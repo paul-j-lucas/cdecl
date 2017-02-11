@@ -1,8 +1,8 @@
 ##
 #	cdecl -- C gibberish translator
-#	man/Makefile.am
+#	man/man1/Makefile.am
 ##
 
-SUBDIRS = man1
+dist_man1_MANS = cdecl.1
 
 # vim:set noet sw=8 ts=8:

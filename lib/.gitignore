@@ -1,0 +1,7 @@
+/getopt.h
+/stdbool.h
+/stddef.h
+/stdlib.h
+/sys_types.h
+/sysexits.h
+/unistd.h
