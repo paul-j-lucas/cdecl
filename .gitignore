@@ -1,6 +1,20 @@
-c++decl
-c++decl.dSYM/
-cdecl
-cdgram.c
-cdlex.c
+*.in
+*.o
+*~
+.*.swp
+.deps
+.DS_Store
+Makefile
 
+/aclocal.m4
+/ar-lib
+/autom4te.cache
+/compile
+/config.guess
+/config.log
+/config.status
+/config.sub
+/configure
+/depcomp
+/install-sh
+/missing
