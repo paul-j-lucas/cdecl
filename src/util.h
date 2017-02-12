@@ -58,6 +58,15 @@ char const* base_name( char const *path_name );
  */
 void* check_realloc( void *p, size_t size );
 
+/**
+ * Calls \c strdup(3) and checks for failure.
+ * If memory allocation fails, prints an error message and exits.
+ *
+ * @param s The null-terminated string to duplicate.
+ * @return Returns a copy of \a s.
+ */
+char* check_strdup( char const *s );
+
 #ifndef HAVE_FMEMOPEN
 /**
  * Local implementation of POSIX 2008 fmemopen(3) for systems that don't have

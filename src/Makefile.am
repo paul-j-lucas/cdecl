@@ -11,4 +11,8 @@ LDADD = $(top_builddir)/lib/libgnu.a
 
 cdecl_SOURCES = cdgram.y cdlex.l cdecl.c options.c util.c
 
+if WITH_READLINE
+cdecl_SOURCES += readline_support.c
+endif
+
 # vim:set noet sw=8 ts=8:

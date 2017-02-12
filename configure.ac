@@ -36,6 +36,7 @@ AC_CHECK_FUNCS([fmemopen])
 AC_SEARCH_LIBS([readline],[readline])
 
 # Makefile conditionals.
+AM_CONDITIONAL([WITH_READLINE], [test x$ac_cv_search_readline != xno])
 
 # Miscellaneous.
 AC_LANG(C)

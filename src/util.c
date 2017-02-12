@@ -58,6 +58,14 @@ void* check_realloc( void *p, size_t size ) {
   return r;
 }
 
+char* check_strdup( char const *s ) {
+  assert( s );
+  char *const dup = strdup( s );
+  if ( !dup )
+    PERROR_EXIT( EX_OSERR );
+  return dup;
+}
+
 #ifndef HAVE_FMEMOPEN
 FILE* fmemopen( void const *buf, size_t size, char const *mode ) {
   assert( buf );

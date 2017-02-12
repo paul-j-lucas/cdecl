@@ -24,23 +24,26 @@
 #include <string.h>
 
 /* maximum # of chars from progname to display in prompt */
-#define PROMPT_MAX_LEN 32
+#define PROMPT_MAX_LEN  32
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
-extern FILE  *yyin;
+extern FILE        *yyin;
 
 // extern variable definitions
-char const   *me;                       // program name
+char const         *me;                 // program name
 
 // local variables
 static bool         is_keyword;         // s argv[0] is a keyword?
-static bool         is_tty;
+static bool         is_tty;             // is stdin connected to a tty?
 static char         prompt_buf[ PROMPT_MAX_LEN + 2/*> */ + 1/*null*/ ];
 static char const  *prompt_ptr;
 
 // extern functions
+#ifdef HAVE_READLINE
+void                readline_init( void );
+#endif /* HAVE_READLINE */
 int                 yyparse( void );
 
 // local functions
@@ -51,11 +54,6 @@ static int          parse_files( int, char const*[] );
 static int          parse_stdin( void );
 static int          parse_string( char const* );
 static char*        readline_wrapper( void );
-#ifdef HAVE_READLINE
-static char**       attempt_completion( char const*, int, int );
-static char*        command_completion( char const*, int );
-static char*        keyword_completion( char const*, int );
-#endif /* HAVE_READLINE */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -69,8 +67,6 @@ void doset(char const *);
 void dodeclare(char*, char*, char*, char*, char*);
 void dodexplain(char*, char*, char*, char*, char*);
 void docexplain(char*, char*, char*, char*);
-
-FILE *tmpfile();
 
 /* variables used during parsing */
 unsigned modbits = 0;
@@ -217,143 +213,6 @@ void c_type_check() {
 #undef A
 #undef ANSI
 
-/* this section contains functions and declarations used with readline() */
-
-/* the readline info pages make this clearer than any comments possibly
- * could, so see them for more information
- */
-
-
-#ifdef HAVE_READLINE
-static char** attempt_completion( char const *text, int start, int end ) {
-  assert( text );
-  (void)end;
-
-  char **matches = NULL;
-  if ( start == 0 )
-    matches = completion_matches( text, command_completion );
-  return matches;
-}
-
-static char* command_completion( char const *text, int flag ) {
-  char const *const commands[] = {
-    "declare",
-    "explain",
-    "cast",
-    "help",
-    "set",
-    "exit",
-    "quit",
-    NULL
-  };
-
-  static int index, len;
-  char const *command;
-
-  if ( !flag ) {
-    index = 0;
-    len = strlen(text);
-  }
-
-  while ( (command = commands[index]) ) {
-    ++index;
-    if ( strncmp( command, text, len ) == 0 )
-      return strdup(command);
-  }
-  return NULL;
-}
-
-static char* keyword_completion( char const *text, int flag ) {
-  static char const *const KEYWORDS[] = {
-    "function",
-    "returning",
-    "array",
-    "pointer",
-    "reference",
-    "member",
-    "const",
-    "volatile",
-    "noalias",
-    "struct",
-    "union",
-    "enum",
-    "class",
-    "extern",
-    "static",
-    "auto",
-    "register",
-    "short",
-    "long",
-    "signed",
-    "unsigned",
-    "char",
-    "float",
-    "double",
-    "void",
-    NULL
-  };
-
-  static char const *const OPTIONS[] = {
-    "options",
-    "create",
-    "nocreate",
-    "prompt",
-    "noprompt",
-  #if 0
-    "interactive",
-    "nointeractive",
-  #endif
-    "preansi",
-    "ansi",
-    "cplusplus",
-    NULL
-  };
-
-  static int index, len, set, into;
-  char const *keyword, *option;
-
-  if (!flag) {
-    index = 0;
-    len = strlen(text);
-    /* completion works differently if the line begins with "set" */
-    set = !strncmp(rl_line_buffer, "set", 3);
-    into = 0;
-  }
-
-  if (set) {
-    while ( (option = OPTIONS[index]) ) {
-      index++;
-      if (!strncmp(option, text, len)) return strdup(option);
-    }
-  } else {
-    /* handle "int" and "into" as special cases */
-    if (!into) {
-      into = 1;
-      if (!strncmp(text, "into", len) && strncmp(text, "int", len))
-        return strdup("into");
-      if (strncmp(text, "int", len))
-        return keyword_completion(text, into);
-      /* normally "int" and "into" would conflict with one another when
-       * completing; cdecl tries to guess which one you wanted, and it
-       * always guesses correctly
-       */
-      if (!strncmp(rl_line_buffer, "cast", 4)
-          && !strstr(rl_line_buffer, "into"))
-        return strdup("into");
-      else
-        return strdup("int");
-    } else {
-      while ( (keyword = KEYWORDS[ index ]) ) {
-        index++;
-        if (!strncmp(keyword, text, len)) return strdup(keyword);
-      }
-    }
-  }
-
-  return NULL;
-}
-#endif /* HAVE_READLINE */
-
 /* Write out a message about something */
 /* being unsupported, possibly with a hint. */
 void unsupp( char const *s, char const *hint ) {
@@ -421,38 +280,39 @@ void print_prompt() {
 void dodeclare(name, storage, left, right, type)
 char *name, *storage, *left, *right, *type;
 {
-    if (prev == 'v')
-      unsupp("Variable of type void",
-        "variable of type pointer to void");
+  if (prev == 'v')
+    unsupp("Variable of type void", "variable of type pointer to void");
 
-    if (*storage == 'r')
-  switch (prev)
-      {
+  if (*storage == 'r') {
+    switch (prev) {
       case 'f': unsupp("Register function", NULL); break;
       case 'A':
       case 'a': unsupp("Register array", NULL); break;
       case 's': unsupp("Register struct/class", NULL); break;
-      }
+    } // switch
+  }
 
-    if (*storage)
-        printf("%s ", storage);
-    printf("%s %s%s%s",
-        type, left,
-  name ? name : (prev == 'f') ? "f" : "var", right);
-    if (MkProgramFlag) {
-      if ((prev == 'f') && (*storage != 'e'))
-        printf(" { }\n");
-      else
-        printf(";\n");
-    } else {
-      printf("\n");
-    }
-    free(storage);
-    free(left);
-    free(right);
-    free(type);
-    if (name)
-        free(name);
+  if ( *storage )
+    printf( "%s ", storage );
+
+  printf(
+    "%s %s%s%s", type, left,
+    name ? name : (prev == 'f') ? "f" : "var", right
+  );
+  if ( MkProgramFlag ) {
+    if ( (prev == 'f') && (*storage != 'e') )
+      printf( " { }\n" );
+    else
+      printf( ";\n" );
+  } else {
+    printf( "\n" );
+  }
+  free( storage );
+  free( left );
+  free( right );
+  free( type );
+  if ( name )
+    free( name );
 }
 
 void dodexplain(storage, constvol1, constvol2, type, decl)
@@ -475,15 +335,15 @@ void dodexplain(storage, constvol1, constvol2, type, decl)
       case 's': unsupp("Register struct/union/enum/class", NULL); break;
     } // switch
 
-  printf("declare %s as ", savedname);
-  if (*storage)
-    printf("%s ", storage);
-  printf("%s", decl);
-  if (*constvol1)
-    printf("%s ", constvol1);
-  if (*constvol2)
-    printf("%s ", constvol2);
-  printf("%s\n", type ? type : "int");
+  printf( "declare %s as ", savedname );
+  if ( *storage )
+    printf( "%s ", storage );
+  printf( "%s", decl );
+  if ( *constvol1 )
+    printf( "%s ", constvol1 );
+  if ( *constvol2 )
+    printf( "%s ", constvol2 );
+  printf( "%s\n", type ? type : "int" );
 }
 
 void docexplain(constvol, type, cast, name)
@@ -495,10 +355,10 @@ char *constvol, *type, *cast, *name;
     else if (prev == 'r')
       unsupp("reference to type void", "pointer to void");
   }
-  printf("cast %s into %s", name, cast);
-  if (strlen(constvol) > 0)
-    printf("%s ", constvol);
-  printf("%s\n",type);
+  printf( "cast %s into %s", name, cast );
+  if ( strlen( constvol ) > 0 )
+    printf( "%s ", constvol );
+  printf( "%s\n", type );
 }
 
 /* Do the appropriate things for the "set" command. */
@@ -589,28 +449,19 @@ void doset( char const *opt ) {
 int main( int argc, char const *argv[] ) {
   cdecl_init( argc, argv );
 
-  int ret = 0;
+  int rv = 0;
 
-  /* Use standard input if no file names or "-" is found. */
-  if ( optind == argc )
-    ret = parse_stdin();
-
-  /* If called as explain, declare or cast, or first */
-  /* argument is one of those, use the command line */
-  /* as the input. */
+  if ( optind == argc )                 // no file names or "-"
+    rv = parse_stdin();
   else if ( (is_keyword = called_as_keyword( argv[ optind ] )) )
-    ret = parse_command_line(argc, argv);
+    rv = parse_command_line( argc, argv );
   else
-    ret = parse_files(argc, argv);
+    rv = parse_files( argc, argv );
 
-  exit( ret );
+  exit( rv );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
-
-/* Run down the list of keywords to see if the */
-/* program is being called named as one of them */
-/* or the first argument is one of them. */
 
 /**
  * TODO
@@ -663,9 +514,7 @@ static void cdecl_init( int argc, char const *argv[] ) {
   prompt_buf[ len+2 ] = '\0';
 
 #ifdef HAVE_READLINE
-  /* install completion handlers */
-  rl_attempted_completion_function = (CPPFunction*)attempt_completion;
-  rl_completion_entry_function = (Function*)keyword_completion;
+  readline_init();
 #endif /* HAVE_READLINE */
 }
 
@@ -676,7 +525,7 @@ static void cdecl_init( int argc, char const *argv[] ) {
  * @param argv The command-line arguments from main().
  * @return TODO
  */
-int parse_command_line( int argc, char const *argv[] ) {
+static int parse_command_line( int argc, char const *argv[] ) {
   int ret = 0;
   FILE *tmpfp = tmpfile();
   if (!tmpfp) {
@@ -722,7 +571,7 @@ errwrite:
  * @param argv The command-line arguments from main().
  * @return TODO
  */
-int parse_files( int argc, char const *argv[] ) {
+static int parse_files( int argc, char const *argv[] ) {
   FILE *ifp;
   int ret = 0;
 
@@ -791,6 +640,12 @@ static int parse_stdin() {
   return ret;
 }
 
+/**
+ * TODO
+ *
+ * @param s TODO
+ * @return TODO
+ */
 static int parse_string( char const *s ) {
   yyin = fmemopen( s, strlen( s ), "r" );
   int const rv = yyparse();
@@ -798,6 +653,11 @@ static int parse_string( char const *s ) {
   return rv;
 }
 
+/**
+ * TODO
+ *
+ * @return TODO
+ */
 static char* readline_wrapper( void ) {
   static char *line_read;
 
