@@ -13,6 +13,7 @@
 
 // standard
 #include <stddef.h>                     /* for size_t */
+#include <stdio.h>                      /* for FILE */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -56,6 +57,19 @@ char const* base_name( char const *path_name );
  * @return Returns a pointer to the allocated memory.
  */
 void* check_realloc( void *p, size_t size );
+
+#ifndef HAVE_FMEMOPEN
+/**
+ * Local implementation of POSIX 2008 fmemopen(3) for systems that don't have
+ * it.
+ *
+ * @param buf TODO
+ * @param size TODO
+ * @param mode TODO
+ * @return TODO
+ */
+FILE* fmemopen( void const *buf, size_t size, char const *mode );
+#endif /* HAVE_FMEMOPEN */
 
 /**
  * Adds a pointer to the head of the free-later-list.

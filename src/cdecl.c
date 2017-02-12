@@ -8,9 +8,11 @@
 #include "cdecl.h"
 #include "cdgram.h"
 #include "options.h"
+#include "readline.h"
 #include "util.h"
 
 // standard
+#include <assert.h>
 #include <ctype.h>
 #include <errno.h>
 #include <getopt.h>
@@ -21,47 +23,54 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* maximum # of chars from progname to display in prompt */
+#define PROMPT_MAX_LEN 32
+
 ///////////////////////////////////////////////////////////////////////////////
 
-extern FILE *yyin;
+// extern variables
+extern FILE  *yyin;
 
-int yyparse( void );
+// extern variable definitions
+char const   *me;                       // program name
 
-#ifdef USE_READLINE
-# include <readline/readline.h>
-  /* prototypes for functions related to readline() */
-char*   getline();
-char**  attempt_completion(char *, int, int);
-char*   keyword_completion(char *, int);
-char*   command_completion(char *, int);
-#endif
+// local variables
+static bool         is_keyword;         // s argv[0] is a keyword?
+static bool         is_tty;
+static char         prompt_buf[ PROMPT_MAX_LEN + 2/*> */ + 1/*null*/ ];
+static char const  *prompt_ptr;
 
-/* maximum # of chars from progname to display in prompt */
-#define MAX_NAME 32
+// extern functions
+int                 yyparse( void );
 
-/* this is the prompt for readline() to display */
-char cdecl_prompt[MAX_NAME+3];
+// local functions
+static bool         called_as_keyword( char const* );
+static void         cdecl_init( int, char const*[] );
+static int          parse_command_line( int, char const*[] );
+static int          parse_files( int, char const*[] );
+static int          parse_stdin( void );
+static int          parse_string( char const* );
+static char*        readline_wrapper( void );
+#ifdef HAVE_READLINE
+static char**       attempt_completion( char const*, int, int );
+static char*        command_completion( char const*, int );
+static char*        keyword_completion( char const*, int );
+#endif /* HAVE_READLINE */
 
-/* backup copy of prompt to save it while prompting is off */
-char real_prompt[MAX_NAME+3];
+///////////////////////////////////////////////////////////////////////////////
 
 char *cat(char const *, ...);
-int dostdin(void);
 void c_type_check(void);
-void prompt(void), doprompt(void), noprompt(void);
+void print_prompt(void);
+void doprompt(void), noprompt(void);
 void unsupp(char const*, char const*);
 void notsupported(char const *, char const *, char const *);
 void doset(char const *);
 void dodeclare(char*, char*, char*, char*, char*);
-void docast(char*, char*, char*, char*);
 void dodexplain(char*, char*, char*, char*, char*);
 void docexplain(char*, char*, char*, char*);
-void cdecl_setprogname(char *);
-int dotmpfile(int, char const**), dofileargs(int, char const**);
 
 FILE *tmpfile();
-
-char const *me; // program name
 
 /* variables used during parsing */
 unsigned modbits = 0;
@@ -82,11 +91,6 @@ char prev = 0;    /* the current type of the variable being examined */
 
 /* options */
 bool MkProgramFlag;                     // -c, output {} and ; after declarations
-bool opt_pre_ansi_c;                    // -p, assume pre-ANSI C language
-bool OnATty;                            // stdin is coming from a terminal
-int KeywordName;                        // $0 is a keyword (declare, explain, cast)
-char const *progname = "cdecl";         // $0
-bool quiet;                             // -q, quiets prompt and initial help msg
 
 #if dodebug
 bool DebugFlag = 0;    /* -d, output debugging trace info */
@@ -185,17 +189,17 @@ void c_type_check() {
           notsupported("", t1, t2);
         }
         else if (restriction == KNR) {
-          if (opt_pre_ansi_c)
+          if ( opt_lang == LANG_C_KNR )
             notsupported(" (Pre-ANSI Compiler)", t1, t2);
         }
         else if (restriction == ANSI) {
-          if (!opt_pre_ansi_c)
+          if ( opt_lang != LANG_C_KNR )
             notsupported(" (ANSI Compiler)", t1, t2);
         }
         else {
           fprintf (stderr,
             "%s: Internal error in crosscheck[%zu,%zu]=%d!\n",
-            progname, i, j, restriction);
+            me, i, j, restriction);
           exit(1);
         }
       } // for
@@ -213,102 +217,36 @@ void c_type_check() {
 #undef A
 #undef ANSI
 
-#ifdef USE_READLINE
-
 /* this section contains functions and declarations used with readline() */
 
 /* the readline info pages make this clearer than any comments possibly
  * could, so see them for more information
  */
 
-char const *const commands[] = {
-  "declare",
-  "explain",
-  "cast",
-  "help",
-  "set",
-  "exit",
-  "quit",
-  NULL
-};
 
-char const *const keywords[] = {
-  "function",
-  "returning",
-  "array",
-  "pointer",
-  "reference",
-  "member",
-  "const",
-  "volatile",
-  "noalias",
-  "struct",
-  "union",
-  "enum",
-  "class",
-  "extern",
-  "static",
-  "auto",
-  "register",
-  "short",
-  "long",
-  "signed",
-  "unsigned",
-  "char",
-  "float",
-  "double",
-  "void",
-  NULL
-};
+#ifdef HAVE_READLINE
+static char** attempt_completion( char const *text, int start, int end ) {
+  assert( text );
+  (void)end;
 
-const char *const options[] = {
-  "options",
-  "create",
-  "nocreate",
-  "prompt",
-  "noprompt",
-#if 0
-  "interactive",
-  "nointeractive",
-#endif
-  "preansi",
-  "ansi",
-  "cplusplus",
-  NULL
-};
-
-/* A static variable for holding the line. */
-static char *line_read = NULL;
-
-/* Read a string, and return a pointer to it.  Returns NULL on EOF. */
-char * getline ()
-{
-  /* If the buffer has already been allocated, return the memory
-     to the free pool. */
-  if (line_read != NULL) {
-    free (line_read);
-    line_read = NULL;
-  }
-
-  /* Get a line from the user. */
-  line_read = readline (cdecl_prompt);
-
-  /* If the line has any text in it, save it on the history. */
-  if (line_read && *line_read)
-    add_history (line_read);
-
-  return (line_read);
-}
-
-char ** attempt_completion(char *text, int start, int end) {
   char **matches = NULL;
   if ( start == 0 )
-    matches = completion_matches(text, command_completion);
+    matches = completion_matches( text, command_completion );
   return matches;
 }
 
-char* command_completion(char *text, int flag)
-{
+static char* command_completion( char const *text, int flag ) {
+  char const *const commands[] = {
+    "declare",
+    "explain",
+    "cast",
+    "help",
+    "set",
+    "exit",
+    "quit",
+    NULL
+  };
+
   static int index, len;
   char const *command;
 
@@ -317,7 +255,7 @@ char* command_completion(char *text, int flag)
     len = strlen(text);
   }
 
-  while ( command = commands[index] ) {
+  while ( (command = commands[index]) ) {
     ++index;
     if ( strncmp( command, text, len ) == 0 )
       return strdup(command);
@@ -325,10 +263,54 @@ char* command_completion(char *text, int flag)
   return NULL;
 }
 
-char * keyword_completion(char *text, int flag)
-{
+static char* keyword_completion( char const *text, int flag ) {
+  static char const *const KEYWORDS[] = {
+    "function",
+    "returning",
+    "array",
+    "pointer",
+    "reference",
+    "member",
+    "const",
+    "volatile",
+    "noalias",
+    "struct",
+    "union",
+    "enum",
+    "class",
+    "extern",
+    "static",
+    "auto",
+    "register",
+    "short",
+    "long",
+    "signed",
+    "unsigned",
+    "char",
+    "float",
+    "double",
+    "void",
+    NULL
+  };
+
+  static char const *const OPTIONS[] = {
+    "options",
+    "create",
+    "nocreate",
+    "prompt",
+    "noprompt",
+  #if 0
+    "interactive",
+    "nointeractive",
+  #endif
+    "preansi",
+    "ansi",
+    "cplusplus",
+    NULL
+  };
+
   static int index, len, set, into;
-  char *keyword, *option;
+  char const *keyword, *option;
 
   if (!flag) {
     index = 0;
@@ -339,7 +321,7 @@ char * keyword_completion(char *text, int flag)
   }
 
   if (set) {
-    while (option = options[index]) {
+    while ( (option = OPTIONS[index]) ) {
       index++;
       if (!strncmp(option, text, len)) return strdup(option);
     }
@@ -349,7 +331,8 @@ char * keyword_completion(char *text, int flag)
       into = 1;
       if (!strncmp(text, "into", len) && strncmp(text, "int", len))
         return strdup("into");
-      if (strncmp(text, "int", len)) return keyword_completion(text, into);
+      if (strncmp(text, "int", len))
+        return keyword_completion(text, into);
       /* normally "int" and "into" would conflict with one another when
        * completing; cdecl tries to guess which one you wanted, and it
        * always guesses correctly
@@ -359,14 +342,17 @@ char * keyword_completion(char *text, int flag)
         return strdup("into");
       else
         return strdup("int");
-    } else while (keyword = keywords[index]) {
-      index++;
-      if (!strncmp(keyword, text, len)) return strdup(keyword);
+    } else {
+      while ( (keyword = KEYWORDS[ index ]) ) {
+        index++;
+        if (!strncmp(keyword, text, len)) return strdup(keyword);
+      }
     }
   }
+
   return NULL;
 }
-#endif /* USE_READLINE */
+#endif /* HAVE_READLINE */
 
 /* Write out a message about something */
 /* being unsupported, possibly with a hint. */
@@ -380,12 +366,12 @@ void unsupp( char const *s, char const *hint ) {
 /* being unsupported on a particular compiler. */
 void notsupported( char const *compiler, char const *type1, char const *type2)
 {
-    if (type2)
-  fprintf(stderr,
+  if (type2)
+    fprintf(stderr,
       "Warning: Unsupported in%s C%s -- '%s' with '%s'\n",
       compiler, opt_lang == LANG_CXX ? "++" : "", type1, type2);
-    else
-  fprintf(stderr,
+  else
+    fprintf(stderr,
       "Warning: Unsupported in%s C%s -- '%s'\n",
       compiler, opt_lang == LANG_CXX ? "++" : "", type1);
 }
@@ -415,51 +401,6 @@ char* cat( char const *s1, ... ) {
   return newstr;
 }
 
-#ifdef NOTMPFILE
-/* provide a conservative version of tmpfile() */
-/* for those systems without it. */
-/* tmpfile() returns a FILE* of a file opened */
-/* for read&write. It is supposed to be */
-/* automatically removed when it gets closed, */
-/* but here we provide a separate rmtmpfile() */
-/* function to perform that function. */
-/* Also provide several possible file names to */
-/* try for opening. */
-static char *file4tmpfile = 0;
-
-FILE *tmpfile()
-{
-  static char const *const listtmpfiles[] = {
-    "/usr/tmp/cdeclXXXXXX",
-    "/tmp/cdeclXXXXXX",
-    "/cdeclXXXXXX",
-    "cdeclXXXXXX",
-    NULL
-  };
-
-  char const **listp = listtmpfiles;
-  for ( ; *listp; listp++) {
-    FILE *retfp;
-    mktemp(*listp);
-    retfp = fopen(*listp, "w+");
-    if (!retfp)
-        continue;
-    file4tmpfile = *listp;
-    return retfp;
-  }
-
-  return 0;
-}
-
-void rmtmpfile() {
-  if ( file4tmpfile )
-     unlink( file4tmpfile );
-}
-#else
-/* provide a mock rmtmpfile() for normal systems */
-# define rmtmpfile()  /* nothing */
-#endif /* NOTMPFILE */
-
 /* Tell how to invoke cdecl. */
 /* Manage the prompts. */
 static int prompting;
@@ -467,263 +408,13 @@ static int prompting;
 void doprompt() { prompting = 1; }
 void noprompt() { prompting = 0; }
 
-void prompt()
-{
+void print_prompt() {
 #ifndef USE_READLINE
-  if ((OnATty || opt_interactive) && prompting) {
-    printf("%s", cdecl_prompt);
-# if 0
-    printf("%s> ", progname);
-# endif /* that was the old way to display the prompt */
-    fflush(stdout);
+  if ( (is_tty || opt_interactive) && prompting ) {
+    printf( "%s", prompt_ptr );
+    fflush( stdout );
   }
 #endif
-}
-
-/* Save away the name of the program from argv[0] */
-void cdecl_setprogname(char *argv0) {
-#ifdef DOS
-  char *dot;
-#endif /* DOS */
-
-  progname = strrchr(argv0, '/');
-
-#ifdef DOS
-  if (!progname)
-    progname = strrchr(argv0, '\\');
-#endif /* DOS */
-
-  if (progname)
-    progname++;
-  else
-    progname = argv0;
-
-#ifdef DOS
-  dot = strchr(progname, '.');
-  if (dot)
-    *dot = '\0';
-  for (dot = progname; *dot; dot++)
-    *dot = tolower(*dot);
-#endif /* DOS */
-
-  /* this sets up the prompt, which is on by default */
-  int len = strlen(progname);
-  if (len > MAX_NAME) len = MAX_NAME;
-  strncpy(real_prompt, progname, len);
-  real_prompt[len] = '>';
-  real_prompt[len+1] = ' ';
-  real_prompt[len+2] = '\0';
-}
-
-/* Run down the list of keywords to see if the */
-/* program is being called named as one of them */
-/* or the first argument is one of them. */
-static int namedkeyword( char const *argn ) {
-  static char const *const cmdlist[] = {
-    "?",
-    "cast",
-    "declare",
-    "explain",
-    "help",
-    "set",
-    NULL
-  };
-
-  /* first check the program name */
-  char const *const *cmdptr = cmdlist;
-  for ( ; *cmdptr; cmdptr++)
-    if (strcmp(*cmdptr, progname) == 0) {
-      KeywordName = 1;
-      return 1;
-    }
-
-  /* now check $1 */
-  for (cmdptr = cmdlist; *cmdptr; cmdptr++)
-    if (strcmp(*cmdptr, argn) == 0)
-      return 1;
-
-  /* nope, must be file name arguments */
-  return 0;
-}
-
-/* Read from standard input, turning */
-/* on prompting if necessary. */
-int dostdin() {
-  int ret;
-  if (OnATty || opt_interactive) {
-#ifndef USE_READLINE
-  if (!quiet) printf("Type `help' or `?' for help\n");
-  prompt();
-#else
-  char *line, *oldline;
-  int len, newline;
-
-  if (!quiet) printf("Type `help' or `?' for help\n");
-  ret = 0;
-  while ((line = getline())) {
-      if (!strcmp(line, "quit") || !strcmp(line, "exit")) {
-    free(line);
-    return ret;
-      }
-      newline = 0;
-      /* readline() strips newline, we add semicolon if necessary */
-      len = strlen(line);
-      if (len && line[len-1] != '\n' && line[len-1] != ';') {
-    newline = 1;
-    oldline = line;
-    line = malloc(len+2);
-    strcpy(line, oldline);
-    line[len] = ';';
-    line[len+1] = '\0';
-      }
-      if (len) ret = dotmpfile_from_string(line);
-      if (newline) free(line);
-  }
-  puts("");
-  return ret;
-#endif
-  }
-
-    yyin = stdin;
-    ret = yyparse();
-    OnATty = 0;
-    return ret;
-}
-
-#ifdef USE_READLINE
-/* Write a string into a file and treat that file as the input. */
-int dotmpfile_from_string( char const *s)
-{
-    int ret = 0;
-    FILE *tmpfp = tmpfile();
-    if (!tmpfp)
-  {
-  int sverrno = errno;
-  fprintf (stderr, "%s: cannot open temp file\n",
-      progname);
-  errno = sverrno;
-  perror(progname);
-  return 1;
-  }
-
-    if (fputs(s, tmpfp) == EOF)
-  {
-  int sverrno;
-  sverrno = errno;
-  fprintf (stderr, "%s: error writing to temp file\n",
-      progname);
-  errno = sverrno;
-  perror(progname);
-  fclose(tmpfp);
-  rmtmpfile();
-  return 1;
-  }
-
-    rewind(tmpfp);
-    yyin = tmpfp;
-    ret += yyparse();
-    fclose(tmpfp);
-    rmtmpfile();
-
-    return ret;
-}
-#endif /* USE_READLINE */
-
-/* Write the arguments into a file */
-/* and treat that file as the input. */
-int dotmpfile(int argc, char const *argv[])
-{
-    int ret = 0;
-    FILE *tmpfp = tmpfile();
-    if (!tmpfp)
-  {
-  int sverrno = errno;
-  fprintf (stderr, "%s: cannot open temp file\n",
-      progname);
-  errno = sverrno;
-  perror(progname);
-  return 1;
-  }
-
-    if (KeywordName)
-  if (fputs(progname, tmpfp) == EOF)
-      {
-      int sverrno;
-  errwrite:
-      sverrno = errno;
-      fprintf (stderr, "%s: error writing to temp file\n",
-    progname);
-      errno = sverrno;
-      perror(progname);
-      fclose(tmpfp);
-      rmtmpfile();
-      return 1;
-      }
-
-    for ( ; optind < argc; optind++)
-  if (fprintf(tmpfp, " %s", argv[optind]) == EOF)
-      goto errwrite;
-
-    if (putc('\n', tmpfp) == EOF)
-  goto errwrite;
-
-    rewind(tmpfp);
-    yyin = tmpfp;
-    ret += yyparse();
-    fclose(tmpfp);
-    rmtmpfile();
-
-    return ret;
-}
-
-/* Read each of the named files for input. */
-int dofileargs(int argc, char const *argv[])
-{
-    FILE *ifp;
-    int ret = 0;
-
-    for ( ; optind < argc; optind++)
-  if (strcmp(argv[optind], "-") == 0)
-      ret += dostdin();
-
-  else if ((ifp = fopen(argv[optind], "r")) == NULL)
-      {
-      int sverrno = errno;
-      fprintf (stderr, "%s: cannot open %s\n",
-    progname, argv[optind]);
-      errno = sverrno;
-      perror(argv[optind]);
-      ret++;
-      }
-
-  else
-      {
-      yyin = ifp;
-      ret += yyparse();
-      }
-
-    return ret;
-}
-
-/* print out a cast */
-void docast(name, left, right, type)
-char *name, *left, *right, *type;
-{
-    int lenl = strlen(left), lenr = strlen(right);
-
-    if (prev == 'f')
-      unsupp("Cast into function",
-        "cast into pointer to function");
-    else if (prev=='A' || prev=='a')
-      unsupp("Cast into array","cast into pointer");
-    printf("(%s%*s%s)%s\n",
-      type, lenl+lenr?lenl+1:0,
-      left, right, name ? name : "expression");
-    free(left);
-    free(right);
-    free(type);
-    if (name)
-        free(name);
 }
 
 /* print out a declaration */
@@ -817,9 +508,9 @@ void doset( char const *opt ) {
   else if (strcmp(opt, "nocreate") == 0)
     { MkProgramFlag = 0; }
   else if (strcmp(opt, "prompt") == 0)
-    { prompting = 1; strcpy(cdecl_prompt, real_prompt); }
+    { prompting = 1; prompt_ptr = prompt_buf; }
   else if (strcmp(opt, "noprompt") == 0)
-    { prompting = 0; cdecl_prompt[0] = '\0'; }
+    { prompting = 0; prompt_ptr = ""; }
 #ifndef USE_READLINE
     /* I cannot seem to figure out what nointeractive was intended to do --
      * it didn't work well to begin with, and it causes problem with
@@ -828,7 +519,7 @@ void doset( char const *opt ) {
   else if (strcmp(opt, "interactive") == 0)
     { opt_interactive = 1; }
   else if (strcmp(opt, "nointeractive") == 0)
-    { opt_interactive = 0; OnATty = 0; }
+    { opt_interactive = 0; is_tty = 0; }
 #endif
   else if (strcmp(opt, "preansi") == 0)
     { opt_lang = LANG_C_KNR; }
@@ -870,8 +561,8 @@ void doset( char const *opt ) {
 
     printf("\nCurrent set values are:\n");
     printf("\t%screate\n", MkProgramFlag ? "   " : " no");
-    printf("\t%sprompt\n", cdecl_prompt[0] ? "   " : " no");
-    printf("\t%sinteractive\n", (OnATty || opt_interactive) ? "   " : " no");
+    printf("\t%sprompt\n", prompt_ptr[0] ? "   " : " no");
+    printf("\t%sinteractive\n", (is_tty || opt_interactive) ? "   " : " no");
     if (opt_lang == LANG_C_KNR)
       printf("\t   preansi\n");
     else
@@ -893,45 +584,231 @@ void doset( char const *opt ) {
   }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
-static void cdecl_cleanup( void ) {
-  free_now();
-}
+////////// main ///////////////////////////////////////////////////////////////
 
 int main( int argc, char const *argv[] ) {
-  atexit( cdecl_cleanup );
-  options_init( argc, argv );
+  cdecl_init( argc, argv );
 
   int ret = 0;
 
-#ifdef USE_READLINE
-  /* install completion handlers */
-  rl_attempted_completion_function = (CPPFunction *)attempt_completion;
-  rl_completion_entry_function = (Function *)keyword_completion;
-#endif
-
-  prompting = OnATty = isatty( STDIN_FILENO );
-
-  /* Set up the prompt. */
-  if (prompting)
-    strcpy(cdecl_prompt, real_prompt);
-  else
-    cdecl_prompt[0] = '\0';
-
   /* Use standard input if no file names or "-" is found. */
-  if (optind == argc)
-    ret = dostdin();
+  if ( optind == argc )
+    ret = parse_stdin();
 
   /* If called as explain, declare or cast, or first */
   /* argument is one of those, use the command line */
   /* as the input. */
-  else if (namedkeyword(argv[optind]))
-    ret = dotmpfile(argc, argv);
+  else if ( (is_keyword = called_as_keyword( argv[ optind ] )) )
+    ret = parse_command_line(argc, argv);
   else
-    ret = dofileargs(argc, argv);
+    ret = parse_files(argc, argv);
 
   exit( ret );
+}
+
+////////// local functions ////////////////////////////////////////////////////
+
+/* Run down the list of keywords to see if the */
+/* program is being called named as one of them */
+/* or the first argument is one of them. */
+
+/**
+ * TODO
+ *
+ * @param argn TODO
+ */
+static bool called_as_keyword( char const *argn ) {
+  static char const *const COMMANDS[] = {
+    "cast",
+    "declare",
+    "explain",
+    "help",
+    "set",
+    NULL
+  };
+
+  for ( char const *const *c = COMMANDS; *c; ++c )
+    if ( strcmp( *c, me ) == 0 || strcmp( *c, argn ) == 0 )
+      return true;
+
+  return false;
+}
+
+/**
+ * Cleans up cdecl data.
+ */
+static void cdecl_cleanup( void ) {
+  free_now();
+}
+
+/**
+ * TODO
+ *
+ * @param argc The number of command-line arguments from main().
+ * @param argv The command-line arguments from main().
+ */
+static void cdecl_init( int argc, char const *argv[] ) {
+  atexit( cdecl_cleanup );
+  options_init( argc, argv );
+
+  prompting = is_tty = isatty( STDIN_FILENO );
+
+  /* this sets up the prompt, which is on by default */
+  size_t len = strlen( me );
+  if ( len > PROMPT_MAX_LEN )
+    len = PROMPT_MAX_LEN;
+  strncpy( prompt_buf, me, len );
+  prompt_buf[ len   ] = '>';
+  prompt_buf[ len+1 ] = ' ';
+  prompt_buf[ len+2 ] = '\0';
+
+#ifdef HAVE_READLINE
+  /* install completion handlers */
+  rl_attempted_completion_function = (CPPFunction*)attempt_completion;
+  rl_completion_entry_function = (Function*)keyword_completion;
+#endif /* HAVE_READLINE */
+}
+
+/**
+ * TODO
+ *
+ * @param argc The number of command-line arguments from main().
+ * @param argv The command-line arguments from main().
+ * @return TODO
+ */
+int parse_command_line( int argc, char const *argv[] ) {
+  int ret = 0;
+  FILE *tmpfp = tmpfile();
+  if (!tmpfp) {
+    int sverrno = errno;
+    fprintf (stderr, "%s: cannot open temp file\n", me);
+    errno = sverrno;
+    perror(me);
+    return 1;
+  }
+
+  if ( is_keyword ) {
+    if (fputs(me, tmpfp) == EOF) {
+      int sverrno;
+errwrite:
+      sverrno = errno;
+      fprintf (stderr, "%s: error writing to temp file\n", me);
+      errno = sverrno;
+      perror(me);
+      fclose(tmpfp);
+      return 1;
+    }
+  }
+
+  for ( ; optind < argc; optind++)
+    if (fprintf(tmpfp, " %s", argv[optind]) == EOF)
+      goto errwrite;
+
+  if (putc('\n', tmpfp) == EOF)
+    goto errwrite;
+
+  rewind( tmpfp );
+  yyin = tmpfp;
+  ret += yyparse();
+  fclose( tmpfp );
+
+  return ret;
+}
+
+/**
+ * TODO
+ *
+ * @param argc The number of command-line arguments from main().
+ * @param argv The command-line arguments from main().
+ * @return TODO
+ */
+int parse_files( int argc, char const *argv[] ) {
+  FILE *ifp;
+  int ret = 0;
+
+  for ( ; optind < argc; ++optind ) {
+    if ( strcmp( argv[optind], "-" ) == 0 )
+      ret = parse_stdin();
+    else if ( (ifp = fopen( argv[optind], "r") ) == NULL ) {
+      int sverrno = errno;
+      fprintf (stderr, "%s: cannot open %s\n", me, argv[optind]);
+      errno = sverrno;
+      perror(argv[optind]);
+      ret++;
+    } else {
+      yyin = ifp;
+      ret += yyparse();
+    }
+  } // for
+  return ret;
+}
+
+/**
+ * TODO
+ *
+ * @return TODO
+ */
+static int parse_stdin() {
+  int ret;
+
+  if ( is_tty || opt_interactive ) {
+    char *line, *oldline;
+    int len, newline;
+
+    if ( !opt_quiet )
+      printf( "Type `help' or `?' for help\n" );
+
+    ret = 0;
+    while ( (line = readline_wrapper()) ) {
+      if ( strcmp( line, "quit" ) == 0 || strcmp( line, "exit" ) == 0 ) {
+        free( line );
+        return ret;
+      }
+
+      newline = 0;
+      /* readline() strips newline, we add semicolon if necessary */
+      len = strlen(line);
+      if (len && line[len-1] != '\n' && line[len-1] != ';') {
+        newline = 1;
+        oldline = line;
+        line = malloc(len+2);
+        strcpy(line, oldline);
+        line[len] = ';';
+        line[len+1] = '\0';
+      }
+      if ( len )
+        ret = parse_string( line );
+      if (newline)
+        free( line );
+    } // while
+    puts( "" );
+    return ret;
+  }
+
+  yyin = stdin;
+  ret = yyparse();
+  is_tty = false;
+  return ret;
+}
+
+static int parse_string( char const *s ) {
+  yyin = fmemopen( s, strlen( s ), "r" );
+  int const rv = yyparse();
+  fclose( yyin );
+  return rv;
+}
+
+static char* readline_wrapper( void ) {
+  static char *line_read;
+
+  if ( line_read )
+    free( line_read );
+
+  line_read = readline( prompt_ptr );
+  if ( line_read && *line_read )
+    add_history( line_read );
+
+  return line_read;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

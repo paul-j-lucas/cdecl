@@ -58,6 +58,23 @@ void* check_realloc( void *p, size_t size ) {
   return r;
 }
 
+#ifndef HAVE_FMEMOPEN
+FILE* fmemopen( void const *buf, size_t size, char const *mode ) {
+  assert( buf );
+  assert( strchr( mode, 'r' ) );
+
+  FILE *const tmp = tmpfile();
+  if ( !tmp )
+    PERROR_EXIT( EX_OSERR );
+  if ( size > 0 ) {
+    if ( fwrite( buf, 1, size, tmp ) != size )
+      PERROR_EXIT( EX_OSERR );
+    rewind( tmp );
+  }
+  return tmp;
+}
+#endif /* HAVE_FMEMOPEN */
+
 void* free_later( void *p ) {
   assert( p );
   free_node_t *const new_node = MALLOC( free_node_t, 1 );

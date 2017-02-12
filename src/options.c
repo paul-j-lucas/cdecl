@@ -27,6 +27,7 @@ char const         *opt_fin;
 char const         *opt_fout;
 bool                opt_interactive;
 lang_t              opt_lang;
+bool                opt_quiet;
 
 // other extern variables
 FILE               *fin;
@@ -40,11 +41,12 @@ static void         usage( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static char const SHORT_OPTS[] = "aipvx:";
+static char const SHORT_OPTS[] = "aipqvx:";
 
 static struct option const LONG_OPTS[] = {
   { "language",     required_argument,  NULL, 'x' },
   { "interactive",  no_argument,        NULL, 'i' },
+  { "quite",        no_argument,        NULL, 'q' },
   { "version",      no_argument,        NULL, 'v' },
   { NULL,           0,                  NULL, 0   }
 };
@@ -150,11 +152,12 @@ static void parse_options( int argc, char const *argv[] ) {
       break;
     SET_OPTION( opt );
     switch ( opt ) {
-      case 'a': opt_lang              = LANG_C_ANSI;            break;
-      case 'i': opt_interactive       = true;                   break;
-      case 'p': opt_lang              = LANG_C_KNR;             break;
-      case 'v': print_version         = true;                   break;
-      case 'x': opt_lang              = parse_lang( optarg );   break;
+      case 'a': opt_lang              = LANG_C_ANSI;          break;
+      case 'i': opt_interactive       = true;                 break;
+      case 'p': opt_lang              = LANG_C_KNR;           break;
+      case '1': opt_quiet             = true;                 break;
+      case 'v': print_version         = true;                 break;
+      case 'x': opt_lang              = parse_lang( optarg ); break;
       default : usage();
     } // switch
   } // for

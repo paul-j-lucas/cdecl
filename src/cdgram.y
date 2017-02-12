@@ -11,8 +11,10 @@
 #include "util.h"
 
 // standard
+#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #ifdef dodebug
@@ -33,6 +35,30 @@ extern void   c_type_check( void );
 extern int    yylex( void );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+static void do_cast( char const *name, char const *left, char const *right,
+                     char const *type ) {
+	assert( left );
+  assert( right );
+  assert( type );
+
+  size_t const lenl = strlen( left ), lenr = strlen( right );
+
+  if ( prev == 'f' )
+    unsupp( "Cast into function", "cast into pointer to function" );
+  else if (prev=='A' || prev=='a')
+    unsupp( "Cast into array","cast into pointer" );
+  printf(
+    "(%s%*s%s)%s\n",
+    type, (int)(lenl + lenr ? lenl + 1 : 0),
+    left, right, name ? name : "expression"
+  );
+  free( (void*)left );
+  free( (void*)right );
+  free( (void*)type );
+  if ( name )
+    free( (void*)name );
+}
 
 static void print_help( void );
 
@@ -106,7 +132,7 @@ prog
   : /* empty */
   | prog stmt
     {
-      prompt();
+      print_prompt();
       prev = 0;
     }
   ;
@@ -148,7 +174,7 @@ stmt
       Debug((stderr, "\tacdecl.left='%s'\n", $4.left));
       Debug((stderr, "\tacdecl.right='%s'\n", $4.right));
       Debug((stderr, "\tacdecl.type='%s'\n", $4.type));
-      docast($2, $4.left, $4.right, $4.type);
+      do_cast($2, $4.left, $4.right, $4.type);
     }
 
   | T_CAST adecl NL
@@ -157,7 +183,7 @@ stmt
       Debug((stderr, "\tacdecl.left='%s'\n", $2.left));
       Debug((stderr, "\tacdecl.right='%s'\n", $2.right));
       Debug((stderr, "\tacdecl.type='%s'\n", $2.type));
-      docast(NULL, $2.left, $2.right, $2.type);
+      do_cast(NULL, $2.left, $2.right, $2.type);
     }
 
   | T_EXPLAIN opt_storage opt_constvol_list type opt_constvol_list cdecl NL

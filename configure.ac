@@ -32,6 +32,8 @@ AC_C_INLINE
 
 # Checks for library functions.
 AC_FUNC_REALLOC
+AC_CHECK_FUNCS([fmemopen])
+AC_SEARCH_LIBS([readline],[readline])
 
 # Makefile conditionals.
 
