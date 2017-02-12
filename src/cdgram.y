@@ -52,6 +52,9 @@ enum c_ident_kind {
 };
 typedef enum c_ident_kind c_ident_kind_t;
 
+/**
+ * Bits denoting C type.
+ */
 typedef unsigned c_type_bits_t;
 
 static c_type_bits_t const C_TYPE_VOID     = 0x0001;
@@ -66,6 +69,29 @@ static c_type_bits_t const C_TYPE_UNSIGNED = 0x0100;
 static c_type_bits_t const C_TYPE_FLOAT    = 0x0200;
 static c_type_bits_t const C_TYPE_DOUBLE   = 0x0400;
 
+/**
+ * Mapping between C type names and bit representations.
+ */
+struct c_type_map {
+  char const   *name;
+  c_type_bits_t bit;
+};
+typedef struct c_type_map c_type_map_t;
+
+static c_type_map_t const C_TYPE_MAP[] = {
+  { "void",     C_TYPE_VOID     },
+  { "bool",     C_TYPE_BOOL     },
+  { "char",     C_TYPE_CHAR     },
+  { "wchar_t",  C_TYPE_WCHAR_T  },
+  { "short",    C_TYPE_SHORT    },
+  { "int",      C_TYPE_INT      },
+  { "long",     C_TYPE_LONG     },
+  { "signed",   C_TYPE_SIGNED   },
+  { "unsigned", C_TYPE_UNSIGNED },
+  { "float",    C_TYPE_FLOAT    },
+  { "double",   C_TYPE_DOUBLE   }
+};
+
 // local variables
 static bool           array_has_dim;
 static c_type_bits_t  c_type_bits;
@@ -73,25 +99,11 @@ static c_ident_kind_t c_ident_kind;
 static char const    *c_ident;
 
 // local functions
-static void   not_supported( char const*, char const*, char const* );
-static void   unsupp( char const*, char const* );
+static char const*  c_type_name( c_type_bits_t );
+static void         not_supported( char const*, char const*, char const* );
+static void         unsupp( char const*, char const* );
 
 ///////////////////////////////////////////////////////////////////////////////
-
-#if 0
-char const crosscheck_old[9][9] = {
-  /*              L, I, S, C, V, U, S, F, D, */
-  /* long */      _, _, _, _, _, _, _, _, _,
-  /* int */       _, _, _, _, _, _, _, _, _,
-  /* short */     X, _, _, _, _, _, _, _, _,
-  /* char */      X, X, X, _, _, _, _, _, _,
-  /* void */      X, X, X, X, _, _, _, _, _,
-  /* unsigned */  R, _, R, R, X, _, _, _, _,
-  /* signed */    K, K, K, K, X, X, _, _, _,
-  /* float */     A, X, X, X, X, X, X, _, _,
-  /* double */    K, X, X, X, X, X, X, X, _
-};
-#endif
 
 /**
  * TODO
@@ -100,7 +112,10 @@ char const crosscheck_old[9][9] = {
  */
 static void c_type_add( c_type_bits_t bit ) {
   if ( c_type_bits & bit )
-    /* complain */;
+    PRINT_ERR(
+      "\"%s\" may not be specified more than once\n",
+      c_type_name( bit )
+    );
   else
     c_type_bits |= bit;
 }
@@ -109,26 +124,6 @@ static void c_type_add( c_type_bits_t bit ) {
  * TODO
  */
 static void c_type_check( void ) {
-  struct c_type_map {
-    char const   *name;
-    c_type_bits_t bit;
-  };
-  typedef struct c_type_map c_type_map_t;
-
-  static c_type_map_t const C_TYPE_MAP[] = {
-    { "void",     C_TYPE_VOID     },
-    { "bool",     C_TYPE_BOOL     },
-    { "char",     C_TYPE_CHAR     },
-    { "wchar_t",  C_TYPE_WCHAR_T  },
-    { "short",    C_TYPE_SHORT    },
-    { "int",      C_TYPE_INT      },
-    { "long",     C_TYPE_LONG     },
-    { "signed",   C_TYPE_SIGNED   },
-    { "unsigned", C_TYPE_UNSIGNED },
-    { "float",    C_TYPE_FLOAT    },
-    { "double",   C_TYPE_DOUBLE   }
-  };
-
   enum restriction {
     NONE,
     NEVER,                              // never allowed
@@ -187,6 +182,19 @@ static void c_type_check( void ) {
       } // for
     }
   } // for
+}
+
+/**
+ * TODO
+ *
+ * @param bit TODO
+ * @return Returns TODO
+ */
+static char const* c_type_name( c_type_bits_t bit ) {
+  for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_MAP ); ++i )
+    if ( bit == C_TYPE_MAP[i].bit )
+      return C_TYPE_MAP[i].name;
+  assert( 0 );
 }
 
 /**
@@ -507,7 +515,7 @@ int yywrap( void ) {
 %type   <dynstr> adecllist
 %type   <dynstr> array_dimension c_type cast cast_list cdecl cdecl1 cdims
 %type   <dynstr> constvol_list ClassStruct mod_list mod_list1 modifier
-%type   <dynstr> opt_constvol_list opt_NAME opt_storage storage StrClaUniEnum
+%type   <dynstr> opt_const_volatile_list opt_NAME opt_storage storage StrClaUniEnum
 %type   <dynstr> c_type_name type
 %type   <halves> adecl
 
@@ -572,22 +580,22 @@ statement
       do_cast(NULL, $2.left, $2.right, $2.type);
     }
 
-  | T_EXPLAIN opt_storage opt_constvol_list type opt_constvol_list cdecl EOL
+  | T_EXPLAIN opt_storage opt_const_volatile_list type opt_const_volatile_list cdecl EOL
     {
-      YYTRACE( "statement: EXPLAIN opt_storage opt_constvol_list type cdecl\n" );
+      YYTRACE( "statement: EXPLAIN opt_storage opt_const_volatile_list type cdecl\n" );
       YYTRACE( "\topt_storage='%s'\n", $2 );
-      YYTRACE( "\topt_constvol_list='%s'\n", $3 );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
       YYTRACE( "\ttype='%s'\n", $4 );
       YYTRACE( "\tcdecl='%s'\n", $6 );
       YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
       explain_declaration($2, $3, $5, $4, $6);
     }
 
-  | T_EXPLAIN storage opt_constvol_list cdecl EOL
+  | T_EXPLAIN storage opt_const_volatile_list cdecl EOL
     {
-      YYTRACE( "statement: EXPLAIN storage opt_constvol_list cdecl\n" );
+      YYTRACE( "statement: EXPLAIN storage opt_const_volatile_list cdecl\n" );
       YYTRACE( "\tstorage='%s'\n", $2 );
-      YYTRACE( "\topt_constvol_list='%s'\n", $3 );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
       YYTRACE( "\tcdecl='%s'\n", $4 );
       YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
       explain_declaration($2, $3, NULL, NULL, $4);
@@ -603,10 +611,10 @@ statement
       explain_declaration($2, $3, NULL, NULL, $4);
     }
 
-  | T_EXPLAIN '(' opt_constvol_list type cast ')' opt_NAME EOL
+  | T_EXPLAIN '(' opt_const_volatile_list type cast ')' opt_NAME EOL
     {
-      YYTRACE( "statement: EXPLAIN ( opt_constvol_list type cast ) opt_NAME\n" );
-      YYTRACE( "\topt_constvol_list='%s'\n", $3 );
+      YYTRACE( "statement: EXPLAIN ( opt_const_volatile_list type cast ) opt_NAME\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
       YYTRACE( "\ttype='%s'\n", $4 );
       YYTRACE( "\tcast='%s'\n", $5 );
       YYTRACE( "\tNAME='%s'\n", $7 );
@@ -656,10 +664,10 @@ opt_NAME
 
 cdecl
   : cdecl1
-  | '*' opt_constvol_list cdecl
+  | '*' opt_const_volatile_list cdecl
     {
-      YYTRACE( "cdecl: * opt_constvol_list cdecl\n" );
-      YYTRACE( "\topt_constvol_list='%s'\n", $2 );
+      YYTRACE( "cdecl: * opt_const_volatile_list cdecl\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
       YYTRACE( "\tcdecl='%s'\n", $3 );
       $$ = cat($3,$2,strdup(strlen($2)?" pointer to ":"pointer to "),NULL);
       c_ident_kind = C_POINTER;
@@ -678,10 +686,10 @@ cdecl
       YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
-  | '&' opt_constvol_list cdecl
+  | '&' opt_const_volatile_list cdecl
     {
-      YYTRACE( "cdecl: & opt_constvol_list cdecl\n" );
-      YYTRACE( "\topt_constvol_list='%s'\n", $2 );
+      YYTRACE( "cdecl: & opt_const_volatile_list cdecl\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
       YYTRACE( "\tcdecl='%s'\n", $3 );
       if (opt_lang != LANG_CXX)
         unsupp("reference", NULL);
@@ -701,11 +709,11 @@ cdecl1
       YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
-  | '(' '^' opt_constvol_list cdecl ')' '(' ')'
+  | '(' '^' opt_const_volatile_list cdecl ')' '(' ')'
     {
       char const *sp = "";
-      YYTRACE( "cdecl1: (^ opt_constvol_list cdecl)()\n" );
-      YYTRACE( "\topt_constvol_list='%s'\n", $3 );
+      YYTRACE( "cdecl1: (^ opt_const_volatile_list cdecl)()\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
       YYTRACE( "\tcdecl='%s'\n", $4 );
       if (strlen($3) > 0)
           sp = " ";
@@ -713,11 +721,11 @@ cdecl1
       c_ident_kind = C_BLOCK;
     }
 
-  | '(' '^' opt_constvol_list cdecl ')' '(' cast_list ')'
+  | '(' '^' opt_const_volatile_list cdecl ')' '(' cast_list ')'
     {
       char const *sp = "";
-      YYTRACE( "cdecl1: (^ opt_constvol_list cdecl)( cast_list )\n" );
-      YYTRACE( "\topt_constvol_list='%s'\n", $3 );
+      YYTRACE( "cdecl1: (^ opt_const_volatile_list cdecl)( cast_list )\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
       YYTRACE( "\tcdecl='%s'\n", $4 );
       YYTRACE( "\tcast_list='%s'\n", $7 );
       if (strlen($3) > 0)
@@ -775,10 +783,10 @@ cast_list
       $$ = cat($1, strdup(", "), $3, NULL);
     }
 
-  | opt_constvol_list type cast
+  | opt_const_volatile_list type cast
     {
-      YYTRACE( "cast_list: opt_constvol_list type cast\n" );
-      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "cast_list: opt_const_volatile_list type cast\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
       YYTRACE( "\ttype='%s'\n", $2 );
       YYTRACE( "\tcast='%s'\n", $3 );
       $$ = cat($3, $1, strdup(strlen($1) ? " " : ""), $2, NULL);
@@ -1000,11 +1008,11 @@ adecl
       YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
-  | opt_constvol_list T_BLOCK T_RETURNING adecl
+  | opt_const_volatile_list T_BLOCK T_RETURNING adecl
     {
       char const *sp = "";
-      YYTRACE( "adecl: opt_constvol_list BLOCK RETURNING adecl\n" );
-      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "adecl: opt_const_volatile_list BLOCK RETURNING adecl\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
       YYTRACE( "\tadecl.left='%s'\n", $4.left );
       YYTRACE( "\tadecl.right='%s'\n", $4.right );
       YYTRACE( "\tadecl.type='%s'\n", $4.type );
@@ -1022,11 +1030,11 @@ adecl
       c_ident_kind = C_BLOCK;
     }
 
-  | opt_constvol_list T_BLOCK '(' adecllist ')' T_RETURNING adecl
+  | opt_const_volatile_list T_BLOCK '(' adecllist ')' T_RETURNING adecl
     {
       char const *sp = "";
-      YYTRACE( "adecl: opt_constvol_list BLOCK RETURNING adecl\n" );
-      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "adecl: opt_const_volatile_list BLOCK RETURNING adecl\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
       YYTRACE( "\tadecllist='%s'\n", $4 );
       YYTRACE( "\tadecl.left='%s'\n", $7.left );
       YYTRACE( "\tadecl.right='%s'\n", $7.right );
@@ -1069,12 +1077,12 @@ adecl
       YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
-  | opt_constvol_list T_POINTER T_TO adecl
+  | opt_const_volatile_list T_POINTER T_TO adecl
     {
       char const *op = "", *cp = "", *sp = "";
 
-      YYTRACE( "adecl: opt_constvol_list POINTER TO adecl\n" );
-      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "adecl: opt_const_volatile_list POINTER TO adecl\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
       YYTRACE( "\tadecl.left='%s'\n", $4.left );
       YYTRACE( "\tadecl.right='%s'\n", $4.right );
       YYTRACE( "\tadecl.type='%s'\n", $4.type );
@@ -1098,12 +1106,12 @@ adecl
       YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
-  | opt_constvol_list T_POINTER T_TO T_MEMBER T_OF ClassStruct T_NAME adecl
+  | opt_const_volatile_list T_POINTER T_TO T_MEMBER T_OF ClassStruct T_NAME adecl
     {
       char const *op = "", *cp = "", *sp = "";
 
-      YYTRACE( "adecl: opt_constvol_list POINTER TO MEMBER OF ClassStruct NAME adecl\n" );
-      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "adecl: opt_const_volatile_list POINTER TO MEMBER OF ClassStruct NAME adecl\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
       YYTRACE( "\tClassStruct='%s'\n", $6 );
       YYTRACE( "\tNAME='%s'\n", $7 );
       YYTRACE( "\tadecl.left='%s'\n", $8.left );
@@ -1131,12 +1139,12 @@ adecl
       YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
-  | opt_constvol_list T_REFERENCE T_TO adecl
+  | opt_const_volatile_list T_REFERENCE T_TO adecl
     {
       char const *op = "", *cp = "", *sp = "";
 
-      YYTRACE( "adecl: opt_constvol_list REFERENCE TO adecl\n" );
-      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "adecl: opt_const_volatile_list REFERENCE TO adecl\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
       YYTRACE( "\tadecl.left='%s'\n", $4.left );
       YYTRACE( "\tadecl.right='%s'\n", $4.right );
       YYTRACE( "\tadecl.type='%s'\n", $4.type );
@@ -1166,10 +1174,10 @@ adecl
       YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
-  | opt_constvol_list type
+  | opt_const_volatile_list type
     {
-      YYTRACE( "adecl: opt_constvol_list type\n" );
-      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "adecl: opt_const_volatile_list type\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
       YYTRACE( "\ttype='%s'\n", $2 );
       $$.left = strdup("");
       $$.right = strdup("");
@@ -1362,10 +1370,10 @@ mod_list1
 
   | T_CONST_VOLATILE
     {
-      YYTRACE( "mod_list1: CONSTVOLATILE\n" );
-      YYTRACE( "\tCONSTVOLATILE='%s'\n", $1 );
+      YYTRACE( "mod_list1: CONST_VOLATILE\n" );
+      YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
       if ( opt_lang == LANG_C_KNR )
-        not_supported(" (Pre-ANSI Compiler)", $1, NULL);
+        not_supported( " (Pre-ANSI Compiler)", $1, NULL );
       else if ((strcmp($1, "noalias") == 0) && opt_lang == LANG_CXX)
         unsupp($1, NULL);
       $$ = $1;
@@ -1406,12 +1414,12 @@ modifier
     }
   ;
 
-opt_constvol_list
-  : T_CONST_VOLATILE opt_constvol_list
+opt_const_volatile_list
+  : T_CONST_VOLATILE opt_const_volatile_list
     {
-      YYTRACE( "opt_constvol_list: CONSTVOLATILE opt_constvol_list\n" );
-      YYTRACE( "\tCONSTVOLATILE='%s'\n", $1 );
-      YYTRACE( "\topt_constvol_list='%s'\n", $2 );
+      YYTRACE( "opt_const_volatile_list: CONST_VOLATILE opt_const_volatile_list\n" );
+      YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
       if (opt_lang == LANG_C_KNR)
         not_supported(" (Pre-ANSI Compiler)", $1, NULL);
       else if ((strcmp($1, "noalias") == 0) && opt_lang == LANG_CXX)
@@ -1421,17 +1429,17 @@ opt_constvol_list
 
   | /* empty */
     {
-      YYTRACE( "opt_constvol_list: EMPTY\n" );
+      YYTRACE( "opt_const_volatile_list: EMPTY\n" );
       $$ = strdup("");
     }
   ;
 
 constvol_list
-  : T_CONST_VOLATILE opt_constvol_list
+  : T_CONST_VOLATILE opt_const_volatile_list
     {
-      YYTRACE( "constvol_list: CONSTVOLATILE opt_constvol_list\n" );
-      YYTRACE( "\tCONSTVOLATILE='%s'\n", $1 );
-      YYTRACE( "\topt_constvol_list='%s'\n", $2 );
+      YYTRACE( "constvol_list: CONST_VOLATILE opt_const_volatile_list\n" );
+      YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
       if (opt_lang == LANG_C_KNR)
         not_supported(" (Pre-ANSI Compiler)", $1, NULL);
       else if ((strcmp($1, "noalias") == 0) && opt_lang == LANG_CXX)
@@ -1472,13 +1480,15 @@ opt_storage
 /* the help messages */
 struct help_text {
   char const *text;                     // generic text 
-  char const *cpptext;                  // C++ specific text 
+  char const *cpp_text;                 // C++ specific text 
 };
 typedef struct help_text help_text_t;
 
+/**
+ * Help text (limited to 80 columns and 23 lines so it fits on an 80x24
+ * screen).
+ */
 static help_text_t const HELP_TEXT[] = {
-  // up-to 23 lines of help text so it fits on (24x80) screens
-
 /*  1 */ { "[] means optional; {} means 1 or more; <> means defined elsewhere", NULL },
 /*  2 */ { "  commands are separated by ';' and newlines", NULL },
 /*  3 */ { "command:", NULL },
@@ -1493,30 +1503,33 @@ static help_text_t const HELP_TEXT[] = {
 /* 12 */ { "  block [( <decl-list> )] returning <english>", NULL },
 /* 13 */ { "  array [<number>] of <english>", NULL },
 /* 14 */ { "  [{ const | volatile | noalias }] pointer to <english>",
-    "  [{const|volatile}] {pointer|reference} to [member of class <name>] <english>" },
+           "  [{const|volatile}] {pointer|reference} to [member of class <name>] <english>" },
 /* 15 */{ "  <type>", NULL },
 /* 16 */{ "type:", NULL },
 /* 17 */{ "  {[<storage-class>] [{<modifier>}] [<C-type>]}", NULL },
 /* 18 */{ "  { struct | union | enum } <name>",
-    "  {struct|class|union|enum} <name>" },
+          "  {struct|class|union|enum} <name>" },
 /* 19 */{ "decllist: a comma separated list of <name>, <english> or <name> as <english>", NULL },
 /* 20 */{ "name: a C identifier", NULL },
 /* 21 */{ "gibberish: a C declaration, like 'int *x', or cast, like '(int *)x'", NULL },
 /* 22 */{ "storage-class: extern, static, auto, register", NULL },
 /* 23 */{ "C-type: int, char, float, double, or void", NULL },
 /* 24 */{ "modifier: short, long, signed, unsigned, const, volatile, or noalias",
-    "modifier: short, long, signed, unsigned, const, or volatile" },
+          "modifier: short, long, signed, unsigned, const, or volatile" },
   { NULL, NULL }
 };
 
+/**
+ * Prints the help message to standard output.
+ */
 static void print_help( void ) {
   char const *const fmt = opt_lang == LANG_CXX ? " %s\n" : "  %s\n";
 
-  for ( help_text_t const *p = HELP_TEXT; p->text; p++ ) {
-    if (opt_lang == LANG_CXX && p->cpptext)
-      printf( fmt, p->cpptext );
+  for ( help_text_t const *ht = HELP_TEXT; ht->text; ++ht ) {
+    if ( opt_lang == LANG_CXX && ht->cpp_text )
+      printf( fmt, ht->cpp_text );
     else
-      printf( fmt, p->text );
+      printf( fmt, ht->text );
   } // for
 }
 
