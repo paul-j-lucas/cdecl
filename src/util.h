@@ -49,6 +49,14 @@ extern char const  *me;                 // executable name
 char const* base_name( char const *path_name );
 
 /**
+ * TODO
+ *
+ * @param s1
+ * @return TODO
+ */
+char* cat( char const *s1, ... );
+
+/**
  * Calls \c realloc(3) and checks for failure.
  * If reallocation fails, prints an error message and exits.
  *
