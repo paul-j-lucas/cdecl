@@ -29,7 +29,7 @@ AN            [A-Za-z_0-9]
 
 array         return T_ARRAY;
 as            return T_AS;
-block         return T_BLOCK;
+block         return T_BLOCK;           /* Apple extension */
 cast          return T_CAST;
 declare       return T_DECLARE;
 exit          return 0;
