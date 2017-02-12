@@ -1,7 +1,7 @@
 /*.dSYM
 /cdecl
 /c++decl
-/cdgram.c
+/cdgram.[ch]
 /cdlex.c
 /config.h
 /stamp-h1

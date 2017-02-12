@@ -1,43 +1,39 @@
+/*
+**    cdecl -- C gibberish translator
+**    src/cdecl.c
+*/
+
+// local
+#include "config.h"
+#include "cdecl.h"
+#include "cdgram.h"
+#include "options.h"
+#include "util.h"
+
+// standard
+#include <ctype.h>
+#include <errno.h>
+#include <getopt.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 
-char cdeclsccsid[] = "@(#)cdecl.c 2.5 1/15/96";
+extern FILE *yyin;
 
-#include <stdio.h>
-#include <ctype.h>
-#if __STDC__ || defined(DOS)
-# include <stdlib.h>
-# include <stddef.h>
-# include <string.h>
-# include <stdarg.h>
-# include <errno.h>
-#else
-# ifndef NOVARARGS
-#  include <varargs.h>
-# endif /* ndef NOVARARGS */
-char *malloc();
-void free(), exit(), perror();
-# ifdef BSD
-#  include <strings.h>
-   extern int errno;
-#  define strrchr rindex
-#  define NOTMPFILE
-# else
-#  include <string.h>
-#  include <errno.h>
-# endif /* BSD */
-# ifdef NOVOID
-#  define void int
-# endif /* NOVOID */
-#endif /* __STDC__ || DOS */
+int yyparse( void );
 
 #ifdef USE_READLINE
 # include <readline/readline.h>
   /* prototypes for functions related to readline() */
-  char * getline();
-  char ** attempt_completion(char *, int, int);
-  char * keyword_completion(char *, int);
-  char * command_completion(char *, int);
+char*   getline();
+char**  attempt_completion(char *, int, int);
+char*   keyword_completion(char *, int);
+char*   command_completion(char *, int);
 #endif
 
 /* maximum # of chars from progname to display in prompt */
@@ -49,48 +45,29 @@ char cdecl_prompt[MAX_NAME+3];
 /* backup copy of prompt to save it while prompting is off */
 char real_prompt[MAX_NAME+3];
 
-#define MB_SHORT  0001
-#define MB_LONG   0002
-#define MB_UNSIGNED 0004
-#define MB_INT    0010
-#define MB_CHAR   0020
-#define MB_FLOAT  0040
-#define MB_DOUBLE 0100
-#define MB_VOID   0200
-#define MB_SIGNED 0400
-
-#define NullCP ((char*)NULL)
-#ifdef dodebug
-# define Debug(x) do { if (DebugFlag) fprintf x; } while (0)
-#else
-# define Debug(x) /* nothing */
-#endif
-
-
-char *ds(char *), *cat(char *, ...), *visible(int);
-int main(int, char **);
-int yywrap(void);
+char *cat(char const *, ...);
 int dostdin(void);
-void mbcheck(void), dohelp(void), usage(void);
+void c_type_check(void);
 void prompt(void), doprompt(void), noprompt(void);
-void unsupp(char *, char *);
-void notsupported(char *, char *, char *);
-void yyerror(char *);
-void doset(char *);
+void unsupp(char const*, char const*);
+void notsupported(char const *, char const *, char const *);
+void doset(char const *);
 void dodeclare(char*, char*, char*, char*, char*);
 void docast(char*, char*, char*, char*);
 void dodexplain(char*, char*, char*, char*, char*);
 void docexplain(char*, char*, char*, char*);
 void cdecl_setprogname(char *);
-int dotmpfile(int, char**), dofileargs(int, char**);
+int dotmpfile(int, char const**), dofileargs(int, char const**);
 
 FILE *tmpfile();
+
+char const *me; // program name
 
 /* variables used during parsing */
 unsigned modbits = 0;
 int arbdims = 1;
-char *savedname = 0;
-char unknown_name[] = "unknown_name";
+char const *savedname = 0;
+char const unknown_name[] = "unknown_name";
 char prev = 0;    /* the current type of the variable being examined */
                   /*    values  type           */
                   /*  p pointer          */
@@ -104,118 +81,126 @@ char prev = 0;    /* the current type of the variable being examined */
                   /*  t simple type (int, long, etc.)    */
 
 /* options */
-int RitchieFlag = 0;                    // -r, assume Ritchie PDP C language
-int MkProgramFlag = 0;                  // -c, output {} and ; after declarations
-int PreANSIFlag = 0;                    // -p, assume pre-ANSI C language
-int CplusplusFlag = 0;                  // -+, assume C++ language
-int OnATty = 0;                         // stdin is coming from a terminal
-int Interactive = 0;                    // -i, overrides OnATty
-int KeywordName = 0;                    // $0 is a keyword (declare, explain, cast)
-char *progname = "cdecl";               // $0
-int quiet = 0;                          // -q, quiets prompt and initial help msg
+bool MkProgramFlag;                     // -c, output {} and ; after declarations
+bool opt_pre_ansi_c;                    // -p, assume pre-ANSI C language
+bool OnATty;                            // stdin is coming from a terminal
+int KeywordName;                        // $0 is a keyword (declare, explain, cast)
+char const *progname = "cdecl";         // $0
+bool quiet;                             // -q, quiets prompt and initial help msg
 
 #if dodebug
-int DebugFlag = 0;    /* -d, output debugging trace info */
+bool DebugFlag = 0;    /* -d, output debugging trace info */
 #endif
 
 #ifdef doyydebug    /* compile in yacc trace statements */
 #define YYDEBUG 1
 #endif /* doyydebug */
 
-#include "cdgram.c"
-#include "cdlex.c"
+/* the names and bits checked for each row in the above array */
+struct c_type_info {
+  char const *name;
+  unsigned    bit;
+};
+typedef struct c_type_info c_type_info_t;
+
+c_type_info_t const C_TYPE_INFO[] = {
+  { "void",     C_TYPE_VOID     },
+  { "bool",     C_TYPE_BOOL     },
+  { "char",     C_TYPE_CHAR     },
+  { "wchar_t",  C_TYPE_WCHAR_T  },
+  { "short",    C_TYPE_SHORT    },
+  { "int",      C_TYPE_INT      },
+  { "long",     C_TYPE_LONG     },
+  { "signed",   C_TYPE_SIGNED   },
+  { "unsigned", C_TYPE_UNSIGNED },
+  { "float",    C_TYPE_FLOAT    },
+  { "double",   C_TYPE_DOUBLE   }
+};
 
 /* definitions (and abbreviations) for type combinations cross check table */
 #define ALWAYS  0                       // always okay 
+#define NEVER   1                       // never allowed 
+#define KNR     3                       // not allowed in Pre-ANSI compiler 
+#define ANSI    4                       // not allowed anymore in ANSI compiler 
+
 #define _ ALWAYS
-#define NEVER 1                         // never allowed 
 #define X NEVER
-#define RITCHIE 2                       // not allowed in Ritchie compiler 
-#define R RITCHIE
-#define PREANSI 3                       // not allowed in Pre-ANSI compiler 
-#define P PREANSI
-#define ANSI  4                         // not allowed anymore in ANSI compiler 
+#define K KNR
 #define A ANSI
 
-/* This is an lower left triangular array. If we needed */
-/* to save 9 bytes, the "long" row can be removed. */
-char crosscheck[9][9] = {
-    /*              L, I, S, C, V, U, S, F, D, */
-    /* long */      _, _, _, _, _, _, _, _, _,
-    /* int */       _, _, _, _, _, _, _, _, _,
-    /* short */     X, _, _, _, _, _, _, _, _,
-    /* char */      X, X, X, _, _, _, _, _, _,
-    /* void */      X, X, X, X, _, _, _, _, _,
-    /* unsigned */  R, _, R, R, X, _, _, _, _,
-    /* signed */    P, P, P, P, X, X, _, _, _,
-    /* float */     A, X, X, X, X, X, X, _, _,
-    /* double */    P, X, X, X, X, X, X, X, _
+static char const crosscheck[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
+  /*               v b c w s i l s u f d */
+  /* void     */ { _,X,X,X,X,X,X,X,X,X,X },
+  /* bool     */ { X,_,X,X,X,X,X,X,X,X,X },
+  /* char     */ { X,X,_,X,X,X,X,_,_,X,X },
+  /* wchar_t  */ { X,X,X,_,X,X,X,X,X,X,X },
+  /* short    */ { X,X,X,X,X,_,X,_,_,X,X },
+  /* int      */ { X,X,X,X,_,X,_,_,_,X,X },
+  /* long     */ { X,X,X,X,X,_,X,_,_,X,_ },
+  /* signed   */ { X,X,_,X,_,_,_,X,X,X,X },
+  /* unsigned */ { X,X,_,X,_,_,_,X,X,X,X },
+  /* float    */ { X,X,X,X,X,X,X,X,X,X,X },
+  /* double   */ { X,X,X,X,X,X,_,X,X,X,X }
 };
 
-/* the names and bits checked for each row in the above array */
-struct {
-  char *name;
-  int bit;
-} crosstypes[9] = {
-  { "long",     MB_LONG   },
-  { "int",      MB_INT    },
-  { "short",    MB_SHORT  },
-  { "char",     MB_CHAR   },
-  { "void",     MB_VOID   },
-  { "unsigned", MB_UNSIGNED },
-  { "signed",   MB_SIGNED },
-  { "float",    MB_FLOAT  },
-  { "double",   MB_DOUBLE }
+#if 0
+/* This is an lower left triangular array. If we needed */
+/* to save 9 bytes, the "long" row can be removed. */
+char const crosscheck_old[9][9] = {
+  /*              L, I, S, C, V, U, S, F, D, */
+  /* long */      _, _, _, _, _, _, _, _, _,
+  /* int */       _, _, _, _, _, _, _, _, _,
+  /* short */     X, _, _, _, _, _, _, _, _,
+  /* char */      X, X, X, _, _, _, _, _, _,
+  /* void */      X, X, X, X, _, _, _, _, _,
+  /* unsigned */  R, _, R, R, X, _, _, _, _,
+  /* signed */    K, K, K, K, X, X, _, _, _,
+  /* float */     A, X, X, X, X, X, X, _, _,
+  /* double */    K, X, X, X, X, X, X, X, _
 };
+#endif
+
 
 /* Run through the crosscheck array looking */
 /* for unsupported combinations of types. */
-void mbcheck() {
-  int i, j, restrict;
-  char *t1, *t2;
+void c_type_check() {
 
   /* Loop through the types */
   /* (skip the "long" row) */
-  for (i = 1; i < 9; i++) {
+  for ( size_t i = 1; i < ARRAY_SIZE( C_TYPE_INFO ); ++i ) {
     /* if this type is in use */
-    if ((modbits & crosstypes[i].bit) != 0) {
+    if ((modbits & C_TYPE_INFO[i].bit) != 0) {
       /* check for other types also in use */
-      for (j = 0; j < i; j++) {
+      for ( size_t j = 0; j < i; ++j ) {
         /* this type is not in use */
-        if (!(modbits & crosstypes[j].bit))
+        if (!(modbits & C_TYPE_INFO[j].bit))
             continue;
         /* check the type of restriction */
-        restrict = crosscheck[i][j];
-        if (restrict == ALWAYS)
+        int restriction = crosscheck[i][j];
+        if (restriction == ALWAYS)
             continue;
-        t1 = crosstypes[i].name;
-        t2 = crosstypes[j].name;
-        if (restrict == NEVER)
-            {
-            notsupported("", t1, t2);
-            }
-        else if (restrict == RITCHIE)
-            {
-            if (RitchieFlag)
-          notsupported(" (Ritchie Compiler)", t1, t2);
-            }
-        else if (restrict == PREANSI) {
-          if (PreANSIFlag || RitchieFlag)
+        char const *t1 = C_TYPE_INFO[i].name;
+        char const *t2 = C_TYPE_INFO[j].name;
+        if (restriction == NEVER) {
+          notsupported("", t1, t2);
+        }
+        else if (restriction == KNR) {
+          if (opt_pre_ansi_c)
             notsupported(" (Pre-ANSI Compiler)", t1, t2);
         }
-        else if (restrict == ANSI) {
-          if (!RitchieFlag && !PreANSIFlag)
+        else if (restriction == ANSI) {
+          if (!opt_pre_ansi_c)
             notsupported(" (ANSI Compiler)", t1, t2);
         }
         else {
           fprintf (stderr,
-            "%s: Internal error in crosscheck[%d,%d]=%d!\n",
-            progname, i, j, restrict);
+            "%s: Internal error in crosscheck[%zu,%zu]=%d!\n",
+            progname, i, j, restriction);
           exit(1);
         }
       } // for
     }
-  }
+  } // for
 }
 
 /* undefine these as they are no longer needed */
@@ -223,10 +208,8 @@ void mbcheck() {
 #undef ALWAYS
 #undef X
 #undef NEVER
-#undef R
-#undef RITCHIE
 #undef P
-#undef PREANSI
+#undef KNR
 #undef A
 #undef ANSI
 
@@ -288,7 +271,6 @@ const char *const options[] = {
   "interactive",
   "nointeractive",
 #endif
-  "ritchie",
   "preansi",
   "ansi",
   "cplusplus",
@@ -388,140 +370,49 @@ char * keyword_completion(char *text, int flag)
 
 /* Write out a message about something */
 /* being unsupported, possibly with a hint. */
-void unsupp( char * s, char *hint ) {
-  notsupported("", s, NullCP);
+void unsupp( char const *s, char const *hint ) {
+  notsupported("", s, NULL);
   if (hint)
     fprintf( stderr, "\t(maybe you mean \"%s\")\n", hint );
 }
 
 /* Write out a message about something */
 /* being unsupported on a particular compiler. */
-void notsupported(compiler, type1, type2)
-char *compiler, *type1, *type2;
+void notsupported( char const *compiler, char const *type1, char const *type2)
 {
     if (type2)
   fprintf(stderr,
       "Warning: Unsupported in%s C%s -- '%s' with '%s'\n",
-      compiler, CplusplusFlag ? "++" : "", type1, type2);
+      compiler, opt_lang == LANG_CXX ? "++" : "", type1, type2);
     else
   fprintf(stderr,
       "Warning: Unsupported in%s C%s -- '%s'\n",
-      compiler, CplusplusFlag ? "++" : "", type1);
+      compiler, opt_lang == LANG_CXX ? "++" : "", type1);
 }
 
-/* Called by the yacc grammar */
-void yyerror( char *s ) {
-   printf("%s\n",s);
-  Debug((stdout, "yychar=%d\n", yychar));
-}
+char* cat( char const *s1, ... ) {
+  size_t len = 1;
+  va_list args;
 
-/* Called by the yacc grammar */
-int yywrap() {
-  return 1;
-}
+  /* find the length which needs to be allocated */
+  va_start( args, s1 );
+  for ( char const *s = s1; s; s = va_arg( args, char const* ) )
+    len += strlen( s );
+  va_end( args );
 
-/*
- * Support for dynamic strings:
- * cat() creates a string from the concatenation
- * of a null terminated list of input strings.
- * The input strings are free()'d by cat()
- * (so they better have been malloc()'d).
- *
- * the different methods of <stdarg.h> and
- * <vararg.h> are handled within these macros
- */
-#if __STDC__
-#  define VA_DCL(type,var)    (type var,...)
-#  define VA_START(list,var,type) ((va_start(list,var)) , (var))
-#else
-#if defined(DOS)
-#  define VA_DCL(type,var)    (var,...) type var;
-#  define VA_START(list,var,type) ((va_start(list,var)) , (var))
-#else
-#ifndef NOVARARGS
-# define VA_DCL(type,var)   (va_alist) va_dcl
-# define VA_START(list,var,type)  ((va_start(list)) , va_arg(list,type))
-#else
-   /*
-    * it is assumed here that machines which don't have either
-    * <varargs.h> or <stdarg.h> will put its arguments on
-    * the stack in the "usual" way and consequently can grab
-    * the arguments using the "take the address of the first
-    * parameter and increment by sizeof" trick.
-    */
-# define VA_DCL(type,var)   (var) type var;
-# define VA_START(list,var,type)  (list = (va_list)&(var) , (var))
-# define va_arg(list,type)    ((type *)(list += sizeof(type)))[-1]
-# define va_end(p)      /* nothing */
-typedef char *va_list;
-#endif /* NOVARARGS */
-#endif /* DOS */
-#endif /* __STDC__ */
+  /* allocate it */
+  char *const newstr = MALLOC( char, len );
+  newstr[0] = '\0';
 
-/* VARARGS */
-char *cat
-VA_DCL(char*, s1)
-{
-    char *newstr;
-    unsigned len = 1;
-    char *str;
-    va_list args;
+  /* copy in the strings */
+  va_start( args, s1 );
+  for ( char const *s = s1; s; s = va_arg( args, char const* ) ) {
+    strcat( newstr, s );
+    free( (void*)s );
+  } // for
+  va_end( args );
 
-    /* find the length which needs to be allocated */
-    str = VA_START(args, s1, char*);
-    for ( ; str; str = va_arg(args, char*))
-  len += strlen(str);
-    va_end(args);
-
-    /* allocate it */
-    newstr = malloc(len);
-    if (newstr == 0)
-  {
-  fprintf (stderr, "%s: out of malloc space within cat()!\n",
-      progname);
-  exit(1);
-  }
-    newstr[0] = '\0';
-
-    /* copy in the strings */
-    str = VA_START(args, s1, char*);
-    for ( ; str; str = va_arg(args, char*))
-  {
-  strcat(newstr,str);
-  free(str);
-  }
-    va_end(args);
-
-    Debug((stderr, "\tcat created '%s'\n", newstr));
-    return newstr;
-}
-
-/*
- * ds() makes a malloc()'d string from one that's not.
- */
-char *ds( char const *s ) {
-  char *p = malloc((unsigned)(strlen(s)+1));
-
-  if (p)
-    strcpy(p,s);
-  else {
-    fprintf (stderr, "%s: malloc() failed!\n", progname);
-    exit(1);
-  }
-  return p;
-}
-
-/* return a visible representation of a character */
-char const* visible( int c ) {
-  static char buf[5];
-
-  c &= 0x7F;
-  if ( isprint( c ) ) {
-    buf[0] = c;
-    buf[1] = '\0';
-  } else
-    sprintf( buf,"\\%02X", c );
-  return buf;
+  return newstr;
 }
 
 #ifdef NOTMPFILE
@@ -569,88 +460,7 @@ void rmtmpfile() {
 # define rmtmpfile()  /* nothing */
 #endif /* NOTMPFILE */
 
-/* the help messages */
-struct helpstruct {
-  char const *text;                     // generic text 
-  char const *cpptext;                  // C++ specific text 
-} helptext[] =
-    { /* up-to 23 lines of help text so it fits on (24x80) screens */
-/*  1 */{ "[] means optional; {} means 1 or more; <> means defined elsewhere", 0 },
-/*  2 */{ "  commands are separated by ';' and newlines", 0 },
-/*  3 */{ "command:", 0 },
-/*  4 */{ "  declare <name> as <english>", 0 },
-/*  5 */{ "  cast <name> into <english>", 0 },
-/*  6 */{ "  explain <gibberish>", 0 },
-/*  7 */{ "  set or set options", 0 },
-/*  8 */{ "  help, ?", 0 },
-/*  9 */{ "  quit or exit", 0 },
-/* 10 */{ "english:", 0 },
-/* 11 */{ "  function [( <decl-list> )] returning <english>", 0 },
-/* 12 */{ "  block [( <decl-list> )] returning <english>", 0 },
-/* 13 */{ "  array [<number>] of <english>", 0 },
-/* 14 */{ "  [{ const | volatile | noalias }] pointer to <english>",
-    "  [{const|volatile}] {pointer|reference} to [member of class <name>] <english>" },
-/* 15 */{ "  <type>", 0 },
-/* 16 */{ "type:", 0 },
-/* 17 */{ "  {[<storage-class>] [{<modifier>}] [<C-type>]}", 0 },
-/* 18 */{ "  { struct | union | enum } <name>",
-    "  {struct|class|union|enum} <name>" },
-/* 19 */{ "decllist: a comma separated list of <name>, <english> or <name> as <english>", 0 },
-/* 20 */{ "name: a C identifier", 0 },
-/* 21 */{ "gibberish: a C declaration, like 'int *x', or cast, like '(int *)x'", 0 },
-/* 22 */{ "storage-class: extern, static, auto, register", 0 },
-/* 23 */{ "C-type: int, char, float, double, or void", 0 },
-/* 24 */{ "modifier: short, long, signed, unsigned, const, volatile, or noalias",
-    "modifier: short, long, signed, unsigned, const, or volatile" },
-  { 0, 0 }
-    };
-
-/* Print out the help text */
-void dohelp() {
-  struct helpstruct const *p;
-  char const *fmt = CplusplusFlag ? " %s\n" : "  %s\n";
-
-  for ( p = helptext; p->text; p++ ) {
-    if (CplusplusFlag && p->cpptext)
-      printf(fmt, p->cpptext);
-    else
-      printf(fmt, p->text);
-  } // for
-}
-
 /* Tell how to invoke cdecl. */
-void usage() {
-  fprintf( stderr, "Usage: %s [-r|-p|-a|-+] [-ciq%s%s] [files...]\n",
-    progname,
-#ifdef dodebug
-    "d",
-#else
-    "",
-#endif /* dodebug */
-#ifdef doyydebug
-    "D"
-#else
-    ""
-#endif /* doyydebug */
-  );
-  fprintf (stderr, "\t-r Check against Ritchie PDP C Compiler\n");
-  fprintf (stderr, "\t-p Check against Pre-ANSI C Compiler\n");
-  fprintf (stderr, "\t-a Check against ANSI C Compiler%s\n",
-CplusplusFlag ? "" : " (the default)");
-  fprintf (stderr, "\t-+ Check against C++ Compiler%s\n",
-CplusplusFlag ? " (the default)" : "");
-  fprintf (stderr, "\t-c Create compilable output (include ; and {})\n");
-  fprintf (stderr, "\t-i Force interactive mode\n");
-  fprintf (stderr, "\t-q Quiet prompt\n");
-#ifdef dodebug
-  fprintf (stderr, "\t-d Turn on debugging mode\n");
-#endif /* dodebug */
-#ifdef doyydebug
-  fprintf (stderr, "\t-D Turn on YACC debugging mode\n");
-#endif /* doyydebug */
-  exit(1);
-}
-
 /* Manage the prompts. */
 static int prompting;
 
@@ -660,7 +470,7 @@ void noprompt() { prompting = 0; }
 void prompt()
 {
 #ifndef USE_READLINE
-  if ((OnATty || Interactive) && prompting) {
+  if ((OnATty || opt_interactive) && prompting) {
     printf("%s", cdecl_prompt);
 # if 0
     printf("%s> ", progname);
@@ -708,19 +518,24 @@ void cdecl_setprogname(char *argv0) {
 /* Run down the list of keywords to see if the */
 /* program is being called named as one of them */
 /* or the first argument is one of them. */
-static int namedkeyword( char *argn ) {
-  static char *cmdlist[] = {
-    "explain", "declare", "cast", "help", "?", "set", 0
+static int namedkeyword( char const *argn ) {
+  static char const *const cmdlist[] = {
+    "?",
+    "cast",
+    "declare",
+    "explain",
+    "help",
+    "set",
+    NULL
   };
 
   /* first check the program name */
-  char **cmdptr = cmdlist;
+  char const *const *cmdptr = cmdlist;
   for ( ; *cmdptr; cmdptr++)
-    if (strcmp(*cmdptr, progname) == 0)
-      {
+    if (strcmp(*cmdptr, progname) == 0) {
       KeywordName = 1;
       return 1;
-      }
+    }
 
   /* now check $1 */
   for (cmdptr = cmdlist; *cmdptr; cmdptr++)
@@ -735,7 +550,7 @@ static int namedkeyword( char *argn ) {
 /* on prompting if necessary. */
 int dostdin() {
   int ret;
-  if (OnATty || Interactive) {
+  if (OnATty || opt_interactive) {
 #ifndef USE_READLINE
   if (!quiet) printf("Type `help' or `?' for help\n");
   prompt();
@@ -777,8 +592,7 @@ int dostdin() {
 
 #ifdef USE_READLINE
 /* Write a string into a file and treat that file as the input. */
-int dotmpfile_from_string(s)
-char *s;
+int dotmpfile_from_string( char const *s)
 {
     int ret = 0;
     FILE *tmpfp = tmpfile();
@@ -817,9 +631,7 @@ char *s;
 
 /* Write the arguments into a file */
 /* and treat that file as the input. */
-int dotmpfile(argc, argv)
-int argc;
-char **argv;
+int dotmpfile(int argc, char const *argv[])
 {
     int ret = 0;
     FILE *tmpfp = tmpfile();
@@ -865,9 +677,7 @@ char **argv;
 }
 
 /* Read each of the named files for input. */
-int dofileargs(argc, argv)
-int argc;
-char **argv;
+int dofileargs(int argc, char const *argv[])
 {
     FILE *ifp;
     int ret = 0;
@@ -894,7 +704,7 @@ char **argv;
 
     return ret;
 }
-
+
 /* print out a cast */
 void docast(name, left, right, type)
 char *name, *left, *right, *type;
@@ -927,10 +737,10 @@ char *name, *storage, *left, *right, *type;
     if (*storage == 'r')
   switch (prev)
       {
-      case 'f': unsupp("Register function", NullCP); break;
+      case 'f': unsupp("Register function", NULL); break;
       case 'A':
-      case 'a': unsupp("Register array", NullCP); break;
-      case 's': unsupp("Register struct/class", NullCP); break;
+      case 'a': unsupp("Register array", NULL); break;
+      case 's': unsupp("Register struct/class", NULL); break;
       }
 
     if (*storage)
@@ -955,159 +765,145 @@ char *name, *storage, *left, *right, *type;
 }
 
 void dodexplain(storage, constvol1, constvol2, type, decl)
-char *storage, *constvol1, *constvol2, *type, *decl;
+  char *storage, *constvol1, *constvol2, *type, *decl;
 {
-    if (type && (strcmp(type, "void") == 0)) {
-  if (prev == 'n')
-      unsupp("Variable of type void",
-       "variable of type pointer to void");
-  else if (prev == 'a')
-      unsupp("array of type void",
-       "array of type pointer to void");
-  else if (prev == 'r')
-      unsupp("reference to type void",
-       "pointer to void");
-    }
+  if (type && (strcmp(type, "void") == 0)) {
+    if (prev == 'n')
+      unsupp("Variable of type void", "variable of type pointer to void");
+    else if (prev == 'a')
+      unsupp("array of type void", "array of type pointer to void");
+    else if (prev == 'r')
+      unsupp("reference to type void", "pointer to void");
+  }
 
-    if (*storage == 'r')
-  switch (prev)
-      {
-      case 'f': unsupp("Register function", NullCP); break;
+  if (*storage == 'r')
+    switch (prev) {
+      case 'f': unsupp("Register function", NULL); break;
       case 'A':
-      case 'a': unsupp("Register array", NullCP); break;
-      case 's': unsupp("Register struct/union/enum/class", NullCP); break;
-      }
+      case 'a': unsupp("Register array", NULL); break;
+      case 's': unsupp("Register struct/union/enum/class", NULL); break;
+    } // switch
 
-    printf("declare %s as ", savedname);
-    if (*storage)
-        printf("%s ", storage);
-    printf("%s", decl);
-    if (*constvol1)
-      printf("%s ", constvol1);
-    if (*constvol2)
-        printf("%s ", constvol2);
-    printf("%s\n", type ? type : "int");
+  printf("declare %s as ", savedname);
+  if (*storage)
+    printf("%s ", storage);
+  printf("%s", decl);
+  if (*constvol1)
+    printf("%s ", constvol1);
+  if (*constvol2)
+    printf("%s ", constvol2);
+  printf("%s\n", type ? type : "int");
 }
 
 void docexplain(constvol, type, cast, name)
 char *constvol, *type, *cast, *name;
 {
-    if (strcmp(type, "void") == 0) {
-  if (prev == 'a')
-      unsupp("array of type void",
-       "array of type pointer to void");
-  else if (prev == 'r')
-      unsupp("reference to type void",
-       "pointer to void");
-    }
-    printf("cast %s into %s", name, cast);
-    if (strlen(constvol) > 0)
-      printf("%s ", constvol);
-    printf("%s\n",type);
+  if (strcmp(type, "void") == 0) {
+    if (prev == 'a')
+      unsupp("array of type void", "array of type pointer to void");
+    else if (prev == 'r')
+      unsupp("reference to type void", "pointer to void");
+  }
+  printf("cast %s into %s", name, cast);
+  if (strlen(constvol) > 0)
+    printf("%s ", constvol);
+  printf("%s\n",type);
 }
 
 /* Do the appropriate things for the "set" command. */
-void doset(opt)
-char *opt;
-{
-    if (strcmp(opt, "create") == 0)
-  { MkProgramFlag = 1; }
-    else if (strcmp(opt, "nocreate") == 0)
-  { MkProgramFlag = 0; }
-    else if (strcmp(opt, "prompt") == 0)
-  { prompting = 1; strcpy(cdecl_prompt, real_prompt); }
-    else if (strcmp(opt, "noprompt") == 0)
-  { prompting = 0; cdecl_prompt[0] = '\0'; }
+void doset( char const *opt ) {
+  if (strcmp(opt, "create") == 0)
+    { MkProgramFlag = 1; }
+  else if (strcmp(opt, "nocreate") == 0)
+    { MkProgramFlag = 0; }
+  else if (strcmp(opt, "prompt") == 0)
+    { prompting = 1; strcpy(cdecl_prompt, real_prompt); }
+  else if (strcmp(opt, "noprompt") == 0)
+    { prompting = 0; cdecl_prompt[0] = '\0'; }
 #ifndef USE_READLINE
     /* I cannot seem to figure out what nointeractive was intended to do --
      * it didn't work well to begin with, and it causes problem with
      * readline, so I'm removing it, for now.  -i still works.
      */
-    else if (strcmp(opt, "interactive") == 0)
-  { Interactive = 1; }
-    else if (strcmp(opt, "nointeractive") == 0)
-  { Interactive = 0; OnATty = 0; }
+  else if (strcmp(opt, "interactive") == 0)
+    { opt_interactive = 1; }
+  else if (strcmp(opt, "nointeractive") == 0)
+    { opt_interactive = 0; OnATty = 0; }
 #endif
-    else if (strcmp(opt, "ritchie") == 0)
-  { CplusplusFlag=0; RitchieFlag=1; PreANSIFlag=0; }
-    else if (strcmp(opt, "preansi") == 0)
-  { CplusplusFlag=0; RitchieFlag=0; PreANSIFlag=1; }
-    else if (strcmp(opt, "ansi") == 0)
-  { CplusplusFlag=0; RitchieFlag=0; PreANSIFlag=0; }
-    else if (strcmp(opt, "cplusplus") == 0)
-  { CplusplusFlag=1; RitchieFlag=0; PreANSIFlag=0; }
+  else if (strcmp(opt, "preansi") == 0)
+    { opt_lang = LANG_C_KNR; }
+  else if (strcmp(opt, "ansi") == 0)
+    { opt_lang = LANG_C_ANSI; }
+  else if (strcmp(opt, "cplusplus") == 0)
+    { opt_lang = LANG_CXX; }
 #ifdef dodebug
-    else if (strcmp(opt, "debug") == 0)
-  { DebugFlag = 1; }
-    else if (strcmp(opt, "nodebug") == 0)
-  { DebugFlag = 0; }
+  else if (strcmp(opt, "debug") == 0)
+    { DebugFlag = 1; }
+  else if (strcmp(opt, "nodebug") == 0)
+    { DebugFlag = 0; }
 #endif /* dodebug */
 #ifdef doyydebug
-    else if (strcmp(opt, "yydebug") == 0)
-  { yydebug = 1; }
-    else if (strcmp(opt, "noyydebug") == 0)
-  { yydebug = 0; }
+  else if (strcmp(opt, "yydebug") == 0)
+    { yydebug = 1; }
+  else if (strcmp(opt, "noyydebug") == 0)
+    { yydebug = 0; }
 #endif /* doyydebug */
-    else
-  {
-  if ((strcmp(opt, unknown_name) != 0) &&
-      (strcmp(opt, "options") != 0))
+  else {
+    if ((strcmp(opt, unknown_name) != 0) &&
+        (strcmp(opt, "options") != 0))
       printf("Unknown set option: '%s'\n", opt);
 
-  printf("Valid set options (and command line equivalents) are:\n");
-  printf("\toptions\n");
-  printf("\tcreate (-c), nocreate\n");
-  printf("\tprompt, noprompt (-q)\n");
+    printf("Valid set options (and command line equivalents) are:\n");
+    printf("\toptions\n");
+    printf("\tcreate (-c), nocreate\n");
+    printf("\tprompt, noprompt (-q)\n");
 #ifndef USE_READLINE
-  printf("\tinteractive (-i), nointeractive\n");
+    printf("\tinteractive (-i), nointeractive\n");
 #endif
-  printf("\tritchie (-r), preansi (-p), ansi (-a) or cplusplus (-+)\n");
+    printf("\tpreansi (-p), ansi (-a) or cplusplus (-+)\n");
 #ifdef dodebug
-  printf("\tdebug (-d), nodebug\n");
+    printf("\tdebug (-d), nodebug\n");
 #endif /* dodebug */
 #ifdef doyydebug
-  printf("\tyydebug (-D), noyydebug\n");
+    printf("\tyydebug (-D), noyydebug\n");
 #endif /* doyydebug */
 
-  printf("\nCurrent set values are:\n");
-  printf("\t%screate\n", MkProgramFlag ? "   " : " no");
-  printf("\t%sprompt\n", cdecl_prompt[0] ? "   " : " no");
-  printf("\t%sinteractive\n",
-      (OnATty || Interactive) ? "   " : " no");
-  if (RitchieFlag)
-      printf("\t   ritchie\n");
-  else
-      printf("\t(noritchie)\n");
-  if (PreANSIFlag)
+    printf("\nCurrent set values are:\n");
+    printf("\t%screate\n", MkProgramFlag ? "   " : " no");
+    printf("\t%sprompt\n", cdecl_prompt[0] ? "   " : " no");
+    printf("\t%sinteractive\n", (OnATty || opt_interactive) ? "   " : " no");
+    if (opt_lang == LANG_C_KNR)
       printf("\t   preansi\n");
-  else
+    else
       printf("\t(nopreansi)\n");
-  if (!RitchieFlag && !PreANSIFlag && !CplusplusFlag)
+    if ( opt_lang == LANG_C_ANSI )
       printf("\t   ansi\n");
-  else
+    else
       printf("\t(noansi)\n");
-  if (CplusplusFlag)
+    if ( opt_lang == LANG_CXX )
       printf("\t   cplusplus\n");
-  else
+    else
       printf("\t(nocplusplus)\n");
 #ifdef dodebug
-  printf("\t%sdebug\n", DebugFlag ? "   " : " no");
+    printf("\t%sdebug\n", DebugFlag ? "   " : " no");
 #endif /* dodebug */
 #ifdef doyydebug
-  printf("\t%syydebug\n", yydebug ? "   " : " no");
+    printf("\t%syydebug\n", yydebug ? "   " : " no");
 #endif /* doyydebug */
   }
 }
 
-void versions() {
-  printf("Version:\n\t%s\n\t%s\n\t%s\n", cdeclsccsid, cdgramsccsid, cdlexsccsid);
-  exit(0);
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
+static void cdecl_cleanup( void ) {
+  free_now();
+}
+
 int main( int argc, char const *argv[] ) {
-  int c, ret = 0;
+  atexit( cdecl_cleanup );
+  options_init( argc, argv );
+
+  int ret = 0;
 
 #ifdef USE_READLINE
   /* install completion handlers */
@@ -1115,38 +911,7 @@ int main( int argc, char const *argv[] ) {
   rl_completion_entry_function = (Function *)keyword_completion;
 #endif
 
-  cdecl_setprogname(argv[0]);
-#ifdef DOS
-  if (strcmp(progname, "cppdecl") == 0)
-#else
-  if (strcmp(progname, "c++decl") == 0)
-#endif /* DOS */
-    CplusplusFlag = 1;
-
   prompting = OnATty = isatty( STDIN_FILENO );
-  while ((c = getopt(argc, argv, "cipqrpa+dDV")) != EOF) {
-    switch (c) {
-      case 'c': MkProgramFlag=1; break;
-      case 'i': Interactive=1; doprompt(); break;
-      case 'q': quiet=1; noprompt(); break;
-
-      /* The following are mutually exclusive. */
-      /* Only the last one set prevails. */
-      case 'r': CplusplusFlag=0; RitchieFlag=1; PreANSIFlag=0; break;
-      case 'p': CplusplusFlag=0; RitchieFlag=0; PreANSIFlag=1; break;
-      case 'a': CplusplusFlag=0; RitchieFlag=0; PreANSIFlag=0; break;
-      case '+': CplusplusFlag=1; RitchieFlag=0; PreANSIFlag=0; break;
-
-#ifdef dodebug
-      case 'd': DebugFlag=1; break;
-#endif /* dodebug */
-#ifdef doyydebug
-      case 'D': yydebug=1; break;
-#endif /* doyydebug */
-      case 'V': versions(); break;
-      case '?': usage(); break;
-    } // switch
-  } // while
 
   /* Set up the prompt. */
   if (prompting)
@@ -1154,21 +919,19 @@ int main( int argc, char const *argv[] ) {
   else
     cdecl_prompt[0] = '\0';
 
-  /* Run down the list of arguments, parsing each one. */
-
   /* Use standard input if no file names or "-" is found. */
   if (optind == argc)
-    ret += dostdin();
+    ret = dostdin();
 
   /* If called as explain, declare or cast, or first */
   /* argument is one of those, use the command line */
   /* as the input. */
   else if (namedkeyword(argv[optind]))
-    ret += dotmpfile(argc, argv);
+    ret = dotmpfile(argc, argv);
   else
-    ret += dofileargs(argc, argv);
+    ret = dofileargs(argc, argv);
 
-  exit(ret);
+  exit( ret );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

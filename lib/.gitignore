@@ -2,6 +2,7 @@
 /stdbool.h
 /stddef.h
 /stdlib.h
+/sys
 /sys_types.h
 /sysexits.h
 /unistd.h
