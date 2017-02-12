@@ -58,9 +58,6 @@ static char*        readline_wrapper( void );
 
 /* variables used during parsing */
 char const unknown_name[] = "unknown_name";
-#if dodebug
-bool DebugFlag = 0;    /* -d, output debugging trace info */
-#endif
 
 #ifdef doyydebug    /* compile in yacc trace statements */
 #define YYDEBUG 1

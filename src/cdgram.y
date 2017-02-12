@@ -16,14 +16,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef dodebug
-# define Debug(x) BLOCK( if (DebugFlag) fprintf x; )
+#define WITH_CDECL_DEBUG 1
+
+#ifdef WITH_CDECL_DEBUG
+#define YYTRACE(...) \
+  BLOCK( if ( opt_debug ) PRINT_ERR( "|" __VA_ARGS__ ); )
 #else
-# define Debug(x) /* nothing */
-#endif
+#define YYTRACE(...)              /* nothing */
+#endif /* WITH_CDECL_DEBUG */
 
 extern char const   unknown_name[];
-extern bool         DebugFlag;
+extern bool         opt_debug;
 extern bool         prompting;
 extern char         prompt_buf[];
 extern char const  *prompt_ptr;
@@ -49,23 +52,25 @@ enum c_ident_kind {
 };
 typedef enum c_ident_kind c_ident_kind_t;
 
-static unsigned const C_TYPE_VOID     = 0x01;
-static unsigned const C_TYPE_BOOL     = 0x02;
-static unsigned const C_TYPE_CHAR     = 0x04;
-static unsigned const C_TYPE_WCHAR_T  = 0x08;
-static unsigned const C_TYPE_SHORT    = 0x10;
-static unsigned const C_TYPE_INT      = 0x11;
-static unsigned const C_TYPE_LONG     = 0x12;
-static unsigned const C_TYPE_SIGNED   = 0x14;
-static unsigned const C_TYPE_UNSIGNED = 0x18;
-static unsigned const C_TYPE_FLOAT    = 0x20;
-static unsigned const C_TYPE_DOUBLE   = 0x21;
+typedef unsigned c_type_bits_t;
+
+static c_type_bits_t const C_TYPE_VOID     = 0x0001;
+static c_type_bits_t const C_TYPE_BOOL     = 0x0002;
+static c_type_bits_t const C_TYPE_CHAR     = 0x0004;
+static c_type_bits_t const C_TYPE_WCHAR_T  = 0x0008;
+static c_type_bits_t const C_TYPE_SHORT    = 0x0010;
+static c_type_bits_t const C_TYPE_INT      = 0x0020;
+static c_type_bits_t const C_TYPE_LONG     = 0x0040;
+static c_type_bits_t const C_TYPE_SIGNED   = 0x0080;
+static c_type_bits_t const C_TYPE_UNSIGNED = 0x0100;
+static c_type_bits_t const C_TYPE_FLOAT    = 0x0200;
+static c_type_bits_t const C_TYPE_DOUBLE   = 0x0400;
 
 // local variables
-static bool         array_has_dim;
-static unsigned     c_type_bits;
+static bool           array_has_dim;
+static c_type_bits_t  c_type_bits;
 static c_ident_kind_t c_ident_kind;
-static char const  *savedname;
+static char const    *c_ident;
 
 // local functions
 static void   not_supported( char const*, char const*, char const* );
@@ -93,7 +98,7 @@ char const crosscheck_old[9][9] = {
  *
  * @param bit TODO
  */
-static void c_type_add( unsigned bit ) {
+static void c_type_add( c_type_bits_t bit ) {
   if ( c_type_bits & bit )
     /* complain */;
   else
@@ -105,8 +110,8 @@ static void c_type_add( unsigned bit ) {
  */
 static void c_type_check( void ) {
   struct c_type_map {
-    char const *name;
-    unsigned    bit;
+    char const   *name;
+    c_type_bits_t bit;
   };
   typedef struct c_type_map c_type_map_t;
 
@@ -290,12 +295,12 @@ static void do_set( char const *opt ) {
     { opt_lang = LANG_C_ANSI; }
   else if (strcmp(opt, "cplusplus") == 0)
     { opt_lang = LANG_CXX; }
-#ifdef dodebug
+#ifdef WITH_CDECL_DEBUG
   else if (strcmp(opt, "debug") == 0)
-    { DebugFlag = 1; }
+    { opt_debug = 1; }
   else if (strcmp(opt, "nodebug") == 0)
-    { DebugFlag = 0; }
-#endif /* dodebug */
+    { opt_debug = 0; }
+#endif /* WITH_CDECL_DEBUG */
 #ifdef doyydebug
   else if (strcmp(opt, "yydebug") == 0)
     { yydebug = 1; }
@@ -315,9 +320,9 @@ static void do_set( char const *opt ) {
     printf("\tinteractive (-i), nointeractive\n");
 #endif
     printf("\tpreansi (-p), ansi (-a) or cplusplus (-+)\n");
-#ifdef dodebug
+#ifdef WITH_CDECL_DEBUG
     printf("\tdebug (-d), nodebug\n");
-#endif /* dodebug */
+#endif /* WITH_CDECL_DEBUG */
 #ifdef doyydebug
     printf("\tyydebug (-D), noyydebug\n");
 #endif /* doyydebug */
@@ -338,9 +343,9 @@ static void do_set( char const *opt ) {
       printf("\t   cplusplus\n");
     else
       printf("\t(nocplusplus)\n");
-#ifdef dodebug
-    printf("\t%sdebug\n", DebugFlag ? "   " : " no");
-#endif /* dodebug */
+#ifdef WITH_CDECL_DEBUG
+    printf("\t%sdebug\n", opt_debug ? "   " : " no");
+#endif /* WITH_CDECL_DEBUG */
 #ifdef doyydebug
     printf("\t%syydebug\n", yydebug ? "   " : " no");
 #endif /* doyydebug */
@@ -400,7 +405,7 @@ void explain_declaration( char const *storage, char const *constvol1,
     } // switch
   }
 
-  printf( "declare %s as ", savedname );
+  printf( "declare %s as ", c_ident );
   if ( *storage )
     printf( "%s ", storage );
   printf( "%s", decl );
@@ -437,7 +442,7 @@ static void unsupp( char const *s, char const *hint ) {
 
 static void yyerror( char const *s ) {
   PRINT_ERR( "%s\n", s );
-  Debug((stdout, "yychar=%d\n", yychar));
+  //YYTRACE( "yychar=%d\n", yychar );
 }
 
 int yywrap( void ) {
@@ -494,7 +499,7 @@ int yywrap( void ) {
 %type   <dynstr> adecllist adims c_type cast castlist cdecl cdecl1 cdims
 %type   <dynstr> constvol_list ClassStruct mod_list mod_list1 modifier
 %type   <dynstr> opt_constvol_list optNAME opt_storage storage StrClaUniEnum
-%type   <dynstr> tname type
+%type   <dynstr> c_type_name type
 %type   <halves> adecl
 
 %start prog
@@ -503,107 +508,107 @@ int yywrap( void ) {
 
 prog
   : /* empty */
-  | prog stmt
+  | prog statement
     {
       c_ident_kind = 0;
     }
   ;
 
-stmt
+statement
   : T_HELP NL
     {
-      Debug((stderr, "stmt: help\n"));
+      YYTRACE( "statement: help\n" );
       print_help();
     }
 
   | T_DECLARE T_NAME T_AS opt_storage adecl NL
     {
-      Debug((stderr, "stmt: DECLARE NAME AS opt_storage adecl\n"));
-      Debug((stderr, "\tNAME='%s'\n", $2));
-      Debug((stderr, "\topt_storage='%s'\n", $4));
-      Debug((stderr, "\tacdecl.left='%s'\n", $5.left));
-      Debug((stderr, "\tacdecl.right='%s'\n", $5.right));
-      Debug((stderr, "\tacdecl.type='%s'\n", $5.type));
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "statement: DECLARE NAME AS opt_storage adecl\n" );
+      YYTRACE( "\tNAME='%s'\n", $2 );
+      YYTRACE( "\topt_storage='%s'\n", $4 );
+      YYTRACE( "\tacdecl.left='%s'\n", $5.left );
+      YYTRACE( "\tacdecl.right='%s'\n", $5.right );
+      YYTRACE( "\tacdecl.type='%s'\n", $5.type );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
       do_declare($2, $4, $5.left, $5.right, $5.type);
     }
 
   | T_DECLARE opt_storage adecl NL
     {
-      Debug((stderr, "stmt: DECLARE opt_storage adecl\n"));
-      Debug((stderr, "\topt_storage='%s'\n", $2));
-      Debug((stderr, "\tacdecl.left='%s'\n", $3.left));
-      Debug((stderr, "\tacdecl.right='%s'\n", $3.right));
-      Debug((stderr, "\tacdecl.type='%s'\n", $3.type));
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "statement: DECLARE opt_storage adecl\n" );
+      YYTRACE( "\topt_storage='%s'\n", $2 );
+      YYTRACE( "\tacdecl.left='%s'\n", $3.left );
+      YYTRACE( "\tacdecl.right='%s'\n", $3.right );
+      YYTRACE( "\tacdecl.type='%s'\n", $3.type );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
       do_declare(NULL, $2, $3.left, $3.right, $3.type);
     }
 
   | T_CAST T_NAME T_INTO adecl NL
     {
-      Debug((stderr, "stmt: CAST NAME AS adecl\n"));
-      Debug((stderr, "\tNAME='%s'\n", $2));
-      Debug((stderr, "\tacdecl.left='%s'\n", $4.left));
-      Debug((stderr, "\tacdecl.right='%s'\n", $4.right));
-      Debug((stderr, "\tacdecl.type='%s'\n", $4.type));
+      YYTRACE( "statement: CAST NAME AS adecl\n" );
+      YYTRACE( "\tNAME='%s'\n", $2 );
+      YYTRACE( "\tacdecl.left='%s'\n", $4.left );
+      YYTRACE( "\tacdecl.right='%s'\n", $4.right );
+      YYTRACE( "\tacdecl.type='%s'\n", $4.type );
       do_cast($2, $4.left, $4.right, $4.type);
     }
 
   | T_CAST adecl NL
     {
-      Debug((stderr, "stmt: CAST adecl\n"));
-      Debug((stderr, "\tacdecl.left='%s'\n", $2.left));
-      Debug((stderr, "\tacdecl.right='%s'\n", $2.right));
-      Debug((stderr, "\tacdecl.type='%s'\n", $2.type));
+      YYTRACE( "statement: CAST adecl\n" );
+      YYTRACE( "\tacdecl.left='%s'\n", $2.left );
+      YYTRACE( "\tacdecl.right='%s'\n", $2.right );
+      YYTRACE( "\tacdecl.type='%s'\n", $2.type );
       do_cast(NULL, $2.left, $2.right, $2.type);
     }
 
   | T_EXPLAIN opt_storage opt_constvol_list type opt_constvol_list cdecl NL
     {
-      Debug((stderr, "stmt: EXPLAIN opt_storage opt_constvol_list type cdecl\n"));
-      Debug((stderr, "\topt_storage='%s'\n", $2));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $3));
-      Debug((stderr, "\ttype='%s'\n", $4));
-      Debug((stderr, "\tcdecl='%s'\n", $6));
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "statement: EXPLAIN opt_storage opt_constvol_list type cdecl\n" );
+      YYTRACE( "\topt_storage='%s'\n", $2 );
+      YYTRACE( "\topt_constvol_list='%s'\n", $3 );
+      YYTRACE( "\ttype='%s'\n", $4 );
+      YYTRACE( "\tcdecl='%s'\n", $6 );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
       explain_declaration($2, $3, $5, $4, $6);
     }
 
   | T_EXPLAIN storage opt_constvol_list cdecl NL
     {
-      Debug((stderr, "stmt: EXPLAIN storage opt_constvol_list cdecl\n"));
-      Debug((stderr, "\tstorage='%s'\n", $2));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $3));
-      Debug((stderr, "\tcdecl='%s'\n", $4));
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "statement: EXPLAIN storage opt_constvol_list cdecl\n" );
+      YYTRACE( "\tstorage='%s'\n", $2 );
+      YYTRACE( "\topt_constvol_list='%s'\n", $3 );
+      YYTRACE( "\tcdecl='%s'\n", $4 );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
       explain_declaration($2, $3, NULL, NULL, $4);
     }
 
   | T_EXPLAIN opt_storage constvol_list cdecl NL
     {
-      Debug((stderr, "stmt: EXPLAIN opt_storage constvol_list cdecl\n"));
-      Debug((stderr, "\topt_storage='%s'\n", $2));
-      Debug((stderr, "\tconstvol_list='%s'\n", $3));
-      Debug((stderr, "\tcdecl='%s'\n", $4));
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "statement: EXPLAIN opt_storage constvol_list cdecl\n" );
+      YYTRACE( "\topt_storage='%s'\n", $2 );
+      YYTRACE( "\tconstvol_list='%s'\n", $3 );
+      YYTRACE( "\tcdecl='%s'\n", $4 );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
       explain_declaration($2, $3, NULL, NULL, $4);
     }
 
   | T_EXPLAIN '(' opt_constvol_list type cast ')' optNAME NL
     {
-      Debug((stderr, "stmt: EXPLAIN ( opt_constvol_list type cast ) optNAME\n"));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $3));
-      Debug((stderr, "\ttype='%s'\n", $4));
-      Debug((stderr, "\tcast='%s'\n", $5));
-      Debug((stderr, "\tNAME='%s'\n", $7));
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "statement: EXPLAIN ( opt_constvol_list type cast ) optNAME\n" );
+      YYTRACE( "\topt_constvol_list='%s'\n", $3 );
+      YYTRACE( "\ttype='%s'\n", $4 );
+      YYTRACE( "\tcast='%s'\n", $5 );
+      YYTRACE( "\tNAME='%s'\n", $7 );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
       explain_cast($3, $4, $5, $7);
     }
 
   | T_SET optNAME NL
     {
-      Debug((stderr, "stmt: SET optNAME\n"));
-      Debug((stderr, "\toptNAME='%s'\n", $2));
+      YYTRACE( "statement: SET optNAME\n" );
+      YYTRACE( "\toptNAME='%s'\n", $2 );
       do_set($2);
     }
 
@@ -628,14 +633,14 @@ NL
 optNAME
   : T_NAME
     {
-      Debug((stderr, "optNAME: NAME\n"));
-      Debug((stderr, "\tNAME='%s'\n", $1));
+      YYTRACE( "optNAME: NAME\n" );
+      YYTRACE( "\tNAME='%s'\n", $1 );
       $$ = $1;
     }
 
   | /* empty */
     {
-      Debug((stderr, "optNAME: EMPTY\n"));
+      YYTRACE( "optNAME: EMPTY\n" );
       $$ = strdup(unknown_name);
     }
   ;
@@ -644,55 +649,55 @@ cdecl
   : cdecl1
   | '*' opt_constvol_list cdecl
     {
-      Debug((stderr, "cdecl: * opt_constvol_list cdecl\n"));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $2));
-      Debug((stderr, "\tcdecl='%s'\n", $3));
+      YYTRACE( "cdecl: * opt_constvol_list cdecl\n" );
+      YYTRACE( "\topt_constvol_list='%s'\n", $2 );
+      YYTRACE( "\tcdecl='%s'\n", $3 );
       $$ = cat($3,$2,strdup(strlen($2)?" pointer to ":"pointer to "),NULL);
       c_ident_kind = C_POINTER;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | T_NAME T_DOUBLECOLON '*' cdecl
     {
-      Debug((stderr, "cdecl: NAME DOUBLECOLON '*' cdecl\n"));
-      Debug((stderr, "\tNAME='%s'\n", $1));
-      Debug((stderr, "\tcdecl='%s'\n", $4));
+      YYTRACE( "cdecl: NAME DOUBLECOLON '*' cdecl\n" );
+      YYTRACE( "\tNAME='%s'\n", $1 );
+      YYTRACE( "\tcdecl='%s'\n", $4 );
       if (opt_lang != LANG_CXX)
         unsupp("pointer to member of class", NULL);
       $$ = cat($4,strdup("pointer to member of class "),$1,strdup(" "),NULL);
       c_ident_kind = C_POINTER;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | '&' opt_constvol_list cdecl
     {
-      Debug((stderr, "cdecl: & opt_constvol_list cdecl\n"));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $2));
-      Debug((stderr, "\tcdecl='%s'\n", $3));
+      YYTRACE( "cdecl: & opt_constvol_list cdecl\n" );
+      YYTRACE( "\topt_constvol_list='%s'\n", $2 );
+      YYTRACE( "\tcdecl='%s'\n", $3 );
       if (opt_lang != LANG_CXX)
         unsupp("reference", NULL);
       $$ = cat($3,$2,strdup(strlen($2)?" reference to ":"reference to "),NULL);
       c_ident_kind = CXX_REFERENCE;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
   ;
 
 cdecl1
   : cdecl1 '(' ')'
     {
-      Debug((stderr, "cdecl1: cdecl1()\n"));
-      Debug((stderr, "\tcdecl1='%s'\n", $1));
+      YYTRACE( "cdecl1: cdecl1()\n" );
+      YYTRACE( "\tcdecl1='%s'\n", $1 );
       $$ = cat($1,strdup("function returning "),NULL);
       c_ident_kind = C_FUNCTION;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | '(' '^' opt_constvol_list cdecl ')' '(' ')'
     {
       char const *sp = "";
-      Debug((stderr, "cdecl1: (^ opt_constvol_list cdecl)()\n"));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $3));
-      Debug((stderr, "\tcdecl='%s'\n", $4));
+      YYTRACE( "cdecl1: (^ opt_constvol_list cdecl)()\n" );
+      YYTRACE( "\topt_constvol_list='%s'\n", $3 );
+      YYTRACE( "\tcdecl='%s'\n", $4 );
       if (strlen($3) > 0)
           sp = " ";
       $$ = cat($4, $3, strdup(sp), strdup("block returning "), NULL);
@@ -702,10 +707,10 @@ cdecl1
   | '(' '^' opt_constvol_list cdecl ')' '(' castlist ')'
     {
       char const *sp = "";
-      Debug((stderr, "cdecl1: (^ opt_constvol_list cdecl)( castlist )\n"));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $3));
-      Debug((stderr, "\tcdecl='%s'\n", $4));
-      Debug((stderr, "\tcastlist='%s'\n", $7));
+      YYTRACE( "cdecl1: (^ opt_constvol_list cdecl)( castlist )\n" );
+      YYTRACE( "\topt_constvol_list='%s'\n", $3 );
+      YYTRACE( "\tcdecl='%s'\n", $4 );
+      YYTRACE( "\tcastlist='%s'\n", $7 );
       if (strlen($3) > 0)
         sp = " ";
       $$ = cat($4, $3, strdup(sp), strdup("block ("), $7, strdup(") returning "), NULL);
@@ -714,59 +719,59 @@ cdecl1
 
   | cdecl1 '(' castlist ')'
     {
-      Debug((stderr, "cdecl1: cdecl1(castlist)\n"));
-      Debug((stderr, "\tcdecl1='%s'\n", $1));
-      Debug((stderr, "\tcastlist='%s'\n", $3));
+      YYTRACE( "cdecl1: cdecl1(castlist)\n" );
+      YYTRACE( "\tcdecl1='%s'\n", $1 );
+      YYTRACE( "\tcastlist='%s'\n", $3 );
       $$ = cat($1, strdup("function ("),
           $3, strdup(") returning "), NULL);
       c_ident_kind = C_FUNCTION;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | cdecl1 cdims
     {
-      Debug((stderr, "cdecl1: cdecl1 cdims\n"));
-      Debug((stderr, "\tcdecl1='%s'\n", $1));
-      Debug((stderr, "\tcdims='%s'\n", $2));
+      YYTRACE( "cdecl1: cdecl1 cdims\n" );
+      YYTRACE( "\tcdecl1='%s'\n", $1 );
+      YYTRACE( "\tcdims='%s'\n", $2 );
       $$ = cat($1,strdup("array "),$2,NULL);
       c_ident_kind = 'a';
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | '(' cdecl ')'
     {
-      Debug((stderr, "cdecl1: (cdecl)\n"));
-      Debug((stderr, "\tcdecl='%s'\n", $2));
+      YYTRACE( "cdecl1: (cdecl)\n" );
+      YYTRACE( "\tcdecl='%s'\n", $2 );
       $$ = $2;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | T_NAME
     {
-      Debug((stderr, "cdecl1: NAME\n"));
-      Debug((stderr, "\tNAME='%s'\n", $1));
-      savedname = $1;
+      YYTRACE( "cdecl1: NAME\n" );
+      YYTRACE( "\tNAME='%s'\n", $1 );
+      c_ident = $1;
       $$ = strdup("");
       c_ident_kind = C_NAME;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
   ;
 
 castlist
   : castlist T_COMMA castlist
     {
-      Debug((stderr, "castlist: castlist1, castlist2\n"));
-      Debug((stderr, "\tcastlist1='%s'\n", $1));
-      Debug((stderr, "\tcastlist2='%s'\n", $3));
+      YYTRACE( "castlist: castlist1, castlist2\n" );
+      YYTRACE( "\tcastlist1='%s'\n", $1 );
+      YYTRACE( "\tcastlist2='%s'\n", $3 );
       $$ = cat($1, strdup(", "), $3, NULL);
     }
 
   | opt_constvol_list type cast
     {
-      Debug((stderr, "castlist: opt_constvol_list type cast\n"));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $1));
-      Debug((stderr, "\ttype='%s'\n", $2));
-      Debug((stderr, "\tcast='%s'\n", $3));
+      YYTRACE( "castlist: opt_constvol_list type cast\n" );
+      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "\ttype='%s'\n", $2 );
+      YYTRACE( "\tcast='%s'\n", $3 );
       $$ = cat($3, $1, strdup(strlen($1) ? " " : ""), $2, NULL);
     }
 
@@ -779,41 +784,41 @@ castlist
 adecllist
   : /* empty */
     {
-      Debug((stderr, "adecllist: EMPTY\n"));
+      YYTRACE( "adecllist: EMPTY\n" );
       $$ = strdup("");
     }
 
   | adecllist T_COMMA adecllist
     {
-      Debug((stderr, "adecllist: adecllist1, adecllist2\n"));
-      Debug((stderr, "\tadecllist1='%s'\n", $1));
-      Debug((stderr, "\tadecllist2='%s'\n", $3));
+      YYTRACE( "adecllist: adecllist1, adecllist2\n" );
+      YYTRACE( "\tadecllist1='%s'\n", $1 );
+      YYTRACE( "\tadecllist2='%s'\n", $3 );
       $$ = cat($1, strdup(", "), $3, NULL);
     }
 
   | T_NAME
     {
-      Debug((stderr, "adecllist: NAME\n"));
-      Debug((stderr, "\tNAME='%s'\n", $1));
+      YYTRACE( "adecllist: NAME\n" );
+      YYTRACE( "\tNAME='%s'\n", $1 );
       $$ = $1;
     }
 
   | adecl
     {
-      Debug((stderr, "adecllist: adecl\n"));
-      Debug((stderr, "\tadecl.left='%s'\n", $1.left));
-      Debug((stderr, "\tadecl.right='%s'\n", $1.right));
-      Debug((stderr, "\tadecl.type='%s'\n", $1.type));
+      YYTRACE( "adecllist: adecl\n" );
+      YYTRACE( "\tadecl.left='%s'\n", $1.left );
+      YYTRACE( "\tadecl.right='%s'\n", $1.right );
+      YYTRACE( "\tadecl.type='%s'\n", $1.type );
       $$ = cat($1.type, strdup(" "), $1.left, $1.right, NULL);
     }
 
   | T_NAME T_AS adecl
     {
-      Debug((stderr, "adecllist: NAME AS adecl\n"));
-      Debug((stderr, "\tNAME='%s'\n", $1));
-      Debug((stderr, "\tadecl.left='%s'\n", $3.left));
-      Debug((stderr, "\tadecl.right='%s'\n", $3.right));
-      Debug((stderr, "\tadecl.type='%s'\n", $3.type));
+      YYTRACE( "adecllist: NAME AS adecl\n" );
+      YYTRACE( "\tNAME='%s'\n", $1 );
+      YYTRACE( "\tadecl.left='%s'\n", $3.left );
+      YYTRACE( "\tadecl.right='%s'\n", $3.right );
+      YYTRACE( "\tadecl.type='%s'\n", $3.type );
       $$ = cat($3.type, strdup(" "), $3.left, $1, $3.right, NULL);
     }
   ;
@@ -821,119 +826,119 @@ adecllist
 cast
   : /* empty */
     {
-      Debug((stderr, "cast: EMPTY\n"));
+      YYTRACE( "cast: EMPTY\n" );
       $$ = strdup("");
       /* c_ident_kind = c_ident_kind; */
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | '(' ')'
     {
-      Debug((stderr, "cast: ()\n"));
+      YYTRACE( "cast: ()\n" );
       $$ = strdup("function returning ");
       c_ident_kind = C_FUNCTION;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | '(' cast ')' '(' ')'
     {
-      Debug((stderr, "cast: (cast)()\n"));
-      Debug((stderr, "\tcast='%s'\n", $2));
+      YYTRACE( "cast: (cast)()\n" );
+      YYTRACE( "\tcast='%s'\n", $2 );
       $$ = cat($2,strdup("function returning "),NULL);
       c_ident_kind = C_FUNCTION;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | '(' cast ')' '(' castlist ')'
     {
-      Debug((stderr, "cast: (cast)(castlist)\n"));
-      Debug((stderr, "\tcast='%s'\n", $2));
-      Debug((stderr, "\tcastlist='%s'\n", $5));
+      YYTRACE( "cast: (cast)(castlist)\n" );
+      YYTRACE( "\tcast='%s'\n", $2 );
+      YYTRACE( "\tcastlist='%s'\n", $5 );
       $$ = cat($2,strdup("function ("),$5,strdup(") returning "),NULL);
       c_ident_kind = C_FUNCTION;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | '(' '^' cast ')' '(' ')'
     {
-      Debug((stderr, "cast: (^ cast)()\n"));
-      Debug((stderr, "\tcast='%s'\n", $3));
+      YYTRACE( "cast: (^ cast)()\n" );
+      YYTRACE( "\tcast='%s'\n", $3 );
       $$ = cat($3,strdup("block returning "),NULL);
       c_ident_kind = C_BLOCK;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | '(' '^' cast ')' '(' castlist ')'
     {
-      Debug((stderr, "cast: (^ cast)(castlist)\n"));
-      Debug((stderr, "\tcast='%s'\n", $3));
+      YYTRACE( "cast: (^ cast)(castlist)\n" );
+      YYTRACE( "\tcast='%s'\n", $3 );
       $$ = cat($3,strdup("block ("), $6, strdup(") returning "),NULL);
       c_ident_kind = C_BLOCK;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | '(' cast ')'
     {
-      Debug((stderr, "cast: (cast)\n"));
-      Debug((stderr, "\tcast='%s'\n", $2));
+      YYTRACE( "cast: (cast)\n" );
+      YYTRACE( "\tcast='%s'\n", $2 );
       $$ = $2;
       /* c_ident_kind = c_ident_kind; */
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | T_NAME T_DOUBLECOLON '*' cast
     {
-      Debug((stderr, "cast: NAME::*cast\n"));
-      Debug((stderr, "\tcast='%s'\n", $4));
+      YYTRACE( "cast: NAME::*cast\n" );
+      YYTRACE( "\tcast='%s'\n", $4 );
       if (opt_lang != LANG_CXX)
         unsupp("pointer to member of class", NULL);
       $$ = cat($4,strdup("pointer to member of class "),$1,strdup(" "),NULL);
       c_ident_kind = C_POINTER;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | '*' cast
     {
-      Debug((stderr, "cast: *cast\n"));
-      Debug((stderr, "\tcast='%s'\n", $2));
+      YYTRACE( "cast: *cast\n" );
+      YYTRACE( "\tcast='%s'\n", $2 );
       $$ = cat($2,strdup("pointer to "),NULL);
       c_ident_kind = C_POINTER;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | '&' cast
     {
-      Debug((stderr, "cast: &cast\n"));
-      Debug((stderr, "\tcast='%s'\n", $2));
+      YYTRACE( "cast: &cast\n" );
+      YYTRACE( "\tcast='%s'\n", $2 );
       if (opt_lang != LANG_CXX)
         unsupp("reference", NULL);
       $$ = cat($2,strdup("reference to "),NULL);
       c_ident_kind = CXX_REFERENCE;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | cast cdims
     {
-      Debug((stderr, "cast: cast cdims\n"));
-      Debug((stderr, "\tcast='%s'\n", $1));
-      Debug((stderr, "\tcdims='%s'\n", $2));
+      YYTRACE( "cast: cast cdims\n" );
+      YYTRACE( "\tcast='%s'\n", $1 );
+      YYTRACE( "\tcdims='%s'\n", $2 );
       $$ = cat($1,strdup("array "),$2,NULL);
       c_ident_kind = C_ARRAY_NO_DIM;
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
   ;
 
 cdims
   : '[' ']'
     {
-      Debug((stderr, "cdims: []\n"));
+      YYTRACE( "cdims: []\n" );
       $$ = strdup("of ");
     }
 
   | '[' T_NUMBER ']'
     {
-      Debug((stderr, "cdims: [NUMBER]\n"));
-      Debug((stderr, "\tNUMBER='%s'\n", $2));
+      YYTRACE( "cdims: [NUMBER]\n" );
+      YYTRACE( "\tNUMBER='%s'\n", $2 );
       $$ = cat($2,strdup(" of "),NULL);
     }
   ;
@@ -941,10 +946,10 @@ cdims
 adecl
   : T_FUNCTION T_RETURNING adecl
     {
-      Debug((stderr, "adecl: FUNCTION RETURNING adecl\n"));
-      Debug((stderr, "\tadecl.left='%s'\n", $3.left));
-      Debug((stderr, "\tadecl.right='%s'\n", $3.right));
-      Debug((stderr, "\tadecl.type='%s'\n", $3.type));
+      YYTRACE( "adecl: FUNCTION RETURNING adecl\n" );
+      YYTRACE( "\tadecl.left='%s'\n", $3.left );
+      YYTRACE( "\tadecl.right='%s'\n", $3.right );
+      YYTRACE( "\tadecl.type='%s'\n", $3.type );
       if (c_ident_kind == C_FUNCTION)
         unsupp("Function returning function",
                 "function returning pointer to function");
@@ -955,20 +960,20 @@ adecl
       $$.right = cat(strdup("()"),$3.right,NULL);
       $$.type = $3.type;
       c_ident_kind = C_FUNCTION;
-      Debug((stderr, "\n\tadecl now =\n"));
-      Debug((stderr, "\t\tadecl.left='%s'\n", $$.left));
-      Debug((stderr, "\t\tadecl.right='%s'\n", $$.right));
-      Debug((stderr, "\t\tadecl.type='%s'\n", $$.type));
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\n\tadecl now =\n" );
+      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
+      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
+      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | T_FUNCTION '(' adecllist ')' T_RETURNING adecl
     {
-      Debug((stderr, "adecl: FUNCTION (adecllist) RETURNING adecl\n"));
-      Debug((stderr, "\tadecllist='%s'\n", $3));
-      Debug((stderr, "\tadecl.left='%s'\n", $6.left));
-      Debug((stderr, "\tadecl.right='%s'\n", $6.right));
-      Debug((stderr, "\tadecl.type='%s'\n", $6.type));
+      YYTRACE( "adecl: FUNCTION (adecllist) RETURNING adecl\n" );
+      YYTRACE( "\tadecllist='%s'\n", $3 );
+      YYTRACE( "\tadecl.left='%s'\n", $6.left );
+      YYTRACE( "\tadecl.right='%s'\n", $6.right );
+      YYTRACE( "\tadecl.type='%s'\n", $6.type );
       if (c_ident_kind == C_FUNCTION)
         unsupp("Function returning function",
                 "function returning pointer to function");
@@ -979,21 +984,21 @@ adecl
       $$.right = cat(strdup("("),$3,strdup(")"),$6.right,NULL);
       $$.type = $6.type;
       c_ident_kind = C_FUNCTION;
-      Debug((stderr, "\n\tadecl now =\n"));
-      Debug((stderr, "\t\tadecl.left='%s'\n", $$.left));
-      Debug((stderr, "\t\tadecl.right='%s'\n", $$.right));
-      Debug((stderr, "\t\tadecl.type='%s'\n", $$.type));
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\n\tadecl now =\n" );
+      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
+      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
+      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | opt_constvol_list T_BLOCK T_RETURNING adecl
     {
       char const *sp = "";
-      Debug((stderr, "adecl: opt_constvol_list BLOCK RETURNING adecl\n"));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $1));
-      Debug((stderr, "\tadecl.left='%s'\n", $4.left));
-      Debug((stderr, "\tadecl.right='%s'\n", $4.right));
-      Debug((stderr, "\tadecl.type='%s'\n", $4.type));
+      YYTRACE( "adecl: opt_constvol_list BLOCK RETURNING adecl\n" );
+      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "\tadecl.left='%s'\n", $4.left );
+      YYTRACE( "\tadecl.right='%s'\n", $4.right );
+      YYTRACE( "\tadecl.type='%s'\n", $4.type );
       if (c_ident_kind == C_FUNCTION)
         unsupp("Block returning function",
                "block returning pointer to function");
@@ -1011,12 +1016,12 @@ adecl
   | opt_constvol_list T_BLOCK '(' adecllist ')' T_RETURNING adecl
     {
       char const *sp = "";
-      Debug((stderr, "adecl: opt_constvol_list BLOCK RETURNING adecl\n"));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $1));
-      Debug((stderr, "\tadecllist='%s'\n", $4));
-      Debug((stderr, "\tadecl.left='%s'\n", $7.left));
-      Debug((stderr, "\tadecl.right='%s'\n", $7.right));
-      Debug((stderr, "\tadecl.type='%s'\n", $7.type));
+      YYTRACE( "adecl: opt_constvol_list BLOCK RETURNING adecl\n" );
+      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "\tadecllist='%s'\n", $4 );
+      YYTRACE( "\tadecl.left='%s'\n", $7.left );
+      YYTRACE( "\tadecl.right='%s'\n", $7.right );
+      YYTRACE( "\tadecl.type='%s'\n", $7.type );
       if (c_ident_kind == C_FUNCTION)
         unsupp("Block returning function",
                "block returning pointer to function");
@@ -1033,11 +1038,11 @@ adecl
 
   | T_ARRAY adims T_OF adecl
     {
-      Debug((stderr, "adecl: ARRAY adims OF adecl\n"));
-      Debug((stderr, "\tadims='%s'\n", $2));
-      Debug((stderr, "\tadecl.left='%s'\n", $4.left));
-      Debug((stderr, "\tadecl.right='%s'\n", $4.right));
-      Debug((stderr, "\tadecl.type='%s'\n", $4.type));
+      YYTRACE( "adecl: ARRAY adims OF adecl\n" );
+      YYTRACE( "\tadims='%s'\n", $2 );
+      YYTRACE( "\tadecl.left='%s'\n", $4.left );
+      YYTRACE( "\tadecl.right='%s'\n", $4.right );
+      YYTRACE( "\tadecl.type='%s'\n", $4.type );
       if ( c_ident_kind == C_FUNCTION )
         unsupp("Array of function", "array of pointer to function");
       else if ( c_ident_kind == C_ARRAY_NO_DIM )
@@ -1048,22 +1053,22 @@ adecl
       $$.left = $4.left;
       $$.right = cat( $2, $4.right, NULL );
       $$.type = $4.type;
-      Debug((stderr, "\n\tadecl now =\n"));
-      Debug((stderr, "\t\tadecl.left='%s'\n", $$.left));
-      Debug((stderr, "\t\tadecl.right='%s'\n", $$.right));
-      Debug((stderr, "\t\tadecl.type='%s'\n", $$.type));
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\n\tadecl now =\n" );
+      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
+      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
+      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | opt_constvol_list T_POINTER T_TO adecl
     {
       char const *op = "", *cp = "", *sp = "";
 
-      Debug((stderr, "adecl: opt_constvol_list POINTER TO adecl\n"));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $1));
-      Debug((stderr, "\tadecl.left='%s'\n", $4.left));
-      Debug((stderr, "\tadecl.right='%s'\n", $4.right));
-      Debug((stderr, "\tadecl.type='%s'\n", $4.type));
+      YYTRACE( "adecl: opt_constvol_list POINTER TO adecl\n" );
+      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "\tadecl.left='%s'\n", $4.left );
+      YYTRACE( "\tadecl.right='%s'\n", $4.right );
+      YYTRACE( "\tadecl.type='%s'\n", $4.type );
       if (c_ident_kind == C_ARRAY_NO_DIM)
         unsupp("Pointer to array of unspecified dimension",
                 "pointer to object");
@@ -1077,24 +1082,24 @@ adecl
       $$.right = cat(strdup(cp),$4.right,NULL);
       $$.type = $4.type;
       c_ident_kind = C_POINTER;
-      Debug((stderr, "\n\tadecl now =\n"));
-      Debug((stderr, "\t\tadecl.left='%s'\n", $$.left));
-      Debug((stderr, "\t\tadecl.right='%s'\n", $$.right));
-      Debug((stderr, "\t\tadecl.type='%s'\n", $$.type));
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\n\tadecl now =\n" );
+      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
+      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
+      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | opt_constvol_list T_POINTER T_TO T_MEMBER T_OF ClassStruct T_NAME adecl
     {
       char const *op = "", *cp = "", *sp = "";
 
-      Debug((stderr, "adecl: opt_constvol_list POINTER TO MEMBER OF ClassStruct NAME adecl\n"));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $1));
-      Debug((stderr, "\tClassStruct='%s'\n", $6));
-      Debug((stderr, "\tNAME='%s'\n", $7));
-      Debug((stderr, "\tadecl.left='%s'\n", $8.left));
-      Debug((stderr, "\tadecl.right='%s'\n", $8.right));
-      Debug((stderr, "\tadecl.type='%s'\n", $8.type));
+      YYTRACE( "adecl: opt_constvol_list POINTER TO MEMBER OF ClassStruct NAME adecl\n" );
+      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "\tClassStruct='%s'\n", $6 );
+      YYTRACE( "\tNAME='%s'\n", $7 );
+      YYTRACE( "\tadecl.left='%s'\n", $8.left );
+      YYTRACE( "\tadecl.right='%s'\n", $8.right );
+      YYTRACE( "\tadecl.type='%s'\n", $8.type );
       if (opt_lang != LANG_CXX)
         unsupp("pointer to member of class", NULL);
       if (c_ident_kind == C_ARRAY_NO_DIM)
@@ -1110,22 +1115,22 @@ adecl
       $$.right = cat(strdup(cp),$8.right,NULL);
       $$.type = $8.type;
       c_ident_kind = C_POINTER;
-      Debug((stderr, "\n\tadecl now =\n"));
-      Debug((stderr, "\t\tadecl.left='%s'\n", $$.left));
-      Debug((stderr, "\t\tadecl.right='%s'\n", $$.right));
-      Debug((stderr, "\t\tadecl.type='%s'\n", $$.type));
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\n\tadecl now =\n" );
+      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
+      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
+      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | opt_constvol_list T_REFERENCE T_TO adecl
     {
       char const *op = "", *cp = "", *sp = "";
 
-      Debug((stderr, "adecl: opt_constvol_list REFERENCE TO adecl\n"));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $1));
-      Debug((stderr, "\tadecl.left='%s'\n", $4.left));
-      Debug((stderr, "\tadecl.right='%s'\n", $4.right));
-      Debug((stderr, "\tadecl.type='%s'\n", $4.type));
+      YYTRACE( "adecl: opt_constvol_list REFERENCE TO adecl\n" );
+      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "\tadecl.left='%s'\n", $4.left );
+      YYTRACE( "\tadecl.right='%s'\n", $4.right );
+      YYTRACE( "\tadecl.type='%s'\n", $4.type );
       if (opt_lang != LANG_CXX)
         unsupp("reference", NULL);
       if (c_ident_kind == C_VOID)
@@ -1144,18 +1149,18 @@ adecl
       $$.right = cat(strdup(cp),$4.right,NULL);
       $$.type = $4.type;
       c_ident_kind = CXX_REFERENCE;
-      Debug((stderr, "\n\tadecl now =\n"));
-      Debug((stderr, "\t\tadecl.left='%s'\n", $$.left));
-      Debug((stderr, "\t\tadecl.right='%s'\n", $$.right));
-      Debug((stderr, "\t\tadecl.type='%s'\n", $$.type));
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\n\tadecl now =\n" );
+      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
+      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
+      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
   | opt_constvol_list type
     {
-      Debug((stderr, "adecl: opt_constvol_list type\n"));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $1));
-      Debug((stderr, "\ttype='%s'\n", $2));
+      YYTRACE( "adecl: opt_constvol_list type\n" );
+      YYTRACE( "\topt_constvol_list='%s'\n", $1 );
+      YYTRACE( "\ttype='%s'\n", $2 );
       $$.left = strdup("");
       $$.right = strdup("");
       $$.type = cat($1,strdup(strlen($1)?" ":""),$2,NULL);
@@ -1166,26 +1171,26 @@ adecl
           c_ident_kind = C_STRUCT;
       else
           c_ident_kind = C_BUILTIN;
-      Debug((stderr, "\n\tadecl now =\n"));
-      Debug((stderr, "\t\tadecl.left='%s'\n", $$.left));
-      Debug((stderr, "\t\tadecl.right='%s'\n", $$.right));
-      Debug((stderr, "\t\tadecl.type='%s'\n", $$.type));
-      Debug((stderr, "\tprev = '%s'\n", visible(c_ident_kind)));
+      YYTRACE( "\n\tadecl now =\n" );
+      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
+      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
+      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
   ;
 
 adims
   : /* empty */
     {
-      Debug((stderr, "adims: EMPTY\n"));
+      YYTRACE( "adims: EMPTY\n" );
       array_has_dim = false;
       $$ = strdup("[]");
     }
 
   | T_NUMBER
     {
-      Debug((stderr, "adims: NUMBER\n"));
-      Debug((stderr, "\tNUMBER='%s'\n", $1));
+      YYTRACE( "adims: NUMBER\n" );
+      YYTRACE( "\tNUMBER='%s'\n", $1 );
       array_has_dim = true;
       $$ = cat(strdup("["),$1,strdup("]"),NULL);
     }
@@ -1194,9 +1199,9 @@ adims
 type
   : c_type_init c_type
     {
-      Debug((stderr, "type: c_type_init c_type\n"));
-      Debug((stderr, "\tc_type_init=''\n"));
-      Debug((stderr, "\tc_type='%s'\n", $2));
+      YYTRACE( "type: c_type_init c_type\n" );
+      YYTRACE( "\tc_type_init=''\n" );
+      YYTRACE( "\tc_type='%s'\n", $2 );
       c_type_check();
       $$ = $2;
     }
@@ -1205,7 +1210,7 @@ type
 c_type_init
   : /* empty */
     {
-      Debug((stderr, "c_type_init: EMPTY\n"));
+      YYTRACE( "c_type_init: EMPTY\n" );
       c_type_bits = 0;
     }
   ;
@@ -1213,31 +1218,31 @@ c_type_init
 c_type
   : mod_list
     {
-      Debug((stderr, "c_type: mod_list\n"));
-      Debug((stderr, "\tmod_list='%s'\n", $1));
+      YYTRACE( "c_type: mod_list\n" );
+      YYTRACE( "\tmod_list='%s'\n", $1 );
       $$ = $1;
     }
 
-  | tname
+  | c_type_name
     {
-      Debug((stderr, "c_type: tname\n"));
-      Debug((stderr, "\ttname='%s'\n", $1));
+      YYTRACE( "c_type: c_type_name\n" );
+      YYTRACE( "\tc_type_name='%s'\n", $1 );
       $$ = $1;
     }
 
-  | mod_list tname
+  | mod_list c_type_name
     {
-      Debug((stderr, "c_type: mod_list tname\n"));
-      Debug((stderr, "\tmod_list='%s'\n", $1));
-      Debug((stderr, "\ttname='%s'\n", $2));
+      YYTRACE( "c_type: mod_list c_type_name\n" );
+      YYTRACE( "\tmod_list='%s'\n", $1 );
+      YYTRACE( "\tc_type_name='%s'\n", $2 );
       $$ = cat( $1, strdup(" "), $2, NULL );
     }
 
   | StrClaUniEnum T_NAME
     {
-      Debug((stderr, "c_type: StrClaUniEnum NAME\n"));
-      Debug((stderr, "\tStrClaUniEnum='%s'\n", $1));
-      Debug((stderr, "\tNAME='%s'\n", $2));
+      YYTRACE( "c_type: StrClaUniEnum NAME\n" );
+      YYTRACE( "\tStrClaUniEnum='%s'\n", $1 );
+      YYTRACE( "\tNAME='%s'\n", $2 );
       $$ = cat($1,strdup(" "),$2,NULL);
     }
   ;
@@ -1259,35 +1264,35 @@ ClassStruct
     }
   ;
 
-tname
+c_type_name
   : T_INT
     {
-      Debug((stderr, "tname: INT\n"));
-      Debug((stderr, "\tINT='%s'\n", $1));
+      YYTRACE( "c_type_name: INT\n" );
+      YYTRACE( "\tINT='%s'\n", $1 );
       c_type_add( C_TYPE_INT );
       $$ = $1;
     }
 
   | T_BOOL
     {
-      Debug((stderr, "tname: BOOL\n"));
-      Debug((stderr, "\tCHAR='%s'\n", $1));
+      YYTRACE( "c_type_name: BOOL\n" );
+      YYTRACE( "\tCHAR='%s'\n", $1 );
       c_type_add( C_TYPE_BOOL );
       $$ = $1;
     }
 
   | T_CHAR
     {
-      Debug((stderr, "tname: CHAR\n"));
-      Debug((stderr, "\tCHAR='%s'\n", $1));
+      YYTRACE( "c_type_name: CHAR\n" );
+      YYTRACE( "\tCHAR='%s'\n", $1 );
       c_type_add( C_TYPE_CHAR );
       $$ = $1;
     }
 
   | T_WCHAR_T
     {
-      Debug((stderr, "tname: WCHAR_T\n"));
-      Debug((stderr, "\tCHAR='%s'\n", $1));
+      YYTRACE( "c_type_name: WCHAR_T\n" );
+      YYTRACE( "\tCHAR='%s'\n", $1 );
       if ( opt_lang == LANG_C_KNR )
         not_supported(" (Pre-ANSI Compiler)", $1, NULL);
       else
@@ -1297,24 +1302,24 @@ tname
 
   | T_FLOAT
     {
-      Debug((stderr, "tname: FLOAT\n"));
-      Debug((stderr, "\tFLOAT='%s'\n", $1));
+      YYTRACE( "c_type_name: FLOAT\n" );
+      YYTRACE( "\tFLOAT='%s'\n", $1 );
       c_type_add( C_TYPE_FLOAT );
       $$ = $1;
     }
 
   | T_DOUBLE
     {
-      Debug((stderr, "tname: DOUBLE\n"));
-      Debug((stderr, "\tDOUBLE='%s'\n", $1));
+      YYTRACE( "c_type_name: DOUBLE\n" );
+      YYTRACE( "\tDOUBLE='%s'\n", $1 );
       c_type_add( C_TYPE_DOUBLE );
       $$ = $1;
     }
 
   | T_VOID
     {
-      Debug((stderr, "tname: VOID\n"));
-      Debug((stderr, "\tVOID='%s'\n", $1));
+      YYTRACE( "c_type_name: VOID\n" );
+      YYTRACE( "\tVOID='%s'\n", $1 );
       c_type_add( C_TYPE_VOID );
       $$ = $1;
     }
@@ -1323,16 +1328,16 @@ tname
 mod_list
   : modifier mod_list1
     {
-      Debug((stderr, "mod_list: modifier mod_list1\n"));
-      Debug((stderr, "\tmodifier='%s'\n", $1));
-      Debug((stderr, "\tmod_list1='%s'\n", $2));
+      YYTRACE( "mod_list: modifier mod_list1\n" );
+      YYTRACE( "\tmodifier='%s'\n", $1 );
+      YYTRACE( "\tmod_list1='%s'\n", $2 );
       $$ = cat($1,strdup(" "),$2,NULL);
     }
 
   | modifier
     {
-      Debug((stderr, "mod_list: modifier\n"));
-      Debug((stderr, "\tmodifier='%s'\n", $1));
+      YYTRACE( "mod_list: modifier\n" );
+      YYTRACE( "\tmodifier='%s'\n", $1 );
       $$ = $1;
     }
   ;
@@ -1340,15 +1345,15 @@ mod_list
 mod_list1
   : mod_list
     {
-      Debug((stderr, "mod_list1: mod_list\n"));
-      Debug((stderr, "\tmod_list='%s'\n", $1));
+      YYTRACE( "mod_list1: mod_list\n" );
+      YYTRACE( "\tmod_list='%s'\n", $1 );
       $$ = $1;
     }
 
   | T_CONST_VOLATILE
     {
-      Debug((stderr, "mod_list1: CONSTVOLATILE\n"));
-      Debug((stderr, "\tCONSTVOLATILE='%s'\n", $1));
+      YYTRACE( "mod_list1: CONSTVOLATILE\n" );
+      YYTRACE( "\tCONSTVOLATILE='%s'\n", $1 );
       if ( opt_lang == LANG_C_KNR )
         not_supported(" (Pre-ANSI Compiler)", $1, NULL);
       else if ((strcmp($1, "noalias") == 0) && opt_lang == LANG_CXX)
@@ -1360,32 +1365,32 @@ mod_list1
 modifier
   : T_UNSIGNED
     {
-      Debug((stderr, "modifier: UNSIGNED\n"));
-      Debug((stderr, "\tUNSIGNED='%s'\n", $1));
+      YYTRACE( "modifier: UNSIGNED\n" );
+      YYTRACE( "\tUNSIGNED='%s'\n", $1 );
       c_type_add( C_TYPE_UNSIGNED );
       $$ = $1;
     }
 
   | T_SIGNED
     {
-      Debug((stderr, "modifier: SIGNED\n"));
-      Debug((stderr, "\tSIGNED='%s'\n", $1));
+      YYTRACE( "modifier: SIGNED\n" );
+      YYTRACE( "\tSIGNED='%s'\n", $1 );
       c_type_add( C_TYPE_SIGNED );
       $$ = $1;
     }
 
   | T_LONG
     {
-      Debug((stderr, "modifier: LONG\n"));
-      Debug((stderr, "\tLONG='%s'\n", $1));
+      YYTRACE( "modifier: LONG\n" );
+      YYTRACE( "\tLONG='%s'\n", $1 );
       c_type_add( C_TYPE_LONG );
       $$ = $1;
     }
 
   | T_SHORT
     {
-      Debug((stderr, "modifier: SHORT\n"));
-      Debug((stderr, "\tSHORT='%s'\n", $1));
+      YYTRACE( "modifier: SHORT\n" );
+      YYTRACE( "\tSHORT='%s'\n", $1 );
       c_type_add( C_TYPE_SHORT );
       $$ = $1;
     }
@@ -1394,9 +1399,9 @@ modifier
 opt_constvol_list
   : T_CONST_VOLATILE opt_constvol_list
     {
-      Debug((stderr, "opt_constvol_list: CONSTVOLATILE opt_constvol_list\n"));
-      Debug((stderr, "\tCONSTVOLATILE='%s'\n", $1));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $2));
+      YYTRACE( "opt_constvol_list: CONSTVOLATILE opt_constvol_list\n" );
+      YYTRACE( "\tCONSTVOLATILE='%s'\n", $1 );
+      YYTRACE( "\topt_constvol_list='%s'\n", $2 );
       if (opt_lang == LANG_C_KNR)
         not_supported(" (Pre-ANSI Compiler)", $1, NULL);
       else if ((strcmp($1, "noalias") == 0) && opt_lang == LANG_CXX)
@@ -1406,7 +1411,7 @@ opt_constvol_list
 
   | /* empty */
     {
-      Debug((stderr, "opt_constvol_list: EMPTY\n"));
+      YYTRACE( "opt_constvol_list: EMPTY\n" );
       $$ = strdup("");
     }
   ;
@@ -1414,9 +1419,9 @@ opt_constvol_list
 constvol_list
   : T_CONST_VOLATILE opt_constvol_list
     {
-      Debug((stderr, "constvol_list: CONSTVOLATILE opt_constvol_list\n"));
-      Debug((stderr, "\tCONSTVOLATILE='%s'\n", $1));
-      Debug((stderr, "\topt_constvol_list='%s'\n", $2));
+      YYTRACE( "constvol_list: CONSTVOLATILE opt_constvol_list\n" );
+      YYTRACE( "\tCONSTVOLATILE='%s'\n", $1 );
+      YYTRACE( "\topt_constvol_list='%s'\n", $2 );
       if (opt_lang == LANG_C_KNR)
         not_supported(" (Pre-ANSI Compiler)", $1, NULL);
       else if ((strcmp($1, "noalias") == 0) && opt_lang == LANG_CXX)
@@ -1431,7 +1436,7 @@ storage
   | T_REGISTER
   | T_STATIC
     {
-      Debug((stderr, "storage: AUTO,EXTERN,STATIC,REGISTER (%s)\n", $1));
+      YYTRACE( "storage: AUTO,EXTERN,STATIC,REGISTER (%s)\n", $1 );
       $$ = $1;
     }
   ;
@@ -1439,13 +1444,13 @@ storage
 opt_storage
   : storage
     {
-      Debug((stderr, "opt_storage: storage=%s\n", $1));
+      YYTRACE( "opt_storage: storage=%s\n", $1 );
       $$ = $1;
     }
 
   | /* empty */
     {
-      Debug((stderr, "opt_storage: EMPTY\n"));
+      YYTRACE( "opt_storage: EMPTY\n" );
       $$ = strdup("");
     }
   ;

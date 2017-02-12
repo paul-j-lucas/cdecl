@@ -23,6 +23,7 @@
 #define SET_OPTION(OPT)           (opts_given[ (unsigned char)(OPT) ] = (OPT))
 
 // extern option variables
+bool                opt_debug;
 char const         *opt_fin;
 char const         *opt_fout;
 bool                opt_interactive;
@@ -42,9 +43,10 @@ static void         usage( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static char const SHORT_OPTS[] = "acipqvx:";
+static char const SHORT_OPTS[] = "acdipqvx:";
 
 static struct option const LONG_OPTS[] = {
+  { "debug",        no_argument,        NULL, 'd' },
   { "language",     required_argument,  NULL, 'x' },
   { "interactive",  no_argument,        NULL, 'i' },
   { "quite",        no_argument,        NULL, 'q' },
@@ -153,13 +155,14 @@ static void parse_options( int argc, char const *argv[] ) {
       break;
     SET_OPTION( opt );
     switch ( opt ) {
-      case 'a': opt_lang              = LANG_C_ANSI;          break;
-      case 'c': opt_make_c            = true;                 break;
-      case 'i': opt_interactive       = true;                 break;
-      case 'p': opt_lang              = LANG_C_KNR;           break;
-      case '1': opt_quiet             = true;                 break;
-      case 'v': print_version         = true;                 break;
-      case 'x': opt_lang              = parse_lang( optarg ); break;
+      case 'a': opt_lang        = LANG_C_ANSI;          break;
+      case 'c': opt_make_c      = true;                 break;
+      case 'd': opt_debug       = true;
+      case 'i': opt_interactive = true;                 break;
+      case 'p': opt_lang        = LANG_C_KNR;           break;
+      case '1': opt_quiet       = true;                 break;
+      case 'v': print_version   = true;                 break;
+      case 'x': opt_lang        = parse_lang( optarg ); break;
       default : usage();
     } // switch
   } // for

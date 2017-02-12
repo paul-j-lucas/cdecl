@@ -30,6 +30,7 @@ enum lang {
 typedef enum lang lang_t;
 
 // extern option variables
+extern bool         opt_debug;
 extern char const  *opt_fin;
 extern char const  *opt_fout;
 extern bool         opt_interactive;
