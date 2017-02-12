@@ -190,9 +190,9 @@ static void usage( void ) {
   PRINT_ERR( "\t-r Check against Ritchie PDP C Compiler\n");
   PRINT_ERR( "\t-p Check against Pre-ANSI C Compiler\n");
   PRINT_ERR( "\t-a Check against ANSI C Compiler%s\n",
-opt_lang == LANG_CXX ? "" : " (the default)");
+    opt_lang == LANG_CXX ? "" : " (the default)");
   PRINT_ERR( "\t-+ Check against C++ Compiler%s\n",
-opt_lang == LANG_CXX ? " (the default)" : "");
+    opt_lang == LANG_CXX ? " (the default)" : "");
   PRINT_ERR( "\t-c Create compilable output (include ; and {})\n");
   PRINT_ERR( "\t-i Force interactive mode\n");
   PRINT_ERR( "\t-q Quiet prompt\n");
@@ -224,6 +224,8 @@ void options_init( int argc, char const *argv[] ) {
        strcasecmp( me, "cppdecl" ) == 0 ||
        strcasecmp( me, "cxxdecl" ) == 0 ) {
     opt_lang = LANG_CXX;
+  } else {
+    opt_lang = LANG_C_ANSI;
   }
 
   parse_options( argc, argv );

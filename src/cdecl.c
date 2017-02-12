@@ -126,7 +126,7 @@ static void cdecl_init( int argc, char const *argv[] ) {
 
   prompting = is_tty = isatty( STDIN_FILENO );
 
-  /* this sets up the prompt, which is on by default */
+  // init the prompt
   size_t len = strlen( me );
   if ( len > PROMPT_MAX_LEN )
     len = PROMPT_MAX_LEN;
@@ -134,6 +134,7 @@ static void cdecl_init( int argc, char const *argv[] ) {
   prompt_buf[ len   ] = '>';
   prompt_buf[ len+1 ] = ' ';
   prompt_buf[ len+2 ] = '\0';
+  prompt_ptr = prompt_buf;
 
 #ifdef HAVE_READLINE
   readline_init();

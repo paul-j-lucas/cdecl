@@ -74,8 +74,6 @@ static void   unsupp( char const*, char const* );
 ///////////////////////////////////////////////////////////////////////////////
 
 #if 0
-/* This is an lower left triangular array. If we needed */
-/* to save 9 bytes, the "long" row can be removed. */
 char const crosscheck_old[9][9] = {
   /*              L, I, S, C, V, U, S, F, D, */
   /* long */      _, _, _, _, _, _, _, _, _,
@@ -92,6 +90,18 @@ char const crosscheck_old[9][9] = {
 
 /**
  * TODO
+ *
+ * @param bit TODO
+ */
+static void c_type_add( unsigned bit ) {
+  if ( c_type_bits & bit )
+    /* complain */;
+  else
+    c_type_bits |= bit;
+}
+
+/**
+ * TODO
  */
 static void c_type_check( void ) {
   struct c_type_map {
@@ -100,7 +110,7 @@ static void c_type_check( void ) {
   };
   typedef struct c_type_map c_type_map_t;
 
-  c_type_map_t const C_TYPE_MAP[] = {
+  static c_type_map_t const C_TYPE_MAP[] = {
     { "void",     C_TYPE_VOID     },
     { "bool",     C_TYPE_BOOL     },
     { "char",     C_TYPE_CHAR     },
@@ -129,17 +139,17 @@ static void c_type_check( void ) {
 
   static restriction_t const RESTRICTIONS[][ ARRAY_SIZE( C_TYPE_MAP ) ] = {
     /*               v b c w s i l s u f d */
-    /* void     */ { X,X,X,X,X,X,X,X,X,X,X },
-    /* bool     */ { X,K,X,X,X,X,X,X,X,X,X },
-    /* char     */ { X,X,_,X,X,X,X,_,_,X,X },
-    /* wchar_t  */ { X,X,X,_,X,X,X,X,X,X,X },
-    /* short    */ { X,X,X,X,X,_,X,_,_,X,X },
-    /* int      */ { X,X,X,X,_,X,_,_,_,X,X },
-    /* long     */ { X,X,X,X,X,_,X,_,_,X,_ },
-    /* signed   */ { X,X,_,X,_,_,_,X,X,X,X },
-    /* unsigned */ { X,X,_,X,_,_,_,X,X,X,X },
-    /* float    */ { X,X,X,X,X,X,X,X,X,X,X },
-    /* double   */ { X,X,X,X,X,X,_,X,X,X,X }
+    /* void     */ { _,_,_,_,_,_,_,_,_,_,_ },
+    /* bool     */ { X,_,_,_,_,_,_,_,_,_,_ },
+    /* char     */ { X,X,_,_,_,_,_,_,_,_,_ },
+    /* wchar_t  */ { X,X,X,K,_,_,_,_,_,_,_ },
+    /* short    */ { X,X,X,X,_,_,_,_,_,_,_ },
+    /* int      */ { X,X,X,X,_,_,_,_,_,_,_ },
+    /* long     */ { X,X,X,X,X,_,_,_,_,_,_ },
+    /* signed   */ { X,X,K,X,K,K,K,_,_,_,_ },
+    /* unsigned */ { X,X,_,X,_,_,_,X,_,_,_ },
+    /* float    */ { X,X,X,X,X,X,A,X,X,_,_ },
+    /* double   */ { X,X,X,X,X,X,K,X,X,X,_ }
   };
 
 #undef _
@@ -147,38 +157,27 @@ static void c_type_check( void ) {
 #undef K
 #undef A
 
-  /* Loop through the types */
-  /* (skip the "long" row) */
-  for ( size_t i = 1; i < ARRAY_SIZE( C_TYPE_MAP ); ++i ) {
-    /* if this type is in use */
-    if ((c_type_bits & C_TYPE_MAP[i].bit) != 0) {
-      /* check for other types also in use */
+  for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_MAP ); ++i ) {
+    if ( c_type_bits & C_TYPE_MAP[i].bit ) {
       for ( size_t j = 0; j < i; ++j ) {
-        /* this type is not in use */
-        if (!(c_type_bits & C_TYPE_MAP[j].bit))
-            continue;
-        /* check the type of restriction */
-        int restriction = RESTRICTIONS[i][j];
-        if (restriction == NONE)
-            continue;
-        char const *t1 = C_TYPE_MAP[i].name;
-        char const *t2 = C_TYPE_MAP[j].name;
-        if (restriction == NEVER) {
-          not_supported("", t1, t2);
-        }
-        else if (restriction == KNR) {
-          if ( opt_lang == LANG_C_KNR )
-            not_supported(" (Pre-ANSI Compiler)", t1, t2);
-        }
-        else if (restriction == ANSI) {
-          if ( opt_lang != LANG_C_KNR )
-            not_supported(" (ANSI Compiler)", t1, t2);
-        }
-        else {
-          fprintf (stderr,
-            "%s: Internal error in RESTRICTIONS[%zu,%zu]=%d!\n",
-            me, i, j, restriction);
-          exit(1);
+        if ( c_type_bits & C_TYPE_MAP[j].bit ) {
+          char const *const t1 = C_TYPE_MAP[i].name;
+          char const *const t2 = C_TYPE_MAP[j].name;
+          switch ( RESTRICTIONS[i][j] ) {
+            case NONE:
+              break;
+            case ANSI:
+              if ( opt_lang != LANG_C_KNR )
+                not_supported( " (ANSI Compiler)", t1, t2 );
+              break;
+            case KNR:
+              if ( opt_lang == LANG_C_KNR )
+                not_supported( " (Pre-ANSI Compiler)", t1, t2 );
+              break;
+            case NEVER:
+              not_supported( "", t1, t2 );
+              break;
+          } // switch
         }
       } // for
     }
@@ -414,18 +413,18 @@ void explain_declaration( char const *storage, char const *constvol1,
 
 static void print_help( void );
 
-/* Write out a message about something */
-/* being unsupported on a particular compiler. */
-static void not_supported( char const *compiler, char const *type1, char const *type2)
-{
-  if (type2)
-    fprintf(stderr,
+static void not_supported( char const *compiler, char const *type1,
+                           char const *type2 ) {
+  if ( type2 )
+    PRINT_ERR(
       "Warning: Unsupported in%s C%s -- '%s' with '%s'\n",
-      compiler, opt_lang == LANG_CXX ? "++" : "", type1, type2);
+      compiler, opt_lang == LANG_CXX ? "++" : "", type1, type2
+    );
   else
-    fprintf(stderr,
+    PRINT_ERR(
       "Warning: Unsupported in%s C%s -- '%s'\n",
-      compiler, opt_lang == LANG_CXX ? "++" : "", type1);
+      compiler, opt_lang == LANG_CXX ? "++" : "", type1
+    );
 }
 
 /* Write out a message about something */
@@ -1231,7 +1230,7 @@ c_type
       Debug((stderr, "c_type: mod_list tname\n"));
       Debug((stderr, "\tmod_list='%s'\n", $1));
       Debug((stderr, "\ttname='%s'\n", $2));
-      $$ = cat($1,strdup(" "),$2,NULL);
+      $$ = cat( $1, strdup(" "), $2, NULL );
     }
 
   | StrClaUniEnum T_NAME
@@ -1265,21 +1264,24 @@ tname
     {
       Debug((stderr, "tname: INT\n"));
       Debug((stderr, "\tINT='%s'\n", $1));
-      c_type_bits |= C_TYPE_INT; $$ = $1;
+      c_type_add( C_TYPE_INT );
+      $$ = $1;
     }
 
   | T_BOOL
     {
       Debug((stderr, "tname: BOOL\n"));
       Debug((stderr, "\tCHAR='%s'\n", $1));
-      c_type_bits |= C_TYPE_BOOL; $$ = $1;
+      c_type_add( C_TYPE_BOOL );
+      $$ = $1;
     }
 
   | T_CHAR
     {
       Debug((stderr, "tname: CHAR\n"));
       Debug((stderr, "\tCHAR='%s'\n", $1));
-      c_type_bits |= C_TYPE_CHAR; $$ = $1;
+      c_type_add( C_TYPE_CHAR );
+      $$ = $1;
     }
 
   | T_WCHAR_T
@@ -1289,7 +1291,7 @@ tname
       if ( opt_lang == LANG_C_KNR )
         not_supported(" (Pre-ANSI Compiler)", $1, NULL);
       else
-        c_type_bits |= C_TYPE_WCHAR_T;
+        c_type_add( C_TYPE_WCHAR_T );
       $$ = $1;
     }
 
@@ -1297,21 +1299,24 @@ tname
     {
       Debug((stderr, "tname: FLOAT\n"));
       Debug((stderr, "\tFLOAT='%s'\n", $1));
-      c_type_bits |= C_TYPE_FLOAT; $$ = $1;
+      c_type_add( C_TYPE_FLOAT );
+      $$ = $1;
     }
 
   | T_DOUBLE
     {
       Debug((stderr, "tname: DOUBLE\n"));
       Debug((stderr, "\tDOUBLE='%s'\n", $1));
-      c_type_bits |= C_TYPE_DOUBLE; $$ = $1;
+      c_type_add( C_TYPE_DOUBLE );
+      $$ = $1;
     }
 
   | T_VOID
     {
       Debug((stderr, "tname: VOID\n"));
       Debug((stderr, "\tVOID='%s'\n", $1));
-      c_type_bits |= C_TYPE_VOID; $$ = $1;
+      c_type_add( C_TYPE_VOID );
+      $$ = $1;
     }
   ;
 
@@ -1357,28 +1362,32 @@ modifier
     {
       Debug((stderr, "modifier: UNSIGNED\n"));
       Debug((stderr, "\tUNSIGNED='%s'\n", $1));
-      c_type_bits |= C_TYPE_UNSIGNED; $$ = $1;
+      c_type_add( C_TYPE_UNSIGNED );
+      $$ = $1;
     }
 
   | T_SIGNED
     {
       Debug((stderr, "modifier: SIGNED\n"));
       Debug((stderr, "\tSIGNED='%s'\n", $1));
-      c_type_bits |= C_TYPE_SIGNED; $$ = $1;
+      c_type_add( C_TYPE_SIGNED );
+      $$ = $1;
     }
 
   | T_LONG
     {
       Debug((stderr, "modifier: LONG\n"));
       Debug((stderr, "\tLONG='%s'\n", $1));
-      c_type_bits |= C_TYPE_LONG; $$ = $1;
+      c_type_add( C_TYPE_LONG );
+      $$ = $1;
     }
 
   | T_SHORT
     {
       Debug((stderr, "modifier: SHORT\n"));
       Debug((stderr, "\tSHORT='%s'\n", $1));
-      c_type_bits |= C_TYPE_SHORT; $$ = $1;
+      c_type_add( C_TYPE_SHORT );
+      $$ = $1;
     }
   ;
 
