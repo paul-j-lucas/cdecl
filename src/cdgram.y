@@ -92,6 +92,10 @@ static c_type_map_t const C_TYPE_MAP[] = {
   { "double",   C_TYPE_DOUBLE   }
 };
 
+char const            UNSUPP_ALL[]  = "";
+char const            UNSUPP_ANSI[] = " (ANSI Compiler)";
+char const            UNSUPP_KNR[]  = " (Pre-ANSI Compiler)";
+
 // local variables
 static bool           array_has_dim;
 static c_type_bits_t  c_type_bits;
@@ -168,14 +172,14 @@ static void c_type_check( void ) {
               break;
             case ANSI:
               if ( opt_lang != LANG_C_KNR )
-                not_supported( " (ANSI Compiler)", t1, t2 );
+                not_supported( UNSUPP_ANSI, t1, t2 );
               break;
             case KNR:
               if ( opt_lang == LANG_C_KNR )
-                not_supported( " (Pre-ANSI Compiler)", t1, t2 );
+                not_supported( UNSUPP_KNR, t1, t2 );
               break;
             case NEVER:
-              not_supported( "", t1, t2 );
+              not_supported( UNSUPP_ALL, t1, t2 );
               break;
           } // switch
         }
@@ -243,19 +247,19 @@ static void do_declare( char const *name, char const *storage,
   assert( type );
 
   if ( c_ident_kind == C_VOID )
-    unsupp("Variable of type void", "variable of type pointer to void");
+    unsupp( "Variable of type void", "variable of type pointer to void" );
 
   if ( *storage == CXX_REFERENCE ) {
     switch ( c_ident_kind ) {
       case C_FUNCTION:
-        unsupp("Register function", NULL);
+        unsupp( "Register function", NULL );
         break;
       case C_ARRAY_DIM:
       case C_ARRAY_NO_DIM:
-        unsupp("Register array", NULL);
+        unsupp( "Register array", NULL );
           break;
       case C_STRUCT:
-        unsupp("Register struct/class", NULL);
+        unsupp( "Register struct/class", NULL );
         break;
       default:
         /* suppress warning */;
@@ -270,7 +274,7 @@ static void do_declare( char const *name, char const *storage,
     name ? name : (c_ident_kind == C_FUNCTION) ? "f" : "var", right
   );
   if ( opt_make_c ) {
-    if ( (c_ident_kind == C_FUNCTION) && (*storage != 'e') )
+    if ( c_ident_kind == C_FUNCTION && (*storage != 'e') )
       printf( " { }\n" );
     else
       printf( ";\n" );
@@ -443,7 +447,7 @@ static void not_supported( char const *compiler, char const *type1,
 /* Write out a message about something */
 /* being unsupported, possibly with a hint. */
 static void unsupp( char const *s, char const *hint ) {
-  not_supported( "", s, NULL );
+  not_supported( UNSUPP_ALL, s, NULL );
   if ( hint )
     PRINT_ERR( "\t(maybe you mean \"%s\")\n", hint );
 }
@@ -514,119 +518,119 @@ int yywrap( void ) {
 
 %type   <dynstr> adecllist
 %type   <dynstr> array_dimension c_type cast cast_list cdecl cdecl1 cdims
-%type   <dynstr> constvol_list ClassStruct mod_list mod_list1 modifier
+%type   <dynstr> const_volatile_list class_or_struct mod_list mod_list1 modifier
 %type   <dynstr> opt_const_volatile_list opt_NAME opt_storage storage StrClaUniEnum
 %type   <dynstr> c_type_name type
 %type   <halves> adecl
 
-%start statement_list
+%start command_list
 
 %%
 
-statement_list
+command_list
   : /* empty */
-  | statement_list statement
+  | command_list command
     {
       c_ident_kind = 0;
     }
   ;
 
-statement
-  : T_HELP EOL
+command
+  : T_DECLARE T_NAME T_AS opt_storage adecl EOL
     {
-      YYTRACE( "statement: help\n" );
-      print_help();
-    }
-
-  | T_DECLARE T_NAME T_AS opt_storage adecl EOL
-    {
-      YYTRACE( "statement: DECLARE NAME AS opt_storage adecl\n" );
+      YYTRACE( "command: DECLARE NAME AS opt_storage adecl\n" );
       YYTRACE( "\tNAME='%s'\n", $2 );
       YYTRACE( "\topt_storage='%s'\n", $4 );
       YYTRACE( "\tacdecl.left='%s'\n", $5.left );
       YYTRACE( "\tacdecl.right='%s'\n", $5.right );
       YYTRACE( "\tacdecl.type='%s'\n", $5.type );
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
-      do_declare($2, $4, $5.left, $5.right, $5.type);
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
+      do_declare( $2, $4, $5.left, $5.right, $5.type );
     }
 
   | T_DECLARE opt_storage adecl EOL
     {
-      YYTRACE( "statement: DECLARE opt_storage adecl\n" );
+      YYTRACE( "command: DECLARE opt_storage adecl\n" );
       YYTRACE( "\topt_storage='%s'\n", $2 );
       YYTRACE( "\tacdecl.left='%s'\n", $3.left );
       YYTRACE( "\tacdecl.right='%s'\n", $3.right );
       YYTRACE( "\tacdecl.type='%s'\n", $3.type );
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
-      do_declare(NULL, $2, $3.left, $3.right, $3.type);
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
+      do_declare( NULL, $2, $3.left, $3.right, $3.type );
     }
 
   | T_CAST T_NAME T_INTO adecl EOL
     {
-      YYTRACE( "statement: CAST NAME AS adecl\n" );
+      YYTRACE( "command: CAST NAME AS adecl\n" );
       YYTRACE( "\tNAME='%s'\n", $2 );
       YYTRACE( "\tacdecl.left='%s'\n", $4.left );
       YYTRACE( "\tacdecl.right='%s'\n", $4.right );
       YYTRACE( "\tacdecl.type='%s'\n", $4.type );
-      do_cast($2, $4.left, $4.right, $4.type);
+      do_cast( $2, $4.left, $4.right, $4.type );
     }
 
   | T_CAST adecl EOL
     {
-      YYTRACE( "statement: CAST adecl\n" );
+      YYTRACE( "command: CAST adecl\n" );
       YYTRACE( "\tacdecl.left='%s'\n", $2.left );
       YYTRACE( "\tacdecl.right='%s'\n", $2.right );
       YYTRACE( "\tacdecl.type='%s'\n", $2.type );
-      do_cast(NULL, $2.left, $2.right, $2.type);
+      do_cast( NULL, $2.left, $2.right, $2.type );
     }
 
   | T_EXPLAIN opt_storage opt_const_volatile_list type opt_const_volatile_list cdecl EOL
     {
-      YYTRACE( "statement: EXPLAIN opt_storage opt_const_volatile_list type cdecl\n" );
+      YYTRACE( "command: EXPLAIN opt_storage opt_const_volatile_list type cdecl\n" );
       YYTRACE( "\topt_storage='%s'\n", $2 );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
       YYTRACE( "\ttype='%s'\n", $4 );
       YYTRACE( "\tcdecl='%s'\n", $6 );
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
-      explain_declaration($2, $3, $5, $4, $6);
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
+      explain_declaration( $2, $3, $5, $4, $6 );
     }
 
   | T_EXPLAIN storage opt_const_volatile_list cdecl EOL
     {
-      YYTRACE( "statement: EXPLAIN storage opt_const_volatile_list cdecl\n" );
+      YYTRACE( "command: EXPLAIN storage opt_const_volatile_list cdecl\n" );
       YYTRACE( "\tstorage='%s'\n", $2 );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
       YYTRACE( "\tcdecl='%s'\n", $4 );
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
-      explain_declaration($2, $3, NULL, NULL, $4);
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
+      explain_declaration( $2, $3, NULL, NULL, $4 );
     }
 
-  | T_EXPLAIN opt_storage constvol_list cdecl EOL
+  | T_EXPLAIN opt_storage const_volatile_list cdecl EOL
     {
-      YYTRACE( "statement: EXPLAIN opt_storage constvol_list cdecl\n" );
+      YYTRACE( "command: EXPLAIN opt_storage const_volatile_list cdecl\n" );
       YYTRACE( "\topt_storage='%s'\n", $2 );
-      YYTRACE( "\tconstvol_list='%s'\n", $3 );
+      YYTRACE( "\tconst_volatile_list='%s'\n", $3 );
       YYTRACE( "\tcdecl='%s'\n", $4 );
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
-      explain_declaration($2, $3, NULL, NULL, $4);
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
+      explain_declaration( $2, $3, NULL, NULL, $4 );
     }
 
   | T_EXPLAIN '(' opt_const_volatile_list type cast ')' opt_NAME EOL
     {
-      YYTRACE( "statement: EXPLAIN ( opt_const_volatile_list type cast ) opt_NAME\n" );
+      YYTRACE( "command: EXPLAIN ( opt_const_volatile_list type cast ) opt_NAME\n" );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
       YYTRACE( "\ttype='%s'\n", $4 );
       YYTRACE( "\tcast='%s'\n", $5 );
       YYTRACE( "\tNAME='%s'\n", $7 );
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
-      explain_cast($3, $4, $5, $7);
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
+      explain_cast( $3, $4, $5, $7 );
+    }
+
+  | T_HELP EOL
+    {
+      YYTRACE( "command: help\n" );
+      print_help();
     }
 
   | T_SET opt_NAME EOL
     {
-      YYTRACE( "statement: SET opt_NAME\n" );
+      YYTRACE( "command: SET opt_NAME\n" );
       YYTRACE( "\topt_NAME='%s'\n", $2 );
-      do_set($2);
+      do_set( $2 );
     }
 
   | EOL
@@ -671,7 +675,7 @@ cdecl
       YYTRACE( "\tcdecl='%s'\n", $3 );
       $$ = cat($3,$2,strdup(strlen($2)?" pointer to ":"pointer to "),NULL);
       c_ident_kind = C_POINTER;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | T_NAME T_DOUBLECOLON '*' cdecl
@@ -683,7 +687,7 @@ cdecl
         unsupp("pointer to member of class", NULL);
       $$ = cat($4,strdup("pointer to member of class "),$1,strdup(" "),NULL);
       c_ident_kind = C_POINTER;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | '&' opt_const_volatile_list cdecl
@@ -695,7 +699,7 @@ cdecl
         unsupp("reference", NULL);
       $$ = cat($3,$2,strdup(strlen($2)?" reference to ":"reference to "),NULL);
       c_ident_kind = CXX_REFERENCE;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
   ;
 
@@ -706,7 +710,7 @@ cdecl1
       YYTRACE( "\tcdecl1='%s'\n", $1 );
       $$ = cat($1,strdup("function returning "),NULL);
       c_ident_kind = C_FUNCTION;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | '(' '^' opt_const_volatile_list cdecl ')' '(' ')'
@@ -742,7 +746,7 @@ cdecl1
       $$ = cat($1, strdup("function ("),
           $3, strdup(") returning "), NULL);
       c_ident_kind = C_FUNCTION;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | cdecl1 cdims
@@ -752,7 +756,7 @@ cdecl1
       YYTRACE( "\tcdims='%s'\n", $2 );
       $$ = cat($1,strdup("array "),$2,NULL);
       c_ident_kind = 'a';
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | '(' cdecl ')'
@@ -760,7 +764,7 @@ cdecl1
       YYTRACE( "cdecl1: (cdecl)\n" );
       YYTRACE( "\tcdecl='%s'\n", $2 );
       $$ = $2;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | T_NAME
@@ -770,7 +774,7 @@ cdecl1
       c_ident = $1;
       $$ = strdup("");
       c_ident_kind = C_NAME;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
   ;
 
@@ -846,7 +850,7 @@ cast
       YYTRACE( "cast: EMPTY\n" );
       $$ = strdup("");
       /* c_ident_kind = c_ident_kind; */
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | '(' ')'
@@ -854,7 +858,7 @@ cast
       YYTRACE( "cast: ()\n" );
       $$ = strdup("function returning ");
       c_ident_kind = C_FUNCTION;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | '(' cast ')' '(' ')'
@@ -863,7 +867,7 @@ cast
       YYTRACE( "\tcast='%s'\n", $2 );
       $$ = cat($2,strdup("function returning "),NULL);
       c_ident_kind = C_FUNCTION;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | '(' cast ')' '(' cast_list ')'
@@ -873,7 +877,7 @@ cast
       YYTRACE( "\tcast_list='%s'\n", $5 );
       $$ = cat($2,strdup("function ("),$5,strdup(") returning "),NULL);
       c_ident_kind = C_FUNCTION;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | '(' '^' cast ')' '(' ')'
@@ -882,7 +886,7 @@ cast
       YYTRACE( "\tcast='%s'\n", $3 );
       $$ = cat($3,strdup("block returning "),NULL);
       c_ident_kind = C_BLOCK;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | '(' '^' cast ')' '(' cast_list ')'
@@ -891,7 +895,7 @@ cast
       YYTRACE( "\tcast='%s'\n", $3 );
       $$ = cat($3,strdup("block ("), $6, strdup(") returning "),NULL);
       c_ident_kind = C_BLOCK;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | '(' cast ')'
@@ -900,7 +904,7 @@ cast
       YYTRACE( "\tcast='%s'\n", $2 );
       $$ = $2;
       /* c_ident_kind = c_ident_kind; */
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | T_NAME T_DOUBLECOLON '*' cast
@@ -911,7 +915,7 @@ cast
         unsupp("pointer to member of class", NULL);
       $$ = cat($4,strdup("pointer to member of class "),$1,strdup(" "),NULL);
       c_ident_kind = C_POINTER;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | '*' cast
@@ -920,7 +924,7 @@ cast
       YYTRACE( "\tcast='%s'\n", $2 );
       $$ = cat($2,strdup("pointer to "),NULL);
       c_ident_kind = C_POINTER;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | '&' cast
@@ -931,7 +935,7 @@ cast
         unsupp("reference", NULL);
       $$ = cat($2,strdup("reference to "),NULL);
       c_ident_kind = CXX_REFERENCE;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | cast cdims
@@ -941,7 +945,7 @@ cast
       YYTRACE( "\tcdims='%s'\n", $2 );
       $$ = cat($1,strdup("array "),$2,NULL);
       c_ident_kind = C_ARRAY_NO_DIM;
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
   ;
 
@@ -981,7 +985,7 @@ adecl
       YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
       YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
       YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | T_FUNCTION '(' adecllist ')' T_RETURNING adecl
@@ -1005,7 +1009,7 @@ adecl
       YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
       YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
       YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | opt_const_volatile_list T_BLOCK T_RETURNING adecl
@@ -1074,7 +1078,7 @@ adecl
       YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
       YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
       YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | opt_const_volatile_list T_POINTER T_TO adecl
@@ -1103,16 +1107,16 @@ adecl
       YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
       YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
       YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
-  | opt_const_volatile_list T_POINTER T_TO T_MEMBER T_OF ClassStruct T_NAME adecl
+  | opt_const_volatile_list T_POINTER T_TO T_MEMBER T_OF class_or_struct T_NAME adecl
     {
       char const *op = "", *cp = "", *sp = "";
 
-      YYTRACE( "adecl: opt_const_volatile_list POINTER TO MEMBER OF ClassStruct NAME adecl\n" );
+      YYTRACE( "adecl: opt_const_volatile_list POINTER TO MEMBER OF class_or_struct NAME adecl\n" );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\tClassStruct='%s'\n", $6 );
+      YYTRACE( "\tclass_or_struct='%s'\n", $6 );
       YYTRACE( "\tNAME='%s'\n", $7 );
       YYTRACE( "\tadecl.left='%s'\n", $8.left );
       YYTRACE( "\tadecl.right='%s'\n", $8.right );
@@ -1136,7 +1140,7 @@ adecl
       YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
       YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
       YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | opt_const_volatile_list T_REFERENCE T_TO adecl
@@ -1171,7 +1175,7 @@ adecl
       YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
       YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
       YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
 
   | opt_const_volatile_list type
@@ -1193,7 +1197,7 @@ adecl
       YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
       YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
       YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
+      YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind)  ); 
     }
   ;
 
@@ -1266,7 +1270,7 @@ c_type
   ;
 
 StrClaUniEnum
-  : ClassStruct
+  : class_or_struct
   | T_ENUM
   | T_UNION
     {
@@ -1274,7 +1278,7 @@ StrClaUniEnum
     }
   ;
 
-ClassStruct
+class_or_struct
   : T_STRUCT
   | T_CLASS
     {
@@ -1312,7 +1316,7 @@ c_type_name
       YYTRACE( "c_type_name: WCHAR_T\n" );
       YYTRACE( "\tCHAR='%s'\n", $1 );
       if ( opt_lang == LANG_C_KNR )
-        not_supported(" (Pre-ANSI Compiler)", $1, NULL);
+        not_supported( UNSUPP_KNR, $1, NULL );
       else
         c_type_add( C_TYPE_WCHAR_T );
       $$ = $1;
@@ -1373,7 +1377,7 @@ mod_list1
       YYTRACE( "mod_list1: CONST_VOLATILE\n" );
       YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
       if ( opt_lang == LANG_C_KNR )
-        not_supported( " (Pre-ANSI Compiler)", $1, NULL );
+        not_supported( UNSUPP_KNR, $1, NULL );
       else if ((strcmp($1, "noalias") == 0) && opt_lang == LANG_CXX)
         unsupp($1, NULL);
       $$ = $1;
@@ -1420,11 +1424,11 @@ opt_const_volatile_list
       YYTRACE( "opt_const_volatile_list: CONST_VOLATILE opt_const_volatile_list\n" );
       YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
-      if (opt_lang == LANG_C_KNR)
-        not_supported(" (Pre-ANSI Compiler)", $1, NULL);
-      else if ((strcmp($1, "noalias") == 0) && opt_lang == LANG_CXX)
-        unsupp($1, NULL);
-      $$ = cat($1,strdup(strlen($2) ? " " : ""),$2,NULL);
+      if ( opt_lang == LANG_C_KNR )
+        not_supported( UNSUPP_KNR, $1, NULL );
+      else if ( strcmp($1, "noalias") == 0 && opt_lang == LANG_CXX )
+        unsupp( $1, NULL );
+      $$ = cat( $1, strdup( strlen($2) ? " " : "" ), $2, NULL );
     }
 
   | /* empty */
@@ -1434,17 +1438,17 @@ opt_const_volatile_list
     }
   ;
 
-constvol_list
+const_volatile_list
   : T_CONST_VOLATILE opt_const_volatile_list
     {
-      YYTRACE( "constvol_list: CONST_VOLATILE opt_const_volatile_list\n" );
+      YYTRACE( "const_volatile_list: CONST_VOLATILE opt_const_volatile_list\n" );
       YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
-      if (opt_lang == LANG_C_KNR)
-        not_supported(" (Pre-ANSI Compiler)", $1, NULL);
-      else if ((strcmp($1, "noalias") == 0) && opt_lang == LANG_CXX)
+      if ( opt_lang == LANG_C_KNR )
+        not_supported( UNSUPP_KNR, $1, NULL );
+      else if ( strcmp( $1, "noalias" ) == 0 && opt_lang == LANG_CXX )
         unsupp($1, NULL);
-      $$ = cat($1,strdup(strlen($2) ? " " : ""),$2,NULL);
+      $$ = cat( $1, strdup( strlen( $2 ) ? " " : "" ), $2, NULL );
     }
   ;
 
