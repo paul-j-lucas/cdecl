@@ -1,8 +1,8 @@
 %{
 /*
- *    cdecl -- C gibberish translator
- *    src/cdlex.l
- */
+**    cdecl -- C gibberish translator
+**    src/cdlex.l
+*/
 
 // local
 #include "config.h"
