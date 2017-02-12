@@ -58,15 +58,13 @@ static char*        readline_wrapper( void );
 ///////////////////////////////////////////////////////////////////////////////
 
 char *cat(char const *, ...);
+
 void c_type_check(void);
 void print_prompt(void);
-void doprompt(void), noprompt(void);
-void unsupp(char const*, char const*);
+void doprompt(void);
+void noprompt(void);
 void notsupported(char const *, char const *, char const *);
-void doset(char const *);
-void dodeclare(char*, char*, char*, char*, char*);
-void dodexplain(char*, char*, char*, char*, char*);
-void docexplain(char*, char*, char*, char*);
+void do_set(char const *);
 
 /* variables used during parsing */
 unsigned modbits = 0;
@@ -84,9 +82,6 @@ char prev = 0;    /* the current type of the variable being examined */
                   /*  v void           */
                   /*  s struct | class         */
                   /*  t simple type (int, long, etc.)    */
-
-/* options */
-bool MkProgramFlag;                     // -c, output {} and ; after declarations
 
 #if dodebug
 bool DebugFlag = 0;    /* -d, output debugging trace info */
@@ -215,12 +210,6 @@ void c_type_check() {
 
 /* Write out a message about something */
 /* being unsupported, possibly with a hint. */
-void unsupp( char const *s, char const *hint ) {
-  notsupported("", s, NULL);
-  if (hint)
-    fprintf( stderr, "\t(maybe you mean \"%s\")\n", hint );
-}
-
 /* Write out a message about something */
 /* being unsupported on a particular compiler. */
 void notsupported( char const *compiler, char const *type1, char const *type2)
@@ -276,97 +265,12 @@ void print_prompt() {
 #endif
 }
 
-/* print out a declaration */
-void dodeclare(name, storage, left, right, type)
-char *name, *storage, *left, *right, *type;
-{
-  if (prev == 'v')
-    unsupp("Variable of type void", "variable of type pointer to void");
-
-  if (*storage == 'r') {
-    switch (prev) {
-      case 'f': unsupp("Register function", NULL); break;
-      case 'A':
-      case 'a': unsupp("Register array", NULL); break;
-      case 's': unsupp("Register struct/class", NULL); break;
-    } // switch
-  }
-
-  if ( *storage )
-    printf( "%s ", storage );
-
-  printf(
-    "%s %s%s%s", type, left,
-    name ? name : (prev == 'f') ? "f" : "var", right
-  );
-  if ( MkProgramFlag ) {
-    if ( (prev == 'f') && (*storage != 'e') )
-      printf( " { }\n" );
-    else
-      printf( ";\n" );
-  } else {
-    printf( "\n" );
-  }
-  free( storage );
-  free( left );
-  free( right );
-  free( type );
-  if ( name )
-    free( name );
-}
-
-void dodexplain(storage, constvol1, constvol2, type, decl)
-  char *storage, *constvol1, *constvol2, *type, *decl;
-{
-  if (type && (strcmp(type, "void") == 0)) {
-    if (prev == 'n')
-      unsupp("Variable of type void", "variable of type pointer to void");
-    else if (prev == 'a')
-      unsupp("array of type void", "array of type pointer to void");
-    else if (prev == 'r')
-      unsupp("reference to type void", "pointer to void");
-  }
-
-  if (*storage == 'r')
-    switch (prev) {
-      case 'f': unsupp("Register function", NULL); break;
-      case 'A':
-      case 'a': unsupp("Register array", NULL); break;
-      case 's': unsupp("Register struct/union/enum/class", NULL); break;
-    } // switch
-
-  printf( "declare %s as ", savedname );
-  if ( *storage )
-    printf( "%s ", storage );
-  printf( "%s", decl );
-  if ( *constvol1 )
-    printf( "%s ", constvol1 );
-  if ( *constvol2 )
-    printf( "%s ", constvol2 );
-  printf( "%s\n", type ? type : "int" );
-}
-
-void docexplain(constvol, type, cast, name)
-char *constvol, *type, *cast, *name;
-{
-  if (strcmp(type, "void") == 0) {
-    if (prev == 'a')
-      unsupp("array of type void", "array of type pointer to void");
-    else if (prev == 'r')
-      unsupp("reference to type void", "pointer to void");
-  }
-  printf( "cast %s into %s", name, cast );
-  if ( strlen( constvol ) > 0 )
-    printf( "%s ", constvol );
-  printf( "%s\n", type );
-}
-
 /* Do the appropriate things for the "set" command. */
-void doset( char const *opt ) {
+void do_set( char const *opt ) {
   if (strcmp(opt, "create") == 0)
-    { MkProgramFlag = 1; }
+    { opt_make_c = true; }
   else if (strcmp(opt, "nocreate") == 0)
-    { MkProgramFlag = 0; }
+    { opt_make_c = false; }
   else if (strcmp(opt, "prompt") == 0)
     { prompting = 1; prompt_ptr = prompt_buf; }
   else if (strcmp(opt, "noprompt") == 0)
@@ -420,7 +324,7 @@ void doset( char const *opt ) {
 #endif /* doyydebug */
 
     printf("\nCurrent set values are:\n");
-    printf("\t%screate\n", MkProgramFlag ? "   " : " no");
+    printf("\t%screate\n", opt_make_c ? "   " : " no");
     printf("\t%sprompt\n", prompt_ptr[0] ? "   " : " no");
     printf("\t%sinteractive\n", (is_tty || opt_interactive) ? "   " : " no");
     if (opt_lang == LANG_C_KNR)

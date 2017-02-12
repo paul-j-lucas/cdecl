@@ -27,6 +27,7 @@ char const         *opt_fin;
 char const         *opt_fout;
 bool                opt_interactive;
 lang_t              opt_lang;
+bool                opt_make_c;
 bool                opt_quiet;
 
 // other extern variables
@@ -41,7 +42,7 @@ static void         usage( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static char const SHORT_OPTS[] = "aipqvx:";
+static char const SHORT_OPTS[] = "acipqvx:";
 
 static struct option const LONG_OPTS[] = {
   { "language",     required_argument,  NULL, 'x' },
@@ -153,6 +154,7 @@ static void parse_options( int argc, char const *argv[] ) {
     SET_OPTION( opt );
     switch ( opt ) {
       case 'a': opt_lang              = LANG_C_ANSI;          break;
+      case 'c': opt_make_c            = true;                 break;
       case 'i': opt_interactive       = true;                 break;
       case 'p': opt_lang              = LANG_C_KNR;           break;
       case '1': opt_quiet             = true;                 break;

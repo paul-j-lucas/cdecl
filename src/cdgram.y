@@ -34,8 +34,15 @@ extern char*  cat();
 extern void   c_type_check( void );
 extern int    yylex( void );
 
+// local functions
+static void   unsupp( char const*, char const* );
+
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * TODO
+ *
+ */
 static void do_cast( char const *name, char const *left, char const *right,
                      char const *type ) {
 	assert( left );
@@ -60,7 +67,114 @@ static void do_cast( char const *name, char const *left, char const *right,
     free( (void*)name );
 }
 
+/* print out a declaration */
+static void do_declare( char const *name, char const *storage,
+                        char const *left, char const *right,
+                        char const *type ) {
+  assert( storage );
+  assert( left );
+  assert( right );
+  assert( type );
+
+  if (prev == 'v')
+    unsupp("Variable of type void", "variable of type pointer to void");
+
+  if (*storage == 'r') {
+    switch (prev) {
+      case 'f': unsupp("Register function", NULL); break;
+      case 'A':
+      case 'a': unsupp("Register array", NULL); break;
+      case 's': unsupp("Register struct/class", NULL); break;
+    } // switch
+  }
+
+  if ( *storage )
+    printf( "%s ", storage );
+
+  printf(
+    "%s %s%s%s", type, left,
+    name ? name : (prev == 'f') ? "f" : "var", right
+  );
+  if ( opt_make_c ) {
+    if ( (prev == 'f') && (*storage != 'e') )
+      printf( " { }\n" );
+    else
+      printf( ";\n" );
+  } else {
+    printf( "\n" );
+  }
+
+  free( (void*)storage );
+  free( (void*)left );
+  free( (void*)right );
+  free( (void*)type );
+  if ( name )
+    free( (void*)name );
+}
+
+static void explain_cast( char const *constvol, char const *type,
+                          char const *cast, char const *name ) {
+  assert( constvol );
+  assert( type );
+  assert( cast );
+  assert( name );
+
+  if ( strcmp( type, "void" ) == 0 ) {
+    if ( prev == 'a' )
+      unsupp("array of type void", "array of type pointer to void");
+    else if ( prev == 'r' )
+      unsupp( "reference to type void", "pointer to void" );
+  }
+  printf( "cast %s into %s", name, cast );
+  if ( strlen( constvol ) > 0 )
+    printf( "%s ", constvol );
+  printf( "%s\n", type );
+}
+
+void explain_declaration( char const *storage, char const *constvol1,
+                          char const *constvol2, char const *type,
+                          char const *decl ) {
+  assert( storage );
+  assert( constvol1 );
+  assert( constvol2 );
+  assert( decl );
+
+  if ( type && strcmp( type, "void" ) == 0 ) {
+    if (prev == 'n')
+      unsupp("Variable of type void", "variable of type pointer to void");
+    else if ( prev == 'a' )
+      unsupp("array of type void", "array of type pointer to void");
+    else if ( prev == 'r' )
+      unsupp("reference to type void", "pointer to void");
+  }
+
+  if ( *storage == 'r' ) {
+    switch ( prev ) {
+      case 'f': unsupp("Register function", NULL); break;
+      case 'A':
+      case 'a': unsupp("Register array", NULL); break;
+      case 's': unsupp("Register struct/union/enum/class", NULL); break;
+    } // switch
+  }
+
+  printf( "declare %s as ", savedname );
+  if ( *storage )
+    printf( "%s ", storage );
+  printf( "%s", decl );
+  if ( *constvol1 )
+    printf( "%s ", constvol1 );
+  if ( *constvol2 )
+    printf( "%s ", constvol2 );
+  printf( "%s\n", type ? type : "int" );
+}
+
 static void print_help( void );
+
+static void unsupp( char const *s, char const *hint ) {
+  notsupported( "", s, NULL );
+  if ( hint )
+    PRINT_ERR( "\t(maybe you mean \"%s\")\n", hint );
+}
 
 static void yyerror( char const *s ) {
   PRINT_ERR( "%s\n", s );
@@ -153,7 +267,7 @@ stmt
       Debug((stderr, "\tacdecl.right='%s'\n", $5.right));
       Debug((stderr, "\tacdecl.type='%s'\n", $5.type));
       Debug((stderr, "\tprev = '%s'\n", visible(prev)));
-      dodeclare($2, $4, $5.left, $5.right, $5.type);
+      do_declare($2, $4, $5.left, $5.right, $5.type);
     }
 
   | T_DECLARE opt_storage adecl NL
@@ -164,7 +278,7 @@ stmt
       Debug((stderr, "\tacdecl.right='%s'\n", $3.right));
       Debug((stderr, "\tacdecl.type='%s'\n", $3.type));
       Debug((stderr, "\tprev = '%s'\n", visible(prev)));
-      dodeclare(NULL, $2, $3.left, $3.right, $3.type);
+      do_declare(NULL, $2, $3.left, $3.right, $3.type);
     }
 
   | T_CAST T_NAME T_INTO adecl NL
@@ -194,7 +308,7 @@ stmt
       Debug((stderr, "\ttype='%s'\n", $4));
       Debug((stderr, "\tcdecl='%s'\n", $6));
       Debug((stderr, "\tprev = '%s'\n", visible(prev)));
-      dodexplain($2, $3, $5, $4, $6);
+      explain_declaration($2, $3, $5, $4, $6);
     }
 
   | T_EXPLAIN storage opt_constvol_list cdecl NL
@@ -204,7 +318,7 @@ stmt
       Debug((stderr, "\topt_constvol_list='%s'\n", $3));
       Debug((stderr, "\tcdecl='%s'\n", $4));
       Debug((stderr, "\tprev = '%s'\n", visible(prev)));
-      dodexplain($2, $3, NULL, NULL, $4);
+      explain_declaration($2, $3, NULL, NULL, $4);
     }
 
   | T_EXPLAIN opt_storage constvol_list cdecl NL
@@ -214,7 +328,7 @@ stmt
       Debug((stderr, "\tconstvol_list='%s'\n", $3));
       Debug((stderr, "\tcdecl='%s'\n", $4));
       Debug((stderr, "\tprev = '%s'\n", visible(prev)));
-      dodexplain($2, $3, NULL, NULL, $4);
+      explain_declaration($2, $3, NULL, NULL, $4);
     }
 
   | T_EXPLAIN '(' opt_constvol_list type cast ')' optNAME NL
@@ -225,14 +339,14 @@ stmt
       Debug((stderr, "\tcast='%s'\n", $5));
       Debug((stderr, "\tNAME='%s'\n", $7));
       Debug((stderr, "\tprev = '%s'\n", visible(prev)));
-      docexplain($3, $4, $5, $7);
+      explain_cast($3, $4, $5, $7);
     }
 
   | T_SET optNAME NL
     {
       Debug((stderr, "stmt: SET optNAME\n"));
       Debug((stderr, "\toptNAME='%s'\n", $2));
-      doset($2);
+      do_set($2);
     }
 
   | NL
