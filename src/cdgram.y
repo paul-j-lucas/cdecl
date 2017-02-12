@@ -41,7 +41,7 @@ enum c_ident_kind {
   C_NONE          = '0',
   C_ARRAY_NO_DIM  = 'a',
   C_ARRAY_DIM     = 'A',
-  C_BLOCK         = '^',                // Apple
+  C_BLOCK         = '^',                // Apple extension
   C_BUILTIN       = 't',                // char, int, etc.
   C_FUNCTION      = 'f',
   C_NAME          = 'n',
@@ -464,7 +464,7 @@ int yywrap( void ) {
 
 %token  T_ARRAY
 %token  T_AS
-%token  T_BLOCK
+%token  T_BLOCK                         /* Apple extension */
 %token  T_CAST
 %token  T_COMMA
 %token  T_DECLARE
@@ -481,47 +481,56 @@ int yywrap( void ) {
 %token  T_SET
 %token  T_TO
 
-%token  <dynstr> T_VOID
+%token  <dynstr> T_AUTO
 %token  <dynstr> T_BOOL
 %token  <dynstr> T_CHAR
-%token  <dynstr> T_WCHAR_T
-%token  <dynstr> T_SHORT T_INT T_LONG T_FLOAT T_DOUBLE
-%token  <dynstr> T_SIGNED
-%token  <dynstr> T_UNSIGNED
 %token  <dynstr> T_CLASS
 %token  <dynstr> T_CONST_VOLATILE
+%token  <dynstr> T_DOUBLE
 %token  <dynstr> T_ENUM
+%token  <dynstr> T_EXTERN
+%token  <dynstr> T_FLOAT
+%token  <dynstr> T_INT
+%token  <dynstr> T_LONG
 %token  <dynstr> T_NAME
-%token  <dynstr> T_STRUCT T_UNION
 %token  <dynstr> T_NUMBER
+%token  <dynstr> T_REGISTER
+%token  <dynstr> T_SHORT
+%token  <dynstr> T_SIGNED
+%token  <dynstr> T_STATIC
+%token  <dynstr> T_STRUCT
+%token  <dynstr> T_UNION
+%token  <dynstr> T_UNSIGNED
+%token  <dynstr> T_VOID
+%token  <dynstr> T_WCHAR_T
 
-%token  <dynstr> T_AUTO T_EXTERN T_REGISTER T_STATIC
-%type   <dynstr> adecllist adims c_type cast castlist cdecl cdecl1 cdims
+%type   <dynstr> adecllist
+%type   <dynstr> array_dimension c_type cast cast_list cdecl cdecl1 cdims
 %type   <dynstr> constvol_list ClassStruct mod_list mod_list1 modifier
-%type   <dynstr> opt_constvol_list optNAME opt_storage storage StrClaUniEnum
+%type   <dynstr> opt_constvol_list opt_NAME opt_storage storage StrClaUniEnum
 %type   <dynstr> c_type_name type
 %type   <halves> adecl
 
-%start prog
+%start statement_list
 
 %%
 
-prog
+statement_list
   : /* empty */
-  | prog statement
+  | statement_list statement
     {
       c_ident_kind = 0;
     }
   ;
 
 statement
-  : T_HELP NL
+  : T_HELP EOL
     {
       YYTRACE( "statement: help\n" );
       print_help();
     }
 
-  | T_DECLARE T_NAME T_AS opt_storage adecl NL
+  | T_DECLARE T_NAME T_AS opt_storage adecl EOL
     {
       YYTRACE( "statement: DECLARE NAME AS opt_storage adecl\n" );
       YYTRACE( "\tNAME='%s'\n", $2 );
@@ -533,7 +542,7 @@ statement
       do_declare($2, $4, $5.left, $5.right, $5.type);
     }
 
-  | T_DECLARE opt_storage adecl NL
+  | T_DECLARE opt_storage adecl EOL
     {
       YYTRACE( "statement: DECLARE opt_storage adecl\n" );
       YYTRACE( "\topt_storage='%s'\n", $2 );
@@ -544,7 +553,7 @@ statement
       do_declare(NULL, $2, $3.left, $3.right, $3.type);
     }
 
-  | T_CAST T_NAME T_INTO adecl NL
+  | T_CAST T_NAME T_INTO adecl EOL
     {
       YYTRACE( "statement: CAST NAME AS adecl\n" );
       YYTRACE( "\tNAME='%s'\n", $2 );
@@ -554,7 +563,7 @@ statement
       do_cast($2, $4.left, $4.right, $4.type);
     }
 
-  | T_CAST adecl NL
+  | T_CAST adecl EOL
     {
       YYTRACE( "statement: CAST adecl\n" );
       YYTRACE( "\tacdecl.left='%s'\n", $2.left );
@@ -563,7 +572,7 @@ statement
       do_cast(NULL, $2.left, $2.right, $2.type);
     }
 
-  | T_EXPLAIN opt_storage opt_constvol_list type opt_constvol_list cdecl NL
+  | T_EXPLAIN opt_storage opt_constvol_list type opt_constvol_list cdecl EOL
     {
       YYTRACE( "statement: EXPLAIN opt_storage opt_constvol_list type cdecl\n" );
       YYTRACE( "\topt_storage='%s'\n", $2 );
@@ -574,7 +583,7 @@ statement
       explain_declaration($2, $3, $5, $4, $6);
     }
 
-  | T_EXPLAIN storage opt_constvol_list cdecl NL
+  | T_EXPLAIN storage opt_constvol_list cdecl EOL
     {
       YYTRACE( "statement: EXPLAIN storage opt_constvol_list cdecl\n" );
       YYTRACE( "\tstorage='%s'\n", $2 );
@@ -584,7 +593,7 @@ statement
       explain_declaration($2, $3, NULL, NULL, $4);
     }
 
-  | T_EXPLAIN opt_storage constvol_list cdecl NL
+  | T_EXPLAIN opt_storage constvol_list cdecl EOL
     {
       YYTRACE( "statement: EXPLAIN opt_storage constvol_list cdecl\n" );
       YYTRACE( "\topt_storage='%s'\n", $2 );
@@ -594,9 +603,9 @@ statement
       explain_declaration($2, $3, NULL, NULL, $4);
     }
 
-  | T_EXPLAIN '(' opt_constvol_list type cast ')' optNAME NL
+  | T_EXPLAIN '(' opt_constvol_list type cast ')' opt_NAME EOL
     {
-      YYTRACE( "statement: EXPLAIN ( opt_constvol_list type cast ) optNAME\n" );
+      YYTRACE( "statement: EXPLAIN ( opt_constvol_list type cast ) opt_NAME\n" );
       YYTRACE( "\topt_constvol_list='%s'\n", $3 );
       YYTRACE( "\ttype='%s'\n", $4 );
       YYTRACE( "\tcast='%s'\n", $5 );
@@ -605,21 +614,21 @@ statement
       explain_cast($3, $4, $5, $7);
     }
 
-  | T_SET optNAME NL
+  | T_SET opt_NAME EOL
     {
-      YYTRACE( "statement: SET optNAME\n" );
-      YYTRACE( "\toptNAME='%s'\n", $2 );
+      YYTRACE( "statement: SET opt_NAME\n" );
+      YYTRACE( "\topt_NAME='%s'\n", $2 );
       do_set($2);
     }
 
-  | NL
-  | error NL
+  | EOL
+  | error EOL
     {
       yyerrok;
     }
   ;
 
-NL
+EOL
   : '\n'
     {
       prompting = true;
@@ -630,18 +639,18 @@ NL
     }
   ;
 
-optNAME
+opt_NAME
   : T_NAME
     {
-      YYTRACE( "optNAME: NAME\n" );
+      YYTRACE( "opt_NAME: NAME\n" );
       YYTRACE( "\tNAME='%s'\n", $1 );
       $$ = $1;
     }
 
   | /* empty */
     {
-      YYTRACE( "optNAME: EMPTY\n" );
-      $$ = strdup(unknown_name);
+      YYTRACE( "opt_NAME: EMPTY\n" );
+      $$ = strdup( unknown_name );
     }
   ;
 
@@ -704,24 +713,24 @@ cdecl1
       c_ident_kind = C_BLOCK;
     }
 
-  | '(' '^' opt_constvol_list cdecl ')' '(' castlist ')'
+  | '(' '^' opt_constvol_list cdecl ')' '(' cast_list ')'
     {
       char const *sp = "";
-      YYTRACE( "cdecl1: (^ opt_constvol_list cdecl)( castlist )\n" );
+      YYTRACE( "cdecl1: (^ opt_constvol_list cdecl)( cast_list )\n" );
       YYTRACE( "\topt_constvol_list='%s'\n", $3 );
       YYTRACE( "\tcdecl='%s'\n", $4 );
-      YYTRACE( "\tcastlist='%s'\n", $7 );
+      YYTRACE( "\tcast_list='%s'\n", $7 );
       if (strlen($3) > 0)
         sp = " ";
       $$ = cat($4, $3, strdup(sp), strdup("block ("), $7, strdup(") returning "), NULL);
       c_ident_kind = C_BLOCK;
     }
 
-  | cdecl1 '(' castlist ')'
+  | cdecl1 '(' cast_list ')'
     {
-      YYTRACE( "cdecl1: cdecl1(castlist)\n" );
+      YYTRACE( "cdecl1: cdecl1(cast_list)\n" );
       YYTRACE( "\tcdecl1='%s'\n", $1 );
-      YYTRACE( "\tcastlist='%s'\n", $3 );
+      YYTRACE( "\tcast_list='%s'\n", $3 );
       $$ = cat($1, strdup("function ("),
           $3, strdup(") returning "), NULL);
       c_ident_kind = C_FUNCTION;
@@ -757,18 +766,18 @@ cdecl1
     }
   ;
 
-castlist
-  : castlist T_COMMA castlist
+cast_list
+  : cast_list T_COMMA cast_list
     {
-      YYTRACE( "castlist: castlist1, castlist2\n" );
-      YYTRACE( "\tcastlist1='%s'\n", $1 );
-      YYTRACE( "\tcastlist2='%s'\n", $3 );
+      YYTRACE( "cast_list: cast_list1, cast_list2\n" );
+      YYTRACE( "\tcast_list1='%s'\n", $1 );
+      YYTRACE( "\tcast_list2='%s'\n", $3 );
       $$ = cat($1, strdup(", "), $3, NULL);
     }
 
   | opt_constvol_list type cast
     {
-      YYTRACE( "castlist: opt_constvol_list type cast\n" );
+      YYTRACE( "cast_list: opt_constvol_list type cast\n" );
       YYTRACE( "\topt_constvol_list='%s'\n", $1 );
       YYTRACE( "\ttype='%s'\n", $2 );
       YYTRACE( "\tcast='%s'\n", $3 );
@@ -849,11 +858,11 @@ cast
       YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
-  | '(' cast ')' '(' castlist ')'
+  | '(' cast ')' '(' cast_list ')'
     {
-      YYTRACE( "cast: (cast)(castlist)\n" );
+      YYTRACE( "cast: (cast)(cast_list)\n" );
       YYTRACE( "\tcast='%s'\n", $2 );
-      YYTRACE( "\tcastlist='%s'\n", $5 );
+      YYTRACE( "\tcast_list='%s'\n", $5 );
       $$ = cat($2,strdup("function ("),$5,strdup(") returning "),NULL);
       c_ident_kind = C_FUNCTION;
       YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
@@ -868,9 +877,9 @@ cast
       YYTRACE( "\tprev = '%s'\n", visible(c_ident_kind) );
     }
 
-  | '(' '^' cast ')' '(' castlist ')'
+  | '(' '^' cast ')' '(' cast_list ')'
     {
-      YYTRACE( "cast: (^ cast)(castlist)\n" );
+      YYTRACE( "cast: (^ cast)(cast_list)\n" );
       YYTRACE( "\tcast='%s'\n", $3 );
       $$ = cat($3,strdup("block ("), $6, strdup(") returning "),NULL);
       c_ident_kind = C_BLOCK;
@@ -1036,10 +1045,10 @@ adecl
       c_ident_kind = C_BLOCK;
     }
 
-  | T_ARRAY adims T_OF adecl
+  | T_ARRAY array_dimension T_OF adecl
     {
-      YYTRACE( "adecl: ARRAY adims OF adecl\n" );
-      YYTRACE( "\tadims='%s'\n", $2 );
+      YYTRACE( "adecl: ARRAY array_dimension OF adecl\n" );
+      YYTRACE( "\tarray_dimension='%s'\n", $2 );
       YYTRACE( "\tadecl.left='%s'\n", $4.left );
       YYTRACE( "\tadecl.right='%s'\n", $4.right );
       YYTRACE( "\tadecl.type='%s'\n", $4.type );
@@ -1139,7 +1148,8 @@ adecl
       else if (c_ident_kind == C_ARRAY_NO_DIM)
         unsupp("Reference to array of unspecified dimension",
                 "reference to object");
-      if (c_ident_kind==C_ARRAY_NO_DIM || c_ident_kind==C_ARRAY_DIM || c_ident_kind==C_FUNCTION) {
+      if ( c_ident_kind == C_ARRAY_NO_DIM || c_ident_kind == C_ARRAY_DIM ||
+           c_ident_kind == C_FUNCTION ) {
         op = "(";
         cp = ")";
       }
@@ -1164,13 +1174,13 @@ adecl
       $$.left = strdup("");
       $$.right = strdup("");
       $$.type = cat($1,strdup(strlen($1)?" ":""),$2,NULL);
-      if (strcmp($2, "void") == 0)
-          c_ident_kind = C_VOID;
-      else if ((strncmp($2, "struct", 6) == 0) ||
-                (strncmp($2, "class", 5) == 0))
-          c_ident_kind = C_STRUCT;
+      if ( strcmp( $2, "void" ) == 0 )
+        c_ident_kind = C_VOID;
+      else if ( strncmp( $2, "struct", 6 ) == 0 ||
+                strncmp( $2, "class", 5 ) == 0 )
+        c_ident_kind = C_STRUCT;
       else
-          c_ident_kind = C_BUILTIN;
+        c_ident_kind = C_BUILTIN;
       YYTRACE( "\n\tadecl now =\n" );
       YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
       YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
@@ -1179,17 +1189,17 @@ adecl
     }
   ;
 
-adims
+array_dimension
   : /* empty */
     {
-      YYTRACE( "adims: EMPTY\n" );
+      YYTRACE( "array_dimension: EMPTY\n" );
       array_has_dim = false;
       $$ = strdup("[]");
     }
 
   | T_NUMBER
     {
-      YYTRACE( "adims: NUMBER\n" );
+      YYTRACE( "array_dimension: NUMBER\n" );
       YYTRACE( "\tNUMBER='%s'\n", $1 );
       array_has_dim = true;
       $$ = cat(strdup("["),$1,strdup("]"),NULL);
