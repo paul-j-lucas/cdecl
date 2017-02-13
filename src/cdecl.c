@@ -30,7 +30,6 @@ extern FILE        *yyin;
 
 // extern variable definitions
 char const         *me;                 // program name
-bool                prompting;
 char                prompt_buf[ PROGRAM_NAME_MAX_LEN + 2/*> */ + 1/*null*/ ];
 char const         *prompt_ptr;
 
@@ -52,11 +51,6 @@ static int          parse_files( int, char const*[] );
 static int          parse_stdin( void );
 static int          parse_string( char const* );
 static char*        readline_wrapper( void );
-
-///////////////////////////////////////////////////////////////////////////////
-
-/* variables used during parsing */
-char const unknown_name[] = "unknown_name";
 
 ////////// main ///////////////////////////////////////////////////////////////
 
@@ -116,7 +110,7 @@ static void cdecl_init( int argc, char const *argv[] ) {
   atexit( cdecl_cleanup );
   options_init( argc, argv );
 
-  prompting = is_tty = isatty( STDIN_FILENO );
+  is_tty = isatty( STDIN_FILENO );
 
   // init the prompt
   strcpy( prompt_buf, opt_lang == LANG_CXX ? "c++decl" : "cdecl" );
