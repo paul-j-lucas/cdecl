@@ -730,7 +730,7 @@ cdecl
       YYTRACE( "\tNAME='%s'\n", $1 );
       YYTRACE( "\tcdecl='%s'\n", $4 );
       if (opt_lang != LANG_CXX)
-        unsupp("pointer to member of class", NULL);
+        unsupp( "pointer to member of class", NULL );
       $$ = cat( $4, strdup( "pointer to member of class " ), $1, strdup( " " ), NULL );
       c_ident_kind = C_POINTER;
       YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
@@ -956,7 +956,7 @@ cast
       YYTRACE( "cast: NAME::*cast\n" );
       YYTRACE( "\tcast='%s'\n", $4 );
       if (opt_lang != LANG_CXX)
-        unsupp("pointer to member of class", NULL);
+        unsupp( "pointer to member of class", NULL );
       $$ = cat( $4, strdup( "pointer to member of class " ), $1, strdup( " " ), NULL );
       c_ident_kind = C_POINTER;
       YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
@@ -1167,11 +1167,12 @@ adecl
       YYTRACE( "\tadecl.right='%s'\n", $8.right );
       YYTRACE( "\tadecl.type='%s'\n", $8.type );
       if (opt_lang != LANG_CXX)
-        unsupp("pointer to member of class", NULL);
-      if (c_ident_kind == C_ARRAY_NO_DIM)
-        unsupp("Pointer to array of unspecified dimension",
-                "pointer to object");
-      if (c_ident_kind==C_ARRAY_NO_DIM || c_ident_kind==C_ARRAY_DIM || c_ident_kind==C_FUNCTION) {
+        unsupp( "pointer to member of class", NULL );
+      if ( c_ident_kind == C_ARRAY_NO_DIM )
+        unsupp( "Pointer to array of unspecified dimension",
+                "pointer to object" );
+      if ( c_ident_kind == C_ARRAY_DIM || c_ident_kind == C_ARRAY_NO_DIM ||
+           c_ident_kind == C_FUNCTION ) {
         op = "(";
         cp = ")";
       }
