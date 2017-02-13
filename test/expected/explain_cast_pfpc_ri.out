@@ -1,0 +1,1 @@
+cast x into pointer to function (pointer to char) returning int

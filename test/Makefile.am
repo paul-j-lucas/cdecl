@@ -15,6 +15,9 @@ TESTS = tests/cast_pc.test \
 	tests/explain_cast_pc.test \
 	tests/explain_cast_pcc-01.test \
 	tests/explain_cast_pcc-02.test \
+	tests/explain_cast_pf_ri.test \
+	tests/explain_cast_pfpc_ri.test \
+	tests/explain_cast_pfpci_ri.test \
 	tests/explain_f_rpi.test \
 	tests/explain_fpc_rpi.test \
 	tests/explain_fv_rpi.test \
