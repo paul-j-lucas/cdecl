@@ -186,11 +186,11 @@ static void parse_options( int argc, char const *argv[] ) {
 static void usage( void ) {
   PRINT_ERR( "Usage: %s [-r|-p|-a|-+] [-ciq%s%s] [files...]\n",
     me,
-#ifdef dodebug
+#ifdef WITH_CDECL_DEBUG
     "d",
 #else
     "",
-#endif /* dodebug */
+#endif /* WITH_CDECL_DEBUG */
 #ifdef doyydebug
     "D"
 #else
@@ -206,9 +206,9 @@ static void usage( void ) {
   PRINT_ERR( "\t-c Create compilable output (include ; and {})\n");
   PRINT_ERR( "\t-i Force interactive mode\n");
   PRINT_ERR( "\t-q Quiet prompt\n");
-#ifdef dodebug
+#ifdef WITH_CDECL_DEBUG
   PRINT_ERR( "\t-d Turn on debugging mode\n");
-#endif /* dodebug */
+#endif /* WITH_CDECL_DEBUG */
 #ifdef doyydebug
   PRINT_ERR( "\t-D Turn on YACC debugging mode\n");
 #endif /* doyydebug */

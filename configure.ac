@@ -35,6 +35,14 @@ AC_FUNC_REALLOC
 AC_CHECK_FUNCS([fmemopen])
 AC_SEARCH_LIBS([readline],[readline])
 
+# Program feature: debug
+AC_ARG_ENABLE([debug],
+  AS_HELP_STRING([--disable-debug], [disable support for cdecl debugging]),
+  [],
+  [AC_DEFINE([WITH_CDECL_DEBUG], [1],
+    [Define to 1 if cdecl debugging is enabled.])]
+)
+
 # Makefile conditionals.
 AM_CONDITIONAL([WITH_READLINE], [test x$ac_cv_search_readline != xno])
 

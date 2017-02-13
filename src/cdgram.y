@@ -16,8 +16,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define WITH_CDECL_DEBUG 1
-
 #ifdef WITH_CDECL_DEBUG
 #define YYTRACE(...) \
   BLOCK( if ( opt_debug ) PRINT_ERR( "|" __VA_ARGS__ ); )
