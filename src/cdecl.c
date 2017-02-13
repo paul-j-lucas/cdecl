@@ -124,13 +124,8 @@ static void cdecl_init( int argc, char const *argv[] ) {
   prompting = is_tty = isatty( STDIN_FILENO );
 
   // init the prompt
-  size_t len = strlen( me );
-  if ( len > PROMPT_MAX_LEN )
-    len = PROMPT_MAX_LEN;
-  strncpy( prompt_buf, me, len );
-  prompt_buf[ len   ] = '>';
-  prompt_buf[ len+1 ] = ' ';
-  prompt_buf[ len+2 ] = '\0';
+  strcpy( prompt_buf, opt_lang == LANG_CXX ? "c++decl" : "cdecl" );
+  strcat( prompt_buf, "> " );
   prompt_ptr = prompt_buf;
 
 #ifdef HAVE_READLINE

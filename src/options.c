@@ -43,13 +43,13 @@ static void         usage( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static char const SHORT_OPTS[] = "acdipqvx:";
+static char const SHORT_OPTS[] = "89acdikpqvx:";
 
 static struct option const LONG_OPTS[] = {
   { "debug",        no_argument,        NULL, 'd' },
   { "language",     required_argument,  NULL, 'x' },
   { "interactive",  no_argument,        NULL, 'i' },
-  { "quite",        no_argument,        NULL, 'q' },
+  { "quiet",        no_argument,        NULL, 'q' },
   { "version",      no_argument,        NULL, 'v' },
   { NULL,           0,                  NULL, 0   }
 };
@@ -107,11 +107,15 @@ static lang_t parse_lang( char const *s ) {
   typedef struct lang_map lang_map_t;
 
   static lang_map_t const LANG_MAP[] = {
-    { "knr",  LANG_C_KNR  },
-    { "c89",  LANG_C_ANSI },
-    { "c99",  LANG_C_99   },
-    { "c++",  LANG_CXX    },
-    { NULL,   LANG_NONE   },
+    { "ansic",  LANG_C_ANSI },
+    { "ansi-c", LANG_C_ANSI },
+    { "knr",    LANG_C_KNR  },
+    { "knrc",   LANG_C_KNR  },
+    { "knr-c",  LANG_C_KNR  },
+    { "c89",    LANG_C_ANSI },
+    { "c99",    LANG_C_99   },
+    { "c++",    LANG_CXX    },
+    { NULL,     LANG_NONE   },
   };
 
   size_t values_buf_size = 1;           // for trailing null
@@ -155,10 +159,13 @@ static void parse_options( int argc, char const *argv[] ) {
       break;
     SET_OPTION( opt );
     switch ( opt ) {
+      case '8':
       case 'a': opt_lang        = LANG_C_ANSI;          break;
+      case '9': opt_lang        = LANG_C_99;            break;
       case 'c': opt_make_c      = true;                 break;
       case 'd': opt_debug       = true;
       case 'i': opt_interactive = true;                 break;
+      case 'k':
       case 'p': opt_lang        = LANG_C_KNR;           break;
       case '1': opt_quiet       = true;                 break;
       case 'v': print_version   = true;                 break;
