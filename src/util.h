@@ -49,10 +49,11 @@ extern char const  *me;                 // executable name
 char const* base_name( char const *path_name );
 
 /**
- * TODO
+ * Concatenates all strings.
  *
- * @param s1
- * @return TODO
+ * @param s1 The first null-terminated C string.
+ * @return Returns a null-terminated C string that is the concatenation of all
+ * arguments.  The called is responsible for freeing the string.
  */
 char* cat( char const *s1, ... );
 
@@ -80,10 +81,11 @@ char* check_strdup( char const *s );
  * Local implementation of POSIX 2008 fmemopen(3) for systems that don't have
  * it.
  *
- * @param buf TODO
- * @param size TODO
- * @param mode TODO
- * @return TODO
+ * @param buf A pointer to the buffer to use.  The pointer should remain valid
+ * for as along as the FILE is open.
+ * @param size The size of \a buf.
+ * @param mode The open mode.  It \e must contain \c r.
+ * @return Returns a FILE containing the contents of \a buf.
  */
 FILE* fmemopen( void const *buf, size_t size, char const *mode );
 #endif /* HAVE_FMEMOPEN */

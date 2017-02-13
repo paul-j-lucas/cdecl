@@ -21,8 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* maximum # of chars from progname to display in prompt */
-#define PROMPT_MAX_LEN  32
+#define PROGRAM_NAME_MAX_LEN      10    /* at least big enough for "c++decl" */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -32,11 +31,11 @@ extern FILE        *yyin;
 // extern variable definitions
 char const         *me;                 // program name
 bool                prompting;
-char                prompt_buf[ PROMPT_MAX_LEN + 2/*> */ + 1/*null*/ ];
+char                prompt_buf[ PROGRAM_NAME_MAX_LEN + 2/*> */ + 1/*null*/ ];
 char const         *prompt_ptr;
 
 // local variables
-static bool         is_keyword;         // s argv[0] is a keyword?
+static bool         is_keyword;         // is argv[0] is a keyword?
 static bool         is_tty;             // is stdin connected to a tty?
 
 // extern functions
@@ -58,10 +57,6 @@ static char*        readline_wrapper( void );
 
 /* variables used during parsing */
 char const unknown_name[] = "unknown_name";
-
-#ifdef doyydebug    /* compile in yacc trace statements */
-#define YYDEBUG 1
-#endif /* doyydebug */
 
 ////////// main ///////////////////////////////////////////////////////////////
 
@@ -258,8 +253,8 @@ static int parse_stdin() {
 /**
  * TODO
  *
- * @param s TODO
- * @return TODO
+ * @param s The null-terminated string to parse.
+ * @return Returns zero on success, non-zero on error.
  */
 static int parse_string( char const *s ) {
   yyin = fmemopen( s, strlen( s ), "r" );
@@ -271,7 +266,7 @@ static int parse_string( char const *s ) {
 /**
  * TODO
  *
- * @return TODO
+ * @return Returns the line read or null for EOF.
  */
 static char* readline_wrapper( void ) {
   static char *line_read;

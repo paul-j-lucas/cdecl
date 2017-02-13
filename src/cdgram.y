@@ -23,6 +23,13 @@
 #define YYTRACE(...)              /* nothing */
 #endif /* WITH_CDECL_DEBUG */
 
+#ifdef WITH_YYDEBUG
+#define YYDEBUG 1
+#endif /* WITH_YYDEBUG */
+
+///////////////////////////////////////////////////////////////////////////////
+
+// external variables
 extern char const   unknown_name[];
 extern bool         opt_debug;
 extern bool         prompting;
@@ -30,7 +37,7 @@ extern char         prompt_buf[];
 extern char const  *prompt_ptr;
 
 // extern functions
-extern int    yylex( void );
+extern int          yylex( void );
 
 /**
  * The kinds of C identifiers.
@@ -55,6 +62,7 @@ typedef enum c_ident_kind c_ident_kind_t;
  */
 typedef unsigned c_type_bits_t;
 
+// local constants
 static c_type_bits_t const C_TYPE_VOID     = 0x0001;
 static c_type_bits_t const C_TYPE_BOOL     = 0x0002;
 static c_type_bits_t const C_TYPE_CHAR     = 0x0004;
@@ -101,9 +109,9 @@ static c_ident_kind_t c_ident_kind;
 static char const    *c_ident;
 
 // local functions
-static char const*  c_type_name( c_type_bits_t );
-static void         not_supported( char const*, char const*, char const* );
-static void         unsupp( char const*, char const* );
+static char const*    c_type_name( c_type_bits_t );
+static void           not_supported( char const*, char const*, char const* );
+static void           unsupp( char const*, char const* );
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -671,7 +679,7 @@ cdecl
       YYTRACE( "cdecl: * opt_const_volatile_list cdecl\n" );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
       YYTRACE( "\tcdecl='%s'\n", $3 );
-      $$ = cat($3,$2,strdup(strlen($2)?" pointer to ":"pointer to "),NULL);
+      $$ = cat( $3, $2, strdup( strlen( $2 ) ? " pointer to " : "pointer to " ), NULL );
       c_ident_kind = C_POINTER;
       YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
@@ -683,7 +691,7 @@ cdecl
       YYTRACE( "\tcdecl='%s'\n", $4 );
       if (opt_lang != LANG_CXX)
         unsupp("pointer to member of class", NULL);
-      $$ = cat($4,strdup("pointer to member of class "),$1,strdup(" "),NULL);
+      $$ = cat( $4, strdup( "pointer to member of class " ), $1, strdup( " " ), NULL );
       c_ident_kind = C_POINTER;
       YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
@@ -695,7 +703,7 @@ cdecl
       YYTRACE( "\tcdecl='%s'\n", $3 );
       if (opt_lang != LANG_CXX)
         unsupp("reference", NULL);
-      $$ = cat($3,$2,strdup(strlen($2)?" reference to ":"reference to "),NULL);
+      $$ = cat( $3, $2, strdup( strlen( $2 ) ? " reference to " : "reference to " ), NULL );
       c_ident_kind = CXX_REFERENCE;
       YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }
@@ -706,7 +714,7 @@ cdecl1
     {
       YYTRACE( "cdecl1: cdecl1()\n" );
       YYTRACE( "\tcdecl1='%s'\n", $1 );
-      $$ = cat($1,strdup("function returning "),NULL);
+      $$ = cat( $1, strdup( "function returning " ), NULL );
       c_ident_kind = C_FUNCTION;
       YYTRACE( "\tprev = '%s'\n", visible( c_ident_kind ) );
     }

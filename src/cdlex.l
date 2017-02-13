@@ -1,9 +1,12 @@
-%{
 /*
 **    cdecl -- C gibberish translator
 **    src/cdlex.l
 */
 
+%option noinput
+%option nounput
+
+%{
 // local
 #include "config.h"
 #include "cdgram.h"
@@ -17,8 +20,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-extern int yywrap( void );
+// extern functions
+extern int  yywrap( void );
 
+///////////////////////////////////////////////////////////////////////////////
 %}
 
 N             [0-9]

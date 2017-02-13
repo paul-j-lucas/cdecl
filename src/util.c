@@ -47,7 +47,7 @@ char* cat( char const *s1, ... ) {
   va_list args;
   size_t len = 0;
 
-  /* find the length which needs to be allocated */
+  // first, find the length that needs to be allocated
   va_start( args, s1 );
   for ( char const *s = s1; s; s = va_arg( args, char const* ) )
     len += strlen( s );
