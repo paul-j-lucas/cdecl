@@ -1,0 +1,1 @@
+cdecl | -xc++ | cast p into ptr to member of class C int | 0

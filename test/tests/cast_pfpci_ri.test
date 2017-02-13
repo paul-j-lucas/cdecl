@@ -1,0 +1,1 @@
+cdecl | | cast p into ptr to func(x as ptr to char, y as int) ret int | 0

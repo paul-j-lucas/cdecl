@@ -7,9 +7,17 @@
 
 AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 
+# Command-line tests
+TESTS =	tests/cdecl-ap.test \
+	tests/cdecl-x.test
+
 # C tests
-TESTS = tests/cast_pc.test \
+TESTS+= tests/cast_pc.test \
 	tests/cast_pcc.test \
+	tests/cast_pf_ri-01.test \
+	tests/cast_pf_ri-02.test \
+	tests/cast_pfpci_ri.test \
+	tests/cast_pfx_ri.test \
 	tests/declare_fx_rpi.test \
 	tests/declare_pc.test \
 	tests/explain_cast_pc.test \
@@ -30,7 +38,13 @@ TESTS = tests/cast_pc.test \
 	tests/set_options.test
 
 # C++ tests
-TESTS+=	tests/help_cxx.test
+TESTS+=	tests/cast_pmi.test \
+	tests/declare_pmi.test \
+	tests/declare_rc.test \
+	tests/explain_cast_pmi.test \
+	tests/explain_pmfxx_rps.test \
+	tests/explain_pmi.test \
+	tests/help_cxx.test
 
 AM_TESTS_ENVIRONMENT = BUILD_SRC=$(top_builddir)/src; export BUILD_SRC ;
 TEST_EXTENSIONS = .test 
