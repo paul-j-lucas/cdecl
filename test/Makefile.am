@@ -18,10 +18,12 @@ TESTS = tests/cast_pc.test \
 	tests/explain_cast_pf_ri.test \
 	tests/explain_cast_pfpc_ri.test \
 	tests/explain_cast_pfpci_ri.test \
+	tests/explain_ci.test \
 	tests/explain_f_rpi.test \
 	tests/explain_fpc_rpi.test \
 	tests/explain_fv_rpi.test \
 	tests/explain_fx_rpi.test \
+	tests/explain_ic.test \
 	tests/explain_pc.test \
 	tests/help_c.test \
 	tests/help_cxx.test \
