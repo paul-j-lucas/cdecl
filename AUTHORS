@@ -1,0 +1,58 @@
+Graham Ross <tektronix!tekmdp!grahamr>, Context, Inc.
+	original author
+
+????
+	modified to provide hints for unsupported types
+	added argument lists for functions
+	added 'explain cast' grammar
+	added #ifdef for 'create program' feature
+
+David Wolverton <ihnp4!houxs!daw>
+	conversion to ANSI C
+
+Tony Hansen <attmail!tony>, <ihnp4!pegasus!hansen>
+	merged D. Wolverton's ANSI C version w/ ????'s version
+	added function prototypes
+	added C++ declarations
+	made type combination checking table driven
+	added checks for void variable combinations
+	made 'create program' feature a runtime option
+	added file parsing as well as just stdin
+	added help message at beginning
+	added prompts when on a TTY or in interactive mode
+	added getopt() usage
+	added -a, -r, -p, -c, -d, -D, -V, -i and -+ options
+	delinted
+	added #defines for those without getopt or void
+	added 'set options' command
+	added 'quit/exit' command
+	added synonyms
+
+Merlyn LeRoy <merlyn@rose3.rosemount.com>
+	added extern, register, static
+	added links to explain, cast, declare
+	separately developed ANSI C support
+
+Tony Hansen <attmail!tony>, <ihnp4!pegasus!hansen>
+	merged versions from LeRoy
+	added tmpfile() support
+	allow more parts to be missing during explanations
+
+Dave Conrad <conrad@detroit.freenet.org>
+	added GNU readline() support
+	added dotmpfile_from_string() to support readline()
+	outdented C help text to prevent line from wrapping
+	minor tweaking of makefile && mv makefile Makefile
+	took out interactive and nointeractive commands when
+		compiled with readline support
+	added prompt and noprompt commands, -q option
+
+Peter Ammon <cdecl@ridiculousfish.com>
+	added support for Apple's "blocks"
+
+Paul J. Lucas <paul@lucasmail.org>
+	converted to C99
+	modularized & cleaned-up source
+	added long-option support
+	added GNU autoconf/automake/configure scripts
+	GNU-ified test suite
