@@ -55,6 +55,7 @@ AC_CONFIG_FILES([
   Makefile
   lib/Makefile
   src/Makefile
+  test/Makefile
   man/Makefile
   man/man1/Makefile
 ])
