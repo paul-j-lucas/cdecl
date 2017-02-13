@@ -45,14 +45,6 @@ extern FILE        *fout;               // file out
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Gets the corresponding name of the long option for the given short option.
- *
- * @param short_opt The short option to get the corresponding long option for.
- * @return Returns the said option.
- */
-char const* get_long_opt( char short_opt );
-
-/**
  * Initializes command-line option variables.
  *
  * @param argc The argument count from \c main().

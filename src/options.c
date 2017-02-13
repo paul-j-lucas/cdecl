@@ -20,6 +20,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #define GAVE_OPTION(OPT)          (opts_given[ (unsigned char)(OPT) ])
+#define OPT_BUF_SIZE              32    /* used for format_opt() */
 #define SET_OPTION(OPT)           (opts_given[ (unsigned char)(OPT) ] = (OPT))
 
 // extern option variables
@@ -39,6 +40,8 @@ FILE               *fout;
 static char         opts_given[ 128 ];
 
 // local functions
+static char*        format_opt( char, char[], size_t );
+static char const*  get_long_opt( char );
 static void         usage( void );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -77,18 +80,12 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
       if ( GAVE_OPTION( *opt ) ) {
         if ( ++gave_count > 1 ) {
           char const gave_opt2 = *opt;
-          char const *const long_opt1 = get_long_opt( gave_opt1 );
-          char const *const long_opt2 = get_long_opt( gave_opt2 );
+          char opt1_buf[ OPT_BUF_SIZE ];
+          char opt2_buf[ OPT_BUF_SIZE ];
           PMESSAGE_EXIT( EX_USAGE,
-            "%s%s%s-%c and %s%s%s-%c are mutually exclusive\n",
-            long_opt1 ? "--" : "",
-            long_opt1 ? long_opt1 : "",
-            long_opt1 ? "/" : "",
-            gave_opt1,
-            long_opt2 ? "--" : "",
-            long_opt2 ? long_opt2 : "",
-            long_opt2 ? "/" : "",
-            gave_opt2
+            "%s and %s are mutually exclusive\n",
+            format_opt( gave_opt1, opt1_buf, sizeof opt1_buf ),
+            format_opt( gave_opt2, opt2_buf, sizeof opt2_buf  )
           );
         }
         gave_opt1 = *opt;
@@ -99,6 +96,40 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
       break;
     opt = opts2;
   } // for
+}
+
+/**
+ * Formats an option as <code>[--%s/]-%c</code> where \c %s is the long option
+ * (if any) and %c is the short option.
+ *
+ * @param short_opt The short option (along with its corresponding long option,
+ * if any) to format.
+ * @param buf The buffer to use.
+ * @param buf_size The size of \a buf.
+ * @return Returns \a buf.
+ */
+static char* format_opt( char short_opt, char buf[], size_t size ) {
+  char const *const long_opt = get_long_opt( short_opt );
+  snprintf(
+    buf, size, "%s%s%s-%c",
+    *long_opt ? "--" : "", long_opt, *long_opt ? "/" : "", short_opt
+  );
+  return buf;
+}
+
+/**
+ * Gets the corresponding name of the long option for the given short option.
+ *
+ * @param short_opt The short option to get the corresponding long option for.
+ * @return Returns the said option or the empty string if none.
+ */
+static char const* get_long_opt( char short_opt ) {
+  for ( struct option const *long_opt = LONG_OPTS; long_opt->name;
+        ++long_opt ) {
+    if ( long_opt->val == short_opt )
+      return long_opt->name;
+  } // for
+  return "";
 }
 
 /**
@@ -145,9 +176,11 @@ static lang_t parse_lang( char const *s ) {
     strcpy( pvalues, m->name );
     pvalues += strlen( m->name );
   } // for
+
+  char opt_buf[ OPT_BUF_SIZE ];
   PMESSAGE_EXIT( EX_USAGE,
-    "\"%s\": invalid value for --%s/-%c; must be one of:\n\t%s\n",
-    s, get_long_opt( 'x' ), 'x', values_buf
+    "\"%s\": invalid value for %s; must be one of:\n\t%s\n",
+    s, format_opt( 'x', opt_buf, sizeof opt_buf ), values_buf
   );
 }
 
@@ -224,15 +257,6 @@ static void usage( void ) {
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
-
-char const* get_long_opt( char short_opt ) {
-  for ( struct option const *long_opt = LONG_OPTS; long_opt->name;
-        ++long_opt ) {
-    if ( long_opt->val == short_opt )
-      return long_opt->name;
-  } // for
-  return NULL;
-}
 
 void options_init( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
