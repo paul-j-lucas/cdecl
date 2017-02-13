@@ -68,6 +68,7 @@ static char* keyword_completion( char const *text, int flag ) {
   static char const *const KEYWORDS[] = {
     "array",
     "auto",
+    "bool",
     "char",
     "class",
     "const",
@@ -91,22 +92,19 @@ static char* keyword_completion( char const *text, int flag ) {
     "unsigned",
     "void",
     "volatile",
+    "wchar_t",
     NULL
   };
 
   static char const *const OPTIONS[] = {
-    "options",
-    "create",
-    "nocreate",
-    "prompt",
-    "noprompt",
-#if 0
-    "interactive",
-    "nointeractive",
-#endif
-    "preansi",
     "ansi",
     "cplusplus",
+    "create",
+  "nocreate",
+    "options",
+    "preansi",
+    "prompt",
+  "noprompt",
     NULL
   };
 
