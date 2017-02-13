@@ -77,10 +77,18 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
       if ( GAVE_OPTION( *opt ) ) {
         if ( ++gave_count > 1 ) {
           char const gave_opt2 = *opt;
+          char const *const long_opt1 = get_long_opt( gave_opt1 );
+          char const *const long_opt2 = get_long_opt( gave_opt2 );
           PMESSAGE_EXIT( EX_USAGE,
-            "--%s/-%c and --%s/-%c are mutually exclusive\n",
-            get_long_opt( gave_opt1 ), gave_opt1,
-            get_long_opt( gave_opt2 ), gave_opt2
+            "%s%s%s-%c and %s%s%s-%c are mutually exclusive\n",
+            long_opt1 ? "--" : "",
+            long_opt1 ? long_opt1 : "",
+            long_opt1 ? "/" : "",
+            gave_opt1,
+            long_opt2 ? "--" : "",
+            long_opt2 ? long_opt2 : "",
+            long_opt2 ? "/" : "",
+            gave_opt2
           );
         }
         gave_opt1 = *opt;
@@ -94,10 +102,10 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
 }
 
 /**
- * TODO
+ * Parses a language name.
  *
- * @param s TODO
- * @return TODO
+ * @param s The null-terminated string to parse.
+ * @return Returns the lang_t corresponding to \a s.
  */
 static lang_t parse_lang( char const *s ) {
   struct lang_map {
@@ -223,8 +231,7 @@ char const* get_long_opt( char short_opt ) {
     if ( long_opt->val == short_opt )
       return long_opt->name;
   } // for
-  assert( false );
-  return NULL;                          // suppress warning (never gets here)
+  return NULL;
 }
 
 void options_init( int argc, char const *argv[] ) {
