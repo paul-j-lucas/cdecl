@@ -99,9 +99,6 @@ static c_type_map_t const C_TYPE_MAP[] = {
 
 // local constants
 static char const     UNKNOWN_NAME[] = "unknown_name";
-static char const     UNSUPP_ALL[]  = "";
-static char const     UNSUPP_ANSI[] = " (ANSI Compiler)";
-static char const     UNSUPP_KNR[]  = " (Pre-ANSI Compiler)";
 
 // local variables
 static bool           array_has_dim;
@@ -111,7 +108,7 @@ static char const    *c_ident;
 
 // local functions
 static char const*    c_type_name( c_type_bits_t );
-static void           illegal( char const*, char const*, char const* );
+static void           illegal( lang_t, char const*, char const* );
 static void           unsupp( char const*, char const* );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -188,14 +185,14 @@ static void c_type_check( void ) {
               break;
             case ANSI:
               if ( opt_lang != LANG_C_KNR )
-                illegal( UNSUPP_ANSI, t1, t2 );
+                illegal( LANG_C_89, t1, t2 );
               break;
             case KNR:
               if ( opt_lang == LANG_C_KNR )
-                illegal( UNSUPP_KNR, t1, t2 );
+                illegal( opt_lang, t1, t2 );
               break;
             case NEVER:
-              illegal( UNSUPP_ALL, t1, t2 );
+              illegal( opt_lang, t1, t2 );
               break;
           } // switch
         }
@@ -214,11 +211,11 @@ static char const* c_type_name( c_type_bits_t bit ) {
   for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_MAP ); ++i )
     if ( bit == C_TYPE_MAP[i].bit )
       return C_TYPE_MAP[i].name;
-  assert( 0 );
+  INTERNAL_ERR( "%X: unexpected value for bit", bit );
 }
 
 /**
- * TODO
+ * Do the "cast" command.
  *
  * @param name TODO
  * @param left TODO
@@ -257,7 +254,7 @@ static void do_cast( char const *name, char const *left, char const *right,
 }
 
 /**
- * TODO
+ * Do the "declare" command.
  *
  * @param name TODO
  * @param storage TODO
@@ -321,30 +318,30 @@ done:
 }
 
 /**
- * TODO
+ * Do the "set" command.
  *
  * @param opt The option to set.
  */
 static void do_set( char const *opt ) {
   if ( strcmp( opt, "create" ) == 0 )
-    { opt_make_c = true; }
+    opt_make_c = true;
   else if ( strcmp( opt, "nocreate" ) == 0 )
-    { opt_make_c = false; }
+    opt_make_c = false;
   else if ( strcmp( opt, "prompt" ) == 0 )
-    { prompt_ptr = prompt_buf; }
+    prompt_ptr = prompt_buf;
   else if ( strcmp( opt, "noprompt" ) == 0 )
-    { prompt_ptr = ""; }
+    prompt_ptr = "";
   else if ( strcmp( opt, "preansi" ) == 0)
     { opt_lang = LANG_C_KNR; }
   else if ( strcmp( opt, "ansi" ) == 0)
-    { opt_lang = LANG_C_89; }
+    opt_lang = LANG_C_89;
   else if ( strcmp( opt, "cplusplus" ) == 0)
-    { opt_lang = LANG_CXX; }
+    opt_lang = LANG_CXX;
 #ifdef WITH_CDECL_DEBUG
   else if ( strcmp( opt, "debug" ) == 0 )
-    { opt_debug = 1; }
+    opt_debug = true;
   else if ( strcmp( opt, "nodebug" ) == 0)
-    { opt_debug = 0; }
+    opt_debug = false;
 #endif /* WITH_CDECL_DEBUG */
 #ifdef WITH_YYDEBUG
   else if ( strcmp( opt, "yydebug" ) == 0)
@@ -353,9 +350,9 @@ static void do_set( char const *opt ) {
     { yydebug = 0; }
 #endif /* WITH_YYDEBUG */
   else {
-    if ( strcmp( opt, UNKNOWN_NAME) != 0 &&
+    if ( strcmp( opt, UNKNOWN_NAME ) != 0 &&
          strcmp( opt, "options" ) != 0 ) {
-      printf( "Unknown set option: '%s'\n", opt );
+      printf( "\"%s\": unknown set option\n", opt );
     }
     printf( "Valid set options (and command line equivalents) are:\n" );
     printf( "\toptions\n" );
@@ -364,7 +361,7 @@ static void do_set( char const *opt ) {
 #ifndef USE_READLINE
     printf( "\tinteractive (-i), nointeractive\n" );
 #endif
-    printf( "\tpreansi (-p), ansi (-a) or cplusplus (-+)\n" );
+    printf( "\tpreansi (-p), ansi (-a), or cplusplus (-+)\n" );
 #ifdef WITH_CDECL_DEBUG
     printf( "\tdebug (-d), nodebug\n" );
 #endif /* WITH_CDECL_DEBUG */
@@ -374,8 +371,9 @@ static void do_set( char const *opt ) {
 
     printf( "\nCurrent set values are:\n" );
     printf( "\t%screate\n", opt_make_c ? "   " : " no" );
-    printf( "\t%sprompt\n", prompt_ptr[0] ? "   " : " no" );
     printf( "\t%sinteractive\n", opt_interactive ? "   " : " no" );
+    printf( "\t%sprompt\n", prompt_ptr[0] ? "   " : " no" );
+
     if ( opt_lang == LANG_C_KNR )
       printf( "\t   preansi\n" );
     else
@@ -469,25 +467,24 @@ void explain_declaration( char const *storage, char const *constvol1,
   printf( "%s\n", type ? type : "int" );
 }
 
-static void illegal( char const *lang_version, char const *type1,
+static void illegal( lang_t lang, char const *type1,
                      char const *type2 ) {
   if ( type2 )
     PRINT_ERR(
-      "warning: \"%s\" with \"%s\" illegal in%s C%s\n",
-      type1, type2,
-      lang_version, opt_lang == LANG_CXX ? "++" : ""
+      "warning: \"%s\" with \"%s\" illegal in %s\n",
+      type1, type2, lang_name( lang )
     );
   else
     PRINT_ERR(
-      "warning: \"%s\" illegal in%s C%s\n",
-      type1, lang_version, opt_lang == LANG_CXX ? "++" : ""
+      "warning: \"%s\" illegal in %s\n",
+      type1, lang_name( lang )
     );
 }
 
 static void print_help( void );
 
 static void unsupp( char const *s, char const *hint ) {
-  illegal( UNSUPP_ALL, s, NULL );
+  illegal( opt_lang, s, NULL );
   if ( hint )
     PRINT_ERR( "\t(maybe you mean \"%s\")\n", hint );
 }
@@ -1371,7 +1368,7 @@ c_type_name
       YYTRACE( "c_type_name: WCHAR_T\n" );
       YYTRACE( "\tCHAR='%s'\n", $1 );
       if ( opt_lang == LANG_C_KNR )
-        illegal( UNSUPP_KNR, $1, NULL );
+        illegal( opt_lang, $1, NULL );
       else
         c_type_add( C_TYPE_WCHAR_T );
       $$ = $1;
@@ -1432,7 +1429,7 @@ mod_list1
       YYTRACE( "mod_list1: CONST_VOLATILE\n" );
       YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
       if ( opt_lang == LANG_C_KNR )
-        illegal( UNSUPP_KNR, $1, NULL );
+        illegal( opt_lang, $1, NULL );
       else if ( strcmp( $1, "noalias" ) == 0 && opt_lang == LANG_CXX )
         unsupp( $1, NULL );
       $$ = $1;
@@ -1480,7 +1477,7 @@ opt_const_volatile_list
       YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
       if ( opt_lang == LANG_C_KNR )
-        illegal( UNSUPP_KNR, $1, NULL );
+        illegal( opt_lang, $1, NULL );
       else if ( strcmp($1, "noalias") == 0 && opt_lang == LANG_CXX )
         unsupp( $1, NULL );
       $$ = cat( $1, strdup( strlen($2) ? " " : "" ), $2, NULL );
@@ -1500,7 +1497,7 @@ const_volatile_list
       YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
       if ( opt_lang == LANG_C_KNR )
-        illegal( UNSUPP_KNR, $1, NULL );
+        illegal( opt_lang, $1, NULL );
       else if ( strcmp( $1, "noalias" ) == 0 && opt_lang == LANG_CXX )
         unsupp($1, NULL);
       $$ = cat( $1, strdup( strlen( $2 ) ? " " : "" ), $2, NULL );

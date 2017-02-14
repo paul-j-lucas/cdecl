@@ -269,9 +269,7 @@ char const* lang_name( lang_t lang ) {
     case LANG_C_11 : return "C11";
     case LANG_CXX  : return "C++";
     default:
-      PMESSAGE_EXIT( EX_SOFTWARE,
-        "internal error: \"%d\": unexpected value for lang\n", (int)lang
-      );
+      INTERNAL_ERR( "\"%d\": unexpected value for lang\n", (int)lang );
   } // switch
 }
 

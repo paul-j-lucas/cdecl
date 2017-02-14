@@ -3,14 +3,14 @@ Valid set options (and command line equivalents) are:
 	create (-c), nocreate
 	prompt, noprompt (-q)
 	interactive (-i), nointeractive
-	preansi (-p), ansi (-a) or cplusplus (-+)
+	preansi (-p), ansi (-a), or cplusplus (-+)
 	debug (-d), nodebug
 
 Current set values are:
 	 nocreate
-	   prompt
 	 nointeractive
+	   prompt
 	(nopreansi)
-	   ansi
+	(noansi)
 	(nocplusplus)
 	 nodebug

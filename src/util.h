@@ -14,6 +14,7 @@
 // standard
 #include <stddef.h>                     /* for size_t */
 #include <stdio.h>                      /* for FILE */
+#include <sysexits.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -22,6 +23,9 @@
 #define PERROR_EXIT(STATUS)       BLOCK( perror( me ); exit( STATUS ); )
 #define PRINT_ERR(...)            fprintf( stderr, __VA_ARGS__ )
 #define STRERROR                  strerror( errno )
+
+#define INTERNAL_ERR(FORMAT,...) \
+  PMESSAGE_EXIT( EX_SOFTWARE, "internal error: " FORMAT, __VA_ARGS__ )
 
 #define MALLOC(TYPE,N) \
   (TYPE*)check_realloc( NULL, sizeof(TYPE) * (N) )
