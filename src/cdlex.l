@@ -3,7 +3,6 @@
 **    src/cdlex.l
 */
 
-%option noinput
 %option nounput
 
 %{
@@ -56,9 +55,9 @@ returning     return T_RETURNING;
 set           return T_SET;
 to            return T_TO;
 vector        return T_ARRAY;
-::            return T_DOUBLECOLON;
-[?]           return T_HELP;
-[,]           return T_COMMA;
+"::"          return T_DOUBLECOLON;
+"?"           return T_HELP;
+","           return T_COMMA;
 
 auto          { yylval.dynstr = YYTEXT;         return T_AUTO; }
 bool          { yylval.dynstr = YYTEXT;         return T_BOOL; }
@@ -91,13 +90,30 @@ wchar_t       { yylval.dynstr = YYTEXT;         return T_WCHAR_T; }
 {A}{AN}*      { yylval.dynstr = YYTEXT;         return T_NAME; }
 {N}+          { yylval.dynstr = YYTEXT;         return T_NUMBER; }
 
-[#].*         ;
-[\t ]         ;
+"&"           |
+"("           |
+")"           |
+"*"           |
+";"           |
+"["           |
+"]"           |
+"^"           |                         /* for blocks (Apple extension) */
+"\n"          return *yytext;
 
-[&*[\]();^\n] return *yytext;
+"/*"          {                         /* C-style comments */
+                for ( int c = input(), prev_c = '\0'; c != EOF;
+                      prev_c = c, c = input() ) {
+                  if ( prev_c == '*' && c == '/' )
+                    break;
+                } // for
+              }
+
+[#].*         ;                         /* script-style comments */
+
+[ \t\r]+      ;
 
 .             {
-                PRINT_ERR( "bad character '%s'\n", visible( *yytext ) );
+                PRINT_ERR( "\"%s\": illegal character\n", visible( *yytext ) );
                 return *yytext;
               }
 
