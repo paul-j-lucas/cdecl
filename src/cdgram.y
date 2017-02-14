@@ -567,17 +567,18 @@ int yywrap( void ) {
 %token  <dynstr> T_VOID
 %token  <dynstr> T_WCHAR_T
 
-%type   <halves> adecl
-%type   <dynstr> adecl_list
 %type   <dynstr> array_dimension
-%type   <dynstr> c_type
-%type   <dynstr> c_type_name
 %type   <dynstr> cast cast_list
 %type   <dynstr> cdecl cdecl1
 %type   <dynstr> cdims
-%type   <dynstr> class_struct
 %type   <dynstr> const_volatile_list opt_const_volatile_list
+%type   <dynstr> class_struct
+%type   <dynstr> c_builtin_type
+%type   <dynstr> c_type
+%type   <halves> decl_english
+%type   <dynstr> decl_list_english
 %type   <dynstr> enum_class_struct_union
+%type   <halves> func_decl_english
 %type   <dynstr> mod_list mod_list1 modifier
 %type   <dynstr> opt_NAME
 %type   <dynstr> storage opt_storage
@@ -596,9 +597,9 @@ command_list
   ;
 
 command
-  : cast_command
-  | declare_command
-  | explain_command
+  : cast_english
+  | declare_english
+  | explain_gibberish
   | set_command
 
   | T_HELP EOL
@@ -619,10 +620,14 @@ EOL
   | ';'
   ;
 
-cast_command
-  : T_CAST T_NAME T_INTO adecl EOL
+/*****************************************************************************/
+/*  cast                                                                     */
+/*****************************************************************************/
+
+cast_english
+  : T_CAST T_NAME T_INTO decl_english EOL
     {
-      YYTRACE( "cast_command: CAST NAME AS adecl\n" );
+      YYTRACE( "cast_english: CAST NAME AS decl_english\n" );
       YYTRACE( "\tNAME='%s'\n", $2 );
       YYTRACE( "\tacdecl.left='%s'\n", $4.left );
       YYTRACE( "\tacdecl.right='%s'\n", $4.right );
@@ -630,9 +635,9 @@ cast_command
       do_cast( $2, $4.left, $4.right, $4.type );
     }
 
-  | T_CAST adecl EOL
+  | T_CAST decl_english EOL
     {
-      YYTRACE( "cast_command: CAST adecl\n" );
+      YYTRACE( "cast_english: CAST decl_english\n" );
       YYTRACE( "\tacdecl.left='%s'\n", $2.left );
       YYTRACE( "\tacdecl.right='%s'\n", $2.right );
       YYTRACE( "\tacdecl.type='%s'\n", $2.type );
@@ -640,10 +645,14 @@ cast_command
     }
   ;
 
-declare_command
-  : T_DECLARE T_NAME T_AS opt_storage adecl EOL
+/*****************************************************************************/
+/*  declare                                                                  */
+/*****************************************************************************/
+
+declare_english
+  : T_DECLARE T_NAME T_AS opt_storage decl_english EOL
     {
-      YYTRACE( "declare_command: DECLARE NAME AS opt_storage adecl\n" );
+      YYTRACE( "declare_english: DECLARE NAME AS opt_storage decl_english\n" );
       YYTRACE( "\tNAME='%s'\n", $2 );
       YYTRACE( "\topt_storage='%s'\n", $4 );
       YYTRACE( "\tacdecl.left='%s'\n", $5.left );
@@ -653,9 +662,9 @@ declare_command
       do_declare( $2, $4, $5.left, $5.right, $5.type );
     }
 
-  | T_DECLARE opt_storage adecl EOL
+  | T_DECLARE opt_storage decl_english EOL
     {
-      YYTRACE( "declare_command: DECLARE opt_storage adecl\n" );
+      YYTRACE( "declare_english: DECLARE opt_storage decl_english\n" );
       YYTRACE( "\topt_storage='%s'\n", $2 );
       YYTRACE( "\tacdecl.left='%s'\n", $3.left );
       YYTRACE( "\tacdecl.right='%s'\n", $3.right );
@@ -665,10 +674,15 @@ declare_command
     }
   ;
 
-explain_command
-  : T_EXPLAIN opt_storage opt_const_volatile_list type opt_const_volatile_list cdecl EOL
+/*****************************************************************************/
+/*  explain                                                                  */
+/*****************************************************************************/
+
+explain_gibberish
+  : T_EXPLAIN opt_storage opt_const_volatile_list type opt_const_volatile_list
+              cdecl EOL
     {
-      YYTRACE( "explain_command: EXPLAIN opt_storage opt_const_volatile_list type cdecl\n" );
+      YYTRACE( "explain_gibberish: EXPLAIN opt_storage opt_const_volatile_list type cdecl\n" );
       YYTRACE( "\topt_storage='%s'\n", $2 );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
       YYTRACE( "\ttype='%s'\n", $4 );
@@ -679,7 +693,7 @@ explain_command
 
   | T_EXPLAIN storage opt_const_volatile_list cdecl EOL
     {
-      YYTRACE( "explain_command: EXPLAIN storage opt_const_volatile_list cdecl\n" );
+      YYTRACE( "explain_gibberish: EXPLAIN storage opt_const_volatile_list cdecl\n" );
       YYTRACE( "\tstorage='%s'\n", $2 );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
       YYTRACE( "\tcdecl='%s'\n", $4 );
@@ -689,7 +703,7 @@ explain_command
 
   | T_EXPLAIN opt_storage const_volatile_list cdecl EOL
     {
-      YYTRACE( "explain_command: EXPLAIN opt_storage const_volatile_list cdecl\n" );
+      YYTRACE( "explain_gibberish: EXPLAIN opt_storage const_volatile_list cdecl\n" );
       YYTRACE( "\topt_storage='%s'\n", $2 );
       YYTRACE( "\tconst_volatile_list='%s'\n", $3 );
       YYTRACE( "\tcdecl='%s'\n", $4 );
@@ -699,7 +713,7 @@ explain_command
 
   | T_EXPLAIN '(' opt_const_volatile_list type cast ')' opt_NAME EOL
     {
-      YYTRACE( "explain_command: EXPLAIN ( opt_const_volatile_list type cast ) opt_NAME\n" );
+      YYTRACE( "explain_gibberish: EXPLAIN ( opt_const_volatile_list type cast ) opt_NAME\n" );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
       YYTRACE( "\ttype='%s'\n", $4 );
       YYTRACE( "\tcast='%s'\n", $5 );
@@ -708,6 +722,10 @@ explain_command
       explain_cast( $3, $4, $5, $7 );
     }
   ;
+
+/*****************************************************************************/
+/*  set                                                                      */
+/*****************************************************************************/
 
 set_command
   : T_SET opt_NAME EOL
@@ -718,20 +736,296 @@ set_command
     }
   ;
 
-opt_NAME
-  : T_NAME
+/*****************************************************************************/
+/*  english productions                                                      */
+/*****************************************************************************/
+
+decl_english
+  : func_decl_english
+  | opt_const_volatile_list T_BLOCK T_RETURNING decl_english
     {
-      YYTRACE( "opt_NAME: NAME\n" );
+      char const *sp = "";
+      YYTRACE( "decl_english: opt_const_volatile_list BLOCK RETURNING decl_english\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
+      YYTRACE( "\tdecl_english.left='%s'\n", $4.left );
+      YYTRACE( "\tdecl_english.right='%s'\n", $4.right );
+      YYTRACE( "\tdecl_english.type='%s'\n", $4.type );
+      if (c_ident_kind == C_FUNCTION)
+        unsupp( "Block returning function",
+                "block returning pointer to function" );
+      else if (c_ident_kind==C_ARRAY_DIM || c_ident_kind==C_ARRAY_NO_DIM)
+        unsupp( "Block returning array",
+                "block returning pointer" );
+      if (strlen($1) != 0)
+        sp = " ";
+      $$.left = cat( $4.left, strdup( "(^" ), strdup( sp ), $1, strdup( sp ), NULL );
+      $$.right = cat( strdup( ")()" ), $4.right, NULL );
+      $$.type = $4.type;
+      c_ident_kind = C_BLOCK;
+    }
+
+  | opt_const_volatile_list T_BLOCK '(' decl_list_english ')' T_RETURNING decl_english
+    {
+      char const *sp = "";
+      YYTRACE( "decl_english: opt_const_volatile_list BLOCK RETURNING decl_english\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
+      YYTRACE( "\tdecl_list_english='%s'\n", $4 );
+      YYTRACE( "\tdecl_english.left='%s'\n", $7.left );
+      YYTRACE( "\tdecl_english.right='%s'\n", $7.right );
+      YYTRACE( "\tdecl_english.type='%s'\n", $7.type );
+      if (c_ident_kind == C_FUNCTION)
+        unsupp( "Block returning function",
+                "block returning pointer to function" );
+      else if (c_ident_kind==C_ARRAY_DIM || c_ident_kind==C_ARRAY_NO_DIM)
+        unsupp( "Block returning array",
+                "block returning pointer" );
+      if (strlen($1) != 0)
+          sp = " ";
+      $$.left = cat( $7.left, strdup( "(^" ), strdup( sp ), $1, strdup( sp ), NULL );
+      $$.right = cat( strdup( ")(" ), $4, strdup( ")" ), $7.right, NULL );
+      $$.type = $7.type;
+      c_ident_kind = C_BLOCK;
+    }
+
+  | T_ARRAY array_dimension T_OF decl_english
+    {
+      YYTRACE( "decl_english: ARRAY array_dimension OF decl_english\n" );
+      YYTRACE( "\tarray_dimension='%s'\n", $2 );
+      YYTRACE( "\tdecl_english.left='%s'\n", $4.left );
+      YYTRACE( "\tdecl_english.right='%s'\n", $4.right );
+      YYTRACE( "\tdecl_english.type='%s'\n", $4.type );
+      if ( c_ident_kind == C_FUNCTION )
+        unsupp( "Array of function", "array of pointer to function" );
+      else if ( c_ident_kind == C_ARRAY_NO_DIM )
+        unsupp( "Inner array of unspecified size", "array of pointer" );
+      else if ( c_ident_kind == C_VOID )
+        unsupp( "Array of void", "pointer to void" );
+      c_ident_kind = array_has_dim ? C_ARRAY_DIM : C_ARRAY_NO_DIM;
+      $$.left = $4.left;
+      $$.right = cat( $2, $4.right, NULL );
+      $$.type = $4.type;
+      YYTRACE( "\n\tdecl_english now =\n" );
+      YYTRACE( "\t\tdecl_english.left='%s'\n", $$.left );
+      YYTRACE( "\t\tdecl_english.right='%s'\n", $$.right );
+      YYTRACE( "\t\tdecl_english.type='%s'\n", $$.type );
+      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+    }
+
+  | opt_const_volatile_list T_POINTER T_TO decl_english
+    {
+      char const *op = "", *cp = "", *sp = "";
+
+      YYTRACE( "decl_english: opt_const_volatile_list POINTER TO decl_english\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
+      YYTRACE( "\tdecl_english.left='%s'\n", $4.left );
+      YYTRACE( "\tdecl_english.right='%s'\n", $4.right );
+      YYTRACE( "\tdecl_english.type='%s'\n", $4.type );
+      if ( c_ident_kind == C_ARRAY_NO_DIM )
+        unsupp( "Pointer to array of unspecified dimension",
+                "pointer to object" );
+      if ( c_ident_kind == C_ARRAY_NO_DIM || c_ident_kind == C_ARRAY_DIM ||
+           c_ident_kind == C_FUNCTION ) {
+        op = "(";
+        cp = ")";
+      }
+      if ( strlen( $1 ) > 0 )
+        sp = " ";
+      $$.left = cat( $4.left, strdup( op ), strdup( "*" ), strdup( sp ), $1, strdup( sp ), NULL );
+      $$.right = cat( strdup( cp ), $4.right, NULL );
+      $$.type = $4.type;
+      c_ident_kind = C_POINTER;
+      YYTRACE( "\n\tdecl_english now =\n" );
+      YYTRACE( "\t\tdecl_english.left='%s'\n", $$.left );
+      YYTRACE( "\t\tdecl_english.right='%s'\n", $$.right );
+      YYTRACE( "\t\tdecl_english.type='%s'\n", $$.type );
+      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+    }
+
+  | opt_const_volatile_list T_POINTER T_TO T_MEMBER T_OF class_struct T_NAME decl_english
+    {
+      char const *op = "", *cp = "", *sp = "";
+
+      YYTRACE( "decl_english: opt_const_volatile_list POINTER TO MEMBER OF class_struct NAME decl_english\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
+      YYTRACE( "\tclass_struct='%s'\n", $6 );
+      YYTRACE( "\tNAME='%s'\n", $7 );
+      YYTRACE( "\tdecl_english.left='%s'\n", $8.left );
+      YYTRACE( "\tdecl_english.right='%s'\n", $8.right );
+      YYTRACE( "\tdecl_english.type='%s'\n", $8.type );
+      if (opt_lang != LANG_CXX)
+        unsupp( "pointer to member of class", NULL );
+      if ( c_ident_kind == C_ARRAY_NO_DIM )
+        unsupp( "Pointer to array of unspecified dimension",
+                "pointer to object" );
+      if ( c_ident_kind == C_ARRAY_DIM || c_ident_kind == C_ARRAY_NO_DIM ||
+           c_ident_kind == C_FUNCTION ) {
+        op = "(";
+        cp = ")";
+      }
+      if (strlen($1) != 0)
+        sp = " ";
+      $$.left = cat( $8.left, strdup( op ), $7 ,strdup( "::*" ), strdup( sp ), $1,strdup( sp ), NULL );
+      $$.right = cat( strdup( cp ), $8.right, NULL );
+      $$.type = $8.type;
+      c_ident_kind = C_POINTER;
+      YYTRACE( "\n\tdecl_english now =\n" );
+      YYTRACE( "\t\tdecl_english.left='%s'\n", $$.left );
+      YYTRACE( "\t\tdecl_english.right='%s'\n", $$.right );
+      YYTRACE( "\t\tdecl_english.type='%s'\n", $$.type );
+      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+    }
+
+  | opt_const_volatile_list T_REFERENCE T_TO decl_english
+    {
+      char const *op = "", *cp = "", *sp = "";
+
+      YYTRACE( "decl_english: opt_const_volatile_list REFERENCE TO decl_english\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
+      YYTRACE( "\tdecl_english.left='%s'\n", $4.left );
+      YYTRACE( "\tdecl_english.right='%s'\n", $4.right );
+      YYTRACE( "\tdecl_english.type='%s'\n", $4.type );
+      if ( opt_lang != LANG_CXX )
+        unsupp( "reference", NULL );
+      if ( c_ident_kind == C_VOID )
+        unsupp( "Reference to void", "pointer to void" );
+      else if ( c_ident_kind == C_ARRAY_NO_DIM )
+        unsupp( "Reference to array of unspecified dimension",
+                "reference to object" );
+      if ( c_ident_kind == C_ARRAY_DIM || c_ident_kind == C_ARRAY_NO_DIM ||
+           c_ident_kind == C_FUNCTION ) {
+        op = "(";
+        cp = ")";
+      }
+      if ( strlen( $1 ) != 0 )
+        sp = " ";
+      $$.left = cat( $4.left, strdup( op ), strdup( "&" ), strdup( sp ), $1, strdup( sp ), NULL );
+      $$.right = cat( strdup( cp ), $4.right, NULL );
+      $$.type = $4.type;
+      c_ident_kind = CXX_REFERENCE;
+      YYTRACE( "\n\tdecl_english now =\n" );
+      YYTRACE( "\t\tdecl_english.left='%s'\n", $$.left );
+      YYTRACE( "\t\tdecl_english.right='%s'\n", $$.right );
+      YYTRACE( "\t\tdecl_english.type='%s'\n", $$.type );
+      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+    }
+
+  | opt_const_volatile_list type
+    {
+      YYTRACE( "decl_english: opt_const_volatile_list type\n" );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
+      YYTRACE( "\ttype='%s'\n", $2 );
+      $$.left = strdup( "" );
+      $$.right = strdup( "" );
+      $$.type = cat( $1, strdup( strlen( $1 ) ? " " : "" ), $2, NULL );
+      if ( strcmp( $2, "void" ) == 0 )
+        c_ident_kind = C_VOID;
+      else if ( strncmp( $2, "struct", 6 ) == 0 ||
+                strncmp( $2, "class", 5 ) == 0 )
+        c_ident_kind = C_STRUCT;
+      else
+        c_ident_kind = C_BUILTIN;
+      YYTRACE( "\n\tdecl_english now =\n" );
+      YYTRACE( "\t\tdecl_english.left='%s'\n", $$.left );
+      YYTRACE( "\t\tdecl_english.right='%s'\n", $$.right );
+      YYTRACE( "\t\tdecl_english.type='%s'\n", $$.type );
+      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind )  ); 
+    }
+  ;
+
+decl_list_english
+  : /* empty */
+    {
+      YYTRACE( "decl_list_english: EMPTY\n" );
+      $$ = strdup( "" );
+    }
+
+  | decl_list_english T_COMMA decl_list_english
+    {
+      YYTRACE( "decl_list_english: decl_list_english1, decl_list_english2\n" );
+      YYTRACE( "\tdecl_list_english1='%s'\n", $1 );
+      YYTRACE( "\tdecl_list_english2='%s'\n", $3 );
+      $$ = cat( $1, strdup( ", " ), $3, NULL );
+    }
+
+  | T_NAME
+    {
+      YYTRACE( "decl_list_english: NAME\n" );
       YYTRACE( "\tNAME='%s'\n", $1 );
       $$ = $1;
     }
 
-  | /* empty */
+  | decl_english
     {
-      YYTRACE( "opt_NAME: EMPTY\n" );
-      $$ = strdup( UNKNOWN_NAME );
+      YYTRACE( "decl_list_english: decl_english\n" );
+      YYTRACE( "\tdeclaration.left='%s'\n", $1.left );
+      YYTRACE( "\tdeclaration.right='%s'\n", $1.right );
+      YYTRACE( "\tdeclaration.type='%s'\n", $1.type );
+      $$ = cat( $1.type, strdup( " " ), $1.left, $1.right, NULL );
+    }
+
+  | T_NAME T_AS decl_english
+    {
+      YYTRACE( "decl_list_english: NAME AS decl_english\n" );
+      YYTRACE( "\tNAME='%s'\n", $1 );
+      YYTRACE( "\tdeclaration.left='%s'\n", $3.left );
+      YYTRACE( "\tdeclaration.right='%s'\n", $3.right );
+      YYTRACE( "\tdeclaration.type='%s'\n", $3.type );
+      $$ = cat( $3.type, strdup( " " ), $3.left, $1, $3.right, NULL );
     }
   ;
+
+func_decl_english
+  : T_FUNCTION T_RETURNING decl_english
+    {
+      YYTRACE( "func_decl_english: FUNCTION RETURNING decl_english\n" );
+      YYTRACE( "\tdecl_english.left='%s'\n", $3.left );
+      YYTRACE( "\tdecl_english.right='%s'\n", $3.right );
+      YYTRACE( "\tdecl_english.type='%s'\n", $3.type );
+      if ( c_ident_kind == C_FUNCTION )
+        unsupp( "Function returning function",
+                "function returning pointer to function" );
+      else if ( c_ident_kind == C_ARRAY_DIM || c_ident_kind == C_ARRAY_NO_DIM )
+        unsupp( "Function returning array",
+                "function returning pointer" );
+      $$.left = $3.left;
+      $$.right = cat( strdup( "()" ), $3.right, NULL );
+      $$.type = $3.type;
+      c_ident_kind = C_FUNCTION;
+      YYTRACE( "\n\tfunc_decl_english now =\n" );
+      YYTRACE( "\t\tfunc_decl_english.left='%s'\n", $$.left );
+      YYTRACE( "\t\tfunc_decl_english.right='%s'\n", $$.right );
+      YYTRACE( "\t\tfunc_decl_english.type='%s'\n", $$.type );
+      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+    }
+
+  | T_FUNCTION '(' decl_list_english ')' T_RETURNING decl_english
+    {
+      YYTRACE( "func_decl_english: FUNCTION (decl_list_english) RETURNING decl_english\n" );
+      YYTRACE( "\tdecl_list_english='%s'\n", $3 );
+      YYTRACE( "\tdecl_english.left='%s'\n", $6.left );
+      YYTRACE( "\tdecl_english.right='%s'\n", $6.right );
+      YYTRACE( "\tdecl_english.type='%s'\n", $6.type );
+      if (c_ident_kind == C_FUNCTION)
+        unsupp( "Function returning function",
+                "function returning pointer to function" );
+      else if (c_ident_kind==C_ARRAY_DIM || c_ident_kind==C_ARRAY_NO_DIM)
+        unsupp( "Function returning array",
+                "function returning pointer" );
+      $$.left = $6.left;
+      $$.right = cat( strdup( "(" ), $3, strdup( ")" ), $6.right ,NULL );
+      $$.type = $6.type;
+      c_ident_kind = C_FUNCTION;
+      YYTRACE( "\n\tfunc_decl_english now =\n" );
+      YYTRACE( "\t\tfunc_decl_english.left='%s'\n", $$.left );
+      YYTRACE( "\t\tfunc_decl_english.right='%s'\n", $$.right );
+      YYTRACE( "\t\tfunc_decl_english.type='%s'\n", $$.type );
+      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+    }
+  ;
+
+/*****************************************************************************/
+/*  miscellaneous                                                            */
+/*****************************************************************************/
 
 cdecl
   : cdecl1
@@ -838,7 +1132,7 @@ cdecl1
       YYTRACE( "cdecl1: NAME\n" );
       YYTRACE( "\tNAME='%s'\n", $1 );
       c_ident = $1;
-      $$ = strdup("");
+      $$ = strdup( "" );
       c_ident_kind = C_NAME;
       YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
     }
@@ -865,48 +1159,6 @@ cast_list
   | T_NAME
     {
       $$ = $1;
-    }
-  ;
-
-adecl_list
-  : /* empty */
-    {
-      YYTRACE( "adecl_list: EMPTY\n" );
-      $$ = strdup( "" );
-    }
-
-  | adecl_list T_COMMA adecl_list
-    {
-      YYTRACE( "adecl_list: adecl_list1, adecl_list2\n" );
-      YYTRACE( "\tadecl_list1='%s'\n", $1 );
-      YYTRACE( "\tadecl_list2='%s'\n", $3 );
-      $$ = cat( $1, strdup( ", " ), $3, NULL );
-    }
-
-  | T_NAME
-    {
-      YYTRACE( "adecl_list: NAME\n" );
-      YYTRACE( "\tNAME='%s'\n", $1 );
-      $$ = $1;
-    }
-
-  | adecl
-    {
-      YYTRACE( "adecl_list: adecl\n" );
-      YYTRACE( "\tadecl.left='%s'\n", $1.left );
-      YYTRACE( "\tadecl.right='%s'\n", $1.right );
-      YYTRACE( "\tadecl.type='%s'\n", $1.type );
-      $$ = cat( $1.type, strdup( " " ), $1.left, $1.right, NULL );
-    }
-
-  | T_NAME T_AS adecl
-    {
-      YYTRACE( "adecl_list: NAME AS adecl\n" );
-      YYTRACE( "\tNAME='%s'\n", $1 );
-      YYTRACE( "\tadecl.left='%s'\n", $3.left );
-      YYTRACE( "\tadecl.right='%s'\n", $3.right );
-      YYTRACE( "\tadecl.type='%s'\n", $3.type );
-      $$ = cat( $3.type, strdup( " " ), $3.left, $1, $3.right, NULL );
     }
   ;
 
@@ -1029,244 +1281,6 @@ cdims
     }
   ;
 
-adecl
-  : T_FUNCTION T_RETURNING adecl
-    {
-      YYTRACE( "adecl: FUNCTION RETURNING adecl\n" );
-      YYTRACE( "\tadecl.left='%s'\n", $3.left );
-      YYTRACE( "\tadecl.right='%s'\n", $3.right );
-      YYTRACE( "\tadecl.type='%s'\n", $3.type );
-      if ( c_ident_kind == C_FUNCTION )
-        unsupp( "Function returning function",
-                "function returning pointer to function" );
-      else if ( c_ident_kind == C_ARRAY_DIM || c_ident_kind == C_ARRAY_NO_DIM )
-        unsupp( "Function returning array",
-                "function returning pointer" );
-      $$.left = $3.left;
-      $$.right = cat( strdup( "()" ), $3.right, NULL );
-      $$.type = $3.type;
-      c_ident_kind = C_FUNCTION;
-      YYTRACE( "\n\tadecl now =\n" );
-      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
-      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
-      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | T_FUNCTION '(' adecl_list ')' T_RETURNING adecl
-    {
-      YYTRACE( "adecl: FUNCTION (adecl_list) RETURNING adecl\n" );
-      YYTRACE( "\tadecl_list='%s'\n", $3 );
-      YYTRACE( "\tadecl.left='%s'\n", $6.left );
-      YYTRACE( "\tadecl.right='%s'\n", $6.right );
-      YYTRACE( "\tadecl.type='%s'\n", $6.type );
-      if (c_ident_kind == C_FUNCTION)
-        unsupp( "Function returning function",
-                "function returning pointer to function" );
-      else if (c_ident_kind==C_ARRAY_DIM || c_ident_kind==C_ARRAY_NO_DIM)
-        unsupp( "Function returning array",
-                "function returning pointer" );
-      $$.left = $6.left;
-      $$.right = cat( strdup( "(" ), $3, strdup( ")" ), $6.right ,NULL );
-      $$.type = $6.type;
-      c_ident_kind = C_FUNCTION;
-      YYTRACE( "\n\tadecl now =\n" );
-      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
-      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
-      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | opt_const_volatile_list T_BLOCK T_RETURNING adecl
-    {
-      char const *sp = "";
-      YYTRACE( "adecl: opt_const_volatile_list BLOCK RETURNING adecl\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\tadecl.left='%s'\n", $4.left );
-      YYTRACE( "\tadecl.right='%s'\n", $4.right );
-      YYTRACE( "\tadecl.type='%s'\n", $4.type );
-      if (c_ident_kind == C_FUNCTION)
-        unsupp( "Block returning function",
-                "block returning pointer to function" );
-      else if (c_ident_kind==C_ARRAY_DIM || c_ident_kind==C_ARRAY_NO_DIM)
-        unsupp( "Block returning array",
-                "block returning pointer" );
-      if (strlen($1) != 0)
-        sp = " ";
-      $$.left = cat( $4.left, strdup( "(^" ), strdup( sp ), $1, strdup( sp ), NULL );
-      $$.right = cat( strdup( ")()" ), $4.right, NULL );
-      $$.type = $4.type;
-      c_ident_kind = C_BLOCK;
-    }
-
-  | opt_const_volatile_list T_BLOCK '(' adecl_list ')' T_RETURNING adecl
-    {
-      char const *sp = "";
-      YYTRACE( "adecl: opt_const_volatile_list BLOCK RETURNING adecl\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\tadecl_list='%s'\n", $4 );
-      YYTRACE( "\tadecl.left='%s'\n", $7.left );
-      YYTRACE( "\tadecl.right='%s'\n", $7.right );
-      YYTRACE( "\tadecl.type='%s'\n", $7.type );
-      if (c_ident_kind == C_FUNCTION)
-        unsupp( "Block returning function",
-                "block returning pointer to function" );
-      else if (c_ident_kind==C_ARRAY_DIM || c_ident_kind==C_ARRAY_NO_DIM)
-        unsupp( "Block returning array",
-                "block returning pointer" );
-      if (strlen($1) != 0)
-          sp = " ";
-      $$.left = cat( $7.left, strdup( "(^" ), strdup( sp ), $1, strdup( sp ), NULL );
-      $$.right = cat( strdup( ")(" ), $4, strdup( ")" ), $7.right, NULL );
-      $$.type = $7.type;
-      c_ident_kind = C_BLOCK;
-    }
-
-  | T_ARRAY array_dimension T_OF adecl
-    {
-      YYTRACE( "adecl: ARRAY array_dimension OF adecl\n" );
-      YYTRACE( "\tarray_dimension='%s'\n", $2 );
-      YYTRACE( "\tadecl.left='%s'\n", $4.left );
-      YYTRACE( "\tadecl.right='%s'\n", $4.right );
-      YYTRACE( "\tadecl.type='%s'\n", $4.type );
-      if ( c_ident_kind == C_FUNCTION )
-        unsupp( "Array of function", "array of pointer to function" );
-      else if ( c_ident_kind == C_ARRAY_NO_DIM )
-        unsupp( "Inner array of unspecified size", "array of pointer" );
-      else if ( c_ident_kind == C_VOID )
-        unsupp( "Array of void", "pointer to void" );
-      c_ident_kind = array_has_dim ? C_ARRAY_DIM : C_ARRAY_NO_DIM;
-      $$.left = $4.left;
-      $$.right = cat( $2, $4.right, NULL );
-      $$.type = $4.type;
-      YYTRACE( "\n\tadecl now =\n" );
-      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
-      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
-      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | opt_const_volatile_list T_POINTER T_TO adecl
-    {
-      char const *op = "", *cp = "", *sp = "";
-
-      YYTRACE( "adecl: opt_const_volatile_list POINTER TO adecl\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\tadecl.left='%s'\n", $4.left );
-      YYTRACE( "\tadecl.right='%s'\n", $4.right );
-      YYTRACE( "\tadecl.type='%s'\n", $4.type );
-      if ( c_ident_kind == C_ARRAY_NO_DIM )
-        unsupp( "Pointer to array of unspecified dimension",
-                "pointer to object" );
-      if ( c_ident_kind == C_ARRAY_NO_DIM || c_ident_kind == C_ARRAY_DIM ||
-           c_ident_kind == C_FUNCTION ) {
-        op = "(";
-        cp = ")";
-      }
-      if ( strlen( $1 ) > 0 )
-        sp = " ";
-      $$.left = cat( $4.left, strdup( op ), strdup( "*" ), strdup( sp ), $1, strdup( sp ), NULL );
-      $$.right = cat( strdup( cp ), $4.right, NULL );
-      $$.type = $4.type;
-      c_ident_kind = C_POINTER;
-      YYTRACE( "\n\tadecl now =\n" );
-      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
-      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
-      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | opt_const_volatile_list T_POINTER T_TO T_MEMBER T_OF class_struct T_NAME adecl
-    {
-      char const *op = "", *cp = "", *sp = "";
-
-      YYTRACE( "adecl: opt_const_volatile_list POINTER TO MEMBER OF class_struct NAME adecl\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\tclass_struct='%s'\n", $6 );
-      YYTRACE( "\tNAME='%s'\n", $7 );
-      YYTRACE( "\tadecl.left='%s'\n", $8.left );
-      YYTRACE( "\tadecl.right='%s'\n", $8.right );
-      YYTRACE( "\tadecl.type='%s'\n", $8.type );
-      if (opt_lang != LANG_CXX)
-        unsupp( "pointer to member of class", NULL );
-      if ( c_ident_kind == C_ARRAY_NO_DIM )
-        unsupp( "Pointer to array of unspecified dimension",
-                "pointer to object" );
-      if ( c_ident_kind == C_ARRAY_DIM || c_ident_kind == C_ARRAY_NO_DIM ||
-           c_ident_kind == C_FUNCTION ) {
-        op = "(";
-        cp = ")";
-      }
-      if (strlen($1) != 0)
-        sp = " ";
-      $$.left = cat( $8.left, strdup( op ), $7 ,strdup( "::*" ), strdup( sp ), $1,strdup( sp ), NULL );
-      $$.right = cat( strdup( cp ), $8.right, NULL );
-      $$.type = $8.type;
-      c_ident_kind = C_POINTER;
-      YYTRACE( "\n\tadecl now =\n" );
-      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
-      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
-      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | opt_const_volatile_list T_REFERENCE T_TO adecl
-    {
-      char const *op = "", *cp = "", *sp = "";
-
-      YYTRACE( "adecl: opt_const_volatile_list REFERENCE TO adecl\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\tadecl.left='%s'\n", $4.left );
-      YYTRACE( "\tadecl.right='%s'\n", $4.right );
-      YYTRACE( "\tadecl.type='%s'\n", $4.type );
-      if ( opt_lang != LANG_CXX )
-        unsupp( "reference", NULL );
-      if ( c_ident_kind == C_VOID )
-        unsupp( "Reference to void", "pointer to void" );
-      else if ( c_ident_kind == C_ARRAY_NO_DIM )
-        unsupp( "Reference to array of unspecified dimension",
-                "reference to object" );
-      if ( c_ident_kind == C_ARRAY_DIM || c_ident_kind == C_ARRAY_NO_DIM ||
-           c_ident_kind == C_FUNCTION ) {
-        op = "(";
-        cp = ")";
-      }
-      if ( strlen( $1 ) != 0 )
-        sp = " ";
-      $$.left = cat( $4.left, strdup( op ), strdup( "&" ), strdup( sp ), $1, strdup( sp ), NULL );
-      $$.right = cat( strdup( cp ), $4.right, NULL );
-      $$.type = $4.type;
-      c_ident_kind = CXX_REFERENCE;
-      YYTRACE( "\n\tadecl now =\n" );
-      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
-      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
-      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | opt_const_volatile_list type
-    {
-      YYTRACE( "adecl: opt_const_volatile_list type\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\ttype='%s'\n", $2 );
-      $$.left = strdup( "" );
-      $$.right = strdup( "" );
-      $$.type = cat( $1, strdup( strlen( $1 ) ? " " : "" ), $2, NULL );
-      if ( strcmp( $2, "void" ) == 0 )
-        c_ident_kind = C_VOID;
-      else if ( strncmp( $2, "struct", 6 ) == 0 ||
-                strncmp( $2, "class", 5 ) == 0 )
-        c_ident_kind = C_STRUCT;
-      else
-        c_ident_kind = C_BUILTIN;
-      YYTRACE( "\n\tadecl now =\n" );
-      YYTRACE( "\t\tadecl.left='%s'\n", $$.left );
-      YYTRACE( "\t\tadecl.right='%s'\n", $$.right );
-      YYTRACE( "\t\tadecl.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind )  ); 
-    }
-  ;
-
 array_dimension
   : /* empty */
     {
@@ -1311,18 +1325,18 @@ c_type
       $$ = $1;
     }
 
-  | c_type_name
+  | c_builtin_type
     {
-      YYTRACE( "c_type: c_type_name\n" );
-      YYTRACE( "\tc_type_name='%s'\n", $1 );
+      YYTRACE( "c_type: c_builtin_type\n" );
+      YYTRACE( "\tc_builtin_type='%s'\n", $1 );
       $$ = $1;
     }
 
-  | mod_list c_type_name
+  | mod_list c_builtin_type
     {
-      YYTRACE( "c_type: mod_list c_type_name\n" );
+      YYTRACE( "c_type: mod_list c_builtin_type\n" );
       YYTRACE( "\tmod_list='%s'\n", $1 );
-      YYTRACE( "\tc_type_name='%s'\n", $2 );
+      YYTRACE( "\tc_builtin_type='%s'\n", $2 );
       $$ = cat( $1, strdup(" "), $2, NULL );
     }
 
@@ -1352,26 +1366,18 @@ class_struct
     }
   ;
 
-c_type_name
-  : T_INT
+c_builtin_type
+  : T_BOOL
     {
-      YYTRACE( "c_type_name: INT\n" );
-      YYTRACE( "\tINT='%s'\n", $1 );
-      c_type_add( C_TYPE_INT );
-      $$ = $1;
-    }
-
-  | T_BOOL
-    {
-      YYTRACE( "c_type_name: BOOL\n" );
-      YYTRACE( "\tCHAR='%s'\n", $1 );
+      YYTRACE( "c_builtin_type: BOOL\n" );
+      YYTRACE( "\tBOOL='%s'\n", $1 );
       c_type_add( C_TYPE_BOOL );
       $$ = $1;
     }
 
   | T_CHAR
     {
-      YYTRACE( "c_type_name: CHAR\n" );
+      YYTRACE( "c_builtin_type: CHAR\n" );
       YYTRACE( "\tCHAR='%s'\n", $1 );
       c_type_add( C_TYPE_CHAR );
       $$ = $1;
@@ -1379,18 +1385,25 @@ c_type_name
 
   | T_WCHAR_T
     {
-      YYTRACE( "c_type_name: WCHAR_T\n" );
-      YYTRACE( "\tCHAR='%s'\n", $1 );
+      YYTRACE( "c_builtin_type: WCHAR_T\n" );
+      YYTRACE( "\tWCHAR_T='%s'\n", $1 );
       if ( opt_lang == LANG_C_KNR )
         illegal( opt_lang, $1, NULL );
-      else
-        c_type_add( C_TYPE_WCHAR_T );
+      c_type_add( C_TYPE_WCHAR_T );
+      $$ = $1;
+    }
+
+  | T_INT
+    {
+      YYTRACE( "c_builtin_type: INT\n" );
+      YYTRACE( "\tINT='%s'\n", $1 );
+      c_type_add( C_TYPE_INT );
       $$ = $1;
     }
 
   | T_FLOAT
     {
-      YYTRACE( "c_type_name: FLOAT\n" );
+      YYTRACE( "c_builtin_type: FLOAT\n" );
       YYTRACE( "\tFLOAT='%s'\n", $1 );
       c_type_add( C_TYPE_FLOAT );
       $$ = $1;
@@ -1398,7 +1411,7 @@ c_type_name
 
   | T_DOUBLE
     {
-      YYTRACE( "c_type_name: DOUBLE\n" );
+      YYTRACE( "c_builtin_type: DOUBLE\n" );
       YYTRACE( "\tDOUBLE='%s'\n", $1 );
       c_type_add( C_TYPE_DOUBLE );
       $$ = $1;
@@ -1406,7 +1419,7 @@ c_type_name
 
   | T_VOID
     {
-      YYTRACE( "c_type_name: VOID\n" );
+      YYTRACE( "c_builtin_type: VOID\n" );
       YYTRACE( "\tVOID='%s'\n", $1 );
       c_type_add( C_TYPE_VOID );
       $$ = $1;
@@ -1484,26 +1497,6 @@ modifier
     }
   ;
 
-opt_const_volatile_list
-  : T_CONST_VOLATILE opt_const_volatile_list
-    {
-      YYTRACE( "opt_const_volatile_list: CONST_VOLATILE opt_const_volatile_list\n" );
-      YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
-      if ( opt_lang == LANG_C_KNR )
-        illegal( opt_lang, $1, NULL );
-      else if ( strcmp($1, "noalias") == 0 && opt_lang == LANG_CXX )
-        unsupp( $1, NULL );
-      $$ = cat( $1, strdup( strlen($2) ? " " : "" ), $2, NULL );
-    }
-
-  | /* empty */
-    {
-      YYTRACE( "opt_const_volatile_list: EMPTY\n" );
-      $$ = strdup("");
-    }
-  ;
-
 const_volatile_list
   : T_CONST_VOLATILE opt_const_volatile_list
     {
@@ -1513,8 +1506,32 @@ const_volatile_list
       if ( opt_lang == LANG_C_KNR )
         illegal( opt_lang, $1, NULL );
       else if ( strcmp( $1, "noalias" ) == 0 && opt_lang == LANG_CXX )
-        unsupp($1, NULL);
+        unsupp( $1, NULL );
       $$ = cat( $1, strdup( strlen( $2 ) ? " " : "" ), $2, NULL );
+    }
+  ;
+
+opt_const_volatile_list
+  : /* empty */
+    {
+      YYTRACE( "opt_const_volatile_list: EMPTY\n" );
+      $$ = strdup( "" );
+    }
+  | const_volatile_list
+  ;
+
+opt_NAME
+  : /* empty */
+    {
+      YYTRACE( "opt_NAME: EMPTY\n" );
+      $$ = strdup( UNKNOWN_NAME );
+    }
+
+  | T_NAME
+    {
+      YYTRACE( "opt_NAME: NAME\n" );
+      YYTRACE( "\tNAME='%s'\n", $1 );
+      $$ = $1;
     }
   ;
 
@@ -1530,16 +1547,16 @@ storage
   ;
 
 opt_storage
-  : storage
+  : /* empty */
+    {
+      YYTRACE( "opt_storage: EMPTY\n" );
+      $$ = strdup( "" );
+    }
+
+  | storage
     {
       YYTRACE( "opt_storage: storage=%s\n", $1 );
       $$ = $1;
-    }
-
-  | /* empty */
-    {
-      YYTRACE( "opt_storage: EMPTY\n" );
-      $$ = strdup("");
     }
   ;
 
