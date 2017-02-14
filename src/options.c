@@ -146,15 +146,16 @@ static lang_t parse_lang( char const *s ) {
   typedef struct lang_map lang_map_t;
 
   static lang_map_t const LANG_MAP[] = {
-    { "ansic",  LANG_C_ANSI },
-    { "ansi-c", LANG_C_ANSI },
-    { "knr",    LANG_C_KNR  },
-    { "knrc",   LANG_C_KNR  },
-    { "knr-c",  LANG_C_KNR  },
-    { "c89",    LANG_C_ANSI },
-    { "c99",    LANG_C_99   },
-    { "c++",    LANG_CXX    },
-    { NULL,     LANG_NONE   },
+    { "ansic",  LANG_C_89  },
+    { "ansi-c", LANG_C_89  },
+    { "knr",    LANG_C_KNR },
+    { "knrc",   LANG_C_KNR },
+    { "knr-c",  LANG_C_KNR },
+    { "c89",    LANG_C_89  },
+    { "c95",    LANG_C_95  },
+    { "c99",    LANG_C_99  },
+    { "c++",    LANG_CXX   },
+    { NULL,     LANG_NONE  },
   };
 
   size_t values_buf_size = 1;           // for trailing null
@@ -201,7 +202,7 @@ static void parse_options( int argc, char const *argv[] ) {
     SET_OPTION( opt );
     switch ( opt ) {
       case '8':
-      case 'a': opt_lang        = LANG_C_ANSI;          break;
+      case 'a': opt_lang        = LANG_C_89;            break;
       case '9': opt_lang        = LANG_C_99;            break;
       case 'c': opt_make_c      = true;                 break;
       case 'd': opt_debug       = true;
@@ -258,6 +259,22 @@ static void usage( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+char const* lang_name( lang_t lang ) {
+  switch ( lang ) {
+    case LANG_NONE : return "";
+    case LANG_C_KNR: return "K&R C";
+    case LANG_C_89 : return "C89";
+    case LANG_C_95 : return "C95";
+    case LANG_C_99 : return "C99";
+    case LANG_C_11 : return "C11";
+    case LANG_CXX  : return "C++";
+    default:
+      PMESSAGE_EXIT( EX_SOFTWARE,
+        "internal error: \"%d\": unexpected value for lang\n", (int)lang
+      );
+  } // switch
+}
+
 void options_init( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
 
@@ -266,7 +283,7 @@ void options_init( int argc, char const *argv[] ) {
        strcasecmp( me, "cxxdecl" ) == 0 ) {
     opt_lang = LANG_CXX;
   } else {
-    opt_lang = LANG_C_ANSI;
+    opt_lang = LANG_C_11;
   }
 
   parse_options( argc, argv );

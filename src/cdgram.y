@@ -60,17 +60,18 @@ typedef enum c_ident_kind c_ident_kind_t;
 typedef unsigned c_type_bits_t;
 
 // local constants
-static c_type_bits_t const C_TYPE_VOID     = 0x0001;
-static c_type_bits_t const C_TYPE_BOOL     = 0x0002;
-static c_type_bits_t const C_TYPE_CHAR     = 0x0004;
-static c_type_bits_t const C_TYPE_WCHAR_T  = 0x0008;
-static c_type_bits_t const C_TYPE_SHORT    = 0x0010;
-static c_type_bits_t const C_TYPE_INT      = 0x0020;
-static c_type_bits_t const C_TYPE_LONG     = 0x0040;
-static c_type_bits_t const C_TYPE_SIGNED   = 0x0080;
-static c_type_bits_t const C_TYPE_UNSIGNED = 0x0100;
-static c_type_bits_t const C_TYPE_FLOAT    = 0x0200;
-static c_type_bits_t const C_TYPE_DOUBLE   = 0x0400;
+static c_type_bits_t const C_TYPE_VOID      = 0x0001;
+static c_type_bits_t const C_TYPE_BOOL      = 0x0002;
+static c_type_bits_t const C_TYPE_CHAR      = 0x0004;
+static c_type_bits_t const C_TYPE_WCHAR_T   = 0x0008;
+static c_type_bits_t const C_TYPE_SHORT     = 0x0010;
+static c_type_bits_t const C_TYPE_INT       = 0x0020;
+static c_type_bits_t const C_TYPE_LONG      = 0x0040;
+static c_type_bits_t const C_TYPE_LONG_LONG = 0x0080;
+static c_type_bits_t const C_TYPE_SIGNED    = 0x0100;
+static c_type_bits_t const C_TYPE_UNSIGNED  = 0x0200;
+static c_type_bits_t const C_TYPE_FLOAT     = 0x0400;
+static c_type_bits_t const C_TYPE_DOUBLE    = 0x0800;
 
 /**
  * Mapping between C type names and bit representations.
@@ -82,17 +83,18 @@ struct c_type_map {
 typedef struct c_type_map c_type_map_t;
 
 static c_type_map_t const C_TYPE_MAP[] = {
-  { "void",     C_TYPE_VOID     },
-  { "bool",     C_TYPE_BOOL     },
-  { "char",     C_TYPE_CHAR     },
-  { "wchar_t",  C_TYPE_WCHAR_T  },
-  { "short",    C_TYPE_SHORT    },
-  { "int",      C_TYPE_INT      },
-  { "long",     C_TYPE_LONG     },
-  { "signed",   C_TYPE_SIGNED   },
-  { "unsigned", C_TYPE_UNSIGNED },
-  { "float",    C_TYPE_FLOAT    },
-  { "double",   C_TYPE_DOUBLE   }
+  { "void",       C_TYPE_VOID       },
+  { "bool",       C_TYPE_BOOL       },
+  { "char",       C_TYPE_CHAR       },
+  { "wchar_t",    C_TYPE_WCHAR_T    },
+  { "short",      C_TYPE_SHORT      },
+  { "int",        C_TYPE_INT        },
+  { "long",       C_TYPE_LONG       },
+  { "long long",  C_TYPE_LONG_LONG  },
+  { "signed",     C_TYPE_SIGNED     },
+  { "unsigned",   C_TYPE_UNSIGNED   },
+  { "float",      C_TYPE_FLOAT      },
+  { "double",     C_TYPE_DOUBLE     }
 };
 
 // local constants
@@ -109,7 +111,7 @@ static char const    *c_ident;
 
 // local functions
 static char const*    c_type_name( c_type_bits_t );
-static void           not_supported( char const*, char const*, char const* );
+static void           illegal( char const*, char const*, char const* );
 static void           unsupp( char const*, char const* );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -117,16 +119,24 @@ static void           unsupp( char const*, char const* );
 /**
  * TODO
  *
- * @param bit TODO
+ * @param type_bit TODO
  */
-static void c_type_add( c_type_bits_t bit ) {
-  if ( c_type_bits & bit )
+static void c_type_add( c_type_bits_t type_bit ) {
+  if ( type_bit == C_TYPE_LONG && (c_type_bits & C_TYPE_LONG) ) {
+    //
+    // TODO
+    //
+    type_bit = C_TYPE_LONG_LONG;
+  }
+
+  if ( !(c_type_bits & type_bit) ) {
+    c_type_bits |= type_bit;
+  } else {
     PRINT_ERR(
-      "\"%s\" may not be specified more than once\n",
-      c_type_name( bit )
+      "error: \"%s\" can not be combined with previous declaration\n",
+      c_type_name( type_bit )
     );
-  else
-    c_type_bits |= bit;
+  }
 }
 
 /**
@@ -147,18 +157,19 @@ static void c_type_check( void ) {
 #define A ANSI
 
   static restriction_t const RESTRICTIONS[][ ARRAY_SIZE( C_TYPE_MAP ) ] = {
-    /*               v b c w s i l s u f d */
-    /* void     */ { _,_,_,_,_,_,_,_,_,_,_ },
-    /* bool     */ { X,_,_,_,_,_,_,_,_,_,_ },
-    /* char     */ { X,X,_,_,_,_,_,_,_,_,_ },
-    /* wchar_t  */ { X,X,X,K,_,_,_,_,_,_,_ },
-    /* short    */ { X,X,X,X,_,_,_,_,_,_,_ },
-    /* int      */ { X,X,X,X,_,_,_,_,_,_,_ },
-    /* long     */ { X,X,X,X,X,_,_,_,_,_,_ },
-    /* signed   */ { X,X,K,X,K,K,K,_,_,_,_ },
-    /* unsigned */ { X,X,_,X,_,_,_,X,_,_,_ },
-    /* float    */ { X,X,X,X,X,X,A,X,X,_,_ },
-    /* double   */ { X,X,X,X,X,X,K,X,X,X,_ }
+    /*                v b c w s i l L s u f d */
+    /* void      */ { _,_,_,_,_,_,_,_,_,_,_,_ },
+    /* bool      */ { X,_,_,_,_,_,_,_,_,_,_,_ },
+    /* char      */ { X,X,_,_,_,_,_,_,_,_,_,_ },
+    /* wchar_t   */ { X,X,X,K,_,_,_,_,_,_,_,_ },
+    /* short     */ { X,X,X,X,_,_,_,_,_,_,_,_ },
+    /* int       */ { X,X,X,X,_,_,_,_,_,_,_,_ },
+    /* long      */ { X,X,X,X,X,_,_,_,_,_,_,_ },
+    /* long long */ { X,X,X,X,K,_,_,_,_,_,_,_ },
+    /* signed    */ { X,X,K,X,K,K,K,_,_,_,_,_ },
+    /* unsigned  */ { X,X,_,X,_,_,_,_,X,_,_,_ },
+    /* float     */ { X,X,X,X,X,X,A,X,X,X,_,_ },
+    /* double    */ { X,X,X,X,X,X,K,X,X,X,X,_ }
   };
 
 #undef _
@@ -177,14 +188,14 @@ static void c_type_check( void ) {
               break;
             case ANSI:
               if ( opt_lang != LANG_C_KNR )
-                not_supported( UNSUPP_ANSI, t1, t2 );
+                illegal( UNSUPP_ANSI, t1, t2 );
               break;
             case KNR:
               if ( opt_lang == LANG_C_KNR )
-                not_supported( UNSUPP_KNR, t1, t2 );
+                illegal( UNSUPP_KNR, t1, t2 );
               break;
             case NEVER:
-              not_supported( UNSUPP_ALL, t1, t2 );
+              illegal( UNSUPP_ALL, t1, t2 );
               break;
           } // switch
         }
@@ -326,7 +337,7 @@ static void do_set( char const *opt ) {
   else if ( strcmp( opt, "preansi" ) == 0)
     { opt_lang = LANG_C_KNR; }
   else if ( strcmp( opt, "ansi" ) == 0)
-    { opt_lang = LANG_C_ANSI; }
+    { opt_lang = LANG_C_89; }
   else if ( strcmp( opt, "cplusplus" ) == 0)
     { opt_lang = LANG_CXX; }
 #ifdef WITH_CDECL_DEBUG
@@ -369,7 +380,7 @@ static void do_set( char const *opt ) {
       printf( "\t   preansi\n" );
     else
       printf( "\t(nopreansi)\n" );
-    if ( opt_lang == LANG_C_ANSI )
+    if ( opt_lang == LANG_C_89 )
       printf( "\t   ansi\n" );
     else
       printf( "\t(noansi)\n" );
@@ -433,14 +444,14 @@ void explain_declaration( char const *storage, char const *constvol1,
   if ( *storage == CXX_REFERENCE ) {
     switch ( c_ident_kind ) {
       case C_FUNCTION:
-        unsupp("Register function", NULL);
+        unsupp( "Register function", NULL );
         break;
       case C_ARRAY_DIM:
       case C_ARRAY_NO_DIM:
-        unsupp("Register array", NULL);
+        unsupp( "Register array", NULL );
         break;
       case C_STRUCT:
-        unsupp("Register struct/union/enum/class", NULL);
+        unsupp( "Register struct/union/enum/class", NULL );
         break;
       default:
         /* suppress warning */;
@@ -458,26 +469,25 @@ void explain_declaration( char const *storage, char const *constvol1,
   printf( "%s\n", type ? type : "int" );
 }
 
-static void print_help( void );
-
-static void not_supported( char const *compiler, char const *type1,
-                           char const *type2 ) {
+static void illegal( char const *lang_version, char const *type1,
+                     char const *type2 ) {
   if ( type2 )
     PRINT_ERR(
-      "Warning: Unsupported in%s C%s -- '%s' with '%s'\n",
-      compiler, opt_lang == LANG_CXX ? "++" : "", type1, type2
+      "warning: \"%s\" with \"%s\" illegal in%s C%s\n",
+      type1, type2,
+      lang_version, opt_lang == LANG_CXX ? "++" : ""
     );
   else
     PRINT_ERR(
-      "Warning: Unsupported in%s C%s -- '%s'\n",
-      compiler, opt_lang == LANG_CXX ? "++" : "", type1
+      "warning: \"%s\" illegal in%s C%s\n",
+      type1, lang_version, opt_lang == LANG_CXX ? "++" : ""
     );
 }
 
-/* Write out a message about something */
-/* being unsupported, possibly with a hint. */
+static void print_help( void );
+
 static void unsupp( char const *s, char const *hint ) {
-  not_supported( UNSUPP_ALL, s, NULL );
+  illegal( UNSUPP_ALL, s, NULL );
   if ( hint )
     PRINT_ERR( "\t(maybe you mean \"%s\")\n", hint );
 }
@@ -742,7 +752,7 @@ cdecl
       YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
       YYTRACE( "\tcdecl='%s'\n", $3 );
       if (opt_lang != LANG_CXX)
-        unsupp("reference", NULL);
+        unsupp( "reference", NULL );
       $$ = cat( $3, $2, strdup( strlen( $2 ) ? " reference to " : "reference to " ), NULL );
       c_ident_kind = CXX_REFERENCE;
       YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
@@ -1040,11 +1050,11 @@ adecl
       YYTRACE( "\tadecl.right='%s'\n", $6.right );
       YYTRACE( "\tadecl.type='%s'\n", $6.type );
       if (c_ident_kind == C_FUNCTION)
-        unsupp("Function returning function",
-                "function returning pointer to function");
+        unsupp( "Function returning function",
+                "function returning pointer to function" );
       else if (c_ident_kind==C_ARRAY_DIM || c_ident_kind==C_ARRAY_NO_DIM)
-        unsupp("Function returning array",
-                "function returning pointer");
+        unsupp( "Function returning array",
+                "function returning pointer" );
       $$.left = $6.left;
       $$.right = cat( strdup( "(" ), $3, strdup( ")" ), $6.right ,NULL );
       $$.type = $6.type;
@@ -1065,11 +1075,11 @@ adecl
       YYTRACE( "\tadecl.right='%s'\n", $4.right );
       YYTRACE( "\tadecl.type='%s'\n", $4.type );
       if (c_ident_kind == C_FUNCTION)
-        unsupp("Block returning function",
-               "block returning pointer to function");
+        unsupp( "Block returning function",
+                "block returning pointer to function" );
       else if (c_ident_kind==C_ARRAY_DIM || c_ident_kind==C_ARRAY_NO_DIM)
-        unsupp("Block returning array",
-               "block returning pointer");
+        unsupp( "Block returning array",
+                "block returning pointer" );
       if (strlen($1) != 0)
         sp = " ";
       $$.left = cat( $4.left, strdup( "(^" ), strdup( sp ), $1, strdup( sp ), NULL );
@@ -1113,7 +1123,7 @@ adecl
       else if ( c_ident_kind == C_ARRAY_NO_DIM )
         unsupp( "Inner array of unspecified size", "array of pointer" );
       else if ( c_ident_kind == C_VOID )
-        unsupp("Array of void", "pointer to void");
+        unsupp( "Array of void", "pointer to void" );
       c_ident_kind = array_has_dim ? C_ARRAY_DIM : C_ARRAY_NO_DIM;
       $$.left = $4.left;
       $$.right = cat( $2, $4.right, NULL );
@@ -1361,7 +1371,7 @@ c_type_name
       YYTRACE( "c_type_name: WCHAR_T\n" );
       YYTRACE( "\tCHAR='%s'\n", $1 );
       if ( opt_lang == LANG_C_KNR )
-        not_supported( UNSUPP_KNR, $1, NULL );
+        illegal( UNSUPP_KNR, $1, NULL );
       else
         c_type_add( C_TYPE_WCHAR_T );
       $$ = $1;
@@ -1422,7 +1432,7 @@ mod_list1
       YYTRACE( "mod_list1: CONST_VOLATILE\n" );
       YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
       if ( opt_lang == LANG_C_KNR )
-        not_supported( UNSUPP_KNR, $1, NULL );
+        illegal( UNSUPP_KNR, $1, NULL );
       else if ( strcmp( $1, "noalias" ) == 0 && opt_lang == LANG_CXX )
         unsupp( $1, NULL );
       $$ = $1;
@@ -1470,7 +1480,7 @@ opt_const_volatile_list
       YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
       if ( opt_lang == LANG_C_KNR )
-        not_supported( UNSUPP_KNR, $1, NULL );
+        illegal( UNSUPP_KNR, $1, NULL );
       else if ( strcmp($1, "noalias") == 0 && opt_lang == LANG_CXX )
         unsupp( $1, NULL );
       $$ = cat( $1, strdup( strlen($2) ? " " : "" ), $2, NULL );
@@ -1490,7 +1500,7 @@ const_volatile_list
       YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
       if ( opt_lang == LANG_C_KNR )
-        not_supported( UNSUPP_KNR, $1, NULL );
+        illegal( UNSUPP_KNR, $1, NULL );
       else if ( strcmp( $1, "noalias" ) == 0 && opt_lang == LANG_CXX )
         unsupp($1, NULL);
       $$ = cat( $1, strdup( strlen( $2 ) ? " " : "" ), $2, NULL );

@@ -23,8 +23,10 @@
 enum lang {
   LANG_NONE   = '0',
   LANG_C_KNR  = 'K',
-  LANG_C_ANSI = 'A',                    // aka, C89
-  LANG_C_99   = '9',
+  LANG_C_89   = '8',                    // ISO/IEC 9899:1990
+  LANG_C_95   = '5',                    // ISO/IEC 9899/AMD1:1995
+  LANG_C_99   = '9',                    // ISO/IEC 9899:1999
+  LANG_C_11   = '1',                    // ISO/IEC 9899:2011/Cor
   LANG_CXX    = '+',
 };
 typedef enum lang lang_t;
@@ -43,6 +45,14 @@ extern FILE        *fin;                // file in
 extern FILE        *fout;               // file out
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Gets the printable name of the given language.
+ *
+ * @param lang The language to get the name of.
+ * @return Returns said name.
+ */
+char const* lang_name( lang_t lang );
 
 /**
  * Initializes command-line option variables.
