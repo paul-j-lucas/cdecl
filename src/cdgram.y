@@ -234,7 +234,7 @@ static void do_cast( char const *name, char const *left, char const *right,
       break;
     case C_ARRAY_DIM:
     case C_ARRAY_NO_DIM:
-      unsupp( "Cast into array","cast into pointer" );
+      unsupp( "Cast into array", "cast into pointer" );
       break;
     default: {
       size_t const lenl = strlen( left ), lenr = strlen( right );
@@ -283,7 +283,7 @@ static void do_declare( char const *name, char const *storage,
       case C_ARRAY_DIM:
       case C_ARRAY_NO_DIM:
         unsupp( "Register array", NULL );
-          break;
+        break;
       case C_STRUCT:
         unsupp( "Register struct/class", NULL );
         break;
@@ -331,23 +331,23 @@ static void do_set( char const *opt ) {
     prompt_ptr = prompt_buf;
   else if ( strcmp( opt, "noprompt" ) == 0 )
     prompt_ptr = "";
-  else if ( strcmp( opt, "preansi" ) == 0)
+  else if ( strcmp( opt, "preansi" ) == 0 )
     { opt_lang = LANG_C_KNR; }
-  else if ( strcmp( opt, "ansi" ) == 0)
+  else if ( strcmp( opt, "ansi" ) == 0 )
     opt_lang = LANG_C_89;
-  else if ( strcmp( opt, "cplusplus" ) == 0)
+  else if ( strcmp( opt, "cplusplus" ) == 0 )
     opt_lang = LANG_CXX;
 #ifdef WITH_CDECL_DEBUG
   else if ( strcmp( opt, "debug" ) == 0 )
     opt_debug = true;
-  else if ( strcmp( opt, "nodebug" ) == 0)
+  else if ( strcmp( opt, "nodebug" ) == 0 )
     opt_debug = false;
 #endif /* WITH_CDECL_DEBUG */
 #ifdef WITH_YYDEBUG
-  else if ( strcmp( opt, "yydebug" ) == 0)
-    { yydebug = 1; }
-  else if ( strcmp( opt, "noyydebug" ) == 0)
-    { yydebug = 0; }
+  else if ( strcmp( opt, "yydebug" ) == 0 )
+    yydebug = 1;
+  else if ( strcmp( opt, "noyydebug" ) == 0 )
+    yydebug = 0;
 #endif /* WITH_YYDEBUG */
   else {
     if ( strcmp( opt, UNKNOWN_NAME ) != 0 &&
@@ -396,7 +396,7 @@ static void do_set( char const *opt ) {
 }
 
 /**
- * TODO
+ * Do the "explain cast" command.
  *
  * @param constvol TODO
  * @param type TODO
@@ -422,6 +422,15 @@ static void explain_cast( char const *constvol, char const *type,
   printf( "%s\n", type );
 }
 
+/**
+ * Do the "explain" (declaration) command.
+ *
+ * @param storage TODO
+ * @param constvol1 TODO
+ * @param constvol2 TODO
+ * @param type TODO
+ * @param decl TODO
+ */
 void explain_declaration( char const *storage, char const *constvol1,
                           char const *constvol2, char const *type,
                           char const *decl ) {
@@ -467,8 +476,14 @@ void explain_declaration( char const *storage, char const *constvol1,
   printf( "%s\n", type ? type : "int" );
 }
 
-static void illegal( lang_t lang, char const *type1,
-                     char const *type2 ) {
+/**
+ * TODO
+ *
+ * @param lang TODO
+ * @param type1 TODO
+ * @param type2 TODO
+ */
+static void illegal( lang_t lang, char const *type1, char const *type2 ) {
   if ( type2 )
     PRINT_ERR(
       "warning: \"%s\" with \"%s\" illegal in %s\n",
@@ -491,7 +506,6 @@ static void unsupp( char const *s, char const *hint ) {
 
 static void yyerror( char const *s ) {
   PRINT_ERR( "%s\n", s );
-  //YYTRACE( "yychar=%d\n", yychar );
 }
 
 int yywrap( void ) {
