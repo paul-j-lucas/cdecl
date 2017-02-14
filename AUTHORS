@@ -55,4 +55,6 @@ Paul J. Lucas <paul@lucasmail.org>
 	modularized & cleaned-up source
 	added long-option support
 	added GNU autoconf/automake/configure scripts
-	GNU-ified test suite
+	added GNU-style test suite
+	added support for bool, complex, restrict, and wchar_t
+	now ignoring C /*...*/ comments in lexer

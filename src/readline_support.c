@@ -66,33 +66,52 @@ static char* command_completion( char const *text, int flag ) {
  */
 static char* keyword_completion( char const *text, int flag ) {
   static char const *const KEYWORDS[] = {
+
+    // english
     "array",
-    "auto",
-    "bool",
-    "char",
-    "class",
-    "const",
-    "double",
-    "enum",
-    "extern",
-    "float",
+//  "as",                               // too short
+//  "block",
     "function",
-    "long",
+//  "into",                             // special case (see below)
     "member",
-    "noalias",
+//  "of",                               // too short
     "pointer",
     "reference",
-    "register",
     "returning",
+//  "to",                               // too short
+
+    // K&R C
+    "auto",
+    "char",
+    "double",
+    "extern",
+    "float",
+//  "int",                              // special case (see below)
+    "long",
+    "noalias",
+    "register",
     "short",
-    "signed",
     "static",
     "struct",
     "union",
     "unsigned",
+
+    // C89
+    "const",
+    "enum",
+    "signed",
     "void",
     "volatile",
+
+    // C99
+    "bool",
+    "complex",
+    "restrict",
     "wchar_t",
+
+    // C++
+    "class",
+
     NULL
   };
 
@@ -121,7 +140,7 @@ static char* keyword_completion( char const *text, int flag ) {
   }
 
   if ( set ) {
-    for ( char const *option; (option = OPTIONS[index]); ++index )
+    for ( char const *option; (option = OPTIONS[ index ]); ++index )
       if ( strncmp( text, option, len ) == 0 )
         return check_strdup( option );
   } else {

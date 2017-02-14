@@ -72,6 +72,7 @@ static c_type_bits_t const C_TYPE_SIGNED    = 0x0100;
 static c_type_bits_t const C_TYPE_UNSIGNED  = 0x0200;
 static c_type_bits_t const C_TYPE_FLOAT     = 0x0400;
 static c_type_bits_t const C_TYPE_DOUBLE    = 0x0800;
+static c_type_bits_t const C_TYPE_COMPLEX   = 0x1000;
 
 /**
  * Mapping between C type names and bit representations.
@@ -94,7 +95,8 @@ static c_type_map_t const C_TYPE_MAP[] = {
   { "signed",     C_TYPE_SIGNED     },
   { "unsigned",   C_TYPE_UNSIGNED   },
   { "float",      C_TYPE_FLOAT      },
-  { "double",     C_TYPE_DOUBLE     }
+  { "double",     C_TYPE_DOUBLE     },
+  { "complet",    C_TYPE_COMPLEX    },
 };
 
 // local constants
@@ -144,29 +146,31 @@ static void c_type_check( void ) {
     NONE,
     NEVER,                              // never allowed
     KNR,                                // not allowed in K&R C
-    ANSI                                // not allowed in ANSI C
+    C89,                                // not allowed in C89
+    CPP                                 // not allowed in C++
   };
   typedef enum restriction restriction_t;
 
 #define _ NONE
 #define X NEVER
 #define K KNR
-#define A ANSI
+#define A C89
 
   static restriction_t const RESTRICTIONS[][ ARRAY_SIZE( C_TYPE_MAP ) ] = {
-    /*                v b c w s i l L s u f d */
-    /* void      */ { _,_,_,_,_,_,_,_,_,_,_,_ },
-    /* bool      */ { X,_,_,_,_,_,_,_,_,_,_,_ },
-    /* char      */ { X,X,_,_,_,_,_,_,_,_,_,_ },
-    /* wchar_t   */ { X,X,X,K,_,_,_,_,_,_,_,_ },
-    /* short     */ { X,X,X,X,_,_,_,_,_,_,_,_ },
-    /* int       */ { X,X,X,X,_,_,_,_,_,_,_,_ },
-    /* long      */ { X,X,X,X,X,_,_,_,_,_,_,_ },
-    /* long long */ { X,X,X,X,K,_,_,_,_,_,_,_ },
-    /* signed    */ { X,X,K,X,K,K,K,_,_,_,_,_ },
-    /* unsigned  */ { X,X,_,X,_,_,_,_,X,_,_,_ },
-    /* float     */ { X,X,X,X,X,X,A,X,X,X,_,_ },
-    /* double    */ { X,X,X,X,X,X,K,X,X,X,X,_ }
+    /*                v b c w s i l L s u f d c */
+    /* void      */ { _,_,_,_,_,_,_,_,_,_,_,_,_ },
+    /* bool      */ { X,_,_,_,_,_,_,_,_,_,_,_,_ },
+    /* char      */ { X,X,_,_,_,_,_,_,_,_,_,_,_ },
+    /* wchar_t   */ { X,X,X,K,_,_,_,_,_,_,_,_,_ },
+    /* short     */ { X,X,X,X,_,_,_,_,_,_,_,_,_ },
+    /* int       */ { X,X,X,X,_,_,_,_,_,_,_,_,_ },
+    /* long      */ { X,X,X,X,X,_,_,_,_,_,_,_,_ },
+    /* long long */ { X,X,X,X,K,_,_,_,_,_,_,_,_ },
+    /* signed    */ { X,X,K,X,K,K,K,_,_,_,_,_,_ },
+    /* unsigned  */ { X,X,_,X,_,_,_,_,X,_,_,_,_ },
+    /* float     */ { X,X,X,X,X,X,A,X,X,X,_,_,_ },
+    /* double    */ { X,X,X,X,X,X,K,X,X,X,X,_,_ },
+    /* complex   */ { X,X,X,X,X,X,X,X,X,X,_,_,_ }
   };
 
 #undef _
@@ -183,7 +187,7 @@ static void c_type_check( void ) {
           switch ( RESTRICTIONS[i][j] ) {
             case NONE:
               break;
-            case ANSI:
+            case C89:
               if ( opt_lang != LANG_C_KNR )
                 illegal( LANG_C_89, t1, t2 );
               break;
@@ -525,64 +529,77 @@ int yywrap( void ) {
   } halves;
 }
 
-%token  T_ARRAY
-%token  T_AS
-%token  T_BLOCK                         /* Apple extension */
-%token  T_CAST
-%token  T_COMMA
-%token  T_DECLARE
-%token  T_DOUBLECOLON
-%token  T_EXPLAIN
-%token  T_FUNCTION
-%token  T_HELP
-%token  T_INTO
-%token  T_MEMBER
-%token  T_OF
-%token  T_POINTER
-%token  T_REFERENCE
-%token  T_RETURNING
-%token  T_SET
-%token  T_TO
+                  /* commands */
+%token            T_CAST
+%token            T_DECLARE
+%token            T_EXPLAIN
+%token            T_HELP
+%token            T_SET
 
-%token  <dynstr> T_AUTO
-%token  <dynstr> T_BOOL
-%token  <dynstr> T_CHAR
-%token  <dynstr> T_CLASS
-%token  <dynstr> T_CONST_VOLATILE
-%token  <dynstr> T_DOUBLE
-%token  <dynstr> T_ENUM
-%token  <dynstr> T_EXTERN
-%token  <dynstr> T_FLOAT
-%token  <dynstr> T_INT
-%token  <dynstr> T_LONG
-%token  <dynstr> T_NAME
-%token  <dynstr> T_NUMBER
-%token  <dynstr> T_REGISTER
-%token  <dynstr> T_SHORT
-%token  <dynstr> T_SIGNED
-%token  <dynstr> T_STATIC
-%token  <dynstr> T_STRUCT
-%token  <dynstr> T_UNION
-%token  <dynstr> T_UNSIGNED
-%token  <dynstr> T_VOID
-%token  <dynstr> T_WCHAR_T
+                  /* english */
+%token            T_ARRAY
+%token            T_AS
+%token            T_BLOCK               /* Apple extension */
+%token            T_FUNCTION
+%token            T_INTO
+%token            T_MEMBER
+%token            T_OF
+%token            T_POINTER
+%token            T_REFERENCE
+%token            T_RETURNING
+%token            T_TO
 
-%type   <dynstr> array_dimension
-%type   <dynstr> cast cast_list
-%type   <dynstr> cdecl cdecl1
-%type   <dynstr> cdims
-%type   <dynstr> const_volatile_list opt_const_volatile_list
-%type   <dynstr> class_struct
-%type   <dynstr> c_builtin_type
-%type   <dynstr> c_type
-%type   <halves> decl_english
-%type   <dynstr> decl_list_english
-%type   <dynstr> enum_class_struct_union
-%type   <halves> func_decl_english
-%type   <dynstr> mod_list mod_list1 modifier
-%type   <dynstr> opt_NAME
-%type   <dynstr> storage opt_storage
-%type   <dynstr> type
+                  /* K&R C */
+%token  <dynstr>  T_AUTO
+%token  <dynstr>  T_CHAR
+%token  <dynstr>  T_DOUBLE
+%token  <dynstr>  T_EXTERN
+%token  <dynstr>  T_FLOAT
+%token  <dynstr>  T_INT
+%token  <dynstr>  T_LONG
+%token  <dynstr>  T_REGISTER
+%token  <dynstr>  T_SHORT
+%token  <dynstr>  T_STATIC
+%token  <dynstr>  T_STRUCT
+%token  <dynstr>  T_UNION
+%token  <dynstr>  T_UNSIGNED
+
+                  /* C89 */
+%token  <dynstr>  T_CONST_VOLATILE
+%token  <dynstr>  T_ENUM
+%token  <dynstr>  T_SIGNED
+%token  <dynstr>  T_VOID
+
+                  /* C99 */
+%token  <dynstr>  T_BOOL
+%token  <dynstr>  T_COMPLEX
+%token  <dynstr>  T_RESTRICT
+%token  <dynstr>  T_WCHAR_T
+
+                  /* C++ */
+%token  <dynstr>  T_CLASS
+%token            T_DOUBLECOLON
+
+                  /* miscellaneous */
+%token  <dynstr>  T_NAME
+%token  <dynstr>  T_NUMBER
+
+%type   <dynstr>  array_dimension
+%type   <dynstr>  cast cast_list
+%type   <dynstr>  cdecl cdecl1
+%type   <dynstr>  cdims
+%type   <dynstr>  class_struct
+%type   <dynstr>  const_volatile_list opt_const_volatile_list
+%type   <dynstr>  c_builtin_type
+%type   <dynstr>  c_type
+%type   <halves>  decl_english
+%type   <dynstr>  decl_list_english
+%type   <dynstr>  enum_class_struct_union
+%type   <halves>  func_decl_english
+%type   <dynstr>  mod_list mod_list1 modifier
+%type   <dynstr>  opt_NAME
+%type   <dynstr>  storage opt_storage
+%type   <dynstr>  type
 
 %start command_list
 
@@ -600,14 +617,8 @@ command
   : cast_english
   | declare_english
   | explain_gibberish
+  | help_command
   | set_command
-
-  | T_HELP EOL
-    {
-      YYTRACE( "command: help\n" );
-      print_help();
-    }
-
   | EOL
   | error EOL
     {
@@ -722,6 +733,17 @@ explain_gibberish
       explain_cast( $3, $4, $5, $7 );
     }
   ;
+
+/*****************************************************************************/
+/*  help                                                                     */
+/*****************************************************************************/
+
+help_command
+  : T_HELP EOL
+    {
+      YYTRACE( "command: help\n" );
+      print_help();
+    }
 
 /*****************************************************************************/
 /*  set                                                                      */
@@ -939,7 +961,7 @@ decl_list_english
       $$ = strdup( "" );
     }
 
-  | decl_list_english T_COMMA decl_list_english
+  | decl_list_english ',' decl_list_english
     {
       YYTRACE( "decl_list_english: decl_list_english1, decl_list_english2\n" );
       YYTRACE( "\tdecl_list_english1='%s'\n", $1 );
@@ -1139,7 +1161,7 @@ cdecl1
   ;
 
 cast_list
-  : cast_list T_COMMA cast_list
+  : cast_list ',' cast_list
     {
       YYTRACE( "cast_list: cast_list1, cast_list2\n" );
       YYTRACE( "\tcast_list1='%s'\n", $1 );
