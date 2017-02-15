@@ -413,14 +413,18 @@ static void do_set( char const *opt ) {
 /**
  * Do the "explain cast" command.
  *
- * @param constvol TODO
+ * @param const_volatile1 TODO
+ * @param const_volatile2 TODO
  * @param type TODO
  * @param cast TODO
  * @param name TODO
  */
-static void explain_cast( char const *constvol, char const *type,
-                          char const *cast, char const *name ) {
-  assert( constvol );
+static void explain_cast( char const *const_volatile1,
+                          char const *const_volatile2,
+                          char const *type, char const *cast,
+                          char const *name ) {
+  assert( const_volatile1 );
+  assert( const_volatile2 );
   assert( type );
   assert( cast );
   assert( name );
@@ -432,8 +436,10 @@ static void explain_cast( char const *constvol, char const *type,
       unsupp( "reference to type void", "pointer to void" );
   }
   printf( "cast %s into %s", name, cast );
-  if ( strlen( constvol ) > 0 )
-    printf( "%s ", constvol );
+  if ( *const_volatile1 )
+    printf( "%s ", const_volatile1 );
+  if ( *const_volatile2 )
+    printf( "%s ", const_volatile2 );
   printf( "%s\n", type );
 }
 
@@ -740,15 +746,16 @@ explain_gibberish
       explain_declaration( $2, $3, NULL, NULL, $4 );
     }
 
-  | T_EXPLAIN '(' opt_const_volatile_list type cast ')' opt_NAME T_END
+  | T_EXPLAIN '(' opt_const_volatile_list type opt_const_volatile_list cast ')' opt_NAME T_END
     {
-      YYTRACE( "explain_gibberish: EXPLAIN ( opt_const_volatile_list type cast ) opt_NAME\n" );
+      YYTRACE( "explain_gibberish: EXPLAIN ( opt_const_volatile_list type opt_const_volatile_list cast ) opt_NAME\n" );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
       YYTRACE( "\ttype='%s'\n", $4 );
-      YYTRACE( "\tcast='%s'\n", $5 );
-      YYTRACE( "\tNAME='%s'\n", $7 );
+      YYTRACE( "\topt_const_volatile_list='%s'\n", $5 );
+      YYTRACE( "\tcast='%s'\n", $6 );
+      YYTRACE( "\tNAME='%s'\n", $8 );
       YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-      explain_cast( $3, $4, $5, $7 );
+      explain_cast( $3, $5, $4, $6, $8 );
     }
   ;
 
