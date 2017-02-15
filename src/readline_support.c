@@ -109,6 +109,14 @@ static char* keyword_completion( char const *text, int flag ) {
     "restrict",
     "wchar_t",
 
+    // C11
+    "_Noreturn",
+    "_Thread_local",
+
+    // C11 & C++11
+    "char16_t",
+    "char32_t",
+
     // C++
     "class",
 

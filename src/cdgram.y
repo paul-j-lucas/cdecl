@@ -48,7 +48,7 @@ enum c_ident_kind {
   C_FUNCTION      = 'f',
   C_NAME          = 'n',
   C_POINTER       = '*',
-  CXX_REFERENCE   = '&',
+  CPP_REFERENCE   = '&',
   C_STRUCT        = 's',                // or C++ class
   C_VOID          = 'v',
 };
@@ -63,16 +63,18 @@ typedef unsigned c_type_bits_t;
 static c_type_bits_t const C_TYPE_VOID      = 0x0001;
 static c_type_bits_t const C_TYPE_BOOL      = 0x0002;
 static c_type_bits_t const C_TYPE_CHAR      = 0x0004;
-static c_type_bits_t const C_TYPE_WCHAR_T   = 0x0008;
-static c_type_bits_t const C_TYPE_SHORT     = 0x0010;
-static c_type_bits_t const C_TYPE_INT       = 0x0020;
-static c_type_bits_t const C_TYPE_LONG      = 0x0040;
-static c_type_bits_t const C_TYPE_LONG_LONG = 0x0080;
-static c_type_bits_t const C_TYPE_SIGNED    = 0x0100;
-static c_type_bits_t const C_TYPE_UNSIGNED  = 0x0200;
-static c_type_bits_t const C_TYPE_FLOAT     = 0x0400;
-static c_type_bits_t const C_TYPE_DOUBLE    = 0x0800;
-static c_type_bits_t const C_TYPE_COMPLEX   = 0x1000;
+static c_type_bits_t const C_TYPE_CHAR16_T  = 0x0008;
+static c_type_bits_t const C_TYPE_CHAR32_T  = 0x0010;
+static c_type_bits_t const C_TYPE_WCHAR_T   = 0x0020;
+static c_type_bits_t const C_TYPE_SHORT     = 0x0040;
+static c_type_bits_t const C_TYPE_INT       = 0x0080;
+static c_type_bits_t const C_TYPE_LONG      = 0x0100;
+static c_type_bits_t const C_TYPE_LONG_LONG = 0x0200;
+static c_type_bits_t const C_TYPE_SIGNED    = 0x0400;
+static c_type_bits_t const C_TYPE_UNSIGNED  = 0x0800;
+static c_type_bits_t const C_TYPE_FLOAT     = 0x1000;
+static c_type_bits_t const C_TYPE_DOUBLE    = 0x2000;
+static c_type_bits_t const C_TYPE_COMPLEX   = 0x4000;
 
 /**
  * Mapping between C type names and bit representations.
@@ -87,6 +89,8 @@ static c_type_map_t const C_TYPE_MAP[] = {
   { "void",       C_TYPE_VOID       },
   { "bool",       C_TYPE_BOOL       },
   { "char",       C_TYPE_CHAR       },
+  { "char16_t",   C_TYPE_CHAR16_T   },
+  { "char32_t",   C_TYPE_CHAR32_T   },
   { "wchar_t",    C_TYPE_WCHAR_T    },
   { "short",      C_TYPE_SHORT      },
   { "int",        C_TYPE_INT        },
@@ -142,41 +146,46 @@ static void c_type_add( c_type_bits_t type_bit ) {
  * TODO
  */
 static void c_type_check( void ) {
-  enum restriction {
-    NONE,
-    NEVER,                              // never allowed
-    KNR,                                // not allowed in K&R C
-    C89,                                // not allowed in C89
-    CPP                                 // not allowed in C++
-  };
-  typedef enum restriction restriction_t;
+  typedef unsigned restriction_t;
 
-#define _ NONE
-#define X NEVER
-#define K KNR
-#define A C89
+  static restriction_t NEVER = ~LANG_NONE;
+
+#define __  LANG_NONE
+#define XX ~LANG_NONE
+#define CK  LANG_C_KNR
+#define C8  LANG_C_89
+#define C9  LANG_C_99
+#define C1  LANG_C_11
+#define P   LANG_CPP
+#define P1  LANG_CPP_11
 
   static restriction_t const RESTRICTIONS[][ ARRAY_SIZE( C_TYPE_MAP ) ] = {
-    /*                v b c w s i l L s u f d c */
-    /* void      */ { _,_,_,_,_,_,_,_,_,_,_,_,_ },
-    /* bool      */ { X,_,_,_,_,_,_,_,_,_,_,_,_ },
-    /* char      */ { X,X,_,_,_,_,_,_,_,_,_,_,_ },
-    /* wchar_t   */ { X,X,X,K,_,_,_,_,_,_,_,_,_ },
-    /* short     */ { X,X,X,X,_,_,_,_,_,_,_,_,_ },
-    /* int       */ { X,X,X,X,_,_,_,_,_,_,_,_,_ },
-    /* long      */ { X,X,X,X,X,_,_,_,_,_,_,_,_ },
-    /* long long */ { X,X,X,X,K,_,_,_,_,_,_,_,_ },
-    /* signed    */ { X,X,K,X,K,K,K,_,_,_,_,_,_ },
-    /* unsigned  */ { X,X,_,X,_,_,_,_,X,_,_,_,_ },
-    /* float     */ { X,X,X,X,X,X,A,X,X,X,_,_,_ },
-    /* double    */ { X,X,X,X,X,X,K,X,X,X,X,_,_ },
-    /* complex   */ { X,X,X,X,X,X,X,X,X,X,_,_,_ }
+    /*                v  b  c  16 32 wc s  i  l  ll s  u  f  d  c */
+    /* void      */ { __,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+    /* bool      */ { XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+    /* char      */ { XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+    /* char16_t  */ { XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__ },
+    /* char32_t  */ { XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__ },
+    /* wchar_t   */ { XX,XX,XX,__,__,CK,__,__,__,__,__,__,__,__,__ },
+    /* short     */ { XX,XX,XX,__,__,XX,__,__,__,__,__,__,__,__,__ },
+    /* int       */ { XX,XX,XX,__,__,XX,__,__,__,__,__,__,__,__,__ },
+    /* long      */ { XX,XX,XX,__,__,XX,XX,__,__,__,__,__,__,__,__ },
+    /* long long */ { XX,XX,XX,__,__,XX,CK,__,__,__,__,__,__,__,__ },
+    /* signed    */ { XX,XX,CK,__,__,XX,CK,CK,CK,__,__,__,__,__,__ },
+    /* unsigned  */ { XX,XX,__,__,__,XX,__,__,__,__,XX,__,__,__,__ },
+    /* float     */ { XX,XX,XX,__,__,XX,XX,XX,C8,XX,XX,XX,__,__,__ },
+    /* double    */ { XX,XX,XX,__,__,XX,XX,XX,CK,XX,XX,XX,__,__,__ },
+    /* complex   */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__ }
   };
 
-#undef _
-#undef X
-#undef K
-#undef A
+#undef __
+#undef XX
+#undef CK
+#undef C8
+#undef C9
+#undef C1
+#undef P
+#undef P1
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_MAP ); ++i ) {
     if ( c_type_bits & C_TYPE_MAP[i].bit ) {
@@ -184,6 +193,7 @@ static void c_type_check( void ) {
         if ( c_type_bits & C_TYPE_MAP[j].bit ) {
           char const *const t1 = C_TYPE_MAP[i].name;
           char const *const t2 = C_TYPE_MAP[j].name;
+#if 0
           switch ( RESTRICTIONS[i][j] ) {
             case NONE:
               break;
@@ -199,6 +209,7 @@ static void c_type_check( void ) {
               illegal( opt_lang, t1, t2 );
               break;
           } // switch
+#endif
         }
       } // for
     }
@@ -279,7 +290,7 @@ static void do_declare( char const *name, char const *storage,
     goto done;
   }
 
-  if ( *storage == CXX_REFERENCE ) {
+  if ( *storage == CPP_REFERENCE ) {
     switch ( c_ident_kind ) {
       case C_FUNCTION:
         unsupp( "Register function", NULL );
@@ -340,7 +351,7 @@ static void do_set( char const *opt ) {
   else if ( strcmp( opt, "ansi" ) == 0 )
     opt_lang = LANG_C_89;
   else if ( strcmp( opt, "cplusplus" ) == 0 )
-    opt_lang = LANG_CXX;
+    opt_lang = LANG_CPP;
 #ifdef WITH_CDECL_DEBUG
   else if ( strcmp( opt, "debug" ) == 0 )
     opt_debug = true;
@@ -386,7 +397,7 @@ static void do_set( char const *opt ) {
       printf( "\t   ansi\n" );
     else
       printf( "\t(noansi)\n" );
-    if ( opt_lang == LANG_CXX )
+    if ( opt_lang == LANG_CPP )
       printf( "\t   cplusplus\n" );
     else
       printf( "\t(nocplusplus)\n" );
@@ -417,7 +428,7 @@ static void explain_cast( char const *constvol, char const *type,
   if ( strcmp( type, "void" ) == 0 ) {
     if ( c_ident_kind == C_ARRAY_NO_DIM )
       unsupp( "array of type void", "array of type pointer to void" );
-    else if ( c_ident_kind == CXX_REFERENCE )
+    else if ( c_ident_kind == CPP_REFERENCE )
       unsupp( "reference to type void", "pointer to void" );
   }
   printf( "cast %s into %s", name, cast );
@@ -448,11 +459,11 @@ void explain_declaration( char const *storage, char const *constvol1,
       unsupp( "Variable of type void", "variable of type pointer to void" );
     else if ( c_ident_kind == C_ARRAY_NO_DIM )
       unsupp( "array of type void", "array of type pointer to void" );
-    else if ( c_ident_kind == CXX_REFERENCE )
+    else if ( c_ident_kind == CPP_REFERENCE )
       unsupp( "reference to type void", "pointer to void" );
   }
 
-  if ( *storage == CXX_REFERENCE ) {
+  if ( *storage == CPP_REFERENCE ) {
     switch ( c_ident_kind ) {
       case C_FUNCTION:
         unsupp( "Register function", NULL );
@@ -565,10 +576,11 @@ int yywrap( void ) {
 %token  <dynstr>  T_UNSIGNED
 
                   /* C89 */
-%token  <dynstr>  T_CONST_VOLATILE
+%token  <dynstr>  T_CONST
 %token  <dynstr>  T_ENUM
 %token  <dynstr>  T_SIGNED
 %token  <dynstr>  T_VOID
+%token  <dynstr>  T_VOLATILE
 
                   /* C99 */
 %token  <dynstr>  T_BOOL
@@ -576,11 +588,21 @@ int yywrap( void ) {
 %token  <dynstr>  T_RESTRICT
 %token  <dynstr>  T_WCHAR_T
 
+                  /* C11 */
+%token  <dynstr>  T_NORETURN;
+%token  <dynstr>  T_THREAD_LOCAL;
+
                   /* C++ */
 %token  <dynstr>  T_CLASS
-%token            T_DOUBLECOLON
+%token            T_COLON_COLON
+
+                  /* C11 & C++ */
+%token  <dynstr>  T_CHAR16_T;
+%token  <dynstr>  T_CHAR32_T;
 
                   /* miscellaneous */
+%token            T_END
+%token            T_ERROR
 %token  <dynstr>  T_NAME
 %token  <dynstr>  T_NUMBER
 
@@ -589,6 +611,7 @@ int yywrap( void ) {
 %type   <dynstr>  cdecl cdecl1
 %type   <dynstr>  cdims
 %type   <dynstr>  class_struct
+%type   <dynstr>  const_volatile
 %type   <dynstr>  const_volatile_list opt_const_volatile_list
 %type   <dynstr>  c_builtin_type
 %type   <dynstr>  c_type
@@ -619,16 +642,11 @@ command
   | explain_gibberish
   | help_command
   | set_command
-  | EOL
-  | error EOL
+  | T_END
+  | error T_END
     {
       yyerrok;
     }
-  ;
-
-EOL
-  : '\n'
-  | ';'
   ;
 
 /*****************************************************************************/
@@ -636,7 +654,7 @@ EOL
 /*****************************************************************************/
 
 cast_english
-  : T_CAST T_NAME T_INTO decl_english EOL
+  : T_CAST T_NAME T_INTO decl_english T_END
     {
       YYTRACE( "cast_english: CAST NAME AS decl_english\n" );
       YYTRACE( "\tNAME='%s'\n", $2 );
@@ -646,7 +664,7 @@ cast_english
       do_cast( $2, $4.left, $4.right, $4.type );
     }
 
-  | T_CAST decl_english EOL
+  | T_CAST decl_english T_END
     {
       YYTRACE( "cast_english: CAST decl_english\n" );
       YYTRACE( "\tacdecl.left='%s'\n", $2.left );
@@ -661,7 +679,7 @@ cast_english
 /*****************************************************************************/
 
 declare_english
-  : T_DECLARE T_NAME T_AS opt_storage decl_english EOL
+  : T_DECLARE T_NAME T_AS opt_storage decl_english T_END
     {
       YYTRACE( "declare_english: DECLARE NAME AS opt_storage decl_english\n" );
       YYTRACE( "\tNAME='%s'\n", $2 );
@@ -673,7 +691,7 @@ declare_english
       do_declare( $2, $4, $5.left, $5.right, $5.type );
     }
 
-  | T_DECLARE opt_storage decl_english EOL
+  | T_DECLARE opt_storage decl_english T_END
     {
       YYTRACE( "declare_english: DECLARE opt_storage decl_english\n" );
       YYTRACE( "\topt_storage='%s'\n", $2 );
@@ -691,7 +709,7 @@ declare_english
 
 explain_gibberish
   : T_EXPLAIN opt_storage opt_const_volatile_list type opt_const_volatile_list
-              cdecl EOL
+              cdecl T_END
     {
       YYTRACE( "explain_gibberish: EXPLAIN opt_storage opt_const_volatile_list type cdecl\n" );
       YYTRACE( "\topt_storage='%s'\n", $2 );
@@ -702,7 +720,7 @@ explain_gibberish
       explain_declaration( $2, $3, $5, $4, $6 );
     }
 
-  | T_EXPLAIN storage opt_const_volatile_list cdecl EOL
+  | T_EXPLAIN storage opt_const_volatile_list cdecl T_END
     {
       YYTRACE( "explain_gibberish: EXPLAIN storage opt_const_volatile_list cdecl\n" );
       YYTRACE( "\tstorage='%s'\n", $2 );
@@ -712,7 +730,7 @@ explain_gibberish
       explain_declaration( $2, $3, NULL, NULL, $4 );
     }
 
-  | T_EXPLAIN opt_storage const_volatile_list cdecl EOL
+  | T_EXPLAIN opt_storage const_volatile_list cdecl T_END
     {
       YYTRACE( "explain_gibberish: EXPLAIN opt_storage const_volatile_list cdecl\n" );
       YYTRACE( "\topt_storage='%s'\n", $2 );
@@ -722,7 +740,7 @@ explain_gibberish
       explain_declaration( $2, $3, NULL, NULL, $4 );
     }
 
-  | T_EXPLAIN '(' opt_const_volatile_list type cast ')' opt_NAME EOL
+  | T_EXPLAIN '(' opt_const_volatile_list type cast ')' opt_NAME T_END
     {
       YYTRACE( "explain_gibberish: EXPLAIN ( opt_const_volatile_list type cast ) opt_NAME\n" );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
@@ -739,7 +757,7 @@ explain_gibberish
 /*****************************************************************************/
 
 help_command
-  : T_HELP EOL
+  : T_HELP T_END
     {
       YYTRACE( "command: help\n" );
       print_help();
@@ -750,7 +768,7 @@ help_command
 /*****************************************************************************/
 
 set_command
-  : T_SET opt_NAME EOL
+  : T_SET opt_NAME T_END
     {
       YYTRACE( "set_command: SET opt_NAME\n" );
       YYTRACE( "\topt_NAME='%s'\n", $2 );
@@ -874,7 +892,7 @@ decl_english
       YYTRACE( "\tdecl_english.left='%s'\n", $8.left );
       YYTRACE( "\tdecl_english.right='%s'\n", $8.right );
       YYTRACE( "\tdecl_english.type='%s'\n", $8.type );
-      if (opt_lang != LANG_CXX)
+      if ( opt_lang != LANG_CPP )
         unsupp( "pointer to member of class", NULL );
       if ( c_ident_kind == C_ARRAY_NO_DIM )
         unsupp( "Pointer to array of unspecified dimension",
@@ -906,7 +924,7 @@ decl_english
       YYTRACE( "\tdecl_english.left='%s'\n", $4.left );
       YYTRACE( "\tdecl_english.right='%s'\n", $4.right );
       YYTRACE( "\tdecl_english.type='%s'\n", $4.type );
-      if ( opt_lang != LANG_CXX )
+      if ( opt_lang != LANG_CPP )
         unsupp( "reference", NULL );
       if ( c_ident_kind == C_VOID )
         unsupp( "Reference to void", "pointer to void" );
@@ -923,7 +941,7 @@ decl_english
       $$.left = cat( $4.left, strdup( op ), strdup( "&" ), strdup( sp ), $1, strdup( sp ), NULL );
       $$.right = cat( strdup( cp ), $4.right, NULL );
       $$.type = $4.type;
-      c_ident_kind = CXX_REFERENCE;
+      c_ident_kind = CPP_REFERENCE;
       YYTRACE( "\n\tdecl_english now =\n" );
       YYTRACE( "\t\tdecl_english.left='%s'\n", $$.left );
       YYTRACE( "\t\tdecl_english.right='%s'\n", $$.right );
@@ -1061,12 +1079,12 @@ cdecl
       YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
     }
 
-  | T_NAME T_DOUBLECOLON '*' cdecl
+  | T_NAME T_COLON_COLON '*' cdecl
     {
       YYTRACE( "cdecl: NAME DOUBLECOLON '*' cdecl\n" );
       YYTRACE( "\tNAME='%s'\n", $1 );
       YYTRACE( "\tcdecl='%s'\n", $4 );
-      if (opt_lang != LANG_CXX)
+      if ( opt_lang != LANG_CPP )
         unsupp( "pointer to member of class", NULL );
       $$ = cat( $4, strdup( "pointer to member of class " ), $1, strdup( " " ), NULL );
       c_ident_kind = C_POINTER;
@@ -1078,10 +1096,10 @@ cdecl
       YYTRACE( "cdecl: & opt_const_volatile_list cdecl\n" );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
       YYTRACE( "\tcdecl='%s'\n", $3 );
-      if (opt_lang != LANG_CXX)
+      if ( opt_lang != LANG_CPP )
         unsupp( "reference", NULL );
       $$ = cat( $3, $2, strdup( strlen( $2 ) ? " reference to " : "reference to " ), NULL );
-      c_ident_kind = CXX_REFERENCE;
+      c_ident_kind = CPP_REFERENCE;
       YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
     }
   ;
@@ -1246,11 +1264,11 @@ cast
       YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
     }
 
-  | T_NAME T_DOUBLECOLON '*' cast
+  | T_NAME T_COLON_COLON '*' cast
     {
       YYTRACE( "cast: NAME::*cast\n" );
       YYTRACE( "\tcast='%s'\n", $4 );
-      if (opt_lang != LANG_CXX)
+      if ( opt_lang != LANG_CPP )
         unsupp( "pointer to member of class", NULL );
       $$ = cat( $4, strdup( "pointer to member of class " ), $1, strdup( " " ), NULL );
       c_ident_kind = C_POINTER;
@@ -1270,10 +1288,10 @@ cast
     {
       YYTRACE( "cast: &cast\n" );
       YYTRACE( "\tcast='%s'\n", $2 );
-      if ( opt_lang != LANG_CXX )
+      if ( opt_lang != LANG_CPP )
         unsupp( "reference", NULL );
       $$ = cat( $2, strdup( "reference to " ), NULL );
-      c_ident_kind = CXX_REFERENCE;
+      c_ident_kind = CPP_REFERENCE;
       YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
     }
 
@@ -1473,14 +1491,10 @@ mod_list1
       $$ = $1;
     }
 
-  | T_CONST_VOLATILE
+  | const_volatile
     {
       YYTRACE( "mod_list1: CONST_VOLATILE\n" );
       YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
-      if ( opt_lang == LANG_C_KNR )
-        illegal( opt_lang, $1, NULL );
-      else if ( strcmp( $1, "noalias" ) == 0 && opt_lang == LANG_CXX )
-        unsupp( $1, NULL );
       $$ = $1;
     }
   ;
@@ -1519,15 +1533,29 @@ modifier
     }
   ;
 
+const_volatile
+  : T_CONST
+  | T_VOLATILE
+    {
+      YYTRACE( "const_volatile: CONST_VOLATILE\n" );
+      YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
+      if ( opt_lang == LANG_C_KNR )
+        illegal( opt_lang, $1, NULL );
+      else if ( strcmp( $1, "noalias" ) == 0 && opt_lang == LANG_CPP )
+        unsupp( $1, NULL );
+      $$ = $1;
+    }
+  ;
+
 const_volatile_list
-  : T_CONST_VOLATILE opt_const_volatile_list
+  : const_volatile opt_const_volatile_list
     {
       YYTRACE( "const_volatile_list: CONST_VOLATILE opt_const_volatile_list\n" );
       YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
       YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
       if ( opt_lang == LANG_C_KNR )
         illegal( opt_lang, $1, NULL );
-      else if ( strcmp( $1, "noalias" ) == 0 && opt_lang == LANG_CXX )
+      else if ( strcmp( $1, "noalias" ) == 0 && opt_lang == LANG_CPP )
         unsupp( $1, NULL );
       $$ = cat( $1, strdup( strlen( $2 ) ? " " : "" ), $2, NULL );
     }
@@ -1633,10 +1661,10 @@ static help_text_t const HELP_TEXT[] = {
  * Prints the help message to standard output.
  */
 static void print_help( void ) {
-  char const *const fmt = opt_lang == LANG_CXX ? " %s\n" : "  %s\n";
+  char const *const fmt = opt_lang == LANG_CPP ? " %s\n" : "  %s\n";
 
   for ( help_text_t const *ht = HELP_TEXT; ht->text; ++ht ) {
-    if ( opt_lang == LANG_CXX && ht->cpp_text )
+    if ( opt_lang == LANG_CPP && ht->cpp_text )
       printf( fmt, ht->cpp_text );
     else
       printf( fmt, ht->text );

@@ -17,19 +17,16 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Language.
- */
-enum lang {
-  LANG_NONE   = '0',
-  LANG_C_KNR  = 'K',
-  LANG_C_89   = '8',                    // ISO/IEC 9899:1990
-  LANG_C_95   = '5',                    // ISO/IEC 9899/AMD1:1995
-  LANG_C_99   = '9',                    // ISO/IEC 9899:1999
-  LANG_C_11   = '1',                    // ISO/IEC 9899:2011/Cor
-  LANG_CXX    = '+',
-};
-typedef enum lang lang_t;
+#define LANG_NONE   0x0000
+#define LANG_C_KNR  0x0001
+#define LANG_C_89   0x0002
+#define LANG_C_95   0x0004
+#define LANG_C_99   0x0008
+#define LANG_C_11   0x0010
+#define LANG_CPP    0x0020
+#define LANG_CPP_11 0x0040
+
+typedef unsigned lang_t;
 
 // extern option variables
 extern bool         opt_debug;

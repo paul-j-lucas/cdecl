@@ -113,7 +113,7 @@ static void cdecl_init( int argc, char const *argv[] ) {
   is_tty = isatty( STDIN_FILENO );
 
   // init the prompt
-  strcpy( prompt_buf, opt_lang == LANG_CXX ? "c++decl" : "cdecl" );
+  strcpy( prompt_buf, opt_lang == LANG_CPP ? "c++decl" : "cdecl" );
   strcat( prompt_buf, "> " );
   prompt_ptr = prompt_buf;
 

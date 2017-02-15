@@ -146,16 +146,16 @@ static lang_t parse_lang( char const *s ) {
   typedef struct lang_map lang_map_t;
 
   static lang_map_t const LANG_MAP[] = {
-    { "ansic",  LANG_C_89  },
-    { "ansi-c", LANG_C_89  },
-    { "knr",    LANG_C_KNR },
-    { "knrc",   LANG_C_KNR },
-    { "knr-c",  LANG_C_KNR },
-    { "c89",    LANG_C_89  },
-    { "c95",    LANG_C_95  },
-    { "c99",    LANG_C_99  },
-    { "c++",    LANG_CXX   },
-    { NULL,     LANG_NONE  },
+    { "cknr",   LANG_C_KNR  },
+    { "knr",    LANG_C_KNR  },
+    { "knrc",   LANG_C_KNR  },
+    { "c89",    LANG_C_89   },
+    { "c95",    LANG_C_95   },
+    { "c99",    LANG_C_99   },
+    { "c11",    LANG_C_11   },
+    { "c++",    LANG_CPP    },
+    { "c++11",  LANG_CPP_11 },
+    { NULL,     LANG_NONE   },
   };
 
   size_t values_buf_size = 1;           // for trailing null
@@ -242,9 +242,9 @@ static void usage( void ) {
   PRINT_ERR( "\t-r Check against Ritchie PDP C Compiler\n");
   PRINT_ERR( "\t-p Check against Pre-ANSI C Compiler\n");
   PRINT_ERR( "\t-a Check against ANSI C Compiler%s\n",
-    opt_lang == LANG_CXX ? "" : " (the default)");
+    opt_lang == LANG_CPP ? "" : " (the default)");
   PRINT_ERR( "\t-+ Check against C++ Compiler%s\n",
-    opt_lang == LANG_CXX ? " (the default)" : "");
+    opt_lang == LANG_CPP ? " (the default)" : "");
   PRINT_ERR( "\t-c Create compilable output (include ; and {})\n");
   PRINT_ERR( "\t-i Force interactive mode\n");
   PRINT_ERR( "\t-q Quiet prompt\n");
@@ -261,13 +261,14 @@ static void usage( void ) {
 
 char const* lang_name( lang_t lang ) {
   switch ( lang ) {
-    case LANG_NONE : return "";
-    case LANG_C_KNR: return "K&R C";
-    case LANG_C_89 : return "C89";
-    case LANG_C_95 : return "C95";
-    case LANG_C_99 : return "C99";
-    case LANG_C_11 : return "C11";
-    case LANG_CXX  : return "C++";
+    case LANG_NONE  : return "";
+    case LANG_C_KNR : return "K&R C";
+    case LANG_C_89  : return "C89";
+    case LANG_C_95  : return "C95";
+    case LANG_C_99  : return "C99";
+    case LANG_C_11  : return "C11";
+    case LANG_CPP   : return "C++";
+    case LANG_CPP_11: return "C++11";
     default:
       INTERNAL_ERR( "\"%d\": unexpected value for lang\n", (int)lang );
   } // switch
@@ -279,7 +280,7 @@ void options_init( int argc, char const *argv[] ) {
   if ( strcasecmp( me, "c++decl" ) == 0 ||
        strcasecmp( me, "cppdecl" ) == 0 ||
        strcasecmp( me, "cxxdecl" ) == 0 ) {
-    opt_lang = LANG_CXX;
+    opt_lang = LANG_CPP;
   } else {
     opt_lang = LANG_C_11;
   }
