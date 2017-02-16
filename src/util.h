@@ -85,7 +85,7 @@ char* check_strdup( char const *s );
  * Local implementation of POSIX 2008 fmemopen(3) for systems that don't have
  * it.
  *
- * @param buf A pointer to the buffer to use.  The pointer should remain valid
+ * @param buf A pointer to the buffer to use.  The pointer must remain valid
  * for as along as the FILE is open.
  * @param size The size of \a buf.
  * @param mode The open mode.  It \e must contain \c r.
