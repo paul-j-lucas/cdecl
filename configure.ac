@@ -43,6 +43,13 @@ AC_ARG_ENABLE([debug],
     [Define to 1 if cdecl debugging is enabled.])]
 )
 
+# Program feature: debug
+AC_ARG_ENABLE([yydebug],
+  AS_HELP_STRING([--enable-yydebug], [enable support for yacc debugging]),
+  [AC_DEFINE([YYDEBUG], [1],
+    [Define to 1 if yacc debugging is enabled.])]
+)
+
 # Makefile conditionals.
 AM_CONDITIONAL([WITH_READLINE], [test x$ac_cv_search_readline != xno])
 
