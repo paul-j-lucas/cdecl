@@ -1,13 +1,12 @@
 /*
-**    cdecl -- C gibberish translator
-**    src/cdecl.c
+**      cdecl -- C gibberish translator
+**      src/cdecl.c
 */
 
 // local
-#include "config.h"
-#include "cdgram.h"
+#include "config.h"                     /* must go first */
+#include "literals.h"
 #include "options.h"
-#include "readline.h"
 #include "util.h"
 
 // standard
@@ -15,6 +14,7 @@
 #include <ctype.h>
 #include <errno.h>
 #include <getopt.h>
+#include <readline.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -34,8 +34,8 @@ char                prompt_buf[ PROGRAM_NAME_MAX_LEN + 2/*> */ + 1/*null*/ ];
 char const         *prompt_ptr;
 
 // local variables
-static bool         is_keyword;         // is argv[0] is a keyword?
-static bool         is_tty;             // is stdin connected to a tty?
+static bool         is_argv0_a_command; // is argv[0] is a command?
+static bool         is_stdin_a_tty;     // is stdin connected to a tty?
 
 // extern functions
 #ifdef HAVE_READLINE
@@ -44,12 +44,12 @@ void                readline_init( void );
 int                 yyparse( void );
 
 // local functions
-static bool         called_as_keyword( char const* );
+static bool         called_as_command( char const* );
 static void         cdecl_init( int, char const*[] );
 static int          parse_command_line( int, char const*[] );
 static int          parse_files( int, char const*[] );
 static int          parse_stdin( void );
-static int          parse_string( char const* );
+static int          parse_string( char const*, size_t );
 static char*        readline_wrapper( void );
 
 ////////// main ///////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@ int main( int argc, char const *argv[] ) {
 
   if ( optind == argc )                 // no file names or "-"
     rv = parse_stdin();
-  else if ( (is_keyword = called_as_keyword( argv[ optind ] )) )
+  else if ( (is_argv0_a_command = called_as_command( argv[ optind ] )) )
     rv = parse_command_line( argc, argv );
   else
     rv = parse_files( argc, argv );
@@ -76,13 +76,11 @@ int main( int argc, char const *argv[] ) {
  *
  * @param argn TODO
  */
-static bool called_as_keyword( char const *argn ) {
+static bool called_as_command( char const *argn ) {
   static char const *const COMMANDS[] = {
-    "cast",
-    "declare",
-    "explain",
-    "help",
-    "set",
+    L_CAST,
+    L_DECLARE,
+    L_EXPLAIN,
     NULL
   };
 
@@ -110,7 +108,7 @@ static void cdecl_init( int argc, char const *argv[] ) {
   atexit( cdecl_cleanup );
   options_init( argc, argv );
 
-  is_tty = isatty( STDIN_FILENO );
+  is_stdin_a_tty = isatty( STDIN_FILENO );
 
   // init the prompt
   strcpy( prompt_buf, opt_lang == LANG_CPP ? "c++decl" : "cdecl" );
@@ -130,42 +128,26 @@ static void cdecl_init( int argc, char const *argv[] ) {
  * @return TODO
  */
 static int parse_command_line( int argc, char const *argv[] ) {
-  int ret = 0;
-  FILE *tmpfp = tmpfile();
-  if (!tmpfp) {
-    int sverrno = errno;
-    fprintf (stderr, "%s: cannot open temp file\n", me);
-    errno = sverrno;
-    perror(me);
-    return 1;
+  size_t buf_size = 1/*\n*/ + 1/*null*/;
+
+  if ( is_argv0_a_command )
+    buf_size += strlen( me );
+  for ( int i = optind; i < argc; ++i )
+    buf_size += 1 + strlen( argv[i] );
+
+  char *const buf = MALLOC( char, buf_size );
+  char *p = buf;
+  if ( is_argv0_a_command )
+    p += strcpy_len( buf, me );
+
+  for ( int i = optind; i < argc; ++i ) {
+    *p++ = ' ';
+    p += strcpy_len( p, argv[i] );
   }
 
-  if ( is_keyword ) {
-    if (fputs(me, tmpfp) == EOF) {
-      int sverrno;
-errwrite:
-      sverrno = errno;
-      fprintf (stderr, "%s: error writing to temp file\n", me);
-      errno = sverrno;
-      perror(me);
-      fclose(tmpfp);
-      return 1;
-    }
-  }
-
-  for ( ; optind < argc; optind++)
-    if (fprintf(tmpfp, " %s", argv[optind]) == EOF)
-      goto errwrite;
-
-  if (putc('\n', tmpfp) == EOF)
-    goto errwrite;
-
-  rewind( tmpfp );
-  yyin = tmpfp;
-  ret += yyparse();
-  fclose( tmpfp );
-
-  return ret;
+  int const rv = parse_string( buf, buf_size );
+  free( buf );
+  return rv;
 }
 
 /**
@@ -176,24 +158,22 @@ errwrite:
  * @return TODO
  */
 static int parse_files( int argc, char const *argv[] ) {
-  FILE *ifp;
-  int ret = 0;
+  int rv = 0;
 
   for ( ; optind < argc; ++optind ) {
     if ( strcmp( argv[optind], "-" ) == 0 )
-      ret = parse_stdin();
-    else if ( (ifp = fopen( argv[optind], "r") ) == NULL ) {
-      int sverrno = errno;
-      fprintf (stderr, "%s: cannot open %s\n", me, argv[optind]);
-      errno = sverrno;
-      perror(argv[optind]);
-      ret++;
-    } else {
-      yyin = ifp;
-      ret += yyparse();
+      rv = parse_stdin();
+    else {
+      FILE *const fin = fopen( argv[optind], "r" );
+      if ( fin == NULL )
+        PERROR_EXIT( EX_NOINPUT );
+      yyin = fin;
+      rv = yyparse();
     }
+    if ( rv != 0 )
+      break;
   } // for
-  return ret;
+  return rv;
 }
 
 /**
@@ -202,20 +182,20 @@ static int parse_files( int argc, char const *argv[] ) {
  * @return TODO
  */
 static int parse_stdin() {
-  int ret;
+  int rv;
 
-  if ( is_tty || opt_interactive ) {
+  if ( is_stdin_a_tty || opt_interactive ) {
     char *line, *oldline;
     int len, newline;
 
     if ( !opt_quiet )
       printf( "Type `help' or `?' for help\n" );
 
-    ret = 0;
+    rv = 0;
     while ( (line = readline_wrapper()) ) {
       if ( strcmp( line, "quit" ) == 0 || strcmp( line, "exit" ) == 0 ) {
         free( line );
-        return ret;
+        return rv;
       }
 
       newline = 0;
@@ -230,28 +210,29 @@ static int parse_stdin() {
         line[len+1] = '\0';
       }
       if ( len )
-        ret = parse_string( line );
+        rv = parse_string( line, strlen( line ) );
       if (newline)
         free( line );
     } // while
     puts( "" );
-    return ret;
+    return rv;
   }
 
   yyin = stdin;
-  ret = yyparse();
-  is_tty = false;
-  return ret;
+  rv = yyparse();
+  is_stdin_a_tty = false;
+  return rv;
 }
 
 /**
  * TODO
  *
  * @param s The null-terminated string to parse.
+ * @param s_len the length of \a s.
  * @return Returns zero on success, non-zero on error.
  */
-static int parse_string( char const *s ) {
-  yyin = fmemopen( s, strlen( s ), "r" );
+static int parse_string( char const *s, size_t s_len ) {
+  yyin = fmemopen( s, s_len, "r" );
   int const rv = yyparse();
   fclose( yyin );
   return rv;
