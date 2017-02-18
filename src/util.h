@@ -33,6 +33,12 @@
 #define PMESSAGE_EXIT(STATUS,FORMAT,...) \
   BLOCK( PRINT_ERR( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
 
+#define FPRINTF(STREAM,...) \
+  BLOCK( if ( fprintf( (STREAM), __VA_ARGS__ ) < 0 ) PERROR_EXIT( EX_IOERR ); )
+
+#define FPUTS(S,STREAM) \
+  BLOCK( if ( fputs( (S), (STREAM) ) == EOF ) PERROR_EXIT( EX_IOERR ); )
+
 // extern variable definitions
 extern char const  *me;                 // executable name
 
