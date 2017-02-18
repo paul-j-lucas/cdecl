@@ -17,9 +17,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define ANY       0
-#define MIN(LANG) (LANG_ ## LANG - 1)
-#define NOT(LANG) (LANG_ ## LANG)
+#define ANY       0                     /* any language */
+#define MIN(LANG) (LANG_ ## LANG - 1)   /* minimum required language */
+#define NOT(LANG) (LANG_ ## LANG)       /* not in this language */
 
 /**
  * Array of all C/C++ keywords (relevant for declarations).
