@@ -72,6 +72,22 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { NULL,           TOKEN( 0 )            }
 };
 
+////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Finds the keyword matching \a s, if any.
+ *
+ * @param s The string to find.
+ * @return Returns a pointer to the corresponding keyword or null if not found.
+ */
+static keyword_t const* keyword_find( char const *s ) {
+  for ( keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
+    if ( strcmp( s, k->literal ) == 0 )
+      return k;
+  } // for
+  return NULL;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 %}
@@ -84,23 +100,24 @@ H             [0-9A-Fa-f]
 %%
 
 {A}({A}|{D})* {
-                for ( keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
-                  if ( strcmp( yytext, k->literal ) == 0 ) {
-                    if ( k->c_keyword_synonym ) {
-                      yytext = (char*)k->c_keyword_synonym;
-                      break;
-                    }
-                    return k->y_token;
-                  }
-                } // for
+                // use our own pointer in case yytext[]
+                char const *keyword = yytext;
 
-                c_keyword_t const *const k = c_keyword_find( yytext );
+                keyword_t const *const k = keyword_find( keyword );
                 if ( k ) {
-                  yylval.type = k->type;
-                  return k->y_token;
+                  if ( k->c_keyword_synonym )
+                    keyword = (char*)k->c_keyword_synonym;
+                  else
+                    return k->y_token;
                 }
 
-                yylval.name = yytext;
+                c_keyword_t const *const ck = c_keyword_find( keyword );
+                if ( ck ) {
+                  yylval.type = ck->type;
+                  return ck->y_token;
+                }
+
+                yylval.name = keyword;
                 return Y_NAME;
               }
 
