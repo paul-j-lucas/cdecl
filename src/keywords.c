@@ -26,16 +26,16 @@
  */
 static c_keyword_t const C_KEYWORDS[] = {
   // K&R C
-  { L_AUTO,           Y_AUTO,         T_NONE,         ANY                   },
+  { L_AUTO,           Y_AUTO,         T_AUTO,         ANY                   },
   { L_CHAR,           Y_CHAR,         T_CHAR,         ANY                   },
   { L_DOUBLE,         Y_DOUBLE,       T_DOUBLE,       ANY                   },
-  { L_EXTERN,         Y_EXTERN,       T_NONE,         ANY                   },
+  { L_EXTERN,         Y_EXTERN,       T_EXTERN,       ANY                   },
   { L_FLOAT,          Y_FLOAT,        T_FLOAT,        ANY                   },
   { L_INT,            Y_INT,          T_INT,          ANY                   },
   { L_LONG,           Y_LONG,         T_LONG,         ANY                   },
-  { L_REGISTER,       Y_REGISTER,     T_NONE,         ANY                   },
+  { L_REGISTER,       Y_REGISTER,     T_REGISTER,     ANY                   },
   { L_SHORT,          Y_SHORT,        T_SHORT,        ANY                   },
-  { L_STATIC,         Y_STATIC,       T_NONE,         ANY                   },
+  { L_STATIC,         Y_STATIC,       T_STATIC,       ANY                   },
   { L_STRUCT,         Y_STRUCT,       T_STRUCT,       ANY                   },
   { L_UNION,          Y_UNION,        T_STRUCT,       ANY                   },
   { L_UNSIGNED,       Y_UNSIGNED,     T_UNSIGNED,     ANY                   },
