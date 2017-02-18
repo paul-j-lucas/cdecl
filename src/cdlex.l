@@ -101,7 +101,7 @@ H             [0-9A-Fa-f]
                 if ( k ) {
                   yylval.type = k->type;
                   return k->y_token;
-                } // for
+                }
 
                 yylval.name = yytext;
                 return Y_NAME;
