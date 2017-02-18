@@ -66,6 +66,7 @@ extern char const L_BOOL[];             // synonym for "_Bool"
 extern char const L__COMPLEX[];
 extern char const L_COMPLEX[];          // synonym for "_Complex"
 extern char const L_RESTRICT[];
+extern char const L_RESTRICTED[];       // synonym for "restrict"
 extern char const L_WCHAR_T[];
 
 // C11

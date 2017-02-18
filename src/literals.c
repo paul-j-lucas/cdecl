@@ -63,6 +63,7 @@ char const L_BOOL[]           = "bool";
 char const L__COMPLEX[]       = "_Complex";
 char const L_COMPLEX[]        = "complex";
 char const L_RESTRICT[]       = "restrict";
+char const L_RESTRICTED[]     = "restricted";
 char const L_WCHAR_T[]        = "wchar_t";
 
 // C11

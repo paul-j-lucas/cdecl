@@ -26,7 +26,7 @@
 struct keyword {
   char const *literal;                  // C string literal of the keyword
   int         y_token;                  // yacc token number
-  char const *synonym_of_c;             // English synonym of C keyword
+  char const *c_keyword_synonym;        // English synonym of C keyword
 };
 typedef struct keyword keyword_t;
 
@@ -34,7 +34,7 @@ typedef struct keyword keyword_t;
 #define TOKEN(T)          T, NULL
 
 /**
- * All cdecl keywords.
+ * All cdecl keywords (that are not C/C++ keywords).
  */
 static keyword_t const CDECL_KEYWORDS[] = {
   { "?",            TOKEN( Y_HELP )       },
@@ -62,6 +62,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_QUIT,         TOKEN( Y_QUIT )       },
   { L_REF,          TOKEN( Y_REFERENCE )  },
   { L_REFERENCE,    TOKEN( Y_REFERENCE )  },
+  { L_RESTRICTED,   C_SYN( L_RESTRICT )   },
   { L_RET,          TOKEN( Y_RETURNING )  },
   { L_RETURNING,    TOKEN( Y_RETURNING )  },
   { L_SET,          TOKEN( Y_SET )        },
@@ -88,15 +89,15 @@ H             [0-9A-Fa-f]
 {A}({A}|{D})* {
                 for ( keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
                   if ( strcmp( yytext, k->literal ) == 0 ) {
-                    if ( k->synonym_of_c ) {
-                      yytext = (char*)k->synonym_of_c;
+                    if ( k->c_keyword_synonym ) {
+                      yytext = (char*)k->c_keyword_synonym;
                       break;
                     }
                     return k->y_token;
                   }
                 } // for
 
-                c_keyword_t const *k = keyword_find( yytext );
+                c_keyword_t const *const k = keyword_find( yytext );
                 if ( k ) {
                   yylval.type = k->type;
                   return k->y_token;
