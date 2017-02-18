@@ -1,134 +1,116 @@
 /*
-**    cdecl -- C gibberish translator
-**    src/cdlex.l
+**      cdecl -- C gibberish translator
+**      src/cdlex.l
 */
 
 %option nounput
 
 %{
+
 // local
-#include "config.h"
-#include "cdgram.h"
-#include "options.h"
-#include "util.h"
+#include "config.h"                     /* must go first */
+#include "ast.h"
+#include "keywords.h"
+#include "lang.h"
+#include "literals.h"
+#include "cdgram.h"                     /* must go last */
 
 // standard
 #include <string.h>
 
-#define CSD(X)                    check_strdup(X)
-#define YYTEXT                    CSD(yytext)
-
-#define BEFORE(LANG)              (LANG - 1)
-#define NOT_BEFORE(LANG,TOKEN)    not_lang( BEFORE(LANG), TOKEN )
-
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * cdecl keyword info.
+ */
+struct keyword {
+  char const *literal;                  // C string literal of the keyword
+  int         y_token;                  // yacc token number
+  char const *synonym_of_c;             // English synonym of C keyword
+};
+typedef struct keyword keyword_t;
+
+#define C_SYN(C_KEYWORD)  0, C_KEYWORD
+#define TOKEN(T)          T, NULL
+
+/**
+ * All cdecl keywords.
+ */
+static keyword_t const CDECL_KEYWORDS[] = {
+  { "?",            TOKEN( Y_HELP )       },
+  { L_ARRAY,        TOKEN( Y_ARRAY )      },
+  { L_AS,           TOKEN( Y_AS )         },
+  { L__BOOL,        C_SYN( L_BOOL )       },
+  { L_CAST,         TOKEN( Y_CAST )       },
+  { L_CHARACTER,    C_SYN( L_CHAR )       },
+  { L__COMPLEX,     C_SYN( L_COMPLEX )    },
+  { L_CONSTANT,     C_SYN( L_CONST )      },
+  { L_DECLARE,      TOKEN( Y_DECLARE )    },
+  { L_ENUMERATION,  C_SYN( L_ENUM )       },
+  { L_EXIT,         TOKEN( Y_QUIT )       },
+  { L_EXPLAIN,      TOKEN( Y_EXPLAIN )    },
+  { L_FUNC,         TOKEN( Y_FUNCTION )   },
+  { L_FUNCTION,     TOKEN( Y_FUNCTION )   },
+  { L_HELP,         TOKEN( Y_HELP )       },
+  { L_INTEGER,      C_SYN( L_INT )        },
+  { L_INTO,         TOKEN( Y_INTO )       },
+  { L_MEMBER,       TOKEN( Y_MEMBER ),    },
+  { L_OF,           TOKEN( Y_OF ),        },
+  { L_POINTER,      TOKEN( Y_POINTER )    },
+  { L_PTR,          TOKEN( Y_POINTER )    },
+  { L_Q,            TOKEN( Y_QUIT )       },
+  { L_QUIT,         TOKEN( Y_QUIT )       },
+  { L_REF,          TOKEN( Y_REFERENCE )  },
+  { L_REFERENCE,    TOKEN( Y_REFERENCE )  },
+  { L_RET,          TOKEN( Y_RETURNING )  },
+  { L_RETURNING,    TOKEN( Y_RETURNING )  },
+  { L_SET,          TOKEN( Y_SET )        },
+  { L_STRUCTURE,    C_SYN( L_STRUCT )     },
+  { L_TO,           TOKEN( Y_TO )         },
+  { L_VECTOR,       TOKEN( Y_ARRAY )      },
+  { NULL,           TOKEN( 0 )            }
+};
 
 // extern functions
 extern int  yywrap( void );
 
-////////// local functions ////////////////////////////////////////////////////
-
-static int not_lang( lang_t forbidden, int token ) {
-  if ( opt_lang & forbidden )
-    return T_ERROR;
-  yylval.dynstr = YYTEXT;
-  return token;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
+
 %}
 
 A             [A-Za-z_]
 O             [0-7]
 D             [0-9]
 H             [0-9A-Fa-f]
-AD            [A-Za-z_0-9]
 
 %%
 
-              /* commands */
-cast          return T_CAST;
-declare       return T_DECLARE;
-exit          return 0;
-explain       return T_EXPLAIN;
-help          return T_HELP;
-q             return 0;
-quit          return 0;
-set           return T_SET;
-"?"           return T_HELP;
+{A}({A}|{D})* {
+                for ( keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
+                  if ( strcmp( yytext, k->literal ) == 0 ) {
+                    if ( k->synonym_of_c ) {
+                      yytext = (char*)k->synonym_of_c;
+                      break;
+                    }
+                    return k->y_token;
+                  }
+                } // for
 
-              /* english */
-array         return T_ARRAY;
-as            return T_AS;
-block         return T_BLOCK;           /* Apple extension */
-character     { yylval.dynstr = CSD("char");    return T_CHAR; }
-func          return T_FUNCTION;
-function      return T_FUNCTION;
-integer       { yylval.dynstr = CSD("int");     return T_INT; }
-into          return T_INTO;
-member        return T_MEMBER;
-of            return T_OF;
-pointer       return T_POINTER;
-ptr           return T_POINTER;
-ref           return T_REFERENCE;
-reference     return T_REFERENCE;
-ret           return T_RETURNING;
-returning     return T_RETURNING;
-structure     { yylval.dynstr = CSD("struct");  return T_STRUCT; }
-to            return T_TO;
-vector        return T_ARRAY;
+                c_keyword_t const *k = keyword_find( yytext );
+                if ( k ) {
+                  yylval.type = k->type;
+                  return k->y_token;
+                } // for
 
-              /* K&R C */
-auto          { yylval.dynstr = YYTEXT;         return T_AUTO; }
-char          { yylval.dynstr = YYTEXT;         return T_CHAR; }
-double        { yylval.dynstr = YYTEXT;         return T_DOUBLE; }
-extern        { yylval.dynstr = YYTEXT;         return T_EXTERN; }
-float         { yylval.dynstr = YYTEXT;         return T_FLOAT; }
-int           { yylval.dynstr = YYTEXT;         return T_INT; }
-long          { yylval.dynstr = YYTEXT;         return T_LONG; }
-register      { yylval.dynstr = YYTEXT;         return T_REGISTER; }
-short         { yylval.dynstr = YYTEXT;         return T_SHORT; }
-static        { yylval.dynstr = YYTEXT;         return T_STATIC; }
-struct        { yylval.dynstr = YYTEXT;         return T_STRUCT; }
-union         { yylval.dynstr = YYTEXT;         return T_UNION; }
-unsigned      { yylval.dynstr = YYTEXT;         return T_UNSIGNED; }
+                yylval.name = yytext;
+                return Y_NAME;
+              }
 
-              /* C89 */
-const         { return NOT_BEFORE( LANG_C_89, T_CONST ); }
-constant      { yylval.dynstr = CSD("const");   return T_CONST; }
-enum          { return NOT_BEFORE( LANG_C_89, T_ENUM ); }
-enumeration   { yylval.dynstr = CSD("enum");    return T_ENUM; }
-signed        { return NOT_BEFORE( LANG_C_89, T_SIGNED ); }
-void          { return NOT_BEFORE( LANG_C_89, T_VOID ); }
-volatile      { return NOT_BEFORE( LANG_C_89, T_VOLATILE ); }
+[1-9]{D}*     { yylval.number = strtol( yytext, NULL, 10 ); return Y_NUMBER; }
+0{O}*         { yylval.number = strtol( yytext, NULL,  8 ); return Y_NUMBER; }
+0[xX]{H}+     { yylval.number = strtol( yytext, NULL, 16 ); return Y_NUMBER; }
 
-              /* C99 */
-bool          { return NOT_BEFORE( LANG_C_99, T_BOOL ); }
-_Bool         { yylval.dynstr = CSD("bool");    return T_BOOL; }
-complex       { return NOT_BEFORE( LANG_C_99, T_COMPLEX ); }
-_Complex      { yylval.dynstr = CSD("complex"); return T_COMPLEX; }
-restrict      { return NOT_BEFORE( LANG_C_99, T_RESTRICT ); }
-wchar_t       { return NOT_BEFORE( LANG_C_99, T_WCHAR_T ); }
-
-              /* C11 */
-_Noreturn     { return NOT_BEFORE( LANG_C_11, T_NORETURN ); }
-_Thread_local { return NOT_BEFORE( LANG_C_11, T_THREAD_LOCAL ); }
-
-              /* C++ */
-class         { return NOT_BEFORE( LANG_CPP, T_CLASS ); }
-
-              /* C11 & C++11 */
-char16_t      { yylval.dynstr = YYTEXT;         return T_CHAR16_T; }
-char32_t      { yylval.dynstr = YYTEXT;         return T_CHAR32_T; }
-
-noalias       { yylval.dynstr = YYTEXT;         return T_VOLATILE; }
-
-{A}{AD}*      { yylval.dynstr = YYTEXT;         return T_NAME; }
-{D}+          |
-0{O}+         |
-0[xX]{H}+     { yylval.dynstr = YYTEXT;         return T_NUMBER; }
-
-"::"          return T_COLON_COLON;
+"::"          return Y_COLON_COLON;
 
 "&"           |
 "("           |
@@ -148,12 +130,11 @@ noalias       { yylval.dynstr = YYTEXT;         return T_VOLATILE; }
               }
 
 [#].*         ;                         /* script-style comments */
-
-[;\n]         return T_END;
-
 [ \f\r\t\v]+  ;                         /* ignore all other whitespace */
 
-.             return T_ERROR;
+[;\n]         return Y_END;
+
+.             return Y_ERROR;
 
 %%
 
