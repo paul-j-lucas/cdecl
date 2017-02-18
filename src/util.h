@@ -9,7 +9,7 @@
 #define cdecl_util_H
 
 // local
-#include "config.h"
+#include "config.h"                     /* must go first */
 
 // standard
 #include <stddef.h>                     /* for size_t */
@@ -114,6 +114,15 @@ void free_now( void );
  * @return TODO
  */
 char const* visible( int c );
+
+/**
+ * A variant of strcpy(3) that returns the number of characters copied.
+ *
+ * @param dst A pointer to receive the copy of \a src.
+ * @param src The null-terminated string to copy.
+ * @return Returns the number of characters copied.
+ */
+size_t strcpy_len( char *dst, char const *src );
 
 ///////////////////////////////////////////////////////////////////////////////
 

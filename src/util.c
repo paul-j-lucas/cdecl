@@ -139,5 +139,14 @@ char const* visible( int c ) {
   return buf;
 }
 
+size_t strcpy_len( char *dst, char const *src ) {
+  assert( dst );
+  assert( src );
+  char const *const dst0 = dst;
+  while ( (*dst++ = *src++) )
+    /* empty */;
+  return dst - dst0 - 1;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */
