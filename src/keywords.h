@@ -31,7 +31,7 @@ typedef struct c_keyword c_keyword_t;
  * @param s TODO
  * @return TODO
  */
-c_keyword_t const* keyword_find( char const *s );
+c_keyword_t const* c_keyword_find( char const *s );
 
 ///////////////////////////////////////////////////////////////////////////////
 

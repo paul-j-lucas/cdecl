@@ -97,7 +97,7 @@ H             [0-9A-Fa-f]
                   }
                 } // for
 
-                c_keyword_t const *const k = keyword_find( yytext );
+                c_keyword_t const *const k = c_keyword_find( yytext );
                 if ( k ) {
                   yylval.type = k->type;
                   return k->y_token;

@@ -75,7 +75,7 @@ static c_keyword_t const C_KEYWORDS[] = {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_keyword_t const* keyword_find( char const *s ) {
+c_keyword_t const* c_keyword_find( char const *s ) {
   for ( c_keyword_t const *k = C_KEYWORDS; k->literal; ++k ) {
     if ( strcmp( s, k->literal ) == 0 )
       return k;
