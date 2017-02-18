@@ -1,15 +1,16 @@
 /*
-**    cdecl -- C gibberish translator
-**    src/readline_support.c
+**      cdecl -- C gibberish translator
+**      src/readline_support.c
 */
 
 // local
-#include "config.h"
-#include "readline.h"
+#include "config.h"                     /* must go first */
+#include "literals.h"
 #include "util.h"
 
 // standard
 #include <assert.h>
+#include <readline.h>
 #include <stdbool.h>
 #include <string.h>
 
@@ -36,13 +37,13 @@ static char** attempt_completion( char const *text, int start, int end ) {
  */
 static char* command_completion( char const *text, int flag ) {
   char const *const COMMANDS[] = {
-    "cast",
-    "declare",
-    "exit",
-    "explain",
-    "help",
-    "quit",
-    "set",
+    L_CAST,
+    L_DECLARE,
+    L_EXIT,
+    L_EXPLAIN,
+    L_HELP,
+    L_QUIT,
+    L_SET,
     NULL
   };
 
@@ -68,57 +69,56 @@ static char* keyword_completion( char const *text, int flag ) {
   static char const *const KEYWORDS[] = {
 
     // english
-    "array",
-//  "as",                               // too short
-//  "block",
-    "function",
-//  "into",                             // special case (see below)
-    "member",
-//  "of",                               // too short
-    "pointer",
-    "reference",
-    "returning",
-//  "to",                               // too short
+    L_ARRAY,
+//  L_AS,                               // too short
+//  L_BLOCK,
+    L_FUNCTION,
+//  L_INTO,                             // special case (see below)
+    L_MEMBER,
+//  L_OF,                               // too short
+    L_POINTER,
+    L_REFERENCE,
+    L_RETURNING,
+//  L_TO,                               // too short
 
     // K&R C
-    "auto",
-    "char",
-    "double",
-    "extern",
-    "float",
-//  "int",                              // special case (see below)
-    "long",
-    "noalias",
-    "register",
-    "short",
-    "static",
-    "struct",
-    "union",
-    "unsigned",
+    L_AUTO,
+    L_CHAR,
+    L_DOUBLE,
+    L_EXTERN,
+    L_FLOAT,
+//  L_INT,                              // special case (see below)
+    L_LONG,
+    L_REGISTER,
+    L_SHORT,
+    L_STATIC,
+    L_STRUCT,
+    L_UNION,
+    L_UNSIGNED,
 
     // C89
-    "const",
-    "enum",
-    "signed",
-    "void",
-    "volatile",
+    L_CONST,
+    L_ENUM,
+    L_SIGNED,
+    L_VOID,
+    L_VOLATILE,
 
     // C99
-    "bool",
-    "complex",
-    "restrict",
-    "wchar_t",
+    L_BOOL,
+    L_COMPLEX,
+    L_RESTRICT,
+    L_WCHAR_T,
 
     // C11
-    "_Noreturn",
-    "_Thread_local",
+    L_NORETURN,
+    L_THREAD_LOCAL,
 
     // C11 & C++11
-    "char16_t",
-    "char32_t",
+    L_CHAR16_T,
+    L_CHAR32_T,
 
     // C++
-    "class",
+    L_CLASS,
 
     NULL
   };
