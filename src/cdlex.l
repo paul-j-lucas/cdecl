@@ -72,9 +72,6 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { NULL,           TOKEN( 0 )            }
 };
 
-// extern functions
-extern int  yywrap( void );
-
 ///////////////////////////////////////////////////////////////////////////////
 
 %}
