@@ -148,5 +148,13 @@ size_t strcpy_len( char *dst, char const *src ) {
   return dst - dst0 - 1;
 }
 
+char* trim_ws( char *s ) {
+  assert( s );
+  s += strspn( s, " \t\r" );
+  for ( size_t len = strlen( s ); len > 0 && isspace( s[ --len ] ); )
+    s[ len ] = '\0';
+  return s;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

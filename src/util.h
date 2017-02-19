@@ -130,6 +130,14 @@ char const* visible( int c );
  */
 size_t strcpy_len( char *dst, char const *src );
 
+/**
+ * Trims both leading and trailing whitespace from a string.
+ *
+ * @param s The string to trim whitespace from.
+ * @return Returns a pointer to within \a s having all whitespace trimmed.
+ */
+char* trim_ws( char *s );
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif /* cdecl_util_H */
