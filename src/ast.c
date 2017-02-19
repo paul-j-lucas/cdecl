@@ -6,48 +6,168 @@
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"
+#include "literals.h"
 #include "util.h"
 
 // system
+#include <assert.h>
 #include <stdlib.h>
+#include <string.h>                     /* for memset(3) */
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_object_free( c_object_t *obj ) {
-  if ( obj->name )
-    free( (void*)obj->name );
-  switch ( obj->kind ) {
-    case K_ARRAY:
-      if ( obj->as.array.of_type )
-        c_object_free( obj->as.array.of_type );
+#if 0
+void c_ast_check( c_ast_t *ast ) {
+  assert( ast );
+
+  switch ( ast->kind ) {
+    case K_NONE:
+      break;
+
+    case K_ARRAY: {
+      c_ast const *const of_ast = ast->as.array.of_ast;
+      switch ( of_ast.kind ) {
+        case K_BUILTIN:
+          if ( of_ast.type & T_VOID )
+            /* complain */;
+          break;
+        case K_FUNCTION:
+          /* complain */;
+          break;
+      } // switch
+      break;
+    }
+
+    case K_BLOCK:
+      // TODO
+      break;
+    case K_BUILTIN:
+      // nothing to do
       break;
     case K_FUNCTION:
-      for ( c_func_arg_t *arg = obj->as.func.arg; arg; arg = arg->next )
-        c_object_free( arg->c_obj );
+      for ( c_ast_t *arg = ast->as.func.args.head; arg; arg = arg->next )
+        /* TODO */;
       break;
     case K_MEMBER:
-      free( (void*)obj->as.member.class_name );
-      c_object_free( obj->as.member.of_type );
+      break;
+    case K_NAME:
       break;
     case K_POINTER:
-      c_object_free( obj->as.ptr_to );
-      break;
     case K_REFERENCE:
-      c_object_free( obj->as.ref_to );
       break;
-    default:
+    case K_STRUCT:
+      // TODO
+      break;
+  } // switch
+}
+#endif
+
+void c_ast_english( c_ast_t const *ast, FILE *fout ) {
+  assert( ast );
+
+  switch ( ast->kind ) {
+    case K_NONE:
+      break;
+
+    case K_ARRAY:
+      FPRINTF( fout, "%s ", L_ARRAY );
+      if ( ast->as.array.size != C_ARRAY_NO_SIZE )
+        FPRINTF( fout, "%d ", ast->as.array.size );
+      FPRINTF( fout, "%s ", L_OF );
+      c_ast_english( ast->as.member.of_ast, fout );
+      break;
+
+    case K_BLOCK:
+      // TODO
+
+    case K_BUILTIN:
+      FPUTS( c_type_name( ast->as.type ), fout );
+      break;
+
+    case K_FUNCTION:
+      FPRINTF( fout, "%s (", L_FUNCTION );
+      for ( c_ast_t *arg = ast->as.func.args.head; arg; arg = arg->next )
+        c_ast_english( arg, fout );
+      FPRINTF( fout, ") %s ", L_RETURNING );
+      c_ast_english( ast->as.func.ret_ast, fout );
+      break;
+
+    case K_MEMBER:
+      if ( ast->as.member.qualifier )
+        FPRINTF( fout, "%s ", c_type_name( ast->as.member.qualifier ) );
+      FPRINTF( fout,
+        "%s %s %s %s %s %s ",
+        L_POINTER, L_TO, L_MEMBER, L_OF, L_CLASS, ast->as.member.class_name
+      );
+      c_ast_english( ast->as.member.of_ast, fout );
+      break;
+
+    case K_NAME:
+      if ( ast->as.name )
+        FPUTS( ast->as.name, fout );
+      break;
+
+    case K_POINTER:
+    case K_REFERENCE:
+      if ( ast->as.ptr_ref.qualifier )
+        FPRINTF( fout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
+      FPRINTF( fout,
+        "%s %s ", (ast->kind == K_POINTER ? L_POINTER : L_REFERENCE), L_TO
+      );
+      c_ast_english( ast->as.ptr_ref.to_ast, fout );
+      break;
+
+    case K_STRUCT:
+      // TODO
       break;
   } // switch
 }
 
-c_object_t* c_object_new( c_kind_t kind, char const *name ) {
-  c_object_t *const obj = MALLOC( c_object_t, 1 );
-  obj->kind = kind;
-  obj->name = name ? check_strdup( name ) : NULL;
-  return obj;
+void c_ast_free( c_ast_t *ast ) {
+  assert( ast );
+
+  switch ( ast->kind ) {
+    case K_NONE:
+      break;
+    case K_ARRAY:
+      if ( ast->as.array.of_ast )
+        c_ast_free( ast->as.array.of_ast );
+      break;
+    case K_BLOCK:
+      // TODO
+      break;
+    case K_BUILTIN:
+      // nothing to do
+      break;
+    case K_FUNCTION:
+      for ( c_ast_t *arg = ast->as.func.args.head; arg; ) {
+        c_ast_t *const next = arg->next;
+        c_ast_free( arg );
+        arg = next;
+      }
+      break;
+    case K_MEMBER:
+      free( (void*)ast->as.member.class_name );
+      c_ast_free( ast->as.member.of_ast );
+      break;
+    case K_NAME:
+      free( (void*)ast->as.name );
+      break;
+    case K_POINTER:
+    case K_REFERENCE:
+      c_ast_free( ast->as.ptr_ref.to_ast );
+      break;
+    case K_STRUCT:
+      // TODO
+      break;
+  } // switch
 }
 
-void c_object_english( c_object_t *obj, FILE *fout ) {
+c_ast_t* c_ast_new( c_kind_t kind ) {
+  c_ast_t *const ast = MALLOC( c_ast_t, 1 );
+  memset( ast, 0, sizeof( c_ast_t ) );
+  ast->kind = kind;
+  return ast;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

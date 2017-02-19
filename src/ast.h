@@ -12,23 +12,32 @@
 // standard
 #include <stdio.h>                      /* for FILE */
 
+/**
+ * @file
+ * Contains types to represent an Abstract Syntax Tree (AST) for parsed C/C++
+ * declarations.
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef struct c_array    c_array_t;
+typedef struct c_ast      c_ast_t;
+typedef struct c_ast_list c_ast_list_t;
 typedef struct c_func     c_func_t;
-typedef struct c_func_arg c_func_arg_t;
 typedef enum   c_kind     c_kind_t;
 typedef struct c_member   c_member_t;
-typedef struct c_object   c_object_t;
+typedef struct c_ptr_ref  c_ptr_ref_t;
+
+#define C_ARRAY_NO_SIZE   (-1)
 
 /**
- * TODO
+ * Kinds of AST nodes.
  */
 enum c_kind {
   K_NONE,
   K_ARRAY,
   K_BLOCK,                              // Apple extension
-  K_BUILTIN,                            // char, int, etc.
+  K_BUILTIN,                            // void, char, int, etc.
   K_FUNCTION,
   K_MEMBER,                             // C++ class data member
   K_NAME,
@@ -38,75 +47,86 @@ enum c_kind {
 };
 
 /**
- * TODO
+ * Linked-list of AST objects.
+ */
+struct c_ast_list {
+  c_ast_t  *head;
+  c_ast_t  *tail;
+};
+
+/**
+ * AST object for a C/C++ array.
  */
 struct c_array {
-  int         size;                     // -1 == no size
-  c_object_t *of_type;
+  int       size;
+  c_ast_t  *of_ast;
 };
 
 /**
- * TODO
+ * AST object for a C/C++ function.
+ */
+struct c_func {
+  c_ast_t      *ret_ast;
+  c_ast_list_t  args;
+};
+
+/**
+ * AST object for a C/C++ pointer or C++ reference.
+ */
+struct c_ptr_ref {
+  c_type_t  qualifier;                  // T_CONST, T_RESTRICT, T_VOLATILE
+  c_ast_t  *to_ast;
+};
+
+/**
+ * AST object for a C++ pointer-to-class-member.
  */
 struct c_member {
+  c_type_t    qualifier;                // T_CONST, T_RESTRICT, T_VOLATILE
   char const *class_name;
-  c_object_t *of_type;
+  c_ast_t    *of_ast;
 };
 
 /**
- * TODO
+ * AST object.
  */
-struct c_func_arg {
-  c_object_t   *c_obj;
-  c_func_arg_t *next;
-};
-
-struct c_func {
-  c_object_t  *ret_type;
-  c_func_arg_t *arg;
-};
-
-/**
- * TODO
- */
-struct c_object {
-  c_kind_t    kind;
-  char const *name;
+struct c_ast {
+  c_kind_t  kind;
+  c_ast_t  *next;
 
   union {
     c_array_t     array;                // K_ARRAY
     c_type_t      type;                 // K_BUILTIN
     c_func_t      func;                 // K_FUNCTION
     c_member_t    member;               // K_MEMBER
-    c_object_t   *ptr_to;               // K_POINTER
-    c_object_t   *ref_to;               // K_REFERENCE
+    char const   *name;                 // K_NAME
+    c_ptr_ref_t   ptr_ref;              // K_POINTER or K_REFERENCE
   } as;
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * TODO
+ * Prints the given c_ast as English.
  *
- * @param obj
+ * @param ast The c_ast to print as English.
+ * @param fout The FILE to print to.
  */
-void c_object_free( c_object_t *obj );
+void c_ast_english( c_ast_t const *ast, FILE *fout );
 
 /**
- * TODO
+ * Frees all the memory used by the given c_ast.
  *
- * @param kind TODO
- * @param name TODO
+ * @param ast The c_ast to free.
  */
-c_object_t* c_object_new( c_kind_t kind, char const *name );
+void c_ast_free( c_ast_t *ast );
 
 /**
- * TODO
+ * Creates a new c_ast.
  *
- * @param obj TODO
- * @param fout TODO
+ * @param kind The kind of object to create.
  */
-void c_object_english( c_object_t *obj, FILE *fout );
+c_ast_t* c_ast_new( c_kind_t kind );
 
 ///////////////////////////////////////////////////////////////////////////////
 
