@@ -22,6 +22,7 @@
 #include <string.h>
 
 #define PROGRAM_NAME_MAX_LEN      10    /* at least big enough for "c++decl" */
+#define PROMPT_SUFFIX             "> "
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -30,8 +31,8 @@ extern FILE        *yyin;
 
 // extern variable definitions
 char const         *me;                 // program name
-char                prompt_buf[ PROGRAM_NAME_MAX_LEN + 2/*> */ + 1/*null*/ ];
-char const         *prompt_ptr;
+char const         *prompt;
+char                prompt_buf[ PROGRAM_NAME_MAX_LEN + sizeof PROMPT_SUFFIX ];
 
 // local variables
 static bool         is_argv0_a_command; // is argv[0] is a command?
@@ -112,8 +113,8 @@ static void cdecl_init( int argc, char const *argv[] ) {
 
   // init the prompt
   strcpy( prompt_buf, opt_lang == LANG_CPP ? "c++decl" : "cdecl" );
-  strcat( prompt_buf, "> " );
-  prompt_ptr = prompt_buf;
+  strcat( prompt_buf, PROMPT_SUFFIX );
+  prompt = prompt_buf;
 
 #ifdef HAVE_READLINE
   readline_init();
@@ -193,10 +194,6 @@ static int parse_stdin() {
 
     rv = 0;
     while ( (line = readline_wrapper()) ) {
-      if ( strcmp( line, "quit" ) == 0 || strcmp( line, "exit" ) == 0 ) {
-        free( line );
-        return rv;
-      }
 
       newline = 0;
       /* readline() strips newline, we add semicolon if necessary */
@@ -248,12 +245,17 @@ static char* readline_wrapper( void ) {
 
   if ( line_read )
     free( line_read );
+  line_read = readline( prompt );
 
-  line_read = readline( prompt_ptr );
-  if ( line_read && *line_read )
-    add_history( line_read );
+  char *line_nws;
+  if ( line_read ) {
+    line_nws = trim_ws( line_read );
+    if ( *line_nws )
+      add_history( line_nws );
+    return line_nws;
+  }
 
-  return line_read;
+  return NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
