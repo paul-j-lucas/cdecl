@@ -73,7 +73,6 @@ extern char const L_WCHAR_T[];
 extern char const L__NORETURN[];
 extern char const L_NORETURN[];         // synonym for "_Noreturn"
 extern char const L__THREAD_LOCAL[];
-extern char const L_THREAD_LOCAL[];     // synonym for "_Thread_local"
 
 // C++
 extern char const L_CLASS[];
@@ -81,6 +80,7 @@ extern char const L_CLASS[];
 // C11 & C++11
 extern char const L_CHAR16_T[];
 extern char const L_CHAR32_T[];
+extern char const L_THREAD_LOCAL[];
 
 // miscellaneous
 extern char const L___BLOCK[];          // Apple extension

@@ -70,7 +70,6 @@ char const L_WCHAR_T[]        = "wchar_t";
 char const L__NORETURN[]      = "_Noreturn";
 char const L_NORETURN[]       = "Noreturn";
 char const L__THREAD_LOCAL[]  = "_Thread_local";
-char const L_THREAD_LOCAL[]   = "Thread_local";
 
 // C++
 char const L_CLASS[]          = "class";
@@ -78,6 +77,7 @@ char const L_CLASS[]          = "class";
 // C11 & C++11
 char const L_CHAR16_T[]       = "char16_t";
 char const L_CHAR32_T[]       = "char32_t";
+char const L_THREAD_LOCAL[]   = "thread_local";
 
 // Miscellaneous
 char const L___BLOCK[]        = "__block";
