@@ -149,7 +149,7 @@ static int parse_command_line( int argc, char const *argv[] ) {
   }
 
   int const rv = parse_string( buf, buf_size );
-  free( buf );
+  FREE( buf );
   return rv;
 }
 
@@ -192,7 +192,7 @@ static int parse_stdin() {
     int len, newline;
 
     if ( !opt_quiet )
-      printf( "Type `help' or `?' for help\n" );
+      printf( "Type \"help\" or \"?\" for help\n" );
 
     rv = 0;
     while ( (line = readline_wrapper()) ) {
