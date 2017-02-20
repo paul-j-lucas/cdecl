@@ -49,6 +49,8 @@ static void         usage( void );
 static char const SHORT_OPTS[] = "89acdikpqvx:";
 
 static struct option const LONG_OPTS[] = {
+  { "c89",          no_argument,        NULL, '8' },
+  { "c99",          no_argument,        NULL, '9' },
   { "debug",        no_argument,        NULL, 'd' },
   { "language",     required_argument,  NULL, 'x' },
   { "interactive",  no_argument,        NULL, 'i' },
@@ -209,7 +211,7 @@ static void parse_options( int argc, char const *argv[] ) {
       case 'i': opt_interactive = true;                 break;
       case 'k':
       case 'p': opt_lang        = LANG_C_KNR;           break;
-      case '1': opt_quiet       = true;                 break;
+      case 'q': opt_quiet       = true;                 break;
       case 'v': print_version   = true;                 break;
       case 'x': opt_lang        = parse_lang( optarg ); break;
       default : usage();
@@ -226,34 +228,26 @@ static void parse_options( int argc, char const *argv[] ) {
 }
 
 static void usage( void ) {
-  PRINT_ERR( "Usage: %s [-r|-p|-a|-+] [-ciq%s%s] [files...]\n",
-    me,
+  PRINT_ERR( "usage: %s [options] [files...]\n", me );
+  PRINT_ERR( "       %s -v\n", me );
+  PRINT_ERR( "\noptions:\n" );
+  PRINT_ERR( "  -8        Use C89.\n" );
+  PRINT_ERR( "  -9        Use C99.\n" );
+  PRINT_ERR( "  -a        Sams as -8 (for historical cdecl compatibility).\n" );
+  PRINT_ERR( "  -c        Create compilable output (include ; and {}).\n" );
 #ifdef WITH_CDECL_DEBUG
-    "d",
-#else
-    "",
+  PRINT_ERR( "  -d        Enable debugging.\n" );
 #endif /* WITH_CDECL_DEBUG */
-#ifdef doyydebug
-    "D"
-#else
-    ""
-#endif /* doyydebug */
-  );
-  PRINT_ERR( "\t-r Check against Ritchie PDP C Compiler\n");
-  PRINT_ERR( "\t-p Check against Pre-ANSI C Compiler\n");
-  PRINT_ERR( "\t-a Check against ANSI C Compiler%s\n",
-    opt_lang == LANG_CPP ? "" : " (the default)");
-  PRINT_ERR( "\t-+ Check against C++ Compiler%s\n",
-    opt_lang == LANG_CPP ? " (the default)" : "");
-  PRINT_ERR( "\t-c Create compilable output (include ; and {})\n");
-  PRINT_ERR( "\t-i Force interactive mode\n");
-  PRINT_ERR( "\t-q Quiet prompt\n");
-#ifdef WITH_CDECL_DEBUG
-  PRINT_ERR( "\t-d Turn on debugging mode\n");
-#endif /* WITH_CDECL_DEBUG */
-#ifdef doyydebug
-  PRINT_ERR( "\t-D Turn on YACC debugging mode\n");
-#endif /* doyydebug */
+#ifdef YYDEBUG
+  PRINT_ERR( "  -D        Enable YACC debugging.\n" );
+#endif /* YYDEBUG */
+  PRINT_ERR( "  -i        Force interactive mode.\n" );
+  PRINT_ERR( "  -k        Use K&R C.\n" );
+  PRINT_ERR( "  -p        Same as -k (for historical cdecl compatibility).\n" );
+  PRINT_ERR( "  -q        Be quiet (disable prompt).\n" );
+  PRINT_ERR( "  -v        Print version an exit.\n" );
+  PRINT_ERR( "  -+        Use C++.\n" );
+  PRINT_ERR( "  -x lang   Use <lang>.\n" );
   exit( EX_USAGE );
 }
 
