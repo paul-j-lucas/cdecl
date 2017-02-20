@@ -5,6 +5,7 @@
 
 // local
 #include "config.h"                     /* must go first */
+#include "ast.h"
 #include "literals.h"
 #include "options.h"
 #include "util.h"
@@ -97,6 +98,7 @@ static bool called_as_command( char const *argn ) {
  */
 static void cdecl_cleanup( void ) {
   free_now();
+  c_ast_cleanup();
 }
 
 /**
