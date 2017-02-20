@@ -27,7 +27,8 @@
 #define T_DOUBLE        0x00004000
 #define T_COMPLEX       0x00008000
 #define T_STRUCT        0x00010000
-#define T_CLASS         0x00020000
+#define T_UNION         0x00020000
+#define T_CLASS         0x00040000
 
 // storage classes
 #define T_AUTO          0x00100000
