@@ -1,12 +1,15 @@
-%{
 /*
-**    cdecl -- C gibberish translator
-**    src/cdgram.y
+**      cdecl -- C gibberish translator
+**      src/cdgram.y
 */
 
+%{
 // local
-#include "config.h"
+#include "config.h"                     /* must cone first */
+#include "ast.h"
+#include "lang.h"
 #include "options.h"
+#include "types.h"
 #include "util.h"
 
 // standard
@@ -23,249 +26,83 @@
 #define YYTRACE(...)              /* nothing */
 #endif /* WITH_CDECL_DEBUG */
 
-#ifdef WITH_YYDEBUG
-#define YYDEBUG 1
-#endif /* WITH_YYDEBUG */
-
 ///////////////////////////////////////////////////////////////////////////////
 
 // external variables
+extern char const  *prompt;
 extern char         prompt_buf[];
-extern char const  *prompt_ptr;
+extern char const* yytext;
 
 // extern functions
+extern void         print_help( void );
 extern int          yylex( void );
 
-/**
- * The kinds of C identifiers.
- */
-enum c_ident_kind {
-  C_NONE          = '0',
-  C_ARRAY_NO_DIM  = 'a',
-  C_ARRAY_DIM     = 'A',
-  C_BLOCK         = '^',                // Apple extension
-  C_BUILTIN       = 't',                // char, int, etc.
-  C_FUNCTION      = 'f',
-  C_NAME          = 'n',
-  C_POINTER       = '*',
-  CPP_REFERENCE   = '&',
-  C_STRUCT        = 's',                // or C++ class
-  C_VOID          = 'v',
-};
-typedef enum c_ident_kind c_ident_kind_t;
-
-/**
- * Bits denoting C type.
- */
-typedef unsigned c_type_bits_t;
-
-// local constants
-static c_type_bits_t const C_TYPE_VOID      = 0x0001;
-static c_type_bits_t const C_TYPE_BOOL      = 0x0002;
-static c_type_bits_t const C_TYPE_CHAR      = 0x0004;
-static c_type_bits_t const C_TYPE_CHAR16_T  = 0x0008;
-static c_type_bits_t const C_TYPE_CHAR32_T  = 0x0010;
-static c_type_bits_t const C_TYPE_WCHAR_T   = 0x0020;
-static c_type_bits_t const C_TYPE_SHORT     = 0x0040;
-static c_type_bits_t const C_TYPE_INT       = 0x0080;
-static c_type_bits_t const C_TYPE_LONG      = 0x0100;
-static c_type_bits_t const C_TYPE_LONG_LONG = 0x0200;
-static c_type_bits_t const C_TYPE_SIGNED    = 0x0400;
-static c_type_bits_t const C_TYPE_UNSIGNED  = 0x0800;
-static c_type_bits_t const C_TYPE_FLOAT     = 0x1000;
-static c_type_bits_t const C_TYPE_DOUBLE    = 0x2000;
-static c_type_bits_t const C_TYPE_COMPLEX   = 0x4000;
-
-/**
- * Mapping between C type names and bit representations.
- */
-struct c_type_map {
-  char const   *name;
-  c_type_bits_t bit;
-};
-typedef struct c_type_map c_type_map_t;
-
-static c_type_map_t const C_TYPE_MAP[] = {
-  { "void",       C_TYPE_VOID       },
-  { "bool",       C_TYPE_BOOL       },
-  { "char",       C_TYPE_CHAR       },
-  { "char16_t",   C_TYPE_CHAR16_T   },
-  { "char32_t",   C_TYPE_CHAR32_T   },
-  { "wchar_t",    C_TYPE_WCHAR_T    },
-  { "short",      C_TYPE_SHORT      },
-  { "int",        C_TYPE_INT        },
-  { "long",       C_TYPE_LONG       },
-  { "long long",  C_TYPE_LONG_LONG  },
-  { "signed",     C_TYPE_SIGNED     },
-  { "unsigned",   C_TYPE_UNSIGNED   },
-  { "float",      C_TYPE_FLOAT      },
-  { "double",     C_TYPE_DOUBLE     },
-  { "complet",    C_TYPE_COMPLEX    },
-};
-
-// local constants
-static char const     UNKNOWN_NAME[] = "unknown_name";
+int yydebug = 1;
 
 // local variables
-static bool           array_has_dim;
-static c_type_bits_t  c_type_bits;
-static c_ident_kind_t c_ident_kind;
-static char const    *c_ident;
+static char const  *c_ident;
+static bool         newlined = true;
 
 // local functions
-static char const*    c_type_name( c_type_bits_t );
-static void           illegal( lang_t, char const*, char const* );
-static void           unsupp( char const*, char const* );
+static void         illegal( lang_t, char const*, char const* );
+static void         unsupp( char const*, char const* );
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#if 0
 /**
  * TODO
  *
- * @param type_bit TODO
+ * @param type TODO
  */
-static void c_type_add( c_type_bits_t type_bit ) {
-  if ( type_bit == C_TYPE_LONG && (c_type_bits & C_TYPE_LONG) ) {
+static void c_type_add( c_type_t type ) {
+  if ( type == T_LONG && (_type & T_LONG) ) {
     //
     // TODO
     //
-    type_bit = C_TYPE_LONG_LONG;
+    type = T_LONG_LONG;
   }
 
-  if ( !(c_type_bits & type_bit) ) {
-    c_type_bits |= type_bit;
+  if ( !(c_type & type) ) {
+    c_type |= type;
   } else {
     PRINT_ERR(
       "error: \"%s\" can not be combined with previous declaration\n",
-      c_type_name( type_bit )
+      c_type_name( type )
     );
   }
 }
-
-/**
- * TODO
- */
-static void c_type_check( void ) {
-  typedef unsigned restriction_t;
-
-  static restriction_t NEVER = ~LANG_NONE;
-
-#define __  LANG_NONE
-#define XX ~LANG_NONE
-#define CK  LANG_C_KNR
-#define C8  LANG_C_89
-#define C9  LANG_C_99
-#define C1  LANG_C_11
-#define P   LANG_CPP
-#define P1  LANG_CPP_11
-
-  static restriction_t const RESTRICTIONS[][ ARRAY_SIZE( C_TYPE_MAP ) ] = {
-    /*                v  b  c  16 32 wc s  i  l  ll s  u  f  d  c */
-    /* void      */ { __,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-    /* bool      */ { XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-    /* char      */ { XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-    /* char16_t  */ { XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__ },
-    /* char32_t  */ { XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__ },
-    /* wchar_t   */ { XX,XX,XX,__,__,CK,__,__,__,__,__,__,__,__,__ },
-    /* short     */ { XX,XX,XX,__,__,XX,__,__,__,__,__,__,__,__,__ },
-    /* int       */ { XX,XX,XX,__,__,XX,__,__,__,__,__,__,__,__,__ },
-    /* long      */ { XX,XX,XX,__,__,XX,XX,__,__,__,__,__,__,__,__ },
-    /* long long */ { XX,XX,XX,__,__,XX,CK,__,__,__,__,__,__,__,__ },
-    /* signed    */ { XX,XX,CK,__,__,XX,CK,CK,CK,__,__,__,__,__,__ },
-    /* unsigned  */ { XX,XX,__,__,__,XX,__,__,__,__,XX,__,__,__,__ },
-    /* float     */ { XX,XX,XX,__,__,XX,XX,XX,C8,XX,XX,XX,__,__,__ },
-    /* double    */ { XX,XX,XX,__,__,XX,XX,XX,CK,XX,XX,XX,__,__,__ },
-    /* complex   */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__ }
-  };
-
-#undef __
-#undef XX
-#undef CK
-#undef C8
-#undef C9
-#undef C1
-#undef P
-#undef P1
-
-  for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_MAP ); ++i ) {
-    if ( c_type_bits & C_TYPE_MAP[i].bit ) {
-      for ( size_t j = 0; j < i; ++j ) {
-        if ( c_type_bits & C_TYPE_MAP[j].bit ) {
-          char const *const t1 = C_TYPE_MAP[i].name;
-          char const *const t2 = C_TYPE_MAP[j].name;
-#if 0
-          switch ( RESTRICTIONS[i][j] ) {
-            case NONE:
-              break;
-            case C89:
-              if ( opt_lang != LANG_C_KNR )
-                illegal( LANG_C_89, t1, t2 );
-              break;
-            case KNR:
-              if ( opt_lang == LANG_C_KNR )
-                illegal( opt_lang, t1, t2 );
-              break;
-            case NEVER:
-              illegal( opt_lang, t1, t2 );
-              break;
-          } // switch
 #endif
-        }
-      } // for
-    }
-  } // for
-}
-
-/**
- * TODO
- *
- * @param bit TODO
- * @return Returns TODO
- */
-static char const* c_type_name( c_type_bits_t bit ) {
-  for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_MAP ); ++i )
-    if ( bit == C_TYPE_MAP[i].bit )
-      return C_TYPE_MAP[i].name;
-  INTERNAL_ERR( "%X: unexpected value for bit", bit );
-}
 
 /**
  * Do the "cast" command.
  *
  * @param name TODO
- * @param left TODO
- * @param right TODO
- * @param type TODO
+ * @param ast TODO
  */
-static void do_cast( char const *name, char const *left, char const *right,
-                     char const *type ) {
-	assert( left );
-  assert( right );
-  assert( type );
+static void do_cast( char const *name, c_ast_t *ast ) {
+  assert( ast );
 
-  switch ( c_ident_kind ) {
-    case C_FUNCTION:
-      unsupp( "Cast into function", "cast into pointer to function" );
+  switch ( ast->kind ) {
+    case K_ARRAY:
+      unsupp( "cast into array", "cast into pointer" );
       break;
-    case C_ARRAY_DIM:
-    case C_ARRAY_NO_DIM:
-      unsupp( "Cast into array", "cast into pointer" );
+    case K_FUNCTION:
+      unsupp( "cast into function", "cast into pointer to function" );
       break;
     default: {
+/*
       size_t const lenl = strlen( left ), lenr = strlen( right );
       printf(
         "(%s%*s%s)%s\n",
         type, (int)(lenl + lenr ? lenl + 1 : 0),
         left, right, name ? name : "expression"
       );
+*/
     }
   } // switch
 
-  free( (void*)left );
-  free( (void*)right );
-  free( (void*)type );
-  if ( name )
-    free( (void*)name );
+  c_ast_free( ast );
 }
 
 /**
@@ -277,29 +114,24 @@ static void do_cast( char const *name, char const *left, char const *right,
  * @param right TODO
  * @param type TODO
  */
-static void do_declare( char const *name, char const *storage,
-                        char const *left, char const *right,
-                        char const *type ) {
-  assert( storage );
-  assert( left );
-  assert( right );
-  assert( type );
+static void do_declare( char const *name, c_ast_t *ast ) {
+  assert( ast );
 
-  if ( c_ident_kind == C_VOID ) {
+/*
+  if ( c_kind == K_VOID ) {
     unsupp( "Variable of type void", "variable of type pointer to void" );
     goto done;
   }
 
-  if ( *storage == CPP_REFERENCE ) {
-    switch ( c_ident_kind ) {
-      case C_FUNCTION:
+  if ( *storage == K_REFERENCE ) {
+    switch ( c_kind ) {
+      case K_FUNCTION:
         unsupp( "Register function", NULL );
         break;
-      case C_ARRAY_DIM:
-      case C_ARRAY_NO_DIM:
+      case K_ARRAY:
         unsupp( "Register array", NULL );
         break;
-      case C_STRUCT:
+      case K_ENUM_CLASS_STRUCT_UNION:
         unsupp( "Register struct/class", NULL );
         break;
       default:
@@ -312,10 +144,10 @@ static void do_declare( char const *name, char const *storage,
 
   printf(
     "%s %s%s%s", type, left,
-    name ? name : (c_ident_kind == C_FUNCTION) ? "f" : "var", right
+    name ? name : (c_kind == K_FUNCTION) ? "f" : "var", right
   );
   if ( opt_make_c ) {
-    if ( c_ident_kind == C_FUNCTION && (*storage != 'e') )
+    if ( c_kind == K_FUNCTION && (*storage != 'e') )
       printf( " { }\n" );
     else
       printf( ";\n" );
@@ -323,13 +155,12 @@ static void do_declare( char const *name, char const *storage,
     printf( "\n" );
   }
 
+*/
+
 done:
-  free( (void*)storage );
-  free( (void*)left );
-  free( (void*)right );
-  free( (void*)type );
   if ( name )
     free( (void*)name );
+  free( (void*)ast );
 }
 
 /**
@@ -342,104 +173,99 @@ static void do_set( char const *opt ) {
     opt_make_c = true;
   else if ( strcmp( opt, "nocreate" ) == 0 )
     opt_make_c = false;
+
   else if ( strcmp( opt, "prompt" ) == 0 )
-    prompt_ptr = prompt_buf;
+    prompt = prompt_buf;
   else if ( strcmp( opt, "noprompt" ) == 0 )
-    prompt_ptr = "";
-  else if ( strcmp( opt, "preansi" ) == 0 )
-    { opt_lang = LANG_C_KNR; }
+    prompt = "";
+
+  else if ( strcmp( opt, "preansi" ) == 0 || strcmp( opt, "knr" ) == 0 )
+    opt_lang = LANG_C_KNR;
   else if ( strcmp( opt, "ansi" ) == 0 )
     opt_lang = LANG_C_89;
-  else if ( strcmp( opt, "cplusplus" ) == 0 )
+  else if ( strcmp( opt, "c++" ) == 0 )
     opt_lang = LANG_CPP;
+  else if ( strcmp( opt, "c++11" ) == 0 )
+    opt_lang = LANG_CPP_11;
+
 #ifdef WITH_CDECL_DEBUG
   else if ( strcmp( opt, "debug" ) == 0 )
     opt_debug = true;
   else if ( strcmp( opt, "nodebug" ) == 0 )
     opt_debug = false;
 #endif /* WITH_CDECL_DEBUG */
-#ifdef WITH_YYDEBUG
+
+#ifdef YYDEBUG
   else if ( strcmp( opt, "yydebug" ) == 0 )
     yydebug = 1;
   else if ( strcmp( opt, "noyydebug" ) == 0 )
     yydebug = 0;
-#endif /* WITH_YYDEBUG */
+#endif /* YYDEBUG */
+
   else {
-    if ( strcmp( opt, UNKNOWN_NAME ) != 0 &&
-         strcmp( opt, "options" ) != 0 ) {
+    if ( strcmp( opt, "options" ) != 0 ) {
       printf( "\"%s\": unknown set option\n", opt );
     }
     printf( "Valid set options (and command line equivalents) are:\n" );
     printf( "\toptions\n" );
     printf( "\tcreate (-c), nocreate\n" );
     printf( "\tprompt, noprompt (-q)\n" );
-#ifndef USE_READLINE
+#ifndef WITH_READLINE
     printf( "\tinteractive (-i), nointeractive\n" );
-#endif
+#endif /* WITH_READLINE */
     printf( "\tpreansi (-p), ansi (-a), or cplusplus (-+)\n" );
 #ifdef WITH_CDECL_DEBUG
     printf( "\tdebug (-d), nodebug\n" );
 #endif /* WITH_CDECL_DEBUG */
-#ifdef WITH_YYDEBUG
+#ifdef YYDEBUG
     printf( "\tyydebug (-D), noyydebug\n" );
-#endif /* WITH_YYDEBUG */
-
+#endif /* YYDEBUG */
     printf( "\nCurrent set values are:\n" );
     printf( "\t%screate\n", opt_make_c ? "   " : " no" );
     printf( "\t%sinteractive\n", opt_interactive ? "   " : " no" );
-    printf( "\t%sprompt\n", prompt_ptr[0] ? "   " : " no" );
-
-    if ( opt_lang == LANG_C_KNR )
-      printf( "\t   preansi\n" );
-    else
-      printf( "\t(nopreansi)\n" );
-    if ( opt_lang == LANG_C_89 )
-      printf( "\t   ansi\n" );
-    else
-      printf( "\t(noansi)\n" );
-    if ( opt_lang == LANG_CPP )
-      printf( "\t   cplusplus\n" );
-    else
-      printf( "\t(nocplusplus)\n" );
+    printf( "\t%sprompt\n", prompt[0] ? "   " : " no" );
+    printf( "\tlang=%s\n", lang_name( opt_lang ) );
 #ifdef WITH_CDECL_DEBUG
     printf( "\t%sdebug\n", opt_debug ? "   " : " no" );
 #endif /* WITH_CDECL_DEBUG */
-#ifdef WITH_YYDEBUG
+#ifdef YYDEBUG
     printf( "\t%syydebug\n", yydebug ? "   " : " no" );
-#endif /* WITH_YYDEBUG */
+#endif /* YYDEBUG */
   }
 }
 
 /**
  * Do the "explain cast" command.
  *
- * @param const_volatile1 TODO
- * @param const_volatile2 TODO
+ * @param qualifier1 TODO
+ * @param qualifier2 TODO
  * @param type TODO
  * @param cast TODO
  * @param name TODO
  */
-static void explain_cast( char const *const_volatile1,
-                          char const *const_volatile2,
+static void explain_cast( char const *qualifier1,
+                          char const *qualifier2,
                           char const *type, char const *cast,
                           char const *name ) {
-  assert( const_volatile1 );
-  assert( const_volatile2 );
+  assert( qualifier1 );
+  assert( qualifier2 );
   assert( type );
   assert( cast );
   assert( name );
 
   if ( strcmp( type, "void" ) == 0 ) {
-    if ( c_ident_kind == C_ARRAY_NO_DIM )
+  /*
+    if ( c_kind == K_ARRAY )
       unsupp( "array of type void", "array of type pointer to void" );
-    else if ( c_ident_kind == CPP_REFERENCE )
+    else if ( c_kind == K_REFERENCE )
       unsupp( "reference to type void", "pointer to void" );
+  */
   }
   printf( "cast %s into %s", name, cast );
-  if ( *const_volatile1 )
-    printf( "%s ", const_volatile1 );
-  if ( *const_volatile2 )
-    printf( "%s ", const_volatile2 );
+  if ( *qualifier1 )
+    printf( "%s ", qualifier1 );
+  if ( *qualifier2 )
+    printf( "%s ", qualifier2 );
   printf( "%s\n", type );
 }
 
@@ -460,31 +286,32 @@ void explain_declaration( char const *storage, char const *constvol1,
   assert( constvol2 );
   assert( decl );
 
+#if 0
   if ( type && strcmp( type, "void" ) == 0 ) {
-    if (c_ident_kind == C_NAME)
+    if ( c_kind == K_NAME )
       unsupp( "Variable of type void", "variable of type pointer to void" );
-    else if ( c_ident_kind == C_ARRAY_NO_DIM )
+    else if ( c_kind == K_ARRAY )
       unsupp( "array of type void", "array of type pointer to void" );
-    else if ( c_ident_kind == CPP_REFERENCE )
+    else if ( c_kind == K_REFERENCE )
       unsupp( "reference to type void", "pointer to void" );
   }
 
-  if ( *storage == CPP_REFERENCE ) {
-    switch ( c_ident_kind ) {
-      case C_FUNCTION:
+  if ( *storage == K_REFERENCE ) {
+    switch ( c_kind ) {
+      case K_FUNCTION:
         unsupp( "Register function", NULL );
         break;
-      case C_ARRAY_DIM:
-      case C_ARRAY_NO_DIM:
+      case K_ARRAY:
         unsupp( "Register array", NULL );
         break;
-      case C_STRUCT:
+      case K_ENUM_CLASS_STRUCT_UNION:
         unsupp( "Register struct/union/enum/class", NULL );
         break;
       default:
         /* suppress warning */;
     } // switch
   }
+#endif
 
   printf( "declare %s as ", c_ident );
   if ( *storage )
@@ -517,7 +344,14 @@ static void illegal( lang_t lang, char const *type1, char const *type2 ) {
     );
 }
 
-static void print_help( void );
+static void parse_error( char const *what, char const *msg ) {
+  if ( !newlined ) {
+    if ( what && *what )
+      PRINT_ERR( "\"%s\": ", what );
+    PRINT_ERR( "%s\n", msg );
+    newlined = true;
+  }
+}
 
 static void unsupp( char const *s, char const *hint ) {
   illegal( opt_lang, s, NULL );
@@ -526,7 +360,8 @@ static void unsupp( char const *s, char const *hint ) {
 }
 
 static void yyerror( char const *s ) {
-  PRINT_ERR( "%s\n", s );
+  PRINT_ERR( "%s%s\n", (newlined ? "" : "\n"), s );
+  newlined = false;
 }
 
 int yywrap( void ) {
@@ -538,107 +373,143 @@ int yywrap( void ) {
 %}
 
 %union {
-  char const *dynstr;
-  struct {
-    char const *left;
-    char const *right;
-    char const *type;
-  } halves;
+  char const   *name;
+  int           number;                 /* for array sizes */
+  c_type_t      type;
+  c_ast_t      *ast;
+  c_ast_list_t  ast_list;
 }
 
-                  /* commands */
-%token            T_CAST
-%token            T_DECLARE
-%token            T_EXPLAIN
-%token            T_HELP
-%token            T_SET
+                    /* commands */
+%token              Y_CAST
+%token              Y_DECLARE
+%token              Y_EXPLAIN
+%token              Y_HELP
+%token              Y_SET
+%token              Y_QUIT
 
-                  /* english */
-%token            T_ARRAY
-%token            T_AS
-%token            T_BLOCK               /* Apple extension */
-%token            T_FUNCTION
-%token            T_INTO
-%token            T_MEMBER
-%token            T_OF
-%token            T_POINTER
-%token            T_REFERENCE
-%token            T_RETURNING
-%token            T_TO
+                    /* english */
+%token              Y_ARRAY
+%token              Y_AS
+%token              Y_FUNCTION
+%token              Y_INTO
+%token              Y_MEMBER
+%token              Y_OF
+%token              Y_POINTER
+%token              Y_REFERENCE
+%token              Y_RETURNING
+%token              Y_TO
 
-                  /* K&R C */
-%token  <dynstr>  T_AUTO
-%token  <dynstr>  T_CHAR
-%token  <dynstr>  T_DOUBLE
-%token  <dynstr>  T_EXTERN
-%token  <dynstr>  T_FLOAT
-%token  <dynstr>  T_INT
-%token  <dynstr>  T_LONG
-%token  <dynstr>  T_REGISTER
-%token  <dynstr>  T_SHORT
-%token  <dynstr>  T_STATIC
-%token  <dynstr>  T_STRUCT
-%token  <dynstr>  T_UNION
-%token  <dynstr>  T_UNSIGNED
+                    /* K&R C */
+%token              ','
+%token              '*'
+%token              '[' ']'
+%token              '(' ')'
+%token  <type>      Y_AUTO
+%token  <type>      Y_CHAR
+%token  <type>      Y_DOUBLE
+%token  <type>      Y_EXTERN
+%token  <type>      Y_FLOAT
+%token  <type>      Y_INT
+%token  <type>      Y_LONG
+%token  <type>      Y_REGISTER
+%token  <type>      Y_SHORT
+%token  <type>      Y_STATIC
+%token  <type>      Y_STRUCT
+%token  <type>      Y_UNION
+%token  <type>      Y_UNSIGNED
 
-                  /* C89 */
-%token  <dynstr>  T_CONST
-%token  <dynstr>  T_ENUM
-%token  <dynstr>  T_SIGNED
-%token  <dynstr>  T_VOID
-%token  <dynstr>  T_VOLATILE
+                    /* C89 */
+%token  <type>      Y_CONST
+%token  <type>      Y_ENUM
+%token  <type>      Y_SIGNED
+%token  <type>      Y_VOID
+%token  <type>      Y_VOLATILE
 
-                  /* C99 */
-%token  <dynstr>  T_BOOL
-%token  <dynstr>  T_COMPLEX
-%token  <dynstr>  T_RESTRICT
-%token  <dynstr>  T_WCHAR_T
+                    /* C99 */
+%token  <type>      Y_BOOL
+%token  <type>      Y_COMPLEX
+%token  <type>      Y_RESTRICT
+%token  <type>      Y_WCHAR_T
 
-                  /* C11 */
-%token  <dynstr>  T_NORETURN;
-%token  <dynstr>  T_THREAD_LOCAL;
+                    /* C11 */
+%token              Y_NORETURN;
+%token  <type>      Y_THREAD_LOCAL;
 
-                  /* C++ */
-%token  <dynstr>  T_CLASS
-%token            T_COLON_COLON
+                    /* C++ */
+%token              '&'
+%token  <type>      Y_CLASS
+%token              Y_COLON_COLON
 
-                  /* C11 & C++ */
-%token  <dynstr>  T_CHAR16_T;
-%token  <dynstr>  T_CHAR32_T;
+                    /* C11 & C++11 */
+%token  <type>      Y_CHAR16_T;
+%token  <type>      Y_CHAR32_T;
 
-                  /* miscellaneous */
-%token            T_END
-%token            T_ERROR
-%token  <dynstr>  T_NAME
-%token  <dynstr>  T_NUMBER
+                    /* miscellaneous */
+%token              '^'                 /* for blocks (Apple extension) */
+%token  <type>      Y_BLOCK             /* Apple extension */
+%token              Y_END
+%token              Y_ERROR
+%token  <name>      Y_NAME
+%token  <number>    Y_NUMBER
 
-%type   <dynstr>  array_dimension
-%type   <dynstr>  cast cast_list
-%type   <dynstr>  cdecl cdecl1
-%type   <dynstr>  cdims
-%type   <dynstr>  class_struct
-%type   <dynstr>  const_volatile
-%type   <dynstr>  const_volatile_list opt_const_volatile_list
-%type   <dynstr>  c_builtin_type
-%type   <dynstr>  c_type
-%type   <halves>  decl_english
-%type   <dynstr>  decl_list_english
-%type   <dynstr>  enum_class_struct_union
-%type   <halves>  func_decl_english
-%type   <dynstr>  mod_list mod_list1 modifier
-%type   <dynstr>  opt_NAME
-%type   <dynstr>  storage opt_storage
-%type   <dynstr>  type
+%type   <ast>       decl_english
+%type   <ast_list>  decl_list_english
+%type   <ast>       array_decl_english
+%type   <number>    array_size_opt_english
+%type   <ast>       block_decl_english
+%type   <ast>       func_decl_english
+%type   <ast>       pointer_english
+%type   <ast>       pointer_to_member_english
+%type   <ast>       reference_english
+%type   <ast>       returning_english
+%type   <ast>       var_decl_english
 
-%start command_list
+%type   <ast>       cast_c
+%type   <ast_list>  cast_list_c
+%type   <ast>       array_cast_c
+%type   <ast>       block_cast_c
+%type   <ast>       func_cast_c
+%type   <ast>       ordinary_cast_c
+%type   <ast>       pointer_cast_c
+%type   <ast>       pointer_to_member_cast_c
+%type   <ast>       reference_cast_c
+
+%type   <ast>       decl_c decl2_c
+%type   <number>    array_decl_c
+%type   <ast>       block_decl_c
+%type   <ast>       func_decl_c
+%type   <ast>       pointer_decl_c
+%type   <ast>       pointer_to_member_decl_c
+%type   <ast>       reference_decl_c
+
+%type   <ast>       builtin_type_c
+%type   <ast>       enum_class_struct_union_type_c
+%type   <ast>       type_c
+%type   <ast>       type_modifier_c
+%type   <ast>       type_modifier_list_c type_modifier_list2_c
+%type   <ast>       type_qualifier_c
+%type   <ast>       type_qualifier_list_c type_qualifier_list_opt_c
+
+%type   <type>      builtin_type_token_c
+%type   <type>      enum_class_struct_union_token_c
+%type   <type>      class_struct_token_c
+%type   <name>      name_token_opt
+%type   <type>      storage_class_token_c storage_class_token_opt_c
+%type   <type>      type_modifier_token_c
+%type   <type>      type_qualifier_token_c
 
 %%
 
 command_list
   : /* empty */
-  | command_list command
+  | command_list command_init command
+  ;
+
+command_init
+  : /* empty */
     {
-      c_ident_kind = 0;
+      newlined = true;
     }
   ;
 
@@ -648,9 +519,11 @@ command
   | explain_gibberish
   | help_command
   | set_command
-  | T_END
-  | error T_END
+  | quit_command
+  | Y_END
+  | error Y_END
     {
+      parse_error( yytext, ": one of \"cast\", \"declare\", \"explain\", \"help\", or \"set\" expected" );
       yyerrok;
     }
   ;
@@ -660,23 +533,14 @@ command
 /*****************************************************************************/
 
 cast_english
-  : T_CAST T_NAME T_INTO decl_english T_END
+  : Y_CAST Y_NAME Y_INTO decl_english Y_END
     {
-      YYTRACE( "cast_english: CAST NAME AS decl_english\n" );
-      YYTRACE( "\tNAME='%s'\n", $2 );
-      YYTRACE( "\tacdecl.left='%s'\n", $4.left );
-      YYTRACE( "\tacdecl.right='%s'\n", $4.right );
-      YYTRACE( "\tacdecl.type='%s'\n", $4.type );
-      do_cast( $2, $4.left, $4.right, $4.type );
+      do_cast( $2, $4 );
     }
 
-  | T_CAST decl_english T_END
+  | Y_CAST decl_english Y_END
     {
-      YYTRACE( "cast_english: CAST decl_english\n" );
-      YYTRACE( "\tacdecl.left='%s'\n", $2.left );
-      YYTRACE( "\tacdecl.right='%s'\n", $2.right );
-      YYTRACE( "\tacdecl.type='%s'\n", $2.type );
-      do_cast( NULL, $2.left, $2.right, $2.type );
+      do_cast( NULL, $2 );
     }
   ;
 
@@ -685,27 +549,9 @@ cast_english
 /*****************************************************************************/
 
 declare_english
-  : T_DECLARE T_NAME T_AS opt_storage decl_english T_END
+  : Y_DECLARE Y_NAME Y_AS storage_class_token_opt_c decl_english Y_END
     {
-      YYTRACE( "declare_english: DECLARE NAME AS opt_storage decl_english\n" );
-      YYTRACE( "\tNAME='%s'\n", $2 );
-      YYTRACE( "\topt_storage='%s'\n", $4 );
-      YYTRACE( "\tacdecl.left='%s'\n", $5.left );
-      YYTRACE( "\tacdecl.right='%s'\n", $5.right );
-      YYTRACE( "\tacdecl.type='%s'\n", $5.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-      do_declare( $2, $4, $5.left, $5.right, $5.type );
-    }
-
-  | T_DECLARE opt_storage decl_english T_END
-    {
-      YYTRACE( "declare_english: DECLARE opt_storage decl_english\n" );
-      YYTRACE( "\topt_storage='%s'\n", $2 );
-      YYTRACE( "\tacdecl.left='%s'\n", $3.left );
-      YYTRACE( "\tacdecl.right='%s'\n", $3.right );
-      YYTRACE( "\tacdecl.type='%s'\n", $3.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-      do_declare( NULL, $2, $3.left, $3.right, $3.type );
+      //do_declare( $2, $4 );
     }
   ;
 
@@ -714,48 +560,26 @@ declare_english
 /*****************************************************************************/
 
 explain_gibberish
-  : T_EXPLAIN opt_storage opt_const_volatile_list type opt_const_volatile_list
-              cdecl T_END
+  : Y_EXPLAIN storage_class_token_opt_c
+    type_qualifier_list_opt_c type_c type_qualifier_list_opt_c decl_c Y_END
     {
-      YYTRACE( "explain_gibberish: EXPLAIN opt_storage opt_const_volatile_list type cdecl\n" );
-      YYTRACE( "\topt_storage='%s'\n", $2 );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
-      YYTRACE( "\ttype='%s'\n", $4 );
-      YYTRACE( "\tcdecl='%s'\n", $6 );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-      explain_declaration( $2, $3, $5, $4, $6 );
+      //explain_declaration( $2, $3, $5, $4, $6 );
     }
 
-  | T_EXPLAIN storage opt_const_volatile_list cdecl T_END
+  | Y_EXPLAIN storage_class_token_c type_qualifier_list_opt_c decl_c Y_END
     {
-      YYTRACE( "explain_gibberish: EXPLAIN storage opt_const_volatile_list cdecl\n" );
-      YYTRACE( "\tstorage='%s'\n", $2 );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
-      YYTRACE( "\tcdecl='%s'\n", $4 );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-      explain_declaration( $2, $3, NULL, NULL, $4 );
+      //explain_declaration( $2, $3, NULL, NULL, $4 );
     }
 
-  | T_EXPLAIN opt_storage const_volatile_list cdecl T_END
+  | Y_EXPLAIN storage_class_token_opt_c type_qualifier_list_c decl_c Y_END
     {
-      YYTRACE( "explain_gibberish: EXPLAIN opt_storage const_volatile_list cdecl\n" );
-      YYTRACE( "\topt_storage='%s'\n", $2 );
-      YYTRACE( "\tconst_volatile_list='%s'\n", $3 );
-      YYTRACE( "\tcdecl='%s'\n", $4 );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-      explain_declaration( $2, $3, NULL, NULL, $4 );
+      //explain_declaration( $2, $3, NULL, NULL, $4 );
     }
 
-  | T_EXPLAIN '(' opt_const_volatile_list type opt_const_volatile_list cast ')' opt_NAME T_END
+  | Y_EXPLAIN '(' type_qualifier_list_opt_c type_c type_qualifier_list_opt_c
+    cast_c ')' name_token_opt Y_END
     {
-      YYTRACE( "explain_gibberish: EXPLAIN ( opt_const_volatile_list type opt_const_volatile_list cast ) opt_NAME\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
-      YYTRACE( "\ttype='%s'\n", $4 );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $5 );
-      YYTRACE( "\tcast='%s'\n", $6 );
-      YYTRACE( "\tNAME='%s'\n", $8 );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-      explain_cast( $3, $5, $4, $6, $8 );
+      //explain_cast( $3, $5, $4, $6, $8 );
     }
   ;
 
@@ -764,9 +588,8 @@ explain_gibberish
 /*****************************************************************************/
 
 help_command
-  : T_HELP T_END
+  : Y_HELP Y_END
     {
-      YYTRACE( "command: help\n" );
       print_help();
     }
 
@@ -775,11 +598,20 @@ help_command
 /*****************************************************************************/
 
 set_command
-  : T_SET opt_NAME T_END
+  : Y_SET name_token_opt Y_END
     {
-      YYTRACE( "set_command: SET opt_NAME\n" );
-      YYTRACE( "\topt_NAME='%s'\n", $2 );
       do_set( $2 );
+    }
+  ;
+
+/*****************************************************************************/
+/*  quit                                                                     */
+/*****************************************************************************/
+
+quit_command
+  : Y_QUIT
+    {
+      exit( EX_OK );
     }
   ;
 
@@ -788,895 +620,498 @@ set_command
 /*****************************************************************************/
 
 decl_english
-  : func_decl_english
-  | opt_const_volatile_list T_BLOCK T_RETURNING decl_english
-    {
-      char const *sp = "";
-      YYTRACE( "decl_english: opt_const_volatile_list BLOCK RETURNING decl_english\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\tdecl_english.left='%s'\n", $4.left );
-      YYTRACE( "\tdecl_english.right='%s'\n", $4.right );
-      YYTRACE( "\tdecl_english.type='%s'\n", $4.type );
-      if (c_ident_kind == C_FUNCTION)
-        unsupp( "Block returning function",
-                "block returning pointer to function" );
-      else if (c_ident_kind==C_ARRAY_DIM || c_ident_kind==C_ARRAY_NO_DIM)
-        unsupp( "Block returning array",
-                "block returning pointer" );
-      if (strlen($1) != 0)
-        sp = " ";
-      $$.left = cat( $4.left, strdup( "(^" ), strdup( sp ), $1, strdup( sp ), NULL );
-      $$.right = cat( strdup( ")()" ), $4.right, NULL );
-      $$.type = $4.type;
-      c_ident_kind = C_BLOCK;
-    }
-
-  | opt_const_volatile_list T_BLOCK '(' decl_list_english ')' T_RETURNING decl_english
-    {
-      char const *sp = "";
-      YYTRACE( "decl_english: opt_const_volatile_list BLOCK RETURNING decl_english\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\tdecl_list_english='%s'\n", $4 );
-      YYTRACE( "\tdecl_english.left='%s'\n", $7.left );
-      YYTRACE( "\tdecl_english.right='%s'\n", $7.right );
-      YYTRACE( "\tdecl_english.type='%s'\n", $7.type );
-      if (c_ident_kind == C_FUNCTION)
-        unsupp( "Block returning function",
-                "block returning pointer to function" );
-      else if (c_ident_kind==C_ARRAY_DIM || c_ident_kind==C_ARRAY_NO_DIM)
-        unsupp( "Block returning array",
-                "block returning pointer" );
-      if (strlen($1) != 0)
-          sp = " ";
-      $$.left = cat( $7.left, strdup( "(^" ), strdup( sp ), $1, strdup( sp ), NULL );
-      $$.right = cat( strdup( ")(" ), $4, strdup( ")" ), $7.right, NULL );
-      $$.type = $7.type;
-      c_ident_kind = C_BLOCK;
-    }
-
-  | T_ARRAY array_dimension T_OF decl_english
-    {
-      YYTRACE( "decl_english: ARRAY array_dimension OF decl_english\n" );
-      YYTRACE( "\tarray_dimension='%s'\n", $2 );
-      YYTRACE( "\tdecl_english.left='%s'\n", $4.left );
-      YYTRACE( "\tdecl_english.right='%s'\n", $4.right );
-      YYTRACE( "\tdecl_english.type='%s'\n", $4.type );
-      if ( c_ident_kind == C_FUNCTION )
-        unsupp( "Array of function", "array of pointer to function" );
-      else if ( c_ident_kind == C_ARRAY_NO_DIM )
-        unsupp( "Inner array of unspecified size", "array of pointer" );
-      else if ( c_ident_kind == C_VOID )
-        unsupp( "Array of void", "pointer to void" );
-      c_ident_kind = array_has_dim ? C_ARRAY_DIM : C_ARRAY_NO_DIM;
-      $$.left = $4.left;
-      $$.right = cat( $2, $4.right, NULL );
-      $$.type = $4.type;
-      YYTRACE( "\n\tdecl_english now =\n" );
-      YYTRACE( "\t\tdecl_english.left='%s'\n", $$.left );
-      YYTRACE( "\t\tdecl_english.right='%s'\n", $$.right );
-      YYTRACE( "\t\tdecl_english.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | opt_const_volatile_list T_POINTER T_TO decl_english
-    {
-      char const *op = "", *cp = "", *sp = "";
-
-      YYTRACE( "decl_english: opt_const_volatile_list POINTER TO decl_english\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\tdecl_english.left='%s'\n", $4.left );
-      YYTRACE( "\tdecl_english.right='%s'\n", $4.right );
-      YYTRACE( "\tdecl_english.type='%s'\n", $4.type );
-      if ( c_ident_kind == C_ARRAY_NO_DIM )
-        unsupp( "Pointer to array of unspecified dimension",
-                "pointer to object" );
-      if ( c_ident_kind == C_ARRAY_NO_DIM || c_ident_kind == C_ARRAY_DIM ||
-           c_ident_kind == C_FUNCTION ) {
-        op = "(";
-        cp = ")";
-      }
-      if ( strlen( $1 ) > 0 )
-        sp = " ";
-      $$.left = cat( $4.left, strdup( op ), strdup( "*" ), strdup( sp ), $1, strdup( sp ), NULL );
-      $$.right = cat( strdup( cp ), $4.right, NULL );
-      $$.type = $4.type;
-      c_ident_kind = C_POINTER;
-      YYTRACE( "\n\tdecl_english now =\n" );
-      YYTRACE( "\t\tdecl_english.left='%s'\n", $$.left );
-      YYTRACE( "\t\tdecl_english.right='%s'\n", $$.right );
-      YYTRACE( "\t\tdecl_english.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | opt_const_volatile_list T_POINTER T_TO T_MEMBER T_OF class_struct T_NAME decl_english
-    {
-      char const *op = "", *cp = "", *sp = "";
-
-      YYTRACE( "decl_english: opt_const_volatile_list POINTER TO MEMBER OF class_struct NAME decl_english\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\tclass_struct='%s'\n", $6 );
-      YYTRACE( "\tNAME='%s'\n", $7 );
-      YYTRACE( "\tdecl_english.left='%s'\n", $8.left );
-      YYTRACE( "\tdecl_english.right='%s'\n", $8.right );
-      YYTRACE( "\tdecl_english.type='%s'\n", $8.type );
-      if ( opt_lang != LANG_CPP )
-        unsupp( "pointer to member of class", NULL );
-      if ( c_ident_kind == C_ARRAY_NO_DIM )
-        unsupp( "Pointer to array of unspecified dimension",
-                "pointer to object" );
-      if ( c_ident_kind == C_ARRAY_DIM || c_ident_kind == C_ARRAY_NO_DIM ||
-           c_ident_kind == C_FUNCTION ) {
-        op = "(";
-        cp = ")";
-      }
-      if (strlen($1) != 0)
-        sp = " ";
-      $$.left = cat( $8.left, strdup( op ), $7 ,strdup( "::*" ), strdup( sp ), $1,strdup( sp ), NULL );
-      $$.right = cat( strdup( cp ), $8.right, NULL );
-      $$.type = $8.type;
-      c_ident_kind = C_POINTER;
-      YYTRACE( "\n\tdecl_english now =\n" );
-      YYTRACE( "\t\tdecl_english.left='%s'\n", $$.left );
-      YYTRACE( "\t\tdecl_english.right='%s'\n", $$.right );
-      YYTRACE( "\t\tdecl_english.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | opt_const_volatile_list T_REFERENCE T_TO decl_english
-    {
-      char const *op = "", *cp = "", *sp = "";
-
-      YYTRACE( "decl_english: opt_const_volatile_list REFERENCE TO decl_english\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\tdecl_english.left='%s'\n", $4.left );
-      YYTRACE( "\tdecl_english.right='%s'\n", $4.right );
-      YYTRACE( "\tdecl_english.type='%s'\n", $4.type );
-      if ( opt_lang != LANG_CPP )
-        unsupp( "reference", NULL );
-      if ( c_ident_kind == C_VOID )
-        unsupp( "Reference to void", "pointer to void" );
-      else if ( c_ident_kind == C_ARRAY_NO_DIM )
-        unsupp( "Reference to array of unspecified dimension",
-                "reference to object" );
-      if ( c_ident_kind == C_ARRAY_DIM || c_ident_kind == C_ARRAY_NO_DIM ||
-           c_ident_kind == C_FUNCTION ) {
-        op = "(";
-        cp = ")";
-      }
-      if ( strlen( $1 ) != 0 )
-        sp = " ";
-      $$.left = cat( $4.left, strdup( op ), strdup( "&" ), strdup( sp ), $1, strdup( sp ), NULL );
-      $$.right = cat( strdup( cp ), $4.right, NULL );
-      $$.type = $4.type;
-      c_ident_kind = CPP_REFERENCE;
-      YYTRACE( "\n\tdecl_english now =\n" );
-      YYTRACE( "\t\tdecl_english.left='%s'\n", $$.left );
-      YYTRACE( "\t\tdecl_english.right='%s'\n", $$.right );
-      YYTRACE( "\t\tdecl_english.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | opt_const_volatile_list type
-    {
-      YYTRACE( "decl_english: opt_const_volatile_list type\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\ttype='%s'\n", $2 );
-      $$.left = strdup( "" );
-      $$.right = strdup( "" );
-      $$.type = cat( $1, strdup( strlen( $1 ) ? " " : "" ), $2, NULL );
-      if ( strcmp( $2, "void" ) == 0 )
-        c_ident_kind = C_VOID;
-      else if ( strncmp( $2, "struct", 6 ) == 0 ||
-                strncmp( $2, "class", 5 ) == 0 )
-        c_ident_kind = C_STRUCT;
-      else
-        c_ident_kind = C_BUILTIN;
-      YYTRACE( "\n\tdecl_english now =\n" );
-      YYTRACE( "\t\tdecl_english.left='%s'\n", $$.left );
-      YYTRACE( "\t\tdecl_english.right='%s'\n", $$.right );
-      YYTRACE( "\t\tdecl_english.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind )  ); 
-    }
+  : array_decl_english
+  | block_decl_english                  /* Apple extension */
+  | func_decl_english
+  | pointer_english
+  | pointer_to_member_english
+  | reference_english
+  | type_qualifier_list_opt_c type_c
+  | var_decl_english
   ;
 
 decl_list_english
   : /* empty */
     {
-      YYTRACE( "decl_list_english: EMPTY\n" );
-      $$ = strdup( "" );
+      $$.head = $$.tail = NULL;
     }
 
-  | decl_list_english ',' decl_list_english
+  | decl_list_english ',' decl_english
     {
-      YYTRACE( "decl_list_english: decl_list_english1, decl_list_english2\n" );
-      YYTRACE( "\tdecl_list_english1='%s'\n", $1 );
-      YYTRACE( "\tdecl_list_english2='%s'\n", $3 );
-      $$ = cat( $1, strdup( ", " ), $3, NULL );
-    }
-
-  | T_NAME
-    {
-      YYTRACE( "decl_list_english: NAME\n" );
-      YYTRACE( "\tNAME='%s'\n", $1 );
-      $$ = $1;
+      //$$.head = $1.head;
+      //$$.tail = $3.tail;
+      //$1.tail->next = $3.head;
     }
 
   | decl_english
     {
-      YYTRACE( "decl_list_english: decl_english\n" );
-      YYTRACE( "\tdeclaration.left='%s'\n", $1.left );
-      YYTRACE( "\tdeclaration.right='%s'\n", $1.right );
-      YYTRACE( "\tdeclaration.type='%s'\n", $1.type );
-      $$ = cat( $1.type, strdup( " " ), $1.left, $1.right, NULL );
+      $$.head = $$.tail = $1;
+    }
+  ;
+
+array_decl_english
+  : Y_ARRAY array_size_opt_english Y_OF decl_english
+    {
+      switch ( $4->kind ) {
+        case K_ARRAY:
+          unsupp( "Inner array of unspecified size", "array of pointer" );
+          break;
+        case K_BUILTIN:
+          if ( $4->as.type & T_VOID )
+            unsupp( "array of void", "pointer to void" );
+          break;
+        case K_FUNCTION:
+          unsupp( "array of function", "array of pointer to function" );
+          break;
+        default:
+          /* suppress warning */;
+      } // switch
+
+      $$ = c_ast_new( K_ARRAY );
+      $$->as.array.size = $2;
+      $$->as.array.of_ast = $4;
+    }
+  ;
+
+array_size_opt_english
+  : /* empty */                   { $$ = C_ARRAY_NO_SIZE; }
+  | Y_NUMBER
+  ;
+
+block_decl_english
+  : type_qualifier_list_opt_c Y_BLOCK Y_RETURNING decl_english
+    {
+/*
+      if ( c_kind == K_FUNCTION )
+        unsupp( "Block returning function",
+                "block returning pointer to function" );
+      else if ( c_kind == K_ARRAY )
+        unsupp( "Block returning array",
+                "block returning pointer" );
+*/
     }
 
-  | T_NAME T_AS decl_english
+  | type_qualifier_list_opt_c Y_BLOCK '(' decl_list_english ')'
+    Y_RETURNING decl_english
     {
-      YYTRACE( "decl_list_english: NAME AS decl_english\n" );
-      YYTRACE( "\tNAME='%s'\n", $1 );
-      YYTRACE( "\tdeclaration.left='%s'\n", $3.left );
-      YYTRACE( "\tdeclaration.right='%s'\n", $3.right );
-      YYTRACE( "\tdeclaration.type='%s'\n", $3.type );
-      $$ = cat( $3.type, strdup( " " ), $3.left, $1, $3.right, NULL );
+/*
+      if ( c_kind == K_FUNCTION )
+        unsupp( "Block returning function",
+                "block returning pointer to function" );
+      else if ( c_kind == K_ARRAY )
+        unsupp( "Block returning array",
+                "block returning pointer" );
+*/
     }
   ;
 
 func_decl_english
-  : T_FUNCTION T_RETURNING decl_english
+  : Y_FUNCTION returning_english
     {
-      YYTRACE( "func_decl_english: FUNCTION RETURNING decl_english\n" );
-      YYTRACE( "\tdecl_english.left='%s'\n", $3.left );
-      YYTRACE( "\tdecl_english.right='%s'\n", $3.right );
-      YYTRACE( "\tdecl_english.type='%s'\n", $3.type );
-      if ( c_ident_kind == C_FUNCTION )
-        unsupp( "Function returning function",
-                "function returning pointer to function" );
-      else if ( c_ident_kind == C_ARRAY_DIM || c_ident_kind == C_ARRAY_NO_DIM )
-        unsupp( "Function returning array",
-                "function returning pointer" );
-      $$.left = $3.left;
-      $$.right = cat( strdup( "()" ), $3.right, NULL );
-      $$.type = $3.type;
-      c_ident_kind = C_FUNCTION;
-      YYTRACE( "\n\tfunc_decl_english now =\n" );
-      YYTRACE( "\t\tfunc_decl_english.left='%s'\n", $$.left );
-      YYTRACE( "\t\tfunc_decl_english.right='%s'\n", $$.right );
-      YYTRACE( "\t\tfunc_decl_english.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+      $$ = c_ast_new( K_FUNCTION );
+      $$->as.func.ret_ast = $2;
     }
 
-  | T_FUNCTION '(' decl_list_english ')' T_RETURNING decl_english
+  | Y_FUNCTION '(' decl_list_english ')' returning_english
     {
-      YYTRACE( "func_decl_english: FUNCTION (decl_list_english) RETURNING decl_english\n" );
-      YYTRACE( "\tdecl_list_english='%s'\n", $3 );
-      YYTRACE( "\tdecl_english.left='%s'\n", $6.left );
-      YYTRACE( "\tdecl_english.right='%s'\n", $6.right );
-      YYTRACE( "\tdecl_english.type='%s'\n", $6.type );
-      if (c_ident_kind == C_FUNCTION)
-        unsupp( "Function returning function",
-                "function returning pointer to function" );
-      else if (c_ident_kind==C_ARRAY_DIM || c_ident_kind==C_ARRAY_NO_DIM)
-        unsupp( "Function returning array",
-                "function returning pointer" );
-      $$.left = $6.left;
-      $$.right = cat( strdup( "(" ), $3, strdup( ")" ), $6.right ,NULL );
-      $$.type = $6.type;
-      c_ident_kind = C_FUNCTION;
-      YYTRACE( "\n\tfunc_decl_english now =\n" );
-      YYTRACE( "\t\tfunc_decl_english.left='%s'\n", $$.left );
-      YYTRACE( "\t\tfunc_decl_english.right='%s'\n", $$.right );
-      YYTRACE( "\t\tfunc_decl_english.type='%s'\n", $$.type );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+      $$ = c_ast_new( K_FUNCTION );
+      $$->as.func.ret_ast = $5;
+      $$->as.func.args = $3;
+    }
+  ;
+
+pointer_english
+  : type_qualifier_list_opt_c Y_POINTER Y_TO decl_english
+    {
+      if ( $4->kind == K_ARRAY )
+        unsupp( "pointer to array of unspecified dimension",
+                "pointer to object" );
+      $$ = c_ast_new( K_POINTER );
+      $$->as.ptr_ref.qualifier = $1->as.type;
+      $$->as.ptr_ref.to_ast = $4;
+    }
+  ;
+
+returning_english
+  : Y_RETURNING decl_english
+    {
+      switch ( $2->kind ) {
+        case K_ARRAY:
+          unsupp( "function returning array",
+                  "function returning pointer" );
+          break;
+        case K_FUNCTION:
+          unsupp( "function returning function",
+                  "function returning pointer to function" );
+        default:
+          /* suppress warning */;
+      } // switch
+
+      $$ = $2;
+    }
+  ;
+
+pointer_to_member_english
+  : type_qualifier_list_opt_c Y_POINTER Y_TO Y_MEMBER Y_OF
+    class_struct_token_c Y_NAME decl_english
+    {
+      if ( opt_lang != LANG_CPP )
+        unsupp( "pointer to member of class", NULL );
+/*
+      if ( c_kind == K_ARRAY )
+        unsupp( "pointer to array of unspecified dimension",
+                "pointer to object" );
+*/
+      $$ = c_ast_new( K_MEMBER );
+      $$->as.member.qualifier = $1->as.type;
+      $$->as.member.class_name = check_strdup( $7 );
+      $$->as.member.of_ast = $8;
+    }
+  ;
+
+reference_english
+  : type_qualifier_list_opt_c Y_REFERENCE Y_TO decl_english
+    {
+      if ( opt_lang != LANG_CPP )
+        unsupp( "reference", NULL );
+      switch ( $4->kind ) {
+        case K_ARRAY:
+          unsupp( "reference to array of unspecified dimension",
+                  "reference to object" );
+          break;
+        case K_BUILTIN:
+          if ( $4->as.type & T_VOID )
+            unsupp( "reference of void", "pointer to void" );
+          break;
+        default:
+          /* suppress warning */;
+      } // switch
+
+      $$ = c_ast_new( K_REFERENCE );
+      $$->as.ptr_ref.qualifier = $1->as.type;
+      $$->as.ptr_ref.to_ast = $4;
+    }
+  ;
+
+var_decl_english
+  : Y_NAME Y_AS decl_english
+    {
+      $$ = $3;
+      assert( $$->name == NULL );
+      $$->name = check_strdup( $1 );
+    }
+
+  | Y_NAME
+    {
+      $$ = c_ast_new( K_NAME );
+      $$->name = check_strdup( $1 );
     }
   ;
 
 /*****************************************************************************/
-/*  miscellaneous                                                            */
+/*  cast gibberish productions                                               */
 /*****************************************************************************/
 
-cdecl
-  : cdecl1
-  | '*' opt_const_volatile_list cdecl
+cast_list_c
+  : cast_list_c ',' cast_list_c
     {
-      YYTRACE( "cdecl: * opt_const_volatile_list cdecl\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
-      YYTRACE( "\tcdecl='%s'\n", $3 );
-      $$ = cat( $3, $2, strdup( strlen( $2 ) ? " pointer to " : "pointer to " ), NULL );
-      c_ident_kind = C_POINTER;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+      $$.head = $1.head;
+      $$.tail = $3.tail;
+      $1.tail->next = $3.head;
     }
 
-  | T_NAME T_COLON_COLON '*' cdecl
+  | type_qualifier_list_opt_c type_c cast_c
     {
-      YYTRACE( "cdecl: NAME DOUBLECOLON '*' cdecl\n" );
-      YYTRACE( "\tNAME='%s'\n", $1 );
-      YYTRACE( "\tcdecl='%s'\n", $4 );
-      if ( opt_lang != LANG_CPP )
-        unsupp( "pointer to member of class", NULL );
-      $$ = cat( $4, strdup( "pointer to member of class " ), $1, strdup( " " ), NULL );
-      c_ident_kind = C_POINTER;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
     }
 
-  | '&' opt_const_volatile_list cdecl
+  | Y_NAME
     {
-      YYTRACE( "cdecl: & opt_const_volatile_list cdecl\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
-      YYTRACE( "\tcdecl='%s'\n", $3 );
-      if ( opt_lang != LANG_CPP )
-        unsupp( "reference", NULL );
-      $$ = cat( $3, $2, strdup( strlen( $2 ) ? " reference to " : "reference to " ), NULL );
-      c_ident_kind = CPP_REFERENCE;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+      c_ast_t *const ast = c_ast_new( K_NAME );
+      ast->name = check_strdup( $1 );
+      $$.head = $$.tail = ast;
     }
   ;
 
-cdecl1
-  : cdecl1 '(' ')'
-    {
-      YYTRACE( "cdecl1: cdecl1()\n" );
-      YYTRACE( "\tcdecl1='%s'\n", $1 );
-      $$ = cat( $1, strdup( "function returning " ), NULL );
-      c_ident_kind = C_FUNCTION;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
+cast_c
+  : /* empty */                   { $$ = NULL; }
+  | array_cast_c
+  | block_cast_c                        /* Apple extension */
+  | func_cast_c
+  | ordinary_cast_c
+  | pointer_cast_c
+  | pointer_to_member_cast_c
+  | reference_cast_c
+  ;
 
-  | '(' '^' opt_const_volatile_list cdecl ')' '(' ')'
-    {
-      char const *sp = "";
-      YYTRACE( "cdecl1: (^ opt_const_volatile_list cdecl)()\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
-      YYTRACE( "\tcdecl='%s'\n", $4 );
-      if (strlen($3) > 0)
-          sp = " ";
-      $$ = cat( $4, $3, strdup( sp ), strdup( "block returning " ), NULL );
-      c_ident_kind = C_BLOCK;
-    }
-
-  | '(' '^' opt_const_volatile_list cdecl ')' '(' cast_list ')'
-    {
-      char const *sp = "";
-      YYTRACE( "cdecl1: (^ opt_const_volatile_list cdecl)( cast_list )\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $3 );
-      YYTRACE( "\tcdecl='%s'\n", $4 );
-      YYTRACE( "\tcast_list='%s'\n", $7 );
-      if (strlen($3) > 0)
-        sp = " ";
-      $$ = cat( $4, $3, strdup( sp ), strdup( "block (" ), $7, strdup( ") returning " ), NULL );
-      c_ident_kind = C_BLOCK;
-    }
-
-  | cdecl1 '(' cast_list ')'
-    {
-      YYTRACE( "cdecl1: cdecl1(cast_list)\n" );
-      YYTRACE( "\tcdecl1='%s'\n", $1 );
-      YYTRACE( "\tcast_list='%s'\n", $3 );
-      $$ = cat( $1, strdup( "function (" ), $3, strdup( ") returning " ), NULL );
-      c_ident_kind = C_FUNCTION;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | cdecl1 cdims
-    {
-      YYTRACE( "cdecl1: cdecl1 cdims\n" );
-      YYTRACE( "\tcdecl1='%s'\n", $1 );
-      YYTRACE( "\tcdims='%s'\n", $2 );
-      $$ = cat( $1, strdup( "array " ), $2 ,NULL );
-      c_ident_kind = C_ARRAY_NO_DIM;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | '(' cdecl ')'
-    {
-      YYTRACE( "cdecl1: (cdecl)\n" );
-      YYTRACE( "\tcdecl='%s'\n", $2 );
-      $$ = $2;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | T_NAME
-    {
-      YYTRACE( "cdecl1: NAME\n" );
-      YYTRACE( "\tNAME='%s'\n", $1 );
-      c_ident = $1;
-      $$ = strdup( "" );
-      c_ident_kind = C_NAME;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+array_cast_c
+  : cast_c array_decl_c
+    { // array
     }
   ;
 
-cast_list
-  : cast_list ',' cast_list
-    {
-      YYTRACE( "cast_list: cast_list1, cast_list2\n" );
-      YYTRACE( "\tcast_list1='%s'\n", $1 );
-      YYTRACE( "\tcast_list2='%s'\n", $3 );
-      $$ = cat( $1, strdup( ", " ), $3, NULL );
+block_cast_c
+  : '(' '^' cast_c ')' '(' ')'
+    { // block returning
     }
 
-  | opt_const_volatile_list type cast
-    {
-      YYTRACE( "cast_list: opt_const_volatile_list type cast\n" );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $1 );
-      YYTRACE( "\ttype='%s'\n", $2 );
-      YYTRACE( "\tcast='%s'\n", $3 );
-      $$ = cat( $3, $1, strdup( strlen( $1 ) ? " " : "" ), $2, NULL );
-    }
-
-  | T_NAME
-    {
-      $$ = $1;
+  | '(' '^' cast_c ')' '(' cast_list_c ')'
+    { // block returning
     }
   ;
 
-cast
-  : /* empty */
-    {
-      YYTRACE( "cast: EMPTY\n" );
-      $$ = strdup( "" );
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+func_cast_c
+  : '(' ')'
+    { // function returning
     }
 
-  | '(' ')'
-    {
-      YYTRACE( "cast: ()\n" );
-      $$ = strdup( "function returning " );
-      c_ident_kind = C_FUNCTION;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+  | '(' cast_c ')' '(' ')'
+    { // function returning
     }
 
-  | '(' cast ')' '(' ')'
-    {
-      YYTRACE( "cast: (cast)()\n" );
-      YYTRACE( "\tcast='%s'\n", $2 );
-      $$ = cat( $2, strdup( "function returning " ), NULL );
-      c_ident_kind = C_FUNCTION;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | '(' cast ')' '(' cast_list ')'
-    {
-      YYTRACE( "cast: (cast)(cast_list)\n" );
-      YYTRACE( "\tcast='%s'\n", $2 );
-      YYTRACE( "\tcast_list='%s'\n", $5 );
-      $$ = cat( $2, strdup( "function (" ), $5, strdup( ") returning " ), NULL );
-      c_ident_kind = C_FUNCTION;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | '(' '^' cast ')' '(' ')'
-    {
-      YYTRACE( "cast: (^ cast)()\n" );
-      YYTRACE( "\tcast='%s'\n", $3 );
-      $$ = cat( $3, strdup( "block returning " ), NULL );
-      c_ident_kind = C_BLOCK;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | '(' '^' cast ')' '(' cast_list ')'
-    {
-      YYTRACE( "cast: (^ cast)(cast_list)\n" );
-      YYTRACE( "\tcast='%s'\n", $3 );
-      $$ = cat( $3, strdup( "block (" ), $6, strdup( ") returning " ), NULL );
-      c_ident_kind = C_BLOCK;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | '(' cast ')'
-    {
-      YYTRACE( "cast: (cast)\n" );
-      YYTRACE( "\tcast='%s'\n", $2 );
-      $$ = $2;
-      /* c_ident_kind = c_ident_kind; */
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | T_NAME T_COLON_COLON '*' cast
-    {
-      YYTRACE( "cast: NAME::*cast\n" );
-      YYTRACE( "\tcast='%s'\n", $4 );
-      if ( opt_lang != LANG_CPP )
-        unsupp( "pointer to member of class", NULL );
-      $$ = cat( $4, strdup( "pointer to member of class " ), $1, strdup( " " ), NULL );
-      c_ident_kind = C_POINTER;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | '*' cast
-    {
-      YYTRACE( "cast: *cast\n" );
-      YYTRACE( "\tcast='%s'\n", $2 );
-      $$ = cat( $2, strdup( "pointer to " ), NULL );
-      c_ident_kind = C_POINTER;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | '&' cast
-    {
-      YYTRACE( "cast: &cast\n" );
-      YYTRACE( "\tcast='%s'\n", $2 );
-      if ( opt_lang != LANG_CPP )
-        unsupp( "reference", NULL );
-      $$ = cat( $2, strdup( "reference to " ), NULL );
-      c_ident_kind = CPP_REFERENCE;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
-    }
-
-  | cast cdims
-    {
-      YYTRACE( "cast: cast cdims\n" );
-      YYTRACE( "\tcast='%s'\n", $1 );
-      YYTRACE( "\tcdims='%s'\n", $2 );
-      $$ = cat( $1, strdup( "array " ), $2, NULL );
-      c_ident_kind = C_ARRAY_NO_DIM;
-      YYTRACE( "\tc_ident_kind = '%s'\n", visible( c_ident_kind ) );
+  | '(' cast_c ')' '(' cast_list_c ')'
+    { // function returning
     }
   ;
 
-cdims
-  : '[' ']'
-    {
-      YYTRACE( "cdims: []\n" );
-      $$ = strdup("of ");
-    }
+ordinary_cast_c
+  : '(' cast_c ')'                { $$ = $2; }
+  ;
 
-  | '[' T_NUMBER ']'
+pointer_cast_c
+  : '*' cast_c
     {
-      YYTRACE( "cdims: [NUMBER]\n" );
-      YYTRACE( "\tNUMBER='%s'\n", $2 );
-      $$ = cat( $2, strdup( " of " ), NULL );
+      $$ = c_ast_new( K_POINTER );
+      $$->as.ptr_ref.to_ast = $2;
     }
   ;
 
-array_dimension
-  : /* empty */
+pointer_to_member_cast_c
+  : Y_NAME Y_COLON_COLON '*' cast_c
     {
-      YYTRACE( "array_dimension: EMPTY\n" );
-      array_has_dim = false;
-      $$ = strdup( "[]" );
-    }
-
-  | T_NUMBER
-    {
-      YYTRACE( "array_dimension: NUMBER\n" );
-      YYTRACE( "\tNUMBER='%s'\n", $1 );
-      array_has_dim = true;
-      $$ = cat( strdup( "[" ), $1, strdup( "]" ), NULL );
+      $$ = c_ast_new( K_MEMBER );
+      $$->as.member.class_name = check_strdup( $1 );
+      $$->as.member.of_ast = $4;
     }
   ;
 
-type
-  : c_type_init c_type
+reference_cast_c
+  : '&' cast_c
     {
-      YYTRACE( "type: c_type_init c_type\n" );
-      YYTRACE( "\tc_type_init=''\n" );
-      YYTRACE( "\tc_type='%s'\n", $2 );
-      c_type_check();
-      $$ = $2;
+      $$ = c_ast_new( K_REFERENCE );
+      $$->as.ptr_ref.to_ast = $2;
     }
   ;
 
-c_type_init
-  : /* empty */
+/*****************************************************************************/
+/*  declaration gibberish productions                                        */
+/*****************************************************************************/
+
+decl_c
+  : decl2_c
+  | pointer_decl_c
+  | pointer_to_member_decl_c
+  | reference_decl_c
+  ;
+
+decl2_c
+  : block_decl_c
+  | func_decl_c
+  | decl2_c array_decl_c
     {
-      YYTRACE( "c_type_init: EMPTY\n" );
-      c_type_bits = 0;
+      $$ = c_ast_new( K_ARRAY );
+      $$->as.array.size = $2;
+      $$->as.array.of_ast = $1;
+    }
+
+  | '(' decl_c ')'                { $$ = $2; }
+
+  | Y_NAME
+    {
+      $$ = c_ast_new( K_NAME );
+      $$->name = check_strdup( $1 );
     }
   ;
 
-c_type
-  : mod_list
-    {
-      YYTRACE( "c_type: mod_list\n" );
-      YYTRACE( "\tmod_list='%s'\n", $1 );
-      $$ = $1;
+array_decl_c
+  : '[' ']'                       { $$ = C_ARRAY_NO_SIZE; }
+  | '[' Y_NUMBER ']'              { $$ = $2; }
+  ;
+
+block_decl_c
+  : '(' '^' type_qualifier_list_opt_c decl_c ')' '(' ')'
+    { // block returning ...
     }
 
-  | c_builtin_type
-    {
-      YYTRACE( "c_type: c_builtin_type\n" );
-      YYTRACE( "\tc_builtin_type='%s'\n", $1 );
-      $$ = $1;
-    }
-
-  | mod_list c_builtin_type
-    {
-      YYTRACE( "c_type: mod_list c_builtin_type\n" );
-      YYTRACE( "\tmod_list='%s'\n", $1 );
-      YYTRACE( "\tc_builtin_type='%s'\n", $2 );
-      $$ = cat( $1, strdup(" "), $2, NULL );
-    }
-
-  | enum_class_struct_union T_NAME
-    {
-      YYTRACE( "c_type: enum_class_struct_union NAME\n" );
-      YYTRACE( "\tenum_class_struct_union='%s'\n", $1 );
-      YYTRACE( "\tNAME='%s'\n", $2 );
-      $$ = cat( $1, strdup( " " ), $2, NULL );
+  | '(' '^' type_qualifier_list_opt_c decl_c ')' '(' cast_list_c ')'
+    { // block(args) returning
     }
   ;
 
-enum_class_struct_union
-  : class_struct
-  | T_ENUM
-  | T_UNION
+func_decl_c
+  : decl2_c '(' ')'
     {
-      $$ = $1;
+      $$ = c_ast_new( K_FUNCTION );
+      $$->as.func.ret_ast = $1;
+      $$->as.func.args.head = NULL;
+      $$->as.func.args.tail = NULL;
+    }
+
+  | decl2_c '(' cast_list_c ')'
+    {
+      $$ = c_ast_new( K_FUNCTION );
+      $$->as.func.ret_ast = $1;
+      $$->as.func.args = $3;
     }
   ;
 
-class_struct
-  : T_STRUCT
-  | T_CLASS
+pointer_decl_c
+  : '*' type_qualifier_list_opt_c decl_c
     {
-      $$ = $1;
+      $$ = c_ast_new( K_POINTER );
+      $$->as.ptr_ref.qualifier = $2->as.type;
+      $$->as.ptr_ref.to_ast = $3;
     }
   ;
 
-c_builtin_type
-  : T_BOOL
+pointer_to_member_decl_c
+  : Y_NAME Y_COLON_COLON '*' decl_c
     {
-      YYTRACE( "c_builtin_type: BOOL\n" );
-      YYTRACE( "\tBOOL='%s'\n", $1 );
-      c_type_add( C_TYPE_BOOL );
-      $$ = $1;
-    }
-
-  | T_CHAR
-    {
-      YYTRACE( "c_builtin_type: CHAR\n" );
-      YYTRACE( "\tCHAR='%s'\n", $1 );
-      c_type_add( C_TYPE_CHAR );
-      $$ = $1;
-    }
-
-  | T_WCHAR_T
-    {
-      YYTRACE( "c_builtin_type: WCHAR_T\n" );
-      YYTRACE( "\tWCHAR_T='%s'\n", $1 );
-      if ( opt_lang == LANG_C_KNR )
-        illegal( opt_lang, $1, NULL );
-      c_type_add( C_TYPE_WCHAR_T );
-      $$ = $1;
-    }
-
-  | T_INT
-    {
-      YYTRACE( "c_builtin_type: INT\n" );
-      YYTRACE( "\tINT='%s'\n", $1 );
-      c_type_add( C_TYPE_INT );
-      $$ = $1;
-    }
-
-  | T_FLOAT
-    {
-      YYTRACE( "c_builtin_type: FLOAT\n" );
-      YYTRACE( "\tFLOAT='%s'\n", $1 );
-      c_type_add( C_TYPE_FLOAT );
-      $$ = $1;
-    }
-
-  | T_DOUBLE
-    {
-      YYTRACE( "c_builtin_type: DOUBLE\n" );
-      YYTRACE( "\tDOUBLE='%s'\n", $1 );
-      c_type_add( C_TYPE_DOUBLE );
-      $$ = $1;
-    }
-
-  | T_VOID
-    {
-      YYTRACE( "c_builtin_type: VOID\n" );
-      YYTRACE( "\tVOID='%s'\n", $1 );
-      c_type_add( C_TYPE_VOID );
-      $$ = $1;
+      $$ = c_ast_new( K_MEMBER );
+      $$->as.member.class_name = check_strdup( $1 );
+      $$->as.member.of_ast = $4;
     }
   ;
 
-mod_list
-  : modifier mod_list1
+reference_decl_c
+  : '&' type_qualifier_list_opt_c decl_c
     {
-      YYTRACE( "mod_list: modifier mod_list1\n" );
-      YYTRACE( "\tmodifier='%s'\n", $1 );
-      YYTRACE( "\tmod_list1='%s'\n", $2 );
-      $$ = cat( $1, strdup( " " ), $2, NULL );
-    }
-
-  | modifier
-    {
-      YYTRACE( "mod_list: modifier\n" );
-      YYTRACE( "\tmodifier='%s'\n", $1 );
-      $$ = $1;
+      $$ = c_ast_new( K_REFERENCE );
+      $$->as.ptr_ref.qualifier = $2->as.type;
+      $$->as.ptr_ref.to_ast = $3;
     }
   ;
 
-mod_list1
-  : mod_list
-    {
-      YYTRACE( "mod_list1: mod_list\n" );
-      YYTRACE( "\tmod_list='%s'\n", $1 );
-      $$ = $1;
-    }
+/*****************************************************************************/
+/*  type gibberish productions                                               */
+/*****************************************************************************/
 
-  | const_volatile
+type_c
+  : type_modifier_list_c
+  | type_modifier_list_c builtin_type_c
+  | builtin_type_c
+  | enum_class_struct_union_type_c
+  ;
+
+type_modifier_list_c
+  : type_modifier_c type_modifier_list2_c
     {
-      YYTRACE( "mod_list1: CONST_VOLATILE\n" );
-      YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
       $$ = $1;
+      $$->as.type |= $2->as.type;
+      c_ast_free( $2 );
+      c_type_check( $$->as.type );
+    }
+  | type_modifier_c
+  ;
+
+type_modifier_list2_c
+  : type_modifier_list_c
+  | type_qualifier_c
+  ;
+
+type_modifier_c
+  : type_modifier_token_c         { $$ = c_ast_new_type( $1 ); }
+  ;
+
+type_modifier_token_c
+  : Y_COMPLEX
+  | Y_LONG
+  | Y_SHORT
+  | Y_SIGNED
+  | Y_UNSIGNED
+  ;
+
+builtin_type_c
+  : builtin_type_token_c          { $$ = c_ast_new_type( $1 ); }
+  ;
+
+builtin_type_token_c
+  : Y_VOID
+  | Y_BOOL
+  | Y_CHAR
+  | Y_CHAR16_T
+  | Y_CHAR32_T
+  | Y_WCHAR_T
+  | Y_INT
+  | Y_FLOAT
+  | Y_DOUBLE
+  ;
+
+enum_class_struct_union_type_c
+  : enum_class_struct_union_token_c Y_NAME
+    {
+      $$ = c_ast_new( K_ENUM_CLASS_STRUCT_UNION );
+      $$->name = check_strdup( $2 );
+      $$->as.type = $1;
     }
   ;
 
-modifier
-  : T_UNSIGNED
-    {
-      YYTRACE( "modifier: UNSIGNED\n" );
-      YYTRACE( "\tUNSIGNED='%s'\n", $1 );
-      c_type_add( C_TYPE_UNSIGNED );
-      $$ = $1;
-    }
+enum_class_struct_union_token_c
+  : Y_ENUM
+  | class_struct_token_c
+  | Y_UNION
+  ;
 
-  | T_SIGNED
-    {
-      YYTRACE( "modifier: SIGNED\n" );
-      YYTRACE( "\tSIGNED='%s'\n", $1 );
-      c_type_add( C_TYPE_SIGNED );
-      $$ = $1;
-    }
+class_struct_token_c
+  : Y_CLASS
+  | Y_STRUCT
+  ;
 
-  | T_LONG
-    {
-      YYTRACE( "modifier: LONG\n" );
-      YYTRACE( "\tLONG='%s'\n", $1 );
-      c_type_add( C_TYPE_LONG );
-      $$ = $1;
-    }
+type_qualifier_c
+  : type_qualifier_token_c        { $$ = c_ast_new_type( $1 ); }
+  ;
 
-  | T_SHORT
+type_qualifier_token_c
+  : Y_CONST
+  | Y_RESTRICT
+  | Y_VOLATILE
+  ;
+
+type_qualifier_list_opt_c
+  : /* empty */                   { $$ = T_NONE; }
+  | type_qualifier_list_c
+  ;
+
+type_qualifier_list_c
+  : type_qualifier_c type_qualifier_list_opt_c
     {
-      YYTRACE( "modifier: SHORT\n" );
-      YYTRACE( "\tSHORT='%s'\n", $1 );
-      c_type_add( C_TYPE_SHORT );
-      $$ = $1;
+      $$->as.type = $1->as.type | $2->as.type;
     }
   ;
 
-const_volatile
-  : T_CONST
-  | T_VOLATILE
-    {
-      YYTRACE( "const_volatile: CONST_VOLATILE\n" );
-      YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
-      if ( opt_lang == LANG_C_KNR )
-        illegal( opt_lang, $1, NULL );
-      else if ( strcmp( $1, "noalias" ) == 0 && opt_lang == LANG_CPP )
-        unsupp( $1, NULL );
-      $$ = $1;
-    }
+storage_class_token_c
+  : Y_AUTO
+  | Y_BLOCK                             /* Apple extension */
+  | Y_EXTERN
+  | Y_REGISTER
+  | Y_STATIC
+  | Y_THREAD_LOCAL
   ;
 
-const_volatile_list
-  : const_volatile opt_const_volatile_list
-    {
-      YYTRACE( "const_volatile_list: CONST_VOLATILE opt_const_volatile_list\n" );
-      YYTRACE( "\tCONST_VOLATILE='%s'\n", $1 );
-      YYTRACE( "\topt_const_volatile_list='%s'\n", $2 );
-      if ( opt_lang == LANG_C_KNR )
-        illegal( opt_lang, $1, NULL );
-      else if ( strcmp( $1, "noalias" ) == 0 && opt_lang == LANG_CPP )
-        unsupp( $1, NULL );
-      $$ = cat( $1, strdup( strlen( $2 ) ? " " : "" ), $2, NULL );
-    }
+storage_class_token_opt_c
+  : /* empty */                   { $$ = T_NONE; }
+  | storage_class_token_c
   ;
 
-opt_const_volatile_list
-  : /* empty */
-    {
-      YYTRACE( "opt_const_volatile_list: EMPTY\n" );
-      $$ = strdup( "" );
-    }
-  | const_volatile_list
-  ;
+/*****************************************************************************/
+/*  miscellaneous gibberish productions                                      */
+/*****************************************************************************/
 
-opt_NAME
-  : /* empty */
-    {
-      YYTRACE( "opt_NAME: EMPTY\n" );
-      $$ = strdup( UNKNOWN_NAME );
-    }
-
-  | T_NAME
-    {
-      YYTRACE( "opt_NAME: NAME\n" );
-      YYTRACE( "\tNAME='%s'\n", $1 );
-      $$ = $1;
-    }
-  ;
-
-storage
-  : T_AUTO
-  | T_EXTERN
-  | T_REGISTER
-  | T_STATIC
-    {
-      YYTRACE( "storage: AUTO,EXTERN,STATIC,REGISTER (%s)\n", $1 );
-      $$ = $1;
-    }
-  ;
-
-opt_storage
-  : /* empty */
-    {
-      YYTRACE( "opt_storage: EMPTY\n" );
-      $$ = strdup( "" );
-    }
-
-  | storage
-    {
-      YYTRACE( "opt_storage: storage=%s\n", $1 );
-      $$ = $1;
-    }
+name_token_opt
+  : /* empty */                   { $$ = NULL; }
+  | Y_NAME
   ;
 
 %%
-
-///////////////////////////////////////////////////////////////////////////////
-
-/* the help messages */
-struct help_text {
-  char const *text;                     // generic text 
-  char const *cpp_text;                 // C++ specific text 
-};
-typedef struct help_text help_text_t;
-
-/**
- * Help text (limited to 80 columns and 23 lines so it fits on an 80x24
- * screen).
- */
-static help_text_t const HELP_TEXT[] = {
-/*  1 */ { "[] means optional; {} means 1 or more; <> means defined elsewhere", NULL },
-/*  2 */ { "  commands are separated by ';' and newlines", NULL },
-/*  3 */ { "command:", NULL },
-/*  4 */ { "  declare <name> as <english>", NULL },
-/*  5 */ { "  cast <name> into <english>", NULL },
-/*  6 */ { "  explain <gibberish>", NULL },
-/*  7 */ { "  set or set options", NULL },
-/*  8 */ { "  help, ?", NULL },
-/*  9 */ { "  quit or exit", NULL },
-/* 10 */ { "english:", NULL },
-/* 11 */ { "  function [( <decl-list> )] returning <english>", NULL },
-/* 12 */ { "  block [( <decl-list> )] returning <english>", NULL },
-/* 13 */ { "  array [<number>] of <english>", NULL },
-/* 14 */ { "  [{ const | volatile | noalias }] pointer to <english>",
-           "  [{const|volatile}] {pointer|reference} to [member of class <name>] <english>" },
-/* 15 */{ "  <type>", NULL },
-/* 16 */{ "type:", NULL },
-/* 17 */{ "  {[<storage-class>] [{<modifier>}] [<C-type>]}", NULL },
-/* 18 */{ "  { struct | union | enum } <name>",
-          "  {struct|class|union|enum} <name>" },
-/* 19 */{ "decllist: a comma separated list of <name>, <english>, or <name> as <english>", NULL },
-/* 20 */{ "name: a C identifier", NULL },
-/* 21 */{ "gibberish: a C declaration, like 'int *x', or cast, like '(int *)x'", NULL },
-/* 22 */{ "storage-class: auto, extern, register, or static",
-          "storage-class: extern, register, or static" },
-/* 23 */{ "C-type: bool, int, char, wchar_t, float, double, or void", NULL },
-/* 24 */{ "modifier: short, long, signed, unsigned, const, volatile, or noalias",
-          "modifier: short, long, signed, unsigned, const, or volatile" },
-  { NULL, NULL }
-};
-
-/**
- * Prints the help message to standard output.
- */
-static void print_help( void ) {
-  char const *const fmt = opt_lang == LANG_CPP ? " %s\n" : "  %s\n";
-
-  for ( help_text_t const *ht = HELP_TEXT; ht->text; ++ht ) {
-    if ( opt_lang == LANG_CPP && ht->cpp_text )
-      printf( fmt, ht->cpp_text );
-    else
-      printf( fmt, ht->text );
-  } // for
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */
