@@ -37,7 +37,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_SHORT,          Y_SHORT,        T_SHORT,        ANY                   },
   { L_STATIC,         Y_STATIC,       T_STATIC,       ANY                   },
   { L_STRUCT,         Y_STRUCT,       T_STRUCT,       ANY                   },
-  { L_UNION,          Y_UNION,        T_STRUCT,       ANY                   },
+  { L_UNION,          Y_UNION,        T_UNION,        ANY                   },
   { L_UNSIGNED,       Y_UNSIGNED,     T_UNSIGNED,     ANY                   },
 
   // C89
@@ -60,7 +60,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L__THREAD_LOCAL,  Y_THREAD_LOCAL, T_THREAD_LOCAL, MIN(C_11) | NOT(CPP)  },
 
   // C++
-  { L_CLASS,          Y_CLASS,        T_STRUCT,       MIN(CPP)              },
+  { L_CLASS,          Y_CLASS,        T_CLASS,        MIN(CPP)              },
 
   // C11 & C++11
   { L_CHAR16_T,       Y_CHAR16_T,     T_CHAR16_T,     MIN(C_11) | MIN(CPP)  },
