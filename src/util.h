@@ -20,6 +20,7 @@
 
 #define ARRAY_SIZE(A)             (sizeof(A) / sizeof(A[0]))
 #define BLOCK(...)                do { __VA_ARGS__ } while (0)
+#define FREE(PTR)                 free( (void*)(PTR) )
 #define PERROR_EXIT(STATUS)       BLOCK( perror( me ); exit( STATUS ); )
 #define PRINT_ERR(...)            fprintf( stderr, __VA_ARGS__ )
 #define STRERROR                  strerror( errno )

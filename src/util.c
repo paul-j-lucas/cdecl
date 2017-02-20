@@ -59,7 +59,7 @@ char* cat( char const *s1, ... ) {
   va_start( args, s1 );
   for ( char const *s = s1; s; s = va_arg( args, char const* ) ) {
     strcat( combined, s );
-    free( (void*)s );
+    FREE( s );
   } // for
   va_end( args );
 
@@ -119,8 +119,8 @@ void* free_later( void *p ) {
 void free_now( void ) {
   for ( free_node_t *p = free_head; p; ) {
     free_node_t *const next = p->fn_next;
-    free( p->fn_ptr );
-    free( p );
+    FREE( p->fn_ptr );
+    FREE( p );
     p = next;
   } // for
   free_head = NULL;
