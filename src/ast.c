@@ -7,12 +7,19 @@
 #include "config.h"                     /* must go first */
 #include "ast.h"
 #include "literals.h"
+#include "options.h"
 #include "util.h"
 
 // system
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>                     /* for memset(3) */
+#include <sysexits.h>
+
+///////////////////////////////////////////////////////////////////////////////
+
+// local variable definitions
+static unsigned c_ast_count;            // allocated but not freed
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -44,23 +51,28 @@ void c_ast_check( c_ast_t *ast ) {
     case K_BUILTIN:
       // nothing to do
       break;
+    case K_ENUM_CLASS_STRUCT_UNION:
+      // TODO
+      break;
     case K_FUNCTION:
-      for ( c_ast_t *arg = ast->as.func.args.head; arg; arg = arg->next )
+      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next )
         /* TODO */;
       break;
-    case K_MEMBER:
+    case K_PTR_TO_MEMBER:
       break;
     case K_NAME:
       break;
     case K_POINTER:
     case K_REFERENCE:
       break;
-    case K_STRUCT:
-      // TODO
-      break;
   } // switch
 }
 #endif
+
+void c_ast_cleanup( void ) {
+  if ( c_ast_count > 0 )
+    INTERNAL_ERR( "number of c_ast objects (%u) > 0\n", c_ast_count );
+}
 
 void c_ast_english( c_ast_t const *ast, FILE *fout ) {
   assert( ast );
@@ -74,7 +86,7 @@ void c_ast_english( c_ast_t const *ast, FILE *fout ) {
       if ( ast->as.array.size != C_ARRAY_NO_SIZE )
         FPRINTF( fout, "%d ", ast->as.array.size );
       FPRINTF( fout, "%s ", L_OF );
-      c_ast_english( ast->as.member.of_ast, fout );
+      c_ast_english( ast->as.array.of_ast, fout );
       break;
 
     case K_BLOCK:
@@ -84,27 +96,33 @@ void c_ast_english( c_ast_t const *ast, FILE *fout ) {
       FPUTS( c_type_name( ast->as.type ), fout );
       break;
 
+    case K_ENUM_CLASS_STRUCT_UNION:
+      FPUTS( c_type_name( ast->as.type ), fout );
+      if ( ast->name )
+        FPRINTF( fout, " %s", ast->name );
+      break;
+
     case K_FUNCTION:
       FPRINTF( fout, "%s (", L_FUNCTION );
-      for ( c_ast_t *arg = ast->as.func.args.head; arg; arg = arg->next )
+      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next )
         c_ast_english( arg, fout );
       FPRINTF( fout, ") %s ", L_RETURNING );
       c_ast_english( ast->as.func.ret_ast, fout );
       break;
 
-    case K_MEMBER:
-      if ( ast->as.member.qualifier )
-        FPRINTF( fout, "%s ", c_type_name( ast->as.member.qualifier ) );
+    case K_PTR_TO_MEMBER:
+      if ( ast->as.ptr_mbr.qualifier )
+        FPRINTF( fout, "%s ", c_type_name( ast->as.ptr_mbr.qualifier ) );
       FPRINTF( fout,
         "%s %s %s %s %s %s ",
-        L_POINTER, L_TO, L_MEMBER, L_OF, L_CLASS, ast->as.member.class_name
+        L_POINTER, L_TO, L_MEMBER, L_OF, L_CLASS, ast->as.ptr_mbr.class_name
       );
-      c_ast_english( ast->as.member.of_ast, fout );
+      c_ast_english( ast->as.ptr_mbr.of_ast, fout );
       break;
 
     case K_NAME:
-      if ( ast->as.name )
-        FPUTS( ast->as.name, fout );
+      if ( ast->name )
+        FPUTS( ast->name, fout );
       break;
 
     case K_POINTER:
@@ -116,15 +134,18 @@ void c_ast_english( c_ast_t const *ast, FILE *fout ) {
       );
       c_ast_english( ast->as.ptr_ref.to_ast, fout );
       break;
-
-    case K_STRUCT:
-      // TODO
-      break;
   } // switch
 }
 
 void c_ast_free( c_ast_t *ast ) {
-  assert( ast );
+  if ( ast == NULL )
+    return;
+  //assert( c_ast_count > 0 );
+
+  --c_ast_count;
+
+  if ( ast->name )
+    FREE( ast->name );
 
   switch ( ast->kind ) {
     case K_NONE:
@@ -133,33 +154,51 @@ void c_ast_free( c_ast_t *ast ) {
       if ( ast->as.array.of_ast )
         c_ast_free( ast->as.array.of_ast );
       break;
-    case K_BLOCK:
-      // TODO
-      break;
     case K_BUILTIN:
       // nothing to do
       break;
+    case K_ENUM_CLASS_STRUCT_UNION:
+      // nothing to do
+      break;
+    case K_BLOCK:
     case K_FUNCTION:
-      for ( c_ast_t *arg = ast->as.func.args.head; arg; ) {
+      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; ) {
         c_ast_t *const next = arg->next;
         c_ast_free( arg );
         arg = next;
       }
       break;
-    case K_MEMBER:
-      free( (void*)ast->as.member.class_name );
-      c_ast_free( ast->as.member.of_ast );
+    case K_PTR_TO_MEMBER:
+      FREE( ast->as.ptr_mbr.class_name );
+      c_ast_free( ast->as.ptr_mbr.of_ast );
       break;
     case K_NAME:
-      free( (void*)ast->as.name );
+      // nothing to do
       break;
     case K_POINTER:
     case K_REFERENCE:
       c_ast_free( ast->as.ptr_ref.to_ast );
       break;
-    case K_STRUCT:
-      // TODO
-      break;
+  } // switch
+}
+
+char const* c_ast_name( c_ast_t const *ast ) {
+  if ( !ast )
+    return NULL;
+
+  if ( ast->name )
+    return ast->name;
+
+  switch ( ast->kind ) {
+    case K_ARRAY:
+      return c_ast_name( ast->as.array.of_ast );
+    case K_PTR_TO_MEMBER:
+      return NULL;
+    case K_POINTER:
+    case K_REFERENCE:
+      return c_ast_name( ast->as.ptr_ref.to_ast );
+    default:
+      return NULL;
   } // switch
 }
 
@@ -167,7 +206,33 @@ c_ast_t* c_ast_new( c_kind_t kind ) {
   c_ast_t *const ast = MALLOC( c_ast_t, 1 );
   memset( ast, 0, sizeof( c_ast_t ) );
   ast->kind = kind;
+  ++c_ast_count;
   return ast;
+}
+
+char const* c_kind_name( c_kind_t kind ) {
+  switch ( kind ) {
+    case K_NONE         : return "none";
+    case K_ARRAY        : return "array";
+    case K_BLOCK        : return "block";
+    case K_BUILTIN      : return "built-in type";
+    case K_FUNCTION     : return "function";
+    case K_NAME         : return "name";
+    case K_POINTER      : return "pointer";
+    case K_PTR_TO_MEMBER: return "pointer-to-member";
+    case K_REFERENCE    : return "reference";
+
+    case K_ENUM_CLASS_STRUCT_UNION:
+      if ( opt_lang >= LANG_CPP )
+        return "enum, class, struct, or union";
+      if ( opt_lang >= LANG_C_89 )
+        return "enum, struct, or union";
+      return "struct or union";
+
+    default:
+      INTERNAL_ERR( "unexpected value (%d) for c_kind\n", (int)kind );
+      return NULL;                      // suppress warning
+  } // switch
 }
 
 ///////////////////////////////////////////////////////////////////////////////
