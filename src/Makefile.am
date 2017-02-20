@@ -10,7 +10,8 @@ AM_YFLAGS = -d
 LDADD = $(top_builddir)/lib/libgnu.a
 
 cdecl_SOURCES =	cdgram.y cdlex.l cdecl.c \
-		ast.c keywords.c lang.c literals.c options.c types.c util.c
+		ast.c help.c keywords.c lang.c literals.c options.c types.c \
+		util.c
 
 if WITH_READLINE
 cdecl_SOURCES += readline_support.c
