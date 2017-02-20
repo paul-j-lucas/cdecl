@@ -56,7 +56,6 @@ static c_keyword_t const C_KEYWORDS[] = {
   // C11
   { L_NORETURN,       Y_NORETURN,     T_NONE,         MIN(C_11) | NOT(CPP)  },
   { L__NORETURN,      Y_NORETURN,     T_NONE,         MIN(C_11) | NOT(CPP)  },
-  { L_THREAD_LOCAL,   Y_THREAD_LOCAL, T_THREAD_LOCAL, MIN(C_11) | NOT(CPP)  },
   { L__THREAD_LOCAL,  Y_THREAD_LOCAL, T_THREAD_LOCAL, MIN(C_11) | NOT(CPP)  },
 
   // C++
@@ -65,10 +64,11 @@ static c_keyword_t const C_KEYWORDS[] = {
   // C11 & C++11
   { L_CHAR16_T,       Y_CHAR16_T,     T_CHAR16_T,     MIN(C_11) | MIN(CPP)  },
   { L_CHAR32_T,       Y_CHAR32_T,     T_CHAR32_T,     MIN(C_11) | MIN(CPP)  },
+  { L_THREAD_LOCAL,   Y_THREAD_LOCAL, T_THREAD_LOCAL, MIN(C_11) | MIN(CPP_11) },
 
   // Apple extension
-  { L___BLOCK,        Y_BLOCK,        T_BLOCK,        ANY                   },
-  { L_BLOCK,          Y_BLOCK,        T_BLOCK,        ANY                   },
+  { L___BLOCK,        Y_BLOCK,        T_BLOCK,        MIN(C_89)             },
+  { L_BLOCK,          Y_BLOCK,        T_BLOCK,        MIN(C_89)             },
 
   { NULL,             0,              T_NONE,         0                     }
 };
