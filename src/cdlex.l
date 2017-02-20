@@ -37,7 +37,6 @@ typedef struct keyword keyword_t;
  * All cdecl keywords (that are not C/C++ keywords).
  */
 static keyword_t const CDECL_KEYWORDS[] = {
-  { "?",            TOKEN( Y_HELP )       },
   { L_ARRAY,        TOKEN( Y_ARRAY )      },
   { L_AS,           TOKEN( Y_AS )         },
   { L__BOOL,        C_SYN( L_BOOL )       },
@@ -126,6 +125,8 @@ H             [0-9A-Fa-f]
 0[xX]{H}+     { yylval.number = strtol( yytext, NULL, 16 ); return Y_NUMBER; }
 
 "::"          return Y_COLON_COLON;
+
+"?"           return Y_HELP;
 
 "&"           |
 "("           |
