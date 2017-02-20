@@ -13,6 +13,7 @@
 #include "keywords.h"
 #include "lang.h"
 #include "literals.h"
+#include "util.h"
 #include "cdgram.h"                     /* must go last */
 
 // standard
@@ -100,23 +101,23 @@ H             [0-9A-Fa-f]
 
 {A}({A}|{D})* {
                 // use our own pointer in case yytext[]
-                char const *keyword = yytext;
+                char const *name = yytext;
 
-                keyword_t const *const k = keyword_find( keyword );
+                keyword_t const *const k = keyword_find( name );
                 if ( k ) {
                   if ( k->c_keyword_synonym )
-                    keyword = (char*)k->c_keyword_synonym;
+                    name = (char*)k->c_keyword_synonym;
                   else
                     return k->y_token;
                 }
 
-                c_keyword_t const *const ck = c_keyword_find( keyword );
+                c_keyword_t const *const ck = c_keyword_find_literal( name );
                 if ( ck ) {
                   yylval.type = ck->type;
                   return ck->y_token;
                 }
 
-                yylval.name = keyword;
+                yylval.name = check_strdup( name );
                 return Y_NAME;
               }
 
