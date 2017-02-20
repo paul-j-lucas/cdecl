@@ -9,14 +9,15 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // languages supported
-#define LANG_NONE   0x0000
-#define LANG_C_KNR  0x0001
-#define LANG_C_89   0x0002
-#define LANG_C_95   0x0004
-#define LANG_C_99   0x0008
-#define LANG_C_11   0x0010
-#define LANG_CPP    0x0020
-#define LANG_CPP_11 0x0040
+#define LANG_NONE   0
+#define LANG_C_KNR  (1 << 0)
+#define LANG_C_89   (1 << 1)
+#define LANG_C_95   (1 << 2)
+#define LANG_C_99   (1 << 3)
+#define LANG_C_11   (1 << 4)
+#define LANG_CPP    (1 << 5)
+#define LANG_CPP_11 (1 << 6)
+#define LANG_ALL    ~LANG_NONE
 
 /**
  * Bitmask for combination of languages.
