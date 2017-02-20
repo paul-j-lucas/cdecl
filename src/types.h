@@ -6,6 +6,12 @@
 #ifndef cdecl_types_H
 #define cdecl_types_H
 
+// local
+#include "config.h"
+
+// standard
+#include <stdbool.h>
+
 ////////// types //////////////////////////////////////////////////////////////
 
 // types
@@ -52,7 +58,7 @@ typedef unsigned c_type_t;
  *
  * @param type TODO
  */
-void c_type_check( c_type_t type );
+bool c_type_check( c_type_t type );
 
 /**
  * Given a type, get its name.

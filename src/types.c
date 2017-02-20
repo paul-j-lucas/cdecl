@@ -94,19 +94,22 @@ static inline bool only_one_bit_set( unsigned n ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_type_check( c_type_t type ) {
+bool c_type_check( c_type_t type ) {
   for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i ) {
     if ( type & C_TYPE_INFO[i].type ) {
       for ( size_t j = 0; j < i; ++j ) {
-        if ( (type & C_TYPE_INFO[j].type) && (opt_lang & RESTRICTIONS[i][j]) )
+        if ( (type & C_TYPE_INFO[j].type) && (opt_lang & RESTRICTIONS[i][j]) ) {
           PRINT_ERR(
             "warning: \"%s\" with \"%s\" is illegal in %s\n",
             C_TYPE_INFO[i].literal, C_TYPE_INFO[j].literal,
             lang_name( opt_lang )
           );
+          return false;
+        }
       } // for
     }
   } // for
+  return true;
 }
 
 char const* c_type_name( c_type_t type ) {
