@@ -75,12 +75,20 @@ static c_keyword_t const C_KEYWORDS[] = {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_keyword_t const* c_keyword_find( char const *s ) {
+c_keyword_t const* c_keyword_find_literal( char const *literal ) {
   for ( c_keyword_t const *k = C_KEYWORDS; k->literal; ++k ) {
-    if ( strcmp( s, k->literal ) == 0 )
+    if ( strcmp( literal, k->literal ) == 0 )
       return k;
   } // for
   return NULL;
+}
+
+c_keyword_t const* c_keyword_find_token( int y_token ) {
+  for ( c_keyword_t const *k = C_KEYWORDS; k->literal; ++k ) {
+    if ( y_token == k->y_token )
+      return k;
+  } // for
+  return T_NONE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

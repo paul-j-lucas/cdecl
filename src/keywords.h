@@ -26,12 +26,20 @@ typedef struct c_keyword c_keyword_t;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * TODO
+ * Gets the c_keyword for the given literal.
  *
- * @param s TODO
- * @return TODO
+ * @param literal The literal to find.
+ * @return Returns a pointer to the corresponding c_keyword or null for none.
  */
-c_keyword_t const* c_keyword_find( char const *s );
+c_keyword_t const* c_keyword_find_literal( char const *literal );
+
+/**
+ * Gets the c_keyword for the given YACC token.
+ *
+ * @param y_token The YACC token to find.
+ * @return Returns a pointer to the corresponding c_keyword or null for none.
+ */
+c_keyword_t const* c_keyword_find_token( int y_token );
 
 ///////////////////////////////////////////////////////////////////////////////
 
