@@ -280,6 +280,8 @@ void options_init( int argc, char const *argv[] ) {
     fin = stdin;
   if ( !fout )
     fout = stdout;
+
+  yydebug = false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
