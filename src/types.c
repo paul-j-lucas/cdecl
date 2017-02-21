@@ -39,31 +39,45 @@ struct c_type_info {
 typedef struct c_type_info c_type_info_t;
 
 static c_type_info_t const C_TYPE_INFO[] = {
-  { L_VOID,         T_VOID,         },
-  { L_BOOL,         T_BOOL,         },
-  { L_CHAR,         T_CHAR,         },
-  { L_CHAR16_T,     T_CHAR16_T,     },
-  { L_CHAR32_T,     T_CHAR32_T,     },
-  { L_WCHAR_T,      T_WCHAR_T,      },
-  { L_SHORT,        T_SHORT,        },
-  { L_INT,          T_INT,          },
-  { L_LONG,         T_LONG,         },
-  { L_LONG_LONG,    T_LONG_LONG,    },
-  { L_SIGNED,       T_SIGNED,       },
-  { L_UNSIGNED,     T_UNSIGNED,     },
-  { L_FLOAT,        T_FLOAT,        },
-  { L_DOUBLE,       T_DOUBLE,       },
-  { L_COMPLEX,      T_COMPLEX,      },
-  { L_ENUM,         T_ENUM,         },
-  { L_STRUCT,       T_STRUCT,       },
-  { L_UNION,        T_UNION,        },
-  { L_CLASS,        T_CLASS,        },
+  // types
+  { L_VOID,         T_VOID         },
+  { L_BOOL,         T_BOOL         },
+  { L_CHAR,         T_CHAR         },
+  { L_CHAR16_T,     T_CHAR16_T     },
+  { L_CHAR32_T,     T_CHAR32_T     },
+  { L_WCHAR_T,      T_WCHAR_T      },
+  { L_SHORT,        T_SHORT        },
+  { L_INT,          T_INT          },
+  { L_LONG,         T_LONG         },
+  { L_LONG_LONG,    T_LONG_LONG    },
+  { L_SIGNED,       T_SIGNED       },
+  { L_UNSIGNED,     T_UNSIGNED     },
+  { L_FLOAT,        T_FLOAT        },
+  { L_DOUBLE,       T_DOUBLE       },
+  { L_COMPLEX,      T_COMPLEX      },
+  { L_ENUM,         T_ENUM         },
+  { L_STRUCT,       T_STRUCT       },
+  { L_UNION,        T_UNION        },
+  { L_CLASS,        T_CLASS        },
+  // storage classes
+  { L_AUTO,         T_AUTO          },
+  { L_BLOCK,        T_BLOCK         },  // Apple extension
+  { L_EXTERN,       T_EXTERN        },
+  { L_REGISTER,     T_REGISTER      },
+  { L_STATIC,       T_STATIC        },
+  { L_THREAD_LOCAL, T_THREAD_LOCAL  },
+  // qualifiers
+  { L_CONST,        T_CONST         },
+  { L_RESTRICT,     T_RESTRICT      },
+  { L_VOLATILE,     T_VOLATILE      },
 };
+
+#define NUM_TYPES 19
 
 /**
  * Restrictions on type combinations in languages.
  */
-static lang_t const RESTRICTIONS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
+static lang_t const RESTRICTIONS[ NUM_TYPES ][ NUM_TYPES ] = {
   /*                v  b  c  16 32 wc s  i  l  ll s  u  f  d  c  E  S  U  C */
   /* void      */ { __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* bool      */ { XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
@@ -95,7 +109,7 @@ static inline bool only_one_bit_set( unsigned n ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool c_type_check( c_type_t type ) {
-  for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i ) {
+  for ( size_t i = 0; i < NUM_TYPES; ++i ) {
     if ( type & C_TYPE_INFO[i].type ) {
       for ( size_t j = 0; j < i; ++j ) {
         if ( (type & C_TYPE_INFO[j].type) && (opt_lang & RESTRICTIONS[i][j]) ) {
@@ -114,15 +128,15 @@ bool c_type_check( c_type_t type ) {
 
 char const* c_type_name( c_type_t type ) {
   if ( only_one_bit_set( type ) ) {
-		for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i )
-			if ( type == C_TYPE_INFO[i].type )
-				return C_TYPE_INFO[i].literal;
-		INTERNAL_ERR( "unexpected value (0x%X) for type\n", type );
-	}
+    for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i )
+      if ( type == C_TYPE_INFO[i].type )
+        return C_TYPE_INFO[i].literal;
+    INTERNAL_ERR( "unexpected value (0x%X) for type\n", type );
+  }
 
   static char c_type_buf[ 80 ];
   c_type_buf[0] = '\0';
-  bool add_space = false;
+  bool space = false;
 
   static c_type_t const C_STORAGE_CLASS[] = {
     T_AUTO,
@@ -135,7 +149,7 @@ char const* c_type_name( c_type_t type ) {
   for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_CLASS ); ++i ) {
     if ( type & C_STORAGE_CLASS[i] ) {
       strcat( c_type_buf, c_type_name( C_STORAGE_CLASS[i] ) );
-      add_space = true;
+      space = true;
       break;
     }
   } // for
@@ -147,10 +161,10 @@ char const* c_type_name( c_type_t type ) {
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER ); ++i ) {
     if ( type & C_QUALIFIER[i] ) {
-      if ( add_space )
+      if ( space )
         strcat( c_type_buf, " " );
       else
-        add_space = true;
+        space = true;
       strcat( c_type_buf, c_type_name( C_QUALIFIER[i] ) );
     }
   } // for
@@ -181,11 +195,11 @@ char const* c_type_name( c_type_t type ) {
   };
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE ); ++i ) {
-    if ( type & C_QUALIFIER[i] ) {
-      if ( add_space )
+    if ( type & C_TYPE[i] ) {
+      if ( space )
         strcat( c_type_buf, " " );
       else
-        add_space = true;
+        space = true;
       strcat( c_type_buf, c_type_name( C_TYPE[i] ) );
     }
   } // for
