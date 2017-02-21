@@ -388,6 +388,7 @@ int yywrap( void ) {
                     /* english */
 %token              Y_ARRAY
 %token              Y_AS
+%token              Y_BLOCK             /* Apple: English for '^' */
 %token              Y_FUNCTION
 %token              Y_INTO
 %token              Y_MEMBER
@@ -443,8 +444,8 @@ int yywrap( void ) {
 %token  <type>      Y_CHAR32_T
 
                     /* miscellaneous */
-%token              '^'                 /* for blocks (Apple extension) */
-%token  <type>      Y_BLOCK             /* Apple extension */
+%token              '^'                 /* Apple: block indicator */
+%token  <type>      Y___BLOCK           /* Apple: block storage class */
 %token              Y_END
 %token              Y_ERROR
 %token  <name>      Y_NAME
@@ -1130,7 +1131,7 @@ storage_class_opt_c
 
 storage_class_c
   : Y_AUTO
-  | Y_BLOCK                             /* Apple extension */
+  | Y___BLOCK                           /* Apple extension */
   | Y_EXTERN
   | Y_REGISTER
   | Y_STATIC
