@@ -117,7 +117,7 @@ char const* c_type_name( c_type_t type ) {
 		for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i )
 			if ( type == C_TYPE_INFO[i].type )
 				return C_TYPE_INFO[i].literal;
-		INTERNAL_ERR( "%X: unexpected value for type", type );
+		INTERNAL_ERR( "unexpected value (0x%X) for type\n", type );
 	}
 
   static char c_type_buf[ 80 ];
