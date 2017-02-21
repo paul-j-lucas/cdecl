@@ -38,75 +38,75 @@ static void print_indent( FILE *fout, unsigned indent ) {
 
 static void c_ast_json_impl( c_ast_t const *ast, char const *key0,
                              unsigned indent, FILE *fout ) {
-  if ( ast == NULL )
-    return;
-
-  if ( key0 && *key0 ) {
-    PRINT_JSON( "\"%s\": ", key0 );
-    FPRINTF( fout, "{\n" );
-  } else {
+  if ( key0 && *key0 )
+    PRINT_JSON( "\"%s\": {\n", key0 );
+  else
     PRINT_JSON( "{\n" );
+
+  if ( ast != NULL ) {
+    ++indent;
+
+    PRINT_JSON( "\"kind\": \"%s\",\n", c_kind_name( ast->kind ) );
+    PRINT_JSON( "\"name\": \"%s\"", ast->name ? ast->name : ""  );
+
+    bool comma = false;
+
+    switch ( ast->kind ) {
+      case K_ENUM_CLASS_STRUCT_UNION:
+      case K_NAME:
+      case K_NONE:
+        break;
+
+      case K_ARRAY:
+        PRINT_COMMA;
+        PRINT_JSON( "\"size\": %d,\n", ast->as.array.size );
+        c_ast_json_impl( ast->as.array.of_ast, "of_ast", indent, fout );
+        break;
+
+      case K_BUILTIN:
+        PRINT_COMMA;
+        PRINT_JSON( "\"type\": \"%s\"", c_type_name( ast->as.type ) );
+        break;
+
+      case K_BLOCK:
+        PRINT_COMMA;
+        PRINT_JSON( "\"type\": \"%s\",\n", c_type_name( ast->as.block.type ) );
+        // no break;
+      case K_FUNCTION:
+        PRINT_COMMA;
+        PRINT_JSON( "\"args\": [\n" );
+        comma = false;
+        for ( c_ast_t *arg = ast->as.func.args.head_ast; arg;
+              arg = arg->next ) {
+          if ( comma )
+            FPRINTF( fout, ", " );
+          else
+            comma = true;
+          c_ast_json_impl( arg, NULL, indent, fout );
+        } // for
+        FPUTC( '\n', fout );
+        PRINT_JSON( "],\n" );
+        c_ast_json_impl( ast->as.func.ret_ast, "ret_ast", indent, fout );
+        break;
+
+      case K_PTR_TO_MEMBER:
+        PRINT_COMMA;
+        PRINT_JSON( "\"class_name\": \"%s\"\n", ast->as.ptr_mbr.class_name );
+        // no break;
+      case K_POINTER:
+      case K_REFERENCE:
+        PRINT_COMMA;
+        PRINT_JSON(
+          "\"qualifier\": \"%s\",\n", c_type_name( ast->as.ptr_ref.qualifier )
+        );
+        c_ast_json_impl( ast->as.ptr_ref.to_ast, "to_ast", indent, fout );
+        break;
+    } // switch
+
+    FPUTC( '\n', fout );
+    --indent;
   }
-  ++indent;
 
-  PRINT_JSON( "\"kind\": \"%s\",\n", c_kind_name( ast->kind ) );
-  PRINT_JSON( "\"name\": \"%s\"", ast->name ? ast->name : ""  );
-
-  bool comma = false;
-
-  switch ( ast->kind ) {
-    case K_ENUM_CLASS_STRUCT_UNION:
-    case K_NAME:
-    case K_NONE:
-      break;
-
-    case K_ARRAY:
-      PRINT_COMMA;
-      PRINT_JSON( "\"size\": %d,\n", ast->as.array.size );
-      c_ast_json_impl( ast->as.array.of_ast, "of_ast", indent, fout );
-      break;
-
-    case K_BUILTIN:
-      PRINT_COMMA;
-      PRINT_JSON( "\"type\": \"%s\"", c_type_name( ast->as.type ) );
-      break;
-
-    case K_BLOCK:
-      PRINT_COMMA;
-      PRINT_JSON( "\"type\": \"%s\",\n", c_type_name( ast->as.block.type ) );
-      // no break;
-    case K_FUNCTION:
-      PRINT_COMMA;
-      PRINT_JSON( "\"args\": [\n" );
-      comma = false;
-      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next ) {
-        if ( comma )
-          FPRINTF( fout, ", " );
-        else
-          comma = true;
-        c_ast_json_impl( arg, NULL, indent, fout );
-      } // for
-      FPUTC( '\n', fout );
-      PRINT_JSON( "],\n" );
-      c_ast_json_impl( ast->as.func.ret_ast, "ret_ast", indent, fout );
-      break;
-
-    case K_PTR_TO_MEMBER:
-      PRINT_COMMA;
-      PRINT_JSON( "\"class_name\": \"%s\"\n", ast->as.ptr_mbr.class_name );
-      // no break;
-    case K_POINTER:
-    case K_REFERENCE:
-      PRINT_COMMA;
-      PRINT_JSON(
-        "\"qualifier\": \"%s\",\n", c_type_name( ast->as.ptr_ref.qualifier )
-      );
-      c_ast_json_impl( ast->as.ptr_ref.to_ast, "to_ast", indent, fout );
-      break;
-  } // switch
-
-  FPUTC( '\n', fout );
-  --indent;
   PRINT_JSON( "}" );
 }
 
@@ -164,7 +164,8 @@ void c_ast_cleanup( void ) {
 }
 
 void c_ast_english( c_ast_t const *ast, FILE *fout ) {
-  assert( ast );
+  if ( ast == NULL )
+    return;
 
   switch ( ast->kind ) {
     case K_NONE:
@@ -192,8 +193,10 @@ void c_ast_english( c_ast_t const *ast, FILE *fout ) {
       break;
 
     case K_NAME:
+#if 0
       if ( ast->name )
         FPUTS( ast->name, fout );
+#endif
       break;
 
     case K_FUNCTION:
@@ -261,6 +264,43 @@ void c_ast_free( c_ast_t *ast ) {
     case K_NAME:
     case K_NONE:
       // nothing to do
+      break;
+  } // switch
+}
+
+void c_ast_gibberish( c_ast_t const *ast, FILE *fout ) {
+  if ( ast == NULL )
+    return;
+
+  switch ( ast->kind ) {
+    case K_NONE:
+      break;
+    case K_ARRAY:
+      // TODO
+      break;
+    case K_BLOCK:
+      // TODO
+      break;
+    case K_BUILTIN:
+      // TODO
+      break;
+    case K_ENUM_CLASS_STRUCT_UNION:
+      // TODO
+      break;
+    case K_NAME:
+      // TODO
+      break;
+    case K_FUNCTION:
+      // TODO
+      break;
+    case K_PTR_TO_MEMBER:
+      // TODO
+      break;
+    case K_POINTER:
+      // TODO
+      break;
+    case K_REFERENCE:
+      // TODO
       break;
   } // switch
 }

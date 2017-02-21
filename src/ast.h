@@ -131,7 +131,7 @@ void c_ast_cleanup( void );
 /**
  * Prints the given c_ast as English.
  *
- * @param ast The c_ast to print as English.
+ * @param ast The c_ast to print.
  * @param fout The FILE to print to.
  */
 void c_ast_english( c_ast_t const *ast, FILE *fout );
@@ -144,7 +144,15 @@ void c_ast_english( c_ast_t const *ast, FILE *fout );
 void c_ast_free( c_ast_t *ast );
 
 /**
- * Dumps the given c_ast to the given file as JSON (for debugging).
+ * Prints the given c_ast as a C/C++ declaration.
+ *
+ * @param ast The c_ast to print.
+ * @param fout The FILE to print to.
+ */
+void c_ast_gibberish( c_ast_t const *ast, FILE *fout );
+
+/**
+ * Dumps the given c_ast as JSON (for debugging).
  *
  * @param ast The c_ast to dump.
  * @param key0 The initial key or null for none.
