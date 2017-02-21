@@ -46,7 +46,7 @@ static void         usage( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static char const SHORT_OPTS[] = "89acdikpqvx:";
+static char const SHORT_OPTS[] = "89acdDikpqvx:";
 
 static struct option const LONG_OPTS[] = {
   { "c89",          no_argument,        NULL, '8' },
@@ -56,6 +56,7 @@ static struct option const LONG_OPTS[] = {
   { "interactive",  no_argument,        NULL, 'i' },
   { "quiet",        no_argument,        NULL, 'q' },
   { "version",      no_argument,        NULL, 'v' },
+  { "yydebug",      no_argument,        NULL, 'D' },
   { NULL,           0,                  NULL, 0   }
 };
 
@@ -208,6 +209,7 @@ static void parse_options( int argc, char const *argv[] ) {
       case '9': opt_lang        = LANG_C_99;            break;
       case 'c': opt_make_c      = true;                 break;
       case 'd': opt_debug       = true;
+      case 'D': yydebug         = true;                 break;
       case 'i': opt_interactive = true;                 break;
       case 'k':
       case 'p': opt_lang        = LANG_C_KNR;           break;

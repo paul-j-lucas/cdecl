@@ -30,6 +30,9 @@ extern bool         opt_quiet;          // don't print the prompt
 // other extern variables
 extern FILE        *fin;                // file in
 extern FILE        *fout;               // file out
+#ifdef YYDEBUG
+extern int          yydebug;            // yacc debugging
+#endif /* YYDEBUG */
 
 ////////// extern functions ///////////////////////////////////////////////////
 
