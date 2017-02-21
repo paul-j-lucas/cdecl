@@ -430,8 +430,8 @@ int yywrap( void ) {
 %token  <type>      Y_WCHAR_T
 
                     /* C11 */
-%token              Y_NORETURN;
-%token  <type>      Y_THREAD_LOCAL;
+%token              Y_NORETURN
+%token  <type>      Y_THREAD_LOCAL
 
                     /* C++ */
 %token              '&'
@@ -439,8 +439,8 @@ int yywrap( void ) {
 %token              Y_COLON_COLON
 
                     /* C11 & C++11 */
-%token  <type>      Y_CHAR16_T;
-%token  <type>      Y_CHAR32_T;
+%token  <type>      Y_CHAR16_T
+%token  <type>      Y_CHAR32_T
 
                     /* miscellaneous */
 %token              '^'                 /* for blocks (Apple extension) */
@@ -622,6 +622,7 @@ explain_gibberish
 
 help_command
   : Y_HELP Y_END                  { print_help(); }
+  ;
 
 /*****************************************************************************/
 /*  set                                                                      */
