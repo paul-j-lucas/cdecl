@@ -17,11 +17,12 @@
 #include <sysexits.h>
 
 #define INDENT_SPACING            "  "
-#define JSON(...) \
-  BLOCK( print_indent( fout, indent ); FPRINTF( fout, __VA_ARGS__ ); )
 
-#define COMMA \
+#define PRINT_COMMA \
   BLOCK( if ( !comma ) { FPUTS( ",\n", fout ); comma = true; } )
+
+#define PRINT_JSON(...) \
+  BLOCK( print_indent( fout, indent ); FPRINTF( fout, __VA_ARGS__ ); )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -40,65 +41,73 @@ static void c_ast_json_impl( c_ast_t const *ast, char const *key0,
   if ( ast == NULL )
     return;
 
-  bool comma = false;
-
-  if ( key0 && *key0 )
-    JSON( "\"%s\": ", key0 );
-  JSON( "{\n" );
+  if ( key0 && *key0 ) {
+    PRINT_JSON( "\"%s\": ", key0 );
+    FPRINTF( fout, "{\n" );
+  } else {
+    PRINT_JSON( "{\n" );
+  }
   ++indent;
 
-  JSON( "\"kind\": \"%s\",\n", c_kind_name( ast->kind ) );
-  JSON( "\"name\": \"%s\"", ast->name ? ast->name : ""  );
+  PRINT_JSON( "\"kind\": \"%s\",\n", c_kind_name( ast->kind ) );
+  PRINT_JSON( "\"name\": \"%s\"", ast->name ? ast->name : ""  );
+
+  bool comma = false;
 
   switch ( ast->kind ) {
+    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_NAME:
     case K_NONE:
       break;
 
     case K_ARRAY:
-      COMMA;
-      JSON( "\"size\": %d,\n", ast->as.array.size );
+      PRINT_COMMA;
+      PRINT_JSON( "\"size\": %d,\n", ast->as.array.size );
       c_ast_json_impl( ast->as.array.of_ast, "of_ast", indent + 1, fout );
       break;
 
     case K_BUILTIN:
-      COMMA;
-      JSON( "\"type\": \"%s\"\n", c_type_name( ast->as.type ) );
-      break;
-
-    case K_ENUM_CLASS_STRUCT_UNION:
-    case K_NAME:
-      COMMA;
+      PRINT_COMMA;
+      PRINT_JSON( "\"type\": \"%s\"", c_type_name( ast->as.type ) );
       break;
 
     case K_BLOCK:
-      COMMA;
-      JSON( "\"type\": \"%s\",\n", c_type_name( ast->as.block.type ) );
+      PRINT_COMMA;
+      PRINT_JSON( "\"type\": \"%s\",\n", c_type_name( ast->as.block.type ) );
       // no break;
     case K_FUNCTION:
-      COMMA;
-      JSON( "\"args\": [\n" );
-      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next )
+      PRINT_COMMA;
+      PRINT_JSON( "\"args\": [\n" );
+      comma = false;
+      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next ) {
+        if ( comma )
+          FPRINTF( fout, ", " );
+        else
+          comma = true;
         c_ast_json_impl( arg, NULL, indent + 1, fout );
-      JSON( "],\n" );
+      } // for
+      FPUTC( '\n', fout );
+      PRINT_JSON( "],\n" );
       c_ast_json_impl( ast->as.func.ret_ast, "ret_ast", indent + 1, fout );
       break;
 
     case K_PTR_TO_MEMBER:
-      COMMA;
-      JSON( "\"class_name\": \"%s\"\n", ast->as.ptr_mbr.class_name );
+      PRINT_COMMA;
+      PRINT_JSON( "\"class_name\": \"%s\"\n", ast->as.ptr_mbr.class_name );
       // no break;
     case K_POINTER:
     case K_REFERENCE:
-      COMMA;
-      JSON(
+      PRINT_COMMA;
+      PRINT_JSON(
         "\"qualifier\": \"%s\",\n", c_type_name( ast->as.ptr_ref.qualifier )
       );
       c_ast_json_impl( ast->as.ptr_ref.to_ast, "to_ast", indent + 1, fout );
       break;
   } // switch
 
+  FPUTC( '\n', fout );
   --indent;
-  JSON( "}\n" );
+  PRINT_JSON( "}" );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -219,6 +228,7 @@ void c_ast_english( c_ast_t const *ast, FILE *fout ) {
 
 void c_ast_json( c_ast_t const *ast, char const *key0, FILE *fout ) {
   c_ast_json_impl( ast, key0, 0, fout );
+  FPUTC( '\n', fout );
 }
 
 void c_ast_free( c_ast_t *ast ) {
