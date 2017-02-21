@@ -39,13 +39,11 @@ typedef union in_attr in_attr_t;
 // external variables
 extern char const  *prompt;
 extern char         prompt_buf[];
-extern char const* yytext;
+extern char const  *yytext;
 
 // extern functions
 extern void         print_help( void );
 extern int          yylex( void );
-
-int yydebug = 1;
 
 // local variables
 static in_attr_t    in_attr;
@@ -204,9 +202,9 @@ static void do_set( char const *opt ) {
 
 #ifdef YYDEBUG
   else if ( strcmp( opt, "yydebug" ) == 0 )
-    yydebug = 1;
+    yydebug = true;
   else if ( strcmp( opt, "noyydebug" ) == 0 )
-    yydebug = 0;
+    yydebug = false;
 #endif /* YYDEBUG */
 
   else {
@@ -214,29 +212,29 @@ static void do_set( char const *opt ) {
       printf( "\"%s\": unknown set option\n", opt );
     }
     printf( "Valid set options (and command line equivalents) are:\n" );
-    printf( "\toptions\n" );
-    printf( "\tcreate (-c), nocreate\n" );
-    printf( "\tprompt, noprompt (-q)\n" );
+    printf( "  options\n" );
+    printf( "  create (-c), nocreate\n" );
+    printf( "  prompt, noprompt (-q)\n" );
 #ifndef WITH_READLINE
-    printf( "\tinteractive (-i), nointeractive\n" );
+    printf( "  interactive (-i), nointeractive\n" );
 #endif /* WITH_READLINE */
-    printf( "\tpreansi (-p), ansi (-a), or cplusplus (-+)\n" );
+    printf( "  preansi (-p), ansi (-a), or cplusplus (-+)\n" );
 #ifdef WITH_CDECL_DEBUG
-    printf( "\tdebug (-d), nodebug\n" );
+    printf( "  debug (-d), nodebug\n" );
 #endif /* WITH_CDECL_DEBUG */
 #ifdef YYDEBUG
-    printf( "\tyydebug (-D), noyydebug\n" );
+    printf( "  yydebug (-D), noyydebug\n" );
 #endif /* YYDEBUG */
     printf( "\nCurrent set values are:\n" );
-    printf( "\t%screate\n", opt_make_c ? "   " : " no" );
-    printf( "\t%sinteractive\n", opt_interactive ? "   " : " no" );
-    printf( "\t%sprompt\n", prompt[0] ? "   " : " no" );
-    printf( "\tlang=%s\n", lang_name( opt_lang ) );
+    printf( "  %screate\n", opt_make_c ? "   " : " no" );
+    printf( "  %sinteractive\n", opt_interactive ? "   " : " no" );
+    printf( "  %sprompt\n", prompt[0] ? "   " : " no" );
+    printf( "  lang=%s\n", lang_name( opt_lang ) );
 #ifdef WITH_CDECL_DEBUG
-    printf( "\t%sdebug\n", opt_debug ? "   " : " no" );
+    printf( "  %sdebug\n", opt_debug ? "   " : " no" );
 #endif /* WITH_CDECL_DEBUG */
 #ifdef YYDEBUG
-    printf( "\t%syydebug\n", yydebug ? "   " : " no" );
+    printf( "  %syydebug\n", yydebug ? "   " : " no" );
 #endif /* YYDEBUG */
   }
 }
@@ -321,14 +319,6 @@ void explain_declaration( char const *storage, char const *constvol1,
 
   printf( "declare %s as ", c_ident );
 #endif
-  if ( *storage )
-    printf( "%s ", storage );
-  printf( "%s", decl );
-  if ( *constvol1 )
-    printf( "%s ", constvol1 );
-  if ( *constvol2 )
-    printf( "%s ", constvol2 );
-  printf( "%s\n", type ? type : "int" );
 }
 
 /**
@@ -576,10 +566,9 @@ explain_gibberish
       CDEBUG( c_ast_json( $6, "decl_c", fout ); );
 
       FPRINTF( fout, "declare %s as ", c_ast_name( $6 ) );
-      //explain_declaration( $2, $3, $5, $4, $6 );
       if ( $6 ) { c_ast_english( $6, fout ); }
       if ( $4 ) { c_ast_english( $4, fout ); }
-      fputc( '\n', fout );
+      FPUTC( '\n', fout );
 
       c_ast_free( $4 );
       c_ast_free( $6 );
@@ -590,20 +579,22 @@ explain_gibberish
       FPRINTF( fout, "EXPLAIN 2\n" );
       $4->as.type |= $2 | $3;
       c_type_check( $4->as.type );
-      //explain_declaration( $2, $3, NULL, NULL, $4 );
+      CDEBUG( c_ast_json( $4, "decl_c", fout ); );
+      FPRINTF( fout, "declare %s as ", c_ast_name( $4 ) );
       if ( $4 ) { c_ast_english( $4, fout ); }
-      fputc( '\n', fout );
+      FPUTC( '\n', fout );
       c_ast_free( $4 );
     }
 
   | Y_EXPLAIN storage_class_opt_c type_qualifier_list_c decl_c Y_END
     {
       FPRINTF( fout, "EXPLAIN 3\n" );
-      //explain_declaration( $2, $3, NULL, NULL, $4 );
       $4->as.type |= $2 | $3;
       c_type_check( $4->as.type );
+      CDEBUG( c_ast_json( $4, "decl_c", fout ); );
+      FPRINTF( fout, "declare %s as ", c_ast_name( $4 ) );
       if ( $4 ) { c_ast_english( $4, fout ); }
-      fputc( '\n', fout );
+      FPUTC( '\n', fout );
       c_ast_free( $4 );
     }
 
@@ -611,13 +602,14 @@ explain_gibberish
     cast_c ')' name_token_opt Y_END
     {
       FPRINTF( fout, "EXPLAIN 4\n" );
-      //explain_cast( $3, $5, $4, $6, $8 );
       $4->as.type |= $3 | $5;
       c_type_check( $4->as.type );
+      //CDEBUG( c_ast_json( $4, "cast_c", fout ); );
       if ( $4 ) { c_ast_english( $4, fout ); }
       if ( $6 ) { c_ast_english( $6, fout ); }
       if ( $8 ) printf( "%s\n", $8 );
-      fputc( '\n', fout );
+      FPUTC( '\n', fout );
+
       c_ast_free( $4 );
       c_ast_free( $6 );
       FREE( $8 );
