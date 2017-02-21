@@ -7,9 +7,9 @@
 // local
 #include "config.h"                     /* must cone first */
 #include "ast.h"
+#include "keywords.h"
 #include "lang.h"
 #include "options.h"
-#include "types.h"
 #include "util.h"
 
 // standard
@@ -28,6 +28,14 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Inherited attribute.
+ */
+union in_attr {
+  int y_token;
+};
+typedef union in_attr in_attr_t;
+
 // external variables
 extern char const  *prompt;
 extern char         prompt_buf[];
@@ -40,7 +48,7 @@ extern int          yylex( void );
 int yydebug = 1;
 
 // local variables
-static char const  *c_ident;
+static in_attr_t    in_attr;
 static bool         newlined = true;
 
 // local functions
@@ -102,6 +110,7 @@ static void do_cast( char const *name, c_ast_t *ast ) {
     }
   } // switch
 
+  FREE( name );
   c_ast_free( ast );
 }
 
@@ -157,10 +166,8 @@ static void do_declare( char const *name, c_ast_t *ast ) {
 
 */
 
-done:
-  if ( name )
-    free( (void*)name );
-  free( (void*)ast );
+  FREE( name );
+  FREE( ast );
 }
 
 /**
@@ -311,9 +318,9 @@ void explain_declaration( char const *storage, char const *constvol1,
         /* suppress warning */;
     } // switch
   }
-#endif
 
   printf( "declare %s as ", c_ident );
+#endif
   if ( *storage )
     printf( "%s ", storage );
   printf( "%s", decl );
@@ -455,6 +462,7 @@ int yywrap( void ) {
 
 %type   <ast>       decl_english
 %type   <ast_list>  decl_list_english
+%type   <ast_list>  decl_list_opt_english
 %type   <ast>       array_decl_english
 %type   <number>    array_size_opt_english
 %type   <ast>       block_decl_english
@@ -483,21 +491,17 @@ int yywrap( void ) {
 %type   <ast>       pointer_to_member_decl_c
 %type   <ast>       reference_decl_c
 
-%type   <ast>       builtin_type_c
-%type   <ast>       enum_class_struct_union_type_c
 %type   <ast>       type_c
-%type   <ast>       type_modifier_c
-%type   <ast>       type_modifier_list_c type_modifier_list2_c
-%type   <ast>       type_qualifier_c
-%type   <ast>       type_qualifier_list_c type_qualifier_list_opt_c
+%type   <type>      builtin_type_c
+%type   <type>      class_struct_type_c
+%type   <type>      enum_class_struct_union_type_c
+%type   <type>      storage_class_c storage_class_opt_c
+%type   <type>      type_modifier_c
+%type   <type>      type_modifier_list_c type_modifier_list2_c
+%type   <type>      type_qualifier_c
+%type   <type>      type_qualifier_list_c type_qualifier_list_opt_c
 
-%type   <type>      builtin_type_token_c
-%type   <type>      enum_class_struct_union_token_c
-%type   <type>      class_struct_token_c
 %type   <name>      name_token_opt
-%type   <type>      storage_class_token_c storage_class_token_opt_c
-%type   <type>      type_modifier_token_c
-%type   <type>      type_qualifier_token_c
 
 %%
 
@@ -549,9 +553,10 @@ cast_english
 /*****************************************************************************/
 
 declare_english
-  : Y_DECLARE Y_NAME Y_AS storage_class_token_opt_c decl_english Y_END
+  : Y_DECLARE Y_NAME Y_AS storage_class_opt_c decl_english Y_END
     {
       //do_declare( $2, $4 );
+      FREE( $2 );
     }
   ;
 
@@ -560,26 +565,62 @@ declare_english
 /*****************************************************************************/
 
 explain_gibberish
-  : Y_EXPLAIN storage_class_token_opt_c
+  : Y_EXPLAIN storage_class_opt_c
     type_qualifier_list_opt_c type_c type_qualifier_list_opt_c decl_c Y_END
     {
+      FPRINTF( fout, "EXPLAIN 1\n" );
+      $4->as.type |= $2 | $3 | $5;
+      c_type_check( $4->as.type );
+
+      c_ast_json( $4, "type_c", fout );
+      c_ast_json( $6, "decl_c", fout );
+
+      FPRINTF( fout, "declare %s as ", c_ast_name( $6 ) );
       //explain_declaration( $2, $3, $5, $4, $6 );
+      if ( $6 ) { c_ast_english( $6, fout ); }
+      if ( $4 ) { c_ast_english( $4, fout ); }
+      fputc( '\n', fout );
+
+      c_ast_free( $4 );
+      c_ast_free( $6 );
     }
 
-  | Y_EXPLAIN storage_class_token_c type_qualifier_list_opt_c decl_c Y_END
+  | Y_EXPLAIN storage_class_c type_qualifier_list_opt_c decl_c Y_END
     {
+      FPRINTF( fout, "EXPLAIN 2\n" );
+      $4->as.type |= $2 | $3;
+      c_type_check( $4->as.type );
       //explain_declaration( $2, $3, NULL, NULL, $4 );
+      if ( $4 ) { c_ast_english( $4, fout ); }
+      fputc( '\n', fout );
+      c_ast_free( $4 );
     }
 
-  | Y_EXPLAIN storage_class_token_opt_c type_qualifier_list_c decl_c Y_END
+  | Y_EXPLAIN storage_class_opt_c type_qualifier_list_c decl_c Y_END
     {
+      FPRINTF( fout, "EXPLAIN 3\n" );
       //explain_declaration( $2, $3, NULL, NULL, $4 );
+      $4->as.type |= $2 | $3;
+      c_type_check( $4->as.type );
+      if ( $4 ) { c_ast_english( $4, fout ); }
+      fputc( '\n', fout );
+      c_ast_free( $4 );
     }
 
   | Y_EXPLAIN '(' type_qualifier_list_opt_c type_c type_qualifier_list_opt_c
     cast_c ')' name_token_opt Y_END
     {
+      FPRINTF( fout, "EXPLAIN 4\n" );
       //explain_cast( $3, $5, $4, $6, $8 );
+      $4->as.type |= $3 | $5;
+      c_type_check( $4->as.type );
+      if ( $4 ) { c_ast_english( $4, fout ); }
+      if ( $6 ) { c_ast_english( $6, fout ); }
+      if ( $8 ) printf( "%s\n", $8 );
+      fputc( '\n', fout );
+      c_ast_free( $4 );
+      c_ast_free( $6 );
+      FREE( $8 );
     }
   ;
 
@@ -588,20 +629,14 @@ explain_gibberish
 /*****************************************************************************/
 
 help_command
-  : Y_HELP Y_END
-    {
-      print_help();
-    }
+  : Y_HELP Y_END                  { print_help(); }
 
 /*****************************************************************************/
 /*  set                                                                      */
 /*****************************************************************************/
 
 set_command
-  : Y_SET name_token_opt Y_END
-    {
-      do_set( $2 );
-    }
+  : Y_SET name_token_opt Y_END    { do_set( $2 ); FREE( $2 ); }
   ;
 
 /*****************************************************************************/
@@ -609,10 +644,7 @@ set_command
 /*****************************************************************************/
 
 quit_command
-  : Y_QUIT
-    {
-      exit( EX_OK );
-    }
+  : Y_QUIT                        { exit( EX_OK ); }
   ;
 
 /*****************************************************************************/
@@ -627,25 +659,29 @@ decl_english
   | pointer_to_member_english
   | reference_english
   | type_qualifier_list_opt_c type_c
+    {
+      $$ = $2;
+      $$->as.type |= $1;
+    }
   | var_decl_english
   ;
 
 decl_list_english
   : /* empty */
     {
-      $$.head = $$.tail = NULL;
+      $$.head_ast = $$.tail_ast = NULL;
     }
 
   | decl_list_english ',' decl_english
     {
-      //$$.head = $1.head;
-      //$$.tail = $3.tail;
-      //$1.tail->next = $3.head;
+      //$$.head_ast = $1.head_ast;
+      //$$.tail_ast = $3.tail_ast;
+      //$1.tail_ast->next = $3.head_ast;
     }
 
   | decl_english
     {
-      $$.head = $$.tail = $1;
+      $$.head_ast = $$.tail_ast = $1;
     }
   ;
 
@@ -679,44 +715,73 @@ array_size_opt_english
   ;
 
 block_decl_english
-  : type_qualifier_list_opt_c Y_BLOCK Y_RETURNING decl_english
+  : type_qualifier_list_opt_c
+    Y_BLOCK { in_attr.y_token = Y_BLOCK; } decl_list_opt_english
+    returning_english
     {
-/*
-      if ( c_kind == K_FUNCTION )
-        unsupp( "Block returning function",
-                "block returning pointer to function" );
-      else if ( c_kind == K_ARRAY )
-        unsupp( "Block returning array",
-                "block returning pointer" );
-*/
-    }
-
-  | type_qualifier_list_opt_c Y_BLOCK '(' decl_list_english ')'
-    Y_RETURNING decl_english
-    {
-/*
-      if ( c_kind == K_FUNCTION )
-        unsupp( "Block returning function",
-                "block returning pointer to function" );
-      else if ( c_kind == K_ARRAY )
-        unsupp( "Block returning array",
-                "block returning pointer" );
-*/
+      $$ = c_ast_new( K_BLOCK );
+      $$->as.block.ret_ast = $5;
+      $$->as.block.args = $4;
+      $$->as.block.type = $1;
     }
   ;
 
 func_decl_english
-  : Y_FUNCTION returning_english
+  : Y_FUNCTION { in_attr.y_token = Y_FUNCTION; } decl_list_opt_english
+    returning_english
     {
       $$ = c_ast_new( K_FUNCTION );
-      $$->as.func.ret_ast = $2;
-    }
-
-  | Y_FUNCTION '(' decl_list_english ')' returning_english
-    {
-      $$ = c_ast_new( K_FUNCTION );
-      $$->as.func.ret_ast = $5;
+      $$->as.func.ret_ast = $4;
       $$->as.func.args = $3;
+    }
+  ;
+
+decl_list_opt_english
+  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
+  | '(' decl_list_english ')'     { $$ = $2; }
+  ;
+
+returning_english
+  : Y_RETURNING decl_english
+    {
+      c_keyword_t const *keyword;
+      switch ( $2->kind ) {
+        case K_ARRAY:
+        case K_FUNCTION:
+          keyword = c_keyword_find_token( in_attr.y_token );
+        default:
+          keyword = NULL;
+      } // switch
+
+      if ( keyword ) {
+        char error_msg[ 80 ];
+        char hint_msg[ 80 ];
+        char const *hint;
+
+        switch ( $2->kind ) {
+          case K_ARRAY:
+            hint = "pointer";
+            break;
+          case K_FUNCTION:
+            hint = "pointer to function";
+            break;
+          default:
+            /* suppress warning */;
+        } // switch
+
+        snprintf( error_msg, sizeof error_msg,
+          "%s returning %s",
+          keyword->literal, c_kind_name( $2->kind )
+        );
+        snprintf( hint_msg, sizeof hint_msg,
+          "%s returning %s",
+          keyword->literal, hint
+        );
+
+        unsupp( error_msg, hint_msg );
+      }
+
+      $$ = $2;
     }
   ;
 
@@ -727,33 +792,14 @@ pointer_english
         unsupp( "pointer to array of unspecified dimension",
                 "pointer to object" );
       $$ = c_ast_new( K_POINTER );
-      $$->as.ptr_ref.qualifier = $1->as.type;
+      $$->as.ptr_ref.qualifier = $1;
       $$->as.ptr_ref.to_ast = $4;
-    }
-  ;
-
-returning_english
-  : Y_RETURNING decl_english
-    {
-      switch ( $2->kind ) {
-        case K_ARRAY:
-          unsupp( "function returning array",
-                  "function returning pointer" );
-          break;
-        case K_FUNCTION:
-          unsupp( "function returning function",
-                  "function returning pointer to function" );
-        default:
-          /* suppress warning */;
-      } // switch
-
-      $$ = $2;
     }
   ;
 
 pointer_to_member_english
   : type_qualifier_list_opt_c Y_POINTER Y_TO Y_MEMBER Y_OF
-    class_struct_token_c Y_NAME decl_english
+    class_struct_type_c Y_NAME decl_english
     {
       if ( opt_lang != LANG_CPP )
         unsupp( "pointer to member of class", NULL );
@@ -762,10 +808,10 @@ pointer_to_member_english
         unsupp( "pointer to array of unspecified dimension",
                 "pointer to object" );
 */
-      $$ = c_ast_new( K_MEMBER );
-      $$->as.member.qualifier = $1->as.type;
-      $$->as.member.class_name = check_strdup( $7 );
-      $$->as.member.of_ast = $8;
+      $$ = c_ast_new( K_PTR_TO_MEMBER );
+      $$->as.ptr_mbr.qualifier = $1;
+      $$->as.ptr_mbr.class_name = $7;
+      $$->as.ptr_mbr.of_ast = $8;
     }
   ;
 
@@ -788,7 +834,7 @@ reference_english
       } // switch
 
       $$ = c_ast_new( K_REFERENCE );
-      $$->as.ptr_ref.qualifier = $1->as.type;
+      $$->as.ptr_ref.qualifier = $1;
       $$->as.ptr_ref.to_ast = $4;
     }
   ;
@@ -798,13 +844,13 @@ var_decl_english
     {
       $$ = $3;
       assert( $$->name == NULL );
-      $$->name = check_strdup( $1 );
+      $$->name = $1;
     }
 
   | Y_NAME
     {
       $$ = c_ast_new( K_NAME );
-      $$->name = check_strdup( $1 );
+      $$->name = $1;
     }
   ;
 
@@ -815,9 +861,9 @@ var_decl_english
 cast_list_c
   : cast_list_c ',' cast_list_c
     {
-      $$.head = $1.head;
-      $$.tail = $3.tail;
-      $1.tail->next = $3.head;
+      $$.head_ast = $1.head_ast;
+      $$.tail_ast = $3.tail_ast;
+      $1.tail_ast->next = $3.head_ast;
     }
 
   | type_qualifier_list_opt_c type_c cast_c
@@ -827,8 +873,8 @@ cast_list_c
   | Y_NAME
     {
       c_ast_t *const ast = c_ast_new( K_NAME );
-      ast->name = check_strdup( $1 );
-      $$.head = $$.tail = ast;
+      ast->name = $1;
+      $$.head_ast = $$.tail_ast = ast;
     }
   ;
 
@@ -845,7 +891,10 @@ cast_c
 
 array_cast_c
   : cast_c array_decl_c
-    { // array
+    {
+      $$ = c_ast_new( K_ARRAY );
+      $$->as.array.size = $2;
+      $$->as.array.of_ast = $1;
     }
   ;
 
@@ -888,9 +937,9 @@ pointer_cast_c
 pointer_to_member_cast_c
   : Y_NAME Y_COLON_COLON '*' cast_c
     {
-      $$ = c_ast_new( K_MEMBER );
-      $$->as.member.class_name = check_strdup( $1 );
-      $$->as.member.of_ast = $4;
+      $$ = c_ast_new( K_PTR_TO_MEMBER );
+      $$->as.ptr_mbr.class_name = $1;
+      $$->as.ptr_mbr.of_ast = $4;
     }
   ;
 
@@ -928,7 +977,7 @@ decl2_c
   | Y_NAME
     {
       $$ = c_ast_new( K_NAME );
-      $$->name = check_strdup( $1 );
+      $$->name = $1;
     }
   ;
 
@@ -952,8 +1001,8 @@ func_decl_c
     {
       $$ = c_ast_new( K_FUNCTION );
       $$->as.func.ret_ast = $1;
-      $$->as.func.args.head = NULL;
-      $$->as.func.args.tail = NULL;
+      $$->as.func.args.head_ast = NULL;
+      $$->as.func.args.tail_ast = NULL;
     }
 
   | decl2_c '(' cast_list_c ')'
@@ -968,7 +1017,7 @@ pointer_decl_c
   : '*' type_qualifier_list_opt_c decl_c
     {
       $$ = c_ast_new( K_POINTER );
-      $$->as.ptr_ref.qualifier = $2->as.type;
+      $$->as.ptr_ref.qualifier = $2;
       $$->as.ptr_ref.to_ast = $3;
     }
   ;
@@ -976,9 +1025,9 @@ pointer_decl_c
 pointer_to_member_decl_c
   : Y_NAME Y_COLON_COLON '*' decl_c
     {
-      $$ = c_ast_new( K_MEMBER );
-      $$->as.member.class_name = check_strdup( $1 );
-      $$->as.member.of_ast = $4;
+      $$ = c_ast_new( K_PTR_TO_MEMBER );
+      $$->as.ptr_mbr.class_name = $1;
+      $$->as.ptr_mbr.of_ast = $4;
     }
   ;
 
@@ -986,7 +1035,7 @@ reference_decl_c
   : '&' type_qualifier_list_opt_c decl_c
     {
       $$ = c_ast_new( K_REFERENCE );
-      $$->as.ptr_ref.qualifier = $2->as.type;
+      $$->as.ptr_ref.qualifier = $2;
       $$->as.ptr_ref.to_ast = $3;
     }
   ;
@@ -997,18 +1046,32 @@ reference_decl_c
 
 type_c
   : type_modifier_list_c
+    {
+      $$ = c_ast_new( K_BUILTIN );
+      $$->as.type = $1;
+    }
   | type_modifier_list_c builtin_type_c
+    {
+      $$ = c_ast_new( K_BUILTIN );
+      $$->as.type = $1 | $2;
+    }
   | builtin_type_c
-  | enum_class_struct_union_type_c
+    {
+      $$ = c_ast_new( K_BUILTIN );
+      $$->as.type = $1;
+    }
+  | enum_class_struct_union_type_c Y_NAME
+    {
+      $$ = c_ast_new( K_ENUM_CLASS_STRUCT_UNION );
+      $$->name = $2;
+      $$->as.type = $1;
+    }
   ;
 
 type_modifier_list_c
   : type_modifier_c type_modifier_list2_c
     {
-      $$ = $1;
-      $$->as.type |= $2->as.type;
-      c_ast_free( $2 );
-      c_type_check( $$->as.type );
+      $$ = $1 | $2;
     }
   | type_modifier_c
   ;
@@ -1019,10 +1082,6 @@ type_modifier_list2_c
   ;
 
 type_modifier_c
-  : type_modifier_token_c         { $$ = c_ast_new_type( $1 ); }
-  ;
-
-type_modifier_token_c
   : Y_COMPLEX
   | Y_LONG
   | Y_SHORT
@@ -1031,10 +1090,6 @@ type_modifier_token_c
   ;
 
 builtin_type_c
-  : builtin_type_token_c          { $$ = c_ast_new_type( $1 ); }
-  ;
-
-builtin_type_token_c
   : Y_VOID
   | Y_BOOL
   | Y_CHAR
@@ -1047,30 +1102,17 @@ builtin_type_token_c
   ;
 
 enum_class_struct_union_type_c
-  : enum_class_struct_union_token_c Y_NAME
-    {
-      $$ = c_ast_new( K_ENUM_CLASS_STRUCT_UNION );
-      $$->name = check_strdup( $2 );
-      $$->as.type = $1;
-    }
-  ;
-
-enum_class_struct_union_token_c
   : Y_ENUM
-  | class_struct_token_c
+  | class_struct_type_c
   | Y_UNION
   ;
 
-class_struct_token_c
+class_struct_type_c
   : Y_CLASS
   | Y_STRUCT
   ;
 
 type_qualifier_c
-  : type_qualifier_token_c        { $$ = c_ast_new_type( $1 ); }
-  ;
-
-type_qualifier_token_c
   : Y_CONST
   | Y_RESTRICT
   | Y_VOLATILE
@@ -1084,22 +1126,22 @@ type_qualifier_list_opt_c
 type_qualifier_list_c
   : type_qualifier_c type_qualifier_list_opt_c
     {
-      $$->as.type = $1->as.type | $2->as.type;
+      $$ = $1 | $2;
     }
   ;
 
-storage_class_token_c
+storage_class_opt_c
+  : /* empty */                   { $$ = T_NONE; }
+  | storage_class_c
+  ;
+
+storage_class_c
   : Y_AUTO
   | Y_BLOCK                             /* Apple extension */
   | Y_EXTERN
   | Y_REGISTER
   | Y_STATIC
   | Y_THREAD_LOCAL
-  ;
-
-storage_class_token_opt_c
-  : /* empty */                   { $$ = T_NONE; }
-  | storage_class_token_c
   ;
 
 /*****************************************************************************/
