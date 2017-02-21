@@ -63,7 +63,7 @@ static void c_ast_json_impl( c_ast_t const *ast, char const *key0,
     case K_ARRAY:
       PRINT_COMMA;
       PRINT_JSON( "\"size\": %d,\n", ast->as.array.size );
-      c_ast_json_impl( ast->as.array.of_ast, "of_ast", indent + 1, fout );
+      c_ast_json_impl( ast->as.array.of_ast, "of_ast", indent, fout );
       break;
 
     case K_BUILTIN:
@@ -84,11 +84,11 @@ static void c_ast_json_impl( c_ast_t const *ast, char const *key0,
           FPRINTF( fout, ", " );
         else
           comma = true;
-        c_ast_json_impl( arg, NULL, indent + 1, fout );
+        c_ast_json_impl( arg, NULL, indent, fout );
       } // for
       FPUTC( '\n', fout );
       PRINT_JSON( "],\n" );
-      c_ast_json_impl( ast->as.func.ret_ast, "ret_ast", indent + 1, fout );
+      c_ast_json_impl( ast->as.func.ret_ast, "ret_ast", indent, fout );
       break;
 
     case K_PTR_TO_MEMBER:
@@ -101,7 +101,7 @@ static void c_ast_json_impl( c_ast_t const *ast, char const *key0,
       PRINT_JSON(
         "\"qualifier\": \"%s\",\n", c_type_name( ast->as.ptr_ref.qualifier )
       );
-      c_ast_json_impl( ast->as.ptr_ref.to_ast, "to_ast", indent + 1, fout );
+      c_ast_json_impl( ast->as.ptr_ref.to_ast, "to_ast", indent, fout );
       break;
   } // switch
 
