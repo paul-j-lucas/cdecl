@@ -129,15 +129,6 @@ struct c_ast {
 void c_ast_cleanup( void );
 
 /**
- * Dumps the given c_ast to the given file as JSON (for debugging).
- *
- * @param ast The c_ast to dump.
- * @param key0 The initial key or null for none.
- * @param fout The FILE to dump to.
- */
-void c_ast_json( c_ast_t const *ast, char const *key0, FILE *fout );
-
-/**
  * Prints the given c_ast as English.
  *
  * @param ast The c_ast to print as English.
@@ -151,6 +142,15 @@ void c_ast_english( c_ast_t const *ast, FILE *fout );
  * @param ast The c_ast to free.
  */
 void c_ast_free( c_ast_t *ast );
+
+/**
+ * Dumps the given c_ast to the given file as JSON (for debugging).
+ *
+ * @param ast The c_ast to dump.
+ * @param key0 The initial key or null for none.
+ * @param fout The FILE to dump to.
+ */
+void c_ast_json( c_ast_t const *ast, char const *key0, FILE *fout );
 
 /**
  * Gets the name from the given c_ast.

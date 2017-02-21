@@ -226,15 +226,10 @@ void c_ast_english( c_ast_t const *ast, FILE *fout ) {
   } // switch
 }
 
-void c_ast_json( c_ast_t const *ast, char const *key0, FILE *fout ) {
-  c_ast_json_impl( ast, key0, 0, fout );
-  FPUTC( '\n', fout );
-}
-
 void c_ast_free( c_ast_t *ast ) {
   if ( ast == NULL )
     return;
-  //assert( c_ast_count > 0 );
+  assert( c_ast_count > 0 );
 
   --c_ast_count;
 
@@ -276,22 +271,30 @@ void c_ast_free( c_ast_t *ast ) {
   } // switch
 }
 
+void c_ast_json( c_ast_t const *ast, char const *key0, FILE *fout ) {
+  c_ast_json_impl( ast, key0, 0, fout );
+  FPUTC( '\n', fout );
+}
+
 char const* c_ast_name( c_ast_t const *ast ) {
   if ( ast == NULL )
     return NULL;
-
   if ( ast->name )
     return ast->name;
 
   switch ( ast->kind ) {
     case K_ARRAY:
       return c_ast_name( ast->as.array.of_ast );
-    case K_PTR_TO_MEMBER:
-      return NULL;
     case K_POINTER:
     case K_REFERENCE:
       return c_ast_name( ast->as.ptr_ref.to_ast );
-    default:
+    case K_BLOCK:
+    case K_BUILTIN:
+    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_FUNCTION:
+    case K_NAME:
+    case K_NONE:
+    case K_PTR_TO_MEMBER:
       return NULL;
   } // switch
 }
