@@ -187,7 +187,9 @@ void c_ast_english( c_ast_t const *ast, FILE *fout ) {
 
     case K_ENUM_CLASS_STRUCT_UNION:
       FPUTS( c_type_name( ast->as.type ), fout );
-      // no break;
+      if ( ast->name )
+        FPRINTF( fout, " %s", ast->name );
+      break;
 
     case K_NAME:
       if ( ast->name )
