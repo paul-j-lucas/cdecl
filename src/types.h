@@ -54,9 +54,9 @@ typedef unsigned c_type_t;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * TODO
+ * Checks that the given type is valid.
  *
- * @param type TODO
+ * @param type The type to check.
  */
 bool c_type_check( c_type_t type );
 
