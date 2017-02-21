@@ -93,6 +93,8 @@ struct c_ptr_mbr {
 
 /**
  * AST object for a C/C++ pointer or C++ reference.
+ * (Note that the members are laid out in the same order as c_ptr_mbr: this is
+ * taken advantage of.)
  */
 struct c_ptr_ref {
   c_type_t  qualifier;                  // T_CONST, T_RESTRICT, T_VOLATILE
@@ -125,6 +127,15 @@ struct c_ast {
  * number allocated.)
  */
 void c_ast_cleanup( void );
+
+/**
+ * Dumps the given c_ast to the given file as JSON (for debugging).
+ *
+ * @param ast The c_ast to dump.
+ * @param key0 The initial key or null for none.
+ * @param fout The FILE to dump to.
+ */
+void c_ast_json( c_ast_t const *ast, char const *key0, FILE *fout );
 
 /**
  * Prints the given c_ast as English.
