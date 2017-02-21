@@ -16,12 +16,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define STRCAT(DST,SRC)           ((DST) += strcpy_len( (DST), (SRC) ))
+
 ///////////////////////////////////////////////////////////////////////////////
 
 static char const L_LONG_LONG[] = "long long";
 
 /**
- * Mapping between C type literals and type.
+ * Mapping between C type literals and type bits.
  */
 struct c_type_info {
   char const *literal;                  // C string literal of the type
@@ -148,7 +150,7 @@ char const* c_type_name( c_type_t type ) {
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_CLASS ); ++i ) {
     if ( type & C_STORAGE_CLASS[i] ) {
-      name += strcpy_len( name, c_type_name( C_STORAGE_CLASS[i] ) );
+      STRCAT( name, c_type_name( C_STORAGE_CLASS[i] ) );
       space = true;
       break;
     }
@@ -162,10 +164,10 @@ char const* c_type_name( c_type_t type ) {
   for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER ); ++i ) {
     if ( type & C_QUALIFIER[i] ) {
       if ( space )
-        name += strcpy_len( name, " " );
+        STRCAT( name, " " );
       else
         space = true;
-      name += strcpy_len( name, c_type_name( C_QUALIFIER[i] ) );
+      STRCAT( name, c_type_name( C_QUALIFIER[i] ) );
     }
   } // for
 
@@ -197,10 +199,10 @@ char const* c_type_name( c_type_t type ) {
   for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE ); ++i ) {
     if ( type & C_TYPE[i] ) {
       if ( space )
-        name += strcpy_len( name, " " );
+        STRCAT( name, " " );
       else
         space = true;
-      name += strcpy_len( name, c_type_name( C_TYPE[i] ) );
+      STRCAT( name, c_type_name( C_TYPE[i] ) );
     }
   } // for
 
