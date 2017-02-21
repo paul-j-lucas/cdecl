@@ -16,15 +16,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MIN(LANG) (LANG - 1)
-
-#define __  LANG_NONE                   /* legal in all languages */
-#define XX  LANG_ALL                    /* illegal in all languages  */
-#define KO ~LANG_C_KNR                  /* legal in K&R C only */
-#define C8  MIN(LANG_C_89)              /* minimum C89 */
-#define C9  MIN(LANG_C_99)              /* minimum C99 */
-#define PP  MIN(LANG_CPP)               /* minimum C++ */
-
 ///////////////////////////////////////////////////////////////////////////////
 
 static char const L_LONG_LONG[] = "long long";
@@ -73,6 +64,14 @@ static c_type_info_t const C_TYPE_INFO[] = {
 };
 
 #define NUM_TYPES 19
+#define MIN(LANG) (LANG - 1)            /* illegal before LANG */
+
+#define __        LANG_NONE             /* legal in all languages */
+#define XX        LANG_ALL              /* illegal in all languages  */
+#define KO       ~LANG_C_KNR            /* legal in K&R C only */
+#define C8        MIN(LANG_C_89)        /* minimum C89 */
+#define C9        MIN(LANG_C_99)        /* minimum C99 */
+#define PP        MIN(LANG_CPP)         /* minimum C++ */
 
 /**
  * Restrictions on type combinations in languages.
@@ -134,8 +133,9 @@ char const* c_type_name( c_type_t type ) {
     INTERNAL_ERR( "unexpected value (0x%X) for type\n", type );
   }
 
-  static char c_type_buf[ 80 ];
-  c_type_buf[0] = '\0';
+  static char name_buf[ 80 ];
+  name_buf[0] = '\0';
+  char *name = name_buf;
   bool space = false;
 
   static c_type_t const C_STORAGE_CLASS[] = {
@@ -148,7 +148,7 @@ char const* c_type_name( c_type_t type ) {
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_CLASS ); ++i ) {
     if ( type & C_STORAGE_CLASS[i] ) {
-      strcat( c_type_buf, c_type_name( C_STORAGE_CLASS[i] ) );
+      name += strcpy_len( name, c_type_name( C_STORAGE_CLASS[i] ) );
       space = true;
       break;
     }
@@ -162,10 +162,10 @@ char const* c_type_name( c_type_t type ) {
   for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER ); ++i ) {
     if ( type & C_QUALIFIER[i] ) {
       if ( space )
-        strcat( c_type_buf, " " );
+        name += strcpy_len( name, " " );
       else
         space = true;
-      strcat( c_type_buf, c_type_name( C_QUALIFIER[i] ) );
+      name += strcpy_len( name, c_type_name( C_QUALIFIER[i] ) );
     }
   } // for
 
@@ -197,14 +197,14 @@ char const* c_type_name( c_type_t type ) {
   for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE ); ++i ) {
     if ( type & C_TYPE[i] ) {
       if ( space )
-        strcat( c_type_buf, " " );
+        name += strcpy_len( name, " " );
       else
         space = true;
-      strcat( c_type_buf, c_type_name( C_TYPE[i] ) );
+      name += strcpy_len( name, c_type_name( C_TYPE[i] ) );
     }
   } // for
 
-  return c_type_buf;
+  return name_buf;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
