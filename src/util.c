@@ -126,16 +126,23 @@ void free_now( void ) {
   free_head = NULL;
 }
 
-char const* visible( int c ) {
-  static char buf[5];
+char const* printable_char( char c ) {
+  switch( c ) {
+    case '\0': return "\\0";
+    case '\a': return "\\a";
+    case '\b': return "\\b";
+    case '\f': return "\\f";
+    case '\n': return "\\n";
+    case '\r': return "\\r";
+    case '\t': return "\\t";
+    case '\v': return "\\v";
+  } // switch
 
-  c &= 0x7F;
-  if ( isprint( c ) ) {
-    buf[0] = c;
-    buf[1] = '\0';
-  } else {
-    sprintf( buf, "\\%02X", c );
-  }
+  static char buf[5];                   // \xHH + NULL
+  if ( isprint( c ) )
+    buf[0] = c, buf[1] = '\0';
+  else
+    snprintf( buf, sizeof buf, "\\x%02X", (unsigned)c );
   return buf;
 }
 

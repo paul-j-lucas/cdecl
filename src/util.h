@@ -118,12 +118,23 @@ void* free_later( void *p );
 void free_now( void );
 
 /**
- * TODO
+ * Gets a printable version of the given character:
+ *  + For characters for which isprint(3) returns non-zero,
+ *    the printable version is a single character string of itself.
+ *  + For the special-case characters of \0, \a, \b, \f, \n, \r, \t, and \v,
+ *    the printable version is a two character string of a backslash followed
+ *    by the letter.
+ *  + For all other characters, the printable version is a four-character
+ *    string of a backslash followed by an 'x' and the two-character
+ *    hexedecimal value of che characters ASCII code.
  *
- * @param c TODO
- * @return TODO
+ * @param c The character to get the printable form of.
+ * @return Returns a NULL-terminated string that is a printable version of
+ * \a c.  Note that the result is a pointer to static storage, hence subsequent
+ * calls will overwrite the returned value.  As such, this function is not
+ * thread-safe.
  */
-char const* visible( int c );
+char const* printable_char( char c );
 
 /**
  * A variant of strcpy(3) that returns the number of characters copied.
