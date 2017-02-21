@@ -5,5 +5,6 @@
 /cdlex.c
 /config.h
 /stamp-h1
+/*.output
 /*.tab.c
-/y.output
+/*.vcg
