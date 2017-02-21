@@ -230,7 +230,6 @@ void c_ast_free( c_ast_t *ast ) {
   if ( ast == NULL )
     return;
   assert( c_ast_count > 0 );
-
   --c_ast_count;
 
   if ( ast->name )
