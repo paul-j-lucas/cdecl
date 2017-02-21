@@ -5,4 +5,5 @@
 /cdlex.c
 /config.h
 /stamp-h1
+/*.tab.c
 /y.output
