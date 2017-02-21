@@ -186,13 +186,14 @@ char const* c_type_name( c_type_t type ) {
     T_CHAR,
     T_CHAR16_T,
     T_CHAR32_T,
-    T_ENUM,
     T_LONG_LONG,
     T_INT,
     T_FLOAT,
     T_DOUBLE,
     T_COMPLEX,
+    T_ENUM,
     T_STRUCT,
+    T_UNION,
     T_CLASS,
   };
 
