@@ -187,8 +187,11 @@ void c_ast_english( c_ast_t const *ast, FILE *fout ) {
 
     case K_ENUM_CLASS_STRUCT_UNION:
       FPUTS( c_type_name( ast->as.type ), fout );
+      // no break;
+
+    case K_NAME:
       if ( ast->name )
-        FPRINTF( fout, " %s", ast->name );
+        FPUTS( ast->name, fout );
       break;
 
     case K_FUNCTION:
@@ -207,11 +210,6 @@ void c_ast_english( c_ast_t const *ast, FILE *fout ) {
         L_POINTER, L_TO, L_MEMBER, L_OF, L_CLASS, ast->as.ptr_mbr.class_name
       );
       c_ast_english( ast->as.ptr_mbr.of_ast, fout );
-      break;
-
-    case K_NAME:
-      if ( ast->name )
-        FPUTS( ast->name, fout );
       break;
 
     case K_POINTER:
@@ -236,17 +234,9 @@ void c_ast_free( c_ast_t *ast ) {
     FREE( ast->name );
 
   switch ( ast->kind ) {
-    case K_NONE:
-      break;
     case K_ARRAY:
       if ( ast->as.array.of_ast )
         c_ast_free( ast->as.array.of_ast );
-      break;
-    case K_BUILTIN:
-      // nothing to do
-      break;
-    case K_ENUM_CLASS_STRUCT_UNION:
-      // nothing to do
       break;
     case K_BLOCK:
     case K_FUNCTION:
@@ -254,18 +244,21 @@ void c_ast_free( c_ast_t *ast ) {
         c_ast_t *const next = arg->next;
         c_ast_free( arg );
         arg = next;
-      }
+      } // for
       break;
     case K_PTR_TO_MEMBER:
       FREE( ast->as.ptr_mbr.class_name );
       c_ast_free( ast->as.ptr_mbr.of_ast );
       break;
-    case K_NAME:
-      // nothing to do
-      break;
     case K_POINTER:
     case K_REFERENCE:
       c_ast_free( ast->as.ptr_ref.to_ast );
+      break;
+    case K_BUILTIN:
+    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_NAME:
+    case K_NONE:
+      // nothing to do
       break;
   } // switch
 }
