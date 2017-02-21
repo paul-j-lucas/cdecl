@@ -20,10 +20,10 @@
 #include <string.h>
 
 #ifdef WITH_CDECL_DEBUG
-#define YYTRACE(...) \
-  BLOCK( if ( opt_debug ) PRINT_ERR( "|" __VA_ARGS__ ); )
+#define CDEBUG(...) \
+  BLOCK( if ( opt_debug ) __VA_ARGS__; )
 #else
-#define YYTRACE(...)              /* nothing */
+#define CDEBUG(...)                     /* nothing */
 #endif /* WITH_CDECL_DEBUG */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -572,8 +572,8 @@ explain_gibberish
       $4->as.type |= $2 | $3 | $5;
       c_type_check( $4->as.type );
 
-      c_ast_json( $4, "type_c", fout );
-      c_ast_json( $6, "decl_c", fout );
+      CDEBUG( c_ast_json( $4, "type_c", fout ); );
+      CDEBUG( c_ast_json( $6, "decl_c", fout ); );
 
       FPRINTF( fout, "declare %s as ", c_ast_name( $6 ) );
       //explain_declaration( $2, $3, $5, $4, $6 );
