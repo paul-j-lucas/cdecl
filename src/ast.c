@@ -277,7 +277,7 @@ void c_ast_free( c_ast_t *ast ) {
 }
 
 char const* c_ast_name( c_ast_t const *ast ) {
-  if ( !ast )
+  if ( ast == NULL )
     return NULL;
 
   if ( ast->name )
