@@ -324,6 +324,7 @@ char const* c_kind_name( c_kind_t kind ) {
         return "enum, class, struct, or union";
       if ( opt_lang >= LANG_C_89 )
         return "enum, struct, or union";
+      assert( opt_lang == LANG_C_KNR );
       return "struct or union";
 
     default:
