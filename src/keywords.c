@@ -67,8 +67,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_THREAD_LOCAL,   Y_THREAD_LOCAL, T_THREAD_LOCAL, MIN(C_11) | MIN(CPP_11) },
 
   // Apple extension
-  { L___BLOCK,        Y_BLOCK,        T_BLOCK,        MIN(C_89)             },
-  { L_BLOCK,          Y_BLOCK,        T_BLOCK,        MIN(C_89)             },
+  { L___BLOCK,        Y___BLOCK,      T_BLOCK,        MIN(C_89)             },
 
   { NULL,             0,              T_NONE,         0                     }
 };

@@ -11,6 +11,7 @@
 // english
 extern char const L_ARRAY[];
 extern char const L_AS[];
+extern char const L_BLOCK[];            // Apple: Engligh for '^'
 extern char const L_CAST[];
 extern char const L_DECLARE[];
 extern char const L_EXIT[];
@@ -83,8 +84,7 @@ extern char const L_CHAR32_T[];
 extern char const L_THREAD_LOCAL[];
 
 // miscellaneous
-extern char const L___BLOCK[];          // Apple extension
-extern char const L_BLOCK[];            // synonym for "__block"
+extern char const L___BLOCK[];          // Apple: storage class
 
 ///////////////////////////////////////////////////////////////////////////////
 

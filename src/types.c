@@ -54,7 +54,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { L_CLASS,        T_CLASS        },
   // storage classes
   { L_AUTO,         T_AUTO          },
-  { L_BLOCK,        T_BLOCK         },  // Apple extension
+  { L___BLOCK,      T_BLOCK         },  // Apple extension
   { L_EXTERN,       T_EXTERN        },
   { L_REGISTER,     T_REGISTER      },
   { L_STATIC,       T_STATIC        },

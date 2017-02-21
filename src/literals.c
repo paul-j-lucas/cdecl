@@ -8,6 +8,7 @@
 // english
 char const L_ARRAY[]          = "array";
 char const L_AS[]             = "as";
+char const L_BLOCK[]          = "block";    // Apple: English for '^'
 char const L_CAST[]           = "cast";
 char const L_DECLARE[]        = "declare";
 char const L_EXIT[]           = "exit";
@@ -80,8 +81,7 @@ char const L_CHAR32_T[]       = "char32_t";
 char const L_THREAD_LOCAL[]   = "thread_local";
 
 // Miscellaneous
-char const L___BLOCK[]        = "__block";
-char const L_BLOCK[]          = "block";
+char const L___BLOCK[]        = "__block";  // Apple: block storage class
 
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

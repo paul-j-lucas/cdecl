@@ -33,7 +33,8 @@ static char const *const CDECL_KEYWORDS[] = {
   L_ARRAY,
 //L_AS,                                 // too short
   L_AUTO,
-  L_BLOCK,
+  L_BLOCK,                              // Apple: English for '^'
+  L___BLOCK,                            // Apple: storage class
   L_BOOL,
   L_CHAR,
   L_CHAR16_T,
