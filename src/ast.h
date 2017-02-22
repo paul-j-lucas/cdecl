@@ -155,10 +155,12 @@ void c_ast_gibberish( c_ast_t const *ast, FILE *fout );
  * Dumps the given c_ast as JSON (for debugging).
  *
  * @param ast The c_ast to dump.
+ * @paran indent The initial indent.
  * @param key0 The initial key or null for none.
  * @param fout The FILE to dump to.
  */
-void c_ast_json( c_ast_t const *ast, char const *key0, FILE *fout );
+void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
+                 FILE *fout );
 
 /**
  * Gets the name from the given c_ast.
