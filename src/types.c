@@ -12,6 +12,7 @@
 #include "util.h"
 
 // system
+#include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,25 +34,25 @@ typedef struct c_type_info c_type_info_t;
 
 static c_type_info_t const C_TYPE_INFO[] = {
   // types
-  { L_VOID,         T_VOID         },
-  { L_BOOL,         T_BOOL         },
-  { L_CHAR,         T_CHAR         },
-  { L_CHAR16_T,     T_CHAR16_T     },
-  { L_CHAR32_T,     T_CHAR32_T     },
-  { L_WCHAR_T,      T_WCHAR_T      },
-  { L_SHORT,        T_SHORT        },
-  { L_INT,          T_INT          },
-  { L_LONG,         T_LONG         },
-  { L_LONG_LONG,    T_LONG_LONG    },
-  { L_SIGNED,       T_SIGNED       },
-  { L_UNSIGNED,     T_UNSIGNED     },
-  { L_FLOAT,        T_FLOAT        },
-  { L_DOUBLE,       T_DOUBLE       },
-  { L_COMPLEX,      T_COMPLEX      },
-  { L_ENUM,         T_ENUM         },
-  { L_STRUCT,       T_STRUCT       },
-  { L_UNION,        T_UNION        },
-  { L_CLASS,        T_CLASS        },
+  { L_VOID,         T_VOID          },
+  { L_BOOL,         T_BOOL          },
+  { L_CHAR,         T_CHAR          },
+  { L_CHAR16_T,     T_CHAR16_T      },
+  { L_CHAR32_T,     T_CHAR32_T      },
+  { L_WCHAR_T,      T_WCHAR_T       },
+  { L_SHORT,        T_SHORT         },
+  { L_INT,          T_INT           },
+  { L_LONG,         T_LONG          },
+  { L_LONG_LONG,    T_LONG_LONG     },
+  { L_SIGNED,       T_SIGNED        },
+  { L_UNSIGNED,     T_UNSIGNED      },
+  { L_FLOAT,        T_FLOAT         },
+  { L_DOUBLE,       T_DOUBLE        },
+  { L_COMPLEX,      T_COMPLEX       },
+  { L_ENUM,         T_ENUM          },
+  { L_STRUCT,       T_STRUCT        },
+  { L_UNION,        T_UNION         },
+  { L_CLASS,        T_CLASS         },
   // storage classes
   { L_AUTO,         T_AUTO          },
   { L___BLOCK,      T_BLOCK         },  // Apple extension
@@ -109,6 +110,26 @@ static inline bool only_one_bit_set( unsigned n ) {
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+void c_type_add( c_type_t *dest_type, c_type_t new_type ) {
+  assert( dest_type );
+
+  if ( new_type == T_LONG && (*dest_type & T_LONG) ) {
+    //
+    // TODO
+    //
+    new_type = T_LONG_LONG;
+  }
+
+  if ( *dest_type & new_type ) {
+    PRINT_ERR(
+      "error: \"%s\" can not be combined with previous declaration\n",
+      c_type_name( new_type )
+    );
+  } else {
+    *dest_type |= new_type;
+  }
+}
 
 bool c_type_check( c_type_t type ) {
   for ( size_t i = 0; i < NUM_TYPES; ++i ) {

@@ -55,6 +55,13 @@ typedef unsigned c_type_t;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * TODO
+ *
+ * @param type TODO
+ */
+void c_type_add( c_type_t *dest_type, c_type_t new_type );
+
+/**
  * Checks that the given type is valid.
  *
  * @param type The type to check.
