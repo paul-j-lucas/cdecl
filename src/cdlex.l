@@ -129,14 +129,14 @@ H             [0-9A-Fa-f]
 
 "?"           return Y_HELP;
 
+"^"           |                         /* Apple extension: block indicator */
 "&"           |
 "("           |
 ")"           |
 "*"           |
 ","           |
 "["           |
-"]"           |
-"^"           return *yytext;           /* for blocks (Apple extension) */
+"]"           return *yytext;           /* for blocks (Apple extension) */
 
 "/*"          {                         /* C-style comments */
                 for ( int c = input(), prev_c = '\0'; c != EOF;
