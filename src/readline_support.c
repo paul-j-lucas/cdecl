@@ -64,6 +64,7 @@ static char const *const CDECL_KEYWORDS[] = {
   L_STRUCT,
 //L_TO,                                 // too short
   L_THREAD_LOCAL,
+  L_TYPEDEF,
   L_UNION,
   L_UNSIGNED,
   L_VOID,

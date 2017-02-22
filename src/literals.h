@@ -49,6 +49,7 @@ extern char const L_SHORT[];
 extern char const L_STATIC[];
 extern char const L_STRUCT[];
 extern char const L_STRUCTURE[];        // synonym for "struct"
+extern char const L_TYPEDEF[];
 extern char const L_UNION[];
 extern char const L_UNSIGNED[];
 

@@ -43,6 +43,7 @@
 #define T_REGISTER      0x00800000
 #define T_STATIC        0x01000000
 #define T_THREAD_LOCAL  0x02000000
+#define T_TYPEDEF       0x04000000
 
 // qualifiers
 #define T_CONST         0x10000000

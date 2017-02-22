@@ -59,6 +59,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { L_REGISTER,     T_REGISTER      },
   { L_STATIC,       T_STATIC        },
   { L_THREAD_LOCAL, T_THREAD_LOCAL  },
+  { L_TYPEDEF,      T_TYPEDEF,      },
   // qualifiers
   { L_CONST,        T_CONST         },
   { L_RESTRICT,     T_RESTRICT      },
@@ -147,6 +148,7 @@ char const* c_type_name( c_type_t type ) {
     T_REGISTER,
     T_STATIC,
     T_THREAD_LOCAL,
+    T_TYPEDEF,
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_CLASS ); ++i ) {
     if ( type & C_STORAGE_CLASS[i] ) {

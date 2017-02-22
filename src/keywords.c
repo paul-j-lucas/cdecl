@@ -37,6 +37,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_SHORT,          Y_SHORT,        T_SHORT,        ANY                   },
   { L_STATIC,         Y_STATIC,       T_STATIC,       ANY                   },
   { L_STRUCT,         Y_STRUCT,       T_STRUCT,       ANY                   },
+  { L_TYPEDEF,        Y_TYPEDEF,      T_TYPEDEF,      ANY                   },
   { L_UNION,          Y_UNION,        T_UNION,        ANY                   },
   { L_UNSIGNED,       Y_UNSIGNED,     T_UNSIGNED,     ANY                   },
 
