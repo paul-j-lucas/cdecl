@@ -5,7 +5,7 @@
 
 %{
 // local
-#include "config.h"                     /* must cone first */
+#include "config.h"                     /* must come first */
 #include "ast.h"
 #include "keywords.h"
 #include "lang.h"
