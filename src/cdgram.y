@@ -75,38 +75,13 @@ static void         unsupp( char const*, char const* );
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#if 0
-/**
- * TODO
- *
- * @param type TODO
- */
-static void c_type_add( c_type_t type ) {
-  if ( type == T_LONG && (_type & T_LONG) ) {
-    //
-    // TODO
-    //
-    type = T_LONG_LONG;
-  }
-
-  if ( !(c_type & type) ) {
-    c_type |= type;
-  } else {
-    PRINT_ERR(
-      "error: \"%s\" can not be combined with previous declaration\n",
-      c_type_name( type )
-    );
-  }
-}
-#endif
-
 /**
  * Do the "cast" command.
  *
  * @param name TODO
  * @param ast TODO
  */
-static void do_cast( char const *name, c_ast_t *ast ) {
+static void cast_english( char const *name, c_ast_t *ast ) {
   assert( ast );
 
   switch ( ast->kind ) {
@@ -141,7 +116,7 @@ static void do_cast( char const *name, c_ast_t *ast ) {
  * @param right TODO
  * @param type TODO
  */
-static void do_declare( char const *name, c_ast_t *ast ) {
+static void declare_english( char const *name, c_ast_t *ast ) {
   assert( ast );
 
 /*
@@ -193,7 +168,7 @@ static void do_declare( char const *name, c_ast_t *ast ) {
  *
  * @param opt The option to set.
  */
-static void do_set( char const *opt ) {
+static void set_option( char const *opt ) {
   if ( strcmp( opt, "create" ) == 0 )
     opt_make_c = true;
   else if ( strcmp( opt, "nocreate" ) == 0 )
@@ -557,12 +532,21 @@ command
 cast_english
   : Y_CAST Y_NAME Y_INTO decl_english Y_END
     {
-      do_cast( $2, $4 );
+      DUMP_RULE( "Y_CAST Y_NAME Y_INTO decl_english Y_END",
+        DUMP_NAME( "Y_NAME", $2 );
+        DUMP_AST( "decl_english", $4 );
+      );
+
+      cast_english( $2, $4 );
     }
 
   | Y_CAST decl_english Y_END
     {
-      do_cast( NULL, $2 );
+      DUMP_RULE( "Y_CAST decl_english Y_END",
+        DUMP_AST( "decl_english", $2 );
+      );
+
+      cast_english( NULL, $2 );
     }
   ;
 
@@ -573,8 +557,13 @@ cast_english
 declare_english
   : Y_DECLARE Y_NAME Y_AS storage_class_opt_c decl_english Y_END
     {
-      //do_declare( $2, $4 );
-      FREE( $2 );
+      DUMP_RULE( "Y_DECLARE Y_NAME Y_AS storage_class_opt_c decl_english Y_END",
+        DUMP_NAME( "Y_NAME", $2 );
+        DUMP_TYPE( "storage_class_opt_c", $4 );
+        DUMP_AST( "decl_english", $5 );
+      );
+
+      //declare_english( $2, $4 );
     }
   ;
 
@@ -664,7 +653,7 @@ help_command
 /*****************************************************************************/
 
 set_command
-  : Y_SET name_token_opt Y_END    { do_set( $2 ); FREE( $2 ); }
+  : Y_SET name_token_opt Y_END    { set_option( $2 ); FREE( $2 ); }
   ;
 
 /*****************************************************************************/
@@ -763,6 +752,10 @@ decl_list_opt_english
 returning_english
   : Y_RETURNING decl_english
     {
+      DUMP_RULE( "Y_RETURNING decl_english",
+        DUMP_AST( "decl_english", $2 );
+      );
+
       c_keyword_t const *keyword;
       switch ( $2->kind ) {
         case K_ARRAY:
@@ -1133,7 +1126,8 @@ type_modifier_list_opt_english
   : /* empty */                   { $$ = T_NONE; }
   | type_modifier_list_opt_english type_modifier_english
     {
-      $$ = $1 | $2;
+      $$ = $1;
+      c_type_add( &$$, $1 );
     }
   ;
 
@@ -1164,7 +1158,8 @@ type_c
   | type_modifier_list_c builtin_type_c
     {
       $$ = c_ast_new( K_BUILTIN );
-      $$->as.type = $1 | $2;
+      $$->as.type = $1;
+      c_type_add( &$$->as.type, $1 );
     }
   | builtin_type_c
     {
@@ -1241,7 +1236,8 @@ type_qualifier_list_opt_c
         DUMP_TYPE( "type_qualifier_c", $2 );
       );
 
-      $$ = $1 | $2;
+      $$ = $1;
+      c_type_add( &$$, $2 );
     }
   ;
 
