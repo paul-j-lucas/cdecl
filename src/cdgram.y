@@ -485,7 +485,7 @@ int yywrap( void ) {
 %type   <type>      enum_class_struct_union_type_c
 %type   <type>      storage_class_c storage_class_opt_c
 %type   <type>      type_modifier_c
-%type   <type>      type_modifier_list_c
+%type   <type>      type_modifier_list_c type_modifier_list_opt_c
 %type   <type>      type_qualifier_c
 %type   <type>      type_qualifier_list_opt_c
 
@@ -1117,7 +1117,7 @@ type_english
     builtin_type_opt_c
     {
       $$ = c_ast_new( K_BUILTIN );
-      $$->as.type = $1 | $2;
+      c_type_add( &$$->as.type, $2 );
       c_type_check( $$->as.type );
     }
   ;
@@ -1152,41 +1152,72 @@ builtin_type_opt_c
 type_c
   : type_modifier_list_c
     {
+      DUMP_RULE( "type_c: type_modifier_list_c",
+        DUMP_TYPE( "type_modifier_list_c", $1 );
+      );
+
       $$ = c_ast_new( K_BUILTIN );
       $$->as.type = $1;
     }
-  | type_modifier_list_c builtin_type_c
+
+  | type_modifier_list_c builtin_type_c type_modifier_list_opt_c
     {
+      DUMP_RULE( "type_c: "
+                 "type_modifier_list_c builtin_type_c type_modifier_list_opt_c",
+        DUMP_TYPE( "type_modifier_list_c", $1 );
+        DUMP_TYPE( "builtin_type_c", $2 );
+        DUMP_TYPE( "type_modifier_list_opt_c", $3 );
+      );
+
       $$ = c_ast_new( K_BUILTIN );
       $$->as.type = $1;
-      c_type_add( &$$->as.type, $1 );
+      c_type_add( &$$->as.type, $2 );
+      c_type_add( &$$->as.type, $3 );
     }
-  | builtin_type_c
+
+  | builtin_type_c type_modifier_list_opt_c
     {
+      DUMP_RULE( "type_c: builtin_type_c type_modifier_list_opt_c",
+        DUMP_TYPE( "builtin_type_c", $1 );
+        DUMP_TYPE( "type_modifier_list_opt_c", $2 );
+      );
+
       $$ = c_ast_new( K_BUILTIN );
       $$->as.type = $1;
     }
+
   | enum_class_struct_union_type_c Y_NAME
     {
+      DUMP_RULE( "type_c: enum_class_struct_union_type_c Y_NAME",
+        DUMP_TYPE( "enum_class_struct_union_type_c", $1 );
+        DUMP_NAME( "Y_NAME", $2 );
+      );
+
       $$ = c_ast_new( K_ENUM_CLASS_STRUCT_UNION );
       $$->name = $2;
       $$->as.type = $1;
     }
   ;
 
+type_modifier_list_opt_c
+  : /* empty */
+  | type_modifier_list_c
+  ;
+
 type_modifier_list_c
   : type_modifier_list_c type_modifier_c
     {
-      DUMP_RULE( "type_modifier_list_c type_modifier_c",
+      DUMP_RULE( "type_modifier_list_c: type_modifier_list_c type_modifier_c",
         DUMP_TYPE( "type_modifier_list_c", $1 );
         DUMP_TYPE( "type_modifier_c", $2 );
       );
 
       $$ = $1 | $2;
     }
+
   | type_modifier_c
     {
-      DUMP_RULE( "type_modifier_c",
+      DUMP_RULE( "type_modifier_list_c: type_modifier_c",
         DUMP_TYPE( "type_modifier_c", $1 );
       );
 
@@ -1231,7 +1262,8 @@ type_qualifier_list_opt_c
   : /* empty */                   { $$ = T_NONE; }
   | type_qualifier_list_opt_c type_qualifier_c
     {
-      DUMP_RULE( "type_qualifier_list_opt_c type_qualifier_c",
+      DUMP_RULE( "type_qualifier_list_opt_c: "
+                 "type_qualifier_list_opt_c type_qualifier_c",
         DUMP_TYPE( "type_qualifier_list_opt_c", $1 );
         DUMP_TYPE( "type_qualifier_c", $2 );
       );
