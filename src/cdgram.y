@@ -922,8 +922,17 @@ array_size_c
   ;
 
 block_decl_c
-  : '(' '^' type_qualifier_list_opt_c decl_c ')' '(' cast_list_opt_c ')'
-    { // block returning ...
+  : '(' '^' type_qualifier_list_opt_c decl_c ')'
+    '(' cast_list_opt_c ')'
+    {
+      DUMP_RULE( "block_decl_c: '(' '^' type_qualifier_list_opt_c decl_c ')' "
+                 "'(' cast_list_opt_c ')'",
+        DUMP_TYPE( "type_qualifier_list_opt_c", $3 );
+        DUMP_AST( "decl_c", $4 );
+        DUMP_AST_LIST( "cast_list_opt_c", $7 );
+      );
+
+      // TODO
     }
   ;
 
@@ -977,8 +986,9 @@ pointer_to_member_decl_c
       );
 
       $$ = c_ast_new( K_POINTER_TO_MEMBER );
+      $$->name = c_ast_name( $4 );
       $$->as.ptr_mbr.class_name = $1;
-      $$->as.ptr_mbr.of_ast = $4;
+      $$->as.ptr_mbr.of_ast = PEEK_TYPE();
     }
   ;
 
