@@ -178,6 +178,24 @@ char const* c_ast_name( c_ast_t const *ast );
 c_ast_t* c_ast_new( c_kind_t kind );
 
 /**
+ * Pops a c_ast from the head of a list.
+ *
+ * @param phead The pointer to the pointer to the head of the list.
+ * @return Returns
+ */
+c_ast_t* c_ast_pop( c_ast_t **phead );
+
+/**
+ * Pushes a c_ast onto the front of a list.
+ *
+ * @param phead The pointer to the pointer to the head of the list.  The head
+ * is updated to point to \a new_ast.
+ * @param new_ast The pointer to the c_ast to add.  Its \c next pointer is set
+ * to the old head of the list.
+ */
+void c_ast_push( c_ast_t **phead, c_ast_t *new_ast );
+
+/**
  * Gets the name of the given kind.
  *
  * @param kind The kind to get the name for.

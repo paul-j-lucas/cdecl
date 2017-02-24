@@ -347,6 +347,23 @@ c_ast_t* c_ast_new( c_kind_t kind ) {
   return ast;
 }
 
+c_ast_t* c_ast_pop( c_ast_t **phead ) {
+  assert( phead );
+  assert( *phead );
+  c_ast_t *const popped = (*phead);
+  (*phead) = popped->next;
+  popped->next = NULL;
+  return popped;
+}
+
+void c_ast_push( c_ast_t **phead, c_ast_t *new_ast ) {
+  assert( phead );
+  assert( new_ast );
+  assert( new_ast->next == NULL );
+  new_ast->next = (*phead);
+  (*phead) = new_ast;
+}
+
 char const* c_kind_name( c_kind_t kind ) {
   switch ( kind ) {
     case K_NONE         : return "none";
