@@ -31,7 +31,7 @@ typedef enum   c_kind     c_kind_t;
 typedef struct c_ptr_mbr  c_ptr_mbr_t;
 typedef struct c_ptr_ref  c_ptr_ref_t;
 
-#define C_ARRAY_NO_SIZE   (-1)
+#define C_ARRAY_NO_SIZE   (-1)          /* for array[] */
 
 /**
  * Kinds of AST nodes.
@@ -45,8 +45,8 @@ enum c_kind {
   K_FUNCTION,
   K_NAME,
   K_POINTER,
-  K_POINTER_TO_MEMBER,                  // C++ class data member
-  K_REFERENCE,
+  K_POINTER_TO_MEMBER,                  // C++ only
+  K_REFERENCE,                          // c++ only
 };
 
 /**
@@ -61,15 +61,15 @@ struct c_ast_list {
  * AST object for a C/C++ array.
  */
 struct c_array {
-  c_ast_t  *of_ast;
-  int       size;
+  c_ast_t  *of_ast;                     // what it's an array of
+  int       size;                       // or C_ARRAY_NO_SIZE
 };
 
 /**
  * AST object for a C/C++ block (Apple extension).
  */
 struct c_block {
-  c_ast_t      *ret_ast;
+  c_ast_t      *ret_ast;                // return type
   c_ast_list_t  args;
   c_type_t      type;
 };
@@ -78,14 +78,14 @@ struct c_block {
  * AST object for a C/C++ built-in type.
  */
 struct c_builtin {
-  c_type_t  type;
+  c_type_t  type;                       // void, char, int, etc.
 };
 
 /**
  * AST object for a C/C++ enum/class/struct/union type.
  */
 struct c_ecsu {
-  c_type_t  type;
+  c_type_t  type;                       // T_ENUM, T_CLASS, T_STRUCT, T_UNION
 };
 
 /**
@@ -94,16 +94,17 @@ struct c_ecsu {
  * taken advantage of.)
  */
 struct c_func {
-  c_ast_t      *ret_ast;
+  c_ast_t      *ret_ast;                // return type
   c_ast_list_t  args;
 };
 
 /**
- * AST object for a C++ pointer-to-member of class.
+ * AST object for a C++ pointer-to-member of a class.
  */
 struct c_ptr_mbr {
-  c_ast_t    *of_ast;
+  c_ast_t    *of_ast;                   // member type
   c_type_t    qualifier;                // T_CONST, T_RESTRICT, T_VOLATILE
+  c_type_t    type;                     // T_CLASS, T_STRUCT, or T_UNION
   char const *class_name;
 };
 
@@ -113,7 +114,7 @@ struct c_ptr_mbr {
  * taken advantage of.)
  */
 struct c_ptr_ref {
-  c_ast_t  *to_ast;
+  c_ast_t  *to_ast;                     // what it's a pointer or reference to
   c_type_t  qualifier;                  // T_CONST, T_RESTRICT, T_VOLATILE
 };
 

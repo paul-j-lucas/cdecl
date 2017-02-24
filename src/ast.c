@@ -96,6 +96,7 @@ static void c_ast_json_impl( c_ast_t const *ast, unsigned indent,
       case K_POINTER_TO_MEMBER:
         PRINT_COMMA;
         PRINT_JSON( "\"class_name\": \"%s\"\n", ast->as.ptr_mbr.class_name );
+        PRINT_JSON( "\"type\": \"%s\",\n", c_type_name( ast->as.ptr_mbr.type ) );
         // no break;
       case K_POINTER:
       case K_REFERENCE:
@@ -226,7 +227,8 @@ void c_ast_english( c_ast_t const *ast, FILE *fout ) {
         FPRINTF( fout, "%s ", c_type_name( ast->as.ptr_mbr.qualifier ) );
       FPRINTF( fout,
         "%s %s %s %s %s %s ",
-        L_POINTER, L_TO, L_MEMBER, L_OF, L_CLASS, ast->as.ptr_mbr.class_name
+        L_POINTER, L_TO, L_MEMBER, L_OF, c_type_name( ast->as.ptr_mbr.type ),
+        ast->as.ptr_mbr.class_name
       );
       c_ast_english( ast->as.ptr_mbr.of_ast, fout );
       break;

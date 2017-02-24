@@ -37,6 +37,15 @@
 #define DUMP_NUM(KEY,NUM) \
   FPRINTF( stdout, "  \"" KEY "\": \"%d\"\n", (NUM) )
 
+#if 0
+static inline void dump_name( char const *key, char const *name ) {
+  if ( name && *name )
+    FPRINTF( stdout, "  \"%s\": \"%s\"\n", key, name );
+  else
+    FPRINTF( stdout, "  \"%s\": null", key );
+}
+#endif
+
 #define DUMP_RULE(RULE,...) \
   CDEBUG( FPRINTF( stdout, "\n\"" RULE "\": {\n" ); \
           BLOCK( __VA_ARGS__ );                     \
@@ -52,7 +61,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Inherited attribute.
+ * Inherited attributes.
  */
 struct in_attr {
   c_ast_t  *type_ast;
@@ -353,9 +362,9 @@ int yywrap( void ) {
 %type   <number>    array_size_opt_english
 %type   <ast>       block_decl_english
 %type   <ast>       func_decl_english
-%type   <ast>       pointer_english
-%type   <ast>       pointer_to_member_english
-%type   <ast>       reference_english
+%type   <ast>       pointer_decl_english
+%type   <ast>       pointer_to_member_decl_english
+%type   <ast>       reference_decl_english
 %type   <ast>       returning_english
 %type   <ast>       var_decl_english
 
@@ -499,12 +508,16 @@ explain_cast_c
   : Y_EXPLAIN '(' type_c { PUSH_TYPE( $3 ); } cast_c ')'
     name_token_opt Y_END
     {
-      DUMP_RULE( "explain_gibberish: Y_EXPLAIN '(' type_c cast_c ')' Y_END",
+      DUMP_RULE( "explain_cast_t: "
+                 "Y_EXPLAIN '(' type_c cast_c ')' name_token_opt Y_END",
         DUMP_AST( "cast_c", $5 );
         DUMP_NAME( "name_token_opt", $7 );
       );
 
-      if ( $7 ) printf( "cast %s into ", $7 );
+      if ( $7 )
+        FPRINTF( fout, "cast %s into ", $7 );
+      else
+        FPUTS( "cast into ", fout );
       c_ast_english( $5, fout );
       FPUTC( '\n', fout );
 
@@ -546,9 +559,9 @@ decl_english
   : array_decl_english
   | block_decl_english
   | func_decl_english
-  | pointer_english
-  | pointer_to_member_english
-  | reference_english
+  | pointer_decl_english
+  | pointer_to_member_decl_english
+  | reference_decl_english
   | type_english
   | var_decl_english
   ;
@@ -611,7 +624,6 @@ decl_list_opt_english
 
 decl_list_english
   : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
-
   | decl_list_english ',' decl_english
     {
       DUMP_RULE( "decl_list_english: decl_list_english ',' decl_english",
@@ -620,7 +632,8 @@ decl_list_english
       );
 
       //$$.head_ast = $1.head_ast;
-      //$$.tail_ast = $3.tail_ast;
+      //$$.tail_ast = $3;
+      //assert( $$.tail_ast->next == NULL );
       //$1.tail_ast->next = $3.head_ast;
     }
   ;
@@ -673,7 +686,7 @@ returning_english
     }
   ;
 
-pointer_english
+pointer_decl_english
   : type_qualifier_list_opt_c Y_POINTER Y_TO decl_english
     {
       if ( $4->kind == K_ARRAY )
@@ -685,7 +698,7 @@ pointer_english
     }
   ;
 
-pointer_to_member_english
+pointer_to_member_decl_english
   : type_qualifier_list_opt_c Y_POINTER Y_TO Y_MEMBER Y_OF
     class_struct_type_c Y_NAME decl_english
     {
@@ -698,12 +711,13 @@ pointer_to_member_english
 #endif
       $$ = c_ast_new( K_POINTER_TO_MEMBER );
       $$->as.ptr_mbr.qualifier = $1;
+      $$->as.ptr_mbr.type = $6;
       $$->as.ptr_mbr.class_name = $7;
       $$->as.ptr_mbr.of_ast = $8;
     }
   ;
 
-reference_english
+reference_decl_english
   : type_qualifier_list_opt_c Y_REFERENCE Y_TO decl_english
     {
       if ( opt_lang != LANG_CPP )
@@ -1176,7 +1190,7 @@ storage_class_c
   ;
 
 /*****************************************************************************/
-/*  miscellaneous gibberish productions                                      */
+/*  miscellaneous productions                                                */
 /*****************************************************************************/
 
 name_token_opt
