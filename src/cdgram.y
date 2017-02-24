@@ -561,7 +561,7 @@ array_decl_english
           unsupp( "Inner array of unspecified size", "array of pointer" );
           break;
         case K_BUILTIN:
-          if ( $4->as.type & T_VOID )
+          if ( $4->as.builtin.type & T_VOID )
             unsupp( "array of void", "pointer to void" );
           break;
         case K_FUNCTION:
@@ -714,7 +714,7 @@ reference_english
                   "reference to object" );
           break;
         case K_BUILTIN:
-          if ( $4->as.type & T_VOID )
+          if ( $4->as.builtin.type & T_VOID )
             unsupp( "reference of void", "pointer to void" );
           break;
         default:
@@ -994,8 +994,8 @@ type_english
     builtin_type_opt_c
     {
       $$ = c_ast_new( K_BUILTIN );
-      c_type_add( &$$->as.type, $2 );
-      c_type_check( $$->as.type );
+      c_type_add( &$$->as.builtin.type, $2 );
+      c_type_check( $$->as.builtin.type );
     }
   ;
 
@@ -1034,8 +1034,8 @@ type_c
       );
 
       $$ = c_ast_new( K_BUILTIN );
-      $$->as.type = $1;
-      c_type_check( $$->as.type );
+      $$->as.builtin.type = $1;
+      c_type_check( $$->as.builtin.type );
     }
 
   | type_modifier_list_c builtin_type_c type_modifier_list_opt_c
@@ -1048,10 +1048,10 @@ type_c
       );
 
       $$ = c_ast_new( K_BUILTIN );
-      $$->as.type = $1;
-      c_type_add( &$$->as.type, $2 );
-      c_type_add( &$$->as.type, $3 );
-      c_type_check( $$->as.type );
+      $$->as.builtin.type = $1;
+      c_type_add( &$$->as.builtin.type, $2 );
+      c_type_add( &$$->as.builtin.type, $3 );
+      c_type_check( $$->as.builtin.type );
     }
 
   | builtin_type_c type_modifier_list_opt_c
@@ -1062,8 +1062,8 @@ type_c
       );
 
       $$ = c_ast_new( K_BUILTIN );
-      $$->as.type = $1;
-      c_type_check( $$->as.type );
+      $$->as.builtin.type = $1;
+      c_type_check( $$->as.builtin.type );
     }
 
   | enum_class_struct_union_type_c Y_NAME
@@ -1075,8 +1075,8 @@ type_c
 
       $$ = c_ast_new( K_ENUM_CLASS_STRUCT_UNION );
       $$->name = $2;
-      $$->as.type = $1;
-      c_type_check( $$->as.type );
+      $$->as.ecsu.type = $1;
+      c_type_check( $$->as.ecsu.type );
     }
   ;
 

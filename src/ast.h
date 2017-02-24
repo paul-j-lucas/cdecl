@@ -24,6 +24,8 @@ typedef struct c_ast      c_ast_t;
 typedef struct c_ast_list c_ast_list_t;
 typedef struct c_array    c_array_t;
 typedef struct c_block    c_block_t;
+typedef struct c_builtin  c_builtin_t;
+typedef struct c_ecsu     c_ecsu_t;
 typedef struct c_func     c_func_t;
 typedef enum   c_kind     c_kind_t;
 typedef struct c_ptr_mbr  c_ptr_mbr_t;
@@ -73,6 +75,20 @@ struct c_block {
 };
 
 /**
+ * AST object for a C/C++ built-in type.
+ */
+struct c_builtin {
+  c_type_t  type;
+};
+
+/**
+ * AST object for a C/C++ enum/class/struct/union type.
+ */
+struct c_ecsu {
+  c_type_t  type;
+};
+
+/**
  * AST object for a C/C++ function.
  * (Note that the members are laid out in the same order as c_block: this is
  * taken advantage of.)
@@ -112,7 +128,8 @@ struct c_ast {
   union {
     c_array_t     array;
     c_block_t     block;
-    c_type_t      type;
+    c_builtin_t   builtin;
+    c_ecsu_t      ecsu;
     c_func_t      func;
     c_ptr_mbr_t   ptr_mbr;
     c_ptr_ref_t   ptr_ref;
@@ -177,6 +194,12 @@ char const* c_ast_name( c_ast_t *ast );
  */
 c_ast_t* c_ast_new( c_kind_t kind );
 
+/**
+ * TODO
+ *
+ * @param ast TODO
+ * @return TODO
+ */
 char const* c_ast_take_name( c_ast_t *ast );
 
 /**

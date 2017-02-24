@@ -65,7 +65,7 @@ static void c_ast_json_impl( c_ast_t const *ast, unsigned indent,
 
       case K_BUILTIN:
         PRINT_COMMA;
-        PRINT_JSON( "\"type\": \"%s\"", c_type_name( ast->as.type ) );
+        PRINT_JSON( "\"type\": \"%s\"", c_type_name( ast->as.builtin.type ) );
         break;
 
       case K_BLOCK:
@@ -187,11 +187,11 @@ void c_ast_english( c_ast_t const *ast, FILE *fout ) {
       // TODO
 
     case K_BUILTIN:
-      FPUTS( c_type_name( ast->as.type ), fout );
+      FPUTS( c_type_name( ast->as.builtin.type ), fout );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      FPUTS( c_type_name( ast->as.type ), fout );
+      FPUTS( c_type_name( ast->as.ecsu.type ), fout );
       if ( ast->name )
         FPRINTF( fout, " %s", ast->name );
       break;
