@@ -17,7 +17,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #ifdef WITH_CDECL_DEBUG
 #define CDEBUG(...) BLOCK( if ( opt_debug ) { __VA_ARGS__ } )
@@ -62,12 +61,11 @@ struct in_attr {
 typedef struct in_attr in_attr_t;
 
 // external variables
-extern char const  *prompt;
-extern char         prompt_buf[];
 extern char const  *yytext;
 
 // extern functions
 extern void         print_help( void );
+extern void         set_option( char const* );
 extern int          yylex( void );
 
 // local variables
@@ -88,6 +86,8 @@ static void         unsupp( char const*, char const* );
  */
 static void cast_english( char const *name, c_ast_t *ast ) {
   assert( ast );
+
+  (void)name;           // TODO: remove
 
   switch ( ast->kind ) {
     case K_ARRAY:
@@ -162,77 +162,6 @@ static void declare_english( char const *name, c_type_t storage_class,
     printf( "\n" );
   }
 */
-}
-
-/**
- * Do the "set" command.
- *
- * @param opt The option to set.
- */
-static void set_option( char const *opt ) {
-  if ( strcmp( opt, "create" ) == 0 )
-    opt_make_c = true;
-  else if ( strcmp( opt, "nocreate" ) == 0 )
-    opt_make_c = false;
-
-  else if ( strcmp( opt, "prompt" ) == 0 )
-    prompt = prompt_buf;
-  else if ( strcmp( opt, "noprompt" ) == 0 )
-    prompt = "";
-
-  else if ( strcmp( opt, "preansi" ) == 0 || strcmp( opt, "knr" ) == 0 )
-    opt_lang = LANG_C_KNR;
-  else if ( strcmp( opt, "ansi" ) == 0 )
-    opt_lang = LANG_C_89;
-  else if ( strcmp( opt, "c++" ) == 0 )
-    opt_lang = LANG_CPP;
-  else if ( strcmp( opt, "c++11" ) == 0 )
-    opt_lang = LANG_CPP_11;
-
-#ifdef WITH_CDECL_DEBUG
-  else if ( strcmp( opt, "debug" ) == 0 )
-    opt_debug = true;
-  else if ( strcmp( opt, "nodebug" ) == 0 )
-    opt_debug = false;
-#endif /* WITH_CDECL_DEBUG */
-
-#ifdef YYDEBUG
-  else if ( strcmp( opt, "yydebug" ) == 0 )
-    yydebug = true;
-  else if ( strcmp( opt, "noyydebug" ) == 0 )
-    yydebug = false;
-#endif /* YYDEBUG */
-
-  else {
-    if ( strcmp( opt, "options" ) != 0 ) {
-      printf( "\"%s\": unknown set option\n", opt );
-    }
-    printf( "Valid set options (and command line equivalents) are:\n" );
-    printf( "  options\n" );
-    printf( "  create (-c), nocreate\n" );
-    printf( "  prompt, noprompt (-q)\n" );
-#ifndef WITH_READLINE
-    printf( "  interactive (-i), nointeractive\n" );
-#endif /* WITH_READLINE */
-    printf( "  preansi (-p), ansi (-a), or cplusplus (-+)\n" );
-#ifdef WITH_CDECL_DEBUG
-    printf( "  debug (-d), nodebug\n" );
-#endif /* WITH_CDECL_DEBUG */
-#ifdef YYDEBUG
-    printf( "  yydebug (-D), noyydebug\n" );
-#endif /* YYDEBUG */
-    printf( "\nCurrent set values are:\n" );
-    printf( "  %screate\n", opt_make_c ? "   " : " no" );
-    printf( "  %sinteractive\n", opt_interactive ? "   " : " no" );
-    printf( "  %sprompt\n", prompt[0] ? "   " : " no" );
-    printf( "  lang=%s\n", lang_name( opt_lang ) );
-#ifdef WITH_CDECL_DEBUG
-    printf( "  %sdebug\n", opt_debug ? "   " : " no" );
-#endif /* WITH_CDECL_DEBUG */
-#ifdef YYDEBUG
-    printf( "  %syydebug\n", yydebug ? "   " : " no" );
-#endif /* YYDEBUG */
-  }
 }
 
 /**
@@ -312,6 +241,10 @@ static void parse_error( char const *what, char const *msg ) {
   }
 }
 
+static void quit( void ) {
+  exit( EX_OK );
+}
+
 static void unsupp( char const *s, char const *hint ) {
   illegal( opt_lang, s, NULL );
   if ( hint )
@@ -328,7 +261,6 @@ int yywrap( void ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
 %}
 
 %union {
@@ -463,6 +395,7 @@ int yywrap( void ) {
 
 %type   <name>      name_token_opt
 
+/*****************************************************************************/
 %%
 
 command_list
@@ -601,26 +534,12 @@ set_command
 /*****************************************************************************/
 
 quit_command
-  : Y_QUIT                        { exit( EX_OK ); }
+  : Y_QUIT                        { quit(); }
   ;
 
 /*****************************************************************************/
 /*  declaration english productions                                          */
 /*****************************************************************************/
-
-decl_list_english
-  : /* empty */
-    {
-      $$.head_ast = $$.tail_ast = NULL;
-    }
-
-  | decl_list_english ',' decl_english
-    {
-      //$$.head_ast = $1.head_ast;
-      //$$.tail_ast = $3.tail_ast;
-      //$1.tail_ast->next = $3.head_ast;
-    }
-  ;
 
 decl_english
   : array_decl_english
@@ -687,6 +606,22 @@ func_decl_english
 decl_list_opt_english
   : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
   | '(' decl_list_english ')'     { $$ = $2; }
+  ;
+
+decl_list_english
+  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
+
+  | decl_list_english ',' decl_english
+    {
+      DUMP_RULE( "decl_list_english: decl_list_english ',' decl_english",
+        DUMP_AST_LIST( "decl_list_english", $1 );
+        DUMP_AST( "decl_english", $3 );
+      );
+
+      //$$.head_ast = $1.head_ast;
+      //$$.tail_ast = $3.tail_ast;
+      //$1.tail_ast->next = $3.head_ast;
+    }
   ;
 
 returning_english
@@ -964,8 +899,9 @@ array_decl_c
       );
 
       $$ = c_ast_new( K_ARRAY );
+      $$->name = c_ast_name( $1 );
       $$->as.array.size = $2;
-      $$->as.array.of_ast = $1;
+      $$->as.array.of_ast = PEEK_TYPE();
     }
   ;
 
@@ -1036,8 +972,9 @@ reference_decl_c
       );
 
       $$ = c_ast_new( K_REFERENCE );
+      $$->name = c_ast_name( $3 );
       $$->as.ptr_ref.qualifier = $2;
-      $$->as.ptr_ref.to_ast = $3;
+      $$->as.ptr_ref.to_ast = PEEK_TYPE();
     }
   ;
 
@@ -1047,7 +984,7 @@ reference_decl_c
 
 type_english
   : /*storage_class_opt_c */
-/*  type_qualifier_list_opt_c */
+    type_qualifier_list_opt_c
     type_modifier_list_opt_english
     builtin_type_opt_c
     {
