@@ -93,7 +93,7 @@ static void c_ast_json_impl( c_ast_t const *ast, unsigned indent,
         c_ast_json_impl( ast->as.func.ret_ast, indent, "ret_ast", fout );
         break;
 
-      case K_PTR_TO_MEMBER:
+      case K_POINTER_TO_MEMBER:
         PRINT_COMMA;
         PRINT_JSON( "\"class_name\": \"%s\"\n", ast->as.ptr_mbr.class_name );
         // no break;
@@ -151,7 +151,7 @@ void c_ast_check( c_ast_t *ast ) {
       for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next )
         /* TODO */;
       break;
-    case K_PTR_TO_MEMBER:
+    case K_POINTER_TO_MEMBER:
       break;
     case K_NAME:
       break;
@@ -211,16 +211,6 @@ void c_ast_english( c_ast_t const *ast, FILE *fout ) {
       c_ast_english( ast->as.func.ret_ast, fout );
       break;
 
-    case K_PTR_TO_MEMBER:
-      if ( ast->as.ptr_mbr.qualifier )
-        FPRINTF( fout, "%s ", c_type_name( ast->as.ptr_mbr.qualifier ) );
-      FPRINTF( fout,
-        "%s %s %s %s %s %s ",
-        L_POINTER, L_TO, L_MEMBER, L_OF, L_CLASS, ast->as.ptr_mbr.class_name
-      );
-      c_ast_english( ast->as.ptr_mbr.of_ast, fout );
-      break;
-
     case K_POINTER:
     case K_REFERENCE:
       if ( ast->as.ptr_ref.qualifier )
@@ -229,6 +219,16 @@ void c_ast_english( c_ast_t const *ast, FILE *fout ) {
         "%s %s ", (ast->kind == K_POINTER ? L_POINTER : L_REFERENCE), L_TO
       );
       c_ast_english( ast->as.ptr_ref.to_ast, fout );
+      break;
+
+    case K_POINTER_TO_MEMBER:
+      if ( ast->as.ptr_mbr.qualifier )
+        FPRINTF( fout, "%s ", c_type_name( ast->as.ptr_mbr.qualifier ) );
+      FPRINTF( fout,
+        "%s %s %s %s %s %s ",
+        L_POINTER, L_TO, L_MEMBER, L_OF, L_CLASS, ast->as.ptr_mbr.class_name
+      );
+      c_ast_english( ast->as.ptr_mbr.of_ast, fout );
       break;
   } // switch
 }
@@ -256,7 +256,7 @@ void c_ast_free( c_ast_t *ast ) {
       c_ast_free( ast->as.array.of_ast );
       break;
 
-    case K_PTR_TO_MEMBER:
+    case K_POINTER_TO_MEMBER:
       FREE( ast->as.ptr_mbr.class_name );
       c_ast_free( ast->as.ptr_mbr.of_ast );
       break;
@@ -295,7 +295,7 @@ void c_ast_gibberish( c_ast_t const *ast, FILE *fout ) {
     case K_FUNCTION:
       // TODO
       break;
-    case K_PTR_TO_MEMBER:
+    case K_POINTER_TO_MEMBER:
       // TODO
       break;
     case K_POINTER:
@@ -324,7 +324,7 @@ c_ast_t* c_ast_find_name( c_ast_t *ast ) {
     case K_BLOCK:
     case K_FUNCTION:
     case K_POINTER:
-    case K_PTR_TO_MEMBER:
+    case K_POINTER_TO_MEMBER:
     case K_REFERENCE:
       return c_ast_find_name( ast->as.array.of_ast );
     case K_BUILTIN:
@@ -377,15 +377,15 @@ void c_ast_push( c_ast_t **phead, c_ast_t *new_ast ) {
 
 char const* c_kind_name( c_kind_t kind ) {
   switch ( kind ) {
-    case K_NONE         : return "none";
-    case K_ARRAY        : return "array";
-    case K_BLOCK        : return "block";
-    case K_BUILTIN      : return "built-in type";
-    case K_FUNCTION     : return "function";
-    case K_NAME         : return "name";
-    case K_POINTER      : return "pointer";
-    case K_PTR_TO_MEMBER: return "pointer-to-member";
-    case K_REFERENCE    : return "reference";
+    case K_NONE             : return "none";
+    case K_ARRAY            : return "array";
+    case K_BLOCK            : return "block";
+    case K_BUILTIN          : return "built-in type";
+    case K_FUNCTION         : return "function";
+    case K_NAME             : return "name";
+    case K_POINTER          : return "pointer";
+    case K_POINTER_TO_MEMBER: return "pointer-to-member";
+    case K_REFERENCE        : return "reference";
 
     case K_ENUM_CLASS_STRUCT_UNION:
       if ( opt_lang >= LANG_CPP )

@@ -43,7 +43,7 @@ enum c_kind {
   K_FUNCTION,
   K_NAME,
   K_POINTER,
-  K_PTR_TO_MEMBER,                      // C++ class data member
+  K_POINTER_TO_MEMBER,                  // C++ class data member
   K_REFERENCE,
 };
 

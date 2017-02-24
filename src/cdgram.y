@@ -374,6 +374,7 @@ int yywrap( void ) {
 %type   <ast>       block_decl_c
 %type   <ast>       array_decl_c
 %type   <ast>       func_decl_c
+%type   <ast>       name_decl_c
 %type   <ast>       pointer_decl_c
 %type   <ast>       pointer_to_member_decl_c
 %type   <ast>       reference_decl_c
@@ -695,7 +696,7 @@ pointer_to_member_english
         unsupp( "pointer to array of unspecified dimension",
                 "pointer to object" );
 #endif
-      $$ = c_ast_new( K_PTR_TO_MEMBER );
+      $$ = c_ast_new( K_POINTER_TO_MEMBER );
       $$->as.ptr_mbr.qualifier = $1;
       $$->as.ptr_mbr.class_name = $7;
       $$->as.ptr_mbr.of_ast = $8;
@@ -841,7 +842,7 @@ pointer_cast_c
 pointer_to_member_cast_c
   : Y_NAME Y_COLON_COLON '*' cast_c
     {
-      $$ = c_ast_new( K_PTR_TO_MEMBER );
+      $$ = c_ast_new( K_POINTER_TO_MEMBER );
       $$->as.ptr_mbr.class_name = $1;
       $$->as.ptr_mbr.of_ast = $4;
     }
@@ -879,15 +880,7 @@ decl2_c
       $$ = $2;
     }
 
-  | Y_NAME
-    {
-      DUMP_RULE( "decl2_c: Y_NAME",
-        DUMP_NAME( "Y_NAME", $1 );
-      );
-
-      $$ = c_ast_new( K_NAME );
-      $$->name = $1;
-    }
+  | name_decl_c
   ;
 
 array_decl_c
@@ -935,6 +928,18 @@ func_decl_c
     }
   ;
 
+name_decl_c
+  : Y_NAME
+    {
+      DUMP_RULE( "name_decl_c: Y_NAME",
+        DUMP_NAME( "Y_NAME", $1 );
+      );
+
+      $$ = c_ast_new( K_NAME );
+      $$->name = $1;
+    }
+  ;
+
 pointer_decl_c
   : '*' type_qualifier_list_opt_c decl_c
     {
@@ -957,7 +962,7 @@ pointer_to_member_decl_c
         DUMP_AST( "decl_c", $4 );
       );
 
-      $$ = c_ast_new( K_PTR_TO_MEMBER );
+      $$ = c_ast_new( K_POINTER_TO_MEMBER );
       $$->as.ptr_mbr.class_name = $1;
       $$->as.ptr_mbr.of_ast = $4;
     }
