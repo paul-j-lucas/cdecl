@@ -86,8 +86,8 @@ struct c_func {
  * AST object for a C++ pointer-to-member of class.
  */
 struct c_ptr_mbr {
-  c_type_t    qualifier;                // T_CONST, T_RESTRICT, T_VOLATILE
   c_ast_t    *of_ast;
+  c_type_t    qualifier;                // T_CONST, T_RESTRICT, T_VOLATILE
   char const *class_name;
 };
 
@@ -97,8 +97,8 @@ struct c_ptr_mbr {
  * taken advantage of.)
  */
 struct c_ptr_ref {
-  c_type_t  qualifier;                  // T_CONST, T_RESTRICT, T_VOLATILE
   c_ast_t  *to_ast;
+  c_type_t  qualifier;                  // T_CONST, T_RESTRICT, T_VOLATILE
 };
 
 /**
@@ -131,7 +131,7 @@ void c_ast_cleanup( void );
 /**
  * Prints the given c_ast as English.
  *
- * @param ast The c_ast to print.
+ * @param ast The c_ast to print.  May be null.
  * @param fout The FILE to print to.
  */
 void c_ast_english( c_ast_t const *ast, FILE *fout );
@@ -139,7 +139,7 @@ void c_ast_english( c_ast_t const *ast, FILE *fout );
 /**
  * Frees all the memory used by the given c_ast.
  *
- * @param ast The c_ast to free.
+ * @param ast The c_ast to free.  May be null.
  */
 void c_ast_free( c_ast_t *ast );
 
@@ -168,7 +168,7 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
  * @param ast The c_ast to get the name from.
  * @return Returns said name or null if none.
  */
-char const* c_ast_name( c_ast_t const *ast );
+char const* c_ast_name( c_ast_t *ast );
 
 /**
  * Creates a new c_ast.
@@ -176,6 +176,8 @@ char const* c_ast_name( c_ast_t const *ast );
  * @param kind The kind of object to create.
  */
 c_ast_t* c_ast_new( c_kind_t kind );
+
+char const* c_ast_take_name( c_ast_t *ast );
 
 /**
  * Pops a c_ast from the head of a list.

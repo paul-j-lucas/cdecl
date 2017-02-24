@@ -239,14 +239,9 @@ void c_ast_free( c_ast_t *ast ) {
   assert( c_ast_count > 0 );
   --c_ast_count;
 
-  if ( ast->name )
-    FREE( ast->name );
+  FREE( ast->name );
 
   switch ( ast->kind ) {
-    case K_ARRAY:
-      if ( ast->as.array.of_ast )
-        c_ast_free( ast->as.array.of_ast );
-      break;
     case K_BLOCK:
     case K_FUNCTION:
       for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; ) {
@@ -254,15 +249,18 @@ void c_ast_free( c_ast_t *ast ) {
         c_ast_free( arg );
         arg = next;
       } // for
+      // no break;
+    case K_ARRAY:
+    case K_POINTER:
+    case K_REFERENCE:
+      c_ast_free( ast->as.array.of_ast );
       break;
+
     case K_PTR_TO_MEMBER:
       FREE( ast->as.ptr_mbr.class_name );
       c_ast_free( ast->as.ptr_mbr.of_ast );
       break;
-    case K_POINTER:
-    case K_REFERENCE:
-      c_ast_free( ast->as.ptr_ref.to_ast );
-      break;
+
     case K_BUILTIN:
     case K_ENUM_CLASS_STRUCT_UNION:
     case K_NAME:
@@ -315,28 +313,41 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
   FPUTC( '\n', fout );
 }
 
-char const* c_ast_name( c_ast_t const *ast ) {
+c_ast_t* c_ast_find_name( c_ast_t *ast ) {
   if ( ast == NULL )
     return NULL;
   if ( ast->name )
-    return ast->name;
+    return ast;
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      return c_ast_name( ast->as.array.of_ast );
-    case K_POINTER:
-    case K_REFERENCE:
-      return c_ast_name( ast->as.ptr_ref.to_ast );
     case K_BLOCK:
     case K_FUNCTION:
-      return c_ast_name( ast->as.func.ret_ast );
+    case K_POINTER:
+    case K_PTR_TO_MEMBER:
+    case K_REFERENCE:
+      return c_ast_find_name( ast->as.array.of_ast );
     case K_BUILTIN:
     case K_ENUM_CLASS_STRUCT_UNION:
     case K_NAME:
     case K_NONE:
-    case K_PTR_TO_MEMBER:
       return NULL;
   } // switch
+}
+
+char const* c_ast_name( c_ast_t *ast ) {
+  c_ast_t *const found = c_ast_find_name( ast );
+  return found ? found->name : NULL;
+}
+
+char const* c_ast_take_name( c_ast_t *ast ) {
+  c_ast_t *const found = c_ast_find_name( ast );
+  if ( !found )
+    return NULL;
+  char const *const name = found->name;
+  found->name = NULL;
+  c_ast_free( ast );
+  return name;
 }
 
 c_ast_t* c_ast_new( c_kind_t kind ) {
