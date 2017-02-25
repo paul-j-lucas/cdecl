@@ -24,35 +24,33 @@
 #define CDEBUG(...)                     /* nothing */
 #endif /* WITH_CDECL_DEBUG */
 
+#define DUMP_COMMA \
+  BLOCK( if ( !json_comma ) json_comma = true; else FPUTS( ",\n", stdout ); )
+
 #define DUMP_AST(KEY,AST) \
-  c_ast_json( (AST), 1, (KEY), stdout )
+  BLOCK( DUMP_COMMA; c_ast_json( (AST), 1, (KEY), stdout ); )
 
 #define DUMP_AST_LIST(KEY,AST_LIST) BLOCK( \
-  c_ast_json( (AST_LIST).head_ast, 1, (KEY ".head"), stdout ); \
-  c_ast_json( (AST_LIST).tail_ast, 1, (KEY ".tail"), stdout ); )
+  DUMP_COMMA; c_ast_json( (AST_LIST).head_ast, 1, (KEY ".head"), stdout ); \
+  DUMP_COMMA; c_ast_json( (AST_LIST).tail_ast, 1, (KEY ".tail"), stdout ); )
 
-#define DUMP_NAME(KEY,NAME) \
-  FPRINTF( stdout, "  \"" KEY "\": \"%s\"\n", (NAME) )
+#define DUMP_NAME(KEY,NAME) BLOCK(        \
+  DUMP_COMMA; FPUTS( "  ", stdout );      \
+  json_print_kv( (KEY), (NAME), stdout ); \
+  FPUTC( '\n', stdout ); )
 
 #define DUMP_NUM(KEY,NUM) \
-  FPRINTF( stdout, "  \"" KEY "\": \"%d\"\n", (NUM) )
+  BLOCK( DUMP_COMMA; FPRINTF( stdout, "  \"" KEY "\": \"%d\"\n", (NUM) ); )
 
-#if 0
-static inline void dump_name( char const *key, char const *name ) {
-  if ( name && *name )
-    FPRINTF( stdout, "  \"%s\": \"%s\"\n", key, name );
-  else
-    FPRINTF( stdout, "  \"%s\": null", key );
-}
-#endif
+#define DUMP_RULE(RULE,...) CDEBUG(       \
+  bool json_comma = false;                \
+  FPUTS( "\n\"" RULE "\": {\n", stdout ); \
+  __VA_ARGS__                             \
+  FPUTS( "\n}\n", stdout ); )
 
-#define DUMP_RULE(RULE,...) \
-  CDEBUG( FPRINTF( stdout, "\n\"" RULE "\": {\n" ); \
-          BLOCK( __VA_ARGS__ );                     \
-          FPUTS( "}\n", stdout ); )
-
-#define DUMP_TYPE(KEY,TYPE) \
-  FPRINTF( stdout, "  \"" KEY "\": \"%s\"\n", c_type_name( TYPE ) )
+#define DUMP_TYPE(KEY,TYPE) BLOCK(    \
+  DUMP_COMMA; FPUTS( "  ", stdout );  \
+  json_print_kv( (KEY), c_type_name( TYPE ), stdout ); )
 
 #define PUSH_TYPE(AST)            c_ast_push( &in_attr.type_ast, (AST) )
 #define PEEK_TYPE()               in_attr.type_ast

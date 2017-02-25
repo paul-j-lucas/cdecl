@@ -118,6 +118,16 @@ void* free_later( void *p );
 void free_now( void );
 
 /**
+ * Prints a key/value pair as JSON.
+ *
+ * @param key The key to print.
+ * @param value The value to print, if any.  If either null or the empty
+ * string, \c null is printed instead of the value.
+ * @param jout The FILE to print to.
+ */
+void json_print_kv( char const *key, char const *value, FILE *jout );
+
+/**
  * Gets a printable version of the given character:
  *  + For characters for which isprint(3) returns non-zero,
  *    the printable version is a single character string of itself.

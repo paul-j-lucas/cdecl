@@ -126,6 +126,13 @@ void free_now( void ) {
   free_head = NULL;
 }
 
+void json_print_kv( char const *key, char const *value, FILE *jout ) {
+  if ( value && *value )
+    FPRINTF( jout, "\"%s\": \"%s\"", key, value );
+  else
+    FPRINTF( jout, "\"%s\": null", key  );
+}
+
 char const* printable_char( char c ) {
   switch( c ) {
     case '\0': return "\\0";
