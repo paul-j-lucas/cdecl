@@ -39,7 +39,7 @@
   json_print_kv( (KEY), (NAME), stdout ); )
 
 #define DUMP_NUM(KEY,NUM) \
-  BLOCK( DUMP_COMMA; FPRINTF( stdout, "  \"" KEY "\": \"%d\"\n", (NUM) ); )
+  BLOCK( DUMP_COMMA; FPRINTF( stdout, "  \"" KEY "\": %d", (NUM) ); )
 
 #define DUMP_RULE(RULE,...) CDEBUG(       \
   bool json_comma = false;                \
