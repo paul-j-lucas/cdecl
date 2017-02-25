@@ -353,8 +353,7 @@ int yywrap( void ) {
 %token  <number>    Y_NUMBER
 
 %type   <ast>       decl_english
-%type   <ast_list>  decl_list_english
-%type   <ast_list>  decl_list_opt_english
+%type   <ast_list>  decl_list_english decl_list_opt_english
 %type   <ast>       array_decl_english
 %type   <number>    array_size_opt_english
 %type   <ast>       block_decl_english
@@ -381,6 +380,7 @@ int yywrap( void ) {
 %type   <ast>       array_decl_c
 %type   <ast>       func_decl_c
 %type   <ast>       name_decl_c
+%type   <ast>       nested_decl_c
 %type   <ast>       pointer_decl_c
 %type   <ast>       pointer_to_member_decl_c
 %type   <ast>       reference_decl_c
@@ -396,8 +396,8 @@ int yywrap( void ) {
 %type   <type>      type_qualifier_list_opt_c
 
 %type   <ast>       type_english
-%type   <type>      type_modifier_list_opt_english
 %type   <type>      type_modifier_english
+%type   <type>      type_modifier_list_opt_english
 %type   <type>      any_type_english
 
 %type   <name>      name_token_opt
@@ -449,6 +449,10 @@ cast_english
       FREE( $2 );
       c_ast_free( $4 );
     }
+  | Y_CAST Y_NAME error
+    {
+      parse_error( NULL, "\"into\" expected" );
+    }
 
   | Y_CAST decl_english Y_END
     {
@@ -478,6 +482,14 @@ declare_english
       declare_english( $2, $4, $5 );
       FREE( $2 );
       c_ast_free( $5 );
+    }
+  | Y_DECLARE error
+    {
+      parse_error( NULL, "name expected" );
+    }
+  | Y_DECLARE Y_NAME error
+    {
+      parse_error( NULL, "\"as\" expected" );
     }
   ;
 
@@ -590,6 +602,10 @@ array_decl_english
 array_size_opt_english
   : /* empty */                   { $$ = C_ARRAY_NO_SIZE; }
   | Y_NUMBER
+  | error
+    {
+      parse_error( NULL, "array size expected" );
+    }
   ;
 
 block_decl_english
@@ -621,7 +637,7 @@ decl_list_opt_english
 
 decl_list_english
   : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
-  | decl_list_english ',' decl_english
+  | decl_list_english comma_expected decl_english
     {
       DUMP_RULE( "decl_list_english: decl_list_english ',' decl_english",
         DUMP_AST_LIST( "decl_list_english", $1 );
@@ -681,6 +697,7 @@ returning_english
 
       $$ = $2;
     }
+  | error { parse_error( NULL, "\"returning\" expected" ); }
   ;
 
 pointer_decl_english
@@ -769,7 +786,7 @@ cast_c
   ;
 
 cast_list_c
-  : cast_list_c ',' cast_c
+  : cast_list_c comma_expected cast_c
     {
       DUMP_RULE( "cast_list_c: cast_lsit_c ',' cast_c",
         DUMP_AST_LIST( "cast_list_c", $1 );
@@ -875,7 +892,7 @@ pointer_cast_c
   ;
 
 pointer_to_member_cast_c
-  : Y_NAME Y_COLON_COLON '*' cast_c
+  : Y_NAME Y_COLON_COLON star_expected cast_c
     {
       DUMP_RULE( "pointer_to_member_cast_c: Y_NAME Y_COLON_COLON '*' cast_c",
         DUMP_NAME( "Y_NAME", $1 );
@@ -915,16 +932,8 @@ decl2_c
   : array_decl_c
   | block_decl_c
   | func_decl_c
-  | '(' decl_c ')'
-    {
-      DUMP_RULE( "decl2_c: '(' decl_c ')'",
-        DUMP_AST( "decl_c", $2 );
-      );
-
-      $$ = $2;
-    }
-
   | name_decl_c
+  | nested_decl_c
   ;
 
 array_decl_c
@@ -995,6 +1004,17 @@ name_decl_c
     }
   ;
 
+nested_decl_c
+  : '(' decl_c ')'
+    {
+      DUMP_RULE( "decl2_c: '(' decl_c ')'",
+        DUMP_AST( "decl_c", $2 );
+      );
+
+      $$ = $2;
+    }
+  ;
+
 pointer_decl_c
   : '*' type_qualifier_list_opt_c decl_c
     {
@@ -1012,7 +1032,7 @@ pointer_decl_c
   ;
 
 pointer_to_member_decl_c
-  : Y_NAME Y_COLON_COLON '*' decl_c
+  : Y_NAME Y_COLON_COLON star_expected decl_c
     {
       DUMP_RULE( "pointer_to_member_decl_c: Y_NAME Y_COLON_COLON '*' decl_c",
         DUMP_AST( "ia:type_c", PEEK_TYPE() );
@@ -1251,9 +1271,19 @@ storage_class_c
 /*  miscellaneous productions                                                */
 /*****************************************************************************/
 
+comma_expected
+  : ','
+  | error                         { parse_error( NULL, "',' expected" ); }
+  ;
+
 name_token_opt
   : /* empty */                   { $$ = NULL; }
   | Y_NAME
+  ;
+
+star_expected
+  : '*'
+  | error                         { parse_error( NULL, "'*' expected" ); }
   ;
 
 %%
