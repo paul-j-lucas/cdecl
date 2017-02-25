@@ -70,6 +70,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define NUM_TYPES 19
 #define MIN(LANG) (LANG - 1)            /* illegal before LANG */
 
+// shorthand      // illegal in...
 #define __        LANG_NONE             /* legal in all languages */
 #define XX        LANG_ALL              /* illegal in all languages  */
 #define KO       ~LANG_C_KNR            /* legal in K&R C only */
@@ -78,9 +79,10 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define PP        MIN(LANG_CPP)         /* minimum C++ */
 
 /**
- * Restrictions on type combinations in languages.
+ * Illegal combinations of types in languages.
+ * Only the lower triangle is used.
  */
-static lang_t const RESTRICTIONS[ NUM_TYPES ][ NUM_TYPES ] = {
+static lang_t const BAD_TYPE_LANG[ NUM_TYPES ][ NUM_TYPES ] = {
   /*                v  b  c  16 32 wc s  i  l  ll s  u  f  d  c  E  S  U  C */
   /* void      */ { __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* bool      */ { XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
@@ -105,6 +107,25 @@ static lang_t const RESTRICTIONS[ NUM_TYPES ][ NUM_TYPES ] = {
 
 ////////// inline functions ///////////////////////////////////////////////////
 
+/**
+ * Checks whether the given type is some form of <code>long int</code> only,
+ * and \e not either <code>long float</code> (K&R) or <code>long double</code>
+ * (C89).
+ *
+ * @param type The type to check.
+ * @return Returns \c true only if \a type is some form of <code>long
+ * int</code>.
+ */
+static inline bool is_long_int( c_type_t type ) {
+  return (type & T_LONG) && !(type & (T_FLOAT | T_DOUBLE));
+}
+
+/**
+ * Checks whether only 1 bit is set in the given integer.
+ *
+ * @param n The number to check.
+ * @reeturn Returns \c true only if exactly 1 bit is set.
+ */
 static inline bool only_one_bit_set( unsigned n ) {
   return n && !(n & (n - 1));
 }
@@ -114,14 +135,10 @@ static inline bool only_one_bit_set( unsigned n ) {
 void c_type_add( c_type_t *dest_type, c_type_t new_type ) {
   assert( dest_type );
 
-  if ( new_type == T_LONG && (*dest_type & T_LONG) ) {
-    //
-    // TODO
-    //
+  if ( is_long_int( new_type ) && is_long_int( *dest_type ) )
     new_type = T_LONG_LONG;
-  }
 
-  if ( *dest_type & new_type ) {
+  if ( new_type & *dest_type ) {
     PRINT_ERR(
       "error: \"%s\" can not be combined with previous declaration\n",
       c_type_name( new_type )
@@ -132,13 +149,14 @@ void c_type_add( c_type_t *dest_type, c_type_t new_type ) {
 }
 
 bool c_type_check( c_type_t type ) {
-  for ( size_t i = 0; i < NUM_TYPES; ++i ) {
-    if ( type & C_TYPE_INFO[i].type ) {
-      for ( size_t j = 0; j < i; ++j ) {
-        if ( (type & C_TYPE_INFO[j].type) && (opt_lang & RESTRICTIONS[i][j]) ) {
+  for ( size_t row = 0; row < NUM_TYPES; ++row ) {
+    if ( type & C_TYPE_INFO[ row ].type ) {
+      for ( size_t col = 0; col < row; ++col ) {
+        if ( (type & C_TYPE_INFO[ col ].type) &&
+             (opt_lang & BAD_TYPE_LANG[ row ][ col ]) ) {
           PRINT_ERR(
             "warning: \"%s\" with \"%s\" is illegal in %s\n",
-            C_TYPE_INFO[i].literal, C_TYPE_INFO[j].literal,
+            C_TYPE_INFO[ row ].literal, C_TYPE_INFO[ col ].literal,
             lang_name( opt_lang )
           );
           return false;

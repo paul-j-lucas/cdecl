@@ -25,7 +25,7 @@
 #define T_SHORT         0x00000040
 #define T_INT           0x00000080
 #define T_LONG          0x00000100
-#define T_LONG_LONG     0x00000200
+#define T_LONG_LONG     0x00000200      /* special case */
 #define T_SIGNED        0x00000400
 #define T_UNSIGNED      0x00000800
 #define T_FLOAT         0x00001000
@@ -55,9 +55,14 @@ typedef unsigned c_type_t;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * TODO
+ * Adds a type to an existing type, e.g., \c short to \c int, ensuring that a
+ * particular type is never added more than once, e.g., \c int to \c int.
  *
- * @param type TODO
+ * A special case has to be made for \c long to allow for <code>long
+ * long</code> yet not allow for <code>long long long</code>.
+ *
+ * @param dest_type A pointer to the type to add to.
+ * @param new_type The type to add.
  */
 void c_type_add( c_type_t *dest_type, c_type_t new_type );
 
@@ -72,6 +77,9 @@ bool c_type_check( c_type_t type );
  * Given a type, get its name.
  *
  * @param type The type to get the name for.
+ * @return Returns said name.
+ * @warning The pointer returned is to a static buffer, so you can't do
+ * something like call this twice in the same \c printf() statement.
  */
 char const* c_type_name( c_type_t type );
 
