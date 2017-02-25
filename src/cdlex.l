@@ -27,7 +27,7 @@
 struct keyword {
   char const *literal;                  // C string literal of the keyword
   int         y_token;                  // yacc token number
-  char const *c_keyword_synonym;        // English synonym of C keyword
+  char const *c_keyword_synonym;        // English synonym of keyword, if any
 };
 typedef struct keyword keyword_t;
 
