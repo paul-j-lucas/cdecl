@@ -369,7 +369,6 @@ int yywrap( void ) {
 %type   <ast>       array_cast_c
 %type   <ast>       block_cast_c
 %type   <ast>       func_cast_c
-%type   <ast>       ordinary_cast_c
 %type   <ast>       pointer_cast_c
 %type   <ast>       pointer_to_member_cast_c
 %type   <ast>       reference_cast_c
@@ -505,7 +504,7 @@ explain_declaration_c
       );
 
       FPRINTF( fout, "declare %s as ", c_ast_name( $4 ) );
-      c_ast_english( $4, fout );
+      c_ast_english( $2, fout );
       FPUTC( '\n', fout );
 
       c_ast_free( POP_TYPE() );
@@ -779,7 +778,6 @@ cast_c
   | array_cast_c
   | block_cast_c                        /* Apple extension */
   | func_cast_c
-  | ordinary_cast_c
   | pointer_cast_c
   | pointer_to_member_cast_c
   | reference_cast_c
@@ -843,39 +841,47 @@ array_cast_c
 
 block_cast_c
   : '(' '^' cast_c ')' '(' cast_list_opt_c ')'
-    { // block returning
+    {
+      $$ = c_ast_new( K_BLOCK );
+      $$->name = c_ast_name( $3 );
+      $$->as.block.args = $6;
+      $$->as.block.ret_ast = PEEK_TYPE();
     }
   ;
 
 func_cast_c
   : '(' ')'
     {
+      DUMP_RULE( "func_cast_c: '(' ')'",
+        DUMP_AST( "ia:type_c", PEEK_TYPE() );
+      );
+
       $$ = c_ast_new( K_FUNCTION );
       $$->as.func.ret_ast = PEEK_TYPE();
     }
 
+  | '(' cast_c ')'
+    {
+      DUMP_RULE( "func_cast_c: '(' cast_c ')'",
+        DUMP_AST( "ia:type_c", PEEK_TYPE() );
+        DUMP_AST( "cast_c", $2 );
+      );
+
+      $$ = $2;
+    }
+
   | '(' cast_c ')' '(' cast_list_opt_c ')'
     {
-      DUMP_RULE( "func_cast_c: '(' ')'",
+      DUMP_RULE( "func_cast_c: '(' cast_c ')' '(' cast_list_opt_c ')'",
         DUMP_AST( "ia:type_c", PEEK_TYPE() );
         DUMP_AST( "cast_c", $2 );
         DUMP_AST_LIST( "cast_list_opt_c", $5 );
       );
 
       $$ = c_ast_new( K_FUNCTION );
+      $$->name = c_ast_name( $2 );
       $$->as.func.args = $5;
       $$->as.func.ret_ast = PEEK_TYPE();
-    }
-  ;
-
-ordinary_cast_c
-  : '(' cast_c ')'
-    {
-      DUMP_RULE( "ordinary_cast_c: '(' cast_c ')'",
-        DUMP_AST( "cast_c", $2 );
-      );
-
-      $$ = $2;
     }
   ;
 
@@ -972,7 +978,11 @@ block_decl_c
         DUMP_AST_LIST( "cast_list_opt_c", $7 );
       );
 
-      // TODO
+      $$ = c_ast_new( K_BLOCK );
+      $$->name = c_ast_name( $4 );
+      $$->as.block.args = $7;
+      $$->as.block.ret_ast = PEEK_TYPE();
+      $$->as.block.type = $3;
     }
   ;
 
@@ -987,8 +997,8 @@ func_decl_c
 
       $$ = c_ast_new( K_FUNCTION );
       $$->name = c_ast_name( $1 );
-      $$->as.func.ret_ast = PEEK_TYPE();
       $$->as.func.args = $3;
+      $$->as.func.ret_ast = PEEK_TYPE();
     }
   ;
 
