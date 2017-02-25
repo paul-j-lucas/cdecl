@@ -36,8 +36,7 @@
 
 #define DUMP_NAME(KEY,NAME) BLOCK(        \
   DUMP_COMMA; FPUTS( "  ", stdout );      \
-  json_print_kv( (KEY), (NAME), stdout ); \
-  FPUTC( '\n', stdout ); )
+  json_print_kv( (KEY), (NAME), stdout ); )
 
 #define DUMP_NUM(KEY,NUM) \
   BLOCK( DUMP_COMMA; FPRINTF( stdout, "  \"" KEY "\": \"%d\"\n", (NUM) ); )
