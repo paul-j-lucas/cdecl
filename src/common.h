@@ -8,6 +8,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#define JSON_INDENT               2     /* speces per JSON indent level */
+
 // extern variables
 extern char const  *me;                 // program name
 extern char const  *prompt;

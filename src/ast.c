@@ -17,8 +17,6 @@
 #include <string.h>                     /* for memset(3) */
 #include <sysexits.h>
 
-#define INDENT_SPACING            "  "
-
 #define PRINT_COMMA \
   BLOCK( if ( !comma ) { FPUTS( ",\n", jout ); comma = true; } )
 
@@ -36,8 +34,7 @@ static unsigned c_ast_count;            // allocated but not freed
 ////////// local functions ////////////////////////////////////////////////////
 
 static void print_indent( unsigned indent, FILE *jout ) {
-  for ( ; indent > 0; --indent )
-    FPUTS( INDENT_SPACING, jout );
+  FPRINTF( jout, "%*s", (int)(indent * JSON_INDENT), "" );
 }
 
 static void c_ast_json_impl( c_ast_t const *ast, unsigned indent,
