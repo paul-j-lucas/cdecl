@@ -147,6 +147,14 @@ struct c_ast {
 void c_ast_cleanup( void );
 
 /**
+ * TODO
+ *
+ * @param ast The c_ast to clone.
+ * @return Returns said clone.
+ */
+c_ast_t* c_ast_clone( c_ast_t const *ast );
+
+/**
  * Prints the given c_ast as English.
  *
  * @param ast The c_ast to print.  May be null.
@@ -179,6 +187,14 @@ void c_ast_gibberish( c_ast_t const *ast, FILE *fout );
  */
 void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
                  FILE *fout );
+
+/**
+ * TODO
+ *
+ * @param list The c_ast_list to clone.
+ * @return Returns said clone.
+ */
+c_ast_list_t c_ast_list_clone( c_ast_list_t const *list );
 
 /**
  * Gets the name from the given c_ast.

@@ -172,6 +172,47 @@ void c_ast_cleanup( void ) {
     INTERNAL_ERR( "number of c_ast objects (%u) > 0\n", c_ast_count );
 }
 
+c_ast_t* c_ast_clone( c_ast_t const *ast ) {
+  if ( ast == NULL )
+    return NULL;
+  c_ast_t *const clone = c_ast_new( ast->kind );
+  clone->name = ast->name ? check_strdup( ast->name ) : NULL;
+  clone->next = c_ast_clone( ast->next );
+
+  switch ( ast->kind ) {
+    case K_NONE:
+    case K_NAME:
+      break;
+    case K_ARRAY:
+      clone->as.array.of_ast = c_ast_clone( ast->as.array.of_ast );
+      clone->as.array.size = ast->as.array.size;
+      break;
+    case K_BLOCK:
+      clone->as.block.args = c_ast_list_clone( &ast->as.block.args );
+      clone->as.block.type = ast->as.block.type;
+      // no break;
+    case K_FUNCTION:
+      clone->as.func.ret_ast = c_ast_clone( ast->as.func.ret_ast );
+      break;
+    case K_BUILTIN:
+    case K_ENUM_CLASS_STRUCT_UNION:
+      clone->as.builtin.type = ast->as.builtin.type;
+      break;
+    case K_POINTER_TO_MEMBER:
+      clone->as.ptr_mbr.type = ast->as.ptr_mbr.type;
+      clone->as.ptr_mbr.class_name = ast->as.ptr_mbr.class_name ?
+        check_strdup( ast->as.ptr_mbr.class_name ) : NULL;
+      // no break;
+    case K_POINTER:
+    case K_REFERENCE:
+      clone->as.ptr_ref.qualifier = ast->as.ptr_ref.qualifier;
+      clone->as.ptr_ref.to_ast = c_ast_clone( ast->as.ptr_ref.to_ast );
+      break;
+  } // switch
+
+  return clone;
+}
+
 void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   if ( ast == NULL )
     return;
@@ -189,7 +230,12 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
       break;
 
     case K_BLOCK:
-      // TODO
+      FPRINTF( eout, "%s (", L_BLOCK );
+      for ( c_ast_t *arg = ast->as.block.args.head_ast; arg; arg = arg->next )
+        c_ast_english( arg, eout );
+      FPRINTF( eout, ") %s ", L_RETURNING );
+      c_ast_english( ast->as.block.ret_ast, eout );
+      break;
 
     case K_BUILTIN:
       FPUTS( c_type_name( ast->as.builtin.type ), eout );
@@ -202,10 +248,8 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
       break;
 
     case K_NAME:
-#if 1
       if ( ast->name )
         FPUTS( ast->name, eout );
-#endif
       break;
 
     case K_FUNCTION:
@@ -220,9 +264,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
     case K_REFERENCE:
       if ( ast->as.ptr_ref.qualifier )
         FPRINTF( eout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
-      FPRINTF( eout,
-        "%s %s ", (ast->kind == K_POINTER ? L_POINTER : L_REFERENCE), L_TO
-      );
+      FPRINTF( eout, "%s %s ", c_kind_name( ast->kind ), L_TO );
       c_ast_english( ast->as.ptr_ref.to_ast, eout );
       break;
 
@@ -236,6 +278,28 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
       );
       c_ast_english( ast->as.ptr_mbr.of_ast, eout );
       break;
+  } // switch
+}
+
+c_ast_t* c_ast_find_name( c_ast_t *ast ) {
+  if ( ast == NULL )
+    return NULL;
+  if ( ast->name )
+    return ast;
+
+  switch ( ast->kind ) {
+    case K_ARRAY:
+    case K_BLOCK:
+    case K_FUNCTION:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+    case K_REFERENCE:
+      return c_ast_find_name( ast->as.array.of_ast );
+    case K_BUILTIN:
+    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_NAME:
+    case K_NONE:
+      return NULL;
   } // switch
 }
 
@@ -319,41 +383,21 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
   //FPUTC( '\n', jout );
 }
 
-c_ast_t* c_ast_find_name( c_ast_t *ast ) {
-  if ( ast == NULL )
-    return NULL;
-  if ( ast->name )
-    return ast;
+c_ast_list_t c_ast_list_clone( c_ast_list_t const *list ) {
+  c_ast_list_t clone;
+  clone.head_ast = list ? c_ast_clone( list->head_ast ) : NULL;
 
-  switch ( ast->kind ) {
-    case K_ARRAY:
-    case K_BLOCK:
-    case K_FUNCTION:
-    case K_POINTER:
-    case K_POINTER_TO_MEMBER:
-    case K_REFERENCE:
-      return c_ast_find_name( ast->as.array.of_ast );
-    case K_BUILTIN:
-    case K_ENUM_CLASS_STRUCT_UNION:
-    case K_NAME:
-    case K_NONE:
-      return NULL;
-  } // switch
+  c_ast_t *tail = clone.head_ast;
+  while ( tail && tail->next )
+    tail = tail->next;
+  clone.tail_ast = tail;
+
+  return clone;
 }
 
 char const* c_ast_name( c_ast_t *ast ) {
   c_ast_t *const found = c_ast_find_name( ast );
   return found ? found->name : NULL;
-}
-
-char const* c_ast_take_name( c_ast_t *ast ) {
-  c_ast_t *const found = c_ast_find_name( ast );
-  if ( !found )
-    return NULL;
-  char const *const name = found->name;
-  found->name = NULL;
-  c_ast_free( ast );
-  return name;
 }
 
 c_ast_t* c_ast_new( c_kind_t kind ) {
@@ -379,6 +423,16 @@ void c_ast_push( c_ast_t **phead, c_ast_t *new_ast ) {
   assert( new_ast->next == NULL );
   new_ast->next = (*phead);
   (*phead) = new_ast;
+}
+
+char const* c_ast_take_name( c_ast_t *ast ) {
+  c_ast_t *const found = c_ast_find_name( ast );
+  if ( !found )
+    return NULL;
+  char const *const name = found->name;
+  found->name = NULL;
+  c_ast_free( ast );
+  return name;
 }
 
 char const* c_kind_name( c_kind_t kind ) {
