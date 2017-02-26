@@ -188,31 +188,14 @@ static int parse_stdin() {
   int rv;
 
   if ( is_stdin_a_tty || opt_interactive ) {
-    char *line, *oldline;
-    int len, newline;
 
     if ( !opt_quiet )
       printf( "Type \"help\" or \"?\" for help\n" );
 
     rv = 0;
-    while ( (line = readline_wrapper()) ) {
+    for ( char *line; (line = readline_wrapper()); )
+      rv = parse_string( line, strlen( line ) );
 
-      newline = 0;
-      /* readline() strips newline, we add semicolon if necessary */
-      len = strlen(line);
-      if (len && line[len-1] != '\n' && line[len-1] != ';') {
-        newline = 1;
-        oldline = line;
-        line = malloc(len+2);
-        strcpy(line, oldline);
-        line[len] = ';';
-        line[len+1] = '\0';
-      }
-      if ( len )
-        rv = parse_string( line, strlen( line ) );
-      if (newline)
-        free( line );
-    } // while
     puts( "" );
     return rv;
   }
@@ -238,26 +221,65 @@ static int parse_string( char const *s, size_t s_len ) {
 }
 
 /**
- * TODO
+ * Wraps GNU readline(3) by:
+ *
+ *  + Trimming lines of both leading and trailing whitespace.
+ *  + Adding non-whitespace-only lines to the history.
+ *  + Returning only non-whitespace-only lines.
+ *  + Ensuring every line returned ends with a newline.
  *
  * @return Returns the line read or null for EOF.
  */
 static char* readline_wrapper( void ) {
   static char *line_read;
 
-  if ( line_read )
-    free( line_read );
-  line_read = readline( prompt );
+  for (;;) {
+    if ( line_read )
+      free( line_read );
+    line_read = readline( prompt );
+    if ( !line_read )
+      return NULL;
 
-  char *line_nws;
-  if ( line_read ) {
-    line_nws = trim_ws( line_read );
-    if ( *line_nws )
+    char *line_nws = line_read;
+    line_nws += strspn( line_nws, " \t\r" );
+
+    size_t len = strlen( line_nws );
+    bool trimmed_on_right = false;
+
+    while ( len > 0 && isspace( line_nws[ --len ] ) ) {
+      line_nws[ len ] = '\0';
+      trimmed_on_right = true;
+    } // while
+
+    if ( line_nws ) {                   // if it wasn't all whitespace ...
       add_history( line_nws );
-    return line_nws;
-  }
-
-  return NULL;
+      //
+      // readline() removes newlines, but we need newlines in the lexer to know
+      // when to reset y_token_col, so we have to put a newline back.
+      //
+      if ( trimmed_on_right ) {
+        //
+        // Since we trimmed whitespace from the right side, there's room to
+        // append a newline.  (The byte after the newline is guaranteed to be a
+        // null byte.)
+        //
+        line_nws[ ++len ] = '\n';
+      } else {
+        //
+        // Otherwise we need to allocate a whole new string, copy the old one
+        // over (without leading whitespace, of course), and then append a
+        // newline.  We re-use line_read so it'll be free'd on the next call.
+        //
+        free( line_read );
+        line_read = MALLOC( char, len + 1/*\n*/ + 1/*\0*/ );
+        len = strcpy_len( line_read, line_nws );
+        line_read[ len++ ] = '\n';
+        line_read[ len ] = '\0';
+        line_nws = line_read;
+      }
+      return line_nws;
+    }
+  } // for
 }
 
 ///////////////////////////////////////////////////////////////////////////////
