@@ -7,6 +7,7 @@
 // local
 #include "config.h"                     /* must come first */
 #include "ast.h"
+#include "common.h"
 #include "keywords.h"
 #include "lang.h"
 #include "options.h"
@@ -70,6 +71,7 @@ typedef struct in_attr in_attr_t;
 extern char const  *yytext;
 
 // extern functions
+extern void         print_caret( void );
 extern void         print_help( void );
 extern void         set_option( char const* );
 extern int          yylex( void );
@@ -240,6 +242,7 @@ static void illegal( lang_t lang, char const *type1, char const *type2 ) {
 
 static void parse_error( char const *what, char const *msg ) {
   if ( !newlined ) {
+    PRINT_ERR( ": " );
     if ( what && *what )
       PRINT_ERR( "\"%s\": ", what );
     PRINT_ERR( "%s\n", msg );
@@ -247,6 +250,9 @@ static void parse_error( char const *what, char const *msg ) {
   }
 }
 
+/**
+ * Implements the cdecl "quit" command.
+ */
 static void quit( void ) {
   exit( EX_OK );
 }
@@ -257,8 +263,9 @@ static void unsupp( char const *s, char const *hint ) {
     PRINT_ERR( "\t(maybe you mean \"%s\")\n", hint );
 }
 
-static void yyerror( char const *s ) {
-  PRINT_ERR( "%s%s\n", (newlined ? "" : "\n"), s );
+static void yyerror( char const *msg ) {
+  print_caret();
+  PRINT_ERR( "%s%s", (newlined ? "" : "\n"), msg );
   newlined = false;
 }
 

@@ -6,6 +6,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"
+#include "common.h"
 #include "literals.h"
 #include "options.h"
 #include "util.h"

@@ -5,20 +5,21 @@
 
 // local
 #include "config.h"                     /* must go first */
+#include "common.h"
 #include "options.h"
 
 // standard
 #include <stdio.h>
 #include <string.h>
 
-///////////////////////////////////////////////////////////////////////////////
-
-// external variables
-extern char const  *prompt;
-extern char         prompt_buf[];
-
 ////////// extern functions ///////////////////////////////////////////////////
 
+/**
+ * Implements the cdecl "set" command.
+ *
+ * @param opt The name of the option to set. If null, displays the current
+ * values of all options.
+ */
 void set_option( char const *opt ) {
   if ( strcmp( opt, "create" ) == 0 )
     opt_make_c = true;

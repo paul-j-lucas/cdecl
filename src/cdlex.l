@@ -10,6 +10,8 @@
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"
+#include "color.h"
+#include "common.h"
 #include "keywords.h"
 #include "lang.h"
 #include "literals.h"
@@ -18,6 +20,9 @@
 
 // standard
 #include <string.h>
+
+#define RETURN(TOKEN) \
+  BLOCK( y_token_col += yyleng; return (TOKEN); )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -72,6 +77,23 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { NULL,           TOKEN( 0 )            }
 };
 
+// local variables
+static size_t  y_token_col;             // column position of current token
+
+////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Prints a '^' (in color, if possible and requested) under the offending
+ * token.
+ */
+void print_caret( void ) {
+  PRINT_ERR( "%*s", (int)(y_token_col - 1 + strlen( prompt )), "" );
+  SGR_START_COLOR( caret );
+  FPUTC( '^', stderr );
+  SGR_END_COLOR();
+  FPUTC( '\n', stderr );
+}
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -88,6 +110,15 @@ static keyword_t const* keyword_find( char const *s ) {
   return NULL;
 }
 
+/**
+ * Parses a number from \c yytext and sets \a yylval.number.
+ *
+ * @param base The number base to use.
+ */
+static inline void parse_number( int base ) {
+  yylval.number = strtol( yytext, NULL, base );
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 %}
@@ -99,6 +130,8 @@ H             [0-9A-Fa-f]
 
 %%
 
+\n.*          { y_token_col = 0; yyless(1); }
+
 {A}({A}|{D})* {
                 // use our own pointer in case yytext[]
                 char const *name = yytext;
@@ -108,26 +141,26 @@ H             [0-9A-Fa-f]
                   if ( k->c_keyword_synonym )
                     name = (char*)k->c_keyword_synonym;
                   else
-                    return k->y_token;
+                    RETURN( k->y_token );
                 }
 
                 c_keyword_t const *const ck = c_keyword_find_literal( name );
                 if ( ck ) {
                   yylval.type = ck->type;
-                  return ck->y_token;
+                  RETURN( ck->y_token );
                 }
 
                 yylval.name = check_strdup( name );
-                return Y_NAME;
+                RETURN( Y_NAME );
               }
 
-[1-9]{D}*     { yylval.number = strtol( yytext, NULL, 10 ); return Y_NUMBER; }
-0{O}*         { yylval.number = strtol( yytext, NULL,  8 ); return Y_NUMBER; }
-0[xX]{H}+     { yylval.number = strtol( yytext, NULL, 16 ); return Y_NUMBER; }
+[1-9]{D}*     { parse_number( 10 ); RETURN( Y_NUMBER ); }
+0{O}*         { parse_number(  8 ); RETURN( Y_NUMBER ); }
+0[xX]{H}+     { parse_number( 16 ); RETURN( Y_NUMBER ); }
 
-"::"          return Y_COLON_COLON;
+"::"          RETURN( Y_COLON_COLON );
 
-"?"           return Y_HELP;
+"?"           RETURN( Y_HELP );
 
 "^"           |                         /* Apple extension: block indicator */
 "&"           |
@@ -136,7 +169,7 @@ H             [0-9A-Fa-f]
 "*"           |
 ","           |
 "["           |
-"]"           return *yytext;           /* for blocks (Apple extension) */
+"]"           RETURN( *yytext );        /* for blocks (Apple extension) */
 
 "/*"          {                         /* C-style comments */
                 for ( int c = input(), prev_c = '\0'; c != EOF;
@@ -146,12 +179,12 @@ H             [0-9A-Fa-f]
                 } // for
               }
 
-[#].*         ;                         /* script-style comments */
+#.*           ;                         /* script-style comments */
 [ \f\r\t\v]+  ;                         /* ignore all other whitespace */
 
-[;\n]         return Y_END;
+";"           RETURN( Y_END );
 
-.             return Y_ERROR;
+.             RETURN( Y_ERROR );
 
 %%
 

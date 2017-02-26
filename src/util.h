@@ -12,6 +12,7 @@
 #include "config.h"                     /* must go first */
 
 // standard
+#include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
 #include <stdio.h>                      /* for FILE */
 #include <sysexits.h>
@@ -43,8 +44,8 @@
 #define FPUTS(S,STREAM) \
   BLOCK( if ( fputs( (S), (STREAM) ) == EOF ) PERROR_EXIT( EX_IOERR ); )
 
-// extern variable definitions
-extern char const  *me;                 // executable name
+#define FSTAT(FD,STAT) \
+  BLOCK( if ( fstat( (FD), (STAT) ) < 0 ) PERROR_EXIT( EX_IOERR ); )
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -116,6 +117,14 @@ void* free_later( void *p );
  * Frees all the memory pointed to by all the nodes in the free-later-list.
  */
 void free_now( void );
+
+/**
+ * Checks whether the given file descriptor refers to a regular file.
+ *
+ * @param fd The file descriptor to check.
+ * @return Returns \c true only if \a fd refers to a regular file.
+ */
+bool is_file( int fd );
 
 /**
  * Prints a key/value pair as JSON.

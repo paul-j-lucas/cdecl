@@ -6,7 +6,8 @@
 */
 
 // local
-#include "config.h"
+#include "config.h"                     /* must go first */
+#include "common.h"
 #include "util.h"
 
 // standard
@@ -16,6 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>                   /* for fstat() */
 #include <sysexits.h>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -124,6 +126,12 @@ void free_now( void ) {
     p = next;
   } // for
   free_head = NULL;
+}
+
+bool is_file( int fd ) {
+  struct stat fd_stat;
+  FSTAT( fd, &fd_stat );
+  return S_ISREG( fd_stat.st_mode );
 }
 
 void json_print_kv( char const *key, char const *value, FILE *jout ) {

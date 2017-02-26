@@ -6,6 +6,9 @@
 */
 
 // local
+#include "config.h"                     /* must go first */
+#include "color.h"
+#include "common.h"
 #include "options.h"
 #include "util.h"
 
@@ -36,21 +39,11 @@ bool                opt_quiet;
 FILE               *fin;
 FILE               *fout;
 
-// local variables
-static char         opts_given[ 128 ];
-
-// local functions
-static char*        format_opt( char, char[], size_t );
-static char const*  get_long_opt( char );
-static void         usage( void );
-
-///////////////////////////////////////////////////////////////////////////////
-
-static char const SHORT_OPTS[] = "89acdDikpqvx:";
-
+// local constant definitions
 static struct option const LONG_OPTS[] = {
   { "c89",          no_argument,        NULL, '8' },
   { "c99",          no_argument,        NULL, '9' },
+  { "color",        required_argument,  NULL, 'C' },
   { "debug",        no_argument,        NULL, 'd' },
   { "language",     required_argument,  NULL, 'x' },
   { "interactive",  no_argument,        NULL, 'i' },
@@ -59,6 +52,15 @@ static struct option const LONG_OPTS[] = {
   { "yydebug",      no_argument,        NULL, 'D' },
   { NULL,           0,                  NULL, 0   }
 };
+static char const   SHORT_OPTS[] = "89acdC:Dikpqvx:";
+
+// local variables
+static char         opts_given[ 128 ];
+
+// local functions
+static char*        format_opt( char, char[], size_t );
+static char const*  get_long_opt( char );
+static void         usage( void );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -136,6 +138,60 @@ static char const* get_long_opt( char short_opt ) {
 }
 
 /**
+ * Parses a color "when" value.
+ *
+ * @param when The NULL-terminated "when" string to parse.
+ * @return Returns the associated \c color_when_t
+ * or prints an error message and exits if \a when is invalid.
+ */
+static color_when_t parse_color_when( char const *when ) {
+  struct colorize_map {
+    char const   *map_when;
+    color_when_t  map_colorization;
+  };
+  typedef struct colorize_map colorize_map_t;
+
+  static colorize_map_t const COLORIZE_MAP[] = {
+    { "always",    COLOR_ALWAYS   },
+    { "auto",      COLOR_ISATTY   },    // grep compatibility
+    { "isatty",    COLOR_ISATTY   },    // explicit synonym for auto
+    { "never",     COLOR_NEVER    },
+    { "not_file",  COLOR_NOT_FILE },    // !ISREG( stdout )
+    { "not_isreg", COLOR_NOT_FILE },    // synonym for not_isfile
+    { "tty",       COLOR_ISATTY   },    // synonym for isatty
+    { NULL,        COLOR_NEVER    }
+  };
+
+  assert( when );
+  size_t names_buf_size = 1;            // for trailing NULL
+
+  for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when; ++m ) {
+    if ( strcasecmp( when, m->map_when ) == 0 )
+      return m->map_colorization;
+    // sum sizes of names in case we need to construct an error message
+    names_buf_size += strlen( m->map_when ) + 2 /* ", " */;
+  } // for
+
+  // name not found: construct valid name list for an error message
+  char *const names_buf = (char*)free_later( MALLOC( char, names_buf_size ) );
+  char *pnames = names_buf;
+  for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when; ++m ) {
+    if ( pnames > names_buf ) {
+      strcpy( pnames, ", " );
+      pnames += 2;
+    }
+    strcpy( pnames, m->map_when );
+    pnames += strlen( m->map_when );
+  } // for
+
+  char opt_buf[ OPT_BUF_SIZE ];
+  PMESSAGE_EXIT( EX_USAGE,
+    "\"%s\": invalid value for %s; must be one of:\n\t%s\n",
+    when, format_opt( 'c', opt_buf, sizeof opt_buf ), names_buf
+  );
+}
+
+/**
  * Parses a language name.
  *
  * @param s The null-terminated string to parse.
@@ -196,7 +252,9 @@ static lang_t parse_lang( char const *s ) {
  */
 static void parse_options( int argc, char const *argv[] ) {
   optind = opterr = 1;
-  bool print_version = false;
+
+  color_when_t  color_when = COLOR_WHEN_DEFAULT;
+  bool          print_version = false;
 
   for (;;) {
     int opt = getopt_long( argc, (char**)argv, SHORT_OPTS, LONG_OPTS, NULL );
@@ -205,17 +263,18 @@ static void parse_options( int argc, char const *argv[] ) {
     SET_OPTION( opt );
     switch ( opt ) {
       case '8':
-      case 'a': opt_lang        = LANG_C_89;            break;
-      case '9': opt_lang        = LANG_C_99;            break;
-      case 'c': opt_make_c      = true;                 break;
-      case 'd': opt_debug       = true;
-      case 'D': yydebug         = true;                 break;
-      case 'i': opt_interactive = true;                 break;
+      case 'a': opt_lang = LANG_C_89;             break;
+      case '9': opt_lang = LANG_C_99;             break;
+      case 'c': opt_make_c = true;                break;
+      case 'C': parse_color_when( optarg );       break;
+      case 'd': opt_debug = true;                 break;
+      case 'D': yydebug = true;                   break;
+      case 'i': opt_interactive = true;           break;
       case 'k':
-      case 'p': opt_lang        = LANG_C_KNR;           break;
-      case 'q': opt_quiet       = true;                 break;
-      case 'v': print_version   = true;                 break;
-      case 'x': opt_lang        = parse_lang( optarg ); break;
+      case 'p': opt_lang = LANG_C_KNR;            break;
+      case 'q': opt_quiet = true;                 break;
+      case 'v': print_version = true;             break;
+      case 'x': opt_lang = parse_lang( optarg );  break;
       default : usage();
     } // switch
   } // for
@@ -226,6 +285,24 @@ static void parse_options( int argc, char const *argv[] ) {
   if ( print_version ) {
     PRINT_ERR( "%s\n", PACKAGE_STRING );
     exit( EX_OK );
+  }
+
+  if ( opt_fin && !(fin = fopen( opt_fin, "r" )) )
+    PMESSAGE_EXIT( EX_NOINPUT, "\"%s\": %s\n", opt_fin, STRERROR );
+  if ( opt_fout && !(fout = fopen( opt_fout, "w" )) )
+    PMESSAGE_EXIT( EX_CANTCREAT, "\"%s\": %s\n", opt_fout, STRERROR );
+
+  if ( !fin )
+    fin = stdin;
+  if ( !fout )
+    fout = stdout;
+
+  colorize = should_colorize( color_when );
+  if ( colorize ) {
+    if ( !(parse_gcc_colors( getenv( "GCC_COLORS" ) )
+        || parse_gcc_colors( getenv( "CDECL_COLORS" ) )) ) {
+      parse_gcc_colors( COLORS_DEFAULT );
+    }
   }
 }
 
@@ -270,18 +347,6 @@ void options_init( int argc, char const *argv[] ) {
   argc -= optind, argv += optind;
   if ( argc )
     usage();
-
-  if ( opt_fin && !(fin = fopen( opt_fin, "r" )) )
-    PMESSAGE_EXIT( EX_NOINPUT, "\"%s\": %s\n", opt_fin, STRERROR );
-  if ( opt_fout && !(fout = fopen( opt_fout, "w" )) )
-    PMESSAGE_EXIT( EX_CANTCREAT, "\"%s\": %s\n", opt_fout, STRERROR );
-
-  if ( !fin )
-    fin = stdin;
-  if ( !fout )
-    fout = stdout;
-
-  yydebug = false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

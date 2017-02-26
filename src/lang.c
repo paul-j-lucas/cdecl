@@ -5,6 +5,7 @@
 
 // local
 #include "config.h"                     /* must go first */
+#include "common.h"
 #include "lang.h"
 #include "util.h"
 
