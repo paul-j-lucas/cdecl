@@ -129,25 +129,6 @@ bool is_file( int fd );
 void json_print_kv( char const *key, char const *value, FILE *jout );
 
 /**
- * Gets a printable version of the given character:
- *  + For characters for which isprint(3) returns non-zero,
- *    the printable version is a single character string of itself.
- *  + For the special-case characters of \0, \a, \b, \f, \n, \r, \t, and \v,
- *    the printable version is a two character string of a backslash followed
- *    by the letter.
- *  + For all other characters, the printable version is a four-character
- *    string of a backslash followed by an 'x' and the two-character
- *    hexedecimal value of che characters ASCII code.
- *
- * @param c The character to get the printable form of.
- * @return Returns a NULL-terminated string that is a printable version of
- * \a c.  Note that the result is a pointer to static storage, hence subsequent
- * calls will overwrite the returned value.  As such, this function is not
- * thread-safe.
- */
-char const* printable_char( char c );
-
-/**
  * A variant of strcpy(3) that returns the number of characters copied.
  *
  * @param dst A pointer to receive the copy of \a src.
@@ -155,14 +136,6 @@ char const* printable_char( char c );
  * @return Returns the number of characters copied.
  */
 size_t strcpy_len( char *dst, char const *src );
-
-/**
- * Trims both leading and trailing whitespace from a string.
- *
- * @param s The string to trim whitespace from.
- * @return Returns a pointer to within \a s having all whitespace trimmed.
- */
-char* trim_ws( char *s );
 
 ///////////////////////////////////////////////////////////////////////////////
 

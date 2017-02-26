@@ -117,26 +117,6 @@ void json_print_kv( char const *key, char const *value, FILE *jout ) {
     FPRINTF( jout, "\"%s\": null", key  );
 }
 
-char const* printable_char( char c ) {
-  switch( c ) {
-    case '\0': return "\\0";
-    case '\a': return "\\a";
-    case '\b': return "\\b";
-    case '\f': return "\\f";
-    case '\n': return "\\n";
-    case '\r': return "\\r";
-    case '\t': return "\\t";
-    case '\v': return "\\v";
-  } // switch
-
-  static char buf[5];                   // \xHH + NULL
-  if ( isprint( c ) )
-    buf[0] = c, buf[1] = '\0';
-  else
-    snprintf( buf, sizeof buf, "\\x%02X", (unsigned)c );
-  return buf;
-}
-
 size_t strcpy_len( char *dst, char const *src ) {
   assert( dst );
   assert( src );
@@ -144,14 +124,6 @@ size_t strcpy_len( char *dst, char const *src ) {
   while ( (*dst++ = *src++) )
     /* empty */;
   return dst - dst0 - 1;
-}
-
-char* trim_ws( char *s ) {
-  assert( s );
-  s += strspn( s, " \t\r" );
-  for ( size_t len = strlen( s ); len > 0 && isspace( s[ --len ] ); )
-    s[ len ] = '\0';
-  return s;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
