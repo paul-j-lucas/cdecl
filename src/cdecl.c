@@ -241,13 +241,11 @@ static char* readline_wrapper( void ) {
       return NULL;
 
     char *line_nws = line_read;
-    line_nws += strspn( line_nws, " \t\r" );
-
     size_t len = strlen( line_nws );
     bool trimmed_on_right = false;
 
-    while ( len > 0 && isspace( line_nws[ --len ] ) ) {
-      line_nws[ len ] = '\0';
+    while ( len > 0 && isspace( line_nws[ len - 1 ] ) ) {
+      line_nws[ --len ] = '\0';
       trimmed_on_right = true;
     } // while
 
@@ -263,7 +261,7 @@ static char* readline_wrapper( void ) {
         // append a newline.  (The byte after the newline is guaranteed to be a
         // null byte.)
         //
-        line_nws[ ++len ] = '\n';
+        line_nws[ len ] = '\n';
       } else {
         //
         // Otherwise we need to allocate a whole new string, copy the old one

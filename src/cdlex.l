@@ -135,8 +135,6 @@ H             [0-9A-Fa-f]
 
 %%
 
-\n.*          { y_token_col = 0; yyless(1); }
-
 {A}({A}|{D})* {
                 // use our own pointer in case yytext[]
                 char const *name = yytext;
@@ -198,9 +196,8 @@ H             [0-9A-Fa-f]
 "//".*        ;                         /* ignore C++-style comments */
 #.*           ;                         /* ignore script-style comments */
 [ \f\r\t\v]+  y_token_col += yyleng;    /* ignore all other whitespace */
-
+\n            { y_token_col = 0; return Y_END; }
 ";"           RETURN( Y_END );
-
 .             RETURN( Y_ERROR );
 
 %%
