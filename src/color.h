@@ -25,12 +25,25 @@
   "quote=01:" \
   "fixit-insert=32:fixit-delete=31"
 
-#define SGR_START_COLOR(COLOR) BLOCK( \
-  if ( colorize && (sgr_ ## COLOR) ) \
-    FPRINTF( stderr, sgr_start, (sgr_ ## COLOR) ); )
+/**
+ * Starts printing in the given, predefined color.
+ *
+ * @param STREAM The FILE to use.
+ * @param COLOR The predefined color.
+ * @hideinitializer
+ */
+#define SGR_START_COLOR(STREAM,COLOR) BLOCK(            \
+  if ( colorize && (sgr_ ## COLOR) )                    \
+    FPRINTF( (STREAM), sgr_start, (sgr_ ## COLOR) ); )
 
-#define SGR_END_COLOR() \
-  BLOCK( if ( colorize ) FPUTS( sgr_end, stderr ); )
+/**
+ * Ends printing in color.
+ *
+ * @param STREAM The FILE to use.
+ * @hideinitializer
+ */
+#define SGR_END_COLOR(STREAM) \
+  BLOCK( if ( colorize ) FPUTS( sgr_end, (STREAM) ); )
 
 /**
  * When to colorize output.
