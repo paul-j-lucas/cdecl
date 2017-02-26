@@ -15,6 +15,7 @@
 
 // standard
 #include <assert.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -240,12 +241,16 @@ static void illegal( lang_t lang, char const *type1, char const *type2 ) {
     );
 }
 
-static void parse_error( char const *what, char const *msg ) {
+static void parse_error( char const *format, ... ) {
   if ( !newlined ) {
     PRINT_ERR( ": " );
-    if ( what && *what )
-      PRINT_ERR( "\"%s\": ", what );
-    PRINT_ERR( "%s\n", msg );
+    if ( yytext && *yytext )
+      PRINT_ERR( "\"%s\": ", yytext );
+    va_list args;
+    va_start( args, format );
+    vfprintf( stderr, format, args );
+    va_end( args );
+    FPUTC( '\n', stderr );
     newlined = true;
   }
 }
@@ -434,7 +439,7 @@ command
   | Y_END
   | error Y_END
     {
-      parse_error( yytext, ": one of \"cast\", \"declare\", \"explain\", \"help\", or \"set\" expected" );
+      parse_error( ": one of \"cast\", \"declare\", \"explain\", \"help\", or \"set\" expected" );
       yyerrok;
     }
   ;
@@ -457,7 +462,7 @@ cast_english
     }
   | Y_CAST Y_NAME error
     {
-      parse_error( NULL, "\"into\" expected" );
+      parse_error( "\"into\" expected" );
     }
 
   | Y_CAST decl_english Y_END
@@ -491,11 +496,11 @@ declare_english
     }
   | Y_DECLARE error
     {
-      parse_error( NULL, "name expected" );
+      parse_error( "name expected" );
     }
   | Y_DECLARE Y_NAME error
     {
-      parse_error( NULL, "\"as\" expected" );
+      parse_error( "\"as\" expected" );
     }
   ;
 
@@ -610,7 +615,7 @@ array_size_opt_english
   | Y_NUMBER
   | error
     {
-      parse_error( NULL, "array size expected" );
+      parse_error( "array size expected" );
     }
   ;
 
@@ -703,7 +708,7 @@ returning_english
 
       $$ = $2;
     }
-  | error { parse_error( NULL, "\"returning\" expected" ); }
+  | error { parse_error( "\"returning\" expected" ); }
   ;
 
 pointer_decl_english
@@ -970,7 +975,7 @@ array_size_c
   | '[' Y_NUMBER ']'              { $$ = $2; }
   | '[' error ']'
     {
-      parse_error( "", "number expected" );
+      parse_error( "number expected" );
     }
   ;
 
@@ -1290,7 +1295,7 @@ storage_class_c
 
 comma_expected
   : ','
-  | error                         { parse_error( NULL, "',' expected" ); }
+  | error                         { parse_error( "',' expected" ); }
   ;
 
 name_token_opt
@@ -1300,7 +1305,7 @@ name_token_opt
 
 star_expected
   : '*'
-  | error                         { parse_error( NULL, "'*' expected" ); }
+  | error                         { parse_error( "'*' expected" ); }
   ;
 
 %%
