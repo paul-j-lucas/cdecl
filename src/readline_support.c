@@ -119,7 +119,7 @@ static char** attempt_completion( char const *text, int start, int end ) {
   // If the word is at the start of the line (start == 0), then attempt to
   // complete only cdecl commands and not all keywords.
   //
-  return start == 0 ? completion_matches( text, command_generator ) : NULL;
+  return start == 0 ? rl_completion_matches( text, command_generator ) : NULL;
 }
 
 /**
@@ -207,8 +207,9 @@ static char* keyword_completion( char const *text, int state ) {
 
 void readline_init( void ) {
   rl_readline_name = (char*)PACKAGE;  // allow conditional .inputrc parsing
-  rl_attempted_completion_function = (CPPFunction*)attempt_completion;
+  rl_attempted_completion_function = attempt_completion;
   rl_completion_entry_function = (Function*)keyword_completion;
+  rl_bind_key( '\t', rl_complete );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
