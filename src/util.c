@@ -13,7 +13,6 @@
 // standard
 #include <assert.h>
 #include <ctype.h>
-#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,29 +42,6 @@ char const* base_name( char const *path_name ) {
   if ( slash )
     return slash[1] ? slash + 1 : slash;
   return path_name;
-}
-
-char* cat( char const *s1, ... ) {
-  va_list args;
-  size_t len = 0;
-
-  // first, find the length that needs to be allocated
-  va_start( args, s1 );
-  for ( char const *s = s1; s; s = va_arg( args, char const* ) )
-    len += strlen( s );
-  va_end( args );
-
-  char *const combined = MALLOC( char, len + 1/*null*/ );
-  combined[0] = '\0';
-
-  va_start( args, s1 );
-  for ( char const *s = s1; s; s = va_arg( args, char const* ) ) {
-    strcat( combined, s );
-    FREE( s );
-  } // for
-  va_end( args );
-
-  return combined;
 }
 
 void* check_realloc( void *p, size_t size ) {
