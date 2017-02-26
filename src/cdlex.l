@@ -87,7 +87,8 @@ static size_t  y_token_col;             // column position of current token
  * token.
  */
 void print_caret( void ) {
-  PRINT_ERR( "%*s", (int)(y_token_col - 1 + strlen( prompt )), "" );
+  size_t const n = strlen( prompt ) + y_token_col - strlen( yytext );
+  PRINT_ERR( "%*s", (int)n, "" );
   SGR_START_COLOR( caret );
   FPUTC( '^', stderr );
   SGR_END_COLOR();
@@ -116,7 +117,11 @@ static keyword_t const* keyword_find( char const *s ) {
  * @param base The number base to use.
  */
 static inline void parse_number( int base ) {
-  yylval.number = strtol( yytext, NULL, base );
+  //
+  // We don't need to check for errors from strtol(3) here since the lexer
+  // guarantees that we'll be passed only a valid number token.
+  //
+  yylval.number = (int)strtol( yytext, NULL, base );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -171,16 +176,28 @@ H             [0-9A-Fa-f]
 "["           |
 "]"           RETURN( *yytext );        /* for blocks (Apple extension) */
 
-"/*"          {                         /* C-style comments */
+"/*"          {                         /* ignore C-style comments */
+                y_token_col += yyleng;
                 for ( int c = input(), prev_c = '\0'; c != EOF;
                       prev_c = c, c = input() ) {
-                  if ( prev_c == '*' && c == '/' )
-                    break;
+                  ++y_token_col;
+                  switch ( c ) {
+                    case '\n':
+                      y_token_col = 0;
+                      break;
+                    case '/':
+                      if ( prev_c == '*' )
+                        goto done;
+                      break;
+                  } // switch
                 } // for
+              done:
+                NO_OP;
               }
 
-#.*           ;                         /* script-style comments */
-[ \f\r\t\v]+  ;                         /* ignore all other whitespace */
+"//".*        ;                         /* ignore C++-style comments */
+#.*           ;                         /* ignore script-style comments */
+[ \f\r\t\v]+  y_token_col += yyleng;    /* ignore all other whitespace */
 
 ";"           RETURN( Y_END );
 
