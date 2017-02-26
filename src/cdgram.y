@@ -384,8 +384,11 @@ int yywrap( void ) {
 %type   <ast>       named_enum_class_struct_union_type_c
 %type   <ast>       nested_decl_c
 %type   <ast>       pointer_decl_c
+%type   <ast>       pointer_decl_type_c
 %type   <ast>       pointer_to_member_decl_c
+%type   <ast>       pointer_to_member_decl_type_c
 %type   <ast>       reference_decl_c
+%type   <ast>       reference_decl_type_c
 
 %type   <ast>       type_c
 %type   <type>      builtin_type_c
@@ -508,6 +511,7 @@ declare_english
 explain_declaration_c
   : Y_EXPLAIN type_c { PUSH_TYPE( $2 ); } decl_c Y_END
     {
+      POP_TYPE();
       DUMP_START( "explain_declaration_c", "EXPLAIN type_c decl_c END" );
       DUMP_AST( "in:type_c", $2 );
       DUMP_AST( "in:decl_c", $4 );
@@ -517,7 +521,6 @@ explain_declaration_c
       c_ast_english( $4, fout );
       FPUTC( '\n', fout );
 
-      POP_TYPE();
       c_ast_free( $2 );
       c_ast_free( $4 );
     }
@@ -527,6 +530,7 @@ explain_cast_c
   : Y_EXPLAIN '(' type_c { PUSH_TYPE( $3 ); } cast_c ')'
     name_token_opt Y_END
     {
+      POP_TYPE();
       DUMP_START( "explain_cast_t",
                   "EXPLAIN '(' type_c cast_c ')' name_token_opt END" );
       DUMP_AST( "in:cast_c", $5 );
@@ -540,7 +544,7 @@ explain_cast_c
       c_ast_english( $5, fout );
       FPUTC( '\n', fout );
 
-      c_ast_free( POP_TYPE() );
+      c_ast_free( $3 );
       c_ast_free( $5 );
       FREE( $7 );
     }
@@ -890,15 +894,17 @@ cast_list_c
 
   | type_c { PUSH_TYPE( $1 ); } cast_c
     {
+      POP_TYPE();
       DUMP_START( "cast_list_c", "type_c cast_c" );
       DUMP_AST( "in:type_c", $1 );
       DUMP_AST( "in:cast_c", $3 );
 
       $$.head_ast = $$.tail_ast = $3;
-      c_ast_free( POP_TYPE() );
 
       DUMP_AST_LIST( "out:cast_list_c", $$ );
       DUMP_END();
+
+      c_ast_free( $1 );
     }
 
   | Y_NAME
@@ -1018,6 +1024,7 @@ pointer_to_member_cast_c
       DUMP_AST( "in:cast_c", $4 );
 
       $$ = c_ast_new( K_POINTER_TO_MEMBER );
+      $$->as.ptr_mbr.type = T_CLASS;
       $$->as.ptr_mbr.class_name = $1;
       $$->as.ptr_mbr.of_ast = $4;
 
@@ -1157,54 +1164,99 @@ nested_decl_c
   ;
 
 pointer_decl_c
-  : /* type_c */ '*' type_qualifier_list_opt_c decl_c
+  : pointer_decl_type_c { PUSH_TYPE( $1 ); } decl_c
     {
+      POP_TYPE();
       DUMP_START( "pointer_decl_c", "'*' type_qualifier_list_opt_c decl_c" );
-      DUMP_AST( "ia:type_c", PEEK_TYPE() );
-      DUMP_TYPE( "in:type_qualifier_list_opt_c", $2 );
+      DUMP_AST( "in:pointer_decl_type_c", $1 );
       DUMP_AST( "in:decl_c", $3 );
 
-      $$ = c_ast_new( K_POINTER );
-      $$->name = c_ast_name( $3 );
-      $$->as.ptr_ref.qualifier = $2;
-      $$->as.ptr_ref.to_ast = PEEK_TYPE();
+      c_ast_free( $1 );
+      $$ = $3;
 
       DUMP_AST( "out:pointer_decl_c", $$ );
       DUMP_END();
     }
   ;
 
-pointer_to_member_decl_c
-  : /* type_c */ Y_NAME Y_COLON_COLON expect_star decl_c
+pointer_decl_type_c
+  : /* type_c */ '*' type_qualifier_list_opt_c
     {
-      DUMP_START( "pointer_to_member_decl_c", "NAME COLON_COLON '*' decl_c" );
+      DUMP_START( "pointer_decl_type_c", "'*' type_qualifier_list_opt_c" );
       DUMP_AST( "ia:type_c", PEEK_TYPE() );
-      DUMP_AST( "in:decl_c", $4 );
+      DUMP_TYPE( "in:type_qualifier_list_opt_c", $2 );
 
-      $$ = c_ast_new( K_POINTER_TO_MEMBER );
-      $$->name = c_ast_name( $4 );
-      $$->as.ptr_mbr.class_name = $1;
-      $$->as.ptr_mbr.of_ast = PEEK_TYPE();
+      $$ = c_ast_new( K_POINTER );
+      $$->as.ptr_ref.qualifier = $2;
+      $$->as.ptr_ref.to_ast = PEEK_TYPE();
+
+      DUMP_AST( "out:pointer_decl_type_c", $$ );
+      DUMP_END();
+    }
+  ;
+
+pointer_to_member_decl_c
+  : pointer_to_member_decl_type_c { PUSH_TYPE( $1 ); } decl_c
+    {
+      POP_TYPE();
+      DUMP_START( "pointer_to_member_decl_c",
+                  "pointer_to_member_decl_type_c decl_c" );
+      DUMP_AST( "in:pointer_to_member_decl_type_c", $1 );
+      DUMP_AST( "in:decl_c", $3 );
+
+      c_ast_free( $1 );
+      $$ = $3;
 
       DUMP_AST( "out:pointer_to_member_decl_c", $$ );
       DUMP_END();
     }
   ;
 
-reference_decl_c
-  : /* type_c */ '&' type_qualifier_list_opt_c decl_c
+pointer_to_member_decl_type_c
+  : /* type_c */ Y_NAME Y_COLON_COLON expect_star
     {
-      DUMP_START( "reference_decl_c", "'&' type_qualifier_list_opt_c decl_c" );
+      DUMP_START( "pointer_to_member_decl_type_c", "NAME COLON_COLON '*'" );
       DUMP_AST( "ia:type_c", PEEK_TYPE() );
-      DUMP_TYPE( "in:type_qualifier_list_opt_c", $2 );
+      DUMP_NAME( "in:NAME", $1 );
+
+      $$ = c_ast_new( K_POINTER_TO_MEMBER );
+      $$->as.ptr_mbr.class_name = $1;
+      $$->as.ptr_mbr.type = T_CLASS;
+      $$->as.ptr_mbr.of_ast = PEEK_TYPE();
+
+      DUMP_AST( "out:pointer_to_member_decl_type_c", $$ );
+      DUMP_END();
+    }
+  ;
+
+reference_decl_c
+  : reference_decl_type_c { PUSH_TYPE( $1 ); } decl_c
+    {
+      POP_TYPE();
+      DUMP_START( "reference_decl_c", "'&' type_qualifier_list_opt_c decl_c" );
+      DUMP_AST( "in:reference_decl_type_c", $1 );
       DUMP_AST( "in:decl_c", $3 );
 
+      c_ast_free( $1 );
+      $$ = $3;
+
+      DUMP_AST( "out:reference_decl_c", $$ );
+      DUMP_END();
+    }
+  ;
+
+reference_decl_type_c
+  : /* type_c */ '&' type_qualifier_list_opt_c
+    {
+      DUMP_START( "reference_decl_type_c", "'&' type_qualifier_list_opt_c" );
+      DUMP_AST( "ia:type_c", PEEK_TYPE() );
+      DUMP_TYPE( "in:type_qualifier_list_opt_c", $2 );
+
       $$ = c_ast_new( K_REFERENCE );
-      $$->name = c_ast_name( $3 );
       $$->as.ptr_ref.qualifier = $2;
       $$->as.ptr_ref.to_ast = PEEK_TYPE();
 
-      DUMP_AST( "out:reference_decl_c", $$ );
+      DUMP_AST( "out:reference_decl_type_c", $$ );
       DUMP_END();
     }
   ;
