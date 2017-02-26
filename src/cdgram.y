@@ -517,7 +517,8 @@ explain_declaration_c
       c_ast_english( $4, fout );
       FPUTC( '\n', fout );
 
-      c_ast_free( POP_TYPE() );
+      POP_TYPE();
+      c_ast_free( $2 );
       c_ast_free( $4 );
     }
   ;
@@ -1059,7 +1060,7 @@ decl2_c
   ;
 
 array_decl_c
-  : decl2_c array_size_c
+  : /* type_c */ decl2_c array_size_c
     {
       DUMP_START( "array_decl_c", "decl2_c array_size_c" );
       DUMP_AST( "ia:type_c", PEEK_TYPE() );
@@ -1086,10 +1087,11 @@ array_size_c
   ;
 
 block_decl_c
-  : '(' '^' type_qualifier_list_opt_c decl_c ')'
+  : /* type_c */ '(' '^' type_qualifier_list_opt_c decl_c ')'
     '(' cast_list_opt_c ')'
     {
-      DUMP_START( "block_decl_c", "'(' '^' type_qualifier_list_opt_c decl_c ')' "
+      DUMP_START( "block_decl_c",
+                  "'(' '^' type_qualifier_list_opt_c decl_c ')' "
                  "'(' cast_list_opt_c ')'" );
       DUMP_AST( "ia:type_c", PEEK_TYPE() );
       DUMP_TYPE( "in:type_qualifier_list_opt_c", $3 );
@@ -1108,7 +1110,7 @@ block_decl_c
   ;
 
 func_decl_c
-  : decl2_c '(' cast_list_opt_c ')'
+  : /* type_c */ decl2_c '(' cast_list_opt_c ')'
     {
       DUMP_START( "func_decl_c", "decl2_c '(' cast_list_opt_c ')'" );
       DUMP_AST( "ia:type_c", PEEK_TYPE() );
@@ -1126,12 +1128,14 @@ func_decl_c
   ;
 
 name_decl_c
-  : Y_NAME
+  : /* type_c */ Y_NAME
     {
       DUMP_START( "name_decl_c", "NAME" );
+      DUMP_AST( "ia:type_c", PEEK_TYPE() );
       DUMP_NAME( "in:NAME", $1 );
 
-      $$ = c_ast_new( K_NAME );
+      $$ = c_ast_clone( PEEK_TYPE() );
+      assert( $$->name == NULL );
       $$->name = $1;
 
       DUMP_AST( "out:name_decl_c", $$ );
@@ -1153,7 +1157,7 @@ nested_decl_c
   ;
 
 pointer_decl_c
-  : '*' type_qualifier_list_opt_c decl_c
+  : /* type_c */ '*' type_qualifier_list_opt_c decl_c
     {
       DUMP_START( "pointer_decl_c", "'*' type_qualifier_list_opt_c decl_c" );
       DUMP_AST( "ia:type_c", PEEK_TYPE() );
@@ -1171,7 +1175,7 @@ pointer_decl_c
   ;
 
 pointer_to_member_decl_c
-  : Y_NAME Y_COLON_COLON expect_star decl_c
+  : /* type_c */ Y_NAME Y_COLON_COLON expect_star decl_c
     {
       DUMP_START( "pointer_to_member_decl_c", "NAME COLON_COLON '*' decl_c" );
       DUMP_AST( "ia:type_c", PEEK_TYPE() );
@@ -1188,7 +1192,7 @@ pointer_to_member_decl_c
   ;
 
 reference_decl_c
-  : '&' type_qualifier_list_opt_c decl_c
+  : /* type_c */ '&' type_qualifier_list_opt_c decl_c
     {
       DUMP_START( "reference_decl_c", "'&' type_qualifier_list_opt_c decl_c" );
       DUMP_AST( "ia:type_c", PEEK_TYPE() );
