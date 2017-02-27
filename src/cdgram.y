@@ -654,7 +654,7 @@ array_cast_c
     }
   ;
 
-block_cast_c
+block_cast_c                            /* Apple extension */
   : '(' '^' cast_c ')' '(' cast_list_opt_c ')'
     {
       DUMP_START( "block_cast_c",
@@ -765,7 +765,7 @@ reference_cast_c
 
 decl_english
   : array_decl_english
-  | block_decl_english
+  | block_decl_english                  /* Apple extension */
   | func_decl_english
   | pointer_decl_english
   | pointer_to_member_decl_english
@@ -815,7 +815,7 @@ array_size_opt_english
     }
   ;
 
-block_decl_english
+block_decl_english                      /* Apple extension */
   : type_qualifier_list_opt_c
     Y_BLOCK { in_attr.y_token = Y_BLOCK; } decl_list_opt_english
     returning_english
@@ -1092,7 +1092,7 @@ array_size_c
     }
   ;
 
-block_decl_c
+block_decl_c                            /* Apple extension */
   : /* type_c */ '(' '^' type_qualifier_list_opt_c decl_c ')'
     '(' cast_list_opt_c ')'
     {
