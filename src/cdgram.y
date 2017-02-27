@@ -1067,17 +1067,16 @@ decl2_c
   ;
 
 array_decl_c
-  : /* type_c */ decl2_c array_size_c
+  : decl2_c array_size_c
     {
       DUMP_START( "array_decl_c", "decl2_c array_size_c" );
-      DUMP_AST( "ia:type_c", PEEK_TYPE() );
       DUMP_AST( "in:decl2_c", $1 );
       DUMP_NUM( "in:array_size_c", $2 );
 
       $$ = c_ast_new( K_ARRAY );
       $$->name = c_ast_name( $1 );
       $$->as.array.size = $2;
-      $$->as.array.of_ast = PEEK_TYPE();
+      $$->as.array.of_ast = c_ast_clone( $1 );
 
       DUMP_AST( "out:array_decl_c", $$ );
       DUMP_END();
@@ -1099,7 +1098,7 @@ block_decl_c
     {
       DUMP_START( "block_decl_c",
                   "'(' '^' type_qualifier_list_opt_c decl_c ')' "
-                 "'(' cast_list_opt_c ')'" );
+                  "'(' cast_list_opt_c ')'" );
       DUMP_AST( "ia:type_c", PEEK_TYPE() );
       DUMP_TYPE( "in:type_qualifier_list_opt_c", $3 );
       DUMP_AST( "in:decl_c", $4 );
@@ -1153,12 +1152,12 @@ name_decl_c
 nested_decl_c
   : '(' decl_c ')'
     {
-      DUMP_START( "decl2_c", "'(' decl_c ')'" );
+      DUMP_START( "func_decl_c", "'(' decl_c ')'" );
       DUMP_AST( "in:decl_c", $2 );
 
       $$ = $2;
 
-      DUMP_AST( "out:nested_decl_c", $$ );
+      DUMP_AST( "out:func_decl_c", $$ );
       DUMP_END();
     }
   ;
