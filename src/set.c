@@ -5,12 +5,22 @@
 
 // local
 #include "config.h"                     /* must go first */
+#include "color.h"
 #include "common.h"
+#include "lang.h"
 #include "options.h"
+#include "util.h"
 
 // standard
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
+#define SET_OPTION(OPT,LITERAL,VAR,ON,NO) BLOCK(  \
+  if ( strcmp( (OPT), LITERAL ) == 0 )            \
+    { VAR = (ON); return; }                       \
+  if ( strcmp( (OPT), "no" LITERAL ) == 0 )       \
+    { VAR = (NO); return; } )
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -21,69 +31,54 @@
  * values of all options.
  */
 void set_option( char const *opt ) {
-  if ( strcmp( opt, "create" ) == 0 )
-    opt_make_c = true;
-  else if ( strcmp( opt, "nocreate" ) == 0 )
-    opt_make_c = false;
-
-  else if ( strcmp( opt, "prompt" ) == 0 )
-    prompt = prompt_buf;
-  else if ( strcmp( opt, "noprompt" ) == 0 )
-    prompt = "";
-
-  else if ( strcmp( opt, "preansi" ) == 0 || strcmp( opt, "knr" ) == 0 )
-    opt_lang = LANG_C_KNR;
-  else if ( strcmp( opt, "ansi" ) == 0 )
-    opt_lang = LANG_C_89;
-  else if ( strcmp( opt, "c++" ) == 0 )
-    opt_lang = LANG_CPP;
-  else if ( strcmp( opt, "c++11" ) == 0 )
-    opt_lang = LANG_CPP_11;
-
-#ifdef WITH_CDECL_DEBUG
-  else if ( strcmp( opt, "debug" ) == 0 )
-    opt_debug = true;
-  else if ( strcmp( opt, "nodebug" ) == 0 )
-    opt_debug = false;
-#endif /* WITH_CDECL_DEBUG */
-
-#ifdef YYDEBUG
-  else if ( strcmp( opt, "yydebug" ) == 0 )
-    yydebug = true;
-  else if ( strcmp( opt, "noyydebug" ) == 0 )
-    yydebug = false;
-#endif /* YYDEBUG */
-
-  else {
-    if ( strcmp( opt, "options" ) != 0 ) {
-      printf( "\"%s\": unknown set option\n", opt );
-    }
-    printf( "Valid set options (and command line equivalents) are:\n" );
-    printf( "  options\n" );
-    printf( "  create (-c), nocreate\n" );
-    printf( "  prompt, noprompt (-q)\n" );
-#ifndef WITH_READLINE
-    printf( "  interactive (-i), nointeractive\n" );
-#endif /* WITH_READLINE */
-    printf( "  preansi (-p), ansi (-a), or cplusplus (-+)\n" );
-#ifdef WITH_CDECL_DEBUG
-    printf( "  debug (-d), nodebug\n" );
-#endif /* WITH_CDECL_DEBUG */
-#ifdef YYDEBUG
-    printf( "  yydebug (-D), noyydebug\n" );
-#endif /* YYDEBUG */
-    printf( "\nCurrent set values are:\n" );
-    printf( "  %screate\n", opt_make_c ? "   " : " no" );
-    printf( "  %sinteractive\n", opt_interactive ? "   " : " no" );
-    printf( "  %sprompt\n", prompt[0] ? "   " : " no" );
-    printf( "  lang=%s\n", lang_name( opt_lang ) );
-#ifdef WITH_CDECL_DEBUG
-    printf( "  %sdebug\n", opt_debug ? "   " : " no" );
-#endif /* WITH_CDECL_DEBUG */
-#ifdef YYDEBUG
-    printf( "  %syydebug\n", yydebug ? "   " : " no" );
-#endif /* YYDEBUG */
+  lang_t const new_lang = lang_find( opt );
+  if ( new_lang ) {
+    opt_lang = new_lang;
+    return;
   }
+
+  SET_OPTION( opt, "create", opt_make_c, true, false );
+#ifdef WITH_CDECL_DEBUG
+  SET_OPTION( opt, "debug", opt_debug, true, false );
+#endif /* WITH_CDECL_DEBUG */
+  SET_OPTION( opt, "prompt", prompt, prompt_buf, "" );
+#ifdef YYDEBUG
+  SET_OPTION( opt, "yydebug", yydebug, true, false );
+#endif /* YYDEBUG */
+
+  if ( strcmp( opt, "options" ) != 0 ) {
+    PRINT_ERR( "\"%s\": ", opt );
+    SGR_START_COLOR( stderr, error );
+    PRINT_ERR( "error" );
+    SGR_END_COLOR( stderr );
+    PRINT_ERR( ": unknown set option\n" );
+  }
+
+  printf( "\nValid set options (and command line equivalents) are:\n" );
+  printf( "  options\n" );
+  printf( "  create (-c) / nocreate\n" );
+  printf( "  prompt / noprompt (-q)\n" );
+#ifndef WITH_READLINE
+  printf( "  interactive (-i) / nointeractive\n" );
+#endif /* WITH_READLINE */
+  printf( "  preansi (-p) / ansi (-a) / cplusplus (-+)\n" );
+#ifdef WITH_CDECL_DEBUG
+  printf( "  debug (-d) / nodebug\n" );
+#endif /* WITH_CDECL_DEBUG */
+#ifdef YYDEBUG
+  printf( "  yydebug (-D) / noyydebug\n" );
+#endif /* YYDEBUG */
+  printf( "\nCurrent set values are:\n" );
+  printf( "  %screate\n", opt_make_c ? "   " : " no" );
+#ifdef WITH_CDECL_DEBUG
+  printf( "  %sdebug\n", opt_debug ? "   " : " no" );
+#endif /* WITH_CDECL_DEBUG */
+  printf( "  %sinteractive\n", opt_interactive ? "   " : " no" );
+  printf( "  %sprompt\n", prompt[0] ? "   " : " no" );
+  printf( "   lang=%s\n", lang_name( opt_lang ) );
+#ifdef YYDEBUG
+  printf( "  %syydebug\n", yydebug ? "   " : " no" );
+#endif /* YYDEBUG */
 }
 
 ///////////////////////////////////////////////////////////////////////////////
