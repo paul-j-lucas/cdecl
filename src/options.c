@@ -45,14 +45,16 @@ static struct option const LONG_OPTS[] = {
   { "c99",          no_argument,        NULL, '9' },
   { "color",        required_argument,  NULL, 'C' },
   { "debug",        no_argument,        NULL, 'd' },
+  { "file",         required_argument,  NULL, 'f' },
   { "language",     required_argument,  NULL, 'x' },
   { "interactive",  no_argument,        NULL, 'i' },
+  { "output",       required_argument,  NULL, 'o' },
   { "quiet",        no_argument,        NULL, 'q' },
   { "version",      no_argument,        NULL, 'v' },
   { "yydebug",      no_argument,        NULL, 'D' },
   { NULL,           0,                  NULL, 0   }
 };
-static char const   SHORT_OPTS[] = "89acdC:Dikpqvx:";
+static char const   SHORT_OPTS[] = "89acdC:Df:iko:pqvx:";
 
 // local variables
 static char         opts_given[ 128 ];
@@ -205,16 +207,19 @@ static lang_t parse_lang( char const *s ) {
   typedef struct lang_map lang_map_t;
 
   static lang_map_t const LANG_MAP[] = {
-    { "cknr",   LANG_C_KNR  },
-    { "knr",    LANG_C_KNR  },
-    { "knrc",   LANG_C_KNR  },
-    { "c89",    LANG_C_89   },
-    { "c95",    LANG_C_95   },
-    { "c99",    LANG_C_99   },
-    { "c11",    LANG_C_11   },
-    { "c++",    LANG_CPP    },
-    { "c++11",  LANG_CPP_11 },
-    { NULL,     LANG_NONE   },
+    { "cknr",   LANG_C_KNR    },
+    { "knr",    LANG_C_KNR    },
+    { "knrc",   LANG_C_KNR    },
+    { "c",      LANG_C_MAX    },
+    { "c89",    LANG_C_89     },
+    { "c95",    LANG_C_95     },
+    { "c99",    LANG_C_99     },
+    { "c11",    LANG_C_11     },
+    { "c++",    LANG_CPP_MAX  },
+    { "c++98",  LANG_CPP_03   },
+    { "c++03",  LANG_CPP_03   },
+    { "c++11",  LANG_CPP_11   },
+    { NULL,     LANG_NONE     },
   };
 
   size_t values_buf_size = 1;           // for trailing null
@@ -262,25 +267,30 @@ static void parse_options( int argc, char const *argv[] ) {
       break;
     SET_OPTION( opt );
     switch ( opt ) {
-      case '8':
-      case 'a': opt_lang = LANG_C_89;             break;
-      case '9': opt_lang = LANG_C_99;             break;
-      case 'c': opt_make_c = true;                break;
-      case 'C': parse_color_when( optarg );       break;
-      case 'd': opt_debug = true;                 break;
-      case 'D': yydebug = true;                   break;
-      case 'i': opt_interactive = true;           break;
-      case 'k':
-      case 'p': opt_lang = LANG_C_KNR;            break;
-      case 'q': opt_quiet = true;                 break;
-      case 'v': print_version = true;             break;
-      case 'x': opt_lang = parse_lang( optarg );  break;
+      case 'a': // cdecl 2.x compatibility
+      case '8': opt_lang        = LANG_C_89;                  break;
+      case '9': opt_lang        = LANG_C_99;                  break;
+      case 'c': opt_make_c      = true;                       break;
+      case 'C': color_when      = parse_color_when( optarg ); break;
+      case 'd': opt_debug       = true;                       break;
+      case 'D': yydebug         = true;                       break;
+      case 'f': opt_fin         = optarg;                     break;
+      case 'i': opt_interactive = true;                       break;
+      case 'o': opt_fout        = optarg;                     break;
+      case 'p': // cdecl 2.x compatibility
+      case 'k': opt_lang        = LANG_C_KNR;                 break;
+      case 'q': opt_quiet       = true;                       break;
+      case 'v': print_version   = true;                       break;
+      case 'x': opt_lang        = parse_lang( optarg );       break;
       default : usage();
     } // switch
   } // for
 
+  check_mutually_exclusive( "8", "9akpx" );
+  check_mutually_exclusive( "9", "8akpx" );
   check_mutually_exclusive( "a", "px" );
-  check_mutually_exclusive( "v", "aipx" );
+  check_mutually_exclusive( "x", "89akp" );
+  check_mutually_exclusive( "v", "89acdDfikopqx" );
 
   if ( print_version ) {
     PRINT_ERR( "%s\n", PACKAGE_STRING );
@@ -299,8 +309,8 @@ static void parse_options( int argc, char const *argv[] ) {
 
   colorize = should_colorize( color_when );
   if ( colorize ) {
-    if ( !(parse_gcc_colors( getenv( "GCC_COLORS" ) )
-        || parse_gcc_colors( getenv( "CDECL_COLORS" ) )) ) {
+    if ( !(parse_gcc_colors( getenv( "CDECL_COLORS" ) )
+        || parse_gcc_colors( getenv( "GCC_COLORS" ) )) ) {
       parse_gcc_colors( COLORS_DEFAULT );
     }
   }
@@ -310,23 +320,25 @@ static void usage( void ) {
   PRINT_ERR( "usage: %s [options] [files...]\n", me );
   PRINT_ERR( "       %s -v\n", me );
   PRINT_ERR( "\noptions:\n" );
-  PRINT_ERR( "  -8        Use C89.\n" );
-  PRINT_ERR( "  -9        Use C99.\n" );
-  PRINT_ERR( "  -a        Sams as -8 (for historical cdecl compatibility).\n" );
-  PRINT_ERR( "  -c        Create compilable output (include ; and {}).\n" );
+  PRINT_ERR( "  -8       Use C89.\n" );
+  PRINT_ERR( "  -9       Use C99.\n" );
+  PRINT_ERR( "  -a       Sams as -8 (for cdecl 2.x compatibility).\n" );
+  PRINT_ERR( "  -c       Create compilable output (include ; and {}).\n" );
 #ifdef WITH_CDECL_DEBUG
-  PRINT_ERR( "  -d        Enable debugging.\n" );
+  PRINT_ERR( "  -d       Enable debug output.\n" );
 #endif /* WITH_CDECL_DEBUG */
 #ifdef YYDEBUG
-  PRINT_ERR( "  -D        Enable YACC debugging.\n" );
+  PRINT_ERR( "  -D       Enable YACC debug output.\n" );
 #endif /* YYDEBUG */
-  PRINT_ERR( "  -i        Force interactive mode.\n" );
-  PRINT_ERR( "  -k        Use K&R C.\n" );
-  PRINT_ERR( "  -p        Same as -k (for historical cdecl compatibility).\n" );
-  PRINT_ERR( "  -q        Be quiet (disable prompt).\n" );
-  PRINT_ERR( "  -v        Print version an exit.\n" );
-  PRINT_ERR( "  -+        Use C++.\n" );
-  PRINT_ERR( "  -x lang   Use <lang>.\n" );
+  PRINT_ERR( "  -f file  Read from this file [default: stdin].\n" );
+  PRINT_ERR( "  -i       Force interactive mode.\n" );
+  PRINT_ERR( "  -k       Use K&R C.\n" );
+  PRINT_ERR( "  -o file  Write to this file [default: stdout].\n" );
+  PRINT_ERR( "  -p       Same as -k (for cdecl 2.x compatibility).\n" );
+  PRINT_ERR( "  -q       Be quiet (disable prompt).\n" );
+  PRINT_ERR( "  -v       Print version an exit.\n" );
+  PRINT_ERR( "  -x lang  Use <lang>.\n" );
+  PRINT_ERR( "  -+       Use C++.\n" );
   exit( EX_USAGE );
 }
 
@@ -338,9 +350,9 @@ void options_init( int argc, char const *argv[] ) {
   if ( strcasecmp( me, "c++decl" ) == 0 ||
        strcasecmp( me, "cppdecl" ) == 0 ||
        strcasecmp( me, "cxxdecl" ) == 0 ) {
-    opt_lang = LANG_CPP;
+    opt_lang = LANG_CPP_MAX;
   } else {
-    opt_lang = LANG_C_11;
+    opt_lang = LANG_C_MAX;
   }
 
   parse_options( argc, argv );

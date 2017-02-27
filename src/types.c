@@ -77,7 +77,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define KO       ~LANG_C_KNR            /* legal in K&R C only */
 #define C8        MIN(LANG_C_89)        /* minimum C89 */
 #define C9        MIN(LANG_C_99)        /* minimum C99 */
-#define PP        MIN(LANG_CPP)         /* minimum C++ */
+#define P3        MIN(LANG_CPP_03)      /* minimum C++03 */
 
 /**
  * Illegal combinations of types in languages.
@@ -103,7 +103,7 @@ static lang_t const BAD_TYPE_LANG[ NUM_TYPES ][ NUM_TYPES ] = {
   /* enum      */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,__,__,__ },
   /* struct    */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__ },
   /* union     */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__ },
-  /* class     */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,PP },
+  /* class     */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P3 },
 };
 
 ////////// inline functions ///////////////////////////////////////////////////

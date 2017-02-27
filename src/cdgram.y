@@ -969,7 +969,7 @@ pointer_to_member_decl_english
       DUMP_NAME( "in:NAME", $7 );
       DUMP_AST( "in:decl_english", $8 );
 
-      if ( opt_lang != LANG_CPP )
+      if ( opt_lang < LANG_CPP_MIN )
         illegal( "pointer to member of class", NULL );
 #if 0
       if ( c_kind == K_ARRAY )
@@ -995,7 +995,7 @@ reference_decl_english
       DUMP_TYPE( "in:type_qualifier_list_opt_c", $1 );
       DUMP_AST( "in:decl_english", $4 );
 
-      if ( opt_lang != LANG_CPP )
+      if ( opt_lang < LANG_CPP_MIN )
         illegal( "reference", NULL );
       switch ( $4->kind ) {
         case K_ARRAY:

@@ -448,7 +448,7 @@ char const* c_kind_name( c_kind_t kind ) {
     case K_REFERENCE        : return "reference";
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      if ( opt_lang >= LANG_CPP )
+      if ( opt_lang >= LANG_CPP_MIN )
         return "enum, class, struct, or union";
       if ( opt_lang >= LANG_C_89 )
         return "enum, struct, or union";
