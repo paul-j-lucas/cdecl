@@ -575,294 +575,6 @@ quit_command
   ;
 
 /*****************************************************************************/
-/*  declaration english productions                                          */
-/*****************************************************************************/
-
-decl_english
-  : array_decl_english
-  | block_decl_english
-  | func_decl_english
-  | pointer_decl_english
-  | pointer_to_member_decl_english
-  | reference_decl_english
-  | type_english
-  | var_decl_english
-  ;
-
-array_decl_english
-  : Y_ARRAY array_size_opt_english Y_OF decl_english
-    {
-      DUMP_START( "array_decl_english",
-                  "ARRAY array_size_opt_english OF decl_english" );
-      DUMP_NUM( "in:array_size_opt_english", $2 );
-      DUMP_AST( "in:decl_english", $4 );
-
-      switch ( $4->kind ) {
-        case K_ARRAY:
-          illegal( "inner array of unspecified size", "array of pointer" );
-          break;
-        case K_BUILTIN:
-          if ( $4->as.builtin.type & T_VOID )
-            illegal( "array of void", "pointer to void" );
-          break;
-        case K_FUNCTION:
-          illegal( "array of function", "array of pointer to function" );
-          break;
-        default:
-          /* suppress warning */;
-      } // switch
-
-      $$ = c_ast_new( K_ARRAY );
-      $$->as.array.size = $2;
-      $$->as.array.of_ast = $4;
-
-      DUMP_AST( "out:array_decl_english", $$ );
-      DUMP_END();
-    }
-  ;
-
-array_size_opt_english
-  : /* empty */                   { $$ = C_ARRAY_NO_SIZE; }
-  | Y_NUMBER
-  | error
-    {
-      parse_error( "array size expected" );
-    }
-  ;
-
-block_decl_english
-  : type_qualifier_list_opt_c
-    Y_BLOCK { in_attr.y_token = Y_BLOCK; } decl_list_opt_english
-    returning_english
-    {
-      DUMP_START( "type_qualifier_list_opt_c",
-                  "BLOCK decl_list_opt_english returning_english" );
-      DUMP_TYPE( "in:type_qualifier_list_opt_c", $1 );
-      DUMP_AST_LIST( "in:decl_list_opt_english", $4 );
-      DUMP_AST( "in:returning_english", $5 );
-
-      $$ = c_ast_new( K_BLOCK );
-      $$->as.block.ret_ast = $5;
-      $$->as.block.args = $4;
-      $$->as.block.type = $1;
-
-      DUMP_AST( "out:block_decl_english", $$ );
-      DUMP_END();
-    }
-  ;
-
-func_decl_english
-  : Y_FUNCTION { in_attr.y_token = Y_FUNCTION; } decl_list_opt_english
-    returning_english
-    {
-      DUMP_START( "func_decl_english",
-                  "FUNCTION decl_list_opt_english returning_english" );
-      DUMP_AST_LIST( "in:decl_list_opt_english", $3 );
-      DUMP_AST( "in:returning_english", $4 );
-
-      $$ = c_ast_new( K_FUNCTION );
-      $$->as.func.ret_ast = $4;
-      $$->as.func.args = $3;
-
-      DUMP_AST( "out:func_decl_english", $$ );
-      DUMP_END();
-    }
-  ;
-
-decl_list_opt_english
-  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
-  | '(' decl_list_english ')'
-    {
-      DUMP_START( "decl_list_opt_english", "'(' decl_list_english ')'" );
-      DUMP_AST_LIST( "in:decl_list_english", $2 );
-
-      $$ = $2;
-
-      DUMP_AST_LIST( "out:decl_list_opt_english", $$ );
-      DUMP_END();
-    }
-  ;
-
-decl_list_english
-  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
-  | decl_list_english expect_comma decl_english
-    {
-      DUMP_START( "decl_list_english", "decl_list_english ',' decl_english" );
-      DUMP_AST_LIST( "in:decl_list_english", $1 );
-      DUMP_AST( "in:decl_english", $3 );
-
-      //$$.head_ast = $1.head_ast;
-      //$$.tail_ast = $3;
-      //assert( $$.tail_ast->next == NULL );
-      //$1.tail_ast->next = $3.head_ast;
-
-      DUMP_AST_LIST( "out:decl_list_english", $$ );
-      DUMP_END();
-    }
-  ;
-
-returning_english
-  : Y_RETURNING decl_english
-    {
-      DUMP_START( "returning_english", "RETURNING decl_english" );
-      DUMP_AST( "in:decl_english", $2 );
-
-      c_keyword_t const *keyword;
-      switch ( $2->kind ) {
-        case K_ARRAY:
-        case K_FUNCTION:
-          keyword = c_keyword_find_token( in_attr.y_token );
-        default:
-          keyword = NULL;
-      } // switch
-
-      if ( keyword ) {
-        char error_msg[ 80 ];
-        char hint_msg[ 80 ];
-        char const *hint;
-
-        switch ( $2->kind ) {
-          case K_ARRAY:
-            hint = "pointer";
-            break;
-          case K_FUNCTION:
-            hint = "pointer to function";
-            break;
-          default:
-            /* suppress warning */;
-        } // switch
-
-        snprintf( error_msg, sizeof error_msg,
-          "%s returning %s",
-          keyword->literal, c_kind_name( $2->kind )
-        );
-        snprintf( hint_msg, sizeof hint_msg,
-          "%s returning %s",
-          keyword->literal, hint
-        );
-
-        illegal( error_msg, hint_msg );
-      }
-
-      $$ = $2;
-
-      DUMP_AST( "out:returning_english", $$ );
-      DUMP_END();
-    }
-  | error { parse_error( "\"returning\" expected" ); }
-  ;
-
-pointer_decl_english
-  : type_qualifier_list_opt_c Y_POINTER Y_TO decl_english
-    {
-      DUMP_START( "pointer_decl_english",
-                  "type_qualifier_list_opt_c POINTER TO decl_english" );
-      DUMP_TYPE( "in:type_qualifier_list_opt_c", $1 );
-      DUMP_AST( "in:decl_english", $4 );
-
-      if ( $4->kind == K_ARRAY )
-        illegal( "pointer to array of unspecified dimension",
-                 "pointer to object" );
-      $$ = c_ast_new( K_POINTER );
-      $$->as.ptr_ref.qualifier = $1;
-      $$->as.ptr_ref.to_ast = $4;
-
-      DUMP_AST( "out:pointer_decl_english", $$ );
-      DUMP_END();
-    }
-  ;
-
-pointer_to_member_decl_english
-  : type_qualifier_list_opt_c Y_POINTER Y_TO Y_MEMBER Y_OF
-    class_struct_type_c Y_NAME decl_english
-    {
-      DUMP_START( "pointer_to_member_decl_english",
-                  "type_qualifier_list_opt_c POINTER TO MEMBER OF "
-                  "class_struct_type_c NAME decl_english" );
-      DUMP_TYPE( "in:type_qualifier_list_opt_c", $1 );
-      DUMP_TYPE( "in:class_struct_type_c", $6 );
-      DUMP_NAME( "in:NAME", $7 );
-      DUMP_AST( "in:decl_english", $8 );
-
-      if ( opt_lang != LANG_CPP )
-        illegal( "pointer to member of class", NULL );
-#if 0
-      if ( c_kind == K_ARRAY )
-        illegal( "pointer to array of unspecified dimension",
-                 "pointer to object" );
-#endif
-      $$ = c_ast_new( K_POINTER_TO_MEMBER );
-      $$->as.ptr_mbr.qualifier = $1;
-      $$->as.ptr_mbr.type = $6;
-      $$->as.ptr_mbr.class_name = $7;
-      $$->as.ptr_mbr.of_ast = $8;
-
-      DUMP_AST( "out:pointer_to_member_decl_english", $$ );
-      DUMP_END();
-    }
-  ;
-
-reference_decl_english
-  : type_qualifier_list_opt_c Y_REFERENCE Y_TO decl_english
-    {
-      DUMP_START( "reference_decl_english",
-                  "type_qualifier_list_opt_c REFERENCE TO decl_english" );
-      DUMP_TYPE( "in:type_qualifier_list_opt_c", $1 );
-      DUMP_AST( "in:decl_english", $4 );
-
-      if ( opt_lang != LANG_CPP )
-        illegal( "reference", NULL );
-      switch ( $4->kind ) {
-        case K_ARRAY:
-          illegal( "reference to array of unspecified dimension",
-                   "reference to object" );
-          break;
-        case K_BUILTIN:
-          if ( $4->as.builtin.type & T_VOID )
-            illegal( "reference of void", "pointer to void" );
-          break;
-        default:
-          ;// suppress warning
-      } // switch
-
-      $$ = c_ast_new( K_REFERENCE );
-      $$->as.ptr_ref.qualifier = $1;
-      $$->as.ptr_ref.to_ast = $4;
-
-      DUMP_AST( "out:reference_decl_english", $$ );
-      DUMP_END();
-    }
-  ;
-
-var_decl_english
-  : Y_NAME Y_AS decl_english
-    {
-      DUMP_START( "var_decl_english", "NAME AS decl_english" );
-      DUMP_NAME( "in:NAME", $1 );
-      DUMP_AST( "in:decl_english", $3 );
-
-      $$ = $3;
-      assert( $$->name == NULL );
-      $$->name = $1;
-
-      DUMP_AST( "out:var_decl_english", $$ );
-      DUMP_END();
-    }
-
-  | Y_NAME
-    {
-      DUMP_START( "var_decl_english", "NAME" );
-      DUMP_NAME( "in:NAME", $1 );
-
-      $$ = c_ast_new( K_NAME );
-      $$->name = $1;
-
-      DUMP_AST( "out:var_decl_english", $$ );
-      DUMP_END();
-    }
-  ;
-
-/*****************************************************************************/
 /*  cast gibberish productions                                               */
 /*****************************************************************************/
 
@@ -1043,6 +755,294 @@ reference_cast_c
       $$->as.ptr_ref.to_ast = $2;
 
       DUMP_AST( "out:reference_cast_c", $$ );
+      DUMP_END();
+    }
+  ;
+
+/*****************************************************************************/
+/*  declaration english productions                                          */
+/*****************************************************************************/
+
+decl_english
+  : array_decl_english
+  | block_decl_english
+  | func_decl_english
+  | pointer_decl_english
+  | pointer_to_member_decl_english
+  | reference_decl_english
+  | type_english
+  | var_decl_english
+  ;
+
+array_decl_english
+  : Y_ARRAY array_size_opt_english Y_OF decl_english
+    {
+      DUMP_START( "array_decl_english",
+                  "ARRAY array_size_opt_english OF decl_english" );
+      DUMP_NUM( "in:array_size_opt_english", $2 );
+      DUMP_AST( "in:decl_english", $4 );
+
+      switch ( $4->kind ) {
+        case K_ARRAY:
+          illegal( "inner array of unspecified size", "array of pointer" );
+          break;
+        case K_BUILTIN:
+          if ( $4->as.builtin.type & T_VOID )
+            illegal( "array of void", "pointer to void" );
+          break;
+        case K_FUNCTION:
+          illegal( "array of function", "array of pointer to function" );
+          break;
+        default:
+          /* suppress warning */;
+      } // switch
+
+      $$ = c_ast_new( K_ARRAY );
+      $$->as.array.size = $2;
+      $$->as.array.of_ast = $4;
+
+      DUMP_AST( "out:array_decl_english", $$ );
+      DUMP_END();
+    }
+  ;
+
+array_size_opt_english
+  : /* empty */                   { $$ = C_ARRAY_NO_SIZE; }
+  | Y_NUMBER
+  | error
+    {
+      parse_error( "array size expected" );
+    }
+  ;
+
+block_decl_english
+  : type_qualifier_list_opt_c
+    Y_BLOCK { in_attr.y_token = Y_BLOCK; } decl_list_opt_english
+    returning_english
+    {
+      DUMP_START( "type_qualifier_list_opt_c",
+                  "BLOCK decl_list_opt_english returning_english" );
+      DUMP_TYPE( "in:type_qualifier_list_opt_c", $1 );
+      DUMP_AST_LIST( "in:decl_list_opt_english", $4 );
+      DUMP_AST( "in:returning_english", $5 );
+
+      $$ = c_ast_new( K_BLOCK );
+      $$->as.block.ret_ast = $5;
+      $$->as.block.args = $4;
+      $$->as.block.type = $1;
+
+      DUMP_AST( "out:block_decl_english", $$ );
+      DUMP_END();
+    }
+  ;
+
+func_decl_english
+  : Y_FUNCTION { in_attr.y_token = Y_FUNCTION; } decl_list_opt_english
+    returning_english
+    {
+      DUMP_START( "func_decl_english",
+                  "FUNCTION decl_list_opt_english returning_english" );
+      DUMP_AST_LIST( "in:decl_list_opt_english", $3 );
+      DUMP_AST( "in:returning_english", $4 );
+
+      $$ = c_ast_new( K_FUNCTION );
+      $$->as.func.ret_ast = $4;
+      $$->as.func.args = $3;
+
+      DUMP_AST( "out:func_decl_english", $$ );
+      DUMP_END();
+    }
+  ;
+
+decl_list_opt_english
+  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
+  | '(' decl_list_english ')'
+    {
+      DUMP_START( "decl_list_opt_english", "'(' decl_list_english ')'" );
+      DUMP_AST_LIST( "in:decl_list_english", $2 );
+
+      $$ = $2;
+
+      DUMP_AST_LIST( "out:decl_list_opt_english", $$ );
+      DUMP_END();
+    }
+  ;
+
+decl_list_english
+  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
+  | decl_list_english expect_comma decl_english
+    {
+      DUMP_START( "decl_list_english", "decl_list_english ',' decl_english" );
+      DUMP_AST_LIST( "in:decl_list_english", $1 );
+      DUMP_AST( "in:decl_english", $3 );
+
+      //$$.head_ast = $1.head_ast;
+      //$$.tail_ast = $3;
+      //assert( $$.tail_ast->next == NULL );
+      //$1.tail_ast->next = $3.head_ast;
+
+      DUMP_AST_LIST( "out:decl_list_english", $$ );
+      DUMP_END();
+    }
+  ;
+
+returning_english
+  : Y_RETURNING decl_english
+    {
+      DUMP_START( "returning_english", "RETURNING decl_english" );
+      DUMP_AST( "in:decl_english", $2 );
+
+      c_keyword_t const *keyword;
+      switch ( $2->kind ) {
+        case K_ARRAY:
+        case K_FUNCTION:
+          keyword = c_keyword_find_token( in_attr.y_token );
+        default:
+          keyword = NULL;
+      } // switch
+
+      if ( keyword ) {
+        char error_msg[ 80 ];
+        char hint_msg[ 80 ];
+        char const *hint;
+
+        switch ( $2->kind ) {
+          case K_ARRAY:
+            hint = "pointer";
+            break;
+          case K_FUNCTION:
+            hint = "pointer to function";
+            break;
+          default:
+            /* suppress warning */;
+        } // switch
+
+        snprintf( error_msg, sizeof error_msg,
+          "%s returning %s",
+          keyword->literal, c_kind_name( $2->kind )
+        );
+        snprintf( hint_msg, sizeof hint_msg,
+          "%s returning %s",
+          keyword->literal, hint
+        );
+
+        illegal( error_msg, hint_msg );
+      }
+
+      $$ = $2;
+
+      DUMP_AST( "out:returning_english", $$ );
+      DUMP_END();
+    }
+  | error { parse_error( "\"%s\" expected", L_RETURNING ); }
+  ;
+
+pointer_decl_english
+  : type_qualifier_list_opt_c Y_POINTER Y_TO decl_english
+    {
+      DUMP_START( "pointer_decl_english",
+                  "type_qualifier_list_opt_c POINTER TO decl_english" );
+      DUMP_TYPE( "in:type_qualifier_list_opt_c", $1 );
+      DUMP_AST( "in:decl_english", $4 );
+
+      if ( $4->kind == K_ARRAY )
+        illegal( "pointer to array of unspecified dimension",
+                 "pointer to object" );
+      $$ = c_ast_new( K_POINTER );
+      $$->as.ptr_ref.qualifier = $1;
+      $$->as.ptr_ref.to_ast = $4;
+
+      DUMP_AST( "out:pointer_decl_english", $$ );
+      DUMP_END();
+    }
+  ;
+
+pointer_to_member_decl_english
+  : type_qualifier_list_opt_c Y_POINTER Y_TO Y_MEMBER Y_OF
+    class_struct_type_c Y_NAME decl_english
+    {
+      DUMP_START( "pointer_to_member_decl_english",
+                  "type_qualifier_list_opt_c POINTER TO MEMBER OF "
+                  "class_struct_type_c NAME decl_english" );
+      DUMP_TYPE( "in:type_qualifier_list_opt_c", $1 );
+      DUMP_TYPE( "in:class_struct_type_c", $6 );
+      DUMP_NAME( "in:NAME", $7 );
+      DUMP_AST( "in:decl_english", $8 );
+
+      if ( opt_lang != LANG_CPP )
+        illegal( "pointer to member of class", NULL );
+#if 0
+      if ( c_kind == K_ARRAY )
+        illegal( "pointer to array of unspecified dimension",
+                 "pointer to object" );
+#endif
+      $$ = c_ast_new( K_POINTER_TO_MEMBER );
+      $$->as.ptr_mbr.qualifier = $1;
+      $$->as.ptr_mbr.type = $6;
+      $$->as.ptr_mbr.class_name = $7;
+      $$->as.ptr_mbr.of_ast = $8;
+
+      DUMP_AST( "out:pointer_to_member_decl_english", $$ );
+      DUMP_END();
+    }
+  ;
+
+reference_decl_english
+  : type_qualifier_list_opt_c Y_REFERENCE Y_TO decl_english
+    {
+      DUMP_START( "reference_decl_english",
+                  "type_qualifier_list_opt_c REFERENCE TO decl_english" );
+      DUMP_TYPE( "in:type_qualifier_list_opt_c", $1 );
+      DUMP_AST( "in:decl_english", $4 );
+
+      if ( opt_lang != LANG_CPP )
+        illegal( "reference", NULL );
+      switch ( $4->kind ) {
+        case K_ARRAY:
+          illegal( "reference to array of unspecified dimension",
+                   "reference to object" );
+          break;
+        case K_BUILTIN:
+          if ( $4->as.builtin.type & T_VOID )
+            illegal( "reference of void", "pointer to void" );
+          break;
+        default:
+          ;// suppress warning
+      } // switch
+
+      $$ = c_ast_new( K_REFERENCE );
+      $$->as.ptr_ref.qualifier = $1;
+      $$->as.ptr_ref.to_ast = $4;
+
+      DUMP_AST( "out:reference_decl_english", $$ );
+      DUMP_END();
+    }
+  ;
+
+var_decl_english
+  : Y_NAME Y_AS decl_english
+    {
+      DUMP_START( "var_decl_english", "NAME AS decl_english" );
+      DUMP_NAME( "in:NAME", $1 );
+      DUMP_AST( "in:decl_english", $3 );
+
+      $$ = $3;
+      assert( $$->name == NULL );
+      $$->name = $1;
+
+      DUMP_AST( "out:var_decl_english", $$ );
+      DUMP_END();
+    }
+
+  | Y_NAME
+    {
+      DUMP_START( "var_decl_english", "NAME" );
+      DUMP_NAME( "in:NAME", $1 );
+
+      $$ = c_ast_new( K_NAME );
+      $$->name = $1;
+
+      DUMP_AST( "out:var_decl_english", $$ );
       DUMP_END();
     }
   ;
