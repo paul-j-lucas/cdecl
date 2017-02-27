@@ -1152,12 +1152,12 @@ name_decl_c
 nested_decl_c
   : '(' decl_c ')'
     {
-      DUMP_START( "func_decl_c", "'(' decl_c ')'" );
+      DUMP_START( "nested_decl_c", "'(' decl_c ')'" );
       DUMP_AST( "in:decl_c", $2 );
 
       $$ = $2;
 
-      DUMP_AST( "out:func_decl_c", $$ );
+      DUMP_AST( "out:nested_decl_c", $$ );
       DUMP_END();
     }
   ;
