@@ -42,6 +42,9 @@ _GL_INLINE_HEADER_BEGIN
 #define PMESSAGE_EXIT(STATUS,FORMAT,...) \
   BLOCK( PRINT_ERR( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
 
+#define FERROR(STREAM) \
+  BLOCK( if ( ferror( STREAM ) ) PERROR_EXIT( EX_IOERR ); )
+
 #define FPRINTF(STREAM,...) \
   BLOCK( if ( fprintf( (STREAM), __VA_ARGS__ ) < 0 ) PERROR_EXIT( EX_IOERR ); )
 
@@ -145,6 +148,19 @@ bool is_file( int fd );
  * @param jout The FILE to print to.
  */
 void json_print_kv( char const *key, char const *value, FILE *jout );
+
+/**
+ * Wraps GNU readline(3) by:
+ *
+ *  + Adding non-whitespace-only lines to the history.
+ *  + Returning only non-whitespace-only lines.
+ *  + Ensuring every line returned ends with a newline.
+ *
+ * If readline(3) is not compiled in, uses getline(3).
+ *
+ * @return Returns the line read or null for EOF.
+ */
+char* readline_wrapper( void );
 
 /**
  * A variant of strcpy(3) that returns the number of characters copied.

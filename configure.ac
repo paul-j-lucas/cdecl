@@ -25,6 +25,7 @@ AC_HEADER_ASSERT
 AC_CHECK_HEADERS([getopt.h])
 AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([sysexits.h])
+AC_CHECK_HEADERS([readline/readline.h readline/history.h])
 gl_INIT
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -34,6 +35,7 @@ AC_C_INLINE
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([fmemopen])
 AC_SEARCH_LIBS([readline],[readline])
+AC_SEARCH_LIBS([add_history],[readline history])
 
 # Program feature: debug
 AC_ARG_ENABLE([debug],
@@ -48,6 +50,17 @@ AC_ARG_ENABLE([yydebug],
   AS_HELP_STRING([--enable-yydebug], [enable support for yacc debugging]),
   [AC_DEFINE([YYDEBUG], [1],
     [Define to 1 if yacc debugging is enabled.])]
+)
+
+# Program feature: readline
+AC_ARG_ENABLE([readline],
+  AS_HELP_STRING([--disable-readline], [disable support for readline]),
+  [],
+  [AC_DEFINE([HAVE_READLINE], [1],
+    [Define to 1 if readline support is enabled.])]
+)
+AS_IF([test x$enable_readline != xno -a x$ac_cv_search_readline = xno],
+  [AC_MSG_ERROR([readline library not found; use --disable-readline to disable])]
 )
 
 # Makefile conditionals.

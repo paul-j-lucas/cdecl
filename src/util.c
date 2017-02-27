@@ -20,6 +20,13 @@
 #include <sys/stat.h>                   /* for fstat() */
 #include <sysexits.h>
 
+#ifdef HAVE_READLINE_READLINE_H
+#include <readline/readline.h>
+#endif /* HAVE_READLINE_READLINE_H */
+#ifdef HAVE_READLINE_HISTORY_H
+#include <readline/history.h>
+#endif /* HAVE_READLINE_HISTORY_H */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -117,6 +124,44 @@ void json_print_kv( char const *key, char const *value, FILE *jout ) {
     FPRINTF( jout, "\"%s\": \"%s\"", key, value );
   else
     FPRINTF( jout, "\"%s\": null", key  );
+}
+
+char* readline_wrapper( void ) {
+  for (;;) {
+    static char *line_read;
+#ifdef HAVE_READLINE
+    extern void readline_init( void );
+    if ( !line_read )
+      readline_init();
+    else
+      free( line_read );
+
+    if ( (line_read = readline( prompt )) == NULL )
+      return NULL;
+#else
+    static size_t line_cap;
+    if ( getline( &line_read, &line_cap, stdin ) == -1 ) {
+      FERROR( stdin );
+      return NULL;
+    }
+#endif /* HAVE_READLINE */
+
+    if ( !is_blank_line( line_read ) ) {
+#ifdef HAVE_READLINE
+      add_history( line_read );
+      //
+      // readline() removes newlines, but we need newlines in the lexer to know
+      // when to reset y_token_col, so we have to put a newline back.
+      //
+      char *const tmp = MALLOC( char, strlen( line_read ) + 1/*\n*/ + 1/*\0*/ );
+      size_t const len = strcpy_len( tmp, line_read );
+      free( line_read );
+      line_read = tmp;
+      strcpy( line_read + len, "\n" );
+#endif /* HAVE_READLINE */
+      return line_read;
+    }
+  } // for
 }
 
 size_t strcpy_len( char *dst, char const *src ) {

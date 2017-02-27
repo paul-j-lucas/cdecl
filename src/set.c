@@ -58,9 +58,9 @@ void set_option( char const *opt ) {
   printf( "  options\n" );
   printf( "  create (-c) / nocreate\n" );
   printf( "  prompt / noprompt (-q)\n" );
-#ifndef WITH_READLINE
+#ifndef HAVE_READLINE
   printf( "  interactive (-i) / nointeractive\n" );
-#endif /* WITH_READLINE */
+#endif /* HAVE_READLINE */
   printf( "  preansi (-p) / ansi (-a) / cplusplus (-+)\n" );
 #ifdef WITH_CDECL_DEBUG
   printf( "  debug (-d) / nodebug\n" );

@@ -43,20 +43,13 @@ AC_DEFUN([gl_EARLY],
   AC_REQUIRE([gl_PROG_AR_RANLIB])
 
   # Code from module absolute-header:
-  # Code from module errno:
   # Code from module extensions:
   # Code from module extern-inline:
-  # Code from module getdelim:
-  # Code from module getline:
   # Code from module getopt-gnu:
   # Code from module getopt-posix:
   # Code from module gettext-h:
-  # Code from module havelib:
   # Code from module include_next:
-  # Code from module limits-h:
-  # Code from module multiarch:
   # Code from module nocrash:
-  # Code from module readline:
   # Code from module snippet/_Noreturn:
   # Code from module snippet/arg-nonnull:
   # Code from module snippet/c++defs:
@@ -70,8 +63,6 @@ AC_DEFUN([gl_EARLY],
   gl_PROG_CC_C99
   # Code from module stdbool:
   # Code from module stddef:
-  # Code from module stdint:
-  # Code from module stdio:
   # Code from module stdlib:
   # Code from module sys_types:
   # Code from module sysexits:
@@ -94,20 +85,7 @@ AC_DEFUN([gl_INIT],
   m4_pushdef([gl_LIBSOURCES_DIR], [])
   gl_COMMON
   gl_source_base='lib'
-  gl_HEADER_ERRNO_H
   AC_REQUIRE([gl_EXTERN_INLINE])
-  gl_FUNC_GETDELIM
-  if test $HAVE_GETDELIM = 0 || test $REPLACE_GETDELIM = 1; then
-    AC_LIBOBJ([getdelim])
-    gl_PREREQ_GETDELIM
-  fi
-  gl_STDIO_MODULE_INDICATOR([getdelim])
-  gl_FUNC_GETLINE
-  if test $REPLACE_GETLINE = 1; then
-    AC_LIBOBJ([getline])
-    gl_PREREQ_GETLINE
-  fi
-  gl_STDIO_MODULE_INDICATOR([getline])
   gl_FUNC_GETOPT_GNU
   if test $REPLACE_GETOPT = 1; then
     AC_LIBOBJ([getopt])
@@ -128,19 +106,10 @@ AC_DEFUN([gl_INIT],
   AC_SUBST([GNULIB_GL_UNISTD_H_GETOPT])
   AC_SUBST([LIBINTL])
   AC_SUBST([LTLIBINTL])
-  gl_LIMITS_H
-  gl_MULTIARCH
-  gl_FUNC_READLINE
-  if test "$gl_cv_lib_readline" = no; then
-    AC_LIBOBJ([readline])
-    gl_PREREQ_READLINE
-  fi
   gt_TYPE_SSIZE_T
   gl_STDARG_H
   AM_STDBOOL_H
   gl_STDDEF_H
-  gl_STDINT_H
-  gl_STDIO_H
   gl_STDLIB_H
   gl_SYS_TYPES_H
   AC_PROG_MKDIR_P
@@ -286,27 +255,18 @@ AC_DEFUN([gltests_LIBSOURCES], [
 # This macro records the list of files which have been installed by
 # gnulib-tool and may be removed by future gnulib-tool invocations.
 AC_DEFUN([gl_FILE_LIST], [
-  build-aux/config.rpath
   build-aux/snippet/_Noreturn.h
   build-aux/snippet/arg-nonnull.h
   build-aux/snippet/c++defs.h
   build-aux/snippet/warn-on-use.h
-  lib/errno.in.h
-  lib/getdelim.c
-  lib/getline.c
   lib/getopt.c
   lib/getopt.in.h
   lib/getopt1.c
   lib/getopt_int.h
   lib/gettext.h
-  lib/limits.in.h
-  lib/readline.c
-  lib/readline.h
   lib/stdarg.in.h
   lib/stdbool.in.h
   lib/stddef.in.h
-  lib/stdint.in.h
-  lib/stdio.in.h
   lib/stdlib.in.h
   lib/sys_types.in.h
   lib/sysexits.in.h
@@ -314,35 +274,22 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/unistd.in.h
   m4/00gnulib.m4
   m4/absolute-header.m4
-  m4/errno_h.m4
   m4/extensions.m4
   m4/extern-inline.m4
-  m4/getdelim.m4
-  m4/getline.m4
   m4/getopt.m4
   m4/gnulib-common.m4
   m4/include_next.m4
-  m4/lib-ld.m4
-  m4/lib-link.m4
-  m4/lib-prefix.m4
-  m4/limits-h.m4
-  m4/longlong.m4
-  m4/multiarch.m4
   m4/nocrash.m4
   m4/off_t.m4
   m4/onceonly.m4
-  m4/readline.m4
   m4/ssize_t.m4
   m4/stdarg.m4
   m4/stdbool.m4
   m4/stddef_h.m4
-  m4/stdint.m4
-  m4/stdio_h.m4
   m4/stdlib_h.m4
   m4/sys_types_h.m4
   m4/sysexits.m4
   m4/unistd_h.m4
   m4/warn-on-use.m4
   m4/wchar_t.m4
-  m4/wint_t.m4
 ])

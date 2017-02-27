@@ -10,7 +10,7 @@
 
 // standard
 #include <assert.h>
-#include <readline.h>
+#include <readline/readline.h>
 #include <stdbool.h>
 #include <string.h>
 

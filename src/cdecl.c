@@ -15,7 +15,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include <getopt.h>
-#include <readline.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -40,9 +39,6 @@ static bool         is_argv0_a_command; // is argv[0] is a command?
 static bool         is_fin_a_tty;       // is our input from a tty?
 
 // extern functions
-#ifdef HAVE_READLINE
-void                readline_init( void );
-#endif /* HAVE_READLINE */
 int                 yyparse( void );
 
 // local functions
@@ -52,7 +48,6 @@ static int          parse_command_line( int, char const*[] );
 static int          parse_files( int, char const*[] );
 static int          parse_stdin( void );
 static int          parse_string( char const*, size_t );
-static char*        readline_wrapper( void );
 
 ////////// main ///////////////////////////////////////////////////////////////
 
@@ -117,10 +112,6 @@ static void cdecl_init( int argc, char const *argv[] ) {
   strcpy( prompt_buf, opt_lang >= LANG_CPP_MIN ? "c++decl" : PACKAGE );
   strcat( prompt_buf, PROMPT_SUFFIX );
   prompt = prompt_buf;
-
-#ifdef HAVE_READLINE
-  readline_init();
-#endif /* HAVE_READLINE */
 }
 
 /**
@@ -213,56 +204,6 @@ static int parse_string( char const *s, size_t s_len ) {
   int const rv = yyparse();
   fclose( yyin );
   return rv;
-}
-
-/**
- * Wraps GNU readline(3) by:
- *
- *  + Trimming lines of both leading and trailing whitespace.
- *  + Adding non-whitespace-only lines to the history.
- *  + Returning only non-whitespace-only lines.
- *  + Ensuring every line returned ends with a newline.
- *
- * @return Returns the line read or null for EOF.
- */
-static char* readline_wrapper( void ) {
-  static char *line_read;
-
-  for (;;) {
-    if ( line_read )
-      free( line_read );
-    line_read = readline( prompt );
-    if ( !line_read )
-      return NULL;
-
-    size_t len = strlen( line_read );
-    bool trimmed_on_right = false;
-
-    while ( len > 0 && isspace( line_read[ len - 1 ] ) ) {
-      line_read[ --len ] = '\0';
-      trimmed_on_right = true;
-    } // while
-
-    if ( !is_blank_line( line_read ) ) {
-      add_history( line_read );
-      //
-      // readline() removes newlines, but we need newlines in the lexer to know
-      // when to reset y_token_col, so we have to put a newline back.
-      //
-      if ( !trimmed_on_right ) {
-        //
-        // We didn't trim whitespace on the right so there's no room to append
-        // a newline: allocate a bigger string and copy the old one over.
-        //
-        char *const temp = MALLOC( char, len + 1/*\n*/ + 1/*\0*/ );
-        len = strcpy_len( temp, line_read );
-        free( line_read );
-        line_read = temp;
-      }
-      strcpy( line_read + len, "\n" );
-      return line_read;
-    }
-  } // for
 }
 
 ///////////////////////////////////////////////////////////////////////////////
