@@ -42,6 +42,17 @@ char const *sgr_caret;
 char const *sgr_error;
 char const *sgr_warning;
 
+/**
+ * Color capabilities table.  Upper-case names are unique to us and upper-case
+ * to avoid conflict with gcc.
+ */
+static color_cap_t const COLOR_CAPS[] = {
+  { "caret",    &sgr_caret    },
+  { "error",    &sgr_error    },
+  { "warning",  &sgr_warning  },
+  { NULL,       NULL          }
+};
+
 // local functions
 static bool parse_sgr( char const* );
 
@@ -51,7 +62,7 @@ static bool parse_sgr( char const* );
  * Sets the SGR color for the given capability.
  *
  * @param cap The color capability to set the color for.
- * @param sgr_color The SGR color to set or empty or NULL to unset.
+ * @param sgr_color The SGR color to set; or null or empty to unset.
  * @return Returns \c true only if \a sgr_color is valid.
  */
 static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
@@ -101,17 +112,6 @@ static bool parse_sgr( char const *sgr_color ) {
   } // for
 }
 
-/**
- * Color capabilities table.  Upper-case names are unique to us and upper-case
- * to avoid conflict with gcc.  Lower-case names are for gcc compatibility.
- */
-static color_cap_t const COLOR_CAPS[] = {
-  { "caret",    &sgr_caret    },
-  { "error",    &sgr_error    },
-  { "warning",  &sgr_warning  },
-  { NULL,       NULL          }
-};
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool parse_gcc_colors( char const *capabilities ) {
@@ -119,12 +119,9 @@ bool parse_gcc_colors( char const *capabilities ) {
 
   if ( capabilities ) {
     // free this later since the sgr_* variables point to substrings
-    char *const capabilities_dup =
-      (char*)free_later( check_strdup( capabilities ) );
-    char *next_cap = capabilities_dup;
-    char *cap_name_val;
+    char *next_cap = (char*)free_later( check_strdup( capabilities ) );
 
-    while ( (cap_name_val = strsep( &next_cap, ":" )) ) {
+    for ( char *cap_name_val; (cap_name_val = strsep( &next_cap, ":" )); ) {
       char const *const cap_name = strsep( &cap_name_val, "=" );
       for ( color_cap_t const *cap = COLOR_CAPS; cap->cap_name; ++cap ) {
         if ( strcmp( cap_name, cap->cap_name ) == 0 ) {
@@ -134,7 +131,7 @@ bool parse_gcc_colors( char const *capabilities ) {
           break;
         }
       } // for
-    } // while
+    } // for
   }
   return set_something;
 }
@@ -167,11 +164,11 @@ bool should_colorize( color_when_t when ) {
   // Results from testing using isatty(3) and fstat(3) are given in the
   // following table:
   //
-  //    COMMAND   Should? isatty ISCHR ISFIFO ISREG
-  //    ========= ======= ====== ===== ====== =====
-  //    ad           T      T      T     F      F
-  //    ad > file    F      F      F     F    >>T<<
-  //    ad | less    T      F      F     T      F
+  //    COMMAND      Should? isatty ISCHR ISFIFO ISREG
+  //    ============ ======= ====== ===== ====== =====
+  //    cdecl           T      T      T     F      F
+  //    cdecl > file    F      F      F     F    >>T<<
+  //    cdecl | less    T      F      F     T      F
   //
   // Hence, we want to do color _except_ when ISREG=T.
   //
