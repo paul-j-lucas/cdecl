@@ -240,42 +240,32 @@ static char* readline_wrapper( void ) {
     if ( !line_read )
       return NULL;
 
-    char *line_nws = line_read;
-    size_t len = strlen( line_nws );
+    size_t len = strlen( line_read );
     bool trimmed_on_right = false;
 
-    while ( len > 0 && isspace( line_nws[ len - 1 ] ) ) {
-      line_nws[ --len ] = '\0';
+    while ( len > 0 && isspace( line_read[ len - 1 ] ) ) {
+      line_read[ --len ] = '\0';
       trimmed_on_right = true;
     } // while
 
-    if ( line_nws ) {                   // if it wasn't all whitespace ...
-      add_history( line_nws );
+    if ( !is_blank_line( line_read ) ) {
+      add_history( line_read );
       //
       // readline() removes newlines, but we need newlines in the lexer to know
       // when to reset y_token_col, so we have to put a newline back.
       //
-      if ( trimmed_on_right ) {
+      if ( !trimmed_on_right ) {
         //
-        // Since we trimmed whitespace from the right side, there's room to
-        // append a newline.  (The byte after the newline is guaranteed to be a
-        // null byte.)
+        // We didn't trim whitespace on the right so there's no room to append
+        // a newline: allocate a bigger string and copy the old one over.
         //
-        line_nws[ len ] = '\n';
-      } else {
-        //
-        // Otherwise we need to allocate a whole new string, copy the old one
-        // over (without leading whitespace, of course), and then append a
-        // newline.  We re-use line_read so it'll be free'd on the next call.
-        //
+        char *const temp = MALLOC( char, len + 1/*\n*/ + 1/*\0*/ );
+        len = strcpy_len( temp, line_read );
         free( line_read );
-        line_read = MALLOC( char, len + 1/*\n*/ + 1/*\0*/ );
-        len = strcpy_len( line_read, line_nws );
-        line_read[ len++ ] = '\n';
-        line_read[ len ] = '\0';
-        line_nws = line_read;
+        line_read = temp;
       }
-      return line_nws;
+      strcpy( line_read + len, "\n" );
+      return line_read;
     }
   } // for
 }

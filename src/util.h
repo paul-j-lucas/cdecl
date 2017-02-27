@@ -15,7 +15,13 @@
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
 #include <stdio.h>                      /* for FILE */
+#include <string.h>
 #include <sysexits.h>
+
+_GL_INLINE_HEADER_BEGIN
+#ifndef CDECL_UTIL_INLINE
+# define CDECL_UTIL_INLINE _GL_INLINE
+#endif /* CDECL_UTIL_INLINE */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -109,6 +115,18 @@ void* free_later( void *p );
  * Frees all the memory pointed to by all the nodes in the free-later-list.
  */
 void free_now( void );
+
+/**
+ * Checks whether \a s is a blank line, that is a line consisting only of
+ * whitespace.
+ *
+ * @param s The null-terminated string to check.
+ * @return Returns \c true only if \a s is a blank line.
+ */
+CDECL_UTIL_INLINE bool is_blank_line( char const *s ) {
+  s += strspn( s, " \t\r\n" );
+  return !*s;
+}
 
 /**
  * Checks whether the given file descriptor refers to a regular file.

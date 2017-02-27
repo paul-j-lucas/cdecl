@@ -8,6 +8,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "common.h"
+#define CDECL_UTIL_INLINE _GL_EXTERN_INLINE
 #include "util.h"
 
 // standard
@@ -111,6 +112,7 @@ bool is_file( int fd ) {
 }
 
 void json_print_kv( char const *key, char const *value, FILE *jout ) {
+  assert( key );
   if ( value && *value )
     FPRINTF( jout, "\"%s\": \"%s\"", key, value );
   else
