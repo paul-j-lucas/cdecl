@@ -37,7 +37,7 @@ char                prompt_buf[ PROGRAM_NAME_MAX_LEN + sizeof PROMPT_SUFFIX ];
 
 // local variables
 static bool         is_argv0_a_command; // is argv[0] is a command?
-static bool         is_stdin_a_tty;     // is stdin connected to a tty?
+static bool         is_fin_a_tty;       // is our input from a tty?
 
 // extern functions
 #ifdef HAVE_READLINE
@@ -111,10 +111,10 @@ static void cdecl_init( int argc, char const *argv[] ) {
   atexit( cdecl_cleanup );
   options_init( argc, argv );
 
-  is_stdin_a_tty = isatty( STDIN_FILENO );
+  is_fin_a_tty = isatty( fileno( fin ) );
 
   // init the prompt
-  strcpy( prompt_buf, opt_lang == LANG_CPP ? "c++decl" : "cdecl" );
+  strcpy( prompt_buf, opt_lang >= LANG_CPP_MIN ? "c++decl" : PACKAGE );
   strcat( prompt_buf, PROMPT_SUFFIX );
   prompt = prompt_buf;
 
@@ -164,10 +164,10 @@ static int parse_files( int argc, char const *argv[] ) {
   int rv = 0;
 
   for ( ; optind < argc; ++optind ) {
-    if ( strcmp( argv[optind], "-" ) == 0 )
+    if ( strcmp( argv[ optind ], "-" ) == 0 )
       rv = parse_stdin();
     else {
-      FILE *const fin = fopen( argv[optind], "r" );
+      FILE *const fin = fopen( argv[ optind ], "r" );
       if ( fin == NULL )
         PERROR_EXIT( EX_NOINPUT );
       yyin = fin;
@@ -184,25 +184,20 @@ static int parse_files( int argc, char const *argv[] ) {
  *
  * @return TODO
  */
-static int parse_stdin() {
+static int parse_stdin( void ) {
   int rv;
 
-  if ( is_stdin_a_tty || opt_interactive ) {
-
+  if ( is_fin_a_tty || opt_interactive ) {
     if ( !opt_quiet )
-      printf( "Type \"help\" or \"?\" for help\n" );
-
+      printf( "Type \"%s\" or \"?\" for help\n", L_HELP );
     rv = 0;
     for ( char *line; (line = readline_wrapper()); )
       rv = parse_string( line, strlen( line ) );
-
-    puts( "" );
-    return rv;
+  } else {
+    yyin = fin;
+    rv = yyparse();
+    is_fin_a_tty = false;
   }
-
-  yyin = stdin;
-  rv = yyparse();
-  is_stdin_a_tty = false;
   return rv;
 }
 
