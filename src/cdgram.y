@@ -229,9 +229,9 @@ void explain_declaration( char const *storage, char const *constvol1,
 
 static void illegal( char const *s, char const *hint ) {
   SGR_START_COLOR( stderr, warning );
-  PRINT_ERR( "warning:" );
+  PRINT_ERR( "warning" );
   SGR_END_COLOR( stderr );
-  PRINT_ERR( "\"%s\" illegal in %s", s, lang_name( opt_lang ) );
+  PRINT_ERR( ": \"%s\" illegal in %s", s, lang_name( opt_lang ) );
   if ( hint )
     PRINT_ERR( " (maybe you mean \"%s\")", hint );
   PRINT_ERR( "\n" );
