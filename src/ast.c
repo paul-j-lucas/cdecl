@@ -37,88 +37,6 @@ static void print_indent( unsigned indent, FILE *jout ) {
   FPRINTF( jout, "%*s", (int)(indent * JSON_INDENT), "" );
 }
 
-static void c_ast_json_impl( c_ast_t const *ast, unsigned indent,
-                             char const *key0, FILE *jout ) {
-  if ( key0 && *key0 )
-    PRINT_JSON( "\"%s\": {\n", key0 );
-  else
-    PRINT_JSON( "{\n" );
-
-  if ( ast != NULL ) {
-    ++indent;
-
-    PRINT_JSON_KV( "kind", c_kind_name( ast->kind ) );
-    FPUTS( ",\n", jout );
-    PRINT_JSON_KV( "name", ast->name );
-
-    bool comma = false;
-
-    switch ( ast->kind ) {
-      case K_ENUM_CLASS_STRUCT_UNION:
-      case K_NAME:
-      case K_NONE:
-        break;
-
-      case K_ARRAY:
-        PRINT_COMMA;
-        PRINT_JSON( "\"size\": %d,\n", ast->as.array.size );
-        c_ast_json_impl( ast->as.array.of_ast, indent, "of_ast", jout );
-        break;
-
-      case K_BUILTIN:
-        PRINT_COMMA;
-        PRINT_JSON_KV( "type", c_type_name( ast->as.builtin.type ) );
-        break;
-
-      case K_BLOCK:
-        PRINT_COMMA;
-        PRINT_JSON_KV( "type", c_type_name( ast->as.block.type ) );
-        FPUTC( '\n', jout );
-        // no break;
-      case K_FUNCTION:
-        PRINT_COMMA;
-        if ( ast->as.func.args.head_ast != NULL ) {
-          PRINT_JSON( "\"args\": [\n" );
-          comma = false;
-          for ( c_ast_t *arg = ast->as.func.args.head_ast; arg;
-                arg = arg->next ) {
-            if ( comma )
-              FPUTS( ", ", jout );
-            else
-              comma = true;
-            c_ast_json_impl( arg, indent + 1, NULL, jout );
-          } // for
-          FPUTC( '\n', jout );
-          PRINT_JSON( "],\n" );
-        } else {
-          PRINT_JSON( "\"args\": []\n" );
-        }
-        c_ast_json_impl( ast->as.func.ret_ast, indent, "ret_ast", jout );
-        break;
-
-      case K_POINTER_TO_MEMBER:
-        PRINT_COMMA;
-        PRINT_JSON_KV( "class_name", ast->as.ptr_mbr.class_name );
-        FPUTC( '\n', jout );
-        PRINT_JSON_KV( "type", c_type_name( ast->as.ptr_mbr.type ) );
-        FPUTC( '\n', jout );
-        // no break;
-      case K_POINTER:
-      case K_REFERENCE:
-        PRINT_COMMA;
-        PRINT_JSON_KV( "qualifier", c_type_name( ast->as.ptr_ref.qualifier ) );
-        FPUTC( '\n', jout );
-        c_ast_json_impl( ast->as.ptr_ref.to_ast, indent, "to_ast", jout );
-        break;
-    } // switch
-
-    FPUTC( '\n', jout );
-    --indent;
-  }
-
-  PRINT_JSON( "}" );
-}
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 #if 0
@@ -379,8 +297,84 @@ void c_ast_gibberish( c_ast_t const *ast, FILE *gout ) {
 
 void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
                  FILE *jout ) {
-  c_ast_json_impl( ast, indent, key0, jout );
-  //FPUTC( '\n', jout );
+  if ( key0 && *key0 )
+    PRINT_JSON( "\"%s\": {\n", key0 );
+  else
+    PRINT_JSON( "{\n" );
+
+  if ( ast != NULL ) {
+    ++indent;
+
+    PRINT_JSON_KV( "kind", c_kind_name( ast->kind ) );
+    FPUTS( ",\n", jout );
+    PRINT_JSON_KV( "name", ast->name );
+
+    bool comma = false;
+
+    switch ( ast->kind ) {
+      case K_ENUM_CLASS_STRUCT_UNION:
+      case K_NAME:
+      case K_NONE:
+        break;
+
+      case K_ARRAY:
+        PRINT_COMMA;
+        PRINT_JSON( "\"size\": %d,\n", ast->as.array.size );
+        c_ast_json( ast->as.array.of_ast, indent, "of_ast", jout );
+        break;
+
+      case K_BUILTIN:
+        PRINT_COMMA;
+        PRINT_JSON_KV( "type", c_type_name( ast->as.builtin.type ) );
+        break;
+
+      case K_BLOCK:
+        PRINT_COMMA;
+        PRINT_JSON_KV( "type", c_type_name( ast->as.block.type ) );
+        FPUTC( '\n', jout );
+        // no break;
+      case K_FUNCTION:
+        PRINT_COMMA;
+        if ( ast->as.func.args.head_ast != NULL ) {
+          PRINT_JSON( "\"args\": [\n" );
+          comma = false;
+          for ( c_ast_t *arg = ast->as.func.args.head_ast; arg;
+                arg = arg->next ) {
+            if ( comma )
+              FPUTS( ", ", jout );
+            else
+              comma = true;
+            c_ast_json( arg, indent + 1, NULL, jout );
+          } // for
+          FPUTC( '\n', jout );
+          PRINT_JSON( "],\n" );
+        } else {
+          PRINT_JSON( "\"args\": []\n" );
+        }
+        c_ast_json( ast->as.func.ret_ast, indent, "ret_ast", jout );
+        break;
+
+      case K_POINTER_TO_MEMBER:
+        PRINT_COMMA;
+        PRINT_JSON_KV( "class_name", ast->as.ptr_mbr.class_name );
+        FPUTC( '\n', jout );
+        PRINT_JSON_KV( "type", c_type_name( ast->as.ptr_mbr.type ) );
+        FPUTC( '\n', jout );
+        // no break;
+      case K_POINTER:
+      case K_REFERENCE:
+        PRINT_COMMA;
+        PRINT_JSON_KV( "qualifier", c_type_name( ast->as.ptr_ref.qualifier ) );
+        FPUTC( '\n', jout );
+        c_ast_json( ast->as.ptr_ref.to_ast, indent, "to_ast", jout );
+        break;
+    } // switch
+
+    FPUTC( '\n', jout );
+    --indent;
+  }
+
+  PRINT_JSON( "}" );
 }
 
 c_ast_list_t c_ast_list_clone( c_ast_list_t const *list ) {
