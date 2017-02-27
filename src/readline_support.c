@@ -81,6 +81,8 @@ static char const *const CDECL_OPTIONS[] = {
   "c99",
   "c11",
   "c++",
+  "c++98",
+  "c++03",
   "c++11",
   "create",
 "nocreate",
@@ -147,7 +149,11 @@ static char* command_generator( char const *text, int state ) {
 }
 
 /**
- * TODO
+ * Attempts to match a cdecl keyword (that is not a command).
+ *
+ * @param text The text read (so far) to match against.
+ * @param state If 0, restart matching from the beginning; if non-zero,
+ * continue to next match, if any.
  */
 static char* keyword_completion( char const *text, int state ) {
   static unsigned index;
@@ -207,7 +213,7 @@ static char* keyword_completion( char const *text, int state ) {
 
 void readline_init( void ) {
   rl_readline_name = (char*)PACKAGE;  // allow conditional .inputrc parsing
-  rl_attempted_completion_function = attempt_completion;
+  rl_attempted_completion_function = (CPPFunction*)attempt_completion;
   rl_completion_entry_function = (Function*)keyword_completion;
   rl_bind_key( '\t', rl_complete );
 }
