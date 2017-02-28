@@ -390,6 +390,7 @@ int yywrap( void ) {
 %type   <ast>       reference_decl_c
 %type   <ast>       reference_decl_type_c
 
+%type   <ast>       placeholder_type_c
 %type   <ast>       type_c
 %type   <type>      builtin_type_c
 %type   <type>      class_struct_type_c
@@ -705,7 +706,7 @@ func_cast_c
       DUMP_AST_LIST( "in:cast_list_opt_c", $5 );
 
       $$ = c_ast_new( K_FUNCTION );
-      $$->name = c_ast_name( $2 );
+      $$->name = check_strdup( c_ast_name( $2 ) );
       $$->as.func.args = $5;
       $$->as.func.ret_ast = PEEK_TYPE();
 
@@ -1070,13 +1071,28 @@ array_decl_c
   : decl2_c array_size_c
     {
       DUMP_START( "array_decl_c", "decl2_c array_size_c" );
+      DUMP_AST( "ia:type_c", PEEK_TYPE() );
       DUMP_AST( "in:decl2_c", $1 );
       DUMP_NUM( "in:array_size_c", $2 );
 
-      $$ = c_ast_new( K_ARRAY );
-      $$->name = c_ast_name( $1 );
-      $$->as.array.size = $2;
-      $$->as.array.of_ast = c_ast_clone( $1 );
+      c_ast_t *const array = c_ast_new( K_ARRAY );
+      array->name = check_strdup( c_ast_name( $1 ) );
+      array->as.array.size = $2;
+
+      switch ( $1->kind ) {
+        case K_POINTER:
+        case K_REFERENCE:
+          if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
+            array->as.array.of_ast = PEEK_TYPE();
+            $1->as.ptr_ref.to_ast = array;
+            $$ = $1;
+            break;
+          }
+          // no break;
+        default:
+          $$ = array;
+          $$->as.array.of_ast = c_ast_clone( $1 );
+      } // switch
 
       DUMP_AST( "out:array_decl_c", $$ );
       DUMP_END();
@@ -1105,7 +1121,7 @@ block_decl_c                            /* Apple extension */
       DUMP_AST_LIST( "in:cast_list_opt_c", $7 );
 
       $$ = c_ast_new( K_BLOCK );
-      $$->name = c_ast_name( $4 );
+      $$->name = check_strdup( c_ast_name( $4 ) );
       $$->as.block.args = $7;
       $$->as.block.ret_ast = PEEK_TYPE();
       $$->as.block.type = $3;
@@ -1124,7 +1140,7 @@ func_decl_c
       DUMP_AST_LIST( "in:cast_list_opt_c", $3 );
 
       $$ = c_ast_new( K_FUNCTION );
-      $$->name = c_ast_name( $1 );
+      $$->name = check_strdup( c_ast_name( $1 ) );
       $$->as.func.args = $3;
       $$->as.func.ret_ast = PEEK_TYPE();
 
@@ -1150,23 +1166,30 @@ name_decl_c
   ;
 
 nested_decl_c
-  : '(' decl_c ')'
+  : '(' placeholder_type_c { PUSH_TYPE( $2 ); } decl_c ')'
     {
-      DUMP_START( "nested_decl_c", "'(' decl_c ')'" );
-      DUMP_AST( "in:decl_c", $2 );
+      POP_TYPE();
+      DUMP_START( "nested_decl_c", "'(' placeholder_type_c decl_c ')'" );
+      DUMP_AST( "in:placeholder_type_c", $2 );
+      DUMP_AST( "in:decl_c", $4 );
 
-      $$ = $2;
+      c_ast_free( $2 );
+      $$ = $4;
 
       DUMP_AST( "out:nested_decl_c", $$ );
       DUMP_END();
     }
   ;
 
+placeholder_type_c
+  : /* empty */                   { $$ = c_ast_new( K_NONE ); }
+  ;
+
 pointer_decl_c
   : pointer_decl_type_c { PUSH_TYPE( $1 ); } decl_c
     {
       POP_TYPE();
-      DUMP_START( "pointer_decl_c", "'*' type_qualifier_list_opt_c decl_c" );
+      DUMP_START( "pointer_decl_c", "pointer_decl_type_c decl_c" );
       DUMP_AST( "in:pointer_decl_type_c", $1 );
       DUMP_AST( "in:decl_c", $3 );
 
@@ -1232,7 +1255,7 @@ reference_decl_c
   : reference_decl_type_c { PUSH_TYPE( $1 ); } decl_c
     {
       POP_TYPE();
-      DUMP_START( "reference_decl_c", "'&' type_qualifier_list_opt_c decl_c" );
+      DUMP_START( "reference_decl_c", "reference_decl_type_c decl_c" );
       DUMP_AST( "in:reference_decl_type_c", $1 );
       DUMP_AST( "in:decl_c", $3 );
 
