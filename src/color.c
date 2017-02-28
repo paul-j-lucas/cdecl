@@ -17,20 +17,19 @@
 #include <string.h>                     /* for str...() */
 #include <unistd.h>                     /* for isatty() */
 
-///////////////////////////////////////////////////////////////////////////////
-
-// local constant definitions
 #define SGR_START "\33[%sm"             /* start color sequence */
 #define SGR_END   "\33[m"               /* end color sequence */
 #define SGR_EL    "\33[K"               /* Erase in Line (EL) sequence */
 
+///////////////////////////////////////////////////////////////////////////////
+
 /**
- * Color capability used to map an AD_COLORS/GREP_COLORS "capability" either to
- * the variable to set or the function to call.
+ * Color capability used to map an CDECL_COLORS/GCC_COLORS "capability" either
+ * to the variable to set or the function to call.
  */
 struct color_cap {
-  char const *cap_name;                 // capability name
-  char const **cap_var_to_set;          // variable to set
+  char const   *cap_name;
+  char const  **cap_var_to_set;
 };
 typedef struct color_cap color_cap_t;
 
