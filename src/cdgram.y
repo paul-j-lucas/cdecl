@@ -612,12 +612,16 @@ cast_list_c
       DUMP_AST( "-> type_c", $1 );
       DUMP_AST( "-> cast_c", $3 );
 
-      $$.head_ast = $$.tail_ast = $3;
+      if ( $3 ) {
+        $$.head_ast = $$.tail_ast = $3;
+        c_ast_free( $1 );
+      } else {
+        $$.head_ast = $$.tail_ast = $1;
+        c_ast_free( $3 );
+      }
 
       DUMP_AST_LIST( "<- cast_list_c", $$ );
       DUMP_END();
-
-      c_ast_free( $1 );
     }
 
   | Y_NAME
