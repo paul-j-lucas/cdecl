@@ -320,10 +320,11 @@ static void usage( void ) {
   PRINT_ERR( "usage: %s [options] [files...]\n", me );
   PRINT_ERR( "       %s -v\n", me );
   PRINT_ERR( "\noptions:\n" );
-  PRINT_ERR( "  -8       Use C89.\n" );
-  PRINT_ERR( "  -9       Use C99.\n" );
+  PRINT_ERR( "  -8       Same as -x c89.\n" );
+  PRINT_ERR( "  -9       Same as -x c99.\n" );
   PRINT_ERR( "  -a       Sams as -8 (for cdecl 2.x compatibility).\n" );
   PRINT_ERR( "  -c       Create compilable output (include ; and {}).\n" );
+  PRINT_ERR( "  -C when  Specify when to colorize output [default: not_file].\n" );
 #ifdef WITH_CDECL_DEBUG
   PRINT_ERR( "  -d       Enable debug output.\n" );
 #endif /* WITH_CDECL_DEBUG */
@@ -332,13 +333,13 @@ static void usage( void ) {
 #endif /* YYDEBUG */
   PRINT_ERR( "  -f file  Read from this file [default: stdin].\n" );
   PRINT_ERR( "  -i       Force interactive mode.\n" );
-  PRINT_ERR( "  -k       Use K&R C.\n" );
+  PRINT_ERR( "  -k       Same as -x knr.\n" );
   PRINT_ERR( "  -o file  Write to this file [default: stdout].\n" );
   PRINT_ERR( "  -p       Same as -k (for cdecl 2.x compatibility).\n" );
   PRINT_ERR( "  -q       Be quiet (disable prompt).\n" );
-  PRINT_ERR( "  -v       Print version an exit.\n" );
+  PRINT_ERR( "  -v       Print version and exit.\n" );
   PRINT_ERR( "  -x lang  Use <lang>.\n" );
-  PRINT_ERR( "  -+       Use C++.\n" );
+  PRINT_ERR( "  -+       Same as -x c++.\n" );
   exit( EX_USAGE );
 }
 
