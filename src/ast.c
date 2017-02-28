@@ -222,40 +222,42 @@ c_ast_t* c_ast_find_name( c_ast_t *ast ) {
 }
 
 void c_ast_free( c_ast_t *ast ) {
-  if ( ast == NULL )
-    return;
-  assert( c_ast_count > 0 );
-  --c_ast_count;
+  if ( ast ) {
+    assert( c_ast_count > 0 );
+    --c_ast_count;
 
-  FREE( ast->name );
+    FREE( ast->name );
 
-  switch ( ast->kind ) {
-    case K_BLOCK:
-    case K_FUNCTION:
-      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; ) {
-        c_ast_t *const next = arg->next;
-        c_ast_free( arg );
-        arg = next;
-      } // for
-      // no break;
-    case K_ARRAY:
-    case K_POINTER:
-    case K_REFERENCE:
-      c_ast_free( ast->as.array.of_ast );
-      break;
+    switch ( ast->kind ) {
+      case K_BLOCK:
+      case K_FUNCTION:
+        c_ast_free( ast->as.func.ret_ast );
+        for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; ) {
+          c_ast_t *const next = arg->next;
+          c_ast_free( arg );
+          arg = next;
+        } // for
+        break;
 
-    case K_POINTER_TO_MEMBER:
-      FREE( ast->as.ptr_mbr.class_name );
-      c_ast_free( ast->as.ptr_mbr.of_ast );
-      break;
+      case K_POINTER_TO_MEMBER:
+        FREE( ast->as.ptr_mbr.class_name );
+        // no break;
+      case K_ARRAY:
+      case K_POINTER:
+      case K_REFERENCE:
+        c_ast_free( ast->as.array.of_ast );
+        break;
 
-    case K_BUILTIN:
-    case K_ENUM_CLASS_STRUCT_UNION:
-    case K_NAME:
-    case K_NONE:
-      // nothing to do
-      break;
-  } // switch
+      case K_BUILTIN:
+      case K_ENUM_CLASS_STRUCT_UNION:
+      case K_NAME:
+      case K_NONE:
+        // nothing to do
+        break;
+    } // switch
+
+    FREE( ast );
+  }
 }
 
 void c_ast_gibberish( c_ast_t const *ast, FILE *gout ) {
@@ -404,11 +406,13 @@ c_ast_t* c_ast_new( c_kind_t kind ) {
 
 c_ast_t* c_ast_pop( c_ast_t **phead ) {
   assert( phead );
-  assert( *phead );
-  c_ast_t *const popped = (*phead);
-  (*phead) = popped->next;
-  popped->next = NULL;
-  return popped;
+  if ( *phead ) {
+    c_ast_t *const popped = (*phead);
+    (*phead) = popped->next;
+    popped->next = NULL;
+    return popped;
+  }
+  return NULL;
 }
 
 void c_ast_push( c_ast_t **phead, c_ast_t *new_ast ) {
