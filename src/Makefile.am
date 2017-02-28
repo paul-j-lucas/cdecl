@@ -14,7 +14,7 @@ cdecl_SOURCES =	cdgram.y cdlex.l cdecl.c \
 		util.c help.c set.c
 
 if WITH_READLINE
-cdecl_SOURCES += readline_support.c
+cdecl_SOURCES += autocomplete.c
 endif
 
 # vim:set noet sw=8 ts=8:

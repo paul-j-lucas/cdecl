@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/readline_support.c
+**      src/autocomplete.c
 */
 
 // local
