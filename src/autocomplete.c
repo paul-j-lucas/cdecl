@@ -10,9 +10,10 @@
 
 // standard
 #include <assert.h>
-#include <readline/readline.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <readline/readline.h>          /* must go last */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -215,7 +216,6 @@ void readline_init( void ) {
   rl_readline_name = (char*)PACKAGE;  // allow conditional .inputrc parsing
   rl_attempted_completion_function = (CPPFunction*)attempt_completion;
   rl_completion_entry_function = (Function*)keyword_completion;
-  rl_bind_key( '\t', rl_complete );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
