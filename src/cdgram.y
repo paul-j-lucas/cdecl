@@ -91,7 +91,7 @@ static bool         newlined = true;
 // local functions
 static void         illegal( char const*, char const* );
 
-///////////////////////////////////////////////////////////////////////////////
+////////// local functions ////////////////////////////////////////////////////
 
 /**
  * Do the "cast" command.
@@ -667,7 +667,7 @@ block_cast_c                            /* Apple extension */
       $$ = c_ast_new( K_BLOCK );
       $$->name = c_ast_name( $3 );
       $$->as.block.args = $6;
-      $$->as.block.ret_ast = PEEK_TYPE();
+      $$->as.block.ret_ast = c_ast_clone( PEEK_TYPE() );
 
       DUMP_AST( "out:block_cast_c", $$ );
       DUMP_END();
@@ -681,7 +681,7 @@ func_cast_c
       DUMP_AST( "ia:type_c", PEEK_TYPE() );
 
       $$ = c_ast_new( K_FUNCTION );
-      $$->as.func.ret_ast = PEEK_TYPE();
+      $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
 
       DUMP_AST( "out:func_cast_c", $$ );
       DUMP_END();
@@ -708,7 +708,7 @@ func_cast_c
       $$ = c_ast_new( K_FUNCTION );
       $$->name = check_strdup( c_ast_name( $2 ) );
       $$->as.func.args = $5;
-      $$->as.func.ret_ast = PEEK_TYPE();
+      $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
 
       DUMP_AST( "out:func_cast_c", $$ );
       DUMP_END();
@@ -1083,7 +1083,7 @@ array_decl_c
         case K_POINTER:
         case K_REFERENCE:
           if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
-            array->as.array.of_ast = PEEK_TYPE();
+            array->as.array.of_ast = c_ast_clone( PEEK_TYPE() );
             $1->as.ptr_ref.to_ast = array;
             $$ = $1;
             break;
@@ -1123,7 +1123,7 @@ block_decl_c                            /* Apple extension */
       $$ = c_ast_new( K_BLOCK );
       $$->name = check_strdup( c_ast_name( $4 ) );
       $$->as.block.args = $7;
-      $$->as.block.ret_ast = PEEK_TYPE();
+      $$->as.block.ret_ast = c_ast_clone( PEEK_TYPE() );
       $$->as.block.type = $3;
 
       DUMP_AST( "out:block_decl_c", $$ );
@@ -1142,7 +1142,7 @@ func_decl_c
       $$ = c_ast_new( K_FUNCTION );
       $$->name = check_strdup( c_ast_name( $1 ) );
       $$->as.func.args = $3;
-      $$->as.func.ret_ast = PEEK_TYPE();
+      $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
 
       DUMP_AST( "out:func_decl_c", $$ );
       DUMP_END();
@@ -1210,7 +1210,7 @@ pointer_decl_type_c
 
       $$ = c_ast_new( K_POINTER );
       $$->as.ptr_ref.qualifier = $2;
-      $$->as.ptr_ref.to_ast = PEEK_TYPE();
+      $$->as.ptr_ref.to_ast = c_ast_clone( PEEK_TYPE() );
 
       DUMP_AST( "out:pointer_decl_type_c", $$ );
       DUMP_END();
@@ -1244,7 +1244,7 @@ pointer_to_member_decl_type_c
       $$ = c_ast_new( K_POINTER_TO_MEMBER );
       $$->as.ptr_mbr.class_name = $1;
       $$->as.ptr_mbr.type = T_CLASS;
-      $$->as.ptr_mbr.of_ast = PEEK_TYPE();
+      $$->as.ptr_mbr.of_ast = c_ast_clone( PEEK_TYPE() );
 
       DUMP_AST( "out:pointer_to_member_decl_type_c", $$ );
       DUMP_END();
@@ -1276,7 +1276,7 @@ reference_decl_type_c
 
       $$ = c_ast_new( K_REFERENCE );
       $$->as.ptr_ref.qualifier = $2;
-      $$->as.ptr_ref.to_ast = PEEK_TYPE();
+      $$->as.ptr_ref.to_ast = c_ast_clone( PEEK_TYPE() );
 
       DUMP_AST( "out:reference_decl_type_c", $$ );
       DUMP_END();
