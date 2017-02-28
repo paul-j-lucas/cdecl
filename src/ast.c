@@ -94,7 +94,7 @@ c_ast_t* c_ast_clone( c_ast_t const *ast ) {
   if ( ast == NULL )
     return NULL;
   c_ast_t *const clone = c_ast_new( ast->kind );
-  clone->name = ast->name ? check_strdup( ast->name ) : NULL;
+  clone->name = check_strdup( ast->name );
   clone->next = c_ast_clone( ast->next );
 
   switch ( ast->kind ) {
@@ -118,8 +118,7 @@ c_ast_t* c_ast_clone( c_ast_t const *ast ) {
       break;
     case K_POINTER_TO_MEMBER:
       clone->as.ptr_mbr.type = ast->as.ptr_mbr.type;
-      clone->as.ptr_mbr.class_name = ast->as.ptr_mbr.class_name ?
-        check_strdup( ast->as.ptr_mbr.class_name ) : NULL;
+      clone->as.ptr_mbr.class_name = check_strdup( ast->as.ptr_mbr.class_name );
       // no break;
     case K_POINTER:
     case K_REFERENCE:
@@ -429,7 +428,6 @@ char const* c_ast_take_name( c_ast_t *ast ) {
     return NULL;
   char const *const name = found->name;
   found->name = NULL;
-  c_ast_free( ast );
   return name;
 }
 
