@@ -69,7 +69,8 @@ void* check_realloc( void *p, size_t size ) {
 }
 
 char* check_strdup( char const *s ) {
-  assert( s );
+  if ( !s )
+    return NULL;
   char *const dup = strdup( s );
   if ( !dup )
     PERROR_EXIT( EX_OSERR );
@@ -136,7 +137,7 @@ char* readline_wrapper( void ) {
     else
       free( line_read );
 
-    if ( (line_read = readline( prompt )) == NULL )
+    if ( !(line_read = readline( prompt )) )
       return NULL;
 #else
     static size_t line_cap;

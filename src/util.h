@@ -87,8 +87,8 @@ void* check_realloc( void *p, size_t size );
  * Calls \c strdup(3) and checks for failure.
  * If memory allocation fails, prints an error message and exits.
  *
- * @param s The null-terminated string to duplicate.
- * @return Returns a copy of \a s.
+ * @param s The null-terminated string to duplicate or null.
+ * @return Returns a copy of \a s or null if \a s is null.
  */
 char* check_strdup( char const *s );
 
