@@ -367,7 +367,7 @@ int yywrap( void ) {
 %type   <ast>       var_decl_english
 
 %type   <ast>       cast_c
-%type   <ast_list>  cast_list_c cast_list_opt_c
+%type   <ast_list>  cast_list_c cast_list_opt_c cast_list_opt_opt_c
 %type   <ast>       array_cast_c
 %type   <ast>       block_cast_c
 %type   <ast>       func_cast_c
@@ -592,6 +592,14 @@ cast_c
   | reference_cast_c
   ;
 
+cast_list_opt_opt_c
+  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
+  | '(' cast_list_opt_c ')'
+    {
+      $$ = $2;
+    }
+  ;
+
 cast_list_opt_c
   : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
   | cast_list_c
@@ -648,9 +656,24 @@ array_cast_c
       DUMP_AST( "-> cast_c", $1 );
       DUMP_NUM( "-> array_size_c", $2 );
 
-      $$ = c_ast_new( K_ARRAY );
-      $$->as.array.size = $2;
-      $$->as.array.of_ast = $1;
+      c_ast_t *const array = c_ast_new( K_ARRAY );
+      array->name = check_strdup( c_ast_name( $1 ) );
+      array->as.array.size = $2;
+
+      switch ( $1->kind ) {
+        case K_POINTER:
+        case K_REFERENCE:
+          if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
+            array->as.array.of_ast = c_ast_clone( PEEK_TYPE() );
+            $1->as.ptr_ref.to_ast = array;
+            $$ = $1;
+            break;
+          }
+          // no break;
+        default:
+          $$ = array;
+          $$->as.array.of_ast = c_ast_clone( $1 );
+      } // switch
 
       DUMP_AST( "<- array_cast_c", $$ );
       DUMP_END();
@@ -677,7 +700,7 @@ block_cast_c                            /* Apple extension */
   ;
 
 func_cast_c
-  : '(' ')'
+  : /* type_c */ '(' ')'
     {
       DUMP_START( "func_cast_c", "'(' ')'" );
       DUMP_AST( "^^ type_c", PEEK_TYPE() );
@@ -689,28 +712,19 @@ func_cast_c
       DUMP_END();
     }
 
-  | '(' cast_c ')'
+  | '(' placeholder_type_c { PUSH_TYPE( $2 ); } cast_c ')' cast_list_opt_opt_c
     {
-      DUMP_START( "func_cast_c", "'(' cast_c ')'" );
-      DUMP_AST( "-> cast_c", $2 );
-
-      $$ = $2;
-
-      DUMP_AST( "<- func_cast_c", $$ );
-      DUMP_END();
-    }
-
-  | '(' cast_c ')' '(' cast_list_opt_c ')'
-    {
+      POP_TYPE();
       DUMP_START( "func_cast_c", "'(' cast_c ')' '(' cast_list_opt_c ')'" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
-      DUMP_AST( "-> cast_c", $2 );
-      DUMP_AST_LIST( "-> cast_list_opt_c", $5 );
+      DUMP_AST( "-> placeholder_type_c", $2 );
+      DUMP_AST( "-> cast_c", $4 );
+      DUMP_AST_LIST( "-> cast_list_opt_c", $6 );
 
+      c_ast_free( $2 );
       $$ = c_ast_new( K_FUNCTION );
-      $$->name = check_strdup( c_ast_name( $2 ) );
-      $$->as.func.args = $5;
-      $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
+      $$->name = check_strdup( c_ast_name( $4 ) );
+      $$->as.func.args = $6;
+      $$->as.func.ret_ast = c_ast_clone( $4 );
 
       DUMP_AST( "<- func_cast_c", $$ );
       DUMP_END();
@@ -718,12 +732,14 @@ func_cast_c
   ;
 
 name_cast_c
-  : Y_NAME
+  : /* type_c */ Y_NAME
     {
       DUMP_START( "name_cast_c", "NAME" );
+      DUMP_AST( "^^ type_c", PEEK_TYPE() );
       DUMP_NAME( "-> NAME", $1 );
 
-      $$ = c_ast_new( K_NAME );
+      $$ = c_ast_clone( PEEK_TYPE() );
+      assert( $$->name == NULL );
       $$->name = $1;
 
       DUMP_AST( "<- name_cast_c", $$ );
@@ -732,13 +748,15 @@ name_cast_c
   ;
 
 pointer_cast_c
-  : '*' cast_c
+  : /* type_c */ '*' cast_c
     {
       DUMP_START( "pointer_cast_c", "'*' cast_c" );
+      DUMP_AST( "^^ type_c", PEEK_TYPE() );
       DUMP_AST( "-> cast_c", $2 );
 
       $$ = c_ast_new( K_POINTER );
       $$->as.ptr_ref.to_ast = $2;
+      //$$->as.ptr_ref.to_ast = c_ast_clone( PEEK_TYPE() );
 
       DUMP_AST( "<- pointer_cast_c", $$ );
       DUMP_END();
@@ -746,9 +764,10 @@ pointer_cast_c
   ;
 
 pointer_to_member_cast_c
-  : Y_NAME Y_COLON_COLON expect_star cast_c
+  : /* type_c */ Y_NAME Y_COLON_COLON expect_star cast_c
     {
       DUMP_START( "pointer_to_member_cast_c", "NAME COLON_COLON '*' cast_c" );
+      DUMP_AST( "^^ type_c", PEEK_TYPE() );
       DUMP_NAME( "-> NAME", $1 );
       DUMP_AST( "-> cast_c", $4 );
 
@@ -763,13 +782,15 @@ pointer_to_member_cast_c
   ;
 
 reference_cast_c
-  : '&' cast_c
+  : /* type_c */ '&' cast_c
     {
       DUMP_START( "reference_cast_c", "'&' cast_c" );
+      DUMP_AST( "^^ type_c", PEEK_TYPE() );
       DUMP_AST( "-> cast_c", $2 );
 
       $$ = c_ast_new( K_REFERENCE );
       $$->as.ptr_ref.to_ast = $2;
+      //$$->as.ptr_ref.to_ast = c_ast_clone( PEEK_TYPE() );
 
       DUMP_AST( "<- reference_cast_c", $$ );
       DUMP_END();
@@ -1258,8 +1279,8 @@ pointer_to_member_decl_type_c
       DUMP_NAME( "-> NAME", $1 );
 
       $$ = c_ast_new( K_POINTER_TO_MEMBER );
-      $$->as.ptr_mbr.class_name = $1;
       $$->as.ptr_mbr.type = T_CLASS;
+      $$->as.ptr_mbr.class_name = $1;
       $$->as.ptr_mbr.of_ast = c_ast_clone( PEEK_TYPE() );
 
       DUMP_AST( "<- pointer_to_member_decl_type_c", $$ );
