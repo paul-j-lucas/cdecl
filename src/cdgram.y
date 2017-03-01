@@ -520,10 +520,12 @@ explain_declaration_c
       DUMP_AST( "-> decl_c", $4 );
       DUMP_END();
 
-      FPRINTF( fout, "declare %s as ", c_ast_name( $4 ) );
+      char const *const name = c_ast_take_name( $4 );
+      FPRINTF( fout, "declare %s as ", name );
       c_ast_english( $4, fout );
       FPUTC( '\n', fout );
 
+      FREE( name );
       c_ast_free( $2 );
       c_ast_free( $4 );
     }
@@ -1420,6 +1422,7 @@ type_c
 
       $$ = c_ast_new( K_BUILTIN );
       $$->as.builtin.type = $1;
+      c_type_add( &$$->as.builtin.type, $2 );
       c_type_check( $$->as.builtin.type );
 
       DUMP_AST( "<- type_c", $$ );
