@@ -147,7 +147,7 @@ struct c_ast {
 void c_ast_cleanup( void );
 
 /**
- * TODO
+ * Clones the given c_ast.
  *
  * @param ast The c_ast to clone.
  * @return Returns said clone.
@@ -189,7 +189,15 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
                  FILE *fout );
 
 /**
- * TODO
+ * Appends a c_ast onto the end of a c_ast_list.
+ *
+ * @param list The c_ast_list to append onto.
+ * @param ast The c_ast to append.  Does nothing if null.
+ */
+void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast );
+
+/**
+ * Clones the given c_ast_list.
  *
  * @param list The c_ast_list to clone.
  * @return Returns said clone.

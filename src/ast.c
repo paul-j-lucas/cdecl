@@ -134,6 +134,8 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   if ( ast == NULL )
     return;
 
+  bool comma = false;
+
   switch ( ast->kind ) {
     case K_NONE:
       break;
@@ -147,19 +149,22 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
       break;
 
     case K_BLOCK:
-      FPRINTF( eout, "%s (", L_BLOCK );
-      for ( c_ast_t *arg = ast->as.block.args.head_ast; arg; arg = arg->next )
+    case K_FUNCTION:
+      FPRINTF( eout, "%s (", c_kind_name( ast->kind ) );
+      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next ) {
+        if ( comma )
+          FPUTS( ", ", eout );
+        else
+          comma = true;
         c_ast_english( arg, eout );
+      }
       FPRINTF( eout, ") %s ", L_RETURNING );
-      c_ast_english( ast->as.block.ret_ast, eout );
+      c_ast_english( ast->as.func.ret_ast, eout );
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name( ast->as.builtin.type ), eout );
-      break;
-
     case K_ENUM_CLASS_STRUCT_UNION:
-      FPUTS( c_type_name( ast->as.ecsu.type ), eout );
+      FPUTS( c_type_name( ast->as.builtin.type ), eout );
       if ( ast->name )
         FPRINTF( eout, " %s", ast->name );
       break;
@@ -167,14 +172,6 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
     case K_NAME:
       if ( ast->name )
         FPUTS( ast->name, eout );
-      break;
-
-    case K_FUNCTION:
-      FPRINTF( eout, "%s (", L_FUNCTION );
-      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next )
-        c_ast_english( arg, eout );
-      FPRINTF( eout, ") %s ", L_RETURNING );
-      c_ast_english( ast->as.func.ret_ast, eout );
       break;
 
     case K_POINTER:
@@ -376,6 +373,20 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
   }
 
   PRINT_JSON( "}" );
+}
+
+void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
+  assert( list );
+  if ( ast ) {
+    if ( !list->head_ast )
+      list->head_ast = list->tail_ast = ast;
+    else {
+      assert( list->tail_ast );
+      assert( list->tail_ast->next == NULL );
+      list->tail_ast->next = ast;
+      list->tail_ast = ast;
+    }
+  }
 }
 
 c_ast_list_t c_ast_list_clone( c_ast_list_t const *list ) {
