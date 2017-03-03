@@ -7,7 +7,7 @@
 #define cdecl_types_H
 
 // local
-#include "config.h"
+#include "config.h"                     /* must go first */
 
 // standard
 #include <stdbool.h>
