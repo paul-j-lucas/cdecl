@@ -171,6 +171,17 @@ char* readline_wrapper( void );
  */
 size_t strcpy_len( char *dst, char const *src );
 
+/**
+ * Checks the flag: if \c false, sets it to \c true.
+ *
+ * @param flag A pointer to the Boolean flag to be tested and, if \c false,
+ * sets it to \c true.
+ * @return Returns \c true only if \c *flag is \c true initially.
+ */
+CDECL_UTIL_INLINE bool true_or_set( bool *flag ) {
+  return *flag || !(*flag = true);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif /* cdecl_util_H */
