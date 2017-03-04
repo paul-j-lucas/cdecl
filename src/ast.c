@@ -62,8 +62,7 @@ static void print_indent( unsigned indent, FILE *out ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-#if 0
-void c_ast_check( c_ast_t *ast ) {
+bool c_ast_check( c_ast_t const *ast ) {
   assert( ast );
 
   switch ( ast->kind ) {
@@ -71,15 +70,23 @@ void c_ast_check( c_ast_t *ast ) {
       break;
 
     case K_ARRAY: {
-      c_ast const *const of_ast = ast->as.array.of_ast;
-      switch ( of_ast.kind ) {
+      c_ast_t const *const of_ast = ast->as.array.of_ast;
+      switch ( of_ast->kind ) {
         case K_BUILTIN:
-          if ( of_ast.type & T_VOID )
-            /* complain */;
+          if ( of_ast->as.builtin.type & T_VOID ) {
+            c_error( "array of void", "array of pointer to void" );
+            return false;
+          }
+          if ( of_ast->as.builtin.type & T_REGISTER ) {
+            c_error( "register array", NULL );
+            return false;
+          }
           break;
         case K_FUNCTION:
           /* complain */;
           break;
+        default:
+          /* suppress warning */;
       } // switch
       break;
     }
@@ -87,26 +94,59 @@ void c_ast_check( c_ast_t *ast ) {
     case K_BLOCK:
       // TODO
       break;
-    case K_BUILTIN:
-      // nothing to do
+
+    case K_BUILTIN: {
+      c_type_t const type = ast->as.builtin.type;
+      if ( type & T_VOID ) {
+        c_error( "variable of void", "pointer to void" );
+        return false;
+      }
       break;
+    }
+
     case K_ENUM_CLASS_STRUCT_UNION:
       // TODO
       break;
-    case K_FUNCTION:
-      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next )
-        /* TODO */;
+
+    case K_FUNCTION: {
+      c_ast_t const *const ret_ast = ast->as.func.ret_ast;
+      switch ( ret_ast->kind ) {
+        case K_BUILTIN:
+          if ( ret_ast->as.builtin.type & T_REGISTER ) {
+            c_error( "register function", NULL );
+            return false;
+          }
+        default:
+          /* suppress warning */;
+      } // switch
       break;
+    }
+
     case K_POINTER_TO_MEMBER:
       break;
     case K_NAME:
       break;
     case K_POINTER:
-    case K_REFERENCE:
       break;
+
+    case K_REFERENCE: {
+      c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
+      switch ( to_ast->kind ) {
+        case K_BUILTIN:
+          if ( to_ast->as.builtin.type & T_VOID ) {
+            c_error( "referece to void", "pointer to void" );
+            return false;
+          }
+          break;
+        default:
+          /* suppress warning */;
+      } // switch
+      break;
+    }
   } // switch
+
+  return true;
 }
-#endif
 
 void c_ast_cleanup( void ) {
   if ( c_ast_count > 0 )
@@ -182,6 +222,8 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 
     case K_BLOCK:
     case K_FUNCTION:
+      if ( ast->as.func.type )
+        FPRINTF( eout, "%s ", c_type_name( ast->as.func.type ) );
       FPRINTF( eout, "%s (", c_kind_name( ast->kind ) );
       for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next ) {
         if ( comma )
@@ -320,27 +362,23 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
         break;
 
       case K_BLOCK:
-        PRINT_COMMA;
-        PRINT_JSON_KV( "type", c_type_name( ast->as.block.type ) );
-        FPUTC( '\n', jout );
-        // no break;
       case K_FUNCTION:
         PRINT_COMMA;
+        PRINT_JSON_KV( "type", c_type_name( ast->as.func.type ) );
+        FPRINTF( jout, ",\n" );
         if ( ast->as.func.args.head_ast != NULL ) {
           PRINT_JSON( "\"args\": [\n" );
           comma = false;
           for ( c_ast_t *arg = ast->as.func.args.head_ast; arg;
                 arg = arg->next ) {
-            if ( comma )
+            if ( true_or_set( &comma ) )
               FPUTS( ", ", jout );
-            else
-              comma = true;
             c_ast_json( arg, indent + 1, NULL, jout );
           } // for
           FPUTC( '\n', jout );
           PRINT_JSON( "],\n" );
         } else {
-          PRINT_JSON( "\"args\": []\n" );
+          PRINT_JSON( "\"args\": [],\n" );
         }
         c_ast_json( ast->as.func.ret_ast, indent, "ret_ast", jout );
         break;
@@ -348,7 +386,7 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_POINTER_TO_MEMBER:
         PRINT_COMMA;
         PRINT_JSON_KV( "class_name", ast->as.ptr_mbr.class_name );
-        FPUTC( '\n', jout );
+        FPRINTF( jout, ",\n" );
         PRINT_JSON_KV( "type", c_type_name( ast->as.ptr_mbr.type ) );
         FPUTC( '\n', jout );
         // no break;
@@ -356,7 +394,7 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_REFERENCE:
         PRINT_COMMA;
         PRINT_JSON_KV( "qualifier", c_type_name( ast->as.ptr_ref.qualifier ) );
-        FPUTC( '\n', jout );
+        FPRINTF( jout, ",\n" );
         c_ast_json( ast->as.ptr_ref.to_ast, indent, "to_ast", jout );
         break;
     } // switch
@@ -435,6 +473,22 @@ char const* c_ast_take_name( c_ast_t *ast ) {
   char const *const name = found->name;
   found->name = NULL;
   return name;
+}
+
+c_type_t c_ast_take_storage( c_ast_t *ast ) {
+  c_type_t storage = T_NONE;
+  switch ( ast->kind ) {
+    case K_BUILTIN:
+      storage = ast->as.builtin.type & T_MASK_STORAGE;
+      ast->as.builtin.type &= ~T_MASK_STORAGE;
+      break;
+    case K_POINTER:
+    case K_REFERENCE:
+      return c_ast_take_storage( ast->as.ptr_ref.to_ast );
+    default:
+      /* suppress warning */;
+  } // switch
+  return storage;
 }
 
 char const* c_kind_name( c_kind_t kind ) {

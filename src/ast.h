@@ -96,6 +96,7 @@ struct c_ecsu {
 struct c_func {
   c_ast_t      *ret_ast;                // return type
   c_ast_list_t  args;
+  c_type_t      type;
 };
 
 /**
@@ -142,24 +143,32 @@ struct c_ast {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Checks an entire AST for semantic validity.
+ *
+ * @param ast The AST to check.
+ * @return Returns \c true only if the entire AST is valid.
+ */
+bool c_ast_check( c_ast_t const *ast );
+
+/**
  * Cleans-up AST data.
- * (Currently, this checks that the number of c_ast object freed match the
+ * (Currently, this checks that the number of c_ast objects freed match the
  * number allocated.)
  */
 void c_ast_cleanup( void );
 
 /**
- * Clones the given c_ast.
+ * Clones the given AST.
  *
- * @param ast The c_ast to clone.
+ * @param ast The AST to clone.
  * @return Returns said clone.
  */
 c_ast_t* c_ast_clone( c_ast_t const *ast );
 
 /**
- * Prints the given c_ast as English.
+ * Prints the given AST as English.
  *
- * @param ast The c_ast to print.  May be null.
+ * @param ast The AST to print.  May be null.
  * @param fout The FILE to print to.
  */
 void c_ast_english( c_ast_t const *ast, FILE *fout );
@@ -170,7 +179,7 @@ void c_ast_english( c_ast_t const *ast, FILE *fout );
 void c_ast_gc( void );
 
 /**
- * Prints the given c_ast as a C/C++ declaration.
+ * Prints the given AST as a C/C++ declaration.
  *
  * @param ast The c_ast to print.
  * @param fout The FILE to print to.
@@ -178,7 +187,7 @@ void c_ast_gc( void );
 void c_ast_gibberish( c_ast_t const *ast, FILE *fout );
 
 /**
- * Dumps the given c_ast as JSON (for debugging).
+ * Dumps the given AST as JSON (for debugging).
  *
  * @param ast The c_ast to dump.
  * @paran indent The initial indent.
@@ -205,9 +214,9 @@ void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast );
 c_ast_list_t c_ast_list_clone( c_ast_list_t const *list );
 
 /**
- * Gets the name from the given c_ast.
+ * Gets the name from the given AST.
  *
- * @param ast The c_ast to get the name from.
+ * @param ast The AST to get the name from.
  * @return Returns said name or null if none.
  */
 char const* c_ast_name( c_ast_t *ast );
@@ -222,10 +231,18 @@ c_ast_t* c_ast_new( c_kind_t kind );
 /**
  * TODO
  *
- * @param ast TODO
- * @return TODO
+ * @param ast The AST to take trom.
+ * @return Returns said name or null.
  */
 char const* c_ast_take_name( c_ast_t *ast );
+
+/**
+ * TODO
+ *
+ * @param ast The AST to take trom.
+ * @return Returns said storage class or T_NONE.
+ */
+c_type_t c_ast_take_storage( c_ast_t *ast );
 
 /**
  * Pops a c_ast from the head of a list.
