@@ -29,12 +29,35 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // local variable definitions
-static unsigned c_ast_count;            // allocated but not freed
+static unsigned   c_ast_count;          // alloc'd but not yet freed
+static c_ast_t   *c_ast_head;           // linked list of alloc'd objects
 
 ////////// local functions ////////////////////////////////////////////////////
 
-static void print_indent( unsigned indent, FILE *jout ) {
-  FPRINTF( jout, "%*s", (int)(indent * JSON_INDENT), "" );
+/**
+ * Frees all the memory used by the given c_ast.
+ *
+ * @param ast The c_ast to free.  May be null.
+ */
+static void c_ast_free( c_ast_t *ast ) {
+  if ( ast ) {
+    assert( c_ast_count > 0 );
+    --c_ast_count;
+
+    FREE( ast->name );
+    switch ( ast->kind ) {
+      case K_POINTER_TO_MEMBER:
+        FREE( ast->as.ptr_mbr.class_name );
+        break;
+      default:
+        break;
+    } // switch
+    FREE( ast );
+  }
+}
+
+static void print_indent( unsigned indent, FILE *out ) {
+  FPRINTF( out, "%*s", (int)(indent * JSON_INDENT), "" );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -88,6 +111,15 @@ void c_ast_check( c_ast_t *ast ) {
 void c_ast_cleanup( void ) {
   if ( c_ast_count > 0 )
     INTERNAL_ERR( "number of c_ast objects (%u) > 0\n", c_ast_count );
+}
+
+void c_ast_gc( void ) {
+  for ( c_ast_t *p = c_ast_head; p; ) {
+    c_ast_t *const next = p->gc_next;
+    c_ast_free( p );
+    p = next;
+  } // for
+  c_ast_head = NULL;
 }
 
 c_ast_t* c_ast_clone( c_ast_t const *ast ) {
@@ -215,45 +247,6 @@ c_ast_t* c_ast_find_name( c_ast_t *ast ) {
     case K_NONE:
       return NULL;
   } // switch
-}
-
-void c_ast_free( c_ast_t *ast ) {
-  if ( ast ) {
-    assert( c_ast_count > 0 );
-    --c_ast_count;
-
-    FREE( ast->name );
-
-    switch ( ast->kind ) {
-      case K_BLOCK:
-      case K_FUNCTION:
-        c_ast_free( ast->as.func.ret_ast );
-        for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; ) {
-          c_ast_t *const next = arg->next;
-          c_ast_free( arg );
-          arg = next;
-        } // for
-        break;
-
-      case K_POINTER_TO_MEMBER:
-        FREE( ast->as.ptr_mbr.class_name );
-        // no break;
-      case K_ARRAY:
-      case K_POINTER:
-      case K_REFERENCE:
-        c_ast_free( ast->as.array.of_ast );
-        break;
-
-      case K_BUILTIN:
-      case K_ENUM_CLASS_STRUCT_UNION:
-      case K_NAME:
-      case K_NONE:
-        // nothing to do
-        break;
-    } // switch
-
-    FREE( ast );
-  }
 }
 
 void c_ast_gibberish( c_ast_t const *ast, FILE *gout ) {
@@ -410,6 +403,8 @@ c_ast_t* c_ast_new( c_kind_t kind ) {
   c_ast_t *const ast = MALLOC( c_ast_t, 1 );
   memset( ast, 0, sizeof( c_ast_t ) );
   ast->kind = kind;
+  ast->gc_next = c_ast_head;
+  c_ast_head = ast;
   ++c_ast_count;
   return ast;
 }

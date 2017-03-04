@@ -415,7 +415,7 @@ int yywrap( void ) {
 
 command_list
   : /* empty */
-  | command_list command_init command
+  | command_list command_init command command_cleanup
   ;
 
 command_init
@@ -444,6 +444,13 @@ command
     }
   ;
 
+command_cleanup
+  : /* empty */
+    {
+      c_ast_gc();
+    }
+  ;
+
 /*****************************************************************************/
 /*  cast                                                                     */
 /*****************************************************************************/
@@ -458,7 +465,6 @@ cast_english
 
       cast_english( $2, $4 );
       FREE( $2 );
-      c_ast_free( $4 );
     }
 
   | Y_CAST Y_NAME error
@@ -473,7 +479,6 @@ cast_english
       DUMP_END();
 
       cast_english( NULL, $2 );
-      c_ast_free( $2 );
     }
   ;
 
@@ -493,7 +498,6 @@ declare_english
 
       declare_english( $2, $4, $5 );
       FREE( $2 );
-      c_ast_free( $5 );
     }
 
   | Y_DECLARE error
@@ -526,8 +530,6 @@ explain_declaration_c
       FPUTC( '\n', fout );
 
       FREE( name );
-      c_ast_free( $2 );
-      c_ast_free( $4 );
     }
   ;
 
@@ -549,8 +551,6 @@ explain_cast_c
       c_ast_english( $5, fout );
       FPUTC( '\n', fout );
 
-      c_ast_free( $3 );
-      c_ast_free( $5 );
       FREE( $7 );
     }
   ;
@@ -674,7 +674,7 @@ array_cast_c
           // no break;
         default:
           $$ = array;
-          $$->as.array.of_ast = c_ast_clone( $1 );
+          $$->as.array.of_ast = $1;
       } // switch
 
       DUMP_AST( "<- array_cast_c", $$ );
@@ -722,11 +722,10 @@ func_cast_c
       DUMP_AST( "-> cast_c", $4 );
       DUMP_AST_LIST( "-> cast_list_opt_c", $6 );
 
-      c_ast_free( $2 );
       $$ = c_ast_new( K_FUNCTION );
       $$->name = check_strdup( c_ast_name( $4 ) );
       $$->as.func.args = $6;
-      $$->as.func.ret_ast = c_ast_clone( $4 );
+      $$->as.func.ret_ast = $4;
 
       DUMP_AST( "<- func_cast_c", $$ );
       DUMP_END();
@@ -916,10 +915,8 @@ decl_list_english
       DUMP_AST_LIST( "-> decl_list_english", $1 );
       DUMP_AST( "-> decl_english", $3 );
 
-      //$$.head_ast = $1.head_ast;
-      //$$.tail_ast = $3;
-      //assert( $$.tail_ast->next == NULL );
-      //$1.tail_ast->next = $3.head_ast;
+      $$ = $1;
+      c_ast_list_append( &$$, $3 );
 
       DUMP_AST_LIST( "<- decl_list_english", $$ );
       DUMP_END();
@@ -1130,7 +1127,7 @@ array_decl_c
           // no break;
         default:
           $$ = array;
-          $$->as.array.of_ast = c_ast_clone( $1 );
+          $$->as.array.of_ast = $1;
       } // switch
 
       DUMP_AST( "<- array_decl_c", $$ );
@@ -1212,7 +1209,6 @@ nested_decl_c
       DUMP_AST( "-> placeholder_type_c", $2 );
       DUMP_AST( "-> decl_c", $4 );
 
-      c_ast_free( $2 );
       $$ = $4;
 
       DUMP_AST( "<- nested_decl_c", $$ );
@@ -1232,7 +1228,6 @@ pointer_decl_c
       DUMP_AST( "-> pointer_decl_type_c", $1 );
       DUMP_AST( "-> decl_c", $3 );
 
-      c_ast_free( $1 );
       $$ = $3;
 
       DUMP_AST( "<- pointer_decl_c", $$ );
@@ -1265,7 +1260,6 @@ pointer_to_member_decl_c
       DUMP_AST( "-> pointer_to_member_decl_type_c", $1 );
       DUMP_AST( "-> decl_c", $3 );
 
-      c_ast_free( $1 );
       $$ = $3;
 
       DUMP_AST( "<- pointer_to_member_decl_c", $$ );
@@ -1298,7 +1292,6 @@ reference_decl_c
       DUMP_AST( "-> reference_decl_type_c", $1 );
       DUMP_AST( "-> decl_c", $3 );
 
-      c_ast_free( $1 );
       $$ = $3;
 
       DUMP_AST( "<- reference_decl_c", $$ );

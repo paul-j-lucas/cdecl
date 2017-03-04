@@ -124,7 +124,7 @@ struct c_ptr_ref {
 struct c_ast {
   c_kind_t    kind;
   char const *name;
-  c_ast_t    *next;
+  c_ast_t    *next;                     // used for stacks and arg lists
 
   union {
     c_array_t     array;
@@ -135,6 +135,8 @@ struct c_ast {
     c_ptr_mbr_t   ptr_mbr;
     c_ptr_ref_t   ptr_ref;
   } as;
+
+  c_ast_t    *gc_next;                  // used for garbage collection
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -163,11 +165,9 @@ c_ast_t* c_ast_clone( c_ast_t const *ast );
 void c_ast_english( c_ast_t const *ast, FILE *fout );
 
 /**
- * Frees all the memory used by the given c_ast.
- *
- * @param ast The c_ast to free.  May be null.
+ * Garbage collects all allocated c_ast objects.
  */
-void c_ast_free( c_ast_t *ast );
+void c_ast_gc( void );
 
 /**
  * Prints the given c_ast as a C/C++ declaration.
