@@ -35,6 +35,35 @@ static c_ast_t   *c_ast_head;           // linked list of alloc'd objects
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Attempts to find a c_ast having a name.
+ *
+ * @param ast The c_ast to start from.
+ * @return Returns a name or null if none.
+ */
+static c_ast_t* c_ast_find_name( c_ast_t *ast ) {
+  if ( ast == NULL )
+    return NULL;
+  if ( ast->name )
+    return ast;
+
+  switch ( ast->kind ) {
+    case K_ARRAY:
+    case K_BLOCK:
+    case K_FUNCTION:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+    case K_REFERENCE:
+      // all c_ast_t* are at the same offset thanks to the union
+      return c_ast_find_name( ast->as.array.of_ast );
+    case K_BUILTIN:
+    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_NAME:
+    case K_NONE:
+      return NULL;
+  } // switch
+}
+
+/**
  * Frees all the memory used by the given c_ast.
  *
  * @param ast The c_ast to free.  May be null.
@@ -59,6 +88,135 @@ static void c_ast_free( c_ast_t *ast ) {
   }
 }
 
+/**
+ * Helper function for c_ast_gibberish_impl() that prints a pointer, pointer-
+ * to-member, or reference qualifier, if any, and the name, if any.
+ *
+ * @param ast The c_ast that is either
+ */
+static void c_ast_gibberish_qual_name( c_ast_t const *ast, FILE *gout ) {
+  assert( ast );
+  assert( ast->kind == K_POINTER ||
+          ast->kind == K_POINTER_TO_MEMBER ||
+          ast->kind == K_REFERENCE );
+
+  if ( ast->as.ptr_ref.qualifier )
+    FPRINTF( gout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
+  if ( ast->name )
+    FPUTS( ast->name, gout );
+}
+
+/**
+ * Prints the given AST as gibberish, aka, a C/C++ declaration.
+ *
+ * @param ast The AST to print.
+ * @param parent The parent c_ast.  Must \c not be null.
+ * @param gout The FILE to print to.
+ */
+static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
+                                  FILE *gout ) {
+  assert( ast );
+  assert( parent );
+
+  bool comma = false;
+
+  switch ( ast->kind ) {
+    case K_NONE:
+      assert( ast->kind != K_NONE );
+
+    case K_ARRAY:
+      c_ast_gibberish_impl( ast->as.array.of_ast, ast, gout );
+      FPUTC( '[', gout );
+      if ( ast->as.array.size != C_ARRAY_NO_SIZE )
+        FPRINTF( gout, "%d", ast->as.array.size );
+      FPUTC( ']', gout );
+      break;
+
+    case K_BLOCK:
+      // TODO
+      break;
+
+    case K_BUILTIN:
+      FPUTS( c_type_name( ast->as.builtin.type ), gout );
+      if ( ast->name )
+        FPRINTF( gout, " %s", ast->name );
+      break;
+
+    case K_ENUM_CLASS_STRUCT_UNION:
+      FPRINTF( gout,
+        "%s %s", c_kind_name( ast->kind ), ast->as.ecsu.ecsu_name
+      );
+      break;
+
+    case K_NAME:
+      if ( ast->name )
+        FPUTS( ast->name, gout );
+      break;
+
+    case K_FUNCTION:
+      c_ast_gibberish_impl( ast->as.func.ret_ast, ast, gout );
+      if ( parent->kind == K_POINTER ) {
+        FPRINTF( gout, " (*" );
+        c_ast_gibberish_qual_name( parent, gout );
+      } else {
+        FPUTS( ast->name, gout );
+      }
+      if ( parent->kind == K_POINTER )
+        FPUTC( ')', gout );
+      FPUTC( '(', gout );
+      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next ) {
+        if ( true_or_set( &comma ) )
+          FPUTS( ", ", gout );
+          c_ast_gibberish_impl( arg, ast, gout );
+      } // for
+      FPUTC( ')', gout );
+      break;
+
+    case K_POINTER: {
+      c_ast_t const *const to = ast->as.ptr_ref.to_ast;
+      if ( to->kind == K_FUNCTION ) {
+        c_ast_gibberish_impl( to, ast, gout );
+      } else {
+        c_ast_gibberish_impl( to, ast, gout );
+        if ( parent->kind != K_FUNCTION )
+          FPUTC( ' ', gout );
+        FPUTC( '*', gout );
+        c_ast_gibberish_qual_name( ast, gout );
+      }
+      break;
+    }
+
+    case K_POINTER_TO_MEMBER:
+      c_ast_gibberish_impl( ast->as.ptr_mbr.of_ast, ast, gout );
+      FPRINTF( gout, " %s::*", ast->as.ptr_mbr.class_name );
+      c_ast_gibberish_qual_name( ast, gout );
+      break;
+
+    case K_REFERENCE:
+      c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, ast, gout );
+      FPUTS( " &", gout );
+      c_ast_gibberish_qual_name( ast, gout );
+      break;
+  } // switch
+}
+
+/**
+ * Initializes a c_ast.
+ *
+ * @param ast The c_ast to initialize.
+ * @param kind The kind of c_ast to initialize.
+ */
+static inline void c_ast_init( c_ast_t *ast, c_kind_t kind ) {
+  memset( ast, 0, sizeof( c_ast_t ) );
+  ast->kind = kind;
+}
+
+/**
+ * Prints a multiple of \a indent spaces.
+ *
+ * @param indent How much to indent.
+ * @param out The FILE to print to.
+ */
 static void print_indent( unsigned indent, FILE *out ) {
   FPRINTF( out, "%*s", (int)(indent * JSON_INDENT), "" );
 }
@@ -280,132 +438,11 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   } // switch
 }
 
-c_ast_t* c_ast_find_name( c_ast_t *ast ) {
-  if ( ast == NULL )
-    return NULL;
-  if ( ast->name )
-    return ast;
-
-  switch ( ast->kind ) {
-    case K_ARRAY:
-    case K_BLOCK:
-    case K_FUNCTION:
-    case K_POINTER:
-    case K_POINTER_TO_MEMBER:
-    case K_REFERENCE:
-      return c_ast_find_name( ast->as.array.of_ast );
-    case K_BUILTIN:
-    case K_ENUM_CLASS_STRUCT_UNION:
-    case K_NAME:
-    case K_NONE:
-      return NULL;
-  } // switch
-}
-
-void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
-                           FILE *gout ) {
-  if ( ast == NULL )
-    return;
-
-  bool comma = false;
-
-  switch ( ast->kind ) {
-    case K_NONE:
-      assert( ast->kind != K_NONE );
-
-    case K_ARRAY:
-      c_ast_gibberish( ast->as.array.of_ast, gout );
-      FPUTC( '[', gout );
-      if ( ast->as.array.size != C_ARRAY_NO_SIZE )
-        FPRINTF( gout, "%d", ast->as.array.size );
-      FPUTC( ']', gout );
-      break;
-
-    case K_BLOCK:
-      break;
-
-    case K_BUILTIN:
-      FPUTS( c_type_name( ast->as.builtin.type ), gout );
-      if ( ast->name )
-        FPRINTF( gout, " %s", ast->name );
-      break;
-
-    case K_ENUM_CLASS_STRUCT_UNION:
-      FPRINTF( gout,
-        "%s %s", c_kind_name( ast->kind ), ast->as.ecsu.ecsu_name
-      );
-      break;
-
-    case K_NAME:
-      break;
-
-    case K_FUNCTION:
-      c_ast_gibberish( ast->as.func.ret_ast, gout );
-      if ( parent && parent->kind == K_POINTER ) {
-        FPRINTF( gout, " (*" );
-        if ( parent->as.ptr_ref.qualifier )
-          FPRINTF( gout, "%s ", c_type_name( parent->as.ptr_ref.qualifier ) );
-        FPUTS( parent->name, gout );
-      } else {
-        FPUTS( ast->name, gout );
-      }
-      if ( parent && parent->kind == K_POINTER ) {
-        FPUTC( ')', gout );
-      }
-      FPUTC( '(', gout );
-      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next ) {
-        if ( true_or_set( &comma ) )
-          FPUTS( ", ", gout );
-          c_ast_gibberish( arg, gout );
-      } // for
-      FPUTC( ')', gout );
-      break;
-
-    case K_POINTER_TO_MEMBER:
-      break;
-
-    case K_POINTER: {
-      c_ast_t const *const to = ast->as.ptr_ref.to_ast;
-      if ( to->kind == K_FUNCTION ) {
-        c_ast_gibberish_impl( to, ast, gout );
-      } else {
-        c_ast_gibberish( to, gout );
-        FPUTS( " *", gout );
-        if ( ast->as.ptr_ref.qualifier )
-          FPRINTF( gout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
-        if ( ast->name )
-          FPUTS( ast->name, gout );
-      }
-      break;
-    }
-
-    case K_REFERENCE:
-      c_ast_gibberish( ast->as.ptr_ref.to_ast, gout );
-      FPUTS( " *", gout );
-      if ( ast->as.ptr_ref.qualifier )
-        FPRINTF( gout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
-      if ( ast->name )
-        FPUTS( ast->name, gout );
-      break;
-  } // switch
-}
-
 void c_ast_gibberish( c_ast_t const *ast, FILE *gout ) {
-  return c_ast_gibberish_impl( ast, NULL, gout );
+  c_ast_t dummy;
+  c_ast_init( &dummy, K_NONE );
+  return c_ast_gibberish_impl( ast, &dummy, gout );
 }
-
-#if 0
-void c_ast_give_name( c_ast_t *ast, char const *name ) {
-  assert( ast );
-  assert( name );
-
-  switch ( ast->kind ) {
-    case K_NONE:
-      assert( ast->kind != K_NONE );
-      
-  } // switch
-}
-#endif
 
 void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
                  FILE *jout ) {
@@ -522,8 +559,7 @@ char const* c_ast_name( c_ast_t *ast ) {
 
 c_ast_t* c_ast_new( c_kind_t kind ) {
   c_ast_t *const ast = MALLOC( c_ast_t, 1 );
-  memset( ast, 0, sizeof( c_ast_t ) );
-  ast->kind = kind;
+  c_ast_init( ast, kind );
   ast->gc_next = c_ast_head;
   c_ast_head = ast;
   ++c_ast_count;
@@ -541,12 +577,12 @@ c_ast_t* c_ast_pop( c_ast_t **phead ) {
   return NULL;
 }
 
-void c_ast_push( c_ast_t **phead, c_ast_t *new_ast ) {
+void c_ast_push( c_ast_t **phead, c_ast_t *ast ) {
   assert( phead );
-  assert( new_ast );
-  assert( new_ast->next == NULL );
-  new_ast->next = (*phead);
-  (*phead) = new_ast;
+  assert( ast );
+  assert( ast->next == NULL );
+  ast->next = (*phead);
+  (*phead) = ast;
 }
 
 char const* c_ast_take_name( c_ast_t *ast ) {
