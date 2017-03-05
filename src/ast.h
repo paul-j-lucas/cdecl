@@ -244,7 +244,8 @@ char const* c_ast_name( c_ast_t *ast );
 c_ast_t* c_ast_new( c_kind_t kind );
 
 /**
- * TODO
+ * Takes the name, if any, away from \a ast
+ * (with the intent of giving it to another c_ast).
  *
  * @param ast The AST to take trom.
  * @return Returns said name or null.
