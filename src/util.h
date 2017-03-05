@@ -8,6 +8,11 @@
 #ifndef cdecl_util_H
 #define cdecl_util_H
 
+/**
+ * @file
+ * Contains utility constants, macros, and functions.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 
