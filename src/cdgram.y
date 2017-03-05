@@ -35,8 +35,7 @@
   CDEBUG( DUMP_COMMA; c_ast_json( (AST), 1, (KEY), stdout ); )
 
 #define DUMP_AST_LIST(KEY,AST_LIST) CDEBUG( \
-  DUMP_COMMA; c_ast_json( (AST_LIST).head_ast, 1, (KEY ".head"), stdout ); \
-  DUMP_COMMA; c_ast_json( (AST_LIST).tail_ast, 1, (KEY ".tail"), stdout ); )
+  DUMP_COMMA; c_ast_json( (AST_LIST).head_ast, 1, (KEY ".head"), stdout ); )
 
 #define DUMP_NAME(KEY,NAME) CDEBUG(         \
   DUMP_COMMA; FPUTS( "  ", stdout );        \
@@ -60,20 +59,29 @@
   DUMP_COMMA; FPUTS( "  ", stdout );        \
   json_print_kv( (KEY), c_type_name( TYPE ), stdout ); )
 
-#define PUSH_TYPE(AST)            c_ast_push( &in_attr.type_ast, (AST) )
-#define PEEK_TYPE()               in_attr.type_ast
-#define POP_TYPE()                c_ast_pop( &in_attr.type_ast )
+#define PUSH_TYPE(AST)            c_ast_push( &explain_ia.type_ast, (AST) )
+#define PEEK_TYPE()               explain_ia.type_ast
+#define POP_TYPE()                c_ast_pop( &explain_ia.type_ast )
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Inherited attributes.
+ * Inherited attributes used by \c declare.
  */
-struct in_attr {
-  c_ast_t  *type_ast;
-  int       y_token;
+struct declare_ia {
+  char const *name;
+  c_type_t    storage;
+  int         y_token;
 };
-typedef struct in_attr in_attr_t;
+typedef struct declare_ia declare_ia_t;
+
+/**
+ * Inherited attributes used by \c explain.
+ */
+struct explain_ia {
+  c_ast_t    *type_ast;
+};
+typedef struct explain_ia explain_ia_t;
 
 // external variables
 extern char const  *yytext;
@@ -85,11 +93,9 @@ extern void         set_option( char const* );
 extern int          yylex( void );
 
 // local variables
-static in_attr_t    in_attr;
+static declare_ia_t declare_ia;
+static explain_ia_t explain_ia;
 static bool         newlined = true;
-
-// local functions
-static void         illegal( char const*, char const* );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -106,10 +112,10 @@ static void cast_english( char const *name, c_ast_t *ast ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      illegal( "cast into array", "cast into pointer" );
+      c_error( "cast into array", "cast into pointer" );
       break;
     case K_FUNCTION:
-      illegal( "cast into function", "cast into pointer to function" );
+      c_error( "cast into function", "cast into pointer to function" );
       break;
     default: {
 /*
@@ -122,61 +128,6 @@ static void cast_english( char const *name, c_ast_t *ast ) {
 */
     }
   } // switch
-}
-
-/**
- * Do the "declare" command.
- *
- * @param name TODO
- * @param storage TODO
- * @param left TODO
- * @param right TODO
- * @param type TODO
- */
-static void declare_english( char const *name, c_type_t storage_class,
-                             c_ast_t *ast ) {
-  assert( name );
-  assert( ast );
-  (void)storage_class;
-
-/*
-  if ( c_kind == K_VOID ) {
-    illegal( "Variable of type void", "variable of type pointer to void" );
-    goto done;
-  }
-
-  if ( *storage == K_REFERENCE ) {
-    switch ( c_kind ) {
-      case K_FUNCTION:
-        illegal( "Register function", NULL );
-        break;
-      case K_ARRAY:
-        illegal( "Register array", NULL );
-        break;
-      case K_ENUM_CLASS_STRUCT_UNION:
-        illegal( "Register struct/class", NULL );
-        break;
-      default:
-        goto done;
-    } // switch
-  }
-
-  if ( *storage )
-    printf( "%s ", storage );
-
-  printf(
-    "%s %s%s%s", type, left,
-    name ? name : (c_kind == K_FUNCTION) ? "f" : "var", right
-  );
-  if ( opt_make_c ) {
-    if ( c_kind == K_FUNCTION && (*storage != 'e') )
-      printf( " { }\n" );
-    else
-      printf( ";\n" );
-  } else {
-    printf( "\n" );
-  }
-*/
 }
 
 /**
@@ -198,25 +149,16 @@ void explain_declaration( char const *storage, char const *constvol1,
   (void)type;
 
 #if 0
-  if ( type && strcmp( type, "void" ) == 0 ) {
-    if ( c_kind == K_NAME )
-      illegal( "Variable of type void", "variable of type pointer to void" );
-    else if ( c_kind == K_ARRAY )
-      illegal( "array of type void", "array of type pointer to void" );
-    else if ( c_kind == K_REFERENCE )
-      illegal( "reference to type void", "pointer to void" );
-  }
-
-  if ( *storage == K_REFERENCE ) {
+  if ( *storage == register ) {
     switch ( c_kind ) {
       case K_FUNCTION:
-        illegal( "Register function", NULL );
+        c_error( "Register function", NULL );
         break;
       case K_ARRAY:
-        illegal( "Register array", NULL );
+        c_error( "Register array", NULL );
         break;
       case K_ENUM_CLASS_STRUCT_UNION:
-        illegal( "Register struct/union/enum/class", NULL );
+        c_error( "Register struct/union/enum/class", NULL );
         break;
       default:
         /* suppress warning */;
@@ -225,16 +167,6 @@ void explain_declaration( char const *storage, char const *constvol1,
 
   printf( "declare %s as ", c_ident );
 #endif
-}
-
-static void illegal( char const *s, char const *hint ) {
-  SGR_START_COLOR( stderr, warning );
-  PRINT_ERR( "warning" );
-  SGR_END_COLOR( stderr );
-  PRINT_ERR( ": \"%s\" illegal in %s", s, lang_name( opt_lang ) );
-  if ( hint )
-    PRINT_ERR( " (maybe you mean \"%s\")", hint );
-  PRINT_ERR( "\n" );
 }
 
 static void parse_error( char const *format, ... ) {
@@ -406,7 +338,7 @@ int yywrap( void ) {
 %type   <ast>       type_english
 %type   <type>      type_modifier_english
 %type   <type>      type_modifier_list_opt_english
-%type   <type>      any_type_english
+%type   <ast>       any_type_english
 
 %type   <name>      name_token_opt
 
@@ -487,17 +419,23 @@ cast_english
 /*****************************************************************************/
 
 declare_english
-  : Y_DECLARE Y_NAME Y_AS storage_class_opt_c decl_english Y_END
+  : Y_DECLARE Y_NAME Y_AS storage_class_opt_c
+    {
+      declare_ia.name = $2;
+      declare_ia.storage = $4;
+    }
+    decl_english Y_END
     {
       DUMP_START( "declare_english",
                   "DECLARE NAME AS storage_class_opt_c decl_english END" );
+      $6->name = $2;
       DUMP_NAME( "-> NAME", $2 );
       DUMP_TYPE( "-> storage_class_opt_c", $4 );
-      DUMP_AST( "-> decl_english", $5 );
+      DUMP_AST( "-> decl_english", $6 );
       DUMP_END();
 
-      declare_english( $2, $4, $5 );
-      FREE( $2 );
+      c_ast_gibberish( $6, fout );
+      FPUTC( '\n', fout );
     }
 
   | Y_DECLARE error
@@ -524,12 +462,13 @@ explain_declaration_c
       DUMP_AST( "-> decl_c", $4 );
       DUMP_END();
 
-      char const *const name = c_ast_take_name( $4 );
-      FPRINTF( fout, "declare %s as ", name );
-      c_ast_english( $4, fout );
-      FPUTC( '\n', fout );
-
-      FREE( name );
+      if ( c_ast_check( $4 ) ) {
+        char const *const name = c_ast_take_name( $4 );
+        FPRINTF( fout, "declare %s as ", name );
+        c_ast_english( $4, fout );
+        FPUTC( '\n', fout );
+        FREE( name );
+      }
     }
   ;
 
@@ -659,7 +598,7 @@ array_cast_c
       DUMP_NUM( "-> array_size_c", $2 );
 
       c_ast_t *const array = c_ast_new( K_ARRAY );
-      array->name = check_strdup( c_ast_name( $1 ) );
+      array->name = c_ast_take_name( $1 );
       array->as.array.size = $2;
 
       switch ( $1->kind ) {
@@ -724,8 +663,8 @@ func_cast_c
 
       $$ = c_ast_new( K_FUNCTION );
       $$->name = check_strdup( c_ast_name( $4 ) );
-      $$->as.func.args = $6;
       $$->as.func.ret_ast = $4;
+      $$->as.func.args = $6;
 
       DUMP_AST( "<- func_cast_c", $$ );
       DUMP_END();
@@ -823,14 +762,14 @@ array_decl_english
 
       switch ( $4->kind ) {
         case K_ARRAY:
-          illegal( "inner array of unspecified size", "array of pointer" );
+          c_error( "inner array of unspecified size", "array of pointer" );
           break;
         case K_BUILTIN:
           if ( $4->as.builtin.type & T_VOID )
-            illegal( "array of void", "pointer to void" );
+            c_error( "array of void", "pointer to void" );
           break;
         case K_FUNCTION:
-          illegal( "array of function", "array of pointer to function" );
+          c_error( "array of function", "array of pointer to function" );
           break;
         default:
           /* suppress warning */;
@@ -856,7 +795,7 @@ array_size_opt_english
 
 block_decl_english                      /* Apple extension */
   : type_qualifier_list_opt_c
-    Y_BLOCK { in_attr.y_token = Y_BLOCK; } decl_list_opt_english
+    Y_BLOCK { declare_ia.y_token = Y_BLOCK; } decl_list_opt_english
     returning_english
     {
       DUMP_START( "type_qualifier_list_opt_c",
@@ -876,7 +815,7 @@ block_decl_english                      /* Apple extension */
   ;
 
 func_decl_english
-  : Y_FUNCTION { in_attr.y_token = Y_FUNCTION; } decl_list_opt_english
+  : Y_FUNCTION { declare_ia.y_token = Y_FUNCTION; } decl_list_opt_english
     returning_english
     {
       DUMP_START( "func_decl_english",
@@ -933,7 +872,7 @@ returning_english
       switch ( $2->kind ) {
         case K_ARRAY:
         case K_FUNCTION:
-          keyword = c_keyword_find_token( in_attr.y_token );
+          keyword = c_keyword_find_token( declare_ia.y_token );
         default:
           keyword = NULL;
       } // switch
@@ -963,7 +902,7 @@ returning_english
           keyword->literal, hint
         );
 
-        illegal( error_msg, hint_msg );
+        c_error( error_msg, hint_msg );
       }
 
       $$ = $2;
@@ -983,7 +922,7 @@ pointer_decl_english
       DUMP_AST( "-> decl_english", $4 );
 
       if ( $4->kind == K_ARRAY )
-        illegal( "pointer to array of unspecified dimension",
+        c_error( "pointer to array of unspecified dimension",
                  "pointer to object" );
       $$ = c_ast_new( K_POINTER );
       $$->as.ptr_ref.qualifier = $1;
@@ -1007,10 +946,10 @@ pointer_to_member_decl_english
       DUMP_AST( "-> decl_english", $8 );
 
       if ( opt_lang < LANG_CPP_MIN )
-        illegal( "pointer to member of class", NULL );
+        c_warning( "pointer to member of class", NULL );
 #if 0
       if ( c_kind == K_ARRAY )
-        illegal( "pointer to array of unspecified dimension",
+        c_error( "pointer to array of unspecified dimension",
                  "pointer to object" );
 #endif
       $$ = c_ast_new( K_POINTER_TO_MEMBER );
@@ -1033,15 +972,15 @@ reference_decl_english
       DUMP_AST( "-> decl_english", $4 );
 
       if ( opt_lang < LANG_CPP_MIN )
-        illegal( "reference", NULL );
+        c_warning( "reference", NULL );
       switch ( $4->kind ) {
         case K_ARRAY:
-          illegal( "reference to array of unspecified dimension",
+          c_error( "reference to array of unspecified dimension",
                    "reference to object" );
           break;
         case K_BUILTIN:
           if ( $4->as.builtin.type & T_VOID )
-            illegal( "reference of void", "pointer to void" );
+            c_error( "reference of void", "pointer to void" );
           break;
         default:
           ;// suppress warning
@@ -1112,7 +1051,7 @@ array_decl_c
       DUMP_NUM( "-> array_size_c", $2 );
 
       c_ast_t *const array = c_ast_new( K_ARRAY );
-      array->name = check_strdup( c_ast_name( $1 ) );
+      array->name = c_ast_take_name( $1 );
       array->as.array.size = $2;
 
       switch ( $1->kind ) {
@@ -1175,10 +1114,25 @@ func_decl_c
       DUMP_AST( "-> decl2_c", $1 );
       DUMP_AST_LIST( "-> cast_list_opt_c", $3 );
 
-      $$ = c_ast_new( K_FUNCTION );
-      $$->name = check_strdup( c_ast_name( $1 ) );
-      $$->as.func.args = $3;
-      $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
+      c_ast_t *const func = c_ast_new( K_FUNCTION );
+      func->name = c_ast_take_name( $1 );
+      func->as.func.args = $3;
+
+      switch ( $1->kind ) {
+        case K_POINTER:
+          if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
+            func->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
+            $1->as.ptr_ref.to_ast = func;
+            $$ = $1;
+            break;
+          }
+          // no break;
+        default:
+          $$ = func;
+          $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
+      } // switch
+
+      $$->as.func.type = c_ast_take_storage( $$->as.func.ret_ast );
 
       DUMP_AST( "<- func_decl_c", $$ );
       DUMP_END();
@@ -1320,17 +1274,18 @@ reference_decl_type_c
 /*****************************************************************************/
 
 type_english
-  : type_qualifier_list_opt_c type_modifier_list_opt_english any_type_english
+  : /* storage */
+    type_qualifier_list_opt_c type_modifier_list_opt_english any_type_english
     {
       DUMP_START( "type_english",
                   "type_qualifier_list_opt_c type_modifier_list_opt_english "
                   "any_type_english" );
       DUMP_TYPE( "-> type_qualifier_list_opt_c", $1 );
       DUMP_TYPE( "-> type_modifier_list_opt_english", $2 );
-      DUMP_TYPE( "-> any_type_english", $3 );
+      DUMP_AST( "-> any_type_english", $3 );
 
-      $$ = c_ast_new( $3 );
-      $$->as.builtin.type = $3;
+      $$ = $3;
+      c_type_add( &$$->as.builtin.type, declare_ia.storage );
       c_type_add( &$$->as.builtin.type, $1 );
       c_type_add( &$$->as.builtin.type, $2 );
 
@@ -1365,9 +1320,23 @@ type_modifier_english
   ;
 
 any_type_english
-  : /* empty */                   { $$ = T_NONE; }
+  : /* empty */
+    {
+      $$ = c_ast_new( K_BUILTIN );
+      $$->as.builtin.type = T_INT;
+    }
+
   | builtin_type_c
+    {
+      $$ = c_ast_new( K_BUILTIN );
+      $$->as.builtin.type = $1;
+    }
+
   | enum_class_struct_union_type_c
+    {
+      $$ = c_ast_new( K_ENUM_CLASS_STRUCT_UNION );
+      $$->as.ecsu.type = $1;
+    }
   ;
 
 /*****************************************************************************/
@@ -1477,8 +1446,8 @@ named_enum_class_struct_union_type_c
       DUMP_NAME( "-> NAME", $2 );
 
       $$ = c_ast_new( K_ENUM_CLASS_STRUCT_UNION );
-      $$->name = $2;
       $$->as.ecsu.type = $1;
+      $$->as.ecsu.ecsu_name = $2;
       c_type_check( $$->as.ecsu.type );
 
       DUMP_AST( "<- named_enum_class_struct_union_type_c", $$ );

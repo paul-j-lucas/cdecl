@@ -83,9 +83,12 @@ struct c_builtin {
 
 /**
  * AST object for a C/C++ enum/class/struct/union type.
+ * (Note that the members are laid out in the same order as c_builtin: this is
+ * taken advantage of.)
  */
 struct c_ecsu {
-  c_type_t  type;                       // T_ENUM, T_CLASS, T_STRUCT, T_UNION
+  c_type_t    type;                     // T_ENUM, T_CLASS, T_STRUCT, T_UNION
+  char const *ecsu_name;
 };
 
 /**

@@ -11,7 +11,7 @@ LDADD = $(top_builddir)/lib/libgnu.a
 
 cdecl_SOURCES =	cdgram.y cdlex.l cdecl.c \
 		ast.c color.c keywords.c lang.c literals.c options.c types.c \
-		util.c help.c set.c
+		common.c util.c help.c set.c
 
 if WITH_READLINE
 cdecl_SOURCES += autocomplete.c

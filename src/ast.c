@@ -46,6 +46,9 @@ static void c_ast_free( c_ast_t *ast ) {
 
     FREE( ast->name );
     switch ( ast->kind ) {
+      case K_ENUM_CLASS_STRUCT_UNION:
+        FREE( ast->as.ecsu.ecsu_name );
+        break;
       case K_POINTER_TO_MEMBER:
         FREE( ast->as.ptr_mbr.class_name );
         break;
@@ -83,8 +86,8 @@ bool c_ast_check( c_ast_t const *ast ) {
           }
           break;
         case K_FUNCTION:
-          /* complain */;
-          break;
+          c_error( "array of function", "array of pointer to function" );
+          return false;
         default:
           /* suppress warning */;
       } // switch
@@ -105,7 +108,7 @@ bool c_ast_check( c_ast_t const *ast ) {
     }
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      // TODO
+      // nothing to do
       break;
 
     case K_FUNCTION: {
@@ -184,8 +187,10 @@ c_ast_t* c_ast_clone( c_ast_t const *ast ) {
     case K_FUNCTION:
       clone->as.func.ret_ast = c_ast_clone( ast->as.func.ret_ast );
       break;
-    case K_BUILTIN:
     case K_ENUM_CLASS_STRUCT_UNION:
+      clone->as.ecsu.ecsu_name = check_strdup( ast->as.ecsu.ecsu_name );
+      // no break;
+    case K_BUILTIN:
       clone->as.builtin.type = ast->as.builtin.type;
       break;
     case K_POINTER_TO_MEMBER:
@@ -226,10 +231,8 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
         FPRINTF( eout, "%s ", c_type_name( ast->as.func.type ) );
       FPRINTF( eout, "%s (", c_kind_name( ast->kind ) );
       for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next ) {
-        if ( comma )
+        if ( true_or_set( &comma ) )
           FPUTS( ", ", eout );
-        else
-          comma = true;
         c_ast_english( arg, eout );
       }
       FPRINTF( eout, ") %s ", L_RETURNING );
@@ -237,8 +240,16 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
       break;
 
     case K_BUILTIN:
-    case K_ENUM_CLASS_STRUCT_UNION:
       FPUTS( c_type_name( ast->as.builtin.type ), eout );
+      if ( ast->name )
+        FPRINTF( eout, " %s", ast->name );
+      break;
+
+    case K_ENUM_CLASS_STRUCT_UNION:
+      FPRINTF( eout,
+        "%s %s",
+        c_type_name( ast->as.builtin.type ), ast->as.ecsu.ecsu_name
+      );
       if ( ast->name )
         FPRINTF( eout, " %s", ast->name );
       break;
@@ -291,42 +302,110 @@ c_ast_t* c_ast_find_name( c_ast_t *ast ) {
   } // switch
 }
 
-void c_ast_gibberish( c_ast_t const *ast, FILE *gout ) {
+void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
+                           FILE *gout ) {
   if ( ast == NULL )
     return;
 
+  bool comma = false;
+
   switch ( ast->kind ) {
     case K_NONE:
-      break;
+      assert( ast->kind != K_NONE );
+
     case K_ARRAY:
-      // TODO
+      c_ast_gibberish( ast->as.array.of_ast, gout );
+      FPUTC( '[', gout );
+      if ( ast->as.array.size != C_ARRAY_NO_SIZE )
+        FPRINTF( gout, "%d", ast->as.array.size );
+      FPUTC( ']', gout );
       break;
+
     case K_BLOCK:
-      // TODO
       break;
+
     case K_BUILTIN:
-      // TODO
+      FPUTS( c_type_name( ast->as.builtin.type ), gout );
+      if ( ast->name )
+        FPRINTF( gout, " %s", ast->name );
       break;
+
     case K_ENUM_CLASS_STRUCT_UNION:
-      // TODO
+      FPRINTF( gout,
+        "%s %s", c_kind_name( ast->kind ), ast->as.ecsu.ecsu_name
+      );
       break;
+
     case K_NAME:
-      // TODO
       break;
+
     case K_FUNCTION:
-      // TODO
+      c_ast_gibberish( ast->as.func.ret_ast, gout );
+      if ( parent && parent->kind == K_POINTER ) {
+        FPRINTF( gout, " (*" );
+        if ( parent->as.ptr_ref.qualifier )
+          FPRINTF( gout, "%s ", c_type_name( parent->as.ptr_ref.qualifier ) );
+        FPUTS( parent->name, gout );
+      } else {
+        FPUTS( ast->name, gout );
+      }
+      if ( parent && parent->kind == K_POINTER ) {
+        FPUTC( ')', gout );
+      }
+      FPUTC( '(', gout );
+      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next ) {
+        if ( true_or_set( &comma ) )
+          FPUTS( ", ", gout );
+          c_ast_gibberish( arg, gout );
+      } // for
+      FPUTC( ')', gout );
       break;
+
     case K_POINTER_TO_MEMBER:
-      // TODO
       break;
-    case K_POINTER:
-      // TODO
+
+    case K_POINTER: {
+      c_ast_t const *const to = ast->as.ptr_ref.to_ast;
+      if ( to->kind == K_FUNCTION ) {
+        c_ast_gibberish_impl( to, ast, gout );
+      } else {
+        c_ast_gibberish( to, gout );
+        FPUTS( " *", gout );
+        if ( ast->as.ptr_ref.qualifier )
+          FPRINTF( gout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
+        if ( ast->name )
+          FPUTS( ast->name, gout );
+      }
       break;
+    }
+
     case K_REFERENCE:
-      // TODO
+      c_ast_gibberish( ast->as.ptr_ref.to_ast, gout );
+      FPUTS( " *", gout );
+      if ( ast->as.ptr_ref.qualifier )
+        FPRINTF( gout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
+      if ( ast->name )
+        FPUTS( ast->name, gout );
       break;
   } // switch
 }
+
+void c_ast_gibberish( c_ast_t const *ast, FILE *gout ) {
+  return c_ast_gibberish_impl( ast, NULL, gout );
+}
+
+#if 0
+void c_ast_give_name( c_ast_t *ast, char const *name ) {
+  assert( ast );
+  assert( name );
+
+  switch ( ast->kind ) {
+    case K_NONE:
+      assert( ast->kind != K_NONE );
+      
+  } // switch
+}
+#endif
 
 void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
                  FILE *jout ) {
@@ -345,7 +424,6 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
     bool comma = false;
 
     switch ( ast->kind ) {
-      case K_ENUM_CLASS_STRUCT_UNION:
       case K_NAME:
       case K_NONE:
         break;
@@ -381,6 +459,11 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
           PRINT_JSON( "\"args\": [],\n" );
         }
         c_ast_json( ast->as.func.ret_ast, indent, "ret_ast", jout );
+        break;
+
+      case K_ENUM_CLASS_STRUCT_UNION:
+        PRINT_COMMA;
+        PRINT_JSON_KV( "ecsu_name", ast->as.ecsu.ecsu_name );
         break;
 
       case K_POINTER_TO_MEMBER:
