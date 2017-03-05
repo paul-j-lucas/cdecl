@@ -194,12 +194,20 @@ void c_ast_english( c_ast_t const *ast, FILE *fout );
 void c_ast_gc( void );
 
 /**
+ * Prints the given AST as a C/C++ cast.
+ *
+ * @param ast The c_ast to print.
+ * @param fout The FILE to print to.
+ */
+void c_ast_gibberish_cast( c_ast_t const *ast, FILE *fout );
+
+/**
  * Prints the given AST as a C/C++ declaration.
  *
  * @param ast The c_ast to print.
  * @param fout The FILE to print to.
  */
-void c_ast_gibberish( c_ast_t const *ast, FILE *fout );
+void c_ast_gibberish_declare( c_ast_t const *ast, FILE *fout );
 
 /**
  * Dumps the given AST as JSON (for debugging).

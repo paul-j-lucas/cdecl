@@ -99,17 +99,8 @@ static bool         newlined = true;
 
 ////////// local functions ////////////////////////////////////////////////////
 
-/**
- * Do the "cast" command.
- *
- * @param name TODO
- * @param ast TODO
- */
+/*
 static void cast_english( char const *name, c_ast_t *ast ) {
-  assert( ast );
-
-  (void)name;           // TODO: remove
-
   switch ( ast->kind ) {
     case K_ARRAY:
       c_error( "cast into array", "cast into pointer" );
@@ -117,57 +108,10 @@ static void cast_english( char const *name, c_ast_t *ast ) {
     case K_FUNCTION:
       c_error( "cast into function", "cast into pointer to function" );
       break;
-    default: {
-/*
-      size_t const lenl = strlen( left ), lenr = strlen( right );
-      printf(
-        "(%s%*s%s)%s\n",
-        type, (int)(lenl + lenr ? lenl + 1 : 0),
-        left, right, name ? name : "expression"
-      );
-*/
     }
   } // switch
 }
-
-/**
- * Do the "explain" (declaration) command.
- *
- * @param storage TODO
- * @param constvol1 TODO
- * @param constvol2 TODO
- * @param type TODO
- * @param decl TODO
- */
-void explain_declaration( char const *storage, char const *constvol1,
-                          char const *constvol2, char const *type,
-                          char const *decl ) {
-  assert( storage );
-  assert( constvol1 );
-  assert( constvol2 );
-  assert( decl );
-  (void)type;
-
-#if 0
-  if ( *storage == register ) {
-    switch ( c_kind ) {
-      case K_FUNCTION:
-        c_error( "Register function", NULL );
-        break;
-      case K_ARRAY:
-        c_error( "Register array", NULL );
-        break;
-      case K_ENUM_CLASS_STRUCT_UNION:
-        c_error( "Register struct/union/enum/class", NULL );
-        break;
-      default:
-        /* suppress warning */;
-    } // switch
-  }
-
-  printf( "declare %s as ", c_ident );
-#endif
-}
+*/
 
 static void parse_error( char const *format, ... ) {
   if ( !newlined ) {
@@ -395,8 +339,12 @@ cast_english
       DUMP_AST( "-> decl_english", $4 );
       DUMP_END();
 
-      cast_english( $2, $4 );
-      FREE( $2 );
+      if ( c_ast_check( $4 ) ) {
+        FPUTC( '(', fout );
+        c_ast_gibberish_cast( $4, fout );
+        FPRINTF( fout, ")%s\n", $2 );
+        FREE( $2 );
+      }
     }
 
   | Y_CAST Y_NAME error
@@ -410,7 +358,11 @@ cast_english
       DUMP_AST( "-> decl_english", $2 );
       DUMP_END();
 
-      cast_english( NULL, $2 );
+      if ( c_ast_check( $2 ) ) {
+        FPUTC( '(', fout );
+        c_ast_gibberish_cast( $2, fout );
+        FPUTS( ")\n", fout );
+      }
     }
   ;
 
@@ -434,8 +386,10 @@ declare_english
       DUMP_AST( "-> decl_english", $6 );
       DUMP_END();
 
-      c_ast_gibberish( $6, fout );
-      FPUTC( '\n', fout );
+      if ( c_ast_check( $6 ) ) {
+        c_ast_gibberish_declare( $6, fout );
+        FPUTC( '\n', fout );
+      }
     }
 
   | Y_DECLARE error
