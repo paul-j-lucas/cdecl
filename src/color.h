@@ -14,16 +14,18 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define COLOR_WHEN_DEFAULT        COLOR_NOT_FILE
+#define COLOR_WHEN_DEFAULT  COLOR_NOT_FILE
 #define COLORS_DEFAULT \
   "caret=01;32:" \
   "error=01;31:" \
   "note=01;36:" \
   "warning=01;35:" \
-  "range1=32:range2=34:" \
   "locus=01:" \
-  "quote=01:" \
-  "fixit-insert=32:fixit-delete=31"
+  "quote=01"
+
+#define SGR_START           "\33[%sm"   /* start color sequence */
+#define SGR_END             "\33[m"     /* end color sequence */
+#define SGR_EL              "\33[K"     /* Erase in Line (EL) sequence */
 
 /**
  * Starts printing in the given, predefined color.
@@ -34,7 +36,7 @@
  */
 #define SGR_START_COLOR(STREAM,COLOR) BLOCK(            \
   if ( colorize && (sgr_ ## COLOR) )                    \
-    FPRINTF( (STREAM), sgr_start, (sgr_ ## COLOR) ); )
+    FPRINTF( (STREAM), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
 
 /**
  * Ends printing in color.
@@ -43,7 +45,7 @@
  * @hideinitializer
  */
 #define SGR_END_COLOR(STREAM) \
-  BLOCK( if ( colorize ) FPUTS( sgr_end, (STREAM) ); )
+  BLOCK( if ( colorize ) FPUTS( SGR_END SGR_EL, (STREAM) ); )
 
 /**
  * When to colorize output.
@@ -58,9 +60,6 @@ typedef enum color_when color_when_t;
 
 // extern variables
 extern bool         colorize;           // colorize diagnostics?
-extern char const  *sgr_start;          // start color output
-extern char const  *sgr_end;            // end color output
-
 extern char const  *sgr_caret;          // caret color
 extern char const  *sgr_error;          // error color
 extern char const  *sgr_warning;        // warning color

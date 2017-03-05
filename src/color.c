@@ -17,10 +17,6 @@
 #include <string.h>                     /* for str...() */
 #include <unistd.h>                     /* for isatty() */
 
-#define SGR_START "\33[%sm"             /* start color sequence */
-#define SGR_END   "\33[m"               /* end color sequence */
-#define SGR_EL    "\33[K"               /* Erase in Line (EL) sequence */
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -35,8 +31,6 @@ typedef struct color_cap color_cap_t;
 
 // extern variable definitions
 bool        colorize;
-char const *sgr_start = SGR_START SGR_EL;
-char const *sgr_end   = SGR_END SGR_EL;
 char const *sgr_caret;
 char const *sgr_error;
 char const *sgr_warning;
