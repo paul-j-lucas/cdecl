@@ -249,7 +249,7 @@ int yywrap( void ) {
 %type   <ast>       var_decl_english
 
 %type   <ast>       cast_c
-%type   <ast_list>  cast_list_c cast_list_opt_c cast_list_opt_opt_c
+%type   <ast_list>  cast_list_c cast_list_opt_c paren_cast_list_opt_opt_c
 %type   <ast>       array_cast_c
 %type   <ast>       block_cast_c
 %type   <ast>       func_cast_c
@@ -494,7 +494,7 @@ cast_c
   | reference_cast_c
   ;
 
-cast_list_opt_opt_c
+paren_cast_list_opt_opt_c
   : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
   | '(' cast_list_opt_c ')'
     {
@@ -614,7 +614,8 @@ func_cast_c
       DUMP_END();
     }
 
-  | '(' placeholder_type_c { PUSH_TYPE( $2 ); } cast_c ')' cast_list_opt_opt_c
+  | '(' placeholder_type_c { PUSH_TYPE( $2 ); } cast_c ')'
+    paren_cast_list_opt_opt_c
     {
       POP_TYPE();
       DUMP_START( "func_cast_c", "'(' cast_c ')' '(' cast_list_opt_c ')'" );
