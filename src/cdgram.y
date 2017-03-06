@@ -62,32 +62,29 @@
 #define PARSE_ERROR(...) \
   BLOCK( parse_error( __VA_ARGS__ ); YYABORT; )
 
-#define PUSH_TYPE(AST)            c_ast_push( &explain_ia.type_ast, (AST) )
-#define PEEK_TYPE()               explain_ia.type_ast
-#define POP_TYPE()                c_ast_pop( &explain_ia.type_ast )
+#define PUSH_TYPE(AST)            c_ast_push( &in_attr.type_ast, (AST) )
+#define PEEK_TYPE()               in_attr.type_ast
+#define POP_TYPE()                c_ast_pop( &in_attr.type_ast )
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Inherited attributes used by \c declare.
+ * Inherited attributes.
  */
-struct declare_ia {
+struct in_attr {
   char const *name;
   c_type_t    storage;
+  c_ast_t    *type_ast;
   int         y_token;
 };
-typedef struct declare_ia declare_ia_t;
-
-/**
- * Inherited attributes used by \c explain.
- */
-struct explain_ia {
-  c_ast_t    *type_ast;
-};
-typedef struct explain_ia explain_ia_t;
+typedef struct in_attr in_attr_t;
 
 // external variables
-extern char const  *yytext;
+#if YYTEXT_POINTER
+extern char        *yytext;
+#else
+extern char         yytext[];
+#endif /* YYTEXT_POINTER */
 
 // extern functions
 extern void         print_caret( void );
@@ -96,8 +93,7 @@ extern void         set_option( char const* );
 extern int          yylex( void );
 
 // local variables
-static declare_ia_t declare_ia;
-static explain_ia_t explain_ia;
+static in_attr_t    in_attr;
 static bool         newlined = true;
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -119,7 +115,7 @@ static void cast_english( char const *name, c_ast_t *ast ) {
 static void parse_error( char const *format, ... ) {
   if ( !newlined ) {
     PRINT_ERR( ": " );
-    if ( yytext && *yytext )
+    if ( *yytext )
       PRINT_ERR( "\"%s\": ", yytext );
     va_list args;
     va_start( args, format );
@@ -379,8 +375,8 @@ cast_english
 declare_english
   : Y_DECLARE Y_NAME Y_AS storage_class_opt_c
     {
-      declare_ia.name = $2;
-      declare_ia.storage = $4;
+      in_attr.name = $2;
+      in_attr.storage = $4;
     }
     decl_english Y_END
     {
@@ -752,7 +748,7 @@ array_size_opt_english
   ;
 
 block_decl_english                      /* Apple extension */
-  : Y_BLOCK { declare_ia.y_token = Y_BLOCK; } paren_decl_list_opt_english
+  : Y_BLOCK { in_attr.y_token = Y_BLOCK; } paren_decl_list_opt_english
     returning_english
     {
       DUMP_START( "block_decl_english",
@@ -770,7 +766,7 @@ block_decl_english                      /* Apple extension */
   ;
 
 func_decl_english
-  : Y_FUNCTION { declare_ia.y_token = Y_FUNCTION; } paren_decl_list_opt_english
+  : Y_FUNCTION { in_attr.y_token = Y_FUNCTION; } paren_decl_list_opt_english
     returning_english
     {
       DUMP_START( "func_decl_english",
@@ -834,7 +830,7 @@ returning_english
       switch ( $2->kind ) {
         case K_ARRAY:
         case K_FUNCTION:
-          keyword = c_keyword_find_token( declare_ia.y_token );
+          keyword = c_keyword_find_token( in_attr.y_token );
         default:
           keyword = NULL;
       } // switch

@@ -137,7 +137,6 @@ H             [0-9A-Fa-f]
 %%
 
 {A}({A}|{D})* {
-                // use our own pointer in case yytext[]
                 char const *name = yytext;
 
                 keyword_t const *const k = keyword_find( name );
