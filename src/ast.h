@@ -80,24 +80,12 @@ struct c_array {
 struct c_block {
   c_ast_t      *ret_ast;                // return type
   c_ast_list_t  args;
-  c_type_t      type;
-};
-
-/**
- * AST object for a C/C++ built-in type.
- */
-struct c_builtin {
-  c_type_t  type;                       // void, char, int, etc.
 };
 
 /**
  * AST object for a C/C++ enum/class/struct/union type.
- *
- * @note Members are laid out in the same order as c_builtin: this is taken
- * advantage of.)
  */
 struct c_ecsu {
-  c_type_t    type;                     // T_ENUM, T_CLASS, T_STRUCT, T_UNION
   char const *ecsu_name;
 };
 
@@ -110,7 +98,6 @@ struct c_ecsu {
 struct c_func {
   c_ast_t      *ret_ast;                // return type
   c_ast_list_t  args;
-  c_type_t      type;
 };
 
 /**
@@ -119,7 +106,6 @@ struct c_func {
 struct c_ptr_mbr {
   c_ast_t    *of_ast;                   // member type
   c_type_t    qualifier;                // T_CONST, T_RESTRICT, T_VOLATILE
-  c_type_t    type;                     // T_CLASS, T_STRUCT, or T_UNION
   char const *class_name;
 };
 
@@ -135,17 +121,18 @@ struct c_ptr_ref {
 };
 
 /**
- * AST object.
+ * AST node for a parse C/C++ declaration.
  */
 struct c_ast {
   c_kind_t    kind;
   char const *name;
+  c_type_t    type;
   c_ast_t    *next;                     // used for stacks and arg lists
 
   union {
     c_array_t     array;
     c_block_t     block;
-    c_builtin_t   builtin;
+    // nothing needed for K_BUILTIN
     c_ecsu_t      ecsu;
     c_func_t      func;
     c_ptr_mbr_t   ptr_mbr;

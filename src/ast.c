@@ -44,7 +44,8 @@ static c_ast_t   *c_ast_head;           // linked list of alloc'd objects
 // local functions
 static void       c_ast_gibberish_impl( c_ast_t const*, c_ast_t const*,
                                         gibberish_t, FILE* );
-static void       c_ast_gibberish_qual_name( c_ast_t const*, FILE* );
+static void       c_ast_gibberish_qual_name( c_ast_t const*, gibberish_t,
+                                             FILE* );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -62,7 +63,7 @@ static c_ast_t* c_ast_find_name( c_ast_t *ast ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
-    case K_BLOCK:
+    case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
@@ -148,14 +149,14 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
       FPUTC( ']', gout );
       break;
 
-    case K_BLOCK:
+    case K_BLOCK:                       // Apple extension
       c_ast_gibberish_impl( ast->as.block.ret_ast, ast, g_kind, gout );
       FPUTS( "(^", gout );
       if ( parent->kind == K_POINTER ) {
         FPUTC( '*', gout );
-        c_ast_gibberish_qual_name( parent, gout );
+        c_ast_gibberish_qual_name( parent, g_kind, gout );
         // the blocks's name has been hoisted to the pointer
-      } else if ( ast->name ) {
+      } else if ( ast->name && g_kind == G_DECLARE ) {
         FPUTS( ast->name, gout );
       }
       FPUTC( ')', gout );
@@ -163,8 +164,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name( ast->as.builtin.type ), gout );
-      if ( ast->name )
+      FPUTS( c_type_name( ast->type ), gout );
+      if ( ast->name && g_kind == G_DECLARE )
         FPRINTF( gout, " %s", ast->name );
       break;
 
@@ -179,9 +180,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
       FPUTC( ' ', gout );
       if ( parent->kind == K_POINTER ) {
         FPRINTF( gout, "(*" );
-        c_ast_gibberish_qual_name( parent, gout );
+        c_ast_gibberish_qual_name( parent, g_kind, gout );
         // the function's name has been hoisted to the pointer
-      } else if ( ast->name ) {
+      } else if ( ast->name && g_kind == G_DECLARE ) {
         FPUTS( ast->name, gout );
       }
       if ( parent->kind == K_POINTER )
@@ -190,7 +191,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
       break;
 
     case K_NAME:
-      if ( ast->name )
+      if ( ast->name && g_kind == G_DECLARE )
         FPUTS( ast->name, gout );
       break;
 
@@ -204,7 +205,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
         if ( parent->kind != K_FUNCTION && g_kind == G_DECLARE )
           FPUTC( ' ', gout );
         FPUTC( '*', gout );
-        c_ast_gibberish_qual_name( ast, gout );
+        c_ast_gibberish_qual_name( ast, g_kind, gout );
       }
       break;
     }
@@ -212,13 +213,13 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
     case K_POINTER_TO_MEMBER:
       c_ast_gibberish_impl( ast->as.ptr_mbr.of_ast, ast, g_kind, gout );
       FPRINTF( gout, " %s::*", ast->as.ptr_mbr.class_name );
-      c_ast_gibberish_qual_name( ast, gout );
+      c_ast_gibberish_qual_name( ast, g_kind, gout );
       break;
 
     case K_REFERENCE:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, ast, g_kind, gout );
       FPUTS( " &", gout );
-      c_ast_gibberish_qual_name( ast, gout );
+      c_ast_gibberish_qual_name( ast, g_kind, gout );
       break;
   } // switch
 }
@@ -231,7 +232,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
  * K_REFERENCE whose qualifier, if any, and name, if any, to print.
  * @param gout The FILE to print to.
  */
-static void c_ast_gibberish_qual_name( c_ast_t const *ast, FILE *gout ) {
+static void c_ast_gibberish_qual_name( c_ast_t const *ast, gibberish_t g_kind,
+                                       FILE *gout ) {
   assert( ast );
   assert( ast->kind == K_POINTER ||
           ast->kind == K_POINTER_TO_MEMBER ||
@@ -239,7 +241,7 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast, FILE *gout ) {
 
   if ( ast->as.ptr_ref.qualifier )
     FPRINTF( gout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
-  if ( ast->name )
+  if ( ast->name && g_kind == G_DECLARE )
     FPUTS( ast->name, gout );
 }
 
@@ -274,11 +276,11 @@ bool c_ast_check( c_ast_t const *ast ) {
       c_ast_t const *const of_ast = ast->as.array.of_ast;
       switch ( of_ast->kind ) {
         case K_BUILTIN:
-          if ( of_ast->as.builtin.type & T_VOID ) {
+          if ( of_ast->type & T_VOID ) {
             c_error( "array of void", "array of pointer to void" );
             return false;
           }
-          if ( of_ast->as.builtin.type & T_REGISTER ) {
+          if ( of_ast->type & T_REGISTER ) {
             c_error( "register array", NULL );
             return false;
           }
@@ -292,36 +294,27 @@ bool c_ast_check( c_ast_t const *ast ) {
       break;
     }
 
-    case K_BLOCK:
+    case K_BLOCK:                       // Apple extension
       // TODO
       break;
 
-    case K_BUILTIN: {
-      c_type_t const type = ast->as.builtin.type;
-      if ( type & T_VOID ) {
+    case K_BUILTIN:
+      if ( ast->type & T_VOID ) {
         c_error( "variable of void", "pointer to void" );
         return false;
       }
       break;
-    }
 
     case K_ENUM_CLASS_STRUCT_UNION:
       // nothing to do
       break;
 
-    case K_FUNCTION: {
-      c_ast_t const *const ret_ast = ast->as.func.ret_ast;
-      switch ( ret_ast->kind ) {
-        case K_BUILTIN:
-          if ( ret_ast->as.builtin.type & T_REGISTER ) {
-            c_error( "register function", NULL );
-            return false;
-          }
-        default:
-          /* suppress warning */;
-      } // switch
+    case K_FUNCTION:
+      if ( ast->type & T_REGISTER ) {
+        c_error( "register function", NULL );
+        return false;
+      }
       break;
-    }
 
     case K_NAME:
       break;
@@ -337,16 +330,10 @@ bool c_ast_check( c_ast_t const *ast ) {
 
     case K_REFERENCE: {
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
-      switch ( to_ast->kind ) {
-        case K_BUILTIN:
-          if ( to_ast->as.builtin.type & T_VOID ) {
-            c_error( "referece to void", "pointer to void" );
-            return false;
-          }
-          break;
-        default:
-          /* suppress warning */;
-      } // switch
+      if ( to_ast->type & T_VOID ) {
+        c_error( "referece to void", "pointer to void" );
+        return false;
+      }
       break;
     }
   } // switch
@@ -373,6 +360,7 @@ c_ast_t* c_ast_clone( c_ast_t const *ast ) {
     return NULL;
   c_ast_t *const clone = c_ast_new( ast->kind );
   clone->name = check_strdup( ast->name );
+  clone->type = ast->type;
   clone->next = c_ast_clone( ast->next );
 
   switch ( ast->kind ) {
@@ -381,11 +369,10 @@ c_ast_t* c_ast_clone( c_ast_t const *ast ) {
       clone->as.array.size = ast->as.array.size;
       break;
 
-    case K_BLOCK:
+    case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
       clone->as.func.ret_ast = c_ast_clone( ast->as.func.ret_ast );
       clone->as.func.args = c_ast_list_clone( &ast->as.func.args );
-      clone->as.func.type = ast->as.func.type;
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
@@ -393,15 +380,11 @@ c_ast_t* c_ast_clone( c_ast_t const *ast ) {
       // no break;
 
     case K_BUILTIN:
-      clone->as.builtin.type = ast->as.builtin.type;
-      break;
-
     case K_NAME:
     case K_NONE:
       break;
 
     case K_POINTER_TO_MEMBER:
-      clone->as.ptr_mbr.type = ast->as.ptr_mbr.type;
       clone->as.ptr_mbr.class_name = check_strdup( ast->as.ptr_mbr.class_name );
       // no break;
 
@@ -430,10 +413,10 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
       c_ast_english( ast->as.array.of_ast, eout );
       break;
 
-    case K_BLOCK:
+    case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
-      if ( ast->as.func.type )
-        FPRINTF( eout, "%s ", c_type_name( ast->as.func.type ) );
+      if ( ast->type )
+        FPRINTF( eout, "%s ", c_type_name( ast->type ) );
       FPRINTF( eout, "%s (", c_kind_name( ast->kind ) );
       for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next ) {
         if ( true_or_set( &comma ) )
@@ -445,7 +428,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name( ast->as.builtin.type ), eout );
+      FPUTS( c_type_name( ast->type ), eout );
       if ( ast->name )
         FPRINTF( eout, " %s", ast->name );
       break;
@@ -453,7 +436,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
     case K_ENUM_CLASS_STRUCT_UNION:
       FPRINTF( eout,
         "%s %s",
-        c_type_name( ast->as.builtin.type ), ast->as.ecsu.ecsu_name
+        c_type_name( ast->type ), ast->as.ecsu.ecsu_name
       );
       if ( ast->name )
         FPRINTF( eout, " %s", ast->name );
@@ -480,7 +463,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
         FPRINTF( eout, "%s ", c_type_name( ast->as.ptr_mbr.qualifier ) );
       FPRINTF( eout,
         "%s %s %s %s %s %s ",
-        L_POINTER, L_TO, L_MEMBER, L_OF, c_type_name( ast->as.ptr_mbr.type ),
+        L_POINTER, L_TO, L_MEMBER, L_OF, c_type_name( ast->type ),
         ast->as.ptr_mbr.class_name
       );
       c_ast_english( ast->as.ptr_mbr.of_ast, eout );
@@ -513,25 +496,28 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
     PRINT_JSON_KV( "kind", c_kind_name( ast->kind ) );
     FPUTS( ",\n", jout );
     PRINT_JSON_KV( "name", ast->name );
+    FPUTS( ",\n", jout );
+    PRINT_JSON_KV( "type", c_type_name( ast->type ) );
 
     bool comma = false;
 
     switch ( ast->kind ) {
+      case K_BUILTIN:
+      case K_NAME:
+      case K_NONE:
+        // nothing to do
+        break;
+
       case K_ARRAY:
         PRINT_COMMA;
         PRINT_JSON( "\"size\": %d,\n", ast->as.array.size );
         c_ast_json( ast->as.array.of_ast, indent, "of_ast", jout );
         break;
 
-      case K_BUILTIN:
-        PRINT_COMMA;
-        PRINT_JSON_KV( "type", c_type_name( ast->as.builtin.type ) );
-        break;
-
-      case K_BLOCK:
+      case K_BLOCK:                     // Apple extension
       case K_FUNCTION:
         PRINT_COMMA;
-        PRINT_JSON_KV( "type", c_type_name( ast->as.func.type ) );
+        PRINT_JSON_KV( "type", c_type_name( ast->type ) );
         FPRINTF( jout, ",\n" );
         if ( ast->as.func.args.head_ast != NULL ) {
           PRINT_JSON( "\"args\": [\n" );
@@ -555,15 +541,11 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
         PRINT_JSON_KV( "ecsu_name", ast->as.ecsu.ecsu_name );
         break;
 
-      case K_NAME:
-      case K_NONE:
-        break;
-
       case K_POINTER_TO_MEMBER:
         PRINT_COMMA;
         PRINT_JSON_KV( "class_name", ast->as.ptr_mbr.class_name );
         FPRINTF( jout, ",\n" );
-        PRINT_JSON_KV( "type", c_type_name( ast->as.ptr_mbr.type ) );
+        PRINT_JSON_KV( "type", c_type_name( ast->type ) );
         FPUTC( '\n', jout );
         // no break;
 
@@ -655,8 +637,8 @@ c_type_t c_ast_take_storage( c_ast_t *ast ) {
   c_type_t storage = T_NONE;
   switch ( ast->kind ) {
     case K_BUILTIN:
-      storage = ast->as.builtin.type & T_MASK_STORAGE;
-      ast->as.builtin.type &= ~T_MASK_STORAGE;
+      storage = ast->type & T_MASK_STORAGE;
+      ast->type &= ~T_MASK_STORAGE;
       break;
     case K_POINTER:
     case K_REFERENCE:
