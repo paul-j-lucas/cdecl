@@ -246,10 +246,14 @@ int yywrap( void ) {
 %type   <ast>       qualified_decl_english
 %type   <ast>       reference_decl_english
 %type   <ast>       returning_english
+%type   <ast>       type_english
+%type   <type>      type_modifier_english
+%type   <type>      type_modifier_list_english
+%type   <type>      type_modifier_list_opt_english
+%type   <ast>       unmodified_type_english
 %type   <ast>       var_decl_english
 
 %type   <ast>       cast_c
-%type   <ast_list>  cast_list_c cast_list_opt_c paren_cast_list_opt_opt_c
 %type   <ast>       array_cast_c
 %type   <ast>       block_cast_c
 %type   <ast>       func_cast_c
@@ -257,7 +261,6 @@ int yywrap( void ) {
 %type   <ast>       pointer_to_member_cast_c
 %type   <ast>       reference_cast_c
 %type   <ast>       name_cast_c
-%type   <ast>       type_cast_c
 
 %type   <ast>       decl_c decl2_c
 %type   <ast>       array_decl_c
@@ -285,12 +288,8 @@ int yywrap( void ) {
 %type   <type>      type_qualifier_c
 %type   <type>      type_qualifier_list_opt_c
 
-%type   <ast>       type_english
-%type   <type>      type_modifier_english
-%type   <type>      type_modifier_list_english
-%type   <type>      type_modifier_list_opt_english
-%type   <ast>       unmodified_type_english
-
+%type   <ast>       arg_c
+%type   <ast_list>  arg_list_c arg_list_opt_c paren_arg_list_opt_opt_c
 %type   <name>      name_token_opt
 
 /*****************************************************************************/
@@ -496,62 +495,6 @@ cast_c
   | reference_cast_c
   ;
 
-paren_cast_list_opt_opt_c
-  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
-  | '(' cast_list_opt_c ')'
-    {
-      $$ = $2;
-    }
-  ;
-
-cast_list_opt_c
-  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
-  | cast_list_c
-  ;
-
-cast_list_c
-  : cast_list_c expect_comma type_cast_c
-    {
-      DUMP_START( "cast_list_c", "cast_lsit_c ',' cast_c" );
-      DUMP_AST_LIST( "-> cast_list_c", $1 );
-      DUMP_AST( "-> cast_c", $3 );
-
-      $$ = $1;
-      c_ast_list_append( &$$, $3 );
-
-      DUMP_AST_LIST( "<- cast_list_c", $$ );
-      DUMP_END();
-    }
-
-  | type_cast_c
-    {
-      DUMP_START( "cast_list_c", "type_cast_c" );
-      DUMP_AST( "-> type_cast_c", $1 );
-
-      $$.head_ast = $$.tail_ast = $1;
-
-      DUMP_AST_LIST( "<- cast_list_c", $$ );
-      DUMP_END();
-    }
-  ;
-
-type_cast_c
-  : type_c { PUSH_TYPE( $1 ); } cast_c
-    {
-      POP_TYPE();
-      DUMP_START( "type_cast_c", "type_c cast_c" );
-      DUMP_AST( "-> type_c", $1 );
-      DUMP_AST( "-> cast_c", $3 );
-
-      $$ = $1;
-      assert( $$->name == NULL );
-      $$->name = check_strdup( c_ast_name( $3 ) );
-
-      DUMP_AST( "<- type_cast_c", $$ );
-      DUMP_END();
-    }
-  ;
-
 array_cast_c
   : /* type_c */ cast_c array_size_c
     {
@@ -585,13 +528,13 @@ array_cast_c
   ;
 
 block_cast_c                            /* Apple extension */
-  : /* type_c */ '(' '^' cast_c ')' '(' cast_list_opt_c ')'
+  : /* type_c */ '(' '^' cast_c ')' '(' arg_list_opt_c ')'
     {
       DUMP_START( "block_cast_c",
-                  "'(' '^' cast_c ')' '(' cast_list_opt_c ')'" );
+                  "'(' '^' cast_c ')' '(' arg_list_opt_c ')'" );
       DUMP_AST( "^^ type_c", PEEK_TYPE() );
       DUMP_AST( "-> cast_c", $3 );
-      DUMP_AST_LIST( "-> cast_list_opt_c", $6 );
+      DUMP_AST_LIST( "-> arg_list_opt_c", $6 );
 
       $$ = c_ast_new( K_BLOCK );
       $$->name = c_ast_name( $3 );
@@ -617,13 +560,13 @@ func_cast_c
     }
 
   | '(' placeholder_type_c { PUSH_TYPE( $2 ); } cast_c ')'
-    paren_cast_list_opt_opt_c
+    paren_arg_list_opt_opt_c
     {
       POP_TYPE();
-      DUMP_START( "func_cast_c", "'(' cast_c ')' '(' cast_list_opt_c ')'" );
+      DUMP_START( "func_cast_c", "'(' cast_c ')' '(' arg_list_opt_c ')'" );
       DUMP_AST( "-> placeholder_type_c", $2 );
       DUMP_AST( "-> cast_c", $4 );
-      DUMP_AST_LIST( "-> cast_list_opt_c", $6 );
+      DUMP_AST_LIST( "-> arg_list_opt_c", $6 );
 
       $$ = c_ast_new( K_FUNCTION );
       $$->name = check_strdup( c_ast_name( $4 ) );
@@ -698,6 +641,63 @@ reference_cast_c
       $$->as.ptr_ref.to_ast = c_ast_clone( PEEK_TYPE() );
 
       DUMP_AST( "<- reference_cast_c", $$ );
+      DUMP_END();
+    }
+  ;
+
+/*****************************************************************************/
+/*  function argument gibberish productions                                  */
+/*****************************************************************************/
+
+paren_arg_list_opt_opt_c
+  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
+  | '(' arg_list_opt_c ')'        { $$ = $2; }
+  ;
+
+arg_list_opt_c
+  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
+  | arg_list_c
+  ;
+
+arg_list_c
+  : arg_list_c expect_comma arg_c
+    {
+      DUMP_START( "arg_list_c", "arg_list_c ',' cast_c" );
+      DUMP_AST_LIST( "-> arg_list_c", $1 );
+      DUMP_AST( "-> cast_c", $3 );
+
+      $$ = $1;
+      c_ast_list_append( &$$, $3 );
+
+      DUMP_AST_LIST( "<- arg_list_c", $$ );
+      DUMP_END();
+    }
+
+  | arg_c
+    {
+      DUMP_START( "arg_list_c", "arg_c" );
+      DUMP_AST( "-> arg_c", $1 );
+
+      $$.head_ast = $$.tail_ast = $1;
+
+      DUMP_AST_LIST( "<- arg_list_c", $$ );
+      DUMP_END();
+    }
+  ;
+
+arg_c
+  : type_c { PUSH_TYPE( $1 ); } cast_c
+    {
+      POP_TYPE();
+      DUMP_START( "arg_c", "type_c cast_c" );
+      DUMP_AST( "-> type_c", $1 );
+      DUMP_AST( "-> cast_c", $3 );
+
+      $$ = $1;
+      assert( $$->name == NULL );
+      $$->name = check_strdup( c_ast_name( $3 ) );
+
+      DUMP_AST( "<- arg_c", $$ );
       DUMP_END();
     }
   ;
@@ -1095,15 +1095,15 @@ array_size_c
 
 block_decl_c                            /* Apple extension */
   : /* type_c */ '(' '^' type_qualifier_list_opt_c decl_c ')'
-    '(' cast_list_opt_c ')'
+    '(' arg_list_opt_c ')'
     {
       DUMP_START( "block_decl_c",
                   "'(' '^' type_qualifier_list_opt_c decl_c ')' "
-                  "'(' cast_list_opt_c ')'" );
+                  "'(' arg_list_opt_c ')'" );
       DUMP_AST( "^^ type_c", PEEK_TYPE() );
       DUMP_TYPE( "-> type_qualifier_list_opt_c", $3 );
       DUMP_AST( "-> decl_c", $4 );
-      DUMP_AST_LIST( "-> cast_list_opt_c", $7 );
+      DUMP_AST_LIST( "-> arg_list_opt_c", $7 );
 
       $$ = c_ast_new( K_BLOCK );
       $$->name = check_strdup( c_ast_name( $4 ) );
@@ -1117,12 +1117,12 @@ block_decl_c                            /* Apple extension */
   ;
 
 func_decl_c
-  : /* type_c */ decl2_c '(' cast_list_opt_c ')'
+  : /* type_c */ decl2_c '(' arg_list_opt_c ')'
     {
-      DUMP_START( "func_decl_c", "decl2_c '(' cast_list_opt_c ')'" );
+      DUMP_START( "func_decl_c", "decl2_c '(' arg_list_opt_c ')'" );
       DUMP_AST( "^^ type_c", PEEK_TYPE() );
       DUMP_AST( "-> decl2_c", $1 );
-      DUMP_AST_LIST( "-> cast_list_opt_c", $3 );
+      DUMP_AST_LIST( "-> arg_list_opt_c", $3 );
 
       c_ast_t *const func = c_ast_new( K_FUNCTION );
       func->name = c_ast_take_name( $1 );
