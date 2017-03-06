@@ -46,6 +46,7 @@ char const L_SHORT[]          = "short";
 char const L_STATIC[]         = "static";
 char const L_STRUCT[]         = "struct";
 char const L_STRUCTURE[]      = "structure";
+char const L_TYPE[]           = "type";
 char const L_TYPEDEF[]        = "typedef";
 char const L_UNION[]          = "union";
 char const L_UNSIGNED[]       = "unsigned";

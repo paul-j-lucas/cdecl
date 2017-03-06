@@ -6,12 +6,6 @@
 #ifndef cdecl_ast_H
 #define cdecl_ast_H
 
-// local
-#include "types.h"
-
-// standard
-#include <stdio.h>                      /* for FILE */
-
 /**
  * @file
  * Contains types to represent an Abstract Syntax Tree (AST) for parsed C/C++
@@ -24,6 +18,14 @@
  *
  * Similar same-offset tricks are done for other \c struct members as well.
  */
+
+// local
+#include "config.h"                     /* must go first */
+#include "types.h"
+
+// standard
+#include <stdbool.h>
+#include <stdio.h>                      /* for FILE */
 
 #define C_ARRAY_NO_SIZE   (-1)          /* for array[] */
 
@@ -57,6 +59,15 @@ typedef struct c_ecsu     c_ecsu_t;
 typedef struct c_func     c_func_t;
 typedef struct c_ptr_mbr  c_ptr_mbr_t;
 typedef struct c_ptr_ref  c_ptr_ref_t;
+
+/**
+ * The signature for functions passed to c_ast_visit().
+ *
+ * @param ast The c_ast to visit.
+ * @return Returning \c true will cause traversal to stop and \a ast to be
+ * returned to the called of c_ast_visit().
+ */
+typedef bool (*c_ast_visitor)( c_ast_t *ast );
 
 /**
  * Linked-list of AST objects.
@@ -239,6 +250,24 @@ char const* c_ast_name( c_ast_t *ast );
 c_ast_t* c_ast_new( c_kind_t kind );
 
 /**
+ * Pops a c_ast from the head of a list.
+ *
+ * @param phead The pointer to the pointer to the head of the list.
+ * @return Returns the popped c_ast or null if the list is empty.
+ */
+c_ast_t* c_ast_pop( c_ast_t **phead );
+
+/**
+ * Pushes a c_ast onto the front of a list.
+ *
+ * @param phead The pointer to the pointer to the head of the list.  The head
+ * is updated to point to \a ast.
+ * @param ast The pointer to the c_ast to add.  Its \c next pointer is set to
+ * the old head of the list.
+ */
+void c_ast_push( c_ast_t **phead, c_ast_t *ast );
+
+/**
  * Takes the name, if any, away from \a ast
  * (with the intent of giving it to another c_ast).
  *
@@ -271,22 +300,34 @@ char const* c_ast_take_name( c_ast_t *ast );
 c_type_t c_ast_take_storage( c_ast_t *ast );
 
 /**
- * Pops a c_ast from the head of a list.
+ * Checks \a ast to see if it contains a \c typedef.
+ * If so, removes it.
+ * This is used in cases like:
+ * @code
+ *  explain typedef int *p
+ * @endcode
+ * that should be explained as:
+ * @code
+ *  declare p as type pointer to int
+ * @endcode
+ * and \e not:
+ * @code
+ *  declare p as pointer to typedef int
+ * @endcode
  *
- * @param phead The pointer to the pointer to the head of the list.
- * @return Returns the popped c_ast or null if the list is empty.
+ * @param ast The AST to check.
+ * @return Returns \c true only if \a ast contains a \c typedef.
  */
-c_ast_t* c_ast_pop( c_ast_t **phead );
+bool c_ast_take_typedef( c_ast_t *ast );
 
 /**
- * Pushes a c_ast onto the front of a list.
+ * Does a depth-first traversal of an AST.
  *
- * @param phead The pointer to the pointer to the head of the list.  The head
- * is updated to point to \a ast.
- * @param ast The pointer to the c_ast to add.  Its \c next pointer is set to
- * the old head of the list.
+ * @param ast The root of the AST to begin visiting.
+ * @param visitor The visitor to use.
+ * @return Returns a pointer to the c_ast the visitor stopped on or null.
  */
-void c_ast_push( c_ast_t **phead, c_ast_t *ast );
+c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visitor visitor );
 
 /**
  * Gets the name of the given kind.

@@ -29,10 +29,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * TODO
+ * The kind of gibberish to create.
  */
 enum gibberish {
-  G_CAST,
+  G_CAST,                               // omits names and unneeded whitespace
   G_DECLARE
 };
 typedef enum gibberish gibberish_t;
@@ -48,35 +48,6 @@ static void       c_ast_gibberish_qual_name( c_ast_t const*, gibberish_t,
                                              FILE* );
 
 ////////// local functions ////////////////////////////////////////////////////
-
-/**
- * Attempts to find a c_ast having a name.
- *
- * @param ast The c_ast to start from.
- * @return Returns a name or null if none.
- */
-static c_ast_t* c_ast_find_name( c_ast_t *ast ) {
-  if ( ast == NULL )
-    return NULL;
-  if ( ast->name )
-    return ast;
-
-  switch ( ast->kind ) {
-    case K_ARRAY:
-    case K_BLOCK:                       // Apple extension
-    case K_FUNCTION:
-    case K_POINTER:
-    case K_POINTER_TO_MEMBER:
-    case K_REFERENCE:
-      // all c_ast_t* are at the same offset thanks to the union
-      return c_ast_find_name( ast->as.array.of_ast );
-    case K_BUILTIN:
-    case K_ENUM_CLASS_STRUCT_UNION:
-    case K_NAME:
-    case K_NONE:
-      return NULL;
-  } // switch
-}
 
 /**
  * Frees all the memory used by the given c_ast.
@@ -264,6 +235,26 @@ static inline void c_ast_init( c_ast_t *ast, c_kind_t kind ) {
  */
 static void print_indent( unsigned indent, FILE *out ) {
   FPRINTF( out, "%*s", (int)(indent * JSON_INDENT), "" );
+}
+
+/**
+ * A c_ast_visitor function used to find a K_BUILTIN.
+ *
+ * @param ast The c_ast to check.
+ * @return Returns \c true only if the kind of \a ast is K_BUILTIN.
+ */
+static bool c_ast_vistor_builtin( c_ast_t *ast ) {
+  return ast->kind == K_BUILTIN;
+}
+
+/**
+ * A c_ast_visitor function used to find a name.
+ *
+ * @param ast The c_ast to check.
+ * @return Returns \c true only if \a ast has a name.
+ */
+static bool c_ast_visitor_name( c_ast_t *ast ) {
+  return ast->name != NULL;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -592,7 +583,7 @@ c_ast_list_t c_ast_list_clone( c_ast_list_t const *list ) {
 }
 
 char const* c_ast_name( c_ast_t *ast ) {
-  c_ast_t *const found = c_ast_find_name( ast );
+  c_ast_t *const found = c_ast_visit( ast, c_ast_visitor_name );
   return found ? found->name : NULL;
 }
 
@@ -625,7 +616,7 @@ void c_ast_push( c_ast_t **phead, c_ast_t *ast ) {
 }
 
 char const* c_ast_take_name( c_ast_t *ast ) {
-  c_ast_t *const found = c_ast_find_name( ast );
+  c_ast_t *const found = c_ast_visit( ast, c_ast_visitor_name );
   if ( !found )
     return NULL;
   char const *const name = found->name;
@@ -635,18 +626,44 @@ char const* c_ast_take_name( c_ast_t *ast ) {
 
 c_type_t c_ast_take_storage( c_ast_t *ast ) {
   c_type_t storage = T_NONE;
-  switch ( ast->kind ) {
-    case K_BUILTIN:
-      storage = ast->type & T_MASK_STORAGE;
-      ast->type &= ~T_MASK_STORAGE;
-      break;
-    case K_POINTER:
-    case K_REFERENCE:
-      return c_ast_take_storage( ast->as.ptr_ref.to_ast );
-    default:
-      /* suppress warning */;
-  } // switch
+  c_ast_t *const found = c_ast_visit( ast, c_ast_vistor_builtin );
+  if ( found ) {
+    storage = found->type & T_MASK_STORAGE;
+    found->type &= ~T_MASK_STORAGE;
+  }
   return storage;
+}
+
+bool c_ast_take_typedef( c_ast_t *ast ) {
+  c_ast_t *const found = c_ast_visit( ast, c_ast_vistor_builtin );
+  if ( found && (found->type & T_TYPEDEF) ) {
+    found->type &= ~T_TYPEDEF;
+    return true;
+  }
+  return false;
+}
+
+c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visitor visitor ) {
+  if ( ast == NULL )
+    return NULL;
+  if ( visitor( ast ) )
+    return ast;
+
+  switch ( ast->kind ) {
+    case K_ARRAY:
+    case K_BLOCK:                       // Apple extension
+    case K_FUNCTION:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+    case K_REFERENCE:
+      // all c_ast_t* are at the same offset thanks to the union
+      return c_ast_visit( ast->as.array.of_ast, visitor );
+    case K_BUILTIN:
+    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_NAME:
+    case K_NONE:
+      return NULL;
+  } // switch
 }
 
 char const* c_kind_name( c_kind_t kind ) {

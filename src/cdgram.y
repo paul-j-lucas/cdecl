@@ -426,6 +426,8 @@ explain_declaration_c
       if ( c_ast_check( $4 ) ) {
         char const *const name = c_ast_take_name( $4 );
         FPRINTF( fout, "declare %s as ", name );
+        if ( c_ast_take_typedef( $4 ) )
+          FPUTS( "type ", fout );
         c_ast_english( $4, fout );
         FPUTC( '\n', fout );
         FREE( name );

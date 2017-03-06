@@ -73,6 +73,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_SET,          TOKEN( Y_SET )        },
   { L_STRUCTURE,    C_SYN( L_STRUCT )     },
   { L_TO,           TOKEN( Y_TO )         },
+  { L_TYPE,         C_SYN( L_TYPEDEF )    },
   { L_VECTOR,       TOKEN( Y_ARRAY )      },
   { NULL,           TOKEN( 0 )            }
 };
