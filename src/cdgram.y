@@ -746,10 +746,7 @@ array_decl_english
 array_size_opt_english
   : /* empty */                   { $$ = C_ARRAY_NO_SIZE; }
   | Y_NUMBER
-  | error
-    {
-      PARSE_ERROR( "array size expected" );
-    }
+  | error                         { PARSE_ERROR( "array size expected" ); }
   ;
 
 block_decl_english                      /* Apple extension */
