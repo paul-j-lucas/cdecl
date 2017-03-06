@@ -152,7 +152,7 @@ H             [0-9A-Fa-f]
                 keyword_t const *const k = keyword_find( name );
                 if ( k ) {
                   if ( k->c_keyword_synonym )
-                    name = (char*)k->c_keyword_synonym;
+                    name = k->c_keyword_synonym;
                   else
                     RETURN( k->y_token );
                 }
@@ -182,7 +182,7 @@ H             [0-9A-Fa-f]
 "*"           |
 ","           |
 "["           |
-"]"           RETURN( *yytext );        /* for blocks (Apple extension) */
+"]"           RETURN( *yytext );
 
 "/*"          {                         /* ignore C-style comments */
                 y_token_col += yyleng;
@@ -204,7 +204,7 @@ H             [0-9A-Fa-f]
               }
 
 "//".*        ;                         /* ignore C++-style comments */
-#.*           ;                         /* ignore script-style comments */
+#.*           ;                         /* ignore preprocessor directives */
 [ \f\r\t\v]+  y_token_col += yyleng;    /* ignore all other whitespace */
 \n            { y_token_col = 0; return Y_END; }
 ";"           RETURN( Y_END );
