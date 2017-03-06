@@ -139,10 +139,6 @@ static void yyerror( char const *msg ) {
   newlined = false;
 }
 
-int yywrap( void ) {
-  return 1;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 %}
 

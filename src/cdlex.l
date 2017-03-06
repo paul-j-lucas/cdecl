@@ -125,6 +125,16 @@ static inline void parse_number( int base ) {
   yylval.number = (int)strtol( yytext, NULL, base );
 }
 
+/**
+ * Standard lex function to know whether to continue parsing upon reaching EOF.
+ *
+ * @return Returns 1 if done or 0 to continue parsing (a new file set via
+ * \c yyin).
+ */
+static int yywrap( void ) {
+  return 1 /* done */;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 %}
