@@ -68,8 +68,9 @@ typedef unsigned c_type_t;
  *
  * @param dest_type A pointer to the type to add to.
  * @param new_type The type to add.
+ * @return Returns \c true only if the type added successfully.
  */
-void c_type_add( c_type_t *dest_type, c_type_t new_type );
+bool c_type_add( c_type_t *dest_type, c_type_t new_type );
 
 /**
  * Checks that the given type is valid.

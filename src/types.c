@@ -133,7 +133,7 @@ static inline bool only_one_bit_set( unsigned n ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_type_add( c_type_t *dest_type, c_type_t new_type ) {
+bool c_type_add( c_type_t *dest_type, c_type_t new_type ) {
   assert( dest_type );
 
   if ( is_long_int( new_type ) && is_long_int( *dest_type ) )
@@ -144,9 +144,11 @@ void c_type_add( c_type_t *dest_type, c_type_t new_type ) {
       "error: \"%s\" can not be combined with previous declaration\n",
       c_type_name( new_type )
     );
-  } else {
-    *dest_type |= new_type;
+    return false;
   }
+
+  *dest_type |= new_type;
+  return true;
 }
 
 bool c_type_check( c_type_t type ) {
