@@ -51,7 +51,7 @@
 #define T_VOLATILE        0x40000000
 
 // bit masks
-#define T_MAST_TYPE       0x000FFFFF
+#define T_MASK_TYPE       0x000FFFFF
 #define T_MASK_STORAGE    0x0FF00000
 #define T_MASK_QUALIFIER  0xF0000000
 
