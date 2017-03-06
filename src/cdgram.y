@@ -231,7 +231,7 @@ int yywrap( void ) {
 %token  <number>    Y_NUMBER
 
 %type   <ast>       decl_english
-%type   <ast_list>  decl_list_english decl_list_opt_english
+%type   <ast_list>  decl_list_opt_english paren_decl_list_opt_english
 %type   <ast>       array_decl_english
 %type   <number>    array_size_opt_english
 %type   <ast>       block_decl_english
@@ -749,13 +749,13 @@ array_size_opt_english
 
 block_decl_english                      /* Apple extension */
   : type_qualifier_list_opt_c
-    Y_BLOCK { declare_ia.y_token = Y_BLOCK; } decl_list_opt_english
+    Y_BLOCK { declare_ia.y_token = Y_BLOCK; } paren_decl_list_opt_english
     returning_english
     {
       DUMP_START( "type_qualifier_list_opt_c",
-                  "BLOCK decl_list_opt_english returning_english" );
+                  "BLOCK paren_decl_list_opt_english returning_english" );
       DUMP_TYPE( "-> type_qualifier_list_opt_c", $1 );
-      DUMP_AST_LIST( "-> decl_list_opt_english", $4 );
+      DUMP_AST_LIST( "-> paren_decl_list_opt_english", $4 );
       DUMP_AST( "-> returning_english", $5 );
 
       $$ = c_ast_new( K_BLOCK );
@@ -769,11 +769,11 @@ block_decl_english                      /* Apple extension */
   ;
 
 func_decl_english
-  : Y_FUNCTION { declare_ia.y_token = Y_FUNCTION; } decl_list_opt_english
+  : Y_FUNCTION { declare_ia.y_token = Y_FUNCTION; } paren_decl_list_opt_english
     returning_english
     {
       DUMP_START( "func_decl_english",
-                  "FUNCTION decl_list_opt_english returning_english" );
+                  "FUNCTION paren_decl_list_opt_english returning_english" );
       DUMP_AST_LIST( "-> decl_list_opt_english", $3 );
       DUMP_AST( "-> returning_english", $4 );
 
@@ -786,32 +786,34 @@ func_decl_english
     }
   ;
 
-decl_list_opt_english
+paren_decl_list_opt_english
   : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
-  | '(' decl_list_english ')'
+  | '(' decl_list_opt_english ')'
     {
-      DUMP_START( "decl_list_opt_english", "'(' decl_list_english ')'" );
-      DUMP_AST_LIST( "-> decl_list_english", $2 );
+      DUMP_START( "paren_decl_list_opt_english",
+                  "'(' decl_list_opt_english ')'" );
+      DUMP_AST_LIST( "-> decl_list_opt_english", $2 );
 
       $$ = $2;
 
-      DUMP_AST_LIST( "<- decl_list_opt_english", $$ );
+      DUMP_AST_LIST( "<- paren_decl_list_opt_english", $$ );
       DUMP_END();
     }
   ;
 
-decl_list_english
+decl_list_opt_english
   : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
-  | decl_list_english expect_comma decl_english
+  | decl_list_opt_english expect_comma decl_english
     {
-      DUMP_START( "decl_list_english", "decl_list_english ',' decl_english" );
-      DUMP_AST_LIST( "-> decl_list_english", $1 );
+      DUMP_START( "decl_list_opt_english",
+                  "decl_list_opt_english ',' decl_english" );
+      DUMP_AST_LIST( "-> decl_list_opt_english", $1 );
       DUMP_AST( "-> decl_english", $3 );
 
       $$ = $1;
       c_ast_list_append( &$$, $3 );
 
-      DUMP_AST_LIST( "<- decl_list_english", $$ );
+      DUMP_AST_LIST( "<- decl_list_opt_english", $$ );
       DUMP_END();
     }
   ;
