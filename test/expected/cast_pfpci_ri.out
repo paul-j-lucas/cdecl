@@ -1,1 +1,1 @@
-(int (*)(char *x, int y))p
+(int (*)(char*, int))p
