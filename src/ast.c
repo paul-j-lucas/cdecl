@@ -359,40 +359,38 @@ void c_ast_gc( void ) {
 c_ast_t* c_ast_clone( c_ast_t const *ast ) {
   if ( ast == NULL )
     return NULL;
+
   c_ast_t *const clone = c_ast_new( ast->kind );
+  c_ast_t *const temp = clone->gc_next;
+  memcpy( clone, ast, sizeof( c_ast_t ) );
+  clone->gc_next = temp;
+
   clone->name = check_strdup( ast->name );
-  clone->type = ast->type;
   clone->next = c_ast_clone( ast->next );
 
   switch ( ast->kind ) {
-    case K_ARRAY:
-      clone->as.array.of_ast = c_ast_clone( ast->as.array.of_ast );
-      clone->as.array.size = ast->as.array.size;
-      break;
-
-    case K_BLOCK:                       // Apple extension
-    case K_FUNCTION:
-      clone->as.func.ret_ast = c_ast_clone( ast->as.func.ret_ast );
-      clone->as.func.args = c_ast_list_clone( &ast->as.func.args );
-      break;
-
-    case K_ENUM_CLASS_STRUCT_UNION:
-      clone->as.ecsu.ecsu_name = check_strdup( ast->as.ecsu.ecsu_name );
+    case K_POINTER_TO_MEMBER:
+      clone->as.ptr_mbr.class_name = check_strdup( ast->as.ptr_mbr.class_name );
       // no break;
+    case K_ARRAY:
+    case K_POINTER:
+    case K_REFERENCE:
+      clone->as.array.of_ast = c_ast_clone( ast->as.array.of_ast );
+      break;
 
     case K_BUILTIN:
     case K_NAME:
     case K_NONE:
       break;
 
-    case K_POINTER_TO_MEMBER:
-      clone->as.ptr_mbr.class_name = check_strdup( ast->as.ptr_mbr.class_name );
-      // no break;
+    case K_ENUM_CLASS_STRUCT_UNION:
+      clone->as.ecsu.ecsu_name = check_strdup( ast->as.ecsu.ecsu_name );
+      break;
 
-    case K_POINTER:
-    case K_REFERENCE:
-      clone->as.ptr_ref.to_ast = c_ast_clone( ast->as.ptr_ref.to_ast );
-      clone->as.ptr_ref.qualifier = ast->as.ptr_ref.qualifier;
+    case K_BLOCK:                       // Apple extension
+    case K_FUNCTION:
+      clone->as.func.ret_ast = c_ast_clone( ast->as.func.ret_ast );
+      clone->as.func.args = c_ast_list_clone( &ast->as.func.args );
       break;
   } // switch
 
@@ -463,16 +461,20 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
       c_ast_english( ast->as.ptr_ref.to_ast, eout );
       break;
 
-    case K_POINTER_TO_MEMBER:
+    case K_POINTER_TO_MEMBER: {
       if ( ast->as.ptr_mbr.qualifier )
         FPRINTF( eout, "%s ", c_type_name( ast->as.ptr_mbr.qualifier ) );
+      char const *const type_name = c_type_name( ast->type );
       FPRINTF( eout,
-        "%s %s %s %s %s %s ",
-        L_POINTER, L_TO, L_MEMBER, L_OF, c_type_name( ast->type ),
-        ast->as.ptr_mbr.class_name
+        "%s %s %s %s ",
+        L_POINTER, L_TO, L_MEMBER, L_OF
       );
+      if ( *type_name )
+        FPRINTF( eout, "%s ", type_name );
+      FPRINTF( eout, "%s ", ast->as.ptr_mbr.class_name );
       c_ast_english( ast->as.ptr_mbr.of_ast, eout );
       break;
+    }
   } // switch
 }
 
@@ -536,8 +538,6 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_POINTER_TO_MEMBER:
         PRINT_COMMA;
         PRINT_JSON_KV( "class_name", ast->as.ptr_mbr.class_name );
-        FPRINTF( jout, ",\n" );
-        PRINT_JSON_KV( "type", c_type_name( ast->type ) );
         FPUTC( '\n', jout );
         // no break;
 

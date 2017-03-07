@@ -503,7 +503,6 @@ array_cast_c
 
       switch ( $1->kind ) {
         case K_POINTER:
-        case K_REFERENCE:
           if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
             array->as.array.of_ast = c_ast_clone( PEEK_TYPE() );
             $1->as.ptr_ref.to_ast = array;
@@ -568,6 +567,7 @@ func_cast_c
 
       switch ( $4->kind ) {
         case K_POINTER:
+        case K_POINTER_TO_MEMBER:
           if ( $4->as.ptr_ref.to_ast->kind == K_NONE ) {
             func->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
             $4->as.ptr_ref.to_ast = func;
@@ -705,6 +705,17 @@ arg_c
         $$->name = check_strdup( c_ast_name( $$ ) );
 
       DUMP_AST( "<- arg_c", $$ );
+      DUMP_END();
+    }
+
+  | Y_NAME                              /* K&R C type-less argument */
+    {
+      DUMP_START( "argc", "NAME" );
+      DUMP_NAME( "-> NAME", $1 );
+
+      $$ = c_ast_new( K_NAME );
+      $$->name = check_strdup( $1 );
+
       DUMP_END();
     }
   ;
@@ -1024,7 +1035,7 @@ var_decl_english
       DUMP_END();
     }
 
-  | Y_NAME
+  | Y_NAME                              /* K&R C type-less variable */
     {
       DUMP_START( "var_decl_english", "NAME" );
       DUMP_NAME( "-> NAME", $1 );
@@ -1073,7 +1084,6 @@ array_decl_c
 
       switch ( $1->kind ) {
         case K_POINTER:
-        case K_REFERENCE:
           if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
             array->as.array.of_ast = c_ast_clone( PEEK_TYPE() );
             $1->as.ptr_ref.to_ast = array;
@@ -1137,6 +1147,7 @@ func_decl_c
 
       switch ( $1->kind ) {
         case K_POINTER:
+        case K_POINTER_TO_MEMBER:
           if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
             func->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
             $1->as.ptr_ref.to_ast = func;
@@ -1149,7 +1160,7 @@ func_decl_c
           $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
       } // switch
 
-      $$->type = c_ast_take_storage( $$->as.func.ret_ast );
+      c_type_add( &$$->type, c_ast_take_storage( $$->as.func.ret_ast ) );
 
       DUMP_AST( "<- func_decl_c", $$ );
       DUMP_END();
