@@ -64,9 +64,9 @@ static help_text_t const HELP_TEXT[] = {
 void print_help( void ) {
   for ( help_text_t const *ht = HELP_TEXT; ht->text; ++ht ) {
     if ( opt_lang >= LANG_CPP_MIN && ht->cpp_text )
-      printf( " %s\n", ht->cpp_text );
+      printf( "  %s\n", ht->cpp_text );
     else
-      printf( " %s\n", ht->text );
+      printf( "  %s\n", ht->text );
   } // for
 }
 

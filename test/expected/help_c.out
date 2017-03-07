@@ -9,9 +9,9 @@
     quit or exit
   english:
     function [( <decl-list> )] returning <english>
-    block [( <decl-list> )] returning <english>
     array [<number>] of <english>
-    [{ const | volatile | noalias }] pointer to <english>
+    block [( <decl-list> )] returning <english>
+    [{ const | volatile | restrict }] pointer to <english>
     <type>
   type:
     {[<storage-class>] [{<modifier>}] [<C-type>]}
@@ -21,4 +21,4 @@
   gibberish: a C declaration, like 'int *x', or cast, like '(int *)x'
   storage-class: auto, extern, register, or static
   C-type: bool, int, char, wchar_t, float, double, or void
-  modifier: short, long, signed, unsigned, const, volatile, or noalias
+  modifier: short, long, signed, unsigned, const, volatile, or restrict
