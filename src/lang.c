@@ -10,6 +10,7 @@
 #include "util.h"
 
 // system
+#include <assert.h>
 #include <stdlib.h>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -38,6 +39,7 @@ static lang_map_t const LANG_MAP[] = {
 ////////// extern functions ///////////////////////////////////////////////////
 
 lang_t lang_find( char const *s ) {
+  assert( s );
   for ( size_t i = 0; i < ARRAY_SIZE( LANG_MAP ); ++i ) {
     if ( strcasecmp( s, LANG_MAP[i].name ) == 0 )
       return LANG_MAP[i].lang;

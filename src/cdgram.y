@@ -700,9 +700,9 @@ arg_c
       DUMP_AST( "-> type_c", $1 );
       DUMP_AST( "-> cast_c", $3 );
 
-      $$ = $1;
-      assert( $$->name == NULL );
-      $$->name = check_strdup( c_ast_name( $3 ) );
+      $$ = $3 ? $3 : $1;
+      if ( $$->name == NULL )
+        $$->name = check_strdup( c_ast_name( $$ ) );
 
       DUMP_AST( "<- arg_c", $$ );
       DUMP_END();

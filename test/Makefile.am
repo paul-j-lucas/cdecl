@@ -35,6 +35,7 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_ic.test \
 	tests/explain_pc.test \
 	tests/help_c.test \
+	tests/set.test
 	tests/set_options.test
 
 # C++ tests

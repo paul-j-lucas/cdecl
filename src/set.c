@@ -31,27 +31,29 @@
  * values of all options.
  */
 void set_option( char const *opt ) {
-  lang_t const new_lang = lang_find( opt );
-  if ( new_lang ) {
-    opt_lang = new_lang;
-    return;
-  }
+  if ( opt ) {
+    lang_t const new_lang = lang_find( opt );
+    if ( new_lang ) {
+      opt_lang = new_lang;
+      return;
+    }
 
-  SET_OPTION( opt, "create", opt_make_c, true, false );
+    SET_OPTION( opt, "create", opt_make_c, true, false );
 #ifdef WITH_CDECL_DEBUG
-  SET_OPTION( opt, "debug", opt_debug, true, false );
+    SET_OPTION( opt, "debug", opt_debug, true, false );
 #endif /* WITH_CDECL_DEBUG */
-  SET_OPTION( opt, "prompt", prompt, prompt_buf, "" );
+    SET_OPTION( opt, "prompt", prompt, prompt_buf, "" );
 #ifdef YYDEBUG
-  SET_OPTION( opt, "yydebug", yydebug, true, false );
+    SET_OPTION( opt, "yydebug", yydebug, true, false );
 #endif /* YYDEBUG */
 
-  if ( strcmp( opt, "options" ) != 0 ) {
-    PRINT_ERR( "\"%s\": ", opt );
-    SGR_START_COLOR( stderr, error );
-    PRINT_ERR( "error" );
-    SGR_END_COLOR( stderr );
-    PRINT_ERR( ": unknown set option\n" );
+    if ( strcmp( opt, "options" ) != 0 ) {
+      PRINT_ERR( "\"%s\": ", opt );
+      SGR_START_COLOR( stderr, error );
+      PRINT_ERR( "error" );
+      SGR_END_COLOR( stderr );
+      PRINT_ERR( ": unknown set option\n" );
+    }
   }
 
   printf( "\nValid set options (and command line equivalents) are:\n" );
@@ -68,16 +70,17 @@ void set_option( char const *opt ) {
 #ifdef YYDEBUG
   printf( "  yydebug (-D) / noyydebug\n" );
 #endif /* YYDEBUG */
-  printf( "\nCurrent set values are:\n" );
-  printf( "  %screate\n", opt_make_c ? "   " : " no" );
+
+  printf( "\nCurrent set option values are:\n" );
+  printf( "  %screate\n", opt_make_c ? "  " : "no" );
 #ifdef WITH_CDECL_DEBUG
-  printf( "  %sdebug\n", opt_debug ? "   " : " no" );
+  printf( "  %sdebug\n", opt_debug ? "  " : "no" );
 #endif /* WITH_CDECL_DEBUG */
-  printf( "  %sinteractive\n", opt_interactive ? "   " : " no" );
-  printf( "  %sprompt\n", prompt[0] ? "   " : " no" );
-  printf( "   lang=%s\n", lang_name( opt_lang ) );
+  printf( "  %sinteractive\n", opt_interactive ? "  " : "no" );
+  printf( "  %sprompt\n", prompt[0] ? "  " : "no" );
+  printf( "  lang=%s\n", lang_name( opt_lang ) );
 #ifdef YYDEBUG
-  printf( "  %syydebug\n", yydebug ? "   " : " no" );
+  printf( "  %syydebug\n", yydebug ? "  " : "no" );
 #endif /* YYDEBUG */
 }
 
