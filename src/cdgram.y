@@ -743,9 +743,6 @@ array_decl_english
       DUMP_AST( "-> decl_english", $4 );
 
       switch ( $4->kind ) {
-        case K_ARRAY:
-          c_error( "inner array of unspecified size", "array of pointer" );
-          break;
         case K_BUILTIN:
           if ( $4->type & T_VOID )
             c_error( "array of void", "pointer to void" );
@@ -919,9 +916,6 @@ pointer_decl_english
       DUMP_START( "pointer_decl_english", "POINTER TO decl_english" );
       DUMP_AST( "-> decl_english", $2 );
 
-      if ( $2->kind == K_ARRAY )
-        c_error( "pointer to array of unspecified dimension",
-                 "pointer to object" );
       $$ = c_ast_new( K_POINTER );
       $$->as.ptr_ref.to_ast = $2;
 
@@ -950,11 +944,7 @@ pointer_to_member_decl_english
 
       if ( opt_lang < LANG_CPP_MIN )
         c_warning( "pointer to member of class", NULL );
-#if 0
-      if ( c_kind == K_ARRAY )
-        c_error( "pointer to array of unspecified dimension",
-                 "pointer to object" );
-#endif
+
       $$ = c_ast_new( K_POINTER_TO_MEMBER );
       $$->type = $4;
       $$->as.ptr_mbr.class_name = $5;
@@ -998,16 +988,12 @@ reference_decl_english
       if ( opt_lang < LANG_CPP_MIN )
         c_warning( "reference", NULL );
       switch ( $3->kind ) {
-        case K_ARRAY:
-          c_error( "reference to array of unspecified dimension",
-                   "reference to object" );
-          break;
         case K_BUILTIN:
           if ( $3->type & T_VOID )
             c_error( "reference of void", "pointer to void" );
           break;
         default:
-          ;// suppress warning
+          /* suppress warning */;
       } // switch
 
       $$ = c_ast_new( K_REFERENCE );
