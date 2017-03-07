@@ -37,8 +37,8 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_fv_rpi.test \
 	tests/explain_fx_rpi.test \
 	tests/explain_ia-012.test \
-	tests/explain_ia-0xA_01.test \
-	tests/explain_ia-0xa_02.test \
+	tests/explain_ia-0xA-01.test \
+	tests/explain_ia-0xa-02.test \
 	tests/explain_ia-10.test \
 	tests/explain_ic.test \
 	tests/explain_is.test \
