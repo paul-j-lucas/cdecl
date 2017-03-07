@@ -22,7 +22,14 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static char const L_LONG_LONG[] = "long long";
+/**
+ * As part of the special case for <code>long long</code>, its literal it only
+ * \c long because it's type, T_LONG_LONG, is always combined with T_LONG,
+ * i.e., two bits are set.  Therefore, when printed, it prints one \c long for
+ * T_LONG and another \c long for T_LONG_LONG (this literal).  That explains
+ * why this literal is only one \c long.
+ */
+static char const L_LONG_LONG[] = "long";
 
 /**
  * Mapping between C type literals and type bits.
@@ -44,7 +51,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { L_SHORT,        T_SHORT         },
   { L_INT,          T_INT           },
   { L_LONG,         T_LONG          },
-  { L_LONG_LONG,    T_LONG_LONG     },
+  { L_LONG_LONG,    T_LONG_LONG     },  // special case
   { L_SIGNED,       T_SIGNED        },
   { L_UNSIGNED,     T_UNSIGNED      },
   { L_FLOAT,        T_FLOAT         },

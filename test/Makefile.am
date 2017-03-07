@@ -33,7 +33,12 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_fv_rpi.test \
 	tests/explain_fx_rpi.test \
 	tests/explain_ic.test \
+	tests/explain_is.test \
+	tests/explain_it.test \
+	tests/explain_ll.test \
 	tests/explain_pc.test \
+	tests/explain_si.test \
+	tests/explain_ti.test \
 	tests/help_c.test \
 	tests/set.test
 	tests/set_options.test
