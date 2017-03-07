@@ -24,6 +24,7 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_ai-0xA-01.test \
 	tests/explain_ai-0xa-02.test \
 	tests/explain_ai-10.test \
+	tests/explain_api-10.test \
 	tests/explain_cast_pc.test \
 	tests/explain_cast_pcc-01.test \
 	tests/explain_cast_pcc-02.test \
