@@ -27,6 +27,10 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_cast_pfpc_ri.test \
 	tests/explain_cast_pfpci_ri.test \
 	tests/explain_ci.test \
+	tests/explain_cp.test \
+	tests/explain_cpc.test \
+	tests/explain_cvpc.test \
+	tests/explain_vcpc.test \
 	tests/explain_f_rpi.test \
 	tests/explain_fpc_rpi.test \
 	tests/explain_fpci_rpi.test \
@@ -40,9 +44,11 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_is.test \
 	tests/explain_it.test \
 	tests/explain_ll.test \
-	tests/explain_pc.test \
+	tests/explain_ppc.test \
+	tests/explain_rpc.test \
 	tests/explain_si.test \
 	tests/explain_ti.test \
+	tests/explain_vpc.test \
 	tests/help_c.test \
 	tests/set.test
 	tests/set_options.test
