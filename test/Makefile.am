@@ -20,6 +20,7 @@ TESTS+= tests/cast_pc.test \
 	tests/cast_pfx_ri.test \
 	tests/declare_api-10.test \
 	tests/declare_fx_rpi.test \
+	tests/declare_pai-10.test \
 	tests/declare_pc.test \
 	tests/explain_ai-012.test \
 	tests/explain_ai-0xA-01.test \
