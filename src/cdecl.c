@@ -97,7 +97,7 @@ static void cdecl_cleanup( void ) {
 }
 
 /**
- * TODO
+ * Parses command-line options and sets up the prompt.
  *
  * @param argc The number of command-line arguments from main().
  * @param argv The command-line arguments from main().
@@ -149,7 +149,7 @@ static int parse_command_line( int argc, char const *argv[] ) {
  *
  * @param argc The number of command-line arguments from main().
  * @param argv The command-line arguments from main().
- * @return TODO
+ * @return Returns zero on success, non-zero on error.
  */
 static int parse_files( int argc, char const *argv[] ) {
   int rv = 0;
@@ -173,7 +173,7 @@ static int parse_files( int argc, char const *argv[] ) {
 /**
  * TODO
  *
- * @return TODO
+ * @return Returns zero on success, non-zero on error.
  */
 static int parse_stdin( void ) {
   int rv;

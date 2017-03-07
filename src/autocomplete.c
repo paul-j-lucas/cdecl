@@ -113,7 +113,12 @@ static inline bool is_command( char const *command ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * TODO
+ * Attempts command completion for readline().
+ *
+ * @param text The text, so far, to match.
+ * @param start The starting character position of \a text.
+ * @param end The ending character position of \a text.
+ * @return Returns an array of C strings of possible matches.
  */
 static char** attempt_completion( char const *text, int start, int end ) {
   assert( text );
