@@ -50,6 +50,16 @@ static void       c_ast_gibberish_qual_name( c_ast_t const*, gibberish_t,
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Convenience function for getting block/function arguments.
+ *
+ * @param ast The c_ast to get the arguments of.
+ * @return Returns a pointe to the first argument or null if none.
+ */
+static inline c_ast_t const* c_ast_args( c_ast_t const *ast ) {
+  return ast->as.func.args.head_ast;
+}
+
+/**
  * Frees all the memory used by the given c_ast.
  *
  * @param ast The c_ast to free.  May be null.
@@ -90,7 +100,7 @@ static void c_ast_gibberish_args( c_ast_t const *ast, gibberish_t g_kind,
 
   bool comma = false;
   FPUTC( '(', gout );
-  for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next ) {
+  for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", gout );
       c_ast_gibberish_impl( arg, ast, g_kind, gout );
@@ -228,16 +238,6 @@ static inline void c_ast_init( c_ast_t *ast, c_kind_t kind ) {
 }
 
 /**
- * Prints a multiple of \a indent spaces.
- *
- * @param indent How much to indent.
- * @param out The FILE to print to.
- */
-static void print_indent( unsigned indent, FILE *out ) {
-  FPRINTF( out, "%*s", (int)(indent * JSON_INDENT), "" );
-}
-
-/**
  * A c_ast_visitor function used to find a K_BUILTIN.
  *
  * @param ast The c_ast to check.
@@ -255,6 +255,16 @@ static bool c_ast_vistor_builtin( c_ast_t *ast ) {
  */
 static bool c_ast_visitor_name( c_ast_t *ast ) {
   return ast->name != NULL;
+}
+
+/**
+ * Prints a multiple of \a indent spaces.
+ *
+ * @param indent How much to indent.
+ * @param out The FILE to print to.
+ */
+static void print_indent( unsigned indent, FILE *out ) {
+  FPRINTF( out, "%*s", (int)(indent * JSON_INDENT), "" );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -408,13 +418,17 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
     case K_FUNCTION:
       if ( ast->type )
         FPRINTF( eout, "%s ", c_type_name( ast->type ) );
-      FPRINTF( eout, "%s (", c_kind_name( ast->kind ) );
-      for ( c_ast_t *arg = ast->as.func.args.head_ast; arg; arg = arg->next ) {
-        if ( true_or_set( &comma ) )
-          FPUTS( ", ", eout );
-        c_ast_english( arg, eout );
+      FPUTS( c_kind_name( ast->kind ), eout );
+      if ( c_ast_args( ast ) ) {
+        FPUTS( " (", eout );
+        for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
+          if ( true_or_set( &comma ) )
+            FPUTS( ", ", eout );
+          c_ast_english( arg, eout );
+        } // for
+        FPUTC( ')', eout );
       }
-      FPRINTF( eout, ") %s ", L_RETURNING );
+      FPRINTF( eout, " %s ", L_RETURNING );
       c_ast_english( ast->as.func.ret_ast, eout );
       break;
 
@@ -574,7 +588,7 @@ void c_ast_list_json( c_ast_list_t const *list, unsigned indent, FILE *jout ) {
   if ( list->head_ast != NULL ) {
     FPUTS( "[\n", jout );
     bool comma = false;
-    for ( c_ast_t *arg = list->head_ast; arg; arg = arg->next ) {
+    for ( c_ast_t const *arg = list->head_ast; arg; arg = arg->next ) {
       if ( true_or_set( &comma ) )
         FPUTS( ",\n", jout );
       c_ast_json( arg, indent + 1, NULL, jout );

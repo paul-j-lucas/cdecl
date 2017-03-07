@@ -434,6 +434,7 @@ explain_cast_c
       POP_TYPE();
       DUMP_START( "explain_cast_t",
                   "EXPLAIN '(' type_c cast_c ')' name_token_opt END" );
+      DUMP_AST( "-> type_c", $3 );
       DUMP_AST( "-> cast_c", $5 );
       DUMP_NAME( "-> name_token_opt", $7 );
       DUMP_END();
@@ -557,14 +558,27 @@ func_cast_c
     {
       POP_TYPE();
       DUMP_START( "func_cast_c", "'(' cast_c ')' '(' arg_list_opt_c ')'" );
+      DUMP_AST( "^^ type_c", PEEK_TYPE() );
       DUMP_AST( "-> placeholder_type_c", $2 );
       DUMP_AST( "-> cast_c", $4 );
       DUMP_AST_LIST( "-> arg_list_opt_c", $6 );
 
-      $$ = c_ast_new( K_FUNCTION );
-      $$->name = check_strdup( c_ast_name( $4 ) );
-      $$->as.func.ret_ast = $4;
-      $$->as.func.args = $6;
+      c_ast_t *const func = c_ast_new( K_FUNCTION );
+      func->as.func.args = $6;
+
+      switch ( $4->kind ) {
+        case K_POINTER:
+          if ( $4->as.ptr_ref.to_ast->kind == K_NONE ) {
+            func->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
+            $4->as.ptr_ref.to_ast = func;
+            $$ = $4;
+            break;
+          }
+          // no break;
+        default:
+          $$ = func;
+          $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
+      } // switch
 
       DUMP_AST( "<- func_cast_c", $$ );
       DUMP_END();
