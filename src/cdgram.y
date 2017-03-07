@@ -29,13 +29,14 @@
 #endif /* WITH_CDECL_DEBUG */
 
 #define DUMP_COMMA \
-  CDEBUG( if ( !dump_comma ) dump_comma = true; else FPUTS( ",\n", stdout ); )
+  CDEBUG( if ( true_or_set( &dump_comma ) ) FPUTS( ",\n", stdout ); )
 
 #define DUMP_AST(KEY,AST) \
   CDEBUG( DUMP_COMMA; c_ast_json( (AST), 1, (KEY), stdout ); )
 
-#define DUMP_AST_LIST(KEY,AST_LIST) CDEBUG( \
-  DUMP_COMMA; c_ast_json( (AST_LIST).head_ast, 1, (KEY ".head"), stdout ); )
+#define DUMP_AST_LIST(KEY,AST_LIST) CDEBUG(           \
+  DUMP_COMMA; FPRINTF( stdout, "  \"%s\": ", (KEY) ); \
+  c_ast_list_json( &(AST_LIST), 1, stdout ); )
 
 #define DUMP_NAME(KEY,NAME) CDEBUG(         \
   DUMP_COMMA; FPUTS( "  ", stdout );        \

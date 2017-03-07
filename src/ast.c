@@ -508,22 +508,9 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_BLOCK:                     // Apple extension
       case K_FUNCTION:
         PRINT_COMMA;
-        PRINT_JSON_KV( "type", c_type_name( ast->type ) );
-        FPRINTF( jout, ",\n" );
-        if ( ast->as.func.args.head_ast != NULL ) {
-          PRINT_JSON( "\"args\": [\n" );
-          comma = false;
-          for ( c_ast_t *arg = ast->as.func.args.head_ast; arg;
-                arg = arg->next ) {
-            if ( true_or_set( &comma ) )
-              FPUTS( ", ", jout );
-            c_ast_json( arg, indent + 1, NULL, jout );
-          } // for
-          FPUTC( '\n', jout );
-          PRINT_JSON( "],\n" );
-        } else {
-          PRINT_JSON( "\"args\": [],\n" );
-        }
+        PRINT_JSON( "\"args\": " );
+        c_ast_list_json( &ast->as.func.args, indent, jout );
+        FPUTS( ",\n", jout );
         c_ast_json( ast->as.func.ret_ast, indent, "ret_ast", jout );
         break;
 
@@ -580,6 +567,23 @@ c_ast_list_t c_ast_list_clone( c_ast_list_t const *list ) {
   clone.tail_ast = tail;
 
   return clone;
+}
+
+void c_ast_list_json( c_ast_list_t const *list, unsigned indent, FILE *jout ) {
+  assert( list );
+  if ( list->head_ast != NULL ) {
+    FPUTS( "[\n", jout );
+    bool comma = false;
+    for ( c_ast_t *arg = list->head_ast; arg; arg = arg->next ) {
+      if ( true_or_set( &comma ) )
+        FPUTS( ",\n", jout );
+      c_ast_json( arg, indent + 1, NULL, jout );
+    } // for
+    FPUTC( '\n', jout );
+    PRINT_JSON( "]" );
+  } else {
+    FPUTS( "[]", jout );
+  }
 }
 
 char const* c_ast_name( c_ast_t *ast ) {

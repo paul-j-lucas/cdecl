@@ -235,6 +235,15 @@ void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast );
 c_ast_list_t c_ast_list_clone( c_ast_list_t const *list );
 
 /**
+ * Dump the given c_ast_list as JSON (for debugging).
+ *
+ * @param list The c_ast_list to dump.
+ * @param indent The initial indent.
+ * @param jour The FILE to dump to.
+ */
+void c_ast_list_json( c_ast_list_t const *list, unsigned indent, FILE *fout );
+
+/**
  * Gets the name from the given AST.
  *
  * @param ast The AST to get the name from.
