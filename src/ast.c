@@ -124,6 +124,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
   switch ( ast->kind ) {
     case K_ARRAY:
       c_ast_gibberish_impl( ast->as.array.of_ast, ast, g_kind, gout );
+      if ( ast->name && g_kind != G_CAST )
+        FPUTS( ast->name, gout );
       FPUTC( '[', gout );
       if ( ast->as.array.size != C_ARRAY_NO_SIZE )
         FPRINTF( gout, "%d", ast->as.array.size );
@@ -134,9 +136,12 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
       c_ast_gibberish_impl( ast->as.block.ret_ast, ast, g_kind, gout );
       FPUTS( "(^", gout );
       if ( parent->kind == K_POINTER ) {
+        //
+        // If the parent node is a pointer, it's a pointer to block.
+        //
         FPUTC( '*', gout );
         c_ast_gibberish_qual_name( parent, g_kind, gout );
-      } else if ( ast->name && g_kind == G_DECLARE ) {
+      } else if ( ast->name && g_kind != G_CAST ) {
         FPUTS( ast->name, gout );
       }
       FPUTC( ')', gout );
@@ -145,7 +150,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
 
     case K_BUILTIN:
       FPUTS( c_type_name( ast->type ), gout );
-      if ( ast->name && g_kind == G_DECLARE )
+      if ( ast->name && g_kind != G_CAST )
         FPRINTF( gout, " %s", ast->name );
       break;
 
@@ -159,18 +164,29 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
       c_ast_gibberish_impl( ast->as.func.ret_ast, ast, g_kind, gout );
       FPUTC( ' ', gout );
       if ( parent->kind == K_POINTER ) {
-        FPRINTF( gout, "(*" );
+        //
+        // If the parent node is a pointer, it's a pointer to function: print
+        // it like:
+        //
+        //    ret_type (*name)(arg_list)
+        //
+        // rather than:
+        //
+        //    ret_type *name(arg_list)
+        //
+        // which is a function returning pointer to ret_type.
+        //
+        FPUTS( "(*", gout );
         c_ast_gibberish_qual_name( parent, g_kind, gout );
-      } else if ( ast->name && g_kind == G_DECLARE ) {
+        FPUTC( ')', gout );
+      } else if ( ast->name && g_kind != G_CAST ) {
         FPUTS( ast->name, gout );
       }
-      if ( parent->kind == K_POINTER )
-        FPUTC( ')', gout );
       c_ast_gibberish_args( ast, g_kind, gout );
       break;
 
     case K_NAME:
-      if ( ast->name && g_kind == G_DECLARE )
+      if ( ast->name && g_kind != G_CAST )
         FPUTS( ast->name, gout );
       break;
 
@@ -180,7 +196,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
     case K_POINTER:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, ast, g_kind, gout );
       if ( ast->as.ptr_ref.to_ast->kind != K_FUNCTION ) {
-        if ( parent->kind != K_FUNCTION && g_kind == G_DECLARE )
+        if ( parent->kind != K_FUNCTION && g_kind != G_CAST )
           FPUTC( ' ', gout );
         FPUTC( '*', gout );
         c_ast_gibberish_qual_name( ast, g_kind, gout );

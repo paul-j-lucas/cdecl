@@ -18,6 +18,7 @@ TESTS+= tests/cast_pc.test \
 	tests/cast_pf_ri-02.test \
 	tests/cast_pfpci_ri.test \
 	tests/cast_pfx_ri.test \
+	tests/declare_api-10.test \
 	tests/declare_fx_rpi.test \
 	tests/declare_pc.test \
 	tests/explain_ai-012.test \
@@ -44,6 +45,7 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_is.test \
 	tests/explain_it.test \
 	tests/explain_ll.test \
+	tests/explain_pai-10.test \
 	tests/explain_ppc.test \
 	tests/explain_rpc.test \
 	tests/explain_si.test \
