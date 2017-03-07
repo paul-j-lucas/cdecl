@@ -6,6 +6,11 @@
 #ifndef cdecl_keywords_H
 #define cdecl_keywords_H
 
+/**
+ * @file
+ * Contains types and functions for looking up C/C++ keyword information.
+ */
+
 // local
 #include "lang.h"
 #include "types.h"
@@ -13,7 +18,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * C/C++ language keyword info.
+ * C/C++ language keyword information.
  */
 struct c_keyword {
   char const *literal;                  // C string literal of the keyword

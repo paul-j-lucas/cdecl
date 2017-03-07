@@ -6,6 +6,11 @@
 #ifndef cdecl_types_H
 #define cdecl_types_H
 
+/**
+ * @file
+ * Contains constants, types, and functions for C/C++ types.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 

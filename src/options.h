@@ -8,6 +8,11 @@
 #ifndef cdecl_options_H
 #define cdecl_options_H
 
+/**
+ * @file
+ * Contains global variables and functions for command-line options.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 #include "lang.h"                       /* for lang_t */

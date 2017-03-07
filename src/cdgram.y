@@ -28,6 +28,9 @@
 #define CDEBUG(...)                     /* nothing */
 #endif /* WITH_CDECL_DEBUG */
 
+#define C_TYPE_ADD(DST,SRC) \
+  BLOCK( if ( !c_type_add( (DST), (SRC) ) ) YYABORT; )
+
 #define DUMP_COMMA \
   CDEBUG( if ( true_or_set( &dump_comma ) ) FPUTS( ",\n", stdout ); )
 
@@ -898,7 +901,7 @@ qualified_decl_english
   : type_qualifier_list_opt_c qualifiable_decl_english
     {
       $$ = $2;
-      c_type_add( &$$->type, $1 );
+      C_TYPE_ADD( &$$->type, $1 );
     }
   ;
 
@@ -1160,7 +1163,7 @@ func_decl_c
           $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
       } // switch
 
-      c_type_add( &$$->type, c_ast_take_storage( $$->as.func.ret_ast ) );
+      C_TYPE_ADD( &$$->type, c_ast_take_storage( $$->as.func.ret_ast ) );
 
       DUMP_AST( "<- func_decl_c", $$ );
       DUMP_END();
@@ -1310,7 +1313,7 @@ type_english
       DUMP_AST( "-> unmodified_type_english", $2 );
 
       $$ = $2;
-      c_type_add( &$$->type, $1 );
+      C_TYPE_ADD( &$$->type, $1 );
 
       DUMP_AST( "<- type_english", $$ );
       DUMP_END();
@@ -1323,7 +1326,7 @@ type_english
 
       $$ = c_ast_new( K_BUILTIN );
       $$->type = T_INT;
-      c_type_add( &$$->type, $1 );
+      C_TYPE_ADD( &$$->type, $1 );
 
       DUMP_AST( "<- type_english", $$ );
       DUMP_END();
@@ -1344,7 +1347,7 @@ type_modifier_list_english
       DUMP_TYPE( "-> type_modifier_english", $2 );
 
       $$ = $1;
-      c_type_add( &$$, $1 );
+      C_TYPE_ADD( &$$, $1 );
 
       DUMP_TYPE( "<- type_modifier_list_opt_english", $$ );
       DUMP_END();
@@ -1404,8 +1407,8 @@ type_c
 
       $$ = c_ast_new( K_BUILTIN );
       $$->type = $1;
-      c_type_add( &$$->type, $2 );
-      c_type_add( &$$->type, $3 );
+      C_TYPE_ADD( &$$->type, $2 );
+      C_TYPE_ADD( &$$->type, $3 );
       c_type_check( $$->type );
 
       DUMP_AST( "<- type_c", $$ );
@@ -1420,7 +1423,7 @@ type_c
 
       $$ = c_ast_new( K_BUILTIN );
       $$->type = $1;
-      c_type_add( &$$->type, $2 );
+      C_TYPE_ADD( &$$->type, $2 );
       c_type_check( $$->type );
 
       DUMP_AST( "<- type_c", $$ );
@@ -1444,7 +1447,7 @@ type_modifier_list_c
       DUMP_TYPE( "-> type_modifier_c", $2 );
 
       $$ = $1;
-      c_type_add( &$$, $2 );
+      C_TYPE_ADD( &$$, $2 );
 
       DUMP_TYPE( "<- type_modifier_list_c", $$ );
       DUMP_END();
@@ -1516,7 +1519,7 @@ type_qualifier_list_opt_c
       DUMP_TYPE( "-> type_qualifier_c", $2 );
 
       $$ = $1;
-      c_type_add( &$$, $2 );
+      C_TYPE_ADD( &$$, $2 );
 
       DUMP_TYPE( "<- type_qualifier_list_opt_c", $$ );
       DUMP_END();

@@ -6,6 +6,12 @@
 #ifndef cdecl_color_H
 #define cdecl_color_H
 
+/**
+ * @file
+ * Contains constants, macros, types, global variables, and functions for
+ * printing in color.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 

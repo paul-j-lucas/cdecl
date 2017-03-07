@@ -6,6 +6,11 @@
 #ifndef cdecl_literals_H
 #define cdecl_literals_H
 
+/**
+ * @file
+ * Contains constants for cdecl and C/C++ language literals.
+ */
+
 ////////// literals ///////////////////////////////////////////////////////////
 
 // english

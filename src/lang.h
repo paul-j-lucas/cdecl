@@ -6,6 +6,11 @@
 #ifndef cdecl_lang_H
 #define cdecl_lang_H
 
+/**
+ * @file
+ * Contains constants, types, and functions for C/C++ language versions.
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // languages supported

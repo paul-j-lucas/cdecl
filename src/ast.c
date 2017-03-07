@@ -136,7 +136,6 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
       if ( parent->kind == K_POINTER ) {
         FPUTC( '*', gout );
         c_ast_gibberish_qual_name( parent, g_kind, gout );
-        // the blocks's name has been hoisted to the pointer
       } else if ( ast->name && g_kind == G_DECLARE ) {
         FPUTS( ast->name, gout );
       }
@@ -162,7 +161,6 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
       if ( parent->kind == K_POINTER ) {
         FPRINTF( gout, "(*" );
         c_ast_gibberish_qual_name( parent, g_kind, gout );
-        // the function's name has been hoisted to the pointer
       } else if ( ast->name && g_kind == G_DECLARE ) {
         FPUTS( ast->name, gout );
       }
@@ -179,17 +177,15 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
     case K_NONE:
       assert( ast->kind != K_NONE );
 
-    case K_POINTER: {
-      c_ast_t const *const to = ast->as.ptr_ref.to_ast;
-      c_ast_gibberish_impl( to, ast, g_kind, gout );
-      if ( to->kind != K_FUNCTION ) {
+    case K_POINTER:
+      c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, ast, g_kind, gout );
+      if ( ast->as.ptr_ref.to_ast->kind != K_FUNCTION ) {
         if ( parent->kind != K_FUNCTION && g_kind == G_DECLARE )
           FPUTC( ' ', gout );
         FPUTC( '*', gout );
         c_ast_gibberish_qual_name( ast, g_kind, gout );
       }
       break;
-    }
 
     case K_POINTER_TO_MEMBER:
       c_ast_gibberish_impl( ast->as.ptr_mbr.of_ast, ast, g_kind, gout );
