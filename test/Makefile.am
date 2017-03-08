@@ -60,7 +60,8 @@ TESTS+= tests/cast_pc.test \
 # C++ tests
 TESTS+=	tests/cast_pmi.test \
 	tests/declare_pmi.test \
-	tests/declare_rc.test \
+	tests/declare_ri-01.test \
+	tests/declare_ri-02.test \
 	tests/explain_cast_pmi.test \
 	tests/explain_pmfxx_rps.test \
 	tests/explain_pmi.test \
