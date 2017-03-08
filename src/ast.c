@@ -135,7 +135,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
         //
         //    type *name[size]
         //
-        // which is an array size of pointer to type.
+        // which is an array [size] of pointer to type.
         //
         FPUTS( " (*", gout );
         c_ast_gibberish_qual_name( parent, g_kind, gout );
@@ -213,18 +213,38 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
     case K_NONE:
       assert( ast->kind != K_NONE );
 
-    case K_POINTER: {
+    case K_POINTER:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, ast, g_kind, gout );
-      c_kind_t const kind = ast->as.ptr_ref.to_ast->kind;
-      if ( kind != K_ARRAY && kind != K_FUNCTION ) {
-        if ( parent->kind != K_FUNCTION && g_kind != G_CAST ) {
-          FPUTC( ' ', gout );
-        }
-        FPUTC( '*', gout );
-        c_ast_gibberish_qual_name( ast, g_kind, gout );
-      }
+      switch ( ast->as.ptr_ref.to_ast->kind ) {
+        case K_ARRAY:
+        case K_BLOCK:                   // Apple extension
+        case K_FUNCTION:
+          //
+          // We have to handle pointers to these kinds in those kinds
+          // themselves due to the extra parentheses needed in the output.
+          //
+          break;
+        default:
+          if ( parent->kind != K_FUNCTION && g_kind != G_CAST ) {
+            //
+            // For all kinds except functions, we want the output to be like:
+            //
+            //    type *var
+            //
+            // i.e., the '*' adjacent to the variable; for functions, or when
+            // we're casting, we want the output to be like:
+            //
+            //    type* func()          // function
+            //    (type*)               // cast
+            //
+            // i.e., the '*' adjacent to the type.
+            //
+            FPUTC( ' ', gout );
+          }
+          FPUTC( '*', gout );
+          c_ast_gibberish_qual_name( ast, g_kind, gout );
+      } // switch
       break;
-    }
 
     case K_POINTER_TO_MEMBER:
       c_ast_gibberish_impl( ast->as.ptr_mbr.of_ast, ast, g_kind, gout );
