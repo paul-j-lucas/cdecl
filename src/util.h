@@ -97,6 +97,17 @@ void* check_realloc( void *p, size_t size );
  */
 char* check_strdup( char const *s );
 
+/**
+ * Checks the flag: if \c false, sets it to \c true.
+ *
+ * @param flag A pointer to the Boolean flag to be tested and, if \c false,
+ * sets it to \c true.
+ * @return Returns \c true only if \c *flag is \c false initially.
+ */
+CDECL_UTIL_INLINE bool false_set( bool *flag ) {
+  return !*flag && (*flag = true);
+}
+
 #ifndef HAVE_FMEMOPEN
 /**
  * Local implementation of POSIX 2008 fmemopen(3) for systems that don't have

@@ -43,7 +43,7 @@ static c_ast_t   *c_ast_head;           // linked list of alloc'd objects
 
 // local functions
 static void       c_ast_gibberish_impl( c_ast_t const*, c_ast_t const*,
-                                        gibberish_t, FILE* );
+                                        gibberish_t, bool*, FILE* );
 static void       c_ast_gibberish_qual_name( c_ast_t const*, gibberish_t,
                                              FILE* );
 
@@ -103,7 +103,8 @@ static void c_ast_gibberish_args( c_ast_t const *ast, gibberish_t g_kind,
   for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", gout );
-    c_ast_gibberish_impl( arg, ast, g_kind, gout );
+    bool space = false;
+    c_ast_gibberish_impl( arg, ast, g_kind, &space, gout );
   } // for
   FPUTC( ')', gout );
 }
@@ -114,26 +115,30 @@ static void c_ast_gibberish_args( c_ast_t const *ast, gibberish_t g_kind,
  * @param ast The AST to print.
  * @param parent The parent c_ast.  Must \c not be null.
  * @param g_kind The kind of gibberish to print.
+ * @param space A pointer to a \c bool: if \c false, it means we haven't
+ * printed a space before \c '*' yet, so print one and set the \c bool to \c
+ * true; if \c true, do nothing.
  * @param gout The FILE to print to.
  */
 static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
-                                  gibberish_t g_kind, FILE *gout ) {
+                                  gibberish_t g_kind, bool *space,
+                                  FILE *gout ) {
   assert( ast );
   assert( parent );
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      c_ast_gibberish_impl( ast->as.array.of_ast, ast, g_kind, gout );
+      c_ast_gibberish_impl( ast->as.array.of_ast, ast, g_kind, space, gout );
       if ( parent->kind == K_POINTER ) {
         //
         // If the parent node is a pointer, it's a pointer to array: print it
         // like:
         //
-        //    type (*name)[size]
+        //      type (*name)[size]
         //
         // rather than:
         //
-        //    type *name[size]
+        //      type *name[size]
         //
         // which is an array [size] of pointer to type.
         //
@@ -151,7 +156,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
       break;
 
     case K_BLOCK:                       // Apple extension
-      c_ast_gibberish_impl( ast->as.block.ret_ast, ast, g_kind, gout );
+      c_ast_gibberish_impl( ast->as.block.ret_ast, ast, g_kind, space, gout );
       FPUTS( "(^", gout );
       if ( parent->kind == K_POINTER ) {
         //
@@ -180,18 +185,18 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
       break;
 
     case K_FUNCTION:
-      c_ast_gibberish_impl( ast->as.func.ret_ast, ast, g_kind, gout );
+      c_ast_gibberish_impl( ast->as.func.ret_ast, ast, g_kind, space, gout );
       FPUTC( ' ', gout );
       if ( parent->kind == K_POINTER ) {
         //
         // If the parent node is a pointer, it's a pointer to function: print
         // it like:
         //
-        //    ret_type (*name)(arg_list)
+        //      ret_type (*name)(arg_list)
         //
         // rather than:
         //
-        //    ret_type *name(arg_list)
+        //      ret_type *name(arg_list)
         //
         // which is a function returning pointer to ret_type.
         //
@@ -214,7 +219,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
       assert( ast->kind != K_NONE );
 
     case K_POINTER:
-      c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, ast, g_kind, gout );
+      c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, ast, g_kind, space, gout );
       switch ( ast->as.ptr_ref.to_ast->kind ) {
         case K_ARRAY:
         case K_BLOCK:                   // Apple extension
@@ -229,17 +234,29 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
             //
             // For all kinds except functions, we want the output to be like:
             //
-            //    type *var
+            //      type *var
             //
             // i.e., the '*' adjacent to the variable; for functions, or when
             // we're casting, we want the output to be like:
             //
-            //    type* func()          // function
-            //    (type*)               // cast
+            //      type* func()        // function
+            //      (type*)             // cast
             //
             // i.e., the '*' adjacent to the type.
             //
-            FPUTC( ' ', gout );
+            if ( false_set( space ) ) {
+              //
+              // Print a space before '*' only if we haven't printed one yet.
+              // This is so we print:
+              //
+              //      int **x
+              //
+              // rather than:
+              //
+              //      int * *x
+              //
+              FPUTC( ' ', gout );
+            }
           }
           FPUTC( '*', gout );
           c_ast_gibberish_qual_name( ast, g_kind, gout );
@@ -247,13 +264,13 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
       break;
 
     case K_POINTER_TO_MEMBER:
-      c_ast_gibberish_impl( ast->as.ptr_mbr.of_ast, ast, g_kind, gout );
+      c_ast_gibberish_impl( ast->as.ptr_mbr.of_ast, ast, g_kind, space, gout );
       FPRINTF( gout, " %s::*", ast->as.ptr_mbr.class_name );
       c_ast_gibberish_qual_name( ast, g_kind, gout );
       break;
 
     case K_REFERENCE:
-      c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, ast, g_kind, gout );
+      c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, ast, g_kind, space, gout );
       FPUTS( " &", gout );
       c_ast_gibberish_qual_name( ast, g_kind, gout );
       break;
@@ -536,13 +553,15 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
   c_ast_t dummy;
   c_ast_init( &dummy, K_NONE );
-  return c_ast_gibberish_impl( ast, &dummy, G_CAST, gout );
+  bool space = false;
+  return c_ast_gibberish_impl( ast, &dummy, G_CAST, &space, gout );
 }
 
 void c_ast_gibberish_declare( c_ast_t const *ast, FILE *gout ) {
   c_ast_t dummy;
   c_ast_init( &dummy, K_NONE );
-  return c_ast_gibberish_impl( ast, &dummy, G_DECLARE, gout );
+  bool space = false;
+  return c_ast_gibberish_impl( ast, &dummy, G_DECLARE, &space, gout );
 }
 
 void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
