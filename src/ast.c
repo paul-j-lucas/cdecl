@@ -103,7 +103,7 @@ static void c_ast_gibberish_args( c_ast_t const *ast, gibberish_t g_kind,
   for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", gout );
-      c_ast_gibberish_impl( arg, ast, g_kind, gout );
+    c_ast_gibberish_impl( arg, ast, g_kind, gout );
   } // for
   FPUTC( ')', gout );
 }
