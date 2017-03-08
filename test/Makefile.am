@@ -19,6 +19,8 @@ TESTS+= tests/cast_pc.test \
 	tests/cast_pfpci_ri.test \
 	tests/cast_pfx_ri.test \
 	tests/declare_api-10.test \
+	tests/declare_ci-01.test \
+	tests/declare_ci-02.test \
 	tests/declare_fx_rpi.test \
 	tests/declare_pai-10.test \
 	tests/declare_pc.test \
@@ -34,9 +36,8 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_cast_pfpc_ri.test \
 	tests/explain_cast_pfpci_ri.test \
 	tests/explain_ci.test \
-	tests/explain_cp.test \
-	tests/explain_cpc.test \
-	tests/explain_cvpc.test \
+	tests/explain_cpi.test \
+	tests/explain_cvpi.test \
 	tests/explain_f_rpi.test \
 	tests/explain_fpc_rpi.test \
 	tests/explain_fpci_rpi.test \
@@ -47,11 +48,12 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_it.test \
 	tests/explain_ll.test \
 	tests/explain_pai-10.test \
+	tests/explain_pi.test \
 	tests/explain_ppc.test \
 	tests/explain_rpc.test \
 	tests/explain_si.test \
 	tests/explain_ti.test \
-	tests/explain_vcpc.test \
+	tests/explain_vcpi.test \
 	tests/explain_vpc.test \
 	tests/help_c.test \
 	tests/set.test

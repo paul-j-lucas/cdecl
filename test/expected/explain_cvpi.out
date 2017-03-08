@@ -1,0 +1,1 @@
+declare x as const volatile pointer to int
