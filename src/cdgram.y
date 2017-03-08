@@ -897,8 +897,16 @@ returning_english
 qualified_decl_english
   : type_qualifier_list_opt_c qualifiable_decl_english
     {
+      DUMP_START( "qualified_decl_english",
+                  "type_qualifier_list_opt_c qualifiable_decl_english" );
+      DUMP_TYPE( "-> type_qualifier_list_opt_c", $1 );
+      DUMP_AST( "-> qualifiable_decl_english", $2 );
+
       $$ = $2;
       C_TYPE_ADD( &$$->type, $1 );
+
+      DUMP_AST( "<- qualified_decl_english", $$ );
+      DUMP_END();
     }
   ;
 
@@ -1353,14 +1361,26 @@ type_modifier_english
 unmodified_type_english
   : builtin_type_c
     {
+      DUMP_START( "unmodified_type_english", "builtin_type_c" );
+      DUMP_TYPE( "-> builtin_type_c", $1 );
+
       $$ = c_ast_new( K_BUILTIN );
       $$->type = $1;
+
+      DUMP_AST( "<- unmodified_type_english", $$ );
+      DUMP_END();
     }
 
   | enum_class_struct_union_type_c
     {
+      DUMP_START( "unmodified_type_english", "enum_class_struct_union_type_c" );
+      DUMP_TYPE( "-> enum_class_struct_union_type_c", $1 );
+
       $$ = c_ast_new( K_ENUM_CLASS_STRUCT_UNION );
       $$->type = $1;
+
+      DUMP_AST( "<- unmodified_type_english", $$ );
+      DUMP_END();
     }
   ;
 
