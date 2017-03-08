@@ -76,8 +76,6 @@
  * Inherited attributes.
  */
 struct in_attr {
-  char const *name;
-  c_type_t    storage;
   c_ast_t    *type_ast;
   int         y_token;
 };
@@ -373,23 +371,19 @@ cast_english
 /*****************************************************************************/
 
 declare_english
-  : Y_DECLARE Y_NAME Y_AS storage_class_opt_c
-    {
-      in_attr.name = $2;
-      in_attr.storage = $4;
-    }
-    decl_english Y_END
+  : Y_DECLARE Y_NAME Y_AS storage_class_opt_c decl_english Y_END
     {
       DUMP_START( "declare_english",
                   "DECLARE NAME AS storage_class_opt_c decl_english END" );
-      $6->name = $2;
+      $5->name = $2;
       DUMP_NAME( "-> NAME", $2 );
       DUMP_TYPE( "-> storage_class_opt_c", $4 );
-      DUMP_AST( "-> decl_english", $6 );
+      DUMP_AST( "-> decl_english", $5 );
       DUMP_END();
 
-      if ( c_ast_check( $6 ) ) {
-        c_ast_gibberish_declare( $6, fout );
+      C_TYPE_ADD( &$5->type, $4 );
+      if ( c_ast_check( $5 ) ) {
+        c_ast_gibberish_declare( $5, fout );
         FPUTC( '\n', fout );
       }
     }
@@ -982,7 +976,8 @@ pointer_to_member_decl_english
   | pointer_to Y_MEMBER Y_OF class_struct_type_c error
     {
       PARSE_ERROR(
-        "%s, %s, or %s name expected", L_CLASS, L_STRUCT, L_UNION
+        "\"%s\", \"%s\", or \"%s\" name expected",
+        L_CLASS, L_STRUCT, L_UNION
       );
     }
   ;
