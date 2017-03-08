@@ -25,6 +25,7 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_pai-10.test \
 	tests/declare_pc.test \
 	tests/declare_ppi.test \
+	tests/declare_cppi.test \
 	tests/explain_ai-012.test \
 	tests/explain_ai-0xA-01.test \
 	tests/explain_ai-0xa-02.test \

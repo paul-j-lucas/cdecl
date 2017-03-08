@@ -688,25 +688,6 @@ c_ast_t* c_ast_new( c_kind_t kind ) {
   return ast;
 }
 
-c_ast_t* c_ast_pop( c_ast_t **phead ) {
-  assert( phead );
-  if ( *phead ) {
-    c_ast_t *const popped = (*phead);
-    (*phead) = popped->next;
-    popped->next = NULL;
-    return popped;
-  }
-  return NULL;
-}
-
-void c_ast_push( c_ast_t **phead, c_ast_t *ast ) {
-  assert( phead );
-  assert( ast );
-  assert( ast->next == NULL );
-  ast->next = (*phead);
-  (*phead) = ast;
-}
-
 char const* c_ast_take_name( c_ast_t *ast ) {
   c_ast_t *const found = c_ast_visit( ast, c_ast_visitor_name );
   if ( !found )

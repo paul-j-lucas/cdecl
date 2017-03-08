@@ -165,6 +165,25 @@ char* readline_wrapper( void ) {
   } // for
 }
 
+link_t* link_pop( link_t **phead ) {
+  assert( phead );
+  if ( *phead ) {
+    link_t *const popped = (*phead);
+    (*phead) = popped->next;
+    popped->next = NULL;
+    return popped;
+  }
+  return NULL;
+}
+
+void link_push( link_t **phead, link_t *node ) {
+  assert( phead );
+  assert( node );
+  assert( !node->next );
+  node->next = (*phead);
+  (*phead) = node;
+}
+
 size_t strcpy_len( char *dst, char const *src ) {
   assert( dst );
   assert( src );

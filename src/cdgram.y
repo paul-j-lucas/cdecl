@@ -66,18 +66,32 @@
 #define PARSE_ERROR(...) \
   BLOCK( parse_error( __VA_ARGS__ ); YYABORT; )
 
-#define PUSH_TYPE(AST)            c_ast_push( &in_attr.type_ast, (AST) )
-#define PEEK_TYPE()               in_attr.type_ast
-#define POP_TYPE()                c_ast_pop( &in_attr.type_ast )
+#define PEEK_QUALIFIER()      (in_attr.qualifier_link->qualifier)
+
+#define PUSH_TYPE(AST)        LINK_PUSH( &in_attr.type_ast, (AST) )
+#define PEEK_TYPE()           (in_attr.type_ast)
+#define POP_TYPE()            LINK_POP( c_ast_t, &in_attr.type_ast )
 
 ///////////////////////////////////////////////////////////////////////////////
+
+typedef struct qualifier_link qualifier_link_t;
+
+/**
+ * A simple \c struct "derived" from \c link that additionally holds a
+ * qualifier.
+ */
+struct qualifier_link {
+  qualifier_link_t *next;               // must be first struct member
+  c_type_t          qualifier;          // T_CONST, T_RESTRICT, or T_VOLATILE
+};
 
 /**
  * Inherited attributes.
  */
 struct in_attr {
-  c_ast_t    *type_ast;
-  int         y_token;
+  qualifier_link_t *qualifier_link;
+  c_ast_t *type_ast;
+  int y_token;
 };
 typedef struct in_attr in_attr_t;
 
@@ -126,6 +140,27 @@ static void parse_error( char const *format, ... ) {
     FPUTC( '\n', stderr );
     newlined = true;
   }
+}
+
+/**
+ * Pops a qualifier from the head of the qualifier inherited attribute list and
+ * frees it.
+ */
+static inline void pop_qualifier( void ) {
+  FREE( LINK_POP( qualifier_link_t, &in_attr.qualifier_link ) );
+}
+
+/**
+ * Pushed a quaifier onto the front of the qualifier inherited attribute list.
+ *
+ * @param qualifier The qualifier to push.
+ */
+static void push_qualifier( c_type_t qualifier ) {
+  assert( (qualifier & ~T_MASK_QUALIFIER) == 0 );
+  qualifier_link_t *const q = MALLOC( qualifier_link_t, 1 );
+  q->qualifier = qualifier;
+  q->next = NULL;
+  LINK_PUSH( &in_attr.qualifier_link, q );
 }
 
 /**
@@ -769,10 +804,12 @@ block_decl_english                      /* Apple extension */
     {
       DUMP_START( "block_decl_english",
                   "BLOCK paren_decl_list_opt_english returning_english" );
+      DUMP_TYPE( "^^ qualifier", PEEK_QUALIFIER() );
       DUMP_AST_LIST( "-> paren_decl_list_opt_english", $3 );
       DUMP_AST( "-> returning_english", $4 );
 
       $$ = c_ast_new( K_BLOCK );
+      $$->type = PEEK_QUALIFIER();
       $$->as.block.ret_ast = $4;
       $$->as.block.args = $3;
 
@@ -889,15 +926,16 @@ returning_english
   ;
 
 qualified_decl_english
-  : type_qualifier_list_opt_c qualifiable_decl_english
+  : type_qualifier_list_opt_c { push_qualifier( $1 ); }
+    qualifiable_decl_english
     {
+      pop_qualifier();
       DUMP_START( "qualified_decl_english",
                   "type_qualifier_list_opt_c qualifiable_decl_english" );
       DUMP_TYPE( "-> type_qualifier_list_opt_c", $1 );
-      DUMP_AST( "-> qualifiable_decl_english", $2 );
+      DUMP_AST( "-> qualifiable_decl_english", $3 );
 
-      $$ = $2;
-      C_TYPE_ADD( &$$->type, $1 );
+      $$ = $3;
 
       DUMP_AST( "<- qualified_decl_english", $$ );
       DUMP_END();
@@ -916,10 +954,12 @@ pointer_decl_english
   : pointer_to decl_english
     {
       DUMP_START( "pointer_decl_english", "POINTER TO decl_english" );
+      DUMP_TYPE( "^^ qualifier", PEEK_QUALIFIER() );
       DUMP_AST( "-> decl_english", $2 );
 
       $$ = c_ast_new( K_POINTER );
       $$->as.ptr_ref.to_ast = $2;
+      $$->as.ptr_ref.qualifier = PEEK_QUALIFIER();
 
       DUMP_AST( "<- pointer_decl_english", $$ );
       DUMP_END();
@@ -940,6 +980,7 @@ pointer_to_member_decl_english
       DUMP_START( "pointer_to_member_decl_english",
                   "POINTER TO MEMBER OF "
                   "class_struct_type_c NAME decl_english" );
+      DUMP_TYPE( "^^ qualifier", PEEK_QUALIFIER() );
       DUMP_TYPE( "-> class_struct_type_c", $4 );
       DUMP_NAME( "-> NAME", $5 );
       DUMP_AST( "-> decl_english", $6 );
@@ -949,8 +990,9 @@ pointer_to_member_decl_english
 
       $$ = c_ast_new( K_POINTER_TO_MEMBER );
       $$->type = $4;
-      $$->as.ptr_mbr.class_name = $5;
       $$->as.ptr_mbr.of_ast = $6;
+      $$->as.ptr_ref.qualifier = PEEK_QUALIFIER();
+      $$->as.ptr_mbr.class_name = $5;
 
       DUMP_AST( "<- pointer_to_member_decl_english", $$ );
       DUMP_END();
@@ -986,6 +1028,7 @@ reference_decl_english
   : Y_REFERENCE Y_TO decl_english
     {
       DUMP_START( "reference_decl_english", "REFERENCE TO decl_english" );
+      DUMP_TYPE( "^^ qualifier", PEEK_QUALIFIER() );
       DUMP_AST( "-> decl_english", $3 );
 
       if ( opt_lang < LANG_CPP_MIN )
@@ -1001,6 +1044,7 @@ reference_decl_english
 
       $$ = c_ast_new( K_REFERENCE );
       $$->as.ptr_ref.to_ast = $3;
+      $$->as.ptr_ref.qualifier = PEEK_QUALIFIER();
 
       DUMP_AST( "<- reference_decl_english", $$ );
       DUMP_END();
@@ -1298,10 +1342,12 @@ type_english
     {
       DUMP_START( "type_english",
                   "type_modifier_list_opt_english unmodified_type_english" );
+      DUMP_TYPE( "^^ qualifier", PEEK_QUALIFIER() );
       DUMP_TYPE( "-> type_modifier_list_opt_english", $1 );
       DUMP_AST( "-> unmodified_type_english", $2 );
 
       $$ = $2;
+      C_TYPE_ADD( &$$->type, PEEK_QUALIFIER() );
       C_TYPE_ADD( &$$->type, $1 );
 
       DUMP_AST( "<- type_english", $$ );
