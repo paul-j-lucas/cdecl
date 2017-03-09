@@ -37,6 +37,8 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_sc.test \
 	tests/declare_si.test \
 	tests/declare_sll.test \
+	tests/declare_ti-01.test \
+	tests/declare_ti-02.test \
 	tests/declare_u.test \
 	tests/declare_uc.test \
 	tests/declare_ui.test \
