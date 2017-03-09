@@ -88,8 +88,8 @@ static size_t  y_token_col;             // column position of current token
  * token.
  */
 void print_caret( void ) {
-  size_t const n = strlen( prompt ) + y_token_col - strlen( yytext );
-  PRINT_ERR( "%*s", (int)n, "" );
+  size_t const caret_col = y_token_col + strlen( prompt ) - strlen( yytext );
+  PRINT_ERR( "%*s", (int)caret_col, "" );
   SGR_START_COLOR( stderr, caret );
   FPUTC( '^', stderr );
   SGR_END_COLOR( stderr );
