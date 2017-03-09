@@ -214,10 +214,8 @@ char const* c_type_name( c_type_t type ) {
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER ); ++i ) {
     if ( type & C_QUALIFIER[i] ) {
-      if ( space )
+      if ( true_or_set( &space ) )
         STRCAT( name, " " );
-      else
-        space = true;
       STRCAT( name, c_type_name( C_QUALIFIER[i] ) );
     }
   } // for
@@ -250,10 +248,8 @@ char const* c_type_name( c_type_t type ) {
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE ); ++i ) {
     if ( type & C_TYPE[i] ) {
-      if ( space )
+      if ( true_or_set( &space ) )
         STRCAT( name, " " );
-      else
-        space = true;
       STRCAT( name, c_type_name( C_TYPE[i] ) );
     }
   } // for
