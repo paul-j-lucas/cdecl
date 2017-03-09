@@ -116,8 +116,8 @@ static void c_ast_gibberish_args( c_ast_t const *ast, gibberish_t g_kind,
  * @param parent The parent c_ast.  Must \c not be null.
  * @param g_kind The kind of gibberish to print.
  * @param space A pointer to a \c bool: if \c false, it means we haven't
- * printed a space before \c '*' yet, so print one and set the \c bool to \c
- * true; if \c true, do nothing.
+ * printed a space yet, so print one and set the \c bool to \c true; if \c
+ * true, do nothing.
  * @param gout The FILE to print to.
  */
 static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
@@ -147,6 +147,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
         FPUTC( ')', gout );
       }
       else if ( ast->name && g_kind != G_CAST ) {
+        if ( false_set( space ) )
+          FPUTC( ' ', gout );
         FPUTS( ast->name, gout );
       }
       FPUTC( '[', gout );
@@ -244,19 +246,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
             //
             // i.e., the '*' adjacent to the type.
             //
-            if ( false_set( space ) ) {
-              //
-              // Print a space before '*' only if we haven't printed one yet.
-              // This is so we print:
-              //
-              //      int **x
-              //
-              // rather than:
-              //
-              //      int * *x
-              //
+            if ( false_set( space ) )
               FPUTC( ' ', gout );
-            }
           }
           FPUTC( '*', gout );
           c_ast_gibberish_qual_name( ast, g_kind, gout );
@@ -271,19 +262,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
 
     case K_REFERENCE:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, ast, g_kind, space, gout );
-      if ( false_set( space ) ) {
-        //
-        // Similar to the K_POINTER case above, print a space before '&' only
-        // if we haven't printed one yet.  This is so we print:
-        //
-        //      int *&x
-        //
-        // rather than:
-        //
-        //      int * &x
-        //
+      if ( false_set( space ) )
         FPUTC( ' ', gout );
-      }
       FPUTC( '&', gout );
       c_ast_gibberish_qual_name( ast, g_kind, gout );
       break;
