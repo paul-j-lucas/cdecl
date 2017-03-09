@@ -25,10 +25,18 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_cppi.test \
 	tests/declare_cvpi.test \
 	tests/declare_fx_rpi.test \
+	tests/declare_ll.test \
 	tests/declare_pai-10.test \
 	tests/declare_pc.test \
 	tests/declare_pcpi.test \
 	tests/declare_ppi.test \
+	tests/declare_sc.test \
+	tests/declare_si.test \
+	tests/declare_sll.test \
+	tests/declare_u.test \
+	tests/declare_uc.test \
+	tests/declare_ui.test \
+	tests/declare_ull.test \
 	tests/explain_ai-012.test \
 	tests/explain_ai-0xA-01.test \
 	tests/explain_ai-0xa-02.test \

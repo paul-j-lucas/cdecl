@@ -1382,7 +1382,7 @@ type_modifier_list_english
       DUMP_TYPE( "-> type_modifier_english", $2 );
 
       $$ = $1;
-      C_TYPE_ADD( &$$, $1 );
+      C_TYPE_ADD( &$$, $2 );
 
       DUMP_TYPE( "<- type_modifier_list_opt_english", $$ );
       DUMP_END();

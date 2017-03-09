@@ -246,6 +246,21 @@ char const* c_type_name( c_type_t type ) {
     T_CLASS,
   };
 
+  if ( !(type & T_CHAR) ) {
+    //
+    // Special case: explicit "signed" isn't needed for any type except char.
+    //
+    type &= ~T_SIGNED;
+  }
+
+  if ( (type & (T_UNSIGNED | T_SHORT | T_LONG | T_LONG_LONG)) ) {
+    //
+    // Special case: explicit "int" isn't needed when at least one int modifier
+    // is present.
+    //
+    type &= ~T_INT;
+  }
+
   for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE ); ++i ) {
     if ( type & C_TYPE[i] ) {
       if ( true_or_set( &space ) )
