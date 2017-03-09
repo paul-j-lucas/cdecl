@@ -113,6 +113,9 @@ extern int          yylex( void );
 static in_attr_t    in_attr;
 static bool         newlined = true;
 
+// local functions
+static void         qualifier_clear( void );
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /*
@@ -134,6 +137,8 @@ static void cast_english( char const *name, c_ast_t *ast ) {
  */
 static void parse_cleanup( void ) {
   c_ast_gc();
+  qualifier_clear();
+  memset( &in_attr, 0, sizeof in_attr );
 }
 
 /**
@@ -157,10 +162,19 @@ static void parse_error( char const *format, ... ) {
 }
 
 /**
+ * Clears the qualifier stack.
+ */
+static void qualifier_clear( void ) {
+  qualifier_link_t *q;
+  while ( (q = LINK_POP( qualifier_link_t, &in_attr.qualifier_link )) )
+    FREE( q );
+}
+
+/**
  * Pops a qualifier from the head of the qualifier inherited attribute list and
  * frees it.
  */
-static inline void pop_qualifier( void ) {
+static inline void qualifier_pop( void ) {
   FREE( LINK_POP( qualifier_link_t, &in_attr.qualifier_link ) );
 }
 
@@ -169,7 +183,7 @@ static inline void pop_qualifier( void ) {
  *
  * @param qualifier The qualifier to push.
  */
-static void push_qualifier( c_type_t qualifier ) {
+static void qualifier_push( c_type_t qualifier ) {
   assert( (qualifier & ~T_MASK_QUALIFIER) == 0 );
   qualifier_link_t *const q = MALLOC( qualifier_link_t, 1 );
   q->qualifier = qualifier;
@@ -940,10 +954,10 @@ returning_english
   ;
 
 qualified_decl_english
-  : type_qualifier_list_opt_c { push_qualifier( $1 ); }
+  : type_qualifier_list_opt_c { qualifier_push( $1 ); }
     qualifiable_decl_english
     {
-      pop_qualifier();
+      qualifier_pop();
       DUMP_START( "qualified_decl_english",
                   "type_qualifier_list_opt_c qualifiable_decl_english" );
       DUMP_TYPE( "-> type_qualifier_list_opt_c", $1 );
