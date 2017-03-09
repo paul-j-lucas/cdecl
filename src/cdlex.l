@@ -78,8 +78,8 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { NULL,           TOKEN( 0 )            }
 };
 
-// local variables
-static size_t  y_token_col;             // column position of current token
+// extern variables
+size_t  y_token_col;                    // column position of current token
 
 ////////// extern functions ///////////////////////////////////////////////////
 

@@ -29,7 +29,7 @@
 #endif /* WITH_CDECL_DEBUG */
 
 #define C_TYPE_ADD(DST,SRC) \
-  BLOCK( if ( !c_type_add( (DST), (SRC) ) ) YYABORT; )
+  BLOCK( if ( !c_type_add( (DST), (SRC) ) ) { parse_cleanup(); YYABORT; } )
 
 #define DUMP_COMMA \
   CDEBUG( if ( true_or_set( &dump_comma ) ) FPUTS( ",\n", stdout ); )
@@ -96,6 +96,7 @@ struct in_attr {
 typedef struct in_attr in_attr_t;
 
 // external variables
+extern size_t       y_token_col;
 #if YYTEXT_POINTER
 extern char        *yytext;
 #else
@@ -128,6 +129,18 @@ static void cast_english( char const *name, c_ast_t *ast ) {
 }
 */
 
+/**
+ * Cleans-up parser data.
+ */
+static void parse_cleanup( void ) {
+  c_ast_gc();
+}
+
+/**
+ * Prints a parsing error message to standard error.
+ *
+ * @param format A \c printf() style format string.
+ */
 static void parse_error( char const *format, ... ) {
   if ( !newlined ) {
     PRINT_ERR( ": " );
@@ -140,6 +153,7 @@ static void parse_error( char const *format, ... ) {
     FPUTC( '\n', stderr );
     newlined = true;
   }
+  parse_cleanup();
 }
 
 /**
@@ -172,7 +186,7 @@ static void quit( void ) {
 
 static void yyerror( char const *msg ) {
   print_caret();
-  PRINT_ERR( "%s%s", (newlined ? "" : "\n"), msg );
+  PRINT_ERR( "%s%zu: %s", (newlined ? "" : "\n"), y_token_col, msg );
   newlined = false;
 }
 
@@ -358,7 +372,7 @@ command
 command_cleanup
   : /* empty */
     {
-      c_ast_gc();
+      parse_cleanup();
     }
   ;
 
