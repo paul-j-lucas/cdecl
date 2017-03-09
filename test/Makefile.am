@@ -18,12 +18,16 @@ TESTS+= tests/cast_pc.test \
 	tests/cast_pf_ri-02.test \
 	tests/cast_pfpci_ri.test \
 	tests/cast_pfx_ri.test \
+	tests/declare_ai-10.test \
 	tests/declare_api-10.test \
 	tests/declare_ci-01.test \
 	tests/declare_ci-02.test \
 	tests/declare_cpcpi.test \
 	tests/declare_cppi.test \
 	tests/declare_cvpi.test \
+	tests/declare_fii_rv.test \
+	tests/declare_fixiy_rv.test \
+	tests/declare_fv_rv.test \
 	tests/declare_fx_rpi.test \
 	tests/declare_ll.test \
 	tests/declare_pai-10.test \
