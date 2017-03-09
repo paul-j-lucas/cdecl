@@ -271,7 +271,20 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
 
     case K_REFERENCE:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, ast, g_kind, space, gout );
-      FPUTS( " &", gout );
+      if ( false_set( space ) ) {
+        //
+        // Similar to the K_POINTER case above, print a space before '&' only
+        // if we haven't printed one yet.  This is so we print:
+        //
+        //      int *&x
+        //
+        // rather than:
+        //
+        //      int * &x
+        //
+        FPUTC( ' ', gout );
+      }
+      FPUTC( '&', gout );
       c_ast_gibberish_qual_name( ast, g_kind, gout );
       break;
   } // switch

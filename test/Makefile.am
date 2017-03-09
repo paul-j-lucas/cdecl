@@ -21,11 +21,14 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_api-10.test \
 	tests/declare_ci-01.test \
 	tests/declare_ci-02.test \
+	tests/declare_cpcpi.test \
+	tests/declare_cppi.test \
+	tests/declare_cvpi.test \
 	tests/declare_fx_rpi.test \
 	tests/declare_pai-10.test \
 	tests/declare_pc.test \
+	tests/declare_pcpi.test \
 	tests/declare_ppi.test \
-	tests/declare_cppi.test \
 	tests/explain_ai-012.test \
 	tests/explain_ai-0xA-01.test \
 	tests/explain_ai-0xa-02.test \
@@ -64,8 +67,11 @@ TESTS+= tests/cast_pc.test \
 # C++ tests
 TESTS+=	tests/cast_pmi.test \
 	tests/declare_pmi.test \
+	tests/declare_rci.test \
+	tests/declare_rcpi.test \
 	tests/declare_ri-01.test \
 	tests/declare_ri-02.test \
+	tests/declare_rpi.test \
 	tests/explain_cast_pmi.test \
 	tests/explain_pmfxx_rps.test \
 	tests/explain_pmi.test \
