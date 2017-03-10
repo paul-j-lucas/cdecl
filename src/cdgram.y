@@ -70,12 +70,12 @@
 #define PARSE_ERROR(...) \
   BLOCK( parse_error( __VA_ARGS__ ); YYABORT; )
 
-#define PEEK_QUALIFIER()      (in_attr.qualifier_head->qualifier)
-#define PEEK_QUALIFIER_LOC()  (in_attr.qualifier_head->loc)
+#define QUALIFIER_PEEK()      (in_attr.qualifier_head->qualifier)
+#define QUALIFIER_PEEK_LOC()  (in_attr.qualifier_head->loc)
 
-#define PUSH_TYPE(AST)        LINK_PUSH( &in_attr.type_ast, (AST) )
-#define PEEK_TYPE()           (in_attr.type_ast)
-#define POP_TYPE()            LINK_POP( c_ast_t, &in_attr.type_ast )
+#define TYPE_PUSH(AST)        LINK_PUSH( &in_attr.type_ast, (AST) )
+#define TYPE_PEEK()           (in_attr.type_ast)
+#define TYPE_POP()            LINK_POP( c_ast_t, &in_attr.type_ast )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -466,9 +466,9 @@ declare_english
 /*****************************************************************************/
 
 explain_declaration_c
-  : Y_EXPLAIN type_c { PUSH_TYPE( $2 ); } decl_c Y_END
+  : Y_EXPLAIN type_c { TYPE_PUSH( $2 ); } decl_c Y_END
     {
-      POP_TYPE();
+      TYPE_POP();
       DUMP_START( "explain_declaration_c", "EXPLAIN type_c decl_c END" );
       DUMP_AST( "-> type_c", $2 );
       DUMP_AST( "-> decl_c", $4 );
@@ -487,10 +487,10 @@ explain_declaration_c
   ;
 
 explain_cast_c
-  : Y_EXPLAIN '(' type_c { PUSH_TYPE( $3 ); } cast_c ')'
+  : Y_EXPLAIN '(' type_c { TYPE_PUSH( $3 ); } cast_c ')'
     name_token_opt Y_END
     {
-      POP_TYPE();
+      TYPE_POP();
       DUMP_START( "explain_cast_t",
                   "EXPLAIN '(' type_c cast_c ')' name_token_opt END" );
       DUMP_AST( "-> type_c", $3 );
@@ -552,7 +552,7 @@ array_cast_c
   : /* type_c */ cast_c array_size_c
     {
       DUMP_START( "array_cast_c", "cast_c array_cast_c" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_AST( "-> cast_c", $1 );
       DUMP_NUM( "-> array_size_c", $2 );
 
@@ -563,7 +563,7 @@ array_cast_c
       switch ( $1->kind ) {
         case K_POINTER:
           if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
-            array->as.array.of_ast = c_ast_clone( PEEK_TYPE() );
+            array->as.array.of_ast = c_ast_clone( TYPE_PEEK() );
             $1->as.ptr_ref.to_ast = array;
             $$ = $1;
             break;
@@ -584,14 +584,14 @@ block_cast_c                            /* Apple extension */
     {
       DUMP_START( "block_cast_c",
                   "'(' '^' cast_c ')' '(' arg_list_opt_c ')'" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_AST( "-> cast_c", $3 );
       DUMP_AST_LIST( "-> arg_list_opt_c", $6 );
 
       $$ = c_ast_new( K_BLOCK, &@$ );
       $$->name = c_ast_name( $3 );
       $$->as.block.args = $6;
-      $$->as.block.ret_ast = c_ast_clone( PEEK_TYPE() );
+      $$->as.block.ret_ast = c_ast_clone( TYPE_PEEK() );
 
       DUMP_AST( "<- block_cast_c", $$ );
       DUMP_END();
@@ -602,21 +602,21 @@ func_cast_c
   : /* type_c */ '(' ')'
     {
       DUMP_START( "func_cast_c", "'(' ')'" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
 
       $$ = c_ast_new( K_FUNCTION, &@$ );
-      $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
+      $$->as.func.ret_ast = c_ast_clone( TYPE_PEEK() );
 
       DUMP_AST( "<- func_cast_c", $$ );
       DUMP_END();
     }
 
-  | '(' placeholder_type_c { PUSH_TYPE( $2 ); } cast_c ')'
+  | '(' placeholder_type_c { TYPE_PUSH( $2 ); } cast_c ')'
     paren_arg_list_opt_opt_c
     {
-      POP_TYPE();
+      TYPE_POP();
       DUMP_START( "func_cast_c", "'(' cast_c ')' '(' arg_list_opt_c ')'" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_AST( "-> placeholder_type_c", $2 );
       DUMP_AST( "-> cast_c", $4 );
       DUMP_AST_LIST( "-> arg_list_opt_c", $6 );
@@ -628,7 +628,7 @@ func_cast_c
         case K_POINTER:
         case K_POINTER_TO_MEMBER:
           if ( $4->as.ptr_ref.to_ast->kind == K_NONE ) {
-            func->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
+            func->as.func.ret_ast = c_ast_clone( TYPE_PEEK() );
             $4->as.ptr_ref.to_ast = func;
             $$ = $4;
             break;
@@ -636,7 +636,7 @@ func_cast_c
           // no break;
         default:
           $$ = func;
-          $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
+          $$->as.func.ret_ast = c_ast_clone( TYPE_PEEK() );
       } // switch
 
       DUMP_AST( "<- func_cast_c", $$ );
@@ -648,10 +648,10 @@ name_cast_c
   : /* type_c */ Y_NAME
     {
       DUMP_START( "name_cast_c", "NAME" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_NAME( "-> NAME", $1 );
 
-      $$ = c_ast_clone( PEEK_TYPE() );
+      $$ = c_ast_clone( TYPE_PEEK() );
       assert( $$->name == NULL );
       $$->name = $1;
 
@@ -664,12 +664,12 @@ pointer_cast_c
   : /* type_c */ '*' cast_c
     {
       DUMP_START( "pointer_cast_c", "'*' cast_c" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_AST( "-> cast_c", $2 );
 
       $$ = c_ast_new( K_POINTER, &@$ );
       // TODO: do something with $2
-      $$->as.ptr_ref.to_ast = c_ast_clone( PEEK_TYPE() );
+      $$->as.ptr_ref.to_ast = c_ast_clone( TYPE_PEEK() );
 
       DUMP_AST( "<- pointer_cast_c", $$ );
       DUMP_END();
@@ -680,13 +680,13 @@ pointer_to_member_cast_c
   : /* type_c */ Y_NAME Y_COLON_COLON expect_star cast_c
     {
       DUMP_START( "pointer_to_member_cast_c", "NAME COLON_COLON '*' cast_c" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_NAME( "-> NAME", $1 );
       DUMP_AST( "-> cast_c", $4 );
 
       $$ = c_ast_new( K_POINTER_TO_MEMBER, &@$ );
       $$->type = T_CLASS;
-      $$->as.ptr_mbr.of_ast = c_ast_clone( PEEK_TYPE() );
+      $$->as.ptr_mbr.of_ast = c_ast_clone( TYPE_PEEK() );
       $$->as.ptr_mbr.class_name = $1;
       // TODO: do something with $4
 
@@ -699,12 +699,12 @@ reference_cast_c
   : /* type_c */ '&' cast_c
     {
       DUMP_START( "reference_cast_c", "'&' cast_c" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_AST( "-> cast_c", $2 );
 
       $$ = c_ast_new( K_REFERENCE, &@$ );
       // TODO: do something with $2
-      $$->as.ptr_ref.to_ast = c_ast_clone( PEEK_TYPE() );
+      $$->as.ptr_ref.to_ast = c_ast_clone( TYPE_PEEK() );
 
       DUMP_AST( "<- reference_cast_c", $$ );
       DUMP_END();
@@ -752,9 +752,9 @@ arg_list_c
   ;
 
 arg_c
-  : type_c { PUSH_TYPE( $1 ); } cast_c
+  : type_c { TYPE_PUSH( $1 ); } cast_c
     {
-      POP_TYPE();
+      TYPE_POP();
       DUMP_START( "arg_c", "type_c cast_c" );
       DUMP_AST( "-> type_c", $1 );
       DUMP_AST( "-> cast_c", $3 );
@@ -834,12 +834,12 @@ block_decl_english                      /* Apple extension */
     {
       DUMP_START( "block_decl_english",
                   "BLOCK paren_decl_list_opt_english returning_english" );
-      DUMP_TYPE( "^^ qualifier", PEEK_QUALIFIER() );
+      DUMP_TYPE( "^^ qualifier", QUALIFIER_PEEK() );
       DUMP_AST_LIST( "-> paren_decl_list_opt_english", $3 );
       DUMP_AST( "-> returning_english", $4 );
 
       $$ = c_ast_new( K_BLOCK, &@$ );
-      $$->type = PEEK_QUALIFIER();
+      $$->type = QUALIFIER_PEEK();
       $$->as.block.ret_ast = $4;
       $$->as.block.args = $3;
 
@@ -981,12 +981,12 @@ pointer_decl_english
   : pointer_to decl_english
     {
       DUMP_START( "pointer_decl_english", "POINTER TO decl_english" );
-      DUMP_TYPE( "^^ qualifier", PEEK_QUALIFIER() );
+      DUMP_TYPE( "^^ qualifier", QUALIFIER_PEEK() );
       DUMP_AST( "-> decl_english", $2 );
 
       $$ = c_ast_new( K_POINTER, &@$ );
       $$->as.ptr_ref.to_ast = $2;
-      $$->as.ptr_ref.qualifier = PEEK_QUALIFIER();
+      $$->as.ptr_ref.qualifier = QUALIFIER_PEEK();
 
       DUMP_AST( "<- pointer_decl_english", $$ );
       DUMP_END();
@@ -1007,7 +1007,7 @@ pointer_to_member_decl_english
       DUMP_START( "pointer_to_member_decl_english",
                   "POINTER TO MEMBER OF "
                   "class_struct_type_c NAME decl_english" );
-      DUMP_TYPE( "^^ qualifier", PEEK_QUALIFIER() );
+      DUMP_TYPE( "^^ qualifier", QUALIFIER_PEEK() );
       DUMP_TYPE( "-> class_struct_type_c", $4 );
       DUMP_NAME( "-> NAME", $5 );
       DUMP_AST( "-> decl_english", $6 );
@@ -1018,7 +1018,7 @@ pointer_to_member_decl_english
       $$ = c_ast_new( K_POINTER_TO_MEMBER, &@$ );
       $$->type = $4;
       $$->as.ptr_mbr.of_ast = $6;
-      $$->as.ptr_ref.qualifier = PEEK_QUALIFIER();
+      $$->as.ptr_ref.qualifier = QUALIFIER_PEEK();
       $$->as.ptr_mbr.class_name = $5;
 
       DUMP_AST( "<- pointer_to_member_decl_english", $$ );
@@ -1055,7 +1055,7 @@ reference_decl_english
   : Y_REFERENCE Y_TO decl_english
     {
       DUMP_START( "reference_decl_english", "REFERENCE TO decl_english" );
-      DUMP_TYPE( "^^ qualifier", PEEK_QUALIFIER() );
+      DUMP_TYPE( "^^ qualifier", QUALIFIER_PEEK() );
       DUMP_AST( "-> decl_english", $3 );
 
       if ( opt_lang < LANG_CPP_MIN )
@@ -1073,7 +1073,7 @@ reference_decl_english
 
       $$ = c_ast_new( K_REFERENCE, &@$ );
       $$->as.ptr_ref.to_ast = $3;
-      $$->as.ptr_ref.qualifier = PEEK_QUALIFIER();
+      $$->as.ptr_ref.qualifier = QUALIFIER_PEEK();
 
       DUMP_AST( "<- reference_decl_english", $$ );
       DUMP_END();
@@ -1139,7 +1139,7 @@ array_decl_c
   : /* type_c */ decl2_c array_size_c
     {
       DUMP_START( "array_decl_c", "decl2_c array_size_c" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_AST( "-> decl2_c", $1 );
       DUMP_NUM( "-> array_size_c", $2 );
 
@@ -1150,7 +1150,7 @@ array_decl_c
       switch ( $1->kind ) {
         case K_POINTER:
           if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
-            array->as.array.of_ast = c_ast_clone( PEEK_TYPE() );
+            array->as.array.of_ast = c_ast_clone( TYPE_PEEK() );
             $1->as.ptr_ref.to_ast = array;
             $$ = $1;
             break;
@@ -1182,7 +1182,7 @@ block_decl_c                            /* Apple extension */
       DUMP_START( "block_decl_c",
                   "'(' '^' type_qualifier_list_opt_c decl_c ')' "
                   "'(' arg_list_opt_c ')'" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_TYPE( "-> type_qualifier_list_opt_c", $3 );
       DUMP_AST( "-> decl_c", $4 );
       DUMP_AST_LIST( "-> arg_list_opt_c", $7 );
@@ -1190,7 +1190,7 @@ block_decl_c                            /* Apple extension */
       $$ = c_ast_new( K_BLOCK, &@$ );
       $$->name = check_strdup( c_ast_name( $4 ) );
       $$->as.block.args = $7;
-      $$->as.block.ret_ast = c_ast_clone( PEEK_TYPE() );
+      $$->as.block.ret_ast = c_ast_clone( TYPE_PEEK() );
       $$->type = $3;
 
       DUMP_AST( "<- block_decl_c", $$ );
@@ -1202,7 +1202,7 @@ func_decl_c
   : /* type_c */ decl2_c '(' arg_list_opt_c ')'
     {
       DUMP_START( "func_decl_c", "decl2_c '(' arg_list_opt_c ')'" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_AST( "-> decl2_c", $1 );
       DUMP_AST_LIST( "-> arg_list_opt_c", $3 );
 
@@ -1214,7 +1214,7 @@ func_decl_c
         case K_POINTER:
         case K_POINTER_TO_MEMBER:
           if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
-            func->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
+            func->as.func.ret_ast = c_ast_clone( TYPE_PEEK() );
             $1->as.ptr_ref.to_ast = func;
             $$ = $1;
             break;
@@ -1222,7 +1222,7 @@ func_decl_c
           // no break;
         default:
           $$ = func;
-          $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
+          $$->as.func.ret_ast = c_ast_clone( TYPE_PEEK() );
       } // switch
 
       $$->type |= c_ast_take_storage( $$->as.func.ret_ast );
@@ -1236,10 +1236,10 @@ name_decl_c
   : /* type_c */ Y_NAME
     {
       DUMP_START( "name_decl_c", "NAME" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_NAME( "-> NAME", $1 );
 
-      $$ = c_ast_clone( PEEK_TYPE() );
+      $$ = c_ast_clone( TYPE_PEEK() );
       assert( $$->name == NULL );
       $$->name = $1;
 
@@ -1249,9 +1249,9 @@ name_decl_c
   ;
 
 nested_decl_c
-  : '(' placeholder_type_c { PUSH_TYPE( $2 ); } decl_c ')'
+  : '(' placeholder_type_c { TYPE_PUSH( $2 ); } decl_c ')'
     {
-      POP_TYPE();
+      TYPE_POP();
       DUMP_START( "nested_decl_c", "'(' placeholder_type_c decl_c ')'" );
       DUMP_AST( "-> placeholder_type_c", $2 );
       DUMP_AST( "-> decl_c", $4 );
@@ -1268,9 +1268,9 @@ placeholder_type_c
   ;
 
 pointer_decl_c
-  : pointer_decl_type_c { PUSH_TYPE( $1 ); } decl_c
+  : pointer_decl_type_c { TYPE_PUSH( $1 ); } decl_c
     {
-      POP_TYPE();
+      TYPE_POP();
       DUMP_START( "pointer_decl_c", "pointer_decl_type_c decl_c" );
       DUMP_AST( "-> pointer_decl_type_c", $1 );
       DUMP_AST( "-> decl_c", $3 );
@@ -1286,12 +1286,12 @@ pointer_decl_type_c
   : /* type_c */ '*' type_qualifier_list_opt_c
     {
       DUMP_START( "pointer_decl_type_c", "'*' type_qualifier_list_opt_c" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_TYPE( "-> type_qualifier_list_opt_c", $2 );
 
       $$ = c_ast_new( K_POINTER, &@$ );
       $$->as.ptr_ref.qualifier = $2;
-      $$->as.ptr_ref.to_ast = c_ast_clone( PEEK_TYPE() );
+      $$->as.ptr_ref.to_ast = c_ast_clone( TYPE_PEEK() );
 
       DUMP_AST( "<- pointer_decl_type_c", $$ );
       DUMP_END();
@@ -1299,9 +1299,9 @@ pointer_decl_type_c
   ;
 
 pointer_to_member_decl_c
-  : pointer_to_member_decl_type_c { PUSH_TYPE( $1 ); } decl_c
+  : pointer_to_member_decl_type_c { TYPE_PUSH( $1 ); } decl_c
     {
-      POP_TYPE();
+      TYPE_POP();
       DUMP_START( "pointer_to_member_decl_c",
                   "pointer_to_member_decl_type_c decl_c" );
       DUMP_AST( "-> pointer_to_member_decl_type_c", $1 );
@@ -1318,13 +1318,13 @@ pointer_to_member_decl_type_c
   : /* type_c */ Y_NAME Y_COLON_COLON expect_star
     {
       DUMP_START( "pointer_to_member_decl_type_c", "NAME COLON_COLON '*'" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_NAME( "-> NAME", $1 );
 
       $$ = c_ast_new( K_POINTER_TO_MEMBER, &@$ );
       $$->type = T_CLASS;
       $$->as.ptr_mbr.class_name = $1;
-      $$->as.ptr_mbr.of_ast = c_ast_clone( PEEK_TYPE() );
+      $$->as.ptr_mbr.of_ast = c_ast_clone( TYPE_PEEK() );
 
       DUMP_AST( "<- pointer_to_member_decl_type_c", $$ );
       DUMP_END();
@@ -1332,9 +1332,9 @@ pointer_to_member_decl_type_c
   ;
 
 reference_decl_c
-  : reference_decl_type_c { PUSH_TYPE( $1 ); } decl_c
+  : reference_decl_type_c { TYPE_PUSH( $1 ); } decl_c
     {
-      POP_TYPE();
+      TYPE_POP();
       DUMP_START( "reference_decl_c", "reference_decl_type_c decl_c" );
       DUMP_AST( "-> reference_decl_type_c", $1 );
       DUMP_AST( "-> decl_c", $3 );
@@ -1350,12 +1350,12 @@ reference_decl_type_c
   : /* type_c */ '&' type_qualifier_list_opt_c
     {
       DUMP_START( "reference_decl_type_c", "'&' type_qualifier_list_opt_c" );
-      DUMP_AST( "^^ type_c", PEEK_TYPE() );
+      DUMP_AST( "^^ type_c", TYPE_PEEK() );
       DUMP_TYPE( "-> type_qualifier_list_opt_c", $2 );
 
       $$ = c_ast_new( K_REFERENCE, &@$ );
       $$->as.ptr_ref.qualifier = $2;
-      $$->as.ptr_ref.to_ast = c_ast_clone( PEEK_TYPE() );
+      $$->as.ptr_ref.to_ast = c_ast_clone( TYPE_PEEK() );
 
       DUMP_AST( "<- reference_decl_type_c", $$ );
       DUMP_END();
@@ -1371,12 +1371,12 @@ type_english
     {
       DUMP_START( "type_english",
                   "type_modifier_list_opt_english unmodified_type_english" );
-      DUMP_TYPE( "^^ qualifier", PEEK_QUALIFIER() );
+      DUMP_TYPE( "^^ qualifier", QUALIFIER_PEEK() );
       DUMP_TYPE( "-> type_modifier_list_opt_english", $1 );
       DUMP_AST( "-> unmodified_type_english", $2 );
 
       $$ = $2;
-      C_TYPE_ADD( &$$->type, PEEK_QUALIFIER(), PEEK_QUALIFIER_LOC() );
+      C_TYPE_ADD( &$$->type, QUALIFIER_PEEK(), QUALIFIER_PEEK_LOC() );
       C_TYPE_ADD( &$$->type, $1, @1 );
 
       DUMP_AST( "<- type_english", $$ );
