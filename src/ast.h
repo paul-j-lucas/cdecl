@@ -139,6 +139,7 @@ struct c_ast {
   c_kind_t    kind;
   char const *name;
   c_type_t    type;
+  YYLTYPE     loc;
 
   union {
     c_array_t     array;
@@ -256,7 +257,7 @@ char const* c_ast_name( c_ast_t *ast );
  *
  * @param kind The kind of c_ast to create.
  */
-c_ast_t* c_ast_new( c_kind_t kind );
+c_ast_t* c_ast_new( c_kind_t kind, YYLTYPE const *loc );
 
 /**
  * Takes the name, if any, away from \a ast

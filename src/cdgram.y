@@ -3,6 +3,8 @@
 **      src/cdgram.y
 */
 
+%locations
+
 %{
 // local
 #include "config.h"                     /* must come first */
@@ -13,6 +15,7 @@
 #include "lang.h"
 #include "literals.h"
 #include "options.h"
+#include "types.h"
 #include "util.h"
 
 // standard
@@ -28,8 +31,11 @@
 #define CDEBUG(...)                     /* nothing */
 #endif /* WITH_CDECL_DEBUG */
 
-#define C_TYPE_ADD(DST,SRC) \
-  BLOCK( if ( !c_type_add( (DST), (SRC) ) ) { parse_cleanup(); YYABORT; } )
+#define C_TYPE_ADD(DST,SRC,LOC) \
+  BLOCK( if ( !c_type_add( (DST), (SRC), &(LOC) ) ) { parse_cleanup(); YYABORT; } )
+
+#define C_TYPE_CHECK(TYPE,LOC) \
+  BLOCK( if ( !c_type_check( TYPE, &(LOC) ) ) { parse_cleanup(); YYABORT; } )
 
 #define DUMP_COMMA \
   CDEBUG( if ( true_or_set( &dump_comma ) ) FPUTS( ",\n", stdout ); )
@@ -66,11 +72,14 @@
 #define PARSE_ERROR(...) \
   BLOCK( parse_error( __VA_ARGS__ ); YYABORT; )
 
-#define PEEK_QUALIFIER()      (in_attr.qualifier_link->qualifier)
+#define PEEK_QUALIFIER()      (in_attr.qualifier_head->qualifier)
+#define PEEK_QUALIFIER_LOC()  (in_attr.qualifier_head->loc)
 
 #define PUSH_TYPE(AST)        LINK_PUSH( &in_attr.type_ast, (AST) )
 #define PEEK_TYPE()           (in_attr.type_ast)
 #define POP_TYPE()            LINK_POP( c_ast_t, &in_attr.type_ast )
+
+#define YYLEX_PARAM           &yylval, &yylloc
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -78,36 +87,30 @@ typedef struct qualifier_link qualifier_link_t;
 
 /**
  * A simple \c struct "derived" from \c link that additionally holds a
- * qualifier.
+ * qualifier and its source location.
  */
-struct qualifier_link {
+struct qualifier_link /* : link */ {
   qualifier_link_t *next;               // must be first struct member
   c_type_t          qualifier;          // T_CONST, T_RESTRICT, or T_VOLATILE
+  YYLTYPE           loc;
 };
 
 /**
  * Inherited attributes.
  */
 struct in_attr {
-  qualifier_link_t *qualifier_link;
+  qualifier_link_t *qualifier_head;
   c_ast_t *type_ast;
   int y_token;
 };
 typedef struct in_attr in_attr_t;
 
 // external variables
-extern size_t       y_token_col;
-#if YYTEXT_POINTER
-extern char        *yytext;
-#else
-extern char         yytext[];
-#endif /* YYTEXT_POINTER */
+extern size_t       y_col;
 
 // extern functions
-extern void         print_caret( void );
 extern void         print_help( void );
 extern void         set_option( char const* );
-extern int          yylex( void );
 
 // local variables
 static in_attr_t    in_attr;
@@ -122,10 +125,10 @@ static void         qualifier_clear( void );
 static void cast_english( char const *name, c_ast_t *ast ) {
   switch ( ast->kind ) {
     case K_ARRAY:
-      c_error( "cast into array", "cast into pointer" );
+      print_error( "cast into array", "cast into pointer" );
       break;
     case K_FUNCTION:
-      c_error( "cast into function", "cast into pointer to function" );
+      print_error( "cast into function", "cast into pointer to function" );
       break;
     }
   } // switch
@@ -166,7 +169,7 @@ static void parse_error( char const *format, ... ) {
  */
 static void qualifier_clear( void ) {
   qualifier_link_t *q;
-  while ( (q = LINK_POP( qualifier_link_t, &in_attr.qualifier_link )) )
+  while ( (q = LINK_POP( qualifier_link_t, &in_attr.qualifier_head )) )
     FREE( q );
 }
 
@@ -175,20 +178,23 @@ static void qualifier_clear( void ) {
  * frees it.
  */
 static inline void qualifier_pop( void ) {
-  FREE( LINK_POP( qualifier_link_t, &in_attr.qualifier_link ) );
+  FREE( LINK_POP( qualifier_link_t, &in_attr.qualifier_head ) );
 }
 
 /**
  * Pushed a quaifier onto the front of the qualifier inherited attribute list.
  *
  * @param qualifier The qualifier to push.
+ * @param loc A pointer to the source location of the qualifier.
  */
-static void qualifier_push( c_type_t qualifier ) {
+static void qualifier_push( c_type_t qualifier, YYLTYPE const *loc ) {
   assert( (qualifier & ~T_MASK_QUALIFIER) == 0 );
+  assert( loc );
   qualifier_link_t *const q = MALLOC( qualifier_link_t, 1 );
   q->qualifier = qualifier;
+  q->loc = *loc;
   q->next = NULL;
-  LINK_PUSH( &in_attr.qualifier_link, q );
+  LINK_PUSH( &in_attr.qualifier_head, q );
 }
 
 /**
@@ -199,8 +205,8 @@ static void quit( void ) {
 }
 
 static void yyerror( char const *msg ) {
-  print_caret();
-  PRINT_ERR( "%s%zu: %s", (newlined ? "" : "\n"), y_token_col, msg );
+  print_caret( CARET_CURRENT_LEX_COL );
+  PRINT_ERR( "%s%zu: %s", (newlined ? "" : "\n"), y_col, msg );
   newlined = false;
 }
 
@@ -375,11 +381,7 @@ command
   | Y_END
   | error Y_END
     {
-      parse_error(
-        "\"%s\", \"%s\", \"%s\", \"%s\", \"%s\", or \"%s\" expected",
-        L_CAST, L_DECLARE, L_EXPLAIN, L_HELP, L_SET, L_QUIT
-      );
-      yyerrok;
+      PARSE_ERROR( "unexpected token" );
     }
   ;
 
@@ -444,7 +446,7 @@ declare_english
       DUMP_AST( "-> decl_english", $5 );
       DUMP_END();
 
-      C_TYPE_ADD( &$5->type, $4 );
+      C_TYPE_ADD( &$5->type, $4, @4 );
       if ( c_ast_check( $5 ) ) {
         c_ast_gibberish_declare( $5, fout );
         FPUTC( '\n', fout );
@@ -557,7 +559,7 @@ array_cast_c
       DUMP_AST( "-> cast_c", $1 );
       DUMP_NUM( "-> array_size_c", $2 );
 
-      c_ast_t *const array = c_ast_new( K_ARRAY );
+      c_ast_t *const array = c_ast_new( K_ARRAY, &@$ );
       array->name = c_ast_take_name( $1 );
       array->as.array.size = $2;
 
@@ -589,7 +591,7 @@ block_cast_c                            /* Apple extension */
       DUMP_AST( "-> cast_c", $3 );
       DUMP_AST_LIST( "-> arg_list_opt_c", $6 );
 
-      $$ = c_ast_new( K_BLOCK );
+      $$ = c_ast_new( K_BLOCK, &@$ );
       $$->name = c_ast_name( $3 );
       $$->as.block.args = $6;
       $$->as.block.ret_ast = c_ast_clone( PEEK_TYPE() );
@@ -605,7 +607,7 @@ func_cast_c
       DUMP_START( "func_cast_c", "'(' ')'" );
       DUMP_AST( "^^ type_c", PEEK_TYPE() );
 
-      $$ = c_ast_new( K_FUNCTION );
+      $$ = c_ast_new( K_FUNCTION, &@$ );
       $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
 
       DUMP_AST( "<- func_cast_c", $$ );
@@ -622,7 +624,7 @@ func_cast_c
       DUMP_AST( "-> cast_c", $4 );
       DUMP_AST_LIST( "-> arg_list_opt_c", $6 );
 
-      c_ast_t *const func = c_ast_new( K_FUNCTION );
+      c_ast_t *const func = c_ast_new( K_FUNCTION, &@$ );
       func->as.func.args = $6;
 
       switch ( $4->kind ) {
@@ -668,7 +670,7 @@ pointer_cast_c
       DUMP_AST( "^^ type_c", PEEK_TYPE() );
       DUMP_AST( "-> cast_c", $2 );
 
-      $$ = c_ast_new( K_POINTER );
+      $$ = c_ast_new( K_POINTER, &@$ );
       // TODO: do something with $2
       $$->as.ptr_ref.to_ast = c_ast_clone( PEEK_TYPE() );
 
@@ -685,7 +687,7 @@ pointer_to_member_cast_c
       DUMP_NAME( "-> NAME", $1 );
       DUMP_AST( "-> cast_c", $4 );
 
-      $$ = c_ast_new( K_POINTER_TO_MEMBER );
+      $$ = c_ast_new( K_POINTER_TO_MEMBER, &@$ );
       $$->type = T_CLASS;
       $$->as.ptr_mbr.of_ast = c_ast_clone( PEEK_TYPE() );
       $$->as.ptr_mbr.class_name = $1;
@@ -703,7 +705,7 @@ reference_cast_c
       DUMP_AST( "^^ type_c", PEEK_TYPE() );
       DUMP_AST( "-> cast_c", $2 );
 
-      $$ = c_ast_new( K_REFERENCE );
+      $$ = c_ast_new( K_REFERENCE, &@$ );
       // TODO: do something with $2
       $$->as.ptr_ref.to_ast = c_ast_clone( PEEK_TYPE() );
 
@@ -773,7 +775,7 @@ arg_c
       DUMP_START( "argc", "NAME" );
       DUMP_NAME( "-> NAME", $1 );
 
-      $$ = c_ast_new( K_NAME );
+      $$ = c_ast_new( K_NAME, &@$ );
       $$->name = check_strdup( $1 );
 
       DUMP_END();
@@ -801,17 +803,20 @@ array_decl_english
 
       switch ( $4->kind ) {
         case K_BUILTIN:
-          if ( $4->type & T_VOID )
-            c_error( "array of void", "pointer to void" );
+          if ( $4->type & T_VOID ) {
+            print_error( &@4, "array of void" );
+            print_hint( "pointer to void" );
+          }
           break;
         case K_FUNCTION:
-          c_error( "array of function", "array of pointer to function" );
+          print_error( &@4, "array of function" );
+          print_hint( "array of pointer to function" );
           break;
         default:
           /* suppress warning */;
       } // switch
 
-      $$ = c_ast_new( K_ARRAY );
+      $$ = c_ast_new( K_ARRAY, &@$ );
       $$->as.array.size = $2;
       $$->as.array.of_ast = $4;
 
@@ -836,7 +841,7 @@ block_decl_english                      /* Apple extension */
       DUMP_AST_LIST( "-> paren_decl_list_opt_english", $3 );
       DUMP_AST( "-> returning_english", $4 );
 
-      $$ = c_ast_new( K_BLOCK );
+      $$ = c_ast_new( K_BLOCK, &@$ );
       $$->type = PEEK_QUALIFIER();
       $$->as.block.ret_ast = $4;
       $$->as.block.args = $3;
@@ -855,7 +860,7 @@ func_decl_english
       DUMP_AST_LIST( "-> decl_list_opt_english", $3 );
       DUMP_AST( "-> returning_english", $4 );
 
-      $$ = c_ast_new( K_FUNCTION );
+      $$ = c_ast_new( K_FUNCTION, &@$ );
       $$->as.func.ret_ast = $4;
       $$->as.func.args = $3;
 
@@ -918,7 +923,6 @@ returning_english
 
       if ( keyword ) {
         char error_msg[ 80 ];
-        char hint_msg[ 80 ];
         char const *hint;
 
         switch ( $2->kind ) {
@@ -929,19 +933,17 @@ returning_english
             hint = "pointer to function";
             break;
           default:
-            /* suppress warning */;
+            hint = NULL;
         } // switch
 
         snprintf( error_msg, sizeof error_msg,
           "%s returning %s",
           keyword->literal, c_kind_name( $2->kind )
         );
-        snprintf( hint_msg, sizeof hint_msg,
-          "%s returning %s",
-          keyword->literal, hint
-        );
 
-        c_error( error_msg, hint_msg );
+        print_error( &@2, error_msg );
+        if ( hint )
+          print_hint( "%s returning %s", keyword->literal, hint );
       }
 
       $$ = $2;
@@ -954,7 +956,7 @@ returning_english
   ;
 
 qualified_decl_english
-  : type_qualifier_list_opt_c { qualifier_push( $1 ); }
+  : type_qualifier_list_opt_c { qualifier_push( $1, &@1 ); }
     qualifiable_decl_english
     {
       qualifier_pop();
@@ -985,7 +987,7 @@ pointer_decl_english
       DUMP_TYPE( "^^ qualifier", PEEK_QUALIFIER() );
       DUMP_AST( "-> decl_english", $2 );
 
-      $$ = c_ast_new( K_POINTER );
+      $$ = c_ast_new( K_POINTER, &@$ );
       $$->as.ptr_ref.to_ast = $2;
       $$->as.ptr_ref.qualifier = PEEK_QUALIFIER();
 
@@ -1014,9 +1016,9 @@ pointer_to_member_decl_english
       DUMP_AST( "-> decl_english", $6 );
 
       if ( opt_lang < LANG_CPP_MIN )
-        c_warning( "pointer to member of class", NULL );
+        print_warning( &@$, "pointer to member of class" );
 
-      $$ = c_ast_new( K_POINTER_TO_MEMBER );
+      $$ = c_ast_new( K_POINTER_TO_MEMBER, &@$ );
       $$->type = $4;
       $$->as.ptr_mbr.of_ast = $6;
       $$->as.ptr_ref.qualifier = PEEK_QUALIFIER();
@@ -1060,17 +1062,19 @@ reference_decl_english
       DUMP_AST( "-> decl_english", $3 );
 
       if ( opt_lang < LANG_CPP_MIN )
-        c_warning( "reference", NULL );
+        print_warning( &@$, "reference" );
       switch ( $3->kind ) {
         case K_BUILTIN:
-          if ( $3->type & T_VOID )
-            c_error( "reference of void", "pointer to void" );
+          if ( $3->type & T_VOID ) {
+            print_error( &@3, "reference of void" );
+            print_hint( "pointer to void" );
+          }
           break;
         default:
           /* suppress warning */;
       } // switch
 
-      $$ = c_ast_new( K_REFERENCE );
+      $$ = c_ast_new( K_REFERENCE, &@$ );
       $$->as.ptr_ref.to_ast = $3;
       $$->as.ptr_ref.qualifier = PEEK_QUALIFIER();
 
@@ -1105,9 +1109,9 @@ var_decl_english
       DUMP_NAME( "-> NAME", $1 );
 
       if ( opt_lang > LANG_C_KNR )
-        c_warning( "missing function prototype", NULL );
+        print_warning( &@$, "missing function prototype" );
 
-      $$ = c_ast_new( K_NAME );
+      $$ = c_ast_new( K_NAME, &@$ );
       $$->name = $1;
 
       DUMP_AST( "<- var_decl_english", $$ );
@@ -1142,7 +1146,7 @@ array_decl_c
       DUMP_AST( "-> decl2_c", $1 );
       DUMP_NUM( "-> array_size_c", $2 );
 
-      c_ast_t *const array = c_ast_new( K_ARRAY );
+      c_ast_t *const array = c_ast_new( K_ARRAY, &@$ );
       array->name = c_ast_take_name( $1 );
       array->as.array.size = $2;
 
@@ -1186,7 +1190,7 @@ block_decl_c                            /* Apple extension */
       DUMP_AST( "-> decl_c", $4 );
       DUMP_AST_LIST( "-> arg_list_opt_c", $7 );
 
-      $$ = c_ast_new( K_BLOCK );
+      $$ = c_ast_new( K_BLOCK, &@$ );
       $$->name = check_strdup( c_ast_name( $4 ) );
       $$->as.block.args = $7;
       $$->as.block.ret_ast = c_ast_clone( PEEK_TYPE() );
@@ -1205,7 +1209,7 @@ func_decl_c
       DUMP_AST( "-> decl2_c", $1 );
       DUMP_AST_LIST( "-> arg_list_opt_c", $3 );
 
-      c_ast_t *const func = c_ast_new( K_FUNCTION );
+      c_ast_t *const func = c_ast_new( K_FUNCTION, &@$ );
       func->name = c_ast_take_name( $1 );
       func->as.func.args = $3;
 
@@ -1224,7 +1228,7 @@ func_decl_c
           $$->as.func.ret_ast = c_ast_clone( PEEK_TYPE() );
       } // switch
 
-      C_TYPE_ADD( &$$->type, c_ast_take_storage( $$->as.func.ret_ast ) );
+      $$->type |= c_ast_take_storage( $$->as.func.ret_ast );
 
       DUMP_AST( "<- func_decl_c", $$ );
       DUMP_END();
@@ -1263,7 +1267,7 @@ nested_decl_c
   ;
 
 placeholder_type_c
-  : /* empty */                   { $$ = c_ast_new( K_NONE ); }
+  : /* empty */                   { $$ = c_ast_new( K_NONE, &@$ ); }
   ;
 
 pointer_decl_c
@@ -1288,7 +1292,7 @@ pointer_decl_type_c
       DUMP_AST( "^^ type_c", PEEK_TYPE() );
       DUMP_TYPE( "-> type_qualifier_list_opt_c", $2 );
 
-      $$ = c_ast_new( K_POINTER );
+      $$ = c_ast_new( K_POINTER, &@$ );
       $$->as.ptr_ref.qualifier = $2;
       $$->as.ptr_ref.to_ast = c_ast_clone( PEEK_TYPE() );
 
@@ -1320,7 +1324,7 @@ pointer_to_member_decl_type_c
       DUMP_AST( "^^ type_c", PEEK_TYPE() );
       DUMP_NAME( "-> NAME", $1 );
 
-      $$ = c_ast_new( K_POINTER_TO_MEMBER );
+      $$ = c_ast_new( K_POINTER_TO_MEMBER, &@$ );
       $$->type = T_CLASS;
       $$->as.ptr_mbr.class_name = $1;
       $$->as.ptr_mbr.of_ast = c_ast_clone( PEEK_TYPE() );
@@ -1352,7 +1356,7 @@ reference_decl_type_c
       DUMP_AST( "^^ type_c", PEEK_TYPE() );
       DUMP_TYPE( "-> type_qualifier_list_opt_c", $2 );
 
-      $$ = c_ast_new( K_REFERENCE );
+      $$ = c_ast_new( K_REFERENCE, &@$ );
       $$->as.ptr_ref.qualifier = $2;
       $$->as.ptr_ref.to_ast = c_ast_clone( PEEK_TYPE() );
 
@@ -1375,8 +1379,8 @@ type_english
       DUMP_AST( "-> unmodified_type_english", $2 );
 
       $$ = $2;
-      C_TYPE_ADD( &$$->type, PEEK_QUALIFIER() );
-      C_TYPE_ADD( &$$->type, $1 );
+      C_TYPE_ADD( &$$->type, PEEK_QUALIFIER(), PEEK_QUALIFIER_LOC() );
+      C_TYPE_ADD( &$$->type, $1, @1 );
 
       DUMP_AST( "<- type_english", $$ );
       DUMP_END();
@@ -1387,9 +1391,9 @@ type_english
       DUMP_START( "type_english", "type_modifier_list_english" );
       DUMP_TYPE( "-> type_modifier_list_english", $1 );
 
-      $$ = c_ast_new( K_BUILTIN );
+      $$ = c_ast_new( K_BUILTIN, &@$ );
       $$->type = T_INT;
-      C_TYPE_ADD( &$$->type, $1 );
+      C_TYPE_ADD( &$$->type, $1, @1 );
 
       DUMP_AST( "<- type_english", $$ );
       DUMP_END();
@@ -1410,7 +1414,7 @@ type_modifier_list_english
       DUMP_TYPE( "-> type_modifier_english", $2 );
 
       $$ = $1;
-      C_TYPE_ADD( &$$, $2 );
+      C_TYPE_ADD( &$$, $2, @2 );
 
       DUMP_TYPE( "<- type_modifier_list_opt_english", $$ );
       DUMP_END();
@@ -1433,7 +1437,7 @@ unmodified_type_english
       DUMP_START( "unmodified_type_english", "builtin_type_c" );
       DUMP_TYPE( "-> builtin_type_c", $1 );
 
-      $$ = c_ast_new( K_BUILTIN );
+      $$ = c_ast_new( K_BUILTIN, &@$ );
       $$->type = $1;
 
       DUMP_AST( "<- unmodified_type_english", $$ );
@@ -1445,7 +1449,7 @@ unmodified_type_english
       DUMP_START( "unmodified_type_english", "enum_class_struct_union_type_c" );
       DUMP_TYPE( "-> enum_class_struct_union_type_c", $1 );
 
-      $$ = c_ast_new( K_ENUM_CLASS_STRUCT_UNION );
+      $$ = c_ast_new( K_ENUM_CLASS_STRUCT_UNION, &@$ );
       $$->type = $1;
 
       DUMP_AST( "<- unmodified_type_english", $$ );
@@ -1463,9 +1467,9 @@ type_c
       DUMP_START( "type_c", "type_modifier_list_c" );
       DUMP_TYPE( "-> type_modifier_list_c", $1 );
 
-      $$ = c_ast_new( K_BUILTIN );
+      $$ = c_ast_new( K_BUILTIN, &@$ );
       $$->type = $1;
-      c_type_check( $$->type );
+      C_TYPE_CHECK( $$->type, @1 );
 
       DUMP_AST( "<- type_c", $$ );
       DUMP_END();
@@ -1480,11 +1484,11 @@ type_c
       DUMP_TYPE( "-> builtin_type_c", $2 );
       DUMP_TYPE( "-> type_modifier_list_opt_c", $3 );
 
-      $$ = c_ast_new( K_BUILTIN );
-      $$->type = $1;
-      C_TYPE_ADD( &$$->type, $2 );
-      C_TYPE_ADD( &$$->type, $3 );
-      c_type_check( $$->type );
+      $$ = c_ast_new( K_BUILTIN, &@$ );
+      $$->type = $2;
+      C_TYPE_ADD( &$$->type, $1, @1 );
+      C_TYPE_ADD( &$$->type, $3, @3 );
+      C_TYPE_CHECK( $$->type, @1 );
 
       DUMP_AST( "<- type_c", $$ );
       DUMP_END();
@@ -1496,10 +1500,10 @@ type_c
       DUMP_TYPE( "-> builtin_type_c", $1 );
       DUMP_TYPE( "-> type_modifier_list_opt_c", $2 );
 
-      $$ = c_ast_new( K_BUILTIN );
+      $$ = c_ast_new( K_BUILTIN, &@$ );
       $$->type = $1;
-      C_TYPE_ADD( &$$->type, $2 );
-      c_type_check( $$->type );
+      C_TYPE_ADD( &$$->type, $2, @2 );
+      C_TYPE_CHECK( $$->type, @1 );
 
       DUMP_AST( "<- type_c", $$ );
       DUMP_END();
@@ -1522,12 +1526,18 @@ type_modifier_list_c
       DUMP_TYPE( "-> type_modifier_c", $2 );
 
       $$ = $1;
-      C_TYPE_ADD( &$$, $2 );
+      C_TYPE_ADD( &$$, $2, @2 );
+      C_TYPE_CHECK( $$, @2 );
 
       DUMP_TYPE( "<- type_modifier_list_c", $$ );
       DUMP_END();
     }
+
   | type_modifier_c
+    {
+      $$ = $1;
+      C_TYPE_CHECK( $$, @1 );
+    }
   ;
 
 type_modifier_c
@@ -1556,10 +1566,10 @@ named_enum_class_struct_union_type_c
       DUMP_TYPE( "-> enum_class_struct_union_type_c", $1 );
       DUMP_NAME( "-> NAME", $2 );
 
-      $$ = c_ast_new( K_ENUM_CLASS_STRUCT_UNION );
+      $$ = c_ast_new( K_ENUM_CLASS_STRUCT_UNION, &@$ );
       $$->type = $1;
       $$->as.ecsu.ecsu_name = $2;
-      c_type_check( $$->type );
+      C_TYPE_CHECK( $$->type, @1 );
 
       DUMP_AST( "<- named_enum_class_struct_union_type_c", $$ );
       DUMP_END();
@@ -1594,7 +1604,8 @@ type_qualifier_list_opt_c
       DUMP_TYPE( "-> type_qualifier_c", $2 );
 
       $$ = $1;
-      C_TYPE_ADD( &$$, $2 );
+      C_TYPE_ADD( &$$, $2, @2 );
+      C_TYPE_CHECK( $$, @2 );
 
       DUMP_TYPE( "<- type_qualifier_list_opt_c", $$ );
       DUMP_END();
@@ -1642,6 +1653,8 @@ name_token_opt
   ;
 
 %%
+
+extern int          yylex( YYSTYPE*, YYLTYPE* );
 
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

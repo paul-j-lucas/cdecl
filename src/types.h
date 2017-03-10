@@ -13,6 +13,7 @@
 
 // local
 #include "config.h"                     /* must go first */
+#include "common.h"
 
 // standard
 #include <stdbool.h>
@@ -73,16 +74,17 @@ typedef unsigned c_type_t;
  *
  * @param dest_type A pointer to the type to add to.
  * @param new_type The type to add.
+ * @param loc TODO
  * @return Returns \c true only if the type added successfully.
  */
-bool c_type_add( c_type_t *dest_type, c_type_t new_type );
+bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc );
 
 /**
  * Checks that the given type is valid.
  *
  * @param type The type to check.
  */
-bool c_type_check( c_type_t type );
+bool c_type_check( c_type_t type, YYLTYPE const *loc );
 
 /**
  * Given a type, get its name.

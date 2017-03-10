@@ -11,28 +11,69 @@
 #include "util.h"
 
 // standard
+#include <assert.h>
+#include <stdarg.h>
 #include <stdlib.h>
+
+extern size_t y_col;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void c_error( char const *what, char const *hint ) {
+void print_caret( int col ) {
+  if ( col == CARET_CURRENT_LEX_COL )
+    col = (int)(y_col - strlen( yytext ));
+  assert( col >= 0 );
+  size_t const caret_col = col + strlen( prompt );
+  PRINT_ERR( "%*s", (int)caret_col, "" );
+  SGR_START_COLOR( stderr, caret );
+  FPUTC( '^', stderr );
+  SGR_END_COLOR( stderr );
+  FPUTC( '\n', stderr );
+}
+
+void print_error( YYLTYPE const *loc, char const *format, ... ) {
+  if ( loc ) {
+    print_caret( loc->first_column );
+    PRINT_ERR( "%d: ", loc->first_column );
+  }
   SGR_START_COLOR( stderr, error );
   PRINT_ERR( "error" );
   SGR_END_COLOR( stderr );
-  PRINT_ERR( ": %s illegal", what );
-  if ( hint )
-    PRINT_ERR( " (maybe you mean \"%s\"?)", hint );
+  PRINT_ERR( ": " );
+
+  va_list args;
+  va_start( args, format );
+  vfprintf( stderr, format, args );
+  va_end( args );
+
   PRINT_ERR( "\n" );
 }
 
-void c_warning( char const *what, char const *hint ) {
+void print_hint( char const *format, ... ) {
+  PRINT_ERR( "\t(did you mean " );
+  va_list args;
+  va_start( args, format );
+  vfprintf( stderr, format, args );
+  va_end( args );
+  PRINT_ERR( "?)\n" );
+}
+
+void print_warning( YYLTYPE const *loc, char const *format, ... ) {
+  if ( loc ) {
+    print_caret( loc->first_column );
+    PRINT_ERR( "%d: ", loc->first_column );
+  }
   SGR_START_COLOR( stderr, warning );
   PRINT_ERR( "warning" );
   SGR_END_COLOR( stderr );
-  PRINT_ERR( ": %s illegal in %s", what, lang_name( opt_lang ) );
-  if ( hint )
-    PRINT_ERR( " (maybe you mean \"%s\"?)", hint );
-  PRINT_ERR( "\n" );
+  PRINT_ERR( ": " );
+
+  va_list args;
+  va_start( args, format );
+  vfprintf( stderr, format, args );
+  va_end( args );
+
+  PRINT_ERR( " illegal in %s\n", lang_name( opt_lang ) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

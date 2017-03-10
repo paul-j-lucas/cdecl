@@ -21,8 +21,10 @@
 // standard
 #include <string.h>
 
-#define RETURN(TOKEN) \
-  BLOCK( y_token_col += yyleng; return (TOKEN); )
+#define YY_USER_ACTION                        \
+  yylloc->first_column = y_col;               \
+  yylloc->last_column  = y_col + yyleng - 1;  \
+  y_col += yyleng;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -79,22 +81,8 @@ static keyword_t const CDECL_KEYWORDS[] = {
 };
 
 // extern variables
-size_t  y_token_col;                    // column position of current token
-
-////////// extern functions ///////////////////////////////////////////////////
-
-/**
- * Prints a '^' (in color, if possible and requested) under the offending
- * token.
- */
-void print_caret( void ) {
-  size_t const caret_col = y_token_col + strlen( prompt ) - strlen( yytext );
-  PRINT_ERR( "%*s", (int)caret_col, "" );
-  SGR_START_COLOR( stderr, caret );
-  FPUTC( '^', stderr );
-  SGR_END_COLOR( stderr );
-  FPUTC( '\n', stderr );
-}
+size_t  y_col;                          // column position of current token
+YYLTYPE yylloc;
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -113,16 +101,17 @@ static keyword_t const* keyword_find( char const *s ) {
 }
 
 /**
- * Parses a number from \c yytext and sets \a yylval.number.
+ * Parses an integer from \c yytext.
  *
- * @param base The number base to use.
+ * @param base The integer base to use.
+ * @return Returns the integer value.
  */
-static inline void parse_number( int base ) {
+static inline int parse_int( int base ) {
   //
   // We don't need to check for errors from strtol(3) here since the lexer
   // guarantees that we'll be passed only a valid number token.
   //
-  yylval.number = (int)strtol( yytext, NULL, base );
+  return (int)strtol( yytext, NULL, base );
 }
 
 /**
@@ -154,26 +143,26 @@ H             [0-9A-Fa-f]
                   if ( k->c_keyword_synonym )
                     name = k->c_keyword_synonym;
                   else
-                    RETURN( k->y_token );
+                    return k->y_token;
                 }
 
                 c_keyword_t const *const ck = c_keyword_find_literal( name );
                 if ( ck ) {
-                  yylval.type = ck->type;
-                  RETURN( ck->y_token );
+                  yylval->type = ck->type;
+                  return ck->y_token;
                 }
 
-                yylval.name = check_strdup( name );
-                RETURN( Y_NAME );
+                yylval->name = check_strdup( name );
+                return Y_NAME;
               }
 
-[1-9]{D}*     { parse_number( 10 ); RETURN( Y_NUMBER ); }
-0{O}*         { parse_number(  8 ); RETURN( Y_NUMBER ); }
-0[xX]{H}+     { parse_number( 16 ); RETURN( Y_NUMBER ); }
+[1-9]{D}*     { yylval->number = parse_int( 10 ); return Y_NUMBER; }
+0{O}*         { yylval->number = parse_int(  8 ); return Y_NUMBER; }
+0[xX]{H}+     { yylval->number = parse_int( 16 ); return Y_NUMBER; }
 
-"::"          RETURN( Y_COLON_COLON );
+"::"          return Y_COLON_COLON;
 
-"?"           RETURN( Y_HELP );
+"?"           return Y_HELP;
 
 "^"           |                         /* Apple extension: block indicator */
 "&"           |
@@ -182,16 +171,15 @@ H             [0-9A-Fa-f]
 "*"           |
 ","           |
 "["           |
-"]"           RETURN( *yytext );
+"]"           return *yytext;
 
 "/*"          {                         /* ignore C-style comments */
-                y_token_col += yyleng;
                 for ( int c = input(), prev_c = '\0'; c != EOF;
                       prev_c = c, c = input() ) {
-                  ++y_token_col;
+                  ++y_col;
                   switch ( c ) {
                     case '\n':
-                      y_token_col = 0;
+                      y_col = 0;
                       break;
                     case '/':
                       if ( prev_c == '*' )
@@ -205,10 +193,10 @@ H             [0-9A-Fa-f]
 
 "//".*        ;                         /* ignore C++-style comments */
 #.*           ;                         /* ignore preprocessor directives */
-[ \f\r\t\v]+  y_token_col += yyleng;    /* ignore all other whitespace */
-\n            { y_token_col = 0; return Y_END; }
-";"           RETURN( Y_END );
-.             RETURN( Y_ERROR );
+[ \f\r\t\v]+  ;                         /* ignore all other whitespace */
+\n            { y_col = 0; return Y_END; }
+";"           return Y_END;
+.             return Y_ERROR;
 
 %%
 

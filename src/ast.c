@@ -343,16 +343,18 @@ bool c_ast_check( c_ast_t const *ast ) {
       switch ( of_ast->kind ) {
         case K_BUILTIN:
           if ( of_ast->type & T_VOID ) {
-            c_error( "array of void", "array of pointer to void" );
+            print_error( &ast->loc, "array of void" );
+            print_hint( "array of pointer to void" );
             return false;
           }
           if ( of_ast->type & T_REGISTER ) {
-            c_error( "register array", NULL );
+            print_error( &ast->loc, "register array" );
             return false;
           }
           break;
         case K_FUNCTION:
-          c_error( "array of function", "array of pointer to function" );
+          print_error( &ast->loc, "array of function" );
+          print_hint( "array of pointer to function" );
           return false;
         default:
           /* suppress warning */;
@@ -366,7 +368,8 @@ bool c_ast_check( c_ast_t const *ast ) {
 
     case K_BUILTIN:
       if ( ast->type & T_VOID ) {
-        c_error( "variable of void", "pointer to void" );
+        print_error( &ast->loc, "variable of void" );
+        print_hint( "pointer to void" );
         return false;
       }
       break;
@@ -377,7 +380,7 @@ bool c_ast_check( c_ast_t const *ast ) {
 
     case K_FUNCTION:
       if ( ast->type & T_REGISTER ) {
-        c_error( "register function", NULL );
+        print_error( &ast->loc, "register function" );
         return false;
       }
       break;
@@ -397,7 +400,8 @@ bool c_ast_check( c_ast_t const *ast ) {
     case K_REFERENCE: {
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
       if ( to_ast->type & T_VOID ) {
-        c_error( "referece to void", "pointer to void" );
+        print_error( &ast->loc, "referece to void" );
+        print_hint( "pointer to void" );
         return false;
       }
       break;
@@ -425,7 +429,7 @@ c_ast_t* c_ast_clone( c_ast_t const *ast ) {
   if ( ast == NULL )
     return NULL;
 
-  c_ast_t *const clone = c_ast_new( ast->kind );
+  c_ast_t *const clone = c_ast_new( ast->kind, &ast->loc );
   c_ast_t *const temp = clone->gc_next;
   memcpy( clone, ast, sizeof( c_ast_t ) );
   clone->gc_next = temp;
@@ -672,9 +676,10 @@ char const* c_ast_name( c_ast_t *ast ) {
   return found ? found->name : NULL;
 }
 
-c_ast_t* c_ast_new( c_kind_t kind ) {
+c_ast_t* c_ast_new( c_kind_t kind, YYLTYPE const *loc ) {
   c_ast_t *const ast = MALLOC( c_ast_t, 1 );
   c_ast_init( ast, kind );
+  ast->loc = *loc;
   ast->gc_next = c_ast_head;
   c_ast_head = ast;
   ++c_ast_count;

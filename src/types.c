@@ -85,18 +85,19 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define C8        MIN(LANG_C_89)        /* minimum C89 */
 #define C9        MIN(LANG_C_99)        /* minimum C99 */
 #define P3        MIN(LANG_CPP_03)      /* minimum C++03 */
+#define P1        MIN(LANG_CPP_11)      /* minimum C++11 */
 
 /**
  * Illegal combinations of types in languages.
  * Only the lower triangle is used.
  */
-static lang_t const BAD_TYPE_LANG[ NUM_TYPES ][ NUM_TYPES ] = {
+static lang_t const BAD_TYPE_LANGS[ NUM_TYPES ][ NUM_TYPES ] = {
   /*                v  b  c  16 32 wc s  i  l  ll s  u  f  d  c  E  S  U  C */
   /* void      */ { __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* bool      */ { XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* char      */ { XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-  /* char16_t  */ { XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-  /* char32_t  */ { XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+  /* char16_t  */ { XX,XX,XX,P1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+  /* char32_t  */ { XX,XX,XX,XX,P1,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* wchar_t   */ { XX,XX,XX,XX,XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* short     */ { XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* int       */ { XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },
@@ -140,13 +141,14 @@ static inline bool only_one_bit_set( unsigned n ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool c_type_add( c_type_t *dest_type, c_type_t new_type ) {
+bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc ) {
   assert( dest_type );
 
   if ( is_long_int( new_type ) && is_long_int( *dest_type ) )
     new_type = T_LONG_LONG;
 
   if ( new_type & *dest_type ) {
+    print_caret( loc->first_column );
     PRINT_ERR(
       "error: \"%s\" can not be combined with previous declaration\n",
       c_type_name( new_type )
@@ -158,18 +160,26 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type ) {
   return true;
 }
 
-bool c_type_check( c_type_t type ) {
+bool c_type_check( c_type_t type, YYLTYPE const *loc ) {
   for ( size_t row = 0; row < NUM_TYPES; ++row ) {
-    if ( type & C_TYPE_INFO[ row ].type ) {
-      for ( size_t col = 0; col < row; ++col ) {
-        if ( (type & C_TYPE_INFO[ col ].type) &&
-             (opt_lang & BAD_TYPE_LANG[ row ][ col ]) ) {
-          PRINT_ERR(
-            "warning: \"%s\" with \"%s\" is illegal in %s\n",
-            C_TYPE_INFO[ row ].literal, C_TYPE_INFO[ col ].literal,
-            lang_name( opt_lang )
-          );
-          return false;
+    if ( (type & C_TYPE_INFO[ row ].type) ) {
+      for ( size_t col = 0; col <= row; ++col ) {
+        lang_t const bad_lang = BAD_TYPE_LANGS[ row ][ col ];
+        if ( (type & C_TYPE_INFO[ col ].type) && (opt_lang & bad_lang) ) {
+          bool const fatal = bad_lang == LANG_ALL;
+
+          if ( fatal )
+            print_error( loc,
+              "\"%s\" with \"%s\" is illegal",
+              C_TYPE_INFO[ row ].literal, C_TYPE_INFO[ col ].literal
+            );
+          else
+            print_warning( loc,
+              "\"%s\" with \"%s\"",
+              C_TYPE_INFO[ row ].literal, C_TYPE_INFO[ col ].literal
+            );
+
+          return !fatal;
         }
       } // for
     }
