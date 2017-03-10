@@ -68,7 +68,7 @@ typedef struct link link_t;
 
 /**
  * A simple \c struct that serves as a "base class" for an intrusive singly
- * linked list. A "derived class" \e must be a \c struct that has a "next"
+ * linked list. A "derived class" \e must be a \c struct that has a \c next
  * pointer as its first member.
  */
 struct link {
