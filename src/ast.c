@@ -430,9 +430,13 @@ c_ast_t* c_ast_clone( c_ast_t const *ast ) {
     return NULL;
 
   c_ast_t *const clone = c_ast_new( ast->kind, &ast->loc );
-  c_ast_t *const temp = clone->gc_next;
+  //
+  // Even though it's slightly less efficient, it's safer to memcpy() the clone
+  // so we can't forget to copy non-pointer struct members.
+  //
+  c_ast_t *const gc_next_copy = clone->gc_next;
   memcpy( clone, ast, sizeof( c_ast_t ) );
-  clone->gc_next = temp;
+  clone->gc_next = gc_next_copy;
 
   clone->name = check_strdup( ast->name );
   clone->next = c_ast_clone( ast->next );
