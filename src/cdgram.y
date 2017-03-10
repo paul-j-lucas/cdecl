@@ -3,8 +3,6 @@
 **      src/cdgram.y
 */
 
-%locations
-
 %{
 // local
 #include "config.h"                     /* must come first */
@@ -31,11 +29,11 @@
 #define CDEBUG(...)                     /* nothing */
 #endif /* WITH_CDECL_DEBUG */
 
-#define C_TYPE_ADD(DST,SRC,LOC) \
-  BLOCK( if ( !c_type_add( (DST), (SRC), &(LOC) ) ) { parse_cleanup(); YYABORT; } )
+#define C_TYPE_ADD(DST,SRC,LOC) BLOCK( \
+  if ( !c_type_add( (DST), (SRC), &(LOC) ) ) { parse_cleanup(); YYABORT; } )
 
-#define C_TYPE_CHECK(TYPE,LOC) \
-  BLOCK( if ( !c_type_check( TYPE, &(LOC) ) ) { parse_cleanup(); YYABORT; } )
+#define C_TYPE_CHECK(TYPE,LOC) BLOCK( \
+  if ( !c_type_check( TYPE, &(LOC) ) ) { parse_cleanup(); YYABORT; } )
 
 #define DUMP_COMMA \
   CDEBUG( if ( true_or_set( &dump_comma ) ) FPUTS( ",\n", stdout ); )
@@ -79,8 +77,6 @@
 #define PEEK_TYPE()           (in_attr.type_ast)
 #define POP_TYPE()            LINK_POP( c_ast_t, &in_attr.type_ast )
 
-#define YYLEX_PARAM           &yylval, &yylloc
-
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef struct qualifier_link qualifier_link_t;
@@ -111,6 +107,7 @@ extern size_t       y_col;
 // extern functions
 extern void         print_help( void );
 extern void         set_option( char const* );
+extern int          yylex();
 
 // local variables
 static in_attr_t    in_attr;
@@ -1653,8 +1650,6 @@ name_token_opt
   ;
 
 %%
-
-extern int          yylex( YYSTYPE*, YYLTYPE* );
 
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

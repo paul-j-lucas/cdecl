@@ -10,10 +10,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"
-#include "color.h"
-#include "common.h"
 #include "keywords.h"
-#include "lang.h"
 #include "literals.h"
 #include "util.h"
 #include "cdgram.h"                     /* must go last */
@@ -21,9 +18,14 @@
 // standard
 #include <string.h>
 
-#define YY_USER_ACTION                        \
-  yylloc->first_column = y_col;               \
-  yylloc->last_column  = y_col + yyleng - 1;  \
+/**
+ * This code is inserted by flex at the beginning of each rule.
+ * It sets the current token location information.
+ * @hideinitializer
+ */
+#define YY_USER_ACTION                      \
+  yylloc.first_column = y_col;              \
+  yylloc.last_column  = y_col + yyleng - 1; \
   y_col += yyleng;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -82,7 +84,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
 
 // extern variables
 size_t  y_col;                          // column position of current token
-YYLTYPE yylloc;
+YYLTYPE yylloc;                         // location of current token
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -148,17 +150,17 @@ H             [0-9A-Fa-f]
 
                 c_keyword_t const *const ck = c_keyword_find_literal( name );
                 if ( ck ) {
-                  yylval->type = ck->type;
+                  yylval.type = ck->type;
                   return ck->y_token;
                 }
 
-                yylval->name = check_strdup( name );
+                yylval.name = check_strdup( name );
                 return Y_NAME;
               }
 
-[1-9]{D}*     { yylval->number = parse_int( 10 ); return Y_NUMBER; }
-0{O}*         { yylval->number = parse_int(  8 ); return Y_NUMBER; }
-0[xX]{H}+     { yylval->number = parse_int( 16 ); return Y_NUMBER; }
+[1-9]{D}*     { yylval.number = parse_int( 10 ); return Y_NUMBER; }
+0{O}*         { yylval.number = parse_int(  8 ); return Y_NUMBER; }
+0[xX]{H}+     { yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
 "::"          return Y_COLON_COLON;
 
