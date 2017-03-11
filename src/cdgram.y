@@ -203,7 +203,10 @@ static void quit( void ) {
 
 static void yyerror( char const *msg ) {
   print_caret( CARET_CURRENT_LEX_COL );
-  PRINT_ERR( "%s%zu: %s", (newlined ? "" : "\n"), y_col, msg );
+  PRINT_ERR( "%s%zu: ", (newlined ? "" : "\n"), y_col );
+  SGR_START_COLOR( stderr, error );
+  FPUTS( msg, stderr );
+  SGR_END_COLOR( stderr );
   newlined = false;
 }
 
