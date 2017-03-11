@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sysexits.h>
 
 #define PROGRAM_NAME_MAX_LEN      10    /* at least big enough for "c++decl" */
 #define PROMPT_SUFFIX             "> "
@@ -35,56 +36,55 @@ char const         *prompt;
 char                prompt_buf[ PROGRAM_NAME_MAX_LEN + sizeof PROMPT_SUFFIX ];
 
 // local variables
-static bool         is_argv0_a_command; // is argv[0] is a command?
 static bool         is_fin_a_tty;       // is our input from a tty?
 
 // extern functions
 int                 yyparse( void );
 
 // local functions
-static bool         called_as_command( char const* );
-static void         cdecl_init( int, char const*[] );
-static int          parse_command_line( int, char const*[] );
-static int          parse_files( int, char const*[] );
-static int          parse_stdin( void );
-static int          parse_string( char const*, size_t );
+static void         cdecl_init( int*, char const*** );
+static bool         is_command( char const* );
+static bool         parse_command_line( char const*, int, char const*[] );
+static bool         parse_files( int, char const*[] );
+static bool         parse_stdin( void );
+static bool         parse_string( char const*, size_t );
 
 ////////// main ///////////////////////////////////////////////////////////////
 
-int main( int argc, char const *argv[] ) {
-  cdecl_init( argc, argv );
+int main( int argc, char const **argv ) {
+  cdecl_init( &argc, &argv );
 
-  int rv = 0;
-
-  if ( optind == argc )                 // no file names or "-"
-    rv = parse_stdin();
-  else if ( (is_argv0_a_command = called_as_command( argv[ optind ] )) )
-    rv = parse_command_line( argc, argv );
+  bool ok;
+  if ( argc == 0 )                      // cdecl
+    ok = parse_stdin();
+  else if ( is_command( me ) )          // {cast|declare|explain} arg ...
+    ok = parse_command_line( me, argc, argv );
+  else if ( is_command( argv[0] ) )     // cdecl {cast|declare|explain} arg ...
+    ok = parse_command_line( NULL, argc, argv );
   else
-    rv = parse_files( argc, argv );
+    ok = parse_files( argc, argv );
 
-  exit( rv );
+  exit( ok ? EX_OK : EX_DATAERR );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * TODO
+ * Checks whether \a s is a cdecl command: cast, declare, or explain.
  *
- * @param argn TODO
+ * @param s The null-terminated string to check
+ * @return Returns \c true only if \a s is a command.
  */
-static bool called_as_command( char const *argn ) {
+static bool is_command( char const *s ) {
   static char const *const COMMANDS[] = {
     L_CAST,
     L_DECLARE,
     L_EXPLAIN,
     NULL
   };
-
   for ( char const *const *c = COMMANDS; *c; ++c )
-    if ( strcmp( *c, me ) == 0 || strcmp( *c, argn ) == 0 )
+    if ( strcmp( *c, s ) == 0 )
       return true;
-
   return false;
 }
 
@@ -99,12 +99,12 @@ static void cdecl_cleanup( void ) {
 /**
  * Parses command-line options and sets up the prompt.
  *
- * @param argc The number of command-line arguments from main().
+ * @param argc The length of \a argv.
  * @param argv The command-line arguments from main().
  */
-static void cdecl_init( int argc, char const *argv[] ) {
+static void cdecl_init( int *pargc, char const ***pargv ) {
   atexit( cdecl_cleanup );
-  options_init( argc, argv );
+  options_init( pargc, pargv );
 
   is_fin_a_tty = isatty( fileno( fin ) );
 
@@ -115,95 +115,100 @@ static void cdecl_init( int argc, char const *argv[] ) {
 }
 
 /**
- * TODO
+ * Parses a cdecl command from the command-line.
  *
- * @param argc The number of command-line arguments from main().
- * @param argv The command-line arguments from main().
- * @return TODO
+ * @param command The value main()'s \c argv[0] if it is a cdecl command; null
+ * otherwise and \c argv[1] is a cdecl command.
+ * @param argc The length of \a argv.
+ * @param argv The command-line arguments.
+ * @return Returns \c true only upon success.
  */
-static int parse_command_line( int argc, char const *argv[] ) {
-  size_t buf_size = 1/*\n*/ + 1/*null*/;
+static bool parse_command_line( char const *command, int argc,
+                                char const *argv[] ) {
+  size_t buf_len = 1 /* ';' */;
+  bool space;                           // need to putput a space?
 
-  if ( is_argv0_a_command )
-    buf_size += strlen( me );
-  for ( int i = optind; i < argc; ++i )
-    buf_size += 1 + strlen( argv[i] );
+  // pre-flight to calc buf_len
+  if ( (space = command != NULL) )
+    buf_len += strlen( command );
+  for ( int i = 0; i < argc; ++i )
+    buf_len += true_or_set( &space ) + strlen( argv[i] );
 
-  char *const buf = MALLOC( char, buf_size );
-  char *p = buf;
-  if ( is_argv0_a_command )
-    p += strcpy_len( buf, me );
+  char *const buf = (char*)free_later( malloc( buf_len + 1/*null*/ ) );
+  char *s = buf;
 
-  for ( int i = optind; i < argc; ++i ) {
-    *p++ = ' ';
-    p += strcpy_len( p, argv[i] );
-  }
-
-  int const rv = parse_string( buf, buf_size );
-  FREE( buf );
-  return rv;
-}
-
-/**
- * TODO
- *
- * @param argc The number of command-line arguments from main().
- * @param argv The command-line arguments from main().
- * @return Returns zero on success, non-zero on error.
- */
-static int parse_files( int argc, char const *argv[] ) {
-  int rv = 0;
-
-  for ( ; optind < argc; ++optind ) {
-    if ( strcmp( argv[ optind ], "-" ) == 0 )
-      rv = parse_stdin();
-    else {
-      FILE *const fin = fopen( argv[ optind ], "r" );
-      if ( fin == NULL )
-        PERROR_EXIT( EX_NOINPUT );
-      yyin = fin;
-      rv = yyparse();
-    }
-    if ( rv != 0 )
-      break;
+  // build cdecl command
+  if ( (space = command != NULL) )
+    s += strcpy_len( buf, command );
+  for ( int i = 0; i < argc; ++i ) {
+    if ( true_or_set( &space ) )
+      *s++ = ' ';
+    s += strcpy_len( s, argv[i] );
   } // for
-  return rv;
+  *s = ';';
+
+  return parse_string( buf, buf_len );
 }
 
 /**
- * TODO
+ * Parses one or more files.
  *
- * @return Returns zero on success, non-zero on error.
+ * @param argc The length of \a argv.
+ * @param argv The command-line arguments from main().
+ * @return Returns \c true only upon success.
  */
-static int parse_stdin( void ) {
-  int rv;
+static bool parse_files( int argc, char const *argv[] ) {
+  bool ok = true;
+
+  for ( int i = 0; i < argc && ok; ++i ) {
+    if ( strcmp( argv[i], "-" ) == 0 )
+      ok = parse_stdin();
+    else {
+      FILE *const fin = fopen( argv[i], "r" );
+      if ( fin == NULL )
+        PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", argv[i], STRERROR );
+      yyin = fin;
+      ok = yyparse() == 0;
+      fclose( fin );
+    }
+  } // for
+  return ok;
+}
+
+/**
+ * Parses standard input.
+ *
+ * @return Returns \c true only upon success.
+ */
+static bool parse_stdin( void ) {
+  bool ok;
 
   if ( is_fin_a_tty || opt_interactive ) {
     if ( !opt_quiet )
       printf( "Type \"%s\" or \"?\" for help\n", L_HELP );
-    rv = 0;
+    ok = true;
     for ( char *line; (line = readline_wrapper()); )
-      rv = parse_string( line, strlen( line ) );
+      ok = parse_string( line, strlen( line ) );
   } else {
     yyin = fin;
-    rv = yyparse();
+    ok = yyparse() == 0;
     is_fin_a_tty = false;
   }
-  return rv;
+  return ok;
 }
 
 /**
- * TODO
+ * Parses a string.
  *
  * @param s The null-terminated string to parse.
  * @param s_len the length of \a s.
- * @return Returns zero on success, non-zero on error.
+ * @return Returns \c true only upon success.
  */
-static int parse_string( char const *s, size_t s_len ) {
+static bool parse_string( char const *s, size_t s_len ) {
   yyin = fmemopen( s, s_len, "r" );
-  int const rv = yyparse();
+  bool const ok = yyparse() == 0;
   fclose( yyin );
-  return rv;
+  return ok;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

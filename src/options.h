@@ -43,11 +43,13 @@ extern int          yydebug;            // yacc debugging
 
 /**
  * Initializes command-line option variables.
+ * On return, \c *pargc and \c *pargv are updated to reflect the remaining
+ * command-line with the options removed.
  *
- * @param argc The argument count from \c main().
- * @param argv The argument values from \c main().
+ * @param pargc A pointer to the argument count from \c main().
+ * @param pargv A pointer to the argument values from \c main().
  */
-void options_init( int argc, char const *argv[] );
+void options_init( int *pargc, char const ***pargv );
 
 ///////////////////////////////////////////////////////////////////////////////
 

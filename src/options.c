@@ -140,6 +140,25 @@ static char const* get_long_opt( char short_opt ) {
 }
 
 /**
+ * Checks whether we're c++decl.
+ *
+ * @returns \c true only if we are.
+ */
+static bool is_cppdecl( void ) {
+  static char const *const NAMES[] = {
+    "c++decl",
+    "cppdecl",
+    "cxxdecl",
+    NULL
+  };
+
+  for ( char const *const *name = NAMES; *name; ++name )
+    if ( strcasecmp( *name, me ) == 0 )
+      return true;
+  return false;
+}
+
+/**
  * Parses a color "when" value.
  *
  * @param when The NULL-terminated "when" string to parse.
@@ -345,21 +364,11 @@ static void usage( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void options_init( int argc, char const *argv[] ) {
-  me = base_name( argv[0] );
-
-  if ( strcasecmp( me, "c++decl" ) == 0 ||
-       strcasecmp( me, "cppdecl" ) == 0 ||
-       strcasecmp( me, "cxxdecl" ) == 0 ) {
-    opt_lang = LANG_CPP_MAX;
-  } else {
-    opt_lang = LANG_C_MAX;
-  }
-
-  parse_options( argc, argv );
-  argc -= optind, argv += optind;
-  if ( argc )
-    usage();
+void options_init( int *pargc, char const ***pargv ) {
+  me = base_name( (*pargv)[0] );
+  opt_lang = is_cppdecl() ? LANG_CPP_MAX : LANG_C_MAX;
+  parse_options( *pargc, *pargv );
+  *pargc -= optind, *pargv += optind;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

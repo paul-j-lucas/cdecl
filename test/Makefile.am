@@ -7,7 +7,7 @@
 
 AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 
-# Command-line tests
+# Command-line option tests
 TESTS =	tests/cdecl-ap.test \
 	tests/cdecl-x.test
 
@@ -90,6 +90,11 @@ TESTS+=	tests/cast_pmi.test \
 	tests/explain_pmfxx_rps.test \
 	tests/explain_pmi.test \
 	tests/help_cxx.test
+
+# Command-line tests
+TESTS+=	tests/cl-cast_i.test \
+	tests/cl-declare_i.test \
+	tests/cl-explain_i.test
 
 AM_TESTS_ENVIRONMENT = BUILD_SRC=$(top_builddir)/src; export BUILD_SRC ;
 TEST_EXTENSIONS = .test 
