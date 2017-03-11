@@ -201,6 +201,11 @@ static void quit( void ) {
   exit( EX_OK );
 }
 
+/**
+ * Called by yacc/bison to print a parsing error message.
+ *
+ * @param msg The error message to print.
+ */
 static void yyerror( char const *msg ) {
   print_caret( CARET_CURRENT_LEX_COL );
   PRINT_ERR( "%s%zu: ", (newlined ? "" : "\n"), y_col );
