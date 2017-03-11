@@ -150,7 +150,7 @@ static void parse_error( char const *format, ... ) {
   if ( !newlined ) {
     PRINT_ERR( ": " );
     if ( *yytext )
-      PRINT_ERR( "\"%s\": ", yytext );
+      PRINT_ERR( "\"%s\": ", (*yytext == '\n' ? "\\n" : yytext) );
     va_list args;
     va_start( args, format );
     vfprintf( stderr, format, args );
