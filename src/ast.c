@@ -162,7 +162,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
         //
         // which is an array [size] of pointer to type.
         //
-        FPUTS( " (*", gout );
+        if ( false_set( space ) )
+          FPUTC( ' ', gout );
+        FPUTS( "(*", gout );
         c_ast_gibberish_qual_name( parent, g_kind, gout );
         FPUTC( ')', gout );
       }

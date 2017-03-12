@@ -32,6 +32,7 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_fv_rv.test \
 	tests/declare_fx_rpi.test \
 	tests/declare_ll.test \
+	tests/declare_pa3pa5i.test \
 	tests/declare_pa9i.test \
 	tests/declare_pc.test \
 	tests/declare_pcpi.test \
