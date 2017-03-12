@@ -20,8 +20,8 @@ TESTS+= tests/cast_pc.test \
 	tests/cast_pfx_ri.test \
 	tests/declare_a3a5a7i.test \
 	tests/declare_a3a5i.test \
-	tests/declare_ai-10.test \
-	tests/declare_api-10.test \
+	tests/declare_a9i.test \
+	tests/declare_a9pi.test \
 	tests/declare_ci-01.test \
 	tests/declare_ci-02.test \
 	tests/declare_cpcpi.test \
@@ -32,7 +32,7 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_fv_rv.test \
 	tests/declare_fx_rpi.test \
 	tests/declare_ll.test \
-	tests/declare_pai-10.test \
+	tests/declare_pa9i.test \
 	tests/declare_pc.test \
 	tests/declare_pcpi.test \
 	tests/declare_ppi.test \
@@ -45,11 +45,11 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_uc.test \
 	tests/declare_ui.test \
 	tests/declare_ull.test \
-	tests/explain_ai-012.test \
-	tests/explain_ai-0xA-01.test \
-	tests/explain_ai-0xa-02.test \
-	tests/explain_ai-10.test \
-	tests/explain_api-10.test \
+	tests/explain_a012i.test \
+	tests/explain_a0xAi-01.test \
+	tests/explain_a0xai-02.test \
+	tests/explain_a9i.test \
+	tests/explain_a9pi.test \
 	tests/explain_cast_pc.test \
 	tests/explain_cast_pcc-01.test \
 	tests/explain_cast_pcc-02.test \
@@ -68,7 +68,7 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_is.test \
 	tests/explain_it.test \
 	tests/explain_ll.test \
-	tests/explain_pai-10.test \
+	tests/explain_pa9i.test \
 	tests/explain_pi.test \
 	tests/explain_ppc.test \
 	tests/explain_rpc.test \
