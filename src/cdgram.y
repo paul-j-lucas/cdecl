@@ -570,6 +570,12 @@ array_cast_c
           break;
 
         case K_POINTER:
+          if ( $1->as.ptr_ref.to_ast->kind == K_ARRAY ) {
+            $1->as.ptr_ref.to_ast = c_ast_append_array( $1->as.ptr_ref.to_ast, array );
+            $$ = $1;
+            break;
+          }
+
           if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
             array->as.array.of_ast = c_ast_clone( TYPE_PEEK() );
             $1->as.ptr_ref.to_ast = array;
@@ -1162,6 +1168,12 @@ array_decl_c
           break;
 
         case K_POINTER:
+          if ( $1->as.ptr_ref.to_ast->kind == K_ARRAY ) {
+            $1->as.ptr_ref.to_ast = c_ast_append_array( $1->as.ptr_ref.to_ast, array );
+            $$ = $1;
+            break;
+          }
+
           if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
             array->as.array.of_ast = c_ast_clone( TYPE_PEEK() );
             $1->as.ptr_ref.to_ast = array;

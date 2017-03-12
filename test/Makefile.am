@@ -70,6 +70,7 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_is.test \
 	tests/explain_it.test \
 	tests/explain_ll.test \
+	tests/explain_pa3a5i.test \
 	tests/explain_pa9i.test \
 	tests/explain_pi.test \
 	tests/explain_ppc.test \
