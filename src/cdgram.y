@@ -562,10 +562,13 @@ array_cast_c
       DUMP_NUM( "> array_size_c", $2 );
 
       c_ast_t *const array = c_ast_new( K_ARRAY, &@$ );
-      array->name = c_ast_take_name( $1 );
       array->as.array.size = $2;
 
       switch ( $1->kind ) {
+        case K_ARRAY:
+          $$ = c_ast_append_array( $1, array );
+          break;
+
         case K_POINTER:
           if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
             array->as.array.of_ast = c_ast_clone( TYPE_PEEK() );
@@ -578,6 +581,8 @@ array_cast_c
           $$ = array;
           $$->as.array.of_ast = $1;
       } // switch
+
+      $$->name = c_ast_take_name( $1 );
 
       DUMP_AST( "< array_cast_c", $$ );
       DUMP_END();
@@ -1149,10 +1154,13 @@ array_decl_c
       DUMP_NUM( "> array_size_c", $2 );
 
       c_ast_t *const array = c_ast_new( K_ARRAY, &@$ );
-      array->name = c_ast_take_name( $1 );
       array->as.array.size = $2;
 
       switch ( $1->kind ) {
+        case K_ARRAY:
+          $$ = c_ast_append_array( $1, array );
+          break;
+
         case K_POINTER:
           if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
             array->as.array.of_ast = c_ast_clone( TYPE_PEEK() );
@@ -1165,6 +1173,8 @@ array_decl_c
           $$ = array;
           $$->as.array.of_ast = $1;
       } // switch
+
+      $$->name = c_ast_take_name( $1 );
 
       DUMP_AST( "< array_decl_c", $$ );
       DUMP_END();

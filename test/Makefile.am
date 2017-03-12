@@ -48,6 +48,8 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_a012i.test \
 	tests/explain_a0xAi-01.test \
 	tests/explain_a0xai-02.test \
+	tests/explain_a3a5a7i.test \
+	tests/explain_a3a5i.test \
 	tests/explain_a9i.test \
 	tests/explain_a9pi.test \
 	tests/explain_cast_pc.test \

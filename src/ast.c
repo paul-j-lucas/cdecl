@@ -364,6 +364,30 @@ static void print_indent( unsigned indent, FILE *out ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
+  assert( ast );
+  assert( array );
+
+  if ( ast->kind != K_ARRAY ) {
+    assert( array->kind == K_ARRAY );
+    assert( array->as.array.of_ast == NULL );
+    //
+    // We've reached the end of the array chain: make the new array be an array
+    // of this AST node and return the array so the parent will now point to it
+    // instead.
+    //
+    array->as.array.of_ast = ast;
+    return array;
+  }
+
+  //
+  // On the next-to-last recursive call, this sets this array to be an array of
+  // the new array; for all prior recursive calls, it's a no-op.
+  //
+  ast->as.array.of_ast = c_ast_append_array( ast->as.array.of_ast, array );
+  return ast;
+}
+
 bool c_ast_check( c_ast_t const *ast ) {
   assert( ast );
 

@@ -157,6 +157,26 @@ struct c_ast {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * If \a ast is:
+ *  + Not an array, makes \a array an array of \a ast.
+ *  + An array, appends \a array to the end of the array AST chain.
+ *
+ * For example, given:
+ *
+ *  + \a ast = <code>array 3 of array 5 of int</code>
+ *  + \a array = <code>array 7 of NULL</code>
+ *
+ * this function returns:
+ *
+ *  + <code>array 3 of array 5 of array 7 of int</code>
+ *
+ * @param ast The AST to append to.
+ * @param array The array AST to append.  It's "of" type must be null.
+ * @return If \a ast is an array, returns \a ast; otherwise returns \a array.
+ */
+c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array );
+
+/**
  * Checks an entire AST for semantic validity.
  *
  * @param ast The AST to check.
