@@ -84,6 +84,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
 
 // extern variables
 size_t  y_col;                          // column position of current token
+size_t  y_col_newline;                  // column position of newline
 YYLTYPE yylloc;                         // location of current token
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -196,7 +197,13 @@ H             [0-9A-Fa-f]
 "//".*        ;                         /* ignore C++-style comments */
 #.*           ;                         /* ignore preprocessor directives */
 [ \f\r\t\v]+  ;                         /* ignore all other whitespace */
-\n            { y_col = 0; return Y_END; }
+
+\n            {
+                y_col_newline = y_col - 1 /* '\n' */;
+                y_col = 0;
+                return Y_END;
+              }
+
 ";"           return Y_END;
 .             return Y_ERROR;
 

@@ -9,6 +9,10 @@
 // local
 #include "config.h"
 
+// standard
+#include <stddef.h>                     /* for size_t */
+#include <string.h>
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #define JSON_INDENT               2     /* speces per JSON indent level */
@@ -27,8 +31,10 @@ typedef struct {
 
 // extern variables
 extern char const  *me;                 // program name
-extern char const  *prompt;
+extern char const  *prompt;             // pointer to current prompt
 extern char         prompt_buf[];
+extern size_t       y_col;
+extern size_t       y_col_newline;
 #if YYTEXT_POINTER
 extern char        *yytext;
 #else
@@ -38,10 +44,19 @@ extern char         yytext[];
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Gets the current column where the error started.
+ *
+ * @return Returns said zero-based column.
+ */
+int error_column( void );
+
+/**
  * Prints a '^' (in color, if possible and requested) under the offending
  * token.
  *
- * @param col The zero-based column to print the caret at.
+ * @param col The zero-based column to print the caret at
+ * or the special value \c CARET_CURRENT_LEX_COL that means use the lexer's
+ * notion of what the current column is.
  */
 void print_caret( int col );
 

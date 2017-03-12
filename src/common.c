@@ -15,15 +15,23 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-extern size_t y_col;
-
 ///////////////////////////////////////////////////////////////////////////////
+
+int error_column( void ) {
+  if ( y_col == 0 )
+    return (int)y_col_newline;
+
+  if ( *yytext == '\n' )
+    return (int)y_col;
+
+  return (int)y_col - (int)strlen( yytext );
+}
 
 void print_caret( int col ) {
   if ( col == CARET_CURRENT_LEX_COL )
-    col = (int)(y_col - strlen( yytext ));
+    col = error_column();
   assert( col >= 0 );
-  size_t const caret_col = col + strlen( prompt );
+  size_t const caret_col = strlen( prompt ) + col;
   PRINT_ERR( "%*s", (int)caret_col, "" );
   SGR_START_COLOR( stderr, caret );
   FPUTC( '^', stderr );

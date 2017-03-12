@@ -101,9 +101,6 @@ struct in_attr {
 };
 typedef struct in_attr in_attr_t;
 
-// external variables
-extern size_t       y_col;
-
 // extern functions
 extern void         print_help( void );
 extern void         set_option( char const* );
@@ -208,7 +205,7 @@ static void quit( void ) {
  */
 static void yyerror( char const *msg ) {
   print_caret( CARET_CURRENT_LEX_COL );
-  PRINT_ERR( "%s%zu: ", (newlined ? "" : "\n"), y_col );
+  PRINT_ERR( "%s%d: ", (newlined ? "" : "\n"), error_column() + 1 );
   SGR_START_COLOR( stderr, error );
   FPUTS( msg, stderr );
   SGR_END_COLOR( stderr );
