@@ -96,6 +96,11 @@ TESTS+=	tests/cl-cast_i.test \
 	tests/cl-declare_i.test \
 	tests/cl-explain_i.test
 
+# File tests
+TESTS+=	tests/file-cast_i.test \
+	tests/file-declare_i.test \
+	tests/file-explain_i.test
+
 AM_TESTS_ENVIRONMENT = BUILD_SRC=$(top_builddir)/src; export BUILD_SRC ;
 TEST_EXTENSIONS = .test 
 
