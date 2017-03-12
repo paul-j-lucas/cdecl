@@ -130,6 +130,46 @@ static void cast_english( char const *name, c_ast_t *ast ) {
 */
 
 /**
+ * TODO
+ *
+ * @param ast The AST to append to.
+ * @param array The array AST to append.  It's "of" type must be null.
+ * @return TODO
+ */
+static c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
+  assert( ast );
+  assert( array );
+  assert( array->kind == K_ARRAY );
+
+  switch ( ast->kind ) {
+    case K_ARRAY:
+      array = c_ast_append_array( ast, array );
+      break;
+
+    case K_POINTER:
+      switch ( ast->as.ptr_ref.to_ast->kind ) {
+        case K_ARRAY:
+          ast->as.ptr_ref.to_ast =
+            c_ast_add_array( ast->as.ptr_ref.to_ast, array );
+          return ast;
+        case K_NONE:
+          array->as.array.of_ast = c_ast_clone( TYPE_PEEK() );
+          ast->as.ptr_ref.to_ast = array;
+          return ast;
+        default:
+          /* suppress warning */;
+      } // switch
+      // no break;
+
+    default:
+      array->as.array.of_ast = ast;
+  } // switch
+
+  array->name = c_ast_take_name( ast );
+  return array;
+}
+
+/**
  * Cleans-up parser data.
  */
 static void parse_cleanup( void ) {
@@ -563,32 +603,7 @@ array_cast_c
 
       c_ast_t *const array = c_ast_new( K_ARRAY, &@$ );
       array->as.array.size = $2;
-
-      switch ( $1->kind ) {
-        case K_ARRAY:
-          $$ = c_ast_append_array( $1, array );
-          break;
-
-        case K_POINTER:
-          if ( $1->as.ptr_ref.to_ast->kind == K_ARRAY ) {
-            $1->as.ptr_ref.to_ast = c_ast_append_array( $1->as.ptr_ref.to_ast, array );
-            $$ = $1;
-            break;
-          }
-
-          if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
-            array->as.array.of_ast = c_ast_clone( TYPE_PEEK() );
-            $1->as.ptr_ref.to_ast = array;
-            $$ = $1;
-            break;
-          }
-          // no break;
-        default:
-          $$ = array;
-          $$->as.array.of_ast = $1;
-      } // switch
-
-      $$->name = c_ast_take_name( $1 );
+      $$ = c_ast_add_array( $1, array );
 
       DUMP_AST( "< array_cast_c", $$ );
       DUMP_END();
@@ -1161,32 +1176,7 @@ array_decl_c
 
       c_ast_t *const array = c_ast_new( K_ARRAY, &@$ );
       array->as.array.size = $2;
-
-      switch ( $1->kind ) {
-        case K_ARRAY:
-          $$ = c_ast_append_array( $1, array );
-          break;
-
-        case K_POINTER:
-          if ( $1->as.ptr_ref.to_ast->kind == K_ARRAY ) {
-            $1->as.ptr_ref.to_ast = c_ast_append_array( $1->as.ptr_ref.to_ast, array );
-            $$ = $1;
-            break;
-          }
-
-          if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
-            array->as.array.of_ast = c_ast_clone( TYPE_PEEK() );
-            $1->as.ptr_ref.to_ast = array;
-            $$ = $1;
-            break;
-          }
-          // no break;
-        default:
-          $$ = array;
-          $$->as.array.of_ast = $1;
-      } // switch
-
-      $$->name = c_ast_take_name( $1 );
+      $$ = c_ast_add_array( $1, array );
 
       DUMP_AST( "< array_decl_c", $$ );
       DUMP_END();
