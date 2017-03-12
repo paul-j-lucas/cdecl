@@ -18,6 +18,8 @@ TESTS+= tests/cast_pc.test \
 	tests/cast_pf_ri-02.test \
 	tests/cast_pfpci_ri.test \
 	tests/cast_pfx_ri.test \
+	tests/declare_a3a5a7i.test \
+	tests/declare_a3a5i.test \
 	tests/declare_ai-10.test \
 	tests/declare_api-10.test \
 	tests/declare_ci-01.test \

@@ -88,8 +88,8 @@ static void c_ast_free( c_ast_t *ast ) {
  * Helper function for c_ast_gibberish_impl() that prints a block's or
  * function's arguments, if any.
  *
- * @param ast The c_ast that is either K_BLOCK or K_FUNCTION whose arguments to
- * print.
+ * @param ast The c_ast that is either a K_BLOCK or a K_FUNCTION whose
+ * arguments to print.
  * @param g_kind The kind of gibberish to print.
  * @param gout The FILE to print to.
  */
@@ -107,6 +107,26 @@ static void c_ast_gibberish_args( c_ast_t const *ast, gibberish_t g_kind,
     c_ast_gibberish_impl( arg, ast, g_kind, &space, gout );
   } // for
   FPUTC( ')', gout );
+}
+
+/**
+ * Helper function for c_ast_gibberish_impl() that prints an array's size as
+ * well as the size for all child arrays, if any.
+ *
+ * @param ast the The c_ast that is a K_ARRAY whose size to print.
+ * @param gout The FILE to print to.
+ */
+static void c_ast_gibberish_array_size( c_ast_t const *ast, FILE *gout ) {
+  assert( ast );
+  assert( ast->kind == K_ARRAY );
+
+  FPUTC( '[', gout );
+  if ( ast->as.array.size != C_ARRAY_NO_SIZE )
+    FPRINTF( gout, "%d", ast->as.array.size );
+  FPUTC( ']', gout );
+
+  if ( ast->as.array.of_ast->kind == K_ARRAY )
+    c_ast_gibberish_array_size( ast->as.array.of_ast, gout );
 }
 
 /**
@@ -151,10 +171,20 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_ast_t const *parent,
           FPUTC( ' ', gout );
         FPUTS( ast->name, gout );
       }
-      FPUTC( '[', gout );
-      if ( ast->as.array.size != C_ARRAY_NO_SIZE )
-        FPRINTF( gout, "%d", ast->as.array.size );
-      FPUTC( ']', gout );
+
+      if ( parent->kind != K_ARRAY ) {
+        //
+        // We have to defer printing the array's size until we've fully unwound
+        // nested arrays, if any, so we print:
+        //
+        //      type name[3][5]
+        //
+        // rather than:
+        //
+        //      type[5] name[3]
+        //
+        c_ast_gibberish_array_size( ast, gout );
+      }
       break;
 
     case K_BLOCK:                       // Apple extension
