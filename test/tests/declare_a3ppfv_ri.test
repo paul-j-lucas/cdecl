@@ -1,0 +1,1 @@
+cdecl | | declare a as array 3 of pointer to pointer to function (void) returning int | 0

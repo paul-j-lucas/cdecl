@@ -21,6 +21,7 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_a3a5a7i.test \
 	tests/declare_a3a5i.test \
 	tests/declare_a3pfv_ri.test \
+	tests/declare_a3ppfv_ri.test \
 	tests/declare_a9cpi.test \
 	tests/declare_a9i.test \
 	tests/declare_a9pi.test \
@@ -59,6 +60,7 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_a3a5a7i.test \
 	tests/explain_a3a5i.test \
 	tests/explain_a3pfv_ri.test \
+	tests/explain_a3ppfv_ri.test \
 	tests/explain_a9i.test \
 	tests/explain_a9pi.test \
 	tests/explain_cast_pc.test \
