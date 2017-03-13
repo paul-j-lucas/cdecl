@@ -397,7 +397,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
 
 /**
  * Helper function for c_ast_gibberish_impl() that prints a pointer, pointer-
- * to-member, or reference qualifier, if any, and the name, if any.
+ * to-member, or reference, its qualifier, if any, and the name, if any.
  *
  * @param ast The c_ast that is one of K_POINTER, K_POINTER_TO_MEMBER, or
  * K_REFERENCE whose qualifier, if any, and name, if any, to print.
