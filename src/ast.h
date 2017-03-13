@@ -29,26 +29,26 @@
 #include <stdio.h>                      /* for FILE */
 
 #define C_ARRAY_NO_SIZE   (-1)          /* for array[] */
-#define C_KIND_PARENT     10
 
 ///////////////////////////////////////////////////////////////////////////////
 
 
 /**
  * Kinds of AST nodes.
+ * Those with values >= 10 are "parent" nodes.
  */
 enum c_kind {
-  K_NONE                    = 0,
-  K_BUILTIN                 = 1,   // void, char, int, etc.
-  K_ENUM_CLASS_STRUCT_UNION = 2,
-  K_NAME                    = 3,   // typeless function argument in K&R C
-  K_ARRAY                   = C_KIND_PARENT + 1,
-  K_BLOCK                   = C_KIND_PARENT + 2,  // Apple extension
-  K_FUNCTION                = C_KIND_PARENT + 3,
-  K_POINTER                 = C_KIND_PARENT + 4,
+  K_NONE                    =  0,
+  K_BUILTIN                 =  1,       // void, char, int, etc.
+  K_ENUM_CLASS_STRUCT_UNION =  2,
+  K_NAME                    =  3,       // typeless function argument in K&R C
+  K_ARRAY                   = 11,
+  K_BLOCK                   = 12,       // Apple extension
+  K_FUNCTION                = 13,
+  K_POINTER                 = 14,
   // C++ only
-  K_POINTER_TO_MEMBER       = C_KIND_PARENT + 5,
-  K_REFERENCE               = C_KIND_PARENT + 6,
+  K_POINTER_TO_MEMBER       = 15,
+  K_REFERENCE               = 16,
 };
 typedef enum c_kind       c_kind_t;
 
@@ -76,7 +76,10 @@ typedef struct c_ptr_ref  c_ptr_ref_t;
 typedef bool (*c_ast_visitor)( c_ast_t *ast, void *data );
 
 /**
- * TOOD
+ * Generic "parent" AST node.
+ *
+ * @note All parent nodes have a c_ast pointer to what they're a parent of as
+ * their first \c struct member: this is taken advantage od.
  */
 struct c_parent {
   c_ast_t  *of_ast;
@@ -295,10 +298,10 @@ char const* c_ast_name( c_ast_t *ast );
 c_ast_t* c_ast_new( c_kind_t kind, YYLTYPE const *loc );
 
 /**
- * TODO
+ * Sets the two-way pointer links between parent/child AST nodes.
  *
- * @param child TODO
- * @Param parent TODO
+ * @param child The "child" AST node to set the parent of.
+ * @Param parent The "parent" AST node whose child node is set.
  */
 void c_ast_set_parent( c_ast_t *child, c_ast_t *parent );
 

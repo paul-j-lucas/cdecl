@@ -38,7 +38,8 @@ enum g_kind {
 typedef enum g_kind g_kind_t;
 
 /**
- * TODO
+ * Parameters used by c_ast_gibberish() (because there'd be too many function
+ * arguments otherwise).
  */
 struct g_param {
   g_kind_t  gkind;
@@ -54,17 +55,10 @@ static c_ast_t   *c_ast_head;           // linked list of alloc'd objects
 
 // local functions
 static void       c_ast_gibberish_impl( c_ast_t const*, g_param_t* );
+static void       c_ast_gibberish_pointer_array( c_ast_t const*, g_param_t* );
 static void       c_ast_gibberish_qual_name( c_ast_t const*, g_param_t const* );
 
-////////// local functions ////////////////////////////////////////////////////
-
-static inline bool c_ast_is_parent( c_ast_t const *ast ) {
-  return ast->kind > C_KIND_PARENT;
-}
-
-static inline c_kind_t c_ast_parent_kind( c_ast_t const *ast ) {
-  return ast->parent ? ast->parent->kind : K_NONE;
-}
+////////// inline functions ///////////////////////////////////////////////////
 
 /**
  * Convenience function for getting block/function arguments.
@@ -75,6 +69,53 @@ static inline c_kind_t c_ast_parent_kind( c_ast_t const *ast ) {
 static inline c_ast_t const* c_ast_args( c_ast_t const *ast ) {
   return ast->as.func.args.head_ast;
 }
+
+/**
+ * Initializes a c_ast.
+ *
+ * @param ast The c_ast to initialize.
+ * @param kind The kind of c_ast to initialize.
+ */
+static inline void c_ast_init( c_ast_t *ast, c_kind_t kind ) {
+  memset( ast, 0, sizeof( c_ast_t ) );
+  ast->kind = kind;
+}
+
+/**
+ * Checks whether the given AST node is a parent node.
+ *
+ * @param ast The \c c_ast to check.
+ * @return Returns \c true only if it is.
+ */
+static inline bool c_ast_is_parent( c_ast_t const *ast ) {
+  return ast->kind > 10;
+}
+
+/**
+ * Gets the kind of AST node the parent node, if any, is.
+ *
+ * @param ast The c_ast to get the parent node's kind of.
+ * @return Returns the parent node's kind or K_NONE if none.
+ */
+static inline c_kind_t c_ast_parent_kind( c_ast_t const *ast ) {
+  return ast->parent ? ast->parent->kind : K_NONE;
+}
+
+/**
+ * Initializes a g_param.
+ *
+ * @param param The \c g_param to initialize.
+ * @param gkind The kind of gibberish to print.
+ * @param gout The FILE to print it to.
+ */
+static inline void g_param_init( g_param_t *param, g_kind_t gkind,
+                                 FILE *gout ) {
+  memset( param, 0, sizeof( g_param_t ) );
+  param->gkind = gkind;
+  param->gout  = gout;
+}
+
+////////// local functions ////////////////////////////////////////////////////
 
 /**
  * Frees all the memory used by the given c_ast.
@@ -107,7 +148,7 @@ static void c_ast_free( c_ast_t *ast ) {
  *
  * @param ast The c_ast that is either a K_BLOCK or a K_FUNCTION whose
  * arguments to print.
- * @param param TODO
+ * @param param The g_param to use.
  */
 static void c_ast_gibberish_args( c_ast_t const *ast, g_param_t *param ) {
   assert( ast );
@@ -145,49 +186,6 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, FILE *gout ) {
 
 
 /**
- * TODO
- *
- * @param ast TODO
- * @param param TODO
- */
-static void c_ast_gibberish_pa( c_ast_t const *ast, g_param_t *param ) {
-  assert( ast );
-  assert( ast->kind == K_ARRAY );
-  assert( param );
-
-  c_ast_t const *const parent = ast->parent;
-
-  if ( parent ) {
-    switch ( parent->kind ) {
-      case K_ARRAY:
-        c_ast_gibberish_pa( parent, param );
-        break;
-
-      case K_POINTER: {
-        FPUTC( '(', param->gout );
-        c_ast_gibberish_qual_name( parent, param );
-        c_ast_t const *const grandparent = parent->parent;
-        if ( grandparent && grandparent->kind == K_ARRAY )
-          c_ast_gibberish_pa( grandparent, param );
-        FPUTC( ')', param->gout );
-      }
-
-      default:
-        /* suppress warning */;
-    } // switch
-  }
-  else {
-    if ( ast->name && param->gkind != G_CAST ) {
-      if ( false_set( &param->space ) )
-        FPUTC( ' ', param->gout );
-      FPUTS( ast->name, param->gout );
-    }
-  }
-
-  c_ast_gibberish_array_size( ast, param->gout );
-}
-
-/**
  * Prints the given AST as gibberish, aka, a C/C++ declaration.
  *
  * @param ast The AST to print.
@@ -204,7 +202,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         param->pointer_array = true;
         if ( false_set( &param->space ) )
           FPUTC( ' ', param->gout );
-        c_ast_gibberish_pa( ast, param );
+        c_ast_gibberish_pointer_array( ast, param );
       }
       else if ( !param->pointer_array && c_ast_parent_kind( ast ) != K_ARRAY ) {
         if ( ast->name && param->gkind != G_CAST ) {
@@ -341,6 +339,54 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 }
 
 /**
+ * Helper function for c_ast_gibberish_impl() that handles the printing of the
+ * case of when "pointer to array" is part of an AST.
+ *
+ * @param ast The c_ast
+ * @param param The g_param to use.
+ */
+static void c_ast_gibberish_pointer_array( c_ast_t const *ast,
+                                           g_param_t *param ) {
+  assert( ast );
+  assert( ast->kind == K_ARRAY );
+  assert( param );
+
+  c_ast_t const *const parent = ast->parent;
+
+  if ( parent ) {
+    switch ( parent->kind ) {
+      case K_ARRAY:
+        c_ast_gibberish_pointer_array( parent, param );
+        break;
+
+      case K_POINTER: {
+        //
+        // A pointer to an array is written in gibberish like:
+        //
+        //      type (*p)[size]
+        //
+        FPUTC( '(', param->gout );
+        c_ast_gibberish_qual_name( parent, param );
+        c_ast_t const *const grandparent = parent->parent;
+        if ( grandparent && grandparent->kind == K_ARRAY )
+          c_ast_gibberish_pointer_array( grandparent, param );
+        FPUTC( ')', param->gout );
+      }
+
+      default:
+        /* suppress warning */;
+    } // switch
+  }
+  else if ( ast->name && param->gkind != G_CAST ) {
+    if ( false_set( &param->space ) )
+      FPUTC( ' ', param->gout );
+    FPUTS( ast->name, param->gout );
+  }
+
+  c_ast_gibberish_array_size( ast, param->gout );
+}
+
+/**
  * Helper function for c_ast_gibberish_impl() that prints a pointer, pointer-
  * to-member, or reference qualifier, if any, and the name, if any.
  *
@@ -370,17 +416,6 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast,
     FPRINTF( param->gout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
   if ( ast->name && param->gkind == G_DECLARE )
     FPUTS( ast->name, param->gout );
-}
-
-/**
- * Initializes a c_ast.
- *
- * @param ast The c_ast to initialize.
- * @param kind The kind of c_ast to initialize.
- */
-static inline void c_ast_init( c_ast_t *ast, c_kind_t kind ) {
-  memset( ast, 0, sizeof( c_ast_t ) );
-  ast->kind = kind;
 }
 
 /**
@@ -645,10 +680,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
       if ( ast->as.ptr_mbr.qualifier )
         FPRINTF( eout, "%s ", c_type_name( ast->as.ptr_mbr.qualifier ) );
       char const *const type_name = c_type_name( ast->type );
-      FPRINTF( eout,
-        "%s %s %s %s ",
-        L_POINTER, L_TO, L_MEMBER, L_OF
-      );
+      FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
       if ( *type_name )
         FPRINTF( eout, "%s ", type_name );
       FPRINTF( eout, "%s ", ast->as.ptr_mbr.class_name );
@@ -659,21 +691,15 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 }
 
 void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
-  g_param_t data;
-  data.gkind = G_CAST;
-  data.space = false;
-  data.pointer_array = false;
-  data.gout  = gout;
-  return c_ast_gibberish_impl( ast, &data );
+  g_param_t param;
+  g_param_init( &param, G_CAST, gout );
+  return c_ast_gibberish_impl( ast, &param );
 }
 
 void c_ast_gibberish_declare( c_ast_t const *ast, FILE *gout ) {
-  g_param_t data;
-  data.gkind = G_DECLARE;
-  data.space = false;
-  data.pointer_array = false;
-  data.gout  = gout;
-  return c_ast_gibberish_impl( ast, &data );
+  g_param_t param;
+  g_param_init( &param, G_DECLARE, gout );
+  return c_ast_gibberish_impl( ast, &param );
 }
 
 void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
