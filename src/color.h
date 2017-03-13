@@ -20,14 +20,36 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#define SGR_BG_BLACK        "40"
+#define SGR_BG_RED          "41"
+#define SGR_BG_GREEN        "42"
+#define SGR_BG_YELLOW       "43"
+#define SGR_BG_BLUE         "44"
+#define SGR_BG_MAGENTA      "45"
+#define SGR_BG_CYAN         "46"
+#define SGR_BG_WHITE        "47"
+
+#define SGR_FG_BLACK        "30"
+#define SGR_FG_RED          "31"
+#define SGR_FG_GREEN        "32"
+#define SGR_FG_YELLOW       "33"
+#define SGR_FG_BLUE         "34"
+#define SGR_FG_MAGENTA      "35"
+#define SGR_FG_CYAN         "36"
+#define SGR_FG_WHITE        "37"
+
+#define SGR_BOLD            "1"
+#define SGR_CAP_SEP         ":"         /* capability separator */
+#define SGR_SEP             ";"         /* attribute/RGB separator */
+
 #define COLOR_WHEN_DEFAULT  COLOR_NOT_FILE
-#define COLORS_DEFAULT \
-  "caret=01;32:" \
-  "error=01;31:" \
-  "note=01;36:" \
-  "warning=01;35:" \
-  "locus=01:" \
-  "quote=01"
+#define COLORS_DEFAULT                                    \
+  "caret="    SGR_FG_GREEN  SGR_SEP SGR_BOLD SGR_CAP_SEP  \
+  "error="    SGR_FG_RED    SGR_SEP SGR_BOLD SGR_CAP_SEP  \
+  "note="     SGR_FG_CYAN   SGR_SEP SGR_BOLD SGR_CAP_SEP  \
+  "warning="  SGR_FG_YELLOW SGR_SEP SGR_BOLD SGR_CAP_SEP  \
+  "locus="                          SGR_BOLD SGR_CAP_SEP  \
+  "quote="                          SGR_BOLD
 
 #define SGR_START           "\33[%sm"   /* start color sequence */
 #define SGR_END             "\33[m"     /* end color sequence */
