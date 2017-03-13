@@ -43,9 +43,9 @@ typedef enum g_kind g_kind_t;
  */
 struct g_param {
   g_kind_t  gkind;
-  bool      space;
-  bool      pointer_array;
   FILE     *gout;
+  bool      postfix;
+  bool      space;
 };
 typedef struct g_param g_param_t;
 
@@ -55,7 +55,7 @@ static c_ast_t   *c_ast_head;           // linked list of alloc'd objects
 
 // local functions
 static void       c_ast_gibberish_impl( c_ast_t const*, g_param_t* );
-static void       c_ast_gibberish_pointer_array( c_ast_t const*, g_param_t* );
+static void       c_ast_gibberish_postfix( c_ast_t const*, g_param_t* );
 static void       c_ast_gibberish_qual_name( c_ast_t const*, g_param_t const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -161,6 +161,7 @@ static void c_ast_gibberish_args( c_ast_t const *ast, g_param_t *param ) {
       FPUTS( ", ", param->gout );
     g_param_t args_param;
     memcpy( &args_param, param, sizeof( g_param_t ) );
+    args_param.postfix = false;
     args_param.space = false;
     c_ast_gibberish_impl( arg, &args_param );
   } // for
@@ -172,16 +173,16 @@ static void c_ast_gibberish_args( c_ast_t const *ast, g_param_t *param ) {
  * well as the size for all child arrays, if any.
  *
  * @param ast the The c_ast that is a K_ARRAY whose size to print.
- * @param gout The FILE to print to.
+ * @param param The g_param to use.
  */
-static void c_ast_gibberish_array_size( c_ast_t const *ast, FILE *gout ) {
+static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
   assert( ast );
   assert( ast->kind == K_ARRAY );
 
-  FPUTC( '[', gout );
+  FPUTC( '[', param->gout );
   if ( ast->as.array.size != C_ARRAY_NO_SIZE )
-    FPRINTF( gout, "%d", ast->as.array.size );
-  FPUTC( ']', gout );
+    FPRINTF( param->gout, "%d", ast->as.array.size );
+  FPUTC( ']', param->gout );
 }
 
 
@@ -199,12 +200,12 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_ARRAY:
       c_ast_gibberish_impl( ast->as.array.of_ast, param );
       if ( !c_ast_is_parent( ast->as.array.of_ast ) ) {
-        param->pointer_array = true;
+        param->postfix = true;
         if ( false_set( &param->space ) )
           FPUTC( ' ', param->gout );
-        c_ast_gibberish_pointer_array( ast, param );
+        c_ast_gibberish_postfix( ast, param );
       }
-      else if ( !param->pointer_array && c_ast_parent_kind( ast ) != K_ARRAY ) {
+      else if ( !param->postfix && c_ast_parent_kind( ast ) != K_ARRAY ) {
         if ( ast->name && param->gkind != G_CAST ) {
           if ( false_set( &param->space ) )
             FPUTC( ' ', param->gout );
@@ -220,7 +221,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         //
         //      type[5] name[3]
         //
-        c_ast_gibberish_array_size( ast, param->gout );
+        c_ast_gibberish_array_size( ast, param );
       }
       break;
 
@@ -257,28 +258,20 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_FUNCTION:
       c_ast_gibberish_impl( ast->as.func.ret_ast, param );
-      FPUTC( ' ', param->gout );
-      if ( c_ast_parent_kind( ast ) == K_POINTER ) {
-        //
-        // If the parent node is a pointer, it's a pointer to function: print
-        // it like:
-        //
-        //      ret_type (*name)(arg_list)
-        //
-        // rather than:
-        //
-        //      ret_type *name(arg_list)
-        //
-        // which is a function returning pointer to ret_type.
-        //
-        FPUTC( '(', param->gout );
-        c_ast_gibberish_qual_name( ast->parent, param );
-        FPUTC( ')', param->gout );
+      if ( !c_ast_is_parent( ast->as.func.ret_ast ) ) {
+        param->postfix = true;
+        if ( false_set( &param->space ) )
+          FPUTC( ' ', param->gout );
+        c_ast_gibberish_postfix( ast, param );
       }
-      else if ( ast->name && param->gkind != G_CAST ) {
-        FPUTS( ast->name, param->gout );
+      else if ( !param->postfix && c_ast_parent_kind( ast ) != K_ARRAY ) {
+        if ( ast->name && param->gkind != G_CAST ) {
+          if ( false_set( &param->space ) )
+            FPUTC( ' ', param->gout );
+          FPUTS( ast->name, param->gout );
+        }
+        c_ast_gibberish_args( ast, param );
       }
-      c_ast_gibberish_args( ast, param );
       break;
 
     case K_NAME:
@@ -339,16 +332,19 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that handles the printing of the
- * case of when "pointer to array" is part of an AST.
+ * Helper function for c_ast_gibberish_impl() that handles the printing of
+ * "postfix" cases:
+ *  + array of pointer to function
+ *  + pointer to array
  *
  * @param ast The c_ast
  * @param param The g_param to use.
  */
-static void c_ast_gibberish_pointer_array( c_ast_t const *ast,
-                                           g_param_t *param ) {
+static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
   assert( ast );
-  assert( ast->kind == K_ARRAY );
+  assert( ast->kind == K_ARRAY ||
+          ast->kind == K_BLOCK ||
+          ast->kind == K_FUNCTION );
   assert( param );
 
   c_ast_t const *const parent = ast->parent;
@@ -356,20 +352,24 @@ static void c_ast_gibberish_pointer_array( c_ast_t const *ast,
   if ( parent ) {
     switch ( parent->kind ) {
       case K_ARRAY:
-        c_ast_gibberish_pointer_array( parent, param );
+      case K_BLOCK:
+      case K_FUNCTION:
+        c_ast_gibberish_postfix( parent, param );
         break;
 
       case K_POINTER: {
         //
-        // A pointer to an array is written in gibberish like:
+        // Pointers to _____ are written in gibberish like:
         //
-        //      type (*p)[size]
+        //      type (*a)[size]         // pointer to array
+        //      type (*f)(args)         // pointer to function
+        //      type (*a[size])(args)   // array of pointer to function
         //
         FPUTC( '(', param->gout );
         c_ast_gibberish_qual_name( parent, param );
         c_ast_t const *const grandparent = parent->parent;
         if ( grandparent && grandparent->kind == K_ARRAY )
-          c_ast_gibberish_pointer_array( grandparent, param );
+          c_ast_gibberish_postfix( grandparent, param );
         FPUTC( ')', param->gout );
       }
 
@@ -383,7 +383,17 @@ static void c_ast_gibberish_pointer_array( c_ast_t const *ast,
     FPUTS( ast->name, param->gout );
   }
 
-  c_ast_gibberish_array_size( ast, param->gout );
+  switch ( ast->kind ) {
+    case K_ARRAY:
+      c_ast_gibberish_array_size( ast, param );
+      break;
+    case K_BLOCK:                       // Apple extension
+    case K_FUNCTION:
+      c_ast_gibberish_args( ast, param );
+      break;
+    default:
+      /* suppress warning */;
+  } // switch
 }
 
 /**
