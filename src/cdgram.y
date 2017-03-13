@@ -216,8 +216,8 @@ static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
       } // switch
       // no break;
 
-    default:
     default_case:
+    default:
       c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), func );
       rv = func;
   } // switch
