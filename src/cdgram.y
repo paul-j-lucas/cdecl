@@ -130,11 +130,11 @@ static void cast_english( char const *name, c_ast_t *ast ) {
 */
 
 /**
- * TODO
+ * Adds an array to the AST being built.
  *
  * @param ast The AST to append to.
  * @param array The array AST to append.  It's "of" type must be null.
- * @return TODO
+ * @return Returns the AST to be used as the grammar production's return value.
  */
 static c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
   assert( ast );
@@ -173,6 +173,59 @@ static c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
 
   array->name = c_ast_take_name( ast );
   return array;
+}
+
+/**
+ * Adds a function to the AST being built.
+ *
+ * @param ast The AST to append to.
+ * @param array The function AST to append.  It's "of" type must be null.
+ * @return Returns the AST to be used as the grammar production's return value.
+ */
+static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
+  assert( ast );
+  assert( func );
+  assert( func->kind == K_FUNCTION );
+
+  c_ast_t *rv = NULL;
+
+  switch ( ast->kind ) {
+    case K_ARRAY:
+      if ( ast->as.array.of_ast->kind == K_POINTER ) {
+        (void)c_ast_add_func( ast->as.array.of_ast, func );
+        rv = ast;
+        break;
+      }
+      goto default_case;
+
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+      switch ( ast->as.ptr_ref.to_ast->kind ) {
+        case K_NONE:
+          c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), func );
+          c_ast_set_parent( func, ast );
+          rv = ast;
+          goto done;
+        case K_POINTER:
+          (void)c_ast_add_func( ast->as.ptr_ref.to_ast, func );
+          rv = ast;
+          goto done;
+
+        default:
+          /* suppress warning */;
+      } // switch
+      // no break;
+
+    default:
+    default_case:
+      c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), func );
+      rv = func;
+  } // switch
+
+done:
+  func->type |= c_ast_take_storage( func->as.func.ret_ast );
+  assert( rv );
+  return rv;
 }
 
 /**
@@ -660,21 +713,7 @@ func_cast_c
 
       c_ast_t *const func = c_ast_new( K_FUNCTION, &@$ );
       func->as.func.args = $6;
-
-      switch ( $4->kind ) {
-        case K_POINTER:
-        case K_POINTER_TO_MEMBER:
-          if ( $4->as.ptr_ref.to_ast->kind == K_NONE ) {
-            c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), func );
-            c_ast_set_parent( func, $4 );
-            $$ = $4;
-            break;
-          }
-          // no break;
-        default:
-          $$ = func;
-          c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), $$ );
-      } // switch
+      $$ = c_ast_add_func( $4, func );
 
       DUMP_AST( "< func_cast_c", $$ );
       DUMP_END();
@@ -1232,33 +1271,7 @@ func_decl_c
       c_ast_t *const func = c_ast_new( K_FUNCTION, &@$ );
       func->name = c_ast_take_name( $1 );
       func->as.func.args = $3;
-
-      switch ( $1->kind ) {
-        case K_ARRAY:
-          if ( $1->as.array.of_ast->kind == K_POINTER ) {
-            if ( $1->as.array.of_ast->as.ptr_ref.to_ast->kind == K_NONE ) {
-              c_ast_set_parent( func, $1->as.array.of_ast );
-              c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), func );
-              $$ = $1;
-            }
-          }
-          break;
-
-        case K_POINTER:
-        case K_POINTER_TO_MEMBER:
-          if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
-            c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), func );
-            c_ast_set_parent( func, $1 );
-            $$ = $1;
-            break;
-          }
-          // no break;
-        default:
-          $$ = func;
-          c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), $$ );
-      } // switch
-
-      $$->type |= c_ast_take_storage( $$->as.func.ret_ast );
+      $$ = c_ast_add_func( $1, func );
 
       DUMP_AST( "< func_decl_c", $$ );
       DUMP_END();
