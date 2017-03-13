@@ -185,7 +185,6 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
   FPUTC( ']', param->gout );
 }
 
-
 /**
  * Prints the given AST as gibberish, aka, a C/C++ declaration.
  *
