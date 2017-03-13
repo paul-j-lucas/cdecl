@@ -22,29 +22,33 @@
 // local
 #include "config.h"                     /* must go first */
 #include "types.h"
+#include "util.h"
 
 // standard
 #include <stdbool.h>
 #include <stdio.h>                      /* for FILE */
 
 #define C_ARRAY_NO_SIZE   (-1)          /* for array[] */
+#define C_KIND_PARENT     10
 
 ///////////////////////////////////////////////////////////////////////////////
+
 
 /**
  * Kinds of AST nodes.
  */
 enum c_kind {
-  K_NONE,
-  K_ARRAY,
-  K_BLOCK,                              // Apple extension
-  K_BUILTIN,                            // void, char, int, etc.
-  K_ENUM_CLASS_STRUCT_UNION,
-  K_FUNCTION,
-  K_NAME,                               // typeless function argument in K&R C
-  K_POINTER,
-  K_POINTER_TO_MEMBER,                  // C++ only
-  K_REFERENCE,                          // C++ only
+  K_NONE                    = 0,
+  K_BUILTIN                 = 1,   // void, char, int, etc.
+  K_ENUM_CLASS_STRUCT_UNION = 2,
+  K_NAME                    = 3,   // typeless function argument in K&R C
+  K_ARRAY                   = C_KIND_PARENT + 1,
+  K_BLOCK                   = C_KIND_PARENT + 2,  // Apple extension
+  K_FUNCTION                = C_KIND_PARENT + 3,
+  K_POINTER                 = C_KIND_PARENT + 4,
+  // C++ only
+  K_POINTER_TO_MEMBER       = C_KIND_PARENT + 5,
+  K_REFERENCE               = C_KIND_PARENT + 6,
 };
 typedef enum c_kind       c_kind_t;
 
@@ -57,6 +61,7 @@ typedef struct c_block    c_block_t;
 typedef struct c_builtin  c_builtin_t;
 typedef struct c_ecsu     c_ecsu_t;
 typedef struct c_func     c_func_t;
+typedef struct c_parent   c_parent_t;
 typedef struct c_ptr_mbr  c_ptr_mbr_t;
 typedef struct c_ptr_ref  c_ptr_ref_t;
 
@@ -64,10 +69,18 @@ typedef struct c_ptr_ref  c_ptr_ref_t;
  * The signature for functions passed to c_ast_visit().
  *
  * @param ast The c_ast to visit.
+ * @param data TODO
  * @return Returning \c true will cause traversal to stop and \a ast to be
  * returned to the called of c_ast_visit().
  */
-typedef bool (*c_ast_visitor)( c_ast_t *ast );
+typedef bool (*c_ast_visitor)( c_ast_t *ast, void *data );
+
+/**
+ * TOOD
+ */
+struct c_parent {
+  c_ast_t  *of_ast;
+};
 
 /**
  * Linked-list of AST objects.
@@ -132,16 +145,18 @@ struct c_ptr_ref {
 };
 
 /**
- * AST node for a parse C/C++ declaration.
+ * AST node for a parsed C/C++ declaration.
  */
 struct c_ast {
   c_ast_t    *next;                     // must be first struct member
+  c_ast_t    *parent;
   c_kind_t    kind;
   char const *name;
   c_type_t    type;
   YYLTYPE     loc;
 
   union {
+    c_parent_t    parent;
     c_array_t     array;
     c_block_t     block;
     // nothing needed for K_BUILTIN
@@ -280,6 +295,14 @@ char const* c_ast_name( c_ast_t *ast );
 c_ast_t* c_ast_new( c_kind_t kind, YYLTYPE const *loc );
 
 /**
+ * TODO
+ *
+ * @param child TODO
+ * @Param parent TODO
+ */
+void c_ast_set_parent( c_ast_t *child, c_ast_t *parent );
+
+/**
  * Takes the name, if any, away from \a ast
  * (with the intent of giving it to another c_ast).
  *
@@ -337,9 +360,10 @@ bool c_ast_take_typedef( c_ast_t *ast );
  *
  * @param ast The root of the AST to begin visiting.
  * @param visitor The visitor to use.
+ * @param data TODO
  * @return Returns a pointer to the c_ast the visitor stopped on or null.
  */
-c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visitor visitor );
+c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visitor visitor, void *data );
 
 /**
  * Gets the name of the given kind.
