@@ -1,0 +1,1 @@
+cdecl | -xc++ | declare p as pointer to member of class C const int | 0

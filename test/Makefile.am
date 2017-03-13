@@ -96,6 +96,8 @@ TESTS+= tests/cast_pc.test \
 
 # C++ tests
 TESTS+=	tests/cast_pmi.test \
+	tests/declare_cpmi.test \
+	tests/declare_pmci.test \
 	tests/declare_pmi.test \
 	tests/declare_rci.test \
 	tests/declare_rcpi.test \
