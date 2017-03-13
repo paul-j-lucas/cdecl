@@ -141,6 +141,8 @@ static c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
   assert( array );
   assert( array->kind == K_ARRAY );
 
+  c_ast_t *const peek_ast = TYPE_PEEK();
+
   switch ( ast->kind ) {
     case K_ARRAY:
       array = c_ast_append_array( ast, array );
@@ -154,9 +156,12 @@ static c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
           );
           return ast;
         case K_NONE:
-          c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), array );
-          c_ast_set_parent( array, ast );
-          return ast;
+          c_ast_set_parent( peek_ast, array );
+          if ( ast != peek_ast ) {
+            c_ast_set_parent( array, ast );
+            return ast;
+          }
+          return array;
         default:
           /* suppress warning */;
       } // switch
@@ -1175,7 +1180,7 @@ array_decl_c
       DUMP_AST( "> decl2_c", $1 );
       DUMP_NUM( "> array_size_c", $2 );
 
-      c_ast_t *const array = c_ast_new( K_ARRAY, &@$ );
+      c_ast_t *const array = c_ast_new( K_ARRAY, &@1 );
       array->as.array.size = $2;
       $$ = c_ast_add_array( $1, array );
 
@@ -1229,6 +1234,16 @@ func_decl_c
       func->as.func.args = $3;
 
       switch ( $1->kind ) {
+        case K_ARRAY:
+          if ( $1->as.array.of_ast->kind == K_POINTER ) {
+            if ( $1->as.array.of_ast->as.ptr_ref.to_ast->kind == K_NONE ) {
+              c_ast_set_parent( func, $1->as.array.of_ast );
+              c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), func );
+              $$ = $1;
+            }
+          }
+          break;
+
         case K_POINTER:
         case K_POINTER_TO_MEMBER:
           if ( $1->as.ptr_ref.to_ast->kind == K_NONE ) {
@@ -1257,7 +1272,7 @@ name_decl_c
       DUMP_AST( "^ type_c", TYPE_PEEK() );
       DUMP_NAME( "> NAME", $1 );
 
-      $$ = c_ast_clone( TYPE_PEEK() );
+      $$ = TYPE_PEEK();
       assert( $$->name == NULL );
       $$->name = $1;
 
