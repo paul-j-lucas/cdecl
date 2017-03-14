@@ -283,7 +283,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
           // themselves due to the extra parentheses needed in the output.
           //
           break;
-        default:
+        default: {
 #endif
           bool const has_function_ancestor = !!
             c_ast_visit_up( ast->parent, c_ast_vistor_kind, (void*)K_FUNCTION );
@@ -308,6 +308,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
           if ( !param->postfix )
             c_ast_gibberish_qual_name( ast, param );
 #if 0
+        }
       } // switch
 #endif
       break;
