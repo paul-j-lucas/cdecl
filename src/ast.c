@@ -58,6 +58,7 @@ static void       c_ast_gibberish_impl( c_ast_t const*, g_param_t* );
 static void       c_ast_gibberish_postfix( c_ast_t const*, g_param_t* );
 static void       c_ast_gibberish_qual_name( c_ast_t const*, g_param_t const* );
 static void       c_ast_gibberish_space_name( c_ast_t const*, g_param_t* );
+static bool       c_ast_vistor_kind( c_ast_t*, void* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -284,8 +285,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
           break;
         default:
 #endif
-          if ( c_ast_parent_kind( ast ) != K_FUNCTION &&
-               param->gkind != G_CAST ) {
+          bool const has_function_ancestor = !!
+            c_ast_visit_up( ast->parent, c_ast_vistor_kind, (void*)K_FUNCTION );
+
+          if ( !has_function_ancestor && param->gkind != G_CAST ) {
             //
             // For all kinds except functions, we want the output to be like:
             //
@@ -464,20 +467,21 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
 }
 
 /**
- * A c_ast_visitor function used to find a K_BUILTIN.
+ * A c_ast_visitor function used to find an AST node of a particular kind.
  *
  * @param ast The c_ast to check.
- * @return Returns \c true only if the kind of \a ast is K_BUILTIN.
+ * @param data The c_kind (cast to <code>void*</code>) to find.
+ * @return Returns \c true only if the kind of \a ast is \a data.
  */
-static bool c_ast_vistor_builtin( c_ast_t *ast, void *data ) {
-  (void)data;
-  return ast->kind == K_BUILTIN;
+static bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
+  return ast->kind == (c_kind_t)data;
 }
 
 /**
  * A c_ast_visitor function used to find a name.
  *
  * @param ast The c_ast to check.
+ * @param data Not used.
  * @return Returns \c true only if \a ast has a name.
  */
 static bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
@@ -895,7 +899,8 @@ char const* c_ast_take_name( c_ast_t *ast ) {
 
 c_type_t c_ast_take_storage( c_ast_t *ast ) {
   c_type_t storage = T_NONE;
-  c_ast_t *const found = c_ast_visit( ast, c_ast_vistor_builtin, NULL );
+  c_ast_t *const found =
+    c_ast_visit( ast, c_ast_vistor_kind, (void*)K_BUILTIN );
   if ( found ) {
     storage = found->type & T_MASK_STORAGE;
     found->type &= ~T_MASK_STORAGE;
@@ -904,7 +909,8 @@ c_type_t c_ast_take_storage( c_ast_t *ast ) {
 }
 
 bool c_ast_take_typedef( c_ast_t *ast ) {
-  c_ast_t *const found = c_ast_visit( ast, c_ast_vistor_builtin, NULL );
+  c_ast_t *const found =
+    c_ast_visit( ast, c_ast_vistor_kind, (void*)K_BUILTIN );
   if ( found && (found->type & T_TYPEDEF) ) {
     found->type &= ~T_TYPEDEF;
     return true;
@@ -919,6 +925,14 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
     return ast;
   return c_ast_is_parent( ast ) ?
     c_ast_visit( ast->as.parent.of_ast, visitor, data ) : NULL;
+}
+
+c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
+  if ( ast == NULL )
+    return NULL;
+  if ( visitor( ast, data ) )
+    return ast;
+  return ast->parent ? c_ast_visit( ast->parent, visitor, data ) : NULL;
 }
 
 char const* c_kind_name( c_kind_t kind ) {

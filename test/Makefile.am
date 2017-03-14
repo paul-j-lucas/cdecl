@@ -22,6 +22,7 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_a3a5i.test \
 	tests/declare_a3a5pfv_ri.test \
 	tests/declare_a3a5pfv_rpi.test \
+	tests/declare_a3a5pfv_rppi.test \
 	tests/declare_a3pfv_ri.test \
 	tests/declare_a3ppfv_ri.test \
 	tests/declare_a9cpi.test \

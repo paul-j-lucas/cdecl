@@ -69,7 +69,7 @@ typedef struct c_ptr_ref  c_ptr_ref_t;
  * The signature for functions passed to c_ast_visit().
  *
  * @param ast The c_ast to visit.
- * @param data TODO
+ * @param data Optional data passed from c_ast_visit() or c_ast_visit_up().
  * @return Returning \c true will cause traversal to stop and \a ast to be
  * returned to the called of c_ast_visit().
  */
@@ -363,10 +363,20 @@ bool c_ast_take_typedef( c_ast_t *ast );
  *
  * @param ast The root of the AST to begin visiting.
  * @param visitor The visitor to use.
- * @param data TODO
+ * @param data Optional data passed to \a visitor.
  * @return Returns a pointer to the c_ast the visitor stopped on or null.
  */
 c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visitor visitor, void *data );
+
+/**
+ * Traverses up the AST towards the root.
+ *
+ * @param ast A leaf of the AST to begin visiting.
+ * @param visitor The visitor to use.
+ * @param data Optional data passed to \a visitor.
+ * @return Returns a pointer to the c_ast the visitor stopped on or null.
+ */
+c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor visitor, void *data );
 
 /**
  * Gets the name of the given kind.
