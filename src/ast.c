@@ -152,7 +152,7 @@ static void c_ast_free( c_ast_t *ast ) {
  * arguments to print.
  * @param param The g_param to use.
  */
-static void c_ast_gibberish_args( c_ast_t const *ast, g_param_t *param ) {
+static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
   assert( ast );
   assert( ast->kind == K_BLOCK || ast->kind == K_FUNCTION );
 
@@ -241,7 +241,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         FPUTS( ast->name, param->gout );
       }
       FPUTC( ')', param->gout );
-      c_ast_gibberish_args( ast, param );
+      c_ast_gibberish_func_args( ast, param );
       break;
 
     case K_BUILTIN:
@@ -257,10 +257,12 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_FUNCTION:
       c_ast_gibberish_impl( ast->as.func.ret_ast, param );
-      param->postfix = true;
-      if ( false_set( &param->space ) )
-        FPUTC( ' ', param->gout );
-      c_ast_gibberish_postfix( ast, param );
+      if ( !param->postfix ) {
+        param->postfix = true;
+        if ( false_set( &param->space ) )
+          FPUTC( ' ', param->gout );
+        c_ast_gibberish_postfix( ast, param );
+      }
       break;
 
     case K_NAME:
@@ -380,6 +382,8 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
         if ( grandparent ) {
           switch ( grandparent->kind ) {
             case K_ARRAY:
+            case K_BLOCK:               // Apple extension
+            case K_FUNCTION:
             case K_POINTER:
               c_ast_gibberish_postfix( parent, param );
               break;
@@ -410,7 +414,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
       break;
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
-      c_ast_gibberish_args( ast, param );
+      c_ast_gibberish_func_args( ast, param );
       break;
     default:
       /* suppress warning */;
