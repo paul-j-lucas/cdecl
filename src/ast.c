@@ -57,6 +57,7 @@ static c_ast_t   *c_ast_head;           // linked list of alloc'd objects
 static void       c_ast_gibberish_impl( c_ast_t const*, g_param_t* );
 static void       c_ast_gibberish_postfix( c_ast_t const*, g_param_t* );
 static void       c_ast_gibberish_qual_name( c_ast_t const*, g_param_t const* );
+static void       c_ast_gibberish_space_name( c_ast_t const*, g_param_t* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -199,17 +200,18 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_ARRAY:
       c_ast_gibberish_impl( ast->as.array.of_ast, param );
       if ( !c_ast_is_parent( ast->as.array.of_ast ) ) {
+        //
+        // We've reached the leaf on the current branch of the tree and printed
+        // the type that the array is of: now recurse back up to the root so we
+        // can print the AST nodes in root-to-leaf order as the recursion
+        // unwinds.
+        //
         param->postfix = true;
         if ( false_set( &param->space ) )
           FPUTC( ' ', param->gout );
         c_ast_gibberish_postfix( ast, param );
       }
       else if ( !param->postfix && c_ast_parent_kind( ast ) != K_ARRAY ) {
-        if ( ast->name && param->gkind != G_CAST ) {
-          if ( false_set( &param->space ) )
-            FPUTC( ' ', param->gout );
-          FPUTS( ast->name, param->gout );
-        }
         //
         // We have to defer printing the array's size until we've fully
         // unwound nested arrays, if any, so we print:
@@ -220,6 +222,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         //
         //      type[5] name[3]
         //
+        c_ast_gibberish_space_name( ast, param );
         c_ast_gibberish_array_size( ast, param );
       }
       break;
@@ -242,11 +245,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_BUILTIN:
       FPUTS( c_type_name( ast->type ), param->gout );
-      if ( ast->name && param->gkind != G_CAST ) {
-        if ( false_set( &param->space ) )
-          FPUTC( ' ', param->gout );
-        FPUTS( ast->name, param->gout );
-      }
+      c_ast_gibberish_space_name( ast, param );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
@@ -264,11 +263,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         c_ast_gibberish_postfix( ast, param );
       }
       else if ( !param->postfix && c_ast_parent_kind( ast ) != K_ARRAY ) {
-        if ( ast->name && param->gkind != G_CAST ) {
-          if ( false_set( &param->space ) )
-            FPUTC( ' ', param->gout );
-          FPUTS( ast->name, param->gout );
-        }
+        c_ast_gibberish_space_name( ast, param );
         c_ast_gibberish_args( ast, param );
       }
       break;
@@ -353,41 +348,60 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
   if ( parent ) {
     switch ( parent->kind ) {
       case K_ARRAY:
-      case K_BLOCK:
+      case K_BLOCK:                     // Apple extension
       case K_FUNCTION:
         c_ast_gibberish_postfix( parent, param );
         break;
 
       case K_POINTER: {
         //
-        // Pointers to _____ are written in gibberish like:
+        // Pointers are written in gibberish like:
         //
         //      type (*a)[size]         // pointer to array
         //      type (*f)(args)         // pointer to function
         //      type (*a[size])(args)   // array of pointer to function
         //
+        // However, if there are consecutive pointers, omit the extra '('
+        // characters:
+        //
+        //      type (**a)[size]        // pointer to pointer to array[size]
+        //
+        // rather than:
+        //
+        //      type (*(*a))[size]      // extra () unnecessary
+        //
         if ( ast->kind != K_POINTER )
           FPUTC( '(', param->gout );
         c_ast_gibberish_qual_name( parent, param );
+
         c_ast_t const *const grandparent = parent->parent;
-        if ( grandparent &&
-             (grandparent->kind == K_ARRAY ||
-              grandparent->kind == K_POINTER) )
-          c_ast_gibberish_postfix( parent, param );
+        if ( grandparent ) {
+          switch ( grandparent->kind ) {
+            case K_ARRAY:
+            case K_POINTER:
+              c_ast_gibberish_postfix( parent, param );
+              break;
+            default:
+              /* suppress warning */;
+          } // switch
+        }
+
         if ( ast->kind != K_POINTER )
           FPUTC( ')', param->gout );
+        break;
       }
 
       default:
         /* suppress warning */;
     } // switch
-  }
-  else if ( ast->name && param->gkind != G_CAST ) {
-    if ( false_set( &param->space ) )
-      FPUTC( ' ', param->gout );
-    FPUTS( ast->name, param->gout );
+  } else {
+    c_ast_gibberish_space_name( ast, param );
   }
 
+  //
+  // We're now unwinding the recursion: print the "postfix" things (size for
+  // arrays, arguments for functions) in root-to-leaf order.
+  //
   switch ( ast->kind ) {
     case K_ARRAY:
       c_ast_gibberish_array_size( ast, param );
@@ -429,8 +443,26 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast,
 
   if ( ast->as.ptr_ref.qualifier )
     FPRINTF( param->gout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
-  if ( ast->name && param->gkind == G_DECLARE )
+  if ( ast->name && param->gkind != G_CAST )
     FPUTS( ast->name, param->gout );
+}
+
+/**
+ * Helper function for c_ast_gibberish_impl() that prints a space (if it hasn't
+ * printed one before) and an AST node's name, if any.
+ *
+ * @param ast The c_ast to print the name of, if any.
+ * @param param The g_param to use.
+ */
+static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
+  assert( ast );
+  assert( param );
+
+  if ( ast->name && param->gkind != G_CAST ) {
+    if ( false_set( &param->space ) )
+      FPUTC( ' ', param->gout );
+    FPUTS( ast->name, param->gout );
+  }
 }
 
 /**
