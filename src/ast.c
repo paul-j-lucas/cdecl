@@ -750,13 +750,13 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
   g_param_t param;
   g_param_init( &param, G_CAST, gout );
-  return c_ast_gibberish_impl( ast, &param );
+  c_ast_gibberish_impl( ast, &param );
 }
 
 void c_ast_gibberish_declare( c_ast_t const *ast, FILE *gout ) {
   g_param_t param;
   g_param_init( &param, G_DECLARE, gout );
-  return c_ast_gibberish_impl( ast, &param );
+  c_ast_gibberish_impl( ast, &param );
 }
 
 void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
