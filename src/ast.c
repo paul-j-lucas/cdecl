@@ -257,8 +257,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_FUNCTION:
       c_ast_gibberish_impl( ast->as.func.ret_ast, param );
-      if ( !param->postfix ) {
-        param->postfix = true;
+      if ( false_set( &param->postfix ) ) {
         if ( false_set( &param->space ) )
           FPUTC( ' ', param->gout );
         c_ast_gibberish_postfix( ast, param );
