@@ -311,7 +311,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
             if ( false_set( &param->space ) )
               FPUTC( ' ', param->gout );
           }
-          c_ast_gibberish_qual_name( ast, param );
+          if ( !param->postfix )
+            c_ast_gibberish_qual_name( ast, param );
       } // switch
       break;
 
@@ -343,7 +344,8 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
   assert( ast );
   assert( ast->kind == K_ARRAY ||
           ast->kind == K_BLOCK ||
-          ast->kind == K_FUNCTION );
+          ast->kind == K_FUNCTION ||
+          ast->kind == K_POINTER );
   assert( param );
 
   c_ast_t const *const parent = ast->parent;
@@ -364,12 +366,16 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
         //      type (*f)(args)         // pointer to function
         //      type (*a[size])(args)   // array of pointer to function
         //
-        FPUTC( '(', param->gout );
+        if ( ast->kind != K_POINTER )
+          FPUTC( '(', param->gout );
         c_ast_gibberish_qual_name( parent, param );
         c_ast_t const *const grandparent = parent->parent;
-        if ( grandparent && grandparent->kind == K_ARRAY )
-          c_ast_gibberish_postfix( grandparent, param );
-        FPUTC( ')', param->gout );
+        if ( grandparent &&
+             (grandparent->kind == K_ARRAY ||
+              grandparent->kind == K_POINTER) )
+          c_ast_gibberish_postfix( parent, param );
+        if ( ast->kind != K_POINTER )
+          FPUTC( ')', param->gout );
       }
 
       default:
