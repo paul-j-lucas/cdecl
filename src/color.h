@@ -42,18 +42,25 @@
 #define SGR_CAP_SEP         ":"         /* capability separator */
 #define SGR_SEP             ";"         /* attribute/RGB separator */
 
-#define COLOR_WHEN_DEFAULT  COLOR_NOT_FILE
-#define COLORS_DEFAULT                                    \
-  "caret="    SGR_FG_GREEN  SGR_SEP SGR_BOLD SGR_CAP_SEP  \
-  "error="    SGR_FG_RED    SGR_SEP SGR_BOLD SGR_CAP_SEP  \
-  "note="     SGR_FG_CYAN   SGR_SEP SGR_BOLD SGR_CAP_SEP  \
-  "warning="  SGR_FG_YELLOW SGR_SEP SGR_BOLD SGR_CAP_SEP  \
-  "locus="                          SGR_BOLD SGR_CAP_SEP  \
-  "quote="                          SGR_BOLD
+// gray is acyually "bold black"
+#define SGR_BG_GRAY         SGR_BG_BLACK SGR_SEP SGR_BOLD
+#define SGR_FG_GRAY         SGR_FG_BLACK SGR_SEP SGR_BOLD
 
 #define SGR_START           "\33[%sm"   /* start color sequence */
 #define SGR_END             "\33[m"     /* end color sequence */
 #define SGR_EL              "\33[K"     /* Erase in Line (EL) sequence */
+
+#define COLOR_WHEN_DEFAULT  COLOR_NOT_FILE
+#define COLORS_DEFAULT                                        \
+  "caret="        SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP \
+  "error="        SGR_FG_RED    SGR_SEP SGR_BOLD  SGR_CAP_SEP \
+  "HELP-keyword="                       SGR_BOLD  SGR_CAP_SEP \
+  "HELP-nonterm=" SGR_FG_CYAN                     SGR_CAP_SEP \
+  "HELP-punct="   SGR_FG_GRAY                     SGR_CAP_SEP \
+  "HELP-title="   SGR_FG_BLUE   SGR_SEP SGR_BOLD  SGR_CAP_SEP \
+  "locus="                              SGR_BOLD  SGR_CAP_SEP \
+  "note="         SGR_FG_CYAN   SGR_SEP SGR_BOLD  SGR_CAP_SEP \
+  "warning="      SGR_FG_YELLOW SGR_SEP SGR_BOLD  SGR_CAP_SEP
 
 /**
  * Starts printing in the given, predefined color.
@@ -88,9 +95,13 @@ typedef enum color_when color_when_t;
 
 // extern variables
 extern bool         colorize;           // colorize diagnostics?
-extern char const  *sgr_caret;          // caret color
-extern char const  *sgr_error;          // error color
-extern char const  *sgr_warning;        // warning color
+extern char const  *sgr_caret;
+extern char const  *sgr_error;
+extern char const  *sgr_help_keyword;
+extern char const  *sgr_help_nonterm;
+extern char const  *sgr_help_punct;
+extern char const  *sgr_help_title;
+extern char const  *sgr_warning;
 
 ///////////////////////////////////////////////////////////////////////////////
 

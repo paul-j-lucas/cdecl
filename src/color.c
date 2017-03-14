@@ -33,6 +33,10 @@ typedef struct color_cap color_cap_t;
 bool        colorize;
 char const *sgr_caret;
 char const *sgr_error;
+char const *sgr_help_keyword;
+char const *sgr_help_nonterm;
+char const *sgr_help_punct;
+char const *sgr_help_title;
 char const *sgr_warning;
 
 /**
@@ -40,10 +44,14 @@ char const *sgr_warning;
  * to avoid conflict with gcc.
  */
 static color_cap_t const COLOR_CAPS[] = {
-  { "caret",    &sgr_caret    },
-  { "error",    &sgr_error    },
-  { "warning",  &sgr_warning  },
-  { NULL,       NULL          }
+  { "caret",        &sgr_caret        },
+  { "error",        &sgr_error        },
+  { "HELP-keyword", &sgr_help_keyword },
+  { "HELP-nonterm", &sgr_help_nonterm },
+  { "HELP-punct",   &sgr_help_punct   },
+  { "HELP-title",   &sgr_help_title   },
+  { "warning",      &sgr_warning      },
+  { NULL,           NULL              }
 };
 
 // local functions
