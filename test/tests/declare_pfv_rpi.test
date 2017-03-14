@@ -1,0 +1,1 @@
+cdecl | | declare x as pointer to function (void) returning pointer to int | 0

@@ -256,16 +256,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_FUNCTION:
       c_ast_gibberish_impl( ast->as.func.ret_ast, param );
-      if ( !c_ast_is_parent( ast->as.func.ret_ast ) ) {
-        param->postfix = true;
-        if ( false_set( &param->space ) )
-          FPUTC( ' ', param->gout );
-        c_ast_gibberish_postfix( ast, param );
-      }
-      else if ( !param->postfix && c_ast_parent_kind( ast ) != K_ARRAY ) {
-        c_ast_gibberish_space_name( ast, param );
-        c_ast_gibberish_args( ast, param );
-      }
+      param->postfix = true;
+      if ( false_set( &param->space ) )
+        FPUTC( ' ', param->gout );
+      c_ast_gibberish_postfix( ast, param );
       break;
 
     case K_NAME:
@@ -278,6 +272,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_POINTER:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
+#if 0
       switch ( ast->as.ptr_ref.to_ast->kind ) {
         case K_ARRAY:
         case K_BLOCK:                   // Apple extension
@@ -288,6 +283,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
           //
           break;
         default:
+#endif
           if ( c_ast_parent_kind( ast ) != K_FUNCTION &&
                param->gkind != G_CAST ) {
             //
@@ -308,7 +304,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
           }
           if ( !param->postfix )
             c_ast_gibberish_qual_name( ast, param );
+#if 0
       } // switch
+#endif
       break;
 
     case K_POINTER_TO_MEMBER:
