@@ -400,6 +400,10 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
         /* suppress warning */;
     } // switch
   } else {
+    //
+    // We've reached the root of the AST that has the name of the thing we're
+    // printing the gibberish for.
+    //
     c_ast_gibberish_space_name( ast, param );
   }
 
