@@ -9,9 +9,20 @@ AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib
 AM_YFLAGS = -d
 LDADD = $(top_builddir)/lib/libgnu.a
 
-cdecl_SOURCES =	cdgram.y cdlex.l cdecl.c \
-		ast.c color.c keywords.c lang.c literals.c options.c types.c \
-		common.c util.c help.c set.c
+cdecl_SOURCES =	cdgram.y cdlex.l \
+		ast.c \
+		cdecl.c \
+		color.c \
+		common.c \
+		gibberish.c \
+		help.c \
+		keywords.c \
+		lang.c \
+		literals.c \
+		options.c \
+		set.c \
+		types.c \
+		util.c
 
 if WITH_READLINE
 cdecl_SOURCES += autocomplete.c

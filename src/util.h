@@ -257,5 +257,7 @@ CDECL_UTIL_INLINE bool true_or_set( bool *flag ) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
+_GL_INLINE_HEADER_END
+
 #endif /* cdecl_util_H */
 /* vim:set et sw=2 ts=2: */

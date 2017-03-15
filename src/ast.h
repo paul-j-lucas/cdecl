@@ -28,6 +28,11 @@
 #include <stdbool.h>
 #include <stdio.h>                      /* for FILE */
 
+_GL_INLINE_HEADER_BEGIN
+#ifndef CDECL_AST_INLINE
+# define CDECL_AST_INLINE _GL_INLINE
+#endif /* CDECL_AST_INLINE */
+
 #define C_ARRAY_NO_SIZE   (-1)          /* for array[] */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -193,6 +198,16 @@ struct c_ast {
  * @return If \a ast is an array, returns \a ast; otherwise returns \a array.
  */
 c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array );
+
+/**
+ * Convenience function for getting block/function arguments.
+ *
+ * @param ast The c_ast to get the arguments of.
+ * @return Returns a pointe to the first argument or null if none.
+ */
+CDECL_AST_INLINE c_ast_t const* c_ast_args( c_ast_t const *ast ) {
+  return ast->as.func.args.head_ast;
+}
 
 /**
  * Checks an entire AST for semantic validity.
@@ -387,6 +402,8 @@ c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor visitor, void *data );
 char const* c_kind_name( c_kind_t kind );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+_GL_INLINE_HEADER_END
 
 #endif /* cdecl_ast_H */
 /* vim:set et sw=2 ts=2: */
