@@ -42,10 +42,13 @@ typedef enum g_kind g_kind_t;
  * arguments otherwise).
  */
 struct g_param {
-  g_kind_t  gkind;
-  FILE     *gout;
-  bool      postfix;
-  bool      space;
+  g_kind_t        gkind;                // the kind of gibberish to create
+  FILE           *gout;                 // where to write the gibberish
+  unsigned        func_depth;           // within "function () returning ..."
+  c_ast_t const  *leaf_ast;             // leaf of AST
+  c_ast_t const  *root_ast;             // root of AST
+  bool            postfix;              // doing postfix gibberish?
+  bool            space;                // printed a space yet?
 };
 typedef struct g_param g_param_t;
 
@@ -70,6 +73,16 @@ static bool       c_ast_vistor_kind( c_ast_t*, void* );
  */
 static inline c_ast_t const* c_ast_args( c_ast_t const *ast ) {
   return ast->as.func.args.head_ast;
+}
+
+/**
+ * Gets the kind of AST node the child node.
+ *
+ * @param The c_ast to get the child node's kind of.
+ * @return Returns the child node's kind.
+ */
+static inline c_kind_t c_ast_child_kind( c_ast_t const *ast ) {
+  return ast->as.parent.of_ast->kind;
 }
 
 /**
@@ -162,9 +175,7 @@ static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", param->gout );
     g_param_t args_param;
-    memcpy( &args_param, param, sizeof( g_param_t ) );
-    args_param.postfix = false;
-    args_param.space = false;
+    g_param_init( &args_param, param->gkind, param->gout );
     c_ast_gibberish_impl( arg, &args_param );
   } // for
   FPUTC( ')', param->gout );
@@ -197,22 +208,25 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   assert( ast );
   assert( param );
 
+  if ( !param->root_ast )
+    param->root_ast = ast;
+
   switch ( ast->kind ) {
     case K_ARRAY:
       c_ast_gibberish_impl( ast->as.array.of_ast, param );
-      if ( !c_ast_is_parent( ast->as.array.of_ast ) ) {
+      if ( ast->as.array.of_ast == param->leaf_ast ) {
         //
         // We've reached the leaf on the current branch of the tree and printed
         // the type that the array is of: now recurse back up to the root so we
         // can print the AST nodes in root-to-leaf order as the recursion
         // unwinds.
         //
-        param->postfix = true;
         if ( false_set( &param->space ) )
           FPUTC( ' ', param->gout );
+        param->postfix = true;
         c_ast_gibberish_postfix( ast, param );
       }
-      else if ( !param->postfix && c_ast_parent_kind( ast ) != K_ARRAY ) {
+      else if ( !param->postfix && param->func_depth == 0 ) {
         //
         // We have to defer printing the array's size until we've fully
         // unwound nested arrays, if any, so we print:
@@ -247,26 +261,34 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_BUILTIN:
       FPUTS( c_type_name( ast->type ), param->gout );
       c_ast_gibberish_space_name( ast, param );
+      param->leaf_ast = ast;
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
       FPRINTF( param->gout,
         "%s %s", c_kind_name( ast->kind ), ast->as.ecsu.ecsu_name
       );
+      param->leaf_ast = ast;
       break;
 
     case K_FUNCTION:
+      ++param->func_depth;
       c_ast_gibberish_impl( ast->as.func.ret_ast, param );
+      --param->func_depth;
       if ( false_set( &param->postfix ) ) {
         if ( false_set( &param->space ) )
           FPUTC( ' ', param->gout );
-        c_ast_gibberish_postfix( ast, param );
+        if ( ast == param->root_ast )
+          c_ast_gibberish_postfix( param->leaf_ast->parent, param );
+        else
+          c_ast_gibberish_postfix( ast, param );
       }
       break;
 
     case K_NAME:
       if ( ast->name && param->gkind != G_CAST )
         FPUTS( ast->name, param->gout );
+      param->leaf_ast = ast;
       break;
 
     case K_NONE:
@@ -274,44 +296,28 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_POINTER:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
-#if 0
-      switch ( ast->as.ptr_ref.to_ast->kind ) {
-        case K_ARRAY:
-        case K_BLOCK:                   // Apple extension
-        case K_FUNCTION:
-          //
-          // We have to handle pointers to these kinds in those kinds
-          // themselves due to the extra parentheses needed in the output.
-          //
-          break;
-        default: {
-#endif
-          bool const has_function_ancestor = !!
-            c_ast_visit_up( ast->parent, c_ast_vistor_kind, (void*)K_FUNCTION );
+      bool const has_function_ancestor =
+        !!c_ast_visit_up( ast->parent, c_ast_vistor_kind, (void*)K_FUNCTION );
 
-          if ( !has_function_ancestor && param->gkind != G_CAST ) {
-            //
-            // For all kinds except functions, we want the output to be like:
-            //
-            //      type *var
-            //
-            // i.e., the '*' adjacent to the variable; for functions, or when
-            // we're casting, we want the output to be like:
-            //
-            //      type* func()        // function
-            //      (type*)             // cast
-            //
-            // i.e., the '*' adjacent to the type.
-            //
-            if ( false_set( &param->space ) )
-              FPUTC( ' ', param->gout );
-          }
-          if ( !param->postfix )
-            c_ast_gibberish_qual_name( ast, param );
-#if 0
-        }
-      } // switch
-#endif
+      if ( !has_function_ancestor && param->gkind != G_CAST ) {
+        //
+        // For all kinds except functions, we want the output to be like:
+        //
+        //      type *var
+        //
+        // i.e., the '*' adjacent to the variable; for functions, or when
+        // we're casting, we want the output to be like:
+        //
+        //      type* func()        // function
+        //      (type*)             // cast
+        //
+        // i.e., the '*' adjacent to the type.
+        //
+        if ( false_set( &param->space ) )
+          FPUTC( ' ', param->gout );
+      }
+      if ( !param->postfix && c_ast_child_kind( ast ) != K_ARRAY )
+        c_ast_gibberish_qual_name( ast, param );
       break;
 
     case K_POINTER_TO_MEMBER:
@@ -940,7 +946,7 @@ c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
     return NULL;
   if ( visitor( ast, data ) )
     return ast;
-  return ast->parent ? c_ast_visit( ast->parent, visitor, data ) : NULL;
+  return ast->parent ? c_ast_visit_up( ast->parent, visitor, data ) : NULL;
 }
 
 char const* c_kind_name( c_kind_t kind ) {

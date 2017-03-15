@@ -39,7 +39,10 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_cvpi.test \
 	tests/declare_fii_rv.test \
 	tests/declare_fixiy_rv.test \
+	tests/declare_fv_rpa3a5i.test \
+	tests/declare_fv_rpa3a5pi.test \
 	tests/declare_fv_rpa3i.test \
+	tests/declare_fv_rpa3pi.test \
 	tests/declare_fv_rv.test \
 	tests/declare_fx_rpi.test \
 	tests/declare_ll.test \
@@ -94,10 +97,7 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_si.test \
 	tests/explain_ti.test \
 	tests/explain_vcpi.test \
-	tests/explain_vpc.test \
-	tests/help_c.test \
-	tests/set.test
-	tests/set_options.test
+	tests/explain_vpc.test
 
 # C++ tests
 TESTS+=	tests/cast_pmi.test \
@@ -111,8 +111,7 @@ TESTS+=	tests/cast_pmi.test \
 	tests/declare_rpi.test \
 	tests/explain_cast_pmi.test \
 	tests/explain_pmfxx_rps.test \
-	tests/explain_pmi.test \
-	tests/help_cxx.test
+	tests/explain_pmi.test
 
 # Command-line tests
 TESTS+=	tests/cl-cast_i.test \
@@ -126,6 +125,12 @@ TESTS+=	tests/file-cast_i.test \
 	tests/file-declare_x.test \
 	tests/file-explain_i.test \
 	tests/file-explain_x.test
+
+# Miscellaneous tests
+TESTS+=	tests/help_c.test \
+	tests/help_cxx.test \
+	tests/set.test \
+	tests/set_options.test
 
 AM_TESTS_ENVIRONMENT = BUILD_SRC=$(top_builddir)/src; export BUILD_SRC ;
 TEST_EXTENSIONS = .test 
