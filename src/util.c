@@ -127,7 +127,7 @@ void json_print_kv( char const *key, char const *value, FILE *jout ) {
     FPRINTF( jout, "\"%s\": null", key  );
 }
 
-char* readline_wrapper( void ) {
+char* readline_wrapper( char const *prompt ) {
   for (;;) {
     static char *line_read;
 #ifdef HAVE_READLINE

@@ -42,10 +42,6 @@
 #define SGR_CAP_SEP         ":"         /* capability separator */
 #define SGR_SEP             ";"         /* attribute/RGB separator */
 
-// gray is acyually "bold black"
-#define SGR_BG_GRAY         SGR_BG_BLACK SGR_SEP SGR_BOLD
-#define SGR_FG_GRAY         SGR_FG_BLACK SGR_SEP SGR_BOLD
-
 #define SGR_START           "\33[%sm"   /* start color sequence */
 #define SGR_END             "\33[m"     /* end color sequence */
 #define SGR_EL              "\33[K"     /* Erase in Line (EL) sequence */
@@ -56,10 +52,11 @@
   "error="        SGR_FG_RED    SGR_SEP SGR_BOLD  SGR_CAP_SEP \
   "HELP-keyword="                       SGR_BOLD  SGR_CAP_SEP \
   "HELP-nonterm=" SGR_FG_CYAN                     SGR_CAP_SEP \
-  "HELP-punct="   SGR_FG_GRAY                     SGR_CAP_SEP \
+  "HELP-punct="   SGR_FG_BLACK  SGR_SEP SGR_BOLD  SGR_CAP_SEP \
   "HELP-title="   SGR_FG_BLUE   SGR_SEP SGR_BOLD  SGR_CAP_SEP \
   "locus="                              SGR_BOLD  SGR_CAP_SEP \
   "note="         SGR_FG_CYAN   SGR_SEP SGR_BOLD  SGR_CAP_SEP \
+  "PROMPT="       SGR_FG_GREEN                    SGR_CAP_SEP \
   "warning="      SGR_FG_YELLOW SGR_SEP SGR_BOLD  SGR_CAP_SEP
 
 /**
@@ -69,9 +66,21 @@
  * @param COLOR The predefined color.
  * @hideinitializer
  */
-#define SGR_START_COLOR(STREAM,COLOR) BLOCK(            \
-  if ( colorize && (sgr_ ## COLOR) )                    \
+#define SGR_START_COLOR(STREAM,COLOR) BLOCK(  \
+  if ( colorize && (sgr_ ## COLOR) )          \
     FPRINTF( (STREAM), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
+
+/**
+ * Writes the bytes to the given string that, when printed to a terminal, will
+ * start printing in the given color.
+ *
+ * @param STRING The string to write to.
+ * @param COLOR The predefined color.
+ * @hideinitializer
+ */
+#define SGR_SSTART_COLOR(STRING,COLOR) BLOCK( \
+  if ( colorize && (sgr_ ## COLOR) )          \
+    sprintf( (STRING), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
 
 /**
  * Ends printing in color.
@@ -81,6 +90,16 @@
  */
 #define SGR_END_COLOR(STREAM) \
   BLOCK( if ( colorize ) FPUTS( SGR_END SGR_EL, (STREAM) ); )
+
+/**
+ * Writes the bytes to the given string that, when printed to a terminal, will
+ * end printing in color.
+ *
+ * @param STRING The string to write to.
+ * @hideinitializer
+ */
+#define SGR_SEND_COLOR(STRING) \
+  BLOCK( if ( colorize ) strcpy( (STRING), SGR_END SGR_EL ); )
 
 /**
  * When to colorize output.
@@ -101,6 +120,7 @@ extern char const  *sgr_help_keyword;
 extern char const  *sgr_help_nonterm;
 extern char const  *sgr_help_punct;
 extern char const  *sgr_help_title;
+extern char const  *sgr_prompt;
 extern char const  *sgr_warning;
 
 ///////////////////////////////////////////////////////////////////////////////

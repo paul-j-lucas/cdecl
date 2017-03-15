@@ -187,9 +187,10 @@ void json_print_kv( char const *key, char const *value, FILE *jout );
  *
  * If readline(3) is not compiled in, uses getline(3).
  *
+ * @param prompt The prompt to use.
  * @return Returns the line read or null for EOF.
  */
-char* readline_wrapper( void );
+char* readline_wrapper( char const *prompt );
 
 /**
  * Pops a node from the head of a list.

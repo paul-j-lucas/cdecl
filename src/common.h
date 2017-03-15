@@ -31,7 +31,7 @@ typedef struct {
 // extern variables
 extern char const  *me;                 // program name
 extern char const  *prompt;             // pointer to current prompt
-extern char         prompt_buf[];
+extern char        *prompt_buf;
 extern size_t       y_col;
 extern size_t       y_col_newline;
 #if YYTEXT_POINTER

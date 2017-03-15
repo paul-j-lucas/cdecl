@@ -37,6 +37,7 @@ char const *sgr_help_keyword;
 char const *sgr_help_nonterm;
 char const *sgr_help_punct;
 char const *sgr_help_title;
+char const *sgr_prompt;
 char const *sgr_warning;
 
 /**
@@ -50,6 +51,7 @@ static color_cap_t const COLOR_CAPS[] = {
   { "HELP-nonterm", &sgr_help_nonterm },
   { "HELP-punct",   &sgr_help_punct   },
   { "HELP-title",   &sgr_help_title   },
+  { "PROMPT",       &sgr_prompt       },
   { "warning",      &sgr_warning      },
   { NULL,           NULL              }
 };

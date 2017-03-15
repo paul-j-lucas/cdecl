@@ -6,6 +6,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"
+#include "color.h"
 #include "literals.h"
 #include "options.h"
 #include "util.h"
@@ -22,8 +23,7 @@
 #include <string.h>
 #include <sysexits.h>
 
-#define PROGRAM_NAME_MAX_LEN      10    /* at least big enough for "c++decl" */
-#define PROMPT_SUFFIX             "> "
+#define PROMPT_SUFFIX             ">"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -33,7 +33,7 @@ extern FILE        *yyin;
 // extern variable definitions
 char const         *me;                 // program name
 char const         *prompt;
-char                prompt_buf[ PROGRAM_NAME_MAX_LEN + sizeof PROMPT_SUFFIX ];
+char               *prompt_buf;
 
 // local variables
 static bool         is_fin_a_tty;       // is our input from a tty?
@@ -109,8 +109,30 @@ static void cdecl_init( int *pargc, char const ***pargv ) {
   is_fin_a_tty = isatty( fileno( fin ) );
 
   // init the prompt
-  strcpy( prompt_buf, opt_lang >= LANG_CPP_MIN ? "c++decl" : PACKAGE );
+  size_t const prompt_max_len =
+    (sizeof( SGR_START SGR_EL ) - 1) +
+    (sgr_prompt ? strlen( sgr_prompt ) : 0) +
+    (strlen( "c++decl" )) +
+    (strlen( PROMPT_SUFFIX ) + 1/*space*/) +
+    (sizeof( SGR_END SGR_EL ) - 1);
+
+  char color_buf[20];
+
+  prompt_buf = (char*)free_later( MALLOC( char, prompt_max_len + 1/*null*/ ) );
+
+  color_buf[0] = '\0';
+  SGR_SSTART_COLOR( color_buf, prompt );
+  strcat( prompt_buf, color_buf );
+
+  strcat( prompt_buf, opt_lang >= LANG_CPP_MIN ? "c++decl" : PACKAGE );
   strcat( prompt_buf, PROMPT_SUFFIX );
+
+  color_buf[0] = '\0';
+  SGR_SEND_COLOR( color_buf );
+  strcat( prompt_buf, color_buf );
+
+  strcat( prompt_buf, " " );
+
   prompt = prompt_buf;
 }
 
@@ -187,7 +209,7 @@ static bool parse_stdin( void ) {
     if ( !opt_quiet )
       printf( "Type \"%s\" or \"?\" for help\n", L_HELP );
     ok = true;
-    for ( char *line; (line = readline_wrapper()); )
+    for ( char *line; (line = readline_wrapper( prompt )); )
       ok = parse_string( line, strlen( line ) );
   } else {
     yyin = fin;
