@@ -14,6 +14,7 @@ cdecl_SOURCES =	cdgram.y cdlex.l \
 		cdecl.c \
 		color.c \
 		common.c \
+		debug.c \
 		english.c \
 		gibberish.c \
 		help.c \
