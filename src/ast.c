@@ -121,13 +121,15 @@ static inline c_kind_t c_ast_parent_kind( c_ast_t const *ast ) {
  *
  * @param param The \c g_param to initialize.
  * @param gkind The kind of gibberish to print.
+ * @param root The AST root.
  * @param gout The FILE to print it to.
  */
-static inline void g_param_init( g_param_t *param, g_kind_t gkind,
-                                 FILE *gout ) {
+static inline void g_param_init( g_param_t *param, c_ast_t const *root,
+                                 g_kind_t gkind, FILE *gout ) {
   memset( param, 0, sizeof( g_param_t ) );
   param->gkind = gkind;
-  param->gout  = gout;
+  param->gout = gout;
+  param->root_ast = root;
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -175,7 +177,7 @@ static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", param->gout );
     g_param_t args_param;
-    g_param_init( &args_param, param->gkind, param->gout );
+    g_param_init( &args_param, arg, param->gkind, param->gout );
     c_ast_gibberish_impl( arg, &args_param );
   } // for
   FPUTC( ')', param->gout );
@@ -207,9 +209,6 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
 static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   assert( ast );
   assert( param );
-
-  if ( !param->root_ast )
-    param->root_ast = ast;
 
   switch ( ast->kind ) {
     case K_ARRAY:
@@ -755,13 +754,13 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 
 void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
   g_param_t param;
-  g_param_init( &param, G_CAST, gout );
+  g_param_init( &param, ast, G_CAST, gout );
   c_ast_gibberish_impl( ast, &param );
 }
 
 void c_ast_gibberish_declare( c_ast_t const *ast, FILE *gout ) {
   g_param_t param;
-  g_param_init( &param, G_DECLARE, gout );
+  g_param_init( &param, ast, G_DECLARE, gout );
   c_ast_gibberish_impl( ast, &param );
 }
 
