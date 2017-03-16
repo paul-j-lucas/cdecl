@@ -73,6 +73,23 @@ static inline c_kind_t c_ast_parent_kind( c_ast_t const *ast ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Helper function for c_ast_gibberish_impl() that prints an array's size as
+ * well as the size for all child arrays, if any.
+ *
+ * @param ast the The c_ast that is a K_ARRAY whose size to print.
+ * @param param The g_param to use.
+ */
+static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
+  assert( ast );
+  assert( ast->kind == K_ARRAY );
+
+  FPUTC( '[', param->gout );
+  if ( ast->as.array.size != C_ARRAY_NO_SIZE )
+    FPRINTF( param->gout, "%d", ast->as.array.size );
+  FPUTC( ']', param->gout );
+}
+
+/**
  * Helper function for c_ast_gibberish_impl() that prints a block's or
  * function's arguments, if any.
  *
@@ -94,23 +111,6 @@ static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
     c_ast_gibberish_impl( arg, &args_param );
   } // for
   FPUTC( ')', param->gout );
-}
-
-/**
- * Helper function for c_ast_gibberish_impl() that prints an array's size as
- * well as the size for all child arrays, if any.
- *
- * @param ast the The c_ast that is a K_ARRAY whose size to print.
- * @param param The g_param to use.
- */
-static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
-  assert( ast );
-  assert( ast->kind == K_ARRAY );
-
-  FPUTC( '[', param->gout );
-  if ( ast->as.array.size != C_ARRAY_NO_SIZE )
-    FPRINTF( param->gout, "%d", ast->as.array.size );
-  FPUTC( ']', param->gout );
 }
 
 /**
