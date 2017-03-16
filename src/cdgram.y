@@ -185,7 +185,7 @@ static c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
 static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
   assert( ast );
   assert( func );
-  assert( func->kind == K_FUNCTION );
+  assert( func->kind == K_BLOCK || func->kind == K_FUNCTION );
 
   c_ast_t *rv = NULL;
 
@@ -1238,22 +1238,23 @@ array_size_c
   ;
 
 block_decl_c                            /* Apple extension */
-  : /* type_c */ '(' '^' type_qualifier_list_opt_c decl_c ')'
+  : /* type_c */
+    '(' '^' type_qualifier_list_opt_c { qualifier_push( $3, &@3 ); } decl_c ')'
     '(' arg_list_opt_c ')'
     {
+      qualifier_pop();
       DUMP_START( "block_decl_c",
                   "'(' '^' type_qualifier_list_opt_c decl_c ')' "
                   "'(' arg_list_opt_c ')'" );
       DUMP_AST( "^ type_c", TYPE_PEEK() );
       DUMP_TYPE( "> type_qualifier_list_opt_c", $3 );
-      DUMP_AST( "> decl_c", $4 );
-      DUMP_AST_LIST( "> arg_list_opt_c", $7 );
+      DUMP_AST( "> decl_c", $5 );
+      DUMP_AST_LIST( "> arg_list_opt_c", $8 );
 
-      $$ = c_ast_new( K_BLOCK, &@$ );
-      $$->name = check_strdup( c_ast_name( $4 ) );
-      $$->as.block.args = $7;
-      c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), $$ );
-      $$->type = $3;
+      c_ast_t *const block = c_ast_new( K_BLOCK, &@$ );
+      block->name = c_ast_take_name( $5 );
+      block->as.func.args = $8;
+      $$ = c_ast_add_func( $5, block );
 
       DUMP_AST( "< block_decl_c", $$ );
       DUMP_END();
