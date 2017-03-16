@@ -49,6 +49,7 @@ typedef struct keyword keyword_t;
 static keyword_t const CDECL_KEYWORDS[] = {
   { L_ARRAY,        TOKEN( Y_ARRAY )      },
   { L_AS,           TOKEN( Y_AS )         },
+  { L_BLOCK,        TOKEN( Y_BLOCK )      },  // Apple extension
   { L__BOOL,        C_SYN( L_BOOL )       },
   { L_CAST,         TOKEN( Y_CAST )       },
   { L_CHARACTER,    C_SYN( L_CHAR )       },
