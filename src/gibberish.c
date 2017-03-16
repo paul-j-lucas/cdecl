@@ -40,12 +40,25 @@ struct g_param {
 typedef struct g_param g_param_t;
 
 // local functions
-static bool       c_ast_vistor_kind( c_ast_t*, void* );
 static void       c_ast_gibberish_impl( c_ast_t const*, g_param_t* );
 static void       c_ast_gibberish_postfix( c_ast_t const*, g_param_t* );
 static void       c_ast_gibberish_qual_name( c_ast_t const*, g_param_t const* );
 static void       c_ast_gibberish_space_name( c_ast_t const*, g_param_t* );
+static bool       c_ast_vistor_kind( c_ast_t*, void* );
 static void       g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
+
+////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Checks whether \a ast has an ancestor AST node of \a kind.
+ *
+ * @param ast The c_ast whose parent to start from.
+ * @param kind The kind of ancestor to look for.
+ * @return Returns \c true only if \a ast has an ancestor of \a kind.
+ */
+static inline bool c_ast_has_ancestor( c_ast_t const *ast, c_kind_t kind ) {
+  return c_ast_visit_up( ast->parent, c_ast_vistor_kind, (void*)kind ) != NULL;
+}
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -153,9 +166,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_POINTER:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
-      bool const has_function_ancestor =
-        !!c_ast_visit_up( ast->parent, c_ast_vistor_kind, (void*)K_FUNCTION );
-
+      bool const has_function_ancestor = c_ast_has_ancestor( ast, K_FUNCTION );
       if ( !has_function_ancestor && param->gkind != G_CAST ) {
         //
         // For all kinds except functions, we want the output to be like:
