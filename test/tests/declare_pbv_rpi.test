@@ -1,0 +1,1 @@
+cdecl | | declare x as pointer to block (void) returning pointer to int | 0

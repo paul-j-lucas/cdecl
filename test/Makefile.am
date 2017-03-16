@@ -31,12 +31,14 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_a9cpi.test \
 	tests/declare_a9i.test \
 	tests/declare_a9pi.test \
+	tests/declare_bii_rd.test \
 	tests/declare_ci-01.test \
 	tests/declare_ci-02.test \
 	tests/declare_cpa3cpa5i.test \
 	tests/declare_cpa3pa5i.test \
 	tests/declare_cpa9ci.test \
 	tests/declare_cpa9i.test \
+	tests/declare_cpbv_rpi.test \
 	tests/declare_cpcpi.test \
 	tests/declare_cppi.test \
 	tests/declare_cvpi.test \
@@ -51,6 +53,7 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_pa3cpa5i.test \
 	tests/declare_pa3pa5i.test \
 	tests/declare_pa9i.test \
+	tests/declare_pbv_rpi.test \
 	tests/declare_pc.test \
 	tests/declare_pcpi.test \
 	tests/declare_pfv_rpi.test \

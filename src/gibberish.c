@@ -125,6 +125,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
+    case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
       c_ast_gibberish_impl( ast->as.parent.of_ast, param );
       if ( false_set( &param->postfix ) ) {
@@ -134,20 +135,6 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         else
           c_ast_gibberish_postfix( ast, param );
       }
-      break;
-
-    case K_BLOCK:                       // Apple extension
-      c_ast_gibberish_impl( ast->as.block.ret_ast, param );
-      FPUTS( "(^", param->gout );
-      if ( false_set( &param->postfix ) ) {
-        g_param_space( param );
-        if ( ast == param->root_ast )
-          c_ast_gibberish_postfix( param->leaf_ast->parent, param );
-        else
-          c_ast_gibberish_postfix( ast, param );
-      }
-      FPUTC( ')', param->gout );
-      c_ast_gibberish_func_args( ast, param );
       break;
 
     case K_BUILTIN:
@@ -174,17 +161,21 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_POINTER:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
-      bool const has_function_ancestor = c_ast_has_ancestor( ast, K_FUNCTION );
-      if ( !has_function_ancestor && param->gkind != G_CAST ) {
+      bool const has_function_or_block_ancestor =
+        c_ast_has_ancestor( ast, K_FUNCTION ) ||
+        c_ast_has_ancestor( ast, K_BLOCK );
+      if ( !has_function_or_block_ancestor && param->gkind != G_CAST ) {
         //
-        // For all kinds except functions, we want the output to be like:
+        // For all kinds except functions and blocks, we want the output to be
+        // like:
         //
         //      type *var
         //
-        // i.e., the '*' adjacent to the variable; for functions, or when
-        // we're casting, we want the output to be like:
+        // i.e., the '*' adjacent to the variable; for functions, blocks, or
+        // when we're casting, we want the output to be like:
         //
         //      type* func()        // function
+        //      type* (^block)()    // block
         //      (type*)             // cast
         //
         // i.e., the '*' adjacent to the type.
@@ -236,30 +227,39 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
         c_ast_gibberish_postfix( parent, param );
         break;
 
-      case K_POINTER: {
-        //
-        // Pointers are written in gibberish like:
-        //
-        //      type (*a)[size]         // pointer to array
-        //      type (*f)(args)         // pointer to function
-        //      type (*a[size])(args)   // array of pointer to function
-        //
-        // However, if there are consecutive pointers, omit the extra '('
-        // characters:
-        //
-        //      type (**a)[size]        // pointer to pointer to array[size]
-        //
-        // rather than:
-        //
-        //      type (*(*a))[size]      // extra () unnecessary
-        //
-        if ( ast->kind != K_POINTER )
-          FPUTC( '(', param->gout );
-        c_ast_gibberish_qual_name( parent, param );
+      case K_POINTER:
+        switch ( ast->kind ) {
+          case K_BLOCK:                 // Apple extension
+            FPUTS( "(^", param->gout );
+            break;
+          default:
+            //
+            // Pointers are written in gibberish like:
+            //
+            //      type (*a)[size]     // pointer to array
+            //      type (*f)()         // pointer to function
+            //      type (*a[size])()   // array of pointer to function
+            //
+            // so we need to add parentheses.
+            //
+            FPUTC( '(', param->gout );
+            break;
+          case K_POINTER:
+            //
+            // However, if there are consecutive pointers, omit the extra '(':
+            //
+            //      type (**a)[size]    // pointer to pointer to array[size]
+            //
+            // rather than:
+            //
+            //      type (*(*a))[size]  // extra () unnecessary
+            //
+            break;
+        } // switch
 
-        c_ast_t const *const grandparent = parent->parent;
-        if ( grandparent ) {
-          switch ( grandparent->kind ) {
+        c_ast_gibberish_qual_name( parent, param );
+        if ( parent->parent ) {
+          switch ( parent->parent->kind ) {
             case K_ARRAY:
             case K_BLOCK:               // Apple extension
             case K_FUNCTION:
@@ -274,7 +274,6 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
         if ( ast->kind != K_POINTER )
           FPUTC( ')', param->gout );
         break;
-      }
 
       default:
         /* suppress warning */;
@@ -284,7 +283,11 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
     // We've reached the root of the AST that has the name of the thing we're
     // printing the gibberish for.
     //
+    if ( ast->kind == K_BLOCK )
+      FPUTS( "(^", param->gout );
     c_ast_gibberish_space_name( ast, param );
+    if ( ast->kind == K_BLOCK )
+      FPUTC( ')', param->gout );
   }
 
   //
