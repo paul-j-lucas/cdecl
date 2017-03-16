@@ -30,10 +30,10 @@
 #endif /* WITH_CDECL_DEBUG */
 
 #define C_TYPE_ADD(DST,SRC,LOC) BLOCK( \
-  if ( !c_type_add( (DST), (SRC), &(LOC) ) ) { parse_cleanup(); YYABORT; } )
+  if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_CLEANUP(); )
 
 #define C_TYPE_CHECK(TYPE,LOC) BLOCK( \
-  if ( !c_type_check( TYPE, &(LOC) ) ) { parse_cleanup(); YYABORT; } )
+  if ( !c_type_check( TYPE, &(LOC) ) ) PARSE_CLEANUP(); )
 
 #define DUMP_COMMA \
   CDEBUG( if ( true_or_set( &dump_comma ) ) FPUTS( ",\n", stdout ); )
@@ -67,8 +67,8 @@
   DUMP_COMMA; FPUTS( "  ", stdout );        \
   json_print_kv( (KEY), c_type_name( TYPE ), stdout ); )
 
-#define PARSE_ERROR(...) \
-  BLOCK( parse_error( __VA_ARGS__ ); YYABORT; )
+#define PARSE_CLEANUP()   BLOCK( parse_cleanup(); yyclearin; YYABORT; )
+#define PARSE_ERROR(...)  BLOCK( parse_error( __VA_ARGS__ ); PARSE_CLEANUP(); )
 
 #define QUALIFIER_PEEK()      (in_attr.qualifier_head->qualifier)
 #define QUALIFIER_PEEK_LOC()  (in_attr.qualifier_head->loc)
@@ -254,7 +254,6 @@ static void parse_error( char const *format, ... ) {
     FPUTC( '\n', stderr );
     newlined = true;
   }
-  parse_cleanup();
 }
 
 /**
