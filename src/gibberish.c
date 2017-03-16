@@ -160,6 +160,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       assert( ast->kind != K_NONE );
 
     case K_POINTER:
+    case K_REFERENCE:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
       bool const has_function_or_block_ancestor =
         c_ast_has_ancestor( ast, K_FUNCTION ) ||
@@ -171,14 +172,14 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         //
         //      type *var
         //
-        // i.e., the '*' adjacent to the variable; for functions, blocks, or
-        // when we're casting, we want the output to be like:
+        // i.e., the '*' or '&' adjacent to the variable; for functions,
+        // blocks, or when we're casting, we want the output to be like:
         //
         //      type* func()        // function
         //      type* (^block)()    // block
         //      (type*)             // cast
         //
-        // i.e., the '*' adjacent to the type.
+        // i.e., the '*' or '&' adjacent to the type.
         //
         g_param_space( param );
       }
@@ -191,11 +192,6 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       FPRINTF( param->gout, " %s::", ast->as.ptr_mbr.class_name );
       c_ast_gibberish_qual_name( ast, param );
       break;
-
-    case K_REFERENCE:
-      c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
-      g_param_space( param );
-      c_ast_gibberish_qual_name( ast, param );
       break;
   } // switch
 }
@@ -214,7 +210,8 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
   assert( ast->kind == K_ARRAY ||
           ast->kind == K_BLOCK ||
           ast->kind == K_FUNCTION ||
-          ast->kind == K_POINTER );
+          ast->kind == K_POINTER ||
+          ast->kind == K_REFERENCE );
   assert( param );
 
   c_ast_t const *const parent = ast->parent;
