@@ -60,6 +60,16 @@ static inline bool c_ast_has_ancestor( c_ast_t const *ast, c_kind_t kind ) {
   return c_ast_visit_up( ast->parent, c_ast_vistor_kind, (void*)kind ) != NULL;
 }
 
+/**
+ * Prints a space only if we haven't printed one yet.
+ *
+ * @param param The g_param to use.
+ */
+static inline void g_param_space( g_param_t *param ) {
+  if ( false_set( &param->space ) )
+    FPUTC( ' ', param->gout );
+}
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -118,8 +128,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_FUNCTION:
       c_ast_gibberish_impl( ast->as.parent.of_ast, param );
       if ( false_set( &param->postfix ) ) {
-        if ( false_set( &param->space ) )
-          FPUTC( ' ', param->gout );
+        g_param_space( param );
         if ( ast == param->root_ast )
           c_ast_gibberish_postfix( param->leaf_ast->parent, param );
         else
@@ -131,8 +140,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       c_ast_gibberish_impl( ast->as.block.ret_ast, param );
       FPUTS( "(^", param->gout );
       if ( false_set( &param->postfix ) ) {
-        if ( false_set( &param->space ) )
-          FPUTC( ' ', param->gout );
+        g_param_space( param );
         if ( ast == param->root_ast )
           c_ast_gibberish_postfix( param->leaf_ast->parent, param );
         else
@@ -181,8 +189,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         //
         // i.e., the '*' adjacent to the type.
         //
-        if ( false_set( &param->space ) )
-          FPUTC( ' ', param->gout );
+        g_param_space( param );
       }
       if ( !param->postfix )
         c_ast_gibberish_qual_name( ast, param );
@@ -196,8 +203,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_REFERENCE:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
-      if ( false_set( &param->space ) )
-        FPUTC( ' ', param->gout );
+      g_param_space( param );
       c_ast_gibberish_qual_name( ast, param );
       break;
   } // switch
@@ -342,8 +348,7 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
   assert( param );
 
   if ( ast->name && param->gkind != G_CAST ) {
-    if ( false_set( &param->space ) )
-      FPUTC( ' ', param->gout );
+    g_param_space( param );
     FPUTS( ast->name, param->gout );
   }
 }
