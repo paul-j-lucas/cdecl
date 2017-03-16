@@ -32,7 +32,6 @@ typedef enum g_kind g_kind_t;
 struct g_param {
   g_kind_t        gkind;                // the kind of gibberish to create
   FILE           *gout;                 // where to write the gibberish
-  unsigned        func_depth;           // within "function () returning ..."
   c_ast_t const  *leaf_ast;             // leaf of AST
   c_ast_t const  *root_ast;             // root of AST
   bool            postfix;              // doing postfix gibberish?
@@ -47,28 +46,6 @@ static void       c_ast_gibberish_postfix( c_ast_t const*, g_param_t* );
 static void       c_ast_gibberish_qual_name( c_ast_t const*, g_param_t const* );
 static void       c_ast_gibberish_space_name( c_ast_t const*, g_param_t* );
 static void       g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
-
-////////// inline functions ///////////////////////////////////////////////////
-
-/**
- * Gets the kind of AST node the child node.
- *
- * @param The c_ast to get the child node's kind of.
- * @return Returns the child node's kind.
- */
-static inline c_kind_t c_ast_child_kind( c_ast_t const *ast ) {
-  return ast->as.parent.of_ast->kind;
-}
-
-/**
- * Gets the kind of AST node the parent node, if any, is.
- *
- * @param ast The c_ast to get the parent node's kind of.
- * @return Returns the parent node's kind or K_NONE if none.
- */
-static inline c_kind_t c_ast_parent_kind( c_ast_t const *ast ) {
-  return ast->parent ? ast->parent->kind : K_NONE;
-}
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -125,46 +102,28 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      c_ast_gibberish_impl( ast->as.array.of_ast, param );
-      if ( ast->as.array.of_ast == param->leaf_ast ) {
-        //
-        // We've reached the leaf on the current branch of the tree and printed
-        // the type that the array is of: now recurse back up to the root so we
-        // can print the AST nodes in root-to-leaf order as the recursion
-        // unwinds.
-        //
+    case K_FUNCTION:
+      c_ast_gibberish_impl( ast->as.parent.of_ast, param );
+      if ( false_set( &param->postfix ) ) {
         if ( false_set( &param->space ) )
           FPUTC( ' ', param->gout );
-        param->postfix = true;
-        c_ast_gibberish_postfix( ast, param );
-      }
-      else if ( !param->postfix && param->func_depth == 0 ) {
-        //
-        // We have to defer printing the array's size until we've fully
-        // unwound nested arrays, if any, so we print:
-        //
-        //      type name[3][5]
-        //
-        // rather than:
-        //
-        //      type[5] name[3]
-        //
-        c_ast_gibberish_space_name( ast, param );
-        c_ast_gibberish_array_size( ast, param );
+        if ( ast == param->root_ast )
+          c_ast_gibberish_postfix( param->leaf_ast->parent, param );
+        else
+          c_ast_gibberish_postfix( ast, param );
       }
       break;
 
     case K_BLOCK:                       // Apple extension
       c_ast_gibberish_impl( ast->as.block.ret_ast, param );
       FPUTS( "(^", param->gout );
-      if ( c_ast_parent_kind( ast ) == K_POINTER ) {
-        //
-        // If the parent node is a pointer, it's a pointer to block.
-        //
-        c_ast_gibberish_qual_name( ast->parent, param );
-      }
-      else if ( ast->name && param->gkind != G_CAST ) {
-        FPUTS( ast->name, param->gout );
+      if ( false_set( &param->postfix ) ) {
+        if ( false_set( &param->space ) )
+          FPUTC( ' ', param->gout );
+        if ( ast == param->root_ast )
+          c_ast_gibberish_postfix( param->leaf_ast->parent, param );
+        else
+          c_ast_gibberish_postfix( ast, param );
       }
       FPUTC( ')', param->gout );
       c_ast_gibberish_func_args( ast, param );
@@ -181,20 +140,6 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         "%s %s", c_kind_name( ast->kind ), ast->as.ecsu.ecsu_name
       );
       param->leaf_ast = ast;
-      break;
-
-    case K_FUNCTION:
-      ++param->func_depth;
-      c_ast_gibberish_impl( ast->as.func.ret_ast, param );
-      --param->func_depth;
-      if ( false_set( &param->postfix ) ) {
-        if ( false_set( &param->space ) )
-          FPUTC( ' ', param->gout );
-        if ( ast == param->root_ast )
-          c_ast_gibberish_postfix( param->leaf_ast->parent, param );
-        else
-          c_ast_gibberish_postfix( ast, param );
-      }
       break;
 
     case K_NAME:
@@ -228,7 +173,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         if ( false_set( &param->space ) )
           FPUTC( ' ', param->gout );
       }
-      if ( !param->postfix && c_ast_child_kind( ast ) != K_ARRAY )
+      if ( !param->postfix )
         c_ast_gibberish_qual_name( ast, param );
       break;
 
