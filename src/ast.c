@@ -229,7 +229,7 @@ c_ast_t* c_ast_clone( c_ast_t const *ast ) {
   clone->gc_next = gc_next_copy;
 
   clone->name = check_strdup( ast->name );
-  clone->next = c_ast_clone( ast->next );
+  clone->next = NULL;                   // don't clone next nodes
 
   switch ( ast->kind ) {
     case K_POINTER_TO_MEMBER:
@@ -263,9 +263,11 @@ c_ast_t* c_ast_clone( c_ast_t const *ast ) {
 void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
   assert( list );
   if ( ast ) {
-    if ( !list->head_ast )
+    assert( ast->next == NULL );
+    if ( !list->head_ast ) {
+      assert( list->tail_ast == NULL );
       list->head_ast = list->tail_ast = ast;
-    else {
+    } else {
       assert( list->tail_ast );
       assert( list->tail_ast->next == NULL );
       list->tail_ast->next = ast;
@@ -286,8 +288,8 @@ c_ast_list_t c_ast_list_clone( c_ast_list_t const *list ) {
   return clone;
 }
 
-char const* c_ast_name( c_ast_t *ast ) {
-  c_ast_t *const found = c_ast_visit( ast, c_ast_visitor_name, NULL );
+char const* c_ast_name( c_ast_t const *ast ) {
+  c_ast_t *const found = c_ast_visit( (c_ast_t*)ast, c_ast_visitor_name, NULL );
   return found ? found->name : NULL;
 }
 

@@ -820,7 +820,8 @@ arg_list_c
       DUMP_START( "arg_list_c", "arg_c" );
       DUMP_AST( "> arg_c", $1 );
 
-      $$.head_ast = $$.tail_ast = $1;
+      $$.head_ast = $$.tail_ast = NULL;
+      c_ast_list_append( &$$, $1 );
 
       DUMP_AST_LIST( "< arg_list_c", $$ );
       DUMP_END();

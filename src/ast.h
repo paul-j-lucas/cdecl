@@ -303,7 +303,7 @@ void c_ast_list_json( c_ast_list_t const *list, unsigned indent, FILE *fout );
  * @param ast The AST to get the name from.
  * @return Returns said name or null if none.
  */
-char const* c_ast_name( c_ast_t *ast );
+char const* c_ast_name( c_ast_t const *ast );
 
 /**
  * Creates a new c_ast.

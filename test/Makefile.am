@@ -40,7 +40,6 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_cpcpi.test \
 	tests/declare_cppi.test \
 	tests/declare_cvpi.test \
-	tests/declare_fii_rv.test \
 	tests/declare_fixiy_rv.test \
 	tests/declare_fv_rpa3a5i.test \
 	tests/declare_fv_rpa3a5pi.test \
@@ -84,6 +83,7 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_cpi.test \
 	tests/explain_cvpi.test \
 	tests/explain_f_rpi.test \
+	tests/explain_fid_rv.test \
 	tests/explain_fpc_rpi.test \
 	tests/explain_fpci_rpi.test \
 	tests/explain_fv_rpi.test \
