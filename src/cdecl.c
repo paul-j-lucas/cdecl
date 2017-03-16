@@ -99,7 +99,7 @@ int main( int argc, char const **argv ) {
 /**
  * Checks whether \a s is a cdecl command: cast, declare, or explain.
  *
- * @param s The null-terminated string to check
+ * @param s The null-terminated string to check.
  * @return Returns \c true only if \a s is a command.
  */
 static bool is_command( char const *s ) {
