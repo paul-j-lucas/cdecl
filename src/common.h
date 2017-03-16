@@ -14,7 +14,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define JSON_INDENT               2     /* speces per JSON indent level */
+#define CPPDECL               "c++decl"
+#define JSON_INDENT           2         /* speces per JSON indent level */
 
 typedef struct {
   int first_line;
@@ -23,10 +24,10 @@ typedef struct {
   int last_column;
 } YYLTYPE;
 
-#define YYLTYPE_IS_DECLARED       1
-#define YYLTYPE_IS_TRIVIAL        1
+#define YYLTYPE_IS_DECLARED   1
+#define YYLTYPE_IS_TRIVIAL    1
 
-#define CARET_CURRENT_LEX_COL     (-1)  // use lex's current column for caret
+#define CARET_CURRENT_LEX_COL (-1)      /* use lex's current column for ^ */
 
 // extern variables
 extern char const  *me;                 // program name

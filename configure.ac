@@ -33,6 +33,7 @@ AC_C_INLINE
 
 # Checks for library functions.
 AC_FUNC_REALLOC
+AC_CHECK_DECLS([rl_gnu_readline_p],[],[],[#include <readline,readline.h>])
 AC_CHECK_FUNCS([fmemopen])
 AC_SEARCH_LIBS([readline],[readline])
 AC_SEARCH_LIBS([add_history],[readline history])

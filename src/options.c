@@ -146,7 +146,7 @@ static char const* get_long_opt( char short_opt ) {
  */
 static bool is_cppdecl( void ) {
   static char const *const NAMES[] = {
-    "c++decl",
+    CPPDECL,
     "cppdecl",
     "cxxdecl",
     NULL
