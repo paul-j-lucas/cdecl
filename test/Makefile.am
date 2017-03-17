@@ -14,43 +14,43 @@ TESTS =	tests/cdecl-ap.test \
 # C declare tests
 TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_a3a5i.test \
-	tests/declare_a3a5pfv_ri.test \
-	tests/declare_a3a5pfv_rpi.test \
-	tests/declare_a3a5pfv_rppa7a9i.test \
-	tests/declare_a3a5pfv_rppa7i.test \
-	tests/declare_a3a5pfv_rppa7pi.test \
-	tests/declare_a3a5pfv_rppi.test \
-	tests/declare_a3pfv_ri.test \
-	tests/declare_a3ppfv_ri.test \
+	tests/declare_a3a5pfv_i.test \
+	tests/declare_a3a5pfv_pi.test \
+	tests/declare_a3a5pfv_ppa7a9i.test \
+	tests/declare_a3a5pfv_ppa7i.test \
+	tests/declare_a3a5pfv_ppa7pi.test \
+	tests/declare_a3a5pfv_ppi.test \
+	tests/declare_a3pfv_i.test \
+	tests/declare_a3ppfv_i.test \
 	tests/declare_a9cpi.test \
 	tests/declare_a9i.test \
 	tests/declare_a9pi.test \
-	tests/declare_bii_rd.test \
+	tests/declare_bii_d.test \
 	tests/declare_ci-01.test \
 	tests/declare_ci-02.test \
 	tests/declare_cpa3cpa5i.test \
 	tests/declare_cpa3pa5i.test \
 	tests/declare_cpa9ci.test \
 	tests/declare_cpa9i.test \
-	tests/declare_cpbv_rpi.test \
+	tests/declare_cpbv_pi.test \
 	tests/declare_cpcpi.test \
 	tests/declare_cppi.test \
 	tests/declare_cvpi.test \
-	tests/declare_fixiy_rv.test \
-	tests/declare_fv_rpa3a5i.test \
-	tests/declare_fv_rpa3a5pi.test \
-	tests/declare_fv_rpa3i.test \
-	tests/declare_fv_rpa3pi.test \
-	tests/declare_fv_rv.test \
-	tests/declare_fx_rpi.test \
+	tests/declare_fixiy_v.test \
+	tests/declare_fv_pa3a5i.test \
+	tests/declare_fv_pa3a5pi.test \
+	tests/declare_fv_pa3i.test \
+	tests/declare_fv_pa3pi.test \
+	tests/declare_fv_v.test \
+	tests/declare_fx_pi.test \
 	tests/declare_ll.test \
 	tests/declare_pa3cpa5i.test \
 	tests/declare_pa3pa5i.test \
 	tests/declare_pa9i.test \
-	tests/declare_pbv_rpi.test \
+	tests/declare_pbv_pi.test \
 	tests/declare_pc.test \
 	tests/declare_pcpi.test \
-	tests/declare_pfv_rpi.test \
+	tests/declare_pfv_pi.test \
 	tests/declare_ppi.test \
 	tests/declare_sc.test \
 	tests/declare_si.test \
@@ -66,28 +66,28 @@ TESTS+=	tests/declare_a3a5a7i.test \
 TESTS+=	tests/explain_a012i.test \
 	tests/explain_a0xAi-01.test \
 	tests/explain_a0xai-02.test \
-	tests/explain_a3a5pfv_ri.test \
 	tests/explain_a3a5a7i.test \
 	tests/explain_a3a5i.test \
-	tests/explain_a3pfv_ri.test \
-	tests/explain_a3ppfv_ri.test \
+	tests/explain_a3a5pfv_i.test \
+	tests/explain_a3pfv_i.test \
+	tests/explain_a3ppfv_i.test \
 	tests/explain_a9i.test \
 	tests/explain_a9pi.test \
 	tests/explain_cast_pc.test \
 	tests/explain_cast_pcc-01.test \
 	tests/explain_cast_pcc-02.test \
-	tests/explain_cast_pf_ri.test \
-	tests/explain_cast_pfpc_ri.test \
-	tests/explain_cast_pfpci_ri.test \
+	tests/explain_cast_pf_i.test \
+	tests/explain_cast_pfpc_i.test \
+	tests/explain_cast_pfpci_i.test \
 	tests/explain_ci.test \
 	tests/explain_cpi.test \
 	tests/explain_cvpi.test \
-	tests/explain_f_rpi.test \
-	tests/explain_fid_rv.test \
-	tests/explain_fpc_rpi.test \
-	tests/explain_fpci_rpi.test \
-	tests/explain_fv_rpi.test \
-	tests/explain_fx_rpi.test \
+	tests/explain_f_pi.test \
+	tests/explain_fid_v.test \
+	tests/explain_fpc_pi.test \
+	tests/explain_fpci_pi.test \
+	tests/explain_fv_pi.test \
+	tests/explain_fx_pi.test \
 	tests/explain_ic.test \
 	tests/explain_is.test \
 	tests/explain_it.test \
@@ -105,10 +105,10 @@ TESTS+=	tests/explain_a012i.test \
 # C cast tests
 TESTS+=	tests/cast_pc.test \
 	tests/cast_pcc.test \
-	tests/cast_pf_ri-01.test \
-	tests/cast_pf_ri-02.test \
-	tests/cast_pfpci_ri.test \
-	tests/cast_pfx_ri.test
+	tests/cast_pf_i-01.test \
+	tests/cast_pf_i-02.test \
+	tests/cast_pfpci_i.test \
+	tests/cast_pfx_i.test
 
 # C++ tests
 TESTS+=	tests/cast_pmi.test \
@@ -121,7 +121,7 @@ TESTS+=	tests/cast_pmi.test \
 	tests/declare_ri-02.test \
 	tests/declare_rpi.test \
 	tests/explain_cast_pmi.test \
-	tests/explain_pmfxx_rps.test \
+	tests/explain_pmfxx_ps.test \
 	tests/explain_pmi.test
 
 # Command-line tests
