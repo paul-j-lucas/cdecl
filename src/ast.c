@@ -45,7 +45,7 @@ static inline void c_ast_init( c_ast_t *ast, c_kind_t kind ) {
  * @return Returns \c true only if it is.
  */
 static inline bool c_ast_is_parent( c_ast_t const *ast ) {
-  return ast->kind > 10;
+  return ast->kind >= K_PARENT_MIN;
 }
 
 ////////// local functions ////////////////////////////////////////////////////

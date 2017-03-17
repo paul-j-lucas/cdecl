@@ -40,22 +40,28 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Kinds of AST nodes.
- * Those with values >= 10 are "parent" nodes.
+ *
+ * A given AST node may only have a single kind and \e not be a bitwise-or of
+ * kinds.  However, a bitwise-or of kinds may be used to test whether a given
+ * AST node is any \e one of those kinds.
  */
 enum c_kind {
-  K_NONE                    =  0,
-  K_BUILTIN                 =  1,       // void, char, int, etc.
-  K_ENUM_CLASS_STRUCT_UNION =  2,
-  K_NAME                    =  3,       // typeless function argument in K&R C
-  K_ARRAY                   = 11,
-  K_BLOCK                   = 12,       // Apple extension
-  K_FUNCTION                = 13,
-  K_POINTER                 = 14,
-  // C++ only
-  K_POINTER_TO_MEMBER       = 15,
-  K_REFERENCE               = 16,
+  K_NONE                    = 0,
+  K_BUILTIN                 = 0x0001,   // void, char, int, etc.
+  K_ENUM_CLASS_STRUCT_UNION = 0x0002,
+  K_NAME                    = 0x0004,   // typeless function argument in K&R C
+  // "parent" kinds
+  K_ARRAY                   = 0x0010,
+  K_BLOCK                   = 0x0020,   // Apple extension
+  K_FUNCTION                = 0x0040,
+  K_POINTER                 = 0x0080,
+  // "parent" kinds (C++ only)
+  K_POINTER_TO_MEMBER       = 0x0100,
+  K_REFERENCE               = 0x0200,
 };
-typedef enum c_kind       c_kind_t;
+typedef enum c_kind c_kind_t;
+
+#define K_PARENT_MIN          K_ARRAY
 
 ///////////////////////////////////////////////////////////////////////////////
 

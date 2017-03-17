@@ -53,7 +53,7 @@ static void       g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
  * Checks whether \a ast has an ancestor AST node of \a kind.
  *
  * @param ast The c_ast whose parent to start from.
- * @param kind The kind of ancestor to look for.
+ * @param kind The bitwise-or kind(s) of ancestor to look for.
  * @return Returns \c true only if \a ast has an ancestor of \a kind.
  */
 static inline bool c_ast_has_ancestor( c_ast_t const *ast, c_kind_t kind ) {
@@ -99,7 +99,7 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
  */
 static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
   assert( ast );
-  assert( ast->kind == K_BLOCK || ast->kind == K_FUNCTION );
+  assert( ast->kind & (K_BLOCK | K_FUNCTION) );
 
   bool comma = false;
   FPUTC( '(', param->gout );
@@ -163,8 +163,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_REFERENCE:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
       bool const has_function_or_block_ancestor =
-        c_ast_has_ancestor( ast, K_FUNCTION ) ||
-        c_ast_has_ancestor( ast, K_BLOCK );
+        c_ast_has_ancestor( ast, K_BLOCK | K_FUNCTION );
       if ( !has_function_or_block_ancestor && param->gkind != G_CAST ) {
         //
         // For all kinds except functions and blocks, we want the output to be
@@ -207,11 +206,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
  */
 static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
   assert( ast );
-  assert( ast->kind == K_ARRAY ||
-          ast->kind == K_BLOCK ||
-          ast->kind == K_FUNCTION ||
-          ast->kind == K_POINTER ||
-          ast->kind == K_REFERENCE );
+  assert( ast->kind &
+          (K_ARRAY | K_BLOCK | K_FUNCTION | K_POINTER | K_REFERENCE) );
   assert( param );
 
   c_ast_t const *const parent = ast->parent;
@@ -261,6 +257,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
             case K_BLOCK:               // Apple extension
             case K_FUNCTION:
             case K_POINTER:
+            case K_REFERENCE:
               c_ast_gibberish_postfix( parent, param );
               break;
             default:
@@ -325,9 +322,7 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast,
       FPUTC( '&', param->gout );
       break;
     default:
-      assert( ast->kind == K_POINTER ||
-              ast->kind == K_POINTER_TO_MEMBER ||
-              ast->kind == K_REFERENCE );
+      assert( ast->kind & (K_POINTER | K_POINTER_TO_MEMBER | K_REFERENCE) );
   } // switch
 
   if ( ast->as.ptr_ref.qualifier )
@@ -361,7 +356,7 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
  * @return Returns \c true only if the kind of \a ast is \a data.
  */
 static bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
-  return ast->kind == (c_kind_t)data;
+  return (ast->kind & (c_kind_t)data) != 0;
 }
 
 /**
