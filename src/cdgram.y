@@ -185,7 +185,7 @@ static c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
 static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
   assert( ast );
   assert( func );
-  assert( func->kind == K_BLOCK || func->kind == K_FUNCTION );
+  assert( func->kind & (K_BLOCK | K_FUNCTION) );
 
   c_ast_t *rv = NULL;
 
