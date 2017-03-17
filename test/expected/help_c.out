@@ -1,24 +1,23 @@
-  | = alternate; [] = optional; {} = 1 or more; <> = defined elsewhere
-    commands are separated by ';' or newline
-  command:
-    declare <name> as <english>
-    cast <name> into <english>
-    explain <gibberish>
-    set [options]
-    help | ?
-    exit | quit
-  english:
-    array [<number>] of <english>
-    block [( <decl-list> )] returning <english>
-    function [( <decl-list> )] returning <english>
-    [{ const[ant] | volatile | restrict[ed] }] pointer to <english>
-    <type>
-  type:
-    {[<storage-class>] [{<modifier>}] [<C-type>]}
-    { struct | union | enum } <name>
-  decl-list: a comma separated list of <name>, <english>, or <name> as <english>
-  name: a C identifier
-  gibberish: a C declaration, like "int *x", or cast, like "(int*)x"
-  storage-class: auto, extern, register, static, or _Thread_local
-  C-type: bool, int, char, char16_t, char32_t, wchar_t, float, double, or void
-  modifier: short, long, signed, unsigned, const, volatile, or restrict
+ | = alternate; [] = optional; {} = 1 or more; <> = defined elsewhere
+ command:
+   declare <name> as <english>
+   cast <name> into <english>
+   explain <gibberish>
+   set [options]
+   help | ?
+   exit | quit
+ english:
+   array [<number>] of <english>
+   block [( [<decl-list>] )] returning <english>
+   function [( [<decl-list>] )] returning <english>
+   [{ const[ant] | volatile | restrict[ed] }] pointer to <english>
+   <type>
+ type:
+   [<storage-class>] [{<modifier>}] [<C-type>]
+   { enum | struct | union } <name>
+ decl-list: a comma separated list of <name>, <english>, or <name> as <english>
+ name: a C identifier
+ gibberish: a C declaration, like "int *x", or cast, like "(int*)x"
+ C-type: bool, int, char, char16_t, char32_t, wchar_t, float, double, or void
+ modifier: short, long, signed, unsigned, const, volatile, or restrict
+ storage-class: auto, extern, register, static, or _Thread_local
