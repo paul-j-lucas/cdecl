@@ -1219,10 +1219,9 @@ decl2_c
   ;
 
 array_decl_c
-  : /* type_c */ decl2_c array_size_c
+  : decl2_c array_size_c
     {
       DUMP_START( "array_decl_c", "decl2_c array_size_c" );
-      DUMP_AST( "^ type_c", TYPE_PEEK() );
       DUMP_AST( "> decl2_c", $1 );
       DUMP_NUM( "> array_size_c", $2 );
 
@@ -1245,14 +1244,12 @@ array_size_c
   ;
 
 block_decl_c                            /* Apple extension */
-  : /* type_c */
-    '(' '^' type_qualifier_list_opt_c decl_c ')'
+  : '(' '^' type_qualifier_list_opt_c decl_c ')'
     '(' arg_list_opt_c ')'
     {
       DUMP_START( "block_decl_c",
                   "'(' '^' type_qualifier_list_opt_c decl_c ')' "
                   "'(' arg_list_opt_c ')'" );
-      DUMP_AST( "^ type_c", TYPE_PEEK() );
       DUMP_TYPE( "> type_qualifier_list_opt_c", $3 );
       DUMP_AST( "> decl_c", $4 );
       DUMP_AST_LIST( "> arg_list_opt_c", $7 );
