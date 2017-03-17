@@ -83,7 +83,8 @@ static void c_ast_free( c_ast_t *ast ) {
  * @return Returns \c true only if the kind of \a ast is \a data.
  */
 static bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
-  return ast->kind == (c_kind_t)data;
+  c_kind_t const kind = REINTERPRET_CAST( c_kind_t, data );
+  return ast->kind == kind;
 }
 
 /**
@@ -289,7 +290,8 @@ c_ast_list_t c_ast_list_clone( c_ast_list_t const *list ) {
 }
 
 char const* c_ast_name( c_ast_t const *ast ) {
-  c_ast_t *const found = c_ast_visit( (c_ast_t*)ast, c_ast_visitor_name, NULL );
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+  c_ast_t *const found = c_ast_visit( nonconst_ast, c_ast_visitor_name, NULL );
   return found ? found->name : NULL;
 }
 
@@ -322,8 +324,8 @@ char const* c_ast_take_name( c_ast_t *ast ) {
 
 c_type_t c_ast_take_storage( c_ast_t *ast ) {
   c_type_t storage = T_NONE;
-  c_ast_t *const found =
-    c_ast_visit( ast, c_ast_vistor_kind, (void*)K_BUILTIN );
+  void *const data = REINTERPRET_CAST( void*, K_BUILTIN );
+  c_ast_t *const found = c_ast_visit( ast, c_ast_vistor_kind, data );
   if ( found ) {
     storage = found->type & T_MASK_STORAGE;
     found->type &= ~T_MASK_STORAGE;
@@ -332,8 +334,8 @@ c_type_t c_ast_take_storage( c_ast_t *ast ) {
 }
 
 bool c_ast_take_typedef( c_ast_t *ast ) {
-  c_ast_t *const found =
-    c_ast_visit( ast, c_ast_vistor_kind, (void*)K_BUILTIN );
+  void *const data = REINTERPRET_CAST( void*, K_BUILTIN );
+  c_ast_t *const found = c_ast_visit( ast, c_ast_vistor_kind, data );
   if ( found && (found->type & T_TYPEDEF) ) {
     found->type &= ~T_TYPEDEF;
     return true;

@@ -32,10 +32,12 @@ _GL_INLINE_HEADER_BEGIN
 
 #define ARRAY_SIZE(A)             (sizeof(A) / sizeof(A[0]))
 #define BLOCK(...)                do { __VA_ARGS__ } while (0)
+#define CONST_CAST(T,EXPR)        ((T)(EXPR))
 #define FREE(PTR)                 free( (void*)(PTR) )
 #define NO_OP                     ((void)0)
 #define PERROR_EXIT(STATUS)       BLOCK( perror( me ); exit( STATUS ); )
 #define PRINT_ERR(...)            fprintf( stderr, __VA_ARGS__ )
+#define REINTERPRET_CAST(T,EXPR)  ((T)(EXPR))
 #define STRERROR                  strerror( errno )
 
 #define INTERNAL_ERR(FORMAT,...) \

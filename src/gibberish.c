@@ -57,7 +57,8 @@ static void       g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
  * @return Returns \c true only if \a ast has an ancestor of \a kind.
  */
 static inline bool c_ast_has_ancestor( c_ast_t const *ast, c_kind_t kind ) {
-  return c_ast_visit_up( ast->parent, c_ast_vistor_kind, (void*)kind ) != NULL;
+  void *const data = REINTERPRET_CAST( void*, kind );
+  return c_ast_visit_up( ast->parent, c_ast_vistor_kind, data ) != NULL;
 }
 
 /**
@@ -356,7 +357,8 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
  * @return Returns \c true only if the kind of \a ast is \a data.
  */
 static bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
-  return (ast->kind & (c_kind_t)data) != 0;
+  c_kind_t const kind = REINTERPRET_CAST( c_kind_t, data );
+  return (ast->kind & kind) != 0;
 }
 
 /**

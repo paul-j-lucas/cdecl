@@ -218,7 +218,9 @@ static char* keyword_completion( char const *text, int state ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void readline_init( void ) {
-  rl_readline_name = (char*)PACKAGE;  // allow conditional .inputrc parsing
+  // allow conditional .inputrc parsing
+  rl_readline_name = CONST_CAST( char*, PACKAGE );
+
   rl_attempted_completion_function = (CPPFunction*)attempt_completion;
   rl_completion_entry_function = (Function*)keyword_completion;
 }
