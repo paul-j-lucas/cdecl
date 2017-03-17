@@ -11,14 +11,8 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 TESTS =	tests/cdecl-ap.test \
 	tests/cdecl-x.test
 
-# C tests
-TESTS+= tests/cast_pc.test \
-	tests/cast_pcc.test \
-	tests/cast_pf_ri-01.test \
-	tests/cast_pf_ri-02.test \
-	tests/cast_pfpci_ri.test \
-	tests/cast_pfx_ri.test \
-	tests/declare_a3a5a7i.test \
+# C declare tests
+TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_a3a5i.test \
 	tests/declare_a3a5pfv_ri.test \
 	tests/declare_a3a5pfv_rpi.test \
@@ -66,10 +60,13 @@ TESTS+= tests/cast_pc.test \
 	tests/declare_u.test \
 	tests/declare_uc.test \
 	tests/declare_ui.test \
-	tests/declare_ull.test \
-	tests/explain_a012i.test \
+	tests/declare_ull.test
+
+# C explain tests
+TESTS+=	tests/explain_a012i.test \
 	tests/explain_a0xAi-01.test \
 	tests/explain_a0xai-02.test \
+	tests/explain_a3a5pfv_ri.test \
 	tests/explain_a3a5a7i.test \
 	tests/explain_a3a5i.test \
 	tests/explain_a3pfv_ri.test \
@@ -104,6 +101,14 @@ TESTS+= tests/cast_pc.test \
 	tests/explain_ti.test \
 	tests/explain_vcpi.test \
 	tests/explain_vpc.test
+
+# C cast tests
+TESTS+=	tests/cast_pc.test \
+	tests/cast_pcc.test \
+	tests/cast_pf_ri-01.test \
+	tests/cast_pf_ri-02.test \
+	tests/cast_pfpci_ri.test \
+	tests/cast_pfx_ri.test
 
 # C++ tests
 TESTS+=	tests/cast_pmi.test \

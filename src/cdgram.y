@@ -191,26 +191,33 @@ static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      if ( ast->as.array.of_ast->kind == K_POINTER ) {
-        (void)c_ast_add_func( ast->as.array.of_ast, func );
-        rv = ast;
-        break;
-      }
+      switch ( ast->as.array.of_ast->kind ) {
+        case K_ARRAY:
+        case K_POINTER:
+        case K_REFERENCE:
+          (void)c_ast_add_func( ast->as.parent.of_ast, func );
+          rv = ast;
+          goto done;
+        default:
+          /* suppress warning */;
+      } // switch
       goto default_case;
 
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
+    case K_REFERENCE:
       switch ( ast->as.ptr_ref.to_ast->kind ) {
         case K_NONE:
           c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), func );
           c_ast_set_parent( func, ast );
           rv = ast;
           goto done;
+        case K_ARRAY:
         case K_POINTER:
+        case K_REFERENCE:
           (void)c_ast_add_func( ast->as.ptr_ref.to_ast, func );
           rv = ast;
           goto done;
-
         default:
           /* suppress warning */;
       } // switch
