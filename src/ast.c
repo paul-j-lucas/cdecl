@@ -278,15 +278,16 @@ void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
 }
 
 c_ast_list_t c_ast_list_clone( c_ast_list_t const *list ) {
-  c_ast_list_t clone;
-  clone.head_ast = list ? c_ast_clone( list->head_ast ) : NULL;
-
-  c_ast_t *tail = clone.head_ast;
-  while ( tail && tail->next )
-    tail = tail->next;
-  clone.tail_ast = tail;
-
-  return clone;
+  c_ast_list_t list_clone;
+  if ( list ) {
+    for ( c_ast_t const *ast = list->head_ast; ast; ast = ast->next ) {
+      c_ast_t *const ast_clone = c_ast_clone( ast );
+      c_ast_list_append( &list_clone, ast_clone );
+    } // for
+  } else {
+    list_clone.head_ast = list_clone.tail_ast = NULL;
+  }
+  return list_clone;
 }
 
 char const* c_ast_name( c_ast_t const *ast ) {
