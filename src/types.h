@@ -74,7 +74,7 @@ typedef unsigned c_type_t;
  *
  * @param dest_type A pointer to the type to add to.
  * @param new_type The type to add.
- * @param loc TODO
+ * @param loc The source location of \a new_type.
  * @return Returns \c true only if the type added successfully.
  */
 bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc );
