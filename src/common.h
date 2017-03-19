@@ -7,7 +7,7 @@
 #define cdecl_common_H
 
 // local
-#include "config.h"
+#include "config.h"                     /* must go first */
 
 // standard
 #include <stddef.h>                     /* for size_t */
@@ -16,6 +16,17 @@
 
 #define CPPDECL               "c++decl"
 #define JSON_INDENT           2         /* speces per JSON indent level */
+
+typedef struct c_ast c_ast_t;
+
+/**
+ * TODO
+ */
+struct syn_attr {
+  c_ast_t *top_ast;
+  c_ast_t *target_ast;
+};
+typedef struct syn_attr syn_attr_t;
 
 typedef struct {
   int first_line;
