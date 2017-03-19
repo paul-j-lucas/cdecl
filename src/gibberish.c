@@ -44,7 +44,6 @@ static void       c_ast_gibberish_impl( c_ast_t const*, g_param_t* );
 static void       c_ast_gibberish_postfix( c_ast_t const*, g_param_t* );
 static void       c_ast_gibberish_qual_name( c_ast_t const*, g_param_t const* );
 static void       c_ast_gibberish_space_name( c_ast_t const*, g_param_t* );
-static bool       c_ast_vistor_kind( c_ast_t*, void* );
 static void       g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -347,18 +346,6 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
     g_param_space( param );
     FPUTS( ast->name, param->gout );
   }
-}
-
-/**
- * A c_ast_visitor function used to find an AST node of a particular kind.
- *
- * @param ast The c_ast to check.
- * @param data The c_kind (cast to <code>void*</code>) to find.
- * @return Returns \c true only if the kind of \a ast is \a data.
- */
-static bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
-  c_kind_t const kind = REINTERPRET_CAST( c_kind_t, data );
-  return (ast->kind & kind) != 0;
 }
 
 /**
