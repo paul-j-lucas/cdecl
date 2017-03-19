@@ -586,9 +586,10 @@ explain_declaration_c
 
       if ( c_ast_check( $4 ) ) {
         char const *const name = c_ast_take_name( $4 );
-        FPRINTF( fout, "declare %s as ", name );
+        assert( name );
+        FPRINTF( fout, "%s %s %s ", L_DECLARE, name, L_AS );
         if ( c_ast_take_typedef( $4 ) )
-          FPUTS( "type ", fout );
+          FPRINTF( fout, "%s ", L_TYPE );
         c_ast_english( $4, fout );
         FPUTC( '\n', fout );
         FREE( name );
@@ -608,14 +609,14 @@ explain_cast_c
       DUMP_NAME( "> name_token_opt", $7 );
       DUMP_END();
 
-      if ( $7 )
-        FPRINTF( fout, "cast %s into ", $7 );
-      else
-        FPUTS( "cast into ", fout );
+      FPUTS( L_CAST, fout );
+      if ( $7 ) {
+        FPRINTF( fout, " %s", $7 );
+        FREE( $7 );
+      }
+      FPRINTF( fout, " %s ", L_INTO );
       c_ast_english( $5, fout );
       FPUTC( '\n', fout );
-
-      FREE( $7 );
     }
   ;
 
