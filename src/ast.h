@@ -163,10 +163,11 @@ struct c_ptr_ref {
  */
 struct c_ast {
   c_ast_t    *next;                     // must be first struct member
-  c_ast_t    *parent;
+  unsigned    id;                       // unique id (starts at 1)
   c_kind_t    kind;
   char const *name;
   c_type_t    type;
+  c_ast_t    *parent;
   YYLTYPE     loc;
 
   union {

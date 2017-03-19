@@ -34,7 +34,9 @@ static bool       c_ast_vistor_kind( c_ast_t*, void* );
  * @param kind The kind of c_ast to initialize.
  */
 static inline void c_ast_init( c_ast_t *ast, c_kind_t kind ) {
+  static unsigned next_id;
   memset( ast, 0, sizeof( c_ast_t ) );
+  ast->id = ++next_id;
   ast->kind = kind;
 }
 
@@ -224,6 +226,8 @@ c_ast_t* c_ast_clone( c_ast_t const *ast ) {
   //
   // Even though it's slightly less efficient, it's safer to memcpy() the clone
   // so we can't forget to copy non-pointer struct members.
+  //
+  // Note that a clone retains its original id.
   //
   c_ast_t *const gc_next_copy = clone->gc_next;
   memcpy( clone, ast, sizeof( c_ast_t ) );

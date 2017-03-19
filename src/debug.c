@@ -46,12 +46,12 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
   if ( ast != NULL ) {
     ++indent;
 
+    PRINT_JSON( "\"id\": %u,\n", ast->id );
     PRINT_JSON_KV( "kind", c_kind_name( ast->kind ) );
     FPUTS( ",\n", jout );
-    PRINT_JSON_KV(
-      "parent->kind", ast->parent ? c_kind_name( ast->parent->kind ) : NULL
+    PRINT_JSON(
+      "\"parent->id\": %d,\n", ast->parent ? (int)ast->parent->id : -1
     );
-    FPUTS( ",\n", jout );
     PRINT_JSON_KV( "name", ast->name );
     FPUTS( ",\n", jout );
     PRINT_JSON_KV( "type", c_type_name( ast->type ) );
