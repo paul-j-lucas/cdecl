@@ -22,9 +22,6 @@
 static unsigned   c_ast_count;          // alloc'd but not yet freed
 static c_ast_t   *c_ast_head;           // linked list of alloc'd objects
 
-// local functions
-static bool       c_ast_vistor_kind( c_ast_t*, void* );
-
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
@@ -75,18 +72,6 @@ static void c_ast_free( c_ast_t *ast ) {
     } // switch
     FREE( ast );
   }
-}
-
-/**
- * A c_ast_visitor function used to find an AST node of a particular kind.
- *
- * @param ast The c_ast to check.
- * @param data The c_kind (cast to <code>void*</code>) to find.
- * @return Returns \c true only if the kind of \a ast is \a data.
- */
-static bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
-  c_kind_t const kind = REINTERPRET_CAST( c_kind_t, data );
-  return ast->kind == kind;
 }
 
 /**
@@ -363,6 +348,11 @@ c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
   if ( visitor( ast, data ) )
     return ast;
   return ast->parent ? c_ast_visit_up( ast->parent, visitor, data ) : NULL;
+}
+
+bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
+  c_kind_t const kind = REINTERPRET_CAST( c_kind_t, data );
+  return (ast->kind & kind) != 0;
 }
 
 char const* c_kind_name( c_kind_t kind ) {
