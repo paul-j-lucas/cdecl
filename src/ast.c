@@ -286,6 +286,7 @@ char const* c_ast_name( c_ast_t const *ast ) {
 }
 
 c_ast_t* c_ast_new( c_kind_t kind, YYLTYPE const *loc ) {
+  assert( loc );
   c_ast_t *const ast = MALLOC( c_ast_t, 1 );
   c_ast_init( ast, kind );
   ast->loc = *loc;

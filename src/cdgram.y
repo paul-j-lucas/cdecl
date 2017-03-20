@@ -213,7 +213,7 @@ static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
     case K_REFERENCE:
       switch ( ast->as.ptr_ref.to_ast->kind ) {
         case K_NONE:
-          c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), func );
+          c_ast_set_parent( TYPE_PEEK(), func );
           c_ast_set_parent( func, ast );
           rv = ast;
           goto done;
@@ -230,7 +230,7 @@ static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
 
     default_case:
     default:
-      c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), func );
+      c_ast_set_parent( TYPE_PEEK(), func );
       rv = func;
   } // switch
 
@@ -693,7 +693,7 @@ block_cast_c                            /* Apple extension */
       $$.top_ast = c_ast_new( K_BLOCK, &@$ );
       $$.top_ast->name = c_ast_name( $3.top_ast );
       $$.top_ast->as.block.args = $6;
-      c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), $$.top_ast );
+      c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
 
       DUMP_AST( "< block_cast_c", $$.top_ast );
       DUMP_END();
@@ -707,7 +707,7 @@ func_cast_c
       DUMP_AST( "^ type_c", TYPE_PEEK() );
 
       $$.top_ast = c_ast_new( K_FUNCTION, &@$ );
-      c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), $$.top_ast );
+      c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
 
       DUMP_AST( "< func_cast_c", $$.top_ast );
       DUMP_END();
@@ -739,7 +739,7 @@ name_cast_c
       DUMP_AST( "^ type_c", TYPE_PEEK() );
       DUMP_NAME( "> NAME", $1 );
 
-      $$.top_ast = c_ast_clone( TYPE_PEEK() );
+      $$.top_ast = TYPE_PEEK();
       assert( $$.top_ast->name == NULL );
       $$.top_ast->name = $1;
 
@@ -757,7 +757,7 @@ pointer_cast_c
 
       $$.top_ast = c_ast_new( K_POINTER, &@$ );
       // TODO: do something with $2
-      c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), $$.top_ast );
+      c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
 
       DUMP_AST( "< pointer_cast_c", $$.top_ast );
       DUMP_END();
@@ -774,7 +774,7 @@ pointer_to_member_cast_c
 
       $$.top_ast = c_ast_new( K_POINTER_TO_MEMBER, &@$ );
       $$.top_ast->type = T_CLASS;
-      c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), $$.top_ast );
+      c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
       $$.top_ast->as.ptr_mbr.class_name = $1;
       // TODO: do something with $4
 
@@ -792,7 +792,7 @@ reference_cast_c
 
       $$.top_ast = c_ast_new( K_REFERENCE, &@$ );
       // TODO: do something with $2
-      c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), $$.top_ast );
+      c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
 
       DUMP_AST( "< reference_cast_c", $$.top_ast );
       DUMP_END();
@@ -1358,7 +1358,7 @@ pointer_decl_type_c
 
       $$.top_ast = c_ast_new( K_POINTER, &@$ );
       $$.top_ast->as.ptr_ref.qualifier = $2;
-      c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), $$.top_ast );
+      c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
 
       DUMP_AST( "< pointer_decl_type_c", $$.top_ast );
       DUMP_END();
@@ -1391,7 +1391,7 @@ pointer_to_member_decl_type_c
       $$.top_ast = c_ast_new( K_POINTER_TO_MEMBER, &@$ );
       $$.top_ast->type = T_CLASS;
       $$.top_ast->as.ptr_mbr.class_name = $1;
-      c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), $$.top_ast );
+      c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
 
       DUMP_AST( "< pointer_to_member_decl_type_c", $$.top_ast );
       DUMP_END();
@@ -1422,7 +1422,7 @@ reference_decl_type_c
 
       $$.top_ast = c_ast_new( K_REFERENCE, &@$ );
       $$.top_ast->as.ptr_ref.qualifier = $2;
-      c_ast_set_parent( c_ast_clone( TYPE_PEEK() ), $$.top_ast );
+      c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
 
       DUMP_AST( "< reference_decl_type_c", $$.top_ast );
       DUMP_END();
