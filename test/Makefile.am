@@ -71,6 +71,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_a3a5pfv_i.test \
 	tests/explain_a3a5pfv_pi.test \
 	tests/explain_a3a5pfv_ppa7a9i.test \
+	tests/explain_a3a5pfv_ppa7i.test \
 	tests/explain_a3pfv_i.test \
 	tests/explain_a3ppfv_i.test \
 	tests/explain_a9i.test \
