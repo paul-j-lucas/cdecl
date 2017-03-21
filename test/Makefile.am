@@ -98,7 +98,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_pa9i.test \
 	tests/explain_pi.test \
 	tests/explain_ppc.test \
-	tests/explain_rpc.test \
+	tests/explain_rpi.test \
 	tests/explain_si.test \
 	tests/explain_ti.test \
 	tests/explain_vcpi.test \
@@ -115,6 +115,8 @@ TESTS+=	tests/cast_pc.test \
 # C++ tests
 TESTS+=	tests/cast_pmi.test \
 	tests/declare_cpmi.test \
+	tests/declare_cpri.test \
+	tests/declare_pfv_ri.test \
 	tests/declare_pmci.test \
 	tests/declare_pmi.test \
 	tests/declare_rci.test \
@@ -124,7 +126,8 @@ TESTS+=	tests/cast_pmi.test \
 	tests/declare_rpi.test \
 	tests/explain_cast_pmi.test \
 	tests/explain_pmfxx_ps.test \
-	tests/explain_pmi.test
+	tests/explain_pmi.test \
+	tests/explain_ri.test
 
 # Command-line tests
 TESTS+=	tests/cl-cast_i.test \
