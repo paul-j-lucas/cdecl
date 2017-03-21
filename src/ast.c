@@ -332,8 +332,9 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
     return NULL;
   if ( visitor( ast, data ) )
     return ast;
-  return c_ast_is_parent( ast ) ?
-    c_ast_visit( ast->as.parent.of_ast, visitor, data ) : NULL;
+  if ( !c_ast_is_parent( ast ) )
+    return NULL;
+  return c_ast_visit( ast->as.parent.of_ast, visitor, data );
 }
 
 c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
