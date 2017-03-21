@@ -46,6 +46,7 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
   if ( ast != NULL ) {
     ++indent;
 
+    PRINT_JSON( "\"depth\": %u,\n", ast->depth );
     PRINT_JSON( "\"id\": %u,\n", ast->id );
     PRINT_JSON_KV( "kind", c_kind_name( ast->kind ) );
     FPUTS( ",\n", jout );

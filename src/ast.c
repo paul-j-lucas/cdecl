@@ -25,19 +25,6 @@ static c_ast_t   *c_ast_head;           // linked list of alloc'd objects
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Initializes a c_ast.
- *
- * @param ast The c_ast to initialize.
- * @param kind The kind of c_ast to initialize.
- */
-static inline void c_ast_init( c_ast_t *ast, c_kind_t kind ) {
-  static unsigned next_id;
-  memset( ast, 0, sizeof( c_ast_t ) );
-  ast->id = ++next_id;
-  ast->kind = kind;
-}
-
-/**
  * Checks whether the given AST node is a parent node.
  *
  * @param ast The \c c_ast to check.
@@ -94,7 +81,7 @@ c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
 
   if ( ast->kind != K_ARRAY ) {
     assert( array->kind == K_ARRAY );
-    assert( array->as.array.of_ast == NULL );
+    assert( array->as.array.of_ast->kind == K_NONE );
     //
     // We've reached the end of the array chain: make the new array be an array
     // of this AST node and return the array so the parent will now point to it
@@ -207,7 +194,7 @@ c_ast_t* c_ast_clone( c_ast_t const *ast ) {
   if ( ast == NULL )
     return NULL;
 
-  c_ast_t *const clone = c_ast_new( ast->kind, &ast->loc );
+  c_ast_t *const clone = c_ast_new( ast->kind, 0, &ast->loc );
   //
   // Even though it's slightly less efficient, it's safer to memcpy() the clone
   // so we can't forget to copy non-pointer struct members.
@@ -285,12 +272,19 @@ char const* c_ast_name( c_ast_t const *ast ) {
   return found ? found->name : NULL;
 }
 
-c_ast_t* c_ast_new( c_kind_t kind, YYLTYPE const *loc ) {
+c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, YYLTYPE const *loc ) {
   assert( loc );
+  static unsigned next_id;
+
   c_ast_t *const ast = MALLOC( c_ast_t, 1 );
-  c_ast_init( ast, kind );
+  memset( ast, 0, sizeof( c_ast_t ) );
+
+  ast->depth = depth;
+  ast->id = ++next_id;
+  ast->kind = kind;
   ast->loc = *loc;
   ast->gc_next = c_ast_head;
+
   c_ast_head = ast;
   ++c_ast_count;
   return ast;

@@ -109,6 +109,7 @@ extern int          yylex();
 // local variables
 static in_attr_t    in_attr;
 static bool         newlined = true;
+static unsigned     ast_depth;
 
 // local functions
 static void         qualifier_clear( void );
@@ -142,42 +143,38 @@ static c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
   assert( array->kind == K_ARRAY );
 
   c_ast_t *const peek_ast = TYPE_PEEK();
-  c_ast_t *temp;
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      array = c_ast_append_array( ast, array );
-      break;
+      return c_ast_append_array( ast, array );
+
+    case K_NONE:
+      if ( peek_ast != ast->parent )
+        c_ast_set_parent( peek_ast, array );
+      c_ast_set_parent( array, ast->parent );
+      return ast->parent;
 
     case K_POINTER:
-      switch ( ast->as.ptr_ref.to_ast->kind ) {
-        case K_ARRAY:
-          temp = c_ast_add_array( ast->as.ptr_ref.to_ast, array );
-          c_ast_set_parent( temp, ast );
-          return ast;
-
-        case K_POINTER:
-          temp = c_ast_add_array( ast->as.ptr_ref.to_ast, array );
-          return temp;
-
-        case K_NONE:
-          c_ast_set_parent( peek_ast, array );
-          if ( ast->id != peek_ast->id ) {
-            c_ast_set_parent( array, ast );
-            return ast;
-          }
-          return array;
-        default:
-          /* suppress warning */;
-      } // switch
+      if ( ast->depth > array->depth ) {
+        array = c_ast_add_array( ast->as.ptr_ref.to_ast, array );
+        c_ast_set_parent( array, ast );
+        return ast;
+      }
       // no break;
 
     default:
-      c_ast_set_parent( ast, array );
+      if ( ast->depth > array->depth ) {
+        if ( array->as.array.of_ast->kind == K_NONE &&
+             ast->kind >= K_PARENT_MIN ) {
+          c_ast_set_parent( ast->as.parent.of_ast, array );
+        }
+        c_ast_set_parent( array, ast );
+        return ast;
+      } else {
+        c_ast_set_parent( ast, array );
+        return array;
+      }
   } // switch
-
-  array->name = c_ast_take_name( ast );
-  return array;
 }
 
 /**
@@ -187,12 +184,10 @@ static c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
  * @param array The function AST to append.  It's "of" type must be null.
  * @return Returns the AST to be used as the grammar production's return value.
  */
-static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
+static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func ) {
   assert( ast );
   assert( func );
   assert( func->kind & (K_BLOCK | K_FUNCTION) );
-
-  c_ast_t *rv = NULL;
 
   switch ( ast->kind ) {
     case K_ARRAY:
@@ -200,9 +195,8 @@ static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
         case K_ARRAY:
         case K_POINTER:
         case K_REFERENCE:
-          (void)c_ast_add_func( ast->as.parent.of_ast, func );
-          rv = ast;
-          goto done;
+          (void)c_ast_add_func_impl( ast->as.parent.of_ast, func );
+          return ast;
         default:
           /* suppress warning */;
       } // switch
@@ -215,14 +209,12 @@ static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
         case K_NONE:
           c_ast_set_parent( TYPE_PEEK(), func );
           c_ast_set_parent( func, ast );
-          rv = ast;
-          goto done;
+          return ast;
         case K_ARRAY:
         case K_POINTER:
         case K_REFERENCE:
-          (void)c_ast_add_func( ast->as.ptr_ref.to_ast, func );
-          rv = ast;
-          goto done;
+          (void)c_ast_add_func_impl( ast->as.ptr_ref.to_ast, func );
+          return ast;
         default:
           /* suppress warning */;
       } // switch
@@ -231,12 +223,21 @@ static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
     default_case:
     default:
       c_ast_set_parent( TYPE_PEEK(), func );
-      rv = func;
+      return func;
   } // switch
+}
 
-done:
-  func->type |= c_ast_take_storage( func->as.func.ret_ast );
+/**
+ * Adds a function to the AST being built.
+ *
+ * @param ast The AST to append to.
+ * @param array The function AST to append.  It's "of" type must be null.
+ * @return Returns the AST to be used as the grammar production's return value.
+ */
+static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
+  c_ast_t *const rv = c_ast_add_func_impl( ast, func );
   assert( rv );
+  func->type |= c_ast_take_storage( func->as.func.ret_ast );
   return rv;
 }
 
@@ -591,7 +592,7 @@ explain_declaration_c
 
       if ( c_ast_check( $4.top_ast ) ) {
         char const *const name = c_ast_take_name( $4.top_ast );
-        assert( name );
+        //assert( name );
         FPRINTF( fout, "%s %s %s ", L_DECLARE, name, L_AS );
         if ( c_ast_take_typedef( $4.top_ast ) )
           FPRINTF( fout, "%s ", L_TYPE );
@@ -654,7 +655,7 @@ quit_command
 /*****************************************************************************/
 
 cast_c
-  : /* empty */                   { $$.top_ast = NULL; }
+  : /* empty */                   { $$.top_ast = $$.target_ast = NULL; }
   | array_cast_c
   | block_cast_c                        /* Apple extension */
   | func_cast_c
@@ -672,9 +673,10 @@ array_cast_c
       DUMP_AST( "> cast_c", $1.top_ast );
       DUMP_NUM( "> array_size_c", $2 );
 
-      c_ast_t *const array = c_ast_new( K_ARRAY, &@$ );
+      c_ast_t *const array = c_ast_new( K_ARRAY, ast_depth, &@$ );
       array->as.array.size = $2;
       $$.top_ast = c_ast_add_array( $1.top_ast, array );
+      $$.target_ast = NULL;
 
       DUMP_AST( "< array_cast_c", $$.top_ast );
       DUMP_END();
@@ -690,7 +692,8 @@ block_cast_c                            /* Apple extension */
       DUMP_AST( "> cast_c", $3.top_ast );
       DUMP_AST_LIST( "> arg_list_opt_c", $6 );
 
-      $$.top_ast = c_ast_new( K_BLOCK, &@$ );
+      $$.top_ast = c_ast_new( K_BLOCK, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->name = c_ast_name( $3.top_ast );
       $$.top_ast->as.block.args = $6;
       c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
@@ -706,7 +709,8 @@ func_cast_c
       DUMP_START( "func_cast_c", "'(' ')'" );
       DUMP_AST( "^ type_c", TYPE_PEEK() );
 
-      $$.top_ast = c_ast_new( K_FUNCTION, &@$ );
+      $$.top_ast = c_ast_new( K_FUNCTION, ast_depth, &@$ );
+      $$.target_ast = NULL;
       c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
 
       DUMP_AST( "< func_cast_c", $$.top_ast );
@@ -723,9 +727,10 @@ func_cast_c
       DUMP_AST( "> cast_c", $4.top_ast );
       DUMP_AST_LIST( "> arg_list_opt_c", $6 );
 
-      c_ast_t *const func = c_ast_new( K_FUNCTION, &@$ );
+      c_ast_t *const func = c_ast_new( K_FUNCTION, ast_depth, &@$ );
       func->as.func.args = $6;
       $$.top_ast = c_ast_add_func( $4.top_ast, func );
+      $$.target_ast = NULL;
 
       DUMP_AST( "< func_cast_c", $$.top_ast );
       DUMP_END();
@@ -740,6 +745,7 @@ name_cast_c
       DUMP_NAME( "> NAME", $1 );
 
       $$.top_ast = TYPE_PEEK();
+      $$.target_ast = NULL;
       assert( $$.top_ast->name == NULL );
       $$.top_ast->name = $1;
 
@@ -755,7 +761,8 @@ pointer_cast_c
       DUMP_AST( "^ type_c", TYPE_PEEK() );
       DUMP_AST( "> cast_c", $2.top_ast );
 
-      $$.top_ast = c_ast_new( K_POINTER, &@$ );
+      $$.top_ast = c_ast_new( K_POINTER, ast_depth, &@$ );
+      $$.target_ast = NULL;
       // TODO: do something with $2
       c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
 
@@ -772,7 +779,8 @@ pointer_to_member_cast_c
       DUMP_NAME( "> NAME", $1 );
       DUMP_AST( "> cast_c", $4.top_ast );
 
-      $$.top_ast = c_ast_new( K_POINTER_TO_MEMBER, &@$ );
+      $$.top_ast = c_ast_new( K_POINTER_TO_MEMBER, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->type = T_CLASS;
       c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
       $$.top_ast->as.ptr_mbr.class_name = $1;
@@ -790,7 +798,8 @@ reference_cast_c
       DUMP_AST( "^ type_c", TYPE_PEEK() );
       DUMP_AST( "> cast_c", $2.top_ast );
 
-      $$.top_ast = c_ast_new( K_REFERENCE, &@$ );
+      $$.top_ast = c_ast_new( K_REFERENCE, ast_depth, &@$ );
+      $$.target_ast = NULL;
       // TODO: do something with $2
       c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
 
@@ -861,7 +870,8 @@ arg_c
       DUMP_START( "argc", "NAME" );
       DUMP_NAME( "> NAME", $1 );
 
-      $$.top_ast = c_ast_new( K_NAME, &@$ );
+      $$.top_ast = c_ast_new( K_NAME, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->name = check_strdup( $1 );
 
       DUMP_END();
@@ -902,7 +912,8 @@ array_decl_english
           /* suppress warning */;
       } // switch
 
-      $$.top_ast = c_ast_new( K_ARRAY, &@$ );
+      $$.top_ast = c_ast_new( K_ARRAY, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->as.array.size = $2;
       c_ast_set_parent( $4.top_ast, $$.top_ast );
 
@@ -927,7 +938,8 @@ block_decl_english                      /* Apple extension */
       DUMP_AST_LIST( "> paren_decl_list_opt_english", $3 );
       DUMP_AST( "> returning_english", $4.top_ast );
 
-      $$.top_ast = c_ast_new( K_BLOCK, &@$ );
+      $$.top_ast = c_ast_new( K_BLOCK, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->type = QUALIFIER_PEEK();
       c_ast_set_parent( $4.top_ast, $$.top_ast );
       $$.top_ast->as.block.args = $3;
@@ -946,7 +958,8 @@ func_decl_english
       DUMP_AST_LIST( "> decl_list_opt_english", $3 );
       DUMP_AST( "> returning_english", $4.top_ast );
 
-      $$.top_ast = c_ast_new( K_FUNCTION, &@$ );
+      $$.top_ast = c_ast_new( K_FUNCTION, ast_depth, &@$ );
+      $$.target_ast = NULL;
       c_ast_set_parent( $4.top_ast, $$.top_ast );
       $$.top_ast->as.func.args = $3;
 
@@ -1073,7 +1086,8 @@ pointer_decl_english
       DUMP_TYPE( "^ qualifier", QUALIFIER_PEEK() );
       DUMP_AST( "> decl_english", $2.top_ast );
 
-      $$.top_ast = c_ast_new( K_POINTER, &@$ );
+      $$.top_ast = c_ast_new( K_POINTER, ast_depth, &@$ );
+      $$.target_ast = NULL;
       c_ast_set_parent( $2.top_ast, $$.top_ast );
       $$.top_ast->as.ptr_ref.qualifier = QUALIFIER_PEEK();
 
@@ -1104,7 +1118,8 @@ pointer_to_member_decl_english
       if ( opt_lang < LANG_CPP_MIN )
         print_warning( &@$, "pointer to member of class" );
 
-      $$.top_ast = c_ast_new( K_POINTER_TO_MEMBER, &@$ );
+      $$.top_ast = c_ast_new( K_POINTER_TO_MEMBER, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->type = $4;
       c_ast_set_parent( $6.top_ast, $$.top_ast );
       $$.top_ast->as.ptr_ref.qualifier = QUALIFIER_PEEK();
@@ -1160,7 +1175,8 @@ reference_decl_english
           /* suppress warning */;
       } // switch
 
-      $$.top_ast = c_ast_new( K_REFERENCE, &@$ );
+      $$.top_ast = c_ast_new( K_REFERENCE, ast_depth, &@$ );
+      $$.target_ast = NULL;
       c_ast_set_parent( $3.top_ast, $$.top_ast );
       $$.top_ast->as.ptr_ref.qualifier = QUALIFIER_PEEK();
 
@@ -1197,7 +1213,8 @@ var_decl_english
       if ( opt_lang > LANG_C_KNR )
         print_warning( &@$, "missing function prototype" );
 
-      $$.top_ast = c_ast_new( K_NAME, &@$ );
+      $$.top_ast = c_ast_new( K_NAME, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->name = $1;
 
       DUMP_AST( "< var_decl_english", $$.top_ast );
@@ -1235,13 +1252,15 @@ array_decl_c
       if ( $1.target_ast )
         DUMP_AST( "> target_ast", $1.target_ast );
 
-      c_ast_t *const array = c_ast_new( K_ARRAY, &@1 );
+      c_ast_t *const array = c_ast_new( K_ARRAY, ast_depth, &@$ );
       array->as.array.size = $2;
+      array->as.array.of_ast = c_ast_new( K_NONE, ast_depth, &@1 );
       if ( $1.target_ast ) {
         $$.top_ast = $1.top_ast;
         $$.target_ast = c_ast_add_array( $1.target_ast, array );
       } else {
         $$.top_ast = c_ast_add_array( $1.top_ast, array );
+        $$.target_ast = NULL;
       }
 
       DUMP_AST( "< array_decl_c", $$.top_ast );
@@ -1269,11 +1288,11 @@ block_decl_c                            /* Apple extension */
       DUMP_AST( "> decl_c", $4.top_ast );
       DUMP_AST_LIST( "> arg_list_opt_c", $7 );
 
-      c_ast_t *const block = c_ast_new( K_BLOCK, &@$ );
-      block->name = c_ast_take_name( $4.top_ast );
+      c_ast_t *const block = c_ast_new( K_BLOCK, ast_depth, &@$ );
       C_TYPE_ADD( &block->type, $3, @3 );
       block->as.func.args = $7;
       $$.top_ast = c_ast_add_func( $4.top_ast, block );
+      $$.target_ast = block->as.func.ret_ast;
 
       DUMP_AST( "< block_decl_c", $$.top_ast );
       DUMP_END();
@@ -1288,8 +1307,7 @@ func_decl_c
       DUMP_AST( "> decl2_c", $1.top_ast );
       DUMP_AST_LIST( "> arg_list_opt_c", $3 );
 
-      c_ast_t *const func = c_ast_new( K_FUNCTION, &@$ );
-      func->name = c_ast_take_name( $1.top_ast );
+      c_ast_t *const func = c_ast_new( K_FUNCTION, ast_depth, &@$ );
       func->as.func.args = $3;
       $$.top_ast = c_ast_add_func( $1.top_ast, func );
       $$.target_ast = func->as.func.ret_ast;
@@ -1307,6 +1325,7 @@ name_decl_c
       DUMP_NAME( "> NAME", $1 );
 
       $$.top_ast = TYPE_PEEK();
+      $$.target_ast = NULL;
       assert( $$.top_ast->name == NULL );
       $$.top_ast->name = $1;
 
@@ -1316,9 +1335,16 @@ name_decl_c
   ;
 
 nested_decl_c
-  : '(' placeholder_type_c { TYPE_PUSH( $2.top_ast ); } decl_c ')'
+  : '(' placeholder_type_c
     {
+      TYPE_PUSH( $2.top_ast );
+      ++ast_depth;
+    }
+    decl_c ')'
+    {
+      --ast_depth;
       TYPE_POP();
+
       DUMP_START( "nested_decl_c", "'(' placeholder_type_c decl_c ')'" );
       DUMP_AST( "> placeholder_type_c", $2.top_ast );
       DUMP_AST( "> decl_c", $4.top_ast );
@@ -1331,7 +1357,11 @@ nested_decl_c
   ;
 
 placeholder_type_c
-  : /* empty */                   { $$.top_ast = c_ast_new( K_NONE, &@$ ); }
+  : /* empty */
+    {
+      $$.top_ast = c_ast_new( K_NONE, ast_depth, &@$ );
+      $$.target_ast = NULL;
+    }
   ;
 
 pointer_decl_c
@@ -1356,7 +1386,8 @@ pointer_decl_type_c
       DUMP_AST( "^ type_c", TYPE_PEEK() );
       DUMP_TYPE( "> type_qualifier_list_opt_c", $2 );
 
-      $$.top_ast = c_ast_new( K_POINTER, &@$ );
+      $$.top_ast = c_ast_new( K_POINTER, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->as.ptr_ref.qualifier = $2;
       c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
 
@@ -1388,7 +1419,8 @@ pointer_to_member_decl_type_c
       DUMP_AST( "^ type_c", TYPE_PEEK() );
       DUMP_NAME( "> NAME", $1 );
 
-      $$.top_ast = c_ast_new( K_POINTER_TO_MEMBER, &@$ );
+      $$.top_ast = c_ast_new( K_POINTER_TO_MEMBER, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->type = T_CLASS;
       $$.top_ast->as.ptr_mbr.class_name = $1;
       c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
@@ -1420,7 +1452,8 @@ reference_decl_type_c
       DUMP_AST( "^ type_c", TYPE_PEEK() );
       DUMP_TYPE( "> type_qualifier_list_opt_c", $2 );
 
-      $$.top_ast = c_ast_new( K_REFERENCE, &@$ );
+      $$.top_ast = c_ast_new( K_REFERENCE, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->as.ptr_ref.qualifier = $2;
       c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
 
@@ -1455,7 +1488,8 @@ type_english
       DUMP_START( "type_english", "type_modifier_list_english" );
       DUMP_TYPE( "> type_modifier_list_english", $1 );
 
-      $$.top_ast = c_ast_new( K_BUILTIN, &@$ );
+      $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->type = T_INT;
       C_TYPE_ADD( &$$.top_ast->type, $1, @1 );
 
@@ -1501,7 +1535,8 @@ unmodified_type_english
       DUMP_START( "unmodified_type_english", "builtin_type_c" );
       DUMP_TYPE( "> builtin_type_c", $1 );
 
-      $$.top_ast = c_ast_new( K_BUILTIN, &@$ );
+      $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->type = $1;
 
       DUMP_AST( "< unmodified_type_english", $$.top_ast );
@@ -1513,7 +1548,8 @@ unmodified_type_english
       DUMP_START( "unmodified_type_english", "enum_class_struct_union_type_c" );
       DUMP_TYPE( "> enum_class_struct_union_type_c", $1 );
 
-      $$.top_ast = c_ast_new( K_ENUM_CLASS_STRUCT_UNION, &@$ );
+      $$.top_ast = c_ast_new( K_ENUM_CLASS_STRUCT_UNION, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->type = $1;
 
       DUMP_AST( "< unmodified_type_english", $$.top_ast );
@@ -1531,7 +1567,8 @@ type_c
       DUMP_START( "type_c", "type_modifier_list_c" );
       DUMP_TYPE( "> type_modifier_list_c", $1 );
 
-      $$.top_ast = c_ast_new( K_BUILTIN, &@$ );
+      $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->type = $1;
       C_TYPE_CHECK( $$.top_ast->type, @1 );
 
@@ -1548,7 +1585,8 @@ type_c
       DUMP_TYPE( "> builtin_type_c", $2 );
       DUMP_TYPE( "> type_modifier_list_opt_c", $3 );
 
-      $$.top_ast = c_ast_new( K_BUILTIN, &@$ );
+      $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->type = $2;
       C_TYPE_ADD( &$$.top_ast->type, $1, @1 );
       C_TYPE_ADD( &$$.top_ast->type, $3, @3 );
@@ -1564,7 +1602,8 @@ type_c
       DUMP_TYPE( "> builtin_type_c", $1 );
       DUMP_TYPE( "> type_modifier_list_opt_c", $2 );
 
-      $$.top_ast = c_ast_new( K_BUILTIN, &@$ );
+      $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->type = $1;
       C_TYPE_ADD( &$$.top_ast->type, $2, @2 );
       C_TYPE_CHECK( $$.top_ast->type, @1 );
@@ -1630,7 +1669,8 @@ named_enum_class_struct_union_type_c
       DUMP_TYPE( "> enum_class_struct_union_type_c", $1 );
       DUMP_NAME( "> NAME", $2 );
 
-      $$.top_ast = c_ast_new( K_ENUM_CLASS_STRUCT_UNION, &@$ );
+      $$.top_ast = c_ast_new( K_ENUM_CLASS_STRUCT_UNION, ast_depth, &@$ );
+      $$.target_ast = NULL;
       $$.top_ast->type = $1;
       $$.top_ast->as.ecsu.ecsu_name = $2;
       C_TYPE_CHECK( $$.top_ast->type, @1 );

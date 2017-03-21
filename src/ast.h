@@ -163,6 +163,7 @@ struct c_ptr_ref {
  */
 struct c_ast {
   c_ast_t    *next;                     // must be first struct member
+  unsigned    depth;                    // how many () deep
   unsigned    id;                       // unique id (starts at 1)
   c_kind_t    kind;
   char const *name;
@@ -316,8 +317,10 @@ char const* c_ast_name( c_ast_t const *ast );
  * Creates a new c_ast.
  *
  * @param kind The kind of c_ast to create.
+ * @param depth How deep within () it is.
+ * @param loc A pointer to the token location data.
  */
-c_ast_t* c_ast_new( c_kind_t kind, YYLTYPE const *loc );
+c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, YYLTYPE const *loc );
 
 /**
  * Sets the two-way pointer links between parent/child AST nodes.
