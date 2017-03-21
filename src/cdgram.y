@@ -238,10 +238,11 @@ static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
 }
 
 /**
- * TODO
+ * "Patches" the given type into the given declaration if the latter still
+ * contains an AST node of type K_NONE.
  *
- * @param type_ast TODO
- * @param decl_ast TODO
+ * @param type_ast The AST of the initial type.
+ * @param decl_ast The AST of a declaration.
  */
 static void c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   if ( !type_ast->parent ) {
@@ -337,11 +338,11 @@ static void yyerror( char const *msg ) {
 %}
 
 %union {
-  char const   *name;
-  int           number;                 /* for array sizes */
-  c_type_t      type;
-  syn_attr_t    syn_attr;
-  c_ast_list_t  ast_list;
+  c_ast_list_t  ast_list; /* for function arguments */
+  c_ast_pair_t  ast_pair; /* for the AST being built */
+  char const   *name;     /* name being declared or explained */
+  int           number;   /* for array sizes */
+  c_type_t      type;     /* built-in types, storage classes, & qualifiers */
 }
 
                     /* commands */
@@ -419,52 +420,52 @@ static void yyerror( char const *msg ) {
 %token  <name>      Y_NAME
 %token  <number>    Y_NUMBER
 
-%type   <syn_attr>  decl_english
+%type   <ast_pair>  decl_english
 %type   <ast_list>  decl_list_english decl_list_opt_english
 %type   <ast_list>  paren_decl_list_opt_english
-%type   <syn_attr>  array_decl_english
+%type   <ast_pair>  array_decl_english
 %type   <number>    array_size_opt_english
-%type   <syn_attr>  block_decl_english
-%type   <syn_attr>  func_decl_english
-%type   <syn_attr>  pointer_decl_english
-%type   <syn_attr>  pointer_to_member_decl_english
-%type   <syn_attr>  qualifiable_decl_english
-%type   <syn_attr>  qualified_decl_english
-%type   <syn_attr>  reference_decl_english
-%type   <syn_attr>  returning_english
-%type   <syn_attr>  type_english
+%type   <ast_pair>  block_decl_english
+%type   <ast_pair>  func_decl_english
+%type   <ast_pair>  pointer_decl_english
+%type   <ast_pair>  pointer_to_member_decl_english
+%type   <ast_pair>  qualifiable_decl_english
+%type   <ast_pair>  qualified_decl_english
+%type   <ast_pair>  reference_decl_english
+%type   <ast_pair>  returning_english
+%type   <ast_pair>  type_english
 %type   <type>      type_modifier_english
 %type   <type>      type_modifier_list_english
 %type   <type>      type_modifier_list_opt_english
-%type   <syn_attr>  unmodified_type_english
-%type   <syn_attr>  var_decl_english
+%type   <ast_pair>  unmodified_type_english
+%type   <ast_pair>  var_decl_english
 
-%type   <syn_attr>  cast_c
-%type   <syn_attr>  array_cast_c
-%type   <syn_attr>  block_cast_c
-%type   <syn_attr>  func_cast_c
-%type   <syn_attr>  pointer_cast_c
-%type   <syn_attr>  pointer_to_member_cast_c
-%type   <syn_attr>  reference_cast_c
-%type   <syn_attr>  name_cast_c
+%type   <ast_pair>  cast_c
+%type   <ast_pair>  array_cast_c
+%type   <ast_pair>  block_cast_c
+%type   <ast_pair>  func_cast_c
+%type   <ast_pair>  pointer_cast_c
+%type   <ast_pair>  pointer_to_member_cast_c
+%type   <ast_pair>  reference_cast_c
+%type   <ast_pair>  name_cast_c
 
-%type   <syn_attr>  decl_c decl2_c
-%type   <syn_attr>  array_decl_c
+%type   <ast_pair>  decl_c decl2_c
+%type   <ast_pair>  array_decl_c
 %type   <number>    array_size_c
-%type   <syn_attr>  block_decl_c
-%type   <syn_attr>  func_decl_c
-%type   <syn_attr>  name_decl_c
-%type   <syn_attr>  named_enum_class_struct_union_type_c
-%type   <syn_attr>  nested_decl_c
-%type   <syn_attr>  pointer_decl_c
-%type   <syn_attr>  pointer_decl_type_c
-%type   <syn_attr>  pointer_to_member_decl_c
-%type   <syn_attr>  pointer_to_member_decl_type_c
-%type   <syn_attr>  reference_decl_c
-%type   <syn_attr>  reference_decl_type_c
+%type   <ast_pair>  block_decl_c
+%type   <ast_pair>  func_decl_c
+%type   <ast_pair>  name_decl_c
+%type   <ast_pair>  named_enum_class_struct_union_type_c
+%type   <ast_pair>  nested_decl_c
+%type   <ast_pair>  pointer_decl_c
+%type   <ast_pair>  pointer_decl_type_c
+%type   <ast_pair>  pointer_to_member_decl_c
+%type   <ast_pair>  pointer_to_member_decl_type_c
+%type   <ast_pair>  reference_decl_c
+%type   <ast_pair>  reference_decl_type_c
 
-%type   <syn_attr>  placeholder_type_c
-%type   <syn_attr>  type_c
+%type   <ast_pair>  placeholder_type_c
+%type   <ast_pair>  type_c
 %type   <type>      builtin_type_c
 %type   <type>      class_struct_type_c
 %type   <type>      enum_class_struct_union_type_c
@@ -474,7 +475,7 @@ static void yyerror( char const *msg ) {
 %type   <type>      type_qualifier_c
 %type   <type>      type_qualifier_list_opt_c
 
-%type   <syn_attr>  arg_c
+%type   <ast_pair>  arg_c
 %type   <ast_list>  arg_list_c arg_list_opt_c paren_arg_list_opt_opt_c
 %type   <name>      name_token_opt
 

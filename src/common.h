@@ -20,13 +20,14 @@
 typedef struct c_ast c_ast_t;
 
 /**
- * TODO
+ * A pair of c_ast pointers used as one of the synthesized attribute types in
+ * the parser.
  */
-struct syn_attr {
+struct c_ast_pair {
   c_ast_t *top_ast;
   c_ast_t *target_ast;
 };
-typedef struct syn_attr syn_attr_t;
+typedef struct c_ast_pair c_ast_pair_t;
 
 typedef struct {
   int first_line;
