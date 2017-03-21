@@ -20,7 +20,7 @@
 
 // local variable definitions
 static unsigned   c_ast_count;          // alloc'd but not yet freed
-static c_ast_t   *c_ast_head;           // linked list of alloc'd objects
+static c_ast_t   *c_ast_gc_head;        // linked list of alloc'd objects
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -183,12 +183,12 @@ void c_ast_cleanup( void ) {
 }
 
 void c_ast_gc( void ) {
-  for ( c_ast_t *p = c_ast_head; p; ) {
+  for ( c_ast_t *p = c_ast_gc_head; p; ) {
     c_ast_t *const next = p->gc_next;
     c_ast_free( p );
     p = next;
   } // for
-  c_ast_head = NULL;
+  c_ast_gc_head = NULL;
 }
 
 c_ast_t* c_ast_clone( c_ast_t const *ast ) {
@@ -284,9 +284,9 @@ c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, YYLTYPE const *loc ) {
   ast->id = ++next_id;
   ast->kind = kind;
   ast->loc = *loc;
-  ast->gc_next = c_ast_head;
+  ast->gc_next = c_ast_gc_head;
 
-  c_ast_head = ast;
+  c_ast_gc_head = ast;
   ++c_ast_count;
   return ast;
 }
