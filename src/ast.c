@@ -309,8 +309,7 @@ char const* c_ast_take_name( c_ast_t *ast ) {
 
 c_type_t c_ast_take_storage( c_ast_t *ast ) {
   c_type_t storage = T_NONE;
-  void *const data = REINTERPRET_CAST( void*, K_BUILTIN );
-  c_ast_t *const found = c_ast_visit( ast, c_ast_vistor_kind, data );
+  c_ast_t *const found = c_ast_find_kind( ast, K_BUILTIN );
   if ( found ) {
     storage = found->type & T_MASK_STORAGE;
     found->type &= ~T_MASK_STORAGE;
@@ -319,8 +318,7 @@ c_type_t c_ast_take_storage( c_ast_t *ast ) {
 }
 
 bool c_ast_take_typedef( c_ast_t *ast ) {
-  void *const data = REINTERPRET_CAST( void*, K_BUILTIN );
-  c_ast_t *const found = c_ast_visit( ast, c_ast_vistor_kind, data );
+  c_ast_t *const found = c_ast_find_kind( ast, K_BUILTIN );
   if ( found && (found->type & T_TYPEDEF) ) {
     found->type &= ~T_TYPEDEF;
     return true;

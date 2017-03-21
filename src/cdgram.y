@@ -142,22 +142,19 @@ static c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
   assert( array );
   assert( array->kind == K_ARRAY );
 
-  c_ast_t *const peek_ast = TYPE_PEEK();
-
   switch ( ast->kind ) {
     case K_ARRAY:
       return c_ast_append_array( ast, array );
 
     case K_NONE:
-      if ( peek_ast != ast->parent )
-        c_ast_set_parent( peek_ast, array );
       c_ast_set_parent( array, ast->parent );
+      c_ast_set_parent( ast, array );
       return ast->parent;
 
     case K_POINTER:
       if ( ast->depth > array->depth ) {
-        array = c_ast_add_array( ast->as.ptr_ref.to_ast, array );
-        c_ast_set_parent( array, ast );
+        c_ast_t *temp = c_ast_add_array( ast->as.ptr_ref.to_ast, array );
+        //c_ast_set_parent( temp, ast );
         return ast;
       }
       // no break;
@@ -239,6 +236,20 @@ static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
   assert( rv );
   func->type |= c_ast_take_storage( func->as.func.ret_ast );
   return rv;
+}
+
+/**
+ * TODO
+ *
+ * @param type_ast TODO
+ * @param decl_ast TODO
+ */
+static void c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
+  if ( !type_ast->parent ) {
+    c_ast_t *const none_ast = c_ast_find_kind( decl_ast, K_NONE );
+    if ( none_ast )
+      c_ast_set_parent( type_ast, none_ast->parent );
+  }
 }
 
 /**
@@ -585,6 +596,8 @@ explain_declaration_c
   : Y_EXPLAIN type_c { TYPE_PUSH( $2.top_ast ); } decl_c Y_END
     {
       TYPE_POP();
+      c_ast_patch_none( $2.top_ast, $4.top_ast );
+
       DUMP_START( "explain_declaration_c", "EXPLAIN type_c decl_c END" );
       DUMP_AST( "> type_c", $2.top_ast );
       DUMP_AST( "> decl_c", $4.top_ast );
@@ -608,6 +621,8 @@ explain_cast_c
     name_token_opt Y_END
     {
       TYPE_POP();
+      c_ast_patch_none( $3.top_ast, $5.top_ast );
+
       DUMP_START( "explain_cast_t",
                   "EXPLAIN '(' type_c cast_c ')' name_token_opt END" );
       DUMP_AST( "> type_c", $3.top_ast );

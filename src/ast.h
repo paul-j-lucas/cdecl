@@ -46,10 +46,10 @@ _GL_INLINE_HEADER_BEGIN
  * AST node is any \e one of those kinds.
  */
 enum c_kind {
-  K_NONE                    = 0,
-  K_BUILTIN                 = 0x0001,   // void, char, int, etc.
-  K_ENUM_CLASS_STRUCT_UNION = 0x0002,
-  K_NAME                    = 0x0004,   // typeless function argument in K&R C
+  K_NONE                    = 0x0001,
+  K_BUILTIN                 = 0x0002,   // void, char, int, etc.
+  K_ENUM_CLASS_STRUCT_UNION = 0x0004,
+  K_NAME                    = 0x0008,   // typeless function argument in K&R C
   // "parent" kinds
   K_ARRAY                   = 0x0010,
   K_BLOCK                   = 0x0020,   // Apple extension
@@ -411,6 +411,18 @@ c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor visitor, void *data );
  * @return Returns \c true only if the kind of \a ast is one of \a data.
  */
 bool c_ast_vistor_kind( c_ast_t *ast, void *data );
+
+/**
+ * Traverses down the AST attempting to find an AST node having \a kind.
+ *
+ * @param ast The AST to start from.
+ * @param kind The bitwise-or kind(s) to find.
+ * @return Returns a pointer to an AST node having \a kind or null if none.
+ */
+CDECL_AST_INLINE c_ast_t* c_ast_find_kind( c_ast_t *ast, c_kind_t kind ) {
+  void *const data = REINTERPRET_CAST( void*, kind );
+  return c_ast_visit( ast, c_ast_vistor_kind, data );
+}
 
 /**
  * Gets the name of the given kind.
