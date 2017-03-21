@@ -48,9 +48,9 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_pa3pa5i.test \
 	tests/declare_pa9i.test \
 	tests/declare_pbv_pi.test \
-	tests/declare_pc.test \
 	tests/declare_pcpi.test \
 	tests/declare_pfv_pi.test \
+	tests/declare_pi.test \
 	tests/declare_ppi.test \
 	tests/declare_sc.test \
 	tests/declare_si.test \
