@@ -153,8 +153,7 @@ static c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
 
     case K_POINTER:
       if ( ast->depth > array->depth ) {
-        c_ast_t *temp = c_ast_add_array( ast->as.ptr_ref.to_ast, array );
-        //c_ast_set_parent( temp, ast );
+        (void)c_ast_add_array( ast->as.ptr_ref.to_ast, array );
         return ast;
       }
       // no break;
@@ -605,7 +604,7 @@ explain_declaration_c
 
       if ( c_ast_check( $4.top_ast ) ) {
         char const *const name = c_ast_take_name( $4.top_ast );
-        //assert( name );
+        assert( name );
         FPRINTF( fout, "%s %s %s ", L_DECLARE, name, L_AS );
         if ( c_ast_take_typedef( $4.top_ast ) )
           FPRINTF( fout, "%s ", L_TYPE );
