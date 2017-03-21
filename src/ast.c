@@ -291,6 +291,13 @@ c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, YYLTYPE const *loc ) {
   return ast;
 }
 
+c_ast_t* c_ast_root( c_ast_t *ast ) {
+  assert( ast );
+  while ( ast->parent )
+    ast = ast->parent;
+  return ast;
+}
+
 void c_ast_set_parent( c_ast_t *child, c_ast_t *parent ) {
   assert( child );
   assert( parent );

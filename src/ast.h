@@ -323,6 +323,14 @@ char const* c_ast_name( c_ast_t const *ast );
 c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, YYLTYPE const *loc );
 
 /**
+ * Gets the root AST node of \a ast.
+ *
+ * @param ast the AST node to get the root
+ * @return Returns said AST node.
+ */
+c_ast_t* c_ast_root( c_ast_t *ast );
+
+/**
  * Sets the two-way pointer links between parent/child AST nodes.
  *
  * @param child The "child" AST node to set the parent of.
