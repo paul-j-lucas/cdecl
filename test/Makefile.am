@@ -119,8 +119,8 @@ TESTS+=	tests/cast_pmi.test \
 	tests/declare_pmi.test \
 	tests/declare_rci.test \
 	tests/declare_rcpi.test \
-	tests/declare_ri-01.test \
-	tests/declare_ri-02.test \
+	tests/declare_ref.test \
+	tests/declare_ri.test \
 	tests/declare_rpi.test \
 	tests/explain_cast_pmi.test \
 	tests/explain_pmfxx_ps.test \
