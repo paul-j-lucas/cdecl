@@ -87,7 +87,7 @@ c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
     // of this AST node and return the array so the parent will now point to it
     // instead.
     //
-    array->as.array.of_ast = ast;
+    c_ast_set_parent( ast, array );
     return array;
   }
 
@@ -95,7 +95,8 @@ c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
   // On the next-to-last recursive call, this sets this array to be an array of
   // the new array; for all prior recursive calls, it's a no-op.
   //
-  ast->as.array.of_ast = c_ast_append_array( ast->as.array.of_ast, array );
+  c_ast_t *const temp = c_ast_append_array( ast->as.array.of_ast, array );
+  c_ast_set_parent( temp, ast );
   return ast;
 }
 
