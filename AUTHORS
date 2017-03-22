@@ -58,6 +58,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added GNU-style test suite
 	added support for bool, char16_t, char32_t, complex, restrict,
 		_Thread_local, and wchar_t
+	added support for register function arguments
 	added support for typedef
-	added support for octal and hexidecimal numbers
+	added support for octal and hexadecimal numbers
 	now ignoring C /*...*/ comments in lexer

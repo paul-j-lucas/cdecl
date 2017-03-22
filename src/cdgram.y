@@ -1422,6 +1422,12 @@ type_modifier_english
   | Y_SHORT
   | Y_SIGNED
   | Y_UNSIGNED
+  /*
+   * Register is here (rather than in storage_class_c) because it's the only
+   * storage class that can be specified for function arguments.  Therefore,
+   * it's simpler to treat it as any other type modifier.
+   */
+  | Y_REGISTER
   ;
 
 unmodified_type_english
@@ -1627,7 +1633,7 @@ storage_class_c
   : Y_AUTO
   | Y___BLOCK                           /* Apple extension */
   | Y_EXTERN
-  | Y_REGISTER
+/*| Y_REGISTER */                       /* in type_modifier_english */
   | Y_STATIC
   | Y_TYPEDEF
   | Y_THREAD_LOCAL

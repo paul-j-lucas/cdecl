@@ -1,0 +1,1 @@
+cdecl | | declare f as function (i as register) returning void | 0

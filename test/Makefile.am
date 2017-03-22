@@ -36,6 +36,8 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_cpcpi.test \
 	tests/declare_cppi.test \
 	tests/declare_cvpi.test \
+	tests/declare_fg_v.test \
+	tests/declare_fgi_v.test \
 	tests/declare_fixiy_v.test \
 	tests/declare_fv_pa3a5i.test \
 	tests/declare_fv_pa3a5pi.test \
