@@ -22,18 +22,6 @@
 static unsigned   c_ast_count;          // alloc'd but not yet freed
 static c_ast_t   *c_ast_gc_head;        // linked list of alloc'd objects
 
-////////// inline functions ///////////////////////////////////////////////////
-
-/**
- * Checks whether the given AST node is a parent node.
- *
- * @param ast The \c c_ast to check.
- * @return Returns \c true only if it is.
- */
-static inline bool c_ast_is_parent( c_ast_t const *ast ) {
-  return ast->kind >= K_PARENT_MIN;
-}
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**

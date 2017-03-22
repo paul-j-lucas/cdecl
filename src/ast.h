@@ -270,6 +270,16 @@ void c_ast_gibberish_cast( c_ast_t const *ast, FILE *fout );
 void c_ast_gibberish_declare( c_ast_t const *ast, FILE *fout );
 
 /**
+ * Checks whether the given AST node is a parent node.
+ *
+ * @param ast The \c c_ast to check.
+ * @return Returns \c true only if it is.
+ */
+CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
+  return ast->kind >= K_PARENT_MIN;
+}
+
+/**
  * Dumps the given AST as JSON (for debugging).
  *
  * @param ast The c_ast to dump.
