@@ -7,6 +7,7 @@
 // local
 #include "config.h"                     /* must come first */
 #include "ast.h"
+#include "ast_util.h"
 #include "color.h"
 #include "common.h"
 #include "keywords.h"
@@ -129,128 +130,6 @@ static void cast_english( char const *name, c_ast_t *ast ) {
   } // switch
 }
 */
-
-/**
- * Adds an array to the AST being built.
- *
- * @param ast The AST to append to.
- * @param array The array AST to append.  It's "of" type must be null.
- * @return Returns the AST to be used as the grammar production's return value.
- */
-static c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
-  assert( ast );
-  assert( array );
-  assert( array->kind == K_ARRAY );
-
-  switch ( ast->kind ) {
-    case K_ARRAY:
-      return c_ast_append_array( ast, array );
-
-    case K_NONE:
-      c_ast_set_parent( array, ast->parent );
-      c_ast_set_parent( ast, array );
-      return ast->parent;
-
-    case K_POINTER:
-      if ( ast->depth > array->depth ) {
-        (void)c_ast_add_array( ast->as.ptr_ref.to_ast, array );
-        return ast;
-      }
-      // no break;
-
-    default:
-      if ( ast->depth > array->depth ) {
-        if ( array->as.array.of_ast->kind == K_NONE &&
-             c_ast_is_parent( ast ) ) {
-          c_ast_set_parent( ast->as.parent.of_ast, array );
-        }
-        c_ast_set_parent( array, ast );
-        return ast;
-      } else {
-        c_ast_set_parent( ast, array );
-        return array;
-      }
-  } // switch
-}
-
-/**
- * Adds a function to the AST being built.
- *
- * @param ast The AST to append to.
- * @param array The function AST to append.  It's "of" type must be null.
- * @return Returns the AST to be used as the grammar production's return value.
- */
-static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *func ) {
-  assert( ast );
-  assert( func );
-  assert( func->kind & (K_BLOCK | K_FUNCTION) );
-
-  switch ( ast->kind ) {
-    case K_ARRAY:
-      switch ( ast->as.array.of_ast->kind ) {
-        case K_ARRAY:
-        case K_POINTER:
-        case K_REFERENCE:
-          (void)c_ast_add_func_impl( ast->as.parent.of_ast, func );
-          return ast;
-        default:
-          /* suppress warning */;
-      } // switch
-      goto default_case;
-
-    case K_POINTER:
-    case K_POINTER_TO_MEMBER:
-    case K_REFERENCE:
-      switch ( ast->as.ptr_ref.to_ast->kind ) {
-        case K_NONE:
-          c_ast_set_parent( TYPE_PEEK(), func );
-          c_ast_set_parent( func, ast );
-          return ast;
-        case K_ARRAY:
-        case K_POINTER:
-        case K_REFERENCE:
-          (void)c_ast_add_func_impl( ast->as.ptr_ref.to_ast, func );
-          return ast;
-        default:
-          /* suppress warning */;
-      } // switch
-      // no break;
-
-    default_case:
-    default:
-      c_ast_set_parent( TYPE_PEEK(), func );
-      return func;
-  } // switch
-}
-
-/**
- * Adds a function to the AST being built.
- *
- * @param ast The AST to append to.
- * @param array The function AST to append.  It's "of" type must be null.
- * @return Returns the AST to be used as the grammar production's return value.
- */
-static c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *func ) {
-  c_ast_t *const rv = c_ast_add_func_impl( ast, func );
-  assert( rv );
-  func->type |= c_ast_take_storage( func->as.func.ret_ast );
-  return rv;
-}
-
-/**
- * "Patches" the given type into the given declaration if the latter still
- * contains an AST node of type K_NONE.
- *
- * @param type_ast The AST of the initial type.
- * @param decl_ast The AST of a declaration.
- */
-static void c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
-  c_ast_t *const none_ast = c_ast_find_kind( decl_ast, K_NONE );
-  if ( none_ast ) {
-    c_ast_t *const type_root_ast = c_ast_root( type_ast );
-    c_ast_set_parent( type_root_ast, none_ast->parent );
-  }
-}
 
 /**
  * Cleans-up parser data.
@@ -744,7 +623,7 @@ func_cast_c
 
       c_ast_t *const func = c_ast_new( K_FUNCTION, ast_depth, &@$ );
       func->as.func.args = $6;
-      $$.top_ast = c_ast_add_func( $4.top_ast, func );
+      $$.top_ast = c_ast_add_func( $4.top_ast, TYPE_PEEK(), func );
       $$.target_ast = NULL;
 
       DUMP_AST( "< func_cast_c", $$.top_ast );
@@ -1299,6 +1178,7 @@ block_decl_c                            /* Apple extension */
       DUMP_START( "block_decl_c",
                   "'(' '^' type_qualifier_list_opt_c decl_c ')' "
                   "'(' arg_list_opt_c ')'" );
+      DUMP_AST( "^ type_c", TYPE_PEEK() );
       DUMP_TYPE( "> type_qualifier_list_opt_c", $3 );
       DUMP_AST( "> decl_c", $4.top_ast );
       DUMP_AST_LIST( "> arg_list_opt_c", $7 );
@@ -1306,7 +1186,7 @@ block_decl_c                            /* Apple extension */
       c_ast_t *const block = c_ast_new( K_BLOCK, ast_depth, &@$ );
       C_TYPE_ADD( &block->type, $3, @3 );
       block->as.func.args = $7;
-      $$.top_ast = c_ast_add_func( $4.top_ast, block );
+      $$.top_ast = c_ast_add_func( $4.top_ast, TYPE_PEEK(), block );
       $$.target_ast = block->as.func.ret_ast;
 
       DUMP_AST( "< block_decl_c", $$.top_ast );
@@ -1324,7 +1204,7 @@ func_decl_c
 
       c_ast_t *const func = c_ast_new( K_FUNCTION, ast_depth, &@$ );
       func->as.func.args = $3;
-      $$.top_ast = c_ast_add_func( $1.top_ast, func );
+      $$.top_ast = c_ast_add_func( $1.top_ast, TYPE_PEEK(), func );
       $$.target_ast = func->as.func.ret_ast;
 
       DUMP_AST( "< func_decl_c", $$.top_ast );

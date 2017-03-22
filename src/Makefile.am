@@ -11,6 +11,7 @@ LDADD = $(top_builddir)/lib/libgnu.a
 
 cdecl_SOURCES =	cdgram.y cdlex.l \
 		ast.c \
+		ast_util.c \
 		cdecl.c \
 		color.c \
 		common.c \
