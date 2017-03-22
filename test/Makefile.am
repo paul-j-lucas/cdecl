@@ -26,8 +26,8 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_a9i.test \
 	tests/declare_a9pi.test \
 	tests/declare_bii_d.test \
-	tests/declare_ci-01.test \
-	tests/declare_ci-02.test \
+	tests/declare_ci.test \
+	tests/declare_constant.test \
 	tests/declare_cpa3cpa5i.test \
 	tests/declare_cpa3pa5i.test \
 	tests/declare_cpa9ci.test \
