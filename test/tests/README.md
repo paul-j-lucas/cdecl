@@ -1,3 +1,38 @@
+Test Names
+==========
+
+Test files are as follows:
+
++ `cast_`    = A cast test.
++ `cdecl-`   = A command-line option test.
++ `cl-`      = A command-line test.
++ `declare_` = A declare test.
++ `explain_` = An explain test.
++ `file-`    = A file test.
++ `help_`    = A help test.
++ `set_`     = A set test.
+
+Within each test, sequences of single characters are used to denote a C/C++
+declaration as it is in Enlish.  The characters are:
+
++ `a` = array (following digit 1-9 specifies array dimension)
++ `b` = block (Apple extension)
++ `c` = `char` or `const`
++ `d` = `double`
++ `i` = `int`
++ `l` = `long`
++ `f` = function
++ `m` = member of class
++ `p` = pointer
++ `r` = `register`, `restrict`, or reference
++ `s` = `signed`, `static`, or `struct`
++ `t` = `typedef`
++ `u` = `union` or `unsigned`
++ `v` = `void` or `volatile`
++ `x` = untyped K&R function argument
+
+A function's return type is separated from its arguments by `_`.
+
 Test File Format
 ================
 
