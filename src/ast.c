@@ -49,11 +49,6 @@ static void c_ast_free( c_ast_t *ast ) {
   }
 }
 
-bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
-  (void)data;
-  return ast->name != NULL;
-}
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_cleanup( void ) {
@@ -148,6 +143,11 @@ c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
 bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
   c_kind_t const kind = REINTERPRET_CAST( c_kind_t, data );
   return (ast->kind & kind) != 0;
+}
+
+bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
+  (void)data;
+  return ast->name != NULL;
 }
 
 char const* c_kind_name( c_kind_t kind ) {
