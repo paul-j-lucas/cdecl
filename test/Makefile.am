@@ -73,10 +73,13 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_a3a5pfv_ppa7a9i.test \
 	tests/explain_a3a5pfv_ppa7i.test \
 	tests/explain_a3a5pfv_ppa7pi.test \
+	tests/explain_a3a5pfv_ppi.test \
 	tests/explain_a3pfv_i.test \
 	tests/explain_a3ppfv_i.test \
+	tests/explain_a9cpi.test \
 	tests/explain_a9i.test \
 	tests/explain_a9pi.test \
+	tests/explain_bii_d.test \
 	tests/explain_cast_pc.test \
 	tests/explain_cast_pcc-01.test \
 	tests/explain_cast_pcc-02.test \
