@@ -91,6 +91,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_cast_pfpci_i.test \
 	tests/explain_ci.test \
 	tests/explain_cpi.test \
+	tests/explain_cpa3cpa5i.test \
 	tests/explain_cvpi.test \
 	tests/explain_f_pi.test \
 	tests/explain_fg_v.test \

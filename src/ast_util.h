@@ -69,8 +69,10 @@ void c_ast_gibberish_cast( c_ast_t const *ast, FILE *fout );
 void c_ast_gibberish_declare( c_ast_t const *ast, FILE *fout );
 
 /**
- * "Patches" the given type into the given declaration if the latter still
- * contains an AST node of type K_NONE.
+ * "Patches" the given type AST into the given declaration AST only if:
+ *  + The type AST has no parent.
+ *  + The type AST's depth is less than the declaration AST's depth.
+ *  + The declaration AST still contains an AST node of type K_NONE.
  *
  * @param type_ast The AST of the initial type.
  * @param decl_ast The AST of a declaration.

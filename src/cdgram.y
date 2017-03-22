@@ -1267,6 +1267,7 @@ pointer_decl_c
       DUMP_AST( "> pointer_decl_type_c", $1.top_ast );
       DUMP_AST( "> decl_c", $3.top_ast );
 
+      c_ast_patch_none( $1.top_ast, $3.top_ast );
       $$ = $3;
 
       DUMP_AST( "< pointer_decl_c", $$.top_ast );

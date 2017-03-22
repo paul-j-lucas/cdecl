@@ -33,25 +33,44 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
   assert( ast );
   assert( array );
 
-  if ( ast->kind != K_ARRAY ) {
-    assert( array->kind == K_ARRAY );
-    assert( array->as.array.of_ast->kind == K_NONE );
-    //
-    // We've reached the end of the array chain: make the new array be an array
-    // of this AST node and return the array so the parent will now point to it
-    // instead.
-    //
-    c_ast_set_parent( ast, array );
-    return array;
-  }
+  switch ( ast->kind ) {
+    case K_POINTER:
+      //
+      // If there's an intervening pointer, e.g.:
+      //
+      //      type (*(*x)[3])[5]
+      //
+      // (where 'x' is a "pointer to array 3 of pointer to array 5 of int"), we
+      // have to recurse "through" it if its depth < the array's depth; else
+      // we'd end up with a "pointer to array 3 of array 5 of pointer to int."
+      //
+      if ( array->depth >= ast->depth )
+        break;
+      // no break;
 
+    case K_ARRAY: {
+      //
+      // On the next-to-last recursive call, this sets this array to be an
+      // array of the new array; for all prior recursive calls, it's a no-op.
+      //
+      c_ast_t *const temp = c_ast_append_array( ast->as.array.of_ast, array );
+      c_ast_set_parent( temp, ast );
+      return ast;
+    }
+
+    default:
+      /* suppress warning */;
+  } // switch
+
+  assert( array->kind == K_ARRAY );
+  assert( array->as.array.of_ast->kind == K_NONE );
   //
-  // On the next-to-last recursive call, this sets this array to be an array of
-  // the new array; for all prior recursive calls, it's a no-op.
+  // We've reached the end of the array chain: make the new array be an array
+  // of this AST node and return the array so the parent will now point to it
+  // instead.
   //
-  c_ast_t *const temp = c_ast_append_array( ast->as.array.of_ast, array );
-  c_ast_set_parent( temp, ast );
-  return ast;
+  c_ast_set_parent( ast, array );
+  return array;
 }
 
 /**
@@ -264,10 +283,12 @@ bool c_ast_check( c_ast_t const *ast ) {
 }
 
 void c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
-  c_ast_t *const none_ast = c_ast_find_kind( decl_ast, K_NONE );
-  if ( none_ast ) {
-    c_ast_t *const type_root_ast = c_ast_root( type_ast );
-    c_ast_set_parent( type_root_ast, none_ast->parent );
+  if ( !type_ast->parent && type_ast->depth < decl_ast->depth ) {
+    c_ast_t *const none_ast = c_ast_find_kind( decl_ast, K_NONE );
+    if ( none_ast ) {
+      c_ast_t *const type_root_ast = c_ast_root( type_ast );
+      c_ast_set_parent( type_root_ast, none_ast->parent );
+    }
   }
 }
 
