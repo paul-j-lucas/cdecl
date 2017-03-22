@@ -70,53 +70,6 @@ void c_ast_gc( void ) {
   c_ast_gc_head = NULL;
 }
 
-c_ast_t* c_ast_clone( c_ast_t const *ast ) {
-  if ( ast == NULL )
-    return NULL;
-
-  c_ast_t *const clone = c_ast_new( ast->kind, 0, &ast->loc );
-  //
-  // Even though it's slightly less efficient, it's safer to memcpy() the clone
-  // so we can't forget to copy non-pointer struct members.
-  //
-  // Note that a clone retains its original id.
-  //
-  c_ast_t *const gc_next_copy = clone->gc_next;
-  memcpy( clone, ast, sizeof( c_ast_t ) );
-  clone->gc_next = gc_next_copy;
-
-  clone->name = check_strdup( ast->name );
-  clone->next = NULL;                   // don't clone next nodes
-
-  switch ( ast->kind ) {
-    case K_POINTER_TO_MEMBER:
-      clone->as.ptr_mbr.class_name = check_strdup( ast->as.ptr_mbr.class_name );
-      // no break;
-    case K_ARRAY:
-    case K_POINTER:
-    case K_REFERENCE:
-      clone->as.parent.of_ast = c_ast_clone( ast->as.parent.of_ast );
-      break;
-
-    case K_BUILTIN:
-    case K_NAME:
-    case K_NONE:
-      break;
-
-    case K_ENUM_CLASS_STRUCT_UNION:
-      clone->as.ecsu.ecsu_name = check_strdup( ast->as.ecsu.ecsu_name );
-      break;
-
-    case K_BLOCK:                       // Apple extension
-    case K_FUNCTION:
-      clone->as.func.ret_ast = c_ast_clone( ast->as.func.ret_ast );
-      clone->as.func.args = c_ast_list_clone( &ast->as.func.args );
-      break;
-  } // switch
-
-  return clone;
-}
-
 void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
   assert( list );
   if ( ast ) {
@@ -131,19 +84,6 @@ void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
       list->tail_ast = ast;
     }
   }
-}
-
-c_ast_list_t c_ast_list_clone( c_ast_list_t const *list ) {
-  c_ast_list_t list_clone;
-  if ( list ) {
-    for ( c_ast_t const *ast = list->head_ast; ast; ast = ast->next ) {
-      c_ast_t *const ast_clone = c_ast_clone( ast );
-      c_ast_list_append( &list_clone, ast_clone );
-    } // for
-  } else {
-    list_clone.head_ast = list_clone.tail_ast = NULL;
-  }
-  return list_clone;
 }
 
 char const* c_ast_name( c_ast_t const *ast ) {

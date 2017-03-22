@@ -205,14 +205,6 @@ CDECL_AST_INLINE c_ast_t const* c_ast_args( c_ast_t const *ast ) {
 void c_ast_cleanup( void );
 
 /**
- * Clones the given AST.
- *
- * @param ast The AST to clone.
- * @return Returns said clone.
- */
-c_ast_t* c_ast_clone( c_ast_t const *ast );
-
-/**
  * Garbage collects all allocated c_ast objects.
  */
 void c_ast_gc( void );
@@ -245,14 +237,6 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
  * @param ast The c_ast to append.  Does nothing if null.
  */
 void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast );
-
-/**
- * Clones the given c_ast_list.
- *
- * @param list The c_ast_list to clone.
- * @return Returns said clone.
- */
-c_ast_list_t c_ast_list_clone( c_ast_list_t const *list );
 
 /**
  * Dump the given c_ast_list as JSON (for debugging).
