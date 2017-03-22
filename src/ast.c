@@ -140,7 +140,9 @@ c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
     return NULL;
   if ( visitor( ast, data ) )
     return ast;
-  return ast->parent ? c_ast_visit_up( ast->parent, visitor, data ) : NULL;
+  if ( !ast->parent )
+    return NULL;
+  return c_ast_visit_up( ast->parent, visitor, data );
 }
 
 bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
