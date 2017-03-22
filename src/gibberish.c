@@ -3,6 +3,12 @@
 **      src/gibberish.c
 */
 
+/**
+ * @file
+ * Contains the code for printing an AST as gibberish, aka, a C/C++
+ * declaration.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"

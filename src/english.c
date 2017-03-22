@@ -3,6 +3,11 @@
 **      src/english.c
 */
 
+/**
+ * @file
+ * Contains the code for printing an AST as English.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"
