@@ -19,12 +19,13 @@ declaration as it is in Enlish.  The characters are:
 + `b` = block (Apple extension)
 + `c` = `char` or `const`
 + `d` = `double`
++ `f` = function
++ `g` = `register`
 + `i` = `int`
 + `l` = `long`
-+ `f` = function
 + `m` = member of class
 + `p` = pointer
-+ `r` = `register`, `restrict`, or reference
++ `r` = `restrict` or reference
 + `s` = `signed`, `static`, or `struct`
 + `t` = `typedef`
 + `u` = `union` or `unsigned`

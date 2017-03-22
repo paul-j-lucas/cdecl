@@ -1457,14 +1457,15 @@ unmodified_type_english
 /*****************************************************************************/
 
 type_c
-  : type_modifier_list_c
+  : type_modifier_list_c                /* allows for default int type */
     {
       DUMP_START( "type_c", "type_modifier_list_c" );
       DUMP_TYPE( "> type_modifier_list_c", $1 );
 
       $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
       $$.target_ast = NULL;
-      $$.top_ast->type = $1;
+      $$.top_ast->type = T_INT;
+      C_TYPE_ADD( &$$.top_ast->type, $1, @1 );
       C_TYPE_CHECK( $$.top_ast->type, @1 );
 
       DUMP_AST( "< type_c", $$.top_ast );

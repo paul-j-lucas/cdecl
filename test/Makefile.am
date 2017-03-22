@@ -43,6 +43,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fv_pa3pi.test \
 	tests/declare_fv_v.test \
 	tests/declare_fx_pi.test \
+	tests/declare_gi.test \
 	tests/declare_ll.test \
 	tests/declare_pa3cpa5i.test \
 	tests/declare_pa3pa5i.test \
@@ -90,12 +91,16 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_cpi.test \
 	tests/explain_cvpi.test \
 	tests/explain_f_pi.test \
+	tests/explain_fg_v.test \
+	tests/explain_fgi_v.test \
 	tests/explain_fid_v.test \
 	tests/explain_fpc_pi.test \
 	tests/explain_fpci_pi.test \
 	tests/explain_fv_pi.test \
 	tests/explain_fx_pi.test \
+	tests/explain_gi.test \
 	tests/explain_ic.test \
+	tests/explain_ig.test \
 	tests/explain_is.test \
 	tests/explain_it.test \
 	tests/explain_ll.test \
