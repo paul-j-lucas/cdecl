@@ -13,7 +13,7 @@ Test files are as follows:
 + `set_`     = A set test.
 
 Within each test, sequences of single characters are used to denote a C/C++
-declaration as it is in Enlish.  The characters are:
+declaration as it is in English.  The characters are:
 
 + `a` = array (following digit 1-9 specifies array dimension)
 + `b` = block (Apple extension)
