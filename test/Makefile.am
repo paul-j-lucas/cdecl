@@ -33,12 +33,13 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_cpa9ci.test \
 	tests/declare_cpa9i.test \
 	tests/declare_cpbv_pi.test \
-	tests/declare_cpcpi.test \
 	tests/declare_cpbv_pi.test \
+	tests/declare_cpcpi.test \
 	tests/declare_cpfv_pi.test \
 	tests/declare_cpi.test \
 	tests/declare_cppi.test \
 	tests/declare_cvpi.test \
+	tests/declare_f_pi.test \
 	tests/declare_fg_v.test \
 	tests/declare_fgi_v.test \
 	tests/declare_fixiy_v.test \
@@ -92,13 +93,16 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_cpa9ci.test \
 	tests/explain_cpa9i.test \
 	tests/explain_cpbv_pi.test \
+	tests/explain_cpcpi.test \
 	tests/explain_cpfv_pi.test \
 	tests/explain_cpi.test \
+	tests/explain_cppi.test \
 	tests/explain_cvpi.test \
 	tests/explain_f_pi.test \
 	tests/explain_fg_v.test \
 	tests/explain_fgi_v.test \
 	tests/explain_fid_v.test \
+	tests/explain_fixiy_v.test \
 	tests/explain_fpc_pi.test \
 	tests/explain_fpci_pi.test \
 	tests/explain_fv_pi.test \
