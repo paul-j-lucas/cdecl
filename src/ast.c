@@ -5,6 +5,7 @@
 
 // local
 #include "config.h"                     /* must go first */
+#define CDECL_AST_INLINE _GL_EXTERN_INLINE
 #include "ast.h"
 #include "literals.h"
 #include "options.h"
