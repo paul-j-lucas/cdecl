@@ -77,12 +77,14 @@ typedef struct c_ptr_mbr  c_ptr_mbr_t;
 typedef struct c_ptr_ref  c_ptr_ref_t;
 
 /**
- * The signature for functions passed to c_ast_visit().
+ * The signature for functions passed to c_ast_visit_down() or
+ * c_ast_visit_up().
  *
  * @param ast The c_ast to visit.
- * @param data Optional data passed from c_ast_visit() or c_ast_visit_up().
+ * @param data Optional data passed from c_ast_visit_down() or
+ * c_ast_visit_up().
  * @return Returning \c true will cause traversal to stop and \a ast to be
- * returned to the called of c_ast_visit().
+ * returned to the called of c_ast_visit_down().
  */
 typedef bool (*c_ast_visitor)( c_ast_t *ast, void *data );
 
@@ -288,7 +290,7 @@ void c_ast_set_parent( c_ast_t *child, c_ast_t *parent );
  * @param data Optional data passed to \a visitor.
  * @return Returns a pointer to the c_ast the visitor stopped on or null.
  */
-c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visitor visitor, void *data );
+c_ast_t* c_ast_visit_down( c_ast_t *ast, c_ast_visitor visitor, void *data );
 
 /**
  * Traverses up the AST towards the root.
@@ -327,7 +329,7 @@ bool c_ast_visitor_name( c_ast_t *ast, void *data );
  */
 CDECL_AST_INLINE c_ast_t* c_ast_find_kind( c_ast_t *ast, c_kind_t kind ) {
   void *const data = REINTERPRET_CAST( void*, kind );
-  return c_ast_visit( ast, c_ast_vistor_kind, data );
+  return c_ast_visit_down( ast, c_ast_vistor_kind, data );
 }
 
 /**

@@ -84,7 +84,8 @@ void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
 
 char const* c_ast_name( c_ast_t const *ast ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_t *const found = c_ast_visit( nonconst_ast, c_ast_visitor_name, NULL );
+  c_ast_t *const found =
+    c_ast_visit_down( nonconst_ast, c_ast_visitor_name, NULL );
   return found ? found->name : NULL;
 }
 
@@ -121,14 +122,14 @@ void c_ast_set_parent( c_ast_t *child, c_ast_t *parent ) {
   child->parent = parent;
 }
 
-c_ast_t* c_ast_visit( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
+c_ast_t* c_ast_visit_down( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
   if ( ast == NULL )
     return NULL;
   if ( visitor( ast, data ) )
     return ast;
   if ( !c_ast_is_parent( ast ) )
     return NULL;
-  return c_ast_visit( ast->as.parent.of_ast, visitor, data );
+  return c_ast_visit_down( ast->as.parent.of_ast, visitor, data );
 }
 
 c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor visitor, void *data ) {

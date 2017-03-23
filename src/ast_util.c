@@ -286,7 +286,7 @@ void c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
 }
 
 char const* c_ast_take_name( c_ast_t *ast ) {
-  c_ast_t *const found = c_ast_visit( ast, c_ast_visitor_name, NULL );
+  c_ast_t *const found = c_ast_visit_down( ast, c_ast_visitor_name, NULL );
   if ( !found )
     return NULL;
   char const *const name = found->name;
