@@ -116,7 +116,8 @@ void c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast );
  * (with the intent of giving it to another c_ast).
  *
  * @param ast The AST (or one of its child nodes) to take from.
- * @return Returns said name or null.
+ * @return Returns said name or null.  The caller is responsible for freeing
+ * the string.
  */
 char const* c_ast_take_name( c_ast_t *ast );
 
