@@ -90,44 +90,34 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      switch ( ast->as.array.of_ast->kind ) {
-        case K_ARRAY:
-        case K_POINTER:
-        case K_REFERENCE:
-          (void)c_ast_add_func_impl(
-            ast->as.parent.of_ast, ret_type_ast, func
-          );
-          return ast;
-        default:
-          /* suppress warning */;
-      } // switch
-      goto default_case;
-
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
     case K_REFERENCE:
       switch ( ast->as.ptr_ref.to_ast->kind ) {
-        case K_NONE:
-          c_ast_set_parent( ret_type_ast, func );
-          c_ast_set_parent( func, ast );
-          return ast;
         case K_ARRAY:
         case K_POINTER:
+        case K_POINTER_TO_MEMBER:
         case K_REFERENCE:
           (void)c_ast_add_func_impl(
             ast->as.ptr_ref.to_ast, ret_type_ast, func
           );
           return ast;
+        case K_NONE:
+          c_ast_set_parent( func, ast );
+          // no break;
+        case K_BLOCK:
+          c_ast_set_parent( ret_type_ast, func );
+          return ast;
         default:
           /* suppress warning */;
       } // switch
-      // no break;
 
-    default_case:
     default:
-      c_ast_set_parent( ret_type_ast, func );
-      return func;
+      /* suppress warning */;
   } // switch
+
+  c_ast_set_parent( ret_type_ast, func );
+  return func;
 }
 
 /**

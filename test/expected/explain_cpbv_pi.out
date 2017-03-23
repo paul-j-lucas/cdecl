@@ -1,0 +1,1 @@
+declare x as const pointer to block (void) returning pointer to int

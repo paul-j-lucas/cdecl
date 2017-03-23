@@ -567,10 +567,19 @@ array_cast_c
       DUMP_AST( "> cast_c", $1.top_ast );
       DUMP_NUM( "> array_size_c", $2 );
 
+      if ( $1.target_ast )
+        DUMP_AST( "> target_ast", $1.target_ast );
+
       c_ast_t *const array = c_ast_new( K_ARRAY, ast_depth, &@$ );
       array->as.array.size = $2;
-      $$.top_ast = c_ast_add_array( $1.top_ast, array );
-      $$.target_ast = NULL;
+      array->as.array.of_ast = c_ast_new( K_NONE, ast_depth, &@1 );
+      if ( $1.target_ast ) {
+        $$.top_ast = $1.top_ast;
+        $$.target_ast = c_ast_add_array( $1.target_ast, array );
+      } else {
+        $$.top_ast = c_ast_add_array( $1.top_ast, array );
+        $$.target_ast = NULL;
+      }
 
       DUMP_AST( "< array_cast_c", $$.top_ast );
       DUMP_END();
@@ -578,19 +587,27 @@ array_cast_c
   ;
 
 block_cast_c                            /* Apple extension */
-  : /* type_c */ '(' '^' cast_c ')' '(' arg_list_opt_c ')'
+  : /* type_c */ '(' '^'
     {
+      //
+      // A block AST has to be the type inherited attribute for cast_c so we
+      // have to create it here.
+      //
+      TYPE_PUSH( c_ast_new( K_BLOCK, ast_depth, &@$ ) );
+    }
+    cast_c ')' '(' arg_list_opt_c ')'
+    {
+      c_ast_t *const block = TYPE_POP();
+
       DUMP_START( "block_cast_c",
                   "'(' '^' cast_c ')' '(' arg_list_opt_c ')'" );
       DUMP_AST( "^ type_c", TYPE_PEEK() );
-      DUMP_AST( "> cast_c", $3.top_ast );
-      DUMP_AST_LIST( "> arg_list_opt_c", $6 );
+      DUMP_AST( "> cast_c", $4.top_ast );
+      DUMP_AST_LIST( "> arg_list_opt_c", $7 );
 
-      $$.top_ast = c_ast_new( K_BLOCK, ast_depth, &@$ );
-      $$.target_ast = NULL;
-      $$.top_ast->name = c_ast_name( $3.top_ast );
-      $$.top_ast->as.block.args = $6;
-      c_ast_set_parent( TYPE_PEEK(), $$.top_ast );
+      $$.top_ast->as.block.args = $7;
+      $$.top_ast = c_ast_add_func( $4.top_ast, TYPE_PEEK(), block );
+      $$.target_ast = block->as.block.ret_ast;
 
       DUMP_AST( "< block_cast_c", $$.top_ast );
       DUMP_END();
@@ -1172,21 +1189,29 @@ array_size_c
   ;
 
 block_decl_c                            /* Apple extension */
-  : /* type */ '(' '^' type_qualifier_list_opt_c decl_c ')'
-    '(' arg_list_opt_c ')'
+  : /* type */ '(' '^'
     {
+      //
+      // A block AST has to be the type inherited attribute for decl_c so we
+      // have to create it here.
+      //
+      TYPE_PUSH( c_ast_new( K_BLOCK, ast_depth, &@$ ) );
+    }
+    type_qualifier_list_opt_c decl_c ')' '(' arg_list_opt_c ')'
+    {
+      c_ast_t *const block = TYPE_POP();
+
       DUMP_START( "block_decl_c",
                   "'(' '^' type_qualifier_list_opt_c decl_c ')' "
                   "'(' arg_list_opt_c ')'" );
       DUMP_AST( "^ type_c", TYPE_PEEK() );
-      DUMP_TYPE( "> type_qualifier_list_opt_c", $3 );
-      DUMP_AST( "> decl_c", $4.top_ast );
-      DUMP_AST_LIST( "> arg_list_opt_c", $7 );
+      DUMP_TYPE( "> type_qualifier_list_opt_c", $4 );
+      DUMP_AST( "> decl_c", $5.top_ast );
+      DUMP_AST_LIST( "> arg_list_opt_c", $8 );
 
-      c_ast_t *const block = c_ast_new( K_BLOCK, ast_depth, &@$ );
-      C_TYPE_ADD( &block->type, $3, @3 );
-      block->as.block.args = $7;
-      $$.top_ast = c_ast_add_func( $4.top_ast, TYPE_PEEK(), block );
+      C_TYPE_ADD( &block->type, $4, @4 );
+      block->as.block.args = $8;
+      $$.top_ast = c_ast_add_func( $5.top_ast, TYPE_PEEK(), block );
       $$.target_ast = block->as.block.ret_ast;
 
       DUMP_AST( "< block_decl_c", $$.top_ast );
