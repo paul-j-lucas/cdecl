@@ -109,6 +109,9 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_fpc_pi.test \
 	tests/explain_fpci_pi.test \
 	tests/explain_fv_pa3a5i.test \
+	tests/explain_fv_pa3a5pi.test \
+	tests/explain_fv_pa3i.test \
+	tests/explain_fv_pa3pi.test \
 	tests/explain_fv_pi.test \
 	tests/explain_fx_pi.test \
 	tests/explain_gi.test \
