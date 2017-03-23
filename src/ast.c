@@ -50,6 +50,24 @@ static void c_ast_free( c_ast_t *ast ) {
   }
 }
 
+#ifndef NDEBUG
+/**
+ * Checks the AST for a cycle.
+ *
+ * @param ast The AST node to begin at.
+ * @return Returns \c true only if there is a cycle.
+ */
+static bool c_ast_has_cycle( c_ast_t const *ast ) {
+  assert( ast );
+  for ( c_ast_t const *const start_ast = ast; ast->parent; ) {
+    ast = ast->parent;
+    if ( ast == start_ast )
+      return true;
+  } // for
+  return false;
+}
+#endif /* NDEBUG */
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_cleanup( void ) {
@@ -111,8 +129,11 @@ void c_ast_set_parent( c_ast_t *child, c_ast_t *parent ) {
   assert( child );
   assert( parent );
   assert( c_ast_is_parent( parent ) );
-  parent->as.parent.of_ast = child;
+
   child->parent = parent;
+  parent->as.parent.of_ast = child;
+
+  assert( !c_ast_has_cycle( child ) );
 }
 
 c_ast_t* c_ast_visit_down( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
