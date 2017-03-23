@@ -4,6 +4,8 @@
 */
 
 // local
+#include "config.h"                     /* must go first */
+#define CDECL_AST_UTIL_INLINE _GL_EXTERN_INLINE
 #include "ast_util.h"
 
 // standard

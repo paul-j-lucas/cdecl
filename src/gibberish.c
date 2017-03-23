@@ -12,6 +12,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"
+#include "ast_util.h"
 #include "util.h"
 
 // system
@@ -168,9 +169,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_POINTER:
     case K_REFERENCE:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
-      bool const has_function_or_block_ancestor =
-        c_ast_has_ancestor( ast, K_BLOCK | K_FUNCTION );
-      if ( !has_function_or_block_ancestor && param->gkind != G_CAST ) {
+      if ( param->gkind != G_CAST && c_ast_has_name( ast ) &&
+           !c_ast_has_ancestor( ast, K_BLOCK | K_FUNCTION ) ) {
         //
         // For all kinds except functions and blocks, we want the output to be
         // like:
@@ -178,11 +178,13 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         //      type *var
         //
         // i.e., the '*' or '&' adjacent to the variable; for functions,
-        // blocks, or when we're casting, we want the output to be like:
+        // blocks, when there's no name for a function argument, or when we're
+        // casting, we want the output to be like:
         //
-        //      type* func()        // function
-        //      type* (^block)()    // block
-        //      (type*)             // cast
+        //      type* func()            // function
+        //      type* (^block)()        // block
+        //      func(type*)             // nameless function argument
+        //      (type*)expr             // cast
         //
         // i.e., the '*' or '&' adjacent to the type.
         //

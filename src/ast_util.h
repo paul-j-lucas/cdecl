@@ -13,7 +13,14 @@
  */
 
 // local
+#include "config.h"                     /* must go first */
 #include "ast.h"
+#include "util.h"
+
+_GL_INLINE_HEADER_BEGIN
+#ifndef CDECL_AST_UTIL_INLINE
+# define CDECL_AST_UTIL_INLINE _GL_INLINE
+#endif /* CDECL_AST_UTIL_INLINE */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -56,7 +63,7 @@ void c_ast_english( c_ast_t const *ast, FILE *fout );
 /**
  * Prints the given AST as a C/C++ cast.
  *
- * @param ast The c_ast to print.
+ * @param ast The AST to print.
  * @param fout The FILE to print to.
  */
 void c_ast_gibberish_cast( c_ast_t const *ast, FILE *fout );
@@ -64,10 +71,21 @@ void c_ast_gibberish_cast( c_ast_t const *ast, FILE *fout );
 /**
  * Prints the given AST as a C/C++ declaration.
  *
- * @param ast The c_ast to print.
+ * @param ast The AST to print.
  * @param fout The FILE to print to.
  */
 void c_ast_gibberish_declare( c_ast_t const *ast, FILE *fout );
+
+/**
+ * Checks whether the given AST has a name.
+ *
+ * @param ast The AST to to start the search at.
+ * @return Returns \c true only if AST has a name.
+ */
+CDECL_AST_UTIL_INLINE bool c_ast_has_name( c_ast_t const *ast ) {
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+  return c_ast_visit_up( nonconst_ast, c_ast_visitor_name, NULL ) != NULL;
+}
 
 /**
  * "Patches" the given type AST into the given declaration AST only if:
@@ -84,7 +102,7 @@ void c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast );
  * Takes the name, if any, away from \a ast
  * (with the intent of giving it to another c_ast).
  *
- * @param ast The AST to take trom.
+ * @param ast The AST (or one of its child nodes) to take from.
  * @return Returns said name or null.
  */
 char const* c_ast_take_name( c_ast_t *ast );
@@ -111,6 +129,8 @@ char const* c_ast_take_name( c_ast_t *ast );
 bool c_ast_take_typedef( c_ast_t *ast );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+_GL_INLINE_HEADER_END
 
 #endif /* cdecl_ast_util_H */
 /* vim:set et sw=2 ts=2: */
