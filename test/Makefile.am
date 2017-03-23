@@ -34,6 +34,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_cpa9i.test \
 	tests/declare_cpbv_pi.test \
 	tests/declare_cpcpi.test \
+	tests/declare_cpi.test \
 	tests/declare_cppi.test \
 	tests/declare_cvpi.test \
 	tests/declare_fg_v.test \
@@ -84,8 +85,11 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_a9pi.test \
 	tests/explain_bii_d.test \
 	tests/explain_ci.test \
-	tests/explain_cpi.test \
 	tests/explain_cpa3cpa5i.test \
+	tests/explain_cpa3pa5i.test \
+	tests/explain_cpa9ci.test \
+	tests/explain_cpa9i.test \
+	tests/explain_cpi.test \
 	tests/explain_cvpi.test \
 	tests/explain_f_pi.test \
 	tests/explain_fg_v.test \
