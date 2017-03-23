@@ -74,11 +74,12 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
 }
 
 /**
- * Adds a function to the AST being built.
+ * Adds a function (or block) to the AST being built.
  *
  * @param ast The AST to append to.
- * @param ret_type_ast The AST of the return-type of the function.
- * @param array The function AST to append.  It's "of" type must be null.
+ * @param ret_type_ast The AST of the return-type of the function (or block).
+ * @param func The function (or block) AST to append.  It's "of" type must be
+ * null.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
