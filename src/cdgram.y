@@ -1172,7 +1172,7 @@ array_size_c
   ;
 
 block_decl_c                            /* Apple extension */
-  : '(' '^' type_qualifier_list_opt_c decl_c ')'
+  : /* type */ '(' '^' type_qualifier_list_opt_c decl_c ')'
     '(' arg_list_opt_c ')'
     {
       DUMP_START( "block_decl_c",
@@ -1185,9 +1185,9 @@ block_decl_c                            /* Apple extension */
 
       c_ast_t *const block = c_ast_new( K_BLOCK, ast_depth, &@$ );
       C_TYPE_ADD( &block->type, $3, @3 );
-      block->as.func.args = $7;
+      block->as.block.args = $7;
       $$.top_ast = c_ast_add_func( $4.top_ast, TYPE_PEEK(), block );
-      $$.target_ast = block->as.func.ret_ast;
+      $$.target_ast = block->as.block.ret_ast;
 
       DUMP_AST( "< block_decl_c", $$.top_ast );
       DUMP_END();
