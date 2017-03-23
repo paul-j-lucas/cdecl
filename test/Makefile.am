@@ -7,9 +7,13 @@
 
 AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 
+###############################################################################
+
 # Command-line option tests
 TESTS =	tests/cdecl-ap.test \
 	tests/cdecl-x.test
+
+###############################################################################
 
 # C declare tests
 TESTS+=	tests/declare_a3a5a7i.test \
@@ -156,9 +160,10 @@ TESTS+=	tests/explain_cast_pi.test \
 	tests/explain_cast_pfpi_i.test \
 	tests/explain_cast_pfpci_i.test
 
-# C++ tests
-TESTS+=	tests/cast_pmi.test \
-	tests/declare_cpmi.test \
+###############################################################################
+
+# C++ declare tests
+TESTS+=	tests/declare_cpmi.test \
 	tests/declare_cpri.test \
 	tests/declare_pfv_ri.test \
 	tests/declare_pmci.test \
@@ -167,16 +172,25 @@ TESTS+=	tests/cast_pmi.test \
 	tests/declare_rcpi.test \
 	tests/declare_ref.test \
 	tests/declare_ri.test \
-	tests/declare_rpi.test \
-	tests/explain_cast_pmi.test \
-	tests/explain_pmfxx_ps.test \
+	tests/declare_rpi.test
+
+# C++ explain tests
+TESTS+= tests/explain_pmfxx_ps.test \
 	tests/explain_pmi.test \
 	tests/explain_ri.test
+
+# C++ cast tests
+TESTS+=	tests/cast_pmi.test
+
+# C++ explain cast tests
+TESTS+=	tests/explain_cast_pmi.test
 
 # Command-line tests
 TESTS+=	tests/cl-cast_i.test \
 	tests/cl-declare_i.test \
 	tests/cl-explain_i.test
+
+###############################################################################
 
 # File tests
 TESTS+=	tests/file-cast_i.test \
@@ -191,6 +205,8 @@ TESTS+=	tests/help_c.test \
 	tests/help_cxx.test \
 	tests/set.test \
 	tests/set_options.test
+
+###############################################################################
 
 AM_TESTS_ENVIRONMENT = BUILD_SRC=$(top_builddir)/src; export BUILD_SRC ;
 TEST_EXTENSIONS = .test 
