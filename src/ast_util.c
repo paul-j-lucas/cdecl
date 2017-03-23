@@ -105,6 +105,8 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
           );
           return ast;
         case K_NONE:
+          if ( ret_type_ast == ast )
+            break;
           c_ast_set_parent( func, ast );
           // no break;
         case K_BLOCK:
