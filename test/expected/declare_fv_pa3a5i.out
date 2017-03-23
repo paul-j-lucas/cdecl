@@ -1,1 +1,1 @@
-int (*x(void))[3][5]
+int (*f(void))[3][5]
