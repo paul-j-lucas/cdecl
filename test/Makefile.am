@@ -65,8 +65,8 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_sc.test \
 	tests/declare_si.test \
 	tests/declare_sll.test \
-	tests/declare_ti-01.test \
-	tests/declare_ti-02.test \
+	tests/declare_ti.test \
+	tests/declare_type.test \
 	tests/declare_u.test \
 	tests/declare_uc.test \
 	tests/declare_ui.test \
@@ -113,6 +113,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_fv_pa3i.test \
 	tests/explain_fv_pa3pi.test \
 	tests/explain_fv_pi.test \
+	tests/explain_fv_v.test \
 	tests/explain_fx_pi.test \
 	tests/explain_gi.test \
 	tests/explain_ic.test \
@@ -121,12 +122,19 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_it.test \
 	tests/explain_ll.test \
 	tests/explain_pa3a5i.test \
+	tests/explain_pa3cpa5i.test \
+	tests/explain_pa3pa5i.test \
 	tests/explain_pa9i.test \
+	tests/explain_pbv_pi.test \
+	tests/explain_pcpi.test \
+	tests/explain_pfv_pi.test \
 	tests/explain_pi.test \
-	tests/explain_ppc.test \
+	tests/explain_ppi.test \
 	tests/explain_rpi.test \
+	tests/explain_sc.test \
 	tests/explain_si.test \
 	tests/explain_ti.test \
+	tests/explain_ull.test \
 	tests/explain_vcpi.test \
 	tests/explain_vpc.test
 

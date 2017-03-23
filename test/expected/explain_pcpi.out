@@ -1,0 +1,1 @@
+declare x as pointer to const pointer to int
