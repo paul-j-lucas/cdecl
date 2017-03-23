@@ -1,0 +1,1 @@
+cdecl | | declare f as function (pointer to char, int) returning pointer to int | 0
