@@ -1,1 +1,1 @@
-cdecl | | cast x into ptr to const char | 0
+cdecl | | cast x into pointer to const char | 0
