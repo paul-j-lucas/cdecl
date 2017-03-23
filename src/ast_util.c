@@ -145,7 +145,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
  */
 static c_type_t c_ast_take_storage( c_ast_t *ast ) {
   c_type_t storage = T_NONE;
-  c_ast_t *const found = c_ast_find_kind( ast, K_BUILTIN );
+  c_ast_t *const found = c_ast_find_kind( ast, V_DOWN, K_BUILTIN );
   if ( found ) {
     storage = found->type & T_MASK_STORAGE;
     found->type &= ~T_MASK_STORAGE;
@@ -275,9 +275,16 @@ bool c_ast_check( c_ast_t const *ast ) {
   return true;
 }
 
+char const* c_ast_name( c_ast_t const *ast, v_direction_t dir ) {
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+  c_ast_t *const found =
+    c_ast_visit( nonconst_ast, dir, c_ast_visitor_name, NULL );
+  return found ? found->name : NULL;
+}
+
 void c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   if ( !type_ast->parent && type_ast->depth < decl_ast->depth ) {
-    c_ast_t *const none_ast = c_ast_find_kind( decl_ast, K_NONE );
+    c_ast_t *const none_ast = c_ast_find_kind( decl_ast, V_DOWN, K_NONE );
     if ( none_ast ) {
       c_ast_t *const type_root_ast = c_ast_root( type_ast );
       c_ast_set_parent( type_root_ast, none_ast->parent );
@@ -286,7 +293,7 @@ void c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
 }
 
 char const* c_ast_take_name( c_ast_t *ast ) {
-  c_ast_t *const found = c_ast_visit_down( ast, c_ast_visitor_name, NULL );
+  c_ast_t *const found = c_ast_visit( ast, V_DOWN, c_ast_visitor_name, NULL );
   if ( !found )
     return NULL;
   char const *const name = found->name;
@@ -295,7 +302,7 @@ char const* c_ast_take_name( c_ast_t *ast ) {
 }
 
 bool c_ast_take_typedef( c_ast_t *ast ) {
-  c_ast_t *const found = c_ast_find_kind( ast, K_BUILTIN );
+  c_ast_t *const found = c_ast_find_kind( ast, V_DOWN, K_BUILTIN );
   if ( found && (found->type & T_TYPEDEF) ) {
     found->type &= ~T_TYPEDEF;
     return true;

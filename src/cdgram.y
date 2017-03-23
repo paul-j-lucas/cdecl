@@ -770,7 +770,7 @@ arg_c
 
       $$ = $3.top_ast ? $3 : $1;
       if ( $$.top_ast->name == NULL )
-        $$.top_ast->name = check_strdup( c_ast_name( $$.top_ast ) );
+        $$.top_ast->name = check_strdup( c_ast_name( $$.top_ast, V_DOWN ) );
 
       DUMP_AST( "< arg_c", $$.top_ast );
       DUMP_END();

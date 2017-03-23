@@ -61,6 +61,21 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_type_ast, c_ast_t *func );
 void c_ast_english( c_ast_t const *ast, FILE *fout );
 
 /**
+ * Traverses the AST attempting to find an AST node having \a kind.
+ *
+ * @param ast The AST to begin at.
+ * @param dir The direction to visit.
+ * @param kind The bitwise-or kind(s) to find.
+ * @return Returns a pointer to an AST node having \a kind or null if none.
+ */
+CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_kind( c_ast_t *ast,
+                                                v_direction_t dir,
+                                                c_kind_t kind ) {
+  void *const data = REINTERPRET_CAST( void*, kind );
+  return c_ast_visit( ast, dir, c_ast_vistor_kind, data );
+}
+
+/**
  * Prints the given AST as a C/C++ cast.
  *
  * @param ast The AST to print.
@@ -77,15 +92,13 @@ void c_ast_gibberish_cast( c_ast_t const *ast, FILE *fout );
 void c_ast_gibberish_declare( c_ast_t const *ast, FILE *fout );
 
 /**
- * Checks whether the given AST has a name.
+ * Gets the name from the given AST.
  *
- * @param ast The AST to to start the search at.
- * @return Returns \c true only if AST has a name.
+ * @param ast The AST to begin the search at.
+ * @param dir The direction to search.
+ * @return Returns said name or null if none.
  */
-CDECL_AST_UTIL_INLINE bool c_ast_has_name( c_ast_t const *ast ) {
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  return c_ast_visit_up( nonconst_ast, c_ast_visitor_name, NULL ) != NULL;
-}
+char const* c_ast_name( c_ast_t const *ast, v_direction_t dir );
 
 /**
  * "Patches" the given type AST into the given declaration AST only if:

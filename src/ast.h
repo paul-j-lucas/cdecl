@@ -63,6 +63,15 @@ typedef enum c_kind c_kind_t;
 
 #define K_PARENT_MIN          K_ARRAY
 
+/**
+ * The direction to traverse an AST using c_ast_visit().
+ */
+enum v_direction {
+  V_DOWN,                               // root -> leaves
+  V_UP                                  // leaf -> root
+};
+typedef enum v_direction v_direction_t;
+
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef struct c_ast      c_ast_t;
@@ -250,14 +259,6 @@ void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast );
 void c_ast_list_json( c_ast_list_t const *list, unsigned indent, FILE *fout );
 
 /**
- * Gets the name from the given AST.
- *
- * @param ast The AST to get the name from.
- * @return Returns said name or null if none.
- */
-char const* c_ast_name( c_ast_t const *ast );
-
-/**
  * Creates a new c_ast.
  *
  * @param kind The kind of c_ast to create.
@@ -283,24 +284,23 @@ c_ast_t* c_ast_root( c_ast_t *ast );
 void c_ast_set_parent( c_ast_t *child, c_ast_t *parent );
 
 /**
- * Does a depth-first traversal of an AST.
+ * Traverses an AST visiting each node in turn.
  *
- * @param ast The root of the AST to begin visiting.
+ * @param ast The AST to begin at.
+ * @param dir The direction to visit.
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.
  * @return Returns a pointer to the c_ast the visitor stopped on or null.
  */
-c_ast_t* c_ast_visit_down( c_ast_t *ast, c_ast_visitor visitor, void *data );
+CDECL_AST_INLINE c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir,
+                                       c_ast_visitor visitor, void *data ) {
+  c_ast_t* c_ast_visit_down( c_ast_t*, c_ast_visitor, void* );
+  c_ast_t* c_ast_visit_up( c_ast_t*, c_ast_visitor, void* );
 
-/**
- * Traverses up the AST towards the root.
- *
- * @param ast A leaf of the AST to begin visiting.
- * @param visitor The visitor to use.
- * @param data Optional data passed to \a visitor.
- * @return Returns a pointer to the c_ast the visitor stopped on or null.
- */
-c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor visitor, void *data );
+  return dir == V_DOWN ?
+    c_ast_visit_down( ast, visitor, data ) :
+    c_ast_visit_up( ast, visitor, data );
+}
 
 /**
  * A c_ast_visitor function used to find an AST node of a particular kind.
@@ -319,18 +319,6 @@ bool c_ast_vistor_kind( c_ast_t *ast, void *data );
  * @return Returns \c true only if \a ast has a name.
  */
 bool c_ast_visitor_name( c_ast_t *ast, void *data );
-
-/**
- * Traverses down the AST attempting to find an AST node having \a kind.
- *
- * @param ast The AST to start from.
- * @param kind The bitwise-or kind(s) to find.
- * @return Returns a pointer to an AST node having \a kind or null if none.
- */
-CDECL_AST_INLINE c_ast_t* c_ast_find_kind( c_ast_t *ast, c_kind_t kind ) {
-  void *const data = REINTERPRET_CAST( void*, kind );
-  return c_ast_visit_down( ast, c_ast_vistor_kind, data );
-}
 
 /**
  * Gets the name of the given kind.

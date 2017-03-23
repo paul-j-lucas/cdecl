@@ -82,13 +82,6 @@ void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
   }
 }
 
-char const* c_ast_name( c_ast_t const *ast ) {
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_t *const found =
-    c_ast_visit_down( nonconst_ast, c_ast_visitor_name, NULL );
-  return found ? found->name : NULL;
-}
-
 c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, YYLTYPE const *loc ) {
   assert( loc );
   static unsigned next_id;

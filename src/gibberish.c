@@ -56,18 +56,6 @@ static void       g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Checks whether \a ast has an ancestor AST node of \a kind.
- *
- * @param ast The c_ast whose parent to start from.
- * @param kind The bitwise-or kind(s) of ancestor to look for.
- * @return Returns \c true only if \a ast has an ancestor of \a kind.
- */
-static inline bool c_ast_has_ancestor( c_ast_t const *ast, c_kind_t kind ) {
-  void *const data = REINTERPRET_CAST( void*, kind );
-  return c_ast_visit_up( ast->parent, c_ast_vistor_kind, data ) != NULL;
-}
-
-/**
  * Prints a space only if we haven't printed one yet.
  *
  * @param param The g_param to use.
@@ -169,8 +157,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_POINTER:
     case K_REFERENCE:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
-      if ( param->gkind != G_CAST && c_ast_has_name( ast ) &&
-           !c_ast_has_ancestor( ast, K_BLOCK | K_FUNCTION ) ) {
+      if ( param->gkind != G_CAST && c_ast_name( ast, V_UP ) != NULL &&
+           !c_ast_find_kind( ast->parent, V_UP, K_BLOCK | K_FUNCTION ) ) {
         //
         // For all kinds except functions and blocks, we want the output to be
         // like:
@@ -198,7 +186,6 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       c_ast_gibberish_impl( ast->as.ptr_mbr.of_ast, param );
       FPRINTF( param->gout, " %s::", ast->as.ptr_mbr.class_name );
       c_ast_gibberish_qual_name( ast, param );
-      break;
       break;
   } // switch
 }

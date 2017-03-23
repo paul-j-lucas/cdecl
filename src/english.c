@@ -11,6 +11,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"
+#include "ast_util.h"
 #include "literals.h"
 #include "util.h"
 
@@ -71,7 +72,7 @@ static void c_ast_english_impl( c_ast_t const *ast, bool print_names,
             // there's no "as" part, so just let the K_NAME case below print
             // the name itself.
             //
-            char const *const name = c_ast_name( arg );
+            char const *const name = c_ast_name( arg, V_DOWN );
             if ( name )
               FPRINTF( eout, "%s as ", name );
             else {
