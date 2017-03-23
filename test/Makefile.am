@@ -70,7 +70,9 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_u.test \
 	tests/declare_uc.test \
 	tests/declare_ui.test \
-	tests/declare_ull.test
+	tests/declare_ull.test \
+	tests/declare_vcpi.test \
+	tests/declare_vpi.test
 
 # C explain tests
 TESTS+=	tests/explain_a012i.test \
@@ -136,7 +138,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_ti.test \
 	tests/explain_ull.test \
 	tests/explain_vcpi.test \
-	tests/explain_vpc.test
+	tests/explain_vpi.test
 
 # C cast tests
 TESTS+=	tests/cast_pi.test \
