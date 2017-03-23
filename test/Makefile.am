@@ -83,12 +83,6 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_a9i.test \
 	tests/explain_a9pi.test \
 	tests/explain_bii_d.test \
-	tests/explain_cast_pc.test \
-	tests/explain_cast_pcc-01.test \
-	tests/explain_cast_pcc-02.test \
-	tests/explain_cast_pf_i.test \
-	tests/explain_cast_pfpc_i.test \
-	tests/explain_cast_pfpci_i.test \
 	tests/explain_ci.test \
 	tests/explain_cpi.test \
 	tests/explain_cpa3cpa5i.test \
@@ -118,12 +112,20 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_vpc.test
 
 # C cast tests
-TESTS+=	tests/cast_pc.test \
-	tests/cast_pcc.test \
+TESTS+=	tests/cast_pi.test \
+	tests/cast_pci.test \
 	tests/cast_pf_i-01.test \
 	tests/cast_pf_i-02.test \
-	tests/cast_pfpci_i.test \
+	tests/cast_pfii_i.test \
 	tests/cast_pfx_i.test
+
+# C explain cast tests
+TESTS+=	tests/explain_cast_pi.test \
+	tests/explain_cast_pci.test \
+	tests/explain_cast_pic.test \
+	tests/explain_cast_pf_i.test \
+	tests/explain_cast_pfpi_i.test \
+	tests/explain_cast_pfpci_i.test
 
 # C++ tests
 TESTS+=	tests/cast_pmi.test \
