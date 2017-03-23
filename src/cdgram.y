@@ -154,7 +154,7 @@ static void parse_error( char const *format, ... ) {
     va_start( args, format );
     vfprintf( stderr, format, args );
     va_end( args );
-    FPUTC( '\n', stderr );
+    PRINT_ERR( "\n" );
     newlined = true;
   }
 }
@@ -200,7 +200,7 @@ static void quit( void ) {
 }
 
 /**
- * Called by yacc/bison to print a parsing error message.
+ * Called by bison to print a parsing error message.
  *
  * @param msg The error message to print.
  */
@@ -211,6 +211,7 @@ static void yyerror( char const *msg ) {
   FPUTS( msg, stderr );
   SGR_END_COLOR( stderr );
   newlined = false;
+  parse_cleanup();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
