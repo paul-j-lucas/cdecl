@@ -5,9 +5,9 @@
 /c++decl
 /cast
 /cdecl
-/cdgram.[ch]
-/cdlex.c
 /config.h
 /declare
 /explain
+/lexer.c
+/parser.[ch]
 /stamp-h1
