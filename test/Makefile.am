@@ -153,7 +153,7 @@ TESTS+=	tests/cast_pi.test \
 	tests/cast_pfx_i.test
 
 # C explain cast tests
-TESTS+=	tests/explain_cast_a3a5a7i.test \
+TESTS+=	tests/explain_cast_a3i.test \
 	tests/explain_cast_pci.test \
 	tests/explain_cast_pf_i.test \
 	tests/explain_cast_pfpci_i.test \

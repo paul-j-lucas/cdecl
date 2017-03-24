@@ -30,6 +30,9 @@
 #define CDEBUG(...)                     /* nothing */
 #endif /* WITH_CDECL_DEBUG */
 
+#define C_AST_CHECK(AST,CHECK) BLOCK( \
+  if ( !c_ast_check( (AST), (CHECK) ) ) PARSE_CLEANUP(); )
+
 #define C_TYPE_ADD(DST,SRC,LOC) BLOCK( \
   if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_CLEANUP(); )
 
@@ -172,9 +175,6 @@ static inline void qualifier_pop( void ) {
 /*
 static void cast_english( char const *name, c_ast_t *ast ) {
   switch ( ast->kind ) {
-    case K_ARRAY:
-      print_error( "cast into array", "cast into pointer" );
-      break;
     case K_FUNCTION:
       print_error( "cast into function", "cast into pointer to function" );
       break;
@@ -452,12 +452,11 @@ cast_english
       DUMP_AST( "> decl_english", $4.top_ast );
       DUMP_END();
 
-      if ( c_ast_check( $4.top_ast ) ) {
-        FPUTC( '(', fout );
-        c_ast_gibberish_cast( $4.top_ast, fout );
-        FPRINTF( fout, ")%s\n", $2 );
-        FREE( $2 );
-      }
+      C_AST_CHECK( $4.top_ast, CHECK_CAST );
+      FPUTC( '(', fout );
+      c_ast_gibberish_cast( $4.top_ast, fout );
+      FPRINTF( fout, ")%s\n", $2 );
+      FREE( $2 );
     }
 
   | Y_CAST Y_NAME error
@@ -471,11 +470,10 @@ cast_english
       DUMP_AST( "> decl_english", $2.top_ast );
       DUMP_END();
 
-      if ( c_ast_check( $2.top_ast ) ) {
-        FPUTC( '(', fout );
-        c_ast_gibberish_cast( $2.top_ast, fout );
-        FPUTS( ")\n", fout );
-      }
+      C_AST_CHECK( $2.top_ast, CHECK_CAST );
+      FPUTC( '(', fout );
+      c_ast_gibberish_cast( $2.top_ast, fout );
+      FPUTS( ")\n", fout );
     }
   ;
 
@@ -495,10 +493,9 @@ declare_english
       DUMP_END();
 
       C_TYPE_ADD( &$5.top_ast->type, $4, @4 );
-      if ( c_ast_check( $5.top_ast ) ) {
-        c_ast_gibberish_declare( $5.top_ast, fout );
-        FPUTC( '\n', fout );
-      }
+      C_AST_CHECK( $5.top_ast, CHECK_DECL );
+      c_ast_gibberish_declare( $5.top_ast, fout );
+      FPUTC( '\n', fout );
     }
 
   | Y_DECLARE error
@@ -527,16 +524,15 @@ explain_declaration_c
       DUMP_END();
 
       c_ast_t *const ast = c_ast_patch_none( $2.top_ast, $4.top_ast );
-      if ( c_ast_check( ast ) ) {
-        char const *const name = c_ast_take_name( ast );
-        assert( name );
-        FPRINTF( fout, "%s %s %s ", L_DECLARE, name, L_AS );
-        if ( c_ast_take_typedef( ast ) )
-          FPRINTF( fout, "%s ", L_TYPE );
-        c_ast_english( ast, fout );
-        FPUTC( '\n', fout );
-        FREE( name );
-      }
+      C_AST_CHECK( ast, CHECK_DECL );
+      char const *const name = c_ast_take_name( ast );
+      assert( name );
+      FPRINTF( fout, "%s %s %s ", L_DECLARE, name, L_AS );
+      if ( c_ast_take_typedef( ast ) )
+        FPRINTF( fout, "%s ", L_TYPE );
+      c_ast_english( ast, fout );
+      FPUTC( '\n', fout );
+      FREE( name );
     }
   ;
 
@@ -554,16 +550,15 @@ explain_cast_c
       DUMP_END();
 
       c_ast_t *const ast = c_ast_patch_none( $3.top_ast, $5.top_ast );
-      if ( c_ast_check( ast ) ) {
-        FPUTS( L_CAST, fout );
-        if ( $7 ) {
-          FPRINTF( fout, " %s", $7 );
-          FREE( $7 );
-        }
-        FPRINTF( fout, " %s ", L_INTO );
-        c_ast_english( ast, fout );
-        FPUTC( '\n', fout );
+      C_AST_CHECK( ast, CHECK_CAST );
+      FPUTS( L_CAST, fout );
+      if ( $7 ) {
+        FPRINTF( fout, " %s", $7 );
+        FREE( $7 );
       }
+      FPRINTF( fout, " %s ", L_INTO );
+      c_ast_english( ast, fout );
+      FPUTC( '\n', fout );
     }
   ;
 
@@ -619,7 +614,7 @@ array_cast_c
 
       c_ast_t *const array = c_ast_new( K_ARRAY, ast_depth, &@$ );
       array->as.array.size = $2;
-      array->as.array.of_ast = c_ast_new( K_NONE, ast_depth, &@1 );
+      c_ast_set_parent( c_ast_new( K_NONE, ast_depth, &@1 ), array );
       if ( $1.target_ast ) {
         $$.top_ast = $1.top_ast;
         $$.target_ast = c_ast_add_array( $1.target_ast, array );
@@ -1211,7 +1206,7 @@ array_decl_c
 
       c_ast_t *const array = c_ast_new( K_ARRAY, ast_depth, &@$ );
       array->as.array.size = $2;
-      array->as.array.of_ast = c_ast_new( K_NONE, ast_depth, &@1 );
+      c_ast_set_parent( c_ast_new( K_NONE, ast_depth, &@1 ), array );
       if ( $1.target_ast ) {
         $$.top_ast = $1.top_ast;
         $$.target_ast = c_ast_add_array( $1.target_ast, array );

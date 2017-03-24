@@ -202,11 +202,16 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_type_ast, c_ast_t *func ) {
   return rv;
 }
 
-bool c_ast_check( c_ast_t const *ast ) {
+bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
   assert( ast );
 
   switch ( ast->kind ) {
     case K_ARRAY: {
+      if ( check == CHECK_CAST ) {
+        print_error( &ast->loc, "cast into array" );
+        print_hint( "cast into pointer" );
+        return false;
+      }
       c_ast_t const *const of_ast = ast->as.array.of_ast;
       switch ( of_ast->kind ) {
         case K_BUILTIN:

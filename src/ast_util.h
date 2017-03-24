@@ -25,6 +25,17 @@ _GL_INLINE_HEADER_BEGIN
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * The kind of semantic checks to perform on an AST.
+ */
+enum c_check {
+  CHECK_CAST,
+  CHECK_DECL
+};
+typedef enum c_check c_check_t;
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
  * Adds an array to the AST being built.
  *
  * @param ast The AST to append to.
@@ -37,9 +48,10 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array );
  * Checks an entire AST for semantic validity.
  *
  * @param ast The AST to check.
+ * @param check The kind of checks to perform.
  * @return Returns \c true only if the entire AST is valid.
  */
-bool c_ast_check( c_ast_t const *ast );
+bool c_ast_check( c_ast_t const *ast, c_check_t check );
 
 /**
  * Adds a function (or block) to the AST being built.
