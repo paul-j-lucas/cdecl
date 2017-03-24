@@ -9,7 +9,7 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 
 ###############################################################################
 
-# Command-line option tests
+# Command-line option error tests
 TESTS =	tests/cdecl-ap.test \
 	tests/cdecl-x.test
 
@@ -81,6 +81,8 @@ TESTS+=	tests/declare_a3a5a7i.test \
 # C declare error tests
 TESTS+=	tests/declare_gf_v.test
 
+###############################################################################
+
 # C explain tests
 TESTS+=	tests/explain_a012i.test \
 	tests/explain_a0xAi-01.test \
@@ -124,7 +126,6 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_fv_pi.test \
 	tests/explain_fv_v.test \
 	tests/explain_fx_pi.test \
-	tests/explain_gf_v.test \
 	tests/explain_gi.test \
 	tests/explain_ic.test \
 	tests/explain_ig.test \
@@ -148,6 +149,11 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_vcpi.test \
 	tests/explain_vpi.test
 
+# C explain error tests
+TESTS+=	tests/explain_gf_v.test
+
+###############################################################################
+
 # C cast tests
 TESTS+=	tests/cast_pi.test \
 	tests/cast_pci.test \
@@ -156,17 +162,24 @@ TESTS+=	tests/cast_pi.test \
 	tests/cast_pfii_i.test \
 	tests/cast_pfx_i.test
 
+# C cast error tests
+TESTS+=	tests/cast_f_i.test
+
+###############################################################################
+
 # C explain cast tests
-TESTS+=	tests/explain_cast_a3a5a7i.test \
-	tests/explain_cast_a3a5i.test \
-	tests/explain_cast_a3i.test \
-	tests/explain_cast_pci.test \
+TESTS+=	tests/explain_cast_pci.test \
 	tests/explain_cast_pf_i.test \
 	tests/explain_cast_pfpci_i.test \
 	tests/explain_cast_pfpi_i.test \
 	tests/explain_cast_pi.test \
 	tests/explain_cast_pic.test \
 	tests/explain_cast_ull.test
+
+# C explain cast error tests
+TESTS+=	tests/explain_cast_a3a5a7i.test \
+	tests/explain_cast_a3a5i.test \
+	tests/explain_cast_a3i.test
 
 ###############################################################################
 
@@ -193,6 +206,8 @@ TESTS+=	tests/cast_pmi.test
 # C++ explain cast tests
 TESTS+=	tests/explain_cast_pmi.test
 
+###############################################################################
+
 # Command-line tests
 TESTS+=	tests/cl-cast_i.test \
 	tests/cl-declare_i.test \
@@ -202,11 +217,15 @@ TESTS+=	tests/cl-cast_i.test \
 
 # File tests
 TESTS+=	tests/file-cast_i.test \
-	tests/file-cast_x.test \
 	tests/file-declare_i.test \
+	tests/file-explain_i.test
+
+# File error tests
+TESTS+=	tests/file-cast_x.test \
 	tests/file-declare_x.test \
-	tests/file-explain_i.test \
 	tests/file-explain_x.test
+
+###############################################################################
 
 # Miscellaneous tests
 TESTS+=	tests/help_c.test \
