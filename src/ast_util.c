@@ -284,7 +284,9 @@ char const* c_ast_name( c_ast_t const *ast, v_direction_t dir ) {
   return found ? found->name : NULL;
 }
 
-void c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
+c_ast_t* c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
+  if ( !decl_ast )
+    return type_ast;
   if ( !type_ast->parent && type_ast->depth < decl_ast->depth ) {
     c_ast_t *const none_ast = c_ast_find_kind( decl_ast, V_DOWN, K_NONE );
     if ( none_ast ) {
@@ -292,6 +294,7 @@ void c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
       c_ast_set_parent( type_root_ast, none_ast->parent );
     }
   }
+  return decl_ast;
 }
 
 char const* c_ast_take_name( c_ast_t *ast ) {

@@ -476,20 +476,20 @@ explain_declaration_c
   : Y_EXPLAIN type_c { TYPE_PUSH( $2.top_ast ); } decl_c Y_END
     {
       TYPE_POP();
-      c_ast_patch_none( $2.top_ast, $4.top_ast );
 
       DUMP_START( "explain_declaration_c", "EXPLAIN type_c decl_c END" );
       DUMP_AST( "> type_c", $2.top_ast );
       DUMP_AST( "> decl_c", $4.top_ast );
       DUMP_END();
 
-      if ( c_ast_check( $4.top_ast ) ) {
-        char const *const name = c_ast_take_name( $4.top_ast );
+      c_ast_t *const ast = c_ast_patch_none( $2.top_ast, $4.top_ast );
+      if ( c_ast_check( ast ) ) {
+        char const *const name = c_ast_take_name( ast );
         assert( name );
         FPRINTF( fout, "%s %s %s ", L_DECLARE, name, L_AS );
-        if ( c_ast_take_typedef( $4.top_ast ) )
+        if ( c_ast_take_typedef( ast ) )
           FPRINTF( fout, "%s ", L_TYPE );
-        c_ast_english( $4.top_ast, fout );
+        c_ast_english( ast, fout );
         FPUTC( '\n', fout );
         FREE( name );
       }
@@ -501,7 +501,6 @@ explain_cast_c
     name_token_opt Y_END
     {
       TYPE_POP();
-      c_ast_patch_none( $3.top_ast, $5.top_ast );
 
       DUMP_START( "explain_cast_t",
                   "EXPLAIN '(' type_c cast_c ')' name_token_opt END" );
@@ -510,13 +509,14 @@ explain_cast_c
       DUMP_NAME( "> name_token_opt", $7 );
       DUMP_END();
 
+      c_ast_t *const ast = c_ast_patch_none( $3.top_ast, $5.top_ast );
       FPUTS( L_CAST, fout );
       if ( $7 ) {
         FPRINTF( fout, " %s", $7 );
         FREE( $7 );
       }
       FPRINTF( fout, " %s ", L_INTO );
-      c_ast_english( $5.top_ast, fout );
+      c_ast_english( ast, fout );
       FPUTC( '\n', fout );
     }
   ;

@@ -107,9 +107,10 @@ char const* c_ast_name( c_ast_t const *ast, v_direction_t dir );
  *  + The declaration AST still contains an AST node of type K_NONE.
  *
  * @param type_ast The AST of the initial type.
- * @param decl_ast The AST of a declaration.
+ * @param decl_ast The AST of a declaration.  May be null.
+ * @return Returns the final AST.
  */
-void c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast );
+c_ast_t* c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast );
 
 /**
  * Takes the name, if any, away from \a ast
