@@ -252,6 +252,11 @@ bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
       break;
 
     case K_FUNCTION:
+      if ( check == CHECK_CAST ) {
+        print_error( &ast->loc, "cast into function" );
+        print_hint( "cast into pointer to function" );
+        return false;
+      }
       if ( ast->type & T_REGISTER ) {
         print_error( &ast->loc, "register function" );
         return false;

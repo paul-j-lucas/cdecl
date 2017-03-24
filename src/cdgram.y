@@ -172,17 +172,6 @@ static inline void qualifier_pop( void ) {
 
 ////////// local functions ////////////////////////////////////////////////////
 
-/*
-static void cast_english( char const *name, c_ast_t *ast ) {
-  switch ( ast->kind ) {
-    case K_FUNCTION:
-      print_error( "cast into function", "cast into pointer to function" );
-      break;
-    }
-  } // switch
-}
-*/
-
 /**
  * Cleans-up parser data.
  */
