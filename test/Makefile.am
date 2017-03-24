@@ -121,6 +121,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_fv_pi.test \
 	tests/explain_fv_v.test \
 	tests/explain_fx_pi.test \
+	tests/explain_gf_v.test \
 	tests/explain_gi.test \
 	tests/explain_ic.test \
 	tests/explain_ig.test \
