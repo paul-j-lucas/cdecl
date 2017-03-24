@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/cdgram.y
+**      src/parser.y
 */
 
 %{

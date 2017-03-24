@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/cdlex.l
+**      src/lexer.l
 */
 
 %option nounput
@@ -13,7 +13,7 @@
 #include "keywords.h"
 #include "literals.h"
 #include "util.h"
-#include "cdgram.h"                     /* must go last */
+#include "parser.h"                     /* must go last */
 
 // standard
 #include <string.h>

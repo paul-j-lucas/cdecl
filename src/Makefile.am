@@ -9,7 +9,7 @@ AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib
 AM_YFLAGS = -d
 LDADD = $(top_builddir)/lib/libgnu.a
 
-cdecl_SOURCES =	cdgram.y cdlex.l \
+cdecl_SOURCES =	parser.y lexer.l \
 		ast.c \
 		ast_util.c \
 		cdecl.c \

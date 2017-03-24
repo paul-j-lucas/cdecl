@@ -10,7 +10,7 @@
 #include "lang.h"
 #include "literals.h"
 #include "types.h"
-#include "cdgram.h"                     /* must go last */
+#include "parser.h"                     /* must go last */
 
 // standard
 #include <string.h>
