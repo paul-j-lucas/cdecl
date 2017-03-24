@@ -31,9 +31,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// extern variables
-extern FILE        *yyin;
-
 // extern variable definitions
 char const         *me;                 // program name
 char const         *prompt;
@@ -44,6 +41,7 @@ static bool         is_input_a_tty;     // is our input from a tty?
 
 // extern functions
 int                 yyparse( void );
+void                yyrestart( FILE* );
 
 // local functions
 static void         cdecl_init( int*, char const*** );
@@ -189,7 +187,7 @@ static bool parse_files( int argc, char const *argv[] ) {
       FILE *const fin = fopen( argv[i], "r" );
       if ( fin == NULL )
         PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", argv[i], STRERROR );
-      yyin = fin;
+      yyrestart( fin );
       ok = yyparse() == 0;
       fclose( fin );
     }
@@ -212,7 +210,7 @@ static bool parse_stdin( void ) {
     for ( char *line; (line = readline_wrapper( prompt )); )
       ok = parse_string( line, strlen( line ) );
   } else {
-    yyin = fin;
+    yyrestart( fin );
     ok = yyparse() == 0;
     is_input_a_tty = false;
   }
@@ -227,9 +225,10 @@ static bool parse_stdin( void ) {
  * @return Returns \c true only upon success.
  */
 static bool parse_string( char const *s, size_t s_len ) {
-  yyin = fmemopen( s, s_len, "r" );
+  FILE *const temp = fmemopen( s, s_len, "r" );
+  yyrestart( temp );
   bool const ok = yyparse() == 0;
-  fclose( yyin );
+  fclose( temp );
   return ok;
 }
 
