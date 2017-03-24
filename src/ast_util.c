@@ -258,7 +258,7 @@ bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
         return false;
       }
       if ( ast->type & T_REGISTER ) {
-        print_error( &ast->loc, "register function" );
+        print_error( &ast->loc, "function can not be register" );
         return false;
       }
       break;

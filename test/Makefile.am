@@ -78,6 +78,9 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_vcpi.test \
 	tests/declare_vpi.test
 
+# C declare error tests
+TESTS+=	tests/declare_gf_v.test
+
 # C explain tests
 TESTS+=	tests/explain_a012i.test \
 	tests/explain_a0xAi-01.test \

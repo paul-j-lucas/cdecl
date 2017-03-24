@@ -71,7 +71,7 @@
   DUMP_COMMA; FPUTS( "  ", stdout );        \
   json_print_kv( (KEY), c_type_name( TYPE ), stdout ); )
 
-#define PARSE_CLEANUP()   BLOCK( parse_cleanup(); yyclearin; YYABORT; )
+#define PARSE_CLEANUP()   BLOCK( parse_cleanup(); yyclearin; yyerrok; YYABORT; )
 #define PARSE_ERROR(...)  BLOCK( parse_error( __VA_ARGS__ ); PARSE_CLEANUP(); )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -346,6 +346,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  qualified_decl_english
 %type   <ast_pair>  reference_decl_english
 %type   <ast_pair>  returning_english
+%type   <type>      storage_class_opt_english
 %type   <ast_pair>  type_english
 %type   <type>      type_modifier_english
 %type   <type>      type_modifier_list_english
@@ -382,7 +383,7 @@ static void yyerror( char const *msg ) {
 %type   <type>      builtin_type_c
 %type   <type>      class_struct_type_c
 %type   <type>      enum_class_struct_union_type_c
-%type   <type>      storage_class_c storage_class_opt_c
+%type   <type>      storage_class_c
 %type   <type>      type_modifier_c
 %type   <type>      type_modifier_list_c type_modifier_list_opt_c
 %type   <type>      type_qualifier_c
@@ -403,7 +404,10 @@ command_list
 command_init
   : /* empty */
     {
-      newlined = true;
+      if ( !newlined ) {
+        FPUTC( '\n', fout );
+        newlined = true;
+      }
     }
   ;
 
@@ -436,7 +440,7 @@ command_cleanup
 cast_english
   : Y_CAST Y_NAME Y_INTO decl_english Y_END
     {
-      DUMP_START( "cast_english", "CAST NAME INTO decl_english END" );
+      DUMP_START( "cast_english", "CAST NAME INTO decl_english" );
       DUMP_NAME( "> NAME", $2 );
       DUMP_AST( "> decl_english", $4.top_ast );
       DUMP_END();
@@ -455,7 +459,7 @@ cast_english
 
   | Y_CAST decl_english Y_END
     {
-      DUMP_START( "cast_english", "CAST decl_english END" );
+      DUMP_START( "cast_english", "CAST decl_english" );
       DUMP_AST( "> decl_english", $2.top_ast );
       DUMP_END();
 
@@ -471,13 +475,13 @@ cast_english
 /*****************************************************************************/
 
 declare_english
-  : Y_DECLARE Y_NAME Y_AS storage_class_opt_c decl_english Y_END
+  : Y_DECLARE Y_NAME Y_AS storage_class_opt_english decl_english Y_END
     {
       DUMP_START( "declare_english",
-                  "DECLARE NAME AS storage_class_opt_c decl_english END" );
+                  "DECLARE NAME AS storage_class_opt_english decl_english" );
       $5.top_ast->name = $2;
       DUMP_NAME( "> NAME", $2 );
-      DUMP_TYPE( "> storage_class_opt_c", $4 );
+      DUMP_TYPE( "> storage_class_opt_english", $4 );
       DUMP_AST( "> decl_english", $5.top_ast );
       DUMP_END();
 
@@ -487,15 +491,16 @@ declare_english
       FPUTC( '\n', fout );
     }
 
-  | Y_DECLARE error
+  | Y_DECLARE error Y_AS
     {
       PARSE_ERROR( "name expected" );
     }
+  ;
 
-  | Y_DECLARE Y_NAME error
-    {
-      PARSE_ERROR( "\"%s\" expected", L_AS );
-    }
+storage_class_opt_english
+  : /* empty */                   { $$ = T_NONE; }
+  | storage_class_c
+  | Y_REGISTER
   ;
 
 /*****************************************************************************/
@@ -507,7 +512,7 @@ explain_declaration_c
     {
       type_pop();
 
-      DUMP_START( "explain_declaration_c", "EXPLAIN type_c decl_c END" );
+      DUMP_START( "explain_declaration_c", "EXPLAIN type_c decl_c" );
       DUMP_AST( "> type_c", $2.top_ast );
       DUMP_AST( "> decl_c", $4.top_ast );
       DUMP_END();
@@ -532,7 +537,7 @@ explain_cast_c
       type_pop();
 
       DUMP_START( "explain_cast_t",
-                  "EXPLAIN '(' type_c cast_c ')' name_token_opt END" );
+                  "EXPLAIN '(' type_c cast_c ')' name_token_opt" );
       DUMP_AST( "> type_c", $3.top_ast );
       DUMP_AST( "> cast_c", $5.top_ast );
       DUMP_NAME( "> name_token_opt", $7 );
@@ -1672,11 +1677,6 @@ type_qualifier_c
   : Y_CONST
   | Y_RESTRICT
   | Y_VOLATILE
-  ;
-
-storage_class_opt_c
-  : /* empty */                   { $$ = T_NONE; }
-  | storage_class_c
   ;
 
 storage_class_c
