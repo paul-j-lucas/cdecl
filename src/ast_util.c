@@ -158,9 +158,11 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
-  assert( ast );
   assert( array );
   assert( array->kind == K_ARRAY );
+
+  if ( !ast )
+    return array;
 
   switch ( ast->kind ) {
     case K_ARRAY:
