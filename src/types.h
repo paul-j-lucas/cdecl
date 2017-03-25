@@ -51,6 +51,9 @@
 #define T_THREAD_LOCAL    0x02000000
 #define T_TYPEDEF         0x04000000
 
+#define T_STORAGE         (T_AUTO | T_BLOCK | T_EXTERN | T_REGISTER | \
+                           T_STATIC | T_THREAD_LOCAL | T_TYPEDEF)
+
 // qualifiers
 #define T_CONST           0x10000000
 #define T_RESTRICT        0x20000000
