@@ -19,6 +19,7 @@
 // standard
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
+#include <stdint.h>                     /* for uintptr_t */
 #include <stdio.h>                      /* for FILE */
 #include <string.h>
 #include <sysexits.h>
@@ -37,7 +38,7 @@ _GL_INLINE_HEADER_BEGIN
 #define NO_OP                     ((void)0)
 #define PERROR_EXIT(STATUS)       BLOCK( perror( me ); exit( STATUS ); )
 #define PRINT_ERR(...)            fprintf( stderr, __VA_ARGS__ )
-#define REINTERPRET_CAST(T,EXPR)  ((T)(EXPR))
+#define REINTERPRET_CAST(T,EXPR)  ((T)(uintptr_t)(EXPR))
 #define STRERROR                  strerror( errno )
 
 #define INTERNAL_ERR(FORMAT,...) \

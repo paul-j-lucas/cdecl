@@ -166,6 +166,11 @@ bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
   return ast->name != NULL;
 }
 
+bool c_ast_vistor_type( c_ast_t *ast, void *data ) {
+  c_type_t const type = REINTERPRET_CAST( c_type_t, data );
+  return (ast->type & type) != 0;
+}
+
 char const* c_kind_name( c_kind_t kind ) {
   switch ( kind ) {
     case K_NONE             : return "none";

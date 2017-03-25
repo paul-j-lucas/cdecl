@@ -204,6 +204,13 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_type_ast, c_ast_t *func ) {
 
 bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
   assert( ast );
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+
+  if ( check == CHECK_CAST &&
+       c_ast_find_type( nonconst_ast, V_DOWN, T_REGISTER ) ) {
+    print_error( &ast->loc, "can not cast to register" );
+    return false;
+  }
 
   switch ( ast->kind ) {
     case K_ARRAY: {

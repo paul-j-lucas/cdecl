@@ -320,6 +320,15 @@ bool c_ast_vistor_kind( c_ast_t *ast, void *data );
 bool c_ast_visitor_name( c_ast_t *ast, void *data );
 
 /**
+ * A c_ast_visitor function used to find a type.
+ *
+ * @param ast The c_ast to check.
+ * @param data The bitwise-or type(s) (cast to <code>void*</code>) to find.
+ * @return Returns \c true only if the type of \a ast is one of \a data.
+ */
+bool c_ast_vistor_type( c_ast_t *ast, void *data );
+
+/**
  * Gets the name of the given kind.
  *
  * @param kind The kind to get the name for.

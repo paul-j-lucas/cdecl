@@ -15,6 +15,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"
+#include "types.h"
 #include "util.h"
 
 _GL_INLINE_HEADER_BEGIN
@@ -85,6 +86,21 @@ CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_kind( c_ast_t *ast,
                                                 c_kind_t kind ) {
   void *const data = REINTERPRET_CAST( void*, kind );
   return c_ast_visit( ast, dir, c_ast_vistor_kind, data );
+}
+
+/**
+ * Traverses the AST attempting to find an AST node having \a type.
+ *
+ * @param ast The AST to begin at.
+ * @param dir The direction to visit.
+ * @param type The bitwise-or typess) to find.
+ * @return Returns a pointer to an AST node having \a typesor null if none.
+ */
+CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_type( c_ast_t *ast,
+                                                v_direction_t dir,
+                                                c_type_t type ) {
+  void *const data = REINTERPRET_CAST( void*, type );
+  return c_ast_visit( ast, dir, c_ast_vistor_type, data );
 }
 
 /**
