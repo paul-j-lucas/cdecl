@@ -358,10 +358,10 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  array_cast_c
 %type   <ast_pair>  block_cast_c
 %type   <ast_pair>  func_cast_c
+%type   <ast_pair>  name_cast_c
 %type   <ast_pair>  pointer_cast_c
 %type   <ast_pair>  pointer_to_member_cast_c
 %type   <ast_pair>  reference_cast_c
-%type   <ast_pair>  name_cast_c
 
 %type   <ast_pair>  decl_c decl2_c
 %type   <ast_pair>  array_decl_c
@@ -377,8 +377,8 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  reference_decl_c
 %type   <ast_pair>  reference_decl_type_c
 
-%type   <ast_pair>  placeholder_type_c
 %type   <ast_pair>  type_c
+%type   <ast_pair>  placeholder_type_c
 %type   <type>      builtin_type_c
 %type   <type>      class_struct_type_c
 %type   <type>      enum_class_struct_union_type_c
