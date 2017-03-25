@@ -124,7 +124,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_FUNCTION:
       c_ast_gibberish_impl( ast->as.parent.of_ast, param );
       if ( false_set( &param->postfix ) ) {
-        g_param_space( param );
+        if ( param->gkind != G_CAST )
+          g_param_space( param );
         if ( ast == param->root_ast )
           c_ast_gibberish_postfix( param->leaf_ast->parent, param );
         else
@@ -320,8 +321,11 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast,
       assert( ast->kind & (K_POINTER | K_POINTER_TO_MEMBER | K_REFERENCE) );
   } // switch
 
-  if ( ast->as.ptr_ref.qualifier )
-    FPRINTF( param->gout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
+  if ( ast->as.ptr_ref.qualifier ) {
+    FPUTS( c_type_name( ast->as.ptr_ref.qualifier ), param->gout );
+    if ( param->gkind != G_CAST )
+      FPUTC( ' ', param->gout );
+  }
   if ( ast->name && param->gkind != G_CAST )
     FPUTS( ast->name, param->gout );
 }

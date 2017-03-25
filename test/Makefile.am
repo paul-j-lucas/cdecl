@@ -156,12 +156,13 @@ TESTS+=	tests/explain_gf_v.test
 ###############################################################################
 
 # C cast tests
-TESTS+=	tests/cast_pi.test \
+TESTS+=	tests/cast_cpa3cpa5i.test \
 	tests/cast_pci.test \
 	tests/cast_pf_i-01.test \
 	tests/cast_pf_i-02.test \
 	tests/cast_pfii_i.test \
 	tests/cast_pfx_i.test
+	tests/cast_pi.test
 
 # C cast error tests
 TESTS+=	tests/cast_f_i.test

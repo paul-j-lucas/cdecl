@@ -1,1 +1,1 @@
-(int (*)(int, int))p
+(int(*)(int, int))p
