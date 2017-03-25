@@ -452,11 +452,6 @@ cast_english
       FREE( $2 );
     }
 
-  | Y_CAST Y_NAME error
-    {
-      PARSE_ERROR( "\"%s\" expected", L_INTO );
-    }
-
   | Y_CAST decl_english Y_END
     {
       DUMP_START( "cast_english", "CAST decl_english" );
