@@ -365,7 +365,6 @@ static void yyerror( char const *msg ) {
 
 %type   <ast_pair>  decl_c decl2_c
 %type   <ast_pair>  array_decl_c
-%type   <number>    array_size_c
 %type   <ast_pair>  block_decl_c
 %type   <ast_pair>  func_decl_c
 %type   <ast_pair>  name_decl_c
@@ -391,6 +390,7 @@ static void yyerror( char const *msg ) {
 
 %type   <ast_pair>  arg_c
 %type   <ast_list>  arg_list_c arg_list_opt_c paren_arg_list_opt_opt_c
+%type   <number>    array_size_c
 %type   <name>      name_token_opt
 
 /*****************************************************************************/
@@ -1209,15 +1209,6 @@ array_decl_c
     }
   ;
 
-array_size_c
-  : '[' ']'                       { $$ = C_ARRAY_NO_SIZE; }
-  | '[' Y_NUMBER ']'              { $$ = $2; }
-  | '[' error ']'
-    {
-      PARSE_ERROR( "integer expected for array size" );
-    }
-  ;
-
 block_decl_c                            /* Apple extension */
   : /* type */ '(' '^'
     {
@@ -1687,6 +1678,15 @@ storage_class_c
 /*****************************************************************************/
 /*  miscellaneous productions                                                */
 /*****************************************************************************/
+
+array_size_c
+  : '[' ']'                       { $$ = C_ARRAY_NO_SIZE; }
+  | '[' Y_NUMBER ']'              { $$ = $2; }
+  | '[' error ']'
+    {
+      PARSE_ERROR( "integer expected for array size" );
+    }
+  ;
 
 expect_comma
   : ','
