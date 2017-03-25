@@ -151,7 +151,8 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_vpi.test
 
 # C explain error tests
-TESTS+=	tests/explain_gf_v.test
+TESTS+=	tests/explain_gf_v.test \
+	tests/explain_lll.test
 
 ###############################################################################
 
@@ -182,19 +183,33 @@ TESTS+=	tests/explain_cast_ci.test \
 	tests/explain_cast_cppi.test \
 	tests/explain_cast_cvpi.test \
 	tests/explain_cast_ic.test \
-	tests/explain_cast_gi.test \
+	tests/explain_cast_ll.test \
+	tests/explain_cast_pa3a5i.test \
+	tests/explain_cast_pa3cpa5i.test \
+	tests/explain_cast_pa3pa5i.test \
+	tests/explain_cast_pa9i.test \
 	tests/explain_cast_pci.test \
+	tests/explain_cast_pcpi.test \
 	tests/explain_cast_pf_i.test \
 	tests/explain_cast_pfpci_i.test \
 	tests/explain_cast_pfpi_i.test \
+	tests/explain_cast_pfv_pi.test \
 	tests/explain_cast_pi.test \
 	tests/explain_cast_pic.test \
+	tests/explain_cast_ppi.test \
+	tests/explain_cast_rpi.test \
 	tests/explain_cast_ull.test
 
 # C explain cast error tests
 TESTS+=	tests/explain_cast_a3a5a7i.test \
 	tests/explain_cast_a3a5i.test \
-	tests/explain_cast_a3i.test
+	tests/explain_cast_a3i.test \
+	tests/explain_cast_ai.test \
+	tests/explain_cast_ei.test \
+	tests/explain_cast_gi.test \
+	tests/explain_cast_lll.test \
+	tests/explain_cast_si.test \
+	tests/explain_cast_ti.test
 
 ###############################################################################
 
