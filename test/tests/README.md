@@ -15,10 +15,11 @@ Test files are as follows:
 Within each test, sequences of single characters are used to denote a C/C++
 declaration as it is in English.  The characters are:
 
-+ `a` = array (following digit 1-9 specifies array dimension)
++ `a` = array (following digit 1-9 specifies array dimension) or `auto`
 + `b` = block (Apple extension)
 + `c` = `char` or `const`
 + `d` = `double`
++ `e` = `extern`
 + `f` = function
 + `g` = `register`
 + `i` = `int`
