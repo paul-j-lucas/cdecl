@@ -15,7 +15,11 @@ TESTS =	tests/cdecl-ap.test \
 
 ###############################################################################
 
+#
 # C declare tests
+# ===============
+# Almost every test here has a corresponding cast_ and explain_ test.
+#
 TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_a3a5i.test \
 	tests/declare_a3a5pfv_i.test \
@@ -36,7 +40,6 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_cpa3pa5i.test \
 	tests/declare_cpa9ci.test \
 	tests/declare_cpa9i.test \
-	tests/declare_cpbv_pi.test \
 	tests/declare_cpbv_pi.test \
 	tests/declare_cpcpi.test \
 	tests/declare_cpfv_pi.test \
@@ -64,6 +67,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_pbv_pi.test \
 	tests/declare_pcpi.test \
 	tests/declare_pfv_pi.test \
+	tests/declare_pfx_i.test \
 	tests/declare_pi.test \
 	tests/declare_ppi.test \
 	tests/declare_sc.test \
@@ -84,7 +88,11 @@ TESTS+=	tests/declare_gf_v.test \
 
 ###############################################################################
 
+#
 # C explain tests
+# ===============
+# Almost every test here has a corresponding cast_ and declare_ test.
+#
 TESTS+=	tests/explain_a012i.test \
 	tests/explain_a0xAi-01.test \
 	tests/explain_a0xai-02.test \
@@ -150,27 +158,71 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_vcpi.test \
 	tests/explain_vpi.test
 
+#
 # C explain error tests
+# =====================
+#
 TESTS+=	tests/explain_gf_v.test \
 	tests/explain_lll.test
 
 ###############################################################################
 
+#
 # C cast tests
-TESTS+=	tests/cast_cpa3cpa5i.test \
+# ============
+# Almost every test here has a corresponding declare_ and explain_ test.
+#
+TESTS+=	tests/cast_bii_d.test \
+	tests/cast_ci.test \
+	tests/cast_constant.test \
+	tests/cast_cpa3cpa5i.test \
+	tests/cast_cpa3pa5i.test \
+	tests/cast_cpa9ci.test \
+	tests/cast_cpa9i.test \
+	tests/cast_cpbv_pi.test \
+	tests/cast_cpcpi.test \
+	tests/cast_cpfv_pi.test \
+	tests/cast_cppi.test \
+	tests/cast_cvpi.test \
+	tests/cast_ll.test \
+	tests/cast_pa3cpa5i.test \
+	tests/cast_pa3pa5i.test \
+	tests/cast_pa9i.test \
 	tests/cast_pci.test \
+	tests/cast_pcpi.test \
 	tests/cast_pf_i-01.test \
 	tests/cast_pf_i-02.test \
 	tests/cast_pfii_i.test \
-	tests/cast_pfx_i.test
-	tests/cast_pi.test
+	tests/cast_pfv_pi.test \
+	tests/cast_pfx_i.test \
+	tests/cast_pi.test \
+	tests/cast_ppi.test \
+	tests/cast_sc.test \
+	tests/cast_si.test \
+	tests/cast_sll.test \
+	tests/cast_u.test \
+	tests/cast_uc.test \
+	tests/cast_ui.test \
+	tests/cast_ull.test \
+	tests/cast_vcpi.test \
+	tests/cast_vpi.test
 
+#
 # C cast error tests
-TESTS+=	tests/cast_f_i.test
+# ==================
+#
+TESTS+=	tests/cast_a3i.test \
+	tests/cast_f_i.test \
+	tests/cast_ti.test \
+	tests/cast_type.test
 
 ###############################################################################
 
+#
 # C explain cast tests
+# ====================
+# Almost every test here has a corresponding cast_ test.
+#
 TESTS+=	tests/explain_cast_ci.test \
 	tests/explain_cast_cpa3cpa5i.test \
 	tests/explain_cast_cpa3pa5i.test \
@@ -202,7 +254,10 @@ TESTS+=	tests/explain_cast_ci.test \
 	tests/explain_cast_vcpi.test \
 	tests/explain_cast_vpi.test
 
+#
 # C explain cast error tests
+# ==========================
+#
 TESTS+=	tests/explain_cast_a3a5a7i.test \
 	tests/explain_cast_a3a5i.test \
 	tests/explain_cast_a3i.test \
@@ -215,7 +270,10 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 
 ###############################################################################
 
+#
 # C++ declare tests
+# =================
+#
 TESTS+=	tests/declare_cpmi.test \
 	tests/declare_cpri.test \
 	tests/declare_pfv_ri.test \
@@ -227,39 +285,60 @@ TESTS+=	tests/declare_cpmi.test \
 	tests/declare_ri.test \
 	tests/declare_rpi.test
 
+#
 # C++ explain tests
+# =================
+#
 TESTS+= tests/explain_pmfxx_ps.test \
 	tests/explain_pmi.test \
 	tests/explain_ri.test
 
+#
 # C++ cast tests
+# ==============
+#
 TESTS+=	tests/cast_pmi.test
 
+#
 # C++ explain cast tests
+# ======================
+#
 TESTS+=	tests/explain_cast_pmi.test
 
 ###############################################################################
 
+#
 # Command-line tests
+# ==================
+#
 TESTS+=	tests/cl-cast_i.test \
 	tests/cl-declare_i.test \
 	tests/cl-explain_i.test
 
 ###############################################################################
 
+#
 # File tests
+# ==========
+#
 TESTS+=	tests/file-cast_i.test \
 	tests/file-declare_i.test \
 	tests/file-explain_i.test
 
+#
 # File error tests
+# ================
+#
 TESTS+=	tests/file-cast_x.test \
 	tests/file-declare_x.test \
 	tests/file-explain_x.test
 
 ###############################################################################
 
+#
 # Miscellaneous tests
+# ===================
+#
 TESTS+=	tests/help_c.test \
 	tests/help_cxx.test \
 	tests/set.test \
