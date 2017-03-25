@@ -171,6 +171,7 @@ TESTS+=	tests/cast_f_i.test
 
 # C explain cast tests
 TESTS+=	tests/explain_cast_ci.test \
+	tests/explain_cast_cpa3cpa5i.test \
 	tests/explain_cast_ic.test \
 	tests/explain_cast_pci.test \
 	tests/explain_cast_pf_i.test \

@@ -1,0 +1,1 @@
+cdecl | | explain (int(*const(*const)[3])[5])x | 0
