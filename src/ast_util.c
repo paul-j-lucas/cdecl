@@ -125,6 +125,41 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
 }
 
 /**
+ * Performs additional checks on an entire AST for semantic validity when
+ * casting.
+ *
+ * @param ast The AST to check.
+ * @return Returns \c true only if the AST does not violate any cast checks.
+ */
+static bool c_ast_check_cast( c_ast_t const *ast ) {
+  assert( ast );
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+
+  c_ast_t const *const storage_ast =
+    c_ast_find_type( nonconst_ast, V_DOWN, T_STORAGE );
+
+  if ( storage_ast ) {
+    print_error(
+      &ast->loc, "can not cast to %s", c_type_name( storage_ast->type )
+    );
+    return false;
+  }
+
+  switch ( ast->kind ) {
+    case K_ARRAY:
+      print_error( &ast->loc, "cast into array" );
+      print_hint( "cast into pointer" );
+      return false;
+    case K_FUNCTION:
+      print_error( &ast->loc, "cast into function" );
+      print_hint( "cast into pointer to function" );
+      return false;
+    default:
+      return true;
+  } // switch
+}
+
+/**
  * Takes the storage type, if any, away from \a ast
  * (with the intent of giving it to another c_ast).
  * This is used is cases like:
@@ -202,23 +237,11 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_type_ast, c_ast_t *func ) {
   return rv;
 }
 
-bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
+static bool c_ast_check_impl( c_ast_t const *ast, c_check_t check ) {
   assert( ast );
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-
-  if ( check == CHECK_CAST &&
-       c_ast_find_type( nonconst_ast, V_DOWN, T_REGISTER ) ) {
-    print_error( &ast->loc, "can not cast to register" );
-    return false;
-  }
 
   switch ( ast->kind ) {
     case K_ARRAY: {
-      if ( check == CHECK_CAST ) {
-        print_error( &ast->loc, "cast into array" );
-        print_hint( "cast into pointer" );
-        return false;
-      }
       c_ast_t const *const of_ast = ast->as.array.of_ast;
       switch ( of_ast->kind ) {
         case K_BUILTIN:
@@ -259,11 +282,6 @@ bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
       break;
 
     case K_FUNCTION:
-      if ( check == CHECK_CAST ) {
-        print_error( &ast->loc, "cast into function" );
-        print_hint( "cast into pointer to function" );
-        return false;
-      }
       if ( ast->type & T_REGISTER ) {
         print_error( &ast->loc, "function can not be register" );
         return false;
@@ -294,6 +312,12 @@ bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
   } // switch
 
   return true;
+}
+
+bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
+  if ( check == CHECK_CAST && !c_ast_check_cast( ast ) )
+    return false;
+  return c_ast_check_impl( ast, check );
 }
 
 char const* c_ast_name( c_ast_t const *ast, v_direction_t dir ) {
