@@ -1,1 +1,1 @@
-void f(int, int)
+void f(int, int);

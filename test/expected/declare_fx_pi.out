@@ -1,1 +1,1 @@
-int* f(x)
+int* f(x);

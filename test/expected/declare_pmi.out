@@ -1,1 +1,1 @@
-int C::*p
+int C::*p;

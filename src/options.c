@@ -32,7 +32,7 @@ char const         *opt_fin;
 char const         *opt_fout;
 bool                opt_interactive;
 lang_t              opt_lang;
-bool                opt_make_c;
+bool                opt_semicolons = true;
 bool                opt_quiet;
 
 // other extern variables
@@ -43,18 +43,21 @@ FILE               *fout;
 static struct option const LONG_OPTS[] = {
   { "c89",          no_argument,        NULL, '8' },
   { "c99",          no_argument,        NULL, '9' },
-  { "color",        required_argument,  NULL, 'C' },
+  { "color",        required_argument,  NULL, 'c' },
   { "debug",        no_argument,        NULL, 'd' },
   { "file",         required_argument,  NULL, 'f' },
-  { "language",     required_argument,  NULL, 'x' },
   { "interactive",  no_argument,        NULL, 'i' },
+  { "knr",          no_argument,        NULL, 'k' },
   { "output",       required_argument,  NULL, 'o' },
+  { "c++",          no_argument,        NULL, 'p' },
   { "quiet",        no_argument,        NULL, 'q' },
+  { "no-semicolons",no_argument,        NULL, 's' },
   { "version",      no_argument,        NULL, 'v' },
-  { "yydebug",      no_argument,        NULL, 'D' },
+  { "language",     required_argument,  NULL, 'x' },
+  { "yydebug",      no_argument,        NULL, 'y' },
   { NULL,           0,                  NULL, 0   }
 };
-static char const   SHORT_OPTS[] = "89acdC:Df:iko:pqvx:";
+static char const   SHORT_OPTS[] = "89ac:df:iko:pqvx:y";
 
 // local variables
 static char         opts_given[ 128 ];
@@ -289,18 +292,18 @@ static void parse_options( int argc, char const *argv[] ) {
       case 'a': // cdecl 2.x compatibility
       case '8': opt_lang        = LANG_C_89;                  break;
       case '9': opt_lang        = LANG_C_99;                  break;
-      case 'c': opt_make_c      = true;                       break;
-      case 'C': color_when      = parse_color_when( optarg ); break;
+      case 'c': color_when      = parse_color_when( optarg ); break;
       case 'd': opt_debug       = true;                       break;
-      case 'D': yydebug         = true;                       break;
       case 'f': opt_fin         = optarg;                     break;
       case 'i': opt_interactive = true;                       break;
-      case 'o': opt_fout        = optarg;                     break;
-      case 'p': // cdecl 2.x compatibility
       case 'k': opt_lang        = LANG_C_KNR;                 break;
+      case 'o': opt_fout        = optarg;                     break;
+      case 'p': opt_lang        = LANG_CPP_MAX;               break;
       case 'q': opt_quiet       = true;                       break;
+      case 's': opt_semicolons  = false;                      break;
       case 'v': print_version   = true;                       break;
       case 'x': opt_lang        = parse_lang( optarg );       break;
+      case 'y': yydebug         = true;                       break;
       default : usage();
     } // switch
   } // for
@@ -309,7 +312,7 @@ static void parse_options( int argc, char const *argv[] ) {
   check_mutually_exclusive( "9", "8akpx" );
   check_mutually_exclusive( "a", "px" );
   check_mutually_exclusive( "x", "89akp" );
-  check_mutually_exclusive( "v", "89acdDfikopqx" );
+  check_mutually_exclusive( "v", "89acdfikopqxy" );
 
   if ( print_version ) {
     PRINT_ERR( "%s\n", PACKAGE_STRING );
@@ -342,23 +345,22 @@ static void usage( void ) {
   PRINT_ERR( "  -8       Same as -x c89.\n" );
   PRINT_ERR( "  -9       Same as -x c99.\n" );
   PRINT_ERR( "  -a       Sams as -8 (for cdecl 2.x compatibility).\n" );
-  PRINT_ERR( "  -c       Create compilable output (include ; and {}).\n" );
-  PRINT_ERR( "  -C when  Specify when to colorize output [default: not_file].\n" );
+  PRINT_ERR( "  -c when  Specify when to colorize output [default: not_file].\n" );
 #ifdef WITH_CDECL_DEBUG
   PRINT_ERR( "  -d       Enable debug output.\n" );
 #endif /* WITH_CDECL_DEBUG */
-#ifdef YYDEBUG
-  PRINT_ERR( "  -D       Enable YACC debug output.\n" );
-#endif /* YYDEBUG */
   PRINT_ERR( "  -f file  Read from this file [default: stdin].\n" );
   PRINT_ERR( "  -i       Force interactive mode.\n" );
   PRINT_ERR( "  -k       Same as -x knr.\n" );
   PRINT_ERR( "  -o file  Write to this file [default: stdout].\n" );
-  PRINT_ERR( "  -p       Same as -k (for cdecl 2.x compatibility).\n" );
+  PRINT_ERR( "  -p       Same as -x c++.\n" );
   PRINT_ERR( "  -q       Be quiet (disable prompt).\n" );
+  PRINT_ERR( "  -s       Suppress trailing semicolon in declarations.\n" );
   PRINT_ERR( "  -v       Print version and exit.\n" );
   PRINT_ERR( "  -x lang  Use <lang>.\n" );
-  PRINT_ERR( "  -+       Same as -x c++.\n" );
+#ifdef YYDEBUG
+  PRINT_ERR( "  -y       Enable YACC debug output.\n" );
+#endif /* YYDEBUG */
   exit( EX_USAGE );
 }
 

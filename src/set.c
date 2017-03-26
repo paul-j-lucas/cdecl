@@ -38,11 +38,11 @@ void set_option( char const *opt ) {
       return;
     }
 
-    SET_OPTION( opt, "create", opt_make_c, true, false );
 #ifdef WITH_CDECL_DEBUG
     SET_OPTION( opt, "debug", opt_debug, true, false );
 #endif /* WITH_CDECL_DEBUG */
     SET_OPTION( opt, "prompt", prompt, prompt_buf, "" );
+    SET_OPTION( opt, "semicolons", opt_semicolons, true, false );
 #ifdef YYDEBUG
     SET_OPTION( opt, "yydebug", yydebug, true, false );
 #endif /* YYDEBUG */
@@ -58,27 +58,26 @@ void set_option( char const *opt ) {
 
   printf( "\nValid set options (and command line equivalents) are:\n" );
   printf( "  options\n" );
-  printf( "  create (-c) / nocreate\n" );
-  printf( "  prompt / noprompt (-q)\n" );
-#ifndef HAVE_READLINE
-  printf( "  interactive (-i) / nointeractive\n" );
-#endif /* HAVE_READLINE */
-  printf( "  preansi (-p) / ansi (-a) / cplusplus (-+)\n" );
 #ifdef WITH_CDECL_DEBUG
-  printf( "  debug (-d) / nodebug\n" );
+  printf( "  debug (-d, --debug) / nodebug\n" );
 #endif /* WITH_CDECL_DEBUG */
+#ifndef HAVE_READLINE
+  printf( "  interactive (-i, --interactive) / nointeractive\n" );
+#endif /* HAVE_READLINE */
+  printf( "  prompt / noprompt (-q, --quiet)\n" );
+  printf( "  semicolons / nosemicolons (-s, --no-semicolons)\n" );
 #ifdef YYDEBUG
-  printf( "  yydebug (-D) / noyydebug\n" );
+  printf( "  yydebug (-y, --yydebug) / noyydebug\n" );
 #endif /* YYDEBUG */
 
   printf( "\nCurrent set option values are:\n" );
-  printf( "  %screate\n", opt_make_c ? "  " : "no" );
 #ifdef WITH_CDECL_DEBUG
   printf( "  %sdebug\n", opt_debug ? "  " : "no" );
 #endif /* WITH_CDECL_DEBUG */
   printf( "  %sinteractive\n", opt_interactive ? "  " : "no" );
+  printf( "    lang=%s\n", lang_name( opt_lang ) );
   printf( "  %sprompt\n", prompt[0] ? "  " : "no" );
-  printf( "  lang=%s\n", lang_name( opt_lang ) );
+  printf( "  %ssemicolons\n", opt_semicolons ? "  " : "no" );
 #ifdef YYDEBUG
   printf( "  %syydebug\n", yydebug ? "  " : "no" );
 #endif /* YYDEBUG */

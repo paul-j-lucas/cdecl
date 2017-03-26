@@ -1,1 +1,1 @@
-int *const volatile x
+int *const volatile x;

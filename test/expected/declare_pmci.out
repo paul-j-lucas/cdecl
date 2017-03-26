@@ -1,1 +1,1 @@
-const int C::*p
+const int C::*p;

@@ -1,1 +1,1 @@
-int* (*x(void))[3]
+int* (*x(void))[3];

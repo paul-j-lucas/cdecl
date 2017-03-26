@@ -1,1 +1,1 @@
-void f(register int i)
+void f(register int i);

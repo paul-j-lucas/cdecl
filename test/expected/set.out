@@ -1,16 +1,15 @@
 
 Valid set options (and command line equivalents) are:
   options
-  create (-c) / nocreate
-  prompt / noprompt (-q)
-  preansi (-p) / ansi (-a) / cplusplus (-+)
-  debug (-d) / nodebug
-  yydebug (-D) / noyydebug
+  debug (-d, --debug) / nodebug
+  prompt / noprompt (-q, --quiet)
+  semicolons / nosemicolons (-s, --no-semicolons)
+  yydebug (-y, --yydebug) / noyydebug
 
 Current set option values are:
-  nocreate
   nodebug
   nointeractive
+    lang=C11
     prompt
-  lang=C11
+    semicolons
   noyydebug

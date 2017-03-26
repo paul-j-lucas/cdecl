@@ -482,6 +482,8 @@ declare_english
       C_TYPE_ADD( &$5.top_ast->type, $4, @4 );
       C_AST_CHECK( $5.top_ast, CHECK_DECL );
       c_ast_gibberish_declare( $5.top_ast, fout );
+      if ( opt_semicolons )
+        FPUTC( ';', fout );
       FPUTC( '\n', fout );
     }
 

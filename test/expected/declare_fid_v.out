@@ -1,1 +1,1 @@
-void f(int i, double d)
+void f(int i, double d);

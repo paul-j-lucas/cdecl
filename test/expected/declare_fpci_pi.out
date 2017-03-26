@@ -1,1 +1,1 @@
-int* f(char*, int)
+int* f(char*, int);

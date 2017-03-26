@@ -1,1 +1,1 @@
-int *const *x
+int *const *x;

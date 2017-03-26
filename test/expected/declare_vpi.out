@@ -1,1 +1,1 @@
-int *volatile x
+int *volatile x;
