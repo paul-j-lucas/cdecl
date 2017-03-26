@@ -313,7 +313,8 @@ TESTS+=	tests/declare_cpmi.test \
 #
 TESTS+=	tests/declare_pmri.test \
 	tests/declare_pri.test \
-	tests/declare_rgi.test
+	tests/declare_rgi.test \
+	tests/declare_rv.test
 
 #
 # C++ explain tests
@@ -330,7 +331,8 @@ TESTS+= tests/explain_pmfxx_ps.test \
 #
 TESTS+=	tests/explain_pmri.test \
 	tests/explain_pri.test \
-	tests/explain_rgi.test
+	tests/explain_rgi.test \
+	tests/explain_rv.test
 
 #
 # C++ cast tests
