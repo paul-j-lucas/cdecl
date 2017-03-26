@@ -182,10 +182,8 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
 
     default:
       if ( ast->depth > array->depth ) {
-        if ( array->as.array.of_ast->kind == K_NONE &&
-             c_ast_is_parent( ast ) ) {
+        if ( c_ast_is_parent( ast ) )
           c_ast_set_parent( ast->as.parent.of_ast, array );
-        }
         c_ast_set_parent( array, ast );
         return ast;
       } else {
