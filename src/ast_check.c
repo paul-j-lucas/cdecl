@@ -32,17 +32,17 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 
   if ( storage_ast ) {
     c_type_t const storage = storage_ast->type & T_MASK_STORAGE;
-    print_error( &ast->loc, "can not cast to %s", c_type_name( storage ) );
+    print_error( &ast->loc, "can not cast into %s", c_type_name( storage ) );
     return false;
   }
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      print_error( &ast->loc, "cast into array" );
+      print_error( &ast->loc, "can not cast into array" );
       print_hint( "cast into pointer" );
       return false;
     case K_FUNCTION:
-      print_error( &ast->loc, "cast into function" );
+      print_error( &ast->loc, "can not cast into function" );
       print_hint( "cast into pointer to function" );
       return false;
     default:
