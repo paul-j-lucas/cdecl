@@ -189,6 +189,8 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
         c_ast_set_parent( array, ast );
         return ast;
       } else {
+        if ( c_ast_is_parent( ast->parent ) )
+          c_ast_set_parent( array, ast->parent );
         c_ast_set_parent( ast, array );
         return array;
       }

@@ -222,11 +222,11 @@ void c_ast_gc( void );
 /**
  * Checks whether the given AST node is a parent node.
  *
- * @param ast The \c c_ast to check.
+ * @param ast The \c c_ast to check.  May be null.
  * @return Returns \c true only if it is.
  */
 CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
-  return ast->kind >= K_PARENT_MIN;
+  return ast && ast->kind >= K_PARENT_MIN;
 }
 
 /**
