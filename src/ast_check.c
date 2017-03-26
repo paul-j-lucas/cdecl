@@ -164,6 +164,7 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
         default:
           return c_ast_check_func_args( ast ) && c_ast_check_impl( ret_ast );
       } // switch
+      break;
     }
 
     case K_NONE:
