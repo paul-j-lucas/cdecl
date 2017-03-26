@@ -53,6 +53,7 @@ Peter Ammon <cdecl@ridiculousfish.com>
 Paul J. Lucas <paul@lucasmail.org>
 	converted to C99
 	modularized & cleaned-up source
+	added more semantic checks
 	added long-option support
 	added GNU autoconf/automake/configure scripts
 	added GNU-style test suite

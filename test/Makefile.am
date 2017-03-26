@@ -162,7 +162,11 @@ TESTS+=	tests/explain_a012i.test \
 # C explain error tests
 # =====================
 #
-TESTS+=	tests/explain_gf_v.test \
+TESTS+=	tests/explain_fiiv_v.test \
+	tests/explain_fiv_v.test \
+	tests/explain_fvi_v.test \
+	tests/explain_fvx_v.test \
+	tests/explain_gf_v.test \
 	tests/explain_lll.test
 
 ###############################################################################

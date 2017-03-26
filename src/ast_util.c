@@ -12,6 +12,9 @@
 // standard
 #include <assert.h>
 
+// local functions
+static bool c_ast_check_impl( c_ast_t const* );
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -160,6 +163,49 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 }
 
 /**
+ * Checks all function (or block) arguments for semantic validity.
+ *
+ * @param ast The function (or block) AST to check.
+ * @return Returns \c true only if all function arguments are valid.
+ */
+static bool c_ast_check_func_args( c_ast_t const *ast ) {
+  assert( ast );
+  assert( ast->kind & (K_BLOCK | K_FUNCTION) );
+
+  c_ast_t const *arg, *void_arg = NULL;
+  unsigned n_args;
+
+  for ( arg = c_ast_args( ast ), n_args = 1; arg; arg = arg->next, ++n_args ) {
+    if ( n_args > 1 && void_arg )
+      goto only_void;
+
+    if ( arg->kind == K_BUILTIN && (arg->type & T_VOID) ) {
+      //
+      // Ordinarily, void variables are invalid; but a single void function
+      // "argument" is valid (as long as it doesn't have a name).
+      //
+      if ( arg->name ) {
+        print_error( &arg->loc, "argument of void" );
+        return false;
+      }
+      void_arg = arg;
+      if ( n_args > 1 )
+        goto only_void;
+      continue;
+    }
+
+    if ( !c_ast_check_impl( arg ) )
+      return false;
+  } // for
+
+  return true;
+
+only_void:
+  print_error( &void_arg->loc, "\"void\" must be only parameter if specified" );
+  return false;
+}
+
+/**
  * Takes the storage type, if any, away from \a ast
  * (with the intent of giving it to another c_ast).
  * This is used is cases like:
@@ -300,7 +346,7 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
           print_hint( "pointer to function" );
           return false;
         default:
-          return c_ast_check_impl( ret_ast );
+          return c_ast_check_func_args( ast ) && c_ast_check_impl( ret_ast );
       } // switch
     }
 
