@@ -11,6 +11,7 @@ LDADD = $(top_builddir)/lib/libgnu.a
 
 cdecl_SOURCES =	parser.y lexer.l \
 		ast.c \
+		ast_check.c \
 		ast_util.c \
 		cdecl.c \
 		color.c \
