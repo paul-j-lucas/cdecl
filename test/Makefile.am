@@ -9,7 +9,10 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 
 ###############################################################################
 
+#
 # Command-line option error tests
+# ===============================
+#
 TESTS =	tests/cdecl-ap.test \
 	tests/cdecl-x.test
 
@@ -82,9 +85,20 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_vcpi.test \
 	tests/declare_vpi.test
 
+#
 # C declare error tests
-TESTS+=	tests/declare_f_ai.test \
+# =====================
+# Almost every test here has a corresponding explain_ error test.
+#
+TESTS+=	tests/declare_b_ai.test \
+	tests/declare_b_f_i.test \
+	tests/declare_f_ai.test \
+	tests/declare_f_f_i.test \
+	tests/declare_fiiv_v.test \
+	tests/declare_fiv_v.test \
+	tests/declare_fvx_v.test \
 	tests/declare_gf_v.test \
+	tests/declare_lll.test \
 	tests/declare_v.test
 
 ###############################################################################
@@ -162,14 +176,17 @@ TESTS+=	tests/explain_a012i.test \
 #
 # C explain error tests
 # =====================
+# Almost every test here has a corresponding declare_ error test.
 #
-TESTS+=	tests/explain_f_ai.test \
+TESTS+=	tests/explain_b_ai.test \
+	tests/explain_f_ai.test \
 	tests/explain_fiiv_v.test \
 	tests/explain_fiv_v.test \
 	tests/explain_fvi_v.test \
 	tests/explain_fvx_v.test \
 	tests/explain_gf_v.test \
-	tests/explain_lll.test
+	tests/explain_lll.test \
+	tests/explain_v.test
 
 ###############################################################################
 
