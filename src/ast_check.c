@@ -148,18 +148,15 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
       // no break;
     case K_BLOCK: {                     // Apple extension
       c_ast_t const *const ret_ast = ast->as.func.ret_ast;
+      char const *const kind_name = c_kind_name( ast->kind );
       switch ( ret_ast->kind ) {
         case K_ARRAY:
-          print_error( &ret_ast->loc,
-            "%s returning array", c_kind_name( ast->kind )
-          );
-          print_hint( "pointer" );
+          print_error( &ret_ast->loc, "%s returning array", kind_name );
+          print_hint( "%s returning pointer", kind_name );
           return false;
         case K_FUNCTION:
-          print_error( &ret_ast->loc,
-            "%s returning function", c_kind_name( ast->kind )
-          );
-          print_hint( "pointer to function" );
+          print_error( &ret_ast->loc, "%s returning function", kind_name );
+          print_hint( "%s returning pointer to function", kind_name );
           return false;
         default:
           return c_ast_check_func_args( ast ) && c_ast_check_impl( ret_ast );
