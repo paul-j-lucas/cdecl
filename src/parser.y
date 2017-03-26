@@ -129,7 +129,6 @@ static inline c_ast_t* type_peek( void ) {
  * @return Returns said AST.
  */
 static inline c_ast_t* type_pop( void ) {
-  --ast_depth;
   return LINK_POP( c_ast_t, &in_attr.type_ast );
 }
 
@@ -140,7 +139,6 @@ static inline c_ast_t* type_pop( void ) {
  */
 static inline void type_push( c_ast_t *ast ) {
   LINK_PUSH( &in_attr.type_ast, ast );
-  ++ast_depth;
 }
 
 /**
@@ -1071,9 +1069,10 @@ name_c
   ;
 
 nested_decl_c
-  : '(' placeholder_type_c { type_push( $2.top_ast ); } decl_c ')'
+  : '(' placeholder_type_c { type_push( $2.top_ast ); ++ast_depth; } decl_c ')'
     {
       type_pop();
+      --ast_depth;
 
       DUMP_START( "nested_decl_c", "'(' placeholder_type_c decl_c ')'" );
       DUMP_AST( "> placeholder_type_c", $2.top_ast );
@@ -1530,9 +1529,10 @@ func_cast_c
   ;
 
 nested_cast_c
-  : '(' placeholder_type_c { type_push( $2.top_ast ); } cast_c ')'
+  : '(' placeholder_type_c { type_push( $2.top_ast ); ++ast_depth; } cast_c ')'
     {
       type_pop();
+      --ast_depth;
 
       DUMP_START( "nested_cast_c", "'(' placeholder_type_c cast_c ')'" );
       DUMP_AST( "> placeholder_type_c", $2.top_ast );
