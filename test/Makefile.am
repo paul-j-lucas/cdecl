@@ -83,7 +83,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_vpi.test
 
 # C declare error tests
-TESTS+=	tests/declare_f_rai.test \
+TESTS+=	tests/declare_f_ai.test \
 	tests/declare_gf_v.test \
 	tests/declare_v.test
 
