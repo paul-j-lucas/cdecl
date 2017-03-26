@@ -24,6 +24,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+///////////////////////////////////////////////////////////////////////////////
+
 #ifdef WITH_CDECL_DEBUG
 #define CDEBUG(...) BLOCK( if ( opt_debug ) { __VA_ARGS__ } )
 #else
@@ -391,7 +393,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  arg_c
 %type   <ast_list>  arg_list_c arg_list_opt_c
 %type   <number>    array_size_c
-%type   <name>      name_token_opt
+%type   <name>      name_opt
 
 /*****************************************************************************/
 %%
@@ -526,16 +528,15 @@ explain_declaration_c
   ;
 
 explain_cast_c
-  : Y_EXPLAIN '(' type_c { type_push( $3.top_ast ); } cast_c ')'
-    name_token_opt Y_END
+  : Y_EXPLAIN '(' type_c { type_push( $3.top_ast ); } cast_c ')' name_opt Y_END
     {
       type_pop();
 
       DUMP_START( "explain_cast_t",
-                  "EXPLAIN '(' type_c cast_c ')' name_token_opt" );
+                  "EXPLAIN '(' type_c cast_c ')' name_opt" );
       DUMP_AST( "> type_c", $3.top_ast );
       DUMP_AST( "> cast_c", $5.top_ast );
-      DUMP_NAME( "> name_token_opt", $7 );
+      DUMP_NAME( "> name_opt", $7 );
       DUMP_END();
 
       c_ast_t *const ast = c_ast_patch_none( $3.top_ast, $5.top_ast );
@@ -564,7 +565,7 @@ help_command
 /*****************************************************************************/
 
 set_command
-  : Y_SET name_token_opt Y_END    { set_option( $2 ); FREE( $2 ); }
+  : Y_SET name_opt Y_END          { set_option( $2 ); FREE( $2 ); }
   ;
 
 /*****************************************************************************/
@@ -573,230 +574,6 @@ set_command
 
 quit_command
   : Y_QUIT Y_END                  { quit(); }
-  ;
-
-/*****************************************************************************/
-/*  cast gibberish productions                                               */
-/*****************************************************************************/
-
-cast_c
-  : /* empty */                   { $$.top_ast = $$.target_ast = NULL; }
-  | cast2_c
-  | pointer_cast_c
-  | pointer_to_member_cast_c
-  | reference_cast_c
-  ;
-
-cast2_c
-  : array_cast_c
-  | block_cast_c
-  | func_cast_c
-  | name_c
-  | nested_cast_c
-  ;
-
-array_cast_c
-  : cast2_c array_size_c
-    {
-      DUMP_START( "array_cast_c", "cast2_c array_size_c" );
-      DUMP_AST( "^ type_c", type_peek() );
-      DUMP_AST( "> cast2_c", $1.top_ast );
-      DUMP_NUM( "> array_size_c", $2 );
-      if ( $1.target_ast )
-        DUMP_AST( "> target_ast", $1.target_ast );
-
-      c_ast_t *const array = c_ast_new( K_ARRAY, ast_depth, &@$ );
-      array->as.array.size = $2;
-      c_ast_set_parent( c_ast_new( K_NONE, ast_depth, &@1 ), array );
-      if ( $1.target_ast ) {
-        $$.top_ast = $1.top_ast;
-        $$.target_ast = c_ast_add_array( $1.target_ast, array );
-      } else {
-        $$.top_ast = c_ast_add_array( $1.top_ast, array );
-        $$.target_ast = NULL;
-      }
-
-      DUMP_AST( "< array_cast_c", $$.top_ast );
-      DUMP_END();
-    }
-  ;
-
-block_cast_c                            /* Apple extension */
-  : /* type */ '(' '^'
-    {
-      //
-      // A block AST has to be the type inherited attribute for cast_c so we
-      // have to create it here.
-      //
-      type_push( c_ast_new( K_BLOCK, ast_depth, &@$ ) );
-    }
-    type_qualifier_list_opt_c cast_c ')' '(' arg_list_opt_c ')'
-    {
-      c_ast_t *const block = type_pop();
-
-      DUMP_START( "block_cast_c",
-                  "'(' '^' type_qualifier_list_opt_c cast_c ')' "
-                  "'(' arg_list_opt_c ')'" );
-      DUMP_AST( "^ type_c", type_peek() );
-      DUMP_TYPE( "> type_qualifier_list_opt_c", $4 );
-      DUMP_AST( "> cast_c", $5.top_ast );
-      DUMP_AST_LIST( "> arg_list_opt_c", $8 );
-
-      C_TYPE_ADD( &block->type, $4, @4 );
-      block->as.block.args = $8;
-      $$.top_ast = c_ast_add_func( $5.top_ast, type_peek(), block );
-      $$.target_ast = block->as.block.ret_ast;
-
-      DUMP_AST( "< block_cast_c", $$.top_ast );
-      DUMP_END();
-    }
-  ;
-
-func_cast_c
-  : /* type_c */ cast2_c '(' arg_list_opt_c ')'
-    {
-      DUMP_START( "func_cast_c", "cast2_c '(' arg_list_opt_c ')'" );
-      DUMP_AST( "^ type_c", type_peek() );
-      DUMP_AST( "> cast2_c", $1.top_ast );
-      DUMP_AST_LIST( "> arg_list_opt_c", $3 );
-
-      c_ast_t *const func = c_ast_new( K_FUNCTION, ast_depth, &@$ );
-      func->as.func.args = $3;
-      $$.top_ast = c_ast_add_func( $1.top_ast, type_peek(), func );
-      $$.target_ast = func->as.func.ret_ast;
-
-      DUMP_AST( "< func_cast_c", $$.top_ast );
-      DUMP_END();
-    }
-  ;
-
-nested_cast_c
-  : '(' placeholder_type_c { type_push( $2.top_ast ); } cast_c ')'
-    {
-      type_pop();
-
-      DUMP_START( "nested_cast_c", "'(' placeholder_type_c cast_c ')'" );
-      DUMP_AST( "> placeholder_type_c", $2.top_ast );
-      DUMP_AST( "> cast_c", $4.top_ast );
-
-      $$ = $4;
-
-      DUMP_AST( "< nested_cast_c", $$.top_ast );
-      DUMP_END();
-    }
-  ;
-
-pointer_cast_c
-  : pointer_type_c { type_push( $1.top_ast ); } cast_c
-    {
-      type_pop();
-      DUMP_START( "pointer_cast_c", "pointer_type_c cast_c" );
-      DUMP_AST( "> pointer_type_c", $1.top_ast );
-      DUMP_AST( "> cast_c", $3.top_ast );
-
-      $$.top_ast = c_ast_patch_none( $1.top_ast, $3.top_ast );
-      $$.target_ast = NULL;
-
-      DUMP_AST( "< pointer_cast_c", $$.top_ast );
-      DUMP_END();
-    }
-  ;
-
-pointer_to_member_cast_c
-  : pointer_to_member_type_c { type_push( $1.top_ast ); } cast_c
-    {
-      type_pop();
-      DUMP_START( "pointer_to_member_cast_c",
-                  "pointer_to_member_type_c cast_c" );
-      DUMP_AST( "> pointer_to_member_type_c", $1.top_ast );
-      DUMP_AST( "> cast_c", $3.top_ast );
-
-      $$.top_ast = c_ast_patch_none( $1.top_ast, $3.top_ast );
-      $$.target_ast = NULL;
-
-      DUMP_AST( "< pointer_to_member_cast_c", $$.top_ast );
-      DUMP_END();
-    }
-  ;
-
-reference_cast_c
-  : reference_type_c { type_push( $1.top_ast ); } cast_c
-    {
-      type_pop();
-      DUMP_START( "reference_cast_c", "reference_type_c cast_c" );
-      DUMP_AST( "> reference_type_c", $1.top_ast );
-      DUMP_AST( "> cast_c", $3.top_ast );
-
-      $$ = $3;
-
-      DUMP_AST( "< reference_cast_c", $$.top_ast );
-      DUMP_END();
-    }
-  ;
-
-/*****************************************************************************/
-/*  function argument gibberish productions                                  */
-/*****************************************************************************/
-
-arg_list_opt_c
-  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
-  | arg_list_c
-  ;
-
-arg_list_c
-  : arg_list_c expect_comma arg_c
-    {
-      DUMP_START( "arg_list_c", "arg_list_c ',' cast_c" );
-      DUMP_AST_LIST( "> arg_list_c", $1 );
-      DUMP_AST( "> cast_c", $3.top_ast );
-
-      $$ = $1;
-      c_ast_list_append( &$$, $3.top_ast );
-
-      DUMP_AST_LIST( "< arg_list_c", $$ );
-      DUMP_END();
-    }
-
-  | arg_c
-    {
-      DUMP_START( "arg_list_c", "arg_c" );
-      DUMP_AST( "> arg_c", $1.top_ast );
-
-      $$.head_ast = $$.tail_ast = NULL;
-      c_ast_list_append( &$$, $1.top_ast );
-
-      DUMP_AST_LIST( "< arg_list_c", $$ );
-      DUMP_END();
-    }
-  ;
-
-arg_c
-  : type_c { type_push( $1.top_ast ); } cast_c
-    {
-      type_pop();
-      DUMP_START( "arg_c", "type_c cast_c" );
-      DUMP_AST( "> type_c", $1.top_ast );
-      DUMP_AST( "> cast_c", $3.top_ast );
-
-      $$ = $3.top_ast ? $3 : $1;
-      if ( $$.top_ast->name == NULL )
-        $$.top_ast->name = check_strdup( c_ast_name( $$.top_ast, V_DOWN ) );
-
-      DUMP_AST( "< arg_c", $$.top_ast );
-      DUMP_END();
-    }
-
-  | Y_NAME                              /* K&R C type-less argument */
-    {
-      DUMP_START( "argc", "NAME" );
-      DUMP_NAME( "> NAME", $1 );
-
-      $$.top_ast = c_ast_new( K_NAME, ast_depth, &@$ );
-      $$.target_ast = NULL;
-      $$.top_ast->name = check_strdup( $1 );
-
-      DUMP_END();
-    }
   ;
 
 /*****************************************************************************/
@@ -1144,6 +921,107 @@ var_decl_english
   ;
 
 /*****************************************************************************/
+/*  type english productions                                                 */
+/*****************************************************************************/
+
+type_english
+  : type_modifier_list_opt_english unmodified_type_english
+    {
+      DUMP_START( "type_english",
+                  "type_modifier_list_opt_english unmodified_type_english" );
+      DUMP_TYPE( "^ qualifier", qualifier_peek() );
+      DUMP_TYPE( "> type_modifier_list_opt_english", $1 );
+      DUMP_AST( "> unmodified_type_english", $2.top_ast );
+
+      $$ = $2;
+      C_TYPE_ADD( &$$.top_ast->type, qualifier_peek(), qualifier_peek_loc() );
+      C_TYPE_ADD( &$$.top_ast->type, $1, @1 );
+
+      DUMP_AST( "< type_english", $$.top_ast );
+      DUMP_END();
+    }
+
+  | type_modifier_list_english          /* allows for default int type */
+    {
+      DUMP_START( "type_english", "type_modifier_list_english" );
+      DUMP_TYPE( "> type_modifier_list_english", $1 );
+
+      $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
+      $$.target_ast = NULL;
+      $$.top_ast->type = T_INT;
+      C_TYPE_ADD( &$$.top_ast->type, $1, @1 );
+
+      DUMP_AST( "< type_english", $$.top_ast );
+      DUMP_END();
+    }
+  ;
+
+type_modifier_list_opt_english
+  : /* empty */                   { $$ = T_NONE; }
+  | type_modifier_list_english
+  ;
+
+type_modifier_list_english
+  : type_modifier_list_opt_english type_modifier_english
+    {
+      DUMP_START( "type_modifier_list_opt_english",
+                  "type_modifier_list_opt_english type_modifier_english" );
+      DUMP_TYPE( "> type_modifier_list_opt_english", $1 );
+      DUMP_TYPE( "> type_modifier_english", $2 );
+
+      $$ = $1;
+      C_TYPE_ADD( &$$, $2, @2 );
+
+      DUMP_TYPE( "< type_modifier_list_opt_english", $$ );
+      DUMP_END();
+    }
+
+  | type_modifier_english
+  ;
+
+type_modifier_english
+  : Y_COMPLEX
+  | Y_LONG
+  | Y_SHORT
+  | Y_SIGNED
+  | Y_UNSIGNED
+  /*
+   * Register is here (rather than in storage_class_c) because it's the only
+   * storage class that can be specified for function arguments.  Therefore,
+   * it's simpler to treat it as any other type modifier.
+   */
+  | Y_REGISTER
+  ;
+
+unmodified_type_english
+  : builtin_type_c
+    {
+      DUMP_START( "unmodified_type_english", "builtin_type_c" );
+      DUMP_TYPE( "> builtin_type_c", $1 );
+
+      $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
+      $$.target_ast = NULL;
+      $$.top_ast->type = $1;
+
+      DUMP_AST( "< unmodified_type_english", $$.top_ast );
+      DUMP_END();
+    }
+
+  | enum_class_struct_union_type_c
+    {
+      DUMP_START( "unmodified_type_english", "enum_class_struct_union_type_c" );
+      DUMP_TYPE( "> enum_class_struct_union_type_c", $1 );
+
+      $$.top_ast = c_ast_new( K_ENUM_CLASS_STRUCT_UNION, ast_depth, &@$ );
+      $$.target_ast = NULL;
+      $$.top_ast->type = $1;
+
+      DUMP_AST( "< unmodified_type_english", $$.top_ast );
+      DUMP_END();
+    }
+  ;
+
+/*****************************************************************************/
 /*  declaration gibberish productions                                        */
 /*****************************************************************************/
 
@@ -1378,102 +1256,66 @@ reference_type_c
   ;
 
 /*****************************************************************************/
-/*  type english productions                                                 */
+/*  function argument gibberish productions                                  */
 /*****************************************************************************/
 
-type_english
-  : type_modifier_list_opt_english unmodified_type_english
-    {
-      DUMP_START( "type_english",
-                  "type_modifier_list_opt_english unmodified_type_english" );
-      DUMP_TYPE( "^ qualifier", qualifier_peek() );
-      DUMP_TYPE( "> type_modifier_list_opt_english", $1 );
-      DUMP_AST( "> unmodified_type_english", $2.top_ast );
-
-      $$ = $2;
-      C_TYPE_ADD( &$$.top_ast->type, qualifier_peek(), qualifier_peek_loc() );
-      C_TYPE_ADD( &$$.top_ast->type, $1, @1 );
-
-      DUMP_AST( "< type_english", $$.top_ast );
-      DUMP_END();
-    }
-
-  | type_modifier_list_english          /* allows for default int type */
-    {
-      DUMP_START( "type_english", "type_modifier_list_english" );
-      DUMP_TYPE( "> type_modifier_list_english", $1 );
-
-      $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
-      $$.target_ast = NULL;
-      $$.top_ast->type = T_INT;
-      C_TYPE_ADD( &$$.top_ast->type, $1, @1 );
-
-      DUMP_AST( "< type_english", $$.top_ast );
-      DUMP_END();
-    }
+arg_list_opt_c
+  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
+  | arg_list_c
   ;
 
-type_modifier_list_opt_english
-  : /* empty */                   { $$ = T_NONE; }
-  | type_modifier_list_english
-  ;
-
-type_modifier_list_english
-  : type_modifier_list_opt_english type_modifier_english
+arg_list_c
+  : arg_list_c expect_comma arg_c
     {
-      DUMP_START( "type_modifier_list_opt_english",
-                  "type_modifier_list_opt_english type_modifier_english" );
-      DUMP_TYPE( "> type_modifier_list_opt_english", $1 );
-      DUMP_TYPE( "> type_modifier_english", $2 );
+      DUMP_START( "arg_list_c", "arg_list_c ',' cast_c" );
+      DUMP_AST_LIST( "> arg_list_c", $1 );
+      DUMP_AST( "> cast_c", $3.top_ast );
 
       $$ = $1;
-      C_TYPE_ADD( &$$, $2, @2 );
+      c_ast_list_append( &$$, $3.top_ast );
 
-      DUMP_TYPE( "< type_modifier_list_opt_english", $$ );
+      DUMP_AST_LIST( "< arg_list_c", $$ );
       DUMP_END();
     }
 
-  | type_modifier_english
-  ;
-
-type_modifier_english
-  : Y_COMPLEX
-  | Y_LONG
-  | Y_SHORT
-  | Y_SIGNED
-  | Y_UNSIGNED
-  /*
-   * Register is here (rather than in storage_class_c) because it's the only
-   * storage class that can be specified for function arguments.  Therefore,
-   * it's simpler to treat it as any other type modifier.
-   */
-  | Y_REGISTER
-  ;
-
-unmodified_type_english
-  : builtin_type_c
+  | arg_c
     {
-      DUMP_START( "unmodified_type_english", "builtin_type_c" );
-      DUMP_TYPE( "> builtin_type_c", $1 );
+      DUMP_START( "arg_list_c", "arg_c" );
+      DUMP_AST( "> arg_c", $1.top_ast );
 
-      $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
-      $$.target_ast = NULL;
-      $$.top_ast->type = $1;
+      $$.head_ast = $$.tail_ast = NULL;
+      c_ast_list_append( &$$, $1.top_ast );
 
-      DUMP_AST( "< unmodified_type_english", $$.top_ast );
+      DUMP_AST_LIST( "< arg_list_c", $$ );
+      DUMP_END();
+    }
+  ;
+
+arg_c
+  : type_c { type_push( $1.top_ast ); } cast_c
+    {
+      type_pop();
+      DUMP_START( "arg_c", "type_c cast_c" );
+      DUMP_AST( "> type_c", $1.top_ast );
+      DUMP_AST( "> cast_c", $3.top_ast );
+
+      $$ = $3.top_ast ? $3 : $1;
+      if ( $$.top_ast->name == NULL )
+        $$.top_ast->name = check_strdup( c_ast_name( $$.top_ast, V_DOWN ) );
+
+      DUMP_AST( "< arg_c", $$.top_ast );
       DUMP_END();
     }
 
-  | enum_class_struct_union_type_c
+  | Y_NAME                              /* K&R C type-less argument */
     {
-      DUMP_START( "unmodified_type_english", "enum_class_struct_union_type_c" );
-      DUMP_TYPE( "> enum_class_struct_union_type_c", $1 );
+      DUMP_START( "argc", "NAME" );
+      DUMP_NAME( "> NAME", $1 );
 
-      $$.top_ast = c_ast_new( K_ENUM_CLASS_STRUCT_UNION, ast_depth, &@$ );
+      $$.top_ast = c_ast_new( K_NAME, ast_depth, &@$ );
       $$.target_ast = NULL;
-      $$.top_ast->type = $1;
+      $$.top_ast->name = check_strdup( $1 );
 
-      DUMP_AST( "< unmodified_type_english", $$.top_ast );
       DUMP_END();
     }
   ;
@@ -1655,6 +1497,165 @@ storage_class_c
   ;
 
 /*****************************************************************************/
+/*  cast gibberish productions                                               */
+/*****************************************************************************/
+
+cast_c
+  : /* empty */                   { $$.top_ast = $$.target_ast = NULL; }
+  | cast2_c
+  | pointer_cast_c
+  | pointer_to_member_cast_c
+  | reference_cast_c
+  ;
+
+cast2_c
+  : array_cast_c
+  | block_cast_c
+  | func_cast_c
+  | name_c
+  | nested_cast_c
+  ;
+
+array_cast_c
+  : cast2_c array_size_c
+    {
+      DUMP_START( "array_cast_c", "cast2_c array_size_c" );
+      DUMP_AST( "^ type_c", type_peek() );
+      DUMP_AST( "> cast2_c", $1.top_ast );
+      DUMP_NUM( "> array_size_c", $2 );
+      if ( $1.target_ast )
+        DUMP_AST( "> target_ast", $1.target_ast );
+
+      c_ast_t *const array = c_ast_new( K_ARRAY, ast_depth, &@$ );
+      array->as.array.size = $2;
+      c_ast_set_parent( c_ast_new( K_NONE, ast_depth, &@1 ), array );
+      if ( $1.target_ast ) {
+        $$.top_ast = $1.top_ast;
+        $$.target_ast = c_ast_add_array( $1.target_ast, array );
+      } else {
+        $$.top_ast = c_ast_add_array( $1.top_ast, array );
+        $$.target_ast = NULL;
+      }
+
+      DUMP_AST( "< array_cast_c", $$.top_ast );
+      DUMP_END();
+    }
+  ;
+
+block_cast_c                            /* Apple extension */
+  : /* type */ '(' '^'
+    {
+      //
+      // A block AST has to be the type inherited attribute for cast_c so we
+      // have to create it here.
+      //
+      type_push( c_ast_new( K_BLOCK, ast_depth, &@$ ) );
+    }
+    type_qualifier_list_opt_c cast_c ')' '(' arg_list_opt_c ')'
+    {
+      c_ast_t *const block = type_pop();
+
+      DUMP_START( "block_cast_c",
+                  "'(' '^' type_qualifier_list_opt_c cast_c ')' "
+                  "'(' arg_list_opt_c ')'" );
+      DUMP_AST( "^ type_c", type_peek() );
+      DUMP_TYPE( "> type_qualifier_list_opt_c", $4 );
+      DUMP_AST( "> cast_c", $5.top_ast );
+      DUMP_AST_LIST( "> arg_list_opt_c", $8 );
+
+      C_TYPE_ADD( &block->type, $4, @4 );
+      block->as.block.args = $8;
+      $$.top_ast = c_ast_add_func( $5.top_ast, type_peek(), block );
+      $$.target_ast = block->as.block.ret_ast;
+
+      DUMP_AST( "< block_cast_c", $$.top_ast );
+      DUMP_END();
+    }
+  ;
+
+func_cast_c
+  : /* type_c */ cast2_c '(' arg_list_opt_c ')'
+    {
+      DUMP_START( "func_cast_c", "cast2_c '(' arg_list_opt_c ')'" );
+      DUMP_AST( "^ type_c", type_peek() );
+      DUMP_AST( "> cast2_c", $1.top_ast );
+      DUMP_AST_LIST( "> arg_list_opt_c", $3 );
+
+      c_ast_t *const func = c_ast_new( K_FUNCTION, ast_depth, &@$ );
+      func->as.func.args = $3;
+      $$.top_ast = c_ast_add_func( $1.top_ast, type_peek(), func );
+      $$.target_ast = func->as.func.ret_ast;
+
+      DUMP_AST( "< func_cast_c", $$.top_ast );
+      DUMP_END();
+    }
+  ;
+
+nested_cast_c
+  : '(' placeholder_type_c { type_push( $2.top_ast ); } cast_c ')'
+    {
+      type_pop();
+
+      DUMP_START( "nested_cast_c", "'(' placeholder_type_c cast_c ')'" );
+      DUMP_AST( "> placeholder_type_c", $2.top_ast );
+      DUMP_AST( "> cast_c", $4.top_ast );
+
+      $$ = $4;
+
+      DUMP_AST( "< nested_cast_c", $$.top_ast );
+      DUMP_END();
+    }
+  ;
+
+pointer_cast_c
+  : pointer_type_c { type_push( $1.top_ast ); } cast_c
+    {
+      type_pop();
+      DUMP_START( "pointer_cast_c", "pointer_type_c cast_c" );
+      DUMP_AST( "> pointer_type_c", $1.top_ast );
+      DUMP_AST( "> cast_c", $3.top_ast );
+
+      $$.top_ast = c_ast_patch_none( $1.top_ast, $3.top_ast );
+      $$.target_ast = NULL;
+
+      DUMP_AST( "< pointer_cast_c", $$.top_ast );
+      DUMP_END();
+    }
+  ;
+
+pointer_to_member_cast_c
+  : pointer_to_member_type_c { type_push( $1.top_ast ); } cast_c
+    {
+      type_pop();
+      DUMP_START( "pointer_to_member_cast_c",
+                  "pointer_to_member_type_c cast_c" );
+      DUMP_AST( "> pointer_to_member_type_c", $1.top_ast );
+      DUMP_AST( "> cast_c", $3.top_ast );
+
+      $$.top_ast = c_ast_patch_none( $1.top_ast, $3.top_ast );
+      $$.target_ast = NULL;
+
+      DUMP_AST( "< pointer_to_member_cast_c", $$.top_ast );
+      DUMP_END();
+    }
+  ;
+
+reference_cast_c
+  : reference_type_c { type_push( $1.top_ast ); } cast_c
+    {
+      type_pop();
+      DUMP_START( "reference_cast_c", "reference_type_c cast_c" );
+      DUMP_AST( "> reference_type_c", $1.top_ast );
+      DUMP_AST( "> cast_c", $3.top_ast );
+
+      $$ = $3;
+
+      DUMP_AST( "< reference_cast_c", $$.top_ast );
+      DUMP_END();
+    }
+  ;
+
+/*****************************************************************************/
 /*  miscellaneous productions                                                */
 /*****************************************************************************/
 
@@ -1677,7 +1678,7 @@ expect_star
   | error                         { PARSE_ERROR( "'*' expected" ); }
   ;
 
-name_token_opt
+name_opt
   : /* empty */                   { $$ = NULL; }
   | Y_NAME
   ;
