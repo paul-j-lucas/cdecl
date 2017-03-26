@@ -7,6 +7,7 @@
 #include "config.h"                     /* must go first */
 #define CDECL_AST_UTIL_INLINE _GL_EXTERN_INLINE
 #include "ast_util.h"
+#include "literals.h"
 
 // standard
 #include <assert.h>
@@ -139,9 +140,8 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
     c_ast_find_type( nonconst_ast, V_DOWN, T_STORAGE );
 
   if ( storage_ast ) {
-    print_error(
-      &ast->loc, "can not cast to %s", c_type_name( storage_ast->type )
-    );
+    c_type_t const storage = storage_ast->type & T_MASK_STORAGE;
+    print_error( &ast->loc, "can not cast to %s", c_type_name( storage ) );
     return false;
   }
 
@@ -237,7 +237,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_type_ast, c_ast_t *func ) {
   return rv;
 }
 
-static bool c_ast_check_impl( c_ast_t const *ast, c_check_t check ) {
+static bool c_ast_check_impl( c_ast_t const *ast ) {
   assert( ast );
 
   switch ( ast->kind ) {
@@ -251,7 +251,7 @@ static bool c_ast_check_impl( c_ast_t const *ast, c_check_t check ) {
             return false;
           }
           if ( of_ast->type & T_REGISTER ) {
-            print_error( &ast->loc, "register array" );
+            print_error( &ast->loc, "array can not be register" );
             return false;
           }
           break;
@@ -260,17 +260,13 @@ static bool c_ast_check_impl( c_ast_t const *ast, c_check_t check ) {
           print_hint( "array of pointer to function" );
           return false;
         default:
-          /* suppress warning */;
+          return c_ast_check_impl( of_ast );
       } // switch
       break;
     }
 
-    case K_BLOCK:                       // Apple extension
-      // TODO
-      break;
-
     case K_BUILTIN:
-      if ( ast->type & T_VOID ) {
+      if ( (ast->type & T_VOID) && !ast->parent ) {
         print_error( &ast->loc, "variable of void" );
         print_hint( "pointer to void" );
         return false;
@@ -278,7 +274,8 @@ static bool c_ast_check_impl( c_ast_t const *ast, c_check_t check ) {
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      // nothing to do
+    case K_NAME:
+      // nothing to check
       break;
 
     case K_FUNCTION:
@@ -286,28 +283,56 @@ static bool c_ast_check_impl( c_ast_t const *ast, c_check_t check ) {
         print_error( &ast->loc, "function can not be register" );
         return false;
       }
-      break;
-
-    case K_NAME:
-      break;
+      // no break;
+    case K_BLOCK: {                     // Apple extension
+      c_ast_t const *const ret_ast = ast->as.func.ret_ast;
+      switch ( ret_ast->type ) {
+        case K_ARRAY:
+          print_error( &ret_ast->loc,
+            "%s returning array", c_kind_name( ast->kind )
+          );
+          print_hint( "pointer" );
+          return false;
+        case K_FUNCTION:
+          print_error( &ret_ast->loc,
+            "%s returning function", c_kind_name( ast->kind )
+          );
+          print_hint( "pointer to function" );
+          return false;
+        default:
+          return c_ast_check_impl( ret_ast );
+      } // switch
+    }
 
     case K_NONE:
       assert( ast->kind != K_NONE );
 
     case K_POINTER:
-      break;
-
-    case K_POINTER_TO_MEMBER:
-      break;
+    case K_POINTER_TO_MEMBER: {
+      c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
+      if ( to_ast->kind & K_REFERENCE ) {
+        print_error( &ast->loc, "%s to reference", c_kind_name( ast->kind ) );
+        return false;
+      }
+      if ( to_ast->type & T_REGISTER ) {
+        print_error( &ast->loc, "%s to register", c_kind_name( ast->kind ) );
+        return false;
+      }
+      return c_ast_check_impl( ast->as.ptr_ref.to_ast );
+    }
 
     case K_REFERENCE: {
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
+      if ( to_ast->type & T_REGISTER ) {
+        print_error( &ast->loc, "reference to register" );
+        return false;
+      }
       if ( to_ast->type & T_VOID ) {
-        print_error( &ast->loc, "referece to void" );
+        print_error( &ast->loc, "reference to void" );
         print_hint( "pointer to void" );
         return false;
       }
-      break;
+      return c_ast_check_impl( to_ast );
     }
   } // switch
 
@@ -317,7 +342,7 @@ static bool c_ast_check_impl( c_ast_t const *ast, c_check_t check ) {
 bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
   if ( check == CHECK_CAST && !c_ast_check_cast( ast ) )
     return false;
-  return c_ast_check_impl( ast, check );
+  return c_ast_check_impl( ast );
 }
 
 char const* c_ast_name( c_ast_t const *ast, v_direction_t dir ) {

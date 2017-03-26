@@ -275,7 +275,6 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 # =================
 #
 TESTS+=	tests/declare_cpmi.test \
-	tests/declare_cpri.test \
 	tests/declare_pfv_ri.test \
 	tests/declare_pmci.test \
 	tests/declare_pmi.test \
@@ -286,12 +285,29 @@ TESTS+=	tests/declare_cpmi.test \
 	tests/declare_rpi.test
 
 #
+# C++ declare error tests
+# =======================
+#
+TESTS+=	tests/declare_pmri.test \
+	tests/declare_pri.test \
+	tests/declare_rgi.test
+
+#
 # C++ explain tests
 # =================
 #
 TESTS+= tests/explain_pmfxx_ps.test \
+	tests/explain_pmgi.test \
 	tests/explain_pmi.test \
 	tests/explain_ri.test
+
+#
+# C++ explain error tests
+# =======================
+#
+TESTS+=	tests/explain_pmri.test \
+	tests/explain_pri.test \
+	tests/explain_rgi.test
 
 #
 # C++ cast tests

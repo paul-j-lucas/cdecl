@@ -96,7 +96,6 @@ struct qualifier_link /* : link */ {
 struct in_attr {
   qualifier_link_t *qualifier_head;
   c_ast_t *type_ast;
-  int y_token;
 };
 typedef struct in_attr in_attr_t;
 
@@ -595,21 +594,6 @@ array_decl_english
       DUMP_NUM( "> array_size_opt_english", $2 );
       DUMP_AST( "> decl_english", $4.top_ast );
 
-      switch ( $4.top_ast->kind ) {
-        case K_BUILTIN:
-          if ( $4.top_ast->type & T_VOID ) {
-            print_error( &@4, "array of void" );
-            print_hint( "pointer to void" );
-          }
-          break;
-        case K_FUNCTION:
-          print_error( &@4, "array of function" );
-          print_hint( "array of pointer to function" );
-          break;
-        default:
-          /* suppress warning */;
-      } // switch
-
       $$.top_ast = c_ast_new( K_ARRAY, ast_depth, &@$ );
       $$.target_ast = NULL;
       $$.top_ast->as.array.size = $2;
@@ -627,20 +611,19 @@ array_size_opt_english
   ;
 
 block_decl_english                      /* Apple extension */
-  : Y_BLOCK { in_attr.y_token = Y_BLOCK; } paren_decl_list_opt_english
-    returning_english
+  : Y_BLOCK paren_decl_list_opt_english returning_english
     {
       DUMP_START( "block_decl_english",
                   "BLOCK paren_decl_list_opt_english returning_english" );
       DUMP_TYPE( "^ qualifier", qualifier_peek() );
-      DUMP_AST_LIST( "> paren_decl_list_opt_english", $3 );
-      DUMP_AST( "> returning_english", $4.top_ast );
+      DUMP_AST_LIST( "> paren_decl_list_opt_english", $2 );
+      DUMP_AST( "> returning_english", $3.top_ast );
 
       $$.top_ast = c_ast_new( K_BLOCK, ast_depth, &@$ );
       $$.target_ast = NULL;
       $$.top_ast->type = qualifier_peek();
-      c_ast_set_parent( $4.top_ast, $$.top_ast );
-      $$.top_ast->as.block.args = $3;
+      c_ast_set_parent( $3.top_ast, $$.top_ast );
+      $$.top_ast->as.block.args = $2;
 
       DUMP_AST( "< block_decl_english", $$.top_ast );
       DUMP_END();
@@ -648,18 +631,17 @@ block_decl_english                      /* Apple extension */
   ;
 
 func_decl_english
-  : Y_FUNCTION { in_attr.y_token = Y_FUNCTION; } paren_decl_list_opt_english
-    returning_english
+  : Y_FUNCTION paren_decl_list_opt_english returning_english
     {
       DUMP_START( "func_decl_english",
                   "FUNCTION paren_decl_list_opt_english returning_english" );
-      DUMP_AST_LIST( "> decl_list_opt_english", $3 );
-      DUMP_AST( "> returning_english", $4.top_ast );
+      DUMP_AST_LIST( "> decl_list_opt_english", $2 );
+      DUMP_AST( "> returning_english", $3.top_ast );
 
       $$.top_ast = c_ast_new( K_FUNCTION, ast_depth, &@$ );
       $$.target_ast = NULL;
-      c_ast_set_parent( $4.top_ast, $$.top_ast );
-      $$.top_ast->as.func.args = $3;
+      c_ast_set_parent( $3.top_ast, $$.top_ast );
+      $$.top_ast->as.func.args = $2;
 
       DUMP_AST( "< func_decl_english", $$.top_ast );
       DUMP_END();
@@ -708,40 +690,6 @@ returning_english
     {
       DUMP_START( "returning_english", "RETURNING decl_english" );
       DUMP_AST( "> decl_english", $2.top_ast );
-
-      c_keyword_t const *keyword;
-      switch ( $2.top_ast->kind ) {
-        case K_ARRAY:
-        case K_FUNCTION:
-          keyword = c_keyword_find_token( in_attr.y_token );
-        default:
-          keyword = NULL;
-      } // switch
-
-      if ( keyword ) {
-        char error_msg[ 80 ];
-        char const *hint;
-
-        switch ( $2.top_ast->kind ) {
-          case K_ARRAY:
-            hint = "pointer";
-            break;
-          case K_FUNCTION:
-            hint = "pointer to function";
-            break;
-          default:
-            hint = NULL;
-        } // switch
-
-        snprintf( error_msg, sizeof error_msg,
-          "%s returning %s",
-          keyword->literal, c_kind_name( $2.top_ast->kind )
-        );
-
-        print_error( &@2, error_msg );
-        if ( hint )
-          print_hint( "%s returning %s", keyword->literal, hint );
-      }
 
       $$ = $2;
 
@@ -862,16 +810,6 @@ reference_decl_english
 
       if ( opt_lang < LANG_CPP_MIN )
         print_warning( &@$, "reference" );
-      switch ( $3.top_ast->kind ) {
-        case K_BUILTIN:
-          if ( $3.top_ast->type & T_VOID ) {
-            print_error( &@3, "reference of void" );
-            print_hint( "pointer to void" );
-          }
-          break;
-        default:
-          /* suppress warning */;
-      } // switch
 
       $$.top_ast = c_ast_new( K_REFERENCE, ast_depth, &@$ );
       $$.target_ast = NULL;
