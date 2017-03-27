@@ -51,7 +51,7 @@ static struct option const LONG_OPTS[] = {
   { "output",       required_argument,  NULL, 'o' },
   { "c++",          no_argument,        NULL, 'p' },
   { "quiet",        no_argument,        NULL, 'q' },
-  { "no-semicolons",no_argument,        NULL, 's' },
+  { "no-semicolon", no_argument,        NULL, 's' },
   { "version",      no_argument,        NULL, 'v' },
   { "language",     required_argument,  NULL, 'x' },
   { "yydebug",      no_argument,        NULL, 'y' },
