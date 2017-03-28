@@ -56,6 +56,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fg_v.test \
 	tests/declare_fgi_v.test \
 	tests/declare_fid_v.test \
+	tests/declare_fipfi_v_pfi_v.test \
 	tests/declare_fixiy_v.test \
 	tests/declare_fpc_pi.test \
 	tests/declare_fpci_pi.test \
