@@ -30,6 +30,9 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_a3a5pfv_ppa7a9i.test \
 	tests/declare_a3a5pfv_ppa7i.test \
 	tests/declare_a3a5pfv_ppa7pi.test \
+	tests/declare_fcce_v-01.test \
+	tests/declare_fcce_v-02.test \
+	tests/declare_fcce_v-03.test \
 	tests/declare_a3a5pfv_ppi.test \
 	tests/declare_a3pfv_i.test \
 	tests/declare_a3ppfv_i.test \
@@ -137,6 +140,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_cppi.test \
 	tests/explain_cvpi.test \
 	tests/explain_f_pi.test \
+	tests/explain_fcce_v.test \
 	tests/explain_fg_v.test \
 	tests/explain_fgi_v.test \
 	tests/explain_fid_v.test \
@@ -180,9 +184,16 @@ TESTS+=	tests/explain_a012i.test \
 #
 TESTS+=	tests/explain_b_ai.test \
 	tests/explain_f_ai.test \
+	tests/explain_fcce_v.test \
+	tests/explain_fe_v.test \
+	tests/explain_fecc_v.test \
+	tests/explain_fee_v.test \
+	tests/explain_fev_v.test \
 	tests/explain_fiiv_v.test \
 	tests/explain_fiv_v.test \
+	tests/explain_fve_v.test \
 	tests/explain_fvi_v.test \
+	tests/explain_fvv_v.test \
 	tests/explain_fvx_v.test \
 	tests/explain_gf_v.test \
 	tests/explain_lll.test \

@@ -60,31 +60,60 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
   assert( ast );
   assert( ast->kind & (K_BLOCK | K_FUNCTION) );
 
-  c_ast_t const *arg, *void_arg = NULL;
-  unsigned n_args;
+  c_ast_t const *arg, *variadic_arg = NULL, *void_arg = NULL;
+  unsigned n_args = 0;
 
-  for ( arg = c_ast_args( ast ), n_args = 1; arg; arg = arg->next, ++n_args ) {
-    if ( n_args > 1 && void_arg )
+  for ( arg = c_ast_args( ast ); arg; arg = arg->next ) {
+    if ( ++n_args > 1 && void_arg )
       goto only_void;
 
-    if ( arg->kind == K_BUILTIN && (arg->type & T_VOID) ) {
-      //
-      // Ordinarily, void variables are invalid; but a single void function
-      // "argument" is valid (as long as it doesn't have a name).
-      //
-      if ( arg->name ) {
-        print_error( &arg->loc, "argument of void" );
-        return false;
-      }
-      void_arg = arg;
-      if ( n_args > 1 )
-        goto only_void;
-      continue;
-    }
+    switch ( arg->kind ) {
+      case K_BUILTIN:
+        if ( (arg->type & T_VOID) ) {
+          //
+          // Ordinarily, void variables are invalid; but a single void function
+          // "argument" is valid (as long as it doesn't have a name).
+          //
+          if ( arg->name ) {
+            print_error( &arg->loc, "argument of void" );
+            return false;
+          }
+          void_arg = arg;
+          if ( n_args > 1 )
+            goto only_void;
+          continue;
+        }
+        break;
 
+      case K_VARIADIC:
+        if ( !void_arg ) {
+          if ( variadic_arg ) {
+            print_error( &arg->loc, "more than one variadic specifier" );
+            return false;
+          }
+          variadic_arg = arg;
+          continue;
+        }
+        break;
+
+      default:
+        /* suppress warning */;
+    } // switch
+
+    if ( variadic_arg ) {
+      print_error( &variadic_arg->loc, "variadic specifier must be last" );
+      return false;
+    }
     if ( !c_ast_check_impl( arg ) )
       return false;
   } // for
+
+  if ( variadic_arg && n_args == 1 ) {
+    print_error( &variadic_arg->loc,
+      "variadic specifier can not be only argument"
+    );
+    return false;
+  }
 
   return true;
 
@@ -137,6 +166,7 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
 
     case K_ENUM_CLASS_STRUCT_UNION:
     case K_NAME:
+    case K_VARIADIC:
       // nothing to check
       break;
 

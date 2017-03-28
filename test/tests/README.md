@@ -19,7 +19,7 @@ declaration as it is in English.  The characters are:
 + `b` = block (Apple extension)
 + `c` = `char` or `const`
 + `d` = `double`
-+ `e` = `extern`
++ `e` = `extern` or ellipsis (`...`)
 + `f` = function
 + `g` = `register`
 + `i` = `int`

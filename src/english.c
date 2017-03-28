@@ -143,6 +143,10 @@ static void c_ast_english_impl( c_ast_t const *ast, bool print_names,
       c_ast_english_impl( ast->as.ptr_mbr.of_ast, print_names, eout );
       break;
     }
+
+    case K_VARIADIC:
+      FPUTS( c_kind_name( ast->kind ), eout );
+      break;
   } // switch
 }
 

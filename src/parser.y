@@ -300,6 +300,7 @@ static void yyerror( char const *msg ) {
 
                     /* C89 */
 %token  <type>      Y_CONST
+%token              Y_ELLIPSIS
 %token  <type>      Y_ENUM
 %token  <type>      Y_SIGNED
 %token  <type>      Y_VOID
@@ -856,6 +857,17 @@ var_decl_english
       DUMP_AST( "< var_decl_english", $$.top_ast );
       DUMP_END();
     }
+
+  | Y_ELLIPSIS
+    {
+      DUMP_START( "var_decl_english", "..." );
+
+      $$.top_ast = c_ast_new( K_VARIADIC, ast_depth, &@$ );
+      $$.target_ast = NULL;
+
+      DUMP_AST( "< var_decl_english", $$.top_ast );
+      DUMP_END();
+    }
   ;
 
 /*****************************************************************************/
@@ -1255,6 +1267,18 @@ arg_c
       $$.target_ast = NULL;
       $$.top_ast->name = check_strdup( $1 );
 
+      DUMP_AST( "< arg_c", $$.top_ast );
+      DUMP_END();
+    }
+
+  | Y_ELLIPSIS
+    {
+      DUMP_START( "argc", "..." );
+
+      $$.top_ast = c_ast_new( K_VARIADIC, ast_depth, &@$ );
+      $$.target_ast = NULL;
+
+      DUMP_AST( "< arg_c", $$.top_ast );
       DUMP_END();
     }
   ;

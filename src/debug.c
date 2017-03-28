@@ -63,6 +63,7 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_BUILTIN:
       case K_NAME:
       case K_NONE:
+      case K_VARIADIC:
         // nothing to do
         break;
 

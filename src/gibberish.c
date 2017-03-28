@@ -13,6 +13,7 @@
 #include "config.h"                     /* must go first */
 #include "ast.h"
 #include "ast_util.h"
+#include "literals.h"
 #include "util.h"
 
 // system
@@ -187,6 +188,11 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       c_ast_gibberish_impl( ast->as.ptr_mbr.of_ast, param );
       FPRINTF( param->gout, " %s::", ast->as.ptr_mbr.class_name );
       c_ast_gibberish_qual_name( ast, param );
+      break;
+
+    case K_VARIADIC:
+      FPUTS( L_ELLIPSIS, param->gout );
+      param->leaf_ast = ast;
       break;
   } // switch
 }

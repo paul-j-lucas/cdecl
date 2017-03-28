@@ -182,6 +182,7 @@ char const* c_kind_name( c_kind_t kind ) {
     case K_POINTER          : return "pointer";
     case K_POINTER_TO_MEMBER: return "pointer-to-member";
     case K_REFERENCE        : return "reference";
+    case K_VARIADIC         : return "variadic";
 
     case K_ENUM_CLASS_STRUCT_UNION:
       if ( opt_lang >= LANG_CPP_MIN )

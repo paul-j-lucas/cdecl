@@ -49,14 +49,15 @@ enum c_kind {
   K_BUILTIN                 = 0x0002,   // void, char, int, etc.
   K_ENUM_CLASS_STRUCT_UNION = 0x0004,
   K_NAME                    = 0x0008,   // typeless function argument in K&R C
+  K_VARIADIC                = 0x0010,   // variadic ("...") function argument
   // "parent" kinds
-  K_ARRAY                   = 0x0010,
-  K_BLOCK                   = 0x0020,   // Apple extension
-  K_FUNCTION                = 0x0040,
-  K_POINTER                 = 0x0080,
+  K_ARRAY                   = 0x0020,
+  K_BLOCK                   = 0x0040,   // Apple extension
+  K_FUNCTION                = 0x0080,
+  K_POINTER                 = 0x0100,
   // "parent" kinds (C++ only)
-  K_POINTER_TO_MEMBER       = 0x0100,
-  K_REFERENCE               = 0x0200,
+  K_POINTER_TO_MEMBER       = 0x0200,
+  K_REFERENCE               = 0x0400,
 };
 typedef enum c_kind c_kind_t;
 
@@ -188,8 +189,10 @@ struct c_ast {
     // nothing needed for K_BUILTIN
     c_ecsu_t      ecsu;
     c_func_t      func;
+    // nothing needed for K_NAME
     c_ptr_mbr_t   ptr_mbr;
     c_ptr_ref_t   ptr_ref;
+    // nothing needed for K_VARIADIC
   } as;
 
   c_ast_t    *gc_next;                  // used for garbage collection
