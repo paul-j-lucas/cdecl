@@ -1,0 +1,1 @@
+cdecl | | declare f as function (g as pointer to function (c as char) returning int) returning double | 0

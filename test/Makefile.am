@@ -30,9 +30,6 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_a3a5pfv_ppa7a9i.test \
 	tests/declare_a3a5pfv_ppa7i.test \
 	tests/declare_a3a5pfv_ppa7pi.test \
-	tests/declare_fcce_v-01.test \
-	tests/declare_fcce_v-02.test \
-	tests/declare_fcce_v-03.test \
 	tests/declare_a3a5pfv_ppi.test \
 	tests/declare_a3pfv_i.test \
 	tests/declare_a3ppfv_i.test \
@@ -53,12 +50,16 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_cppi.test \
 	tests/declare_cvpi.test \
 	tests/declare_f_pi.test \
+	tests/declare_fcce_v-01.test \
+	tests/declare_fcce_v-02.test \
+	tests/declare_fcce_v-03.test \
 	tests/declare_fg_v.test \
 	tests/declare_fgi_v.test \
 	tests/declare_fid_v.test \
 	tests/declare_fixiy_v.test \
 	tests/declare_fpc_pi.test \
 	tests/declare_fpci_pi.test \
+	tests/declare_fpfc_i_d.test \
 	tests/declare_fv_pa3a5i.test \
 	tests/declare_fv_pa3a5pi.test \
 	tests/declare_fv_pa3i.test \
@@ -147,6 +148,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_fixiy_v.test \
 	tests/explain_fpc_pi.test \
 	tests/explain_fpci_pi.test \
+	tests/explain_fpfc_i_d.test \
 	tests/explain_fv_pa3a5i.test \
 	tests/explain_fv_pa3a5pi.test \
 	tests/explain_fv_pa3i.test \

@@ -1,0 +1,1 @@
+cdecl | | explain double f( int (*g)(char c) ) | 0
