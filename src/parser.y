@@ -102,12 +102,12 @@ typedef struct in_attr in_attr_t;
 // extern functions
 extern void         print_help( void );
 extern void         set_option( char const* );
-extern int          yylex();
+extern int          yylex( void );
 
 // local variables
-static in_attr_t    in_attr;
-static bool         newlined = true;
 static unsigned     ast_depth;
+static bool         error_newlined = true;
+static in_attr_t    in_attr;
 
 // local functions
 static void         qualifier_clear( void );
@@ -186,7 +186,7 @@ static void parse_cleanup( void ) {
  * @param format A \c printf() style format string.
  */
 static void parse_error( char const *format, ... ) {
-  if ( !newlined ) {
+  if ( !error_newlined ) {
     PRINT_ERR( ": " );
     if ( *yytext )
       PRINT_ERR( "\"%s\": ", (*yytext == '\n' ? "\\n" : yytext) );
@@ -195,7 +195,7 @@ static void parse_error( char const *format, ... ) {
     vfprintf( stderr, format, args );
     va_end( args );
     PRINT_ERR( "\n" );
-    newlined = true;
+    error_newlined = true;
   }
 }
 
@@ -238,11 +238,11 @@ static void quit( void ) {
  */
 static void yyerror( char const *msg ) {
   print_caret( CARET_CURRENT_LEX_COL );
-  PRINT_ERR( "%s%d: ", (newlined ? "" : "\n"), error_column() + 1 );
+  PRINT_ERR( "%s%d: ", (error_newlined ? "" : "\n"), error_column() + 1 );
   SGR_START_COLOR( stderr, error );
   FPUTS( msg, stderr );
   SGR_END_COLOR( stderr );
-  newlined = false;
+  error_newlined = false;
   parse_cleanup();
 }
 
@@ -404,9 +404,9 @@ command_list
 command_init
   : /* empty */
     {
-      if ( !newlined ) {
+      if ( !error_newlined ) {
         FPUTC( '\n', fout );
-        newlined = true;
+        error_newlined = true;
       }
     }
   ;
