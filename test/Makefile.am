@@ -146,6 +146,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_fg_v.test \
 	tests/explain_fgi_v.test \
 	tests/explain_fid_v.test \
+	tests/explain_fipfi_v_pfi_v.test \
 	tests/explain_fixiy_v.test \
 	tests/explain_fpc_pi.test \
 	tests/explain_fpci_pi.test \

@@ -996,9 +996,9 @@ array_decl_c
       DUMP_START( "array_decl_c", "decl2_c array_size_c" );
       DUMP_AST( "^ type_c", type_peek() );
       DUMP_AST( "> decl2_c", $1.top_ast );
-      DUMP_NUM( "> array_size_c", $2 );
       if ( $1.target_ast )
         DUMP_AST( "> target_ast", $1.target_ast );
+      DUMP_NUM( "> array_size_c", $2 );
 
       c_ast_t *const array = c_ast_new( K_ARRAY, ast_depth, &@$ );
       array->as.array.size = $2;
@@ -1053,11 +1053,18 @@ func_decl_c
       DUMP_START( "func_decl_c", "decl2_c '(' arg_list_opt_c ')'" );
       DUMP_AST( "^ type_c", type_peek() );
       DUMP_AST( "> decl2_c", $1.top_ast );
+      if ( $1.target_ast )
+        DUMP_AST( "> target_ast", $1.target_ast );
       DUMP_AST_LIST( "> arg_list_opt_c", $3 );
 
       c_ast_t *const func = c_ast_new( K_FUNCTION, ast_depth, &@$ );
       func->as.func.args = $3;
-      $$.top_ast = c_ast_add_func( $1.top_ast, type_peek(), func );
+      if ( $1.target_ast ) {
+        $$.top_ast = $1.top_ast;
+        (void)c_ast_add_func( $1.target_ast, type_peek(), func );
+      } else {
+        $$.top_ast = c_ast_add_func( $1.top_ast, type_peek(), func );
+      }
       $$.target_ast = func->as.func.ret_ast;
 
       DUMP_AST( "< func_decl_c", $$.top_ast );
