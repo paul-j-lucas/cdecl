@@ -8,12 +8,12 @@
 
 /**
  * @file
- * Contains constants, types, and functions for C/C++ types.
+ * Declares constants, types, and functions for C/C++ types.
  */
 
 // local
 #include "config.h"                     /* must go first */
-#include "common.h"
+#include "common.h"                     /* for YYLTYPE */
 
 // standard
 #include <stdbool.h>

@@ -21,6 +21,7 @@ struct lang_map {
 };
 typedef struct lang_map lang_map_t;
 
+// local constant definitions
 static lang_map_t const LANG_MAP[] = {
   { "cknr",   LANG_C_KNR    },          // synonym for "knr"
   { "knr",    LANG_C_KNR    },

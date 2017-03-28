@@ -10,6 +10,7 @@
 #include "ast_util.h"
 #include "color.h"
 #include "common.h"
+#include "diagnostics.h"
 #include "keywords.h"
 #include "lang.h"
 #include "literals.h"

@@ -15,8 +15,8 @@ cdecl_SOURCES =	parser.y lexer.l \
 		ast_util.c \
 		cdecl.c \
 		color.c \
-		common.c \
 		debug.c \
+		diagnostics.c \
 		english.c \
 		gibberish.c \
 		help.c \
