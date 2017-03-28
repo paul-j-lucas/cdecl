@@ -5,11 +5,16 @@
 > declared.  It is one of the things that draws strong criticism, but it has a
 > certain logic to it.*
 
-<div style="text-align: center">-- Dennis M. Richie</div>
+<div style="text-align: center">
+-- Dennis M. Richie
+</div>
+<p></p>
 
 > *I consider the C declarator syntax an experiment that failed.*
 
-<div style="text-align: center">-- Bjarne Stroustrup</div>
+<div style="text-align: center">
+-- Bjarne Stroustrup
+</div>
 <p></p>
 
 **cdecl** is a program for composing and deciphering C (or C++)
