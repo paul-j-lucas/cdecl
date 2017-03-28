@@ -10,7 +10,7 @@ Graham Ross <tektronix!tekmdp!grahamr>, Context, Inc.
 David Wolverton <ihnp4!houxs!daw>
 	conversion to ANSI C
 
-Tony Hansen <attmail!tony>, <ihnp4!pegasus!hansen>
+Tony Hansen <tony@attmail.com>, <hansen@pegasus.att.com>
 	merged D. Wolverton's ANSI C version w/ ????'s version
 	added function prototypes
 	added C++ declarations
@@ -33,7 +33,7 @@ Merlyn LeRoy <merlyn@rose3.rosemount.com>
 	added links to explain, cast, declare
 	separately developed ANSI C support
 
-Tony Hansen <attmail!tony>, <ihnp4!pegasus!hansen>
+Tony Hansen <tony@attmail.com>, <hansen@pegasus.att.com>
 	merged versions from LeRoy
 	added tmpfile() support
 	allow more parts to be missing during explanations
@@ -58,6 +58,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added long-option support
 	added support for bool, char16_t, char32_t, complex, restrict,
 		_Thread_local, wchar_t
+	added better warning and error messages
 	added support for register and variadic function arguments
 	added support for typedef declarations
 	added support for octal and hexadecimal numbers
