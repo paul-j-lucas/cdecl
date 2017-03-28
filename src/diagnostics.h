@@ -1,6 +1,8 @@
 /*
 **      cdecl -- C gibberish translator
 **      src/diagnostics.h
+**
+**      Paul J. Lucas
 */
 
 #ifndef cdecl_diagnostics_H

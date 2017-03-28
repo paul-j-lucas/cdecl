@@ -1,6 +1,8 @@
 ##
 #	cdecl -- C gibberish translator
 #	src/Makefile.am
+#
+#	Paul J. Lucas
 ##
 
 bin_PROGRAMS = cdecl

@@ -1,6 +1,8 @@
 /*
 **      cdecl -- C gibberish translator
 **      src/common.h
+**
+**      Paul J. Lucas
 */
 
 #ifndef cdecl_common_H

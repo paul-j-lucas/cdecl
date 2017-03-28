@@ -1,6 +1,8 @@
 /*
 **      cdecl -- C gibberish translator
 **      src/ast_util.c
+**
+**      Paul J. Lucas
 */
 
 // local

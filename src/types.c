@@ -1,6 +1,8 @@
 /*
 **      cdecl -- C gibberish translator
 **      src/types.c
+**
+**      Paul J. Lucas
 */
 
 // local

@@ -1,6 +1,8 @@
 /*
 **      cdecl -- C gibberish translator
 **      src/debug.c
+**
+**      Paul J. Lucas
 */
 
 // local

@@ -1,6 +1,8 @@
 /*
 **      cdecl -- C gibberish translator
 **      src/literals.h
+**
+**      Paul J. Lucas
 */
 
 #ifndef cdecl_literals_H

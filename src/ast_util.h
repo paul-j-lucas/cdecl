@@ -1,6 +1,8 @@
 /*
 **      cdecl -- C gibberish translator
 **      src/ast_util.h
+**
+**      Paul J. Lucas
 */
 
 #ifndef cdecl_ast_util_H

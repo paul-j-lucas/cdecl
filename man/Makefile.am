@@ -1,6 +1,8 @@
 ##
 #	cdecl -- C gibberish translator
 #	man/Makefile.am
+#
+#	Paul J. Lucas
 ##
 
 SUBDIRS = man1

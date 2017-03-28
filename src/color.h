@@ -1,6 +1,8 @@
 /*
 **      cdecl -- C gibberish translator
 **      src/color.h
+**
+**      Paul J. Lucas
 */
 
 #ifndef cdecl_color_H

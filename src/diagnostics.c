@@ -1,6 +1,8 @@
 /*
 **      cdecl -- C gibberish translator
 **      src/diagnostics.c
+**
+**      Paul J. Lucas
 */
 
 // local
