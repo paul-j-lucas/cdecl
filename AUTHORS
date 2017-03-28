@@ -52,14 +52,14 @@ Peter Ammon <cdecl@ridiculousfish.com>
 
 Paul J. Lucas <paul@lucasmail.org>
 	converted to C99
+	now using GNU autoconf/automake/configure build
+	added GNU-style test suite and many more tests
 	modularized & cleaned-up source
-	added more semantic checks
 	added long-option support
-	added GNU autoconf/automake/configure scripts
-	added GNU-style test suite
 	added support for bool, char16_t, char32_t, complex, restrict,
-		_Thread_local, and wchar_t
-	added support for register function arguments
-	added support for typedef
+		_Thread_local, wchar_t
+	added support for register and variadic function arguments
+	added support for typedef declarations
 	added support for octal and hexadecimal numbers
 	now ignoring C /*...*/ comments in lexer
+	added more semantic checks
