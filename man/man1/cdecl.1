@@ -78,13 +78,13 @@ If it is invoked as:
 .B cdecl
 Runs with C11 as the default language.
 .TP
-.B c++decl
+.BR c++decl " | " cppdecl " | " cxxdecl
 Runs with C++11 as the default language.
 .TP
 .BR cast " | " declare
 Interprets the rest of the command-line
 (if given)
-as English,
+as pseudo-English,
 performs the conversion to gibberish,
 and exits.
 .TP
@@ -92,7 +92,7 @@ and exits.
 Interprets the rest of the command-line
 (if given)
 as gibberish,
-performs the conversion to English,
+performs the conversion to pseudo-English,
 and exits.
 .P
 For example
@@ -123,24 +123,25 @@ or a file name of ``\f(CW-\fP'' is encountered,
 standard input will be read
 until end-of-file is encountered
 or either the
-.B exit
+.BR exit ,
+.BR q ,
 or
 .B quit
 command is given.
 .PP
 You can use
 .B cdecl
-as you create a C (or C++) program with an editor like
-.BR vi (1).
-You simply type in the pseudo-English version of the declaration and apply
-.I cdecl
-as a filter to the line.
-(In
+as you create a C (or C++) program from within an editor.
+For example,
+in
 .BR vi (1),
-type
+type the declaration in pseudo-English,
+then filter the line through
+.BR cdecl :
 .cS
 !!cdecl<cr>
-.cE 0
+.cE
+where \f(CW<cr>\fP is a carriage-return.
 .SS Interactive Input
 If standard input is coming from a terminal
 (or either the
@@ -336,293 +337,303 @@ as they are being reduced by the parser.
 (This is a debugging aid for developers of
 .B cdecl
 itself.)
-.SH COMMANDS
+.SH LANGUAGE
+.SS Commands
 .B cdecl
 has the following commands:
 .RS 4
 .TP 4
 .BI cast " name" " into" " english"
-Composes a C (or C++) cast from English.
+Composes a C (or C++) cast from pseudo-English.
 .TP
 .BI declare " name" " as" " english"
-Composes a C (or C++) declaration from English.
+Composes a C (or C++) declaration from pseudo-English.
 .TP
-.BI explain " declaration"
-Deciphers a C (or C++) declaration into English.
+.BI explain " gibberish"
+Deciphers a C (or C++) declaration into pseudo-English.
 .TP
-.BR "explain (" \f2cast\fP ")" [ \f2name\fP ]
-Deciphers a C (or C++) cast into English.
+.BR "explain (" \f2gibberish\fP ")" [ \f2name\fP ]
+Deciphers a C (or C++) cast into pseudo-English.
 .TP
-.BR set " [" \f2option\fP "]"
-Sets a particular option, if given;
+.BR set " [" \f2option\fP "] | " "set options"
+In the first form,
+sets a particular option, if given;
 if not,
-prints the current value of all options.
+it's equivalent to the second form
+that prints the current value of all options.
 .TP
 .BR help " | " ?
-Prints a grammar summary.
+Prints a
+.B cdecl
+language summary
+(see
+.B LANGUAGE
+below)
+that's sensitive to the current programming language
+(C or C++).
 .TP
-.BR exit " | " quit
+.BR exit " | " quit " | " q
 Quits
 .BR cdecl .
 .RE
 .P
 Each command is terminated by either a semicolon or newline.
-.SH SYNONYMS
-Some synonyms are permitted during a declaration:
-.sp
-.nf
-    character   is a synonym for   char
-     constant   is a synonym for   const
-  enumeration   is a synonym for   enum
-         func   is a synonym for   function
-      integer   is a synonym for   int
-          ptr   is a synonym for   pointer
-          ref   is a synonym for   reference
-          ret   is a synonym for   returning
-    structure   is a synonym for   struct
-       vector   is a synonym for   array
-.fi
-.PP
-The TAB completion feature only knows about the keywords in the right
-column of the structure, not the ones in the left column.
-TAB completion is a lot less useful when the leading characters of
-different keywords are the same (the keywords confict with one another),
-and putting both columns in would cause quite a few conflicts.
-.SH GRAMMAR
-The following grammar describes the language.
-In the grammar, words in "<>" are non-terminals,
-bare lower-case words are terminals that stand for themselves.
-Bare upper-case words are other lexical tokens:
-NOTHING means the empty string;
-NAME means a C identifier;
-NUMBER means a string of decimal digits; and
-NL means the new-line or semi-colon characters.
+.SS English
+In what follows,
+| means alternate,
+[] means optional,
+and
+{} means one or more.
+.P
+.I English
+is one of:
+.IP "" 4
+.BR array " [" \f2number\fP "] " of " \f2english\fP"
+.br
+.BR block " [" ( \f2decl-list\fP ) "] " returning " \f2english\fP"
+.br
+.BR function " [" ( \f2decl-list\fP ) "] " returning " \f2english\fP"
+.br
+.RB [{ \f2qualifier\fP "}] " "pointer to" " [" "member of class" " \f2name\fP" ] " \f2english\fP"
+.br
+.I type
+.P
+and
+.I type
+is either:
+.IP "" 4
+.RI [ storage-class "] [{" modifier "}] [" C-type ]
+.br
+.RB [{ enum " | " class " | " struct " | " union }] " \f2name\fP"
+.P
+where:
+.RS 4
+.TP 15
+.I C-type
+One of:
+\f(CWbool\fP,
+\f(CWchar\fP,
+\f(CWchar16_t\fP,
+\f(CWchar32_t\fP,
+\f(CWwchar_t\fP,
+\f(CWint\fP,
+\f(CWfloat\fP,
+\f(CWdouble\fP,
+or
+\f(CWvoid\fP.
+.TP
+.I decl-list
+A comma-separated list of
+.IR name ,
+.IR english ,
+or
+.IR name " as " english .
+.TP
+.I modifier
+One of:
+\f(CWshort\fP,
+\f(CWlong\fP,
+\f(CWsigned\fP,
+\f(CWunsigned\fP,
+\f(CWconst\fP,
+\f(CWvolatile\fP,
+or
+\f(CWrestrict\fP.
+.TP
+.I name
+A valid C (or C++) identifier.
+.TP
+.I number
+One of a
+decimal,
+octal (if starting with \f(CW0\fP),
+or
+hexadecimal (if starting with either \f(CW0x\fP or \f(CW0X\fP)
+number.
+.TP
+.I qualifier
+One of:
+\f(CWconst\fP,
+\f(CWrestrict\fP,
+or
+\f(CWvolatile\fP.
+.TP
+.I storage-class
+One of:
+\f(CWauto\fP,
+\f(CWextern\fP,
+\f(CWregister\fP,
+\f(CWstatic\fP,
+or
+\f(CW_Thread_local.
+.RE
+.SS Gibberish
+TODO
+.SS Synonyms
+Some synonyms are permitted within pseudo-English.
+The words on the left are synonyms for what's on the right:
 .cS
-  <program> ::= NOTHING
-    | <program> <stmt> NL
-  <stmt>  ::= NOTHING
-    | declare NAME as <adecl>
-    | declare <adecl>
-    | cast NAME into <adecl>
-    | cast <adecl>
-    | explain <optstorage> <ptrmodlist> <type> <cdecl>
-    | explain <storage> <ptrmodlist> <cdecl>
-    | explain ( <ptrmodlist> <type> <cast> ) optional-NAME
-    | set <options>
-    | help | ?
-    | quit
-    | exit
-  <adecl> ::= array of <adecl>
-    | array NUMBER of <adecl>
-    | function returning <adecl>
-    | function ( <adecl-list> ) returning <adecl>
-    | <ptrmodlist> pointer to <adecl>
-    | <ptrmodlist> pointer to member of class NAME <adecl>
-    | <ptrmodlist> reference to <adecl>
-    | <ptrmodlist> <type>
-  <cdecl> ::= <cdecl1>
-    | * <ptrmodlist> <cdecl>
-    | NAME :: * <cdecl>
-    | & <ptrmodlist> <cdecl>
-  <cdecl1>  ::= <cdecl1> ( )
-    | <cdecl1> ( <castlist> )
-    | <cdecl1> [ ]
-    | <cdecl1> [ NUMBER ]
-    | ( <cdecl> )
-    | NAME
-  <cast>  ::= NOTHING
-    | ( )
-    | ( <cast> ) ( )
-    | ( <cast> ) ( <castlist> )
-    | ( <cast> )
-    | NAME :: * <cast>
-    | * <cast>
-    | & <cast>
-    | <cast> [ ]
-    | <cast> [ NUMBER ]
-  <type>  ::= <typename> | <modlist>
-    | <modlist> <typename>
-    | struct NAME | union NAME | enum NAME | class NAME
-  <castlist>  ::= <castlist> , <castlist>
-    | <ptrmodlist> <type> <cast>
-    | <name>
-  <adecllist> ::= <adecllist> , <adecllist>
-    | NOTHING
-    | <name>
-    | <adecl>
-    | <name> as <adecl>
-  <typename>  ::= int | char | double | float | void
-  <modlist> ::= <modifier> | <modlist> <modifier>
-  <modifier>  ::= short | long | unsigned | signed | <ptrmod>
-  <ptrmodlist>  ::= <ptrmod> <ptrmodlist> | NOTHING
-  <ptrmod>  ::= const | volatile | noalias
-  <storage> ::= auto | extern | register | static
-  <optstorage>  ::= NOTHING | <storage>
-  <options> ::= NOTHING | <options>
-    | create | nocreate
-    | prompt | noprompt
-    | ritchie | preansi | ansi | cplusplus
-    | debug | nodebug | yydebug | noyydebug
+       bool  _Bool
+  character  char
+    complex  _Complex
+   constant  const
+enumeration  enum
+       func  function
+    integer  int
+        mbr  member
+        ptr  pointer
+        ref  reference
+ restricted  restrict
+        ret  returning
+  structure  struct
+       type  typedef
+    varargs  ...
+   variadic  ...
+     vector  array
 .cE 0
-.SH "SET OPTIONS"
+.SS Set Options
 The
-.I set
-command takes several options.
-You can type
-.IR set " or " "set options"
-to see the currently selected options and a summary of the options which
-are available.
-The first four correspond to the
-.IR -a ", " -p ", " -r ", and " -+
-command line options, respectively.
-.IP ansi
-Use the ANSI C dialect of the C language.
-.IP preansi
-Use the pre-ANSI dialect defined by Kernighan & Ritchie's book.
-.IP ritchie
-Use the dialect defined by the Ritchie PDP-11 C compiler.
-.IP cplusplus
-Use the C++ language, rather than C.
-.IP [no]prompt
-Turn on or off the prompt in interactive mode.
-.IP [no]create
-Turn on or off the appending of semicolon or curly braces to the
-declarations output by
-.IR cdecl .
-This corresponds to the
-.I -c
-command line option.
-.IP [no]debug
-Turn on or off debugging information.
-.IP [no]yydebug
-Turn on or off YACC debugging information.
+.B set
+command takes several options:
+.RS 4
+.TP 7
+.B c
+Use the latest supported dialect of the C language.
+.TP
+.B c89
+Use the C89 (ANSI C) dialect of the C language.
+.TP
+.B c99
+Use the C99 dialect of the C language.
+.TP
+.B c11
+Use the C11 dialect of the C language.
+.TP
+.BR cknr " | " knr " | " knrc
+Sets the language to the pre-ANSI Kernighan & Ritchie dialect of the C language
+as given in the first edition of
+.IR "The C Programming Language" .
+.TP
+.B c++
+Use the latest supported dialect of the C++ language.
+.TP
+.B c++03
+Use the C++03 dialect of the C++ language.
+.TP
+.B c++11
+Use the C++11 dialect of the C++ language.
+.TP
+.RB [ no ] debug
+Turns [off] or on debugging output.
+.TP
+.RB [ no ] prompt
+Turns [off] or on the prompt.
+.TP
+.RB [ no ] semicolon
+Turns [off] or on printing a semicolon at the end of a C (or C++) declaration.
+.TP
+.RB [ no ] yydebug
+Turns [off] or on
+.BR bison (1)
+debugging output.
+.RE
 .PP
-Note: debugging information and YACC debugging information are only
-available if they have been compiled into
+Note that debugging information and
+.BR bison (1)
+debugging information are available
+only if they have been compiled into
 .IR cdecl .
-The last two options correspond to the
-.IR -d " and " -D
-command line options, respectively.
-Debugging information is normally used in program development, and
-is not generally compiled into distributed executables.
 .SH EXAMPLES
-.de Ex
-.    PP
-.    RS
-..
-.de Ee
-.    RE
-.    PP
-..
 To declare an array of pointers to functions that are like
 .IR malloc (3),
 do
-.Ex
+.cS
 declare fptab as array of pointer to function returning pointer to char
-.Ee
+.cE
 The result of this command is
-.Ex
+.cS
 char *(*fptab[])()
-.Ee
+.cE
 When you see this declaration in someone else's code, you
 can make sense out of it by doing
-.Ex
+.cS
 explain char *(*fptab[])()
-.Ee
+.cE
 The proper declaration for signal(2), ignoring function prototypes, is easily
 described in
 .IR cdecl 's
 language:
-.Ex
+.cS
 declare signal as function returning pointer to function returning void
-.Ee
+.cE
 which produces
-.Ex
+.cS
 void (*signal())()
-.Ee
+.cE
 The function declaration that results has two sets of empty parentheses.
 The author of such a function might wonder where to put the parameters:
-.Ex
+.cS
 declare signal as function (arg1,arg2) returning pointer to function returning
 void
-.Ee
-provides the following solution (when run with the
-.I \-c
-option):
-.Ex
-void (*signal(arg1,arg2))()
-{
-}
-.Ee
+.cE
+provides the following solution:
+.cS
+void (*signal(arg1,arg2))();
+.cE
 If we want to add in the function prototypes, the function prototype for a
 function such as _exit(2) would be declared with:
-.Ex
+.cS
 declare _exit as function (retvalue as int) returning void
-.Ee
-giving
-.Ex
-void _exit(int retvalue)
-{
-}
-.Ee
+.cE
+giving:
+.cS
+void _exit(int retvalue);
+.cE
 As a more complex example using function prototypes, signal(2) could be fully
 defined as:
-.Ex
-declare signal as function(x as int, y as pointer to function(int)
-returning void) returning pointer to function(int) returning void
-.Ee
-giving (with \-c)
-.Ex
-void (*signal(int x, void (*y)(int )))(int )
-{
-}
-.Ee
-.I Cdecl
+.cS
+declare signal as function
+    (sig as int, f as pointer to function (int) returning void)
+    returning pointer to function (int) returning void
+.cE
+giving:
+.cS
+void (*signal(int sig, void (*f)(int)))(int);
+.cE
+.B cdecl
 can help figure out the where to put the "const" and "volatile" modifiers
-in declarations, thus
-.Ex
-declare foo as pointer to const int
-.Ee
-gives
-.Ex
-const int *foo
-.Ee
-while
-.Ex
-declare foo as const pointer to int
-.Ee
-gives
-.Ex
-int * const foo
-.Ee
-.I C++decl
-can help with declaring references, thus
-.Ex
-declare x as reference to pointer to character
-.Ee
-gives
-.Ex
-char *&x
-.Ee
-.I C++decl
-can help with pointers to member of classes, thus
-declaring a pointer to an integer member of a class X with
-.Ex
-declare foo as pointer to member of class X int
-.Ee
-gives
-.Ex
-int X::*foo
-.Ee
-and
-.Ex
-declare foo as pointer to member of class X function (arg1, arg2) returning
-pointer to class Y
-.Ee
-gives
-.Ex
-class Y *(X::*foo)(arg1, arg2)
-.Ee
+in declarations:
+.cS
+cdecl> declare p as pointer to const int
+const int *p;
+.cE
+while:
+.cS
+cdecl> declare p as const pointer to int
+int *const p;
+.cE
+.B c++decl
+can help with declaring references:
+.cS
+c++decl> declare r as reference to pointer to char
+char *&r;
+.cE
+.B c++decl
+can help with pointers to member of classes:
+.cS
+c++decl> declare p as pointer to member of class C int
+int C::*p;
+.cE
+and:
+.cS
+declare p as pointer to member of class C
+    function (i as int, j as int)
+    returning pointer to class D
+.cE
+gives:
+.cS
+class D *(C::*p)(int i, int j)
+.cE
 .SH DIAGNOSTICS
 The declare, cast and explain statements try to point out constructions that
 are not supported in C.
@@ -691,70 +702,48 @@ Capability names in upper-case are unique to
 those in lower-case are upwards compatibile with
 .BR gcc .
 .RS
-.TP 8
-.BI bn= SGR
-SGR for the byte offset
-(as with
-.BR grep ).
-The default is \f(CW36\f1
-(green foreground over current terminal background).
-.TP
-.BI EC= SGR
-SGR for elided rows and byte counts.
-The default is \f(CW35\f1
-(magenta foreground over current terminal background).
-.TP
-.BI MA= SGR
-SGR for matched ASCII characters.
-The default is \f(CW41;1\f1
-(current terminal foreground over a bright red background).
-.TP
-.BI MH= SGR
-SGR for matched hexadecimal.
-The default is \f(CW41;1\f1
-(current terminal foreground over a bright red background).
-.TP
-.BI MB= SGR
-SGR for both matched ASCII and hexadecimal.
-(This capability is the same as specifying both the
-.B MA
-and
-.B MH
-capabilities
-with the same
-.IR SGR ).
-.TP
-.BI mt= SGR
-Same as
-.B MB
-(for compatibility with
-.BR gcc ).
-.TP
-.B ne
-Boolean value that,
-when true,
-prevents clearing to the end of a line using the Erase in Line
-(EL)
-SGR escape sequence
+.TP 18
+.BI caret= SGR
+SGR for the caret pointing to the error on the line above
 (as with
 .BR gcc ).
-.IP ""
-This is needed on terminals on which EL is not supported.
-It is otherwise useful on terminals for which the
-.B back_color_erase
-(BCE)
-Boolean terminfo capability does not apply,
-when the chosen highlight colors do not affect the background,
-or when EL is too slow or causes too much flicker.
-The default is false
-(i.e., EL is used for clearing to the end of a line).
+The default is \f(CW36;1\f1
+(bright green foreground over current terminal background).
 .TP
-.BI se= SGR
-SGR for the ``\f(CW:\f1'' and ``\f(CW-\f1'' separators
-(as with
-.BR gcc ).
+.BI error= SGR
+SGR for the word ``error.''
+The default is \f(CW31;1\f1
+(bright red foreground over current terminal background).
+.TP
+.BI HELP-keyword= SGR
+SGR for keywords in help output.
+The default is \f(CW;1\f1
+(bold terminal foreground current terminal background).
+.TP
+.BI HELP-nonterm= SGR
+SGR for nonterminals in help output.
 The default is \f(CW36\f1
 (cyan foreground over current terminal background).
+.TP
+.BI HELP-punct= SGR
+SGR for punctuation in help output.
+The default is \f(CW30;1\f1
+(dark dray forgreound over current terminal background).
+.TP
+.BI HELP-title= SGR
+SGR for titles in help output.
+The default is \f(CW34;1\f1
+(bright blue foreground over current termianl background).
+.TP
+.BI PROMPT= SGR
+SGR for the prompt.
+The default is \f(CW32\f1
+(green foreground over current terminal background).
+.TP
+.BI warning= SGR
+SGR for the word ``warning.''
+The default is \f(CW33;1\f1
+(bright yellow foreground over current terminal background).
 .RE
 .IP ""
 Other
@@ -769,7 +758,7 @@ such as bold, underlined, reverse video, etc.,
 may be possible depending on the capabilities of the terminal.
 .TP
 .B GCC_COLORS
-This variable is used for compatibility with newer versions of
+This variable is used for compatibility with
 .BR gcc .
 It is used exactly as
 .B CDECL_COLORS
@@ -777,7 +766,7 @@ but only when
 .B CDECL_COLORS
 is either unset or empty.
 Capabilities in
-.B grep
+.B gcc
 that are unsupported by
 .B cdecl
 (because they don't apply)
@@ -787,36 +776,39 @@ are ignored.
 The type of the terminal on which
 .B cdecl
 is being run.
+.SH BUGS
+On macOS,
+the
+.BR readline (3)
+API is provided,
+but backed by
+.B libedit
+that has a bug that prevents color prompts from working correctly.
+As such,
+the
+.B PROMPT
+color cabapility is ignored on macOS.
 .SH CAVEATS
 The pseudo-English syntax is excessively verbose.
 .PP
-.IR Cdecl 's
+.BR cdecl 's
 scope is intentionally small.
-.I Cdecl
-doesn't know anything about variable length argument lists.
-(This includes the
-.RI `` ,... ''
-syntax.)
-.PP
-.I Cdecl
+.B cdecl
 thinks all the declarations you utter are going to be used as external
 definitions.
 Some declaration contexts in C allow more flexibility than this.
 An example of this is:
-.Ex
+.cS
 declare argv as array of array of char
-.Ee
+.cE
 where
-.I cdecl
+.B cdecl
 responds with
-.Ex
-.nf
+.cS
 Warning: Unsupported in C -- 'Inner array of unspecified size'
         (maybe you mean "array of pointer")
 char argv[][]
-.fi
-.Ee
-.PP
+.cE
 Tentative support for the
 .I noalias
 keyword was put in because it was in the draft ANSI specifications.
