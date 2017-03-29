@@ -315,6 +315,7 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 TESTS+=	tests/declare_cpmi.test \
 	tests/declare_pfv_ri.test \
 	tests/declare_pmci.test \
+	tests/declare_pmf_i.test \
 	tests/declare_pmi.test \
 	tests/declare_rci.test \
 	tests/declare_rcpi.test \
@@ -335,7 +336,8 @@ TESTS+=	tests/declare_pmri.test \
 # C++ explain tests
 # =================
 #
-TESTS+= tests/explain_pmfxx_ps.test \
+TESTS+=	tests/explain_pmf_i.test \
+	tests/explain_pmfxx_ps.test \
 	tests/explain_pmgi.test \
 	tests/explain_pmi.test \
 	tests/explain_ri.test

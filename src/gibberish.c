@@ -188,8 +188,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_POINTER_TO_MEMBER:
       c_ast_gibberish_impl( ast->as.ptr_mbr.of_ast, param );
-      FPRINTF( param->gout, " %s::", ast->as.ptr_mbr.class_name );
-      c_ast_gibberish_qual_name( ast, param );
+      if ( !param->postfix ) {
+        FPUTC( ' ', param->gout );
+        c_ast_gibberish_qual_name( ast, param );
+      }
       break;
 
     case K_VARIADIC:
@@ -225,6 +227,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
         break;
 
       case K_POINTER:
+      case K_POINTER_TO_MEMBER:
         switch ( ast->kind ) {
           case K_BLOCK:                 // Apple extension
             FPUTS( "(^", param->gout );
@@ -261,6 +264,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
             case K_BLOCK:               // Apple extension
             case K_FUNCTION:
             case K_POINTER:
+            case K_POINTER_TO_MEMBER:
             case K_REFERENCE:
               c_ast_gibberish_postfix( parent, param );
               break;
@@ -269,7 +273,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
           } // switch
         }
 
-        if ( ast->kind != K_POINTER )
+        if ( !(ast->kind & (K_POINTER | K_POINTER_TO_MEMBER)) )
           FPUTC( ')', param->gout );
         break;
 
@@ -319,8 +323,10 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast,
 
   switch ( ast->kind ) {
     case K_POINTER:
-    case K_POINTER_TO_MEMBER:
       FPUTC( '*', param->gout );
+      break;
+    case K_POINTER_TO_MEMBER:
+      FPRINTF( param->gout, "%s::*", ast->as.ptr_mbr.class_name );
       break;
     case K_REFERENCE:
       FPUTC( '&', param->gout );
