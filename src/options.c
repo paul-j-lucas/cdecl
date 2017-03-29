@@ -32,7 +32,7 @@ char const         *opt_fin;
 char const         *opt_fout;
 bool                opt_interactive;
 lang_t              opt_lang;
-bool                opt_semicolons = true;
+bool                opt_semicolon = true;
 bool                opt_quiet;
 
 // other extern variables
@@ -300,7 +300,7 @@ static void parse_options( int argc, char const *argv[] ) {
       case 'o': opt_fout        = optarg;                     break;
       case 'p': opt_lang        = LANG_CPP_MAX;               break;
       case 'q': opt_quiet       = true;                       break;
-      case 's': opt_semicolons  = false;                      break;
+      case 's': opt_semicolon   = false;                      break;
       case 'v': print_version   = true;                       break;
       case 'x': opt_lang        = parse_lang( optarg );       break;
       case 'y': yydebug         = true;                       break;
