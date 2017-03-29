@@ -905,6 +905,8 @@ type_english
       DUMP_AST( "< type_english", $$.top_ast );
       DUMP_END();
     }
+
+  | named_enum_class_struct_union_type_c
   ;
 
 type_modifier_list_opt_english
@@ -951,19 +953,6 @@ unmodified_type_english
       DUMP_TYPE( "> builtin_type_c", $1 );
 
       $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
-      $$.target_ast = NULL;
-      $$.top_ast->type = $1;
-
-      DUMP_AST( "< unmodified_type_english", $$.top_ast );
-      DUMP_END();
-    }
-
-  | enum_class_struct_union_type_c
-    {
-      DUMP_START( "unmodified_type_english", "enum_class_struct_union_type_c" );
-      DUMP_TYPE( "> enum_class_struct_union_type_c", $1 );
-
-      $$.top_ast = c_ast_new( K_ENUM_CLASS_STRUCT_UNION, ast_depth, &@$ );
       $$.target_ast = NULL;
       $$.top_ast->type = $1;
 

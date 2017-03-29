@@ -144,7 +144,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_ENUM_CLASS_STRUCT_UNION:
       FPRINTF( param->gout,
-        "%s %s", c_kind_name( ast->kind ), ast->as.ecsu.ecsu_name
+        "%s %s", c_type_name( ast->type ), ast->as.ecsu.ecsu_name
       );
       param->leaf_ast = ast;
       break;
