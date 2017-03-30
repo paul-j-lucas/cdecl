@@ -178,16 +178,6 @@ CDECL_UTIL_INLINE bool is_blank_line( char const *s ) {
 bool is_file( int fd );
 
 /**
- * Prints a key/value pair as JSON.
- *
- * @param key The key to print.
- * @param value The value to print, if any.  If either null or the empty
- * string, \c null is printed instead of the value.
- * @param jout The FILE to print to.
- */
-void json_print_kv( char const *key, char const *value, FILE *jout );
-
-/**
  * Wraps GNU readline(3) by:
  *
  *  + Adding non-whitespace-only lines to the history.

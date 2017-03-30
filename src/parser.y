@@ -9,6 +9,9 @@
 #include "ast.h"
 #include "ast_util.h"
 #include "color.h"
+#ifdef WITH_CDECL_DEBUG
+#include "debug.h"
+#endif /* WITH_CDECL_DEBUG */
 #include "common.h"
 #include "diagnostics.h"
 #include "keywords.h"

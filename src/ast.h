@@ -235,32 +235,12 @@ CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
 }
 
 /**
- * Dumps the given AST as JSON (for debugging).
- *
- * @param ast The c_ast to dump.
- * @paran indent The initial indent.
- * @param key0 The initial key or null for none.
- * @param fout The FILE to dump to.
- */
-void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
-                 FILE *fout );
-
-/**
  * Appends a c_ast onto the end of a c_ast_list.
  *
  * @param list The c_ast_list to append onto.
  * @param ast The c_ast to append.  Does nothing if null.
  */
 void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast );
-
-/**
- * Dump the given c_ast_list as JSON (for debugging).
- *
- * @param list The c_ast_list to dump.
- * @param indent The initial indent.
- * @param jour The FILE to dump to.
- */
-void c_ast_list_json( c_ast_list_t const *list, unsigned indent, FILE *fout );
 
 /**
  * Creates a new c_ast.

@@ -8,6 +8,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"
+#include "debug.h"
 #include "util.h"
 
 // system
@@ -126,6 +127,14 @@ void c_ast_list_json( c_ast_list_t const *list, unsigned indent, FILE *jout ) {
   } else {
     FPUTS( "[]", jout );
   }
+}
+
+void json_print_kv( char const *key, char const *value, FILE *jout ) {
+  assert( key );
+  if ( value && *value )
+    FPRINTF( jout, "\"%s\": \"%s\"", key, value );
+  else
+    FPRINTF( jout, "\"%s\": null", key  );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

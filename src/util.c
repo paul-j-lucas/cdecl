@@ -119,14 +119,6 @@ bool is_file( int fd ) {
   return S_ISREG( fd_stat.st_mode );
 }
 
-void json_print_kv( char const *key, char const *value, FILE *jout ) {
-  assert( key );
-  if ( value && *value )
-    FPRINTF( jout, "\"%s\": \"%s\"", key, value );
-  else
-    FPRINTF( jout, "\"%s\": null", key  );
-}
-
 char* readline_wrapper( char const *ps1, char const *ps2 ) {
   static char *buf;
   size_t buf_len = 0;
