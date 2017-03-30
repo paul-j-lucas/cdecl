@@ -65,6 +65,9 @@ _GL_INLINE_HEADER_BEGIN
 #define FSTAT(FD,STAT) \
   BLOCK( if ( fstat( (FD), (STAT) ) < 0 ) PERROR_EXIT( EX_IOERR ); )
 
+#define REALLOC(PTR,TYPE,N) \
+  (PTR) = (TYPE*)check_realloc( (PTR), sizeof(TYPE) * (N) )
+
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef struct link link_t;
