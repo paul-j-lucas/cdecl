@@ -197,7 +197,7 @@ void json_print_kv( char const *key, char const *value, FILE *jout );
  * If readline(3) is not compiled in, uses getline(3).
  *
  * @param ps1 The primary prompt to use.
- * @param ps2 The secondard prompt to use.
+ * @param ps2 The secondary prompt to use.
  * @return Returns the line read or null for EOF.
  */
 char* readline_wrapper( char const *ps1, char const *ps2 );
