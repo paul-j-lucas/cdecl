@@ -210,6 +210,7 @@ H             [0-9A-Fa-f]
 "//".*        ;                         /* ignore C++-style comments */
 #.*           ;                         /* ignore preprocessor directives */
 [ \f\r\t\v]+  ;                         /* ignore all other whitespace */
+\\\n          ;                         /* eat escaped newlines */
 
 [;\n]         {
                 reset_loc();
