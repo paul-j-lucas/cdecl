@@ -1,0 +1,1 @@
+cdecl | | explain int func( char const array[], void *pointer, bool cast ) | 0

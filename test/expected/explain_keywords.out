@@ -1,0 +1,1 @@
+declare func as function (array as array of const char, pointer as pointer to void, cast as bool) returning int

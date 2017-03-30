@@ -100,6 +100,9 @@ struct in_attr {
 };
 typedef struct in_attr in_attr_t;
 
+// extern variables
+extern bool         explaining;
+
 // extern functions
 extern void         print_help( void );
 extern void         set_option( char const* );
@@ -177,6 +180,7 @@ static inline void qualifier_pop( void ) {
  */
 static void parse_cleanup( void ) {
   c_ast_gc();
+  explaining = false;
   qualifier_clear();
   memset( &in_attr, 0, sizeof in_attr );
 }
@@ -506,7 +510,7 @@ storage_class_opt_english
 /*****************************************************************************/
 
 explain_declaration_c
-  : Y_EXPLAIN type_c { type_push( $2.top_ast ); } decl_c Y_END
+  : explain type_c { type_push( $2.top_ast ); } decl_c Y_END
     {
       type_pop();
 
@@ -529,7 +533,7 @@ explain_declaration_c
   ;
 
 explain_cast_c
-  : Y_EXPLAIN '(' type_c { type_push( $3.top_ast ); } cast_c ')' name_opt Y_END
+  : explain '(' type_c { type_push( $3.top_ast ); } cast_c ')' name_opt Y_END
     {
       type_pop();
 
@@ -550,6 +554,22 @@ explain_cast_c
       FPRINTF( fout, " %s ", L_INTO );
       c_ast_english( ast, fout );
       FPUTC( '\n', fout );
+    }
+  ;
+
+explain
+  : Y_EXPLAIN
+    {
+      //
+      // Tell the lexer that we're explaining gibberish so cdecl keywords
+      // (e.g., "func") are returned as ordinary names, otherwise gibberish
+      // like:
+      //
+      //      int func(void);
+      //
+      // would result in a parser error.
+      //
+      explaining = true;
     }
   ;
 

@@ -48,19 +48,21 @@ Dave Conrad <conrad@detroit.freenet.org>
 	added prompt and noprompt commands, -q option
 
 Peter Ammon <cdecl@ridiculousfish.com>
-	added support for Apple's "blocks"
+	added Apple's "blocks"
 
 Paul J. Lucas <paul@lucasmail.org>
 	converted to C99
 	now using GNU autoconf/automake/configure build
 	added GNU-style test suite and many more tests
 	modularized & cleaned-up source
-	added long-option support
-	added support for bool, char16_t, char32_t, complex, restrict,
-		_Thread_local, wchar_t
+	added long options
+	added bool, char16_t, char32_t, complex, restrict, _Thread_local,
+		wchar_t
 	added better warning and error messages
-	added support for register and variadic function arguments
-	added support for typedef declarations
-	added support for octal and hexadecimal numbers
+	added octal and hexadecimal numbers
+	added register and variadic function arguments
+	added typedef declarations
+	allow escaped newlines
 	now ignoring C /*...*/ comments in lexer
+	now treating cdecl keywords in declarations as ordinary names
 	added more semantic checks

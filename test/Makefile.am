@@ -163,6 +163,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_ig.test \
 	tests/explain_is.test \
 	tests/explain_it.test \
+	tests/explain_keywords.test \
 	tests/explain_ll.test \
 	tests/explain_pa3a5i.test \
 	tests/explain_pa3cpa5i.test \

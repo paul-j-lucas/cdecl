@@ -87,6 +87,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
 };
 
 // extern variables
+bool    explaining;                     // parsing "explain ..."?
 size_t  y_col;                          // column position of current token
 size_t  y_col_newline;                  // column position of newline
 YYLTYPE yylloc;                         // location of current token
@@ -153,18 +154,20 @@ H             [0-9A-Fa-f]
 {A}({A}|{D})* {
                 char const *name = yytext;
 
-                keyword_t const *const k = keyword_find( name );
-                if ( k ) {
-                  if ( k->c_keyword_synonym )
-                    name = k->c_keyword_synonym;
-                  else
-                    return k->y_token;
+                if ( !explaining ) {
+                  keyword_t const *const k = keyword_find( name );
+                  if ( k ) {
+                    if ( k->c_keyword_synonym )
+                      name = k->c_keyword_synonym;
+                    else
+                      return k->y_token;
+                  }
                 }
 
-                c_keyword_t const *const ck = c_keyword_find_literal( name );
-                if ( ck ) {
-                  yylval.type = ck->type;
-                  return ck->y_token;
+                c_keyword_t const *const k = c_keyword_find_literal( name );
+                if ( k ) {
+                  yylval.type = k->type;
+                  return k->y_token;
                 }
 
                 yylval.name = check_strdup( name );
