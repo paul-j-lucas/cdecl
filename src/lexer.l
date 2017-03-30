@@ -122,7 +122,7 @@ static inline int parse_int( int base ) {
 }
 
 /**
- * TODO
+ * Resets our notion of the current location to the beginning of the line.
  */
 static void reset_loc( void ) {
   y_col_newline = y_col - 1 /* '\n' */;
@@ -177,7 +177,6 @@ H             [0-9A-Fa-f]
 
 "..."         return Y_ELLIPSIS;
 "::"          return Y_COLON_COLON;
-
 "?"           return Y_HELP;
 
 "^"           |                         /* Apple extension: block indicator */
@@ -195,7 +194,7 @@ H             [0-9A-Fa-f]
                   ++y_col;
                   switch ( c ) {
                     case '\n':
-                      y_col = 0;
+                      reset_loc();
                       break;
                     case '/':
                       if ( prev_c == '*' )
