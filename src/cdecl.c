@@ -232,6 +232,13 @@ static bool parse_string( char const *s, size_t s_len ) {
   return ok;
 }
 
+/**
+ * Creates a prompt.
+ *
+ * @param suffix The prompt suffix character to use.
+ * @return Returns a prompt string.  The caller is responsible for freeing the
+ * memory.
+ */
 static char* prompt_create( char suffix ) {
   size_t prompt_len = strlen( CPPDECL ) + 1/*suffix*/ + 1/*space*/;
 
