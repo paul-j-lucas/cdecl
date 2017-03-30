@@ -53,6 +53,9 @@ _GL_INLINE_HEADER_BEGIN
 #define FERROR(STREAM) \
   BLOCK( if ( ferror( STREAM ) ) PERROR_EXIT( EX_IOERR ); )
 
+#define FFLUSH(STREAM) \
+  BLOCK( if ( fflush( STREAM ) != 0 ) PERROR_EXIT( EX_IOERR ); )
+
 #define FPRINTF(STREAM,...) \
   BLOCK( if ( fprintf( (STREAM), __VA_ARGS__ ) < 0 ) PERROR_EXIT( EX_IOERR ); )
 
@@ -189,14 +192,15 @@ void json_print_kv( char const *key, char const *value, FILE *jout );
  *
  *  + Adding non-whitespace-only lines to the history.
  *  + Returning only non-whitespace-only lines.
- *  + Ensuring every line returned ends with a newline.
+ *  + Stitching multiple lines ending with '\' together.
  *
  * If readline(3) is not compiled in, uses getline(3).
  *
- * @param prompt The prompt to use.
+ * @param ps1 The primary prompt to use.
+ * @param ps2 The secondard prompt to use.
  * @return Returns the line read or null for EOF.
  */
-char* readline_wrapper( char const *prompt );
+char* readline_wrapper( char const *ps1, char const *ps2 );
 
 /**
  * Pops a node from the head of a list.

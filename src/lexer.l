@@ -122,6 +122,14 @@ static inline int parse_int( int base ) {
 }
 
 /**
+ * TODO
+ */
+static void reset_loc( void ) {
+  y_col_newline = y_col - 1 /* '\n' */;
+  y_col = 0;
+}
+
+/**
  * Standard lex function to know whether to continue parsing upon reaching EOF.
  *
  * @return Returns 1 if done or 0 to continue parsing (a new file set via
@@ -203,13 +211,17 @@ H             [0-9A-Fa-f]
 #.*           ;                         /* ignore preprocessor directives */
 [ \f\r\t\v]+  ;                         /* ignore all other whitespace */
 
-\n            {
-                y_col_newline = y_col - 1 /* '\n' */;
-                y_col = 0;
+[;\n]         {
+                reset_loc();
                 return Y_END;
               }
 
-";"           return Y_END;
+<<EOF>>       {
+                static bool eof;
+                reset_loc();
+                return (eof = !eof) ? Y_END : 0;
+              }
+
 .             return Y_ERROR;
 
 %%

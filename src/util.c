@@ -127,42 +127,73 @@ void json_print_kv( char const *key, char const *value, FILE *jout ) {
     FPRINTF( jout, "\"%s\": null", key  );
 }
 
-char* readline_wrapper( char const *prompt ) {
+char* readline_wrapper( char const *ps1, char const *ps2 ) {
+  static char *buf;
+  size_t buf_len = 0;
+
+  free( buf );
+  buf = NULL;
+
   for (;;) {
-    static char *line_read;
+    static char *line;
 #ifdef HAVE_READLINE
     extern void readline_init( void );
-    if ( !line_read )
-      readline_init();
-    else
-      free( line_read );
+    static bool called_readline_init;
 
-    if ( !(line_read = readline( prompt )) )
+    if ( !called_readline_init ) {
+      readline_init();
+      called_readline_init = true;
+    }
+
+    free( line );
+    if ( !(line = readline( buf ? ps2 : ps1 )) )
       return NULL;
 #else
     static size_t line_cap;
-    if ( getline( &line_read, &line_cap, stdin ) == -1 ) {
+    FPUTS( buf ? ps2 : ps1, stdout );
+    FFLUSH( stdout );
+    if ( getline( &line, &line_cap, stdin ) == -1 ) {
       FERROR( stdin );
       return NULL;
     }
 #endif /* HAVE_READLINE */
 
-    if ( !is_blank_line( line_read ) ) {
-#ifdef HAVE_READLINE
-      add_history( line_read );
-      //
-      // readline() removes newlines, but we need newlines in the lexer to know
-      // when to reset y_token_col, so we have to put a newline back.
-      //
-      char *const tmp = MALLOC( char, strlen( line_read ) + 1/*\n*/ + 1/*\0*/ );
-      size_t const len = strcpy_len( tmp, line_read );
-      free( line_read );
-      line_read = tmp;
-      strcpy( line_read + len, "\n" );
-#endif /* HAVE_READLINE */
-      return line_read;
+    if ( is_blank_line( line ) ) {
+      if ( buf ) {
+        //
+        // If we've been accumulating continuation lines, a blank line ends it.
+        //
+        break;
+      }
+      continue;
     }
+
+    size_t line_len = strlen( line );
+    bool const is_continuation = line_len >= 1 && line[ line_len - 1 ] == '\\';
+
+    if ( is_continuation )
+      line[ --line_len ] = '\0';        // get rid of '\'
+
+    if ( !buf ) {
+      buf = check_strdup( line );
+      buf_len = line_len;
+    } else {
+      size_t const new_len = buf_len + line_len;
+      REALLOC( buf, char, new_len + 1/*null*/ );
+      strcpy( buf + buf_len, line );
+      buf_len = new_len;
+    }
+
+    if ( !is_continuation )
+      break;
   } // for
+
+  assert( buf );
+  assert( *buf );
+#ifdef HAVE_READLINE
+  add_history( buf );
+#endif /* HAVE_READLINE */
+  return buf;
 }
 
 link_t* link_pop( link_t **phead ) {

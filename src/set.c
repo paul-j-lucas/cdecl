@@ -41,8 +41,14 @@ void set_option( char const *opt ) {
 #ifdef WITH_CDECL_DEBUG
     SET_OPTION( opt, "debug", opt_debug, true, false );
 #endif /* WITH_CDECL_DEBUG */
-    SET_OPTION( opt, "prompt", prompt, prompt_buf, "" );
+
+    if ( strcmp( opt, "prompt" ) == 0 )
+      { prompt[0] = prompt_buf[0]; prompt[1] = prompt_buf[1]; return; }
+    if ( strcmp( opt, "noprompt" ) == 0 )
+      { prompt[0] = prompt[1] = ""; return; }
+
     SET_OPTION( opt, "semicolon", opt_semicolon, true, false );
+
 #ifdef YYDEBUG
     SET_OPTION( opt, "yydebug", yydebug, true, false );
 #endif /* YYDEBUG */
@@ -76,7 +82,7 @@ void set_option( char const *opt ) {
 #endif /* WITH_CDECL_DEBUG */
   printf( "  %sinteractive\n", opt_interactive ? "  " : "no" );
   printf( "    lang=%s\n", lang_name( opt_lang ) );
-  printf( "  %sprompt\n", prompt[0] ? "  " : "no" );
+  printf( "  %sprompt\n", prompt[0][0] ? "  " : "no" );
   printf( "  %ssemicolon\n", opt_semicolon ? "  " : "no" );
 #ifdef YYDEBUG
   printf( "  %syydebug\n", yydebug ? "  " : "no" );

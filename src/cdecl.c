@@ -33,8 +33,8 @@
 
 // extern variable definitions
 char const         *me;                 // program name
-char const         *prompt;
-char               *prompt_buf;
+char const         *prompt[2];
+char               *prompt_buf[2];
 
 // local variables
 static bool         is_input_a_tty;     // is our input from a tty?
@@ -207,7 +207,7 @@ static bool parse_stdin( void ) {
     if ( !opt_quiet )
       printf( "Type \"%s\" or \"?\" for help\n", L_HELP );
     ok = true;
-    for ( char *line; (line = readline_wrapper( prompt )); )
+    for ( char *line; (line = readline_wrapper( prompt[0], prompt[1] )); )
       ok = parse_string( line, strlen( line ) );
   } else {
     yyrestart( fin );
@@ -232,13 +232,8 @@ static bool parse_string( char const *s, size_t s_len ) {
   return ok;
 }
 
-/**
- * Initializes the prompt.
- */
-static void prompt_init( void ) {
-  size_t prompt_len =
-    (strlen( CPPDECL )) +
-    (strlen( PROMPT_SUFFIX ) + 1/*space*/);
+static char* prompt_create( char suffix ) {
+  size_t prompt_len = strlen( CPPDECL ) + 1/*suffix*/ + 1/*space*/;
 
   if ( have_genuine_gnu_readline() && sgr_prompt ) {
     prompt_len +=
@@ -249,8 +244,7 @@ static void prompt_init( void ) {
       (sizeof( SGR_END SGR_EL ) - 1);
   }
 
-  FREE( prompt_buf );
-  prompt_buf = MALLOC( char, prompt_len + 1/*null*/ );
+  char *const prompt_buf = MALLOC( char, prompt_len + 1/*null*/ );
   char *p = prompt_buf;
 
   char color_buf[20];
@@ -263,7 +257,7 @@ static void prompt_init( void ) {
   }
 
   p += strcpy_len( p, opt_lang >= LANG_CPP_MIN ? CPPDECL : PACKAGE );
-  p += strcpy_len( p, PROMPT_SUFFIX );
+  *p++ = suffix;
 
   if ( have_genuine_gnu_readline() && sgr_prompt ) {
     *p++ = RL_PROMPT_START_IGNORE;
@@ -275,7 +269,17 @@ static void prompt_init( void ) {
   *p++ = ' ';
   *p = '\0';
 
-  prompt = prompt_buf;
+  return prompt_buf;
+}
+
+/**
+ * Initializes the prompt.
+ */
+static void prompt_init( void ) {
+  FREE( prompt_buf[0] );
+  FREE( prompt_buf[1] );
+  prompt[0] = prompt_buf[0] = prompt_create( '>' );
+  prompt[1] = prompt_buf[1] = prompt_create( '+' );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
