@@ -36,7 +36,7 @@ extern int          yyparse( void );
 extern void         yyrestart( FILE* );
 
 // local functions
-static void         cdecl_init( int*, char const*** );
+static void         cdecl_cleanup( void );
 static bool         is_command( char const* );
 static bool         parse_command_line( char const*, int, char const*[] );
 static bool         parse_files( int, char const*[] );
@@ -46,7 +46,10 @@ static bool         parse_string( char const*, size_t );
 ////////// main ///////////////////////////////////////////////////////////////
 
 int main( int argc, char const **argv ) {
-  cdecl_init( &argc, &argv );
+  atexit( cdecl_cleanup );
+  options_init( &argc, &argv );
+  is_input_a_tty = isatty( fileno( fin ) );
+  cdecl_prompt_init();
 
   bool ok;
   if ( argc == 0 )                      // cdecl
@@ -88,19 +91,6 @@ static bool is_command( char const *s ) {
 static void cdecl_cleanup( void ) {
   free_now();
   c_ast_cleanup();
-}
-
-/**
- * Parses command-line options and sets up the prompt.
- *
- * @param argc The length of \a argv.
- * @param argv The command-line arguments from main().
- */
-static void cdecl_init( int *pargc, char const ***pargv ) {
-  atexit( cdecl_cleanup );
-  options_init( pargc, pargv );
-  is_input_a_tty = isatty( fileno( fin ) );
-  cdecl_prompt_init();
 }
 
 /**
