@@ -26,6 +26,7 @@ cdecl_SOURCES =	parser.y lexer.l \
 		lang.c \
 		literals.c \
 		options.c \
+		prompt.c \
 		set.c \
 		types.c \
 		util.c

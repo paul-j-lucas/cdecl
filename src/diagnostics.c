@@ -10,6 +10,7 @@
 #include "color.h"
 #include "diagnostics.h"
 #include "options.h"
+#include "prompt.h"
 #include "util.h"
 
 // standard

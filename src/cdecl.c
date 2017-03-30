@@ -9,39 +9,31 @@
 #include "color.h"
 #include "literals.h"
 #include "options.h"
+#include "prompt.h"
 #include "util.h"
 
 // standard
-#include <assert.h>
 #include <ctype.h>
 #include <errno.h>
-#include <getopt.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sysexits.h>
-
-#if HAVE_READLINE
-#include <readline/readline.h>
-#endif /* HAVE_READLINE */
-
-#define PROMPT_SUFFIX             ">"
+#include <unistd.h>                     /* for isatty(3) */
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variable definitions
 char const         *me;                 // program name
-char const         *prompt[2];
-char               *prompt_buf[2];
 
 // local variables
 static bool         is_input_a_tty;     // is our input from a tty?
 
 // extern functions
-int                 yyparse( void );
-void                yyrestart( FILE* );
+extern int          yyparse( void );
+extern void         yyrestart( FILE* );
 
 // local functions
 static void         cdecl_init( int*, char const*** );
@@ -50,29 +42,6 @@ static bool         parse_command_line( char const*, int, char const*[] );
 static bool         parse_files( int, char const*[] );
 static bool         parse_stdin( void );
 static bool         parse_string( char const*, size_t );
-static void         prompt_init( void );
-
-////////// inline functions ///////////////////////////////////////////////////
-
-/**
- * Checks to see whether we're running genuine GNU readline and not some other
- * library emulating it.
- *
- * Some readline emulators, e.g., editline, have a bug that makes color prompts
- * not work correctly; see <http://stackoverflow.com/a/31333315/99089>.
- *
- * So, unless we know we're using genuine GNU readline, use this function to
- * disable color prompts.
- *
- * @return Returns \c true only if we're running genuine GNU readline.
- */
-static inline bool have_genuine_gnu_readline( void ) {
-#if HAVE_DECL_RL_GNU_READLINE_P
-  return rl_gnu_readline_p == 1;
-#else
-  return false;
-#endif /* HAVE_DECL_RL_GNU_READLINE_P */
-}
 
 ////////// main ///////////////////////////////////////////////////////////////
 
@@ -131,7 +100,7 @@ static void cdecl_init( int *pargc, char const ***pargv ) {
   atexit( cdecl_cleanup );
   options_init( pargc, pargv );
   is_input_a_tty = isatty( fileno( fin ) );
-  prompt_init();
+  cdecl_prompt_init();
 }
 
 /**
@@ -230,63 +199,6 @@ static bool parse_string( char const *s, size_t s_len ) {
   bool const ok = yyparse() == 0;
   fclose( temp );
   return ok;
-}
-
-/**
- * Creates a prompt.
- *
- * @param suffix The prompt suffix character to use.
- * @return Returns a prompt string.  The caller is responsible for freeing the
- * memory.
- */
-static char* prompt_create( char suffix ) {
-  size_t prompt_len = strlen( CPPDECL ) + 1/*suffix*/ + 1/*space*/;
-
-  if ( have_genuine_gnu_readline() && sgr_prompt ) {
-    prompt_len +=
-      1 /* RL_PROMPT_START_IGNORE */ +
-      (sizeof( SGR_START SGR_EL ) - 1) +
-      (strlen( sgr_prompt )) +
-      1 /* RL_PROMPT_END_IGNORE */ +
-      (sizeof( SGR_END SGR_EL ) - 1);
-  }
-
-  char *const prompt_buf = MALLOC( char, prompt_len + 1/*null*/ );
-  char *p = prompt_buf;
-
-  char color_buf[20];
-
-  if ( have_genuine_gnu_readline() && sgr_prompt ) {
-    *p++ = RL_PROMPT_START_IGNORE;
-    SGR_SSTART_COLOR( color_buf, prompt );
-    p += strcpy_len( p, color_buf );
-    *p++ = RL_PROMPT_END_IGNORE;
-  }
-
-  p += strcpy_len( p, opt_lang >= LANG_CPP_MIN ? CPPDECL : PACKAGE );
-  *p++ = suffix;
-
-  if ( have_genuine_gnu_readline() && sgr_prompt ) {
-    *p++ = RL_PROMPT_START_IGNORE;
-    SGR_SEND_COLOR( color_buf );
-    p += strcpy_len( p, color_buf );
-    *p++ = RL_PROMPT_END_IGNORE;
-  }
-
-  *p++ = ' ';
-  *p = '\0';
-
-  return prompt_buf;
-}
-
-/**
- * Initializes the prompt.
- */
-static void prompt_init( void ) {
-  FREE( prompt_buf[0] );
-  FREE( prompt_buf[1] );
-  prompt[0] = prompt_buf[0] = prompt_create( '>' );
-  prompt[1] = prompt_buf[1] = prompt_create( '+' );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

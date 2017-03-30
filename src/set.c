@@ -9,6 +9,7 @@
 #include "common.h"
 #include "lang.h"
 #include "options.h"
+#include "prompt.h"
 #include "util.h"
 
 // standard
@@ -43,9 +44,9 @@ void set_option( char const *opt ) {
 #endif /* WITH_CDECL_DEBUG */
 
     if ( strcmp( opt, "prompt" ) == 0 )
-      { prompt[0] = prompt_buf[0]; prompt[1] = prompt_buf[1]; return; }
+      { cdecl_prompt_enable( true ); return; }
     if ( strcmp( opt, "noprompt" ) == 0 )
-      { prompt[0] = prompt[1] = ""; return; }
+      { cdecl_prompt_enable( false ); return; }
 
     SET_OPTION( opt, "semicolon", opt_semicolon, true, false );
 

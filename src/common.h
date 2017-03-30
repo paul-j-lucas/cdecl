@@ -45,8 +45,6 @@ typedef struct {
 
 // extern variables
 extern char const  *me;                 // program name
-extern char const  *prompt[2];          // pointers to current prompts
-extern char        *prompt_buf[2];      // buffers for prompts
 extern size_t       y_col;
 extern size_t       y_col_newline;
 #if YYTEXT_POINTER
