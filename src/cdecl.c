@@ -132,20 +132,20 @@ static bool parse_command_line( char const *command, int argc,
 /**
  * Parses one or more files.
  *
- * @param argc The length of \a argv.
- * @param argv The command-line arguments from main().
+ * @param num_files The length of \a files.
+ * @param files An array of file names.
  * @return Returns \c true only upon success.
  */
-static bool parse_files( int argc, char const *argv[] ) {
+static bool parse_files( int num_files, char const *files[] ) {
   bool ok = true;
 
-  for ( int i = 0; i < argc && ok; ++i ) {
-    if ( strcmp( argv[i], "-" ) == 0 )
+  for ( int i = 0; i < num_files && ok; ++i ) {
+    if ( strcmp( files[i], "-" ) == 0 )
       ok = parse_stdin();
     else {
-      FILE *const fin = fopen( argv[i], "r" );
+      FILE *const fin = fopen( files[i], "r" );
       if ( fin == NULL )
-        PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", argv[i], STRERROR );
+        PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", files[i], STRERROR );
       yyrestart( fin );
       ok = yyparse() == 0;
       fclose( fin );
