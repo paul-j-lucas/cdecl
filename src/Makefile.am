@@ -17,7 +17,6 @@ cdecl_SOURCES =	parser.y lexer.l \
 		ast_util.c \
 		cdecl.c \
 		color.c \
-		debug.c \
 		diagnostics.c \
 		english.c \
 		gibberish.c \
@@ -30,6 +29,10 @@ cdecl_SOURCES =	parser.y lexer.l \
 		set.c \
 		types.c \
 		util.c
+
+if WITH_CDECL_DEBUG
+cdecl_SOURCES += debug.c
+endif
 
 if WITH_READLINE
 cdecl_SOURCES += autocomplete.c
