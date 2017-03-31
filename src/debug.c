@@ -17,13 +17,13 @@
 #include <sysexits.h>
 
 #define PRINT_COMMA \
-  BLOCK( if ( !comma ) { FPUTS( ",\n", jout ); comma = true; } )
+  BLOCK( if ( !comma ) { FPUTS( ",\n", dout ); comma = true; } )
 
-#define PRINT_JSON(...) \
-  BLOCK( print_indent( indent, jout ); FPRINTF( jout, __VA_ARGS__ ); )
+#define INDENT_PRINT(...) \
+  BLOCK( print_indent( indent, dout ); FPRINTF( dout, __VA_ARGS__ ); )
 
-#define PRINT_JSON_KV(KEY,VALUE) \
-  BLOCK( print_indent( indent, jout ); json_print_kv( (KEY), (VALUE), jout ); )
+#define INDENT_PRINT_KV(KEY,VALUE) \
+  BLOCK( print_indent( indent, dout ); print_kv( (KEY), (VALUE), dout ); )
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -34,31 +34,31 @@
  * @param out The FILE to print to.
  */
 static void print_indent( unsigned indent, FILE *out ) {
-  FPRINTF( out, "%*s", (int)(indent * JSON_INDENT), "" );
+  FPRINTF( out, "%*s", (int)(indent * DEBUG_INDENT), "" );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
-                 FILE *jout ) {
+void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
+                 FILE *dout ) {
   if ( key0 && *key0 )
-    PRINT_JSON( "\"%s\": {\n", key0 );
+    INDENT_PRINT( "%s = {\n", key0 );
   else
-    PRINT_JSON( "{\n" );
+    INDENT_PRINT( "{\n" );
 
   if ( ast != NULL ) {
     ++indent;
 
-    PRINT_JSON( "\"depth\": %u,\n", ast->depth );
-    PRINT_JSON( "\"id\": %u,\n", ast->id );
-    PRINT_JSON_KV( "kind", c_kind_name( ast->kind ) );
-    FPUTS( ",\n", jout );
-    PRINT_JSON(
-      "\"parent->id\": %d,\n", ast->parent ? (int)ast->parent->id : -1
+    INDENT_PRINT( "id = %u,\n", ast->id );
+    INDENT_PRINT_KV( "kind", c_kind_name( ast->kind ) );
+    FPUTS( ",\n", dout );
+    INDENT_PRINT( "depth = %u,\n", ast->depth );
+    INDENT_PRINT_KV( "name", ast->name );
+    FPUTS( ",\n", dout );
+    INDENT_PRINT(
+      "parent->id = %d,\n", ast->parent ? (int)ast->parent->id : -1
     );
-    PRINT_JSON_KV( "name", ast->name );
-    FPUTS( ",\n", jout );
-    PRINT_JSON_KV( "type", c_type_name( ast->type ) );
+    INDENT_PRINT_KV( "type", c_type_name( ast->type ) );
 
     bool comma = false;
 
@@ -72,69 +72,69 @@ void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_ARRAY:
         PRINT_COMMA;
-        PRINT_JSON( "\"size\": %d,\n", ast->as.array.size );
-        c_ast_json( ast->as.array.of_ast, indent, "of_ast", jout );
+        INDENT_PRINT( "size = %d,\n", ast->as.array.size );
+        c_ast_debug( ast->as.array.of_ast, indent, "of_ast", dout );
         break;
 
       case K_BLOCK:                     // Apple extension
       case K_FUNCTION:
         PRINT_COMMA;
-        PRINT_JSON( "\"args\": " );
-        c_ast_list_json( &ast->as.func.args, indent, jout );
-        FPUTS( ",\n", jout );
-        c_ast_json( ast->as.func.ret_ast, indent, "ret_ast", jout );
+        INDENT_PRINT( "args = " );
+        c_ast_list_debug( &ast->as.func.args, indent, dout );
+        FPUTS( ",\n", dout );
+        c_ast_debug( ast->as.func.ret_ast, indent, "ret_ast", dout );
         break;
 
       case K_ENUM_CLASS_STRUCT_UNION:
         PRINT_COMMA;
-        PRINT_JSON_KV( "ecsu_name", ast->as.ecsu.ecsu_name );
+        INDENT_PRINT_KV( "ecsu_name", ast->as.ecsu.ecsu_name );
         break;
 
       case K_POINTER_TO_MEMBER:
         PRINT_COMMA;
-        PRINT_JSON_KV( "class_name", ast->as.ptr_mbr.class_name );
-        FPUTC( '\n', jout );
+        INDENT_PRINT_KV( "class_name", ast->as.ptr_mbr.class_name );
+        FPUTC( '\n', dout );
         // no break;
 
       case K_POINTER:
       case K_REFERENCE:
         PRINT_COMMA;
-        PRINT_JSON_KV( "qualifier", c_type_name( ast->as.ptr_ref.qualifier ) );
-        FPRINTF( jout, ",\n" );
-        c_ast_json( ast->as.ptr_ref.to_ast, indent, "to_ast", jout );
+        INDENT_PRINT_KV( "qualifier", c_type_name( ast->as.ptr_ref.qualifier ) );
+        FPUTS( ",\n", dout );
+        c_ast_debug( ast->as.ptr_ref.to_ast, indent, "to_ast", dout );
         break;
     } // switch
 
-    FPUTC( '\n', jout );
+    FPUTC( '\n', dout );
     --indent;
   }
 
-  PRINT_JSON( "}" );
+  INDENT_PRINT( "}" );
 }
 
-void c_ast_list_json( c_ast_list_t const *list, unsigned indent, FILE *jout ) {
+void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
   assert( list );
   if ( list->head_ast != NULL ) {
-    FPUTS( "[\n", jout );
+    FPUTS( "[\n", dout );
     bool comma = false;
     for ( c_ast_t const *arg = list->head_ast; arg; arg = arg->next ) {
       if ( true_or_set( &comma ) )
-        FPUTS( ",\n", jout );
-      c_ast_json( arg, indent + 1, NULL, jout );
+        FPUTS( ",\n", dout );
+      c_ast_debug( arg, indent + 1, NULL, dout );
     } // for
-    FPUTC( '\n', jout );
-    PRINT_JSON( "]" );
+    FPUTC( '\n', dout );
+    INDENT_PRINT( "]" );
   } else {
-    FPUTS( "[]", jout );
+    FPUTS( "[]", dout );
   }
 }
 
-void json_print_kv( char const *key, char const *value, FILE *jout ) {
+void print_kv( char const *key, char const *value, FILE *dout ) {
   assert( key );
   if ( value && *value )
-    FPRINTF( jout, "\"%s\": \"%s\"", key, value );
+    FPRINTF( dout, "%s = \"%s\"", key, value );
   else
-    FPRINTF( jout, "\"%s\": null", key  );
+    FPRINTF( dout, "%s = null", key );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

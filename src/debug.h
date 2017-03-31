@@ -18,34 +18,34 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Dumps the given AST as JSON (for debugging).
+ * Dumps the given AST (for debugging).
  *
  * @param ast The c_ast to dump.
  * @paran indent The initial indent.
  * @param key0 The initial key or null for none.
  * @param fout The FILE to dump to.
  */
-void c_ast_json( c_ast_t const *ast, unsigned indent, char const *key0,
-                 FILE *fout );
+void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
+                  FILE *fout );
 
 /**
- * Dump the given c_ast_list as JSON (for debugging).
+ * Dump the given c_ast_list (for debugging).
  *
  * @param list The c_ast_list to dump.
  * @param indent The initial indent.
  * @param jour The FILE to dump to.
  */
-void c_ast_list_json( c_ast_list_t const *list, unsigned indent, FILE *fout );
+void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *fout );
 
 /**
- * Prints a key/value pair as JSON.
+ * Prints a key/value pair.
  *
  * @param key The key to print.
  * @param value The value to print, if any.  If either null or the empty
  * string, \c null is printed instead of the value.
  * @param jout The FILE to print to.
  */
-void json_print_kv( char const *key, char const *value, FILE *jout );
+void print_kv( char const *key, char const *value, FILE *jout );
 
 ///////////////////////////////////////////////////////////////////////////////
 

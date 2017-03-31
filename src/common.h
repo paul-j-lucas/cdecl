@@ -17,7 +17,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #define CPPDECL               "c++decl"
-#define JSON_INDENT           2         /* speces per JSON indent level */
+#define DEBUG_INDENT          2         /* spaces per debug indent level */
 
 typedef struct c_ast c_ast_t;
 
