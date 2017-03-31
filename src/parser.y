@@ -37,7 +37,7 @@
 #endif /* WITH_CDECL_DEBUG */
 
 #define C_AST_CHECK(AST,CHECK) BLOCK( \
-  if ( !c_ast_check( (AST), (CHECK) ) ) PARSE_CLEANUP(); )
+  if ( !c_ast_check_errors( (AST), (CHECK) ) ) PARSE_CLEANUP(); )
 
 #define C_TYPE_ADD(DST,SRC,LOC) BLOCK( \
   if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_CLEANUP(); )

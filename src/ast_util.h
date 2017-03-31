@@ -48,13 +48,13 @@ typedef enum c_check c_check_t;
 c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array );
 
 /**
- * Checks an entire AST for semantic validity.
+ * Checks an entire AST for semantic errors.
  *
  * @param ast The AST to check.
  * @param check The kind of checks to perform.
  * @return Returns \c true only if the entire AST is valid.
  */
-bool c_ast_check( c_ast_t const *ast, c_check_t check );
+bool c_ast_check_errors( c_ast_t const *ast, c_check_t check );
 
 /**
  * Adds a function (or block) to the AST being built.

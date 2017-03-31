@@ -234,7 +234,7 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
+bool c_ast_check_errors( c_ast_t const *ast, c_check_t check ) {
   if ( check == CHECK_CAST && !c_ast_check_cast( ast ) )
     return false;
   return c_ast_check_impl( ast );
