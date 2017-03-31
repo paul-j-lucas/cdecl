@@ -23,11 +23,12 @@ declaration as it is in English.  The characters are:
 + `f` = function
 + `g` = `register`
 + `i` = `int`
++ `k` = `struct`
 + `l` = `long`
 + `m` = member of class
 + `p` = pointer
 + `r` = `restrict` or reference
-+ `s` = `signed`, `static`, or `struct`
++ `s` = `signed` or `static`
 + `t` = `typedef`
 + `u` = `union` or `unsigned`
 + `v` = `void` or `volatile`

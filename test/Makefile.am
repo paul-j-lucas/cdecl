@@ -341,7 +341,7 @@ TESTS+=	tests/declare_pmri.test \
 #
 TESTS+=	tests/explain_pmf_i.test \
 	tests/explain_pmf_pc.test \
-	tests/explain_pmfxx_ps.test \
+	tests/explain_pmfxx_pk.test \
 	tests/explain_pmgi.test \
 	tests/explain_pmi.test \
 	tests/explain_ri.test
