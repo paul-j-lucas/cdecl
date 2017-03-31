@@ -140,6 +140,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_cpfv_pi.test \
 	tests/explain_cpi.test \
 	tests/explain_cppi.test \
+	tests/explain_cs.test \
 	tests/explain_cvpi.test \
 	tests/explain_f_pi.test \
 	tests/explain_fcce_v.test \
