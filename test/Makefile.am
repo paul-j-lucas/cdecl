@@ -344,7 +344,7 @@ TESTS+=	tests/declare_pmri.test \
 #
 TESTS+=	tests/explain_pmf_i.test \
 	tests/explain_pmf_pc.test \
-	tests/explain_pmfxx_pk.test \
+	tests/explain_pmfii_pk.test \
 	tests/explain_pmgi.test \
 	tests/explain_pmi.test \
 	tests/explain_ri.test
@@ -353,7 +353,8 @@ TESTS+=	tests/explain_pmf_i.test \
 # C++ explain error tests
 # =======================
 #
-TESTS+=	tests/explain_pmri.test \
+TESTS+=	tests/explain_fx_v.test \
+	tests/explain_pmri.test \
 	tests/explain_pri.test \
 	tests/explain_rgi.test \
 	tests/explain_rv.test

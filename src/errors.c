@@ -9,6 +9,7 @@
 #include "config.h"                     /* must go first */
 #include "ast_util.h"
 #include "diagnostics.h"
+#include "options.h"
 
 // standard
 #include <assert.h>
@@ -84,6 +85,13 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
           if ( n_args > 1 )
             goto only_void;
           continue;
+        }
+        break;
+
+      case K_NAME:
+        if ( opt_lang >= LANG_CPP_MIN ) {
+          print_error( &ast->loc, "C++ requires type specifier" );
+          return false;
         }
         break;
 
