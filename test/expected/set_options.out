@@ -4,7 +4,6 @@ Valid set options (and command line equivalents) are:
   debug (-d, --debug) / nodebug
   prompt / noprompt (-q, --quiet)
   semicolon / nosemicolon (-s, --no-semicolon)
-  yydebug (-y, --yydebug) / noyydebug
 
 Current set option values are:
   nodebug
@@ -12,4 +11,3 @@ Current set option values are:
     lang=C11
     prompt
     semicolon
-  noyydebug
