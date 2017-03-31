@@ -27,7 +27,7 @@ as well as adds many new features,
 most notably:
 
 * Using GNU Autotools for building.
-* Command-line long-option support.
+* Command-line long-options.
 * Support for C11 and C++ keywords
   `bool`,
   `char16_t`,
@@ -41,3 +41,15 @@ most notably:
 * Support for variadic function arguments.
 * Better warning and error messages
   complete with location information and color.
+
+## Installation
+
+The git repository contains only the necessary source code.
+Things like `configure` are _derived_ sources and
+[should not be included in repositories](http://stackoverflow.com/a/18732931).
+If you have `autoconf`, `automake`, and `m4` installed,
+you can generate `configure` yourself by doing:
+
+    autoreconf -fiv
+
+Then follow the generic installation instructions given in `INSTALL`.
