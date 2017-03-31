@@ -206,6 +206,8 @@ TESTS+=	tests/explain_b_ai.test \
 	tests/explain_gf_v.test \
 	tests/explain_gk.test \
 	tests/explain_lll.test \
+	tests/explain_pmi-c.test \
+	tests/explain_ri-c.test \
 	tests/explain_v.test
 
 ###############################################################################

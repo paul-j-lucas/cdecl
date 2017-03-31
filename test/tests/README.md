@@ -3,14 +3,16 @@ Test Names
 
 Test files are as follows:
 
-+ `cast_`    = A cast test.
-+ `cdecl-`   = A command-line option test.
-+ `cl-`      = A command-line test.
-+ `declare_` = A declare test.
-+ `explain_` = An explain test.
-+ `file-`    = A file test.
-+ `help_`    = A help test.
-+ `set_`     = A set test.
++ `cast_*`    = A cast test.
++ `cdecl-*`   = A command-line option test.
++ `cl-*`      = A command-line test.
++ `declare_*` = A declare test.
++ `explain_*` = An explain test.
++ `file-*`    = A file test.
++ `help_*`    = A help test.
++ `set_*`     = A set test.
++ `*-c*`      = An explicitly C test.
++ `*-c++*`    = An explicitly C++ test.
 
 Within each test, sequences of single characters are used to denote a C/C++
 declaration as it is in English.  The characters are:

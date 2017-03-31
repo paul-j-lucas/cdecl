@@ -215,8 +215,11 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
     case K_NONE:
       assert( ast->kind != K_NONE );
 
-    case K_POINTER:
-    case K_POINTER_TO_MEMBER: {
+    case K_POINTER_TO_MEMBER:
+      if ( opt_lang < LANG_CPP_MIN )
+        goto kind_not_supported;
+      // no break;
+    case K_POINTER: {
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
       if ( to_ast->kind & K_REFERENCE ) {
         print_error( &ast->loc, "%s to reference", c_kind_name( ast->kind ) );
@@ -230,6 +233,8 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
     }
 
     case K_REFERENCE: {
+      if ( opt_lang < LANG_CPP_MIN )
+        goto kind_not_supported;
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
       if ( to_ast->type & T_REGISTER ) {
         print_error( &ast->loc, "reference to register" );
@@ -245,6 +250,12 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
   } // switch
 
   return true;
+
+kind_not_supported:
+  print_error( &ast->loc,
+    "%s not supported in %s", c_kind_name( ast->kind ), lang_name( opt_lang )
+  );
+  return false;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
