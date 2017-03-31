@@ -42,11 +42,14 @@ AC_SEARCH_LIBS([add_history],[readline history])
 AC_ARG_ENABLE([debug],
   AS_HELP_STRING([--disable-debug], [disable support for cdecl debugging]),
   [],
+  [enable_debug="yes"]
+)
+AS_IF([test x$enable_debug = xyes],
   [AC_DEFINE([WITH_CDECL_DEBUG], [1],
     [Define to 1 if cdecl debugging is enabled.])]
 )
 
-# Program feature: debug
+# Program feature: yacc debug
 AC_ARG_ENABLE([yydebug],
   AS_HELP_STRING([--enable-yydebug], [enable support for yacc debugging]),
   [AC_DEFINE([YYDEBUG], [1],
@@ -65,7 +68,8 @@ AS_IF([test x$enable_readline != xno -a x$ac_cv_search_readline = xno],
 )
 
 # Makefile conditionals.
-AM_CONDITIONAL([WITH_READLINE], [test x$ac_cv_search_readline != xno])
+AM_CONDITIONAL([WITH_CDECL_DEBUG], [test x$enable_debug = xyes])
+AM_CONDITIONAL([WITH_READLINE], [test x$enable_readline != xno])
 
 # Miscellaneous.
 AC_LANG(C)
