@@ -204,6 +204,7 @@ TESTS+=	tests/explain_b_ai.test \
 	tests/explain_fvv_v.test \
 	tests/explain_fvx_v.test \
 	tests/explain_gf_v.test \
+	tests/explain_gk.test \
 	tests/explain_lll.test \
 	tests/explain_v.test
 

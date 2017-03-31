@@ -167,9 +167,12 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-    case K_NAME:
-    case K_VARIADIC:
-      // nothing to check
+      if ( ast->type & T_REGISTER ) {
+        print_error( &ast->loc,
+          "%s can not be register", c_kind_name( ast->kind )
+        );
+        return false;
+      }
       break;
 
     case K_FUNCTION:
@@ -195,6 +198,11 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
       } // switch
       break;
     }
+
+    case K_NAME:
+    case K_VARIADIC:
+      // nothing to check
+      break;
 
     case K_NONE:
       assert( ast->kind != K_NONE );
