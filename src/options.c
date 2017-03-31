@@ -27,7 +27,9 @@
 #define SET_OPTION(OPT)           (opts_given[ (unsigned char)(OPT) ] = (OPT))
 
 // extern option variables
+#ifdef WITH_CDECL_DEBUG
 bool                opt_debug;
+#endif /* WITH_CDECL_DEBUG */
 char const         *opt_fin;
 char const         *opt_fout;
 bool                opt_interactive;
@@ -44,7 +46,9 @@ static struct option const LONG_OPTS[] = {
   { "c89",          no_argument,        NULL, '8' },
   { "c99",          no_argument,        NULL, '9' },
   { "color",        required_argument,  NULL, 'c' },
+#ifdef WITH_CDECL_DEBUG
   { "debug",        no_argument,        NULL, 'd' },
+#endif /* WITH_CDECL_DEBUG */
   { "file",         required_argument,  NULL, 'f' },
   { "interactive",  no_argument,        NULL, 'i' },
   { "knr",          no_argument,        NULL, 'k' },
@@ -54,10 +58,20 @@ static struct option const LONG_OPTS[] = {
   { "no-semicolon", no_argument,        NULL, 's' },
   { "version",      no_argument,        NULL, 'v' },
   { "language",     required_argument,  NULL, 'x' },
+#ifdef YYDEBUG
   { "yydebug",      no_argument,        NULL, 'y' },
+#endif /* YYDEBUG */
   { NULL,           0,                  NULL, 0   }
 };
-static char const   SHORT_OPTS[] = "89ac:df:iko:pqvx:y";
+
+static char const   SHORT_OPTS[] = "89ac:f:iko:pqvx:"
+#ifdef WITH_CDECL_DEBUG
+  "d"
+#endif /* WITH_CDECL_DEBUG */
+#ifdef YYDEBUG
+  "y"
+#endif /* YYDEBUG */
+;
 
 // local variables
 static char         opts_given[ 128 ];
@@ -293,7 +307,9 @@ static void parse_options( int argc, char const *argv[] ) {
       case '8': opt_lang        = LANG_C_89;                  break;
       case '9': opt_lang        = LANG_C_99;                  break;
       case 'c': color_when      = parse_color_when( optarg ); break;
+#ifdef WITH_CDECL_DEBUG
       case 'd': opt_debug       = true;                       break;
+#endif /* WITH_CDECL_DEBUG */
       case 'f': opt_fin         = optarg;                     break;
       case 'i': opt_interactive = true;                       break;
       case 'k': opt_lang        = LANG_C_KNR;                 break;
@@ -303,7 +319,9 @@ static void parse_options( int argc, char const *argv[] ) {
       case 's': opt_semicolon   = false;                      break;
       case 'v': print_version   = true;                       break;
       case 'x': opt_lang        = parse_lang( optarg );       break;
+#ifdef YYDEBUG
       case 'y': yydebug         = true;                       break;
+#endif /* YYDEBUG */
       default : usage();
     } // switch
   } // for
