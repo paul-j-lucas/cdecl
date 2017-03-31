@@ -131,6 +131,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_a9pi.test \
 	tests/explain_bii_d.test \
 	tests/explain_ci.test \
+	tests/explain_ck.test \
 	tests/explain_cpa3cpa5i.test \
 	tests/explain_cpa3pa5i.test \
 	tests/explain_cpa9ci.test \
@@ -164,6 +165,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_ig.test \
 	tests/explain_is.test \
 	tests/explain_it.test \
+	tests/explain_kc.test \
 	tests/explain_keywords.test \
 	tests/explain_ll.test \
 	tests/explain_pa3a5i.test \

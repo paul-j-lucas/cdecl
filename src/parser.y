@@ -374,9 +374,9 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  decl_c decl2_c
 %type   <ast_pair>  array_decl_c
 %type   <ast_pair>  block_decl_c
+%type   <ast_pair>  builtin_or_enum_class_struct_union_type_c
 %type   <ast_pair>  func_decl_c
 %type   <ast_pair>  name_c
-%type   <ast_pair>  named_enum_class_struct_union_type_c
 %type   <ast_pair>  nested_decl_c
 %type   <ast_pair>  pointer_decl_c
 %type   <ast_pair>  pointer_type_c
@@ -928,8 +928,6 @@ type_english
       DUMP_AST( "type_english", $$.top_ast );
       DUMP_END();
     }
-
-  | named_enum_class_struct_union_type_c
   ;
 
 type_modifier_list_opt_english
@@ -970,18 +968,7 @@ type_modifier_english
   ;
 
 unmodified_type_english
-  : builtin_type_c
-    {
-      DUMP_START( "unmodified_type_english", "builtin_type_c" );
-      DUMP_TYPE( "builtin_type_c", $1 );
-
-      $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
-      $$.target_ast = NULL;
-      $$.top_ast->type = $1;
-
-      DUMP_AST( "unmodified_type_english", $$.top_ast );
-      DUMP_END();
-    }
+  : builtin_or_enum_class_struct_union_type_c
   ;
 
 /*****************************************************************************/
@@ -1323,18 +1310,17 @@ type_c
       DUMP_END();
     }
 
-  | type_modifier_list_c builtin_type_c type_modifier_list_opt_c
+  | type_modifier_list_c builtin_or_enum_class_struct_union_type_c
+    type_modifier_list_opt_c
     {
       DUMP_START( "type_c",
                   "type_modifier_list_c builtin_type_c "
                   "type_modifier_list_opt_c" );
       DUMP_TYPE( "type_modifier_list_c", $1 );
-      DUMP_TYPE( "builtin_type_c", $2 );
+      DUMP_AST( "builtin_or_enum_class_struct_union_type_c", $2.top_ast );
       DUMP_TYPE( "type_modifier_list_opt_c", $3 );
 
-      $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
-      $$.target_ast = NULL;
-      $$.top_ast->type = $2;
+      $$ = $2;
       C_TYPE_ADD( &$$.top_ast->type, $1, @1 );
       C_TYPE_ADD( &$$.top_ast->type, $3, @3 );
       C_TYPE_CHECK( $$.top_ast->type, @1 );
@@ -1343,23 +1329,19 @@ type_c
       DUMP_END();
     }
 
-  | builtin_type_c type_modifier_list_opt_c
+  | builtin_or_enum_class_struct_union_type_c type_modifier_list_opt_c
     {
       DUMP_START( "type_c", "builtin_type_c type_modifier_list_opt_c" );
-      DUMP_TYPE( "builtin_type_c", $1 );
+      DUMP_AST( "builtin_or_enum_class_struct_union_type_c", $1.top_ast );
       DUMP_TYPE( "type_modifier_list_opt_c", $2 );
 
-      $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
-      $$.target_ast = NULL;
-      $$.top_ast->type = $1;
+      $$ = $1;
       C_TYPE_ADD( &$$.top_ast->type, $2, @2 );
       C_TYPE_CHECK( $$.top_ast->type, @1 );
 
       DUMP_AST( "type_c", $$.top_ast );
       DUMP_END();
     }
-
-  | named_enum_class_struct_union_type_c
   ;
 
 type_modifier_list_opt_c
@@ -1396,6 +1378,38 @@ type_modifier_c
   | storage_class_c
   ;
 
+builtin_or_enum_class_struct_union_type_c
+  : builtin_type_c
+    {
+      DUMP_START( "builtin_or_enum_class_struct_union_type_c",
+                  "builtin_type_c" );
+      DUMP_TYPE( "builtin_type_c", $1 );
+
+      $$.top_ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
+      $$.target_ast = NULL;
+      $$.top_ast->type = $1;
+
+      DUMP_AST( "builtin_or_enum_class_struct_union_type_c", $$.top_ast );
+      DUMP_END();
+    }
+
+  | enum_class_struct_union_type_c Y_NAME
+    {
+      DUMP_START( "builtin_or_enum_class_struct_union_type_c",
+                  "enum_class_struct_union_type_c NAME" );
+      DUMP_TYPE( "enum_class_struct_union_type_c", $1 );
+      DUMP_NAME( "NAME", $2 );
+
+      $$.top_ast = c_ast_new( K_ENUM_CLASS_STRUCT_UNION, ast_depth, &@$ );
+      $$.target_ast = NULL;
+      $$.top_ast->type = $1;
+      $$.top_ast->as.ecsu.ecsu_name = $2;
+
+      DUMP_AST( "builtin_or_enum_class_struct_union_type_c", $$.top_ast );
+      DUMP_END();
+    }
+  ;
+
 builtin_type_c
   : Y_VOID
   | Y_BOOL
@@ -1406,32 +1420,6 @@ builtin_type_c
   | Y_INT
   | Y_FLOAT
   | Y_DOUBLE
-  ;
-
-named_enum_class_struct_union_type_c
-  : enum_class_struct_union_type_c Y_NAME
-    {
-      DUMP_START( "named_enum_class_struct_union_type_c",
-                  "enum_class_struct_union_type_c NAME" );
-      DUMP_TYPE( "enum_class_struct_union_type_c", $1 );
-      DUMP_NAME( "NAME", $2 );
-
-      $$.top_ast = c_ast_new( K_ENUM_CLASS_STRUCT_UNION, ast_depth, &@$ );
-      $$.target_ast = NULL;
-      $$.top_ast->type = $1;
-      $$.top_ast->as.ecsu.ecsu_name = $2;
-      C_TYPE_CHECK( $$.top_ast->type, @1 );
-
-      DUMP_AST( "named_enum_class_struct_union_type_c", $$.top_ast );
-      DUMP_END();
-    }
-
-  | enum_class_struct_union_type_c error
-    {
-      PARSE_ERROR(
-        "%s name expected", c_kind_name( K_ENUM_CLASS_STRUCT_UNION )
-      );
-    }
   ;
 
 enum_class_struct_union_type_c
