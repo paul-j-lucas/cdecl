@@ -59,6 +59,7 @@ static char const *const CDECL_KEYWORDS[] = {
   L_REGISTER,
   L_RESTRICT,
   L_RETURNING,
+  L_RVALUE,
   L_SHORT,
   L_SIGNED,
   L_STATIC,
