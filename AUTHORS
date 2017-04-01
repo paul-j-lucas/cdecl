@@ -61,6 +61,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added better warning and error messages
 	added octal and hexadecimal numbers
 	added register and variadic function arguments
+	added rvalue references
 	added typedef declarations
 	allow escaped newlines
 	now ignoring C /*...*/ comments in lexer

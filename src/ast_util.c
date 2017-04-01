@@ -97,11 +97,13 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
     case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
       switch ( ast->as.ptr_ref.to_ast->kind ) {
         case K_ARRAY:
         case K_POINTER:
         case K_POINTER_TO_MEMBER:
         case K_REFERENCE:
+        case K_RVALUE_REFERENCE:
           (void)c_ast_add_func_impl(
             ast->as.ptr_ref.to_ast, ret_type_ast, func
           );

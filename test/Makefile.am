@@ -320,6 +320,7 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 # =================
 #
 TESTS+=	tests/declare_cpmi.test \
+	tests/declare_frri_v.test \
 	tests/declare_pfv_ri.test \
 	tests/declare_pmci.test \
 	tests/declare_pmf_i.test \
@@ -344,7 +345,8 @@ TESTS+=	tests/declare_pmri.test \
 # C++ explain tests
 # =================
 #
-TESTS+=	tests/explain_pmf_i.test \
+TESTS+=	tests/explain_frri_v.test \
+	tests/explain_pmf_i.test \
 	tests/explain_pmf_pc.test \
 	tests/explain_pmfii_pk.test \
 	tests/explain_pmgi.test \
@@ -355,9 +357,11 @@ TESTS+=	tests/explain_pmf_i.test \
 # C++ explain error tests
 # =======================
 #
-TESTS+=	tests/explain_fx_v.test \
+TESTS+=	tests/explain_frri_v-c++03.test \
+	tests/explain_fx_v.test \
 	tests/explain_pmri.test \
 	tests/explain_pri.test \
+	tests/explain_prri.test \
 	tests/explain_rgi.test \
 	tests/explain_rv.test
 

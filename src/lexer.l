@@ -76,6 +76,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_RESTRICTED,   C_SYN( L_RESTRICT )   },
   { L_RET,          TOKEN( Y_RETURNING )  },
   { L_RETURNING,    TOKEN( Y_RETURNING )  },
+  { L_RVALUE,       TOKEN( Y_RVALUE )     },
   { L_SET,          TOKEN( Y_SET )        },
   { L_STRUCTURE,    C_SYN( L_STRUCT )     },
   { L_TO,           TOKEN( Y_TO )         },
@@ -178,6 +179,7 @@ H             [0-9A-Fa-f]
 0{O}*         { yylval.number = parse_int(  8 ); return Y_NUMBER; }
 0[xX]{H}+     { yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
+"&&"          return Y_RVALUE_REFERENCE;
 "..."         return Y_ELLIPSIS;
 "::"          return Y_COLON_COLON;
 "?"           return Y_HELP;

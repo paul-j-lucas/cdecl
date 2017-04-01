@@ -60,6 +60,7 @@ enum c_kind {
   // "parent" kinds (C++ only)
   K_POINTER_TO_MEMBER       = 0x0200,
   K_REFERENCE               = 0x0400,
+  K_RVALUE_REFERENCE        = 0x0800,
 };
 typedef enum c_kind c_kind_t;
 
@@ -161,7 +162,7 @@ struct c_ptr_mbr {
 };
 
 /**
- * AST object for a C/C++ pointer or C++ reference.
+ * AST object for a C/C++ pointer, or a C++ reference or rvalue reference.
  *
  * @note Members are laid out in the same order as c_ptr_mbr: this is taken
  * advantage of.)

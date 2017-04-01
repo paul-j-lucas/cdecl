@@ -284,6 +284,7 @@ static void yyerror( char const *msg ) {
 %token              Y_POINTER
 %token              Y_REFERENCE
 %token              Y_RETURNING
+%token              Y_RVALUE
 %token              Y_TO
 
                     /* K&R C */
@@ -329,6 +330,9 @@ static void yyerror( char const *msg ) {
 %token  <type>      Y_CLASS
 %token              Y_COLON_COLON
 
+                    /* C++11 */
+%token              Y_RVALUE_REFERENCE  /* && */
+
                     /* C11 & C++11 */
 %token  <type>      Y_CHAR16_T
 %token  <type>      Y_CHAR32_T
@@ -353,6 +357,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  qualifiable_decl_english
 %type   <ast_pair>  qualified_decl_english
 %type   <ast_pair>  reference_decl_english
+%type   <ast_pair>  reference_english
 %type   <ast_pair>  returning_english
 %type   <type>      storage_class_opt_english
 %type   <ast_pair>  type_english
@@ -786,9 +791,6 @@ pointer_to_member_decl_english
       DUMP_NAME( "NAME", $5 );
       DUMP_AST( "decl_english", $6.top_ast );
 
-      if ( opt_lang < LANG_CPP_MIN )
-        print_warning( &@$, "pointer to member of class" );
-
       $$.top_ast = c_ast_new( K_POINTER_TO_MEMBER, ast_depth, &@$ );
       $$.target_ast = NULL;
       $$.top_ast->type = $4;
@@ -827,27 +829,33 @@ pointer_to_member_decl_english
   ;
 
 reference_decl_english
-  : Y_REFERENCE Y_TO decl_english
+  : reference_english Y_TO decl_english
     {
-      DUMP_START( "reference_decl_english", "REFERENCE TO decl_english" );
+      DUMP_START( "reference_decl_english",
+                  "reference_english TO decl_english" );
       DUMP_TYPE( "qualifier", qualifier_peek() );
       DUMP_AST( "decl_english", $3.top_ast );
 
-      if ( opt_lang < LANG_CPP_MIN )
-        print_warning( &@$, "reference" );
-
-      $$.top_ast = c_ast_new( K_REFERENCE, ast_depth, &@$ );
-      $$.target_ast = NULL;
+      $$ = $1;
       c_ast_set_parent( $3.top_ast, $$.top_ast );
       $$.top_ast->as.ptr_ref.qualifier = qualifier_peek();
 
       DUMP_AST( "reference_decl_english", $$.top_ast );
       DUMP_END();
     }
+  ;
 
-  | Y_REFERENCE error
+reference_english
+  : Y_REFERENCE
     {
-      PARSE_ERROR( "\"%s\" expected", L_TO );
+      $$.top_ast = c_ast_new( K_REFERENCE, ast_depth, &@$ );
+      $$.target_ast = NULL;
+    }
+
+  | Y_RVALUE Y_REFERENCE
+    {
+      $$.top_ast = c_ast_new( K_RVALUE_REFERENCE, ast_depth, &@$ );
+      $$.target_ast = NULL;
     }
   ;
 
@@ -1133,7 +1141,7 @@ pointer_decl_c
 pointer_type_c
   : /* type_c */ '*' type_qualifier_list_opt_c
     {
-      DUMP_START( "pointer_type_c", "'*' type_qualifier_list_opt_c" );
+      DUMP_START( "pointer_type_c", "* type_qualifier_list_opt_c" );
       DUMP_AST( "type_c", type_peek() );
       DUMP_TYPE( "type_qualifier_list_opt_c", $2 );
 
@@ -1166,7 +1174,7 @@ pointer_to_member_decl_c
 pointer_to_member_type_c
   : /* type_c */ Y_NAME Y_COLON_COLON expect_star
     {
-      DUMP_START( "pointer_to_member_type_c", "NAME COLON_COLON '*'" );
+      DUMP_START( "pointer_to_member_type_c", "NAME COLON_COLON *" );
       DUMP_AST( "type_c", type_peek() );
       DUMP_NAME( "NAME", $1 );
 
@@ -1197,15 +1205,26 @@ reference_decl_c
   ;
 
 reference_type_c
-  : /* type_c */ '&' type_qualifier_list_opt_c
+  : /* type_c */ '&'
     {
-      DUMP_START( "reference_type_c", "'&' type_qualifier_list_opt_c" );
+      DUMP_START( "reference_type_c", "&" );
       DUMP_AST( "type_c", type_peek() );
-      DUMP_TYPE( "type_qualifier_list_opt_c", $2 );
 
       $$.top_ast = c_ast_new( K_REFERENCE, ast_depth, &@$ );
       $$.target_ast = NULL;
-      $$.top_ast->as.ptr_ref.qualifier = $2;
+      c_ast_set_parent( type_peek(), $$.top_ast );
+
+      DUMP_AST( "reference_type_c", $$.top_ast );
+      DUMP_END();
+    }
+
+  | /* type_c */ Y_RVALUE_REFERENCE
+    {
+      DUMP_START( "reference_type_c", "&&" );
+      DUMP_AST( "type_c", type_peek() );
+
+      $$.top_ast = c_ast_new( K_RVALUE_REFERENCE, ast_depth, &@$ );
+      $$.target_ast = NULL;
       c_ast_set_parent( type_peek(), $$.top_ast );
 
       DUMP_AST( "reference_type_c", $$.top_ast );

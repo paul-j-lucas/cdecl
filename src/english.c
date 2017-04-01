@@ -128,6 +128,7 @@ static void c_ast_english_impl( c_ast_t const *ast, bool print_names,
 
     case K_POINTER:
     case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
       if ( ast->as.ptr_ref.qualifier )
         FPRINTF( eout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
       FPRINTF( eout, "%s %s ", c_kind_name( ast->kind ), L_TO );

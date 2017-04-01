@@ -160,6 +160,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_POINTER:
     case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
       if ( param->gkind != G_CAST && c_ast_name( ast, V_UP ) != NULL &&
            !c_ast_find_kind( ast->parent, V_UP, K_BLOCK | K_FUNCTION ) ) {
@@ -169,7 +170,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         //
         //      type *var
         //
-        // i.e., the '*' or '&' adjacent to the variable; for functions,
+        // i.e., the '*', '&', or "&&" adjacent to the variable; for functions,
         // blocks, when there's no name for a function argument, or when we're
         // casting, we want the output to be like:
         //
@@ -178,7 +179,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         //      func(type*)             // nameless function argument
         //      (type*)expr             // cast
         //
-        // i.e., the '*' or '&' adjacent to the type.
+        // i.e., the '*', '&', or "&&" adjacent to the type.
         //
         g_param_space( param );
       }
@@ -213,7 +214,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
   assert( ast );
   assert( ast->kind &
-          (K_ARRAY | K_BLOCK | K_FUNCTION | K_POINTER | K_REFERENCE) );
+          (K_ARRAY | K_BLOCK | K_FUNCTION |
+           K_POINTER | K_REFERENCE | K_RVALUE_REFERENCE) );
   assert( param );
 
   c_ast_t const *const parent = ast->parent;
@@ -258,20 +260,8 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
         } // switch
 
         c_ast_gibberish_qual_name( parent, param );
-        if ( parent->parent ) {
-          switch ( parent->parent->kind ) {
-            case K_ARRAY:
-            case K_BLOCK:               // Apple extension
-            case K_FUNCTION:
-            case K_POINTER:
-            case K_POINTER_TO_MEMBER:
-            case K_REFERENCE:
-              c_ast_gibberish_postfix( parent, param );
-              break;
-            default:
-              /* suppress warning */;
-          } // switch
-        }
+        if ( c_ast_is_parent( parent->parent ) )
+          c_ast_gibberish_postfix( parent, param );
 
         if ( !(ast->kind & (K_POINTER | K_POINTER_TO_MEMBER)) )
           FPUTC( ')', param->gout );
@@ -313,8 +303,9 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
  * Helper function for c_ast_gibberish_impl() that prints a pointer, pointer-
  * to-member, or reference, its qualifier, if any, and the name, if any.
  *
- * @param ast The c_ast that is one of K_POINTER, K_POINTER_TO_MEMBER, or
- * K_REFERENCE whose qualifier, if any, and name, if any, to print.
+ * @param ast The c_ast that is one of K_POINTER, K_POINTER_TO_MEMBER,
+ * K_REFERENCE, or K_RVALUE_REFERENCE whose qualifier, if any, and name, if
+ * any, to print.
  * @param param The g_param to use.
  */
 static void c_ast_gibberish_qual_name( c_ast_t const *ast,
@@ -331,8 +322,14 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast,
     case K_REFERENCE:
       FPUTC( '&', param->gout );
       break;
+    case K_RVALUE_REFERENCE:
+      FPUTS( "&&", param->gout );
+      break;
     default:
-      assert( ast->kind & (K_POINTER | K_POINTER_TO_MEMBER | K_REFERENCE) );
+      assert(
+        ast->kind &
+          (K_POINTER | K_POINTER_TO_MEMBER | K_REFERENCE | K_RVALUE_REFERENCE)
+      );
   } // switch
 
   if ( ast->as.ptr_ref.qualifier ) {

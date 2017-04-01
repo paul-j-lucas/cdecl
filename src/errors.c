@@ -221,8 +221,10 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
       // no break;
     case K_POINTER: {
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
-      if ( to_ast->kind & K_REFERENCE ) {
-        print_error( &ast->loc, "%s to reference", c_kind_name( ast->kind ) );
+      if ( to_ast->kind & (K_REFERENCE | K_RVALUE_REFERENCE) ) {
+        print_error( &ast->loc,
+          "%s to %s", c_kind_name( ast->kind ), c_kind_name( to_ast->kind )
+        );
         return false;
       }
       if ( to_ast->type & T_REGISTER ) {
@@ -232,16 +234,20 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
       return c_ast_check_impl( ast->as.ptr_ref.to_ast );
     }
 
+    case K_RVALUE_REFERENCE:
+      if ( opt_lang < LANG_CPP_11 )
+        goto kind_not_supported;
+      // no break;
     case K_REFERENCE: {
       if ( opt_lang < LANG_CPP_MIN )
         goto kind_not_supported;
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
       if ( to_ast->type & T_REGISTER ) {
-        print_error( &ast->loc, "reference to register" );
+        print_error( &ast->loc, "%s to register", c_kind_name( ast->kind ) );
         return false;
       }
       if ( to_ast->type & T_VOID ) {
-        print_error( &ast->loc, "reference to void" );
+        print_error( &ast->loc, "%s to void", c_kind_name( ast->kind ) );
         print_hint( "pointer to void" );
         return false;
       }

@@ -256,7 +256,10 @@ The choices for
 are:
 .RS
 .TP 7
-.B KNR
+.B C
+Use the latest supported dialect of the C language.
+.TP
+.BR CKNR " | " KNR " | " KNRC
 Use the pre-ANSI Kernighan & Ritchie dialect of the C language
 as given in the first edition of
 .IR "The C Programming Language" .
@@ -268,8 +271,8 @@ Adds support for
 \f(CWenum\fP,
 \f(CWsigned\fP,
 \f(CWvoid\fP,
-and
-\f(CWvolatile\fP.
+\f(CWvolatile\fP,
+and function prototypes.
 .TP
 .B C99
 Use the C99 dialect of the C language.
@@ -289,6 +292,9 @@ and
 \f(CW_Thread_local\fP
 and (\f(CWthread_local\fP).
 .TP
+.B C++
+Use the latest supported dialect of the C++ language.
+.TP
 .B C++03
 Use the C++03 dialect of the C++ language.
 Adds support for
@@ -301,8 +307,8 @@ Use the C++11 dialect of the C++ language.
 Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
-and
-\f(CWthread_local\fP.
+\f(CWthread_local\fP
+and rvalue references.
 .RE
 .IP ""
 The default is
@@ -331,7 +337,8 @@ and exits.
 .BR \-\-yydebug " | " \-y
 Turns on
 .BR bison (1)
-debugging output (if compiled in).
+debugging output
+(if compiled in).
 The additional output is of grammar productions
 as they are being reduced by the parser.
 (This is a debugging aid for developers of
@@ -406,6 +413,8 @@ is one of:
 .br
 .RB [{ \f2qualifier\fP "}] " "pointer to" " [" "member of class" " \f2name\fP" ] " \f2english\fP"
 .br
+.RB [ rvalue "] " "reference to" " [" "member of class" " \f2name\fP" "" ] " \f2english\fP"
+.br
 .I type
 .P
 and
@@ -447,8 +456,9 @@ One of:
 \f(CWunsigned\fP,
 \f(CWconst\fP,
 \f(CWvolatile\fP,
+\f(CWrestrict\fP,
 or
-\f(CWrestrict\fP.
+\f(CWcomplex\fP.
 .TP
 .I name
 A valid C (or C++) identifier.
@@ -511,45 +521,75 @@ command takes several options:
 Use the latest supported dialect of the C language.
 .TP
 .BR cknr " | " knr " | " knrc
-Sets the language to the pre-ANSI Kernighan & Ritchie dialect of the C language
+Use the pre-ANSI Kernighan & Ritchie dialect of the C language
 as given in the first edition of
 .IR "The C Programming Language" .
 .TP
 .B c89
 Use the C89 (ANSI C) dialect of the C language.
+Adds support for
+\f(CWconst\fP,
+\f(CWenum\fP,
+\f(CWsigned\fP,
+\f(CWvoid\fP,
+\f(CWvolatile\fP,
+and function prototypes.
 .TP
 .B c99
 Use the C99 dialect of the C language.
+Adds support for
+\f(CW_Bool\fP (and \f(CWbool\fP),
+\f(CW_Complex\fP (and \f(CWcomplex\fP),
+\f(CWrestrict\fP,
+and
+\f(CWwchar_t\fP.
 .TP
 .B c11
 Use the C11 dialect of the C language.
+Adds support for
+\f(CWchar16_t\fP,
+\f(CWchar32_t\fP,
+and
+\f(CW_Thread_local\fP
+and (\f(CWthread_local\fP).
 .TP
 .B c++
 Use the latest supported dialect of the C++ language.
 .TP
 .B c++03
 Use the C++03 dialect of the C++ language.
+Adds support for
+\f(CWclass\fP,
+references,
+and pointers to class members.
 .TP
 .B c++11
 Use the C++11 dialect of the C++ language.
+Adds support for
+\f(CWchar16_t\fP,
+\f(CWchar32_t\fP,
+\f(CWthread_local\fP
+and rvalue references.
 .TP
 .RB [ no ] debug
-Turns [off] or on debugging output.
-(Default is off.)
+Turns [off] or on debugging output
+(if compiled in)
+\(em default is off.
 .TP
 .RB [ no ] prompt
-Turns [off] or on the prompt.
-(Default is on.)
+Turns [off] or on the prompt
+\(em default is on.
 .TP
 .RB [ no ] semicolon
-Turns [off] or on printing a semicolon at the end of a C (or C++) declaration.
-(Default is on.)
+Turns [off] or on printing a semicolon at the end of a C (or C++) declaration
+\(em default is on.
 .TP
 .RB [ no ] yydebug
 Turns [off] or on
 .BR bison (1)
-debugging output.
-(Default is off.)
+debugging output
+(if compiled in)
+\(em default is off.
 .RE
 .PP
 Note that debugging information and
@@ -838,6 +878,7 @@ mult-line input,
 \f(CW_Thread_local\fP,
 \f(CWwchar_t\fP,
 \f(CWregister\fP and variadic function arguments,
+rvalue references,
 \f(CWtypedef\fP declarations,
 and
 octal and hexadecimal array sizes.

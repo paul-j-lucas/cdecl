@@ -30,6 +30,7 @@ char const L_REF[]            = "ref";
 char const L_REFERENCE[]      = "reference";
 char const L_RET[]            = "ret";
 char const L_RETURNING[]      = "returning";
+char const L_RVALUE[]         = "rvalue";
 char const L_SET[]            = "set";
 char const L_TO[]             = "to";
 char const L_VECTOR[]         = "vector";
