@@ -405,15 +405,15 @@ and
 .I English
 is one of:
 .IP "" 4
-.BR array " [" \f2number\fP "] " of " \f2english\fP"
+.RB [ \f2storage-class\fP "] " array " [" \f2number\fP "] " of " \f2english\fP"
 .br
-.BR block " [" ( \f2decl-list\fP ) "] " returning " \f2english\fP"
+.BR block " [" ( \f2arg-list\fP ) "] " returning " \f2english\fP"
 .br
-.BR function " [" ( \f2decl-list\fP ) "] " returning " \f2english\fP"
+.RB [ \f2storage-class\fP "] " function " [" ( \f2arg-list\fP ) "] " returning " \f2english\fP"
 .br
 .RB [{ \f2qualifier\fP "}] " "pointer to" " [" "member of class" " \f2name\fP" ] " \f2english\fP"
 .br
-.RB [ rvalue "] " "reference to" " [" "member of class" " \f2name\fP" "" ] " \f2english\fP"
+.RB [ rvalue "] " "reference to" " \f2english\fP"
 .br
 .I type
 .P
@@ -423,7 +423,7 @@ is either:
 .IP "" 4
 .RI [ storage-class "] [{" modifier "}] [" C-type ]
 .br
-.RB [{ enum " | " class " | " struct " | " union }] " \f2name\fP"
+.RB [ enum " | " class " | " struct " | " union ] " \f2name\fP"
 .P
 where:
 .RS 4
@@ -441,12 +441,14 @@ One of:
 or
 \f(CWvoid\fP.
 .TP
-.I decl-list
+.I arg-list
 A comma-separated list of
 .IR name ,
 .IR english ,
 or
-.IR name " as " english .
+.I name
+\f(CWas\fP
+.IR english .
 .TP
 .I modifier
 One of:
@@ -454,9 +456,6 @@ One of:
 \f(CWlong\fP,
 \f(CWsigned\fP,
 \f(CWunsigned\fP,
-\f(CWconst\fP,
-\f(CWvolatile\fP,
-\f(CWrestrict\fP,
 or
 \f(CWcomplex\fP.
 .TP
@@ -484,8 +483,9 @@ One of:
 \f(CWextern\fP,
 \f(CWregister\fP,
 \f(CWstatic\fP,
+\f(CW_Thread_local\fP,
 or
-\f(CW_Thread_local.
+\f(CWvirtual\fP.
 .RE
 .SS Gibberish
 TODO

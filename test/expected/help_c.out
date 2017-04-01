@@ -5,18 +5,17 @@
    explain <gibberish>
    set [options]
    help | ?
-   exit | quit
+   exit | quit | q
  english:
-   array [<number>] of <english>
-   block [( [<decl-list>] )] returning <english>
-   function [( [<decl-list>] )] returning <english>
-   [{ const[ant] | volatile | restrict[ed] }] pointer to <english>
+   [<storage-class>] array [<number>] of <english>
+   block [( [<arg-list>] )] returning <english>
+   [<storage-class>] function [( [<arg-list>] )] returning <english>
+   [{ const | volatile | restrict }] pointer to <english>
    <type>
  type:
    [<storage-class>] [{<modifier>}] [<C-type>]
    { enum | struct | union } <name>
- decl-list: a comma separated list of <name>, <english>, or <name> as <english>
- name: a C identifier
+ arg-list: a comma separated list of <name>, <english>, or <name> as <english>
  gibberish: a C declaration, like "int *x", or cast, like "(int*)x"
  C-type: bool, int, char, char16_t, char32_t, wchar_t, float, double, or void
  modifier: short, long, signed, unsigned, const, volatile, or restrict

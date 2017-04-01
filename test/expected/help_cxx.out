@@ -5,19 +5,19 @@
    explain <gibberish>
    set [options]
    help | ?
-   exit | quit
+   exit | quit | q
  english:
-   array [<number>] of <english>
-   block [( [<decl-list>] )] returning <english>
-   function [( [<decl-list>] )] returning <english>
-   [{const|volatile}] {pointer|reference} to [member of class <name>] <english>
+   [<storage-class>] array [<number>] of <english>
+   block [( [<arg-list>] )] returning <english>
+   [<storage-class>] function [( [<arg-list>] )] returning <english>
+   [{ const | volatile }] pointer to [member of class <name>] <english>
+   [rvalue] reference to <english>
    <type>
  type:
    [<storage-class>] [{<modifier>}] [<C++-type>]
    { enum | struct | union | class } <name>
- decl-list: a comma separated list of <name>, <english>, or <name> as <english>
- name: a C++ identifier
+ arg-list: a comma separated list of <english> or <name> as <english>
  gibberish: a C++ declaration, like "int *x", or cast, like "(int*)x"
  C++-type: bool, int, char, char16_t, char32_t, wchar_t, float, double, or void
  modifier: short, long, signed, unsigned, const, or volatile
- storage-class: extern, register, static, or thread_local
+ storage-class: extern, register, static, thread_local, or virtual
