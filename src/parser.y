@@ -73,8 +73,8 @@
 #define DUMP_END() CDEBUG( \
   FPUTS( "\n}\n", stdout ); )
 
-#define DUMP_TYPE(KEY,TYPE) CDEBUG(         \
-  DUMP_COMMA; \
+#define DUMP_TYPE(KEY,TYPE) CDEBUG(   \
+  DUMP_COMMA; FPUTS( "  ", stdout );  \
   print_kv( (KEY), c_type_name( TYPE ), stdout ); )
 
 #define PARSE_CLEANUP()   BLOCK( parse_cleanup(); yyclearin; yyerrok; YYABORT; )
@@ -329,6 +329,7 @@ static void yyerror( char const *msg ) {
 %token              '&'
 %token  <type>      Y_CLASS
 %token              Y_COLON_COLON
+%token  <type>      Y_VIRTUAL
 
                     /* C++11 */
 %token              Y_RVALUE_REFERENCE  /* && */
@@ -485,6 +486,8 @@ cast_english
 declare_english
   : Y_DECLARE Y_NAME Y_AS storage_class_opt_english decl_english Y_END
     {
+      C_TYPE_ADD( &$5.top_ast->type, $4, @4 );
+
       DUMP_START( "declare_english",
                   "DECLARE NAME AS storage_class_opt_english decl_english" );
       $5.top_ast->name = $2;
@@ -493,7 +496,6 @@ declare_english
       DUMP_AST( "decl_english", $5.top_ast );
       DUMP_END();
 
-      C_TYPE_ADD( &$5.top_ast->type, $4, @4 );
       C_AST_CHECK( $5.top_ast, CHECK_DECL );
       c_ast_gibberish_declare( $5.top_ast, fout );
       if ( opt_semicolon )
@@ -1484,6 +1486,7 @@ storage_class_c
   | Y_STATIC
   | Y_TYPEDEF
   | Y_THREAD_LOCAL
+  | Y_VIRTUAL
   ;
 
 /*****************************************************************************/

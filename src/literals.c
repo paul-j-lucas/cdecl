@@ -83,6 +83,7 @@ char const L__THREAD_LOCAL[]  = "_Thread_local";
 
 // C++
 char const L_CLASS[]          = "class";
+char const L_VIRTUAL[]        = "virtual";
 
 // C11 & C++11
 char const L_CHAR16_T[]       = "char16_t";

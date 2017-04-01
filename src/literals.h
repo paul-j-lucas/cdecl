@@ -91,6 +91,7 @@ extern char const L__THREAD_LOCAL[];
 
 // C++
 extern char const L_CLASS[];
+extern char const L_VIRTUAL[];
 
 // C11 & C++11
 extern char const L_CHAR16_T[];

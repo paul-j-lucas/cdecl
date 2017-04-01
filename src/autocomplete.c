@@ -69,6 +69,7 @@ static char const *const CDECL_KEYWORDS[] = {
   L_TYPEDEF,
   L_UNION,
   L_UNSIGNED,
+  L_VIRTUAL,
   L_VOID,
   L_VOLATILE,
   L_WCHAR_T,

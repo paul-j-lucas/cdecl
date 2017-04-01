@@ -32,7 +32,7 @@ declaration as it is in English.  The characters are:
 + `s` = `signed` or `static`
 + `t` = `typedef`
 + `u` = `union` or `unsigned`
-+ `v` = `void` or `volatile`
++ `v` = `virtual`, `void`, or `volatile`
 + `x` = untyped K&R function argument
 
 A function's return type is separated from its arguments by `_`.

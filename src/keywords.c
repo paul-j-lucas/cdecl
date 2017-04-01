@@ -65,6 +65,7 @@ static c_keyword_t const C_KEYWORDS[] = {
 
   // C++
   { L_CLASS,         Y_CLASS,        T_CLASS,        MIN(CPP_MIN)             },
+  { L_VIRTUAL,       Y_VIRTUAL,      T_VIRTUAL,      MIN(CPP_MIN)             },
 
   // C11 & C++11
   { L_CHAR16_T,      Y_CHAR16_T,     T_CHAR16_T,     MIN(C_11) | MIN(CPP_MIN) },

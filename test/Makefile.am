@@ -49,6 +49,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_cpi.test \
 	tests/declare_cppi.test \
 	tests/declare_cvpi.test \
+	tests/declare_ea2i.test \
 	tests/declare_f_pi.test \
 	tests/declare_fcce_v-01.test \
 	tests/declare_fcce_v-02.test \
@@ -78,7 +79,9 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_pfx_i.test \
 	tests/declare_pi.test \
 	tests/declare_ppi.test \
+	tests/declare_sa2i.test \
 	tests/declare_sc.test \
+	tests/declare_sf_v.test \
 	tests/declare_si.test \
 	tests/declare_sll.test \
 	tests/declare_ti.test \
@@ -143,6 +146,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_cppi.test \
 	tests/explain_cs.test \
 	tests/explain_cvpi.test \
+	tests/explain_ea2i.test \
 	tests/explain_f_pi.test \
 	tests/explain_fcce_v.test \
 	tests/explain_fg_v.test \
@@ -178,11 +182,14 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_pi.test \
 	tests/explain_ppi.test \
 	tests/explain_rpi.test \
+	tests/explain_sa2i.test \
 	tests/explain_sc.test \
+	tests/explain_sf_v.test \
 	tests/explain_si.test \
 	tests/explain_ti.test \
 	tests/explain_ull.test \
 	tests/explain_vcpi.test \
+	tests/explain_vf_v.test \
 	tests/explain_vpi.test
 
 #
@@ -330,7 +337,8 @@ TESTS+=	tests/declare_cpmi.test \
 	tests/declare_rcpi.test \
 	tests/declare_ref.test \
 	tests/declare_ri.test \
-	tests/declare_rpi.test
+	tests/declare_rpi.test \
+	tests/declare_vf_v.test
 
 #
 # C++ declare error tests

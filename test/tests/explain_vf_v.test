@@ -1,0 +1,1 @@
+cdecl | -xc++ | explain virtual void f() | 0

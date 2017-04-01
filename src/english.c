@@ -41,6 +41,8 @@ static void c_ast_english_impl( c_ast_t const *ast, bool print_names,
 
   switch ( ast->kind ) {
     case K_ARRAY:
+      if ( ast->type )                  // storage class
+        FPRINTF( eout, "%s ", c_type_name( ast->type ) );
       FPRINTF( eout, "%s ", L_ARRAY );
       if ( ast->as.array.size != C_ARRAY_NO_SIZE )
         FPRINTF( eout, "%d ", ast->as.array.size );
@@ -50,7 +52,7 @@ static void c_ast_english_impl( c_ast_t const *ast, bool print_names,
 
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
-      if ( ast->type )
+      if ( ast->type )                  // storage class
         FPRINTF( eout, "%s ", c_type_name( ast->type ) );
       FPUTS( c_kind_name( ast->kind ), eout );
 

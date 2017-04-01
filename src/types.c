@@ -71,6 +71,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { L_STATIC,       T_STATIC        },
   { L_THREAD_LOCAL, T_THREAD_LOCAL  },
   { L_TYPEDEF,      T_TYPEDEF,      },
+  { L_VIRTUAL,      T_VIRTUAL,      },
   // qualifiers
   { L_CONST,        T_CONST         },
   { L_RESTRICT,     T_RESTRICT      },
