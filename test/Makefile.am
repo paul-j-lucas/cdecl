@@ -419,8 +419,8 @@ TESTS+=	tests/file-cast_x.test \
 # Miscellaneous tests
 # ===================
 #
-TESTS+=	tests/help_c.test \
-	tests/help_cxx.test \
+TESTS+=	tests/help-c.test \
+	tests/help-c++.test \
 	tests/set.test \
 	tests/set_options.test
 

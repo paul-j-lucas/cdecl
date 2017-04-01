@@ -9,9 +9,9 @@ Test files are as follows:
 + `declare_*`    = A declare test.
 + `explain_*`    = An explain test.
 + `file-*`       = A file test.
-+ `help_*`       = A help test.
++ `help-*`       = A help test.
 + `set_*`        = A set test.
-+ `*-`*lang*`-*` = A test using *lang* explicitly.
++ `*-`*lang*`*` = A test using *lang* explicitly.
 
 Within each test, sequences of single characters are used to denote a C/C++
 declaration as it is in English.  The characters are:
