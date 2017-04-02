@@ -104,6 +104,7 @@ TESTS+=	tests/declare_b_ai.test \
 	tests/declare_f_f_i.test \
 	tests/declare_fiiv_v.test \
 	tests/declare_fiv_v.test \
+	tests/declare_fsi_v.test \
 	tests/declare_fvx_v.test \
 	tests/declare_gf_v.test \
 	tests/declare_lll.test \
@@ -207,6 +208,7 @@ TESTS+=	tests/explain_b_ai.test \
 	tests/explain_fev_v.test \
 	tests/explain_fiiv_v.test \
 	tests/explain_fiv_v.test \
+	tests/explain_fsi_v.test \
 	tests/explain_fve_v.test \
 	tests/explain_fvi_v.test \
 	tests/explain_fvv_v.test \
