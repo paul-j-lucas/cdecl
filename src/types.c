@@ -150,7 +150,7 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc ) {
   if ( is_long_int( new_type ) && is_long_int( *dest_type ) )
     new_type = T_LONG_LONG;
 
-  if ( new_type & *dest_type ) {
+  if ( (new_type & *dest_type) ) {
     print_caret( loc->first_column );
     PRINT_ERR(
       "error: \"%s\" can not be combined with previous declaration\n",
@@ -213,7 +213,7 @@ char const* c_type_name( c_type_t type ) {
     T_TYPEDEF,
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_CLASS ); ++i ) {
-    if ( type & C_STORAGE_CLASS[i] ) {
+    if ( (type & C_STORAGE_CLASS[i]) ) {
       STRCAT( name, c_type_name( C_STORAGE_CLASS[i] ) );
       space = true;
       break;
@@ -226,7 +226,7 @@ char const* c_type_name( c_type_t type ) {
     T_VOLATILE,
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER ); ++i ) {
-    if ( type & C_QUALIFIER[i] ) {
+    if ( (type & C_QUALIFIER[i]) ) {
       if ( true_or_set( &space ) )
         STRCAT( name, " " );
       STRCAT( name, c_type_name( C_QUALIFIER[i] ) );
@@ -275,7 +275,7 @@ char const* c_type_name( c_type_t type ) {
   }
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE ); ++i ) {
-    if ( type & C_TYPE[i] ) {
+    if ( (type & C_TYPE[i]) ) {
       if ( true_or_set( &space ) )
         STRCAT( name, " " );
       STRCAT( name, c_type_name( C_TYPE[i] ) );

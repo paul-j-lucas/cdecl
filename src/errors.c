@@ -164,12 +164,12 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
       c_ast_t const *const of_ast = ast->as.array.of_ast;
       switch ( of_ast->kind ) {
         case K_BUILTIN:
-          if ( of_ast->type & T_VOID ) {
+          if ( (of_ast->type & T_VOID) ) {
             print_error( &ast->loc, "array of void" );
             print_hint( "array of pointer to void" );
             return false;
           }
-          if ( of_ast->type & T_REGISTER ) {
+          if ( (of_ast->type & T_REGISTER) ) {
             print_error( &ast->loc, "array can not be register" );
             return false;
           }
@@ -193,7 +193,7 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      if ( ast->type & T_REGISTER ) {
+      if ( (ast->type & T_REGISTER) ) {
         print_error( &ast->loc,
           "%s can not be register", c_kind_name( ast->kind )
         );
@@ -202,7 +202,7 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
       break;
 
     case K_FUNCTION:
-      if ( ast->type & T_REGISTER ) {
+      if ( (ast->type & T_REGISTER) ) {
         print_error( &ast->loc, "function can not be register" );
         return false;
       }
@@ -241,13 +241,13 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
       // no break;
     case K_POINTER: {
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
-      if ( to_ast->kind & (K_REFERENCE | K_RVALUE_REFERENCE) ) {
+      if ( (to_ast->kind & (K_REFERENCE | K_RVALUE_REFERENCE)) ) {
         print_error( &ast->loc,
           "%s to %s", c_kind_name( ast->kind ), c_kind_name( to_ast->kind )
         );
         return false;
       }
-      if ( to_ast->type & T_REGISTER )
+      if ( (to_ast->type & T_REGISTER) )
         return bad_kind_to_type( ast, T_REGISTER );
       return c_ast_check_impl( ast->as.ptr_ref.to_ast );
     }
@@ -260,9 +260,9 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
       if ( opt_lang < LANG_CPP_MIN )
         return kind_not_supported( ast );
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
-      if ( to_ast->type & T_REGISTER )
+      if ( (to_ast->type & T_REGISTER) )
         return bad_kind_to_type( ast, T_REGISTER );
-      if ( to_ast->type & T_VOID ) {
+      if ( (to_ast->type & T_VOID) ) {
         bad_kind_to_type( ast, T_VOID );
         print_hint( "pointer to void" );
         return false;
