@@ -132,16 +132,6 @@ static inline bool is_long_int( c_type_t type ) {
   return (type & T_LONG) && !(type & (T_FLOAT | T_DOUBLE));
 }
 
-/**
- * Checks whether only 1 bit is set in the given integer.
- *
- * @param n The number to check.
- * @reeturn Returns \c true only if exactly 1 bit is set.
- */
-static inline bool only_one_bit_set( unsigned n ) {
-  return n && !(n & (n - 1));
-}
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc ) {
