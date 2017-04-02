@@ -189,6 +189,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_sf_v.test \
 	tests/explain_si.test \
 	tests/explain_ti.test \
+	tests/explain_uc.test \
 	tests/explain_ull.test \
 	tests/explain_vcpi.test \
 	tests/explain_vf_v.test \
@@ -215,9 +216,27 @@ TESTS+=	tests/explain_b_ai.test \
 	tests/explain_fvx_v.test \
 	tests/explain_gf_v.test \
 	tests/explain_gk.test \
+	tests/explain_hb.test \
+	tests/explain_hc.test \
+	tests/explain_hc16.test \
+	tests/explain_hc32.test \
+	tests/explain_hv.test \
+	tests/explain_lb.test \
+	tests/explain_lc.test \
+	tests/explain_lc16.test \
+	tests/explain_lc32.test \
 	tests/explain_lll.test \
+	tests/explain_lv.test \
 	tests/explain_pmi-c.test \
 	tests/explain_ri-c.test \
+	tests/explain_sb.test \
+	tests/explain_sc16.test \
+	tests/explain_sc32.test \
+	tests/explain_sv.test \
+	tests/explain_ub.test \
+	tests/explain_uc16.test \
+	tests/explain_uc32.test \
+	tests/explain_uv.test \
 	tests/explain_v.test \
 	tests/explain_vf_v-c.test
 

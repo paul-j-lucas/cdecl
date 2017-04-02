@@ -78,17 +78,19 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { L_VOLATILE,     T_VOLATILE      },
 };
 
-#define NUM_TYPES 19
-#define MIN(LANG) (LANG - 1)            /* illegal before LANG */
+#define NUM_TYPES     19
+#define BEFORE(LANG)  (LANG - 1)        /* illegal before LANG */
 
-// shorthand      // illegal in...
-#define __        LANG_NONE             /* legal in all languages */
-#define XX        LANG_ALL              /* illegal in all languages  */
-#define KO       ~LANG_C_KNR            /* legal in K&R C only */
-#define C8        MIN(LANG_C_89)        /* minimum C89 */
-#define C9        MIN(LANG_C_99)        /* minimum C99 */
-#define P3        MIN(LANG_CPP_03)      /* minimum C++03 */
-#define P1        MIN(LANG_CPP_11)      /* minimum C++11 */
+// shorthand, illegal in/before/unless ...
+#define __    LANG_NONE                 /* legal in all languages */
+#define XX    LANG_ALL                  /* illegal in all languages  */
+#define KO   ~LANG_C_KNR                /* legal in K&R C only */
+#define C8    BEFORE(LANG_C_89)         /* minimum C89 */
+#define C9    BEFORE(LANG_C_99)         /* minimum C99 */
+#define C1    BEFORE(LANG_C_11)         /* minimum C11 */
+#define P3    BEFORE(LANG_CPP_03)       /* minimum C++03 */
+#define P1    BEFORE(LANG_CPP_11)       /* minimum C++11 */
+#define E1  ~(LANG_C_11 | LANG_CPP_11)  /* legal in either C11 or C++11 only */
 
 /**
  * Illegal combinations of types in languages.
@@ -99,8 +101,8 @@ static lang_t const BAD_TYPE_LANGS[ NUM_TYPES ][ NUM_TYPES ] = {
   /* void      */ { __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* bool      */ { XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* char      */ { XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-  /* char16_t  */ { XX,XX,XX,P1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-  /* char32_t  */ { XX,XX,XX,XX,P1,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+  /* char16_t  */ { XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+  /* char32_t  */ { XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* wchar_t   */ { XX,XX,XX,XX,XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* short     */ { XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* int       */ { XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },
@@ -159,9 +161,9 @@ bool c_type_check( c_type_t type, YYLTYPE const *loc ) {
       for ( size_t col = 0; col <= row; ++col ) {
         lang_t const bad_lang = BAD_TYPE_LANGS[ row ][ col ];
         if ( (type & C_TYPE_INFO[ col ].type) && (opt_lang & bad_lang) ) {
-          bool const fatal = bad_lang == LANG_ALL;
+          bool const error = bad_lang == LANG_ALL;
 
-          if ( fatal )
+          if ( error )
             print_error( loc,
               "\"%s\" with \"%s\" is illegal",
               C_TYPE_INFO[ row ].literal, C_TYPE_INFO[ col ].literal
@@ -172,7 +174,7 @@ bool c_type_check( c_type_t type, YYLTYPE const *loc ) {
               C_TYPE_INFO[ row ].literal, C_TYPE_INFO[ col ].literal
             );
 
-          return !fatal;
+          return !error;
         }
       } // for
     }

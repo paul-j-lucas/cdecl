@@ -17,12 +17,15 @@ Within each test, sequences of single characters are used to denote a C/C++
 declaration as it is in English.  The characters are:
 
 + `a` = array (following digit 1-9 specifies array dimension) or `auto`
-+ `b` = block (Apple extension)
++ `b` = block (Apple extension) or `bool`
 + `c` = `char` or `const`
++ `c16` = `char16_t`
++ `c32` = `char32_t`
 + `d` = `double`
 + `e` = `extern` or `...` (ellipsis)
 + `f` = function
 + `g` = `register`
++ `h` = `short`
 + `i` = `int`
 + `k` = `struct`
 + `l` = `long`
@@ -33,6 +36,7 @@ declaration as it is in English.  The characters are:
 + `t` = `typedef`
 + `u` = `union` or `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
++ `w` = `wchar_t`
 + `x` = untyped K&R function argument
 
 A function's return type is separated from its arguments by `_`.
