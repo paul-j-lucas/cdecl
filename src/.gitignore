@@ -1,6 +1,6 @@
 /*.dSYM
 /*.output
-/*.tab.c
+/*.tab.[ch]
 /*.vcg
 /c++decl
 /cast
