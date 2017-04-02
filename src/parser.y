@@ -310,7 +310,7 @@ static void yyerror( char const *msg ) {
 
                     /* C89 */
 %token  <type>      Y_CONST
-%token              Y_ELLIPSIS
+%token              Y_ELLIPSIS          "..."
 %token  <type>      Y_ENUM
 %token  <type>      Y_SIGNED
 %token  <type>      Y_VOID
@@ -327,13 +327,13 @@ static void yyerror( char const *msg ) {
 %token  <type>      Y_THREAD_LOCAL
 
                     /* C++ */
-%token              '&'
+%token              '&'                 /* reference */
 %token  <type>      Y_CLASS
-%token              Y_COLON_COLON
+%token              Y_COLON_COLON       "::"
 %token  <type>      Y_VIRTUAL
 
                     /* C++11 */
-%token              Y_RVALUE_REFERENCE  /* && */
+%token              Y_RVALUE_REFERENCE  "&&"
 
                     /* C11 & C++11 */
 %token  <type>      Y_CHAR16_T
@@ -893,7 +893,7 @@ var_decl_english
       DUMP_END();
     }
 
-  | Y_ELLIPSIS
+  | "..."
     {
       DUMP_START( "var_decl_english", "..." );
 
@@ -1175,7 +1175,7 @@ pointer_to_member_decl_c
   ;
 
 pointer_to_member_type_c
-  : /* type_c */ Y_NAME Y_COLON_COLON expect_star
+  : /* type_c */ Y_NAME "::" expect_star
     {
       DUMP_START( "pointer_to_member_type_c", "NAME COLON_COLON *" );
       DUMP_AST( "type_c", type_peek() );
@@ -1221,7 +1221,7 @@ reference_type_c
       DUMP_END();
     }
 
-  | /* type_c */ Y_RVALUE_REFERENCE
+  | /* type_c */ "&&"
     {
       DUMP_START( "reference_type_c", "&&" );
       DUMP_AST( "type_c", type_peek() );
@@ -1300,7 +1300,7 @@ arg_c
       DUMP_END();
     }
 
-  | Y_ELLIPSIS
+  | "..."
     {
       DUMP_START( "argc", "..." );
 
