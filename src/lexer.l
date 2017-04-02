@@ -88,10 +88,13 @@ static keyword_t const CDECL_KEYWORDS[] = {
 };
 
 // extern variables
-bool    explaining;                     // parsing "explain ..."?
-size_t  y_col;                          // column position of current token
-size_t  y_col_newline;                  // column position of newline
-YYLTYPE yylloc;                         // location of current token
+bool        explaining;                 // parsing "explain ..."?
+size_t      y_col;                      // column position of current token
+size_t      y_col_newline;              // column position of newline
+YYLTYPE     yylloc;                     // location of current token
+
+// local variables
+static bool eof;
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -110,6 +113,14 @@ static keyword_t const* keyword_find( char const *s ) {
 }
 
 /**
+ * Resets our notion of the current location to the beginning of the line.
+ */
+static void loc_reset( void ) {
+  y_col_newline = y_col - 1 /* '\n' */;
+  y_col = 0;
+}
+
+/**
  * Parses an integer from \c yytext.
  *
  * @param base The integer base to use.
@@ -124,14 +135,6 @@ static inline int parse_int( int base ) {
 }
 
 /**
- * Resets our notion of the current location to the beginning of the line.
- */
-static void reset_loc( void ) {
-  y_col_newline = y_col - 1 /* '\n' */;
-  y_col = 0;
-}
-
-/**
  * Standard lex function to know whether to continue parsing upon reaching EOF.
  *
  * @return Returns 1 if done or 0 to continue parsing (a new file set via
@@ -139,6 +142,16 @@ static void reset_loc( void ) {
  */
 static int yywrap( void ) {
   return 1 /* done */;
+}
+
+////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Resets the lexer to its initial state.
+ */
+void lexer_reset( void ) {
+  explaining = false;
+  loc_reset();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -199,7 +212,7 @@ H             [0-9A-Fa-f]
                   ++y_col;
                   switch ( c ) {
                     case '\n':
-                      reset_loc();
+                      loc_reset();
                       break;
                     case '/':
                       if ( prev_c == '*' )
@@ -217,14 +230,13 @@ H             [0-9A-Fa-f]
 \\\n          ;                         /* eat escaped newlines */
 
 [;\n]         {
-                reset_loc();
+                loc_reset();
                 return Y_END;
               }
 
 <<EOF>>       {
-                static bool eof;
-                reset_loc();
-                return (eof = !eof) ? Y_END : 0;
+                loc_reset();
+                return (eof = !eof) ? Y_END : YY_NULL;
               }
 
 .             return Y_ERROR;

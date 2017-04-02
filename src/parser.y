@@ -107,6 +107,7 @@ typedef struct in_attr in_attr_t;
 extern bool         explaining;
 
 // extern functions
+extern void         lexer_reset( void );
 extern void         print_help( void );
 extern void         set_option( char const* );
 extern int          yylex( void );
@@ -183,7 +184,7 @@ static inline void qualifier_pop( void ) {
  */
 static void parse_cleanup( void ) {
   c_ast_gc();
-  explaining = false;
+  lexer_reset();
   qualifier_clear();
   memset( &in_attr, 0, sizeof in_attr );
 }
