@@ -3,6 +3,8 @@
 **      src/parser.y
 */
 
+%expect 7
+
 %{
 // local
 #include "config.h"                     /* must come first */
