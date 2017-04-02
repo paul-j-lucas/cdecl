@@ -17,24 +17,12 @@
 
 // local functions
 static bool c_ast_check_impl( c_ast_t const* );
-static bool kind_not_supported( c_ast_t const* );
-static bool type_not_supported( c_type_t, c_ast_t const* );
+static bool error_kind_not_supported( c_ast_t const* );
+static bool error_kind_not_type( c_ast_t const*, c_type_t );
+static bool error_kind_to_type( c_ast_t const*, c_type_t );
+static bool error_type_not_supported( c_type_t, c_ast_t const* );
 
 ////////// local functions ////////////////////////////////////////////////////
-
-/**
- * Prints an error: <kind> to <type>.
- *
- * @param ast The AST having the bad kind.
- * @param type The bad type.
- * @return Always returns \c false.
- */
-static bool bad_kind_to_type( c_ast_t const *ast, c_type_t type ) {
-  print_error( &ast->loc,
-    "%s to %s", c_kind_name( ast->kind ), c_type_name( type )
-  );
-  return false;
-}
 
 /**
  * Performs additional checks on an entire AST for semantic validity when
@@ -169,10 +157,8 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
             print_hint( "array of pointer to void" );
             return false;
           }
-          if ( (of_ast->type & T_REGISTER) ) {
-            print_error( &ast->loc, "array can not be register" );
-            return false;
-          }
+          if ( (of_ast->type & T_REGISTER) )
+            return error_kind_not_type( ast, T_REGISTER );
           break;
         case K_FUNCTION:
           print_error( &ast->loc, "array of function" );
@@ -193,21 +179,23 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      if ( (ast->type & T_REGISTER) ) {
-        print_error( &ast->loc,
-          "%s can not be register", c_kind_name( ast->kind )
-        );
-        return false;
+      if ( (ast->type & (T_STRUCT | T_UNION | T_CLASS)) &&
+           (ast->type & T_REGISTER) ) {
+        return error_kind_not_type( ast, T_REGISTER );
       }
       break;
 
     case K_FUNCTION:
-      if ( (ast->type & T_REGISTER) ) {
-        print_error( &ast->loc, "function can not be register" );
-        return false;
+      if ( (ast->type & T_REGISTER) )
+        return error_kind_not_type( ast, T_REGISTER );
+      if ( opt_lang < LANG_CPP_MIN ) {
+        if ( (ast->type & T_CONST) )
+          return error_type_not_supported( T_CONST, ast );
+        if ( (ast->type & T_VIRTUAL) )
+          return error_type_not_supported( T_VIRTUAL, ast );
+      } else {
+        // TODO
       }
-      if ( (ast->type & T_VIRTUAL) && opt_lang < LANG_CPP_MIN )
-        return type_not_supported( T_VIRTUAL, ast );
       // no break;
     case K_BLOCK: {                     // Apple extension
       c_ast_t const *const ret_ast = ast->as.func.ret_ast;
@@ -237,7 +225,7 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
 
     case K_POINTER_TO_MEMBER:
       if ( opt_lang < LANG_CPP_MIN )
-        return kind_not_supported( ast );
+        return error_kind_not_supported( ast );
       // no break;
     case K_POINTER: {
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
@@ -248,22 +236,22 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
         return false;
       }
       if ( (to_ast->type & T_REGISTER) )
-        return bad_kind_to_type( ast, T_REGISTER );
+        return error_kind_to_type( ast, T_REGISTER );
       return c_ast_check_impl( ast->as.ptr_ref.to_ast );
     }
 
     case K_RVALUE_REFERENCE:
       if ( opt_lang < LANG_CPP_11 )
-        return kind_not_supported( ast );
+        return error_kind_not_supported( ast );
       // no break;
     case K_REFERENCE: {
       if ( opt_lang < LANG_CPP_MIN )
-        return kind_not_supported( ast );
+        return error_kind_not_supported( ast );
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
       if ( (to_ast->type & T_REGISTER) )
-        return bad_kind_to_type( ast, T_REGISTER );
+        return error_kind_to_type( ast, T_REGISTER );
       if ( (to_ast->type & T_VOID) ) {
-        bad_kind_to_type( ast, T_VOID );
+        error_kind_to_type( ast, T_VOID );
         print_hint( "pointer to void" );
         return false;
       }
@@ -275,14 +263,42 @@ static bool c_ast_check_impl( c_ast_t const *ast ) {
 }
 
 /**
+ * Prints an error: <kind> can not be <type>.
+ *
+ * @param ast The AST.
+ * @param type The bad type.
+ * @return Always returns \c false.
+ */
+static bool error_kind_not_type( c_ast_t const *ast, c_type_t type ) {
+  print_error( &ast->loc,
+    "%s can not be %s", c_kind_name( ast->kind ), c_type_name( type )
+  );
+  return false;
+}
+
+/**
  * Prints an error: <kind> not supported in <lang>.
  *
  * @param ast The AST having the bad kind.
  * @return Always returns \c false.
  */
-static bool kind_not_supported( c_ast_t const *ast ) {
+static bool error_kind_not_supported( c_ast_t const *ast ) {
   print_error( &ast->loc,
     "%s not supported in %s", c_kind_name( ast->kind ), lang_name( opt_lang )
+  );
+  return false;
+}
+
+/**
+ * Prints an error: <kind> to <type>.
+ *
+ * @param ast The AST having the bad kind.
+ * @param type The bad type.
+ * @return Always returns \c false.
+ */
+static bool error_kind_to_type( c_ast_t const *ast, c_type_t type ) {
+  print_error( &ast->loc,
+    "%s to %s", c_kind_name( ast->kind ), c_type_name( type )
   );
   return false;
 }
@@ -294,7 +310,7 @@ static bool kind_not_supported( c_ast_t const *ast ) {
  * @param ast The AST having the location of the error.
  * @return Always returns \c false.
  */
-static bool type_not_supported( c_type_t type, c_ast_t const *ast ) {
+static bool error_type_not_supported( c_type_t type, c_ast_t const *ast ) {
   print_error( &ast->loc,
     "%s not supported in %s", c_type_name( type ), lang_name( opt_lang )
   );
