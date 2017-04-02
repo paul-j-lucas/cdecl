@@ -19,18 +19,6 @@
 #define CPPDECL               "c++decl"
 #define DEBUG_INDENT          2         /* spaces per debug indent level */
 
-typedef struct c_ast c_ast_t;
-
-/**
- * A pair of c_ast pointers used as one of the synthesized attribute types in
- * the parser.
- */
-struct c_ast_pair {
-  c_ast_t *top_ast;
-  c_ast_t *target_ast;
-};
-typedef struct c_ast_pair c_ast_pair_t;
-
 typedef struct {
   int first_line;
   int first_column;
