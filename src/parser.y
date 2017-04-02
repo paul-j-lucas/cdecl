@@ -398,6 +398,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  placeholder_type_c
 %type   <type>      builtin_type_c
 %type   <type>      class_struct_type_c
+%type   <type>      cv_qualifier_c
 %type   <type>      enum_class_struct_union_type_c
 %type   <type>      storage_class_c
 %type   <type>      type_modifier_c
@@ -1088,9 +1089,9 @@ func_decl_c
       DUMP_START( "func_decl_c", "decl2_c '(' arg_list_opt_c ')'" );
       DUMP_AST( "type_c", type_peek() );
       DUMP_AST( "decl2_c", $1.ast );
+      DUMP_AST_LIST( "arg_list_opt_c", $3 );
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
-      DUMP_AST_LIST( "arg_list_opt_c", $3 );
 
       c_ast_t *const func = c_ast_new( K_FUNCTION, ast_depth, &@$ );
       func->as.func.args = $3;
@@ -1503,8 +1504,12 @@ type_qualifier_list_opt_c
   ;
 
 type_qualifier_c
-  : Y_CONST
+  : cv_qualifier_c
   | Y_RESTRICT
+  ;
+
+cv_qualifier_c
+  : Y_CONST
   | Y_VOLATILE
   ;
 
