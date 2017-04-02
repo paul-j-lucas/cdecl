@@ -79,7 +79,7 @@
   DUMP_COMMA; FPUTS( "  ", stdout );  \
   print_kv( (KEY), c_type_name( TYPE ), stdout ); )
 
-#define PARSE_CLEANUP()   BLOCK( parse_cleanup(); yyclearin; yyerrok; YYABORT; )
+#define PARSE_CLEANUP()   BLOCK( parse_cleanup(); YYABORT; )
 #define PARSE_ERROR(...)  BLOCK( parse_error( __VA_ARGS__ ); PARSE_CLEANUP(); )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -469,6 +469,11 @@ cast_english
       FREE( $2 );
     }
 
+  | Y_CAST Y_NAME error Y_END
+    {
+      PARSE_ERROR( "\"%s\" expected", L_INTO );
+    }
+
   | Y_CAST decl_english Y_END
     {
       DUMP_START( "cast_english", "CAST decl_english" );
@@ -509,6 +514,11 @@ declare_english
   | Y_DECLARE error Y_AS
     {
       PARSE_ERROR( "name expected" );
+    }
+
+  | Y_DECLARE Y_NAME error Y_END
+    {
+      PARSE_ERROR( "\"%s\" expected", L_AS );
     }
   ;
 
@@ -732,7 +742,10 @@ returning_english
       DUMP_END();
     }
 
-  | error { PARSE_ERROR( "\"%s\" expected", L_RETURNING ); }
+  | error Y_END
+    {
+      PARSE_ERROR( "\"%s\" expected", L_RETURNING );
+    }
   ;
 
 qualified_decl_english
@@ -807,11 +820,6 @@ pointer_to_member_decl_english
       DUMP_END();
     }
 
-  | pointer_to error
-    {
-      PARSE_ERROR( "\"%s\" expected", L_MEMBER );
-    }
-
   | pointer_to Y_MEMBER error
     {
       PARSE_ERROR( "\"%s\" expected", L_OF );
@@ -861,6 +869,11 @@ reference_english
     {
       $$.ast = c_ast_new( K_RVALUE_REFERENCE, ast_depth, &@$ );
       $$.target_ast = NULL;
+    }
+
+  | Y_RVALUE error
+    {
+      PARSE_ERROR( "\"%s\" expected", L_REFERENCE );
     }
   ;
 
@@ -1029,6 +1042,15 @@ array_decl_c
     }
   ;
 
+array_size_c
+  : '[' ']'                       { $$ = C_ARRAY_NO_SIZE; }
+  | '[' Y_NUMBER ']'              { $$ = $2; }
+  | '[' error ']'
+    {
+      PARSE_ERROR( "integer expected for array size" );
+    }
+  ;
+
 block_decl_c                            /* Apple extension */
   : /* type */ '(' '^'
     {
@@ -1179,7 +1201,7 @@ pointer_to_member_decl_c
 pointer_to_member_type_c
   : /* type_c */ Y_NAME "::" expect_star
     {
-      DUMP_START( "pointer_to_member_type_c", "NAME COLON_COLON *" );
+      DUMP_START( "pointer_to_member_type_c", "NAME :: *" );
       DUMP_AST( "type_c", type_peek() );
       DUMP_NAME( "NAME", $1 );
 
@@ -1432,6 +1454,11 @@ builtin_or_enum_class_struct_union_type_c
       DUMP_AST( "builtin_or_enum_class_struct_union_type_c", $$.ast );
       DUMP_END();
     }
+
+  | enum_class_struct_union_type_c error
+    {
+      PARSE_ERROR( "enum name expected" );
+    }
   ;
 
 builtin_type_c
@@ -1655,15 +1682,6 @@ reference_cast_c
 /*****************************************************************************/
 /*  miscellaneous productions                                                */
 /*****************************************************************************/
-
-array_size_c
-  : '[' ']'                       { $$ = C_ARRAY_NO_SIZE; }
-  | '[' Y_NUMBER ']'              { $$ = $2; }
-  | '[' error ']'
-    {
-      PARSE_ERROR( "integer expected for array size" );
-    }
-  ;
 
 expect_comma
   : ','
