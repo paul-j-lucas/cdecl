@@ -45,7 +45,7 @@ static free_node_t *free_head;          // linked list of stuff to free
 ///////////////////////////////////////////////////////////////////////////////
 
 char const* base_name( char const *path_name ) {
-  assert( path_name );
+  assert( path_name != NULL );
   char const *const slash = strrchr( path_name, '/' );
   if ( slash )
     return slash[1] ? slash + 1 : slash;
@@ -79,8 +79,8 @@ char* check_strdup( char const *s ) {
 
 #ifndef HAVE_FMEMOPEN
 FILE* fmemopen( void const *buf, size_t size, char const *mode ) {
-  assert( buf );
-  assert( strchr( mode, 'r' ) );
+  assert( buf != NULL );
+  assert( strchr( mode, 'r' ) != NULL );
 
   FILE *const tmp = tmpfile();
   if ( !tmp )
@@ -95,7 +95,7 @@ FILE* fmemopen( void const *buf, size_t size, char const *mode ) {
 #endif /* HAVE_FMEMOPEN */
 
 void* free_later( void *p ) {
-  assert( p );
+  assert( p != NULL );
   free_node_t *const new_node = MALLOC( free_node_t, 1 );
   new_node->fn_ptr = p;
   new_node->fn_next = free_head;
@@ -180,8 +180,8 @@ char* readline_wrapper( char const *ps1, char const *ps2 ) {
       break;
   } // for
 
-  assert( buf );
-  assert( *buf );
+  assert( buf != NULL );
+  assert( *buf != '\0' );
 #ifdef HAVE_READLINE
   add_history( buf );
 #endif /* HAVE_READLINE */
@@ -189,7 +189,7 @@ char* readline_wrapper( char const *ps1, char const *ps2 ) {
 }
 
 link_t* link_pop( link_t **phead ) {
-  assert( phead );
+  assert( phead != NULL );
   if ( *phead ) {
     link_t *const popped = (*phead);
     (*phead) = popped->next;
@@ -200,16 +200,16 @@ link_t* link_pop( link_t **phead ) {
 }
 
 void link_push( link_t **phead, link_t *node ) {
-  assert( phead );
-  assert( node );
-  assert( !node->next );
+  assert( phead != NULL );
+  assert( node != NULL );
+  assert( node->next == NULL );
   node->next = (*phead);
   (*phead) = node;
 }
 
 size_t strcpy_len( char *dst, char const *src ) {
-  assert( dst );
-  assert( src );
+  assert( dst != NULL );
+  assert( src != NULL );
   char const *const dst0 = dst;
   while ( (*dst++ = *src++) )
     /* empty */;

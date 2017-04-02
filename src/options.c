@@ -92,8 +92,8 @@ static void         usage( void );
  * @param opts2 The second set of short options.
  */
 static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
-  assert( opts1 );
-  assert( opts2 );
+  assert( opts1 != NULL );
+  assert( opts2 != NULL );
 
   unsigned gave_count = 0;
   char const *opt = opts1;
@@ -200,7 +200,7 @@ static color_when_t parse_color_when( char const *when ) {
     { NULL,        COLOR_NEVER    }
   };
 
-  assert( when );
+  assert( when != NULL );
   size_t names_buf_size = 1;            // for trailing NULL
 
   for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when; ++m ) {

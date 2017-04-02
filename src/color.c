@@ -71,8 +71,8 @@ static bool parse_sgr( char const* );
  * @return Returns \c true only if \a sgr_color is valid.
  */
 static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
-  assert( cap );
-  assert( cap->cap_var_to_set );
+  assert( cap != NULL );
+  assert( cap->cap_var_to_set != NULL );
 
   if ( sgr_color ) {
     if ( !*sgr_color )                  // empty string -> NULL = unset

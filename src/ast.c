@@ -60,7 +60,7 @@ static void c_ast_free( c_ast_t *ast ) {
  * @return Returns \c true only if there is a cycle.
  */
 static bool c_ast_has_cycle( c_ast_t const *ast ) {
-  assert( ast );
+  assert( ast != NULL );
   for ( c_ast_t const *const start_ast = ast; ast->parent; ) {
     ast = ast->parent;
     if ( ast == start_ast )
@@ -87,14 +87,14 @@ void c_ast_gc( void ) {
 }
 
 void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
-  assert( list );
+  assert( list != NULL );
   if ( ast ) {
     assert( ast->next == NULL );
     if ( !list->head_ast ) {
       assert( list->tail_ast == NULL );
       list->head_ast = list->tail_ast = ast;
     } else {
-      assert( list->tail_ast );
+      assert( list->tail_ast != NULL );
       assert( list->tail_ast->next == NULL );
       list->tail_ast->next = ast;
       list->tail_ast = ast;
@@ -103,7 +103,7 @@ void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
 }
 
 c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, YYLTYPE const *loc ) {
-  assert( loc );
+  assert( loc != NULL );
   static unsigned next_id;
 
   c_ast_t *const ast = MALLOC( c_ast_t, 1 );
@@ -121,15 +121,15 @@ c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, YYLTYPE const *loc ) {
 }
 
 c_ast_t* c_ast_root( c_ast_t *ast ) {
-  assert( ast );
+  assert( ast != NULL );
   while ( ast->parent )
     ast = ast->parent;
   return ast;
 }
 
 void c_ast_set_parent( c_ast_t *child, c_ast_t *parent ) {
-  assert( child );
-  assert( parent );
+  assert( child != NULL );
+  assert( parent != NULL );
   assert( c_ast_is_parent( parent ) );
 
   child->parent = parent;

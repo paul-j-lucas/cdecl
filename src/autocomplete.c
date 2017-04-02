@@ -123,7 +123,7 @@ static inline bool is_command( char const *command ) {
  * @return Returns an array of C strings of possible matches.
  */
 static char** attempt_completion( char const *text, int start, int end ) {
-  assert( text );
+  assert( text != NULL );
   (void)end;
   //
   // If the word is at the start of the line (start == 0), then attempt to

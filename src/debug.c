@@ -114,7 +114,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 }
 
 void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
-  assert( list );
+  assert( list != NULL );
   if ( list->head_ast != NULL ) {
     FPUTS( "[\n", dout );
     bool comma = false;
@@ -131,7 +131,7 @@ void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
 }
 
 void print_kv( char const *key, char const *value, FILE *dout ) {
-  assert( key );
+  assert( key != NULL );
   if ( value && *value )
     FPRINTF( dout, "%s = \"%s\"", key, value );
   else

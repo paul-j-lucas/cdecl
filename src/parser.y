@@ -224,7 +224,7 @@ static void qualifier_clear( void ) {
  */
 static void qualifier_push( c_type_t qualifier, YYLTYPE const *loc ) {
   assert( (qualifier & ~T_MASK_QUALIFIER) == 0 );
-  assert( loc );
+  assert( loc != NULL );
   qualifier_link_t *const q = MALLOC( qualifier_link_t, 1 );
   q->qualifier = qualifier;
   q->loc = *loc;
@@ -532,7 +532,7 @@ explain_declaration_c
       c_ast_t *const ast = c_ast_patch_none( $2.top_ast, $4.top_ast );
       C_AST_CHECK( ast, CHECK_DECL );
       char const *const name = c_ast_take_name( ast );
-      assert( name );
+      assert( name != NULL );
       FPRINTF( fout, "%s %s %s ", L_DECLARE, name, L_AS );
       if ( c_ast_take_typedef( ast ) )
         FPRINTF( fout, "%s ", L_TYPE );

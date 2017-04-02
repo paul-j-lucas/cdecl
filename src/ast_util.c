@@ -27,7 +27,7 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t* );
  * @return Returns the AST to be used as the grammar production's return value.
  */
 c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
-  assert( array );
+  assert( array != NULL );
   assert( array->kind == K_ARRAY );
 
   if ( !ast )
@@ -83,8 +83,8 @@ c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
  * @return If \a ast is an array, returns \a ast; otherwise returns \a array.
  */
 static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
-  assert( ast );
-  assert( array );
+  assert( ast != NULL );
+  assert( array != NULL );
 
   switch ( ast->kind ) {
     case K_POINTER:
@@ -137,8 +137,8 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
  */
 static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
                                      c_ast_t *func ) {
-  assert( ast );
-  assert( func );
+  assert( ast != NULL );
+  assert( func != NULL );
   assert( func->kind & (K_BLOCK | K_FUNCTION) );
 
   switch ( ast->kind ) {
@@ -212,14 +212,14 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
 
 c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
   c_ast_t *const rv = c_ast_add_array_impl( ast, array );
-  assert( rv );
+  assert( rv != NULL );
   array->type |= c_ast_take_storage( array->as.array.of_ast );
   return rv;
 }
 
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_type_ast, c_ast_t *func ) {
   c_ast_t *const rv = c_ast_add_func_impl( ast, ret_type_ast, func );
-  assert( rv );
+  assert( rv != NULL );
   func->type |= c_ast_take_storage( func->as.func.ret_ast );
   return rv;
 }

@@ -44,7 +44,7 @@ static bool bad_kind_to_type( c_ast_t const *ast, c_type_t type ) {
  * @return Returns \c true only if the AST does not violate any cast checks.
  */
 static bool c_ast_check_cast( c_ast_t const *ast ) {
-  assert( ast );
+  assert( ast != NULL );
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
 
   c_ast_t const *const storage_ast =
@@ -77,7 +77,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
  * @return Returns \c true only if all function arguments are valid.
  */
 static bool c_ast_check_func_args( c_ast_t const *ast ) {
-  assert( ast );
+  assert( ast != NULL );
   assert( ast->kind & (K_BLOCK | K_FUNCTION) );
 
   c_ast_t const *arg, *variadic_arg = NULL, *void_arg = NULL;
@@ -157,7 +157,7 @@ only_void:
  * @return Returns \c true only if the entire AST is valid.
  */
 static bool c_ast_check_impl( c_ast_t const *ast ) {
-  assert( ast );
+  assert( ast != NULL );
 
   switch ( ast->kind ) {
     case K_ARRAY: {

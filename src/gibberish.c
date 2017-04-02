@@ -78,7 +78,7 @@ static inline void g_param_space( g_param_t *param ) {
  * @param param The g_param to use.
  */
 static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
-  assert( ast );
+  assert( ast != NULL );
   assert( ast->kind == K_ARRAY );
 
   FPUTC( '[', param->gout );
@@ -96,7 +96,7 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
  * @param param The g_param to use.
  */
 static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
-  assert( ast );
+  assert( ast != NULL );
   assert( ast->kind & (K_BLOCK | K_FUNCTION) );
 
   bool comma = false;
@@ -118,8 +118,8 @@ static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
  * @param param The g_param to use.
  */
 static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
-  assert( ast );
-  assert( param );
+  assert( ast != NULL );
+  assert( param != NULL );
 
   switch ( ast->kind ) {
     case K_ARRAY:
@@ -214,11 +214,11 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
  * @param param The g_param to use.
  */
 static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
-  assert( ast );
+  assert( ast != NULL );
   assert( ast->kind &
           (K_ARRAY | K_BLOCK | K_FUNCTION |
            K_POINTER | K_REFERENCE | K_RVALUE_REFERENCE) );
-  assert( param );
+  assert( param != NULL );
 
   c_ast_t const *const parent = ast->parent;
 
@@ -312,7 +312,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
  */
 static void c_ast_gibberish_qual_name( c_ast_t const *ast,
                                        g_param_t const *param ) {
-  assert( ast );
+  assert( ast != NULL );
 
   switch ( ast->kind ) {
     case K_POINTER:
@@ -351,8 +351,8 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast,
  * @param param The g_param to use.
  */
 static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
-  assert( ast );
-  assert( param );
+  assert( ast != NULL );
+  assert( param != NULL );
 
   if ( ast->name && param->gkind != G_CAST ) {
     g_param_space( param );

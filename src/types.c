@@ -145,7 +145,7 @@ static inline bool only_one_bit_set( unsigned n ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc ) {
-  assert( dest_type );
+  assert( dest_type != NULL );
 
   if ( is_long_int( new_type ) && is_long_int( *dest_type ) )
     new_type = T_LONG_LONG;
