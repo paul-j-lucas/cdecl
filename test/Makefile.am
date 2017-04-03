@@ -48,6 +48,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_cpfv_pi.test \
 	tests/declare_cpi.test \
 	tests/declare_cppi.test \
+	tests/declare_cu.test \
 	tests/declare_cvpi.test \
 	tests/declare_ea2i.test \
 	tests/declare_f_pi.test \
@@ -186,6 +187,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_cpi.test \
 	tests/explain_cppi.test \
 	tests/explain_cs.test \
+	tests/explain_cu.test \
 	tests/explain_cvpi.test \
 	tests/explain_ea2i.test \
 	tests/explain_f_pi.test \

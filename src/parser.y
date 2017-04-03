@@ -934,9 +934,9 @@ type_english
     {
       DUMP_START( "type_english",
                   "type_modifier_list_opt_english unmodified_type_english" );
-      DUMP_TYPE( "qualifier", qualifier_peek() );
       DUMP_TYPE( "type_modifier_list_opt_english", $1 );
       DUMP_AST( "unmodified_type_english", $2.ast );
+      DUMP_TYPE( "qualifier", qualifier_peek() );
 
       $$ = $2;
       C_TYPE_ADD( &$$.ast->type, qualifier_peek(), qualifier_peek_loc() );
@@ -950,10 +950,12 @@ type_english
     {
       DUMP_START( "type_english", "type_modifier_list_english" );
       DUMP_TYPE( "type_modifier_list_english", $1 );
+      DUMP_TYPE( "qualifier", qualifier_peek() );
 
       $$.ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
       $$.target_ast = NULL;
       $$.ast->type = T_INT;
+      C_TYPE_ADD( &$$.ast->type, qualifier_peek(), qualifier_peek_loc() );
       C_TYPE_ADD( &$$.ast->type, $1, @1 );
 
       DUMP_AST( "type_english", $$.ast );
