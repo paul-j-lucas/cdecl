@@ -93,7 +93,9 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_ui.test \
 	tests/declare_ull.test \
 	tests/declare_vcpi.test \
-	tests/declare_vpi.test
+	tests/declare_vpi.test \
+	tests/declare_zd.test \
+	tests/declare_zf.test
 
 #
 # C declare error tests
@@ -232,7 +234,9 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_ull.test \
 	tests/explain_vcpi.test \
 	tests/explain_vf_v.test \
-	tests/explain_vpi.test
+	tests/explain_vpi.test \
+	tests/explain_zd.test \
+	tests/explain_zf.test
 
 #
 # C explain error tests

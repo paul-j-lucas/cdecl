@@ -38,6 +38,7 @@ declaration as it is in English.  The characters are:
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
 + `x` = untyped K&R function argument
++ `z` = `complex`
 
 A function's return type is separated from its arguments by `_`.
 
