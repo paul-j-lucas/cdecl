@@ -123,6 +123,8 @@ TESTS+=	tests/declare_b_ai.test \
 	tests/declare_lc16.test \
 	tests/declare_lc32.test \
 	tests/declare_lf-c.test \
+	tests/declare_ll-c89.test \
+	tests/declare_ll-knr.test \
 	tests/declare_lll.test \
 	tests/declare_lv.test \
 	tests/declare_lw.test \
@@ -265,6 +267,8 @@ TESTS+=	tests/explain_b_ai.test \
 	tests/explain_lc16.test \
 	tests/explain_lc32.test \
 	tests/explain_lf-c.test \
+	tests/explain_ll-c89.test \
+	tests/explain_ll-knr.test \
 	tests/explain_lll.test \
 	tests/explain_lv.test \
 	tests/explain_lw.test \

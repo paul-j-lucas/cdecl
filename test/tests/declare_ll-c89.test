@@ -1,0 +1,1 @@
+cdecl | -xc89 | declare x as long long x | 65

@@ -107,7 +107,7 @@ static lang_t const BAD_TYPE_LANGS[ NUM_TYPES ][ NUM_TYPES ] = {
   /* short     */ { XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* int       */ { XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* long      */ { XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__ },
-  /* long long */ { XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__ },
+  /* long long */ { XX,XX,XX,XX,XX,XX,XX,C9,__,C9,__,__,__,__,__,__,__,__,__ },
   /* signed    */ { XX,XX,C8,XX,XX,XX,C8,C8,C8,C8,C8,__,__,__,__,__,__,__,__ },
   /* unsigned  */ { XX,XX,__,XX,XX,XX,__,__,__,C8,XX,__,__,__,__,__,__,__,__ },
   /* float     */ { XX,XX,XX,XX,XX,XX,XX,XX,KO,XX,XX,XX,__,__,__,__,__,__,__ },
