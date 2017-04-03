@@ -18,7 +18,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "March 30, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 3, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -178,9 +178,12 @@ A transformation is made from that language to C (C++) or pseudo-English.
 The results of this transformation are written on standard output.
 .SH OPTIONS
 An option argument
+.I f
+means
+.IR file ,
 .I n
 means
-.I "unsigned integer"
+.IR "unsigned integer" ,
 and
 .I s
 means
@@ -200,23 +203,71 @@ then
 .I n
 is interpreted as hexedecimal.
 .TP 4
-.BR \-\-c89 " | " \-8
-Shorthand for either
-.B \-\-language=c89
-or
-.BR \-xc89 .
+.BI \-\-color \f1=\fPs "\f1 | \fP" "" \-c " s"
+Sets when to colorize output to
+.I s
+(which is case-insensitive).
+(See the
+.B CDECL_COLORS
+environment variable about colorization.)
+The choices for
+.I s
+are:
+.RS
+.TP 11
+.B always
+Always colorize.
 .TP
-.BR \-\-c99 " | " \-9
-Shorthand for either
-.B \-\-language=c99
-or
-.BR \-xc99 .
+.B auto
+Explicit synonym for
+.BR isatty .
 .TP
-.BR \-\-c++ " | " \-c
-Shorthand for either
-.B \-\-language=c++
-or
-.BR \-xc++ .
+.B isatty
+Colorize only when standard output is connected to a TTY
+(terminal)
+and the TERM environment variable
+is not empty and not equal to
+.BR dumb .
+.TP
+.B never
+Never colorize.
+.TP
+.B not_file
+Colorize only when
+.I not
+writing to a regular file
+(hence writing to a TTY or pipe)
+and the TERM environment variable
+is not empty and not equal to
+.BR dumb .
+(Specifically,
+.BR fstat (3)
+is called on standard output:
+colorize only if \f(CWS_IFREG\f1 is false.)
+.IP ""
+This is more useful than
+.B isatty
+since it accomodates the common case of allowing color output to be piped to
+.BR less (1)
+and still display in color since
+.B less
+understands
+.I SGR
+(``Select Graphic Rendition'')
+ASCII terminal escape sequences
+that produce color.
+.TP
+.B not_isreg
+Explicit synonym for
+.BR not_file .
+.TP
+.B tty
+Synonym for
+.BR isatty .
+.RE
+.IP ""
+The default is
+.BR not_file .
 .TP
 .BR \-\-debug " | " \-d
 Turns on debugging output (if compiled in).
@@ -228,7 +279,7 @@ while the parser is reducing grammar productions.
 .B cdecl
 itself.)
 .TP
-.BR \-\-file \f1=\fPf "\f1 | \fP" "" \-f " f"
+.BI \-\-file \f1=\fPf "\f1 | \fP" "" \-f " f"
 Reads commands from file
 .IR f .
 .TP
@@ -240,13 +291,7 @@ and
 enables line-editing and history.
 (This is the default when connected to a terminal.)
 .TP
-.BR \-\-knr " | " \-k
-Shorthand for either
-.B \-\-language=knr
-or
-.BR \-xknr .
-.TP
-.BR \-\-lang \f1=\fPs "\f1 | \fP" "" \-x " s"
+.BI \-\-lang \f1=\fPs "\f1 | \fP" "" \-x " s"
 Specifies which dialect of what language
 .I s
 (which is case-insensitive)
@@ -265,7 +310,7 @@ as given in the first edition of
 .IR "The C Programming Language" .
 .TP
 .B C89
-Use the C89 (ANSI C) dialect of the C language.
+Use the C89 (first ANSI C) dialect of the C language.
 Adds support for
 \f(CWconst\fP,
 \f(CWenum\fP,
@@ -274,14 +319,18 @@ Adds support for
 \f(CWvolatile\fP,
 and function prototypes.
 .TP
+.B C95
+Use the C95 dialect of the C language.
+Adds support for
+\f(CWwchar_t\fP.
+.TP
 .B C99
 Use the C99 dialect of the C language.
 Adds support for
 \f(CW_Bool\fP (and \f(CWbool\fP),
 \f(CW_Complex\fP (and \f(CWcomplex\fP),
-\f(CWrestrict\fP,
 and
-\f(CWwchar_t\fP.
+\f(CWrestrict\fP.
 .TP
 .B C11
 Use the C11 dialect of the C language.
@@ -290,7 +339,7 @@ Adds support for
 \f(CWchar32_t\fP,
 and
 \f(CW_Thread_local\fP
-and (\f(CWthread_local\fP).
+(and \f(CWthread_local\fP).
 .TP
 .B C++
 Use the latest supported dialect of the C++ language.
@@ -323,7 +372,7 @@ and
 .BR \-\-no-semicolon " | " \-s
 Suppresses printing of a trailing semicolon for C & C++ declarations.
 .TP
-.BR \-\-output \f1=\fPf "\f1 | \fP" "" \-o " f"
+.BI \-\-output \f1=\fPf "\f1 | \fP" "" \-o " f"
 Sends all non-error output to file
 .IR f .
 .TP
@@ -526,7 +575,7 @@ as given in the first edition of
 .IR "The C Programming Language" .
 .TP
 .B c89
-Use the C89 (ANSI C) dialect of the C language.
+Use the C89 (first ANSI C) dialect of the C language.
 Adds support for
 \f(CWconst\fP,
 \f(CWenum\fP,
@@ -535,14 +584,18 @@ Adds support for
 \f(CWvolatile\fP,
 and function prototypes.
 .TP
+.B c95
+Use the C95 dialect of the C language.
+Adds support for
+\f(CWwchar_t\fP.
+.TP
 .B c99
 Use the C99 dialect of the C language.
 Adds support for
 \f(CW_Bool\fP (and \f(CWbool\fP),
 \f(CW_Complex\fP (and \f(CWcomplex\fP),
-\f(CWrestrict\fP,
 and
-\f(CWwchar_t\fP.
+\f(CWrestrict\fP.
 .TP
 .B c11
 Use the C11 dialect of the C language.
@@ -576,6 +629,9 @@ Turns [off] or on debugging output
 (if compiled in)
 \(em default is off.
 .TP
+.B options
+Prints the current value of all options.
+.TP
 .RB [ no ] prompt
 Turns [off] or on the prompt
 \(em default is on.
@@ -591,12 +647,6 @@ debugging output
 (if compiled in)
 \(em default is off.
 .RE
-.PP
-Note that debugging information and
-.BR bison (1)
-debugging information are available
-only if they have been compiled into
-.IR cdecl .
 .SH EXAMPLES
 To declare an array of pointers to functions that are like
 .BR malloc (3):
