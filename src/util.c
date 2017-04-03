@@ -78,7 +78,7 @@ char* check_strdup( char const *s ) {
 }
 
 #ifndef HAVE_FMEMOPEN
-FILE* fmemopen( void const *buf, size_t size, char const *mode ) {
+FILE* fmemopen( void *buf, size_t size, char const *mode ) {
   assert( buf != NULL );
   assert( strchr( mode, 'r' ) != NULL );
 

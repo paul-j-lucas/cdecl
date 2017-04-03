@@ -184,7 +184,7 @@ static bool parse_stdin( void ) {
  * @return Returns \c true only upon success.
  */
 static bool parse_string( char const *s, size_t s_len ) {
-  FILE *const temp = fmemopen( s, s_len, "r" );
+  FILE *const temp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
   yyrestart( temp );
   bool const ok = yyparse() == 0;
   fclose( temp );

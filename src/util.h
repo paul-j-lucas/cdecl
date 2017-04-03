@@ -141,7 +141,7 @@ CDECL_UTIL_INLINE bool false_set( bool *flag ) {
  * @param mode The open mode.  It \e must contain \c r.
  * @return Returns a FILE containing the contents of \a buf.
  */
-FILE* fmemopen( void const *buf, size_t size, char const *mode );
+FILE* fmemopen( void *buf, size_t size, char const *mode );
 #endif /* HAVE_FMEMOPEN */
 
 /**
