@@ -8,6 +8,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "color.h"
+#include "common.h"
 #include "diagnostics.h"
 #include "options.h"
 #include "prompt.h"
@@ -22,13 +23,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 int error_column( void ) {
-  if ( y_col == 0 )
-    return (int)y_col_newline;
+  if ( my_col == 0 )
+    return (int)my_col_newline;
 
-  if ( *yytext == '\n' )
-    return (int)y_col;
+  if ( *my_text == '\n' )
+    return (int)my_col;
 
-  return (int)y_col - (int)strlen( yytext );
+  return (int)my_col - (int)strlen( my_text );
 }
 
 void print_caret( int col ) {

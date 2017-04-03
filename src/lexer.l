@@ -18,15 +18,17 @@
 // standard
 #include <string.h>
 
+#define SET_MY_TEXT   my_text = yytext
+
 /**
  * This code is inserted by flex at the beginning of each rule.
  * It sets the current token location information.
  * @hideinitializer
  */
-#define YY_USER_ACTION                      \
-  yylloc.first_column = y_col;              \
-  yylloc.last_column  = y_col + yyleng - 1; \
-  y_col += yyleng;
+#define YY_USER_ACTION                        \
+  yylloc.first_column = my_col;               \
+  yylloc.last_column  = my_col + yyleng - 1;  \
+  my_col += yyleng;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -89,8 +91,9 @@ static keyword_t const CDECL_KEYWORDS[] = {
 
 // extern variables
 bool        explaining;                 // parsing "explain ..."?
-size_t      y_col;                      // column position of current token
-size_t      y_col_newline;              // column position of newline
+size_t      my_col;                     // column position of current token
+size_t      my_col_newline;             // column position of newline
+char const *my_text;                    // guranteed pointer of yytext
 YYLTYPE     yylloc;                     // location of current token
 
 // local variables
@@ -116,12 +119,12 @@ static keyword_t const* keyword_find( char const *s ) {
  * Resets our notion of the current location to the beginning of the line.
  */
 static void loc_reset( void ) {
-  y_col_newline = y_col - 1 /* '\n' */;
-  y_col = 0;
+  my_col_newline = my_col - 1 /* '\n' */;
+  my_col = 0;
 }
 
 /**
- * Parses an integer from \c yytext.
+ * Parses an integer from \c my_text.
  *
  * @param base The integer base to use.
  * @return Returns the integer value.
@@ -131,7 +134,7 @@ static inline int parse_int( int base ) {
   // We don't need to check for errors from strtol(3) here since the lexer
   // guarantees that we'll be passed only a valid number token.
   //
-  return (int)strtol( yytext, NULL, base );
+  return (int)strtol( my_text, NULL, base );
 }
 
 /**
@@ -166,36 +169,40 @@ H             [0-9A-Fa-f]
 %%
 
 {A}({A}|{D})* {
-                char const *name = yytext;
+                SET_MY_TEXT;
 
                 if ( !explaining ) {
-                  keyword_t const *const k = keyword_find( name );
+                  keyword_t const *const k = keyword_find( my_text );
                   if ( k ) {
                     if ( k->c_keyword_synonym )
-                      name = k->c_keyword_synonym;
+                      my_text = k->c_keyword_synonym;
                     else
                       return k->y_token;
                   }
                 }
 
-                c_keyword_t const *const k = c_keyword_find_literal( name );
+                c_keyword_t const *const k = c_keyword_find_literal( my_text );
                 if ( k ) {
                   yylval.type = k->type;
                   return k->y_token;
                 }
 
-                yylval.name = check_strdup( name );
+                yylval.name = check_strdup( my_text );
                 return Y_NAME;
               }
 
-"c++"         { yylval.name = check_strdup( yytext ); return Y_CPP_LANG_NAME; }
-"c++98"       { yylval.name = check_strdup( yytext ); return Y_CPP_LANG_NAME; }
-"c++03"       { yylval.name = check_strdup( yytext ); return Y_CPP_LANG_NAME; }
-"c++11"       { yylval.name = check_strdup( yytext ); return Y_CPP_LANG_NAME; }
+"c++"         |
+"c++98"       |
+"c++03"       |
+"c++11"       {
+                SET_MY_TEXT;
+                yylval.name = check_strdup( my_text );
+                return Y_CPP_LANG_NAME;
+              }
 
-[1-9]{D}*     { yylval.number = parse_int( 10 ); return Y_NUMBER; }
-0{O}*         { yylval.number = parse_int(  8 ); return Y_NUMBER; }
-0[xX]{H}+     { yylval.number = parse_int( 16 ); return Y_NUMBER; }
+[1-9]{D}*     { SET_MY_TEXT; yylval.number = parse_int( 10 ); return Y_NUMBER; }
+0{O}*         { SET_MY_TEXT; yylval.number = parse_int(  8 ); return Y_NUMBER; }
+0[xX]{H}+     { SET_MY_TEXT; yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
 "&&"          return Y_RVALUE_REFERENCE;
 "..."         return Y_ELLIPSIS;
@@ -209,12 +216,12 @@ H             [0-9A-Fa-f]
 "*"           |
 ","           |
 "["           |
-"]"           return *yytext;
+"]"           { SET_MY_TEXT; return *my_text; }
 
 "/*"          {                         /* ignore C-style comments */
                 for ( int c = input(), prev_c = '\0'; c != EOF;
                       prev_c = c, c = input() ) {
-                  ++y_col;
+                  ++my_col;
                   switch ( c ) {
                     case '\n':
                       loc_reset();
@@ -235,16 +242,21 @@ H             [0-9A-Fa-f]
 \\\n          ;                         /* eat escaped newlines */
 
 [;\n]         {
+                SET_MY_TEXT;
                 loc_reset();
                 return Y_END;
               }
 
 <<EOF>>       {
+                SET_MY_TEXT;
                 loc_reset();
                 return (eof = !eof) ? Y_END : YY_NULL;
               }
 
-.             return Y_ERROR;
+.             {
+                SET_MY_TEXT;
+                return Y_ERROR;
+              }
 
 %%
 

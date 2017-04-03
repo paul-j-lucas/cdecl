@@ -196,8 +196,8 @@ static void parse_cleanup( void ) {
 static void parse_error( char const *format, ... ) {
   if ( !error_newlined ) {
     PRINT_ERR( ": " );
-    if ( *yytext )
-      PRINT_ERR( "\"%s\": ", (*yytext == '\n' ? "\\n" : yytext) );
+    if ( *my_text )
+      PRINT_ERR( "\"%s\": ", (*my_text == '\n' ? "\\n" : my_text) );
     va_list args;
     va_start( args, format );
     vfprintf( stderr, format, args );

@@ -33,13 +33,9 @@ typedef struct {
 
 // extern variables
 extern char const  *me;                 // program name
-extern size_t       y_col;
-extern size_t       y_col_newline;
-#if YYTEXT_POINTER
-extern char        *yytext;
-#else
-extern char         yytext[];
-#endif /* YYTEXT_POINTER */
+extern size_t       my_col;             // current lexer column
+extern size_t       my_col_newline;     // lexer column of newline
+extern char const  *my_text;            // guaranteed pointer of yytext
 
 ///////////////////////////////////////////////////////////////////////////////
 
