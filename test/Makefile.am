@@ -492,6 +492,11 @@ TESTS+=	tests/help-c.test \
 	tests/set_prompt.test \
 	tests/set_semicolon.test
 
+if WITH_CDECL_DEBUG
+TESTS+=	tests/set_debug.test \
+	tests/set_nodebug.test
+endif
+
 ###############################################################################
 
 AM_TESTS_ENVIRONMENT = BUILD_SRC=$(top_builddir)/src; export BUILD_SRC ;
