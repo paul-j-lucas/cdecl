@@ -69,6 +69,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fv_v.test \
 	tests/declare_fx_pi.test \
 	tests/declare_gi.test \
+	tests/declare_ld.test \
 	tests/declare_lf.test \
 	tests/declare_ll.test \
 	tests/declare_pa3cpa5i.test \
@@ -122,6 +123,7 @@ TESTS+=	tests/declare_b_ai.test \
 	tests/declare_lc.test \
 	tests/declare_lc16.test \
 	tests/declare_lc32.test \
+	tests/declare_ld-knr.test \
 	tests/declare_lf-c.test \
 	tests/declare_ll-c89.test \
 	tests/declare_ll-knr.test \
@@ -208,6 +210,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_it.test \
 	tests/explain_kc.test \
 	tests/explain_keywords.test \
+	tests/explain_ld.test \
 	tests/explain_lf.test \
 	tests/explain_ll.test \
 	tests/explain_pa3a5i.test \
@@ -266,6 +269,7 @@ TESTS+=	tests/explain_b_ai.test \
 	tests/explain_lc.test \
 	tests/explain_lc16.test \
 	tests/explain_lc32.test \
+	tests/explain_ld-knr.test \
 	tests/explain_lf-c.test \
 	tests/explain_ll-c89.test \
 	tests/explain_ll-knr.test \
