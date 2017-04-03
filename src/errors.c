@@ -10,6 +10,7 @@
 #include "ast_util.h"
 #include "diagnostics.h"
 #include "options.h"
+#include "types.h"
 
 // standard
 #include <assert.h>
@@ -21,6 +22,7 @@ static const bool AST_ERROR_NOT_FOUND = false;
 
 // local functions
 static bool c_ast_visitor_error( c_ast_t*, void* );
+static bool c_ast_visitor_type( c_ast_t*, void* );
 static bool error_kind_not_supported( c_ast_t const* );
 static bool error_kind_not_type( c_ast_t const*, c_type_t );
 static bool error_kind_to_type( c_ast_t const*, c_type_t );
@@ -38,6 +40,19 @@ static inline bool c_ast_check_errors_impl( c_ast_t const *ast ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_t *const error_ast =
     c_ast_visit( nonconst_ast, V_DOWN, c_ast_visitor_error, NULL );
+  return error_ast != NULL ? AST_ERROR_FOUND : AST_ERROR_NOT_FOUND;
+}
+
+/**
+ * Wrapper around calling c_ast_visitor_type().
+ *
+ * @param ast The AST to check.
+ * @return Returns \c true only if an error was found.
+ */
+static inline bool c_ast_check_types( c_ast_t const *ast ) {
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+  c_ast_t *const error_ast =
+    c_ast_visit( nonconst_ast, V_DOWN, c_ast_visitor_type, NULL );
   return error_ast != NULL ? AST_ERROR_FOUND : AST_ERROR_NOT_FOUND;
 }
 
@@ -284,6 +299,29 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 }
 
 /**
+ * Vistor function that checks an AST for type validity.
+ *
+ * @param data Not used.
+ * @return Returns \c true only if an error was found.
+ */
+static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
+  assert( ast != NULL );
+  (void)data;
+
+  lang_t const bad_langs = c_type_check( ast->type );
+  if ( bad_langs == LANG_NONE )
+    return AST_ERROR_NOT_FOUND;
+  if ( bad_langs == LANG_ALL )
+    print_error( &ast->loc, "\"%s\" is illegal", c_type_name( ast->type ) );
+  else
+    print_error( &ast->loc,
+      "\"%s\" is illegal in %s",
+      c_type_name( ast->type ), lang_name( opt_lang )
+    );
+  return AST_ERROR_FOUND;
+}
+
+/**
  * Prints an error: <kind> can not be <type>.
  *
  * @param ast The AST.
@@ -343,7 +381,11 @@ static bool error_type_not_supported( c_type_t type, c_ast_t const *ast ) {
 bool c_ast_check_errors( c_ast_t const *ast, c_check_t check ) {
   if ( check == CHECK_CAST && c_ast_check_cast( ast ) == AST_ERROR_FOUND )
     return false;
-  return c_ast_check_errors_impl( ast ) == AST_ERROR_NOT_FOUND;
+  if ( c_ast_check_errors_impl( ast ) == AST_ERROR_FOUND )
+    return false;
+  if ( c_ast_check_types( ast ) == AST_ERROR_FOUND )
+    return false;
+  return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

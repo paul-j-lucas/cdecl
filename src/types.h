@@ -16,6 +16,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "common.h"                     /* for YYLTYPE */
+#include "lang.h"                       /* for lang_t */
 
 // standard
 #include <stdbool.h>
@@ -86,8 +87,9 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc );
  * Checks that the given type is valid.
  *
  * @param type The type to check.
+ * @return Returns the bitwise-or of the language(s) \a type is illegal in.
  */
-bool c_type_check( c_type_t type, YYLTYPE const *loc );
+lang_t c_type_check( c_type_t type );
 
 /**
  * Given a type, get its name.

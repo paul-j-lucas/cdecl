@@ -107,7 +107,25 @@ TESTS+=	tests/declare_b_ai.test \
 	tests/declare_fsi_v.test \
 	tests/declare_fvx_v.test \
 	tests/declare_gf_v.test \
+	tests/declare_hb.test \
+	tests/declare_hc.test \
+	tests/declare_hc16.test \
+	tests/declare_hc32.test \
+	tests/declare_hv.test \
+	tests/declare_lb.test \
+	tests/declare_lc.test \
+	tests/declare_lc16.test \
+	tests/declare_lc32.test \
 	tests/declare_lll.test \
+	tests/declare_lv.test \
+	tests/declare_sb.test \
+	tests/declare_sc16.test \
+	tests/declare_sc32.test \
+	tests/declare_sv.test \
+	tests/declare_ub.test \
+	tests/declare_uc16.test \
+	tests/declare_uc32.test \
+	tests/declare_uv.test \
 	tests/declare_v.test \
 	tests/declare_vf_v-c.test
 

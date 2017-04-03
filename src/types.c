@@ -143,9 +143,8 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc ) {
     new_type = T_LONG_LONG;
 
   if ( (new_type & *dest_type) ) {
-    print_caret( loc->first_column );
-    PRINT_ERR(
-      "error: \"%s\" can not be combined with previous declaration\n",
+    print_error( loc,
+      "\"%s\" can not be combined with previous declaration\n",
       c_type_name( new_type )
     );
     return false;
@@ -155,31 +154,17 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc ) {
   return true;
 }
 
-bool c_type_check( c_type_t type, YYLTYPE const *loc ) {
+lang_t c_type_check( c_type_t type ) {
   for ( size_t row = 0; row < NUM_TYPES; ++row ) {
     if ( (type & C_TYPE_INFO[ row ].type) ) {
       for ( size_t col = 0; col <= row; ++col ) {
-        lang_t const bad_lang = BAD_TYPE_LANGS[ row ][ col ];
-        if ( (type & C_TYPE_INFO[ col ].type) && (opt_lang & bad_lang) ) {
-          bool const error = bad_lang == LANG_ALL;
-
-          if ( error )
-            print_error( loc,
-              "\"%s\" with \"%s\" is illegal",
-              C_TYPE_INFO[ row ].literal, C_TYPE_INFO[ col ].literal
-            );
-          else
-            print_warning( loc,
-              "\"%s\" with \"%s\"",
-              C_TYPE_INFO[ row ].literal, C_TYPE_INFO[ col ].literal
-            );
-
-          return !error;
-        }
+        lang_t const bad_langs = BAD_TYPE_LANGS[ row ][ col ];
+        if ( (type & C_TYPE_INFO[ col ].type) && (opt_lang & bad_langs) )
+          return bad_langs;
       } // for
     }
   } // for
-  return true;
+  return LANG_NONE;
 }
 
 char const* c_type_name( c_type_t type ) {

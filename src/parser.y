@@ -38,14 +38,11 @@
 #define CDEBUG(...)                     /* nothing */
 #endif /* WITH_CDECL_DEBUG */
 
-#define C_AST_CHECK(AST,CHECK) BLOCK( \
-  if ( !c_ast_check_errors( (AST), (CHECK) ) ) PARSE_CLEANUP(); )
+#define C_AST_CHECK_ERRORS(AST,CHECK) \
+  BLOCK( if ( !c_ast_check_errors( (AST), (CHECK) ) ) PARSE_CLEANUP(); )
 
-#define C_TYPE_ADD(DST,SRC,LOC) BLOCK( \
-  if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_CLEANUP(); )
-
-#define C_TYPE_CHECK(TYPE,LOC) BLOCK( \
-  if ( !c_type_check( TYPE, &(LOC) ) ) PARSE_CLEANUP(); )
+#define C_TYPE_ADD(DST,SRC,LOC) \
+  BLOCK( if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_CLEANUP(); )
 
 #define DUMP_COMMA \
   CDEBUG( if ( true_or_set( &debug_comma ) ) FPUTS( ",\n", stdout ); )
@@ -463,7 +460,7 @@ cast_english
       DUMP_AST( "decl_english", $4.ast );
       DUMP_END();
 
-      C_AST_CHECK( $4.ast, CHECK_CAST );
+      C_AST_CHECK_ERRORS( $4.ast, CHECK_CAST );
       FPUTC( '(', fout );
       c_ast_gibberish_cast( $4.ast, fout );
       FPRINTF( fout, ")%s\n", $2 );
@@ -481,7 +478,7 @@ cast_english
       DUMP_AST( "decl_english", $2.ast );
       DUMP_END();
 
-      C_AST_CHECK( $2.ast, CHECK_CAST );
+      C_AST_CHECK_ERRORS( $2.ast, CHECK_CAST );
       FPUTC( '(', fout );
       c_ast_gibberish_cast( $2.ast, fout );
       FPUTS( ")\n", fout );
@@ -505,7 +502,7 @@ declare_english
       DUMP_AST( "decl_english", $5.ast );
       DUMP_END();
 
-      C_AST_CHECK( $5.ast, CHECK_DECL );
+      C_AST_CHECK_ERRORS( $5.ast, CHECK_DECL );
       c_ast_gibberish_declare( $5.ast, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
@@ -544,7 +541,7 @@ explain_declaration_c
       DUMP_END();
 
       c_ast_t *const ast = c_ast_patch_none( $2.ast, $4.ast );
-      C_AST_CHECK( ast, CHECK_DECL );
+      C_AST_CHECK_ERRORS( ast, CHECK_DECL );
       char const *const name = c_ast_take_name( ast );
       assert( name != NULL );
       FPRINTF( fout, "%s %s %s ", L_DECLARE, name, L_AS );
@@ -569,7 +566,7 @@ explain_cast_c
       DUMP_END();
 
       c_ast_t *const ast = c_ast_patch_none( $3.ast, $5.ast );
-      C_AST_CHECK( ast, CHECK_CAST );
+      C_AST_CHECK_ERRORS( ast, CHECK_CAST );
       FPUTS( L_CAST, fout );
       if ( $7 ) {
         FPRINTF( fout, " %s", $7 );
@@ -1351,7 +1348,6 @@ type_c
       $$.target_ast = NULL;
       $$.ast->type = T_INT;
       C_TYPE_ADD( &$$.ast->type, $1, @1 );
-      C_TYPE_CHECK( $$.ast->type, @1 );
 
       DUMP_AST( "type_c", $$.ast );
       DUMP_END();
@@ -1370,7 +1366,6 @@ type_c
       $$ = $2;
       C_TYPE_ADD( &$$.ast->type, $1, @1 );
       C_TYPE_ADD( &$$.ast->type, $3, @3 );
-      C_TYPE_CHECK( $$.ast->type, @1 );
 
       DUMP_AST( "type_c", $$.ast );
       DUMP_END();
@@ -1384,7 +1379,6 @@ type_c
 
       $$ = $1;
       C_TYPE_ADD( &$$.ast->type, $2, @2 );
-      C_TYPE_CHECK( $$.ast->type, @1 );
 
       DUMP_AST( "type_c", $$.ast );
       DUMP_END();
@@ -1406,7 +1400,6 @@ type_modifier_list_c
 
       $$ = $1;
       C_TYPE_ADD( &$$, $2, @2 );
-      C_TYPE_CHECK( $$, @2 );
 
       DUMP_TYPE( "type_modifier_list_c", $$ );
       DUMP_END();
@@ -1415,7 +1408,6 @@ type_modifier_list_c
   | type_modifier_c
     {
       $$ = $1;
-      C_TYPE_CHECK( $$, @1 );
     }
   ;
 
@@ -1496,7 +1488,6 @@ type_qualifier_list_opt_c
 
       $$ = $1;
       C_TYPE_ADD( &$$, $2, @2 );
-      C_TYPE_CHECK( $$, @2 );
 
       DUMP_TYPE( "type_qualifier_list_opt_c", $$ );
       DUMP_END();
