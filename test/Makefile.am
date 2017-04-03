@@ -239,22 +239,26 @@ TESTS+=	tests/explain_b_ai.test \
 	tests/explain_hc16.test \
 	tests/explain_hc32.test \
 	tests/explain_hv.test \
+	tests/explain_hw.test \
 	tests/explain_lb.test \
 	tests/explain_lc.test \
 	tests/explain_lc16.test \
 	tests/explain_lc32.test \
 	tests/explain_lll.test \
 	tests/explain_lv.test \
+	tests/explain_lw.test \
 	tests/explain_pmi-c.test \
 	tests/explain_ri-c.test \
 	tests/explain_sb.test \
 	tests/explain_sc16.test \
 	tests/explain_sc32.test \
 	tests/explain_sv.test \
+	tests/explain_sw.test \
 	tests/explain_ub.test \
 	tests/explain_uc16.test \
 	tests/explain_uc32.test \
 	tests/explain_uv.test \
+	tests/explain_uw.test \
 	tests/explain_v.test \
 	tests/explain_vf_v-c.test
 
