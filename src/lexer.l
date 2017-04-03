@@ -188,6 +188,11 @@ H             [0-9A-Fa-f]
                 return Y_NAME;
               }
 
+"c++"         { yylval.name = check_strdup( yytext ); return Y_CPP_LANG_NAME; }
+"c++98"       { yylval.name = check_strdup( yytext ); return Y_CPP_LANG_NAME; }
+"c++03"       { yylval.name = check_strdup( yytext ); return Y_CPP_LANG_NAME; }
+"c++11"       { yylval.name = check_strdup( yytext ); return Y_CPP_LANG_NAME; }
+
 [1-9]{D}*     { yylval.number = parse_int( 10 ); return Y_NUMBER; }
 0{O}*         { yylval.number = parse_int(  8 ); return Y_NUMBER; }
 0[xX]{H}+     { yylval.number = parse_int( 16 ); return Y_NUMBER; }

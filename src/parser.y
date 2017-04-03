@@ -341,6 +341,7 @@ static void yyerror( char const *msg ) {
                     /* miscellaneous */
 %token              '^'                 /* Apple: block indicator */
 %token  <type>      Y___BLOCK           /* Apple: block storage class */
+%token  <name>      Y_CPP_LANG_NAME
 %token              Y_END
 %token              Y_ERROR
 %token  <name>      Y_NAME
@@ -407,6 +408,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_list>  arg_list_c arg_list_opt_c
 %type   <number>    array_size_c
 %type   <name>      name_opt
+%type   <name>      set_option
 
 /*****************************************************************************/
 %%
@@ -607,7 +609,12 @@ help_command
 /*****************************************************************************/
 
 set_command
-  : Y_SET name_opt Y_END          { set_option( $2 ); FREE( $2 ); }
+  : Y_SET set_option Y_END        { set_option( $2 ); FREE( $2 ); }
+  ;
+
+set_option
+  : name_opt
+  | Y_CPP_LANG_NAME
   ;
 
 /*****************************************************************************/

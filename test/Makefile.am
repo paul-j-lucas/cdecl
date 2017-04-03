@@ -475,7 +475,22 @@ TESTS+=	tests/file-cast_x.test \
 TESTS+=	tests/help-c.test \
 	tests/help-c++.test \
 	tests/set.test \
-	tests/set_options.test
+	tests/set_c++.test \
+	tests/set_c++03.test \
+	tests/set_c++11.test \
+	tests/set_c++98.test \
+	tests/set_c.test \
+	tests/set_c11.test \
+	tests/set_c89.test \
+	tests/set_c99.test \
+	tests/set_cknr.test \
+	tests/set_knr.test \
+	tests/set_knrc.test \
+	tests/set_noprompt.test \
+	tests/set_nosemicolon.test \
+	tests/set_options.test \
+	tests/set_prompt.test \
+	tests/set_semicolon.test
 
 ###############################################################################
 
