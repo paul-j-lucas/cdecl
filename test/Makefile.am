@@ -497,6 +497,11 @@ TESTS+=	tests/set_debug.test \
 	tests/set_nodebug.test
 endif
 
+if WITH_YYDEBUG
+TESTS+=	tests/set_yydebug.test \
+	tests/set_noyydebug.test
+endif
+
 ###############################################################################
 
 AM_TESTS_ENVIRONMENT = BUILD_SRC=$(top_builddir)/src; export BUILD_SRC ;
