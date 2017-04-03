@@ -86,6 +86,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define XX    LANG_ALL                  /* illegal in all languages  */
 #define KO   ~LANG_C_KNR                /* legal in K&R C only */
 #define C8    BEFORE(LANG_C_89)         /* minimum C89 */
+#define C5    BEFORE(LANG_C_95)         /* minimum C95 */
 #define C9    BEFORE(LANG_C_99)         /* minimum C99 */
 #define C1    BEFORE(LANG_C_11)         /* minimum C11 */
 #define P3    BEFORE(LANG_CPP_03)       /* minimum C++03 */
@@ -103,7 +104,7 @@ static lang_t const BAD_TYPE_LANGS[ NUM_TYPES ][ NUM_TYPES ] = {
   /* char      */ { XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* char16_t  */ { XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* char32_t  */ { XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-  /* wchar_t   */ { XX,XX,XX,XX,XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+  /* wchar_t   */ { XX,XX,XX,XX,XX,C5,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* short     */ { XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* int       */ { XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* long      */ { XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__ },
