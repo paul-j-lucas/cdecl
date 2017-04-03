@@ -236,28 +236,6 @@ static color_when_t parse_color_when( char const *when ) {
  * @return Returns the lang_t corresponding to \a s.
  */
 static lang_t parse_lang( char const *s ) {
-  struct lang_map {
-    char const *name;
-    lang_t      lang;
-  };
-  typedef struct lang_map lang_map_t;
-
-  static lang_map_t const LANG_MAP[] = {
-    { "cknr",   LANG_C_KNR    },
-    { "knr",    LANG_C_KNR    },
-    { "knrc",   LANG_C_KNR    },
-    { "c",      LANG_C_MAX    },
-    { "c89",    LANG_C_89     },
-    { "c95",    LANG_C_95     },
-    { "c99",    LANG_C_99     },
-    { "c11",    LANG_C_11     },
-    { "c++",    LANG_CPP_MAX  },
-    { "c++98",  LANG_CPP_03   },
-    { "c++03",  LANG_CPP_03   },
-    { "c++11",  LANG_CPP_11   },
-    { NULL,     LANG_NONE     },
-  };
-
   size_t values_buf_size = 1;           // for trailing null
 
   for ( lang_map_t const *m = LANG_MAP; m->name; ++m ) {

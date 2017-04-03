@@ -17,14 +17,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-struct lang_map {
-  char const *name;
-  lang_t      lang;
-};
-typedef struct lang_map lang_map_t;
-
-// local constant definitions
-static lang_map_t const LANG_MAP[] = {
+// extern constant definitions
+lang_map_t const LANG_MAP[] = {
   { "cknr",   LANG_C_KNR    },          // synonym for "knr"
   { "knr",    LANG_C_KNR    },
   { "knrc",   LANG_C_KNR    },          // synonym for "knr"
@@ -37,15 +31,16 @@ static lang_map_t const LANG_MAP[] = {
   { "c++98",  LANG_CPP_03   },          // C++03 added no new decl. syntax
   { "c++03",  LANG_CPP_03   },
   { "c++11",  LANG_CPP_11   },
+  { NULL,     LANG_NONE     },
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 lang_t lang_find( char const *s ) {
   assert( s != NULL );
-  for ( size_t i = 0; i < ARRAY_SIZE( LANG_MAP ); ++i ) {
-    if ( strcasecmp( s, LANG_MAP[i].name ) == 0 )
-      return LANG_MAP[i].lang;
+  for ( lang_map_t const *m = LANG_MAP; m->name; ++m ) {
+    if ( strcasecmp( s, m->name ) == 0 )
+      return m->lang;
   } // for
   return LANG_NONE;
 }

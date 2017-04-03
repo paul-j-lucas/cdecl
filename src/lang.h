@@ -37,6 +37,18 @@
  */
 typedef unsigned lang_t;
 
+/**
+ * A mapping between a language name and its corresponding lang_t.
+ */
+struct lang_map {
+  char const *name;
+  lang_t      lang;
+};
+typedef struct lang_map lang_map_t;
+
+// extern constants
+extern lang_map_t const LANG_MAP[];     // lang name -> lang_t
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
