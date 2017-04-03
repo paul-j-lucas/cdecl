@@ -112,6 +112,10 @@ TESTS+=	tests/declare_b_ai.test \
 	tests/declare_hc.test \
 	tests/declare_hc16.test \
 	tests/declare_hc32.test \
+	tests/declare_hd.test \
+	tests/declare_hf.test \
+	tests/declare_hl.test \
+	tests/declare_hll.test \
 	tests/declare_hv.test \
 	tests/declare_hw.test \
 	tests/declare_lb.test \
@@ -123,13 +127,18 @@ TESTS+=	tests/declare_b_ai.test \
 	tests/declare_lv.test \
 	tests/declare_lw.test \
 	tests/declare_sb.test \
+	tests/declare_sc-knr.test \
 	tests/declare_sc16.test \
 	tests/declare_sc32.test \
+	tests/declare_si-knr.test \
+	tests/declare_sl-knr.test \
 	tests/declare_sv.test \
 	tests/declare_sw.test \
 	tests/declare_ub.test \
 	tests/declare_uc16.test \
 	tests/declare_uc32.test \
+	tests/declare_ud.test \
+	tests/declare_uf.test \
 	tests/declare_uv.test \
 	tests/declare_uw.test \
 	tests/declare_v.test \
@@ -245,6 +254,10 @@ TESTS+=	tests/explain_b_ai.test \
 	tests/explain_hc.test \
 	tests/explain_hc16.test \
 	tests/explain_hc32.test \
+	tests/explain_hd.test \
+	tests/explain_hf.test \
+	tests/explain_hl.test \
+	tests/explain_hll.test \
 	tests/explain_hv.test \
 	tests/explain_hw.test \
 	tests/explain_lb.test \
@@ -258,13 +271,18 @@ TESTS+=	tests/explain_b_ai.test \
 	tests/explain_pmi-c.test \
 	tests/explain_ri-c.test \
 	tests/explain_sb.test \
+	tests/explain_sc-knr.test \
 	tests/explain_sc16.test \
 	tests/explain_sc32.test \
+	tests/explain_si-knr.test \
+	tests/explain_sl-knr.test \
 	tests/explain_sv.test \
 	tests/explain_sw.test \
 	tests/explain_ub.test \
 	tests/explain_uc16.test \
 	tests/explain_uc32.test \
+	tests/explain_ud.test \
+	tests/explain_uf.test \
 	tests/explain_uv.test \
 	tests/explain_uw.test \
 	tests/explain_v.test \
