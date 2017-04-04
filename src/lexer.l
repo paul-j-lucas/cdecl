@@ -119,7 +119,7 @@ static keyword_t const* keyword_find( char const *s ) {
  * Resets our notion of the current location to the beginning of the line.
  */
 static void loc_reset( void ) {
-  my_col_newline = my_col - 1 /* '\n' */;
+  my_col_newline = my_col;              // my_col is the column of the newline
   my_col = 0;
 }
 
