@@ -415,7 +415,10 @@ static void yyerror( char const *msg ) {
 
 command_list
   : /* empty */
-  | command_list command_init command command_cleanup
+  | command_list command_init command
+    {
+      parse_cleanup( false );
+    }
   ;
 
 command_init
@@ -440,13 +443,6 @@ command
   | error Y_END
     {
       PARSE_ERROR( "unexpected token" );
-    }
-  ;
-
-command_cleanup
-  : /* empty */
-    {
-      parse_cleanup( false );
     }
   ;
 
