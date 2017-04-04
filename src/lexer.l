@@ -151,8 +151,13 @@ static int yywrap( void ) {
 
 /**
  * Resets the lexer to its initial state.
+ *
+ * @param hard_reset If \c true, does a "hard" reset that currently resets the
+ * EOF flag also.
  */
-void lexer_reset( void ) {
+void lexer_reset( bool hard_reset ) {
+  if ( hard_reset )
+    my_eof = false;
   explaining = false;
   loc_reset();
 }

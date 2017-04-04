@@ -76,7 +76,7 @@
   DUMP_COMMA; FPUTS( "  ", stdout );  \
   print_kv( (KEY), c_type_name( TYPE ), stdout ); )
 
-#define PARSE_CLEANUP()   BLOCK( parse_cleanup(); YYABORT; )
+#define PARSE_CLEANUP()   BLOCK( parse_cleanup( true ); YYABORT; )
 #define PARSE_ERROR(...)  BLOCK( parse_error( __VA_ARGS__ ); PARSE_CLEANUP(); )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ typedef struct in_attr in_attr_t;
 extern bool         explaining;
 
 // extern functions
-extern void         lexer_reset( void );
+extern void         lexer_reset( bool );
 extern void         print_help( void );
 extern void         set_option( char const* );
 extern int          yylex( void );
@@ -181,9 +181,9 @@ static inline void qualifier_pop( void ) {
 /**
  * Cleans-up parser data.
  */
-static void parse_cleanup( void ) {
+static void parse_cleanup( bool hard_reset ) {
   c_ast_gc();
-  lexer_reset();
+  lexer_reset( hard_reset );
   qualifier_clear();
   memset( &in_attr, 0, sizeof in_attr );
 }
@@ -251,7 +251,7 @@ static void yyerror( char const *msg ) {
   FPUTS( msg, stderr );
   SGR_END_COLOR( stderr );
   error_newlined = false;
-  parse_cleanup();
+  parse_cleanup( false );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -436,7 +436,7 @@ command
   | help_command
   | set_command
   | quit_command
-  | Y_END
+  | Y_END                               /* allows for blank lines */
   | error Y_END
     {
       PARSE_ERROR( "unexpected token" );
@@ -446,7 +446,7 @@ command
 command_cleanup
   : /* empty */
     {
-      parse_cleanup();
+      parse_cleanup( false );
     }
   ;
 
