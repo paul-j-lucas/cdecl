@@ -240,15 +240,15 @@ static void quit( void ) {
 }
 
 /**
- * Called by bison to print a parsing error message.
+ * Called by bison to print an error message (usually just "syntax error").
  *
  * @param msg The error message to print.
  */
 static void yyerror( char const *msg ) {
   print_caret( CARET_CURRENT_LEX_COL );
-  PRINT_ERR( "%s%d: ", (error_newlined ? "" : "\n"), error_column() + 1 );
+  PRINT_ERR( "%d: ", error_column() + 1 );
   SGR_START_COLOR( stderr, error );
-  FPUTS( msg, stderr );
+  FPUTS( msg, stderr );                 // no newline
   SGR_END_COLOR( stderr );
   error_newlined = false;
   parse_cleanup( false );
@@ -439,7 +439,12 @@ command
   | Y_END                               /* allows for blank lines */
   | error Y_END
     {
-      PARSE_ERROR( "unexpected token" );
+      if ( *my_text )
+        PARSE_ERROR(
+          "\"%s\": unexpected token", (*my_text == '\n' ? "\\n" : my_text)
+        );
+      else
+        PARSE_ERROR( "unexpected end of command" );
     }
   ;
 
