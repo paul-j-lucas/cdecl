@@ -26,11 +26,12 @@
 #define LANG_C_11     (1u << 4)
 #define LANG_C_MAX    LANG_C_11
 
-#define LANG_CPP_MIN  LANG_CPP_03
-#define LANG_CPP_03   (1u << 5)
-#define LANG_CPP_11   (1u << 6)
+#define LANG_CPP_MIN  LANG_CPP_98
+#define LANG_CPP_98   (1u << 5)
+#define LANG_CPP_03   (1u << 6)
+#define LANG_CPP_11   (1u << 7)
 #define LANG_CPP_MAX  LANG_CPP_11
-#define LANG_CPP_ANY  (LANG_CPP_03 | LANG_CPP_11)
+#define LANG_CPP_ANY  (LANG_CPP_98 | LANG_CPP_03 | LANG_CPP_11)
 
 /**
  * Bitmask for combination of languages.

@@ -18,7 +18,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 3, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 4, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -345,19 +345,24 @@ and
 .B C++
 Use the latest supported dialect of the C++ language.
 .TP
-.B C++03
-Use the C++03 dialect of the C++ language.
+.B C++98
+Use the C++98 dialect of the C++ language.
 Adds support for
 \f(CWclass\fP,
 references,
 and pointers to class members.
+.TP
+.B C++03
+Use the C++03 dialect of the C++ language.
+(Here for completeness:
+C++03 added no new types or declaration syntax.)
 .TP
 .B C++11
 Use the C++11 dialect of the C++ language.
 Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
-\f(CWthread_local\fP
+\f(CWthread_local\fP,
 and rvalue references.
 .RE
 .IP ""
@@ -630,19 +635,24 @@ and (\f(CWthread_local\fP).
 .B c++
 Use the latest supported dialect of the C++ language.
 .TP
-.B c++03
-Use the C++03 dialect of the C++ language.
+.B c++98
+Use the C++98 dialect of the C++ language.
 Adds support for
 \f(CWclass\fP,
 references,
 and pointers to class members.
+.TP
+.B c++03
+Use the C++03 dialect of the C++ language.
+(Here for completeness:
+C++03 added no new types or declaration syntax.)
 .TP
 .B c++11
 Use the C++11 dialect of the C++ language.
 Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
-\f(CWthread_local\fP
+\f(CWthread_local\fP,
 and rvalue references.
 .TP
 .RB [ no ] debug

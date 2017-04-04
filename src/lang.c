@@ -28,7 +28,7 @@ lang_map_t const LANG_MAP[] = {
   { "c99",    LANG_C_99     },
   { "c11",    LANG_C_11     },
   { "c++",    LANG_CPP_MAX  },
-  { "c++98",  LANG_CPP_03   },          // C++03 added no new decl. syntax
+  { "c++98",  LANG_CPP_98   },
   { "c++03",  LANG_CPP_03   },
   { "c++11",  LANG_CPP_11   },
   { NULL,     LANG_NONE     },
@@ -53,6 +53,7 @@ char const* lang_name( lang_t lang ) {
     case LANG_C_95  : return "C95";
     case LANG_C_99  : return "C99";
     case LANG_C_11  : return "C11";
+    case LANG_CPP_98: return "C++98";
     case LANG_CPP_03: return "C++03";
     case LANG_CPP_11: return "C++11";
     default:

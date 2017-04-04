@@ -89,7 +89,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define C5    BEFORE(LANG_C_95)         /* minimum C95 */
 #define C9    BEFORE(LANG_C_99)         /* minimum C99 */
 #define C1    BEFORE(LANG_C_11)         /* minimum C11 */
-#define P3    BEFORE(LANG_CPP_03)       /* minimum C++03 */
+#define PP    BEFORE(LANG_CPP_MIN)      /* minimum C++ */
 #define P1    BEFORE(LANG_CPP_11)       /* minimum C++11 */
 #define E1  ~(LANG_C_11 | LANG_CPP_11)  /* legal in either C11 or C++11 only */
 
@@ -117,7 +117,7 @@ static lang_t const BAD_TYPE_LANGS[ NUM_TYPES ][ NUM_TYPES ] = {
   /* enum      */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,__,__,__ },
   /* struct    */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__ },
   /* union     */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__ },
-  /* class     */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P3 },
+  /* class     */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,PP },
 };
 
 ////////// inline functions ///////////////////////////////////////////////////
