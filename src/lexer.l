@@ -97,7 +97,7 @@ char const *my_text;                    // guranteed pointer of yytext
 YYLTYPE     yylloc;                     // location of current token
 
 // local variables
-static bool eof;
+static bool my_eof;
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -250,7 +250,7 @@ H             [0-9A-Fa-f]
 <<EOF>>       {
                 SET_MY_TEXT;
                 loc_reset();
-                return (eof = !eof) ? Y_END : YY_NULL;
+                return (my_eof = !my_eof) ? Y_END : YY_NULL;
               }
 
 .             {
