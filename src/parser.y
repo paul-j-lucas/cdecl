@@ -415,19 +415,16 @@ static void yyerror( char const *msg ) {
 
 command_list
   : /* empty */
-  | command_list command_init command
-    {
-      parse_cleanup( false );
-    }
-  ;
-
-command_init
-  : /* empty */
+  | command_list
     {
       if ( !error_newlined ) {
         FPUTC( '\n', fout );
         error_newlined = true;
       }
+    }
+    command
+    {
+      parse_cleanup( false );
     }
   ;
 
