@@ -76,10 +76,10 @@ or creating either a symbolic or hard link to it).
 If it is invoked as:
 .TP 9
 .B cdecl
-Runs with C11 as the default language.
+Runs with the latest supported dialect of C as the default language.
 .TP
 .BR c++decl " | " cppdecl " | " cxxdecl
-Runs with C++11 as the default language.
+Runs with the latest supported dialect of C++ as the default language.
 .TP
 .BR cast " | " declare
 Interprets the rest of the command-line
@@ -139,9 +139,9 @@ type the declaration in pseudo-English,
 then filter the line through
 .BR cdecl :
 .cS
-!!cdecl<cr>
+!!cdecl<CR>
 .cE
-where \f(CW<cr>\fP is a carriage-return.
+where \f(CW<CR>\fP is a carriage-return.
 .SS Interactive Input
 If standard input is coming from a terminal
 (or either the
@@ -495,10 +495,15 @@ or
 A comma-separated list of
 .IR name ,
 .IR english ,
-or
 .I name
 \f(CWas\fP
-.IR english .
+.IR english ;
+or one of
+\f(CWvarargs\fP,
+\f(CWvariadic\fP,
+or
+\f(CW...\fP
+(ellipsis).
 .TP
 .I modifier
 One of:
@@ -537,8 +542,6 @@ One of:
 or
 \f(CWvirtual\fP.
 .RE
-.SS Gibberish
-TODO
 .SS Synonyms
 Some synonyms are permitted within pseudo-English.
 The words on the left are synonyms for what's on the right:
@@ -561,6 +564,22 @@ enumeration  enum
    variadic  ...
      vector  array
 .cE 0
+.SS Gibberish
+.I Gibberish
+is any supported C
+(for
+.BR cdecl )
+or C++
+(for
+.BR c++decl )
+variable or function declaration,
+or type cast.
+(See
+.B EXAMPLES
+for examples
+and
+.B CAVEATS
+for unsupported declarations.)
 .SS Set Options
 The
 .B set
@@ -881,8 +900,6 @@ that do not provide genuine GNU
 .SH CAVEATS
 .nr step 1 1
 .IP \n[step]. 3
-The pseudo-English syntax is excessively verbose.
-.IP \n+[step].
 When converting from pseudo-English to a C++ declaration,
 \f(CWenum\fP,
 \f(CWclass\fP,
@@ -908,10 +925,25 @@ or
 name.
 While the keyword
 .I could
-be elided,
+be elided from the output of
+.BR declare ,
 it isn't in order to have the output be ``round-trippable''
 when used as input to
 .BR explain .
+.IP \n+[step].
+When converting from pseudo-English to a C++ declaration
+for either a reference or an rvalue reference variable
+that is not a function argument,
+the output doesn't include an initializer:
+.cS
+c++decl> declare r as reference to int
+int &r;
+.cE 0
+.IP ""
+This is an illegal C++ declaration
+since all such references
+.I must
+be initialized.
 .SH AUTHORS
 In reverse chronological order:
 .TP 4
