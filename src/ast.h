@@ -23,6 +23,7 @@
 
 // local
 #include "config.h"                     /* must go first */
+#include "kinds.h"
 #include "types.h"
 #include "util.h"
 
@@ -38,33 +39,6 @@ _GL_INLINE_HEADER_BEGIN
 #define C_ARRAY_NO_SIZE   (-1)          /* for array[] */
 
 ///////////////////////////////////////////////////////////////////////////////
-
-/**
- * Kinds of AST nodes.
- *
- * A given AST node may only have a single kind and \e not be a bitwise-or of
- * kinds.  However, a bitwise-or of kinds may be used to test whether a given
- * AST node is any \e one of those kinds.
- */
-enum c_kind {
-  K_NONE                    = 0x0001,
-  K_BUILTIN                 = 0x0002,   // void, char, int, etc.
-  K_ENUM_CLASS_STRUCT_UNION = 0x0004,
-  K_NAME                    = 0x0008,   // typeless function argument in K&R C
-  K_VARIADIC                = 0x0010,   // variadic ("...") function argument
-  // "parent" kinds
-  K_ARRAY                   = 0x0020,
-  K_BLOCK                   = 0x0040,   // Apple extension
-  K_FUNCTION                = 0x0080,
-  K_POINTER                 = 0x0100,
-  // "parent" kinds (C++ only)
-  K_POINTER_TO_MEMBER       = 0x0200,
-  K_REFERENCE               = 0x0400,
-  K_RVALUE_REFERENCE        = 0x0800,
-};
-typedef enum c_kind c_kind_t;
-
-#define K_PARENT_MIN          K_ARRAY
 
 /**
  * The direction to traverse an AST using c_ast_visit().
@@ -251,7 +225,7 @@ void c_ast_gc( void );
  * @return Returns \c true only if it is.
  */
 CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
-  return ast && ast->kind >= K_PARENT_MIN;
+  return ast && kind_is_parent( ast->kind );
 }
 
 /**
@@ -332,14 +306,6 @@ bool c_ast_visitor_name( c_ast_t *ast, void *data );
  * @return Returns \c true only if the type of \a ast is one of \a data.
  */
 bool c_ast_vistor_type( c_ast_t *ast, void *data );
-
-/**
- * Gets the name of the given kind.
- *
- * @param kind The kind to get the name for.
- * @return Returns said name.
- */
-char const* c_kind_name( c_kind_t kind );
 
 ///////////////////////////////////////////////////////////////////////////////
 

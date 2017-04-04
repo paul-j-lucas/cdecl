@@ -22,6 +22,7 @@ cdecl_SOURCES =	parser.y lexer.l \
 		gibberish.c \
 		help.c \
 		keywords.c \
+		kinds.c \
 		lang.c \
 		literals.c \
 		options.c \
