@@ -70,6 +70,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fv_v.test \
 	tests/declare_fx_pi.test \
 	tests/declare_gi.test \
+	tests/declare_k.test \
 	tests/declare_ld.test \
 	tests/declare_lf.test \
 	tests/declare_ll.test \
@@ -271,6 +272,7 @@ TESTS+=	tests/explain_b_ai.test \
 	tests/explain_hll.test \
 	tests/explain_hv.test \
 	tests/explain_hw.test \
+	tests/explain_k.test \
 	tests/explain_lb.test \
 	tests/explain_lc.test \
 	tests/explain_lc16.test \
@@ -414,6 +416,7 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 TESTS+=	tests/declare_cpmi.test \
 	tests/declare_frri_v.test \
 	tests/declare_pfv_ri.test \
+	tests/declare_pmci.test \
 	tests/declare_pmci.test \
 	tests/declare_pmf_i.test \
 	tests/declare_pmf_pc.test \

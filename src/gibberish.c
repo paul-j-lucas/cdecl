@@ -148,6 +148,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       FPRINTF( param->gout,
         "%s %s", c_type_name( ast->type ), ast->as.ecsu.ecsu_name
       );
+      c_ast_gibberish_space_name( ast, param );
       param->leaf_ast = ast;
       break;
 
