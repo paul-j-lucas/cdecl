@@ -97,7 +97,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
  * Illegal combinations of types in languages.
  * Only the lower triangle is used.
  */
-static lang_t const BAD_TYPE_LANGS[ NUM_TYPES ][ NUM_TYPES ] = {
+static c_lang_t const BAD_TYPE_LANGS[ NUM_TYPES ][ NUM_TYPES ] = {
   /*                v  b  c  16 32 wc s  i  l  ll s  u  f  d  c  E  S  U  C */
   /* void      */ { C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* bool      */ { XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
@@ -155,11 +155,11 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc ) {
   return true;
 }
 
-lang_t c_type_check( c_type_t type ) {
+c_lang_t c_type_check( c_type_t type ) {
   for ( size_t row = 0; row < NUM_TYPES; ++row ) {
     if ( (type & C_TYPE_INFO[ row ].type) ) {
       for ( size_t col = 0; col <= row; ++col ) {
-        lang_t const bad_langs = BAD_TYPE_LANGS[ row ][ col ];
+        c_lang_t const bad_langs = BAD_TYPE_LANGS[ row ][ col ];
         if ( (type & C_TYPE_INFO[ col ].type) && (opt_lang & bad_langs) )
           return bad_langs;
       } // for

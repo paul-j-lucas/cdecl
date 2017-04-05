@@ -34,7 +34,7 @@ bool                opt_debug;
 char const         *opt_fin;
 char const         *opt_fout;
 bool                opt_interactive;
-lang_t              opt_lang;
+c_lang_t            opt_lang;
 bool                opt_semicolon = true;
 bool                opt_quiet;
 
@@ -230,9 +230,9 @@ static color_when_t parse_color_when( char const *when ) {
  * Parses a language name.
  *
  * @param s The null-terminated string to parse.
- * @return Returns the lang_t corresponding to \a s.
+ * @return Returns the c_lang_t corresponding to \a s.
  */
-static lang_t parse_lang( char const *s ) {
+static c_lang_t parse_lang( char const *s ) {
   size_t values_buf_size = 1;           // for trailing null
 
   for ( lang_map_t const *m = LANG_MAP; m->name; ++m ) {

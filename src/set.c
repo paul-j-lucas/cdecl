@@ -33,7 +33,7 @@
  */
 void set_option( char const *opt ) {
   if ( opt ) {
-    lang_t const new_lang = lang_find( opt );
+    c_lang_t const new_lang = lang_find( opt );
     if ( new_lang ) {
       opt_lang = new_lang;
       bool const prompt_enabled = *prompt[0] != '\0';

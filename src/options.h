@@ -15,7 +15,7 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "lang.h"                       /* for lang_t */
+#include "lang.h"                       /* for c_lang_t */
 
 // standard
 #include <stdbool.h>
@@ -30,7 +30,7 @@ extern bool         opt_debug;
 extern char const  *opt_fin;
 extern char const  *opt_fout;
 extern bool         opt_interactive;
-extern lang_t       opt_lang;
+extern c_lang_t     opt_lang;
 extern bool         opt_semicolon;
 extern bool         opt_quiet;          // don't print the prompt
 

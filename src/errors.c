@@ -308,7 +308,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   (void)data;
 
-  lang_t const bad_langs = c_type_check( ast->type );
+  c_lang_t const bad_langs = c_type_check( ast->type );
   if ( bad_langs == LANG_NONE )
     return AST_ERROR_NOT_FOUND;
   if ( bad_langs == LANG_ALL )

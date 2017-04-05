@@ -36,7 +36,7 @@ lang_map_t const LANG_MAP[] = {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-lang_t lang_find( char const *s ) {
+c_lang_t lang_find( char const *s ) {
   assert( s != NULL );
   for ( lang_map_t const *m = LANG_MAP; m->name; ++m ) {
     if ( strcasecmp( s, m->name ) == 0 )
@@ -45,7 +45,7 @@ lang_t lang_find( char const *s ) {
   return LANG_NONE;
 }
 
-char const* lang_name( lang_t lang ) {
+char const* lang_name( c_lang_t lang ) {
   switch ( lang ) {
     case LANG_NONE  : return "";
     case LANG_C_KNR : return "K&R C";

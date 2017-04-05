@@ -36,19 +36,19 @@
 /**
  * Bitmask for combination of languages.
  */
-typedef unsigned lang_t;
+typedef unsigned c_lang_t;
 
 /**
- * A mapping between a language name and its corresponding lang_t.
+ * A mapping between a language name and its corresponding c_lang_t.
  */
 struct lang_map {
   char const *name;
-  lang_t      lang;
+  c_lang_t    lang;
 };
 typedef struct lang_map lang_map_t;
 
 // extern constants
-extern lang_map_t const LANG_MAP[];     // lang name -> lang_t
+extern lang_map_t const LANG_MAP[];     // lang name -> c_lang_t
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -59,7 +59,7 @@ extern lang_map_t const LANG_MAP[];     // lang name -> lang_t
  * @return Returns said language or \c LANG_NONE if \a s doesn't correspond to
  * any supported language.
  */
-lang_t lang_find( char const *s );
+c_lang_t lang_find( char const *s );
 
 /**
  * Gets the printable name of the given language.
@@ -67,7 +67,7 @@ lang_t lang_find( char const *s );
  * @param lang The language to get the name of.
  * @return Returns said name.
  */
-char const* lang_name( lang_t lang );
+char const* lang_name( c_lang_t lang );
 
 ///////////////////////////////////////////////////////////////////////////////
 

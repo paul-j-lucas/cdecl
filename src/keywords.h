@@ -26,7 +26,7 @@ struct c_keyword {
   char const *literal;                  // C string literal of the keyword
   int         y_token;                  // yacc token number
   c_type_t    type;                     // type, if any
-  lang_t      not_ok;                   // which language(s) it's not OK in
+  c_lang_t    not_ok;                   // which language(s) it's not OK in
 };
 typedef struct c_keyword c_keyword_t;
 
