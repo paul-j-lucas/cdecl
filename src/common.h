@@ -16,6 +16,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#define CARET_CURRENT_LEX_COL (-1)      /* use lex's current column for ^ */
 #define CPPDECL               "c++decl"
 #define DEBUG_INDENT          2         /* spaces per debug indent level */
 
@@ -28,8 +29,6 @@ typedef struct {
 
 #define YYLTYPE_IS_DECLARED   1
 #define YYLTYPE_IS_TRIVIAL    1
-
-#define CARET_CURRENT_LEX_COL (-1)      /* use lex's current column for ^ */
 
 // extern variables
 extern char const  *me;                 // program name
