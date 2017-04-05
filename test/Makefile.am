@@ -50,6 +50,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_cppi.test \
 	tests/declare_cu.test \
 	tests/declare_cvpi.test \
+	tests/declare_e.test \
 	tests/declare_ea2i.test \
 	tests/declare_f_pi.test \
 	tests/declare_fcce_v-01.test \
@@ -107,6 +108,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 TESTS+=	tests/declare_b_ai.test \
 	tests/declare_b_f_i.test \
 	tests/declare_f_ai.test \
+	tests/declare_e-knr.test \
 	tests/declare_f_f_i.test \
 	tests/declare_fiiv_v.test \
 	tests/declare_fiv_v.test \
@@ -190,6 +192,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_cs.test \
 	tests/explain_cu.test \
 	tests/explain_cvpi.test \
+	tests/explain_e.test \
 	tests/explain_ea2i.test \
 	tests/explain_f_pi.test \
 	tests/explain_fcce_v.test \
@@ -247,6 +250,7 @@ TESTS+=	tests/explain_a012i.test \
 # Almost every test here has a corresponding declare_ error test.
 #
 TESTS+=	tests/explain_b_ai.test \
+	tests/explain_e-knr.test \
 	tests/explain_f_ai.test \
 	tests/explain_fcce_v.test \
 	tests/explain_fe_v.test \

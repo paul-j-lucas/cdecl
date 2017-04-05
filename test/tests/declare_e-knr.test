@@ -1,0 +1,1 @@
+cdecl | -xknr | declare x as enum E | 65

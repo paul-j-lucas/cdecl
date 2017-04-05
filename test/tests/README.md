@@ -22,7 +22,7 @@ declaration as it is in English.  The characters are:
 + `c16` = `char16_t`
 + `c32` = `char32_t`
 + `d` = `double`
-+ `e` = `extern` or `...` (ellipsis)
++ `e` = `enum`, `extern`, or `...` (ellipsis)
 + `f` = function
 + `g` = `register`
 + `h` = `short`
