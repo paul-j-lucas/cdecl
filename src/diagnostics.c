@@ -86,7 +86,7 @@ void print_warning( YYLTYPE const *loc, char const *format, ... ) {
   vfprintf( stderr, format, args );
   va_end( args );
 
-  PRINT_ERR( " illegal in %s\n", lang_name( opt_lang ) );
+  PRINT_ERR( " illegal in %s\n", c_lang_name( opt_lang ) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

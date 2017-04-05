@@ -33,7 +33,7 @@
  */
 void set_option( char const *opt ) {
   if ( opt ) {
-    c_lang_t const new_lang = lang_find( opt );
+    c_lang_t const new_lang = c_lang_find( opt );
     if ( new_lang ) {
       opt_lang = new_lang;
       bool const prompt_enabled = *prompt[0] != '\0';
@@ -85,7 +85,7 @@ void set_option( char const *opt ) {
   printf( "  %sdebug\n", opt_debug ? "  " : "no" );
 #endif /* WITH_CDECL_DEBUG */
   printf( "  %sinteractive\n", opt_interactive ? "  " : "no" );
-  printf( "    lang=%s\n", lang_name( opt_lang ) );
+  printf( "    lang=%s\n", c_lang_name( opt_lang ) );
   printf( "  %sprompt\n", prompt[0][0] ? "  " : "no" );
   printf( "  %ssemicolon\n", opt_semicolon ? "  " : "no" );
 #ifdef YYDEBUG

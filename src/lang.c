@@ -18,34 +18,34 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern constant definitions
-lang_map_t const LANG_MAP[] = {
-  { "cknr",   LANG_C_KNR    },          // synonym for "knr"
-  { "knr",    LANG_C_KNR    },
-  { "knrc",   LANG_C_KNR    },          // synonym for "knr"
-  { "c",      LANG_C_MAX    },
-  { "c89",    LANG_C_89     },
-  { "c95",    LANG_C_95     },
-  { "c99",    LANG_C_99     },
-  { "c11",    LANG_C_11     },
-  { "c++",    LANG_CPP_MAX  },
-  { "c++98",  LANG_CPP_98   },
-  { "c++03",  LANG_CPP_03   },
-  { "c++11",  LANG_CPP_11   },
-  { NULL,     LANG_NONE     },
+c_lang_info_t const C_LANG_INFO[] = {
+  { LANG_C_KNR,   "cknr"    },          // synonym for "knr"
+  { LANG_C_KNR,   "knr"     },
+  { LANG_C_KNR,   "knrc"    },          // synonym for "knr"
+  { LANG_C_MAX,   "c"       },
+  { LANG_C_89,    "c89"     },
+  { LANG_C_95,    "c95"     },
+  { LANG_C_99,    "c99"     },
+  { LANG_C_11,    "c11"     },
+  { LANG_CPP_MAX, "c++"     },
+  { LANG_CPP_98,  "c++98"   },
+  { LANG_CPP_03,  "c++03"   },
+  { LANG_CPP_11,  "c++11"   },
+  { LANG_NONE,    NULL      },
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_lang_t lang_find( char const *s ) {
+c_lang_t c_lang_find( char const *s ) {
   assert( s != NULL );
-  for ( lang_map_t const *m = LANG_MAP; m->name; ++m ) {
-    if ( strcasecmp( s, m->name ) == 0 )
-      return m->lang;
+  for ( c_lang_info_t const *info = C_LANG_INFO; info->name; ++info ) {
+    if ( strcasecmp( s, info->name ) == 0 )
+      return info->lang;
   } // for
   return LANG_NONE;
 }
 
-char const* lang_name( c_lang_t lang ) {
+char const* c_lang_name( c_lang_t lang ) {
   switch ( lang ) {
     case LANG_NONE  : return "";
     case LANG_C_KNR : return "K&R C";

@@ -316,7 +316,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   else
     print_error( &ast->loc,
       "\"%s\" is illegal in %s",
-      c_type_name( ast->type ), lang_name( opt_lang )
+      c_type_name( ast->type ), c_lang_name( opt_lang )
     );
   return AST_ERROR_FOUND;
 }
@@ -343,7 +343,7 @@ static bool error_kind_not_type( c_ast_t const *ast, c_type_t type ) {
  */
 static bool error_kind_not_supported( c_ast_t const *ast ) {
   print_error( &ast->loc,
-    "%s not supported in %s", c_kind_name( ast->kind ), lang_name( opt_lang )
+    "%s not supported in %s", c_kind_name( ast->kind ), c_lang_name( opt_lang )
   );
   return AST_ERROR_FOUND;
 }
@@ -371,7 +371,7 @@ static bool error_kind_to_type( c_ast_t const *ast, c_type_t type ) {
  */
 static bool error_type_not_supported( c_type_t type, c_ast_t const *ast ) {
   print_error( &ast->loc,
-    "%s not supported in %s", c_type_name( type ), lang_name( opt_lang )
+    "%s not supported in %s", c_type_name( type ), c_lang_name( opt_lang )
   );
   return AST_ERROR_FOUND;
 }
