@@ -37,6 +37,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_a9i.test \
 	tests/declare_a9pi.test \
 	tests/declare_bii_d.test \
+	tests/declare_c.test \
 	tests/declare_ci.test \
 	tests/declare_constant.test \
 	tests/declare_cpa3cpa5i.test \
@@ -75,6 +76,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_ld.test \
 	tests/declare_lf.test \
 	tests/declare_ll.test \
+	tests/declare_n.test \
 	tests/declare_pa3cpa5i.test \
 	tests/declare_pa3pa5i.test \
 	tests/declare_pa9i.test \
@@ -107,8 +109,9 @@ TESTS+=	tests/declare_a3a5a7i.test \
 #
 TESTS+=	tests/declare_b_ai.test \
 	tests/declare_b_f_i.test \
-	tests/declare_f_ai.test \
+	tests/declare_c-c.test \
 	tests/declare_e-knr.test \
+	tests/declare_f_ai.test \
 	tests/declare_f_f_i.test \
 	tests/declare_fiiv_v.test \
 	tests/declare_fiv_v.test \
@@ -178,6 +181,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_a9i.test \
 	tests/explain_a9pi.test \
 	tests/explain_bii_d.test \
+	tests/explain_c.test \
 	tests/explain_ci.test \
 	tests/explain_ck.test \
 	tests/explain_cpa3cpa5i.test \
@@ -221,6 +225,7 @@ TESTS+=	tests/explain_a012i.test \
 	tests/explain_ld.test \
 	tests/explain_lf.test \
 	tests/explain_ll.test \
+	tests/explain_n.test \
 	tests/explain_pa3a5i.test \
 	tests/explain_pa3cpa5i.test \
 	tests/explain_pa3pa5i.test \
@@ -250,6 +255,7 @@ TESTS+=	tests/explain_a012i.test \
 # Almost every test here has a corresponding declare_ error test.
 #
 TESTS+=	tests/explain_b_ai.test \
+	tests/explain_c-c.test \
 	tests/explain_e-knr.test \
 	tests/explain_f_ai.test \
 	tests/explain_fcce_v.test \

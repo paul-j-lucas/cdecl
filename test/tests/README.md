@@ -18,7 +18,7 @@ declaration as it is in English.  The characters are:
 
 + `a` = array (following digit 1-9 specifies array dimension) or `auto`
 + `b` = block (Apple extension) or `bool`
-+ `c` = `char` or `const`
++ `c` = `char`, `class`,  or `const`
 + `c16` = `char16_t`
 + `c32` = `char32_t`
 + `d` = `double`
@@ -30,11 +30,12 @@ declaration as it is in English.  The characters are:
 + `k` = `struct`
 + `l` = `long`
 + `m` = member of class
++ `n` = `union`
 + `p` = pointer
 + `r` = `restrict` or reference
 + `s` = `signed` or `static`
 + `t` = `typedef`
-+ `u` = `union` or `unsigned`
++ `u` = `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
 + `x` = untyped K&R function argument

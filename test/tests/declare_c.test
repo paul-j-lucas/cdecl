@@ -1,0 +1,1 @@
+cdecl | -xc++ | declare x as class C | 0
