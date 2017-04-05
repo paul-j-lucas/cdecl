@@ -34,48 +34,48 @@
 static char const L_LONG_LONG[] = "long";
 
 /**
- * Mapping between C type literals and type bits.
+ * Mapping between C type bits and literals.
  */
 struct c_type_info {
-  char const *literal;                  // C string literal of the type
   c_type_t    type;
+  char const *literal;                  // C string literal of the type
 };
 typedef struct c_type_info c_type_info_t;
 
 static c_type_info_t const C_TYPE_INFO[] = {
   // types
-  { L_VOID,         T_VOID          },
-  { L_BOOL,         T_BOOL          },
-  { L_CHAR,         T_CHAR          },
-  { L_CHAR16_T,     T_CHAR16_T      },
-  { L_CHAR32_T,     T_CHAR32_T      },
-  { L_WCHAR_T,      T_WCHAR_T       },
-  { L_SHORT,        T_SHORT         },
-  { L_INT,          T_INT           },
-  { L_LONG,         T_LONG          },
-  { L_LONG_LONG,    T_LONG_LONG     },  // special case
-  { L_SIGNED,       T_SIGNED        },
-  { L_UNSIGNED,     T_UNSIGNED      },
-  { L_FLOAT,        T_FLOAT         },
-  { L_DOUBLE,       T_DOUBLE        },
-  { L_COMPLEX,      T_COMPLEX       },
-  { L_ENUM,         T_ENUM          },
-  { L_STRUCT,       T_STRUCT        },
-  { L_UNION,        T_UNION         },
-  { L_CLASS,        T_CLASS         },
+  { T_VOID,         L_VOID          },
+  { T_BOOL,         L_BOOL          },
+  { T_CHAR,         L_CHAR          },
+  { T_CHAR16_T,     L_CHAR16_T      },
+  { T_CHAR32_T,     L_CHAR32_T      },
+  { T_WCHAR_T,      L_WCHAR_T       },
+  { T_SHORT,        L_SHORT         },
+  { T_INT,          L_INT           },
+  { T_LONG,         L_LONG          },
+  { T_LONG_LONG,    L_LONG_LONG     },  // special case
+  { T_SIGNED,       L_SIGNED        },
+  { T_UNSIGNED,     L_UNSIGNED      },
+  { T_FLOAT,        L_FLOAT         },
+  { T_DOUBLE,       L_DOUBLE        },
+  { T_COMPLEX,      L_COMPLEX       },
+  { T_ENUM,         L_ENUM          },
+  { T_STRUCT,       L_STRUCT        },
+  { T_UNION,        L_UNION         },
+  { T_CLASS,        L_CLASS         },
   // storage classes
-  { L_AUTO,         T_AUTO          },
-  { L___BLOCK,      T_BLOCK         },  // Apple extension
-  { L_EXTERN,       T_EXTERN        },
-  { L_REGISTER,     T_REGISTER      },
-  { L_STATIC,       T_STATIC        },
-  { L_THREAD_LOCAL, T_THREAD_LOCAL  },
-  { L_TYPEDEF,      T_TYPEDEF,      },
-  { L_VIRTUAL,      T_VIRTUAL,      },
+  { T_AUTO,         L_AUTO          },
+  { T_BLOCK,        L___BLOCK       },  // Apple extension
+  { T_EXTERN,       L_EXTERN        },
+  { T_REGISTER,     L_REGISTER      },
+  { T_STATIC,       L_STATIC        },
+  { T_THREAD_LOCAL, L_THREAD_LOCAL  },
+  { T_TYPEDEF,      L_TYPEDEF       },
+  { T_VIRTUAL,      L_VIRTUAL       },
   // qualifiers
-  { L_CONST,        T_CONST         },
-  { L_RESTRICT,     T_RESTRICT      },
-  { L_VOLATILE,     T_VOLATILE      },
+  { T_CONST,        L_CONST         },
+  { T_RESTRICT,     L_RESTRICT      },
+  { T_VOLATILE,     L_VOLATILE      },
 };
 
 #define NUM_TYPES     19
