@@ -149,6 +149,16 @@ static int yywrap( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+size_t lexer_column( void ) {
+  if ( my_col == 0 )
+    return my_col_newline;
+
+  if ( *my_text == '\n' )
+    return my_col;
+
+  return my_col - strlen( my_text );
+}
+
 /**
  * Resets the lexer to its initial state.
  *

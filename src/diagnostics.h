@@ -23,21 +23,12 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Gets the current column where the error started.
- *
- * @return Returns said zero-based column.
- */
-int error_column( void );
-
-/**
  * Prints a '^' (in color, if possible and requested) under the offending
  * token.
  *
- * @param col The zero-based column to print the caret at
- * or the special value \c CARET_CURRENT_LEX_COL that means use the lexer's
- * notion of what the current column is.
+ * @param col The zero-based column to print the caret at.
  */
-void print_caret( int col );
+void print_caret( size_t col );
 
 /**
  * Prints an error message to standard error.

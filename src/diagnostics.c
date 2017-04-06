@@ -20,22 +20,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+extern size_t lexer_column( void );
+
 ///////////////////////////////////////////////////////////////////////////////
 
-int error_column( void ) {
-  if ( my_col == 0 )
-    return (int)my_col_newline;
-
-  if ( *my_text == '\n' )
-    return (int)my_col;
-
-  return (int)my_col - (int)strlen( my_text );
-}
-
-void print_caret( int col ) {
-  if ( col == CARET_CURRENT_LEX_COL )
-    col = error_column();
-  assert( col >= 0 );
+void print_caret( size_t col ) {
   size_t const caret_col = strlen( prompt[0] ) + col;
   PRINT_ERR( "%*s", (int)caret_col, "" );
   SGR_START_COLOR( stderr, caret );

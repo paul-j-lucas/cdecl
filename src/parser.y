@@ -106,6 +106,7 @@ typedef struct in_attr in_attr_t;
 extern bool         explaining;
 
 // extern functions
+extern size_t       lexer_column( void );
 extern void         lexer_reset( bool );
 extern void         print_help( void );
 extern void         set_option( char const* );
@@ -245,8 +246,9 @@ static void quit( void ) {
  * @param msg The error message to print.
  */
 static void yyerror( char const *msg ) {
-  print_caret( CARET_CURRENT_LEX_COL );
-  PRINT_ERR( "%d: ", error_column() + 1 );
+  size_t const col = lexer_column();
+  print_caret( col );
+  PRINT_ERR( "%zu: ", col + 1 );
   SGR_START_COLOR( stderr, error );
   FPUTS( msg, stderr );                 // no newline
   SGR_END_COLOR( stderr );

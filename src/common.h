@@ -16,7 +16,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define CARET_CURRENT_LEX_COL (-1)      /* use lex's current column for ^ */
 #define CPPDECL               "c++decl"
 #define DEBUG_INDENT          2         /* spaces per debug indent level */
 
