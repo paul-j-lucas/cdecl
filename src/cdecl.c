@@ -104,8 +104,8 @@ static void cdecl_cleanup( void ) {
  */
 static bool parse_command_line( char const *command, int argc,
                                 char const *argv[] ) {
-  size_t buf_len = 1 /* ';' */;
-  bool space;                           // need to putput a space?
+  size_t buf_len = 0;
+  bool space;                           // need to output a space?
 
   // pre-flight to calc buf_len
   if ( (space = command != NULL) )
@@ -124,7 +124,6 @@ static bool parse_command_line( char const *command, int argc,
       *s++ = ' ';
     s += strcpy_len( s, argv[i] );
   } // for
-  *s = ';';
 
   return parse_string( buf, buf_len );
 }
