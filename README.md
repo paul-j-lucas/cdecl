@@ -37,7 +37,7 @@ most notably:
   `_Thread_local`,
   and
   `wchar_t`.
-* Support for rvalue references.
+* Support for C++11 rvalue references.
 * Support for `typedef` declarations.
 * Support for variadic function arguments.
 * Better warning and error messages
