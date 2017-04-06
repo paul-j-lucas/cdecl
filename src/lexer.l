@@ -116,9 +116,9 @@ static keyword_t const* keyword_find( char const *s ) {
 }
 
 /**
- * Resets our notion of the current location to the beginning of the line.
+ * Do what's necessary after a newline character.
  */
-static void loc_reset( void ) {
+static void newline( void ) {
   my_col_newline = my_col;              // my_col is the column of the newline
   my_col = 0;
 }
@@ -159,7 +159,7 @@ void lexer_reset( bool hard_reset ) {
   if ( hard_reset )
     my_eof = false;
   explaining = false;
-  loc_reset();
+  newline();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -222,6 +222,7 @@ H             [0-9A-Fa-f]
 ","           |
 "["           |
 "]"           { SET_MY_TEXT; return *my_text; }
+";"           { SET_MY_TEXT; return Y_END; }
 
 "/*"          {                         /* ignore C-style comments */
                 for ( int c = input(), prev_c = '\0'; c != EOF;
@@ -229,7 +230,7 @@ H             [0-9A-Fa-f]
                   ++my_col;
                   switch ( c ) {
                     case '\n':
-                      loc_reset();
+                      newline();
                       break;
                     case '/':
                       if ( prev_c == '*' )
@@ -246,15 +247,15 @@ H             [0-9A-Fa-f]
 [ \f\r\t\v]+  ;                         /* ignore all other whitespace */
 \\\n          ;                         /* eat escaped newlines */
 
-[;\n]         {
+\n            {
                 SET_MY_TEXT;
-                loc_reset();
+                newline();
                 return Y_END;
               }
 
 <<EOF>>       {
                 SET_MY_TEXT;
-                loc_reset();
+                newline();
                 return (my_eof = !my_eof) ? Y_END : YY_NULL;
               }
 
