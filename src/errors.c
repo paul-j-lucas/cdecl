@@ -17,8 +17,8 @@
 #include <stdbool.h>
 
 // local constants
-static const bool AST_ERROR_FOUND     = true;
-static const bool AST_ERROR_NOT_FOUND = false;
+static bool const AST_ERROR_FOUND     = true;
+static bool const AST_ERROR_NOT_FOUND = false;
 
 // local functions
 static bool c_ast_visitor_error( c_ast_t*, void* );
