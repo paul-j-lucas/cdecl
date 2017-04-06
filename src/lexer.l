@@ -10,15 +10,25 @@
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"
+#include "common.h"
 #include "keywords.h"
+#include "lexer.h"
 #include "literals.h"
 #include "util.h"
 #include "parser.h"                     /* must go last */
 
 // standard
+#include <stdio.h>
 #include <string.h>
 
 #define SET_MY_TEXT   my_text = yytext
+
+/**
+ * Overrides flex's fatal error message to print the message in our format and
+ * also exit with the status we want.
+ * @hideinitializer
+ */
+#define YY_FATAL_ERROR( MSG )     lexer_fatal( (MSG) )
 
 /**
  * This code is inserted by flex at the beginning of each rule.
@@ -90,14 +100,17 @@ static keyword_t const CDECL_KEYWORDS[] = {
 };
 
 // extern variables
-bool        explaining;                 // parsing "explain ..."?
-size_t      my_col;                     // column position of current token
-size_t      my_col_newline;             // column position of newline
-char const *my_text;                    // guranteed pointer of yytext
-YYLTYPE     yylloc;                     // location of current token
+bool            explaining;             // parsing "explain ..."?
+char const     *my_text;                // guranteed pointer of yytext
+YYLTYPE         yylloc;                 // location of current token
 
 // local variables
-static bool my_eof;
+static size_t   my_col;                 // column position of current token
+static size_t   my_col_newline;         // column position of newline
+static bool     my_eof;
+
+// local functions
+static void     lexer_fatal( char const* );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -159,12 +172,6 @@ size_t lexer_column( void ) {
   return my_col - strlen( my_text );
 }
 
-/**
- * Resets the lexer to its initial state.
- *
- * @param hard_reset If \c true, does a "hard" reset that currently resets the
- * EOF flag also.
- */
 void lexer_reset( bool hard_reset ) {
   if ( hard_reset )
     my_eof = false;
@@ -275,6 +282,23 @@ H             [0-9A-Fa-f]
               }
 
 %%
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Called by flex only when there's a fatal error.
+ *
+ * @param msg The error message to print.
+ *
+ * @note This is defined down here to avoid having to declare yy_fatal_error
+ * ourselves and having to get it right being subject to possible changes in
+ * its signature in different flex versions.
+ */
+static void lexer_fatal( char const *msg ) {
+  INTERNAL_ERR( "%s\n", msg );
+
+  // Not reached -- "called" just to silence the "unused function" warning.
+  yy_fatal_error( msg );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

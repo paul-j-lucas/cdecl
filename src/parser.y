@@ -18,6 +18,7 @@
 #include "diagnostics.h"
 #include "keywords.h"
 #include "lang.h"
+#include "lexer.h"
 #include "literals.h"
 #include "options.h"
 #include "types.h"
@@ -102,15 +103,9 @@ struct in_attr {
 };
 typedef struct in_attr in_attr_t;
 
-// extern variables
-extern bool         explaining;
-
 // extern functions
-extern size_t       lexer_column( void );
-extern void         lexer_reset( bool );
 extern void         print_help( void );
 extern void         set_option( char const* );
-extern int          yylex( void );
 
 // local variables
 static unsigned     ast_depth;

@@ -10,6 +10,7 @@
 #include "color.h"
 #include "common.h"
 #include "diagnostics.h"
+#include "lexer.h"
 #include "options.h"
 #include "prompt.h"
 #include "util.h"
@@ -19,8 +20,6 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
-
-extern size_t lexer_column( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 
