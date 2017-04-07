@@ -887,7 +887,7 @@ The type of the terminal on which
 .B cdecl
 is being run.
 .SH FILES
-.TP
+.TP 4
 .B ~/.inputrc
 Individual
 .BR readline (3)
@@ -910,6 +910,30 @@ that do not provide genuine GNU
 .SH CAVEATS
 .nr step 1 1
 .IP \n[step]. 3
+Multiple comma-separated declarations are not supported:
+.cS
+int i, *p;
+.cE 0
+.IP \n+[step].
+C++ member functions that are
+\f(CWconst\fP
+and/or
+\f(CWvolatile\fP,
+pure \f(CWvirtual\fP,
+or deleted
+are not supported:
+.cS
+void f() const;
+virtual void g() = 0;
+void h() = delete;
+.cE 0
+.IP \n+[step].
+C++ function exception specifications
+\f(CWthrow()\fP
+and
+\f(CWnoexcept\fP
+are not supported.
+.IP \n+[step].
 When converting from pseudo-English to a C++ declaration,
 \f(CWenum\fP,
 \f(CWclass\fP,
