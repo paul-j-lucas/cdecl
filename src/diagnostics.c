@@ -51,12 +51,12 @@ void print_error( YYLTYPE const *loc, char const *format, ... ) {
 }
 
 void print_hint( char const *format, ... ) {
-  PRINT_ERR( "\t(did you mean " );
+  PUTS_ERR( "\t(did you mean " );
   va_list args;
   va_start( args, format );
   vfprintf( stderr, format, args );
   va_end( args );
-  PRINT_ERR( "?)\n" );
+  PUTS_ERR( "?)\n" );
 }
 
 void print_warning( YYLTYPE const *loc, char const *format, ... ) {
@@ -65,9 +65,9 @@ void print_warning( YYLTYPE const *loc, char const *format, ... ) {
     PRINT_ERR( "%d: ", loc->first_column );
   }
   SGR_START_COLOR( stderr, warning );
-  PRINT_ERR( "warning" );
+  PUTS_ERR( "warning" );
   SGR_END_COLOR( stderr );
-  PRINT_ERR( ": " );
+  PUTS_ERR( ": " );
 
   va_list args;
   va_start( args, format );

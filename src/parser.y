@@ -191,14 +191,14 @@ static void parse_cleanup( bool hard_reset ) {
  */
 static void parse_error( char const *format, ... ) {
   if ( !error_newlined ) {
-    PRINT_ERR( ": " );
+    PUTS_ERR( ": " );
     if ( *my_text )
       PRINT_ERR( "\"%s\": ", (*my_text == '\n' ? "\\n" : my_text) );
     va_list args;
     va_start( args, format );
     vfprintf( stderr, format, args );
     va_end( args );
-    PRINT_ERR( "\n" );
+    PUTC_ERR( '\n' );
     error_newlined = true;
   }
 }

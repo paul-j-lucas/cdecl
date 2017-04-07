@@ -60,9 +60,9 @@ void set_option( char const *opt ) {
     if ( strcmp( opt, "options" ) != 0 ) {
       PRINT_ERR( "\"%s\": ", opt );
       SGR_START_COLOR( stderr, error );
-      PRINT_ERR( "error" );
+      PUTS_ERR( "error" );
       SGR_END_COLOR( stderr );
-      PRINT_ERR( ": unknown set option\n" );
+      PUTS_ERR( ": unknown set option\n" );
     }
   }
 
