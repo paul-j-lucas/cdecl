@@ -121,12 +121,16 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
   assert( param != NULL );
 
+  c_type_t pure_virtual = T_NONE;
+
   switch ( ast->kind ) {
+    case K_FUNCTION:
+      pure_virtual = (ast->type & T_PURE_VIRTUAL);
+      // no break;
     case K_ARRAY:
     case K_BLOCK:                       // Apple extension
-    case K_FUNCTION:
       if ( ast->type )                  // storage class
-        FPRINTF( param->gout, "%s ", c_type_name( ast->type ) );
+        FPRINTF( param->gout, "%s ", c_type_name( ast->type & ~pure_virtual ) );
       c_ast_gibberish_impl( ast->as.parent.of_ast, param );
       if ( false_set( &param->postfix ) ) {
         if ( param->gkind != G_CAST )
@@ -136,6 +140,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         else
           c_ast_gibberish_postfix( ast, param );
       }
+      if ( pure_virtual )
+        FPUTS( " = 0", param->gout );
       break;
 
     case K_BUILTIN:

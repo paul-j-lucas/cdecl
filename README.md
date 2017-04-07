@@ -34,11 +34,12 @@ most notably:
   `char32_t`,
   `complex`,
   `restrict`,
-  `_Thread_local`,
+  `thread_local`,
+  `virtual`,
   and
   `wchar_t`.
-* Support for C++11 rvalue references.
 * Support for `typedef` declarations.
+* Support for C++11 rvalue references.
 * Support for variadic function arguments.
 * Better warning and error messages
   complete with location information and color.

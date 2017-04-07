@@ -286,6 +286,7 @@ static void yyerror( char const *msg ) {
 
                     /* K&R C */
 %token              ','
+%token              '='
 %token              '*'
 %token              '[' ']'
 %token              '(' ')'
@@ -326,6 +327,7 @@ static void yyerror( char const *msg ) {
 %token              '&'                 /* reference */
 %token  <type>      Y_CLASS
 %token              Y_COLON_COLON       "::"
+%token              Y_PURE
 %token  <type>      Y_VIRTUAL
 
                     /* C++11 */
@@ -353,6 +355,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  func_decl_english
 %type   <ast_pair>  pointer_decl_english
 %type   <ast_pair>  pointer_to_member_decl_english
+%type   <type>      pure_opt_english
 %type   <ast_pair>  qualifiable_decl_english
 %type   <ast_pair>  qualified_decl_english
 %type   <ast_pair>  reference_decl_english
@@ -373,6 +376,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  nested_cast_c
 %type   <ast_pair>  pointer_cast_c
 %type   <ast_pair>  pointer_to_member_cast_c
+%type   <type>      pure_virtual_opt_c
 %type   <ast_pair>  reference_cast_c
 
 %type   <ast_pair>  decl_c decl2_c
@@ -520,8 +524,19 @@ declare_english
 
 storage_class_opt_english
   : /* empty */                   { $$ = T_NONE; }
-  | storage_class_c
+  | Y_AUTO
+  | Y___BLOCK                           /* Apple extension */
+  | Y_EXTERN
   | Y_REGISTER
+  | Y_STATIC
+  | Y_THREAD_LOCAL
+  | Y_TYPEDEF
+  | pure_opt_english Y_VIRTUAL    { $$ = $1 | $2; }
+  ;
+
+pure_opt_english
+  : /* empty */                   { $$ = T_NONE; }
+  | Y_PURE                        { $$ = T_PURE_VIRTUAL; }
   ;
 
 /*****************************************************************************/
@@ -1086,16 +1101,18 @@ block_decl_c                            /* Apple extension */
   ;
 
 func_decl_c
-  : /* type_c */ decl2_c '(' arg_list_opt_c ')'
+  : /* type_c */ decl2_c '(' arg_list_opt_c ')' pure_virtual_opt_c
     {
       DUMP_START( "func_decl_c", "decl2_c '(' arg_list_opt_c ')'" );
       DUMP_AST( "type_c", type_peek() );
       DUMP_AST( "decl2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
+      DUMP_TYPE( "pure_virtual_opt_c", $5 );
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
 
       c_ast_t *const func = c_ast_new( K_FUNCTION, ast_depth, &@$ );
+      func->type = $5;
       func->as.func.args = $3;
       if ( $1.target_ast ) {
         $$.ast = $1.ast;
@@ -1108,6 +1125,11 @@ func_decl_c
       DUMP_AST( "func_decl_c", $$.ast );
       DUMP_END();
     }
+  ;
+
+pure_virtual_opt_c
+  : /* empty */                   { $$ = T_NONE; }
+  | '=' expect_zero               { $$ = T_PURE_VIRTUAL; }
   ;
 
 name_c
@@ -1692,6 +1714,24 @@ expect_comma
 expect_star
   : '*'
   | error                         { PARSE_ERROR( "'*' expected" ); }
+  ;
+
+expect_zero
+  : zero
+  | error
+    {
+      PARSE_ERROR( "'0' expected" );
+    }
+  ;
+
+zero
+  : Y_NUMBER
+    {
+      if ( $1 != 0 ) {
+        yyerror( "syntax error" );
+        YYERROR;
+      }
+    }
   ;
 
 name_opt

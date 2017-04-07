@@ -57,7 +57,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	modularized & cleaned-up source
 	added long options
 	added bool, char16_t, char32_t, complex, restrict, _Thread_local,
-		wchar_t
+		virtual, wchar_t
 	added better warning and error messages
 	added octal and hexadecimal numbers
 	added register and variadic function arguments

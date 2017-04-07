@@ -72,6 +72,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { T_THREAD_LOCAL, L_THREAD_LOCAL  },
   { T_TYPEDEF,      L_TYPEDEF       },
   { T_VIRTUAL,      L_VIRTUAL       },
+  { T_PURE_VIRTUAL, L_PURE          },
   // qualifiers
   { T_CONST,        L_CONST         },
   { T_RESTRICT,     L_RESTRICT      },
@@ -189,12 +190,14 @@ char const* c_type_name( c_type_t type ) {
     T_STATIC,
     T_THREAD_LOCAL,
     T_TYPEDEF,
+    T_PURE_VIRTUAL,
+    T_VIRTUAL,
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_CLASS ); ++i ) {
     if ( (type & C_STORAGE_CLASS[i]) ) {
+      if ( true_or_set( &space ) )
+        STRCAT( name, " " );
       STRCAT( name, c_type_name( C_STORAGE_CLASS[i] ) );
-      space = true;
-      break;
     }
   } // for
 

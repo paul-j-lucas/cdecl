@@ -107,7 +107,8 @@ TESTS+=	tests/declare_a3a5a7i.test \
 # =====================
 # Almost every test here has a corresponding explain_ error test.
 #
-TESTS+=	tests/declare_b_ai.test \
+TESTS+=	tests/declare_0f_v-c.test \
+	tests/declare_b_ai.test \
 	tests/declare_b_f_i.test \
 	tests/declare_c-c.test \
 	tests/declare_e-knr.test \
@@ -164,7 +165,8 @@ TESTS+=	tests/declare_b_ai.test \
 # ===============
 # Almost every test here has a corresponding cast_ and declare_ test.
 #
-TESTS+=	tests/explain_a012i.test \
+TESTS+=	tests/explain_0f_v-01.test \
+	tests/explain_a012i.test \
 	tests/explain_a0xAi-01.test \
 	tests/explain_a0xai-02.test \
 	tests/explain_a3a5a7i.test \
@@ -254,7 +256,9 @@ TESTS+=	tests/explain_a012i.test \
 # =====================
 # Almost every test here has a corresponding declare_ error test.
 #
-TESTS+=	tests/explain_b_ai.test \
+TESTS+=	tests/explain_0f_v-02.test \
+	tests/explain_0f_v-c.test \
+	tests/explain_b_ai.test \
 	tests/explain_c-c.test \
 	tests/explain_e-knr.test \
 	tests/explain_f_ai.test \
@@ -423,7 +427,8 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 # C++ declare tests
 # =================
 #
-TESTS+=	tests/declare_cpmi.test \
+TESTS+=	tests/declare_0f_v.test \
+	tests/declare_cpmi.test \
 	tests/declare_frri_v.test \
 	tests/declare_pfv_ri.test \
 	tests/declare_pmci.test \

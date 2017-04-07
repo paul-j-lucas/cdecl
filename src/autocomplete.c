@@ -55,6 +55,7 @@ static char const *const CDECL_KEYWORDS[] = {
   L_NORETURN,
 //L_OF,                                 // too short
   L_POINTER,
+  L_PURE,
   L_REFERENCE,
   L_REGISTER,
   L_RESTRICT,

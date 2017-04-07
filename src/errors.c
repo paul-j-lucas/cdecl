@@ -227,9 +227,13 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       if ( opt_lang < LANG_CPP_MIN ) {
         if ( (ast->type & T_CONST) )
           return error_type_not_supported( T_CONST, ast );
-        if ( (ast->type & T_VIRTUAL) )
+        if ( (ast->type & (T_VIRTUAL | T_PURE_VIRTUAL)) )
           return error_type_not_supported( T_VIRTUAL, ast );
       } else {
+        if ( (ast->type & T_PURE_VIRTUAL) && !(ast->type & T_VIRTUAL) ) {
+          print_error( &ast->loc, "non-virtual function can not be pure" );
+          return AST_ERROR_FOUND;
+        }
         // TODO
       }
       // no break;

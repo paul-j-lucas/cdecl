@@ -88,6 +88,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_OF,           TOKEN( Y_OF ),        },
   { L_POINTER,      TOKEN( Y_POINTER )    },
   { L_PTR,          TOKEN( Y_POINTER )    },
+  { L_PURE,         TOKEN( Y_PURE )       },
   { L_Q,            TOKEN( Y_QUIT )       },
   { L_QUIT,         TOKEN( Y_QUIT )       },
   { L_REF,          TOKEN( Y_REFERENCE )  },
@@ -293,6 +294,7 @@ H             [0-9A-Fa-f]
 ")"           |
 "*"           |
 ","           |
+"="           |
 "["           |
 "]"           { SET_TOKEN; return lexer_token[0]; }
 ";"           { SET_TOKEN; return Y_END; }

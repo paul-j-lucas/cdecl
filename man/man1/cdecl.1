@@ -540,12 +540,15 @@ or
 .I storage-class
 One of:
 \f(CWauto\fP,
+\f(CWblock\fP,
 \f(CWextern\fP,
 \f(CWregister\fP,
 \f(CWstatic\fP,
-\f(CW_Thread_local\fP,
+\f(CWthread_local\fP (or \f(CW_Thread_local\fP),
+\f(CWtypedef\fP,
+\f(CWvirtual\fP,
 or
-\f(CWvirtual\fP.
+\f(CWpure virtual\fP.
 .RE
 .SS Synonyms
 Some synonyms are permitted within pseudo-English.
@@ -919,12 +922,10 @@ C++ member functions that are
 \f(CWconst\fP
 and/or
 \f(CWvolatile\fP,
-pure \f(CWvirtual\fP,
 or deleted
 are not supported:
 .cS
 void f() const;
-virtual void g() = 0;
 void h() = delete;
 .cE 0
 .IP \n+[step].
@@ -993,11 +994,14 @@ mult-line input,
 \f(CWchar32_t\fP,
 \f(CWcomplex\fP,
 \f(CWrestrict\fP,
-\f(CW_Thread_local\fP,
+\f(CWthread_local\fP,
 \f(CWwchar_t\fP,
-\f(CWregister\fP and variadic function arguments,
-rvalue references,
-\f(CWtypedef\fP declarations,
+\f(CWregister\fP and variadic function argument,
+rvalue reference,
+\f(CWtypedef\fP,
+and
+\f(CWvirtual\fP function
+declarations;
 and
 octal and hexadecimal array sizes.
 .TP

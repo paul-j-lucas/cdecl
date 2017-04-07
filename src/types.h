@@ -20,6 +20,7 @@
 
 // standard
 #include <stdbool.h>
+#include <stdint.h>
 
 ////////// types //////////////////////////////////////////////////////////////
 
@@ -54,18 +55,19 @@
 #define T_THREAD_LOCAL    0x02000000
 #define T_TYPEDEF         0x04000000
 #define T_VIRTUAL         0x08000000
+#define T_PURE_VIRTUAL    0x10000000
 
 // qualifiers
-#define T_CONST           0x10000000
-#define T_RESTRICT        0x20000000
-#define T_VOLATILE        0x40000000
+#define T_CONST           0x20000000
+#define T_RESTRICT        0x40000000
+#define T_VOLATILE        0x80000000
 
 // bit masks
 #define T_MASK_TYPE       0x000FFFFF
-#define T_MASK_STORAGE    0x0FF00000
-#define T_MASK_QUALIFIER  0xF0000000
+#define T_MASK_STORAGE    0x1FF00000
+#define T_MASK_QUALIFIER  0xE0000000
 
-typedef unsigned c_type_t;
+typedef uint32_t c_type_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
 
