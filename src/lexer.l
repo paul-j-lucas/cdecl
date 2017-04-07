@@ -36,9 +36,9 @@
  * @hideinitializer
  */
 #define YY_USER_ACTION                        \
-  yylloc.first_column = my_col;               \
-  yylloc.last_column  = my_col + yyleng - 1;  \
-  my_col += yyleng;
+  yylloc.first_column = column;               \
+  yylloc.last_column  = column + yyleng - 1;  \
+  column += yyleng;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -105,9 +105,9 @@ char const     *my_text;                // guranteed pointer of yytext
 YYLTYPE         yylloc;                 // location of current token
 
 // local variables
-static size_t   my_col;                 // column position of current token
-static size_t   my_col_newline;         // column position of newline
-static bool     my_eof;
+static size_t   column;                 // column position of current token
+static size_t   column_newline;         // column position of newline
+static bool     is_eof;                 // encountered EOF?
 
 // local functions
 static void     lexer_fatal( char const* );
@@ -129,11 +129,11 @@ static keyword_t const* keyword_find( char const *s ) {
 }
 
 /**
- * Do what's necessary after a newline character.
+ * Resets the column position upon encountering a newline.
  */
-static void newline( void ) {
-  my_col_newline = my_col;              // my_col is the column of the newline
-  my_col = 0;
+static inline void newline( void ) {
+  column_newline = column;
+  column = 0;
 }
 
 /**
@@ -163,18 +163,18 @@ static int yywrap( void ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 size_t lexer_column( void ) {
-  if ( my_col == 0 )
-    return my_col_newline;
+  if ( column == 0 )
+    return column_newline;
 
   if ( *my_text == '\n' )
-    return my_col;
+    return column;
 
-  return my_col - strlen( my_text );
+  return column - strlen( my_text );
 }
 
 void lexer_reset( bool hard_reset ) {
   if ( hard_reset )
-    my_eof = false;
+    is_eof = false;
   explaining = false;
   newline();
 }
@@ -244,7 +244,7 @@ H             [0-9A-Fa-f]
 "/*"          {                         /* ignore C-style comments */
                 for ( int c = input(), prev_c = '\0'; c != EOF;
                       prev_c = c, c = input() ) {
-                  ++my_col;
+                  ++column;
                   switch ( c ) {
                     case '\n':
                       newline();
@@ -273,7 +273,16 @@ H             [0-9A-Fa-f]
 <<EOF>>       {
                 SET_MY_TEXT;
                 newline();
-                return (my_eof = !my_eof) ? Y_END : YY_NULL;
+                //
+                // The first time we encounter EOF, we want to treat it as if
+                // it were a newline by returning Y_END so commands in the
+                // parser always end in Y_END.
+                //
+                // Requesting more characters after encountering EOF will
+                // simply continue to return EOF, so the second time we
+                // encounter EOF, treat it as EOF by returning no token.
+                //
+                return (is_eof = !is_eof) ? Y_END : YY_NULL;
               }
 
 .             {
