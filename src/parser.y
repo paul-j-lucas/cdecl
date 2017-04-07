@@ -192,8 +192,8 @@ static void parse_cleanup( bool hard_reset ) {
 static void parse_error( char const *format, ... ) {
   if ( !error_newlined ) {
     PUTS_ERR( ": " );
-    if ( *my_text )
-      PRINT_ERR( "\"%s\": ", (*my_text == '\n' ? "\\n" : my_text) );
+    if ( lexer_token[0] )
+      PRINT_ERR( "\"%s\": ", (lexer_token[0] == '\n' ? "\\n" : lexer_token) );
     va_list args;
     va_start( args, format );
     vfprintf( stderr, format, args );
@@ -436,9 +436,10 @@ command
   | Y_END                               /* allows for blank lines */
   | error Y_END
     {
-      if ( *my_text )
+      if ( lexer_token[0] )
         PARSE_ERROR(
-          "\"%s\": unexpected token", (*my_text == '\n' ? "\\n" : my_text)
+          "\"%s\": unexpected token",
+          (lexer_token[0] == '\n' ? "\\n" : lexer_token)
         );
       else
         PARSE_ERROR( "unexpected end of command" );

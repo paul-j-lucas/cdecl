@@ -19,7 +19,7 @@
 
 // extern variables
 extern bool         explaining;         // parsing "explain ..."?
-extern char const  *my_text;            // guaranteed pointer of yytext
+extern char const  *lexer_token;        // text of current token
 
 /**
  * Gets the lexer's current column number.

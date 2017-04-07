@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define SET_MY_TEXT   my_text = yytext
+#define SET_TOKEN                 lexer_token = yytext
 
 /**
  * Overrides flex's fatal error message to print the message in our format and
@@ -101,7 +101,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
 
 // extern variables
 bool            explaining;             // parsing "explain ..."?
-char const     *my_text;                // guranteed pointer of yytext
+char const     *lexer_token;            // guranteed pointer of yytext
 YYLTYPE         yylloc;                 // location of current token
 
 // local variables
@@ -137,7 +137,7 @@ static inline void newline( void ) {
 }
 
 /**
- * Parses an integer from \c my_text.
+ * Parses an integer from \c lexer_token.
  *
  * @param base The integer base to use.
  * @return Returns the integer value.
@@ -147,7 +147,7 @@ static inline int parse_int( int base ) {
   // We don't need to check for errors from strtol(3) here since the lexer
   // guarantees that we'll be passed only a valid number token.
   //
-  return (int)strtol( my_text, NULL, base );
+  return (int)strtol( lexer_token, NULL, base );
 }
 
 /**
@@ -166,10 +166,10 @@ size_t lexer_column( void ) {
   if ( column == 0 )
     return column_newline;
 
-  if ( *my_text == '\n' )
+  if ( lexer_token[0] == '\n' )
     return column;
 
-  return column - strlen( my_text );
+  return column - strlen( lexer_token );
 }
 
 void lexer_reset( bool hard_reset ) {
@@ -191,25 +191,25 @@ H             [0-9A-Fa-f]
 %%
 
 {A}({A}|{D})* {
-                SET_MY_TEXT;
+                SET_TOKEN;
 
                 if ( !explaining ) {
-                  keyword_t const *const k = keyword_find( my_text );
+                  keyword_t const *const k = keyword_find( lexer_token );
                   if ( k ) {
                     if ( k->c_keyword_synonym )
-                      my_text = k->c_keyword_synonym;
+                      lexer_token = k->c_keyword_synonym;
                     else
                       return k->y_token;
                   }
                 }
 
-                c_keyword_t const *const k = c_keyword_find_literal( my_text );
+                c_keyword_t const *k = c_keyword_find_literal( lexer_token );
                 if ( k ) {
                   yylval.type = k->type;
                   return k->y_token;
                 }
 
-                yylval.name = check_strdup( my_text );
+                yylval.name = check_strdup( lexer_token );
                 return Y_NAME;
               }
 
@@ -217,14 +217,14 @@ H             [0-9A-Fa-f]
 "c++98"       |
 "c++03"       |
 "c++11"       {
-                SET_MY_TEXT;
-                yylval.name = check_strdup( my_text );
+                SET_TOKEN;
+                yylval.name = check_strdup( lexer_token );
                 return Y_CPP_LANG_NAME;
               }
 
-[1-9]{D}*     { SET_MY_TEXT; yylval.number = parse_int( 10 ); return Y_NUMBER; }
-0{O}*         { SET_MY_TEXT; yylval.number = parse_int(  8 ); return Y_NUMBER; }
-0[xX]{H}+     { SET_MY_TEXT; yylval.number = parse_int( 16 ); return Y_NUMBER; }
+[1-9]{D}*     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
+0{O}*         { SET_TOKEN; yylval.number = parse_int(  8 ); return Y_NUMBER; }
+0[xX]{H}+     { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
 "&&"          return Y_RVALUE_REFERENCE;
 "..."         return Y_ELLIPSIS;
@@ -238,8 +238,8 @@ H             [0-9A-Fa-f]
 "*"           |
 ","           |
 "["           |
-"]"           { SET_MY_TEXT; return *my_text; }
-";"           { SET_MY_TEXT; return Y_END; }
+"]"           { SET_TOKEN; return lexer_token[0]; }
+";"           { SET_TOKEN; return Y_END; }
 
 "/*"          {                         /* ignore C-style comments */
                 for ( int c = input(), prev_c = '\0'; c != EOF;
@@ -265,13 +265,13 @@ H             [0-9A-Fa-f]
 \\\n          ;                         /* eat escaped newlines */
 
 \n            {
-                SET_MY_TEXT;
+                SET_TOKEN;
                 newline();
                 return Y_END;
               }
 
 <<EOF>>       {
-                SET_MY_TEXT;
+                SET_TOKEN;
                 newline();
                 //
                 // The first time we encounter EOF, we want to treat it as if
@@ -286,7 +286,7 @@ H             [0-9A-Fa-f]
               }
 
 .             {
-                SET_MY_TEXT;
+                SET_TOKEN;
                 return Y_ERROR;
               }
 
