@@ -12,6 +12,7 @@
 #include "config.h"                     /* must go first */
 
 // standard
+#include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -30,6 +31,7 @@ typedef struct {
 #define YYLTYPE_IS_TRIVIAL    1
 
 // extern variables
+extern bool         is_input_a_tty;     // is our input from a tty?
 extern char const  *me;                 // program name
 
 ///////////////////////////////////////////////////////////////////////////////

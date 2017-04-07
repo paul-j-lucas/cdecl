@@ -31,6 +31,13 @@
 #define YY_FATAL_ERROR( MSG )     lexer_fatal( (MSG) )
 
 /**
+ * Overrides flex's input.
+ * @hideinitializer
+ */
+#define YY_INPUT( BUF, RESULT, MAX_SIZE ) \
+  (RESULT) = lexer_get_input( (BUF), (MAX_SIZE) )
+
+/**
  * This code is inserted by flex at the beginning of each rule.
  * It sets the current token location information.
  * @hideinitializer
@@ -107,6 +114,8 @@ YYLTYPE         yylloc;                 // location of current token
 // local variables
 static size_t   column;                 // column position of current token
 static size_t   column_newline;         // column position of newline
+static char    *input_line;             // entire current input line
+static size_t   input_line_len;         // length of input_line
 static bool     is_eof;                 // encountered EOF?
 
 // local functions
@@ -126,6 +135,47 @@ static keyword_t const* keyword_find( char const *s ) {
       return k;
   } // for
   return NULL;
+}
+
+/**
+ * Gets a line of input for flex and keeps a copy for use later if printing an
+ * error message.
+ *
+ * @param buf A pointer to the buffer to read into.
+ * @param buf_size The size of \a buf.
+ * @return Returns the number of bytes read.
+ */
+static size_t lexer_get_input( char *buf, size_t buf_size ) {
+  size_t bytes_read = 0;
+
+  for ( ; bytes_read < buf_size; ++bytes_read ) {
+    int const c = getc( yyin );
+    if ( c == EOF ) {
+      FERROR( yyin );
+      break;
+    }
+    buf[ bytes_read ] = (char)c;
+    if ( c == '\n' )
+      break;
+  } // for
+
+  if ( column == 0 && bytes_read < buf_size ) {
+    //
+    // We're at the beginning of a line and we've read fewer than buf_size
+    // characters; therefore we must have encountered either a newline or EOF:
+    // copy the line.
+    //
+    static size_t input_line_capacity;
+    if ( input_line_capacity < bytes_read + 1/*null*/ ) {
+      input_line_capacity = bytes_read + 1/*null*/;
+      REALLOC( input_line, char, input_line_capacity );
+    }
+    strncpy( input_line, buf, bytes_read );
+    input_line_len = bytes_read;
+    input_line[ input_line_len ] = '\0';
+  }
+
+  return bytes_read;
 }
 
 /**
@@ -170,6 +220,12 @@ size_t lexer_column( void ) {
     return column;
 
   return column - strlen( lexer_token );
+}
+
+char const* lexer_input_line( size_t *plen ) {
+  if ( plen )
+    *plen = input_line_len;
+  return input_line;
 }
 
 void lexer_reset( bool hard_reset ) {

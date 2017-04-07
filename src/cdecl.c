@@ -26,10 +26,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variable definitions
+bool                is_input_a_tty;     // is our input from a tty?
 char const         *me;                 // program name
-
-// local variables
-static bool         is_input_a_tty;     // is our input from a tty?
 
 // extern functions
 extern int          yyparse( void );

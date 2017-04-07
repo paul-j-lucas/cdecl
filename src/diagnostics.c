@@ -24,8 +24,27 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 void print_caret( size_t col ) {
-  size_t const caret_col = strlen( prompt[0] ) + col;
-  PRINT_ERR( "%*s", (int)caret_col, "" );
+  if ( is_input_a_tty || opt_interactive ) {
+    //
+    // If we're interactive, we can put the ^ under the already existing token
+    // the user typed for the recent command, but we have to add the length of
+    // the prompt.
+    //
+    col += strlen( prompt[0] );
+  } else {
+    //
+    // Otherwise we have to print out the line containing the error then put
+    // the ^ under that.
+    //
+    size_t line_len;
+    char const *const line = lexer_input_line( &line_len );
+    assert( line );
+    PUTS_ERR( line );
+    if ( line_len > 0 && line[ line_len - 1 ] != '\n' )
+      PUTC_ERR( '\n' );
+  }
+
+  PRINT_ERR( "%*s", (int)col, "" );
   SGR_START_COLOR( stderr, caret );
   PUTC_ERR( '^' );
   SGR_END_COLOR( stderr );

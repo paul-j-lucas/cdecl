@@ -29,6 +29,15 @@ extern char const  *lexer_token;        // text of current token
 size_t lexer_column( void );
 
 /**
+ * Gets the current input line.
+ *
+ * @param plen If not null, sets the value pointed at to be the length of said
+ * line.
+ * @return Returns said line.
+ */
+char const* lexer_input_line( size_t *plen );
+
+/**
  * Resets the lexer to its initial state.
  *
  * @param hard_reset If \c true, does a "hard" reset that currently resets the
