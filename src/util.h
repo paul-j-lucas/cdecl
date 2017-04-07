@@ -38,6 +38,8 @@ _GL_INLINE_HEADER_BEGIN
 #define NO_OP                     ((void)0)
 #define PERROR_EXIT(STATUS)       BLOCK( perror( me ); exit( STATUS ); )
 #define PRINT_ERR(...)            fprintf( stderr, __VA_ARGS__ )
+#define PUTC_ERR(C)               FPUTC( (C), stderr )
+#define PUTS_ERR(S)               FPUTS( (S), stderr )
 #define REINTERPRET_CAST(T,EXPR)  ((T)(uintptr_t)(EXPR))
 #define STRERROR                  strerror( errno )
 

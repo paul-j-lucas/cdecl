@@ -245,7 +245,7 @@ static void yyerror( char const *msg ) {
   print_caret( col );
   PRINT_ERR( "%zu: ", col + 1 );
   SGR_START_COLOR( stderr, error );
-  FPUTS( msg, stderr );                 // no newline
+  PUTS_ERR( msg );                      // no newline
   SGR_END_COLOR( stderr );
   error_newlined = false;
   parse_cleanup( false );
