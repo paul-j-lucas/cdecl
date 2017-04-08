@@ -18,7 +18,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 4, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 7, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -918,6 +918,29 @@ Multiple comma-separated declarations are not supported:
 int i, *p;
 .cE 0
 .IP \n+[step].
+Only
+\f(CWenum\fP,
+\f(CWclass\fP,
+\f(CWstruct\fP,
+and
+\f(CWunion\fP
+names are supported;
+complete declarations are not:
+.cS
+struct S s;                       // supported
+struct S { int i; char c; } s;    // not supported
+.cE 0
+.IP \n+[step].
+The C (and C++)
+\f(CWalignas\fP specifier
+is not supported.
+.IP \n+[step].
+The C11
+\f(CW_Noreturn\fP
+(and \f(CWnoreturn\fP)
+function specifier
+is not supported.
+.IP \n+[step].
 C++ member functions that are
 \f(CWconst\fP
 and/or
@@ -926,8 +949,12 @@ or deleted
 are not supported:
 .cS
 void f() const;
-void h() = delete;
+void g() = delete;
 .cE 0
+.IP \n+[step].
+C++ attribute specifiers,
+e.g., \f(CW[[noreturn]]\fP,
+are not supported.
 .IP \n+[step].
 C++ function exception specifications
 \f(CWthrow()\fP
