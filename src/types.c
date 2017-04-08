@@ -26,10 +26,10 @@
 
 /**
  * As part of the special case for <code>long long</code>, its literal is only
- * \c long because it's type, T_LONG_LONG, is always combined with T_LONG,
- * i.e., two bits are set.  Therefore, when printed, it prints one \c long for
- * T_LONG and another \c long for T_LONG_LONG (this literal).  That explains
- * why this literal is only one \c long.
+ * \c long because its type, T_LONG_LONG, is always combined with T_LONG, i.e.,
+ * two bits are set.  Therefore, when printed, it prints one \c long for T_LONG
+ * and another \c long for T_LONG_LONG (this literal).  That explains why this
+ * literal is only one \c long.
  */
 static char const L_LONG_LONG[] = "long";
 
