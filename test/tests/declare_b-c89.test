@@ -1,0 +1,1 @@
+cdecl | -xc89 | declare x as bool | 65

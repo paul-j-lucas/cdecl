@@ -36,6 +36,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_a9cpi.test \
 	tests/declare_a9i.test \
 	tests/declare_a9pi.test \
+	tests/declare_b.test \
 	tests/declare_bii_d.test \
 	tests/declare_c.test \
 	tests/declare_ci.test \
@@ -99,6 +100,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_ull.test \
 	tests/declare_vcpi.test \
 	tests/declare_vpi.test \
+	tests/declare_w.test \
 	tests/declare_zd.test \
 	tests/declare_zf.test
 
@@ -108,9 +110,14 @@ TESTS+=	tests/declare_a3a5a7i.test \
 # Almost every test here has a corresponding explain_ error test.
 #
 TESTS+=	tests/declare_0f_v-c.test \
+	tests/declare_b-c89.test \
 	tests/declare_b_ai.test \
 	tests/declare_b_f_i.test \
 	tests/declare_c-c.test \
+	tests/declare_c16-c++03.test \
+	tests/declare_c16-c99.test \
+	tests/declare_c32-c++03.test \
+	tests/declare_c32-c99.test \
 	tests/declare_e-knr.test \
 	tests/declare_f_ai.test \
 	tests/declare_f_f_i.test \
@@ -156,7 +163,8 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_uv.test \
 	tests/declare_uw.test \
 	tests/declare_v.test \
-	tests/declare_vf_v-c.test
+	tests/declare_vf_v-c.test \
+	tests/declare_w-c89.test
 
 ###############################################################################
 
@@ -182,6 +190,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_a9cpi.test \
 	tests/explain_a9i.test \
 	tests/explain_a9pi.test \
+	tests/explain_b.test \
 	tests/explain_bii_d.test \
 	tests/explain_c.test \
 	tests/explain_ci.test \
@@ -248,6 +257,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_vcpi.test \
 	tests/explain_vf_v.test \
 	tests/explain_vpi.test \
+	tests/explain_w.test \
 	tests/explain_zd.test \
 	tests/explain_zf.test
 
@@ -258,8 +268,13 @@ TESTS+=	tests/explain_0f_v-01.test \
 #
 TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_0f_v-c.test \
+	tests/explain_b-c89.test \
 	tests/explain_b_ai.test \
 	tests/explain_c-c.test \
+	tests/explain_c16-c++03.test \
+	tests/explain_c16-c99.test \
+	tests/explain_c32-c++03.test \
+	tests/explain_c32-c99.test \
 	tests/explain_e-knr.test \
 	tests/explain_f_ai.test \
 	tests/explain_fcce_v.test \
@@ -316,7 +331,9 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_uv.test \
 	tests/explain_uw.test \
 	tests/explain_v.test \
-	tests/explain_vf_v-c.test
+	tests/explain_vf_v-c.test \
+	tests/explain_w-c89.test \
+	tests/explain_w-c89.test
 
 ###############################################################################
 
