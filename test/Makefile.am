@@ -10,15 +10,22 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 ###############################################################################
 
 #
-# Command-line option error tests
-# ===============================
+# Command-line option tests
+# =========================
 #
-TESTS =	tests/cdecl-xx.test
+TESTS =	tests/cdecl-s.test \
+	tests/cdecl--no-semicolon.test
 
 if WITH_CDECL_DEBUG
 TESTS+=	tests/cdecl-d.test \
 	tests/cdecl--debug.test
 endif
+
+#
+# Command-line option error tests
+# ===============================
+#
+TESTS+=	tests/cdecl-xx.test
 
 ###############################################################################
 
