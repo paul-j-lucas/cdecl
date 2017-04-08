@@ -52,7 +52,7 @@
   CDEBUG( DUMP_COMMA; c_ast_debug( (AST), 1, (KEY), stdout ); )
 
 #define DUMP_AST_LIST(KEY,AST_LIST) CDEBUG(       \
-  DUMP_COMMA; FPRINTF( stdout, "%s = ", (KEY) );  \
+  DUMP_COMMA; FPRINTF( stdout, "  %s = ", (KEY) );  \
   c_ast_list_debug( &(AST_LIST), 1, stdout ); )
 
 #define DUMP_NAME(KEY,NAME) CDEBUG(   \
