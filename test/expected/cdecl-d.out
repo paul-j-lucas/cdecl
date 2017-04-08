@@ -1,0 +1,577 @@
+
+builtin_or_enum_class_struct_union_type_c ::= builtin_type_c = {
+  builtin_type_c = "int",
+  builtin_or_enum_class_struct_union_type_c = {
+    id = 1,
+    kind = "built-in type",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = "int"
+  }
+}
+
+type_c ::= builtin_type_c type_modifier_list_opt_c = {
+  builtin_or_enum_class_struct_union_type_c = {
+    id = 1,
+    kind = "built-in type",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = "int"
+  },
+  type_modifier_list_opt_c = null,
+  type_c = {
+    id = 1,
+    kind = "built-in type",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = "int"
+  }
+}
+
+pointer_type_c ::= * type_qualifier_list_opt_c = {
+  type_c = {
+    id = 1,
+    kind = "built-in type",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = "int"
+  },
+  type_qualifier_list_opt_c = null,
+  pointer_type_c = {
+    id = 2,
+    kind = "pointer",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = null,
+    qualifier = null,
+    to_ast = {
+      id = 1,
+      kind = "built-in type",
+      depth = 0,
+      name = null,
+      parent->id = 2,
+      type = "int"
+    }
+  }
+}
+
+name_c ::= NAME = {
+  type_c = {
+    id = 2,
+    kind = "pointer",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = null,
+    qualifier = null,
+    to_ast = {
+      id = 1,
+      kind = "built-in type",
+      depth = 0,
+      name = null,
+      parent->id = 2,
+      type = "int"
+    }
+  },
+  NAME = "f",
+  name_c = {
+    id = 2,
+    kind = "pointer",
+    depth = 0,
+    name = "f",
+    parent->id = -1,
+    type = null,
+    qualifier = null,
+    to_ast = {
+      id = 1,
+      kind = "built-in type",
+      depth = 0,
+      name = null,
+      parent->id = 2,
+      type = "int"
+    }
+  }
+}
+
+builtin_or_enum_class_struct_union_type_c ::= builtin_type_c = {
+  builtin_type_c = "int",
+  builtin_or_enum_class_struct_union_type_c = {
+    id = 3,
+    kind = "built-in type",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = "int"
+  }
+}
+
+type_c ::= builtin_type_c type_modifier_list_opt_c = {
+  builtin_or_enum_class_struct_union_type_c = {
+    id = 3,
+    kind = "built-in type",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = "int"
+  },
+  type_modifier_list_opt_c = null,
+  type_c = {
+    id = 3,
+    kind = "built-in type",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = "int"
+  }
+}
+
+name_c ::= NAME = {
+  type_c = {
+    id = 3,
+    kind = "built-in type",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = "int"
+  },
+  NAME = "x",
+  name_c = {
+    id = 3,
+    kind = "built-in type",
+    depth = 0,
+    name = "x",
+    parent->id = -1,
+    type = "int"
+  }
+}
+
+arg_c ::= type_c cast_c = {
+  type_c = {
+    id = 3,
+    kind = "built-in type",
+    depth = 0,
+    name = "x",
+    parent->id = -1,
+    type = "int"
+  },
+  cast_c = {
+    id = 3,
+    kind = "built-in type",
+    depth = 0,
+    name = "x",
+    parent->id = -1,
+    type = "int"
+  },
+  arg_c = {
+    id = 3,
+    kind = "built-in type",
+    depth = 0,
+    name = "x",
+    parent->id = -1,
+    type = "int"
+  }
+}
+
+arg_list_c ::= arg_c = {
+  arg_c = {
+    id = 3,
+    kind = "built-in type",
+    depth = 0,
+    name = "x",
+    parent->id = -1,
+    type = "int"
+  },
+  arg_list_c = [
+    {
+      id = 3,
+      kind = "built-in type",
+      depth = 0,
+      name = "x",
+      parent->id = -1,
+      type = "int"
+    }
+  ]
+}
+
+builtin_or_enum_class_struct_union_type_c ::= builtin_type_c = {
+  builtin_type_c = "int",
+  builtin_or_enum_class_struct_union_type_c = {
+    id = 4,
+    kind = "built-in type",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = "int"
+  }
+}
+
+type_c ::= builtin_type_c type_modifier_list_opt_c = {
+  builtin_or_enum_class_struct_union_type_c = {
+    id = 4,
+    kind = "built-in type",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = "int"
+  },
+  type_modifier_list_opt_c = null,
+  type_c = {
+    id = 4,
+    kind = "built-in type",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = "int"
+  }
+}
+
+name_c ::= NAME = {
+  type_c = {
+    id = 4,
+    kind = "built-in type",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = "int"
+  },
+  NAME = "y",
+  name_c = {
+    id = 4,
+    kind = "built-in type",
+    depth = 0,
+    name = "y",
+    parent->id = -1,
+    type = "int"
+  }
+}
+
+arg_c ::= type_c cast_c = {
+  type_c = {
+    id = 4,
+    kind = "built-in type",
+    depth = 0,
+    name = "y",
+    parent->id = -1,
+    type = "int"
+  },
+  cast_c = {
+    id = 4,
+    kind = "built-in type",
+    depth = 0,
+    name = "y",
+    parent->id = -1,
+    type = "int"
+  },
+  arg_c = {
+    id = 4,
+    kind = "built-in type",
+    depth = 0,
+    name = "y",
+    parent->id = -1,
+    type = "int"
+  }
+}
+
+arg_list_c ::= arg_list_c ',' cast_c = {
+  arg_list_c = [
+    {
+      id = 3,
+      kind = "built-in type",
+      depth = 0,
+      name = "x",
+      parent->id = -1,
+      type = "int"
+    }
+  ],
+  cast_c = {
+    id = 4,
+    kind = "built-in type",
+    depth = 0,
+    name = "y",
+    parent->id = -1,
+    type = "int"
+  },
+  arg_list_c = [
+    {
+      id = 3,
+      kind = "built-in type",
+      depth = 0,
+      name = "x",
+      parent->id = -1,
+      type = "int"
+    },
+    {
+      id = 4,
+      kind = "built-in type",
+      depth = 0,
+      name = "y",
+      parent->id = -1,
+      type = "int"
+    }
+  ]
+}
+
+func_decl_c ::= decl2_c '(' arg_list_opt_c ')' = {
+  type_c = {
+    id = 2,
+    kind = "pointer",
+    depth = 0,
+    name = "f",
+    parent->id = -1,
+    type = null,
+    qualifier = null,
+    to_ast = {
+      id = 1,
+      kind = "built-in type",
+      depth = 0,
+      name = null,
+      parent->id = 2,
+      type = "int"
+    }
+  },
+  decl2_c = {
+    id = 2,
+    kind = "pointer",
+    depth = 0,
+    name = "f",
+    parent->id = -1,
+    type = null,
+    qualifier = null,
+    to_ast = {
+      id = 1,
+      kind = "built-in type",
+      depth = 0,
+      name = null,
+      parent->id = 2,
+      type = "int"
+    }
+  },
+  arg_list_opt_c = [
+    {
+      id = 3,
+      kind = "built-in type",
+      depth = 0,
+      name = "x",
+      parent->id = -1,
+      type = "int"
+    },
+    {
+      id = 4,
+      kind = "built-in type",
+      depth = 0,
+      name = "y",
+      parent->id = -1,
+      type = "int"
+    }
+  ],
+  pure_virtual_opt_c = null,
+  func_decl_c = {
+    id = 5,
+    kind = "function",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = null,
+    args = [
+      {
+        id = 3,
+        kind = "built-in type",
+        depth = 0,
+        name = "x",
+        parent->id = -1,
+        type = "int"
+      },
+      {
+        id = 4,
+        kind = "built-in type",
+        depth = 0,
+        name = "y",
+        parent->id = -1,
+        type = "int"
+      }
+    ],
+    ret_ast = {
+      id = 2,
+      kind = "pointer",
+      depth = 0,
+      name = "f",
+      parent->id = 5,
+      type = null,
+      qualifier = null,
+      to_ast = {
+        id = 1,
+        kind = "built-in type",
+        depth = 0,
+        name = null,
+        parent->id = 2,
+        type = "int"
+      }
+    }
+  }
+}
+
+pointer_decl_c ::= pointer_type_c decl_c = {
+  pointer_type_c = {
+    id = 2,
+    kind = "pointer",
+    depth = 0,
+    name = "f",
+    parent->id = 5,
+    type = null,
+    qualifier = null,
+    to_ast = {
+      id = 1,
+      kind = "built-in type",
+      depth = 0,
+      name = null,
+      parent->id = 2,
+      type = "int"
+    }
+  },
+  decl_c = {
+    id = 5,
+    kind = "function",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = null,
+    args = [
+      {
+        id = 3,
+        kind = "built-in type",
+        depth = 0,
+        name = "x",
+        parent->id = -1,
+        type = "int"
+      },
+      {
+        id = 4,
+        kind = "built-in type",
+        depth = 0,
+        name = "y",
+        parent->id = -1,
+        type = "int"
+      }
+    ],
+    ret_ast = {
+      id = 2,
+      kind = "pointer",
+      depth = 0,
+      name = "f",
+      parent->id = 5,
+      type = null,
+      qualifier = null,
+      to_ast = {
+        id = 1,
+        kind = "built-in type",
+        depth = 0,
+        name = null,
+        parent->id = 2,
+        type = "int"
+      }
+    }
+  },
+  pointer_decl_c = {
+    id = 5,
+    kind = "function",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = null,
+    args = [
+      {
+        id = 3,
+        kind = "built-in type",
+        depth = 0,
+        name = "x",
+        parent->id = -1,
+        type = "int"
+      },
+      {
+        id = 4,
+        kind = "built-in type",
+        depth = 0,
+        name = "y",
+        parent->id = -1,
+        type = "int"
+      }
+    ],
+    ret_ast = {
+      id = 2,
+      kind = "pointer",
+      depth = 0,
+      name = "f",
+      parent->id = 5,
+      type = null,
+      qualifier = null,
+      to_ast = {
+        id = 1,
+        kind = "built-in type",
+        depth = 0,
+        name = null,
+        parent->id = 2,
+        type = "int"
+      }
+    }
+  }
+}
+
+explain_declaration_c ::= EXPLAIN type_c decl_c = {
+  type_c = {
+    id = 1,
+    kind = "built-in type",
+    depth = 0,
+    name = null,
+    parent->id = 2,
+    type = "int"
+  },
+  decl_c = {
+    id = 5,
+    kind = "function",
+    depth = 0,
+    name = null,
+    parent->id = -1,
+    type = null,
+    args = [
+      {
+        id = 3,
+        kind = "built-in type",
+        depth = 0,
+        name = "x",
+        parent->id = -1,
+        type = "int"
+      },
+      {
+        id = 4,
+        kind = "built-in type",
+        depth = 0,
+        name = "y",
+        parent->id = -1,
+        type = "int"
+      }
+    ],
+    ret_ast = {
+      id = 2,
+      kind = "pointer",
+      depth = 0,
+      name = "f",
+      parent->id = 5,
+      type = null,
+      qualifier = null,
+      to_ast = {
+        id = 1,
+        kind = "built-in type",
+        depth = 0,
+        name = null,
+        parent->id = 2,
+        type = "int"
+      }
+    }
+  }
+}
+declare f as function (x as int, y as int) returning pointer to int

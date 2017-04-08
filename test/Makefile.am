@@ -13,8 +13,12 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 # Command-line option error tests
 # ===============================
 #
-TESTS =	tests/cdecl-ap.test \
-	tests/cdecl-x.test
+TESTS =	tests/cdecl-xx.test
+
+if WITH_CDECL_DEBUG
+TESTS+=	tests/cdecl-d.test \
+	tests/cdecl--debug.test
+endif
 
 ###############################################################################
 
