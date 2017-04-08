@@ -1340,7 +1340,7 @@ arg_c
 
       $$.ast = c_ast_new( K_NAME, ast_depth, &@$ );
       $$.target_ast = NULL;
-      $$.ast->name = check_strdup( $1 );
+      $$.ast->name = $1;
 
       DUMP_AST( "arg_c", $$.ast );
       DUMP_END();
