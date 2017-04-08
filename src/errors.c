@@ -129,9 +129,11 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
 
       case K_NAME:
         if ( opt_lang >= LANG_CPP_MIN ) {
-          print_error( &ast->loc, "C++ requires type specifier" );
+          print_error( &arg->loc, "C++ requires type specifier" );
           return AST_ERROR_FOUND;
         }
+        if ( opt_lang > LANG_C_KNR )
+          print_warning( &arg->loc, "missing function prototype" );
         break;
 
       case K_VARIADIC:

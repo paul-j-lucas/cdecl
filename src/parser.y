@@ -913,9 +913,6 @@ var_decl_english
       DUMP_START( "var_decl_english", "NAME" );
       DUMP_NAME( "NAME", $1 );
 
-      if ( opt_lang > LANG_C_KNR )
-        print_warning( &@$, "missing function prototype" );
-
       $$.ast = c_ast_new( K_NAME, ast_depth, &@$ );
       $$.target_ast = NULL;
       $$.ast->name = $1;
