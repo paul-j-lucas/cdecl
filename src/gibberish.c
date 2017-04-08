@@ -222,9 +222,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
  */
 static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
-  assert( ast->kind &
-          (K_ARRAY | K_BLOCK | K_FUNCTION |
-           K_POINTER | K_REFERENCE | K_RVALUE_REFERENCE) );
+  assert( c_ast_is_parent( ast ) );
   assert( param != NULL );
 
   c_ast_t const *const parent = ast->parent;
