@@ -55,3 +55,35 @@ you can generate `configure` yourself by doing:
     autoreconf -fiv
 
 Then follow the generic installation instructions given in `INSTALL`.
+
+## Licensing
+
+**cdecl** was originally written by Graham Ross
+sometime in the mid-1980s.
+Tony Hansen, a major contributor,
+[posted the source code with his changes](https://groups.google.com/d/msg/comp.lang.c/mumKTLgPFDQ/GI3eh9f89J4J)
+to `comp.sources.unix` in 1988.
+
+The source files have never had either a copyright notice or license.
+Attempts have been made independently by several people
+to contact Graham over the years to clear-up the licensing issue,
+all without success.
+
+In 1996,
+David Conrad made contributions for version 2.5 and wrote:
+
+> *I have no reason to believe there are any limitations on [**cdecl**'s] use,
+> and strongly believe it to be in the Public Domain.*
+
+(See the included `README-orig.txt` for David's full comments.)
+
+One of David's contributions was adding GNU readline support.
+However, GNU readline is under the GNU General Public License (GPL).
+That means that any program that links with GNU readline
+*must* also be under the GPL.
+
+Something in the Public Domain allows anyone to do whatever they want with it.
+Assuming that David is correct
+and that **cdecl** is in the Public Domain,
+and given the GNU readline GPL issue,
+I therefore am licencing **cdecl** 3.0 under the GPLv3.
