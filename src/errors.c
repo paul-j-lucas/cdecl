@@ -366,6 +366,46 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
 }
 
 /**
+ * Vistor function that checks an AST for semantic warnings.
+ *
+ * @param ast The AST to check.
+ * @param data Not used.
+ * @return Always returns \c false.
+ */
+static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
+  assert( ast != NULL );
+  (void)data;
+
+  switch ( ast->kind ) {
+    case K_ARRAY:
+    case K_BUILTIN:
+    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+    case K_VARIADIC:
+      // nothing to check
+      break;
+
+    case K_BLOCK:
+    case K_FUNCTION:
+      for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next )
+        (void)c_ast_check_visitor( arg, c_ast_visitor_warning );
+      break;
+
+    case K_NAME:
+      if ( opt_lang > LANG_C_KNR )
+        print_warning( &ast->loc, "missing type specifier" );
+      break;
+
+    case K_NONE:
+      assert( ast->kind != K_NONE );
+  } // switch
+  return false;
+}
+
+/**
  * Prints an error: <kind> can not be <type>.
  *
  * @param ast The AST.
@@ -427,6 +467,7 @@ bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
     return false;
   if ( !c_ast_check_errors( ast ) )
     return false;
+  (void)c_ast_check_visitor( ast, c_ast_visitor_warning );
   return true;
 }
 
