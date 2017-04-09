@@ -100,6 +100,7 @@
 
 #define PARSE_CLEANUP()   BLOCK( parse_cleanup( true ); YYABORT; )
 #define PARSE_ERROR(...)  BLOCK( parse_error( __VA_ARGS__ ); PARSE_CLEANUP(); )
+#define SYNTAX_ERROR()    BLOCK( yyerror( "syntax error" ); YYERROR; )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -1745,10 +1746,8 @@ expect_zero
 zero
   : Y_NUMBER
     {
-      if ( $1 != 0 ) {
-        yyerror( "syntax error" );
-        YYERROR;
-      }
+      if ( $1 != 0 )
+        SYNTAX_ERROR();
     }
   ;
 
