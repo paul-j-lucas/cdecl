@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Contains global variables and functions for command-line options.
+ * Declares global variables and functions for command-line options.
  */
 
 // local

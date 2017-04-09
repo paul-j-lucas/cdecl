@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Contains constants, types, and functions for C/C++ language versions.
+ * Declares constants, types, and functions for C/C++ language versions.
  */
 
 ///////////////////////////////////////////////////////////////////////////////

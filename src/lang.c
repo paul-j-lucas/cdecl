@@ -18,6 +18,11 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file
+ * Defines functions for C/C++ language versions.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 #include "common.h"

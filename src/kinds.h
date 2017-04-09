@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Contains types and functions for kinds of things in C/C++ declarations.
+ * Declares types and functions for kinds of things in C/C++ declarations.
  */
 
 // local
@@ -74,7 +74,7 @@ typedef enum c_kind c_kind_t;
  * @param ast The \c c_ast to check.  May be null.
  * @return Returns \c true only if it is.
  */
-CDECL_KINDS_INLINE bool kind_is_parent( c_kind_t kind ) {
+CDECL_KINDS_INLINE bool c_kind_is_parent( c_kind_t kind ) {
   return kind >= K_PARENT_MIN;
 }
 

@@ -18,6 +18,11 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file
+ * Defines the function that implements the "set" command.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 #include "color.h"

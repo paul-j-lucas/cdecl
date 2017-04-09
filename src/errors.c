@@ -18,6 +18,11 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file
+ * Defines functions for performing semantic checks on an AST.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 #include "ast_util.h"

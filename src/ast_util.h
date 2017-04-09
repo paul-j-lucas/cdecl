@@ -23,8 +23,8 @@
 
 /**
  * @file
- * Contains various cdecl-specific algorithms for construcing an Abstract
- * Syntax Tree (AST) for parsed C/C++ declarations.
+ * Declares functions implementing various cdecl-specific algorithms for
+ * construcing an Abstract Syntax Tree (AST) for parsed C/C++ declarations.
  */
 
 // local

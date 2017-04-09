@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Contains types to represent an Abstract Syntax Tree (AST) for parsed C/C++
+ * Declares types to represent an Abstract Syntax Tree (AST) for parsed C/C++
  * declarations as well as functions for traversing and manipulating an AST.
  *
  * In all cases where an AST node contains a pointer to another, that pointer
@@ -238,7 +238,7 @@ void c_ast_gc( void );
  * @return Returns \c true only if it is.
  */
 CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
-  return ast && kind_is_parent( ast->kind );
+  return ast && c_kind_is_parent( ast->kind );
 }
 
 /**

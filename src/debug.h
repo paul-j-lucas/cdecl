@@ -21,6 +21,11 @@
 #ifndef cdecl_debug_H
 #define cdecl_debug_H
 
+/**
+ * @file
+ * Declares functions for printing abstract syntax trees for debugging.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"

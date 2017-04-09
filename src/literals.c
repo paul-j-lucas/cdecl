@@ -18,6 +18,11 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file
+ * Defines constants for cdecl and C/C++ language literals.
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // english

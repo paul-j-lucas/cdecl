@@ -21,6 +21,12 @@
 #ifndef cdecl_lexer_H
 #define cdecl_lexer_H
 
+/**
+ * @file
+ * Declares global variables and functions interacting with the lexical
+ * analyzer.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 

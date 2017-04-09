@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Contains the code for printing an AST as English.
+ * Defines functions for printing an AST in pseudo-English.
  */
 
 // local

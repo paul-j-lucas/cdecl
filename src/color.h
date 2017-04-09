@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Contains constants, macros, types, global variables, and functions for
+ * Declares constants, macros, types, global variables, and functions for
  * printing in color.
  */
 

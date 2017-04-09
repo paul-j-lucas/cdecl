@@ -21,6 +21,11 @@
 #ifndef cdecl_prompt_H
 #define cdecl_prompt_H
 
+/**
+ * @file
+ * Declares global variables and functions for the prompt.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 

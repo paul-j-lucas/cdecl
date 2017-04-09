@@ -18,6 +18,11 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file
+ * Defines functions for printing error and warning messages.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 #include "color.h"

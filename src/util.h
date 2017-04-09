@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Contains utility constants, macros, and functions.
+ * Declares utility constants, macros, and functions.
  */
 
 // local

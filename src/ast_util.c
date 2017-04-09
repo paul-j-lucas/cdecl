@@ -18,6 +18,12 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file
+ * Defines functions for various cdecl-specific algorithms for construcing an
+ * Abstract Syntax Tree (AST) for parsed C/C++ declarations.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 #define CDECL_AST_UTIL_INLINE _GL_EXTERN_INLINE

@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Contains constants for cdecl and C/C++ language literals.
+ * Declares constants for cdecl and C/C++ language literals.
  */
 
 ////////// literals ///////////////////////////////////////////////////////////

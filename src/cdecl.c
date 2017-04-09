@@ -18,6 +18,12 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file
+ * Defines \c main() as well as functions for initialization, clean-up, and
+ * parsing user input.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"

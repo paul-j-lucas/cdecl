@@ -18,6 +18,12 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file
+ * Defines helper macros, data structures, variables, functions, and the
+ * tokenizer for C/C++ declarations.
+ */
+
 %option nounput
 
 %{

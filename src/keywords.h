@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Contains types and functions for looking up C/C++ keyword information.
+ * Declares types and functions for looking up C/C++ keyword information.
  */
 
 // local

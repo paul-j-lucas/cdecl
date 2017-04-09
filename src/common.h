@@ -21,6 +21,12 @@
 #ifndef cdecl_common_H
 #define cdecl_common_H
 
+/**
+ * @file
+ * Declares constants, macros, types, and global variables, that are common to
+ * several files that don't really fit anywhere else.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 

@@ -18,6 +18,11 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file
+ * Defines functions for kinds of things in C/C++ declarations.
+ */
+
 // local
 #include "config.h"                     /* must go first */
 #define CDECL_KINDS_INLINE _GL_EXTERN_INLINE
