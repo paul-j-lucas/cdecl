@@ -79,11 +79,11 @@ typedef struct c_ptr_ref  c_ptr_ref_t;
  * The signature for functions passed to c_ast_visit_down() or
  * c_ast_visit_up().
  *
- * @param ast The c_ast to visit.
+ * @param ast The AST node to visit.
  * @param data Optional data passed from c_ast_visit_down() or
  * c_ast_visit_up().
  * @return Returning \c true will cause traversal to stop and \a ast to be
- * returned to the called of c_ast_visit_down().
+ * returned to the caller of c_ast_visit_down() or c_ast_visit_up().
  */
 typedef bool (*c_ast_visitor)( c_ast_t *ast, void *data );
 
@@ -91,7 +91,7 @@ typedef bool (*c_ast_visitor)( c_ast_t *ast, void *data );
  * Generic "parent" AST node.
  *
  * @note All parent nodes have a c_ast pointer to what they're a parent of as
- * their first \c struct member: this is taken advantage od.
+ * their first \c struct member: this is taken advantage of.
  */
 struct c_parent {
   c_ast_t  *of_ast;
@@ -282,6 +282,9 @@ void c_ast_set_parent( c_ast_t *child, c_ast_t *parent );
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.
  * @return Returns a pointer to the c_ast the visitor stopped on or null.
+ *
+ * @note Function (or block) argument(s) are \e not traversed into. They're
+ * considered distinct ASTs.
  */
 CDECL_AST_INLINE c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir,
                                        c_ast_visitor visitor, void *data ) {
@@ -302,6 +305,9 @@ CDECL_AST_INLINE c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir,
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.
  * @return Returns \c true only if \a visitor ever returned \c true.
+ *
+ * @note Function (or block) argument(s) are \e not traversed into. They're
+ * considered distinct ASTs.
  */
 CDECL_AST_INLINE bool c_ast_found( c_ast_t const *ast, v_direction_t dir,
                                    c_ast_visitor visitor, void *data ) {
