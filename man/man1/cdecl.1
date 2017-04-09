@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 7, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 8, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -710,7 +710,7 @@ you can make sense out of it by doing:
 explain char *(*fptab[])()
 .cE
 The proper declaration for
-.B signal (2),
+.BR signal (2),
 ignoring function prototypes,
 is easily described in
 .BR cdecl 's
@@ -1022,6 +1022,12 @@ since all such references
 .I must
 be initialized.
 .SH AUTHORS
+.B cdecl
+has been around since the mid-1980s
+and there have been many versions of
+.BR cdecl ,
+some with different subsets of authors.
+This list is a best-effort at a union of all authors.
 In reverse chronological order:
 .TP 4
 .BI "Paul J. Lucas <" paul@lucasmail.org ">"
@@ -1045,7 +1051,8 @@ and
 \f(CWvirtual\fP function
 declarations;
 and
-octal and hexadecimal array sizes.
+octal and hexadecimal array sizes;
+revamped the manual page.
 .TP
 .BI "Peter Ammon <" cdecl@ridiculousfish.com ">"
 Added support for Apple's ``blocks'' syntax.
@@ -1060,9 +1067,17 @@ Merged version from Merlyn LeRoy;
 added
 .BR tmpfile (3)
 support;
-allowed more parts to be missing during explanations.
+allowed more parts to be missing during explanations;
+added support for \f(CW...\fP;
+improved command-line processing.
 .TP
-.B Merlyn LeRoy
+.BI "Alexander Dupuy <" dupuy@cs.columbia.edu ">"
+Modified type crosscheck
+to warn about \f(CWvoid\fP and \f(CWsigned\fP in K&R C;
+added better semantic checking on use of C++ references,
+\f(CWconst\fP and \f(CWvolatile\fP for function member pointers.
+.TP
+.BI "Merlyn LeRoy <" merlyn@rose3.rosemount.com ">"
 Added support for
 \f(CWextern\f1,
 \f(CWregister\f1,
@@ -1109,8 +1124,10 @@ added
 or
 \f(CWvoid\fP.
 .TP
-.B David Wolverton
-Converted to ANSI C.
+.BI "David Wolverton <" david_wolverton@att.com ">"
+Converted to ANSI C;
+added \f(CWtypedef\fP declarations;
+removed \f(CWnoalias\fP.
 .TP
 .B <unknown author>
 Added function argument lists,
