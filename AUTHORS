@@ -7,8 +7,10 @@ Graham Ross <tektronix!tekmdp!grahamr>, Context, Inc.
 	added 'explain cast' grammar
 	added #ifdef for 'create program' feature
 
-David Wolverton <ihnp4!houxs!daw>
+David Wolverton <david_wolverton@att.com>
 	conversion to ANSI C
+	added typedef support
+	removed noalias
 
 Tony Hansen <tony@attmail.com>, <hansen@pegasus.att.com>
 	merged D. Wolverton's ANSI C version w/ ????'s version
@@ -33,10 +35,19 @@ Merlyn LeRoy <merlyn@rose3.rosemount.com>
 	added links to explain, cast, declare
 	separately developed ANSI C support
 
+Alexander Dupuy <dupuy@smarts.com>, <dupuy@cs.columbia.edu>
+	modified type crosscheck to warn about void/signed in ritchie, preansi
+	#undef yywrap so that flex can be used
+	better semantic checking on use of C++ references
+	support const/volatile function member pointers
+
 Tony Hansen <tony@attmail.com>, <hansen@pegasus.att.com>
 	merged versions from LeRoy
 	added tmpfile() support
 	allow more parts to be missing during explanations
+	fixed some memory leak problems pointed out by the "purify" program
+	add support for ...
+	now a command line argument may have more text than just the keyword
 
 Dave Conrad <conrad@detroit.freenet.org>
 	added GNU readline() support
@@ -55,14 +66,16 @@ Paul J. Lucas <paul@lucasmail.org>
 	now using GNU autoconf/automake/configure build
 	added GNU-style test suite and many more tests
 	modularized & cleaned-up source
+	now distinguishing among K&R C, C89, C95, C99, C11, C++98, C++03, C++11
+	now using a proper abstract syntax tree data structure
 	added long options
 	added bool, char16_t, char32_t, complex, restrict, _Thread_local,
 		virtual, wchar_t
 	added better warning and error messages
-	added octal and hexadecimal numbers
+	added octal and hexadecimal number support
 	added register and variadic function arguments
 	added rvalue references
-	added typedef declarations
+	independently added typedef support
 	allow escaped newlines
 	now ignoring C /*...*/ comments in lexer
 	now treating cdecl keywords in declarations as ordinary names
