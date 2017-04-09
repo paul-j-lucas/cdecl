@@ -87,3 +87,8 @@ Assuming that David is correct
 and that **cdecl** is in the Public Domain,
 and given the GNU readline GPL issue,
 I therefore am licencing **cdecl** 3.0 under the GPLv3.
+
+**Paul J. Lucas**  
+*paul@lucasmail.org*  
+San Francisco, California, USA  
+8 April 2017
