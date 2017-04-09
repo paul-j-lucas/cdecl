@@ -328,9 +328,9 @@ static void parse_options( int argc, char const *argv[] ) {
 
   colorize = should_colorize( color_when );
   if ( colorize ) {
-    if ( !(parse_gcc_colors( getenv( "CDECL_COLORS" ) )
-        || parse_gcc_colors( getenv( "GCC_COLORS" ) )) ) {
-      parse_gcc_colors( COLORS_DEFAULT );
+    if ( !(colors_parse( getenv( "CDECL_COLORS" ) )
+        || colors_parse( getenv( "GCC_COLORS" ) )) ) {
+      colors_parse( COLORS_DEFAULT );
     }
   }
 }

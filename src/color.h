@@ -147,7 +147,7 @@ extern char const  *sgr_warning;
  * @return Returns \c true only if at least one capability was parsed
  * successfully.
  */
-bool parse_gcc_colors( char const *capabilities );
+bool colors_parse( char const *capabilities );
 
 /**
  * Determines whether we should emit escape sequences for color.

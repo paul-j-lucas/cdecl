@@ -132,7 +132,7 @@ static bool parse_sgr( char const *sgr_color ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool parse_gcc_colors( char const *capabilities ) {
+bool colors_parse( char const *capabilities ) {
   bool set_something = false;
 
   if ( capabilities ) {
