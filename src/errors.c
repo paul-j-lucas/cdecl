@@ -362,8 +362,8 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   (void)data;
 
-  c_lang_t const bad_langs = c_type_check( ast->type );
-  if ( bad_langs == LANG_NONE ) {
+  c_lang_t const ok_langs = c_type_check( ast->type );
+  if ( ok_langs == LANG_ALL ) {
     if ( ast->kind & (K_BLOCK | K_FUNCTION) ) {
       for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
         if ( !c_ast_check_visitor( arg, c_ast_visitor_type ) )
@@ -373,7 +373,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
     return VISITOR_ERROR_NOT_FOUND;
   }
 
-  if ( bad_langs == LANG_ALL )
+  if ( ok_langs == LANG_NONE )
     print_error( &ast->loc, "\"%s\" is illegal", c_type_name( ast->type ) );
   else
     print_error( &ast->loc,

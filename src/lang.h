@@ -31,6 +31,7 @@
 // languages supported
 #define LANG_NONE     (0u)
 #define LANG_ALL      (~LANG_NONE)
+#define LANG_MIN(L)   (~(LANG_ ## L - 1u))
 
 #define LANG_C_KNR    (1u << 0)
 #define LANG_C_89     (1u << 1)
@@ -44,7 +45,7 @@
 #define LANG_CPP_03   (1u << 6)
 #define LANG_CPP_11   (1u << 7)
 #define LANG_CPP_MAX  LANG_CPP_11
-#define LANG_CPP_ANY  (LANG_CPP_98 | LANG_CPP_03 | LANG_CPP_11)
+#define LANG_CPP_ALL  LANG_MIN(CPP_MIN)
 
 /**
  * Bitmask for combination of languages.

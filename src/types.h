@@ -102,7 +102,7 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc );
  * Checks that the given type is valid.
  *
  * @param type The type to check.
- * @return Returns the bitwise-or of the language(s) \a type is illegal in.
+ * @return Returns the bitwise-or of the language(s) \a type is legal in.
  */
 c_lang_t c_type_check( c_type_t type );
 

@@ -57,66 +57,66 @@ static char const L_LONG_LONG[] = "long";
 struct c_type_info {
   c_type_t    type;
   char const *literal;                  // C string literal of the type
+  c_lang_t    ok_langs;
 };
 typedef struct c_type_info c_type_info_t;
 
 static c_type_info_t const C_TYPE_INFO[] = {
   // types
-  { T_VOID,         L_VOID          },
-  { T_BOOL,         L_BOOL          },
-  { T_CHAR,         L_CHAR          },
-  { T_CHAR16_T,     L_CHAR16_T      },
-  { T_CHAR32_T,     L_CHAR32_T      },
-  { T_WCHAR_T,      L_WCHAR_T       },
-  { T_SHORT,        L_SHORT         },
-  { T_INT,          L_INT           },
-  { T_LONG,         L_LONG          },
-  { T_LONG_LONG,    L_LONG_LONG     },  // special case
-  { T_SIGNED,       L_SIGNED        },
-  { T_UNSIGNED,     L_UNSIGNED      },
-  { T_FLOAT,        L_FLOAT         },
-  { T_DOUBLE,       L_DOUBLE        },
-  { T_COMPLEX,      L_COMPLEX       },
-  { T_ENUM,         L_ENUM          },
-  { T_STRUCT,       L_STRUCT        },
-  { T_UNION,        L_UNION         },
-  { T_CLASS,        L_CLASS         },
+  { T_VOID,         L_VOID,         LANG_MIN(C_89)                  },
+  { T_BOOL,         L_BOOL,         LANG_MIN(C_89)                  },
+  { T_CHAR,         L_CHAR,         LANG_ALL                        },
+  { T_CHAR16_T,     L_CHAR16_T,     LANG_C_11 | LANG_MIN(CPP_11)    },
+  { T_CHAR32_T,     L_CHAR32_T,     LANG_C_11 | LANG_MIN(CPP_11)    },
+  { T_WCHAR_T,      L_WCHAR_T,      LANG_MIN(C_95)                  },
+  { T_SHORT,        L_SHORT,        LANG_ALL                        },
+  { T_INT,          L_INT,          LANG_ALL                        },
+  { T_LONG,         L_LONG,         LANG_ALL                        },
+  { T_LONG_LONG,    L_LONG_LONG,    LANG_MIN(C_89)                  },
+  { T_SIGNED,       L_SIGNED,       LANG_MIN(C_89)                  },
+  { T_UNSIGNED,     L_UNSIGNED,     LANG_ALL                        },
+  { T_FLOAT,        L_FLOAT,        LANG_ALL                        },
+  { T_DOUBLE,       L_DOUBLE,       LANG_ALL                        },
+  { T_COMPLEX,      L_COMPLEX,      LANG_MIN(C_99)                  },
+  { T_ENUM,         L_ENUM,         LANG_MIN(C_89)                  },
+  { T_STRUCT,       L_STRUCT,       LANG_ALL                        },
+  { T_UNION,        L_UNION,        LANG_ALL                        },
+  { T_CLASS,        L_CLASS,        LANG_CPP_ALL                    },
   // storage classes
-  { T_AUTO,         L_AUTO          },
-  { T_BLOCK,        L___BLOCK       },  // Apple extension
-  { T_EXTERN,       L_EXTERN        },
-  { T_REGISTER,     L_REGISTER      },
-  { T_STATIC,       L_STATIC        },
-  { T_THREAD_LOCAL, L_THREAD_LOCAL  },
-  { T_TYPEDEF,      L_TYPEDEF       },
-  { T_VIRTUAL,      L_VIRTUAL       },
-  { T_PURE_VIRTUAL, L_PURE          },
+  { T_AUTO,         L_AUTO,         LANG_ALL                        },
+  { T_BLOCK,        L___BLOCK,      LANG_ALL                        }, // Apple
+  { T_EXTERN,       L_EXTERN,       LANG_ALL                        },
+  { T_REGISTER,     L_REGISTER,     LANG_ALL                        },
+  { T_STATIC,       L_STATIC,       LANG_ALL                        },
+  { T_THREAD_LOCAL, L_THREAD_LOCAL, LANG_C_11 | LANG_MIN(CPP_11)    },
+  { T_TYPEDEF,      L_TYPEDEF,      LANG_ALL                        },
+  { T_VIRTUAL,      L_VIRTUAL,      LANG_CPP_ALL                    },
+  { T_PURE_VIRTUAL, L_PURE,         LANG_CPP_ALL                    },
   // qualifiers
-  { T_CONST,        L_CONST         },
-  { T_RESTRICT,     L_RESTRICT      },
-  { T_VOLATILE,     L_VOLATILE      },
+  { T_CONST,        L_CONST,        LANG_MIN(C_89)                  },
+  { T_RESTRICT,     L_RESTRICT,     LANG_MIN(C_89) & ~LANG_CPP_ALL  },
+  { T_VOLATILE,     L_VOLATILE,     LANG_MIN(C_89)                  },
 };
 
-#define NUM_TYPES     19
-#define BEFORE(LANG)  (LANG - 1)        /* illegal before LANG */
+#define NUM_TYPES   19              /* first N type-only rows of C_TYPE_INFO */
 
-// shorthand, illegal in/before/unless ...
-#define __    LANG_NONE                 /* legal in all languages */
-#define XX    LANG_ALL                  /* illegal in all languages  */
-#define KO   ~LANG_C_KNR                /* legal in K&R C only */
-#define C8    BEFORE(LANG_C_89)         /* minimum C89 */
-#define C5    BEFORE(LANG_C_95)         /* minimum C95 */
-#define C9    BEFORE(LANG_C_99)         /* minimum C99 */
-#define C1    BEFORE(LANG_C_11)         /* minimum C11 */
-#define PP    BEFORE(LANG_CPP_MIN)      /* minimum C++ */
-#define P1    BEFORE(LANG_CPP_11)       /* minimum C++11 */
-#define E1  ~(LANG_C_11 | LANG_CPP_11)  /* legal in either C11 or C++11 only */
+//      shorthand   legal in ...
+#define __          LANG_ALL
+#define XX          LANG_NONE
+#define KO          LANG_C_KNR
+#define C8          LANG_MIN(C_89)
+#define C5          LANG_MIN(C_95)
+#define C9          LANG_MIN(C_99)
+#define C1          LANG_MIN(C_11)
+#define PP          LANG_CPP_ALL
+#define P1          LANG_MIN(CPP_11)
+#define E1          LANG_C_11 | LANG_MIN(CPP_11)
 
 /**
- * Illegal combinations of types in languages.
+ * Legal combinations of types in languages.
  * Only the lower triangle is used.
  */
-static c_lang_t const BAD_TYPE_LANGS[ NUM_TYPES ][ NUM_TYPES ] = {
+static c_lang_t const OK_TYPE_LANGS[ NUM_TYPES ][ NUM_TYPES ] = {
   /*                v  b  c  16 32 wc s  i  l  ll s  u  f  d  c  E  S  U  C */
   /* void      */ { C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
   /* bool      */ { XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
@@ -178,13 +178,13 @@ c_lang_t c_type_check( c_type_t type ) {
   for ( size_t row = 0; row < NUM_TYPES; ++row ) {
     if ( (type & C_TYPE_INFO[ row ].type) ) {
       for ( size_t col = 0; col <= row; ++col ) {
-        c_lang_t const bad_langs = BAD_TYPE_LANGS[ row ][ col ];
-        if ( (type & C_TYPE_INFO[ col ].type) && (opt_lang & bad_langs) )
-          return bad_langs;
+        c_lang_t const ok_langs = OK_TYPE_LANGS[ row ][ col ];
+        if ( (type & C_TYPE_INFO[ col ].type) && !(opt_lang & ok_langs) )
+          return ok_langs;
       } // for
     }
   } // for
-  return LANG_NONE;
+  return LANG_ALL;
 }
 
 char const* c_type_name( c_type_t type ) {
