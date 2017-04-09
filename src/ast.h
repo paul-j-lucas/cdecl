@@ -281,6 +281,23 @@ CDECL_AST_INLINE c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir,
 }
 
 /**
+ * Traverses an AST visiting each node in turn looking for an AST node that
+ * satisfies the visitor.
+ *
+ * @param ast The AST to begin at.
+ * @param dir The direction to visit.
+ * @param visitor The visitor to use.
+ * @param data Optional data passed to \a visitor.
+ * @return Returns \c true only if \a visitor ever returned \c true.
+ */
+CDECL_AST_INLINE bool c_ast_found( c_ast_t const *ast, v_direction_t dir,
+                                   c_ast_visitor visitor, void *data ) {
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+  c_ast_t *const found_ast = c_ast_visit( nonconst_ast, dir, visitor, data );
+  return found_ast != NULL;
+}
+
+/**
  * A c_ast_visitor function used to find an AST node of a particular kind.
  *
  * @param ast The c_ast to check.

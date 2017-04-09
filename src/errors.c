@@ -17,8 +17,8 @@
 #include <stdbool.h>
 
 // local constants
-static bool const AST_ERROR_FOUND     = true;
-static bool const AST_ERROR_NOT_FOUND = false;
+static bool const VISITOR_ERROR_FOUND     = true;
+static bool const VISITOR_ERROR_NOT_FOUND = false;
 
 // local functions
 static bool c_ast_visitor_error( c_ast_t*, void* );
@@ -31,39 +31,25 @@ static bool error_type_not_supported( c_type_t, c_ast_t const* );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Wrapper around calling c_ast_visitor_error().
+ * Simple wrapper around \c c_ast_found().
  *
  * @param ast The AST to check.
- * @return Returns \c true only if an error was found.
+ * @param visitor The visitor to use.
+ * @return Returns \c true only if all checks passed.
  */
-static inline bool c_ast_check_errors_impl( c_ast_t const *ast ) {
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_t *const error_ast =
-    c_ast_visit( nonconst_ast, V_DOWN, c_ast_visitor_error, NULL );
-  return error_ast != NULL ? AST_ERROR_FOUND : AST_ERROR_NOT_FOUND;
-}
-
-/**
- * Wrapper around calling c_ast_visitor_type().
- *
- * @param ast The AST to check.
- * @return Returns \c true only if an error was found.
- */
-static inline bool c_ast_check_types( c_ast_t const *ast ) {
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_t *const error_ast =
-    c_ast_visit( nonconst_ast, V_DOWN, c_ast_visitor_type, NULL );
-  return error_ast != NULL ? AST_ERROR_FOUND : AST_ERROR_NOT_FOUND;
+static inline bool c_ast_check_visitor( c_ast_t const *ast,
+                                        c_ast_visitor visitor ) {
+  return !c_ast_found( ast, V_DOWN, visitor, NULL );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Performs additional checks on an entire AST for semantic validity when
+ * Performs additional checks on an entire AST for semantic errors when
  * casting.
  *
  * @param ast The AST to check.
- * @return Returns \c true only if an error was found.
+ * @return Returns \c true only if all checks passed.
  */
 static bool c_ast_check_cast( c_ast_t const *ast ) {
   assert( ast != NULL );
@@ -75,32 +61,47 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
   if ( storage_ast ) {
     c_type_t const storage = storage_ast->type & T_MASK_STORAGE;
     print_error( &ast->loc, "can not cast into %s", c_type_name( storage ) );
-    return AST_ERROR_FOUND;
+    return false;
   }
 
   switch ( ast->kind ) {
     case K_ARRAY:
       print_error( &ast->loc, "can not cast into array" );
       print_hint( "cast into pointer" );
-      return AST_ERROR_FOUND;
+      return false;
     case K_FUNCTION:
       print_error( &ast->loc, "can not cast into function" );
       print_hint( "cast into pointer to function" );
-      return AST_ERROR_FOUND;
+      return false;
     default:
-      return AST_ERROR_NOT_FOUND;
+      return true;
   } // switch
 }
 
 /**
- * Checks all function (or block) arguments for semantic validity.
+ * Checks an entire AST for semantic errors.
  *
  * @param ast The function (or block) AST to check.
- * @return Returns \c true only if an error was found.
+ * @return Returns \c true only if all checks passed.
+ */
+static bool c_ast_check_errors( c_ast_t const *ast ) {
+  if ( !c_ast_check_visitor( ast, c_ast_visitor_error ) )
+    return false;
+  if ( !c_ast_check_visitor( ast, c_ast_visitor_type ) )
+    return false;
+  return true;
+}
+
+/**
+ * Checks all function (or block) arguments for semantic errors.
+ *
+ * @param ast The function (or block) AST to check.
+ * @return Returns \c true only if all checks passed.
  */
 static bool c_ast_check_func_args( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind & (K_BLOCK | K_FUNCTION) );
+  assert( opt_lang != LANG_C_KNR );
 
   c_ast_t const *arg, *variadic_arg = NULL, *void_arg = NULL;
   unsigned n_args = 0;
@@ -118,7 +119,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
           //
           if ( arg->name ) {
             print_error( &arg->loc, "argument of void" );
-            return AST_ERROR_FOUND;
+            return false;
           }
           void_arg = arg;
           if ( n_args > 1 )
@@ -130,16 +131,14 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
       case K_NAME:
         if ( opt_lang >= LANG_CPP_MIN ) {
           print_error( &arg->loc, "C++ requires type specifier" );
-          return AST_ERROR_FOUND;
+          return false;
         }
-        if ( opt_lang > LANG_C_KNR )
-          print_warning( &arg->loc, "missing function prototype" );
         break;
 
       case K_VARIADIC:
         if ( arg->next ) {
           print_error( &arg->loc, "variadic specifier must be last" );
-          return AST_ERROR_FOUND;
+          return false;
         }
         variadic_arg = arg;
         continue;
@@ -153,33 +152,59 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
       print_error( &arg->loc,
         "function argument can not be %s", c_type_name( storage )
       );
-      return AST_ERROR_FOUND;
+      return false;
     }
 
-    if ( c_ast_check_errors_impl( arg ) == AST_ERROR_FOUND )
-      return AST_ERROR_FOUND;
+    if ( !c_ast_check_errors( arg ) )
+      return false;
   } // for
 
   if ( variadic_arg && n_args == 1 ) {
     print_error( &variadic_arg->loc,
       "variadic specifier can not be only argument"
     );
-    return AST_ERROR_FOUND;
+    return false;
   }
 
-  return AST_ERROR_NOT_FOUND;
+  return true;
 
 only_void:
   print_error( &void_arg->loc, "\"void\" must be only parameter if specified" );
-  return AST_ERROR_FOUND;
+  return false;
 }
 
 /**
- * Vistor function that checks an AST for semantic validity.
+ * Checks all function (or block) arguments for semantic errors in K&R C.
+ *
+ * @param ast The function (or block) AST to check.
+ * @return Returns \c true only if all checks passed.
+ */
+static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
+  assert( ast );
+  assert( ast->kind & (K_BLOCK | K_FUNCTION) );
+  assert( opt_lang == LANG_C_KNR );
+
+  for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
+    switch ( arg->kind ) {
+      case K_NAME:
+        break;
+      case K_NONE:
+        assert( arg->kind != K_NONE );
+      default:
+        print_error( &ast->loc, "function prototypes" );
+				return false;
+    } // switch
+  } // for
+  return true;
+}
+
+/**
+ * Vistor function that checks an AST for semantic errors.
  *
  * @param ast The AST to check.
  * @param data Not used.
- * @return Returns \c true only if an error was found.
+ * @return Returns \c VISITOR_ERROR_FOUND if an error was found;
+ * \c VISITOR_ERROR_NOT_FOUND if not.
  */
 static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
@@ -193,7 +218,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           if ( (of_ast->type & T_VOID) ) {
             print_error( &ast->loc, "array of void" );
             print_hint( "array of pointer to void" );
-            return AST_ERROR_FOUND;
+            return VISITOR_ERROR_FOUND;
           }
           if ( (of_ast->type & T_REGISTER) )
             return error_kind_not_type( ast, T_REGISTER );
@@ -201,9 +226,9 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         case K_FUNCTION:
           print_error( &ast->loc, "array of function" );
           print_hint( "array of pointer to function" );
-          return AST_ERROR_FOUND;
+          return VISITOR_ERROR_FOUND;
         default:
-          return AST_ERROR_NOT_FOUND;
+          return VISITOR_ERROR_NOT_FOUND;
       } // switch
       break;
     }
@@ -212,7 +237,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       if ( (ast->type & T_VOID) && !ast->parent ) {
         print_error( &ast->loc, "variable of void" );
         print_hint( "pointer to void" );
-        return AST_ERROR_FOUND;
+        return VISITOR_ERROR_FOUND;
       }
       break;
 
@@ -234,7 +259,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       } else {
         if ( (ast->type & T_PURE_VIRTUAL) && !(ast->type & T_VIRTUAL) ) {
           print_error( &ast->loc, "non-virtual function can not be pure" );
-          return AST_ERROR_FOUND;
+          return VISITOR_ERROR_FOUND;
         }
         // TODO
       }
@@ -246,13 +271,17 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         case K_ARRAY:
           print_error( &ret_ast->loc, "%s returning array", kind_name );
           print_hint( "%s returning pointer", kind_name );
-          return AST_ERROR_FOUND;
+          return VISITOR_ERROR_FOUND;
         case K_FUNCTION:
           print_error( &ret_ast->loc, "%s returning function", kind_name );
           print_hint( "%s returning pointer to function", kind_name );
-          return AST_ERROR_FOUND;
-        default:
-          return c_ast_check_func_args( ast );
+          return VISITOR_ERROR_FOUND;
+        default: {
+          bool const args_ok = opt_lang == LANG_C_KNR ?
+            c_ast_check_func_args_knr( ast ) :
+            c_ast_check_func_args( ast );
+          return args_ok ? VISITOR_ERROR_NOT_FOUND : VISITOR_ERROR_FOUND;
+        }
       } // switch
       break;
     }
@@ -275,11 +304,11 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         print_error( &ast->loc,
           "%s to %s", c_kind_name( ast->kind ), c_kind_name( to_ast->kind )
         );
-        return AST_ERROR_FOUND;
+        return VISITOR_ERROR_FOUND;
       }
       if ( (to_ast->type & T_REGISTER) )
         return error_kind_to_type( ast, T_REGISTER );
-      return AST_ERROR_NOT_FOUND;
+      return VISITOR_ERROR_NOT_FOUND;
     }
 
     case K_RVALUE_REFERENCE:
@@ -295,28 +324,37 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       if ( (to_ast->type & T_VOID) ) {
         error_kind_to_type( ast, T_VOID );
         print_hint( "pointer to void" );
-        return AST_ERROR_FOUND;
+        return VISITOR_ERROR_FOUND;
       }
-      return AST_ERROR_NOT_FOUND;
+      return VISITOR_ERROR_NOT_FOUND;
     }
   } // switch
 
-  return AST_ERROR_NOT_FOUND;
+  return VISITOR_ERROR_NOT_FOUND;
 }
 
 /**
- * Vistor function that checks an AST for type validity.
+ * Vistor function that checks an AST for type errors.
  *
  * @param data Not used.
- * @return Returns \c true only if an error was found.
+ * @return Returns \c VISITOR_ERROR_FOUND if an error was found;
+ * \c VISITOR_ERROR_NOT_FOUND if not.
  */
 static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   (void)data;
 
   c_lang_t const bad_langs = c_type_check( ast->type );
-  if ( bad_langs == LANG_NONE )
-    return AST_ERROR_NOT_FOUND;
+  if ( bad_langs == LANG_NONE ) {
+    if ( ast->kind & (K_BLOCK | K_FUNCTION) ) {
+      for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
+        if ( !c_ast_check_visitor( arg, c_ast_visitor_type ) )
+          return VISITOR_ERROR_FOUND;
+      } // for
+    }
+    return VISITOR_ERROR_NOT_FOUND;
+  }
+
   if ( bad_langs == LANG_ALL )
     print_error( &ast->loc, "\"%s\" is illegal", c_type_name( ast->type ) );
   else
@@ -324,7 +362,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
       "\"%s\" is illegal in %s",
       c_type_name( ast->type ), c_lang_name( opt_lang )
     );
-  return AST_ERROR_FOUND;
+  return VISITOR_ERROR_FOUND;
 }
 
 /**
@@ -332,26 +370,26 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
  *
  * @param ast The AST.
  * @param type The bad type.
- * @return Always returns \c AST_ERROR_FOUND.
+ * @return Always returns \c VISITOR_ERROR_FOUND.
  */
 static bool error_kind_not_type( c_ast_t const *ast, c_type_t type ) {
   print_error( &ast->loc,
     "%s can not be %s", c_kind_name( ast->kind ), c_type_name( type )
   );
-  return AST_ERROR_FOUND;
+  return VISITOR_ERROR_FOUND;
 }
 
 /**
  * Prints an error: <kind> not supported in <lang>.
  *
  * @param ast The AST having the bad kind.
- * @return Always returns \c AST_ERROR_FOUND.
+ * @return Always returns \c VISITOR_ERROR_FOUND.
  */
 static bool error_kind_not_supported( c_ast_t const *ast ) {
   print_error( &ast->loc,
     "%s not supported in %s", c_kind_name( ast->kind ), c_lang_name( opt_lang )
   );
-  return AST_ERROR_FOUND;
+  return VISITOR_ERROR_FOUND;
 }
 
 /**
@@ -359,13 +397,13 @@ static bool error_kind_not_supported( c_ast_t const *ast ) {
  *
  * @param ast The AST having the bad kind.
  * @param type The bad type.
- * @return Always returns \c AST_ERROR_FOUND.
+ * @return Always returns \c VISITOR_ERROR_FOUND.
  */
 static bool error_kind_to_type( c_ast_t const *ast, c_type_t type ) {
   print_error( &ast->loc,
     "%s to %s", c_kind_name( ast->kind ), c_type_name( type )
   );
-  return AST_ERROR_FOUND;
+  return VISITOR_ERROR_FOUND;
 }
 
 /**
@@ -373,23 +411,21 @@ static bool error_kind_to_type( c_ast_t const *ast, c_type_t type ) {
  *
  * @param type The bad type.
  * @param ast The AST having the location of the error.
- * @return Always returns \c AST_ERROR_FOUND.
+ * @return Always returns \c VISITOR_ERROR_FOUND.
  */
 static bool error_type_not_supported( c_type_t type, c_ast_t const *ast ) {
   print_error( &ast->loc,
     "%s not supported in %s", c_type_name( type ), c_lang_name( opt_lang )
   );
-  return AST_ERROR_FOUND;
+  return VISITOR_ERROR_FOUND;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool c_ast_check_errors( c_ast_t const *ast, c_check_t check ) {
-  if ( check == CHECK_CAST && c_ast_check_cast( ast ) == AST_ERROR_FOUND )
+bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
+  if ( check == CHECK_CAST && !c_ast_check_cast( ast ) )
     return false;
-  if ( c_ast_check_errors_impl( ast ) == AST_ERROR_FOUND )
-    return false;
-  if ( c_ast_check_types( ast ) == AST_ERROR_FOUND )
+  if ( !c_ast_check_errors( ast ) )
     return false;
   return true;
 }
