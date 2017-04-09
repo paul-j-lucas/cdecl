@@ -84,7 +84,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { T_CLASS,        L_CLASS,        LANG_CPP_ALL                    },
   // storage classes
   { T_AUTO,         L_AUTO,         LANG_ALL                        },
-  { T_BLOCK,        L___BLOCK,      LANG_ALL                        }, // Apple
+  { T_BLOCK,        L___BLOCK,      LANG_ALL /* Apple extension */  },
   { T_EXTERN,       L_EXTERN,       LANG_ALL                        },
   { T_REGISTER,     L_REGISTER,     LANG_ALL                        },
   { T_STATIC,       L_STATIC,       LANG_ALL                        },
@@ -175,6 +175,20 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc ) {
 }
 
 c_lang_t c_type_check( c_type_t type ) {
+  //
+  // First, check that the type/storage-class/qualifier is legal in the current
+  // language.
+  //
+  for ( size_t row = 0; row < ARRAY_SIZE( C_TYPE_INFO ); ++row ) {
+    c_type_info_t const *const ti = &C_TYPE_INFO[ row ];
+    if ( (type & ti->type) && !(opt_lang & ti->ok_langs) )
+      return ti->ok_langs;
+  } // for
+
+  //
+  // Second, check that the type/storage-class/qualifier combination is legal
+  // in the current language.
+  //
   for ( size_t row = 0; row < NUM_TYPES; ++row ) {
     if ( (type & C_TYPE_INFO[ row ].type) ) {
       for ( size_t col = 0; col <= row; ++col ) {
@@ -184,6 +198,7 @@ c_lang_t c_type_check( c_type_t type ) {
       } // for
     }
   } // for
+
   return LANG_ALL;
 }
 
