@@ -61,7 +61,7 @@ Then follow the generic installation instructions given in `INSTALL`.
 **cdecl** was originally written by Graham Ross
 sometime in the mid-1980s.
 Tony Hansen, a major contributor,
-[posted the source code with his changes](https://groups.google.com/d/msg/comp.lang.c/mumKTLgPFDQ/GI3eh9f89J4J)
+[posted the source code with his changes](https://groups.google.com/d/msg/comp.sources.unix/Y76scbXQQBk/MVrZZBG0nNwJ)
 to `comp.sources.unix` in 1988.
 
 The source files have never had either a copyright notice or license.
