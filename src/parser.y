@@ -769,7 +769,7 @@ decl_list_english
   ;
 
 returning_english
-  : Y_RETURNING decl_english
+  : expect_returning decl_english
     {
       DUMP_START( "returning_english", "RETURNING decl_english" );
       DUMP_AST( "decl_english", $2.ast );
@@ -780,9 +780,9 @@ returning_english
       DUMP_END();
     }
 
-  | error Y_END
+  | expect_returning error
     {
-      PARSE_ERROR( "\"%s\" expected", L_RETURNING );
+      PARSE_ERROR( "English expected after \"%s\"", L_RETURNING );
     }
   ;
 
@@ -1730,6 +1730,14 @@ expect_comma
   | error                         { PARSE_ERROR( "',' expected" ); }
   ;
 
+expect_returning
+  : Y_RETURNING
+  | error
+    {
+      PARSE_ERROR( "\"%s\" expected", L_RETURNING );
+    }
+  ;
+
 expect_star
   : '*'
   | error                         { PARSE_ERROR( "'*' expected" ); }
@@ -1737,10 +1745,7 @@ expect_star
 
 expect_zero
   : zero
-  | error
-    {
-      PARSE_ERROR( "'0' expected" );
-    }
+  | error                         { PARSE_ERROR( "'0' expected" ); }
   ;
 
 zero
