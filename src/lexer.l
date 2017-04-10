@@ -136,8 +136,9 @@ YYLTYPE         yylloc;                 // location of current token
 // local variables
 static size_t   column;                 // column position of current token
 static size_t   column_newline;         // column position of newline
-static char    *input_line;             // entire current input line
-static size_t   input_line_len;         // length of input_line
+static char    *input_buf;              // entire current input line
+static size_t   input_len;              // length of line in input_buf
+static size_t   input_sent;             // how many chars returned to flex
 static bool     is_eof;                 // encountered EOF?
 
 // local functions
@@ -163,41 +164,32 @@ static keyword_t const* keyword_find( char const *s ) {
  * Gets a line of input for flex and keeps a copy for use later if printing an
  * error message.
  *
- * @param buf A pointer to the buffer to read into.
- * @param buf_size The size of \a buf.
+ * @param buf A pointer to the buffer to write into.
+ * @param buf_capacity The size of \a buf.
  * @return Returns the number of bytes read.
  */
-static size_t lexer_get_input( char *buf, size_t buf_size ) {
-  size_t bytes_read = 0;
-
-  for ( ; bytes_read < buf_size; ++bytes_read ) {
-    int const c = getc( yyin );
-    if ( c == EOF ) {
+static size_t lexer_get_input( char *buf, size_t buf_capacity ) {
+  size_t input_avail = input_len - input_sent;
+  if ( input_avail == 0 ) {
+    static size_t input_capacity;
+    ssize_t bytes_read = getline( &input_buf, &input_capacity, yyin );
+    if ( bytes_read == -1 ) {
       FERROR( yyin );
-      break;
+      bytes_read = 0;
     }
-    buf[ bytes_read ] = (char)c;
-    if ( c == '\n' )
-      break;
-  } // for
-
-  if ( column == 0 && bytes_read < buf_size ) {
-    //
-    // We're at the beginning of a line and we've read fewer than buf_size
-    // characters; therefore we must have encountered either a newline or EOF:
-    // copy the line.
-    //
-    static size_t input_line_capacity;
-    if ( input_line_capacity < bytes_read + 1/*null*/ ) {
-      input_line_capacity = bytes_read + 1/*null*/;
-      REALLOC( input_line, char, input_line_capacity );
-    }
-    strncpy( input_line, buf, bytes_read );
-    input_line_len = bytes_read;
-    input_line[ input_line_len ] = '\0';
+    input_avail = input_len = (size_t)bytes_read;
+    input_sent = 0;
   }
-
-  return bytes_read;
+  //
+  // Given that the default buffer capacity (YY_READ_BUF_SIZE) for flex is
+  // 8192, it's unlikely that this will ever be true and that we'll have to
+  // return the input line in chunks; but might as well code for the case.
+  //
+  if ( input_avail > buf_capacity )
+    input_avail = buf_capacity;
+  memcpy( buf, input_buf + input_sent, input_avail );
+  input_sent += input_avail;
+  return input_avail;
 }
 
 /**
@@ -246,14 +238,15 @@ size_t lexer_column( void ) {
 
 char const* lexer_input_line( size_t *plen ) {
   if ( plen )
-    *plen = input_line_len;
-  return input_line;
+    *plen = input_len;
+  return input_buf;
 }
 
 void lexer_reset( bool hard_reset ) {
   if ( hard_reset )
     is_eof = false;
   explaining = false;
+  input_len = input_sent = 0;
   newline();
 }
 
