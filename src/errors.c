@@ -44,7 +44,6 @@ static bool c_ast_visitor_type( c_ast_t*, void* );
 static bool error_kind_not_supported( c_ast_t const* );
 static bool error_kind_not_type( c_ast_t const*, c_type_t );
 static bool error_kind_to_type( c_ast_t const*, c_type_t );
-static bool error_type_not_supported( c_type_t, c_ast_t const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -269,17 +268,11 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
     case K_FUNCTION:
       if ( (ast->type & T_REGISTER) )
         return error_kind_not_type( ast, T_REGISTER );
-      if ( opt_lang < LANG_CPP_MIN ) {
-        if ( (ast->type & T_CONST) )
-          return error_type_not_supported( T_CONST, ast );
-        if ( (ast->type & (T_VIRTUAL | T_PURE_VIRTUAL)) )
-          return error_type_not_supported( T_VIRTUAL, ast );
-      } else {
+      if ( opt_lang >= LANG_CPP_MIN ) {
         if ( (ast->type & T_PURE_VIRTUAL) && !(ast->type & T_VIRTUAL) ) {
           print_error( &ast->loc, "non-virtual function can not be pure" );
           return VISITOR_ERROR_FOUND;
         }
-        // TODO
       }
       // no break;
     case K_BLOCK: {                     // Apple extension
@@ -460,20 +453,6 @@ static bool error_kind_not_supported( c_ast_t const *ast ) {
 static bool error_kind_to_type( c_ast_t const *ast, c_type_t type ) {
   print_error( &ast->loc,
     "%s to %s", c_kind_name( ast->kind ), c_type_name( type )
-  );
-  return VISITOR_ERROR_FOUND;
-}
-
-/**
- * Prints an error: <type> not supported in <lang>.
- *
- * @param type The bad type.
- * @param ast The AST having the location of the error.
- * @return Always returns \c VISITOR_ERROR_FOUND.
- */
-static bool error_type_not_supported( c_type_t type, c_ast_t const *ast ) {
-  print_error( &ast->loc,
-    "%s not supported in %s", c_type_name( type ), c_lang_name( opt_lang )
   );
   return VISITOR_ERROR_FOUND;
 }
