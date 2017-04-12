@@ -134,6 +134,7 @@ extern char const  *sgr_help_keyword;
 extern char const  *sgr_help_nonterm;
 extern char const  *sgr_help_punct;
 extern char const  *sgr_help_title;
+extern char const  *sgr_locus;
 extern char const  *sgr_prompt;
 extern char const  *sgr_warning;
 

@@ -45,6 +45,9 @@ static char const*  MORE[]     = { "...", "..." };
 static size_t const MORE_LEN[] = { 3,     3 };
 static unsigned     TERM_COLUMNS_DEFAULT = 80;
 
+// local functions
+static void         print_loc( YYLTYPE const* );
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -179,10 +182,7 @@ void print_caret( size_t error_column ) {
 }
 
 void print_error( YYLTYPE const *loc, char const *format, ... ) {
-  if ( loc ) {
-    print_caret( loc->first_column );
-    PRINT_ERR( "%d: ", loc->first_column );
-  }
+  print_loc( loc );
   SGR_START_COLOR( stderr, error );
   PUTS_ERR( "error" );
   SGR_END_COLOR( stderr );
@@ -205,11 +205,17 @@ void print_hint( char const *format, ... ) {
   PUTS_ERR( "?)\n" );
 }
 
+static void print_loc( YYLTYPE const *loc ) {
+  assert( loc );
+  print_caret( loc->first_column );
+  SGR_START_COLOR( stderr, locus );
+  PRINT_ERR( "%d", loc->first_column );
+  SGR_END_COLOR( stderr );
+  PUTS_ERR( ": " );
+}
+
 void print_warning( YYLTYPE const *loc, char const *format, ... ) {
-  if ( loc ) {
-    print_caret( loc->first_column );
-    PRINT_ERR( "%d: ", loc->first_column );
-  }
+  print_loc( loc );
   SGR_START_COLOR( stderr, warning );
   PUTS_ERR( "warning" );
   SGR_END_COLOR( stderr );
