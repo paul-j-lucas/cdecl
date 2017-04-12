@@ -931,6 +931,8 @@ color cabapility is ignored on systems
 that do not provide genuine GNU
 .BR readline (3).
 .SH CAVEATS
+.SS Unsupported Declarations
+The following types of declarations are not currently supported:
 .nr step 1 1
 .IP \n[step]. 3
 Multiple comma-separated declarations are not supported:
@@ -954,6 +956,8 @@ struct S { int i; char c; } s;    // not supported
 The C (and C++)
 \f(CWalignas\fP specifier
 is not supported.
+.IP \n+[step].
+C++ template declarations are not supported.
 .IP \n+[step].
 The C11
 \f(CW_Noreturn\fP
@@ -981,7 +985,9 @@ C++ function exception specifications
 and
 \f(CWnoexcept\fP
 are not supported.
-.IP \n+[step].
+.SS Other Minor Caveats
+.nr step 1 1
+.IP \n[step]. 3
 When converting from pseudo-English to a C++ declaration,
 \f(CWenum\fP,
 \f(CWclass\fP,
