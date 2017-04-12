@@ -71,6 +71,8 @@ AC_DEFUN([gl_EARLY],
   # Code from module stdint:
   # Code from module stdio:
   # Code from module stdlib:
+  # Code from module string:
+  # Code from module strsep:
   # Code from module sys_types:
   # Code from module sysexits:
   # Code from module unistd:
@@ -126,6 +128,13 @@ AC_DEFUN([gl_INIT],
   gl_STDINT_H
   gl_STDIO_H
   gl_STDLIB_H
+  gl_HEADER_STRING_H
+  gl_FUNC_STRSEP
+  if test $HAVE_STRSEP = 0; then
+    AC_LIBOBJ([strsep])
+    gl_PREREQ_STRSEP
+  fi
+  gl_STRING_MODULE_INDICATOR([strsep])
   gl_SYS_TYPES_H
   AC_PROG_MKDIR_P
   gl_SYSEXITS
@@ -293,6 +302,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/stdint.in.h
   lib/stdio.in.h
   lib/stdlib.in.h
+  lib/string.in.h
+  lib/strsep.c
   lib/sys_types.in.h
   lib/sysexits.in.h
   lib/unistd.c
@@ -321,6 +332,8 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/stdint.m4
   m4/stdio_h.m4
   m4/stdlib_h.m4
+  m4/string_h.m4
+  m4/strsep.m4
   m4/sys_types_h.m4
   m4/sysexits.m4
   m4/unistd_h.m4

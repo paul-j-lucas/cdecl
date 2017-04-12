@@ -58,7 +58,7 @@ AC_TYPE_UINT32_T
 # Checks for library functions.
 AC_FUNC_REALLOC
 AC_CHECK_DECLS([rl_gnu_readline_p],[],[],[#include <readline,readline.h>])
-AC_CHECK_FUNCS([fmemopen])
+AC_CHECK_FUNCS([fmemopen strsep])
 AC_SEARCH_LIBS([readline],[readline])
 AC_SEARCH_LIBS([add_history],[readline history])
 AC_SEARCH_LIBS([endwin],[curses ncurses])
