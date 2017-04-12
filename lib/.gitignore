@@ -1,4 +1,5 @@
 /errno.h
+/getopt-cdefs.h
 /getopt.h
 /limits.h
 /stdarg.h
