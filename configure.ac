@@ -35,10 +35,18 @@ AC_PROG_INSTALL
 
 # Checks for header files.
 AC_HEADER_ASSERT
+AC_CHECK_HEADERS([curses.h ncurses.h])
 AC_CHECK_HEADERS([getopt.h])
 AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([sysexits.h])
 AC_CHECK_HEADERS([readline/readline.h readline/history.h])
+AC_CHECK_HEADERS([term.h], [], [],
+[#if defined(HAVE_CURSES_H)
+#include <curses.h>
+#elif defined(HAVE_NCURSES_H)
+#include <ncurses.h>
+#endif
+])
 gl_INIT
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -53,6 +61,7 @@ AC_CHECK_DECLS([rl_gnu_readline_p],[],[],[#include <readline,readline.h>])
 AC_CHECK_FUNCS([fmemopen])
 AC_SEARCH_LIBS([readline],[readline])
 AC_SEARCH_LIBS([add_history],[readline history])
+AC_SEARCH_LIBS([endwin],[curses ncurses])
 
 # Program feature: debug
 AC_ARG_ENABLE([debug],
@@ -85,6 +94,17 @@ AC_ARG_ENABLE([readline],
 )
 AS_IF([test x$enable_readline != xno -a x$ac_cv_search_readline = xno],
   [AC_MSG_ERROR([readline library not found; use --disable-readline to disable])]
+)
+
+# Program feature: term-columns
+AC_ARG_ENABLE([term-columns],
+  AS_HELP_STRING([--disable-term-columns], [disable support for terminal columns]),
+  [],
+  [AC_DEFINE([WITH_TERM_COLUMNS], [1],
+    [Define to 1 if term-columns is enabled.])]
+)
+AS_IF([test x$enable_term_columns != xno -a x$ac_cv_search_endwin = xno],
+  [AC_MSG_ERROR([curses library for term-columns not found; use --disable-term-columns to disable])]
 )
 
 # Makefile conditionals.

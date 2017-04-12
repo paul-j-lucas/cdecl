@@ -35,34 +35,143 @@
 
 // standard
 #include <assert.h>
+#include <ctype.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 
-///////////////////////////////////////////////////////////////////////////////
+// local constants
+static char const*  MORE[]     = { "...", "..." };
+static size_t const MORE_LEN[] = { 3,     3 };
+static unsigned     TERM_COLUMNS_DEFAULT = 80;
 
-void print_caret( size_t col ) {
+////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Gets the length of the first token in \a s.  Characters are divided into
+ * three classes:
+ *
+ *  + Whitespace.
+ *  + Alpha-numeric.
+ *  + Everything else (e.g., punctuation).
+ *
+ * A token is composed of characters in exclusively one class.  The class is
+ * determined by s[0].  The length of the token is the number of consecutive
+ * characters of the same class starting at s[0].
+ *
+ * @param s The null-terminated string to use.
+ * @return Returns the length of the token.
+ */
+static size_t token_len( char const *s ) {
+  char const *const s0 = s;
+  bool const is_s0_space = isspace( *s0 );
+  bool const is_s0_alnum = isalnum( *s0 );
+  for ( ++s; *s; ++s ) {
+    if ( is_s0_space ) {
+      if ( !isspace( *s ) )
+        break;
+    }
+    else if ( is_s0_alnum ) {
+      if ( !isalnum( *s ) )
+        break;
+    }
+    else {
+      if ( isalnum( *s ) || isspace( *s ) )
+        break;
+    }
+  } // for
+  return s - s0;
+}
+
+////////// extern functions ///////////////////////////////////////////////////
+
+void print_caret( size_t error_column ) {
+  size_t    error_column_term = error_column;
+  unsigned  term_columns = get_term_columns();
+
+  if ( term_columns == 0 )
+    term_columns = TERM_COLUMNS_DEFAULT;
+
   if ( is_input_a_tty || opt_interactive ) {
     //
     // If we're interactive, we can put the ^ under the already existing token
     // the user typed for the recent command, but we have to add the length of
     // the prompt.
     //
-    col += strlen( prompt[0] );
+    error_column_term += strlen( prompt[0] );
+    if ( term_columns )
+      error_column_term %= term_columns;
   } else {
+    --term_columns;
     //
     // Otherwise we have to print out the line containing the error then put
     // the ^ under that.
     //
     size_t line_len;
-    char const *const line = lexer_input_line( &line_len );
-    assert( line );
-    PUTS_ERR( line );
-    if ( line_len > 0 && line[ line_len - 1 ] != '\n' )
-      PUTC_ERR( '\n' );
+    char const *const input_line = lexer_input_line( &line_len );
+    assert( input_line );
+
+    if ( line_len > 0 && input_line[ line_len - 1 ] != '\n' )
+      --line_len;
+
+    size_t const    token_columns = token_len( input_line + error_column );
+    unsigned const  error_end_column = error_column + token_columns;
+    bool            more[2] = { /*left=*/false, /*right=*/false };
+    size_t          print_offset = 0;
+
+    //
+    // Start off with the number of printable columns equal to the length of
+    // the line.
+    //
+    size_t print_columns = line_len;
+
+    //
+    // If the number of printable columns exceeds the number of terminal
+    // columns, there is "more" on the right, so limit the number of printable
+    // columns.
+    //
+    more[1] = print_columns > term_columns;
+    if ( more[1] )
+      print_columns = term_columns;
+
+    //
+    // If the error end column is past the number of printable columns, there
+    // is "more" on the left since we will "scroll" the line to the left.
+    //
+    more[0] = error_end_column > print_columns;
+
+    //
+    // However, if there is "more" on the right but end of the error token is
+    // at the end of the line, then we can print through the end of the line
+    // without any "more."
+    //
+    if ( more[1] ) {
+      if ( error_end_column < line_len )
+        print_columns -= MORE_LEN[1];
+      else
+        more[1] = false;
+    }
+
+    //
+    // If there is "more" on the left, we have to adjust the error column, the
+    // offset into the input line that we start printing at, and the number of
+    // printable columns to give the appearance that the input line has been
+    // "scrolled" to the left.
+    //
+    if ( more[0] ) {
+      error_column_term = print_columns - token_columns;
+      print_offset = MORE_LEN[0] + (error_column - error_column_term);
+      print_columns -= MORE_LEN[0];
+    }
+
+    PRINT_ERR( "%s%.*s%s\n",
+      (more[0] ? MORE[0] : ""),
+      (int)print_columns, input_line + print_offset,
+      (more[1] ? MORE[1] : "")
+    );
   }
 
-  PRINT_ERR( "%*s", (int)col, "" );
+  PRINT_ERR( "%*s", (int)error_column_term, "" );
   SGR_START_COLOR( stderr, caret );
   PUTC_ERR( '^' );
   SGR_END_COLOR( stderr );

@@ -172,6 +172,15 @@ void* free_later( void *p );
  */
 void free_now( void );
 
+#ifdef WITH_TERM_COLUMNS
+/**
+ * Gets the number of columns of the terminal.
+ *
+ * @return Returns said number of columns or 0 if it can not be determined.
+ */
+unsigned get_term_columns( void );
+#endif /* WITH_TERM_COLUMNS */
+
 /**
  * Checks whether \a s is a blank line, that is a line consisting only of
  * whitespace.

@@ -32,6 +32,7 @@
 // standard
 #include <assert.h>
 #include <ctype.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -39,11 +40,24 @@
 #include <sysexits.h>
 
 #ifdef HAVE_READLINE_READLINE_H
-#include <readline/readline.h>
+# include <readline/readline.h>
 #endif /* HAVE_READLINE_READLINE_H */
 #ifdef HAVE_READLINE_HISTORY_H
-#include <readline/history.h>
+# include <readline/history.h>
 #endif /* HAVE_READLINE_HISTORY_H */
+
+#ifdef WITH_TERM_COLUMNS
+# include <fcntl.h>                     /* for open(2) */
+# if defined(HAVE_CURSES_H)
+#   define _BOOL                        /* prevents clash of bool on Solaris */
+#   include <curses.h>
+#   undef _BOOL
+# elif defined(HAVE_NCURSES_H)
+#   include <ncurses.h>
+# endif
+# include <term.h>                      /* for setupterm(3) */
+# include <unistd.h>                    /* for close(2) */
+#endif /* WITH_TERM_COLUMNS */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -130,6 +144,79 @@ void free_now( void ) {
   } // for
   free_head = NULL;
 }
+
+#ifdef WITH_TERM_COLUMNS
+unsigned get_term_columns( void ) {
+  unsigned    cols = 0;
+  int         cterm_fd = -1;
+  char        reason_buf[ 128 ];
+  char const *reason = NULL;
+
+  char const *const cterm_path = ctermid( NULL );
+  if ( !cterm_path || !*cterm_path ) {
+    reason = "ctermid(3) failed to get controlling terminal";
+    goto error;
+  }
+
+  if ( (cterm_fd = open( cterm_path, O_RDWR )) == -1 ) {
+    reason = STRERROR;
+    goto error;
+  }
+
+  char const *const term = getenv( "TERM" );
+  if ( !term ) {
+    reason = "TERM environment variable not set";
+    goto error;
+  }
+
+  int setupterm_err;
+  if ( setupterm( (char*)term, cterm_fd, &setupterm_err ) == ERR ) {
+    reason = reason_buf;
+    switch ( setupterm_err ) {
+      case -1:
+        reason = "terminfo database not found";
+        break;
+      case 0:
+        snprintf(
+          reason_buf, sizeof reason_buf,
+          "TERM=%s not found in database or too generic", term
+        );
+        break;
+      case 1:
+        reason = "terminal is harcopy";
+        break;
+      default:
+        snprintf(
+          reason_buf, sizeof reason_buf,
+          "setupterm(3) returned error code %d", setupterm_err
+        );
+    } // switch
+    goto error;
+  }
+
+  int const ti_cols = tigetnum( (char*)"cols" );
+  if ( ti_cols < 0 ) {
+    snprintf(
+      reason_buf, sizeof reason_buf,
+      "tigetnum(\"cols\") returned error code %d", ti_cols
+    );
+    goto error;
+  }
+
+  cols = (unsigned)ti_cols;
+
+error:
+  if ( cterm_fd != -1 )
+    close( cterm_fd );
+  if ( reason )
+    PMESSAGE_EXIT( EX_UNAVAILABLE,
+      "failed to determine number of columns in terminal: %s\n",
+      reason
+    );
+
+  return cols;
+}
+#endif /* WITH_TERM_COLUMNS */
 
 bool is_file( int fd ) {
   struct stat fd_stat;
