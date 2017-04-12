@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 8, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 12, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -331,6 +331,7 @@ Adds support for
 \f(CWenum\fP,
 \f(CWlong double\fP,
 \f(CWsigned\fP,
+\f(CWsize_t\fP,
 \f(CWvoid\fP,
 \f(CWvolatile\fP,
 and function prototypes.
@@ -377,8 +378,9 @@ Use the C++11 dialect of the C++ language.
 Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
-\f(CWthread_local\fP,
-and rvalue references.
+rvalue references,
+and
+\f(CWthread_local\fP.
 .RE
 .IP ""
 The default is
@@ -506,6 +508,7 @@ One of:
 \f(CWchar32_t\fP,
 \f(CWwchar_t\fP,
 \f(CWint\fP,
+\f(CWsize_t\fP,
 \f(CWfloat\fP,
 \f(CWdouble\fP,
 or
@@ -624,6 +627,7 @@ Adds support for
 \f(CWenum\fP,
 \f(CWlong double\fP,
 \f(CWsigned\fP,
+\f(CWsize_t\fP,
 \f(CWvoid\fP,
 \f(CWvolatile\fP,
 and function prototypes.
@@ -670,8 +674,9 @@ Use the C++11 dialect of the C++ language.
 Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
-\f(CWthread_local\fP,
-and rvalue references.
+rvalue references,
+and
+\f(CWthread_local\fP.
 .TP
 .RB [ no ] debug
 Turns [off] or on debugging output

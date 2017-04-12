@@ -80,11 +80,12 @@ extern char const L_UNSIGNED[];
 extern char const L_CONST[];
 extern char const L_CONSTANT[];         // synonym for "const"
 extern char const L_ELLIPSIS[];         // ...
-extern char const L_VARARGS[];          // synonym for "..."
-extern char const L_VARIADIC[];         // synonym for "..."
 extern char const L_ENUM[];
 extern char const L_ENUMERATION[];      // synonym for "enum"
 extern char const L_SIGNED[];
+extern char const L_SIZE_T[];
+extern char const L_VARARGS[];          // synonym for "..."
+extern char const L_VARIADIC[];         // synonym for "..."
 extern char const L_VOID[];
 extern char const L_VOLATILE[];
 

@@ -83,6 +83,7 @@ static char const *const CDECL_KEYWORDS[] = {
   L_RVALUE,
   L_SHORT,
   L_SIGNED,
+  L_SIZE_T,
   L_STATIC,
   L_STRUCT,
 //L_TO,                                 // too short

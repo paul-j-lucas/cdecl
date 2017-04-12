@@ -74,14 +74,14 @@ static help_text_t const HELP_TEXT[] = {
             "  { enum | struct | union | class } <name>" },
 /* 19 */  { "arg-list: a comma separated list of <name>, <english>, or <name> as <english>",
             "arg-list: a comma separated list of <english> or <name> as <english>" },
-/* 20 */  { "gibberish: a C declaration, like \"int *x\", or cast, like \"(int*)x\"",
-            "gibberish: a C++ declaration, like \"int *x\", or cast, like \"(int*)x\"" },
-/* 21 */  { "C-type: bool, int, char, char16_t, char32_t, wchar_t, float, double, or void",
-            "C++-type: bool, int, char, char16_t, char32_t, wchar_t, float, double, or void" },
-/* 22 */  { "modifier: short, long, signed, unsigned, const, volatile, or restrict",
-            "modifier: short, long, signed, unsigned, const, or volatile" },
-/* 23 */  { "storage-class: auto, extern, register, static, or _Thread_local",
-            "storage-class: extern, register, static, thread_local, or virtual" },
+/* 20 */  { "gibberish: a C declaration, like \"int *x\"; or cast, like \"(int*)x\"",
+            "gibberish: a C++ declaration, like \"int *x\"; or cast, like \"(int*)x\"" },
+/* 21 */  { "C-type: bool char char16_t char32_t wchar_t int float double size_t void",
+            "C++-type: bool char char16_t char32_t wchar_t int float double size_t void" },
+/* 22 */  { "modifier: short long signed unsigned const restrict volatile",
+            "modifier: short long signed unsigned const volatile" },
+/* 23 */  { "storage-class: auto extern register static _Thread_local",
+            "storage-class: extern register static thread_local virtual" },
           { NULL, NULL }
 };
 

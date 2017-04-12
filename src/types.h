@@ -49,15 +49,16 @@
 #define T_INT             0x00000080
 #define T_LONG            0x00000100
 #define T_LONG_LONG       0x00000200    /* special case */
-#define T_SIGNED          0x00000400
-#define T_UNSIGNED        0x00000800
-#define T_FLOAT           0x00001000
-#define T_DOUBLE          0x00002000
-#define T_COMPLEX         0x00004000
-#define T_ENUM            0x00008000
-#define T_STRUCT          0x00010000
-#define T_UNION           0x00020000
-#define T_CLASS           0x00040000
+#define T_SIZE_T          0x00000400    /* because it's so common */
+#define T_SIGNED          0x00000800
+#define T_UNSIGNED        0x00001000
+#define T_FLOAT           0x00002000
+#define T_DOUBLE          0x00004000
+#define T_COMPLEX         0x00008000
+#define T_ENUM            0x00010000
+#define T_STRUCT          0x00020000
+#define T_UNION           0x00040000
+#define T_CLASS           0x00080000
 
 // storage classes
 #define T_AUTO            0x00100000

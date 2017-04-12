@@ -41,7 +41,7 @@ The characters are:
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
 + `x` = untyped K&R function argument
-+ `z` = `complex`
++ `z` = `complex` or `size_t`
 
 A function's return type is separated from its arguments by `_`.
 
