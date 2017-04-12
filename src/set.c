@@ -91,9 +91,7 @@ void set_option( char const *opt ) {
 #ifdef WITH_CDECL_DEBUG
   printf( "  debug (-d, --debug) / nodebug\n" );
 #endif /* WITH_CDECL_DEBUG */
-#ifndef HAVE_READLINE
   printf( "  interactive (-i, --interactive) / nointeractive\n" );
-#endif /* HAVE_READLINE */
   printf( "  prompt / noprompt (-q, --quiet)\n" );
   printf( "  semicolon / nosemicolon (-s, --no-semicolon)\n" );
 #ifdef YYDEBUG
