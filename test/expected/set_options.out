@@ -2,6 +2,7 @@
 Valid set options (and command line equivalents) are:
   options
   debug (-d, --debug) / nodebug
+  interactive (-i, --interactive) / nointeractive
   prompt / noprompt (-q, --quiet)
   semicolon / nosemicolon (-s, --no-semicolon)
 
