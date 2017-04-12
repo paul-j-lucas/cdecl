@@ -49,6 +49,7 @@ static char        *prompt_buf[2];
 
 ////////// local functions ////////////////////////////////////////////////////
 
+#ifdef HAVE_READLINE
 /**
  * Checks to see whether we're running genuine GNU readline and not some other
  * library emulating it.
@@ -68,6 +69,7 @@ static inline bool have_genuine_gnu_readline( void ) {
   return false;
 #endif /* HAVE_DECL_RL_GNU_READLINE_P */
 }
+#endif /* HAVE_READLINE */
 
 /**
  * Creates a prompt.
@@ -79,6 +81,7 @@ static inline bool have_genuine_gnu_readline( void ) {
 static char* prompt_create( char suffix ) {
   size_t prompt_len = strlen( CPPDECL ) + 1/*suffix*/ + 1/*space*/;
 
+#ifdef HAVE_READLINE
   if ( have_genuine_gnu_readline() && sgr_prompt ) {
     prompt_len +=
       1 /* RL_PROMPT_START_IGNORE */ +
@@ -87,10 +90,12 @@ static char* prompt_create( char suffix ) {
       1 /* RL_PROMPT_END_IGNORE */ +
       (sizeof( SGR_END SGR_EL ) - 1/*null*/);
   }
+#endif /* HAVE_READLINE */
 
   char *const prompt_buf = MALLOC( char, prompt_len + 1/*null*/ );
   char *p = prompt_buf;
 
+#ifdef HAVE_READLINE
   char color_buf[20];
 
   if ( have_genuine_gnu_readline() && sgr_prompt ) {
@@ -99,16 +104,19 @@ static char* prompt_create( char suffix ) {
     p += strcpy_len( p, color_buf );
     *p++ = RL_PROMPT_END_IGNORE;
   }
+#endif /* HAVE_READLINE */
 
   p += strcpy_len( p, opt_lang >= LANG_CPP_MIN ? CPPDECL : PACKAGE );
   *p++ = suffix;
 
+#ifdef HAVE_READLINE
   if ( have_genuine_gnu_readline() && sgr_prompt ) {
     *p++ = RL_PROMPT_START_IGNORE;
     SGR_SEND_COLOR( color_buf );
     p += strcpy_len( p, color_buf );
     *p++ = RL_PROMPT_END_IGNORE;
   }
+#endif /* HAVE_READLINE */
 
   *p++ = ' ';
   *p = '\0';

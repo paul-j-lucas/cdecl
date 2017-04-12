@@ -40,6 +40,7 @@
 
 // standard
 #include <stdio.h>
+#include <stdlib.h>                     /* for strtol(3) */
 #include <string.h>
 
 #define SET_TOKEN                 lexer_token = yytext

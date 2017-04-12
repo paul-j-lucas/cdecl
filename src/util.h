@@ -34,6 +34,7 @@
 #include <stddef.h>                     /* for size_t */
 #include <stdint.h>                     /* for uintptr_t */
 #include <stdio.h>                      /* for FILE */
+#include <stdlib.h>
 #include <string.h>
 #include <sysexits.h>
 
