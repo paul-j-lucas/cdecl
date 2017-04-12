@@ -70,7 +70,6 @@
   "HELP-punct="   SGR_FG_BLACK  SGR_SEP SGR_BOLD  SGR_CAP_SEP \
   "HELP-title="   SGR_FG_BLUE   SGR_SEP SGR_BOLD  SGR_CAP_SEP \
   "locus="                              SGR_BOLD  SGR_CAP_SEP \
-  "note="         SGR_FG_CYAN   SGR_SEP SGR_BOLD  SGR_CAP_SEP \
   "PROMPT="       SGR_FG_GREEN                    SGR_CAP_SEP \
   "warning="      SGR_FG_YELLOW SGR_SEP SGR_BOLD  SGR_CAP_SEP
 
