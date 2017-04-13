@@ -63,7 +63,7 @@ AC_SEARCH_LIBS([readline],[readline])
 AC_SEARCH_LIBS([add_history],[readline history])
 AC_SEARCH_LIBS([endwin],[curses ncurses])
 
-# Program feature: debug
+# Program feature: debug (enabled by default)
 AC_ARG_ENABLE([debug],
   AS_HELP_STRING([--disable-debug], [disable support for cdecl debugging]),
   [enable_debug=${enableval}],
@@ -85,7 +85,7 @@ AS_IF([test x$enable_yydebug = xyes],
     [Define to 1 if yacc debugging is enabled.])]
 )
 
-# Program feature: readline
+# Program feature: readline (enabled by default)
 AC_ARG_ENABLE([readline],
   AS_HELP_STRING([--disable-readline], [disable support for readline]),
   [],
@@ -96,7 +96,7 @@ AS_IF([test x$enable_readline != xno -a x$ac_cv_search_readline = xno],
   [AC_MSG_ERROR([readline library not found; use --disable-readline to disable])]
 )
 
-# Program feature: term-columns
+# Program feature: term-columns (enabled by default)
 AC_ARG_ENABLE([term-columns],
   AS_HELP_STRING([--disable-term-columns], [disable support for terminal columns]),
   [],
