@@ -6,7 +6,7 @@
 > certain logic to it.*
 
 <div style="text-align: center">
--- Dennis M. Richie
+-- Dennis M. Ritchie
 </div>
 <p></p>
 
