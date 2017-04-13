@@ -216,7 +216,7 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
 }
 
 /**
- * Vistor function that checks an AST for semantic errors.
+ * Visitor function that checks an AST for semantic errors.
  *
  * @param ast The AST to check.
  * @param data Not used.
@@ -345,7 +345,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 }
 
 /**
- * Vistor function that checks an AST for type errors.
+ * Visitor function that checks an AST for type errors.
  *
  * @param data Not used.
  * @return Returns \c VISITOR_ERROR_FOUND if an error was found;
@@ -377,7 +377,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
 }
 
 /**
- * Vistor function that checks an AST for semantic warnings.
+ * Visitor function that checks an AST for semantic warnings.
  *
  * @param ast The AST to check.
  * @param data Not used.
