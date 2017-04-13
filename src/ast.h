@@ -275,7 +275,7 @@ c_ast_t* c_ast_root( c_ast_t *ast );
 void c_ast_set_parent( c_ast_t *child, c_ast_t *parent );
 
 /**
- * Traverses an AST visiting each node in turn.
+ * Does a depth-first, post-order traversal of an AST.
  *
  * @param ast The AST to begin at.
  * @param dir The direction to visit.
@@ -297,8 +297,8 @@ CDECL_AST_INLINE c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir,
 }
 
 /**
- * Traverses an AST visiting each node in turn looking for an AST node that
- * satisfies the visitor.
+ * Does a depth-first, post-order traversal of an AST looking for an AST node
+ * that satisfies the visitor.
  *
  * @param ast The AST to begin at.
  * @param dir The direction to visit.
