@@ -93,7 +93,7 @@ AC_ARG_ENABLE([readline],
     [Define to 1 if readline support is enabled.])]
 )
 AS_IF([test x$enable_readline != xno -a x$ac_cv_search_readline = xno],
-  [AC_MSG_ERROR([readline library not found; use --disable-readline to disable])]
+  [AC_MSG_ERROR([readline library not found; use --disable-readline])]
 )
 
 # Program feature: term-columns (enabled by default)
@@ -104,7 +104,7 @@ AC_ARG_ENABLE([term-columns],
     [Define to 1 if term-columns is enabled.])]
 )
 AS_IF([test x$enable_term_columns != xno -a x$ac_cv_search_endwin = xno],
-  [AC_MSG_ERROR([curses library for term-columns not found; use --disable-term-columns to disable])]
+  [AC_MSG_ERROR([curses library for term-columns not found; use --disable-term-columns])]
 )
 
 # Makefile conditionals.
