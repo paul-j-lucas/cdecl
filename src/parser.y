@@ -263,9 +263,10 @@ static void quit( void ) {
  * @param msg The error message to print.
  */
 static void yyerror( char const *msg ) {
-  size_t const col = lexer_column();
-  print_caret( col );
-  PRINT_ERR( "%zu: ", col + 1 );
+  YYLTYPE loc;
+  memset( &loc, 0, sizeof loc );
+  loc.first_column = lexer_column();
+  print_loc( &loc );
   SGR_START_COLOR( stderr, error );
   PUTS_ERR( msg );                      // no newline
   SGR_END_COLOR( stderr );

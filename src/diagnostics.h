@@ -36,15 +36,8 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Prints a '^' (in color, if possible and requested) under the offending
- * token.
- *
- * @param col The zero-based column to print the caret at.
- */
-void print_caret( size_t col );
-
-/**
  * Prints an error message to standard error.
+ * A newline is automatically printed.
  *
  * @param loc The location of the error.
  * @param format The \c printf() style format string.
@@ -59,6 +52,15 @@ void print_error( YYLTYPE const *loc, char const *format, ... );
  * @param format The \c printf() style format string.
  */
 void print_hint( char const *format, ... );
+
+/**
+ * Prints the location of the error including:
+ *
+ *  + The error line (if not neither a TTY nor interactive).
+ *  + A '^' (in color, if possible and requested) under the offending token.
+ *  + The error column.
+ */
+void print_loc( YYLTYPE const *loc );
 
 /**
  * Prints a warning message to standard error.

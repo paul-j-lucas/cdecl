@@ -46,49 +46,17 @@ static size_t const MORE_LEN[] = { 3,     3 };
 static unsigned     TERM_COLUMNS_DEFAULT = 80;
 
 // local functions
-static void         print_loc( YYLTYPE const* );
+static size_t       token_len( char const* );
 
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Gets the length of the first token in \a s.  Characters are divided into
- * three classes:
+ * Prints the error line (if not interactive) and a '^' (in color, if possible
+ * and requested) under the offending token.
  *
- *  + Whitespace.
- *  + Alpha-numeric.
- *  + Everything else (e.g., punctuation).
- *
- * A token is composed of characters in exclusively one class.  The class is
- * determined by s[0].  The length of the token is the number of consecutive
- * characters of the same class starting at s[0].
- *
- * @param s The null-terminated string to use.
- * @return Returns the length of the token.
+ * @param error_col The zero-based column of the offending token.
  */
-static size_t token_len( char const *s ) {
-  char const *const s0 = s;
-  bool const is_s0_space = isspace( *s0 );
-  bool const is_s0_alnum = isalnum( *s0 );
-  for ( ++s; *s; ++s ) {
-    if ( is_s0_space ) {
-      if ( !isspace( *s ) )
-        break;
-    }
-    else if ( is_s0_alnum ) {
-      if ( !isalnum( *s ) )
-        break;
-    }
-    else {
-      if ( isalnum( *s ) || isspace( *s ) )
-        break;
-    }
-  } // for
-  return s - s0;
-}
-
-////////// extern functions ///////////////////////////////////////////////////
-
-void print_caret( size_t error_column ) {
+static void print_caret( size_t error_column ) {
 #ifdef WITH_TERM_COLUMNS
   unsigned term_columns = get_term_columns();
   if ( term_columns == 0 )
@@ -197,6 +165,44 @@ void print_caret( size_t error_column ) {
   PUTC_ERR( '\n' );
 }
 
+/**
+ * Gets the length of the first token in \a s.  Characters are divided into
+ * three classes:
+ *
+ *  + Whitespace.
+ *  + Alpha-numeric.
+ *  + Everything else (e.g., punctuation).
+ *
+ * A token is composed of characters in exclusively one class.  The class is
+ * determined by s[0].  The length of the token is the number of consecutive
+ * characters of the same class starting at s[0].
+ *
+ * @param s The null-terminated string to use.
+ * @return Returns the length of the token.
+ */
+static size_t token_len( char const *s ) {
+  char const *const s0 = s;
+  bool const is_s0_space = isspace( *s0 );
+  bool const is_s0_alnum = isalnum( *s0 );
+  for ( ++s; *s; ++s ) {
+    if ( is_s0_space ) {
+      if ( !isspace( *s ) )
+        break;
+    }
+    else if ( is_s0_alnum ) {
+      if ( !isalnum( *s ) )
+        break;
+    }
+    else {
+      if ( isalnum( *s ) || isspace( *s ) )
+        break;
+    }
+  } // for
+  return s - s0;
+}
+
+////////// extern functions ///////////////////////////////////////////////////
+
 void print_error( YYLTYPE const *loc, char const *format, ... ) {
   print_loc( loc );
   SGR_START_COLOR( stderr, error );
@@ -221,7 +227,7 @@ void print_hint( char const *format, ... ) {
   PUTS_ERR( "?)\n" );
 }
 
-static void print_loc( YYLTYPE const *loc ) {
+void print_loc( YYLTYPE const *loc ) {
   assert( loc );
   print_caret( loc->first_column );
   SGR_START_COLOR( stderr, locus );
