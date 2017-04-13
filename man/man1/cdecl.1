@@ -97,14 +97,16 @@ Runs with the latest supported dialect of C as the default language.
 Runs with the latest supported dialect of C++ as the default language.
 .TP
 .BR cast " | " declare
-Interprets the rest of the command-line
+Runs with the latest supported dialect of C as the current language
+interpreting the rest of the command-line
 (if given)
 as pseudo-English,
 performs the conversion to gibberish,
 and exits.
 .TP
 .B explain
-Interprets the rest of the command-line
+Runs with the latest supported dialect of C as the current language
+interpreting the rest of the command-line
 (if given)
 as gibberish,
 performs the conversion to pseudo-English,
@@ -182,6 +184,7 @@ command.
 uses the GNU
 .BR readline (3)
 library
+(if available and compiled in)
 to provide keyword completion,
 command-line history,
 and
@@ -189,8 +192,20 @@ editing.
 .SS File Input
 .B cdecl
 reads the named files for statements in the language described below.
-A transformation is made from that language to C (C++) or pseudo-English.
-The results of this transformation are written on standard output.
+A transformation is made from that language to C (C++)
+for either
+.B cast
+or
+.BR declare ,
+or pseudo-English
+for
+.BR explain .
+The results of this transformation are written to standard output
+(unless either the
+.B \-o
+or
+.B \-\-output
+option is given).
 .SH OPTIONS
 An option argument
 .I f
@@ -366,7 +381,8 @@ Use the C++98 dialect of the C++ language.
 Adds support for
 \f(CWclass\fP,
 references,
-and pointers to class members.
+pointers to class members,
+and \f(CWvirtual\fP functions.
 .TP
 .B C++03
 Use the C++03 dialect of the C++ language.
@@ -446,7 +462,7 @@ Prints a
 .B cdecl
 language summary
 (see
-.B LANGUAGE
+.B English
 below)
 that's sensitive to the current programming language
 (C or C++).
@@ -662,7 +678,8 @@ Use the C++98 dialect of the C++ language.
 Adds support for
 \f(CWclass\fP,
 references,
-and pointers to class members.
+pointers to class members,
+and \f(CWvirtual\fP functions.
 .TP
 .B c++03
 Use the C++03 dialect of the C++ language.
