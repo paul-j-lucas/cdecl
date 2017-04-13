@@ -92,8 +92,8 @@ AS_IF([test x$enable_yydebug = xyes],
 # Program feature: readline (enabled by default)
 AC_ARG_ENABLE([readline],
   AS_HELP_STRING([--disable-readline], [disable support for readline]),
-  [enable_debug=${enableval}],
-  [enable_debug="yes"]
+  [enable_readline=${enableval}],
+  [enable_readline="yes"]
 )
 AS_IF([test x$enable_readline != xno -a x$ac_cv_search_readline = xno],
   [AC_MSG_ERROR([readline library not found; use --disable-readline])]
