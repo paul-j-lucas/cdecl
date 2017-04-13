@@ -176,17 +176,25 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
             ast->as.ptr_ref.to_ast, ret_type_ast, func
           );
           return ast;
+
         case K_NONE:
           if ( ret_type_ast == ast )
             break;
           c_ast_set_parent( func, ast );
           // no break;
+
         case K_BLOCK:
           c_ast_set_parent( ret_type_ast, func );
           return ast;
+
         default:
           /* suppress warning */;
       } // switch
+
+    case K_NONE:
+      if ( !func->name )
+        func->name = c_ast_take_name( ast );
+      break;
 
     default:
       /* suppress warning */;
@@ -257,7 +265,8 @@ c_ast_t* c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     c_ast_t *const none_ast = c_ast_find_kind( decl_ast, V_DOWN, K_NONE );
     if ( none_ast ) {
       if ( type_ast->depth >= decl_ast->depth ) {
-        type_ast->name = c_ast_take_name( decl_ast );
+        if ( !type_ast->name )
+          type_ast->name = c_ast_take_name( decl_ast );
         return type_ast;
       }
       c_ast_t *const type_root_ast = c_ast_root( type_ast );
