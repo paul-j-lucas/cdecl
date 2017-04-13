@@ -37,19 +37,19 @@
 
 // extern constant definitions
 c_lang_info_t const C_LANG_INFO[] = {
-  { LANG_C_KNR,   "cknr"    },          // synonym for "knr"
-  { LANG_C_KNR,   "knr"     },
-  { LANG_C_KNR,   "knrc"    },          // synonym for "knr"
-  { LANG_C_MAX,   "c"       },
-  { LANG_C_89,    "c89"     },
-  { LANG_C_95,    "c95"     },
-  { LANG_C_99,    "c99"     },
-  { LANG_C_11,    "c11"     },
-  { LANG_CPP_MAX, "c++"     },
-  { LANG_CPP_98,  "c++98"   },
-  { LANG_CPP_03,  "c++03"   },
-  { LANG_CPP_11,  "c++11"   },
-  { LANG_NONE,    NULL      },
+  { "cknr",    LANG_C_KNR   },          // synonym for "knr"
+  { "knr",     LANG_C_KNR   },
+  { "knrc",    LANG_C_KNR   },          // synonym for "knr"
+  { "c",       LANG_C_MAX   },
+  { "c89",     LANG_C_89,   },
+  { "c95",     LANG_C_95    },
+  { "c99",     LANG_C_99    },
+  { "c11",     LANG_C_11    },
+  { "c++",     LANG_CPP_MAX },
+  { "c++98",   LANG_CPP_98  },
+  { "c++03",   LANG_CPP_03  },
+  { "c++11",   LANG_CPP_11  },
+  { NULL,      LANG_NONE    },
 };
 
 ////////// extern functions ///////////////////////////////////////////////////

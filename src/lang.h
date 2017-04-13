@@ -56,8 +56,8 @@ typedef unsigned c_lang_t;
  * A mapping between a language name and its corresponding c_lang_t.
  */
 struct c_lang_info {
-  c_lang_t    lang;
   char const *name;
+  c_lang_t    lang;
 };
 typedef struct c_lang_info c_lang_info_t;
 
