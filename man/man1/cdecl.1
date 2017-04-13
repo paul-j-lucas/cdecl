@@ -991,6 +991,11 @@ void f() const;
 void g() = delete;
 .cE 0
 .IP \n+[step].
+Fully qualified C++ member functions are not supported:
+.cS
+void C::f();
+.cE 0
+.IP \n+[step].
 C++ attribute specifiers,
 e.g., \f(CW[[noreturn]]\fP,
 are not supported.
