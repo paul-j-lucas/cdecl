@@ -52,7 +52,9 @@ void print_caret( size_t col );
 void print_error( YYLTYPE const *loc, char const *format, ... );
 
 /**
- * Prints a hint message to standard error.
+ * Prints a hint message to standard error in the form:
+ *
+ *      \t(did you mean _____?)\n
  *
  * @param format The \c printf() style format string.
  */
