@@ -59,11 +59,14 @@ void print_hint( char const *format, ... );
  *  + The error line (if not neither a TTY nor interactive).
  *  + A '^' (in color, if possible and requested) under the offending token.
  *  + The error column.
+ *
+ * A newline is \e not automatically printed.
  */
 void print_loc( YYLTYPE const *loc );
 
 /**
  * Prints a warning message to standard error.
+ * A newline is automatically printed.
  *
  * @param loc The location of the warning.
  * @param format The \c printf() style format string.
