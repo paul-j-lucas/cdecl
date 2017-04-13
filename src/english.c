@@ -35,46 +35,56 @@
 #include <stdlib.h>
 #include <sysexits.h>
 
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Parameters used by c_ast_visitor_english().
+ */
+struct e_param {
+  bool  print_names;                    // print names only if true
+  FILE *eout;                           // where to write the English
+};
+typedef struct e_param e_param_t;
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Prints the given AST as English.
+ * Visitor function that prints an AST as English.
  *
- * @param ast The AST to print.  May be null.
- * @param print_names Print names only if \c true.  (This is set to \c false
- * for function arguments.
- * @param eout The FILE to print to.
+ * @param ast The AST to print.
+ * @param data A pointer to an \c e_param \c struct.
+ * @return Always returns \c false.
  */
-static void c_ast_english_impl( c_ast_t const *ast, bool print_names,
-                                FILE *eout ) {
-  if ( ast == NULL )
-    return;
-
+static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
+  e_param_t const *const param = REINTERPRET_CAST( e_param_t*, data );
   bool comma = false;
 
   switch ( ast->kind ) {
     case K_ARRAY:
       if ( ast->type )                  // storage class
-        FPRINTF( eout, "%s ", c_type_name( ast->type ) );
-      FPRINTF( eout, "%s ", L_ARRAY );
+        FPRINTF( param->eout, "%s ", c_type_name( ast->type ) );
+      FPRINTF( param->eout, "%s ", L_ARRAY );
       if ( ast->as.array.size != C_ARRAY_NO_SIZE )
-        FPRINTF( eout, "%d ", ast->as.array.size );
-      FPRINTF( eout, "%s ", L_OF );
-      c_ast_english_impl( ast->as.array.of_ast, print_names, eout );
+        FPRINTF( param->eout, "%d ", ast->as.array.size );
+      FPRINTF( param->eout, "%s ", L_OF );
       break;
 
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
       if ( ast->type )                  // storage class
-        FPRINTF( eout, "%s ", c_type_name( ast->type ) );
-      FPUTS( c_kind_name( ast->kind ), eout );
+        FPRINTF( param->eout, "%s ", c_type_name( ast->type ) );
+      FPUTS( c_kind_name( ast->kind ), param->eout );
 
       if ( c_ast_args( ast ) ) {
-        FPUTS( " (", eout );
+        FPUTS( " (", param->eout );
+
+        e_param_t arg_param;
+        arg_param.print_names = false;
+        arg_param.eout = param->eout;
 
         for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
           if ( true_or_set( &comma ) )
-            FPUTS( ", ", eout );
+            FPUTS( ", ", param->eout );
 
           if ( arg->kind != K_NAME ) {
             //
@@ -91,7 +101,7 @@ static void c_ast_english_impl( c_ast_t const *ast, bool print_names,
             //
             char const *const name = c_ast_name( arg, V_DOWN );
             if ( name )
-              FPRINTF( eout, "%s as ", name );
+              FPRINTF( param->eout, "%s as ", name );
             else {
               //
               // If there's no name, it's an unnamed argument, e.g.:
@@ -106,36 +116,38 @@ static void c_ast_english_impl( c_ast_t const *ast, bool print_names,
           //
           // For all kinds except K_NAME, we'e already printed the name above,
           // so we have to suppress printing the name again; hence, pass false
-          // here.
+          // for print_names here.
           //
-          c_ast_english_impl( arg, false, eout );
+          c_ast_t *const nonconst_arg = CONST_CAST( c_ast_t*, arg );
+          c_ast_visit(
+            nonconst_arg, V_DOWN, c_ast_visitor_english, &arg_param
+          );
         } // for
 
-        FPUTC( ')', eout );
+        FPUTC( ')', param->eout );
       }
 
-      FPRINTF( eout, " %s ", L_RETURNING );
-      c_ast_english_impl( ast->as.func.ret_ast, print_names, eout );
+      FPRINTF( param->eout, " %s ", L_RETURNING );
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name( ast->type ), eout );
-      if ( print_names && ast->name )
-        FPRINTF( eout, " %s", ast->name );
+      FPUTS( c_type_name( ast->type ), param->eout );
+      if ( param->print_names && ast->name )
+        FPRINTF( param->eout, " %s", ast->name );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      FPRINTF( eout,
+      FPRINTF( param->eout,
         "%s %s",
         c_type_name( ast->type ), ast->as.ecsu.ecsu_name
       );
-      if ( print_names && ast->name )
-        FPRINTF( eout, " %s", ast->name );
+      if ( param->print_names && ast->name )
+        FPRINTF( param->eout, " %s", ast->name );
       break;
 
     case K_NAME:
       if ( ast->name )                  // do NOT check print_names
-        FPUTS( ast->name, eout );
+        FPUTS( ast->name, param->eout );
       break;
 
     case K_NONE:
@@ -145,33 +157,37 @@ static void c_ast_english_impl( c_ast_t const *ast, bool print_names,
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       if ( ast->as.ptr_ref.qualifier )
-        FPRINTF( eout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
-      FPRINTF( eout, "%s %s ", c_kind_name( ast->kind ), L_TO );
-      c_ast_english_impl( ast->as.ptr_ref.to_ast, print_names, eout );
+        FPRINTF( param->eout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
+      FPRINTF( param->eout, "%s %s ", c_kind_name( ast->kind ), L_TO );
       break;
 
     case K_POINTER_TO_MEMBER: {
       if ( ast->as.ptr_mbr.qualifier )
-        FPRINTF( eout, "%s ", c_type_name( ast->as.ptr_mbr.qualifier ) );
-      FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
+        FPRINTF( param->eout, "%s ", c_type_name( ast->as.ptr_mbr.qualifier ) );
+      FPRINTF( param->eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
       char const *const type_name = c_type_name( ast->type );
       if ( *type_name )
-        FPRINTF( eout, "%s ", type_name );
-      FPRINTF( eout, "%s ", ast->as.ptr_mbr.class_name );
-      c_ast_english_impl( ast->as.ptr_mbr.of_ast, print_names, eout );
+        FPRINTF( param->eout, "%s ", type_name );
+      FPRINTF( param->eout, "%s ", ast->as.ptr_mbr.class_name );
       break;
     }
 
     case K_VARIADIC:
-      FPUTS( c_kind_name( ast->kind ), eout );
+      FPUTS( c_kind_name( ast->kind ), param->eout );
       break;
   } // switch
+
+  return false;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_english( c_ast_t const *ast, FILE *eout ) {
-  c_ast_english_impl( ast, true, eout );
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+  e_param_t param;
+  param.print_names = true;
+  param.eout = eout;
+  c_ast_visit( nonconst_ast, V_DOWN, c_ast_visitor_english, &param );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
