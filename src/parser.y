@@ -464,10 +464,7 @@ command
   | error Y_END
     {
       if ( lexer_token[0] )
-        PARSE_ERROR(
-          "\"%s\": unexpected token",
-          (lexer_token[0] == '\n' ? "\\n" : lexer_token)
-        );
+        PARSE_ERROR( "unexpected token" );
       else
         PARSE_ERROR( "unexpected end of command" );
     }
