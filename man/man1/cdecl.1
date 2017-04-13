@@ -895,6 +895,16 @@ other character attributes
 such as bold, underlined, reverse video, etc.,
 may be possible depending on the capabilities of the terminal.
 .TP
+.B COLUMNS
+The number of columns of the terminal on which
+.B cdecl
+is being run.
+Used to get the terminal's width
+for limiting error and warning messages' length.
+Takes precedence over the number of columns specified by the
+.B TERM
+variable.
+.TP
 .B GCC_COLORS
 This variable is used for compatibility with
 .BR gcc .
