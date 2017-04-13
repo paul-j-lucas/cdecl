@@ -28,6 +28,7 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_PROG_CC_C99
 gl_EARLY
 AC_PROG_LEX
+test x$LEX == xflex || AC_MSG_ERROR([required program "flex" not found])
 AC_PROG_YACC
 AC_PROG_INSTALL
 
