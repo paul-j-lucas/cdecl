@@ -136,6 +136,18 @@ void* check_realloc( void *p, size_t size );
 char* check_strdup( char const *s );
 
 /**
+ * Checks whether \a s ends with \a c.
+ *
+ * @param s The string to check.
+ * @param s_len The length of \a s.
+ * @param c The character to check for.
+ * @return Returns \c true only if \a ends with \a c.
+ */
+CDECL_UTIL_INLINE bool ends_with_chr( char const *s, size_t s_len, char c ) {
+  return s_len > 0 && s[ s_len - 1 ] == c;
+}
+
+/**
  * Checks the flag: if \c false, sets it to \c true.
  *
  * @param flag A pointer to the Boolean flag to be tested and, if \c false,

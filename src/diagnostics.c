@@ -105,34 +105,43 @@ void print_caret( size_t error_column ) {
     if ( term_columns )
       error_column_term %= term_columns;
   } else {
-    --term_columns;
+    --term_columns;                     // more aesthetically pleasing
     //
     // Otherwise we have to print out the line containing the error then put
     // the ^ under that.
     //
-    size_t line_len;
-    char const *const input_line = lexer_input_line( &line_len );
+    size_t input_line_len;
+    char const *const input_line = lexer_input_line( &input_line_len );
     assert( input_line );
 
-    if ( line_len > 0 && input_line[ line_len - 1 ] != '\n' )
-      --line_len;
+    //
+    // Chop off a newline (if any) so we can always print one ourselves.
+    //
+    if ( ends_with_chr( input_line, input_line_len, '\n' ) )
+      --input_line_len;
+
+    //
+    // If the error is due to unexpected end of input, back up the error column
+    // so it refers to a non-null character.
+    //
+    if ( error_column > 0 && input_line[ error_column ] == '\0' )
+      --error_column;
 
     size_t const    token_columns = token_len( input_line + error_column );
-    unsigned const  error_end_column = error_column + token_columns;
-    bool            more[2] = { /*left=*/false, /*right=*/false };
-    size_t          print_offset = 0;
+    unsigned const  error_end_column = error_column + token_columns - 1;
 
     //
-    // Start off with the number of printable columns equal to the length of
-    // the line.
+    // Start with the number of printable columns equal to the length of the
+    // line.
     //
-    size_t print_columns = line_len;
+    size_t print_columns = input_line_len;
 
     //
     // If the number of printable columns exceeds the number of terminal
     // columns, there is "more" on the right, so limit the number of printable
     // columns.
     //
+    bool more[2];                       // [0] = left; [1] = right
     more[1] = print_columns > term_columns;
     if ( more[1] )
       print_columns = term_columns;
@@ -149,7 +158,7 @@ void print_caret( size_t error_column ) {
     // without any "more."
     //
     if ( more[1] ) {
-      if ( error_end_column < line_len )
+      if ( error_end_column < input_line_len - 1 )
         print_columns -= MORE_LEN[1];
       else
         more[1] = false;
@@ -161,10 +170,13 @@ void print_caret( size_t error_column ) {
     // printable columns to give the appearance that the input line has been
     // "scrolled" to the left.
     //
+    size_t print_offset;                // offset into input_line to print from
     if ( more[0] ) {
       error_column_term = print_columns - token_columns;
       print_offset = MORE_LEN[0] + (error_column - error_column_term);
       print_columns -= MORE_LEN[0];
+    } else {
+      print_offset = 0;
     }
 
     PRINT_ERR( "%s%.*s%s\n",
