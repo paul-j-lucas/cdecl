@@ -89,11 +89,15 @@ static size_t token_len( char const *s ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void print_caret( size_t error_column ) {
-  size_t    error_column_term = error_column;
-  unsigned  term_columns = get_term_columns();
-
+#ifdef WITH_TERM_COLUMNS
+  unsigned term_columns = get_term_columns();
   if ( term_columns == 0 )
     term_columns = TERM_COLUMNS_DEFAULT;
+#else
+  unsigned term_columns = 0;
+#endif /* WITH_TERM_COLUMNS */
+
+  size_t error_column_term = error_column;
 
   if ( is_input_a_tty || opt_interactive ) {
     //
