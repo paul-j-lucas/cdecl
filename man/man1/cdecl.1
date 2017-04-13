@@ -987,15 +987,11 @@ struct S { int i; char c; } s;    // not supported
 .IP \n+[step].
 The C (and C++)
 \f(CWalignas\fP specifier
-is not supported.
-.IP \n+[step].
-C++ template declarations are not supported.
-.IP \n+[step].
-The C11
+and the C11
 \f(CW_Noreturn\fP
 (and \f(CWnoreturn\fP)
 function specifier
-is not supported.
+are not supported.
 .IP \n+[step].
 C++ member functions that are
 \f(CWconst\fP
@@ -1013,14 +1009,15 @@ Fully qualified C++ member functions are not supported:
 void C::f();
 .cE 0
 .IP \n+[step].
-C++ attribute specifiers,
-e.g., \f(CW[[noreturn]]\fP,
-are not supported.
-.IP \n+[step].
-C++ function exception specifications
-\f(CWthrow()\fP
+C++
+constructors,
+destructors,
+template declarations,
+function exception specifications
+(\f(CWthrow()\fP and \f(CWnoexcept\fP)
 and
-\f(CWnoexcept\fP
+attribute specifiers,
+(e.g., \f(CW[[noreturn]]\fP)
 are not supported.
 .SS Other Minor Caveats
 .nr step 1 1
