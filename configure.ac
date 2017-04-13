@@ -88,23 +88,29 @@ AS_IF([test x$enable_yydebug = xyes],
 # Program feature: readline (enabled by default)
 AC_ARG_ENABLE([readline],
   AS_HELP_STRING([--disable-readline], [disable support for readline]),
-  [],
-  [AC_DEFINE([HAVE_READLINE], [1],
-    [Define to 1 if readline support is enabled.])]
+  [enable_debug=${enableval}],
+  [enable_debug="yes"]
 )
 AS_IF([test x$enable_readline != xno -a x$ac_cv_search_readline = xno],
   [AC_MSG_ERROR([readline library not found; use --disable-readline])]
+)
+AS_IF([test x$enable_readline = xyes],
+  [AC_DEFINE([HAVE_READLINE], [1],
+    [Define to 1 if readline support is enabled.])]
 )
 
 # Program feature: term-columns (enabled by default)
 AC_ARG_ENABLE([term-columns],
   AS_HELP_STRING([--disable-term-columns], [disable support for terminal columns]),
-  [],
-  [AC_DEFINE([WITH_TERM_COLUMNS], [1],
-    [Define to 1 if term-columns is enabled.])]
+  [enable_term_columns=${enableval}],
+  [enable_term_columns="yes"]
 )
 AS_IF([test x$enable_term_columns != xno -a x$ac_cv_search_endwin = xno],
   [AC_MSG_ERROR([curses library for term-columns not found; use --disable-term-columns])]
+)
+AS_IF([test x$enable_term_columns = xyes],
+  [AC_DEFINE([WITH_TERM_COLUMNS], [1],
+    [Define to 1 if term-columns is enabled.])]
 )
 
 # Makefile conditionals.
