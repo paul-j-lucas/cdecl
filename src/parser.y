@@ -837,7 +837,7 @@ qualifiable_decl_english
   ;
 
 pointer_decl_english
-  : pointer_to decl_english
+  : pointer_to_english decl_english
     {
       DUMP_START( "pointer_decl_english", "POINTER TO decl_english" );
       DUMP_TYPE( "qualifier", qualifier_peek() );
@@ -853,7 +853,7 @@ pointer_decl_english
     }
   ;
 
-pointer_to
+pointer_to_english
   : Y_POINTER Y_TO
   | Y_POINTER error
     {
@@ -862,7 +862,7 @@ pointer_to
   ;
 
 pointer_to_member_decl_english
-  : pointer_to Y_MEMBER Y_OF class_struct_type_c Y_NAME decl_english
+  : pointer_to_english Y_MEMBER Y_OF class_struct_type_c Y_NAME decl_english
     {
       DUMP_START( "pointer_to_member_decl_english",
                   "POINTER TO MEMBER OF "
@@ -883,19 +883,19 @@ pointer_to_member_decl_english
       DUMP_END();
     }
 
-  | pointer_to Y_MEMBER error
+  | pointer_to_english Y_MEMBER error
     {
       PARSE_ERROR( "\"%s\" expected", L_OF );
     }
 
-  | pointer_to Y_MEMBER Y_OF error
+  | pointer_to_english Y_MEMBER Y_OF error
     {
       PARSE_ERROR(
         "\"%s\", \"%s\", or \"%s\" expected", L_CLASS, L_STRUCT, L_UNION
       );
     }
 
-  | pointer_to Y_MEMBER Y_OF class_struct_type_c error
+  | pointer_to_english Y_MEMBER Y_OF class_struct_type_c error
     {
       PARSE_ERROR(
         "\"%s\", \"%s\", or \"%s\" name expected",
