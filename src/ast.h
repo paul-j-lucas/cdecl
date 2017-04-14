@@ -202,7 +202,7 @@ struct c_ast_pair {
   /**
    * Array and function (or block) declarations need a separate AST pointer
    * that points to their \c of_ast or \c ret_ast (respectively) to be the
-   * "target" of subsequenct additions to the AST.
+   * "target" of subsequent additions to the AST.
    */
   c_ast_t *target_ast;
 };

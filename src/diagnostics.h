@@ -37,7 +37,7 @@
 
 /**
  * Prints an error message to standard error.
- * A newline is automatically printed.
+ * A newline is printed.
  *
  * @param loc The location of the error.
  * @param format The \c printf() style format string.
@@ -60,13 +60,13 @@ void print_hint( char const *format, ... );
  *  + A '^' (in color, if possible and requested) under the offending token.
  *  + The error column.
  *
- * A newline is \e not automatically printed.
+ * A newline is \e not printed.
  */
 void print_loc( YYLTYPE const *loc );
 
 /**
  * Prints a warning message to standard error.
- * A newline is automatically printed.
+ * A newline is printed.
  *
  * @param loc The location of the warning.
  * @param format The \c printf() style format string.

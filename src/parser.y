@@ -61,10 +61,13 @@
 #endif /* WITH_CDECL_DEBUG */
 
 #define C_AST_CHECK(AST,CHECK) \
-  BLOCK( if ( !c_ast_check( (AST), (CHECK) ) ) PARSE_CLEANUP(); )
+  BLOCK( if ( !c_ast_check( (AST), (CHECK) ) ) PARSE_ABORT(); )
+
+#define C_AST_NEW(KIND,LOC) \
+  c_ast_new( (KIND), ast_depth, (LOC) )
 
 #define C_TYPE_ADD(DST,SRC,LOC) \
-  BLOCK( if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_CLEANUP(); )
+  BLOCK( if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_ABORT(); )
 
 #define DUMP_COMMA \
   CDEBUG( if ( true_or_set( &debug_comma ) ) FPUTS( ",\n", stdout ); )
@@ -98,8 +101,8 @@
   DUMP_COMMA; FPUTS( "  ", stdout );  \
   print_kv( (KEY), c_type_name( TYPE ), stdout ); )
 
-#define PARSE_CLEANUP()   BLOCK( parse_cleanup( true ); YYABORT; )
-#define PARSE_ERROR(...)  BLOCK( parse_error( __VA_ARGS__ ); PARSE_CLEANUP(); )
+#define PARSE_ABORT()     BLOCK( parse_cleanup( true ); YYABORT; )
+#define PARSE_ERROR(...)  BLOCK( parse_error( __VA_ARGS__ ); PARSE_ABORT(); )
 #define SYNTAX_ERROR()    BLOCK( yyerror( "syntax error" ); YYERROR; )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -220,7 +223,8 @@ static void parse_cleanup( bool hard_reset ) {
 }
 
 /**
- * Prints a parsing error message to standard error.
+ * Prints an additional parsing error message to standard error that contines
+ * from yyerror() left off.
  *
  * @param format A \c printf() style format string.
  */
@@ -271,7 +275,19 @@ static void quit( void ) {
 }
 
 /**
- * Called by bison to print an error message (usually just "syntax error").
+ * Prints a parsing error message to standard error.  This function is called
+ * directly by bison to print just "syntax error" (usually).
+ *
+ * @note A newline is \e not printed since the error message will be added to
+ * by parse_error().  For example, the parts of an error message are printed by
+ * the functions shown:
+ *
+ *      42: syntax error: "int": "into" expected
+ *      |--||----------||----------------------|
+ *      |   |           |
+ *      |   yyerror()   parse_error()
+ *      |
+ *      print_loc()
  *
  * @param msg The error message to print.
  */
@@ -280,10 +296,12 @@ static void yyerror( char const *msg ) {
   memset( &loc, 0, sizeof loc );
   loc.first_column = lexer_column();
   print_loc( &loc );
+
   SGR_START_COLOR( stderr, error );
   PUTS_ERR( msg );                      // no newline
   SGR_END_COLOR( stderr );
   error_newlined = false;
+
   parse_cleanup( false );
 }
 
@@ -315,6 +333,7 @@ static void yyerror( char const *msg ) {
 %token              Y_MEMBER
 %token              Y_OF
 %token              Y_POINTER
+%token              Y_PURE
 %token              Y_REFERENCE
 %token              Y_RETURNING
 %token              Y_RVALUE
@@ -322,7 +341,6 @@ static void yyerror( char const *msg ) {
 
                     /* K&R C */
 %token              ','
-%token              '='
 %token              '*'
 %token              '[' ']'
 %token              '(' ')'
@@ -358,13 +376,12 @@ static void yyerror( char const *msg ) {
 
                     /* C11 */
 %token              Y_NORETURN
-%token  <type>      Y_THREAD_LOCAL
 
                     /* C++ */
 %token              '&'                 /* reference */
+%token              '='                 /* used for pure virtual: = 0 */
 %token  <type>      Y_CLASS
 %token              Y_COLON_COLON       "::"
-%token              Y_PURE
 %token  <type>      Y_VIRTUAL
 
                     /* C++11 */
@@ -373,6 +390,7 @@ static void yyerror( char const *msg ) {
                     /* C11 & C++11 */
 %token  <type>      Y_CHAR16_T
 %token  <type>      Y_CHAR32_T
+%token  <type>      Y_THREAD_LOCAL
 
                     /* miscellaneous */
 %token              '^'                 /* Apple: block indicator */
@@ -698,7 +716,7 @@ array_decl_english
       DUMP_NUM( "array_size_opt_english", $2 );
       DUMP_AST( "decl_english", $4.ast );
 
-      $$.ast = c_ast_new( K_ARRAY, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_ARRAY, &@$ );
       $$.target_ast = NULL;
       $$.ast->as.array.size = $2;
       c_ast_set_parent( $4.ast, $$.ast );
@@ -723,7 +741,7 @@ block_decl_english                      /* Apple extension */
       DUMP_AST_LIST( "paren_decl_list_opt_english", $2 );
       DUMP_AST( "returning_english", $3.ast );
 
-      $$.ast = c_ast_new( K_BLOCK, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_BLOCK, &@$ );
       $$.target_ast = NULL;
       $$.ast->type = qualifier_peek();
       c_ast_set_parent( $3.ast, $$.ast );
@@ -742,7 +760,7 @@ func_decl_english
       DUMP_AST_LIST( "decl_list_opt_english", $2 );
       DUMP_AST( "returning_english", $3.ast );
 
-      $$.ast = c_ast_new( K_FUNCTION, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_FUNCTION, &@$ );
       $$.target_ast = NULL;
       c_ast_set_parent( $3.ast, $$.ast );
       $$.ast->as.func.args = $2;
@@ -839,7 +857,7 @@ pointer_decl_english
       DUMP_TYPE( "qualifier", qualifier_peek() );
       DUMP_AST( "decl_english", $3.ast );
 
-      $$.ast = c_ast_new( K_POINTER, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_POINTER, &@$ );
       $$.target_ast = NULL;
       c_ast_set_parent( $3.ast, $$.ast );
       $$.ast->as.ptr_ref.qualifier = qualifier_peek();
@@ -861,7 +879,7 @@ pointer_to_member_decl_english
       DUMP_NAME( "NAME", $6 );
       DUMP_AST( "decl_english", $7.ast );
 
-      $$.ast = c_ast_new( K_POINTER_TO_MEMBER, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_POINTER_TO_MEMBER, &@$ );
       $$.target_ast = NULL;
       $$.ast->type = $5;
       c_ast_set_parent( $7.ast, $$.ast );
@@ -893,13 +911,13 @@ reference_decl_english
 reference_english
   : Y_REFERENCE
     {
-      $$.ast = c_ast_new( K_REFERENCE, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_REFERENCE, &@$ );
       $$.target_ast = NULL;
     }
 
   | Y_RVALUE reference_expected
     {
-      $$.ast = c_ast_new( K_RVALUE_REFERENCE, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_RVALUE_REFERENCE, &@$ );
       $$.target_ast = NULL;
     }
   ;
@@ -932,7 +950,7 @@ var_decl_english
       DUMP_START( "var_decl_english", "NAME" );
       DUMP_NAME( "NAME", $1 );
 
-      $$.ast = c_ast_new( K_NAME, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_NAME, &@$ );
       $$.target_ast = NULL;
       $$.ast->name = $1;
 
@@ -944,7 +962,7 @@ var_decl_english
     {
       DUMP_START( "var_decl_english", "..." );
 
-      $$.ast = c_ast_new( K_VARIADIC, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_VARIADIC, &@$ );
       $$.target_ast = NULL;
 
       DUMP_AST( "var_decl_english", $$.ast );
@@ -979,7 +997,7 @@ type_english
       DUMP_TYPE( "type_modifier_list_english", $1 );
       DUMP_TYPE( "qualifier", qualifier_peek() );
 
-      $$.ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
       $$.target_ast = NULL;
       $$.ast->type = T_INT;
       C_TYPE_ADD( &$$.ast->type, qualifier_peek(), qualifier_peek_loc() );
@@ -1060,10 +1078,10 @@ array_decl_c
         DUMP_AST( "target_ast", $1.target_ast );
       DUMP_NUM( "array_size_c", $2 );
 
-      c_ast_t *const array = c_ast_new( K_ARRAY, ast_depth, &@$ );
+      c_ast_t *const array = C_AST_NEW( K_ARRAY, &@$ );
       array->as.array.size = $2;
-      c_ast_set_parent( c_ast_new( K_NONE, ast_depth, &@1 ), array );
-      if ( $1.target_ast ) {
+      c_ast_set_parent( C_AST_NEW( K_NONE, &@1 ), array );
+      if ( $1.target_ast ) {            // array-of or function/block-ret type
         $$.ast = $1.ast;
         $$.target_ast = c_ast_add_array( $1.target_ast, array );
       } else {
@@ -1092,7 +1110,7 @@ block_decl_c                            /* Apple extension */
       // A block AST has to be the type inherited attribute for decl_c so we
       // have to create it here.
       //
-      type_push( c_ast_new( K_BLOCK, ast_depth, &@$ ) );
+      type_push( C_AST_NEW( K_BLOCK, &@$ ) );
     }
     type_qualifier_list_opt_c decl_c ')' '(' arg_list_opt_c ')'
     {
@@ -1127,7 +1145,7 @@ func_decl_c
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
 
-      c_ast_t *const func = c_ast_new( K_FUNCTION, ast_depth, &@$ );
+      c_ast_t *const func = C_AST_NEW( K_FUNCTION, &@$ );
       func->type = $5;
       func->as.func.args = $3;
       if ( $1.target_ast ) {
@@ -1185,7 +1203,7 @@ nested_decl_c
 placeholder_type_c
   : /* empty */
     {
-      $$.ast = c_ast_new( K_NONE, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_NONE, &@$ );
       $$.target_ast = NULL;
     }
   ;
@@ -1213,7 +1231,7 @@ pointer_type_c
       DUMP_AST( "type_c", type_peek() );
       DUMP_TYPE( "type_qualifier_list_opt_c", $2 );
 
-      $$.ast = c_ast_new( K_POINTER, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_POINTER, &@$ );
       $$.target_ast = NULL;
       $$.ast->as.ptr_ref.qualifier = $2;
       c_ast_set_parent( type_peek(), $$.ast );
@@ -1246,7 +1264,7 @@ pointer_to_member_type_c
       DUMP_AST( "type_c", type_peek() );
       DUMP_NAME( "NAME", $1 );
 
-      $$.ast = c_ast_new( K_POINTER_TO_MEMBER, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_POINTER_TO_MEMBER, &@$ );
       $$.target_ast = NULL;
       $$.ast->type = T_CLASS;
       $$.ast->as.ptr_mbr.class_name = $1;
@@ -1278,7 +1296,7 @@ reference_type_c
       DUMP_START( "reference_type_c", "&" );
       DUMP_AST( "type_c", type_peek() );
 
-      $$.ast = c_ast_new( K_REFERENCE, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_REFERENCE, &@$ );
       $$.target_ast = NULL;
       c_ast_set_parent( type_peek(), $$.ast );
 
@@ -1291,7 +1309,7 @@ reference_type_c
       DUMP_START( "reference_type_c", "&&" );
       DUMP_AST( "type_c", type_peek() );
 
-      $$.ast = c_ast_new( K_RVALUE_REFERENCE, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_RVALUE_REFERENCE, &@$ );
       $$.target_ast = NULL;
       c_ast_set_parent( type_peek(), $$.ast );
 
@@ -1357,7 +1375,7 @@ arg_c
       DUMP_START( "argc", "NAME" );
       DUMP_NAME( "NAME", $1 );
 
-      $$.ast = c_ast_new( K_NAME, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_NAME, &@$ );
       $$.target_ast = NULL;
       $$.ast->name = $1;
 
@@ -1369,7 +1387,7 @@ arg_c
     {
       DUMP_START( "argc", "..." );
 
-      $$.ast = c_ast_new( K_VARIADIC, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_VARIADIC, &@$ );
       $$.target_ast = NULL;
 
       DUMP_AST( "arg_c", $$.ast );
@@ -1387,7 +1405,7 @@ type_c
       DUMP_START( "type_c", "type_modifier_list_c" );
       DUMP_TYPE( "type_modifier_list_c", $1 );
 
-      $$.ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
       $$.target_ast = NULL;
       $$.ast->type = T_INT;
       C_TYPE_ADD( &$$.ast->type, $1, @1 );
@@ -1464,7 +1482,7 @@ builtin_or_enum_class_struct_union_type_c
                   "builtin_type_c" );
       DUMP_TYPE( "builtin_type_c", $1 );
 
-      $$.ast = c_ast_new( K_BUILTIN, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
       $$.target_ast = NULL;
       $$.ast->type = $1;
 
@@ -1479,7 +1497,7 @@ builtin_or_enum_class_struct_union_type_c
       DUMP_TYPE( "enum_class_struct_union_type_c", $1 );
       DUMP_NAME( "NAME", $2 );
 
-      $$.ast = c_ast_new( K_ENUM_CLASS_STRUCT_UNION, ast_depth, &@$ );
+      $$.ast = C_AST_NEW( K_ENUM_CLASS_STRUCT_UNION, &@$ );
       $$.target_ast = NULL;
       $$.ast->type = $1;
       $$.ast->as.ecsu.ecsu_name = $2;
@@ -1581,10 +1599,10 @@ array_cast_c
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
 
-      c_ast_t *const array = c_ast_new( K_ARRAY, ast_depth, &@$ );
+      c_ast_t *const array = C_AST_NEW( K_ARRAY, &@$ );
       array->as.array.size = $2;
-      c_ast_set_parent( c_ast_new( K_NONE, ast_depth, &@1 ), array );
-      if ( $1.target_ast ) {
+      c_ast_set_parent( C_AST_NEW( K_NONE, &@1 ), array );
+      if ( $1.target_ast ) {            // array-of or function/block-ret type
         $$.ast = $1.ast;
         $$.target_ast = c_ast_add_array( $1.target_ast, array );
       } else {
@@ -1604,7 +1622,7 @@ block_cast_c                            /* Apple extension */
       // A block AST has to be the type inherited attribute for cast_c so we
       // have to create it here.
       //
-      type_push( c_ast_new( K_BLOCK, ast_depth, &@$ ) );
+      type_push( C_AST_NEW( K_BLOCK, &@$ ) );
     }
     type_qualifier_list_opt_c cast_c ')' '(' arg_list_opt_c ')'
     {
@@ -1636,7 +1654,7 @@ func_cast_c
       DUMP_AST( "cast2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
 
-      c_ast_t *const func = c_ast_new( K_FUNCTION, ast_depth, &@$ );
+      c_ast_t *const func = C_AST_NEW( K_FUNCTION, &@$ );
       func->as.func.args = $3;
       $$.ast = c_ast_add_func( $1.ast, type_peek(), func );
       $$.target_ast = func->as.func.ret_ast;
