@@ -454,6 +454,7 @@ TESTS+=	tests/explain_cast_ci.test \
 	tests/explain_cast_pi.test \
 	tests/explain_cast_pic.test \
 	tests/explain_cast_ppi.test \
+	tests/explain_cast_ri.test \
 	tests/explain_cast_rpi.test \
 	tests/explain_cast_ull.test \
 	tests/explain_cast_vcpi.test \

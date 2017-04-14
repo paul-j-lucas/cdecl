@@ -1704,7 +1704,8 @@ reference_cast_c
       DUMP_AST( "reference_type_c", $1.ast );
       DUMP_AST( "cast_c", $3.ast );
 
-      $$ = $3;
+      $$.ast = c_ast_patch_none( $1.ast, $3.ast );
+      $$.target_ast = NULL;
 
       DUMP_AST( "reference_cast_c", $$.ast );
       DUMP_END();
