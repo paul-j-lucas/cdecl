@@ -447,6 +447,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  arg_c
 %type   <ast_list>  arg_list_c arg_list_opt_c
 %type   <number>    array_size_c
+%type   <name>      name_expected
 %type   <name>      name_opt
 %type   <name>      set_option
 
@@ -523,7 +524,7 @@ cast_english
   ;
 
 name_into_english
-  : Y_NAME Y_INTO                 { $$ = $1; }
+  : Y_NAME Y_INTO
   | Y_NAME error
     {
       PARSE_ERROR( "\"%s\" expected", L_INTO );
@@ -556,16 +557,11 @@ declare_english
   ;
 
 declare_name_as_english
-  : Y_DECLARE Y_NAME Y_AS         { $$ = $2; }
+  : Y_DECLARE name_expected Y_AS  { $$ = $2; }
 
   | Y_DECLARE Y_NAME error
     {
       PARSE_ERROR( "\"%s\" expected", L_AS );
-    }
-
-  | Y_DECLARE error
-    {
-      PARSE_ERROR( "name expected" );
     }
   ;
 
@@ -778,7 +774,7 @@ decl_list_opt_english
 
 decl_list_english
   : decl_english                  { $$.head_ast = $$.tail_ast = $1.ast; }
-  | decl_list_english expect_comma decl_english
+  | decl_list_english comma_expected decl_english
     {
       DUMP_START( "decl_list_opt_english",
                   "decl_list_opt_english ',' decl_english" );
@@ -794,7 +790,7 @@ decl_list_english
   ;
 
 returning_english
-  : expect_returning decl_english
+  : returning_expected decl_english
     {
       DUMP_START( "returning_english", "RETURNING decl_english" );
       DUMP_AST( "decl_english", $2.ast );
@@ -805,7 +801,7 @@ returning_english
       DUMP_END();
     }
 
-  | expect_returning error
+  | Y_RETURNING error
     {
       PARSE_ERROR( "English expected after \"%s\"", L_RETURNING );
     }
@@ -862,45 +858,34 @@ pointer_to_english
   ;
 
 pointer_to_member_decl_english
-  : pointer_to_english Y_MEMBER Y_OF class_struct_type_c Y_NAME decl_english
+  : pointer_to_english member_of_english class_struct_type_c name_expected
+    decl_english
     {
       DUMP_START( "pointer_to_member_decl_english",
                   "POINTER TO MEMBER OF "
                   "class_struct_type_c NAME decl_english" );
       DUMP_TYPE( "qualifier", qualifier_peek() );
-      DUMP_TYPE( "class_struct_type_c", $4 );
-      DUMP_NAME( "NAME", $5 );
-      DUMP_AST( "decl_english", $6.ast );
+      DUMP_TYPE( "class_struct_type_c", $3 );
+      DUMP_NAME( "NAME", $4 );
+      DUMP_AST( "decl_english", $5.ast );
 
       $$.ast = c_ast_new( K_POINTER_TO_MEMBER, ast_depth, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = $4;
-      c_ast_set_parent( $6.ast, $$.ast );
+      $$.ast->type = $3;
+      c_ast_set_parent( $5.ast, $$.ast );
       $$.ast->as.ptr_ref.qualifier = qualifier_peek();
-      $$.ast->as.ptr_mbr.class_name = $5;
+      $$.ast->as.ptr_mbr.class_name = $4;
 
       DUMP_AST( "pointer_to_member_decl_english", $$.ast );
       DUMP_END();
     }
+  ;
 
-  | pointer_to_english Y_MEMBER error
+member_of_english
+  : Y_MEMBER Y_OF
+  | Y_MEMBER error
     {
       PARSE_ERROR( "\"%s\" expected", L_OF );
-    }
-
-  | pointer_to_english Y_MEMBER Y_OF error
-    {
-      PARSE_ERROR(
-        "\"%s\", \"%s\", or \"%s\" expected", L_CLASS, L_STRUCT, L_UNION
-      );
-    }
-
-  | pointer_to_english Y_MEMBER Y_OF class_struct_type_c error
-    {
-      PARSE_ERROR(
-        "\"%s\", \"%s\", or \"%s\" name expected",
-        L_CLASS, L_STRUCT, L_UNION
-      );
     }
   ;
 
@@ -1173,7 +1158,7 @@ func_decl_c
 
 pure_virtual_opt_c
   : /* empty */                   { $$ = T_NONE; }
-  | '=' expect_zero               { $$ = T_PURE_VIRTUAL; }
+  | '=' zero_expected             { $$ = T_PURE_VIRTUAL; }
   ;
 
 name_c
@@ -1268,7 +1253,7 @@ pointer_to_member_decl_c
   ;
 
 pointer_to_member_type_c
-  : /* type_c */ Y_NAME "::" expect_star
+  : /* type_c */ Y_NAME "::" star_expected
     {
       DUMP_START( "pointer_to_member_type_c", "NAME :: *" );
       DUMP_AST( "type_c", type_peek() );
@@ -1338,7 +1323,7 @@ arg_list_opt_c
   ;
 
 arg_list_c
-  : arg_list_c expect_comma arg_c
+  : arg_list_c comma_expected arg_c
     {
       DUMP_START( "arg_list_c", "arg_list_c ',' cast_c" );
       DUMP_AST_LIST( "arg_list_c", $1 );
@@ -1503,7 +1488,7 @@ builtin_or_enum_class_struct_union_type_c
       DUMP_END();
     }
 
-  | enum_class_struct_union_type_c Y_NAME
+  | enum_class_struct_union_type_c name_expected
     {
       DUMP_START( "builtin_or_enum_class_struct_union_type_c",
                   "enum_class_struct_union_type_c NAME" );
@@ -1517,11 +1502,6 @@ builtin_or_enum_class_struct_union_type_c
 
       DUMP_AST( "builtin_or_enum_class_struct_union_type_c", $$.ast );
       DUMP_END();
-    }
-
-  | enum_class_struct_union_type_c error
-    {
-      PARSE_ERROR( "enum name expected" );
     }
   ;
 
@@ -1751,12 +1731,12 @@ reference_cast_c
 /*  miscellaneous productions                                                */
 /*****************************************************************************/
 
-expect_comma
+comma_expected
   : ','
   | error                         { PARSE_ERROR( "',' expected" ); }
   ;
 
-expect_returning
+returning_expected
   : Y_RETURNING
   | error
     {
@@ -1764,12 +1744,25 @@ expect_returning
     }
   ;
 
-expect_star
+star_expected
   : '*'
   | error                         { PARSE_ERROR( "'*' expected" ); }
   ;
 
-expect_zero
+name_expected
+  : Y_NAME
+  | error
+    {
+      PARSE_ERROR( "name expected" );
+    }
+  ;
+
+name_opt
+  : /* empty */                   { $$ = NULL; }
+  | Y_NAME
+  ;
+
+zero_expected
   : zero
   | error                         { PARSE_ERROR( "'0' expected" ); }
   ;
@@ -1780,11 +1773,6 @@ zero
       if ( $1 != 0 )
         SYNTAX_ERROR();
     }
-  ;
-
-name_opt
-  : /* empty */                   { $$ = NULL; }
-  | Y_NAME
   ;
 
 %%
