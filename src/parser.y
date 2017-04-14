@@ -435,7 +435,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  type_c
 %type   <ast_pair>  placeholder_type_c
 %type   <type>      builtin_type_c
-%type   <type>      class_struct_type_c
+%type   <type>      class_struct_type_c class_struct_type_expected_c
 %type   <type>      cv_qualifier_c
 %type   <type>      enum_class_struct_union_type_c
 %type   <type>      storage_class_c
@@ -833,15 +833,15 @@ qualifiable_decl_english
   ;
 
 pointer_decl_english
-  : pointer_to_english decl_english
+  : Y_POINTER to_expected decl_english
     {
       DUMP_START( "pointer_decl_english", "POINTER TO decl_english" );
       DUMP_TYPE( "qualifier", qualifier_peek() );
-      DUMP_AST( "decl_english", $2.ast );
+      DUMP_AST( "decl_english", $3.ast );
 
       $$.ast = c_ast_new( K_POINTER, ast_depth, &@$ );
       $$.target_ast = NULL;
-      c_ast_set_parent( $2.ast, $$.ast );
+      c_ast_set_parent( $3.ast, $$.ast );
       $$.ast->as.ptr_ref.qualifier = qualifier_peek();
 
       DUMP_AST( "pointer_decl_english", $$.ast );
@@ -849,48 +849,32 @@ pointer_decl_english
     }
   ;
 
-pointer_to_english
-  : Y_POINTER Y_TO
-  | Y_POINTER error
-    {
-      PARSE_ERROR( "\"%s\" expected", L_TO );
-    }
-  ;
-
 pointer_to_member_decl_english
-  : pointer_to_english member_of_english class_struct_type_c name_expected
-    decl_english
+  : Y_POINTER to_expected member_expected of_expected
+    class_struct_type_expected_c name_expected decl_english
     {
       DUMP_START( "pointer_to_member_decl_english",
                   "POINTER TO MEMBER OF "
                   "class_struct_type_c NAME decl_english" );
       DUMP_TYPE( "qualifier", qualifier_peek() );
-      DUMP_TYPE( "class_struct_type_c", $3 );
-      DUMP_NAME( "NAME", $4 );
-      DUMP_AST( "decl_english", $5.ast );
+      DUMP_TYPE( "class_struct_type_c", $5 );
+      DUMP_NAME( "NAME", $6 );
+      DUMP_AST( "decl_english", $7.ast );
 
       $$.ast = c_ast_new( K_POINTER_TO_MEMBER, ast_depth, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = $3;
-      c_ast_set_parent( $5.ast, $$.ast );
+      $$.ast->type = $5;
+      c_ast_set_parent( $7.ast, $$.ast );
       $$.ast->as.ptr_ref.qualifier = qualifier_peek();
-      $$.ast->as.ptr_mbr.class_name = $4;
+      $$.ast->as.ptr_mbr.class_name = $6;
 
       DUMP_AST( "pointer_to_member_decl_english", $$.ast );
       DUMP_END();
     }
   ;
 
-member_of_english
-  : Y_MEMBER Y_OF
-  | Y_MEMBER error
-    {
-      PARSE_ERROR( "\"%s\" expected", L_OF );
-    }
-  ;
-
 reference_decl_english
-  : reference_english Y_TO decl_english
+  : reference_english to_expected decl_english
     {
       DUMP_START( "reference_decl_english",
                   "reference_english TO decl_english" );
@@ -913,13 +897,16 @@ reference_english
       $$.target_ast = NULL;
     }
 
-  | Y_RVALUE Y_REFERENCE
+  | Y_RVALUE reference_expected
     {
       $$.ast = c_ast_new( K_RVALUE_REFERENCE, ast_depth, &@$ );
       $$.target_ast = NULL;
     }
+  ;
 
-  | Y_RVALUE error
+reference_expected
+  : Y_REFERENCE
+  | error
     {
       PARSE_ERROR( "\"%s\" expected", L_REFERENCE );
     }
@@ -1731,6 +1718,14 @@ reference_cast_c
 /*  miscellaneous productions                                                */
 /*****************************************************************************/
 
+class_struct_type_expected_c
+  : class_struct_type_c
+  | error
+    {
+      PARSE_ERROR( "\"%s\" or \"%s\" expected", L_CLASS, L_STRUCT );
+    }
+  ;
+
 comma_expected
   : ','
   | error                         { PARSE_ERROR( "',' expected" ); }
@@ -1749,6 +1744,14 @@ star_expected
   | error                         { PARSE_ERROR( "'*' expected" ); }
   ;
 
+member_expected
+  : Y_MEMBER
+  | error
+    {
+      PARSE_ERROR( "\"%s\" expected", L_MEMBER );
+    }
+  ;
+
 name_expected
   : Y_NAME
   | error
@@ -1760,6 +1763,22 @@ name_expected
 name_opt
   : /* empty */                   { $$ = NULL; }
   | Y_NAME
+  ;
+
+of_expected
+  : Y_OF
+  | error
+    {
+      PARSE_ERROR( "\"%s\" expected", L_OF );
+    }
+  ;
+
+to_expected
+  : Y_TO
+  | error
+    {
+      PARSE_ERROR( "\"%s\" expected", L_TO );
+    }
   ;
 
 zero_expected
