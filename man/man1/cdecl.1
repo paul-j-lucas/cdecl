@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 13, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 14, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -133,7 +133,11 @@ is one of
 .BR cast ,
 .BR declare ,
 or
-.BR explain .
+.BR explain :
+.cS
+$ cdecl declare p as pointer to array 4 of int
+int (*p)[4];
+.cE 0
 .SS Standard Input
 If no file names are given,
 or a file name of ``\f(CW-\fP'' is encountered,
@@ -158,7 +162,9 @@ then filter the line through
 .cS
 !!cdecl<CR>
 .cE
-where \f(CW<CR>\fP is a carriage-return.
+where \f(CW<CR>\fP is the
+.I return
+key.
 .SS Interactive Input
 If standard input is coming from a terminal
 (or either the
