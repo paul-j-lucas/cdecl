@@ -582,6 +582,7 @@ One of:
 \f(CWauto\fP,
 \f(CWblock\fP,
 \f(CWextern\fP,
+\f(CWfriend\fP,
 \f(CWregister\fP,
 \f(CWstatic\fP,
 \f(CWthread_local\fP (or \f(CW_Thread_local\fP),
@@ -1083,11 +1084,13 @@ In reverse chronological order:
 .TP 4
 .BI "Paul J. Lucas <" paul@lucasmail.org ">"
 Converted to C99;
-converted to GNU autoconf build;
+converted to GNU Autotools build;
 added GNU-style test suite and many more tests;
 added more semantic checks;
 added long options,
 mult-line input,
+now distinguishing among K&R C, C89, C95, C99, C11, C++98, C++03, and C++11;
+added
 \f(CWbool\fP,
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
@@ -1095,14 +1098,16 @@ mult-line input,
 \f(CWrestrict\fP,
 \f(CWthread_local\fP,
 \f(CWwchar_t\fP,
-\f(CWregister\fP and variadic function argument,
+\f(CWregister\fP and variadic function arguments,
 rvalue reference,
 \f(CWtypedef\fP,
-and
-\f(CWvirtual\fP function
-declarations;
+\f(CWfriend\fP and \f(CWvirtual\fP function declarations;
 and
 octal and hexadecimal array sizes;
+added better warning and error messages;
+error messages and help in color;
+now ignoring C \f(CW/*...*/\fP and C++ \f(CW//\fP comments in lexer;
+now treating cdecl keywords in declarations as ordinary names;
 revamped the manual page.
 .TP
 .BI "Peter Ammon <" cdecl@ridiculousfish.com ">"

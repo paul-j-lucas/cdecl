@@ -87,6 +87,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { T_AUTO,         L_AUTO,         LANG_ALL                        },
   { T_BLOCK,        L___BLOCK,      LANG_ALL /* Apple extension */  },
   { T_EXTERN,       L_EXTERN,       LANG_ALL                        },
+  { T_FRIEND,       L_FRIEND,       LANG_CPP_ALL                    },
   { T_REGISTER,     L_REGISTER,     LANG_ALL                        },
   { T_STATIC,       L_STATIC,       LANG_ALL                        },
   { T_THREAD_LOCAL, L_THREAD_LOCAL, LANG_C_11 | LANG_MIN(CPP_11)    },
@@ -209,7 +210,7 @@ char const* c_type_name( c_type_t type ) {
     for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i )
       if ( type == C_TYPE_INFO[i].type )
         return C_TYPE_INFO[i].literal;
-    INTERNAL_ERR( "unexpected value (0x%X) for type\n", type );
+    INTERNAL_ERR( "unexpected value (0x%llX) for type\n", type );
   }
 
   static char name_buf[ 80 ];
@@ -221,6 +222,7 @@ char const* c_type_name( c_type_t type ) {
     T_AUTO,
     T_BLOCK,
     T_EXTERN,
+    T_FRIEND,
     T_REGISTER,
     T_STATIC,
     T_THREAD_LOCAL,

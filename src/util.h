@@ -32,7 +32,7 @@
 // standard
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
-#include <stdint.h>                     /* for uintptr_t */
+#include <stdint.h>
 #include <stdio.h>                      /* for FILE */
 #include <stdlib.h>
 #include <string.h>
@@ -265,7 +265,7 @@ void link_push( link_t **phead, link_t *node );
  * @param n The number to check.
  * @reeturn Returns \c true only if exactly 1 bit is set.
  */
-CDECL_UTIL_INLINE bool only_one_bit_set( unsigned n ) {
+CDECL_UTIL_INLINE bool only_one_bit_set( uint64_t n ) {
   return n && !(n & (n - 1));
 }
 

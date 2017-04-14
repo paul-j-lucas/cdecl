@@ -63,20 +63,21 @@ Peter Ammon <cdecl@ridiculousfish.com>
 
 Paul J. Lucas <paul@lucasmail.org>
 	converted to C99
-	now using GNU autoconf/automake/configure build
+	converted to GNU Autotools build
 	added GNU-style test suite and many more tests
-	modularized & cleaned-up source
+	added more semantic checks
+	added long options
+	added multi-line input
 	now distinguishing among K&R C, C89, C95, C99, C11, C++98, C++03, C++11
 	now using a proper abstract syntax tree data structure
-	added long options
-	added bool, char16_t, char32_t, complex, restrict, _Thread_local,
-		virtual, wchar_t
-	added better warning and error messages
-	added octal and hexadecimal number support
+	added bool, char16_t, char32_t, complex, restrict, thread_local,
+		wchar_t
 	added register and variadic function arguments
 	added rvalue references
-	independently added typedef support
-	allow escaped newlines
-	now ignoring C /*...*/ comments in lexer
+	independently added typedef declarations
+	added friend, virtual, and pur virtual C++ declarations
+	added octal and hexadecimal array sizes
+	added better warning and error messages
+	now ignoring C /*...*/ and C++ // comments in lexer
 	now treating cdecl keywords in declarations as ordinary names
-	added more semantic checks
+	revamped the manual page

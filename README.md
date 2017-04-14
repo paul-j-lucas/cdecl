@@ -28,16 +28,18 @@ most notably:
 
 * Using GNU Autotools for building.
 * Command-line long-options.
-* Support for C11 and C++ keywords
+* Support for C11 and C++11 keywords
   `bool`,
   `char16_t`,
   `char32_t`,
   `complex`,
+  `friend`,
   `restrict`,
   `thread_local`,
   `virtual`,
   and
   `wchar_t`.
+* Distinguishing among K&R C, C89, C95, C99, C11, C++98, C++03, and C++11.
 * Support for `typedef` declarations.
 * Support for C++11 rvalue references.
 * Support for variadic function arguments.

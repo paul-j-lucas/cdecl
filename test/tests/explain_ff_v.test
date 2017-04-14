@@ -1,0 +1,1 @@
+cdecl | -xc++ | explain friend void f() | 0

@@ -79,6 +79,7 @@ static c_keyword_t const C_KEYWORDS[] = {
 
   // C++
   { L_CLASS,         Y_CLASS,        T_CLASS        },
+  { L_FRIEND,        Y_FRIEND,       T_FRIEND       },
   { L_VIRTUAL,       Y_VIRTUAL,      T_VIRTUAL      },
 
   // C11 & C++11

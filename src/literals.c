@@ -102,6 +102,7 @@ char const L__THREAD_LOCAL[]  = "_Thread_local";
 
 // C++
 char const L_CLASS[]          = "class";
+char const L_FRIEND[]         = "friend";
 char const L_PURE[]           = "pure";
 char const L_VIRTUAL[]        = "virtual";
 

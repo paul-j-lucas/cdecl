@@ -25,7 +25,7 @@ The characters are:
 + `c32` = `char32_t`
 + `d` = `double`
 + `e` = `enum`, `extern`, or `...` (ellipsis)
-+ `f` = function
++ `f` = `friend` or function
 + `g` = `register`
 + `h` = `short`
 + `i` = `int`

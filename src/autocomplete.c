@@ -67,6 +67,7 @@ static char const *const CDECL_KEYWORDS[] = {
   L_ENUM,
   L_EXTERN,
   L_FLOAT,
+  L_FRIEND,
   L_FUNCTION,
 //L_INT,                                // special case (see below)
 //L_INTO,                               // special case (see below)

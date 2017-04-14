@@ -105,6 +105,7 @@ extern char const L__THREAD_LOCAL[];
 
 // C++
 extern char const L_CLASS[];
+extern char const L_FRIEND[];
 extern char const L_PURE[];
 extern char const L_VIRTUAL[];
 

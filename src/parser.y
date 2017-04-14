@@ -381,6 +381,7 @@ static void yyerror( char const *msg ) {
 %token              '='                 /* used for pure virtual: = 0 */
 %token  <type>      Y_CLASS
 %token              Y_COLON_COLON       "::"
+%token  <type>      Y_FRIEND
 %token  <type>      Y_VIRTUAL
 
                     /* C++11 */
@@ -587,6 +588,7 @@ storage_class_opt_english
   | Y_AUTO
   | Y___BLOCK                           /* Apple extension */
   | Y_EXTERN
+  | Y_FRIEND
   | Y_REGISTER
   | Y_STATIC
   | Y_THREAD_LOCAL
@@ -1561,6 +1563,7 @@ storage_class_c
   : Y_AUTO
   | Y___BLOCK                           /* Apple extension */
   | Y_EXTERN
+  | Y_FRIEND
 /*| Y_REGISTER */                       /* in type_modifier_english */
   | Y_STATIC
   | Y_TYPEDEF
