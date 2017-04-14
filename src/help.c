@@ -95,14 +95,14 @@ static help_text_t const HELP_TEXT[] = {
 static void print_help_line( char const *line ) {
   if ( !line[0] )
     return;
-  FPUTC( ' ', stdout );
+  PUTC_OUT( ' ' );
   for ( char const *c = line; *c; ++c ) {
     switch ( *c ) {
       case '<':
         SGR_START_COLOR( stdout, help_nonterm );
         break;
       case '>':
-        FPUTC( *c, stdout );
+        PUTC_OUT( *c );
         SGR_END_COLOR( stdout );
         continue;
 
@@ -112,7 +112,7 @@ static void print_help_line( char const *line ) {
       case '|':
       case '}':
         SGR_START_COLOR( stdout, help_punct );
-        FPUTC( *c, stdout );
+        PUTC_OUT( *c );
         SGR_END_COLOR( stdout );
         continue;
 
@@ -124,13 +124,13 @@ static void print_help_line( char const *line ) {
               SGR_END_COLOR( stdout );
               break;
             }
-            FPUTC( *c, stdout );
+            PUTC_OUT( *c );
           } // for
         }
     } // switch
-    FPUTC( *c, stdout );
+    PUTC_OUT( *c );
   } // for
-  FPUTC( '\n', stdout );
+  PUTC_OUT( '\n' );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

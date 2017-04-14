@@ -70,35 +70,34 @@
   BLOCK( if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_ABORT(); )
 
 #define DUMP_COMMA \
-  CDEBUG( if ( true_or_set( &debug_comma ) ) FPUTS( ",\n", stdout ); )
+  CDEBUG( if ( true_or_set( &debug_comma ) ) PUTS_OUT( ",\n" ); )
 
 #define DUMP_AST(KEY,AST) \
   CDEBUG( DUMP_COMMA; c_ast_debug( (AST), 1, (KEY), stdout ); )
 
-#define DUMP_AST_LIST(KEY,AST_LIST) CDEBUG(       \
-  DUMP_COMMA; FPRINTF( stdout, "  %s = ", (KEY) );  \
+#define DUMP_AST_LIST(KEY,AST_LIST) CDEBUG( \
+  DUMP_COMMA; printf( "  %s = ", (KEY) );   \
   c_ast_list_debug( &(AST_LIST), 1, stdout ); )
 
-#define DUMP_NAME(KEY,NAME) CDEBUG(   \
-  DUMP_COMMA; FPUTS( "  ", stdout );  \
+#define DUMP_NAME(KEY,NAME) CDEBUG( \
+  DUMP_COMMA; PUTS_OUT( "  " );     \
   print_kv( (KEY), (NAME), stdout ); )
 
 #define DUMP_NUM(KEY,NUM) \
-  CDEBUG( DUMP_COMMA; FPRINTF( stdout, KEY " = %d", (NUM) ); )
+  CDEBUG( DUMP_COMMA; printf( KEY " = %d", (NUM) ); )
 
 #ifdef WITH_CDECL_DEBUG
 #define DUMP_START(NAME,PROD) \
   bool debug_comma = false;   \
-  CDEBUG( FPUTS( "\n" NAME " ::= " PROD " = {\n", stdout ); )
+  CDEBUG( PUTS_OUT( "\n" NAME " ::= " PROD " = {\n" ); )
 #else
 #define DUMP_START(NAME,PROD)           /* nothing */
 #endif
 
-#define DUMP_END() CDEBUG( \
-  FPUTS( "\n}\n", stdout ); )
+#define DUMP_END()        CDEBUG( PUTS_OUT( "\n}\n" ); )
 
-#define DUMP_TYPE(KEY,TYPE) CDEBUG(   \
-  DUMP_COMMA; FPUTS( "  ", stdout );  \
+#define DUMP_TYPE(KEY,TYPE) CDEBUG( \
+  DUMP_COMMA; PUTS_OUT( "  " );     \
   print_kv( (KEY), c_type_name( TYPE ), stdout ); )
 
 #define PARSE_ABORT()     BLOCK( parse_cleanup( true ); YYABORT; )

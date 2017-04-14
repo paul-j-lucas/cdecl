@@ -247,7 +247,7 @@ char* readline_wrapper( char const *ps1, char const *ps2 ) {
       return NULL;
 #else
     static size_t line_cap;
-    FPUTS( buf ? ps2 : ps1, stdout );
+    PUTS_OUT( buf ? ps2 : ps1 );
     FFLUSH( stdout );
     if ( getline( &line, &line_cap, stdin ) == -1 ) {
       FERROR( stdin );
