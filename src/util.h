@@ -105,6 +105,16 @@ struct link {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Checks whether at most 1 bit is set in the given integer.
+ *
+ * @param n The number to check.
+ * @reeturn Returns \c true only if at most 1 bit is set.
+ */
+CDECL_UTIL_INLINE bool at_most_one_bit_set( uint64_t n ) {
+  return !(n & (n - 1));
+}
+
+/**
  * Extracts the base portion of a path-name.
  * Unlike \c basename(3):
  *  + Trailing \c '/' characters are not deleted.
@@ -147,6 +157,16 @@ char* check_strdup( char const *s );
  */
 CDECL_UTIL_INLINE bool ends_with_chr( char const *s, size_t s_len, char c ) {
   return s_len > 0 && s[ s_len - 1 ] == c;
+}
+
+/**
+ * Checks whether exactly 1 bit is set in the given integer.
+ *
+ * @param n The number to check.
+ * @reeturn Returns \c true only if exactly 1 bit is set.
+ */
+CDECL_UTIL_INLINE bool exactly_one_bit_set( uint64_t n ) {
+  return n && at_most_one_bit_set( n );
 }
 
 /**
@@ -258,16 +278,6 @@ void link_push( link_t **phead, link_t *node );
  */
 #define LINK_PUSH(PHEAD,NODE) \
   link_push( (link_t**)(PHEAD), (link_t*)(NODE) )
-
-/**
- * Checks whether only 1 bit is set in the given integer.
- *
- * @param n The number to check.
- * @reeturn Returns \c true only if exactly 1 bit is set.
- */
-CDECL_UTIL_INLINE bool only_one_bit_set( uint64_t n ) {
-  return n && !(n & (n - 1));
-}
 
 /**
  * Reads an input line:

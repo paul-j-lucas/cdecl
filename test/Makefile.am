@@ -146,6 +146,8 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_c32-c99.test \
 	tests/declare_ci-knr.test \
 	tests/declare_e-knr.test \
+	tests/declare_esf_v.test \
+	tests/declare_esf_v.test \
 	tests/declare_f_ai.test \
 	tests/declare_f_f_i.test \
 	tests/declare_ff_v-c.test \
@@ -312,6 +314,7 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_c32-c99.test \
 	tests/explain_ci-knr.test \
 	tests/explain_e-knr.test \
+	tests/explain_esf_v.test \
 	tests/explain_f_ai.test \
 	tests/explain_fcce_v.test \
 	tests/explain_fe_v.test \
@@ -528,6 +531,7 @@ TESTS+=	tests/explain_f_pmi.test \
 # =======================
 #
 TESTS+=	tests/explain_frri_v-c++03.test \
+	tests/explain_fsf_v.test \
 	tests/explain_fx_v.test \
 	tests/explain_pmri.test \
 	tests/explain_pri.test \

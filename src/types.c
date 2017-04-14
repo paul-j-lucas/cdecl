@@ -189,8 +189,16 @@ c_lang_t c_type_check( c_type_t type ) {
   } // for
 
   //
-  // Second, check that the type/storage-class/qualifier combination is legal
-  // in the current language.
+  // Second, check that there is at most one storage class.  (T_PURE_VIRTUAL is
+  // a special case in that it's always combined with T_VIRTUAL, so turn it off
+  // here.)
+  //
+  c_type_t const storage_class = (type & T_MASK_STORAGE) & ~T_PURE_VIRTUAL;
+  if ( !at_most_one_bit_set( storage_class ) )
+    return LANG_NONE;
+
+  //
+  // Third, check that the type combination is legal in the current language.
   //
   for ( size_t row = 0; row < NUM_TYPES; ++row ) {
     if ( (type & C_TYPE_INFO[ row ].type) ) {
@@ -206,7 +214,7 @@ c_lang_t c_type_check( c_type_t type ) {
 }
 
 char const* c_type_name( c_type_t type ) {
-  if ( only_one_bit_set( type ) ) {
+  if ( exactly_one_bit_set( type ) ) {
     for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i )
       if ( type == C_TYPE_INFO[i].type )
         return C_TYPE_INFO[i].literal;
