@@ -224,7 +224,7 @@ bool is_file( int fd ) {
   return S_ISREG( fd_stat.st_mode );
 }
 
-char* readline_wrapper( char const *ps1, char const *ps2 ) {
+char* read_input_line( char const *ps1, char const *ps2 ) {
   static char *buf;
   size_t buf_len = 0;
 
@@ -244,15 +244,13 @@ char* readline_wrapper( char const *ps1, char const *ps2 ) {
 
     free( line );
     if ( !(line = readline( buf ? ps2 : ps1 )) )
-      return NULL;
+      goto check_for_error;
 #else
     static size_t line_cap;
     PUTS_OUT( buf ? ps2 : ps1 );
     FFLUSH( stdout );
-    if ( getline( &line, &line_cap, stdin ) == -1 ) {
-      FERROR( stdin );
-      return NULL;
-    }
+    if ( getline( &line, &line_cap, stdin ) == -1 )
+      goto check_for_error;
 #endif /* HAVE_READLINE */
 
     if ( is_blank_line( line ) ) {
@@ -266,7 +264,7 @@ char* readline_wrapper( char const *ps1, char const *ps2 ) {
     }
 
     size_t line_len = strlen( line );
-    bool const is_continuation = line_len >= 1 && line[ line_len - 1 ] == '\\';
+    bool const is_continuation = ends_with_chr( line, line_len, '\\' );
 
     if ( is_continuation )
       line[ --line_len ] = '\0';        // get rid of '\'
@@ -291,6 +289,10 @@ char* readline_wrapper( char const *ps1, char const *ps2 ) {
   add_history( buf );
 #endif /* HAVE_READLINE */
   return buf;
+
+check_for_error:
+  FERROR( stdin );
+  return NULL;
 }
 
 link_t* link_pop( link_t **phead ) {

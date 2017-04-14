@@ -270,19 +270,20 @@ CDECL_UTIL_INLINE bool only_one_bit_set( unsigned n ) {
 }
 
 /**
- * Wraps GNU readline(3) by:
+ * Reads an input line:
  *
- *  + Adding non-whitespace-only lines to the history.
- *  + Returning only non-whitespace-only lines.
- *  + Stitching multiple lines ending with '\' together.
+ *  + Returns only non-whitespace-only lines.
+ *  + Stitches multiple lines ending with '\' together.
  *
- * If readline(3) is not compiled in, uses getline(3).
+ * If GNU readline(3) is compiled in, also:
+ *
+ *  + Adds non-whitespace-only lines to the history.
  *
  * @param ps1 The primary prompt to use.
  * @param ps2 The secondary prompt to use.
  * @return Returns the line read or null for EOF.
  */
-char* readline_wrapper( char const *ps1, char const *ps2 );
+char* read_input_line( char const *ps1, char const *ps2 );
 
 /**
  * A variant of strcpy(3) that returns the number of characters copied.
