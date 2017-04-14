@@ -384,6 +384,7 @@ static void yyerror( char const *msg ) {
 %token  <number>    Y_NUMBER
 
 %type   <ast_pair>  decl_english
+%type   <name>      declare_name_as_english
 %type   <ast_list>  decl_list_english decl_list_opt_english
 %type   <ast_list>  paren_decl_list_opt_english
 %type   <ast_pair>  array_decl_english
@@ -534,33 +535,37 @@ name_into_english
 /*****************************************************************************/
 
 declare_english
-  : Y_DECLARE Y_NAME Y_AS storage_class_opt_english decl_english Y_END
+  : declare_name_as_english storage_class_opt_english decl_english Y_END
     {
-      C_TYPE_ADD( &$5.ast->type, $4, @4 );
+      C_TYPE_ADD( &$3.ast->type, $2, @2 );
 
       DUMP_START( "declare_english",
                   "DECLARE NAME AS storage_class_opt_english decl_english" );
-      $5.ast->name = $2;
-      DUMP_NAME( "NAME", $2 );
-      DUMP_TYPE( "storage_class_opt_english", $4 );
-      DUMP_AST( "decl_english", $5.ast );
+      $3.ast->name = $1;
+      DUMP_NAME( "NAME", $1 );
+      DUMP_TYPE( "storage_class_opt_english", $2 );
+      DUMP_AST( "decl_english", $3.ast );
       DUMP_END();
 
-      C_AST_CHECK( $5.ast, CHECK_DECL );
-      c_ast_gibberish_declare( $5.ast, fout );
+      C_AST_CHECK( $3.ast, CHECK_DECL );
+      c_ast_gibberish_declare( $3.ast, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
     }
+  ;
 
-  | Y_DECLARE error Y_AS
-    {
-      PARSE_ERROR( "name expected" );
-    }
+declare_name_as_english
+  : Y_DECLARE Y_NAME Y_AS         { $$ = $2; }
 
-  | Y_DECLARE Y_NAME error Y_END
+  | Y_DECLARE Y_NAME error
     {
       PARSE_ERROR( "\"%s\" expected", L_AS );
+    }
+
+  | Y_DECLARE error
+    {
+      PARSE_ERROR( "name expected" );
     }
   ;
 
