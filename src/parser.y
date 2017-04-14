@@ -120,8 +120,8 @@ struct qualifier_link /* : link */ {
  * Inherited attributes.
  */
 struct in_attr {
-  qualifier_link_t *qualifier_head;
-  c_ast_t *type_ast;
+  qualifier_link_t *qualifier_head;     // qualifier stack
+  c_ast_t *type_head;                   // type stack
 };
 typedef struct in_attr in_attr_t;
 
@@ -130,7 +130,7 @@ extern void         print_help( void );
 extern void         set_option( char const* );
 
 // local variables
-static unsigned     ast_depth;
+static unsigned     ast_depth;          // parentheses nesting depth
 static bool         error_newlined = true;
 static in_attr_t    in_attr;
 
@@ -145,7 +145,7 @@ static void         qualifier_clear( void );
  * @return Returns said AST.
  */
 static inline c_ast_t* type_peek( void ) {
-  return in_attr.type_ast;
+  return in_attr.type_head;
 }
 
 /**
@@ -154,7 +154,7 @@ static inline c_ast_t* type_peek( void ) {
  * @return Returns said AST.
  */
 static inline c_ast_t* type_pop( void ) {
-  return LINK_POP( c_ast_t, &in_attr.type_ast );
+  return LINK_POP( c_ast_t, &in_attr.type_head );
 }
 
 /**
@@ -163,7 +163,7 @@ static inline c_ast_t* type_pop( void ) {
  * @param ast The AST to push.
  */
 static inline void type_push( c_ast_t *ast ) {
-  LINK_PUSH( &in_attr.type_ast, ast );
+  LINK_PUSH( &in_attr.type_head, ast );
 }
 
 /**
@@ -198,6 +198,10 @@ static inline void qualifier_pop( void ) {
 
 /**
  * Cleans-up parser data.
+ *
+ * @param hard_reset If \c true, does a "hard" reset that currently resets the
+ * EOF flag of the lexer.  This should be \c true if an error occurs and
+ * YYABORT is called.
  */
 static void parse_cleanup( bool hard_reset ) {
   c_ast_gc();
@@ -449,6 +453,10 @@ command_list
     }
     command
     {
+      //
+      // We get here only after a successful parse, so a hard reset is not
+      // needed.
+      //
       parse_cleanup( false );
     }
   ;
