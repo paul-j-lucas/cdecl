@@ -85,7 +85,7 @@ typedef struct c_ptr_ref  c_ptr_ref_t;
  * @return Returning \c true will cause traversal to stop and \a ast to be
  * returned to the caller of c_ast_visit_down() or c_ast_visit_up().
  */
-typedef bool (*c_ast_visitor)( c_ast_t *ast, void *data );
+typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
 
 /**
  * Generic "parent" AST node.
@@ -98,7 +98,7 @@ struct c_parent {
 };
 
 /**
- * Linked-list of AST objects.
+ * Linked-list of AST nodes.
  */
 struct c_ast_list {
   c_ast_t  *head_ast;
@@ -106,7 +106,7 @@ struct c_ast_list {
 };
 
 /**
- * AST object for a C/C++ array.
+ * AST node for a C/C++ array.
  */
 struct c_array {
   c_ast_t  *of_ast;                     // what it's an array of
@@ -114,7 +114,7 @@ struct c_array {
 };
 
 /**
- * AST object for a C/C++ block (Apple extension).
+ * AST node for a C/C++ block (Apple extension).
  */
 struct c_block {
   c_ast_t      *ret_ast;                // return type
@@ -122,14 +122,14 @@ struct c_block {
 };
 
 /**
- * AST object for a C/C++ enum/class/struct/union type.
+ * AST node for a C/C++ enum/class/struct/union type.
  */
 struct c_ecsu {
   char const *ecsu_name;
 };
 
 /**
- * AST object for a C/C++ function.
+ * AST node for a C/C++ function.
  *
  * @note Members are laid out in the same order as c_block: this is taken
  * advantage of.
@@ -140,16 +140,16 @@ struct c_func {
 };
 
 /**
- * AST object for a C++ pointer-to-member of a class.
+ * AST node for a C++ pointer-to-member of a class.
  */
 struct c_ptr_mbr {
   c_ast_t    *of_ast;                   // member type
   c_type_t    qualifier;                // T_CONST, T_RESTRICT, T_VOLATILE
-  char const *class_name;
+  char const *class_name;               // when a member function; or null
 };
 
 /**
- * AST object for a C/C++ pointer, or a C++ reference or rvalue reference.
+ * AST node for a C/C++ pointer, or a C++ reference or rvalue reference.
  *
  * @note Members are laid out in the same order as c_ptr_mbr: this is taken
  * advantage of.)
@@ -221,13 +221,13 @@ CDECL_AST_INLINE c_ast_t const* c_ast_args( c_ast_t const *ast ) {
 
 /**
  * Cleans-up AST data.
- * (Currently, this checks that the number of c_ast objects freed match the
+ * (Currently, this checks that the number of c_ast nodes freed match the
  * number allocated.)
  */
 void c_ast_cleanup( void );
 
 /**
- * Garbage collects all allocated c_ast objects.
+ * Garbage collects all allocated c_ast nodes.
  */
 void c_ast_gc( void );
 
@@ -287,9 +287,9 @@ void c_ast_set_parent( c_ast_t *child, c_ast_t *parent );
  * considered distinct ASTs.
  */
 CDECL_AST_INLINE c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir,
-                                       c_ast_visitor visitor, void *data ) {
-  c_ast_t* c_ast_visit_down( c_ast_t*, c_ast_visitor, void* );
-  c_ast_t* c_ast_visit_up( c_ast_t*, c_ast_visitor, void* );
+                                       c_ast_visitor_t visitor, void *data ) {
+  c_ast_t* c_ast_visit_down( c_ast_t*, c_ast_visitor_t, void* );
+  c_ast_t* c_ast_visit_up( c_ast_t*, c_ast_visitor_t, void* );
 
   return dir == V_DOWN ?
     c_ast_visit_down( ast, visitor, data ) :
@@ -310,14 +310,14 @@ CDECL_AST_INLINE c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir,
  * considered distinct ASTs.
  */
 CDECL_AST_INLINE bool c_ast_found( c_ast_t const *ast, v_direction_t dir,
-                                   c_ast_visitor visitor, void *data ) {
+                                   c_ast_visitor_t visitor, void *data ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_t *const found_ast = c_ast_visit( nonconst_ast, dir, visitor, data );
   return found_ast != NULL;
 }
 
 /**
- * A c_ast_visitor function used to find an AST node of a particular kind.
+ * A visitor function used to find an AST node of a particular kind.
  *
  * @param ast The c_ast to check.
  * @param data The bitwise-or kind(s) (cast to <code>void*</code>) to find.
@@ -326,7 +326,7 @@ CDECL_AST_INLINE bool c_ast_found( c_ast_t const *ast, v_direction_t dir,
 bool c_ast_vistor_kind( c_ast_t *ast, void *data );
 
 /**
- * A c_ast_visitor function used to find a name.
+ * A visitor function used to find a name.
  *
  * @param ast The c_ast to check.
  * @param data Not used.
@@ -335,7 +335,7 @@ bool c_ast_vistor_kind( c_ast_t *ast, void *data );
 bool c_ast_visitor_name( c_ast_t *ast, void *data );
 
 /**
- * A c_ast_visitor function used to find a type.
+ * A visitor function used to find a type.
  *
  * @param ast The c_ast to check.
  * @param data The bitwise-or type(s) (cast to <code>void*</code>) to find.

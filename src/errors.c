@@ -55,7 +55,7 @@ static bool error_kind_to_type( c_ast_t const*, c_type_t );
  * @return Returns \c true only if all checks passed.
  */
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
-                                        c_ast_visitor visitor ) {
+                                        c_ast_visitor_t visitor ) {
   return !c_ast_found( ast, V_DOWN, visitor, NULL );
 }
 

@@ -64,7 +64,7 @@ static void c_ast_free( c_ast_t *ast ) {
         FREE( ast->as.ptr_mbr.class_name );
         break;
       default:
-        break;
+        /* suppress warnings */;
     } // switch
     FREE( ast );
   }
@@ -156,7 +156,7 @@ void c_ast_set_parent( c_ast_t *child, c_ast_t *parent ) {
   assert( !c_ast_has_cycle( child ) );
 }
 
-c_ast_t* c_ast_visit_down( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
+c_ast_t* c_ast_visit_down( c_ast_t *ast, c_ast_visitor_t visitor, void *data ) {
   if ( ast == NULL )
     return NULL;
   if ( visitor( ast, data ) )
@@ -166,7 +166,7 @@ c_ast_t* c_ast_visit_down( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
   return c_ast_visit_down( ast->as.parent.of_ast, visitor, data );
 }
 
-c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor visitor, void *data ) {
+c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor_t visitor, void *data ) {
   if ( ast == NULL )
     return NULL;
   if ( visitor( ast, data ) )
