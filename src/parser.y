@@ -140,6 +140,15 @@ static void         qualifier_clear( void );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
+ * Gets a printable string of the lexer's current token.
+ *
+ * @return Returns said string.
+ */
+static inline char const* printable_token( void ) {
+  return lexer_token[0] == '\n' ? "\\n" : lexer_token;
+}
+
+/**
  * Peeks at the type AST at the head of the type AST inherited attribute stack.
  *
  * @return Returns said AST.
@@ -219,7 +228,7 @@ static void parse_error( char const *format, ... ) {
   if ( !error_newlined ) {
     PUTS_ERR( ": " );
     if ( lexer_token[0] )
-      PRINT_ERR( "\"%s\": ", (lexer_token[0] == '\n' ? "\\n" : lexer_token) );
+      PRINT_ERR( "\"%s\": ", printable_token() );
     va_list args;
     va_start( args, format );
     vfprintf( stderr, format, args );
@@ -381,6 +390,7 @@ static void yyerror( char const *msg ) {
 %type   <number>    array_size_opt_english
 %type   <ast_pair>  block_decl_english
 %type   <ast_pair>  func_decl_english
+%type   <name>      name_into_english
 %type   <ast_pair>  pointer_decl_english
 %type   <ast_pair>  pointer_to_member_decl_english
 %type   <type>      pure_opt_english
@@ -484,23 +494,18 @@ command
 /*****************************************************************************/
 
 cast_english
-  : Y_CAST Y_NAME Y_INTO decl_english Y_END
+  : Y_CAST name_into_english decl_english Y_END
     {
       DUMP_START( "cast_english", "CAST NAME INTO decl_english" );
       DUMP_NAME( "NAME", $2 );
-      DUMP_AST( "decl_english", $4.ast );
+      DUMP_AST( "decl_english", $3.ast );
       DUMP_END();
 
-      C_AST_CHECK( $4.ast, CHECK_CAST );
+      C_AST_CHECK( $3.ast, CHECK_CAST );
       FPUTC( '(', fout );
-      c_ast_gibberish_cast( $4.ast, fout );
+      c_ast_gibberish_cast( $3.ast, fout );
       FPRINTF( fout, ")%s\n", $2 );
       FREE( $2 );
-    }
-
-  | Y_CAST Y_NAME error Y_END
-    {
-      PARSE_ERROR( "\"%s\" expected", L_INTO );
     }
 
   | Y_CAST decl_english Y_END
@@ -513,6 +518,14 @@ cast_english
       FPUTC( '(', fout );
       c_ast_gibberish_cast( $2.ast, fout );
       FPUTS( ")\n", fout );
+    }
+  ;
+
+name_into_english
+  : Y_NAME Y_INTO                 { $$ = $1; }
+  | Y_NAME error
+    {
+      PARSE_ERROR( "\"%s\" expected", L_INTO );
     }
   ;
 
