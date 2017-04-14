@@ -122,7 +122,7 @@ void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
 
 c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, YYLTYPE const *loc ) {
   assert( loc != NULL );
-  static unsigned next_id;
+  static c_ast_id_t next_id;
 
   c_ast_t *const ast = MALLOC( c_ast_t, 1 );
   memset( ast, 0, sizeof( c_ast_t ) );

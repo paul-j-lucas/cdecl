@@ -65,6 +65,7 @@ typedef enum v_direction v_direction_t;
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef struct c_ast      c_ast_t;
+typedef unsigned          c_ast_id_t;
 typedef struct c_ast_list c_ast_list_t;
 typedef struct c_array    c_array_t;
 typedef struct c_block    c_block_t;
@@ -165,7 +166,7 @@ struct c_ptr_ref {
 struct c_ast {
   c_ast_t    *next;                     // must be first struct member
   unsigned    depth;                    // how many () deep
-  unsigned    id;                       // unique id (starts at 1)
+  c_ast_id_t  id;                       // unique id (starts at 1)
   c_kind_t    kind;
   char const *name;
   c_type_t    type;
