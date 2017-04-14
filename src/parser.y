@@ -1449,9 +1449,6 @@ type_modifier_list_c
     }
 
   | type_modifier_c
-    {
-      $$ = $1;
-    }
   ;
 
 type_modifier_c
