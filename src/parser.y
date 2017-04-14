@@ -591,7 +591,7 @@ pure_opt_english
 /*****************************************************************************/
 
 explain_declaration_c
-  : explain type_c { type_push( $2.ast ); } decl_c Y_END
+  : explain_c type_c { type_push( $2.ast ); } decl_c Y_END
     {
       type_pop();
 
@@ -614,7 +614,7 @@ explain_declaration_c
   ;
 
 explain_cast_c
-  : explain '(' type_c { type_push( $3.ast ); } cast_c ')' name_opt Y_END
+  : explain_c '(' type_c { type_push( $3.ast ); } cast_c ')' name_opt Y_END
     {
       type_pop();
 
@@ -638,7 +638,7 @@ explain_cast_c
     }
   ;
 
-explain
+explain_c
   : Y_EXPLAIN
     {
       //
