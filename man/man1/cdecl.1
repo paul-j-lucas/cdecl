@@ -1001,6 +1001,11 @@ and the C11
 function specifier
 are not supported.
 .IP \n+[step].
+Default arguments for C++ functions are not supported:
+.cS
+void f( int x = 0 );              // not supported
+.cE 0
+.IP \n+[step].
 Fully qualified C++ member functions
 or C++ member functions that are deleted
 are not supported:
