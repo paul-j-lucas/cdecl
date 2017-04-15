@@ -101,12 +101,11 @@ static char const *const CDECL_KEYWORDS[] = {
 
 // cdecl options
 static char const *const CDECL_OPTIONS[] = {
-  "ansi",
   "c89",
   "c95",
   "c99",
   "c11",
-  "c++",
+//"c++",                                // too short
   "c++98",
   "c++03",
   "c++11",
@@ -114,7 +113,6 @@ static char const *const CDECL_OPTIONS[] = {
 "nocreate",
   "knr"
   "options",
-  "preansi",                            // synonym for "knr"
   "prompt",
 "noprompt",
   NULL
