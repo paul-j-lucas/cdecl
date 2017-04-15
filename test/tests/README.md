@@ -40,7 +40,7 @@ The characters are:
 + `u` = `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
-+ `x` = untyped K&R function argument
++ `x` = `constexpr` or untyped K&R function argument
 + `z` = `complex` or `size_t`
 
 A function's return type is separated from its arguments by `_`.

@@ -81,7 +81,7 @@ static help_text_t const HELP_TEXT[] = {
 /* 22 */  { "modifier: short long signed unsigned const restrict volatile",
             "modifier: short long signed unsigned const volatile" },
 /* 23 */  { "storage: auto extern register static _Thread_local",
-            "storage: extern friend register static thread_local [pure] virtual" },
+            "storage: constexpr extern friend register static thread_local [pure] virtual" },
           { NULL, NULL }
 };
 

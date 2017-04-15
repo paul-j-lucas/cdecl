@@ -52,7 +52,7 @@
 static char const L_LONG_LONG[] = "long";
 
 /**
- * Mapping between C type bits and literals.
+ * Mapping between C type bits, literals, and valid language(s).
  */
 struct c_type_info {
   c_type_t    type;
@@ -62,7 +62,6 @@ struct c_type_info {
 typedef struct c_type_info c_type_info_t;
 
 static c_type_info_t const C_TYPE_INFO[] = {
-  // types
   { T_VOID,         L_VOID,         LANG_MIN(C_89)                  },
   { T_BOOL,         L_BOOL,         LANG_MIN(C_89)                  },
   { T_CHAR,         L_CHAR,         LANG_ALL                        },
@@ -83,9 +82,12 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { T_STRUCT,       L_STRUCT,       LANG_ALL                        },
   { T_UNION,        L_UNION,        LANG_ALL                        },
   { T_CLASS,        L_CLASS,        LANG_CPP_ALL                    },
-  // storage classes
+};
+
+static c_type_info_t const C_STORAGE_INFO[] = {
   { T_AUTO,         L_AUTO,         LANG_ALL                        },
   { T_BLOCK,        L___BLOCK,      LANG_ALL /* Apple extension */  },
+  { T_CONSTEXPR,    L_CONSTEXPR,    LANG_CPP_11                     },
   { T_EXTERN,       L_EXTERN,       LANG_ALL                        },
   { T_FRIEND,       L_FRIEND,       LANG_CPP_ALL                    },
   { T_REGISTER,     L_REGISTER,     LANG_ALL                        },
@@ -94,18 +96,18 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { T_TYPEDEF,      L_TYPEDEF,      LANG_ALL                        },
   { T_VIRTUAL,      L_VIRTUAL,      LANG_CPP_ALL                    },
   { T_PURE_VIRTUAL, L_PURE,         LANG_CPP_ALL                    },
-  // qualifiers
+};
+
+static c_type_info_t const C_QUALIFIER_INFO[] = {
   { T_CONST,        L_CONST,        LANG_MIN(C_89)                  },
   { T_RESTRICT,     L_RESTRICT,     LANG_MIN(C_89) & ~LANG_CPP_ALL  },
   { T_VOLATILE,     L_VOLATILE,     LANG_MIN(C_89)                  },
 };
 
-#define NUM_TYPES   20              /* first N type-only rows of C_TYPE_INFO */
-
 //      shorthand   legal in ...
 #define __          LANG_ALL
 #define XX          LANG_NONE
-#define KO          LANG_C_KNR
+#define KR          LANG_C_KNR
 #define C8          LANG_MIN(C_89)
 #define C5          LANG_MIN(C_95)
 #define C9          LANG_MIN(C_99)
@@ -118,7 +120,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
  * Legal combinations of types in languages.
  * Only the lower triangle is used.
  */
-static c_lang_t const OK_TYPE_LANGS[ NUM_TYPES ][ NUM_TYPES ] = {
+static c_lang_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 /*                v  b  c  16 32 wc s  i  l  ll st s  u  f  d  c  E  S  U  C */
 /* void      */ { C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
 /* bool      */ { XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
@@ -133,13 +135,32 @@ static c_lang_t const OK_TYPE_LANGS[ NUM_TYPES ][ NUM_TYPES ] = {
 /* size_t    */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C8,__,__,__,__,__,__,__,__,__ },
 /* signed    */ { XX,XX,C8,XX,XX,XX,C8,C8,C8,C8,XX,C8,__,__,__,__,__,__,__,__ },
 /* unsigned  */ { XX,XX,__,XX,XX,XX,__,__,__,C8,XX,XX,__,__,__,__,__,__,__,__ },
-/* float     */ { XX,XX,XX,XX,XX,XX,XX,XX,KO,XX,XX,XX,XX,__,__,__,__,__,__,__ },
+/* float     */ { XX,XX,XX,XX,XX,XX,XX,XX,KR,XX,XX,XX,XX,__,__,__,__,__,__,__ },
 /* double    */ { XX,XX,XX,XX,XX,XX,XX,XX,C8,XX,XX,XX,XX,XX,__,__,__,__,__,__ },
 /* complex   */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,C9,__,__,__,__ },
 /* enum      */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,__,__,__ },
 /* struct    */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__ },
 /* union     */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__ },
 /* class     */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,PP },
+};
+
+/**
+ * Legal combinations of storage classes in languages.
+ * Only the lower triangle is used.
+ */
+static c_lang_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
+/*                   a  b  c  e  f  r  s  tl td v  pv */
+/* auto         */ { __,__,__,__,__,__,__,__,__,__,__ },
+/* block        */ { __,__,__,__,__,__,__,__,__,__,__ },
+/* constexpr    */ { P1,P1,P1,__,__,__,__,__,__,__,__ },
+/* extern       */ { XX,__,P1,__,__,__,__,__,__,__,__ },
+/* friend       */ { XX,XX,P1,XX,PP,__,__,__,__,__,__ },
+/* register     */ { XX,__,XX,XX,XX,__,__,__,__,__,__ },
+/* static       */ { XX,XX,P1,XX,XX,XX,__,__,__,__,__ },
+/* thread_local */ { XX,E1,P1,E1,XX,XX,E1,E1,__,__,__ },
+/* typedef      */ { XX,__,XX,XX,XX,XX,XX,XX,__,__,__ },
+/* virtual      */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,PP,__ },
+/* pure virtual */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,PP,PP },
 };
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -179,8 +200,16 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc ) {
 
 c_lang_t c_type_check( c_type_t type ) {
   //
-  // First, check that the type/storage-class/qualifier is legal in the current
-  // language.
+  // Check that the storage-class is legal in the current language.
+  //
+  for ( size_t row = 0; row < ARRAY_SIZE( C_STORAGE_INFO ); ++row ) {
+    c_type_info_t const *const si = &C_STORAGE_INFO[ row ];
+    if ( (type & si->type) && !(opt_lang & si->ok_langs) )
+      return si->ok_langs;
+  } // for
+
+  //
+  // Check that the type is legal in the current language.
   //
   for ( size_t row = 0; row < ARRAY_SIZE( C_TYPE_INFO ); ++row ) {
     c_type_info_t const *const ti = &C_TYPE_INFO[ row ];
@@ -188,19 +217,46 @@ c_lang_t c_type_check( c_type_t type ) {
       return ti->ok_langs;
   } // for
 
-  //
-  // Second, check that there is at most one storage class.  (T_PURE_VIRTUAL is
-  // a special case in that it's always combined with T_VIRTUAL, so turn it off
-  // here.)
-  //
-  c_type_t const storage_class = (type & T_MASK_STORAGE) & ~T_PURE_VIRTUAL;
-  if ( !at_most_one_bit_set( storage_class ) )
-    return LANG_NONE;
 
   //
-  // Third, check that the type combination is legal in the current language.
+  // Check that the qualifier(s) are legal in the current language.
   //
-  for ( size_t row = 0; row < NUM_TYPES; ++row ) {
+  for ( size_t row = 0; row < ARRAY_SIZE( C_QUALIFIER_INFO ); ++row ) {
+    c_type_info_t const *const qi = &C_QUALIFIER_INFO[ row ];
+    if ( (type & qi->type) && !(opt_lang & qi->ok_langs) )
+      return qi->ok_langs;
+  } // for
+
+  //
+  // Check that the storage class combination is legal in the current language.
+  //
+  for ( size_t row = 0; row < ARRAY_SIZE( C_STORAGE_INFO ); ++row ) {
+    if ( (type & C_STORAGE_INFO[ row ].type) ) {
+      for ( size_t col = 0; col <= row; ++col ) {
+        c_lang_t const ok_langs = OK_STORAGE_LANGS[ row ][ col ];
+        if ( (type & C_STORAGE_INFO[ col ].type) && !(opt_lang & ok_langs) )
+          return ok_langs;
+      } // for
+    }
+  } // for
+
+  //
+  // Check that the type combination is legal in the current language.
+  //
+  for ( size_t row = 0; row < ARRAY_SIZE( C_TYPE_INFO ); ++row ) {
+    if ( (type & C_TYPE_INFO[ row ].type) ) {
+      for ( size_t col = 0; col <= row; ++col ) {
+        c_lang_t const ok_langs = OK_TYPE_LANGS[ row ][ col ];
+        if ( (type & C_TYPE_INFO[ col ].type) && !(opt_lang & ok_langs) )
+          return ok_langs;
+      } // for
+    }
+  } // for
+
+  //
+  // Check that the type combination is legal in the current language.
+  //
+  for ( size_t row = 0; row < ARRAY_SIZE( C_TYPE_INFO ); ++row ) {
     if ( (type & C_TYPE_INFO[ row ].type) ) {
       for ( size_t col = 0; col <= row; ++col ) {
         c_lang_t const ok_langs = OK_TYPE_LANGS[ row ][ col ];
@@ -218,6 +274,12 @@ char const* c_type_name( c_type_t type ) {
     for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i )
       if ( type == C_TYPE_INFO[i].type )
         return C_TYPE_INFO[i].literal;
+    for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_INFO ); ++i )
+      if ( type == C_STORAGE_INFO[i].type )
+        return C_STORAGE_INFO[i].literal;
+    for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i )
+      if ( type == C_QUALIFIER_INFO[i].type )
+        return C_QUALIFIER_INFO[i].literal;
     INTERNAL_ERR( "unexpected value (0x%llX) for type\n", type );
   }
 
@@ -237,6 +299,9 @@ char const* c_type_name( c_type_t type ) {
     T_TYPEDEF,
     T_PURE_VIRTUAL,
     T_VIRTUAL,
+
+    // This is last so we get names like "static constexpr".
+    T_CONSTEXPR,
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_CLASS ); ++i ) {
     if ( (type & C_STORAGE_CLASS[i]) ) {

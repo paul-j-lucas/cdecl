@@ -41,7 +41,7 @@ most notably:
   `wchar_t`.
 * Distinguishes among K&R C, C89, C95, C99, C11, C++98, C++03, and C++11.
 * Support for variadic function arguments.
-* Support for C++11 rvalue references.
+* Support for C++11 `constexpr` and rvalue references.
 * Support for `typedef` declarations.
 * Support for
   `friend`,

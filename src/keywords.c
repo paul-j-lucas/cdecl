@@ -82,6 +82,9 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_FRIEND,        Y_FRIEND,       T_FRIEND       },
   { L_VIRTUAL,       Y_VIRTUAL,      T_VIRTUAL      },
 
+  // C++11
+  { L_CONSTEXPR,     Y_CONSTEXPR,    T_CONSTEXPR    },
+
   // C11 & C++11
   { L_CHAR16_T,      Y_CHAR16_T,     T_CHAR16_T     },
   { L_CHAR32_T,      Y_CHAR32_T,     T_CHAR32_T     },

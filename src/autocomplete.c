@@ -63,6 +63,7 @@ static char const *const CDECL_KEYWORDS[] = {
   L_CLASS,
   L_COMPLEX,
   L_CONST,
+  L_CONSTEXPR,
   L_DOUBLE,
   L_ENUM,
   L_EXTERN,

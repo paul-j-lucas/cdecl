@@ -1,0 +1,1 @@
+cdecl | -xc++ | explain static constexpr int x | 0

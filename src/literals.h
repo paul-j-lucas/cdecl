@@ -109,6 +109,9 @@ extern char const L_FRIEND[];
 extern char const L_PURE[];
 extern char const L_VIRTUAL[];
 
+// C++11
+extern char const L_CONSTEXPR[];
+
 // C11 & C++11
 extern char const L_CHAR16_T[];
 extern char const L_CHAR32_T[];

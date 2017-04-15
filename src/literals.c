@@ -106,6 +106,9 @@ char const L_FRIEND[]         = "friend";
 char const L_PURE[]           = "pure";
 char const L_VIRTUAL[]        = "virtual";
 
+// C++11
+char const L_CONSTEXPR[]      = "constexpr";
+
 // C11 & C++11
 char const L_CHAR16_T[]       = "char16_t";
 char const L_CHAR32_T[]       = "char32_t";

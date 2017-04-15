@@ -385,6 +385,7 @@ static void yyerror( char const *msg ) {
 %token  <type>      Y_VIRTUAL
 
                     /* C++11 */
+%token  <type>      Y_CONSTEXPR
 %token              Y_RVALUE_REFERENCE  "&&"
 
                     /* C11 & C++11 */
@@ -418,7 +419,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  reference_decl_english
 %type   <ast_pair>  reference_english
 %type   <ast_pair>  returning_english
-%type   <type>      storage_class_opt_english
+%type   <type>      storage_class_english storage_class_list_opt_english
 %type   <ast_pair>  type_english
 %type   <type>      type_modifier_english
 %type   <type>      type_modifier_list_english type_modifier_list_opt_english
@@ -553,7 +554,7 @@ name_into_english
 /*****************************************************************************/
 
 declare_english
-  : declare_name_as_english storage_class_opt_english decl_english Y_END
+  : declare_name_as_english storage_class_list_opt_english decl_english Y_END
     {
       C_TYPE_ADD( &$3.ast->type, $2, @2 );
 
@@ -582,10 +583,27 @@ declare_name_as_english
     }
   ;
 
-storage_class_opt_english
+storage_class_list_opt_english
   : /* empty */                   { $$ = T_NONE; }
-  | Y_AUTO
+  | storage_class_list_opt_english storage_class_english
+    {
+      DUMP_START( "storage_class_list_opt_english",
+                  "storage_class_list_opt_english storage_class_english" );
+      DUMP_TYPE( "storage_class_list_opt_english", $1 );
+      DUMP_TYPE( "storage_class_english", $2 );
+
+      $$ = $1;
+      C_TYPE_ADD( &$$, $2, @2 );
+
+      DUMP_TYPE( "storage_class_list_opt_english", $$ );
+      DUMP_END();
+    }
+  ;
+
+storage_class_english
+  : Y_AUTO
   | Y___BLOCK                           /* Apple extension */
+  | Y_CONSTEXPR
   | Y_EXTERN
   | Y_FRIEND
   | Y_REGISTER
@@ -1565,6 +1583,7 @@ cv_qualifier_c
 storage_class_c
   : Y_AUTO
   | Y___BLOCK                           /* Apple extension */
+  | Y_CONSTEXPR
   | Y_EXTERN
   | Y_FRIEND
 /*| Y_REGISTER */                       /* in type_modifier_english */

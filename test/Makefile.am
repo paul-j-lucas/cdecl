@@ -199,6 +199,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_vf_v-c.test \
 	tests/declare_vi-knr.test \
 	tests/declare_w-c89.test \
+	tests/declare_xi-c.test \
 	tests/declare_z-knr.test
 
 ###############################################################################
@@ -378,6 +379,7 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_vf_v-c.test \
 	tests/explain_vi-knr.test \
 	tests/explain_w-c89.test \
+	tests/explain_xi-c.test \
 	tests/explain_z-knr.test
 
 ###############################################################################
@@ -506,7 +508,9 @@ TESTS+=	tests/declare_0f_v.test \
 	tests/declare_ref.test \
 	tests/declare_ri.test \
 	tests/declare_rpi.test \
-	tests/declare_vf_v.test
+	tests/declare_sxi.test \
+	tests/declare_vf_v.test \
+	tests/declare_xi.test
 
 #
 # C++ declare error tests
@@ -531,7 +535,9 @@ TESTS+=	tests/explain_cf_v.test \
 	tests/explain_pmfii_pk.test \
 	tests/explain_pmgi.test \
 	tests/explain_pmi.test \
-	tests/explain_ri.test
+	tests/explain_ri.test \
+	tests/explain_sxi.test \
+	tests/explain_xi.test
 
 #
 # C++ explain error tests
