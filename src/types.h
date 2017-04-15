@@ -39,48 +39,48 @@
 
 // types
 #define T_NONE            0
-#define T_VOID            0x0000000001ul
-#define T_BOOL            0x0000000002ul
-#define T_CHAR            0x0000000004ul
-#define T_CHAR16_T        0x0000000008ul
-#define T_CHAR32_T        0x0000000010ul
-#define T_WCHAR_T         0x0000000020ul
-#define T_SHORT           0x0000000040ul
-#define T_INT             0x0000000080ul
-#define T_LONG            0x0000000100ul
-#define T_LONG_LONG       0x0000000200ul  /* special case */
-#define T_SIZE_T          0x0000000400ul  /* because it's so common */
-#define T_SIGNED          0x0000000800ul
-#define T_UNSIGNED        0x0000001000ul
-#define T_FLOAT           0x0000002000ul
-#define T_DOUBLE          0x0000004000ul
-#define T_COMPLEX         0x0000008000ul
-#define T_ENUM            0x0000010000ul
-#define T_STRUCT          0x0000020000ul
-#define T_UNION           0x0000040000ul
-#define T_CLASS           0x0000080000ul
+#define T_VOID            0x0000000001ull
+#define T_BOOL            0x0000000002ull
+#define T_CHAR            0x0000000004ull
+#define T_CHAR16_T        0x0000000008ull
+#define T_CHAR32_T        0x0000000010ull
+#define T_WCHAR_T         0x0000000020ull
+#define T_SHORT           0x0000000040ull
+#define T_INT             0x0000000080ull
+#define T_LONG            0x0000000100ull
+#define T_LONG_LONG       0x0000000200ull /* special case */
+#define T_SIZE_T          0x0000000400ull /* because it's so common */
+#define T_SIGNED          0x0000000800ull
+#define T_UNSIGNED        0x0000001000ull
+#define T_FLOAT           0x0000002000ull
+#define T_DOUBLE          0x0000004000ull
+#define T_COMPLEX         0x0000008000ull
+#define T_ENUM            0x0000010000ull
+#define T_STRUCT          0x0000020000ull
+#define T_UNION           0x0000040000ull
+#define T_CLASS           0x0000080000ull
 
 // storage classes
-#define T_AUTO            0x0000100000ul
-#define T_BLOCK           0x0000200000ul  /* Apple extension */
-#define T_EXTERN          0x0000400000ul
-#define T_FRIEND          0x0000800000ul
-#define T_REGISTER        0x0001000000ul
-#define T_STATIC          0x0002000000ul
-#define T_THREAD_LOCAL    0x0004000000ul
-#define T_TYPEDEF         0x0008000000ul
-#define T_VIRTUAL         0x0010000000ul
-#define T_PURE_VIRTUAL    0x0020000000ul
+#define T_AUTO            0x0000100000ull
+#define T_BLOCK           0x0000200000ull /* Apple extension */
+#define T_EXTERN          0x0000400000ull
+#define T_FRIEND          0x0000800000ull
+#define T_REGISTER        0x0001000000ull
+#define T_STATIC          0x0002000000ull
+#define T_THREAD_LOCAL    0x0004000000ull
+#define T_TYPEDEF         0x0008000000ull
+#define T_VIRTUAL         0x0010000000ull
+#define T_PURE_VIRTUAL    0x0020000000ull
 
 // qualifiers
-#define T_CONST           0x0100000000ul
-#define T_RESTRICT        0x0200000000ul
-#define T_VOLATILE        0x0400000000ul
+#define T_CONST           0x0100000000ull
+#define T_RESTRICT        0x0200000000ull
+#define T_VOLATILE        0x0400000000ull
 
 // bit masks
-#define T_MASK_TYPE       0x00000FFFFFul
-#define T_MASK_STORAGE    0x00FFF00000ul
-#define T_MASK_QUALIFIER  0xFF00000000ul
+#define T_MASK_TYPE       0x00000FFFFFull
+#define T_MASK_STORAGE    0x00FFF00000ull
+#define T_MASK_QUALIFIER  0xFF00000000ull
 
 typedef uint64_t c_type_t;
 
