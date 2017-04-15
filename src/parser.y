@@ -500,7 +500,7 @@ command
   | set_command
   | quit_command
   | Y_END                               /* allows for blank lines */
-  | error Y_END
+  | error
     {
       if ( lexer_token[0] )
         PARSE_ERROR( "unexpected token" );
