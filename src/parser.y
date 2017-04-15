@@ -84,7 +84,7 @@
   print_kv( (KEY), (NAME), stdout ); )
 
 #define DUMP_NUM(KEY,NUM) \
-  CDEBUG( DUMP_COMMA; printf( KEY " = %d", (NUM) ); )
+  CDEBUG( DUMP_COMMA; printf( "  " KEY " = %d", (NUM) ); )
 
 #ifdef WITH_CDECL_DEBUG
 #define DUMP_START(NAME,PROD) \
