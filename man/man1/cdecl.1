@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 14, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 15, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -503,7 +503,7 @@ is one of:
 .br
 .BR block " [" ( \f2arg-list\fP ) "] " returning " \f2english\fP"
 .br
-.RB [ \f2storage-class\fP "] " function " [" ( \f2arg-list\fP ) "] " returning " \f2english\fP"
+.RB [ \f2storage-class\fP "] [" \f2qualifier\fP "] " function " [" ( \f2arg-list\fP ) "] " returning " \f2english\fP"
 .br
 .RB [{ \f2qualifier\fP "}] " "pointer to" " [" "member of class" " \f2name\fP" ] " \f2english\fP"
 .br
@@ -1000,26 +1000,18 @@ and the C11
 function specifier
 are not supported.
 .IP \n+[step].
-C++ member functions that are
-\f(CWconst\fP
-and/or
-\f(CWvolatile\fP,
-or deleted
+Fully qualified C++ member functions
+or C++ member functions that are deleted
 are not supported:
 .cS
-void f() const;
-void g() = delete;
-.cE 0
-.IP \n+[step].
-Fully qualified C++ member functions are not supported:
-.cS
-void C::f();
+void C::f();                      // not supported
+void f() = delete;                // not supported
 .cE 0
 .IP \n+[step].
 C++
 constructors,
 destructors,
-template declarations,
+overloaded operator and template declarations,
 function exception specifications
 (\f(CWthrow()\fP and \f(CWnoexcept\fP)
 and
@@ -1100,12 +1092,20 @@ added
 \f(CWwchar_t\fP,
 \f(CWregister\fP and variadic function arguments,
 rvalue reference,
-\f(CWtypedef\fP,
-\f(CWfriend\fP and \f(CWvirtual\fP function declarations;
 and
-octal and hexadecimal array sizes;
+\f(CWtypedef\fP
+declarations;
+added
+\f(CWfriend\fP,
+\f(CWconst\fP,
+\f(CWvolatile\fP,
+\f(CWvirtual\fP,
+and
+pure \f(CWvirtual\fP
+C++ member function declarations;
+added octal and hexadecimal array sizes;
 added better warning and error messages;
-error messages and help in color;
+error messages and help are now in color;
 now ignoring C \f(CW/*...*/\fP and C++ \f(CW//\fP comments in lexer;
 now treating cdecl keywords in declarations as ordinary names;
 revamped the manual page.

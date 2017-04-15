@@ -59,17 +59,17 @@ static help_text_t const HELP_TEXT[] = {
 /*  7 */  { "  help | ?", NULL },
 /*  8 */  { "  exit | quit | q", NULL },
 /*  9 */  { "english:", NULL },
-/* 10 */  { "  [<storage-class>] array [<number>] of <english>", NULL },
-/* 11 */  { "  block [( [<arg-list>] )] returning <english>", NULL },
-/* 12 */  { "  [<storage-class>] function [( [<arg-list>] )] returning <english>", NULL },
-/* 13 */  { "  [{ const | volatile | restrict }] pointer to <english>",
-            "  [{ const | volatile }] pointer to [member of class <name>] <english>" },
+/* 10 */  { "  [<storage>] array [<number>] of <english>", NULL },
+/* 11 */  { "  block [([<arg-list>])] returning <english>", NULL },
+/* 12 */  { "  [<storage>] [{const | volatile}] function [([<arg-list>])] returning <english>", NULL },
+/* 13 */  { "  [{const | volatile | restrict}] pointer to <english>",
+            "  [{const | volatile}] pointer to [member of class <name>] <english>" },
 /* 14 */  { "",
             "  [rvalue] reference to <english>" },
 /* 15 */  { "  <type>", NULL },
 /* 16 */  { "type:", NULL },
-/* 17 */  { "  [<storage-class>] [{<modifier>}] [<C-type>]",
-            "  [<storage-class>] [{<modifier>}] [<C++-type>]" },
+/* 17 */  { "  [<storage>] [{<modifier>}] [<C-type>]",
+            "  [<storage>] [{<modifier>}] [<C++-type>]" },
 /* 18 */  { "  { enum | struct | union } <name>",
             "  { enum | struct | union | class } <name>" },
 /* 19 */  { "arg-list: a comma separated list of <name>, <english>, or <name> as <english>",
@@ -80,8 +80,8 @@ static help_text_t const HELP_TEXT[] = {
             "C++-type: bool char char16_t char32_t wchar_t int float double size_t void" },
 /* 22 */  { "modifier: short long signed unsigned const restrict volatile",
             "modifier: short long signed unsigned const volatile" },
-/* 23 */  { "storage-class: auto extern register static _Thread_local",
-            "storage-class: extern friend register static thread_local virtual" },
+/* 23 */  { "storage: auto extern register static _Thread_local",
+            "storage: extern friend register static thread_local [pure] virtual" },
           { NULL, NULL }
 };
 
@@ -95,7 +95,6 @@ static help_text_t const HELP_TEXT[] = {
 static void print_help_line( char const *line ) {
   if ( !line[0] )
     return;
-  PUTC_OUT( ' ' );
   for ( char const *c = line; *c; ++c ) {
     switch ( *c ) {
       case '<':

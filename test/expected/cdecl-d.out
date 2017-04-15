@@ -369,6 +369,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' = {
       type = "int"
     }
   ],
+  type_qualifier_list_opt_c = null,
   pure_virtual_opt_c = null,
   func_decl_c = {
     id = 5,

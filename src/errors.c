@@ -274,6 +274,14 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           return VISITOR_ERROR_FOUND;
         }
       }
+      else if ( (ast->type & T_MASK_QUALIFIER) ) {
+        print_error( &ast->loc,
+          "\"%s\" functions illegal in %s",
+          c_type_name( ast->type & T_MASK_QUALIFIER ),
+          c_lang_name( opt_lang )
+        );
+        return VISITOR_ERROR_FOUND;
+      }
       // no break;
     case K_BLOCK: {                     // Apple extension
       c_ast_t const *const ret_ast = ast->as.func.ret_ast;

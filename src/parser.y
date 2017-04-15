@@ -704,7 +704,6 @@ quit_command
 
 decl_english
   : array_decl_english
-  | func_decl_english
   | qualified_decl_english
   | var_decl_english
   ;
@@ -758,13 +757,15 @@ func_decl_english
     {
       DUMP_START( "func_decl_english",
                   "FUNCTION paren_decl_list_opt_english returning_english" );
+      DUMP_TYPE( "qualifier", qualifier_peek() );
       DUMP_AST_LIST( "decl_list_opt_english", $2 );
       DUMP_AST( "returning_english", $3.ast );
 
       $$.ast = C_AST_NEW( K_FUNCTION, &@$ );
       $$.target_ast = NULL;
-      c_ast_set_parent( $3.ast, $$.ast );
+      $$.ast->type = qualifier_peek();
       $$.ast->as.func.args = $2;
+      c_ast_set_parent( $3.ast, $$.ast );
 
       DUMP_AST( "func_decl_english", $$.ast );
       DUMP_END();
@@ -845,6 +846,7 @@ qualified_decl_english
 
 qualifiable_decl_english
   : block_decl_english
+  | func_decl_english
   | pointer_decl_english
   | pointer_to_member_decl_english
   | reference_decl_english
@@ -1136,18 +1138,20 @@ block_decl_c                            /* Apple extension */
   ;
 
 func_decl_c
-  : /* type_c */ decl2_c '(' arg_list_opt_c ')' pure_virtual_opt_c
+  : /* type_c */ decl2_c '(' arg_list_opt_c ')' type_qualifier_list_opt_c
+    pure_virtual_opt_c
     {
       DUMP_START( "func_decl_c", "decl2_c '(' arg_list_opt_c ')'" );
       DUMP_AST( "type_c", type_peek() );
       DUMP_AST( "decl2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
-      DUMP_TYPE( "pure_virtual_opt_c", $5 );
+      DUMP_TYPE( "type_qualifier_list_opt_c", $5 );
+      DUMP_TYPE( "pure_virtual_opt_c", $6 );
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
 
       c_ast_t *const func = C_AST_NEW( K_FUNCTION, &@$ );
-      func->type = $5;
+      func->type = $5 | $6;
       func->as.func.args = $3;
       if ( $1.target_ast ) {
         $$.ast = $1.ast;

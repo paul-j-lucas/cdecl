@@ -1,23 +1,23 @@
- | = alternate; [] = optional; {} = 1 or more; <> = defined elsewhere
- command:
-   declare <name> as <english>
-   cast <name> into <english>
-   explain <gibberish>
-   set [options]
-   help | ?
-   exit | quit | q
- english:
-   [<storage-class>] array [<number>] of <english>
-   block [( [<arg-list>] )] returning <english>
-   [<storage-class>] function [( [<arg-list>] )] returning <english>
-   [{ const | volatile }] pointer to [member of class <name>] <english>
-   [rvalue] reference to <english>
-   <type>
- type:
-   [<storage-class>] [{<modifier>}] [<C++-type>]
-   { enum | struct | union | class } <name>
- arg-list: a comma separated list of <english> or <name> as <english>
- gibberish: a C++ declaration, like "int *x"; or cast, like "(int*)x"
- C++-type: bool char char16_t char32_t wchar_t int float double size_t void
- modifier: short long signed unsigned const volatile
- storage-class: extern friend register static thread_local virtual
+| = alternate; [] = optional; {} = 1 or more; <> = defined elsewhere
+command:
+  declare <name> as <english>
+  cast <name> into <english>
+  explain <gibberish>
+  set [options]
+  help | ?
+  exit | quit | q
+english:
+  [<storage>] array [<number>] of <english>
+  block [([<arg-list>])] returning <english>
+  [<storage>] [{const | volatile}] function [([<arg-list>])] returning <english>
+  [{const | volatile}] pointer to [member of class <name>] <english>
+  [rvalue] reference to <english>
+  <type>
+type:
+  [<storage>] [{<modifier>}] [<C++-type>]
+  { enum | struct | union | class } <name>
+arg-list: a comma separated list of <english> or <name> as <english>
+gibberish: a C++ declaration, like "int *x"; or cast, like "(int*)x"
+C++-type: bool char char16_t char32_t wchar_t int float double size_t void
+modifier: short long signed unsigned const volatile
+storage: extern friend register static thread_local [pure] virtual

@@ -144,6 +144,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_c16-c99.test \
 	tests/declare_c32-c++03.test \
 	tests/declare_c32-c99.test \
+	tests/declare_cf_v-c.test \
 	tests/declare_ci-knr.test \
 	tests/declare_e-knr.test \
 	tests/declare_esf_v.test \
@@ -178,6 +179,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_lv.test \
 	tests/declare_lw.test \
 	tests/declare_pv-knr.test \
+	tests/declare_rf_v-c.test \
 	tests/declare_sb.test \
 	tests/declare_sc-knr.test \
 	tests/declare_sc16.test \
@@ -312,6 +314,7 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_c16-c99.test \
 	tests/explain_c32-c++03.test \
 	tests/explain_c32-c99.test \
+	tests/explain_cf_v-c.test \
 	tests/explain_ci-knr.test \
 	tests/explain_e-knr.test \
 	tests/explain_esf_v.test \
@@ -488,6 +491,7 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 # =================
 #
 TESTS+=	tests/declare_0f_v.test \
+	tests/declare_cf_v.test \
 	tests/declare_cpmi.test \
 	tests/declare_f_pmi.test \
 	tests/declare_frri_v.test \
@@ -510,6 +514,7 @@ TESTS+=	tests/declare_0f_v.test \
 #
 TESTS+=	tests/declare_pmri.test \
 	tests/declare_pri.test \
+	tests/declare_rf_v.test \
 	tests/declare_rgi.test \
 	tests/declare_rv.test
 
@@ -517,7 +522,9 @@ TESTS+=	tests/declare_pmri.test \
 # C++ explain tests
 # =================
 #
-TESTS+=	tests/explain_f_pmi.test \
+TESTS+=	tests/explain_cf_v.test \
+	tests/explain_cvf_v.test \
+	tests/explain_f_pmi.test \
 	tests/explain_frri_v.test \
 	tests/explain_pmf_i.test \
 	tests/explain_pmf_pc.test \

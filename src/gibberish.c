@@ -134,16 +134,26 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
   assert( param != NULL );
 
+  c_type_t ast_type = ast->type;
+  c_type_t cv_qualifier = T_NONE;
   c_type_t pure_virtual = T_NONE;
 
   switch ( ast->kind ) {
     case K_FUNCTION:
-      pure_virtual = (ast->type & T_PURE_VIRTUAL);
+      //
+      // cv-qualifier(s) and pure virtual's "= 0" aren't printed as part of the
+      // type beforehand, so strip them out of the type here, but print them
+      // after the arguments.
+      //
+      cv_qualifier = (ast_type & T_MASK_QUALIFIER);
+      pure_virtual = (ast_type & T_PURE_VIRTUAL);
+      ast_type &= ~(T_MASK_QUALIFIER | T_PURE_VIRTUAL);
       // no break;
+
     case K_ARRAY:
     case K_BLOCK:                       // Apple extension
-      if ( ast->type )                  // storage class
-        FPRINTF( param->gout, "%s ", c_type_name( ast->type & ~pure_virtual ) );
+      if ( ast_type )                   // storage class
+        FPRINTF( param->gout, "%s ", c_type_name( ast_type ) );
       c_ast_gibberish_impl( ast->as.parent.of_ast, param );
       if ( false_set( &param->postfix ) ) {
         if ( param->gkind != G_CAST )
@@ -153,19 +163,21 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         else
           c_ast_gibberish_postfix( ast, param );
       }
+      if ( cv_qualifier )
+        FPRINTF( param->gout, " %s", c_type_name( cv_qualifier ) );
       if ( pure_virtual )
         FPUTS( " = 0", param->gout );
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name( ast->type ), param->gout );
+      FPUTS( c_type_name( ast_type ), param->gout );
       c_ast_gibberish_space_name( ast, param );
       param->leaf_ast = ast;
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
       FPRINTF( param->gout,
-        "%s %s", c_type_name( ast->type ), ast->as.ecsu.ecsu_name
+        "%s %s", c_type_name( ast_type ), ast->as.ecsu.ecsu_name
       );
       c_ast_gibberish_space_name( ast, param );
       param->leaf_ast = ast;

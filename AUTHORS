@@ -75,7 +75,8 @@ Paul J. Lucas <paul@lucasmail.org>
 	added register and variadic function arguments
 	added rvalue references
 	independently added typedef declarations
-	added friend, virtual, and pur virtual C++ declarations
+	added friend, const, volatile, virtual, and pure virtual C++ member
+		function declarations
 	added octal and hexadecimal array sizes
 	added better warning and error messages
 	now ignoring C /*...*/ and C++ // comments in lexer
