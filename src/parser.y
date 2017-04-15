@@ -24,7 +24,7 @@
  * grammar for C/C++ declarations.
  */
 
-%expect 7
+%expect 1
 
 %{
 // local
@@ -421,8 +421,7 @@ static void yyerror( char const *msg ) {
 %type   <type>      storage_class_opt_english
 %type   <ast_pair>  type_english
 %type   <type>      type_modifier_english
-%type   <type>      type_modifier_list_english
-%type   <type>      type_modifier_list_opt_english
+%type   <type>      type_modifier_list_english type_modifier_list_opt_english
 %type   <ast_pair>  unmodified_type_english
 %type   <ast_pair>  var_decl_english
 
@@ -1017,11 +1016,11 @@ type_modifier_list_opt_english
   ;
 
 type_modifier_list_english
-  : type_modifier_list_opt_english type_modifier_english
+  : type_modifier_list_english type_modifier_english
     {
-      DUMP_START( "type_modifier_list_opt_english",
-                  "type_modifier_list_opt_english type_modifier_english" );
-      DUMP_TYPE( "type_modifier_list_opt_english", $1 );
+      DUMP_START( "type_modifier_list_english",
+                  "type_modifier_list_english type_modifier_english" );
+      DUMP_TYPE( "type_modifier_list_english", $1 );
       DUMP_TYPE( "type_modifier_english", $2 );
 
       $$ = $1;
