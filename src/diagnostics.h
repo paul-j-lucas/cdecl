@@ -30,9 +30,6 @@
 #include "config.h"                     /* must go first */
 #include "common.h"                     /* for YYLTYPE */
 
-// standard
-#include <stddef.h>                     /* for size_t */
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
