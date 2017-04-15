@@ -61,9 +61,9 @@ void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *fout );
  * @param key The key to print.
  * @param value The value to print, if any.  If either null or the empty
  * string, \c null is printed instead of the value.
- * @param jout The FILE to print to.
+ * @param out The FILE to print to.
  */
-void print_kv( char const *key, char const *value, FILE *jout );
+void print_kv( char const *key, char const *value, FILE *out );
 
 ///////////////////////////////////////////////////////////////////////////////
 

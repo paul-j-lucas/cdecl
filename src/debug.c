@@ -150,12 +150,12 @@ void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
   }
 }
 
-void print_kv( char const *key, char const *value, FILE *dout ) {
+void print_kv( char const *key, char const *value, FILE *out ) {
   assert( key != NULL );
   if ( value && *value )
-    FPRINTF( dout, "%s = \"%s\"", key, value );
+    FPRINTF( out, "%s = \"%s\"", key, value );
   else
-    FPRINTF( dout, "%s = null", key );
+    FPRINTF( out, "%s = null", key );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
