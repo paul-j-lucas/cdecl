@@ -148,12 +148,12 @@ static void     lexer_fatal( char const* );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Finds the keyword matching \a s, if any.
+ * Finds a cdecl keyword matching \a s, if any.
  *
  * @param s The string to find.
  * @return Returns a pointer to the corresponding keyword or null if not found.
  */
-static keyword_t const* keyword_find( char const *s ) {
+static keyword_t const* cdecl_keyword_find( char const *s ) {
   for ( keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
     if ( strcmp( s, k->literal ) == 0 )
       return k;
@@ -266,7 +266,7 @@ H             [0-9A-Fa-f]
                 SET_TOKEN;
 
                 if ( !explaining ) {
-                  keyword_t const *const k = keyword_find( lexer_token );
+                  keyword_t const *const k = cdecl_keyword_find( lexer_token );
                   if ( k ) {
                     if ( k->c_keyword_synonym )
                       lexer_token = k->c_keyword_synonym;
