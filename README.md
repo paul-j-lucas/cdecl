@@ -89,18 +89,12 @@ David Conrad made contributions for version 2.5 and wrote:
 
 (See the included `README-orig.txt` for David's full comments.)
 
-One of David's contributions was adding GNU readline support.
-However, GNU readline is under the GNU General Public License (GPL).
-That means that any program that links with GNU readline
-*must* also be under the GPL.
-
 Something in the Public Domain allows anyone to do whatever they want with it.
 Assuming that David is correct
 and that **cdecl** is in the Public Domain,
-and given the GNU readline GPL issue,
 I therefore am licencing **cdecl** 3.0 under the GPLv3.
 
 **Paul J. Lucas**  
 *paul@lucasmail.org*  
 San Francisco, California, USA  
-8 April 2017
+16 April 2017
