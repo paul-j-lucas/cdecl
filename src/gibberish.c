@@ -134,20 +134,23 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
   assert( param != NULL );
 
-  c_type_t ast_type = ast->type;
-  c_type_t cv_qualifier = T_NONE;
-  c_type_t pure_virtual = T_NONE;
+  c_type_t  ast_type        = ast->type;
+  c_type_t  cv_qualifier    = T_NONE;
+  bool      is_final        = false;
+  bool      is_override     = false;
+  bool      is_pure_virtual = false;
 
   switch ( ast->kind ) {
     case K_FUNCTION:
       //
-      // cv-qualifier(s) and pure virtual's "= 0" aren't printed as part of the
-      // type beforehand, so strip them out of the type here, but print them
-      // after the arguments.
+      // These things aren't printed as part of the type beforehand, so strip
+      // them out of the type here, but print them after the arguments.
       //
-      cv_qualifier = (ast_type & T_MASK_QUALIFIER);
-      pure_virtual = (ast_type & T_PURE_VIRTUAL);
-      ast_type &= ~(T_MASK_QUALIFIER | T_PURE_VIRTUAL);
+      cv_qualifier    = (ast_type & T_MASK_QUALIFIER);
+      is_final        = (ast_type & T_FINAL) != 0;
+      is_override     = (ast_type & T_OVERRIDE) != 0;
+      is_pure_virtual = (ast_type & T_PURE_VIRTUAL) != 0;
+      ast_type &= ~(T_MASK_QUALIFIER | T_FINAL | T_OVERRIDE | T_PURE_VIRTUAL);
       // no break;
 
     case K_ARRAY:
@@ -165,7 +168,11 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       }
       if ( cv_qualifier )
         FPRINTF( param->gout, " %s", c_type_name( cv_qualifier ) );
-      if ( pure_virtual )
+      if ( is_override )
+        FPRINTF( param->gout, " %s", L_OVERRIDE );
+      if ( is_final )
+        FPRINTF( param->gout, " %s", L_FINAL );
+      if ( is_pure_virtual )
         FPUTS( " = 0", param->gout );
       break;
 

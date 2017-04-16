@@ -44,8 +44,10 @@ most notably:
 * Support for C++11 `constexpr` and rvalue references.
 * Support for `typedef` declarations.
 * Support for
-  `friend`,
   `const`,
+  `final`,
+  `friend`,
+  `override`,
   `volatile`,
   `virtual`,
   and

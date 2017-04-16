@@ -82,6 +82,8 @@ static c_keyword_t const C_KEYWORDS[] = {
 
   // C++11
   { L_CONSTEXPR,     Y_CONSTEXPR,    T_CONSTEXPR    },
+  { L_FINAL,         Y_FINAL,        T_FINAL        },
+  { L_OVERRIDE,      Y_OVERRIDE,     T_OVERRIDE,    },
 
   // C11 & C++11
   { L_CHAR16_T,      Y_CHAR16_T,     T_CHAR16_T     },

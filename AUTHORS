@@ -75,8 +75,8 @@ Paul J. Lucas <paul@lucasmail.org>
 	added register and variadic function arguments
 	added C++11 constexpr rvalue references
 	independently added typedef declarations
-	added friend, const, volatile, virtual, and pure virtual C++ member
-		function declarations
+	added final, friend, const, override, volatile, virtual,
+		and pure virtual C++ member function declarations
 	made "returning" optional
 	added binary, octal, and hexadecimal array sizes
 	added better warning and error messages

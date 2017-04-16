@@ -109,6 +109,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_MEMBER,         TOKEN( Y_MEMBER ),      },
   { L__NORETURN,      C_SYN( L_NORETURN )     },
   { L_OF,             TOKEN( Y_OF ),          },
+  { L_OVERRIDDEN,     C_SYN( L_OVERRIDE )     },
   { L_POINTER,        TOKEN( Y_POINTER )      },
   { L_PTR,            TOKEN( Y_POINTER )      },
   { L_PURE,           TOKEN( Y_PURE )         },

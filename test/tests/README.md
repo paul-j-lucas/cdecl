@@ -33,6 +33,7 @@ The characters are:
 + `l` = `long`
 + `m` = member of class
 + `n` = nested, `noreturn`, or `union`
++ `o` = `override`
 + `p` = pointer
 + `r` = `restrict` or reference
 + `s` = `signed` or `static`
@@ -41,6 +42,7 @@ The characters are:
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
 + `x` = `constexpr` or untyped K&R function argument
++ 'y' = `final`
 + `z` = `complex` or `size_t`
 
 A function's return type is separated from its arguments by `_`.

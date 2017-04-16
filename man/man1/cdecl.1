@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 15, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 16, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -403,8 +403,12 @@ Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
 rvalue references,
+\f(CWthread_local\fP,
 and
-\f(CWthread_local\fP.
+\f(CWfinal\fP
+and
+\f(CWoverride\fP
+member functions.
 .RE
 .IP ""
 The default is
@@ -591,8 +595,10 @@ One of:
 \f(CWblock\fP,
 \f(CWconstexpr\fP,
 \f(CWextern\fP,
+\f(CWfinal\fP,
 \f(CWfriend\fP,
 \f(CWnoreturn\fP,
+\f(CWoverride\fP,
 \f(CWregister\fP,
 \f(CWstatic\fP,
 \f(CWthread_local\fP,
@@ -622,6 +628,7 @@ The words on the left are synonyms for what's on the right:
           mbr  member
 non-returning  noreturn
     _Noreturn  noreturn
+   overridden  override
           ptr  pointer
           ref  reference
    restricted  restrict
@@ -721,8 +728,12 @@ Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
 rvalue references,
+\f(CWthread_local\fP,
 and
-\f(CWthread_local\fP.
+\f(CWfinal\fP
+and
+\f(CWoverride\fP
+member functions.
 .TP
 .RB [ no ] debug
 Turns [off] or on debugging output
@@ -1121,8 +1132,10 @@ and
 \f(CWtypedef\fP
 declarations;
 added
-\f(CWfriend\fP,
 \f(CWconst\fP,
+\f(CWfinal\fP,
+\f(CWfriend\fP,
+\f(CWoverride\fP,
 \f(CWvolatile\fP,
 \f(CWvirtual\fP,
 and

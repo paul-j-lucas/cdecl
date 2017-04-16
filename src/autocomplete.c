@@ -67,6 +67,7 @@ static char const *const CDECL_KEYWORDS[] = {
   L_DOUBLE,
   L_ENUM,
   L_EXTERN,
+  L_FINAL,
   L_FLOAT,
   L_FRIEND,
   L_FUNCTION,
@@ -76,6 +77,7 @@ static char const *const CDECL_KEYWORDS[] = {
   L_MEMBER,
   L_NORETURN,
 //L_OF,                                 // too short
+  L_OVERRIDE,
   L_POINTER,
   L_PURE,
   L_REFERENCE,

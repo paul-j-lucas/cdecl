@@ -1,0 +1,1 @@
+cdecl | -xc++ | explain void f() final | 0

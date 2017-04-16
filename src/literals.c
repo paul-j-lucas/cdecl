@@ -108,6 +108,9 @@ char const L_VIRTUAL[]        = "virtual";
 
 // C++11
 char const L_CONSTEXPR[]      = "constexpr";
+char const L_FINAL[]          = "final";
+char const L_OVERRIDE[]       = "override";
+char const L_OVERRIDDEN[]     = "overridden";
 
 // C11 & C++11
 char const L_CHAR16_T[]       = "char16_t";

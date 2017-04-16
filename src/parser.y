@@ -386,6 +386,8 @@ static void yyerror( char const *msg ) {
 
                     /* C++11 */
 %token  <type>      Y_CONSTEXPR
+%token  <type>      Y_FINAL
+%token  <type>      Y_OVERRIDE
 %token              Y_RVALUE_REFERENCE  "&&"
 
                     /* C11 & C++11 */
@@ -455,12 +457,12 @@ static void yyerror( char const *msg ) {
 %type   <type>      builtin_type_c
 %type   <type>      class_struct_type_c class_struct_type_expected_c
 %type   <type>      cv_qualifier_c
+%type   <type>      func_qualifier_c func_qualifier_list_opt_c
 %type   <type>      enum_class_struct_union_type_c
 %type   <type>      storage_class_c
 %type   <type>      type_modifier_c
 %type   <type>      type_modifier_list_c type_modifier_list_opt_c
-%type   <type>      type_qualifier_c
-%type   <type>      type_qualifier_list_opt_c
+%type   <type>      type_qualifier_c type_qualifier_list_opt_c
 
 %type   <ast_pair>  arg_c
 %type   <ast_list>  arg_list_c arg_list_opt_c
@@ -605,8 +607,10 @@ storage_class_english
   | Y___BLOCK                           /* Apple extension */
   | Y_CONSTEXPR
   | Y_EXTERN
+  | Y_FINAL
   | Y_FRIEND
   | Y_NORETURN
+  | Y_OVERRIDE
   | Y_REGISTER
   | Y_STATIC
   | Y_THREAD_LOCAL
@@ -1169,14 +1173,14 @@ block_decl_c                            /* Apple extension */
   ;
 
 func_decl_c
-  : /* type_c */ decl2_c '(' arg_list_opt_c ')' type_qualifier_list_opt_c
+  : /* type_c */ decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c
     pure_virtual_opt_c
     {
       DUMP_START( "func_decl_c", "decl2_c '(' arg_list_opt_c ')'" );
       DUMP_AST( "type_c", type_peek() );
       DUMP_AST( "decl2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
-      DUMP_TYPE( "type_qualifier_list_opt_c", $5 );
+      DUMP_TYPE( "func_qualifier_list_opt_c", $5 );
       DUMP_TYPE( "pure_virtual_opt_c", $6 );
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
@@ -1195,6 +1199,29 @@ func_decl_c
       DUMP_AST( "func_decl_c", $$.ast );
       DUMP_END();
     }
+  ;
+
+func_qualifier_list_opt_c
+  : /* empty */                   { $$ = T_NONE; }
+  | func_qualifier_list_opt_c func_qualifier_c
+    {
+      DUMP_START( "func_qualifier_list_opt_c",
+                  "func_qualifier_list_opt_c func_qualifier_c" );
+      DUMP_TYPE( "func_qualifier_list_opt_c", $1 );
+      DUMP_TYPE( "func_qualifier_c", $2 );
+
+      $$ = $1;
+      C_TYPE_ADD( &$$, $2, @2 );
+
+      DUMP_TYPE( "func_qualifier_list_opt_c", $$ );
+      DUMP_END();
+    }
+  ;
+
+func_qualifier_c
+  : cv_qualifier_c
+  | Y_FINAL
+  | Y_OVERRIDE
   ;
 
 pure_virtual_opt_c
@@ -1599,8 +1626,10 @@ storage_class_c
   | Y___BLOCK                           /* Apple extension */
   | Y_CONSTEXPR
   | Y_EXTERN
+  | Y_FINAL
   | Y_FRIEND
   | Y_NORETURN
+  | Y_OVERRIDE
 /*| Y_REGISTER */                       /* in type_modifier_english */
   | Y_STATIC
   | Y_TYPEDEF

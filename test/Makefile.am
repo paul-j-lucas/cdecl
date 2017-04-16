@@ -384,6 +384,7 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_v.test \
 	tests/explain_vf_v-c.test \
 	tests/explain_vi-knr.test \
+	tests/explain_voyf-c.test \
 	tests/explain_w-c89.test \
 	tests/explain_xi-c.test \
 	tests/explain_z-knr.test
@@ -503,6 +504,7 @@ TESTS+=	tests/declare_0f_v.test \
 	tests/declare_cpmi.test \
 	tests/declare_f_pmi.test \
 	tests/declare_frri_v.test \
+	tests/declare_oyf.test \
 	tests/declare_pfv_ri.test \
 	tests/declare_pmci.test \
 	tests/declare_pmci.test \
@@ -516,7 +518,9 @@ TESTS+=	tests/declare_0f_v.test \
 	tests/declare_rpi.test \
 	tests/declare_sxi.test \
 	tests/declare_vf_v.test \
-	tests/declare_xi.test
+	tests/declare_voyf.test \
+	tests/declare_xi.test \
+	tests/declare_yf.test
 
 #
 # C++ declare error tests
@@ -536,6 +540,7 @@ TESTS+=	tests/explain_cf_v.test \
 	tests/explain_cvf_v.test \
 	tests/explain_f_pmi.test \
 	tests/explain_frri_v.test \
+	tests/explain_oyf.test \
 	tests/explain_pmf_i.test \
 	tests/explain_pmf_pc.test \
 	tests/explain_pmfii_pk.test \
@@ -543,7 +548,9 @@ TESTS+=	tests/explain_cf_v.test \
 	tests/explain_pmi.test \
 	tests/explain_ri.test \
 	tests/explain_sxi.test \
-	tests/explain_xi.test
+	tests/explain_voyf.test \
+	tests/explain_xi.test \
+	tests/explain_yf.test
 
 #
 # C++ explain error tests

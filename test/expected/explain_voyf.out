@@ -1,0 +1,1 @@
+declare f as virtual override final function returning void

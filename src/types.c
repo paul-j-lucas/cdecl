@@ -87,14 +87,17 @@ static c_type_info_t const C_TYPE_INFO[] = {
 static c_type_info_t const C_STORAGE_INFO[] = {
   { T_AUTO,         L_AUTO,         LANG_ALL                        },
   { T_BLOCK,        L___BLOCK,      LANG_ALL /* Apple extension */  },
-  { T_CONSTEXPR,    L_CONSTEXPR,    LANG_CPP_11                     },
   { T_EXTERN,       L_EXTERN,       LANG_ALL                        },
-  { T_FRIEND,       L_FRIEND,       LANG_CPP_ALL                    },
-  { T_NORETURN,     L_NORETURN,     LANG_C_11                       },
   { T_REGISTER,     L_REGISTER,     LANG_ALL                        },
   { T_STATIC,       L_STATIC,       LANG_ALL                        },
   { T_THREAD_LOCAL, L_THREAD_LOCAL, LANG_C_11 | LANG_MIN(CPP_11)    },
   { T_TYPEDEF,      L_TYPEDEF,      LANG_ALL                        },
+
+  { T_CONSTEXPR,    L_CONSTEXPR,    LANG_MIN(CPP_11)                },
+  { T_FINAL,        L_FINAL,        LANG_MIN(CPP_11)                },
+  { T_FRIEND,       L_FRIEND,       LANG_CPP_ALL                    },
+  { T_NORETURN,     L_NORETURN,     LANG_C_11                       },
+  { T_OVERRIDE,     L_OVERRIDE,     LANG_MIN(CPP_11)                },
   { T_VIRTUAL,      L_VIRTUAL,      LANG_CPP_ALL                    },
   { T_PURE_VIRTUAL, L_PURE,         LANG_CPP_ALL                    },
 };
@@ -150,19 +153,22 @@ static c_lang_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
  * Only the lower triangle is used.
  */
 static c_lang_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
-/*                   a  b  c  e  f  nr r  s  tl td v  pv */
-/* auto         */ { __,__,__,__,__,__,__,__,__,__,__,__ },
-/* block        */ { __,__,__,__,__,__,__,__,__,__,__,__ },
-/* constexpr    */ { P1,P1,P1,__,__,__,__,__,__,__,__,__ },
-/* extern       */ { XX,__,P1,__,__,__,__,__,__,__,__,__ },
-/* friend       */ { XX,XX,P1,XX,PP,__,__,__,__,__,__,__ },
-/* noreturn     */ { XX,XX,XX,C1,XX,C1,__,__,__,__,__,__ },
-/* register     */ { XX,__,XX,XX,XX,XX,__,__,__,__,__,__ },
-/* static       */ { XX,XX,P1,XX,XX,C1,XX,__,__,__,__,__ },
-/* thread_local */ { XX,E1,P1,E1,XX,XX,XX,E1,E1,__,__,__ },
-/* typedef      */ { XX,__,XX,XX,XX,XX,XX,XX,XX,__,__,__ },
-/* virtual      */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,PP,__ },
-/* pure virtual */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,PP,PP },
+/*                   a  b  e  r  s  tl td   c  fi fr nr o  v  pv */
+/* auto         */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__ },
+/* block        */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__ },
+/* extern       */ { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__ },
+/* register     */ { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__ },
+/* static       */ { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__ },
+/* thread_local */ { XX,E1,E1,XX,E1,E1,__,  __,__,__,__,__,__,__ },
+/* typedef      */ { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__ },
+
+/* constexpr    */ { P1,P1,P1,XX,P1,XX,XX,  P1,__,__,__,__,__,__ },
+/* final        */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,__,__,__,__,__ },
+/* friend       */ { XX,XX,XX,XX,XX,XX,XX,  P1,XX,PP,__,__,__,__ },
+/* noreturn     */ { XX,XX,C1,XX,C1,XX,XX,  XX,XX,XX,C1,__,__,__ },
+/* override     */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,P1,__,__ },
+/* virtual      */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,P1,PP,__ },
+/* pure virtual */ { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,P1,PP,PP },
 };
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -218,7 +224,6 @@ c_lang_t c_type_check( c_type_t type ) {
     if ( (type & ti->type) && !(opt_lang & ti->ok_langs) )
       return ti->ok_langs;
   } // for
-
 
   //
   // Check that the qualifier(s) are legal in the current language.
@@ -305,6 +310,9 @@ char const* c_type_name( c_type_t type ) {
     // These are second so we get names like "static constexpr".
     T_CONSTEXPR,
     T_NORETURN,
+
+    T_OVERRIDE,
+    T_FINAL
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_CLASS ); ++i ) {
     if ( (type & C_STORAGE_CLASS[i]) ) {

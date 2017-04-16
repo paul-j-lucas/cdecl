@@ -63,26 +63,30 @@
 // storage classes
 #define T_AUTO            0x0000100000ull
 #define T_BLOCK           0x0000200000ull /* Apple extension */
-#define T_CONSTEXPR       0x0000400000ull
-#define T_EXTERN          0x0000800000ull
-#define T_FRIEND          0x0001000000ull
-#define T_NORETURN        0x0002000000ull
-#define T_REGISTER        0x0004000000ull
-#define T_STATIC          0x0008000000ull
-#define T_THREAD_LOCAL    0x0010000000ull
-#define T_TYPEDEF         0x0020000000ull
-#define T_VIRTUAL         0x0040000000ull
-#define T_PURE_VIRTUAL    0x0080000000ull
+#define T_EXTERN          0x0000400000ull
+#define T_REGISTER        0x0000800000ull
+#define T_STATIC          0x0001000000ull
+#define T_THREAD_LOCAL    0x0002000000ull
+#define T_TYPEDEF         0x0004000000ull
+
+// storage-class-like
+#define T_CONSTEXPR       0x0008000000ull
+#define T_FINAL           0x0010000000ull
+#define T_FRIEND          0x0020000000ull
+#define T_NORETURN        0x0040000000ull
+#define T_OVERRIDE        0x0080000000ull
+#define T_PURE_VIRTUAL    0x0100000000ull
+#define T_VIRTUAL         0x0200000000ull
 
 // qualifiers
-#define T_CONST           0x0100000000ull
-#define T_RESTRICT        0x0200000000ull
-#define T_VOLATILE        0x0400000000ull
+#define T_CONST           0x1000000000ull
+#define T_RESTRICT        0x2000000000ull
+#define T_VOLATILE        0x4000000000ull
 
 // bit masks
 #define T_MASK_TYPE       0x00000FFFFFull
-#define T_MASK_STORAGE    0x00FFF00000ull
-#define T_MASK_QUALIFIER  0xFF00000000ull
+#define T_MASK_STORAGE    0x0FFFF00000ull
+#define T_MASK_QUALIFIER  0xF000000000ull
 
 typedef uint64_t c_type_t;
 

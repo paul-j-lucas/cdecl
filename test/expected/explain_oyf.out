@@ -1,0 +1,1 @@
+declare f as override final function returning void
