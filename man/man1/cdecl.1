@@ -375,7 +375,8 @@ Use the C11 dialect of the C language.
 Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
-\f(CW_Noreturn\fP,
+\f(CW_Noreturn\fP
+(and \f(CWnoreturn\fP),
 and
 \f(CW_Thread_local\fP
 (and \f(CWthread_local\fP).
@@ -492,21 +493,26 @@ to indicate that the current line
 will be a continuation of the previons line.
 .SS English
 In what follows,
-| means alternate,
-[] means optional,
+[] means zero or one,
+* means zero or more,
+{} means one of,
 and
-{} means one or more.
+| means alternate.
+The only punctuation characters used in pseudo-English
+are parentheses around
+and commas between
+function (or block) arguments.
 .P
 .I English
 is one of:
 .IP "" 4
-.RB [ \f2storage-class\fP "] " array " [" \f2number\fP "] " of " \f2english\fP"
+.RB [ \f2storage\fP "]* " array " [" \f2number\fP "] " of " \f2english\fP"
 .br
-.BR block " [" ( \f2arg-list\fP ) "] " returning " \f2english\fP"
+.BR block " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "]"
 .br
-.RB [ \f2storage-class\fP "] [" \f2qualifier\fP "] " function " [" ( \f2arg-list\fP ) "] " returning " \f2english\fP"
+.RB [ \f2storage\fP "]* [" \f2qualifier\fP "]* " function " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "]"
 .br
-.RB [{ \f2qualifier\fP "}] " "pointer to" " [" "member of class" " \f2name\fP" ] " \f2english\fP"
+.RB [ \f2qualifier\fP "]* " "pointer to" " [" "member of class" " \f2name\fP" ] " \f2english\fP"
 .br
 .RB [ rvalue "] " "reference to" " \f2english\fP"
 .br
@@ -516,13 +522,13 @@ and
 .I type
 is either:
 .IP "" 4
-.RI [ storage-class "] [{" modifier "}] [" C-type ]
+.RI [ storage "]* [" modifier "]* [" C-type ]
 .br
-.RB [ enum " | " class " | " struct " | " union ] " \f2name\fP"
+.RB "{ " enum " | " class " | " struct " | " union " } \f2name\fP"
 .P
 where:
 .RS 4
-.TP 15
+.TP 11
 .I C-type
 One of:
 \f(CWbool\fP,
@@ -537,7 +543,7 @@ One of:
 or
 \f(CWvoid\fP.
 .TP
-.I arg-list
+.I args
 A comma-separated list of
 .IR name ,
 .IR english ,
@@ -578,21 +584,29 @@ One of:
 or
 \f(CWvolatile\fP.
 .TP
-.I storage-class
+.I storage
 One of:
 \f(CWauto\fP,
 \f(CWblock\fP,
 \f(CWconstexpr\fP,
 \f(CWextern\fP,
 \f(CWfriend\fP,
+\f(CWnoreturn\fP,
 \f(CWregister\fP,
 \f(CWstatic\fP,
-\f(CWthread_local\fP (or \f(CW_Thread_local\fP),
+\f(CWthread_local\fP,
 \f(CWtypedef\fP,
 \f(CWvirtual\fP,
 or
 \f(CWpure virtual\fP.
 .RE
+.P
+If
+.B returning
+.I english
+is omitted,
+it's equivalent to
+.BR "returning void" .
 .SS Synonyms
 Some synonyms are permitted within pseudo-English.
 The words on the left are synonyms for what's on the right:
@@ -678,7 +692,8 @@ Use the C11 dialect of the C language.
 Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
-\f(CW_Noreturn\fP,
+\f(CW_Noreturn\fP
+(and \f(CWnoreturn\fP),
 and
 \f(CW_Thread_local\fP
 and (\f(CWthread_local\fP).
@@ -1113,6 +1128,7 @@ and
 pure \f(CWvirtual\fP
 C++ member function declarations;
 added octal and hexadecimal array sizes;
+made \f(CWreturning\fP optional;
 added better warning and error messages;
 error messages and help are now in color;
 now ignoring C \f(CW/*...*/\fP and C++ \f(CW//\fP comments in lexer;

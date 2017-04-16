@@ -50,7 +50,7 @@ typedef struct help_text help_text_t;
  * screen).
  */
 static help_text_t const HELP_TEXT[] = {
-/*  1 */  { "| = alternate; [] = optional; {} = 1 or more; <> = defined elsewhere", NULL },
+/*  1 */  { "[] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere", NULL },
 /*  2 */  { "command:", NULL },
 /*  3 */  { "  declare <name> as <english>", NULL },
 /*  4 */  { "  cast <name> into <english>", NULL },
@@ -59,23 +59,23 @@ static help_text_t const HELP_TEXT[] = {
 /*  7 */  { "  help | ?", NULL },
 /*  8 */  { "  exit | quit | q", NULL },
 /*  9 */  { "english:", NULL },
-/* 10 */  { "  [<storage>] array [<number>] of <english>", NULL },
-/* 11 */  { "  block [([<arg-list>])] returning <english>", NULL },
-/* 12 */  { "  [<storage>] [{const | volatile}] function [([<arg-list>])] returning <english>", NULL },
-/* 13 */  { "  [{const | volatile | restrict}] pointer to <english>",
-            "  [{const | volatile}] pointer to [member of class <name>] <english>" },
+/* 10 */  { "  [<storage>]* array [<number>] of <english>", NULL },
+/* 11 */  { "  block [([<args>])] [returning <english>]", NULL },
+/* 12 */  { "  [<storage>]* [const|volatile]* function [([<args>])] [returning <english>]", NULL },
+/* 13 */  { "  [const|volatile|restrict]* pointer to <english>",
+            "  [const|volatile]* pointer to [member of class <name>] <english>" },
 /* 14 */  { "",
             "  [rvalue] reference to <english>" },
 /* 15 */  { "  <type>", NULL },
 /* 16 */  { "type:", NULL },
-/* 17 */  { "  [<storage>] [{<modifier>}] [<C-type>]",
-            "  [<storage>] [{<modifier>}] [<C++-type>]" },
+/* 17 */  { "  [<storage>]* [<modifier>]* [<C-type>]",
+            "  [<storage>]* [<modifier>]* [<C++-type>]" },
 /* 18 */  { "  { enum | struct | union } <name>",
             "  { enum | struct | union | class } <name>" },
-/* 19 */  { "arg-list: a comma separated list of <name>, <english>, or <name> as <english>",
-            "arg-list: a comma separated list of <english> or <name> as <english>" },
-/* 20 */  { "gibberish: a C declaration, like \"int *x\"; or cast, like \"(int*)x\"",
-            "gibberish: a C++ declaration, like \"int *x\"; or cast, like \"(int*)x\"" },
+/* 19 */  { "args: a comma separated list of <name>, <english>, or <name> as <english>",
+            "args: a comma separated list of <english> or <name> as <english>" },
+/* 20 */  { "gibberish: a C declaration, like \"int x\"; or cast, like \"(int)x\"",
+            "gibberish: a C++ declaration, like \"int x\"; or cast, like \"(int)x\"" },
 /* 21 */  { "C-type: bool char char16_t char32_t wchar_t int float double size_t void",
             "C++-type: bool char char16_t char32_t wchar_t int float double size_t void" },
 /* 22 */  { "modifier: short long signed unsigned const restrict volatile",
@@ -105,6 +105,7 @@ static void print_help_line( char const *line ) {
         SGR_END_COLOR( stdout );
         continue;
 
+      case '*':
       case '[':
       case ']':
       case '{':

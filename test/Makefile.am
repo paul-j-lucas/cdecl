@@ -78,6 +78,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_cvpi.test \
 	tests/declare_e.test \
 	tests/declare_ea2i.test \
+	tests/declare_f.test \
 	tests/declare_f_pi.test \
 	tests/declare_fcce_v-01.test \
 	tests/declare_fcce_v-02.test \

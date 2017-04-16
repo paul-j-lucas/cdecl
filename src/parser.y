@@ -418,7 +418,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  qualified_decl_english
 %type   <ast_pair>  reference_decl_english
 %type   <ast_pair>  reference_english
-%type   <ast_pair>  returning_english
+%type   <ast_pair>  returning_english_opt
 %type   <type>      storage_class_english storage_class_list_opt_english
 %type   <ast_pair>  type_english
 %type   <type>      type_modifier_english
@@ -751,13 +751,13 @@ array_size_opt_english
   ;
 
 block_decl_english                      /* Apple extension */
-  : Y_BLOCK paren_decl_list_opt_english returning_english
+  : Y_BLOCK paren_decl_list_opt_english returning_english_opt
     {
       DUMP_START( "block_decl_english",
-                  "BLOCK paren_decl_list_opt_english returning_english" );
+                  "BLOCK paren_decl_list_opt_english returning_english_opt" );
       DUMP_TYPE( "qualifier", qualifier_peek() );
       DUMP_AST_LIST( "paren_decl_list_opt_english", $2 );
-      DUMP_AST( "returning_english", $3.ast );
+      DUMP_AST( "returning_english_opt", $3.ast );
 
       $$.ast = C_AST_NEW( K_BLOCK, &@$ );
       $$.target_ast = NULL;
@@ -771,13 +771,14 @@ block_decl_english                      /* Apple extension */
   ;
 
 func_decl_english
-  : Y_FUNCTION paren_decl_list_opt_english returning_english
+  : Y_FUNCTION paren_decl_list_opt_english returning_english_opt
     {
       DUMP_START( "func_decl_english",
-                  "FUNCTION paren_decl_list_opt_english returning_english" );
+                  "FUNCTION paren_decl_list_opt_english "
+                  "returning_english_opt" );
       DUMP_TYPE( "qualifier", qualifier_peek() );
       DUMP_AST_LIST( "decl_list_opt_english", $2 );
-      DUMP_AST( "returning_english", $3.ast );
+      DUMP_AST( "returning_english_opt", $3.ast );
 
       $$.ast = C_AST_NEW( K_FUNCTION, &@$ );
       $$.target_ast = NULL;
@@ -827,15 +828,27 @@ decl_list_english
     }
   ;
 
-returning_english
-  : returning_expected decl_english
+returning_english_opt
+  : /* empty */
     {
-      DUMP_START( "returning_english", "RETURNING decl_english" );
+      DUMP_START( "returning_english_opt", "<empty>" );
+
+      $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
+      $$.target_ast = NULL;
+      $$.ast->type = T_VOID;
+
+      DUMP_AST( "returning_english_opt", $$.ast );
+      DUMP_END();
+    }
+
+  | Y_RETURNING decl_english
+    {
+      DUMP_START( "returning_english_opt", "RETURNING decl_english" );
       DUMP_AST( "decl_english", $2.ast );
 
       $$ = $2;
 
-      DUMP_AST( "returning_english", $$.ast );
+      DUMP_AST( "returning_english_opt", $$.ast );
       DUMP_END();
     }
 
@@ -1771,14 +1784,6 @@ class_struct_type_expected_c
 comma_expected
   : ','
   | error                         { PARSE_ERROR( "',' expected" ); }
-  ;
-
-returning_expected
-  : Y_RETURNING
-  | error
-    {
-      PARSE_ERROR( "\"%s\" expected", L_RETURNING );
-    }
   ;
 
 star_expected
