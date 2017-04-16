@@ -73,9 +73,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_WCHAR_T,       Y_WCHAR_T,      T_WCHAR_T      },
 
   // C11
-  { L_NORETURN,      Y_NORETURN,     T_NONE         },
-  { L__NORETURN,     Y_NORETURN,     T_NONE         },
-  { L__THREAD_LOCAL, Y_THREAD_LOCAL, T_THREAD_LOCAL },
+  { L_NORETURN,      Y_NORETURN,     T_NORETURN     },
 
   // C++
   { L_CLASS,         Y_CLASS,        T_CLASS        },

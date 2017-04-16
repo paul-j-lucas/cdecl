@@ -88,45 +88,47 @@ typedef struct keyword keyword_t;
  * All cdecl keywords (that are not C/C++ keywords).
  */
 static keyword_t const CDECL_KEYWORDS[] = {
-  { L_ARRAY,        TOKEN( Y_ARRAY )      },
-  { L_AS,           TOKEN( Y_AS )         },
-  { L_BLOCK,        TOKEN( Y_BLOCK )      },  // Apple extension
-  { L__BOOL,        C_SYN( L_BOOL )       },
-  { L_CAST,         TOKEN( Y_CAST )       },
-  { L_CHARACTER,    C_SYN( L_CHAR )       },
-  { L__COMPLEX,     C_SYN( L_COMPLEX )    },
-  { L_CONSTANT,     C_SYN( L_CONST )      },
-  { L_DECLARE,      TOKEN( Y_DECLARE )    },
-  { L_ENUMERATION,  C_SYN( L_ENUM )       },
-  { L_EXIT,         TOKEN( Y_QUIT )       },
-  { L_EXPLAIN,      TOKEN( Y_EXPLAIN )    },
-  { L_FUNC,         TOKEN( Y_FUNCTION )   },
-  { L_FUNCTION,     TOKEN( Y_FUNCTION )   },
-  { L_HELP,         TOKEN( Y_HELP )       },
-  { L_INTEGER,      C_SYN( L_INT )        },
-  { L_INTO,         TOKEN( Y_INTO )       },
-  { L_MBR,          TOKEN( Y_MEMBER ),    },
-  { L_MEMBER,       TOKEN( Y_MEMBER ),    },
-  { L_OF,           TOKEN( Y_OF ),        },
-  { L_POINTER,      TOKEN( Y_POINTER )    },
-  { L_PTR,          TOKEN( Y_POINTER )    },
-  { L_PURE,         TOKEN( Y_PURE )       },
-  { L_Q,            TOKEN( Y_QUIT )       },
-  { L_QUIT,         TOKEN( Y_QUIT )       },
-  { L_REF,          TOKEN( Y_REFERENCE )  },
-  { L_REFERENCE,    TOKEN( Y_REFERENCE )  },
-  { L_RESTRICTED,   C_SYN( L_RESTRICT )   },
-  { L_RET,          TOKEN( Y_RETURNING )  },
-  { L_RETURNING,    TOKEN( Y_RETURNING )  },
-  { L_RVALUE,       TOKEN( Y_RVALUE )     },
-  { L_SET,          TOKEN( Y_SET )        },
-  { L_STRUCTURE,    C_SYN( L_STRUCT )     },
-  { L_TO,           TOKEN( Y_TO )         },
-  { L_TYPE,         C_SYN( L_TYPEDEF )    },
-  { L_VARARGS,      C_SYN( L_ELLIPSIS )   },
-  { L_VARIADIC,     C_SYN( L_ELLIPSIS )   },
-  { L_VECTOR,       TOKEN( Y_ARRAY )      },
-  { NULL,           TOKEN( 0 )            }
+  { L_ARRAY,          TOKEN( Y_ARRAY )        },
+  { L_AS,             TOKEN( Y_AS )           },
+  { L_BLOCK,          TOKEN( Y_BLOCK )        },  // Apple extension
+  { L__BOOL,          C_SYN( L_BOOL )         },
+  { L_CAST,           TOKEN( Y_CAST )         },
+  { L_CHARACTER,      C_SYN( L_CHAR )         },
+  { L__COMPLEX,       C_SYN( L_COMPLEX )      },
+  { L_CONSTANT,       C_SYN( L_CONST )        },
+  { L_DECLARE,        TOKEN( Y_DECLARE )      },
+  { L_ENUMERATION,    C_SYN( L_ENUM )         },
+  { L_EXIT,           TOKEN( Y_QUIT )         },
+  { L_EXPLAIN,        TOKEN( Y_EXPLAIN )      },
+  { L_FUNC,           TOKEN( Y_FUNCTION )     },
+  { L_FUNCTION,       TOKEN( Y_FUNCTION )     },
+  { L_HELP,           TOKEN( Y_HELP )         },
+  { L_INTEGER,        C_SYN( L_INT )          },
+  { L_INTO,           TOKEN( Y_INTO )         },
+  { L_MBR,            TOKEN( Y_MEMBER ),      },
+  { L_MEMBER,         TOKEN( Y_MEMBER ),      },
+  { L__NORETURN,      C_SYN( L_NORETURN )     },
+  { L_OF,             TOKEN( Y_OF ),          },
+  { L_POINTER,        TOKEN( Y_POINTER )      },
+  { L_PTR,            TOKEN( Y_POINTER )      },
+  { L_PURE,           TOKEN( Y_PURE )         },
+  { L_Q,              TOKEN( Y_QUIT )         },
+  { L_QUIT,           TOKEN( Y_QUIT )         },
+  { L_REF,            TOKEN( Y_REFERENCE )    },
+  { L_REFERENCE,      TOKEN( Y_REFERENCE )    },
+  { L_RESTRICTED,     C_SYN( L_RESTRICT )     },
+  { L_RET,            TOKEN( Y_RETURNING )    },
+  { L_RETURNING,      TOKEN( Y_RETURNING )    },
+  { L_RVALUE,         TOKEN( Y_RVALUE )       },
+  { L_SET,            TOKEN( Y_SET )          },
+  { L_STRUCTURE,      C_SYN( L_STRUCT )       },
+  { L__THREAD_LOCAL,  C_SYN( L_THREAD_LOCAL)  },
+  { L_TO,             TOKEN( Y_TO )           },
+  { L_TYPE,           C_SYN( L_TYPEDEF )      },
+  { L_VARARGS,        C_SYN( L_ELLIPSIS )     },
+  { L_VARIADIC,       C_SYN( L_ELLIPSIS )     },
+  { L_VECTOR,         TOKEN( Y_ARRAY )        },
+  { NULL,             TOKEN( 0 )              }
 };
 
 // extern variables
@@ -275,6 +277,7 @@ H             [0-9A-Fa-f]
                   }
                 }
 
+  find_keyword: NO_OP;
                 c_keyword_t const *k = c_keyword_find_literal( lexer_token );
                 if ( k ) {
                   yylval.type = k->type;
@@ -294,14 +297,19 @@ H             [0-9A-Fa-f]
                 return Y_CPP_LANG_NAME;
               }
 
+non-returning { // special case since it's not an ordinary identifier
+                lexer_token = L_NORETURN;
+                goto find_keyword;
+              }
+
 [1-9]{D}*     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
 0{O}*         { SET_TOKEN; yylval.number = parse_int(  8 ); return Y_NUMBER; }
 0[xX]{H}+     { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
-"&&"          return Y_RVALUE_REFERENCE;
-"..."         return Y_ELLIPSIS;
-"::"          return Y_COLON_COLON;
-"?"           return Y_HELP;
+"&&"          { SET_TOKEN; return Y_RVALUE_REFERENCE; }
+"..."         { SET_TOKEN; return Y_ELLIPSIS; }
+"::"          { SET_TOKEN; return Y_COLON_COLON; }
+"?"           { SET_TOKEN; return Y_HELP; }
 
 "^"           |                         /* Apple extension: block indicator */
 "&"           |

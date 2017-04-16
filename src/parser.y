@@ -374,7 +374,7 @@ static void yyerror( char const *msg ) {
 %token  <type>      Y_WCHAR_T
 
                     /* C11 */
-%token              Y_NORETURN
+%token  <type>      Y_NORETURN
 
                     /* C++ */
 %token              '&'                 /* reference */
@@ -606,6 +606,7 @@ storage_class_english
   | Y_CONSTEXPR
   | Y_EXTERN
   | Y_FRIEND
+  | Y_NORETURN
   | Y_REGISTER
   | Y_STATIC
   | Y_THREAD_LOCAL
@@ -1586,6 +1587,7 @@ storage_class_c
   | Y_CONSTEXPR
   | Y_EXTERN
   | Y_FRIEND
+  | Y_NORETURN
 /*| Y_REGISTER */                       /* in type_modifier_english */
   | Y_STATIC
   | Y_TYPEDEF

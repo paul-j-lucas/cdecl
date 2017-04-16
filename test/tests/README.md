@@ -32,7 +32,7 @@ The characters are:
 + `k` = `struct`
 + `l` = `long`
 + `m` = member of class
-+ `n` = nested or `union`
++ `n` = nested, `noreturn`, or `union`
 + `p` = pointer
 + `r` = `restrict` or reference
 + `s` = `signed` or `static`

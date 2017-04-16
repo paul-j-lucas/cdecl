@@ -66,12 +66,13 @@
 #define T_CONSTEXPR       0x0000400000ull
 #define T_EXTERN          0x0000800000ull
 #define T_FRIEND          0x0001000000ull
-#define T_REGISTER        0x0002000000ull
-#define T_STATIC          0x0004000000ull
-#define T_THREAD_LOCAL    0x0008000000ull
-#define T_TYPEDEF         0x0010000000ull
-#define T_VIRTUAL         0x0020000000ull
-#define T_PURE_VIRTUAL    0x0040000000ull
+#define T_NORETURN        0x0002000000ull
+#define T_REGISTER        0x0004000000ull
+#define T_STATIC          0x0008000000ull
+#define T_THREAD_LOCAL    0x0010000000ull
+#define T_TYPEDEF         0x0020000000ull
+#define T_VIRTUAL         0x0040000000ull
+#define T_PURE_VIRTUAL    0x0080000000ull
 
 // qualifiers
 #define T_CONST           0x0100000000ull

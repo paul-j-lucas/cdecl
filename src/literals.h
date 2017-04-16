@@ -90,18 +90,18 @@ extern char const L_VOID[];
 extern char const L_VOLATILE[];
 
 // C99
-extern char const L__BOOL[];
-extern char const L_BOOL[];             // synonym for "_Bool"
-extern char const L__COMPLEX[];
-extern char const L_COMPLEX[];          // synonym for "_Complex"
+extern char const L_BOOL[];
+extern char const L__BOOL[];            // synonym for "bool"
+extern char const L_COMPLEX[];
+extern char const L__COMPLEX[];         // synonym for "complex"
 extern char const L_RESTRICT[];
 extern char const L_RESTRICTED[];       // synonym for "restrict"
 extern char const L_WCHAR_T[];
 
 // C11
-extern char const L__NORETURN[];
-extern char const L_NORETURN[];         // synonym for "_Noreturn"
-extern char const L__THREAD_LOCAL[];
+extern char const L_NORETURN[];
+extern char const L_NON_RETURNING[];    // synonym for "noreturn"
+extern char const L__NORETURN[];        // synonym for "noreturn"
 
 // C++
 extern char const L_CLASS[];
@@ -116,6 +116,7 @@ extern char const L_CONSTEXPR[];
 extern char const L_CHAR16_T[];
 extern char const L_CHAR32_T[];
 extern char const L_THREAD_LOCAL[];
+extern char const L__THREAD_LOCAL[];    // synonym for "thread_local"
 
 // miscellaneous
 extern char const L___BLOCK[];          // Apple: storage class

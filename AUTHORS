@@ -70,8 +70,8 @@ Paul J. Lucas <paul@lucasmail.org>
 	added multi-line input
 	now distinguishing among K&R C, C89, C95, C99, C11, C++98, C++03, C++11
 	now using a proper abstract syntax tree data structure
-	added bool, char16_t, char32_t, complex, restrict, thread_local,
-		wchar_t
+	added bool, char16_t, char32_t, complex, noreturn, restrict,
+		thread_local, wchar_t
 	added register and variadic function arguments
 	added C++11 constexpr rvalue references
 	independently added typedef declarations

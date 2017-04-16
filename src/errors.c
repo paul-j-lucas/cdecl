@@ -364,24 +364,38 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   (void)data;
 
   c_lang_t const ok_langs = c_type_check( ast->type );
-  if ( ok_langs == LANG_ALL ) {
-    if ( ast->kind & (K_BLOCK | K_FUNCTION) ) {
+  if ( ok_langs != LANG_ALL ) {
+    if ( ok_langs == LANG_NONE )
+      print_error( &ast->loc, "\"%s\" is illegal", c_type_name( ast->type ) );
+    else
+      print_error( &ast->loc,
+        "\"%s\" is illegal in %s",
+        c_type_name( ast->type ), c_lang_name( opt_lang )
+      );
+    return VISITOR_ERROR_FOUND;
+  }
+
+  switch ( ast->kind ) {
+    case K_BLOCK:                       // Apple extension
+    case K_FUNCTION:
       for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
         if ( !c_ast_check_visitor( arg, c_ast_visitor_type ) )
           return VISITOR_ERROR_FOUND;
       } // for
-    }
-    return VISITOR_ERROR_NOT_FOUND;
-  }
+      if ( ast->kind == K_FUNCTION )
+        break;
+      // no break;
 
-  if ( ok_langs == LANG_NONE )
-    print_error( &ast->loc, "\"%s\" is illegal", c_type_name( ast->type ) );
-  else
-    print_error( &ast->loc,
-      "\"%s\" is illegal in %s",
-      c_type_name( ast->type ), c_lang_name( opt_lang )
-    );
-  return VISITOR_ERROR_FOUND;
+    default:
+      if ( (ast->type & T_NORETURN) ) {
+        print_error( &ast->loc,
+          "\"%s\" can only appear on functions", c_type_name( T_NORETURN )
+        );
+        return VISITOR_ERROR_FOUND;
+      }
+  } // switch
+
+  return VISITOR_ERROR_NOT_FOUND;
 }
 
 /**

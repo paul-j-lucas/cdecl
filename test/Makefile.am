@@ -103,6 +103,8 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_lf.test \
 	tests/declare_ll.test \
 	tests/declare_n.test \
+	tests/declare_nfi_v-01.test \
+	tests/declare_nfi_v-02.test \
 	tests/declare_pa3cpa5i.test \
 	tests/declare_pa3pa5i.test \
 	tests/declare_pa9i.test \
@@ -178,6 +180,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_lll.test \
 	tests/declare_lv.test \
 	tests/declare_lw.test \
+	tests/declare_ni.test \
 	tests/declare_pv-knr.test \
 	tests/declare_rf_v-c.test \
 	tests/declare_sb.test \
@@ -275,6 +278,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_ll.test \
 	tests/explain_n.test \
 	tests/explain_nfi_c.test \
+	tests/explain_nfi_v.test \
 	tests/explain_ni.test \
 	tests/explain_pa3a5i.test \
 	tests/explain_pa3cpa5i.test \
@@ -546,6 +550,7 @@ TESTS+=	tests/explain_cf_v.test \
 TESTS+=	tests/explain_frri_v-c++03.test \
 	tests/explain_fsf_v.test \
 	tests/explain_fx_v.test \
+	tests/explain_nfi_v-c++.test \
 	tests/explain_pmri.test \
 	tests/explain_pri.test \
 	tests/explain_prri.test \

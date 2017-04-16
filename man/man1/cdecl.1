@@ -375,6 +375,7 @@ Use the C11 dialect of the C language.
 Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
+\f(CW_Noreturn\fP,
 and
 \f(CW_Thread_local\fP
 (and \f(CWthread_local\fP).
@@ -596,23 +597,26 @@ or
 Some synonyms are permitted within pseudo-English.
 The words on the left are synonyms for what's on the right:
 .cS
-       bool  _Bool
-  character  char
-    complex  _Complex
-   constant  const
-enumeration  enum
-       func  function
-    integer  int
-        mbr  member
-        ptr  pointer
-        ref  reference
- restricted  restrict
-        ret  returning
-  structure  struct
-       type  typedef
-    varargs  ...
-   variadic  ...
-     vector  array
+        _Bool  bool
+    character  char
+     _Complex  complex
+     constant  const
+  enumeration  enum
+         func  function
+      integer  int
+          mbr  member
+non-returning  noreturn
+    _Noreturn  noreturn
+          ptr  pointer
+          ref  reference
+   restricted  restrict
+          ret  returning
+    structure  struct
+         type  typedef
+_Thread_local  thread_local
+      varargs  ...
+     variadic  ...
+       vector  array
 .cE 0
 .SS Gibberish
 .I Gibberish
@@ -674,6 +678,7 @@ Use the C11 dialect of the C language.
 Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
+\f(CW_Noreturn\fP,
 and
 \f(CW_Thread_local\fP
 and (\f(CWthread_local\fP).
@@ -995,11 +1000,7 @@ struct S { int i; char c; } s;    // not supported
 .IP \n+[step].
 The C (and C++)
 \f(CWalignas\fP specifier
-and the C11
-\f(CW_Noreturn\fP
-(and \f(CWnoreturn\fP)
-function specifier
-are not supported.
+is not supported.
 .IP \n+[step].
 Default arguments for C++ functions are not supported:
 .cS
@@ -1093,6 +1094,7 @@ added
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
 \f(CWcomplex\fP,
+\f(CWnoreturn\fP,
 \f(CWrestrict\fP,
 \f(CWthread_local\fP,
 \f(CWwchar_t\fP,
