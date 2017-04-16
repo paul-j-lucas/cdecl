@@ -215,6 +215,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 #
 TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_a012i.test \
+	tests/explain_a0b10i.test \
 	tests/explain_a0xAi-01.test \
 	tests/explain_a0xai-02.test \
 	tests/explain_a3a5a7i.test \

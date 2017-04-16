@@ -214,7 +214,10 @@ static inline int parse_int( int base ) {
   // We don't need to check for errors from strtol(3) here since the lexer
   // guarantees that we'll be passed only a valid number token.
   //
-  return (int)strtol( lexer_token, NULL, base );
+  // Standard strtol(3) doesn't understand a "0b" (binary) prefix, so skip over
+  // it if the base is 2.
+  //
+  return (int)strtol( lexer_token + (base == 2 ? 2 : 0), NULL, base );
 }
 
 /**
@@ -258,6 +261,7 @@ void lexer_reset( bool hard_reset ) {
 %}
 
 A             [A-Za-z_]
+B             [01]
 O             [0-7]
 D             [0-9]
 H             [0-9A-Fa-f]
@@ -304,6 +308,7 @@ non-returning { // special case since it's not an ordinary identifier
 
 [1-9]{D}*     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
 0{O}*         { SET_TOKEN; yylval.number = parse_int(  8 ); return Y_NUMBER; }
+0[bB]{B}+     { SET_TOKEN; yylval.number = parse_int(  2 ); return Y_NUMBER; }
 0[xX]{H}+     { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
 "&&"          { SET_TOKEN; return Y_RVALUE_REFERENCE; }

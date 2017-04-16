@@ -573,8 +573,9 @@ A valid C (or C++) identifier.
 One of a
 decimal,
 octal (if starting with \f(CW0\fP),
+hexadecimal (if starting with either \f(CW0x\fP or \f(CW0X\fP),
 or
-hexadecimal (if starting with either \f(CW0x\fP or \f(CW0X\fP)
+binary (if starting with either \f(CW0b\fP or \f(CW0B\fP)
 number.
 .TP
 .I qualifier
@@ -1127,7 +1128,7 @@ added
 and
 pure \f(CWvirtual\fP
 C++ member function declarations;
-added octal and hexadecimal array sizes;
+added binary, octal, and hexadecimal array sizes;
 made \f(CWreturning\fP optional;
 added better warning and error messages;
 error messages and help are now in color;

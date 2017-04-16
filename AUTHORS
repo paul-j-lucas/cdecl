@@ -78,7 +78,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added friend, const, volatile, virtual, and pure virtual C++ member
 		function declarations
 	made "returning" optional
-	added octal and hexadecimal array sizes
+	added binary, octal, and hexadecimal array sizes
 	added better warning and error messages
 	now ignoring C /*...*/ and C++ // comments in lexer
 	now treating cdecl keywords in declarations as ordinary names
