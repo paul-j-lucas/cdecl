@@ -61,6 +61,30 @@ struct c_type_info {
 };
 typedef struct c_type_info c_type_info_t;
 
+static c_type_info_t const C_QUALIFIER_INFO[] = {
+  { T_CONST,        L_CONST,        LANG_MIN(C_89)                  },
+  { T_RESTRICT,     L_RESTRICT,     LANG_MIN(C_89) & ~LANG_CPP_ALL  },
+  { T_VOLATILE,     L_VOLATILE,     LANG_MIN(C_89)                  },
+};
+
+static c_type_info_t const C_STORAGE_INFO[] = {
+  { T_AUTO_C,       L_AUTO,         LANG_MAX(CPP_03)                },
+  { T_BLOCK,        L___BLOCK,      LANG_ALL                        },
+  { T_EXTERN,       L_EXTERN,       LANG_ALL                        },
+  { T_REGISTER,     L_REGISTER,     LANG_ALL                        },
+  { T_STATIC,       L_STATIC,       LANG_ALL                        },
+  { T_THREAD_LOCAL, L_THREAD_LOCAL, LANG_C_11 | LANG_MIN(CPP_11)    },
+  { T_TYPEDEF,      L_TYPEDEF,      LANG_ALL                        },
+
+  { T_CONSTEXPR,    L_CONSTEXPR,    LANG_MIN(CPP_11)                },
+  { T_FINAL,        L_FINAL,        LANG_MIN(CPP_11)                },
+  { T_FRIEND,       L_FRIEND,       LANG_CPP_ALL                    },
+  { T_NORETURN,     L_NORETURN,     LANG_C_11                       },
+  { T_OVERRIDE,     L_OVERRIDE,     LANG_MIN(CPP_11)                },
+  { T_VIRTUAL,      L_VIRTUAL,      LANG_CPP_ALL                    },
+  { T_PURE_VIRTUAL, L_PURE,         LANG_CPP_ALL                    },
+};
+
 static c_type_info_t const C_TYPE_INFO[] = {
   { T_VOID,         L_VOID,         LANG_MIN(C_89)                  },
   { T_AUTO_CPP_11,  L_AUTO,         LANG_MIN(CPP_11)                },
@@ -85,30 +109,6 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { T_CLASS,        L_CLASS,        LANG_CPP_ALL                    },
 };
 
-static c_type_info_t const C_STORAGE_INFO[] = {
-  { T_AUTO_C,       L_AUTO,         LANG_MAX(CPP_03)                },
-  { T_BLOCK,        L___BLOCK,      LANG_ALL                        },
-  { T_EXTERN,       L_EXTERN,       LANG_ALL                        },
-  { T_REGISTER,     L_REGISTER,     LANG_ALL                        },
-  { T_STATIC,       L_STATIC,       LANG_ALL                        },
-  { T_THREAD_LOCAL, L_THREAD_LOCAL, LANG_C_11 | LANG_MIN(CPP_11)    },
-  { T_TYPEDEF,      L_TYPEDEF,      LANG_ALL                        },
-
-  { T_CONSTEXPR,    L_CONSTEXPR,    LANG_MIN(CPP_11)                },
-  { T_FINAL,        L_FINAL,        LANG_MIN(CPP_11)                },
-  { T_FRIEND,       L_FRIEND,       LANG_CPP_ALL                    },
-  { T_NORETURN,     L_NORETURN,     LANG_C_11                       },
-  { T_OVERRIDE,     L_OVERRIDE,     LANG_MIN(CPP_11)                },
-  { T_VIRTUAL,      L_VIRTUAL,      LANG_CPP_ALL                    },
-  { T_PURE_VIRTUAL, L_PURE,         LANG_CPP_ALL                    },
-};
-
-static c_type_info_t const C_QUALIFIER_INFO[] = {
-  { T_CONST,        L_CONST,        LANG_MIN(C_89)                  },
-  { T_RESTRICT,     L_RESTRICT,     LANG_MIN(C_89) & ~LANG_CPP_ALL  },
-  { T_VOLATILE,     L_VOLATILE,     LANG_MIN(C_89)                  },
-};
-
 //      shorthand   legal in ...
 #define __          LANG_ALL
 #define XX          LANG_NONE
@@ -120,6 +120,29 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
 #define PP          LANG_CPP_ALL
 #define P1          LANG_MIN(CPP_11)
 #define E1          LANG_C_11 | LANG_MIN(CPP_11)
+
+/**
+ * Legal combinations of storage classes in languages.
+ * Only the lower triangle is used.
+ */
+static c_lang_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
+/*                   a  b  e  r  s  tl td   c  fi fr nr o  v  pv */
+/* auto         */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__ },
+/* block        */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__ },
+/* extern       */ { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__ },
+/* register     */ { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__ },
+/* static       */ { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__ },
+/* thread_local */ { XX,E1,E1,XX,E1,E1,__,  __,__,__,__,__,__,__ },
+/* typedef      */ { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__ },
+
+/* constexpr    */ { P1,P1,P1,XX,P1,XX,XX,  P1,__,__,__,__,__,__ },
+/* final        */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,__,__,__,__,__ },
+/* friend       */ { XX,XX,XX,XX,XX,XX,XX,  P1,XX,PP,__,__,__,__ },
+/* noreturn     */ { XX,XX,C1,XX,C1,XX,XX,  XX,XX,XX,C1,__,__,__ },
+/* override     */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,P1,__,__ },
+/* virtual      */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,P1,PP,__ },
+/* pure virtual */ { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,P1,PP,PP },
+};
 
 /**
  * Legal combinations of types in languages.
@@ -148,29 +171,6 @@ static c_lang_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 /* struct  */{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__ },
 /* union   */{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__ },
 /* class   */{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,PP },
-};
-
-/**
- * Legal combinations of storage classes in languages.
- * Only the lower triangle is used.
- */
-static c_lang_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
-/*                   a  b  e  r  s  tl td   c  fi fr nr o  v  pv */
-/* auto         */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__ },
-/* block        */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__ },
-/* extern       */ { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__ },
-/* register     */ { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__ },
-/* static       */ { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__ },
-/* thread_local */ { XX,E1,E1,XX,E1,E1,__,  __,__,__,__,__,__,__ },
-/* typedef      */ { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__ },
-
-/* constexpr    */ { P1,P1,P1,XX,P1,XX,XX,  P1,__,__,__,__,__,__ },
-/* final        */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,__,__,__,__,__ },
-/* friend       */ { XX,XX,XX,XX,XX,XX,XX,  P1,XX,PP,__,__,__,__ },
-/* noreturn     */ { XX,XX,C1,XX,C1,XX,XX,  XX,XX,XX,C1,__,__,__ },
-/* override     */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,P1,__,__ },
-/* virtual      */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,P1,PP,__ },
-/* pure virtual */ { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,P1,PP,PP },
 };
 
 ////////// inline functions ///////////////////////////////////////////////////
