@@ -562,6 +562,7 @@ TESTS+=	tests/explain_a.test \
 # =======================
 #
 TESTS+=	tests/explain_ai-c++11.test \
+	tests/explain_fa_v.test \
 	tests/explain_frri_v-c++03.test \
 	tests/explain_fsf_v.test \
 	tests/explain_fx_v.test \

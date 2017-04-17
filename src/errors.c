@@ -129,13 +129,17 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
 
     switch ( arg->kind ) {
       case K_BUILTIN:
+        if ( (arg->type & T_AUTO_CPP_11) ) {
+          print_error( &arg->loc, "arguments can not be auto" );
+          return false;
+        }
         if ( (arg->type & T_VOID) ) {
           //
-          // Ordinarily, void variables are invalid; but a single void function
+          // Ordinarily, void arguments are invalid; but a single void function
           // "argument" is valid (as long as it doesn't have a name).
           //
           if ( arg->name ) {
-            print_error( &arg->loc, "argument of void" );
+            print_error( &arg->loc, "arguments can not be void" );
             return false;
           }
           void_arg = arg;
