@@ -31,8 +31,10 @@
 // languages supported
 #define LANG_NONE     (0u)
 #define LANG_ALL      (~LANG_NONE)
-#define LANG_MIN(L)   (~(LANG_ ## L - 1u))
+#define LANG_MAX(L)   ((LANG_ ## L) | ((LANG_ ## L) - 1u))
+#define LANG_MIN(L)   (~((LANG_ ## L) - 1u))
 
+#define LANG_C_MIN    LANG_C_KNR
 #define LANG_C_KNR    (1u << 0)
 #define LANG_C_89     (1u << 1)
 #define LANG_C_95     (1u << 2)

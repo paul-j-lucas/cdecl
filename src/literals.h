@@ -58,6 +58,7 @@ extern char const L_VECTOR[];           // synonym for "array"
 
 // K&R
 extern char const L_AUTO[];
+extern char const L_AUTOMATIC[];        // synonym for "auto"
 extern char const L_CHAR[];
 extern char const L_CHARACTER[];        // synonym for "char"
 extern char const L_DOUBLE[];

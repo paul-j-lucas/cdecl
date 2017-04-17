@@ -73,7 +73,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added bool, char16_t, char32_t, complex, noreturn, restrict,
 		thread_local, wchar_t
 	added register and variadic function arguments
-	added C++11 constexpr rvalue references
+	added C++11 auto, constexpr, and rvalue references
 	independently added typedef declarations
 	added final, friend, const, override, volatile, virtual,
 		and pure virtual C++ member function declarations

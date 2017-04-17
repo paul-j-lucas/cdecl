@@ -60,6 +60,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_a9cpi.test \
 	tests/declare_a9i.test \
 	tests/declare_a9pi.test \
+	tests/declare_ai.test \
 	tests/declare_b.test \
 	tests/declare_bii_d.test \
 	tests/declare_c.test \
@@ -231,6 +232,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_a9cpi.test \
 	tests/explain_a9i.test \
 	tests/explain_a9pi.test \
+	tests/explain_ai.test \
 	tests/explain_b.test \
 	tests/explain_bii_d.test \
 	tests/explain_c.test \
@@ -500,6 +502,7 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 # =================
 #
 TESTS+=	tests/declare_0f_v.test \
+	tests/declare_a.test \
 	tests/declare_cf_v.test \
 	tests/declare_cpmi.test \
 	tests/declare_f_pmi.test \
@@ -526,7 +529,8 @@ TESTS+=	tests/declare_0f_v.test \
 # C++ declare error tests
 # =======================
 #
-TESTS+=	tests/declare_pmri.test \
+TESTS+=	tests/declare_ai-c++11.test \
+	tests/declare_pmri.test \
 	tests/declare_pri.test \
 	tests/declare_rf_v.test \
 	tests/declare_rgi.test \
@@ -536,7 +540,8 @@ TESTS+=	tests/declare_pmri.test \
 # C++ explain tests
 # =================
 #
-TESTS+=	tests/explain_cf_v.test \
+TESTS+=	tests/explain_a.test \
+	tests/explain_cf_v.test \
 	tests/explain_cvf_v.test \
 	tests/explain_f_pmi.test \
 	tests/explain_frri_v.test \
@@ -556,7 +561,8 @@ TESTS+=	tests/explain_cf_v.test \
 # C++ explain error tests
 # =======================
 #
-TESTS+=	tests/explain_frri_v-c++03.test \
+TESTS+=	tests/explain_ai-c++11.test \
+	tests/explain_frri_v-c++03.test \
 	tests/explain_fsf_v.test \
 	tests/explain_fx_v.test \
 	tests/explain_nfi_v-c++.test \

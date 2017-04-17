@@ -63,6 +63,7 @@ typedef struct c_type_info c_type_info_t;
 
 static c_type_info_t const C_TYPE_INFO[] = {
   { T_VOID,         L_VOID,         LANG_MIN(C_89)                  },
+  { T_AUTO_CPP_11,  L_AUTO,         LANG_MIN(CPP_11)                },
   { T_BOOL,         L_BOOL,         LANG_MIN(C_89)                  },
   { T_CHAR,         L_CHAR,         LANG_ALL                        },
   { T_CHAR16_T,     L_CHAR16_T,     LANG_C_11 | LANG_MIN(CPP_11)    },
@@ -85,8 +86,8 @@ static c_type_info_t const C_TYPE_INFO[] = {
 };
 
 static c_type_info_t const C_STORAGE_INFO[] = {
-  { T_AUTO,         L_AUTO,         LANG_ALL                        },
-  { T_BLOCK,        L___BLOCK,      LANG_ALL /* Apple extension */  },
+  { T_AUTO_C,       L_AUTO,         LANG_MAX(CPP_03)                },
+  { T_BLOCK,        L___BLOCK,      LANG_ALL                        },
   { T_EXTERN,       L_EXTERN,       LANG_ALL                        },
   { T_REGISTER,     L_REGISTER,     LANG_ALL                        },
   { T_STATIC,       L_STATIC,       LANG_ALL                        },
@@ -125,27 +126,28 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
  * Only the lower triangle is used.
  */
 static c_lang_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
-/*                v  b  c  16 32 wc s  i  l  ll st s  u  f  d  c  E  S  U  C */
-/* void      */ { C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-/* bool      */ { XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-/* char      */ { XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-/* char16_t  */ { XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-/* char32_t  */ { XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-/* wchar_t   */ { XX,XX,XX,XX,XX,C5,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-/* short     */ { XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-/* int       */ { XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-/* long      */ { XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },
-/* long long */ { XX,XX,XX,XX,XX,XX,XX,C9,__,C9,__,__,__,__,__,__,__,__,__,__ },
-/* size_t    */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C8,__,__,__,__,__,__,__,__,__ },
-/* signed    */ { XX,XX,C8,XX,XX,XX,C8,C8,C8,C8,XX,C8,__,__,__,__,__,__,__,__ },
-/* unsigned  */ { XX,XX,__,XX,XX,XX,__,__,__,C8,XX,XX,__,__,__,__,__,__,__,__ },
-/* float     */ { XX,XX,XX,XX,XX,XX,XX,XX,KR,XX,XX,XX,XX,__,__,__,__,__,__,__ },
-/* double    */ { XX,XX,XX,XX,XX,XX,XX,XX,C8,XX,XX,XX,XX,XX,__,__,__,__,__,__ },
-/* complex   */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,C9,__,__,__,__ },
-/* enum      */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,__,__,__ },
-/* struct    */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__ },
-/* union     */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__ },
-/* class     */ { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,PP },
+/*             v  a  b  c  16 32 wc s  i  l  ll st s  u  f  d  c  e  s  u  c */
+/* void    */{ C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+/* auto    */{ XX,P1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+/* bool    */{ XX,XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+/* char    */{ XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+/* char16_t*/{ XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+/* char32_t*/{ XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+/* wchar_t */{ XX,XX,XX,XX,XX,XX,C5,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+/* short   */{ XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+/* int     */{ XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+/* long    */{ XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },
+/* l. long */{ XX,XX,XX,XX,XX,XX,XX,XX,C9,__,C9,__,__,__,__,__,__,__,__,__,__ },
+/* size_t  */{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C8,__,__,__,__,__,__,__,__,__ },
+/* signed  */{ XX,XX,XX,C8,XX,XX,XX,C8,C8,C8,C8,XX,C8,__,__,__,__,__,__,__,__ },
+/* unsigned*/{ XX,XX,XX,__,XX,XX,XX,__,__,__,C8,XX,XX,__,__,__,__,__,__,__,__ },
+/* float   */{ XX,XX,XX,XX,XX,XX,XX,XX,XX,KR,XX,XX,XX,XX,__,__,__,__,__,__,__ },
+/* double  */{ XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,XX,XX,XX,XX,XX,__,__,__,__,__,__ },
+/* complex */{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,C9,__,__,__,__ },
+/* enum    */{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,__,__,__ },
+/* struct  */{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__ },
+/* union   */{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__ },
+/* class   */{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,PP },
 };
 
 /**
@@ -296,7 +298,7 @@ char const* c_type_name( c_type_t type ) {
   bool space = false;
 
   static c_type_t const C_STORAGE_CLASS[] = {
-    T_AUTO,
+    T_AUTO_C,
     T_BLOCK,
     T_EXTERN,
     T_FRIEND,
@@ -346,6 +348,7 @@ char const* c_type_name( c_type_t type ) {
     T_SHORT,
 
     T_VOID,
+    T_AUTO_CPP_11,
     T_BOOL,
     T_CHAR,
     T_CHAR16_T,

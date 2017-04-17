@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 16, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 17, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -400,6 +400,7 @@ C++03 added no new types or declaration syntax.)
 .B C++11
 Use the C++11 dialect of the C++ language.
 Adds support for
+\f(CWauto\fP,
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
 rvalue references,
@@ -535,6 +536,7 @@ where:
 .TP 11
 .I C-type
 One of:
+\f(CWauto\fP (C++11 or later),
 \f(CWbool\fP,
 \f(CWchar\fP,
 \f(CWchar16_t\fP,
@@ -591,7 +593,7 @@ or
 .TP
 .I storage
 One of:
-\f(CWauto\fP,
+\f(CWauto\fP (C, or C++03 or earlier),
 \f(CWblock\fP,
 \f(CWconstexpr\fP,
 \f(CWextern\fP,
@@ -618,6 +620,7 @@ it's equivalent to
 Some synonyms are permitted within pseudo-English.
 The words on the left are synonyms for what's on the right:
 .cS
+    automatic  auto
         _Bool  bool
     character  char
      _Complex  complex
@@ -725,6 +728,7 @@ C++03 added no new types or declaration syntax.)
 .B c++11
 Use the C++11 dialect of the C++ language.
 Adds support for
+\f(CWauto\fP,
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
 rvalue references,
@@ -1087,16 +1091,22 @@ when used as input to
 .BR explain .
 .IP \n+[step].
 When converting from pseudo-English to a C++ declaration
-for either a reference or an rvalue reference variable
+for either
+\f(CWauto\fP,
+or a reference or an rvalue reference variable
 that is not a function argument,
 the output doesn't include an initializer:
 .cS
+c++decl> declare x as auto
+auto &r;
 c++decl> declare r as reference to int
 int &r;
 .cE 0
 .IP ""
-This is an illegal C++ declaration
-since all such references
+These are a illegal C++ declarations
+since
+\f(CWauto\fP
+and all such references
 .I must
 be initialized.
 .SH AUTHORS
@@ -1126,11 +1136,14 @@ added
 \f(CWthread_local\fP,
 \f(CWwchar_t\fP,
 \f(CWregister\fP and variadic function arguments,
-\f(CWconstexpr\fP,
-rvalue reference,
 and
 \f(CWtypedef\fP
 declarations;
+added C++11
+\f(CWauto\fP,
+\f(CWconstexpr\fP,
+and
+rvalue references;
 added
 \f(CWconst\fP,
 \f(CWfinal\fP,

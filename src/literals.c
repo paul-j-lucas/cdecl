@@ -55,6 +55,7 @@ char const L_VECTOR[]         = "vector";
 
 // K&R
 char const L_AUTO[]           = "auto";
+char const L_AUTOMATIC[]      = "automatic";
 char const L_CHAR[]           = "char";
 char const L_CHARACTER[]      = "character";
 char const L_DOUBLE[]         = "double";

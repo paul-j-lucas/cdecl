@@ -343,7 +343,7 @@ static void yyerror( char const *msg ) {
 %token              '*'
 %token              '[' ']'
 %token              '(' ')'
-%token  <type>      Y_AUTO
+%token  <type>      Y_AUTO_C            /* C version of "auto" */
 %token  <type>      Y_CHAR
 %token  <type>      Y_DOUBLE
 %token  <type>      Y_EXTERN
@@ -385,6 +385,7 @@ static void yyerror( char const *msg ) {
 %token  <type>      Y_VIRTUAL
 
                     /* C++11 */
+%token  <type>      Y_AUTO_CPP_11       /* C++11 version of "auto" */
 %token  <type>      Y_CONSTEXPR
 %token  <type>      Y_FINAL
 %token  <type>      Y_OVERRIDE
@@ -603,7 +604,7 @@ storage_class_list_opt_english
   ;
 
 storage_class_english
-  : Y_AUTO
+  : Y_AUTO_C
   | Y___BLOCK                           /* Apple extension */
   | Y_CONSTEXPR
   | Y_EXTERN
@@ -1572,6 +1573,7 @@ builtin_or_enum_class_struct_union_type_c
 
 builtin_type_c
   : Y_VOID
+  | Y_AUTO_CPP_11
   | Y_BOOL
   | Y_CHAR
   | Y_CHAR16_T
@@ -1622,7 +1624,7 @@ cv_qualifier_c
   ;
 
 storage_class_c
-  : Y_AUTO
+  : Y_AUTO_C
   | Y___BLOCK                           /* Apple extension */
   | Y_CONSTEXPR
   | Y_EXTERN
@@ -1658,7 +1660,7 @@ cast2_c
   ;
 
 array_cast_c
-  : cast2_c array_size_c
+  : /* type */ cast2_c array_size_c
     {
       DUMP_START( "array_cast_c", "cast2_c array_size_c" );
       DUMP_AST( "type_c", type_peek() );
