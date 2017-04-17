@@ -39,6 +39,9 @@
 #define CPPDECL               "c++decl"
 #define DEBUG_INDENT          2         /* spaces per debug indent level */
 
+/**
+ * The source location used by bison.
+ */
 typedef struct {
   int first_line;
   int first_column;
