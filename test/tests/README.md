@@ -42,7 +42,7 @@ The characters are:
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
 + `x` = `constexpr` or untyped K&R function argument
-+ 'y' = `final`
++ `y` = `final`
 + `z` = `complex` or `size_t`
 
 A function's return type is separated from its arguments by `_`.
@@ -75,7 +75,7 @@ For example, tests such as these:
     cdecl-i.test
     cdecl-I.test
 
-that differ only in 'i' vs. 'I' will work fine on every other Unix filesystem
+that differ only in `i` vs. `I` will work fine on every other Unix filesystem
 but cause a collision on HFS+.
 
 One solution (the one used here) is to append a distinct number:
