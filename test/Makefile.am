@@ -289,6 +289,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_nfi_c.test \
 	tests/explain_nfi_v.test \
 	tests/explain_ni.test \
+	tests/explain_oi.test \
 	tests/explain_pa3a5i.test \
 	tests/explain_pa3cpa5i.test \
 	tests/explain_pa3pa5i.test \

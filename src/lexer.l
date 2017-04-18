@@ -158,7 +158,9 @@ static void     lexer_fatal( char const* );
  */
 static keyword_t const* cdecl_keyword_find( char const *s ) {
   for ( keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
-    if ( strcmp( s, k->literal ) == 0 )
+    if ( strcmp( s, k->literal ) != 0 )
+      continue;
+    if ( k->c_keyword_synonym || c_mode != MODE_EXPLAIN )
       return k;
   } // for
   return NULL;
@@ -272,21 +274,19 @@ H             [0-9A-Fa-f]
 {A}({A}|{D})* {
                 SET_TOKEN;
 
-                if ( c_mode == MODE_DECLARE ) {
-                  keyword_t const *const k = cdecl_keyword_find( lexer_token );
-                  if ( k ) {
-                    if ( k->c_keyword_synonym )
-                      lexer_token = k->c_keyword_synonym;
-                    else
-                      return k->y_token;
-                  }
+                keyword_t const *const cdk = cdecl_keyword_find( lexer_token );
+                if ( cdk ) {
+                  if ( cdk->c_keyword_synonym )
+                    lexer_token = cdk->c_keyword_synonym;
+                  else
+                    return cdk->y_token;
                 }
 
   find_keyword: NO_OP;
-                c_keyword_t const *k = c_keyword_find_literal( lexer_token );
-                if ( k ) {
-                  yylval.type = k->type;
-                  return k->y_token;
+                c_keyword_t const *ck = c_keyword_find_literal( lexer_token );
+                if ( ck ) {
+                  yylval.type = ck->type;
+                  return ck->y_token;
                 }
 
                 yylval.name = check_strdup( lexer_token );

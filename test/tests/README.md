@@ -33,7 +33,7 @@ The characters are:
 + `l` = `long`
 + `m` = member of class or `mutable`
 + `n` = nested, `noreturn`, or `union`
-+ `o` = `override`
++ `o` = `override` or `thread_local`
 + `p` = pointer
 + `r` = `restrict` or reference
 + `s` = `signed` or `static`
