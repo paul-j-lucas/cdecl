@@ -150,7 +150,7 @@ name_c ::= NAME = {
   }
 }
 
-arg_c ::= type_c cast_c = {
+arg_c ::= type_c cast_opt_c = {
   type_c = {
     id = 3,
     kind = "built-in type",
@@ -159,7 +159,7 @@ arg_c ::= type_c cast_c = {
     parent->id = -1,
     type = "int"
   },
-  cast_c = {
+  cast_opt_c = {
     id = 3,
     kind = "built-in type",
     depth = 0,
@@ -250,7 +250,7 @@ name_c ::= NAME = {
   }
 }
 
-arg_c ::= type_c cast_c = {
+arg_c ::= type_c cast_opt_c = {
   type_c = {
     id = 4,
     kind = "built-in type",
@@ -259,7 +259,7 @@ arg_c ::= type_c cast_c = {
     parent->id = -1,
     type = "int"
   },
-  cast_c = {
+  cast_opt_c = {
     id = 4,
     kind = "built-in type",
     depth = 0,
@@ -277,7 +277,7 @@ arg_c ::= type_c cast_c = {
   }
 }
 
-arg_list_c ::= arg_list_c ',' cast_c = {
+arg_list_c ::= arg_list_c ',' cast_opt_c = {
   arg_list_c = [
     {
       id = 3,
@@ -288,7 +288,7 @@ arg_list_c ::= arg_list_c ',' cast_c = {
       type = "int"
     }
   ],
-  cast_c = {
+  cast_opt_c = {
     id = 4,
     kind = "built-in type",
     depth = 0,

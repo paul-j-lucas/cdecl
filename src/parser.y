@@ -431,7 +431,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  unmodified_type_english
 %type   <ast_pair>  var_decl_english
 
-%type   <ast_pair>  cast_c cast2_c
+%type   <ast_pair>  cast_c cast_opt_c cast2_c
 %type   <ast_pair>  array_cast_c
 %type   <ast_pair>  block_cast_c
 %type   <ast_pair>  func_cast_c
@@ -656,14 +656,14 @@ explain_declaration_c
   ;
 
 explain_cast_c
-  : explain_c '(' type_c { type_push( $3.ast ); } cast_c ')' name_opt Y_END
+  : explain_c '(' type_c { type_push( $3.ast ); } cast_opt_c ')' name_opt Y_END
     {
       type_pop();
 
       DUMP_START( "explain_cast_t",
-                  "EXPLAIN '(' type_c cast_c ')' name_opt" );
+                  "EXPLAIN '(' type_c cast_opt_c ')' name_opt" );
       DUMP_AST( "type_c", $3.ast );
-      DUMP_AST( "cast_c", $5.ast );
+      DUMP_AST( "cast_opt_c", $5.ast );
       DUMP_NAME( "name_opt", $7 );
       DUMP_END();
 
@@ -1398,9 +1398,9 @@ arg_list_opt_c
 arg_list_c
   : arg_list_c comma_expected arg_c
     {
-      DUMP_START( "arg_list_c", "arg_list_c ',' cast_c" );
+      DUMP_START( "arg_list_c", "arg_list_c ',' cast_opt_c" );
       DUMP_AST_LIST( "arg_list_c", $1 );
-      DUMP_AST( "cast_c", $3.ast );
+      DUMP_AST( "cast_opt_c", $3.ast );
 
       $$ = $1;
       c_ast_list_append( &$$, $3.ast );
@@ -1423,12 +1423,12 @@ arg_list_c
   ;
 
 arg_c
-  : type_c { type_push( $1.ast ); } cast_c
+  : type_c { type_push( $1.ast ); } cast_opt_c
     {
       type_pop();
-      DUMP_START( "arg_c", "type_c cast_c" );
+      DUMP_START( "arg_c", "type_c cast_opt_c" );
       DUMP_AST( "type_c", $1.ast );
-      DUMP_AST( "cast_c", $3.ast );
+      DUMP_AST( "cast_opt_c", $3.ast );
 
       $$ = $3.ast ? $3 : $1;
       if ( $$.ast->name == NULL )
@@ -1650,9 +1650,13 @@ storage_class_c
 /*  cast gibberish productions                                               */
 /*****************************************************************************/
 
-cast_c
+cast_opt_c
   : /* empty */                   { $$.ast = $$.target_ast = NULL; }
-  | cast2_c
+  | cast_c
+  ;
+
+cast_c
+  : cast2_c
   | pointer_cast_c
   | pointer_to_member_cast_c
   | reference_cast_c
@@ -1696,21 +1700,21 @@ block_cast_c                            /* Apple extension */
   : /* type */ '(' '^'
     {
       //
-      // A block AST has to be the type inherited attribute for cast_c so we
-      // have to create it here.
+      // A block AST has to be the type inherited attribute for cast_opt_c so
+      // we have to create it here.
       //
       type_push( C_AST_NEW( K_BLOCK, &@$ ) );
     }
-    type_qualifier_list_opt_c cast_c ')' '(' arg_list_opt_c ')'
+    type_qualifier_list_opt_c cast_opt_c ')' '(' arg_list_opt_c ')'
     {
       c_ast_t *const block = type_pop();
 
       DUMP_START( "block_cast_c",
-                  "'(' '^' type_qualifier_list_opt_c cast_c ')' "
+                  "'(' '^' type_qualifier_list_opt_c cast_opt_c ')' "
                   "'(' arg_list_opt_c ')'" );
       DUMP_AST( "type_c", type_peek() );
       DUMP_TYPE( "type_qualifier_list_opt_c", $4 );
-      DUMP_AST( "cast_c", $5.ast );
+      DUMP_AST( "cast_opt_c", $5.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $8 );
 
       C_TYPE_ADD( &block->type, $4, @4 );
@@ -1742,14 +1746,14 @@ func_cast_c
   ;
 
 nested_cast_c
-  : '(' placeholder_type_c { type_push( $2.ast ); ++ast_depth; } cast_c ')'
+  : '(' placeholder_type_c { type_push( $2.ast ); ++ast_depth; } cast_opt_c ')'
     {
       type_pop();
       --ast_depth;
 
-      DUMP_START( "nested_cast_c", "'(' placeholder_type_c cast_c ')'" );
+      DUMP_START( "nested_cast_c", "'(' placeholder_type_c cast_opt_c ')'" );
       DUMP_AST( "placeholder_type_c", $2.ast );
-      DUMP_AST( "cast_c", $4.ast );
+      DUMP_AST( "cast_opt_c", $4.ast );
 
       $$ = $4;
 
@@ -1759,12 +1763,12 @@ nested_cast_c
   ;
 
 pointer_cast_c
-  : pointer_type_c { type_push( $1.ast ); } cast_c
+  : pointer_type_c { type_push( $1.ast ); } cast_opt_c
     {
       type_pop();
-      DUMP_START( "pointer_cast_c", "pointer_type_c cast_c" );
+      DUMP_START( "pointer_cast_c", "pointer_type_c cast_opt_c" );
       DUMP_AST( "pointer_type_c", $1.ast );
-      DUMP_AST( "cast_c", $3.ast );
+      DUMP_AST( "cast_opt_c", $3.ast );
 
       $$.ast = c_ast_patch_none( $1.ast, $3.ast );
       $$.target_ast = NULL;
@@ -1775,13 +1779,13 @@ pointer_cast_c
   ;
 
 pointer_to_member_cast_c
-  : pointer_to_member_type_c { type_push( $1.ast ); } cast_c
+  : pointer_to_member_type_c { type_push( $1.ast ); } cast_opt_c
     {
       type_pop();
       DUMP_START( "pointer_to_member_cast_c",
-                  "pointer_to_member_type_c cast_c" );
+                  "pointer_to_member_type_c cast_opt_c" );
       DUMP_AST( "pointer_to_member_type_c", $1.ast );
-      DUMP_AST( "cast_c", $3.ast );
+      DUMP_AST( "cast_opt_c", $3.ast );
 
       $$.ast = c_ast_patch_none( $1.ast, $3.ast );
       $$.target_ast = NULL;
@@ -1792,12 +1796,12 @@ pointer_to_member_cast_c
   ;
 
 reference_cast_c
-  : reference_type_c { type_push( $1.ast ); } cast_c
+  : reference_type_c { type_push( $1.ast ); } cast_opt_c
     {
       type_pop();
-      DUMP_START( "reference_cast_c", "reference_type_c cast_c" );
+      DUMP_START( "reference_cast_c", "reference_type_c cast_opt_c" );
       DUMP_AST( "reference_type_c", $1.ast );
-      DUMP_AST( "cast_c", $3.ast );
+      DUMP_AST( "cast_opt_c", $3.ast );
 
       $$.ast = c_ast_patch_none( $1.ast, $3.ast );
       $$.target_ast = NULL;
