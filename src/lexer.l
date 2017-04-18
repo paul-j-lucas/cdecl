@@ -282,7 +282,8 @@ H             [0-9A-Fa-f]
                     return cdk->y_token;
                 }
 
-  find_keyword: NO_OP;
+        find_c_keyword:
+                NO_OP;
                 c_keyword_t const *ck = c_keyword_find_literal( lexer_token );
                 if ( ck ) {
                   yylval.type = ck->type;
@@ -305,7 +306,7 @@ H             [0-9A-Fa-f]
 
 non-returning { // special case since it's not an ordinary identifier
                 lexer_token = L_NORETURN;
-                goto find_keyword;
+                goto find_c_keyword;
               }
 
 [1-9]{D}*     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
