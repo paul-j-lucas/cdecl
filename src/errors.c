@@ -121,10 +121,10 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
   assert( ast->kind & (K_BLOCK | K_FUNCTION) );
   assert( opt_lang != LANG_C_KNR );
 
-  c_ast_t const *arg, *variadic_arg = NULL, *void_arg = NULL;
+  c_ast_t const *variadic_arg = NULL, *void_arg = NULL;
   unsigned n_args = 0;
 
-  for ( arg = c_ast_args( ast ); arg; arg = arg->next ) {
+  for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
     if ( ++n_args > 1 && void_arg )
       goto only_void;
 
