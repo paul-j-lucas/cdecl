@@ -65,19 +65,21 @@
 #define T_AUTO_C          0x000001000000ull /* C version of "auto" */
 #define T_BLOCK           0x000002000000ull /* Apple extension */
 #define T_EXTERN          0x000004000000ull
-#define T_REGISTER        0x000008000000ull
-#define T_STATIC          0x000010000000ull
-#define T_THREAD_LOCAL    0x000020000000ull
-#define T_TYPEDEF         0x000040000000ull
+#define T_INLINE          0x000008000000ull
+#define T_MUTABLE         0x000010000000ull
+#define T_REGISTER        0x000020000000ull
+#define T_STATIC          0x000040000000ull
+#define T_THREAD_LOCAL    0x000080000000ull
+#define T_TYPEDEF         0x000100000000ull
 
 // storage-class-like
-#define T_CONSTEXPR       0x000080000000ull
-#define T_FINAL           0x000100000000ull
-#define T_FRIEND          0x000200000000ull
-#define T_NORETURN        0x000400000000ull
-#define T_OVERRIDE        0x000800000000ull
-#define T_PURE_VIRTUAL    0x001000000000ull
-#define T_VIRTUAL         0x002000000000ull
+#define T_CONSTEXPR       0x000200000000ull
+#define T_FINAL           0x000400000000ull
+#define T_FRIEND          0x000800000000ull
+#define T_NORETURN        0x001000000000ull
+#define T_OVERRIDE        0x002000000000ull
+#define T_PURE_VIRTUAL    0x004000000000ull
+#define T_VIRTUAL         0x008000000000ull
 
 // qualifiers
 #define T_CONST           0x010000000000ull

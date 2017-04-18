@@ -72,8 +72,9 @@ Paul J. Lucas <paul@lucasmail.org>
 	now using a proper abstract syntax tree data structure
 	added bool, char16_t, char32_t, complex, noreturn, restrict,
 		thread_local, wchar_t
+	added inline functions
 	added register and variadic function arguments
-	added C++11 auto, constexpr, enum class, and rvalue references
+	added C++11 auto, constexpr, enum class, mutable, and rvalue references
 	independently added typedef declarations
 	added final, friend, const, override, volatile, virtual,
 		and pure virtual C++ member function declarations

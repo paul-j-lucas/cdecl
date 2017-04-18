@@ -71,10 +71,12 @@ static char const *const CDECL_KEYWORDS[] = {
   L_FLOAT,
   L_FRIEND,
   L_FUNCTION,
+  L_INLINE,
 //L_INT,                                // special case (see below)
 //L_INTO,                               // special case (see below)
   L_LONG,
   L_MEMBER,
+  L_MUTABLE,
   L_NORETURN,
 //L_OF,                                 // too short
   L_OVERRIDE,

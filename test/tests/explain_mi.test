@@ -1,0 +1,1 @@
+cdecl | -xc++ | explain mutable int x | 0

@@ -100,6 +100,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fv_v.test \
 	tests/declare_fx_pi.test \
 	tests/declare_gi.test \
+	tests/declare_if_v.test \
 	tests/declare_k.test \
 	tests/declare_ld.test \
 	tests/declare_lf.test \
@@ -120,6 +121,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_sc.test \
 	tests/declare_sf_v.test \
 	tests/declare_si.test \
+	tests/declare_sif_v.test \
 	tests/declare_sll.test \
 	tests/declare_ti.test \
 	tests/declare_type.test \
@@ -273,6 +275,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fx_pi.test \
 	tests/explain_gi.test \
 	tests/explain_ic.test \
+	tests/explain_if_v.test \
 	tests/explain_ig.test \
 	tests/explain_is.test \
 	tests/explain_it.test \
@@ -510,6 +513,7 @@ TESTS+=	tests/declare_0f_v.test \
 	tests/declare_ek.test \
 	tests/declare_f_pmi.test \
 	tests/declare_frri_v.test \
+	tests/declare_mi.test \
 	tests/declare_oyf.test \
 	tests/declare_pfv_ri.test \
 	tests/declare_pmci.test \
@@ -537,7 +541,8 @@ TESTS+=	tests/declare_ai-c++11.test \
 	tests/declare_pri.test \
 	tests/declare_rf_v.test \
 	tests/declare_rgi.test \
-	tests/declare_rv.test
+	tests/declare_rv.test \
+	tests/declare_smi.test
 
 #
 # C++ explain tests
@@ -548,6 +553,7 @@ TESTS+=	tests/explain_a.test \
 	tests/explain_cvf_v.test \
 	tests/explain_f_pmi.test \
 	tests/explain_frri_v.test \
+	tests/explain_mi.test \
 	tests/explain_oyf.test \
 	tests/explain_pmf_i.test \
 	tests/explain_pmf_pc.test \
@@ -576,7 +582,8 @@ TESTS+=	tests/explain_ai-c++11.test \
 	tests/explain_pri.test \
 	tests/explain_prri.test \
 	tests/explain_rgi.test \
-	tests/explain_rv.test
+	tests/explain_rv.test \
+	tests/explain_smi.test
 
 #
 # C++ cast tests

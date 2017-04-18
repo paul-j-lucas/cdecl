@@ -370,6 +370,7 @@ static void yyerror( char const *msg ) {
                     /* C99 */
 %token  <type>      Y_BOOL
 %token  <type>      Y_COMPLEX
+%token  <type>      Y_INLINE
 %token  <type>      Y_RESTRICT
 %token  <type>      Y_WCHAR_T
 
@@ -382,6 +383,7 @@ static void yyerror( char const *msg ) {
 %token  <type>      Y_CLASS
 %token              Y_COLON_COLON       "::"
 %token  <type>      Y_FRIEND
+%token  <type>      Y_MUTABLE
 %token  <type>      Y_VIRTUAL
 
                     /* C++11 */
@@ -610,6 +612,8 @@ storage_class_english
   | Y_EXTERN
   | Y_FINAL
   | Y_FRIEND
+  | Y_INLINE
+  | Y_MUTABLE
   | Y_NORETURN
   | Y_OVERRIDE
   | Y_REGISTER
@@ -1631,6 +1635,8 @@ storage_class_c
   | Y_EXTERN
   | Y_FINAL
   | Y_FRIEND
+  | Y_INLINE
+  | Y_MUTABLE
   | Y_NORETURN
   | Y_OVERRIDE
 /*| Y_REGISTER */                       /* in type_modifier_english */

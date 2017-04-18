@@ -84,6 +84,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   // C99
   { L_BOOL,          Y_BOOL,         T_BOOL,          LANG_ALL          },
   { L_COMPLEX,       Y_COMPLEX,      T_COMPLEX,       LANG_ALL          },
+  { L_INLINE,        Y_INLINE,       T_INLINE,        LANG_ALL          },
   { L_RESTRICT,      Y_RESTRICT,     T_RESTRICT,      LANG_ALL          },
   { L_WCHAR_T,       Y_WCHAR_T,      T_WCHAR_T,       LANG_ALL          },
 
@@ -93,6 +94,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   // C++
   { L_CLASS,         Y_CLASS,        T_CLASS,         LANG_ALL          },
   { L_FRIEND,        Y_FRIEND,       T_FRIEND,        LANG_ALL          },
+  { L_MUTABLE,       Y_MUTABLE,      T_MUTABLE,       LANG_ALL          },
   { L_VIRTUAL,       Y_VIRTUAL,      T_VIRTUAL,       LANG_ALL          },
 
   // C++11

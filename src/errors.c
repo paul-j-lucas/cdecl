@@ -232,6 +232,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   (void)data;
 
+  c_type_t tmp_type;
+
   switch ( ast->kind ) {
     case K_ARRAY: {
       c_ast_t const *const of_ast = ast->as.array.of_ast;
@@ -279,8 +281,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       break;
 
     case K_FUNCTION:
-      if ( (ast->type & T_REGISTER) )
-        return error_kind_not_type( ast, T_REGISTER );
+      if ( (tmp_type = (ast->type & (T_MUTABLE | T_REGISTER))) )
+        return error_kind_not_type( ast, tmp_type );
       if ( opt_lang >= LANG_CPP_MIN ) {
         if ( (ast->type & T_PURE_VIRTUAL) && !(ast->type & T_VIRTUAL) ) {
           print_error( &ast->loc, "non-virtual function can not be pure" );

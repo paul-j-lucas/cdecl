@@ -68,6 +68,7 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
 };
 
 static c_type_info_t const C_STORAGE_INFO[] = {
+  // storage classes
   { T_AUTO_C,       L_AUTO,         LANG_MAX(CPP_03)                },
   { T_BLOCK,        L___BLOCK,      LANG_ALL                        },
   { T_EXTERN,       L_EXTERN,       LANG_ALL                        },
@@ -76,9 +77,12 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { T_THREAD_LOCAL, L_THREAD_LOCAL, LANG_C_11 | LANG_MIN(CPP_11)    },
   { T_TYPEDEF,      L_TYPEDEF,      LANG_ALL                        },
 
+  // storage-class-like
   { T_CONSTEXPR,    L_CONSTEXPR,    LANG_MIN(CPP_11)                },
   { T_FINAL,        L_FINAL,        LANG_MIN(CPP_11)                },
   { T_FRIEND,       L_FRIEND,       LANG_CPP_ALL                    },
+  { T_INLINE,       L_INLINE,       LANG_MIN(C_99)                  },
+  { T_MUTABLE,      L_MUTABLE,      LANG_MIN(CPP_MIN)               },
   { T_NORETURN,     L_NORETURN,     LANG_C_11                       },
   { T_OVERRIDE,     L_OVERRIDE,     LANG_MIN(CPP_11)                },
   { T_VIRTUAL,      L_VIRTUAL,      LANG_CPP_ALL                    },
@@ -118,6 +122,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define C9          LANG_MIN(C_99)
 #define C1          LANG_MIN(C_11)
 #define PP          LANG_CPP_ALL
+#define P3          LANG_MIN(CPP_03)
 #define P1          LANG_MIN(CPP_11)
 #define E1          LANG_C_11 | LANG_MIN(CPP_11)
 
@@ -126,22 +131,24 @@ static c_type_info_t const C_TYPE_INFO[] = {
  * Only the lower triangle is used.
  */
 static c_lang_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
-/*                   a  b  e  r  s  tl td   c  fi fr nr o  v  pv */
-/* auto         */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__ },
-/* block        */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__ },
-/* extern       */ { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__ },
-/* register     */ { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__ },
-/* static       */ { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__ },
-/* thread_local */ { XX,E1,E1,XX,E1,E1,__,  __,__,__,__,__,__,__ },
-/* typedef      */ { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__ },
+/*                   a  b  e  r  s  tl td   ce fi fr in mu nr o  v  pv */
+/* auto         */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__ },
+/* block        */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__ },
+/* extern       */ { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__ },
+/* register     */ { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__,__,__ },
+/* static       */ { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__,__,__ },
+/* thread_local */ { XX,E1,E1,XX,E1,E1,__,  __,__,__,__,__,__,__,__,__ },
+/* typedef      */ { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__,__,__ },
 
-/* constexpr    */ { P1,P1,P1,XX,P1,XX,XX,  P1,__,__,__,__,__,__ },
-/* final        */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,__,__,__,__,__ },
-/* friend       */ { XX,XX,XX,XX,XX,XX,XX,  P1,XX,PP,__,__,__,__ },
-/* noreturn     */ { XX,XX,C1,XX,C1,XX,XX,  XX,XX,XX,C1,__,__,__ },
-/* override     */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,P1,__,__ },
-/* virtual      */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,P1,PP,__ },
-/* pure virtual */ { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,P1,PP,PP },
+/* constexpr    */ { P1,P1,P1,XX,P1,XX,XX,  P1,__,__,__,__,__,__,__,__ },
+/* final        */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,__,__,__,__,__,__,__ },
+/* friend       */ { XX,XX,XX,XX,XX,XX,XX,  P1,XX,PP,__,__,__,__,__,__ },
+/* inline       */ { XX,XX,C9,XX,C9,XX,XX,  P1,P1,PP,C9,__,__,__,__,__ },
+/* mutable      */ { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,P3,__,__,__,__ },
+/* noreturn     */ { XX,XX,C1,XX,C1,XX,XX,  XX,XX,XX,C1,XX,C1,__,__,__ },
+/* override     */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,C1,XX,XX,P1,__,__ },
+/* virtual      */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,PP,XX,XX,P1,PP,__ },
+/* pure virtual */ { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,PP,XX,XX,P1,PP,PP },
 };
 
 /**
@@ -303,13 +310,17 @@ char const* c_type_name( c_type_t type ) {
     T_EXTERN,
     T_FRIEND,
     T_REGISTER,
+    T_MUTABLE,
     T_STATIC,
     T_THREAD_LOCAL,
     T_TYPEDEF,
     T_PURE_VIRTUAL,
     T_VIRTUAL,
 
-    // These are second so we get names like "static constexpr".
+    // This is second so we get names like "static inline".
+    T_INLINE,
+
+    // These are third so we get names like "static inline noreturn".
     T_CONSTEXPR,
     T_NORETURN,
 

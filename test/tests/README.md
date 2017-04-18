@@ -28,10 +28,10 @@ The characters are:
 + `f` = `friend` or function
 + `g` = `register`
 + `h` = `short`
-+ `i` = `int`
++ `i` = `inline` or `int`
 + `k` = `struct`
 + `l` = `long`
-+ `m` = member of class
++ `m` = member of class or `mutable`
 + `n` = nested, `noreturn`, or `union`
 + `o` = `override`
 + `p` = pointer

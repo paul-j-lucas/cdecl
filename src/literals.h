@@ -95,6 +95,7 @@ extern char const L_BOOL[];
 extern char const L__BOOL[];            // synonym for "bool"
 extern char const L_COMPLEX[];
 extern char const L__COMPLEX[];         // synonym for "complex"
+extern char const L_INLINE[];
 extern char const L_RESTRICT[];
 extern char const L_RESTRICTED[];       // synonym for "restrict"
 extern char const L_WCHAR_T[];
@@ -107,6 +108,7 @@ extern char const L__NORETURN[];        // synonym for "noreturn"
 // C++
 extern char const L_CLASS[];
 extern char const L_FRIEND[];
+extern char const L_MUTABLE[];
 extern char const L_PURE[];
 extern char const L_VIRTUAL[];
 

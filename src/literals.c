@@ -92,6 +92,7 @@ char const L_BOOL[]           = "bool";
 char const L__BOOL[]          = "_Bool";
 char const L_COMPLEX[]        = "complex";
 char const L__COMPLEX[]       = "_Complex";
+char const L_INLINE[]         = "inline";
 char const L_RESTRICT[]       = "restrict";
 char const L_RESTRICTED[]     = "restricted";
 char const L_WCHAR_T[]        = "wchar_t";
@@ -104,6 +105,7 @@ char const L__NORETURN[]      = "_Noreturn";
 // C++
 char const L_CLASS[]          = "class";
 char const L_FRIEND[]         = "friend";
+char const L_MUTABLE[]        = "mutable";
 char const L_PURE[]           = "pure";
 char const L_VIRTUAL[]        = "virtual";
 
