@@ -298,7 +298,10 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       // no break;
 
     case K_BLOCK: {                     // Apple extension
-      if ( (tmp_type = (ast->type & (T_AUTO_C | T_MUTABLE | T_REGISTER))) )
+      tmp_type = (ast->type &
+                  (T_AUTO_C | T_BLOCK | T_MUTABLE | T_REGISTER |
+                   T_THREAD_LOCAL));
+      if ( tmp_type )
         return error_kind_not_type( ast, tmp_type );
 
       char const *const kind_name = c_kind_name( ast->kind );
