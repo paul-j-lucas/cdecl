@@ -281,8 +281,6 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       break;
 
     case K_FUNCTION:
-      if ( (tmp_type = (ast->type & (T_MUTABLE | T_REGISTER))) )
-        return error_kind_not_type( ast, tmp_type );
       if ( opt_lang >= LANG_CPP_MIN ) {
         if ( (ast->type & T_PURE_VIRTUAL) && !(ast->type & T_VIRTUAL) ) {
           print_error( &ast->loc, "non-virtual function can not be pure" );
@@ -298,26 +296,42 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         return VISITOR_ERROR_FOUND;
       }
       // no break;
+
     case K_BLOCK: {                     // Apple extension
-      c_ast_t const *const ret_ast = ast->as.func.ret_ast;
+      if ( (tmp_type = (ast->type & (T_AUTO_C | T_MUTABLE | T_REGISTER))) )
+        return error_kind_not_type( ast, tmp_type );
+
       char const *const kind_name = c_kind_name( ast->kind );
+      c_ast_t const *const ret_ast = ast->as.func.ret_ast;
+
       switch ( ret_ast->kind ) {
         case K_ARRAY:
           print_error( &ret_ast->loc, "%s returning array", kind_name );
           print_hint( "%s returning pointer", kind_name );
           return VISITOR_ERROR_FOUND;
+        case K_BUILTIN:
+          if ( opt_lang < LANG_CPP_14 ) {
+            if ( (ret_ast->type & (/*T_AUTO_C |*/ T_AUTO_CPP_11)) ) {
+              print_error( &ret_ast->loc,
+                "\"auto\" return type not supported in %s",
+               c_lang_name( opt_lang )
+              );
+              return VISITOR_ERROR_FOUND;
+            }
+          }
+          break;
         case K_FUNCTION:
           print_error( &ret_ast->loc, "%s returning function", kind_name );
           print_hint( "%s returning pointer to function", kind_name );
           return VISITOR_ERROR_FOUND;
-        default: {
-          bool const args_ok = opt_lang == LANG_C_KNR ?
-            c_ast_check_func_args_knr( ast ) :
-            c_ast_check_func_args( ast );
-          return args_ok ? VISITOR_ERROR_NOT_FOUND : VISITOR_ERROR_FOUND;
-        }
+        default:
+          /* suppress warnings */;
       } // switch
-      break;
+
+      bool const args_ok = opt_lang == LANG_C_KNR ?
+        c_ast_check_func_args_knr( ast ) :
+        c_ast_check_func_args( ast );
+      return args_ok ? VISITOR_ERROR_NOT_FOUND : VISITOR_ERROR_FOUND;
     }
 
     case K_NAME:

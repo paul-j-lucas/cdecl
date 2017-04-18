@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 17, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 18, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -414,6 +414,12 @@ and
 and
 \f(CWoverride\fP
 member functions.
+.TP
+.B C++14
+Use the C++14 dialect of the C++ language.
+Adds support for
+\f(CWauto\fP
+functions.
 .RE
 .IP ""
 The default is
@@ -421,7 +427,7 @@ The default is
 (for
 .BR cdecl )
 and
-.B C++11
+.B C++14
 (for
 .BR c++decl ).
 .TP
@@ -748,6 +754,12 @@ and
 and
 \f(CWoverride\fP
 member functions.
+.TP
+.B c++14
+Use the C++14 dialect of the C++ language.
+Adds support for
+\f(CWauto\fP
+functions.
 .TP
 .RB [ no ] debug
 Turns [off] or on debugging output
@@ -1137,7 +1149,17 @@ added GNU-style test suite and many more tests;
 added more semantic checks;
 added long options,
 mult-line input,
-now distinguishing among K&R C, C89, C95, C99, C11, C++98, C++03, and C++11;
+now distinguishing among
+K&R C,
+C89,
+C95,
+C99,
+C11,
+C++98,
+C++03
+C++11,
+and
+C++14;
 added
 \f(CWbool\fP,
 \f(CWchar16_t\fP,

@@ -142,6 +142,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 # Almost every test here has a corresponding explain_ error test.
 #
 TESTS+=	tests/declare_0f_v-c.test \
+	tests/declare_af.test \
 	tests/declare_b-c89.test \
 	tests/declare_b_ai.test \
 	tests/declare_b_f_i.test \
@@ -320,6 +321,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 #
 TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_0f_v-c.test \
+	tests/explain_af.test \
 	tests/explain_b-c89.test \
 	tests/explain_b_ai.test \
 	tests/explain_c-c.test \
@@ -507,6 +509,7 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 #
 TESTS+=	tests/declare_0f_v.test \
 	tests/declare_a.test \
+	tests/declare_af-c++.test \
 	tests/declare_cf_v.test \
 	tests/declare_cpmi.test \
 	tests/declare_ec.test \

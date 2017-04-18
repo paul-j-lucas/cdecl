@@ -47,7 +47,8 @@
 #define LANG_CPP_98   (1u << 5)
 #define LANG_CPP_03   (1u << 6)
 #define LANG_CPP_11   (1u << 7)
-#define LANG_CPP_MAX  LANG_CPP_11
+#define LANG_CPP_14   (1u << 8)
+#define LANG_CPP_MAX  LANG_CPP_14
 #define LANG_CPP_ALL  LANG_MIN(CPP_MIN)
 
 /**

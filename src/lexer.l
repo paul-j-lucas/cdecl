@@ -296,7 +296,8 @@ H             [0-9A-Fa-f]
 "c++"         |
 "c++98"       |
 "c++03"       |
-"c++11"       {
+"c++11"       |
+"c++14"       {
                 SET_TOKEN;
                 yylval.name = check_strdup( lexer_token );
                 return Y_CPP_LANG_NAME;

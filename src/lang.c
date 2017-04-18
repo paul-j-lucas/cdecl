@@ -49,6 +49,7 @@ c_lang_info_t const C_LANG_INFO[] = {
   { "c++98",   LANG_CPP_98  },
   { "c++03",   LANG_CPP_03  },
   { "c++11",   LANG_CPP_11  },
+  { "c++14",   LANG_CPP_14  },
   { NULL,      LANG_NONE    },
 };
 
@@ -74,6 +75,7 @@ char const* c_lang_name( c_lang_t lang ) {
     case LANG_CPP_98: return "C++98";
     case LANG_CPP_03: return "C++03";
     case LANG_CPP_11: return "C++11";
+    case LANG_CPP_14: return "C++14";
     default:
       INTERNAL_ERR( "\"%d\": unexpected value for lang\n", (int)lang );
   } // switch
