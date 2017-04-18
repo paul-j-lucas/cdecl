@@ -134,7 +134,6 @@ static keyword_t const CDECL_KEYWORDS[] = {
 };
 
 // extern variables
-bool            explaining;             // parsing "explain ..."?
 char const     *lexer_token;            // guranteed pointer of yytext
 YYLTYPE         yylloc;                 // location of current token
 
@@ -253,7 +252,7 @@ char const* lexer_input_line( size_t *plen ) {
 void lexer_reset( bool hard_reset ) {
   if ( hard_reset )
     is_eof = false;
-  explaining = false;
+  c_mode = MODE_DECLARE;
   input_len = input_sent = 0;
   newline();
 }
@@ -273,7 +272,7 @@ H             [0-9A-Fa-f]
 {A}({A}|{D})* {
                 SET_TOKEN;
 
-                if ( !explaining ) {
+                if ( c_mode == MODE_DECLARE ) {
                   keyword_t const *const k = cdecl_keyword_find( lexer_token );
                   if ( k ) {
                     if ( k->c_keyword_synonym )

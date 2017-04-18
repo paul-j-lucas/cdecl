@@ -151,6 +151,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_cf_v-c.test \
 	tests/declare_ci-knr.test \
 	tests/declare_e-knr.test \
+	tests/declare_ec-c.test \
 	tests/declare_esf_v.test \
 	tests/declare_esf_v.test \
 	tests/declare_f_ai.test \
@@ -505,6 +506,8 @@ TESTS+=	tests/declare_0f_v.test \
 	tests/declare_a.test \
 	tests/declare_cf_v.test \
 	tests/declare_cpmi.test \
+	tests/declare_ec.test \
+	tests/declare_ek.test \
 	tests/declare_f_pmi.test \
 	tests/declare_frri_v.test \
 	tests/declare_oyf.test \
@@ -562,6 +565,8 @@ TESTS+=	tests/explain_a.test \
 # =======================
 #
 TESTS+=	tests/explain_ai-c++11.test \
+	tests/explain_ec.test \
+	tests/explain_ek.test \
 	tests/explain_fa_v.test \
 	tests/explain_frri_v-c++03.test \
 	tests/explain_fsf_v.test \

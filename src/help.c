@@ -71,7 +71,7 @@ static help_text_t const HELP_TEXT[] = {
 /* 17 */  { "  [<storage>]* [<modifier>]* [<C-type>]",
             "  [<storage>]* [<modifier>]* [<C++-type>]" },
 /* 18 */  { "  { enum | struct | union } <name>",
-            "  { enum | struct | union | class } <name>" },
+            "  { enum [class|struct] | struct | union | class } <name>" },
 /* 19 */  { "args: a comma separated list of <name>, <english>, or <name> as <english>",
             "args: a comma separated list of <english> or <name> as <english>" },
 /* 20 */  { "gibberish: a C declaration, like \"int x\"; or cast, like \"(int)x\"",

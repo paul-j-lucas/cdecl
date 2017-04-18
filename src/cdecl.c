@@ -47,6 +47,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variable definitions
+c_mode_t            c_mode;             // are we declaring or explaining?
 bool                is_input_a_tty;     // is our input from a tty?
 char const         *me;                 // program name
 

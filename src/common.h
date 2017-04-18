@@ -39,6 +39,15 @@
 #define DEBUG_INDENT          2         /* spaces per debug indent level */
 
 /**
+ * Mode of operation.
+ */
+enum c_mode {
+  MODE_DECLARE,                         // includes "cast ... into ..."
+  MODE_EXPLAIN
+};
+typedef enum c_mode c_mode_t;
+
+/**
  * The source location used by bison.
  */
 typedef struct {
@@ -52,6 +61,7 @@ typedef struct {
 #define YYLTYPE_IS_TRIVIAL    1
 
 // extern variables
+extern c_mode_t     c_mode;             // are we declaring or explaining?
 extern bool         is_input_a_tty;     // is our input from a tty?
 extern char const  *me;                 // program name
 

@@ -26,6 +26,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "ast_util.h"
+#include "common.h"
 #include "diagnostics.h"
 #include "options.h"
 #include "types.h"
@@ -266,6 +267,14 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       if ( (ast->type & (T_STRUCT | T_UNION | T_CLASS)) &&
            (ast->type & T_REGISTER) ) {
         return error_kind_not_type( ast, T_REGISTER );
+      }
+      if ( c_mode == MODE_EXPLAIN &&
+           (ast->type & T_ENUM) && (ast->type & (T_STRUCT | T_CLASS)) ) {
+        print_error( &ast->loc,
+          "\"%s\": enum classes must just use \"enum\"",
+          c_type_name( ast->type )
+        );
+        return VISITOR_ERROR_FOUND;
       }
       break;
 

@@ -688,7 +688,7 @@ explain_c
       //
       // would result in a parser error.
       //
-      explaining = true;
+      c_mode = MODE_EXPLAIN;
     }
   ;
 
@@ -1588,6 +1588,7 @@ builtin_type_c
 enum_class_struct_union_type_c
   : Y_ENUM
   | class_struct_type_c
+  | Y_ENUM class_struct_type_c    { $$ = $1 | $2; }
   | Y_UNION
   ;
 

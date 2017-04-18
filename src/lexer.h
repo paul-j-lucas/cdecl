@@ -37,7 +37,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
-extern bool         explaining;         // parsing "explain ..."?
 extern char const  *lexer_token;        // text of current token
 
 /**
