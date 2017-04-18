@@ -1124,6 +1124,7 @@ array_decl_c
       c_ast_t *const array = C_AST_NEW( K_ARRAY, &@$ );
       array->as.array.size = $2;
       c_ast_set_parent( C_AST_NEW( K_NONE, &@1 ), array );
+
       if ( $1.target_ast ) {            // array-of or function/block-ret type
         $$.ast = $1.ast;
         $$.target_ast = c_ast_add_array( $1.target_ast, array );
@@ -1193,6 +1194,7 @@ func_decl_c
       c_ast_t *const func = C_AST_NEW( K_FUNCTION, &@$ );
       func->type = $5 | $6;
       func->as.func.args = $3;
+
       if ( $1.target_ast ) {
         $$.ast = $1.ast;
         (void)c_ast_add_func( $1.target_ast, type_peek(), func );
@@ -1676,13 +1678,14 @@ array_cast_c
       DUMP_START( "array_cast_c", "cast2_c array_size_c" );
       DUMP_AST( "type_c", type_peek() );
       DUMP_AST( "cast2_c", $1.ast );
-      DUMP_NUM( "array_size_c", $2 );
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
+      DUMP_NUM( "array_size_c", $2 );
 
       c_ast_t *const array = C_AST_NEW( K_ARRAY, &@$ );
       array->as.array.size = $2;
       c_ast_set_parent( C_AST_NEW( K_NONE, &@1 ), array );
+
       if ( $1.target_ast ) {            // array-of or function/block-ret type
         $$.ast = $1.ast;
         $$.target_ast = c_ast_add_array( $1.target_ast, array );
@@ -1728,16 +1731,26 @@ block_cast_c                            /* Apple extension */
   ;
 
 func_cast_c
-  : /* type_c */ cast2_c '(' arg_list_opt_c ')'
+  : /* type_c */ cast2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c
     {
       DUMP_START( "func_cast_c", "cast2_c '(' arg_list_opt_c ')'" );
       DUMP_AST( "type_c", type_peek() );
       DUMP_AST( "cast2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
+      DUMP_TYPE( "func_qualifier_list_opt_c", $5 );
+      if ( $1.target_ast )
+        DUMP_AST( "target_ast", $1.target_ast );
 
       c_ast_t *const func = C_AST_NEW( K_FUNCTION, &@$ );
+      func->type = $5;
       func->as.func.args = $3;
-      $$.ast = c_ast_add_func( $1.ast, type_peek(), func );
+
+      if ( $1.target_ast ) {
+        $$.ast = $1.ast;
+        (void)c_ast_add_func( $1.target_ast, type_peek(), func );
+      } else {
+        $$.ast = c_ast_add_func( $1.ast, type_peek(), func );
+      }
       $$.target_ast = func->as.func.ret_ast;
 
       DUMP_AST( "func_cast_c", $$.ast );
