@@ -26,6 +26,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "literals.h"
+#include "options.h"
 #include "util.h"
 
 // standard
@@ -259,6 +260,8 @@ void readline_init( void ) {
 
   rl_attempted_completion_function = (CPPFunction*)attempt_completion;
   rl_completion_entry_function = (void*)keyword_completion;
+  rl_instream = fin;
+  rl_outstream = fout;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
