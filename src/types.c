@@ -62,6 +62,7 @@ struct c_type_info {
 typedef struct c_type_info c_type_info_t;
 
 static c_type_info_t const C_QUALIFIER_INFO[] = {
+  { T_ATOMIC,       L__ATOMIC,      LANG_MIN(C_11)                  },
   { T_CONST,        L_CONST,        LANG_MIN(C_89)                  },
   { T_RESTRICT,     L_RESTRICT,     LANG_MIN(C_89) & ~LANG_CPP_ALL  },
   { T_VOLATILE,     L_VOLATILE,     LANG_MIN(C_89)                  },
@@ -339,6 +340,7 @@ char const* c_type_name( c_type_t type ) {
     T_CONST,
     T_RESTRICT,
     T_VOLATILE,
+    T_ATOMIC,
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER ); ++i ) {
     if ( (type & C_QUALIFIER[i]) ) {

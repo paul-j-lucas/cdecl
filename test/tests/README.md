@@ -18,7 +18,7 @@ declaration as it is in English.
 The characters are:
 
 + `0` = pure virtual
-+ `a` = array (following digit 1-9 specifies array dimension) or `auto`
++ `a` = array (following digits specify array size), `_Atomic`, or `auto`
 + `b` = block (Apple extension) or `bool`
 + `c` = `char`, `class`,  or `const`
 + `c16` = `char16_t`

@@ -71,7 +71,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	now distinguishing among K&R C, C89, C95, C99, C11, C++98, C++03,
 		C++11, and C++14
 	now using a proper abstract syntax tree data structure
-	added bool, char16_t, char32_t, complex, noreturn, restrict,
+	added _Atomic, bool, char16_t, char32_t, complex, noreturn, restrict,
 		thread_local, wchar_t
 	added inline functions
 	added register and variadic function arguments

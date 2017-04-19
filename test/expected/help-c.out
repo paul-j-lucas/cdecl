@@ -18,5 +18,5 @@ type:
 args: a comma separated list of <name>, <english>, or <name> as <english>
 gibberish: a C declaration, like "int x"; or cast, like "(int)x"
 C-type: bool char char16_t char32_t wchar_t int float double size_t void
-modifier: short long signed unsigned const restrict volatile
-storage: auto extern register static _Thread_local
+modifier: short long signed unsigned atomic const restrict volatile
+storage: auto extern register static thread_local

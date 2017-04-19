@@ -375,6 +375,7 @@ functions.
 .B C11
 Use the C11 dialect of the C language.
 Adds support for
+\f(CW_Atomic\fP,
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
 \f(CW_Noreturn\fP
@@ -596,6 +597,7 @@ number.
 .TP
 .I qualifier
 One of:
+\f(CW_Atomic\fP,
 \f(CWconst\fP,
 \f(CWrestrict\fP,
 or
@@ -632,6 +634,7 @@ it's equivalent to
 Some synonyms are permitted within pseudo-English.
 The words on the left are synonyms for what's on the right:
 .cS
+       atomic  _Atomic
     automatic  auto
         _Bool  bool
     character  char
@@ -715,6 +718,7 @@ functions.
 .B c11
 Use the C11 dialect of the C language.
 Adds support for
+\f(CW_Atomic\fP,
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
 \f(CW_Noreturn\fP
@@ -1051,10 +1055,9 @@ struct S s;                       // supported
 struct S { int i; char c; } s;    // not supported
 .cE 0
 .IP \n+[step].
-The C11 \f(CW_Atomic\fP
-and the C11 (and C++11)
-\f(CWalignas\fP specifiers
-are not supported.
+The C11 (and C++11)
+\f(CWalignas\fP specifier
+is not supported.
 .IP \n+[step].
 Default arguments for C++ functions are not supported:
 .cS
@@ -1162,6 +1165,7 @@ C++11,
 and
 C++14;
 added
+\f(CW_Atomic\fP,
 \f(CWbool\fP,
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,

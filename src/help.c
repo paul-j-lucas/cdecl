@@ -78,9 +78,9 @@ static help_text_t const HELP_TEXT[] = {
             "gibberish: a C++ declaration, like \"int x\"; or cast, like \"(int)x\"" },
 /* 21 */  { "C-type: bool char char16_t char32_t wchar_t int float double size_t void",
             "C++-type: bool char char16_t char32_t wchar_t int float double size_t void" },
-/* 22 */  { "modifier: short long signed unsigned const restrict volatile",
+/* 22 */  { "modifier: short long signed unsigned atomic const restrict volatile",
             "modifier: short long signed unsigned const volatile" },
-/* 23 */  { "storage: auto extern register static _Thread_local",
+/* 23 */  { "storage: auto extern register static thread_local",
             "storage: constexpr extern friend register static thread_local [pure] virtual" },
           { NULL, NULL }
 };

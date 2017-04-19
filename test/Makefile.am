@@ -60,7 +60,10 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_a9cpi.test \
 	tests/declare_a9i.test \
 	tests/declare_a9pi.test \
+	tests/declare_ai-01.test \
+	tests/declare_ai-02.test \
 	tests/declare_ai.test \
+	tests/declare_api-01.test \
 	tests/declare_b.test \
 	tests/declare_bii_d.test \
 	tests/declare_c.test \
@@ -111,6 +114,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_pa3cpa5i.test \
 	tests/declare_pa3pa5i.test \
 	tests/declare_pa9i.test \
+	tests/declare_pai-01.test \
 	tests/declare_pbv_pi.test \
 	tests/declare_pcpi.test \
 	tests/declare_pfv_pi.test \
@@ -236,7 +240,11 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_a9cpi.test \
 	tests/explain_a9i.test \
 	tests/explain_a9pi.test \
+	tests/explain_ai-01.test \
+	tests/explain_ai-02.test \
 	tests/explain_ai.test \
+	tests/explain_api-01.test \
+	tests/explain_api-02.test \
 	tests/explain_b.test \
 	tests/explain_bii_d.test \
 	tests/explain_c.test \
@@ -294,6 +302,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_pa3cpa5i.test \
 	tests/explain_pa3pa5i.test \
 	tests/explain_pa9i.test \
+	tests/explain_pai-01.test \
+	tests/explain_pai-02.test \
 	tests/explain_pbv_pi.test \
 	tests/explain_pcpi.test \
 	tests/explain_pfv_pi.test \

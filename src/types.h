@@ -82,9 +82,10 @@
 #define T_VIRTUAL         0x008000000000ull
 
 // qualifiers
-#define T_CONST           0x010000000000ull
-#define T_RESTRICT        0x020000000000ull
-#define T_VOLATILE        0x040000000000ull
+#define T_ATOMIC          0x010000000000ull
+#define T_CONST           0x020000000000ull
+#define T_RESTRICT        0x040000000000ull
+#define T_VOLATILE        0x080000000000ull
 
 // bit masks
 #define T_MASK_TYPE       0x000000FFFFFFull

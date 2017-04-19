@@ -1,7 +1,7 @@
 
-builtin_or_enum_class_struct_union_type_c ::= builtin_type_c = {
+builtin_type_ast_c ::= builtin_type_c = {
   builtin_type_c = "int",
-  builtin_or_enum_class_struct_union_type_c = {
+  builtin_type_ast_c = {
     id = 1,
     kind = "built-in type",
     depth = 0,
@@ -11,8 +11,8 @@ builtin_or_enum_class_struct_union_type_c ::= builtin_type_c = {
   }
 }
 
-type_c ::= builtin_type_c type_modifier_list_opt_c = {
-  builtin_or_enum_class_struct_union_type_c = {
+type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
+  unmodified_type_c = {
     id = 1,
     kind = "built-in type",
     depth = 0,
@@ -21,7 +21,7 @@ type_c ::= builtin_type_c type_modifier_list_opt_c = {
     type = "int"
   },
   type_modifier_list_opt_c = null,
-  type_c = {
+  type_ast_c = {
     id = 1,
     kind = "built-in type",
     depth = 0,
@@ -32,7 +32,7 @@ type_c ::= builtin_type_c type_modifier_list_opt_c = {
 }
 
 pointer_type_c ::= * type_qualifier_list_opt_c = {
-  type_c = {
+  type_ast_c = {
     id = 1,
     kind = "built-in type",
     depth = 0,
@@ -61,7 +61,7 @@ pointer_type_c ::= * type_qualifier_list_opt_c = {
 }
 
 name_c ::= NAME = {
-  type_c = {
+  type_ast_c = {
     id = 2,
     kind = "pointer",
     depth = 0,
@@ -98,9 +98,9 @@ name_c ::= NAME = {
   }
 }
 
-builtin_or_enum_class_struct_union_type_c ::= builtin_type_c = {
+builtin_type_ast_c ::= builtin_type_c = {
   builtin_type_c = "int",
-  builtin_or_enum_class_struct_union_type_c = {
+  builtin_type_ast_c = {
     id = 3,
     kind = "built-in type",
     depth = 0,
@@ -110,8 +110,8 @@ builtin_or_enum_class_struct_union_type_c ::= builtin_type_c = {
   }
 }
 
-type_c ::= builtin_type_c type_modifier_list_opt_c = {
-  builtin_or_enum_class_struct_union_type_c = {
+type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
+  unmodified_type_c = {
     id = 3,
     kind = "built-in type",
     depth = 0,
@@ -120,7 +120,7 @@ type_c ::= builtin_type_c type_modifier_list_opt_c = {
     type = "int"
   },
   type_modifier_list_opt_c = null,
-  type_c = {
+  type_ast_c = {
     id = 3,
     kind = "built-in type",
     depth = 0,
@@ -131,7 +131,7 @@ type_c ::= builtin_type_c type_modifier_list_opt_c = {
 }
 
 name_c ::= NAME = {
-  type_c = {
+  type_ast_c = {
     id = 3,
     kind = "built-in type",
     depth = 0,
@@ -150,8 +150,8 @@ name_c ::= NAME = {
   }
 }
 
-arg_c ::= type_c cast_opt_c = {
-  type_c = {
+arg_c ::= type_ast_c cast_opt_c = {
+  type_ast_c = {
     id = 3,
     kind = "built-in type",
     depth = 0,
@@ -198,9 +198,9 @@ arg_list_c ::= arg_c = {
   ]
 }
 
-builtin_or_enum_class_struct_union_type_c ::= builtin_type_c = {
+builtin_type_ast_c ::= builtin_type_c = {
   builtin_type_c = "int",
-  builtin_or_enum_class_struct_union_type_c = {
+  builtin_type_ast_c = {
     id = 4,
     kind = "built-in type",
     depth = 0,
@@ -210,8 +210,8 @@ builtin_or_enum_class_struct_union_type_c ::= builtin_type_c = {
   }
 }
 
-type_c ::= builtin_type_c type_modifier_list_opt_c = {
-  builtin_or_enum_class_struct_union_type_c = {
+type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
+  unmodified_type_c = {
     id = 4,
     kind = "built-in type",
     depth = 0,
@@ -220,7 +220,7 @@ type_c ::= builtin_type_c type_modifier_list_opt_c = {
     type = "int"
   },
   type_modifier_list_opt_c = null,
-  type_c = {
+  type_ast_c = {
     id = 4,
     kind = "built-in type",
     depth = 0,
@@ -231,7 +231,7 @@ type_c ::= builtin_type_c type_modifier_list_opt_c = {
 }
 
 name_c ::= NAME = {
-  type_c = {
+  type_ast_c = {
     id = 4,
     kind = "built-in type",
     depth = 0,
@@ -250,8 +250,8 @@ name_c ::= NAME = {
   }
 }
 
-arg_c ::= type_c cast_opt_c = {
-  type_c = {
+arg_c ::= type_ast_c cast_opt_c = {
+  type_ast_c = {
     id = 4,
     kind = "built-in type",
     depth = 0,
@@ -317,7 +317,7 @@ arg_list_c ::= arg_list_c ',' cast_opt_c = {
 }
 
 func_decl_c ::= decl2_c '(' arg_list_opt_c ')' = {
-  type_c = {
+  type_ast_c = {
     id = 2,
     kind = "pointer",
     depth = 0,
@@ -522,8 +522,8 @@ pointer_decl_c ::= pointer_type_c decl_c = {
   }
 }
 
-explain_declaration_c ::= EXPLAIN type_c decl_c = {
-  type_c = {
+explain_declaration_c ::= EXPLAIN type_ast_c decl_c = {
+  type_ast_c = {
     id = 1,
     kind = "built-in type",
     depth = 0,

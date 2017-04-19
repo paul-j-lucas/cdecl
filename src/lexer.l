@@ -90,6 +90,7 @@ typedef struct keyword keyword_t;
 static keyword_t const CDECL_KEYWORDS[] = {
   { L_ARRAY,          TOKEN( Y_ARRAY )        },
   { L_AS,             TOKEN( Y_AS )           },
+  { L_ATOMIC,         C_SYN( L__ATOMIC )      },
   { L_AUTOMATIC,      C_SYN( L_AUTO )         },
   { L_BLOCK,          TOKEN( Y_BLOCK )        },  // Apple extension
   { L__BOOL,          C_SYN( L_BOOL )         },
@@ -268,8 +269,16 @@ B             [01]
 O             [0-7]
 D             [0-9]
 H             [0-9A-Fa-f]
+S             [ \f\r\t\v]
 
 %%
+
+              /*
+               * Special case: If the _Atomic keyword is immediately followed
+               * by a left parenthesis, it is interpreted as a type specifier
+               * ..., not as a type qualifier.
+               */
+_Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 
 {A}({A}|{D})* {
                 SET_TOKEN;
@@ -350,7 +359,7 @@ non-returning { // special case since it's not an ordinary identifier
 
 "//".*        ;                         /* ignore C++-style comments */
 #.*           ;                         /* ignore preprocessor directives */
-[ \f\r\t\v]+  ;                         /* ignore all other whitespace */
+{S}+          ;                         /* ignore all other whitespace */
 \\\n          ;                         /* eat escaped newlines */
 
 \n            {
