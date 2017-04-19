@@ -62,9 +62,9 @@ void set_option( char const *opt ) {
       return;
     }
 
-#ifdef WITH_CDECL_DEBUG
+#ifdef ENABLE_CDECL_DEBUG
     SET_OPTION( opt, "debug", opt_debug, true, false );
-#endif /* WITH_CDECL_DEBUG */
+#endif /* ENABLE_CDECL_DEBUG */
 
     if ( strcmp( opt, "prompt" ) == 0 )
       { cdecl_prompt_enable( true ); return; }
@@ -88,9 +88,9 @@ void set_option( char const *opt ) {
 
   printf( "\nValid set options (and command line equivalents) are:\n" );
   printf( "  options\n" );
-#ifdef WITH_CDECL_DEBUG
+#ifdef ENABLE_CDECL_DEBUG
   printf( "  debug (-d, --debug) / nodebug\n" );
-#endif /* WITH_CDECL_DEBUG */
+#endif /* ENABLE_CDECL_DEBUG */
   printf( "  interactive (-i, --interactive) / nointeractive\n" );
   printf( "  prompt / noprompt (-q, --quiet)\n" );
   printf( "  semicolon / nosemicolon (-s, --no-semicolon)\n" );
@@ -99,9 +99,9 @@ void set_option( char const *opt ) {
 #endif /* YYDEBUG */
 
   printf( "\nCurrent set option values are:\n" );
-#ifdef WITH_CDECL_DEBUG
+#ifdef ENABLE_CDECL_DEBUG
   printf( "  %sdebug\n", opt_debug ? "  " : "no" );
-#endif /* WITH_CDECL_DEBUG */
+#endif /* ENABLE_CDECL_DEBUG */
   printf( "  %sinteractive\n", opt_interactive ? "  " : "no" );
   printf( "    lang=%s\n", c_lang_name( opt_lang ) );
   printf( "  %sprompt\n", prompt[0][0] ? "  " : "no" );

@@ -44,7 +44,7 @@ cdecl_SOURCES =	parser.y lexer.l \
 		types.c \
 		util.c
 
-if WITH_CDECL_DEBUG
+if ENABLE_CDECL_DEBUG
 cdecl_SOURCES += debug.c
 endif
 

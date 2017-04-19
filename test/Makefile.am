@@ -29,7 +29,7 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 TESTS =	tests/cdecl-s.test \
 	tests/cdecl--no-semicolon.test
 
-if WITH_CDECL_DEBUG
+if ENABLE_CDECL_DEBUG
 TESTS+=	tests/cdecl-d.test \
 	tests/cdecl--debug.test
 endif
@@ -665,12 +665,12 @@ TESTS+=	tests/help-c.test \
 	tests/set_prompt.test \
 	tests/set_semicolon.test
 
-if WITH_CDECL_DEBUG
+if ENABLE_CDECL_DEBUG
 TESTS+=	tests/set_debug.test \
 	tests/set_nodebug.test
 endif
 
-if WITH_YYDEBUG
+if ENABLE_YYDEBUG
 TESTS+=	tests/set_yydebug.test \
 	tests/set_noyydebug.test
 endif

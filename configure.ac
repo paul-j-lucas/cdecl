@@ -68,51 +68,40 @@ AC_SEARCH_LIBS([readline],[readline])
 AC_SEARCH_LIBS([add_history],[readline history])
 AC_SEARCH_LIBS([endwin],[curses ncurses])
 
+# External dependency: readline (enabled by default)
+AC_ARG_WITH([readline],
+  AS_HELP_STRING([--without-readline], [disable support for readline]),
+  [],
+  [with_readline=yes]
+)
+AS_IF([test x$with_readline = xyes -a \( \
+            x$ac_cv_search_readline = xno -o \
+            x$ac_cv_have_decl_rl_completion_matches = xno \)],
+  [AC_MSG_ERROR([proper readline library not found; use --without-readline])]
+)
+AS_IF([test x$with_readline = xyes],
+  [AC_DEFINE([WITH_READLINE], [1],
+    [Define to 1 if readline support is enabled.])]
+)
+
 # Program feature: debug (enabled by default)
 AC_ARG_ENABLE([debug],
   AS_HELP_STRING([--disable-debug], [disable support for cdecl debugging]),
-  [enable_debug=${enableval}],
-  [enable_debug="yes"]
+  [],
+  [enable_debug=yes]
 )
 AS_IF([test x$enable_debug = xyes],
-  [AC_DEFINE([WITH_CDECL_DEBUG], [1],
+  [AC_DEFINE([ENABLE_CDECL_DEBUG], [1],
     [Define to 1 if cdecl debugging is enabled.])]
-)
-
-# Program feature: yacc debug (disabled by default)
-AC_ARG_ENABLE([yydebug],
-  AS_HELP_STRING([--enable-yydebug], [enable support for yacc debugging]),
-  [enable_yydebug=${enableval}]
-  [enable_yydebug="no"]
-)
-AS_IF([test x$enable_yydebug = xyes],
-  [AC_DEFINE([YYDEBUG], [1],
-    [Define to 1 if yacc debugging is enabled.])]
-)
-
-# Program feature: readline (enabled by default)
-AC_ARG_ENABLE([readline],
-  AS_HELP_STRING([--disable-readline], [disable support for readline]),
-  [enable_readline=${enableval}],
-  [enable_readline="yes"]
-)
-AS_IF([test x$enable_readline != xno -a \( \
-            x$ac_cv_search_readline == xno -o \
-            x$ac_cv_have_decl_rl_completion_matches != xyes \)],
-  [AC_MSG_ERROR([proper readline library not found; use --disable-readline])]
-)
-AS_IF([test x$enable_readline = xyes],
-  [AC_DEFINE([HAVE_READLINE], [1],
-    [Define to 1 if readline support is enabled.])]
 )
 
 # Program feature: term-columns (enabled by default)
 AC_ARG_ENABLE([term-columns],
   AS_HELP_STRING([--disable-term-columns], [disable support for terminal columns]),
-  [enable_term_columns=${enableval}],
-  [enable_term_columns="yes"]
+  [],
+  [enable_term_columns=yes]
 )
-AS_IF([test x$enable_term_columns != xno -a x$ac_cv_search_endwin = xno],
+AS_IF([test x$enable_term_columns = xyes -a x$ac_cv_search_endwin = xno],
   [AC_MSG_ERROR([curses library for term-columns not found; use --disable-term-columns])]
 )
 AS_IF([test x$enable_term_columns = xyes],
@@ -120,10 +109,21 @@ AS_IF([test x$enable_term_columns = xyes],
     [Define to 1 if term-columns is enabled.])]
 )
 
+# Program feature: yacc debug (disabled by default)
+AC_ARG_ENABLE([yydebug],
+  AS_HELP_STRING([--enable-yydebug], [enable support for yacc debugging]),
+  [],
+  [enable_yydebug=no]
+)
+AS_IF([test x$enable_yydebug = xyes],
+  [AC_DEFINE([YYDEBUG], [1],
+    [Define to 1 if yacc debugging is enabled.])]
+)
+
 # Makefile conditionals.
-AM_CONDITIONAL([WITH_CDECL_DEBUG],  [test x$enable_debug    != xno])
-AM_CONDITIONAL([WITH_READLINE],     [test x$enable_readline != xno])
-AM_CONDITIONAL([WITH_YYDEBUG],      [test x$enable_yydebug   = xyes])
+AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline  = xyes])
+AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test x$enable_debug   = xyes])
+AM_CONDITIONAL([ENABLE_YYDEBUG],      [test x$enable_yydebug = xyes])
 
 # Miscellaneous.
 AC_LANG(C)

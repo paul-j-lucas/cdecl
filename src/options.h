@@ -37,9 +37,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern option variables
-#ifdef WITH_CDECL_DEBUG
+#ifdef ENABLE_CDECL_DEBUG
 extern bool         opt_debug;
-#endif /* WITH_CDECL_DEBUG */
+#endif /* ENABLE_CDECL_DEBUG */
 extern char const  *opt_fin;
 extern char const  *opt_fout;
 extern bool         opt_interactive;

@@ -32,9 +32,9 @@
 #include "ast.h"
 #include "ast_util.h"
 #include "color.h"
-#ifdef WITH_CDECL_DEBUG
+#ifdef ENABLE_CDECL_DEBUG
 #include "debug.h"
-#endif /* WITH_CDECL_DEBUG */
+#endif /* ENABLE_CDECL_DEBUG */
 #include "common.h"
 #include "diagnostics.h"
 #include "keywords.h"
@@ -54,11 +54,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifdef WITH_CDECL_DEBUG
+#ifdef ENABLE_CDECL_DEBUG
 #define CDEBUG(...) BLOCK( if ( opt_debug ) { __VA_ARGS__ } )
 #else
 #define CDEBUG(...)                     /* nothing */
-#endif /* WITH_CDECL_DEBUG */
+#endif /* ENABLE_CDECL_DEBUG */
 
 #define C_AST_CHECK(AST,CHECK) \
   BLOCK( if ( !c_ast_check( (AST), (CHECK) ) ) PARSE_ABORT(); )
@@ -86,7 +86,7 @@
 #define DUMP_NUM(KEY,NUM) \
   CDEBUG( DUMP_COMMA; printf( "  " KEY " = %d", (NUM) ); )
 
-#ifdef WITH_CDECL_DEBUG
+#ifdef ENABLE_CDECL_DEBUG
 #define DUMP_START(NAME,PROD) \
   bool debug_comma = false;   \
   CDEBUG( PUTS_OUT( "\n" NAME " ::= " PROD " = {\n" ); )

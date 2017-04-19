@@ -233,7 +233,7 @@ char* read_input_line( char const *ps1, char const *ps2 ) {
 
   for (;;) {
     static char *line;
-#ifdef HAVE_READLINE
+#ifdef WITH_READLINE
     extern void readline_init( void );
     static bool called_readline_init;
 
@@ -251,7 +251,7 @@ char* read_input_line( char const *ps1, char const *ps2 ) {
     FFLUSH( stdout );
     if ( getline( &line, &line_cap, stdin ) == -1 )
       goto check_for_error;
-#endif /* HAVE_READLINE */
+#endif /* WITH_READLINE */
 
     if ( is_blank_line( line ) ) {
       if ( buf ) {
@@ -285,9 +285,9 @@ char* read_input_line( char const *ps1, char const *ps2 ) {
 
   assert( buf != NULL );
   assert( *buf != '\0' );
-#ifdef HAVE_READLINE
+#ifdef WITH_READLINE
   add_history( buf );
-#endif /* HAVE_READLINE */
+#endif /* WITH_READLINE */
   return buf;
 
 check_for_error:

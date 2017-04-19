@@ -46,9 +46,9 @@
 #define SET_OPTION(OPT)           (opts_given[ (unsigned char)(OPT) ] = (OPT))
 
 // extern option variables
-#ifdef WITH_CDECL_DEBUG
+#ifdef ENABLE_CDECL_DEBUG
 bool                opt_debug;
-#endif /* WITH_CDECL_DEBUG */
+#endif /* ENABLE_CDECL_DEBUG */
 char const         *opt_fin;
 char const         *opt_fout;
 bool                opt_interactive;
@@ -63,9 +63,9 @@ FILE               *fout;
 // local constant definitions
 static struct option const LONG_OPTS[] = {
   { "color",        required_argument,  NULL, 'c' },
-#ifdef WITH_CDECL_DEBUG
+#ifdef ENABLE_CDECL_DEBUG
   { "debug",        no_argument,        NULL, 'd' },
-#endif /* WITH_CDECL_DEBUG */
+#endif /* ENABLE_CDECL_DEBUG */
   { "file",         required_argument,  NULL, 'f' },
   { "interactive",  no_argument,        NULL, 'i' },
   { "output",       required_argument,  NULL, 'o' },
@@ -80,9 +80,9 @@ static struct option const LONG_OPTS[] = {
 };
 
 static char const   SHORT_OPTS[] = "c:f:io:qsvx:"
-#ifdef WITH_CDECL_DEBUG
+#ifdef ENABLE_CDECL_DEBUG
   "d"
-#endif /* WITH_CDECL_DEBUG */
+#endif /* ENABLE_CDECL_DEBUG */
 #ifdef YYDEBUG
   "y"
 #endif /* YYDEBUG */
@@ -297,9 +297,9 @@ static void parse_options( int argc, char const *argv[] ) {
     SET_OPTION( opt );
     switch ( opt ) {
       case 'c': color_when      = parse_color_when( optarg ); break;
-#ifdef WITH_CDECL_DEBUG
+#ifdef ENABLE_CDECL_DEBUG
       case 'd': opt_debug       = true;                       break;
-#endif /* WITH_CDECL_DEBUG */
+#endif /* ENABLE_CDECL_DEBUG */
       case 'f': opt_fin         = optarg;                     break;
       case 'i': opt_interactive = true;                       break;
       case 'o': opt_fout        = optarg;                     break;
@@ -345,9 +345,9 @@ static void usage( void ) {
   PRINT_ERR( "       %s -v\n", me );
   PRINT_ERR( "\noptions:\n" );
   PRINT_ERR( "  -c when  Specify when to colorize output [default: not_file].\n" );
-#ifdef WITH_CDECL_DEBUG
+#ifdef ENABLE_CDECL_DEBUG
   PRINT_ERR( "  -d       Enable debug output.\n" );
-#endif /* WITH_CDECL_DEBUG */
+#endif /* ENABLE_CDECL_DEBUG */
   PRINT_ERR( "  -f file  Read from this file [default: stdin].\n" );
   PRINT_ERR( "  -i       Force interactive mode.\n" );
   PRINT_ERR( "  -o file  Write to this file [default: stdout].\n" );
