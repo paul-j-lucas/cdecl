@@ -37,7 +37,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// subset of cdecl keywords that are commands
+/**
+ * Subset of cdecl keywords that are commands.
+ */
 static char const *const CDECL_COMMANDS[] = {
   L_CAST,
   L_DECLARE,
@@ -49,7 +51,9 @@ static char const *const CDECL_COMMANDS[] = {
   NULL
 };
 
-// subset of cdecl keywords that are completable
+/**
+ * Subset of cdecl keywords that are completable.
+ */
 static char const *const CDECL_KEYWORDS[] = {
   L_ARRAY,
 //L_AS,                                 // too short
@@ -105,7 +109,9 @@ static char const *const CDECL_KEYWORDS[] = {
   NULL
 };
 
-// cdecl options
+/**
+ * cdecl options.
+ */
 static char const *const CDECL_OPTIONS[] = {
   "c89",
   "c95",
