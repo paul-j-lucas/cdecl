@@ -91,13 +91,13 @@ or creating either a symbolic or hard link to it).
 If it is invoked as:
 .TP 9
 .B cdecl
-Runs with the latest supported dialect of C as the default language.
+Runs with the latest supported version of C as the default language.
 .TP
 .BR c++decl " | " cppdecl " | " cxxdecl
-Runs with the latest supported dialect of C++ as the default language.
+Runs with the latest supported version of C++ as the default language.
 .TP
 .BR cast " | " declare
-Runs with the latest supported dialect of C as the current language
+Runs with the latest supported version of C as the current language
 interpreting the rest of the command-line
 (if given)
 as pseudo-English,
@@ -105,7 +105,7 @@ performs the conversion to gibberish,
 and exits.
 .TP
 .B explain
-Runs with the latest supported dialect of C as the current language
+Runs with the latest supported version of C as the current language
 interpreting the rest of the command-line
 (if given)
 as gibberish,
@@ -328,101 +328,14 @@ enables line-editing and history.
 (This is the default when connected to a terminal.)
 .TP
 .BI \-\-lang \f1=\fPs "\f1 | \fP" "" \-x " s"
-Specifies which dialect of what language
+Specifies which version of what language
 .I s
 (which is case-insensitive)
 to use.
-The choices for
-.I s
-are:
-.RS
-.TP 7
-.B C
-Use the latest supported dialect of the C language.
-.TP
-.BR CKNR " | " KNR " | " KNRC
-Use the pre-ANSI Kernighan & Ritchie dialect of the C language
-as given in the first edition of
-.IR "The C Programming Language" .
-.TP
-.B C89
-Use the C89 (first ANSI C) dialect of the C language.
-Adds support for
-\f(CWconst\fP,
-\f(CWenum\fP,
-\f(CWlong double\fP,
-\f(CWsigned\fP,
-\f(CWsize_t\fP,
-\f(CWvoid\fP,
-\f(CWvolatile\fP,
-and function prototypes.
-.TP
-.B C95
-Use the C95 dialect of the C language.
-Adds support for
-\f(CWwchar_t\fP.
-.TP
-.B C99
-Use the C99 dialect of the C language.
-Adds support for
-\f(CW_Bool\fP (and \f(CWbool\fP),
-\f(CW_Complex\fP (and \f(CWcomplex\fP),
-\f(CWrestrict\fP,
-and
-\f(CWinline\fP
-functions.
-.TP
-.B C11
-Use the C11 dialect of the C language.
-Adds support for
-\f(CW_Atomic\fP,
-\f(CWchar16_t\fP,
-\f(CWchar32_t\fP,
-\f(CW_Noreturn\fP
-(and \f(CWnoreturn\fP),
-and
-\f(CW_Thread_local\fP
-(and \f(CWthread_local\fP).
-.TP
-.B C++
-Use the latest supported dialect of the C++ language.
-.TP
-.B C++98
-Use the C++98 dialect of the C++ language.
-Adds support for
-\f(CWclass\fP,
-references,
-pointers to class members,
-and \f(CWvirtual\fP functions.
-.TP
-.B C++03
-Use the C++03 dialect of the C++ language.
-Adds support for
-\f(CWmutable\fP
-data members.
-.TP
-.B C++11
-Use the C++11 dialect of the C++ language.
-Adds support for
-\f(CWauto\fP,
-\f(CWchar16_t\fP,
-\f(CWchar32_t\fP,
-\f(CWenum class\fP,
-rvalue references,
-\f(CWthread_local\fP,
-and
-\f(CWfinal\fP
-and
-\f(CWoverride\fP
-member functions.
-.TP
-.B C++14
-Use the C++14 dialect of the C++ language.
-Adds support for
-\f(CWauto\fP
-functions.
-.RE
-.IP ""
+(See
+.B C AND C++ LANGUAGE VERSIONS
+for valid values of
+.IR lang .)
 The default is
 .B C11
 (for
@@ -456,7 +369,103 @@ as they are being reduced by the parser.
 (This is a debugging aid for developers of
 .B cdecl
 itself.)
-.SH LANGUAGE
+.SH C AND C++ LANGUAGE VERSIONS
+The argument to the
+.B \-\-lang
+or
+.B \-x
+option
+or the
+.B set
+command
+is be one of the following versions
+(which are case-insensitive):
+.TP 7
+.B C
+Use the latest supported version of the C language.
+.TP
+.BR CKNR " | " KNR " | " KNRC
+Use the pre-ANSI Kernighan & Ritchie version of the C language
+as given in the first edition of
+.IR "The C Programming Language" .
+.TP
+.B C89
+Use the C89 (first ANSI C) version of the C language.
+Adds support for
+\f(CWconst\fP,
+\f(CWenum\fP,
+\f(CWlong double\fP,
+\f(CWsigned\fP,
+\f(CWsize_t\fP,
+\f(CWvoid\fP,
+\f(CWvolatile\fP,
+and function prototypes.
+.TP
+.B C95
+Use the C95 version of the C language.
+Adds support for
+\f(CWwchar_t\fP.
+.TP
+.B C99
+Use the C99 version of the C language.
+Adds support for
+\f(CW_Bool\fP (and \f(CWbool\fP),
+\f(CW_Complex\fP (and \f(CWcomplex\fP),
+\f(CWrestrict\fP,
+and
+\f(CWinline\fP
+functions.
+.TP
+.B C11
+Use the C11 version of the C language.
+Adds support for
+\f(CW_Atomic\fP,
+\f(CWchar16_t\fP,
+\f(CWchar32_t\fP,
+\f(CW_Noreturn\fP
+(and \f(CWnoreturn\fP),
+and
+\f(CW_Thread_local\fP
+(and \f(CWthread_local\fP).
+.TP
+.B C++
+Use the latest supported version of the C++ language.
+.TP
+.B C++98
+Use the C++98 version of the C++ language.
+Adds support for
+\f(CWclass\fP,
+references,
+pointers to class members,
+and \f(CWvirtual\fP functions.
+.TP
+.B C++03
+Use the C++03 version of the C++ language.
+Adds support for
+\f(CWmutable\fP
+data members.
+.TP
+.B C++11
+Use the C++11 version of the C++ language.
+Adds support for
+\f(CWauto\fP,
+\f(CWchar16_t\fP,
+\f(CWchar32_t\fP,
+\f(CWenum class\fP,
+rvalue references,
+\f(CWthread_local\fP,
+and
+\f(CWfinal\fP
+and
+\f(CWoverride\fP
+member functions.
+.TP
+.B C++14
+Use the C++14 version of the C++ language.
+Adds support for
+\f(CWauto\fP
+functions.
+.SH CDECL LANGUAGE
 .SS Commands
 .B cdecl
 has the following commands:
@@ -674,96 +683,28 @@ for examples
 and
 .B CAVEATS
 for unsupported declarations.)
+.P
+.I Gibberish
+also includes support
+for Apple's ``blocks'' syntax
+and
+\f(CW__block\fP
+storage class.
 .SS Set Options
 The
 .B set
 command takes several options:
 .RS 4
-.TP 7
-.B c
-Use the latest supported dialect of the C language.
-.TP
-.BR cknr " | " knr " | " knrc
-Use the pre-ANSI Kernighan & Ritchie dialect of the C language
-as given in the first edition of
-.IR "The C Programming Language" .
-.TP
-.B c89
-Use the C89 (first ANSI C) dialect of the C language.
-Adds support for
-\f(CWconst\fP,
-\f(CWenum\fP,
-\f(CWlong double\fP,
-\f(CWsigned\fP,
-\f(CWsize_t\fP,
-\f(CWvoid\fP,
-\f(CWvolatile\fP,
-and function prototypes.
-.TP
-.B c95
-Use the C95 dialect of the C language.
-Adds support for
-\f(CWwchar_t\fP.
-.TP
-.B c99
-Use the C99 dialect of the C language.
-Adds support for
-\f(CW_Bool\fP (and \f(CWbool\fP),
-\f(CW_Complex\fP (and \f(CWcomplex\fP),
-\f(CWrestrict\fP,
-and
-\f(CWinline\fP
-functions.
-.TP
-.B c11
-Use the C11 dialect of the C language.
-Adds support for
-\f(CW_Atomic\fP,
-\f(CWchar16_t\fP,
-\f(CWchar32_t\fP,
-\f(CW_Noreturn\fP
-(and \f(CWnoreturn\fP),
-and
-\f(CW_Thread_local\fP
-and (\f(CWthread_local\fP).
-.TP
-.B c++
-Use the latest supported dialect of the C++ language.
-.TP
-.B c++98
-Use the C++98 dialect of the C++ language.
-Adds support for
-\f(CWclass\fP,
-references,
-pointers to class members,
-and \f(CWvirtual\fP functions.
-.TP
-.B c++03
-Use the C++03 dialect of the C++ language.
-Adds support for
-\f(CWmutable\fP
-data members.
-.TP
-.B c++11
-Use the C++11 dialect of the C++ language.
-Adds support for
-\f(CWauto\fP,
-\f(CWchar16_t\fP,
-\f(CWchar32_t\fP,
-\f(CWenum class\fP,
-rvalue references,
-\f(CWthread_local\fP,
-and
-\f(CWfinal\fP
-and
-\f(CWoverride\fP
-member functions.
-.TP
-.B c++14
-Use the C++14 dialect of the C++ language.
-Adds support for
-\f(CWauto\fP
-functions.
+.TP 6
+.I lang
+Use
+.I lang
+(which is case-insensitive)
+as the current language.
+(See
+.B C AND C++ LANGUAGE VERSIONS
+for valid values of
+.IR lang .)
 .TP
 .RB [ no ] debug
 Turns [off] or on debugging output
