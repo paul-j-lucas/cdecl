@@ -121,6 +121,7 @@ static char const *const CDECL_OPTIONS[] = {
   "c++98",
   "c++03",
   "c++11",
+  "c++14",
   "create",
 "nocreate",
   "knr"
