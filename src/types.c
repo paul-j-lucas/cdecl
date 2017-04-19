@@ -297,7 +297,10 @@ char const* c_type_name( c_type_t type ) {
     for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i )
       if ( type == C_QUALIFIER_INFO[i].type )
         return C_QUALIFIER_INFO[i].literal;
-    INTERNAL_ERR( "unexpected value (0x%llX) for type\n", type );
+    INTERNAL_ERR(
+      "unexpected value (0x%llX) for type\n",
+      (unsigned long long)type
+    );
   }
 
   static char name_buf[ 80 ];
