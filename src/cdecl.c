@@ -28,6 +28,7 @@
 #include "config.h"                     /* must go first */
 #include "ast.h"
 #include "color.h"
+#include "lexer.h"
 #include "literals.h"
 #include "options.h"
 #include "prompt.h"
@@ -111,6 +112,7 @@ static bool is_command( char const *s ) {
 static void cdecl_cleanup( void ) {
   free_now();
   c_ast_cleanup();
+  yylex_destroy();
 }
 
 /**
