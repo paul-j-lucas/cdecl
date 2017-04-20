@@ -743,7 +743,7 @@ decl_english
   ;
 
 array_decl_english
-  : Y_ARRAY array_size_opt_english Y_OF decl_english
+  : Y_ARRAY array_size_opt_english of_expected decl_english
     {
       DUMP_START( "array_decl_english",
                   "ARRAY array_size_opt_english OF decl_english" );
@@ -763,7 +763,6 @@ array_decl_english
 array_size_opt_english
   : /* empty */                   { $$ = C_ARRAY_NO_SIZE; }
   | Y_NUMBER
-  | error                         { PARSE_ERROR( "array size expected" ); }
   ;
 
 block_decl_english                      /* Apple extension */
