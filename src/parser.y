@@ -242,6 +242,16 @@ static void parse_error( char const *format, ... ) {
 }
 
 /**
+ * Gets ready to parse a command.
+ */
+static void parse_init( void ) {
+  if ( !error_newlined ) {
+    FPUTC( '\n', fout );
+    error_newlined = true;
+  }
+}
+
+/**
  * Clears the qualifier stack.
  */
 static void qualifier_clear( void ) {
@@ -485,14 +495,7 @@ static void yyerror( char const *msg ) {
 
 command_list
   : /* empty */
-  | command_list
-    {
-      if ( !error_newlined ) {
-        FPUTC( '\n', fout );
-        error_newlined = true;
-      }
-    }
-    command
+  | command_list { parse_init(); } command
     {
       //
       // We get here only after a successful parse, so a hard reset is not
