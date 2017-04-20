@@ -112,7 +112,6 @@ static bool is_command( char const *s ) {
 static void cdecl_cleanup( void ) {
   free_now();
   c_ast_cleanup();
-  yylex_destroy();
 }
 
 /**
