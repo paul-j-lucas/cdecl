@@ -1086,150 +1086,22 @@ and there have been many versions of
 some with different subsets of authors.
 This list is a best-effort at a union of all authors.
 In reverse chronological order:
-.TP 4
+.P
 .BI "Paul J. Lucas <" paul@lucasmail.org ">"
-Converted to C99;
-converted to GNU Autotools build;
-added GNU-style test suite and many more tests;
-added more semantic checks;
-added long options,
-mult-line input,
-now distinguishing among
-K&R C,
-C89,
-C95,
-C99,
-C11,
-C++98,
-C++03
-C++11,
-and
-C++14;
-added
-\f(CW_Atomic\fP,
-\f(CWbool\fP,
-\f(CWchar16_t\fP,
-\f(CWchar32_t\fP,
-\f(CWcomplex\fP,
-\f(CWnoreturn\fP,
-\f(CWrestrict\fP,
-\f(CWthread_local\fP,
-\f(CWwchar_t\fP,
-\f(CWinline\fP functions,
-\f(CWregister\fP and variadic function arguments,
-and
-\f(CWtypedef\fP
-declarations;
-added C++11
-\f(CWauto\fP,
-\f(CWconstexpr\fP,
-\f(CWenum class\fP,
-\f(CWmutable\fP,
-and
-rvalue references;
-added
-\f(CWconst\fP,
-\f(CWfinal\fP,
-\f(CWfriend\fP,
-\f(CWoverride\fP,
-\f(CWvolatile\fP,
-\f(CWvirtual\fP,
-and
-pure \f(CWvirtual\fP
-C++ member function declarations;
-added binary, octal, and hexadecimal array sizes;
-made \f(CWreturning\fP optional;
-added better warning and error messages;
-error messages and help are now in color;
-now ignoring C \f(CW/*...*/\fP and C++ \f(CW//\fP comments in lexer;
-now treating cdecl keywords in declarations as ordinary names;
-revamped the manual page.
-.TP
+.br
 .BI "Peter Ammon <" cdecl@ridiculousfish.com ">"
-Added support for Apple's ``blocks'' syntax.
-.TP
+.br
 .BI "David R. Conrad <" conrad@detroit.freenet.org ">"
-Ported to Linux and added GNU
-.BR readline (3)
-support.
-.TP
-.BI "Tony Hansen <" tony@attmail.com ">"
-Merged version from Merlyn LeRoy;
-added
-.BR tmpfile (3)
-support;
-allowed more parts to be missing during explanations;
-added support for \f(CW...\fP;
-improved command-line processing.
-.TP
+.br
 .BI "Alexander Dupuy <" dupuy@cs.columbia.edu ">"
-Modified type crosscheck
-to warn about \f(CWvoid\fP and \f(CWsigned\fP in K&R C;
-added better semantic checking on use of C++ references,
-\f(CWconst\fP and \f(CWvolatile\fP for function member pointers.
-.TP
+.br
 .BI "Merlyn LeRoy <" merlyn@rose3.rosemount.com ">"
-Added support for
-\f(CWextern\f1,
-\f(CWregister\f1,
-and
-\f(CWstatic\f1;
-separately converted to ANSI C.
-.TP
+.br
 .BI "Tony Hansen <" tony@attmail.com ">"
-Merged David Wolverton's and <unknown author>'s versions;
-added
-function prototypes,
-better \f(CWvoid\fP support,
-C++ declarations,
-synonyms,
-file parsing,
-prompts when on a TTY or interactive mode,
-initial help message,
-.B set options
-command,
-.B quit
-and
-.B exit
-commands;
-made ``create program'' feature a runtime option;
-made type-checking table-driven;
-added
-.BR getopt (3)
-usage;
-added original
-.BR \-a ,
-.BR \-c ,
-.BR \-d ,
-.BR \-D ,
-.BR \-i ,
-.BR \-p ,
-.BR \-r ,
-.BR \-V ,
-and
-.BR -+
-options;
-added
-\f(CW#define\fPs for those without
-.BR getopt (3)
-or
-\f(CWvoid\fP.
-.TP
+.br
 .BI "David Wolverton <" david_wolverton@att.com ">"
-Converted to ANSI C;
-added \f(CWtypedef\fP declarations;
-removed \f(CWnoalias\fP.
-.TP
-.B <unknown author>
-Added function argument lists,
-hints,
-.B explain cast
-grammar,
-and
-``create program'' feature via \f(CW#ifdef\fP.
-.TP
+.br
 .B Graham Ross
-Original author.
 .SH SEE ALSO
 .BR bison (1),
 .BR clang (1),
