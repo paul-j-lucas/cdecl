@@ -1775,7 +1775,8 @@ block_cast_c                            /* Apple extension */
 func_cast_c
   : /* type_ast_c */ cast2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c
     {
-      DUMP_START( "func_cast_c", "cast2_c '(' arg_list_opt_c ')'" );
+      DUMP_START( "func_cast_c",
+                  "cast2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c" );
       DUMP_AST( "type_ast_c", type_peek() );
       DUMP_AST( "cast2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
