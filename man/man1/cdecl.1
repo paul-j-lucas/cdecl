@@ -198,7 +198,7 @@ editing.
 .SS File Input
 .B cdecl
 reads the named files for statements in the language described below.
-A transformation is made from that language to C (C++)
+A transformation is made from that language to C (or C++)
 for either
 .B cast
 or
@@ -216,28 +216,11 @@ option is given).
 An option argument
 .I f
 means
-.IR file ,
-.I n
-means
-.IR "unsigned integer" ,
+.I file
 and
 .I s
 means
 .IR string .
-If
-.I n
-starts with
-.BR 0 ,
-then it is interpreted as octal;
-if
-.I n
-starts with either
-.B 0x
-or
-.BR 0X ,
-then
-.I n
-is interpreted as hexedecimal.
 .TP 4
 .BI \-\-color \f1=\fPs "\f1 | \fP" "" \-c " s"
 Sets when to colorize output to
@@ -346,7 +329,7 @@ and
 .BR c++decl ).
 .TP
 .BR \-\-no-semicolon " | " \-s
-Suppresses printing of a trailing semicolon for C & C++ declarations.
+Suppresses printing of a trailing semicolon for C (and C++) declarations.
 .TP
 .BI \-\-output \f1=\fPf "\f1 | \fP" "" \-o " f"
 Sends all non-error output to file
@@ -378,7 +361,7 @@ option
 or the
 .B set
 command
-is be one of the following versions
+is one of the following versions
 (which are case-insensitive):
 .TP 7
 .B C
