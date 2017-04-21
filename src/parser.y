@@ -1902,12 +1902,18 @@ class_struct_type_expected_c
 
 comma_expected
   : ','
-  | error                         { ELABORATE_ERROR( "',' expected" ); }
+  | error
+    {
+      ELABORATE_ERROR( "',' expected" );
+    }
   ;
 
 star_expected
   : '*'
-  | error                         { ELABORATE_ERROR( "'*' expected" ); }
+  | error
+    {
+      ELABORATE_ERROR( "'*' expected" );
+    }
   ;
 
 member_expected
@@ -1956,15 +1962,16 @@ virtual_expected
   ;
 
 zero_expected
-  : zero
-  | error                         { ELABORATE_ERROR( "'0' expected" ); }
-  ;
-
-zero
   : Y_NUMBER
     {
-      if ( $1 != 0 )
-        SYNTAX_ERROR();
+      if ( $1 != 0 ) {
+        print_error( &@1, "'0' expected" );
+        PARSE_ABORT();
+      }
+    }
+  | error
+    {
+      ELABORATE_ERROR( "'0' expected" );
     }
   ;
 
