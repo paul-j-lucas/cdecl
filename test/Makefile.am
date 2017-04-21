@@ -88,7 +88,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fcce_v-02.test \
 	tests/declare_fcce_v-03.test \
 	tests/declare_ff_v.test \
-	tests/declare_fg_v.test \
+	tests/declare_fg_v-c89.test \
 	tests/declare_fgi_v.test \
 	tests/declare_fid_v.test \
 	tests/declare_fipfi_v_pfi_v.test \
@@ -164,6 +164,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_f_ai.test \
 	tests/declare_f_f_i.test \
 	tests/declare_ff_v-c.test \
+	tests/declare_fg_v.test \
 	tests/declare_fiiv_v.test \
 	tests/declare_fiv_v.test \
 	tests/declare_fsi_v.test \
@@ -267,7 +268,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_f_pi.test \
 	tests/explain_fcce_v.test \
 	tests/explain_ff_v.test \
-	tests/explain_fg_v.test \
+	tests/explain_fg_v-c89.test \
 	tests/explain_fgi_v.test \
 	tests/explain_fid_v.test \
 	tests/explain_fipfi_v_pfi_v.test \
@@ -351,6 +352,7 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_fee_v.test \
 	tests/explain_fev_v.test \
 	tests/explain_ff_v-c.test \
+	tests/explain_fg_v.test \
 	tests/explain_fiiv_v.test \
 	tests/explain_fiv_v.test \
 	tests/explain_fsi_v.test \

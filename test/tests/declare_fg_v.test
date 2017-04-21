@@ -1,1 +1,1 @@
-cdecl | | declare f as function (i as register) returning void | 0
+cdecl | | declare f as function (i as register) returning void | 65

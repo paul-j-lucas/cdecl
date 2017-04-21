@@ -263,6 +263,13 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         print_hint( "pointer to void" );
         return VISITOR_ERROR_FOUND;
       }
+      if ( (ast->type & T_MASK_TYPE) == 0 ) {
+        print_error( &ast->loc,
+          "implicit \"int\" is illegal in %s",
+          c_lang_name( opt_lang )
+        );
+        return VISITOR_ERROR_FOUND;
+      }
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:

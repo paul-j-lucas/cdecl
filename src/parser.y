@@ -1051,7 +1051,8 @@ type_english
 
       $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = T_INT;
+      if ( opt_lang < LANG_C_99 )       // see comment in type_ast_c
+        $$.ast->type = T_INT;
       C_TYPE_ADD( &$$.ast->type, qualifier_peek(), qualifier_peek_loc() );
       C_TYPE_ADD( &$$.ast->type, $1, @1 );
 
@@ -1487,7 +1488,22 @@ type_ast_c
 
       $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = T_INT;
+      if ( opt_lang < LANG_C_99 ) {     // see comment in type_english
+        //
+        // Prior to C99, typeless declarations are implicitly int, so we set
+        // it here.  In C99 and later, however, implicit int is an error, so we
+        // don't set it here and c_ast_check() will catch the error later.
+        //
+        // Note that type modifiers, e.g., unsigned, count as a type since that
+        // means unsigned int; however, neither qualifiers, e.g., const, nor
+        // storage classes, e.g., register, by themselves count as a type:
+        //
+        //      unsigned i;   // legal in C99
+        //      const    j;   // illegal in C99
+        //      register k;   // illegal in C99
+        //
+        $$.ast->type = T_INT;
+      }
       C_TYPE_ADD( &$$.ast->type, $1, @1 );
 
       DUMP_AST( "type_ast_c", $$.ast );
