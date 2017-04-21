@@ -104,7 +104,6 @@
   BLOCK( elaborate_error( __VA_ARGS__ ); PARSE_ABORT(); )
 
 #define PARSE_ABORT()     BLOCK( parse_cleanup( true ); YYABORT; )
-#define SYNTAX_ERROR()    BLOCK( yyerror( "syntax error" ); YYERROR; )
 
 ///////////////////////////////////////////////////////////////////////////////
 
