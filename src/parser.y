@@ -430,7 +430,6 @@ static void yyerror( char const *msg ) {
 %type   <name>      name_into_english
 %type   <ast_pair>  pointer_decl_english
 %type   <ast_pair>  pointer_to_member_decl_english
-%type   <type>      pure_opt_english
 %type   <ast_pair>  qualifiable_decl_english
 %type   <ast_pair>  qualified_decl_english
 %type   <ast_pair>  reference_decl_english
@@ -629,12 +628,8 @@ storage_class_english
   | Y_STATIC
   | Y_THREAD_LOCAL
   | Y_TYPEDEF
-  | pure_opt_english Y_VIRTUAL    { $$ = $1 | $2; }
-  ;
-
-pure_opt_english
-  : /* empty */                   { $$ = T_NONE; }
-  | Y_PURE                        { $$ = T_PURE_VIRTUAL; }
+  | Y_VIRTUAL
+  | Y_PURE virtual_expected       { $$ = T_PURE_VIRTUAL | T_VIRTUAL; }
   ;
 
 /*****************************************************************************/
@@ -1947,6 +1942,14 @@ to_expected
   | error
     {
       PARSE_ERROR( "\"%s\" expected", L_TO );
+    }
+  ;
+
+virtual_expected
+  : Y_VIRTUAL
+  | error
+    {
+      PARSE_ERROR( "\"%s\" expected", L_VIRTUAL );
     }
   ;
 
