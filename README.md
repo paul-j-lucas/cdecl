@@ -56,8 +56,9 @@ most notably:
   `constexpr`,
   `enum class`,
   `mutable`,
+  rvalue references,
   and
-  rvalue references.
+  the function trailing return-type syntax.
 * Support for
   `const`,
   `final`,
