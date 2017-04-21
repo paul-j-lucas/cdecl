@@ -56,11 +56,6 @@ c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
     case K_ARRAY:
       return c_ast_append_array( ast, array );
 
-    case K_NONE:
-      c_ast_set_parent( array, ast->parent );
-      c_ast_set_parent( ast, array );
-      return ast->parent;
-
     case K_POINTER:
       if ( ast->depth > array->depth ) {
         (void)c_ast_add_array_impl( ast->as.ptr_ref.to_ast, array );
@@ -69,12 +64,37 @@ c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
       // no break;
 
     default:
+      //
+      // An AST node's "depth" says how nested within () it is and control the
+      // precendence of what is an array of what.
+      //
       if ( ast->depth > array->depth ) {
+        //
+        // Before:
+        //
+        //      [ast-child] --(child of)--> [ast]
+        //      [array]
+        //
+        // After:
+        //
+        //      [ast-child] --(child of)--> [array] --(child of)--> [ast]
+        //
         if ( c_ast_is_parent( ast ) )
           c_ast_set_parent( ast->as.parent.of_ast, array );
         c_ast_set_parent( array, ast );
         return ast;
-      } else {
+      }
+      else {
+        //
+        // Before:
+        //
+        //      [ast] --(child of)--> [parent]
+        //      [array]
+        //
+        // After:
+        //
+        //      [ast] --(child of)--> [array] --(child of)--> [parent]
+        //
         if ( c_ast_is_parent( ast->parent ) )
           c_ast_set_parent( array, ast->parent );
         c_ast_set_parent( ast, array );
@@ -166,7 +186,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
     case K_POINTER_TO_MEMBER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      switch ( ast->as.ptr_ref.to_ast->kind ) {
+      switch ( ast->as.parent.of_ast->kind ) {
         case K_ARRAY:
         case K_POINTER:
         case K_POINTER_TO_MEMBER:
@@ -183,18 +203,13 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
           c_ast_set_parent( func, ast );
           // no break;
 
-        case K_BLOCK:
+        case K_BLOCK:                   // Apple extension
           c_ast_set_parent( ret_type_ast, func );
           return ast;
 
         default:
           /* suppress warning */;
       } // switch
-
-    case K_NONE:
-      if ( !func->name )
-        func->name = c_ast_take_name( ast );
-      break;
 
     default:
       /* suppress warning */;
@@ -247,6 +262,8 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_type_ast, c_ast_t *func ) {
   c_ast_t *const rv = c_ast_add_func_impl( ast, ret_type_ast, func );
   assert( rv != NULL );
+  if ( !func->name )
+    func->name = c_ast_take_name( ast );
   func->type |= c_ast_take_storage( func->as.func.ret_ast );
   return rv;
 }

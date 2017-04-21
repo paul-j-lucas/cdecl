@@ -1207,7 +1207,6 @@ func_decl_c
       func->as.func.args = $3;
 
       if ( $6.ast ) {
-        func->name = c_ast_take_name( $1.ast );
         $$.ast = c_ast_add_func( $1.ast, $6.ast, func );
       }
       else if ( $1.target_ast ) {
