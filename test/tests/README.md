@@ -45,7 +45,9 @@ The characters are:
 + `y` = `final`
 + `z` = `complex` or `size_t`
 
-A function's return type is separated from its arguments by `_`.
+A function's return type is separated from its arguments by `_`
+using the traditional "leading" syntax
+or `__` using the C++11 "trailing" syntax.
 
 Test File Format
 ================

@@ -567,6 +567,9 @@ TESTS+=	tests/declare_ai-c++11.test \
 TESTS+=	tests/explain_a.test \
 	tests/explain_cf_v.test \
 	tests/explain_cvf_v.test \
+	tests/explain_f__pf__v.test \
+	tests/explain_f__pv.test \
+	tests/explain_f__v.test \
 	tests/explain_f_pmi.test \
 	tests/explain_frri_v.test \
 	tests/explain_mi.test \
@@ -589,6 +592,8 @@ TESTS+=	tests/explain_a.test \
 TESTS+=	tests/explain_ai-c++11.test \
 	tests/explain_ec.test \
 	tests/explain_ek.test \
+	tests/explain_f__v-c++03.test \
+	tests/explain_f_v__v.test \
 	tests/explain_fa_v.test \
 	tests/explain_frri_v-c++03.test \
 	tests/explain_fsf_v.test \

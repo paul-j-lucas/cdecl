@@ -24,7 +24,7 @@
  * grammar for C/C++ declarations.
  */
 
-%expect 1
+%expect 7
 
 %{
 // local
@@ -351,6 +351,7 @@ static void yyerror( char const *msg ) {
 
                     /* K&R C */
 %token              ','
+%token              Y_ARROW             "->"
 %token              '*'
 %token              '[' ']'
 %token              '(' ')'
@@ -457,6 +458,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  array_decl_c
 %type   <ast_pair>  block_decl_c
 %type   <ast_pair>  func_decl_c
+%type   <ast_pair>  func_trailing_return_type_opt_c
 %type   <ast_pair>  name_c
 %type   <ast_pair>  nested_decl_c
 %type   <ast_pair>  pointer_decl_c
@@ -1187,6 +1189,7 @@ block_decl_c                            /* Apple extension */
 
 func_decl_c
   : /* type_ast_c */ decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c
+    func_trailing_return_type_opt_c
     pure_virtual_opt_c
     {
       DUMP_START( "func_decl_c", "decl2_c '(' arg_list_opt_c ')'" );
@@ -1194,23 +1197,80 @@ func_decl_c
       DUMP_AST( "decl2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
       DUMP_TYPE( "func_qualifier_list_opt_c", $5 );
-      DUMP_TYPE( "pure_virtual_opt_c", $6 );
+      DUMP_AST( "func_trailing_return_type_opt_c", $6.ast );
+      DUMP_TYPE( "pure_virtual_opt_c", $7 );
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
 
       c_ast_t *const func = C_AST_NEW( K_FUNCTION, &@$ );
-      func->type = $5 | $6;
+      func->type = $5 | $7;
       func->as.func.args = $3;
 
-      if ( $1.target_ast ) {
+      if ( $6.ast ) {
+        func->name = c_ast_take_name( $1.ast );
+        $$.ast = c_ast_add_func( $1.ast, $6.ast, func );
+      }
+      else if ( $1.target_ast ) {
         $$.ast = $1.ast;
         (void)c_ast_add_func( $1.target_ast, type_peek(), func );
-      } else {
+      }
+      else {
         $$.ast = c_ast_add_func( $1.ast, type_peek(), func );
       }
       $$.target_ast = func->as.func.ret_ast;
 
       DUMP_AST( "func_decl_c", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+func_trailing_return_type_opt_c
+  : /* empty */                   { $$.ast = $$.target_ast = NULL; }
+  | "->" type_ast_c { type_push( $2.ast ); } cast_opt_c
+    {
+      type_pop();
+
+      //
+      // The function trailing return-type syntax is supported only in C++11
+      // and later.  This check has to be done now in the parser rather than
+      // later in the AST because the AST has no "memory" of where the return-
+      // type came from.
+      //
+      if ( opt_lang < LANG_CPP_11 ) {
+        print_error( &@1,
+          "trailing return type is illegal in %s", c_lang_name( opt_lang )
+        );
+        PARSE_ABORT();
+      }
+
+      //
+      // Ensure that a function using the C++11 trailing return type syntax
+      // starts with "auto":
+      //
+      //      void f() -> int
+      //      ^
+      //      error: must be "auto"
+      //
+      // This check has to be done now in the parser rather than later in the
+      // AST because the "auto" is just a syntactic return-type placeholder in
+      // C++11 and the AST node for the placeholder is discarded and never made
+      // part of the AST.
+      //
+      if ( type_peek()->type != T_AUTO_CPP_11 ) {
+        print_error( &type_peek()->loc,
+          "function with trailing return type must specify \"auto\""
+        );
+        PARSE_ABORT();
+      }
+
+      DUMP_START( "func_trailing_return_type_opt_c", "type_ast_c cast_opt_c" );
+      DUMP_AST( "(type_ast_c)", type_peek() );
+      DUMP_AST( "type_ast_c", $2.ast );
+      DUMP_AST( "cast_opt_c", $4.ast );
+
+      $$ = $4.ast ? $4 : $2;
+
+      DUMP_AST( "func_trailing_return_type_opt_c", $$.ast );
       DUMP_END();
     }
   ;
@@ -1788,6 +1848,7 @@ block_cast_c                            /* Apple extension */
 
 func_cast_c
   : /* type_ast_c */ cast2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c
+    func_trailing_return_type_opt_c
     {
       DUMP_START( "func_cast_c",
                   "cast2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c" );
@@ -1795,6 +1856,7 @@ func_cast_c
       DUMP_AST( "cast2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
       DUMP_TYPE( "func_qualifier_list_opt_c", $5 );
+      DUMP_AST( "func_trailing_return_type_opt_c", $6.ast );
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
 
@@ -1802,10 +1864,14 @@ func_cast_c
       func->type = $5;
       func->as.func.args = $3;
 
-      if ( $1.target_ast ) {
+      if ( $6.ast ) {
+        $$.ast = c_ast_add_func( $1.ast, $6.ast, func );
+      }
+      else if ( $1.target_ast ) {
         $$.ast = $1.ast;
         (void)c_ast_add_func( $1.target_ast, type_peek(), func );
-      } else {
+      }
+      else {
         $$.ast = c_ast_add_func( $1.ast, type_peek(), func );
       }
       $$.target_ast = func->as.func.ret_ast;

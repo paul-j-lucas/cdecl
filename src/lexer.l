@@ -324,6 +324,7 @@ non-returning { // special case since it's not an ordinary identifier
 0[xX]{H}+     { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
 "&&"          { SET_TOKEN; return Y_RVALUE_REFERENCE; }
+"->"          { SET_TOKEN; return Y_ARROW; }
 "..."         { SET_TOKEN; return Y_ELLIPSIS; }
 "::"          { SET_TOKEN; return Y_COLON_COLON; }
 "?"           { SET_TOKEN; return Y_HELP; }

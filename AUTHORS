@@ -76,6 +76,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added inline functions
 	added register and variadic function arguments
 	added C++11 auto, constexpr, enum class, mutable, and rvalue references
+	added C++11 function trailing return-type syntax
 	independently added typedef declarations
 	added final, friend, const, override, volatile, virtual,
 		and pure virtual C++ member function declarations

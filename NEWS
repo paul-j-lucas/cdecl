@@ -50,7 +50,8 @@ Added final, friend, const, override, volatile, virtual, and pure virtual C++
 member function declaration support.
 
 ** C++11 features.
-Added C++11 auto, constexpr, enum class, mutable, and rvalue references.
+Added C++11 auto, constexpr, enum class, mutable, rvalue references, and the
+function trailing return-type syntax.
 
 ** Optional returning.
 In pseudo-English for functions, the "returning" clause is now optional and
