@@ -100,8 +100,10 @@
   DUMP_COMMA; PUTS_OUT( "  " );     \
   print_kv( (KEY), c_type_name( TYPE ), stdout ); )
 
+#define ELABORATE_ERROR(...) \
+  BLOCK( elaborate_error( __VA_ARGS__ ); PARSE_ABORT(); )
+
 #define PARSE_ABORT()     BLOCK( parse_cleanup( true ); YYABORT; )
-#define PARSE_ERROR(...)  BLOCK( parse_error( __VA_ARGS__ ); PARSE_ABORT(); )
 #define SYNTAX_ERROR()    BLOCK( yyerror( "syntax error" ); YYERROR; )
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -208,26 +210,12 @@ static inline void qualifier_pop( void ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Cleans-up parser data.
- *
- * @param hard_reset If \c true, does a "hard" reset that currently resets the
- * EOF flag of the lexer.  This should be \c true if an error occurs and
- * YYABORT is called.
- */
-static void parse_cleanup( bool hard_reset ) {
-  c_ast_gc();
-  lexer_reset( hard_reset );
-  qualifier_clear();
-  memset( &in_attr, 0, sizeof in_attr );
-}
-
-/**
  * Prints an additional parsing error message to standard error that contines
  * from yyerror() left off.
  *
  * @param format A \c printf() style format string.
  */
-static void parse_error( char const *format, ... ) {
+static void elaborate_error( char const *format, ... ) {
   if ( !error_newlined ) {
     PUTS_ERR( ": " );
     if ( lexer_token[0] )
@@ -239,6 +227,20 @@ static void parse_error( char const *format, ... ) {
     PUTC_ERR( '\n' );
     error_newlined = true;
   }
+}
+
+/**
+ * Cleans-up parser data.
+ *
+ * @param hard_reset If \c true, does a "hard" reset that currently resets the
+ * EOF flag of the lexer.  This should be \c true if an error occurs and
+ * YYABORT is called.
+ */
+static void parse_cleanup( bool hard_reset ) {
+  c_ast_gc();
+  lexer_reset( hard_reset );
+  qualifier_clear();
+  memset( &in_attr, 0, sizeof in_attr );
 }
 
 /**
@@ -287,14 +289,14 @@ static void quit( void ) {
  * Prints a parsing error message to standard error.  This function is called
  * directly by bison to print just "syntax error" (usually).
  *
- * @note A newline is \e not printed since the error message will be added to
- * by parse_error().  For example, the parts of an error message are printed by
- * the functions shown:
+ * @note A newline is \e not printed since the error message will be appended
+ * to by elaborate_error().  For example, the parts of an error message are
+ * printed by the functions shown:
  *
  *      42: syntax error: "int": "into" expected
  *      |--||----------||----------------------|
  *      |   |           |
- *      |   yyerror()   parse_error()
+ *      |   yyerror()   elaborate_error()
  *      |
  *      print_loc()
  *
@@ -516,9 +518,9 @@ command
   | error
     {
       if ( lexer_token[0] )
-        PARSE_ERROR( "unexpected token" );
+        ELABORATE_ERROR( "unexpected token" );
       else
-        PARSE_ERROR( "unexpected end of command" );
+        ELABORATE_ERROR( "unexpected end of command" );
     }
   ;
 
@@ -558,7 +560,7 @@ name_into_english
   : Y_NAME Y_INTO
   | Y_NAME error
     {
-      PARSE_ERROR( "\"%s\" expected", L_INTO );
+      ELABORATE_ERROR( "\"%s\" expected", L_INTO );
     }
   ;
 
@@ -592,7 +594,7 @@ declare_name_as_english
 
   | Y_DECLARE Y_NAME error
     {
-      PARSE_ERROR( "\"%s\" expected", L_AS );
+      ELABORATE_ERROR( "\"%s\" expected", L_AS );
     }
   ;
 
@@ -867,7 +869,7 @@ returning_english_opt
 
   | Y_RETURNING error
     {
-      PARSE_ERROR( "English expected after \"%s\"", L_RETURNING );
+      ELABORATE_ERROR( "English expected after \"%s\"", L_RETURNING );
     }
   ;
 
@@ -973,7 +975,7 @@ reference_expected
   : Y_REFERENCE
   | error
     {
-      PARSE_ERROR( "\"%s\" expected", L_REFERENCE );
+      ELABORATE_ERROR( "\"%s\" expected", L_REFERENCE );
     }
   ;
 
@@ -1149,7 +1151,7 @@ array_size_c
   | '[' Y_NUMBER ']'              { $$ = $2; }
   | '[' error ']'
     {
-      PARSE_ERROR( "integer expected for array size" );
+      ELABORATE_ERROR( "integer expected for array size" );
     }
   ;
 
@@ -1894,25 +1896,25 @@ class_struct_type_expected_c
   : class_struct_type_c
   | error
     {
-      PARSE_ERROR( "\"%s\" or \"%s\" expected", L_CLASS, L_STRUCT );
+      ELABORATE_ERROR( "\"%s\" or \"%s\" expected", L_CLASS, L_STRUCT );
     }
   ;
 
 comma_expected
   : ','
-  | error                         { PARSE_ERROR( "',' expected" ); }
+  | error                         { ELABORATE_ERROR( "',' expected" ); }
   ;
 
 star_expected
   : '*'
-  | error                         { PARSE_ERROR( "'*' expected" ); }
+  | error                         { ELABORATE_ERROR( "'*' expected" ); }
   ;
 
 member_expected
   : Y_MEMBER
   | error
     {
-      PARSE_ERROR( "\"%s\" expected", L_MEMBER );
+      ELABORATE_ERROR( "\"%s\" expected", L_MEMBER );
     }
   ;
 
@@ -1920,7 +1922,7 @@ name_expected
   : Y_NAME
   | error
     {
-      PARSE_ERROR( "name expected" );
+      ELABORATE_ERROR( "name expected" );
     }
   ;
 
@@ -1933,7 +1935,7 @@ of_expected
   : Y_OF
   | error
     {
-      PARSE_ERROR( "\"%s\" expected", L_OF );
+      ELABORATE_ERROR( "\"%s\" expected", L_OF );
     }
   ;
 
@@ -1941,7 +1943,7 @@ to_expected
   : Y_TO
   | error
     {
-      PARSE_ERROR( "\"%s\" expected", L_TO );
+      ELABORATE_ERROR( "\"%s\" expected", L_TO );
     }
   ;
 
@@ -1949,13 +1951,13 @@ virtual_expected
   : Y_VIRTUAL
   | error
     {
-      PARSE_ERROR( "\"%s\" expected", L_VIRTUAL );
+      ELABORATE_ERROR( "\"%s\" expected", L_VIRTUAL );
     }
   ;
 
 zero_expected
   : zero
-  | error                         { PARSE_ERROR( "'0' expected" ); }
+  | error                         { ELABORATE_ERROR( "'0' expected" ); }
   ;
 
 zero
