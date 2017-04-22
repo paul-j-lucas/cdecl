@@ -6,7 +6,6 @@
 .deps
 .DS_Store
 Makefile
-
 /aclocal.m4
 /ar-lib
 /autom4te.cache
