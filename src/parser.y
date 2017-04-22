@@ -425,13 +425,11 @@ static void yyerror( char const *msg ) {
 %token  <number>    Y_NUMBER
 
 %type   <ast_pair>  decl_english
-%type   <name>      declare_name_as_english
 %type   <ast_list>  decl_list_english decl_list_opt_english
 %type   <ast_pair>  array_decl_english
 %type   <number>    array_size_opt_english
 %type   <ast_pair>  block_decl_english
 %type   <ast_pair>  func_decl_english
-%type   <name>      name_into_english
 %type   <ast_list>  paren_decl_list_opt_english
 %type   <ast_pair>  pointer_decl_english
 %type   <ast_pair>  pointer_to_member_decl_english
@@ -534,18 +532,22 @@ command
 /*****************************************************************************/
 
 cast_english
-  : Y_CAST name_into_english decl_english Y_END
+  : Y_CAST Y_NAME into_expected decl_english Y_END
     {
       DUMP_START( "cast_english", "CAST NAME INTO decl_english" );
       DUMP_NAME( "NAME", $2 );
-      DUMP_AST( "decl_english", $3.ast );
+      DUMP_AST( "decl_english", $4.ast );
       DUMP_END();
 
-      C_AST_CHECK( $3.ast, CHECK_CAST );
-      FPUTC( '(', fout );
-      c_ast_gibberish_cast( $3.ast, fout );
-      FPRINTF( fout, ")%s\n", $2 );
+      bool const ok = c_ast_check( $4.ast, CHECK_CAST );
+      if ( ok ) {
+        FPUTC( '(', fout );
+        c_ast_gibberish_cast( $4.ast, fout );
+        FPRINTF( fout, ")%s\n", $2 );
+      }
       FREE( $2 );
+      if ( !ok )
+        PARSE_ABORT();
     }
 
   | Y_CAST decl_english Y_END
@@ -561,44 +563,29 @@ cast_english
     }
   ;
 
-name_into_english
-  : Y_NAME Y_INTO
-  | Y_NAME error
-    {
-      ELABORATE_ERROR( "\"%s\" expected", L_INTO );
-    }
-  ;
-
 /*****************************************************************************/
 /*  declare                                                                  */
 /*****************************************************************************/
 
 declare_english
-  : declare_name_as_english storage_class_list_opt_english decl_english Y_END
+  : Y_DECLARE name_expected as_expected storage_class_list_opt_english
+    decl_english Y_END
     {
-      C_TYPE_ADD( &$3.ast->type, $2, @2 );
+      $5.ast->name = $2;
 
       DUMP_START( "declare_english",
                   "DECLARE NAME AS storage_class_opt_english decl_english" );
-      $3.ast->name = $1;
-      DUMP_NAME( "NAME", $1 );
-      DUMP_TYPE( "storage_class_opt_english", $2 );
-      DUMP_AST( "decl_english", $3.ast );
+      DUMP_NAME( "NAME", $2 );
+      DUMP_TYPE( "storage_class_opt_english", $4 );
+      DUMP_AST( "decl_english", $5.ast );
       DUMP_END();
 
-      C_AST_CHECK( $3.ast, CHECK_DECL );
-      c_ast_gibberish_declare( $3.ast, fout );
+      C_TYPE_ADD( &$5.ast->type, $4, @4 );
+      C_AST_CHECK( $5.ast, CHECK_DECL );
+      c_ast_gibberish_declare( $5.ast, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
-    }
-  ;
-
-declare_name_as_english
-  : Y_DECLARE name_expected Y_AS  { $$ = $2; }
-  | Y_DECLARE Y_NAME error
-    {
-      ELABORATE_ERROR( "\"%s\" expected", L_AS );
     }
   ;
 
@@ -679,15 +666,18 @@ explain_cast_c
       DUMP_END();
 
       c_ast_t *const ast = c_ast_patch_none( $3.ast, $5.ast );
-      C_AST_CHECK( ast, CHECK_CAST );
-      FPUTS( L_CAST, fout );
-      if ( $7 ) {
-        FPRINTF( fout, " %s", $7 );
-        FREE( $7 );
+      bool const ok = c_ast_check( ast, CHECK_CAST );
+      if ( ok ) {
+        FPUTS( L_CAST, fout );
+        if ( $7 )
+          FPRINTF( fout, " %s", $7 );
+        FPRINTF( fout, " %s ", L_INTO );
+        c_ast_english( ast, fout );
+        FPUTC( '\n', fout );
       }
-      FPRINTF( fout, " %s ", L_INTO );
-      c_ast_english( ast, fout );
-      FPUTC( '\n', fout );
+      FREE( $7 );
+      if ( !ok )
+        PARSE_ABORT();
     }
   ;
 
@@ -1398,7 +1388,7 @@ pointer_to_member_decl_c
   ;
 
 pointer_to_member_type_c
-  : /* type_ast_c */ Y_NAME "::" star_expected
+  : /* type_ast_c */ Y_NAME "::" asterisk_expected
     {
       DUMP_START( "pointer_to_member_type_c", "NAME :: *" );
       DUMP_AST( "(type_ast_c)", type_peek() );
@@ -1961,6 +1951,22 @@ reference_cast_c
 /*  miscellaneous productions                                                */
 /*****************************************************************************/
 
+as_expected
+  : Y_AS
+  | error
+    {
+      ELABORATE_ERROR( "\"%s\" expected", L_AS );
+    }
+  ;
+
+asterisk_expected
+  : '*'
+  | error
+    {
+      ELABORATE_ERROR( "'*' expected" );
+    }
+  ;
+
 class_struct_type_expected_c
   : class_struct_type_c
   | error
@@ -1977,11 +1983,11 @@ comma_expected
     }
   ;
 
-star_expected
-  : '*'
+into_expected
+  : Y_INTO
   | error
     {
-      ELABORATE_ERROR( "'*' expected" );
+      ELABORATE_ERROR( "\"%s\" expected", L_INTO );
     }
   ;
 
