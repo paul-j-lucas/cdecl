@@ -427,19 +427,19 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  decl_english
 %type   <name>      declare_name_as_english
 %type   <ast_list>  decl_list_english decl_list_opt_english
-%type   <ast_list>  paren_decl_list_opt_english
 %type   <ast_pair>  array_decl_english
 %type   <number>    array_size_opt_english
 %type   <ast_pair>  block_decl_english
 %type   <ast_pair>  func_decl_english
 %type   <name>      name_into_english
+%type   <ast_list>  paren_decl_list_opt_english
 %type   <ast_pair>  pointer_decl_english
 %type   <ast_pair>  pointer_to_member_decl_english
 %type   <ast_pair>  qualifiable_decl_english
 %type   <ast_pair>  qualified_decl_english
 %type   <ast_pair>  reference_decl_english
 %type   <ast_pair>  reference_english
-%type   <ast_pair>  returning_english_opt
+%type   <ast_pair>  returning_opt_english
 %type   <type>      storage_class_english storage_class_list_opt_english
 %type   <ast_pair>  type_english
 %type   <type>      type_modifier_english
@@ -459,6 +459,7 @@ static void yyerror( char const *msg ) {
 
 %type   <ast_pair>  decl_c decl2_c
 %type   <ast_pair>  array_decl_c
+%type   <number>    array_size_c
 %type   <ast_pair>  block_decl_c
 %type   <ast_pair>  func_decl_c
 %type   <ast_pair>  func_trailing_return_type_opt_c
@@ -481,8 +482,9 @@ static void yyerror( char const *msg ) {
 %type   <type>      builtin_type_c
 %type   <type>      class_struct_type_c class_struct_type_expected_c
 %type   <type>      cv_qualifier_c
-%type   <type>      func_qualifier_c func_qualifier_list_opt_c
 %type   <type>      enum_class_struct_union_type_c
+%type   <type>      func_qualifier_c
+%type   <type>      func_qualifier_list_opt_c
 %type   <type>      storage_class_c
 %type   <type>      type_modifier_c
 %type   <type>      type_modifier_list_c type_modifier_list_opt_c
@@ -490,7 +492,6 @@ static void yyerror( char const *msg ) {
 
 %type   <ast_pair>  arg_c
 %type   <ast_list>  arg_list_c arg_list_opt_c
-%type   <number>    array_size_c
 %type   <name>      name_expected
 %type   <name>      name_opt
 %type   <name>      set_option
@@ -769,13 +770,13 @@ array_size_opt_english
   ;
 
 block_decl_english                      /* Apple extension */
-  : Y_BLOCK paren_decl_list_opt_english returning_english_opt
+  : Y_BLOCK paren_decl_list_opt_english returning_opt_english
     {
       DUMP_START( "block_decl_english",
-                  "BLOCK paren_decl_list_opt_english returning_english_opt" );
+                  "BLOCK paren_decl_list_opt_english returning_opt_english" );
       DUMP_TYPE( "(qualifier)", qualifier_peek() );
       DUMP_AST_LIST( "paren_decl_list_opt_english", $2 );
-      DUMP_AST( "returning_english_opt", $3.ast );
+      DUMP_AST( "returning_opt_english", $3.ast );
 
       $$.ast = C_AST_NEW( K_BLOCK, &@$ );
       $$.target_ast = NULL;
@@ -789,14 +790,14 @@ block_decl_english                      /* Apple extension */
   ;
 
 func_decl_english
-  : Y_FUNCTION paren_decl_list_opt_english returning_english_opt
+  : Y_FUNCTION paren_decl_list_opt_english returning_opt_english
     {
       DUMP_START( "func_decl_english",
                   "FUNCTION paren_decl_list_opt_english "
-                  "returning_english_opt" );
+                  "returning_opt_english" );
       DUMP_TYPE( "(qualifier)", qualifier_peek() );
       DUMP_AST_LIST( "decl_list_opt_english", $2 );
-      DUMP_AST( "returning_english_opt", $3.ast );
+      DUMP_AST( "returning_opt_english", $3.ast );
 
       $$.ast = C_AST_NEW( K_FUNCTION, &@$ );
       $$.target_ast = NULL;
@@ -846,27 +847,27 @@ decl_list_english
     }
   ;
 
-returning_english_opt
+returning_opt_english
   : /* empty */
     {
-      DUMP_START( "returning_english_opt", "<empty>" );
+      DUMP_START( "returning_opt_english", "<empty>" );
 
       $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
       $$.target_ast = NULL;
       $$.ast->type = T_VOID;
 
-      DUMP_AST( "returning_english_opt", $$.ast );
+      DUMP_AST( "returning_opt_english", $$.ast );
       DUMP_END();
     }
 
   | Y_RETURNING decl_english
     {
-      DUMP_START( "returning_english_opt", "RETURNING decl_english" );
+      DUMP_START( "returning_opt_english", "RETURNING decl_english" );
       DUMP_AST( "decl_english", $2.ast );
 
       $$ = $2;
 
-      DUMP_AST( "returning_english_opt", $$.ast );
+      DUMP_AST( "returning_opt_english", $$.ast );
       DUMP_END();
     }
 
@@ -1043,7 +1044,7 @@ type_english
       DUMP_END();
     }
 
-  | type_modifier_list_english          /* allows for default int type */
+  | type_modifier_list_english          /* allows implicit int in K&R C */
     {
       DUMP_START( "type_english", "type_modifier_list_english" );
       DUMP_TYPE( "type_modifier_list_english", $1 );
@@ -1191,10 +1192,11 @@ block_decl_c                            /* Apple extension */
 
 func_decl_c
   : /* type_ast_c */ decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c
-    func_trailing_return_type_opt_c
-    pure_virtual_opt_c
+    func_trailing_return_type_opt_c pure_virtual_opt_c
     {
-      DUMP_START( "func_decl_c", "decl2_c '(' arg_list_opt_c ')'" );
+      DUMP_START( "func_decl_c",
+                  "decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c "
+                  "func_trailing_return_type_opt_c pure_virtual_opt_c" );
       DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_AST( "decl2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
@@ -1404,7 +1406,7 @@ pointer_to_member_type_c
 
       $$.ast = C_AST_NEW( K_POINTER_TO_MEMBER, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = T_CLASS;
+      $$.ast->type = T_CLASS;           // assume T_CLASS
       $$.ast->as.ptr_mbr.class_name = $1;
       c_ast_set_parent( type_peek(), $$.ast );
 
@@ -1538,7 +1540,7 @@ arg_c
 /*****************************************************************************/
 
 type_ast_c
-  : type_modifier_list_c                /* allows for default int type */
+  : type_modifier_list_c                /* allows implicit int in K&R C */
     {
       DUMP_START( "type_ast_c", "type_modifier_list_c" );
       DUMP_TYPE( "type_modifier_list_c", $1 );
@@ -1649,10 +1651,10 @@ atomic_specifier_type_ast_c
         case K_POINTER_TO_MEMBER:
         case K_REFERENCE:
         case K_RVALUE_REFERENCE:
-          $$.ast->as.ptr_ref.qualifier |= T_ATOMIC;
+          C_TYPE_ADD( &$$.ast->as.ptr_ref.qualifier, T_ATOMIC, @1 );
           break;
         default:
-          $$.ast->type |= T_ATOMIC;
+          C_TYPE_ADD( &$$.ast->type, T_ATOMIC, @1 );
       } // switch
 
       DUMP_AST( "atomic_specifier_type_ast_c", $$.ast );
@@ -1852,7 +1854,8 @@ func_cast_c
     func_trailing_return_type_opt_c
     {
       DUMP_START( "func_cast_c",
-                  "cast2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c" );
+                  "cast2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c "
+                  "func_trailing_return_type_opt_c" );
       DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_AST( "cast2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
