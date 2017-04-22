@@ -234,14 +234,13 @@ static char* keyword_completion( char const *text, int state ) {
     if ( strncmp( text, L_INT, text_len ) != 0 )
       return keyword_completion( text, is_into );
 
-    /* normally "int" and "into" would conflict with one another when
-      * completing; cdecl tries to guess which one you wanted, and it
-      * always guesses correctly
-      */
-    return check_strdup(
-      is_command( L_CAST ) && !strstr( rl_line_buffer, L_INTO ) ?
-        L_INTO : L_INT
-    );
+    //
+    // If it's the "cast" command and the user hasn't type "into" yet, complete
+    // as "into"; otherwise "int".
+    //
+    bool const cast_no_into =
+      is_command( L_CAST ) && !strstr( rl_line_buffer, L_INTO );
+    return check_strdup( cast_no_into ? L_INTO : L_INT );
   }
 
   for ( char const *keyword; (keyword = CDECL_KEYWORDS[ index ]); ) {

@@ -81,7 +81,7 @@ bool c_ast_check( c_ast_t const *ast, c_check_t check );
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_type_ast, c_ast_t *func );
 
 /**
- * Prints the given AST as English.
+ * Prints the given AST as pseudo-English.
  *
  * @param ast The AST to print.  May be null.
  * @param fout The FILE to print to.

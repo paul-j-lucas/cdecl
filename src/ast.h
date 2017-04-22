@@ -278,7 +278,7 @@ void c_ast_set_parent( c_ast_t *child, c_ast_t *parent );
 /**
  * Does a depth-first, post-order traversal of an AST.
  *
- * @param ast The AST to begin at.
+ * @param ast The AST to begin at.  May be null.
  * @param dir The direction to visit.
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.

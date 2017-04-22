@@ -42,14 +42,14 @@
  */
 struct e_param {
   bool  print_names;                    // print names only if true
-  FILE *eout;                           // where to write the English
+  FILE *eout;                           // where to write the pseudo-English
 };
 typedef struct e_param e_param_t;
 
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Visitor function that prints an AST as English.
+ * Visitor function that prints an AST as pseudo-English.
  *
  * @param ast The AST to print.
  * @param data A pointer to an \c e_param \c struct.
@@ -75,7 +75,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
         FPRINTF( param->eout, "%s ", c_type_name( ast->type ) );
       FPUTS( c_kind_name( ast->kind ), param->eout );
 
-      if ( c_ast_args( ast ) ) {
+      if ( c_ast_args( ast ) ) {        // print function arguments
         FPUTS( " (", param->eout );
 
         e_param_t arg_param;

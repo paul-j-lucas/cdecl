@@ -192,6 +192,9 @@ static inline c_type_t qualifier_peek( void ) {
  * Peeks at the location of the qualifier at the head of the qualifier
  * inherited attribute stack.
  *
+ * @note This is a macro instead of an inline function because it should return
+ * a reference (not a pointer), but C doesn't have references.
+ *
  * @return Returns said qualifier location.
  * @hideinitializer
  */
@@ -592,7 +595,6 @@ declare_english
 
 declare_name_as_english
   : Y_DECLARE name_expected Y_AS  { $$ = $2; }
-
   | Y_DECLARE Y_NAME error
     {
       ELABORATE_ERROR( "\"%s\" expected", L_AS );
@@ -771,7 +773,7 @@ block_decl_english                      /* Apple extension */
     {
       DUMP_START( "block_decl_english",
                   "BLOCK paren_decl_list_opt_english returning_english_opt" );
-      DUMP_TYPE( "qualifier", qualifier_peek() );
+      DUMP_TYPE( "(qualifier)", qualifier_peek() );
       DUMP_AST_LIST( "paren_decl_list_opt_english", $2 );
       DUMP_AST( "returning_english_opt", $3.ast );
 
@@ -792,7 +794,7 @@ func_decl_english
       DUMP_START( "func_decl_english",
                   "FUNCTION paren_decl_list_opt_english "
                   "returning_english_opt" );
-      DUMP_TYPE( "qualifier", qualifier_peek() );
+      DUMP_TYPE( "(qualifier)", qualifier_peek() );
       DUMP_AST_LIST( "decl_list_opt_english", $2 );
       DUMP_AST( "returning_english_opt", $3.ast );
 
@@ -904,7 +906,7 @@ pointer_decl_english
   : Y_POINTER to_expected decl_english
     {
       DUMP_START( "pointer_decl_english", "POINTER TO decl_english" );
-      DUMP_TYPE( "qualifier", qualifier_peek() );
+      DUMP_TYPE( "(qualifier)", qualifier_peek() );
       DUMP_AST( "decl_english", $3.ast );
 
       $$.ast = C_AST_NEW( K_POINTER, &@$ );
@@ -924,7 +926,7 @@ pointer_to_member_decl_english
       DUMP_START( "pointer_to_member_decl_english",
                   "POINTER TO MEMBER OF "
                   "class_struct_type_c NAME decl_english" );
-      DUMP_TYPE( "qualifier", qualifier_peek() );
+      DUMP_TYPE( "(qualifier)", qualifier_peek() );
       DUMP_TYPE( "class_struct_type_c", $5 );
       DUMP_NAME( "NAME", $6 );
       DUMP_AST( "decl_english", $7.ast );
@@ -946,7 +948,7 @@ reference_decl_english
     {
       DUMP_START( "reference_decl_english",
                   "reference_english TO decl_english" );
-      DUMP_TYPE( "qualifier", qualifier_peek() );
+      DUMP_TYPE( "(qualifier)", qualifier_peek() );
       DUMP_AST( "decl_english", $3.ast );
 
       $$ = $1;
@@ -1031,7 +1033,7 @@ type_english
                   "type_modifier_list_opt_english unmodified_type_english" );
       DUMP_TYPE( "type_modifier_list_opt_english", $1 );
       DUMP_AST( "unmodified_type_english", $2.ast );
-      DUMP_TYPE( "qualifier", qualifier_peek() );
+      DUMP_TYPE( "(qualifier)", qualifier_peek() );
 
       $$ = $2;
       C_TYPE_ADD( &$$.ast->type, qualifier_peek(), qualifier_peek_loc() );
@@ -1045,7 +1047,7 @@ type_english
     {
       DUMP_START( "type_english", "type_modifier_list_english" );
       DUMP_TYPE( "type_modifier_list_english", $1 );
-      DUMP_TYPE( "qualifier", qualifier_peek() );
+      DUMP_TYPE( "(qualifier)", qualifier_peek() );
 
       $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
       $$.target_ast = NULL;
@@ -1124,7 +1126,7 @@ array_decl_c
   : decl2_c array_size_c
     {
       DUMP_START( "array_decl_c", "decl2_c array_size_c" );
-      DUMP_AST( "type_ast_c", type_peek() );
+      DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_AST( "decl2_c", $1.ast );
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
@@ -1172,7 +1174,7 @@ block_decl_c                            /* Apple extension */
       DUMP_START( "block_decl_c",
                   "'(' '^' type_qualifier_list_opt_c decl_c ')' "
                   "'(' arg_list_opt_c ')'" );
-      DUMP_AST( "type_ast_c", type_peek() );
+      DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_TYPE( "type_qualifier_list_opt_c", $4 );
       DUMP_AST( "decl_c", $5.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $8 );
@@ -1193,7 +1195,7 @@ func_decl_c
     pure_virtual_opt_c
     {
       DUMP_START( "func_decl_c", "decl2_c '(' arg_list_opt_c ')'" );
-      DUMP_AST( "type_ast_c", type_peek() );
+      DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_AST( "decl2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
       DUMP_TYPE( "func_qualifier_list_opt_c", $5 );
@@ -1306,7 +1308,7 @@ name_c
   : /* type_ast_c */ Y_NAME
     {
       DUMP_START( "name_c", "NAME" );
-      DUMP_AST( "type_ast_c", type_peek() );
+      DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_NAME( "NAME", $1 );
 
       $$.ast = type_peek();
@@ -1364,7 +1366,7 @@ pointer_type_c
   : /* type_ast_c */ '*' type_qualifier_list_opt_c
     {
       DUMP_START( "pointer_type_c", "* type_qualifier_list_opt_c" );
-      DUMP_AST( "type_ast_c", type_peek() );
+      DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_TYPE( "type_qualifier_list_opt_c", $2 );
 
       $$.ast = C_AST_NEW( K_POINTER, &@$ );
@@ -1397,7 +1399,7 @@ pointer_to_member_type_c
   : /* type_ast_c */ Y_NAME "::" star_expected
     {
       DUMP_START( "pointer_to_member_type_c", "NAME :: *" );
-      DUMP_AST( "type_ast_c", type_peek() );
+      DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_NAME( "NAME", $1 );
 
       $$.ast = C_AST_NEW( K_POINTER_TO_MEMBER, &@$ );
@@ -1430,7 +1432,7 @@ reference_type_c
   : /* type_ast_c */ '&'
     {
       DUMP_START( "reference_type_c", "&" );
-      DUMP_AST( "type_ast_c", type_peek() );
+      DUMP_AST( "(type_ast_c)", type_peek() );
 
       $$.ast = C_AST_NEW( K_REFERENCE, &@$ );
       $$.target_ast = NULL;
@@ -1443,7 +1445,7 @@ reference_type_c
   | /* type_ast_c */ "&&"
     {
       DUMP_START( "reference_type_c", "&&" );
-      DUMP_AST( "type_ast_c", type_peek() );
+      DUMP_AST( "(type_ast_c)", type_peek() );
 
       $$.ast = C_AST_NEW( K_RVALUE_REFERENCE, &@$ );
       $$.target_ast = NULL;
@@ -1791,7 +1793,7 @@ array_cast_c
   : /* type */ cast2_c array_size_c
     {
       DUMP_START( "array_cast_c", "cast2_c array_size_c" );
-      DUMP_AST( "type_ast_c", type_peek() );
+      DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_AST( "cast2_c", $1.ast );
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
@@ -1830,7 +1832,7 @@ block_cast_c                            /* Apple extension */
       DUMP_START( "block_cast_c",
                   "'(' '^' type_qualifier_list_opt_c cast_opt_c ')' "
                   "'(' arg_list_opt_c ')'" );
-      DUMP_AST( "type_ast_c", type_peek() );
+      DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_TYPE( "type_qualifier_list_opt_c", $4 );
       DUMP_AST( "cast_opt_c", $5.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $8 );
@@ -1851,7 +1853,7 @@ func_cast_c
     {
       DUMP_START( "func_cast_c",
                   "cast2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c" );
-      DUMP_AST( "type_ast_c", type_peek() );
+      DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_AST( "cast2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
       DUMP_TYPE( "func_qualifier_list_opt_c", $5 );

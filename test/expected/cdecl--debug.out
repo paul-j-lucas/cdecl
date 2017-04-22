@@ -32,7 +32,7 @@ type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
 }
 
 pointer_type_c ::= * type_qualifier_list_opt_c = {
-  type_ast_c = {
+  (type_ast_c) = {
     id = 1,
     kind = "built-in type",
     depth = 0,
@@ -61,7 +61,7 @@ pointer_type_c ::= * type_qualifier_list_opt_c = {
 }
 
 name_c ::= NAME = {
-  type_ast_c = {
+  (type_ast_c) = {
     id = 2,
     kind = "pointer",
     depth = 0,
@@ -131,7 +131,7 @@ type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
 }
 
 name_c ::= NAME = {
-  type_ast_c = {
+  (type_ast_c) = {
     id = 3,
     kind = "built-in type",
     depth = 0,
@@ -231,7 +231,7 @@ type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
 }
 
 name_c ::= NAME = {
-  type_ast_c = {
+  (type_ast_c) = {
     id = 4,
     kind = "built-in type",
     depth = 0,
@@ -317,7 +317,7 @@ arg_list_c ::= arg_list_c ',' cast_opt_c = {
 }
 
 func_decl_c ::= decl2_c '(' arg_list_opt_c ')' = {
-  type_ast_c = {
+  (type_ast_c) = {
     id = 2,
     kind = "pointer",
     depth = 0,

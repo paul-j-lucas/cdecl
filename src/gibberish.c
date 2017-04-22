@@ -140,6 +140,12 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   bool      is_override     = false;
   bool      is_pure_virtual = false;
 
+  //
+  // This isn't implemented using a visitor because c_ast_visit() visits in
+  // post-order and, in order to print gibberish, the AST has to be visited in
+  // pre-order.  Since this is the only case where a pre-order traversal has to
+  // be done, it's not worth having a pre-order version of c_ast_visit().
+  //
   switch ( ast->kind ) {
     case K_FUNCTION:
       //
@@ -417,6 +423,9 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
  */
 static void g_param_init( g_param_t *param, c_ast_t const *root,
                           g_kind_t gkind, FILE *gout ) {
+  assert( param != NULL );
+  assert( root != NULL );
+
   memset( param, 0, sizeof( g_param_t ) );
   param->gkind = gkind;
   param->gout = gout;

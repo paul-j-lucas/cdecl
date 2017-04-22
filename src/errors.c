@@ -103,6 +103,8 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
  * @return Returns \c true only if all checks passed.
  */
 static bool c_ast_check_errors( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  // check in major-to-minor error order
   if ( !c_ast_check_visitor( ast, c_ast_visitor_error ) )
     return false;
   if ( !c_ast_check_visitor( ast, c_ast_visitor_type ) )
@@ -202,7 +204,7 @@ only_void:
  * @return Returns \c true only if all checks passed.
  */
 static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
-  assert( ast );
+  assert( ast != NULL );
   assert( ast->kind & (K_BLOCK | K_FUNCTION) );
   assert( opt_lang == LANG_C_KNR );
 
@@ -485,6 +487,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
  * @return Always returns \c VISITOR_ERROR_FOUND.
  */
 static bool error_kind_not_type( c_ast_t const *ast, c_type_t type ) {
+  assert( ast != NULL );
   print_error( &ast->loc,
     "%s can not be %s", c_kind_name( ast->kind ), c_type_name( type )
   );
@@ -498,6 +501,7 @@ static bool error_kind_not_type( c_ast_t const *ast, c_type_t type ) {
  * @return Always returns \c VISITOR_ERROR_FOUND.
  */
 static bool error_kind_not_supported( c_ast_t const *ast ) {
+  assert( ast != NULL );
   print_error( &ast->loc,
     "%s not supported in %s", c_kind_name( ast->kind ), c_lang_name( opt_lang )
   );
@@ -521,6 +525,7 @@ static bool error_kind_to_type( c_ast_t const *ast, c_type_t type ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
+  assert( ast != NULL );
   if ( check == CHECK_CAST && !c_ast_check_cast( ast ) )
     return false;
   if ( !c_ast_check_errors( ast ) )

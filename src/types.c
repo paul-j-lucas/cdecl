@@ -201,14 +201,21 @@ static inline bool is_long_int( c_type_t type ) {
 bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc ) {
   assert( dest_type != NULL );
 
-  if ( is_long_int( new_type ) && is_long_int( *dest_type ) )
+  if ( is_long_int( *dest_type ) && is_long_int( new_type ) ) {
+    //
+    // If the existing type is "long" and the new type is "long", turn the new
+    // type into "long long".
+    //
     new_type = T_LONG_LONG;
+  }
 
-  if ( (new_type & *dest_type) ) {
+  if ( (*dest_type & new_type) ) {
+    char const *const new_name = check_strdup( c_type_name( new_type ) );
     print_error( loc,
-      "\"%s\" can not be combined with previous declaration\n",
-      c_type_name( new_type )
+      "\"%s\" can not be combined with \"%s\"",
+      new_name, c_type_name( *dest_type )
     );
+    FREE( new_name );
     return false;
   }
 
@@ -343,6 +350,8 @@ char const* c_type_name( c_type_t type ) {
     T_CONST,
     T_RESTRICT,
     T_VOLATILE,
+
+    // This is second so we get names like "const _Atomic".
     T_ATOMIC,
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER ); ++i ) {
