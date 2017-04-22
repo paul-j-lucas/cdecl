@@ -24,25 +24,29 @@ AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib
 AM_YFLAGS = -d
 LDADD = $(top_builddir)/lib/libgnu.a
 
-cdecl_SOURCES =	parser.y lexer.l \
-		ast.c \
-		ast_util.c \
+cdecl_SOURCES =	parser.y \
+		lexer.l lexer.h \
+		ast.c ast.h \
+		ast_util.c ast_util.h \
 		cdecl.c \
 		color.c \
-		diagnostics.c \
+		color.h \
+		common.h \
+		debug.h \
+		diagnostics.c diagnostics.h \
 		english.c \
 		errors.c \
 		gibberish.c \
 		help.c \
-		keywords.c \
-		kinds.c \
-		lang.c \
-		literals.c \
-		options.c \
-		prompt.c \
+		keywords.c keywords.h \
+		kinds.c kinds.h \
+		lang.c lang.h \
+		literals.c literals.h \
+		options.c options.h \
+		prompt.c prompt.h \
 		set.c \
-		types.c \
-		util.c
+		types.c types.h \
+		util.c util.h
 
 if ENABLE_CDECL_DEBUG
 cdecl_SOURCES += debug.c
