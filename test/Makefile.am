@@ -689,7 +689,7 @@ TEST_EXTENSIONS = .test
 
 TEST_LOG_DRIVER = $(srcdir)/run_test.sh
 
-EXTRA_DIST = run_test.sh data tests expected
+EXTRA_DIST = run_test.sh tests data expected
 dist-hook:
 	cd $(distdir)/tests && rm -f *.log *.trs
 
