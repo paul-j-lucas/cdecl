@@ -10,6 +10,7 @@ Makefile
 /aclocal.m4
 /ar-lib
 /autom4te.cache
+/cdecl-*.tar.gz
 /compile
 /config.guess
 /config.log
