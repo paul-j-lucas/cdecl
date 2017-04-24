@@ -25,56 +25,56 @@ The GNU Autotools suite is now used to build.
 ** GNU-style test suite and many more tests
 There are now over 500 unit tests that can be run via "make check".
 
-** More semantic checks.
+** More semantic checks
 Many more semantic checks have been added to disallow invalid declarations.
 
-** Long command-line options.
+** Long command-line options
 Long (GNU-style) command-line options, e.g., --language, are now accepted.
 
-** Multi-line input.
+** Multi-line input
 Long commands can now be given across multiple lines by escaping the newlines
 with a backslash.
 
-** More C and C++ versions.
+** More C and C++ versions
 Now distinguishes among K&R C, C89, C95, C99, C11, C++98, C++03, C++11, and
 C++14.
 
-** More types.
+** More types
 Now supports _Atomic, bool, char16_t, char32_t, complex, noreturn, restrict,
 thread_local, and wchar_t.
 
-** Inline functions.
+** Inline functions
 Added inline function support.
 
-** Function arguments.
+** Function arguments
 Added register and variadic function argument support (independently).
 
-** Typedef declarations.
+** Typedef declarations
 Added typedef declarations (independently).
 
-** C++ member functions.
+** C++ member functions
 Added final, friend, const, override, volatile, virtual, and pure virtual C++
 member function declaration support.
 
-** C++11 features.
+** C++11 features
 Added C++11 auto, constexpr, enum class, mutable, rvalue references, and the
 function trailing return-type syntax.
 
-** Optional returning.
+** Optional returning
 In pseudo-English for functions, the "returning" clause is now optional and
 equivalent to returning void.
 
-** Number bases.
+** Number bases
 Binary, octal, and hexadecimal numbers can now be used for array sizes.
 
-** Better warning an error messages.
+** Better warning an error messages
 Warning and error messages are now better, complete with location information
 and color.
 
-** Comments.
+** Comments
 C /*...*/ and C++ // comments are now ignored.
 
-** No cdecl reserved words in C declarations.
+** No cdecl reserved words in C declarations
 Reserved words that are part of cdecl's pseudo-English are no longer considered
 such when explaining C or C++ declarations.
 
@@ -84,76 +84,76 @@ The cdecl(1) manual page has been revamped.
 
 * Changes in Cdecl 2.5-blocks
 
-** Blocks syntax.
+** Blocks syntax
 Added support for Apple's "blocks" syntax per N1370 "Apple’s Extensions to C"
 <http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf>.
 
 
 * Changes in Cdecl 2.5
 
-** GNU readline.
+** GNU readline
 Now using GNU readline (when available) for command-line editing.
 
-** Prompt/Noprompt commands.
+** Prompt/Noprompt commands
 New "prompt" and "noprompt" commands are available.
 
 
 * Changes by Tony Hansen
 
-** Improved grammar.
+** Improved grammar
 More parts can be missing during explanations.
 
-** Variadic arguments.
+** Variadic arguments
 Functions can now accept a variadic argument.
 
 
 * Changes by Alexander Dupuy
 
-** Additional K&R C checks.
+** Additional K&R C checks
 Now warns about use of signed or void in K&R C.
 
-** Better C++ reference support.
+** Better C++ reference support
 Better semantic checking on C++ references is now done.
 
-** Const/volatile.
+** Const/volatile
 Const and volatile function pointers are now supported.
 
 
 * Changes by Merlyn LeRoy
 
-** Extern, register, and static.
+** Extern, register, and static
 Added extern, register, and static support.
 
-** Alternate invocation.
+** Alternate invocation
 Cdecl can now be invoked as cast, declare, or explain from the command-line.
 
 
 * Changes in Cdecl 2.0
 
-** C++.
+** C++
 C++ declarations are now supported.
 
-** Create program at runtime.
+** Create program at runtime
 The "Create program" feature is now selectable at runtime.
 
-** File input.
+** File input
 Cdecl can now parse input from files in addition to standard input.
 
-** Initial help message.
+** Initial help message
 When starting, cdecl now prints a help message.
 
-** Prompt.
+** Prompt
 Now displays a prompt when either standard input is connected to a TTY or when
 in interactive mode.
 
-** More command-line options.
+** More command-line options
 Cdecl now has the additional command-line options of -a, -r, -p, -c, -d, -D,
 -V, -i, and -+.
 
-** Set options.
+** Set options
 A new "set options" command is available.
 
-** Exit/Quit command.
+** Exit/Quit command
 New "exit" and "quit" commands are available.
 
 ** Synonyms
@@ -162,32 +162,32 @@ Now supports synonyms for some pseudo-English words.
 
 * Changes by David Wolverton
 
-** Typedef declarations.
+** Typedef declarations
 Added typedef declarations.
 
-** Noalias removal.
+** Noalias removal
 Support for noalias has been removed.
 
 
 * Changes by <unknown author>
 
-** Hints.
+** Hints
 For some errors, a hint about a possible fix is now printer.
 
-** Function arguments.
+** Function arguments
 Now accepts function arguments.
 
-** Explain casts.
+** Explain casts
 Added ability to explain casts.
 
-** Create program.
+** Create program
 Added #ifdef to emit either a semicolon (for variables) or braces (for
 functions) afterwards.
 
 
 * Changes in Cdecl 1.0
 
-** Initial version.
+** Initial version
 
 -------------------------------------------------------------------------------
 The file is part of Cdecl.
