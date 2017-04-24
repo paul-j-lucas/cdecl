@@ -113,6 +113,9 @@ char* check_strdup( char const *s ) {
 FILE* fmemopen( void *buf, size_t size, char const *mode ) {
   assert( buf != NULL );
   assert( strchr( mode, 'r' ) != NULL );
+#ifdef NDEBUG
+  (void)mode;
+#endif /* NDEBUG */
 
   FILE *const tmp = tmpfile();
   if ( !tmp )
