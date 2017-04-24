@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 3.0.1
+
+** Renamed --disable-debug to --disable-cdecl-debug
+Renamed this configure option to avoid clash with conventional --disable-debug
+option.
+
+
 * Changes in Cdecl 3.0
 
 ** GNU Autotools
