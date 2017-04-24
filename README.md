@@ -17,7 +17,8 @@
 </div>
 <p></p>
 
-**cdecl** is a program for composing and deciphering C (or C++)
+**cdecl** (_see-deh-kull_)
+is a program for composing and deciphering C (or C++)
 type declarations or casts, aka ‘‘gibberish.’’
 It can be used interactively on a terminal or
 accept input from either the command line or standard input.
