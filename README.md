@@ -82,7 +82,12 @@ you can generate `configure` yourself by doing:
 
     autoreconf -fiv
 
-You will also need `flex` and `bison`
+Or you can download a
+[released version](https://github.com/paul-j-lucas/cdecl/releases)
+that contains `configure`.
+
+In either case,
+you will also need `flex` and `bison`
 (`lex` and `yacc` won't do).
 Then follow the generic installation instructions given in `INSTALL`.
 
