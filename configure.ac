@@ -90,13 +90,13 @@ AS_IF([test x$with_readline = xyes],
     [Define to 1 if readline support is enabled.])]
 )
 
-# Program feature: debug (enabled by default)
-AC_ARG_ENABLE([debug],
-  AS_HELP_STRING([--disable-debug], [disable support for cdecl debugging]),
+# Program feature: cdecl-debug (enabled by default)
+AC_ARG_ENABLE([cdecl-debug],
+  AS_HELP_STRING([--disable-cdecl-debug], [disable support for cdecl debugging]),
   [],
-  [enable_debug=yes]
+  [enable_cdecl_debug=yes]
 )
-AS_IF([test x$enable_debug = xyes],
+AS_IF([test x$enable_cdecl_debug = xyes],
   [AC_DEFINE([ENABLE_CDECL_DEBUG], [1],
     [Define to 1 if cdecl debugging is enabled.])]
 )
@@ -127,9 +127,9 @@ AS_IF([test x$enable_yydebug = xyes],
 )
 
 # Makefile conditionals.
-AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline  = xyes])
-AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test x$enable_debug   = xyes])
-AM_CONDITIONAL([ENABLE_YYDEBUG],      [test x$enable_yydebug = xyes])
+AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline      = xyes])
+AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test x$enable_cdecl_debug = xyes])
+AM_CONDITIONAL([ENABLE_YYDEBUG],      [test x$enable_yydebug     = xyes])
 
 # Miscellaneous.
 AC_LANG(C)
