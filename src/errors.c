@@ -304,7 +304,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         );
         return VISITOR_ERROR_FOUND;
       }
-      // no break;
+      // FALLTHROUGH
 
     case K_BLOCK: {                     // Apple extension
       tmp_type = (ast->type &
@@ -357,7 +357,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
     case K_POINTER_TO_MEMBER:
       if ( opt_lang < LANG_CPP_MIN )
         return error_kind_not_supported( ast );
-      // no break;
+      // FALLTHROUGH
     case K_POINTER: {
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
       if ( (to_ast->kind & (K_REFERENCE | K_RVALUE_REFERENCE)) ) {
@@ -374,7 +374,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
     case K_RVALUE_REFERENCE:
       if ( opt_lang < LANG_CPP_11 )
         return error_kind_not_supported( ast );
-      // no break;
+      // FALLTHROUGH
     case K_REFERENCE: {
       if ( opt_lang < LANG_CPP_MIN )
         return error_kind_not_supported( ast );
@@ -425,7 +425,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
       } // for
       if ( ast->kind == K_FUNCTION )
         break;
-      // no break;
+      // FALLTHROUGH
 
     default:
       if ( (ast->type & T_NORETURN) ) {

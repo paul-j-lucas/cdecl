@@ -157,7 +157,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       is_override     = (ast_type & T_OVERRIDE) != 0;
       is_pure_virtual = (ast_type & T_PURE_VIRTUAL) != 0;
       ast_type &= ~(T_MASK_QUALIFIER | T_FINAL | T_OVERRIDE | T_PURE_VIRTUAL);
-      // no break;
+      // FALLTHROUGH
 
     case K_ARRAY:
     case K_BLOCK:                       // Apple extension
