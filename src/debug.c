@@ -83,7 +83,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
     switch ( ast->kind ) {
       case K_BUILTIN:
       case K_NAME:
-      case K_NONE:
+      case K_PLACEHOLDER:
       case K_VARIADIC:
         // nothing to do
         break;

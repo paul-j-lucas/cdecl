@@ -155,7 +155,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
   } // switch
 
   assert( array->kind == K_ARRAY );
-  assert( array->as.array.of_ast->kind == K_NONE );
+  assert( array->as.array.of_ast->kind == K_PLACEHOLDER );
   //
   // We've reached the end of the array chain: make the new array be an array
   // of this AST node and return the array so the parent will now point to it
@@ -197,7 +197,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
           );
           return ast;
 
-        case K_NONE:
+        case K_PLACEHOLDER:
           if ( ret_type_ast == ast )
             break;
           c_ast_set_parent( func, ast );
@@ -284,19 +284,20 @@ c_ast_t* c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     return type_ast;
 
   if ( !type_ast->parent ) {
-    c_ast_t *const none_ast = c_ast_find_kind( decl_ast, V_DOWN, K_NONE );
-    if ( none_ast ) {
+    c_ast_t *const placeholder =
+      c_ast_find_kind( decl_ast, V_DOWN, K_PLACEHOLDER );
+    if ( placeholder ) {
       if ( type_ast->depth >= decl_ast->depth ) {
         //
-        // The type_ast is the final AST -- decl_ast (containing a K_NONE) is
-        // discarded.
+        // The type_ast is the final AST -- decl_ast (containing a placeholder)
+        // is discarded.
         //
         if ( !type_ast->name )
           type_ast->name = c_ast_take_name( decl_ast );
         return type_ast;
       }
       //
-      // Otherwise, excise the K_NONE.
+      // Otherwise, excise the K_PLACEHOLDER.
       // Before:
       //
       //      [type] --> ... --> [type-root]
@@ -307,7 +308,7 @@ c_ast_t* c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
       //      [type] --> ... --> [type-root] --> [none-parent]
       //
       c_ast_t *const type_root_ast = c_ast_root( type_ast );
-      c_ast_set_parent( type_root_ast, none_ast->parent );
+      c_ast_set_parent( type_root_ast, placeholder->parent );
     }
   }
 

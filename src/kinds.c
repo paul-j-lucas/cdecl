@@ -40,12 +40,12 @@
 
 char const* c_kind_name( c_kind_t kind ) {
   switch ( kind ) {
-    case K_NONE             : return "none";
     case K_ARRAY            : return "array";
     case K_BLOCK            : return "block";
     case K_BUILTIN          : return "built-in type";
     case K_FUNCTION         : return "function";
     case K_NAME             : return "name";
+    case K_PLACEHOLDER      : return "placeholder";
     case K_POINTER          : return "pointer";
     case K_POINTER_TO_MEMBER: return "pointer-to-member";
     case K_REFERENCE        : return "reference";

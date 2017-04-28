@@ -147,7 +147,7 @@ char const* c_ast_name( c_ast_t const *ast, v_direction_t dir );
  * "Patches" the given type AST into the given declaration AST only if:
  *  + The type AST has no parent.
  *  + The type AST's depth is less than the declaration AST's depth.
- *  + The declaration AST still contains an AST node of type K_NONE.
+ *  + The declaration AST still contains an AST node of type K_PLACEHOLDER.
  *
  * @param type_ast The AST of the initial type.
  * @param decl_ast The AST of a declaration.  May be null.

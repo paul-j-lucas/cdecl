@@ -212,8 +212,8 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
     switch ( arg->kind ) {
       case K_NAME:
         break;
-      case K_NONE:
-        assert( arg->kind != K_NONE );
+      case K_PLACEHOLDER:
+        assert( arg->kind != K_PLACEHOLDER );
       default:
         print_error( &ast->loc, "function prototypes" );
 				return false;
@@ -351,8 +351,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       // nothing to check
       break;
 
-    case K_NONE:
-      assert( ast->kind != K_NONE );
+    case K_PLACEHOLDER:
+      assert( ast->kind != K_PLACEHOLDER );
 
     case K_POINTER_TO_MEMBER:
       if ( opt_lang < LANG_CPP_MIN )
@@ -473,8 +473,8 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
         print_warning( &ast->loc, "missing type specifier" );
       break;
 
-    case K_NONE:
-      assert( ast->kind != K_NONE );
+    case K_PLACEHOLDER:
+      assert( ast->kind != K_PLACEHOLDER );
   } // switch
   return false;
 }

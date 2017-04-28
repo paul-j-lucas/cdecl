@@ -1125,7 +1125,7 @@ array_decl_c
 
       c_ast_t *const array = C_AST_NEW( K_ARRAY, &@$ );
       array->as.array.size = $2;
-      c_ast_set_parent( C_AST_NEW( K_NONE, &@1 ), array );
+      c_ast_set_parent( C_AST_NEW( K_PLACEHOLDER, &@1 ), array );
 
       if ( $1.target_ast ) {            // array-of or function/block-ret type
         $$.ast = $1.ast;
@@ -1333,7 +1333,7 @@ nested_decl_c
 placeholder_type_ast_c
   : /* empty */
     {
-      $$.ast = C_AST_NEW( K_NONE, &@$ );
+      $$.ast = C_AST_NEW( K_PLACEHOLDER, &@$ );
       $$.target_ast = NULL;
     }
   ;
@@ -1793,7 +1793,7 @@ array_cast_c
 
       c_ast_t *const array = C_AST_NEW( K_ARRAY, &@$ );
       array->as.array.size = $2;
-      c_ast_set_parent( C_AST_NEW( K_NONE, &@1 ), array );
+      c_ast_set_parent( C_AST_NEW( K_PLACEHOLDER, &@1 ), array );
 
       if ( $1.target_ast ) {            // array-of or function/block-ret type
         $$.ast = $1.ast;

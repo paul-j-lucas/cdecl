@@ -212,8 +212,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       param->leaf_ast = ast;
       break;
 
-    case K_NONE:
-      assert( ast->kind != K_NONE );
+    case K_PLACEHOLDER:
+      assert( ast->kind != K_PLACEHOLDER );
 
     case K_POINTER:
     case K_REFERENCE:
