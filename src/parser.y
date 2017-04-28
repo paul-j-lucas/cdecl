@@ -1217,6 +1217,29 @@ func_decl_c
     }
   ;
 
+func_qualifier_list_opt_c
+  : /* empty */                   { $$ = T_NONE; }
+  | func_qualifier_list_opt_c func_qualifier_c
+    {
+      DUMP_START( "func_qualifier_list_opt_c",
+                  "func_qualifier_list_opt_c func_qualifier_c" );
+      DUMP_TYPE( "func_qualifier_list_opt_c", $1 );
+      DUMP_TYPE( "func_qualifier_c", $2 );
+
+      $$ = $1;
+      C_TYPE_ADD( &$$, $2, @2 );
+
+      DUMP_TYPE( "func_qualifier_list_opt_c", $$ );
+      DUMP_END();
+    }
+  ;
+
+func_qualifier_c
+  : cv_qualifier_c
+  | Y_FINAL
+  | Y_OVERRIDE
+  ;
+
 func_trailing_return_type_opt_c
   : /* empty */                   { $$.ast = $$.target_ast = NULL; }
   | "->" type_ast_c { type_push( $2.ast ); } cast_opt_c
@@ -1266,29 +1289,6 @@ func_trailing_return_type_opt_c
       DUMP_AST( "func_trailing_return_type_opt_c", $$.ast );
       DUMP_END();
     }
-  ;
-
-func_qualifier_list_opt_c
-  : /* empty */                   { $$ = T_NONE; }
-  | func_qualifier_list_opt_c func_qualifier_c
-    {
-      DUMP_START( "func_qualifier_list_opt_c",
-                  "func_qualifier_list_opt_c func_qualifier_c" );
-      DUMP_TYPE( "func_qualifier_list_opt_c", $1 );
-      DUMP_TYPE( "func_qualifier_c", $2 );
-
-      $$ = $1;
-      C_TYPE_ADD( &$$, $2, @2 );
-
-      DUMP_TYPE( "func_qualifier_list_opt_c", $$ );
-      DUMP_END();
-    }
-  ;
-
-func_qualifier_c
-  : cv_qualifier_c
-  | Y_FINAL
-  | Y_OVERRIDE
   ;
 
 pure_virtual_opt_c
