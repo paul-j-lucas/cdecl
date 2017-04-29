@@ -67,8 +67,8 @@ most notably:
   `override`,
   `volatile`,
   `virtual`,
-  and
-  pure `virtual`
+  pure `virtual`,
+  and ref-qualified
   C++ member function declarations.
 * Better warning and error messages
   complete with location information and color.
