@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** Ref-qualifiers
 Now supports C++11 function ref-qualifiers.
 
+** Installs c++decl
+A "make install" will now also create c++decl as a symbolic link to cdecl.
+
 
 * Changes in Cdecl 3.0.1
 

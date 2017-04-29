@@ -56,4 +56,7 @@ if WITH_READLINE
 cdecl_SOURCES += autocomplete.c
 endif
 
+install-exec-hook:
+	cd "$(DESTDIR)$(bindir)" && $(LN_S) cdecl c++decl
+
 # vim:set noet sw=8 ts=8:

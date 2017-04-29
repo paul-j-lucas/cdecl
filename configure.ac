@@ -34,6 +34,7 @@ AC_PROG_YACC
 test "x$YACC" = xyacc &&
   AC_MSG_ERROR([required program "bison" or "byacc" not found])
 AC_PROG_INSTALL
+AC_PROG_LN_S
 
 # Checks for libraries.
 
