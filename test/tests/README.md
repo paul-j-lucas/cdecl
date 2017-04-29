@@ -36,6 +36,7 @@ The characters are:
 + `o` = `override` or `thread_local`
 + `p` = pointer
 + `r` = `restrict` or reference
++ `rr` = rvalue reference
 + `s` = `signed` or `static`
 + `t` = `typedef`
 + `u` = `unsigned`
