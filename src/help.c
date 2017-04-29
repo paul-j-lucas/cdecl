@@ -52,37 +52,40 @@ typedef struct help_text help_text_t;
 static help_text_t const HELP_TEXT[] = {
 /*  1 */  { "[] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere", NULL },
 /*  2 */  { "command:", NULL },
-/*  3 */  { "  declare <name> as <english>", NULL },
-/*  4 */  { "  cast <name> into <english>", NULL },
-/*  5 */  { "  explain <gibberish>", NULL },
-/*  6 */  { "  set [options]", NULL },
-/*  7 */  { "  help | ?", NULL },
-/*  8 */  { "  exit | quit | q", NULL },
-/*  9 */  { "english:", NULL },
-/* 10 */  { "  [<storage>]* array [<number>] of <english>", NULL },
-/* 11 */  { "  block [([<args>])] [returning <english>]", NULL },
-/* 12 */  { "  [<storage>]* [const|volatile]* function [([<args>])] [returning <english>]", NULL },
-/* 13 */  { "  [const|volatile|restrict]* pointer to <english>",
-            "  [const|volatile]* pointer to [member of class <name>] <english>" },
-/* 14 */  { "",
+/*  3 */  { "  declare <name> as <english>         | set [options]", NULL },
+/*  4 */  { "  cast <name> into <english>          | help | ?", NULL },
+/*  5 */  { "  explain <gibberish>                 | exit | quit | q", NULL },
+/*  6 */  { "english:", NULL },
+/*  7 */  { "  [<storage>]* array [<number>] of <english>", NULL },
+/*  8 */  { "  block [([<args>])] [returning <english>]", NULL },
+/*  9 */  { "  [<storage>]* function [([<args>])] [returning <english>]",
+            "  [<storage>]* [<fn-qualifier>]* function [([<args>])] [returning <english>]" },
+/* 10 */  { "  [<cv-qualifier]* pointer to <english>",
+            "  [<cv-qualifier]* pointer to [member of class <name>] <english>" },
+/* 11 */  { NULL,
             "  [rvalue] reference to <english>" },
-/* 15 */  { "  <type>", NULL },
-/* 16 */  { "type:", NULL },
-/* 17 */  { "  [<storage>]* [<modifier>]* [<C-type>]",
+/* 12 */  { "  <type>", NULL },
+/* 13 */  { "type:", NULL },
+/* 14 */  { "  [<storage>]* [<modifier>]* [<C-type>]",
             "  [<storage>]* [<modifier>]* [<C++-type>]" },
-/* 18 */  { "  { enum | struct | union } <name>",
+/* 15 */  { "  { enum | struct | union } <name>",
             "  { enum [class|struct] | struct | union | class } <name>" },
-/* 19 */  { "args: a comma separated list of <name>, <english>, or <name> as <english>",
+/* 16 */  { "args: a comma separated list of <name>, <english>, or <name> as <english>",
             "args: a comma separated list of <english> or <name> as <english>" },
-/* 20 */  { "gibberish: a C declaration, like \"int x\"; or cast, like \"(int)x\"",
+/* 17 */  { "gibberish: a C declaration, like \"int x\"; or cast, like \"(int)x\"",
             "gibberish: a C++ declaration, like \"int x\"; or cast, like \"(int)x\"" },
-/* 21 */  { "C-type: bool char char16_t char32_t wchar_t int float double size_t void",
+/* 18 */  { "C-type: bool char char16_t char32_t wchar_t int float double size_t void",
             "C++-type: bool char char16_t char32_t wchar_t int float double size_t void" },
-/* 22 */  { "modifier: short long signed unsigned atomic const restrict volatile",
+/* 19 */  { "cv-qualifier: _Atomic const restrict volatile",
+            "cv-qualifier: const volatile" },
+/* 20 */  { NULL,
+            "fn-qualifier: const volatile [rvalue] reference" },
+/* 21 */  { "modifier: short long signed unsigned atomic const restrict volatile",
             "modifier: short long signed unsigned const volatile" },
+/* 22 */  { "name: a C identifier",
+            "name: a C++ identifier" },
 /* 23 */  { "storage: auto extern register static thread_local",
             "storage: constexpr extern friend register static thread_local [pure] virtual" },
-          { NULL, NULL }
 };
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -93,8 +96,6 @@ static help_text_t const HELP_TEXT[] = {
  * @param line The line to print.
  */
 static void print_help_line( char const *line ) {
-  if ( !line[0] )
-    return;
   for ( char const *c = line; *c; ++c ) {
     switch ( *c ) {
       case '<':
@@ -139,10 +140,11 @@ static void print_help_line( char const *line ) {
  * Prints the help message to standard output.
  */
 void print_help( void ) {
-  for ( help_text_t const *ht = HELP_TEXT; ht->text; ++ht ) {
+  for ( size_t i = 0; i < ARRAY_SIZE( HELP_TEXT ); ++i ) {
+    help_text_t const *const ht = &HELP_TEXT[i];
     if ( opt_lang >= LANG_CPP_MIN && ht->cpp_text )
       print_help_line( ht->cpp_text );
-    else
+    else if ( ht->text )
       print_help_line( ht->text );
   } // for
 }

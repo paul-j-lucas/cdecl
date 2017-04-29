@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 3.1
+
+** Ref-qualifiers
+Now supports C++11 function ref-qualifiers.
+
+
 * Changes in Cdecl 3.0.1
 
 ** Renamed --disable-debug to --disable-cdecl-debug

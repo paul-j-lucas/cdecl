@@ -386,6 +386,7 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_lw.test \
 	tests/explain_pmi-c.test \
 	tests/explain_pv-knr.test \
+	tests/explain_rf_v-01.test \
 	tests/explain_ri-c.test \
 	tests/explain_sb.test \
 	tests/explain_sc-knr.test \
@@ -525,6 +526,8 @@ TESTS+=	tests/declare_0f_v.test \
 	tests/declare_af-c++.test \
 	tests/declare_cf_v.test \
 	tests/declare_cpmi.test \
+	tests/declare_crf_v.test \
+	tests/declare_crrf_v.test \
 	tests/declare_ec.test \
 	tests/declare_ek.test \
 	tests/declare_f_pmi.test \
@@ -540,8 +543,10 @@ TESTS+=	tests/declare_0f_v.test \
 	tests/declare_rci.test \
 	tests/declare_rcpi.test \
 	tests/declare_ref.test \
+	tests/declare_rf_v.test \
 	tests/declare_ri.test \
 	tests/declare_rpi.test \
+	tests/declare_rrf_v.test \
 	tests/declare_sxi.test \
 	tests/declare_vf_v.test \
 	tests/declare_voyf.test \
@@ -555,7 +560,7 @@ TESTS+=	tests/declare_0f_v.test \
 TESTS+=	tests/declare_ai-c++11.test \
 	tests/declare_pmri.test \
 	tests/declare_pri.test \
-	tests/declare_rf_v.test \
+	tests/declare_rf_v-01.test \
 	tests/declare_rgi.test \
 	tests/declare_rv.test \
 	tests/declare_smi.test
@@ -566,6 +571,7 @@ TESTS+=	tests/declare_ai-c++11.test \
 #
 TESTS+=	tests/explain_a.test \
 	tests/explain_cf_v.test \
+	tests/explain_crf_v.test \
 	tests/explain_cvf_v.test \
 	tests/explain_f__pf__v.test \
 	tests/explain_f__pv.test \
@@ -579,7 +585,10 @@ TESTS+=	tests/explain_a.test \
 	tests/explain_pmfii_pk.test \
 	tests/explain_pmgi.test \
 	tests/explain_pmi.test \
+	tests/explain_rf_v.test \
 	tests/explain_ri.test \
+	tests/explain_rrf_v.test \
+	tests/explain_rrf_v.test \
 	tests/explain_sxi.test \
 	tests/explain_voyf.test \
 	tests/explain_xi.test \
@@ -602,9 +611,13 @@ TESTS+=	tests/explain_ai-c++11.test \
 	tests/explain_pmri.test \
 	tests/explain_pri.test \
 	tests/explain_prri.test \
+	tests/explain_rf_v-c++03.test \
 	tests/explain_rgi.test \
+	tests/explain_rrf_v-c++03.test \
 	tests/explain_rv.test \
-	tests/explain_smi.test
+	tests/explain_smi.test \
+	tests/explain_srf_v.test \
+	tests/explain_srrf_v.test
 
 #
 # C++ cast tests

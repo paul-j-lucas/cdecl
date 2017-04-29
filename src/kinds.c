@@ -45,6 +45,7 @@ char const* c_kind_name( c_kind_t kind ) {
     case K_BUILTIN          : return "built-in type";
     case K_FUNCTION         : return "function";
     case K_NAME             : return "name";
+    case K_NONE             : return "none";
     case K_PLACEHOLDER      : return "placeholder";
     case K_POINTER          : return "pointer";
     case K_POINTER_TO_MEMBER: return "pointer-to-member";

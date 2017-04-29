@@ -439,10 +439,10 @@ rvalue references,
 \f(CWthread_local\fP,
 the function trailing return-type syntax,
 and
-\f(CWfinal\fP
+member function ref-qualfiers,
+\f(CWfinal\fP,
 and
-\f(CWoverride\fP
-member functions.
+\f(CWoverride\fP.
 .TP
 .B C++14
 Use the C++14 version of the C++ language.
@@ -517,11 +517,11 @@ is one of:
 .IP "" 4
 .RB [ \f2storage\fP "]* " array " [" \f2number\fP "] " of " \f2english\fP"
 .br
-.BR block " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "]"
+.BR block " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
 .br
-.RB [ \f2storage\fP "]* [" \f2qualifier\fP "]* " function " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "]"
+.RB [ \f2storage\fP "]* [" \f2fn-qualifier\fP "]* " function " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
 .br
-.RB [ \f2qualifier\fP "]* " "pointer to" " [" "member of class" " \f2name\fP" ] " \f2english\fP"
+.RB [ \f2cv-qualifier\fP "]* " "pointer to" " [" "member of class" " \f2name\fP" "" ] " \f2english\fP"
 .br
 .RB [ rvalue "] " "reference to" " \f2english\fP"
 .br
@@ -537,7 +537,21 @@ is either:
 .P
 where:
 .RS 4
-.TP 11
+.TP 14
+.I args
+A comma-separated list of
+.IR name ,
+.IR english ,
+.I name
+\f(CWas\fP
+.IR english ;
+or one of
+\f(CWvarargs\fP,
+\f(CWvariadic\fP,
+or
+\f(CW...\fP
+(ellipsis).
+.TP
 .I C-type
 One of:
 \f(CWauto\fP (C++11 or later),
@@ -553,19 +567,21 @@ One of:
 or
 \f(CWvoid\fP.
 .TP
-.I args
-A comma-separated list of
-.IR name ,
-.IR english ,
-.I name
-\f(CWas\fP
-.IR english ;
-or one of
-\f(CWvarargs\fP,
-\f(CWvariadic\fP,
+.I cv-qualifier
+One of:
+\f(CW_Atomic\fP,
+\f(CWconst\fP,
+\f(CWrestrict\fP,
 or
-\f(CW...\fP
-(ellipsis).
+\f(CWvolatile\fP.
+.TP
+.I fn-qualifier
+One of:
+\f(CWconst\fP,
+\f(CWreference\fP,
+\f(CWrvalue reference\fP,
+or
+\f(CWvolatile\fP.
 .TP
 .I modifier
 One of:
@@ -587,14 +603,6 @@ hexadecimal (if starting with either \f(CW0x\fP or \f(CW0X\fP),
 or
 binary (if starting with either \f(CW0b\fP or \f(CW0B\fP)
 number.
-.TP
-.I qualifier
-One of:
-\f(CW_Atomic\fP,
-\f(CWconst\fP,
-\f(CWrestrict\fP,
-or
-\f(CWvolatile\fP.
 .TP
 .I storage
 One of:

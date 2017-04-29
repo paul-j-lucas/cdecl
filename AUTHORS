@@ -75,7 +75,8 @@ Paul J. Lucas <paul@lucasmail.org>
 		thread_local, wchar_t
 	added inline functions
 	added register and variadic function arguments
-	added C++11 auto, constexpr, enum class, mutable, and rvalue references
+	added C++11 auto, constexpr, enum class, mutable, ref-qualifiers, and
+		rvalue references
 	added C++11 function trailing return-type syntax
 	independently added typedef declarations
 	added final, friend, const, override, volatile, virtual,

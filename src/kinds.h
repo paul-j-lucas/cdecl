@@ -47,6 +47,7 @@ _GL_INLINE_HEADER_BEGIN
  * thing is any \e one of those kinds.
  */
 enum c_kind {
+  K_NONE                    = 0,
   K_PLACEHOLDER             = 0x0001,
   K_BUILTIN                 = 0x0002,   // void, char, int, etc.
   K_ENUM_CLASS_STRUCT_UNION = 0x0004,

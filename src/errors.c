@@ -174,7 +174,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
     c_type_t const storage = arg->type & (T_MASK_STORAGE & ~T_REGISTER);
     if ( storage ) {
       print_error( &arg->loc,
-        "function argument can not be %s", c_type_name( storage )
+        "function arguments can not be %s", c_type_name( storage )
       );
       return false;
     }
@@ -290,9 +290,26 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       break;
 
     case K_FUNCTION:
+      if ( ast->type & (T_REFERENCE | T_RVALUE_REFERENCE) ) {
+        if ( opt_lang < LANG_CPP_11 ) {
+          print_error( &ast->loc,
+            "reference qualified functions illegal in %s",
+            c_type_name( ast->type ),
+            c_lang_name( opt_lang )
+          );
+          return VISITOR_ERROR_FOUND;
+        }
+        if ( (ast->type & (T_EXTERN | T_STATIC)) ) {
+          print_error( &ast->loc,
+            "reference qualified functions can not be %s",
+            c_type_name( ast->type & (T_EXTERN | T_STATIC) )
+          );
+          return VISITOR_ERROR_FOUND;
+        }
+      }
       if ( opt_lang >= LANG_CPP_MIN ) {
         if ( (ast->type & T_PURE_VIRTUAL) && !(ast->type & T_VIRTUAL) ) {
-          print_error( &ast->loc, "non-virtual function can not be pure" );
+          print_error( &ast->loc, "non-virtual functions can not be pure" );
           return VISITOR_ERROR_FOUND;
         }
       }
@@ -351,6 +368,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       // nothing to check
       break;
 
+    case K_NONE:
+      assert( ast->kind != K_NONE );
     case K_PLACEHOLDER:
       assert( ast->kind != K_PLACEHOLDER );
 
@@ -473,6 +492,8 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
         print_warning( &ast->loc, "missing type specifier" );
       break;
 
+    case K_NONE:
+      assert( ast->kind != K_NONE );
     case K_PLACEHOLDER:
       assert( ast->kind != K_PLACEHOLDER );
   } // switch

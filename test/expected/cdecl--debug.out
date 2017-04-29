@@ -370,6 +370,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_tr
     }
   ],
   func_qualifier_list_opt_c = null,
+  func_ref_qualifier_opt_c = null,
   func_trailing_return_type_opt_c = {
   },
   pure_virtual_opt_c = null,

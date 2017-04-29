@@ -139,6 +139,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   bool      is_final        = false;
   bool      is_override     = false;
   bool      is_pure_virtual = false;
+  c_type_t  ref_qualifier   = T_NONE;
 
   //
   // This isn't implemented using a visitor because c_ast_visit() visits in
@@ -156,7 +157,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       is_final        = (ast_type & T_FINAL) != 0;
       is_override     = (ast_type & T_OVERRIDE) != 0;
       is_pure_virtual = (ast_type & T_PURE_VIRTUAL) != 0;
-      ast_type &= ~(T_MASK_QUALIFIER | T_FINAL | T_OVERRIDE | T_PURE_VIRTUAL);
+      ref_qualifier   = (ast_type & T_MASK_REF_QUALIFIER);
+
+      ast_type &= ~(T_MASK_QUALIFIER | T_FINAL | T_OVERRIDE | T_PURE_VIRTUAL
+                  | T_MASK_REF_QUALIFIER);
       // FALLTHROUGH
 
     case K_ARRAY:
@@ -174,6 +178,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       }
       if ( cv_qualifier )
         FPRINTF( param->gout, " %s", c_type_name( cv_qualifier ) );
+      if ( ref_qualifier )
+        FPUTS( (ref_qualifier & T_REFERENCE) ? " &" : " &&", param->gout );
       if ( is_override )
         FPRINTF( param->gout, " %s", L_OVERRIDE );
       if ( is_final )
@@ -212,6 +218,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       param->leaf_ast = ast;
       break;
 
+    case K_NONE:
+      assert( ast->kind != K_NONE );
     case K_PLACEHOLDER:
       assert( ast->kind != K_PLACEHOLDER );
 

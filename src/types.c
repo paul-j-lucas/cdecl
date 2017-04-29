@@ -62,10 +62,12 @@ struct c_type_info {
 typedef struct c_type_info c_type_info_t;
 
 static c_type_info_t const C_QUALIFIER_INFO[] = {
-  { T_ATOMIC,       L__ATOMIC,      LANG_MIN(C_11)                  },
-  { T_CONST,        L_CONST,        LANG_MIN(C_89)                  },
-  { T_RESTRICT,     L_RESTRICT,     LANG_MIN(C_89) & ~LANG_CPP_ALL  },
-  { T_VOLATILE,     L_VOLATILE,     LANG_MIN(C_89)                  },
+  { T_ATOMIC,           L__ATOMIC,      LANG_MIN(C_11)                  },
+  { T_CONST,            L_CONST,        LANG_MIN(C_89)                  },
+  { T_REFERENCE,        L_REFERENCE,    LANG_MIN(CPP_11)                },
+  { T_RVALUE_REFERENCE, "rvalue reference", LANG_MIN(CPP_11)                },
+  { T_RESTRICT,         L_RESTRICT,     LANG_MIN(C_89) & ~LANG_CPP_ALL  },
+  { T_VOLATILE,         L_VOLATILE,     LANG_MIN(C_89)                  },
 };
 
 static c_type_info_t const C_STORAGE_INFO[] = {
@@ -351,7 +353,10 @@ char const* c_type_name( c_type_t type ) {
     T_RESTRICT,
     T_VOLATILE,
 
-    // This is second so we get names like "const _Atomic".
+    T_REFERENCE,
+    T_RVALUE_REFERENCE,
+
+    // This is last so we get names like "const _Atomic".
     T_ATOMIC,
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER ); ++i ) {

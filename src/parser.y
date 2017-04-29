@@ -435,6 +435,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  pointer_to_member_decl_english
 %type   <ast_pair>  qualifiable_decl_english
 %type   <ast_pair>  qualified_decl_english
+%type   <type>      ref_qualifier_opt_english
 %type   <ast_pair>  reference_decl_english
 %type   <ast_pair>  reference_english
 %type   <ast_pair>  returning_opt_english
@@ -460,6 +461,7 @@ static void yyerror( char const *msg ) {
 %type   <number>    array_size_c
 %type   <ast_pair>  block_decl_c
 %type   <ast_pair>  func_decl_c
+%type   <type>      func_ref_qualifier_opt_c
 %type   <ast_pair>  func_trailing_return_type_opt_c
 %type   <ast_pair>  name_c
 %type   <ast_pair>  nested_decl_c
@@ -780,24 +782,33 @@ block_decl_english                      /* Apple extension */
   ;
 
 func_decl_english
-  : Y_FUNCTION paren_decl_list_opt_english returning_opt_english
+  : ref_qualifier_opt_english
+    Y_FUNCTION paren_decl_list_opt_english returning_opt_english
     {
       DUMP_START( "func_decl_english",
                   "FUNCTION paren_decl_list_opt_english "
                   "returning_opt_english" );
       DUMP_TYPE( "(qualifier)", qualifier_peek() );
-      DUMP_AST_LIST( "decl_list_opt_english", $2 );
-      DUMP_AST( "returning_opt_english", $3.ast );
+      DUMP_TYPE( "ref_qualifier_opt_english", $1 );
+      DUMP_AST_LIST( "decl_list_opt_english", $3 );
+      DUMP_AST( "returning_opt_english", $4.ast );
 
       $$.ast = C_AST_NEW( K_FUNCTION, &@$ );
       $$.target_ast = NULL;
       $$.ast->type = qualifier_peek();
-      $$.ast->as.func.args = $2;
-      c_ast_set_parent( $3.ast, $$.ast );
+      $$.ast->as.func.args = $3;
+      $$.ast->type |= $1;
+      c_ast_set_parent( $4.ast, $$.ast );
 
       DUMP_AST( "func_decl_english", $$.ast );
       DUMP_END();
     }
+  ;
+
+ref_qualifier_opt_english
+  : /* empty */                   { $$ = T_NONE; }
+  | Y_REFERENCE                   { $$ = T_REFERENCE; }
+  | Y_RVALUE reference_expected   { $$ = T_RVALUE_REFERENCE; }
   ;
 
 paren_decl_list_opt_english
@@ -1182,7 +1193,7 @@ block_decl_c                            /* Apple extension */
 
 func_decl_c
   : /* type_ast_c */ decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c
-    func_trailing_return_type_opt_c pure_virtual_opt_c
+    func_ref_qualifier_opt_c func_trailing_return_type_opt_c pure_virtual_opt_c
     {
       DUMP_START( "func_decl_c",
                   "decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c "
@@ -1191,17 +1202,18 @@ func_decl_c
       DUMP_AST( "decl2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
       DUMP_TYPE( "func_qualifier_list_opt_c", $5 );
-      DUMP_AST( "func_trailing_return_type_opt_c", $6.ast );
-      DUMP_TYPE( "pure_virtual_opt_c", $7 );
+      DUMP_TYPE( "func_ref_qualifier_opt_c", $6 );
+      DUMP_AST( "func_trailing_return_type_opt_c", $7.ast );
+      DUMP_TYPE( "pure_virtual_opt_c", $8 );
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
 
       c_ast_t *const func = C_AST_NEW( K_FUNCTION, &@$ );
-      func->type = $5 | $7;
+      func->type = $5 | $6 | $8;
       func->as.func.args = $3;
 
-      if ( $6.ast ) {
-        $$.ast = c_ast_add_func( $1.ast, $6.ast, func );
+      if ( $7.ast ) {
+        $$.ast = c_ast_add_func( $1.ast, $7.ast, func );
       }
       else if ( $1.target_ast ) {
         $$.ast = $1.ast;
@@ -1238,6 +1250,12 @@ func_qualifier_c
   : cv_qualifier_c
   | Y_FINAL
   | Y_OVERRIDE
+  ;
+
+func_ref_qualifier_opt_c
+  : /* empty */                   { $$ = T_NONE; }
+  | '&'                           { $$ = T_REFERENCE; }
+  | "&&"                          { $$ = T_RVALUE_REFERENCE; }
   ;
 
 func_trailing_return_type_opt_c
