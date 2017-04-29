@@ -116,7 +116,7 @@ David Conrad made contributions for version 2.5 and wrote:
 Something in the Public Domain allows anyone to do whatever they want with it.
 Assuming that David is correct
 and that **cdecl** is in the Public Domain,
-I therefore am licencing **cdecl** 3.0 under the GPLv3.
+I therefore am licensing **cdecl** 3.0 under the GPLv3.
 
 **Paul J. Lucas**  
 *paul@lucasmail.org*  
