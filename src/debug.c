@@ -112,7 +112,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_POINTER_TO_MEMBER:
         PRINT_COMMA;
         INDENT_PRINT_KV( "class_name", ast->as.ptr_mbr.class_name );
-        FPUTC( '\n', dout );
+        FPUTS( ",\n", dout );
         // FALLTHROUGH
 
       case K_POINTER:
