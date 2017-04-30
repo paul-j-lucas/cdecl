@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 28, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 30, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -972,7 +972,7 @@ The following types of declarations are not currently supported:
 .IP \n[step]. 3
 Multiple comma-separated declarations are not supported:
 .cS
-int i, *p;
+int i, *p;                        // not supported
 .cE 0
 .IP \n+[step].
 Only
@@ -992,17 +992,13 @@ The C11 (and C++11)
 \f(CWalignas\fP specifier
 is not supported.
 .IP \n+[step].
-Default arguments for C++ functions are not supported:
-.cS
-void f( int x = 0 );              // not supported
-.cE 0
-.IP \n+[step].
-Fully qualified C++ member functions
-or C++ member functions that are deleted
+Qualified C++ data members or member functions,
+or member functions that are deleted
 are not supported:
 .cS
-void C::f();                      // not supported
-void f() = delete;                // not supported
+int C::x;                         // not supported
+int C::f();                       // not supported
+int g() = delete;                 // not supported
 .cE 0
 .IP \n+[step].
 C++
@@ -1011,7 +1007,8 @@ destructors,
 attribute specifiers
 (e.g., \f(CW[[noreturn]]\fP),
 \f(CWdecltype\fP,
-function exception specifications
+function default arguments
+and exception specifications
 (\f(CWthrow()\fP and \f(CWnoexcept\fP),
 overloaded operators,
 and
@@ -1064,16 +1061,16 @@ c++decl> declare r as reference to int
 int &r;
 .cE 0
 .IP ""
-These are a illegal C++ declarations
+These are illegal C++ declarations
 since
 \f(CWauto\fP
-and all such references
+and such references
 .I must
 be initialized.
 .IP \n+[step].
 While
 .B explain
-supports the function trailing return-type syntax,
+supports the C++11 function trailing return-type syntax,
 .B declare
 always prints in the traditional syntax.
 .SH AUTHORS
