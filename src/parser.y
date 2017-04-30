@@ -573,6 +573,7 @@ declare_english
   : Y_DECLARE name_expected as_expected storage_class_list_opt_english
     decl_english Y_END
     {
+      assert( $5.ast->name == NULL );
       $5.ast->name = $2;
 
       DUMP_START( "declare_english",
