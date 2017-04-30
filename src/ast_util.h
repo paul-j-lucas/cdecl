@@ -109,7 +109,7 @@ CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_kind( c_ast_t *ast,
  * @param ast The AST to begin at.
  * @param dir The direction to visit.
  * @param type The bitwise-or typess) to find.
- * @return Returns a pointer to an AST node having \a typesor null if none.
+ * @return Returns a pointer to an AST node having \a type or null if none.
  */
 CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_type( c_ast_t *ast,
                                                 v_direction_t dir,
@@ -153,7 +153,7 @@ char const* c_ast_name( c_ast_t const *ast, v_direction_t dir );
  * @param decl_ast The AST of a declaration.  May be null.
  * @return Returns the final AST.
  */
-c_ast_t* c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast );
+c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
 
 /**
  * Takes the name, if any, away from \a ast

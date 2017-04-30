@@ -642,7 +642,7 @@ explain_declaration_c
       DUMP_AST( "decl_c", $4.ast );
       DUMP_END();
 
-      c_ast_t *const ast = c_ast_patch_none( $2.ast, $4.ast );
+      c_ast_t *const ast = c_ast_patch_placeholder( $2.ast, $4.ast );
       C_AST_CHECK( ast, CHECK_DECL );
       char const *const name = c_ast_take_name( ast );
       assert( name != NULL );
@@ -668,7 +668,7 @@ explain_cast_c
       DUMP_NAME( "name_opt", $7 );
       DUMP_END();
 
-      c_ast_t *const ast = c_ast_patch_none( $3.ast, $5.ast );
+      c_ast_t *const ast = c_ast_patch_placeholder( $3.ast, $5.ast );
       bool const ok = c_ast_check( ast, CHECK_CAST );
       if ( ok ) {
         FPUTS( L_CAST, fout );
@@ -1365,7 +1365,7 @@ pointer_decl_c
       DUMP_AST( "pointer_type_c", $1.ast );
       DUMP_AST( "decl_c", $3.ast );
 
-      (void)c_ast_patch_none( $1.ast, $3.ast );
+      (void)c_ast_patch_placeholder( $1.ast, $3.ast );
       $$ = $3;
 
       DUMP_AST( "pointer_decl_c", $$.ast );
@@ -1925,7 +1925,7 @@ pointer_cast_c
       DUMP_AST( "pointer_type_c", $1.ast );
       DUMP_AST( "cast_opt_c", $3.ast );
 
-      $$.ast = c_ast_patch_none( $1.ast, $3.ast );
+      $$.ast = c_ast_patch_placeholder( $1.ast, $3.ast );
       $$.target_ast = NULL;
 
       DUMP_AST( "pointer_cast_c", $$.ast );
@@ -1942,7 +1942,7 @@ pointer_to_member_cast_c
       DUMP_AST( "pointer_to_member_type_c", $1.ast );
       DUMP_AST( "cast_opt_c", $3.ast );
 
-      $$.ast = c_ast_patch_none( $1.ast, $3.ast );
+      $$.ast = c_ast_patch_placeholder( $1.ast, $3.ast );
       $$.target_ast = NULL;
 
       DUMP_AST( "pointer_to_member_cast_c", $$.ast );
@@ -1958,7 +1958,7 @@ reference_cast_c
       DUMP_AST( "reference_type_c", $1.ast );
       DUMP_AST( "cast_opt_c", $3.ast );
 
-      $$.ast = c_ast_patch_none( $1.ast, $3.ast );
+      $$.ast = c_ast_patch_placeholder( $1.ast, $3.ast );
       $$.target_ast = NULL;
 
       DUMP_AST( "reference_cast_c", $$.ast );

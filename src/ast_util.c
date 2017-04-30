@@ -278,7 +278,7 @@ char const* c_ast_name( c_ast_t const *ast, v_direction_t dir ) {
   return found ? found->name : NULL;
 }
 
-c_ast_t* c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
+c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   assert( type_ast != NULL );
   if ( !decl_ast )
     return type_ast;
@@ -301,11 +301,11 @@ c_ast_t* c_ast_patch_none( c_ast_t *type_ast, c_ast_t *decl_ast ) {
       // Before:
       //
       //      [type] --> ... --> [type-root]
-      //      [none] --> [none-parent]
+      //      [placeholder] --> [placeholder-parent]
       //
       // After:
       //
-      //      [type] --> ... --> [type-root] --> [none-parent]
+      //      [type] --> ... --> [type-root] --> [placeholder-parent]
       //
       c_ast_t *const type_root_ast = c_ast_root( type_ast );
       c_ast_set_parent( type_root_ast, placeholder->parent );
