@@ -10,6 +10,16 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 3.1.1
+
+** Parallel builds
+Parallel builds were fixed.
+
+** Manual page caveats
+Added additional caveats: qualified C++ data members or member functions are
+not supported.
+
+
 * Changes in Cdecl 3.1
 
 ** Ref-qualifiers
