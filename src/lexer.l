@@ -125,7 +125,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_RVALUE,         TOKEN( Y_RVALUE )       },
   { L_SET,            TOKEN( Y_SET )          },
   { L_STRUCTURE,      C_SYN( L_STRUCT )       },
-  { L__THREAD_LOCAL,  C_SYN( L_THREAD_LOCAL)  },
+  { L__THREAD_LOCAL,  C_SYN( L_THREAD_LOCAL ) },
   { L_TO,             TOKEN( Y_TO )           },
   { L_TYPE,           C_SYN( L_TYPEDEF )      },
   { L_VARARGS,        C_SYN( L_ELLIPSIS )     },
@@ -323,7 +323,7 @@ non-returning { // special case since it's not an ordinary identifier
 0[bB]{B}+     { SET_TOKEN; yylval.number = parse_int(  2 ); return Y_NUMBER; }
 0[xX]{H}+     { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
-"&&"          { SET_TOKEN; return Y_RVALUE_REFERENCE; }
+"&&"          { SET_TOKEN; return Y_DOUBLE_AMPERSAND; }
 "->"          { SET_TOKEN; return Y_ARROW; }
 "..."         { SET_TOKEN; return Y_ELLIPSIS; }
 "::"          { SET_TOKEN; return Y_COLON_COLON; }

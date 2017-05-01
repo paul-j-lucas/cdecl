@@ -408,7 +408,7 @@ static void yyerror( char const *msg ) {
 %token  <type>      Y_CONSTEXPR
 %token  <type>      Y_FINAL
 %token  <type>      Y_OVERRIDE
-%token              Y_RVALUE_REFERENCE  "&&"
+%token              Y_DOUBLE_AMPERSAND  "&&"
 
                     /* C11 & C++11 */
 %token  <type>      Y_CHAR16_T
