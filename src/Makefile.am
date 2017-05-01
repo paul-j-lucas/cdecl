@@ -24,6 +24,8 @@ AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib
 AM_YFLAGS = -d
 LDADD = $(top_builddir)/lib/libgnu.a
 
+BUILT_SOURCES =	parser.c parser.h lexer.c
+
 cdecl_SOURCES =	parser.y \
 		lexer.l lexer.h \
 		ast.c ast.h \
