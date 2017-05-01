@@ -382,12 +382,14 @@ static void yyerror( char const *msg ) {
 %token  <type>      Y_VOID
 %token  <type>      Y_VOLATILE
 
+                    /* C95 */
+%token  <type>      Y_WCHAR_T
+
                     /* C99 */
 %token  <type>      Y_BOOL
 %token  <type>      Y_COMPLEX
 %token  <type>      Y_INLINE
 %token  <type>      Y_RESTRICT
-%token  <type>      Y_WCHAR_T
 
                     /* C11 */
 %token  <type>      Y_ATOMIC_QUAL       /* qualifier: _Atomic type */
@@ -796,9 +798,8 @@ func_decl_english
 
       $$.ast = C_AST_NEW( K_FUNCTION, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = qualifier_peek();
+      $$.ast->type = qualifier_peek() | $1;
       $$.ast->as.func.args = $3;
-      $$.ast->type |= $1;
       c_ast_set_parent( $4.ast, $$.ast );
 
       DUMP_AST( "func_decl_english", $$.ast );
@@ -938,7 +939,7 @@ pointer_to_member_decl_english
       $$.target_ast = NULL;
       $$.ast->type = $5;
       c_ast_set_parent( $7.ast, $$.ast );
-      $$.ast->as.ptr_ref.qualifier = qualifier_peek();
+      $$.ast->as.ptr_mbr.qualifier = qualifier_peek();
       $$.ast->as.ptr_mbr.class_name = $6;
 
       DUMP_AST( "pointer_to_member_decl_english", $$.ast );
@@ -974,14 +975,6 @@ reference_english
     {
       $$.ast = C_AST_NEW( K_RVALUE_REFERENCE, &@$ );
       $$.target_ast = NULL;
-    }
-  ;
-
-reference_expected
-  : Y_REFERENCE
-  | error
-    {
-      ELABORATE_ERROR( "\"%s\" expected", L_REFERENCE );
     }
   ;
 
@@ -1361,6 +1354,7 @@ pointer_decl_c
   : pointer_type_c { type_push( $1.ast ); } decl_c
     {
       type_pop();
+
       DUMP_START( "pointer_decl_c", "pointer_type_c decl_c" );
       DUMP_AST( "pointer_type_c", $1.ast );
       DUMP_AST( "decl_c", $3.ast );
@@ -1394,6 +1388,7 @@ pointer_to_member_decl_c
   : pointer_to_member_type_c { type_push( $1.ast ); } decl_c
     {
       type_pop();
+
       DUMP_START( "pointer_to_member_decl_c",
                   "pointer_to_member_type_c decl_c" );
       DUMP_AST( "pointer_to_member_type_c", $1.ast );
@@ -1428,6 +1423,7 @@ reference_decl_c
   : reference_type_c { type_push( $1.ast ); } decl_c
     {
       type_pop();
+
       DUMP_START( "reference_decl_c", "reference_type_c decl_c" );
       DUMP_AST( "reference_type_c", $1.ast );
       DUMP_AST( "decl_c", $3.ast );
@@ -1507,6 +1503,7 @@ arg_c
   : type_ast_c { type_push( $1.ast ); } cast_opt_c
     {
       type_pop();
+
       DUMP_START( "arg_c", "type_ast_c cast_opt_c" );
       DUMP_AST( "type_ast_c", $1.ast );
       DUMP_AST( "cast_opt_c", $3.ast );
@@ -1921,6 +1918,7 @@ pointer_cast_c
   : pointer_type_c { type_push( $1.ast ); } cast_opt_c
     {
       type_pop();
+
       DUMP_START( "pointer_cast_c", "pointer_type_c cast_opt_c" );
       DUMP_AST( "pointer_type_c", $1.ast );
       DUMP_AST( "cast_opt_c", $3.ast );
@@ -1937,6 +1935,7 @@ pointer_to_member_cast_c
   : pointer_to_member_type_c { type_push( $1.ast ); } cast_opt_c
     {
       type_pop();
+
       DUMP_START( "pointer_to_member_cast_c",
                   "pointer_to_member_type_c cast_opt_c" );
       DUMP_AST( "pointer_to_member_type_c", $1.ast );
@@ -1954,6 +1953,7 @@ reference_cast_c
   : reference_type_c { type_push( $1.ast ); } cast_opt_c
     {
       type_pop();
+
       DUMP_START( "reference_cast_c", "reference_type_c cast_opt_c" );
       DUMP_AST( "reference_type_c", $1.ast );
       DUMP_AST( "cast_opt_c", $3.ast );
@@ -2036,6 +2036,14 @@ of_expected
   | error
     {
       ELABORATE_ERROR( "\"%s\" expected", L_OF );
+    }
+  ;
+
+reference_expected
+  : Y_REFERENCE
+  | error
+    {
+      ELABORATE_ERROR( "\"%s\" expected", L_REFERENCE );
     }
   ;
 
