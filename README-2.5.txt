@@ -1,10 +1,3 @@
-This is cdecl, the C gibberish translator. This version has been enhanced
-by ridiculous_fish to support Apple's blocks syntax.
-
-Visit https://cdecl.org to use it online.
-
-Original README follows:
-
 			Cdecl version 2.5
 
 Cdecl is a program which will turn English-like phrases such as "declare
@@ -65,4 +58,3 @@ David R. Conrad
 conrad@detroit.freenet.org
 Detroit, Michigan, USA
 16 January 1996
-

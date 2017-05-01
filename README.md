@@ -111,7 +111,7 @@ David Conrad made contributions for version 2.5 and wrote:
 > *I have no reason to believe there are any limitations on [**cdecl**'s] use,
 > and strongly believe it to be in the Public Domain.*
 
-(See the included `README-orig.txt` for David's full comments.)
+(See the included `README-2.5.txt` for David's full comments.)
 
 Something in the Public Domain allows anyone to do whatever they want with it.
 Assuming that David is correct
