@@ -354,8 +354,7 @@ non-returning { // special case since it's not an ordinary identifier
                       break;
                   } // switch
                 } // for
-              done:
-                NO_OP;
+        done:   NO_OP;
               }
 
 "//".*        ;                         /* ignore C++-style comments */
