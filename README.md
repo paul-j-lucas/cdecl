@@ -83,14 +83,15 @@ you can generate `configure` yourself by doing:
 
     autoreconf -fiv
 
+You will also need `flex` and `bison`
+(`lex` and `yacc` won't do).
 Or you can download a
 [released version](https://github.com/paul-j-lucas/cdecl/releases)
-that contains `configure`.
+that contains `configure`
+and the generated lexer and parser.
 
 In either case,
-you will also need `flex` and `bison`
-(`lex` and `yacc` won't do).
-Then follow the generic installation instructions given in `INSTALL`.
+then follow the generic installation instructions given in `INSTALL`.
 
 ## Licensing
 
