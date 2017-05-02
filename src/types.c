@@ -313,8 +313,8 @@ char const* c_type_name( c_type_t type ) {
   }
 
   static char name_buf[ 80 ];
-  name_buf[0] = '\0';
   char *name = name_buf;
+  name[0] = '\0';
   bool space = false;
 
   static c_type_t const C_STORAGE_CLASS[] = {
