@@ -191,6 +191,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_BUILTIN:
       FPUTS( c_type_name( ast_type ), param->gout );
       c_ast_gibberish_space_name( ast, param );
+      assert( param->leaf_ast == NULL );
       param->leaf_ast = ast;
       break;
 
@@ -209,12 +210,14 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         "%s %s", c_type_name( ast_type ), ast->as.ecsu.ecsu_name
       );
       c_ast_gibberish_space_name( ast, param );
+      assert( param->leaf_ast == NULL );
       param->leaf_ast = ast;
       break;
 
     case K_NAME:
       if ( ast->name && param->gkind != G_CAST )
         FPUTS( ast->name, param->gout );
+      assert( param->leaf_ast == NULL );
       param->leaf_ast = ast;
       break;
 
@@ -262,6 +265,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_VARIADIC:
       FPUTS( L_ELLIPSIS, param->gout );
+      assert( param->leaf_ast == NULL );
       param->leaf_ast = ast;
       break;
   } // switch
@@ -364,7 +368,8 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
 
 /**
  * Helper function for c_ast_gibberish_impl() that prints a pointer, pointer-
- * to-member, or reference, its qualifier, if any, and the name, if any.
+ * to-member, reference, or rvalue reference, its qualifier, if any, and the
+ * name, if any.
  *
  * @param ast The c_ast that is one of K_POINTER, K_POINTER_TO_MEMBER,
  * K_REFERENCE, or K_RVALUE_REFERENCE whose qualifier, if any, and name, if
