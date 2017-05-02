@@ -204,7 +204,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         //      c++decl> declare e as enum class C
         //      enum C e;                   // not: enum class C e;
         //
-        ast_type &= ~ (T_STRUCT | T_CLASS);
+        ast_type &= ~(T_STRUCT | T_CLASS);
       }
       FPRINTF( param->gout,
         "%s %s", c_type_name( ast_type ), ast->as.ecsu.ecsu_name
