@@ -101,7 +101,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
             //
             char const *const name = c_ast_name( arg, V_DOWN );
             if ( name )
-              FPRINTF( param->eout, "%s as ", name );
+              FPRINTF( param->eout, "%s %s ", name, L_AS );
             else {
               //
               // If there's no name, it's an unnamed argument, e.g.:
