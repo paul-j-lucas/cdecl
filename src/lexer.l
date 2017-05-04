@@ -271,6 +271,13 @@ D             [0-9]
 H             [0-9A-Fa-f]
 S             [ \f\r\t\v]
 
+int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
+
+binary        0[bB]{B}+{int_suffix}?
+octal         0{O}*{int_suffix}?
+decimal       [1-9]{D}*{int_suffix}?
+hexadecimal   0[xX]{H}+{int_suffix}?
+
 %%
 
               /*
@@ -318,10 +325,10 @@ non-returning { // special case since it's not an ordinary identifier
                 goto find_c_keyword;
               }
 
-[1-9]{D}*     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
-0{O}*         { SET_TOKEN; yylval.number = parse_int(  8 ); return Y_NUMBER; }
-0[bB]{B}+     { SET_TOKEN; yylval.number = parse_int(  2 ); return Y_NUMBER; }
-0[xX]{H}+     { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
+{binary}      { SET_TOKEN; yylval.number = parse_int(  2 ); return Y_NUMBER; }
+{octal}       { SET_TOKEN; yylval.number = parse_int(  8 ); return Y_NUMBER; }
+{decimal}     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
+{hexadecimal} { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
 "&&"          { SET_TOKEN; return Y_DOUBLE_AMPERSAND; }
 "->"          { SET_TOKEN; return Y_ARROW; }
