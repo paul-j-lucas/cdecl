@@ -229,6 +229,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
+      if ( ast_type )                   // storage class
+        FPRINTF( param->gout, "%s ", c_type_name( ast_type ) );
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
       if ( param->gkind != G_CAST && c_ast_name( ast, V_UP ) != NULL &&
            !c_ast_find_kind( ast->parent, V_UP, K_BLOCK | K_FUNCTION ) ) {

@@ -1,0 +1,1 @@
+cdecl | | declare x as type pointer to function (char) returning int | 0

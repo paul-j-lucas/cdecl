@@ -10,10 +10,19 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 3.1.2
+
+** Fixed declarations with storage-class
+Declarations like:
+    declare x as static pointer to function returning int
+    declare x as type pointer to function returning int
+are fixed.
+
+
 * Changes in Cdecl 3.1.1
 
 ** Parallel builds
-Parallel builds were fixed.
+Parallel builds are fixed.
 
 ** Manual page caveats
 Added additional caveats: qualified C++ data members or member functions are

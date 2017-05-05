@@ -128,6 +128,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_sif_v.test \
 	tests/declare_sll.test \
 	tests/declare_ti.test \
+	tests/declare_tpfc_i.test \
 	tests/declare_type.test \
 	tests/declare_u.test \
 	tests/declare_uc.test \
@@ -316,6 +317,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_sf_v.test \
 	tests/explain_si.test \
 	tests/explain_ti.test \
+	tests/explain_tpfc_i.test \
 	tests/explain_uc.test \
 	tests/explain_ull.test \
 	tests/explain_vcpi.test \

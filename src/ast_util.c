@@ -327,8 +327,8 @@ char const* c_ast_take_name( c_ast_t *ast ) {
 
 bool c_ast_take_typedef( c_ast_t *ast ) {
   assert( ast != NULL );
-  c_ast_t *const found = c_ast_find_kind( ast, V_DOWN, K_BUILTIN );
-  if ( found && (found->type & T_TYPEDEF) ) {
+  c_ast_t *const found = c_ast_find_type( ast, V_DOWN, T_TYPEDEF );
+  if ( found ) {
     found->type &= ~T_TYPEDEF;
     return true;
   }
