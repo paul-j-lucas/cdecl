@@ -155,6 +155,12 @@ unsigned get_term_columns( void ) {
   char        reason_buf[ 128 ];
   char const *reason = NULL;
 
+  char const *const term = getenv( "TERM" );
+  if ( !term ) {
+    reason = "TERM environment variable not set";
+    goto error;
+  }
+
   char const *const cterm_path = ctermid( NULL );
   if ( !cterm_path || !*cterm_path ) {
     reason = "ctermid(3) failed to get controlling terminal";
@@ -163,12 +169,6 @@ unsigned get_term_columns( void ) {
 
   if ( (cterm_fd = open( cterm_path, O_RDWR )) == -1 ) {
     reason = STRERROR;
-    goto error;
-  }
-
-  char const *const term = getenv( "TERM" );
-  if ( !term ) {
-    reason = "TERM environment variable not set";
     goto error;
   }
 
