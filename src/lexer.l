@@ -164,6 +164,7 @@ static keyword_t const* cdecl_keyword_find( char const *s ) {
       continue;
     if ( c_mode != MODE_EXPLAIN || (k->c_keyword_synonym && k->allow_explain) )
       return k;
+    break;
   } // for
   return NULL;
 }
