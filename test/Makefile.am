@@ -398,6 +398,7 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_sl-knr.test \
 	tests/explain_sv.test \
 	tests/explain_sw.test \
+	tests/explain_type_i.test \
 	tests/explain_ub.test \
 	tests/explain_uc16.test \
 	tests/explain_uc32.test \

@@ -78,60 +78,61 @@ struct keyword {
   char const *literal;                  // C string literal of the keyword
   int         y_token;                  // yacc token number
   char const *c_keyword_synonym;        // synonym of C/C++ keyword, if any
+  bool        allow_explain;            // allow when explaining C/C++?
 };
 typedef struct keyword keyword_t;
 
-#define C_SYN(C_KEYWORD)  0, C_KEYWORD
-#define TOKEN(T)          T, NULL
+#define C_SYN(C_KEYWORD,ALLOW)  0, C_KEYWORD, ALLOW
+#define TOKEN(T)                T, NULL,      false
 
 /**
  * All cdecl keywords (that are not C/C++ keywords).
  */
 static keyword_t const CDECL_KEYWORDS[] = {
-  { L_ARRAY,          TOKEN( Y_ARRAY )        },
-  { L_AS,             TOKEN( Y_AS )           },
-  { L_ATOMIC,         C_SYN( L__ATOMIC )      },
-  { L_AUTOMATIC,      C_SYN( L_AUTO )         },
-  { L_BLOCK,          TOKEN( Y_BLOCK )        },  // Apple extension
-  { L__BOOL,          C_SYN( L_BOOL )         },
-  { L_CAST,           TOKEN( Y_CAST )         },
-  { L_CHARACTER,      C_SYN( L_CHAR )         },
-  { L__COMPLEX,       C_SYN( L_COMPLEX )      },
-  { L_CONSTANT,       C_SYN( L_CONST )        },
-  { L_DECLARE,        TOKEN( Y_DECLARE )      },
-  { L_ENUMERATION,    C_SYN( L_ENUM )         },
-  { L_EXIT,           TOKEN( Y_QUIT )         },
-  { L_EXPLAIN,        TOKEN( Y_EXPLAIN )      },
-  { L_FUNC,           TOKEN( Y_FUNCTION )     },
-  { L_FUNCTION,       TOKEN( Y_FUNCTION )     },
-  { L_HELP,           TOKEN( Y_HELP )         },
-  { L_INTEGER,        C_SYN( L_INT )          },
-  { L_INTO,           TOKEN( Y_INTO )         },
-  { L_MBR,            TOKEN( Y_MEMBER ),      },
-  { L_MEMBER,         TOKEN( Y_MEMBER ),      },
-  { L__NORETURN,      C_SYN( L_NORETURN )     },
-  { L_OF,             TOKEN( Y_OF ),          },
-  { L_OVERRIDDEN,     C_SYN( L_OVERRIDE )     },
-  { L_POINTER,        TOKEN( Y_POINTER )      },
-  { L_PTR,            TOKEN( Y_POINTER )      },
-  { L_PURE,           TOKEN( Y_PURE )         },
-  { L_Q,              TOKEN( Y_QUIT )         },
-  { L_QUIT,           TOKEN( Y_QUIT )         },
-  { L_REF,            TOKEN( Y_REFERENCE )    },
-  { L_REFERENCE,      TOKEN( Y_REFERENCE )    },
-  { L_RESTRICTED,     C_SYN( L_RESTRICT )     },
-  { L_RET,            TOKEN( Y_RETURNING )    },
-  { L_RETURNING,      TOKEN( Y_RETURNING )    },
-  { L_RVALUE,         TOKEN( Y_RVALUE )       },
-  { L_SET,            TOKEN( Y_SET )          },
-  { L_STRUCTURE,      C_SYN( L_STRUCT )       },
-  { L__THREAD_LOCAL,  C_SYN( L_THREAD_LOCAL ) },
-  { L_TO,             TOKEN( Y_TO )           },
-  { L_TYPE,           C_SYN( L_TYPEDEF )      },
-  { L_VARARGS,        C_SYN( L_ELLIPSIS )     },
-  { L_VARIADIC,       C_SYN( L_ELLIPSIS )     },
-  { L_VECTOR,         TOKEN( Y_ARRAY )        },
-  { NULL,             TOKEN( 0 )              }
+  { L_ARRAY,          TOKEN( Y_ARRAY )                },
+  { L_AS,             TOKEN( Y_AS )                   },
+  { L_ATOMIC,         C_SYN( L__ATOMIC,       false ) },
+  { L_AUTOMATIC,      C_SYN( L_AUTO,          false ) },
+  { L_BLOCK,          TOKEN( Y_BLOCK )                },  // Apple extension
+  { L__BOOL,          C_SYN( L_BOOL,          true  ) },
+  { L_CAST,           TOKEN( Y_CAST )                 },
+  { L_CHARACTER,      C_SYN( L_CHAR,          false ) },
+  { L__COMPLEX,       C_SYN( L_COMPLEX,       true  ) },
+  { L_CONSTANT,       C_SYN( L_CONST,         false ) },
+  { L_DECLARE,        TOKEN( Y_DECLARE )              },
+  { L_ENUMERATION,    C_SYN( L_ENUM,          false ) },
+  { L_EXIT,           TOKEN( Y_QUIT )                 },
+  { L_EXPLAIN,        TOKEN( Y_EXPLAIN )              },
+  { L_FUNC,           TOKEN( Y_FUNCTION )             },
+  { L_FUNCTION,       TOKEN( Y_FUNCTION )             },
+  { L_HELP,           TOKEN( Y_HELP )                 },
+  { L_INTEGER,        C_SYN( L_INT,           false ) },
+  { L_INTO,           TOKEN( Y_INTO )                 },
+  { L_MBR,            TOKEN( Y_MEMBER ),              },
+  { L_MEMBER,         TOKEN( Y_MEMBER ),              },
+  { L__NORETURN,      C_SYN( L_NORETURN,      true  ) },
+  { L_OF,             TOKEN( Y_OF ),                  },
+  { L_OVERRIDDEN,     C_SYN( L_OVERRIDE,      false ) },
+  { L_POINTER,        TOKEN( Y_POINTER )              },
+  { L_PTR,            TOKEN( Y_POINTER )              },
+  { L_PURE,           TOKEN( Y_PURE )                 },
+  { L_Q,              TOKEN( Y_QUIT )                 },
+  { L_QUIT,           TOKEN( Y_QUIT )                 },
+  { L_REF,            TOKEN( Y_REFERENCE )            },
+  { L_REFERENCE,      TOKEN( Y_REFERENCE )            },
+  { L_RESTRICTED,     C_SYN( L_RESTRICT,      false ) },
+  { L_RET,            TOKEN( Y_RETURNING )            },
+  { L_RETURNING,      TOKEN( Y_RETURNING )            },
+  { L_RVALUE,         TOKEN( Y_RVALUE )               },
+  { L_SET,            TOKEN( Y_SET )                  },
+  { L_STRUCTURE,      C_SYN( L_STRUCT,        false ) },
+  { L__THREAD_LOCAL,  C_SYN( L_THREAD_LOCAL,  true  ) },
+  { L_TO,             TOKEN( Y_TO )                   },
+  { L_TYPE,           C_SYN( L_TYPEDEF,       false ) },
+  { L_VARARGS,        C_SYN( L_ELLIPSIS,      false ) },
+  { L_VARIADIC,       C_SYN( L_ELLIPSIS,      false ) },
+  { L_VECTOR,         TOKEN( Y_ARRAY )                },
+  { NULL,             TOKEN( 0 )                      }
 };
 
 // extern variables
@@ -161,7 +162,7 @@ static keyword_t const* cdecl_keyword_find( char const *s ) {
   for ( keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
     if ( strcmp( s, k->literal ) != 0 )
       continue;
-    if ( k->c_keyword_synonym || c_mode != MODE_EXPLAIN )
+    if ( c_mode != MODE_EXPLAIN || (k->c_keyword_synonym && k->allow_explain) )
       return k;
   } // for
   return NULL;
