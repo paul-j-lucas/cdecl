@@ -136,7 +136,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
 };
 
 // extern variables
-char const     *lexer_token;            // guranteed pointer of yytext
+char const     *lexer_token;            // guaranteed pointer of yytext
 YYLTYPE         yylloc;                 // location of current token
 
 // local variables
