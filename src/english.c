@@ -157,19 +157,22 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
     case K_POINTER:
     case K_REFERENCE:
-    case K_RVALUE_REFERENCE:
-      if ( ast->as.ptr_ref.qualifier )
-        FPRINTF( param->eout, "%s ", c_type_name( ast->as.ptr_ref.qualifier ) );
+    case K_RVALUE_REFERENCE: {
+      c_type_t const qualifier = (ast->type & T_MASK_QUALIFIER);
+      if ( qualifier )
+        FPRINTF( param->eout, "%s ", c_type_name( qualifier ) );
       FPRINTF( param->eout, "%s %s ", c_kind_name( ast->kind ), L_TO );
       break;
+    }
 
     case K_POINTER_TO_MEMBER: {
-      if ( ast->as.ptr_mbr.qualifier )
-        FPRINTF( param->eout, "%s ", c_type_name( ast->as.ptr_mbr.qualifier ) );
+      c_type_t const qualifier = (ast->type & T_MASK_QUALIFIER);
+      if ( qualifier )
+        FPRINTF( param->eout, "%s ", c_type_name( qualifier ) );
       FPRINTF( param->eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
-      char const *const type_name = c_type_name( ast->type );
-      if ( *type_name )
-        FPRINTF( param->eout, "%s ", type_name );
+      char const *const name = c_type_name( ast->type & ~T_MASK_QUALIFIER );
+      if ( *name )
+        FPRINTF( param->eout, "%s ", name );
       FPRINTF( param->eout, "%s ", ast->as.ptr_mbr.class_name );
       break;
     }

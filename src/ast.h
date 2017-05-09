@@ -145,19 +145,14 @@ struct c_func {
  */
 struct c_ptr_mbr {
   c_ast_t    *of_ast;                   // member type
-  c_type_t    qualifier;                // T_CONST, T_RESTRICT, T_VOLATILE
   char const *class_name;               // when a member function; or null
 };
 
 /**
  * AST node for a C/C++ pointer, or a C++ reference or rvalue reference.
- *
- * @note Members are laid out in the same order as c_ptr_mbr: this is taken
- * advantage of.)
  */
 struct c_ptr_ref {
   c_ast_t  *to_ast;                     // what it's a pointer or reference to
-  c_type_t  qualifier;                  // T_CONST, T_RESTRICT, T_VOLATILE
 };
 
 /**

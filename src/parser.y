@@ -915,8 +915,8 @@ pointer_decl_english
 
       $$.ast = C_AST_NEW( K_POINTER, &@$ );
       $$.target_ast = NULL;
+      $$.ast->type = qualifier_peek();
       c_ast_set_parent( $3.ast, $$.ast );
-      $$.ast->as.ptr_ref.qualifier = qualifier_peek();
 
       DUMP_AST( "pointer_decl_english", $$.ast );
       DUMP_END();
@@ -937,9 +937,9 @@ pointer_to_member_decl_english
 
       $$.ast = C_AST_NEW( K_POINTER_TO_MEMBER, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = $5;
+      $$.ast->type = qualifier_peek();
+      C_TYPE_ADD( &$$.ast->type, $5, @5 );
       c_ast_set_parent( $7.ast, $$.ast );
-      $$.ast->as.ptr_mbr.qualifier = qualifier_peek();
       $$.ast->as.ptr_mbr.class_name = $6;
 
       DUMP_AST( "pointer_to_member_decl_english", $$.ast );
@@ -957,7 +957,7 @@ reference_decl_english
 
       $$ = $1;
       c_ast_set_parent( $3.ast, $$.ast );
-      $$.ast->as.ptr_ref.qualifier = qualifier_peek();
+      C_TYPE_ADD( &$$.ast->type, qualifier_peek(), qualifier_peek_loc() );
 
       DUMP_AST( "reference_decl_english", $$.ast );
       DUMP_END();
@@ -1376,7 +1376,7 @@ pointer_type_c
 
       $$.ast = C_AST_NEW( K_POINTER, &@$ );
       $$.target_ast = NULL;
-      $$.ast->as.ptr_ref.qualifier = $2;
+      $$.ast->type = $2;
       c_ast_set_parent( type_peek(), $$.ast );
 
       DUMP_AST( "pointer_type_c", $$.ast );
@@ -1652,16 +1652,7 @@ atomic_specifier_type_ast_c
       DUMP_AST( "cast_opt_c", $5.ast );
 
       $$ = $5.ast ? $5 : $3;
-      switch ( $$.ast->kind ) {
-        case K_POINTER:
-        case K_POINTER_TO_MEMBER:
-        case K_REFERENCE:
-        case K_RVALUE_REFERENCE:
-          C_TYPE_ADD( &$$.ast->as.ptr_ref.qualifier, T_ATOMIC, @1 );
-          break;
-        default:
-          C_TYPE_ADD( &$$.ast->type, T_ATOMIC, @1 );
-      } // switch
+      C_TYPE_ADD( &$$.ast->type, T_ATOMIC, @1 );
 
       DUMP_AST( "atomic_specifier_type_ast_c", $$.ast );
       DUMP_END();

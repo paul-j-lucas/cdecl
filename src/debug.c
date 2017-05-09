@@ -119,10 +119,6 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
         PRINT_COMMA;
-        INDENT_PRINT_KV(
-          "qualifier", c_type_name( ast->as.ptr_ref.qualifier )
-        );
-        FPUTS( ",\n", dout );
         c_ast_debug( ast->as.ptr_ref.to_ast, indent, "to_ast", dout );
         break;
     } // switch
