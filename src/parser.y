@@ -55,9 +55,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifdef ENABLE_CDECL_DEBUG
-#define CDEBUG(...) BLOCK( if ( opt_debug ) { __VA_ARGS__ } )
+#define IF_DEBUG(...) BLOCK( if ( opt_debug ) { __VA_ARGS__ } )
 #else
-#define CDEBUG(...)                     /* nothing */
+#define IF_DEBUG(...)                   /* nothing */
 #endif /* ENABLE_CDECL_DEBUG */
 
 #define C_AST_CHECK(AST,CHECK) \
@@ -70,33 +70,33 @@
   BLOCK( if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_ABORT(); )
 
 #define DUMP_COMMA \
-  CDEBUG( if ( true_or_set( &debug_comma ) ) PUTS_OUT( ",\n" ); )
+  IF_DEBUG( if ( true_or_set( &debug_comma ) ) PUTS_OUT( ",\n" ); )
 
 #define DUMP_AST(KEY,AST) \
-  CDEBUG( DUMP_COMMA; c_ast_debug( (AST), 1, (KEY), stdout ); )
+  IF_DEBUG( DUMP_COMMA; c_ast_debug( (AST), 1, (KEY), stdout ); )
 
-#define DUMP_AST_LIST(KEY,AST_LIST) CDEBUG( \
-  DUMP_COMMA; printf( "  %s = ", (KEY) );   \
+#define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
+  DUMP_COMMA; printf( "  %s = ", (KEY) );     \
   c_ast_list_debug( &(AST_LIST), 1, stdout ); )
 
-#define DUMP_NAME(KEY,NAME) CDEBUG( \
-  DUMP_COMMA; PUTS_OUT( "  " );     \
+#define DUMP_NAME(KEY,NAME) IF_DEBUG( \
+  DUMP_COMMA; PUTS_OUT( "  " );       \
   print_kv( (KEY), (NAME), stdout ); )
 
 #define DUMP_NUM(KEY,NUM) \
-  CDEBUG( DUMP_COMMA; printf( "  " KEY " = %d", (NUM) ); )
+  IF_DEBUG( DUMP_COMMA; printf( "  " KEY " = %d", (NUM) ); )
 
 #ifdef ENABLE_CDECL_DEBUG
 #define DUMP_START(NAME,PROD) \
   bool debug_comma = false;   \
-  CDEBUG( PUTS_OUT( "\n" NAME " ::= " PROD " = {\n" ); )
+  IF_DEBUG( PUTS_OUT( "\n" NAME " ::= " PROD " = {\n" ); )
 #else
 #define DUMP_START(NAME,PROD)           /* nothing */
 #endif
 
-#define DUMP_END()        CDEBUG( PUTS_OUT( "\n}\n" ); )
+#define DUMP_END()        IF_DEBUG( PUTS_OUT( "\n}\n" ); )
 
-#define DUMP_TYPE(KEY,TYPE) CDEBUG( \
+#define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
   DUMP_COMMA; PUTS_OUT( "  " );     \
   print_kv( (KEY), c_type_name( TYPE ), stdout ); )
 
