@@ -1475,7 +1475,7 @@ arg_list_opt_c
 arg_list_c
   : arg_list_c comma_expected arg_c
     {
-      DUMP_START( "arg_list_c", "arg_list_c ',' cast_opt_c" );
+      DUMP_START( "arg_list_c", "arg_list_c ',' arg_c" );
       DUMP_AST_LIST( "arg_list_c", $1 );
       DUMP_AST( "cast_opt_c", $3.ast );
 

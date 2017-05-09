@@ -277,7 +277,7 @@ arg_c ::= type_ast_c cast_opt_c = {
   }
 }
 
-arg_list_c ::= arg_list_c ',' cast_opt_c = {
+arg_list_c ::= arg_list_c ',' arg_c = {
   arg_list_c = [
     {
       id = 3,
