@@ -55,7 +55,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifdef ENABLE_CDECL_DEBUG
-#define IF_DEBUG(...) BLOCK( if ( opt_debug ) { __VA_ARGS__ } )
+#define IF_DEBUG(...)     BLOCK( if ( opt_debug ) { __VA_ARGS__ } )
 #else
 #define IF_DEBUG(...)                   /* nothing */
 #endif /* ENABLE_CDECL_DEBUG */
@@ -212,7 +212,7 @@ static inline void qualifier_pop( void ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Prints an additional parsing error message to standard error that contines
+ * Prints an additional parsing error message to standard error that continues
  * from yyerror() left off.
  *
  * @param format A \c printf() style format string.
