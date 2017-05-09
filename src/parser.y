@@ -1553,7 +1553,7 @@ type_ast_c
 
       $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
       $$.target_ast = NULL;
-      if ( opt_lang < LANG_C_99 ) {     // see comment in type_english
+      if ( opt_lang < LANG_C_99 ) {
         //
         // Prior to C99, typeless declarations are implicitly int, so we set
         // it here.  In C99 and later, however, implicit int is an error, so we
