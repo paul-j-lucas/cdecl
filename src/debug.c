@@ -58,7 +58,7 @@ static void print_indent( unsigned indent, FILE *out ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
-                 FILE *dout ) {
+                  FILE *dout ) {
   if ( key0 && *key0 )
     INDENT_PRINT( "%s = {\n", key0 );
   else
