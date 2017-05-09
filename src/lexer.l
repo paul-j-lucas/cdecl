@@ -359,11 +359,13 @@ non-returning { // special case since it's not an ordinary identifier
                       break;
                     case '/':
                       if ( prev_c == '*' )
-                        goto done;
+                        goto c_comment_done;
                       break;
                   } // switch
                 } // for
-        done:   NO_OP;
+
+        c_comment_done:
+                NO_OP;
               }
 
 "//".*        ;                         /* ignore C++-style comments */
