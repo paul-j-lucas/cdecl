@@ -231,7 +231,7 @@ void print_loc( YYLTYPE const *loc ) {
   assert( loc );
   print_caret( loc->first_column );
   SGR_START_COLOR( stderr, locus );
-  PRINT_ERR( "%d", loc->first_column );
+  PRINT_ERR( "%d", loc->first_column + 1 );
   SGR_END_COLOR( stderr );
   PUTS_ERR( ": " );
 }
