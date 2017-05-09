@@ -76,6 +76,9 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
     INDENT_PRINT(
       "parent->id = %d,\n", ast->parent ? (int)ast->parent->id : -1
     );
+    INDENT_PRINT(
+      "loc = %d-%d,\n", ast->loc.first_column, ast->loc.last_column
+    );
     INDENT_PRINT_KV( "type", c_type_name( ast->type ) );
 
     bool comma = false;

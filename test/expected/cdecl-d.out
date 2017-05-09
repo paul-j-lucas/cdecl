@@ -7,6 +7,7 @@ builtin_type_ast_c ::= builtin_type_c = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 8-10,
     type = "int"
   }
 }
@@ -18,6 +19,7 @@ type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 8-10,
     type = "int"
   },
   type_modifier_list_opt_c = null,
@@ -27,6 +29,7 @@ type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 8-10,
     type = "int"
   }
 }
@@ -38,6 +41,7 @@ pointer_type_c ::= * type_qualifier_list_opt_c = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 8-10,
     type = "int"
   },
   type_qualifier_list_opt_c = null,
@@ -47,6 +51,7 @@ pointer_type_c ::= * type_qualifier_list_opt_c = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 11-11,
     type = null,
     to_ast = {
       id = 1,
@@ -54,6 +59,7 @@ pointer_type_c ::= * type_qualifier_list_opt_c = {
       depth = 0,
       name = null,
       parent->id = 2,
+      loc = 8-10,
       type = "int"
     }
   }
@@ -66,6 +72,7 @@ name_c ::= NAME = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 11-11,
     type = null,
     to_ast = {
       id = 1,
@@ -73,6 +80,7 @@ name_c ::= NAME = {
       depth = 0,
       name = null,
       parent->id = 2,
+      loc = 8-10,
       type = "int"
     }
   },
@@ -83,6 +91,7 @@ name_c ::= NAME = {
     depth = 0,
     name = "f",
     parent->id = -1,
+    loc = 11-11,
     type = null,
     to_ast = {
       id = 1,
@@ -90,6 +99,7 @@ name_c ::= NAME = {
       depth = 0,
       name = null,
       parent->id = 2,
+      loc = 8-10,
       type = "int"
     }
   }
@@ -103,6 +113,7 @@ builtin_type_ast_c ::= builtin_type_c = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 15-17,
     type = "int"
   }
 }
@@ -114,6 +125,7 @@ type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 15-17,
     type = "int"
   },
   type_modifier_list_opt_c = null,
@@ -123,6 +135,7 @@ type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 15-17,
     type = "int"
   }
 }
@@ -134,6 +147,7 @@ name_c ::= NAME = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 15-17,
     type = "int"
   },
   NAME = "x",
@@ -143,6 +157,7 @@ name_c ::= NAME = {
     depth = 0,
     name = "x",
     parent->id = -1,
+    loc = 15-17,
     type = "int"
   }
 }
@@ -154,6 +169,7 @@ arg_c ::= type_ast_c cast_opt_c = {
     depth = 0,
     name = "x",
     parent->id = -1,
+    loc = 15-17,
     type = "int"
   },
   cast_opt_c = {
@@ -162,6 +178,7 @@ arg_c ::= type_ast_c cast_opt_c = {
     depth = 0,
     name = "x",
     parent->id = -1,
+    loc = 15-17,
     type = "int"
   },
   arg_c = {
@@ -170,6 +187,7 @@ arg_c ::= type_ast_c cast_opt_c = {
     depth = 0,
     name = "x",
     parent->id = -1,
+    loc = 15-17,
     type = "int"
   }
 }
@@ -181,6 +199,7 @@ arg_list_c ::= arg_c = {
     depth = 0,
     name = "x",
     parent->id = -1,
+    loc = 15-17,
     type = "int"
   },
   arg_list_c = [
@@ -190,6 +209,7 @@ arg_list_c ::= arg_c = {
       depth = 0,
       name = "x",
       parent->id = -1,
+      loc = 15-17,
       type = "int"
     }
   ]
@@ -203,6 +223,7 @@ builtin_type_ast_c ::= builtin_type_c = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 22-24,
     type = "int"
   }
 }
@@ -214,6 +235,7 @@ type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 22-24,
     type = "int"
   },
   type_modifier_list_opt_c = null,
@@ -223,6 +245,7 @@ type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 22-24,
     type = "int"
   }
 }
@@ -234,6 +257,7 @@ name_c ::= NAME = {
     depth = 0,
     name = null,
     parent->id = -1,
+    loc = 22-24,
     type = "int"
   },
   NAME = "y",
@@ -243,6 +267,7 @@ name_c ::= NAME = {
     depth = 0,
     name = "y",
     parent->id = -1,
+    loc = 22-24,
     type = "int"
   }
 }
@@ -254,6 +279,7 @@ arg_c ::= type_ast_c cast_opt_c = {
     depth = 0,
     name = "y",
     parent->id = -1,
+    loc = 22-24,
     type = "int"
   },
   cast_opt_c = {
@@ -262,6 +288,7 @@ arg_c ::= type_ast_c cast_opt_c = {
     depth = 0,
     name = "y",
     parent->id = -1,
+    loc = 22-24,
     type = "int"
   },
   arg_c = {
@@ -270,6 +297,7 @@ arg_c ::= type_ast_c cast_opt_c = {
     depth = 0,
     name = "y",
     parent->id = -1,
+    loc = 22-24,
     type = "int"
   }
 }
@@ -282,6 +310,7 @@ arg_list_c ::= arg_list_c ',' arg_c = {
       depth = 0,
       name = "x",
       parent->id = -1,
+      loc = 15-17,
       type = "int"
     }
   ],
@@ -291,6 +320,7 @@ arg_list_c ::= arg_list_c ',' arg_c = {
     depth = 0,
     name = "y",
     parent->id = -1,
+    loc = 22-24,
     type = "int"
   },
   arg_list_c = [
@@ -300,6 +330,7 @@ arg_list_c ::= arg_list_c ',' arg_c = {
       depth = 0,
       name = "x",
       parent->id = -1,
+      loc = 15-17,
       type = "int"
     },
     {
@@ -308,6 +339,7 @@ arg_list_c ::= arg_list_c ',' arg_c = {
       depth = 0,
       name = "y",
       parent->id = -1,
+      loc = 22-24,
       type = "int"
     }
   ]
@@ -320,6 +352,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_tr
     depth = 0,
     name = "f",
     parent->id = -1,
+    loc = 11-11,
     type = null,
     to_ast = {
       id = 1,
@@ -327,6 +360,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_tr
       depth = 0,
       name = null,
       parent->id = 2,
+      loc = 8-10,
       type = "int"
     }
   },
@@ -336,6 +370,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_tr
     depth = 0,
     name = "f",
     parent->id = -1,
+    loc = 11-11,
     type = null,
     to_ast = {
       id = 1,
@@ -343,6 +378,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_tr
       depth = 0,
       name = null,
       parent->id = 2,
+      loc = 8-10,
       type = "int"
     }
   },
@@ -353,6 +389,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_tr
       depth = 0,
       name = "x",
       parent->id = -1,
+      loc = 15-17,
       type = "int"
     },
     {
@@ -361,6 +398,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_tr
       depth = 0,
       name = "y",
       parent->id = -1,
+      loc = 22-24,
       type = "int"
     }
   ],
@@ -375,6 +413,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_tr
     depth = 0,
     name = "f",
     parent->id = -1,
+    loc = 13-27,
     type = null,
     args = [
       {
@@ -383,6 +422,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_tr
         depth = 0,
         name = "x",
         parent->id = -1,
+        loc = 15-17,
         type = "int"
       },
       {
@@ -391,6 +431,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_tr
         depth = 0,
         name = "y",
         parent->id = -1,
+        loc = 22-24,
         type = "int"
       }
     ],
@@ -400,6 +441,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_tr
       depth = 0,
       name = null,
       parent->id = 5,
+      loc = 11-11,
       type = null,
       to_ast = {
         id = 1,
@@ -407,6 +449,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_tr
         depth = 0,
         name = null,
         parent->id = 2,
+        loc = 8-10,
         type = "int"
       }
     }
@@ -420,6 +463,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
     depth = 0,
     name = null,
     parent->id = 5,
+    loc = 11-11,
     type = null,
     to_ast = {
       id = 1,
@@ -427,6 +471,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
       depth = 0,
       name = null,
       parent->id = 2,
+      loc = 8-10,
       type = "int"
     }
   },
@@ -436,6 +481,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
     depth = 0,
     name = "f",
     parent->id = -1,
+    loc = 13-27,
     type = null,
     args = [
       {
@@ -444,6 +490,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
         depth = 0,
         name = "x",
         parent->id = -1,
+        loc = 15-17,
         type = "int"
       },
       {
@@ -452,6 +499,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
         depth = 0,
         name = "y",
         parent->id = -1,
+        loc = 22-24,
         type = "int"
       }
     ],
@@ -461,6 +509,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
       depth = 0,
       name = null,
       parent->id = 5,
+      loc = 11-11,
       type = null,
       to_ast = {
         id = 1,
@@ -468,6 +517,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
         depth = 0,
         name = null,
         parent->id = 2,
+        loc = 8-10,
         type = "int"
       }
     }
@@ -478,6 +528,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
     depth = 0,
     name = "f",
     parent->id = -1,
+    loc = 13-27,
     type = null,
     args = [
       {
@@ -486,6 +537,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
         depth = 0,
         name = "x",
         parent->id = -1,
+        loc = 15-17,
         type = "int"
       },
       {
@@ -494,6 +546,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
         depth = 0,
         name = "y",
         parent->id = -1,
+        loc = 22-24,
         type = "int"
       }
     ],
@@ -503,6 +556,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
       depth = 0,
       name = null,
       parent->id = 5,
+      loc = 11-11,
       type = null,
       to_ast = {
         id = 1,
@@ -510,6 +564,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
         depth = 0,
         name = null,
         parent->id = 2,
+        loc = 8-10,
         type = "int"
       }
     }
@@ -523,6 +578,7 @@ explain_declaration_c ::= EXPLAIN type_ast_c decl_c = {
     depth = 0,
     name = null,
     parent->id = 2,
+    loc = 8-10,
     type = "int"
   },
   decl_c = {
@@ -531,6 +587,7 @@ explain_declaration_c ::= EXPLAIN type_ast_c decl_c = {
     depth = 0,
     name = "f",
     parent->id = -1,
+    loc = 13-27,
     type = null,
     args = [
       {
@@ -539,6 +596,7 @@ explain_declaration_c ::= EXPLAIN type_ast_c decl_c = {
         depth = 0,
         name = "x",
         parent->id = -1,
+        loc = 15-17,
         type = "int"
       },
       {
@@ -547,6 +605,7 @@ explain_declaration_c ::= EXPLAIN type_ast_c decl_c = {
         depth = 0,
         name = "y",
         parent->id = -1,
+        loc = 22-24,
         type = "int"
       }
     ],
@@ -556,6 +615,7 @@ explain_declaration_c ::= EXPLAIN type_ast_c decl_c = {
       depth = 0,
       name = null,
       parent->id = 5,
+      loc = 11-11,
       type = null,
       to_ast = {
         id = 1,
@@ -563,6 +623,7 @@ explain_declaration_c ::= EXPLAIN type_ast_c decl_c = {
         depth = 0,
         name = null,
         parent->id = 2,
+        loc = 8-10,
         type = "int"
       }
     }
