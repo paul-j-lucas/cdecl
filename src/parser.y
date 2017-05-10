@@ -131,6 +131,7 @@ typedef struct in_attr in_attr_t;
 // extern functions
 extern void         print_help( void );
 extern void         set_option( char const* );
+extern int          yylex( void );
 
 // local variables
 static unsigned     ast_depth;          // parentheses nesting depth
