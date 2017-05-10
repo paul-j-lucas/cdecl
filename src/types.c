@@ -200,7 +200,7 @@ static inline bool is_long_int( c_type_t type ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc ) {
+bool c_type_add( c_type_t *dest_type, c_type_t new_type, c_loc_t const *loc ) {
   assert( dest_type != NULL );
 
   if ( is_long_int( *dest_type ) && is_long_int( new_type ) ) {

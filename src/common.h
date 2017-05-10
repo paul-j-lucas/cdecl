@@ -60,6 +60,8 @@ typedef struct {
 #define YYLTYPE_IS_DECLARED   1
 #define YYLTYPE_IS_TRIVIAL    1
 
+typedef YYLTYPE c_loc_t;
+
 // extern variables
 extern c_mode_t     c_mode;             // are we declaring or explaining?
 extern bool         is_input_a_tty;     // is our input from a tty?

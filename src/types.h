@@ -28,7 +28,7 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "common.h"                     /* for YYLTYPE */
+#include "common.h"                     /* for c_loc_t */
 #include "lang.h"                       /* for c_lang_t */
 
 // standard
@@ -111,7 +111,7 @@ typedef uint64_t c_type_t;
  * @param loc The source location of \a new_type.
  * @return Returns \c true only if the type added successfully.
  */
-bool c_type_add( c_type_t *dest_type, c_type_t new_type, YYLTYPE const *loc );
+bool c_type_add( c_type_t *dest_type, c_type_t new_type, c_loc_t const *loc );
 
 /**
  * Checks that the given type is valid.

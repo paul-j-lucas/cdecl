@@ -116,7 +116,7 @@ typedef struct qualifier_link qualifier_link_t;
 struct qualifier_link /* : link */ {
   qualifier_link_t *next;               // must be first struct member
   c_type_t          qualifier;          // T_CONST, T_RESTRICT, or T_VOLATILE
-  YYLTYPE           loc;
+  c_loc_t           loc;
 };
 
 /**
@@ -270,7 +270,7 @@ static void qualifier_clear( void ) {
  * @param qualifier The qualifier to push.
  * @param loc A pointer to the source location of the qualifier.
  */
-static void qualifier_push( c_type_t qualifier, YYLTYPE const *loc ) {
+static void qualifier_push( c_type_t qualifier, c_loc_t const *loc ) {
   assert( (qualifier & ~T_MASK_QUALIFIER) == 0 );
   assert( loc != NULL );
   qualifier_link_t *const q = MALLOC( qualifier_link_t, 1 );
@@ -305,7 +305,7 @@ static void quit( void ) {
  * @param msg The error message to print.
  */
 static void yyerror( char const *msg ) {
-  YYLTYPE loc;
+  c_loc_t loc;
   memset( &loc, 0, sizeof loc );
   loc.first_column = lexer_column();
   print_loc( &loc );

@@ -204,7 +204,7 @@ static size_t token_len( char const *s ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void print_error( YYLTYPE const *loc, char const *format, ... ) {
+void print_error( c_loc_t const *loc, char const *format, ... ) {
   print_loc( loc );
   SGR_START_COLOR( stderr, error );
   PUTS_ERR( "error" );
@@ -228,7 +228,7 @@ void print_hint( char const *format, ... ) {
   PUTS_ERR( "?)\n" );
 }
 
-void print_loc( YYLTYPE const *loc ) {
+void print_loc( c_loc_t const *loc ) {
   assert( loc );
   print_caret( loc->first_column );
   SGR_START_COLOR( stderr, locus );
@@ -237,7 +237,7 @@ void print_loc( YYLTYPE const *loc ) {
   PUTS_ERR( ": " );
 }
 
-void print_warning( YYLTYPE const *loc, char const *format, ... ) {
+void print_warning( c_loc_t const *loc, char const *format, ... ) {
   print_loc( loc );
   SGR_START_COLOR( stderr, warning );
   PUTS_ERR( "warning" );

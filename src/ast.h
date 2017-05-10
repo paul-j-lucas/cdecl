@@ -166,7 +166,7 @@ struct c_ast {
   char const *name;
   c_type_t    type;
   c_ast_t    *parent;
-  YYLTYPE     loc;
+  c_loc_t     loc;
 
   union {
     c_parent_t    parent;
@@ -252,7 +252,7 @@ void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast );
  * @param depth How deep within () it is.
  * @param loc A pointer to the token location data.
  */
-c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, YYLTYPE const *loc );
+c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, c_loc_t const *loc );
 
 /**
  * Gets the root AST node of \a ast.

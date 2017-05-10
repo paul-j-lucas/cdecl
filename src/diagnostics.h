@@ -28,7 +28,7 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "common.h"                     /* for YYLTYPE */
+#include "common.h"                     /* for c_loc_t */
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -39,7 +39,7 @@
  * @param loc The location of the error.
  * @param format The \c printf() style format string.
  */
-void print_error( YYLTYPE const *loc, char const *format, ... );
+void print_error( c_loc_t const *loc, char const *format, ... );
 
 /**
  * Prints a hint message to standard error in the form:
@@ -59,7 +59,7 @@ void print_hint( char const *format, ... );
  *
  * A newline is \e not printed.
  */
-void print_loc( YYLTYPE const *loc );
+void print_loc( c_loc_t const *loc );
 
 /**
  * Prints a warning message to standard error.
@@ -68,7 +68,7 @@ void print_loc( YYLTYPE const *loc );
  * @param loc The location of the warning.
  * @param format The \c printf() style format string.
  */
-void print_warning( YYLTYPE const *loc, char const *format, ... );
+void print_warning( c_loc_t const *loc, char const *format, ... );
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -120,7 +120,7 @@ void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
   }
 }
 
-c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, YYLTYPE const *loc ) {
+c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, c_loc_t const *loc ) {
   assert( loc != NULL );
   static c_ast_id_t next_id;
 
