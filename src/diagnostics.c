@@ -85,6 +85,7 @@ static void print_caret( size_t error_column ) {
     size_t input_line_len;
     char const *const input_line = lexer_input_line( &input_line_len );
     assert( input_line );
+    assert( error_column <= input_line_len );
 
     //
     // Chop off a newline (if any) so we can always print one ourselves.
