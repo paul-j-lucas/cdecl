@@ -213,7 +213,7 @@ static inline void qualifier_pop( void ) {
 
 /**
  * Prints an additional parsing error message to standard error that continues
- * from yyerror() left off.
+ * from where yyerror() left off.
  *
  * @param format A \c printf() style format string.
  */
