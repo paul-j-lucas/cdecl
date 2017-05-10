@@ -137,7 +137,6 @@ static keyword_t const CDECL_KEYWORDS[] = {
 
 // extern variables
 char const     *lexer_token;            // guaranteed pointer of yytext
-YYLTYPE         yylloc;                 // location of current token
 
 // local variables
 static size_t   column;                 // column position of current token
