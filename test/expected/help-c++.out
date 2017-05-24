@@ -7,7 +7,7 @@ english:
   [<storage>]* array [<number>] of <english>
   block [([<args>])] [returning <english>]
   [<storage>]* [<fn-qualifier>]* function [([<args>])] [returning <english>]
-  [<cv-qualifier]* pointer to [member of class <name>] <english>
+  [<cv-qualifier>]* pointer to [member of class <name>] <english>
   [rvalue] reference to <english>
   <type>
 type:
