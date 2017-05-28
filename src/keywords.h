@@ -53,14 +53,6 @@ typedef struct c_keyword c_keyword_t;
  */
 c_keyword_t const* c_keyword_find_literal( char const *literal );
 
-/**
- * Gets the c_keyword for the given YACC token.
- *
- * @param y_token The YACC token to find.
- * @return Returns a pointer to the corresponding c_keyword or null for none.
- */
-c_keyword_t const* c_keyword_find_token( int y_token );
-
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif /* cdecl_keywords_H */

@@ -127,13 +127,5 @@ c_keyword_t const* c_keyword_find_literal( char const *literal ) {
   return NULL;
 }
 
-c_keyword_t const* c_keyword_find_token( int y_token ) {
-  for ( c_keyword_t const *k = C_KEYWORDS; k->literal; ++k ) {
-    if ( y_token == k->y_token )
-      return k;
-  } // for
-  return T_NONE;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */
