@@ -664,7 +664,7 @@ explain_cast_c
     {
       type_pop();
 
-      DUMP_START( "explain_cast_t",
+      DUMP_START( "explain_cast_c",
                   "EXPLAIN '(' type_ast_c cast_opt_c ')' name_opt" );
       DUMP_AST( "type_ast_c", $3.ast );
       DUMP_AST( "cast_opt_c", $5.ast );
