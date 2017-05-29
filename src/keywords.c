@@ -57,62 +57,66 @@
  */
 static c_keyword_t const C_KEYWORDS[] = {
   // K&R C
-  { L_AUTO,          Y_AUTO_C,       T_AUTO_C,        LANG_MAX(CPP_03)  },
-  { L_CHAR,          Y_CHAR,         T_CHAR,          LANG_ALL          },
-  { L_DOUBLE,        Y_DOUBLE,       T_DOUBLE,        LANG_ALL          },
-  { L_EXTERN,        Y_EXTERN,       T_EXTERN,        LANG_ALL          },
-  { L_FLOAT,         Y_FLOAT,        T_FLOAT,         LANG_ALL          },
-  { L_INT,           Y_INT,          T_INT,           LANG_ALL          },
-  { L_LONG,          Y_LONG,         T_LONG,          LANG_ALL          },
-  { L_REGISTER,      Y_REGISTER,     T_REGISTER,      LANG_ALL          },
-  { L_SHORT,         Y_SHORT,        T_SHORT,         LANG_ALL          },
-  { L_STATIC,        Y_STATIC,       T_STATIC,        LANG_ALL          },
-  { L_STRUCT,        Y_STRUCT,       T_STRUCT,        LANG_ALL          },
-  { L_TYPEDEF,       Y_TYPEDEF,      T_TYPEDEF,       LANG_ALL          },
-  { L_UNION,         Y_UNION,        T_UNION,         LANG_ALL          },
-  { L_UNSIGNED,      Y_UNSIGNED,     T_UNSIGNED,      LANG_ALL          },
+  { L_AUTO,             Y_AUTO_C,           T_AUTO_C,        LANG_MAX(CPP_03) },
+  { L_CHAR,             Y_CHAR,             T_CHAR,          LANG_ALL         },
+  { L_DOUBLE,           Y_DOUBLE,           T_DOUBLE,        LANG_ALL         },
+  { L_EXTERN,           Y_EXTERN,           T_EXTERN,        LANG_ALL         },
+  { L_FLOAT,            Y_FLOAT,            T_FLOAT,         LANG_ALL         },
+  { L_INT,              Y_INT,              T_INT,           LANG_ALL         },
+  { L_LONG,             Y_LONG,             T_LONG,          LANG_ALL         },
+  { L_REGISTER,         Y_REGISTER,         T_REGISTER,      LANG_ALL         },
+  { L_SHORT,            Y_SHORT,            T_SHORT,         LANG_ALL         },
+  { L_STATIC,           Y_STATIC,           T_STATIC,        LANG_ALL         },
+  { L_STRUCT,           Y_STRUCT,           T_STRUCT,        LANG_ALL         },
+  { L_TYPEDEF,          Y_TYPEDEF,          T_TYPEDEF,       LANG_ALL         },
+  { L_UNION,            Y_UNION,            T_UNION,         LANG_ALL         },
+  { L_UNSIGNED,         Y_UNSIGNED,         T_UNSIGNED,      LANG_ALL         },
 
   // C89
-  { L_CONST,         Y_CONST,        T_CONST,         LANG_ALL          },
-  { L_ELLIPSIS,      Y_ELLIPSIS,     T_NONE,          LANG_ALL          },
-  { L_ENUM,          Y_ENUM,         T_ENUM,          LANG_ALL          },
-  { L_SIGNED,        Y_SIGNED,       T_SIGNED,        LANG_ALL          },
-  { L_SIZE_T,        Y_SIZE_T,       T_SIZE_T,        LANG_ALL          },
-  { L_VOID,          Y_VOID,         T_VOID,          LANG_ALL          },
-  { L_VOLATILE,      Y_VOLATILE,     T_VOLATILE,      LANG_ALL          },
+  { L_CONST,            Y_CONST,            T_CONST,         LANG_ALL         },
+  { L_ELLIPSIS,         Y_ELLIPSIS,         T_NONE,          LANG_ALL         },
+  { L_ENUM,             Y_ENUM,             T_ENUM,          LANG_ALL         },
+  { L_SIGNED,           Y_SIGNED,           T_SIGNED,        LANG_ALL         },
+  { L_SIZE_T,           Y_SIZE_T,           T_SIZE_T,        LANG_ALL         },
+  { L_VOID,             Y_VOID,             T_VOID,          LANG_ALL         },
+  { L_VOLATILE,         Y_VOLATILE,         T_VOLATILE,      LANG_ALL         },
 
   // C99
-  { L_BOOL,          Y_BOOL,         T_BOOL,          LANG_ALL          },
-  { L_COMPLEX,       Y_COMPLEX,      T_COMPLEX,       LANG_ALL          },
-  { L_INLINE,        Y_INLINE,       T_INLINE,        LANG_ALL          },
-  { L_RESTRICT,      Y_RESTRICT,     T_RESTRICT,      LANG_ALL          },
-  { L_WCHAR_T,       Y_WCHAR_T,      T_WCHAR_T,       LANG_ALL          },
+  { L_BOOL,             Y_BOOL,             T_BOOL,          LANG_ALL         },
+  { L_COMPLEX,          Y_COMPLEX,          T_COMPLEX,       LANG_ALL         },
+  { L_INLINE,           Y_INLINE,           T_INLINE,        LANG_ALL         },
+  { L_RESTRICT,         Y_RESTRICT,         T_RESTRICT,      LANG_ALL         },
+  { L_WCHAR_T,          Y_WCHAR_T,          T_WCHAR_T,       LANG_ALL         },
 
   // C11
-  { L__ATOMIC,       Y_ATOMIC_QUAL,  T_ATOMIC,        LANG_ALL          },
-  { L_NORETURN,      Y_NORETURN,     T_NORETURN,      LANG_ALL          },
+  { L__ATOMIC,          Y_ATOMIC_QUAL,      T_ATOMIC,        LANG_ALL         },
+  { L_NORETURN,         Y_NORETURN,         T_NORETURN,      LANG_ALL         },
 
   // C++
-  { L_CLASS,         Y_CLASS,        T_CLASS,         LANG_ALL          },
-  { L_FRIEND,        Y_FRIEND,       T_FRIEND,        LANG_ALL          },
-  { L_MUTABLE,       Y_MUTABLE,      T_MUTABLE,       LANG_ALL          },
-  { L_VIRTUAL,       Y_VIRTUAL,      T_VIRTUAL,       LANG_ALL          },
+  { L_CLASS,            Y_CLASS,            T_CLASS,         LANG_ALL         },
+  { L_CONST_CAST,       Y_CONST_CAST,       T_NONE,          LANG_ALL         },
+  { L_DYNAMIC_CAST,     Y_DYNAMIC_CAST,     T_NONE,          LANG_ALL         },
+  { L_FRIEND,           Y_FRIEND,           T_FRIEND,        LANG_ALL         },
+  { L_MUTABLE,          Y_MUTABLE,          T_MUTABLE,       LANG_ALL         },
+  { L_REINTERPRET_CAST, Y_REINTERPRET_CAST, T_NONE,          LANG_ALL         },
+  { L_STATIC_CAST,      Y_STATIC_CAST,      T_NONE,          LANG_ALL         },
+  { L_VIRTUAL,          Y_VIRTUAL,          T_VIRTUAL,       LANG_ALL         },
 
   // C++11
-  { L_AUTO,          Y_AUTO_CPP_11,  T_AUTO_CPP_11,   LANG_MIN(CPP_11)  },
-  { L_CONSTEXPR,     Y_CONSTEXPR,    T_CONSTEXPR,     LANG_ALL          },
-  { L_FINAL,         Y_FINAL,        T_FINAL,         LANG_ALL          },
-  { L_OVERRIDE,      Y_OVERRIDE,     T_OVERRIDE,      LANG_ALL          },
+  { L_AUTO,             Y_AUTO_CPP_11,      T_AUTO_CPP_11,   LANG_MIN(CPP_11) },
+  { L_CONSTEXPR,        Y_CONSTEXPR,        T_CONSTEXPR,     LANG_ALL         },
+  { L_FINAL,            Y_FINAL,            T_FINAL,         LANG_ALL         },
+  { L_OVERRIDE,         Y_OVERRIDE,         T_OVERRIDE,      LANG_ALL         },
 
   // C11 & C++11
-  { L_CHAR16_T,      Y_CHAR16_T,     T_CHAR16_T,      LANG_ALL          },
-  { L_CHAR32_T,      Y_CHAR32_T,     T_CHAR32_T,      LANG_ALL          },
-  { L_THREAD_LOCAL,  Y_THREAD_LOCAL, T_THREAD_LOCAL,  LANG_ALL          },
+  { L_CHAR16_T,         Y_CHAR16_T,         T_CHAR16_T,      LANG_ALL         },
+  { L_CHAR32_T,         Y_CHAR32_T,         T_CHAR32_T,      LANG_ALL         },
+  { L_THREAD_LOCAL,     Y_THREAD_LOCAL,     T_THREAD_LOCAL,  LANG_ALL         },
 
   // Apple extension
-  { L___BLOCK,       Y___BLOCK,      T_BLOCK,         LANG_ALL          },
+  { L___BLOCK,          Y___BLOCK,          T_BLOCK,         LANG_ALL         },
 
-  { NULL,            0,              T_NONE,          LANG_NONE         }
+  { NULL,               0,                  T_NONE,          LANG_NONE        }
 };
 
 ////////// extern functions ///////////////////////////////////////////////////

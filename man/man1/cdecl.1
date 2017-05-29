@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "May 28, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "May 29, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -131,12 +131,19 @@ will also behave as above
 if the first non-option argument on the command-line
 is one of
 .BR cast ,
+.BR const ,
 .BR declare ,
+.BR dynamic ,
+.BR explain ,
+.BR reinterpret ,
 or
-.BR explain :
+.BR static :
 .cS
 $ cdecl declare p as pointer to array 4 of int
 int (*p)[4];
+
+$ c++decl reinterpret cast n into pointer to unsigned
+reinterpret_cast<unsigned*>(n)
 .cE 0
 .SS Standard Input
 If no file names are given,
@@ -148,7 +155,7 @@ or either the
 .BR q ,
 or
 .B quit
-command is given.
+command is read.
 .PP
 You can use
 .B cdecl
@@ -458,11 +465,14 @@ has the following commands:
 .BI cast " name" " into" " english"
 Composes a C (or C++) cast from pseudo-English.
 .TP
+.RB "{ " const " | " dynamic " | " reinterpret " | " static " } " cast " \f2name\fP" " into" " \f2english\fP"
+Composes a C++ new-style cast from pseudo-English.
+.TP
 .BI declare " name" " as" " english"
 Composes a C (or C++) declaration from pseudo-English.
 .TP
 .BI explain " gibberish"
-Deciphers a C (or C++) declaration into pseudo-English.
+Deciphers a C (or C++) declaration or new-style cast into pseudo-English.
 .TP
 .BR "explain (" \f2gibberish\fP ")" [ \f2name\fP ]
 Deciphers a C (or C++) cast into pseudo-English.
@@ -679,7 +689,7 @@ for unsupported declarations.)
 .I Gibberish
 also includes support
 for Apple's ``blocks'' syntax
-and
+and the
 \f(CW__block\fP
 storage class.
 .SS Set Options
@@ -1073,6 +1083,10 @@ While
 supports the C++11 function trailing return-type syntax,
 .B declare
 always prints in the traditional syntax.
+.IP \n+[step].
+When converting from or to a C++ new-style cast,
+no semantic validation is performed
+to determine whether the type of cast is legal.
 .SH AUTHORS
 .B cdecl
 has been around since the mid-1980s

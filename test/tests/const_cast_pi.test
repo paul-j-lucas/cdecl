@@ -1,0 +1,1 @@
+cdecl | -xc++ | const cast x into pointer to int | 0

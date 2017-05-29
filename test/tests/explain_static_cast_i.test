@@ -1,0 +1,1 @@
+cdecl | -xc++ | explain static_cast<int>(x) | 0

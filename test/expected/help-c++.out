@@ -1,8 +1,8 @@
 [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere
 command:
-  declare <name> as <english>         | set [options]
-  cast <name> into <english>          | help | ?
+  declare <name> as <english>         | set [options]         | help | ?
   explain <gibberish>                 | exit | quit | q
+  [const | dynamic | reinterpret | static] cast <name> into <english>
 english:
   [<storage>]* array [<number>] of <english>
   block [([<args>])] [returning <english>]

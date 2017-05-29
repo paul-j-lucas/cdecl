@@ -463,7 +463,11 @@ TESTS+=	tests/cast_bii_d.test \
 TESTS+=	tests/cast_a3i.test \
 	tests/cast_f_i.test \
 	tests/cast_ti.test \
-	tests/cast_type.test
+	tests/cast_type.test \
+	tests/const_cast_pi-c.test \
+	tests/dynamic_cast_pc-c.test \
+	tests/reinterpret_cast_pv-c.test \
+	tests/static_cast_i-c.test
 
 ###############################################################################
 
@@ -516,7 +520,11 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 	tests/explain_cast_gi.test \
 	tests/explain_cast_lll.test \
 	tests/explain_cast_si.test \
-	tests/explain_cast_ti.test
+	tests/explain_cast_ti.test \
+	tests/explain_const_cast_pi-c.test \
+	tests/explain_dynamic_cast_pc-c.test \
+	tests/explain_reinterpret_cast_pv-c.test \
+	tests/explain_static_cast_i-c.test
 
 ###############################################################################
 
@@ -626,13 +634,21 @@ TESTS+=	tests/explain_ai-c++11.test \
 # C++ cast tests
 # ==============
 #
-TESTS+=	tests/cast_pmi.test
+TESTS+=	tests/cast_pmi.test \
+	tests/const_cast_pi.test \
+	tests/dynamic_cast_pc.test \
+	tests/reinterpret_cast_pv.test \
+	tests/static_cast_i.test
 
 #
 # C++ explain cast tests
 # ======================
 #
-TESTS+=	tests/explain_cast_pmi.test
+TESTS+=	tests/explain_cast_pmi.test \
+	tests/explain_const_cast_pi.test \
+	tests/explain_dynamic_cast_pc.test \
+	tests/explain_reinterpret_cast_pv.test \
+	tests/explain_static_cast_i.test
 
 ###############################################################################
 

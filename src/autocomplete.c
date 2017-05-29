@@ -25,6 +25,7 @@
 
 // local
 #include "config.h"                     /* must go first */
+#include "lang.h"
 #include "literals.h"
 #include "options.h"
 #include "util.h"
@@ -39,75 +40,95 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * C/C++ autocompletion keywords.
+ */
+struct ac_keyword {
+  char const *keyword;                  // the keyword literal
+  c_lang_t    ok_langs;                 // language(s) OK in
+};
+typedef struct ac_keyword ac_keyword_t;
+
+/**
  * Subset of cdecl keywords that are commands.
  */
-static char const *const CDECL_COMMANDS[] = {
-  L_CAST,
-  L_DECLARE,
-  L_EXIT,
-  L_EXPLAIN,
-  L_HELP,
-  L_QUIT,
-  L_SET,
-  NULL
+static ac_keyword_t const CDECL_COMMANDS[] = {
+  { L_CAST,             LANG_ALL           },
+  { L_CONST,            LANG_MIN(CPP_MIN)  }, // const cast ...
+  { L_DECLARE,          LANG_ALL           },
+  { L_DYNAMIC,          LANG_MIN(CPP_MIN)  }, // dynamic cast ...
+  { L_EXIT,             LANG_ALL           },
+  { L_EXPLAIN,          LANG_ALL           },
+  { L_HELP,             LANG_ALL           },
+  { L_QUIT,             LANG_ALL           },
+  { L_REINTERPRET,      LANG_MIN(CPP_MIN)  }, // reinterpret cast ...
+  { L_SET,              LANG_ALL           },
+  { L_STATIC,           LANG_MIN(CPP_MIN)  }, // static cast ...
+  { NULL,               LANG_NONE          },
 };
 
 /**
  * Subset of cdecl keywords that are completable.
  */
-static char const *const CDECL_KEYWORDS[] = {
-  L_ARRAY,
-//L_AS,                                 // too short
-  L_ATOMIC,
-  L_AUTO,
-  L_BLOCK,                              // Apple: English for '^'
-  L___BLOCK,                            // Apple: storage class
-  L_BOOL,
-  L_CHAR,
-  L_CHAR16_T,
-  L_CHAR32_T,
-  L_CLASS,
-  L_COMPLEX,
-  L_CONST,
-  L_CONSTEXPR,
-  L_DOUBLE,
-  L_ENUM,
-  L_EXTERN,
-  L_FINAL,
-  L_FLOAT,
-  L_FRIEND,
-  L_FUNCTION,
-  L_INLINE,
-//L_INT,                                // special case (see below)
-//L_INTO,                               // special case (see below)
-  L_LONG,
-  L_MEMBER,
-  L_MUTABLE,
-  L_NORETURN,
-//L_OF,                                 // too short
-  L_OVERRIDE,
-  L_POINTER,
-  L_PURE,
-  L_REFERENCE,
-  L_REGISTER,
-  L_RESTRICT,
-  L_RETURNING,
-  L_RVALUE,
-  L_SHORT,
-  L_SIGNED,
-  L_SIZE_T,
-  L_STATIC,
-  L_STRUCT,
-//L_TO,                                 // too short
-  L_THREAD_LOCAL,
-  L_TYPEDEF,
-  L_UNION,
-  L_UNSIGNED,
-  L_VIRTUAL,
-  L_VOID,
-  L_VOLATILE,
-  L_WCHAR_T,
-  NULL
+static ac_keyword_t const CDECL_KEYWORDS[] = {
+  { L_ARRAY,            LANG_ALL                        },
+//  L_AS,                                // too short
+  { L_ATOMIC,           LANG_MIN(C_11)                  },
+  { L_AUTO,             LANG_ALL                        },
+  { L_BLOCK,            LANG_ALL                        },
+  { L___BLOCK,          LANG_ALL                        },
+  { L_BOOL,             LANG_MIN(C_99)                  },
+  { L_CAST,             LANG_ALL                        },
+  { L_CHAR,             LANG_ALL                        },
+  { L_CHAR16_T,         LANG_MIN(CPP_11)                },
+  { L_CHAR32_T,         LANG_MIN(CPP_11)                },
+  { L_CLASS,            LANG_MIN(CPP_MIN)               },
+  { L_COMPLEX,          LANG_MIN(C_99)                  },
+  { L_CONST,            LANG_MIN(C_89)                  },
+  { L_CONST_CAST,       LANG_MIN(CPP_MIN)               },
+  { L_CONSTEXPR,        LANG_MIN(CPP_11)                },
+  { L_DOUBLE,           LANG_ALL                        },
+//  L_DYNAMIC,                          // handled in CDECL_COMMANDS
+  { L_DYNAMIC_CAST,     LANG_MIN(CPP_11)                },
+  { L_ENUM,             LANG_MIN(C_89)                  },
+  { L_EXTERN,           LANG_ALL                        },
+  { L_FINAL,            LANG_MIN(CPP_11)                },
+  { L_FLOAT,            LANG_ALL                        },
+  { L_FRIEND,           LANG_MIN(CPP_MIN)               },
+  { L_FUNCTION,         LANG_ALL                        },
+  { L_INLINE,           LANG_MIN(C_99)                  },
+  { L_INT,              LANG_ALL                        },
+//{ L_INTO,                             // special case (see below)
+  { L_LONG,             LANG_ALL                        },
+  { L_MEMBER,           LANG_MIN(CPP_MIN)               },
+  { L_MUTABLE,          LANG_MIN(CPP_MIN)               },
+  { L_NORETURN,         LANG_C_11                       },
+//{ L_OF,                               // too short
+  { L_OVERRIDE,         LANG_MIN(CPP_11)                },
+  { L_POINTER,          LANG_ALL                        },
+  { L_PURE,             LANG_MIN(CPP_MIN)               },
+  { L_REFERENCE,        LANG_MIN(CPP_MIN)               },
+  { L_REGISTER,         LANG_ALL                        },
+//  L_REINTERPRET,                      // handled in CDECL_COMMANDS
+  { L_REINTERPRET_CAST, LANG_MIN(CPP_MIN)               },
+  { L_RESTRICT,         LANG_MIN(C_89) & ~LANG_CPP_ALL  },
+  { L_RETURNING,        LANG_ALL                        },
+  { L_RVALUE,           LANG_MIN(CPP_11)                },
+  { L_SHORT,            LANG_ALL                        },
+  { L_SIGNED,           LANG_MIN(C_89)                  },
+  { L_SIZE_T,           LANG_MIN(C_89)                  },
+  { L_STATIC,           LANG_ALL                        },
+  { L_STATIC_CAST,      LANG_MIN(CPP_MIN)               },
+  { L_STRUCT,           LANG_ALL                        },
+//  L_TO,                               // too short
+  { L_THREAD_LOCAL,     LANG_C_11 | LANG_MIN(CPP_11)    },
+  { L_TYPEDEF,          LANG_ALL                        },
+  { L_UNION,            LANG_ALL                        },
+  { L_UNSIGNED,         LANG_ALL                        },
+  { L_VIRTUAL,          LANG_MIN(CPP_MIN)               },
+  { L_VOID,             LANG_MIN(C_89)                  },
+  { L_VOLATILE,         LANG_MIN(C_89)                  },
+  { L_WCHAR_T,          LANG_MIN(C_95)                  },
+  { NULL,               LANG_NONE                       }
 };
 
 /**
@@ -135,24 +156,33 @@ static char const *const CDECL_OPTIONS[] = {
 // local functions
 static char*  command_generator( char const*, int );
 
-////////// inline functions ///////////////////////////////////////////////////
+////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Checks whether the current line being read is a particular cdecl command.
+ * Attempts to find the ac_keyword (partially) matching the given text.
  *
- * @param command The command to check for.
- * @return Returns \c true only if it is.
+ * @param keywords The array of keywords to search through.
+ * @param text The text to search for.
+ * @param text_len The length of text to (partially) match.
+ * @param index A pointer to the current index into \a keywords to update.
+ * @return Returns a copy of the keyword or NULL if not found.
  */
-static inline bool is_command( char const *command ) {
-  return strncmp( rl_line_buffer, command, strlen( command ) ) == 0;
+static char* ac_keyword_find( ac_keyword_t const keywords[], char const *text,
+                              size_t text_len, size_t *index ) {
+  for ( ac_keyword_t const *k; (k = keywords + *index)->keyword; ) {
+    ++*index;
+    if ( (k->ok_langs & opt_lang) == 0 )
+      continue;
+    if ( strncmp( text, k->keyword, text_len ) == 0 )
+      return check_strdup( k->keyword );
+  } // for
+  return NULL;
 }
-
-////////// local functions ////////////////////////////////////////////////////
 
 /**
  * Attempts command completion for readline().
  *
- * @param text The text, so far, to match.
+ * @param text The text read (so far) to match against.
  * @param start The starting character position of \a text.
  * @param end The ending character position of \a text.
  * @return Returns an array of C strings of possible matches.
@@ -175,7 +205,7 @@ static char** attempt_completion( char const *text, int start, int end ) {
  * continue to next match, if any.
  */
 static char* command_generator( char const *text, int state ) {
-  static unsigned index;
+  static size_t index;
   static size_t text_len;
 
   if ( !state ) {                       // new word? reset
@@ -183,12 +213,20 @@ static char* command_generator( char const *text, int state ) {
     text_len = strlen( text );
   }
 
-  for ( char const *command; (command = CDECL_COMMANDS[ index ]); ) {
-    ++index;
-    if ( strncmp( text, command, text_len ) == 0 )
-      return check_strdup( command );
-  } // for
-  return NULL;
+  return ac_keyword_find( CDECL_COMMANDS, text, text_len, &index );
+}
+
+/**
+ * Checks whether the current line being read is a particular cdecl command.
+ *
+ * @param command The command to check for.
+ * @return Returns \c true only if it is.
+ */
+static bool is_command( char const *command ) {
+  size_t const command_len = strlen( command );
+  if ( command_len > (size_t)rl_end )   /// more chars than in rl_line_buffer?
+    return false;
+  return strncmp( rl_line_buffer, command, command_len ) == 0;
 }
 
 /**
@@ -197,25 +235,67 @@ static char* command_generator( char const *text, int state ) {
  * @param text The text read (so far) to match against.
  * @param state If 0, restart matching from the beginning; if non-zero,
  * continue to next match, if any.
+ * @return Returns a copy of the keyword or NULL if none.
  */
 static char* keyword_completion( char const *text, int state ) {
-  static unsigned index;
-  static size_t text_len;
-
-  static bool is_into;
-  static bool is_set_command;
+  static char const  *command;          // current command
+  static size_t       index;
+  static bool         no_more_matches;
+  static size_t       text_len;
 
   if ( !state ) {                       // new word? reset
+    no_more_matches = false;
     index = 0;
     text_len = strlen( text );
-    is_into = false;
+
     //
-    // If we're doing the "set" command, complete options, not keywords.
+    // Special case: the "cast" command is begin by either "cast" or, if C++11
+    // or later, any one of "const", "dynamic", "static", or "reimplement" for
+    // "const cast ...", etc.
     //
-    is_set_command = is_command( L_SET );
+    command = is_command( L_CAST ) ||
+      ( opt_lang >= LANG_CPP_MIN && (
+        is_command( L_CONST       ) ||
+        is_command( L_DYNAMIC     ) ||
+        is_command( L_STATIC      ) ||
+        is_command( L_REINTERPRET ) ) ) ? L_CAST : NULL;
+
+    //
+    // If it's not the "cast" command, see if it's any other command.
+    //
+    if ( command == NULL ) {
+      for ( ac_keyword_t const *k = CDECL_COMMANDS; k->keyword; ++k ) {
+        if ( (k->ok_langs & opt_lang) && is_command( k->keyword ) ) {
+          command = k->keyword;
+          break;
+        }
+      } // for
+    }
   }
 
-  if ( is_set_command ) {
+  if ( command == NULL || no_more_matches ) {
+    //
+    // We haven't at least matched a command yet, so don't match any other
+    // keywords.
+    //
+    return NULL;
+  }
+
+  //
+  // Special case: if it's the "cast" command, the text partially matches
+  // "into", and the user hasn't typed "into" yet, complete as "into".
+  //
+  if ( strcmp( command, L_CAST ) == 0 &&
+       strncmp( text, L_INTO, text_len ) == 0 &&
+       !strstr( rl_line_buffer, L_INTO ) ) {
+    no_more_matches = true;             // unambiguously match "into"
+    return check_strdup( L_INTO );
+  }
+
+  //
+  // Special case: if it's the "set" command, complete options, not keywords.
+  //
+  if ( strcmp( command, L_SET ) == 0 ) {
     for ( char const *option; (option = CDECL_OPTIONS[ index ]); ) {
       ++index;
       if ( strncmp( text, option, text_len ) == 0 )
@@ -224,31 +304,10 @@ static char* keyword_completion( char const *text, int state ) {
     return NULL;
   }
 
-  // handle "int" and "into" as special cases
-  if ( !is_into ) {
-    is_into = true;
-    if ( strncmp( text, L_INTO, text_len ) == 0 &&
-         strncmp( text, L_INT, text_len ) != 0 ) {
-      return check_strdup( L_INTO );
-    }
-    if ( strncmp( text, L_INT, text_len ) != 0 )
-      return keyword_completion( text, is_into );
-
-    //
-    // If it's the "cast" command and the user hasn't type "into" yet, complete
-    // as "into"; otherwise "int".
-    //
-    bool const cast_no_into =
-      is_command( L_CAST ) && !strstr( rl_line_buffer, L_INTO );
-    return check_strdup( cast_no_into ? L_INTO : L_INT );
-  }
-
-  for ( char const *keyword; (keyword = CDECL_KEYWORDS[ index ]); ) {
-    ++index;
-    if ( strncmp( text, keyword, text_len ) == 0 )
-      return check_strdup( keyword );
-  } // for
-  return NULL;
+  //
+  // Otherwise, just attempt to match any keyword.
+  //
+  return ac_keyword_find( CDECL_KEYWORDS, text, text_len, &index );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

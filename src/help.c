@@ -52,9 +52,10 @@ typedef struct help_text help_text_t;
 static help_text_t const HELP_TEXT[] = {
 /*  1 */  { "[] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere", NULL },
 /*  2 */  { "command:", NULL },
-/*  3 */  { "  declare <name> as <english>         | set [options]", NULL },
-/*  4 */  { "  cast <name> into <english>          | help | ?", NULL },
-/*  5 */  { "  explain <gibberish>                 | exit | quit | q", NULL },
+/*  3 */  { "  declare <name> as <english>         | set [options]         | help | ?", NULL },
+/*  4 */  { "  explain <gibberish>                 | exit | quit | q", NULL },
+/*  5 */  { "  cast <name> into <english>",
+            "  [const | dynamic | reinterpret | static] cast <name> into <english>" },
 /*  6 */  { "english:", NULL },
 /*  7 */  { "  [<storage>]* array [<number>] of <english>", NULL },
 /*  8 */  { "  block [([<args>])] [returning <english>]", NULL },

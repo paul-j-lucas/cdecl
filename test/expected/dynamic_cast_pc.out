@@ -1,0 +1,1 @@
+dynamic_cast<class C*>(x)

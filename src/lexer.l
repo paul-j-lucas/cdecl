@@ -100,6 +100,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L__COMPLEX,       C_SYN( L_COMPLEX,       true  ) },
   { L_CONSTANT,       C_SYN( L_CONST,         false ) },
   { L_DECLARE,        TOKEN( Y_DECLARE )              },
+  { L_DYNAMIC,        TOKEN( Y_DYNAMIC )              },
   { L_ENUMERATION,    C_SYN( L_ENUM,          false ) },
   { L_EXIT,           TOKEN( Y_QUIT )                 },
   { L_EXPLAIN,        TOKEN( Y_EXPLAIN )              },
@@ -120,6 +121,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_QUIT,           TOKEN( Y_QUIT )                 },
   { L_REF,            TOKEN( Y_REFERENCE )            },
   { L_REFERENCE,      TOKEN( Y_REFERENCE )            },
+  { L_REINTERPRET,    TOKEN( Y_REINTERPRET )          },
   { L_RESTRICTED,     C_SYN( L_RESTRICT,      false ) },
   { L_RET,            TOKEN( Y_RETURNING )            },
   { L_RETURNING,      TOKEN( Y_RETURNING )            },
@@ -343,7 +345,9 @@ non-returning { // special case since it's not an ordinary identifier
 ")"           |
 "*"           |
 ","           |
+"<"           |
 "="           |
+">"           |
 "["           |
 "]"           { SET_TOKEN; return lexer_token[0]; }
 ";"           { SET_TOKEN; return Y_END; }

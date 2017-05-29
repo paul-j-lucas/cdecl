@@ -109,9 +109,15 @@ extern char const L__NORETURN[];        // synonym for "noreturn"
 
 // C++
 extern char const L_CLASS[];
+extern char const L_CONST_CAST[];
+extern char const L_DYNAMIC[];
+extern char const L_DYNAMIC_CAST[];
 extern char const L_FRIEND[];
 extern char const L_MUTABLE[];
 extern char const L_PURE[];
+extern char const L_REINTERPRET[];
+extern char const L_REINTERPRET_CAST[];
+extern char const L_STATIC_CAST[];
 extern char const L_VIRTUAL[];
 
 // C++11

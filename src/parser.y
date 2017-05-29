@@ -79,6 +79,8 @@
   DUMP_COMMA; printf( "  %s = ", (KEY) );     \
   c_ast_list_debug( &(AST_LIST), 1, stdout ); )
 
+#define DUMP_LITERAL(KEY,NAME)    DUMP_NAME(KEY,NAME)
+
 #define DUMP_NAME(KEY,NAME) IF_DEBUG( \
   DUMP_COMMA; PUTS_OUT( "  " );       \
   print_kv( (KEY), (NAME), stdout ); )
@@ -94,7 +96,7 @@
 #define DUMP_START(NAME,PROD)           /* nothing */
 #endif
 
-#define DUMP_END()        IF_DEBUG( PUTS_OUT( "\n}\n" ); )
+#define DUMP_END()                IF_DEBUG( PUTS_OUT( "\n}\n" ); )
 
 #define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
   DUMP_COMMA; PUTS_OUT( "  " );     \
@@ -103,7 +105,7 @@
 #define ELABORATE_ERROR(...) \
   BLOCK( elaborate_error( __VA_ARGS__ ); PARSE_ABORT(); )
 
-#define PARSE_ABORT()     BLOCK( parse_cleanup( true ); YYABORT; )
+#define PARSE_ABORT()             BLOCK( parse_cleanup( true ); YYABORT; )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -326,6 +328,7 @@ static void yyerror( char const *msg ) {
   c_ast_list_t  ast_list; /* for function arguments */
   c_ast_pair_t  ast_pair; /* for the AST being built */
   char const   *name;     /* name being declared or explained */
+  char const   *literal;  /* token literal (used for new-style casts)*/
   int           number;   /* for array sizes */
   c_type_t      type;     /* built-in types, storage classes, & qualifiers */
 }
@@ -342,6 +345,7 @@ static void yyerror( char const *msg ) {
 %token              Y_ARRAY
 %token              Y_AS
 %token              Y_BLOCK             /* Apple: English for '^' */
+%token              Y_DYNAMIC
 %token              Y_FUNCTION
 %token              Y_INTO
 %token              Y_MEMBER
@@ -349,6 +353,7 @@ static void yyerror( char const *msg ) {
 %token              Y_POINTER
 %token              Y_PURE
 %token              Y_REFERENCE
+%token              Y_REINTERPRET
 %token              Y_RETURNING
 %token              Y_RVALUE
 %token              Y_TO
@@ -400,10 +405,15 @@ static void yyerror( char const *msg ) {
                     /* C++ */
 %token              '&'                 /* reference */
 %token              '='                 /* used for pure virtual: = 0 */
+%token              '<' '>'             /* used for new-style casts */
 %token  <type>      Y_CLASS
 %token              Y_COLON_COLON       "::"
+%token  <literal>   Y_CONST_CAST
+%token  <literal>   Y_DYNAMIC_CAST
 %token  <type>      Y_FRIEND
 %token  <type>      Y_MUTABLE
+%token  <literal>   Y_REINTERPRET_CAST
+%token  <literal>   Y_STATIC_CAST
 %token  <type>      Y_VIRTUAL
 
                     /* C++11 */
@@ -497,6 +507,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_list>  arg_list_c arg_list_opt_c
 %type   <name>      name_expected
 %type   <name>      name_opt
+%type   <literal>   new_style_cast_c new_style_cast_english
 %type   <name>      set_option
 
 /*****************************************************************************/
@@ -519,6 +530,7 @@ command
   | declare_english
   | explain_declaration_c
   | explain_cast_c
+  | explain_new_style_cast_c
   | help_command
   | set_command
   | quit_command
@@ -555,6 +567,35 @@ cast_english
         PARSE_ABORT();
     }
 
+  | new_style_cast_english
+    cast_expected name_expected into_expected decl_english Y_END
+    {
+      DUMP_START( "cast_english",
+                  "new_style_cast_english CAST NAME INTO decl_english" );
+      DUMP_LITERAL( "new_style_cast_english", $1 );
+      DUMP_NAME( "NAME", $3 );
+      DUMP_AST( "decl_english", $5.ast );
+      DUMP_END();
+
+      bool ok = false;
+
+      if ( opt_lang < LANG_CPP_11 ) {
+        print_error( &@1, "%s is illegal in %s", $1, c_lang_name( opt_lang ) );
+      }
+      else {
+        ok = c_ast_check( $5.ast, CHECK_CAST );
+        if ( ok ) {
+          FPRINTF( fout, "%s<", $1 );
+          c_ast_gibberish_cast( $5.ast, fout );
+          FPRINTF( fout, ">(%s)\n", $3 );
+        }
+      }
+
+      FREE( $3 );
+      if ( !ok )
+        PARSE_ABORT();
+    }
+
   | Y_CAST decl_english Y_END
     {
       DUMP_START( "cast_english", "CAST decl_english" );
@@ -566,6 +607,13 @@ cast_english
       c_ast_gibberish_cast( $2.ast, fout );
       FPUTS( ")\n", fout );
     }
+  ;
+
+new_style_cast_english
+  : Y_CONST                       { $$ = L_CONST_CAST;        }
+  | Y_DYNAMIC                     { $$ = L_DYNAMIC_CAST;      }
+  | Y_REINTERPRET                 { $$ = L_REINTERPRET_CAST;  }
+  | Y_STATIC                      { $$ = L_STATIC_CAST;       }
   ;
 
 /*****************************************************************************/
@@ -687,6 +735,44 @@ explain_cast_c
     }
   ;
 
+explain_new_style_cast_c
+  : explain_c new_style_cast_c
+    '<' type_ast_c { type_push( $4.ast ); } cast_opt_c '>' '(' name_opt ')'
+    Y_END
+    {
+      type_pop();
+
+      DUMP_START( "explain_new_style_cast_c",
+                  "EXPLAIN '<' type_ast_c cast_opt_c '>' '(' name_opt ')'" );
+      DUMP_LITERAL( "new_style_cast_c", $2 );
+      DUMP_AST( "type_ast_c", $4.ast );
+      DUMP_AST( "cast_opt_c", $6.ast );
+      DUMP_NAME( "name_opt", $9 );
+      DUMP_END();
+
+      bool ok = false;
+
+      if ( opt_lang < LANG_CPP_11 ) {
+        print_error( &@2,
+          "%s_cast is illegal in %s", $2, c_lang_name( opt_lang )
+        );
+      }
+      else {
+        c_ast_t *const ast = c_ast_patch_placeholder( $4.ast, $6.ast );
+        ok = c_ast_check( ast, CHECK_CAST );
+        if ( ok ) {
+          FPRINTF( fout, "%s %s %s %s ", $2, L_CAST, $9, L_INTO );
+          c_ast_english( ast, fout );
+          FPUTC( '\n', fout );
+        }
+      }
+
+      FREE( $9 );
+      if ( !ok )
+        PARSE_ABORT();
+    }
+  ;
+
 explain_c
   : Y_EXPLAIN
     {
@@ -701,6 +787,13 @@ explain_c
       //
       c_mode = MODE_EXPLAIN;
     }
+  ;
+
+new_style_cast_c
+  : Y_CONST_CAST                  { $$ = L_CONST;       }
+  | Y_DYNAMIC_CAST                { $$ = L_DYNAMIC;     }
+  | Y_REINTERPRET_CAST            { $$ = L_REINTERPRET; }
+  | Y_STATIC_CAST                 { $$ = L_STATIC;      }
   ;
 
 /*****************************************************************************/
@@ -1975,6 +2068,14 @@ asterisk_expected
   | error
     {
       ELABORATE_ERROR( "'*' expected" );
+    }
+  ;
+
+cast_expected
+  : Y_CAST
+  | error
+    {
+      ELABORATE_ERROR( "\"%s\" expected", L_CAST );
     }
   ;
 

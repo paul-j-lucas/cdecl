@@ -10,6 +10,20 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 3.2
+
+** C++ new-style casts
+Added support for C++ new-style casts.
+
+** Language-sensitive autocompletion
+Autocompletion is now language-sensitive in that it will not offer completions
+that are not valid in the current language.
+
+** Context-sensitive autocompletion
+Autocompletion is now slightly more context-sensitive in that it will offer
+only command keywords for the first word in the input.
+
+
 * Changes in Cdecl 3.1.5
 
 ** Fixed color prompt caret position

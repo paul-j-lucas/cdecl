@@ -57,6 +57,7 @@ most notably:
   `constexpr`,
   `enum class`,
   `mutable`,
+  new-style casts,
   rvalue references,
   and
   the function trailing return-type syntax.
