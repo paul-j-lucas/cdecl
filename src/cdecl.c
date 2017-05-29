@@ -49,6 +49,8 @@
 
 // extern variable definitions
 c_mode_t            c_mode;             // are we declaring or explaining?
+char const         *command_line;       // command from command line, if any
+size_t              command_line_len;   // length of command_line
 bool                is_input_a_tty;     // is our input from a tty?
 char const         *me;                 // program name
 
@@ -69,7 +71,6 @@ static bool         parse_string( char const*, size_t );
 int main( int argc, char const **argv ) {
   atexit( cdecl_cleanup );
   options_init( &argc, &argv );
-  is_input_a_tty = isatty( fileno( fin ) );
   cdecl_prompt_init();
 
   bool ok;
@@ -129,28 +130,32 @@ static void cdecl_cleanup( void ) {
  */
 static bool parse_command_line( char const *command, int argc,
                                 char const *argv[] ) {
-  size_t buf_len = 0;
   bool space;                           // need to output a space?
 
-  // pre-flight to calc buf_len
+  // pre-flight to calc command_line_len
+  command_line_len = 0;
   if ( (space = command != NULL) )
-    buf_len += strlen( command );
+    command_line_len += strlen( command );
   for ( int i = 0; i < argc; ++i )
-    buf_len += true_or_set( &space ) + strlen( argv[i] );
+    command_line_len += true_or_set( &space ) + strlen( argv[i] );
 
-  char *const buf = (char*)free_later( malloc( buf_len + 1/*null*/ ) );
-  char *s = buf;
+  command_line = MALLOC( char, command_line_len + 1/*null*/ );
+  char *s = (char*)command_line;
 
   // build cdecl command
   if ( (space = command != NULL) )
-    s += strcpy_len( buf, command );
+    s += strcpy_len( s, command );
   for ( int i = 0; i < argc; ++i ) {
     if ( true_or_set( &space ) )
       *s++ = ' ';
     s += strcpy_len( s, argv[i] );
   } // for
 
-  return parse_string( buf, buf_len );
+  bool const ok = parse_string( command_line, command_line_len );
+  FREE( command_line );
+  command_line = NULL;
+  command_line_len = 0;
+  return ok;
 }
 
 /**
@@ -186,6 +191,8 @@ static bool parse_files( int num_files, char const *files[] ) {
 static bool parse_stdin( void ) {
   bool ok;
 
+  is_input_a_tty = isatty( fileno( fin ) );
+
   if ( is_input_a_tty || opt_interactive ) {
     if ( !opt_quiet )
       FPRINTF( fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
@@ -195,8 +202,9 @@ static bool parse_stdin( void ) {
   } else {
     yyrestart( fin );
     ok = yyparse() == 0;
-    is_input_a_tty = false;
   }
+
+  is_input_a_tty = false;
   return ok;
 }
 

@@ -83,8 +83,13 @@ static void print_caret( size_t error_column ) {
     // the ^ under that.
     //
     size_t input_line_len;
-    char const *const input_line = lexer_input_line( &input_line_len );
+    char const *input_line = lexer_input_line( &input_line_len );
     assert( input_line );
+    if ( input_line_len == 0 ) {        // no input? try command line
+      input_line = command_line;
+      assert( input_line );
+      input_line_len = command_line_len;
+    }
     assert( error_column <= input_line_len );
 
     //
