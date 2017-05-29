@@ -39,6 +39,8 @@
  *
  *  + 0 = The primary prompt.
  *  + 1 = The secondary prompt (used for continuation lines).
+ *
+ * @note These may contain SGR color codes.
  */
 extern char const  *prompt[2];
 

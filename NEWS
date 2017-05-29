@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 3.1.5
+
+** Fixed color prompt caret position
+The position of the caret in error messages when using color prompts has been
+fixed.
+
+
 * Changes in Cdecl 3.1.4
 
 ** Fixed cv-qualifier in help

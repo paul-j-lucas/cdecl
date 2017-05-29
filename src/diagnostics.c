@@ -30,7 +30,6 @@
 #include "diagnostics.h"
 #include "lexer.h"
 #include "options.h"
-#include "prompt.h"
 #include "util.h"
 
 // standard
@@ -73,7 +72,8 @@ static void print_caret( size_t error_column ) {
     // the user typed for the recent command, but we have to add the length of
     // the prompt.
     //
-    error_column_term += strlen( prompt[0] );
+    error_column_term += strlen( opt_lang >= LANG_CPP_MIN ? CPPDECL : PACKAGE )
+      + 2 /* "> " */;
     if ( term_columns )
       error_column_term %= term_columns;
   } else {
