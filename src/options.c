@@ -67,6 +67,7 @@ static struct option const LONG_OPTS[] = {
   { "debug",        no_argument,        NULL, 'd' },
 #endif /* ENABLE_CDECL_DEBUG */
   { "file",         required_argument,  NULL, 'f' },
+  { "help",         no_argument,        NULL, 'h' },
   { "interactive",  no_argument,        NULL, 'i' },
   { "output",       required_argument,  NULL, 'o' },
   { "quiet",        no_argument,        NULL, 'q' },
@@ -301,6 +302,7 @@ static void parse_options( int argc, char const *argv[] ) {
       case 'd': opt_debug       = true;                       break;
 #endif /* ENABLE_CDECL_DEBUG */
       case 'f': opt_fin         = optarg;                     break;
+   // case 'h': usage();        // default case handles this
       case 'i': opt_interactive = true;                       break;
       case 'o': opt_fout        = optarg;                     break;
       case 'q': opt_quiet       = true;                       break;
@@ -349,6 +351,7 @@ static void usage( void ) {
   PRINT_ERR( "  -d       Enable debug output.\n" );
 #endif /* ENABLE_CDECL_DEBUG */
   PRINT_ERR( "  -f file  Read from this file [default: stdin].\n" );
+  PRINT_ERR( "  -h       Print this help and exit.\n" );
   PRINT_ERR( "  -i       Force interactive mode.\n" );
   PRINT_ERR( "  -o file  Write to this file [default: stdout].\n" );
   PRINT_ERR( "  -q       Be quiet (disable prompt).\n" );

@@ -10,6 +10,15 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 3.3
+
+** Help command-line option
+Added the command-line options of -h or --help that prints the usage message.
+
+** Fixed const pointers to members
+Explaining const/volatile pointers to members now works.
+
+
 * Changes in Cdecl 3.2
 
 ** C++ new-style casts
