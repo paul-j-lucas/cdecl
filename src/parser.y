@@ -494,7 +494,7 @@ static void yyerror( char const *msg ) {
 
 %type   <type>      builtin_type_c
 %type   <type>      class_struct_type_c class_struct_type_expected_c
-%type   <type>      cv_qualifier_c
+%type   <type>      cv_qualifier_c cv_qualifier_list_opt_c
 %type   <type>      enum_class_struct_union_type_c
 %type   <type>      func_qualifier_c
 %type   <type>      func_qualifier_list_opt_c
@@ -1496,15 +1496,17 @@ pointer_to_member_decl_c
   ;
 
 pointer_to_member_type_c
-  : /* type_ast_c */ Y_NAME "::" asterisk_expected
+  : /* type_ast_c */ Y_NAME "::" asterisk_expected cv_qualifier_list_opt_c
     {
-      DUMP_START( "pointer_to_member_type_c", "NAME :: *" );
+      DUMP_START( "pointer_to_member_type_c",
+                  "NAME :: cv_qualifier_list_opt_c *" );
       DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_NAME( "NAME", $1 );
+      DUMP_TYPE( "cv_qualifier_list_opt_c", $4 );
 
       $$.ast = C_AST_NEW( K_POINTER_TO_MEMBER, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = T_CLASS;           // assume T_CLASS
+      $$.ast->type = $4 | T_CLASS;      // assume T_CLASS
       $$.ast->as.ptr_mbr.class_name = $1;
       c_ast_set_parent( type_peek(), $$.ast );
 
@@ -1833,6 +1835,23 @@ type_qualifier_c
   : cv_qualifier_c
   | Y_ATOMIC_QUAL
   | Y_RESTRICT
+  ;
+
+cv_qualifier_list_opt_c
+  : /* empty */                   { $$ = T_NONE; }
+  | cv_qualifier_list_opt_c cv_qualifier_c
+    {
+      DUMP_START( "cv_qualifier_list_opt_c",
+                  "cv_qualifier_list_opt_c cv_qualifier_c" );
+      DUMP_TYPE( "cv_qualifier_list_opt_c", $1 );
+      DUMP_TYPE( "cv_qualifier_c", $2 );
+
+      $$ = $1;
+      C_TYPE_ADD( &$$, $2, @2 );
+
+      DUMP_TYPE( "cv_qualifier_list_opt_c", $$ );
+      DUMP_END();
+    }
   ;
 
 cv_qualifier_c

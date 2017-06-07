@@ -1,0 +1,1 @@
+cdecl | -xc++ | explain const int C::*const p | 0

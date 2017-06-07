@@ -1,0 +1,1 @@
+declare f as function returning const pointer to member of class C int
