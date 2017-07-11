@@ -294,7 +294,6 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         if ( opt_lang < LANG_CPP_11 ) {
           print_error( &ast->loc,
             "reference qualified functions illegal in %s",
-            c_type_name( ast->type ),
             c_lang_name( opt_lang )
           );
           return VISITOR_ERROR_FOUND;
