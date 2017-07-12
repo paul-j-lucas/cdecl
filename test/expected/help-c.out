@@ -4,13 +4,14 @@ command:
   explain <gibberish>                 | exit | quit | q
   cast <name> into <english>
 english:
-  [<storage>]* array [<number>] of <english>
+  <storage>* array [[static] <cv-qualifier>* {<number>|*}] of <english>
+  <storage>* variable length array <cv-qualifier>* of <english>
   block [([<args>])] [returning <english>]
-  [<storage>]* function [([<args>])] [returning <english>]
-  [<cv-qualifier>]* pointer to <english>
+  <storage>* function [([<args>])] [returning <english>]
+  <cv-qualifier>* pointer to <english>
   <type>
 type:
-  [<storage>]* [<modifier>]* [<C-type>]
+  <storage>* <modifier>* [<C-type>]
   { enum | struct | union } <name>
 args: a comma separated list of <name>, <english>, or <name> as <english>
 gibberish: a C declaration, like "int x"; or cast, like "(int)x"

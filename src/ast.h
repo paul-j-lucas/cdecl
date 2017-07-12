@@ -49,7 +49,8 @@ _GL_INLINE_HEADER_BEGIN
 # define CDECL_AST_INLINE _GL_INLINE
 #endif /* CDECL_AST_INLINE */
 
-#define C_ARRAY_NO_SIZE   (-1)          /* for array[] */
+#define C_ARRAY_SIZE_NONE     (-1)      /* for array[] */
+#define C_ARRAY_SIZE_VARIABLE (-2)      /* for array[*] */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -81,8 +82,7 @@ typedef struct c_ptr_ref  c_ptr_ref_t;
  * c_ast_visit_up().
  *
  * @param ast The AST node to visit.
- * @param data Optional data passed from c_ast_visit_down() or
- * c_ast_visit_up().
+ * @param data Optional data passed to c_ast_visit_down() or c_ast_visit_up().
  * @return Returning \c true will cause traversal to stop and \a ast to be
  * returned to the caller of c_ast_visit_down() or c_ast_visit_up().
  */
@@ -111,7 +111,8 @@ struct c_ast_list {
  */
 struct c_array {
   c_ast_t  *of_ast;                     // what it's an array of
-  int       size;                       // or C_ARRAY_NO_SIZE
+  int       size;                       // or C_ARRAY_*
+  c_type_t  type;                       // e.g., array[ static const 10 ]
 };
 
 /**

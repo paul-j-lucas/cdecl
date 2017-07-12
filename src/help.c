@@ -45,48 +45,55 @@ typedef struct help_text help_text_t;
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#define NOT_IN_LANG   "~"               /* don't print text for current lang */
+#define SAME_AS_C     ""                /* C++ text is the same as C */
+
 /**
  * Help text (limited to 80 columns and 23 lines so it fits on an 80x24
  * screen).
  */
 static help_text_t const HELP_TEXT[] = {
-/*  1 */  { "[] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere", NULL },
-/*  2 */  { "command:", NULL },
-/*  3 */  { "  declare <name> as <english>         | set [options]         | help | ?", NULL },
-/*  4 */  { "  explain <gibberish>                 | exit | quit | q", NULL },
-/*  5 */  { "  cast <name> into <english>",
-            "  [const | dynamic | reinterpret | static] cast <name> into <english>" },
-/*  6 */  { "english:", NULL },
-/*  7 */  { "  [<storage>]* array [<number>] of <english>", NULL },
-/*  8 */  { "  block [([<args>])] [returning <english>]", NULL },
-/*  9 */  { "  [<storage>]* function [([<args>])] [returning <english>]",
-            "  [<storage>]* [<fn-qualifier>]* function [([<args>])] [returning <english>]" },
-/* 10 */  { "  [<cv-qualifier>]* pointer to <english>",
-            "  [<cv-qualifier>]* pointer to [member of class <name>] <english>" },
-/* 11 */  { NULL,
-            "  [rvalue] reference to <english>" },
-/* 12 */  { "  <type>", NULL },
-/* 13 */  { "type:", NULL },
-/* 14 */  { "  [<storage>]* [<modifier>]* [<C-type>]",
-            "  [<storage>]* [<modifier>]* [<C++-type>]" },
-/* 15 */  { "  { enum | struct | union } <name>",
-            "  { enum [class|struct] | struct | union | class } <name>" },
-/* 16 */  { "args: a comma separated list of <name>, <english>, or <name> as <english>",
-            "args: a comma separated list of <english> or <name> as <english>" },
-/* 17 */  { "gibberish: a C declaration, like \"int x\"; or cast, like \"(int)x\"",
-            "gibberish: a C++ declaration, like \"int x\"; or cast, like \"(int)x\"" },
-/* 18 */  { "C-type: bool char char16_t char32_t wchar_t int float double size_t void",
-            "C++-type: bool char char16_t char32_t wchar_t int float double size_t void" },
-/* 19 */  { "cv-qualifier: _Atomic const restrict volatile",
-            "cv-qualifier: const volatile" },
-/* 20 */  { NULL,
-            "fn-qualifier: const volatile [rvalue] reference" },
-/* 21 */  { "modifier: short long signed unsigned atomic const restrict volatile",
-            "modifier: short long signed unsigned const volatile" },
-/* 22 */  { "name: a C identifier",
-            "name: a C++ identifier" },
-/* 23 */  { "storage: auto extern register static thread_local",
-            "storage: constexpr extern friend register static thread_local [pure] virtual" },
+/*  C | C++ */
+/* ===|==== */
+/*  1 |  1 */  { "[] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere", SAME_AS_C },
+/*  2 |  2 */  { "command:", SAME_AS_C },
+/*  3 |  3 */  { "  declare <name> as <english>         | set [options]         | help | ?", SAME_AS_C },
+/*  4 |  4 */  { "  explain <gibberish>                 | exit | quit | q", SAME_AS_C },
+/*  5 |  5 */  { "  cast <name> into <english>",
+                 "  [const | dynamic | reinterpret | static] cast <name> into <english>" },
+/*  6 |  6 */  { "english:", SAME_AS_C },
+/*  7 |  7 */  { "  <storage>* array [[static] <cv-qualifier>* {<number>|\\*}] of <english>",
+                 "  <storage>* array [<number>] of <english>" },
+/*  8 | -- */  { "  <storage>* variable length array <cv-qualifier>* of <english>", NOT_IN_LANG },
+/*  9 |  8 */  { "  block [([<args>])] [returning <english>]", SAME_AS_C },
+/* 10 |  9 */  { "  <storage>* function [([<args>])] [returning <english>]",
+                 "  <storage>* <fn-qualifier>* function [([<args>])] [returning <english>]" },
+/* 11 | 10 */  { "  <cv-qualifier>* pointer to <english>",
+                 "  <cv-qualifier>* pointer to [member of class <name>] <english>" },
+/* -- | 11 */  { NOT_IN_LANG,
+                 "  [rvalue] reference to <english>" },
+/* 12 | 12 */  { "  <type>", SAME_AS_C },
+/* 13 | 13 */  { "type:", SAME_AS_C },
+/* 14 | 14 */  { "  <storage>* <modifier>* [<C-type>]",
+                 "  <storage>* <modifier>* [<C++-type>]" },
+/* 15 | 15 */  { "  { enum | struct | union } <name>",
+                 "  { enum [class|struct] | struct | union | class } <name>" },
+/* 16 | 16 */  { "args: a comma separated list of <name>, <english>, or <name> as <english>",
+                 "args: a comma separated list of <english> or <name> as <english>" },
+/* 17 | 17 */  { "gibberish: a C declaration, like \"int x\"; or cast, like \"(int)x\"",
+                 "gibberish: a C++ declaration, like \"int x\"; or cast, like \"(int)x\"" },
+/* 18 | 18 */  { "C-type: bool char char16_t char32_t wchar_t int float double size_t void",
+                 "C++-type: bool char char16_t char32_t wchar_t int float double size_t void" },
+/* 19 | 19 */  { "cv-qualifier: _Atomic const restrict volatile",
+                 "cv-qualifier: const volatile" },
+/* -- | 20 */  { NOT_IN_LANG,
+                 "fn-qualifier: const volatile [rvalue] reference" },
+/* 20 | 21 */  { "modifier: short long signed unsigned atomic const restrict volatile",
+                 "modifier: short long signed unsigned const volatile" },
+/* 21 | 22 */  { "name: a C identifier",
+                 "name: a C++ identifier" },
+/* 22 | 23 */  { "storage: auto extern register static thread_local",
+                 "storage: constexpr extern friend register static thread_local [pure] virtual" },
 };
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -97,26 +104,38 @@ static help_text_t const HELP_TEXT[] = {
  * @param line The line to print.
  */
 static void print_help_line( char const *line ) {
+  bool escaped = false;
+
   for ( char const *c = line; *c; ++c ) {
     switch ( *c ) {
+      case '\\':
+        if ( !escaped ) {
+          escaped = true;
+          continue;
+        }
       case '<':
-        SGR_START_COLOR( stdout, help_nonterm );
-        break;
+        if ( !escaped ) {
+          SGR_START_COLOR( stdout, help_nonterm );
+          break;
+        }
       case '>':
-        PUTC_OUT( *c );
-        SGR_END_COLOR( stdout );
-        continue;
-
+        if ( !escaped ) {
+          PUTC_OUT( *c );
+          SGR_END_COLOR( stdout );
+          continue;
+        }
       case '*':
       case '[':
       case ']':
       case '{':
       case '|':
       case '}':
-        SGR_START_COLOR( stdout, help_punct );
-        PUTC_OUT( *c );
-        SGR_END_COLOR( stdout );
-        continue;
+        if ( !escaped ) {
+          SGR_START_COLOR( stdout, help_punct );
+          PUTC_OUT( *c );
+          SGR_END_COLOR( stdout );
+          continue;
+        }
 
       default:
         if ( c == line && isalpha( *c ) ) {
@@ -129,6 +148,7 @@ static void print_help_line( char const *line ) {
             PUTC_OUT( *c );
           } // for
         }
+        escaped = false;
     } // switch
     PUTC_OUT( *c );
   } // for
@@ -141,12 +161,21 @@ static void print_help_line( char const *line ) {
  * Prints the help message to standard output.
  */
 void print_help( void ) {
+  bool const is_cpp = opt_lang >= LANG_CPP_MIN;
+
   for ( size_t i = 0; i < ARRAY_SIZE( HELP_TEXT ); ++i ) {
-    help_text_t const *const ht = &HELP_TEXT[i];
-    if ( opt_lang >= LANG_CPP_MIN && ht->cpp_text )
-      print_help_line( ht->cpp_text );
-    else if ( ht->text )
-      print_help_line( ht->text );
+    help_text_t const *const help = &HELP_TEXT[i];
+    if ( is_cpp ) {
+      if ( help->cpp_text[0] == NOT_IN_LANG[0] )
+        continue;
+      if ( help->cpp_text[0] != SAME_AS_C[0] ) {
+        print_help_line( help->cpp_text );
+        continue;
+      }
+    }
+
+    if ( help->text[0] != NOT_IN_LANG[0] )
+      print_help_line( help->text );
   } // for
 }
 

@@ -96,8 +96,12 @@ extern char const L__BOOL[];            // synonym for "bool"
 extern char const L_COMPLEX[];
 extern char const L__COMPLEX[];         // synonym for "complex"
 extern char const L_INLINE[];
+extern char const L_LEN[];              // synonym for "length"
+extern char const L_LENGTH[];
 extern char const L_RESTRICT[];
 extern char const L_RESTRICTED[];       // synonym for "restrict"
+extern char const L_VAR[];              // synonym for "variable"
+extern char const L_VARIABLE[];
 extern char const L_WCHAR_T[];
 
 // C11

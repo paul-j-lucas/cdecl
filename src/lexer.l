@@ -109,6 +109,8 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_HELP,           TOKEN( Y_HELP )                 },
   { L_INTEGER,        C_SYN( L_INT,           false ) },
   { L_INTO,           TOKEN( Y_INTO )                 },
+  { L_LEN,            TOKEN( Y_LENGTH )               },
+  { L_LENGTH,         TOKEN( Y_LENGTH )               },
   { L_MBR,            TOKEN( Y_MEMBER ),              },
   { L_MEMBER,         TOKEN( Y_MEMBER ),              },
   { L__NORETURN,      C_SYN( L_NORETURN,      true  ) },
@@ -131,7 +133,9 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L__THREAD_LOCAL,  C_SYN( L_THREAD_LOCAL,  true  ) },
   { L_TO,             TOKEN( Y_TO )                   },
   { L_TYPE,           C_SYN( L_TYPEDEF,       false ) },
+  { L_VAR,            TOKEN( Y_VARIABLE )             },
   { L_VARARGS,        C_SYN( L_ELLIPSIS,      false ) },
+  { L_VARIABLE,       TOKEN( Y_VARIABLE )             },
   { L_VARIADIC,       C_SYN( L_ELLIPSIS,      false ) },
   { L_VECTOR,         TOKEN( Y_ARRAY )                },
   { NULL,             TOKEN( 0 )                      }

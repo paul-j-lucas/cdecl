@@ -1,0 +1,1 @@
+cdecl | | declare x as array const 3 of int | 65

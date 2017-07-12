@@ -325,6 +325,7 @@ static void yyerror( char const *msg ) {
 %}
 
 %union {
+  c_ast_t      *ast;
   c_ast_list_t  ast_list; /* for function arguments */
   c_ast_pair_t  ast_pair; /* for the AST being built */
   char const   *name;     /* name being declared or explained */
@@ -348,6 +349,7 @@ static void yyerror( char const *msg ) {
 %token              Y_DYNAMIC
 %token              Y_FUNCTION
 %token              Y_INTO
+%token              Y_LENGTH
 %token              Y_MEMBER
 %token              Y_OF
 %token              Y_POINTER
@@ -357,6 +359,7 @@ static void yyerror( char const *msg ) {
 %token              Y_RETURNING
 %token              Y_RVALUE
 %token              Y_TO
+%token              Y_VARIABLE
 
                     /* K&R C */
 %token              ','
@@ -501,14 +504,17 @@ static void yyerror( char const *msg ) {
 %type   <type>      storage_class_c
 %type   <type>      type_modifier_c
 %type   <type>      type_modifier_list_c type_modifier_list_opt_c
-%type   <type>      type_qualifier_c type_qualifier_list_opt_c
+%type   <type>      type_qualifier_c
+%type   <type>      type_qualifier_list_c type_qualifier_list_opt_c
 
 %type   <ast_pair>  arg_c
+%type   <ast>       arg_array_size_c
 %type   <ast_list>  arg_list_c arg_list_opt_c
 %type   <name>      name_expected
 %type   <name>      name_opt
 %type   <literal>   new_style_cast_c new_style_cast_english
 %type   <name>      set_option
+%type   <type>      static_type_opt
 
 /*****************************************************************************/
 %%
@@ -836,17 +842,41 @@ decl_english
   ;
 
 array_decl_english
-  : Y_ARRAY array_size_opt_english of_expected decl_english
+  : Y_ARRAY static_type_opt type_qualifier_list_opt_c array_size_opt_english
+    of_expected decl_english
     {
       DUMP_START( "array_decl_english",
-                  "ARRAY array_size_opt_english OF decl_english" );
-      DUMP_NUM( "array_size_opt_english", $2 );
-      DUMP_AST( "decl_english", $4.ast );
+                  "ARRAY static_type_opt type_qualifier_list_opt_c "
+                  "array_size_opt_english OF decl_english" );
+      DUMP_TYPE( "static_type_opt", $2 );
+      DUMP_TYPE( "type_qualifier_list_opt_c", $3 );
+      DUMP_NUM( "array_size_opt_english", $4 );
+      DUMP_AST( "decl_english", $6.ast );
 
       $$.ast = C_AST_NEW( K_ARRAY, &@$ );
       $$.target_ast = NULL;
-      $$.ast->as.array.size = $2;
-      c_ast_set_parent( $4.ast, $$.ast );
+      $$.ast->as.array.size = $4;
+      $$.ast->as.array.type = $2 | $3;
+      c_ast_set_parent( $6.ast, $$.ast );
+
+      DUMP_AST( "array_decl_english", $$.ast );
+      DUMP_END();
+    }
+
+  | Y_VARIABLE length_opt array_expected type_qualifier_list_opt_c of_expected
+    decl_english
+    {
+      DUMP_START( "array_decl_english",
+                  "VARIABLE LENGTH ARRAY type_qualifier_list_opt_c "
+                  "OF decl_english" );
+      DUMP_TYPE( "type_qualifier_list_opt_c", $4 );
+      DUMP_AST( "decl_english", $6.ast );
+
+      $$.ast = C_AST_NEW( K_ARRAY, &@$ );
+      $$.target_ast = NULL;
+      $$.ast->as.array.size = C_ARRAY_SIZE_VARIABLE;
+      $$.ast->as.array.type = $4;
+      c_ast_set_parent( $6.ast, $$.ast );
 
       DUMP_AST( "array_decl_english", $$.ast );
       DUMP_END();
@@ -854,8 +884,14 @@ array_decl_english
   ;
 
 array_size_opt_english
-  : /* empty */                   { $$ = C_ARRAY_NO_SIZE; }
+  : /* empty */                   { $$ = C_ARRAY_SIZE_NONE; }
   | Y_NUMBER
+  | '*'                           { $$ = C_ARRAY_SIZE_VARIABLE; }
+  ;
+
+length_opt
+  : /* empty */
+  | Y_LENGTH
   ;
 
 block_decl_english                      /* Apple extension */
@@ -1240,7 +1276,7 @@ array_decl_c
   ;
 
 array_size_c
-  : '[' ']'                       { $$ = C_ARRAY_NO_SIZE; }
+  : '[' ']'                       { $$ = C_ARRAY_SIZE_NONE; }
   | '[' Y_NUMBER ']'              { $$ = $2; }
   | '[' error ']'
     {
@@ -1816,19 +1852,25 @@ class_struct_type_c
 
 type_qualifier_list_opt_c
   : /* empty */                   { $$ = T_NONE; }
-  | type_qualifier_list_opt_c type_qualifier_c
+  | type_qualifier_list_c
+  ;
+
+type_qualifier_list_c
+  : type_qualifier_list_c type_qualifier_c
     {
-      DUMP_START( "type_qualifier_list_opt_c",
-                  "type_qualifier_list_opt_c type_qualifier_c" );
-      DUMP_TYPE( "type_qualifier_list_opt_c", $1 );
+      DUMP_START( "type_qualifier_list_c",
+                  "type_qualifier_list_c type_qualifier_c" );
+      DUMP_TYPE( "type_qualifier_list_c", $1 );
       DUMP_TYPE( "type_qualifier_c", $2 );
 
       $$ = $1;
       C_TYPE_ADD( &$$, $2, @2 );
 
-      DUMP_TYPE( "type_qualifier_list_opt_c", $$ );
+      DUMP_TYPE( "type_qualifier_list_c", $$ );
       DUMP_END();
     }
+
+  | type_qualifier_c
   ;
 
 type_qualifier_c
@@ -1902,30 +1944,59 @@ cast2_c
   ;
 
 array_cast_c
-  : /* type */ cast2_c array_size_c
+  : /* type */ cast2_c arg_array_size_c
     {
       DUMP_START( "array_cast_c", "cast2_c array_size_c" );
       DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_AST( "cast2_c", $1.ast );
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
-      DUMP_NUM( "array_size_c", $2 );
+      DUMP_AST( "arg_array_size_c", $2 );
 
-      c_ast_t *const array = C_AST_NEW( K_ARRAY, &@$ );
-      array->as.array.size = $2;
-      c_ast_set_parent( C_AST_NEW( K_PLACEHOLDER, &@1 ), array );
+      c_ast_set_parent( C_AST_NEW( K_PLACEHOLDER, &@1 ), $2 );
 
       if ( $1.target_ast ) {            // array-of or function/block-ret type
         $$.ast = $1.ast;
-        $$.target_ast = c_ast_add_array( $1.target_ast, array );
+        $$.target_ast = c_ast_add_array( $1.target_ast, $2 );
       } else {
-        $$.ast = c_ast_add_array( $1.ast, array );
+        $$.ast = c_ast_add_array( $1.ast, $2 );
         $$.target_ast = NULL;
       }
 
       DUMP_AST( "array_cast_c", $$.ast );
       DUMP_END();
     }
+  ;
+
+arg_array_size_c
+  : array_size_c
+    {
+      $$ = C_AST_NEW( K_ARRAY, &@$ );
+      $$->as.array.size = $1;
+    }
+  | '[' type_qualifier_list_c static_type_opt Y_NUMBER ']'
+    {
+      $$ = C_AST_NEW( K_ARRAY, &@$ );
+      $$->as.array.size = $4;
+      $$->as.array.type = $2 | $3;
+    }
+  | '[' Y_STATIC type_qualifier_list_opt_c Y_NUMBER ']'
+    {
+      $$ = C_AST_NEW( K_ARRAY, &@$ );
+      $$->as.array.size = $4;
+      $$->as.array.type = T_STATIC | $3;
+    }
+  | '[' type_qualifier_list_opt_c '*' ']'
+    {
+      $$ = C_AST_NEW( K_ARRAY, &@$ );
+      $$->as.array.size = C_ARRAY_SIZE_VARIABLE;
+      $$->as.array.type = $2;
+    }
+  ;
+
+static_type_opt
+  : /* empty */                   { $$ = T_NONE; }
+  | Y_STATIC                      { $$ = T_STATIC; }
   ;
 
 block_cast_c                            /* Apple extension */
@@ -2073,6 +2144,14 @@ reference_cast_c
 /*****************************************************************************/
 /*  miscellaneous productions                                                */
 /*****************************************************************************/
+
+array_expected
+  : Y_ARRAY
+  | error
+    {
+      ELABORATE_ERROR( "\"%s\" expected", L_ARRAY );
+    }
+  ;
 
 as_expected
   : Y_AS

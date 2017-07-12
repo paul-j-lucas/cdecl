@@ -63,8 +63,12 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     case K_ARRAY:
       if ( ast->type )                  // storage class
         FPRINTF( param->eout, "%s ", c_type_name( ast->type ) );
+      if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE )
+        FPRINTF( param->eout, "%s %s ", L_VARIABLE, L_LENGTH );
       FPRINTF( param->eout, "%s ", L_ARRAY );
-      if ( ast->as.array.size != C_ARRAY_NO_SIZE )
+      if ( ast->as.array.type )
+        FPRINTF( param->eout, "%s ", c_type_name( ast->as.array.type ) );
+      if ( ast->as.array.size >= 0 )
         FPRINTF( param->eout, "%d ", ast->as.array.size );
       FPRINTF( param->eout, "%s ", L_OF );
       break;

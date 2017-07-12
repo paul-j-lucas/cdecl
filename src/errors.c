@@ -53,11 +53,13 @@ static bool error_kind_to_type( c_ast_t const*, c_type_t );
  *
  * @param ast The AST to check.
  * @param visitor The visitor to use.
+ * @param data Optional data passed to c_ast_visit_down() or c_ast_visit_up().
  * @return Returns \c true only if all checks passed.
  */
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
-                                        c_ast_visitor_t visitor ) {
-  return !c_ast_found( ast, V_DOWN, visitor, NULL );
+                                        c_ast_visitor_t visitor,
+                                        void *data ) {
+  return !c_ast_found( ast, V_DOWN, visitor, data );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -100,14 +102,16 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
  * Checks an entire AST for semantic errors.
  *
  * @param ast The function (or block) AST to check.
+ * @param is_func_arg If \c true, we're checking a function argument.
  * @return Returns \c true only if all checks passed.
  */
-static bool c_ast_check_errors( c_ast_t const *ast ) {
+static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
   assert( ast != NULL );
   // check in major-to-minor error order
-  if ( !c_ast_check_visitor( ast, c_ast_visitor_error ) )
+  void *const data = REINTERPRET_CAST( void*, is_func_arg );
+  if ( !c_ast_check_visitor( ast, c_ast_visitor_error, data ) )
     return false;
-  if ( !c_ast_check_visitor( ast, c_ast_visitor_type ) )
+  if ( !c_ast_check_visitor( ast, c_ast_visitor_type, NULL ) )
     return false;
   return true;
 }
@@ -179,7 +183,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
       return false;
     }
 
-    if ( !c_ast_check_errors( arg ) )
+    if ( !c_ast_check_errors( arg, true ) )
       return false;
   } // for
 
@@ -232,12 +236,46 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
  */
 static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  (void)data;
+  bool const is_func_arg = REINTERPRET_CAST( bool, data );
 
   c_type_t tmp_type;
 
   switch ( ast->kind ) {
     case K_ARRAY: {
+      if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE ) {
+        if ( (opt_lang & (LANG_MIN(C_99) & ~LANG_CPP_ALL)) == 0 ) {
+          print_error( &ast->loc,
+            "variable length arrays not supported in %s",
+            c_lang_name( opt_lang )
+          );
+          return VISITOR_ERROR_FOUND;
+        }
+        if ( !is_func_arg ) {
+          print_error( &ast->loc,
+            "variable length arrays are illegal outside of function arguments"
+          );
+          return VISITOR_ERROR_FOUND;
+        }
+      }
+
+      if ( ast->as.array.type ) {
+        if ( (opt_lang & (LANG_MIN(C_99) & ~LANG_CPP_ALL)) == 0 ) {
+          print_error( &ast->loc,
+            "\"%s\" arrays not supported in %s",
+            c_type_name( ast->as.array.type ),
+            c_lang_name( opt_lang )
+          );
+          return VISITOR_ERROR_FOUND;
+        }
+        if ( !is_func_arg ) {
+          print_error( &ast->loc,
+            "\"%s\" arrays are illegal outside of function arguments",
+            c_type_name( ast->as.array.type )
+          );
+          return VISITOR_ERROR_FOUND;
+        }
+      }
+
       c_ast_t const *const of_ast = ast->as.array.of_ast;
       switch ( of_ast->kind ) {
         case K_BUILTIN:
@@ -254,9 +292,10 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           print_hint( "array of pointer to function" );
           return VISITOR_ERROR_FOUND;
         default:
-          return VISITOR_ERROR_NOT_FOUND;
+          /* suppress warning */;
       } // switch
-      break;
+
+      return VISITOR_ERROR_NOT_FOUND;
     }
 
     case K_BUILTIN:
@@ -353,7 +392,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           print_hint( "%s returning pointer to function", kind_name );
           return VISITOR_ERROR_FOUND;
         default:
-          /* suppress warnings */;
+          /* suppress warning */;
       } // switch
 
       bool const args_ok = opt_lang == LANG_C_KNR ?
@@ -420,7 +459,6 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
  */
 static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  (void)data;
 
   c_lang_t const ok_langs = c_type_check( ast->type );
   if ( ok_langs != LANG_ALL ) {
@@ -438,7 +476,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
       for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-        if ( !c_ast_check_visitor( arg, c_ast_visitor_type ) )
+        if ( !c_ast_check_visitor( arg, c_ast_visitor_type, data ) )
           return VISITOR_ERROR_FOUND;
       } // for
       if ( ast->kind == K_FUNCTION )
@@ -466,7 +504,6 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
  */
 static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  (void)data;
 
   switch ( ast->kind ) {
     case K_ARRAY:
@@ -483,7 +520,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     case K_BLOCK:
     case K_FUNCTION:
       for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next )
-        (void)c_ast_check_visitor( arg, c_ast_visitor_warning );
+        (void)c_ast_check_visitor( arg, c_ast_visitor_warning, data );
       break;
 
     case K_NAME:
@@ -548,9 +585,9 @@ bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
   assert( ast != NULL );
   if ( check == CHECK_CAST && !c_ast_check_cast( ast ) )
     return false;
-  if ( !c_ast_check_errors( ast ) )
+  if ( !c_ast_check_errors( ast, false ) )
     return false;
-  (void)c_ast_check_visitor( ast, c_ast_visitor_warning );
+  (void)c_ast_check_visitor( ast, c_ast_visitor_warning, NULL );
   return true;
 }
 

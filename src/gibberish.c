@@ -95,8 +95,17 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
   assert( ast->kind == K_ARRAY );
 
   FPUTC( '[', param->gout );
-  if ( ast->as.array.size != C_ARRAY_NO_SIZE )
-    FPRINTF( param->gout, "%d", ast->as.array.size );
+  if ( ast->as.array.type )
+    FPRINTF( param->gout, "%s ", c_type_name( ast->as.array.type ) );
+  switch ( ast->as.array.size ) {
+    case C_ARRAY_SIZE_NONE:
+      break;
+    case C_ARRAY_SIZE_VARIABLE:
+      FPUTC( '*', param->gout );
+      break;
+    default:
+      FPRINTF( param->gout, "%d", ast->as.array.size );
+  } // switch
   FPUTC( ']', param->gout );
 }
 

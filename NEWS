@@ -10,6 +10,18 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 3.4
+
+** Static & type-qualified arrays
+Added support for C99 static and type-qualified array function arguments, e.g.:
+    void f( int a[static const 10] );
+
+** Variable length arrays
+Added support for C99 variable length array function arguments, e.g.:
+    void f( int a[*] );
+    void g( int a[const *] );
+
+
 * Changes in Cdecl 3.3
 
 ** Help command-line option

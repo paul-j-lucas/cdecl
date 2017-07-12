@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 7, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 12, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -405,9 +405,11 @@ Adds support for
 \f(CW_Bool\fP (and \f(CWbool\fP),
 \f(CW_Complex\fP (and \f(CWcomplex\fP),
 \f(CWrestrict\fP,
-and
 \f(CWinline\fP
-functions.
+functions,
+and
+\f(CWstatic\fP, type-qualified, and variable length array
+function arguments.
 .TP
 .B C11
 Use the C11 version of the C language.
@@ -419,7 +421,7 @@ Adds support for
 (and \f(CWnoreturn\fP),
 and
 \f(CW_Thread_local\fP
-(and \f(CWthread_local\fP).
+(and \f(CWthread_local\fP),
 .TP
 .B C++
 Use the latest supported version of the C++ language.
@@ -528,13 +530,15 @@ function (or block) arguments.
 .I English
 is one of:
 .IP "" 4
-.RB [ \f2storage\fP "]* " array " [" \f2number\fP "] " of " \f2english\fP"
+.BR \f2storage\fP "* " array " [[" static "] " \f2cv-qualifier\fP "* {" \f2number\fP | * "}] " of " \f2english\fP"
+.br
+.BR \f2storage\fP "* " variable " [" length "] " "array " \f2cv-qualifier\fP * " of" " \f2english\fP"
 .br
 .BR block " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
 .br
-.RB [ \f2storage\fP "]* [" \f2fn-qualifier\fP "]* " function " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
+.BR \f2storage\fP "* " \f2fn-qualifier\fP "* " function " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
 .br
-.RB [ \f2cv-qualifier\fP "]* " "pointer to" " [" "member of class" " \f2name\fP" "" ] " \f2english\fP"
+.BR \f2cv-qualifier\fP "* " "pointer to" " [" "member of class" " \f2name\fP" "" ] " \f2english\fP"
 .br
 .RB [ rvalue "] " "reference to" " \f2english\fP"
 .br
@@ -544,7 +548,7 @@ and
 .I type
 is either:
 .IP "" 4
-.RI [ storage "]* [" modifier "]* [" C-type ]
+.IR storage "* " modifier "* [" C-type ]
 .br
 .RB "{ " enum " [" class " | " struct "] | " class " | " struct " | " union " } \f2name\fP"
 .P
@@ -657,6 +661,7 @@ The words on the left are synonyms for what's on the right:
   enumeration  enum
          func  function
       integer  int
+          len  length
           mbr  member
 non-returning  noreturn
     _Noreturn  noreturn
@@ -668,6 +673,7 @@ non-returning  noreturn
     structure  struct
          type  typedef
 _Thread_local  thread_local
+          var  variable
       varargs  ...
      variadic  ...
        vector  array

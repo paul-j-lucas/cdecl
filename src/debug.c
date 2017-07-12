@@ -94,7 +94,22 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_ARRAY:
         PRINT_COMMA;
-        INDENT_PRINT( "size = %d,\n", ast->as.array.size );
+        INDENT_PRINT( "size = " );
+        switch ( ast->as.array.size ) {
+          case C_ARRAY_SIZE_NONE:
+            FPRINTF( dout, "unspecified" );
+            break;
+          case C_ARRAY_SIZE_VARIABLE:
+            FPUTC( '*', dout );
+            break;
+          default:
+            FPRINTF( dout, "%d", ast->as.array.size );
+        } // switch
+        FPUTS( ",\n", dout );
+        if ( ast->as.array.type ) {
+          INDENT_PRINT_KV( "type", c_type_name( ast->as.array.type ) );
+          FPUTS( ",\n", dout );
+        }
         c_ast_debug( ast->as.array.of_ast, indent, "of_ast", dout );
         break;
 

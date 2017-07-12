@@ -52,6 +52,8 @@ most notably:
   `wchar_t`.
 * Support for `inline` function declarations.
 * Support for `typedef` declarations.
+* Support for `static`, type-qualified, and variable length array
+  function arguments in C.
 * Support for variadic function arguments.
 * Support for C++11
   `constexpr`,

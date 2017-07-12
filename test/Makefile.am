@@ -84,6 +84,11 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_ea2i.test \
 	tests/declare_f.test \
 	tests/declare_f_pi.test \
+	tests/declare_facs3_v.test \
+	tests/declare_facv_v.test \
+	tests/declare_fas3_v.test \
+	tests/declare_fasc3_v.test \
+	tests/declare_fav_v.test \
 	tests/declare_fcce_v-01.test \
 	tests/declare_fcce_v-02.test \
 	tests/declare_fcce_v-03.test \
@@ -147,7 +152,10 @@ TESTS+=	tests/declare_a3a5a7i.test \
 # Almost every test here has a corresponding explain_ error test.
 #
 TESTS+=	tests/declare_0f_v-c.test \
+	tests/declare_ac3i.test \
 	tests/declare_af.test \
+	tests/declare_as3i.test \
+	tests/declare_avi.test \
 	tests/declare_b-c89.test \
 	tests/declare_b_ai.test \
 	tests/declare_b_f_i.test \
@@ -267,6 +275,11 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_e.test \
 	tests/explain_ea2i.test \
 	tests/explain_f_pi.test \
+	tests/explain_facs3_v.test \
+	tests/explain_facv_v.test \
+	tests/explain_fas3_v.test \
+	tests/explain_fasc3_v.test \
+	tests/explain_fav_v.test \
 	tests/explain_fcce_v.test \
 	tests/explain_ff_v.test \
 	tests/explain_fg_v-c89.test \
@@ -336,6 +349,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_0f_v-c.test \
 	tests/explain_af.test \
+	tests/explain_ac9i.test \
+	tests/explain_as9i.test \
 	tests/explain_b-c89.test \
 	tests/explain_b_ai.test \
 	tests/explain_c-c.test \
@@ -348,6 +363,7 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_e-knr.test \
 	tests/explain_esf_v.test \
 	tests/explain_f_ai.test \
+	tests/explain_fasv_v.test \
 	tests/explain_fcce_v.test \
 	tests/explain_fe_v.test \
 	tests/explain_fecc_v.test \
@@ -617,6 +633,9 @@ TESTS+=	tests/explain_ai-c++11.test \
 	tests/explain_f__v-c++03.test \
 	tests/explain_f_v__v.test \
 	tests/explain_fa_v.test \
+	tests/explain_fac3_v-c++.test \
+	tests/explain_fas3_v-c++.test \
+	tests/explain_fav_v-c++.test \
 	tests/explain_frri_v-c++03.test \
 	tests/explain_fsf_v.test \
 	tests/explain_fx_v.test \
