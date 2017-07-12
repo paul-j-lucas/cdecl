@@ -21,6 +21,9 @@ Added support for C99 variable length array function arguments, e.g.:
     void f( int a[*] );
     void g( int a[const *] );
 
+** Fixed reference to array
+The generated gibberish for "reference to array" has been fixed.
+
 
 * Changes in Cdecl 3.3
 

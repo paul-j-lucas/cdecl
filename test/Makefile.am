@@ -567,6 +567,7 @@ TESTS+=	tests/declare_0f_v.test \
 	tests/declare_pmf_i.test \
 	tests/declare_pmf_pc.test \
 	tests/declare_pmi.test \
+	tests/declare_ra3i.test \
 	tests/declare_rci.test \
 	tests/declare_rcpi.test \
 	tests/declare_ref.test \
@@ -602,19 +603,20 @@ TESTS+=	tests/explain_a.test \
 	tests/explain_cpmi.test \
 	tests/explain_crf_v.test \
 	tests/explain_cvf_v.test \
-	tests/explain_f_cpmi.test \
 	tests/explain_f__pf__v.test \
-	tests/explain_f_pmi.test \
 	tests/explain_f__pv.test \
-	tests/explain_frri_v.test \
 	tests/explain_f__v.test \
+	tests/explain_f_cpmi.test \
+	tests/explain_f_pmi.test \
+	tests/explain_frri_v.test \
 	tests/explain_mi.test \
 	tests/explain_oyf.test \
-	tests/explain_pmfii_pk.test \
 	tests/explain_pmf_i.test \
 	tests/explain_pmf_pc.test \
+	tests/explain_pmfii_pk.test \
 	tests/explain_pmgi.test \
 	tests/explain_pmi.test \
+	tests/explain_ra3i.test \
 	tests/explain_rf_v.test \
 	tests/explain_ri.test \
 	tests/explain_rrf_v.test \

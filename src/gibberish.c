@@ -289,6 +289,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
  * "postfix" cases:
  *  + array of pointer to function
  *  + pointer to array
+ *  + reference to array
  *
  * @param ast The c_ast
  * @param param The g_param to use.
@@ -310,6 +311,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
 
       case K_POINTER:
       case K_POINTER_TO_MEMBER:
+      case K_REFERENCE:
         switch ( ast->kind ) {
           case K_BLOCK:                 // Apple extension
             FPUTS( "(^", param->gout );
