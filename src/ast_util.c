@@ -45,7 +45,7 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t* );
  * @param array The array AST to append.  It's "of" type must be null.
  * @return Returns the AST to be used as the grammar production's return value.
  */
-c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
+static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
   assert( array != NULL );
   assert( array->kind == K_ARRAY );
 
