@@ -89,6 +89,14 @@ typedef struct c_ptr_ref  c_ptr_ref_t;
 typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
 
 /**
+ * Linked-list of AST nodes.
+ */
+struct c_ast_list {
+  c_ast_t  *head_ast;
+  c_ast_t  *tail_ast;
+};
+
+/**
  * Generic "parent" AST node.
  *
  * @note All parent nodes have a c_ast pointer to what they're a parent of as
@@ -96,14 +104,6 @@ typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
  */
 struct c_parent {
   c_ast_t  *of_ast;
-};
-
-/**
- * Linked-list of AST nodes.
- */
-struct c_ast_list {
-  c_ast_t  *head_ast;
-  c_ast_t  *tail_ast;
 };
 
 /**
