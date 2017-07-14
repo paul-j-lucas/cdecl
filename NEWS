@@ -21,6 +21,10 @@ Added support for C99 variable length array function arguments, e.g.:
     void f( int a[*] );
     void g( int a[const *] );
 
+** Help command-line argument
+Now prints the help message and exits if the first command-line argument is
+"help".
+
 ** Fixed reference to array
 The generated gibberish for "reference to array" has been fixed.
 
