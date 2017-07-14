@@ -89,7 +89,7 @@ int main( int argc, char const **argv ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Checks whether \a s is a cdecl command: cast, declare, or explain.
+ * Checks whether \a s is a cdecl command: cast, declare, explain, etc.
  *
  * @param s The null-terminated string to check.
  * @return Returns \c true only if \a s is a command.
