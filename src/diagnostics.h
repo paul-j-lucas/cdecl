@@ -53,7 +53,7 @@ void print_hint( char const *format, ... );
 /**
  * Prints the location of the error including:
  *
- *  + The error line (if not neither a TTY nor interactive).
+ *  + The error line (if neither a TTY nor interactive).
  *  + A '^' (in color, if possible and requested) under the offending token.
  *  + The error column.
  *
