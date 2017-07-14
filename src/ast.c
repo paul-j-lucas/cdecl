@@ -64,7 +64,7 @@ static void c_ast_free( c_ast_t *ast ) {
         FREE( ast->as.ptr_mbr.class_name );
         break;
       default:
-        /* suppress warnings */;
+        /* suppress warning */;
     } // switch
     FREE( ast );
   }
