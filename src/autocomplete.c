@@ -252,7 +252,7 @@ static char* keyword_completion( char const *text, int state ) {
 
     //
     // Special case: the "cast" command is begin by either "cast" or, if C++11
-    // or later, any one of "const", "dynamic", "static", or "reimplement" for
+    // or later, any one of "const", "dynamic", "static", or "reinterpret" for
     // "const cast ...", etc.
     //
     command = is_command( L_CAST ) ||
