@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 3.4.1
+
+** Fixed new-style casts C++ version
+New-style casts are now permitted as far back as C++98.
+
+
 * Changes in Cdecl 3.4
 
 ** Static & type-qualified arrays
