@@ -743,7 +743,8 @@ explain_cast_c
 
 explain_new_style_cast_c
   : explain_c new_style_cast_c
-    '<' type_ast_c { type_push( $4.ast ); } cast_opt_c '>' '(' name_opt ')'
+    lt_expected type_ast_c { type_push( $4.ast ); } cast_opt_c gt_expected
+    lparen_expected name_opt rparen_expected
     Y_END
     {
       type_pop();
@@ -2193,11 +2194,35 @@ comma_expected
     }
   ;
 
+gt_expected
+  : '>'
+  | error
+    {
+      ELABORATE_ERROR( "'>' expected" );
+    }
+  ;
+
 into_expected
   : Y_INTO
   | error
     {
       ELABORATE_ERROR( "\"%s\" expected", L_INTO );
+    }
+  ;
+
+lparen_expected
+  : '('
+  | error
+    {
+      ELABORATE_ERROR( "'(' expected" );
+    }
+  ;
+
+lt_expected
+  : '<'
+  | error
+    {
+      ELABORATE_ERROR( "'<' expected" );
     }
   ;
 
@@ -2235,6 +2260,14 @@ reference_expected
   | error
     {
       ELABORATE_ERROR( "\"%s\" expected", L_REFERENCE );
+    }
+  ;
+
+rparen_expected
+  : ')'
+  | error
+    {
+      ELABORATE_ERROR( "')' expected" );
     }
   ;
 
