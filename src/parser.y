@@ -750,7 +750,8 @@ explain_new_style_cast_c
       type_pop();
 
       DUMP_START( "explain_new_style_cast_c",
-                  "EXPLAIN '<' type_ast_c cast_opt_c '>' '(' NAME ')'" );
+                  "EXPLAIN new_style_cast_c '<' type_ast_c cast_opt_c '>' "
+                  "'(' NAME ')'" );
       DUMP_LITERAL( "new_style_cast_c", $2 );
       DUMP_AST( "type_ast_c", $4.ast );
       DUMP_AST( "cast_opt_c", $6.ast );
