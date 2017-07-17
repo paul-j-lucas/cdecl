@@ -113,17 +113,20 @@ static void print_help_line( char const *line ) {
           escaped = true;
           continue;
         }
+        // FALLTHROUGH
       case '<':
         if ( !escaped ) {
           SGR_START_COLOR( stdout, help_nonterm );
           break;
         }
+        // FALLTHROUGH
       case '>':
         if ( !escaped ) {
           PUTC_OUT( *c );
           SGR_END_COLOR( stdout );
           continue;
         }
+        // FALLTHROUGH
       case '*':
       case '[':
       case ']':
@@ -136,6 +139,7 @@ static void print_help_line( char const *line ) {
           SGR_END_COLOR( stdout );
           continue;
         }
+        // FALLTHROUGH
 
       default:
         if ( c == line && isalpha( *c ) ) {
