@@ -760,7 +760,7 @@ explain_new_style_cast_c
 
       bool ok = false;
 
-      if ( opt_lang < LANG_CPP_11 ) {
+      if ( opt_lang < LANG_CPP_MIN ) {
         print_error( &@2,
           "%s_cast is illegal in %s", $2, c_lang_name( opt_lang )
         );
