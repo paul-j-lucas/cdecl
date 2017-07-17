@@ -744,17 +744,17 @@ explain_cast_c
 explain_new_style_cast_c
   : explain_c new_style_cast_c
     lt_expected type_ast_c { type_push( $4.ast ); } cast_opt_c gt_expected
-    lparen_expected name_opt rparen_expected
+    lparen_expected name_expected rparen_expected
     Y_END
     {
       type_pop();
 
       DUMP_START( "explain_new_style_cast_c",
-                  "EXPLAIN '<' type_ast_c cast_opt_c '>' '(' name_opt ')'" );
+                  "EXPLAIN '<' type_ast_c cast_opt_c '>' '(' NAME ')'" );
       DUMP_LITERAL( "new_style_cast_c", $2 );
       DUMP_AST( "type_ast_c", $4.ast );
       DUMP_AST( "cast_opt_c", $6.ast );
-      DUMP_NAME( "name_opt", $9 );
+      DUMP_NAME( "name_expected", $9 );
       DUMP_END();
 
       bool ok = false;
