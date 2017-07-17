@@ -62,6 +62,33 @@ _GL_INLINE_HEADER_BEGIN
 #define INTERNAL_ERR(FORMAT,...) \
   PMESSAGE_EXIT( EX_SOFTWARE, "internal error: " FORMAT, __VA_ARGS__ )
 
+#ifdef __GNUC__
+
+/**
+ * Specifies that \a EXPR is \e very likely (as in 99.99% of the time) to be
+ * non-zero (true) allowing the compiler to better order code blocks for
+ * magrinally better performance.
+ *
+ * @see http://lwn.net/Articles/255364/
+ * @hideinitializer
+ */
+#define likely(EXPR)              __builtin_expect( !!(EXPR), 1 )
+
+/**
+ * Specifies that \a EXPR is \e very unlikely (as in .01% of the time) to be
+ * non-zero (true) allowing the compiler to better order code blocks for
+ * magrinally better performance.
+ *
+ * @see http://lwn.net/Articles/255364/
+ * @hideinitializer
+ */
+#define unlikely(EXPR)            __builtin_expect( !!(EXPR), 0 )
+
+#else
+# define likely(EXPR)             (EXPR)
+# define unlikely(EXPR)           (EXPR)
+#endif /* __GNUC__ */
+
 #define MALLOC(TYPE,N) \
   (TYPE*)check_realloc( NULL, sizeof(TYPE) * (N) )
 
@@ -69,22 +96,22 @@ _GL_INLINE_HEADER_BEGIN
   BLOCK( PRINT_ERR( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
 
 #define FERROR(STREAM) \
-  BLOCK( if ( ferror( STREAM ) ) PERROR_EXIT( EX_IOERR ); )
+  BLOCK( if ( unlikely( ferror( STREAM ) ) ) PERROR_EXIT( EX_IOERR ); )
 
-#define FFLUSH(STREAM) \
-  BLOCK( if ( fflush( STREAM ) != 0 ) PERROR_EXIT( EX_IOERR ); )
+#define FFLUSH(STREAM) BLOCK( \
+  if ( unlikely( fflush( STREAM ) != 0 ) ) PERROR_EXIT( EX_IOERR ); )
 
-#define FPRINTF(STREAM,...) \
-  BLOCK( if ( fprintf( (STREAM), __VA_ARGS__ ) < 0 ) PERROR_EXIT( EX_IOERR ); )
+#define FPRINTF(STREAM,...) BLOCK( \
+  if ( unlikely( fprintf( (STREAM), __VA_ARGS__ ) < 0 ) ) PERROR_EXIT( EX_IOERR ); )
 
-#define FPUTC(C,STREAM) \
-  BLOCK( if ( putc( (C), (STREAM) ) == EOF ) PERROR_EXIT( EX_IOERR ); )
+#define FPUTC(C,STREAM) BLOCK( \
+  if ( unlikely( putc( (C), (STREAM) ) == EOF ) ) PERROR_EXIT( EX_IOERR ); )
 
-#define FPUTS(S,STREAM) \
-  BLOCK( if ( fputs( (S), (STREAM) ) == EOF ) PERROR_EXIT( EX_IOERR ); )
+#define FPUTS(S,STREAM) BLOCK( \
+  if ( unlikely( fputs( (S), (STREAM) ) == EOF ) ) PERROR_EXIT( EX_IOERR ); )
 
-#define FSTAT(FD,STAT) \
-  BLOCK( if ( fstat( (FD), (STAT) ) < 0 ) PERROR_EXIT( EX_IOERR ); )
+#define FSTAT(FD,STAT) BLOCK( \
+  if ( unlikely( fstat( (FD), (STAT) ) < 0 ) ) PERROR_EXIT( EX_IOERR ); )
 
 #define REALLOC(PTR,TYPE,N) \
   (PTR) = (TYPE*)check_realloc( (PTR), sizeof(TYPE) * (N) )

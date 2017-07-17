@@ -81,7 +81,7 @@ static bool c_ast_has_cycle( c_ast_t const *ast ) {
   assert( ast != NULL );
   for ( c_ast_t const *const start_ast = ast; ast->parent; ) {
     ast = ast->parent;
-    if ( ast == start_ast )
+    if ( unlikely( ast == start_ast ) )
       return true;
   } // for
   return false;
