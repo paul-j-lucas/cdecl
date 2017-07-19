@@ -278,6 +278,7 @@ D             [0-9]
 H             [0-9A-Fa-f]
 S             [ \f\r\t\v]
 
+identifier    {A}({A}|{D})*
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
 
 binary        0[bB]{B}+{int_suffix}?
@@ -294,7 +295,7 @@ hexadecimal   0[xX]{H}+{int_suffix}?
                */
 _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 
-{A}({A}|{D})* {
+{identifier}* {
                 SET_TOKEN;
 
                 keyword_t const *const cdk = cdecl_keyword_find( lexer_token );
