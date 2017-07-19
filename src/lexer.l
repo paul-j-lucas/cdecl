@@ -50,13 +50,13 @@
  * also exit with the status we want.
  * @hideinitializer
  */
-#define YY_FATAL_ERROR( MSG )     lexer_fatal( (MSG) )
+#define YY_FATAL_ERROR(MSG)       lexer_fatal( (MSG) )
 
 /**
  * Overrides flex's input.
  * @hideinitializer
  */
-#define YY_INPUT( BUF, RESULT, MAX_SIZE ) \
+#define YY_INPUT(BUF,RESULT,MAX_SIZE) \
   (RESULT) = lexer_get_input( (BUF), (MAX_SIZE) )
 
 /**
