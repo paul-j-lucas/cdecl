@@ -50,7 +50,6 @@ _GL_INLINE_HEADER_BEGIN
 #define CONST_CAST(T,EXPR)        ((T)(EXPR))
 #define FREE(PTR)                 free( CONST_CAST( void*, (PTR) ) )
 #define NO_OP                     ((void)0)
-#define PERROR_EXIT(STATUS)       BLOCK( perror( me ); exit( STATUS ); )
 #define PRINT_ERR(...)            fprintf( stderr, __VA_ARGS__ )
 #define PUTC_ERR(C)               FPUTC( (C), stderr )
 #define PUTC_OUT(C)               FPUTC( (C), stdout )
@@ -96,22 +95,22 @@ _GL_INLINE_HEADER_BEGIN
   BLOCK( PRINT_ERR( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
 
 #define FERROR(STREAM) \
-  BLOCK( if ( unlikely( ferror( STREAM ) ) ) PERROR_EXIT( EX_IOERR ); )
+  BLOCK( if ( unlikely( ferror( STREAM ) ) ) perror_exit( EX_IOERR ); )
 
 #define FFLUSH(STREAM) BLOCK( \
-  if ( unlikely( fflush( STREAM ) != 0 ) ) PERROR_EXIT( EX_IOERR ); )
+  if ( unlikely( fflush( STREAM ) != 0 ) ) perror_exit( EX_IOERR ); )
 
 #define FPRINTF(STREAM,...) BLOCK( \
-  if ( unlikely( fprintf( (STREAM), __VA_ARGS__ ) < 0 ) ) PERROR_EXIT( EX_IOERR ); )
+  if ( unlikely( fprintf( (STREAM), __VA_ARGS__ ) < 0 ) ) perror_exit( EX_IOERR ); )
 
 #define FPUTC(C,STREAM) BLOCK( \
-  if ( unlikely( putc( (C), (STREAM) ) == EOF ) ) PERROR_EXIT( EX_IOERR ); )
+  if ( unlikely( putc( (C), (STREAM) ) == EOF ) ) perror_exit( EX_IOERR ); )
 
 #define FPUTS(S,STREAM) BLOCK( \
-  if ( unlikely( fputs( (S), (STREAM) ) == EOF ) ) PERROR_EXIT( EX_IOERR ); )
+  if ( unlikely( fputs( (S), (STREAM) ) == EOF ) ) perror_exit( EX_IOERR ); )
 
 #define FSTAT(FD,STAT) BLOCK( \
-  if ( unlikely( fstat( (FD), (STAT) ) < 0 ) ) PERROR_EXIT( EX_IOERR ); )
+  if ( unlikely( fstat( (FD), (STAT) ) < 0 ) ) perror_exit( EX_IOERR ); )
 
 #define REALLOC(PTR,TYPE,N) \
   (PTR) = (TYPE*)check_realloc( (PTR), sizeof(TYPE) * (N) )
@@ -305,6 +304,13 @@ void link_push( link_t **phead, link_t *node );
  */
 #define LINK_PUSH(PHEAD,NODE) \
   link_push( (link_t**)(PHEAD), (link_t*)(NODE) )
+
+/**
+ * Prints an error message for \c errno to standard error and exits.
+ *
+ * @param status The exit status code.
+ */
+void perror_exit( int status );
 
 /**
  * Reads an input line:

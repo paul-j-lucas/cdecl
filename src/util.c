@@ -96,7 +96,7 @@ void* check_realloc( void *p, size_t size ) {
     size = 1;
   void *const r = p ? realloc( p, size ) : malloc( size );
   if ( unlikely( !r ) )
-    PERROR_EXIT( EX_OSERR );
+    perror_exit( EX_OSERR );
   return r;
 }
 
@@ -105,7 +105,7 @@ char* check_strdup( char const *s ) {
     return NULL;
   char *const dup = strdup( s );
   if ( unlikely( !dup ) )
-    PERROR_EXIT( EX_OSERR );
+    perror_exit( EX_OSERR );
   return dup;
 }
 
@@ -119,10 +119,10 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
 
   FILE *const tmp = tmpfile();
   if ( unlikely( !tmp ) )
-    PERROR_EXIT( EX_OSERR );
+    perror_exit( EX_OSERR );
   if ( likely( size > 0 ) ) {
     if ( unlikely( fwrite( buf, 1, size, tmp ) != size ) )
-      PERROR_EXIT( EX_OSERR );
+      perror_exit( EX_OSERR );
     rewind( tmp );
   }
   return tmp;
@@ -225,6 +225,11 @@ bool is_file( int fd ) {
   struct stat fd_stat;
   FSTAT( fd, &fd_stat );
   return S_ISREG( fd_stat.st_mode );
+}
+
+void perror_exit( int status ) {
+  perror( me );
+  exit( status );
 }
 
 char* read_input_line( char const *ps1, char const *ps2 ) {
