@@ -258,7 +258,7 @@ c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, c_loc_t const *loc );
 /**
  * Gets the root AST node of \a ast.
  *
- * @param ast the AST node to get the root
+ * @param ast The AST node to get the root of.
  * @return Returns said AST node.
  */
 c_ast_t* c_ast_root( c_ast_t *ast );
