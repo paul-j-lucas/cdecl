@@ -144,7 +144,8 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_w.test \
 	tests/declare_z.test \
 	tests/declare_zd.test \
-	tests/declare_zf.test
+	tests/declare_zf.test \
+	tests/declare_zz.test
 
 #
 # C declare error tests
@@ -223,7 +224,8 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_vi-knr.test \
 	tests/declare_w-c89.test \
 	tests/declare_xi-c.test \
-	tests/declare_z-knr.test
+	tests/declare_z-knr.test \
+	tests/declare_zz-knr.test
 
 ###############################################################################
 
@@ -339,7 +341,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_w.test \
 	tests/explain_z.test \
 	tests/explain_zd.test \
-	tests/explain_zf.test
+	tests/explain_zf.test \
+	tests/explain_zz.test
 
 #
 # C explain error tests
@@ -428,7 +431,8 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_voyf-c.test \
 	tests/explain_w-c89.test \
 	tests/explain_xi-c.test \
-	tests/explain_z-knr.test
+	tests/explain_z-knr.test \
+	tests/explain_zz-knr.test
 
 ###############################################################################
 

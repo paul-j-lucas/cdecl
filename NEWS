@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 3.5
+
+** Added ssize_t
+Similar to size_t, support for ssize_t has been added.
+
+
 * Changes in Cdecl 3.4.1
 
 ** Fixed new-style casts C++ version

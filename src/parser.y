@@ -388,6 +388,7 @@ static void yyerror( char const *msg ) {
 %token  <type>      Y_ENUM
 %token  <type>      Y_SIGNED
 %token  <type>      Y_SIZE_T
+%token  <type>      Y_SSIZE_T
 %token  <type>      Y_VOID
 %token  <type>      Y_VOLATILE
 
@@ -1818,6 +1819,7 @@ builtin_type_c
   | Y_WCHAR_T
   | Y_INT
   | Y_SIZE_T
+  | Y_SSIZE_T
   | Y_FLOAT
   | Y_DOUBLE
   ;

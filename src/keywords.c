@@ -78,6 +78,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_ENUM,             Y_ENUM,             T_ENUM,          LANG_ALL         },
   { L_SIGNED,           Y_SIGNED,           T_SIGNED,        LANG_ALL         },
   { L_SIZE_T,           Y_SIZE_T,           T_SIZE_T,        LANG_ALL         },
+  { L_SSIZE_T,          Y_SSIZE_T,          T_SSIZE_T,       LANG_ALL         },
   { L_VOID,             Y_VOID,             T_VOID,          LANG_ALL         },
   { L_VOLATILE,         Y_VOLATILE,         T_VOLATILE,      LANG_ALL         },
 
