@@ -12,10 +12,10 @@ Test files are as follows:
 + `help-*`             = A help test.
 + `set_*`              = A set test.
 + `static_cast_*`      = A static cast test.
-+ `reinterpret_cast_*` = A static cast test.
++ `reinterpret_cast_*` = A reinterpret cast test.
 + `*-`*lang*`*`        = A test using *lang* explicitly.
 
-Within each test, sequences of single characters are used to denote a C/C++
+Within each test, sequences of characters are used to denote a C/C++
 declaration as it is in English.
 The characters are:
 
