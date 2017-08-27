@@ -47,6 +47,7 @@ most notably:
   `complex`,
   `restrict`,
   `size_t`,
+  `ssize_t`,
   `thread_local`,
   and
   `wchar_t`.
