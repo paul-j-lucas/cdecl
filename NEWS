@@ -10,6 +10,14 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 3.6
+
+** First word of first argument
+The first word of the first non-option command-line argument is now also
+checked to see if it's a command thus allowing fully quoted strings:
+    $ cdecl 'explain int *const p'
+
+
 * Changes in Cdecl 3.5
 
 ** Added ssize_t

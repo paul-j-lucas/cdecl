@@ -61,6 +61,7 @@ extern void         yyrestart( FILE* );
 // local functions
 static void         cdecl_cleanup( void );
 static bool         is_command( char const* );
+static bool         parse_argv( int, char const*[] );
 static bool         parse_command_line( char const*, int, char const*[] );
 static bool         parse_files( int, char const*[] );
 static bool         parse_stdin( void );
@@ -72,17 +73,7 @@ int main( int argc, char const **argv ) {
   atexit( cdecl_cleanup );
   options_init( &argc, &argv );
   cdecl_prompt_init();
-
-  bool ok;
-  if ( argc == 0 )                      // cdecl
-    ok = parse_stdin();
-  else if ( is_command( me ) )          // {cast|declare|explain} arg ...
-    ok = parse_command_line( me, argc, argv );
-  else if ( is_command( argv[0] ) )     // cdecl {cast|declare|explain} arg ...
-    ok = parse_command_line( NULL, argc, argv );
-  else
-    ok = parse_files( argc, argv );
-
+  bool const ok = parse_argv( argc, argv );
   exit( ok ? EX_OK : EX_DATAERR );
 }
 
@@ -118,6 +109,34 @@ static bool is_command( char const *s ) {
 static void cdecl_cleanup( void ) {
   free_now();
   c_ast_cleanup();
+}
+
+/**
+ * Parses argv to figure out what kind of arguments were given.
+ *
+ * @param argc The length of \a argv.
+ * @param argv The command-line arguments.
+ * @return Returns \c true only upon success.
+ */
+static bool parse_argv( int argc, char const *argv[] ) {
+  if ( argc == 0 )                      // cdecl
+    return parse_stdin();
+  if ( is_command( me ) )               // {cast|declare|explain} arg ...
+    return parse_command_line( me, argc, argv );
+  if ( is_command( argv[0] ) )          // cdecl {cast|declare|explain} arg ...
+    return parse_command_line( NULL, argc, argv );
+
+  // cdecl '{cast|declare|explain} arg ...'
+  char *remainder = CONST_CAST( char*, argv[0] );
+  char *first_word = strsep( &remainder, " \t" );
+  if ( first_word != NULL && is_command( first_word ) ) {
+    char const *const command = check_strdup( first_word );
+    while ( (*first_word++ = *remainder++) )
+      ;
+    return parse_command_line( command, argc, argv );
+  }
+
+  return parse_files( argc, argv );
 }
 
 /**

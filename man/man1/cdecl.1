@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "August 26, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "August 30, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -128,7 +128,9 @@ declare p as pointer to array 4 of const pointer to int
 .SS First Argument
 .B cdecl
 will also behave as above
-if the first non-option argument on the command-line
+if the first non-option argument
+on the command-line
+or the first whitespace separated word thereof
 is one of
 .BR cast ,
 .BR const ,
@@ -143,7 +145,7 @@ or
 $ cdecl declare p as pointer to array 4 of int
 int (*p)[4];
 
-$ c++decl reinterpret cast n into pointer to unsigned
+$ c++decl 'reinterpret cast n into pointer to unsigned'
 reinterpret_cast<unsigned*>(n)
 .cE 0
 .SS Standard Input
