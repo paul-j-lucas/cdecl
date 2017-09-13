@@ -51,7 +51,7 @@ typedef struct c_keyword c_keyword_t;
  * @param literal The literal to find.
  * @return Returns a pointer to the corresponding c_keyword or null for none.
  */
-c_keyword_t const* c_keyword_find_literal( char const *literal );
+c_keyword_t const* c_keyword_find( char const *literal );
 
 ///////////////////////////////////////////////////////////////////////////////
 

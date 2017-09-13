@@ -122,7 +122,7 @@ static c_keyword_t const C_KEYWORDS[] = {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_keyword_t const* c_keyword_find_literal( char const *literal ) {
+c_keyword_t const* c_keyword_find( char const *literal ) {
   for ( c_keyword_t const *k = C_KEYWORDS; k->literal; ++k ) {
     if ( (k->ok_langs & opt_lang) == 0 )
       continue;

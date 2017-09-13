@@ -298,20 +298,20 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 {identifier}* {
                 SET_TOKEN;
 
-                keyword_t const *const cdk = cdecl_keyword_find( lexer_token );
-                if ( cdk ) {
-                  if ( cdk->c_keyword_synonym )
-                    lexer_token = cdk->c_keyword_synonym;
+                keyword_t const *const ck = cdecl_keyword_find( lexer_token );
+                if ( ck ) {
+                  if ( ck->c_keyword_synonym )
+                    lexer_token = ck->c_keyword_synonym;
                   else
-                    return cdk->y_token;
+                    return ck->y_token;
                 }
 
         find_c_keyword:
                 NO_OP;
-                c_keyword_t const *ck = c_keyword_find_literal( lexer_token );
-                if ( ck ) {
-                  yylval.type = ck->type;
-                  return ck->y_token;
+                c_keyword_t const *const k = c_keyword_find( lexer_token );
+                if ( k ) {
+                  yylval.type = k->type;
+                  return k->y_token;
                 }
 
                 yylval.name = check_strdup( lexer_token );
