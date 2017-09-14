@@ -631,6 +631,25 @@ declare_english
   : Y_DECLARE name_expected as_expected storage_class_list_opt_english
     decl_english Y_END
     {
+      if ( $5.ast->kind == K_NAME ) {
+        //
+        // This checks for a case like:
+        //
+        //      declare x as y
+        //
+        // i.e., declaring a variable name as another name (unknown type).
+        // This can get this far due to the nature of the C/C++ grammar.
+        //
+        // This check has to be done now in the parser rather than later in the
+        // AST because the name of the AST node needs to be set to the variable
+        // name, but the AST node is itself a name and overwriting it would
+        // lose information.
+        //
+        assert( $5.ast->name != NULL );
+        print_error( &@5, "\"%s\": unknown type", $5.ast->name );
+        PARSE_ABORT();
+      }
+
       assert( $5.ast->name == NULL );
       $5.ast->name = $2;
 

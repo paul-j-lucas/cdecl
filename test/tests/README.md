@@ -40,7 +40,7 @@ The characters are:
 + `r` = `restrict` or reference
 + `rr` = rvalue reference
 + `s` = `signed` or `static`
-+ `t` = `typedef`
++ `t` = `typedef` or unknown type
 + `u` = `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`

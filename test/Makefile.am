@@ -212,6 +212,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_sl-knr.test \
 	tests/declare_sv.test \
 	tests/declare_sw.test \
+	tests/declare_t.test \
 	tests/declare_ub.test \
 	tests/declare_uc16.test \
 	tests/declare_uc32.test \
