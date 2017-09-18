@@ -78,7 +78,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
   c_ast_t const *const storage_ast =
     c_ast_find_type( nonconst_ast, V_DOWN, T_MASK_STORAGE );
 
-  if ( storage_ast ) {
+  if ( storage_ast != NULL ) {
     c_type_t const storage = storage_ast->type & T_MASK_STORAGE;
     print_error( &ast->loc, "can not cast into %s", c_type_name( storage ) );
     return false;
@@ -131,7 +131,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
   unsigned n_args = 0;
 
   for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-    if ( ++n_args > 1 && void_arg )
+    if ( ++n_args > 1 && void_arg != NULL )
       goto only_void;
 
     switch ( arg->kind ) {
@@ -145,7 +145,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
           // Ordinarily, void arguments are invalid; but a single void function
           // "argument" is valid (as long as it doesn't have a name).
           //
-          if ( arg->name ) {
+          if ( arg->name != NULL ) {
             print_error( &arg->loc, "arguments can not be void" );
             return false;
           }
@@ -164,7 +164,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
         break;
 
       case K_VARIADIC:
-        if ( arg->next ) {
+        if ( arg->next != NULL ) {
           print_error( &arg->loc, "variadic specifier must be last" );
           return false;
         }
@@ -176,7 +176,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
     } // switch
 
     c_type_t const storage = arg->type & (T_MASK_STORAGE & ~T_REGISTER);
-    if ( storage ) {
+    if ( storage != T_NONE ) {
       print_error( &arg->loc,
         "function arguments can not be %s", c_type_name( storage )
       );
@@ -187,7 +187,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
       return false;
   } // for
 
-  if ( variadic_arg && n_args == 1 ) {
+  if ( variadic_arg != NULL && n_args == 1 ) {
     print_error( &variadic_arg->loc,
       "variadic specifier can not be only argument"
     );
@@ -243,7 +243,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
   switch ( ast->kind ) {
     case K_ARRAY: {
       if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE ) {
-        if ( (opt_lang & (LANG_MIN(C_99) & ~LANG_CPP_ALL)) == 0 ) {
+        if ( (opt_lang & (LANG_MIN(C_99) & ~LANG_CPP_ALL)) == LANG_NONE ) {
           print_error( &ast->loc,
             "variable length arrays not supported in %s",
             c_lang_name( opt_lang )
@@ -259,7 +259,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       }
 
       if ( ast->as.array.type ) {
-        if ( (opt_lang & (LANG_MIN(C_99) & ~LANG_CPP_ALL)) == 0 ) {
+        if ( (opt_lang & (LANG_MIN(C_99) & ~LANG_CPP_ALL)) == LANG_NONE ) {
           print_error( &ast->loc,
             "\"%s\" arrays not supported in %s",
             c_type_name( ast->as.array.type ),
@@ -299,14 +299,14 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
     }
 
     case K_BUILTIN:
-      if ( (ast->type & T_MASK_TYPE) == 0 ) {
+      if ( (ast->type & T_MASK_TYPE) == T_NONE ) {
         print_error( &ast->loc,
           "implicit \"int\" is illegal in %s",
           c_lang_name( opt_lang )
         );
         return VISITOR_ERROR_FOUND;
       }
-      if ( (ast->type & T_VOID) && !ast->parent ) {
+      if ( (ast->type & T_VOID) && ast->parent == NULL ) {
         print_error( &ast->loc, "variable of void" );
         print_hint( "pointer to void" );
         return VISITOR_ERROR_FOUND;
@@ -351,7 +351,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           return VISITOR_ERROR_FOUND;
         }
       }
-      else if ( (ast->type & T_MASK_QUALIFIER) ) {
+      else if ( (ast->type & T_MASK_QUALIFIER) != T_NONE ) {
         print_error( &ast->loc,
           "\"%s\" functions illegal in %s",
           c_type_name( ast->type & T_MASK_QUALIFIER ),
@@ -365,7 +365,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       tmp_type = (ast->type &
                   (T_AUTO_C | T_BLOCK | T_MUTABLE | T_REGISTER |
                    T_THREAD_LOCAL));
-      if ( tmp_type )
+      if ( tmp_type != T_NONE )
         return error_kind_not_type( ast, tmp_type );
 
       char const *const kind_name = c_kind_name( ast->kind );

@@ -84,10 +84,10 @@ static void print_caret( size_t error_column ) {
     //
     size_t input_line_len;
     char const *input_line = lexer_input_line( &input_line_len );
-    assert( input_line );
+    assert( input_line != NULL );
     if ( input_line_len == 0 ) {        // no input? try command line
       input_line = command_line;
-      assert( input_line );
+      assert( input_line != NULL );
       input_line_len = command_line_len;
     }
     assert( error_column <= input_line_len );
@@ -190,7 +190,7 @@ static size_t token_len( char const *s ) {
   char const *const s0 = s;
   bool const is_s0_space = isspace( *s0 );
   bool const is_s0_alnum = isalnum( *s0 );
-  for ( ++s; *s; ++s ) {
+  for ( ++s; *s != '\0'; ++s ) {
     if ( is_s0_space ) {
       if ( !isspace( *s ) )
         break;

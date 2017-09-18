@@ -244,7 +244,7 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
   assert( ast != NULL );
   c_type_t storage = T_NONE;
   c_ast_t *const found = c_ast_find_kind( ast, V_DOWN, K_BUILTIN );
-  if ( found ) {
+  if ( found != NULL ) {
     storage = found->type & T_MASK_STORAGE;
     found->type &= ~T_MASK_STORAGE;
   }
@@ -265,7 +265,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_type_ast, c_ast_t *func ) {
   assert( ast != NULL );
   c_ast_t *const rv = c_ast_add_func_impl( ast, ret_type_ast, func );
   assert( rv != NULL );
-  if ( !func->name )
+  if ( func->name == NULL )
     func->name = c_ast_take_name( ast );
   func->type |= c_ast_take_storage( func->as.func.ret_ast );
   return rv;
@@ -275,24 +275,24 @@ char const* c_ast_name( c_ast_t const *ast, v_direction_t dir ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_t *const found =
     c_ast_visit( nonconst_ast, dir, c_ast_visitor_name, NULL );
-  return found ? found->name : NULL;
+  return found != NULL ? found->name : NULL;
 }
 
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   assert( type_ast != NULL );
-  if ( !decl_ast )
+  if ( decl_ast == NULL )
     return type_ast;
 
-  if ( !type_ast->parent ) {
+  if ( type_ast->parent == NULL ) {
     c_ast_t *const placeholder =
       c_ast_find_kind( decl_ast, V_DOWN, K_PLACEHOLDER );
-    if ( placeholder ) {
+    if ( placeholder != NULL ) {
       if ( type_ast->depth >= decl_ast->depth ) {
         //
         // The type_ast is the final AST -- decl_ast (containing a placeholder)
         // is discarded.
         //
-        if ( !type_ast->name )
+        if ( type_ast->name == NULL )
           type_ast->name = c_ast_take_name( decl_ast );
         return type_ast;
       }
@@ -318,7 +318,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
 char const* c_ast_take_name( c_ast_t *ast ) {
   assert( ast != NULL );
   c_ast_t *const found = c_ast_visit( ast, V_DOWN, c_ast_visitor_name, NULL );
-  if ( !found )
+  if ( found == NULL )
     return NULL;
   char const *const name = found->name;
   found->name = NULL;
@@ -328,7 +328,7 @@ char const* c_ast_take_name( c_ast_t *ast ) {
 bool c_ast_take_typedef( c_ast_t *ast ) {
   assert( ast != NULL );
   c_ast_t *const found = c_ast_find_type( ast, V_DOWN, T_TYPEDEF );
-  if ( found ) {
+  if ( found != NULL ) {
     found->type &= ~T_TYPEDEF;
     return true;
   }

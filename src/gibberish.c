@@ -95,7 +95,7 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
   assert( ast->kind == K_ARRAY );
 
   FPUTC( '[', param->gout );
-  if ( ast->as.array.type )
+  if ( ast->as.array.type != T_NONE )
     FPRINTF( param->gout, "%s ", c_type_name( ast->as.array.type ) );
   switch ( ast->as.array.size ) {
     case C_ARRAY_SIZE_NONE:
@@ -185,9 +185,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         else
           c_ast_gibberish_postfix( ast, param );
       }
-      if ( cv_qualifier )
+      if ( cv_qualifier != T_NONE )
         FPRINTF( param->gout, " %s", c_type_name( cv_qualifier ) );
-      if ( ref_qualifier )
+      if ( ref_qualifier != T_NONE )
         FPUTS( (ref_qualifier & T_REFERENCE) ? " &" : " &&", param->gout );
       if ( is_override )
         FPRINTF( param->gout, " %s", L_OVERRIDE );
@@ -224,7 +224,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       break;
 
     case K_NAME:
-      if ( ast->name && param->gkind != G_CAST )
+      if ( ast->name != NULL && param->gkind != G_CAST )
         FPUTS( ast->name, param->gout );
       assert( param->leaf_ast == NULL );
       param->leaf_ast = ast;
@@ -239,7 +239,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE: {
       c_type_t const storage = (ast_type & T_MASK_STORAGE);
-      if ( storage )
+      if ( storage != T_NONE )
         FPRINTF( param->gout, "%s ", c_type_name( storage ) );
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
       if ( param->gkind != G_CAST && c_ast_name( ast, V_UP ) != NULL &&
@@ -301,7 +301,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
 
   c_ast_t const *const parent = ast->parent;
 
-  if ( parent ) {
+  if ( parent != NULL ) {
     switch ( parent->kind ) {
       case K_ARRAY:
       case K_BLOCK:                     // Apple extension
@@ -345,7 +345,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
         if ( c_ast_is_parent( parent->parent ) )
           c_ast_gibberish_postfix( parent, param );
 
-        if ( !(ast->kind & (K_POINTER | K_POINTER_TO_MEMBER)) )
+        if ( (ast->kind & (K_POINTER | K_POINTER_TO_MEMBER)) == K_NONE )
           FPUTC( ')', param->gout );
         break;
 
@@ -416,12 +416,12 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast,
   } // switch
 
   c_type_t const qualifier = (ast->type & T_MASK_QUALIFIER);
-  if ( qualifier ) {
+  if ( qualifier != T_NONE ) {
     FPUTS( c_type_name( qualifier ), param->gout );
     if ( param->gkind != G_CAST )
       FPUTC( ' ', param->gout );
   }
-  if ( ast->name && param->gkind != G_CAST )
+  if ( ast->name != NULL && param->gkind != G_CAST )
     FPUTS( ast->name, param->gout );
 }
 
@@ -436,7 +436,7 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
   assert( param != NULL );
 
-  if ( ast->name && param->gkind != G_CAST ) {
+  if ( ast->name != NULL && param->gkind != G_CAST ) {
     g_param_space( param );
     FPUTS( ast->name, param->gout );
   }

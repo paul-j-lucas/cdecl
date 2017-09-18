@@ -59,7 +59,7 @@ static void print_indent( unsigned indent, FILE *out ) {
 
 void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
                   FILE *dout ) {
-  if ( key0 && *key0 )
+  if ( key0 != NULL && *key0 != '\0' )
     INDENT_PRINT( "%s = {\n", key0 );
   else
     INDENT_PRINT( "{\n" );
@@ -167,7 +167,7 @@ void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
 
 void print_kv( char const *key, char const *value, FILE *out ) {
   assert( key != NULL );
-  if ( value && *value )
+  if ( value != NULL && *value != '\0' )
     FPRINTF( out, "%s = \"%s\"", key, value );
   else
     FPRINTF( out, "%s = null", key );

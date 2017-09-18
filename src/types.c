@@ -197,7 +197,7 @@ static c_lang_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
  * int</code>.
  */
 static inline bool is_long_int( c_type_t type ) {
-  return (type & T_LONG) && !(type & (T_FLOAT | T_DOUBLE));
+  return (type & T_LONG) && (type & (T_FLOAT | T_DOUBLE)) == T_NONE;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -213,7 +213,7 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type, c_loc_t const *loc ) {
     new_type = T_LONG_LONG;
   }
 
-  if ( (*dest_type & new_type) ) {
+  if ( (*dest_type & new_type) != T_NONE ) {
     char const *const new_name = check_strdup( c_type_name( new_type ) );
     print_error( loc,
       "\"%s\" can not be combined with \"%s\"",
@@ -233,7 +233,7 @@ c_lang_t c_type_check( c_type_t type ) {
   //
   for ( size_t row = 0; row < ARRAY_SIZE( C_STORAGE_INFO ); ++row ) {
     c_type_info_t const *const si = &C_STORAGE_INFO[ row ];
-    if ( (type & si->type) && !(opt_lang & si->ok_langs) )
+    if ( (type & si->type) != T_NONE && (opt_lang & si->ok_langs) == LANG_NONE )
       return si->ok_langs;
   } // for
 
@@ -242,7 +242,7 @@ c_lang_t c_type_check( c_type_t type ) {
   //
   for ( size_t row = 0; row < ARRAY_SIZE( C_TYPE_INFO ); ++row ) {
     c_type_info_t const *const ti = &C_TYPE_INFO[ row ];
-    if ( (type & ti->type) && !(opt_lang & ti->ok_langs) )
+    if ( (type & ti->type) != T_NONE && (opt_lang & ti->ok_langs) == LANG_NONE )
       return ti->ok_langs;
   } // for
 
@@ -251,7 +251,7 @@ c_lang_t c_type_check( c_type_t type ) {
   //
   for ( size_t row = 0; row < ARRAY_SIZE( C_QUALIFIER_INFO ); ++row ) {
     c_type_info_t const *const qi = &C_QUALIFIER_INFO[ row ];
-    if ( (type & qi->type) && !(opt_lang & qi->ok_langs) )
+    if ( (type & qi->type) != T_NONE && (opt_lang & qi->ok_langs) == LANG_NONE )
       return qi->ok_langs;
   } // for
 
@@ -259,11 +259,13 @@ c_lang_t c_type_check( c_type_t type ) {
   // Check that the storage class combination is legal in the current language.
   //
   for ( size_t row = 0; row < ARRAY_SIZE( C_STORAGE_INFO ); ++row ) {
-    if ( (type & C_STORAGE_INFO[ row ].type) ) {
+    if ( (type & C_STORAGE_INFO[ row ].type) != T_NONE ) {
       for ( size_t col = 0; col <= row; ++col ) {
         c_lang_t const ok_langs = OK_STORAGE_LANGS[ row ][ col ];
-        if ( (type & C_STORAGE_INFO[ col ].type) && !(opt_lang & ok_langs) )
+        if ( (type & C_STORAGE_INFO[ col ].type) != T_NONE &&
+             (opt_lang & ok_langs) == LANG_NONE ) {
           return ok_langs;
+        }
       } // for
     }
   } // for
@@ -272,11 +274,13 @@ c_lang_t c_type_check( c_type_t type ) {
   // Check that the type combination is legal in the current language.
   //
   for ( size_t row = 0; row < ARRAY_SIZE( C_TYPE_INFO ); ++row ) {
-    if ( (type & C_TYPE_INFO[ row ].type) ) {
+    if ( (type & C_TYPE_INFO[ row ].type) != T_NONE ) {
       for ( size_t col = 0; col <= row; ++col ) {
         c_lang_t const ok_langs = OK_TYPE_LANGS[ row ][ col ];
-        if ( (type & C_TYPE_INFO[ col ].type) && !(opt_lang & ok_langs) )
+        if ( (type & C_TYPE_INFO[ col ].type) != T_NONE &&
+             (opt_lang & ok_langs) == LANG_NONE ) {
           return ok_langs;
+        }
       } // for
     }
   } // for
@@ -285,11 +289,13 @@ c_lang_t c_type_check( c_type_t type ) {
   // Check that the type combination is legal in the current language.
   //
   for ( size_t row = 0; row < ARRAY_SIZE( C_TYPE_INFO ); ++row ) {
-    if ( (type & C_TYPE_INFO[ row ].type) ) {
+    if ( (type & C_TYPE_INFO[ row ].type) != T_NONE ) {
       for ( size_t col = 0; col <= row; ++col ) {
         c_lang_t const ok_langs = OK_TYPE_LANGS[ row ][ col ];
-        if ( (type & C_TYPE_INFO[ col ].type) && !(opt_lang & ok_langs) )
+        if ( (type & C_TYPE_INFO[ col ].type) != T_NONE &&
+             (opt_lang & ok_langs) == LANG_NONE ) {
           return ok_langs;
+        }
       } // for
     }
   } // for
@@ -343,7 +349,7 @@ char const* c_type_name( c_type_t type ) {
     T_FINAL
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_CLASS ); ++i ) {
-    if ( (type & C_STORAGE_CLASS[i]) ) {
+    if ( (type & C_STORAGE_CLASS[i]) != T_NONE ) {
       if ( true_or_set( &space ) )
         STRCAT( name, " " );
       STRCAT( name, c_type_name( C_STORAGE_CLASS[i] ) );
@@ -362,7 +368,7 @@ char const* c_type_name( c_type_t type ) {
     T_ATOMIC,
   };
   for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER ); ++i ) {
-    if ( (type & C_QUALIFIER[i]) ) {
+    if ( (type & C_QUALIFIER[i]) != T_NONE ) {
       if ( true_or_set( &space ) )
         STRCAT( name, " " );
       STRCAT( name, c_type_name( C_QUALIFIER[i] ) );
@@ -414,7 +420,7 @@ char const* c_type_name( c_type_t type ) {
   }
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE ); ++i ) {
-    if ( (type & C_TYPE[i]) ) {
+    if ( (type & C_TYPE[i]) != T_NONE ) {
       if ( true_or_set( &space ) )
         STRCAT( name, " " );
       STRCAT( name, c_type_name( C_TYPE[i] ) );

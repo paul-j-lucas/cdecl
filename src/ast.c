@@ -51,7 +51,7 @@ static c_ast_t   *c_ast_gc_head;        // linked list of alloc'd objects
  * @param ast The c_ast to free.  May be null.
  */
 static void c_ast_free( c_ast_t *ast ) {
-  if ( ast ) {
+  if ( ast != NULL ) {
     assert( c_ast_count > 0 );
     --c_ast_count;
 
@@ -79,7 +79,7 @@ static void c_ast_free( c_ast_t *ast ) {
  */
 static bool c_ast_has_cycle( c_ast_t const *ast ) {
   assert( ast != NULL );
-  for ( c_ast_t const *const start_ast = ast; ast->parent; ) {
+  for ( c_ast_t const *const start_ast = ast; ast->parent != NULL; ) {
     ast = ast->parent;
     if ( unlikely( ast == start_ast ) )
       return true;
@@ -96,7 +96,7 @@ void c_ast_cleanup( void ) {
 }
 
 void c_ast_gc( void ) {
-  for ( c_ast_t *p = c_ast_gc_head; p; ) {
+  for ( c_ast_t *p = c_ast_gc_head; p != NULL; ) {
     c_ast_t *const next = p->gc_next;
     c_ast_free( p );
     p = next;
@@ -106,7 +106,7 @@ void c_ast_gc( void ) {
 
 void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
   assert( list != NULL );
-  if ( ast ) {
+  if ( ast != NULL ) {
     assert( ast->next == NULL );
     if ( list->head_ast == NULL ) {
       assert( list->tail_ast == NULL );
@@ -140,7 +140,7 @@ c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, c_loc_t const *loc ) {
 
 c_ast_t* c_ast_root( c_ast_t *ast ) {
   assert( ast != NULL );
-  while ( ast->parent )
+  while ( ast->parent != NULL )
     ast = ast->parent;
   return ast;
 }
@@ -171,7 +171,7 @@ c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor_t visitor, void *data ) {
     return NULL;
   if ( visitor( ast, data ) )
     return ast;
-  if ( !ast->parent )
+  if ( ast->parent == NULL )
     return NULL;
   return c_ast_visit_up( ast->parent, visitor, data );
 }

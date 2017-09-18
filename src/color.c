@@ -94,8 +94,8 @@ static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
   assert( cap != NULL );
   assert( cap->cap_var_to_set != NULL );
 
-  if ( sgr_color ) {
-    if ( !*sgr_color )                  // empty string -> NULL = unset
+  if ( sgr_color != NULL ) {
+    if ( *sgr_color == '\0' )           // empty string -> NULL = unset
       sgr_color = NULL;
     else if ( !parse_sgr( sgr_color ) )
       return false;
@@ -115,9 +115,9 @@ static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
  * @return Returns \c true only only if \a s contains a valid SGR value.
  */
 static bool parse_sgr( char const *sgr_color ) {
-  if ( !sgr_color )
+  if ( sgr_color == NULL )
     return false;
-  for ( ;; ) {
+  for (;;) {
     if ( !isdigit( *sgr_color ) )
       return false;
     char *end;
@@ -142,7 +142,7 @@ static bool parse_sgr( char const *sgr_color ) {
 bool colors_parse( char const *capabilities ) {
   bool set_something = false;
 
-  if ( capabilities ) {
+  if ( capabilities != NULL ) {
     // free this later since the sgr_* variables point to substrings
     char *next_cap = (char*)free_later( check_strdup( capabilities ) );
 
@@ -172,7 +172,7 @@ bool should_colorize( color_when_t when ) {
   // If TERM is unset, empty, or "dumb", color probably won't work.
   //
   char const *const term = getenv( "TERM" );
-  if ( !term || !*term || strcmp( term, "dumb" ) == 0 )
+  if ( term == NULL || *term == '\0' || strcmp( term, "dumb" ) == 0 )
     return false;
 
   int const fd_out = fileno( fout );

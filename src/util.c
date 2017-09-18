@@ -79,7 +79,7 @@ static free_node_t *free_head;          // linked list of stuff to free
 char const* base_name( char const *path_name ) {
   assert( path_name != NULL );
   char const *const slash = strrchr( path_name, '/' );
-  if ( slash )
+  if ( slash != NULL )
     return slash[1] ? slash + 1 : slash;
   return path_name;
 }
@@ -92,16 +92,16 @@ void* check_realloc( void *p, size_t size ) {
   //    The C standard says a call realloc(NULL, size) is equivalent to
   //    malloc(size), but some old systems don't support this (e.g., NextStep).
   //
-  if ( !size )
+  if ( size == 0 )
     size = 1;
   void *const r = p ? realloc( p, size ) : malloc( size );
-  if ( unlikely( !r ) )
+  if ( unlikely( r == NULL ) )
     perror_exit( EX_OSERR );
   return r;
 }
 
 char* check_strdup( char const *s ) {
-  if ( !s )
+  if ( s == NULL )
     return NULL;
   char *const dup = strdup( s );
   if ( unlikely( !dup ) )
@@ -118,7 +118,7 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
 #endif /* NDEBUG */
 
   FILE *const tmp = tmpfile();
-  if ( unlikely( !tmp ) )
+  if ( unlikely( tmp == NULL ) )
     perror_exit( EX_OSERR );
   if ( likely( size > 0 ) ) {
     if ( unlikely( fwrite( buf, 1, size, tmp ) != size ) )
@@ -139,7 +139,7 @@ void* free_later( void *p ) {
 }
 
 void free_now( void ) {
-  for ( free_node_t *p = free_head; p; ) {
+  for ( free_node_t *p = free_head; p != NULL; ) {
     free_node_t *const next = p->fn_next;
     FREE( p->fn_ptr );
     FREE( p );
@@ -156,13 +156,13 @@ unsigned get_term_columns( void ) {
   char const *reason = NULL;
 
   char const *const term = getenv( "TERM" );
-  if ( unlikely( !term ) ) {
+  if ( unlikely( term == NULL ) ) {
     reason = "TERM environment variable not set";
     goto error;
   }
 
   char const *const cterm_path = ctermid( NULL );
-  if ( unlikely( !cterm_path || !*cterm_path ) ) {
+  if ( unlikely( cterm_path == NULL || *cterm_path == '\0' ) ) {
     reason = "ctermid(3) failed to get controlling terminal";
     goto error;
   }
@@ -251,18 +251,18 @@ char* read_input_line( char const *ps1, char const *ps2 ) {
     }
 
     free( line );
-    if ( !(line = readline( buf ? ps2 : ps1 )) )
+    if ( (line = readline( buf ? ps2 : ps1 )) == NULL )
       goto check_for_error;
 #else
     static size_t line_cap;
-    PUTS_OUT( buf ? ps2 : ps1 );
+    PUTS_OUT( buf != NULL ? ps2 : ps1 );
     FFLUSH( stdout );
     if ( getline( &line, &line_cap, stdin ) == -1 )
       goto check_for_error;
 #endif /* WITH_READLINE */
 
     if ( is_blank_line( line ) ) {
-      if ( buf ) {
+      if ( buf != NULL ) {
         //
         // If we've been accumulating continuation lines, a blank line ends it.
         //
@@ -277,7 +277,7 @@ char* read_input_line( char const *ps1, char const *ps2 ) {
     if ( is_continuation )
       line[ --line_len ] = '\0';        // get rid of '\'
 
-    if ( !buf ) {
+    if ( buf == NULL ) {
       buf = check_strdup( line );
       buf_len = line_len;
     } else {
@@ -305,7 +305,7 @@ check_for_error:
 
 link_t* link_pop( link_t **phead ) {
   assert( phead != NULL );
-  if ( *phead ) {
+  if ( *phead != NULL ) {
     link_t *const popped = (*phead);
     (*phead) = popped->next;
     popped->next = NULL;

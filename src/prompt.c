@@ -82,7 +82,7 @@ static char* prompt_create( char suffix ) {
   size_t prompt_len = strlen( CPPDECL ) + 1/*suffix*/ + 1/*space*/;
 
 #ifdef WITH_READLINE
-  if ( have_genuine_gnu_readline() && sgr_prompt ) {
+  if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
     prompt_len +=
       1 /* RL_PROMPT_START_IGNORE */ +
       (sizeof( SGR_START SGR_EL ) - 1/*null*/) +
@@ -98,7 +98,7 @@ static char* prompt_create( char suffix ) {
 #ifdef WITH_READLINE
   char color_buf[20];
 
-  if ( have_genuine_gnu_readline() && sgr_prompt ) {
+  if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
     *p++ = RL_PROMPT_START_IGNORE;
     SGR_SSTART_COLOR( color_buf, prompt );
     p += strcpy_len( p, color_buf );
@@ -110,7 +110,7 @@ static char* prompt_create( char suffix ) {
   *p++ = suffix;
 
 #ifdef WITH_READLINE
-  if ( have_genuine_gnu_readline() && sgr_prompt ) {
+  if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
     *p++ = RL_PROMPT_START_IGNORE;
     SGR_SEND_COLOR( color_buf );
     p += strcpy_len( p, color_buf );

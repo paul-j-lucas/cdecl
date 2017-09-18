@@ -58,7 +58,7 @@ c_lang_info_t const C_LANG_INFO[] = {
 
 c_lang_t c_lang_find( char const *s ) {
   assert( s != NULL );
-  for ( c_lang_info_t const *info = C_LANG_INFO; info->name; ++info ) {
+  for ( c_lang_info_t const *info = C_LANG_INFO; info->name != NULL; ++info ) {
     if ( strcasecmp( s, info->name ) == 0 )
       return info->lang;
   } // for

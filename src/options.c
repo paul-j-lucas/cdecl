@@ -116,7 +116,7 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
   char gave_opt1 = '\0';
 
   for ( unsigned i = 0; i < 2; ++i ) {
-    for ( ; *opt; ++opt ) {
+    for ( ; *opt != '\0'; ++opt ) {
       if ( GAVE_OPTION( *opt ) ) {
         if ( ++gave_count > 1 ) {
           char const gave_opt2 = *opt;
@@ -132,7 +132,7 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
         break;
       }
     } // for
-    if ( !gave_count )
+    if ( gave_count == 0 )
       break;
     opt = opts2;
   } // for
@@ -185,8 +185,8 @@ static bool is_cppdecl( void ) {
     NULL
   };
 
-  for ( char const *const *name = NAMES; *name; ++name )
-    if ( strcasecmp( *name, me ) == 0 )
+  for ( char const *const *pname = NAMES; *pname != NULL; ++pname )
+    if ( strcasecmp( *pname, me ) == 0 )
       return true;
   return false;
 }
@@ -219,7 +219,7 @@ static color_when_t parse_color_when( char const *when ) {
   assert( when != NULL );
   size_t names_buf_size = 1;            // for trailing NULL
 
-  for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when; ++m ) {
+  for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when != NULL; ++m ) {
     if ( strcasecmp( when, m->map_when ) == 0 )
       return m->map_colorization;
     // sum sizes of names in case we need to construct an error message
@@ -229,7 +229,7 @@ static color_when_t parse_color_when( char const *when ) {
   // name not found: construct valid name list for an error message
   char *const names_buf = (char*)free_later( MALLOC( char, names_buf_size ) );
   char *pnames = names_buf;
-  for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when; ++m ) {
+  for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when != NULL; ++m ) {
     if ( pnames > names_buf ) {
       strcpy( pnames, ", " );
       pnames += 2;
@@ -254,7 +254,7 @@ static color_when_t parse_color_when( char const *when ) {
 static c_lang_t parse_lang( char const *s ) {
   size_t values_buf_size = 1;           // for trailing null
 
-  for ( c_lang_info_t const *info = C_LANG_INFO; info->name; ++info ) {
+  for ( c_lang_info_t const *info = C_LANG_INFO; info->name != NULL; ++info ) {
     if ( strcasecmp( s, info->name ) == 0 )
       return info->lang;
     values_buf_size += strlen( info->name ) + 2 /* ", " */;
@@ -263,7 +263,7 @@ static c_lang_t parse_lang( char const *s ) {
   // name not found: construct valid name list for an error message
   char *const values_buf = (char*)free_later( MALLOC( char, values_buf_size ) );
   char *pvalues = values_buf;
-  for ( c_lang_info_t const *info = C_LANG_INFO; info->name; ++info ) {
+  for ( c_lang_info_t const *info = C_LANG_INFO; info->name != NULL; ++info ) {
     if ( pvalues > values_buf ) {
       strcpy( pvalues, ", " );
       pvalues += 2;
@@ -323,14 +323,14 @@ static void parse_options( int argc, char const *argv[] ) {
     exit( EX_OK );
   }
 
-  if ( opt_fin && !(fin = fopen( opt_fin, "r" )) )
+  if ( opt_fin != NULL && !(fin = fopen( opt_fin, "r" )) )
     PMESSAGE_EXIT( EX_NOINPUT, "\"%s\": %s\n", opt_fin, STRERROR );
-  if ( opt_fout && !(fout = fopen( opt_fout, "w" )) )
+  if ( opt_fout != NULL && !(fout = fopen( opt_fout, "w" )) )
     PMESSAGE_EXIT( EX_CANTCREAT, "\"%s\": %s\n", opt_fout, STRERROR );
 
-  if ( !fin )
+  if ( fin == NULL )
     fin = stdin;
-  if ( !fout )
+  if ( fout == NULL )
     fout = stdout;
 
   colorize = should_colorize( color_when );

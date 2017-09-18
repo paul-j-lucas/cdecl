@@ -106,7 +106,7 @@ static help_text_t const HELP_TEXT[] = {
 static void print_help_line( char const *line ) {
   bool escaped = false;
 
-  for ( char const *c = line; *c; ++c ) {
+  for ( char const *c = line; *c != '\0'; ++c ) {
     switch ( *c ) {
       case '\\':
         if ( !escaped ) {

@@ -172,7 +172,7 @@ static char*  command_generator( char const*, int );
  */
 static char* ac_keyword_find( ac_keyword_t const keywords[], char const *text,
                               size_t text_len, size_t *index ) {
-  for ( ac_keyword_t const *k; (k = keywords + *index)->keyword; ) {
+  for ( ac_keyword_t const *k; (k = keywords + *index)->keyword != NULL; ) {
     ++*index;
     if ( (k->ok_langs & opt_lang) == 0 )
       continue;
@@ -211,7 +211,7 @@ static char* command_generator( char const *text, int state ) {
   static size_t index;
   static size_t text_len;
 
-  if ( !state ) {                       // new word? reset
+  if ( state == 0 ) {                   // new word? reset
     index = 0;
     text_len = strlen( text );
   }
@@ -246,7 +246,7 @@ static char* keyword_completion( char const *text, int state ) {
   static bool         no_more_matches;
   static size_t       text_len;
 
-  if ( !state ) {                       // new word? reset
+  if ( state == 0 ) {                   // new word? reset
     no_more_matches = false;
     index = 0;
     text_len = strlen( text );
@@ -299,7 +299,7 @@ static char* keyword_completion( char const *text, int state ) {
   // Special case: if it's the "set" command, complete options, not keywords.
   //
   if ( strcmp( command, L_SET ) == 0 ) {
-    for ( char const *option; (option = CDECL_OPTIONS[ index ]); ) {
+    for ( char const *option; (option = CDECL_OPTIONS[ index ]) != NULL; ) {
       ++index;
       if ( strncmp( text, option, text_len ) == 0 )
         return check_strdup( option );
