@@ -108,15 +108,15 @@ void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
   assert( list != NULL );
   if ( ast ) {
     assert( ast->next == NULL );
-    if ( !list->head_ast ) {
+    if ( list->head_ast == NULL ) {
       assert( list->tail_ast == NULL );
-      list->head_ast = list->tail_ast = ast;
+      list->head_ast = ast;
     } else {
       assert( list->tail_ast != NULL );
       assert( list->tail_ast->next == NULL );
       list->tail_ast->next = ast;
-      list->tail_ast = ast;
     }
+    list->tail_ast = ast;
   }
 }
 
