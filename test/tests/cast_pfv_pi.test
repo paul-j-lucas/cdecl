@@ -1,1 +1,1 @@
-cdecl | | cast x into pointer to function (void) returning pointer to int | 0
+cdecl | /dev/null | | cast x into pointer to function (void) returning pointer to int | 0

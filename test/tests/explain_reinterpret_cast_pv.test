@@ -1,1 +1,1 @@
-cdecl | -xc++ | explain reinterpret_cast<void*>(x) | 0
+cdecl | /dev/null | -xc++ | explain reinterpret_cast<void*>(x) | 0

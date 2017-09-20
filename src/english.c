@@ -28,6 +28,7 @@
 #include "ast.h"
 #include "ast_util.h"
 #include "literals.h"
+#include "typedefs.h"
 #include "util.h"
 
 // system
@@ -180,6 +181,10 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       FPRINTF( param->eout, "%s ", ast->as.ptr_mbr.class_name );
       break;
     }
+
+    case K_TYPEDEF:
+      FPUTS( ast->as.c_typedef->type_name, param->eout );
+      break;
 
     case K_VARIADIC:
       FPUTS( c_kind_name( ast->kind ), param->eout );

@@ -1,1 +1,1 @@
-cdecl | | declare x as const unsigned | 0
+cdecl | /dev/null | | declare x as const unsigned | 0

@@ -75,6 +75,7 @@ Paul J. Lucas <paul@lucasmail.org>
 		thread_local, wchar_t
 	added inline functions
 	added register and variadic function arguments
+	added typedef, define, and show commands
 	added C99 static, type-qualified, and variable length array
 		function arguments
 	added C++11 auto, constexpr, enum class, mutable, new-style casts,

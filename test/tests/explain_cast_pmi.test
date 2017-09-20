@@ -1,1 +1,1 @@
-cdecl | -xc++ | explain (int C::*)p | 0
+cdecl | /dev/null | -xc++ | explain (int C::*)p | 0

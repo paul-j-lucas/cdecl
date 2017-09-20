@@ -1,1 +1,1 @@
-cdecl | | explain unsigned char x | 0
+cdecl | /dev/null | | explain unsigned char x | 0

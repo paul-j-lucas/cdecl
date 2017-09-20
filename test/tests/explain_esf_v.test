@@ -1,1 +1,1 @@
-cdecl | | explain extern static void f() | 65
+cdecl | /dev/null | | explain extern static void f() | 65

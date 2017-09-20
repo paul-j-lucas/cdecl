@@ -1,0 +1,31 @@
+define int16_t as short
+define int32_t as int
+define int64_t as long
+define int8_t as char
+define int_fast16_t as short
+define int_fast32_t as int
+define int_fast64_t as long
+define int_fast8_t as char
+define int_least16_t as short
+define int_least32_t as int
+define int_least64_t as long
+define int_least8_t as char
+define intmax_t as long
+define intptr_t as long
+define ptrdiff_t as long
+define size_t as unsigned long
+define ssize_t as long
+define uint16_t as unsigned short
+define uint32_t as unsigned
+define uint64_t as unsigned long
+define uint8_t as unsigned char
+define uint_fast16_t as unsigned short
+define uint_fast32_t as unsigned
+define uint_fast64_t as unsigned long
+define uint_fast8_t as unsigned char
+define uint_least16_t as unsigned short
+define uint_least32_t as unsigned
+define uint_least64_t as unsigned long
+define uint_least8_t as unsigned char
+define uintmax_t as unsigned long
+define uintptr_t as unsigned long

@@ -1,1 +1,1 @@
-cdecl | | explain int f()[] | 65
+cdecl | /dev/null | | explain int f()[] | 65

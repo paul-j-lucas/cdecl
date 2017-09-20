@@ -40,13 +40,6 @@
 extern char const  *lexer_token;        // text of current token
 
 /**
- * Gets the lexer's current column number.
- *
- * @return Returns said column.
- */
-size_t lexer_column( void );
-
-/**
  * Gets the current input line.
  *
  * @param plen If not null, sets the value pointed at to be the length of said
@@ -54,6 +47,14 @@ size_t lexer_column( void );
  * @return Returns said line.
  */
 char const* lexer_input_line( size_t *plen );
+
+/**
+ * Gets the lexer's current location.
+ *
+ * @param line A pointer to a variable to receive the lexer's line.
+ * @param column A pointer to a variable to receive the lexer's column.
+ */
+void lexer_loc( size_t *line, size_t *column );
 
 /**
  * Resets the lexer to its initial state.

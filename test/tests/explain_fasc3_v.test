@@ -1,1 +1,1 @@
-cdecl | | explain void f(int x[static const 3]) | 0
+cdecl | /dev/null | | explain void f(int x[static const 3]) | 0

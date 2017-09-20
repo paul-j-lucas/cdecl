@@ -27,6 +27,8 @@
 #include "config.h"                     /* must go first */
 #include "common.h"
 #include "lang.h"
+#include "options.h"
+#include "prompt.h"
 #include "util.h"
 
 // system
@@ -80,6 +82,18 @@ char const* c_lang_name( c_lang_t lang ) {
     default:
       INTERNAL_ERR( "\"%d\": unexpected value for lang\n", (int)lang );
   } // switch
+}
+
+void c_lang_set( c_lang_t lang ) {
+  assert( exactly_one_bit_set( lang ) );
+  opt_lang = lang;
+
+  bool const prompt_enabled =
+    prompt[0] == NULL       // first time: cdecl_prompt_init() not called yet
+    || *prompt[0] != '\0';
+
+  cdecl_prompt_init();      // change prompt based on new language
+  cdecl_prompt_enable( prompt_enabled );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

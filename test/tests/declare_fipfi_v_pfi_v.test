@@ -1,1 +1,1 @@
-cdecl | | declare signal as function (sig as int, f as pointer to function (int) returning void) returning pointer to function (int) returning void | 0
+cdecl | /dev/null | | declare signal as function (sig as int, f as pointer to function (int) returning void) returning pointer to function (int) returning void | 0

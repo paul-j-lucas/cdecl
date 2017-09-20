@@ -3,19 +3,19 @@ command:
   declare <name> as <english>         | set [options]         | help | ?
   explain <gibberish>                 | exit | quit | q
   cast <name> into <english>
+  define <name> as <english>          | typedef <gibberish>
+  show { <name> | [all | predefined | user] types }
 english:
   <storage>* array [[static] <cv-qualifier>* {<number>|*}] of <english>
   <storage>* variable length array <cv-qualifier>* of <english>
   block [([<args>])] [returning <english>]
   <storage>* function [([<args>])] [returning <english>]
   <cv-qualifier>* pointer to <english>
-  <type>
-type:
   <storage>* <modifier>* [<C-type>]
   { enum | struct | union } <name>
 args: a comma separated list of <name>, <english>, or <name> as <english>
 gibberish: a C declaration, like "int x"; or cast, like "(int)x"
-C-type: bool char char16_t char32_t wchar_t int float double size_t void
+C-type: bool char char16_t char32_t wchar_t int float double void
 cv-qualifier: _Atomic const restrict volatile
 modifier: short long signed unsigned atomic const restrict volatile
 name: a C identifier

@@ -1,1 +1,1 @@
-cdecl | | declare x as short char | 65
+cdecl | /dev/null | | declare x as short char | 65

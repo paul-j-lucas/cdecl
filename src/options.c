@@ -46,6 +46,7 @@
 #define SET_OPTION(OPT)           (opts_given[ (unsigned char)(OPT) ] = (OPT))
 
 // extern option variables
+char const         *opt_conf_file;
 #ifdef ENABLE_CDECL_DEBUG
 bool                opt_debug;
 #endif /* ENABLE_CDECL_DEBUG */
@@ -53,7 +54,9 @@ char const         *opt_fin;
 char const         *opt_fout;
 bool                opt_interactive;
 c_lang_t            opt_lang;
+bool                opt_no_conf;
 bool                opt_semicolon = true;
+bool                opt_typedefs = true;
 bool                opt_quiet;
 
 // other extern variables
@@ -62,16 +65,19 @@ FILE               *fout;
 
 // local constant definitions
 static struct option const LONG_OPTS[] = {
-  { "color",        required_argument,  NULL, 'c' },
+  { "config",       required_argument,  NULL, 'c' },
+  { "no-config",    no_argument,        NULL, 'C' },
 #ifdef ENABLE_CDECL_DEBUG
   { "debug",        no_argument,        NULL, 'd' },
 #endif /* ENABLE_CDECL_DEBUG */
   { "file",         required_argument,  NULL, 'f' },
   { "help",         no_argument,        NULL, 'h' },
   { "interactive",  no_argument,        NULL, 'i' },
+  { "color",        required_argument,  NULL, 'k' },
   { "output",       required_argument,  NULL, 'o' },
   { "quiet",        no_argument,        NULL, 'q' },
   { "no-semicolon", no_argument,        NULL, 's' },
+  { "no-typedefs",  no_argument,        NULL, 't' },
   { "version",      no_argument,        NULL, 'v' },
   { "language",     required_argument,  NULL, 'x' },
 #ifdef YYDEBUG
@@ -80,7 +86,7 @@ static struct option const LONG_OPTS[] = {
   { NULL,           0,                  NULL, 0   }
 };
 
-static char const   SHORT_OPTS[] = "c:f:io:qsvx:"
+static char const   SHORT_OPTS[] = "c:Cf:ik:o:qstvx:"
 #ifdef ENABLE_CDECL_DEBUG
   "d"
 #endif /* ENABLE_CDECL_DEBUG */
@@ -241,7 +247,7 @@ static color_when_t parse_color_when( char const *when ) {
   char opt_buf[ OPT_BUF_SIZE ];
   PMESSAGE_EXIT( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of:\n\t%s\n",
-    when, format_opt( 'c', opt_buf, sizeof opt_buf ), names_buf
+    when, format_opt( 'k', opt_buf, sizeof opt_buf ), names_buf
   );
 }
 
@@ -297,16 +303,19 @@ static void parse_options( int argc, char const *argv[] ) {
       break;
     SET_OPTION( opt );
     switch ( opt ) {
-      case 'c': color_when      = parse_color_when( optarg ); break;
+      case 'c': opt_conf_file   = optarg;                     break;
+      case 'C': opt_no_conf     = true;                       break;
 #ifdef ENABLE_CDECL_DEBUG
       case 'd': opt_debug       = true;                       break;
 #endif /* ENABLE_CDECL_DEBUG */
       case 'f': opt_fin         = optarg;                     break;
    // case 'h': usage();        // default case handles this
       case 'i': opt_interactive = true;                       break;
+      case 'k': color_when      = parse_color_when( optarg ); break;
       case 'o': opt_fout        = optarg;                     break;
       case 'q': opt_quiet       = true;                       break;
       case 's': opt_semicolon   = false;                      break;
+      case 't': opt_typedefs    = false;                      break;
       case 'v': print_version   = true;                       break;
       case 'x': opt_lang        = parse_lang( optarg );       break;
 #ifdef YYDEBUG
@@ -316,7 +325,7 @@ static void parse_options( int argc, char const *argv[] ) {
     } // switch
   } // for
 
-  check_mutually_exclusive( "v", "cdfioqsxy" );
+  check_mutually_exclusive( "v", "cCdfikoqstxy" );
 
   if ( print_version ) {
     PRINT_ERR( "%s\n", PACKAGE_STRING );
@@ -343,24 +352,33 @@ static void parse_options( int argc, char const *argv[] ) {
 }
 
 static void usage( void ) {
-  PRINT_ERR( "usage: %s [options] [files...]\n", me );
-  PRINT_ERR( "       %s -v\n", me );
-  PRINT_ERR( "\noptions:\n" );
-  PRINT_ERR( "  -c when  Specify when to colorize output [default: not_file].\n" );
+  PRINT_ERR(
+"usage: %s [options] [command...]\n"
+"       %s [options] files...\n"
+"       %s -v\n"
+"\n"
+"options:\n"
+"  -c file  Specify the configuration file [default: ~/%s].\n"
+"  -C       Suppress reading configuration file.\n"
 #ifdef ENABLE_CDECL_DEBUG
-  PRINT_ERR( "  -d       Enable debug output.\n" );
+"  -d       Enable debug output.\n"
 #endif /* ENABLE_CDECL_DEBUG */
-  PRINT_ERR( "  -f file  Read from this file [default: stdin].\n" );
-  PRINT_ERR( "  -h       Print this help and exit.\n" );
-  PRINT_ERR( "  -i       Force interactive mode.\n" );
-  PRINT_ERR( "  -o file  Write to this file [default: stdout].\n" );
-  PRINT_ERR( "  -q       Be quiet (disable prompt).\n" );
-  PRINT_ERR( "  -s       Suppress trailing semicolon in declarations.\n" );
-  PRINT_ERR( "  -v       Print version and exit.\n" );
-  PRINT_ERR( "  -x lang  Use <lang>.\n" );
+"  -f file  Read from this file [default: stdin].\n"
+"  -h       Print this help and exit.\n"
+"  -i       Force interactive mode.\n"
+"  -k when  Specify when to colorize output [default: not_file].\n"
+"  -o file  Write to this file [default: stdout].\n"
+"  -q       Be quiet (disable prompt).\n"
+"  -s       Suppress trailing semicolon in declarations.\n"
+"  -t       Suppress predefining standard types.\n"
+"  -v       Print version and exit.\n"
+"  -x lang  Use <lang>.\n"
 #ifdef YYDEBUG
-  PRINT_ERR( "  -y       Enable bison debug output.\n" );
+"  -y       Enable bison debug output.\n"
 #endif /* YYDEBUG */
+    , me, me, me,
+    CONF_FILE_NAME
+  );
   exit( EX_USAGE );
 }
 
@@ -370,6 +388,7 @@ void options_init( int *pargc, char const ***pargv ) {
   me = base_name( (*pargv)[0] );
   opt_lang = is_cppdecl() ? LANG_CPP_MAX : LANG_C_MAX;
   parse_options( *pargc, *pargv );
+  c_lang_set( opt_lang );
   *pargc -= optind, *pargv += optind;
 }
 

@@ -28,10 +28,12 @@
 #include "config.h"                     /* must go first */
 #include "ast.h"
 #include "color.h"
+#include "lang.h"
 #include "lexer.h"
 #include "literals.h"
 #include "options.h"
 #include "prompt.h"
+#include "typedefs.h"
 #include "util.h"
 
 // standard
@@ -55,6 +57,7 @@ bool                is_input_a_tty;     // is our input from a tty?
 char const         *me;                 // program name
 
 // extern functions
+extern bool         parse_string( char const*, size_t );
 extern int          yyparse( void );
 extern void         yyrestart( FILE* );
 
@@ -65,14 +68,21 @@ static bool         parse_argv( int, char const*[] );
 static bool         parse_command_line( char const*, int, char const*[] );
 static bool         parse_files( int, char const*[] );
 static bool         parse_stdin( void );
-static bool         parse_string( char const*, size_t );
+static void         read_conf_file( void );
 
 ////////// main ///////////////////////////////////////////////////////////////
 
 int main( int argc, char const **argv ) {
   atexit( cdecl_cleanup );
   options_init( &argc, &argv );
-  cdecl_prompt_init();
+
+  c_typedef_init();
+  lexer_reset( true );                  // resets line number
+
+  if ( !opt_no_conf )
+    read_conf_file();
+  opt_conf_file = NULL;                 // don't print in errors any more
+
   bool const ok = parse_argv( argc, argv );
   exit( ok ? EX_OK : EX_DATAERR );
 }
@@ -108,6 +118,7 @@ static bool is_command( char const *s ) {
  */
 static void cdecl_cleanup( void ) {
   free_now();
+  c_typedef_cleanup();                  // must go before c_ast_cleanup()
   c_ast_cleanup();
 }
 
@@ -218,7 +229,7 @@ static bool parse_stdin( void ) {
       FPRINTF( fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
     ok = true;
     for ( char *line; (line = read_input_line( prompt[0], prompt[1] )); )
-      ok = parse_string( line, strlen( line ) );
+      ok = parse_string( line, 0 );
   } else {
     yyrestart( fin );
     ok = yyparse() == 0;
@@ -235,12 +246,46 @@ static bool parse_stdin( void ) {
  * @param s_len the length of \a s.
  * @return Returns \c true only upon success.
  */
-static bool parse_string( char const *s, size_t s_len ) {
+bool parse_string( char const *s, size_t s_len ) {
+  if ( s_len == 0 )
+    s_len = strlen( s );
+  if ( command_line == NULL ) {
+    command_line = s;
+    command_line_len = s_len;
+  }
   FILE *const temp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
   yyrestart( temp );
   bool const ok = yyparse() == 0;
   fclose( temp );
   return ok;
+}
+
+/**
+ * Reads the configuration file, if any.
+ */
+static void read_conf_file( void ) {
+  static char conf_path_buf[ PATH_MAX ];
+  bool const explicit_conf_file = (opt_conf_file != NULL);
+
+  if ( !explicit_conf_file ) {
+    char const *const home = home_dir();
+    if ( !home )
+      return;
+    strcpy( conf_path_buf, home );
+    path_append( conf_path_buf, CONF_FILE_NAME );
+    opt_conf_file = conf_path_buf;
+  }
+
+  FILE *const cin = fopen( opt_conf_file, "r" );
+  if ( !cin ) {
+    if ( explicit_conf_file )
+      PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", opt_conf_file, STRERROR );
+    return;
+  }
+
+  yyrestart( cin );
+  (void)yyparse();
+  fclose( cin );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

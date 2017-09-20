@@ -1,1 +1,1 @@
-cdecl | | explain size_t x | 0
+cdecl | /dev/null | | explain size_t x | 0

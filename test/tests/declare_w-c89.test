@@ -1,1 +1,1 @@
-cdecl | -xc89 | declare x as wchar_t | 65
+cdecl | /dev/null | -xc89 | declare x as wchar_t | 65

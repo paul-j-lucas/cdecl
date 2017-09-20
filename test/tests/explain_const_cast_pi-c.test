@@ -1,1 +1,1 @@
-cdecl | | explain const_cast<int*>(x) | 65
+cdecl | /dev/null | | explain const_cast<int*>(x) | 65

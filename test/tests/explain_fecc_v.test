@@ -1,1 +1,1 @@
-cdecl | | explain void f( ..., char const *fmt ) | 65
+cdecl | /dev/null | | explain void f( ..., char const *fmt ) | 65

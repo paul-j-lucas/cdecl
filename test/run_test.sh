@@ -184,14 +184,17 @@ OUTPUT=/tmp/cdecl_test_output_$$_
 
 run_cdecl_test() {
   IFS_old=$IFS
-  IFS='|'; read COMMAND OPTIONS INPUT EXPECTED_EXIT < $TEST
+  IFS='|'; read COMMAND CONFIG OPTIONS INPUT EXPECTED_EXIT < $TEST
   [ "$IFS_old" ] && IFS=$IFS_old
 
+  COMMAND=`echo $COMMAND`               # trims whitespace
+  CONFIG=`echo $CONFIG`                 # trims whitespace
+  [ "$CONFIG" != /dev/null ] && CONFIG=$DATA_DIR/$CONFIG
   EXPECTED_EXIT=`echo $EXPECTED_EXIT`   # trims whitespace
   EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
 
-  #echo echo \| $COMMAND "$OPTIONS" \> $OUTPUT
-  if echo $INPUT | $COMMAND $OPTIONS > $OUTPUT 2> $LOG_FILE
+  #echo echo \| $COMMAND -c $CONFIG "$OPTIONS" \> $OUTPUT
+  if echo $INPUT | $COMMAND -c $CONFIG $OPTIONS > $OUTPUT 2> $LOG_FILE
   then
     if [ 0 -eq $EXPECTED_EXIT ]
     then

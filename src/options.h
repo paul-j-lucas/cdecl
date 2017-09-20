@@ -37,14 +37,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern option variables
+extern char const  *opt_conf_file;
 #ifdef ENABLE_CDECL_DEBUG
 extern bool         opt_debug;
 #endif /* ENABLE_CDECL_DEBUG */
-extern char const  *opt_fin;
-extern char const  *opt_fout;
+extern char const  *opt_fin;            // file in path
+extern char const  *opt_fout;           // file out path
 extern bool         opt_interactive;
 extern c_lang_t     opt_lang;
-extern bool         opt_semicolon;
+extern bool         opt_no_conf;        // do not read conf file
+extern bool         opt_semicolon;      // print ';' at end of gibberish
+extern bool         opt_typedefs;       // load C99 standard typedefs
 extern bool         opt_quiet;          // don't print the prompt
 
 // other extern variables

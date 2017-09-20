@@ -104,8 +104,6 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { T_INT,              L_INT,              LANG_ALL                        },
   { T_LONG,             L_LONG,             LANG_ALL                        },
   { T_LONG_LONG,        L_LONG_LONG,        LANG_MIN(C_89)                  },
-  { T_SIZE_T,           L_SIZE_T,           LANG_MIN(C_89)                  },
-  { T_SSIZE_T,          L_SSIZE_T,          LANG_MIN(C_89)                  },
   { T_SIGNED,           L_SIGNED,           LANG_MIN(C_89)                  },
   { T_UNSIGNED,         L_UNSIGNED,         LANG_ALL                        },
   { T_FLOAT,            L_FLOAT,            LANG_ALL                        },
@@ -115,6 +113,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { T_STRUCT,           L_STRUCT,           LANG_ALL                        },
   { T_UNION,            L_UNION,            LANG_ALL                        },
   { T_CLASS,            L_CLASS,            LANG_CPP_ALL                    },
+  { T_TYPEDEF_TYPE,     "",                 LANG_ALL                        },
 };
 
 //      shorthand   legal in ...
@@ -160,29 +159,28 @@ static c_lang_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
  * Only the lower triangle is used.
  */
 static c_lang_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
-//v  a  b  c  16 32 wc s  i  l  ll st st s  u  f  d  c  e  s  u  c
-{ C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },//void
-{ XX,P1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },//auto
-{ XX,XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },//bool
-{ XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },//char
-{ XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },//char16.
-{ XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },//char32.
-{ XX,XX,XX,XX,XX,XX,C5,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },//wchar_t
-{ XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },//short
-{ XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },//int
-{ XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },//long
-{ XX,XX,XX,XX,XX,XX,XX,XX,C9,__,C9,__,__,__,__,__,__,__,__,__,__,__ },//l. long
-{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C8,__,__,__,__,__,__,__,__,__,__ },//size_t
-{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,XX,C8,__,__,__,__,__,__,__,__,__ },//ssize_t
-{ XX,XX,XX,C8,XX,XX,XX,C8,C8,C8,C8,XX,XX,C8,__,__,__,__,__,__,__,__ },//signed
-{ XX,XX,XX,__,XX,XX,XX,__,__,__,C8,XX,XX,XX,__,__,__,__,__,__,__,__ },//unsign.
-{ XX,XX,XX,XX,XX,XX,XX,XX,XX,KR,XX,XX,XX,XX,XX,__,__,__,__,__,__,__ },//float
-{ XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__ },//double
-{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,C9,__,__,__,__ },//complex
-{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,__,__,__ },//enum
-{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P1,__,__,__ },//struct
-{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__ },//union
-{ XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P1,XX,XX,PP },//class
+  //v  a  b  c  16 32 wc s  i  l  ll s  u  f  d  c  e  s  u  c  t
+  { C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// void
+  { XX,P1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// auto
+  { XX,XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// bool
+  { XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char
+  { XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char16_t
+  { XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char32_5
+  { XX,XX,XX,XX,XX,XX,C5,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// wchar_t
+  { XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// short
+  { XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// int
+  { XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },// long
+  { XX,XX,XX,XX,XX,XX,XX,XX,C9,__,C9,__,__,__,__,__,__,__,__,__,__ },// l. long
+  { XX,XX,XX,C8,XX,XX,XX,C8,C8,C8,C8,C8,__,__,__,__,__,__,__,__,__ },// signed
+  { XX,XX,XX,__,XX,XX,XX,__,__,__,C8,XX,__,__,__,__,__,__,__,__,__ },// unsigned
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,KR,XX,XX,XX,__,__,__,__,__,__,__,__ },// float
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,XX,XX,XX,XX,__,__,__,__,__,__,__ },// double
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,C9,__,__,__,__,__ },// complex
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,__,__,__,__ },// enum
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P1,__,__,__,__ },// struct
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__ },// union
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P1,XX,XX,PP,__ },// class
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__ },// typedef
 };
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -392,8 +390,6 @@ char const* c_type_name( c_type_t type ) {
     T_CHAR16_T,
     T_CHAR32_T,
     T_LONG_LONG,
-    T_SIZE_T,
-    T_SSIZE_T,
     T_INT,
     T_COMPLEX,
     T_FLOAT,

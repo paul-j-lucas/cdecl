@@ -1,1 +1,1 @@
-cdecl | | explain bool x | 0
+cdecl | /dev/null | | explain bool x | 0

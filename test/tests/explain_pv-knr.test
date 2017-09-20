@@ -1,1 +1,1 @@
-cdecl | -xknr | explain void *p | 65
+cdecl | /dev/null | -xknr | explain void *p | 65

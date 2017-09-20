@@ -1,1 +1,1 @@
-cdecl | | declare f as function (fmt as pointer to const char, ...) returning void | 0
+cdecl | /dev/null | | declare f as function (fmt as pointer to const char, ...) returning void | 0

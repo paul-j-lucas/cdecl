@@ -1,1 +1,1 @@
-cdecl | -xc++ | declare x as pointer to function (void) returning reference to int | 0
+cdecl | /dev/null | -xc++ | declare x as pointer to function (void) returning reference to int | 0

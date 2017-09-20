@@ -40,6 +40,8 @@
 #include "types.h"
 #include "util.h"
 
+typedef struct c_typedef c_typedef_t;
+
 // standard
 #include <stdbool.h>
 #include <stdio.h>                      /* for FILE */
@@ -170,19 +172,28 @@ struct c_ast {
   c_loc_t     loc;
 
   union {
-    c_parent_t    parent;
-    c_array_t     array;
-    c_block_t     block;
+    c_parent_t          parent;
+    c_array_t           array;
+    c_block_t           block;
     // nothing needed for K_BUILTIN
-    c_ecsu_t      ecsu;
-    c_func_t      func;
+    c_ecsu_t            ecsu;
+    c_func_t            func;
     // nothing needed for K_NAME
-    c_ptr_mbr_t   ptr_mbr;
-    c_ptr_ref_t   ptr_ref;
+    c_ptr_mbr_t         ptr_mbr;
+    c_ptr_ref_t         ptr_ref;
+    c_typedef_t const  *c_typedef;
     // nothing needed for K_VARIADIC
   } as;
 
-  c_ast_t    *gc_next;                  // used for garbage collection
+  /**
+   * Every c_ast that's dynamically allocated is added to a static linked list
+   * so that they all can be garbage collected in one go.  This pointer is used
+   * for that list.
+   *
+   * This is much easier than having to free manually on parsing success or
+   * rely on Bison \c \%destructor code for parsing failure.
+   */
+  c_ast_t *gc_next;
 };
 
 /**
@@ -224,9 +235,30 @@ CDECL_AST_INLINE c_ast_t const* c_ast_args( c_ast_t const *ast ) {
 void c_ast_cleanup( void );
 
 /**
+ * Checks whether the two ASTs are equivalent, i.e., represent the same type.
+ *
+ * @param ast_i The first AST.
+ * @param ast_j The second AST.
+ * @return Returns \c true only if the two ASTs are equivalent.
+ */
+bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j );
+
+/**
+ * Frees all the memory used by the given c_ast.
+ *
+ * @param ast The c_ast to free.  May be NULL.
+ */
+void c_ast_free( c_ast_t *ast );
+
+/**
  * Garbage collects all allocated c_ast nodes.
  */
 void c_ast_gc( void );
+
+/**
+ * Releases all the current c_ast nodes so they will not be garbage collected.
+ */
+void c_ast_gc_release( void );
 
 /**
  * Checks whether the given AST node is a parent node.
@@ -245,6 +277,13 @@ CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
  * @param ast The c_ast to append.  Does nothing if null.
  */
 void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast );
+
+/**
+ * Frees all the memory used by the given c_ast_list.
+ *
+ * @param list A pointer to the list to free.  Does nothing if null.
+ */
+void c_ast_list_free( c_ast_list_t *list );
 
 /**
  * Creates a new c_ast.

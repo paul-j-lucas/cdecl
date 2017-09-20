@@ -52,16 +52,17 @@ enum c_kind {
   K_BUILTIN                 = 0x0002,   // void, char, int, etc.
   K_ENUM_CLASS_STRUCT_UNION = 0x0004,
   K_NAME                    = 0x0008,   // typeless function argument in K&R C
-  K_VARIADIC                = 0x0010,   // variadic ("...") function argument
+  K_TYPEDEF                 = 0x0010,   // typedef type, e.g., size_t
+  K_VARIADIC                = 0x0020,   // variadic ("...") function argument
   // "parent" kinds
-  K_ARRAY                   = 0x0020,
-  K_BLOCK                   = 0x0040,   // Apple extension
-  K_FUNCTION                = 0x0080,
-  K_POINTER                 = 0x0100,
+  K_ARRAY                   = 0x0040,
+  K_BLOCK                   = 0x0080,   // Apple extension
+  K_FUNCTION                = 0x0100,
+  K_POINTER                 = 0x0200,
   // "parent" kinds (C++ only)
-  K_POINTER_TO_MEMBER       = 0x0200,
-  K_REFERENCE               = 0x0400,
-  K_RVALUE_REFERENCE        = 0x0800,
+  K_POINTER_TO_MEMBER       = 0x0400,
+  K_REFERENCE               = 0x0800,
+  K_RVALUE_REFERENCE        = 0x1000,
 };
 typedef enum c_kind c_kind_t;
 

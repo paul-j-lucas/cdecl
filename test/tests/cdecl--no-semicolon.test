@@ -1,1 +1,1 @@
-cdecl | --no-semicolon | declare x as int | 0
+cdecl | /dev/null | --no-semicolon | declare x as int | 0

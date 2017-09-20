@@ -1,1 +1,1 @@
-cdecl | | declare f as function | 0
+cdecl | /dev/null | | declare f as function | 0

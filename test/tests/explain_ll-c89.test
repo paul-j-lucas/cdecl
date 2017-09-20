@@ -1,1 +1,1 @@
-cdecl | -xc89 | explain long long x | 65
+cdecl | /dev/null | -xc89 | explain long long x | 65

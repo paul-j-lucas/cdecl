@@ -1,1 +1,1 @@
-cdecl | | cast x into typedef int | 65
+cdecl | /dev/null | | cast x into typedef int | 65

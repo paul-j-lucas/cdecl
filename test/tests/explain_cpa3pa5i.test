@@ -1,1 +1,1 @@
-cdecl | | explain int (*(*const x)[3])[5] | 0
+cdecl | /dev/null | | explain int (*(*const x)[3])[5] | 0

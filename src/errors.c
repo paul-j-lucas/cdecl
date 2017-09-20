@@ -295,7 +295,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           /* suppress warning */;
       } // switch
 
-      return VISITOR_ERROR_NOT_FOUND;
+      break;
     }
 
     case K_BUILTIN:
@@ -318,7 +318,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
            (ast->type & T_REGISTER) ) {
         return error_kind_not_type( ast, T_REGISTER );
       }
-      if ( c_mode == MODE_EXPLAIN &&
+      if ( c_mode == MODE_GIBBERISH &&
            (ast->type & T_ENUM) && (ast->type & (T_STRUCT | T_CLASS)) ) {
         print_error( &ast->loc,
           "\"%s\": enum classes must just use \"enum\"",
@@ -402,6 +402,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
     }
 
     case K_NAME:
+    case K_TYPEDEF:
     case K_VARIADIC:
       // nothing to check
       break;
@@ -425,7 +426,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       }
       if ( (to_ast->type & T_REGISTER) )
         return error_kind_to_type( ast, T_REGISTER );
-      return VISITOR_ERROR_NOT_FOUND;
+      break;
     }
 
     case K_RVALUE_REFERENCE:
@@ -443,7 +444,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         print_hint( "pointer to void" );
         return VISITOR_ERROR_FOUND;
       }
-      return VISITOR_ERROR_NOT_FOUND;
+      break;
     }
   } // switch
 
@@ -513,6 +514,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     case K_POINTER_TO_MEMBER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
+    case K_TYPEDEF:
     case K_VARIADIC:
       // nothing to check
       break;

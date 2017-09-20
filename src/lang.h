@@ -87,6 +87,14 @@ c_lang_t c_lang_find( char const *s );
  */
 char const* c_lang_name( c_lang_t lang );
 
+/**
+ * Sets the current language and the corresponding prompt and built-in
+ * typedefs.
+ *
+ * @param lang The language to set.
+ */
+void c_lang_set( c_lang_t lang );
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif /* cdecl_lang_H */

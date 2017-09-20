@@ -1,1 +1,1 @@
-cdecl | | declare f as function (x as variable length array const of int) returning void | 0
+cdecl | /dev/null | | declare f as function (x as variable length array const of int) returning void | 0

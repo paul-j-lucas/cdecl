@@ -1,1 +1,1 @@
-cdecl | -xc++03 | declare x as char16_t | 65
+cdecl | /dev/null | -xc++03 | declare x as char16_t | 65

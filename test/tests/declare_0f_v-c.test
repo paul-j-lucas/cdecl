@@ -1,1 +1,1 @@
-cdecl | | declare f as pure virtual function returning void | 65
+cdecl | /dev/null | | declare f as pure virtual function returning void | 65

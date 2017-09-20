@@ -1,1 +1,1 @@
-cdecl | | explain short char x | 65
+cdecl | /dev/null | | explain short char x | 65

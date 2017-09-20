@@ -1,1 +1,1 @@
-cdecl | -xc++ | explain noreturn void f(int) | 65
+cdecl | /dev/null | -xc++ | explain noreturn void f(int) | 65

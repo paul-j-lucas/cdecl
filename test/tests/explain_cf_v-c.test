@@ -1,1 +1,1 @@
-cdecl | | explain void f() const | 65
+cdecl | /dev/null | | explain void f() const | 65

@@ -1,1 +1,1 @@
-cdecl | -xx | | 64
+cdecl | /dev/null | -xx | | 64

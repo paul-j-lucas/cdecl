@@ -24,7 +24,7 @@
  * grammar for C/C++ declarations.
  */
 
-%expect 7
+%expect 10
 
 %{
 // local
@@ -43,6 +43,7 @@
 #include "literals.h"
 #include "options.h"
 #include "types.h"
+#include "typedefs.h"
 #include "util.h"
 
 // standard
@@ -55,9 +56,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifdef ENABLE_CDECL_DEBUG
-#define IF_DEBUG(...)     BLOCK( if ( opt_debug ) { __VA_ARGS__ } )
+#define IF_DEBUG(...)             BLOCK( if ( opt_debug ) { __VA_ARGS__ } )
 #else
-#define IF_DEBUG(...)                   /* nothing */
+#define IF_DEBUG(...)             /* nothing */
 #endif /* ENABLE_CDECL_DEBUG */
 
 #define C_AST_CHECK(AST,CHECK) \
@@ -68,6 +69,13 @@
 
 #define C_TYPE_ADD(DST,SRC,LOC) \
   BLOCK( if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_ABORT(); )
+
+// Developer aid for tracing when Bison %destructors are called.
+#if 0
+#define DTRACE                    PRINT_ERR( "%d: destructor\n", __LINE__ )
+#else
+#define DTRACE                    NO_OP
+#endif
 
 #define DUMP_COMMA \
   IF_DEBUG( if ( true_or_set( &debug_comma ) ) PUTS_OUT( ",\n" ); )
@@ -106,6 +114,10 @@
   BLOCK( elaborate_error( __VA_ARGS__ ); PARSE_ABORT(); )
 
 #define PARSE_ABORT()             BLOCK( parse_cleanup( true ); YYABORT; )
+
+#define SHOW_ALL_TYPES            (~0u)
+#define SHOW_PREDEFINED_TYPES     0x01u
+#define SHOW_USER_TYPES           0x02u
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -259,6 +271,40 @@ static void parse_init( void ) {
 }
 
 /**
+ * Prints a c_typdef in English.
+ *
+ * @param type A pointer to the c_typedef to print.
+ */
+static void print_typedef( c_typedef_t const *type ) {
+  assert( type != NULL );
+  FPRINTF( fout, "define %s as ", type->type_name );
+  c_ast_english( type->ast, fout );
+  FPUTC( '\n', fout );
+}
+
+/**
+ * Prints the definition of a typedef.
+ *
+ * @param type A pointer to the c_typedef to print.
+ * @param data Optional data passed to the visitor: in this case, the bitmask
+ * of which typedefs to show.
+ * @return Always returns \c false.
+ */
+static bool print_typedef_visitor( c_typedef_t const *type, void *data ) {
+  assert( type != NULL );
+
+  unsigned const show_which_types = REINTERPRET_CAST( unsigned, data );
+
+  bool const show_it = type->user_defined ?
+    (show_which_types & SHOW_USER_TYPES) != 0 :
+    (show_which_types & SHOW_PREDEFINED_TYPES) != 0;
+
+  if ( show_it )
+    print_typedef( type );
+  return false;
+}
+
+/**
  * Clears the qualifier stack.
  */
 static void qualifier_clear( void ) {
@@ -310,7 +356,7 @@ static void quit( void ) {
 static void yyerror( char const *msg ) {
   c_loc_t loc;
   memset( &loc, 0, sizeof loc );
-  loc.first_column = lexer_column();
+  lexer_loc( &loc.first_line, &loc.first_column );
   print_loc( &loc );
 
   SGR_START_COLOR( stderr, error );
@@ -325,24 +371,29 @@ static void yyerror( char const *msg ) {
 %}
 
 %union {
-  c_ast_t      *ast;
-  c_ast_list_t  ast_list; /* for function arguments */
-  c_ast_pair_t  ast_pair; /* for the AST being built */
-  char const   *name;     /* name being declared or explained */
-  char const   *literal;  /* token literal (used for new-style casts)*/
-  int           number;   /* for array sizes */
-  c_type_t      type;     /* built-in types, storage classes, & qualifiers */
+  c_ast_t            *ast;
+  c_ast_list_t        ast_list;   /* for function arguments */
+  c_ast_pair_t        ast_pair;   /* for the AST being built */
+  char const         *name;       /* name being declared or explained */
+  char const         *literal;    /* token literal (used for new-style casts) */
+  int                 number;     /* for array sizes */
+  unsigned            bitmask;    /* multipurpose bitmask (used by show) */
+  c_type_t            type;       /* built-ins, storage classes, & qualifiers */
+  c_typedef_t const  *c_typedef;  /* typedef type */
 }
 
                     /* commands */
 %token              Y_CAST
 %token              Y_DECLARE
+%token              Y_DEFINE
 %token              Y_EXPLAIN
 %token              Y_HELP
 %token              Y_SET
+%token              Y_SHOW
 %token              Y_QUIT
 
                     /* english */
+%token              Y_ALL
 %token              Y_ARRAY
 %token              Y_AS
 %token              Y_BLOCK             /* Apple: English for '^' */
@@ -353,12 +404,15 @@ static void yyerror( char const *msg ) {
 %token              Y_MEMBER
 %token              Y_OF
 %token              Y_POINTER
+%token              Y_PREDEFINED
 %token              Y_PURE
 %token              Y_REFERENCE
 %token              Y_REINTERPRET
 %token              Y_RETURNING
 %token              Y_RVALUE
 %token              Y_TO
+%token              Y_TYPES
+%token              Y_USER
 %token              Y_VARIABLE
 
                     /* K&R C */
@@ -387,8 +441,6 @@ static void yyerror( char const *msg ) {
 %token              Y_ELLIPSIS          "..."
 %token  <type>      Y_ENUM
 %token  <type>      Y_SIGNED
-%token  <type>      Y_SIZE_T
-%token  <type>      Y_SSIZE_T
 %token  <type>      Y_VOID
 %token  <type>      Y_VOLATILE
 
@@ -440,6 +492,7 @@ static void yyerror( char const *msg ) {
 %token              Y_ERROR
 %token  <name>      Y_NAME
 %token  <number>    Y_NUMBER
+%token  <c_typedef> Y_TYPEDEF_TYPE
 
 %type   <ast_pair>  decl_english
 %type   <ast_list>  decl_list_english decl_list_opt_english
@@ -495,6 +548,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  builtin_type_ast_c
 %type   <ast_pair>  enum_class_struct_union_type_ast_c
 %type   <ast_pair>  placeholder_type_ast_c
+%type   <ast_pair>  typedef_type_ast_c
 
 %type   <type>      builtin_type_c
 %type   <type>      class_struct_type_c class_struct_type_expected_c
@@ -515,7 +569,20 @@ static void yyerror( char const *msg ) {
 %type   <name>      name_opt
 %type   <literal>   new_style_cast_c new_style_cast_english
 %type   <name>      set_option
+%type   <bitmask>   show_which_types_opt
 %type   <type>      static_type_opt
+
+/*
+ * Bison %destructors.  We don't use the <identifier> syntax because older
+ * versions of bison don't support it.
+ *
+ * Clean-up of AST nodes is done via garbage collection; see c_ast::gc_next.
+ */
+
+/* name */
+%destructor { DTRACE; FREE( $$ ); } Y_NAME name_expected name_opt
+%destructor { DTRACE; FREE( $$ ); } Y_CPP_LANG_NAME
+%destructor { DTRACE; FREE( $$ ); } set_option
 
 /*****************************************************************************/
 %%
@@ -535,11 +602,14 @@ command_list
 command
   : cast_english
   | declare_english
+  | define_english
   | explain_declaration_c
   | explain_cast_c
   | explain_new_style_cast_c
   | help_command
   | set_command
+  | show_command
+  | typedef_declaration_c
   | quit_command
   | Y_END                               /* allows for blank lines */
   | error
@@ -589,13 +659,10 @@ cast_english
       if ( opt_lang < LANG_CPP_11 ) {
         print_error( &@1, "%s is illegal in %s", $1, c_lang_name( opt_lang ) );
       }
-      else {
-        ok = c_ast_check( $5.ast, CHECK_CAST );
-        if ( ok ) {
-          FPRINTF( fout, "%s<", $1 );
-          c_ast_gibberish_cast( $5.ast, fout );
-          FPRINTF( fout, ">(%s)\n", $3 );
-        }
+      else if ( (ok = c_ast_check( $5.ast, CHECK_CAST )) ) {
+        FPRINTF( fout, "%s<", $1 );
+        c_ast_gibberish_cast( $5.ast, fout );
+        FPRINTF( fout, ">(%s)\n", $3 );
       }
 
       FREE( $3 );
@@ -647,6 +714,7 @@ declare_english
         //
         assert( $5.ast->name != NULL );
         print_error( &@5, "\"%s\": unknown type", $5.ast->name );
+        FREE( $2 );
         PARSE_ABORT();
       }
 
@@ -654,9 +722,10 @@ declare_english
       $5.ast->name = $2;
 
       DUMP_START( "declare_english",
-                  "DECLARE NAME AS storage_class_opt_english decl_english" );
+                  "DECLARE NAME AS storage_class_list_opt_english "
+                  "decl_english" );
       DUMP_NAME( "NAME", $2 );
-      DUMP_TYPE( "storage_class_opt_english", $4 );
+      DUMP_TYPE( "storage_class_list_opt_english", $4 );
       DUMP_AST( "decl_english", $5.ast );
       DUMP_END();
 
@@ -703,6 +772,101 @@ storage_class_english
   | Y_TYPEDEF
   | Y_VIRTUAL
   | Y_PURE virtual_expected       { $$ = T_PURE_VIRTUAL | T_VIRTUAL; }
+  ;
+
+/*****************************************************************************/
+/*  define
+/*****************************************************************************/
+
+define_english
+  : Y_DEFINE name_expected as_expected storage_class_list_opt_english
+    decl_english Y_END
+    {
+      if ( $5.ast->kind == K_NAME ) {
+        //
+        // This checks for a case like:
+        //
+        //      define x as y
+        //
+        // i.e., defining a type name as another name (unknown type).  This can
+        // get this far due to the nature of the C/C++ grammar.
+        //
+        // This check has to be done now in the parser rather than later in the
+        // AST because the name of the AST node needs to be set to the type
+        // name, but the AST node is itself a name and overwriting it would
+        // lose information.
+        //
+        assert( $5.ast->name != NULL );
+        print_error( &@5, "\"%s\": unknown type", $5.ast->name );
+        FREE( $2 );
+        PARSE_ABORT();
+      }
+
+      DUMP_START( "define_english",
+                  "DEFINE NAME AS storage_class_list_opt_english "
+                  "decl_english" );
+      DUMP_NAME( "NAME", $2 );
+      DUMP_TYPE( "storage_class_list_opt_english", $4 );
+      DUMP_AST( "decl_english", $5.ast );
+      DUMP_END();
+
+      bool ok = c_type_add( &$5.ast->type, $4, &@4 ) &&
+                c_ast_check( $5.ast, CHECK_DECL );
+
+      if ( ok ) {
+        if ( c_typedef_add( $2, $5.ast ) ) {
+          //
+          // If c_typedef_add() returns true, it takes ownership of the name and
+          // AST, so we release the AST from garbage collection.
+          //
+          c_ast_gc_release();
+        }
+        else {
+          print_error( &@5,
+            "\"%s\": typedef redefinition with different type", $2
+          );
+          ok = false;
+        }
+      }
+
+      if ( !ok ) {
+        FREE( $2 );
+        PARSE_ABORT();
+      }
+    }
+
+  | Y_DEFINE Y_TYPEDEF_TYPE as_expected storage_class_list_opt_english
+    decl_english Y_END
+    {
+      //
+      // This is for a case like:
+      //
+      //      define int_least32_t as int
+      //
+      // that is: an existing type followed by a type, i.e., redefining an
+      // existing type name to be the same type.
+      //
+      DUMP_START( "define_english",
+                  "DEFINE Y_TYPEDEF_TYPE AS storage_class_list_opt_english "
+                  "decl_english" );
+      DUMP_NAME( "type_name", $2->type_name );
+      DUMP_AST( "type_ast", $2->ast );
+      DUMP_TYPE( "storage_class_list_opt_english", $4 );
+      DUMP_AST( "decl_english", $5.ast );
+      DUMP_END();
+
+      C_TYPE_ADD( &$5.ast->type, $4, @4 );
+      C_AST_CHECK( $5.ast, CHECK_DECL );
+
+      c_typedef_t const *const found = c_typedef_find( $2->type_name );
+      assert( found != NULL );
+      if ( !c_ast_equiv( found->ast, $5.ast ) ) {
+        print_error( &@5,
+          "\"%s\": typedef redefinition with different type", $2->type_name
+        );
+        PARSE_ABORT();
+      }
+    }
   ;
 
 /*****************************************************************************/
@@ -755,6 +919,7 @@ explain_cast_c
         c_ast_english( ast, fout );
         FPUTC( '\n', fout );
       }
+
       FREE( $7 );
       if ( !ok )
         PARSE_ABORT();
@@ -787,8 +952,7 @@ explain_new_style_cast_c
       }
       else {
         c_ast_t *const ast = c_ast_patch_placeholder( $4.ast, $6.ast );
-        ok = c_ast_check( ast, CHECK_CAST );
-        if ( ok ) {
+        if ( (ok = c_ast_check( ast, CHECK_CAST )) ) {
           FPRINTF( fout, "%s %s %s %s ", $2, L_CAST, $9, L_INTO );
           c_ast_english( ast, fout );
           FPUTC( '\n', fout );
@@ -813,7 +977,7 @@ explain_c
       //
       // would result in a parser error.
       //
-      c_mode = MODE_EXPLAIN;
+      c_mode = MODE_GIBBERISH;
     }
   ;
 
@@ -843,6 +1007,136 @@ set_command
 set_option
   : name_opt
   | Y_CPP_LANG_NAME
+  ;
+
+/*****************************************************************************/
+/*  show
+/*****************************************************************************/
+
+show_command
+  : show_type_command
+  | show_types_command
+  ;
+
+show_type_command
+  : Y_SHOW Y_TYPEDEF_TYPE Y_END
+    {
+      print_typedef( $2 );
+    }
+
+  | Y_SHOW Y_NAME Y_END
+    {
+      print_error( &@2, "\"%s\": not defined as type (typedef)", $2 );
+      FREE( $2 );
+      PARSE_ABORT();
+    }
+  ;
+
+show_types_command
+  : Y_SHOW show_which_types_opt types_expected Y_END
+    {
+      void *const data = REINTERPRET_CAST( void*, $2 );
+      (void)c_typedef_visit( &print_typedef_visitor, data );
+    }
+  ;
+
+show_which_types_opt
+  : /* empty */                   { $$ = SHOW_USER_TYPES; }
+  | Y_ALL                         { $$ = SHOW_ALL_TYPES; }
+  | Y_PREDEFINED                  { $$ = SHOW_PREDEFINED_TYPES; }
+  | Y_USER                        { $$ = SHOW_USER_TYPES; }
+  ;
+
+/*****************************************************************************/
+/*  typedef                                                                  */
+/*****************************************************************************/
+
+typedef_declaration_c
+  : Y_TYPEDEF
+    {
+      //
+      // Tell the lexer that we're typedef'ing gibberish so cdecl keywords
+      // (e.g., "func") are returned as ordinary names, otherwise gibberish
+      // like:
+      //
+      //      typedef int (*func)(void);
+      //
+      // would result in a parser error.
+      //
+      c_mode = MODE_GIBBERISH;
+    }
+    type_ast_c { type_push( $3.ast ); } decl_c Y_END
+    {
+      type_pop();
+
+      DUMP_START( "typedef_declaration_c", "TYPEDEF type_ast_c decl_c" );
+      DUMP_AST( "type_ast_c", $3.ast );
+      DUMP_AST( "decl_c", $5.ast );
+      DUMP_END();
+
+      c_ast_t *ast;
+      char const *name;
+
+      if ( $3.ast->kind == K_TYPEDEF && $5.ast->kind == K_TYPEDEF ) {
+        //
+        // This is for a case like:
+        //
+        //      typedef size_t foo;
+        //
+        // that is: an existing type name followed by a new name.
+        //
+        ast = $3.ast;
+        name = check_strdup( $3.ast->name );
+      }
+      else if ( $3.ast->kind == K_TYPEDEF || $5.ast->kind == K_TYPEDEF ) {
+        //
+        // This is for a case like:
+        //
+        //      typedef int int_least32_t;
+        //
+        // that is: a type followed by an existing type name, i.e., redefining
+        // an existing type name to be the same type.
+        //
+        ast = $3.ast;
+        name = check_strdup( $5.ast->as.c_typedef->type_name );
+      }
+      else {
+        //
+        // This is for a case like:
+        //
+        //      typedef int foo;
+        //
+        // that is: a type followed by a new name.
+        //
+        ast = c_ast_patch_placeholder( $3.ast, $5.ast );
+        name = c_ast_take_name( ast );
+        assert( name != NULL );
+      }
+
+      C_AST_CHECK( ast, CHECK_DECL );
+
+      if ( c_typedef_add( name, ast ) ) {
+        //
+        // If c_typedef_add() returns true, it takes ownership of the name and
+        // AST, so we release the AST from garbage collection.
+        //
+        c_ast_gc_release();
+        //
+        // The first two cases above set ast to $3 ignoring $5.  Since we just
+        // released garbage collection, we have to free $5 explicitly if it's a
+        // c_typedef.
+        //
+        if ( $3.ast != $5.ast && $5.ast->kind == K_TYPEDEF )
+          c_ast_free( $5.ast );
+      }
+      else {
+        print_error( &@5,
+          "\"%s\": typedef redefinition with different type", name
+        );
+        FREE( name );
+        PARSE_ABORT();
+      }
+    }
   ;
 
 /*****************************************************************************/
@@ -1090,9 +1384,9 @@ pointer_to_member_decl_english
       $$.ast = C_AST_NEW( K_POINTER_TO_MEMBER, &@$ );
       $$.target_ast = NULL;
       $$.ast->type = qualifier_peek();
-      C_TYPE_ADD( &$$.ast->type, $5, @5 );
-      c_ast_set_parent( $7.ast, $$.ast );
       $$.ast->as.ptr_mbr.class_name = $6;
+      c_ast_set_parent( $7.ast, $$.ast );
+      C_TYPE_ADD( &$$.ast->type, $5, @5 );
 
       DUMP_AST( "pointer_to_member_decl_english", $$.ast );
       DUMP_END();
@@ -1197,12 +1491,15 @@ type_english
       DUMP_TYPE( "type_modifier_list_english", $1 );
       DUMP_TYPE( "(qualifier)", qualifier_peek() );
 
+      // see comment in type_ast_c
+      c_type_t type = opt_lang < LANG_C_99 ? T_INT : T_NONE;
+
+      C_TYPE_ADD( &type, qualifier_peek(), qualifier_peek_loc() );
+      C_TYPE_ADD( &type, $1, @1 );
+
       $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
+      $$.ast->type = type;
       $$.target_ast = NULL;
-      if ( opt_lang < LANG_C_99 )       // see comment in type_ast_c
-        $$.ast->type = T_INT;
-      C_TYPE_ADD( &$$.ast->type, qualifier_peek(), qualifier_peek_loc() );
-      C_TYPE_ADD( &$$.ast->type, $1, @1 );
 
       DUMP_AST( "type_english", $$.ast );
       DUMP_END();
@@ -1249,6 +1546,7 @@ type_modifier_english
 unmodified_type_english
   : builtin_type_ast_c
   | enum_class_struct_union_type_ast_c
+  | typedef_type_ast_c
   ;
 
 /*****************************************************************************/
@@ -1268,6 +1566,7 @@ decl2_c
   | func_decl_c
   | name_c
   | nested_decl_c
+  | typedef_type_ast_c
   ;
 
 array_decl_c
@@ -1705,25 +2004,26 @@ type_ast_c
       DUMP_START( "type_ast_c", "type_modifier_list_c" );
       DUMP_TYPE( "type_modifier_list_c", $1 );
 
+      //
+      // Prior to C99, typeless declarations are implicitly int, so we set it
+      // here.  In C99 and later, however, implicit int is an error, so we
+      // don't set it here and c_ast_check() will catch the error later.
+      //
+      // Note that type modifiers, e.g., unsigned, count as a type since that
+      // means unsigned int; however, neither qualifiers, e.g., const, nor
+      // storage classes, e.g., register, by themselves count as a type:
+      //
+      //      unsigned i;   // legal in C99
+      //      const    j;   // illegal in C99
+      //      register k;   // illegal in C99
+      //
+      c_type_t type = opt_lang < LANG_C_99 ? T_INT : T_NONE;
+
+      C_TYPE_ADD( &type, $1, @1 );
+
       $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
+      $$.ast->type = type;
       $$.target_ast = NULL;
-      if ( opt_lang < LANG_C_99 ) {
-        //
-        // Prior to C99, typeless declarations are implicitly int, so we set
-        // it here.  In C99 and later, however, implicit int is an error, so we
-        // don't set it here and c_ast_check() will catch the error later.
-        //
-        // Note that type modifiers, e.g., unsigned, count as a type since that
-        // means unsigned int; however, neither qualifiers, e.g., const, nor
-        // storage classes, e.g., register, by themselves count as a type:
-        //
-        //      unsigned i;   // legal in C99
-        //      const    j;   // illegal in C99
-        //      register k;   // illegal in C99
-        //
-        $$.ast->type = T_INT;
-      }
-      C_TYPE_ADD( &$$.ast->type, $1, @1 );
 
       DUMP_AST( "type_ast_c", $$.ast );
       DUMP_END();
@@ -1793,6 +2093,7 @@ unmodified_type_c
   : atomic_specifier_type_ast_c
   | builtin_type_ast_c
   | enum_class_struct_union_type_ast_c
+  | typedef_type_ast_c
   ;
 
 atomic_specifier_type_ast_c
@@ -1837,8 +2138,6 @@ builtin_type_c
   | Y_CHAR32_T
   | Y_WCHAR_T
   | Y_INT
-  | Y_SIZE_T
-  | Y_SSIZE_T
   | Y_FLOAT
   | Y_DOUBLE
   ;
@@ -1871,6 +2170,23 @@ enum_class_struct_union_type_c
 class_struct_type_c
   : Y_CLASS
   | Y_STRUCT
+  ;
+
+typedef_type_ast_c
+  : Y_TYPEDEF_TYPE
+    {
+      DUMP_START( "typedef_type_ast_c", "Y_TYPEDEF_TYPE" );
+      DUMP_NAME( "type_name", $1->type_name );
+      DUMP_AST( "type_ast", $1->ast );
+
+      $$.ast = C_AST_NEW( K_TYPEDEF, &@$ );
+      $$.target_ast = NULL;
+      $$.ast->as.c_typedef = $1;
+      $$.ast->type = T_TYPEDEF_TYPE;
+
+      DUMP_AST( "typedef_type_ast_c", $$.ast );
+      DUMP_END();
+    }
   ;
 
 type_qualifier_list_opt_c
@@ -2260,6 +2576,7 @@ name_expected
   : Y_NAME
   | error
     {
+      $$ = NULL;
       ELABORATE_ERROR( "name expected" );
     }
   ;
@@ -2298,6 +2615,14 @@ to_expected
   | error
     {
       ELABORATE_ERROR( "\"%s\" expected", L_TO );
+    }
+  ;
+
+types_expected
+  : Y_TYPES
+  | error
+    {
+      ELABORATE_ERROR( "\"%s\" expected", L_TYPES );
     }
   ;
 

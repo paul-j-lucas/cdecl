@@ -1,1 +1,1 @@
-cdecl | | declare x as pointer to atomic int | 0
+cdecl | /dev/null | | declare x as pointer to atomic int | 0

@@ -8,6 +8,7 @@ Test files are as follows:
 + `cl-*`               = A command-line test.
 + `declare_*`          = A declare test.
 + `explain_*`          = An explain test.
++ `typedef_*`          = A typedef test.
 + `file-*`             = A file test.
 + `help-*`             = A help test.
 + `set_*`              = A set test.
@@ -56,15 +57,16 @@ or `__` using the C++11 "trailing" syntax.
 Test File Format
 ================
 
-cdecl test files must be a single line in the following format:
+Cdecl test files must be a single line in the following format:
 
-*command* `|` *options* `|` *input* `|` *exit*
+*command* `|` *config* `|` *options* `|` *input* `|` *exit*
 
-that is four fields separated by the pipe (`|`) character
+that is five fields separated by the pipe (`|`) character
 (with optional whitespace)
 where:
 
 + *command* = command to execute (`cdecl`)
++ *config*  = name of config file to use or `/dev/null` for none
 + *options* = command-line options or blank for none
 + *input*   = command-line arguments
 + *exit*    = expected exit status code

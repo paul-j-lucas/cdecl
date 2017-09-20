@@ -1,1 +1,1 @@
-cdecl | | declare f as function (pointer to char) returning pointer to int | 0
+cdecl | /dev/null | | declare f as function (pointer to char) returning pointer to int | 0

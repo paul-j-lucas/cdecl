@@ -33,11 +33,15 @@
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>
+#if HAVE_PWD_H
+# include <pwd.h>                       /* for getpwuid() */
+#endif /* HAVE_PWD_H */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>                   /* for fstat() */
 #include <sysexits.h>
+#include <unistd.h>                     /* for geteuid() */
 
 #ifdef HAVE_READLINE_READLINE_H
 # include <readline/readline.h>
@@ -221,6 +225,22 @@ error:
 }
 #endif /* WITH_TERM_COLUMNS */
 
+
+char const* home_dir( void ) {
+  static char const *home;
+  if ( home == NULL ) {
+    home = getenv( "HOME" );
+#if HAVE_GETEUID && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR
+    if ( !home ) {
+      struct passwd *const pw = getpwuid( geteuid() );
+      if ( pw )
+        home = pw->pw_dir;
+    }
+#endif /* HAVE_GETEUID && && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR */
+  }
+  return home;
+}
+
 bool is_file( int fd ) {
   struct stat fd_stat;
   FSTAT( fd, &fd_stat );
@@ -320,6 +340,19 @@ void link_push( link_t **phead, link_t *node ) {
   assert( node->next == NULL );
   node->next = (*phead);
   (*phead) = node;
+}
+
+void path_append( char *path, char const *component ) {
+  assert( path != NULL );
+  assert( component != NULL );
+
+  size_t const len = strlen( path );
+  if ( len ) {
+    path += len - 1;
+    if ( *path != '/' )
+      *++path = '/';
+    strcpy( ++path, component );
+  }
 }
 
 size_t strcpy_len( char *dst, char const *src ) {

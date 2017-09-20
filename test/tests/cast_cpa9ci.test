@@ -1,1 +1,1 @@
-cdecl | | cast x into const pointer to array 9 of const int | 0
+cdecl | /dev/null | | cast x into const pointer to array 9 of const int | 0

@@ -1,1 +1,1 @@
-cdecl | | declare x as reference to register int | 65
+cdecl | /dev/null | | declare x as reference to register int | 65

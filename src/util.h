@@ -243,6 +243,13 @@ unsigned get_term_columns( void );
 #endif /* WITH_TERM_COLUMNS */
 
 /**
+ * Gets the full path of the user's home directory.
+ *
+ * @return Returns said directory or NULL if it is not obtainable.
+ */
+char const* home_dir( void );
+
+/**
  * Checks whether \a s is a blank line, that is a line consisting only of
  * whitespace.
  *
@@ -304,6 +311,15 @@ void link_push( link_t **phead, link_t *node );
  */
 #define LINK_PUSH(PHEAD,NODE) \
   link_push( (link_t**)(PHEAD), (link_t*)(NODE) )
+
+/**
+ * Appends a component to a path ensuring that exactly one \c / separates them.
+ *
+ * @param path The path to append to.
+ * The buffer pointed to must be big enough to hold the new path.
+ * @param component The component to append.
+ */
+void path_append( char *path, char const *component );
 
 /**
  * Prints an error message for \c errno to standard error and exits.

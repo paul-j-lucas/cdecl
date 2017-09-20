@@ -10,6 +10,42 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 3.7
+
+** New typedef and define commands
+New typedef gibberish and define english commands have been added to allow new
+types to be defined that can then be used in subsequent declarations and
+explanations.
+
+** New C99 standard types
+The following C99 types are now supported via the new typedef command:
+int8_t, int16_t, int32_t, int64_t, int_fast8_t, int_fast16_t, int_fast32_t,
+int_fast64_t, int_least16_t, int_least32_t, int_least64_t, int_least8_t,
+intmax_t, intptr_t, ptrdiff_t, uint8_t, uint16_t, uint32_t, uint64_t,
+uint_fast8_t, uint_fast16_t, uint_fast32_t, uint_fast64_t, uint_least8_t,
+uint_least16_t, uint_least32_t, uint_least64_t, uintmax_t, and uintptr_t.
+
+** New --no-typedefs/-t command-line options
+Either of these options suppresses the definition of the standard C99 types.
+
+** Reads configuration file
+Upon start-up and if it exists, reads ~/.cdeclrc (by default) for user-defined
+typedef or define commands.
+
+** New --config/-c command-line options
+These options specify an alternate configuration file to read upon start-up.
+As a result, the -c option in earlier versions of cdecl used to specify when to
+colorize output has been renamed to -k.
+
+** New --no-config/-C command-line options
+These options suppress the reading of a configuration file, even one explicitly
+specified via --config/-c.
+
+** New show command
+A new show command has been added to show the definition of either predefined
+or user-defined types.
+
+
 * Changes in Cdecl 3.6
 
 ** First word of first argument

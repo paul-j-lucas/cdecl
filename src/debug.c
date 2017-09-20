@@ -27,6 +27,7 @@
 #include "config.h"                     /* must go first */
 #include "ast.h"
 #include "debug.h"
+#include "typedefs.h"
 #include "util.h"
 
 // system
@@ -77,7 +78,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
       "parent->id = %d,\n", ast->parent ? (int)ast->parent->id : -1
     );
     INDENT_PRINT(
-      "loc = %d-%d,\n", ast->loc.first_column, ast->loc.last_column
+      "loc = %zu-%zu,\n", ast->loc.first_column, ast->loc.last_column
     );
     INDENT_PRINT_KV( "type", c_type_name( ast->type ) );
 
@@ -138,6 +139,11 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_RVALUE_REFERENCE:
         PRINT_COMMA;
         c_ast_debug( ast->as.ptr_ref.to_ast, indent, "to_ast", dout );
+        break;
+
+      case K_TYPEDEF:
+        PRINT_COMMA;
+        INDENT_PRINT_KV( "typedef_name", ast->as.c_typedef->type_name );
         break;
     } // switch
 

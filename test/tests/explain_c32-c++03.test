@@ -1,1 +1,1 @@
-cdecl | -xc++03 | explain char32_t x | 65
+cdecl | /dev/null | -xc++03 | explain char32_t x | 65

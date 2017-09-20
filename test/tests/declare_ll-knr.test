@@ -1,1 +1,1 @@
-cdecl | -xknr | declare x as long long x | 65
+cdecl | /dev/null | -xknr | declare x as long long x | 65

@@ -20,7 +20,7 @@
 #       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-AC_INIT([cdecl], [3.6], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/cdecl])
+AC_INIT([cdecl], [3.7], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/cdecl])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
@@ -43,6 +43,7 @@ AC_HEADER_ASSERT
 AC_CHECK_HEADERS([curses.h ncurses.h])
 AC_CHECK_HEADERS([getopt.h])
 AC_HEADER_STDBOOL
+AC_CHECK_HEADERS([pwd.h])
 AC_CHECK_HEADERS([sysexits.h])
 AC_CHECK_HEADERS([readline/readline.h readline/history.h])
 AC_CHECK_HEADERS([term.h], [], [],
@@ -59,6 +60,7 @@ AC_C_INLINE
 AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
 AC_TYPE_UINT32_T
+AC_CHECK_MEMBERS([struct passwd.pw_dir],[],[],[[#include <pwd.h>]])
 
 # Checks for library functions.
 AC_FUNC_REALLOC
@@ -70,7 +72,7 @@ AC_CHECK_DECLS([rl_gnu_readline_p],[],[],
 [#include <stdio.h>
 #include <readline/readline.h>
 ])
-AC_CHECK_FUNCS([fmemopen strsep])
+AC_CHECK_FUNCS([geteuid getpwuid fmemopen strsep])
 AC_SEARCH_LIBS([readline],[readline])
 AC_SEARCH_LIBS([add_history],[readline history])
 AC_SEARCH_LIBS([endwin],[curses ncurses])

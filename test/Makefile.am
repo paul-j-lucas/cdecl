@@ -80,6 +80,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_cppi.test \
 	tests/declare_cu.test \
 	tests/declare_cvpi.test \
+	tests/declare_cz.test \
 	tests/declare_e.test \
 	tests/declare_ea2i.test \
 	tests/declare_f.test \
@@ -220,13 +221,12 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_uf.test \
 	tests/declare_uv.test \
 	tests/declare_uw.test \
+	tests/declare_uz.test \
 	tests/declare_v.test \
 	tests/declare_vf_v-c.test \
 	tests/declare_vi-knr.test \
 	tests/declare_w-c89.test \
-	tests/declare_xi-c.test \
-	tests/declare_z-knr.test \
-	tests/declare_zz-knr.test
+	tests/declare_xi-c.test
 
 ###############################################################################
 
@@ -431,9 +431,7 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_vi-knr.test \
 	tests/explain_voyf-c.test \
 	tests/explain_w-c89.test \
-	tests/explain_xi-c.test \
-	tests/explain_z-knr.test \
-	tests/explain_zz-knr.test
+	tests/explain_xi-c.test
 
 ###############################################################################
 
@@ -546,6 +544,66 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 	tests/explain_dynamic_cast_pc-c.test \
 	tests/explain_reinterpret_cast_pv-c.test \
 	tests/explain_static_cast_i-c.test
+
+###############################################################################
+
+#
+# C show tests
+# ============
+#
+TESTS+=	tests/show_all_types.test \
+	tests/show_int8_t.test \
+	tests/show_predefined_types.test \
+	tests/show_user_types.test
+
+#
+# C show error tests
+# ==================
+#
+TESTS+=	tests/show_foo.test
+
+###############################################################################
+
+#
+# C typedef tests
+# ===============
+#
+TESTS+=	tests/typedef_i.test \
+	tests/typedef_i_declare_i.test \
+	tests/typedef_i_explain_i.test \
+	tests/typedef_i_int_least32_t.test
+
+#
+# C typedef error tests
+# =====================
+#
+TESTS+=	tests/typedef_c_int_least32_t.test
+
+###############################################################################
+
+#
+# C define tests
+# ==============
+#
+TESTS+=	tests/define_i.test \
+	tests/define_i_declare_i.test \
+	tests/define_i_explain_i.test \
+	tests/define_i_int_least32_t.test
+
+#
+# C define error tests
+# ====================
+#
+TESTS+=	tests/define_c_int_least32_t.test
+
+###############################################################################
+
+#
+# C config file tests
+# ===================
+#
+TESTS+=	tests/declare_config_u.test \
+	tests/explain_config_u.test
 
 ###############################################################################
 

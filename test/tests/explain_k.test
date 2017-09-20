@@ -1,1 +1,1 @@
-cdecl | | explain struct S x | 0
+cdecl | /dev/null | | explain struct S x | 0

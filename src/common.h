@@ -36,15 +36,16 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define CPPDECL               "c++decl"
-#define DEBUG_INDENT          2         /* spaces per debug indent level */
+#define CONF_FILE_NAME            "." PACKAGE "rc"
+#define CPPDECL                   "c++decl"
+#define DEBUG_INDENT              2     /* spaces per debug indent level */
 
 /**
  * Mode of operation.
  */
 enum c_mode {
-  MODE_DECLARE,                         // includes "cast ... into ..."
-  MODE_EXPLAIN
+  MODE_ENGLISH,
+  MODE_GIBBERISH
 };
 typedef enum c_mode c_mode_t;
 
@@ -52,14 +53,14 @@ typedef enum c_mode c_mode_t;
  * The source location used by bison.
  */
 typedef struct {
-  int first_line;
-  int first_column;
-  int last_line;
-  int last_column;
+  size_t first_line;
+  size_t first_column;
+  size_t last_line;
+  size_t last_column;
 } YYLTYPE;
 
-#define YYLTYPE_IS_DECLARED   1
-#define YYLTYPE_IS_TRIVIAL    1
+#define YYLTYPE_IS_DECLARED       1
+#define YYLTYPE_IS_TRIVIAL        1
 
 typedef YYLTYPE c_loc_t;
 

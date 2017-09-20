@@ -29,6 +29,7 @@
 #include "ast.h"
 #include "ast_util.h"
 #include "literals.h"
+#include "typedefs.h"
 #include "util.h"
 
 // system
@@ -70,6 +71,18 @@ static void       c_ast_gibberish_space_name( c_ast_t const*, g_param_t* );
 static void       g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
 
 ////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Sets the leaf c_ast.
+ *
+ * @param param The g_param to use.
+ * @param ast The c_ast to set the leaf to.
+ */
+static inline void g_param_leaf( g_param_t *param, c_ast_t const *ast ) {
+  assert( param->leaf_ast == NULL );
+  assert( ast != NULL );
+  param->leaf_ast = ast;
+}
 
 /**
  * Prints a space only if we haven't printed one yet.
@@ -200,8 +213,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_BUILTIN:
       FPUTS( c_type_name( ast_type ), param->gout );
       c_ast_gibberish_space_name( ast, param );
-      assert( param->leaf_ast == NULL );
-      param->leaf_ast = ast;
+      g_param_leaf( param, ast );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
@@ -219,15 +231,13 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         "%s %s", c_type_name( ast_type ), ast->as.ecsu.ecsu_name
       );
       c_ast_gibberish_space_name( ast, param );
-      assert( param->leaf_ast == NULL );
-      param->leaf_ast = ast;
+      g_param_leaf( param, ast );
       break;
 
     case K_NAME:
       if ( ast->name != NULL && param->gkind != G_CAST )
         FPUTS( ast->name, param->gout );
-      assert( param->leaf_ast == NULL );
-      param->leaf_ast = ast;
+      g_param_leaf( param, ast );
       break;
 
     case K_NONE:
@@ -276,10 +286,17 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       }
       break;
 
+    case K_TYPEDEF:
+      if ( ast_type != T_TYPEDEF_TYPE )
+        FPRINTF( param->gout, "%s ", c_type_name( ast_type ) );
+      FPRINTF( param->gout, "%s", ast->as.c_typedef->type_name );
+      c_ast_gibberish_space_name( ast, param );
+      g_param_leaf( param, ast );
+      break;
+
     case K_VARIADIC:
       FPUTS( L_ELLIPSIS, param->gout );
-      assert( param->leaf_ast == NULL );
-      param->leaf_ast = ast;
+      g_param_leaf( param, ast );
       break;
   } // switch
 }

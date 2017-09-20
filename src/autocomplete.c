@@ -55,6 +55,7 @@ static ac_keyword_t const CDECL_COMMANDS[] = {
   { L_CAST,             LANG_ALL           },
   { L_CONST,            LANG_MIN(CPP_MIN)  }, // const cast ...
   { L_DECLARE,          LANG_ALL           },
+  { L_DEFINE,           LANG_ALL           },
   { L_DYNAMIC,          LANG_MIN(CPP_MIN)  }, // dynamic cast ...
   { L_EXIT,             LANG_ALL           },
   { L_EXPLAIN,          LANG_ALL           },
@@ -62,6 +63,7 @@ static ac_keyword_t const CDECL_COMMANDS[] = {
   { L_QUIT,             LANG_ALL           },
   { L_REINTERPRET,      LANG_MIN(CPP_MIN)  }, // reinterpret cast ...
   { L_SET,              LANG_ALL           },
+  { L_SHOW,             LANG_ALL           },
   { L_STATIC,           LANG_MIN(CPP_MIN)  }, // static cast ...
   { NULL,               LANG_NONE          },
 };
@@ -106,6 +108,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
 //{ L_OF,                               // too short
   { L_OVERRIDE,         LANG_MIN(CPP_11)                },
   { L_POINTER,          LANG_ALL                        },
+  { L_PREDEFINED,       LANG_ALL                        },
   { L_PURE,             LANG_MIN(CPP_MIN)               },
   { L_REFERENCE,        LANG_MIN(CPP_MIN)               },
   { L_REGISTER,         LANG_ALL                        },

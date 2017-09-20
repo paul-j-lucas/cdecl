@@ -1,1 +1,1 @@
-cdecl | | explain pure virtual void f() | 65
+cdecl | /dev/null | | explain pure virtual void f() | 65

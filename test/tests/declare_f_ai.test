@@ -1,1 +1,1 @@
-cdecl | | declare f as function returning array of int | 65
+cdecl | /dev/null | | declare f as function returning array of int | 65

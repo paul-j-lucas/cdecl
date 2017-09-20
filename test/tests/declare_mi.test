@@ -1,1 +1,1 @@
-cdecl | -xc++ | declare x as mutable int | 0
+cdecl | /dev/null | -xc++ | declare x as mutable int | 0

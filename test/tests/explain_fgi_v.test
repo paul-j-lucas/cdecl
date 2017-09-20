@@ -1,1 +1,1 @@
-cdecl | | explain void f(register int i) | 0
+cdecl | /dev/null | | explain void f(register int i) | 0

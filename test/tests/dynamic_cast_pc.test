@@ -1,1 +1,1 @@
-cdecl | -xc++ | dynamic cast x into pointer to class C | 0
+cdecl | /dev/null | -xc++ | dynamic cast x into pointer to class C | 0

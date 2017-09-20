@@ -25,6 +25,7 @@
  */
 
 %option nounput
+%option yylineno
 
 %{
 
@@ -36,9 +37,11 @@
 #include "lexer.h"
 #include "literals.h"
 #include "util.h"
+#include "typedefs.h"
 #include "parser.h"                     /* must go last */
 
 // standard
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>                     /* for strtol(3) */
 #include <string.h>
@@ -64,9 +67,10 @@
  * It sets the current token location information.
  * @hideinitializer
  */
-#define YY_USER_ACTION                        \
-  yylloc.first_column = column;               \
-  yylloc.last_column  = column + yyleng - 1;  \
+#define YY_USER_ACTION                                \
+  yylloc.first_line   = yylloc.last_line = yylineno;  \
+  yylloc.first_column = column;                       \
+  yylloc.last_column  = column + yyleng - 1;          \
   column += yyleng;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -89,6 +93,7 @@ typedef struct keyword keyword_t;
  * All cdecl keywords (that are not C/C++ keywords).
  */
 static keyword_t const CDECL_KEYWORDS[] = {
+  { L_ALL,            TOKEN( Y_ALL )                  },
   { L_ARRAY,          TOKEN( Y_ARRAY )                },
   { L_AS,             TOKEN( Y_AS )                   },
   { L_ATOMIC,         C_SYN( L__ATOMIC,       false ) },
@@ -100,6 +105,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L__COMPLEX,       C_SYN( L_COMPLEX,       true  ) },
   { L_CONSTANT,       C_SYN( L_CONST,         false ) },
   { L_DECLARE,        TOKEN( Y_DECLARE )              },
+  { L_DEFINE,         TOKEN( Y_DEFINE )               },
   { L_DYNAMIC,        TOKEN( Y_DYNAMIC )              },
   { L_ENUMERATION,    C_SYN( L_ENUM,          false ) },
   { L_EXIT,           TOKEN( Y_QUIT )                 },
@@ -117,6 +123,8 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_OF,             TOKEN( Y_OF ),                  },
   { L_OVERRIDDEN,     C_SYN( L_OVERRIDE,      false ) },
   { L_POINTER,        TOKEN( Y_POINTER )              },
+  { L_PREDEF,         TOKEN( Y_PREDEFINED )           },
+  { L_PREDEFINED,     TOKEN( Y_PREDEFINED )           },
   { L_PTR,            TOKEN( Y_POINTER )              },
   { L_PURE,           TOKEN( Y_PURE )                 },
   { L_Q,              TOKEN( Y_QUIT )                 },
@@ -129,10 +137,13 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_RETURNING,      TOKEN( Y_RETURNING )            },
   { L_RVALUE,         TOKEN( Y_RVALUE )               },
   { L_SET,            TOKEN( Y_SET )                  },
+  { L_SHOW,           TOKEN( Y_SHOW )                 },
   { L_STRUCTURE,      C_SYN( L_STRUCT,        false ) },
   { L__THREAD_LOCAL,  C_SYN( L_THREAD_LOCAL,  true  ) },
   { L_TO,             TOKEN( Y_TO )                   },
   { L_TYPE,           C_SYN( L_TYPEDEF,       false ) },
+  { L_TYPES,          TOKEN( Y_TYPES )                },
+  { L_USER,           TOKEN( Y_USER )                 },
   { L_VAR,            TOKEN( Y_VARIABLE )             },
   { L_VARARGS,        C_SYN( L_ELLIPSIS,      false ) },
   { L_VARIABLE,       TOKEN( Y_VARIABLE )             },
@@ -167,7 +178,7 @@ static keyword_t const* cdecl_keyword_find( char const *s ) {
   for ( keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
     if ( strcmp( s, k->literal ) != 0 )
       continue;
-    if ( c_mode != MODE_EXPLAIN || (k->c_keyword_synonym && k->allow_explain) )
+    if ( c_mode == MODE_ENGLISH || (k->c_keyword_synonym && k->allow_explain) )
       return k;
     break;
   } // for
@@ -243,26 +254,32 @@ static int yywrap( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-size_t lexer_column( void ) {
-  if ( column == 0 )
-    return column_newline;
-
-  if ( lexer_token[0] == '\n' )
-    return column;
-
-  return column - strlen( lexer_token );
-}
-
 char const* lexer_input_line( size_t *plen ) {
   if ( plen )
     *plen = input_len;
   return input_buf;
 }
 
+void lexer_loc( size_t *pline, size_t *pcolumn ) {
+  assert( pline != NULL );
+  assert( pcolumn != NULL );
+
+  *pline = yylineno;
+
+  if ( column == 0 )
+    *pcolumn = column_newline;
+  else if ( lexer_token[0] == '\n' )
+    *pcolumn = column;
+  else
+    *pcolumn = column - strlen( lexer_token );
+}
+
 void lexer_reset( bool hard_reset ) {
-  if ( hard_reset )
+  if ( hard_reset ) {
     is_eof = false;
-  c_mode = MODE_DECLARE;
+    yylineno = 0;
+  }
+  c_mode = MODE_ENGLISH;
   input_len = input_sent = 0;
   newline();
 }
@@ -304,6 +321,12 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                     lexer_token = ck->c_keyword_synonym;
                   else
                     return ck->y_token;
+                }
+
+                c_typedef_t const *const t = c_typedef_find( lexer_token );
+                if ( t ) {
+                  yylval.c_typedef = t;
+                  return Y_TYPEDEF_TYPE;
                 }
 
         find_c_keyword:

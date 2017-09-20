@@ -237,7 +237,9 @@ void print_loc( c_loc_t const *loc ) {
   assert( loc );
   print_caret( loc->first_column );
   SGR_START_COLOR( stderr, locus );
-  PRINT_ERR( "%d", loc->first_column + 1 );
+  if ( opt_conf_file )
+    PRINT_ERR( "%s:%zu,", opt_conf_file, loc->first_line + 1 );
+  PRINT_ERR( "%zu", loc->first_column + 1 );
   SGR_END_COLOR( stderr );
   PUTS_ERR( ": " );
 }

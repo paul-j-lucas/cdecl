@@ -1,1 +1,1 @@
-cdecl | | explain (extern int)x | 65
+cdecl | /dev/null | | explain (extern int)x | 65

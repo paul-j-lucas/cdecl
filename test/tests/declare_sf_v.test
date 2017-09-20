@@ -1,1 +1,1 @@
-cdecl | | declare f as static function returning void | 0
+cdecl | /dev/null | | declare f as static function returning void | 0

@@ -26,11 +26,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // english
+char const L_ALL[]              = "all";
 char const L_ARRAY[]            = "array";
 char const L_AS[]               = "as";
 char const L_BLOCK[]            = "block";    // Apple: English for '^'
 char const L_CAST[]             = "cast";
 char const L_DECLARE[]          = "declare";
+char const L_DEFINE[]           = "define";
 char const L_EXIT[]             = "exit";
 char const L_EXPLAIN[]          = "explain";
 char const L_FUNC[]             = "func";
@@ -41,6 +43,8 @@ char const L_MBR[]              = "mbr";
 char const L_MEMBER[]           = "member";
 char const L_OF[]               = "of";
 char const L_POINTER[]          = "pointer";
+char const L_PREDEF[]           = "predef";
+char const L_PREDEFINED[]       = "predefined";
 char const L_PTR[]              = "ptr";
 char const L_Q[]                = "q";
 char const L_QUIT[]             = "quit";
@@ -50,7 +54,10 @@ char const L_RET[]              = "ret";
 char const L_RETURNING[]        = "returning";
 char const L_RVALUE[]           = "rvalue";
 char const L_SET[]              = "set";
+char const L_SHOW[]             = "show";
 char const L_TO[]               = "to";
+char const L_TYPES[]            = "types";
+char const L_USER[]             = "user";
 char const L_VECTOR[]           = "vector";
 
 // K&R

@@ -1,1 +1,1 @@
-cdecl | -xc++ | declare x as reference to void | 65
+cdecl | /dev/null | -xc++ | declare x as reference to void | 65

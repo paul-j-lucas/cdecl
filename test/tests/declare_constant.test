@@ -1,1 +1,1 @@
-cdecl | | declare x as constant int | 0
+cdecl | /dev/null | | declare x as constant int | 0

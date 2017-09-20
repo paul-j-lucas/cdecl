@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "August 30, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "September 17, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -232,7 +232,7 @@ and
 means
 .IR string .
 .TP 4
-.BI \-\-color \f1=\fPs "\f1 | \fP" "" \-c " s"
+.BI \-\-color \f1=\fPs "\f1 | \fP" "" \-k " s"
 Sets when to colorize output to
 .I s
 (which is case-insensitive).
@@ -298,6 +298,13 @@ Synonym for
 The default is
 .BR not_file .
 .TP
+.BI \-\-config \f1=\fPf "\f1 | \fP" "" \-c " f"
+Specifies the configuration file
+.I f
+to read
+(default is
+.BR ~/.cdeclrc ).
+.TP
 .BR \-\-debug " | " \-d
 Turns on debugging output (if compiled in).
 The additional JSON-like output is of an abstract syntax tree
@@ -341,8 +348,22 @@ and
 (for
 .BR c++decl ).
 .TP
+.BR \-\-no-config " | " \-C
+Suppresses reading of any configuration file,
+even one explicitly specified via either
+.BR \-\-config
+or
+.BR \-c .
+.TP
 .BR \-\-no-semicolon " | " \-s
 Suppresses printing of a trailing semicolon for C (and C++) declarations.
+.TP
+.BR \-\-no-typedefs " | " \-t
+Suppresses predefining standard types,
+e.g.,
+\f(CWsize_t\f1,
+\f(CWuint8_t\f1,
+etc.
 .TP
 .BI \-\-output \f1=\fPf "\f1 | \fP" "" \-o " f"
 Sends all non-error output to file
@@ -482,6 +503,9 @@ Composes a C++ new-style cast from pseudo-English.
 .BI declare " name" " as" " english"
 Composes a C (or C++) declaration from pseudo-English.
 .TP
+.BI define " name" " as" " english"
+Defines a type (\f(CWtypedef\f1) from pseudo-English.
+.TP
 .BI explain " gibberish"
 Deciphers a C (or C++) declaration or new-style cast into pseudo-English.
 .TP
@@ -494,6 +518,18 @@ sets a particular option, if given;
 if not,
 it's equivalent to the second form
 that prints the current value of all options.
+.TP
+.BR show " \f2name\fP" "" " | " show " { " all " | " predefined " | " user " } " types
+In the first form,
+shows the definition for a previously defined type (\f(CWtypedef\fP).
+In the second form,
+shows one of
+all, predefined-only, or user-defined-only
+types.
+.TP
+.BI typedef " gibberish"
+Parses a C (or C++) declaration
+and defines a type.
 .TP
 .BR help " | " ?
 Prints a
@@ -515,7 +551,9 @@ However,
 commands may be given that span multiple lines
 when newlines are escaped via \f(CW\\\fP.
 When a newline is escaped,
-the next prompt changes to either
+the next prompt
+(if interactive and enabled)
+changes to either
 \f(CWcdecl+\fP
 or
 \f(CWc++decl+\fP
@@ -548,12 +586,6 @@ is one of:
 .br
 .RB [ rvalue "] " "reference to" " \f2english\fP"
 .br
-.I type
-.P
-and
-.I type
-is either:
-.IP "" 4
 .IR storage "* " modifier "* [" C-type ]
 .br
 .RB "{ " enum " [" class " | " struct "] | " class " | " struct " | " union " } \f2name\fP"
@@ -673,6 +705,7 @@ The words on the left are synonyms for what's on the right:
 non-returning  noreturn
     _Noreturn  noreturn
    overridden  override
+       predef  predefined
           ptr  pointer
           ref  reference
    restricted  restrict
@@ -708,6 +741,49 @@ for Apple's ``blocks'' syntax
 and the
 \f(CW__block\fP
 storage class.
+.SS Predefined Types
+The following types are predefined:
+.P
+.RS 4
+\f(CWptrdiff_t\fP,
+\f(CWsize_t\fP,
+\f(CWssize_t\fP
+.br
+\f(CWintmax_t\fP,
+\f(CWuintmax_t\fP,
+\f(CWintptr_t\fP,
+\f(CWuintptr_t\fP
+.br
+\f(CWint8_t\fP,
+\f(CWint16_t\fP,
+\f(CWint32_t\fP,
+\f(CWint64_t\fP
+.br
+\f(CWint_fast8_t\fP,
+\f(CWint_fast16_t\fP,
+\f(CWint_fast32_t\fP,
+\f(CWint_fast64_t\fP
+.br
+\f(CWint_least8_t\fP,
+\f(CWint_least16_t\fP,
+\f(CWint_least32_t\fP,
+\f(CWint_least64_t\fP
+.br
+\f(CWuint8_t\fP,
+\f(CWuint16_t\fP,
+\f(CWuint32_t\fP,
+\f(CWuint64_t\fP
+.br
+\f(CWuint_fast8_t\fP,
+\f(CWuint_fast16_t\fP,
+\f(CWuint_fast32_t\fP,
+\f(CWuint_fast64_t\fP
+.br
+\f(CWuint_least8_t\fP,
+\f(CWuint_least16_t\fP,
+\f(CWuint_least32_t\fP,
+\f(CWuint_least64_t\fP
+.RE
 .SS Set Options
 The
 .B set
@@ -796,6 +872,13 @@ cdecl+      f as pointer to function (int) returning void) \\
 cdecl+     returning pointer to function (int) returning void
 void (*signal(int sig, void (*f)(int)))(int);
 .cE
+This is made more comprehensible using ether \f(CWdefine\fP or \f(CWtypedef\fP:
+.cS
+cdecl> define pfi_rv as pointer to function (int) returning void
+cdecl> declare signal as function \\
+cdecl+     (sig as int, f as pfi_rv) returning pfi_rv
+pfi_rv signal(int sig, pfi_rv f);
+.cE
 .B cdecl
 can help figure out where to put
 \f(CWconst\fP and \f(CWvolatile\fP modifiers:
@@ -846,7 +929,7 @@ Create file error.
 I/O error.
 .PD
 .SH ENVIRONMENT
-.TP 4
+.TP 6
 .B CDECL_COLORS
 This variable specifies the colors and other attributes
 used to highlight various parts of the output
@@ -966,12 +1049,29 @@ that are unsupported by
 (because they don't apply)
 are ignored.
 .TP
+.B HOME
+The user's home directory:
+used to locate the default configuration file.
+If unset,
+the home directory is obtained from the password database entry
+for the effective user.
+If that fails,
+no default configuration file is read.
+.TP
 .B TERM
 The type of the terminal on which
 .B cdecl
 is being run.
 .SH FILES
 .TP 4
+.B ~/.cdeclrc
+The default configuration file
+containing user-specified
+\f(CWdefine\fP
+or
+\f(CWtypedef\fP
+commands.
+.TP
 .B ~/.inputrc
 Individual
 .BR readline (3)
@@ -1052,8 +1152,8 @@ and
 types include the corresponding keyword explicitly in the result
 even though it isn't needed in C++:
 .cS
-c++decl> declare p as pointer to struct S
-struct S *p;
+c++decl> declare p as const pointer to struct S
+struct S *const p;
 .cE 0
 .IP ""
 This is because,
@@ -1073,6 +1173,16 @@ be elided from the output of
 it isn't in order to have the output be ``round-trippable''
 when used as input to
 .BR explain .
+.IP ""
+However,
+\f(CWdefine\fP
+(or \f(CWtypedef\fP)
+can be used to define the type:
+.cS
+c++decl> define S as struct S
+c++decl> declare p as const pointer to S
+S *const p;
+.cE 0
 .IP \n+[step].
 When converting from pseudo-English to a C++ declaration
 for either

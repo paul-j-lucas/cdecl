@@ -29,11 +29,13 @@
 ////////// literals ///////////////////////////////////////////////////////////
 
 // english
+extern char const L_ALL[];
 extern char const L_ARRAY[];
 extern char const L_AS[];
 extern char const L_BLOCK[];            // Apple: Engligh for '^'
 extern char const L_CAST[];
 extern char const L_DECLARE[];
+extern char const L_DEFINE[];
 extern char const L_EXIT[];
 extern char const L_EXPLAIN[];
 extern char const L_FUNC[];             // synonym for "function"
@@ -44,6 +46,8 @@ extern char const L_MBR[];              // synonym for "member"
 extern char const L_MEMBER[];
 extern char const L_OF[];
 extern char const L_POINTER[];
+extern char const L_PREDEF[];           // synonym for "predefined"
+extern char const L_PREDEFINED[];
 extern char const L_PTR[];              // synonym for "pointer"
 extern char const L_Q[];                // synonym for "quit"
 extern char const L_QUIT[];
@@ -53,7 +57,10 @@ extern char const L_RET[];              // synonym for "returning"
 extern char const L_RETURNING[];
 extern char const L_RVALUE[];
 extern char const L_SET[];
+extern char const L_SHOW[];
+extern char const L_TYPES[];
 extern char const L_TO[];
+extern char const L_USER[];
 extern char const L_VECTOR[];           // synonym for "array"
 
 // K&R

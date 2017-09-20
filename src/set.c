@@ -55,10 +55,7 @@ void set_option( char const *opt ) {
   if ( opt != NULL ) {
     c_lang_t const new_lang = c_lang_find( opt );
     if ( new_lang != LANG_NONE ) {
-      opt_lang = new_lang;
-      bool const prompt_enabled = *prompt[0] != '\0';
-      cdecl_prompt_init();
-      cdecl_prompt_enable( prompt_enabled );
+      c_lang_set( new_lang );
       return;
     }
 
