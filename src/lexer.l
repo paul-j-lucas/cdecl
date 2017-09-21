@@ -32,6 +32,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "ast.h"
+#include "ast_util.h"
 #include "common.h"
 #include "keywords.h"
 #include "lexer.h"
