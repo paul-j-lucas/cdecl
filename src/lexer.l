@@ -296,6 +296,7 @@ D             [0-9]
 H             [0-9A-Fa-f]
 S             [ \f\r\t\v]
 
+cxx_name      "c++"({D}{D})?
 identifier    {A}({A}|{D})*
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
 
@@ -342,11 +343,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 return Y_NAME;
               }
 
-"c++"         |
-"c++98"       |
-"c++03"       |
-"c++11"       |
-"c++14"       {
+{cxx_name}    {
                 SET_TOKEN;
                 yylval.name = check_strdup( lexer_token );
                 return Y_CPP_LANG_NAME;
