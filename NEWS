@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 3.7
+* Changes in Cdecl 4.0
 
 ** Added C++17 support
 Specifically, inline variable declarations are now supported.
