@@ -69,11 +69,11 @@ Paul J. Lucas <paul@lucasmail.org>
 	added long options
 	added multi-line input
 	now distinguishing among K&R C, C89, C95, C99, C11, C++98, C++03,
-		C++11, and C++14
+		C++11, C++14, and C++17
 	now using a proper abstract syntax tree data structure
 	added _Atomic, bool, char16_t, char32_t, complex, noreturn, restrict,
 		thread_local, wchar_t
-	added inline functions
+	added inline functions and variables
 	added register and variadic function arguments
 	added typedef, define, and show commands
 	added C99 static, type-qualified, and variable length array

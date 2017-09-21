@@ -311,6 +311,13 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         print_hint( "pointer to void" );
         return VISITOR_ERROR_FOUND;
       }
+      if ( (ast->type & T_INLINE) && opt_lang < LANG_CPP_17 ) {
+        print_error( &ast->loc,
+          "inline variables illegal in %s",
+          c_lang_name( opt_lang )
+        );
+        return VISITOR_ERROR_FOUND;
+      }
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:

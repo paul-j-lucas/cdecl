@@ -38,8 +38,9 @@ most notably:
   C++98,
   C++03,
   C++11,
+  C++14,
   and
-  C++14.
+  C++17.
 * Support for C99 types
   `int8_t`,
   `int16_t`,
@@ -82,7 +83,7 @@ most notably:
   `thread_local`,
   and
   `wchar_t`.
-* Support for `inline` function declarations.
+* Support for `inline` function and variable declarations.
 * Support for `typedef` declarations.
 * Support for `static`, type-qualified, and variable length array
   function arguments in C.

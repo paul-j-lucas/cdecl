@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "September 17, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "September 21, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -344,7 +344,7 @@ The default is
 (for
 .BR cdecl )
 and
-.B C++14
+.B C++17
 (for
 .BR c++decl ).
 .TP
@@ -488,6 +488,12 @@ Use the C++14 version of the C++ language.
 Adds support for
 \f(CWauto\fP
 functions.
+.TP
+.B C++17
+Use the C++17 version of the C++ language.
+Adds support for
+\f(CWinline\fP
+variables.
 .SH CDECL LANGUAGE
 .SS Commands
 .B cdecl

@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 3.7
 
+** Added C++17 support
+Specifically, inline variable declarations are now supported.
+
 ** New typedef and define commands
 New typedef gibberish and define english commands have been added to allow new
 types to be defined that can then be used in subsequent declarations and

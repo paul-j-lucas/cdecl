@@ -191,6 +191,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_hll.test \
 	tests/declare_hv.test \
 	tests/declare_hw.test \
+	tests/declare_ii.test \
 	tests/declare_lb.test \
 	tests/declare_lc.test \
 	tests/declare_lc16.test \
@@ -352,8 +353,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 #
 TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_0f_v-c.test \
-	tests/explain_af.test \
 	tests/explain_ac9i.test \
+	tests/explain_af.test \
 	tests/explain_as9i.test \
 	tests/explain_b-c89.test \
 	tests/explain_b_ai.test \
@@ -394,6 +395,7 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_hll.test \
 	tests/explain_hv.test \
 	tests/explain_hw.test \
+	tests/explain_ii.test \
 	tests/explain_k.test \
 	tests/explain_lb.test \
 	tests/explain_lc.test \

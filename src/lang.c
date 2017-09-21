@@ -53,6 +53,7 @@ c_lang_info_t const C_LANG_INFO[] = {
   { "c++03",   LANG_CPP_03  },
   { "c++11",   LANG_CPP_11  },
   { "c++14",   LANG_CPP_14  },
+  { "c++17",   LANG_CPP_17  },
   { NULL,      LANG_NONE    },
 };
 
@@ -60,10 +61,13 @@ c_lang_info_t const C_LANG_INFO[] = {
 
 c_lang_t c_lang_find( char const *s ) {
   assert( s != NULL );
+
+  // the list is small, so linear search is good enough
   for ( c_lang_info_t const *info = C_LANG_INFO; info->name != NULL; ++info ) {
     if ( strcasecmp( s, info->name ) == 0 )
       return info->lang;
   } // for
+
   return LANG_NONE;
 }
 
@@ -79,6 +83,7 @@ char const* c_lang_name( c_lang_t lang ) {
     case LANG_CPP_03: return "C++03";
     case LANG_CPP_11: return "C++11";
     case LANG_CPP_14: return "C++14";
+    case LANG_CPP_17: return "C++17";
     default:
       INTERNAL_ERR( "\"%d\": unexpected value for lang\n", (int)lang );
   } // switch
