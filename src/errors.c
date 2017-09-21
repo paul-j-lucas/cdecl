@@ -508,7 +508,6 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
-    case K_BUILTIN:
     case K_ENUM_CLASS_STRUCT_UNION:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
@@ -523,6 +522,14 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     case K_FUNCTION:
       for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next )
         (void)c_ast_check_visitor( arg, c_ast_visitor_warning, data );
+      break;
+
+    case K_BUILTIN:
+      if ( (ast->type & T_REGISTER) && opt_lang >= LANG_CPP_11 ) {
+        print_warning( &ast->loc,
+          "register is deprecated in %s", c_lang_name( opt_lang )
+        );
+      }
       break;
 
     case K_NAME:

@@ -45,6 +45,9 @@ specified via --config/-c.
 A new show command has been added to show the definition of either predefined
 or user-defined types.
 
+** Register warning
+The use of "register" now triggers a warning in C++11 and later.
+
 
 * Changes in Cdecl 3.6
 
