@@ -50,7 +50,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variable definitions
-c_mode_t            c_mode;             // are we declaring or explaining?
+c_mode_t            c_mode;             // parsing english or gibberish?
 char const         *command_line;       // command from command line, if any
 size_t              command_line_len;   // length of command_line
 bool                is_input_a_tty;     // is our input from a tty?

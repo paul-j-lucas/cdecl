@@ -65,7 +65,7 @@ typedef struct {
 typedef YYLTYPE c_loc_t;
 
 // extern variables
-extern c_mode_t     c_mode;             // are we declaring or explaining?
+extern c_mode_t     c_mode;             // parsing english or gibberish?
 extern char const  *command_line;       // command from command line, if any
 extern size_t       command_line_len;   // length of command_line
 extern bool         is_input_a_tty;     // is our input from a tty?
