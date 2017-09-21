@@ -57,6 +57,7 @@ _GL_INLINE_HEADER_BEGIN
 #define PUTS_OUT(S)               FPUTS( (S), stdout )
 #define REINTERPRET_CAST(T,EXPR)  ((T)(uintptr_t)(EXPR))
 #define STRERROR                  strerror( errno )
+#define ZERO(PTR)                 memset( (PTR), 0, sizeof *(PTR) )
 
 #define INTERNAL_ERR(FORMAT,...) \
   PMESSAGE_EXIT( EX_SOFTWARE, "internal error: " FORMAT, __VA_ARGS__ )

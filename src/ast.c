@@ -35,7 +35,6 @@
 // system
 #include <assert.h>
 #include <stdlib.h>
-#include <string.h>                     /* for memset(3) */
 #include <sysexits.h>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -264,7 +263,7 @@ c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, c_loc_t const *loc ) {
   static c_ast_id_t next_id;
 
   c_ast_t *const ast = MALLOC( c_ast_t, 1 );
-  memset( ast, 0, sizeof( c_ast_t ) );
+  ZERO( ast );
 
   ast->depth = depth;
   ast->id = ++next_id;

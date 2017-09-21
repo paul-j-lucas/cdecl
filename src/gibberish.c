@@ -35,7 +35,6 @@
 // system
 #include <assert.h>
 #include <stdlib.h>
-#include <string.h>                     /* for memset(3) */
 #include <sysexits.h>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -472,7 +471,7 @@ static void g_param_init( g_param_t *param, c_ast_t const *root,
   assert( param != NULL );
   assert( root != NULL );
 
-  memset( param, 0, sizeof( g_param_t ) );
+  ZERO( param );
   param->gkind = gkind;
   param->gout = gout;
   param->root_ast = root;

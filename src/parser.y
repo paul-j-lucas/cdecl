@@ -257,7 +257,7 @@ static void parse_cleanup( bool hard_reset ) {
   c_ast_gc();
   lexer_reset( hard_reset );
   qualifier_clear();
-  memset( &in_attr, 0, sizeof in_attr );
+  ZERO( &in_attr );
 }
 
 /**
@@ -355,7 +355,7 @@ static void quit( void ) {
  */
 static void yyerror( char const *msg ) {
   c_loc_t loc;
-  memset( &loc, 0, sizeof loc );
+  ZERO( &loc );
   lexer_loc( &loc.first_line, &loc.first_column );
   print_loc( &loc );
 
