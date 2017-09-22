@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_kinds_H
-#define cdecl_kinds_H
+#ifndef cdecl_c_kind_H
+#define cdecl_c_kind_H
 
 /**
  * @file
@@ -28,6 +28,7 @@
 
 // local
 #include "config.h"                     /* must go first */
+#include "typedefs.h"
 
 // standard
 #include <stdbool.h>
@@ -64,7 +65,6 @@ enum c_kind {
   K_REFERENCE               = 0x0800,
   K_RVALUE_REFERENCE        = 0x1000,
 };
-typedef enum c_kind c_kind_t;
 
 #define K_PARENT_MIN          K_ARRAY
 
@@ -92,5 +92,5 @@ char const* c_kind_name( c_kind_t kind );
 
 _GL_INLINE_HEADER_END
 
-#endif /* cdecl_kinds_H */
+#endif /* cdecl_c_kind_H */
 /* vim:set et sw=2 ts=2: */

@@ -18,13 +18,16 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_lang_H
-#define cdecl_lang_H
+#ifndef cdecl_c_lang_H
+#define cdecl_c_lang_H
 
 /**
  * @file
  * Declares constants, types, and functions for C/C++ language versions.
  */
+
+// local
+#include "typedefs.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -64,7 +67,6 @@ struct c_lang_info {
   char const *name;
   c_lang_t    lang;
 };
-typedef struct c_lang_info c_lang_info_t;
 
 // extern constants
 extern c_lang_info_t const C_LANG_INFO[];
@@ -98,5 +100,5 @@ void c_lang_set( c_lang_t lang );
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif /* cdecl_lang_H */
+#endif /* cdecl_c_lang_H */
 /* vim:set et sw=2 ts=2: */

@@ -26,7 +26,6 @@
 // local
 #include "config.h"                     /* must go first */
 #include "color.h"
-#include "common.h"
 #include "diagnostics.h"
 #include "lexer.h"
 #include "options.h"

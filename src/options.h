@@ -28,7 +28,7 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "lang.h"                       /* for c_lang_t */
+#include "c_lang.h"                     /* for c_lang_t */
 
 // standard
 #include <stdbool.h>

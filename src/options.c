@@ -26,7 +26,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "color.h"
-#include "common.h"
+#include "misc.h"
 #include "options.h"
 #include "util.h"
 

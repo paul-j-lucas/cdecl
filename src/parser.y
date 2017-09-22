@@ -29,20 +29,20 @@
 %{
 // local
 #include "config.h"                     /* must come first */
-#include "ast.h"
-#include "ast_util.h"
+#include "c_ast.h"
+#include "c_ast_util.h"
+#include "c_keyword.h"
+#include "c_lang.h"
+#include "c_type.h"
+#include "c_typedef.h"
 #include "color.h"
 #ifdef ENABLE_CDECL_DEBUG
 #include "debug.h"
 #endif /* ENABLE_CDECL_DEBUG */
-#include "common.h"
 #include "diagnostics.h"
-#include "keywords.h"
-#include "lang.h"
 #include "lexer.h"
 #include "literals.h"
 #include "options.h"
-#include "types.h"
 #include "typedefs.h"
 #include "util.h"
 

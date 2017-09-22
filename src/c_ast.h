@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_ast_H
-#define cdecl_ast_H
+#ifndef cdecl_c_ast_H
+#define cdecl_c_ast_H
 
 /**
  * @file
@@ -36,11 +36,10 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "kinds.h"
-#include "types.h"
+#include "c_kind.h"
+#include "c_type.h"
+#include "typedefs.h"
 #include "util.h"
-
-typedef struct c_typedef c_typedef_t;
 
 // standard
 #include <stdbool.h>
@@ -63,21 +62,10 @@ enum v_direction {
   V_DOWN,                               // root -> leaves
   V_UP                                  // leaf -> root
 };
-typedef enum v_direction v_direction_t;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef struct c_ast      c_ast_t;
-typedef unsigned          c_ast_id_t;
-typedef struct c_ast_list c_ast_list_t;
-typedef struct c_array    c_array_t;
-typedef struct c_block    c_block_t;
-typedef struct c_builtin  c_builtin_t;
-typedef struct c_ecsu     c_ecsu_t;
-typedef struct c_func     c_func_t;
-typedef struct c_parent   c_parent_t;
-typedef struct c_ptr_mbr  c_ptr_mbr_t;
-typedef struct c_ptr_ref  c_ptr_ref_t;
+typedef unsigned c_ast_id_t;
 
 /**
  * The signature for functions passed to c_ast_visit_down() or
@@ -364,5 +352,5 @@ bool c_ast_vistor_type( c_ast_t *ast, void *data );
 
 _GL_INLINE_HEADER_END
 
-#endif /* cdecl_ast_H */
+#endif /* cdecl_c_ast_H */
 /* vim:set et sw=2 ts=2: */

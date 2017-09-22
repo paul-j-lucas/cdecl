@@ -25,11 +25,10 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "ast_util.h"
-#include "common.h"
+#include "c_ast_util.h"
+#include "c_type.h"
 #include "diagnostics.h"
 #include "options.h"
-#include "types.h"
 
 // standard
 #include <assert.h>

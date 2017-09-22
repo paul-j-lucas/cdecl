@@ -26,10 +26,10 @@
 // local
 #include "config.h"                     /* must go first */
 #define CDECL_AST_INLINE _GL_EXTERN_INLINE
-#include "ast.h"
+#include "c_ast.h"
+#include "c_typedef.h"
 #include "literals.h"
 #include "options.h"
-#include "typedefs.h"
 #include "util.h"
 
 // system

@@ -25,11 +25,11 @@
 
 // local
 #include "config.h"                     /* must go first */
+#include "c_lang.h"
+#include "c_type.h"
 #include "diagnostics.h"
-#include "lang.h"
 #include "literals.h"
 #include "options.h"
-#include "types.h"
 #include "util.h"
 
 // system

@@ -28,28 +28,28 @@ BUILT_SOURCES =	parser.c parser.h lexer.c
 
 cdecl_SOURCES =	parser.y \
 		lexer.l lexer.h \
-		ast.c ast.h \
-		ast_util.c ast_util.h \
+		c_ast.c c_ast.h \
+		c_ast_util.c c_ast_util.h \
+		c_keyword.c c_keyword.h \
+		c_kind.c c_kind.h \
+		c_lang.c c_lang.h \
+		c_type.c c_type.h \
+		c_typedef.c c_typedef.h \
 		cdecl.c \
-		color.c \
-		color.h \
-		common.h \
+		color.c color.h \
 		debug.h \
 		diagnostics.c diagnostics.h \
 		english.c \
 		errors.c \
 		gibberish.c \
 		help.c \
-		keywords.c keywords.h \
-		kinds.c kinds.h \
-		lang.c lang.h \
 		literals.c literals.h \
+		misc.h \
 		options.c options.h \
 		prompt.c prompt.h \
 		red_black.c reb_black.h \
 		set.c \
-		types.c types.h \
-		typedefs.c typedefs.h \
+		typedefs.h \
 		util.c util.h
 
 if ENABLE_CDECL_DEBUG

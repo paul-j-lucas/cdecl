@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_ast_util_H
-#define cdecl_ast_util_H
+#ifndef cdecl_c_ast_util_H
+#define cdecl_c_ast_util_H
 
 /**
  * @file
@@ -29,8 +29,9 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "ast.h"
-#include "types.h"
+#include "c_ast.h"
+#include "c_type.h"
+#include "typedefs.h"
 #include "util.h"
 
 _GL_INLINE_HEADER_BEGIN
@@ -57,7 +58,6 @@ struct c_ast_pair {
    */
   c_ast_t *target_ast;
 };
-typedef struct c_ast_pair c_ast_pair_t;
 
 /**
  * The kind of semantic checks to perform on an AST.
@@ -66,7 +66,6 @@ enum c_check {
   CHECK_CAST,
   CHECK_DECL
 };
-typedef enum c_check c_check_t;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -209,5 +208,5 @@ bool c_ast_take_typedef( c_ast_t *ast );
 
 _GL_INLINE_HEADER_END
 
-#endif /* cdecl_ast_util_H */
+#endif /* cdecl_c_ast_util_H */
 /* vim:set et sw=2 ts=2: */

@@ -25,9 +25,9 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "ast.h"
+#include "c_ast.h"
+#include "c_typedef.h"
 #include "debug.h"
-#include "typedefs.h"
 #include "util.h"
 
 // system

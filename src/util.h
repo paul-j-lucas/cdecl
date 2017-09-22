@@ -28,6 +28,7 @@
 
 // local
 #include "config.h"                     /* must go first */
+#include "misc.h"                       /* for me */
 
 // standard
 #include <stdbool.h>

@@ -25,11 +25,11 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "ast.h"
-#include "ast_util.h"
-#include "keywords.h"
+#include "c_ast.h"
+#include "c_ast_util.h"
+#include "c_keyword.h"
+#include "c_type.h"
 #include "literals.h"
-#include "types.h"
 #include "options.h"
 #include "parser.h"                     /* must go last */
 

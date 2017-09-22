@@ -26,10 +26,10 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "ast.h"
-#include "ast_util.h"
+#include "c_ast.h"
+#include "c_ast_util.h"
+#include "c_typedef.h"
 #include "literals.h"
-#include "typedefs.h"
 #include "util.h"
 
 // system

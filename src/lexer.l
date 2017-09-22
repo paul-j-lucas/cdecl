@@ -31,14 +31,14 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "ast.h"
-#include "ast_util.h"
-#include "common.h"
-#include "keywords.h"
+#include "c_ast.h"
+#include "c_ast_util.h"
+#include "c_keyword.h"
+#include "c_typedef.h"
 #include "lexer.h"
 #include "literals.h"
+#include "misc.h"
 #include "util.h"
-#include "typedefs.h"
 #include "parser.h"                     /* must go last */
 
 // standard

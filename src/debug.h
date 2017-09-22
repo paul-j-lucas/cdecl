@@ -28,7 +28,7 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "ast.h"
+#include "c_ast.h"
 
 // system
 #include <stdio.h>                      /* for FILE */

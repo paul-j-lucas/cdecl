@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_types_H
-#define cdecl_types_H
+#ifndef cdecl_c_type_H
+#define cdecl_c_type_H
 
 /**
  * @file
@@ -28,8 +28,8 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "common.h"                     /* for c_loc_t */
-#include "lang.h"                       /* for c_lang_t */
+#include "c_lang.h"                     /* for c_lang_t */
+#include "typedefs.h"                   /* for c_loc_t */
 
 // standard
 #include <stdbool.h>
@@ -95,6 +95,9 @@
 #define T_MASK_QUALIFIER      0x0F0000000000ull
 #define T_MASK_REF_QUALIFIER  0xF00000000000ull
 
+/**
+ * TODO
+ */
 typedef uint64_t c_type_t;
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -133,5 +136,5 @@ char const* c_type_name( c_type_t type );
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif /* cdecl_types_H */
+#endif /* cdecl_c_type_H */
 /* vim:set et sw=2 ts=2: */

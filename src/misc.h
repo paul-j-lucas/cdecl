@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/keywords.h
+**      src/misc.h
 **
 **      Copyright (C) 2017  Paul J. Lucas, et al.
 **
@@ -18,42 +18,36 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_keywords_H
-#define cdecl_keywords_H
+#ifndef cdecl_misc_H
+#define cdecl_misc_H
 
 /**
  * @file
- * Declares types and functions for looking up C/C++ keyword information.
+ * Declares miscellaneous macros and global variables.
  */
 
 // local
-#include "lang.h"
-#include "types.h"
+#include "config.h"                     /* must go first */
+#include "typedefs.h"
+
+// standard
+#include <stdbool.h>
+#include <stddef.h>                     /* for size_t */
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * C/C++ language keyword information.
- */
-struct c_keyword {
-  char const *literal;                  // C string literal of the keyword
-  int         y_token;                  // yacc token number
-  c_type_t    type;                     // type the keyword maps to
-  c_lang_t    ok_langs;                 // language(s) OK in
-};
-typedef struct c_keyword c_keyword_t;
+#define CONF_FILE_NAME            "." PACKAGE "rc"
+#define CPPDECL                   "c++decl"
+#define DEBUG_INDENT              2     /* spaces per debug indent level */
 
-////////// extern functions ///////////////////////////////////////////////////
-
-/**
- * Gets the c_keyword for the given literal.
- *
- * @param literal The literal to find.
- * @return Returns a pointer to the corresponding c_keyword or null for none.
- */
-c_keyword_t const* c_keyword_find( char const *literal );
+// extern variables
+extern c_mode_t     c_mode;             // parsing english or gibberish?
+extern char const  *command_line;       // command from command line, if any
+extern size_t       command_line_len;   // length of command_line
+extern bool         is_input_a_tty;     // is our input from a tty?
+extern char const  *me;                 // program name
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif /* cdecl_keywords_H */
+#endif /* cdecl_misc_H */
 /* vim:set et sw=2 ts=2: */

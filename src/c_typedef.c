@@ -1,5 +1,5 @@
 /*
-**      cdecl -- C gibberish translator
+**      cc_decl -- C gibberih translator
 **      src/typedefs.c
 **
 **      Copyright (C) 2017  Paul J. Lucas, et al.
@@ -25,10 +25,10 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "ast.h"
+#include "c_ast.h"
+#include "c_typedef.h"
 #include "options.h"
 #include "red_black.h"
-#include "typedefs.h"
 #include "util.h"
 
 // standard

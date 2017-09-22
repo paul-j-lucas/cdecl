@@ -26,14 +26,14 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "ast.h"
+#include "c_ast.h"
+#include "c_lang.h"
+#include "c_typedef.h"
 #include "color.h"
-#include "lang.h"
 #include "lexer.h"
 #include "literals.h"
 #include "options.h"
 #include "prompt.h"
-#include "typedefs.h"
 #include "util.h"
 
 // standard

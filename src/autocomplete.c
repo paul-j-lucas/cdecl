@@ -25,7 +25,7 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "lang.h"
+#include "c_lang.h"
 #include "literals.h"
 #include "options.h"
 #include "util.h"

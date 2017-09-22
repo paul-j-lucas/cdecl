@@ -21,83 +21,63 @@
 #ifndef cdecl_typedefs_H
 #define cdecl_typedefs_H
 
-// local
-#include "config.h"                     /* must go first */
-
-typedef struct c_ast c_ast_t;
-
-// standard
-#include <stdbool.h>
-
 /**
  * @file
- * Declares types and functions for adding and looking up C/C++ typedef
- * declarations.
+ * Declares \c enum and \c struct \c typedef definitions in one file.
+ *
+ * Some headers are bidirectionally dependent, so \c typedef were used
+ * originally rather than \c #include.  However, some old C compilers don't
+ * like multiple \c typedef definitions even if the types match.  Hence, just
+ * put all \c typedef definitions in one file.
  */
+
+// standard
+#include <stddef.h>                     /* for size_t */
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * C/C++ language typedef information.
+ * The source location used by Bison.
  */
-struct c_typedef {
-  char const *type_name;
-  c_ast_t const *ast;
-  bool user_defined;
+struct c_loc {
+  size_t first_line;
+  size_t first_column;
+  size_t last_line;
+  size_t last_column;
 };
-typedef struct c_typedef c_typedef_t;
 
 /**
- * The signature for a function passed to c_typedef_visit().
- *
- * @param type The c_typedef to visit.
- * @param data Optional data passed to the visitor.
- * @return Returning \c true will cause traversal to stop and \a type to be
- * returned to the caller of c_typedef_visit().
+ * Mode of operation.
  */
-typedef bool (*c_typedef_visitor_t)( c_typedef_t const *type, void *data );
+enum c_mode {
+  MODE_ENGLISH,
+  MODE_GIBBERISH
+};
 
-////////// extern functions ///////////////////////////////////////////////////
+typedef struct c_ast        c_ast_t;
+typedef struct c_ast_list   c_ast_list_t;
+typedef struct c_ast_pair   c_ast_pair_t;
+typedef struct c_array      c_array_t;
+typedef struct c_block      c_block_t;
+typedef enum c_check        c_check_t;
+typedef struct c_lang_info  c_lang_info_t;
+typedef struct c_loc        c_loc_t;
+typedef struct c_builtin    c_builtin_t;
+typedef struct c_ecsu       c_ecsu_t;
+typedef struct c_func       c_func_t;
+typedef struct c_keyword    c_keyword_t;
+typedef enum c_kind         c_kind_t;
+typedef enum c_mode         c_mode_t;
+typedef struct c_parent     c_parent_t;
+typedef struct c_ptr_mbr    c_ptr_mbr_t;
+typedef struct c_ptr_ref    c_ptr_ref_t;
+typedef struct c_typedef    c_typedef_t;
+typedef enum v_direction    v_direction_t;
 
-/**
- * Adds a new \c typedef to the global set.
- *
- * @param type_name The name of the type.  Ownership of the C string is taken
- * only if the function returns \a true.
- * @param type_ast The AST of the type.  Ownership is taken only if the
- * function returns \a true.
- * @return Returns \c true only if the type was either added or \a name already
- * exists and the types are equivalent; \c false if \a name already exists and
- * the types are not equivalent.
- */
-bool c_typedef_add( char const *type_name, c_ast_t const *type_ast );
-
-/**
- * Cleans up \c typedef data.
- */
-void c_typedef_cleanup( void );
-
-/**
- * Gets the c_typedef for \a name.
- *
- * @param name The name to find.
- * @return Returns a pointer to the corresponding c_typedef or NULL for none.
- */
-c_typedef_t const* c_typedef_find( char const *name );
-
-/**
- * Initializes typedef data.
- */
-void c_typedef_init( void );
-
-/**
- * Does an in-order traversal of all typedefs.
- *
- * @param visitor The visitor to use.
- * @param data Optional data passed to \a visitor.
- * @return Returns a pointer to the c_typedef the visitor stopped on or NULL.
- */
-c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data );
+// for Bison
+typedef c_loc_t YYLTYPE;
+#define YYLTYPE_IS_DECLARED       1
+#define YYLTYPE_IS_TRIVIAL        1
 
 ///////////////////////////////////////////////////////////////////////////////
 
