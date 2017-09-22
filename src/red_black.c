@@ -143,9 +143,9 @@ static inline bool is_red( rb_node_t *node ) {
  * @param node A pointer to the node to initialize.
  */
 static void rb_node_init( rb_tree_t *tree, rb_node_t *node ) {
+  node->data = NULL;
   node->color = RB_BLACK;
   node->left = node->right = RB_NIL(tree);
-  node->data = NULL;
 }
 
 /**
@@ -160,12 +160,15 @@ static void rb_node_init( rb_tree_t *tree, rb_node_t *node ) {
  */
 static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
                                  rb_visitor_t visitor, void *aux_data ) {
+  assert( tree != NULL );
+  assert( node != NULL );
+
   if ( node == RB_NIL(tree) )
     return NULL;
 
   rb_node_t *const stopped_node =
     rb_node_visit( tree, node->left, visitor, aux_data );
-  if ( stopped_node )
+  if ( stopped_node != NULL )
     return stopped_node;
 
   if ( visitor( node->data, aux_data ) )
@@ -184,6 +187,9 @@ static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
  */
 static void rb_tree_free_impl( rb_tree_t *tree, rb_node_t *node,
                                rb_data_free_t data_free_fn ) {
+  assert( tree != NULL );
+  assert( node != NULL );
+
   if ( node != RB_NIL(tree) ) {
     rb_tree_free_impl( tree, node->left, data_free_fn );
     rb_tree_free_impl( tree, node->right, data_free_fn );
@@ -416,6 +422,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
 
   node = MALLOC( rb_node_t, 1 );
   node->data = data;
+  node->color = RB_RED;
   node->left = node->right = RB_NIL(tree);
   node->parent = parent;
 
@@ -423,7 +430,6 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
     parent->left = node;
   else
     parent->right = node;
-  node->color = RB_RED;
 
   //
   // If the parent node is black, we're all set; if it's red, we have the
