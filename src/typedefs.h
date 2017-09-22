@@ -59,20 +59,20 @@ typedef struct c_ast_list   c_ast_list_t;
 typedef struct c_ast_pair   c_ast_pair_t;
 typedef struct c_array      c_array_t;
 typedef struct c_block      c_block_t;
-typedef enum c_check        c_check_t;
+typedef enum   c_check      c_check_t;
 typedef struct c_lang_info  c_lang_info_t;
 typedef struct c_loc        c_loc_t;
 typedef struct c_builtin    c_builtin_t;
 typedef struct c_ecsu       c_ecsu_t;
 typedef struct c_func       c_func_t;
 typedef struct c_keyword    c_keyword_t;
-typedef enum c_kind         c_kind_t;
-typedef enum c_mode         c_mode_t;
+typedef enum   c_kind       c_kind_t;
+typedef enum   c_mode       c_mode_t;
 typedef struct c_parent     c_parent_t;
 typedef struct c_ptr_mbr    c_ptr_mbr_t;
 typedef struct c_ptr_ref    c_ptr_ref_t;
 typedef struct c_typedef    c_typedef_t;
-typedef enum v_direction    v_direction_t;
+typedef enum   v_direction  v_direction_t;
 
 // for Bison
 typedef c_loc_t YYLTYPE;
