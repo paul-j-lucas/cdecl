@@ -12,7 +12,7 @@
    GNU Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 /* Written by Simon Josefsson based on sysexits(3) man page */
 
@@ -27,7 +27,7 @@
 
 /* IRIX 6.5 has an <unistd.h> that defines a macro EX_OK with a nonzero
    value.  Override it.  See
-   <http://lists.gnu.org/archive/html/bug-gnulib/2007-03/msg00361.html>  */
+   <https://lists.gnu.org/archive/html/bug-gnulib/2007-03/msg00361.html>  */
 # ifdef __sgi
 #  include <unistd.h>
 #  undef EX_OK
