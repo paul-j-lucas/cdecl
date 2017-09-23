@@ -236,7 +236,7 @@ void c_ast_gc_release( void );
  * @return Returns \c true only if it is.
  */
 CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
-  return ast && c_kind_is_parent( ast->kind );
+  return ast != NULL && c_kind_is_parent( ast->kind );
 }
 
 /**
