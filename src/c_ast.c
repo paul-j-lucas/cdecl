@@ -314,23 +314,5 @@ c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor_t visitor, void *data ) {
   return c_ast_visit_up( ast->parent, visitor, data );
 }
 
-bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
-  assert( ast != NULL );
-  c_kind_t const kind = REINTERPRET_CAST( c_kind_t, data );
-  return (ast->kind & kind) != 0;
-}
-
-bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
-  assert( ast != NULL );
-  (void)data;
-  return ast->name != NULL;
-}
-
-bool c_ast_vistor_type( c_ast_t *ast, void *data ) {
-  assert( ast != NULL );
-  c_type_t const type = REINTERPRET_CAST( c_type_t, data );
-  return (ast->type & type) != 0;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */
