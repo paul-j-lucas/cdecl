@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/types.h
+**      src/c_type.h
 **
 **      Copyright (C) 2017  Paul J. Lucas, et al.
 **

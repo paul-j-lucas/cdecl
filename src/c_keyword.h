@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/keywords.h
+**      src/c_keyword.h
 **
 **      Copyright (C) 2017  Paul J. Lucas, et al.
 **
