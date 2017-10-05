@@ -54,7 +54,7 @@ char const* lexer_input_line( size_t *plen );
  * @param line A pointer to a variable to receive the lexer's line.
  * @param column A pointer to a variable to receive the lexer's column.
  */
-void lexer_loc( size_t *line, size_t *column );
+void lexer_loc( int *line, int *column );
 
 /**
  * Resets the lexer to its initial state.

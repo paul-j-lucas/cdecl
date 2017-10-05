@@ -31,19 +31,21 @@
  * put all \c typedef definitions in one file.
  */
 
-// standard
-#include <stddef.h>                     /* for size_t */
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
  * The source location used by Bison.
  */
 struct c_loc {
-  size_t first_line;
-  size_t first_column;
-  size_t last_line;
-  size_t last_column;
+  //
+  // These should be either unsigned or size_t, but Bison generates code that
+  // tests these for >= 0 which is always true for unsigned types so it
+  // generates warnings; hence these are kept as int to eliminate the warnings.
+  //
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
 };
 
 /**

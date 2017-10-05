@@ -157,8 +157,8 @@ static keyword_t const CDECL_KEYWORDS[] = {
 char const     *lexer_token;            // guaranteed pointer of yytext
 
 // local variables
-static size_t   column;                 // column position of current token
-static size_t   column_newline;         // column position of newline
+static int      column;                 // column position of current token
+static int      column_newline;         // column position of newline
 static char    *input_buf;              // entire current input line
 static size_t   input_len;              // length of line in input_buf
 static size_t   input_sent;             // how many chars returned to flex
@@ -261,7 +261,7 @@ char const* lexer_input_line( size_t *plen ) {
   return input_buf;
 }
 
-void lexer_loc( size_t *pline, size_t *pcolumn ) {
+void lexer_loc( int *pline, int *pcolumn ) {
   assert( pline != NULL );
   assert( pcolumn != NULL );
 
