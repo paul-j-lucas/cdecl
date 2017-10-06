@@ -269,7 +269,7 @@ static void read_conf_file( void ) {
 
   if ( !explicit_conf_file ) {
     char const *const home = home_dir();
-    if ( !home )
+    if ( home == NULL )
       return;
     strcpy( conf_path_buf, home );
     path_append( conf_path_buf, CONF_FILE_NAME );
@@ -277,7 +277,7 @@ static void read_conf_file( void ) {
   }
 
   FILE *const cin = fopen( opt_conf_file, "r" );
-  if ( !cin ) {
+  if ( cin == NULL ) {
     if ( explicit_conf_file )
       PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", opt_conf_file, STRERROR );
     return;

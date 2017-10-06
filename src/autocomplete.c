@@ -177,7 +177,7 @@ static char* ac_keyword_find( ac_keyword_t const keywords[], char const *text,
                               size_t text_len, size_t *index ) {
   for ( ac_keyword_t const *k; (k = keywords + *index)->keyword != NULL; ) {
     ++*index;
-    if ( (k->ok_langs & opt_lang) == 0 )
+    if ( (k->ok_langs & opt_lang) == LANG_NONE )
       continue;
     if ( strncmp( text, k->keyword, text_len ) == 0 )
       return check_strdup( k->keyword );
@@ -271,7 +271,8 @@ static char* keyword_completion( char const *text, int state ) {
     //
     if ( command == NULL ) {
       for ( ac_keyword_t const *k = CDECL_COMMANDS; k->keyword; ++k ) {
-        if ( (k->ok_langs & opt_lang) && is_command( k->keyword ) ) {
+        if ( (k->ok_langs & opt_lang) != LANG_NONE &&
+             is_command( k->keyword ) ) {
           command = k->keyword;
           break;
         }

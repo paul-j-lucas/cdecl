@@ -216,7 +216,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      if ( (ast_type & T_ENUM) ) {
+      if ( (ast_type & T_ENUM) != T_NONE ) {
         //
         // Special case: an enum class must be written as just "enum" when
         // doing an elaborated-type-specifier:
