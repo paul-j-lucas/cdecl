@@ -32,6 +32,7 @@
 
 // system
 #include <assert.h>
+#include <inttypes.h>                   /* for PRIX64, etc. */
 #include <stdlib.h>
 #include <sysexits.h>
 
@@ -43,6 +44,11 @@
 
 #define INDENT_PRINT_KV(KEY,VALUE) \
   BLOCK( print_indent( indent, dout ); print_kv( (KEY), (VALUE), dout ); )
+
+#define INDENT_PRINT_TYPE(TYPE) BLOCK(  \
+  print_indent( indent, dout );         \
+  FPUTS( "type = ", dout );             \
+  c_type_debug( (TYPE), dout ); )
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -80,7 +86,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
     INDENT_PRINT(
       "loc = %d-%d,\n", ast->loc.first_column, ast->loc.last_column
     );
-    INDENT_PRINT_KV( "type", c_type_name( ast->type ) );
+    INDENT_PRINT_TYPE( ast->type );
 
     bool comma = false;
 
@@ -107,8 +113,8 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
             FPRINTF( dout, "%d", ast->as.array.size );
         } // switch
         FPUTS( ",\n", dout );
-        if ( ast->as.array.type ) {
-          INDENT_PRINT_KV( "type", c_type_name( ast->as.array.type ) );
+        if ( ast->as.array.type != T_NONE ) {
+          INDENT_PRINT_TYPE( ast->as.array.type );
           FPUTS( ",\n", dout );
         }
         c_ast_debug( ast->as.array.of_ast, indent, "of_ast", dout );
@@ -169,6 +175,10 @@ void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
   } else {
     FPUTS( "[]", dout );
   }
+}
+
+void c_type_debug( c_type_t type, FILE *dout ) {
+  FPRINTF( dout, "\"%s\" (0x%" PRIX64 ")", c_type_name( type ), type );
 }
 
 void print_kv( char const *key, char const *value, FILE *out ) {

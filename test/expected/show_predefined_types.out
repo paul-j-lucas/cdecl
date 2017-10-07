@@ -1,3 +1,40 @@
+define atomic_bool as _Atomic bool
+define atomic_char as _Atomic char
+define atomic_char16_t as _Atomic char16_t
+define atomic_char32_t as _Atomic char32_t
+define atomic_int as _Atomic int
+define atomic_int_fast16_t as _Atomic int_fast16_t
+define atomic_int_fast32_t as _Atomic int_fast32_t
+define atomic_int_fast64_t as _Atomic int_fast64_t
+define atomic_int_fast8_t as _Atomic int_fast8_t
+define atomic_int_least16_t as _Atomic int_least16_t
+define atomic_int_least32_t as _Atomic int_least32_t
+define atomic_int_least64_t as _Atomic int_least64_t
+define atomic_int_least8_t as _Atomic int_least8_t
+define atomic_intmax_t as _Atomic intmax_t
+define atomic_intptr_t as _Atomic intptr_t
+define atomic_llong as _Atomic long long
+define atomic_long as _Atomic long
+define atomic_ptrdiff_t as _Atomic ptrdiff_t
+define atomic_schar as _Atomic signed char
+define atomic_short as _Atomic short
+define atomic_size_t as _Atomic size_t
+define atomic_uchar as _Atomic unsigned char
+define atomic_uint as _Atomic unsigned
+define atomic_uint_fast16_t as _Atomic uint_fast16_t
+define atomic_uint_fast32_t as _Atomic uint_fast32_t
+define atomic_uint_fast64_t as _Atomic uint_fast64_t
+define atomic_uint_fast8_t as _Atomic uint_fast8_t
+define atomic_uint_least16_t as _Atomic uint_least16_t
+define atomic_uint_least32_t as _Atomic uint_least32_t
+define atomic_uint_least64_t as _Atomic uint_least64_t
+define atomic_uint_least8_t as _Atomic uint_least8_t
+define atomic_uintmax_t as _Atomic uintmax_t
+define atomic_uintptr_t as _Atomic uintptr_t
+define atomic_ullong as _Atomic unsigned long long
+define atomic_ulong as _Atomic unsigned long
+define atomic_ushort as _Atomic unsigned short
+define atomic_wchar_t as _Atomic wchar_t
 define int16_t as short
 define int32_t as int
 define int64_t as long

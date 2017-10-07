@@ -29,6 +29,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "c_ast.h"
+#include "c_type.h"
 
 // system
 #include <stdio.h>                      /* for FILE */
@@ -41,19 +42,27 @@
  * @param ast The c_ast to dump.
  * @paran indent The initial indent.
  * @param key0 The initial key or null for none.
- * @param fout The FILE to dump to.
+ * @param dout The FILE to dump to.
  */
 void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
-                  FILE *fout );
+                  FILE *dout );
 
 /**
- * Dump the given c_ast_list (for debugging).
+ * Dumps the given c_ast_list (for debugging).
  *
  * @param list The c_ast_list to dump.
  * @param indent The initial indent.
- * @param jour The FILE to dump to.
+ * @param dout The FILE to dump to.
  */
-void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *fout );
+void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout );
+
+/**
+ * Dumps the given c_type (for debugging).
+ *
+ * @param type The type to print.
+ * @param dout The FILE to dump to.
+ */
+void c_type_debug( c_type_t type, FILE *dout );
 
 /**
  * Prints a key/value pair.

@@ -744,7 +744,12 @@ and the
 \f(CW__block\fP
 storage class.
 .SS Predefined Types
-The following types are predefined:
+The following types are predefined
+(unless either the
+.B \-\-no-typedefs
+or
+.B \-t
+option is specified):
 .P
 .RS 4
 \f(CWptrdiff_t\fP,
@@ -754,37 +759,90 @@ The following types are predefined:
 \f(CWintmax_t\fP,
 \f(CWuintmax_t\fP,
 \f(CWintptr_t\fP,
-\f(CWuintptr_t\fP
+\f(CWuintptr_t\fP,
 .br
 \f(CWint8_t\fP,
 \f(CWint16_t\fP,
 \f(CWint32_t\fP,
-\f(CWint64_t\fP
+\f(CWint64_t\fP,
 .br
 \f(CWint_fast8_t\fP,
 \f(CWint_fast16_t\fP,
 \f(CWint_fast32_t\fP,
-\f(CWint_fast64_t\fP
+\f(CWint_fast64_t\fP,
 .br
 \f(CWint_least8_t\fP,
 \f(CWint_least16_t\fP,
 \f(CWint_least32_t\fP,
-\f(CWint_least64_t\fP
+\f(CWint_least64_t\fP,
 .br
 \f(CWuint8_t\fP,
 \f(CWuint16_t\fP,
 \f(CWuint32_t\fP,
-\f(CWuint64_t\fP
+\f(CWuint64_t\fP,
 .br
 \f(CWuint_fast8_t\fP,
 \f(CWuint_fast16_t\fP,
 \f(CWuint_fast32_t\fP,
-\f(CWuint_fast64_t\fP
+\f(CWuint_fast64_t\fP,
 .br
 \f(CWuint_least8_t\fP,
 \f(CWuint_least16_t\fP,
 \f(CWuint_least32_t\fP,
 \f(CWuint_least64_t\fP
+.P
+\f(CWatomic_ptrdiff_t\fP,
+\f(CWatomic_size_t\fP,
+.br
+\f(CWatomic_bool\fP,
+\f(CWatomic_char\fP,
+\f(CWatomic_schar\fP,
+.br
+\f(CWatomic_char16_t\fP,
+\f(CWatomic_char32_t\fP,
+\f(CWatomic_wchar_t\fP,
+.br
+\f(CWatomic_short\fP,
+\f(CWatomic_int\fP,
+\f(CWatomic_long\fP,
+\f(CWatomic_llong\fP,
+.br
+\f(CWatomic_uchar\fP,
+\f(CWatomic_ushort\fP,
+\f(CWatomic_uint\fP,
+.br
+\f(CWatomic_ulong\fP,
+\f(CWatomic_ullong\fP,
+.br
+\f(CWatomic_intmax_t\fP,
+\f(CWatomic_uintmax_t\fP,
+.br
+\f(CWatomic_intptr_t\fP,
+\f(CWatomic_uintptr_t\fP,
+.br
+\f(CWatomic_int_fast8_t\fP,
+\f(CWatomic_int_fast16_t\fP,
+.br
+\f(CWatomic_int_fast32_t\fP,
+\f(CWatomic_int_fast64_t\fP,
+.br
+\f(CWatomic_uint_fast8_t\fP,
+\f(CWatomic_uint_fast16_t\fP,
+.br
+\f(CWatomic_uint_fast32_t\fP,
+\f(CWatomic_uint_fast64_t\fP,
+.br
+\f(CWatomic_int_least8_t\fP,
+\f(CWatomic_int_least16_t\fP,
+.br
+\f(CWatomic_int_least32_t\fP,
+\f(CWatomic_int_least64_t\fP,
+.br
+\f(CWatomic_uint_least8_t\fP,
+\f(CWatomic_uint_least16_t\fP,
+.br
+\f(CWatomic_uint_least32_t\fP,
+\f(CWatomic_uint_least64_t\fP
 .RE
 .SS Set Options
 The
@@ -803,7 +861,7 @@ for valid values of
 .IR lang .)
 .TP
 .RB [ no ] debug
-Turns [off] or on debugging output
+Turns [off] on debugging output
 (if compiled in)
 \(em default is off.
 .TP
@@ -811,15 +869,15 @@ Turns [off] or on debugging output
 Prints the current value of all options.
 .TP
 .RB [ no ] prompt
-Turns [off] or on the prompt
+Turns [off] on the prompt
 \(em default is on.
 .TP
 .RB [ no ] semicolon
-Turns [off] or on printing a semicolon at the end of a C (or C++) declaration
+Turns [off] on printing a semicolon at the end of a C (or C++) declaration
 \(em default is on.
 .TP
 .RB [ no ] yydebug
-Turns [off] or on
+Turns [off] on
 .BR bison (1)
 debugging output
 (if compiled in)
@@ -830,13 +888,13 @@ To declare an array of pointers to functions that are like
 .BR malloc (3):
 .cS
 cdecl> declare fptab as array of pointer to function \\
-cdecl+     returning pointer to char
-char *(*fptab[])();
+cdecl+     returning pointer to void
+void *(*fptab[])();
 .cE
 When you see this declaration in someone else's code,
 you can make sense out of it by doing:
 .cS
-explain char *(*fptab[])()
+explain void *(*fptab[])()
 .cE
 The proper declaration for
 .BR signal (2),
@@ -861,8 +919,8 @@ the function prototype for a function such as
 .BR _exit (2)
 would be declared with:
 .cS
-cdecl> declare _exit as function (retvalue as int) returning void
-void _exit(int retvalue);
+cdecl> declare _exit as function (retval as int) returning void
+void _exit(int retval);
 .cE
 As a more complex example using function prototypes,
 .BR signal (2)

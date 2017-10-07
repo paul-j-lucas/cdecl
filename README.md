@@ -41,7 +41,7 @@ most notably:
   C++14,
   and
   C++17.
-* Support for C99 types
+* Support for standard C99 types
   `int8_t`,
   `int16_t`,
   `int32_t`,
@@ -50,10 +50,10 @@ most notably:
   `int_fast16_t`,
   `int_fast32_t`,
   `int_fast64_t`,
+  `int_least8_t`,
   `int_least16_t`,
   `int_least32_t`,
   `int_least64_t`,
-  `int_least8_t`,
   `intmax_t`,
   `intptr_t`,
   `ptrdiff_t`,
@@ -83,6 +83,45 @@ most notably:
   `thread_local`,
   and
   `wchar_t`.
+* Support for standard C11 atomic types
+  `atomic_bool`,
+  `atomic_char`,
+  `atomic_schar`,
+  `atomic_char16_t`,
+  `atomic_char32_t`,
+  `atomic_wchar_t`,
+  `atomic_short`,
+  `atomic_int`,
+  `atomic_long`,
+  `atomic_llong`,
+  `atomic_uchar`,
+  `atomic_ushort`,
+  `atomic_uint`,
+  `atomic_ulong`,
+  `atomic_ullong`,
+  `atomic_ptrdiff_t`,
+  `atomic_size_t`,
+  `atomic_intmax_t`,
+  `atomic_intptr_t`,
+  `atomic_uintptr_t`,
+  `atomic_uintmax_t`,
+  `atomic_int_fast8_t`,
+  `atomic_int_fast16_t`,
+  `atomic_int_fast32_t`,
+  `atomic_int_fast64_t`,
+  `atomic_uint_fast8_t`,
+  `atomic_uint_fast16_t`,
+  `atomic_uint_fast32_t`,
+  `atomic_uint_fast64_t`,
+  `atomic_int_least8_t`,
+  `atomic_int_least16_t`,
+  `atomic_int_least32_t`,
+  `atomic_int_least64_t`,
+  `atomic_uint_least8_t`,
+  `atomic_uint_least16_t`,
+  `atomic_uint_least32_t`,
+  and
+  `atomic_uint_least64_t`.
 * Support for `inline` function and variable declarations.
 * Support for `typedef` declarations.
 * Support for `static`, type-qualified, and variable length array

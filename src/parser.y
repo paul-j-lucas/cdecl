@@ -107,8 +107,7 @@
 #define DUMP_END()                IF_DEBUG( PUTS_OUT( "\n}\n" ); )
 
 #define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
-  DUMP_COMMA; PUTS_OUT( "  " );     \
-  print_kv( (KEY), c_type_name( TYPE ), stdout ); )
+  DUMP_COMMA; printf( "  %s = ", (KEY) ); c_type_debug( TYPE, stdout ); )
 
 #define ELABORATE_ERROR(...) \
   BLOCK( elaborate_error( __VA_ARGS__ ); PARSE_ABORT(); )

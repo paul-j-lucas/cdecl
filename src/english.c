@@ -183,6 +183,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     }
 
     case K_TYPEDEF:
+      if ( ast->type != T_TYPEDEF_TYPE )
+        FPRINTF( param->eout, "%s ", c_type_name( ast->type ) );
       FPUTS( ast->as.c_typedef->type_name, param->eout );
       break;
 
