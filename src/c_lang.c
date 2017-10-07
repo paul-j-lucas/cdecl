@@ -39,7 +39,10 @@
 
 // extern constant definitions
 c_lang_info_t const C_LANG_INFO[] = {
+  { "ck&r",    LANG_C_KNR   },          // synonym for "knr"
   { "cknr",    LANG_C_KNR   },          // synonym for "knr"
+  { "k&r",     LANG_C_KNR   },          // synonym for "knr"
+  { "k&rc",    LANG_C_KNR   },          // synonym for "knr"
   { "knr",     LANG_C_KNR   },
   { "knrc",    LANG_C_KNR   },          // synonym for "knr"
   { "c",       LANG_C_MAX   },

@@ -487,9 +487,9 @@ static void yyerror( char const *msg ) {
                     /* miscellaneous */
 %token              '^'                 /* Apple: block indicator */
 %token  <type>      Y___BLOCK           /* Apple: block storage class */
-%token  <name>      Y_CPP_LANG_NAME
 %token              Y_END
 %token              Y_ERROR
+%token  <name>      Y_LANG_NAME
 %token  <name>      Y_NAME
 %token  <number>    Y_NUMBER
 %token  <c_typedef> Y_TYPEDEF_TYPE
@@ -580,8 +580,8 @@ static void yyerror( char const *msg ) {
  */
 
 /* name */
+%destructor { DTRACE; FREE( $$ ); } Y_LANG_NAME
 %destructor { DTRACE; FREE( $$ ); } Y_NAME name_expected name_opt
-%destructor { DTRACE; FREE( $$ ); } Y_CPP_LANG_NAME
 %destructor { DTRACE; FREE( $$ ); } set_option
 
 /*****************************************************************************/
@@ -1006,7 +1006,7 @@ set_command
 
 set_option
   : name_opt
-  | Y_CPP_LANG_NAME
+  | Y_LANG_NAME
   ;
 
 /*****************************************************************************/

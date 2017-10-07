@@ -296,9 +296,11 @@ D             [0-9]
 H             [0-9A-Fa-f]
 S             [ \f\r\t\v]
 
-cxx_name      "c++"({D}{D})?
+cknr_name     ([cC][kK]&[rR])|([kK]&[rR][cC]?)
+cxx_name      [cC]"++"({D}{D})?
 identifier    {A}({A}|{D})*
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
+lang_name     {cknr_name}|{cxx_name}
 
 binary        0[bB]{B}+{int_suffix}?
 octal         0{O}*{int_suffix}?
@@ -343,10 +345,10 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 return Y_NAME;
               }
 
-{cxx_name}    {
+{lang_name}   {
                 SET_TOKEN;
                 yylval.name = check_strdup( lexer_token );
-                return Y_CPP_LANG_NAME;
+                return Y_LANG_NAME;
               }
 
 non-returning { // special case since it's not an ordinary identifier
