@@ -96,7 +96,7 @@
 #define T_MASK_REF_QUALIFIER  0xF00000000000ull
 
 /**
- * TODO
+ * Bitmask for combination of types.
  */
 typedef uint64_t c_type_t;
 
