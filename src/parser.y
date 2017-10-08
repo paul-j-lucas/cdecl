@@ -809,8 +809,27 @@ define_english
       DUMP_AST( "decl_english", $5.ast );
       DUMP_END();
 
-      bool ok = c_type_add( &$5.ast->type, $4, &@4 ) &&
+      //
+      // Explicitly add T_TYPEDEF to prohibit cases like:
+      //
+      //      define eint as extern int
+      //      define rint as register int
+      //      define sint as static int
+      //      ...
+      //
+      //  i.e., a defined type with a storage class.
+      //
+      bool ok = c_type_add( &$5.ast->type, T_TYPEDEF, &@4 ) &&
+                c_type_add( &$5.ast->type, $4, &@4 ) &&
                 c_ast_check( $5.ast, CHECK_DECL );
+
+      //
+      // Once the semantic checks pass, remove the T_TYPEDEF for the same
+      // reason as using c_ast_take_typedef().  (Since we know $5.ast has the
+      // T_TYPEDEF, we can just remove it directly rather than call
+      // c_ast_take_typedef().)
+      //
+      $5.ast->type &= ~T_TYPEDEF;
 
       if ( ok ) {
         if ( c_typedef_add( $2, $5.ast ) ) {
@@ -854,8 +873,11 @@ define_english
       DUMP_AST( "decl_english", $5.ast );
       DUMP_END();
 
+      // see comment above about T_TYPEDEF
+      C_TYPE_ADD( &$5.ast->type, T_TYPEDEF, @4 );
       C_TYPE_ADD( &$5.ast->type, $4, @4 );
       C_AST_CHECK( $5.ast, CHECK_DECL );
+      $5.ast->type &= ~T_TYPEDEF;
 
       c_typedef_t const *const found = c_typedef_find( $2->type_name );
       assert( found != NULL );
@@ -1064,7 +1086,13 @@ typedef_declaration_c
       //
       c_mode = MODE_GIBBERISH;
     }
-    type_ast_c { type_push( $3.ast ); } decl_c Y_END
+    type_ast_c
+    {
+      // see comment in define_english about T_TYPEDEF
+      C_TYPE_ADD( &$3.ast->type, T_TYPEDEF, @3 );
+      type_push( $3.ast );
+    }
+    decl_c Y_END
     {
       type_pop();
 
@@ -1113,6 +1141,8 @@ typedef_declaration_c
       }
 
       C_AST_CHECK( ast, CHECK_DECL );
+      // see comment in define_english about T_TYPEDEF
+      ast->type &= ~T_TYPEDEF;
 
       if ( c_typedef_add( name, ast ) ) {
         //

@@ -579,7 +579,11 @@ TESTS+=	tests/typedef_i.test \
 # C typedef error tests
 # =====================
 #
-TESTS+=	tests/typedef_c_int_least32_t.test
+TESTS+=	tests/typedef_ai.test \
+	tests/typedef_c_int_least32_t.test \
+	tests/typedef_ei.test \
+	tests/typedef_gi.test \
+	tests/typedef_si.test
 
 ###############################################################################
 
@@ -596,7 +600,11 @@ TESTS+=	tests/define_i.test \
 # C define error tests
 # ====================
 #
-TESTS+=	tests/define_c_int_least32_t.test
+TESTS+=	tests/define_ai.test \
+	tests/define_c_int_least32_t.test \
+	tests/define_ei.test \
+	tests/define_gi.test \
+	tests/define_si.test
 
 ###############################################################################
 
