@@ -243,7 +243,7 @@ static bool parse_stdin( void ) {
  * Parses a string.
  *
  * @param s The null-terminated string to parse.
- * @param s_len the length of \a s.
+ * @param s_len the length of \a s.  If 0, it will be calculated.
  * @return Returns \c true only upon success.
  */
 bool parse_string( char const *s, size_t s_len ) {
