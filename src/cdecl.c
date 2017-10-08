@@ -249,14 +249,26 @@ static bool parse_stdin( void ) {
 bool parse_string( char const *s, size_t s_len ) {
   if ( s_len == 0 )
     s_len = strlen( s );
+
+  bool reset_command_line = false;
   if ( command_line == NULL ) {
+    //
+    // The diagnostics code relies on command_line being set, so set it.
+    //
     command_line = s;
     command_line_len = s_len;
+    reset_command_line = true;
   }
+
   FILE *const temp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
   yyrestart( temp );
   bool const ok = yyparse() == 0;
   fclose( temp );
+
+  if ( reset_command_line ) {
+    command_line = NULL;
+    command_line_len = 0;
+  }
   return ok;
 }
 
