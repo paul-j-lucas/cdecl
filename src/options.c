@@ -158,7 +158,10 @@ static char* format_opt( char short_opt, char buf[], size_t size ) {
   char const *const long_opt = get_long_opt( short_opt );
   snprintf(
     buf, size, "%s%s%s-%c",
-    *long_opt ? "--" : "", long_opt, *long_opt ? "/" : "", short_opt
+    *long_opt ? "--" : "",
+    long_opt,
+    *long_opt ? "/" : "",
+    short_opt
   );
   return buf;
 }
