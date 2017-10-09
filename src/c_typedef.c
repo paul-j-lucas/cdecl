@@ -51,7 +51,12 @@ static bool       user_defined;         // are new typedefs used-defined?
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// types from <stdint.h>
+/**
+ * Types from \c stdint.h.
+ *
+ * The underlying types used here are merely typical and do not necessarily
+ * match the underlying type on any particular platform.
+ */
 static char const *const TYPEDEFS_STDINT_H[] = {
   "typedef          long   ptrdiff_t",
   "typedef          long  ssize_t",
@@ -92,7 +97,9 @@ static char const *const TYPEDEFS_STDINT_H[] = {
   NULL
 };
 
-// types from <stdatomic.h>
+/**
+ * Types from \c stdatomic.h.
+ */
 static char const *const TYPEDEFS_STDATOMIC_H[] = {
   "typedef _Atomic          _Bool     atomic_bool",
   "typedef _Atomic          char      atomic_char",
