@@ -283,21 +283,6 @@ c_lang_t c_type_check( c_type_t type ) {
     }
   } // for
 
-  //
-  // Check that the type combination is legal in the current language.
-  //
-  for ( size_t row = 0; row < ARRAY_SIZE( C_TYPE_INFO ); ++row ) {
-    if ( (type & C_TYPE_INFO[ row ].type) != T_NONE ) {
-      for ( size_t col = 0; col <= row; ++col ) {
-        c_lang_t const ok_langs = OK_TYPE_LANGS[ row ][ col ];
-        if ( (type & C_TYPE_INFO[ col ].type) != T_NONE &&
-             (opt_lang & ok_langs) == LANG_NONE ) {
-          return ok_langs;
-        }
-      } // for
-    }
-  } // for
-
   return LANG_ALL;
 }
 
