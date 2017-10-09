@@ -338,7 +338,7 @@ bool c_ast_take_typedef( c_ast_t *ast ) {
 bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   c_kind_t const kind = REINTERPRET_CAST( c_kind_t, data );
-  return (ast->kind & kind) != 0;
+  return (ast->kind & kind) != K_NONE;
 }
 
 bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
@@ -350,7 +350,7 @@ bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
 bool c_ast_vistor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   c_type_t const type = REINTERPRET_CAST( c_type_t, data );
-  return (ast->type & type) != 0;
+  return (ast->type & type) != T_NONE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
