@@ -33,6 +33,7 @@
 
 // standard
 #include <stdbool.h>
+#include <inttypes.h>                   /* for PRIX64, etc. */
 #include <stdint.h>
 
 ////////// types //////////////////////////////////////////////////////////////
@@ -99,6 +100,11 @@
  * Bitmask for combination of types.
  */
 typedef uint64_t c_type_t;
+
+/**
+ * Hexadecimal print conversion specifier for c_type_t.
+ */
+#define PRIX_C_TYPE_T         PRIX64
 
 ////////// extern functions ///////////////////////////////////////////////////
 

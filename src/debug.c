@@ -26,13 +26,13 @@
 // local
 #include "config.h"                     /* must go first */
 #include "c_ast.h"
+#include "c_type.h"
 #include "c_typedef.h"
 #include "debug.h"
 #include "util.h"
 
 // system
 #include <assert.h>
-#include <inttypes.h>                   /* for PRIX64, etc. */
 #include <stdlib.h>
 #include <sysexits.h>
 
@@ -178,7 +178,7 @@ void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
 }
 
 void c_type_debug( c_type_t type, FILE *dout ) {
-  FPRINTF( dout, "\"%s\" (0x%" PRIX64 ")", c_type_name( type ), type );
+  FPRINTF( dout, "\"%s\" (0x%" PRIX_C_TYPE_T ")", c_type_name( type ), type );
 }
 
 void print_kv( char const *key, char const *value, FILE *out ) {
