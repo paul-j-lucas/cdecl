@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "October 6, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "October 9, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1276,6 +1276,16 @@ casting an expression is not supported.
 When converting from or to a C++ new-style cast,
 no semantic validation is performed
 to determine whether the type of cast is legal.
+.IP \n+[step].
+When a predefined type,
+e.g.,
+\f(CWsize_t\fP,
+\f(CWuint16_t\fP,
+etc.,
+is shown (via the \f(CWshow\fP command),
+the underlying type is merely typical
+and does not necessarily match
+the underlying type on any particular platform.
 .SH AUTHORS
 .B cdecl
 has been around since the mid-1980s
