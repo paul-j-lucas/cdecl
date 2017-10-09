@@ -193,8 +193,11 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
       break;
   } // switch
 
-  if ( !c_ast_is_parent( ast_i ) )
+  if ( !c_ast_is_parent( ast_i ) ) {
+    assert( !c_ast_is_parent( ast_j ) );
     return true;
+  }
+  assert( c_ast_is_parent( ast_j ) );
   return c_ast_equiv( ast_i->as.parent.of_ast, ast_j->as.parent.of_ast );
 }
 
