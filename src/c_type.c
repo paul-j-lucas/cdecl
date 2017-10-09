@@ -195,7 +195,7 @@ static c_lang_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
  * int</code>.
  */
 static inline bool is_long_int( c_type_t type ) {
-  return (type & T_LONG) && (type & (T_FLOAT | T_DOUBLE)) == T_NONE;
+  return (type & T_LONG) != T_NONE && (type & (T_FLOAT | T_DOUBLE)) == T_NONE;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
