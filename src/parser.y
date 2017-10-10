@@ -781,20 +781,7 @@ define_english
   : Y_DEFINE name_expected as_expected storage_class_list_opt_english
     decl_english Y_END
     {
-      if ( $5.ast->kind == K_NAME ) {
-        //
-        // This checks for a case like:
-        //
-        //      define x as y
-        //
-        // i.e., defining a type name as another name (unknown type).  This can
-        // get this far due to the nature of the C/C++ grammar.
-        //
-        // This check has to be done now in the parser rather than later in the
-        // AST because the name of the AST node needs to be set to the type
-        // name, but the AST node is itself a name and overwriting it would
-        // lose information.
-        //
+      if ( $5.ast->kind == K_NAME ) {   // see comment in declare_english
         assert( $5.ast->name != NULL );
         print_error( &@5, "\"%s\": unknown type", $5.ast->name );
         FREE( $2 );
