@@ -198,7 +198,7 @@ static c_typedef_t* c_typedef_new( char const *type_name, c_ast_t const *ast ) {
  */
 static void c_typedef_parse_builtins( char const *const types[] ) {
   extern bool parse_string( char const*, size_t );
-  for ( char const *const *ptype = types; *ptype; ++ptype ) {
+  for ( char const *const *ptype = types; *ptype != NULL; ++ptype ) {
     bool const ok = parse_string( *ptype, 0 );
     assert( ok );
   } // for
@@ -309,9 +309,7 @@ void c_typedef_init( void ) {
 
 c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data ) {
   assert( visitor != NULL );
-
   rb_visitor_data_t vd = { visitor, data };
-
   rb_node_t const *const rb = rb_tree_visit( typedefs, &rb_visitor, &vd );
   return rb ? rb_type_data( c_typedef_t const*, rb ) : NULL;
 }
