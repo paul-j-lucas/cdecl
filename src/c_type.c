@@ -198,6 +198,29 @@ static inline bool is_long_int( c_type_t type ) {
   return (type & T_LONG) != T_NONE && (type & (T_FLOAT | T_DOUBLE)) == T_NONE;
 }
 
+////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Concatenates the partial type name onto the full type name being made.
+ *
+ * @param pname A pointer to the pointer to the name to concatenate to.
+ * @param type The type to concatenate the name of.
+ * @param types The array of types to use.
+ * @param types_size The size of \a types.
+ * @param pspace A pointer to a variable to keep track of whether a space has
+ * been concatenated.
+ */
+static void name_cat( char **pname, c_type_t type, c_type_t const types[],
+                      size_t types_size, bool *pspace ) {
+  for ( size_t i = 0; i < types_size; ++i ) {
+    if ( (type & types[i]) != T_NONE ) {
+      if ( true_or_set( pspace ) )
+        STRCAT( *pname, " " );
+      STRCAT( *pname, c_type_name( types[i] ) );
+    }
+  } // for
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool c_type_add( c_type_t *dest_type, c_type_t new_type, c_loc_t const *loc ) {
@@ -286,6 +309,9 @@ c_lang_t c_type_check( c_type_t type ) {
   return LANG_ALL;
 }
 
+#define NAME_CAT(PNAME,TYPE,TYPES,PSPACE) \
+  name_cat( (PNAME), (TYPE), (TYPES), ARRAY_SIZE( TYPES ), (PSPACE) )
+
 char const* c_type_name( c_type_t type ) {
   if ( exactly_one_bit_set( type ) ) {
     for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i )
@@ -328,13 +354,7 @@ char const* c_type_name( c_type_t type ) {
     T_OVERRIDE,
     T_FINAL
   };
-  for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_CLASS ); ++i ) {
-    if ( (type & C_STORAGE_CLASS[i]) != T_NONE ) {
-      if ( true_or_set( &space ) )
-        STRCAT( name, " " );
-      STRCAT( name, c_type_name( C_STORAGE_CLASS[i] ) );
-    }
-  } // for
+  NAME_CAT( &name, type, C_STORAGE_CLASS, &space );
 
   static c_type_t const C_QUALIFIER[] = {
     T_CONST,
@@ -347,13 +367,7 @@ char const* c_type_name( c_type_t type ) {
     // This is last so we get names like "const _Atomic".
     T_ATOMIC,
   };
-  for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER ); ++i ) {
-    if ( (type & C_QUALIFIER[i]) != T_NONE ) {
-      if ( true_or_set( &space ) )
-        STRCAT( name, " " );
-      STRCAT( name, c_type_name( C_QUALIFIER[i] ) );
-    }
-  } // for
+  NAME_CAT( &name, type, C_QUALIFIER, &space );
 
   static c_type_t const C_TYPE[] = {
 
@@ -398,13 +412,7 @@ char const* c_type_name( c_type_t type ) {
     type &= ~T_INT;
   }
 
-  for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE ); ++i ) {
-    if ( (type & C_TYPE[i]) != T_NONE ) {
-      if ( true_or_set( &space ) )
-        STRCAT( name, " " );
-      STRCAT( name, c_type_name( C_TYPE[i] ) );
-    }
-  } // for
+  NAME_CAT( &name, type, C_TYPE, &space );
 
   return name_buf;
 }
