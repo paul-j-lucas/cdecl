@@ -10,6 +10,14 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 4.1.1
+
+** Fixed handling of leading whitespace in command-line argument
+The unusual case of:
+    cdecl ' declare x as int'
+i.e., a quoted argument having leading whitespace, is now handled correctly.
+
+
 * Changes in Cdecl 4.1
 
 ** New C11 standard atomic types
