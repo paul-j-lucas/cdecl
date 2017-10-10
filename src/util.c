@@ -83,7 +83,7 @@ char const* base_name( char const *path_name ) {
   assert( path_name != NULL );
   char const *const slash = strrchr( path_name, '/' );
   if ( slash != NULL )
-    return slash[1] ? slash + 1 : slash;
+    return slash[1] != '\0' ? slash + 1 : slash;
   return path_name;
 }
 
@@ -97,7 +97,7 @@ void* check_realloc( void *p, size_t size ) {
   //
   if ( size == 0 )
     size = 1;
-  void *const r = p ? realloc( p, size ) : malloc( size );
+  void *const r = p != NULL ? realloc( p, size ) : malloc( size );
   if ( unlikely( r == NULL ) )
     perror_exit( EX_OSERR );
   return r;
@@ -107,7 +107,7 @@ char* check_strdup( char const *s ) {
   if ( s == NULL )
     return NULL;
   char *const dup = strdup( s );
-  if ( unlikely( !dup ) )
+  if ( unlikely( dup == NULL ) )
     perror_exit( EX_OSERR );
   return dup;
 }
@@ -230,9 +230,9 @@ char const* home_dir( void ) {
   if ( home == NULL ) {
     home = getenv( "HOME" );
 #if HAVE_GETEUID && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR
-    if ( !home ) {
+    if ( home == NULL ) {
       struct passwd *const pw = getpwuid( geteuid() );
-      if ( pw )
+      if ( pw != NULL )
         home = pw->pw_dir;
     }
 #endif /* HAVE_GETEUID && && HAVE_GETPWUID && HAVE_STRUCT_PASSWD_PW_DIR */
