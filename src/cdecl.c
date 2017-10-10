@@ -138,16 +138,37 @@ static bool parse_argv( int argc, char const *argv[] ) {
     return parse_command_line( NULL, argc, argv );
 
   // cdecl '{cast|declare|explain} arg ...'
-  char *remainder = CONST_CAST( char*, argv[0] );
-  char *first_word = strsep( &remainder, " \t" );
-  if ( first_word != NULL && is_command( first_word ) ) {
-    char const *const command = check_strdup( first_word );
-    while ( (*first_word++ = *remainder++) )
-      ;
-    return parse_command_line( command, argc, argv );
-  }
+  char *argv0 = CONST_CAST( char*, argv[0] );
+  for ( char *first_word; (first_word = strsep( &argv0, " \t" )); ) {
+    if ( first_word[0] == '\0' ) {
+      //
+      // Leading whitespace in a quoted argument, e.g.:
+      //
+      //      cdecl ' declare x as int'
+      //             ^
+      //
+      // results in an "empty field": skip it.
+      //
+      continue;
+    }
 
-  return parse_files( argc, argv );
+    if ( is_command( first_word ) ) {
+      //
+      // Now that we've split off the command, set the argument to the
+      // remaining characters.  E.g., given:
+      //
+      //      cdecl 'declare x as int'
+      //
+      // set argv[0] to "x as int" by changing the pointer.
+      //
+      argv[0] = argv0;
+      return parse_command_line( first_word, argc, argv );
+    }
+
+    break;                              // nothing special about first argument
+  } // for
+
+  return parse_files( argc, argv );     // assume arguments are file names
 }
 
 /**
