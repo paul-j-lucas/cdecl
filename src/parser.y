@@ -613,7 +613,7 @@ command
   | Y_END                               /* allows for blank lines */
   | error
     {
-      if ( lexer_token[0] )
+      if ( lexer_token[0] != '\0' )
         ELABORATE_ERROR( "unexpected token" );
       else
         ELABORATE_ERROR( "unexpected end of command" );
