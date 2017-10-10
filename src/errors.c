@@ -219,7 +219,7 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
         assert( arg->kind != K_PLACEHOLDER );
       default:
         print_error( &ast->loc, "function prototypes" );
-				return false;
+        return false;
     } // switch
   } // for
   return true;
