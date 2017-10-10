@@ -101,7 +101,7 @@
   bool debug_comma = false;   \
   IF_DEBUG( PUTS_OUT( "\n" NAME " ::= " PROD " = {\n" ); )
 #else
-#define DUMP_START(NAME,PROD)           /* nothing */
+#define DUMP_START(NAME,PROD)     /* nothing */
 #endif
 
 #define DUMP_END()                IF_DEBUG( PUTS_OUT( "\n}\n" ); )
