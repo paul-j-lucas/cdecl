@@ -308,7 +308,7 @@ static bool print_typedef_visitor( c_typedef_t const *type, void *data ) {
  */
 static void qualifier_clear( void ) {
   qualifier_link_t *q;
-  while ( (q = LINK_POP( qualifier_link_t, &in_attr.qualifier_head )) )
+  while ( (q = LINK_POP( qualifier_link_t, &in_attr.qualifier_head )) != NULL )
     FREE( q );
 }
 
