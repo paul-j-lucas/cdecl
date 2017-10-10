@@ -186,7 +186,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
     case K_ARRAY:
     case K_BLOCK:                       // Apple extension
-      if ( ast_type )                   // storage class
+      if ( ast_type != T_NONE )         // storage class
         FPRINTF( param->gout, "%s ", c_type_name( ast_type ) );
       c_ast_gibberish_impl( ast->as.parent.of_ast, param );
       if ( false_set( &param->postfix ) ) {
