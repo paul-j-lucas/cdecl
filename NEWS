@@ -10,6 +10,22 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 4.3
+
+** Added C99 _Imaginary number support
+C99 _Imaginary number declarations are now supported.
+
+** External
+The keyword "external" is now a synonym for "extern".
+
+** More English for explain
+More English synonyms are used in explanations, e.g.:
+    declare x as automatic
+    declare x as constant int
+    declare x as enumeration E
+    declare x as structure S
+
+
 * Changes in Cdecl 4.2
 
 ** Added noexcept and throw() support
