@@ -78,7 +78,8 @@ most notably:
   `bool`,
   `char16_t`,
   `char32_t`,
-  `complex`,
+  `_Complex`,
+  `_Imaginary`,
   `restrict`,
   `thread_local`,
   and

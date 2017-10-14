@@ -114,6 +114,8 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_ld.test \
 	tests/declare_lf.test \
 	tests/declare_ll.test \
+	tests/declare_md.test \
+	tests/declare_mf.test \
 	tests/declare_n.test \
 	tests/declare_nfi_v-01.test \
 	tests/declare_nfi_v-02.test \
@@ -312,6 +314,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_ld.test \
 	tests/explain_lf.test \
 	tests/explain_ll.test \
+	tests/explain_md.test \
+	tests/explain_mf.test \
 	tests/explain_n.test \
 	tests/explain_nfi_c.test \
 	tests/explain_nfi_v.test \

@@ -449,6 +449,7 @@ static void yyerror( char const *msg ) {
                     /* C99 */
 %token  <type>      Y_BOOL
 %token  <type>      Y__COMPLEX
+%token  <type>      Y__IMAGINARY
 %token  <type>      Y_INLINE
 %token  <type>      Y_RESTRICT
 
@@ -1555,6 +1556,7 @@ type_modifier_list_english
 
 type_modifier_english
   : Y__COMPLEX
+  | Y__IMAGINARY
   | Y_LONG
   | Y_SHORT
   | Y_SIGNED

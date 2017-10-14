@@ -98,6 +98,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_FLOAT,            LANG_ALL                        },
   { L_FRIEND,           LANG_MIN(CPP_MIN)               },
   { L_FUNCTION,         LANG_ALL                        },
+  { L_IMAGINARY,        LANG_MIN(C_99)                  },
   { L_INLINE,           LANG_MIN(C_99)                  },
   { L_INT,              LANG_ALL                        },
 //{ L_INTO,                             // special case (see below)

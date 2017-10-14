@@ -34,7 +34,7 @@ The characters are:
 + `i` = `inline` or `int`
 + `k` = `struct`
 + `l` = `long`
-+ `m` = member of class or `mutable`
++ `m` = `_Imaginary`, member of class, or `mutable`
 + `n` = nested, `noreturn`, or `union`
 + `o` = `override` or `thread_local`
 + `p` = pointer
@@ -47,7 +47,7 @@ The characters are:
 + `w` = `wchar_t`
 + `x` = `constexpr`, `noexcept`,  or untyped K&R function argument
 + `y` = `final`
-+ `z` = `complex` or `size_t`
++ `z` = `_Complex` or `size_t`
 + `zz` = `ssize_t`
 
 A function's return type is separated from its arguments by `_`

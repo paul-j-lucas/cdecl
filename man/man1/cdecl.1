@@ -428,6 +428,7 @@ Use the C99 version of the C language.
 Adds support for
 \f(CW_Bool\fP,
 \f(CW_Complex\fP,
+\f(CW_Imaginary\fP,
 \f(CWrestrict\fP,
 \f(CWinline\fP
 functions,
@@ -649,8 +650,9 @@ One of:
 \f(CWlong\fP,
 \f(CWsigned\fP,
 \f(CWunsigned\fP,
+\f(CW_Complex\fP,
 or
-\f(CW_Complex\fP.
+\f(CW_Imaginary\fP.
 .TP
 .I name
 A valid C (or C++) identifier.
@@ -705,6 +707,7 @@ The words on the left are synonyms for what's on the right:
   enumeration  enum
      external  extern
          func  function
+    imaginary  _Imaginary
       integer  int
           len  length
           mbr  member

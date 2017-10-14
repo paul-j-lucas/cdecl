@@ -102,6 +102,8 @@ extern char const L_BOOL[];
 extern char const L__BOOL[];            // synonym for "bool"
 extern char const L__COMPLEX[];
 extern char const L_COMPLEX[];          // synonym for "_Complex"
+extern char const L__IMAGINARY[];
+extern char const L_IMAGINARY[];        // synonym for "_Imaginary"
 extern char const L_INLINE[];
 extern char const L_LEN[];              // synonym for "length"
 extern char const L_LENGTH[];

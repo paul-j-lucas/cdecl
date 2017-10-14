@@ -118,6 +118,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_FUNC,           TOKEN( Y_FUNCTION )             },
   { L_FUNCTION,       TOKEN( Y_FUNCTION )             },
   { L_HELP,           TOKEN( Y_HELP )                 },
+  { L_IMAGINARY,      C_SYN( L__IMAGINARY,    true  ) },
   { L_INTEGER,        C_SYN( L_INT,           false ) },
   { L_INTO,           TOKEN( Y_INTO )                 },
   { L_LEN,            TOKEN( Y_LENGTH )               },

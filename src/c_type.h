@@ -56,11 +56,12 @@
 #define T_FLOAT               0x00000000002000ull
 #define T_DOUBLE              0x00000000004000ull
 #define T_COMPLEX             0x00000000008000ull
-#define T_ENUM                0x00000000010000ull
-#define T_STRUCT              0x00000000020000ull
-#define T_UNION               0x00000000040000ull
-#define T_CLASS               0x00000000080000ull
-#define T_TYPEDEF_TYPE        0x00000000100000ull /* e.g., size_t */
+#define T_IMAGINARY           0x00000000010000ull
+#define T_ENUM                0x00000000020000ull
+#define T_STRUCT              0x00000000040000ull
+#define T_UNION               0x00000000080000ull
+#define T_CLASS               0x00000000100000ull
+#define T_TYPEDEF_TYPE        0x00000000200000ull /* e.g., size_t */
 
 // storage classes
 #define T_AUTO_C              0x00000001000000ull /* C version of "auto" */

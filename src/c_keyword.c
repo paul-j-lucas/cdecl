@@ -84,6 +84,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   // C99
   { L_BOOL,             Y_BOOL,             T_BOOL,          LANG_ALL         },
   { L__COMPLEX,         Y__COMPLEX,         T_COMPLEX,       LANG_ALL         },
+  { L__IMAGINARY,       Y__IMAGINARY,       T_IMAGINARY,     LANG_ALL         },
   { L_INLINE,           Y_INLINE,           T_INLINE,        LANG_ALL         },
   { L_RESTRICT,         Y_RESTRICT,         T_RESTRICT,      LANG_ALL         },
   { L_WCHAR_T,          Y_WCHAR_T,          T_WCHAR_T,       LANG_ALL         },
