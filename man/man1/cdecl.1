@@ -426,8 +426,8 @@ Adds support for
 .B C99
 Use the C99 version of the C language.
 Adds support for
-\f(CW_Bool\fP (and \f(CWbool\fP),
-\f(CW_Complex\fP (and \f(CWcomplex\fP),
+\f(CW_Bool\fP,
+\f(CW_Complex\fP,
 \f(CWrestrict\fP,
 \f(CWinline\fP
 functions,
@@ -650,7 +650,7 @@ One of:
 \f(CWsigned\fP,
 \f(CWunsigned\fP,
 or
-\f(CWcomplex\fP.
+\f(CW_Complex\fP.
 .TP
 .I name
 A valid C (or C++) identifier.
@@ -700,7 +700,7 @@ The words on the left are synonyms for what's on the right:
     automatic  auto
         _Bool  bool
     character  char
-     _Complex  complex
+      complex  _Complex
      constant  const
   enumeration  enum
      external  extern

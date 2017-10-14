@@ -100,8 +100,8 @@ extern char const L_VOLATILE[];
 // C99
 extern char const L_BOOL[];
 extern char const L__BOOL[];            // synonym for "bool"
-extern char const L_COMPLEX[];
-extern char const L__COMPLEX[];         // synonym for "complex"
+extern char const L__COMPLEX[];
+extern char const L_COMPLEX[];          // synonym for "_Complex"
 extern char const L_INLINE[];
 extern char const L_LEN[];              // synonym for "length"
 extern char const L_LENGTH[];

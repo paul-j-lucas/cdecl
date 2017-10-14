@@ -97,8 +97,8 @@ char const L_VOLATILE[]         = "volatile";
 // C99
 char const L_BOOL[]             = "bool";
 char const L__BOOL[]            = "_Bool";
-char const L_COMPLEX[]          = "complex";
 char const L__COMPLEX[]         = "_Complex";
+char const L_COMPLEX[]          = "complex";
 char const L_INLINE[]           = "inline";
 char const L_LEN[]              = "len";
 char const L_LENGTH[]           = "length";

@@ -135,7 +135,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { T_UNSIGNED,     L_UNSIGNED,         NULL, LANG_ALL                        },
   { T_FLOAT,        L_FLOAT,            NULL, LANG_ALL                        },
   { T_DOUBLE,       L_DOUBLE,           NULL, LANG_ALL                        },
-  { T_COMPLEX,      L_COMPLEX,          NULL, LANG_MIN(C_99)                  },
+  { T_COMPLEX,      L__COMPLEX,    L_COMPLEX, LANG_MIN(C_99)                  },
   { T_ENUM,         L_ENUM,    L_ENUMERATION, LANG_MIN(C_89)                  },
   { T_STRUCT,       L_STRUCT,    L_STRUCTURE, LANG_ALL                        },
   { T_UNION,        L_UNION,            NULL, LANG_ALL                        },
