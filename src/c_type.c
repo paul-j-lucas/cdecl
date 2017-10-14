@@ -42,7 +42,7 @@
   c_type_name_cat( (PNAME), (TYPE), (TYPES), ARRAY_SIZE( TYPES ), \
                    (IS_ERROR), (PSPACE) )
 
-#define STRCAT(DST,SRC)           ((DST) += strcpy_len( (DST), (SRC) ))
+#define STRCAT(DST,SRC)           ((DST) = strcpy_end( (DST), (SRC) ))
 
 // local functions
 static char const* c_type_name_impl( c_type_t, bool );

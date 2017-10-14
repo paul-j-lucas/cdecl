@@ -101,19 +101,19 @@ static char* prompt_create( char suffix ) {
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
     *p++ = RL_PROMPT_START_IGNORE;
     SGR_SSTART_COLOR( color_buf, prompt );
-    p += strcpy_len( p, color_buf );
+    p = strcpy_end( p, color_buf );
     *p++ = RL_PROMPT_END_IGNORE;
   }
 #endif /* WITH_READLINE */
 
-  p += strcpy_len( p, opt_lang >= LANG_CPP_MIN ? CPPDECL : PACKAGE );
+  p = strcpy_end( p, opt_lang >= LANG_CPP_MIN ? CPPDECL : PACKAGE );
   *p++ = suffix;
 
 #ifdef WITH_READLINE
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
     *p++ = RL_PROMPT_START_IGNORE;
     SGR_SEND_COLOR( color_buf );
-    p += strcpy_len( p, color_buf );
+    p = strcpy_end( p, color_buf );
     *p++ = RL_PROMPT_END_IGNORE;
   }
 #endif /* WITH_READLINE */

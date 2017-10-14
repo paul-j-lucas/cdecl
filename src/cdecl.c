@@ -196,11 +196,11 @@ static bool parse_command_line( char const *command, int argc,
 
   // build cdecl command
   if ( (space = command != NULL) )
-    s += strcpy_len( s, command );
+    s = strcpy_end( s, command );
   for ( int i = 0; i < argc; ++i ) {
     if ( true_or_set( &space ) )
       *s++ = ' ';
-    s += strcpy_len( s, argv[i] );
+    s = strcpy_end( s, argv[i] );
   } // for
 
   bool const ok = parse_string( command_line, command_line_len );

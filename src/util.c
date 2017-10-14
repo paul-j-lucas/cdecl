@@ -354,13 +354,12 @@ void path_append( char *path, char const *component ) {
   }
 }
 
-size_t strcpy_len( char *dst, char const *src ) {
+char* strcpy_end( char *dst, char const *src ) {
   assert( dst != NULL );
   assert( src != NULL );
-  char const *const dst0 = dst;
   while ( (*dst++ = *src++) )
     /* empty */;
-  return dst - dst0 - 1;
+  return dst - 1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
