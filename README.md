@@ -132,7 +132,9 @@ most notably:
   `enum class`,
   `mutable`,
   new-style casts,
+  `noexcept`,
   rvalue references,
+  `throw`,
   and
   the function trailing return-type syntax.
 * Support for

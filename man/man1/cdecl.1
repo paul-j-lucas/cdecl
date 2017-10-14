@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "October 9, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "October 12, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -454,6 +454,7 @@ Use the latest supported version of the C++ language.
 Use the C++98 version of the C++ language.
 Adds support for
 \f(CWclass\fP,
+exception specifications (\f(CWthrow\fP),
 new-style casts,
 references,
 pointers to class members,
@@ -472,6 +473,7 @@ Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
 \f(CWenum class\fP,
+\f(CWnoexcept\fP,
 rvalue references,
 \f(CWthread_local\fP,
 the function trailing return-type syntax,
@@ -672,6 +674,7 @@ One of:
 \f(CWfriend\fP,
 \f(CWinline\fP,
 \f(CWmutable\fP,
+non-throwing,
 \f(CWnoreturn\fP,
 \f(CWoverride\fP,
 \f(CWregister\fP,
@@ -704,7 +707,9 @@ The words on the left are synonyms for what's on the right:
       integer  int
           len  length
           mbr  member
+    no-except  noexcept
 non-returning  noreturn
+ non-throwing  throw
     _Noreturn  noreturn
    overridden  override
        predef  predefined
@@ -1193,12 +1198,22 @@ destructors,
 attribute specifiers
 (e.g., \f(CW[[noreturn]]\fP),
 \f(CWdecltype\fP,
-function default arguments
-and exception specifications
-(\f(CWthrow()\fP and \f(CWnoexcept\fP),
+function default arguments,
 overloaded operators,
 and
 template declarations
+are not supported.
+.IP \n+[step].
+For function exception specifications,
+only
+\f(CWnoexcept\fP,
+\f(CWnoexcept(true)\fP,
+\f(CWnoexcept(false)\fP,
+and
+\f(CWthrow()\fP,
+are supported.
+Arbitrary expressions for \f(CWnoexcept\fP
+or types for \f(CWthrow\fP
 are not supported.
 .SS Other Minor Caveats
 .nr step 1 1

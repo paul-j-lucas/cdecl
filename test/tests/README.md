@@ -41,11 +41,11 @@ The characters are:
 + `r` = `restrict` or reference
 + `rr` = rvalue reference
 + `s` = `signed` or `static`
-+ `t` = `typedef` or unknown type
++ `t` = `throw`, `typedef`, or unknown type
 + `u` = `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
-+ `x` = `constexpr` or untyped K&R function argument
++ `x` = `constexpr`, `noexcept`,  or untyped K&R function argument
 + `y` = `final`
 + `z` = `complex` or `size_t`
 + `zz` = `ssize_t`

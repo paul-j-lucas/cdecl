@@ -38,7 +38,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define C_TYPE_NAME_CAT(PNAME,TYPE,TYPES,IS_ERROR,PSPACE) \
+  c_type_name_cat( (PNAME), (TYPE), (TYPES), ARRAY_SIZE( TYPES ), \
+                   (IS_ERROR), (PSPACE) )
+
 #define STRCAT(DST,SRC)           ((DST) += strcpy_len( (DST), (SRC) ))
+
+// local functions
+static char const* c_type_name_impl( c_type_t, bool );
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -52,68 +59,79 @@
 static char const L_LONG_LONG[] = "long";
 
 /**
+ * For convenience, this is just a concatenation of L_RVALUE and L_REFERENCE.
+ */
+static char const L_RVALUE_REFERENCE[] = "rvalue reference";
+
+/**
  * Mapping between C type bits, literals, and valid language(s).
  */
 struct c_type_info {
   c_type_t    type;
   char const *literal;                  // C string literal of the type
+  char const *english;                  // English version, if not NULL
   c_lang_t    ok_langs;
 };
 typedef struct c_type_info c_type_info_t;
 
 static c_type_info_t const C_QUALIFIER_INFO[] = {
-  { T_ATOMIC,           L__ATOMIC,          LANG_MIN(C_11)                  },
-  { T_CONST,            L_CONST,            LANG_MIN(C_89)                  },
-  { T_REFERENCE,        L_REFERENCE,        LANG_MIN(CPP_11)                },
-  { T_RVALUE_REFERENCE, "rvalue reference", LANG_MIN(CPP_11)                },
-  { T_RESTRICT,         L_RESTRICT,         LANG_MIN(C_89) & ~LANG_CPP_ALL  },
-  { T_VOLATILE,         L_VOLATILE,         LANG_MIN(C_89)                  },
+  { T_ATOMIC,       L__ATOMIC,          NULL, LANG_MIN(C_11)                  },
+  { T_CONST,        L_CONST,            NULL, LANG_MIN(C_89)                  },
+  { T_REFERENCE,    L_REFERENCE,        NULL, LANG_MIN(CPP_11)                },
+  { T_RVALUE_REFERENCE,
+                    L_RVALUE_REFERENCE, NULL, LANG_MIN(CPP_11)                },
+  { T_RESTRICT,     L_RESTRICT,         NULL, LANG_MIN(C_89) & ~LANG_CPP_ALL  },
+  { T_VOLATILE,     L_VOLATILE,         NULL, LANG_MIN(C_89)                  },
 };
 
 static c_type_info_t const C_STORAGE_INFO[] = {
   // storage classes
-  { T_AUTO_C,           L_AUTO,             LANG_MAX(CPP_03)                },
-  { T_BLOCK,            L___BLOCK,          LANG_ALL                        },
-  { T_EXTERN,           L_EXTERN,           LANG_ALL                        },
-  { T_REGISTER,         L_REGISTER,         LANG_ALL                        },
-  { T_STATIC,           L_STATIC,           LANG_ALL                        },
-  { T_THREAD_LOCAL,     L_THREAD_LOCAL,     LANG_C_11 | LANG_MIN(CPP_11)    },
-  { T_TYPEDEF,          L_TYPEDEF,          LANG_ALL                        },
+  { T_AUTO_C,       L_AUTO,             NULL, LANG_MAX(CPP_03)                },
+  { T_BLOCK,        L___BLOCK,          NULL, LANG_ALL                        },
+  { T_EXTERN,       L_EXTERN,           NULL, LANG_ALL                        },
+  { T_REGISTER,     L_REGISTER,         NULL, LANG_ALL                        },
+  { T_STATIC,       L_STATIC,           NULL, LANG_ALL                        },
+  { T_THREAD_LOCAL, L_THREAD_LOCAL,     NULL, LANG_C_11 | LANG_MIN(CPP_11)    },
+  { T_TYPEDEF,      L_TYPEDEF,          NULL, LANG_ALL                        },
 
   // storage-class-like
-  { T_CONSTEXPR,        L_CONSTEXPR,        LANG_MIN(CPP_11)                },
-  { T_FINAL,            L_FINAL,            LANG_MIN(CPP_11)                },
-  { T_FRIEND,           L_FRIEND,           LANG_CPP_ALL                    },
-  { T_INLINE,           L_INLINE,           LANG_MIN(C_99)                  },
-  { T_MUTABLE,          L_MUTABLE,          LANG_MIN(CPP_MIN)               },
-  { T_NORETURN,         L_NORETURN,         LANG_C_11                       },
-  { T_OVERRIDE,         L_OVERRIDE,         LANG_MIN(CPP_11)                },
-  { T_VIRTUAL,          L_VIRTUAL,          LANG_CPP_ALL                    },
-  { T_PURE_VIRTUAL,     L_PURE,             LANG_CPP_ALL                    },
+  { T_CONSTEXPR,    L_CONSTEXPR,        NULL, LANG_MIN(CPP_11)                },
+  { T_FINAL,        L_FINAL,            NULL, LANG_MIN(CPP_11)                },
+  { T_FRIEND,       L_FRIEND,           NULL, LANG_CPP_ALL                    },
+  { T_INLINE,       L_INLINE,           NULL, LANG_MIN(C_99)                  },
+  { T_MUTABLE,      L_MUTABLE,          NULL, LANG_MIN(CPP_MIN)               },
+  { T_NOEXCEPT,     L_NOEXCEPT,         NULL, LANG_MIN(CPP_11)                },
+  { T_NORETURN,     L_NORETURN,
+                    L_NON_RETURNING,          LANG_C_11                       },
+  { T_OVERRIDE,     L_OVERRIDE,         NULL, LANG_MIN(CPP_11)                },
+  { T_THROW,        L_THROW,
+                    L_NON_THROWING,           LANG_MIN(CPP_MIN)               },
+  { T_VIRTUAL,      L_VIRTUAL,          NULL, LANG_CPP_ALL                    },
+  { T_PURE_VIRTUAL, L_PURE,             NULL, LANG_CPP_ALL                    },
 };
 
 static c_type_info_t const C_TYPE_INFO[] = {
-  { T_VOID,             L_VOID,             LANG_MIN(C_89)                  },
-  { T_AUTO_CPP_11,      L_AUTO,             LANG_MIN(CPP_11)                },
-  { T_BOOL,             L_BOOL,             LANG_MIN(C_89)                  },
-  { T_CHAR,             L_CHAR,             LANG_ALL                        },
-  { T_CHAR16_T,         L_CHAR16_T,         LANG_C_11 | LANG_MIN(CPP_11)    },
-  { T_CHAR32_T,         L_CHAR32_T,         LANG_C_11 | LANG_MIN(CPP_11)    },
-  { T_WCHAR_T,          L_WCHAR_T,          LANG_MIN(C_95)                  },
-  { T_SHORT,            L_SHORT,            LANG_ALL                        },
-  { T_INT,              L_INT,              LANG_ALL                        },
-  { T_LONG,             L_LONG,             LANG_ALL                        },
-  { T_LONG_LONG,        L_LONG_LONG,        LANG_MIN(C_89)                  },
-  { T_SIGNED,           L_SIGNED,           LANG_MIN(C_89)                  },
-  { T_UNSIGNED,         L_UNSIGNED,         LANG_ALL                        },
-  { T_FLOAT,            L_FLOAT,            LANG_ALL                        },
-  { T_DOUBLE,           L_DOUBLE,           LANG_ALL                        },
-  { T_COMPLEX,          L_COMPLEX,          LANG_MIN(C_99)                  },
-  { T_ENUM,             L_ENUM,             LANG_MIN(C_89)                  },
-  { T_STRUCT,           L_STRUCT,           LANG_ALL                        },
-  { T_UNION,            L_UNION,            LANG_ALL                        },
-  { T_CLASS,            L_CLASS,            LANG_CPP_ALL                    },
-  { T_TYPEDEF_TYPE,     "",                 LANG_ALL                        },
+  { T_VOID,         L_VOID,             NULL, LANG_MIN(C_89)                  },
+  { T_AUTO_CPP_11,  L_AUTO,             NULL, LANG_MIN(CPP_11)                },
+  { T_BOOL,         L_BOOL,             NULL, LANG_MIN(C_89)                  },
+  { T_CHAR,         L_CHAR,             NULL, LANG_ALL                        },
+  { T_CHAR16_T,     L_CHAR16_T,         NULL, LANG_C_11 | LANG_MIN(CPP_11)    },
+  { T_CHAR32_T,     L_CHAR32_T,         NULL, LANG_C_11 | LANG_MIN(CPP_11)    },
+  { T_WCHAR_T,      L_WCHAR_T,          NULL, LANG_MIN(C_95)                  },
+  { T_SHORT,        L_SHORT,            NULL, LANG_ALL                        },
+  { T_INT,          L_INT,              NULL, LANG_ALL                        },
+  { T_LONG,         L_LONG,             NULL, LANG_ALL                        },
+  { T_LONG_LONG,    L_LONG_LONG,        NULL, LANG_MIN(C_89)                  },
+  { T_SIGNED,       L_SIGNED,           NULL, LANG_MIN(C_89)                  },
+  { T_UNSIGNED,     L_UNSIGNED,         NULL, LANG_ALL                        },
+  { T_FLOAT,        L_FLOAT,            NULL, LANG_ALL                        },
+  { T_DOUBLE,       L_DOUBLE,           NULL, LANG_ALL                        },
+  { T_COMPLEX,      L_COMPLEX,          NULL, LANG_MIN(C_99)                  },
+  { T_ENUM,         L_ENUM,             NULL, LANG_MIN(C_89)                  },
+  { T_STRUCT,       L_STRUCT,           NULL, LANG_ALL                        },
+  { T_UNION,        L_UNION,            NULL, LANG_ALL                        },
+  { T_CLASS,        L_CLASS,            NULL, LANG_CPP_ALL                    },
+  { T_TYPEDEF_TYPE, "",                 NULL, LANG_ALL                        },
 };
 
 //      shorthand   legal in ...
@@ -134,24 +152,26 @@ static c_type_info_t const C_TYPE_INFO[] = {
  * Only the lower triangle is used.
  */
 static c_lang_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
-/*                   a  b  e  r  s  tl td   ce fi fr in mu nr o  v  pv */
-/* auto         */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__ },
-/* block        */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__ },
-/* extern       */ { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__ },
-/* register     */ { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__,__,__ },
-/* static       */ { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__,__,__ },
-/* thread_local */ { XX,E1,E1,XX,E1,E1,__,  __,__,__,__,__,__,__,__,__ },
-/* typedef      */ { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__,__,__ },
+/*                   a  b  e  r  s  tl td   ce fi fr in mu ne nr o  t  v  pv */
+/* auto         */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__ },
+/* block        */ { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__ },
+/* extern       */ { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__ },
+/* register     */ { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__ },
+/* static       */ { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__ },
+/* thread_local */ { XX,E1,E1,XX,E1,E1,__,  __,__,__,__,__,__,__,__,__,__,__ },
+/* typedef      */ { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__,__,__,__,__ },
 
-/* constexpr    */ { P1,P1,P1,XX,P1,XX,XX,  P1,__,__,__,__,__,__,__,__ },
-/* final        */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,__,__,__,__,__,__,__ },
-/* friend       */ { XX,XX,XX,XX,XX,XX,XX,  P1,XX,PP,__,__,__,__,__,__ },
-/* inline       */ { XX,XX,C9,XX,C9,XX,XX,  P1,P1,PP,C9,__,__,__,__,__ },
-/* mutable      */ { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,P3,__,__,__,__ },
-/* noreturn     */ { XX,XX,C1,XX,C1,XX,XX,  XX,XX,XX,C1,XX,C1,__,__,__ },
-/* override     */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,C1,XX,XX,P1,__,__ },
-/* virtual      */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,PP,XX,XX,P1,PP,__ },
-/* pure virtual */ { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,PP,XX,XX,P1,PP,PP },
+/* constexpr    */ { P1,P1,P1,XX,P1,XX,XX,  P1,__,__,__,__,__,__,__,__,__,__ },
+/* final        */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,__,__,__,__,__,__,__,__,__ },
+/* friend       */ { XX,XX,XX,XX,XX,XX,XX,  P1,XX,PP,__,__,__,__,__,__,__,__ },
+/* inline       */ { XX,XX,C9,XX,C9,XX,XX,  P1,P1,PP,C9,__,__,__,__,__,__,__ },
+/* mutable      */ { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,P3,__,__,__,__,__,__ },
+/* noexcept     */ { XX,XX,P1,XX,P1,XX,P1,  XX,P1,P1,P1,XX,P1,__,__,__,__,__ },
+/* noreturn     */ { XX,XX,C1,XX,C1,XX,XX,  XX,XX,XX,C1,XX,C1,C1,__,__,__,__ },
+/* override     */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,C1,XX,C1,XX,P1,__,__,__ },
+/* throw        */ { XX,XX,PP,XX,PP,XX,PP,  XX,PP,XX,PP,XX,XX,XX,PP,PP,__,__ },
+/* virtual      */ { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,PP,XX,C1,XX,P1,__,PP,__ },
+/* pure virtual */ { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,PP,XX,C1,XX,P1,__,PP,PP },
 };
 
 /**
@@ -201,24 +221,169 @@ static inline bool is_long_int( c_type_t type ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Gets the literal of a given c_type_info, either gibberish or, if appropriate
+ * and available, English.
+ *
+ * @param t A pointer to the c_type_info to get the literal of.
+ * @return Returns said literal.
+ */
+static char const* c_type_literal( c_type_info_t const *t, bool is_error ) {
+  bool const is_english = c_mode == MODE_ENGLISH;
+  return is_english == is_error && t->english != NULL ? t->english : t->literal;
+}
+
+/**
+ * Given an individual type, get its name.
+ *
+ * @param type The type to get the name for; \a type must have exactly one bit
+ * set.
+ * @param is_error \c true if getting the name for part of an error message.
+ * @return Returns said name.
+ */
+static char const* c_type_name_1( c_type_t type, bool is_error ) {
+  assert( exactly_one_bit_set( type ) );
+
+  for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i )
+    if ( type == C_TYPE_INFO[i].type )
+      return c_type_literal( &C_TYPE_INFO[i], is_error );
+  for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_INFO ); ++i )
+    if ( type == C_STORAGE_INFO[i].type )
+      return c_type_literal( &C_STORAGE_INFO[i], is_error );
+  for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i )
+    if ( type == C_QUALIFIER_INFO[i].type )
+      return c_type_literal( &C_QUALIFIER_INFO[i], is_error );
+
+  INTERNAL_ERR( "unexpected value (0x%" PRIX_C_TYPE_T ") for type\n", type );
+}
+
+/**
  * Concatenates the partial type name onto the full type name being made.
  *
  * @param pname A pointer to the pointer to the name to concatenate to.
  * @param type The type to concatenate the name of.
  * @param types The array of types to use.
  * @param types_size The size of \a types.
+ * @param is_error \c true if concatenating the name for part of an error
+ * message.
  * @param pspace A pointer to a variable to keep track of whether a space has
  * been concatenated.
  */
-static void name_cat( char **pname, c_type_t type, c_type_t const types[],
-                      size_t types_size, bool *pspace ) {
+static void c_type_name_cat( char **pname, c_type_t type,
+                             c_type_t const types[], size_t types_size,
+                             bool is_error, bool *pspace ) {
   for ( size_t i = 0; i < types_size; ++i ) {
     if ( (type & types[i]) != T_NONE ) {
       if ( true_or_set( pspace ) )
         STRCAT( *pname, " " );
-      STRCAT( *pname, c_type_name( types[i] ) );
+      STRCAT( *pname, c_type_name_impl( types[i], is_error ) );
     }
   } // for
+}
+
+/**
+ * Given a type, get its name.
+ *
+ * @param type The type to get the name for.
+ * @param is_error \c true if getting the name for part of an error message.
+ * @return Returns said name.
+ * @warning The pointer returned is to a static buffer, so you can't do
+ * something like call this twice in the same \c printf() statement.
+ */
+static char const* c_type_name_impl( c_type_t type, bool is_error ) {
+  if ( exactly_one_bit_set( type ) )
+    return c_type_name_1( type, is_error );
+
+  static char name_buf[ 80 ];
+  char *name = name_buf;
+  name[0] = '\0';
+  bool space = false;
+
+  static c_type_t const C_STORAGE_CLASS[] = {
+    T_AUTO_C,
+    T_BLOCK,
+    T_EXTERN,
+    T_FRIEND,
+    T_REGISTER,
+    T_MUTABLE,
+    T_STATIC,
+    T_THREAD_LOCAL,
+    T_TYPEDEF,
+    T_PURE_VIRTUAL,
+    T_VIRTUAL,
+
+    // This is second so we get names like "static inline".
+    T_INLINE,
+
+    // These are third so we get names like "static inline noreturn".
+    T_CONSTEXPR,
+    T_NORETURN,
+
+    T_OVERRIDE,
+    T_FINAL,
+    T_NOEXCEPT,
+    T_THROW
+  };
+  C_TYPE_NAME_CAT( &name, type, C_STORAGE_CLASS, is_error, &space );
+
+  static c_type_t const C_QUALIFIER[] = {
+    T_CONST,
+    T_RESTRICT,
+    T_VOLATILE,
+
+    T_REFERENCE,
+    T_RVALUE_REFERENCE,
+
+    // This is last so we get names like "const _Atomic".
+    T_ATOMIC,
+  };
+  C_TYPE_NAME_CAT( &name, type, C_QUALIFIER, is_error, &space );
+
+  static c_type_t const C_TYPE[] = {
+
+    // These are first so we get names like "unsigned int".
+    T_SIGNED,
+    T_UNSIGNED,
+
+    // These are second so we get names like "unsigned long int".
+    T_LONG,
+    T_SHORT,
+
+    T_VOID,
+    T_AUTO_CPP_11,
+    T_BOOL,
+    T_CHAR,
+    T_CHAR16_T,
+    T_CHAR32_T,
+    T_WCHAR_T,
+    T_LONG_LONG,
+    T_INT,
+    T_COMPLEX,
+    T_FLOAT,
+    T_DOUBLE,
+    T_ENUM,
+    T_STRUCT,
+    T_UNION,
+    T_CLASS,
+  };
+
+  if ( (type & T_CHAR) == T_NONE ) {
+    //
+    // Special case: explicit "signed" isn't needed for any type except char.
+    //
+    type &= ~T_SIGNED;
+  }
+
+  if ( (type & (T_UNSIGNED | T_SHORT | T_LONG | T_LONG_LONG)) != T_NONE ) {
+    //
+    // Special case: explicit "int" isn't needed when at least one int modifier
+    // is present.
+    //
+    type &= ~T_INT;
+  }
+
+  C_TYPE_NAME_CAT( &name, type, C_TYPE, is_error, &space );
+
+  return name_buf;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -235,10 +400,10 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type, c_loc_t const *loc ) {
   }
 
   if ( (*dest_type & new_type) != T_NONE ) {
-    char const *const new_name = check_strdup( c_type_name( new_type ) );
+    char const *const new_name = check_strdup( c_type_name_error( new_type ) );
     print_error( loc,
       "\"%s\" can not be combined with \"%s\"",
-      new_name, c_type_name( *dest_type )
+      new_name, c_type_name_error( *dest_type )
     );
     FREE( new_name );
     return false;
@@ -309,112 +474,12 @@ c_lang_t c_type_check( c_type_t type ) {
   return LANG_ALL;
 }
 
-#define NAME_CAT(PNAME,TYPE,TYPES,PSPACE) \
-  name_cat( (PNAME), (TYPE), (TYPES), ARRAY_SIZE( TYPES ), (PSPACE) )
-
 char const* c_type_name( c_type_t type ) {
-  if ( exactly_one_bit_set( type ) ) {
-    for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i )
-      if ( type == C_TYPE_INFO[i].type )
-        return C_TYPE_INFO[i].literal;
-    for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_INFO ); ++i )
-      if ( type == C_STORAGE_INFO[i].type )
-        return C_STORAGE_INFO[i].literal;
-    for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i )
-      if ( type == C_QUALIFIER_INFO[i].type )
-        return C_QUALIFIER_INFO[i].literal;
-    INTERNAL_ERR( "unexpected value (0x%" PRIX_C_TYPE_T ") for type\n", type );
-  }
+  return c_type_name_impl( type, /*is_error=*/false );
+}
 
-  static char name_buf[ 80 ];
-  char *name = name_buf;
-  name[0] = '\0';
-  bool space = false;
-
-  static c_type_t const C_STORAGE_CLASS[] = {
-    T_AUTO_C,
-    T_BLOCK,
-    T_EXTERN,
-    T_FRIEND,
-    T_REGISTER,
-    T_MUTABLE,
-    T_STATIC,
-    T_THREAD_LOCAL,
-    T_TYPEDEF,
-    T_PURE_VIRTUAL,
-    T_VIRTUAL,
-
-    // This is second so we get names like "static inline".
-    T_INLINE,
-
-    // These are third so we get names like "static inline noreturn".
-    T_CONSTEXPR,
-    T_NORETURN,
-
-    T_OVERRIDE,
-    T_FINAL
-  };
-  NAME_CAT( &name, type, C_STORAGE_CLASS, &space );
-
-  static c_type_t const C_QUALIFIER[] = {
-    T_CONST,
-    T_RESTRICT,
-    T_VOLATILE,
-
-    T_REFERENCE,
-    T_RVALUE_REFERENCE,
-
-    // This is last so we get names like "const _Atomic".
-    T_ATOMIC,
-  };
-  NAME_CAT( &name, type, C_QUALIFIER, &space );
-
-  static c_type_t const C_TYPE[] = {
-
-    // These are first so we get names like "unsigned int".
-    T_SIGNED,
-    T_UNSIGNED,
-
-    // These are second so we get names like "unsigned long int".
-    T_LONG,
-    T_SHORT,
-
-    T_VOID,
-    T_AUTO_CPP_11,
-    T_BOOL,
-    T_CHAR,
-    T_CHAR16_T,
-    T_CHAR32_T,
-    T_WCHAR_T,
-    T_LONG_LONG,
-    T_INT,
-    T_COMPLEX,
-    T_FLOAT,
-    T_DOUBLE,
-    T_ENUM,
-    T_STRUCT,
-    T_UNION,
-    T_CLASS,
-  };
-
-  if ( (type & T_CHAR) == T_NONE ) {
-    //
-    // Special case: explicit "signed" isn't needed for any type except char.
-    //
-    type &= ~T_SIGNED;
-  }
-
-  if ( (type & (T_UNSIGNED | T_SHORT | T_LONG | T_LONG_LONG)) != T_NONE ) {
-    //
-    // Special case: explicit "int" isn't needed when at least one int modifier
-    // is present.
-    //
-    type &= ~T_INT;
-  }
-
-  NAME_CAT( &name, type, C_TYPE, &space );
-
-  return name_buf;
+char const* c_type_name_error( c_type_t type ) {
+  return c_type_name_impl( type, /*is_error=*/true );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

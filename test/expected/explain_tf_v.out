@@ -1,0 +1,1 @@
+declare f as non-throwing function returning void

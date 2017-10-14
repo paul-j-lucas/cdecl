@@ -79,7 +79,9 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 
   if ( storage_ast != NULL ) {
     c_type_t const storage = storage_ast->type & T_MASK_STORAGE;
-    print_error( &ast->loc, "can not cast into %s", c_type_name( storage ) );
+    print_error( &ast->loc,
+      "can not cast into %s", c_type_name_error( storage )
+    );
     return false;
   }
 
@@ -177,7 +179,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
     c_type_t const storage = arg->type & (T_MASK_STORAGE & ~T_REGISTER);
     if ( storage != T_NONE ) {
       print_error( &arg->loc,
-        "function arguments can not be %s", c_type_name( storage )
+        "function arguments can not be %s", c_type_name_error( storage )
       );
       return false;
     }
@@ -261,7 +263,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         if ( (opt_lang & (LANG_MIN(C_99) & ~LANG_CPP_ALL)) == LANG_NONE ) {
           print_error( &ast->loc,
             "\"%s\" arrays not supported in %s",
-            c_type_name( ast->as.array.type ),
+            c_type_name_error( ast->as.array.type ),
             c_lang_name( opt_lang )
           );
           return VISITOR_ERROR_FOUND;
@@ -269,7 +271,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         if ( !is_func_arg ) {
           print_error( &ast->loc,
             "\"%s\" arrays are illegal outside of function arguments",
-            c_type_name( ast->as.array.type )
+            c_type_name_error( ast->as.array.type )
           );
           return VISITOR_ERROR_FOUND;
         }
@@ -328,7 +330,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
            (ast->type & T_ENUM) && (ast->type & (T_STRUCT | T_CLASS)) ) {
         print_error( &ast->loc,
           "\"%s\": enum classes must just use \"enum\"",
-          c_type_name( ast->type )
+          c_type_name_error( ast->type )
         );
         return VISITOR_ERROR_FOUND;
       }
@@ -346,7 +348,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         if ( (ast->type & (T_EXTERN | T_STATIC)) != T_NONE ) {
           print_error( &ast->loc,
             "reference qualified functions can not be %s",
-            c_type_name( ast->type & (T_EXTERN | T_STATIC) )
+            c_type_name_error( ast->type & (T_EXTERN | T_STATIC) )
           );
           return VISITOR_ERROR_FOUND;
         }
@@ -361,7 +363,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       else if ( (ast->type & T_MASK_QUALIFIER) != T_NONE ) {
         print_error( &ast->loc,
           "\"%s\" functions illegal in %s",
-          c_type_name( ast->type & T_MASK_QUALIFIER ),
+          c_type_name_error( ast->type & T_MASK_QUALIFIER ),
           c_lang_name( opt_lang )
         );
         return VISITOR_ERROR_FOUND;
@@ -471,11 +473,13 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   c_lang_t const ok_langs = c_type_check( ast->type );
   if ( ok_langs != LANG_ALL ) {
     if ( ok_langs == LANG_NONE )
-      print_error( &ast->loc, "\"%s\" is illegal", c_type_name( ast->type ) );
+      print_error( &ast->loc,
+        "\"%s\" is illegal", c_type_name_error( ast->type )
+      );
     else
       print_error( &ast->loc,
         "\"%s\" is illegal in %s",
-        c_type_name( ast->type ), c_lang_name( opt_lang )
+        c_type_name_error( ast->type ), c_lang_name( opt_lang )
       );
     return VISITOR_ERROR_FOUND;
   }
@@ -494,7 +498,8 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
     default:
       if ( (ast->type & T_NORETURN) != T_NONE ) {
         print_error( &ast->loc,
-          "\"%s\" can only appear on functions", c_type_name( T_NORETURN )
+          "\"%s\" can only appear on functions",
+          c_type_name_error( T_NORETURN )
         );
         return VISITOR_ERROR_FOUND;
       }
@@ -562,7 +567,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
 static bool error_kind_not_type( c_ast_t const *ast, c_type_t type ) {
   assert( ast != NULL );
   print_error( &ast->loc,
-    "%s can not be %s", c_kind_name( ast->kind ), c_type_name( type )
+    "%s can not be %s", c_kind_name( ast->kind ), c_type_name_error( type )
   );
   return VISITOR_ERROR_FOUND;
 }
@@ -590,7 +595,7 @@ static bool error_kind_not_supported( c_ast_t const *ast ) {
  */
 static bool error_kind_to_type( c_ast_t const *ast, c_type_t type ) {
   print_error( &ast->loc,
-    "%s to %s", c_kind_name( ast->kind ), c_type_name( type )
+    "%s to %s", c_kind_name( ast->kind ), c_type_name_error( type )
   );
   return VISITOR_ERROR_FOUND;
 }

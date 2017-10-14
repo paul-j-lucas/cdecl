@@ -1,0 +1,1 @@
+cdecl | /dev/null | -xc++ | declare f as noexcept function returning void | 0

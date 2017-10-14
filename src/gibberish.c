@@ -30,6 +30,7 @@
 #include "c_ast_util.h"
 #include "c_typedef.h"
 #include "literals.h"
+#include "options.h"
 #include "util.h"
 
 // system
@@ -158,8 +159,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   c_type_t  ast_type        = ast->type;
   c_type_t  cv_qualifier    = T_NONE;
   bool      is_final        = false;
+  bool      is_noexcept     = false;
   bool      is_override     = false;
   bool      is_pure_virtual = false;
+  bool      is_throw        = false;
   c_type_t  ref_qualifier   = T_NONE;
 
   //
@@ -176,12 +179,35 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       //
       cv_qualifier    = (ast_type & T_MASK_QUALIFIER);
       is_final        = (ast_type & T_FINAL) != 0;
+      is_noexcept     = (ast_type & T_NOEXCEPT) != 0;
       is_override     = (ast_type & T_OVERRIDE) != 0;
       is_pure_virtual = (ast_type & T_PURE_VIRTUAL) != 0;
+      is_throw        = (ast_type & T_THROW) != 0;
       ref_qualifier   = (ast_type & T_MASK_REF_QUALIFIER);
 
-      ast_type &= ~(T_MASK_QUALIFIER | T_FINAL | T_OVERRIDE | T_PURE_VIRTUAL
+      ast_type &= ~(T_MASK_QUALIFIER
+                  | T_FINAL
+                  | T_NOEXCEPT
+                  | T_OVERRIDE
+                  | T_PURE_VIRTUAL
+                  | T_THROW
                   | T_MASK_REF_QUALIFIER);
+
+      //
+      // Depending on the C++ language version, change noexcept to throw() or
+      // vice versa.
+      //
+      if ( opt_lang < LANG_CPP_11 ) {
+        if ( is_noexcept ) {
+          is_noexcept = false;
+          is_throw = true;
+        }
+      } else {
+        if ( is_throw ) {
+          is_noexcept = true;
+          is_throw = false;
+        }
+      }
       // FALLTHROUGH
 
     case K_ARRAY:
@@ -201,6 +227,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         FPRINTF( param->gout, " %s", c_type_name( cv_qualifier ) );
       if ( ref_qualifier != T_NONE )
         FPUTS( (ref_qualifier & T_REFERENCE) ? " &" : " &&", param->gout );
+      if ( is_noexcept )
+        FPRINTF( param->gout, " %s", L_NOEXCEPT );
+      if ( is_throw )
+        FPRINTF( param->gout, " %s()", L_THROW );
       if ( is_override )
         FPRINTF( param->gout, " %s", L_OVERRIDE );
       if ( is_final )

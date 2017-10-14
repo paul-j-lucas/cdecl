@@ -47,6 +47,9 @@
 #include <stdlib.h>                     /* for strtol(3) */
 #include <string.h>
 
+#define ASSERT_MODE(MODE) \
+  BLOCK( if ( c_mode != MODE_ ## MODE ) return Y_ERROR; )
+
 #define SET_TOKEN                 lexer_token = yytext
 
 /**
@@ -351,8 +354,24 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 return Y_LANG_NAME;
               }
 
-non-returning { // special case since it's not an ordinary identifier
+no-except     {
+                SET_TOKEN;
+                ASSERT_MODE( ENGLISH );
+                lexer_token = L_NOEXCEPT;
+                goto find_c_keyword;
+              }
+
+non-returning {
+                SET_TOKEN;
+                ASSERT_MODE( ENGLISH );
                 lexer_token = L_NORETURN;
+                goto find_c_keyword;
+              }
+
+non-throwing  {
+                SET_TOKEN;
+                ASSERT_MODE( ENGLISH );
+                lexer_token = L_THROW;
                 goto find_c_keyword;
               }
 

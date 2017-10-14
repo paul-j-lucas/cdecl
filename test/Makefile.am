@@ -651,6 +651,7 @@ TESTS+=	tests/declare_0f_v.test \
 	tests/declare_sxi.test \
 	tests/declare_vf_v.test \
 	tests/declare_voyf.test \
+	tests/declare_xf.test \
 	tests/declare_xi.test \
 	tests/declare_yf.test
 
@@ -694,8 +695,12 @@ TESTS+=	tests/explain_a.test \
 	tests/explain_ri.test \
 	tests/explain_rrf_v.test \
 	tests/explain_sxi.test \
+	tests/explain_tf_v.test \
 	tests/explain_voyf.test \
+	tests/explain_xf_v.test \
+	tests/explain_xff_v.test \
 	tests/explain_xi.test \
+	tests/explain_xtf_v.test \
 	tests/explain_yf.test
 
 #

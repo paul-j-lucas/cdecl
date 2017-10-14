@@ -345,7 +345,7 @@ arg_list_c ::= arg_list_c ',' arg_c = {
   ]
 }
 
-func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_trailing_return_type_opt_c pure_virtual_opt_c = {
+func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_ref_qualifier_opt_c func_noexcept_opt_c func_trailing_return_type_opt_c pure_virtual_opt_c = {
   (type_ast_c) = {
     id = 70,
     kind = "pointer",
@@ -404,6 +404,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_tr
   ],
   func_qualifier_list_opt_c = "" (0x0),
   func_ref_qualifier_opt_c = "" (0x0),
+  func_noexcept_opt_c = "" (0x0),
   func_trailing_return_type_opt_c = {
   },
   pure_virtual_opt_c = "" (0x0),

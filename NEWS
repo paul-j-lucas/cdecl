@@ -10,7 +10,10 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 4.1.1
+* Changes in Cdecl 4.2
+
+** Added noexcept and throw() support
+Function declarations may now include exception specifications.
 
 ** Fixed handling of leading whitespace in command-line argument
 The unusual case of:

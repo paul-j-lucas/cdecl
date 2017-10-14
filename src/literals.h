@@ -124,17 +124,22 @@ extern char const L_CLASS[];
 extern char const L_CONST_CAST[];
 extern char const L_DYNAMIC[];
 extern char const L_DYNAMIC_CAST[];
+extern char const L_FALSE[];
 extern char const L_FRIEND[];
 extern char const L_MUTABLE[];
+extern char const L_NON_THROWING[];    // synonym for "throw"
 extern char const L_PURE[];
 extern char const L_REINTERPRET[];
 extern char const L_REINTERPRET_CAST[];
 extern char const L_STATIC_CAST[];
+extern char const L_THROW[];
+extern char const L_TRUE[];
 extern char const L_VIRTUAL[];
 
 // C++11
 extern char const L_CONSTEXPR[];
 extern char const L_FINAL[];
+extern char const L_NOEXCEPT[];
 extern char const L_OVERRIDE[];
 extern char const L_OVERRIDDEN[];       // synonym for "override"
 

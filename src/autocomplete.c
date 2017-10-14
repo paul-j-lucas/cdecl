@@ -93,6 +93,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_DYNAMIC_CAST,     LANG_MIN(CPP_11)                },
   { L_ENUM,             LANG_MIN(C_89)                  },
   { L_EXTERN,           LANG_ALL                        },
+  { L_FALSE,            LANG_MIN(CPP_MIN)               },
   { L_FINAL,            LANG_MIN(CPP_11)                },
   { L_FLOAT,            LANG_ALL                        },
   { L_FRIEND,           LANG_MIN(CPP_MIN)               },
@@ -104,6 +105,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_LONG,             LANG_ALL                        },
   { L_MEMBER,           LANG_MIN(CPP_MIN)               },
   { L_MUTABLE,          LANG_MIN(CPP_MIN)               },
+  { L_NOEXCEPT,         LANG_MIN(CPP_11)                },
   { L_NORETURN,         LANG_C_11                       },
 //{ L_OF,                               // too short
   { L_OVERRIDE,         LANG_MIN(CPP_11)                },
@@ -126,6 +128,8 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_STRUCT,           LANG_ALL                        },
 //  L_TO,                               // too short
   { L_THREAD_LOCAL,     LANG_C_11 | LANG_MIN(CPP_11)    },
+  { L_THROW,            LANG_MIN(CPP_MIN)               },
+  { L_TRUE,             LANG_MIN(CPP_MIN)               },
   { L_TYPEDEF,          LANG_ALL                        },
   { L_UNION,            LANG_ALL                        },
   { L_UNSIGNED,         LANG_ALL                        },

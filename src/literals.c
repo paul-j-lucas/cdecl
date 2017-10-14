@@ -121,17 +121,22 @@ char const L_CLASS[]            = "class";
 char const L_CONST_CAST[]       = "const_cast";
 char const L_DYNAMIC[]          = "dynamic";
 char const L_DYNAMIC_CAST[]     = "dynamic_cast";
+char const L_FALSE[]            = "false";
 char const L_FRIEND[]           = "friend";
 char const L_MUTABLE[]          = "mutable";
+char const L_NON_THROWING[]     = "non-throwing";
 char const L_PURE[]             = "pure";
 char const L_REINTERPRET[]      = "reinterpret";
 char const L_REINTERPRET_CAST[] = "reinterpret_cast";
 char const L_STATIC_CAST[]      = "static_cast";
+char const L_THROW[]            = "throw";
+char const L_TRUE[]             = "true";
 char const L_VIRTUAL[]          = "virtual";
 
 // C++11
 char const L_CONSTEXPR[]        = "constexpr";
 char const L_FINAL[]            = "final";
+char const L_NOEXCEPT[]         = "noexcept";
 char const L_OVERRIDE[]         = "override";
 char const L_OVERRIDDEN[]       = "overridden";
 

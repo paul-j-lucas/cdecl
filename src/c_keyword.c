@@ -96,16 +96,20 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_CLASS,            Y_CLASS,            T_CLASS,         LANG_ALL         },
   { L_CONST_CAST,       Y_CONST_CAST,       T_NONE,          LANG_ALL         },
   { L_DYNAMIC_CAST,     Y_DYNAMIC_CAST,     T_NONE,          LANG_ALL         },
+  { L_FALSE,            Y_FALSE,            T_NONE,          LANG_ALL         },
   { L_FRIEND,           Y_FRIEND,           T_FRIEND,        LANG_ALL         },
   { L_MUTABLE,          Y_MUTABLE,          T_MUTABLE,       LANG_ALL         },
   { L_REINTERPRET_CAST, Y_REINTERPRET_CAST, T_NONE,          LANG_ALL         },
   { L_STATIC_CAST,      Y_STATIC_CAST,      T_NONE,          LANG_ALL         },
+  { L_TRUE,             Y_TRUE,             T_NOEXCEPT,      LANG_ALL         },
+  { L_THROW,            Y_THROW,            T_THROW,         LANG_ALL         },
   { L_VIRTUAL,          Y_VIRTUAL,          T_VIRTUAL,       LANG_ALL         },
 
   // C++11
   { L_AUTO,             Y_AUTO_CPP_11,      T_AUTO_CPP_11,   LANG_MIN(CPP_11) },
   { L_CONSTEXPR,        Y_CONSTEXPR,        T_CONSTEXPR,     LANG_ALL         },
   { L_FINAL,            Y_FINAL,            T_FINAL,         LANG_ALL         },
+  { L_NOEXCEPT,         Y_NOEXCEPT,         T_NOEXCEPT,      LANG_ALL         },
   { L_OVERRIDE,         Y_OVERRIDE,         T_OVERRIDE,      LANG_ALL         },
 
   // C11 & C++11

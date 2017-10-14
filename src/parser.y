@@ -24,7 +24,7 @@
  * grammar for C/C++ declarations.
  */
 
-%expect 10
+%expect 11
 
 %{
 // local
@@ -465,16 +465,20 @@ static void yyerror( char const *msg ) {
 %token              Y_COLON_COLON       "::"
 %token  <literal>   Y_CONST_CAST
 %token  <literal>   Y_DYNAMIC_CAST
+%token  <type>      Y_FALSE
 %token  <type>      Y_FRIEND
 %token  <type>      Y_MUTABLE
 %token  <literal>   Y_REINTERPRET_CAST
 %token  <literal>   Y_STATIC_CAST
+%token  <type>      Y_THROW
+%token  <type>      Y_TRUE
 %token  <type>      Y_VIRTUAL
 
                     /* C++11 */
 %token  <type>      Y_AUTO_CPP_11       /* C++11 version of "auto" */
 %token  <type>      Y_CONSTEXPR
 %token  <type>      Y_FINAL
+%token  <type>      Y_NOEXCEPT
 %token  <type>      Y_OVERRIDE
 %token              Y_DOUBLE_AMPERSAND  "&&"
 
@@ -530,6 +534,7 @@ static void yyerror( char const *msg ) {
 %type   <number>    array_size_c
 %type   <ast_pair>  block_decl_c
 %type   <ast_pair>  func_decl_c
+%type   <type>      func_noexcept_opt_c
 %type   <type>      func_ref_qualifier_opt_c
 %type   <ast_pair>  func_trailing_return_type_opt_c
 %type   <ast_pair>  name_c
@@ -555,6 +560,7 @@ static void yyerror( char const *msg ) {
 %type   <type>      enum_class_struct_union_type_c
 %type   <type>      func_qualifier_c
 %type   <type>      func_qualifier_list_opt_c
+%type   <type>      noexcept_bool
 %type   <type>      storage_class_c
 %type   <type>      type_modifier_c
 %type   <type>      type_modifier_list_c type_modifier_list_opt_c
@@ -763,11 +769,13 @@ storage_class_english
   | Y_FRIEND
   | Y_INLINE
   | Y_MUTABLE
+  | Y_NOEXCEPT
   | Y_NORETURN
   | Y_OVERRIDE
   | Y_REGISTER
   | Y_STATIC
   | Y_THREAD_LOCAL
+  | Y_THROW
   | Y_TYPEDEF
   | Y_VIRTUAL
   | Y_PURE virtual_expected       { $$ = T_PURE_VIRTUAL | T_VIRTUAL; }
@@ -1654,27 +1662,30 @@ block_decl_c                            /* Apple extension */
 
 func_decl_c
   : /* type_ast_c */ decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c
-    func_ref_qualifier_opt_c func_trailing_return_type_opt_c pure_virtual_opt_c
+    func_ref_qualifier_opt_c func_noexcept_opt_c
+    func_trailing_return_type_opt_c pure_virtual_opt_c
     {
       DUMP_START( "func_decl_c",
                   "decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c "
+                  "func_ref_qualifier_opt_c func_noexcept_opt_c "
                   "func_trailing_return_type_opt_c pure_virtual_opt_c" );
       DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_AST( "decl2_c", $1.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
       DUMP_TYPE( "func_qualifier_list_opt_c", $5 );
       DUMP_TYPE( "func_ref_qualifier_opt_c", $6 );
-      DUMP_AST( "func_trailing_return_type_opt_c", $7.ast );
-      DUMP_TYPE( "pure_virtual_opt_c", $8 );
+      DUMP_TYPE( "func_noexcept_opt_c", $7 );
+      DUMP_AST( "func_trailing_return_type_opt_c", $8.ast );
+      DUMP_TYPE( "pure_virtual_opt_c", $9 );
       if ( $1.target_ast )
         DUMP_AST( "target_ast", $1.target_ast );
 
       c_ast_t *const func = C_AST_NEW( K_FUNCTION, &@$ );
-      func->type = $5 | $6 | $8;
+      func->type = $5 | $6 | $7 | $9;
       func->as.func.args = $3;
 
-      if ( $7.ast ) {
-        $$.ast = c_ast_add_func( $1.ast, $7.ast, func );
+      if ( $8.ast ) {
+        $$.ast = c_ast_add_func( $1.ast, $8.ast, func );
       }
       else if ( $1.target_ast ) {
         $$.ast = $1.ast;
@@ -1717,6 +1728,25 @@ func_ref_qualifier_opt_c
   : /* empty */                   { $$ = T_NONE; }
   | '&'                           { $$ = T_REFERENCE; }
   | "&&"                          { $$ = T_RVALUE_REFERENCE; }
+  ;
+
+func_noexcept_opt_c
+  : /* empty */                   { $$ = T_NONE; }
+  | Y_NOEXCEPT                    { $$ = T_NOEXCEPT; }
+  | Y_NOEXCEPT '(' noexcept_bool rparen_expected
+    {
+      $$ = $3;
+    }
+  | Y_THROW lparen_expected rparen_expected
+  ;
+
+noexcept_bool
+  : Y_FALSE
+  | Y_TRUE
+  | error
+    {
+      ELABORATE_ERROR( "\"%s\" or \"%s\" expected", L_TRUE, L_FALSE );
+    }
   ;
 
 func_trailing_return_type_opt_c
