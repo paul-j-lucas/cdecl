@@ -121,8 +121,6 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_RVALUE,           LANG_MIN(CPP_11)                },
   { L_SHORT,            LANG_ALL                        },
   { L_SIGNED,           LANG_MIN(C_89)                  },
-  { L_SIZE_T,           LANG_MIN(C_89)                  },
-  { L_SSIZE_T,          LANG_MIN(C_89)                  },
   { L_STATIC,           LANG_ALL                        },
   { L_STATIC_CAST,      LANG_MIN(CPP_MIN)               },
   { L_STRUCT,           LANG_ALL                        },

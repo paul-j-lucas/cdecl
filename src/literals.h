@@ -91,8 +91,6 @@ extern char const L_ELLIPSIS[];         // ...
 extern char const L_ENUM[];
 extern char const L_ENUMERATION[];      // synonym for "enum"
 extern char const L_SIGNED[];
-extern char const L_SIZE_T[];
-extern char const L_SSIZE_T[];
 extern char const L_VARARGS[];          // synonym for "..."
 extern char const L_VARIADIC[];         // synonym for "..."
 extern char const L_VOID[];
