@@ -1,1 +1,1 @@
-declare x as auto int
+declare x as automatic int

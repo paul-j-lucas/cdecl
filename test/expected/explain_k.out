@@ -1,1 +1,1 @@
-declare x as struct S
+declare x as structure S

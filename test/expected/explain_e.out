@@ -1,1 +1,1 @@
-declare x as enum E
+declare x as enumeration E

@@ -1,1 +1,1 @@
-declare a as array 9 of const pointer to int
+declare a as array 9 of constant pointer to int

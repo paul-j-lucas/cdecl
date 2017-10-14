@@ -1,1 +1,1 @@
-cast x into const pointer to array 9 of const int
+cast x into constant pointer to array 9 of constant int

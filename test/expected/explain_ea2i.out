@@ -1,1 +1,1 @@
-declare x as extern array 2 of int
+declare x as external array 2 of int

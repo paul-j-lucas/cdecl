@@ -1,1 +1,1 @@
-declare f as noexcept function returning void
+declare f as no-exception function returning void

@@ -1,1 +1,1 @@
-cast x into restrict pointer to int
+cast x into restricted pointer to int

@@ -1,1 +1,1 @@
-declare x as const pointer to array 3 of const pointer to array 5 of int
+declare x as constant pointer to array 3 of constant pointer to array 5 of int

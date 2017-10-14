@@ -1,1 +1,1 @@
-declare x as const struct S
+declare x as constant structure S

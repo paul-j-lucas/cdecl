@@ -1,1 +1,1 @@
-declare x as const unsigned
+declare x as constant unsigned

@@ -1,1 +1,1 @@
-cast x into const pointer to const pointer to int
+cast x into constant pointer to constant pointer to int

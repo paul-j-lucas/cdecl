@@ -1,1 +1,1 @@
-declare f as function (fmt as pointer to const char, variadic) returning void
+declare f as function (fmt as pointer to constant char, variadic) returning void

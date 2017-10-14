@@ -1,1 +1,1 @@
-cast x into const pointer to function (void) returning pointer to int
+cast x into constant pointer to function (void) returning pointer to int

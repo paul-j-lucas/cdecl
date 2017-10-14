@@ -1,1 +1,1 @@
-declare x as _Atomic int
+declare x as atomic int
