@@ -139,6 +139,7 @@ extern char const L_VIRTUAL[];
 extern char const L_CONSTEXPR[];
 extern char const L_FINAL[];
 extern char const L_NOEXCEPT[];
+extern char const L_NO_EXCEPTION[];     // synonym for "noexcept"
 extern char const L_OVERRIDE[];
 extern char const L_OVERRIDDEN[];       // synonym for "override"
 

@@ -84,20 +84,20 @@ struct c_type_info {
 typedef struct c_type_info c_type_info_t;
 
 static c_type_info_t const C_QUALIFIER_INFO[] = {
-  { T_ATOMIC,       L__ATOMIC,          NULL, LANG_MIN(C_11)                  },
-  { T_CONST,        L_CONST,            NULL, LANG_MIN(C_89)                  },
+  { T_ATOMIC,       L__ATOMIC,      L_ATOMIC, LANG_MIN(C_11)                  },
+  { T_CONST,        L_CONST,      L_CONSTANT, LANG_MIN(C_89)                  },
   { T_REFERENCE,    L_REFERENCE,        NULL, LANG_MIN(CPP_11)                },
   { T_RVALUE_REFERENCE,
                     L_RVALUE_REFERENCE, NULL, LANG_MIN(CPP_11)                },
-  { T_RESTRICT,     L_RESTRICT,         NULL, LANG_MIN(C_89) & ~LANG_CPP_ALL  },
+  { T_RESTRICT,     L_RESTRICT, L_RESTRICTED, LANG_MIN(C_89) & ~LANG_CPP_ALL  },
   { T_VOLATILE,     L_VOLATILE,         NULL, LANG_MIN(C_89)                  },
 };
 
 static c_type_info_t const C_STORAGE_INFO[] = {
   // storage classes
-  { T_AUTO_C,       L_AUTO,             NULL, LANG_MAX(CPP_03)                },
+  { T_AUTO_C,       L_AUTO,      L_AUTOMATIC, LANG_MAX(CPP_03)                },
   { T_BLOCK,        L___BLOCK,          NULL, LANG_ALL                        },
-  { T_EXTERN,       L_EXTERN,           NULL, LANG_ALL                        },
+  { T_EXTERN,       L_EXTERN,     L_EXTERNAL, LANG_ALL                        },
   { T_REGISTER,     L_REGISTER,         NULL, LANG_ALL                        },
   { T_STATIC,       L_STATIC,           NULL, LANG_ALL                        },
   { T_THREAD_LOCAL, L_THREAD_LOCAL,     NULL, LANG_C_11 | LANG_MIN(CPP_11)    },
@@ -109,19 +109,19 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { T_FRIEND,       L_FRIEND,           NULL, LANG_CPP_ALL                    },
   { T_INLINE,       L_INLINE,           NULL, LANG_MIN(C_99)                  },
   { T_MUTABLE,      L_MUTABLE,          NULL, LANG_MIN(CPP_MIN)               },
-  { T_NOEXCEPT,     L_NOEXCEPT,         NULL, LANG_MIN(CPP_11)                },
+  { T_NOEXCEPT,     L_NOEXCEPT,
+                    L_NO_EXCEPTION,           LANG_MIN(CPP_11)                },
   { T_NORETURN,     L_NORETURN,
                     L_NON_RETURNING,          LANG_C_11                       },
-  { T_OVERRIDE,     L_OVERRIDE,         NULL, LANG_MIN(CPP_11)                },
-  { T_THROW,        L_THROW,
-                    L_NON_THROWING,           LANG_MIN(CPP_MIN)               },
+  { T_OVERRIDE,     L_OVERRIDE, L_OVERRIDDEN, LANG_MIN(CPP_11)                },
+  { T_THROW,        L_THROW,  L_NON_THROWING, LANG_MIN(CPP_MIN)               },
   { T_VIRTUAL,      L_VIRTUAL,          NULL, LANG_CPP_ALL                    },
   { T_PURE_VIRTUAL, L_PURE,             NULL, LANG_CPP_ALL                    },
 };
 
 static c_type_info_t const C_TYPE_INFO[] = {
   { T_VOID,         L_VOID,             NULL, LANG_MIN(C_89)                  },
-  { T_AUTO_CPP_11,  L_AUTO,             NULL, LANG_MIN(CPP_11)                },
+  { T_AUTO_CPP_11,  L_AUTO,      L_AUTOMATIC, LANG_MIN(CPP_11)                },
   { T_BOOL,         L_BOOL,             NULL, LANG_MIN(C_89)                  },
   { T_CHAR,         L_CHAR,             NULL, LANG_ALL                        },
   { T_CHAR16_T,     L_CHAR16_T,         NULL, LANG_C_11 | LANG_MIN(CPP_11)    },
@@ -136,8 +136,8 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { T_FLOAT,        L_FLOAT,            NULL, LANG_ALL                        },
   { T_DOUBLE,       L_DOUBLE,           NULL, LANG_ALL                        },
   { T_COMPLEX,      L_COMPLEX,          NULL, LANG_MIN(C_99)                  },
-  { T_ENUM,         L_ENUM,             NULL, LANG_MIN(C_89)                  },
-  { T_STRUCT,       L_STRUCT,           NULL, LANG_ALL                        },
+  { T_ENUM,         L_ENUM,    L_ENUMERATION, LANG_MIN(C_89)                  },
+  { T_STRUCT,       L_STRUCT,    L_STRUCTURE, LANG_ALL                        },
   { T_UNION,        L_UNION,            NULL, LANG_ALL                        },
   { T_CLASS,        L_CLASS,            NULL, LANG_CPP_ALL                    },
   { T_TYPEDEF_TYPE, L_TYPEDEF_TYPE,     NULL, LANG_ALL                        },

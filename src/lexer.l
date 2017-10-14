@@ -355,7 +355,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 return Y_LANG_NAME;
               }
 
-no-except     {
+no-exception  {
                 SET_TOKEN;
                 ASSERT_MODE( ENGLISH );
                 lexer_token = L_NOEXCEPT;

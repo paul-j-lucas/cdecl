@@ -136,6 +136,7 @@ char const L_VIRTUAL[]          = "virtual";
 char const L_CONSTEXPR[]        = "constexpr";
 char const L_FINAL[]            = "final";
 char const L_NOEXCEPT[]         = "noexcept";
+char const L_NO_EXCEPTION[]     = "no-exception";
 char const L_OVERRIDE[]         = "override";
 char const L_OVERRIDDEN[]       = "overridden";
 
