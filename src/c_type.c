@@ -64,6 +64,15 @@ static char const L_LONG_LONG[] = "long";
 static char const L_RVALUE_REFERENCE[] = "rvalue reference";
 
 /**
+ * T_TYPEDEF_TYPE exists only so there can be a row/column for it in the
+ * OK_TYPE_LANGS table to make things like <code>signed size_t</code> illegal.
+ *
+ * T_TYPEDEF_TYPE doesn't have any printable representation (only the name of
+ * the type is printed); therefore, its literal is the empty string.
+ */
+static char const L_TYPEDEF_TYPE[] = "";
+
+/**
  * Mapping between C type bits, literals, and valid language(s).
  */
 struct c_type_info {
@@ -131,7 +140,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { T_STRUCT,       L_STRUCT,           NULL, LANG_ALL                        },
   { T_UNION,        L_UNION,            NULL, LANG_ALL                        },
   { T_CLASS,        L_CLASS,            NULL, LANG_CPP_ALL                    },
-  { T_TYPEDEF_TYPE, "",                 NULL, LANG_ALL                        },
+  { T_TYPEDEF_TYPE, L_TYPEDEF_TYPE,     NULL, LANG_ALL                        },
 };
 
 //      shorthand   legal in ...
