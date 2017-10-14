@@ -67,6 +67,7 @@ char const L_CHAR[]             = "char";
 char const L_CHARACTER[]        = "character";
 char const L_DOUBLE[]           = "double";
 char const L_EXTERN[]           = "extern";
+char const L_EXTERNAL[]         = "external";
 char const L_FLOAT[]            = "float";
 char const L_INT[]              = "int";
 char const L_INTEGER[]          = "integer";

@@ -70,6 +70,7 @@ extern char const L_CHAR[];
 extern char const L_CHARACTER[];        // synonym for "char"
 extern char const L_DOUBLE[];
 extern char const L_EXTERN[];
+extern char const L_EXTERNAL[];         // synonym for "extern"
 extern char const L_FLOAT[];
 extern char const L_INT[];
 extern char const L_INTEGER[];          // synonym for "int"

@@ -114,6 +114,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_ENUMERATION,    C_SYN( L_ENUM,          false ) },
   { L_EXIT,           TOKEN( Y_QUIT )                 },
   { L_EXPLAIN,        TOKEN( Y_EXPLAIN )              },
+  { L_EXTERNAL,       C_SYN( L_EXTERN,        false ) },
   { L_FUNC,           TOKEN( Y_FUNCTION )             },
   { L_FUNCTION,       TOKEN( Y_FUNCTION )             },
   { L_HELP,           TOKEN( Y_HELP )                 },
