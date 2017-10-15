@@ -91,7 +91,7 @@ static c_keyword_t const C_KEYWORDS[] = {
 
   // C11
   { L__ATOMIC,          Y_ATOMIC_QUAL,      T_ATOMIC,        LANG_ALL         },
-  { L_NORETURN,         Y_NORETURN,         T_NORETURN,      LANG_ALL         },
+  { L__NORETURN,        Y__NORETURN,        T_NORETURN,      LANG_ALL         },
 
   // C++
   { L_CLASS,            Y_CLASS,            T_CLASS,         LANG_ALL         },

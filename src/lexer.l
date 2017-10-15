@@ -125,7 +125,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_LENGTH,         TOKEN( Y_LENGTH )               },
   { L_MBR,            TOKEN( Y_MEMBER ),              },
   { L_MEMBER,         TOKEN( Y_MEMBER ),              },
-  { L__NORETURN,      C_SYN( L_NORETURN,      true  ) },
+  { L_NORETURN,       C_SYN( L__NORETURN,     true  ) },
   { L_OF,             TOKEN( Y_OF ),                  },
   { L_OVERRIDDEN,     C_SYN( L_OVERRIDE,      false ) },
   { L_POINTER,        TOKEN( Y_POINTER )              },
@@ -366,7 +366,7 @@ no-exception  {
 non-returning {
                 SET_TOKEN;
                 ASSERT_MODE( ENGLISH );
-                lexer_token = L_NORETURN;
+                lexer_token = L__NORETURN;
                 goto find_c_keyword;
               }
 

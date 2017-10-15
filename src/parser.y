@@ -456,7 +456,7 @@ static void yyerror( char const *msg ) {
                     /* C11 */
 %token  <type>      Y_ATOMIC_QUAL       /* qualifier: _Atomic type */
 %token  <type>      Y_ATOMIC_SPEC       /* specifier: _Atomic (type) */
-%token  <type>      Y_NORETURN
+%token  <type>      Y__NORETURN
 
                     /* C++ */
 %token              '&'                 /* reference */
@@ -771,7 +771,7 @@ storage_class_english
   | Y_INLINE
   | Y_MUTABLE
   | Y_NOEXCEPT
-  | Y_NORETURN
+  | Y__NORETURN
   | Y_OVERRIDE
   | Y_REGISTER
   | Y_STATIC
@@ -2297,7 +2297,7 @@ storage_class_c
   | Y_FRIEND
   | Y_INLINE
   | Y_MUTABLE
-  | Y_NORETURN
+  | Y__NORETURN
   | Y_OVERRIDE
 /*| Y_REGISTER */                       /* in type_modifier_english */
   | Y_STATIC

@@ -113,9 +113,9 @@ char const L_WCHAR_T[]          = "wchar_t";
 // C11
 char const L__ATOMIC[]          = "_Atomic";
 char const L_ATOMIC[]           = "atomic";
-char const L_NORETURN[]         = "noreturn";
-char const L_NON_RETURNING[]    = "non-returning";
 char const L__NORETURN[]        = "_Noreturn";
+char const L_NON_RETURNING[]    = "non-returning";
+char const L_NORETURN[]         = "noreturn";
 
 // C++
 char const L_CLASS[]            = "class";

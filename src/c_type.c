@@ -111,7 +111,7 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { T_MUTABLE,      L_MUTABLE,          NULL, LANG_MIN(CPP_MIN)               },
   { T_NOEXCEPT,     L_NOEXCEPT,
                     L_NO_EXCEPTION,           LANG_MIN(CPP_11)                },
-  { T_NORETURN,     L_NORETURN,
+  { T_NORETURN,     L__NORETURN,
                     L_NON_RETURNING,          LANG_C_11                       },
   { T_OVERRIDE,     L_OVERRIDE, L_OVERRIDDEN, LANG_MIN(CPP_11)                },
   { T_THROW,        L_THROW,  L_NON_THROWING, LANG_MIN(CPP_MIN)               },

@@ -116,9 +116,9 @@ extern char const L_WCHAR_T[];
 // C11
 extern char const L__ATOMIC[];
 extern char const L_ATOMIC[];           // synonym for "_Atomic"
-extern char const L_NORETURN[];
-extern char const L_NON_RETURNING[];    // synonym for "noreturn"
-extern char const L__NORETURN[];        // synonym for "noreturn"
+extern char const L__NORETURN[];
+extern char const L_NON_RETURNING[];    // synonym for "_Noreturn"
+extern char const L_NORETURN[];         // synonym for "_Noreturn"
 
 // C++
 extern char const L_CLASS[];
