@@ -374,7 +374,7 @@ static void yyerror( char const *msg ) {
   c_ast_list_t        ast_list;   /* for function arguments */
   c_ast_pair_t        ast_pair;   /* for the AST being built */
   char const         *name;       /* name being declared or explained */
-  char const         *literal;    /* token literal (used for new-style casts) */
+  char const         *literal;    /* token literal (for new-style casts) */
   int                 number;     /* for array sizes */
   unsigned            bitmask;    /* multipurpose bitmask (used by show) */
   c_type_t            type;       /* built-ins, storage classes, & qualifiers */
@@ -416,7 +416,7 @@ static void yyerror( char const *msg ) {
 
                     /* K&R C */
 %token              ','
-%token              Y_ARROW             "->"
+%token              Y_ARROW       "->"
 %token              '*'
 %token              '[' ']'
 %token              '(' ')'
@@ -437,7 +437,7 @@ static void yyerror( char const *msg ) {
 
                     /* C89 */
 %token  <type>      Y_CONST
-%token              Y_ELLIPSIS          "..."
+%token              Y_ELLIPSIS    "..." /* for varargs */
 %token  <type>      Y_ENUM
 %token  <type>      Y_SIGNED
 %token  <type>      Y_VOID
@@ -459,11 +459,11 @@ static void yyerror( char const *msg ) {
 %token  <type>      Y__NORETURN
 
                     /* C++ */
-%token              '&'                 /* reference */
-%token              '='                 /* used for pure virtual: = 0 */
-%token              '<' '>'             /* used for new-style casts */
+%token              '&'                 /* for reference */
+%token              '='                 /* for pure virtual: = 0 */
+%token              '<' '>'             /* for new-style casts */
+%token              Y_2COLON      "::"
 %token  <type>      Y_CLASS
-%token              Y_COLON_COLON       "::"
 %token  <literal>   Y_CONST_CAST
 %token  <literal>   Y_DYNAMIC_CAST
 %token  <type>      Y_FALSE
@@ -476,12 +476,12 @@ static void yyerror( char const *msg ) {
 %token  <type>      Y_VIRTUAL
 
                     /* C++11 */
+%token              Y_2AMPERSAND  "&&"  /* for rvalue references */
 %token  <type>      Y_AUTO_CPP_11       /* C++11 version of "auto" */
 %token  <type>      Y_CONSTEXPR
 %token  <type>      Y_FINAL
 %token  <type>      Y_NOEXCEPT
 %token  <type>      Y_OVERRIDE
-%token              Y_DOUBLE_AMPERSAND  "&&"
 
                     /* C11 & C++11 */
 %token  <type>      Y_CHAR16_T

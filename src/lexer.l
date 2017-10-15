@@ -382,10 +382,10 @@ non-throwing  {
 {decimal}     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
 {hexadecimal} { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
-"&&"          { SET_TOKEN; return Y_DOUBLE_AMPERSAND; }
+"&&"          { SET_TOKEN; return Y_2AMPERSAND; }
 "->"          { SET_TOKEN; return Y_ARROW; }
 "..."         { SET_TOKEN; return Y_ELLIPSIS; }
-"::"          { SET_TOKEN; return Y_COLON_COLON; }
+"::"          { SET_TOKEN; return Y_2COLON; }
 "?"           { SET_TOKEN; return Y_HELP; }
 
 "^"           |                         /* Apple extension: block indicator */
