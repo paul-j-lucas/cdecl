@@ -466,13 +466,13 @@ static void yyerror( char const *msg ) {
 %token  <type>      Y_CLASS
 %token  <literal>   Y_CONST_CAST
 %token  <literal>   Y_DYNAMIC_CAST
-%token  <type>      Y_FALSE
+%token  <type>      Y_FALSE             /* for noexcept(false) */
 %token  <type>      Y_FRIEND
 %token  <type>      Y_MUTABLE
 %token  <literal>   Y_REINTERPRET_CAST
 %token  <literal>   Y_STATIC_CAST
 %token  <type>      Y_THROW
-%token  <type>      Y_TRUE
+%token  <type>      Y_TRUE              /* for noexcept(true) */
 %token  <type>      Y_VIRTUAL
 
                     /* C++11 */
