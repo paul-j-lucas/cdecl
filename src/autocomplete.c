@@ -159,10 +159,20 @@ static char const *const CDECL_OPTIONS[] = {
   "c++14",
   "create",
 "nocreate",
+#ifdef ENABLE_CDECL_DEBUG
+  "debug",
+"nodebug",
+#endif /* ENABLE_CDECL_DEBUG */
   "knr"
   "options",
   "prompt",
 "noprompt",
+  "semicolon",
+"nosemicolon",
+#ifdef YYDEBUG
+  "yydebug",
+"noyydebug",
+#endif /* YYDEBUG */
   NULL
 };
 
