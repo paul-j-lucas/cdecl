@@ -275,7 +275,7 @@ c_ast_t* c_ast_root( c_ast_t *ast );
  * Sets the two-way pointer links between parent/child AST nodes.
  *
  * @param child The "child" AST node to set the parent of.
- * @Param parent The "parent" AST node whose child node is set.
+ * @param parent The "parent" AST node whose child node is set.
  */
 void c_ast_set_parent( c_ast_t *child, c_ast_t *parent );
 
