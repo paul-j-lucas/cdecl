@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 4.4
+
+** Added C++ attribute specifier support
+The C++ attrribute specifiers carries_dependency, deprecated, noreturn,
+maybe_unused, and nodiscard are now supported.
+
+
 * Changes in Cdecl 4.3
 
 ** Added C99 _Imaginary number support

@@ -38,6 +38,7 @@
 #include "lexer.h"
 #include "literals.h"
 #include "misc.h"
+#include "options.h"
 #include "util.h"
 #include "parser.h"                     /* must go last */
 
@@ -184,7 +185,8 @@ static keyword_t const* cdecl_keyword_find( char const *s ) {
   for ( keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
     if ( strcmp( s, k->literal ) != 0 )
       continue;
-    if ( c_mode == MODE_ENGLISH || (k->c_keyword_synonym && k->allow_explain) )
+    if ( c_mode == MODE_ENGLISH_TO_GIBBERISH ||
+         (k->c_keyword_synonym && k->allow_explain) )
       return k;
     break;
   } // for
@@ -285,7 +287,7 @@ void lexer_reset( bool hard_reset ) {
     is_eof = false;
     yylineno = 0;
   }
-  c_mode = MODE_ENGLISH;
+  c_mode = MODE_ENGLISH_TO_GIBBERISH;
   input_len = input_sent = 0;
   newline();
 }
@@ -325,23 +327,70 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 SET_TOKEN;
 
                 keyword_t const *const ck = cdecl_keyword_find( lexer_token );
-                if ( ck ) {
-                  if ( ck->c_keyword_synonym )
-                    lexer_token = ck->c_keyword_synonym;
-                  else
+                if ( ck != NULL ) {
+                  if ( ck->c_keyword_synonym == NULL )
                     return ck->y_token;
+                  if ( ck->c_keyword_synonym == L__NORETURN &&
+                       opt_lang >= LANG_CPP_MIN ) {
+                    //
+                    // _Noreturn is a special case. In C11, it's "_Noreturn"
+                    // and is a reserved word. In C++11, it's "noreturn", but
+                    // is NOT a reserved word.
+                    //
+                    // When parsing C11, we also want to allow "noreturn" as a
+                    // synonym (since that's provided via <stdnoreturn.h>).
+                    //
+                    // When parsing C++11, we want to recognize "noreturn" only
+                    // when it's an attribute as [[noreturn]].
+                    //
+                    // When parsing English:
+                    //
+                    //  + We want to allow "_Noreturn" when we're translating
+                    //    to C only and not C++.
+                    //
+                    //  + We want to allow either "noreturn" or "non-returning"
+                    //    in all cases.
+                    //
+                    // However, when either parsing or translating to C++, we
+                    // do NOT want to allow "noreturn" to be a synonym for
+                    // "_Noreturn" since that's illegal in C++.  Hence, we do
+                    // nothing.
+                    //
+                  }
+                  else {
+                    lexer_token = ck->c_keyword_synonym;
+                  }
                 }
 
                 c_typedef_t const *const t = c_typedef_find( lexer_token );
-                if ( t ) {
+                if ( t != NULL ) {
                   yylval.c_typedef = t;
                   return Y_TYPEDEF_TYPE;
                 }
 
         find_c_keyword:
                 NO_OP;
-                c_keyword_t const *const k = c_keyword_find( lexer_token );
-                if ( k ) {
+                c_keyword_t const *k = c_keyword_find( lexer_token );
+                if ( k == NULL && c_mode == MODE_ENGLISH_TO_GIBBERISH ) {
+                  //
+                  // We have to look-up attribute names when parsing English
+                  // because there can't be any special syntax for them, e.g.:
+                  //
+                  //      declare x as deprecated int
+                  //
+                  k = c_attribute_find( lexer_token );
+                }
+                else {
+                  //
+                  // We do NOT look-up attribute names when parsing C++ because
+                  // they are not reserved words.  For example:
+                  //
+                  //      [[noreturn]] void noreturn();
+                  //
+                  // is legal.
+                  //
+                }
+                if ( k != NULL ) {
                   yylval.type = k->type;
                   return k->y_token;
                 }
@@ -356,23 +405,45 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 return Y_LANG_NAME;
               }
 
+carries-dependency {
+                SET_TOKEN;
+                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
+                lexer_token = L_CARRIES_DEPENDENCY;
+                goto find_c_keyword;
+              }
+
+maybe-unused  {
+                SET_TOKEN;
+                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
+                lexer_token = L_MAYBE_UNUSED;
+                goto find_c_keyword;
+              }
+
 no-exception  {
                 SET_TOKEN;
-                ASSERT_MODE( ENGLISH );
+                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
                 lexer_token = L_NOEXCEPT;
+                goto find_c_keyword;
+              }
+
+non-discardable {
+                SET_TOKEN;
+                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
+                lexer_token = L_NODISCARD;
                 goto find_c_keyword;
               }
 
 non-returning {
                 SET_TOKEN;
-                ASSERT_MODE( ENGLISH );
-                lexer_token = L__NORETURN;
+                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
+                lexer_token = opt_lang <= LANG_C_MAX ?
+                  L__NORETURN : L_NORETURN;
                 goto find_c_keyword;
               }
 
 non-throwing  {
                 SET_TOKEN;
-                ASSERT_MODE( ENGLISH );
+                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
                 lexer_token = L_THROW;
                 goto find_c_keyword;
               }
@@ -387,6 +458,8 @@ non-throwing  {
 "..."         { SET_TOKEN; return Y_ELLIPSIS; }
 "::"          { SET_TOKEN; return Y_2COLON; }
 "?"           { SET_TOKEN; return Y_HELP; }
+"[["          { SET_TOKEN; return Y_2LBRACKET; }
+"]]"          { SET_TOKEN; return Y_2RBRACKET; }
 
 "^"           |                         /* Apple extension: block indicator */
 "&"           |

@@ -139,7 +139,7 @@ struct link {
  * @reeturn Returns \c true only if at most 1 bit is set.
  */
 CDECL_UTIL_INLINE bool at_most_one_bit_set( uint64_t n ) {
-  return !(n & (n - 1));
+  return (n & (n - 1)) == 0;
 }
 
 /**
@@ -194,7 +194,7 @@ CDECL_UTIL_INLINE bool ends_with_chr( char const *s, size_t s_len, char c ) {
  * @reeturn Returns \c true only if exactly 1 bit is set.
  */
 CDECL_UTIL_INLINE bool exactly_one_bit_set( uint64_t n ) {
-  return n && at_most_one_bit_set( n );
+  return n != 0 && at_most_one_bit_set( n );
 }
 
 /**
@@ -345,6 +345,15 @@ void perror_exit( int status );
  * @return Returns the line read or null for EOF.
  */
 char* read_input_line( char const *ps1, char const *ps2 );
+
+/**
+ * Copies a character to \a dst and appends a null.
+ *
+ * @param dst A pointer to receive \a c.
+ * @param c The character to copy.
+ * @return Returns a pointer to the new end of \a dst.
+ */
+char* chrcpy_end( char *dst, char c );
 
 /**
  * A variant of strcpy(3) that returns the pointer to the new end of \a dst.

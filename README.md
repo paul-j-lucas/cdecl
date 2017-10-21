@@ -148,6 +148,14 @@ most notably:
   pure `virtual`,
   and ref-qualified
   C++ member function declarations.
+* Support for C++
+  `[[carries_dependency]]`,
+  `[[deprecated]]`,
+  `[[maybe_unused]]`,
+  `[[nodiscard]]`,
+  and
+  `[[noreturn]]`
+  attribute specifiers.
 * Better warning and error messages
   complete with location information and color.
 

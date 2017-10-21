@@ -24,7 +24,7 @@
  * grammar for C/C++ declarations.
  */
 
-%expect 11
+%expect 20
 
 %{
 // local
@@ -243,6 +243,28 @@ static void elaborate_error( char const *format, ... ) {
     PUTC_ERR( '\n' );
     error_newlined = true;
   }
+}
+
+/**
+ * Checks whether the \c _Noreturn token is OK in the current language.  If
+ * not, prints an error message (and perhaps a hint).
+ *
+ * @param loc The location of the \c _Noreturn token.
+ * @return Returns \c true only of \c _Noreturn is OK.
+ */
+static bool _Noreturn_ok( c_loc_t const *loc ) {
+  if ( opt_lang == LANG_C_11 )
+    return true;
+  print_error( loc,
+    "\"%s\" is illegal in %s", lexer_token, c_lang_name( opt_lang )
+  );
+  if ( opt_lang >= LANG_CPP_11 ) {
+    if ( c_mode == MODE_ENGLISH_TO_GIBBERISH )
+      print_hint( "\"%s\"", L_NORETURN );
+    else
+      print_hint( "[[%s]]", L_NORETURN );
+  }
+  return false;
 }
 
 /**
@@ -477,7 +499,10 @@ static void yyerror( char const *msg ) {
 
                     /* C++11 */
 %token              Y_2AMPERSAND  "&&"  /* for rvalue references */
+%token              Y_2LBRACKET   "[["  /* for attribute specifiers */
+%token              Y_2RBRACKET   "]]"  /* for attribute specifiers */
 %token  <type>      Y_AUTO_CPP_11       /* C++11 version of "auto" */
+%token  <type>      Y_CARRIES_DEPENDENCY
 %token  <type>      Y_CONSTEXPR
 %token  <type>      Y_FINAL
 %token  <type>      Y_NOEXCEPT
@@ -487,6 +512,14 @@ static void yyerror( char const *msg ) {
 %token  <type>      Y_CHAR16_T
 %token  <type>      Y_CHAR32_T
 %token  <type>      Y_THREAD_LOCAL
+
+                    /* C++14 */
+%token  <type>      Y_DEPRECATED
+
+                    /* C++17 */
+%token  <type>      Y_MAYBE_UNUSED
+%token  <type>      Y_NORETURN
+%token  <type>      Y_NODISCARD
 
                     /* miscellaneous */
 %token              '^'                 /* Apple: block indicator */
@@ -502,6 +535,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_list>  decl_list_english decl_list_opt_english
 %type   <ast_pair>  array_decl_english
 %type   <number>    array_size_opt_english
+%type   <type>      attribute_english
 %type   <ast_pair>  block_decl_english
 %type   <ast_pair>  func_decl_english
 %type   <ast_list>  paren_decl_list_opt_english
@@ -514,6 +548,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  reference_english
 %type   <ast_pair>  returning_opt_english
 %type   <type>      storage_class_english storage_class_list_opt_english
+%type   <type>      type_attribute_english
 %type   <ast_pair>  type_english
 %type   <type>      type_modifier_english
 %type   <type>      type_modifier_list_english type_modifier_list_opt_english
@@ -555,6 +590,9 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  placeholder_type_ast_c
 %type   <ast_pair>  typedef_type_ast_c
 
+%type   <type>      attribute_name_c
+%type   <type>      attribute_name_list_c attribute_name_list_opt_c
+%type   <type>      attribute_specifier_list_c
 %type   <type>      builtin_type_c
 %type   <type>      class_struct_type_c class_struct_type_expected_c
 %type   <type>      cv_qualifier_c cv_qualifier_list_opt_c
@@ -564,6 +602,7 @@ static void yyerror( char const *msg ) {
 %type   <type>      noexcept_bool
 %type   <type>      storage_class_c
 %type   <type>      type_modifier_c
+%type   <type>      type_modifier_base_c
 %type   <type>      type_modifier_list_c type_modifier_list_opt_c
 %type   <type>      type_qualifier_c
 %type   <type>      type_qualifier_list_c type_qualifier_list_opt_c
@@ -762,7 +801,8 @@ storage_class_list_opt_english
   ;
 
 storage_class_english
-  : Y_AUTO_C
+  : attribute_english
+  | Y_AUTO_C
   | Y___BLOCK                           /* Apple extension */
   | Y_CONSTEXPR
   | Y_EXTERN
@@ -771,15 +811,24 @@ storage_class_english
   | Y_INLINE
   | Y_MUTABLE
   | Y_NOEXCEPT
-  | Y__NORETURN
   | Y_OVERRIDE
-  | Y_REGISTER
+/*| Y_REGISTER */                       /* in type_modifier_list_english */
   | Y_STATIC
   | Y_THREAD_LOCAL
   | Y_THROW
   | Y_TYPEDEF
   | Y_VIRTUAL
   | Y_PURE virtual_expected       { $$ = T_PURE_VIRTUAL | T_VIRTUAL; }
+  ;
+
+attribute_english
+  : type_attribute_english
+  | Y_NORETURN
+  | Y__NORETURN
+    {
+      if ( !_Noreturn_ok( &@1 ) )
+        PARSE_ABORT();
+    }
   ;
 
 /*****************************************************************************/
@@ -994,7 +1043,7 @@ explain_c
       //
       // would result in a parser error.
       //
-      c_mode = MODE_GIBBERISH;
+      c_mode = MODE_GIBBERISH_TO_ENGLISH;
     }
   ;
 
@@ -1080,7 +1129,7 @@ typedef_declaration_c
       //
       // would result in a parser error.
       //
-      c_mode = MODE_GIBBERISH;
+      c_mode = MODE_GIBBERISH_TO_ENGLISH;
     }
     type_ast_c
     {
@@ -1555,18 +1604,26 @@ type_modifier_list_english
   ;
 
 type_modifier_english
-  : Y__COMPLEX
+  : type_attribute_english
+  | Y__COMPLEX
   | Y__IMAGINARY
   | Y_LONG
   | Y_SHORT
   | Y_SIGNED
   | Y_UNSIGNED
   /*
-   * Register is here (rather than in storage_class_c) because it's the only
-   * storage class that can be specified for function arguments.  Therefore,
-   * it's simpler to treat it as any other type modifier.
+   * Register is here (rather than in storage_class_english) because it's the
+   * only storage class that can be specified for function arguments.
+   * Therefore, it's simpler to treat it as any other type modifier.
    */
   | Y_REGISTER
+  ;
+
+type_attribute_english
+  : Y_CARRIES_DEPENDENCY
+  | Y_DEPRECATED
+  | Y_MAYBE_UNUSED
+  | Y_NODISCARD
   ;
 
 unmodified_type_english
@@ -2132,9 +2189,24 @@ type_modifier_list_c
   ;
 
 type_modifier_c
-  : type_modifier_english
+  : type_modifier_base_c
   | type_qualifier_c
   | storage_class_c
+  ;
+
+type_modifier_base_c
+  : Y__COMPLEX
+  | Y__IMAGINARY
+  | Y_LONG
+  | Y_SHORT
+  | Y_SIGNED
+  | Y_UNSIGNED
+  /*
+   * Register is here (rather than in storage_class_c) because it's the only
+   * storage class that can be specified for function arguments.  Therefore,
+   * it's simpler to treat it as any other type modifier.
+   */
+  | Y_REGISTER
   ;
 
 unmodified_type_c
@@ -2289,7 +2361,8 @@ cv_qualifier_c
   ;
 
 storage_class_c
-  : Y_AUTO_C
+  : attribute_specifier_list_c
+  | Y_AUTO_C
   | Y___BLOCK                           /* Apple extension */
   | Y_CONSTEXPR
   | Y_EXTERN
@@ -2297,13 +2370,79 @@ storage_class_c
   | Y_FRIEND
   | Y_INLINE
   | Y_MUTABLE
+  | Y_NORETURN
   | Y__NORETURN
+    {
+      if ( !_Noreturn_ok( &@1 ) )
+        PARSE_ABORT();
+    }
   | Y_OVERRIDE
-/*| Y_REGISTER */                       /* in type_modifier_english */
+/*| Y_REGISTER */                       /* in type_modifier_base_c */
   | Y_STATIC
   | Y_TYPEDEF
   | Y_THREAD_LOCAL
   | Y_VIRTUAL
+  ;
+
+attribute_specifier_list_c
+  : "[[" attribute_name_list_opt_c "]]"
+    {
+      DUMP_START( "attribute_specifier_list_c",
+                  "[[ attribute_name_list_opt_c ]]" );
+      DUMP_TYPE( "attribute_name_list_opt_c", $2 );
+      DUMP_END();
+
+      $$ = $2;
+    }
+  ;
+
+attribute_name_list_opt_c
+  : /* empty */                   { $$ = T_NONE; }
+  | attribute_name_list_c
+  ;
+
+attribute_name_list_c
+  : attribute_name_list_c comma_expected attribute_name_c
+    {
+      DUMP_START( "attribute_name_list_c",
+                  "attribute_name_list_c , attribute_name_c" );
+      DUMP_TYPE( "attribute_name_list_c", $1 );
+      DUMP_TYPE( "attribute_name_c", $3 );
+
+      $$ = $1;
+      C_TYPE_ADD( &$$, $3, @3 );
+
+      DUMP_TYPE( "attribute_name_list_c", $$ );
+      DUMP_END();
+    }
+
+  | attribute_name_c
+  ;
+
+attribute_name_c
+  : name_expected
+    {
+      DUMP_START( "attribute_name_c", "Y_NAME" );
+      DUMP_NAME( "NAME", $1 );
+      DUMP_END();
+
+      $$ = T_NONE;
+
+      c_keyword_t const *const a = c_attribute_find( $1 );
+      if ( a == NULL ) {
+        print_warning( &@1, "\"%s\": unknown attribute", $1 );
+      }
+      else if ( (opt_lang & a->ok_langs) == LANG_NONE ) {
+        print_warning( &@1,
+          "\"%s\" is unsupported in %s", $1, c_lang_name( opt_lang )
+        );
+      }
+      else {
+        $$ = a->type;
+      }
+
+      FREE( $1 );
+    }
   ;
 
 /*****************************************************************************/

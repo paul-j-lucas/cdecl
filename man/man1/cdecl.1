@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "October 15, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "October 21, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -469,10 +469,12 @@ data members.
 Use the C++11 version of the C++ language.
 Adds support for
 \f(CWauto\fP,
+\f(CW[[carries_dependency]]\fP,
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
 \f(CWenum class\fP,
 \f(CWnoexcept\fP,
+\f(CW[[noreturn]]\fP,
 rvalue references,
 \f(CWthread_local\fP,
 the function trailing return-type syntax,
@@ -486,13 +488,18 @@ and
 Use the C++14 version of the C++ language.
 Adds support for
 \f(CWauto\fP
-functions.
+functions
+and
+\f(CW[[deprecated]]\fP.
 .TP
 .B C++17
 Use the C++17 version of the C++ language.
 Adds support for
 \f(CWinline\fP
-variables.
+variables,
+\f(CW[[maybe_unused]]\fP,
+and
+\f(CW[[nodiscard]]\fP.
 .SH CDECL LANGUAGE
 .SS Commands
 .B cdecl
@@ -668,13 +675,17 @@ number.
 One of:
 \f(CWauto\fP (C, or C++03 or earlier),
 \f(CWblock\fP,
+\f(CWcarries_dependency\fP,
 \f(CWconstexpr\fP,
+\f(CWdeprecated\fP,
 \f(CWextern\fP,
 \f(CWfinal\fP,
 \f(CWfriend\fP,
 \f(CWinline\fP,
+\f(CWmaybe_unused\fP,
 \f(CWmutable\fP,
-non-throwing,
+\f(CWnodiscard\fP,
+\f(CWnon-throwing\fP,
 \f(CWnoreturn\fP,
 \f(CWoverride\fP,
 \f(CWregister\fP,
@@ -696,36 +707,39 @@ it's equivalent to
 Some synonyms are permitted within pseudo-English.
 The words on the left are synonyms for what's on the right:
 .cS
-       atomic  _Atomic
-    automatic  auto
-        _Bool  bool
-    character  char
-      complex  _Complex
-     constant  const
-  enumeration  enum
-     external  extern
-         func  function
-    imaginary  _Imaginary
-      integer  int
-          len  length
-          mbr  member
-    no-except  noexcept
-non-returning  _Noreturn
- non-throwing  throw()
-     noreturn  _Noreturn
-   overridden  override
-       predef  predefined
-          ptr  pointer
-          ref  reference
-   restricted  restrict
-          ret  returning
-    structure  struct
-         type  typedef
-_Thread_local  thread_local
-          var  variable
-      varargs  ...
-     variadic  ...
-       vector  array
+            atomic  _Atomic
+         automatic  auto
+             _Bool  bool
+carries-dependency  carries_dependency
+         character  char
+           complex  _Complex
+          constant  const
+       enumeration  enum
+          external  extern
+              func  function
+         imaginary  _Imaginary
+           integer  int
+               len  length
+      maybe-unused  maybe_unused
+               mbr  member
+      no-exception  noexcept
+   non-discardable  nodiscard
+     non-returning  _Noreturn
+      non-throwing  throw()
+          noreturn  _Noreturn
+        overridden  override
+            predef  predefined
+               ptr  pointer
+               ref  reference
+        restricted  restrict
+               ret  returning
+         structure  struct
+              type  typedef
+     _Thread_local  thread_local
+               var  variable
+           varargs  ...
+          variadic  ...
+            vector  array
 .cE 0
 .SS Gibberish
 .I Gibberish
@@ -1197,8 +1211,6 @@ int g() = delete;                 // not supported
 C++
 constructors,
 destructors,
-attribute specifiers
-(e.g., \f(CW[[noreturn]]\fP),
 \f(CWdecltype\fP,
 function default arguments,
 overloaded operators,
@@ -1217,6 +1229,10 @@ are supported.
 Arbitrary expressions for \f(CWnoexcept\fP
 or types for \f(CWthrow\fP
 are not supported.
+.IP \n+[step].
+Only simple C++ attribute specifiers like \f(CW[[this]]\fP
+are supported.
+Attribute specifiers with namespaces or arguments are not.
 .SS Other Minor Caveats
 .nr step 1 1
 .IP \n[step]. 3

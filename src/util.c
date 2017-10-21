@@ -354,6 +354,13 @@ void path_append( char *path, char const *component ) {
   }
 }
 
+char* chrcpy_end( char *dst, char c ) {
+  assert( dst != NULL );
+  *dst = c;
+  *++dst = '\0';
+  return dst;
+}
+
 char* strcpy_end( char *dst, char const *src ) {
   assert( dst != NULL );
   assert( src != NULL );

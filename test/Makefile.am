@@ -119,6 +119,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_n.test \
 	tests/declare_nfi_v-01.test \
 	tests/declare_nfi_v-02.test \
+	tests/declare_nfi_v-03.test \
 	tests/declare_pa3cpa5i.test \
 	tests/declare_pa3pa5i.test \
 	tests/declare_pa9i.test \
@@ -628,18 +629,29 @@ TESTS+=	tests/declare_config_u.test \
 TESTS+=	tests/declare_0f_v.test \
 	tests/declare_a.test \
 	tests/declare_af-c++.test \
+	tests/declare_cdfcdi_i.test \
+	tests/declare_cdfi_i.test \
 	tests/declare_cf_v.test \
 	tests/declare_cpmi.test \
 	tests/declare_crf_v.test \
 	tests/declare_crrf_v.test \
+	tests/declare_df_v.test \
+	tests/declare_dui.test \
 	tests/declare_ec.test \
 	tests/declare_ek.test \
 	tests/declare_f_pmi.test \
+	tests/declare_fcdi_i.test \
+	tests/declare_fdi_v.test \
 	tests/declare_frri_v.test \
+	tests/declare_fti_v-01.test \
+	tests/declare_fti_v-02.test \
+	tests/declare_fui_v-01.test \
+	tests/declare_fui_v-02.test \
 	tests/declare_mi.test \
+	tests/declare_nfi_v-02-c++.test \
+	tests/declare_nfi_v-03-c++.test \
 	tests/declare_oyf.test \
 	tests/declare_pfv_ri.test \
-	tests/declare_pmci.test \
 	tests/declare_pmci.test \
 	tests/declare_pmf_i.test \
 	tests/declare_pmf_pc.test \
@@ -653,6 +665,12 @@ TESTS+=	tests/declare_0f_v.test \
 	tests/declare_rpi.test \
 	tests/declare_rrf_v.test \
 	tests/declare_sxi.test \
+	tests/declare_tf_i-01.test \
+	tests/declare_tf_i-02.test \
+	tests/declare_uf_v-01.test \
+	tests/declare_uf_v-02.test \
+	tests/declare_ui-01.test \
+	tests/declare_ui-02.test \
 	tests/declare_vf_v.test \
 	tests/declare_voyf.test \
 	tests/declare_xf.test \
@@ -664,6 +682,8 @@ TESTS+=	tests/declare_0f_v.test \
 # =======================
 #
 TESTS+=	tests/declare_ai-c++11.test \
+	tests/declare_cdi.test \
+	tests/declare_nfi_v-01.test \
 	tests/declare_pmri.test \
 	tests/declare_pri.test \
 	tests/declare_rf_v-01.test \
@@ -676,17 +696,27 @@ TESTS+=	tests/declare_ai-c++11.test \
 # =================
 #
 TESTS+=	tests/explain_a.test \
+	tests/explain_cdfcdi_i.test \
+	tests/explain_cdfi_i.test \
 	tests/explain_cf_v.test \
 	tests/explain_cpmci.test \
 	tests/explain_cpmi.test \
 	tests/explain_crf_v.test \
 	tests/explain_cvf_v.test \
+	tests/explain_df_v.test \
+	tests/explain_di.test \
+	tests/explain_dui-01.test \
+	tests/explain_dui-02.test \
 	tests/explain_f__pf__v.test \
 	tests/explain_f__pv.test \
 	tests/explain_f__v.test \
 	tests/explain_f_cpmi.test \
 	tests/explain_f_pmi.test \
+	tests/explain_fcdi_i.test \
+	tests/explain_fdi_v.test \
 	tests/explain_frri_v.test \
+	tests/explain_fti_v.test \
+	tests/explain_fui_v.test \
 	tests/explain_mi.test \
 	tests/explain_oyf.test \
 	tests/explain_pmf_i.test \
@@ -700,6 +730,8 @@ TESTS+=	tests/explain_a.test \
 	tests/explain_rrf_v.test \
 	tests/explain_sxi.test \
 	tests/explain_tf_v.test \
+	tests/explain_uf_v.test \
+	tests/explain_ui.test \
 	tests/explain_voyf.test \
 	tests/explain_xf_v.test \
 	tests/explain_xff_v.test \
@@ -712,6 +744,7 @@ TESTS+=	tests/explain_a.test \
 # =======================
 #
 TESTS+=	tests/explain_ai-c++11.test \
+	tests/explain_cdi.test \
 	tests/explain_ec.test \
 	tests/explain_ek.test \
 	tests/explain_f__v-c++03.test \
@@ -733,7 +766,8 @@ TESTS+=	tests/explain_ai-c++11.test \
 	tests/explain_rv.test \
 	tests/explain_smi.test \
 	tests/explain_srf_v.test \
-	tests/explain_srrf_v.test
+	tests/explain_srrf_v.test \
+	tests/explain_unknown_attribute.test
 
 #
 # C++ cast tests

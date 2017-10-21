@@ -1,0 +1,1 @@
+cdecl | /dev/null | -xc++ | declare f as function (x as maybe-unused int) | 0

@@ -28,6 +28,7 @@
 #include "c_ast_util.h"
 #include "c_type.h"
 #include "diagnostics.h"
+#include "literals.h"
 #include "options.h"
 
 // standard
@@ -112,7 +113,7 @@ static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
   void *const data = REINTERPRET_CAST( void*, is_func_arg );
   if ( !c_ast_check_visitor( ast, c_ast_visitor_error, data ) )
     return false;
-  if ( !c_ast_check_visitor( ast, c_ast_visitor_type, NULL ) )
+  if ( !c_ast_check_visitor( ast, c_ast_visitor_type, data ) )
     return false;
   return true;
 }
@@ -231,7 +232,7 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
  * Visitor function that checks an AST for semantic errors.
  *
  * @param ast The AST to check.
- * @param data Not used.
+ * @param data Cast to \c bool, indicates if \a ast is a function argument.
  * @return Returns \c VISITOR_ERROR_FOUND if an error was found;
  * \c VISITOR_ERROR_NOT_FOUND if not.
  */
@@ -326,7 +327,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
            (ast->type & T_REGISTER) != T_NONE ) {
         return error_kind_not_type( ast, T_REGISTER );
       }
-      if ( c_mode == MODE_GIBBERISH &&
+      if ( c_mode == MODE_GIBBERISH_TO_ENGLISH &&
            (ast->type & T_ENUM) && (ast->type & (T_STRUCT | T_CLASS)) ) {
         print_error( &ast->loc,
           "\"%s\": enum classes must just use \"enum\"",
@@ -463,12 +464,13 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 /**
  * Visitor function that checks an AST for type errors.
  *
- * @param data Not used.
+ * @param data Cast to \c bool, indicates if \a ast is a function argument.
  * @return Returns \c VISITOR_ERROR_FOUND if an error was found;
  * \c VISITOR_ERROR_NOT_FOUND if not.
  */
 static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
+  bool const is_func_arg = REINTERPRET_CAST( bool, data );
 
   c_lang_t const ok_langs = c_type_check( ast->type );
   if ( ok_langs != LANG_ALL ) {
@@ -487,6 +489,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   switch ( ast->kind ) {
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
+      data = REINTERPRET_CAST( void*, true );
       for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
         if ( !c_ast_check_visitor( arg, c_ast_visitor_type, data ) )
           return VISITOR_ERROR_FOUND;
@@ -496,6 +499,13 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
       // FALLTHROUGH
 
     default:
+      if ( !is_func_arg && (ast->type & T_CARRIES_DEPENDENCY) != T_NONE ) {
+        print_error( &ast->loc,
+          "\"%s\" can only appear on functions or function arguments",
+          c_type_name_error( T_CARRIES_DEPENDENCY )
+        );
+        return VISITOR_ERROR_FOUND;
+      }
       if ( (ast->type & T_NORETURN) != T_NONE ) {
         print_error( &ast->loc,
           "\"%s\" can only appear on functions",
@@ -531,10 +541,18 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
       break;
 
     case K_BLOCK:
-    case K_FUNCTION:
+    case K_FUNCTION: {
+      c_ast_t const *const ret_ast = ast->as.func.ret_ast;
+      if ( (ast->type & T_NODISCARD) != T_NONE &&
+           (ret_ast->type & T_VOID) != T_NONE ) {
+        print_warning( &ast->loc,
+          "[[%s]] functions can not return void", L_NODISCARD
+        );
+      }
       for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next )
         (void)c_ast_check_visitor( arg, c_ast_visitor_warning, data );
       break;
+    }
 
     case K_BUILTIN:
       if ( (ast->type & T_REGISTER) != T_NONE && opt_lang >= LANG_CPP_11 ) {

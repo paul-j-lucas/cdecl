@@ -1,0 +1,1 @@
+cdecl | /dev/null | -xc++ | declare f as carries-dependency function (x as int) returning int | 0

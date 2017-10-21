@@ -40,66 +40,73 @@
 
 // types
 #define T_NONE                0
-#define T_VOID                0x00000000000001ull
-#define T_AUTO_CPP_11         0x00000000000002ull /* C++11 version of "auto" */
-#define T_BOOL                0x00000000000004ull
-#define T_CHAR                0x00000000000008ull
-#define T_CHAR16_T            0x00000000000010ull
-#define T_CHAR32_T            0x00000000000020ull
-#define T_WCHAR_T             0x00000000000040ull
-#define T_SHORT               0x00000000000080ull
-#define T_INT                 0x00000000000100ull
-#define T_LONG                0x00000000000200ull
-#define T_LONG_LONG           0x00000000000400ull /* special case */
-#define T_SIGNED              0x00000000000800ull
-#define T_UNSIGNED            0x00000000001000ull
-#define T_FLOAT               0x00000000002000ull
-#define T_DOUBLE              0x00000000004000ull
-#define T_COMPLEX             0x00000000008000ull
-#define T_IMAGINARY           0x00000000010000ull
-#define T_ENUM                0x00000000020000ull
-#define T_STRUCT              0x00000000040000ull
-#define T_UNION               0x00000000080000ull
-#define T_CLASS               0x00000000100000ull
-#define T_TYPEDEF_TYPE        0x00000000200000ull /* e.g., size_t */
+#define T_VOID                0x0000000000000001ull
+#define T_AUTO_CPP_11         0x0000000000000002ull /* C++11 version of auto */
+#define T_BOOL                0x0000000000000004ull
+#define T_CHAR                0x0000000000000008ull
+#define T_CHAR16_T            0x0000000000000010ull
+#define T_CHAR32_T            0x0000000000000020ull
+#define T_WCHAR_T             0x0000000000000040ull
+#define T_SHORT               0x0000000000000080ull
+#define T_INT                 0x0000000000000100ull
+#define T_LONG                0x0000000000000200ull
+#define T_LONG_LONG           0x0000000000000400ull /* special case */
+#define T_SIGNED              0x0000000000000800ull
+#define T_UNSIGNED            0x0000000000001000ull
+#define T_FLOAT               0x0000000000002000ull
+#define T_DOUBLE              0x0000000000004000ull
+#define T_COMPLEX             0x0000000000008000ull
+#define T_IMAGINARY           0x0000000000010000ull
+#define T_ENUM                0x0000000000020000ull
+#define T_STRUCT              0x0000000000040000ull
+#define T_UNION               0x0000000000080000ull
+#define T_CLASS               0x0000000000100000ull
+#define T_TYPEDEF_TYPE        0x0000000000200000ull /* e.g., size_t */
 
 // storage classes
-#define T_AUTO_C              0x00000001000000ull /* C version of "auto" */
-#define T_BLOCK               0x00000002000000ull /* Apple extension */
-#define T_EXTERN              0x00000004000000ull
-#define T_MUTABLE             0x00000008000000ull
-#define T_REGISTER            0x00000010000000ull
-#define T_STATIC              0x00000020000000ull
-#define T_THREAD_LOCAL        0x00000040000000ull
-#define T_TYPEDEF             0x00000080000000ull
+#define T_AUTO_C              0x0000000001000000ull /* C version of auto */
+#define T_BLOCK               0x0000000002000000ull /* Apple extension */
+#define T_EXTERN              0x0000000004000000ull
+#define T_MUTABLE             0x0000000008000000ull
+#define T_REGISTER            0x0000000010000000ull
+#define T_STATIC              0x0000000020000000ull
+#define T_THREAD_LOCAL        0x0000000040000000ull
+#define T_TYPEDEF             0x0000000080000000ull
 
 // storage-class-like
-#define T_CONSTEXPR           0x00000100000000ull
-#define T_FINAL               0x00000200000000ull
-#define T_FRIEND              0x00000400000000ull
-#define T_INLINE              0x00000800000000ull
-#define T_NOEXCEPT            0x00001000000000ull
-#define T_NORETURN            0x00002000000000ull
-#define T_OVERRIDE            0x00004000000000ull
-#define T_PURE_VIRTUAL        0x00008000000000ull
-#define T_THROW               0x00010000000000ull
-#define T_VIRTUAL             0x00020000000000ull
+#define T_CONSTEXPR           0x0000000100000000ull
+#define T_FINAL               0x0000000200000000ull
+#define T_FRIEND              0x0000000400000000ull
+#define T_INLINE              0x0000000800000000ull
+#define T_NOEXCEPT            0x0000001000000000ull
+#define T_OVERRIDE            0x0000002000000000ull
+#define T_PURE_VIRTUAL        0x0000004000000000ull
+#define T_THROW               0x0000008000000000ull
+#define T_VIRTUAL             0x0000010000000000ull
+
+// attributes
+#define T_CARRIES_DEPENDENCY  0x0000100000000000ull
+#define T_DEPRECATED          0x0000200000000000ull
+#define T_MAYBE_UNUSED        0x0000400000000000ull
+#define T_NODISCARD           0x0000800000000000ull
+#define T_NORETURN            0x0001000000000000ull
 
 // qualifiers
-#define T_ATOMIC              0x00100000000000ull
-#define T_CONST               0x00200000000000ull
-#define T_RESTRICT            0x00400000000000ull
-#define T_VOLATILE            0x00800000000000ull
+#define T_ATOMIC              0x0010000000000000ull
+#define T_CONST               0x0020000000000000ull
+#define T_RESTRICT            0x0040000000000000ull
+#define T_VOLATILE            0x0080000000000000ull
 
 // ref-qualifiers
-#define T_REFERENCE           0x01000000000000ull /* void f() & */
-#define T_RVALUE_REFERENCE    0x02000000000000ull /* void f() && */
+#define T_REFERENCE           0x0100000000000000ull /* void f() & */
+#define T_RVALUE_REFERENCE    0x0200000000000000ull /* void f() && */
 
 // bit masks
-#define T_MASK_TYPE           0x00000000FFFFFFull
-#define T_MASK_STORAGE        0x000FFFFF000000ull
-#define T_MASK_QUALIFIER      0x00F00000000000ull
-#define T_MASK_REF_QUALIFIER  0x0F000000000000ull
+#define T_MASK_TYPE           0x0000000000FFFFFFull
+#define T_MASK_STORAGE        0x00000FFFFF000000ull
+#define T_MASK_ATTRIBUTE      0x000FF00000000000ull
+#define T_MASK_QUALIFIER      0x00F0000000000000ull
+#define T_MASK_REF_QUALIFIER  0x0F00000000000000ull
 
 /**
  * Bitmask for combination of types.

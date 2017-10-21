@@ -245,8 +245,8 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
   c_type_t storage = T_NONE;
   c_ast_t *const found = c_ast_find_kind( ast, V_DOWN, K_BUILTIN | K_TYPEDEF );
   if ( found != NULL ) {
-    storage = found->type & T_MASK_STORAGE;
-    found->type &= ~T_MASK_STORAGE;
+    storage = found->type & (T_MASK_ATTRIBUTE | T_MASK_STORAGE);
+    found->type &= ~(T_MASK_ATTRIBUTE | T_MASK_STORAGE);
   }
   return storage;
 }

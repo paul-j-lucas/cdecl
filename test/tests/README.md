@@ -24,9 +24,10 @@ The characters are:
 + `a` = array (following digits specify array size), `_Atomic`, or `auto`
 + `b` = block (Apple extension) or `bool`
 + `c` = `char`, `class`,  or `const`
++ `cd` = `carries_dependency`
 + `c16` = `char16_t`
 + `c32` = `char32_t`
-+ `d` = `double`
++ `d` = `deprecated` or `double`
 + `e` = `enum`, `extern`, or `...` (ellipsis)
 + `f` = `friend` or function
 + `g` = `register`
@@ -41,8 +42,8 @@ The characters are:
 + `r` = `restrict` or reference
 + `rr` = rvalue reference
 + `s` = `signed` or `static`
-+ `t` = `throw`, `typedef`, or unknown type
-+ `u` = `unsigned`
++ `t` = `nodiscard`, `throw`, `typedef`, or unknown type
++ `u` = `maybe-unused` or `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
 + `x` = `constexpr`, `noexcept`,  or untyped K&R function argument

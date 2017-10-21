@@ -52,8 +52,8 @@ struct c_loc {
  * Mode of operation.
  */
 enum c_mode {
-  MODE_ENGLISH,
-  MODE_GIBBERISH
+  MODE_ENGLISH_TO_GIBBERISH,
+  MODE_GIBBERISH_TO_ENGLISH
 };
 
 typedef struct c_ast        c_ast_t;

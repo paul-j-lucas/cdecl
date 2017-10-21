@@ -1,0 +1,1 @@
+cdecl | /dev/null | -xc++ | explain void f([[nodiscard]] int x) | 0
