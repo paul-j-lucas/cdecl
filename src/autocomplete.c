@@ -52,20 +52,20 @@ typedef struct ac_keyword ac_keyword_t;
  * Subset of cdecl keywords that are commands.
  */
 static ac_keyword_t const CDECL_COMMANDS[] = {
-  { L_CAST,             LANG_ALL           },
-  { L_CONST,            LANG_MIN(CPP_MIN)  }, // const cast ...
-  { L_DECLARE,          LANG_ALL           },
-  { L_DEFINE,           LANG_ALL           },
-  { L_DYNAMIC,          LANG_MIN(CPP_MIN)  }, // dynamic cast ...
-  { L_EXIT,             LANG_ALL           },
-  { L_EXPLAIN,          LANG_ALL           },
-  { L_HELP,             LANG_ALL           },
-  { L_QUIT,             LANG_ALL           },
-  { L_REINTERPRET,      LANG_MIN(CPP_MIN)  }, // reinterpret cast ...
-  { L_SET,              LANG_ALL           },
-  { L_SHOW,             LANG_ALL           },
-  { L_STATIC,           LANG_MIN(CPP_MIN)  }, // static cast ...
-  { NULL,               LANG_NONE          },
+  { L_CAST,         LANG_ALL           },
+  { L_CONST,        LANG_MIN(CPP_MIN)  }, // const cast ...
+  { L_DECLARE,      LANG_ALL           },
+  { L_DEFINE,       LANG_ALL           },
+  { L_DYNAMIC,      LANG_MIN(CPP_MIN)  }, // dynamic cast ...
+  { L_EXIT,         LANG_ALL           },
+  { L_EXPLAIN,      LANG_ALL           },
+  { L_HELP,         LANG_ALL           },
+  { L_QUIT,         LANG_ALL           },
+  { L_REINTERPRET,  LANG_MIN(CPP_MIN)  }, // reinterpret cast ...
+  { L_SET,          LANG_ALL           },
+  { L_SHOW,         LANG_ALL           },
+  { L_STATIC,       LANG_MIN(CPP_MIN)  }, // static cast ...
+  { NULL,           LANG_NONE          },
 };
 
 /**
@@ -73,7 +73,7 @@ static ac_keyword_t const CDECL_COMMANDS[] = {
  */
 static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_ARRAY,              LANG_ALL                        },
-//  L_AS,                                  // too short
+//  L_AS,                               // too short
   { L_ATOMIC,             LANG_MIN(C_11)                  },
   { L_AUTO,               LANG_ALL                        },
   { L_BLOCK,              LANG_ALL                        },
@@ -91,7 +91,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_CONSTEXPR,          LANG_MIN(CPP_11)                },
   { L_DEPRECATED,         LANG_MIN(CPP_14)                },
   { L_DOUBLE,             LANG_ALL                        },
-//  L_DYNAMIC,                            // handled in CDECL_COMMANDS
+//  L_DYNAMIC,                          // handled in CDECL_COMMANDS
   { L_DYNAMIC_CAST,       LANG_MIN(CPP_11)                },
   { L_ENUM,               LANG_MIN(C_89)                  },
   { L_EXTERN,             LANG_ALL                        },
@@ -103,7 +103,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_IMAGINARY,          LANG_MIN(C_99)                  },
   { L_INLINE,             LANG_MIN(C_99)                  },
   { L_INT,                LANG_ALL                        },
-//{ L_INTO,                               // special case (see below)
+//{ L_INTO,                             // special case (see below)
   { L_LENGTH,             LANG_MIN(C_99) & ~LANG_CPP_ALL  },
   { L_LONG,               LANG_ALL                        },
   { L_MAYBE_UNUSED,       LANG_MIN(CPP_11)                },
@@ -112,14 +112,14 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_NODISCARD,          LANG_MIN(CPP_17)                },
   { L_NOEXCEPT,           LANG_MIN(CPP_11)                },
   { L_NORETURN,           LANG_C_11                       },
-//{ L_OF,                                 // too short
+//{ L_OF,                               // too short
   { L_OVERRIDE,           LANG_MIN(CPP_11)                },
   { L_POINTER,            LANG_ALL                        },
   { L_PREDEFINED,         LANG_ALL                        },
   { L_PURE,               LANG_MIN(CPP_MIN)               },
   { L_REFERENCE,          LANG_MIN(CPP_MIN)               },
   { L_REGISTER,           LANG_ALL                        },
-//  L_REINTERPRET,                        // handled in CDECL_COMMANDS
+//  L_REINTERPRET,                      // handled in CDECL_COMMANDS
   { L_REINTERPRET_CAST,   LANG_MIN(CPP_MIN)               },
   { L_RESTRICT,           LANG_MIN(C_89) & ~LANG_CPP_ALL  },
   { L_RETURNING,          LANG_ALL                        },
@@ -129,7 +129,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_STATIC,             LANG_ALL                        },
   { L_STATIC_CAST,        LANG_MIN(CPP_MIN)               },
   { L_STRUCT,             LANG_ALL                        },
-//  L_TO,                                 // too short
+//  L_TO,                               // too short
   { L_THREAD_LOCAL,       LANG_C_11 | LANG_MIN(CPP_11)    },
   { L_THROW,              LANG_MIN(CPP_MIN)               },
   { L_TRUE,               LANG_MIN(CPP_MIN)               },
