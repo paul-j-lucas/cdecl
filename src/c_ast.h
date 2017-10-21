@@ -65,8 +65,6 @@ enum v_direction {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef unsigned c_ast_id_t;
-
 /**
  * The signature for functions passed to c_ast_visit_down() or
  * c_ast_visit_up().
