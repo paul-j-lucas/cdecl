@@ -260,6 +260,7 @@ static inline bool is_long_int( c_type_t type ) {
  * and available, English.
  *
  * @param t A pointer to the c_type_info to get the literal of.
+ * @param is_error \c true if getting the literal for part of an error message.
  * @return Returns said literal.
  */
 static inline char const* c_type_literal( c_type_info_t const *t,
