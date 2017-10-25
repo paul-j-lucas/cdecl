@@ -95,7 +95,7 @@ void* check_realloc( void *p, size_t size ) {
   //    The C standard says a call realloc(NULL, size) is equivalent to
   //    malloc(size), but some old systems don't support this (e.g., NextStep).
   //
-  if ( size == 0 )
+  if ( unlikely( size == 0 ) )
     size = 1;
   void *const r = p != NULL ? realloc( p, size ) : malloc( size );
   if ( unlikely( r == NULL ) )

@@ -106,7 +106,7 @@ static bool c_ast_has_cycle( c_ast_t const *ast ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_cleanup( void ) {
-  if ( c_ast_count > 0 )
+  if ( unlikely( c_ast_count > 0 ) )
     INTERNAL_ERR( "number of c_ast objects (%u) > 0\n", c_ast_count );
 }
 

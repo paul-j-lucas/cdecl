@@ -118,12 +118,12 @@ static bool parse_sgr( char const *sgr_color ) {
   if ( sgr_color == NULL )
     return false;
   for (;;) {
-    if ( !isdigit( *sgr_color ) )
+    if ( unlikely( !isdigit( *sgr_color ) ) )
       return false;
     char *end;
     errno = 0;
     uint64_t const n = strtoull( sgr_color, &end, 10 );
-    if ( errno || n > 255 )
+    if ( unlikely( errno || n > 255 ) )
       return false;
     switch ( *end ) {
       case '\0':

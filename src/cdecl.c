@@ -140,7 +140,7 @@ static bool parse_argv( int argc, char const *argv[] ) {
   // cdecl '{cast|declare|explain} arg ...'
   char *argv0 = CONST_CAST( char*, argv[0] );
   for ( char *first_word; (first_word = strsep( &argv0, " \t" )); ) {
-    if ( first_word[0] == '\0' ) {
+    if ( unlikely( first_word[0] == '\0' ) ) {
       //
       // Leading whitespace in a quoted argument, e.g.:
       //
@@ -225,7 +225,7 @@ static bool parse_files( int num_files, char const *files[] ) {
       ok = parse_stdin();
     else {
       FILE *const fin = fopen( files[i], "r" );
-      if ( fin == NULL )
+      if ( unlikely( fin == NULL ) )
         PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", files[i], STRERROR );
       yyrestart( fin );
       ok = yyparse() == 0;
@@ -310,7 +310,7 @@ static void read_conf_file( void ) {
   }
 
   FILE *const cin = fopen( opt_conf_file, "r" );
-  if ( cin == NULL ) {
+  if ( unlikely( cin == NULL ) ) {
     if ( explicit_conf_file )
       PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", opt_conf_file, STRERROR );
     return;
