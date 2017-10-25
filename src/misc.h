@@ -38,7 +38,6 @@
 
 #define CONF_FILE_NAME            "." PACKAGE "rc"
 #define CPPDECL                   "c++decl"
-#define DEBUG_INDENT              2     /* spaces per debug indent level */
 
 // extern variables
 extern c_mode_t     c_mode;             // parsing english or gibberish?

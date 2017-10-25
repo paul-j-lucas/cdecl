@@ -36,6 +36,8 @@
 #include <stdlib.h>
 #include <sysexits.h>
 
+#define DEBUG_INDENT              2     /* spaces per debug indent level */
+
 #define PRINT_COMMA \
   BLOCK( if ( !comma ) { FPUTS( ",\n", dout ); comma = true; } )
 
