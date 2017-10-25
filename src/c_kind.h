@@ -34,9 +34,9 @@
 #include <stdbool.h>
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef CDECL_KINDS_INLINE
-# define CDECL_KINDS_INLINE _GL_INLINE
-#endif /* CDECL_KINDS_INLINE */
+#ifndef CDECL_KIND_INLINE
+# define CDECL_KIND_INLINE _GL_INLINE
+#endif /* CDECL_KIND_INLINE */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -76,7 +76,7 @@ enum c_kind {
  * @param ast The \c c_ast to check.  May be null.
  * @return Returns \c true only if it is.
  */
-CDECL_KINDS_INLINE bool c_kind_is_parent( c_kind_t kind ) {
+CDECL_KIND_INLINE bool c_kind_is_parent( c_kind_t kind ) {
   return kind >= K_PARENT_MIN;
 }
 

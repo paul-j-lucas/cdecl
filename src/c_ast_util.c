@@ -169,12 +169,12 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
  * Adds a function (or block) to the AST being built.
  *
  * @param ast The AST to append to.
- * @param ret_type_ast The AST of the return-type of the function (or block).
+ * @param ret_ast The AST of the return-type of the function (or block).
  * @param func The function (or block) AST to append.  Its "of" type must be
  * null.
  * @return Returns the AST to be used as the grammar production's return value.
  */
-static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
+static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
                                      c_ast_t *func ) {
   assert( ast != NULL );
   assert( func != NULL );
@@ -192,19 +192,17 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
         case K_POINTER_TO_MEMBER:
         case K_REFERENCE:
         case K_RVALUE_REFERENCE:
-          (void)c_ast_add_func_impl(
-            ast->as.ptr_ref.to_ast, ret_type_ast, func
-          );
+          (void)c_ast_add_func_impl( ast->as.ptr_ref.to_ast, ret_ast, func );
           return ast;
 
         case K_PLACEHOLDER:
-          if ( ret_type_ast == ast )
+          if ( ret_ast == ast )
             break;
           c_ast_set_parent( func, ast );
           // FALLTHROUGH
 
         case K_BLOCK:                   // Apple extension
-          c_ast_set_parent( ret_type_ast, func );
+          c_ast_set_parent( ret_ast, func );
           return ast;
 
         default:
@@ -215,7 +213,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_type_ast,
       /* suppress warning */;
   } // switch
 
-  c_ast_set_parent( ret_type_ast, func );
+  c_ast_set_parent( ret_ast, func );
   return func;
 }
 
@@ -261,9 +259,9 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
   return rv;
 }
 
-c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_type_ast, c_ast_t *func ) {
+c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func ) {
   assert( ast != NULL );
-  c_ast_t *const rv = c_ast_add_func_impl( ast, ret_type_ast, func );
+  c_ast_t *const rv = c_ast_add_func_impl( ast, ret_ast, func );
   assert( rv != NULL );
   if ( func->name == NULL )
     func->name = c_ast_take_name( ast );

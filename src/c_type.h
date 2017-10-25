@@ -39,7 +39,7 @@
 ////////// types //////////////////////////////////////////////////////////////
 
 // types
-#define T_NONE                0
+#define T_NONE                0ull
 #define T_VOID                0x0000000000000001ull
 #define T_AUTO_CPP_11         0x0000000000000002ull /* C++11 version of auto */
 #define T_BOOL                0x0000000000000004ull

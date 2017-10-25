@@ -118,12 +118,12 @@ bool c_ast_check( c_ast_t const *ast, c_check_t check );
  * Adds a function (or block) to the AST being built.
  *
  * @param ast The AST to append to.
- * @param ret_type_ast The AST of the return-type of the function (or block).
+ * @param ret_ast The AST of the return-type of the function (or block).
  * @param func The function (or block) AST to append.  Its "of" type must be
  * null.
  * @return Returns the AST to be used as the grammar production's return value.
  */
-c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_type_ast, c_ast_t *func );
+c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func );
 
 /**
  * Prints the given AST as pseudo-English.

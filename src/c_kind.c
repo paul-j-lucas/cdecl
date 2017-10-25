@@ -25,7 +25,7 @@
 
 // local
 #include "config.h"                     /* must go first */
-#define CDECL_KINDS_INLINE _GL_EXTERN_INLINE
+#define CDECL_KIND_INLINE _GL_EXTERN_INLINE
 #include "c_kind.h"
 #include "options.h"
 #include "util.h"
