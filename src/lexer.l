@@ -159,6 +159,29 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { NULL,             TOKEN( 0 )                      }
 };
 
+/**
+ * Hyphenated English keyword-to-literal mapping.
+ */
+struct hyphenated {
+  char const *token;                    // C string hyphenated English literal
+  char const *literal;                  // C language literal it maps to
+};
+typedef struct hyphenated hyphenated_t;
+
+/**
+ * All hyphenated English keywords.  These are handled seperately because
+ * hyphenated words are not valid identifiers (since '-' is not valid in an
+ * identifier).
+ */
+static hyphenated_t const HYPHENATED_KEYWORDS[] = {
+  { "carries-dependency", L_CARRIES_DEPENDENCY  },
+  { "maybe-unused",       L_MAYBE_UNUSED        },
+  { "no-exception",       L_NOEXCEPT            },
+  { "non-discardable",    L_NODISCARD           },
+  { "non-returning",      L__NORETURN           },
+  { "non-throwing",       L_THROW               },
+};
+
 // extern variables
 char const     *lexer_token;            // guaranteed pointer of yytext
 
@@ -191,6 +214,33 @@ static keyword_t const* cdecl_keyword_find( char const *s ) {
     break;
   } // for
   return NULL;
+}
+
+/**
+ * Finds a hyphenated English literal.
+ *
+ * @param s The string to find.
+ * @return Returns the corresponding C language literal or NULL if none.
+ */
+static char const* hyphenated_find( char const *s ) {
+  char const *literal = NULL;
+  for ( hyphenated_t const *h = HYPHENATED_KEYWORDS; h->token; ++h ) {
+    if ( strcmp( s, h->token ) == 0 ) {
+      literal = h->literal;
+      if ( literal == L__NORETURN && opt_lang >= LANG_CPP_MIN ) {
+        //
+        // _Noreturn is a special case. In C11, it's "_Noreturn"; in C++11,
+        // it's "noreturn".
+        //
+        // Depending on the current language, we map "non-returning" either to
+        // "_Noreturn" or "noreturn".
+        //
+        literal = L_NORETURN;
+      }
+      break;
+    }
+  } // for
+  return literal;
 }
 
 /**
@@ -297,6 +347,7 @@ void lexer_reset( bool hard_reset ) {
 %}
 
 A             [A-Za-z_]
+az            [a-z]
 B             [01]
 O             [0-7]
 D             [0-9]
@@ -305,6 +356,7 @@ S             [ \f\r\t\v]
 
 cknr_name     ([cC][kK]&[rR])|([kK]&[rR][cC]?)
 cxx_name      [cC]"++"({D}{D})?
+hyphenated    {az}+-{az}+
 identifier    {A}({A}|{D})*
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
 lang_name     {cknr_name}|{cxx_name}
@@ -399,53 +451,19 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 return Y_NAME;
               }
 
+{hyphenated}  {
+                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
+                char const *const literal = hyphenated_find( yytext );
+                if ( literal == NULL )
+                  return Y_ERROR;
+                lexer_token = literal;
+                goto find_c_keyword;
+              }
+
 {lang_name}   {
                 SET_TOKEN;
                 yylval.name = check_strdup( lexer_token );
                 return Y_LANG_NAME;
-              }
-
-carries-dependency {
-                SET_TOKEN;
-                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
-                lexer_token = L_CARRIES_DEPENDENCY;
-                goto find_c_keyword;
-              }
-
-maybe-unused  {
-                SET_TOKEN;
-                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
-                lexer_token = L_MAYBE_UNUSED;
-                goto find_c_keyword;
-              }
-
-no-exception  {
-                SET_TOKEN;
-                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
-                lexer_token = L_NOEXCEPT;
-                goto find_c_keyword;
-              }
-
-non-discardable {
-                SET_TOKEN;
-                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
-                lexer_token = L_NODISCARD;
-                goto find_c_keyword;
-              }
-
-non-returning {
-                SET_TOKEN;
-                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
-                lexer_token = opt_lang <= LANG_C_MAX ?
-                  L__NORETURN : L_NORETURN;
-                goto find_c_keyword;
-              }
-
-non-throwing  {
-                SET_TOKEN;
-                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
-                lexer_token = L_THROW;
-                goto find_c_keyword;
               }
 
 {binary}      { SET_TOKEN; yylval.number = parse_int(  2 ); return Y_NUMBER; }
