@@ -375,7 +375,7 @@ hexadecimal   0[xX]{H}+{int_suffix}?
                */
 _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 
-{identifier}* {
+{identifier}  {
                 SET_TOKEN;
 
                 keyword_t const *const ck = cdecl_keyword_find( lexer_token );
