@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "October 21, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "October 27, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -272,7 +272,7 @@ is not empty and not equal to
 (Specifically,
 .BR fstat (3)
 is called on standard output:
-colorize only if \f(CWS_IFREG\f1 is false.)
+colorize only if \f(CWS_IFREG\fP is false.)
 .IP ""
 This is more useful than
 .B isatty
@@ -302,8 +302,8 @@ The default is
 Specifies the configuration file
 .I f
 to read
-(default is
-.BR ~/.cdeclrc ).
+(see
+.BR "CONFIGURATION FILE" ).
 .TP
 .BR \-\-debug " | " \-d
 Turns on debugging output (if compiled in).
@@ -361,8 +361,8 @@ Suppresses printing of a trailing semicolon for C (and C++) declarations.
 .BR \-\-no-typedefs " | " \-t
 Suppresses predefining standard types,
 e.g.,
-\f(CWsize_t\f1,
-\f(CWuint8_t\f1,
+\f(CWsize_t\fP,
+\f(CWuint8_t\fP,
 etc.
 .TP
 .BI \-\-output \f1=\fPf "\f1 | \fP" "" \-o " f"
@@ -516,7 +516,7 @@ Composes a C++ new-style cast from pseudo-English.
 Composes a C (or C++) declaration from pseudo-English.
 .TP
 .BI define " name" " as" " english"
-Defines a type (\f(CWtypedef\f1) from pseudo-English.
+Defines a type (\f(CWtypedef\fP) from pseudo-English.
 .TP
 .BI explain " gibberish"
 Deciphers a C (or C++) declaration or new-style cast into pseudo-English.
@@ -540,8 +540,7 @@ all, predefined-only, or user-defined-only
 types.
 .TP
 .BI typedef " gibberish"
-Parses a C (or C++) declaration
-and defines a type.
+Defines a type from a C (or C++) \f(CWtypedef\fP.
 .TP
 .BR help " | " ?
 Prints a
@@ -904,6 +903,28 @@ debugging output
 (if compiled in)
 \(em default is off.
 .RE
+.SH CONFIGURATION FILE
+The
+.B cdeclrc
+file
+(by default,
+.BR ~/.cdeclrc )
+is used to configure
+.B cdecl
+by pre-defining types
+(via either the
+\f(CWdefine\fP
+or
+\f(CWtypedef\fP
+commands)
+so that they may be subsequently used
+when eithter composing or deciphering declarations.
+Configuration files may include
+blank lines,
+C-style \f(CW/*\fP\ \f(CW*/\fP comments,
+C++-style \f(CW//\fP comments,
+and C preprocessor directives \f(CW#\fP,
+all of which are ignored.
 .SH EXAMPLES
 To declare an array of pointers to functions that are like
 .BR malloc (3):
@@ -1036,7 +1057,7 @@ is a
 value
 that is a semicolon-separated list of integers
 in the range 0\-255.
-An example SGR value is \f(CW31;1\f1
+An example SGR value is \f(CW31;1\fP
 that specifies a bright red foreground
 on the terminal's default background.
 .IP ""
@@ -1050,32 +1071,32 @@ those in lower-case are upwards compatibile with
 SGR for the caret pointing to the error on the line above
 (as with
 .BR gcc ).
-The default is \f(CW36;1\f1
+The default is \f(CW36;1\fP
 (bright green foreground over current terminal background).
 .TP
 .BI error= SGR
 SGR for the word ``error.''
-The default is \f(CW31;1\f1
+The default is \f(CW31;1\fP
 (bright red foreground over current terminal background).
 .TP
 .BI HELP-keyword= SGR
 SGR for keywords in help output.
-The default is \f(CW1\f1
+The default is \f(CW1\fP
 (bold terminal foreground current terminal background).
 .TP
 .BI HELP-nonterm= SGR
 SGR for nonterminals in help output.
-The default is \f(CW36\f1
+The default is \f(CW36\fP
 (cyan foreground over current terminal background).
 .TP
 .BI HELP-punct= SGR
 SGR for punctuation in help output.
-The default is \f(CW30;1\f1
+The default is \f(CW30;1\fP
 (dark dray forgreound over current terminal background).
 .TP
 .BI HELP-title= SGR
 SGR for titles in help output.
-The default is \f(CW34;1\f1
+The default is \f(CW34;1\fP
 (bright blue foreground over current terminal background).
 .TP
 .BI locus= SGR
@@ -1085,12 +1106,12 @@ The defualt is \f(CW1\fP
 .TP
 .BI PROMPT= SGR
 SGR for the prompt.
-The default is \f(CW32\f1
+The default is \f(CW32\fP
 (green foreground over current terminal background).
 .TP
 .BI warning= SGR
 SGR for the word ``warning.''
-The default is \f(CW33;1\f1
+The default is \f(CW33;1\fP
 (bright yellow foreground over current terminal background).
 .RE
 .IP ""
@@ -1151,7 +1172,9 @@ containing user-specified
 \f(CWdefine\fP
 or
 \f(CWtypedef\fP
-commands.
+commands
+(see
+.BR "CONFIGURATION FILE" ).
 .TP
 .B ~/.inputrc
 Individual
