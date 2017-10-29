@@ -922,7 +922,7 @@ define_english
       // existing type name.
       //
       DUMP_START( "define_english",
-                  "DEFINE Y_TYPEDEF_TYPE AS storage_class_list_opt_english "
+                  "DEFINE TYPEDEF_TYPE AS storage_class_list_opt_english "
                   "decl_english" );
       DUMP_NAME( "type_name", $2->type_name );
       DUMP_AST( "type_ast", $2->ast );
