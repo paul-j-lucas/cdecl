@@ -863,7 +863,6 @@ define_english
       DUMP_NAME( "NAME", $2 );
       DUMP_TYPE( "storage_class_list_opt_english", $4 );
       DUMP_AST( "decl_english", $5.ast );
-      DUMP_END();
 
       //
       // Explicitly add T_TYPEDEF to prohibit cases like:
@@ -906,6 +905,9 @@ define_english
         FREE( $2 );
         PARSE_ABORT();
       }
+
+      DUMP_AST( "define_english", $5.ast );
+      DUMP_END();
     }
 
   | Y_DEFINE Y_TYPEDEF_TYPE as_expected storage_class_list_opt_english
@@ -932,7 +934,7 @@ define_english
       C_TYPE_ADD( &$5.ast->type, T_TYPEDEF, @4 );
       C_TYPE_ADD( &$5.ast->type, $4, @4 );
       C_AST_CHECK( $5.ast, CHECK_DECL );
-      $5.ast->type &= ~T_TYPEDEF;
+      (void)c_ast_take_typedef( $5.ast );
 
       c_typedef_t const *const found = c_typedef_find( $2->type_name );
       assert( found != NULL );
