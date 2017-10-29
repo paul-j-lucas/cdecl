@@ -919,7 +919,7 @@ define_english
       //      define int_least32_t as int
       //
       // that is: an existing type followed by a type, i.e., redefining an
-      // existing type name to be the same type.
+      // existing type name.
       //
       DUMP_START( "define_english",
                   "DEFINE Y_TYPEDEF_TYPE AS storage_class_list_opt_english "
