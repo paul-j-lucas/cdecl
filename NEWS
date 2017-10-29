@@ -10,6 +10,17 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 4.4.1
+
+** Fixed typedef of pointer-to-function
+A typedef like:
+    typedef void (*f)(int)
+now works correctly.
+
+** Added CONFIGURATION FILE section
+The cdecl(1) man page now contains a CONFIGURATION FILE section.
+
+
 * Changes in Cdecl 4.4
 
 ** Added C++ attribute specifier support
