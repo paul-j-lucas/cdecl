@@ -43,6 +43,7 @@
 
 // standard
 #include <stdbool.h>
+#include <stddef.h>                     /* for offsetof() */
 #include <stdio.h>                      /* for FILE */
 
 _GL_INLINE_HEADER_BEGIN
@@ -172,9 +173,9 @@ struct c_ast {
   } as;
 
   /**
-   * Every c_ast that's dynamically allocated is added to a static linked list
-   * so that they all can be garbage collected in one go.  This pointer is used
-   * for that list.
+   * Every c_ast that's dynamically allocated is added to a linked list so that
+   * they all can be garbage collected in one go.  This pointer is used for
+   * that list.
    *
    * This is much easier than having to free manually on parsing success or
    * rely on Bison \c \%destructor code for parsing failure.
@@ -218,16 +219,6 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j );
 void c_ast_free( c_ast_t *ast );
 
 /**
- * Garbage collects all allocated c_ast nodes.
- */
-void c_ast_gc( void );
-
-/**
- * Releases all the current c_ast nodes so they will not be garbage collected.
- */
-void c_ast_gc_release( void );
-
-/**
  * Checks whether the given AST node is a parent node.
  *
  * @param ast The \c c_ast to check.  May be null.
@@ -242,15 +233,63 @@ CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
  *
  * @param list The c_ast_list to append onto.
  * @param ast The c_ast to append.  Does nothing if null.
+ * @param next_offset The offset, in bytes, of the next pointer member within
+ * c_ast to use.
+ * @return Returns \a ast.
  */
-void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast );
+c_ast_t* c_ast_list_append_ast( c_ast_list_t *list, c_ast_t *ast,
+                                size_t next_offset );
+
+/**
+ * Convenience macro that calls c_ast_list_append_ast() with the offset of
+ * \a NEXT.
+ *
+ * @param LIST the c_ast_list to append onto.
+ * @param AST The c_ast to append.  Does nothing if null.
+ * @param NEXT The name of the next pointer member to use.
+ */
+#define C_AST_LIST_APPEND_AST(LIST,AST,NEXT) \
+  c_ast_list_append_ast( (LIST), (AST), offsetof( c_ast_t, NEXT ) )
+
+/**
+ * Appends a c_ast_list onto the end of another c_ast_list.
+ *
+ * @param dst The c_ast_list to append onto.
+ * @param src The c_ast_list to append.  It is made empty.
+ * @param next_offset The offset, in bytes, of the next pointer member within
+ * c_ast to use.
+ */
+void c_ast_list_append_list( c_ast_list_t *dst, c_ast_list_t *src,
+                             size_t next_offset );
+
+/**
+ * Convenience macro that calls c_ast_list_append_list() with the offset of
+ * \a NEXT.
+ *
+ * @param DST The c_ast_list to append onto.
+ * @param SRC The c_ast_list to append.
+ * @param NEXT The name of the next pointer member to use.
+ */
+#define C_AST_LIST_APPEND_LIST(DST,SRC,NEXT) \
+  c_ast_list_append_list( (DST), (SRC), offsetof( c_ast_t, NEXT ) )
 
 /**
  * Frees all the memory used by the given c_ast_list.
  *
  * @param list A pointer to the list to free.  Does nothing if null.
+ * @param next_offset The offset, in bytes, of the next pointer member within
+ * c_ast to use.
  */
-void c_ast_list_free( c_ast_list_t *list );
+void c_ast_list_free( c_ast_list_t *list, size_t next_offset );
+
+/**
+ * Convenience macro that calls c_ast_list_free() with the offset of \a NEXT.
+ *
+ * @param LIST A pointer to the list to free.  Does nothing if null.
+ * @param NEXT The name of the next pointer member to follow.
+ */
+#define C_AST_LIST_FREE(LIST,NEXT) \
+  c_ast_list_free( (LIST), offsetof( c_ast_t, NEXT ) )
 
 /**
  * Creates a new c_ast.

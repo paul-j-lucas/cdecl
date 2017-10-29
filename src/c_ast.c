@@ -41,49 +41,8 @@
 
 // local variable definitions
 static unsigned   c_ast_count;          // alloc'd but not yet freed
-static c_ast_t    c_ast_free_recursive; // special sentinel value
-static c_ast_t   *c_ast_gc_head;        // linked list of alloc'd objects
 
 ////////// local functions ////////////////////////////////////////////////////
-
-/**
- * Frees all the memory used by the given c_ast.
- *
- * @param ast The c_ast to free.  May be NULL.
- * @param free_recursive If \c true, free recursively.
- */
-static void c_ast_free_impl( c_ast_t *ast, bool free_recursive ) {
-  if ( ast != NULL ) {
-    assert( c_ast_count > 0 );
-    --c_ast_count;
-
-    FREE( ast->name );
-    switch ( ast->kind ) {
-      case K_BLOCK:
-      case K_FUNCTION:
-        if ( free_recursive )
-          c_ast_list_free( &ast->as.func.args );
-        break;
-      case K_ENUM_CLASS_STRUCT_UNION:
-        FREE( ast->as.ecsu.ecsu_name );
-        break;
-      case K_POINTER_TO_MEMBER:
-        FREE( ast->as.ptr_mbr.class_name );
-        break;
-      case K_TYPEDEF:
-        // Do not free ast->as.c_typedef here since it's global data: it will
-        // be freed eventually via c_typedef_cleanup().
-        break;
-      default:
-        /* suppress warning */;
-    } // switch
-
-    if ( free_recursive && c_ast_is_parent( ast ) )
-      c_ast_free_impl( ast->as.parent.of_ast, true );
-
-    FREE( ast );
-  }
-}
 
 #ifndef NDEBUG
 /**
@@ -202,58 +161,71 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
 }
 
 void c_ast_free( c_ast_t *ast ) {
-  if ( ast != NULL )
-    c_ast_free_impl( ast, ast->gc_next == &c_ast_free_recursive );
-}
+  if ( ast != NULL ) {
+    assert( c_ast_count > 0 );
+    --c_ast_count;
 
-void c_ast_gc( void ) {
-  for ( c_ast_t *p = c_ast_gc_head; p != NULL; ) {
-    c_ast_t *const next = p->gc_next;
-    c_ast_free_impl( p, false );
-    p = next;
-  } // for
-  c_ast_gc_head = NULL;
-}
+    FREE( ast->name );
+    switch ( ast->kind ) {
+      case K_ENUM_CLASS_STRUCT_UNION:
+        FREE( ast->as.ecsu.ecsu_name );
+        break;
+      case K_POINTER_TO_MEMBER:
+        FREE( ast->as.ptr_mbr.class_name );
+        break;
+      case K_TYPEDEF:
+        // Do not free ast->as.c_typedef here since it's global data: it will
+        // be freed eventually via c_typedef_cleanup().
+        break;
+      default:
+        /* suppress warning */;
+    } // switch
 
-void c_ast_gc_release( void ) {
-  if ( c_ast_gc_head != NULL ) {
-    //
-    // During garbage collection, freeing an AST node frees only that node and
-    // not its child nodes (since they'll be freed eventually by garbage
-    // collection).
-    //
-    // However, if the current set of AST nodes are being released from garbage
-    // collection (as is done when defining a type), we have to ensure that
-    // freeing the head node will also free its child nodes.
-    //
-    // Therefore, we set the gc_next pointer to a special value to indicate
-    // this (rather than use an extra bool field).
-    //
-    c_ast_gc_head->gc_next = &c_ast_free_recursive;
-    c_ast_gc_head = NULL;
+    FREE( ast );
   }
 }
 
-void c_ast_list_append( c_ast_list_t *list, c_ast_t *ast ) {
+c_ast_t* c_ast_list_append_ast( c_ast_list_t *list, c_ast_t *ast,
+                                size_t next_offset ) {
   assert( list != NULL );
   if ( ast != NULL ) {
-    assert( ast->next == NULL );
+    assert( *PTR_TO_OFFSET( ast, c_ast_t*, next_offset ) == NULL );
     if ( list->head_ast == NULL ) {
       assert( list->tail_ast == NULL );
       list->head_ast = ast;
     } else {
       assert( list->tail_ast != NULL );
-      assert( list->tail_ast->next == NULL );
-      list->tail_ast->next = ast;
+      assert( *PTR_TO_OFFSET( list->tail_ast, c_ast_t*, next_offset ) == NULL );
+      *PTR_TO_OFFSET( list->tail_ast, c_ast_t*, next_offset ) = ast;
     }
     list->tail_ast = ast;
   }
+  return ast;
 }
 
-void c_ast_list_free( c_ast_list_t *list ) {
+void c_ast_list_append_list( c_ast_list_t *dst, c_ast_list_t *src,
+                             size_t next_offset ) {
+  assert( dst != NULL );
+  assert( src != NULL );
+  if ( src->head_ast != NULL ) {
+    assert( src->tail_ast != NULL );
+    if ( dst->head_ast == NULL ) {
+      assert( dst->tail_ast == NULL );
+      dst->head_ast = src->head_ast;
+      dst->tail_ast = src->tail_ast;
+    } else {
+      assert( *PTR_TO_OFFSET( dst->tail_ast, c_ast_t*, next_offset ) == NULL );
+      *PTR_TO_OFFSET( dst->tail_ast, c_ast_t*, next_offset ) = src->head_ast;
+      dst->tail_ast = src->tail_ast;
+    }
+    src->head_ast = src->tail_ast = NULL;
+  }
+}
+
+void c_ast_list_free( c_ast_list_t *list, size_t next_offset ) {
   if ( list != NULL ) {
     for ( c_ast_t *ast = list->head_ast; ast != NULL; ) {
-      c_ast_t *const next = ast->next;
+      c_ast_t *const next = *PTR_TO_OFFSET( ast, c_ast_t*, next_offset );
       c_ast_free( ast );
       ast = next;
     } // for
@@ -272,9 +244,8 @@ c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, c_loc_t const *loc ) {
   ast->id = ++next_id;
   ast->kind = kind;
   ast->loc = *loc;
-  ast->gc_next = c_ast_gc_head;
+  ast->gc_next = NULL;
 
-  c_ast_gc_head = ast;
   ++c_ast_count;
   return ast;
 }

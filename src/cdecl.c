@@ -58,6 +58,7 @@ char const         *me;                 // program name
 
 // extern functions
 extern bool         parse_string( char const*, size_t );
+extern void         parser_cleanup( void );
 extern int          yyparse( void );
 extern void         yyrestart( FILE* );
 
@@ -107,7 +108,7 @@ static bool is_command( char const *s ) {
     L_STATIC,                           // cast ...
     NULL
   };
-  for ( char const *const *c = COMMANDS; *c; ++c )
+  for ( char const *const *c = COMMANDS; *c != NULL; ++c )
     if ( strcmp( *c, s ) == 0 )
       return true;
   return false;
@@ -118,7 +119,8 @@ static bool is_command( char const *s ) {
  */
 static void cdecl_cleanup( void ) {
   free_now();
-  c_typedef_cleanup();                  // must go before c_ast_cleanup()
+  c_typedef_cleanup();
+  parser_cleanup();                     // must go before c_ast_cleanup()
   c_ast_cleanup();
 }
 
@@ -139,7 +141,7 @@ static bool parse_argv( int argc, char const *argv[] ) {
 
   // cdecl '{cast|declare|explain} arg ...'
   char *argv0 = CONST_CAST( char*, argv[0] );
-  for ( char *first_word; (first_word = strsep( &argv0, " \t" )); ) {
+  for ( char *first_word; (first_word = strsep( &argv0, " \t" )) != NULL; ) {
     if ( unlikely( first_word[0] == '\0' ) ) {
       //
       // Leading whitespace in a quoted argument, e.g.:

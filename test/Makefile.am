@@ -575,7 +575,8 @@ TESTS+=	tests/show_foo.test
 # C typedef tests
 # ===============
 #
-TESTS+=	tests/typedef_i.test \
+TESTS+=	tests/typedef_fi_v_show_f.test \
+	tests/typedef_i.test \
 	tests/typedef_i_declare_i.test \
 	tests/typedef_i_explain_i.test \
 	tests/typedef_i_int_least32_t.test

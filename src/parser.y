@@ -65,7 +65,7 @@
   BLOCK( if ( !c_ast_check( (AST), (CHECK) ) ) PARSE_ABORT(); )
 
 #define C_AST_NEW(KIND,LOC) \
-  c_ast_new( (KIND), ast_depth, (LOC) )
+  C_AST_LIST_APPEND_AST( &ast_gc_list, c_ast_new( (KIND), ast_depth, (LOC) ), gc_next )
 
 #define C_TYPE_ADD(DST,SRC,LOC) \
   BLOCK( if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_ABORT(); )
@@ -148,6 +148,8 @@ extern int          yylex( void );
 
 // local variables
 static unsigned     ast_depth;          // parentheses nesting depth
+static c_ast_list_t ast_gc_list;        // cleaned up after every parse
+static c_ast_list_t ast_typedef_list;   // cleaned up before program end
 static bool         error_newlined = true;
 static in_attr_t    in_attr;
 
@@ -223,6 +225,15 @@ static inline void qualifier_pop( void ) {
   FREE( LINK_POP( qualifier_link_t, &in_attr.qualifier_head ) );
 }
 
+////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Cleans up parser data.
+ */
+void parser_cleanup( void ) {
+  C_AST_LIST_FREE( &ast_typedef_list, gc_next );
+}
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -275,7 +286,7 @@ static bool _Noreturn_ok( c_loc_t const *loc ) {
  * YYABORT is called.
  */
 static void parse_cleanup( bool hard_reset ) {
-  c_ast_gc();
+  C_AST_LIST_FREE( &ast_gc_list, gc_next );
   lexer_reset( hard_reset );
   qualifier_clear();
   MEM_ZERO( &in_attr );
@@ -869,20 +880,19 @@ define_english
                 c_ast_check( $5.ast, CHECK_DECL );
 
       //
-      // Once the semantic checks pass, remove the T_TYPEDEF for the same
-      // reason as using c_ast_take_typedef().  (Since we know $5.ast has the
-      // T_TYPEDEF, we can just remove it directly rather than call
-      // c_ast_take_typedef().)
+      // Once the semantic checks pass, remove the T_TYPEDEF.
       //
-      $5.ast->type &= ~T_TYPEDEF;
+      (void)c_ast_take_typedef( $5.ast );
 
       if ( ok ) {
         if ( c_typedef_add( $2, $5.ast ) ) {
           //
-          // If c_typedef_add() returns true, it takes ownership of the name and
-          // AST, so we release the AST from garbage collection.
+          // If c_typedef_add() succeeds, we have to move the AST from the
+          // ast_gc_list so it won't be garbage collected at the end of the
+          // parse to a separate ast_typedef_list that's freed only at program
+          // termination.
           //
-          c_ast_gc_release();
+          C_AST_LIST_APPEND_LIST( &ast_typedef_list, &ast_gc_list, gc_next );
         }
         else {
           print_error( &@5,
@@ -1144,7 +1154,6 @@ typedef_declaration_c
       DUMP_START( "typedef_declaration_c", "TYPEDEF type_ast_c decl_c" );
       DUMP_AST( "type_ast_c", $3.ast );
       DUMP_AST( "decl_c", $5.ast );
-      DUMP_END();
 
       c_ast_t *ast;
       char const *name;
@@ -1187,21 +1196,11 @@ typedef_declaration_c
 
       C_AST_CHECK( ast, CHECK_DECL );
       // see comment in define_english about T_TYPEDEF
-      ast->type &= ~T_TYPEDEF;
+      (void)c_ast_take_typedef( ast );
 
       if ( c_typedef_add( name, ast ) ) {
-        //
-        // If c_typedef_add() returns true, it takes ownership of the name and
-        // AST, so we release the AST from garbage collection.
-        //
-        c_ast_gc_release();
-        //
-        // The first two cases above set ast to $3 ignoring $5.  Since we just
-        // released garbage collection, we have to free $5 explicitly if it's a
-        // c_typedef.
-        //
-        if ( $3.ast != $5.ast && $5.ast->kind == K_TYPEDEF )
-          c_ast_free( $5.ast );
+        // see comment in define_english about ast_typedef_list
+        C_AST_LIST_APPEND_LIST( &ast_typedef_list, &ast_gc_list, gc_next );
       }
       else {
         print_error( &@5,
@@ -1210,6 +1209,9 @@ typedef_declaration_c
         FREE( name );
         PARSE_ABORT();
       }
+
+      DUMP_AST( "typedef_declaration_c", ast );
+      DUMP_END();
     }
   ;
 
@@ -1363,7 +1365,7 @@ decl_list_english
       DUMP_AST( "decl_english", $3.ast );
 
       $$ = $1;
-      c_ast_list_append( &$$, $3.ast );
+      C_AST_LIST_APPEND_AST( &$$, $3.ast, next );
 
       DUMP_AST_LIST( "decl_list_opt_english", $$ );
       DUMP_END();
@@ -2038,7 +2040,7 @@ arg_list_c
       DUMP_AST( "cast_opt_c", $3.ast );
 
       $$ = $1;
-      c_ast_list_append( &$$, $3.ast );
+      C_AST_LIST_APPEND_AST( &$$, $3.ast, next );
 
       DUMP_AST_LIST( "arg_list_c", $$ );
       DUMP_END();
@@ -2050,7 +2052,7 @@ arg_list_c
       DUMP_AST( "arg_c", $1.ast );
 
       $$.head_ast = $$.tail_ast = NULL;
-      c_ast_list_append( &$$, $1.ast );
+      C_AST_LIST_APPEND_AST( &$$, $1.ast, next );
 
       DUMP_AST_LIST( "arg_list_c", $$ );
       DUMP_END();

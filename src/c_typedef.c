@@ -172,7 +172,6 @@ static int c_typedef_cmp( void const *data_i, void const *data_j ) {
 static void c_typedef_free( void *data ) {
   c_typedef_t *const t = REINTERPRET_CAST( c_typedef_t*, data );
   FREE( t->type_name );
-  c_ast_free( CONST_CAST( c_ast_t*, t->ast ) );
 }
 
 /**
