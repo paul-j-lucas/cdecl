@@ -114,7 +114,7 @@ _GL_INLINE_HEADER_BEGIN
 #define FSTAT(FD,STAT) BLOCK( \
   if ( unlikely( fstat( (FD), (STAT) ) < 0 ) ) perror_exit( EX_IOERR ); )
 
-#define PTR_TO_OFFSET(PTR,TYPE,OFFSET) \
+#define PTR_OFFSET(PTR,TYPE,OFFSET) \
   REINTERPRET_CAST( TYPE*, REINTERPRET_CAST( char*, (PTR) ) + (OFFSET) )
 
 #define REALLOC(PTR,TYPE,N) \
