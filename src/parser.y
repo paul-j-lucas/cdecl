@@ -78,7 +78,7 @@
 #endif
 
 #define DUMP_COMMA \
-  IF_DEBUG( if ( true_or_set( &debug_comma ) ) PUTS_OUT( ",\n" ); )
+  BLOCK( if ( true_or_set( &debug_comma ) ) PUTS_OUT( ",\n" ); )
 
 #define DUMP_AST(KEY,AST) \
   IF_DEBUG( DUMP_COMMA; c_ast_debug( (AST), 1, (KEY), stdout ); )
