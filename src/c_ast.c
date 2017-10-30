@@ -233,7 +233,7 @@ void c_ast_list_free( c_ast_list_t *list, size_t next_offset ) {
   }
 }
 
-c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, c_loc_t const *loc ) {
+c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc ) {
   assert( loc != NULL );
   static c_ast_id_t next_id;
 

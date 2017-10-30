@@ -142,19 +142,19 @@ struct in_attr {
 typedef struct in_attr in_attr_t;
 
 // extern functions
-extern void         print_help( void );
-extern void         set_option( char const* );
-extern int          yylex( void );
+extern void           print_help( void );
+extern void           set_option( char const* );
+extern int            yylex( void );
 
 // local variables
-static unsigned     ast_depth;          // parentheses nesting depth
-static c_ast_list_t ast_gc_list;        // cleaned up after every parse
-static c_ast_list_t ast_typedef_list;   // cleaned up before program end
-static bool         error_newlined = true;
-static in_attr_t    in_attr;
+static c_ast_depth_t  ast_depth;        // parentheses nesting depth
+static c_ast_list_t   ast_gc_list;      // cleaned up after every parse
+static c_ast_list_t   ast_typedef_list; // cleaned up before program end
+static bool           error_newlined = true;
+static in_attr_t      in_attr;
 
 // local functions
-static void         qualifier_clear( void );
+static void           qualifier_clear( void );
 
 ////////// inline functions ///////////////////////////////////////////////////
 

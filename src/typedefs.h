@@ -57,6 +57,7 @@ enum c_mode {
 };
 
 typedef struct c_ast        c_ast_t;
+typedef unsigned            c_ast_depth_t;
 typedef unsigned            c_ast_id_t;
 typedef struct c_ast_list   c_ast_list_t;
 typedef struct c_ast_pair   c_ast_pair_t;

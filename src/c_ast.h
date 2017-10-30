@@ -149,14 +149,14 @@ struct c_ptr_ref {
  * AST node for a parsed C/C++ declaration.
  */
 struct c_ast {
-  c_ast_t    *next;                     // must be first struct member
-  unsigned    depth;                    // how many () deep
-  c_ast_id_t  id;                       // unique id (starts at 1)
-  c_kind_t    kind;
-  char const *name;
-  c_type_t    type;
-  c_ast_t    *parent;
-  c_loc_t     loc;
+  c_ast_t      *next;                   // must be first struct member
+  c_ast_depth_t depth;                  // how many () deep
+  c_ast_id_t    id;                     // unique id (starts at 1)
+  c_kind_t      kind;
+  char const   *name;
+  c_type_t      type;
+  c_ast_t      *parent;
+  c_loc_t       loc;
 
   union {
     c_parent_t          parent;
@@ -298,7 +298,7 @@ void c_ast_list_free( c_ast_list_t *list, size_t next_offset );
  * @param depth How deep within () it is.
  * @param loc A pointer to the token location data.
  */
-c_ast_t* c_ast_new( c_kind_t kind, unsigned depth, c_loc_t const *loc );
+c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc );
 
 /**
  * Gets the root AST node of \a ast.
