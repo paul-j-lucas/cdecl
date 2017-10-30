@@ -178,11 +178,11 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       // them out of the type here, but print them after the arguments.
       //
       cv_qualifier    = (ast_type & T_MASK_QUALIFIER);
-      is_final        = (ast_type & T_FINAL) != 0;
-      is_noexcept     = (ast_type & T_NOEXCEPT) != 0;
-      is_override     = (ast_type & T_OVERRIDE) != 0;
-      is_pure_virtual = (ast_type & T_PURE_VIRTUAL) != 0;
-      is_throw        = (ast_type & T_THROW) != 0;
+      is_final        = (ast_type & T_FINAL) != T_NONE;
+      is_noexcept     = (ast_type & T_NOEXCEPT) != T_NONE;
+      is_override     = (ast_type & T_OVERRIDE) != T_NONE;
+      is_pure_virtual = (ast_type & T_PURE_VIRTUAL) != T_NONE;
+      is_throw        = (ast_type & T_THROW) != T_NONE;
       ref_qualifier   = (ast_type & T_MASK_REF_QUALIFIER);
 
       ast_type &= ~(T_MASK_QUALIFIER
