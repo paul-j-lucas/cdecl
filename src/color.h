@@ -32,6 +32,7 @@
 
 // standard
 #include <stdbool.h>
+#include <stddef.h>                     /* for NULL */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -81,7 +82,7 @@
  * @hideinitializer
  */
 #define SGR_START_COLOR(STREAM,COLOR) BLOCK(  \
-  if ( colorize && (sgr_ ## COLOR) )          \
+  if ( colorize && (sgr_ ## COLOR) != NULL )  \
     FPRINTF( (STREAM), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
 
 /**
@@ -93,7 +94,7 @@
  * @hideinitializer
  */
 #define SGR_SSTART_COLOR(STRING,COLOR) BLOCK( \
-  if ( colorize && (sgr_ ## COLOR) )          \
+  if ( colorize && (sgr_ ## COLOR) != NULL )  \
     sprintf( (STRING), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
 
 /**
