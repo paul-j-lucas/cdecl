@@ -36,7 +36,7 @@ The characters are:
 + `k` = `struct`
 + `l` = `long`
 + `m` = `_Imaginary`, member of class, or `mutable`
-+ `n` = nested, `noreturn`, or `union`
++ `n` = name, nested, `noreturn`, or `union`
 + `o` = `override` or `thread_local`
 + `p` = pointer
 + `r` = `restrict` or reference

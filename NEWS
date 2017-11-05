@@ -10,6 +10,14 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 4.4.2
+
+** Fixed declare of function with an invalid argument
+A declaration like:
+    declare f as function (x as unknown_type)
+now correctly reports the unknown type.
+
+
 * Changes in Cdecl 4.4.1
 
 ** Fixed typedef of pointer-to-function

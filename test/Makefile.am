@@ -161,19 +161,18 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_af.test \
 	tests/declare_as3i.test \
 	tests/declare_avi.test \
-	tests/declare_b-c89.test \
 	tests/declare_b_ai.test \
+	tests/declare_b-c89.test \
 	tests/declare_b_f_i.test \
-	tests/declare_c-c.test \
 	tests/declare_c16-c++03.test \
 	tests/declare_c16-c99.test \
 	tests/declare_c32-c++03.test \
 	tests/declare_c32-c99.test \
+	tests/declare_c-c.test \
 	tests/declare_cf_v-c.test \
 	tests/declare_ci-knr.test \
-	tests/declare_e-knr.test \
 	tests/declare_ec-c.test \
-	tests/declare_esf_v.test \
+	tests/declare_e-knr.test \
 	tests/declare_esf_v.test \
 	tests/declare_f_ai.test \
 	tests/declare_f_f_i.test \
@@ -181,24 +180,25 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_fg_v.test \
 	tests/declare_fiiv_v.test \
 	tests/declare_fiv_v.test \
+	tests/declare_fn.test \
 	tests/declare_fsi_v.test \
 	tests/declare_fvx_v.test \
 	tests/declare_gf_v.test \
 	tests/declare_hb.test \
-	tests/declare_hc.test \
 	tests/declare_hc16.test \
 	tests/declare_hc32.test \
+	tests/declare_hc.test \
 	tests/declare_hd.test \
 	tests/declare_hf.test \
-	tests/declare_hl.test \
 	tests/declare_hll.test \
+	tests/declare_hl.test \
 	tests/declare_hv.test \
 	tests/declare_hw.test \
 	tests/declare_ii.test \
 	tests/declare_lb.test \
-	tests/declare_lc.test \
 	tests/declare_lc16.test \
 	tests/declare_lc32.test \
+	tests/declare_lc.test \
 	tests/declare_ld-knr.test \
 	tests/declare_lf-c.test \
 	tests/declare_ll-c89.test \
@@ -210,9 +210,9 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_pv-knr.test \
 	tests/declare_rf_v-c.test \
 	tests/declare_sb.test \
-	tests/declare_sc-knr.test \
 	tests/declare_sc16.test \
 	tests/declare_sc32.test \
+	tests/declare_sc-knr.test \
 	tests/declare_si-knr.test \
 	tests/declare_sl-knr.test \
 	tests/declare_sv.test \
@@ -226,9 +226,9 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_uv.test \
 	tests/declare_uw.test \
 	tests/declare_uz.test \
-	tests/declare_v.test \
 	tests/declare_vf_v-c.test \
 	tests/declare_vi-knr.test \
+	tests/declare_v.test \
 	tests/declare_w-c89.test \
 	tests/declare_xi-c.test
 
@@ -383,6 +383,7 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_fg_v.test \
 	tests/explain_fiiv_v.test \
 	tests/explain_fiv_v.test \
+	tests/explain_fn.test \
 	tests/explain_fsi_v.test \
 	tests/explain_fve_v.test \
 	tests/explain_fvi_v.test \

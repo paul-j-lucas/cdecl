@@ -1508,6 +1508,13 @@ var_decl_english
       DUMP_NAME( "NAME", $1 );
       DUMP_AST( "decl_english", $3.ast );
 
+      if ( $3.ast->kind == K_NAME ) {   // see comment in declare_english
+        assert( $3.ast->name != NULL );
+        print_error( &@3, "\"%s\": unknown type", $3.ast->name );
+        FREE( $1 );
+        PARSE_ABORT();
+      }
+
       $$ = $3;
       assert( $$.ast->name == NULL );
       $$.ast->name = $1;
