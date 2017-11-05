@@ -38,6 +38,7 @@
 #include "config.h"                     /* must go first */
 #include "c_kind.h"
 #include "c_type.h"
+#include "slist.h"
 #include "typedefs.h"
 #include "util.h"
 
@@ -53,6 +54,15 @@ _GL_INLINE_HEADER_BEGIN
 
 #define C_ARRAY_SIZE_NONE     (-1)      /* for array[] */
 #define C_ARRAY_SIZE_VARIABLE (-2)      /* for array[*] */
+
+/**
+ * Convenience macro to get the AST given an slist_node_t.
+ *
+ * @param NODE A pointer to an slist_node.
+ * @return Returns a pointer to the AST.
+ * @hideinitializer
+ */
+#define C_AST_DATA(NODE)          SLIST_DATA( c_ast_t*, (NODE) )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -78,14 +88,6 @@ enum v_direction {
 typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
 
 /**
- * Linked-list of AST nodes.
- */
-struct c_ast_list {
-  c_ast_t  *head_ast;
-  c_ast_t  *tail_ast;
-};
-
-/**
  * Generic "parent" AST node.
  *
  * @note All parent nodes have a c_ast pointer to what they're a parent of as
@@ -108,8 +110,8 @@ struct c_array {
  * AST node for a C/C++ block (Apple extension).
  */
 struct c_block {
-  c_ast_t      *ret_ast;                // return type
-  c_ast_list_t  args;
+  c_ast_t  *ret_ast;                    // return type
+  slist_t   args;
 };
 
 /**
@@ -126,8 +128,8 @@ struct c_ecsu {
  * advantage of.
  */
 struct c_func {
-  c_ast_t      *ret_ast;                // return type
-  c_ast_list_t  args;
+  c_ast_t  *ret_ast;                    // return type
+  slist_t   args;
 };
 
 /**
@@ -149,7 +151,6 @@ struct c_ptr_ref {
  * AST node for a parsed C/C++ declaration.
  */
 struct c_ast {
-  c_ast_t      *next;                   // must be first struct member
   c_ast_depth_t depth;                  // how many () deep
   c_ast_id_t    id;                     // unique id (starts at 1)
   c_kind_t      kind;
@@ -171,16 +172,6 @@ struct c_ast {
     c_typedef_t const  *c_typedef;
     // nothing needed for K_VARIADIC
   } as;
-
-  /**
-   * Every c_ast that's dynamically allocated is added to a linked list so that
-   * they all can be garbage collected in one go.  This pointer is used for
-   * that list.
-   *
-   * This is much easier than having to free manually on parsing success or
-   * rely on Bison \c \%destructor code for parsing failure.
-   */
-  c_ast_t *gc_next;
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -189,10 +180,10 @@ struct c_ast {
  * Convenience function for getting block/function arguments.
  *
  * @param ast The c_ast to get the arguments of.
- * @return Returns a pointe to the first argument or null if none.
+ * @return Returns a pointer to the first argument or null if none.
  */
-CDECL_AST_INLINE c_ast_t const* c_ast_args( c_ast_t const *ast ) {
-  return ast->as.func.args.head_ast;
+CDECL_AST_INLINE c_ast_arg_t const* c_ast_args( c_ast_t const *ast ) {
+  return ast->as.func.args.head;
 }
 
 /**
@@ -227,69 +218,6 @@ void c_ast_free( c_ast_t *ast );
 CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
   return ast != NULL && c_kind_is_parent( ast->kind );
 }
-
-/**
- * Appends a c_ast onto the end of a c_ast_list.
- *
- * @param list The c_ast_list to append onto.
- * @param ast The c_ast to append.  Does nothing if null.
- * @param next_offset The offset, in bytes, of the next pointer member within
- * c_ast to use.
- * @return Returns \a ast.
- */
-c_ast_t* c_ast_list_append_ast( c_ast_list_t *list, c_ast_t *ast,
-                                size_t next_offset );
-
-/**
- * Convenience macro that calls c_ast_list_append_ast() with the offset of
- * \a NEXT.
- *
- * @param LIST the c_ast_list to append onto.
- * @param AST The c_ast to append.  Does nothing if null.
- * @param NEXT The name of the next pointer member to use.
- */
-#define C_AST_LIST_APPEND_AST(LIST,AST,NEXT) \
-  c_ast_list_append_ast( (LIST), (AST), offsetof( c_ast_t, NEXT ) )
-
-/**
- * Appends a c_ast_list onto the end of another c_ast_list.
- *
- * @param dst The c_ast_list to append onto.
- * @param src The c_ast_list to append.  It is made empty.
- * @param next_offset The offset, in bytes, of the next pointer member within
- * c_ast to use.
- */
-void c_ast_list_append_list( c_ast_list_t *dst, c_ast_list_t *src,
-                             size_t next_offset );
-
-/**
- * Convenience macro that calls c_ast_list_append_list() with the offset of
- * \a NEXT.
- *
- * @param DST The c_ast_list to append onto.
- * @param SRC The c_ast_list to append.
- * @param NEXT The name of the next pointer member to use.
- */
-#define C_AST_LIST_APPEND_LIST(DST,SRC,NEXT) \
-  c_ast_list_append_list( (DST), (SRC), offsetof( c_ast_t, NEXT ) )
-
-/**
- * Frees all the memory used by the given c_ast_list.
- *
- * @param list A pointer to the list to free.  Does nothing if null.
- * @param next_offset The offset, in bytes, of the next pointer member within
- * c_ast to use.
- */
-void c_ast_list_free( c_ast_list_t *list, size_t next_offset );
-
-/**
- * Convenience macro that calls c_ast_list_free() with the offset of \a NEXT.
- *
- * @param LIST A pointer to the list to free.  Does nothing if null.
- * @param NEXT The name of the next pointer member to follow.
- */
-#define C_AST_LIST_FREE(LIST,NEXT) \
-  c_ast_list_free( (LIST), offsetof( c_ast_t, NEXT ) )
 
 /**
  * Creates a new c_ast.

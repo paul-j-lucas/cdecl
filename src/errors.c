@@ -129,29 +129,30 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
   assert( ast->kind & (K_BLOCK | K_FUNCTION) );
   assert( opt_lang != LANG_C_KNR );
 
-  c_ast_t const *variadic_arg = NULL, *void_arg = NULL;
+  c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
   unsigned n_args = 0;
 
-  for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-    if ( ++n_args > 1 && void_arg != NULL )
+  for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
+    if ( ++n_args > 1 && void_ast != NULL )
       goto only_void;
 
-    switch ( arg->kind ) {
+    c_ast_t const *const arg_ast = C_AST_DATA( arg );
+    switch ( arg_ast->kind ) {
       case K_BUILTIN:
-        if ( (arg->type & T_AUTO_CPP_11) != T_NONE ) {
-          print_error( &arg->loc, "arguments can not be auto" );
+        if ( (arg_ast->type & T_AUTO_CPP_11) != T_NONE ) {
+          print_error( &arg_ast->loc, "arguments can not be auto" );
           return false;
         }
-        if ( (arg->type & T_VOID) != T_NONE ) {
+        if ( (arg_ast->type & T_VOID) != T_NONE ) {
           //
           // Ordinarily, void arguments are invalid; but a single void function
           // "argument" is valid (as long as it doesn't have a name).
           //
-          if ( arg->name != NULL ) {
-            print_error( &arg->loc, "arguments can not be void" );
+          if ( arg_ast->name != NULL ) {
+            print_error( &arg_ast->loc, "arguments can not be void" );
             return false;
           }
-          void_arg = arg;
+          void_ast = arg_ast;
           if ( n_args > 1 )
             goto only_void;
           continue;
@@ -160,37 +161,37 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
 
       case K_NAME:
         if ( opt_lang >= LANG_CPP_MIN ) {
-          print_error( &arg->loc, "C++ requires type specifier" );
+          print_error( &arg_ast->loc, "C++ requires type specifier" );
           return false;
         }
         break;
 
       case K_VARIADIC:
         if ( arg->next != NULL ) {
-          print_error( &arg->loc, "variadic specifier must be last" );
+          print_error( &arg_ast->loc, "variadic specifier must be last" );
           return false;
         }
-        variadic_arg = arg;
+        variadic_ast = arg_ast;
         continue;
 
       default:
         /* suppress warning */;
     } // switch
 
-    c_type_t const storage = arg->type & (T_MASK_STORAGE & ~T_REGISTER);
+    c_type_t const storage = arg_ast->type & (T_MASK_STORAGE & ~T_REGISTER);
     if ( storage != T_NONE ) {
-      print_error( &arg->loc,
+      print_error( &arg_ast->loc,
         "function arguments can not be %s", c_type_name_error( storage )
       );
       return false;
     }
 
-    if ( !c_ast_check_errors( arg, true ) )
+    if ( !c_ast_check_errors( arg_ast, true ) )
       return false;
   } // for
 
-  if ( variadic_arg != NULL && n_args == 1 ) {
-    print_error( &variadic_arg->loc,
+  if ( variadic_ast != NULL && n_args == 1 ) {
+    print_error( &variadic_ast->loc,
       "variadic specifier can not be only argument"
     );
     return false;
@@ -199,7 +200,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
   return true;
 
 only_void:
-  print_error( &void_arg->loc, "\"void\" must be only parameter if specified" );
+  print_error( &void_ast->loc, "\"void\" must be only parameter if specified" );
   return false;
 }
 
@@ -214,12 +215,13 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
   assert( ast->kind & (K_BLOCK | K_FUNCTION) );
   assert( opt_lang == LANG_C_KNR );
 
-  for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-    switch ( arg->kind ) {
+  for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
+    c_ast_t const *const arg_ast = C_AST_DATA( arg );
+    switch ( arg_ast->kind ) {
       case K_NAME:
         break;
       case K_PLACEHOLDER:
-        assert( arg->kind != K_PLACEHOLDER );
+        assert( arg_ast->kind != K_PLACEHOLDER );
       default:
         print_error( &ast->loc, "function prototypes" );
         return false;
@@ -490,9 +492,11 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
       data = REINTERPRET_CAST( void*, true );
-      for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-        if ( !c_ast_check_visitor( arg, c_ast_visitor_type, data ) )
+      for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
+        if ( !c_ast_check_visitor( C_AST_DATA( arg ), c_ast_visitor_type,
+                                   data ) ) {
           return VISITOR_ERROR_FOUND;
+        }
       } // for
       if ( ast->kind == K_FUNCTION )
         break;
@@ -549,8 +553,11 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
           "[[%s]] functions can not return void", L_NODISCARD
         );
       }
-      for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next )
-        (void)c_ast_check_visitor( arg, c_ast_visitor_warning, data );
+      for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
+        (void)c_ast_check_visitor(
+          C_AST_DATA( arg ), c_ast_visitor_warning, data
+        );
+      } // for
       break;
     }
 

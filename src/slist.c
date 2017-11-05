@@ -1,0 +1,97 @@
+/*
+**      cdecl -- C gibberish translator
+**      src/slist.c
+**
+**      Copyright (C) 2017  Paul J. Lucas, et al.
+**
+**      This program is free software: you can redistribute it and/or modify
+**      it under the terms of the GNU General Public License as published by
+**      the Free Software Foundation, either version 3 of the License, or
+**      (at your option) any later version.
+**
+**      This program is distributed in the hope that it will be useful,
+**      but WITHOUT ANY WARRANTY; without even the implied warranty of
+**      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**      GNU General Public License for more details.
+**
+**      You should have received a copy of the GNU General Public License
+**      along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+// local
+#include "slist.h"
+
+// standard
+#include <assert.h>
+
+////////// extern functions ///////////////////////////////////////////////////
+
+void* slist_append( slist_t *list, void *data ) {
+  assert( list != NULL );
+  slist_node_t *const new_tail = MALLOC( slist_node_t, 1 );
+  new_tail->data = data;
+  new_tail->next = NULL;
+
+  if ( list->head == NULL ) {
+    assert( list->tail == NULL );
+    list->head = new_tail;
+  } else {
+    assert( list->tail != NULL );
+    assert( list->tail->next == NULL );
+    list->tail->next = new_tail;
+  }
+  list->tail = new_tail;
+  return data;
+}
+
+void slist_append_list( slist_t *dst, slist_t *src ) {
+  assert( dst != NULL );
+  assert( src != NULL );
+  if ( dst->head == NULL ) {
+    dst->head = src->head;
+    dst->tail = src->tail;
+  }
+  else if ( src->head != NULL ) {
+    assert( dst->tail->next == NULL );
+    dst->tail->next = src->head;
+    dst->tail = src->tail;
+  }
+  src->head = src->tail = NULL;
+}
+
+void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn ) {
+  if ( list != NULL ) {
+    for ( slist_node_t *p = list->head; p != NULL; p = p->next ) {
+      if ( data_free_fn != NULL )
+        (*data_free_fn)( p->data );
+    } // for
+    slist_init( list );
+  }
+}
+
+void* slist_pop( slist_t *list ) {
+  assert( list != NULL );
+  if ( list->head != NULL ) {
+    void *const data = list->head->data;
+    slist_node_t *const next = list->head->next;
+    FREE( list->head );
+    list->head = next;
+    if ( list->head == NULL )
+      list->tail = NULL;
+    return data;
+  }
+  return NULL;
+}
+
+void slist_push( slist_t *list, void *data ) {
+  assert( list != NULL );
+  slist_node_t *const new_head = MALLOC( slist_node_t, 1 );
+  new_head->data = data;
+  new_head->next = list->head;
+  list->head = new_head;
+  if ( list->tail == NULL )
+    list->tail = new_head;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/* vim:set et sw=2 ts=2: */

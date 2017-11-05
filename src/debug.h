@@ -30,6 +30,7 @@
 #include "config.h"                     /* must go first */
 #include "c_ast.h"
 #include "c_type.h"
+#include "slist.h"
 
 // system
 #include <stdio.h>                      /* for FILE */
@@ -54,7 +55,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
  * @param indent The initial indent.
  * @param dout The FILE to dump to.
  */
-void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout );
+void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout );
 
 /**
  * Dumps the given c_type (for debugging).

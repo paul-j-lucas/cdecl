@@ -114,24 +114,8 @@ _GL_INLINE_HEADER_BEGIN
 #define FSTAT(FD,STAT) BLOCK( \
   if ( unlikely( fstat( (FD), (STAT) ) < 0 ) ) perror_exit( EX_IOERR ); )
 
-#define PTR_OFFSET(PTR,TYPE,OFFSET) \
-  REINTERPRET_CAST( TYPE*, REINTERPRET_CAST( char*, (PTR) ) + (OFFSET) )
-
 #define REALLOC(PTR,TYPE,N) \
   (PTR) = (TYPE*)check_realloc( (PTR), sizeof(TYPE) * (N) )
-
-///////////////////////////////////////////////////////////////////////////////
-
-typedef struct link link_t;
-
-/**
- * A simple \c struct that serves as a "base class" for an intrusive singly
- * linked list. A "derived class" \e must be a \c struct that has a \c next
- * pointer as its first member.
- */
-struct link {
-  link_t *next;
-};
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -273,49 +257,6 @@ CDECL_UTIL_INLINE bool is_blank_line( char const *s ) {
  * @return Returns \c true only if \a fd refers to a regular file.
  */
 bool is_file( int fd );
-
-/**
- * Pops a node from the head of a list.
- *
- * @param phead The pointer to the pointer to the head of the list.
- * @return Returns the popped node or null if the list is empty.
- */
-link_t* link_pop( link_t **phead );
-
-/**
- * Convenience macro that pops a node from the head of a list and does the
- * necessary casting.
- *
- * @param NODE_TYPE The type of the node.
- * @param PHEAD A pointer to the pointer of the head of the list.
- * @return Returns the popped node or null if the list is empty.
- * @hideinitializer
- */
-#define LINK_POP(NODE_TYPE,PHEAD) \
-  (NODE_TYPE*)link_pop( (link_t**)(PHEAD) )
-
-/**
- * Pushes a node onto the front of a list.
- *
- * @param phead The pointer to the pointer to the head of the list.  The head
- * is updated to point to \a node.
- * @param node The pointer to the node to add.  Its \c next pointer is set to
- * the old head of the list.
- */
-void link_push( link_t **phead, link_t *node );
-
-/**
- * Convenience macro that pushes a node onto the front of a list and does the
- * necessary casting.
- *
- * @param PHEAD The pointer to the pointer to the head of the list.  The head
- * is updated to point to \a NODE.
- * @param NODE The pointer to the node to add.  Its \c next pointer is set to
- * the old head of the list.
- * @hideinitializer
- */
-#define LINK_PUSH(PHEAD,NODE) \
-  link_push( (link_t**)(PHEAD), (link_t*)(NODE) )
 
 /**
  * Appends a component to a path ensuring that exactly one \c / separates them.

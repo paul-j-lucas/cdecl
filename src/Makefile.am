@@ -49,6 +49,7 @@ cdecl_SOURCES =	parser.y \
 		prompt.c prompt.h \
 		red_black.c red_black.h \
 		set.c \
+		slist.c slist.h \
 		typedefs.h \
 		util.c util.h
 

@@ -102,10 +102,10 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
 
     case K_BLOCK:
     case K_FUNCTION: {
-      c_ast_t const *arg_i = c_ast_args( ast_i );
-      c_ast_t const *arg_j = c_ast_args( ast_j );
+      c_ast_arg_t const *arg_i = c_ast_args( ast_i );
+      c_ast_arg_t const *arg_j = c_ast_args( ast_j );
       for ( ; arg_i && arg_j; arg_i = arg_i->next, arg_j = arg_j->next ) {
-        if ( !c_ast_equiv( arg_i, arg_j ) )
+        if ( !c_ast_equiv( C_AST_DATA( arg_i ), C_AST_DATA( arg_j ) ) )
           return false;
       } // for
       if ( arg_i != NULL || arg_j != NULL )
@@ -185,54 +185,6 @@ void c_ast_free( c_ast_t *ast ) {
   }
 }
 
-c_ast_t* c_ast_list_append_ast( c_ast_list_t *list, c_ast_t *ast,
-                                size_t next_offset ) {
-  assert( list != NULL );
-  if ( ast != NULL ) {
-    assert( *PTR_OFFSET( ast, c_ast_t*, next_offset ) == NULL );
-    if ( list->head_ast == NULL ) {
-      assert( list->tail_ast == NULL );
-      list->head_ast = ast;
-    } else {
-      assert( list->tail_ast != NULL );
-      assert( *PTR_OFFSET( list->tail_ast, c_ast_t*, next_offset ) == NULL );
-      *PTR_OFFSET( list->tail_ast, c_ast_t*, next_offset ) = ast;
-    }
-    list->tail_ast = ast;
-  }
-  return ast;
-}
-
-void c_ast_list_append_list( c_ast_list_t *dst, c_ast_list_t *src,
-                             size_t next_offset ) {
-  assert( dst != NULL );
-  assert( src != NULL );
-  if ( src->head_ast != NULL ) {
-    assert( src->tail_ast != NULL );
-    if ( dst->head_ast == NULL ) {
-      assert( dst->tail_ast == NULL );
-      dst->head_ast = src->head_ast;
-      dst->tail_ast = src->tail_ast;
-    } else {
-      assert( *PTR_OFFSET( dst->tail_ast, c_ast_t*, next_offset ) == NULL );
-      *PTR_OFFSET( dst->tail_ast, c_ast_t*, next_offset ) = src->head_ast;
-      dst->tail_ast = src->tail_ast;
-    }
-    src->head_ast = src->tail_ast = NULL;
-  }
-}
-
-void c_ast_list_free( c_ast_list_t *list, size_t next_offset ) {
-  if ( list != NULL ) {
-    for ( c_ast_t *ast = list->head_ast; ast != NULL; ) {
-      c_ast_t *const next = *PTR_OFFSET( ast, c_ast_t*, next_offset );
-      c_ast_free( ast );
-      ast = next;
-    } // for
-    list->head_ast = list->tail_ast = NULL;
-  }
-}
-
 c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc ) {
   assert( loc != NULL );
   static c_ast_id_t next_id;
@@ -244,7 +196,6 @@ c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc ) {
   ast->id = ++next_id;
   ast->kind = kind;
   ast->loc = *loc;
-  ast->gc_next = NULL;
 
   ++c_ast_count;
   return ast;

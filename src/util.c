@@ -322,25 +322,6 @@ check_for_error:
   return NULL;
 }
 
-link_t* link_pop( link_t **phead ) {
-  assert( phead != NULL );
-  if ( *phead != NULL ) {
-    link_t *const popped = (*phead);
-    (*phead) = popped->next;
-    popped->next = NULL;
-    return popped;
-  }
-  return NULL;
-}
-
-void link_push( link_t **phead, link_t *node ) {
-  assert( phead != NULL );
-  assert( node != NULL );
-  assert( node->next == NULL );
-  node->next = (*phead);
-  (*phead) = node;
-}
-
 void path_append( char *path, char const *component ) {
   assert( path != NULL );
   assert( component != NULL );

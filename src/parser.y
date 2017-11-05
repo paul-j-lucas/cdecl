@@ -43,6 +43,7 @@
 #include "lexer.h"
 #include "literals.h"
 #include "options.h"
+#include "slist.h"
 #include "typedefs.h"
 #include "util.h"
 
@@ -65,7 +66,7 @@
   BLOCK( if ( !c_ast_check( (AST), (CHECK) ) ) PARSE_ABORT(); )
 
 #define C_AST_NEW(KIND,LOC) \
-  C_AST_LIST_APPEND_AST( &ast_gc_list, c_ast_new( (KIND), ast_depth, (LOC) ), gc_next )
+  SLIST_APPEND( c_ast_t*, &ast_gc_list, c_ast_new( (KIND), ast_depth, (LOC) ) )
 
 #define C_TYPE_ADD(DST,SRC,LOC) \
   BLOCK( if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_ABORT(); )
@@ -120,24 +121,22 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-typedef struct qualifier_link qualifier_link_t;
-
 /**
  * A simple \c struct "derived" from \c link that additionally holds a
  * qualifier and its source location.
  */
-struct qualifier_link /* : link */ {
-  qualifier_link_t *next;               // must be first struct member
-  c_type_t          qualifier;          // T_CONST, T_RESTRICT, or T_VOLATILE
-  c_loc_t           loc;
+struct qualifier_info {
+  c_type_t  type;                       // T_CONST, T_RESTRICT, or T_VOLATILE
+  c_loc_t   loc;
 };
+typedef struct qualifier_info qualifier_info_t;
 
 /**
  * Inherited attributes.
  */
 struct in_attr {
-  qualifier_link_t *qualifier_head;     // qualifier stack
-  c_ast_t *type_head;                   // type stack
+  slist_t qualifier_stack;
+  slist_t type_stack;
 };
 typedef struct in_attr in_attr_t;
 
@@ -148,13 +147,10 @@ extern int            yylex( void );
 
 // local variables
 static c_ast_depth_t  ast_depth;        // parentheses nesting depth
-static c_ast_list_t   ast_gc_list;      // cleaned up after every parse
-static c_ast_list_t   ast_typedef_list; // cleaned up before program end
+static slist_t        ast_gc_list;      // cleaned up after every parse
+static slist_t        ast_typedef_list; // cleaned up before program end
 static bool           error_newlined = true;
 static in_attr_t      in_attr;
-
-// local functions
-static void           qualifier_clear( void );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -173,7 +169,7 @@ static inline char const* printable_token( void ) {
  * @return Returns said AST.
  */
 static inline c_ast_t* type_peek( void ) {
-  return in_attr.type_head;
+  return SLIST_TOP( c_ast_t*, &in_attr.type_stack );
 }
 
 /**
@@ -182,7 +178,7 @@ static inline c_ast_t* type_peek( void ) {
  * @return Returns said AST.
  */
 static inline c_ast_t* type_pop( void ) {
-  return LINK_POP( c_ast_t, &in_attr.type_head );
+  return SLIST_POP( c_ast_t*, &in_attr.type_stack );
 }
 
 /**
@@ -191,7 +187,7 @@ static inline c_ast_t* type_pop( void ) {
  * @param ast The AST to push.
  */
 static inline void type_push( c_ast_t *ast ) {
-  LINK_PUSH( &in_attr.type_head, ast );
+  slist_push( &in_attr.type_stack, ast );
 }
 
 /**
@@ -201,7 +197,7 @@ static inline void type_push( c_ast_t *ast ) {
  * @return Returns said qualifier.
  */
 static inline c_type_t qualifier_peek( void ) {
-  return in_attr.qualifier_head->qualifier;
+  return SLIST_TOP( qualifier_info_t*, &in_attr.qualifier_stack )->type;
 }
 
 /**
@@ -215,14 +211,14 @@ static inline c_type_t qualifier_peek( void ) {
  * @hideinitializer
  */
 #define qualifier_peek_loc() \
-  (in_attr.qualifier_head->loc)
+  (SLIST_TOP( qualifier_info_t*, &in_attr.qualifier_stack )->loc)
 
 /**
  * Pops a qualifier from the head of the qualifier inherited attribute stack
  * and frees it.
  */
 static inline void qualifier_pop( void ) {
-  FREE( LINK_POP( qualifier_link_t, &in_attr.qualifier_head ) );
+  FREE( slist_pop( &in_attr.qualifier_stack ) );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -231,7 +227,7 @@ static inline void qualifier_pop( void ) {
  * Cleans up parser data.
  */
 void parser_cleanup( void ) {
-  C_AST_LIST_FREE( &ast_typedef_list, gc_next );
+  slist_free( &ast_typedef_list, (slist_data_free_fn_t)&c_ast_free );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -286,9 +282,10 @@ static bool _Noreturn_ok( c_loc_t const *loc ) {
  * YYABORT is called.
  */
 static void parse_cleanup( bool hard_reset ) {
-  C_AST_LIST_FREE( &ast_gc_list, gc_next );
   lexer_reset( hard_reset );
-  qualifier_clear();
+  slist_free( &ast_gc_list, (slist_data_free_fn_t)&c_ast_free );
+  slist_free( &in_attr.qualifier_stack, NULL );
+  slist_free( &in_attr.type_stack, NULL );
   MEM_ZERO( &in_attr );
 }
 
@@ -337,15 +334,6 @@ static bool print_typedef_visitor( c_typedef_t const *type, void *data ) {
 }
 
 /**
- * Clears the qualifier stack.
- */
-static void qualifier_clear( void ) {
-  qualifier_link_t *q;
-  while ( (q = LINK_POP( qualifier_link_t, &in_attr.qualifier_head )) != NULL )
-    FREE( q );
-}
-
-/**
  * Pushed a quaifier onto the front of the qualifier inherited attribute list.
  *
  * @param qualifier The qualifier to push.
@@ -354,11 +342,11 @@ static void qualifier_clear( void ) {
 static void qualifier_push( c_type_t qualifier, c_loc_t const *loc ) {
   assert( (qualifier & ~T_MASK_QUALIFIER) == 0 );
   assert( loc != NULL );
-  qualifier_link_t *const q = MALLOC( qualifier_link_t, 1 );
-  q->qualifier = qualifier;
-  q->loc = *loc;
-  q->next = NULL;
-  LINK_PUSH( &in_attr.qualifier_head, q );
+
+  qualifier_info_t *const qi = MALLOC( qualifier_info_t, 1 );
+  qi->type = qualifier;
+  qi->loc = *loc;
+  slist_push( &in_attr.qualifier_stack, qi );
 }
 
 /**
@@ -404,7 +392,7 @@ static void yyerror( char const *msg ) {
 
 %union {
   c_ast_t            *ast;
-  c_ast_list_t        ast_list;   /* for function arguments */
+  slist_t             ast_list;   /* for function arguments */
   c_ast_pair_t        ast_pair;   /* for the AST being built */
   char const         *name;       /* name being declared or explained */
   char const         *literal;    /* token literal (for new-style casts) */
@@ -891,7 +879,7 @@ define_english
           // parse to a separate ast_typedef_list that's freed only at program
           // termination.
           //
-          C_AST_LIST_APPEND_LIST( &ast_typedef_list, &ast_gc_list, gc_next );
+          slist_append_list( &ast_typedef_list, &ast_gc_list );
         }
         else {
           print_error( &@5,
@@ -1202,7 +1190,7 @@ typedef_declaration_c
 
       if ( c_typedef_add( name, ast ) ) {
         // see comment in define_english about ast_typedef_list
-        C_AST_LIST_APPEND_LIST( &ast_typedef_list, &ast_gc_list, gc_next );
+        slist_append_list( &ast_typedef_list, &ast_gc_list );
       }
       else {
         print_error( &@5,
@@ -1338,7 +1326,7 @@ ref_qualifier_opt_english
   ;
 
 paren_decl_list_opt_english
-  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
+  : /* empty */                   { slist_init( &$$ ); }
   | '(' decl_list_opt_english ')'
     {
       DUMP_START( "paren_decl_list_opt_english",
@@ -1353,12 +1341,23 @@ paren_decl_list_opt_english
   ;
 
 decl_list_opt_english
-  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
+  : /* empty */                   { slist_init( &$$ ); }
   | decl_list_english
   ;
 
 decl_list_english
-  : decl_english                  { $$.head_ast = $$.tail_ast = $1.ast; }
+  : decl_english
+    {
+      DUMP_START( "decl_list_opt_english", "decl_english" );
+      DUMP_AST( "decl_english", $1.ast );
+
+      slist_init( &$$ );
+      (void)slist_append( &$$, $1.ast );
+
+      DUMP_AST_LIST( "decl_list_opt_english", $$ );
+      DUMP_END();
+    }
+
   | decl_list_english comma_expected decl_english
     {
       DUMP_START( "decl_list_opt_english",
@@ -1367,7 +1366,7 @@ decl_list_english
       DUMP_AST( "decl_english", $3.ast );
 
       $$ = $1;
-      C_AST_LIST_APPEND_AST( &$$, $3.ast, next );
+      (void)slist_append( &$$, $3.ast );
 
       DUMP_AST_LIST( "decl_list_opt_english", $$ );
       DUMP_END();
@@ -2030,7 +2029,7 @@ reference_type_c
 /*****************************************************************************/
 
 arg_list_opt_c
-  : /* empty */                   { $$.head_ast = $$.tail_ast = NULL; }
+  : /* empty */                   { slist_init( &$$ ); }
   | arg_list_c
   ;
 
@@ -2042,7 +2041,7 @@ arg_list_c
       DUMP_AST( "cast_opt_c", $3.ast );
 
       $$ = $1;
-      C_AST_LIST_APPEND_AST( &$$, $3.ast, next );
+      (void)slist_append( &$$, $3.ast );
 
       DUMP_AST_LIST( "arg_list_c", $$ );
       DUMP_END();
@@ -2053,8 +2052,8 @@ arg_list_c
       DUMP_START( "arg_list_c", "arg_c" );
       DUMP_AST( "arg_c", $1.ast );
 
-      $$.head_ast = $$.tail_ast = NULL;
-      C_AST_LIST_APPEND_AST( &$$, $1.ast, next );
+      slist_init( &$$ );
+      (void)slist_append( &$$, $1.ast );
 
       DUMP_AST_LIST( "arg_list_c", $$ );
       DUMP_END();

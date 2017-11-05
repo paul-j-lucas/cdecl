@@ -87,11 +87,13 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
         arg_param.print_names = false;
         arg_param.eout = param->eout;
 
-        for ( c_ast_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
+        for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg != NULL;
+              arg = arg->next ) {
           if ( true_or_set( &comma ) )
             FPUTS( ", ", param->eout );
 
-          if ( arg->kind != K_NAME ) {
+          c_ast_t const *const arg_ast = C_AST_DATA( arg );
+          if ( arg_ast->kind != K_NAME ) {
             //
             // For all kinds except K_NAME, we have to print:
             //
@@ -104,7 +106,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
             // there's no "as" part, so just let the K_NAME case below print
             // the name itself.
             //
-            char const *const name = c_ast_name( arg, V_DOWN );
+            char const *const name = c_ast_name( arg_ast, V_DOWN );
             if ( name != NULL )
               FPRINTF( param->eout, "%s %s ", name, L_AS );
             else {
@@ -123,7 +125,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
           // so we have to suppress printing the name again; hence, pass false
           // for print_names here.
           //
-          c_ast_t *const nonconst_arg = CONST_CAST( c_ast_t*, arg );
+          c_ast_t *const nonconst_arg = CONST_CAST( c_ast_t*, arg_ast );
           c_ast_visit(
             nonconst_arg, V_DOWN, c_ast_visitor_english, &arg_param
           );

@@ -162,15 +162,15 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
   INDENT_PRINT( "}" );
 }
 
-void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
+void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout ) {
   assert( list != NULL );
-  if ( list->head_ast != NULL ) {
+  if ( list->head != NULL ) {
     FPUTS( "[\n", dout );
     bool comma = false;
-    for ( c_ast_t const *arg = list->head_ast; arg; arg = arg->next ) {
+    for ( slist_node_t const *p = list->head; p != NULL; p = p->next ) {
       if ( true_or_set( &comma ) )
         FPUTS( ",\n", dout );
-      c_ast_debug( arg, indent + 1, NULL, dout );
+      c_ast_debug( C_AST_DATA( p ), indent + 1, NULL, dout );
     } // for
     FPUTC( '\n', dout );
     INDENT_PRINT( "]" );
