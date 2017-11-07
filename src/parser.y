@@ -284,7 +284,7 @@ static bool _Noreturn_ok( c_loc_t const *loc ) {
 static void parse_cleanup( bool hard_reset ) {
   lexer_reset( hard_reset );
   slist_free( &ast_gc_list, (slist_data_free_fn_t)&c_ast_free );
-  slist_free( &in_attr.qualifier_stack, NULL );
+  slist_free( &in_attr.qualifier_stack, &free );
   slist_free( &in_attr.type_stack, NULL );
   MEM_ZERO( &in_attr );
 }
