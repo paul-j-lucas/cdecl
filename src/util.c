@@ -26,6 +26,7 @@
 // local
 #include "config.h"                     /* must go first */
 #define CDECL_UTIL_INLINE _GL_EXTERN_INLINE
+#include "slist.h"
 #include "util.h"
 
 // standard
@@ -64,18 +65,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * A node for a singly linked list of pointers to memory to be freed via
- * \c atexit().
- */
-struct free_node {
-  void             *fn_ptr;
-  struct free_node *fn_next;
-};
-typedef struct free_node free_node_t;
-
 // local variable definitions
-static free_node_t *free_head;          // linked list of stuff to free
+static slist_t free_later_list;         ///< List of stuff to free later.
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -134,21 +125,12 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
 
 void* free_later( void *p ) {
   assert( p != NULL );
-  free_node_t *const new_node = MALLOC( free_node_t, 1 );
-  new_node->fn_ptr = p;
-  new_node->fn_next = free_head;
-  free_head = new_node;
+  slist_append( &free_later_list, p );
   return p;
 }
 
 void free_now( void ) {
-  for ( free_node_t *p = free_head; p != NULL; ) {
-    free_node_t *const next = p->fn_next;
-    FREE( p->fn_ptr );
-    FREE( p );
-    p = next;
-  } // for
-  free_head = NULL;
+  slist_free( &free_later_list, &free );
 }
 
 #ifdef WITH_TERM_COLUMNS
