@@ -38,30 +38,31 @@
  * C/C++ language keyword or C++11 (or later) attribute information.
  */
 struct c_keyword {
-  char const *literal;                  // C string literal of the keyword
-  int         y_token;                  // yacc token number
-  c_type_t    type;                     // type the keyword maps to
-  c_lang_t    ok_langs;                 // language(s) OK in
+  char const *literal;                  ///< C string literal of the keyword.
+  int         y_token;                  ///< Bison token number.
+  c_type_t    type;                     ///< Type the keyword maps to.
+  c_lang_t    ok_langs;                 ///< Language(s) OK in.
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Given a literal, gets the c_keyword for the corresponding C++11 (or later)
- * attribute, e.g., <code>[[deprecated]]</code>
+ * Given a literal, gets the `c_keyword` for the corresponding C++11 (or later)
+ * attribute, e.g., `[[deprecated]]`.
  * @note The search is \e sensitive to the current language.
  *
  * @param literal The literal to find.
- * @return Returns a pointer to the corresponding c_attribute or null for none.
+ * @return Returns a pointer to the corresponding `c_attribute` or null for
+ * none.
  */
 c_keyword_t const* c_attribute_find( char const *literal );
 
 /**
- * Given a literal, gets the c_keyword for the corresponding C/C++ keyword.
+ * Given a literal, gets the `c_keyword` for the corresponding C/C++ keyword.
  * @note The search is \e insensitive to the current language.
  *
  * @param literal The literal to find.
- * @return Returns a pointer to the corresponding c_keyword or null for none.
+ * @return Returns a pointer to the corresponding `c_keyword` or null for none.
  */
 c_keyword_t const* c_keyword_find( char const *literal );
 

@@ -31,12 +31,16 @@
 #include "options.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <assert.h>
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
+
+/// @endcond
 
 // local constants
 static char const*  MORE[]     = { "...", "..." };
@@ -49,10 +53,10 @@ static size_t       token_len( char const* );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Prints the error line (if not interactive) and a '^' (in color, if possible
+ * Prints the error line (if not interactive) and a `^` (in color, if possible
  * and requested) under the offending token.
  *
- * @param error_col The zero-based column of the offending token.
+ * @param error_column The zero-based column of the offending token.
  */
 static void print_caret( size_t error_column ) {
 #ifdef WITH_TERM_COLUMNS
@@ -179,8 +183,8 @@ static void print_caret( size_t error_column ) {
  *  + Everything else (e.g., punctuation).
  *
  * A token is composed of characters in exclusively one class.  The class is
- * determined by s[0].  The length of the token is the number of consecutive
- * characters of the same class starting at s[0].
+ * determined by `s[0]`.  The length of the token is the number of consecutive
+ * characters of the same class starting at `s[0]`.
  *
  * @param s The null-terminated string to use.
  * @return Returns the length of the token.

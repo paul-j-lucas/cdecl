@@ -30,14 +30,18 @@
 // local
 #include "config.h"                     /* must go first */
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
-extern char const  *lexer_token;        // text of current token
+extern char const  *lexer_token;        ///< Text of current token.
 
 /**
  * Gets the current input line.
@@ -51,15 +55,15 @@ char const* lexer_input_line( size_t *plen );
 /**
  * Gets the lexer's current location.
  *
- * @param line A pointer to a variable to receive the lexer's line.
- * @param column A pointer to a variable to receive the lexer's column.
+ * @param pline A pointer to a variable to receive the lexer's line.
+ * @param pcolumn A pointer to a variable to receive the lexer's column.
  */
-void lexer_loc( int *line, int *column );
+void lexer_loc( int *pline, int *pcolumn );
 
 /**
  * Resets the lexer to its initial state.
  *
- * @param hard_reset If \c true, does a "hard" reset that currently resets the
+ * @param hard_reset If `true`, does a "hard" reset that currently resets the
  * EOF flag also.
  */
 void lexer_reset( bool hard_reset );

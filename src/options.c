@@ -30,6 +30,8 @@
 #include "options.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <assert.h>
 #include <ctype.h>
@@ -39,11 +41,13 @@
 #include <string.h>
 #include <sysexits.h>
 
-///////////////////////////////////////////////////////////////////////////////
-
 #define GAVE_OPTION(OPT)          (opts_given[ (unsigned char)(OPT) ])
 #define OPT_BUF_SIZE              32    /* used for format_opt() */
 #define SET_OPTION(OPT)           (opts_given[ (unsigned char)(OPT) ] = (OPT))
+
+/// @endcond
+
+///////////////////////////////////////////////////////////////////////////////
 
 // extern option variables
 char const         *opt_conf_file;
@@ -63,7 +67,11 @@ bool                opt_quiet;
 FILE               *fin;
 FILE               *fout;
 
-// local constant definitions
+/**
+ * Long options.
+ *
+ * @hideinitializer
+ */
 static struct option const LONG_OPTS[] = {
   { "config",       required_argument,  NULL, 'c' },
   { "no-config",    no_argument,        NULL, 'C' },
@@ -86,6 +94,11 @@ static struct option const LONG_OPTS[] = {
   { NULL,           0,                  NULL, 0   }
 };
 
+/**
+ * Short options.
+ *
+ * @hideinitializer
+ */
 static char const   SHORT_OPTS[] = "c:Cf:ik:o:qstvx:"
 #ifdef ENABLE_CDECL_DEBUG
   "d"
@@ -96,7 +109,7 @@ static char const   SHORT_OPTS[] = "c:Cf:ik:o:qstvx:"
 ;
 
 // local variables
-static char         opts_given[ 128 ];
+static char         opts_given[ 128 ];  ///< Table of options that were given.
 
 // local functions
 static char*        format_opt( char, char[], size_t );
@@ -145,8 +158,8 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
 }
 
 /**
- * Formats an option as <code>[--%s/]-%c</code> where \c %s is the long option
- * (if any) and %c is the short option.
+ * Formats an option as `[--%%s/]-%%c` where `%%s` is the long option (if any)
+ * and `%%c` is the short option.
  *
  * @param short_opt The short option (along with its corresponding long option,
  * if any) to format.
@@ -154,10 +167,10 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
  * @param buf_size The size of \a buf.
  * @return Returns \a buf.
  */
-static char* format_opt( char short_opt, char buf[], size_t size ) {
+static char* format_opt( char short_opt, char buf[], size_t buf_size ) {
   char const *const long_opt = get_long_opt( short_opt );
   snprintf(
-    buf, size, "%s%s%s-%c",
+    buf, buf_size, "%s%s%s-%c",
     *long_opt ? "--" : "",
     long_opt,
     *long_opt ? "/" : "",
@@ -182,9 +195,9 @@ static char const* get_long_opt( char short_opt ) {
 }
 
 /**
- * Checks whether we're c++decl.
+ * Checks whether we're `c++decl`.
  *
- * @returns \c true only if we are.
+ * @returns Returns `true` only if we are.
  */
 static bool is_cppdecl( void ) {
   static char const *const NAMES[] = {
@@ -203,9 +216,9 @@ static bool is_cppdecl( void ) {
 /**
  * Parses a color "when" value.
  *
- * @param when The NULL-terminated "when" string to parse.
- * @return Returns the associated \c color_when_t
- * or prints an error message and exits if \a when is invalid.
+ * @param when The null-terminated "when" string to parse.
+ * @return Returns the associated `color_when` or prints an error message and
+ * exits if \a when is invalid.
  */
 static color_when_t parse_color_when( char const *when ) {
   struct colorize_map {
@@ -258,7 +271,7 @@ static color_when_t parse_color_when( char const *when ) {
  * Parses a language name.
  *
  * @param s The null-terminated string to parse.
- * @return Returns the c_lang_t corresponding to \a s.
+ * @return Returns the `c_lang_t` corresponding to \a s.
  */
 static c_lang_t parse_lang( char const *s ) {
   size_t values_buf_size = 1;           // for trailing null
@@ -291,8 +304,8 @@ static c_lang_t parse_lang( char const *s ) {
 /**
  * Parses command-line options.
  *
- * @param argc The argument count from \c main().
- * @param argv The argument values from \c main().
+ * @param argc The argument count from `main()`.
+ * @param argv The argument values from `main()`.
  */
 static void parse_options( int argc, char const *argv[] ) {
   optind = opterr = 1;
@@ -354,6 +367,9 @@ static void parse_options( int argc, char const *argv[] ) {
   }
 }
 
+/**
+ * Prints the usage message to standard error.
+ */
 static void usage( void ) {
   PRINT_ERR(
 "usage: %s [options] [command...]\n"
@@ -380,7 +396,7 @@ static void usage( void ) {
 "  -y       Enable bison debug output.\n"
 #endif /* YYDEBUG */
     , me, me, me,
-    CONF_FILE_NAME
+    CONF_FILE_NAME_DEFAULT
   );
   exit( EX_USAGE );
 }

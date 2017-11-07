@@ -24,43 +24,50 @@
 /**
  * @file
  * Declares constants, macros, types, global variables, and functions for
- * printing in color.
+ * printing to an ANSI terminal in color using Select Graphics Rendition (SGR)
+ * codes.
  */
 
 // local
 #include "config.h"                     /* must go first */
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <stdbool.h>
 #include <stddef.h>                     /* for NULL */
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
-#define SGR_BG_BLACK        "40"
-#define SGR_BG_RED          "41"
-#define SGR_BG_GREEN        "42"
-#define SGR_BG_YELLOW       "43"
-#define SGR_BG_BLUE         "44"
-#define SGR_BG_MAGENTA      "45"
-#define SGR_BG_CYAN         "46"
-#define SGR_BG_WHITE        "47"
+#define SGR_BG_BLACK        "40"        /**< Background black.   */
+#define SGR_BG_RED          "41"        /**< Background red.     */
+#define SGR_BG_GREEN        "42"        /**< Background green.   */
+#define SGR_BG_YELLOW       "43"        /**< Background yellow.  */
+#define SGR_BG_BLUE         "44"        /**< Background blue.    */
+#define SGR_BG_MAGENTA      "45"        /**< Background magenta. */
+#define SGR_BG_CYAN         "46"        /**< Background cyan.    */
+#define SGR_BG_WHITE        "47"        /**< Background white.   */
 
-#define SGR_FG_BLACK        "30"
-#define SGR_FG_RED          "31"
-#define SGR_FG_GREEN        "32"
-#define SGR_FG_YELLOW       "33"
-#define SGR_FG_BLUE         "34"
-#define SGR_FG_MAGENTA      "35"
-#define SGR_FG_CYAN         "36"
-#define SGR_FG_WHITE        "37"
+#define SGR_FG_BLACK        "30"        /**< Foreground black.   */
+#define SGR_FG_RED          "31"        /**< Foreground red.     */
+#define SGR_FG_GREEN        "32"        /**< Foreground green.   */
+#define SGR_FG_YELLOW       "33"        /**< Foreground yellow.  */
+#define SGR_FG_BLUE         "34"        /**< Foreground blue.    */
+#define SGR_FG_MAGENTA      "35"        /**< Foreground magenta. */
+#define SGR_FG_CYAN         "36"        /**< Foreground cyan.    */
+#define SGR_FG_WHITE        "37"        /**< Foreground white.   */
 
-#define SGR_BOLD            "1"
-#define SGR_CAP_SEP         ":"         /* capability separator */
-#define SGR_SEP             ";"         /* attribute/RGB separator */
+#define SGR_BOLD            "1"         /**< Bold. */
+#define SGR_CAP_SEP         ":"         /**< Capability separator. */
+#define SGR_SEP             ";"         /**< Attribute/RGB separator. */
 
-#define SGR_START           "\33[%sm"   /* start color sequence */
-#define SGR_END             "\33[m"     /* end color sequence */
-#define SGR_EL              "\33[K"     /* Erase in Line (EL) sequence */
+#define SGR_START           "\33[%sm"   /**< Start color sequence. */
+#define SGR_END             "\33[m"     /**< End color sequence. */
+#define SGR_EL              "\33[K"     /**< Erase in Line (EL) sequence */
+
+///< @cond IGNORE
 
 #define COLOR_WHEN_DEFAULT  COLOR_NOT_FILE
 #define COLORS_DEFAULT                                        \
@@ -74,10 +81,12 @@
   "PROMPT="       SGR_FG_GREEN                    SGR_CAP_SEP \
   "warning="      SGR_FG_YELLOW SGR_SEP SGR_BOLD  SGR_CAP_SEP
 
+///< @endcond
+
 /**
- * Starts printing in the given, predefined color.
+ * Starts printing in the predefined \a COLOR.
  *
- * @param STREAM The FILE to use.
+ * @param STREAM The `FILE` to use.
  * @param COLOR The predefined color.
  * @hideinitializer
  */
@@ -86,8 +95,8 @@
     FPRINTF( (STREAM), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
 
 /**
- * Writes the bytes to the given string that, when printed to a terminal, will
- * start printing in the given color.
+ * Writes the bytes to \a STRING that, when printed to a terminal, will start
+ * printing in \a COLOR.
  *
  * @param STRING The string to write to.
  * @param COLOR The predefined color.
@@ -100,15 +109,15 @@
 /**
  * Ends printing in color.
  *
- * @param STREAM The FILE to use.
+ * @param STREAM The `FILE` to use.
  * @hideinitializer
  */
 #define SGR_END_COLOR(STREAM) \
   BLOCK( if ( colorize ) FPUTS( SGR_END SGR_EL, (STREAM) ); )
 
 /**
- * Writes the bytes to the given string that, when printed to a terminal, will
- * end printing in color.
+ * Writes the bytes to \a STRING that, when printed to a terminal, will end
+ * printing in color.
  *
  * @param STRING The string to write to.
  * @hideinitializer
@@ -120,24 +129,24 @@
  * When to colorize output.
  */
 enum color_when {
-  COLOR_NEVER,                          // never colorize
-  COLOR_ISATTY,                         // colorize only if isatty(3)
-  COLOR_NOT_FILE,                       // colorize only if !ISREG stdout
-  COLOR_ALWAYS                          // always colorize
+  COLOR_NEVER,                          ///< Never colorize.
+  COLOR_ISATTY,                         ///< Colorize only if `isatty`(3).
+  COLOR_NOT_FILE,                       ///< Colorize only if `!ISREG` stdout.
+  COLOR_ALWAYS                          ///< Always colorize.
 };
 typedef enum color_when color_when_t;
 
 // extern variables
-extern bool         colorize;           // colorize diagnostics?
-extern char const  *sgr_caret;
-extern char const  *sgr_error;
-extern char const  *sgr_help_keyword;
-extern char const  *sgr_help_nonterm;
-extern char const  *sgr_help_punct;
-extern char const  *sgr_help_title;
-extern char const  *sgr_locus;
-extern char const  *sgr_prompt;
-extern char const  *sgr_warning;
+extern bool         colorize;           ///< Colorize diagnostics?
+extern char const  *sgr_caret;          ///< Color of the caret `^`.
+extern char const  *sgr_error;          ///< Color of `error`.
+extern char const  *sgr_help_keyword;   ///< Color of cdecl keyword.
+extern char const  *sgr_help_nonterm;   ///< Color of grammar nonterminal.
+extern char const  *sgr_help_punct;     ///< Color of punctuation.
+extern char const  *sgr_help_title;     ///< Color of help title.
+extern char const  *sgr_locus;          ///< Color of error location.
+extern char const  *sgr_prompt;         ///< Color of cdecl prompt.
+extern char const  *sgr_warning;        ///< Color of `warning`.
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -145,7 +154,7 @@ extern char const  *sgr_warning;
  * Parses and sets the sequence of gcc color capabilities.
  *
  * @param capabilities The gcc capabilities to parse.
- * @return Returns \c true only if at least one capability was parsed
+ * @return Returns `true` only if at least one capability was parsed
  * successfully.
  */
 bool colors_parse( char const *capabilities );
@@ -153,10 +162,10 @@ bool colors_parse( char const *capabilities );
 /**
  * Determines whether we should emit escape sequences for color.
  *
- * @param c The color_when value.
- * @return Returns \c true only if we should do color.
+ * @param when The `color_when` value.
+ * @return Returns `true` only if we should do color.
  */
-bool should_colorize( color_when_t c );
+bool should_colorize( color_when_t when );
 
 ///////////////////////////////////////////////////////////////////////////////
 

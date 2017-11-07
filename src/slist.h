@@ -30,6 +30,8 @@
 #include "config.h"                     /* must go first */
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <stddef.h>                     /* for NULL */
 
@@ -38,13 +40,15 @@ _GL_INLINE_HEADER_BEGIN
 # define CDECL_SLIST_INLINE _GL_INLINE
 #endif /* CDECL_SLIST_INLINE */
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef struct slist      slist_t;
 typedef struct slist_node slist_node_t;
 
 /**
- * The signature for a function passed to slist_free() used to free data
+ * The signature for a function passed to `slist_free()` used to free data
  * associated with each node (if necessary).
  *
  * @param data A pointer to the data to free.
@@ -57,24 +61,26 @@ typedef void (*slist_data_free_fn_t)( void *data );
  * Singly-linked list.
  */
 struct slist {
-  slist_node_t *head;
-  slist_node_t *tail;
+  slist_node_t *head;                   ///< Pointer to list head.
+  slist_node_t *tail;                   ///< Pointer to list tail.
 };
 
 /**
  * Singly-linked-list node.
  */
 struct slist_node {
-  void *data;
-  slist_node_t *next;
+  void *data;                           ///< Pointer to user data.
+  slist_node_t *next;                   ///< Pointer to next node or null.
 };
 
 /**
- * Convenience macro to get the data cast to \a DATA_TYPE given an slist_node.
+ * Convenience macro to get the data cast to \a DATA_TYPE given an
+ * `slist_node`.
  *
- * @param DATA_TYPE The type of the data.
- * @param NODE The slist_node to get the data of.
+ * @param DATA_TYPE The type of the data to cast to.
+ * @param NODE The `slist_node` to get the data of.
  * @return Returns said data cast to \a DATA_TYPE.
+ * @hideinitializer
  */
 #define SLIST_DATA(DATA_TYPE,NODE) \
   REINTERPRET_CAST( DATA_TYPE, (NODE)->data )
@@ -84,7 +90,7 @@ struct slist_node {
 /**
  * Appends \a data onto the end of \a list.
  *
- * @param list The list to append onto.
+ * @param list The `slist` to append onto.
  * @param data The data to append.
  * @return Returns \a data.
  */
@@ -93,10 +99,11 @@ void* slist_append( slist_t *list, void *data );
 /**
  * Convenience macro that appends \a DATA onto the end of \a LIST.
  *
- * @param DATA_TYPE The type of the data.
- * @param LIST A pointer to the list.
+ * @param DATA_TYPE The type of the data to cast to.
+ * @param LIST A pointer to the `slist`.
  * @param DATA The data to append.
- * @return Returns \a DATA.
+ * @return Returns \a DATA cast to \a DATA_TYPE.
+ * @hideinitializer
  */
 #define SLIST_APPEND(DATA_TYPE,LIST,DATA) \
   REINTERPRET_CAST( DATA_TYPE, slist_append( (LIST), REINTERPRET_CAST( void*, (DATA) ) ) )
@@ -104,25 +111,25 @@ void* slist_append( slist_t *list, void *data );
 /**
  * Appends \a src onto the end of \a dst.
  *
- * @param dst The list to append onto.
- * @param src The list to append.  It is made empty.
+ * @param dst The `slist` to append onto.
+ * @param src The `slist` to append.  It is made empty.
  */
 void slist_append_list( slist_t *dst, slist_t *src );
 
 /**
  * Frees all memory associated with \a list.
  *
- * @param list A pointer to the list.  If null, does nothing.
+ * @param list A pointer to the `slist`.  If null, does nothing.
  * @param data_free_fn A pointer to a function to use to free the data at each
- * node of the list or null if none is required.
+ * node of \a list or null if none is required.
  */
 void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn );
 
 /**
- * Initializes \a list.  This is not necessary for either global or \c static
+ * Initializes \a list.  This is not necessary for either global or `static`
  * lists.
  *
- * @param list A pointer to the list to initialize.
+ * @param list A pointer to the `slist` to initialize.
  */
 CDECL_SLIST_INLINE void slist_init( slist_t *list ) {
   list->head = list->tail = NULL;
@@ -131,8 +138,8 @@ CDECL_SLIST_INLINE void slist_init( slist_t *list ) {
 /**
  * Pops data from the head of \a list.
  *
- * @param list The pointer to the list.
- * @return Returns the data from the head of the list.  The caller is
+ * @param list The pointer to the `slist`.
+ * @return Returns the data from the head of \a list.  The caller is
  * responsible for deleting it (if necessary).
  */
 void* slist_pop( slist_t *list );
@@ -141,10 +148,10 @@ void* slist_pop( slist_t *list );
  * Convenience macro that pops data from the head of \a LIST and casts it to
  * the requested type.
  *
- * @param DATA_TYPE The type of the data.
- * @param LIST A pointer to the list.
- * @return Returns the data from the head of the list cast to \a DATA_TYPE or
- * null (or equivalent) if the list is empty.  The caller is responsible for
+ * @param DATA_TYPE The type of the data to cast to.
+ * @param LIST A pointer to the `slist`.
+ * @return Returns the data from the head of \a LIST cast to \a DATA_TYPE or
+ * null (or equivalent) if the `slist` is empty.  The caller is responsible for
  * deleting it (if necessary).
  * @hideinitializer
  */
@@ -154,19 +161,17 @@ void* slist_pop( slist_t *list );
 /**
  * Pushes a node onto the front of \a list.
  *
- * @param phead The pointer to the pointer to the head of the list.  The head
- * is updated to point to \a node.
- * @param node The pointer to the node to add.  Its \c next pointer is set to
- * the old head of the list.
+ * @param list A pointer to the `slist`.
+ * @param data The pointer to the data to add.
  */
 void slist_push( slist_t *list, void *data );
 
 /**
  * Peeks at the data at the head of \a list.
  *
- * @param list A pointer to the list.
+ * @param list A pointer to the `slist`.
  * @return Returns a pointer to the data from the node at the head of \a list
- * or null if the list is empty.
+ * or null if \a list is empty.
  */
 CDECL_SLIST_INLINE void* slist_top( slist_t const *list ) {
   return list->head != NULL ? list->head->data : NULL;
@@ -177,9 +182,9 @@ CDECL_SLIST_INLINE void* slist_top( slist_t const *list ) {
  * to the requested type.
  *
  * @param DATA_TYPE The type of the data.
- * @param LIST A pointer to the list.
- * @return Returns the data from the head of the list cast to \a DATA_TYPE or
- * null (or equivalent) if the list is empty.
+ * @param LIST A pointer to the `slist`.
+ * @return Returns the data from the head of \a LIST cast to \a DATA_TYPE or
+ * null (or equivalent) if the `slist` is empty.
  * @hideinitializer
  */
 #define SLIST_TOP(DATA_TYPE,LIST) \

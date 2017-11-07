@@ -31,6 +31,8 @@
 #include "prompt.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,10 +44,12 @@
   if ( strcmp( (OPT), "no" LITERAL ) == 0 )       \
     { VAR = (NO); return; } )
 
+/// @endcond
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Implements the cdecl "set" command.
+ * Implements the cdecl `set` command.
  *
  * @param opt The name of the option to set. If null, displays the current
  * values of all options.

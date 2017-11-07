@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines \c main() as well as functions for initialization, clean-up, and
+ * Defines `main()` as well as functions for initialization, clean-up, and
  * parsing user input.
  */
 
@@ -36,6 +36,8 @@
 #include "prompt.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <ctype.h>
 #include <errno.h>
@@ -46,6 +48,8 @@
 #include <string.h>
 #include <sysexits.h>
 #include <unistd.h>                     /* for isatty(3) */
+
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -73,6 +77,13 @@ static void         read_conf_file( void );
 
 ////////// main ///////////////////////////////////////////////////////////////
 
+/**
+ * The main entry point.
+ *
+ * @param argc The command-line argument count.
+ * @param argv The command-line argument values.
+ * @return Returns 0 on success, non-zero on failure.
+ */
 int main( int argc, char const **argv ) {
   atexit( cdecl_cleanup );
   options_init( &argc, &argv );
@@ -91,10 +102,10 @@ int main( int argc, char const **argv ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Checks whether \a s is a cdecl command: cast, declare, explain, etc.
+ * Checks whether \a s is a cdecl command: `cast`, `declare`, `explain`, etc.
  *
  * @param s The null-terminated string to check.
- * @return Returns \c true only if \a s is a command.
+ * @return Returns `true` only if \a s is a command.
  */
 static bool is_command( char const *s ) {
   static char const *const COMMANDS[] = {
@@ -125,11 +136,11 @@ static void cdecl_cleanup( void ) {
 }
 
 /**
- * Parses argv to figure out what kind of arguments were given.
+ * Parses \a argv to figure out what kind of arguments were given.
  *
- * @param argc The length of \a argv.
- * @param argv The command-line arguments.
- * @return Returns \c true only upon success.
+ * @param argc The command-line argument count.
+ * @param argv The command-line argument values.
+ * @return Returns `true` only upon success.
  */
 static bool parse_argv( int argc, char const *argv[] ) {
   if ( argc == 0 )                      // cdecl
@@ -176,11 +187,11 @@ static bool parse_argv( int argc, char const *argv[] ) {
 /**
  * Parses a cdecl command from the command-line.
  *
- * @param command The value main()'s \c argv[0] if it is a cdecl command; null
- * otherwise and \c argv[1] is a cdecl command.
- * @param argc The length of \a argv.
- * @param argv The command-line arguments.
- * @return Returns \c true only upon success.
+ * @param command The value `main()`'s `argv[0]` if it is a cdecl command; null
+ * otherwise and `argv[1]` is a cdecl command.
+ * @param argc The command-line argument count.
+ * @param argv The command-line argument values.
+ * @return Returns `true` only upon success.
  */
 static bool parse_command_line( char const *command, int argc,
                                 char const *argv[] ) {
@@ -217,7 +228,7 @@ static bool parse_command_line( char const *command, int argc,
  *
  * @param num_files The length of \a files.
  * @param files An array of file names.
- * @return Returns \c true only upon success.
+ * @return Returns `true` only upon success.
  */
 static bool parse_files( int num_files, char const *files[] ) {
   bool ok = true;
@@ -240,7 +251,7 @@ static bool parse_files( int num_files, char const *files[] ) {
 /**
  * Parses standard input.
  *
- * @return Returns \c true only upon success.
+ * @return Returns `true` only upon success.
  */
 static bool parse_stdin( void ) {
   bool ok;
@@ -266,8 +277,8 @@ static bool parse_stdin( void ) {
  * Parses a string.
  *
  * @param s The null-terminated string to parse.
- * @param s_len the length of \a s.  If 0, it will be calculated.
- * @return Returns \c true only upon success.
+ * @param s_len The length of \a s.  If 0, it will be calculated.
+ * @return Returns `true` only upon success.
  */
 bool parse_string( char const *s, size_t s_len ) {
   if ( s_len == 0 )
@@ -307,7 +318,7 @@ static void read_conf_file( void ) {
     if ( home == NULL )
       return;
     strcpy( conf_path_buf, home );
-    path_append( conf_path_buf, CONF_FILE_NAME );
+    path_append( conf_path_buf, CONF_FILE_NAME_DEFAULT );
     opt_conf_file = conf_path_buf;
   }
 

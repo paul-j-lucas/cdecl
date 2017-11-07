@@ -30,21 +30,28 @@
 #include "config.h"                     /* must go first */
 #include "typedefs.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
-#define CONF_FILE_NAME            "." PACKAGE "rc"
+/** Default configuration file name. */
+#define CONF_FILE_NAME_DEFAULT    "." PACKAGE "rc"
+
+/** Program name when composing or deciphering C++. */
 #define CPPDECL                   "c++decl"
 
 // extern variables
-extern c_mode_t     c_mode;             // parsing english or gibberish?
-extern char const  *command_line;       // command from command line, if any
-extern size_t       command_line_len;   // length of command_line
-extern bool         is_input_a_tty;     // is our input from a tty?
-extern char const  *me;                 // program name
+extern c_mode_t     c_mode;             ///< Parsing english or gibberish?
+extern char const  *command_line;       ///< Command from command line, if any.
+extern size_t       command_line_len;   ///< Length of `command_line`.
+extern bool         is_input_a_tty;     ///< Is our input from a TTY?
+extern char const  *me;                 ///< Program name.
 
 ///////////////////////////////////////////////////////////////////////////////
 

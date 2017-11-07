@@ -31,8 +31,12 @@
 #include "red_black.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <assert.h>
+
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -40,22 +44,24 @@
  * Data passed to our red-black tree visitor function.
  */
 struct rb_visitor_data {
-  c_typedef_visitor_t visitor;          // caller's visitor function
-  void *data;                           // caller's optional data
+  c_typedef_visitor_t visitor;          ///< Caller's visitor function.
+  void *data;                           ///< Caller's optional data.
 };
 typedef struct rb_visitor_data rb_visitor_data_t;
 
 // local variable definitions
-static rb_tree_t *typedefs;             // global set of typedef declarations
-static bool       user_defined;         // are new typedefs used-defined?
+static rb_tree_t *typedefs;             ///< Global set of `typedef`s.
+static bool       user_defined;         ///< Are new `typedef`s used-defined?
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Types from \c stdint.h.
+ * Types from `stdint.h`.
  *
  * The underlying types used here are merely typical and do not necessarily
  * match the underlying type on any particular platform.
+ *
+ * @hideinitializer
  */
 static char const *const TYPEDEFS_STDINT_H[] = {
   "typedef          long   ptrdiff_t",
@@ -98,7 +104,9 @@ static char const *const TYPEDEFS_STDINT_H[] = {
 };
 
 /**
- * Types from \c stdatomic.h.
+ * Types from `stdatomic.h`.
+ *
+ * @hideinitializer
  */
 static char const *const TYPEDEFS_STDATOMIC_H[] = {
   "typedef _Atomic          _Bool     atomic_bool",
@@ -149,13 +157,13 @@ static char const *const TYPEDEFS_STDATOMIC_H[] = {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Comparison function for c_typedef data used by the red-black tree.
+ * Comparison function for `c_typedef` data used by the red-black tree.
  *
  * @param data_i A pointer to data.
  * @param data_j A pointer to data.
  * @return Returns an integer less than, equal to, or greater than 0, according
- * to whether the \c typedef name pointed to by \a data_i is less than, equal
- * to, or greater than the \c typedef name pointed to by \a data_j.
+ * to whether the `typedef` name pointed to by \a data_i is less than, equal
+ * to, or greater than the `typedef` name pointed to by \a data_j.
  */
 static int c_typedef_cmp( void const *data_i, void const *data_j ) {
   c_typedef_t const *const ti = REINTERPRET_CAST( c_typedef_t const*, data_i );
@@ -164,7 +172,7 @@ static int c_typedef_cmp( void const *data_i, void const *data_j ) {
 }
 
 /**
- * Red-black tree node free function for c_typedef data used by the red-black
+ * Red-black tree node free function for `c_typedef` data used by the red-black
  * tree.
  *
  * @param data A pointer to the data to free.
@@ -175,11 +183,11 @@ static void c_typedef_free( void *data ) {
 }
 
 /**
- * Creates a new c_typedef.
+ * Creates a new `c_typedef`.
  *
  * @param type_name The type name.
- * @param ast The c_ast of the type.
- * @return Returns said c_typedef.
+ * @param ast The `c_ast` of the type.
+ * @return Returns said `c_typedef`.
  */
 static c_typedef_t* c_typedef_new( char const *type_name, c_ast_t const *ast ) {
   c_typedef_t *const t = MALLOC( c_typedef_t, 1 );
@@ -190,10 +198,10 @@ static c_typedef_t* c_typedef_new( char const *type_name, c_ast_t const *ast ) {
 }
 
 /**
- * Parses an array of built-in \c typedef declarations.
+ * Parses an array of built-in `typedef` declarations.
  *
- * @param types An array of pointers to typedef strings.  The last element must
- * be NULL.
+ * @param types An array of pointers to `typedef` strings.  The last element
+ * must be null.
  */
 static void c_typedef_parse_builtins( char const *const types[] ) {
   extern bool parse_string( char const*, size_t );
@@ -204,13 +212,13 @@ static void c_typedef_parse_builtins( char const *const types[] ) {
 }
 
 /**
- * Red-black tree visitor function that forwards to the c_typedef_visitor_t
+ * Red-black tree visitor function that forwards to the `c_typedef_visitor_t`
  * function.
  *
  * @param node_data A pointer to the node's data.
  * @param aux_data Optional data passed to to the visitor.
- * @return Returning \c true will cause traversal to stop and the current node
- * to be returned to the caller of rb_tree_visit().
+ * @return Returning `true` will cause traversal to stop and the current node
+ * to be returned to the caller of `rb_tree_visit()`.
  */
 static bool rb_visitor( void *node_data, void *aux_data ) {
   c_typedef_t const *const t =

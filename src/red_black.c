@@ -64,10 +64,19 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ * @file
+ * Defined functions for manipulating a Red-Black Tree.
+ *
+ * @see https://en.wikipedia.org/wiki/Red–black_tree
+ */
+
 // local
 #include "config.h"                     /* must go first */
 #include "red_black.h"
 #include "util.h"
+
+/// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
@@ -76,6 +85,8 @@
 #define RB_FIRST(TREE)  (RB_ROOT(TREE)->left)
 #define RB_NIL(TREE)    (&(TREE)->nil)
 #define RB_ROOT(TREE)   (&(TREE)->root)
+
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -92,20 +103,20 @@ typedef enum rb_color rb_color_t;
  * A red-black tree node.
  */
 struct rb_node {
-  void *data;                           // must be first
-  rb_color_t color;
-  rb_node_t *left;
-  rb_node_t *right;
-  rb_node_t *parent;
+  void *data;                           ///< User data. Must be first.
+  rb_color_t color;                     ///< Node color.
+  rb_node_t *left;                      ///< Left child.
+  rb_node_t *right;                     ///< Right child.
+  rb_node_t *parent;                    ///< Parent.
 };
 
 /**
  * A red-black tree.
  */
 struct rb_tree {
-  rb_node_t root;
-  rb_node_t nil;                        // sentinel
-  rb_data_cmp_t data_cmp_fn;
+  rb_node_t root;                       ///< Root node.
+  rb_node_t nil;                        ///< Sentinel node.
+  rb_data_cmp_t data_cmp_fn;            ///< Data comparison function.
 };
 
 // local functions
@@ -117,8 +128,8 @@ static void rb_rotate_right( rb_tree_t*, rb_node_t* );
 /**
  * Convenience function for checking that a node is black.
  *
- * @param node A pointer to the node to check.
- * @return Returns \c true only if the node is black.
+ * @param node A pointer to the `rb_node` to check.
+ * @return Returns `true` only if \a node is black.
  */
 static inline bool is_black( rb_node_t *node ) {
   return node->color == RB_BLACK;
@@ -127,8 +138,8 @@ static inline bool is_black( rb_node_t *node ) {
 /**
  * Convenience function for checking that a node is red.
  *
- * @param node A pointer to the node to check.
- * @return Returns \c true only if the node is red.
+ * @param node A pointer to the `rb_node` to check.
+ * @return Returns `true` only if \a node is red.
  */
 static inline bool is_red( rb_node_t *node ) {
   return node->color == RB_RED;
@@ -137,10 +148,10 @@ static inline bool is_red( rb_node_t *node ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Initializes an rb_node.
+ * Initializes an `rb_node`.
  *
  * @param tree A pointer to the red-black tree to which \a node belongs.
- * @param node A pointer to the node to initialize.
+ * @param node A pointer to the `rb_node` to initialize.
  */
 static void rb_node_init( rb_tree_t *tree, rb_node_t *node ) {
   node->data = NULL;
@@ -152,11 +163,11 @@ static void rb_node_init( rb_tree_t *tree, rb_node_t *node ) {
  * Performs an in-order traversal of the red-black tree starting at \a node.
  *
  * @param tree A pointer to the red-black tree to visit.
- * @param node A pointer to the node to start visiting at.
+ * @param node A pointer to the `rb_node` to start visiting at.
  * @param visitor The visitor to use.
  * @param aux_data Optional data passed to \a visitor.
- * @return Returns a pointer to the node at which visiting stopped or NULL if
- * the entire sub-tree was visited.
+ * @return Returns a pointer to the `rb_node` at which visiting stopped or null
+ * if the entire sub-tree was visited.
  */
 static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
                                  rb_visitor_t visitor, void *aux_data ) {
@@ -181,9 +192,9 @@ static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
  * Frees all memory associated with \a tree.
  *
  * @param tree A pointer to the red-black tree to free.
- * @param node A pointer to the node to free.
+ * @param node A pointer to the `rb_node` to free.
  * @param data_free_fn A pointer to the function to use to free data associated
- * with each node, if any.
+ * with each `rb_node`, if any.
  */
 static void rb_tree_free_impl( rb_tree_t *tree, rb_node_t *node,
                                rb_data_free_t data_free_fn ) {
@@ -204,7 +215,7 @@ static void rb_tree_free_impl( rb_tree_t *tree, rb_node_t *node,
  * colors to restore the 4 properties inherent in red-black trees.
  *
  * @param tree A pointer to the red-black tree to repair.
- * @param node A pointer to the node to start the repair at.
+ * @param node A pointer to the `rb_node` to start the repair at.
  */
 static void rb_tree_repair( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
@@ -267,7 +278,7 @@ static void rb_tree_repair( rb_tree_t *tree, rb_node_t *node ) {
  * Rotates a subtree of a red-black tree left.
  *
  * @param tree A pointer to the red-black tree to manipulate.
- * @param node A pointer to the node to rotate.
+ * @param node A pointer to the `rb_node` to rotate.
  */
 static void rb_rotate_left( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
@@ -293,7 +304,7 @@ static void rb_rotate_left( rb_tree_t *tree, rb_node_t *node ) {
  * Rotates a subtree of a red-black tree right.
  *
  * @param tree A pointer to the red-black tree to manipulate.
- * @param node A pointer to the node to rotate.
+ * @param node A pointer to the `rb_node` to rotate.
  */
 static void rb_rotate_right( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
@@ -318,8 +329,8 @@ static void rb_rotate_right( rb_tree_t *tree, rb_node_t *node ) {
 /**
  * Gets the successor of \a node.
  *
- * @param tree A pointer to the red-black tree \a node is part of.
- * @param node A pointer to the node to get the successor of.
+ * @param tree A pointer to the red-black tree that \a node is part of.
+ * @param node A pointer to the `rb_node` to get the successor of.
  * @return Returns said successor.
  */
 static rb_node_t* rb_successor( rb_tree_t *tree, rb_node_t *node ) {

@@ -44,10 +44,6 @@
 #ifndef cdecl_red_black_H
 #define cdecl_red_black_H
 
-// local
-#include "config.h"
-#include "util.h"
-
 /**
  * @file
  * Declares types to represent a Red-Black Tree as well as functions for
@@ -56,23 +52,29 @@
  * @see https://en.wikipedia.org/wiki/Red–black_tree
  */
 
+// local
+#include "config.h"
+#include "util.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Gets a pointer to a rb_node's data.
+ * Gets a pointer to a node's data.
  *
- * @param NODE_PTR A pointer to the rb_node to get the data of.
+ * @param NODE_PTR A pointer to the node to get the data of.
  * @return Returns said pointer.
+ * @hideinitializer
  */
 #define rb_node_data(NODE_PTR) \
   (*REINTERPRET_CAST( void**, NODE_PTR ))
 
 /**
- * Gets a pointer to a rb_node's data cast to a user-defined type.
+ * Gets a pointer to a node's data cast to \a TYPE.
  *
- * @param TYPE The type to case the data to.
- * @param NODE_PTR A pointer to the rb_node to get the data of.
+ * @param TYPE The type to cast the data to.
+ * @param NODE_PTR A pointer to the node to get the data of.
  * @return Returns said pointer.
+ * @hideinitializer
  */
 #define rb_type_data(TYPE,NODE_PTR) \
   REINTERPRET_CAST( TYPE, rb_node_data( NODE_PTR ) )
@@ -83,7 +85,7 @@ typedef struct rb_node rb_node_t;
 typedef struct rb_tree rb_tree_t;
 
 /**
- * The signature for a function passed to rb_tree_new() used to compare node
+ * The signature for a function passed to `rb_tree_new()` used to compare node
  * data.
  *
  * @param data_i A pointer to data.
@@ -95,7 +97,7 @@ typedef struct rb_tree rb_tree_t;
 typedef int (*rb_data_cmp_t)( void const *data_i, void const *data_j );
 
 /**
- * The signature for a function passed to rb_tree_free() used to free data
+ * The signature for a function passed to `rb_tree_free()` used to free data
  * associated with each node (if necessary).
  *
  * @param data A pointer to the data to free.
@@ -103,11 +105,11 @@ typedef int (*rb_data_cmp_t)( void const *data_i, void const *data_j );
 typedef void (*rb_data_free_t)( void *data );
 
 /**
- * The signature for the function passed to rb_tree_visit().
+ * The signature for the function passed to `rb_tree_visit()`.
  *
  * @param node_data A pointer to the node's data.
  * @param aux_data Optional data passed to to the visitor.
- * @return Returning \c true will cause traversal to stop and the current node
+ * @return Returning `true` will cause traversal to stop and the current node
  * to be returned to the caller of rb_tree_visit().
  */
 typedef bool (*rb_visitor_t)( void *node_data, void *aux_data );
@@ -129,7 +131,7 @@ void* rb_node_delete( rb_tree_t *tree, rb_node_t *node );
  *
  * @param tree A pointer to the red-black tree to search through.
  * @param data A pointer to the data to search for.
- * @return Returns a pointer to the node containing \a data or NULL if not
+ * @return Returns a pointer to the node containing \a data or null if not
  * found.
  */
 rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data );
@@ -139,7 +141,7 @@ rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data );
  *
  * @param tree The red-black tree to free.
  * @param data_free_fn A pointer to a function used to free data associated
- * with each node or NULL if unnecessary.
+ * with each node or null if unnecessary.
  */
 void rb_tree_free( rb_tree_t *tree, rb_data_free_t data_free_fn );
 
@@ -148,7 +150,7 @@ void rb_tree_free( rb_tree_t *tree, rb_data_free_t data_free_fn );
  *
  * @param tree A pointer to the red-black tree to insert into.
  * @param data A pointer to the data to insert.
- * @return Returns NULL if \a data is inserted or a pointer to a node if \a
+ * @return Returns null if \a data is inserted or a pointer to a node if \a
  * data already exists.
  */
 rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
@@ -162,12 +164,12 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
 rb_tree_t* rb_tree_new( rb_data_cmp_t data_cmp_fn );
 
 /**
- * Performs an in-order traversal of the red-black tree.
+ * Performs an in-order traversal of \a tree.
  *
  * @param tree A pointer to the red-black tree to visit.
  * @param visitor The visitor to use.
  * @param aux_data Optional data passed to \a visitor.
- * @return Returns a pointer to the node at which visiting stopped or NULL if
+ * @return Returns a pointer to the node at which visiting stopped or null if
  * the entire tree was visited.
  */
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visitor_t visitor,

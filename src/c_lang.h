@@ -32,60 +32,67 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // languages supported
-#define LANG_NONE     (0u)
-#define LANG_ALL      (~LANG_NONE)
-#define LANG_MAX(L)   ((LANG_ ## L) | ((LANG_ ## L) - 1u))
-#define LANG_MIN(L)   (~((LANG_ ## L) - 1u))
+#define LANG_NONE     (0u)              /**< No languages. */
+#define LANG_ALL      (~LANG_NONE)      /**< All supported languages. */
 
-#define LANG_C_MIN    LANG_C_KNR
-#define LANG_C_KNR    (1u << 0)
-#define LANG_C_89     (1u << 1)
-#define LANG_C_95     (1u << 2)
-#define LANG_C_99     (1u << 3)
-#define LANG_C_11     (1u << 4)
-#define LANG_C_MAX    LANG_C_11
-#define LANG_C_ALL    LANG_MAX(C_MAX)
+#define LANG_MAX(L) \
+  ((LANG_ ## L) | ((LANG_ ## L) - 1u))  /**< Maximum allowed language. */
 
-#define LANG_CPP_MIN  LANG_CPP_98
-#define LANG_CPP_98   (1u << 8)
-#define LANG_CPP_03   (1u << 9)
-#define LANG_CPP_11   (1u << 10)
-#define LANG_CPP_14   (1u << 11)
-#define LANG_CPP_17   (1u << 12)
-#define LANG_CPP_MAX  LANG_CPP_17
-#define LANG_CPP_ALL  LANG_MIN(CPP_MIN)
+#define LANG_MIN(L) \
+  (~((LANG_ ## L) - 1u))                /**< Minimum allowed language. */
+
+#define LANG_C_MIN    LANG_C_KNR        /**< Minimum supported C language. */
+#define LANG_C_KNR    (1u << 0)         /**< K&R (pre-ANSI) C. */
+#define LANG_C_89     (1u << 1)         /**< C 89 (first ANSI C). */
+#define LANG_C_95     (1u << 2)         /**< C 95. */
+#define LANG_C_99     (1u << 3)         /**< C 99. */
+#define LANG_C_11     (1u << 4)         /**< C 11. */
+#define LANG_C_MAX    LANG_C_11         /**< Maximum supported C language. */
+#define LANG_C_ALL    LANG_MAX(C_MAX)   /**< All C languages. */
+
+#define LANG_CPP_MIN  LANG_CPP_98       /**< Minimum supported C++ language. */
+#define LANG_CPP_98   (1u << 8)         /**< C++ 98. */
+#define LANG_CPP_03   (1u << 9)         /**< C++ 03. */
+#define LANG_CPP_11   (1u << 10)        /**< C++ 11. */
+#define LANG_CPP_14   (1u << 11)        /**< C++ 14. */
+#define LANG_CPP_17   (1u << 12)        /**< C++ 17. */
+#define LANG_CPP_MAX  LANG_CPP_17       /**< Maximum supported C++ language. */
+#define LANG_CPP_ALL  LANG_MIN(CPP_MIN) /**< All C++ languages. */
 
 /**
- * Bitmask for combination of languages.
+ * Bitmask for combination of language(s).
  */
 typedef unsigned c_lang_t;
 
 /**
- * A mapping between a language name and its corresponding c_lang_t.
+ * A mapping between a language name and its corresponding `c_lang_t`.
  */
 struct c_lang_info {
-  char const *name;
-  c_lang_t    lang;
+  char const *name;                     ///< Language name.
+  c_lang_t    lang;                     ///< Language bit.
 };
 
-// extern constants
+/**
+ * Array of `c_lang_info` for all supported languages. The last entry is
+ * `{ NULL, LANG_NONE }`.
+ */
 extern c_lang_info_t const C_LANG_INFO[];
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Gets the language corresponding to the given string (case insensitive).
+ * Gets the `c_lang_t` corresponding to the given string (case insensitive).
  *
- * @param s The null-terminated string to get the language for.
- * @return Returns said language or \c LANG_NONE if \a s doesn't correspond to
- * any supported language.
+ * @param name The language name to get the corresponding `c_lang_t` for.
+ * @return Returns said language or `LANG_NONE` if \a name doesn't correspond
+ * to any supported language.
  */
-c_lang_t c_lang_find( char const *s );
+c_lang_t c_lang_find( char const *name );
 
 /**
- * Gets the printable name of the given language.
+ * Gets the printable name of \a lang.
  *
- * @param lang The language to get the name of.
+ * @param lang The `c_lang_t` to get the name of.
  * @return Returns said name.
  */
 char const* c_lang_name( c_lang_t lang );

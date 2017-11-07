@@ -25,31 +25,37 @@
 
 // local
 #include "config.h"                     /* must go first */
+/// @cond DOXYGEN_IGNORE
 #define CDECL_AST_INLINE _GL_EXTERN_INLINE
+/// @endcond
 #include "c_ast.h"
 #include "c_typedef.h"
 #include "literals.h"
 #include "options.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // system
 #include <assert.h>
 #include <stdlib.h>
 #include <sysexits.h>
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // local variable definitions
-static unsigned   c_ast_count;          // alloc'd but not yet freed
+static unsigned   c_ast_count;          ///< ASTs allocated but not yet freed.
 
 ////////// local functions ////////////////////////////////////////////////////
 
 #ifndef NDEBUG
 /**
- * Checks the AST for a cycle.
+ * Checks \a ast for a cycle.
  *
- * @param ast The AST node to begin at.
- * @return Returns \c true only if there is a cycle.
+ * @param ast The `c_ast` node to begin at.
+ * @return Returns `true` only if there is a cycle.
  */
 static bool c_ast_has_cycle( c_ast_t const *ast ) {
   assert( ast != NULL );
@@ -190,7 +196,7 @@ c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc ) {
   static c_ast_id_t next_id;
 
   c_ast_t *const ast = MALLOC( c_ast_t, 1 );
-  MEM_ZERO( ast );
+  STRUCT_ZERO( ast );
 
   ast->depth = depth;
   ast->id = ++next_id;
@@ -219,6 +225,8 @@ void c_ast_set_parent( c_ast_t *child, c_ast_t *parent ) {
   assert( !c_ast_has_cycle( child ) );
 }
 
+/// @cond DOXYGEN_IGNORE
+
 c_ast_t* c_ast_visit_down( c_ast_t *ast, c_ast_visitor_t visitor, void *data ) {
   if ( ast == NULL )
     return NULL;
@@ -238,6 +246,8 @@ c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor_t visitor, void *data ) {
     return NULL;
   return c_ast_visit_up( ast->parent, visitor, data );
 }
+
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

@@ -24,9 +24,13 @@
  * grammar for C/C++ declarations.
  */
 
+/** @cond DOXYGEN_IGNORE */
+
 %expect 20
 
 %{
+/** @endcond */
+
 // local
 #include "config.h"                     /* must come first */
 #include "c_ast.h"
@@ -47,6 +51,8 @@
 #include "typedefs.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <assert.h>
 #include <stdarg.h>
@@ -54,7 +60,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
+
+/// @cond DOXYGEN_IGNORE
 
 #ifdef ENABLE_CDECL_DEBUG
 #define IF_DEBUG(...)             BLOCK( if ( opt_debug ) { __VA_ARGS__ } )
@@ -119,15 +129,16 @@
 #define SHOW_PREDEFINED_TYPES     0x01u
 #define SHOW_USER_TYPES           0x02u
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A simple \c struct "derived" from \c link that additionally holds a
- * qualifier and its source location.
+ * Qualifier and its source location.
  */
 struct qualifier_info {
-  c_type_t  type;                       // T_CONST, T_RESTRICT, or T_VOLATILE
-  c_loc_t   loc;
+  c_type_t  type;                       ///< E.g., `T_CONST` or `T_VOLATILE`.
+  c_loc_t   loc;                        ///< Qualifier source location.
 };
 typedef struct qualifier_info qualifier_info_t;
 
@@ -135,8 +146,8 @@ typedef struct qualifier_info qualifier_info_t;
  * Inherited attributes.
  */
 struct in_attr {
-  slist_t qualifier_stack;
-  slist_t type_stack;
+  slist_t qualifier_stack;              ///< Qualifier stack.
+  slist_t type_stack;                   ///< Type stack.
 };
 typedef struct in_attr in_attr_t;
 
@@ -146,11 +157,11 @@ extern void           set_option( char const* );
 extern int            yylex( void );
 
 // local variables
-static c_ast_depth_t  ast_depth;        // parentheses nesting depth
-static slist_t        ast_gc_list;      // cleaned up after every parse
-static slist_t        ast_typedef_list; // cleaned up before program end
+static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
+static slist_t        ast_gc_list;      ///< `c_ast` nodes freed after parse.
+static slist_t        ast_typedef_list; ///< `c_ast` nodes for `typedef`s.
 static bool           error_newlined = true;
-static in_attr_t      in_attr;
+static in_attr_t      in_attr;          ///< Inherited attributes.
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -164,34 +175,35 @@ static inline char const* printable_token( void ) {
 }
 
 /**
- * Peeks at the type AST at the head of the type AST inherited attribute stack.
+ * Peeks at the type `c_ast` at the top of the type AST inherited attribute
+ * stack.
  *
- * @return Returns said AST.
+ * @return Returns said `c_ast`.
  */
 static inline c_ast_t* type_peek( void ) {
   return SLIST_TOP( c_ast_t*, &in_attr.type_stack );
 }
 
 /**
- * Pops a type AST from the type AST inherited attribute stack.
+ * Pops a type `c_ast` from the type AST inherited attribute stack.
  *
- * @return Returns said AST.
+ * @return Returns said `c_ast`.
  */
 static inline c_ast_t* type_pop( void ) {
   return SLIST_POP( c_ast_t*, &in_attr.type_stack );
 }
 
 /**
- * Pushes a type AST onto the type AST inherited attribute stack.
+ * Pushes a type `c_ast` onto the type AST inherited attribute stack.
  *
- * @param ast The AST to push.
+ * @param ast The `c_ast` to push.
  */
 static inline void type_push( c_ast_t *ast ) {
   slist_push( &in_attr.type_stack, ast );
 }
 
 /**
- * Peeks at the qualifier at the head of the qualifier inherited attribute
+ * Peeks at the qualifier at the top of the qualifier inherited attribute
  * stack.
  *
  * @return Returns said qualifier.
@@ -201,8 +213,8 @@ static inline c_type_t qualifier_peek( void ) {
 }
 
 /**
- * Peeks at the location of the qualifier at the head of the qualifier
- * inherited attribute stack.
+ * Peeks at the location of the qualifier at the top of the qualifier inherited
+ * attribute stack.
  *
  * @note This is a macro instead of an inline function because it should return
  * a reference (not a pointer), but C doesn't have references.
@@ -214,8 +226,7 @@ static inline c_type_t qualifier_peek( void ) {
   (SLIST_TOP( qualifier_info_t*, &in_attr.qualifier_stack )->loc)
 
 /**
- * Pops a qualifier from the head of the qualifier inherited attribute stack
- * and frees it.
+ * Pops a qualifier from the qualifier inherited attribute stack and frees it.
  */
 static inline void qualifier_pop( void ) {
   FREE( slist_pop( &in_attr.qualifier_stack ) );
@@ -234,9 +245,9 @@ void parser_cleanup( void ) {
 
 /**
  * Prints an additional parsing error message to standard error that continues
- * from where yyerror() left off.
+ * from where `yyerror()` left off.
  *
- * @param format A \c printf() style format string.
+ * @param format A `printf()` style format string.
  */
 static void elaborate_error( char const *format, ... ) {
   if ( !error_newlined ) {
@@ -253,11 +264,11 @@ static void elaborate_error( char const *format, ... ) {
 }
 
 /**
- * Checks whether the \c _Noreturn token is OK in the current language.  If
- * not, prints an error message (and perhaps a hint).
+ * Checks whether the `_Noreturn` token is OK in the current language.  If not,
+ * prints an error message (and perhaps a hint).
  *
- * @param loc The location of the \c _Noreturn token.
- * @return Returns \c true only of \c _Noreturn is OK.
+ * @param loc The location of the `_Noreturn` token.
+ * @return Returns `true` only of `_Noreturn` is OK.
  */
 static bool _Noreturn_ok( c_loc_t const *loc ) {
   if ( opt_lang == LANG_C_11 )
@@ -277,16 +288,16 @@ static bool _Noreturn_ok( c_loc_t const *loc ) {
 /**
  * Cleans-up parser data.
  *
- * @param hard_reset If \c true, does a "hard" reset that currently resets the
- * EOF flag of the lexer.  This should be \c true if an error occurs and
- * YYABORT is called.
+ * @param hard_reset If `true`, does a "hard" reset that currently resets the
+ * EOF flag of the lexer.  This should be `true` if an error occurs and
+ * `YYABORT` is called.
  */
 static void parse_cleanup( bool hard_reset ) {
   lexer_reset( hard_reset );
   slist_free( &ast_gc_list, (slist_data_free_fn_t)&c_ast_free );
   slist_free( &in_attr.qualifier_stack, &free );
   slist_free( &in_attr.type_stack, NULL );
-  MEM_ZERO( &in_attr );
+  STRUCT_ZERO( &in_attr );
 }
 
 /**
@@ -300,9 +311,9 @@ static void parse_init( void ) {
 }
 
 /**
- * Prints a c_typdef in English.
+ * Prints a `c_typedef` in English.
  *
- * @param type A pointer to the c_typedef to print.
+ * @param type A pointer to the `c_typedef` to print.
  */
 static void print_typedef( c_typedef_t const *type ) {
   assert( type != NULL );
@@ -312,12 +323,12 @@ static void print_typedef( c_typedef_t const *type ) {
 }
 
 /**
- * Prints the definition of a typedef.
+ * Prints the definition of a `typedef`.
  *
- * @param type A pointer to the c_typedef to print.
+ * @param type A pointer to the `c_typedef` to print.
  * @param data Optional data passed to the visitor: in this case, the bitmask
- * of which typedefs to show.
- * @return Always returns \c false.
+ * of which `typedef`s to print.
+ * @return Always returns `false`.
  */
 static bool print_typedef_visitor( c_typedef_t const *type, void *data ) {
   assert( type != NULL );
@@ -334,7 +345,7 @@ static bool print_typedef_visitor( c_typedef_t const *type, void *data ) {
 }
 
 /**
- * Pushed a quaifier onto the front of the qualifier inherited attribute list.
+ * Pushes a qualifier onto the qualifier inherited attribute stack.
  *
  * @param qualifier The qualifier to push.
  * @param loc A pointer to the source location of the qualifier.
@@ -350,7 +361,7 @@ static void qualifier_push( c_type_t qualifier, c_loc_t const *loc ) {
 }
 
 /**
- * Implements the cdecl "quit" command.
+ * Implements the cdecl `quit` command.
  */
 static void quit( void ) {
   exit( EX_OK );
@@ -358,10 +369,10 @@ static void quit( void ) {
 
 /**
  * Prints a parsing error message to standard error.  This function is called
- * directly by bison to print just "syntax error" (usually).
+ * directly by Bison to print just `syntax error` (usually).
  *
  * @note A newline is \e not printed since the error message will be appended
- * to by elaborate_error().  For example, the parts of an error message are
+ * to by `elaborate_error()`.  For example, the parts of an error message are
  * printed by the functions shown:
  *
  *      42: syntax error: "int": "into" expected
@@ -375,7 +386,7 @@ static void quit( void ) {
  */
 static void yyerror( char const *msg ) {
   c_loc_t loc;
-  MEM_ZERO( &loc );
+  STRUCT_ZERO( &loc );
   lexer_loc( &loc.first_line, &loc.first_column );
   print_loc( &loc );
 
@@ -388,6 +399,9 @@ static void yyerror( char const *msg ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/// @cond DOXYGEN_IGNORE
+
 %}
 
 %union {
@@ -618,7 +632,7 @@ static void yyerror( char const *msg ) {
 
 /*
  * Bison %destructors.  We don't use the <identifier> syntax because older
- * versions of bison don't support it.
+ * versions of Bison don't support it.
  *
  * Clean-up of AST nodes is done via garbage collection; see c_ast::gc_next.
  */
@@ -2846,6 +2860,8 @@ zero_expected
   ;
 
 %%
+
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

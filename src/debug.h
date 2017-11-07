@@ -32,36 +32,40 @@
 #include "c_type.h"
 #include "slist.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // system
 #include <stdio.h>                      /* for FILE */
+
+/// @endcond
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Dumps the given AST (for debugging).
+ * Dumps \a ast (for debugging).
  *
- * @param ast The c_ast to dump.
- * @paran indent The initial indent.
+ * @param ast The `c_ast` to dump.
+ * @param indent The initial indent.
  * @param key0 The initial key or null for none.
- * @param dout The FILE to dump to.
+ * @param dout The `FILE` to dump to.
  */
 void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
                   FILE *dout );
 
 /**
- * Dumps the given c_ast_list (for debugging).
+ * Dumps \a list (for debugging).
  *
- * @param list The c_ast_list to dump.
+ * @param list The `slist` to dump.
  * @param indent The initial indent.
- * @param dout The FILE to dump to.
+ * @param dout The `FILE` to dump to.
  */
 void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout );
 
 /**
- * Dumps the given c_type (for debugging).
+ * Dumps \a type (for debugging).
  *
- * @param type The type to print.
- * @param dout The FILE to dump to.
+ * @param type The `c_type_t` to print.
+ * @param dout The `FILE` to dump to.
  */
 void c_type_debug( c_type_t type, FILE *dout );
 
@@ -70,8 +74,8 @@ void c_type_debug( c_type_t type, FILE *dout );
  *
  * @param key The key to print.
  * @param value The value to print, if any.  If either null or the empty
- * string, \c null is printed instead of the value.
- * @param out The FILE to print to.
+ * string, `null` is printed instead of the value.
+ * @param out The `FILE` to print to.
  */
 void print_kv( char const *key, char const *value, FILE *out );
 

@@ -28,6 +28,8 @@
 #include "options.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <assert.h>
 #include <ctype.h>
@@ -37,15 +39,17 @@
 #include <string.h>                     /* for str...() */
 #include <unistd.h>                     /* for isatty() */
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Color capability used to map an CDECL_COLORS/GCC_COLORS "capability" either
- * to the variable to set or the function to call.
+ * Color capability used to map a `CDECL_COLORS` or `GCC_COLORS` "capability"
+ * either to the variable to set or the function to call.
  */
 struct color_cap {
-  char const   *cap_name;
-  char const  **cap_var_to_set;
+  char const   *cap_name;               ///< Capability name.
+  char const  **cap_var_to_set;         ///< Pointer to variable to set.
 };
 typedef struct color_cap color_cap_t;
 
@@ -64,6 +68,8 @@ char const *sgr_warning;
 /**
  * Color capabilities table.  Upper-case names are unique to us and upper-case
  * to avoid conflict with gcc.
+ *
+ * @hideinitializer
  */
 static color_cap_t const COLOR_CAPS[] = {
   { "caret",        &sgr_caret        },
@@ -88,7 +94,7 @@ static bool parse_sgr( char const* );
  *
  * @param cap The color capability to set the color for.
  * @param sgr_color The SGR color to set; or null or empty to unset.
- * @return Returns \c true only if \a sgr_color is valid.
+ * @return Returns `true` only if \a sgr_color is valid.
  */
 static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
   assert( cap != NULL );
@@ -106,13 +112,13 @@ static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
 
 /**
  * Parses an SGR (Select Graphic Rendition) value that matches the regular
- * expression of \c n(;n)* or a semicolon-separated list of integers in the
+ * expression of `n(;n)*` or a semicolon-separated list of integers in the
  * range 0-255.
  *
  * See: http://en.wikipedia.org/wiki/ANSI_escape_code
  *
- * @param sgr_color The NULL-terminated allegedly SGR string to parse.
- * @return Returns \c true only only if \a s contains a valid SGR value.
+ * @param sgr_color The null-terminated allegedly SGR string to parse.
+ * @return Returns `true` only if \a sgr_color contains a valid SGR value.
  */
 static bool parse_sgr( char const *sgr_color ) {
   if ( sgr_color == NULL )

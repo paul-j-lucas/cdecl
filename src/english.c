@@ -31,30 +31,34 @@
 #include "literals.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // system
 #include <assert.h>
 #include <stdlib.h>
 #include <sysexits.h>
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Parameters used by c_ast_visitor_english().
+ * Parameters used by `c_ast_visitor_english()`.
  */
 struct e_param {
-  bool  print_names;                    // print names only if true
-  FILE *eout;                           // where to write the pseudo-English
+  bool  print_names;                    ///< Print names only if true.
+  FILE *eout;                           ///< Where to write the pseudo-English.
 };
 typedef struct e_param e_param_t;
 
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Visitor function that prints an AST as pseudo-English.
+ * Visitor function that prints \a ast as pseudo-English.
  *
- * @param ast The AST to print.
- * @param data A pointer to an \c e_param \c struct.
- * @return Always returns \c false.
+ * @param ast The `c_ast` to print.
+ * @param data A pointer to an `e_param` `struct`.
+ * @return Always returns `false`.
  */
 static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
   e_param_t const *const param = REINTERPRET_CAST( e_param_t*, data );

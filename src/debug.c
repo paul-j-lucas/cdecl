@@ -31,12 +31,12 @@
 #include "debug.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // system
 #include <assert.h>
 #include <stdlib.h>
 #include <sysexits.h>
-
-#define DEBUG_INDENT              2     /* spaces per debug indent level */
 
 #define PRINT_COMMA \
   BLOCK( if ( !comma ) { FPUTS( ",\n", dout ); comma = true; } )
@@ -52,13 +52,17 @@
   FPUTS( "type = ", dout );             \
   c_type_debug( (TYPE), dout ); )
 
+/// @endcond
+
+#define DEBUG_INDENT              2     /**< Spaces per debug indent level. */
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
  * Prints a multiple of \a indent spaces.
  *
  * @param indent How much to indent.
- * @param out The FILE to print to.
+ * @param out The `FILE` to print to.
  */
 static void print_indent( unsigned indent, FILE *out ) {
   FPRINTF( out, "%*s", (int)(indent * DEBUG_INDENT), "" );

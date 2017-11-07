@@ -23,12 +23,12 @@
 
 /**
  * @file
- * Declares \c enum and \c struct \c typedef definitions in one file.
+ * Declares many `typedef` definitions in one file.
  *
- * Some headers are bidirectionally dependent, so \c typedef were used
- * originally rather than \c #include.  However, some old C compilers don't
- * like multiple \c typedef definitions even if the types match.  Hence, just
- * put all \c typedef definitions in one file.
+ * Some headers are bidirectionally dependent, so `typedef`s were used
+ * originally rather than `include`.  However, some old C compilers don't like
+ * multiple `typedef` definitions even if the types match.  Hence, just put all
+ * `typedef` definitions in one file.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,24 +42,24 @@ struct c_loc {
   // tests these for >= 0 which is always true for unsigned types so it
   // generates warnings; hence these are kept as int to eliminate the warnings.
   //
-  int first_line;
-  int first_column;
-  int last_line;
-  int last_column;
+  int first_line;                       ///< First line of location range.
+  int first_column;                     ///< First column of location range.
+  int last_line;                        ///< Last line of location range.
+  int last_column;                      ///< Last column of location range.
 };
 
 /**
  * Mode of operation.
  */
 enum c_mode {
-  MODE_ENGLISH_TO_GIBBERISH,
-  MODE_GIBBERISH_TO_ENGLISH
+  MODE_ENGLISH_TO_GIBBERISH,            ///< Convert English into gibberish.
+  MODE_GIBBERISH_TO_ENGLISH             ///< Decipher gibberish into English.
 };
 
 typedef struct c_ast        c_ast_t;
-typedef struct slist_node   c_ast_arg_t;
-typedef unsigned            c_ast_depth_t;
-typedef unsigned            c_ast_id_t;
+typedef struct slist_node   c_ast_arg_t;    ///< AST-specific type alias.
+typedef unsigned            c_ast_depth_t;  ///< How many `()` deep.
+typedef unsigned            c_ast_id_t;     ///< Unique AST node id.
 typedef struct c_ast_pair   c_ast_pair_t;
 typedef struct c_array      c_array_t;
 typedef struct c_block      c_block_t;
@@ -78,10 +78,11 @@ typedef struct c_ptr_ref    c_ptr_ref_t;
 typedef struct c_typedef    c_typedef_t;
 typedef enum   v_direction  v_direction_t;
 
-// for Bison
-typedef c_loc_t YYLTYPE;
+typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
+/// @cond DOXYGEN_IGNORE
 #define YYLTYPE_IS_DECLARED       1
 #define YYLTYPE_IS_TRIVIAL        1
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 

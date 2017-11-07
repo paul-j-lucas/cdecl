@@ -24,10 +24,13 @@
  * tokenizer for C/C++ declarations.
  */
 
+/** @cond DOXYGEN_IGNORE */
+
 %option nounput
 %option yylineno
 
 %{
+/** @endcond */
 
 // local
 #include "config.h"                     /* must go first */
@@ -42,34 +45,54 @@
 #include "util.h"
 #include "parser.h"                     /* must go last */
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>                     /* for strtol(3) */
 #include <string.h>
 
+/// @endcond
+
+/**
+ * Asserts that we're in \a MODE of operation.
+ * If not, return the error token.
+ *
+ * @param MODE The `c_mode` we're asserting.
+ */
 #define ASSERT_MODE(MODE) \
   BLOCK( if ( c_mode != MODE_ ## MODE ) return Y_ERROR; )
 
+/**
+ * Sets `lexer_token` to the current token.
+ */
 #define SET_TOKEN                 lexer_token = yytext
 
 /**
  * Overrides flex's fatal error message to print the message in our format and
- * also exit with the status we want.
+ * also exit with the status code we want.
+ *
+ * @param MSG The error message to print.
  * @hideinitializer
  */
 #define YY_FATAL_ERROR(MSG)       lexer_fatal( (MSG) )
 
 /**
  * Overrides flex's input.
+ *
+ * @param BUF The buffer to use.
+ * @param BYTES_READ Set to the number of bytes read.
+ * @param BYTES_MAX The maximum number of bytes to read.
  * @hideinitializer
  */
-#define YY_INPUT(BUF,RESULT,MAX_SIZE) \
-  (RESULT) = lexer_get_input( (BUF), (MAX_SIZE) )
+#define YY_INPUT(BUF,BYTES_READ,BYTES_MAX) \
+  (BYTES_READ) = lexer_get_input( (BUF), (BYTES_MAX) )
 
 /**
- * This code is inserted by flex at the beginning of each rule.
- * It sets the current token location information.
+ * This code is inserted by flex at the beginning of each rule to set the
+ * current token location information.
+ *
  * @hideinitializer
  */
 #define YY_USER_ACTION                                \
@@ -84,18 +107,22 @@
  * cdecl keyword info.
  */
 struct keyword {
-  char const *literal;                  // C string literal of the keyword
-  int         y_token;                  // yacc token number
-  char const *c_keyword_synonym;        // synonym of C/C++ keyword, if any
-  bool        allow_explain;            // allow when explaining C/C++?
+  char const *literal;                  ///< C string literal of the keyword.
+  int         y_token;                  ///< Bison token number.
+  char const *c_keyword_synonym;        ///< Synonym of C/C++ keyword, if any.
+  bool        allow_explain;            ///< Allow when explaining C/C++?
 };
 typedef struct keyword keyword_t;
 
+/// @cond DOXYGEN_IGNORE
 #define C_SYN(C_KEYWORD,ALLOW)  0, C_KEYWORD, ALLOW
 #define TOKEN(T)                T, NULL,      false
+/// @endcond
 
 /**
  * All cdecl keywords (that are not C/C++ keywords).
+ *
+ * @hideinitializer
  */
 static keyword_t const CDECL_KEYWORDS[] = {
   { L_ALL,            TOKEN( Y_ALL )                  },
@@ -163,8 +190,8 @@ static keyword_t const CDECL_KEYWORDS[] = {
  * Hyphenated English keyword-to-literal mapping.
  */
 struct hyphenated {
-  char const *token;                    // C string hyphenated English literal
-  char const *literal;                  // C language literal it maps to
+  char const *token;                    ///< Hyphenated English literal.
+  char const *literal;                  ///< C language literal it maps to.
 };
 typedef struct hyphenated hyphenated_t;
 
@@ -172,6 +199,8 @@ typedef struct hyphenated hyphenated_t;
  * All hyphenated English keywords.  These are handled seperately because
  * hyphenated words are not valid identifiers (since '-' is not valid in an
  * identifier).
+ *
+ * @hideinitializer
  */
 static hyphenated_t const HYPHENATED_KEYWORDS[] = {
   { "carries-dependency", L_CARRIES_DEPENDENCY  },
@@ -186,12 +215,12 @@ static hyphenated_t const HYPHENATED_KEYWORDS[] = {
 char const     *lexer_token;            // guaranteed pointer of yytext
 
 // local variables
-static int      column;                 // column position of current token
-static int      column_newline;         // column position of newline
-static char    *input_buf;              // entire current input line
-static size_t   input_len;              // length of line in input_buf
-static size_t   input_sent;             // how many chars returned to flex
-static bool     is_eof;                 // encountered EOF?
+static int      column;                 ///< Column position of current token.
+static int      column_newline;         ///< Column position of newline.
+static char    *input_buf;              ///< Entire current input line.
+static size_t   input_len;              ///< Length of line in `input_buf`.
+static size_t   input_sent;             ///< How many bytes returned to flex.
+static bool     is_eof;                 ///< Encountered EOF?
 
 // local functions
 static void     lexer_fatal( char const* );
@@ -220,7 +249,7 @@ static keyword_t const* cdecl_keyword_find( char const *s ) {
  * Finds a hyphenated English literal.
  *
  * @param s The string to find.
- * @return Returns the corresponding C language literal or NULL if none.
+ * @return Returns the corresponding C language literal or null if none.
  */
 static char const* hyphenated_find( char const *s ) {
   char const *literal = NULL;
@@ -248,7 +277,7 @@ static char const* hyphenated_find( char const *s ) {
  * error message.
  *
  * @param buf A pointer to the buffer to write into.
- * @param buf_capacity The size of \a buf.
+ * @param buf_capacity The capacity of \a buf.
  * @return Returns the number of bytes read.
  */
 static size_t lexer_get_input( char *buf, size_t buf_capacity ) {
@@ -313,7 +342,7 @@ static int yywrap( void ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 char const* lexer_input_line( size_t *plen ) {
-  if ( plen )
+  if ( plen != NULL )
     *plen = input_len;
   return input_buf;
 }
@@ -343,6 +372,8 @@ void lexer_reset( bool hard_reset ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/// @cond DOXYGEN_IGNORE
 
 %}
 
@@ -543,18 +574,22 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
               }
 
 %%
+
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
  * Called by flex only when there's a fatal error.
  *
  * @param msg The error message to print.
- *
- * @note This is defined down here to avoid having to declare yy_fatal_error
- * ourselves and having to get it right being subject to possible changes in
- * its signature in different flex versions.
  */
 static void lexer_fatal( char const *msg ) {
+  //
+  // This is defined down here to avoid having to declare yy_fatal_error
+  // ourselves and having to get it right being subject to possible changes in
+  // its signature in different flex versions.
+  //
   INTERNAL_ERR( "%s\n", msg );
 
   // Not reached -- "called" just to silence the "unused function" warning.

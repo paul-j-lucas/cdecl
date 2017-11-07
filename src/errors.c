@@ -31,6 +31,8 @@
 #include "literals.h"
 #include "options.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <assert.h>
 #include <stdbool.h>
@@ -38,6 +40,8 @@
 // local constants
 static bool const VISITOR_ERROR_FOUND     = true;
 static bool const VISITOR_ERROR_NOT_FOUND = false;
+
+/// @endcond
 
 // local functions
 static bool c_ast_visitor_error( c_ast_t*, void* );
@@ -49,12 +53,12 @@ static bool error_kind_to_type( c_ast_t const*, c_type_t );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Simple wrapper around \c c_ast_found().
+ * Simple wrapper around `c_ast_found()`.
  *
- * @param ast The AST to check.
+ * @param ast The `c_ast` to check.
  * @param visitor The visitor to use.
- * @param data Optional data passed to c_ast_visit_down() or c_ast_visit_up().
- * @return Returns \c true only if all checks passed.
+ * @param data Optional data passed to `c_ast_visit()`.
+ * @return Returns `true` only if all checks passed.
  */
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
                                         c_ast_visitor_t visitor,
@@ -68,8 +72,8 @@ static inline bool c_ast_check_visitor( c_ast_t const *ast,
  * Performs additional checks on an entire AST for semantic errors when
  * casting.
  *
- * @param ast The AST to check.
- * @return Returns \c true only if all checks passed.
+ * @param ast The `c_ast` to check.
+ * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_cast( c_ast_t const *ast ) {
   assert( ast != NULL );
@@ -103,9 +107,9 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 /**
  * Checks an entire AST for semantic errors.
  *
- * @param ast The function (or block) AST to check.
- * @param is_func_arg If \c true, we're checking a function argument.
- * @return Returns \c true only if all checks passed.
+ * @param ast The function (or block) `c_ast` to check.
+ * @param is_func_arg If `true`, we're checking a function argument.
+ * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
   assert( ast != NULL );
@@ -121,8 +125,8 @@ static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
 /**
  * Checks all function (or block) arguments for semantic errors.
  *
- * @param ast The function (or block) AST to check.
- * @return Returns \c true only if all checks passed.
+ * @param ast The function (or block) c_ast to check.
+ * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_func_args( c_ast_t const *ast ) {
   assert( ast != NULL );
@@ -207,8 +211,8 @@ only_void:
 /**
  * Checks all function (or block) arguments for semantic errors in K&R C.
  *
- * @param ast The function (or block) AST to check.
- * @return Returns \c true only if all checks passed.
+ * @param ast The function (or block) `c_ast` to check.
+ * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
   assert( ast != NULL );
@@ -233,10 +237,10 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
 /**
  * Visitor function that checks an AST for semantic errors.
  *
- * @param ast The AST to check.
- * @param data Cast to \c bool, indicates if \a ast is a function argument.
- * @return Returns \c VISITOR_ERROR_FOUND if an error was found;
- * \c VISITOR_ERROR_NOT_FOUND if not.
+ * @param ast The `c_ast` to check.
+ * @param data Cast to `bool`, indicates if \a ast is a function argument.
+ * @return Returns `VISITOR_ERROR_FOUND` if an error was found;
+ * `VISITOR_ERROR_NOT_FOUND` if not.
  */
 static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
@@ -466,9 +470,10 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 /**
  * Visitor function that checks an AST for type errors.
  *
- * @param data Cast to \c bool, indicates if \a ast is a function argument.
- * @return Returns \c VISITOR_ERROR_FOUND if an error was found;
- * \c VISITOR_ERROR_NOT_FOUND if not.
+ * @param ast The `c_ast` to visit.
+ * @param data Cast to `bool`, indicates if \a ast is a function argument.
+ * @return Returns `VISITOR_ERROR_FOUND` if an error was found;
+ * `VISITOR_ERROR_NOT_FOUND` if not.
  */
 static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
@@ -525,9 +530,9 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
 /**
  * Visitor function that checks an AST for semantic warnings.
  *
- * @param ast The AST to check.
+ * @param ast The `c_ast` to check.
  * @param data Not used.
- * @return Always returns \c false.
+ * @return Always returns `false`.
  */
 static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
@@ -583,11 +588,11 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
 }
 
 /**
- * Prints an error: <kind> can not be <type>.
+ * Prints an error: `<kind> can not be <type>`.
  *
- * @param ast The AST.
+ * @param ast The `c_ast` .
  * @param type The bad type.
- * @return Always returns \c VISITOR_ERROR_FOUND.
+ * @return Always returns `VISITOR_ERROR_FOUND`.
  */
 static bool error_kind_not_type( c_ast_t const *ast, c_type_t type ) {
   assert( ast != NULL );
@@ -598,10 +603,10 @@ static bool error_kind_not_type( c_ast_t const *ast, c_type_t type ) {
 }
 
 /**
- * Prints an error: <kind> not supported in <lang>.
+ * Prints an error: `<kind> not supported in <lang>`.
  *
- * @param ast The AST having the bad kind.
- * @return Always returns \c VISITOR_ERROR_FOUND.
+ * @param ast The `c_ast` having the bad kind.
+ * @return Always returns `VISITOR_ERROR_FOUND`.
  */
 static bool error_kind_not_supported( c_ast_t const *ast ) {
   assert( ast != NULL );
@@ -612,11 +617,11 @@ static bool error_kind_not_supported( c_ast_t const *ast ) {
 }
 
 /**
- * Prints an error: <kind> to <type>.
+ * Prints an error: `<kind> to <type>`.
  *
- * @param ast The AST having the bad kind.
+ * @param ast The `c_ast` having the bad kind.
  * @param type The bad type.
- * @return Always returns \c VISITOR_ERROR_FOUND.
+ * @return Always returns `VISITOR_ERROR_FOUND`.
  */
 static bool error_kind_to_type( c_ast_t const *ast, c_type_t type ) {
   print_error( &ast->loc,

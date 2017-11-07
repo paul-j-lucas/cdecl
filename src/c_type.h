@@ -31,136 +31,143 @@
 #include "c_lang.h"                     /* for c_lang_t */
 #include "typedefs.h"                   /* for c_loc_t */
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <stdbool.h>
 #include <inttypes.h>                   /* for PRIX64, etc. */
 #include <stdint.h>
 
+/// @endcond
+
 ////////// types //////////////////////////////////////////////////////////////
 
 // types
-#define T_NONE                0ull
-#define T_VOID                0x0000000000000001ull
-#define T_AUTO_CPP_11         0x0000000000000002ull /* C++11 version of auto */
-#define T_BOOL                0x0000000000000004ull
-#define T_CHAR                0x0000000000000008ull
-#define T_CHAR16_T            0x0000000000000010ull
-#define T_CHAR32_T            0x0000000000000020ull
-#define T_WCHAR_T             0x0000000000000040ull
-#define T_SHORT               0x0000000000000080ull
-#define T_INT                 0x0000000000000100ull
-#define T_LONG                0x0000000000000200ull
-#define T_LONG_LONG           0x0000000000000400ull /* special case */
-#define T_SIGNED              0x0000000000000800ull
-#define T_UNSIGNED            0x0000000000001000ull
-#define T_FLOAT               0x0000000000002000ull
-#define T_DOUBLE              0x0000000000004000ull
-#define T_COMPLEX             0x0000000000008000ull
-#define T_IMAGINARY           0x0000000000010000ull
-#define T_ENUM                0x0000000000020000ull
-#define T_STRUCT              0x0000000000040000ull
-#define T_UNION               0x0000000000080000ull
-#define T_CLASS               0x0000000000100000ull
-#define T_TYPEDEF_TYPE        0x0000000000200000ull /* e.g., size_t */
+#define T_NONE                0ull                  /**< No type.             */
+#define T_VOID                0x0000000000000001ull /**< `void`               */
+#define T_AUTO_CPP_11         0x0000000000000002ull /**< C++11's `auto`       */
+#define T_BOOL                0x0000000000000004ull /**< `_Bool` or `bool`    */
+#define T_CHAR                0x0000000000000008ull /**< `char`               */
+#define T_CHAR16_T            0x0000000000000010ull /**< `char16_t`           */
+#define T_CHAR32_T            0x0000000000000020ull /**< `char32_t`           */
+#define T_WCHAR_T             0x0000000000000040ull /**< `wchar_t`            */
+#define T_SHORT               0x0000000000000080ull /**< `short`              */
+#define T_INT                 0x0000000000000100ull /**< `int`                */
+#define T_LONG                0x0000000000000200ull /**< `long`               */
+#define T_LONG_LONG           0x0000000000000400ull /**< `long long`          */
+#define T_SIGNED              0x0000000000000800ull /**< `signed`             */
+#define T_UNSIGNED            0x0000000000001000ull /**< `unsigned`           */
+#define T_FLOAT               0x0000000000002000ull /**< `float`              */
+#define T_DOUBLE              0x0000000000004000ull /**< `double`             */
+#define T_COMPLEX             0x0000000000008000ull /**< `_Complex`           */
+#define T_IMAGINARY           0x0000000000010000ull /**< `_Imaginary`         */
+#define T_ENUM                0x0000000000020000ull /**< `enum`               */
+#define T_STRUCT              0x0000000000040000ull /**< `struct`             */
+#define T_UNION               0x0000000000080000ull /**< `union`              */
+#define T_CLASS               0x0000000000100000ull /**< `class`              */
+#define T_TYPEDEF_TYPE        0x0000000000200000ull /**< E.g., `size_t`       */
 
 // storage classes
-#define T_AUTO_C              0x0000000001000000ull /* C version of auto */
-#define T_BLOCK               0x0000000002000000ull /* Apple extension */
-#define T_EXTERN              0x0000000004000000ull
-#define T_MUTABLE             0x0000000008000000ull
-#define T_REGISTER            0x0000000010000000ull
-#define T_STATIC              0x0000000020000000ull
-#define T_THREAD_LOCAL        0x0000000040000000ull
-#define T_TYPEDEF             0x0000000080000000ull
+#define T_AUTO_C              0x0000000001000000ull /**< C's `auto`           */
+#define T_BLOCK               0x0000000002000000ull /**< Apple extension      */
+#define T_EXTERN              0x0000000004000000ull /**< `extern`             */
+#define T_MUTABLE             0x0000000008000000ull /**< `mutable`            */
+#define T_REGISTER            0x0000000010000000ull /**< `register`           */
+#define T_STATIC              0x0000000020000000ull /**< `static`             */
+#define T_THREAD_LOCAL        0x0000000040000000ull /**< `thread_local`       */
+#define T_TYPEDEF             0x0000000080000000ull /**< `typedef`            */
 
 // storage-class-like
-#define T_CONSTEXPR           0x0000000100000000ull
-#define T_FINAL               0x0000000200000000ull
-#define T_FRIEND              0x0000000400000000ull
-#define T_INLINE              0x0000000800000000ull
-#define T_NOEXCEPT            0x0000001000000000ull
-#define T_OVERRIDE            0x0000002000000000ull
-#define T_PURE_VIRTUAL        0x0000004000000000ull
-#define T_THROW               0x0000008000000000ull
-#define T_VIRTUAL             0x0000010000000000ull
+#define T_CONSTEXPR           0x0000000100000000ull /**< `constexpr`          */
+#define T_FINAL               0x0000000200000000ull /**< `final`              */
+#define T_FRIEND              0x0000000400000000ull /**< `friend`             */
+#define T_INLINE              0x0000000800000000ull /**< `inline`             */
+#define T_NOEXCEPT            0x0000001000000000ull /**< `noexcept`           */
+#define T_OVERRIDE            0x0000002000000000ull /**< `override`           */
+#define T_PURE_VIRTUAL        0x0000004000000000ull /**< `= 0`                */
+#define T_THROW               0x0000008000000000ull /**< `throw()`            */
+#define T_VIRTUAL             0x0000010000000000ull /**< `virtual`            */
 
 // attributes
-#define T_CARRIES_DEPENDENCY  0x0000100000000000ull
-#define T_DEPRECATED          0x0000200000000000ull
-#define T_MAYBE_UNUSED        0x0000400000000000ull
-#define T_NODISCARD           0x0000800000000000ull
-#define T_NORETURN            0x0001000000000000ull
+#define T_CARRIES_DEPENDENCY  0x0000100000000000ull /**< `carries_dependency` */
+#define T_DEPRECATED          0x0000200000000000ull /**< `deprecated`         */
+#define T_MAYBE_UNUSED        0x0000400000000000ull /**< `maybe_unused`       */
+#define T_NODISCARD           0x0000800000000000ull /**< `nodiscard`          */
+#define T_NORETURN            0x0001000000000000ull /**< `noreturn`           */
 
 // qualifiers
-#define T_ATOMIC              0x0010000000000000ull
-#define T_CONST               0x0020000000000000ull
-#define T_RESTRICT            0x0040000000000000ull
-#define T_VOLATILE            0x0080000000000000ull
+#define T_ATOMIC              0x0010000000000000ull /**< `_Atomic`            */
+#define T_CONST               0x0020000000000000ull /**< `const`              */
+#define T_RESTRICT            0x0040000000000000ull /**< `restrict`           */
+#define T_VOLATILE            0x0080000000000000ull /**< `volatile`           */
 
 // ref-qualifiers
-#define T_REFERENCE           0x0100000000000000ull /* void f() & */
-#define T_RVALUE_REFERENCE    0x0200000000000000ull /* void f() && */
+#define T_REFERENCE           0x0100000000000000ull /**< `void f() &`         */
+#define T_RVALUE_REFERENCE    0x0200000000000000ull /**< `void f() &&`        */
 
 // bit masks
-#define T_MASK_TYPE           0x0000000000FFFFFFull
-#define T_MASK_STORAGE        0x00000FFFFF000000ull
-#define T_MASK_ATTRIBUTE      0x000FF00000000000ull
-#define T_MASK_QUALIFIER      0x00F0000000000000ull
-#define T_MASK_REF_QUALIFIER  0x0F00000000000000ull
+#define T_MASK_TYPE           0x0000000000FFFFFFull /**< Type bitmask.        */
+#define T_MASK_STORAGE        0x00000FFFFF000000ull /**< Storage bitmask.     */
+#define T_MASK_ATTRIBUTE      0x000FF00000000000ull /**< Attribute bitmask.   */
+#define T_MASK_QUALIFIER      0x00F0000000000000ull /**< Qualifier bitmask.   */
+#define T_MASK_REF_QUALIFIER  0x0F00000000000000ull /**< Ref-qual bitmask.    */
 
 /**
- * Bitmask for combination of types.
+ * Bitmask for combination of type(s).
  */
 typedef uint64_t c_type_t;
 
 /**
  * Hexadecimal print conversion specifier for c_type_t.
+ *
+ * @hideinitializer
  */
 #define PRIX_C_TYPE_T         PRIX64
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Adds a type to an existing type, e.g., \c short to \c int, ensuring that a
- * particular type is never added more than once, e.g., \c int to \c int.
+ * Adds a type to an existing type, e.g., `short` to `int`, ensuring that a
+ * particular type is never added more than once, e.g., `short` to `short int`.
  *
- * A special case has to be made for \c long to allow for <code>long
- * long</code> yet not allow for <code>long long long</code>.
+ * A special case has to be made for `long` to allow for `long long` yet not
+ * allow for `long long long`.
  *
- * @param dest_type A pointer to the type to add to.
- * @param new_type The type to add.
- * @param loc The source location of \a new_type.
- * @return Returns \c true only if the type added successfully.
+ * @param dest_type A pointer to the `c_type_t` to add to.
+ * @param new_type The `c_type_t` to add.
+ * @param new_loc The source location of \a new_type.
+ * @return Returns `true` only if the type added successfully.
  */
-bool c_type_add( c_type_t *dest_type, c_type_t new_type, c_loc_t const *loc );
+bool c_type_add( c_type_t *dest_type, c_type_t new_type,
+                 c_loc_t const *new_loc );
 
 /**
- * Checks that the given type is valid.
+ * Checks that \a type is valid.
  *
- * @param type The type to check.
+ * @param type The `c_type_t` to check.
  * @return Returns the bitwise-or of the language(s) \a type is legal in.
  */
 c_lang_t c_type_check( c_type_t type );
 
 /**
- * Given a type, get its name.
+ * Gets the name of \a type.
  *
- * @param type The type to get the name for.
+ * @param type The `c_type_t` to get the name of.
  * @return Returns said name.
  * @warning The pointer returned is to a static buffer, so you can't do
- * something like call this twice in the same \c printf() statement.
+ * something like call this twice in the same `printf()` statement.
  */
 char const* c_type_name( c_type_t type );
 
 /**
- * Given a type, get its name for part of an error message.
- * If translating from English to gibberish and the type has an English alias,
- * return the alias, e.g., \c non-returning rather than \c noreturn.
+ * Gets the name of \a type for part of an error message.  If translating from
+ * English to gibberish and the type has an English alias, return the alias,
+ * e.g., `non-returning` rather than `noreturn`.
  *
- * @param type The type to get the name for.
+ * @param type The `c_type_t` to get the name of.
  * @return Returns said name.
  * @warning The pointer returned is to a static buffer, so you can't do
- * something like call this twice in the same \c printf() statement.
+ * something like call this twice in the same `printf()` statement.
  */
 char const* c_type_name_error( c_type_t type );
 

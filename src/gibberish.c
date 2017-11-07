@@ -33,10 +33,14 @@
 #include "options.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // system
 #include <assert.h>
 #include <stdlib.h>
 #include <sysexits.h>
+
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -44,22 +48,22 @@
  * The kind of gibberish to create.
  */
 enum g_kind {
-  G_CAST,                               // omits names and unneeded whitespace
-  G_DECLARE
+  G_CAST,                               ///< Omit names and unneeded whitespace.
+  G_DECLARE                             ///< Regular C/C++ declarations.
 };
 typedef enum g_kind g_kind_t;
 
 /**
- * Parameters used by c_ast_gibberish() (because there'd be too many function
+ * Parameters used by `c_ast_gibberish()` (because there'd be too many function
  * arguments otherwise).
  */
 struct g_param {
-  g_kind_t        gkind;                // the kind of gibberish to create
-  FILE           *gout;                 // where to write the gibberish
-  c_ast_t const  *leaf_ast;             // leaf of AST
-  c_ast_t const  *root_ast;             // root of AST
-  bool            postfix;              // doing postfix gibberish?
-  bool            space;                // printed a space yet?
+  g_kind_t        gkind;                ///< The kind of gibberish to create.
+  FILE           *gout;                 ///< Where to write the gibberish.
+  c_ast_t const  *leaf_ast;             ///< Leaf of AST.
+  c_ast_t const  *root_ast;             ///< Root of AST.
+  bool            postfix;              ///< Doing postfix gibberish?
+  bool            space;                ///< Printed a space yet?
 };
 typedef struct g_param g_param_t;
 
@@ -73,10 +77,10 @@ static void       g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Sets the leaf c_ast.
+ * Sets the leaf `c_ast`.
  *
- * @param param The g_param to use.
- * @param ast The c_ast to set the leaf to.
+ * @param param The `g_param` to use.
+ * @param ast The `c_ast` to set the leaf to.
  */
 static inline void g_param_leaf( g_param_t *param, c_ast_t const *ast ) {
   assert( param->leaf_ast == NULL );
@@ -87,7 +91,7 @@ static inline void g_param_leaf( g_param_t *param, c_ast_t const *ast ) {
 /**
  * Prints a space only if we haven't printed one yet.
  *
- * @param param The g_param to use.
+ * @param param The `g_param` to use.
  */
 static inline void g_param_space( g_param_t *param ) {
   if ( false_set( &param->space ) )
@@ -97,11 +101,11 @@ static inline void g_param_space( g_param_t *param ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints an array's size as
+ * Helper function for `c_ast_gibberish_impl()` that prints an array's size as
  * well as the size for all child arrays, if any.
  *
- * @param ast the The c_ast that is a K_ARRAY whose size to print.
- * @param param The g_param to use.
+ * @param ast The `c_ast` that is a `K_ARRAY` whose size to print.
+ * @param param The `g_param` to use.
  */
 static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
@@ -123,12 +127,12 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a block's or
+ * Helper function for `c_ast_gibberish_impl()` that prints a block's or
  * function's arguments, if any.
  *
- * @param ast The c_ast that is either a K_BLOCK or a K_FUNCTION whose
+ * @param ast The `c_ast` that is either a `K_BLOCK` or a `K_FUNCTION` whose
  * arguments to print.
- * @param param The g_param to use.
+ * @param param The `g_param` to use.
  */
 static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
@@ -148,10 +152,10 @@ static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
 }
 
 /**
- * Prints the given AST as gibberish, aka, a C/C++ declaration.
+ * Prints \a ast as gibberish, aka, a C/C++ declaration.
  *
- * @param ast The AST to print.
- * @param param The g_param to use.
+ * @param ast The `c_ast` to print.
+ * @param param The `g_param` to use.
  */
 static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
@@ -332,14 +336,15 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that handles the printing of
+ * Helper function for `c_ast_gibberish_impl()` that handles the printing of
  * "postfix" cases:
- *  + array of pointer to function
- *  + pointer to array
- *  + reference to array
  *
- * @param ast The c_ast
- * @param param The g_param to use.
+ *  + Array of pointer to function.
+ *  + Pointer to array.
+ *  + Reference to array.
+ *
+ * @param ast The `c_ast`.
+ * @param param The `g_param` to use.
  */
 static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
@@ -429,14 +434,14 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a pointer, pointer-
+ * Helper function for `c_ast_gibberish_impl()` that prints a pointer, pointer-
  * to-member, reference, or rvalue reference, its qualifier, if any, and the
  * name, if any.
  *
- * @param ast The c_ast that is one of K_POINTER, K_POINTER_TO_MEMBER,
- * K_REFERENCE, or K_RVALUE_REFERENCE whose qualifier, if any, and name, if
+ * @param ast The `c_ast` that is one of `K_POINTER`, `K_POINTER_TO_MEMBER`,
+ * `K_REFERENCE`, or `K_RVALUE_REFERENCE` whose qualifier, if any, and name, if
  * any, to print.
- * @param param The g_param to use.
+ * @param param The `g_param` to use.
  */
 static void c_ast_gibberish_qual_name( c_ast_t const *ast,
                                        g_param_t const *param ) {
@@ -473,11 +478,11 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast,
 }
 
 /**
- * Helper function for c_ast_gibberish_impl() that prints a space (if it hasn't
- * printed one before) and an AST node's name, if any.
+ * Helper function for `c_ast_gibberish_impl()` that prints a space (if it
+ * hasn't printed one before) and an AST node's name, if any.
  *
- * @param ast The c_ast to print the name of, if any.
- * @param param The g_param to use.
+ * @param ast The `c_ast` to print the name of, if any.
+ * @param param The `g_param` to use.
  */
 static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
@@ -490,19 +495,19 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
 }
 
 /**
- * Initializes a g_param.
+ * Initializes a `g_param`.
  *
- * @param param The \c g_param to initialize.
- * @param gkind The kind of gibberish to print.
- * @param root The AST root.
- * @param gout The FILE to print it to.
+ * @param param The `g_param` to initialize.
+ * @param gkind The `g_kind` of gibberish to print.
+ * @param root The `c_ast` root.
+ * @param gout The `FILE` to print it to.
  */
 static void g_param_init( g_param_t *param, c_ast_t const *root,
                           g_kind_t gkind, FILE *gout ) {
   assert( param != NULL );
   assert( root != NULL );
 
-  MEM_ZERO( param );
+  STRUCT_ZERO( param );
   param->gkind = gkind;
   param->gout = gout;
   param->root_ast = root;

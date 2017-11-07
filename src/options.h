@@ -30,42 +30,46 @@
 #include "config.h"                     /* must go first */
 #include "c_lang.h"                     /* for c_lang_t */
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <stdbool.h>
 #include <stdio.h>                      /* for FILE */
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern option variables
-extern char const  *opt_conf_file;
+extern char const  *opt_conf_file;      ///< Configuration file path.
 #ifdef ENABLE_CDECL_DEBUG
-extern bool         opt_debug;
+extern bool         opt_debug;          ///< Generate JSON-like debug output?
 #endif /* ENABLE_CDECL_DEBUG */
-extern char const  *opt_fin;            // file in path
-extern char const  *opt_fout;           // file out path
-extern bool         opt_interactive;
-extern c_lang_t     opt_lang;
-extern bool         opt_no_conf;        // do not read conf file
-extern bool         opt_semicolon;      // print ';' at end of gibberish
-extern bool         opt_typedefs;       // load C99 standard typedefs
-extern bool         opt_quiet;          // don't print the prompt
+extern char const  *opt_fin;            ///< File in path.
+extern char const  *opt_fout;           ///< File out path.
+extern bool         opt_interactive;    ///< Interactive mode?
+extern c_lang_t     opt_lang;           ///< Current language.
+extern bool         opt_no_conf;        ///< Do not read configuration file.
+extern bool         opt_semicolon;      ///< Print `;` at end of gibberish.
+extern bool         opt_typedefs;       ///< Load C99 standard `typedef`s.
+extern bool         opt_quiet;          ///< Don't print the prompt.
 
 // other extern variables
-extern FILE        *fin;                // file in
-extern FILE        *fout;               // file out
+extern FILE        *fin;                ///< File in.
+extern FILE        *fout;               ///< File out.
 #ifdef YYDEBUG
-extern int          yydebug;            // yacc debugging
+extern int          yydebug;            ///< Bison debugging.
 #endif /* YYDEBUG */
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
  * Initializes command-line option variables.
- * On return, \c *pargc and \c *pargv are updated to reflect the remaining
+ * On return, `*pargc` and `*pargv` are updated to reflect the remaining
  * command-line with the options removed.
  *
- * @param pargc A pointer to the argument count from \c main().
- * @param pargv A pointer to the argument values from \c main().
+ * @param pargc A pointer to the argument count from `main()`.
+ * @param pargv A pointer to the argument values from `main()`.
  */
 void options_init( int *pargc, char const ***pargv );
 

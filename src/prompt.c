@@ -30,6 +30,8 @@
 #include "options.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <stdbool.h>
 #include <stdlib.h>
@@ -39,13 +41,15 @@
 #include <readline/readline.h>          /* for rl_gnu_readline_p */
 #endif /* WITH_READLINE */
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variable definitions
 char const         *prompt[2];
 
 // local variable definitions
-static char        *prompt_buf[2];
+static char        *prompt_buf[2];      ///< Buffers for prompts.
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -60,7 +64,7 @@ static char        *prompt_buf[2];
  * So, unless we know we're using genuine GNU readline, use this function to
  * disable color prompts.
  *
- * @return Returns \c true only if we're running genuine GNU readline.
+ * @return Returns `true` only if we're running genuine GNU readline.
  */
 static inline bool have_genuine_gnu_readline( void ) {
 #if HAVE_DECL_RL_GNU_READLINE_P

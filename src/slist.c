@@ -18,11 +18,20 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file
+ * Defines functions to manipulate a singly-linked-list data structure.
+ */
+
 // local
 #include "slist.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <assert.h>
+
+/// @endcond
 
 ////////// extern functions ///////////////////////////////////////////////////
 

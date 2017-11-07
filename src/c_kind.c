@@ -25,15 +25,21 @@
 
 // local
 #include "config.h"                     /* must go first */
+/// @cond DOXYGEN_IGNORE
 #define CDECL_KIND_INLINE _GL_EXTERN_INLINE
+/// @endcond
 #include "c_kind.h"
 #include "options.h"
 #include "util.h"
+
+/// @cond DOXYGEN_IGNORE
 
 // system
 #include <assert.h>
 #include <stdlib.h>
 #include <sysexits.h>
+
+/// @endcond
 
 ////////// extern functions ///////////////////////////////////////////////////
 

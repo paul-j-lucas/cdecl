@@ -1,0 +1,66 @@
+##
+#       cdecl -- C gibberish translator
+#       Doxyfile
+#
+#       Copyright (C) 2017  Paul J. Lucas, et al.
+#
+#       This program is free software: you can redistribute it and/or modify
+#       it under the terms of the GNU General Public License as published by
+#       the Free Software Foundation, either version 3 of the License, or
+#       (at your option) any later version.
+#
+#       This program is distributed in the hope that it will be useful,
+#       but WITHOUT ANY WARRANTY; without even the implied warranty of
+#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#       GNU General Public License for more details.
+#
+#       You should have received a copy of the GNU General Public License
+#       along with this program.  If not, see <http://www.gnu.org/licenses/>.
+##
+
+PROJECT_NAME            = "cdecl"
+PROJECT_BRIEF           = "Compose and decipher C (or C++) type declarations or casts, aka ‘‘gibberish.’’"
+
+INPUT                   = README.md src
+EXTENSION_MAPPING       = l=C y=C
+FILE_PATTERNS           = *.c *.h *.l *.md *.y
+FILTER_PATTERNS         = "*.h=sed s/CDECL_[A-Z]*_INLINE/inline/"
+PREDEFINED              = __GNUC__ \
+                          WITH_READLINE \
+                          WITH_TERM_COLUMNS
+EXCLUDE                 = src/config.h \
+                          src/lexer.c \
+                          src/literals.h src/literals.c \
+                          src/parser.c src/parser.h
+OUTPUT_DIRECTORY        = docs
+
+EXTRACT_ALL             = YES
+EXTRACT_PACKAGE         = YES
+EXTRACT_STATIC          = YES
+
+DISABLE_INDEX           = YES
+GENERATE_TREEVIEW       = YES
+
+ALPHABETICAL_INDEX      = NO
+ENUM_VALUES_PER_LINE    = 1
+FORCE_LOCAL_INCLUDES    = YES
+INTERNAL_DOCS           = YES
+JAVADOC_AUTOBRIEF       = YES
+MARKDOWN_SUPPORT        = YES
+MAX_INITIALIZER_LINES   = 0
+OPTIMIZE_OUTPUT_FOR_C   = YES
+QUIET                   = YES
+SHOW_INCLUDE_FILES      = NO
+SORT_BRIEF_DOCS         = YES
+TAB_SIZE                = 2
+TYPEDEF_HIDES_STRUCT    = YES
+USE_MDFILE_AS_MAINPAGE  = README.md
+WARN_NO_PARAMDOC        = YES
+
+SOURCE_BROWSER          = YES
+STRIP_CODE_COMMENTS     = YES
+REFERENCED_BY_RELATION  = YES
+REFERENCES_LINK_SOURCE  = YES
+REFERENCES_RELATION     = YES
+
+# vim:set et sw=8 ts=8:

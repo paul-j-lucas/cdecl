@@ -144,6 +144,5 @@ and that **cdecl** is in the Public Domain,
 I therefore am licensing **cdecl** 3.0 (and later) under the GPLv3.
 
 **Paul J. Lucas**  
-*paul@lucasmail.org*  
 San Francisco, California, USA  
 16 April 2017

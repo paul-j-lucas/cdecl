@@ -30,14 +30,19 @@
 #include "prompt.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // system
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern constant definitions
+/// @hideinitializer
 c_lang_info_t const C_LANG_INFO[] = {
   { "ck&r",    LANG_C_KNR   },          // synonym for "knr"
   { "cknr",    LANG_C_KNR   },          // synonym for "knr"
@@ -61,12 +66,12 @@ c_lang_info_t const C_LANG_INFO[] = {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_lang_t c_lang_find( char const *s ) {
-  assert( s != NULL );
+c_lang_t c_lang_find( char const *name ) {
+  assert( name != NULL );
 
   // the list is small, so linear search is good enough
   for ( c_lang_info_t const *info = C_LANG_INFO; info->name != NULL; ++info ) {
-    if ( strcasecmp( s, info->name ) == 0 )
+    if ( strcasecmp( name, info->name ) == 0 )
       return info->lang;
   } // for
 

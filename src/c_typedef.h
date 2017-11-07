@@ -21,18 +21,22 @@
 #ifndef cdecl_c_typedef_H
 #define cdecl_c_typedef_H
 
-// local
-#include "config.h"                     /* must go first */
-#include "typedefs.h"
-
-// standard
-#include <stdbool.h>
-
 /**
  * @file
  * Declares types and functions for adding and looking up C/C++ typedef
  * declarations.
  */
+
+// local
+#include "config.h"                     /* must go first */
+#include "typedefs.h"
+
+/// @cond DOXYGEN_IGNORE
+
+// standard
+#include <stdbool.h>
+
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -40,60 +44,61 @@
  * C/C++ language typedef information.
  */
 struct c_typedef {
-  char const *type_name;
-  c_ast_t const *ast;
-  bool user_defined;
+  char const     *type_name;            ///< Type name.
+  c_ast_t const  *ast;                  ///< AST representing the type.
+  bool            user_defined;         ///< Is the type user-defined?
 };
 
 /**
- * The signature for a function passed to c_typedef_visit().
+ * The signature for a function passed to `c_typedef_visit()`.
  *
- * @param type The c_typedef to visit.
+ * @param type The `c_typedef` to visit.
  * @param data Optional data passed to the visitor.
- * @return Returning \c true will cause traversal to stop and \a type to be
- * returned to the caller of c_typedef_visit().
+ * @return Returning `true` will cause traversal to stop and \a type to be
+ * returned to the caller of `c_typedef_visit()`.
  */
 typedef bool (*c_typedef_visitor_t)( c_typedef_t const *type, void *data );
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Adds a new \c typedef to the global set.
+ * Adds a new `c_typedef` to the global set.
  *
  * @param type_name The name of the type.  Ownership of the C string is taken
  * only if the function returns \a true.
  * @param type_ast The AST of the type.  Ownership is taken only if the
- * function returns \a true.
- * @return Returns \c true only if the type was either added or \a name already
- * exists and the types are equivalent; \c false if \a name already exists and
+ * function returns `true`.
+ * @return Returns `true` only if the type was either added or \a name already
+ * exists and the types are equivalent; `false` if \a name already exists and
  * the types are not equivalent.
  */
 bool c_typedef_add( char const *type_name, c_ast_t const *type_ast );
 
 /**
- * Cleans up \c typedef data.
+ * Cleans up `c_typedef` data.
  */
 void c_typedef_cleanup( void );
 
 /**
- * Gets the c_typedef for \a name.
+ * Gets the `c_typedef` for \a name.
  *
  * @param name The name to find.
- * @return Returns a pointer to the corresponding c_typedef or NULL for none.
+ * @return Returns a pointer to the corresponding `c_typedef` or null for
+ * none.
  */
 c_typedef_t const* c_typedef_find( char const *name );
 
 /**
- * Initializes typedef data.
+ * Initializes `c_typedef` data.
  */
 void c_typedef_init( void );
 
 /**
- * Does an in-order traversal of all typedefs.
+ * Does an in-order traversal of all `c_typedef`s.
  *
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.
- * @return Returns a pointer to the c_typedef the visitor stopped on or NULL.
+ * @return Returns a pointer to the `c_typedef` the visitor stopped on or null.
  */
 c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data );
 

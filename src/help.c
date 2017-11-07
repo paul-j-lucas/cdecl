@@ -29,23 +29,30 @@
 #include "options.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#define NOT_IN_LANG   "~"               /* don't print text for current lang */
+#define SAME_AS_C     ""                /* C++ text is the same as C */
+
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Help text.
+ */
 struct help_text {
-  char const *text;                     // generic text 
-  char const *cpp_text;                 // C++ specific text 
+  char const *text;                     ///< Generic text.
+  char const *cpp_text;                 ///< C++ specific text.
 };
 typedef struct help_text help_text_t;
 
 ///////////////////////////////////////////////////////////////////////////////
-
-#define NOT_IN_LANG   "~"               /* don't print text for current lang */
-#define SAME_AS_C     ""                /* C++ text is the same as C */
 
 /**
  * Help text (limited to 80 columns and 23 lines so it fits on an 80x24

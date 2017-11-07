@@ -33,13 +33,19 @@
 #include "options.h"
 #include "parser.h"                     /* must go last */
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <string.h>
+
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
  * Array of all C++ attributes.
+ *
+ * @hideinitializer
  */
 static c_keyword_t const C_ATTRIBUTES[] = {
   // C++11
@@ -62,20 +68,22 @@ static c_keyword_t const C_ATTRIBUTES[] = {
 /**
  * Array of all C/C++ keywords (relevant for declarations).
  *
- * @note The \c ok_langs column is only used here for the sake of \c auto.
- * Since \c auto has two different meanings (one as a storage class in C and
- * C++ up to C++03, and the other as an automatically deduced type in C++11 and
- * later), there have to be two rows in the table for it.
+ * @note The `ok_langs` column is only used here for the sake of `auto`.  Since
+ * `auto` has two different meanings (one as a storage class in C and C++ up to
+ * C++03, and the other as an automatically deduced type in C++11 and later),
+ * there have to be two rows in the table for it.
  *
- * However, there is only one literal, the \c ok_langs column says which
+ * However, there is only one literal, the `ok_langs` column says which
  * language(s) the row is a valid entry for: when searching for a literal
- * match, if the current language is not among \c ok_langs, the current row is
+ * match, if the current language is not among `ok_langs`, the current row is
  * rejected and the search continues.
  *
- * The remaining rows are all LANG_ALL rather than the language(s) the keyword
- * is valid in because it results in better error messages by allowing the AST
- * to be fully constructed and semantic errors issued afterwards rather than by
- * the parser that can only give "unexpected token."
+ * The remaining rows are all `LANG_ALL` rather than the language(s) the
+ * keyword is valid in because it results in better error messages by allowing
+ * the AST to be fully constructed and semantic errors issued afterwards rather
+ * than by the parser that can only give "unexpected token."
+ *
+ * @hideinitializer
  */
 static c_keyword_t const C_KEYWORDS[] = {
   // K&R C

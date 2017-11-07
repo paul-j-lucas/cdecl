@@ -33,20 +33,21 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Prints an error message to standard error.
- * A newline is printed.
+ * Prints an error message to standard error, including a newline.
  *
  * @param loc The location of the error.
- * @param format The \c printf() style format string.
+ * @param format The `printf()` style format string.
  */
 void print_error( c_loc_t const *loc, char const *format, ... );
 
 /**
  * Prints a hint message to standard error in the form:
- *
+ * @code
  *      \t(did you mean _____?)\n
+ * @endcode
+ * where `_____` is the hint.
  *
- * @param format The \c printf() style format string.
+ * @param format The `printf()` style format string.
  */
 void print_hint( char const *format, ... );
 
@@ -54,7 +55,7 @@ void print_hint( char const *format, ... );
  * Prints the location of the error including:
  *
  *  + The error line (if neither a TTY nor interactive).
- *  + A '^' (in color, if possible and requested) under the offending token.
+ *  + A `^` (in color, if possible and requested) under the offending token.
  *  + The error column.
  *
  * A newline is \e not printed.
@@ -62,11 +63,10 @@ void print_hint( char const *format, ... );
 void print_loc( c_loc_t const *loc );
 
 /**
- * Prints a warning message to standard error.
- * A newline is printed.
+ * Prints a warning message to standard error, including a newline.
  *
  * @param loc The location of the warning.
- * @param format The \c printf() style format string.
+ * @param format The `printf()` style format string.
  */
 void print_warning( c_loc_t const *loc, char const *format, ... );
 

@@ -17,6 +17,7 @@ Makefile
 /config.sub
 /configure
 /depcomp
+/docs
 /install-sh
 /missing
 /ylwrap

@@ -22,4 +22,12 @@ ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = m4/gnulib-cache.m4 README-2.5.txt README-blocks.txt README.md
 SUBDIRS = lib src man test
 
+.PHONY: docs
+
+docs:
+	doxygen
+
+clean-local:
+	rm -rf docs
+
 # vim:set noet sw=8 ts=8:

@@ -30,6 +30,8 @@
 #include "config.h"                     /* must go first */
 #include "misc.h"                       /* for me */
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
@@ -44,22 +46,55 @@ _GL_INLINE_HEADER_BEGIN
 # define CDECL_UTIL_INLINE _GL_INLINE
 #endif /* CDECL_UTIL_INLINE */
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
+/** Gets the number of elements of the given array. */
 #define ARRAY_SIZE(A)             (sizeof(A) / sizeof(A[0]))
-#define BLOCK(...)                do { __VA_ARGS__ } while (0)
-#define CONST_CAST(T,EXPR)        ((T)(EXPR))
-#define FREE(PTR)                 free( CONST_CAST( void*, (PTR) ) )
-#define NO_OP                     ((void)0)
-#define PRINT_ERR(...)            fprintf( stderr, __VA_ARGS__ )
-#define PUTC_ERR(C)               FPUTC( (C), stderr )
-#define PUTC_OUT(C)               FPUTC( (C), stdout )
-#define PUTS_ERR(S)               FPUTS( (S), stderr )
-#define PUTS_OUT(S)               FPUTS( (S), stdout )
-#define REINTERPRET_CAST(T,EXPR)  ((T)(uintptr_t)(EXPR))
-#define STRERROR                  strerror( errno )
-#define MEM_ZERO(PTR)             memset( (PTR), 0, sizeof *(PTR) )
 
+/** Embeds the given statements into a compount statement block. */
+#define BLOCK(...)                do { __VA_ARGS__ } while (0)
+
+/** Explicit C version of C++'s `const_cast`. */
+#define CONST_CAST(T,EXPR)        ((T)(EXPR))
+
+/** Frees the given memory. */
+#define FREE(PTR)                 free( CONST_CAST( void*, (PTR) ) )
+
+/** No-operation statement.  (Useful for a `goto` target.) */
+#define NO_OP                     ((void)0)
+
+/** Shorthand for printing to standard error. */
+#define PRINT_ERR(...)            fprintf( stderr, __VA_ARGS__ )
+
+/** Shorthand for printing a character to standard error. */
+#define PUTC_ERR(C)               FPUTC( (C), stderr )
+
+/** Shorthand for printing a character to standard output. */
+#define PUTC_OUT(C)               FPUTC( (C), stdout )
+
+/** Shorthand for printing a string to standard error. */
+#define PUTS_ERR(S)               FPUTS( (S), stderr )
+
+/** Shorthand for printing a string to standard output. */
+#define PUTS_OUT(S)               FPUTS( (S), stdout )
+
+/** Explicit C version of C++'s `reinterpret_cast`. */
+#define REINTERPRET_CAST(T,EXPR)  ((T)(uintptr_t)(EXPR))
+
+/** Shorthand for calling **strerror**(3). */
+#define STRERROR                  strerror( errno )
+
+/** Zeros the given `struct`. */
+#define STRUCT_ZERO(PTR)          memset( (PTR), 0, sizeof *(PTR) )
+
+/**
+ * Prints an error message and exits in response to an internal error.
+ *
+ * @param FORMAT The `printf()` format to use.
+ * @hideinitializer
+ */
 #define INTERNAL_ERR(FORMAT,...) \
   PMESSAGE_EXIT( EX_SOFTWARE, "internal error: " FORMAT, __VA_ARGS__ )
 
@@ -70,6 +105,7 @@ _GL_INLINE_HEADER_BEGIN
  * non-zero (true) allowing the compiler to better order code blocks for
  * magrinally better performance.
  *
+ * @param EXPR An expression that can be cast to `bool`.
  * @see http://lwn.net/Articles/255364/
  * @hideinitializer
  */
@@ -80,6 +116,7 @@ _GL_INLINE_HEADER_BEGIN
  * non-zero (true) allowing the compiler to better order code blocks for
  * magrinally better performance.
  *
+ * @param EXPR An expression that can be cast to `bool`.
  * @see http://lwn.net/Articles/255364/
  * @hideinitializer
  */
@@ -90,30 +127,93 @@ _GL_INLINE_HEADER_BEGIN
 # define unlikely(EXPR)           (EXPR)
 #endif /* __GNUC__ */
 
+/**
+ * Calls **malloc**(3) and casts the result to \a TYPE.
+ *
+ * @param TYPE The type to cast the pointer returned by **malloc**(3) to.
+ * @param N The number of objects of \a TYPE to allocate.
+ * @return Returns a pointer to \a N uninitialized objects of \a TYPE.
+ * @hideinitializer
+ */
 #define MALLOC(TYPE,N) \
-  (TYPE*)check_realloc( NULL, sizeof(TYPE) * (N) )
+  ((TYPE*)check_realloc( NULL, sizeof(TYPE) * (N) ))
 
+/**
+ * Prints an error message to standard output and exits with \a STATUS code.
+ *
+ * @param STATUS The status code to **exit**(3) with.
+ * @param FORMAT The `printf()` format to use.
+ * @hideinitializer
+ */
 #define PMESSAGE_EXIT(STATUS,FORMAT,...) \
   BLOCK( PRINT_ERR( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
 
+/**
+ * Calls **ferror**(3) and exits if there was an error on \a STREAM.
+ *
+ * @param STREAM The `FILE` stream to check for an error.
+ * @hideinitializer
+ */
 #define FERROR(STREAM) \
   BLOCK( if ( unlikely( ferror( STREAM ) ) ) perror_exit( EX_IOERR ); )
 
+/**
+ * Calls **fflush(3)** on \a STREAM.
+ *
+ * @param STREAM The `FILE` stream to flush.
+ * @hideinitializer
+ */
 #define FFLUSH(STREAM) BLOCK( \
   if ( unlikely( fflush( STREAM ) != 0 ) ) perror_exit( EX_IOERR ); )
 
+/**
+ * Calls **fprintf**(3), checks for an error, and exits if there was one.
+ *
+ * @param STREAM The `FILE` stream to print to.
+ * @hideinitializer
+ */
 #define FPRINTF(STREAM,...) BLOCK( \
   if ( unlikely( fprintf( (STREAM), __VA_ARGS__ ) < 0 ) ) perror_exit( EX_IOERR ); )
 
+/**
+ * Calls **putc**(3), checks for an error, and exits if there was one.
+ *
+ * @param C The character to print.
+ * @param STREAM The `FILE` stream to print to.
+ * @hideinitializer
+ */
 #define FPUTC(C,STREAM) BLOCK( \
   if ( unlikely( putc( (C), (STREAM) ) == EOF ) ) perror_exit( EX_IOERR ); )
 
+/**
+ * Calls **fputs**(3), checks for an error, and exits if there was one.
+ *
+ * @param S The string to print.
+ * @param STREAM The `FILE` stream to print to.
+ * @hideinitializer
+ */
 #define FPUTS(S,STREAM) BLOCK( \
   if ( unlikely( fputs( (S), (STREAM) ) == EOF ) ) perror_exit( EX_IOERR ); )
 
+/**
+ * Calls **fstat**(3), checks for an error, and exits if there was one.
+ *
+ * @param FD The file descriptor to stat.
+ * @param STAT A pointer to a `struct stat` to receive the result.
+ * @hideinitializer
+ */
 #define FSTAT(FD,STAT) BLOCK( \
   if ( unlikely( fstat( (FD), (STAT) ) < 0 ) ) perror_exit( EX_IOERR ); )
 
+/**
+ * Calls **realloc**(3) and resets \a PTR.
+ *
+ * @param PTR The pointer to memory to reallocate.  It is set to the newly
+ * reallocated memory.
+ * @param TYPE The type to cast the pointer returned by **realloc**(3) to.
+ * @param N The number of objects of \a TYPE to reallocate.
+ * @hideinitializer
+ */
 #define REALLOC(PTR,TYPE,N) \
   (PTR) = (TYPE*)check_realloc( (PTR), sizeof(TYPE) * (N) )
 
@@ -123,7 +223,7 @@ _GL_INLINE_HEADER_BEGIN
  * Checks whether at most 1 bit is set in the given integer.
  *
  * @param n The number to check.
- * @reeturn Returns \c true only if at most 1 bit is set.
+ * @return Returns `true` only if at most 1 bit is set.
  */
 CDECL_UTIL_INLINE bool at_most_one_bit_set( uint64_t n ) {
   return (n & (n - 1)) == 0;
@@ -131,30 +231,30 @@ CDECL_UTIL_INLINE bool at_most_one_bit_set( uint64_t n ) {
 
 /**
  * Extracts the base portion of a path-name.
- * Unlike \c basename(3):
- *  + Trailing \c '/' characters are not deleted.
- *  + \a path_name is never modified (hence can therefore be \c const).
+ * Unlike **basename**(3):
+ *  + Trailing `/` characters are not deleted.
+ *  + \a path_name is never modified (hence can therefore be `const`).
  *  + Returns a pointer within \a path_name (hence is multi-call safe).
  *
  * @param path_name The path-name to extract the base portion of.
  * @return Returns a pointer to the last component of \a path_name.
- * If \a path_name consists entirely of '/' characters,
- * a pointer to the string "/" is returned.
+ * If \a path_name consists entirely of `/` characters, a pointer to the string
+ * `/` is returned.
  */
 char const* base_name( char const *path_name );
 
 /**
- * Calls \c realloc(3) and checks for failure.
+ * Calls **realloc**(3) and checks for failure.
  * If reallocation fails, prints an error message and exits.
  *
- * @param p The pointer to reallocate.  If NULL, new memory is allocated.
+ * @param p The pointer to reallocate.  If null, new memory is allocated.
  * @param size The number of bytes to allocate.
  * @return Returns a pointer to the allocated memory.
  */
 void* check_realloc( void *p, size_t size );
 
 /**
- * Calls \c strdup(3) and checks for failure.
+ * Calls **strdup**(3) and checks for failure.
  * If memory allocation fails, prints an error message and exits.
  *
  * @param s The null-terminated string to duplicate or null.
@@ -168,7 +268,7 @@ char* check_strdup( char const *s );
  * @param s The string to check.
  * @param s_len The length of \a s.
  * @param c The character to check for.
- * @return Returns \c true only if \a ends with \a c.
+ * @return Returns `true` only if \a ends with \a c.
  */
 CDECL_UTIL_INLINE bool ends_with_chr( char const *s, size_t s_len, char c ) {
   return s_len > 0 && s[ s_len - 1 ] == c;
@@ -178,18 +278,18 @@ CDECL_UTIL_INLINE bool ends_with_chr( char const *s, size_t s_len, char c ) {
  * Checks whether exactly 1 bit is set in the given integer.
  *
  * @param n The number to check.
- * @reeturn Returns \c true only if exactly 1 bit is set.
+ * @return Returns `true` only if exactly 1 bit is set.
  */
 CDECL_UTIL_INLINE bool exactly_one_bit_set( uint64_t n ) {
   return n != 0 && at_most_one_bit_set( n );
 }
 
 /**
- * Checks the flag: if \c false, sets it to \c true.
+ * Checks the flag: if `false`, sets it to `true`.
  *
- * @param flag A pointer to the Boolean flag to be tested and, if \c false,
- * sets it to \c true.
- * @return Returns \c true only if \c *flag is \c false initially.
+ * @param flag A pointer to the Boolean flag to be tested and, if `false`,
+ * sets it to `true`.
+ * @return Returns `true` only if `*flag` is `false` initially.
  */
 CDECL_UTIL_INLINE bool false_set( bool *flag ) {
   return !*flag && (*flag = true);
@@ -197,14 +297,14 @@ CDECL_UTIL_INLINE bool false_set( bool *flag ) {
 
 #ifndef HAVE_FMEMOPEN
 /**
- * Local implementation of POSIX 2008 fmemopen(3) for systems that don't have
- * it.
+ * Local implementation of POSIX 2008 **fmemopen**(3) for systems that don't
+ * have it.
  *
  * @param buf A pointer to the buffer to use.  The pointer must remain valid
- * for as along as the FILE is open.
+ * for as along as the `FILE` is open.
  * @param size The size of \a buf.
- * @param mode The open mode.  It \e must contain \c r.
- * @return Returns a FILE containing the contents of \a buf.
+ * @param mode The open mode.  It \e must contain `r`.
+ * @return Returns a `FILE` containing the contents of \a buf.
  */
 FILE* fmemopen( void *buf, size_t size, char const *mode );
 #endif /* HAVE_FMEMOPEN */
@@ -234,7 +334,7 @@ unsigned get_term_columns( void );
 /**
  * Gets the full path of the user's home directory.
  *
- * @return Returns said directory or NULL if it is not obtainable.
+ * @return Returns said directory or null if it is not obtainable.
  */
 char const* home_dir( void );
 
@@ -243,7 +343,7 @@ char const* home_dir( void );
  * whitespace.
  *
  * @param s The null-terminated string to check.
- * @return Returns \c true only if \a s is a blank line.
+ * @return Returns `true` only if \a s is a blank line.
  */
 CDECL_UTIL_INLINE bool is_blank_line( char const *s ) {
   s += strspn( s, " \t\r\n" );
@@ -254,12 +354,12 @@ CDECL_UTIL_INLINE bool is_blank_line( char const *s ) {
  * Checks whether the given file descriptor refers to a regular file.
  *
  * @param fd The file descriptor to check.
- * @return Returns \c true only if \a fd refers to a regular file.
+ * @return Returns `true` only if \a fd refers to a regular file.
  */
 bool is_file( int fd );
 
 /**
- * Appends a component to a path ensuring that exactly one \c / separates them.
+ * Appends a component to a path ensuring that exactly one `/` separates them.
  *
  * @param path The path to append to.
  * The buffer pointed to must be big enough to hold the new path.
@@ -268,7 +368,7 @@ bool is_file( int fd );
 void path_append( char *path, char const *component );
 
 /**
- * Prints an error message for \c errno to standard error and exits.
+ * Prints an error message for `errno` to standard error and exits.
  *
  * @param status The exit status code.
  */
@@ -278,9 +378,9 @@ void perror_exit( int status );
  * Reads an input line:
  *
  *  + Returns only non-whitespace-only lines.
- *  + Stitches multiple lines ending with '\' together.
+ *  + Stitches multiple lines ending with `\` together.
  *
- * If GNU readline(3) is compiled in, also:
+ * If GNU **readline**(3) is compiled in, also:
  *
  *  + Adds non-whitespace-only lines to the history.
  *
@@ -300,7 +400,8 @@ char* read_input_line( char const *ps1, char const *ps2 );
 char* chrcpy_end( char *dst, char c );
 
 /**
- * A variant of strcpy(3) that returns the pointer to the new end of \a dst.
+ * A variant of **strcpy**(3) that returns the pointer to the new end of \a
+ * dst.
  *
  * @param dst A pointer to receive the copy of \a src.
  * @param src The null-terminated string to copy.
@@ -309,11 +410,11 @@ char* chrcpy_end( char *dst, char c );
 char* strcpy_end( char *dst, char const *src );
 
 /**
- * Checks the flag: if \c false, sets it to \c true.
+ * Checks the flag: if `false`, sets it to `true`.
  *
- * @param flag A pointer to the Boolean flag to be tested and, if \c false,
- * sets it to \c true.
- * @return Returns \c true only if \c *flag is \c true initially.
+ * @param flag A pointer to the Boolean flag to be tested and, if `false`, sets
+ * it to `true`.
+ * @return Returns `true` only if `*flag` is `true` initially.
  */
 CDECL_UTIL_INLINE bool true_or_set( bool *flag ) {
   return *flag || !(*flag = true);

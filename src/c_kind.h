@@ -30,6 +30,8 @@
 #include "config.h"                     /* must go first */
 #include "typedefs.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <stdbool.h>
 
@@ -37,6 +39,8 @@ _GL_INLINE_HEADER_BEGIN
 #ifndef CDECL_KIND_INLINE
 # define CDECL_KIND_INLINE _GL_INLINE
 #endif /* CDECL_KIND_INLINE */
+
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -48,42 +52,44 @@ _GL_INLINE_HEADER_BEGIN
  * thing is any \e one of those kinds.
  */
 enum c_kind {
-  K_NONE                    = 0,
-  K_PLACEHOLDER             = 0x0001,
-  K_BUILTIN                 = 0x0002,   // void, char, int, etc.
-  K_ENUM_CLASS_STRUCT_UNION = 0x0004,
-  K_NAME                    = 0x0008,   // typeless function argument in K&R C
-  K_TYPEDEF                 = 0x0010,   // typedef type, e.g., size_t
-  K_VARIADIC                = 0x0020,   // variadic ("...") function argument
+  K_NONE                    = 0,        ///< No kind.
+  K_PLACEHOLDER             = 0x0001,   ///< Temporary node in AST.
+  K_BUILTIN                 = 0x0002,   ///< `void,` `char,` `int,` etc.
+  K_ENUM_CLASS_STRUCT_UNION = 0x0004,   ///< `enum,` `class,` `struct,` `union`
+  K_NAME                    = 0x0008,   ///< Typeless function argument in K&R C
+  K_TYPEDEF                 = 0x0010,   ///< `typedef` type, e.g., `size_t`.
+  K_VARIADIC                = 0x0020,   ///< Variadic (`...`) function argument.
   // "parent" kinds
-  K_ARRAY                   = 0x0040,
-  K_BLOCK                   = 0x0080,   // Apple extension
-  K_FUNCTION                = 0x0100,
-  K_POINTER                 = 0x0200,
+  K_ARRAY                   = 0x0040,   ///< Array.
+  K_BLOCK                   = 0x0080,   ///< Apple extension.
+  K_FUNCTION                = 0x0100,   ///< Function.
+  K_POINTER                 = 0x0200,   ///< Pointer.
   // "parent" kinds (C++ only)
-  K_POINTER_TO_MEMBER       = 0x0400,
-  K_REFERENCE               = 0x0800,
-  K_RVALUE_REFERENCE        = 0x1000,
+  K_POINTER_TO_MEMBER       = 0x0400,   ///< Pointer-to-member (C++ only).
+  K_REFERENCE               = 0x0800,   ///< Reference (C++ only).
+  K_RVALUE_REFERENCE        = 0x1000,   ///< Rvalue reference (C++ only).
 };
 
+/// @cond DOXYGEN_IGNORE
 #define K_PARENT_MIN          K_ARRAY
+/// @endcond
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Checks whether the given AST node is a parent node.
+ * Checks whether \a kind is a parent kind.
  *
- * @param ast The \c c_ast to check.  May be null.
- * @return Returns \c true only if it is.
+ * @param kind The `c_kind` to check.
+ * @return Returns `true` only if it is.
  */
 CDECL_KIND_INLINE bool c_kind_is_parent( c_kind_t kind ) {
   return kind >= K_PARENT_MIN;
 }
 
 /**
- * Gets the name of the given kind.
+ * Gets the name of \a kind.
  *
- * @param kind The kind to get the name for.
+ * @param kind The `c_kind` to get the name for.
  * @return Returns said name.
  */
 char const* c_kind_name( c_kind_t kind );

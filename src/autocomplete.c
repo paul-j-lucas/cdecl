@@ -30,6 +30,8 @@
 #include "options.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <assert.h>
 #include <stdio.h>
@@ -37,19 +39,23 @@
 #include <string.h>
 #include <readline/readline.h>          /* must go last */
 
+/// @endcond
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * C/C++ autocompletion keywords.
+ * C/C++ autocompletion keyword.
  */
 struct ac_keyword {
-  char const *keyword;                  // the keyword literal
-  c_lang_t    ok_langs;                 // language(s) OK in
+  char const *keyword;                  ///< The keyword literal.
+  c_lang_t    ok_langs;                 ///< Language(s) OK in.
 };
 typedef struct ac_keyword ac_keyword_t;
 
 /**
  * Subset of cdecl keywords that are commands.
+ *
+ * @hideinitializer
  */
 static ac_keyword_t const CDECL_COMMANDS[] = {
   { L_CAST,         LANG_ALL           },
@@ -70,6 +76,8 @@ static ac_keyword_t const CDECL_COMMANDS[] = {
 
 /**
  * Subset of cdecl keywords that are completable.
+ *
+ * @hideinitializer
  */
 static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_ARRAY,              LANG_ALL                        },
@@ -146,6 +154,8 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
 
 /**
  * cdecl options.
+ *
+ * @hideinitializer
  */
 static char const *const CDECL_OPTIONS[] = {
   "c89",
@@ -182,13 +192,13 @@ static char*  command_generator( char const*, int );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Attempts to find the ac_keyword (partially) matching the given text.
+ * Attempts to find the `ac_keyword` (partially) matching the given text.
  *
  * @param keywords The array of keywords to search through.
  * @param text The text to search for.
  * @param text_len The length of text to (partially) match.
  * @param index A pointer to the current index into \a keywords to update.
- * @return Returns a copy of the keyword or NULL if not found.
+ * @return Returns a copy of the keyword or null if not found.
  */
 static char* ac_keyword_find( ac_keyword_t const keywords[], char const *text,
                               size_t text_len, size_t *index ) {
@@ -203,7 +213,7 @@ static char* ac_keyword_find( ac_keyword_t const keywords[], char const *text,
 }
 
 /**
- * Attempts command completion for readline().
+ * Attempts command completion for `readline()`.
  *
  * @param text The text read (so far) to match against.
  * @param start The starting character position of \a text.
@@ -226,6 +236,7 @@ static char** attempt_completion( char const *text, int start, int end ) {
  * @param text The text read (so far) to match against.
  * @param state If 0, restart matching from the beginning; if non-zero,
  * continue to next match, if any.
+ * @return Returns a copy of the command or null if not found.
  */
 static char* command_generator( char const *text, int state ) {
   static size_t index;
@@ -243,11 +254,11 @@ static char* command_generator( char const *text, int state ) {
  * Checks whether the current line being read is a particular cdecl command.
  *
  * @param command The command to check for.
- * @return Returns \c true only if it is.
+ * @return Returns `true` only if it is.
  */
 static bool is_command( char const *command ) {
   size_t const command_len = strlen( command );
-  if ( command_len > (size_t)rl_end )   /// more chars than in rl_line_buffer?
+  if ( command_len > (size_t)rl_end )   // more chars than in rl_line_buffer?
     return false;
   return strncmp( rl_line_buffer, command, command_len ) == 0;
 }
@@ -258,7 +269,7 @@ static bool is_command( char const *command ) {
  * @param text The text read (so far) to match against.
  * @param state If 0, restart matching from the beginning; if non-zero,
  * continue to next match, if any.
- * @return Returns a copy of the keyword or NULL if none.
+ * @return Returns a copy of the keyword or null if none.
  */
 static char* keyword_completion( char const *text, int state ) {
   static char const  *command;          // current command
@@ -336,6 +347,9 @@ static char* keyword_completion( char const *text, int state ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+/**
+ * Initializes readline.
+ */
 void readline_init( void ) {
   // allow conditional ~/.inputrc parsing
   rl_readline_name = CONST_CAST( char*, PACKAGE );

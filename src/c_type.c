@@ -32,6 +32,8 @@
 #include "options.h"
 #include "util.h"
 
+/// @cond DOXYGEN_IGNORE
+
 // system
 #include <assert.h>
 #include <stdbool.h>
@@ -56,30 +58,33 @@
 #define CHRCAT(DST,SRC)           ((DST) = chrcpy_end( (DST), (SRC) ))
 #define STRCAT(DST,SRC)           ((DST) = strcpy_end( (DST), (SRC) ))
 
+/// @endcond
+
 // local functions
 static char const* c_type_name_impl( c_type_t, bool );
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * As part of the special case for <code>long long</code>, its literal is only
- * \c long because its type, T_LONG_LONG, is always combined with T_LONG, i.e.,
- * two bits are set.  Therefore, when printed, it prints one \c long for T_LONG
- * and another \c long for T_LONG_LONG (this literal).  That explains why this
- * literal is only one \c long.
+ * As part of the special case for `long long`, its literal is only `long`
+ * because its type, `T_LONG_LONG`, is always combined with `T_LONG`, i.e., two
+ * bits are set.  Therefore, when printed, it prints one `long` for `T_LONG`
+ * and another `long` for `T_LONG_LONG` (this literal).  That explains why this
+ * literal is only one `long`.
  */
 static char const L_LONG_LONG[] = "long";
 
 /**
- * For convenience, this is just a concatenation of L_RVALUE and L_REFERENCE.
+ * For convenience, this is just a concatenation of `L_RVALUE` and
+ * `L_REFERENCE`.
  */
 static char const L_RVALUE_REFERENCE[] = "rvalue reference";
 
 /**
- * T_TYPEDEF_TYPE exists only so there can be a row/column for it in the
- * OK_TYPE_LANGS table to make things like <code>signed size_t</code> illegal.
+ * `T_TYPEDEF_TYPE` exists only so there can be a row/column for it in the
+ * `OK_TYPE_LANGS` table to make things like `signed size_t` illegal.
  *
- * T_TYPEDEF_TYPE doesn't have any printable representation (only the name of
+ * `T_TYPEDEF_TYPE` doesn't have any printable representation (only the name of
  * the type is printed); therefore, its literal is the empty string.
  */
 static char const L_TYPEDEF_TYPE[] = "";
@@ -88,13 +93,18 @@ static char const L_TYPEDEF_TYPE[] = "";
  * Mapping between C type bits, literals, and valid language(s).
  */
 struct c_type_info {
-  c_type_t    type;
-  char const *literal;                  // C string literal of the type
-  char const *english;                  // English version, if not NULL
-  c_lang_t    ok_langs;                 // language(s) OK in
+  c_type_t    type;                     ///< The type.
+  char const *literal;                  ///< C string literal of the type.
+  char const *english;                  ///< English version (if not NULL).
+  c_lang_t    ok_langs;                 ///< Language(s) OK in.
 };
 typedef struct c_type_info c_type_info_t;
 
+/**
+ * Type mapping for attributes.
+ *
+ * @hideinitializer
+ */
 static c_type_info_t const C_ATTRIBUTE_INFO[] = {
   { T_CARRIES_DEPENDENCY,
                     L_CARRIES_DEPENDENCY,
@@ -108,6 +118,11 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
                     L_NON_RETURNING,          LANG_C_11 | LANG_MIN(CPP_11)    },
 };
 
+/**
+ * Type mapping for qualifiers.
+ *
+ * @hideinitializer
+ */
 static c_type_info_t const C_QUALIFIER_INFO[] = {
   { T_ATOMIC,       L__ATOMIC,      L_ATOMIC, LANG_MIN(C_11)                  },
   { T_CONST,        L_CONST,      L_CONSTANT, LANG_MIN(C_89)                  },
@@ -118,6 +133,11 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
   { T_VOLATILE,     L_VOLATILE,         NULL, LANG_MIN(C_89)                  },
 };
 
+/**
+ * Type mapping for storage classes (or storage-class-like).
+ *
+ * @hideinitializer
+ */
 static c_type_info_t const C_STORAGE_INFO[] = {
   // storage classes
   { T_AUTO_C,       L_AUTO,      L_AUTOMATIC, LANG_MAX(CPP_03)                },
@@ -142,6 +162,11 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { T_PURE_VIRTUAL, L_PURE,             NULL, LANG_CPP_ALL                    },
 };
 
+/**
+ * Type mapping for simpler types.
+ *
+ * @hideinitializer
+ */
 static c_type_info_t const C_TYPE_INFO[] = {
   { T_VOID,         L_VOID,             NULL, LANG_MIN(C_89)                  },
   { T_AUTO_CPP_11,  L_AUTO,      L_AUTOMATIC, LANG_MIN(CPP_11)                },
@@ -168,6 +193,8 @@ static c_type_info_t const C_TYPE_INFO[] = {
   { T_TYPEDEF_TYPE, L_TYPEDEF_TYPE,     NULL, LANG_ALL                        },
 };
 
+/// @cond DOXYGEN_IGNORE
+
 //      shorthand   legal in ...
 #define __          LANG_ALL
 #define XX          LANG_NONE
@@ -181,14 +208,18 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define P1          LANG_MIN(CPP_11)
 #define E1          LANG_C_11 | LANG_MIN(CPP_11)
 
+/// @endcond
+
 // There is no OK_ATTRIBUTE_LANGS because all combinations of attributes are
 // legal.
 
 /**
  * Legal combinations of storage classes in languages.
- * Only the lower triangle is used.
+ *
+ * @hideinitializer
  */
 static c_lang_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
+// Only the lower triangle is used.
 //  a  b  e  r  s  tl td   ce fi fr in mu ne o  t  v  pv
   { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__ },// auto
   { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__ },// block
@@ -212,9 +243,11 @@ static c_lang_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 
 /**
  * Legal combinations of types in languages.
- * Only the lower triangle is used.
+ *
+ * @hideinitializer
  */
 static c_lang_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
+// Only the lower triangle is used.
 //  v  a1 b  c  16 32 wc s  i  l  ll s  u  f  d  co im e  st un cl t
   { C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// void
   { XX,P1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// auto
@@ -243,13 +276,11 @@ static c_lang_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Checks whether the given type is some form of <code>long int</code> only,
- * and \e not either <code>long float</code> (K&R) or <code>long double</code>
- * (C89).
+ * Checks whether \a type is some form of <code>long int</code> only, and \e
+ * not either `long float` (K&R) or `long double` (C89).
  *
- * @param type The type to check.
- * @return Returns \c true only if \a type is some form of <code>long
- * int</code>.
+ * @param type The `c_type_t` to check.
+ * @return Returns `true` only if \a type is some form of `long int`.
  */
 static inline bool is_long_int( c_type_t type ) {
   return (type & T_LONG) != T_NONE && (type & (T_FLOAT | T_DOUBLE)) == T_NONE;
@@ -259,8 +290,8 @@ static inline bool is_long_int( c_type_t type ) {
  * Gets the literal of a given c_type_info, either gibberish or, if appropriate
  * and available, English.
  *
- * @param t A pointer to the c_type_info to get the literal of.
- * @param is_error \c true if getting the literal for part of an error message.
+ * @param t A pointer to the `c_type_info` to get the literal of.
+ * @param is_error `true` if getting the literal for part of an error message.
  * @return Returns said literal.
  */
 static inline char const* c_type_literal( c_type_info_t const *t,
@@ -274,10 +305,10 @@ static inline char const* c_type_literal( c_type_info_t const *t,
 /**
  * Checks that the type combination is legal in the current language.
  *
- * @param type The type to check.
- * @param types The array of types to use.
+ * @param type The `c_type_t` to check.
+ * @param types The array of types to check against.
  * @param types_size The size of \a types.
- * @param type_langs The type/languages array to use.
+ * @param type_langs The type/languages array to check against.
  * @return Returns the bitwise-or of the language(s) \a type is legal in.
  */
 static c_lang_t c_type_check_combo( c_type_t type, c_type_info_t const types[],
@@ -298,10 +329,10 @@ static c_lang_t c_type_check_combo( c_type_t type, c_type_info_t const types[],
 }
 
 /**
- * Checks that the type is legal in the current language.
+ * Checks that \a type is legal in the current language.
  *
- * @param type The type to check.
- * @param types The array of types to use.
+ * @param type The `c_type_t` to check.
+ * @param types The array of types to check against.
  * @param types_size The size of \a types.
  * @return Returns the bitwise-or of the language(s) \a type is legal in.
  */
@@ -316,11 +347,11 @@ static c_lang_t c_type_check_legal( c_type_t type, c_type_info_t const types[],
 }
 
 /**
- * Given an individual type, get its name.
+ * Gets the name of an individual type.
  *
- * @param type The type to get the name for; \a type must have exactly one bit
- * set.
- * @param is_error \c true if getting the name for part of an error message.
+ * @param type The `c_type_t` to get the name for; \a type must have exactly
+ * one bit set.
+ * @param is_error `true` if getting the name for part of an error message.
  * @return Returns said name.
  */
 static char const* c_type_name_1( c_type_t type, bool is_error ) {
@@ -362,10 +393,10 @@ static char const* c_type_name_1( c_type_t type, bool is_error ) {
  * Concatenates the partial type name onto the full type name being made.
  *
  * @param pname A pointer to the pointer to the name to concatenate to.
- * @param type The type to concatenate the name of.
+ * @param type The `c_type_t` to concatenate the name of.
  * @param types The array of types to use.
  * @param types_size The size of \a types.
- * @param is_error \c true if concatenating the name for part of an error
+ * @param is_error `true` if concatenating the name for part of an error
  * message.
  * @param sep The separator character.
  * @param psep A pointer to a variable to keep track of whether \a sep has been
@@ -384,13 +415,13 @@ static void c_type_name_cat( char **pname, c_type_t type,
 }
 
 /**
- * Given a type, get its name.
+ * Gets the name of \a type.
  *
- * @param type The type to get the name for.
- * @param is_error \c true if getting the name for part of an error message.
+ * @param type The `c_type_t` to get the name for.
+ * @param is_error `true` if getting the name for part of an error message.
  * @return Returns said name.
  * @warning The pointer returned is to a static buffer, so you can't do
- * something like call this twice in the same \c printf() statement.
+ * something like call this twice in the same `printf()` statement.
  */
 static char const* c_type_name_impl( c_type_t type, bool is_error ) {
   static char name_buf[ 256 ];
@@ -517,7 +548,8 @@ static char const* c_type_name_impl( c_type_t type, bool is_error ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool c_type_add( c_type_t *dest_type, c_type_t new_type, c_loc_t const *loc ) {
+bool c_type_add( c_type_t *dest_type, c_type_t new_type,
+                 c_loc_t const *new_loc ) {
   assert( dest_type != NULL );
 
   if ( is_long_int( *dest_type ) && is_long_int( new_type ) ) {
@@ -530,7 +562,7 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type, c_loc_t const *loc ) {
 
   if ( (*dest_type & new_type) != T_NONE ) {
     char const *const new_name = check_strdup( c_type_name_error( new_type ) );
-    print_error( loc,
+    print_error( new_loc,
       "\"%s\" can not be combined with \"%s\"",
       new_name, c_type_name_error( *dest_type )
     );

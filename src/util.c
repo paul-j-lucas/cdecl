@@ -25,9 +25,13 @@
 
 // local
 #include "config.h"                     /* must go first */
+/// @cond DOXYGEN_IGNORE
 #define CDECL_UTIL_INLINE _GL_EXTERN_INLINE
+/// @endcond
 #include "slist.h"
 #include "util.h"
+
+/// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
@@ -62,6 +66,8 @@
 # include <term.h>                      /* for setupterm(3) */
 # include <unistd.h>                    /* for close(2) */
 #endif /* WITH_TERM_COLUMNS */
+
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 

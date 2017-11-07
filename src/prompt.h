@@ -29,8 +29,12 @@
 // local
 #include "config.h"                     /* must go first */
 
+/// @cond DOXYGEN_IGNORE
+
 // standard
 #include <stdbool.h>
+
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -49,15 +53,15 @@ extern char const  *prompt[2];
 /**
  * Enables or disables the prompt.
  *
- * @param enable If \c true, enables the prompt; else disables it.
+ * @param enable If `true`, enables the prompt; else disables it.
  */
 void cdecl_prompt_enable( bool enable );
 
 /**
  * Initializes the prompt.
  *
- * @note This is called cdecl_prompt_init and not prompt_init so as not to
- * conflict with the latter function in libedit.
+ * @note This is called `cdecl_prompt_init` and not `prompt_init` so as not to
+ * conflict with the latter function in `libedit`.
  */
 void cdecl_prompt_init( void );
 
