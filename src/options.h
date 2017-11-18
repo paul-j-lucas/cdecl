@@ -40,6 +40,12 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * @defgroup options-group Options
+ * Declares global variables and functions for command-line options.
+ * @{
+ */
+
 // extern option variables
 extern char const  *opt_conf_file;      ///< Configuration file path.
 #ifdef ENABLE_CDECL_DEBUG
@@ -74,6 +80,8 @@ extern int          yydebug;            ///< Bison debugging.
 void options_init( int *pargc, char const ***pargv );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_options_H */
 /* vim:set et sw=2 ts=2: */

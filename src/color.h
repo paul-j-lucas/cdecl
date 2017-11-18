@@ -39,6 +39,14 @@
 
 /// @endcond
 
+/**
+ * @defgroup color-group Color
+ * Declares constants, macros, types, global variables, and functions for
+ * printing to an ANSI terminal in color using Select Graphics Rendition (SGR)
+ * codes.
+ * @{
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #define SGR_BG_BLACK        "40"        /**< Background black.   */
@@ -67,9 +75,10 @@
 #define SGR_END             "\33[m"     /**< End color sequence. */
 #define SGR_EL              "\33[K"     /**< Erase in Line (EL) sequence */
 
-///< @cond DOXYGEN_IGNORE
-
+/** When to colorize default. */
 #define COLOR_WHEN_DEFAULT  COLOR_NOT_FILE
+
+/** The default colors. */
 #define COLORS_DEFAULT                                        \
   "caret="        SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP \
   "error="        SGR_FG_RED    SGR_SEP SGR_BOLD  SGR_CAP_SEP \
@@ -80,8 +89,6 @@
   "locus="                              SGR_BOLD  SGR_CAP_SEP \
   "PROMPT="       SGR_FG_GREEN                    SGR_CAP_SEP \
   "warning="      SGR_FG_YELLOW SGR_SEP SGR_BOLD  SGR_CAP_SEP
-
-///< @endcond
 
 /**
  * Starts printing in the predefined \a COLOR.
@@ -168,6 +175,8 @@ bool colors_parse( char const *capabilities );
 bool should_colorize( color_when_t when );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_color_H */
 /* vim:set et sw=2 ts=2: */

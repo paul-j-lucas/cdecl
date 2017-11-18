@@ -393,7 +393,7 @@ static void usage( void ) {
 "  -v       Print version and exit.\n"
 "  -x lang  Use <lang>.\n"
 #ifdef YYDEBUG
-"  -y       Enable bison debug output.\n"
+"  -y       Enable Bison debug output.\n"
 #endif /* YYDEBUG */
     , me, me, me,
     CONF_FILE_NAME_DEFAULT
