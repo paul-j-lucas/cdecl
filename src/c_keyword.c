@@ -78,10 +78,11 @@ static c_keyword_t const C_ATTRIBUTES[] = {
  * match, if the current language is not among `ok_langs`, the current row is
  * rejected and the search continues.
  *
- * The remaining rows are all `LANG_ALL` rather than the language(s) the
- * keyword is valid in because it results in better error messages by allowing
- * the AST to be fully constructed and semantic errors issued afterwards rather
- * than by the parser that can only give "unexpected token."
+ * The remaining rows are all <code>\ref LANG_ALL</code> rather than the
+ * language(s) the keyword is valid in because it results in better error
+ * messages by allowing the AST to be fully constructed and semantic errors
+ * issued afterwards rather than by the parser that can only give "unexpected
+ * token."
  *
  * @hideinitializer
  */

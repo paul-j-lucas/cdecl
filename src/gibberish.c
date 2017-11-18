@@ -54,8 +54,8 @@ enum g_kind {
 typedef enum g_kind g_kind_t;
 
 /**
- * Parameters used by `c_ast_gibberish()` (because there'd be too many function
- * arguments otherwise).
+ * Parameters used by `c_ast_gibberish_cast()` and `c_ast_gibberish_declare()`
+ * (because there'd be too many function arguments otherwise).
  */
 struct g_param {
   g_kind_t        gkind;                ///< The kind of gibberish to create.
@@ -104,7 +104,8 @@ static inline void g_param_space( g_param_t *param ) {
  * Helper function for `c_ast_gibberish_impl()` that prints an array's size as
  * well as the size for all child arrays, if any.
  *
- * @param ast The `c_ast` that is a `K_ARRAY` whose size to print.
+ * @param ast The `c_ast` that is a <code>\ref K_ARRAY</code> whose size to
+ * print.
  * @param param The `g_param` to use.
  */
 static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
@@ -130,8 +131,8 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
  * Helper function for `c_ast_gibberish_impl()` that prints a block's or
  * function's arguments, if any.
  *
- * @param ast The `c_ast` that is either a `K_BLOCK` or a `K_FUNCTION` whose
- * arguments to print.
+ * @param ast The `c_ast` that is either a <code>\ref K_BLOCK</code> or a
+ * <code>\ref K_FUNCTION</code> whose arguments to print.
  * @param param The `g_param` to use.
  */
 static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
@@ -438,8 +439,9 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
  * to-member, reference, or rvalue reference, its qualifier, if any, and the
  * name, if any.
  *
- * @param ast The `c_ast` that is one of `K_POINTER`, `K_POINTER_TO_MEMBER`,
- * `K_REFERENCE`, or `K_RVALUE_REFERENCE` whose qualifier, if any, and name, if
+ * @param ast The `c_ast` that is one of <code>\ref K_POINTER</code>,
+ * <code>\ref K_POINTER_TO_MEMBER</code>, <code>\ref K_REFERENCE</code>, or
+ * <code>\ref K_RVALUE_REFERENCE</code> whose qualifier, if any, and name, if
  * any, to print.
  * @param param The `g_param` to use.
  */
@@ -498,7 +500,7 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
  * Initializes a `g_param`.
  *
  * @param param The `g_param` to initialize.
- * @param gkind The `g_kind` of gibberish to print.
+ * @param gkind The <code>\ref g_kind</code> of gibberish to print.
  * @param root The `c_ast` root.
  * @param gout The `FILE` to print it to.
  */

@@ -77,7 +77,8 @@ enum c_check {
  * A visitor function used to find an AST node of a particular kind.
  *
  * @param ast The `c_ast` to check.
- * @param data The bitwise-or kind(s) (cast to <code>void*</code>) to find.
+ * @param data The bitwise-or of <code>\ref c_kind</code> (cast to `void*`) to
+ * find.
  * @return Returns `true` only if the kind of \a ast is one of \a data.
  */
 bool c_ast_vistor_kind( c_ast_t *ast, void *data );
@@ -95,7 +96,8 @@ bool c_ast_visitor_name( c_ast_t *ast, void *data );
  * A visitor function used to find a type.
  *
  * @param ast The `c_ast` to check.
- * @param data The bitwise-or type(s) (cast to <code>void*</code>) to find.
+ * @param data The bitwise-or of <code>\ref c_type_t</code> (cast to `void*`)
+ * to find.
  * @return Returns `true` only if the type of \a ast is one of \a data.
  */
 bool c_ast_vistor_type( c_ast_t *ast, void *data );
@@ -142,7 +144,7 @@ void c_ast_english( c_ast_t const *ast, FILE *fout );
  *
  * @param ast The `c_ast` to begin at.
  * @param dir The direction to visit.
- * @param kind The bitwise-or kind(s) to find.
+ * @param kind The bitwise-or of <code>\ref c_kind</code> to find.
  * @return Returns a pointer to an AST node having \a kind or null if none.
  */
 CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_kind( c_ast_t *ast,
@@ -157,7 +159,7 @@ CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_kind( c_ast_t *ast,
  *
  * @param ast The `c_ast` to begin at.
  * @param dir The direction to visit.
- * @param type The bitwise-or of types to find.
+ * @param type The bitwise-or of of <code>\ref c_type_t</code> to find.
  * @return Returns a pointer to an AST node having \a type or null if none.
  */
 CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_type( c_ast_t *ast,
@@ -196,7 +198,8 @@ char const* c_ast_name( c_ast_t const *ast, v_direction_t dir );
  * "Patches" \a type_ast into \a decl_ast only if:
  *  + \a type_ast has no parent.
  *  + The depth of \a type_ast is less than that of \a decl_ast.
- *  + \a decl_ast still contains an AST node of type `K_PLACEHOLDER`.
+ *  + \a decl_ast still contains an AST node of type
+ *    <code>\ref K_PLACEHOLDER</code>.
  *
  * @param type_ast The `c_ast` of the initial type.
  * @param decl_ast The `c_ast` of a declaration.  May be null.

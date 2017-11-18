@@ -49,12 +49,18 @@
  * Declares types to represent a Red-Black Tree as well as functions for
  * manipulating said trees.
  *
- * @see https://en.wikipedia.org/wiki/Red–black_tree
+ * @see https://en.wikipedia.org/wiki/Red-black_tree
  */
 
 // local
 #include "config.h"
 #include "util.h"
+
+/**
+ * @defgroup red-black-group Red-Black Tree
+ * Types and functions for manipulating red-black trees.
+ * @{
+ */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -176,6 +182,8 @@ rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visitor_t visitor,
                           void *aux_data );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_red_black_H */
 /* vim:set et sw=2 ts=2: */

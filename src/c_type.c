@@ -67,9 +67,10 @@ static char const* c_type_name_impl( c_type_t, bool );
 
 /**
  * As part of the special case for `long long`, its literal is only `long`
- * because its type, `T_LONG_LONG`, is always combined with `T_LONG`, i.e., two
- * bits are set.  Therefore, when printed, it prints one `long` for `T_LONG`
- * and another `long` for `T_LONG_LONG` (this literal).  That explains why this
+ * because its type, <code>\ref T_LONG_LONG</code>, is always combined with
+ * <code>\ref T_LONG</code>, i.e., two bits are set.  Therefore, when printed,
+ * it prints one `long` for <code>\ref T_LONG</code> and another `long` for
+ * <code>\ref T_LONG_LONG</code> (this literal).  That explains why this
  * literal is only one `long`.
  */
 static char const L_LONG_LONG[] = "long";
@@ -81,11 +82,13 @@ static char const L_LONG_LONG[] = "long";
 static char const L_RVALUE_REFERENCE[] = "rvalue reference";
 
 /**
- * `T_TYPEDEF_TYPE` exists only so there can be a row/column for it in the
- * `OK_TYPE_LANGS` table to make things like `signed size_t` illegal.
+ * <code>\ref T_TYPEDEF_TYPE</code> exists only so there can be a row/column
+ * for it in the <code>\ref OK_TYPE_LANGS</code> table to make things like
+ * `signed size_t` illegal.
  *
- * `T_TYPEDEF_TYPE` doesn't have any printable representation (only the name of
- * the type is printed); therefore, its literal is the empty string.
+ * <code>\ref T_TYPEDEF_TYPE</code> doesn't have any printable representation
+ * (only the name of the type is printed); therefore, its literal is the empty
+ * string.
  */
 static char const L_TYPEDEF_TYPE[] = "";
 
@@ -279,7 +282,7 @@ static c_lang_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
  * Checks whether \a type is some form of <code>long int</code> only, and \e
  * not either `long float` (K&R) or `long double` (C89).
  *
- * @param type The `c_type_t` to check.
+ * @param type The <code>\ref c_type_t</code> to check.
  * @return Returns `true` only if \a type is some form of `long int`.
  */
 static inline bool is_long_int( c_type_t type ) {
@@ -287,10 +290,11 @@ static inline bool is_long_int( c_type_t type ) {
 }
 
 /**
- * Gets the literal of a given c_type_info, either gibberish or, if appropriate
- * and available, English.
+ * Gets the literal of a given <code>\ref c_type_info</code>, either gibberish
+ * or, if appropriate and available, English.
  *
- * @param t A pointer to the `c_type_info` to get the literal of.
+ * @param t A pointer to the <code>\ref c_type_info</code> to get the literal
+ * of.
  * @param is_error `true` if getting the literal for part of an error message.
  * @return Returns said literal.
  */
@@ -305,7 +309,7 @@ static inline char const* c_type_literal( c_type_info_t const *t,
 /**
  * Checks that the type combination is legal in the current language.
  *
- * @param type The `c_type_t` to check.
+ * @param type The <code>\ref c_type_t</code> to check.
  * @param types The array of types to check against.
  * @param types_size The size of \a types.
  * @param type_langs The type/languages array to check against.
@@ -331,7 +335,7 @@ static c_lang_t c_type_check_combo( c_type_t type, c_type_info_t const types[],
 /**
  * Checks that \a type is legal in the current language.
  *
- * @param type The `c_type_t` to check.
+ * @param type The <code>\ref c_type_t</code> to check.
  * @param types The array of types to check against.
  * @param types_size The size of \a types.
  * @return Returns the bitwise-or of the language(s) \a type is legal in.
@@ -349,8 +353,8 @@ static c_lang_t c_type_check_legal( c_type_t type, c_type_info_t const types[],
 /**
  * Gets the name of an individual type.
  *
- * @param type The `c_type_t` to get the name for; \a type must have exactly
- * one bit set.
+ * @param type The <code>\ref c_type_t</code> to get the name for; \a type must
+ * have exactly one bit set.
  * @param is_error `true` if getting the name for part of an error message.
  * @return Returns said name.
  */
@@ -393,7 +397,7 @@ static char const* c_type_name_1( c_type_t type, bool is_error ) {
  * Concatenates the partial type name onto the full type name being made.
  *
  * @param pname A pointer to the pointer to the name to concatenate to.
- * @param type The `c_type_t` to concatenate the name of.
+ * @param type The <code>\ref c_type_t</code> to concatenate the name of.
  * @param types The array of types to use.
  * @param types_size The size of \a types.
  * @param is_error `true` if concatenating the name for part of an error
@@ -417,7 +421,7 @@ static void c_type_name_cat( char **pname, c_type_t type,
 /**
  * Gets the name of \a type.
  *
- * @param type The `c_type_t` to get the name for.
+ * @param type The <code>\ref c_type_t</code> to get the name for.
  * @param is_error `true` if getting the name for part of an error message.
  * @return Returns said name.
  * @warning The pointer returned is to a static buffer, so you can't do

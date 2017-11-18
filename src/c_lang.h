@@ -81,18 +81,20 @@ extern c_lang_info_t const C_LANG_INFO[];
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Gets the `c_lang_t` corresponding to the given string (case insensitive).
+ * Gets the <code>\ref c_lang_t</code> corresponding to the given string (case
+ * insensitive).
  *
- * @param name The language name to get the corresponding `c_lang_t` for.
- * @return Returns said language or `LANG_NONE` if \a name doesn't correspond
- * to any supported language.
+ * @param name The language name to get the corresponding
+ * <code>\ref c_lang_t</code> for.
+ * @return Returns said language or <code>\ref LANG_NONE</code> if \a name
+ * doesn't correspond to any supported language.
  */
 c_lang_t c_lang_find( char const *name );
 
 /**
  * Gets the printable name of \a lang.
  *
- * @param lang The `c_lang_t` to get the name of.
+ * @param lang The <code>\ref c_lang_t</code> to get the name of.
  * @return Returns said name.
  */
 char const* c_lang_name( c_lang_t lang );

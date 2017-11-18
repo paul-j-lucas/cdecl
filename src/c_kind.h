@@ -79,7 +79,7 @@ enum c_kind {
 /**
  * Checks whether \a kind is a parent kind.
  *
- * @param kind The `c_kind` to check.
+ * @param kind The <code>\ref c_kind</code> to check.
  * @return Returns `true` only if it is.
  */
 CDECL_KIND_INLINE bool c_kind_is_parent( c_kind_t kind ) {
@@ -89,7 +89,7 @@ CDECL_KIND_INLINE bool c_kind_is_parent( c_kind_t kind ) {
 /**
  * Gets the name of \a kind.
  *
- * @param kind The `c_kind` to get the name for.
+ * @param kind The <code>\ref c_kind</code> to get the name for.
  * @return Returns said name.
  */
 char const* c_kind_name( c_kind_t kind );

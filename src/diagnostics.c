@@ -42,10 +42,14 @@
 
 /// @endcond
 
+/// @cond DOXYGEN_IGNORE
+
 // local constants
 static char const*  MORE[]     = { "...", "..." };
 static size_t const MORE_LEN[] = { 3,     3 };
 static unsigned     TERM_COLUMNS_DEFAULT = 80;
+
+/// @endcond
 
 // local functions
 static size_t       token_len( char const* );

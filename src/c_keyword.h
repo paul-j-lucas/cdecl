@@ -52,8 +52,8 @@ struct c_keyword {
  * @note The search is \e sensitive to the current language.
  *
  * @param literal The literal to find.
- * @return Returns a pointer to the corresponding `c_attribute` or null for
- * none.
+ * @return Returns a pointer to the corresponding attribute (`c_keyword`) or
+ * null for none.
  */
 c_keyword_t const* c_attribute_find( char const *literal );
 

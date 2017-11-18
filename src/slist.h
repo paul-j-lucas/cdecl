@@ -42,6 +42,12 @@ _GL_INLINE_HEADER_BEGIN
 
 /// @endcond
 
+/**
+ * @defgroup slist-group Singly-Linked List
+ * Types and functions for manipulating singly-linked lists.
+ * @{
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef struct slist      slist_t;
@@ -90,7 +96,7 @@ struct slist_node {
 /**
  * Appends \a data onto the end of \a list.
  *
- * @param list The `slist` to append onto.
+ * @param list The <code>\ref slist</code> to append onto.
  * @param data The data to append.
  * @return Returns \a data.
  */
@@ -100,7 +106,7 @@ void* slist_append( slist_t *list, void *data );
  * Convenience macro that appends \a DATA onto the end of \a LIST.
  *
  * @param DATA_TYPE The type of the data to cast to.
- * @param LIST A pointer to the `slist`.
+ * @param LIST A pointer to the <code>\ref slist</code> to append to.
  * @param DATA The data to append.
  * @return Returns \a DATA cast to \a DATA_TYPE.
  * @hideinitializer
@@ -111,15 +117,16 @@ void* slist_append( slist_t *list, void *data );
 /**
  * Appends \a src onto the end of \a dst.
  *
- * @param dst The `slist` to append onto.
- * @param src The `slist` to append.  It is made empty.
+ * @param dst The <code>\ref slist</code> to append onto.
+ * @param src The <code>\ref slist</code> to append.  It is made empty.
  */
 void slist_append_list( slist_t *dst, slist_t *src );
 
 /**
  * Frees all memory associated with \a list.
  *
- * @param list A pointer to the `slist`.  If null, does nothing.
+ * @param list A pointer to the <code>\ref slist</code>.  If null, does
+ * nothing.
  * @param data_free_fn A pointer to a function to use to free the data at each
  * node of \a list or null if none is required.
  */
@@ -129,7 +136,7 @@ void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn );
  * Initializes \a list.  This is not necessary for either global or `static`
  * lists.
  *
- * @param list A pointer to the `slist` to initialize.
+ * @param list A pointer to the <code>\ref slist</code> to initialize.
  */
 CDECL_SLIST_INLINE void slist_init( slist_t *list ) {
   list->head = list->tail = NULL;
@@ -138,7 +145,7 @@ CDECL_SLIST_INLINE void slist_init( slist_t *list ) {
 /**
  * Pops data from the head of \a list.
  *
- * @param list The pointer to the `slist`.
+ * @param list The pointer to the <code>\ref slist</code>.
  * @return Returns the data from the head of \a list.  The caller is
  * responsible for deleting it (if necessary).
  */
@@ -149,10 +156,10 @@ void* slist_pop( slist_t *list );
  * the requested type.
  *
  * @param DATA_TYPE The type of the data to cast to.
- * @param LIST A pointer to the `slist`.
+ * @param LIST A pointer to the <code>\ref slist</code>.
  * @return Returns the data from the head of \a LIST cast to \a DATA_TYPE or
- * null (or equivalent) if the `slist` is empty.  The caller is responsible for
- * deleting it (if necessary).
+ * null (or equivalent) if the <code>\ref slist</code> is empty.  The caller is
+ * responsible for deleting it (if necessary).
  * @hideinitializer
  */
 #define SLIST_POP(DATA_TYPE,LIST) \
@@ -161,7 +168,7 @@ void* slist_pop( slist_t *list );
 /**
  * Pushes a node onto the front of \a list.
  *
- * @param list A pointer to the `slist`.
+ * @param list A pointer to the <code>\ref slist</code>.
  * @param data The pointer to the data to add.
  */
 void slist_push( slist_t *list, void *data );
@@ -169,7 +176,7 @@ void slist_push( slist_t *list, void *data );
 /**
  * Peeks at the data at the head of \a list.
  *
- * @param list A pointer to the `slist`.
+ * @param list A pointer to the <code>\ref slist</code>.
  * @return Returns a pointer to the data from the node at the head of \a list
  * or null if \a list is empty.
  */
@@ -182,15 +189,17 @@ CDECL_SLIST_INLINE void* slist_top( slist_t const *list ) {
  * to the requested type.
  *
  * @param DATA_TYPE The type of the data.
- * @param LIST A pointer to the `slist`.
+ * @param LIST A pointer to the <code>\ref slist</code>.
  * @return Returns the data from the head of \a LIST cast to \a DATA_TYPE or
- * null (or equivalent) if the `slist` is empty.
+ * null (or equivalent) if the <code>\ref slist</code> is empty.
  * @hideinitializer
  */
 #define SLIST_TOP(DATA_TYPE,LIST) \
   REINTERPRET_CAST( DATA_TYPE, slist_top( LIST ) )
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 _GL_INLINE_HEADER_END
 

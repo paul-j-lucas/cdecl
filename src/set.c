@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines the function that implements the "set" command.
+ * Defines the function that implements the cdecl `set` command.
  */
 
 // local

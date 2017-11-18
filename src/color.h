@@ -67,7 +67,7 @@
 #define SGR_END             "\33[m"     /**< End color sequence. */
 #define SGR_EL              "\33[K"     /**< Erase in Line (EL) sequence */
 
-///< @cond IGNORE
+///< @cond DOXYGEN_IGNORE
 
 #define COLOR_WHEN_DEFAULT  COLOR_NOT_FILE
 #define COLORS_DEFAULT                                        \
@@ -145,7 +145,7 @@ extern char const  *sgr_help_nonterm;   ///< Color of grammar nonterminal.
 extern char const  *sgr_help_punct;     ///< Color of punctuation.
 extern char const  *sgr_help_title;     ///< Color of help title.
 extern char const  *sgr_locus;          ///< Color of error location.
-extern char const  *sgr_prompt;         ///< Color of cdecl prompt.
+extern char const  *sgr_prompt;         ///< Color of the cdecl prompt.
 extern char const  *sgr_warning;        ///< Color of `warning`.
 
 ///////////////////////////////////////////////////////////////////////////////

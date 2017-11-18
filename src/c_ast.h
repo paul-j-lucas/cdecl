@@ -91,8 +91,9 @@ enum v_direction {
 typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
 
 /**
- * @defgroup AST AST Nodes
- * The AST node `struct`s  contain data specific to each `c_kind_t`.
+ * @defgroup AST-group AST Nodes
+ * The AST node `struct`s  contain data specific to each
+ * <code>\ref c_kind_t</code>.
  * All `struct`s are placed into a `union` within `c_ast`.
  * @{
  */
@@ -208,8 +209,8 @@ void c_ast_cleanup( void );
 /**
  * Checks whether the two ASTs are equivalent, i.e., represent the same type.
  *
- * @param ast_i The first c_ast.
- * @param ast_j The second c_ast.
+ * @param ast_i The first `c_ast`.
+ * @param ast_j The second `c_ast`.
  * @return Returns `true` only if the two ASTs are equivalent.
  */
 bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j );
@@ -235,7 +236,7 @@ CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
  * Creates a new `c_ast`.
  *
  * @param kind The kind of `c_ast` to create.
- * @param depth How deep within () it is.
+ * @param depth How deep within `()` it is.
  * @param loc A pointer to the token location data.
  * @return Returns a pointer to a new c_ast.
  */

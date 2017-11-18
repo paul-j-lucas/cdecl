@@ -244,7 +244,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
  * because it's the function that's `static`, not the `int`.
  *
  * @param ast The `c_ast` to take trom.
- * @return Returns said storage class or `T_NONE`.
+ * @return Returns said storage class or <code>\ref T_NONE</code>.
  */
 static c_type_t c_ast_take_storage( c_ast_t *ast ) {
   assert( ast != NULL );

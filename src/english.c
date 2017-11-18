@@ -46,7 +46,7 @@
  * Parameters used by `c_ast_visitor_english()`.
  */
 struct e_param {
-  bool  print_names;                    ///< Print names only if true.
+  bool  print_names;                    ///< Print names only if `true`.
   FILE *eout;                           ///< Where to write the pseudo-English.
 };
 typedef struct e_param e_param_t;

@@ -195,7 +195,7 @@ static char const* get_long_opt( char short_opt ) {
 }
 
 /**
- * Checks whether we're `c++decl`.
+ * Checks whether we're c++decl.
  *
  * @returns Returns `true` only if we are.
  */
@@ -217,8 +217,8 @@ static bool is_cppdecl( void ) {
  * Parses a color "when" value.
  *
  * @param when The null-terminated "when" string to parse.
- * @return Returns the associated `color_when` or prints an error message and
- * exits if \a when is invalid.
+ * @return Returns the associated <code>\ref color_when</code> or prints an
+ * error message and exits if \a when is invalid.
  */
 static color_when_t parse_color_when( char const *when ) {
   struct colorize_map {
@@ -271,7 +271,7 @@ static color_when_t parse_color_when( char const *when ) {
  * Parses a language name.
  *
  * @param s The null-terminated string to parse.
- * @return Returns the `c_lang_t` corresponding to \a s.
+ * @return Returns the <code>\ref c_lang_t</code> corresponding to \a s.
  */
 static c_lang_t parse_lang( char const *s ) {
   size_t values_buf_size = 1;           // for trailing null

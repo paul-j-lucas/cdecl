@@ -125,7 +125,7 @@ static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
 /**
  * Checks all function (or block) arguments for semantic errors.
  *
- * @param ast The function (or block) c_ast to check.
+ * @param ast The function (or block) `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_func_args( c_ast_t const *ast ) {

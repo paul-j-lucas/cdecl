@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Declares types and functions for adding and looking up C/C++ typedef
+ * Declares types and functions for adding and looking up C/C++ `typedef`
  * declarations.
  */
 

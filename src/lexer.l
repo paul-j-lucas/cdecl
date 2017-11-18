@@ -57,7 +57,7 @@
 
 /**
  * Asserts that we're in \a MODE of operation.
- * If not, return the error token.
+ * If not, returns the error token.
  *
  * @param MODE The `c_mode` we're asserting.
  */
@@ -65,7 +65,7 @@
   BLOCK( if ( c_mode != MODE_ ## MODE ) return Y_ERROR; )
 
 /**
- * Sets `lexer_token` to the current token.
+ * Sets <code>\ref lexer_token</code> to the current token.
  */
 #define SET_TOKEN                 lexer_token = yytext
 
@@ -197,7 +197,7 @@ typedef struct hyphenated hyphenated_t;
 
 /**
  * All hyphenated English keywords.  These are handled seperately because
- * hyphenated words are not valid identifiers (since '-' is not valid in an
+ * hyphenated words are not valid identifiers (since `-` is not valid in an
  * identifier).
  *
  * @hideinitializer
@@ -212,7 +212,7 @@ static hyphenated_t const HYPHENATED_KEYWORDS[] = {
 };
 
 // extern variables
-char const     *lexer_token;            // guaranteed pointer of yytext
+char const     *lexer_token;            ///< Guaranteed pointer of `yytext`.
 
 // local variables
 static int      column;                 ///< Column position of current token.
@@ -313,7 +313,7 @@ static inline void newline( void ) {
 }
 
 /**
- * Parses an integer from \c lexer_token.
+ * Parses an integer from <code>\ref lexer_token</code>.
  *
  * @param base The integer base to use.
  * @return Returns the integer value.

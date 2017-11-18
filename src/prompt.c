@@ -59,12 +59,14 @@ static char        *prompt_buf[2];      ///< Buffers for prompts.
  * library emulating it.
  *
  * Some readline emulators, e.g., editline, have a bug that makes color prompts
- * not work correctly; see <http://stackoverflow.com/a/31333315/99089>.
+ * not work correctly.
  *
  * So, unless we know we're using genuine GNU readline, use this function to
  * disable color prompts.
  *
  * @return Returns `true` only if we're running genuine GNU readline.
+ * @see https://tiswww.case.edu/php/chet/readline/rltop.html
+ * @see http://stackoverflow.com/a/31333315/99089
  */
 static inline bool have_genuine_gnu_readline( void ) {
 #if HAVE_DECL_RL_GNU_READLINE_P

@@ -58,8 +58,8 @@ static bool       user_defined;         ///< Are new `typedef`s used-defined?
 /**
  * Types from `stdint.h`.
  *
- * The underlying types used here are merely typical and do not necessarily
- * match the underlying type on any particular platform.
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  *
  * @hideinitializer
  */
@@ -212,8 +212,8 @@ static void c_typedef_parse_builtins( char const *const types[] ) {
 }
 
 /**
- * Red-black tree visitor function that forwards to the `c_typedef_visitor_t`
- * function.
+ * Red-black tree visitor function that forwards to the
+ * <code>\ref c_typedef_visitor_t</code> function.
  *
  * @param node_data A pointer to the node's data.
  * @param aux_data Optional data passed to to the visitor.
