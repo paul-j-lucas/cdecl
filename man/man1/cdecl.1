@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "October 27, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "November 22, 2017" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -913,9 +913,9 @@ is used to configure
 .B cdecl
 by pre-defining types
 (via either the
-\f(CWdefine\fP
+.B define
 or
-\f(CWtypedef\fP
+.B typedef
 commands)
 so that they may be subsequently used
 when eithter composing or deciphering declarations.
@@ -974,7 +974,10 @@ cdecl+      f as pointer to function (int) returning void) \\
 cdecl+     returning pointer to function (int) returning void
 void (*signal(int sig, void (*f)(int)))(int);
 .cE
-This is made more comprehensible using ether \f(CWdefine\fP or \f(CWtypedef\fP:
+This is made more comprehensible using ether
+.B define
+or
+.BR typedef :
 .cS
 cdecl> define pfi_rv as pointer to function (int) returning void
 cdecl> declare signal as function \\
@@ -1291,8 +1294,9 @@ when used as input to
 .BR explain .
 .IP ""
 However,
-\f(CWdefine\fP
-(or \f(CWtypedef\fP)
+.B define
+(or
+.BR typedef )
 can be used to define the type:
 .cS
 c++decl> define S as struct S
@@ -1338,7 +1342,9 @@ e.g.,
 \f(CWsize_t\fP,
 \f(CWuint16_t\fP,
 etc.,
-is shown (via the \f(CWshow\fP command),
+is shown (via the
+.B show
+command),
 the underlying type is merely typical
 and does not necessarily match
 the underlying type on any particular platform.
