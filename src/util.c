@@ -212,7 +212,6 @@ error:
 }
 #endif /* WITH_TERM_COLUMNS */
 
-
 char const* home_dir( void ) {
   static char const *home;
   if ( home == NULL ) {
