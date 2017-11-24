@@ -186,7 +186,7 @@ static char* format_opt( char short_opt, char buf[], size_t buf_size ) {
  * @return Returns the said option or the empty string if none.
  */
 static char const* get_long_opt( char short_opt ) {
-  for ( struct option const *long_opt = LONG_OPTS; long_opt->name;
+  for ( struct option const *long_opt = LONG_OPTS; long_opt->name != NULL;
         ++long_opt ) {
     if ( long_opt->val == short_opt )
       return long_opt->name;
