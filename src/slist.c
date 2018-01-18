@@ -70,9 +70,12 @@ void slist_append_list( slist_t *dst, slist_t *src ) {
 
 void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn ) {
   if ( list != NULL ) {
-    for ( slist_node_t *p = list->head; p != NULL; p = p->next ) {
+    for ( slist_node_t *p = list->head; p != NULL; ) {
+      slist_node_t *const node = p;
+      p = p->next;
       if ( data_free_fn != NULL )
-        (*data_free_fn)( p->data );
+        (*data_free_fn)( node->data );
+      FREE( node );
     } // for
     slist_init( list );
   }
