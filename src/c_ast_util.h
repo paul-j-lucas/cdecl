@@ -132,7 +132,7 @@ bool c_ast_check( c_ast_t const *ast, c_check_t check );
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func );
 
 /**
- * Prints \a ast pseudo-English.
+ * Prints \a ast as pseudo-English.
  *
  * @param ast The `c_ast` to print.  May be null.
  * @param fout The `FILE` to print to.
