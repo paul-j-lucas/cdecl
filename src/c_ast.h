@@ -173,7 +173,7 @@ struct c_ast {
   union {
     c_parent_t          parent;         ///< "Parent" member(s).
     c_array_t           array;          ///< Array member(s).
-    c_block_t           block;          ///< Member(s) when a block.
+    c_block_t           block;          ///< Block member(s).
     // nothing needed for K_BUILTIN
     c_ecsu_t            ecsu;           ///< `enum`, `class`, `struct`, `union`
     c_func_t            func;           ///< Function member(s).
