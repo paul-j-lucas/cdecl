@@ -202,7 +202,7 @@ unsigned get_term_columns( void ) {
 error:
   if ( likely( cterm_fd != -1 ) )
     close( cterm_fd );
-  if ( reason )
+  if ( reason != NULL )
     PMESSAGE_EXIT( EX_UNAVAILABLE,
       "failed to determine number of columns in terminal: %s\n",
       reason
