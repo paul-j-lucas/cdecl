@@ -114,7 +114,7 @@ AS_IF([test x$enable_term_columns = xyes -a x$ac_cv_search_endwin = xno],
   [AC_MSG_ERROR([curses library for term-columns not found; use --disable-term-columns])]
 )
 AS_IF([test x$enable_term_columns = xyes],
-  [AC_DEFINE([WITH_TERM_COLUMNS], [1],
+  [AC_DEFINE([ENABLE_TERM_COLUMNS], [1],
     [Define to 1 if term-columns is enabled.])]
 )
 

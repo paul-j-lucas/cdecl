@@ -322,14 +322,14 @@ void* free_later( void *p );
  */
 void free_now( void );
 
-#ifdef WITH_TERM_COLUMNS
+#ifdef ENABLE_TERM_COLUMNS
 /**
  * Gets the number of columns of the terminal.
  *
  * @return Returns said number of columns or 0 if it can not be determined.
  */
 unsigned get_term_columns( void );
-#endif /* WITH_TERM_COLUMNS */
+#endif /* ENABLE_TERM_COLUMNS */
 
 /**
  * Gets the full path of the user's home directory.

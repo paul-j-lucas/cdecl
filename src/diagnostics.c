@@ -63,13 +63,13 @@ static size_t       token_len( char const* );
  * @param error_column The zero-based column of the offending token.
  */
 static void print_caret( size_t error_column ) {
-#ifdef WITH_TERM_COLUMNS
+#ifdef ENABLE_TERM_COLUMNS
   unsigned term_columns = get_term_columns();
   if ( term_columns == 0 )
     term_columns = TERM_COLUMNS_DEFAULT;
 #else
   unsigned term_columns = 0;
-#endif /* WITH_TERM_COLUMNS */
+#endif /* ENABLE_TERM_COLUMNS */
 
   size_t error_column_term = error_column;
 

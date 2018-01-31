@@ -54,7 +54,7 @@
 # include <readline/history.h>
 #endif /* HAVE_READLINE_HISTORY_H */
 
-#ifdef WITH_TERM_COLUMNS
+#ifdef ENABLE_TERM_COLUMNS
 # include <fcntl.h>                     /* for open(2) */
 # if defined(HAVE_CURSES_H)
 #   define _BOOL                        /* prevents clash of bool on Solaris */
@@ -65,7 +65,7 @@
 # endif
 # include <term.h>                      /* for setupterm(3) */
 # include <unistd.h>                    /* for close(2) */
-#endif /* WITH_TERM_COLUMNS */
+#endif /* ENABLE_TERM_COLUMNS */
 
 /// @endcond
 
@@ -139,7 +139,7 @@ void free_now( void ) {
   slist_free( &free_later_list, &free );
 }
 
-#ifdef WITH_TERM_COLUMNS
+#ifdef ENABLE_TERM_COLUMNS
 unsigned get_term_columns( void ) {
   unsigned    cols = 0;
   int         cterm_fd = -1;
@@ -210,7 +210,7 @@ error:
 
   return cols;
 }
-#endif /* WITH_TERM_COLUMNS */
+#endif /* ENABLE_TERM_COLUMNS */
 
 char const* home_dir( void ) {
   static char const *home;
