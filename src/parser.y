@@ -252,7 +252,7 @@ void parser_cleanup( void ) {
 static void elaborate_error( char const *format, ... ) {
   if ( !error_newlined ) {
     PUTS_ERR( ": " );
-    if ( lexer_token[0] )
+    if ( lexer_token[0] != '\0' )
       PRINT_ERR( "\"%s\": ", printable_token() );
     va_list args;
     va_start( args, format );
@@ -993,7 +993,7 @@ explain_cast_c
       bool const ok = c_ast_check( ast, CHECK_CAST );
       if ( ok ) {
         FPUTS( L_CAST, fout );
-        if ( $7 )
+        if ( $7 != NULL )
           FPRINTF( fout, " %s", $7 );
         FPRINTF( fout, " %s ", L_INTO );
         c_ast_english( ast, fout );
@@ -1682,7 +1682,7 @@ array_decl_c
       DUMP_START( "array_decl_c", "decl2_c array_size_c" );
       DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_AST( "decl2_c", $1.ast );
-      if ( $1.target_ast )
+      if ( $1.target_ast != NULL )
         DUMP_AST( "target_ast", $1.target_ast );
       DUMP_NUM( "array_size_c", $2 );
 
@@ -1690,7 +1690,7 @@ array_decl_c
       array->as.array.size = $2;
       c_ast_set_parent( C_AST_NEW( K_PLACEHOLDER, &@1 ), array );
 
-      if ( $1.target_ast ) {            // array-of or function/block-ret type
+      if ( $1.target_ast != NULL ) {    // array-of or function/block-ret type
         $$.ast = $1.ast;
         $$.target_ast = c_ast_add_array( $1.target_ast, array );
       } else {
@@ -1760,17 +1760,17 @@ func_decl_c
       DUMP_TYPE( "func_noexcept_opt_c", $7 );
       DUMP_AST( "func_trailing_return_type_opt_c", $8.ast );
       DUMP_TYPE( "pure_virtual_opt_c", $9 );
-      if ( $1.target_ast )
+      if ( $1.target_ast != NULL )
         DUMP_AST( "target_ast", $1.target_ast );
 
       c_ast_t *const func = C_AST_NEW( K_FUNCTION, &@$ );
       func->type = $5 | $6 | $7 | $9;
       func->as.func.args = $3;
 
-      if ( $8.ast ) {
+      if ( $8.ast != NULL ) {
         $$.ast = c_ast_add_func( $1.ast, $8.ast, func );
       }
-      else if ( $1.target_ast ) {
+      else if ( $1.target_ast != NULL ) {
         $$.ast = $1.ast;
         (void)c_ast_add_func( $1.target_ast, type_peek(), func );
       }
@@ -2499,13 +2499,13 @@ array_cast_c
       DUMP_START( "array_cast_c", "cast2_c array_size_c" );
       DUMP_AST( "(type_ast_c)", type_peek() );
       DUMP_AST( "cast2_c", $1.ast );
-      if ( $1.target_ast )
+      if ( $1.target_ast != NULL )
         DUMP_AST( "target_ast", $1.target_ast );
       DUMP_AST( "arg_array_size_c", $2 );
 
       c_ast_set_parent( C_AST_NEW( K_PLACEHOLDER, &@1 ), $2 );
 
-      if ( $1.target_ast ) {            // array-of or function/block-ret type
+      if ( $1.target_ast != NULL ) {    // array-of or function/block-ret type
         $$.ast = $1.ast;
         $$.target_ast = c_ast_add_array( $1.target_ast, $2 );
       } else {
@@ -2592,17 +2592,17 @@ func_cast_c
       DUMP_AST_LIST( "arg_list_opt_c", $3 );
       DUMP_TYPE( "func_qualifier_list_opt_c", $5 );
       DUMP_AST( "func_trailing_return_type_opt_c", $6.ast );
-      if ( $1.target_ast )
+      if ( $1.target_ast != NULL )
         DUMP_AST( "target_ast", $1.target_ast );
 
       c_ast_t *const func = C_AST_NEW( K_FUNCTION, &@$ );
       func->type = $5;
       func->as.func.args = $3;
 
-      if ( $6.ast ) {
+      if ( $6.ast != NULL ) {
         $$.ast = c_ast_add_func( $1.ast, $6.ast, func );
       }
-      else if ( $1.target_ast ) {
+      else if ( $1.target_ast != NULL ) {
         $$.ast = $1.ast;
         (void)c_ast_add_func( $1.target_ast, type_peek(), func );
       }
