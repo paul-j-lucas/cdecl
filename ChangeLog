@@ -1,0 +1,1999 @@
+2018-02-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added explicit != NULL.
+
+2018-01-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, diagnostics.c, util.c, util.h:
+     s/WITH_TERM_COLUMNS/ENABLE_TERM_COLUMNS/
+
+2018-01-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: Added explicit != NULL.
+
+2018-01-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.h: Fixed comment.
+
+2018-01-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * slist.c: Now actually deleting nodes in slist_free().
+
+2017-11-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.c: Added != NULL.
+   * util.c: Removed blank line.
+
+2017-11-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Made referencing commands consistently bold.
+
+2017-11-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * color.h, options.c, options.h: More Doxygen groups.
+
+2017-11-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * ax_append_flag.m4, ax_check_compile_flag.m4: Updated ax M$ macros.
+
+2017-11-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * Doxyfile: Made parser.[ch] order consistent with literals.[ch].
+
+2017-11-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * Doxyfile, Makefile.am, autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c,
+     c_ast_util.h, c_keyword.c, c_keyword.h, c_kind.c, c_kind.h, c_lang.c,
+     c_lang.h, c_type.c, c_type.h, c_typedef.c, c_typedef.h, cdecl.c, color.c,
+     color.h, debug.c, debug.h, diagnostics.c, diagnostics.h, english.c,
+     errors.c, gibberish.c, help.c, lexer.h, lexer.l, misc.h, options.c,
+     options.h, parser.y, prompt.c, prompt.h, red_black.c, red_black.h, set.c,
+     slist.c, slist.h, typedefs.h, util.c, util.h: Added Doxygen documentation.
+   * parser.y: Now properly freeing qualifier_stack.
+   * util.c: Now using slist for free_later().
+
+2017-11-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, parser.y, test/Makefile.am, declare_fn.test,
+     explain_fn.test: Fixed declare of function with an invalid argument.
+   * src/Makefile.am, c_ast.c, c_ast.h, debug.c, debug.h, english.c, errors.c,
+     gibberish.c, parser.y, slist.c, slist.h, typedefs.h, util.c, util.h: Now
+     using separate singly-linked-list code.
+
+2017-10-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, parser.y, typedefs.h: Added c_ast_depth_t.
+
+2017-10-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: s/0/T_NONE/
+   * parser.y: Removed redundant IF_DEBUG from DUMP_COMMA.
+   * color.h: Added != NULL.
+   * c_ast.c, util.h: s/PTR_TO_OFFSET/PTR_OFFSET/
+   * util.h: Fixed PTR_TO_OFFSET.
+   * NEWS, configure.ac: Updated version to 4.4.1.
+   * parser.y: Tweaked dump line.
+   * parser.y: Tweaked comment.
+   * parser.y: Now dumping final type in define_english.
+   * c_ast.c, c_ast.h, c_typedef.c, cdecl.c, parser.y, util.h,
+     test/Makefile.am, typedef_fi_v_show_f.out, typedef_fi_v_show_f.test: Fixed
+     typedef-pointer-to-function; reworked c_ast memory management.
+
+2017-10-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added CONFIGUATION FILE section.
+   * lexer.l: Removed extraneous '*'.
+   * lexer.l: Added hyphenated_find().
+
+2017-10-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, cdecl.c, color.c, util.c: Added more likely/unlikely.
+   * debug.c, misc.h: Moved DEBUG_INDENT.
+   * c_ast_util.c, c_ast_util.h, c_kind.c, c_kind.h, c_lang.h, c_type.h: Misc.
+     clean-up.
+
+2017-10-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, typedefs.h: Moved c_ast_id_t.
+   * c_ast.h: Fixed @param.
+   * autocomplete.c: Added missing options to autocomplete.
+   * autocomplete.c: Whitespace changes.
+   * c_type.c: Added missing @param.
+   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_ast_util.c,
+     c_keyword.c, c_keyword.h, c_type.c, c_type.h, errors.c, lexer.l,
+     literals.c, literals.h, parser.y, typedefs.h, util.c, util.h,
+     test/Makefile.am, declare_cdfcdi_i.out, declare_cdfi_i.out,
+     declare_df_v.out, declare_dui.out, declare_fcdi_i.out, declare_fdi_v.out,
+     declare_fti_v-01.out, declare_fti_v-02.out, declare_fui_v-01.out,
+     declare_fui_v-02.out, declare_nfi_v-02-c++.out, declare_nfi_v-03-c++.out,
+     declare_nfi_v-03.out, declare_tf_i-01.out, declare_tf_i-02.out,
+     declare_uf_v-01.out, declare_uf_v-02.out, declare_ui-01.out,
+     declare_ui-02.out, explain_cdfcdi_i.out, explain_cdfi_i.out,
+     explain_df_v.out, explain_di.out, explain_dui-01.out, explain_dui-02.out,
+     explain_fcdi_i.out, explain_fdi_v.out, explain_fti_v.out,
+     explain_fui_v.out, explain_uf_v.out, explain_ui.out,
+     explain_unknown_attribute.out, declare_cdfcdi_i.test, declare_cdfi_i.test,
+     declare_cdi.test, declare_df_v.test, declare_dui.test,
+     declare_fcdi_i.test, declare_fdi_v.test, declare_fti_v-01.test,
+     declare_fti_v-02.test, declare_fui_v-01.test, declare_fui_v-02.test,
+     declare_nfi_v-01-c++.test, declare_nfi_v-01.test,
+     declare_nfi_v-02-c++.test, declare_nfi_v-02.test,
+     declare_nfi_v-03-c++.test, declare_nfi_v-03.test, declare_tf_i-01.test,
+     declare_tf_i-02.test, declare_uf_v-01.test, declare_uf_v-02.test,
+     declare_ui-01.test, declare_ui-02.test, explain_cdfcdi_i.test,
+     explain_cdfi_i.test, explain_cdi.test, explain_df_v.test, explain_di.test,
+     explain_dui-01.test, explain_dui-02.test, explain_fcdi_i.test,
+     explain_fdi_v.test, explain_fti_v.test, explain_fui_v.test,
+     explain_uf_v.test, explain_ui.test, explain_unknown_attribute.test: Added
+     support for C++ attributes.
+
+2017-10-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added comments.
+   * lexer.l, parser.y: Minor token renaming.
+   * cdecl.1, c_keyword.c, c_type.c, lexer.l, literals.c, literals.h, parser.y,
+     declare_nfi_v-01.out, declare_nfi_v-02.out: Switch to _Noreturn being
+     primary.
+   * AUTHORS: Added new features.
+
+2017-10-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated to 4.3.
+   * cdecl.1, autocomplete.c, c_keyword.c, c_type.c, c_type.h, lexer.l,
+     literals.c, literals.h, parser.y, test/Makefile.am, declare_md.out,
+     declare_mf.out, explain_md.out, explain_mf.out, declare_md.test,
+     declare_mf.test, explain_md.test, explain_mf.test: Added C99 _Imaginary
+     support.
+   * cdecl.1, c_keyword.c, c_type.c, lexer.l, literals.c, literals.h, parser.y,
+     declare_zd.out, declare_zf.out: Changed complex to _Complex.
+   * explain_a.out, explain_a9cpi.out, explain_ai-01.out, explain_ai-02.out,
+     explain_ai.out, explain_api-01.out, explain_api-02.out,
+     explain_cast_ci.out, explain_cast_cpa3cpa5i.out,
+     explain_cast_cpa3pa5i.out, explain_cast_cpa9ci.out,
+     explain_cast_cpa9i.out, explain_cast_cpbv_pi.out, explain_cast_cpcpi.out,
+     explain_cast_cpfv_pi.out, explain_cast_cpi.out, explain_cast_cppi.out,
+     explain_cast_cvpi.out, explain_cast_ic.out, explain_cast_pa3cpa5i.out,
+     explain_cast_pci.out, explain_cast_pcpi, explain_cast_pcpi.out,
+     explain_cast_pic.out, explain_cast_rpi.out, explain_cast_vcpi.out,
+     explain_cf_v.out, explain_ci.out, explain_ck.out, explain_cpa3cpa5i.out,
+     explain_cpa3pa5i.out, explain_cpa9ci.out, explain_cpa9i.out,
+     explain_cpbv_pi.out, explain_cpcpi.out, explain_cpfv_pi.out,
+     explain_cpi.out, explain_cpmci.out, explain_cpmi.out, explain_cppi.out,
+     explain_crf_v.out, explain_cu.out, explain_cvf_v.out, explain_cvpi.out,
+     explain_e.out, explain_ea2i.out, explain_f_cpmi.out, explain_facs3_v.out,
+     explain_facv_v.out, explain_fasc3_v.out, explain_fcce_v.out,
+     explain_ic.out, explain_k.out, explain_kc.out, explain_keywords.out,
+     explain_oyf.out, explain_pa3cpa5i.out, explain_pai-01.out,
+     explain_pai-02.out, explain_pcpi.out, explain_pmfii_pk.out,
+     explain_rpi.out, explain_vcpi.out, explain_voyf.out, explain_xf_v.out,
+     explain_xtf_v.out: Updated tests for new English use.
+   * c_type.c, lexer.l, literals.c, literals.h: Now using more English words in
+     English.
+   * cdecl.1, lexer.l, literals.c, literals.h: Added "external" as a synonym
+     for "extern".
+   * autocomplete.c, literals.c, literals.h: Removed vestiges of L_SIZE_T.
+
+2017-10-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c, cdecl.c, prompt.c, util.c, util.h: Replaced strcpy_len() with
+     strcpy_end().
+   * c_type.c, c_type.h: Added L_TYPEDEF_TYPE.
+   * NEWS, configure.ac, cdecl.1, autocomplete.c, c_keyword.c, c_type.c,
+     c_type.h, errors.c, gibberish.c, lexer.l, literals.c, literals.h,
+     parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d.out, declare_xf.out,
+     explain_nfi_v.out, explain_tf_v.out, explain_xf_v.out, explain_xff_v.out,
+     explain_xtf_v.out, declare_xf.test, explain_tf_v.test, explain_xf_v.test,
+     explain_xff_v.test, explain_xtf_v.test: Added noexcept and throw()
+     support.
+
+2017-10-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Comment removal.
+   * parser.y: Explicit comparison.
+   * parser.y: Explicit comparison.
+   * options.c, util.c: Clean-up.
+   * gibberish.c: More explicit comparison.
+   * errors.c: Fixed whitespace.
+   * lib/Makefile.am, getopt-cdefs.in.h, getopt-pfx-core.h, getopt-pfx-ext.h,
+     getopt.in.h, unistd.in.h, string_h.m4, sys_types_h.m4: Updated GNUlib.
+   * NEWS, configure.ac: Updated version.
+   * cdecl.c: Fixed handling of leading whitespace in command-line argument.
+   * c_typedef.c: Minor clean-up.
+   * c_type.c: Added name_cat().
+
+2017-10-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: More explicit comparison in is_long_int().
+   * c_ast_util.c: More explicit comparison.
+   * c_ast.c: More assert()s in c_ast_equiv().
+   * options.c: Split line for clarity.
+   * c_type.c: Now using PRIX_C_TYPE_T for INTERNAL_ERR().
+   * c_type.h, debug.c: Added PRIX_C_TYPE_T.
+   * c_type.c: Removed duplicated code.
+   * c_typedef.c: Added comment.
+   * cdecl.1: Added caveat about predefined types' underlying types.
+
+2017-10-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, parser.y, test/Makefile.am, define_ai.test, define_ei.test,
+     define_gi.test, define_si.test, typedef_ai.test, typedef_ei.test,
+     typedef_gi.test, typedef_si.test: Fixed typedef & define with storage
+     classes.
+   * cdecl.c: Now resetting command-line in parse_string().
+   * cdecl.c: Augmented comment.
+   * c_type.h: Completed comment.
+
+2017-10-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, c_type.c, c_typedef.c, debug.c, debug.h,
+     english.c, parser.y, cdecl--debug.out, cdecl-d.out, show_all_types.out,
+     show_predefined_types.out: Added support for stdatomic types.
+
+2017-10-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1, c_lang.c, lexer.l, parser.y: Now allowing ck&r, k&r, and k&rc
+     lang names.
+   * cdecl.1: Removed size_t, ssize_t, Explicit.
+   * autocomplete.c, c_ast_util.c, c_type.c, cdecl.c, errors.c, gibberish.c:
+     Made type and lang comparisons more explicit.
+   * c_ast_util.c, c_ast_util.h: Fixed grammar errors in comments.
+
+2017-10-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c, c_keyword.h,
+     c_kind.c, c_kind.h, c_lang.c, c_lang.h, c_type.c, c_type.h, c_typedef.c,
+     c_typedef.h, errors.c: Fixed filenames in comments.
+   * debug.c, diagnostics.c, lexer.h, lexer.l, typedefs.h: Reverted Bison
+     location to int to avoid warnings.
+
+2017-09-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, gibberish.c, parser.y, util.h: s/ZERO/MEM_ZERO/
+
+2017-09-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h: Moved visitor callbacks.
+
+2017-09-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h: Added explicit != NULL.
+
+2017-09-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c: Minor clean-up.
+
+2017-09-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: Fixed typo.
+   * lib/Makefile.am, arg-nonnull.h, c++defs.h, errno.in.h, getdelim.c,
+     getline.c, getopt-cdefs.in.h, getopt-core.h, getopt-ext.h,
+     getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c,
+     getopt_int.h, gettext.h, limits.in.h, stdarg.in.h, stdbool.in.h,
+     stddef.in.h, stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h, strsep.c,
+     sys_types.in.h, sysexits.in.h, unistd.in.h, warn-on-use.h,
+     extern-inline.m4, gnulib-cache.m4, gnulib-common.m4, gnulib-comp.m4,
+     onceonly.m4, stdbool.m4, sys_types_h.m4: Updated gnulib.
+   * src/Makefile.am, autocomplete.c, c_typedef.h, cdecl.c, debug.c, debug.h,
+     diagnostics.c, diagnostics.h, english.c, errors.c, gibberish.c, help.c,
+     lexer.l, options.c, options.h, parser.y, prompt.c, set.c, typedefs.h,
+     util.c, util.h: Fixed build on old gcc that doesn't allow multiple
+     typedefs of the same type.
+   * cdecl.c, common.h: Comment fix.
+   * NEWS, configure.ac: Changed version to 4.0.
+   * AUTHORS, NEWS, cdecl.1, errors.c, lang.c, lang.h, test/Makefile.am,
+     declare_ii-c++.out, explain_ii-c++.out, declare_ii-c++.test,
+     declare_ii.test, explain_ii-c++.test, explain_ii.test: Added C++17
+     support: inline variables.
+   * NEWS, errors.c: Now warning on "register" >= C++11.
+   * lexer.l: Better C++ lang name handling for "set" command.
+   * ast.c, gibberish.c, parser.y, util.h: Added ZERO().
+   * ast.h, ast_util.h, keywords.c, lexer.l: Moved c_ast_pair to ast_util.h.
+
+2017-09-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, NEWS, configure.ac, cdecl.1, src/Makefile.am, ast.c, ast.h,
+     ast_util.c, autocomplete.c, cdecl.c, common.h, debug.c, diagnostics.c,
+     english.c, errors.c, gibberish.c, help.c, keywords.c, kinds.c, kinds.h,
+     lang.c, lang.h, lexer.h, lexer.l, literals.c, literals.h, options.c,
+     options.h, parser.y, red_black.c, red_black.h, set.c, typedefs.c,
+     typedefs.h, types.c, types.h, util.c, util.h, test/Makefile.am,
+     config_u.cdeclrc, cdecl--debug.out, cdecl-d.out, declare_config_u.out,
+     declare_cz.out, define_i.out, define_i_declare_i.out,
+     define_i_explain_i.out, define_i_int_least32_t.out, explain_config_u.out,
+     help-c++.out, help-c.out, show_all_types.out, show_int8_t.out,
+     show_predefined_types.out, show_user_types.out, typedef_i.out,
+     typedef_i_declare_i.out, typedef_i_explain_i.out,
+     typedef_i_int_least32_t.out, run_test.sh, cast_a3i.test, cast_bii_d.test,
+     cast_ci.test, cast_constant.test, cast_cpa3cpa5i.test, cast_cpa3pa5i.test,
+     cast_cpa9ci.test, cast_cpa9i.test, cast_cpbv_pi.test, cast_cpcpi.test,
+     cast_cpfv_pi.test, cast_cpi.test, cast_cppi.test, cast_cvpi.test,
+     cast_f_i.test, cast_gi.test, cast_ll.test, cast_pa3cpa5i.test,
+     cast_pa3pa5i.test, cast_pa9i.test, cast_pbv_pi.test, cast_pci.test,
+     cast_pcpi.test, cast_pf_i-01.test, cast_pf_i-02.test, cast_pfii_i.test,
+     cast_pfv_pi.test, cast_pfx_i.test, cast_pi.test, cast_pmi.test,
+     cast_ppi.test, cast_sc.test, cast_si.test, cast_sll.test, cast_ti.test,
+     cast_type.test, cast_u.test, cast_uc.test, cast_ui.test, cast_ull.test,
+     cast_vcpi.test, cast_vpi.test, cdecl--debug.test,
+     cdecl--no-semicolon.test, cdecl-d.test, cdecl-s.test, cdecl-xx.test,
+     cl-cast_i.test, cl-declare_i.test, cl-explain_i.test,
+     const_cast_pi-c.test, const_cast_pi.test, declare_0f_v-c.test,
+     declare_0f_v.test, declare_a.test, declare_a3a5a7i.test,
+     declare_a3a5i.test, declare_a3a5pfv_i.test, declare_a3a5pfv_pi.test,
+     declare_a3a5pfv_ppa7a9i.test, declare_a3a5pfv_ppa7a9pc.test,
+     declare_a3a5pfv_ppa7i.test, declare_a3a5pfv_ppa7pi.test,
+     declare_a3a5pfv_ppi.test, declare_a3pfv_i.test, declare_a3ppfv_i.test,
+     declare_a9cpi.test, declare_a9i.test, declare_a9pi.test,
+     declare_ac3i.test, declare_af-c++.test, declare_af.test,
+     declare_ai-01.test, declare_ai-02.test, declare_ai-c++11.test,
+     declare_ai.test, declare_api-01.test, declare_as3i.test, declare_avi.test,
+     declare_b-c89.test, declare_b.test, declare_b_ai.test, declare_b_f_i.test,
+     declare_bii_d.test, declare_c-c.test, declare_c.test,
+     declare_c16-c++03.test, declare_c16-c99.test, declare_c32-c++03.test,
+     declare_c32-c99.test, declare_cf_v-c.test, declare_cf_v.test,
+     declare_ci-knr.test, declare_ci.test, declare_config_u.test,
+     declare_constant.test, declare_cpa3cpa5i.test, declare_cpa3pa5i.test,
+     declare_cpa9ci.test, declare_cpa9i.test, declare_cpbv_pi.test,
+     declare_cpcpi.test, declare_cpfv_pi.test, declare_cpi.test,
+     declare_cpmi.test, declare_cppi.test, declare_crf_v.test,
+     declare_crrf_v.test, declare_cu.test, declare_cvpi.test, declare_cz.test,
+     declare_e-knr.test, declare_e.test, declare_ea2i.test, declare_ec-c.test,
+     declare_ec.test, declare_ek.test, declare_esf_v.test, declare_f.test,
+     declare_f_ai.test, declare_f_f_i.test, declare_f_pi.test,
+     declare_f_pmi.test, declare_facs3_v.test, declare_facv_v.test,
+     declare_fas3_v.test, declare_fasc3_v.test, declare_fav_v.test,
+     declare_fcce_v-01.test, declare_fcce_v-02.test, declare_fcce_v-03.test,
+     declare_ff_v-c.test, declare_ff_v.test, declare_fg_v-c89.test,
+     declare_fg_v.test, declare_fgi_v.test, declare_fid_v.test,
+     declare_fii_v.test, declare_fiiv_v.test, declare_fipfi_v_pfi_v.test,
+     declare_fiv_v.test, declare_fixiy_v.test, declare_fpc_pi.test,
+     declare_fpci_pi.test, declare_fpfc_i_d.test, declare_frri_v.test,
+     declare_fsi_v.test, declare_fv_pa3a5i.test, declare_fv_pa3a5pi.test,
+     declare_fv_pa3i.test, declare_fv_pa3pi.test, declare_fv_v.test,
+     declare_fvx_v.test, declare_fx_pi.test, declare_gf_v.test,
+     declare_gi.test, declare_hb.test, declare_hc.test, declare_hc16.test,
+     declare_hc32.test, declare_hd.test, declare_hf.test, declare_hl.test,
+     declare_hll.test, declare_hv.test, declare_hw.test, declare_if_v.test,
+     declare_k.test, declare_lb.test, declare_lc.test, declare_lc16.test,
+     declare_lc32.test, declare_ld-knr.test, declare_ld.test,
+     declare_lf-c.test, declare_lf.test, declare_ll-c89.test,
+     declare_ll-knr.test, declare_ll.test, declare_lll.test, declare_lv.test,
+     declare_lw.test, declare_mi.test, declare_n.test, declare_nfi_v-01.test,
+     declare_nfi_v-02.test, declare_ni.test, declare_oyf.test,
+     declare_pa3cpa5i.test, declare_pa3pa5i.test, declare_pa9i.test,
+     declare_pai-01.test, declare_pbv_pi.test, declare_pcpi.test,
+     declare_pfv_pi.test, declare_pfv_ri.test, declare_pfx_i.test,
+     declare_pi.test, declare_pmci.test, declare_pmf_i.test,
+     declare_pmf_pc.test, declare_pmi.test, declare_pmri.test,
+     declare_ppi.test, declare_pri.test, declare_pv-knr.test,
+     declare_ra3i.test, declare_rci.test, declare_rcpi.test, declare_ref.test,
+     declare_rf_v-01.test, declare_rf_v-c.test, declare_rf_v.test,
+     declare_rgi.test, declare_ri.test, declare_rpi.test, declare_rrf_v.test,
+     declare_rv.test, declare_sa2i.test, declare_sb.test, declare_sc-knr.test,
+     declare_sc.test, declare_sc16.test, declare_sc32.test, declare_sf_v.test,
+     declare_si-knr.test, declare_si.test, declare_sif_v.test,
+     declare_sl-knr.test, declare_sll.test, declare_smi.test, declare_sv.test,
+     declare_sw.test, declare_sxi.test, declare_t.test, declare_ti.test,
+     declare_tpfc_i.test, declare_type.test, declare_u.test, declare_ub.test,
+     declare_uc.test, declare_uc16.test, declare_uc32.test, declare_ud.test,
+     declare_uf.test, declare_ui.test, declare_ull.test, declare_uv.test,
+     declare_uw.test, declare_uz.test, declare_v.test, declare_vcpi.test,
+     declare_vf_v-c.test, declare_vf_v.test, declare_vi-knr.test,
+     declare_voyf.test, declare_vpi.test, declare_w-c89.test, declare_w.test,
+     declare_xi-c.test, declare_xi.test, declare_yf.test, declare_z.test,
+     declare_zd.test, declare_zf.test, declare_zz.test,
+     define_c_int_least32_t.test, define_i.test, define_i_declare_i.test,
+     define_i_explain_i.test, define_i_int_least32_t.test,
+     dynamic_cast_pc-c.test, dynamic_cast_pc.test, explain_0f_v-01.test,
+     explain_0f_v-02.test, explain_0f_v-c.test, explain_a.test,
+     explain_a012i.test, explain_a0b10i.test, explain_a0xAi-01.test,
+     explain_a0xai-02.test, explain_a3a5a7i.test, explain_a3a5i.test,
+     explain_a3a5pfv_i.test, explain_a3a5pfv_pi.test,
+     explain_a3a5pfv_ppa7a9i.test, explain_a3a5pfv_ppa7a9pc.test,
+     explain_a3a5pfv_ppa7i.test, explain_a3a5pfv_ppa7pi.test,
+     explain_a3a5pfv_ppi.test, explain_a3pfv_i.test, explain_a3ppfv_i.test,
+     explain_a9cpi.test, explain_a9i.test, explain_a9pi.test,
+     explain_ac9i.test, explain_af.test, explain_ai-01.test,
+     explain_ai-02.test, explain_ai-c++11.test, explain_ai.test,
+     explain_api-01.test, explain_api-02.test, explain_as9i.test,
+     explain_b-c89.test, explain_b.test, explain_b_ai.test, explain_bii_d.test,
+     explain_c-c.test, explain_c.test, explain_c16-c++03.test,
+     explain_c16-c99.test, explain_c32-c++03.test, explain_c32-c99.test,
+     explain_cast_a3a5a7i.test, explain_cast_a3a5i.test, explain_cast_a3i.test,
+     explain_cast_ai.test, explain_cast_ci.test, explain_cast_cpa3cpa5i.test,
+     explain_cast_cpa3pa5i.test, explain_cast_cpa9ci.test,
+     explain_cast_cpa9i.test, explain_cast_cpbv_pi.test,
+     explain_cast_cpcpi.test, explain_cast_cpfv_pi.test, explain_cast_cpi.test,
+     explain_cast_cppi.test, explain_cast_cvpi.test, explain_cast_ei.test,
+     explain_cast_gi.test, explain_cast_ic.test, explain_cast_ll.test,
+     explain_cast_lll.test, explain_cast_pa3a5i.test,
+     explain_cast_pa3cpa5i.test, explain_cast_pa3pa5i.test,
+     explain_cast_pa9i.test, explain_cast_pbv_pi.test, explain_cast_pci.test,
+     explain_cast_pcpi.test, explain_cast_pf_i.test, explain_cast_pfpci_i.test,
+     explain_cast_pfpi_i.test, explain_cast_pfv_pi.test, explain_cast_pi.test,
+     explain_cast_pic.test, explain_cast_pmi.test, explain_cast_ppi.test,
+     explain_cast_ri.test, explain_cast_rpi.test, explain_cast_si.test,
+     explain_cast_ti.test, explain_cast_ull.test, explain_cast_vcpi.test,
+     explain_cast_vpi.test, explain_cf_v-c.test, explain_cf_v.test,
+     explain_ci-knr.test, explain_ci.test, explain_ck.test,
+     explain_config_u.test, explain_const_cast_pi-c.test,
+     explain_const_cast_pi.test, explain_cpa3cpa5i.test, explain_cpa3pa5i.test,
+     explain_cpa9ci.test, explain_cpa9i.test, explain_cpbv_pi.test,
+     explain_cpcpi.test, explain_cpfv_pi.test, explain_cpi.test,
+     explain_cpmci.test, explain_cpmi.test, explain_cppi.test,
+     explain_crf_v.test, explain_cs.test, explain_cu.test, explain_cvf_v.test,
+     explain_cvpi.test, explain_dynamic_cast_pc-c.test,
+     explain_dynamic_cast_pc.test, explain_e-knr.test, explain_e.test,
+     explain_ea2i.test, explain_ec.test, explain_ek.test, explain_esf_v.test,
+     explain_f__pf__v.test, explain_f__pv.test, explain_f__v-c++03.test,
+     explain_f__v.test, explain_f_ai.test, explain_f_cpmi.test,
+     explain_f_pi.test, explain_f_pmi.test, explain_f_v__v.test,
+     explain_fa_v.test, explain_fac3_v-c++.test, explain_facs3_v.test,
+     explain_facv_v.test, explain_fas3_v-c++.test, explain_fas3_v.test,
+     explain_fasc3_v.test, explain_fasv_v.test, explain_fav_v-c++.test,
+     explain_fav_v.test, explain_fcce_v.test, explain_fe_v.test,
+     explain_fecc_v.test, explain_fee_v.test, explain_fev_v.test,
+     explain_ff_v-c.test, explain_ff_v.test, explain_fg_v-c89.test,
+     explain_fg_v.test, explain_fgi_v.test, explain_fid_v.test,
+     explain_fiiv_v.test, explain_fipfi_v_pfi_v.test, explain_fiv_v.test,
+     explain_fixiy_v.test, explain_fpc_pi.test, explain_fpci_pi.test,
+     explain_fpfc_i_d.test, explain_frri_v-c++03.test, explain_frri_v.test,
+     explain_fsf_v.test, explain_fsi_v.test, explain_fv_pa3a5i.test,
+     explain_fv_pa3a5pi.test, explain_fv_pa3i.test, explain_fv_pa3pi.test,
+     explain_fv_pi.test, explain_fv_v.test, explain_fve_v.test,
+     explain_fvi_v.test, explain_fvv_v.test, explain_fvx_v.test,
+     explain_fx_pi.test, explain_fx_v.test, explain_gf_v.test, explain_gi.test,
+     explain_gk.test, explain_hb.test, explain_hc.test, explain_hc16.test,
+     explain_hc32.test, explain_hd.test, explain_hf.test, explain_hl.test,
+     explain_hll.test, explain_hv.test, explain_hw.test, explain_ic.test,
+     explain_if_v.test, explain_ig.test, explain_is.test, explain_it.test,
+     explain_k.test, explain_kc.test, explain_keywords.test, explain_lb.test,
+     explain_lc.test, explain_lc16.test, explain_lc32.test,
+     explain_ld-knr.test, explain_ld.test, explain_lf-c.test, explain_lf.test,
+     explain_ll-c89.test, explain_ll-knr.test, explain_ll.test,
+     explain_lll.test, explain_lv.test, explain_lw.test, explain_mi.test,
+     explain_n.test, explain_nfi_c.test, explain_nfi_v-c++.test,
+     explain_nfi_v.test, explain_ni.test, explain_oi.test, explain_oyf.test,
+     explain_pa3a5i.test, explain_pa3cpa5i.test, explain_pa3pa5i.test,
+     explain_pa9i.test, explain_pai-01.test, explain_pai-02.test,
+     explain_pbv_pi.test, explain_pcpi.test, explain_pfv_pi.test,
+     explain_pi.test, explain_pmf_i.test, explain_pmf_pc.test,
+     explain_pmfii_pk.test, explain_pmgi.test, explain_pmi-c.test,
+     explain_pmi.test, explain_pmri.test, explain_ppi.test, explain_pri.test,
+     explain_prri.test, explain_pv-knr.test, explain_ra3i.test,
+     explain_reinterpret_cast_pv-c.test, explain_reinterpret_cast_pv.test,
+     explain_rf_v-01.test, explain_rf_v-c++03.test, explain_rf_v.test,
+     explain_rgi.test, explain_ri-c.test, explain_ri.test, explain_rpi.test,
+     explain_rrf_v-c++03.test, explain_rrf_v.test, explain_rv.test,
+     explain_sa2i.test, explain_sb.test, explain_sc-knr.test, explain_sc.test,
+     explain_sc16.test, explain_sc32.test, explain_sf_v.test,
+     explain_si-knr.test, explain_si.test, explain_sl-knr.test,
+     explain_smi.test, explain_srf_v.test, explain_srrf_v.test,
+     explain_static_cast_i-c.test, explain_static_cast_i.test, explain_sv.test,
+     explain_sw.test, explain_sxi.test, explain_ti.test, explain_tpfc_i.test,
+     explain_type_i.test, explain_ub.test, explain_uc.test, explain_uc16.test,
+     explain_uc32.test, explain_ud.test, explain_uf.test, explain_ull.test,
+     explain_uv.test, explain_uw.test, explain_v.test, explain_vcpi.test,
+     explain_vf_v-c.test, explain_vf_v.test, explain_vi-knr.test,
+     explain_voyf-c.test, explain_voyf.test, explain_vpi.test,
+     explain_w-c89.test, explain_w.test, explain_xi-c.test, explain_xi.test,
+     explain_yf.test, explain_z.test, explain_zd.test, explain_zf.test,
+     explain_zz.test, file-cast_i.test, file-cast_x.test, file-declare_i.test,
+     file-declare_x.test, file-explain_i.test, file-explain_x.test,
+     help-c++.test, help-c.test, reinterpret_cast_pv-c.test,
+     reinterpret_cast_pv.test, set.test, set_c++.test, set_c++03.test,
+     set_c++11.test, set_c++98.test, set_c.test, set_c11.test, set_c89.test,
+     set_c99.test, set_cknr.test, set_debug.test, set_knr.test, set_knrc.test,
+     set_nodebug.test, set_noprompt.test, set_nosemicolon.test,
+     set_noyydebug.test, set_options.test, set_prompt.test, set_semicolon.test,
+     set_yydebug.test, show_all_types.test, show_foo.test, show_int8_t.test,
+     show_predefined_types.test, show_user_types.test, static_cast_i-c.test,
+     static_cast_i.test, typedef_c_int_least32_t.test, typedef_i.test,
+     typedef_i_declare_i.test, typedef_i_explain_i.test,
+     typedef_i_int_least32_t.test: Added ability to typedef types; added C99
+     standard types.
+
+2017-09-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast.c, ast_util.c, autocomplete.c, color.c, debug.c, diagnostics.c,
+     english.c, errors.c, gibberish.c, help.c, keywords.c, lang.c, options.c,
+     prompt.c, set.c, types.c, util.c: More explicit about == NULL or == 0.
+   * ast.c: c_ast_list_append() clean-up.
+   * cdecl.1: Added (missing) long long for C89.
+
+2017-09-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, test/Makefile.am, declare_t.test: Fixed "declare x as y" bug.
+
+2017-09-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * keywords.c, keywords.h, lexer.l: s/c_keyword_find_literal/c_keyword_find/
+
+2017-08-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, cdecl.c: Now checking first word of first
+     argument for command.
+
+2017-08-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, gettext.h,
+     stdio.in.h, stdlib.in.h, string.in.h, sys_types.in.h, unistd.in.h,
+     extensions.m4, getdelim.m4, getline.m4, include_next.m4, stdint.m4,
+     stdlib_h.m4, string_h.m4, sys_types_h.m4, unistd_h.m4, wint_t.m4: Updated
+     gnulib.
+   * NEWS, configure.ac, cdecl.1, autocomplete.c, keywords.c, literals.c,
+     literals.h, parser.y, types.c, types.h, test/Makefile.am, declare_zz.out,
+     explain_zz.out, declare_zz-knr.test, declare_zz.test, explain_zz-knr.test,
+     explain_zz.test: Added support for ssize_t.
+
+2017-07-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c, util.h: Made perror_exit() a function.
+   * lexer.l: Added identifier.
+
+2017-07-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated version.
+   * parser.y: Fixed new-style casts C++ version.
+   * cdecl.1: Added mention of new-style casts; added casting name only caveat.
+   * parser.y: Added "new_style_cast_c" to dump line.
+   * parser.y: explain_new_style_cast_c requires NAME.
+   * parser.y: Better error messages for explain_new_style_cast_c.
+
+2017-07-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c: Added FALLTHROUGH comment.
+   * ast.c, util.c, util.h: Added likely() and unlikely().
+   * autocomplete.c: Fixed typo in comment.
+
+2017-07-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, cdecl.c: Added "help" as a command-line argument.
+   * ast_util.c: Comment fix.
+   * ast_util.c: Added missing "static".
+   * ast.c: Comment fix.
+   * diagnostics.h: Comment grammar fix.
+
+2017-07-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, gibberish.c, test/Makefile.am, declare_ra3i.out, explain_ra3i.out,
+     declare_ra3i.test, explain_ra3i.test: Fixed reference to array.
+   * AUTHORS, NEWS, configure.ac, cdecl.1, ast.h, autocomplete.c, debug.c,
+     english.c, errors.c, gibberish.c, help.c, lexer.l, literals.c, literals.h,
+     parser.y, test/Makefile.am, declare_facs3_v.out, declare_facv_v.out,
+     declare_fas3_v.out, declare_fasc3_v.out, declare_fav_v.out,
+     explain_facs3_v.out, explain_facv_v.out, explain_fas3_v.out,
+     explain_fasc3_v.out, explain_fav_v.out, help-c++.out, help-c.out,
+     declare_ac3i.test, declare_as3i.test, declare_avi.test,
+     declare_facs3_v.test, declare_facv_v.test, declare_fas3_v.test,
+     declare_fasc3_v.test, declare_fav_v.test, explain_ac9i.test,
+     explain_as9i.test, explain_fac3_v-c++.test, explain_facs3_v.test,
+     explain_facv_v.test, explain_fas3_v-c++.test, explain_fas3_v.test,
+     explain_fasc3_v.test, explain_fasv_v.test, explain_fav_v-c++.test,
+     explain_fav_v.test: Added C99 static, type-qualified, and variable length
+     array function argument support.
+
+2017-07-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * lang.h: Moved C++ languages into upper byte.
+
+2017-07-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * errors.c: Fixed printing of error message.
+
+2017-06-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, options.c: Added -h and --help.
+   * parser.y, test/Makefile.am, explain_cpmci.out, explain_cpmi.out,
+     explain_f_cpmi.out, explain_cpmci.test, explain_cpmi.test,
+     explain_f_cpmi.test: Added support for explaining const/volatile pointers
+     to member.
+
+2017-05-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.c, common.h, diagnostics.c: Fixed error printing if source is
+     command line.
+   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, cdecl.c, help.c,
+     keywords.c, lexer.l, literals.c, literals.h, parser.y, test/Makefile.am,
+     const_cast_pi.out, dynamic_cast_pc.out, explain_const_cast_pi.out,
+     explain_dynamic_cast_pc.out, explain_reinterpret_cast_pv.out,
+     explain_static_cast_i.out, help-c++.out, help-c.out,
+     reinterpret_cast_pv.out, static_cast_i.out, const_cast_pi-c.test,
+     const_cast_pi.test, dynamic_cast_pc-c.test, dynamic_cast_pc.test,
+     explain_const_cast_pi-c.test, explain_const_cast_pi.test,
+     explain_dynamic_cast_pc-c.test, explain_dynamic_cast_pc.test,
+     explain_reinterpret_cast_pv-c.test, explain_reinterpret_cast_pv.test,
+     explain_static_cast_i-c.test, explain_static_cast_i.test,
+     reinterpret_cast_pv-c.test, reinterpret_cast_pv.test,
+     static_cast_i-c.test, static_cast_i.test: Added support for C++ new-style
+     casts.
+
+2017-05-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, diagnostics.c, prompt.h: Fixed color prompt caret
+     position.
+   * cdecl.1: Fixed caveat auto example.
+
+2017-05-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * keywords.c, keywords.h: Removed c_keyword_find_token() -- not used.
+   * parser.y: Fixed typo in dump line.
+
+2017-05-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, help.c, help-c++.out, help-c.out: Fixed cv-qualifier
+     in help text.
+
+2017-05-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.h, parser.y: Got rid of yylex() redundant declaration warning.
+   * lexer.l: Removed redundant declaration of yylloc.
+   * ast.c, ast.h, common.h, diagnostics.c, diagnostics.h, parser.y, types.c,
+     types.h: Now using c_loc_t instead of YYLTYPE.
+   * parser.y: Fixed comment grammar.
+   * diagnostics.c: Added assert( error_column <= input_line_len ).
+
+2017-05-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * debug.c, cdecl--debug.out, cdecl-d.out: Now printing loc in debug output.
+   * diagnostics.c: Printed error columns are now 1-based.
+   * ast.h, debug.c, english.c, gibberish.c, parser.y, cdecl--debug.out,
+     cdecl-d.out: Folded qualifier struct member into type.
+   * parser.y: Removed incorrect comment.
+   * parser.y, cdecl--debug.out, cdecl-d.out: Fixed arg_list_c dump.
+   * parser.y: Fixed typo in comment.
+   * parser.y: s/CDEBUG/IF_DEBUG/
+
+2017-05-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Now using CONST_CAST in FREE().
+
+2017-05-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Added "break" to cdecl_keyword_find().
+   * lexer.l: Fixed typo incomment.
+   * NEWS, configure.ac, lexer.l, test/Makefile.am, explain_type_i.test: Fixed
+     wrongly allowing keyword synonyms in explain.
+
+2017-05-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, ast_util.c, gibberish.c, test/Makefile.am,
+     declare_tpfc_i.out, explain_tpfc_i.out, declare_tpfc_i.test,
+     explain_tpfc_i.test: Fixed declarations with storage-class.
+   * util.c: Reordered open().
+
+2017-05-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Now allowing l, ll, llu, u, ul, ull integer suffixes for array
+     sizes.
+
+2017-05-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: Added asserts; fixed comment.
+   * english.c: Now using L_AS.
+
+2017-05-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l, parser.y: s/Y_RVALUE_REFERENCE/Y_DOUBLE_AMPERSAND/
+
+2017-04-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated to 3.1.1.
+   * src/Makefile.am: Added BUILT_SOURCES.
+   * Makefile.am: Fixed to use new README files.
+   * README-blocks.txt: Split out README info; disavowed associated with
+     cdecl.org.
+   * cdecl.1: Added mention tht qualified C++ data members or member functions
+     are not supported.
+   * ast_util.c, ast_util.h, parser.y:
+     s/c_ast_patch_none/c_ast_patch_placeholder/
+   * debug.c: Fixed missing ',' after class_name.
+
+2017-04-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added assert().
+   * NEWS, configure.ac, src/Makefile.am: Added c++decl symlink on install.
+   * AUTHORS, NEWS, configure.ac, cdecl.1, debug.c, english.c, errors.c,
+     gibberish.c, help.c, kinds.c, kinds.h, parser.y, types.c, types.h,
+     test/Makefile.am, cdecl--debug.out, cdecl-d.out, declare_crf_v.out,
+     declare_crrf_v.out, declare_rf_v.out, declare_rrf_v.out,
+     explain_crf_v.out, explain_rf_v.out, explain_rrf_v.out, help-c++.out,
+     help-c.out, declare_crf_v.test, declare_crrf_v.test, declare_rf_v-01.test,
+     declare_rf_v.test, declare_rrf_v.test, explain_crf_v.test,
+     explain_rf_v-01.test, explain_rf_v-c++03.test, explain_rf_v.test,
+     explain_rrf_v-c++03.test, explain_rrf_v.test, explain_srf_v.test,
+     explain_srrf_v.test: Added member function ref-qualifiers.
+
+2017-04-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Fixed auto caveat.
+   * ast_util.c, ast_util.h, debug.c, english.c, errors.c, gibberish.c,
+     kinds.c, kinds.h, parser.y: Changed K_NONE to K_PLACEHOLDER.
+   * parser.y: Reordered func_qualifier_list_opt_c.
+
+2017-04-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast_util.c, debug.c, errors.c, gibberish.c: Changed "no break;" comment to
+     "FALLTHROUGH" for gcc >= 7.
+
+2017-04-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: Now consistent with periods.
+   * NEWS, configure.ac: Upped version to 3.0.1.
+   * configure.ac: Renamed --disable-debug to --disable-cdecl-debug to avoid
+     clash with other --disable-debug.
+   * util.c: Eliminated warning when not compiling with asserts.
+   * cdecl.1: Fixed minor formatting of signal(2).
+
+2017-04-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * Makefile.am: Added READMEs to EXTRA_DIST.
+   * test/Makefile.am: Rearranged EXTRA_DIST.
+   * test/Makefile.am: Added missing "data".
+   * src/Makefile.am: Added headers.
+   * gettext.h, getopt.m4, gnulib-comp.m4: Updated GNUlib.
+   * parser.y: Clean-up; fixed memory leak of names on error.
+   * parser.y, cdecl--debug.out, cdecl-d.out: More clean-up.
+
+2017-04-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast.c, ast.h, ast_util.c, ast_util.h, autocomplete.c, cdecl.c, english.c,
+     errors.c, gibberish.c, lang.c, parser.y, types.c, cdecl--debug.out,
+     cdecl-d.out: Clean-up.
+   * ast_util.c, parser.y: More comments; clean-up.
+   * AUTHORS, NEWS, cdecl.1, lexer.l, parser.y, test/Makefile.am,
+     cdecl--debug.out, cdecl-d.out, explain_f__pf__v.out, explain_f__pv.out,
+     explain_f__v.out, explain_f__pf__v.test, explain_f__pv.test,
+     explain_f__v-c++03.test, explain_f__v.test, explain_f_v__v.test: Added
+     support for the C++11 function trailing return type syntax.
+   * cdecl.1: Removed mention of 'n' (not used); clean-up.
+   * parser.y: Removed SYNTAX_ERROR -- no longer used.
+   * parser.y: Simplified zero.
+   * parser.y: s/parse_error/elaborate_error/
+
+2017-04-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Better error message for pure without virtual.
+   * errors.c: Reordering implicit in check.
+   * errors.c, parser.y, test/Makefile.am, declare_fg_v-c89.test,
+     declare_fg_v.test, explain_fg_v-c89.test, explain_fg_v.test: Now making
+     implicit int an error in C99 and later.
+   * parser.y: Added parse_init().
+   * cdecl.c, lexer.h: Backed out call to yylex_destroy() -- not present on
+     some flex versions.
+   * parser.y: Improved error message for array_decl_english.
+   * cdecl.c, lexer.h: Now calling yylex_destroy().
+   * parser.y: Fixed func_cast_c dump.
+
+2017-04-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Removed author contributions; the AUTHORS and NEWS files are
+     enough.
+   * NEWS: Added NEWS file.
+   * cdecl.1: s/--lang/--language/ to match reality.
+   * autocomplete.c: Added setting of rl_instream and rl_outstream.
+   * autocomplete.c: Added missing "c++14".
+   * autocomplete.c: Comments.
+   * configure.ac: Some readline.h on require #include <stdio.h> first.
+   * types.c: Added cast to unsigned long long.
+   * configure.ac, src/Makefile.am, options.c, options.h, parser.y, prompt.c,
+     set.c, util.c, test/Makefile.am: Fixed-up --enable/--with in configure.
+   * cdecl.1: Added "C AND C++ LANGUAGE VERSIONS" section.
+
+2017-04-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, cdecl.1, autocomplete.c, help.c, keywords.c, lexer.l, literals.c,
+     literals.h, parser.y, types.c, types.h, test/Makefile.am,
+     cdecl--debug.out, cdecl-d.out, declare_ai-01.out, declare_ai-02.out,
+     declare_api-01.out, declare_api-02.out, declare_pai-01.out,
+     explain_ai-01.out, explain_ai-02.out, explain_api-01.out,
+     explain_api-02.out, explain_pai-01.out, explain_pai-02.out, help-c.out,
+     declare_ai-01.test, declare_ai-02.test, declare_api-01.test,
+     declare_pai-01.test, explain_ai-01.test, explain_ai-02.test,
+     explain_api-01.test, explain_api-02.test, explain_pai-01.test,
+     explain_pai-02.test: Added _Atomic support.
+   * lexer.l: Renamed goto label.
+   * lexer.l, test/Makefile.am, explain_oi.out, explain_oi.test: Fixed C token
+     synonyms.
+   * errors.c: Now forbidding thread_local functions.
+   * types.h: Moved T_INLINE.
+   * cdecl.1: Added caveat of no _Atomic.
+   * errors.c: Made "arg" scoped to "for" loop.
+   * AUTHORS, cdecl.1, errors.c, lang.c, lang.h, lexer.l, test/Makefile.am,
+     declare_af-c++.out, declare_af-c++.test, declare_af.test, explain_af.test:
+     Added C++14, auto functions.
+   * parser.y: Added misssing func_qualifier_list_opt_c to func_cast_c.
+   * parser.y, cdecl--debug.out, cdecl-d.out: Reworked cast_c grammar.
+   * AUTHORS, cdecl.1, autocomplete.c, errors.c, keywords.c, literals.c,
+     literals.h, parser.y, types.c, types.h, test/Makefile.am,
+     declare_if_v.out, declare_mi.out, declare_sif_v.out, explain_if_v.out,
+     explain_mi.out, declare_if_v.test, declare_mi.test, declare_sif_v.test,
+     declare_smi.test, explain_if_v.test, explain_mi.test, explain_smi.test:
+     Added inline and mutable support.
+
+2017-04-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, cdecl.1, cdecl.c, common.h, errors.c, gibberish.c, help.c,
+     lexer.h, lexer.l, parser.y, types.c, test/Makefile.am, declare_ec.out,
+     declare_ek.out, help-c++.out, declare_ec-c.test, declare_ec.test,
+     declare_ek.test, explain_ec.test, explain_ek.test: Added support for C++11
+     enum class.
+   * common.h: Removed unnecessary #include.
+   * common.h: Added comment.
+   * cdecl.1: Added mention of decltype.
+   * lang.h: Added LANG_C_ALL.
+   * errors.c, test/Makefile.am, explain_fa_v.test: Now forbidding auto
+     function arguments.
+   * types.c: Rearranged arrays.
+   * AUTHORS, cdecl.1, keywords.c, keywords.h, lang.h, lexer.l, literals.c,
+     literals.h, parser.y, types.c, types.h, test/Makefile.am, declare_a.out,
+     declare_ai.out, explain_a.out, explain_ai.out, declare_a.test,
+     declare_ai-c++11.test, declare_ai.test, explain_a.test,
+     explain_ai-c++11.test, explain_ai.test: Now distinguishing between C's
+     auto and C++11's.
+
+2017-04-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, cdecl.1, autocomplete.c, gibberish.c, keywords.c, lexer.l,
+     literals.c, literals.h, parser.y, types.c, types.h, test/Makefile.am,
+     cdecl--debug.out, cdecl-d.out, declare_oyf.out, declare_voyf.out,
+     declare_yf.out, explain_oyf.out, explain_voyf.out, explain_yf.out,
+     declare_oyf.test, declare_voyf.test, declare_yf.test, explain_oyf.test,
+     explain_voyf-c.test, explain_voyf.test, explain_yf.test: Added C++ "final"
+     and "override" support.
+
+2017-04-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, cdecl.1, lexer.l, test/Makefile.am, explain_a0b10i.out,
+     explain_a0b10i.test: Added C++14 binary literal support.
+   * AUTHORS, cdecl.1, help.c, parser.y, test/Makefile.am, declare_f.out,
+     help-c++.out, help-c.out, declare_f.test: Made "returning" optional;
+     reworked help syntax.
+   * AUTHORS, cdecl.1, errors.c, keywords.c, lexer.l, literals.c, literals.h,
+     parser.y, types.c, types.h, test/Makefile.am, declare_nfi_v-01.out,
+     declare_nfi_v-02.out, explain_nfi_v.out, declare_nfi_v-01.test,
+     declare_nfi_v-02.test, declare_ni.test, explain_nfi_v-c++.test,
+     explain_nfi_v.test: Added C11 noreturn support.
+   * cdecl.1: Added mention of default arguments not being supported.
+   * AUTHORS, cdecl.1, autocomplete.c, help.c, keywords.c, literals.c,
+     literals.h, parser.y, types.c, types.h, test/Makefile.am, declare_sxi.out,
+     declare_xi.out, explain_sxi.out, explain_xi.out, help-c++.out,
+     declare_sxi.test, declare_xi-c.test, declare_xi.test, explain_sxi.test,
+     explain_xi-c.test, explain_xi.test: Added support for constexpr.
+   * parser.y: Fixed type_modifier_list_english; reduced shift/reduce conflicts
+     to 1.
+   * lexer.l: Tweaked comment.
+   * autocomplete.c: Removed ansi, preansi, c++.
+   * AUTHORS, cdecl.1, errors.c, gibberish.c, help.c, parser.y,
+     test/Makefile.am, cdecl--debug.out, cdecl-d.out, declare_cf_v.out,
+     explain_cf_v.out, explain_cvf_v.out, help-c++.out, help-c.out,
+     declare_cf_v-c.test, declare_cf_v.test, declare_rf_v-c.test,
+     declare_rf_v.test, explain_cf_v-c.test, explain_cf_v.test,
+     explain_cvf_v.test: Added const/volatile member functions.
+
+2017-04-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Fixed parse error reporting.
+   * lexer.l: s/keyword_find/cdecl_keyword_find/
+   * diagnostics.h: Removed unnecessary header.
+   * debug.c, debug.h: Minor clean-up.
+   * types.h: Now using ull suffix to ensure 64 bits.
+   * parser.y: Fixed DUMP_NUM().
+   * configure.ac: Better checking for proper readline.
+   * types.c, util.h, test/Makefile.am, declare_esf_v.test, explain_esf_v.test,
+     explain_fsf_v.test: Now checking that at most one storage class is given.
+   * AUTHORS, cdecl.1, autocomplete.c, help.c, keywords.c, literals.c,
+     literals.h, parser.y, types.c, types.h, util.h, test/Makefile.am,
+     declare_ff_v.out, explain_ff_v.out, help-c++.out, declare_ff_v-c.test,
+     declare_ff_v.test, explain_ff_v-c.test, explain_ff_v.test: Added C++
+     "friend" function support.
+   * cdecl.1: Added example for first command-line argument parsing.
+   * cdecl.c, util.c, util.h: Renamed readline_wrapper to read_input_line.
+   * help.c, parser.y, util.c, util.h: Added PUTC_OUT and PUTS_OUT.
+   * ast.h, diagnostics.h, parser.y: Added C_AST_NEW().
+   * parser.y, test/Makefile.am, explain_cast_ri.out, explain_cast_ri.test:
+     Added cast into reference test.
+   * parser.y: Removed unnecessary code.
+   * parser.y: More grammar clean-up.
+   * parser.y: Grammar clean-up.
+   * parser.y: s/pointer_to/pointer_to_english/
+   * parser.y: Renamed "explain" to "explain_c".
+   * parser.y: Added declare_name_as_english.
+   * parser.y: Added name_into_english.
+
+2017-04-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: More comments.
+   * ast.c, ast.h: s/unsigned/c_ast_id_t/
+   * ast_util.c, test/Makefile.am, cdecl--debug.out, cdecl-d.out,
+     explain_nfi_c.out, explain_nfi_c.test: Fixed explain char (f)(int).
+   * ast_util.c, test/Makefile.am, explain_ni.out, explain_ni.test: Fixed
+     "explain int (x)".
+   * ast.h: Updated comment to mention post-order traversal.
+   * english.c: Now using visitor function to generate English.
+   * errors.c: Fixed typos in comments.
+   * english.c: Comment fix.
+   * configure.ac: Fixed copy/paste error.
+   * lib/Makefile.am, gnulib-cache.m4: Added stddef and stdint to Gnulib.
+   * configure.ac: Now requiring either bison or byacc.
+   * configure.ac: Now checking for and requiring flex specifically.
+   * cdecl.1: Made caveats more consise.
+   * lang.c, lang.h: Swapped order of struct members.
+   * cdecl.1: Removed extraneous ';'.
+   * cdecl.1: Minor additions.
+
+2017-04-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added caveat about fully qualified C++ member functions.
+   * cdecl.1: Added COLUMNS.
+   * diagnostics.h: More comments.
+   * diagnostics.c, diagnostics.h, parser.y: yyerror() now uses the same error
+     location printing code.
+   * diagnostics.h: Added to print_hint() docs.
+   * configure.ac: Normalized feature configuration.
+   * diagnostics.c: Added needed #ifdef WITH_TERM_COLUMNS.
+   * configure.ac: Removed " to disable".
+   * parser.y: Fixed duplicate printing of token in error message.
+   * diagnostics.c, util.h: Fixed non-interactive error message printing.
+   * cdecl.1, color.c, color.h, diagnostics.c: Partial support for "locus"
+     color.
+   * color.h: Removed "note".
+   * lib/Makefile.am, arg-nonnull.h, c++defs.h, errno.in.h, getdelim.c,
+     getline.c, getopt-cdefs.in.h, getopt-core.h, getopt-ext.h,
+     getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c,
+     getopt_int.h, gettext.h, limits.in.h, stdarg.in.h, stdbool.in.h,
+     stddef.in.h, stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h, strsep.c,
+     sys_types.in.h, sysexits.in.h, unistd.in.h, warn-on-use.h,
+     gnulib-cache.m4: Changed Gnulib to LGPL.
+   * set.out, set_options.out: Fixed "set" expected results.
+   * set.c: Removed HAVE_READLINE.
+   * configure.ac, lib/Makefile.am, string.in.h, strsep.c, gnulib-cache.m4,
+     gnulib-comp.m4, string_h.m4, strsep.m4: Added strsep().
+   * lib/Makefile.am, arg-nonnull.h, c++defs.h, getopt-cdefs.in.h,
+     getopt-core.h, getopt-ext.h, getopt-pfx-core.h, getopt-pfx-ext.h,
+     getopt.c, getopt.in.h, getopt1.c, getopt_int.h, limits.in.h, stdint.in.h,
+     unistd.in.h, warn-on-use.h, getopt.m4, gnulib-common.m4, gnulib-comp.m4:
+     Updared Gnulib.
+   * lexer.l, prompt.c, util.h: Some Solaris fixes.
+   * cdecl.1: Added mention that template declarations are not supported.
+   * cdecl.1, autocomplete.c, help.c, keywords.c, literals.c, literals.h,
+     parser.y, types.c, types.h, test/Makefile.am, declare_z.out,
+     explain_z.out, help-c++.out, help-c.out, declare_z-knr.test,
+     declare_z.test, explain_z-knr.test, explain_z.test: Added support for
+     size_t.
+   * configure.ac, diagnostics.c, util.c, util.h: Now horizontally "scrolling"
+     long input lines.
+   * declare_fipfi_v_pfi_v.test: Removed space.
+
+2017-04-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * errors.c: Removed redundant checks.
+   * parser.y: Fixed error message after "returning".
+   * configure.ac: Added int type checks.
+   * lexer.l: Went back to using getline().
+
+2017-04-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast.h: Comment additions.
+   * types.c, test/Makefile.am, declare_ci-knr.test, declare_pv-knr.test,
+     declare_vi-knr.test, explain_ci-knr.test, explain_pv-knr.test,
+     explain_vi-knr.test: Now checking current language against storage classes
+     and qualifiers.
+   * errors.c, keywords.c, keywords.h, lang.h, types.c, types.h: Flipped
+     type-check table to contain valid languages; removed keyword language
+     column -- not used.
+   * parser.y: Added SYNTAX_ERROR().
+   * ast.c, ast.h, ast_util.c, ast_util.h, autocomplete.c, cdecl.c, color.c,
+     color.h, common.h, debug.c, debug.h, diagnostics.c, english.c, errors.c,
+     gibberish.c, help.c, keywords.c, keywords.h, kinds.c, kinds.h, lang.c,
+     lang.h, lexer.h, lexer.l, literals.c, literals.h, options.c, options.h,
+     parser.y, prompt.c, prompt.h, set.c, types.c, util.c, util.h: Added more
+     @file comments.
+   * color.c, color.h, options.c: Renamed parse_gcc_colors to colors_parse.
+   * lexer.l, parser.y: Added missing copyright/license.
+   * AUTHORS: Added Alexander Dupuy; list of languages; mention of AST.
+   * cdecl.1: Added Alexander Dupuy; fixed small stuff.
+
+2017-04-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * COPYING, Makefile.am, configure.ac, man/Makefile.am, man/man1/Makefile.am,
+     man/man1/c++decl.1, cdecl.1, src/Makefile.am, ast.c, ast.h, ast_util.c,
+     ast_util.h, autocomplete.c, cdecl.c, color.c, color.h, common.h, debug.c,
+     debug.h, diagnostics.c, diagnostics.h, english.c, errors.c, gibberish.c,
+     help.c, keywords.c, keywords.h, kinds.c, kinds.h, lang.c, lang.h, lexer.h,
+     literals.c, literals.h, options.c, options.h, prompt.c, prompt.h, set.c,
+     types.c, types.h, util.c, util.h, test/Makefile.am, run_test.sh: Put under
+     GPLv3.
+   * diagnostics.c, errors.c: Added warnign for function arguments.
+   * ast.h, ast_util.h, errors.c, parser.y: Reworked error checking.
+   * test/Makefile.am, cdecl--no-semicolon.out, cdecl-s.out,
+     cdecl--no-semicolon.test, cdecl-s.test: More command-line tests.
+   * test/Makefile.am, cdecl--debug.out, cdecl-d.out, cdecl--debug.test,
+     cdecl-d.test, cdecl-xx.test: Added -d tests.
+   * gibberish.c, test/Makefile.am, declare_f_pmi.out, explain_f_pmi.out,
+     declare_f_pmi.test, explain_f_pmi.test: Fixed function returning pointer
+     to member.
+   * parser.y: Removed wrong check_strdup() and memory leak.
+
+2017-04-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Fixed spacing on DUMP_AST_LIST().
+   * cdecl.1: More caveats.
+   * errors.c, parser.y: Moved "missing function prototype" warning.
+   * test/Makefile.am, declare_b.out, declare_w.out, explain_b.out,
+     explain_w.out, declare_b-c89.test, declare_b.test, declare_c16-c++03.test,
+     declare_c16-c99.test, declare_c32-c++03.test, declare_c32-c99.test,
+     declare_w-c89.test, declare_w.test, explain_b-c89.test, explain_b.test,
+     explain_c16-c++03.test, explain_c16-c99.test, explain_c32-c++03.test,
+     explain_c32-c99.test, explain_w-c89.test, explain_w.test: Added bool,
+     char16_t, char32_t, wchar_t tests.
+   * types.c: Fixed typo in comment.
+   * AUTHORS, cdecl.1, autocomplete.c, errors.c, gibberish.c, lexer.l,
+     literals.c, literals.h, parser.y, types.c, types.h, test/Makefile.am,
+     declare_0f_v.out, explain_0f_v-01.out, declare_0f_v-c.test,
+     declare_0f_v.test, explain_0f_v-01.test, explain_0f_v-02.test,
+     explain_0f_v-c.test: Added pure virtual member function support.
+   * cdecl.c, common.h, diagnostics.c, lexer.h, lexer.l: Now printing error
+     line when not a TTY.
+   * cdecl.1: Added more caveats.
+   * lexer.h, lexer.l, parser.y: Renamed my_text to lexer_token.
+   * lexer.l: Renaming.
+   * diagnostics.c, parser.y, set.c: Now using PUTS_ERR.
+   * diagnostics.c, parser.y, util.h: Added PUTC_ERR, PUTS_ERR.
+
+2017-04-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * common.h, diagnostics.c, lexer.h, lexer.l, parser.y: Added lexer.h;
+     overrode YY_FATAL_ERROR.
+   * common.h, diagnostics.c, diagnostics.h, lexer.l, parser.y: Renamed
+     error_column() to lexer_column().
+
+2017-04-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Renamed loc_reset() to newline(); split ; from \n.
+   * cdecl.c: No longer appending ';' at end of command-line.
+   * diagnostics.c, errors.c, lang.c, lang.h, options.c, set.c: Some renamings.
+   * errors.c, keywords.h, lang.c, lang.h, options.c, options.h, set.c,
+     types.c, types.h: Rename lang_t to c_lang_t.
+   * types.c: Flipped c_type_info field order.
+   * test/Makefile.am, declare_c.out, declare_n.out, explain_c.out,
+     explain_n.out, declare_c-c.test, declare_c.test, declare_n.test,
+     explain_c-c.test, explain_c.test, explain_n.test: Added class and union
+     tests.
+   * test/Makefile.am, declare_e.out, explain_e.out, declare_e-knr.test,
+     declare_e.test, explain_e-knr.test, explain_e.test: Added enum tests.
+   * gibberish.c, test/Makefile.am, declare_k.out, explain_k.out,
+     declare_k.test, explain_k.test: Fixed struct gibberish.
+   * types.c: Fixes to types table.
+
+2017-04-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, ast.c, ast.h, kinds.c, kinds.h: Split out kinds.[ch].
+   * cdecl.1, lang.c, lang.h, types.c: Split out C++03 for completeness.
+   * parser.y: Now printing "unexpected end of command."
+   * parser.y: Got rid of command_init.
+   * parser.y: Folded in command_cleanup.
+   * lexer.l, parser.y: I think I fixed the EOF issue.
+
+2017-04-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Renamed eof to my_eof.
+   * lexer.l: Adjusted my_col_newline.
+   * cdecl.1: Added mention of varargs; Gibberish section; reference
+     declaration caveat.
+   * parser.y, test/Makefile.am, declare_cu.out, explain_cu.out,
+     declare_cu.test, explain_cu.test: Fixed "const unsigned".
+   * types.c: Moved complex up so it appears first in English.
+   * test/Makefile.am, declare_zd.out, declare_zf.out, explain_zd.out,
+     explain_zf.out, declare_zd.test, declare_zf.test, explain_zd.test,
+     explain_zf.test: Some complex tests.
+   * cdecl.1, test/Makefile.am, declare_ld.out, explain_ld.out,
+     declare_ld-knr.test, declare_ld.test, explain_ld-knr.test,
+     explain_ld.test: Added long double tests.
+   * common.h, diagnostics.c, lexer.l, parser.y: No longer relying on
+     apparently broken YYTEXT_POINTER.
+   * autocomplete.c, cdecl.c, util.c, util.h: Some Linux fixes.
+   * options.c: Added missing #include <stdlib.h>.
+   * cdecl.1: Added missing --color; more clean-up.
+   * options.c: Got rid of old options.
+   * types.c: Correctly put wchar_t into C95.
+   * types.c, test/Makefile.am, declare_ll-c89.test, declare_ll-knr.test,
+     explain_ll-c89.test, explain_ll-knr.test: Fixed C version for long long;
+     more tests.
+   * test/Makefile.am, declare_hd.test, declare_hf.test, declare_hl.test,
+     declare_hll.test, declare_sc-knr.test, declare_si-knr.test,
+     declare_sl-knr.test, declare_ud.test, declare_uf.test, explain_hd.test,
+     explain_hf.test, explain_hl.test, explain_hll.test, explain_sc-knr.test,
+     explain_si-knr.test, explain_sl-knr.test, explain_ud.test,
+     explain_uf.test: More type tests.
+
+2017-04-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, test/Makefile.am, set_noyydebug.out, set_yydebug.out,
+     set_noyydebug.test, set_yydebug.test: Added set_yydebug tests.
+   * test/Makefile.am, set_debug.out, set_nodebug.out, set_debug.test,
+     set_nodebug.test: Added set debug tests.
+   * lexer.l, parser.y, set.c, test/Makefile.am, set_c++.out, set_c++03.out,
+     set_c++11.out, set_c++98.out, set_c.out, set_c11.out, set_c89.out,
+     set_c99.out, set_cknr.out, set_knr.out, set_knrc.out, set_noprompt.out,
+     set_nosemicolon.out, set_prompt.out, set_semicolon.out, set_c++.test,
+     set_c++03.test, set_c++11.test, set_c++98.test, set_c.test, set_c11.test,
+     set_c89.test, set_c99.test, set_cknr.test, set_knr.test, set_knrc.test,
+     set_noprompt.test, set_nosemicolon.test, set_prompt.test,
+     set_semicolon.test: Now accepting c++ names for set options; more set
+     tests.
+   * lang.c, lang.h, options.c: Now only one lang_map.
+   * test/Makefile.am, declare_lf.out, explain_lf.out, declare_lf-c.test,
+     declare_lf.test, explain_lf-c.test, explain_lf.test: long float tests.
+   * test/Makefile.am, declare_hw.test, declare_lw.test, declare_sw.test,
+     declare_uw.test: More declare error tests.
+   * test/Makefile.am, explain_hw.test, explain_lw.test, explain_sw.test,
+     explain_uw.test: More type tests.
+   * errors.c, parser.y, types.c, types.h, test/Makefile.am, declare_hc.test,
+     declare_hc16.test, declare_hc32.test, declare_hv.test, declare_lb.test,
+     declare_lc.test, declare_lc16.test, declare_lc32.test, declare_lv.test,
+     declare_sb.test, declare_sc16.test, declare_sc32.test, declare_sv.test,
+     declare_ub.test, declare_uc16.test, declare_uc32.test, declare_uv.test:
+     Better type-checking; more tests.
+   * errors.c: Converted c_ast_check_errors() to using a visitor function.
+   * types.c, test/Makefile.am, explain_uc.out, declare_hb.test,
+     explain_hb.test, explain_hc.test, explain_hc16.test, explain_hc32.test,
+     explain_hv.test, explain_lb.test, explain_lc.test, explain_lc16.test,
+     explain_lc32.test, explain_lv.test, explain_sb.test, explain_sc16.test,
+     explain_sc32.test, explain_sv.test, explain_ub.test, explain_uc.test,
+     explain_uc16.test, explain_uc32.test, explain_uv.test: Added more negative
+     explain tests.
+   * errors.c: More error checking.
+   * parser.y: Added cv_qualifier_c.
+   * types.c, util.h: Moved only_one_bit_set().
+
+2017-04-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: More error productions.
+   * ast.h, common.h, parser.y: Moved c_ast_pair to ast.h; renamed top_ast to
+     just ast.
+   * parser.y: Added %expect.
+   * parser.y: Now using string literals for some tokens.
+   * lexer.l, parser.y: Added lexer_reset().
+   * ast.c, ast_util.c, autocomplete.c, color.c, debug.c, errors.c,
+     gibberish.c, lang.c, options.c, parser.y, types.c, util.c: Now more
+     explicit != NULL in asserts.
+   * errors.c, types.c: Added ().
+   * test/Makefile.am, declare_fsi_v.test, explain_fsi_v.test: static function
+     argument test.
+   * test/Makefile.am, declare_vf_v-c.test, explain_vf_v-c.test: virtual C
+     test.
+   * test/Makefile.am: Renamed help tests.
+   * cdecl.1, help.c, help_c.out, help_cxx.out: Added "virtual" to help.
+   * ast_util.c, autocomplete.c, english.c, errors.c, gibberish.c, keywords.c,
+     literals.c, literals.h, parser.y, types.c, types.h, test/Makefile.am,
+     declare_ea2i.out, declare_sa2i.out, declare_sf_v.out, declare_vf_v.out,
+     explain_ea2i.out, explain_sa2i.out, explain_sf_v.out, explain_vf_v.out,
+     declare_ea2i.test, declare_sa2i.test, declare_sf_v.test,
+     declare_vf_v.test, explain_ea2i.test, explain_sa2i.test,
+     explain_sf_v.test, explain_vf_v.test: Added virtual functions; fixed
+     several other errors.
+
+2017-03-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Added missing L_RVALUE.
+   * AUTHORS, cdecl.1, ast.c, ast.h, ast_util.c, debug.c, english.c, errors.c,
+     gibberish.c, lexer.l, literals.c, literals.h, parser.y, test/Makefile.am,
+     declare_frri_v.out, explain_frri_v.out, declare_frri_v.test,
+     explain_frri_v-c++03.test, explain_frri_v.test, explain_prri.test: Added
+     rvalue references.
+   * errors.c, test/Makefile.am, explain_pmi-c.test, explain_ri-c.test: Now
+     checking for references and pointers-to-member in C.
+   * errors.c, test/Makefile.am, explain_pmfii_pk.out, explain_fx_v.test,
+     explain_pmfii_pk.test: Now checking for typeless function arguments in
+     C++.
+
+2017-03-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * set.out, set_options.out: Changed expected results for noyydebug.
+   * errors.c, test/Makefile.am, explain_gk.test: Now checking for register
+     struct.
+   * parser.y, test/Makefile.am, explain_ck.out, explain_kc.out,
+     explain_ck.test, explain_kc.test: Modified grammar to allow modifiers for
+     enum, class, struct, union.
+   * test/Makefile.am: Changed "struct" to "k".
+   * test/Makefile.am, explain_cs.test: Added missing "char signed" test.
+   * errors.c: Removed CDECL_AST_UTIL_INLINE.
+   * src/Makefile.am, ast_util.h, parser.y: Renamed ast_check.c to errors.c.
+   * configure.ac: Added WITH_CDECL_DEBUG AM_CONDITIONAL.
+   * src/Makefile.am: Put debug.c within WITH_CDECL_DEBUG.
+   * options.c, options.h: Added missing #ifdefs.
+   * common.h, debug.c, debug.h, parser.y: Simplified debug output.
+   * ast.h, debug.c, debug.h, parser.y, util.c, util.h: Added debug.h.
+   * cdecl.1: Added mention of multiline input.
+   * cdecl.1: Added mention of escaped newlines; more clean-up.
+   * lexer.l: Removed "English".
+   * AUTHORS, lexer.l, parser.y, test/Makefile.am, explain_keywords.out,
+     explain_keywords.test: Now treating cdecl keywords in declarations as
+     ordinary names.
+   * lexer.l: Added comment.
+   * lexer.l: Now accepts escaped newlines in files.
+   * cdecl.c: Variable renaming.
+   * cdecl.c: Removed cdecl_init().
+   * src/Makefile.am, cdecl.c, common.h, diagnostics.c, prompt.c, prompt.h,
+     set.c: Moved prompt code into separate .c file.
+   * util.h: Fixed typo.
+
+2017-03-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c: Added comment.
+   * cdecl.c, common.h, diagnostics.c, lexer.l, set.c, util.c, util.h: Now
+     support escaped newlines.
+   * util.h: Added REALLOC().
+   * cdecl.1: Fixed Hansen's options.
+   * cdecl.1: More additions.
+   * gibberish.c, parser.y, test/Makefile.am, declare_pmf_pc.out,
+     explain_pmf_pc.out, declare_pmf_pc.test, explain_pmf_pc.test: Fixed
+     declare_pmf_pc.test.
+
+2017-03-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c, test/Makefile.am, declare_pmf_i.out, explain_pmf_i.out,
+     declare_pmf_i.test, explain_pmf_i.test: Fixed gibberish of a pointer to
+     member of class function returning int.
+   * set.out, set_options.out: Forgot to s/semicolons/semicolon/
+   * cdecl.1: More updates.
+   * options.c, options.h, parser.y, set.c: Now opt_semicolon (singular).
+   * man/Makefile.am, man/man1/Makefile.am, src/Makefile.am, ast.c, ast.h,
+     ast_check.c, ast_util.c, ast_util.h, color.c, color.h, common.h, debug.c,
+     diagnostics.c, diagnostics.h, english.c, gibberish.c, keywords.c,
+     keywords.h, lang.c, lang.h, literals.c, literals.h, types.c, types.h:
+     Added name.
+   * src/Makefile.am, ast_check.c, common.h, diagnostics.h, lang.c, parser.y,
+     types.c, types.h: Split error/warning code into diagnostics.c.
+   * parser.y: Minor changes.
+   * parser.y, test/Makefile.am, explain_fipfi_v_pfi_v.out,
+     explain_fipfi_v_pfi_v.test: Fixed signal() test.
+
+2017-03-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added Leroy's contributions.
+   * test/Makefile.am, declare_fipfi_v_pfi_v.out, declare_fipfi_v_pfi_v.test:
+     Declare signal() test.
+   * test/Makefile.am, declare_fpfc_i_d.out, explain_fpfc_i_d.out,
+     declare_fpfc_i_d.test, explain_fpfc_i_d.test: More tests.
+   * AUTHORS: Added mention of better errors and warnings.
+   * AUTHORS: Added more detail.
+   * keywords.c: Added variadic function argument support.
+   * ast.c, ast.h, ast_check.c, debug.c, english.c, gibberish.c, lexer.l,
+     literals.c, literals.h, parser.y, test/Makefile.am, declare_fcce_v-01.out,
+     declare_fcce_v-02.out, declare_fcce_v-03.out, explain_fcce_v.out,
+     declare_fcce_v-01.test, declare_fcce_v-02.test, declare_fcce_v-03.test,
+     explain_fcce_v.test, explain_fe_v.test, explain_fecc_v.test,
+     explain_fee_v.test, explain_fev_v.test, explain_fve_v.test,
+     explain_fvv_v.test: Added variadic function argument support.
+   * options.c: s/no-semicolons/no-semicolon/
+
+2017-03-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.c, options.h, parser.y, set.c, cl-declare_i.out,
+     declare_a3a5a7i.out, declare_a3a5i.out, declare_a3a5pfv_i.out,
+     declare_a3a5pfv_pi.out, declare_a3a5pfv_ppa7a9i.out,
+     declare_a3a5pfv_ppa7a9pc.out, declare_a3a5pfv_ppa7i.out,
+     declare_a3a5pfv_ppa7pi.out, declare_a3a5pfv_ppi.out, declare_a3pfv_i.out,
+     declare_a3ppfv_i.out, declare_a9cpi.out, declare_a9i.out,
+     declare_a9pi.out, declare_bii_d.out, declare_ci.out, declare_constant.out,
+     declare_cpa3cpa5i.out, declare_cpa3pa5i.out, declare_cpa9ci.out,
+     declare_cpa9i.out, declare_cpbv_pi.out, declare_cpcpi.out,
+     declare_cpfv_pi.out, declare_cpi.out, declare_cpmi.out, declare_cppi.out,
+     declare_cvpi.out, declare_f_pi.out, declare_fg_v.out, declare_fgi_v.out,
+     declare_fid_v.out, declare_fii_v.out, declare_fixiy_v.out,
+     declare_fpc_pi.out, declare_fpci_pi.out, declare_fv_pa3a5i.out,
+     declare_fv_pa3a5pi.out, declare_fv_pa3i.out, declare_fv_pa3pi.out,
+     declare_fv_v.out, declare_fx_pi.out, declare_gi.out, declare_ll.out,
+     declare_pa3cpa5i.out, declare_pa3pa5i.out, declare_pa9i.out,
+     declare_pbv_pi.out, declare_pcpi.out, declare_pfv_pi.out,
+     declare_pfv_ri.out, declare_pfx_i.out, declare_pi.out, declare_pmci.out,
+     declare_pmi.out, declare_ppi.out, declare_rci.out, declare_rcpi.out,
+     declare_ref.out, declare_ri.out, declare_rpi.out, declare_sc.out,
+     declare_si.out, declare_sll.out, declare_ti.out, declare_type.out,
+     declare_u.out, declare_uc.out, declare_ui.out, declare_ull.out,
+     declare_vcpi.out, declare_vpi.out, file-declare_i.out, set.out,
+     set_options.out: Reworked command-line options; not emitting ';' by
+     default.
+   * ast_check.c: Tweaks.
+   * test/Makefile.am, declare_rv.test, explain_rv.test: Reference to void
+     tests.
+   * test/Makefile.am, declare_b_ai.test, declare_b_f_i.test,
+     declare_f_f_i.test, declare_fiiv_v.test, declare_fiv_v.test,
+     declare_fvx_v.test, declare_lll.test, explain_b_ai.test, explain_v.test:
+     More tests.
+   * ast_util.c: Removed apparently uncecessary check for K_NONE.
+   * ast.h, ast_util.c, test/Makefile.am, explain_f_ai.test: Now forbidding
+     array of function.
+
+2017-03-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Now only incrementing ast_depth in nested declarations.
+   * test/Makefile.am: Renamed test.
+   * ast_check.c: Added break.
+   * ast_check.c, test/Makefile.am, declare_f_rai.test: Fixed function
+     return-type check.
+   * src/Makefile.am, ast_check.c, ast_util.c: Split off c_ast_check().
+   * AUTHORS, ast_util.c, test/Makefile.am, explain_fiiv_v.test,
+     explain_fiv_v.test, explain_fvi_v.test, explain_fvx_v.test: Now checking
+     function arguments.
+   * ast_util.c, parser.y, test/Makefile.am, declare_pmri.test,
+     declare_pri.test, declare_rgi.test, explain_pmgi.test, explain_pmri.test,
+     explain_pri.test, explain_rgi.test: Moved all semantic checks to
+     ast_util.c; added more tests.
+   * parser.y: Rearranged productions.
+   * parser.y: Replaced cast grammar with modified declaration grammar.
+   * test/Makefile.am, cast_bii_d.out, cast_ci.out, cast_constant.out,
+     cast_cpa3pa5i.out, cast_cpa9ci.out, cast_cpa9i.out, cast_cpbv_pi.out,
+     cast_cpcpi.out, cast_cpfv_pi.out, cast_cpi.out, cast_cppi.out,
+     cast_cvpi.out, cast_ll.out, cast_pa3cpa5i.out, cast_pa3pa5i.out,
+     cast_pa9i.out, cast_pbv_pi.out, cast_pcpi.out, cast_pfv_pi.out,
+     cast_ppi.out, cast_sc.out, cast_si.out, cast_sll.out, cast_u.out,
+     cast_uc.out, cast_ui.out, cast_ull.out, cast_vcpi.out, cast_vpi.out,
+     declare_pfx_i.out, cast_a3i.test, cast_bii_d.test, cast_ci.test,
+     cast_constant.test, cast_cpa3pa5i.test, cast_cpa9ci.test, cast_cpa9i.test,
+     cast_cpbv_pi.test, cast_cpcpi.test, cast_cpfv_pi.test, cast_cpi.test,
+     cast_cppi.test, cast_cvpi.test, cast_gi.test, cast_ll.test,
+     cast_pa3cpa5i.test, cast_pa3pa5i.test, cast_pa9i.test, cast_pbv_pi.test,
+     cast_pcpi.test, cast_pfv_pi.test, cast_ppi.test, cast_sc.test,
+     cast_si.test, cast_sll.test, cast_ti.test, cast_type.test, cast_u.test,
+     cast_uc.test, cast_ui.test, cast_ull.test, cast_vcpi.test, cast_vpi.test,
+     declare_pfx_i.test: Many more cast tests.
+   * ast_util.c: Split out c_ast_check_cast().
+   * test/Makefile.am, explain_cast_vcpi.out, explain_cast_vpi.out,
+     explain_cast_vcpi.test, explain_cast_vpi.test: More explain cast tests.
+   * types.h: Added T_STORAGE.
+   * test/Makefile.am, explain_cast_ll.out, explain_cast_pa3a5i.out,
+     explain_cast_pa3cpa5i.out, explain_cast_pa3pa5i.out,
+     explain_cast_pa9i.out, explain_cast_pbv_pi.out, explain_cast_pcpi,
+     explain_cast_pcpi.out, explain_cast_pfv_pi.out, explain_cast_ppi.out,
+     explain_cast_rpi.out, explain_cast_ai.test, explain_cast_ei.test,
+     explain_cast_ll.test, explain_cast_lll.test, explain_cast_pa3a5i.test,
+     explain_cast_pa3cpa5i.test, explain_cast_pa3pa5i.test,
+     explain_cast_pa9i.test, explain_cast_pbv_pi.test, explain_cast_pcpi.test,
+     explain_cast_pfv_pi.test, explain_cast_ppi.test, explain_cast_rpi.test,
+     explain_cast_si.test, explain_cast_ti.test, explain_lll.test: More explain
+     cast tests.
+   * ast.c, ast.h, ast_util.c, ast_util.h, util.h, test/Makefile.am,
+     explain_cast_gi.test: Now forbidding cast to register.
+   * test/Makefile.am, explain_cast_cpa3pa5i.out, explain_cast_cpa9ci.out,
+     explain_cast_cpa9i.out, explain_cast_cpbv_pi.out, explain_cast_cpcpi.out,
+     explain_cast_cpfv_pi.out, explain_cast_cpi.out, explain_cast_cppi.out,
+     explain_cast_cvpi.out, explain_cast_cpa3pa5i.test,
+     explain_cast_cpa9ci.test, explain_cast_cpa9i.test,
+     explain_cast_cpbv_pi.test, explain_cast_cpcpi.test,
+     explain_cast_cpfv_pi.test, explain_cast_cpi.test, explain_cast_cppi.test,
+     explain_cast_cvpi.test: More explain cast tests.
+
+2017-03-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am, explain_cast_cpa3cpa5i.out, explain_cast_cpa3cpa5i.test:
+     More tests.
+   * parser.y: %type reordering.
+   * parser.y: Moved array_size_c.
+   * parser.y: Removed not-so-good error message.
+   * gibberish.c, test/Makefile.am, cast_cpa3cpa5i.out, cast_pf_i-01.out,
+     cast_pf_i-02.out, cast_pfii_i.out, cast_pfx_i.out, cast_cpa3cpa5i.test:
+     Removed more spaces from casts.
+   * test/Makefile.am, explain_cast_ci.out, explain_cast_ic.out,
+     explain_cast_ci.test, explain_cast_ic.test: More explain cast tests.
+   * test/Makefile.am, declare_v.test: Added void test.
+   * test/Makefile.am: Split off error tests.
+   * ast_util.c, parser.y, test/Makefile.am, declare_gf_v.test: Put "register"
+     back for English storage class.
+   * cdecl.c: Fixed resetting of lexer state on error.
+   * src/Makefile.am, keywords.c, parser.c, parser.h: Renamed lexer and parser
+     files.
+   * test/Makefile.am, explain_gf_v.test: Added register function test.
+   * ast_util.c, cdgram.y, test/Makefile.am, cast_f_i.test,
+     explain_cast_a3a5a7i.test, explain_cast_a3a5i.test: More tests; now
+     prohibit cast into function.
+   * ast_util.c, ast_util.h, cdgram.y, test/Makefile.am, explain_cast_a3i.test:
+     Now prohibiting casting into an array.
+   * ast.h: Removed blank line.
+   * ast_util.c, cdgram.y, test/Makefile.am, explain_cast_a3a5a7i.out,
+     explain_cast_a3a5a7i.test: Fixed cast test.
+
+2017-03-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast_util.c, ast_util.h, cdgram.y: Fixed test.
+   * test/Makefile.am, explain_cast_ull.out, explain_cast_ull.test: Fixed test.
+   * test/Makefile.am: Reordered tests.
+   * test/Makefile.am, declare_vcpi.out, declare_vpi.out, explain_vpi.out,
+     declare_vcpi.test, declare_vpi.test, explain_vpi.test: More tests.
+   * test/Makefile.am, explain_cs.out, explain_fv_v.out, explain_pa3cpa5i.out,
+     explain_pa3pa5i.out, explain_pbv_pi.out, explain_pcpi.out,
+     explain_pfv_pi.out, explain_ppi.out, explain_sc.out, explain_ull.out,
+     explain_fv_v.test, explain_pa3cpa5i.test, explain_pa3pa5i.test,
+     explain_pbv_pi.test, explain_pcpi.test, explain_pfv_pi.test,
+     explain_ppi.test, explain_sc.test, explain_ull.test: More tests.
+   * test/Makefile.am, explain_fv_pa3a5pi.out, explain_fv_pa3i.out,
+     explain_fv_pa3pi.out, explain_fv_pa3a5pi.test, explain_fv_pa3i.test,
+     explain_fv_pa3pi.test: More tests.
+   * test/Makefile.am, declare_fpci_pi.out, declare_fpci_pi.test,
+     explain_fpci_pi.test: Another test.
+   * ast_util.c, test/Makefile.am, explain_fv_pa3a5i.out,
+     explain_fv_pa3a5i.test: Fixed test.
+   * ast.c: Added c_ast_has_cycle().
+   * test/Makefile.am, declare_fid_v.out, declare_fv_pa3a5i.out,
+     declare_fid_v.test, declare_fv_pa3a5i.test: More tests.
+   * cdgram.y: Now calling parse_clearup() from yyerror().
+   * ast_util.h: Added comment about caller being responsible for freeing name.
+   * ast.c, ast.h, ast_util.c, ast_util.h, cdgram.y, english.c, gibberish.c:
+     Can now pass visit direction to visitor functions.
+   * ast.c, ast.h, ast_util.c: s/c_ast_visit/c_ast_visit_down/
+   * ast_util.c, ast_util.h, gibberish.c, test/Makefile.am, declare_fpc_pi.out,
+     declare_fpc_pi.test: Fixed gibberish spacing for nameless function
+     arguments.
+
+2017-03-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast.c: Added missing #define CDECL_AST_INLINE _GL_EXTERN_INLINE.
+   * test/Makefile.am, declare_f_pi.out, explain_cpcpi.out, explain_cppi.out,
+     explain_fixiy_v.out, declare_f_pi.test, explain_cpcpi.test,
+     explain_cppi.test, explain_fixiy_v.test: More tests.
+   * ast_util.c, cdgram.y, test/Makefile.am, explain_cpbv_pi.out,
+     explain_cpbv_pi.test: Fixed pointer to blocks.
+   * declare_cpfv_pi.out, explain_cpfv_pi.out, declare_cpfv_pi.test,
+     explain_cpfv_pi.test: More tests.
+   * cdgram.y: s/func/block/
+   * test/Makefile.am, declare_cpi.out, explain_cpa3pa5i.out,
+     explain_cpa9ci.out, explain_cpa9i.out, declare_cpi.test,
+     explain_cpa3pa5i.test, explain_cpa9ci.test, explain_cpa9i.test: More
+     tests.
+   * test/Makefile.am, cast_pci.out, cast_pfii_i.out, cast_pi.out,
+     explain_cast_pci.out, explain_cast_pfpi_i.out, explain_cast_pi.out,
+     explain_cast_pic.out, cast_pci.test, cast_pf_i-02.test, cast_pfii_i.test,
+     cast_pi.test, explain_cast_pci.test, explain_cast_pfpi_i.test,
+     explain_cast_pi.test, explain_cast_pic.test: Test reorganization.
+   * cast_pc.test, cast_pcc.test, cast_pf_i-01.test, cast_pf_i-02.test,
+     cast_pfpci_i.test, cast_pfx_i.test, cast_pmi.test: Expanded abbreviations.
+   * ast_util.c, ast_util.h, cdgram.y, test/Makefile.am, explain_cpa3cpa5i.out,
+     explain_cpa3cpa5i.test: Now handling pointer to array of pointer to array.
+   * AUTHORS, cdgram.y, test/Makefile.am, declare_fg_v.out, declare_fgi_v.out,
+     declare_fg_v.test, declare_fgi_v.test: Changed "register" to be a modifier
+     to handle register function arguments.
+   * cdgram.y, test/Makefile.am, declare_gi.out, explain_fg_v.out,
+     explain_fgi_v.out, explain_gi.out, explain_ig.out, declare_gi.test,
+     explain_fg_v.test, explain_fgi_v.test, explain_gi.test, explain_ig.test:
+     Added some register tests; fixed default int type.
+   * ast.c: Moved function.
+   * ast.c: Clean-up.
+   * ast.c, ast.h: Removed clone functions -- not used.
+   * english.c, gibberish.c: Added @file comments.
+   * src/Makefile.am, ast.c, ast.h, ast_util.c, ast_util.h, cdgram.y: Moved AST
+     algorithm functions to ast_util.c.
+
+2017-03-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast.c, ast.h, cdgram.y: Moved c_ast_is_parent() to ast.h.
+   * test/Makefile.am: More tests.
+   * test/Makefile.am, explain_a3a5pfv_ppi.out, explain_a9cpi.out,
+     explain_bii_d.out, explain_a3a5pfv_ppi.test, explain_a9cpi.test,
+     explain_bii_d.test: More tests.
+   * ast.c, ast.h, cdgram.y, test/Makefile.am, explain_a3a5pfv_ppa7pi.out,
+     explain_a3a5pfv_ppa7pi.test: c_ast_patch_none() now traverses to root, if
+     necessary.
+   * test/Makefile.am, explain_a3a5pfv_ppa7i.out, explain_a3a5pfv_ppa7i.test:
+     More tests.
+   * test/Makefile.am, declare_cpri.out, declare_pfv_ri.out, explain_ri.out,
+     explain_rpi.out, declare_cpri.test, declare_pfv_ri.test, explain_ri.test,
+     explain_rpi.test: More reference tests.
+   * test/Makefile.am: Renamed test.
+   * test/Makefile.am, declare_pi.out, declare_pi.test: Renamed test.
+   * ast.c: s/c_ast_head/c_ast_gc_head/
+   * ast.c: Minor clean-up.
+   * cdgram.y, common.h: Renamed syn_attr to c_ast_pair.
+   * cdgram.y: Put assert() back; removed temp.
+   * ast.c: All tests pass.
+
+2017-03-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdgram.y: Got rid of using c_ast_clone().
+   * ast.c: Added assert( loc ).
+   * ast.c, ast.h, gibberish.c: Now only 1 copy of c_ast_vistor_kind().
+   * cdgram.y, common.h: Temporary commit on syn_attr branch.
+   * ast.c, ast.h, debug.c: Added AST node unique id.
+   * test/Makefile.am, explain_a3a5pfv_pi.out, explain_a3a5pfv_ppa7a9i.out,
+     explain_a3a5pfv_pi.test, explain_a3a5pfv_ppa7a9i.test: More tests.
+   * cdgram.y: Now using literals in more places.
+
+2017-03-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c, help_c.out, help_cxx.out: Tweaked help.
+   * cdlex.l, literals.c, literals.h: Added "mbr" as synonym for "member".
+   * cdgram.y: Removed TYPE_PEEK() where apparently not needed.
+   * ast.c: Fixed c_ast_list_clone() since c_ast_clone() no longer clones next.
+   * types.h: Added comment.
+   * ast.c, autocomplete.c, gibberish.c, util.h: Added C++-like CONST_CAST and
+     REINTERPRET_CAST macros.
+
+2017-03-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdgram.y: Now using bitwise or.
+   * test/Makefile.am: Renamed tests so r no longer means "returning".
+   * ast.c, ast.h, gibberish.c: Change c_kind to use individual bits.
+   * cdgram.y, test/Makefile.am, explain_a3a5pfv_ri.out,
+     explain_a3a5pfv_ri.test: Fixed another explain test.
+   * cdgram.y: No longer using qualifier_push() for block_decl_c.
+   * gibberish.c: Reference fix.
+   * gibberish.c, test/Makefile.am, declare_bii_rd.out, declare_cpbv_rpi.out,
+     declare_pbv_rpi.out, declare_bii_rd.test, declare_cpbv_rpi.test,
+     declare_pbv_rpi.test: Blocks now work.
+   * cdlex.l: Added (missing) L_BLOCK.
+   * cdgram.y: Now calling yyclearin to clear lookahead after error.
+   * cdecl.c: Comment fix.
+   * configure.ac, cdecl.c, common.h, options.c: Now disabling color prompts on
+     non-genuine GNU readline.
+
+2017-03-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: Added g_param_space().
+   * ast.c, ast.h, cdgram.y, english.c, test/Makefile.am, explain_fid_rv.out,
+     explain_fid_rv.test: Fixed named function arguments.
+   * cdgram.y: Makde block closer to function.
+   * gibberish.c: Added c_ast_has_ancestor().
+   * gibberish.c: Array and function unification.
+   * declare_a3a5pfv_rppa7pi.out: Correction.
+   * test/Makefile.am: Added another (currently failing) test.
+   * gibberish.c: Function reordering.
+   * test/Makefile.am, declare_a3a5pfv_rppa7a9i.out,
+     declare_a3a5pfv_rppa7i.out, declare_a3a5pfv_rppa7pi.out,
+     declare_a3a5pfv_rppa7a9i.test, declare_a3a5pfv_rppa7i.test,
+     declare_a3a5pfv_rppa7pi.test: More tests.
+   * src/Makefile.am, ast.c, debug.c: Moved debug code to its own .c file.
+   * src/Makefile.am, ast.c, english.c: Moved english code to its own .c file.
+   * src/Makefile.am, ast.c, ast.h, gibberish.c, util.h: Moved gibberish code
+     to its own .c file.
+   * ast.c: Added root param to g_param_init().
+   * ast.c, test/Makefile.am, declare_fv_rpa3a5i.out, declare_fv_rpa3a5pi.out,
+     declare_fv_rpa3pi.out, declare_fv_rpa3a5i.test, declare_fv_rpa3a5pi.test,
+     declare_fv_rpa3pi.test: Fixed another test.
+
+2017-03-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, color.c, color.h, common.h, util.c, util.h: Prompt is in color.
+   * help_c.out, help_cxx.out: Updated expected help.
+   * color.c, color.h, help.c: Help is now in color.
+   * ast.c: Removed erroneous "return".
+   * ast.c: Added comment.
+   * ast.c: Now using false_set().
+   * ast.c, test/Makefile.am, declare_fv_rpa3i.out, declare_fv_rpa3i.test:
+     Fixed function returning pointer to array test.
+   * ast.c: Added temporarily braces.
+
+2017-03-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast.c, ast.h, test/Makefile.am, declare_a3a5pfv_rppi.out,
+     declare_a3a5pfv_rppi.test: Now using visitor data; fixed another test.
+   * ast.c, test/Makefile.am, declare_a3a5pfv_rpi.out, declare_pfv_rpi.out,
+     declare_a3a5pfv_rpi.test, declare_pfv_rpi.test: pointer to function
+     returning pointer fix.
+   * test/Makefile.am, declare_a3a5pfv_ri.out, declare_a3a5pfv_ri.test: Another
+     test.
+   * ast.c: Added c_ast_gibberish_space_name(), comments.
+   * ast.c: Fixed another function test.
+   * ast.c: Updated comment.
+   * ast.c: Removed blank line.
+   * color.h: Added more color constants.
+   * test/Makefile.am, declare_cpmi.out, declare_pmci.out, declare_cpmi.test,
+     declare_pmci.test: More pointer-to-member tests.
+   * cdgram.y: Moved default_case.
+   * cdgram.y: Added c_ast_add_func().
+   * test/Makefile.am, declare_a3ppfv_ri.out, explain_a3ppfv_ri.out,
+     declare_a3ppfv_ri.test, explain_a3ppfv_ri.test: More tests; one still
+     fails.
+   * cdgram.y, declare_a3a5pfv_rppa7a9pc.out, explain_a3a5pfv_rppa7a9pc.out,
+     declare_a3a5pfv_rppa7a9pc.test, explain_a3a5pfv_rppa7a9pc.test: Fixed
+     array-of-pointer-to-function test.
+   * ast.c, test/Makefile.am, declare_a3pfv_ri.out, explain_a3pfv_ri.out,
+     declare_a3pfv_ri.test, explain_a3pfv_ri.test: More tests; one failing.
+   * test/Makefile.am, declare_a9cpi.out, declare_cpa3cpa5i.out,
+     declare_cpa3pa5i.out, declare_cpa9ci.out, declare_cpa9i.out,
+     declare_pa3cpa5i.out, declare_a9cpi.test, declare_cpa3cpa5i.test,
+     declare_cpa3pa5i.test, declare_cpa9ci.test, declare_cpa9i.test,
+     declare_pa3cpa5i.test: More tests.
+   * ast.c, ast.h: Comments.
+   * ast.c, ast.h, cdgram.y: Fixed tests; needs clean-up.
+
+2017-03-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast.c: c_ast_gibberish_impl() arg reordering.
+   * ast.c, test/Makefile.am, declare_pa3pa5i.out, declare_pa3pa5i.test: Added
+     (currently failing) nester pointer/array test.
+
+2017-03-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdgram.y: Factored out c_ast_add_array() code.
+   * cdgram.y, test/Makefile.am, explain_pa3a5i.out, explain_pa3a5i.test: Fixed
+     pointer to array of array.
+   * ast.c, ast.h, cdgram.y, test/Makefile.am, explain_a3a5a7i.out,
+     explain_a3a5i.out, explain_a3a5a7i.test, explain_a3a5i.test: Fixed
+     declaration of multiply dimensioned arrays.
+   * test/Makefile.am, declare_a9i.out, declare_a9pi.out, declare_pa9i.out,
+     explain_a9i.out, explain_a9pi.out, explain_pa9i.out, declare_a9i.test,
+     declare_a9pi.test, declare_pa9i.test, explain_a9i.test, explain_a9pi.test,
+     explain_pa9i.test: Array test renaming.
+   * ast.c, test/Makefile.am, declare_a3a5a7i.out, declare_a3a5i.out,
+     declare_a3a5a7i.test, declare_a3a5i.test: Fixed multidimensional array
+     gibberish.
+   * common.c, common.h: Fixed headers.
+   * cdgram.y, cdlex.l, common.c, common.h, test/Makefile.am, cast_x.cdecl,
+     declare_x.cdecl, explain_x.cdecl, file-cast_x.test, file-declare_x.test,
+     file-explain_x.test: Added file tests.
+   * test/Makefile.am, cast_i.cdecl, declare_i.cdecl, explain_i.cdecl,
+     file-cast_i.out, file-declare_i.out, file-explain_i.out, file-cast_i.test,
+     file-declare_i.test, file-explain_i.test: Added file tests.
+   * cdecl.c, options.c, options.h, test/Makefile.am, cl-cast_i.out,
+     cl-declare_i.out, cl-explain_i.out, cl-cast_i.test, cl-declare_i.test,
+     cl-explain_i.test: Cleaned-up ways of calling cdecl.
+   * cdgram.y: Added yyerror() comment.
+   * cdgram.y: Now printing yacc error in color.
+   * cdgram.y: Now printing literal \n instead of newline.
+
+2017-03-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdgram.y: Shorted in/out notation.
+   * ast.c: Added comment.
+   * cdgram.y: Macro renaming.
+   * src/Makefile.am, cdgram.y, cdlex.l: yylval is not a pointer again.
+   * src/Makefile.am, ast.c, ast.h, cdgram.y, cdlex.l, common.c, common.h,
+     types.c, types.h: Now using Bison token location.
+   * util.h: Comment fix.
+
+2017-03-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * lang.h: Added 'u'.
+   * cdgram.y: Now clearing the qualifier stack and zeroing out in_attr.
+   * test/Makefile.am, declare_ti-01.out, declare_ti-02.out,
+     declare_ti-01.test, declare_ti-02.test: declare typedef tests.
+   * test/Makefile.am, declare_ai-10.out, declare_fii_rv.out,
+     declare_fixiy_rv.out, declare_fv_rv.out, declare_ai-10.test,
+     declare_fii_rv.test, declare_fixiy_rv.test, declare_fv_rv.test: More
+     tests.
+   * cdgram.y, cdlex.l: Now printing column in error message; added
+     parse_cleanup().
+   * ast.c: Fixed printing of array names.
+   * cdlex.l: s/n/caret_col/
+
+2017-03-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdgram.y, types.c, test/Makefile.am, declare_ll.out, declare_sc.out,
+     declare_si.out, declare_sll.out, declare_u.out, declare_uc.out,
+     declare_ui.out, declare_ull.out, declare_ll.test, declare_sc.test,
+     declare_si.test, declare_sll.test, declare_u.test, declare_uc.test,
+     declare_ui.test, declare_ull.test: Fixed unsiged; more tests.
+   * types.c: Now using true_or_set().
+   * ast.c, test/Makefile.am, declare_cpcpi.out, declare_cvpi.out,
+     declare_pcpi.out, declare_rci.out, declare_rcpi.out, declare_rpi.out,
+     declare_cpcpi.test, declare_cvpi.test, declare_pcpi.test,
+     declare_rci.test, declare_rcpi.test, declare_rpi.test: Fixed reference to
+     pointer gibberish; more tests.
+   * ast.c, ast.h, cdgram.y, util.c, util.h, test/Makefile.am,
+     declare_cppi.out, declare_cppi.test: Fixed handling of const pointers.
+   * cdgram.y: Removed name & storage inherited attributes.
+
+2017-03-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdgram.y: Added more DUMPing.
+   * ast.c, util.h, test/Makefile.am, declare_ppi.out, declare_ppi.test: Fixed:
+     int * *x
+   * ast.c: Fixed indent.
+   * test/Makefile.am, declare_ci-01.out, declare_ci-02.out, explain_cpi.out,
+     explain_cvpi.out, explain_pi.out, explain_vcpi.out, declare_ci-01.test,
+     declare_ci-02.test, explain_cpi.test, explain_cvpi.test, explain_pi.test,
+     explain_vcpi.test: More tests.
+   * test/Makefile.am, declare_ri-01.out, declare_ri-02.out,
+     declare_ri-01.test, declare_ri-02.test: Renamed some tests; additional
+     reference test.
+   * ast.c: More comments.
+   * ast.c, test/Makefile.am, declare_pai-10.out, declare_pai-10.test: New
+     declare array test and fix.
+   * ast.c, test/Makefile.am, declare_api-10.out, explain_pai-10.out,
+     declare_api-10.test, explain_pai-10.test: New declare array test and fix.
+   * cdgram.y: Removed array size checks.
+   * test/Makefile.am, explain_api-10.out, explain_api-10.test: Array of
+     pointer test.
+   * test/Makefile.am: Test renaming.
+
+2017-03-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast.c, cdgram.y, color.h, keywords.h, lang.h, literals.h, options.h,
+     types.h: Added @file comments; added C_TYPE_ADD.
+   * autocomplete.c, cdecl.c: Comment additions.
+   * test/Makefile.am: Test renaming.
+   * test/Makefile.am, explain_cpc.out, explain_cvpc.out, explain_ppc.out,
+     explain_rpc.out, explain_vcpc.out, explain_vpc.out, explain_cpc.test,
+     explain_cvpc.test, explain_ppc.test, explain_rpc.test, explain_vcpc.test,
+     explain_vpc.test: More tests.
+   * test/Makefile.am, explain_ia-012.out, explain_ia-0xA_01.out,
+     explain_ia-0xa_02.out, explain_ia-10.out, explain_ia-012.test,
+     explain_ia-0xA_01.test, explain_ia-0xa_02.test, explain_ia-10.test: Some
+     array tests.
+   * types.c, test/Makefile.am, explain_is.out, explain_it.out, explain_ll.out,
+     explain_si.out, explain_ti.out, explain_is.test, explain_it.test,
+     explain_ll.test, explain_si.test, explain_ti.test: Fixed long long; more
+     tests.
+   * ast.c, cdgram.y: All tests pass.
+   * cdgram.y, lang.c, set.c, test/Makefile.am, set.out, set_options.out,
+     set.test: Fixed several tests.
+   * help.c, help_c.out, help_cxx.out: Fixed help tests.
+   * ast.c, ast.h, cdgram.y: DUMP_AST_LIST now dumps the whole list.
+   * cdlex.l: Removed unnecessary cast; comment fixes.
+   * cdgram.y, cdlex.l: Moved yywrap() to lex file.
+   * cdgram.y, cdlex.l: Merged inherited attributes. Now using YYTEXT_POINTER.
+   * cdgram.y: cast_list -> arg_list.
+   * AUTHORS: Added mention of _Thread_local and typedef.
+   * ast.c, ast.h, cdgram.y, cdlex.l, literals.c, literals.h: Better support
+     for typedef.
+
+2017-03-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * types.h: Fixed typo.
+   * cast_pfpci_ri.out, cast_pfx_ri.out: Changed expected results.
+   * types.c, types.h: c_type_add() now returns bool.
+   * cdgram.y: Rule renaming.
+   * ast.c, ast.h, cdgram.y: Split into c_ast_gibberish_cast() and
+     c_ast_gibberish_declare().
+   * ast.c: Refactoring.
+   * ast.h: Updated comment.
+   * util.h: Added @file comment.
+
+2017-03-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast.c, ast.h: Added c_ast_take_storage(); fixed c_ast_json().
+   * util.h: Added true_or_set().
+   * types.h: Added bit masks.
+
+2017-03-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast.c, ast.h, cdgram.y: Now using garbage collection for c_ast.
+   * types.h: Added comment.
+
+2017-02-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast.c, ast.h: Fixed printing English of function args; added
+     c_ast_list_append().
+   * ast.c: check_strdup() ignores null now.
+   * cdgram.y: Fixed: type_c { PUSH_TYPE( $1 ); } cast_c
+
+2017-02-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Fixed readline #include.
+   * cdgram.y: Now using ^^ -> and <-.
+   * cdgram.y: Now cloning PEEK_TYPE().
+   * ast.c: Better c_ast_free(); now allowing nunll for c_ast_pop().
+   * cdgram.y: pointer to array of char works.
+   * util.c, util.h: check_strdup() now allows null.
+   * options.c: Tweaked usage message.
+   * src/Makefile.am: s/readline_support/autocomplete/
+   * ast.c: Got rid of c_ast_json_impl().
+   * readline_support.c: Added c++98 and c++03.
+   * lib/Makefile.am, errno.in.h, getdelim.c, getline.c, limits.in.h,
+     stdint.in.h, stdio.in.h, errno_h.m4, getdelim.m4, getline.m4,
+     gnulib-cache.m4, gnulib-comp.m4, limits-h.m4, longlong.m4, multiarch.m4,
+     stdint.m4, stdio_h.m4, wint_t.m4: Added GNU getline().
+   * configure.ac, lib/Makefile.am, gnulib-cache.m4, gnulib-comp.m4, cdecl.c,
+     readline_support.c, set.c, util.c, util.h: Proper readline() support.
+   * ast.c, cdgram.y, help.c, keywords.c, lang.c, lang.h, options.c, types.c:
+     Improved LANG_ macros.
+   * set.c: Clean-up; now using color for "error".
+   * cdecl.c: Clean-up.
+   * color.c: Clean-up.
+   * cdgram.y: Colon no longer in color.
+
+2017-02-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdgram.y: Comments.
+   * cdecl.c, util.c, util.h: Now only adding history for non-blank lines.
+   * cdgram.y: Properly doing inherited attributes with pointers/references.
+   * ast.c, ast.h: Added clone functions.
+   * readline_support.c: Added rl_bind_key() -- but it still doesn't work.
+   * cdgram.y: Reworked DUMP_RULE into DUMP_START.
+   * cdlex.l, color.h: SGR_START/END macros now take stream parameter.
+
+2017-02-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c, util.h: Removed unused functions.
+   * cdecl.c, cdlex.l: Can't trim leading whitespace: ^ needs it.
+   * ast.c, common.h: Simplified print_indent().
+   * cdlex.l: Now doing proper accounting for y_token_col.
+   * cdgram.y: Reworked parse_erro().
+   * cdecl.c: Reworked readline_wrapper().
+   * util.c, util.h: Removed cat().
+   * src/Makefile.am, ast.c, cdgram.y, cdlex.l, color.c, color.h, common.h,
+     lang.c, options.c, set.c, types.c, util.c, util.h: Added color.
+   * cdgram.y: Added some error cases.
+
+2017-02-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdgram.y: Lots more DUMP code; added inherited attributes.
+   * cdgram.y: Fixed DUMP_NUM.
+   * cdgram.y: Fixed DUMP_NAME.
+   * ast.c, cdgram.y, util.c, util.h: Improved JSON printing.
+   * types.c, types.h: More comments.
+
+2017-02-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast.c, ast.h, cdgram.y: Added separate node types for builtin and ecsu.
+   * ast.c, ast.h: Added c_ast push/pop.
+
+2017-02-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * types.c, types.h: Moved c_add_type() here.
+   * cdgram.y: Comment fix.
+   * cdgram.y: Reworking of DUMP macros.
+   * cdlex.l: Minor change.
+
+2017-02-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * ast.c, ast.h: Now exposing "indent" argument.
+   * keywords.c, literals.c, literals.h, readline_support.c, types.c, types.h:
+     Added typedef.
+   * ast.c, ast.h: Added skeletal c_ast_gibberish().
+
+2017-02-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdgram.y: Now distinguishing between "block" and "__block".
+   * keywords.c, literals.c, literals.h, readline_support.c, types.c: Now
+     distinguishing between "block" and "__block".
+   * cdgram.y: Removed extraneous characters.
+   * options.c: Setting yydebug to false.
+   * options.c, options.h: Fixed yydebug.
+   * types.c: Added missing T_UNION.
+   * types.h: Comment update.
+   * types.c: Now using STRCAT().
+   * types.c: Now using strcpy_len().
+   * util.c, util.h: Replaced visible() with printable_char().
+   * types.c: Fixed c_type_name().
+   * types.h: Fixed enum bits.
+   * types.c: Fixed error messagein c_type_name().
+   * ast.c: Fixed K_ENUM_CLASS_STRUCT_UNION.
+   * ast.c: Clean-up.
+   * cdgram.y: Switched to CDEBUG macro.
+   * ast.c: Added assert().
+   * ast.c, ast.h: Reordering; put assert() on object count back.
+   * ast.c: Fixed JSON indenting.
+   * ast.c: JSON fixes.
+   * ast.c, ast.h: Initial JSON implementation.
+   * util.h: Added FPUTC.
+   * cdlex.l: Now strdup()'ing name tokens.
+   * cdecl.c: Now using " in help message.
+   * util.c, util.h: Added FREE().
+   * keywords.c, keywords.h: Added c_keyword_find_token().
+   * options.c: Reworked options.
+   * cdlex.l: Fixed ? token.
+   * types.c, types.h: Made c_type_check() return bool.
+   * keywords.c: Moved THREAD_LOCAL to be C11 & CPP_11.
+   * cdecl.c: Added call to c_ast_cleanup().
+
+2017-02-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * lang.h: Added LANG_ALL.
+   * types.c, types.h: Added enum, struct, union, class to restrictions.
+   * keywords.c: L_CLASS and L_UNION now have distinct types.
+   * literals.c, literals.h: thread_local is now also C++11.
+   * types.h: Added T_UNION.
+   * src/Makefile.am, help.c: Moved print_help() to its own file.
+
+2017-02-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c: Now adding only non-whitespace lines to readline history.
+   * util.c, util.h: Added trim_ws().
+   * readline_support.c: Clean-up.
+   * cdlex.l: Added keyword_find; copying yytext to local.
+   * cdlex.l: Removed yywrap().
+   * cdlex.l, keywords.c, keywords.h: s/keyword_find/c_keyword_find/
+   * cdlex.l: Comment fix.
+   * util.h: Added FPRINTF and FPUTS.
+   * keywords.c: Fixed types.
+   * cdlex.l, literals.c, literals.h: Added "restricted".
+   * keywords.c: Comments.
+
+2017-02-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdlex.l: Clean-up.
+   * cdecl.c: Clean-up.
+   * util.c, util.h: Added strcpy_len().
+   * src/Makefile.am, ast.c, ast.h, keywords.c, keywords.h, lang.c, lang.h,
+     literals.c, literals.h, options.c, options.h, readline_support.c, types.c,
+     types.h: Major refactoring.
+   * configure.ac: Added --enable-yydebug.
+
+2017-02-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * lang.c, lang.h: New files.
+
+2017-02-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdgram.y: Fixed explain cast to accept (char const*).
+   * AUTHORS, cdgram.y, cdlex.l, readline_support.c: Addde complex and
+     restrict.
+   * cdlex.l: Cleaned-up; added /*...*/ support.
+
+2017-02-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdgram.y: Clean-up.
+   * cdgram.y: Clean-up.
+   * cdgram.y, options.c, util.h, set_options.out: Clean-up.
+   * cdgram.y, options.c, options.h: Added special long long handling.
+   * readline_support.c: Added bool and wchar_t.
+   * options.c, options.h: Now using format_opt().
+   * test/Makefile.am, cast_pf_ri-01.out, cast_pf_ri-02.out, cast_pfpci_ri.out,
+     cast_pfx_ri.out, cast_pmi.out, declare_pmi.out, declare_rc.out,
+     explain_cast_pmi.out, explain_pmfxx_rps.out, explain_pmi.out,
+     cast_pf_ri-01.test, cast_pf_ri-02.test, cast_pfpci_ri.test,
+     cast_pfx_ri.test, cast_pmi.test, cdecl-ap.test, cdecl-x.test,
+     declare_pmi.test, declare_rc.test, explain_cast_pmi.test,
+     explain_pmfxx_rps.test, explain_pmi.test: More tests.
+   * options.c: Now handling short options without long options.
+   * cdgram.y: Clean-up.
+   * explain_f_rpi.test, explain_fpc_rpi.test, explain_fv_rpi.test,
+     explain_fx_rpi.test: Clean-up.
+
+2017-02-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * Makefile.am: Added "test".
+   * test/Makefile.am, explain_fpci_rpi.out, explain_fpci_rpi.test: More tests.
+   * test/Makefile.am, explain_ci.out, explain_ic.out, explain_ci.test,
+     explain_ic.test, help_cxx.test: More tests.
+   * AUTHORS, cdecl.c: Moved author info to AUTHORS file.
+   * configure.ac, cdgram.y, options.c: Now using WITH_CDECL_DEBUG throughout.
+   * cdecl.c, options.c: Fixed prompt.
+   * test/Makefile.am, explain_cast_pf_ri.out, explain_cast_pfpc_ri.out,
+     explain_cast_pfpci_ri.out, explain_cast_pf_ri.test,
+     explain_cast_pfpc_ri.test, explain_cast_pfpci_ri.test: More tests.
+   * configure.ac, test/Makefile.am, cast_pc.out, cast_pcc-01.out,
+     cast_pcc-02.out, declare_fx_rpi.out, declare_pc.out, explain_cast_pc.out,
+     explain_cast_pcc-01.out, explain_cast_pcc-02.out, explain_f_rpi.out,
+     explain_fpc_rpi.out, explain_fv_rpi.out, explain_fx_rpi.out,
+     explain_pc.out, help_c.out, help_cxx.out, set_options.out, run_test.sh,
+     cast_pc.test, cast_pcc-01.test, cast_pcc-02.test, declare_fx_rpi.test,
+     declare_pc.test, explain_cast_pc.test, explain_cast_pcc-01.test,
+     explain_cast_pcc-02.test, explain_f_rpi.test, explain_fpc_rpi.test,
+     explain_fv_rpi.test, explain_fx_rpi.test, explain_pc.test, help_c.test,
+     help_cxx.test, set_options.test: Some tests.
+   * cdgram.y: Clean-up.
+   * cdgram.y: Clean-up.
+   * cdlex.l: Added Apple comment.
+   * cdlex.l: Cleaned-up.
+
+2017-02-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * config.rpath, lib/Makefile.am, errno.in.h, getdelim.c, getline.c,
+     limits.in.h, readline.c, readline.h, stdarg.in.h, stdint.in.h, stdio.in.h,
+     errno_h.m4, getdelim.m4, getline.m4, gnulib-cache.m4, gnulib-comp.m4,
+     lib-ld.m4, lib-link.m4, lib-prefix.m4, limits-h.m4, longlong.m4,
+     multiarch.m4, readline.m4, stdarg.m4, stdint.m4, stdio_h.m4, wint_t.m4:
+     Added GNUlib stdarg and readline.
+
+2017-02-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * Makefile.am, lib/Makefile.am, getopt.c, getopt.in.h, getopt1.c,
+     getopt_int.h, gettext.h, stdbool.in.h, stddef.in.h, stdlib.in.h,
+     sys_types.in.h, sysexits.in.h, unistd.c, unistd.in.h, 00gnulib.m4,
+     absolute-header.m4, ax_append_flag.m4, ax_cflags_gcc_option.m4,
+     ax_cflags_warn_all.m4, ax_check_compile_flag.m4, extensions.m4,
+     extern-inline.m4, getopt.m4, gnulib-cache.m4, gnulib-common.m4,
+     gnulib-comp.m4, gnulib-tool.m4, include_next.m4, nocrash.m4, off_t.m4,
+     onceonly.m4, ssize_t.m4, stdbool.m4, stddef_h.m4, stdlib_h.m4,
+     sys_types_h.m4, sysexits.m4, unistd_h.m4, warn-on-use.m4, wchar_t.m4,
+     man/Makefile.am, man/man1/Makefile.am, man/man1/c++decl.1,
+     snippet/_Noreturn.h, snippet/arg-nonnull.h, snippet/c++defs.h,
+     snippet/warn-on-use.h, src/Makefile.am, cdecl.c, cdgram.y, cdlex.l: Post
+     gnulib import.
+
+2016-11-29  ridiculousfish <corydoras@ridiculousfish.com>
+
+   * cdecl.c: Fix some warnings about dangling elses
+   * Makefile, cdecl.c, cdgram.y, test_expected_output.txt, testset: First
+     attempt to support const-after-type
+   * Makefile: make test to output unified diffs with context
+   * Makefile, test_expected_output.txt: Make `make test` actually output the
+     result of the test
+   * Makefile: Don't run C++ tests by default
+
+2016-11-28  ridiculousfish <corydoras@ridiculousfish.com>
+
+   * README: Toot my horn in the README
+   * Makefile: Compile explicitly as C89 via -std=c89
