@@ -94,8 +94,8 @@
  * Red-black tree colors.
  */
 enum rb_color {
-  RB_RED,
-  RB_BLACK
+  RB_BLACK,
+  RB_RED
 };
 typedef enum rb_color rb_color_t;
 
