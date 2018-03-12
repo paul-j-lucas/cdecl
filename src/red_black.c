@@ -156,7 +156,7 @@ static inline bool is_red( rb_node_t *node ) {
 static void rb_node_init( rb_tree_t *tree, rb_node_t *node ) {
   node->data = NULL;
   node->color = RB_BLACK;
-  node->left = node->right = RB_NIL(tree);
+  node->left = node->right = node->parent = RB_NIL(tree);
 }
 
 /**
