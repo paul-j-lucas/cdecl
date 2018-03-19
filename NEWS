@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 4.4.3
+
+** Minor fix to red-black tree code
+Now initializing node->parent to NIL.
+
+
 * Changes in Cdecl 4.4.2
 
 ** Fixed declare of function with an invalid argument
