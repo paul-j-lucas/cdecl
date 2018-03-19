@@ -1,3 +1,8 @@
+2018-03-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c: RB_BLACK is now int 0.
+   * red_black.c: Now initializing node->parent to NIL.
+
 2018-02-13  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Added explicit != NULL.
