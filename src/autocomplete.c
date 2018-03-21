@@ -322,7 +322,7 @@ static char* keyword_completion( char const *text, int state ) {
   //
   if ( strcmp( command, L_CAST ) == 0 &&
        strncmp( text, L_INTO, text_len ) == 0 &&
-       !strstr( rl_line_buffer, L_INTO ) ) {
+       strstr( rl_line_buffer, L_INTO ) == NULL ) {
     no_more_matches = true;             // unambiguously match "into"
     return check_strdup( L_INTO );
   }
