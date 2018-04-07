@@ -52,11 +52,10 @@ fail() {
 
 print_result() {
   RESULT=$1; shift
-  MSG="$RESULT: $*"
   COLOR=`eval echo \\$COLOR_$RESULT`
   if [ "$COLOR" ]
-  then echo $COLOR$MSG$COLOR_NONE
-  else echo $MSG
+  then echo $COLOR$RESULT$COLOR_NONE: $*
+  else echo $RESULT: $*
   fi
 }
 
