@@ -1,6 +1,6 @@
 /* A GNU-like <stdio.h>.
 
-   Copyright (C) 2004, 2007-2017 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2007-2018 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as published by
@@ -122,7 +122,7 @@
    it before we  #define perror rpl_perror.  */
 /* But in any case avoid namespace pollution on glibc systems.  */
 #if (@GNULIB_PERROR@ || defined GNULIB_POSIXCHECK) \
-    && ((defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__) \
+    && (defined _WIN32 && ! defined __CYGWIN__) \
     && ! defined __GLIBC__
 # include <stdlib.h>
 #endif
@@ -133,7 +133,7 @@
    it before we  #define rename rpl_rename.  */
 /* But in any case avoid namespace pollution on glibc systems.  */
 #if (@GNULIB_REMOVE@ || @GNULIB_RENAME@ || defined GNULIB_POSIXCHECK) \
-    && ((defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__) \
+    && (defined _WIN32 && ! defined __CYGWIN__) \
     && ! defined __GLIBC__
 # include <io.h>
 #endif
@@ -152,7 +152,7 @@
 /* When also using extern inline, suppress the use of static inline in
    standard headers of problematic Apple configurations, as Libc at
    least through Libc-825.26 (2013-04-09) mishandles it; see, e.g.,
-   <https://lists.gnu.org/archive/html/bug-gnulib/2012-12/msg00023.html>.
+   <https://lists.gnu.org/r/bug-gnulib/2012-12/msg00023.html>.
    Perhaps Apple will fix this some day.  */
 #if (defined _GL_EXTERN_INLINE_IN_USE && defined __APPLE__ \
      && defined __GNUC__ && defined __STDC__)
