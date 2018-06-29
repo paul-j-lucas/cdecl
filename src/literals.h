@@ -135,6 +135,7 @@ extern char const L_REINTERPRET_CAST[];
 extern char const L_STATIC_CAST[];
 extern char const L_THROW[];
 extern char const L_TRUE[];
+extern char const L_USING[];
 extern char const L_VIRTUAL[];
 
 // C++11

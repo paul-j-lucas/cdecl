@@ -573,24 +573,35 @@ TESTS+=	tests/show_foo.test
 ###############################################################################
 
 #
-# C typedef tests
-# ===============
+# C typedef & using tests
+# =======================
 #
 TESTS+=	tests/typedef_fi_v_show_f.test \
 	tests/typedef_i.test \
 	tests/typedef_i_declare_i.test \
 	tests/typedef_i_explain_i.test \
-	tests/typedef_i_int_least32_t.test
+	tests/typedef_i_int_least32_t.test \
+	tests/using_fi_v_show_f.test \
+	tests/using_i.test \
+	tests/using_i_declare_i.test \
+	tests/using_i_explain_i.test \
+	tests/using_i_int_least32_t.test
 
 #
-# C typedef error tests
-# =====================
+# C typedef & using error tests
+# =============================
 #
 TESTS+=	tests/typedef_ai.test \
 	tests/typedef_c_int_least32_t.test \
 	tests/typedef_ei.test \
 	tests/typedef_gi.test \
-	tests/typedef_si.test
+	tests/typedef_si.test \
+	tests/using_ai.test \
+	tests/using_c_int_least32_t.test \
+	tests/using_ei.test \
+	tests/using_gi.test \
+	tests/using_i-c.test \
+	tests/using_si.test
 
 ###############################################################################
 
@@ -620,7 +631,8 @@ TESTS+=	tests/define_ai.test \
 # ===================
 #
 TESTS+=	tests/declare_config_u.test \
-	tests/explain_config_u.test
+	tests/explain_config_u.test \
+	tests/using_config_i.test
 
 ###############################################################################
 

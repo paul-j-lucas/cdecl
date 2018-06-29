@@ -508,6 +508,7 @@ static void yyerror( char const *msg ) {
 %token  <literal>   Y_STATIC_CAST
 %token  <type>      Y_THROW
 %token  <type>      Y_TRUE              /* for noexcept(true) */
+%token  <type>      Y_USING
 %token  <type>      Y_VIRTUAL
 
                     /* C++11 */
@@ -600,6 +601,8 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  atomic_specifier_type_ast_c
 %type   <ast_pair>  builtin_type_ast_c
 %type   <ast_pair>  enum_class_struct_union_type_ast_c
+%type   <ast_pair>  name_ast_c
+%type   <ast_pair>  name_or_typedef_type_ast_c
 %type   <ast_pair>  placeholder_type_ast_c
 %type   <ast_pair>  typedef_type_ast_c
 
@@ -668,6 +671,7 @@ command
   | set_command
   | show_command
   | typedef_declaration_c
+  | using_declaration_c
   | quit_command
   | Y_END                               /* allows for blank lines */
   | error
@@ -1195,20 +1199,20 @@ typedef_declaration_c
         //
         ast = c_ast_patch_placeholder( $3.ast, $5.ast );
         name = c_ast_take_name( ast );
-        assert( name != NULL );
       }
 
       C_AST_CHECK( ast, CHECK_DECL );
       // see comment in define_english about T_TYPEDEF
       (void)c_ast_take_typedef( ast );
 
+      assert( name != NULL );
       if ( c_typedef_add( name, ast ) ) {
         // see comment in define_english about ast_typedef_list
         slist_append_list( &ast_typedef_list, &ast_gc_list );
       }
       else {
         print_error( &@5,
-          "\"%s\": typedef redefinition with different type", name
+          "\"%s\": %s redefinition with different type", name, L_TYPEDEF
         );
         FREE( name );
         PARSE_ABORT();
@@ -1216,6 +1220,89 @@ typedef_declaration_c
 
       DUMP_AST( "typedef_declaration_c", ast );
       DUMP_END();
+    }
+  ;
+
+/*****************************************************************************/
+/*  using                                                                    */
+/*****************************************************************************/
+
+using_declaration_c
+  : Y_USING
+    {
+      //
+      // Tell the lexer that we're typedef'ing gibberish so cdecl keywords
+      // (e.g., "func") are returned as ordinary names, otherwise gibberish
+      // like:
+      //
+      //      using func = int (*)(void);
+      //
+      // would result in a parser error.
+      //
+      c_mode = MODE_GIBBERISH_TO_ENGLISH;
+    }
+    name_or_typedef_type_ast_c equals_expected type_ast_c
+    {
+      // see comment in define_english about T_TYPEDEF
+      C_TYPE_ADD( &$5.ast->type, T_TYPEDEF, @5 );
+      type_push( $5.ast );
+    }
+    cast_opt_c Y_END
+    {
+      type_pop();
+
+      //
+      // Using declarations are supported only in C++11 and later.  (However,
+      // we always allow them in configuration files.)
+      //
+      // This check has to be done now in the parser rather than later in the
+      // AST because using declarations are treated like typedef declarations
+      // and the AST has no "memory" that such a declaration was a using
+      // declaration.
+      //
+      if ( c_init >= INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+        print_error( &@1,
+          "\"%s\" not supported in %s", L_USING, C_LANG_NAME()
+        );
+        PARSE_ABORT();
+      }
+
+      DUMP_START( "using_declaration_c", "USING NAME = decl_c" );
+      DUMP_AST( "name_or_typedef_type_ast_c", $3.ast );
+      DUMP_AST( "type_ast_c", $5.ast );
+      DUMP_AST( "cast_opt_c", $7.ast );
+
+      c_ast_t *const ast = c_ast_patch_placeholder( $5.ast, $7.ast );
+      char const *const name = check_strdup( c_ast_name( $3.ast, V_DOWN ) );
+
+      C_AST_CHECK( ast, CHECK_DECL );
+      // see comment in define_english about T_TYPEDEF
+      (void)c_ast_take_typedef( ast );
+
+      assert( name != NULL );
+      if ( c_typedef_add( name, ast ) ) {
+        // see comment in define_english about ast_typedef_list
+        slist_append_list( &ast_typedef_list, &ast_gc_list );
+      }
+      else {
+        print_error( &@5,
+          "\"%s\": %s redefinition with different type", name, L_USING
+        );
+        FREE( name );
+        PARSE_ABORT();
+      }
+
+      DUMP_AST( "using_declaration_c", ast );
+      DUMP_END();
+    }
+  ;
+
+name_or_typedef_type_ast_c
+  : name_ast_c
+  | typedef_type_ast_c
+  | error
+    {
+      ELABORATE_ERROR( "type name expected" );
     }
   ;
 
@@ -1537,18 +1624,7 @@ var_decl_english
       DUMP_END();
     }
 
-  | Y_NAME                              /* K&R C type-less variable */
-    {
-      DUMP_START( "var_decl_english", "NAME" );
-      DUMP_NAME( "NAME", $1 );
-
-      $$.ast = C_AST_NEW( K_NAME, &@$ );
-      $$.target_ast = NULL;
-      $$.ast->name = $1;
-
-      DUMP_AST( "var_decl_english", $$.ast );
-      DUMP_END();
-    }
+  | name_ast_c                          /* K&R C type-less variable */
 
   | "..."
     {
@@ -2098,18 +2174,7 @@ arg_c
       DUMP_END();
     }
 
-  | Y_NAME                              /* K&R C type-less argument */
-    {
-      DUMP_START( "argc", "NAME" );
-      DUMP_NAME( "NAME", $1 );
-
-      $$.ast = C_AST_NEW( K_NAME, &@$ );
-      $$.target_ast = NULL;
-      $$.ast->name = $1;
-
-      DUMP_AST( "arg_c", $$.ast );
-      DUMP_END();
-    }
+  | name_ast_c                          /* K&R C type-less argument */
 
   | "..."
     {
@@ -2743,6 +2808,14 @@ comma_expected
     }
   ;
 
+equals_expected
+  : '='
+  | error
+    {
+      ELABORATE_ERROR( "'=' expected" );
+    }
+  ;
+
 gt_expected
   : '>'
   | error
@@ -2780,6 +2853,21 @@ member_expected
   | error
     {
       ELABORATE_ERROR( "\"%s\" expected", L_MEMBER );
+    }
+  ;
+
+name_ast_c
+  : Y_NAME
+    {
+      DUMP_START( "name_ast_c", "NAME" );
+      DUMP_NAME( "NAME", $1 );
+
+      $$.ast = C_AST_NEW( K_NAME, &@$ );
+      $$.target_ast = NULL;
+      $$.ast->name = $1;
+
+      DUMP_AST( "name_ast_c", $$.ast );
+      DUMP_END();
     }
   ;
 

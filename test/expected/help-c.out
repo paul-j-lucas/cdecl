@@ -1,10 +1,10 @@
 [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere
 command:
-  declare <name> as <english>         | set [options]         | help | ?
-  explain <gibberish>                 | exit | quit | q
+  explain <gibberish>        | declare <name> as <english>
   cast <name> into <english>
-  define <name> as <english>          | typedef <gibberish>
+  define <name> as <english> | typedef <gibberish>
   show { <name> | [all | predefined | user] types }
+  set [options]              | help | ?            | exit | quit | q
 english:
   <storage>* array [[static] <cv-qualifier>* {<number>|*}] of <english>
   <storage>* variable length array <cv-qualifier>* of <english>

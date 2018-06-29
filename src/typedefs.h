@@ -34,6 +34,21 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Initialization state.
+ *
+ * We currently only need to discriminate between before and after reading the
+ * configuration file, if any, to know whether we should restrict "using"
+ * declarations to C++11 and later.  Hence, this could have been a simple bool.
+ * However, it was made an enum in the event that discriminating between more
+ * initialization states becomes needed in the future.
+ */
+enum c_init {
+  INIT_BEGIN,                           ///< Very beginning of initialization.
+  INIT_READ_CONF,                       ///< Read configuration file.
+  INIT_DONE                             ///< Initialization done.
+};
+
+/**
  * The source location used by Bison.
  */
 struct c_loc {
@@ -64,6 +79,7 @@ typedef struct c_ast_pair   c_ast_pair_t;
 typedef struct c_array      c_array_t;
 typedef struct c_block      c_block_t;
 typedef enum   c_check      c_check_t;
+typedef enum   c_init       c_init_t;
 typedef struct c_lang_info  c_lang_info_t;
 typedef struct c_loc        c_loc_t;
 typedef struct c_builtin    c_builtin_t;

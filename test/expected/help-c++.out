@@ -1,10 +1,10 @@
 [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere
 command:
-  declare <name> as <english>         | set [options]         | help | ?
-  explain <gibberish>                 | exit | quit | q
+  explain <gibberish>        | declare <name> as <english>
   [const | dynamic | reinterpret | static] cast <name> into <english>
-  define <name> as <english>          | typedef <gibberish>
+  define <name> as <english> | typedef <gibberish> | using <name> = <gibberish>
   show { <name> | [all | predefined | user] types }
+  set [options]              | help | ?            | exit | quit | q
 english:
   <storage>* array [<number>] of <english>
   block [([<args>])] [returning <english>]

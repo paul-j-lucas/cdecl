@@ -134,6 +134,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_STATIC_CAST,      Y_STATIC_CAST,      T_NONE,         LANG_ALL          },
   { L_TRUE,             Y_TRUE,             T_NOEXCEPT,     LANG_ALL          },
   { L_THROW,            Y_THROW,            T_THROW,        LANG_ALL          },
+  { L_USING,            Y_USING,            T_TYPEDEF,      LANG_ALL          },
   { L_VIRTUAL,          Y_VIRTUAL,          T_VIRTUAL,      LANG_ALL          },
 
   // C++11

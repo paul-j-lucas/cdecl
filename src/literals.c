@@ -132,6 +132,7 @@ char const L_REINTERPRET_CAST[]     = "reinterpret_cast";
 char const L_STATIC_CAST[]          = "static_cast";
 char const L_THROW[]                = "throw";
 char const L_TRUE[]                 = "true";
+char const L_USING[]                = "using";
 char const L_VIRTUAL[]              = "virtual";
 
 // C++11

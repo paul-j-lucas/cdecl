@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 4.5
+
+** Using declarations
+Added support for C++11's "using" declarations as a synonym for typedef.
+
+
 * Changes in Cdecl 4.4.3
 
 ** Minor fix to red-black tree code

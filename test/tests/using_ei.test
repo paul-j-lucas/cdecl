@@ -1,0 +1,1 @@
+cdecl | /dev/null | -xc++ | using SI = extern int | 65

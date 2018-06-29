@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "November 22, 2017" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "June 30, 2018" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -533,14 +533,18 @@ that prints the current value of all options.
 .TP
 .BR show " \f2name\fP" "" " | " show " { " all " | " predefined " | " user " } " types
 In the first form,
-shows the definition for a previously defined type (\f(CWtypedef\fP).
+shows the definition for a previously defined type
+(via \f(CWdefine\fP, \f(CWtypedef\fP, or \f(CWusing\fP).
 In the second form,
 shows one of
 all, predefined-only, or user-defined-only
 types.
 .TP
 .BI typedef " gibberish"
-Defines a type from a C (or C++) \f(CWtypedef\fP.
+Defines a type via a C (or C++) \f(CWtypedef\fP declaration.
+.TP
+.BI using " name" " = " gibberish
+Defines a type via a C++11 (or later) \f(CWusing\fP declaration.
 .TP
 .BR help " | " ?
 Prints a
@@ -912,10 +916,11 @@ file
 is used to configure
 .B cdecl
 by pre-defining types
-(via either the
-.B define
+(via the
+.BR define ,
+.BR typedef ,
 or
-.B typedef
+.B using
 commands)
 so that they may be subsequently used
 when eithter composing or deciphering declarations.
@@ -974,10 +979,11 @@ cdecl+      f as pointer to function (int) returning void) \\
 cdecl+     returning pointer to function (int) returning void
 void (*signal(int sig, void (*f)(int)))(int);
 .cE
-This is made more comprehensible using ether
-.B define
+This is made more comprehensible with one of
+.BR define ,
+.BR typedef ,
 or
-.BR typedef :
+.BR using :
 .cS
 cdecl> define pfi_rv as pointer to function (int) returning void
 cdecl> declare signal as function \\
@@ -1172,9 +1178,10 @@ is being run.
 .B ~/.cdeclrc
 The default configuration file
 containing user-specified
-\f(CWdefine\fP
+\f(CWdefine\fP,
+\f(CWtypedef\fP,
 or
-\f(CWtypedef\fP
+\f(CWusing\fP
 commands
 (see
 .BR "CONFIGURATION FILE" ).
@@ -1296,7 +1303,9 @@ when used as input to
 However,
 .B define
 (or
-.BR typedef )
+.B typedef
+or
+.BR using )
 can be used to define the type:
 .cS
 c++decl> define S as struct S
