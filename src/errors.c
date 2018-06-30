@@ -321,7 +321,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       }
       if ( (ast->type & T_INLINE) != T_NONE && opt_lang < LANG_CPP_17 ) {
         print_error( &ast->loc,
-          "inline variables illegal in %s",
+          "inline variables not supported in %s",
           C_LANG_NAME()
         );
         return VISITOR_ERROR_FOUND;
@@ -347,7 +347,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       if ( (ast->type & (T_REFERENCE | T_RVALUE_REFERENCE)) != T_NONE ) {
         if ( opt_lang < LANG_CPP_11 ) {
           print_error( &ast->loc,
-            "reference qualified functions illegal in %s",
+            "reference qualified functions not supported in %s",
             C_LANG_NAME()
           );
           return VISITOR_ERROR_FOUND;
@@ -369,7 +369,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       }
       else if ( (ast->type & T_MASK_QUALIFIER) != T_NONE ) {
         print_error( &ast->loc,
-          "\"%s\" functions illegal in %s",
+          "\"%s\" functions not supported in %s",
           c_type_name_error( ast->type & T_MASK_QUALIFIER ),
           C_LANG_NAME()
         );
@@ -569,7 +569,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     case K_BUILTIN:
       if ( (ast->type & T_REGISTER) != T_NONE && opt_lang >= LANG_CPP_11 ) {
         print_warning( &ast->loc,
-          "register is deprecated in %s", C_LANG_NAME()
+          "%s is deprecated in %s", L_REGISTER, C_LANG_NAME()
         );
       }
       break;

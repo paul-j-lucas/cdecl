@@ -273,7 +273,7 @@ static void elaborate_error( char const *format, ... ) {
 static bool _Noreturn_ok( c_loc_t const *loc ) {
   if ( opt_lang == LANG_C_11 )
     return true;
-  print_error( loc, "\"%s\" is illegal in %s", lexer_token, C_LANG_NAME() );
+  print_error( loc, "\"%s\" not supported in %s", lexer_token, C_LANG_NAME() );
   if ( opt_lang >= LANG_CPP_11 ) {
     if ( c_mode == MODE_ENGLISH_TO_GIBBERISH )
       print_hint( "\"%s\"", L_NORETURN );
@@ -717,7 +717,7 @@ cast_english
       bool ok = false;
 
       if ( opt_lang < LANG_CPP_11 ) {
-        print_error( &@1, "%s is illegal in %s", $1, C_LANG_NAME() );
+        print_error( &@1, "%s not supported in %s", $1, C_LANG_NAME() );
       }
       else if ( (ok = c_ast_check( $5.ast, CHECK_CAST )) ) {
         FPRINTF( fout, "%s<", $1 );
@@ -1028,7 +1028,7 @@ explain_new_style_cast_c
       bool ok = false;
 
       if ( opt_lang < LANG_CPP_MIN ) {
-        print_error( &@2, "%s_cast is illegal in %s", $2, C_LANG_NAME() );
+        print_error( &@2, "%s_cast not supported in %s", $2, C_LANG_NAME() );
       }
       else {
         c_ast_t *const ast = c_ast_patch_placeholder( $4.ast, $6.ast );
@@ -1912,7 +1912,7 @@ func_trailing_return_type_opt_c
       //
       if ( opt_lang < LANG_CPP_11 ) {
         print_error( &@1,
-          "trailing return type is illegal in %s", C_LANG_NAME()
+          "trailing return type not supported in %s", C_LANG_NAME()
         );
         PARSE_ABORT();
       }
@@ -2512,9 +2512,7 @@ attribute_name_c
         print_warning( &@1, "\"%s\": unknown attribute", $1 );
       }
       else if ( (opt_lang & a->ok_langs) == LANG_NONE ) {
-        print_warning( &@1,
-          "\"%s\" is unsupported in %s", $1, C_LANG_NAME()
-        );
+        print_warning( &@1, "\"%s\" not supported in %s", $1, C_LANG_NAME() );
       }
       else {
         $$ = a->type;
