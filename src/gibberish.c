@@ -324,7 +324,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_TYPEDEF:
       if ( ast_type != T_TYPEDEF_TYPE )
         FPRINTF( param->gout, "%s ", c_type_name( ast_type ) );
-      FPRINTF( param->gout, "%s", ast->as.c_typedef->type_name );
+      FPRINTF( param->gout, "%s", ast->as.c_typedef->ast->name );
       c_ast_gibberish_space_name( ast, param );
       g_param_leaf( param, ast );
       break;

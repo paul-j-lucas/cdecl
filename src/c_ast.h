@@ -251,6 +251,14 @@ c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc );
 c_ast_t* c_ast_root( c_ast_t *ast );
 
 /**
+ * Sets the name of \a ast.
+ *
+ * @param ast The `c_ast` node to set the name of.
+ * @param name The name to set.  It is not copied.
+ */
+void c_ast_set_name( c_ast_t *ast, char const *name );
+
+/**
  * Sets the two-way pointer links between parent/child `c_ast` nodes.
  *
  * @param child The "child" `c_ast` node to set the parent of.

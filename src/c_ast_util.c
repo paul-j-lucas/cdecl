@@ -282,10 +282,7 @@ char const* c_ast_name( c_ast_t const *ast, v_direction_t dir ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_t *const found =
     c_ast_visit( nonconst_ast, dir, c_ast_visitor_name, NULL );
-  return found != NULL ?
-    // Likely temporary hack to be removed later.
-    (found->kind == K_TYPEDEF ? found->as.c_typedef->type_name : found->name) :
-    NULL;
+  return found != NULL ? found->name : NULL;
 }
 
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
@@ -354,11 +351,6 @@ bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
 bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   (void)data;
-  if ( ast->kind == K_TYPEDEF ) {
-    // Likely temporary hack to be removed later.
-    assert( ast->as.c_typedef->type_name != NULL );
-    return true;
-  }
   return ast->name != NULL;
 }
 

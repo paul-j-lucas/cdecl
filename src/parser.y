@@ -317,7 +317,7 @@ static void parse_init( void ) {
  */
 static void print_typedef( c_typedef_t const *type ) {
   assert( type != NULL );
-  FPRINTF( fout, "define %s as ", type->type_name );
+  FPRINTF( fout, "define %s as ", type->ast->name );
   c_ast_english( type->ast, fout );
   FPUTC( '\n', fout );
 }
@@ -780,8 +780,7 @@ declare_english
         PARSE_ABORT();
       }
 
-      assert( $5.ast->name == NULL );
-      $5.ast->name = $2;
+      c_ast_set_name( $5.ast, $2 );
 
       DUMP_START( "declare_english",
                   "DECLARE NAME AS storage_class_list_opt_english "
@@ -890,7 +889,8 @@ define_english
       (void)c_ast_take_typedef( $5.ast );
 
       if ( ok ) {
-        if ( c_typedef_add( $2, $5.ast ) ) {
+        c_ast_set_name( $5.ast, $2 );
+        if ( c_typedef_add( $5.ast ) ) {
           //
           // If c_typedef_add() succeeds, we have to move the AST from the
           // ast_gc_list so it won't be garbage collected at the end of the
@@ -901,7 +901,7 @@ define_english
         }
         else {
           print_error( &@5,
-            "\"%s\": typedef redefinition with different type", $2
+            "\"%s\": %s redefinition with different type", $2, L_TYPEDEF
           );
           ok = false;
         }
@@ -930,7 +930,7 @@ define_english
       DUMP_START( "define_english",
                   "DEFINE TYPEDEF_TYPE AS storage_class_list_opt_english "
                   "decl_english" );
-      DUMP_NAME( "type_name", $2->type_name );
+      DUMP_NAME( "type_name", $2->ast->name );
       DUMP_AST( "type_ast", $2->ast );
       DUMP_TYPE( "storage_class_list_opt_english", $4 );
       DUMP_AST( "decl_english", $5.ast );
@@ -942,11 +942,11 @@ define_english
       C_AST_CHECK( $5.ast, CHECK_DECL );
       (void)c_ast_take_typedef( $5.ast );
 
-      c_typedef_t const *const found = c_typedef_find( $2->type_name );
+      c_typedef_t const *const found = c_typedef_find( $2->ast->name );
       assert( found != NULL );
       if ( !c_ast_equiv( found->ast, $5.ast ) ) {
         print_error( &@5,
-          "\"%s\": typedef redefinition with different type", $2->type_name
+          "\"%s\": %s redefinition with different type", L_TYPEDEF, $2->ast->name
         );
         PARSE_ABORT();
       }
@@ -1164,7 +1164,6 @@ typedef_declaration_c
       DUMP_AST( "decl_c", $5.ast );
 
       c_ast_t *ast;
-      char const *name;
 
       if ( $3.ast->kind == K_TYPEDEF && $5.ast->kind == K_TYPEDEF ) {
         //
@@ -1175,7 +1174,6 @@ typedef_declaration_c
         // that is: an existing type name followed by a new name.
         //
         ast = $3.ast;
-        name = check_strdup( $3.ast->name );
       }
       else if ( $3.ast->kind == K_TYPEDEF || $5.ast->kind == K_TYPEDEF ) {
         //
@@ -1187,7 +1185,7 @@ typedef_declaration_c
         // an existing type name to be the same type.
         //
         ast = $3.ast;
-        name = check_strdup( $5.ast->as.c_typedef->type_name );
+        c_ast_set_name( ast, check_strdup( $5.ast->name ) );
       }
       else {
         //
@@ -1198,23 +1196,21 @@ typedef_declaration_c
         // that is: a type followed by a new name.
         //
         ast = c_ast_patch_placeholder( $3.ast, $5.ast );
-        name = c_ast_take_name( ast );
+        c_ast_set_name( ast, c_ast_take_name( $5.ast ) );
       }
 
       C_AST_CHECK( ast, CHECK_DECL );
       // see comment in define_english about T_TYPEDEF
       (void)c_ast_take_typedef( ast );
 
-      assert( name != NULL );
-      if ( c_typedef_add( name, ast ) ) {
+      if ( c_typedef_add( ast ) ) {
         // see comment in define_english about ast_typedef_list
         slist_append_list( &ast_typedef_list, &ast_gc_list );
       }
       else {
         print_error( &@5,
-          "\"%s\": %s redefinition with different type", name, L_TYPEDEF
+          "\"%s\": %s redefinition with different type", ast->name, L_TYPEDEF
         );
-        FREE( name );
         PARSE_ABORT();
       }
 
@@ -1273,22 +1269,20 @@ using_declaration_c
       DUMP_AST( "cast_opt_c", $7.ast );
 
       c_ast_t *const ast = c_ast_patch_placeholder( $5.ast, $7.ast );
-      char const *const name = check_strdup( c_ast_name( $3.ast, V_DOWN ) );
+      c_ast_set_name( ast, c_ast_take_name( $3.ast ) );
 
       C_AST_CHECK( ast, CHECK_DECL );
       // see comment in define_english about T_TYPEDEF
       (void)c_ast_take_typedef( ast );
 
-      assert( name != NULL );
-      if ( c_typedef_add( name, ast ) ) {
+      if ( c_typedef_add( ast ) ) {
         // see comment in define_english about ast_typedef_list
         slist_append_list( &ast_typedef_list, &ast_gc_list );
       }
       else {
         print_error( &@5,
-          "\"%s\": %s redefinition with different type", name, L_USING
+          "\"%s\": %s redefinition with different type", ast->name, L_USING
         );
-        FREE( name );
         PARSE_ABORT();
       }
 
@@ -1973,8 +1967,7 @@ name_c
 
       $$.ast = type_peek();
       $$.target_ast = NULL;
-      assert( $$.ast->name == NULL );
-      $$.ast->name = $1;
+      c_ast_set_name( $$.ast, $1 );
 
       DUMP_AST( "name_c", $$.ast );
       DUMP_END();
@@ -2385,13 +2378,14 @@ typedef_type_ast_c
   : Y_TYPEDEF_TYPE
     {
       DUMP_START( "typedef_type_ast_c", "Y_TYPEDEF_TYPE" );
-      DUMP_NAME( "type_name", $1->type_name );
+      DUMP_NAME( "type_name", $1->ast->name );
       DUMP_AST( "type_ast", $1->ast );
 
       $$.ast = C_AST_NEW( K_TYPEDEF, &@$ );
       $$.target_ast = NULL;
       $$.ast->as.c_typedef = $1;
       $$.ast->type = T_TYPEDEF_TYPE;
+      c_ast_set_name( $$.ast, check_strdup( $1->ast->name ) );
 
       DUMP_AST( "typedef_type_ast_c", $$.ast );
       DUMP_END();

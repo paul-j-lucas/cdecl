@@ -155,7 +155,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_TYPEDEF:
         PRINT_COMMA;
-        INDENT_PRINT_KV( "typedef_name", ast->as.c_typedef->type_name );
+        INDENT_PRINT_KV( "typedef_name", ast->as.c_typedef->ast->name );
         break;
     } // switch
 

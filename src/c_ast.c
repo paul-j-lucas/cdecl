@@ -214,6 +214,12 @@ c_ast_t* c_ast_root( c_ast_t *ast ) {
   return ast;
 }
 
+void c_ast_set_name( c_ast_t *ast, char const *name ) {
+  assert( ast != NULL );
+  FREE( ast->name );
+  ast->name = name;
+}
+
 void c_ast_set_parent( c_ast_t *child, c_ast_t *parent ) {
   assert( child != NULL );
   assert( parent != NULL );

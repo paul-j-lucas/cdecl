@@ -40,61 +40,46 @@
 
 /// @endcond
 
-///////////////////////////////////////////////////////////////////////////////
-
-/**
- * Parameters used by `c_ast_visitor_english()`.
- */
-struct e_param {
-  bool  print_names;                    ///< Print names only if `true`.
-  FILE *eout;                           ///< Where to write the pseudo-English.
-};
-typedef struct e_param e_param_t;
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
  * Visitor function that prints \a ast as pseudo-English.
  *
  * @param ast The `c_ast` to print.
- * @param data A pointer to an `e_param` `struct`.
+ * @param data A pointer to a `FILE` to emit to.
  * @return Always returns `false`.
  */
 static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
-  e_param_t const *const param = REINTERPRET_CAST( e_param_t*, data );
+  FILE *const eout = REINTERPRET_CAST( FILE*, data );
   bool comma = false;
 
   switch ( ast->kind ) {
     case K_ARRAY:
       if ( ast->type != T_NONE )        // storage class
-        FPRINTF( param->eout, "%s ", c_type_name( ast->type ) );
+        FPRINTF( eout, "%s ", c_type_name( ast->type ) );
       if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE )
-        FPRINTF( param->eout, "%s %s ", L_VARIABLE, L_LENGTH );
-      FPRINTF( param->eout, "%s ", L_ARRAY );
+        FPRINTF( eout, "%s %s ", L_VARIABLE, L_LENGTH );
+      FPRINTF( eout, "%s ", L_ARRAY );
       if ( ast->as.array.type != T_NONE )
-        FPRINTF( param->eout, "%s ", c_type_name( ast->as.array.type ) );
+        FPRINTF( eout, "%s ", c_type_name( ast->as.array.type ) );
       if ( ast->as.array.size >= 0 )
-        FPRINTF( param->eout, "%d ", ast->as.array.size );
-      FPRINTF( param->eout, "%s ", L_OF );
+        FPRINTF( eout, "%d ", ast->as.array.size );
+      FPRINTF( eout, "%s ", L_OF );
       break;
 
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
       if ( ast->type != T_NONE )        // storage class
-        FPRINTF( param->eout, "%s ", c_type_name( ast->type ) );
-      FPUTS( c_kind_name( ast->kind ), param->eout );
+        FPRINTF( eout, "%s ", c_type_name( ast->type ) );
+      FPUTS( c_kind_name( ast->kind ), eout );
 
       if ( c_ast_args( ast ) ) {        // print function arguments
-        FPUTS( " (", param->eout );
-
-        e_param_t arg_param;
-        arg_param.print_names = false;
-        arg_param.eout = param->eout;
+        FPUTS( " (", eout );
 
         for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg != NULL;
               arg = arg->next ) {
           if ( true_or_set( &comma ) )
-            FPUTS( ", ", param->eout );
+            FPUTS( ", ", eout );
 
           c_ast_t const *const arg_ast = C_AST_DATA( arg );
           if ( arg_ast->kind != K_NAME ) {
@@ -112,7 +97,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
             //
             char const *const name = c_ast_name( arg_ast, V_DOWN );
             if ( name != NULL )
-              FPRINTF( param->eout, "%s %s ", name, L_AS );
+              FPRINTF( eout, "%s %s ", name, L_AS );
             else {
               //
               // If there's no name, it's an unnamed argument, e.g.:
@@ -130,35 +115,29 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
           // for print_names here.
           //
           c_ast_t *const nonconst_arg = CONST_CAST( c_ast_t*, arg_ast );
-          c_ast_visit(
-            nonconst_arg, V_DOWN, c_ast_visitor_english, &arg_param
-          );
+          c_ast_visit( nonconst_arg, V_DOWN, c_ast_visitor_english, data );
         } // for
 
-        FPUTC( ')', param->eout );
+        FPUTC( ')', eout );
       }
 
-      FPRINTF( param->eout, " %s ", L_RETURNING );
+      FPRINTF( eout, " %s ", L_RETURNING );
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name( ast->type ), param->eout );
-      if ( param->print_names && ast->name != NULL )
-        FPRINTF( param->eout, " %s", ast->name );
+      FPUTS( c_type_name( ast->type ), eout );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      FPRINTF( param->eout,
+      FPRINTF( eout,
         "%s %s",
         c_type_name( ast->type ), ast->as.ecsu.ecsu_name
       );
-      if ( param->print_names && ast->name != NULL )
-        FPRINTF( param->eout, " %s", ast->name );
       break;
 
     case K_NAME:
-      if ( ast->name != NULL )          // do NOT check print_names
-        FPUTS( ast->name, param->eout );
+      if ( ast->name != NULL )
+        FPUTS( ast->name, eout );
       break;
 
     case K_NONE:
@@ -171,31 +150,31 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     case K_RVALUE_REFERENCE: {
       c_type_t const qualifier = (ast->type & T_MASK_QUALIFIER);
       if ( qualifier != T_NONE )
-        FPRINTF( param->eout, "%s ", c_type_name( qualifier ) );
-      FPRINTF( param->eout, "%s %s ", c_kind_name( ast->kind ), L_TO );
+        FPRINTF( eout, "%s ", c_type_name( qualifier ) );
+      FPRINTF( eout, "%s %s ", c_kind_name( ast->kind ), L_TO );
       break;
     }
 
     case K_POINTER_TO_MEMBER: {
       c_type_t const qualifier = (ast->type & T_MASK_QUALIFIER);
       if ( qualifier != T_NONE )
-        FPRINTF( param->eout, "%s ", c_type_name( qualifier ) );
-      FPRINTF( param->eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
+        FPRINTF( eout, "%s ", c_type_name( qualifier ) );
+      FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
       char const *const name = c_type_name( ast->type & ~T_MASK_QUALIFIER );
       if ( *name != '\0' )
-        FPRINTF( param->eout, "%s ", name );
-      FPRINTF( param->eout, "%s ", ast->as.ptr_mbr.class_name );
+        FPRINTF( eout, "%s ", name );
+      FPRINTF( eout, "%s ", ast->as.ptr_mbr.class_name );
       break;
     }
 
     case K_TYPEDEF:
       if ( ast->type != T_TYPEDEF_TYPE )
-        FPRINTF( param->eout, "%s ", c_type_name( ast->type ) );
-      FPUTS( ast->as.c_typedef->type_name, param->eout );
+        FPRINTF( eout, "%s ", c_type_name( ast->type ) );
+      FPUTS( ast->as.c_typedef->ast->name, eout );
       break;
 
     case K_VARIADIC:
-      FPUTS( c_kind_name( ast->kind ), param->eout );
+      FPUTS( c_kind_name( ast->kind ), eout );
       break;
   } // switch
 
@@ -206,10 +185,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
 void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  e_param_t param;
-  param.print_names = true;
-  param.eout = eout;
-  c_ast_visit( nonconst_ast, V_DOWN, c_ast_visitor_english, &param );
+  c_ast_visit( nonconst_ast, V_DOWN, c_ast_visitor_english, eout );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

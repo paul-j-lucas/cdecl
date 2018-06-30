@@ -44,7 +44,6 @@
  * C/C++ language typedef information.
  */
 struct c_typedef {
-  char const     *type_name;            ///< Type name.
   c_ast_t const  *ast;                  ///< AST representing the type.
   bool            user_defined;         ///< Is the type user-defined?
 };
@@ -64,15 +63,13 @@ typedef bool (*c_typedef_visitor_t)( c_typedef_t const *type, void *data );
 /**
  * Adds a new `c_typedef` to the global set.
  *
- * @param type_name The name of the type.  Ownership of the C string is taken
- * only if the function returns \a true.
  * @param type_ast The AST of the type.  Ownership is taken only if the
  * function returns `true`.
- * @return Returns `true` only if the type was either added or \a name already
- * exists and the types are equivalent; `false` if \a name already exists and
- * the types are not equivalent.
+ * @return Returns `true` only if the type was either added or
+ * \a type_ast->name already exists and the types are equivalent; `false` if
+ * \a type_ast->name already exists and the types are not equivalent.
  */
-bool c_typedef_add( char const *type_name, c_ast_t const *type_ast );
+bool c_typedef_add( c_ast_t const *type_ast );
 
 /**
  * Cleans up `c_typedef` data.

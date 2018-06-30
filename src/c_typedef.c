@@ -168,30 +168,17 @@ static char const *const TYPEDEFS_STDATOMIC_H[] = {
 static int c_typedef_cmp( void const *data_i, void const *data_j ) {
   c_typedef_t const *const ti = REINTERPRET_CAST( c_typedef_t const*, data_i );
   c_typedef_t const *const tj = REINTERPRET_CAST( c_typedef_t const*, data_j );
-  return strcmp( ti->type_name, tj->type_name );
-}
-
-/**
- * Red-black tree node free function for `c_typedef` data used by the red-black
- * tree.
- *
- * @param data A pointer to the data to free.
- */
-static void c_typedef_free( void *data ) {
-  c_typedef_t *const t = REINTERPRET_CAST( c_typedef_t*, data );
-  FREE( t->type_name );
+  return strcmp( ti->ast->name, tj->ast->name );
 }
 
 /**
  * Creates a new `c_typedef`.
  *
- * @param type_name The type name.
  * @param ast The `c_ast` of the type.
  * @return Returns said `c_typedef`.
  */
-static c_typedef_t* c_typedef_new( char const *type_name, c_ast_t const *ast ) {
+static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
   c_typedef_t *const t = MALLOC( c_typedef_t, 1 );
-  t->type_name = type_name;
   t->ast = ast;
   t->user_defined = user_defined;
   return t;
@@ -232,54 +219,48 @@ static bool rb_visitor( void *node_data, void *aux_data ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool c_typedef_add( char const *type_name, c_ast_t const *ast ) {
-  assert( type_name != NULL );
+bool c_typedef_add( c_ast_t const *ast ) {
   assert( ast != NULL );
+  assert( ast->name != NULL );
 
-  c_typedef_t *const new_t = c_typedef_new( type_name, ast );
+  c_typedef_t *const new_t = c_typedef_new( ast );
   rb_node_t const *const old_rb = rb_tree_insert( typedefs, new_t );
-  if ( old_rb == NULL )                 // type_name didn't exist
+  if ( old_rb == NULL )                 // type's name doesn't exist
     return true;
 
   //
-  // A typedef having the same name already exists.  In C, multiple typedef
-  // declarations having the same name are allowed only if the types are
-  // equivalent:
+  // A typedef having the same name already exists, so we don't need the new
+  // c_typedef.
+  //
+  FREE( new_t );
+
+  //
+  // In C, multiple typedef declarations having the same name are allowed only
+  // if the types are equivalent:
   //
   //      typedef int T;
   //      typedef int T;              // OK
   //      typedef double T;           // error: types aren't equivalent
   //
   c_typedef_t const *const old_t = rb_type_data( c_typedef_t const*, old_rb );
-  bool const is_equiv = c_ast_equiv( ast, old_t->ast );
-  if ( is_equiv ) {
-    //
-    // If the types are equivalent, take ownership of type_name and AST, but we
-    // don't need the duplicate c_typedef, so free it via c_typedef_free() that
-    // will free type_name and AST.
-    //
-    c_typedef_free( new_t );
-  }
-  else {
-    //
-    // If the types are not equivalent, don't take ownership, but we still need
-    // to free the c_typedef struct itself but not either type_name or AST,
-    // hence a plain FREE().
-    //
-    FREE( new_t );
-  }
-  return is_equiv;
+  return c_ast_equiv( ast, old_t->ast );
 }
 
 void c_typedef_cleanup( void ) {
-  rb_tree_free( typedefs, &c_typedef_free );
+  rb_tree_free( typedefs, NULL );
   typedefs = NULL;
 }
 
 c_typedef_t const* c_typedef_find( char const *type_name ) {
-  c_typedef_t rb_find;
-  rb_find.type_name = type_name;
-  rb_node_t const *const rb_found = rb_tree_find( typedefs, &rb_find );
+  //
+  // Create a temporary c_typedef with just the name set in order to find it.
+  //
+  c_ast_t ast;
+  ast.name = type_name;
+  c_typedef_t type;
+  type.ast = &ast;
+
+  rb_node_t const *const rb_found = rb_tree_find( typedefs, &type );
   return rb_found ? rb_type_data( c_typedef_t const*, rb_found ) : NULL;
 }
 
