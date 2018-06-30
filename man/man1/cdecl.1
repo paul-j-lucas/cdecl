@@ -534,7 +534,11 @@ that prints the current value of all options.
 .BR show " \f2name\fP" "" " | " show " { " all " | " predefined " | " user " } " types
 In the first form,
 shows the definition for a previously defined type
-(via \f(CWdefine\fP, \f(CWtypedef\fP, or \f(CWusing\fP).
+(via
+.BR define ,
+.BR typedef ,
+or
+.BR using ).
 In the second form,
 shows one of
 all, predefined-only, or user-defined-only
@@ -1178,10 +1182,10 @@ is being run.
 .B ~/.cdeclrc
 The default configuration file
 containing user-specified
-\f(CWdefine\fP,
-\f(CWtypedef\fP,
+.BR define ,
+.BR typedef ,
 or
-\f(CWusing\fP
+.B using
 commands
 (see
 .BR "CONFIGURATION FILE" ).
@@ -1301,11 +1305,10 @@ when used as input to
 .BR explain .
 .IP ""
 However,
-.B define
-(or
-.B typedef
+.BR define ,
+.BR typedef ,
 or
-.BR using )
+.B using
 can be used to define the type:
 .cS
 c++decl> define S as struct S
