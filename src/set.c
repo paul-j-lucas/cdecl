@@ -103,7 +103,7 @@ void set_option( char const *opt ) {
   printf( "  %sdebug\n", opt_debug ? "  " : "no" );
 #endif /* ENABLE_CDECL_DEBUG */
   printf( "  %sinteractive\n", opt_interactive ? "  " : "no" );
-  printf( "    lang=%s\n", c_lang_name( opt_lang ) );
+  printf( "    lang=%s\n", C_LANG_NAME() );
   printf( "  %sprompt\n", prompt[0][0] ? "  " : "no" );
   printf( "  %ssemicolon\n", opt_semicolon ? "  " : "no" );
 #ifdef YYDEBUG

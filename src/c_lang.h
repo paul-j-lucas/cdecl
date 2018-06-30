@@ -100,6 +100,13 @@ c_lang_t c_lang_find( char const *name );
 char const* c_lang_name( c_lang_t lang );
 
 /**
+ * Shorthand for the common case of getting the name of the current language.
+ *
+ * @return Returns said name.
+ */
+#define C_LANG_NAME() c_lang_name( opt_lang )
+
+/**
  * Sets the current language and the corresponding prompt.
  *
  * @param lang The language to set.

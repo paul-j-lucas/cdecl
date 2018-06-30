@@ -254,7 +254,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         if ( (opt_lang & (LANG_MIN(C_99) & ~LANG_CPP_ALL)) == LANG_NONE ) {
           print_error( &ast->loc,
             "variable length arrays not supported in %s",
-            c_lang_name( opt_lang )
+            C_LANG_NAME()
           );
           return VISITOR_ERROR_FOUND;
         }
@@ -271,7 +271,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           print_error( &ast->loc,
             "\"%s\" arrays not supported in %s",
             c_type_name_error( ast->as.array.type ),
-            c_lang_name( opt_lang )
+            C_LANG_NAME()
           );
           return VISITOR_ERROR_FOUND;
         }
@@ -310,7 +310,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       if ( (ast->type & T_MASK_TYPE) == T_NONE ) {
         print_error( &ast->loc,
           "implicit \"int\" is illegal in %s",
-          c_lang_name( opt_lang )
+          C_LANG_NAME()
         );
         return VISITOR_ERROR_FOUND;
       }
@@ -322,7 +322,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       if ( (ast->type & T_INLINE) != T_NONE && opt_lang < LANG_CPP_17 ) {
         print_error( &ast->loc,
           "inline variables illegal in %s",
-          c_lang_name( opt_lang )
+          C_LANG_NAME()
         );
         return VISITOR_ERROR_FOUND;
       }
@@ -348,7 +348,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         if ( opt_lang < LANG_CPP_11 ) {
           print_error( &ast->loc,
             "reference qualified functions illegal in %s",
-            c_lang_name( opt_lang )
+            C_LANG_NAME()
           );
           return VISITOR_ERROR_FOUND;
         }
@@ -371,7 +371,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         print_error( &ast->loc,
           "\"%s\" functions illegal in %s",
           c_type_name_error( ast->type & T_MASK_QUALIFIER ),
-          c_lang_name( opt_lang )
+          C_LANG_NAME()
         );
         return VISITOR_ERROR_FOUND;
       }
@@ -397,7 +397,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
             if ( (ret_ast->type & (/*T_AUTO_C |*/ T_AUTO_CPP_11)) != T_NONE ) {
               print_error( &ret_ast->loc,
                 "\"auto\" return type not supported in %s",
-               c_lang_name( opt_lang )
+               C_LANG_NAME()
               );
               return VISITOR_ERROR_FOUND;
             }
@@ -488,7 +488,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
     else
       print_error( &ast->loc,
         "\"%s\" is illegal in %s",
-        c_type_name_error( ast->type ), c_lang_name( opt_lang )
+        c_type_name_error( ast->type ), C_LANG_NAME()
       );
     return VISITOR_ERROR_FOUND;
   }
@@ -569,7 +569,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     case K_BUILTIN:
       if ( (ast->type & T_REGISTER) != T_NONE && opt_lang >= LANG_CPP_11 ) {
         print_warning( &ast->loc,
-          "register is deprecated in %s", c_lang_name( opt_lang )
+          "register is deprecated in %s", C_LANG_NAME()
         );
       }
       break;
@@ -611,7 +611,7 @@ static bool error_kind_not_type( c_ast_t const *ast, c_type_t type ) {
 static bool error_kind_not_supported( c_ast_t const *ast ) {
   assert( ast != NULL );
   print_error( &ast->loc,
-    "%s not supported in %s", c_kind_name( ast->kind ), c_lang_name( opt_lang )
+    "%s not supported in %s", c_kind_name( ast->kind ), C_LANG_NAME()
   );
   return VISITOR_ERROR_FOUND;
 }
