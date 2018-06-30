@@ -899,7 +899,8 @@ define_english
         }
         else {
           print_error( &@5,
-            "\"%s\": %s redefinition with different type", $2, L_TYPEDEF
+            "\"%s\": \"%s\" redefinition with different type",
+            $2, L_TYPEDEF
           );
           ok = false;
         }
@@ -944,7 +945,8 @@ define_english
       assert( found != NULL );
       if ( !c_ast_equiv( found->ast, $5.ast ) ) {
         print_error( &@5,
-          "\"%s\": %s redefinition with different type", L_TYPEDEF, $2->ast->name
+          "\"%s\": \"%s\" redefinition with different type",
+          L_TYPEDEF, $2->ast->name
         );
         PARSE_ABORT();
       }
@@ -1205,7 +1207,8 @@ typedef_declaration_c
       }
       else {
         print_error( &@5,
-          "\"%s\": %s redefinition with different type", ast->name, L_TYPEDEF
+          "\"%s\": \"%s\" redefinition with different type",
+          ast->name, L_TYPEDEF
         );
         PARSE_ABORT();
       }
@@ -1277,7 +1280,8 @@ using_declaration_c
       }
       else {
         print_error( &@5,
-          "\"%s\": %s redefinition with different type", ast->name, L_USING
+          "\"%s\": \"%s\" redefinition with different type",
+          ast->name, L_USING
         );
         PARSE_ABORT();
       }

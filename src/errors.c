@@ -569,7 +569,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     case K_BUILTIN:
       if ( (ast->type & T_REGISTER) != T_NONE && opt_lang >= LANG_CPP_11 ) {
         print_warning( &ast->loc,
-          "%s is deprecated in %s", L_REGISTER, C_LANG_NAME()
+          "\"%s\" is deprecated in %s", L_REGISTER, C_LANG_NAME()
         );
       }
       break;
