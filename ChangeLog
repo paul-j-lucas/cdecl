@@ -1,5 +1,9 @@
 2018-06-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, configure.ac, parser.y, test/Makefile.am, explain_using_pfi_v.out,
+     explain_using_pfi_v-c.test, explain_using_pfi_v.test: Added support for
+     explaining C++11's using declarations.
+   * explain_it.test: Fixed test.
    * errors.c, parser.y: Put keywords in quotes in error messages.
    * cdecl.1: Now using .BR more consistently.
    * errors.c, parser.y: Now using "not supported in" rather than "illegal in".
