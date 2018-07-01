@@ -282,6 +282,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_e.test \
 	tests/explain_ea2i.test \
 	tests/explain_f_pi.test \
+	tests/explain_fac_v.test \
 	tests/explain_facs3_v.test \
 	tests/explain_facv_v.test \
 	tests/explain_fas3_v.test \
@@ -747,6 +748,7 @@ TESTS+=	tests/explain_a.test \
 	tests/explain_tf_v.test \
 	tests/explain_uf_v.test \
 	tests/explain_ui.test \
+	tests/explain_using_a3i.test \
 	tests/explain_using_pfi_v.test \
 	tests/explain_voyf.test \
 	tests/explain_xf_v.test \

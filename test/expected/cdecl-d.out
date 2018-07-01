@@ -314,7 +314,7 @@ arg_list_c ::= arg_list_c ',' arg_c = {
       type = "int" (0x100)
     }
   ],
-  cast_opt_c = {
+  arg_c = {
     id = 72,
     kind = "built-in type",
     depth = 0,

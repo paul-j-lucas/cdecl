@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 20
+%expect 23
 
 %{
 /** @endcond */
@@ -2605,11 +2605,11 @@ cast2_c
   ;
 
 array_cast_c
-  : /* type */ cast2_c arg_array_size_c
+  : /* type */ cast_opt_c arg_array_size_c
     {
-      DUMP_START( "array_cast_c", "cast2_c array_size_c" );
+      DUMP_START( "array_cast_c", "cast_opt_c array_size_c" );
       DUMP_AST( "(type_ast_c)", type_peek() );
-      DUMP_AST( "cast2_c", $1.ast );
+      DUMP_AST( "cast_opt_c", $1.ast );
       if ( $1.target_ast != NULL )
         DUMP_AST( "target_ast", $1.target_ast );
       DUMP_AST( "arg_array_size_c", $2 );
@@ -2620,7 +2620,8 @@ array_cast_c
         $$.ast = $1.ast;
         $$.target_ast = c_ast_add_array( $1.target_ast, $2 );
       } else {
-        $$.ast = c_ast_add_array( $1.ast, $2 );
+        c_ast_t *const ast = $1.ast != NULL ? $1.ast : type_peek();
+        $$.ast = c_ast_add_array( ast, $2 );
         $$.target_ast = NULL;
       }
 
