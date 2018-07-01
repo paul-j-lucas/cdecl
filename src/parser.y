@@ -235,7 +235,7 @@ static inline void qualifier_pop( void ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Cleans up parser data.
+ * Cleans up parser data at program termination.
  */
 void parser_cleanup( void ) {
   slist_free( &ast_typedef_list, (slist_data_free_fn_t)&c_ast_free );
@@ -284,7 +284,7 @@ static bool _Noreturn_ok( c_loc_t const *loc ) {
 }
 
 /**
- * Cleans-up parser data.
+ * Cleans-up parser data after each parse.
  *
  * @param hard_reset If `true`, does a "hard" reset that currently resets the
  * EOF flag of the lexer.  This should be `true` if an error occurs and
