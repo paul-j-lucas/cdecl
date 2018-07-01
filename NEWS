@@ -10,6 +10,14 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 4.6.1
+
+** Fixed explaining of unnamed array function arguments
+Explaining unnamed array function arguments like:
+    void f(char[])
+now works.
+
+
 * Changes in Cdecl 4.6
 
 ** Explain using declarations
