@@ -1,3 +1,18 @@
+2018-07-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: Updated NEWS.
+   * configure.ac, parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d.out,
+     explain_fac_v.out, explain_using_a3i.out, explain_fac_v.test,
+     explain_using_a3i.test: Fixed parsing of unnamed function array arguments,
+     e.g., void f(char[]).
+   * parser.y: Fixed arg_list_c debug printing for arc_c.
+   * parser.y: Additional use of c_ast_set_name().
+   * parser.y: show NAME now includes "using" when C++11 or later.
+   * parser.y: Fixed keyword order in error message when defining an existing
+     type name with a different type.
+   * parser.y: Made comments for parser_cleanup() and parse_cleanup() more
+     explicit.
+
 2018-06-30  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac, parser.y, test/Makefile.am, explain_using_pfi_v.out,
