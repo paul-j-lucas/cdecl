@@ -1666,8 +1666,7 @@ var_decl_english
       }
 
       $$ = $3;
-      assert( $$.ast->name == NULL );
-      $$.ast->name = $1;
+      c_ast_set_name( $$.ast, $1 );
 
       DUMP_AST( "var_decl_english", $$.ast );
       DUMP_END();
