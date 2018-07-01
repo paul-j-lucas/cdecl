@@ -1,3 +1,55 @@
+2018-06-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * errors.c, parser.y: Put keywords in quotes in error messages.
+   * cdecl.1: Now using .BR more consistently.
+   * errors.c, parser.y: Now using "not supported in" rather than "illegal in".
+   * c_lang.h, errors.c, parser.y, set.c: Added C_LANG_NAME().
+   * c_ast.c, c_ast.h, c_ast_util.c, c_typedef.c, c_typedef.h, debug.c,
+     english.c, gibberish.c, parser.y: Removed c_typedef::type_name -- not
+     needed.
+
+2018-06-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_ast_util.c,
+     c_keyword.c, cdecl.c, help.c, literals.c, literals.h, misc.h, parser.y,
+     typedefs.h, test/Makefile.am, config_using_i.cdeclrc, help-c++.out,
+     help-c.out, using_config_i.out, using_fi_v_show_f.out, using_i.out,
+     using_i_declare_i.out, using_i_explain_i.out, using_i_int_least32_t.out,
+     using_ai.test, using_c_int_least32_t.test, using_config_i.test,
+     using_ei.test, using_fi_v_show_f.test, using_gi.test, using_i-c.test,
+     using_i.test, using_i_declare_i.test, using_i_explain_i.test,
+     using_i_int_least32_t.test, using_si.test: Added support for C++11 using
+     declarations.
+
+2018-05-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, arg-nonnull.h, c++defs.h, errno.in.h, getdelim.c,
+     getline.c, getopt-cdefs.in.h, getopt-core.h, getopt-ext.h,
+     getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c,
+     getopt_int.h, gettext.h, limits.in.h, stdarg.in.h, stdbool.in.h,
+     stddef.in.h, stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h, strsep.c,
+     sys_types.in.h, sysexits.in.h, unistd.in.h, warn-on-use.h, 00gnulib.m4,
+     absolute-header.m4, errno_h.m4, extensions.m4, extern-inline.m4,
+     getdelim.m4, getline.m4, getopt.m4, gnulib-cache.m4, gnulib-common.m4,
+     gnulib-comp.m4, gnulib-tool.m4, include_next.m4, limits-h.m4, longlong.m4,
+     multiarch.m4, nocrash.m4, off_t.m4, onceonly.m4, ssize_t.m4, stdarg.m4,
+     stdbool.m4, stddef_h.m4, stdint.m4, stdio_h.m4, stdlib_h.m4, string_h.m4,
+     strsep.m4, sys_types_h.m4, sysexits.m4, unistd_h.m4, warn-on-use.m4,
+     wchar_t.m4, wint_t.m4: Updated GNUlib.
+
+2018-04-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * run_test.sh: Made color output match standard test-driver.
+
+2018-03-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Replaced non-bool use of ! with explicit checks.
+
+2018-03-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: Added 4.4.3 news.
+   * configure.ac: Changed version to 4.4.3.
+
 2018-03-12  Paul J. Lucas <paul@lucasmail.org>
 
    * red_black.c: RB_BLACK is now int 0.
