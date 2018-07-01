@@ -1,6 +1,6 @@
 Cdecl NEWS -- history of user-visible changes.
 
-Copyright (C) 2017  Paul J. Lucas, et al.
+Copyright (C) 2018  Paul J. Lucas, et al.
 See the end of the file for license conditions.
 
 Note: over its 30+ year history, cdecl has never had good version numbering.
@@ -9,6 +9,12 @@ version's author is given instead.  For the full (known) list of authors along
 with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
+
+* Changes in Cdecl 4.6
+
+** Explain using declarations
+Added support for explaining C++11's "using" declarations.
+
 
 * Changes in Cdecl 4.5
 

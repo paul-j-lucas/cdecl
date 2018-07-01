@@ -665,6 +665,7 @@ command
   | explain_declaration_c
   | explain_cast_c
   | explain_new_style_cast_c
+  | explain_using_declaration_c
   | help_command
   | set_command
   | show_command
@@ -715,7 +716,6 @@ cast_english
       DUMP_END();
 
       bool ok = false;
-
       if ( opt_lang < LANG_CPP_11 ) {
         print_error( &@1, "%s not supported in %s", $1, C_LANG_NAME() );
       }
@@ -881,12 +881,9 @@ define_english
                 c_type_add( &$5.ast->type, $4, &@4 ) &&
                 c_ast_check( $5.ast, CHECK_DECL );
 
-      //
-      // Once the semantic checks pass, remove the T_TYPEDEF.
-      //
-      (void)c_ast_take_typedef( $5.ast );
-
       if ( ok ) {
+        // Once the semantic checks pass, remove the T_TYPEDEF.
+        (void)c_ast_take_typedef( $5.ast );
         c_ast_set_name( $5.ast, $2 );
         if ( c_typedef_add( $5.ast ) ) {
           //
@@ -1028,7 +1025,6 @@ explain_new_style_cast_c
       DUMP_END();
 
       bool ok = false;
-
       if ( opt_lang < LANG_CPP_MIN ) {
         print_error( &@2, "%s_cast not supported in %s", $2, C_LANG_NAME() );
       }
@@ -1042,6 +1038,55 @@ explain_new_style_cast_c
       }
 
       FREE( $9 );
+      if ( !ok )
+        PARSE_ABORT();
+    }
+  ;
+
+explain_using_declaration_c
+  : explain_c Y_USING name_expected equals_expected type_ast_c
+    {
+      // see comment in define_english about T_TYPEDEF
+      C_TYPE_ADD( &$5.ast->type, T_TYPEDEF, @5 );
+      type_push( $5.ast );
+    }
+    cast_opt_c Y_END
+    {
+      type_pop();
+
+      DUMP_START( "explain_using_declaration_c",
+                  "EXPLAIN USING NAME = type_ast_c cast_opt_c" );
+      DUMP_NAME( "NAME", $3 );
+      DUMP_AST( "type_ast_c", $5.ast );
+      DUMP_AST( "cast_opt_c", $7.ast );
+      DUMP_END();
+
+      //
+      // Using declarations are supported only in C++11 and later.
+      //
+      // This check has to be done now in the parser rather than later in the
+      // AST because using declarations are treated like typedef declarations
+      // and the AST has no "memory" that such a declaration was a using
+      // declaration.
+      //
+      bool ok = false;
+      if ( opt_lang < LANG_CPP_11 ) {
+        print_error( &@2,
+          "\"%s\" not supported in %s", L_USING, C_LANG_NAME()
+        );
+      }
+      else {
+        c_ast_t *const ast = c_ast_patch_placeholder( $5.ast, $7.ast );
+        if ( (ok = c_ast_check( ast, CHECK_DECL )) ) {
+          // Once the semantic checks pass, remove the T_TYPEDEF.
+          (void)c_ast_take_typedef( ast );
+          FPRINTF( fout, "%s %s %s %s ", L_DECLARE, $3, L_AS, L_TYPE );
+          c_ast_english( ast, fout );
+          FPUTC( '\n', fout );
+        }
+      }
+
+      FREE( $3 );
       if ( !ok )
         PARSE_ABORT();
     }

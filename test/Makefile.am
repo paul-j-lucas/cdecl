@@ -432,6 +432,7 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_uc32.test \
 	tests/explain_ud.test \
 	tests/explain_uf.test \
+	tests/explain_using_pfi_v-c.test \
 	tests/explain_uv.test \
 	tests/explain_uw.test \
 	tests/explain_v.test \
@@ -746,6 +747,7 @@ TESTS+=	tests/explain_a.test \
 	tests/explain_tf_v.test \
 	tests/explain_uf_v.test \
 	tests/explain_ui.test \
+	tests/explain_using_pfi_v.test \
 	tests/explain_voyf.test \
 	tests/explain_xf_v.test \
 	tests/explain_xff_v.test \
