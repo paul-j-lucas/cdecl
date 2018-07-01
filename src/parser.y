@@ -1153,7 +1153,17 @@ show_type_command
 
   | Y_SHOW Y_NAME Y_END
     {
-      print_error( &@2, "\"%s\": not defined as type (typedef)", $2 );
+      if ( opt_lang < LANG_CPP_11 ) {
+        print_error( &@2,
+          "\"%s\": not defined as type via %s or %s",
+          $2, L_DEFINE, L_TYPEDEF
+        );
+      } else {
+        print_error( &@2,
+          "\"%s\": not defined as type via %s, %s, or %s",
+          $2, L_DEFINE, L_TYPEDEF, L_USING
+        );
+      }
       FREE( $2 );
       PARSE_ABORT();
     }
