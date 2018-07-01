@@ -941,9 +941,9 @@ define_english
       c_typedef_t const *const found = c_typedef_find( $2->ast->name );
       assert( found != NULL );
       if ( !c_ast_equiv( found->ast, $5.ast ) ) {
-        print_error( &@5,
+        print_error( &@4,
           "\"%s\": \"%s\" redefinition with different type",
-          L_TYPEDEF, $2->ast->name
+          $2->ast->name, L_TYPEDEF
         );
         PARSE_ABORT();
       }
