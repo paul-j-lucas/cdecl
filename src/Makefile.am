@@ -61,6 +61,10 @@ if WITH_READLINE
 cdecl_SOURCES += autocomplete.c
 endif
 
+parser.output: parser.y
+	bison -v $<
+	@rm -f parser.tab.c
+
 install-exec-hook:
 	cd "$(DESTDIR)$(bindir)" && $(LN_S) cdecl c++decl
 
