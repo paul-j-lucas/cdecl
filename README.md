@@ -41,52 +41,62 @@ most notably:
   C++14,
   and
   C++17.
-* Support for standard C99 types
+* Support for C89
+  `const`,
+  `restrict`,
+  and
+  `volatile`
+  declarations.
+* Support for the standard C95 type
+  `wchar_t`.
+* Support for the standard C99 types
+  `_Bool`,
+  `_Complex`,
+  `_Imaginary`,
   `int8_t`,
   `int16_t`,
   `ptrdiff_t`,
   `size_t`,
   etc.
-* Support for C11 and C++11 types
-  `bool`,
-  `char16_t`,
-  `char32_t`,
-  `_Complex`,
-  `_Imaginary`,
-  `restrict`,
-  `thread_local`,
+* Support for C99
+  `static`,
+  type-qualified,
   and
-  `wchar_t`.
-* Support for standard C11 atomic types
+  variable length array
+  function arguments.
+* Support for the standard C11 atomic types
   `atomic_bool`,
   `atomic_char`,
   etc.
+* Support for the standard C11 and C++11 types
+  `char16_t`,
+  `char32_t`,
+  and
+  `thread_local`.
 * Support for `inline` function and variable declarations.
 * Support for `typedef` declarations.
-* Support for `static`, type-qualified, and variable length array
-  function arguments in C.
 * Support for variadic function arguments.
+* Support for C++
+  `mutable` data members,
+  new-style casts,
+  `throw`,
+  and
+  `friend`,
+  `virtual`,
+  and
+  pure `virtual`
+  member function declarations.
 * Support for C++11
   `constexpr`,
   `enum class`,
-  `mutable`,
-  new-style casts,
-  `noexcept`,
-  rvalue references,
-  `throw`,
-  `using` (as a `typedef` synonym),
-  and
-  the function trailing return-type syntax.
-* Support for
-  `const`,
   `final`,
-  `friend`,
+  `noexcept`,
   `override`,
-  `volatile`,
-  `virtual`,
-  pure `virtual`,
-  and ref-qualified
-  C++ member function declarations.
+  rvalue references,
+  `using` (as a `typedef` synonym),
+  the function trailing return-type syntax,
+  and
+  ref-qualified member function declarations.
 * Support for C++
   `[[carries_dependency]]`,
   `[[deprecated]]`,
