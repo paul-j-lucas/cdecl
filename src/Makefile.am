@@ -62,7 +62,7 @@ cdecl_SOURCES += autocomplete.c
 endif
 
 parser.output: parser.y
-	bison -v $<
+	bison -v --report=all $<
 	@rm -f parser.tab.c
 
 install-exec-hook:
