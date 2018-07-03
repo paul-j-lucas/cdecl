@@ -2432,7 +2432,6 @@ typedef_type_ast_c
   : Y_TYPEDEF_TYPE
     {
       DUMP_START( "typedef_type_ast_c", "Y_TYPEDEF_TYPE" );
-      DUMP_NAME( "type_name", $1->ast->name );
       DUMP_AST( "type_ast", $1->ast );
 
       $$.ast = C_AST_NEW( K_TYPEDEF, &@$ );
