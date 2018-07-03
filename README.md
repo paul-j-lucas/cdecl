@@ -74,6 +74,7 @@ most notably:
   `noexcept`,
   rvalue references,
   `throw`,
+  `using` (as a `typedef` synonym),
   and
   the function trailing return-type syntax.
 * Support for
