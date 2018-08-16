@@ -195,6 +195,7 @@ static void c_typedef_parse_builtins( char const *const types[] ) {
   for ( char const *const *ptype = types; *ptype != NULL; ++ptype ) {
     bool const ok = parse_string( *ptype, 0 );
     assert( ok );
+    (void)ok;
   } // for
 }
 
