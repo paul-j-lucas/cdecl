@@ -53,6 +53,18 @@ struct color_cap {
 };
 typedef struct color_cap color_cap_t;
 
+// extern constant definitions
+char const  COLORS_DEFAULT[] =
+  "caret="        SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP
+  "error="        SGR_FG_RED    SGR_SEP SGR_BOLD  SGR_CAP_SEP
+  "HELP-keyword="                       SGR_BOLD  SGR_CAP_SEP
+  "HELP-nonterm=" SGR_FG_CYAN                     SGR_CAP_SEP
+  "HELP-punct="   SGR_FG_BLACK  SGR_SEP SGR_BOLD  SGR_CAP_SEP
+  "HELP-title="   SGR_FG_BLUE   SGR_SEP SGR_BOLD  SGR_CAP_SEP
+  "locus="                              SGR_BOLD  SGR_CAP_SEP
+  "PROMPT="       SGR_FG_GREEN                    SGR_CAP_SEP
+  "warning="      SGR_FG_YELLOW SGR_SEP SGR_BOLD  SGR_CAP_SEP;
+
 // extern variable definitions
 bool        colorize;
 char const *sgr_caret;

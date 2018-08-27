@@ -78,18 +78,6 @@
 /** When to colorize default. */
 #define COLOR_WHEN_DEFAULT  COLOR_NOT_FILE
 
-/** The default colors. */
-#define COLORS_DEFAULT                                        \
-  "caret="        SGR_FG_GREEN  SGR_SEP SGR_BOLD  SGR_CAP_SEP \
-  "error="        SGR_FG_RED    SGR_SEP SGR_BOLD  SGR_CAP_SEP \
-  "HELP-keyword="                       SGR_BOLD  SGR_CAP_SEP \
-  "HELP-nonterm=" SGR_FG_CYAN                     SGR_CAP_SEP \
-  "HELP-punct="   SGR_FG_BLACK  SGR_SEP SGR_BOLD  SGR_CAP_SEP \
-  "HELP-title="   SGR_FG_BLUE   SGR_SEP SGR_BOLD  SGR_CAP_SEP \
-  "locus="                              SGR_BOLD  SGR_CAP_SEP \
-  "PROMPT="       SGR_FG_GREEN                    SGR_CAP_SEP \
-  "warning="      SGR_FG_YELLOW SGR_SEP SGR_BOLD  SGR_CAP_SEP
-
 /**
  * Starts printing in the predefined \a COLOR.
  *
@@ -142,6 +130,9 @@ enum color_when {
   COLOR_ALWAYS                          ///< Always colorize.
 };
 typedef enum color_when color_when_t;
+
+// extern constants
+extern char const   COLORS_DEFAULT[];   ///< Default colors.
 
 // extern variables
 extern bool         colorize;           ///< Colorize diagnostics?
