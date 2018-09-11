@@ -15,8 +15,8 @@ with their complete changes, see the AUTHORS file.
 ** Added more predefined typedefs
 More predefined typedefs were added: blkcnt_t, blksize_t, clockid_t, clock_t,
 dev_t, errno_t, FILE, fpos_t, gid_t, in_addr_t, ino_t, in_port_t, mbstate_t,
-mode_t, nlink_t, off_t, pid_t, rlim_t, sa_family_t, socklen_t, suseconds_t,
-time_t, uid_t, useconds_t, and wint_t.
+mode_t, nlink_t, off_t, pid_t, rlim_t, rsize_t, sa_family_t, socklen_t,
+suseconds_t, time_t, uid_t, useconds_t, and wint_t.
 
 
 * Changes in Cdecl 4.6.1
