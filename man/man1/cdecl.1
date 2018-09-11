@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "August 16, 2018" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "September 10, 2018" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -782,6 +782,7 @@ option is specified):
 .P
 .RS 4
 \f(CWptrdiff_t\fP,
+\f(CWrsize_t\fP,
 \f(CWsize_t\fP,
 \f(CWssize_t\fP
 .br
@@ -871,7 +872,36 @@ option is specified):
 \f(CWatomic_uint_least16_t\fP,
 .br
 \f(CWatomic_uint_least32_t\fP,
-\f(CWatomic_uint_least64_t\fP
+\f(CWatomic_uint_least64_t\fP,
+.P
+\f(CWblkcnt_t\fP,
+\f(CWblksize_t\fP,
+\f(CWdev_t\fP,
+\f(CWfpos_t\fP,
+\f(CWino_t\fP,
+\f(CWmbstate_t\fP,
+\f(CWmode_t\fP,
+\f(CWnlink_t\fP,
+\f(CWoff_t\fP,
+.br
+\f(CWclock_t\fP,
+\f(CWclockid_t\fP,
+\f(CWtime_t\fP,
+\f(CWsuseconds_t\fP,
+\f(CWuseconds_t\fP,
+.br
+\f(CWerrno_t\fP,
+\f(CWFILE\fP,
+\f(CWgid_t\fP,
+\f(CWpid_t\fP,
+\f(CWrlim_t\fP,
+\f(CWuid_t\fP,
+\f(CWwint_t\fP,
+.br
+\f(CWin_addr_t\fP,
+\f(CWin_port_t\fP,
+\f(CWsa_family_t\fP,
+\f(CWsocklen_t\fP
 .RE
 .SS Set Options
 The

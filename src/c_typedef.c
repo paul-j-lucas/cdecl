@@ -65,6 +65,7 @@ static bool       user_defined;         ///< Are new `typedef`s used-defined?
  */
 static char const *const TYPEDEFS_STDINT_H[] = {
   "typedef          long   ptrdiff_t",
+  "typedef unsigned long  rsize_t",     // C11
   "typedef          long  ssize_t",
   "typedef unsigned long   size_t",
 
@@ -150,6 +151,45 @@ static char const *const TYPEDEFS_STDATOMIC_H[] = {
   "typedef _Atomic uint_least16_t     atomic_uint_least16_t",
   "typedef _Atomic uint_least32_t     atomic_uint_least32_t",
   "typedef _Atomic uint_least64_t     atomic_uint_least64_t",
+
+  NULL
+};
+
+/**
+ * Miscellaneous standard types.
+ *
+ * @hideinitializer
+ */
+static char const *const TYPEDEFS_MISC[] = {
+  "typedef  int32_t         blkcnt_t",
+  "typedef  int32_t         blksize_t",
+  "typedef  int32_t         dev_t",
+  "typedef struct __FILE    FILE",
+  "typedef struct __fpos    fpos_t",
+  "typedef  int32_t         ino_t",
+  "typedef struct __mbstate mbstate_t",
+  "typedef  int32_t         mode_t",
+  "typedef uint32_t         nlink_t",
+  "typedef  int64_t         off_t",
+
+  "typedef  long            clock_t",
+  "typedef  long            clockid_t",
+  "typedef  int64_t         time_t",
+  "typedef  int64_t         suseconds_t",
+  "typedef uint32_t         useconds_t",
+
+  "typedef uint32_t         gid_t",
+  "typedef  int32_t         pid_t",
+  "typedef uint32_t         uid_t",
+
+  "typedef uint32_t         in_addr_t",
+  "typedef uint16_t         in_port_t",
+  "typedef uint32_t         sa_family_t",
+  "typedef uint32_t         socklen_t",
+
+  "typedef  int             errno_t",
+  "typedef uint32_t         rlim_t",
+  "typedef  int             wint_t",
 
   NULL
 };
@@ -286,6 +326,7 @@ void c_typedef_init( void ) {
 
     c_typedef_parse_builtins( TYPEDEFS_STDINT_H );    // must go first
     c_typedef_parse_builtins( TYPEDEFS_STDATOMIC_H );
+    c_typedef_parse_builtins( TYPEDEFS_MISC );
 
 #ifdef ENABLE_CDECL_DEBUG
     opt_debug = prev_debug;

@@ -1,3 +1,4 @@
+define FILE as struct __FILE
 define Int as int
 define atomic_bool as _Atomic bool
 define atomic_char as _Atomic char
@@ -36,6 +37,17 @@ define atomic_ullong as _Atomic unsigned long long
 define atomic_ulong as _Atomic unsigned long
 define atomic_ushort as _Atomic unsigned short
 define atomic_wchar_t as _Atomic wchar_t
+define blkcnt_t as int32_t
+define blksize_t as int32_t
+define clock_t as long
+define clockid_t as long
+define dev_t as int32_t
+define errno_t as int
+define fpos_t as struct __fpos
+define gid_t as uint32_t
+define in_addr_t as uint32_t
+define in_port_t as uint16_t
+define ino_t as int32_t
 define int16_t as short
 define int32_t as int
 define int64_t as long
@@ -50,9 +62,21 @@ define int_least64_t as long
 define int_least8_t as char
 define intmax_t as long
 define intptr_t as long
+define mbstate_t as struct __mbstate
+define mode_t as int32_t
+define nlink_t as uint32_t
+define off_t as int64_t
+define pid_t as int32_t
 define ptrdiff_t as long
+define rlim_t as uint32_t
+define rsize_t as unsigned long
+define sa_family_t as uint32_t
 define size_t as unsigned long
+define socklen_t as uint32_t
 define ssize_t as long
+define suseconds_t as int64_t
+define time_t as int64_t
+define uid_t as uint32_t
 define uint16_t as unsigned short
 define uint32_t as unsigned
 define uint64_t as unsigned long
@@ -67,3 +91,5 @@ define uint_least64_t as unsigned long
 define uint_least8_t as unsigned char
 define uintmax_t as unsigned long
 define uintptr_t as unsigned long
+define useconds_t as uint32_t
+define wint_t as int
