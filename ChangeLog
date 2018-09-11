@@ -1,3 +1,33 @@
+2018-09-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
+     show_all_types.out, show_predefined_types.out: Added more predefined
+     types.
+
+2018-08-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * color.c, color.h: Made COLORS_DEFAULT a C constant.
+
+2018-08-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c: Suppressing warning when asserts not compiled in.
+   * cdecl.1: s/eithter/either/
+
+2018-08-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, unistd.in.h, warn-on-use.h, extern-inline.m4,
+     gnulib-cache.m4, gnulib-common.m4, warn-on-use.m4: Updated Gnulib.
+
+2018-07-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: Added --report=all option.
+
+2018-07-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Don't need DUMP_NAME() in typedef_type_ast_c.
+   * cdecl.1: Added "using" to what is supported for C++11.
+   * src/Makefile.am: Added rule to make parser.output.
+
 2018-07-01  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS: Updated NEWS.
