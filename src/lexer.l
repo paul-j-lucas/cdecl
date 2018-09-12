@@ -377,7 +377,7 @@ void lexer_reset( bool hard_reset ) {
 
 %}
 
-A             [A-Za-z_]
+letter        [A-Za-z_]
 az            [a-z]
 B             [01]
 O             [0-7]
@@ -388,14 +388,14 @@ S             [ \f\r\t\v]
 cknr_name     ([cC][kK]&[rR])|([kK]&[rR][cC]?)
 cxx_name      [cC]"++"({D}{D})?
 hyphenated    {az}+-{az}+
-identifier    {A}({A}|{D})*
+identifier    {letter}({letter}|{D})*
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
 lang_name     {cknr_name}|{cxx_name}
 
-binary        0[bB]{B}+{int_suffix}?
-octal         0{O}*{int_suffix}?
-decimal       [1-9]{D}*{int_suffix}?
-hexadecimal   0[xX]{H}+{int_suffix}?
+bin_int       0[bB]{B}+{int_suffix}?
+oct_int       0{O}*{int_suffix}?
+dec_int       [1-9]{D}*{int_suffix}?
+hex_int       0[xX]{H}+{int_suffix}?
 
 %%
 
@@ -497,10 +497,10 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 return Y_LANG_NAME;
               }
 
-{binary}      { SET_TOKEN; yylval.number = parse_int(  2 ); return Y_NUMBER; }
-{octal}       { SET_TOKEN; yylval.number = parse_int(  8 ); return Y_NUMBER; }
-{decimal}     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
-{hexadecimal} { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
+{bin_int}     { SET_TOKEN; yylval.number = parse_int(  2 ); return Y_NUMBER; }
+{oct_int}     { SET_TOKEN; yylval.number = parse_int(  8 ); return Y_NUMBER; }
+{dec_int}     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
+{hex_int}     { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
 "&&"          { SET_TOKEN; return Y_2AMPERSAND; }
 "->"          { SET_TOKEN; return Y_ARROW; }
