@@ -10,6 +10,16 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 4.8
+
+** Show command improvement
+The show command can now show the definition of a type in English (same as
+before, but now the default) or in gibberish as a typedef (new, optional).
+
+Note also that the trailing "types" keyword has been removed from the command:
+it wasn't needed.
+
+
 * Changes in Cdecl 4.7
 
 ** Added more predefined typedefs

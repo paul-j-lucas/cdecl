@@ -56,7 +56,6 @@ char const L_RVALUE[]               = "rvalue";
 char const L_SET[]                  = "set";
 char const L_SHOW[]                 = "show";
 char const L_TO[]                   = "to";
-char const L_TYPES[]                = "types";
 char const L_USER[]                 = "user";
 char const L_VECTOR[]               = "vector";
 

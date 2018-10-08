@@ -561,10 +561,14 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 # C show tests
 # ============
 #
-TESTS+=	tests/show_all_types.test \
+TESTS+=	tests/show_all.test \
+	tests/show_all_typedef.test
 	tests/show_int8_t.test \
-	tests/show_predefined_types.test \
-	tests/show_user_types.test
+	tests/show_int8_t_typedef.test \
+	tests/show_predefined.test \
+	tests/show_predefined_typedef.test \
+	tests/show_user.test \
+	tests/show_user_typedef.test
 
 #
 # C show error tests

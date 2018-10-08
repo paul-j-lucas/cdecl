@@ -58,7 +58,6 @@ extern char const L_RETURNING[];
 extern char const L_RVALUE[];
 extern char const L_SET[];
 extern char const L_SHOW[];
-extern char const L_TYPES[];
 extern char const L_TO[];
 extern char const L_USER[];
 extern char const L_VECTOR[];               // synonym for "array"

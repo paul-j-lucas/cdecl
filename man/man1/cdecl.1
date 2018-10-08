@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "September 10, 2018" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "October 8, 2018" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -532,18 +532,24 @@ if not,
 it's equivalent to the second form
 that prints the current value of all options.
 .TP
-.BR show " \f2name\fP" "" " | " show " { " all " | " predefined " | " user " } " types
-In the first form,
-shows the definition for a previously defined type
+.BR show " { " \f2name\fP " | " all " | " predefined " | " user " } [" typedef ]
+Shows the definition for a previously defined type
 (via
 .BR define ,
 .BR typedef ,
 or
-.BR using ).
-In the second form,
-shows one of
+.BR using )
+having
+.IR name ;
+or shows
 all, predefined-only, or user-defined-only
 types.
+By default,
+the definitions are shown in pseudo-English.
+If
+.B typedef
+is given,
+the definitions are given as \f(CWtypedef\fP declarations.
 .TP
 .BI typedef " gibberish"
 Defines a type via a C (or C++) \f(CWtypedef\fP declaration.

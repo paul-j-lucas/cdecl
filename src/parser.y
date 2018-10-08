@@ -134,6 +134,20 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Print type function signature for print_type_visitor().
+ */
+typedef void (*print_type_t)( c_typedef_t const* );
+
+/**
+ * Information for print_type_visitor().
+ */
+struct print_type_info {
+  print_type_t  print_fn;               ///< Print English or gibberish?
+  unsigned      show_which;             ///< Predefined, user, or both?
+};
+typedef struct print_type_info print_type_info_t;
+
+/**
  * Qualifier and its source location.
  */
 struct qualifier_info {
@@ -313,10 +327,24 @@ static void parse_init( void ) {
  *
  * @param type A pointer to the `c_typedef` to print.
  */
-static void print_typedef( c_typedef_t const *type ) {
+static void print_type_english( c_typedef_t const *type ) {
   assert( type != NULL );
-  FPRINTF( fout, "define %s as ", type->ast->name );
+  FPRINTF( fout, "%s %s %s ", L_DEFINE, type->ast->name, L_AS );
   c_ast_english( type->ast, fout );
+  FPUTC( '\n', fout );
+}
+
+/**
+ * Prints a `c_typedef` in gibberish.
+ *
+ * @param type A pointer to the `c_typedef` to print.
+ */
+static void print_type_gibberish( c_typedef_t const *type ) {
+  assert( type != NULL );
+  FPRINTF( fout, "%s ", L_TYPEDEF );
+  c_ast_gibberish_declare( type->ast, fout );
+  if ( opt_semicolon )
+    FPUTC( ';', fout );
   FPUTC( '\n', fout );
 }
 
@@ -328,17 +356,18 @@ static void print_typedef( c_typedef_t const *type ) {
  * of which `typedef`s to print.
  * @return Always returns `false`.
  */
-static bool print_typedef_visitor( c_typedef_t const *type, void *data ) {
+static bool print_type_visitor( c_typedef_t const *type, void *data ) {
   assert( type != NULL );
 
-  unsigned const show_which_types = REINTERPRET_CAST( unsigned, data );
+  print_type_info_t const *const pti =
+    REINTERPRET_CAST( print_type_info_t const*, data );
 
   bool const show_it = type->user_defined ?
-    (show_which_types & SHOW_USER_TYPES) != 0 :
-    (show_which_types & SHOW_PREDEFINED_TYPES) != 0;
+    (pti->show_which & SHOW_USER_TYPES) != 0 :
+    (pti->show_which & SHOW_PREDEFINED_TYPES) != 0;
 
   if ( show_it )
-    print_typedef( type );
+    (*pti->print_fn)( type );
   return false;
 }
 
@@ -630,6 +659,7 @@ static void yyerror( char const *msg ) {
 %type   <name>      set_option
 %type   <bitmask>   show_which_types_opt
 %type   <type>      static_type_opt
+%type   <bitmask>   typedef_opt
 
 /*
  * Bison %destructors.  We don't use the <identifier> syntax because older
@@ -1146,12 +1176,15 @@ show_command
   ;
 
 show_type_command
-  : Y_SHOW Y_TYPEDEF_TYPE Y_END
+  : Y_SHOW Y_TYPEDEF_TYPE typedef_opt Y_END
     {
-      print_typedef( $2 );
+      if ( $3 )
+        print_type_gibberish( $2 );
+      else
+        print_type_english( $2 );
     }
 
-  | Y_SHOW Y_NAME Y_END
+  | Y_SHOW Y_NAME typedef_opt Y_END
     {
       if ( opt_lang < LANG_CPP_11 ) {
         print_error( &@2,
@@ -1170,10 +1203,12 @@ show_type_command
   ;
 
 show_types_command
-  : Y_SHOW show_which_types_opt types_expected Y_END
+  : Y_SHOW show_which_types_opt typedef_opt Y_END
     {
-      void *const data = REINTERPRET_CAST( void*, $2 );
-      (void)c_typedef_visit( &print_typedef_visitor, data );
+      print_type_info_t pti;
+      pti.print_fn = $3 ? &print_type_gibberish : &print_type_english;
+      pti.show_which = $2;
+      (void)c_typedef_visit( &print_type_visitor, &pti );
     }
   ;
 
@@ -2963,12 +2998,9 @@ to_expected
     }
   ;
 
-types_expected
-  : Y_TYPES
-  | error
-    {
-      ELABORATE_ERROR( "\"%s\" expected", L_TYPES );
-    }
+typedef_opt
+  : /* empty */                   { $$ = false; }
+  | Y_TYPEDEF                     { $$ = true; }
   ;
 
 virtual_expected

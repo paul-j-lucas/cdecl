@@ -3,7 +3,7 @@ command:
   explain <gibberish>        | declare <name> as <english>
   cast <name> into <english>
   define <name> as <english> | typedef <gibberish>
-  show { <name> | [all | predefined | user] types }
+  show { <name> | all | predefined | user } [typedef]
   set [options]              | help | ?            | exit | quit | q
 english:
   <storage>* array [[static] <cv-qualifier>* {<number>|*}] of <english>

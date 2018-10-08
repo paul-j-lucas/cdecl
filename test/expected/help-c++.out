@@ -3,7 +3,7 @@ command:
   explain <gibberish>        | declare <name> as <english>
   [const | dynamic | reinterpret | static] cast <name> into <english>
   define <name> as <english> | typedef <gibberish> | using <name> = <gibberish>
-  show { <name> | [all | predefined | user] types }
+  show { <name> | all | predefined | user } [typedef]
   set [options]              | help | ?            | exit | quit | q
 english:
   <storage>* array [<number>] of <english>

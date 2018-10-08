@@ -68,7 +68,7 @@ static help_text_t const HELP_TEXT[] = {
                  "  [const | dynamic | reinterpret | static] cast <name> into <english>" },
 /*  5 |  5 */  { "  define <name> as <english> | typedef <gibberish>",
                  "  define <name> as <english> | typedef <gibberish> | using <name> = <gibberish>" },
-/*  6 |  6 */  { "  show { <name> | [all | predefined | user] types }", SAME_AS_C },
+/*  6 |  6 */  { "  show { <name> | all | predefined | user } [typedef]", SAME_AS_C },
 /*  7 |  7 */  { "  set [options]              | help | ?            | exit | quit | q", SAME_AS_C },
 /*  8 |  8 */  { "english:", SAME_AS_C },
 /*  9 |  9 */  { "  <storage>* array [[static] <cv-qualifier>* {<number>|\\*}] of <english>",
