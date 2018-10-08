@@ -176,7 +176,6 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L__THREAD_LOCAL,  C_SYN( L_THREAD_LOCAL,  true  ) },
   { L_TO,             TOKEN( Y_TO )                   },
   { L_TYPE,           C_SYN( L_TYPEDEF,       false ) },
-  { L_TYPES,          TOKEN( Y_TYPES )                },
   { L_USER,           TOKEN( Y_USER )                 },
   { L_VAR,            TOKEN( Y_VARIABLE )             },
   { L_VARARGS,        C_SYN( L_ELLIPSIS,      false ) },
