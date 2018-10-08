@@ -1,5 +1,16 @@
+2018-10-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, help.c, literals.c, literals.h, parser.y,
+     test/Makefile.am, help-c++.out, help-c.out, show_all_typedef.out,
+     show_int8_t_typedef.out, show_predefined_typedef.out,
+     show_user_typedef.out, show_all.test, show_all_typedef.test,
+     show_int8_t_typedef.test, show_predefined.test,
+     show_predefined_typedef.test, show_user.test, show_user_typedef.test: Can
+     now show types in gibberish.
+
 2018-09-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS: Added rsize_t.
    * NEWS, configure.ac, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
      show_all_types.out, show_predefined_types.out: Added more predefined
      types.
