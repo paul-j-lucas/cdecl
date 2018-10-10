@@ -367,7 +367,8 @@ void lexer_reset( bool hard_reset ) {
   }
   c_mode = MODE_ENGLISH_TO_GIBBERISH;
   input_len = input_sent = 0;
-  newline();
+  if ( lexer_token[0] == '\n' )
+    newline();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

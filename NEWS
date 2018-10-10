@@ -10,6 +10,14 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 4.8.1
+
+** Fixed ^ position
+An error in a second (or subsequent) command after a ';', e.g.:
+    typedef int Int; show foo
+now correctly positions the ^.
+
+
 * Changes in Cdecl 4.8
 
 ** Show command improvement
