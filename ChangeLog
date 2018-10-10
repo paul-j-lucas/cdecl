@@ -1,5 +1,11 @@
+2018-10-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, lexer.l: Fixed printing of ^.
+   * cdecl.1: s/given/shown/
+
 2018-10-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: Removed L_TYPES.
    * NEWS, configure.ac, cdecl.1, help.c, literals.c, literals.h, parser.y,
      test/Makefile.am, help-c++.out, help-c.out, show_all_typedef.out,
      show_int8_t_typedef.out, show_predefined_typedef.out,
