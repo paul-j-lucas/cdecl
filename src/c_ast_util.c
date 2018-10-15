@@ -187,7 +187,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
                                      c_ast_t *func ) {
   assert( ast != NULL );
   assert( func != NULL );
-  assert( func->kind & (K_BLOCK | K_FUNCTION) );
+  assert( (func->kind & (K_BLOCK | K_FUNCTION)) != K_NONE );
 
   switch ( ast->kind ) {
     case K_ARRAY:

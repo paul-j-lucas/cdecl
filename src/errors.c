@@ -130,7 +130,7 @@ static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
  */
 static bool c_ast_check_func_args( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind & (K_BLOCK | K_FUNCTION) );
+  assert( (ast->kind & (K_BLOCK | K_FUNCTION)) != K_NONE );
   assert( opt_lang != LANG_C_KNR );
 
   c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
@@ -216,7 +216,7 @@ only_void:
  */
 static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind & (K_BLOCK | K_FUNCTION) );
+  assert( (ast->kind & (K_BLOCK | K_FUNCTION)) != K_NONE );
   assert( opt_lang == LANG_C_KNR );
 
   for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
@@ -334,7 +334,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         return error_kind_not_type( ast, T_REGISTER );
       }
       if ( c_mode == MODE_GIBBERISH_TO_ENGLISH &&
-           (ast->type & T_ENUM) && (ast->type & (T_STRUCT | T_CLASS)) ) {
+           (ast->type & T_ENUM) != T_NONE &&
+           (ast->type & (T_STRUCT | T_CLASS)) != T_NONE ) {
         print_error( &ast->loc,
           "\"%s\": enum classes must just use \"enum\"",
           c_type_name_error( ast->type )

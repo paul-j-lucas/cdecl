@@ -137,7 +137,7 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
  */
 static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
-  assert( ast->kind & (K_BLOCK | K_FUNCTION) );
+  assert( (ast->kind & (K_BLOCK | K_FUNCTION)) != K_NONE );
 
   bool comma = false;
   FPUTC( '(', param->gout );
