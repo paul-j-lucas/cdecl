@@ -118,7 +118,10 @@ you can generate `configure` yourself by doing:
 
     autoreconf -fiv
 
-You will also need `flex` and `bison`
+You will also need
+[`flex`](https://github.com/westes/flex)
+and
+[`bison`](https://www.gnu.org/software/bison/)
 (`lex` and `yacc` won't do).
 Or you can download a
 [released version](https://github.com/paul-j-lucas/cdecl/releases)
@@ -126,7 +129,8 @@ that contains `configure`
 and the generated lexer and parser.
 
 In either case,
-then follow the generic installation instructions given in `INSTALL`.
+then follow the generic installation instructions given in
+[`INSTALL`](https://github.com/paul-j-lucas/cdecl/blob/master/INSTALL).
 
 ## Licensing
 
@@ -147,12 +151,15 @@ David Conrad made contributions for version 2.5 and wrote:
 > *I have no reason to believe there are any limitations on [**cdecl**'s] use,
 > and strongly believe it to be in the Public Domain.*
 
-(See the included `README-2.5.txt` for David's full comments.)
+(See the included
+[`README-2.5.txt`](https://github.com/paul-j-lucas/cdecl/blob/master/README-2.5.txt)
+for David's full comments.)
 
 Something in the Public Domain allows anyone to do whatever they want with it.
 Assuming that David is correct
 and that **cdecl** is in the Public Domain,
-I therefore am licensing **cdecl** 3.0 (and later) under the GPLv3.
+I therefore am licensing **cdecl** 3.0 (and later) under the
+[GNU General Public License, v3](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
 **Paul J. Lucas**  
 San Francisco, California, USA  
