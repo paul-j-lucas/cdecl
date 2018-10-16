@@ -1,5 +1,5 @@
-Note that cdecl-3.x has no affiliation with the cdecl.org site that, as of this
-writing, still uses cdecl 2.x.
+Note that cdecl-3.0 (and later) has no affiliation with the cdecl.org site
+that, as of this writing, still uses cdecl 2.x.
 
 Paul J. Lucas
 paul@lucasmail.org
