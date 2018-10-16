@@ -453,7 +453,7 @@ Support for noalias has been removed.
 * Changes by <unknown author>
 
 ** Hints
-For some errors, a hint about a possible fix is now printer.
+For some errors, a hint about a possible fix is now printed.
 
 ** Function arguments
 Now accepts function arguments.
