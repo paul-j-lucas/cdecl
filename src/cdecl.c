@@ -229,6 +229,24 @@ static bool parse_command_line( char const *command, int argc,
 }
 
 /**
+ * Parses a file.
+ *
+ * @param fin The FILE to read from.
+ * @return Returns `true` only upon success.
+ */
+static bool parse_file( FILE *fin ) {
+  bool ok = true;
+
+  for ( char buf[ 1024 ]; fgets( buf, sizeof buf, fin ) != NULL; ) {
+    if ( !parse_string( buf, 0 ) )
+      ok = false;
+  } // for
+  FERROR( fin );
+
+  return ok;
+}
+
+/**
  * Parses one or more files.
  *
  * @param num_files The length of \a files.
@@ -245,8 +263,8 @@ static bool parse_files( int num_files, char const *files[] ) {
       FILE *const fin = fopen( files[i], "r" );
       if ( unlikely( fin == NULL ) )
         PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", files[i], STRERROR );
-      yyrestart( fin );
-      ok = yyparse() == 0;
+      if ( !parse_file( fin ) )
+        ok = false;
       fclose( fin );
     }
   } // for
@@ -259,8 +277,7 @@ static bool parse_files( int num_files, char const *files[] ) {
  * @return Returns `true` only upon success.
  */
 static bool parse_stdin( void ) {
-  bool ok;
-
+  bool ok = true;
   is_input_a_tty = isatty( fileno( fin ) );
 
   if ( is_input_a_tty || opt_interactive ) {
@@ -270,8 +287,7 @@ static bool parse_stdin( void ) {
     for ( char *line; (line = read_input_line( prompt[0], prompt[1] )); )
       ok = parse_string( line, 0 );
   } else {
-    yyrestart( fin );
-    ok = yyparse() == 0;
+    ok = parse_file( fin );
   }
 
   is_input_a_tty = false;
@@ -334,8 +350,7 @@ static void read_conf_file( void ) {
     return;
   }
 
-  yyrestart( cin );
-  (void)yyparse();
+  (void)parse_file( cin );
   fclose( cin );
 }
 
