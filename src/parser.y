@@ -150,11 +150,11 @@ typedef struct print_type_info print_type_info_t;
 /**
  * Qualifier and its source location.
  */
-struct qualifier_info {
+struct c_qualifier {
   c_type_t  type;                       ///< E.g., `T_CONST` or `T_VOLATILE`.
   c_loc_t   loc;                        ///< Qualifier source location.
 };
-typedef struct qualifier_info qualifier_info_t;
+typedef struct c_qualifier c_qualifier_t;
 
 /**
  * Inherited attributes.
@@ -223,7 +223,7 @@ static inline void type_push( c_ast_t *ast ) {
  * @return Returns said qualifier.
  */
 static inline c_type_t qualifier_peek( void ) {
-  return SLIST_TOP( qualifier_info_t*, &in_attr.qualifier_stack )->type;
+  return SLIST_TOP( c_qualifier_t*, &in_attr.qualifier_stack )->type;
 }
 
 /**
@@ -237,7 +237,7 @@ static inline c_type_t qualifier_peek( void ) {
  * @hideinitializer
  */
 #define qualifier_peek_loc() \
-  (SLIST_TOP( qualifier_info_t*, &in_attr.qualifier_stack )->loc)
+  (SLIST_TOP( c_qualifier_t*, &in_attr.qualifier_stack )->loc)
 
 /**
  * Pops a qualifier from the qualifier inherited attribute stack and frees it.
@@ -381,10 +381,10 @@ static void qualifier_push( c_type_t qualifier, c_loc_t const *loc ) {
   assert( (qualifier & ~T_MASK_QUALIFIER) == 0 );
   assert( loc != NULL );
 
-  qualifier_info_t *const qi = MALLOC( qualifier_info_t, 1 );
-  qi->type = qualifier;
-  qi->loc = *loc;
-  slist_push( &in_attr.qualifier_stack, qi );
+  c_qualifier_t *const qual = MALLOC( c_qualifier_t, 1 );
+  qual->type = qualifier;
+  qual->loc = *loc;
+  slist_push( &in_attr.qualifier_stack, qual );
 }
 
 /**

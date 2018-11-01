@@ -43,7 +43,7 @@
 
 // extern constant definitions
 /// @hideinitializer
-c_lang_info_t const C_LANG_INFO[] = {
+c_lang_t const C_LANG[] = {
   { "ck&r",    LANG_C_KNR   },          // synonym for "knr"
   { "cknr",    LANG_C_KNR   },          // synonym for "knr"
   { "k&r",     LANG_C_KNR   },          // synonym for "knr"
@@ -70,16 +70,16 @@ c_lang_id_t c_lang_find( char const *name ) {
   assert( name != NULL );
 
   // the list is small, so linear search is good enough
-  for ( c_lang_info_t const *info = C_LANG_INFO; info->name != NULL; ++info ) {
-    if ( strcasecmp( name, info->name ) == 0 )
-      return info->lang;
+  for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
+    if ( strcasecmp( name, lang->name ) == 0 )
+      return lang->lang_id;
   } // for
 
   return LANG_NONE;
 }
 
-char const* c_lang_name( c_lang_id_t lang ) {
-  switch ( lang ) {
+char const* c_lang_name( c_lang_id_t lang_id ) {
+  switch ( lang_id ) {
     case LANG_NONE  : return "";
     case LANG_C_KNR : return "K&R C";
     case LANG_C_89  : return "C89";
@@ -92,13 +92,13 @@ char const* c_lang_name( c_lang_id_t lang ) {
     case LANG_CPP_14: return "C++14";
     case LANG_CPP_17: return "C++17";
     default:
-      INTERNAL_ERR( "\"%d\": unexpected value for lang\n", (int)lang );
+      INTERNAL_ERR( "\"%d\": unexpected value for lang\n", (int)lang_id );
   } // switch
 }
 
-void c_lang_set( c_lang_id_t lang ) {
-  assert( exactly_one_bit_set( lang ) );
-  opt_lang = lang;
+void c_lang_set( c_lang_id_t lang_id ) {
+  assert( exactly_one_bit_set( lang_id ) );
+  opt_lang = lang_id;
 
   bool const prompt_enabled =
     prompt[0] == NULL       // first time: cdecl_prompt_init() not called yet

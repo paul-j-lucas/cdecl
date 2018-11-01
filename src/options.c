@@ -276,22 +276,22 @@ static color_when_t parse_color_when( char const *when ) {
 static c_lang_id_t parse_lang( char const *s ) {
   size_t values_buf_size = 1;           // for trailing null
 
-  for ( c_lang_info_t const *info = C_LANG_INFO; info->name != NULL; ++info ) {
-    if ( strcasecmp( s, info->name ) == 0 )
-      return info->lang;
-    values_buf_size += strlen( info->name ) + 2 /* ", " */;
+  for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
+    if ( strcasecmp( s, lang->name ) == 0 )
+      return lang->lang_id;
+    values_buf_size += strlen( lang->name ) + 2 /* ", " */;
   } // for
 
   // name not found: construct valid name list for an error message
   char *const values_buf = (char*)free_later( MALLOC( char, values_buf_size ) );
   char *pvalues = values_buf;
-  for ( c_lang_info_t const *info = C_LANG_INFO; info->name != NULL; ++info ) {
+  for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
     if ( pvalues > values_buf ) {
       strcpy( pvalues, ", " );
       pvalues += 2;
     }
-    strcpy( pvalues, info->name );
-    pvalues += strlen( info->name );
+    strcpy( pvalues, lang->name );
+    pvalues += strlen( lang->name );
   } // for
 
   char opt_buf[ OPT_BUF_SIZE ];

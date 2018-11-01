@@ -80,7 +80,7 @@ typedef struct c_array      c_array_t;
 typedef struct c_block      c_block_t;
 typedef enum   c_check      c_check_t;
 typedef enum   c_init       c_init_t;
-typedef struct c_lang_info  c_lang_info_t;
+typedef struct c_lang       c_lang_t;
 typedef struct c_loc        c_loc_t;
 typedef struct c_builtin    c_builtin_t;
 typedef struct c_ecsu       c_ecsu_t;

@@ -67,16 +67,16 @@ typedef unsigned c_lang_id_t;
 /**
  * A mapping between a language name and its corresponding `c_lang_id_t`.
  */
-struct c_lang_info {
+struct c_lang {
   char const *name;                     ///< Language name.
-  c_lang_id_t lang;                     ///< Language bit.
+  c_lang_id_t lang_id;                  ///< Language bit.
 };
 
 /**
- * Array of `c_lang_info` for all supported languages. The last entry is
+ * Array of `c_lang` for all supported languages. The last entry is
  * `{ NULL, LANG_NONE }`.
  */
-extern c_lang_info_t const C_LANG_INFO[];
+extern c_lang_t const C_LANG[];
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -92,12 +92,12 @@ extern c_lang_info_t const C_LANG_INFO[];
 c_lang_id_t c_lang_find( char const *name );
 
 /**
- * Gets the printable name of \a lang.
+ * Gets the printable name of \a lang_id.
  *
- * @param lang The <code>\ref c_lang_id_t</code> to get the name of.
+ * @param lang_id The <code>\ref c_lang_id_t</code> to get the name of.
  * @return Returns said name.
  */
-char const* c_lang_name( c_lang_id_t lang );
+char const* c_lang_name( c_lang_id_t lang_id );
 
 /**
  * Shorthand for the common case of getting the name of the current language.
@@ -109,9 +109,9 @@ char const* c_lang_name( c_lang_id_t lang );
 /**
  * Sets the current language and the corresponding prompt.
  *
- * @param lang The language to set.
+ * @param lang_id The language to set.
  */
-void c_lang_set( c_lang_id_t lang );
+void c_lang_set( c_lang_id_t lang_id );
 
 ///////////////////////////////////////////////////////////////////////////////
 
