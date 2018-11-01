@@ -83,7 +83,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
     c_ast_find_type( nonconst_ast, V_DOWN, T_MASK_STORAGE );
 
   if ( storage_ast != NULL ) {
-    c_type_id_t const storage = storage_ast->type & T_MASK_STORAGE;
+    c_type_id_t const storage = storage_ast->type_id & T_MASK_STORAGE;
     print_error( &ast->loc,
       "can not cast into %s", c_type_name_error( storage )
     );
@@ -143,11 +143,11 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
     c_ast_t const *const arg_ast = C_AST_DATA( arg );
     switch ( arg_ast->kind ) {
       case K_BUILTIN:
-        if ( (arg_ast->type & T_AUTO_CPP_11) != T_NONE ) {
+        if ( (arg_ast->type_id & T_AUTO_CPP_11) != T_NONE ) {
           print_error( &arg_ast->loc, "arguments can not be auto" );
           return false;
         }
-        if ( (arg_ast->type & T_VOID) != T_NONE ) {
+        if ( (arg_ast->type_id & T_VOID) != T_NONE ) {
           //
           // Ordinarily, void arguments are invalid; but a single void function
           // "argument" is valid (as long as it doesn't have a name).
@@ -182,7 +182,8 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
         /* suppress warning */;
     } // switch
 
-    c_type_id_t const storage = arg_ast->type & (T_MASK_STORAGE & ~T_REGISTER);
+    c_type_id_t const storage =
+      arg_ast->type_id & (T_MASK_STORAGE & ~T_REGISTER);
     if ( storage != T_NONE ) {
       print_error( &arg_ast->loc,
         "function arguments can not be %s", c_type_name_error( storage )
@@ -266,11 +267,11 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         }
       }
 
-      if ( ast->as.array.type ) {
+      if ( ast->as.array.type_id ) {
         if ( (opt_lang & (LANG_MIN(C_99) & ~LANG_CPP_ALL)) == LANG_NONE ) {
           print_error( &ast->loc,
             "\"%s\" arrays not supported in %s",
-            c_type_name_error( ast->as.array.type ),
+            c_type_name_error( ast->as.array.type_id ),
             C_LANG_NAME()
           );
           return VISITOR_ERROR_FOUND;
@@ -278,7 +279,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         if ( !is_func_arg ) {
           print_error( &ast->loc,
             "\"%s\" arrays are illegal outside of function arguments",
-            c_type_name_error( ast->as.array.type )
+            c_type_name_error( ast->as.array.type_id )
           );
           return VISITOR_ERROR_FOUND;
         }
@@ -287,12 +288,12 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       c_ast_t const *const of_ast = ast->as.array.of_ast;
       switch ( of_ast->kind ) {
         case K_BUILTIN:
-          if ( (of_ast->type & T_VOID) != T_NONE ) {
+          if ( (of_ast->type_id & T_VOID) != T_NONE ) {
             print_error( &ast->loc, "array of void" );
             print_hint( "array of pointer to void" );
             return VISITOR_ERROR_FOUND;
           }
-          if ( (of_ast->type & T_REGISTER) != T_NONE )
+          if ( (of_ast->type_id & T_REGISTER) != T_NONE )
             return error_kind_not_type( ast, T_REGISTER );
           break;
         case K_FUNCTION:
@@ -307,19 +308,19 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
     }
 
     case K_BUILTIN:
-      if ( (ast->type & T_MASK_TYPE) == T_NONE ) {
+      if ( (ast->type_id & T_MASK_TYPE) == T_NONE ) {
         print_error( &ast->loc,
           "implicit \"int\" is illegal in %s",
           C_LANG_NAME()
         );
         return VISITOR_ERROR_FOUND;
       }
-      if ( (ast->type & T_VOID) != T_NONE && ast->parent == NULL ) {
+      if ( (ast->type_id & T_VOID) != T_NONE && ast->parent == NULL ) {
         print_error( &ast->loc, "variable of void" );
         print_hint( "pointer to void" );
         return VISITOR_ERROR_FOUND;
       }
-      if ( (ast->type & T_INLINE) != T_NONE && opt_lang < LANG_CPP_17 ) {
+      if ( (ast->type_id & T_INLINE) != T_NONE && opt_lang < LANG_CPP_17 ) {
         print_error( &ast->loc,
           "inline variables not supported in %s",
           C_LANG_NAME()
@@ -329,23 +330,23 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      if ( (ast->type & (T_STRUCT | T_UNION | T_CLASS)) != T_NONE &&
-           (ast->type & T_REGISTER) != T_NONE ) {
+      if ( (ast->type_id & (T_STRUCT | T_UNION | T_CLASS)) != T_NONE &&
+           (ast->type_id & T_REGISTER) != T_NONE ) {
         return error_kind_not_type( ast, T_REGISTER );
       }
       if ( c_mode == MODE_GIBBERISH_TO_ENGLISH &&
-           (ast->type & T_ENUM) != T_NONE &&
-           (ast->type & (T_STRUCT | T_CLASS)) != T_NONE ) {
+           (ast->type_id & T_ENUM) != T_NONE &&
+           (ast->type_id & (T_STRUCT | T_CLASS)) != T_NONE ) {
         print_error( &ast->loc,
           "\"%s\": enum classes must just use \"enum\"",
-          c_type_name_error( ast->type )
+          c_type_name_error( ast->type_id )
         );
         return VISITOR_ERROR_FOUND;
       }
       break;
 
     case K_FUNCTION:
-      if ( (ast->type & (T_REFERENCE | T_RVALUE_REFERENCE)) != T_NONE ) {
+      if ( (ast->type_id & (T_REFERENCE | T_RVALUE_REFERENCE)) != T_NONE ) {
         if ( opt_lang < LANG_CPP_11 ) {
           print_error( &ast->loc,
             "reference qualified functions not supported in %s",
@@ -353,25 +354,25 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           );
           return VISITOR_ERROR_FOUND;
         }
-        if ( (ast->type & (T_EXTERN | T_STATIC)) != T_NONE ) {
+        if ( (ast->type_id & (T_EXTERN | T_STATIC)) != T_NONE ) {
           print_error( &ast->loc,
             "reference qualified functions can not be %s",
-            c_type_name_error( ast->type & (T_EXTERN | T_STATIC) )
+            c_type_name_error( ast->type_id & (T_EXTERN | T_STATIC) )
           );
           return VISITOR_ERROR_FOUND;
         }
       }
       if ( opt_lang >= LANG_CPP_MIN ) {
-        if ( (ast->type & T_PURE_VIRTUAL) != T_NONE &&
-             (ast->type & T_VIRTUAL) == T_NONE ) {
+        if ( (ast->type_id & T_PURE_VIRTUAL) != T_NONE &&
+             (ast->type_id & T_VIRTUAL) == T_NONE ) {
           print_error( &ast->loc, "non-virtual functions can not be pure" );
           return VISITOR_ERROR_FOUND;
         }
       }
-      else if ( (ast->type & T_MASK_QUALIFIER) != T_NONE ) {
+      else if ( (ast->type_id & T_MASK_QUALIFIER) != T_NONE ) {
         print_error( &ast->loc,
           "\"%s\" functions not supported in %s",
-          c_type_name_error( ast->type & T_MASK_QUALIFIER ),
+          c_type_name_error( ast->type_id & T_MASK_QUALIFIER ),
           C_LANG_NAME()
         );
         return VISITOR_ERROR_FOUND;
@@ -379,7 +380,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       // FALLTHROUGH
 
     case K_BLOCK: {                     // Apple extension
-      tmp_type = (ast->type &
+      tmp_type = (ast->type_id &
                   (T_AUTO_C | T_BLOCK | T_MUTABLE | T_REGISTER |
                    T_THREAD_LOCAL));
       if ( tmp_type != T_NONE )
@@ -395,7 +396,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           return VISITOR_ERROR_FOUND;
         case K_BUILTIN:
           if ( opt_lang < LANG_CPP_14 ) {
-            if ( (ret_ast->type & (/*T_AUTO_C |*/ T_AUTO_CPP_11)) != T_NONE ) {
+            if ( (ret_ast->type_id & T_AUTO_CPP_11) != T_NONE ) {
               print_error( &ret_ast->loc,
                 "\"auto\" return type not supported in %s",
                C_LANG_NAME()
@@ -441,7 +442,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         );
         return VISITOR_ERROR_FOUND;
       }
-      if ( (to_ast->type & T_REGISTER) != T_NONE )
+      if ( (to_ast->type_id & T_REGISTER) != T_NONE )
         return error_kind_to_type( ast, T_REGISTER );
       break;
     }
@@ -454,9 +455,9 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       if ( opt_lang < LANG_CPP_MIN )
         return error_kind_not_supported( ast );
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
-      if ( (to_ast->type & T_REGISTER) != T_NONE )
+      if ( (to_ast->type_id & T_REGISTER) != T_NONE )
         return error_kind_to_type( ast, T_REGISTER );
-      if ( (to_ast->type & T_VOID) != T_NONE ) {
+      if ( (to_ast->type_id & T_VOID) != T_NONE ) {
         error_kind_to_type( ast, T_VOID );
         print_hint( "pointer to void" );
         return VISITOR_ERROR_FOUND;
@@ -480,16 +481,16 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   bool const is_func_arg = REINTERPRET_CAST( bool, data );
 
-  c_lang_id_t const ok_langs = c_type_check( ast->type );
+  c_lang_id_t const ok_langs = c_type_check( ast->type_id );
   if ( ok_langs != LANG_ALL ) {
     if ( ok_langs == LANG_NONE )
       print_error( &ast->loc,
-        "\"%s\" is illegal", c_type_name_error( ast->type )
+        "\"%s\" is illegal", c_type_name_error( ast->type_id )
       );
     else
       print_error( &ast->loc,
         "\"%s\" is illegal in %s",
-        c_type_name_error( ast->type ), C_LANG_NAME()
+        c_type_name_error( ast->type_id ), C_LANG_NAME()
       );
     return VISITOR_ERROR_FOUND;
   }
@@ -509,14 +510,14 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
       // FALLTHROUGH
 
     default:
-      if ( !is_func_arg && (ast->type & T_CARRIES_DEPENDENCY) != T_NONE ) {
+      if ( !is_func_arg && (ast->type_id & T_CARRIES_DEPENDENCY) != T_NONE ) {
         print_error( &ast->loc,
           "\"%s\" can only appear on functions or function arguments",
           c_type_name_error( T_CARRIES_DEPENDENCY )
         );
         return VISITOR_ERROR_FOUND;
       }
-      if ( (ast->type & T_NORETURN) != T_NONE ) {
+      if ( (ast->type_id & T_NORETURN) != T_NONE ) {
         print_error( &ast->loc,
           "\"%s\" can only appear on functions",
           c_type_name_error( T_NORETURN )
@@ -553,8 +554,8 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     case K_BLOCK:
     case K_FUNCTION: {
       c_ast_t const *const ret_ast = ast->as.func.ret_ast;
-      if ( (ast->type & T_NODISCARD) != T_NONE &&
-           (ret_ast->type & T_VOID) != T_NONE ) {
+      if ( (ast->type_id & T_NODISCARD) != T_NONE &&
+           (ret_ast->type_id & T_VOID) != T_NONE ) {
         print_warning( &ast->loc,
           "[[%s]] functions can not return void", L_NODISCARD
         );
@@ -568,7 +569,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     }
 
     case K_BUILTIN:
-      if ( (ast->type & T_REGISTER) != T_NONE && opt_lang >= LANG_CPP_11 ) {
+      if ( (ast->type_id & T_REGISTER) != T_NONE && opt_lang >= LANG_CPP_11 ) {
         print_warning( &ast->loc,
           "\"%s\" is deprecated in %s", L_REGISTER, C_LANG_NAME()
         );
@@ -592,13 +593,13 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
  * Prints an error: `<kind> can not be <type>`.
  *
  * @param ast The `c_ast` .
- * @param type The bad type.
+ * @param type_id The bad type.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
-static bool error_kind_not_type( c_ast_t const *ast, c_type_id_t type ) {
+static bool error_kind_not_type( c_ast_t const *ast, c_type_id_t type_id ) {
   assert( ast != NULL );
   print_error( &ast->loc,
-    "%s can not be %s", c_kind_name( ast->kind ), c_type_name_error( type )
+    "%s can not be %s", c_kind_name( ast->kind ), c_type_name_error( type_id )
   );
   return VISITOR_ERROR_FOUND;
 }
@@ -621,12 +622,12 @@ static bool error_kind_not_supported( c_ast_t const *ast ) {
  * Prints an error: `<kind> to <type>`.
  *
  * @param ast The `c_ast` having the bad kind.
- * @param type The bad type.
+ * @param type_id The bad type.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
-static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t type ) {
+static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
   print_error( &ast->loc,
-    "%s to %s", c_kind_name( ast->kind ), c_type_name_error( type )
+    "%s to %s", c_kind_name( ast->kind ), c_type_name_error( type_id )
   );
   return VISITOR_ERROR_FOUND;
 }

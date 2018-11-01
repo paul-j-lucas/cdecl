@@ -252,8 +252,8 @@ static c_type_id_t c_ast_take_storage( c_ast_t *ast ) {
   c_type_id_t storage = T_NONE;
   c_ast_t *const found = c_ast_find_kind( ast, V_DOWN, K_BUILTIN | K_TYPEDEF );
   if ( found != NULL ) {
-    storage = found->type & (T_MASK_ATTRIBUTE | T_MASK_STORAGE);
-    found->type &= ~(T_MASK_ATTRIBUTE | T_MASK_STORAGE);
+    storage = found->type_id & (T_MASK_ATTRIBUTE | T_MASK_STORAGE);
+    found->type_id &= ~(T_MASK_ATTRIBUTE | T_MASK_STORAGE);
   }
   return storage;
 }
@@ -264,7 +264,7 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
   assert( ast != NULL );
   c_ast_t *const rv = c_ast_add_array_impl( ast, array );
   assert( rv != NULL );
-  array->type |= c_ast_take_storage( array->as.array.of_ast );
+  array->type_id |= c_ast_take_storage( array->as.array.of_ast );
   return rv;
 }
 
@@ -274,7 +274,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func ) {
   assert( rv != NULL );
   if ( func->name == NULL )
     func->name = c_ast_take_name( ast );
-  func->type |= c_ast_take_storage( func->as.func.ret_ast );
+  func->type_id |= c_ast_take_storage( func->as.func.ret_ast );
   return rv;
 }
 
@@ -336,7 +336,7 @@ bool c_ast_take_typedef( c_ast_t *ast ) {
   assert( ast != NULL );
   c_ast_t *const found = c_ast_find_type( ast, V_DOWN, T_TYPEDEF );
   if ( found != NULL ) {
-    found->type &= ~T_TYPEDEF;
+    found->type_id &= ~T_TYPEDEF;
     return true;
   }
   return false;
@@ -356,8 +356,8 @@ bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
 
 bool c_ast_vistor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  c_type_id_t const type = REINTERPRET_CAST( c_type_id_t, data );
-  return (ast->type & type) != T_NONE;
+  c_type_id_t const type_id = REINTERPRET_CAST( c_type_id_t, data );
+  return (ast->type_id & type_id) != T_NONE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

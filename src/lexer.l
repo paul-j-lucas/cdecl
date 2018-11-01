@@ -474,7 +474,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                   //
                 }
                 if ( k != NULL ) {
-                  yylval.type = k->type;
+                  yylval.type_id = k->type_id;
                   return k->y_token;
                 }
 

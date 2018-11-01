@@ -114,7 +114,7 @@ struct c_parent {
 struct c_array {
   c_ast_t    *of_ast;                   ///< What it's an array of.
   int         size;                     ///< Array size or `C_ARRAY_*`.
-  c_type_id_t type;                     ///< E.g., `array[static const 10]`
+  c_type_id_t type_id;                  ///< E.g., `array[static const 10]`
 };
 
 /**
@@ -166,7 +166,7 @@ struct c_ast {
   c_ast_id_t    id;                     ///< Unique id (starts at 1).
   c_kind_t      kind;                   ///< Kind.
   char const   *name;                   ///< Name, if any.
-  c_type_id_t   type;                   ///< Type.
+  c_type_id_t   type_id;                ///< Type.
   c_ast_t      *parent;                 ///< Parent `c_ast` node, if any.
   c_loc_t       loc;                    ///< Source location.
 

@@ -151,7 +151,7 @@ typedef struct print_type_info print_type_info_t;
  * Qualifier and its source location.
  */
 struct c_qualifier {
-  c_type_id_t type;                     ///< E.g., `T_CONST` or `T_VOLATILE`.
+  c_type_id_t type_id;                  ///< E.g., `T_CONST` or `T_VOLATILE`.
   c_loc_t     loc;                      ///< Qualifier source location.
 };
 typedef struct c_qualifier c_qualifier_t;
@@ -223,7 +223,7 @@ static inline void type_push( c_ast_t *ast ) {
  * @return Returns said qualifier.
  */
 static inline c_type_id_t qualifier_peek( void ) {
-  return SLIST_TOP( c_qualifier_t*, &in_attr.qualifier_stack )->type;
+  return SLIST_TOP( c_qualifier_t*, &in_attr.qualifier_stack )->type_id;
 }
 
 /**
@@ -382,7 +382,7 @@ static void qualifier_push( c_type_id_t qualifier, c_loc_t const *loc ) {
   assert( loc != NULL );
 
   c_qualifier_t *const qual = MALLOC( c_qualifier_t, 1 );
-  qual->type = qualifier;
+  qual->type_id = qualifier;
   qual->loc = *loc;
   slist_push( &in_attr.qualifier_stack, qual );
 }
@@ -439,7 +439,7 @@ static void yyerror( char const *msg ) {
   char const         *literal;    /* token literal (for new-style casts) */
   int                 number;     /* for array sizes */
   unsigned            bitmask;    /* multipurpose bitmask (used by show) */
-  c_type_id_t         type;       /* built-ins, storage classes, & qualifiers */
+  c_type_id_t         type_id;    /* built-ins, storage classes, & qualifiers */
   c_typedef_t const  *c_typedef;  /* typedef type */
 }
 
@@ -482,89 +482,89 @@ static void yyerror( char const *msg ) {
 %token              '*'
 %token              '[' ']'
 %token              '(' ')'
-%token  <type>      Y_AUTO_C            /* C version of "auto" */
-%token  <type>      Y_CHAR
-%token  <type>      Y_DOUBLE
-%token  <type>      Y_EXTERN
-%token  <type>      Y_FLOAT
-%token  <type>      Y_INT
-%token  <type>      Y_LONG
-%token  <type>      Y_REGISTER
-%token  <type>      Y_SHORT
-%token  <type>      Y_STATIC
-%token  <type>      Y_STRUCT
-%token  <type>      Y_TYPEDEF
-%token  <type>      Y_UNION
-%token  <type>      Y_UNSIGNED
+%token  <type_id>   Y_AUTO_C            /* C version of "auto" */
+%token  <type_id>   Y_CHAR
+%token  <type_id>   Y_DOUBLE
+%token  <type_id>   Y_EXTERN
+%token  <type_id>   Y_FLOAT
+%token  <type_id>   Y_INT
+%token  <type_id>   Y_LONG
+%token  <type_id>   Y_REGISTER
+%token  <type_id>   Y_SHORT
+%token  <type_id>   Y_STATIC
+%token  <type_id>   Y_STRUCT
+%token  <type_id>   Y_TYPEDEF
+%token  <type_id>   Y_UNION
+%token  <type_id>   Y_UNSIGNED
 
                     /* C89 */
-%token  <type>      Y_CONST
+%token  <type_id>   Y_CONST
 %token              Y_ELLIPSIS    "..." /* for varargs */
-%token  <type>      Y_ENUM
-%token  <type>      Y_SIGNED
-%token  <type>      Y_VOID
-%token  <type>      Y_VOLATILE
+%token  <type_id>   Y_ENUM
+%token  <type_id>   Y_SIGNED
+%token  <type_id>   Y_VOID
+%token  <type_id>   Y_VOLATILE
 
                     /* C95 */
-%token  <type>      Y_WCHAR_T
+%token  <type_id>   Y_WCHAR_T
 
                     /* C99 */
-%token  <type>      Y_BOOL
-%token  <type>      Y__COMPLEX
-%token  <type>      Y__IMAGINARY
-%token  <type>      Y_INLINE
-%token  <type>      Y_RESTRICT
+%token  <type_id>   Y_BOOL
+%token  <type_id>   Y__COMPLEX
+%token  <type_id>   Y__IMAGINARY
+%token  <type_id>   Y_INLINE
+%token  <type_id>   Y_RESTRICT
 
                     /* C11 */
-%token  <type>      Y_ATOMIC_QUAL       /* qualifier: _Atomic type */
-%token  <type>      Y_ATOMIC_SPEC       /* specifier: _Atomic (type) */
-%token  <type>      Y__NORETURN
+%token  <type_id>   Y_ATOMIC_QUAL       /* qualifier: _Atomic type */
+%token  <type_id>   Y_ATOMIC_SPEC       /* specifier: _Atomic (type) */
+%token  <type_id>   Y__NORETURN
 
                     /* C++ */
 %token              '&'                 /* for reference */
 %token              '='                 /* for pure virtual: = 0 */
 %token              '<' '>'             /* for new-style casts */
 %token              Y_2COLON      "::"
-%token  <type>      Y_CLASS
+%token  <type_id>   Y_CLASS
 %token  <literal>   Y_CONST_CAST
 %token  <literal>   Y_DYNAMIC_CAST
-%token  <type>      Y_FALSE             /* for noexcept(false) */
-%token  <type>      Y_FRIEND
-%token  <type>      Y_MUTABLE
+%token  <type_id>   Y_FALSE             /* for noexcept(false) */
+%token  <type_id>   Y_FRIEND
+%token  <type_id>   Y_MUTABLE
 %token  <literal>   Y_REINTERPRET_CAST
 %token  <literal>   Y_STATIC_CAST
-%token  <type>      Y_THROW
-%token  <type>      Y_TRUE              /* for noexcept(true) */
-%token  <type>      Y_USING
-%token  <type>      Y_VIRTUAL
+%token  <type_id>   Y_THROW
+%token  <type_id>   Y_TRUE              /* for noexcept(true) */
+%token  <type_id>   Y_USING
+%token  <type_id>   Y_VIRTUAL
 
                     /* C++11 */
 %token              Y_2AMPERSAND  "&&"  /* for rvalue references */
 %token              Y_2LBRACKET   "[["  /* for attribute specifiers */
 %token              Y_2RBRACKET   "]]"  /* for attribute specifiers */
-%token  <type>      Y_AUTO_CPP_11       /* C++11 version of "auto" */
-%token  <type>      Y_CARRIES_DEPENDENCY
-%token  <type>      Y_CONSTEXPR
-%token  <type>      Y_FINAL
-%token  <type>      Y_NOEXCEPT
-%token  <type>      Y_OVERRIDE
+%token  <type_id>   Y_AUTO_CPP_11       /* C++11 version of "auto" */
+%token  <type_id>   Y_CARRIES_DEPENDENCY
+%token  <type_id>   Y_CONSTEXPR
+%token  <type_id>   Y_FINAL
+%token  <type_id>   Y_NOEXCEPT
+%token  <type_id>   Y_OVERRIDE
 
                     /* C11 & C++11 */
-%token  <type>      Y_CHAR16_T
-%token  <type>      Y_CHAR32_T
-%token  <type>      Y_THREAD_LOCAL
+%token  <type_id>   Y_CHAR16_T
+%token  <type_id>   Y_CHAR32_T
+%token  <type_id>   Y_THREAD_LOCAL
 
                     /* C++14 */
-%token  <type>      Y_DEPRECATED
+%token  <type_id>   Y_DEPRECATED
 
                     /* C++17 */
-%token  <type>      Y_MAYBE_UNUSED
-%token  <type>      Y_NORETURN
-%token  <type>      Y_NODISCARD
+%token  <type_id>   Y_MAYBE_UNUSED
+%token  <type_id>   Y_NORETURN
+%token  <type_id>   Y_NODISCARD
 
                     /* miscellaneous */
 %token              '^'                 /* Apple: block indicator */
-%token  <type>      Y___BLOCK           /* Apple: block storage class */
+%token  <type_id>   Y___BLOCK           /* Apple: block storage class */
 %token              Y_END
 %token              Y_ERROR
 %token  <name>      Y_LANG_NAME
@@ -576,7 +576,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_list>  decl_list_english decl_list_opt_english
 %type   <ast_pair>  array_decl_english
 %type   <number>    array_size_opt_english
-%type   <type>      attribute_english
+%type   <type_id>   attribute_english
 %type   <ast_pair>  block_decl_english
 %type   <ast_pair>  func_decl_english
 %type   <ast_list>  paren_decl_list_opt_english
@@ -584,15 +584,15 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  pointer_to_member_decl_english
 %type   <ast_pair>  qualifiable_decl_english
 %type   <ast_pair>  qualified_decl_english
-%type   <type>      ref_qualifier_opt_english
+%type   <type_id>   ref_qualifier_opt_english
 %type   <ast_pair>  reference_decl_english
 %type   <ast_pair>  reference_english
 %type   <ast_pair>  returning_opt_english
-%type   <type>      storage_class_english storage_class_list_opt_english
-%type   <type>      type_attribute_english
+%type   <type_id>   storage_class_english storage_class_list_opt_english
+%type   <type_id>   type_attribute_english
 %type   <ast_pair>  type_english
-%type   <type>      type_modifier_english
-%type   <type>      type_modifier_list_english type_modifier_list_opt_english
+%type   <type_id>   type_modifier_english
+%type   <type_id>   type_modifier_list_english type_modifier_list_opt_english
 %type   <ast_pair>  unmodified_type_english
 %type   <ast_pair>  var_decl_english
 
@@ -603,7 +603,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  nested_cast_c
 %type   <ast_pair>  pointer_cast_c
 %type   <ast_pair>  pointer_to_member_cast_c
-%type   <type>      pure_virtual_opt_c
+%type   <type_id>   pure_virtual_opt_c
 %type   <ast_pair>  reference_cast_c
 
 %type   <ast_pair>  decl_c decl2_c
@@ -611,8 +611,8 @@ static void yyerror( char const *msg ) {
 %type   <number>    array_size_c
 %type   <ast_pair>  block_decl_c
 %type   <ast_pair>  func_decl_c
-%type   <type>      func_noexcept_opt_c
-%type   <type>      func_ref_qualifier_opt_c
+%type   <type_id>   func_noexcept_opt_c
+%type   <type_id>   func_ref_qualifier_opt_c
 %type   <ast_pair>  func_trailing_return_type_opt_c
 %type   <ast_pair>  name_c
 %type   <ast_pair>  nested_decl_c
@@ -633,22 +633,22 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  placeholder_type_ast_c
 %type   <ast_pair>  typedef_type_ast_c
 
-%type   <type>      attribute_name_c
-%type   <type>      attribute_name_list_c attribute_name_list_opt_c
-%type   <type>      attribute_specifier_list_c
-%type   <type>      builtin_type_c
-%type   <type>      class_struct_type_c class_struct_type_expected_c
-%type   <type>      cv_qualifier_c cv_qualifier_list_opt_c
-%type   <type>      enum_class_struct_union_type_c
-%type   <type>      func_qualifier_c
-%type   <type>      func_qualifier_list_opt_c
-%type   <type>      noexcept_bool
-%type   <type>      storage_class_c
-%type   <type>      type_modifier_c
-%type   <type>      type_modifier_base_c
-%type   <type>      type_modifier_list_c type_modifier_list_opt_c
-%type   <type>      type_qualifier_c
-%type   <type>      type_qualifier_list_c type_qualifier_list_opt_c
+%type   <type_id>   attribute_name_c
+%type   <type_id>   attribute_name_list_c attribute_name_list_opt_c
+%type   <type_id>   attribute_specifier_list_c
+%type   <type_id>   builtin_type_c
+%type   <type_id>   class_struct_type_c class_struct_type_expected_c
+%type   <type_id>   cv_qualifier_c cv_qualifier_list_opt_c
+%type   <type_id>   enum_class_struct_union_type_c
+%type   <type_id>   func_qualifier_c
+%type   <type_id>   func_qualifier_list_opt_c
+%type   <type_id>   noexcept_bool
+%type   <type_id>   storage_class_c
+%type   <type_id>   type_modifier_c
+%type   <type_id>   type_modifier_base_c
+%type   <type_id>   type_modifier_list_c type_modifier_list_opt_c
+%type   <type_id>   type_qualifier_c
+%type   <type_id>   type_qualifier_list_c type_qualifier_list_opt_c
 
 %type   <ast_pair>  arg_c
 %type   <ast>       arg_array_size_c
@@ -658,7 +658,7 @@ static void yyerror( char const *msg ) {
 %type   <literal>   new_style_cast_c new_style_cast_english
 %type   <name>      set_option
 %type   <bitmask>   show_which_types_opt
-%type   <type>      static_type_opt
+%type   <type_id>   static_type_opt
 %type   <bitmask>   typedef_opt
 
 /*
@@ -818,7 +818,7 @@ declare_english
       DUMP_AST( "decl_english", $5.ast );
       DUMP_END();
 
-      C_TYPE_ADD( &$5.ast->type, $4, @4 );
+      C_TYPE_ADD( &$5.ast->type_id, $4, @4 );
       C_AST_CHECK( $5.ast, CHECK_DECL );
       c_ast_gibberish_declare( $5.ast, fout );
       if ( opt_semicolon )
@@ -907,8 +907,8 @@ define_english
       //
       //  i.e., a defined type with a storage class.
       //
-      bool ok = c_type_add( &$5.ast->type, T_TYPEDEF, &@4 ) &&
-                c_type_add( &$5.ast->type, $4, &@4 ) &&
+      bool ok = c_type_add( &$5.ast->type_id, T_TYPEDEF, &@4 ) &&
+                c_type_add( &$5.ast->type_id, $4, &@4 ) &&
                 c_ast_check( $5.ast, CHECK_DECL );
 
       if ( ok ) {
@@ -963,8 +963,8 @@ define_english
       DUMP_END();
 
       // see comment above about T_TYPEDEF
-      C_TYPE_ADD( &$5.ast->type, T_TYPEDEF, @4 );
-      C_TYPE_ADD( &$5.ast->type, $4, @4 );
+      C_TYPE_ADD( &$5.ast->type_id, T_TYPEDEF, @4 );
+      C_TYPE_ADD( &$5.ast->type_id, $4, @4 );
       C_AST_CHECK( $5.ast, CHECK_DECL );
       (void)c_ast_take_typedef( $5.ast );
 
@@ -1077,7 +1077,7 @@ explain_using_declaration_c
   : explain_c Y_USING name_expected equals_expected type_ast_c
     {
       // see comment in define_english about T_TYPEDEF
-      C_TYPE_ADD( &$5.ast->type, T_TYPEDEF, @5 );
+      C_TYPE_ADD( &$5.ast->type_id, T_TYPEDEF, @5 );
       type_push( $5.ast );
     }
     cast_opt_c Y_END
@@ -1240,7 +1240,7 @@ typedef_declaration_c
     type_ast_c
     {
       // see comment in define_english about T_TYPEDEF
-      C_TYPE_ADD( &$3.ast->type, T_TYPEDEF, @3 );
+      C_TYPE_ADD( &$3.ast->type_id, T_TYPEDEF, @3 );
       type_push( $3.ast );
     }
     decl_c Y_END
@@ -1329,7 +1329,7 @@ using_declaration_c
     name_or_typedef_type_ast_c equals_expected type_ast_c
     {
       // see comment in define_english about T_TYPEDEF
-      C_TYPE_ADD( &$5.ast->type, T_TYPEDEF, @5 );
+      C_TYPE_ADD( &$5.ast->type_id, T_TYPEDEF, @5 );
       type_push( $5.ast );
     }
     cast_opt_c Y_END
@@ -1423,7 +1423,7 @@ array_decl_english
       $$.ast = C_AST_NEW( K_ARRAY, &@$ );
       $$.target_ast = NULL;
       $$.ast->as.array.size = $4;
-      $$.ast->as.array.type = $2 | $3;
+      $$.ast->as.array.type_id = $2 | $3;
       c_ast_set_parent( $6.ast, $$.ast );
 
       DUMP_AST( "array_decl_english", $$.ast );
@@ -1442,7 +1442,7 @@ array_decl_english
       $$.ast = C_AST_NEW( K_ARRAY, &@$ );
       $$.target_ast = NULL;
       $$.ast->as.array.size = C_ARRAY_SIZE_VARIABLE;
-      $$.ast->as.array.type = $4;
+      $$.ast->as.array.type_id = $4;
       c_ast_set_parent( $6.ast, $$.ast );
 
       DUMP_AST( "array_decl_english", $$.ast );
@@ -1472,7 +1472,7 @@ block_decl_english                      /* Apple extension */
 
       $$.ast = C_AST_NEW( K_BLOCK, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = qualifier_peek();
+      $$.ast->type_id = qualifier_peek();
       c_ast_set_parent( $3.ast, $$.ast );
       $$.ast->as.block.args = $2;
 
@@ -1495,7 +1495,7 @@ func_decl_english
 
       $$.ast = C_AST_NEW( K_FUNCTION, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = qualifier_peek() | $1;
+      $$.ast->type_id = qualifier_peek() | $1;
       $$.ast->as.func.args = $3;
       c_ast_set_parent( $4.ast, $$.ast );
 
@@ -1565,7 +1565,7 @@ returning_opt_english
 
       $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = T_VOID;
+      $$.ast->type_id = T_VOID;
 
       DUMP_AST( "returning_opt_english", $$.ast );
       DUMP_END();
@@ -1623,7 +1623,7 @@ pointer_decl_english
 
       $$.ast = C_AST_NEW( K_POINTER, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = qualifier_peek();
+      $$.ast->type_id = qualifier_peek();
       c_ast_set_parent( $3.ast, $$.ast );
 
       DUMP_AST( "pointer_decl_english", $$.ast );
@@ -1645,10 +1645,10 @@ pointer_to_member_decl_english
 
       $$.ast = C_AST_NEW( K_POINTER_TO_MEMBER, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = qualifier_peek();
+      $$.ast->type_id = qualifier_peek();
       $$.ast->as.ptr_mbr.class_name = $6;
       c_ast_set_parent( $7.ast, $$.ast );
-      C_TYPE_ADD( &$$.ast->type, $5, @5 );
+      C_TYPE_ADD( &$$.ast->type_id, $5, @5 );
 
       DUMP_AST( "pointer_to_member_decl_english", $$.ast );
       DUMP_END();
@@ -1665,7 +1665,7 @@ reference_decl_english
 
       $$ = $1;
       c_ast_set_parent( $3.ast, $$.ast );
-      C_TYPE_ADD( &$$.ast->type, qualifier_peek(), qualifier_peek_loc() );
+      C_TYPE_ADD( &$$.ast->type_id, qualifier_peek(), qualifier_peek_loc() );
 
       DUMP_AST( "reference_decl_english", $$.ast );
       DUMP_END();
@@ -1735,8 +1735,8 @@ type_english
       DUMP_TYPE( "(qualifier)", qualifier_peek() );
 
       $$ = $2;
-      C_TYPE_ADD( &$$.ast->type, qualifier_peek(), qualifier_peek_loc() );
-      C_TYPE_ADD( &$$.ast->type, $1, @1 );
+      C_TYPE_ADD( &$$.ast->type_id, qualifier_peek(), qualifier_peek_loc() );
+      C_TYPE_ADD( &$$.ast->type_id, $1, @1 );
 
       DUMP_AST( "type_english", $$.ast );
       DUMP_END();
@@ -1749,13 +1749,13 @@ type_english
       DUMP_TYPE( "(qualifier)", qualifier_peek() );
 
       // see comment in type_ast_c
-      c_type_id_t type = opt_lang < LANG_C_99 ? T_INT : T_NONE;
+      c_type_id_t type_id = opt_lang < LANG_C_99 ? T_INT : T_NONE;
 
-      C_TYPE_ADD( &type, qualifier_peek(), qualifier_peek_loc() );
-      C_TYPE_ADD( &type, $1, @1 );
+      C_TYPE_ADD( &type_id, qualifier_peek(), qualifier_peek_loc() );
+      C_TYPE_ADD( &type_id, $1, @1 );
 
       $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
-      $$.ast->type = type;
+      $$.ast->type_id = type_id;
       $$.target_ast = NULL;
 
       DUMP_AST( "type_english", $$.ast );
@@ -1892,7 +1892,7 @@ block_decl_c                            /* Apple extension */
       DUMP_AST( "decl_c", $5.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $8 );
 
-      C_TYPE_ADD( &block->type, $4, @4 );
+      C_TYPE_ADD( &block->type_id, $4, @4 );
       block->as.block.args = $8;
       $$.ast = c_ast_add_func( $5.ast, type_peek(), block );
       $$.target_ast = block->as.block.ret_ast;
@@ -1923,7 +1923,7 @@ func_decl_c
         DUMP_AST( "target_ast", $1.target_ast );
 
       c_ast_t *const func = C_AST_NEW( K_FUNCTION, &@$ );
-      func->type = $5 | $6 | $7 | $9;
+      func->type_id = $5 | $6 | $7 | $9;
       func->as.func.args = $3;
 
       if ( $8.ast != NULL ) {
@@ -2023,7 +2023,7 @@ func_trailing_return_type_opt_c
       // C++11 and the AST node for the placeholder is discarded and never made
       // part of the AST.
       //
-      if ( type_peek()->type != T_AUTO_CPP_11 ) {
+      if ( type_peek()->type_id != T_AUTO_CPP_11 ) {
         print_error( &type_peek()->loc,
           "function with trailing return type must specify \"auto\""
         );
@@ -2114,7 +2114,7 @@ pointer_type_c
 
       $$.ast = C_AST_NEW( K_POINTER, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = $2;
+      $$.ast->type_id = $2;
       c_ast_set_parent( type_peek(), $$.ast );
 
       DUMP_AST( "pointer_type_c", $$.ast );
@@ -2150,7 +2150,7 @@ pointer_to_member_type_c
 
       $$.ast = C_AST_NEW( K_POINTER_TO_MEMBER, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = $4 | T_CLASS;      // assume T_CLASS
+      $$.ast->type_id = $4 | T_CLASS;   // assume T_CLASS
       $$.ast->as.ptr_mbr.class_name = $1;
       c_ast_set_parent( type_peek(), $$.ast );
 
@@ -2293,12 +2293,12 @@ type_ast_c
       //      const    j;   // illegal in C99
       //      register k;   // illegal in C99
       //
-      c_type_id_t type = opt_lang < LANG_C_99 ? T_INT : T_NONE;
+      c_type_id_t type_id = opt_lang < LANG_C_99 ? T_INT : T_NONE;
 
-      C_TYPE_ADD( &type, $1, @1 );
+      C_TYPE_ADD( &type_id, $1, @1 );
 
       $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
-      $$.ast->type = type;
+      $$.ast->type_id = type_id;
       $$.target_ast = NULL;
 
       DUMP_AST( "type_ast_c", $$.ast );
@@ -2315,8 +2315,8 @@ type_ast_c
       DUMP_TYPE( "type_modifier_list_opt_c", $3 );
 
       $$ = $2;
-      C_TYPE_ADD( &$$.ast->type, $1, @1 );
-      C_TYPE_ADD( &$$.ast->type, $3, @3 );
+      C_TYPE_ADD( &$$.ast->type_id, $1, @1 );
+      C_TYPE_ADD( &$$.ast->type_id, $3, @3 );
 
       DUMP_AST( "type_ast_c", $$.ast );
       DUMP_END();
@@ -2329,7 +2329,7 @@ type_ast_c
       DUMP_TYPE( "type_modifier_list_opt_c", $2 );
 
       $$ = $1;
-      C_TYPE_ADD( &$$.ast->type, $2, @2 );
+      C_TYPE_ADD( &$$.ast->type_id, $2, @2 );
 
       DUMP_AST( "type_ast_c", $$.ast );
       DUMP_END();
@@ -2398,7 +2398,7 @@ atomic_specifier_type_ast_c
       DUMP_AST( "cast_opt_c", $5.ast );
 
       $$ = $5.ast ? $5 : $3;
-      C_TYPE_ADD( &$$.ast->type, T_ATOMIC, @1 );
+      C_TYPE_ADD( &$$.ast->type_id, T_ATOMIC, @1 );
 
       DUMP_AST( "atomic_specifier_type_ast_c", $$.ast );
       DUMP_END();
@@ -2413,7 +2413,7 @@ builtin_type_ast_c
 
       $$.ast = C_AST_NEW( K_BUILTIN, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = $1;
+      $$.ast->type_id = $1;
 
       DUMP_AST( "builtin_type_ast_c", $$.ast );
       DUMP_END();
@@ -2443,7 +2443,7 @@ enum_class_struct_union_type_ast_c
 
       $$.ast = C_AST_NEW( K_ENUM_CLASS_STRUCT_UNION, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type = $1;
+      $$.ast->type_id = $1;
       $$.ast->as.ecsu.ecsu_name = $2;
 
       DUMP_AST( "enum_class_struct_union_type_ast_c", $$.ast );
@@ -2472,7 +2472,7 @@ typedef_type_ast_c
       $$.ast = C_AST_NEW( K_TYPEDEF, &@$ );
       $$.target_ast = NULL;
       $$.ast->as.c_typedef = $1;
-      $$.ast->type = T_TYPEDEF_TYPE;
+      $$.ast->type_id = T_TYPEDEF_TYPE;
       c_ast_set_name( $$.ast, check_strdup( $1->ast->name ) );
 
       DUMP_AST( "typedef_type_ast_c", $$.ast );
@@ -2607,7 +2607,7 @@ attribute_name_c
         print_warning( &@1, "\"%s\" not supported in %s", $1, C_LANG_NAME() );
       }
       else {
-        $$ = a->type;
+        $$ = a->type_id;
       }
 
       FREE( $1 );
@@ -2674,19 +2674,19 @@ arg_array_size_c
     {
       $$ = C_AST_NEW( K_ARRAY, &@$ );
       $$->as.array.size = $4;
-      $$->as.array.type = $2 | $3;
+      $$->as.array.type_id = $2 | $3;
     }
   | '[' Y_STATIC type_qualifier_list_opt_c Y_NUMBER ']'
     {
       $$ = C_AST_NEW( K_ARRAY, &@$ );
       $$->as.array.size = $4;
-      $$->as.array.type = T_STATIC | $3;
+      $$->as.array.type_id = T_STATIC | $3;
     }
   | '[' type_qualifier_list_opt_c '*' ']'
     {
       $$ = C_AST_NEW( K_ARRAY, &@$ );
       $$->as.array.size = C_ARRAY_SIZE_VARIABLE;
-      $$->as.array.type = $2;
+      $$->as.array.type_id = $2;
     }
   ;
 
@@ -2716,7 +2716,7 @@ block_cast_c                            /* Apple extension */
       DUMP_AST( "cast_opt_c", $5.ast );
       DUMP_AST_LIST( "arg_list_opt_c", $8 );
 
-      C_TYPE_ADD( &block->type, $4, @4 );
+      C_TYPE_ADD( &block->type_id, $4, @4 );
       block->as.block.args = $8;
       $$.ast = c_ast_add_func( $5.ast, type_peek(), block );
       $$.target_ast = block->as.block.ret_ast;
@@ -2742,7 +2742,7 @@ func_cast_c
         DUMP_AST( "target_ast", $1.target_ast );
 
       c_ast_t *const func = C_AST_NEW( K_FUNCTION, &@$ );
-      func->type = $5;
+      func->type_id = $5;
       func->as.func.args = $3;
 
       if ( $6.ast != NULL ) {

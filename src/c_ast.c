@@ -92,7 +92,7 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
 
   if ( ast_i->kind != ast_j->kind )
     return false;
-  if ( ast_i->type != ast_j->type )
+  if ( ast_i->type_id != ast_j->type_id )
     return false;
 
   switch ( ast_i->kind ) {
@@ -101,7 +101,7 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
       c_array_t const *const a_j = &ast_j->as.array;
       if ( a_i->size != a_j->size )
         return false;
-      if ( a_i->type != a_j->type )
+      if ( a_i->type_id != a_j->type_id )
         return false;
       break;
     }

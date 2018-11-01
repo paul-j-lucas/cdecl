@@ -92,7 +92,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
     INDENT_PRINT(
       "loc = %d-%d,\n", ast->loc.first_column, ast->loc.last_column
     );
-    INDENT_PRINT_TYPE( ast->type );
+    INDENT_PRINT_TYPE( ast->type_id );
 
     bool comma = false;
 
@@ -119,8 +119,8 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
             FPRINTF( dout, "%d", ast->as.array.size );
         } // switch
         FPUTS( ",\n", dout );
-        if ( ast->as.array.type != T_NONE ) {
-          INDENT_PRINT_TYPE( ast->as.array.type );
+        if ( ast->as.array.type_id != T_NONE ) {
+          INDENT_PRINT_TYPE( ast->as.array.type_id );
           FPUTS( ",\n", dout );
         }
         c_ast_debug( ast->as.array.of_ast, indent, "of_ast", dout );
@@ -183,8 +183,11 @@ void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout ) {
   }
 }
 
-void c_type_debug( c_type_id_t type, FILE *dout ) {
-  FPRINTF( dout, "\"%s\" (0x%" PRIX_C_TYPE_T ")", c_type_name( type ), type );
+void c_type_debug( c_type_id_t type_id, FILE *dout ) {
+  FPRINTF( dout,
+    "\"%s\" (0x%" PRIX_C_TYPE_T ")",
+    c_type_name( type_id ), type_id
+  );
 }
 
 void print_kv( char const *key, char const *value, FILE *out ) {

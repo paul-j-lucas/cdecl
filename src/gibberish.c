@@ -113,8 +113,8 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
   assert( ast->kind == K_ARRAY );
 
   FPUTC( '[', param->gout );
-  if ( ast->as.array.type != T_NONE )
-    FPRINTF( param->gout, "%s ", c_type_name( ast->as.array.type ) );
+  if ( ast->as.array.type_id != T_NONE )
+    FPRINTF( param->gout, "%s ", c_type_name( ast->as.array.type_id ) );
   switch ( ast->as.array.size ) {
     case C_ARRAY_SIZE_NONE:
       break;
@@ -162,7 +162,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
   assert( param != NULL );
 
-  c_type_id_t ast_type        = ast->type;
+  c_type_id_t ast_type        = ast->type_id;
   c_type_id_t cv_qualifier    = T_NONE;
   bool        is_final        = false;
   bool        is_noexcept     = false;
@@ -469,7 +469,7 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast,
       );
   } // switch
 
-  c_type_id_t const qualifier = (ast->type & T_MASK_QUALIFIER);
+  c_type_id_t const qualifier = (ast->type_id & T_MASK_QUALIFIER);
   if ( qualifier != T_NONE ) {
     FPUTS( c_type_name( qualifier ), param->gout );
     if ( param->gkind != G_CAST )

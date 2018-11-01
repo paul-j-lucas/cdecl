@@ -155,17 +155,17 @@ CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_kind( c_ast_t *ast,
 }
 
 /**
- * Traverses \a ast attempting to find an AST node having \a type.
+ * Traverses \a ast attempting to find an AST node having \a type_id.
  *
  * @param ast The `c_ast` to begin at.
  * @param dir The direction to visit.
- * @param type The bitwise-or of of <code>\ref c_type_id_t</code> to find.
- * @return Returns a pointer to an AST node having \a type or null if none.
+ * @param type_id The bitwise-or of of <code>\ref c_type_id_t</code> to find.
+ * @return Returns a pointer to an AST node having \a type_id or null if none.
  */
 CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_type( c_ast_t *ast,
                                                 v_direction_t dir,
-                                                c_type_id_t type ) {
-  void *const data = REINTERPRET_CAST( void*, type );
+                                                c_type_id_t type_id ) {
+  void *const data = REINTERPRET_CAST( void*, type_id );
   return c_ast_visit( ast, dir, c_ast_vistor_type, data );
 }
 

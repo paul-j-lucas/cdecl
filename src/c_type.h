@@ -142,34 +142,34 @@ bool c_type_add( c_type_id_t *dest_type, c_type_id_t new_type,
                  c_loc_t const *new_loc );
 
 /**
- * Checks that \a type is valid.
+ * Checks that \a type_id is valid.
  *
- * @param type The <code>\ref c_type_id_t</code> to check.
- * @return Returns the bitwise-or of the language(s) \a type is legal in.
+ * @param type_id The <code>\ref c_type_id_t</code> to check.
+ * @return Returns the bitwise-or of the language(s) \a type_id is legal in.
  */
-c_lang_id_t c_type_check( c_type_id_t type );
+c_lang_id_t c_type_check( c_type_id_t type_id );
 
 /**
- * Gets the name of \a type.
+ * Gets the name of \a type_id.
  *
- * @param type The <code>\ref c_type_id_t</code> to get the name of.
+ * @param type_id The <code>\ref c_type_id_t</code> to get the name of.
  * @return Returns said name.
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  */
-char const* c_type_name( c_type_id_t type );
+char const* c_type_name( c_type_id_t type_id );
 
 /**
- * Gets the name of \a type for part of an error message.  If translating from
- * English to gibberish and the type has an English alias, return the alias,
- * e.g., `non-returning` rather than `noreturn`.
+ * Gets the name of \a type_id for part of an error message.  If translating
+ * from English to gibberish and the type has an English alias, return the
+ * alias, e.g., `non-returning` rather than `noreturn`.
  *
- * @param type The <code>\ref c_type_id_t</code> to get the name of.
+ * @param type_id The <code>\ref c_type_id_t</code> to get the name of.
  * @return Returns said name.
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  */
-char const* c_type_name_error( c_type_id_t type );
+char const* c_type_name_error( c_type_id_t type_id );
 
 ///////////////////////////////////////////////////////////////////////////////
 

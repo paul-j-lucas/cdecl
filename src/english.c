@@ -55,13 +55,13 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      if ( ast->type != T_NONE )        // storage class
-        FPRINTF( eout, "%s ", c_type_name( ast->type ) );
+      if ( ast->type_id != T_NONE )     // storage class
+        FPRINTF( eout, "%s ", c_type_name( ast->type_id ) );
       if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE )
         FPRINTF( eout, "%s %s ", L_VARIABLE, L_LENGTH );
       FPRINTF( eout, "%s ", L_ARRAY );
-      if ( ast->as.array.type != T_NONE )
-        FPRINTF( eout, "%s ", c_type_name( ast->as.array.type ) );
+      if ( ast->as.array.type_id != T_NONE )
+        FPRINTF( eout, "%s ", c_type_name( ast->as.array.type_id ) );
       if ( ast->as.array.size >= 0 )
         FPRINTF( eout, "%d ", ast->as.array.size );
       FPRINTF( eout, "%s ", L_OF );
@@ -69,8 +69,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
-      if ( ast->type != T_NONE )        // storage class
-        FPRINTF( eout, "%s ", c_type_name( ast->type ) );
+      if ( ast->type_id != T_NONE )     // storage class
+        FPRINTF( eout, "%s ", c_type_name( ast->type_id ) );
       FPUTS( c_kind_name( ast->kind ), eout );
 
       if ( c_ast_args( ast ) ) {        // print function arguments
@@ -125,13 +125,13 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name( ast->type ), eout );
+      FPUTS( c_type_name( ast->type_id ), eout );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
       FPRINTF( eout,
         "%s %s",
-        c_type_name( ast->type ), ast->as.ecsu.ecsu_name
+        c_type_name( ast->type_id ), ast->as.ecsu.ecsu_name
       );
       break;
 
@@ -148,7 +148,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE: {
-      c_type_id_t const qualifier = (ast->type & T_MASK_QUALIFIER);
+      c_type_id_t const qualifier = (ast->type_id & T_MASK_QUALIFIER);
       if ( qualifier != T_NONE )
         FPRINTF( eout, "%s ", c_type_name( qualifier ) );
       FPRINTF( eout, "%s %s ", c_kind_name( ast->kind ), L_TO );
@@ -156,11 +156,11 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     }
 
     case K_POINTER_TO_MEMBER: {
-      c_type_id_t const qualifier = (ast->type & T_MASK_QUALIFIER);
+      c_type_id_t const qualifier = (ast->type_id & T_MASK_QUALIFIER);
       if ( qualifier != T_NONE )
         FPRINTF( eout, "%s ", c_type_name( qualifier ) );
       FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
-      char const *const name = c_type_name( ast->type & ~T_MASK_QUALIFIER );
+      char const *const name = c_type_name( ast->type_id & ~T_MASK_QUALIFIER );
       if ( *name != '\0' )
         FPRINTF( eout, "%s ", name );
       FPRINTF( eout, "%s ", ast->as.ptr_mbr.class_name );
@@ -168,8 +168,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     }
 
     case K_TYPEDEF:
-      if ( ast->type != T_TYPEDEF_TYPE )
-        FPRINTF( eout, "%s ", c_type_name( ast->type ) );
+      if ( ast->type_id != T_TYPEDEF_TYPE )
+        FPRINTF( eout, "%s ", c_type_name( ast->type_id ) );
       FPUTS( ast->as.c_typedef->ast->name, eout );
       break;
 
