@@ -247,9 +247,9 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
  * @param ast The `c_ast` to take trom.
  * @return Returns said storage class or <code>\ref T_NONE</code>.
  */
-static c_type_t c_ast_take_storage( c_ast_t *ast ) {
+static c_type_id_t c_ast_take_storage( c_ast_t *ast ) {
   assert( ast != NULL );
-  c_type_t storage = T_NONE;
+  c_type_id_t storage = T_NONE;
   c_ast_t *const found = c_ast_find_kind( ast, V_DOWN, K_BUILTIN | K_TYPEDEF );
   if ( found != NULL ) {
     storage = found->type & (T_MASK_ATTRIBUTE | T_MASK_STORAGE);
@@ -356,7 +356,7 @@ bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
 
 bool c_ast_vistor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  c_type_t const type = REINTERPRET_CAST( c_type_t, data );
+  c_type_id_t const type = REINTERPRET_CAST( c_type_id_t, data );
   return (ast->type & type) != T_NONE;
 }
 

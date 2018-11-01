@@ -64,10 +64,10 @@ void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout );
 /**
  * Dumps \a type (for debugging).
  *
- * @param type The <code>\ref c_type_t</code> to print.
+ * @param type The <code>\ref c_type_id_t</code> to print.
  * @param dout The `FILE` to dump to.
  */
-void c_type_debug( c_type_t type, FILE *dout );
+void c_type_debug( c_type_id_t type, FILE *dout );
 
 /**
  * Prints a key/value pair.

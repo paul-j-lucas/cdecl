@@ -61,7 +61,7 @@
 /// @endcond
 
 // local functions
-static char const* c_type_name_impl( c_type_t, bool );
+static char const* c_type_name_impl( c_type_id_t, bool );
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -95,20 +95,20 @@ static char const L_TYPEDEF_TYPE[] = "";
 /**
  * Mapping between C type bits, literals, and valid language(s).
  */
-struct c_type_info {
-  c_type_t    type;                     ///< The type.
+struct c_type {
+  c_type_id_t type_id;                  ///< The type.
   char const *literal;                  ///< C string literal of the type.
   char const *english;                  ///< English version (if not NULL).
   c_lang_id_t ok_langs;                 ///< Language(s) OK in.
 };
-typedef struct c_type_info c_type_info_t;
+typedef struct c_type c_type_t;
 
 /**
  * Type mapping for attributes.
  *
  * @hideinitializer
  */
-static c_type_info_t const C_ATTRIBUTE_INFO[] = {
+static c_type_t const C_ATTRIBUTE_INFO[] = {
   { T_CARRIES_DEPENDENCY,
                     L_CARRIES_DEPENDENCY,
                        L_CARRIES_DEPENDENCY2, LANG_MIN(CPP_11)                },
@@ -126,7 +126,7 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
  *
  * @hideinitializer
  */
-static c_type_info_t const C_QUALIFIER_INFO[] = {
+static c_type_t const C_QUALIFIER_INFO[] = {
   { T_ATOMIC,       L__ATOMIC,      L_ATOMIC, LANG_MIN(C_11)                  },
   { T_CONST,        L_CONST,      L_CONSTANT, LANG_MIN(C_89)                  },
   { T_REFERENCE,    L_REFERENCE,        NULL, LANG_MIN(CPP_11)                },
@@ -141,7 +141,7 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
  *
  * @hideinitializer
  */
-static c_type_info_t const C_STORAGE_INFO[] = {
+static c_type_t const C_STORAGE_INFO[] = {
   // storage classes
   { T_AUTO_C,       L_AUTO,      L_AUTOMATIC, LANG_MAX(CPP_03)                },
   { T_BLOCK,        L___BLOCK,          NULL, LANG_ALL                        },
@@ -170,7 +170,7 @@ static c_type_info_t const C_STORAGE_INFO[] = {
  *
  * @hideinitializer
  */
-static c_type_info_t const C_TYPE_INFO[] = {
+static c_type_t const C_TYPE_INFO[] = {
   { T_VOID,         L_VOID,             NULL, LANG_MIN(C_89)                  },
   { T_AUTO_CPP_11,  L_AUTO,      L_AUTOMATIC, LANG_MIN(CPP_11)                },
   { T_BOOL,         L_BOOL,             NULL, LANG_MIN(C_89)                  },
@@ -279,27 +279,27 @@ static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Checks whether \a type is some form of <code>long int</code> only, and \e
+ * Checks whether \a type_id is some form of <code>long int</code> only, and \e
  * not either `long float` (K&R) or `long double` (C89).
  *
- * @param type The <code>\ref c_type_t</code> to check.
- * @return Returns `true` only if \a type is some form of `long int`.
+ * @param type_id The <code>\ref c_type_id_t</code> to check.
+ * @return Returns `true` only if \a type_id is some form of `long int`.
  */
-static inline bool is_long_int( c_type_t type ) {
-  return (type & T_LONG) != T_NONE && (type & (T_FLOAT | T_DOUBLE)) == T_NONE;
+static inline bool is_long_int( c_type_id_t type_id ) {
+  return  (type_id & T_LONG) != T_NONE &&
+          (type_id & (T_FLOAT | T_DOUBLE)) == T_NONE;
 }
 
 /**
- * Gets the literal of a given <code>\ref c_type_info</code>, either gibberish
+ * Gets the literal of a given <code>\ref c_type</code>, either gibberish
  * or, if appropriate and available, English.
  *
- * @param t A pointer to the <code>\ref c_type_info</code> to get the literal
+ * @param t A pointer to the <code>\ref c_type</code> to get the literal
  * of.
  * @param is_error `true` if getting the literal for part of an error message.
  * @return Returns said literal.
  */
-static inline char const* c_type_literal( c_type_info_t const *t,
-                                          bool is_error ) {
+static inline char const* c_type_literal( c_type_t const *t, bool is_error ) {
   bool const is_english = c_mode == MODE_ENGLISH_TO_GIBBERISH;
   return is_english == is_error && t->english != NULL ? t->english : t->literal;
 }
@@ -309,21 +309,21 @@ static inline char const* c_type_literal( c_type_info_t const *t,
 /**
  * Checks that the type combination is legal in the current language.
  *
- * @param type The <code>\ref c_type_t</code> to check.
+ * @param type_id The <code>\ref c_type_id_t</code> to check.
  * @param types The array of types to check against.
  * @param types_size The size of \a types.
  * @param type_langs The type/languages array to check against.
- * @return Returns the bitwise-or of the language(s) \a type is legal in.
+ * @return Returns the bitwise-or of the language(s) \a type_id is legal in.
  */
 static c_lang_id_t
-c_type_check_combo( c_type_t type, c_type_info_t const types[],
+c_type_check_combo( c_type_id_t type_id, c_type_t const types[],
                     size_t types_size,
                     c_lang_id_t const type_langs[][types_size] ) {
   for ( size_t row = 0; row < types_size; ++row ) {
-    if ( (type & types[ row ].type) != T_NONE ) {
+    if ( (type_id & types[ row ].type_id) != T_NONE ) {
       for ( size_t col = 0; col <= row; ++col ) {
         c_lang_id_t const ok_langs = type_langs[ row ][ col ];
-        if ( (type & types[ col ].type) != T_NONE &&
+        if ( (type_id & types[ col ].type_id) != T_NONE &&
              (opt_lang & ok_langs) == LANG_NONE ) {
           return ok_langs;
         }
@@ -334,20 +334,22 @@ c_type_check_combo( c_type_t type, c_type_info_t const types[],
 }
 
 /**
- * Checks that \a type is legal in the current language.
+ * Checks that \a type_id is legal in the current language.
  *
- * @param type The <code>\ref c_type_t</code> to check.
+ * @param type_id The <code>\ref c_type_id_t</code> to check.
  * @param types The array of types to check against.
  * @param types_size The size of \a types.
- * @return Returns the bitwise-or of the language(s) \a type is legal in.
+ * @return Returns the bitwise-or of the language(s) \a type_id is legal in.
  */
 static c_lang_id_t
-c_type_check_legal( c_type_t type, c_type_info_t const types[],
+c_type_check_legal( c_type_id_t type_id, c_type_t const types[],
                     size_t types_size ) {
   for ( size_t row = 0; row < types_size; ++row ) {
-    c_type_info_t const *const ti = &types[ row ];
-    if ( (type & ti->type) != T_NONE && (opt_lang & ti->ok_langs) == LANG_NONE )
+    c_type_t const *const ti = &types[ row ];
+    if ( (type_id & ti->type_id) != T_NONE &&
+         (opt_lang & ti->ok_langs) == LANG_NONE ) {
       return ti->ok_langs;
+    }
   } // for
   return LANG_ALL;
 }
@@ -355,22 +357,22 @@ c_type_check_legal( c_type_t type, c_type_info_t const types[],
 /**
  * Gets the name of an individual type.
  *
- * @param type The <code>\ref c_type_t</code> to get the name for; \a type must
- * have exactly one bit set.
+ * @param type_id The <code>\ref c_type_id_t</code> to get the name for;
+ * \a type_id must have exactly one bit set.
  * @param is_error `true` if getting the name for part of an error message.
  * @return Returns said name.
  */
-static char const* c_type_name_1( c_type_t type, bool is_error ) {
-  assert( exactly_one_bit_set( type ) );
+static char const* c_type_name_1( c_type_id_t type_id, bool is_error ) {
+  assert( exactly_one_bit_set( type_id ) );
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_ATTRIBUTE_INFO ); ++i ) {
-    if ( type == C_ATTRIBUTE_INFO[i].type ) {
+    if ( type_id == C_ATTRIBUTE_INFO[i].type_id ) {
       char const *literal = c_type_literal( &C_ATTRIBUTE_INFO[i], is_error );
       if ( literal == L__NORETURN && opt_lang >= LANG_CPP_MIN ) {
         //
         // _Noreturn is a special case.  In C11, it's "_Noreturn"; in C++11,
         // it's "noreturn".  Since this is the only special case like this,
-        // it's not worth extending c_type_info to handle language-specific
+        // it's not worth extending c_type to handle language-specific
         // literals, so we just check for "_Noreturn" here and change it to
         // "noreturn" when translating to C++.
         //
@@ -381,25 +383,25 @@ static char const* c_type_name_1( c_type_t type, bool is_error ) {
   } // for
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i )
-    if ( type == C_QUALIFIER_INFO[i].type )
+    if ( type_id == C_QUALIFIER_INFO[i].type_id )
       return c_type_literal( &C_QUALIFIER_INFO[i], is_error );
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_INFO ); ++i )
-    if ( type == C_STORAGE_INFO[i].type )
+    if ( type_id == C_STORAGE_INFO[i].type_id )
       return c_type_literal( &C_STORAGE_INFO[i], is_error );
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i )
-    if ( type == C_TYPE_INFO[i].type )
+    if ( type_id == C_TYPE_INFO[i].type_id )
       return c_type_literal( &C_TYPE_INFO[i], is_error );
 
-  INTERNAL_ERR( "unexpected value (0x%" PRIX_C_TYPE_T ") for type\n", type );
+  INTERNAL_ERR( "unexpected value (0x%" PRIX_C_TYPE_T ") for type\n", type_id );
 }
 
 /**
  * Concatenates the partial type name onto the full type name being made.
  *
  * @param pname A pointer to the pointer to the name to concatenate to.
- * @param type The <code>\ref c_type_t</code> to concatenate the name of.
+ * @param type_id The <code>\ref c_type_id_t</code> to concatenate the name of.
  * @param types The array of types to use.
  * @param types_size The size of \a types.
  * @param is_error `true` if concatenating the name for part of an error
@@ -408,11 +410,11 @@ static char const* c_type_name_1( c_type_t type, bool is_error ) {
  * @param psep A pointer to a variable to keep track of whether \a sep has been
  * concatenated.
  */
-static void c_type_name_cat( char **pname, c_type_t type,
-                             c_type_t const types[], size_t types_size,
+static void c_type_name_cat( char **pname, c_type_id_t type_id,
+                             c_type_id_t const types[], size_t types_size,
                              bool is_error, char sep, bool *psep ) {
   for ( size_t i = 0; i < types_size; ++i ) {
-    if ( (type & types[i]) != T_NONE ) {
+    if ( (type_id & types[i]) != T_NONE ) {
       if ( true_or_set( psep ) )
         CHRCAT( *pname, sep );
       STRCAT( *pname, c_type_name_1( types[i], is_error ) );
@@ -421,22 +423,22 @@ static void c_type_name_cat( char **pname, c_type_t type,
 }
 
 /**
- * Gets the name of \a type.
+ * Gets the name of \a type_id.
  *
- * @param type The <code>\ref c_type_t</code> to get the name for.
+ * @param type_id The <code>\ref c_type_id_t</code> to get the name for.
  * @param is_error `true` if getting the name for part of an error message.
  * @return Returns said name.
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  */
-static char const* c_type_name_impl( c_type_t type, bool is_error ) {
+static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
   static char name_buf[ 256 ];
   char *name = name_buf;
   name[0] = '\0';
   bool space = false;
 
-  if ( (type & T_MASK_ATTRIBUTE) != T_NONE ) {
-    static c_type_t const C_ATTRIBUTE[] = {
+  if ( (type_id & T_MASK_ATTRIBUTE) != T_NONE ) {
+    static c_type_id_t const C_ATTRIBUTE[] = {
       T_CARRIES_DEPENDENCY,
       T_DEPRECATED,
       T_MAYBE_UNUSED,
@@ -455,13 +457,13 @@ static char const* c_type_name_impl( c_type_t type, bool is_error ) {
 
     if ( brackets )
       STRCAT( name, "[[" );
-    C_TYPE_NAME_CAT( &name, type, C_ATTRIBUTE, is_error, sep, psep );
+    C_TYPE_NAME_CAT( &name, type_id, C_ATTRIBUTE, is_error, sep, psep );
     if ( brackets )
       STRCAT( name, "]]" );
     space = true;
   }
 
-  static c_type_t const C_STORAGE_CLASS[] = {
+  static c_type_id_t const C_STORAGE_CLASS[] = {
 
     // This is first so we get named like "static int".
     T_AUTO_C,
@@ -488,9 +490,9 @@ static char const* c_type_name_impl( c_type_t type, bool is_error ) {
     // This is fourth so we get names like "static inline constexpr".
     T_CONSTEXPR,
   };
-  C_TYPE_NAME_CAT( &name, type, C_STORAGE_CLASS, is_error, ' ', &space );
+  C_TYPE_NAME_CAT( &name, type_id, C_STORAGE_CLASS, is_error, ' ', &space );
 
-  static c_type_t const C_QUALIFIER[] = {
+  static c_type_id_t const C_QUALIFIER[] = {
     T_CONST,
     T_RESTRICT,
     T_VOLATILE,
@@ -501,9 +503,9 @@ static char const* c_type_name_impl( c_type_t type, bool is_error ) {
     // This is last so we get names like "const _Atomic".
     T_ATOMIC,
   };
-  C_TYPE_NAME_CAT( &name, type, C_QUALIFIER, is_error, ' ', &space );
+  C_TYPE_NAME_CAT( &name, type_id, C_QUALIFIER, is_error, ' ', &space );
 
-  static c_type_t const C_TYPE[] = {
+  static c_type_id_t const C_TYPE[] = {
 
     // These are first so we get names like "unsigned int".
     T_SIGNED,
@@ -532,29 +534,29 @@ static char const* c_type_name_impl( c_type_t type, bool is_error ) {
     T_CLASS,
   };
 
-  if ( (type & T_CHAR) == T_NONE ) {
+  if ( (type_id & T_CHAR) == T_NONE ) {
     //
     // Special case: explicit "signed" isn't needed for any type except char.
     //
-    type &= ~T_SIGNED;
+    type_id &= ~T_SIGNED;
   }
 
-  if ( (type & (T_UNSIGNED | T_SHORT | T_LONG | T_LONG_LONG)) != T_NONE ) {
+  if ( (type_id & (T_UNSIGNED | T_SHORT | T_LONG | T_LONG_LONG)) != T_NONE ) {
     //
     // Special case: explicit "int" isn't needed when at least one int modifier
     // is present.
     //
-    type &= ~T_INT;
+    type_id &= ~T_INT;
   }
 
-  C_TYPE_NAME_CAT( &name, type, C_TYPE, is_error, ' ', &space );
+  C_TYPE_NAME_CAT( &name, type_id, C_TYPE, is_error, ' ', &space );
 
   return name_buf;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool c_type_add( c_type_t *dest_type, c_type_t new_type,
+bool c_type_add( c_type_id_t *dest_type, c_type_id_t new_type,
                  c_loc_t const *new_loc ) {
   assert( dest_type != NULL );
 
@@ -580,34 +582,36 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type,
   return true;
 }
 
-c_lang_id_t c_type_check( c_type_t type ) {
+c_lang_id_t c_type_check( c_type_id_t type_id ) {
   // Check that the attribute(s) are legal in the current language.
-  C_TYPE_CHECK( C_TYPE_CHECK_LEGAL( type, C_ATTRIBUTE_INFO ) );
+  C_TYPE_CHECK( C_TYPE_CHECK_LEGAL( type_id, C_ATTRIBUTE_INFO ) );
 
   // Check that the storage class is legal in the current language.
-  C_TYPE_CHECK( C_TYPE_CHECK_LEGAL( type, C_STORAGE_INFO ) );
+  C_TYPE_CHECK( C_TYPE_CHECK_LEGAL( type_id, C_STORAGE_INFO ) );
 
   // Check that the type is legal in the current language.
-  C_TYPE_CHECK( C_TYPE_CHECK_LEGAL( type, C_TYPE_INFO ) );
+  C_TYPE_CHECK( C_TYPE_CHECK_LEGAL( type_id, C_TYPE_INFO ) );
 
   // Check that the qualifier(s) are legal in the current language.
-  C_TYPE_CHECK( C_TYPE_CHECK_LEGAL( type, C_QUALIFIER_INFO ) );
+  C_TYPE_CHECK( C_TYPE_CHECK_LEGAL( type_id, C_QUALIFIER_INFO ) );
 
   // Check that the storage class combination is legal in the current language.
-  C_TYPE_CHECK( C_TYPE_CHECK_COMBO( type, C_STORAGE_INFO, OK_STORAGE_LANGS ) );
+  C_TYPE_CHECK(
+    C_TYPE_CHECK_COMBO( type_id, C_STORAGE_INFO, OK_STORAGE_LANGS )
+  );
 
   // Check that the type combination is legal in the current language.
-  C_TYPE_CHECK( C_TYPE_CHECK_COMBO( type, C_TYPE_INFO, OK_TYPE_LANGS ) );
+  C_TYPE_CHECK( C_TYPE_CHECK_COMBO( type_id, C_TYPE_INFO, OK_TYPE_LANGS ) );
 
   return LANG_ALL;
 }
 
-char const* c_type_name( c_type_t type ) {
-  return c_type_name_impl( type, /*is_error=*/false );
+char const* c_type_name( c_type_id_t type_id ) {
+  return c_type_name_impl( type_id, /*is_error=*/false );
 }
 
-char const* c_type_name_error( c_type_t type ) {
-  return c_type_name_impl( type, /*is_error=*/true );
+char const* c_type_name_error( c_type_id_t type_id ) {
+  return c_type_name_impl( type_id, /*is_error=*/true );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

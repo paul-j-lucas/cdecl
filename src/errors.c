@@ -47,8 +47,8 @@ static bool const VISITOR_ERROR_NOT_FOUND = false;
 static bool c_ast_visitor_error( c_ast_t*, void* );
 static bool c_ast_visitor_type( c_ast_t*, void* );
 static bool error_kind_not_supported( c_ast_t const* );
-static bool error_kind_not_type( c_ast_t const*, c_type_t );
-static bool error_kind_to_type( c_ast_t const*, c_type_t );
+static bool error_kind_not_type( c_ast_t const*, c_type_id_t );
+static bool error_kind_to_type( c_ast_t const*, c_type_id_t );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -83,7 +83,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
     c_ast_find_type( nonconst_ast, V_DOWN, T_MASK_STORAGE );
 
   if ( storage_ast != NULL ) {
-    c_type_t const storage = storage_ast->type & T_MASK_STORAGE;
+    c_type_id_t const storage = storage_ast->type & T_MASK_STORAGE;
     print_error( &ast->loc,
       "can not cast into %s", c_type_name_error( storage )
     );
@@ -182,7 +182,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
         /* suppress warning */;
     } // switch
 
-    c_type_t const storage = arg_ast->type & (T_MASK_STORAGE & ~T_REGISTER);
+    c_type_id_t const storage = arg_ast->type & (T_MASK_STORAGE & ~T_REGISTER);
     if ( storage != T_NONE ) {
       print_error( &arg_ast->loc,
         "function arguments can not be %s", c_type_name_error( storage )
@@ -246,7 +246,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   bool const is_func_arg = REINTERPRET_CAST( bool, data );
 
-  c_type_t tmp_type;
+  c_type_id_t tmp_type;
 
   switch ( ast->kind ) {
     case K_ARRAY: {
@@ -595,7 +595,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
  * @param type The bad type.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
-static bool error_kind_not_type( c_ast_t const *ast, c_type_t type ) {
+static bool error_kind_not_type( c_ast_t const *ast, c_type_id_t type ) {
   assert( ast != NULL );
   print_error( &ast->loc,
     "%s can not be %s", c_kind_name( ast->kind ), c_type_name_error( type )
@@ -624,7 +624,7 @@ static bool error_kind_not_supported( c_ast_t const *ast ) {
  * @param type The bad type.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
-static bool error_kind_to_type( c_ast_t const *ast, c_type_t type ) {
+static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t type ) {
   print_error( &ast->loc,
     "%s to %s", c_kind_name( ast->kind ), c_type_name_error( type )
   );

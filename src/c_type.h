@@ -115,10 +115,10 @@
 /**
  * Bitmask for combination of type(s).
  */
-typedef uint64_t c_type_t;
+typedef uint64_t c_type_id_t;
 
 /**
- * Hexadecimal print conversion specifier for <code>\ref c_type_t</code>.
+ * Hexadecimal print conversion specifier for <code>\ref c_type_id_t</code>.
  *
  * @hideinitializer
  */
@@ -133,43 +133,43 @@ typedef uint64_t c_type_t;
  * A special case has to be made for `long` to allow for `long long` yet not
  * allow for `long long long`.
  *
- * @param dest_type A pointer to the <code>\ref c_type_t</code> to add to.
- * @param new_type The <code>\ref c_type_t</code> to add.
+ * @param dest_type A pointer to the <code>\ref c_type_id_t</code> to add to.
+ * @param new_type The <code>\ref c_type_id_t</code> to add.
  * @param new_loc The source location of \a new_type.
  * @return Returns `true` only if the type added successfully.
  */
-bool c_type_add( c_type_t *dest_type, c_type_t new_type,
+bool c_type_add( c_type_id_t *dest_type, c_type_id_t new_type,
                  c_loc_t const *new_loc );
 
 /**
  * Checks that \a type is valid.
  *
- * @param type The <code>\ref c_type_t</code> to check.
+ * @param type The <code>\ref c_type_id_t</code> to check.
  * @return Returns the bitwise-or of the language(s) \a type is legal in.
  */
-c_lang_id_t c_type_check( c_type_t type );
+c_lang_id_t c_type_check( c_type_id_t type );
 
 /**
  * Gets the name of \a type.
  *
- * @param type The <code>\ref c_type_t</code> to get the name of.
+ * @param type The <code>\ref c_type_id_t</code> to get the name of.
  * @return Returns said name.
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  */
-char const* c_type_name( c_type_t type );
+char const* c_type_name( c_type_id_t type );
 
 /**
  * Gets the name of \a type for part of an error message.  If translating from
  * English to gibberish and the type has an English alias, return the alias,
  * e.g., `non-returning` rather than `noreturn`.
  *
- * @param type The <code>\ref c_type_t</code> to get the name of.
+ * @param type The <code>\ref c_type_id_t</code> to get the name of.
  * @return Returns said name.
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  */
-char const* c_type_name_error( c_type_t type );
+char const* c_type_name_error( c_type_id_t type );
 
 ///////////////////////////////////////////////////////////////////////////////
 

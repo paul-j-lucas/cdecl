@@ -162,14 +162,14 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
   assert( param != NULL );
 
-  c_type_t  ast_type        = ast->type;
-  c_type_t  cv_qualifier    = T_NONE;
-  bool      is_final        = false;
-  bool      is_noexcept     = false;
-  bool      is_override     = false;
-  bool      is_pure_virtual = false;
-  bool      is_throw        = false;
-  c_type_t  ref_qualifier   = T_NONE;
+  c_type_id_t ast_type        = ast->type;
+  c_type_id_t cv_qualifier    = T_NONE;
+  bool        is_final        = false;
+  bool        is_noexcept     = false;
+  bool        is_override     = false;
+  bool        is_pure_virtual = false;
+  bool        is_throw        = false;
+  c_type_id_t ref_qualifier   = T_NONE;
 
   //
   // This isn't implemented using a visitor because c_ast_visit() visits in
@@ -283,7 +283,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE: {
-      c_type_t const storage = (ast_type & T_MASK_STORAGE);
+      c_type_id_t const storage = (ast_type & T_MASK_STORAGE);
       if ( storage != T_NONE )
         FPRINTF( param->gout, "%s ", c_type_name( storage ) );
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
@@ -469,7 +469,7 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast,
       );
   } // switch
 
-  c_type_t const qualifier = (ast->type & T_MASK_QUALIFIER);
+  c_type_id_t const qualifier = (ast->type & T_MASK_QUALIFIER);
   if ( qualifier != T_NONE ) {
     FPUTS( c_type_name( qualifier ), param->gout );
     if ( param->gkind != G_CAST )

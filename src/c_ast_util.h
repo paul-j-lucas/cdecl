@@ -96,8 +96,8 @@ bool c_ast_visitor_name( c_ast_t *ast, void *data );
  * A visitor function used to find a type.
  *
  * @param ast The `c_ast` to check.
- * @param data The bitwise-or of <code>\ref c_type_t</code> (cast to `void*`)
- * to find.
+ * @param data The bitwise-or of <code>\ref c_type_id_t</code> (cast to
+ * `void*`) to find.
  * @return Returns `true` only if the type of \a ast is one of \a data.
  */
 bool c_ast_vistor_type( c_ast_t *ast, void *data );
@@ -159,12 +159,12 @@ CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_kind( c_ast_t *ast,
  *
  * @param ast The `c_ast` to begin at.
  * @param dir The direction to visit.
- * @param type The bitwise-or of of <code>\ref c_type_t</code> to find.
+ * @param type The bitwise-or of of <code>\ref c_type_id_t</code> to find.
  * @return Returns a pointer to an AST node having \a type or null if none.
  */
 CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_type( c_ast_t *ast,
                                                 v_direction_t dir,
-                                                c_type_t type ) {
+                                                c_type_id_t type ) {
   void *const data = REINTERPRET_CAST( void*, type );
   return c_ast_visit( ast, dir, c_ast_vistor_type, data );
 }

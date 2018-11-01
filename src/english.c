@@ -148,7 +148,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE: {
-      c_type_t const qualifier = (ast->type & T_MASK_QUALIFIER);
+      c_type_id_t const qualifier = (ast->type & T_MASK_QUALIFIER);
       if ( qualifier != T_NONE )
         FPRINTF( eout, "%s ", c_type_name( qualifier ) );
       FPRINTF( eout, "%s %s ", c_kind_name( ast->kind ), L_TO );
@@ -156,7 +156,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     }
 
     case K_POINTER_TO_MEMBER: {
-      c_type_t const qualifier = (ast->type & T_MASK_QUALIFIER);
+      c_type_id_t const qualifier = (ast->type & T_MASK_QUALIFIER);
       if ( qualifier != T_NONE )
         FPRINTF( eout, "%s ", c_type_name( qualifier ) );
       FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );

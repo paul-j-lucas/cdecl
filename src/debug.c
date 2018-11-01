@@ -183,7 +183,7 @@ void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout ) {
   }
 }
 
-void c_type_debug( c_type_t type, FILE *dout ) {
+void c_type_debug( c_type_id_t type, FILE *dout ) {
   FPRINTF( dout, "\"%s\" (0x%" PRIX_C_TYPE_T ")", c_type_name( type ), type );
 }
 

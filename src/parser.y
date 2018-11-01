@@ -151,8 +151,8 @@ typedef struct print_type_info print_type_info_t;
  * Qualifier and its source location.
  */
 struct c_qualifier {
-  c_type_t  type;                       ///< E.g., `T_CONST` or `T_VOLATILE`.
-  c_loc_t   loc;                        ///< Qualifier source location.
+  c_type_id_t type;                     ///< E.g., `T_CONST` or `T_VOLATILE`.
+  c_loc_t     loc;                      ///< Qualifier source location.
 };
 typedef struct c_qualifier c_qualifier_t;
 
@@ -222,7 +222,7 @@ static inline void type_push( c_ast_t *ast ) {
  *
  * @return Returns said qualifier.
  */
-static inline c_type_t qualifier_peek( void ) {
+static inline c_type_id_t qualifier_peek( void ) {
   return SLIST_TOP( c_qualifier_t*, &in_attr.qualifier_stack )->type;
 }
 
@@ -377,7 +377,7 @@ static bool print_type_visitor( c_typedef_t const *type, void *data ) {
  * @param qualifier The qualifier to push.
  * @param loc A pointer to the source location of the qualifier.
  */
-static void qualifier_push( c_type_t qualifier, c_loc_t const *loc ) {
+static void qualifier_push( c_type_id_t qualifier, c_loc_t const *loc ) {
   assert( (qualifier & ~T_MASK_QUALIFIER) == 0 );
   assert( loc != NULL );
 
@@ -439,7 +439,7 @@ static void yyerror( char const *msg ) {
   char const         *literal;    /* token literal (for new-style casts) */
   int                 number;     /* for array sizes */
   unsigned            bitmask;    /* multipurpose bitmask (used by show) */
-  c_type_t            type;       /* built-ins, storage classes, & qualifiers */
+  c_type_id_t         type;       /* built-ins, storage classes, & qualifiers */
   c_typedef_t const  *c_typedef;  /* typedef type */
 }
 
@@ -1749,7 +1749,7 @@ type_english
       DUMP_TYPE( "(qualifier)", qualifier_peek() );
 
       // see comment in type_ast_c
-      c_type_t type = opt_lang < LANG_C_99 ? T_INT : T_NONE;
+      c_type_id_t type = opt_lang < LANG_C_99 ? T_INT : T_NONE;
 
       C_TYPE_ADD( &type, qualifier_peek(), qualifier_peek_loc() );
       C_TYPE_ADD( &type, $1, @1 );
@@ -2293,7 +2293,7 @@ type_ast_c
       //      const    j;   // illegal in C99
       //      register k;   // illegal in C99
       //
-      c_type_t type = opt_lang < LANG_C_99 ? T_INT : T_NONE;
+      c_type_id_t type = opt_lang < LANG_C_99 ? T_INT : T_NONE;
 
       C_TYPE_ADD( &type, $1, @1 );
 
