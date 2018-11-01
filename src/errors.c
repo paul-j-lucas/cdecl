@@ -480,7 +480,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   bool const is_func_arg = REINTERPRET_CAST( bool, data );
 
-  c_lang_t const ok_langs = c_type_check( ast->type );
+  c_lang_id_t const ok_langs = c_type_check( ast->type );
   if ( ok_langs != LANG_ALL ) {
     if ( ok_langs == LANG_NONE )
       print_error( &ast->loc,

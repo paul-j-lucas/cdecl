@@ -28,7 +28,7 @@
 
 // local
 #include "config.h"                     /* must go first */
-#include "c_lang.h"                     /* for c_lang_t */
+#include "c_lang.h"                     /* for c_lang_id_t */
 #include "typedefs.h"                   /* for c_loc_t */
 
 /// @cond DOXYGEN_IGNORE
@@ -147,7 +147,7 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type,
  * @param type The <code>\ref c_type_t</code> to check.
  * @return Returns the bitwise-or of the language(s) \a type is legal in.
  */
-c_lang_t c_type_check( c_type_t type );
+c_lang_id_t c_type_check( c_type_t type );
 
 /**
  * Gets the name of \a type.

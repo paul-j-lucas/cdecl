@@ -48,7 +48,7 @@
  */
 struct ac_keyword {
   char const *keyword;                  ///< The keyword literal.
-  c_lang_t    ok_langs;                 ///< Language(s) OK in.
+  c_lang_id_t ok_langs;                 ///< Language(s) OK in.
 };
 typedef struct ac_keyword ac_keyword_t;
 

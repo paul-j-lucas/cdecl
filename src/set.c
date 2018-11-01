@@ -56,7 +56,7 @@
  */
 void set_option( char const *opt ) {
   if ( opt != NULL ) {
-    c_lang_t const new_lang = c_lang_find( opt );
+    c_lang_id_t const new_lang = c_lang_find( opt );
     if ( new_lang != LANG_NONE ) {
       c_lang_set( new_lang );
       return;

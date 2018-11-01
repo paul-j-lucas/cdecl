@@ -66,7 +66,7 @@ c_lang_info_t const C_LANG_INFO[] = {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_lang_t c_lang_find( char const *name ) {
+c_lang_id_t c_lang_find( char const *name ) {
   assert( name != NULL );
 
   // the list is small, so linear search is good enough
@@ -78,7 +78,7 @@ c_lang_t c_lang_find( char const *name ) {
   return LANG_NONE;
 }
 
-char const* c_lang_name( c_lang_t lang ) {
+char const* c_lang_name( c_lang_id_t lang ) {
   switch ( lang ) {
     case LANG_NONE  : return "";
     case LANG_C_KNR : return "K&R C";
@@ -96,7 +96,7 @@ char const* c_lang_name( c_lang_t lang ) {
   } // switch
 }
 
-void c_lang_set( c_lang_t lang ) {
+void c_lang_set( c_lang_id_t lang ) {
   assert( exactly_one_bit_set( lang ) );
   opt_lang = lang;
 

@@ -321,7 +321,7 @@ void c_typedef_init( void ) {
     // Temporarily set the language to the latest C version to allow all built-
     // in typedefs.
     //
-    c_lang_t const prev_lang = opt_lang;
+    c_lang_id_t const prev_lang = opt_lang;
     opt_lang = LANG_C_MAX;
 
     c_typedef_parse_builtins( TYPEDEFS_STDINT_H );    // must go first

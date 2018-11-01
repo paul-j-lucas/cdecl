@@ -40,9 +40,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define C_TYPE_CHECK(...) BLOCK(          \
-  c_lang_t const ok_langs = __VA_ARGS__;  \
-  if ( ok_langs != LANG_ALL )             \
+#define C_TYPE_CHECK(...) BLOCK(            \
+  c_lang_id_t const ok_langs = __VA_ARGS__; \
+  if ( ok_langs != LANG_ALL )               \
     return ok_langs; )
 
 #define C_TYPE_CHECK_COMBO(TYPE,TYPES,OK_TYPE_LANGS) \
@@ -99,7 +99,7 @@ struct c_type_info {
   c_type_t    type;                     ///< The type.
   char const *literal;                  ///< C string literal of the type.
   char const *english;                  ///< English version (if not NULL).
-  c_lang_t    ok_langs;                 ///< Language(s) OK in.
+  c_lang_id_t ok_langs;                 ///< Language(s) OK in.
 };
 typedef struct c_type_info c_type_info_t;
 
@@ -221,7 +221,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
  *
  * @hideinitializer
  */
-static c_lang_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
+static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 // Only the lower triangle is used.
 //  a  b  e  r  s  tl td   ce fi fr in mu ne o  t  v  pv
   { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__ },// auto
@@ -249,7 +249,7 @@ static c_lang_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
  *
  * @hideinitializer
  */
-static c_lang_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
+static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 // Only the lower triangle is used.
 //  v  a1 b  c  16 32 wc s  i  l  ll s  u  f  d  co im e  st un cl t
   { C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// void
@@ -315,13 +315,14 @@ static inline char const* c_type_literal( c_type_info_t const *t,
  * @param type_langs The type/languages array to check against.
  * @return Returns the bitwise-or of the language(s) \a type is legal in.
  */
-static c_lang_t c_type_check_combo( c_type_t type, c_type_info_t const types[],
-                                    size_t types_size,
-                                    c_lang_t const type_langs[][types_size] ) {
+static c_lang_id_t
+c_type_check_combo( c_type_t type, c_type_info_t const types[],
+                    size_t types_size,
+                    c_lang_id_t const type_langs[][types_size] ) {
   for ( size_t row = 0; row < types_size; ++row ) {
     if ( (type & types[ row ].type) != T_NONE ) {
       for ( size_t col = 0; col <= row; ++col ) {
-        c_lang_t const ok_langs = type_langs[ row ][ col ];
+        c_lang_id_t const ok_langs = type_langs[ row ][ col ];
         if ( (type & types[ col ].type) != T_NONE &&
              (opt_lang & ok_langs) == LANG_NONE ) {
           return ok_langs;
@@ -340,8 +341,9 @@ static c_lang_t c_type_check_combo( c_type_t type, c_type_info_t const types[],
  * @param types_size The size of \a types.
  * @return Returns the bitwise-or of the language(s) \a type is legal in.
  */
-static c_lang_t c_type_check_legal( c_type_t type, c_type_info_t const types[],
-                                    size_t types_size ) {
+static c_lang_id_t
+c_type_check_legal( c_type_t type, c_type_info_t const types[],
+                    size_t types_size ) {
   for ( size_t row = 0; row < types_size; ++row ) {
     c_type_info_t const *const ti = &types[ row ];
     if ( (type & ti->type) != T_NONE && (opt_lang & ti->ok_langs) == LANG_NONE )
@@ -578,7 +580,7 @@ bool c_type_add( c_type_t *dest_type, c_type_t new_type,
   return true;
 }
 
-c_lang_t c_type_check( c_type_t type ) {
+c_lang_id_t c_type_check( c_type_t type ) {
   // Check that the attribute(s) are legal in the current language.
   C_TYPE_CHECK( C_TYPE_CHECK_LEGAL( type, C_ATTRIBUTE_INFO ) );
 
