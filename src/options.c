@@ -252,12 +252,9 @@ static color_when_t parse_color_when( char const *when ) {
   char *const names_buf = (char*)free_later( MALLOC( char, names_buf_size ) );
   char *pnames = names_buf;
   for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when != NULL; ++m ) {
-    if ( pnames > names_buf ) {
-      strcpy( pnames, ", " );
-      pnames += 2;
-    }
-    strcpy( pnames, m->map_when );
-    pnames += strlen( m->map_when );
+    if ( pnames > names_buf )
+      pnames = strcpy_end( pnames, ", " );
+    pnames = strcpy_end( pnames, m->map_when );
   } // for
 
   char opt_buf[ OPT_BUF_SIZE ];
@@ -274,30 +271,27 @@ static color_when_t parse_color_when( char const *when ) {
  * @return Returns the <code>\ref c_lang_id_t</code> corresponding to \a s.
  */
 static c_lang_id_t parse_lang( char const *s ) {
-  size_t values_buf_size = 1;           // for trailing null
+  size_t langs_buf_size = 1;            // for trailing NULL
 
   for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
     if ( strcasecmp( s, lang->name ) == 0 )
       return lang->lang_id;
-    values_buf_size += strlen( lang->name ) + 2 /* ", " */;
+    langs_buf_size += strlen( lang->name ) + 2 /* ", " */;
   } // for
 
   // name not found: construct valid name list for an error message
-  char *const values_buf = (char*)free_later( MALLOC( char, values_buf_size ) );
-  char *pvalues = values_buf;
+  char *const langs_buf = (char*)free_later( MALLOC( char, langs_buf_size ) );
+  char *plangs = langs_buf;
   for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
-    if ( pvalues > values_buf ) {
-      strcpy( pvalues, ", " );
-      pvalues += 2;
-    }
-    strcpy( pvalues, lang->name );
-    pvalues += strlen( lang->name );
+    if ( plangs > langs_buf )
+      plangs = strcpy_end( plangs, ", " );
+    plangs = strcpy_end( plangs, lang->name );
   } // for
 
   char opt_buf[ OPT_BUF_SIZE ];
   PMESSAGE_EXIT( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of:\n\t%s\n",
-    s, format_opt( 'x', opt_buf, sizeof opt_buf ), values_buf
+    s, format_opt( 'x', opt_buf, sizeof opt_buf ), langs_buf
   );
 }
 
