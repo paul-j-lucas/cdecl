@@ -454,6 +454,17 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
     case K_REFERENCE: {
       if ( opt_lang < LANG_CPP_MIN )
         return error_kind_not_supported( ast );
+      if ( (ast->type_id & (T_CONST | T_VOLATILE)) != T_NONE ) {
+        print_error( &ast->loc,
+          "references can not be %s",
+          c_type_name( ast->type_id & T_MASK_QUALIFIER )
+        );
+        print_hint(
+          "reference to %s",
+          c_type_name( ast->type_id & T_MASK_QUALIFIER )
+        );
+        return VISITOR_ERROR_FOUND;
+      }
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
       if ( (to_ast->type_id & T_REGISTER) != T_NONE )
         return error_kind_to_type( ast, T_REGISTER );

@@ -10,6 +10,15 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 4.9
+
+** Fixed const/volatile reference
+Declarations of the form:
+    declare r as const reference to int
+    declare r as volatile reference to int
+are now correctly reported as an error.
+
+
 * Changes in Cdecl 4.8.1
 
 ** Fixed ^ position

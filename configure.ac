@@ -4,7 +4,7 @@
 #       cdecl -- C gibberish translator
 #       configure.ac
 #
-#       Copyright (C) 2017  Paul J. Lucas, et al.
+#       Copyright (C) 2018  Paul J. Lucas, et al.
 #
 #       This program is free software: you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-AC_INIT([cdecl], [4.8.1], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/cdecl])
+AC_INIT([cdecl], [4.9], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/cdecl])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
