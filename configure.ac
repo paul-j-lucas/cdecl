@@ -20,7 +20,7 @@
 #       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-AC_INIT([cdecl], [4.9], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/cdecl])
+AC_INIT([cdecl], [5.0], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/cdecl])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 

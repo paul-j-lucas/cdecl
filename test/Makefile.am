@@ -208,6 +208,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_lv.test \
 	tests/declare_lw.test \
 	tests/declare_ni.test \
+	tests/declare_pk.test \
 	tests/declare_pv-knr.test \
 	tests/declare_rf_v-c.test \
 	tests/declare_sb.test \

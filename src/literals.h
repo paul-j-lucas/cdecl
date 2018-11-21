@@ -65,24 +65,37 @@ extern char const L_VECTOR[];               // synonym for "array"
 // K&R
 extern char const L_AUTO[];
 extern char const L_AUTOMATIC[];            // synonym for "auto"
+extern char const L_BREAK[];
+extern char const L_CASE[];
 extern char const L_CHAR[];
 extern char const L_CHARACTER[];            // synonym for "char"
+extern char const L_CONTINUE[];
+extern char const L_DEFAULT[];
+extern char const L_DO[];
 extern char const L_DOUBLE[];
+extern char const L_ELSE[];
 extern char const L_EXTERN[];
 extern char const L_EXTERNAL[];             // synonym for "extern"
 extern char const L_FLOAT[];
+extern char const L_FOR[];
+extern char const L_GOTO[];
+extern char const L_IF[];
 extern char const L_INT[];
 extern char const L_INTEGER[];              // synonym for "int"
 extern char const L_LONG[];
 extern char const L_REGISTER[];
+extern char const L_RETURN[];
 extern char const L_SHORT[];
+extern char const L_SIZEOF[];
 extern char const L_STATIC[];
 extern char const L_STRUCT[];
 extern char const L_STRUCTURE[];            // synonym for "struct"
+extern char const L_SWITCH[];
 extern char const L_TYPE[];                 // synonym for "typedef"
 extern char const L_TYPEDEF[];
 extern char const L_UNION[];
 extern char const L_UNSIGNED[];
+extern char const L_WHILE[];
 
 // C89
 extern char const L_CONST[];
@@ -113,37 +126,71 @@ extern char const L_VARIABLE[];
 extern char const L_WCHAR_T[];
 
 // C11
+extern char const L__ALIGNAS[];
+extern char const L__ALIGNOF[];
 extern char const L__ATOMIC[];
 extern char const L_ATOMIC[];               // synonym for "_Atomic"
+extern char const L__GENERIC[];
 extern char const L__NORETURN[];
 extern char const L_NON_RETURNING[];        // synonym for "_Noreturn"
 extern char const L_NORETURN[];             // synonym for "_Noreturn"
+extern char const L__STATIC_ASSERT[];
+extern char const L_STATIC_ASSERT[];
 
 // C++
+extern char const L_AND[];
+extern char const L_AND_EQ[];
+extern char const L_BITAND[];
+extern char const L_BITOR[];
+extern char const L_CATCH[];
 extern char const L_CLASS[];
+extern char const L_COMPL[];
 extern char const L_CONST_CAST[];
+extern char const L_DELETE[];
 extern char const L_DYNAMIC[];
 extern char const L_DYNAMIC_CAST[];
+extern char const L_EXPLICIT[];
+extern char const L_EXPORT[];
 extern char const L_FALSE[];
 extern char const L_FRIEND[];
 extern char const L_MUTABLE[];
+extern char const L_NAMESPACE[];
+extern char const L_NEW[];
 extern char const L_NON_THROWING[];         // synonym for "throw"
+extern char const L_NOT[];
+extern char const L_NOT_EQ[];
+extern char const L_OR[];
+extern char const L_OR_EQ[];
+extern char const L_PRIVATE[];
+extern char const L_PROTECTED[];
+extern char const L_PUBLIC[];
 extern char const L_PURE[];
 extern char const L_REINTERPRET[];
 extern char const L_REINTERPRET_CAST[];
 extern char const L_STATIC_CAST[];
+extern char const L_TEMPLATE[];
+extern char const L_THIS[];
 extern char const L_THROW[];
 extern char const L_TRUE[];
+extern char const L_TRY[];
+extern char const L_TYPEID[];
+extern char const L_TYPENAME[];
 extern char const L_USING[];
 extern char const L_VIRTUAL[];
+extern char const L_XOR[];
+extern char const L_XOR_EQ[];
 
 // C++11
+extern char const L_ALIGNAS[];
+extern char const L_ALIGNOF[];
 extern char const L_CARRIES_DEPENDENCY[];
 extern char const L_CARRIES_DEPENDENCY2[];  // synonym for "carries_dependency"
 extern char const L_CONSTEXPR[];
+extern char const L_DECLTYPE[];
 extern char const L_FINAL[];
 extern char const L_NOEXCEPT[];
 extern char const L_NO_EXCEPTION[];         // synonym for "noexcept"
+extern char const L_NULLPTR[];
 extern char const L_OVERRIDE[];
 extern char const L_OVERRIDDEN[];           // synonym for "override"
 

@@ -453,7 +453,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 
         find_c_keyword:
                 NO_OP;
-                c_keyword_t const *k = c_keyword_find( lexer_token );
+                c_keyword_t const *k = c_keyword_find( lexer_token, opt_lang );
                 if ( k == NULL && c_mode == MODE_ENGLISH_TO_GIBBERISH ) {
                   //
                   // We have to look-up attribute names when parsing English

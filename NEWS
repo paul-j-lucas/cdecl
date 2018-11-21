@@ -10,12 +10,30 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 4.9
+* Changes in Cdecl 5.0
+
+** Added all C/C++ keywords
+All C/C++ keywords have been added to the lexer/parser to prevent declaring
+variables or functions having names that are keywords.  For example:
+
+    declare break as int
+
+is now correctly reported as an error.
+
+Additionally, names that are keywords is later versions of C/C++, while legal,
+now issue warnings, e.g.:
+
+    declare class as int
+                     ^
+    18: warning: "class" is a keyword in C++98
+    int class;
 
 ** Fixed const/volatile reference
 Declarations of the form:
+
     declare r as const reference to int
     declare r as volatile reference to int
+
 are now correctly reported as an error.
 
 
@@ -23,7 +41,9 @@ are now correctly reported as an error.
 
 ** Fixed ^ position
 An error in a second (or subsequent) command after a ';', e.g.:
+
     typedef int Int; show foo
+
 now correctly positions the ^.
 
 
@@ -50,7 +70,9 @@ suseconds_t, time_t, uid_t, useconds_t, and wint_t.
 
 ** Fixed explaining of unnamed array function arguments
 Explaining unnamed array function arguments like:
+
     void f(char[])
+
 now works.
 
 
@@ -76,7 +98,9 @@ Now initializing node->parent to NIL.
 
 ** Fixed declare of function with an invalid argument
 A declaration like:
+
     declare f as function (x as unknown_type)
+
 now correctly reports the unknown type.
 
 
@@ -84,7 +108,9 @@ now correctly reports the unknown type.
 
 ** Fixed typedef of pointer-to-function
 A typedef like:
+
     typedef void (*f)(int)
+
 now works correctly.
 
 ** Added CONFIGURATION FILE section
@@ -108,6 +134,7 @@ The keyword "external" is now a synonym for "extern".
 
 ** More English for explain
 More English synonyms are used in explanations, e.g.:
+
     declare x as automatic
     declare x as constant int
     declare x as enumeration E
@@ -121,7 +148,9 @@ Function declarations may now include exception specifications.
 
 ** Fixed handling of leading whitespace in command-line argument
 The unusual case of:
+
     cdecl ' declare x as int'
+
 i.e., a quoted argument having leading whitespace, is now handled correctly.
 
 
@@ -193,6 +222,7 @@ The use of "register" now triggers a warning in C++11 and later.
 ** First word of first argument
 The first word of the first non-option command-line argument is now also
 checked to see if it's a command thus allowing fully quoted strings:
+
     $ cdecl 'explain int *const p'
 
 
@@ -216,6 +246,7 @@ Added support for C99 static and type-qualified array function arguments, e.g.:
 
 ** Variable length arrays
 Added support for C99 variable length array function arguments, e.g.:
+
     void f( int a[*] );
     void g( int a[const *] );
 
@@ -276,8 +307,10 @@ Explanations no longer wrongly allow English synonyms.
 
 ** Fixed declarations with storage-class
 Declarations like:
+
     declare x as static pointer to function returning int
     declare x as type pointer to function returning int
+
 are fixed.
 
 

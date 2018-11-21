@@ -26,6 +26,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "c_ast_util.h"
+#include "c_keyword.h"
 #include "c_type.h"
 #include "diagnostics.h"
 #include "literals.h"
@@ -49,6 +50,7 @@ static bool c_ast_visitor_type( c_ast_t*, void* );
 static bool error_kind_not_supported( c_ast_t const* );
 static bool error_kind_not_type( c_ast_t const*, c_type_id_t );
 static bool error_kind_to_type( c_ast_t const*, c_type_id_t );
+static bool error_unknown_type( c_ast_t const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -267,7 +269,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         }
       }
 
-      if ( ast->as.array.type_id ) {
+      if ( ast->as.array.type_id != T_NONE ) {
         if ( (opt_lang & (LANG_MIN(C_99) & ~LANG_CPP_ALL)) == LANG_NONE ) {
           print_error( &ast->loc,
             "\"%s\" arrays not supported in %s",
@@ -300,6 +302,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           print_error( &ast->loc, "array of function" );
           print_hint( "array of pointer to function" );
           return VISITOR_ERROR_FOUND;
+        case K_NAME:
+          return error_unknown_type( of_ast );
         default:
           /* suppress warning */;
       } // switch
@@ -436,12 +440,18 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       // FALLTHROUGH
     case K_POINTER: {
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
-      if ( (to_ast->kind & (K_REFERENCE | K_RVALUE_REFERENCE)) != K_NONE ) {
-        print_error( &ast->loc,
-          "%s to %s", c_kind_name( ast->kind ), c_kind_name( to_ast->kind )
-        );
-        return VISITOR_ERROR_FOUND;
-      }
+      switch ( to_ast->kind ) {
+        case K_NAME:
+          return error_unknown_type( to_ast );
+        case K_REFERENCE:
+        case K_RVALUE_REFERENCE:
+          print_error( &ast->loc,
+            "%s to %s", c_kind_name( ast->kind ), c_kind_name( to_ast->kind )
+          );
+          return VISITOR_ERROR_FOUND;
+        default:
+          /* suppress warning */;
+      } // switch
       if ( (to_ast->type_id & T_REGISTER) != T_NONE )
         return error_kind_to_type( ast, T_REGISTER );
       break;
@@ -466,6 +476,12 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         return VISITOR_ERROR_FOUND;
       }
       c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
+      switch ( to_ast->kind ) {
+        case K_NAME:
+          return error_unknown_type( to_ast );
+        default:
+          /* suppress warning */;
+      } // switch
       if ( (to_ast->type_id & T_REGISTER) != T_NONE )
         return error_kind_to_type( ast, T_REGISTER );
       if ( (to_ast->type_id & T_VOID) != T_NONE ) {
@@ -597,6 +613,17 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     case K_PLACEHOLDER:
       assert( ast->kind != K_PLACEHOLDER );
   } // switch
+
+  if ( ast->name != NULL ) {
+    c_keyword_t const *const k = c_keyword_find( ast->name, LANG_ALL );
+    if ( k != NULL ) {
+      print_warning( &ast->loc,
+        "\"%s\" is a keyword in %s",
+        ast->name, c_lang_name( c_lang_oldest( k->ok_langs ) )
+      );
+    }
+  }
+
   return false;
 }
 
@@ -640,6 +667,17 @@ static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
   print_error( &ast->loc,
     "%s to %s", c_kind_name( ast->kind ), c_type_name_error( type_id )
   );
+  return VISITOR_ERROR_FOUND;
+}
+
+/**
+ * Prints an error: `"<identifier>": unknown type`.
+ *
+ * @param ast The `c_ast` of the unknown type.
+ * @return Always returns `VISITOR_ERROR_FOUND`.
+ */
+static bool error_unknown_type( c_ast_t const *ast ) {
+  print_error( &ast->loc, "\"%s\": unknown type", ast->name );
   return VISITOR_ERROR_FOUND;
 }
 

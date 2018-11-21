@@ -62,9 +62,10 @@ c_keyword_t const* c_attribute_find( char const *literal );
  * @note The search is \e insensitive to the current language.
  *
  * @param literal The literal to find.
+ * @param lang_id The bitwise-or of language(s) to look for the keyword in.
  * @return Returns a pointer to the corresponding `c_keyword` or null for none.
  */
-c_keyword_t const* c_keyword_find( char const *literal );
+c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_id );
 
 ///////////////////////////////////////////////////////////////////////////////
 

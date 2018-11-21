@@ -350,7 +350,16 @@ static void read_conf_file( void ) {
     return;
   }
 
+  //
+  // Before reading the configuration file, temporarily set the language to the
+  // maximum supported C++ so "using" declarations, if any, won't cause the
+  // parser to error out.
+  //
+  c_lang_id_t const orig_lang = opt_lang;
+  opt_lang = LANG_CPP_MAX;
   (void)parse_file( cin );
+  opt_lang = orig_lang;
+
   fclose( cin );
 }
 

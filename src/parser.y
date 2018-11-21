@@ -483,19 +483,32 @@ static void yyerror( char const *msg ) {
 %token              '[' ']'
 %token              '(' ')'
 %token  <type_id>   Y_AUTO_C            /* C version of "auto" */
+%token              Y_BREAK
+%token              Y_CASE
 %token  <type_id>   Y_CHAR
+%token              Y_CONTINUE
+%token              Y_DEFAULT
+%token              Y_DO
 %token  <type_id>   Y_DOUBLE
+%token              Y_ELSE
 %token  <type_id>   Y_EXTERN
 %token  <type_id>   Y_FLOAT
+%token              Y_FOR
+%token              Y_GOTO
+%token              Y_IF
 %token  <type_id>   Y_INT
 %token  <type_id>   Y_LONG
 %token  <type_id>   Y_REGISTER
+%token              Y_RETURN
 %token  <type_id>   Y_SHORT
+%token  <type_id>   Y_SIZEOF
 %token  <type_id>   Y_STATIC
 %token  <type_id>   Y_STRUCT
+%token              Y_SWITCH
 %token  <type_id>   Y_TYPEDEF
 %token  <type_id>   Y_UNION
 %token  <type_id>   Y_UNSIGNED
+%token              Y_WHILE
 
                     /* C89 */
 %token  <type_id>   Y_CONST
@@ -516,37 +529,70 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_RESTRICT
 
                     /* C11 */
+%token              Y__ALIGNAS
+%token              Y__ALIGNOF
 %token  <type_id>   Y_ATOMIC_QUAL       /* qualifier: _Atomic type */
 %token  <type_id>   Y_ATOMIC_SPEC       /* specifier: _Atomic (type) */
+%token              Y__GENERIC
 %token  <type_id>   Y__NORETURN
+%token              Y__STATIC_ASSERT
 
                     /* C++ */
 %token              '&'                 /* for reference */
 %token              '='                 /* for pure virtual: = 0 */
 %token              '<' '>'             /* for new-style casts */
 %token              Y_2COLON      "::"
+%token              Y_AND
+%token              Y_AND_EQ
+%token              Y_BITAND
+%token              Y_BITOR
+%token              Y_CATCH
 %token  <type_id>   Y_CLASS
+%token              Y_COMPL
 %token  <literal>   Y_CONST_CAST
+%token  <type_id>   Y_DELETE
 %token  <literal>   Y_DYNAMIC_CAST
+%token              Y_EXPLICIT
+%token              Y_EXPORT
 %token  <type_id>   Y_FALSE             /* for noexcept(false) */
 %token  <type_id>   Y_FRIEND
 %token  <type_id>   Y_MUTABLE
+%token              Y_NAMESPACE
+%token  <type_id>   Y_NEW
+%token              Y_NOT
+%token              Y_NOT_EQ
+%token              Y_OR
+%token              Y_OR_EQ
+%token              Y_PRIVATE
+%token              Y_PROTECTED
+%token              Y_PUBLIC
 %token  <literal>   Y_REINTERPRET_CAST
 %token  <literal>   Y_STATIC_CAST
+%token              Y_TEMPLATE
+%token              Y_THIS
 %token  <type_id>   Y_THROW
 %token  <type_id>   Y_TRUE              /* for noexcept(true) */
+%token              Y_TRY
+%token              Y_TYPEID
+%token              Y_TYPENAME
 %token  <type_id>   Y_USING
 %token  <type_id>   Y_VIRTUAL
+%token              Y_XOR
+%token              Y_XOR_EQ
 
                     /* C++11 */
 %token              Y_2AMPERSAND  "&&"  /* for rvalue references */
 %token              Y_2LBRACKET   "[["  /* for attribute specifiers */
 %token              Y_2RBRACKET   "]]"  /* for attribute specifiers */
+%token              Y_ALIGNAS
+%token              Y_ALIGNOF
 %token  <type_id>   Y_AUTO_CPP_11       /* C++11 version of "auto" */
 %token  <type_id>   Y_CARRIES_DEPENDENCY
 %token  <type_id>   Y_CONSTEXPR
+%token              Y_DECLTYPE
 %token  <type_id>   Y_FINAL
 %token  <type_id>   Y_NOEXCEPT
+%token              Y_NULLPTR
 %token  <type_id>   Y_OVERRIDE
 
                     /* C11 & C++11 */
@@ -1620,6 +1666,12 @@ pointer_decl_english
       DUMP_START( "pointer_decl_english", "POINTER TO decl_english" );
       DUMP_TYPE( "(qualifier)", qualifier_peek() );
       DUMP_AST( "decl_english", $3.ast );
+
+      if ( $3.ast->kind == K_NAME ) {   // see comment in declare_english
+        assert( $3.ast->name != NULL );
+        print_error( &@3, "\"%s\": unknown type", $3.ast->name );
+        PARSE_ABORT();
+      }
 
       $$.ast = C_AST_NEW( K_POINTER, &@$ );
       $$.target_ast = NULL;

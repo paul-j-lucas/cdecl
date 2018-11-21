@@ -27,7 +27,17 @@
  */
 
 // local
+#include "config.h"                     /* must go first */
 #include "typedefs.h"
+
+/// @cond DOXYGEN_IGNORE
+
+_GL_INLINE_HEADER_BEGIN
+#ifndef CDECL_LANG_INLINE
+# define CDECL_LANG_INLINE _GL_INLINE
+#endif /* CDECL_LANG_INLINE */
+
+/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -92,6 +102,16 @@ extern c_lang_t const C_LANG[];
 c_lang_id_t c_lang_find( char const *name );
 
 /**
+ * Gets the oldest language of the given set.
+ *
+ * @param lang_id The bitwise-or of language(s).
+ * @return Returns said language.
+ */
+CDECL_LANG_INLINE c_lang_id_t c_lang_oldest( c_lang_id_t lang_id ) {
+  return lang_id & ~(lang_id - 1u);
+}
+
+/**
  * Gets the printable name of \a lang_id.
  *
  * @param lang_id The <code>\ref c_lang_id_t</code> to get the name of.
@@ -114,6 +134,8 @@ char const* c_lang_name( c_lang_id_t lang_id );
 void c_lang_set( c_lang_id_t lang_id );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+_GL_INLINE_HEADER_END
 
 #endif /* cdecl_c_lang_H */
 /* vim:set et sw=2 ts=2: */
