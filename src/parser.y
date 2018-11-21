@@ -627,7 +627,6 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  func_decl_english
 %type   <ast_list>  paren_decl_list_opt_english
 %type   <ast_pair>  pointer_decl_english
-%type   <ast_pair>  pointer_to_member_decl_english
 %type   <ast_pair>  qualifiable_decl_english
 %type   <ast_pair>  qualified_decl_english
 %type   <type_id>   ref_qualifier_opt_english
@@ -1655,7 +1654,6 @@ qualifiable_decl_english
   : block_decl_english
   | func_decl_english
   | pointer_decl_english
-  | pointer_to_member_decl_english
   | reference_decl_english
   | type_english
   ;
@@ -1681,10 +1679,8 @@ pointer_decl_english
       DUMP_AST( "pointer_decl_english", $$.ast );
       DUMP_END();
     }
-  ;
 
-pointer_to_member_decl_english
-  : Y_POINTER to_expected member_expected of_expected
+  | Y_POINTER to_expected Y_MEMBER of_expected
     class_struct_type_expected_c name_expected decl_english
     {
       DUMP_START( "pointer_to_member_decl_english",
@@ -1704,6 +1700,14 @@ pointer_to_member_decl_english
 
       DUMP_AST( "pointer_to_member_decl_english", $$.ast );
       DUMP_END();
+    }
+
+  | Y_POINTER to_expected error
+    {
+      if ( opt_lang >= LANG_CPP_MIN )
+        ELABORATE_ERROR( "type name or \"%s\" expected", L_MEMBER );
+      else
+        ELABORATE_ERROR( "type name expected" );
     }
   ;
 
@@ -2929,7 +2933,10 @@ class_struct_type_expected_c
   : class_struct_type_c
   | error
     {
-      ELABORATE_ERROR( "\"%s\" or \"%s\" expected", L_CLASS, L_STRUCT );
+      if ( opt_lang >= LANG_CPP_MIN )
+        ELABORATE_ERROR( "\"%s\" or \"%s\" expected", L_CLASS, L_STRUCT );
+      else
+        ELABORATE_ERROR( "\"%s\" expected", L_STRUCT );
     }
   ;
 
@@ -2978,14 +2985,6 @@ lt_expected
   | error
     {
       ELABORATE_ERROR( "'<' expected" );
-    }
-  ;
-
-member_expected
-  : Y_MEMBER
-  | error
-    {
-      ELABORATE_ERROR( "\"%s\" expected", L_MEMBER );
     }
   ;
 
