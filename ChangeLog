@@ -1,3 +1,51 @@
+2018-11-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Combined pointer_decl_english and pointer_to_member_decl_english
+     to produce better error messages.
+   * NEWS, configure.ac, c_keyword.c, c_keyword.h, c_lang.c, c_lang.h, cdecl.c,
+     errors.c, lexer.l, literals.c, literals.h, parser.y, test/Makefile.am,
+     declare_pk.test: Added all remaining C/C++ keywords.
+
+2018-11-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Fixed use of lang.
+
+2018-11-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.c: Now using strcpy_end() more.
+
+2018-11-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, errors.c, test/Makefile.am, declare_cri.test,
+     declare_vri.test: Fixed const/volatile reference.
+
+2018-11-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.h, c_type.h,
+     debug.c, debug.h, english.c, errors.c, gibberish.c, lexer.l, parser.y:
+     s/type/type_id/
+   * c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.h, c_type.c, c_type.h,
+     debug.c, debug.h, english.c, errors.c, gibberish.c, parser.y: Type
+     renaming.
+   * c_lang.c, c_lang.h, options.c, parser.y, typedefs.h: Type renaming.
+   * autocomplete.c, c_keyword.h, c_lang.c, c_lang.h, c_type.c, c_type.h,
+     c_typedef.c, errors.c, options.c, options.h, set.c:
+     s/c_lang_t/c_lang_id_t/
+
+2018-10-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c: Now ultimately always calling parse_string() to fix assert
+     failure in diagnostics.c when there's an error in a command with a ';'.
+
+2018-10-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: s/printer/printed/
+   * README-blocks.txt: Added "(and later)".
+
+2018-10-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, errors.c, gibberish.c: More explicit bitwise expressions.
+
 2018-10-10  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac, lexer.l: Fixed printing of ^.
