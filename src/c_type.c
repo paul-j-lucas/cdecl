@@ -480,7 +480,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     // This is second so we get names like "static inline".
     T_INLINE,
 
-    // These are third so we get names like "static inline constexpr".
+    // These are third so we get names like "static inline final".
     T_OVERRIDE,
     T_FINAL,
     T_NOEXCEPT,
