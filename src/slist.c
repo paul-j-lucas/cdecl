@@ -61,10 +61,12 @@ void slist_append_list( slist_t *dst, slist_t *src ) {
   assert( dst != NULL );
   assert( src != NULL );
   if ( dst->head == NULL ) {
+    assert( dst->tail == NULL );
     dst->head = src->head;
     dst->tail = src->tail;
   }
   else if ( src->head != NULL ) {
+    assert( src->tail != NULL );
     assert( dst->tail->next == NULL );
     dst->tail->next = src->head;
     dst->tail = src->tail;
