@@ -35,7 +35,7 @@
 
 /// @cond DOXYGEN_IGNORE
 
-// system
+// standard
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>

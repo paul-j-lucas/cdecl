@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain int a[static 9] | 65
+cdecl @ /dev/null @ @ explain int a[static 9] @ 65

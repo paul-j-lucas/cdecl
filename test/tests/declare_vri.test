@@ -1,1 +1,1 @@
-cdecl | /dev/null | | declare r as volatile reference to int | 65
+cdecl @ /dev/null @ @ declare r as volatile reference to int @ 65

@@ -147,6 +147,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_NEW,              Y_NEW,              T_NONE,         LANG_MIN(CPP_MIN) },
   { L_NOT,              Y_NOT,              T_NONE,         LANG_MIN(CPP_MIN) },
   { L_NOT_EQ,           Y_NOT_EQ,           T_NONE,         LANG_MIN(CPP_MIN) },
+  { L_OPERATOR,         Y_OPERATOR,         T_NONE,         LANG_MIN(CPP_MIN) },
   { L_OR,               Y_OR,               T_NONE,         LANG_MIN(CPP_MIN) },
   { L_OR_EQ,            Y_OR_EQ,            T_NONE,         LANG_MIN(CPP_MIN) },
   { L_PRIVATE,          Y_PRIVATE,          T_NONE,         LANG_MIN(CPP_MIN) },

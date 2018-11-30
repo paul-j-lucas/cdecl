@@ -171,6 +171,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_c32-c99.test \
 	tests/declare_cf_v-c.test \
 	tests/declare_ci-knr.test \
+	tests/declare_cnmf_v.test \
 	tests/declare_cri.test \
 	tests/declare_e-knr.test \
 	tests/declare_ec-c.test \
@@ -181,6 +182,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_fg_v.test \
 	tests/declare_fiiv_v.test \
 	tests/declare_fiv_v.test \
+	tests/declare_fmf_v.test \
 	tests/declare_fn.test \
 	tests/declare_fsi_v.test \
 	tests/declare_fvx_v.test \
@@ -243,6 +245,10 @@ TESTS+=	tests/declare_0f_v-c.test \
 # Almost every test here has a corresponding cast_ and declare_ test.
 #
 TESTS+=	tests/explain_0f_v-01.test \
+	tests/explain_0o_minus2_i_rk.test \
+	tests/explain_0o_minus_rk_rk.test \
+	tests/explain_0o_plus2_i_rk.test \
+	tests/explain_0o_plus_rk_rk.test \
 	tests/explain_a012i.test \
 	tests/explain_a0b10i.test \
 	tests/explain_a0xAi-01.test \
@@ -270,6 +276,10 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_c.test \
 	tests/explain_ci.test \
 	tests/explain_ck.test \
+	tests/explain_co_minus2_i_rk.test \
+	tests/explain_co_minus_rk_rk.test \
+	tests/explain_co_plus2_i_rk.test \
+	tests/explain_co_plus_rk_rk.test \
 	tests/explain_cpa3cpa5i.test \
 	tests/explain_cpa3pa5i.test \
 	tests/explain_cpa9ci.test \
@@ -326,6 +336,10 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_nfi_v.test \
 	tests/explain_ni.test \
 	tests/explain_oi.test \
+	tests/explain_oo_minus2_i_rk.test \
+	tests/explain_oo_minus_rk_rk.test \
+	tests/explain_oo_plus2_i_rk.test \
+	tests/explain_oo_plus_rk_rk.test \
 	tests/explain_pa3a5i.test \
 	tests/explain_pa3cpa5i.test \
 	tests/explain_pa3pa5i.test \
@@ -337,7 +351,15 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_pfv_pi.test \
 	tests/explain_pi.test \
 	tests/explain_ppi.test \
+	tests/explain_ro_minus2_i_rk.test \
+	tests/explain_ro_minus_rk_rk.test \
+	tests/explain_ro_plus2_i_rk.test \
+	tests/explain_ro_plus_rk_rk.test \
 	tests/explain_rpi.test \
+	tests/explain_rro_minus2_i_rk.test \
+	tests/explain_rro_minus_rk_rk.test \
+	tests/explain_rro_plus2_i_rk.test \
+	tests/explain_rro_plus_rk_rk.test \
 	tests/explain_sa2i.test \
 	tests/explain_sc.test \
 	tests/explain_sf_v.test \
@@ -348,8 +370,16 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_ull.test \
 	tests/explain_vcpi.test \
 	tests/explain_vf_v.test \
+	tests/explain_vo_minus2_i_rk.test \
+	tests/explain_vo_minus_rk_rk.test \
+	tests/explain_vo_plus2_i_rk.test \
+	tests/explain_vo_plus_rk_rk.test \
 	tests/explain_vpi.test \
 	tests/explain_w.test \
+	tests/explain_yo_minus2_i_rk.test \
+	tests/explain_yo_minus_rk_rk.test \
+	tests/explain_yo_plus2_i_rk.test \
+	tests/explain_yo_plus_rk_rk.test \
 	tests/explain_z.test \
 	tests/explain_zd.test \
 	tests/explain_zf.test \
@@ -565,7 +595,7 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 # ============
 #
 TESTS+=	tests/show_all.test \
-	tests/show_all_typedef.test
+	tests/show_all_typedef.test \
 	tests/show_int8_t.test \
 	tests/show_int8_t_typedef.test \
 	tests/show_predefined.test \
@@ -706,6 +736,8 @@ TESTS+=	tests/declare_0f_v.test \
 #
 TESTS+=	tests/declare_ai-c++11.test \
 	tests/declare_cdi.test \
+	tests/declare_fcf.test \
+	tests/declare_fco_exclam_b.test \
 	tests/declare_nfi_v-01.test \
 	tests/declare_pmri.test \
 	tests/declare_pri.test \
@@ -713,6 +745,166 @@ TESTS+=	tests/declare_ai-c++11.test \
 	tests/declare_rgi.test \
 	tests/declare_rv.test \
 	tests/declare_smi.test
+
+#
+# C++ declare member operator tests
+# =================================
+#
+TESTS+=	tests/declare_mo_amper2_rck_b.test \
+	tests/declare_mo_amper_eq_i_rk.test \
+	tests/declare_mo_amper_i_rk.test \
+	tests/declare_mo_amper_pk.test \
+	tests/declare_mo_arrow_pk.test \
+	tests/declare_mo_arrow_star_i_rk.test \
+	tests/declare_mo_brackets_i_i.test \
+	tests/declare_mo_circ_eq_i_rk.test \
+	tests/declare_mo_comma_i_rk.test \
+	tests/declare_mo_exclam_b.test \
+	tests/declare_mo_exclam_eq_i_b.test \
+	tests/declare_mo_greater2_eq_i_rk.test \
+	tests/declare_mo_greater2_i_k.test \
+	tests/declare_mo_greater_eq_rcki_b.test \
+	tests/declare_mo_less2_eq_i_rk.test \
+	tests/declare_mo_less2_i_k.test \
+	tests/declare_mo_less_eq_rcki_b.test \
+	tests/declare_mo_minus_eq_i_rk.test \
+	tests/declare_mo_minus_i_k.test \
+	tests/declare_mo_percent_eq_i_rk.test \
+	tests/declare_mo_percent_i_k.test \
+	tests/declare_mo_pipe2_rck_b.test \
+	tests/declare_mo_pipe_eq_i_rk.test \
+	tests/declare_mo_pipe_i_rk.test \
+	tests/declare_mo_plus_eq_i_rk.test \
+	tests/declare_mo_plus_i_k.test \
+	tests/declare_mo_slash_eq_i_rk.test \
+	tests/declare_mo_star_eq_i_rk.test \
+	tests/declare_mo_star_i_rk.test \
+	tests/declare_mo_star_rk.test \
+	tests/declare_mo_tilde_k.test
+
+#
+# C++ declare non-member operator tests
+# =====================================
+#
+TESTS+=	tests/declare_nmo_amper2_2rck_b.test \
+	tests/declare_nmo_amper_eq_rki_rk.test \
+	tests/declare_nmo_amper_rcki_k.test \
+	tests/declare_nmo_amper_rk_pk.test \
+	tests/declare_nmo_arrow_star_rki_rk.test \
+	tests/declare_nmo_circ_rcki_k.test \
+	tests/declare_nmo_comma_rki_rk.test \
+	tests/declare_nmo_exclam_eq_ki_b.test \
+	tests/declare_nmo_exclam_rck_b.test \
+	tests/declare_nmo_greater2_rcki_k.test \
+	tests/declare_nmo_greater_eq_rcki_b.test \
+	tests/declare_nmo_greater_rcki_b.test \
+	tests/declare_nmo_less2_eq_rki_rk.test \
+	tests/declare_nmo_less2_rcki_k.test \
+	tests/declare_nmo_less_eq_rcki_b.test \
+	tests/declare_nmo_less_rcki_b.test \
+	tests/declare_nmo_minus2_rki_rk.test \
+	tests/declare_nmo_minus_eq_rki_rk.test \
+	tests/declare_nmo_minus_rcki_k.test \
+	tests/declare_nmo_percent_eq_rki_rk.test \
+	tests/declare_nmo_percent_rcki_k.test \
+	tests/declare_nmo_pipe2_2rck_b.test \
+	tests/declare_nmo_pipe_eq_rki_rk.test \
+	tests/declare_nmo_plus2_rki_rk.test \
+	tests/declare_nmo_plus_eq_rki_rk.test \
+	tests/declare_nmo_plus_rcki_k.test \
+	tests/declare_nmo_slash_eq_rki_rk.test \
+	tests/declare_nmo_slash_rcki_k.test \
+	tests/declare_nmo_star_eq_rki_rk.test \
+	tests/declare_nmo_star_rck_k.test \
+	tests/declare_nmo_star_rcki_k.test \
+	tests/declare_nmo_tilde_rck_k.test
+
+#
+# C++ declare unspecified operator tests
+# ======================================
+#
+TESTS+=	tests/declare_o_amper2_2rck_b.test \
+	tests/declare_o_amper2_rck_b.test \
+	tests/declare_o_amper_2rck_k.test \
+	tests/declare_o_amper_eq_i_rk.test \
+	tests/declare_o_amper_eq_rki_rk.test \
+	tests/declare_o_amper_i_rk.test \
+	tests/declare_o_amper_pk.test \
+	tests/declare_o_amper_rcki_k.test \
+	tests/declare_o_arrow_star_i_rk.test \
+	tests/declare_o_arrow_star_rki_rk.test \
+	tests/declare_o_circ_eq_i_rk.test \
+	tests/declare_o_comma_rki_rk.test \
+	tests/declare_o_eq_i_b.test \
+	tests/declare_o_eq_ki_b.test \
+	tests/declare_o_exclam_b.test \
+	tests/declare_o_exclam_eq_i_b.test \
+	tests/declare_o_exclam_eq_ki_b.test \
+	tests/declare_o_exclam_rck_b.test \
+	tests/declare_o_greater2_eq_i_rk.test \
+	tests/declare_o_greater2_i_k.test \
+	tests/declare_o_greater2_rcki_k.test \
+	tests/declare_o_greater_eq_rcki_b.test \
+	tests/declare_o_less2_eq_i_rk.test \
+	tests/declare_o_less2_i_k.test \
+	tests/declare_o_less2_rcki_k.test \
+	tests/declare_o_less_eq_rcki_b.test \
+	tests/declare_o_minus_i_k.test \
+	tests/declare_o_parens_2i_v.test \
+	tests/declare_o_parens_3i_v.test \
+	tests/declare_o_parens_i_v.test \
+	tests/declare_o_parens_v.test \
+	tests/declare_o_percent_eq_i_rk.test \
+	tests/declare_o_percent_eq_rki_rk.test \
+	tests/declare_o_percent_i_k.test \
+	tests/declare_o_percent_rcki_k.test \
+	tests/declare_o_pipe2_2rck_b.test \
+	tests/declare_o_pipe2_rck_b.test \
+	tests/declare_o_pipe_eq_i_rk.test \
+	tests/declare_o_pipe_eq_rki_rk.test \
+	tests/declare_o_pipe_i_rk.test \
+	tests/declare_o_plus_i_k.test \
+	tests/declare_o_slash_eq_i_rk.test \
+	tests/declare_o_star_eq_i_rk.test \
+	tests/declare_o_star_eq_rki_rk.test \
+	tests/declare_o_star_i_rk.test \
+	tests/declare_o_star_rck_k.test \
+	tests/declare_o_star_rcki_k.test \
+	tests/declare_o_star_rk.test \
+	tests/declare_o_tilde_k.test \
+	tests/declare_o_tilde_rck_k.test
+
+#
+# C++ declare operator error tests
+# ================================
+#
+TESTS+=	tests/declare_co_exclam_k_b.test \
+	tests/declare_fmo_star_rk_rk.test \
+	tests/declare_mo_arrow_i.test \
+	tests/declare_nmo_amper_i_i.test \
+	tests/declare_nmo_arrow_rk_pk.test \
+	tests/declare_nmo_brackets_rcki_v.test \
+	tests/declare_nmo_eq_rki_rk.test \
+	tests/declare_nmo_parens_rck_v.test \
+	tests/declare_o_arrow_i.test \
+	tests/declare_o_arrow_rk_pk.test \
+	tests/declare_o_brackets_2i_i.test \
+	tests/declare_o_colon2_rk_rk.test \
+	tests/declare_o_dot_k.test \
+	tests/declare_o_dot_star_rk_rk.test \
+	tests/declare_o_exclam_2i.test \
+	tests/declare_o_minus2_d_rk.test \
+	tests/declare_o_minus2_rkd_rk.test \
+	tests/declare_o_minus_ie_i.test \
+	tests/declare_o_oexclam_k_b.test \
+	tests/declare_o_plus2_d_rk.test \
+	tests/declare_o_plus2_rkd_rk.test \
+	tests/declare_o_plus_ie_i.test \
+	tests/declare_o_qmark_colon_k2i_i.test \
+	tests/declare_ro_exclam_k_b.test \
+	tests/declare_rro_exclam_k_b.test \
+	tests/declare_vo_exclam_k_b.test \
+	tests/declare_yo_exclam_k_b.test
 
 #
 # C++ explain tests
@@ -793,6 +985,129 @@ TESTS+=	tests/explain_ai-c++11.test \
 	tests/explain_srf_v.test \
 	tests/explain_srrf_v.test \
 	tests/explain_unknown_attribute.test
+
+#
+# C++ explain operator tests
+# ==========================
+#
+TESTS+=	tests/explain_0o_amper_rk_pk.test \
+	tests/explain_0o_star_rk_rk.test \
+	tests/explain_co_amper_rk_pk.test \
+	tests/explain_co_star_rk_rk.test \
+	tests/explain_co_tilde_k.test \
+	tests/explain_o_amper2_2rck_b.test \
+	tests/explain_o_amper2_rck_b.test \
+	tests/explain_o_amper_2rck_k.test \
+	tests/explain_o_amper_eq_i_rk.test \
+	tests/explain_o_amper_eq_rki_rk.test \
+	tests/explain_o_amper_i_i.test \
+	tests/explain_o_amper_i_rk.test \
+	tests/explain_o_amper_pk.test \
+	tests/explain_o_amper_rcki_k.test \
+	tests/explain_o_amper_rk_pk.test \
+	tests/explain_o_arrow_pk.test \
+	tests/explain_o_arrow_star_i_rk.test \
+	tests/explain_o_arrow_star_rki_rk.test \
+	tests/explain_o_brackets_i_i.test \
+	tests/explain_o_circ_eq_i_rk.test \
+	tests/explain_o_circ_eq_rki_rk.test \
+	tests/explain_o_circ_rcki_k.test \
+	tests/explain_o_comma_i_rk.test \
+	tests/explain_o_comma_rcki_k.test \
+	tests/explain_o_comma_rki_rk.test \
+	tests/explain_o_eq_i_b.test \
+	tests/explain_o_eq_ki_b.test \
+	tests/explain_o_exclam_b.test \
+	tests/explain_o_exclam_eq_i_b.test \
+	tests/explain_o_exclam_eq_ki_b.test \
+	tests/explain_o_exclam_rck_b.test \
+	tests/explain_o_greater2_eq_i_rk.test \
+	tests/explain_o_greater2_eq_rki_rk.test \
+	tests/explain_o_greater2_i_k.test \
+	tests/explain_o_greater2_i_rk.test \
+	tests/explain_o_greater2_rcki_k.test \
+	tests/explain_o_greater2_rki_rk.test \
+	tests/explain_o_greater_eq_rcki_b.test \
+	tests/explain_o_greater_rcki_b.test \
+	tests/explain_o_less2_eq_i_rk.test \
+	tests/explain_o_less2_eq_rki_rk.test \
+	tests/explain_o_less2_i_k.test \
+	tests/explain_o_less2_i_rk.test \
+	tests/explain_o_less2_rcki_k.test \
+	tests/explain_o_less2_rki_rk.test \
+	tests/explain_o_less_eq_rcki_b.test \
+	tests/explain_o_less_rcki_b.test \
+	tests/explain_o_minus2_rki_rk.test \
+	tests/explain_o_minus_2rck_k.test \
+	tests/explain_o_minus_eq_i_rk.test \
+	tests/explain_o_minus_eq_rki_rk.test \
+	tests/explain_o_minus_i_k.test \
+	tests/explain_o_minus_rcki_k.test \
+	tests/explain_o_parens_2i_v.test \
+	tests/explain_o_parens_3i_v.test \
+	tests/explain_o_parens_i_v.test \
+	tests/explain_o_parens_v.test \
+	tests/explain_o_percent_2rck_k.test \
+	tests/explain_o_percent_eq_i_rk.test \
+	tests/explain_o_percent_eq_rki_rk.test \
+	tests/explain_o_percent_i_k.test \
+	tests/explain_o_percent_rcki_k.test \
+	tests/explain_o_pipe2_2rck_b.test \
+	tests/explain_o_pipe2_rck_b.test \
+	tests/explain_o_pipe_2rck_k.test \
+	tests/explain_o_pipe_eq_i_rk.test \
+	tests/explain_o_pipe_eq_rki_rk.test \
+	tests/explain_o_pipe_i_rk.test \
+	tests/explain_o_plus2_rki_rk.test \
+	tests/explain_o_plus_2rck_k.test \
+	tests/explain_o_plus_eq_i_rk.test \
+	tests/explain_o_plus_eq_rki_rk.test \
+	tests/explain_o_plus_i_k.test \
+	tests/explain_o_plus_rcki_k.test \
+	tests/explain_o_slash_2rck_k.test \
+	tests/explain_o_slash_eq_i_rk.test \
+	tests/explain_o_slash_eq_rki_rk.test \
+	tests/explain_o_slash_rcki_k.test \
+	tests/explain_o_star_2rck_k.test \
+	tests/explain_o_star_eq_i_rk.test \
+	tests/explain_o_star_eq_rki_rk.test \
+	tests/explain_o_star_i_rk.test \
+	tests/explain_o_star_rck_k.test \
+	tests/explain_o_star_rcki_k.test \
+	tests/explain_o_star_rk.test \
+	tests/explain_o_tilde_k.test \
+	tests/explain_o_tilde_rck_k.test \
+	tests/explain_oo_amper_rk_pk.test \
+	tests/explain_oo_star_rk_rk.test \
+	tests/explain_ro_amper_rk_pk.test \
+	tests/explain_ro_star_rk_rk.test \
+	tests/explain_rro_amper_rk_pk.test \
+	tests/explain_rro_star_rk_rk.test \
+	tests/explain_vo_amper_rk_pk.test \
+	tests/explain_vo_star_rk_rk.test \
+	tests/explain_yo_amper_rk_pk.test \
+	tests/explain_yo_star_rk_rk.test
+
+#
+# C++ explain operator error tests
+# ================================
+#
+TESTS+=	tests/explain_co_exclam_k_b.test \
+	tests/explain_o_arrow_i.test \
+	tests/explain_o_brackets_2i_i.test \
+	tests/explain_o_exclam_2i.test \
+	tests/explain_o_minus2_d_rk.test \
+	tests/explain_o_minus2_rkd_rk.test \
+	tests/explain_o_minus_ie_i.test \
+	tests/explain_o_oexclam_k_b.test \
+	tests/explain_o_plus2_d_rk.test \
+	tests/explain_o_plus2_rkd_rk.test \
+	tests/explain_o_plus_ie_i.test \
+	tests/explain_o_qmark_colon_k2i_i.test \
+	tests/explain_ro_exclam_k_b.test \
+	tests/explain_rro_exclam_k_b.test \
+	tests/explain_vo_exclam_k_b.test \
+	tests/explain_yo_exclam_k_b.test
 
 #
 # C++ cast tests

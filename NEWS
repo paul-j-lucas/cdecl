@@ -23,16 +23,37 @@ is now correctly reported as an error.
 Additionally, names that are keywords is later versions of C/C++, while legal,
 now issue warnings, e.g.:
 
-    declare class as int
-                     ^
+    cdecl> declare class as int
+                   ^
     18: warning: "class" is a keyword in C++98
     int class;
+
+** Operator overloading
+Added support for composing and deciphering C++ overloaded operators.
 
 ** Fixed const/volatile reference
 Declarations of the form:
 
     declare r as const reference to int
     declare r as volatile reference to int
+
+are now correctly reported as an error.
+
+** Added member/non-member to functions
+You can now explcitly specify either "member" or "non-member" in declarations:
+
+    declare f as const member function
+
+Additionally, cdecl will include "member" in function explanations when it can
+infer a function is a member function:
+
+    cdecl> explain void f() const
+    declare f as constant member function returning void
+
+** Fixed friend const/volatile/override/final/virtual/reference functions
+Declarations of the form:
+
+    declare f as friend const function returning bool
 
 are now correctly reported as an error.
 

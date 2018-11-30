@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | declare f as virtual override final function | 0
+cdecl @ /dev/null @ -xc++ @ declare f as virtual override final function @ 0

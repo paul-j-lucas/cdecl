@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain using f = void (*)(int) | 65
+cdecl @ /dev/null @ @ explain using f = void (*)(int) @ 65

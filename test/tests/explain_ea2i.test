@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain extern int x[2] | 0
+cdecl @ /dev/null @ @ explain extern int x[2] @ 0

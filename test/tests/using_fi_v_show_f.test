@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | using f = void (*)(int); show f | 0
+cdecl @ /dev/null @ -xc++ @ using f = void (*)(int); show f @ 0

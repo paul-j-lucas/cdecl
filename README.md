@@ -80,6 +80,7 @@ most notably:
   `mutable` data members,
   new-style casts,
   `throw`,
+  overloaded operators,
   and
   `friend`,
   `virtual`,

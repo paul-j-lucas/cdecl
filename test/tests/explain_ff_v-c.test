@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain friend void f() | 65
+cdecl @ /dev/null @ @ explain friend void f() @ 65

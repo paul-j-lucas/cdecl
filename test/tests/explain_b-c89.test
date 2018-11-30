@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc89 | explain bool x | 65
+cdecl @ /dev/null @ -xc89 @ explain bool x @ 65

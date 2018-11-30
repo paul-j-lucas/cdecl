@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain double f( int (*g)(char c) ) | 0
+cdecl @ /dev/null @ @ explain double f( int (*g)(char c) ) @ 0

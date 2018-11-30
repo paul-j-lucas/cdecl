@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain int* f(x) | 0
+cdecl @ /dev/null @ @ explain int* f(x) @ 0

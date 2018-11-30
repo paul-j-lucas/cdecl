@@ -143,6 +143,14 @@ CDECL_SLIST_INLINE void slist_init( slist_t *list ) {
 }
 
 /**
+ * Gets the length of \a list.
+ *
+ * @param list A pointer to the <code>\ref slist</code> to get the length of.
+ * @return Returns said length.
+ */
+unsigned slist_len( slist_t const *list );
+
+/**
  * Pops data from the head of \a list.
  *
  * @param list The pointer to the <code>\ref slist</code>.

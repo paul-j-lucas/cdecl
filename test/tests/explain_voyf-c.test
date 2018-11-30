@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain virtual void f() override final | 65
+cdecl @ /dev/null @ @ explain virtual void f() override final @ 65

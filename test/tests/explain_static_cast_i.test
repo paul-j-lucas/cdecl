@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | explain static_cast<int>(x) | 0
+cdecl @ /dev/null @ -xc++ @ explain static_cast<int>(x) @ 0

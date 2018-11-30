@@ -1,1 +1,1 @@
-cdecl | /dev/null | | typedef int Int; show user typedef | 0
+cdecl @ /dev/null @ @ typedef int Int; show user typedef @ 0

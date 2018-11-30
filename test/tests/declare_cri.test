@@ -1,1 +1,1 @@
-cdecl | /dev/null | | declare r as constant reference to int | 65
+cdecl @ /dev/null @ @ declare r as const reference to int @ 65

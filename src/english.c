@@ -27,13 +27,14 @@
 #include "config.h"                     /* must go first */
 #include "c_ast.h"
 #include "c_ast_util.h"
+#include "c_operator.h"
 #include "c_typedef.h"
 #include "literals.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
-// system
+// standard
 #include <assert.h>
 #include <stdlib.h>
 #include <sysexits.h>
@@ -69,12 +70,32 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
+    case K_OPERATOR:
       if ( ast->type_id != T_NONE )     // storage class
         FPRINTF( eout, "%s ", c_type_name( ast->type_id ) );
+
+      switch ( ast->kind ) {
+        case K_FUNCTION:
+          if ( (ast->type_id & T_MEMBER_ONLY) != T_NONE )
+            FPRINTF( eout, "%s ", L_MEMBER );
+          break;
+        case K_OPERATOR: {
+          unsigned const overload_flags = op_get_overload( ast );
+          char const *const op_literal =
+            overload_flags == OP_MEMBER     ? L_MEMBER      :
+            overload_flags == OP_NON_MEMBER ? L_NON_MEMBER  :
+            "";
+          FPRINTF( eout, "%s%s", SP_AFTER( op_literal ) );
+          break;
+        }
+        default:
+          /* suppress warning */;
+      } // switch
+
       FPUTS( c_kind_name( ast->kind ), eout );
 
-      if ( c_ast_args( ast ) ) {        // print function arguments
-        FPUTS( " (", eout );
+      if ( c_ast_args( ast ) != NULL ) {
+        FPUTS( " (", eout );            // print function arguments
 
         for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg != NULL;
               arg = arg->next ) {
@@ -161,9 +182,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
         FPRINTF( eout, "%s ", c_type_name( qualifier ) );
       FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
       char const *const name = c_type_name( ast->type_id & ~T_MASK_QUALIFIER );
-      if ( *name != '\0' )
-        FPRINTF( eout, "%s ", name );
-      FPRINTF( eout, "%s ", ast->as.ptr_mbr.class_name );
+      FPRINTF( eout, "%s%s%s ", SP_AFTER( name ), ast->as.ptr_mbr.class_name );
       break;
     }
 

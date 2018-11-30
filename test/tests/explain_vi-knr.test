@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xknr | explain volatile int x | 65
+cdecl @ /dev/null @ -xknr @ explain volatile int x @ 65

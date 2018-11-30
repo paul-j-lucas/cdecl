@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain int a[012] | 0
+cdecl @ /dev/null @ @ explain int a[012] @ 0

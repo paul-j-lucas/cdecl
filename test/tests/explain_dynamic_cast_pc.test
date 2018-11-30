@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | explain dynamic_cast<class C*>(x) | 0
+cdecl @ /dev/null @ -xc++ @ explain dynamic_cast<class C*>(x) @ 0

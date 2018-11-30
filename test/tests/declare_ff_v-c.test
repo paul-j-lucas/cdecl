@@ -1,1 +1,1 @@
-cdecl | /dev/null | | declare f as friend function returning void | 65
+cdecl @ /dev/null @ @ declare f as friend function returning void @ 65

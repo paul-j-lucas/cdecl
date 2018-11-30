@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -xc++ @ define S as struct S; declare > as non-member operator (reference to const S, int) returning bool @ 0

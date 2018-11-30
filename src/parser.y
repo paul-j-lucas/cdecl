@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 23
+%expect 24
 
 %{
 /** @endcond */
@@ -37,6 +37,7 @@
 #include "c_ast_util.h"
 #include "c_keyword.h"
 #include "c_lang.h"
+#include "c_operator.h"
 #include "c_type.h"
 #include "c_typedef.h"
 #include "color.h"
@@ -435,10 +436,11 @@ static void yyerror( char const *msg ) {
   c_ast_t            *ast;
   slist_t             ast_list;   /* for function arguments */
   c_ast_pair_t        ast_pair;   /* for the AST being built */
-  char const         *name;       /* name being declared or explained */
-  char const         *literal;    /* token literal (for new-style casts) */
-  int                 number;     /* for array sizes */
   unsigned            bitmask;    /* multipurpose bitmask (used by show) */
+  char const         *literal;    /* token literal (for new-style casts) */
+  char const         *name;       /* name being declared or explained */
+  int                 number;     /* for array sizes */
+  c_oper_id_t         oper_id;    /* overloaded operator ID */
   c_type_id_t         type_id;    /* built-ins, storage classes, & qualifiers */
   c_typedef_t const  *c_typedef;  /* typedef type */
 }
@@ -463,6 +465,7 @@ static void yyerror( char const *msg ) {
 %token              Y_INTO
 %token              Y_LENGTH
 %token              Y_MEMBER
+%token              Y_NON_MEMBER
 %token              Y_OF
 %token              Y_POINTER
 %token              Y_PREDEFINED
@@ -477,11 +480,44 @@ static void yyerror( char const *msg ) {
 %token              Y_VARIABLE
 
                     /* K&R C */
-%token              ','
-%token              Y_ARROW       "->"
-%token              '*'
-%token              '[' ']'
-%token              '(' ')'
+%token  <oper_id>   '!'
+%token  <oper_id>   '%'
+%token  <oper_id>   '&'
+%token  <oper_id>   '(' ')'
+%token  <oper_id>   '*'
+%token  <oper_id>   '+'
+%token  <oper_id>   ','
+%token  <oper_id>   '-'
+%token  <oper_id>   '.'
+%token  <oper_id>   '/'
+%token  <oper_id>   '<' '>'
+%token  <oper_id>   '='
+%token  <oper_id>   Y_QMARK_COLON "?:"
+%token  <oper_id>   '[' ']'
+%token  <oper_id>   '^'
+%token  <oper_id>   '|'
+%token  <oper_id>   '~'
+%token  <oper_id>   Y_NOT_EQ      "!="
+%token  <oper_id>   Y_PERCENT_EQ  "%="
+%token  <oper_id>   Y_AMPER2      "&&"
+%token  <oper_id>   Y_AMPER_EQ    "&="
+%token  <oper_id>   Y_STAR_EQ     "*="
+%token  <oper_id>   Y_PLUS2       "++"
+%token  <oper_id>   Y_PLUS_EQ     "+="
+%token  <oper_id>   Y_MINUS2      "--"
+%token  <oper_id>   Y_MINUS_EQ    "-="
+%token  <oper_id>   Y_ARROW       "->"
+%token  <oper_id>   Y_SLASH_EQ    "/="
+%token  <oper_id>   Y_LESS2       "<<"
+%token  <oper_id>   Y_LESS2_EQ    "<<="
+%token  <oper_id>   Y_LESS_EQ     "<="
+%token  <oper_id>   Y_EQ2         "=="
+%token  <oper_id>   Y_GREATER_EQ  ">="
+%token  <oper_id>   Y_GREATER2    ">>"
+%token  <oper_id>   Y_GREATER2_EQ ">>="
+%token  <oper_id>   Y_CIRC_EQ     "^="
+%token  <oper_id>   Y_PIPE_EQ     "|="
+%token  <oper_id>   Y_PIPE2       "||"
 %token  <type_id>   Y_AUTO_C            /* C version of "auto" */
 %token              Y_BREAK
 %token              Y_CASE
@@ -538,19 +574,18 @@ static void yyerror( char const *msg ) {
 %token              Y__STATIC_ASSERT
 
                     /* C++ */
-%token              '&'                 /* for reference */
-%token              '='                 /* for pure virtual: = 0 */
-%token              '<' '>'             /* for new-style casts */
-%token              Y_2COLON      "::"
 %token              Y_AND
 %token              Y_AND_EQ
+%token  <oper_id>   Y_ARROW_STAR  "->*"
 %token              Y_BITAND
 %token              Y_BITOR
 %token              Y_CATCH
 %token  <type_id>   Y_CLASS
+%token  <oper_id>   Y_COLON2      "::"
 %token              Y_COMPL
 %token  <literal>   Y_CONST_CAST
 %token  <type_id>   Y_DELETE
+%token  <oper_id>   Y_DOT_STAR    ".*"
 %token  <literal>   Y_DYNAMIC_CAST
 %token              Y_EXPLICIT
 %token              Y_EXPORT
@@ -560,7 +595,7 @@ static void yyerror( char const *msg ) {
 %token              Y_NAMESPACE
 %token  <type_id>   Y_NEW
 %token              Y_NOT
-%token              Y_NOT_EQ
+%token              Y_OPERATOR
 %token              Y_OR
 %token              Y_OR_EQ
 %token              Y_PRIVATE
@@ -581,9 +616,8 @@ static void yyerror( char const *msg ) {
 %token              Y_XOR_EQ
 
                     /* C++11 */
-%token              Y_2AMPERSAND  "&&"  /* for rvalue references */
-%token              Y_2LBRACKET   "[["  /* for attribute specifiers */
-%token              Y_2RBRACKET   "]]"  /* for attribute specifiers */
+%token              Y_LBRACKET2   "[["  /* for attribute specifiers */
+%token              Y_RBRACKET2   "]]"  /* for attribute specifiers */
 %token              Y_ALIGNAS
 %token              Y_ALIGNOF
 %token  <type_id>   Y_AUTO_CPP_11       /* C++11 version of "auto" */
@@ -609,7 +643,6 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_NODISCARD
 
                     /* miscellaneous */
-%token              '^'                 /* Apple: block indicator */
 %token  <type_id>   Y___BLOCK           /* Apple: block storage class */
 %token              Y_END
 %token              Y_ERROR
@@ -625,6 +658,7 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   attribute_english
 %type   <ast_pair>  block_decl_english
 %type   <ast_pair>  func_decl_english
+%type   <ast_pair>  oper_decl_english
 %type   <ast_list>  paren_decl_list_opt_english
 %type   <ast_pair>  pointer_decl_english
 %type   <ast_pair>  qualifiable_decl_english
@@ -661,6 +695,8 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  func_trailing_return_type_opt_c
 %type   <ast_pair>  name_c
 %type   <ast_pair>  nested_decl_c
+%type   <ast_pair>  oper_c
+%type   <ast_pair>  oper_decl_c
 %type   <ast_pair>  pointer_decl_c
 %type   <ast_pair>  pointer_to_member_decl_c
 %type   <ast_pair>  pointer_to_member_type_c
@@ -698,6 +734,8 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  arg_c
 %type   <ast>       arg_array_size_c
 %type   <ast_list>  arg_list_c arg_list_opt_c
+%type   <oper_id>   c_operator
+%type   <bitmask>   member_or_non_member_opt
 %type   <name>      name_expected
 %type   <name>      name_opt
 %type   <literal>   new_style_cast_c new_style_cast_english
@@ -830,7 +868,7 @@ new_style_cast_english
 /*****************************************************************************/
 
 declare_english
-  : Y_DECLARE name_expected as_expected storage_class_list_opt_english
+  : Y_DECLARE Y_NAME as_expected storage_class_list_opt_english
     decl_english Y_END
     {
       if ( $5.ast->kind == K_NAME ) {
@@ -860,15 +898,49 @@ declare_english
                   "decl_english" );
       DUMP_NAME( "NAME", $2 );
       DUMP_TYPE( "storage_class_list_opt_english", $4 );
+
+      $5.ast->loc = @2;
+      C_TYPE_ADD( &$5.ast->type_id, $4, @4 );
+      C_AST_CHECK( $5.ast, CHECK_DECL );
+
       DUMP_AST( "decl_english", $5.ast );
       DUMP_END();
 
+      c_ast_gibberish_declare( $5.ast, fout );
+      if ( opt_semicolon )
+        FPUTC( ';', fout );
+      FPUTC( '\n', fout );
+    }
+
+  | Y_DECLARE c_operator as_expected storage_class_list_opt_english
+    oper_decl_english Y_END
+    {
+      DUMP_START( "declare_english",
+                  "DECLARE c_operator AS storage_class_list_opt_english "
+                  "oper_decl_english" );
+      DUMP_NAME( "c_operator", op_get( $2 )->name );
+      DUMP_TYPE( "storage_class_list_opt_english", $4 );
+
+      $5.ast->loc = @2;
+      $5.ast->as.oper.oper_id = $2;
       C_TYPE_ADD( &$5.ast->type_id, $4, @4 );
+
+      DUMP_AST( "oper_decl_english", $5.ast );
+      DUMP_END();
+
       C_AST_CHECK( $5.ast, CHECK_DECL );
       c_ast_gibberish_declare( $5.ast, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
+    }
+
+  | Y_DECLARE error
+    {
+      if ( opt_lang >= LANG_CPP_MIN )
+        ELABORATE_ERROR( "name or %s expected", L_OPERATOR );
+      else
+        ELABORATE_ERROR( "name expected" );
     }
   ;
 
@@ -1041,14 +1113,20 @@ explain_declaration_c
 
       c_ast_t *const ast = c_ast_patch_placeholder( $2.ast, $4.ast );
       C_AST_CHECK( ast, CHECK_DECL );
-      char const *const name = c_ast_take_name( ast );
+      char const *name;
+      if ( ast->kind == K_OPERATOR ) {
+        name = op_get( ast->as.oper.oper_id )->name;
+      } else {
+        name = c_ast_take_name( ast );
+      }
       assert( name != NULL );
       FPRINTF( fout, "%s %s %s ", L_DECLARE, name, L_AS );
       if ( c_ast_take_typedef( ast ) )
         FPRINTF( fout, "%s ", L_TYPE );
       c_ast_english( ast, fout );
       FPUTC( '\n', fout );
-      FREE( name );
+      if ( ast->kind != K_OPERATOR )
+        FREE( name );
     }
   ;
 
@@ -1216,11 +1294,6 @@ set_option
 /*****************************************************************************/
 
 show_command
-  : show_type_command
-  | show_types_command
-  ;
-
-show_type_command
   : Y_SHOW Y_TYPEDEF_TYPE typedef_opt Y_END
     {
       if ( $3 )
@@ -1245,15 +1318,21 @@ show_type_command
       FREE( $2 );
       PARSE_ABORT();
     }
-  ;
 
-show_types_command
-  : Y_SHOW show_which_types_opt typedef_opt Y_END
+  | Y_SHOW show_which_types_opt typedef_opt Y_END
     {
       print_type_info_t pti;
       pti.print_fn = $3 ? &print_type_gibberish : &print_type_english;
       pti.show_which = $2;
       (void)c_typedef_visit( &print_type_visitor, &pti );
+    }
+
+  | Y_SHOW error
+    {
+      ELABORATE_ERROR(
+        "type name or \"%s\", \"%s\", or \"%s\" expected",
+        L_ALL, L_PREDEFINED, L_USER
+      );
     }
   ;
 
@@ -1304,21 +1383,21 @@ typedef_declaration_c
         //
         //      typedef size_t foo;
         //
-        // that is: an existing type name followed by a new name.
+        // that is: an existing typedef name followed by a new name.
         //
         ast = $3.ast;
       }
-      else if ( $3.ast->kind == K_TYPEDEF || $5.ast->kind == K_TYPEDEF ) {
+      else if ( $5.ast->kind == K_TYPEDEF ) {
         //
         // This is for a case like:
         //
         //      typedef int int_least32_t;
         //
-        // that is: a type followed by an existing type name, i.e., redefining
-        // an existing type name to be the same type.
+        // that is: a type followed by an existing typedef name, i.e.,
+        // redefining an existing typedef name to be the same type.
         //
         ast = $3.ast;
-        c_ast_set_name( ast, check_strdup( $5.ast->name ) );
+        c_ast_set_name( ast, check_strdup( $5.ast->as.c_typedef->ast->name ) );
       }
       else {
         //
@@ -1403,7 +1482,11 @@ using_declaration_c
       DUMP_AST( "cast_opt_c", $7.ast );
 
       c_ast_t *const ast = c_ast_patch_placeholder( $5.ast, $7.ast );
-      c_ast_set_name( ast, c_ast_take_name( $3.ast ) );
+
+      char const *const name = $3.ast->kind == K_TYPEDEF ?
+        check_strdup( $3.ast->as.c_typedef->ast->name ) :
+        c_ast_take_name( $3.ast );
+      c_ast_set_name( ast, name );
 
       C_AST_CHECK( ast, CHECK_DECL );
       // see comment in define_english about T_TYPEDEF
@@ -1527,24 +1610,55 @@ block_decl_english                      /* Apple extension */
   ;
 
 func_decl_english
-  : ref_qualifier_opt_english
+  : ref_qualifier_opt_english member_or_non_member_opt
     Y_FUNCTION paren_decl_list_opt_english returning_opt_english
     {
       DUMP_START( "func_decl_english",
+                  "ref_qualifier_opt_english "
+                  "member_or_non_member_opt "
                   "FUNCTION paren_decl_list_opt_english "
                   "returning_opt_english" );
       DUMP_TYPE( "(qualifier)", qualifier_peek() );
       DUMP_TYPE( "ref_qualifier_opt_english", $1 );
-      DUMP_AST_LIST( "decl_list_opt_english", $3 );
-      DUMP_AST( "returning_opt_english", $4.ast );
+      DUMP_NUM( "member_or_non_member_opt", $2 );
+      DUMP_AST_LIST( "decl_list_opt_english", $4 );
+      DUMP_AST( "returning_opt_english", $5.ast );
 
       $$.ast = C_AST_NEW( K_FUNCTION, &@$ );
       $$.target_ast = NULL;
       $$.ast->type_id = qualifier_peek() | $1;
-      $$.ast->as.func.args = $3;
-      c_ast_set_parent( $4.ast, $$.ast );
+      $$.ast->as.func.args = $4;
+      $$.ast->as.func.flags = $2;
+      c_ast_set_parent( $5.ast, $$.ast );
 
       DUMP_AST( "func_decl_english", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+oper_decl_english
+  : type_qualifier_list_opt_c { qualifier_push( $1, &@1 ); }
+    ref_qualifier_opt_english member_or_non_member_opt
+    Y_OPERATOR paren_decl_list_opt_english returning_opt_english
+    {
+      qualifier_pop();
+      DUMP_START( "oper_decl_english",
+                  "member_or_non_member_opt "
+                  "OPERATOR paren_decl_list_opt_english "
+                  "returning_opt_english" );
+      DUMP_TYPE( "ref_qualifier_opt_english", $3 );
+      DUMP_NUM( "member_or_non_member_opt", $4 );
+      DUMP_AST_LIST( "decl_list_opt_english", $6 );
+      DUMP_AST( "returning_opt_english", $7.ast );
+
+      $$.ast = C_AST_NEW( K_OPERATOR, &@$ );
+      $$.target_ast = NULL;
+      $$.ast->type_id = $1 | $3;
+      $$.ast->as.oper.args = $6;
+      $$.ast->as.oper.flags = $4;
+      c_ast_set_parent( $7.ast, $$.ast );
+
+      DUMP_AST( "oper_decl_english", $$.ast );
       DUMP_END();
     }
   ;
@@ -1888,6 +2002,7 @@ decl2_c
   | func_decl_c
   | name_c
   | nested_decl_c
+  | oper_decl_c
   | typedef_type_ast_c
   ;
 
@@ -2132,6 +2247,63 @@ nested_decl_c
       $$ = $4;
 
       DUMP_AST( "nested_decl_c", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+oper_decl_c
+  : /* type_ast_c */ oper_c '(' arg_list_opt_c ')'
+    func_qualifier_list_opt_c func_ref_qualifier_opt_c func_noexcept_opt_c
+    func_trailing_return_type_opt_c pure_virtual_opt_c
+    {
+      DUMP_START( "oper_decl_c",
+                  "OPERATOR c_operator '(' arg_list_opt_c ')' "
+                  "func_qualifier_list_opt_c "
+                  "func_ref_qualifier_opt_c func_noexcept_opt_c "
+                  "func_trailing_return_type_opt_c pure_virtual_opt_c" );
+      DUMP_AST( "(type_ast_c)", type_peek() );
+      DUMP_AST( "c_operator", $1.ast );
+      DUMP_AST_LIST( "arg_list_opt_c", $3 );
+      DUMP_TYPE( "func_qualifier_list_opt_c", $5 );
+      DUMP_TYPE( "func_ref_qualifier_opt_c", $6 );
+      DUMP_TYPE( "func_noexcept_opt_c", $7 );
+      DUMP_AST( "func_trailing_return_type_opt_c", $8.ast );
+      DUMP_TYPE( "pure_virtual_opt_c", $9 );
+
+      c_ast_t *const oper = C_AST_NEW( K_OPERATOR, &@$ );
+      oper->type_id = $5 | $6 | $7 | $9;
+      oper->as.oper.args = $3;
+      oper->as.oper.oper_id = $1.ast->as.oper.oper_id;
+
+      if ( $8.ast != NULL ) {
+        $$.ast = c_ast_add_func( $1.ast, $8.ast, oper );
+      }
+      else if ( $1.target_ast != NULL ) {
+        $$.ast = $1.ast;
+        (void)c_ast_add_func( $1.target_ast, type_peek(), oper );
+      }
+      else {
+        $$.ast = c_ast_add_func( $1.ast, type_peek(), oper );
+      }
+      $$.target_ast = oper->as.oper.ret_ast;
+
+      DUMP_AST( "oper_decl_c", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+oper_c
+  : /* type_ast_c */ Y_OPERATOR c_operator
+    {
+      DUMP_START( "oper_c", "OPERATOR c_operator" );
+      DUMP_AST( "(type_ast_c)", type_peek() );
+      DUMP_NAME( "c_operator", op_get( $2 )->name );
+
+      $$.ast = type_peek();
+      $$.target_ast = NULL;
+      $$.ast->as.oper.oper_id = $2;
+
+      DUMP_AST( "oper_c", $$.ast );
       DUMP_END();
     }
   ;
@@ -2529,7 +2701,6 @@ typedef_type_ast_c
       $$.target_ast = NULL;
       $$.ast->as.c_typedef = $1;
       $$.ast->type_id = T_TYPEDEF_TYPE;
-      c_ast_set_name( $$.ast, check_strdup( $1->ast->name ) );
 
       DUMP_AST( "typedef_type_ast_c", $$.ast );
       DUMP_END();
@@ -2948,6 +3119,51 @@ comma_expected
     }
   ;
 
+c_operator
+  : '!'                           { $$ = OP_EXCLAM     ; }
+  | "!="                          { $$ = OP_EXCLAM_EQ  ; }
+  | '%'                           { $$ = OP_PERCENT    ; }
+  | "%="                          { $$ = OP_PERCENT_EQ ; }
+  | '&'                           { $$ = OP_AMPER      ; }
+  | "&&"                          { $$ = OP_AMPER2     ; }
+  | "&="                          { $$ = OP_AMPER_EQ   ; }
+  | '(' rparen_expected           { $$ = OP_PARENS     ; }
+  | '*'                           { $$ = OP_STAR       ; }
+  | "*="                          { $$ = OP_STAR_EQ    ; }
+  | '+'                           { $$ = OP_PLUS       ; }
+  | "++"                          { $$ = OP_PLUS2      ; }
+  | "+="                          { $$ = OP_PLUS_EQ    ; }
+  | ','                           { $$ = OP_COMMA      ; }
+  | '-'                           { $$ = OP_MINUS      ; }
+  | "--"                          { $$ = OP_MINUS2     ; }
+  | "-="                          { $$ = OP_MINUS_EQ   ; }
+  | "->"                          { $$ = OP_ARROW      ; }
+  | "->*"                         { $$ = OP_ARROW_STAR ; }
+  | '.'                           { $$ = OP_DOT        ; }
+  | ".*"                          { $$ = OP_DOT_STAR   ; }
+  | '/'                           { $$ = OP_SLASH      ; }
+  | "/="                          { $$ = OP_SLASH_EQ   ; }
+  | "::"                          { $$ = OP_COLON2     ; }
+  | '<'                           { $$ = OP_LESS       ; }
+  | "<<"                          { $$ = OP_LESS2      ; }
+  | "<<="                         { $$ = OP_LESS2_EQ   ; }
+  | "<="                          { $$ = OP_LESS_EQ    ; }
+  | '='                           { $$ = OP_EQ         ; }
+  | "=="                          { $$ = OP_EQ2        ; }
+  | '>'                           { $$ = OP_GREATER    ; }
+  | ">>"                          { $$ = OP_GREATER2   ; }
+  | ">>="                         { $$ = OP_GREATER2_EQ; }
+  | ">="                          { $$ = OP_GREATER_EQ ; }
+  | "?:"                          { $$ = OP_QMARK_COLON; }
+  | '[' rbracket_expected         { $$ = OP_BRACKETS   ; }
+  | '^'                           { $$ = OP_CIRC       ; }
+  | "^="                          { $$ = OP_CIRC_EQ    ; }
+  | '|'                           { $$ = OP_PIPE       ; }
+  | "||"                          { $$ = OP_PIPE2      ; }
+  | "|="                          { $$ = OP_PIPE_EQ    ; }
+  | '~'                           { $$ = OP_TILDE      ; }
+  ;
+
 equals_expected
   : '='
   | error
@@ -2986,6 +3202,12 @@ lt_expected
     {
       ELABORATE_ERROR( "'<' expected" );
     }
+  ;
+
+member_or_non_member_opt
+  : /* empty */                   { $$ = C_FUNC_UNSPECIFIED; }
+  | Y_MEMBER                      { $$ = C_FUNC_MEMBER     ; }
+  | Y_NON_MEMBER                  { $$ = C_FUNC_NON_MEMBER ; }
   ;
 
 name_ast_c
@@ -3030,6 +3252,14 @@ reference_expected
   | error
     {
       ELABORATE_ERROR( "\"%s\" expected", L_REFERENCE );
+    }
+  ;
+
+rbracket_expected
+  : ']'
+  | error
+    {
+      ELABORATE_ERROR( "']' expected" );
     }
   ;
 

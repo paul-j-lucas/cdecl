@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | declare f as restrict function returning void | 65
+cdecl @ /dev/null @ -xc++ @ declare f as restrict function returning void @ 65

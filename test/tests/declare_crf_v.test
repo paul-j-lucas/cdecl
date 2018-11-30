@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | declare f as const reference function returning void | 0
+cdecl @ /dev/null @ -xc++ @ declare f as const reference function returning void @ 0

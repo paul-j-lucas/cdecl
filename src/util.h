@@ -62,6 +62,15 @@ _GL_INLINE_HEADER_BEGIN
 /** Frees the given memory. */
 #define FREE(PTR)                 free( CONST_CAST( void*, (PTR) ) )
 
+/** Frees the given C string later. */
+#define FREE_STR_LATER(PTR)       REINTERPRET_CAST( char*, free_later( PTR ) )
+
+/** Frees the newly allocated C string later. */
+#define FREE_STRBUF_LATER(SIZE)   FREE_STR_LATER( MALLOC( char, (SIZE) ) )
+
+/** Frees the duplicated C string later. */
+#define FREE_STRDUP_LATER(PTR)    FREE_STR_LATER( check_strdup( PTR ) )
+
 /** No-operation statement.  (Useful for a `goto` target.) */
 #define NO_OP                     ((void)0)
 
@@ -82,6 +91,32 @@ _GL_INLINE_HEADER_BEGIN
 
 /** Explicit C version of C++'s `reinterpret_cast`. */
 #define REINTERPRET_CAST(T,EXPR)  ((T)(uintptr_t)(EXPR))
+
+/**
+ * Conditionally returns a space or an empty string.
+ *
+ * @param S The C string to check.
+ * @return If \a S is non-empty, returns `" "`; otherwise returns `""`.
+ */
+#define SP_IF(S)                  (S[0] != '\0' ? " " : "")
+
+/**
+ * Conditionally returns \a S followed by a space.
+ *
+ * @param S The C string to check.
+ * @return If \a S is non-empty, returns \a S followed by `" "`; otherwise
+ * returns `""` followed by `""`.
+ */
+#define SP_AFTER(S)               S, SP_IF(S)
+
+/**
+ * Conditionally returns space followed by \a S.
+ *
+ * @param S The C string to check.
+ * @return If \a S is non-empty, returns `" "` followed by \a S; otherwise
+ * returns `""` followed by `""`.
+ */
+#define SP_BEFORE(S)              SP_IF(S), S
 
 /** Shorthand for calling **strerror**(3). */
 #define STRERROR                  strerror( errno )

@@ -1,1 +1,1 @@
-cdecl | /dev/null | | register int f(void) | 65
+cdecl @ /dev/null @ @ register int f(void) @ 65

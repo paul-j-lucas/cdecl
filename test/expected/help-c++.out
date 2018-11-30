@@ -1,23 +1,23 @@
 [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere
 command:
-  explain <gibberish>        | declare <name> as <english>
+  explain <gibberish> | declare { <name> | <operator> } as <english>
   [const | dynamic | reinterpret | static] cast <name> into <english>
   define <name> as <english> | typedef <gibberish> | using <name> = <gibberish>
   show { <name> | all | predefined | user } [typedef]
   set [options]              | help | ?            | exit | quit | q
 english:
-  <storage>* array [<number>] of <english>
+  <store>* array [<number>] of <english>
   block [([<args>])] [returning <english>]
-  <storage>* <fn-qualifier>* function [([<args>])] [returning <english>]
-  <cv-qualifier>* pointer to [member of class <name>] <english>
+  <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]
+  <store>* <fn-qual>* [[non-]member] operator [([<args>])] [returning <english>]
+  <cv-qual>* pointer to [member of class <name>] <english>
   [rvalue] reference to <english>
-  <storage>* <modifier>* [<C++-type>]
+  <store>* <modifier>* [<C++-type>]
   { enum [class|struct] | struct | union | class } <name>
 args: a comma separated list of <english> or <name> as <english>
 gibberish: a C++ declaration, like "int x"; or cast, like "(int)x"
 C++-type: bool char char16_t char32_t wchar_t int float double void
-cv-qualifier: const volatile
-fn-qualifier: const volatile [rvalue] reference
+cv-qual: const volatile
+fn-qual: const volatile [rvalue] reference
 modifier: short long signed unsigned const volatile
-name: a C++ identifier
-storage: constexpr extern friend register static thread_local [pure] virtual
+store: constexpr extern friend register static thread_local [pure] virtual

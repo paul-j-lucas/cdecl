@@ -1,1 +1,1 @@
-declare f as virtual function returning void
+declare f as virtual member function returning void

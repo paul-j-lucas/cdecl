@@ -34,7 +34,7 @@
 
 /// @cond DOXYGEN_IGNORE
 
-// system
+// standard
 #include <stdio.h>                      /* for FILE */
 
 /// @endcond

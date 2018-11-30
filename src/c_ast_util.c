@@ -187,7 +187,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
                                      c_ast_t *func ) {
   assert( ast != NULL );
   assert( func != NULL );
-  assert( (func->kind & (K_BLOCK | K_FUNCTION)) != K_NONE );
+  assert( (func->kind & K_FUNCTION_LIKE) != K_NONE );
 
   switch ( ast->kind ) {
     case K_ARRAY:
@@ -278,6 +278,28 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func ) {
   return rv;
 }
 
+bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t type_id ) {
+  ast = c_ast_untypedef( ast );
+  return  ast->kind == K_BUILTIN &&
+          (type_id == T_NONE || (ast->type_id & type_id) != T_NONE);
+}
+
+bool c_ast_is_ecsu( c_ast_t const *ast ) {
+  ast = c_ast_untypedef( ast );
+  ast = c_ast_unreference( ast );
+  ast = c_ast_untypedef( ast );
+  return ast->kind == K_ENUM_CLASS_STRUCT_UNION;
+}
+
+bool c_ast_is_ptr_to( c_ast_t const *ast, c_type_id_t type_id ) {
+  ast = c_ast_untypedef( ast );
+  if ( ast->kind == K_POINTER ) {
+    ast = c_ast_untypedef( ast->as.ptr_ref.to_ast );
+    return (ast->type_id & type_id) != T_NONE;
+  }
+  return false;
+}
+
 char const* c_ast_name( c_ast_t const *ast, v_direction_t dir ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_t *const found =
@@ -340,6 +362,18 @@ bool c_ast_take_typedef( c_ast_t *ast ) {
     return true;
   }
   return false;
+}
+
+c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
+  while ( ast->kind == K_REFERENCE || ast->kind == K_RVALUE_REFERENCE )
+    ast = ast->as.ptr_ref.to_ast;
+  return ast;
+}
+
+c_ast_t const* c_ast_untypedef( c_ast_t const *ast ) {
+  while ( ast->kind == K_TYPEDEF )
+    ast = ast->as.c_typedef->ast;
+  return ast;
 }
 
 bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {

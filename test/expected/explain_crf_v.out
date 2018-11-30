@@ -1,1 +1,1 @@
-declare f as constant reference function returning void
+declare f as constant reference member function returning void

@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | explain enum struct C x | 65
+cdecl @ /dev/null @ -xc++ @ explain enum struct C x @ 65

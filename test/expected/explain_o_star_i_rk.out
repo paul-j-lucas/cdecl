@@ -1,0 +1,1 @@
+declare * as operator (int) returning reference to S

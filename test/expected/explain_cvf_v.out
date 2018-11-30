@@ -1,1 +1,1 @@
-declare f as constant volatile function returning void
+declare f as constant volatile member function returning void

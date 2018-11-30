@@ -1,1 +1,1 @@
-cdecl | /dev/null | | cast x into unsigned int | 0
+cdecl @ /dev/null @ @ cast x into unsigned int @ 0

@@ -1,1 +1,1 @@
-cdecl | /dev/null | | cast x into register int | 65
+cdecl @ /dev/null @ @ cast x into register int @ 65

@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -xc++ @ define S as struct S; declare ->* as operator (reference to S, int) returning reference to S @ 0

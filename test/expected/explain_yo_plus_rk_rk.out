@@ -1,0 +1,1 @@
+declare + as final member operator (reference to S) returning reference to S

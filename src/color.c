@@ -162,7 +162,7 @@ bool colors_parse( char const *capabilities ) {
 
   if ( capabilities != NULL ) {
     // free this later since the sgr_* variables point to substrings
-    char *next_cap = (char*)free_later( check_strdup( capabilities ) );
+    char *next_cap = FREE_STRDUP_LATER( capabilities );
 
     for ( char *cap_name_val; (cap_name_val = strsep( &next_cap, ":" )); ) {
       char const *const cap_name = strsep( &cap_name_val, "=" );

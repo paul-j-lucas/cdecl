@@ -1,0 +1,1 @@
+declare , as non-member operator (reference to constant S, int) returning S

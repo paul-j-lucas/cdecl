@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain char (f)(int) | 0
+cdecl @ /dev/null @ @ explain char (f)(int) @ 0

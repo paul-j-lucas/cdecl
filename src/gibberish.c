@@ -35,7 +35,7 @@
 
 /// @cond DOXYGEN_IGNORE
 
-// system
+// standard
 #include <assert.h>
 #include <stdlib.h>
 #include <sysexits.h>
@@ -131,13 +131,14 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
  * Helper function for `c_ast_gibberish_impl()` that prints a block's or
  * function's arguments, if any.
  *
- * @param ast The `c_ast` that is either a <code>\ref K_BLOCK</code> or a
- * <code>\ref K_FUNCTION</code> whose arguments to print.
+ * @param ast The `c_ast` that is either a <code>\ref K_BLOCK</code>,
+ * <code>\ref K_FUNCTION</code> or <code>\ref K_OPERATOR</code> whose arguments
+ * to print.
  * @param param The `g_param` to use.
  */
 static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
-  assert( (ast->kind & (K_BLOCK | K_FUNCTION)) != K_NONE );
+  assert( (ast->kind & K_FUNCTION_LIKE) != K_NONE );
 
   bool comma = false;
   FPUTC( '(', param->gout );
@@ -179,6 +180,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   //
   switch ( ast->kind ) {
     case K_FUNCTION:
+    case K_OPERATOR:
       //
       // These things aren't printed as part of the type beforehand, so strip
       // them out of the type here, but print them after the arguments.
@@ -288,7 +290,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         FPRINTF( param->gout, "%s ", c_type_name( storage ) );
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
       if ( param->gkind != G_CAST && c_ast_name( ast, V_UP ) != NULL &&
-           !c_ast_find_kind( ast->parent, V_UP, K_BLOCK | K_FUNCTION ) ) {
+           !c_ast_find_kind( ast->parent, V_UP, K_FUNCTION_LIKE ) ) {
         //
         // For all kinds except functions and blocks, we want the output to be
         // like:
@@ -359,6 +361,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
       case K_ARRAY:
       case K_BLOCK:                     // Apple extension
       case K_FUNCTION:
+      case K_OPERATOR:
         c_ast_gibberish_postfix( parent, param );
         break;
 
@@ -427,6 +430,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
       break;
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
+    case K_OPERATOR:
       c_ast_gibberish_func_args( ast, param );
       break;
     default:
@@ -490,9 +494,17 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
   assert( param != NULL );
 
-  if ( ast->name != NULL && param->gkind != G_CAST ) {
-    g_param_space( param );
-    FPUTS( ast->name, param->gout );
+  if ( param->gkind != G_CAST ) {
+    if ( ast->kind == K_OPERATOR ) {
+      g_param_space( param );
+      FPRINTF( param->gout,
+        "operator%s", op_get( ast->as.oper.oper_id )->name
+      );
+    }
+    else if ( ast->name != NULL ) {
+      g_param_space( param );
+      FPUTS( ast->name, param->gout );
+    }
   }
 }
 

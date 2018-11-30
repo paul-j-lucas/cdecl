@@ -1,1 +1,1 @@
-cdecl | /dev/null | | declare x as class C | 65
+cdecl @ /dev/null @ @ declare x as class C @ 65

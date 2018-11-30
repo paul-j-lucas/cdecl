@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain int register x | 0
+cdecl @ /dev/null @ @ explain int register x @ 0

@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++03 | explain void f(int &&r) | 65
+cdecl @ /dev/null @ -xc++03 @ explain void f(int &&r) @ 65

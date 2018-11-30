@@ -1,1 +1,1 @@
-cdecl | /dev/null | | define int_least32_t as int | 0
+cdecl @ /dev/null @ @ define int_least32_t as int @ 0

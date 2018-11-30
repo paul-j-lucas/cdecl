@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | explain int (&r)[3] | 0
+cdecl @ /dev/null @ -xc++ @ explain int (&r)[3] @ 0

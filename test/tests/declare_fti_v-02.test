@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | declare f as function (x as non-discardable int) | 0
+cdecl @ /dev/null @ -xc++ @ declare f as function (x as non-discardable int) @ 0

@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain void f(char[]) | 0
+cdecl @ /dev/null @ @ explain void f(char[]) @ 0

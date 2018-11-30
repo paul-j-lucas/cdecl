@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xknr | explain signed char x | 65
+cdecl @ /dev/null @ -xknr @ explain signed char x @ 65

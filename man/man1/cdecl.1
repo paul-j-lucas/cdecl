@@ -2,7 +2,7 @@
 .\"     cdecl -- C gibberish translator
 .\"     cdecl.1: manual page
 .\"
-.\"     Copyright (C) 2017  Paul J. Lucas, et al.
+.\"     Copyright (C) 2018  Paul J. Lucas, et al.
 .\"
 .\"     This program is free software: you can redistribute it and/or modify
 .\"     it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "October 10, 2018" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "November 29, 2018" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -454,6 +454,7 @@ Adds support for
 \f(CWclass\fP,
 exception specifications (\f(CWthrow\fP),
 new-style casts,
+overloaded operators,
 references,
 pointers to class members,
 and \f(CWvirtual\fP functions.
@@ -512,7 +513,7 @@ Composes a C (or C++) cast from pseudo-English.
 .RB "{ " const " | " dynamic " | " reinterpret " | " static " } " cast " \f2name\fP" " into" " \f2english\fP"
 Composes a C++ new-style cast from pseudo-English.
 .TP
-.BI declare " name" " as" " english"
+.BI declare " \f1{\fP" "" " name" " \f1|\fP" " operator" " \f1}\fP" "" " as" " english"
 Composes a C (or C++) declaration from pseudo-English.
 .TP
 .BI define " name" " as" " english"
@@ -599,19 +600,21 @@ function (or block) arguments.
 .I English
 is one of:
 .IP "" 4
-.BR \f2storage\fP "* " array " [[" static "] " \f2cv-qualifier\fP "* {" \f2number\fP | * "}] " of " \f2english\fP"
+.BR \f2store\fP "* " array " [[" static "] " \f2cv-qual\fP "* {" \f2number\fP | * "}] " of " \f2english\fP"
 .br
-.BR \f2storage\fP "* " variable " [" length "] " "array " \f2cv-qualifier\fP * " of" " \f2english\fP"
+.BR \f2store\fP "* " variable " [" length "] " "array " \f2cv-qual\fP * " of" " \f2english\fP"
 .br
 .BR block " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
 .br
-.BR \f2storage\fP "* " \f2fn-qualifier\fP "* " function " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
+.BR \f2store\fP "* " \f2fn-qual\fP "* [[" non- "]" member "] " function " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
 .br
-.BR \f2cv-qualifier\fP "* " "pointer to" " [" "member of class" " \f2name\fP" "" ] " \f2english\fP"
+.BR \f2store\fP "* " \f2fn-qual\fP "* [[" non- "]" member "] " operator " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
+.br
+.BR \f2cv-qual\fP "* " "pointer to" " [" "member of class" " \f2name\fP" "" ] " \f2english\fP"
 .br
 .RB [ rvalue "] " "reference to" " \f2english\fP"
 .br
-.IR storage "* " modifier "* [" C-type ]
+.IR store "* " modifier "* [" C-type ]
 .br
 .RB "{ " enum " [" class " | " struct "] | " class " | " struct " | " union " } \f2name\fP"
 .P
@@ -646,7 +649,7 @@ One of:
 or
 \f(CWvoid\fP.
 .TP
-.I cv-qualifier
+.I cv-qual
 One of:
 \f(CW_Atomic\fP,
 \f(CWconst\fP,
@@ -654,7 +657,7 @@ One of:
 or
 \f(CWvolatile\fP.
 .TP
-.I fn-qualifier
+.I fn-qual
 One of:
 \f(CWconst\fP,
 \f(CWreference\fP,
@@ -684,7 +687,7 @@ or
 binary (if starting with either \f(CW0b\fP or \f(CW0B\fP)
 number.
 .TP
-.I storage
+.I store
 One of:
 \f(CWauto\fP (C, or C++03 or earlier),
 \f(CWblock\fP,
@@ -740,6 +743,7 @@ carries-dependency  carries_dependency
      non-returning  _Noreturn
       non-throwing  throw()
           noreturn  _Noreturn
+              oper  operator
         overridden  override
             predef  predefined
                ptr  pointer
@@ -762,7 +766,11 @@ is any supported C
 or C++
 (for
 .BR c++decl )
-variable or function declaration,
+variable,
+function,
+or
+overloaded operator
+declaration,
 or type cast.
 (See
 .B EXAMPLES
@@ -1285,7 +1293,7 @@ constructors,
 destructors,
 \f(CWdecltype\fP,
 function default arguments,
-overloaded operators,
+overloaded conversion operators,
 and
 template declarations
 are not supported.
@@ -1351,9 +1359,55 @@ c++decl> declare p as const pointer to S
 S *const p;
 .cE 0
 .IP \n+[step].
+When converting from one of the C++ overloaded operators
+\f(CW&\fP,
+\f(CW*\fP,
+\f(CW+\fP,
+\f(CW++\fP,
+\f(CW-\fP,
+or
+\f(CW--\fP,
+to pseudo-English
+when declared as:
+.cS
+T operator OP(U);
+.cE 0
+.IP ""
+i.e., taking one argument,
+it's ambiguous
+(to
+.BR cdecl )
+between being a member or non-member operator
+since
+.B cdecl
+doesn't have the context in which the operator is declared.
+If it were declared in-class,
+e.g.:
+.cS
+class T {
+public:
+  // ...
+  T operator OP(U);
+};
+.cE 0
+.IP ""
+then clearly it's a member operator;
+if it were declared at file scope,
+then clearly it's a non-member operator;
+but
+.B cdecl
+doesn't have this context.
+In such cases,
+.B cdecl
+omits either
+.B member
+or
+.B non-member
+from its output.
+.IP \n+[step].
 When converting from pseudo-English to a C++ declaration
 for either
-\f(CWauto\fP,
+\f(CWauto\fP
 or a reference or an rvalue reference variable
 that is not a function argument,
 the output doesn't include an initializer:

@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xknr | explain long double x | 65
+cdecl @ /dev/null @ -xknr @ explain long double x @ 65

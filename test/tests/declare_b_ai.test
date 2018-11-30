@@ -1,1 +1,1 @@
-cdecl | /dev/null | | declare b as block returning array of int | 65
+cdecl @ /dev/null @ @ declare b as block returning array of int @ 65

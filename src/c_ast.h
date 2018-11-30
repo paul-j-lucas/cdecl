@@ -37,6 +37,7 @@
 // local
 #include "config.h"                     /* must go first */
 #include "c_kind.h"
+#include "c_operator.h"
 #include "c_type.h"
 #include "slist.h"
 #include "typedefs.h"
@@ -58,6 +59,13 @@ _GL_INLINE_HEADER_BEGIN
 
 #define C_ARRAY_SIZE_NONE     (-1)      /**< For `array[]`. */
 #define C_ARRAY_SIZE_VARIABLE (-2)      /**< For `array[*]`. */
+
+#define C_FUNC_UNSPECIFIED    0u        /**< Function is unspecified. */
+#define C_FUNC_MEMBER         (1u << 0) /**< Function is a member. */
+#define C_FUNC_NON_MEMBER     (1u << 1) /**< Function is a non-member. */
+
+// bit masks
+#define C_FUNC_MASK_MEMBER    0x3u      /**< Member/non-member bitmask. */
 
 /**
  * Convenience macro to get the `c_ast` given an `slist_node`.
@@ -141,6 +149,20 @@ struct c_ecsu {
 struct c_func {
   c_ast_t  *ret_ast;                    ///< Return type.
   slist_t   args;                       ///< Function argument(s), if any.
+  unsigned  flags;                      ///< Member vs. non-member.
+};
+
+/**
+ * AST node for a C++ overloaded operator.
+ *
+ * @note Members are laid out in the same order as `c_func`: this is taken
+ * advantage of.
+ */
+struct c_oper {
+  c_ast_t    *ret_ast;                  ///< Return type.
+  slist_t     args;                     ///< Operator argument(s), if any.
+  unsigned    flags;                    ///< Member vs. non-member.
+  c_oper_id_t oper_id;                  ///< Which operator it is.
 };
 
 /**
@@ -178,6 +200,7 @@ struct c_ast {
     c_ecsu_t            ecsu;           ///< `enum`, `class`, `struct`, `union`
     c_func_t            func;           ///< Function member(s).
     // nothing needed for K_NAME
+    c_oper_t            oper;           ///< Operator member(s).
     c_ptr_mbr_t         ptr_mbr;        ///< Pointer-to-member member(s).
     c_ptr_ref_t         ptr_ref;        ///< Pointer or reference member(s).
     c_typedef_t const  *c_typedef;      ///< `typedef` member(s).
@@ -190,13 +213,24 @@ struct c_ast {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Convenience function for getting block or function arguments.
+ * Convenience function for getting function, operator, or block arguments.
  *
  * @param ast The `c_ast` to get the arguments of.
  * @return Returns a pointer to the first argument or null if none.
  */
 CDECL_AST_INLINE c_ast_arg_t const* c_ast_args( c_ast_t const *ast ) {
   return ast->as.func.args.head;
+}
+
+/**
+ * Convenience function for getting the number of function, operator, or block
+ * arguments.
+ *
+ * @param ast The `c_ast` to get the number of arguments of.
+ * @return Returns said number of arguments.
+ */
+CDECL_AST_INLINE unsigned c_ast_args_len( c_ast_t const *ast ) {
+  return slist_len( &ast->as.func.args );
 }
 
 /**
@@ -275,8 +309,8 @@ void c_ast_set_parent( c_ast_t *child, c_ast_t *parent );
  * @param data Optional data passed to \a visitor.
  * @return Returns a pointer to the `c_ast` the visitor stopped on or null.
  *
- * @note Function (or block) argument(s) are \e not traversed into. They're
- * considered distinct ASTs.
+ * @note Function, operator, or block argument(s) are \e not traversed into.
+ * They're considered distinct ASTs.
  */
 CDECL_AST_INLINE c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir,
                                        c_ast_visitor_t visitor, void *data ) {
@@ -298,8 +332,8 @@ CDECL_AST_INLINE c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir,
  * @param data Optional data passed to \a visitor.
  * @return Returns `true` only if \a visitor ever returned `true`.
  *
- * @note Function (or block) argument(s) are \e not traversed into. They're
- * considered distinct ASTs.
+ * @note Function, operator, or block argument(s) are \e not traversed into.
+ * They're considered distinct ASTs.
  */
 CDECL_AST_INLINE bool c_ast_found( c_ast_t const *ast, v_direction_t dir,
                                    c_ast_visitor_t visitor, void *data ) {

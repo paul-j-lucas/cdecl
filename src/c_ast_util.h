@@ -112,15 +112,6 @@ bool c_ast_vistor_type( c_ast_t *ast, void *data );
 c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array );
 
 /**
- * Checks an entire AST for semantic errors and warnings.
- *
- * @param ast The `c_ast` to check.
- * @param check The kind of checks to perform.
- * @return Returns `true` only if \a ast  error-free.
- */
-bool c_ast_check( c_ast_t const *ast, c_check_t check );
-
-/**
  * Adds a function (or block) to the AST being built.
  *
  * @param ast The `c_ast` to append to.
@@ -130,6 +121,44 @@ bool c_ast_check( c_ast_t const *ast, c_check_t check );
  * @return Returns the AST to be used as the grammar production's return value.
  */
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func );
+
+/**
+ * Checks an entire AST for semantic errors and warnings.
+ *
+ * @param ast The `c_ast` to check.
+ * @param check The kind of checks to perform.
+ * @return Returns `true` only if \a ast  error-free.
+ */
+bool c_ast_check( c_ast_t const *ast, c_check_t check );
+
+/**
+ * Checks whether \a ast is an AST for a builtin type.
+ *
+ * @param ast The `c_ast` to check.
+ * @param type_id The bitwise-or of the type(s) \a ast can be or
+ * <code>\ref T_NONE</code> for any builtin type.
+ * @return Returns `true` only if \a ast is a builtin type.
+ */
+bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t type_id );
+
+/**
+ * Checks whether \a ast is an AST for an `enum`, `class`, `struct`, or `union`
+ * or a reference or rvalue reference thereto.
+ *
+ * @param ast The `c_ast` to check.
+ * @return Returns `true` only if \a ast is an `enum`, `class`, `struct`, or
+ * `union` or a reference or rvalue reference thereto.
+ */
+bool c_ast_is_ecsu( c_ast_t const *ast );
+
+/**
+ * Checks whether \a ast is an AST for a pointer to \a type_id.
+ *
+ * @param ast The `c_ast` to check.
+ * @param type_id The bitwise-or of type(s) to check against.
+ * @return Returns `true` only if \a ast is a pointer to one of the types.
+ */
+bool c_ast_is_ptr_to( c_ast_t const *ast, c_type_id_t type_id );
 
 /**
  * Prints \a ast as pseudo-English.
@@ -237,6 +266,24 @@ char const* c_ast_take_name( c_ast_t *ast );
  * @return Returns `true` only if \a ast contains a `typedef`.
  */
 bool c_ast_take_typedef( c_ast_t *ast );
+
+/**
+ * Un-references \a ast, i.e., if \a ast is a <code>\ref K_REFERENCE</code> or
+ * <code>\ref K_RVALUE_REFERENCE</code> returns the AST of the underlying type.
+ *
+ * @param ast The `c_ast` to un-reference.
+ * @return Returns the AST of the underlying type.
+ */
+c_ast_t const* c_ast_unreference( c_ast_t const *ast );
+
+/**
+ * Un-typedefs \a ast, i.e., if \a ast is a <code>\ref K_TYPEDEF</code>,
+ * returns the AST of the underlying type.
+ *
+ * @param ast The `c_ast` to un-typedef.
+ * @return Returns the AST of the underlying type.
+ */
+c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
 
 ///////////////////////////////////////////////////////////////////////////////
 

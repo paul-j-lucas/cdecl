@@ -416,6 +416,7 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_re
     parent->id = -1,
     loc = 13-27,
     type = "" (0x0),
+    flags = 0x0,
     args = [
       {
         id = 97,
@@ -484,6 +485,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
     parent->id = -1,
     loc = 13-27,
     type = "" (0x0),
+    flags = 0x0,
     args = [
       {
         id = 97,
@@ -531,6 +533,7 @@ pointer_decl_c ::= pointer_type_c decl_c = {
     parent->id = -1,
     loc = 13-27,
     type = "" (0x0),
+    flags = 0x0,
     args = [
       {
         id = 97,
@@ -590,6 +593,7 @@ explain_declaration_c ::= EXPLAIN type_ast_c decl_c = {
     parent->id = -1,
     loc = 13-27,
     type = "" (0x0),
+    flags = 0x0,
     args = [
       {
         id = 97,

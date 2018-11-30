@@ -1,1 +1,1 @@
-cdecl | /dev/null | | reinterpret cast x into pointer to void | 65
+cdecl @ /dev/null @ @ reinterpret cast x into pointer to void @ 65

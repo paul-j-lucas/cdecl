@@ -44,6 +44,8 @@ extern char const L_HELP[];
 extern char const L_INTO[];
 extern char const L_MBR[];                  // synonym for "member"
 extern char const L_MEMBER[];
+extern char const L_NON_MBR[];              // synonym for "non-member"
+extern char const L_NON_MEMBER[];
 extern char const L_OF[];
 extern char const L_POINTER[];
 extern char const L_PREDEF[];               // synonym for "predefined"
@@ -159,6 +161,8 @@ extern char const L_NEW[];
 extern char const L_NON_THROWING[];         // synonym for "throw"
 extern char const L_NOT[];
 extern char const L_NOT_EQ[];
+extern char const L_OPER[];                 // synonym for "operator"
+extern char const L_OPERATOR[];
 extern char const L_OR[];
 extern char const L_OR_EQ[];
 extern char const L_PRIVATE[];

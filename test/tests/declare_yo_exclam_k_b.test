@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -xc++ @ define S as struct S; declare ! as final operator (S) returning bool @ 65

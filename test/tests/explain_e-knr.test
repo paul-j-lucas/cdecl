@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xknr | explain enum E x | 65
+cdecl @ /dev/null @ -xknr @ explain enum E x @ 65

@@ -45,9 +45,9 @@
 /// @cond DOXYGEN_IGNORE
 
 // local constants
-static char const*  MORE[]     = { "...", "..." };
-static size_t const MORE_LEN[] = { 3,     3 };
-static unsigned     TERM_COLUMNS_DEFAULT = 80;
+static char const*    MORE[]     = { "...", "..." };
+static size_t const   MORE_LEN[] = { 3,     3 };
+static unsigned const TERM_COLUMNS_DEFAULT = 80;
 
 /// @endcond
 

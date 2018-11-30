@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xknr | declare x as const int | 65
+cdecl @ /dev/null @ -xknr @ declare x as const int @ 65

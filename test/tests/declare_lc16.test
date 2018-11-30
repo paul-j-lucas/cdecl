@@ -1,1 +1,1 @@
-cdecl | /dev/null | | declare x as long char16_t | 65
+cdecl @ /dev/null @ @ declare x as long char16_t @ 65

@@ -1,1 +1,1 @@
-declare f as rvalue reference function returning void
+declare f as rvalue reference member function returning void

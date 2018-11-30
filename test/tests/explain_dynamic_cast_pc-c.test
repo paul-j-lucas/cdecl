@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain dynamic_cast<class C*>(x) | 65
+cdecl @ /dev/null @ @ explain dynamic_cast<class C*>(x) @ 65

@@ -1,1 +1,1 @@
-cdecl | /dev/null | | cast x into const volatile pointer to int | 0
+cdecl @ /dev/null @ @ cast x into const volatile pointer to int @ 0

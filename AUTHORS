@@ -79,6 +79,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added C99 static, type-qualified, and variable length array
 		function arguments
 	added C99 standard types, e.g., int8_t, atomic_int, etc.
+	added C++ overloaded operators
 	added C++11 auto, constexpr, enum class, mutable, new-style casts,
 		noexcept, ref-qualifiers, rvalue references, and throw()
 	added C++11 function trailing return-type syntax

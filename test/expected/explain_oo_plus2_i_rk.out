@@ -1,0 +1,1 @@
+declare ++ as overridden member operator (int) returning reference to S

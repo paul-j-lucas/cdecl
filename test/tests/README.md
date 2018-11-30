@@ -37,7 +37,7 @@ The characters are:
 + `l` = `long`
 + `m` = `_Imaginary`, member of class, or `mutable`
 + `n` = name, nested, `noreturn`, or `union`
-+ `o` = `override` or `thread_local`
++ `o` = `operator`, `override`, or `thread_local`
 + `p` = pointer
 + `r` = `restrict` or reference
 + `rr` = rvalue reference

@@ -1,1 +1,1 @@
-cdecl | /dev/null | | cast x into signed char | 0
+cdecl @ /dev/null @ @ cast x into signed char @ 0

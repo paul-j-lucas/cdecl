@@ -1,1 +1,1 @@
-cdecl | /dev/null | | show foo | 65
+cdecl @ /dev/null @ @ show foo @ 65

@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain int* (**(*x[3][5])(void))[7] | 0
+cdecl @ /dev/null @ @ explain int* (**(*x[3][5])(void))[7] @ 0

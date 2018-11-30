@@ -142,8 +142,8 @@ void cdecl_prompt_enable( bool enable ) {
 }
 
 void cdecl_prompt_init( void ) {
-  prompt[0] = prompt_buf[0] = (char*)free_later( prompt_create( '>' ) );
-  prompt[1] = prompt_buf[1] = (char*)free_later( prompt_create( '+' ) );
+  prompt[0] = prompt_buf[0] = FREE_STR_LATER( prompt_create( '>' ) );
+  prompt[1] = prompt_buf[1] = FREE_STR_LATER( prompt_create( '+' ) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

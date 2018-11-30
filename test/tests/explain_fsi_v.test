@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain void f(static int x) | 65
+cdecl @ /dev/null @ @ explain void f(static int x) @ 65

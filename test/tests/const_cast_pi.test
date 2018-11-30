@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | const cast x into pointer to int | 0
+cdecl @ /dev/null @ -xc++ @ const cast x into pointer to int @ 0

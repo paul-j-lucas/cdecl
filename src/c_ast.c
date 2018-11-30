@@ -36,7 +36,7 @@
 
 /// @cond DOXYGEN_IGNORE
 
-// system
+// standard
 #include <assert.h>
 #include <stdlib.h>
 #include <sysexits.h>
@@ -107,7 +107,8 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
     }
 
     case K_BLOCK:
-    case K_FUNCTION: {
+    case K_FUNCTION:
+    case K_OPERATOR: {
       c_ast_arg_t const *arg_i = c_ast_args( ast_i );
       c_ast_arg_t const *arg_j = c_ast_args( ast_j );
       for ( ; arg_i && arg_j; arg_i = arg_i->next, arg_j = arg_j->next ) {

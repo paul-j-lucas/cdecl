@@ -33,7 +33,7 @@
 
 /// @cond DOXYGEN_IGNORE
 
-// system
+// standard
 #include <assert.h>
 #include <stdlib.h>
 #include <sysexits.h>
@@ -126,8 +126,21 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         c_ast_debug( ast->as.array.of_ast, indent, "of_ast", dout );
         break;
 
-      case K_BLOCK:                     // Apple extension
+      case K_OPERATOR:
+        PRINT_COMMA;
+        INDENT_PRINT( "oper_id = %u,\n", ast->as.oper.oper_id );
+        INDENT_PRINT_KV(
+          "operator_name", op_get( ast->as.oper.oper_id )->name
+        );
+        FPUTS( ",\n", dout );
+        // FALLTHROUGH
+
       case K_FUNCTION:
+        PRINT_COMMA;
+        INDENT_PRINT( "flags = 0x%x,\n", ast->as.func.flags );
+        // FALLTHROUGH
+
+      case K_BLOCK:                     // Apple extension
         PRINT_COMMA;
         INDENT_PRINT( "args = " );
         c_ast_list_debug( &ast->as.func.args, indent, dout );

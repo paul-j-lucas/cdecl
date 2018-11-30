@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | declare x as enum struct C | 0
+cdecl @ /dev/null @ -xc++ @ declare x as enum struct C @ 0

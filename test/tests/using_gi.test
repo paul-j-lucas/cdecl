@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | using SI = register int | 65
+cdecl @ /dev/null @ -xc++ @ using SI = register int @ 65

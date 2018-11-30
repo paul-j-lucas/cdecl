@@ -1,1 +1,1 @@
-declare f as virtual overridden final function returning void
+declare f as virtual overridden final member function returning void

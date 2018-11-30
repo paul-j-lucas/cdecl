@@ -34,7 +34,7 @@
 
 /// @cond DOXYGEN_IGNORE
 
-// system
+// standard
 #include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -569,12 +569,12 @@ bool c_type_add( c_type_id_t *dest_type, c_type_id_t new_type,
   }
 
   if ( (*dest_type & new_type) != T_NONE ) {
-    char const *const new_name = check_strdup( c_type_name_error( new_type ) );
+    char const *const new_name =
+      FREE_STRDUP_LATER( c_type_name_error( new_type ) );
     print_error( new_loc,
       "\"%s\" can not be combined with \"%s\"",
       new_name, c_type_name_error( *dest_type )
     );
-    FREE( new_name );
     return false;
   }
 

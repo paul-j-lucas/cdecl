@@ -112,6 +112,11 @@
 #define T_MASK_QUALIFIER      0x00F0000000000000ull /**< Qualifier bitmask.   */
 #define T_MASK_REF_QUALIFIER  0x0F00000000000000ull /**< Ref-qual bitmask.    */
 
+// shorthands
+#define T_MEMBER_ONLY         ( T_CONST | T_VOLATILE | T_OVERRIDE | T_FINAL \
+                              | T_VIRTUAL | T_REFERENCE | T_RVALUE_REFERENCE )
+#define T_NON_MEMBER_ONLY     T_FRIEND
+
 /**
  * Bitmask for combination of type(s).
  */

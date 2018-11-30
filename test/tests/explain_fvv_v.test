@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain void f( void, void ) | 65
+cdecl @ /dev/null @ @ explain void f( void, void ) @ 65

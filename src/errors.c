@@ -28,6 +28,7 @@
 #include "c_ast_util.h"
 #include "c_keyword.h"
 #include "c_type.h"
+#include "c_typedef.h"
 #include "diagnostics.h"
 #include "literals.h"
 #include "options.h"
@@ -37,6 +38,8 @@
 // standard
 #include <assert.h>
 #include <stdbool.h>
+
+#define PLURAL_S(N)               ((N) == 1 ? "" : "s")
 
 // local constants
 static bool const VISITOR_ERROR_FOUND     = true;
@@ -98,7 +101,11 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
       print_hint( "cast into pointer" );
       return false;
     case K_FUNCTION:
-      print_error( &ast->loc, "can not cast into function" );
+    case K_OPERATOR:
+      print_error( &ast->loc,
+        "can not cast into %s",
+        c_kind_name( ast->kind )
+      );
       print_hint( "cast into pointer to function" );
       return false;
     default:
@@ -125,14 +132,14 @@ static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
 }
 
 /**
- * Checks all function (or block) arguments for semantic errors.
+ * Checks all function (or operator or block) arguments for semantic errors.
  *
  * @param ast The function (or block) `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_func_args( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & (K_BLOCK | K_FUNCTION)) != K_NONE );
+  assert( (ast->kind & K_FUNCTION_LIKE) != K_NONE );
   assert( opt_lang != LANG_C_KNR );
 
   c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
@@ -146,7 +153,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
     switch ( arg_ast->kind ) {
       case K_BUILTIN:
         if ( (arg_ast->type_id & T_AUTO_CPP_11) != T_NONE ) {
-          print_error( &arg_ast->loc, "arguments can not be auto" );
+          print_error( &arg_ast->loc, "arguments can not be %s", L_AUTO );
           return false;
         }
         if ( (arg_ast->type_id & T_VOID) != T_NONE ) {
@@ -155,7 +162,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
           // "argument" is valid (as long as it doesn't have a name).
           //
           if ( arg_ast->name != NULL ) {
-            print_error( &arg_ast->loc, "arguments can not be void" );
+            print_error( &arg_ast->loc, "arguments can not be %s", L_VOID );
             return false;
           }
           void_ast = arg_ast;
@@ -173,6 +180,13 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
         break;
 
       case K_VARIADIC:
+        if ( ast->kind == K_OPERATOR && ast->as.oper.oper_id != OP_PARENS ) {
+          print_error( &arg_ast->loc,
+            "%s %s can not have a variadic argument",
+            L_OPERATOR, op_get( ast->as.oper.oper_id )->name
+          );
+          return false;
+        }
         if ( arg->next != NULL ) {
           print_error( &arg_ast->loc, "variadic specifier must be last" );
           return false;
@@ -188,7 +202,9 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
       arg_ast->type_id & (T_MASK_STORAGE & ~T_REGISTER);
     if ( storage != T_NONE ) {
       print_error( &arg_ast->loc,
-        "function arguments can not be %s", c_type_name_error( storage )
+        "%s arguments can not be %s",
+        c_kind_name( ast->kind ),
+        c_type_name_error( storage )
       );
       return false;
     }
@@ -196,6 +212,200 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
     if ( !c_ast_check_errors( arg_ast, true ) )
       return false;
   } // for
+
+  if ( ast->kind == K_OPERATOR ) {
+    unsigned user_overload_flags = ast->as.oper.flags & OP_MASK_OVERLOAD;
+    c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+    unsigned const op_overload_flags = op->flags & OP_MASK_OVERLOAD;
+
+    char const *const op_type =
+      op_overload_flags == OP_MEMBER     ? L_MEMBER     :
+      op_overload_flags == OP_NON_MEMBER ? L_NON_MEMBER :
+      "";
+    char const *const user_type =
+      user_overload_flags == OP_MEMBER     ? L_MEMBER     :
+      user_overload_flags == OP_NON_MEMBER ? L_NON_MEMBER :
+      op_type;
+
+    if ( user_overload_flags == OP_UNSPECIFIED ) {
+      //
+      // If the user didn't specify either member or non-member explicitly...
+      //
+      switch ( op_overload_flags ) {
+        //
+        // ...and the operator can not be both, then assume the user meant the
+        // one the operator can only be.
+        //
+        case OP_MEMBER:
+        case OP_NON_MEMBER:
+          user_overload_flags = op_overload_flags;
+          break;
+        //
+        // ...and the operator can be either one, then infer which one based on
+        // the number of arguments given.
+        //
+        case OP_MEMBER | OP_NON_MEMBER:
+          if ( n_args == op->args_min )
+            user_overload_flags = OP_MEMBER;
+          else if ( n_args == op->args_max )
+            user_overload_flags = OP_NON_MEMBER;
+          break;
+      } // switch
+    }
+    else if ( (user_overload_flags & op_overload_flags) == 0 ) {
+      //
+      // The user specified either member or non-member, but the operator can't
+      // be that.
+      //
+      print_error( &ast->loc,
+        "%s %s can only be a %s",
+        L_OPERATOR, op->name, op_type
+      );
+      return false;
+    }
+
+    //
+    // Determine the minimum and maximum number of arguments the operator can
+    // have based on whether it's a member, non-member, or unspecified.
+    //
+    bool const is_ambiguous = op_is_ambiguous( op );
+    unsigned req_args_min = 0, req_args_max = 0;
+    switch ( user_overload_flags ) {
+      case OP_NON_MEMBER:
+        // Non-member operators must always take at least one argument (the
+        // enum, class, struct, or union for which it's overloaded).
+        req_args_min = is_ambiguous ? 1 : op->args_max;
+        req_args_max = op->args_max;
+        break;
+      case OP_MEMBER:
+        if ( op->args_max != OP_ARGS_UNLIMITED ) {
+          req_args_min = op->args_min;
+          req_args_max = is_ambiguous ? 1 : op->args_min;
+          break;
+        }
+        // FALLTHROUGH
+      case OP_UNSPECIFIED:
+        req_args_min = op->args_min;
+        req_args_max = op->args_max;
+        break;
+    } // switch
+
+    //
+    // Ensure the operator has the required number of arguments.
+    //
+    if ( n_args < req_args_min ) {
+      if ( req_args_min == req_args_max )
+exact:  print_error( &ast->loc,
+          "%s%s%s %s must have exactly %u argument%s",
+          SP_AFTER( user_type ), L_OPERATOR, op->name,
+          req_args_min, PLURAL_S( req_args_min )
+        );
+      else
+        print_error( &ast->loc,
+          "%s%s%s %s must have at least %u argument%s",
+          SP_AFTER( user_type ), L_OPERATOR, op->name,
+          req_args_min, PLURAL_S( req_args_min )
+        );
+      return false;
+    }
+    if ( n_args > req_args_max ) {
+      if ( op->args_min == req_args_max )
+        goto exact;
+      print_error( &ast->loc,
+        "%s%s%s %s can have at most %u argument%s",
+        SP_AFTER( user_type ), L_OPERATOR, op->name,
+        op->args_max, PLURAL_S( op->args_max )
+      );
+      return false;
+    }
+
+    bool const is_user_non_member = user_overload_flags == OP_NON_MEMBER;
+    if ( is_user_non_member ) {
+      //
+      // Ensure non-member operators are not const, overridden, final,
+      // reference, rvalue reference, nor virtual.
+      //
+      c_type_id_t const member_only_types = ast->type_id & T_MEMBER_ONLY;
+      if ( member_only_types != T_NONE ) {
+        print_error( &ast->loc,
+          "%s operators can not be %s",
+          L_NON_MEMBER,
+          c_type_name( member_only_types )
+        );
+        return false;
+      }
+
+      //
+      // Ensure non-member operators have at least one enum, class, struct, or
+      // union argument.
+      //
+      bool has_ecsu_arg = false;
+      for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
+        c_ast_t const *const arg_ast = C_AST_DATA( arg );
+        if ( c_ast_is_ecsu( arg_ast ) ) {
+          has_ecsu_arg = true;
+          break;
+        }
+      } // for
+      if ( !has_ecsu_arg ) {
+        print_error( &ast->loc,
+          "at least 1 argument of a %s %s must be an %s"
+          "; or a %s or %s %s thereto",
+          L_NON_MEMBER, L_OPERATOR, c_kind_name( K_ENUM_CLASS_STRUCT_UNION ),
+          L_REFERENCE, L_RVALUE, L_REFERENCE
+        );
+        return false;
+      }
+    }
+    else if ( user_overload_flags == OP_MEMBER ) {
+      //
+      // Ensure member operators are not friend.
+      //
+      c_type_id_t const non_member_only_types =
+        ast->type_id & T_NON_MEMBER_ONLY;
+      if ( non_member_only_types != T_NONE ) {
+        print_error( &ast->loc,
+          "%s operators can not be %s",
+          L_MEMBER,
+          c_type_name( non_member_only_types )
+        );
+        return false;
+      }
+    }
+
+    switch ( ast->as.oper.oper_id ) {
+      case OP_MINUS2:
+      case OP_PLUS2: {
+        //
+        // Ensure that the dummy argument for postfix -- or ++ is type int (or
+        // is a typedef of int).
+        //
+        c_ast_arg_t const *arg = c_ast_args( ast );
+        if ( arg == NULL )              // member prefix
+          break;
+        if ( is_user_non_member ) {
+          arg = arg->next;
+          if ( arg == NULL )            // non-member prefix
+            break;
+        }
+        // At this point, it's either member or non-member postfix:
+        // operator++(int) or operator++(S&,int).
+        c_ast_t const *const arg_ast = C_AST_DATA( arg );
+        if ( !c_ast_is_builtin( arg_ast, T_INT ) ) {
+          print_error( &arg_ast->loc,
+            "argument of postfix %s%s%s %s must be %s",
+            SP_AFTER( op_type ), L_OPERATOR, op->name,
+            c_type_name( T_INT )
+          );
+          return false;
+        }
+        break;
+      }
+
+      default:
+        /* suppress warning */;
+    } // switch
+  }
 
   if ( variadic_ast != NULL && n_args == 1 ) {
     print_error( &variadic_ast->loc,
@@ -212,14 +422,15 @@ only_void:
 }
 
 /**
- * Checks all function (or block) arguments for semantic errors in K&R C.
+ * Checks all function (or operator or block) arguments for semantic errors in
+ * K&R C.
  *
  * @param ast The function (or block) `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & (K_BLOCK | K_FUNCTION)) != K_NONE );
+  assert( (ast->kind & K_FUNCTION_LIKE) != K_NONE );
   assert( opt_lang == LANG_C_KNR );
 
   for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
@@ -299,7 +510,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
             return error_kind_not_type( ast, T_REGISTER );
           break;
         case K_FUNCTION:
-          print_error( &ast->loc, "array of function" );
+        case K_OPERATOR:
+          print_error( &ast->loc, "array of %s", c_kind_name( of_ast->kind ) );
           print_hint( "array of pointer to function" );
           return VISITOR_ERROR_FOUND;
         case K_NAME:
@@ -349,37 +561,118 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       }
       break;
 
+    case K_OPERATOR: {
+      if ( opt_lang < LANG_CPP_MIN ) {
+        print_error( &ast->loc,
+          "overloaded operators not supported in %s",
+          C_LANG_NAME()
+        );
+        return VISITOR_ERROR_FOUND;
+      }
+      c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+      if ( (op->flags & OP_MASK_OVERLOAD) == OP_NOT_OVERLOADABLE ) {
+        print_error( &ast->loc,
+          "%s %s can not be overloaded",
+          L_OPERATOR, op->name
+        );
+        return VISITOR_ERROR_FOUND;
+      }
+      if ( ast->as.oper.oper_id == OP_ARROW ) {
+        //
+        // Special case for operator-> that must return a pointer to a struct,
+        // union, or class.
+        //
+        c_ast_t const *const ret_ast = ast->as.oper.ret_ast;
+        if ( !c_ast_is_ptr_to( ret_ast, (T_STRUCT | T_UNION | T_CLASS) ) ) {
+          print_error( &ret_ast->loc,
+            "%s -> must return a pointer to %s, %s, or %s",
+            L_OPERATOR, L_STRUCT, L_UNION, L_CLASS
+          );
+          return VISITOR_ERROR_FOUND;
+        }
+      }
+      // FALLTHROUGH
+    }
+
     case K_FUNCTION:
       if ( (ast->type_id & (T_REFERENCE | T_RVALUE_REFERENCE)) != T_NONE ) {
         if ( opt_lang < LANG_CPP_11 ) {
           print_error( &ast->loc,
-            "reference qualified functions not supported in %s",
-            C_LANG_NAME()
+            "%s qualified %ss not supported in %s",
+            L_REFERENCE, c_kind_name( ast->kind ), C_LANG_NAME()
           );
           return VISITOR_ERROR_FOUND;
         }
         if ( (ast->type_id & (T_EXTERN | T_STATIC)) != T_NONE ) {
           print_error( &ast->loc,
-            "reference qualified functions can not be %s",
+            "%s qualified %ss can not be %s",
+            L_REFERENCE, c_kind_name( ast->kind ),
             c_type_name_error( ast->type_id & (T_EXTERN | T_STATIC) )
           );
           return VISITOR_ERROR_FOUND;
         }
       }
+
       if ( opt_lang >= LANG_CPP_MIN ) {
+        c_type_id_t const member_types = ast->type_id & T_MEMBER_ONLY;
+        c_type_id_t const non_member_types = ast->type_id & T_NON_MEMBER_ONLY;
+        if ( member_types != T_NONE && non_member_types != T_NONE ) {
+          char const *const member_types_names =
+            FREE_STRDUP_LATER( c_type_name( member_types ) );
+          print_error( &ast->loc,
+            "%ss can not be %s and %s",
+            c_kind_name( ast->kind ),
+            member_types_names,
+            c_type_name( non_member_types )
+          );
+          return VISITOR_ERROR_FOUND;
+        }
+
+        unsigned const user_overload_flags =
+          ast->as.func.flags & C_FUNC_MASK_MEMBER;
+        switch ( user_overload_flags ) {
+          case C_FUNC_MEMBER:
+            if ( non_member_types != T_NONE ) {
+              print_error( &ast->loc,
+                "%s %ss can not be %s",
+                L_MEMBER, c_kind_name( ast->kind ),
+                c_type_name( non_member_types )
+              );
+              return VISITOR_ERROR_FOUND;
+            }
+            break;
+          case C_FUNC_NON_MEMBER:
+            if ( member_types != T_NONE ) {
+              print_error( &ast->loc,
+                "%s %ss can not be %s",
+                L_NON_MEMBER, c_kind_name( ast->kind ),
+                c_type_name( member_types )
+              );
+              return VISITOR_ERROR_FOUND;
+            }
+            break;
+        } // switch
+
         if ( (ast->type_id & T_PURE_VIRTUAL) != T_NONE &&
              (ast->type_id & T_VIRTUAL) == T_NONE ) {
-          print_error( &ast->loc, "non-virtual functions can not be pure" );
+          print_error( &ast->loc,
+            "non-%s %ss can not be %s",
+            L_VIRTUAL, c_kind_name( ast->kind ), L_PURE
+          );
           return VISITOR_ERROR_FOUND;
         }
       }
-      else if ( (ast->type_id & T_MASK_QUALIFIER) != T_NONE ) {
-        print_error( &ast->loc,
-          "\"%s\" functions not supported in %s",
-          c_type_name_error( ast->type_id & T_MASK_QUALIFIER ),
-          C_LANG_NAME()
-        );
-        return VISITOR_ERROR_FOUND;
+      else {
+        c_type_id_t const qualifiers = ast->type_id & T_MASK_QUALIFIER;
+        if ( qualifiers != T_NONE ) {
+          print_error( &ast->loc,
+            "\"%s\" %ss not supported in %s",
+            c_type_name_error( qualifiers ),
+            c_kind_name( ast->kind ),
+            C_LANG_NAME()
+          );
+          return VISITOR_ERROR_FOUND;
+        }
       }
       // FALLTHROUGH
 
@@ -402,15 +695,20 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           if ( opt_lang < LANG_CPP_14 ) {
             if ( (ret_ast->type_id & T_AUTO_CPP_11) != T_NONE ) {
               print_error( &ret_ast->loc,
-                "\"auto\" return type not supported in %s",
-               C_LANG_NAME()
+                "\"%s\" return type not supported in %s",
+               L_AUTO, C_LANG_NAME()
               );
               return VISITOR_ERROR_FOUND;
             }
           }
           break;
         case K_FUNCTION:
-          print_error( &ret_ast->loc, "%s returning function", kind_name );
+        case K_OPERATOR:
+          print_error( &ret_ast->loc,
+            "%s returning %s",
+            kind_name,
+            c_kind_name( ret_ast->kind )
+          );
           print_hint( "%s returning pointer to function", kind_name );
           return VISITOR_ERROR_FOUND;
         default:
@@ -525,6 +823,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   switch ( ast->kind ) {
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
+    case K_OPERATOR:
       data = REINTERPRET_CAST( void*, true );
       for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
         if ( !c_ast_check_visitor( C_AST_DATA( arg ), c_ast_visitor_type,
@@ -532,7 +831,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
           return VISITOR_ERROR_FOUND;
         }
       } // for
-      if ( ast->kind == K_FUNCTION )
+      if ( (ast->kind & (K_FUNCTION | K_OPERATOR)) != K_NONE )
         break;
       // FALLTHROUGH
 
@@ -579,12 +878,14 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
       break;
 
     case K_BLOCK:
-    case K_FUNCTION: {
+    case K_FUNCTION:
+    case K_OPERATOR: {
       c_ast_t const *const ret_ast = ast->as.func.ret_ast;
       if ( (ast->type_id & T_NODISCARD) != T_NONE &&
            (ret_ast->type_id & T_VOID) != T_NONE ) {
         print_warning( &ast->loc,
-          "[[%s]] functions can not return void", L_NODISCARD
+          "[[%s]] %ss can not return %s",
+          L_NODISCARD, c_kind_name( ast->kind ), L_VOID
         );
       }
       for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {

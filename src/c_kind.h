@@ -65,12 +65,14 @@ enum c_kind {
   K_FUNCTION                = 0x0100,   ///< Function.
   K_POINTER                 = 0x0200,   ///< Pointer.
   // "parent" kinds (C++ only)
-  K_POINTER_TO_MEMBER       = 0x0400,   ///< Pointer-to-member (C++ only).
-  K_REFERENCE               = 0x0800,   ///< Reference (C++ only).
-  K_RVALUE_REFERENCE        = 0x1000,   ///< Rvalue reference (C++ only).
+  K_OPERATOR                = 0x0400,   ///< Overloaded operator (C++ only).
+  K_POINTER_TO_MEMBER       = 0x0800,   ///< Pointer-to-member (C++ only).
+  K_REFERENCE               = 0x1000,   ///< Reference (C++ only).
+  K_RVALUE_REFERENCE        = 0x2000,   ///< Rvalue reference (C++ only).
 };
 
 /// @cond DOXYGEN_IGNORE
+#define K_FUNCTION_LIKE       (K_BLOCK | K_FUNCTION | K_OPERATOR)
 #define K_PARENT_MIN          K_ARRAY
 /// @endcond
 

@@ -33,6 +33,7 @@ cdecl_SOURCES =	parser.y \
 		c_keyword.c c_keyword.h \
 		c_kind.c c_kind.h \
 		c_lang.c c_lang.h \
+		c_operator.c c_operator.h \
 		c_type.c c_type.h \
 		c_typedef.c c_typedef.h \
 		cdecl.c \

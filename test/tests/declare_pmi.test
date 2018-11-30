@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | declare p as pointer to member of class C int | 0
+cdecl @ /dev/null @ -xc++ @ declare p as pointer to member of class C int @ 0

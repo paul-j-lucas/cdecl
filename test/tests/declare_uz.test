@@ -1,1 +1,1 @@
-cdecl | /dev/null | | declare x as unsigned size_t | 65
+cdecl @ /dev/null @ @ declare x as unsigned size_t @ 65

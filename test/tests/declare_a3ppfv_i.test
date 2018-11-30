@@ -1,1 +1,1 @@
-cdecl | /dev/null | | declare a as array 3 of pointer to pointer to function (void) returning int | 0
+cdecl @ /dev/null @ @ declare a as array 3 of pointer to pointer to function (void) returning int @ 0

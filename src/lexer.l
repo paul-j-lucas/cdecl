@@ -153,8 +153,11 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_LENGTH,         TOKEN( Y_LENGTH )               },
   { L_MBR,            TOKEN( Y_MEMBER ),              },
   { L_MEMBER,         TOKEN( Y_MEMBER ),              },
+  { L_NON_MBR,        TOKEN( Y_NON_MEMBER ),          },
+  { L_NON_MEMBER,     TOKEN( Y_NON_MEMBER ),          },
   { L_NORETURN,       C_SYN( L__NORETURN,     true  ) },
   { L_OF,             TOKEN( Y_OF ),                  },
+  { L_OPER,           TOKEN( Y_OPERATOR )             },
   { L_OVERRIDDEN,     C_SYN( L_OVERRIDE,      false ) },
   { L_POINTER,        TOKEN( Y_POINTER )              },
   { L_PREDEF,         TOKEN( Y_PREDEFINED )           },
@@ -386,11 +389,11 @@ H             [0-9A-Fa-f]
 S             [ \f\r\t\v]
 
 cknr_name     ([cC][kK]&[rR])|([kK]&[rR][cC]?)
-cxx_name      [cC]"++"({D}{D})?
+cpp_name      [cC]"++"({D}{D})?
 hyphenated    {az}+-{az}+
 identifier    {letter}({letter}|{D})*
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
-lang_name     {cknr_name}|{cxx_name}
+lang_name     {cknr_name}|{cpp_name}
 
 bin_int       0[bB]{B}+{int_suffix}?
 oct_int       0{O}*{int_suffix}?
@@ -482,6 +485,13 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 return Y_NAME;
               }
 
+"non-member"  |
+"non-mbr"     {
+                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
+                SET_TOKEN;
+                return Y_NON_MEMBER;
+              }
+
 {hyphenated}  {
                 ASSERT_MODE( ENGLISH_TO_GIBBERISH );
                 char const *const literal = hyphenated_find( yytext );
@@ -502,25 +512,55 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 {dec_int}     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
 {hex_int}     { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
-"&&"          { SET_TOKEN; return Y_2AMPERSAND; }
-"->"          { SET_TOKEN; return Y_ARROW; }
-"..."         { SET_TOKEN; return Y_ELLIPSIS; }
-"::"          { SET_TOKEN; return Y_2COLON; }
-"?"           { SET_TOKEN; return Y_HELP; }
-"[["          { SET_TOKEN; return Y_2LBRACKET; }
-"]]"          { SET_TOKEN; return Y_2RBRACKET; }
+"!="          { SET_TOKEN; return Y_NOT_EQ     ; }
+"%="          { SET_TOKEN; return Y_PERCENT_EQ ; }
+"&&"          { SET_TOKEN; return Y_AMPER2     ; }
+"&="          { SET_TOKEN; return Y_AMPER_EQ   ; }
+"*="          { SET_TOKEN; return Y_STAR_EQ    ; }
+"++"          { SET_TOKEN; return Y_PLUS2      ; }
+"+="          { SET_TOKEN; return Y_PLUS_EQ    ; }
+"--"          { SET_TOKEN; return Y_MINUS2     ; }
+"-="          { SET_TOKEN; return Y_MINUS_EQ   ; }
+"->"          { SET_TOKEN; return Y_ARROW      ; }
+"->*"         { SET_TOKEN; return Y_ARROW_STAR ; }
+".*"          { SET_TOKEN; return Y_DOT_STAR   ; }
+"..."         { SET_TOKEN; return Y_ELLIPSIS   ; }
+"/="          { SET_TOKEN; return Y_SLASH_EQ   ; }
+"::"          { SET_TOKEN; return Y_COLON2     ; }
+"<<"          { SET_TOKEN; return Y_LESS2      ; }
+"<<="         { SET_TOKEN; return Y_LESS2_EQ   ; }
+"<="          { SET_TOKEN; return Y_LESS_EQ    ; }
+"=="          { SET_TOKEN; return Y_EQ2        ; }
+">="          { SET_TOKEN; return Y_GREATER_EQ ; }
+">>"          { SET_TOKEN; return Y_GREATER2   ; }
+">>="         { SET_TOKEN; return Y_GREATER2_EQ; }
+"?"           { SET_TOKEN; return Y_HELP       ; }
+"?:"          { SET_TOKEN; return Y_QMARK_COLON; }
+"[["          { SET_TOKEN; return Y_LBRACKET2  ; }
+"]]"          { SET_TOKEN; return Y_RBRACKET2  ; }
+"^="          { SET_TOKEN; return Y_CIRC_EQ    ; }
+"|="          { SET_TOKEN; return Y_PIPE_EQ    ; }
+"||"          { SET_TOKEN; return Y_PIPE2      ; }
 
-"^"           |                         /* Apple extension: block indicator */
+"!"           |
+"%"           |
 "&"           |
 "("           |
 ")"           |
 "*"           |
+"+"           |
 ","           |
+"-"           |
+"."           |
+"/"           |
 "<"           |
 "="           |
 ">"           |
 "["           |
-"]"           { SET_TOKEN; return lexer_token[0]; }
+"]"           |
+"^"           |
+"|"           |
+"~"           { SET_TOKEN; return lexer_token[0]; }
 ";"           { SET_TOKEN; return Y_END; }
 
 "/*"          {                         /* ignore C-style comments */

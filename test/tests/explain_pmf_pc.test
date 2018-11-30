@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | explain class D *(C::*p)() | 0
+cdecl @ /dev/null @ -xc++ @ explain class D *(C::*p)() @ 0

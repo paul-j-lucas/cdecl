@@ -1,1 +1,1 @@
-cdecl | /dev/null | | declare f as function (x as array static const 3 of int) returning void | 0
+cdecl @ /dev/null @ @ declare f as function (x as array static const 3 of int) returning void @ 0

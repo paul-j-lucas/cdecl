@@ -1,1 +1,1 @@
-cdecl | /dev/null | | explain _Thread_local int x | 0
+cdecl @ /dev/null @ @ explain _Thread_local int x @ 0

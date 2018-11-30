@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xknr | declare x as long float | 0
+cdecl @ /dev/null @ -xknr @ declare x as long float @ 0

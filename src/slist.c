@@ -24,6 +24,10 @@
  */
 
 // local
+#include "config.h"                     /* must go first */
+/// @cond DOXYGEN_IGNORE
+#define CDECL_SLIST_INLINE _GL_EXTERN_INLINE
+/// @endcond
 #include "slist.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -81,6 +85,15 @@ void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn ) {
   }
 }
 
+unsigned slist_len( slist_t const *list ) {
+  unsigned len = 0;
+  if ( list != NULL ) {
+    for ( slist_node_t *p = list->head; p != NULL; p = p->next )
+      ++len;
+  }
+  return len;
+}
+
 void* slist_pop( slist_t *list ) {
   assert( list != NULL );
   if ( list->head != NULL ) {
@@ -106,4 +119,7 @@ void slist_push( slist_t *list, void *data ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+_GL_INLINE_HEADER_END
+
 /* vim:set et sw=2 ts=2: */

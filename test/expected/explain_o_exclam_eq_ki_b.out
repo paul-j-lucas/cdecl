@@ -1,0 +1,1 @@
+declare != as non-member operator (S, int) returning bool

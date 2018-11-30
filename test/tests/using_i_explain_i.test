@@ -1,1 +1,1 @@
-cdecl | /dev/null | -xc++ | using Int = int; explain Int x | 0
+cdecl @ /dev/null @ -xc++ @ using Int = int; explain Int x @ 0
