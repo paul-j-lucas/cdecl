@@ -286,8 +286,7 @@ static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
  * @return Returns `true` only if \a type_id is some form of `long int`.
  */
 static inline bool is_long_int( c_type_id_t type_id ) {
-  return  (type_id & T_LONG) != T_NONE &&
-          (type_id & (T_FLOAT | T_DOUBLE)) == T_NONE;
+  return (type_id & (T_LONG | T_FLOAT | T_DOUBLE)) == T_LONG;
 }
 
 /**
