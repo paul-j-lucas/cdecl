@@ -63,4 +63,4 @@ REFERENCED_BY_RELATION  = YES
 REFERENCES_LINK_SOURCE  = YES
 REFERENCES_RELATION     = YES
 
-# vim:set et sw=8 ts=8:
+# vim:set et sw=4 ts=4:
