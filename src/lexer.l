@@ -214,18 +214,20 @@ static hyphenated_t const HYPHENATED_KEYWORDS[] = {
 };
 
 // extern variables
-char const     *lexer_token;            ///< Guaranteed pointer of `yytext`.
+static char const lexer_token_init_buf; ///< So lexer_token is never null.
+/** Guaranteed pointer of `yytext`. */
+char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
-static int      column;                 ///< Column position of current token.
-static int      column_newline;         ///< Column position of newline.
-static char    *input_buf;              ///< Entire current input line.
-static size_t   input_len;              ///< Length of line in `input_buf`.
-static size_t   input_sent;             ///< How many bytes returned to flex.
-static bool     is_eof;                 ///< Encountered EOF?
+static int        column;               ///< Column position of current token.
+static int        column_newline;       ///< Column position of newline.
+static char      *input_buf;            ///< Entire current input line.
+static size_t     input_len;            ///< Length of line in `input_buf`.
+static size_t     input_sent;           ///< How many bytes returned to flex.
+static bool       is_eof;               ///< Encountered EOF?
 
 // local functions
-static void     lexer_fatal( char const* );
+static void       lexer_fatal( char const* );
 
 ////////// local functions ////////////////////////////////////////////////////
 
