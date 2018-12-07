@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "November 29, 2018" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "December 6, 2018" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -339,11 +339,11 @@ to use.
 .B C AND C++ LANGUAGE VERSIONS
 for valid languages.)
 The default is
-.B C11
+.B C18
 (for
 .BR cdecl )
 and
-.B C++17
+.B C++20
 (for
 .BR c++decl ).
 .TP
@@ -445,6 +445,12 @@ Adds support for
 and
 \f(CW_Thread_local\fP,
 .TP
+.B C18
+Use the C18 version of the C language.
+(Since C18 is only a bugfix version,
+the argument is merely recognized
+as a valid version of C.)
+.TP
 .B C++
 Use the latest supported version of the C++ language.
 .TP
@@ -501,6 +507,13 @@ variables,
 \f(CW[[maybe_unused]]\fP,
 and
 \f(CW[[nodiscard]]\fP.
+.TP
+.B C++20
+Use the C++20 version of the C++ language.
+Adds support for
+\f(CWconsteval\fP
+and
+\f(CWoperator<=>\fP.
 .SH CDECL LANGUAGE
 .SS Commands
 .B cdecl
@@ -692,6 +705,7 @@ One of:
 \f(CWauto\fP (C, or C++03 or earlier),
 \f(CWblock\fP,
 \f(CWcarries_dependency\fP,
+\f(CWconsteval\fP,
 \f(CWconstexpr\fP,
 \f(CWdeprecated\fP,
 \f(CWextern\fP,
@@ -914,7 +928,13 @@ option is specified):
 \f(CWin_addr_t\fP,
 \f(CWin_port_t\fP,
 \f(CWsa_family_t\fP,
-\f(CWsocklen_t\fP
+\f(CWsocklen_t\fP,
+.P
+\f(CWpartial_ordering\fP,
+\f(CWstrong_equality\fP,
+\f(CWstrong_ordering\fP,
+\f(CWweak_equality\fP,
+\f(CWweak_ordering\fP
 .RE
 .SS Set Options
 The
@@ -1313,6 +1333,13 @@ are not supported.
 Only simple C++ attribute specifiers like \f(CW[[this]]\fP
 are supported.
 Attribute specifiers with namespaces or arguments are not.
+.IP \n+[step].
+C++20 contracts
+(\f(CW[[assert]]\fP,
+\f(CW[[ensures]]\fP,
+and
+\f(CW[[expects]]\fP)
+are not supported.
 .SS Other Minor Caveats
 .nr step 1 1
 .IP \n[step]. 3

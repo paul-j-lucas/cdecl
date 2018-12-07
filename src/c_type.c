@@ -24,7 +24,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "c_lang.h"
 #include "c_type.h"
 #include "diagnostics.h"
@@ -57,6 +57,8 @@
 
 #define CHRCAT(DST,SRC)           ((DST) = chrcpy_end( (DST), (SRC) ))
 #define STRCAT(DST,SRC)           ((DST) = strcpy_end( (DST), (SRC) ))
+
+#define LANG_C_CPP_11_MIN         (LANG_C_MIN(11) | LANG_MIN(CPP_11))
 
 /// @endcond
 
@@ -111,14 +113,14 @@ typedef struct c_type c_type_t;
 static c_type_t const C_ATTRIBUTE_INFO[] = {
   { T_CARRIES_DEPENDENCY,
                     L_CARRIES_DEPENDENCY,
-                       L_CARRIES_DEPENDENCY2, LANG_MIN(CPP_11)                },
+                    L_CARRIES_DEPENDENCY2,    LANG_MIN(CPP_11)                },
   { T_DEPRECATED,   L_DEPRECATED,       NULL, LANG_MIN(CPP_11)                },
   { T_MAYBE_UNUSED, L_MAYBE_UNUSED,
                     L_MAYBE_UNUSED2,          LANG_MIN(CPP_17)                },
   { T_NODISCARD,    L_NODISCARD,
                     L_NON_DISCARDABLE,        LANG_MIN(CPP_11)                },
   { T_NORETURN,     L__NORETURN,
-                    L_NON_RETURNING,          LANG_C_11 | LANG_MIN(CPP_11)    },
+                    L_NON_RETURNING,          LANG_C_CPP_11_MIN               },
 };
 
 /**
@@ -148,19 +150,20 @@ static c_type_t const C_STORAGE_INFO[] = {
   { T_EXTERN,       L_EXTERN,     L_EXTERNAL, LANG_ALL                        },
   { T_REGISTER,     L_REGISTER,         NULL, LANG_ALL                        },
   { T_STATIC,       L_STATIC,           NULL, LANG_ALL                        },
-  { T_THREAD_LOCAL, L_THREAD_LOCAL,     NULL, LANG_C_11 | LANG_MIN(CPP_11)    },
+  { T_THREAD_LOCAL, L_THREAD_LOCAL,     NULL, LANG_C_CPP_11_MIN               },
   { T_TYPEDEF,      L_TYPEDEF,          NULL, LANG_ALL                        },
 
   // storage-class-like
+  { T_CONSTEVAL,    L_CONSTEVAL,        NULL, LANG_MIN(CPP_20)                },
   { T_CONSTEXPR,    L_CONSTEXPR,        NULL, LANG_MIN(CPP_11)                },
   { T_FINAL,        L_FINAL,            NULL, LANG_MIN(CPP_11)                },
   { T_FRIEND,       L_FRIEND,           NULL, LANG_CPP_ALL                    },
   { T_INLINE,       L_INLINE,           NULL, LANG_MIN(C_99)                  },
-  { T_MUTABLE,      L_MUTABLE,          NULL, LANG_MIN(CPP_MIN)               },
+  { T_MUTABLE,      L_MUTABLE,          NULL, LANG_CPP_ALL                    },
   { T_NOEXCEPT,     L_NOEXCEPT,
                     L_NO_EXCEPTION,           LANG_MIN(CPP_11)                },
   { T_OVERRIDE,     L_OVERRIDE, L_OVERRIDDEN, LANG_MIN(CPP_11)                },
-  { T_THROW,        L_THROW,  L_NON_THROWING, LANG_MIN(CPP_MIN)               },
+  { T_THROW,        L_THROW,  L_NON_THROWING, LANG_CPP_ALL                    },
   { T_VIRTUAL,      L_VIRTUAL,          NULL, LANG_CPP_ALL                    },
   { T_PURE_VIRTUAL, L_PURE,             NULL, LANG_CPP_ALL                    },
 };
@@ -175,8 +178,8 @@ static c_type_t const C_TYPE_INFO[] = {
   { T_AUTO_CPP_11,  L_AUTO,      L_AUTOMATIC, LANG_MIN(CPP_11)                },
   { T_BOOL,         L_BOOL,             NULL, LANG_MIN(C_89)                  },
   { T_CHAR,         L_CHAR,             NULL, LANG_ALL                        },
-  { T_CHAR16_T,     L_CHAR16_T,         NULL, LANG_C_11 | LANG_MIN(CPP_11)    },
-  { T_CHAR32_T,     L_CHAR32_T,         NULL, LANG_C_11 | LANG_MIN(CPP_11)    },
+  { T_CHAR16_T,     L_CHAR16_T,         NULL, LANG_C_CPP_11_MIN               },
+  { T_CHAR32_T,     L_CHAR32_T,         NULL, LANG_C_CPP_11_MIN               },
   { T_WCHAR_T,      L_WCHAR_T,          NULL, LANG_MIN(C_95)                  },
   { T_SHORT,        L_SHORT,            NULL, LANG_ALL                        },
   { T_INT,          L_INT,              NULL, LANG_ALL                        },
@@ -209,7 +212,8 @@ static c_type_t const C_TYPE_INFO[] = {
 #define PP          LANG_CPP_ALL
 #define P3          LANG_MIN(CPP_03)
 #define P1          LANG_MIN(CPP_11)
-#define E1          LANG_C_11 | LANG_MIN(CPP_11)
+#define P2          LANG_MIN(CPP_20)
+#define E1          LANG_C_CPP_11_MIN
 
 /// @endcond
 
@@ -223,25 +227,26 @@ static c_type_t const C_TYPE_INFO[] = {
  */
 static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 // Only the lower triangle is used.
-//  a  b  e  r  s  tl td   ce fi fr in mu ne o  t  v  pv
-  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__ },// auto
-  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__ },// block
-  { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__ },// extern
-  { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__,__,__,__ },// register
-  { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__ },// static
-  { XX,E1,E1,XX,E1,E1,__,  __,__,__,__,__,__,__,__,__,__ },// thread_local
-  { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__,__,__,__ },// typedef
+//  a  b  e  r  s  tl td   cv cx fi fr in mu ne o  t  v  pv
+  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__ },// auto
+  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__ },// block
+  { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__ },// extern
+  { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__ },// register
+  { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__ },// static
+  { XX,E1,E1,XX,E1,E1,__,  __,__,__,__,__,__,__,__,__,__,__ },// thread_local
+  { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__,__,__,__,__ },// typedef
 
-  { P1,P1,P1,XX,P1,XX,XX,  P1,__,__,__,__,__,__,__,__,__ },// constexpr
-  { XX,XX,XX,XX,XX,XX,XX,  P1,P1,__,__,__,__,__,__,__,__ },// final
-  { XX,XX,XX,XX,XX,XX,XX,  P1,XX,PP,__,__,__,__,__,__,__ },// friend
-  { XX,XX,C9,XX,C9,XX,XX,  P1,P1,PP,C9,__,__,__,__,__,__ },// inline
-  { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,P3,__,__,__,__,__ },// mutable
-  { XX,XX,P1,XX,P1,XX,P1,  P1,P1,P1,P1,XX,P1,__,__,__,__ },// noexcept
-  { XX,XX,XX,XX,XX,XX,XX,  P1,P1,XX,C1,XX,C1,P1,__,__,__ },// overrride
-  { XX,XX,PP,XX,PP,XX,PP,  P1,PP,XX,PP,XX,XX,PP,PP,__,__ },// throw
-  { XX,XX,XX,XX,XX,XX,XX,  P1,P1,XX,PP,XX,C1,P1,PP,PP,__ },// virtual
-  { XX,XX,XX,XX,XX,XX,XX,  P1,XX,XX,PP,XX,C1,P1,PP,PP,PP },// pure
+  { P1,P1,P1,XX,P1,XX,XX,  P2,P1,__,__,__,__,__,__,__,__,__ },// consteval
+  { P1,P1,P1,XX,P1,XX,XX,  XX,P1,__,__,__,__,__,__,__,__,__ },// constexpr
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,P1,__,__,__,__,__,__,__,__ },// final
+  { XX,XX,XX,XX,XX,XX,XX,  P2,P1,XX,PP,__,__,__,__,__,__,__ },// friend
+  { XX,XX,C9,XX,C9,XX,XX,  P2,P1,P1,PP,C9,__,__,__,__,__,__ },// inline
+  { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,XX,P3,__,__,__,__,__ },// mutable
+  { XX,XX,P1,XX,P1,XX,P1,  P2,P1,P1,P1,P1,XX,P1,__,__,__,__ },// noexcept
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,P1,XX,C1,XX,C1,P1,__,__,__ },// overrride
+  { XX,XX,PP,XX,PP,XX,PP,  P2,P1,PP,XX,PP,XX,XX,PP,PP,__,__ },// throw
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,P1,XX,PP,XX,C1,P1,PP,PP,__ },// virtual
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,PP,XX,C1,P1,PP,PP,PP },// pure
 };
 
 /**
@@ -367,7 +372,7 @@ static char const* c_type_name_1( c_type_id_t type_id, bool is_error ) {
   for ( size_t i = 0; i < ARRAY_SIZE( C_ATTRIBUTE_INFO ); ++i ) {
     if ( type_id == C_ATTRIBUTE_INFO[i].type_id ) {
       char const *literal = c_type_literal( &C_ATTRIBUTE_INFO[i], is_error );
-      if ( literal == L__NORETURN && opt_lang >= LANG_CPP_MIN ) {
+      if ( literal == L__NORETURN && C_LANG_IS_CPP() ) {
         //
         // _Noreturn is a special case.  In C11, it's "_Noreturn"; in C++11,
         // it's "noreturn".  Since this is the only special case like this,
@@ -446,7 +451,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     };
 
     bool const brackets =
-      opt_lang >= LANG_CPP_MIN &&
+      C_LANG_IS_CPP() &&
       c_mode == MODE_ENGLISH_TO_GIBBERISH &&
       !is_error;
 
@@ -487,6 +492,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     T_THROW,
 
     // This is fourth so we get names like "static inline constexpr".
+    T_CONSTEVAL,
     T_CONSTEXPR,
   };
   C_TYPE_NAME_CAT( &name, type_id, C_STORAGE_CLASS, is_error, ' ', &space );

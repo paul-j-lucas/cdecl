@@ -24,7 +24,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "c_ast.h"
 #include "c_type.h"
 #include "c_typedef.h"

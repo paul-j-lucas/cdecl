@@ -33,14 +33,14 @@
 /** @endcond */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_keyword.h"
+#include "c_lang.h"
 #include "c_typedef.h"
 #include "lexer.h"
 #include "literals.h"
-#include "misc.h"
 #include "options.h"
 #include "util.h"
 #include "parser.h"                     /* must go last */
@@ -260,7 +260,7 @@ static char const* hyphenated_find( char const *s ) {
   for ( hyphenated_t const *h = HYPHENATED_KEYWORDS; h->token; ++h ) {
     if ( strcmp( s, h->token ) == 0 ) {
       literal = h->literal;
-      if ( literal == L__NORETURN && opt_lang >= LANG_CPP_MIN ) {
+      if ( literal == L__NORETURN && C_LANG_IS_CPP() ) {
         //
         // _Noreturn is a special case. In C11, it's "_Noreturn"; in C++11,
         // it's "noreturn".
@@ -419,7 +419,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                   if ( ck->c_keyword_synonym == NULL )
                     return ck->y_token;
                   if ( ck->c_keyword_synonym == L__NORETURN &&
-                       opt_lang >= LANG_CPP_MIN ) {
+                       C_LANG_IS_CPP() ) {
                     //
                     // _Noreturn is a special case. In C11, it's "_Noreturn"
                     // and is a reserved word. In C++11, it's "noreturn", but
@@ -514,35 +514,36 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 {dec_int}     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
 {hex_int}     { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
-"!="          { SET_TOKEN; return Y_NOT_EQ     ; }
-"%="          { SET_TOKEN; return Y_PERCENT_EQ ; }
-"&&"          { SET_TOKEN; return Y_AMPER2     ; }
-"&="          { SET_TOKEN; return Y_AMPER_EQ   ; }
-"*="          { SET_TOKEN; return Y_STAR_EQ    ; }
-"++"          { SET_TOKEN; return Y_PLUS2      ; }
-"+="          { SET_TOKEN; return Y_PLUS_EQ    ; }
-"--"          { SET_TOKEN; return Y_MINUS2     ; }
-"-="          { SET_TOKEN; return Y_MINUS_EQ   ; }
-"->"          { SET_TOKEN; return Y_ARROW      ; }
-"->*"         { SET_TOKEN; return Y_ARROW_STAR ; }
-".*"          { SET_TOKEN; return Y_DOT_STAR   ; }
-"..."         { SET_TOKEN; return Y_ELLIPSIS   ; }
-"/="          { SET_TOKEN; return Y_SLASH_EQ   ; }
-"::"          { SET_TOKEN; return Y_COLON2     ; }
-"<<"          { SET_TOKEN; return Y_LESS2      ; }
-"<<="         { SET_TOKEN; return Y_LESS2_EQ   ; }
-"<="          { SET_TOKEN; return Y_LESS_EQ    ; }
-"=="          { SET_TOKEN; return Y_EQ2        ; }
-">="          { SET_TOKEN; return Y_GREATER_EQ ; }
-">>"          { SET_TOKEN; return Y_GREATER2   ; }
-">>="         { SET_TOKEN; return Y_GREATER2_EQ; }
-"?"           { SET_TOKEN; return Y_HELP       ; }
-"?:"          { SET_TOKEN; return Y_QMARK_COLON; }
-"[["          { SET_TOKEN; return Y_LBRACKET2  ; }
-"]]"          { SET_TOKEN; return Y_RBRACKET2  ; }
-"^="          { SET_TOKEN; return Y_CIRC_EQ    ; }
-"|="          { SET_TOKEN; return Y_PIPE_EQ    ; }
-"||"          { SET_TOKEN; return Y_PIPE2      ; }
+"!="          { SET_TOKEN; return Y_NOT_EQ          ; }
+"%="          { SET_TOKEN; return Y_PERCENT_EQ      ; }
+"&&"          { SET_TOKEN; return Y_AMPER2          ; }
+"&="          { SET_TOKEN; return Y_AMPER_EQ        ; }
+"*="          { SET_TOKEN; return Y_STAR_EQ         ; }
+"++"          { SET_TOKEN; return Y_PLUS2           ; }
+"+="          { SET_TOKEN; return Y_PLUS_EQ         ; }
+"--"          { SET_TOKEN; return Y_MINUS2          ; }
+"-="          { SET_TOKEN; return Y_MINUS_EQ        ; }
+"->"          { SET_TOKEN; return Y_ARROW           ; }
+"->*"         { SET_TOKEN; return Y_ARROW_STAR      ; }
+".*"          { SET_TOKEN; return Y_DOT_STAR        ; }
+"..."         { SET_TOKEN; return Y_ELLIPSIS        ; }
+"/="          { SET_TOKEN; return Y_SLASH_EQ        ; }
+"::"          { SET_TOKEN; return Y_COLON2          ; }
+"<<"          { SET_TOKEN; return Y_LESS2           ; }
+"<<="         { SET_TOKEN; return Y_LESS2_EQ        ; }
+"<="          { SET_TOKEN; return Y_LESS_EQ         ; }
+"<=>"         { SET_TOKEN; return Y_LESS_EQ_GREATER ; }
+"=="          { SET_TOKEN; return Y_EQ2             ; }
+">="          { SET_TOKEN; return Y_GREATER_EQ      ; }
+">>"          { SET_TOKEN; return Y_GREATER2        ; }
+">>="         { SET_TOKEN; return Y_GREATER2_EQ     ; }
+"?"           { SET_TOKEN; return Y_HELP            ; }
+"?:"          { SET_TOKEN; return Y_QMARK_COLON     ; }
+"[["          { SET_TOKEN; return Y_LBRACKET2       ; }
+"]]"          { SET_TOKEN; return Y_RBRACKET2       ; }
+"^="          { SET_TOKEN; return Y_CIRC_EQ         ; }
+"|="          { SET_TOKEN; return Y_PIPE_EQ         ; }
+"||"          { SET_TOKEN; return Y_PIPE2           ; }
 
 "!"           |
 "%"           |

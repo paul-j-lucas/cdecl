@@ -25,7 +25,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "c_ast.h"
 #include "c_lang.h"
 #include "c_typedef.h"
@@ -356,7 +356,7 @@ static void read_conf_file( void ) {
   // parser to error out.
   //
   c_lang_id_t const orig_lang = opt_lang;
-  opt_lang = LANG_CPP_MAX;
+  opt_lang = LANG_CPP_NEW;
   (void)parse_file( cin );
   opt_lang = orig_lang;
 

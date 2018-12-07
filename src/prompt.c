@@ -24,9 +24,8 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "color.h"
-#include "misc.h"
 #include "options.h"
 #include "util.h"
 
@@ -112,7 +111,7 @@ static char* prompt_create( char suffix ) {
   }
 #endif /* WITH_READLINE */
 
-  p = strcpy_end( p, opt_lang >= LANG_CPP_MIN ? CPPDECL : PACKAGE );
+  p = strcpy_end( p, C_LANG_IS_CPP() ? CPPDECL : PACKAGE );
   *p++ = suffix;
 
 #ifdef WITH_READLINE

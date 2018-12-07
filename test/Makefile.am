@@ -112,6 +112,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fx_pi.test \
 	tests/declare_gi.test \
 	tests/declare_if_v.test \
+	tests/declare_jf_i.test \
 	tests/declare_k.test \
 	tests/declare_ld.test \
 	tests/declare_lf.test \
@@ -200,6 +201,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_hv.test \
 	tests/declare_hw.test \
 	tests/declare_ii.test \
+	tests/declare_ji.test \
 	tests/declare_lb.test \
 	tests/declare_lc.test \
 	tests/declare_lc16.test \
@@ -850,6 +852,7 @@ TESTS+=	tests/declare_o_amper2_2rck_b.test \
 	tests/declare_o_less2_eq_i_rk.test \
 	tests/declare_o_less2_i_k.test \
 	tests/declare_o_less2_rcki_k.test \
+	tests/declare_o_less_eq_greater_2rck_a.test \
 	tests/declare_o_less_eq_rcki_b.test \
 	tests/declare_o_minus_i_k.test \
 	tests/declare_o_parens_2i_v.test \
@@ -895,6 +898,7 @@ TESTS+=	tests/declare_co_exclam_k_b.test \
 	tests/declare_o_dot_k.test \
 	tests/declare_o_dot_star_rk_rk.test \
 	tests/declare_o_exclam_2i.test \
+	tests/declare_o_less_eq_greater_2rck_a-c++17.test \
 	tests/declare_o_minus2_d_rk.test \
 	tests/declare_o_minus2_rkd_rk.test \
 	tests/declare_o_minus_ie_i.test \

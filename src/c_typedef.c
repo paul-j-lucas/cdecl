@@ -24,7 +24,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "c_ast.h"
 #include "c_typedef.h"
 #include "options.h"
@@ -151,6 +151,21 @@ static char const *const TYPEDEFS_STDATOMIC_H[] = {
   "typedef _Atomic uint_least16_t     atomic_uint_least16_t",
   "typedef _Atomic uint_least32_t     atomic_uint_least32_t",
   "typedef _Atomic uint_least64_t     atomic_uint_least64_t",
+
+  NULL
+};
+
+/**
+ * Types from `compare` for C++20 `operator<=>()`.
+ *
+ * @hideinitializer
+ */
+static char const *const TYPEDEFS_CPP_20[] = {
+  "typedef struct partial_ordering  partial_ordering",
+  "typedef struct strong_equality   strong_equality",
+  "typedef struct strong_ordering   strong_ordering",
+  "typedef struct weak_equality     weak_equality",
+  "typedef struct weak_ordering     weak_ordering",
 
   NULL
 };
@@ -322,10 +337,11 @@ void c_typedef_init( void ) {
     // in typedefs.
     //
     c_lang_id_t const prev_lang = opt_lang;
-    opt_lang = LANG_C_MAX;
+    opt_lang = LANG_C_NEW;
 
     c_typedef_parse_builtins( TYPEDEFS_STDINT_H );    // must go first
     c_typedef_parse_builtins( TYPEDEFS_STDATOMIC_H );
+    c_typedef_parse_builtins( TYPEDEFS_CPP_20 );
     c_typedef_parse_builtins( TYPEDEFS_MISC );
 
 #ifdef ENABLE_CDECL_DEBUG

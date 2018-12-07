@@ -24,7 +24,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "color.h"
 #include "options.h"
 #include "util.h"
@@ -101,7 +101,7 @@ static help_text_t const HELP_TEXT[] = {
 /* 20 | 22 */  { "modifier: short long signed unsigned atomic const restrict volatile",
                  "modifier: short long signed unsigned const volatile" },
 /* 21 | 23 */  { "store: auto extern register static thread_local",
-                 "store: constexpr extern friend register static thread_local [pure] virtual" },
+                 "store: const{eval|expr} extern friend mutable static thread_local [pure] virtual" },
 };
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -173,7 +173,7 @@ static void print_help_line( char const *line ) {
  * Prints the help message to standard output.
  */
 void print_help( void ) {
-  bool const is_cpp = opt_lang >= LANG_CPP_MIN;
+  bool const is_cpp = C_LANG_IS_CPP();
 
   for ( size_t i = 0; i < ARRAY_SIZE( HELP_TEXT ); ++i ) {
     help_text_t const *const help = &HELP_TEXT[i];

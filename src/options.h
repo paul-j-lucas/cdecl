@@ -27,7 +27,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "c_lang.h"                     /* for c_lang_id_t */
 
 /// @cond DOXYGEN_IGNORE
@@ -57,7 +57,7 @@ extern bool         opt_interactive;    ///< Interactive mode?
 extern c_lang_id_t  opt_lang;           ///< Current language.
 extern bool         opt_no_conf;        ///< Do not read configuration file.
 extern bool         opt_semicolon;      ///< Print `;` at end of gibberish.
-extern bool         opt_typedefs;       ///< Load C 99 standard `typedef`s.
+extern bool         opt_typedefs;       ///< Load C/C++ standard `typedef`s.
 extern bool         opt_quiet;          ///< Don't print the prompt.
 
 // other extern variables

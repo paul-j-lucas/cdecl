@@ -1,0 +1,1 @@
+auto operator<=>(const S&, const S&);

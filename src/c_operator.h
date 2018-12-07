@@ -27,9 +27,9 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "c_ast.h"
-#include "typedefs.h"
+#include "c_lang.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -67,48 +67,49 @@ _GL_INLINE_HEADER_BEGIN
  */
 enum c_oper_id {
   OP_NONE,
-  OP_EXCLAM,      // !
-  OP_EXCLAM_EQ,   // !=
-  OP_PERCENT,     // %
-  OP_PERCENT_EQ,  // %=
-  OP_AMPER,       // &
-  OP_AMPER2,      // &&
-  OP_AMPER_EQ,    // &=
-  OP_PARENS,      // ()
-  OP_STAR,        // *
-  OP_STAR_EQ,     // *=
-  OP_PLUS,        // +
-  OP_PLUS2,       // ++
-  OP_PLUS_EQ,     // +=
-  OP_COMMA,       // ,
-  OP_MINUS,       // -
-  OP_MINUS2,      // --
-  OP_MINUS_EQ,    // -=
-  OP_ARROW,       // ->
-  OP_ARROW_STAR,  // ->*
-  OP_DOT,         // .
-  OP_DOT_STAR,    // .*
-  OP_SLASH,       // /
-  OP_SLASH_EQ,    // /=
-  OP_COLON2,      // ::
-  OP_LESS,        // <
-  OP_LESS2,       // <<
-  OP_LESS2_EQ,    // <<=
-  OP_LESS_EQ,     // <=
-  OP_EQ,          // =
-  OP_EQ2,         // ==
-  OP_GREATER,     // >
-  OP_GREATER_EQ,  // >=
-  OP_GREATER2,    // >>
-  OP_GREATER2_EQ, // >>=
-  OP_QMARK_COLON, // ?:
-  OP_BRACKETS,    // []
-  OP_CIRC,        // ^
-  OP_CIRC_EQ,     // ^=
-  OP_PIPE,        // |
-  OP_PIPE_EQ,     // |=
-  OP_PIPE2,       // ||
-  OP_TILDE,       // ~
+  OP_EXCLAM,          // !
+  OP_EXCLAM_EQ,       // !=
+  OP_PERCENT,         // %
+  OP_PERCENT_EQ,      // %=
+  OP_AMPER,           // &
+  OP_AMPER2,          // &&
+  OP_AMPER_EQ,        // &=
+  OP_PARENS,          // ()
+  OP_STAR,            // *
+  OP_STAR_EQ,         // *=
+  OP_PLUS,            // +
+  OP_PLUS2,           // ++
+  OP_PLUS_EQ,         // +=
+  OP_COMMA,           // ,
+  OP_MINUS,           // -
+  OP_MINUS2,          // --
+  OP_MINUS_EQ,        // -=
+  OP_ARROW,           // ->
+  OP_ARROW_STAR,      // ->*
+  OP_DOT,             // .
+  OP_DOT_STAR,        // .*
+  OP_SLASH,           // /
+  OP_SLASH_EQ,        // /=
+  OP_COLON2,          // ::
+  OP_LESS,            // <
+  OP_LESS2,           // <<
+  OP_LESS2_EQ,        // <<=
+  OP_LESS_EQ,         // <=
+  OP_LESS_EQ_GREATER, // <=>
+  OP_EQ,              // =
+  OP_EQ2,             // ==
+  OP_GREATER,         // >
+  OP_GREATER_EQ,      // >=
+  OP_GREATER2,        // >>
+  OP_GREATER2_EQ,     // >>=
+  OP_QMARK_COLON,     // ?:
+  OP_BRACKETS,        // []
+  OP_CIRC,            // ^
+  OP_CIRC_EQ,         // ^=
+  OP_PIPE,            // |
+  OP_PIPE_EQ,         // |=
+  OP_PIPE2,           // ||
+  OP_TILDE,           // ~
 };
 
 /**
@@ -124,6 +125,7 @@ struct c_operator {
   unsigned    flags;                    ///< Bitwise-or of flags.
   unsigned    args_min;                 ///< Minumum number of arguments.
   unsigned    args_max;                 ///< Maximum number of arguments.
+  c_lang_id_t ok_langs;                 ///< Language(s) OK in.
 };
 
 ////////// extern functions ///////////////////////////////////////////////////

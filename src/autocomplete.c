@@ -24,7 +24,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "c_lang.h"
 #include "literals.h"
 #include "options.h"
@@ -58,20 +58,20 @@ typedef struct ac_keyword ac_keyword_t;
  * @hideinitializer
  */
 static ac_keyword_t const CDECL_COMMANDS[] = {
-  { L_CAST,         LANG_ALL           },
-  { L_CONST,        LANG_MIN(CPP_MIN)  }, // const cast ...
-  { L_DECLARE,      LANG_ALL           },
-  { L_DEFINE,       LANG_ALL           },
-  { L_DYNAMIC,      LANG_MIN(CPP_MIN)  }, // dynamic cast ...
-  { L_EXIT,         LANG_ALL           },
-  { L_EXPLAIN,      LANG_ALL           },
-  { L_HELP,         LANG_ALL           },
-  { L_QUIT,         LANG_ALL           },
-  { L_REINTERPRET,  LANG_MIN(CPP_MIN)  }, // reinterpret cast ...
-  { L_SET,          LANG_ALL           },
-  { L_SHOW,         LANG_ALL           },
-  { L_STATIC,       LANG_MIN(CPP_MIN)  }, // static cast ...
-  { NULL,           LANG_NONE          },
+  { L_CAST,         LANG_ALL      },
+  { L_CONST,        LANG_CPP_ALL  },    // const cast ...
+  { L_DECLARE,      LANG_ALL      },
+  { L_DEFINE,       LANG_ALL      },
+  { L_DYNAMIC,      LANG_CPP_ALL  },    // dynamic cast ...
+  { L_EXIT,         LANG_ALL      },
+  { L_EXPLAIN,      LANG_ALL      },
+  { L_HELP,         LANG_ALL      },
+  { L_QUIT,         LANG_ALL      },
+  { L_REINTERPRET,  LANG_CPP_ALL  },    // reinterpret cast ...
+  { L_SET,          LANG_ALL      },
+  { L_SHOW,         LANG_ALL      },
+  { L_STATIC,       LANG_CPP_ALL  },    // static cast ...
+  { NULL,           LANG_NONE     },
 };
 
 /**
@@ -80,79 +80,80 @@ static ac_keyword_t const CDECL_COMMANDS[] = {
  * @hideinitializer
  */
 static ac_keyword_t const CDECL_KEYWORDS[] = {
-  { L_ARRAY,              LANG_ALL                        },
+  { L_ARRAY,              LANG_ALL                          },
 //  L_AS,                               // too short
-  { L_ATOMIC,             LANG_MIN(C_11)                  },
-  { L_AUTO,               LANG_ALL                        },
-  { L_BLOCK,              LANG_ALL                        },
-  { L___BLOCK,            LANG_ALL                        },
-  { L_BOOL,               LANG_MIN(C_99)                  },
-  { L_CARRIES_DEPENDENCY, LANG_MIN(CPP_11)                },
-  { L_CAST,               LANG_ALL                        },
-  { L_CHAR,               LANG_ALL                        },
-  { L_CHAR16_T,           LANG_MIN(CPP_11)                },
-  { L_CHAR32_T,           LANG_MIN(CPP_11)                },
-  { L_CLASS,              LANG_MIN(CPP_MIN)               },
-  { L_COMPLEX,            LANG_MIN(C_99)                  },
-  { L_CONST,              LANG_MIN(C_89)                  },
-  { L_CONST_CAST,         LANG_MIN(CPP_MIN)               },
-  { L_CONSTEXPR,          LANG_MIN(CPP_11)                },
-  { L_DEPRECATED,         LANG_MIN(CPP_14)                },
-  { L_DOUBLE,             LANG_ALL                        },
+  { L_ATOMIC,             LANG_MIN(C_11)                    },
+  { L_AUTO,               LANG_ALL                          },
+  { L_BLOCK,              LANG_ALL                          },
+  { L___BLOCK,            LANG_ALL                          },
+  { L_BOOL,               LANG_MIN(C_99)                    },
+  { L_CARRIES_DEPENDENCY, LANG_MIN(CPP_11)                  },
+  { L_CAST,               LANG_ALL                          },
+  { L_CHAR,               LANG_ALL                          },
+  { L_CHAR16_T,           LANG_MIN(CPP_11)                  },
+  { L_CHAR32_T,           LANG_MIN(CPP_11)                  },
+  { L_CLASS,              LANG_CPP_ALL                      },
+  { L_COMPLEX,            LANG_MIN(C_99)                    },
+  { L_CONST,              LANG_MIN(C_89)                    },
+  { L_CONST_CAST,         LANG_CPP_ALL                      },
+  { L_CONSTEVAL,          LANG_MIN(CPP_20)                  },
+  { L_CONSTEXPR,          LANG_MIN(CPP_11)                  },
+  { L_DEPRECATED,         LANG_MIN(CPP_14)                  },
+  { L_DOUBLE,             LANG_ALL                          },
 //  L_DYNAMIC,                          // handled in CDECL_COMMANDS
-  { L_DYNAMIC_CAST,       LANG_MIN(CPP_11)                },
-  { L_ENUM,               LANG_MIN(C_89)                  },
-  { L_EXTERN,             LANG_ALL                        },
-  { L_FALSE,              LANG_MIN(CPP_MIN)               },
-  { L_FINAL,              LANG_MIN(CPP_11)                },
-  { L_FLOAT,              LANG_ALL                        },
-  { L_FRIEND,             LANG_MIN(CPP_MIN)               },
-  { L_FUNCTION,           LANG_ALL                        },
-  { L_IMAGINARY,          LANG_MIN(C_99)                  },
-  { L_INLINE,             LANG_MIN(C_99)                  },
-  { L_INT,                LANG_ALL                        },
+  { L_DYNAMIC_CAST,       LANG_MIN(CPP_11)                  },
+  { L_ENUM,               LANG_MIN(C_89)                    },
+  { L_EXTERN,             LANG_ALL                          },
+  { L_FALSE,              LANG_CPP_ALL                      },
+  { L_FINAL,              LANG_MIN(CPP_11)                  },
+  { L_FLOAT,              LANG_ALL                          },
+  { L_FRIEND,             LANG_CPP_ALL                      },
+  { L_FUNCTION,           LANG_ALL                          },
+  { L_IMAGINARY,          LANG_MIN(C_99)                    },
+  { L_INLINE,             LANG_MIN(C_99)                    },
+  { L_INT,                LANG_ALL                          },
 //{ L_INTO,                             // special case (see below)
-  { L_LENGTH,             LANG_MIN(C_99) & ~LANG_CPP_ALL  },
-  { L_LONG,               LANG_ALL                        },
-  { L_MAYBE_UNUSED,       LANG_MIN(CPP_11)                },
-  { L_MEMBER,             LANG_MIN(CPP_MIN)               },
-  { L_MUTABLE,            LANG_MIN(CPP_MIN)               },
-  { L_NODISCARD,          LANG_MIN(CPP_17)                },
-  { L_NOEXCEPT,           LANG_MIN(CPP_11)                },
-  { L_NON_MEMBER,         LANG_MIN(CPP_MIN)               },
-  { L_NORETURN,           LANG_C_11                       },
+  { L_LENGTH,             LANG_MIN(C_99) & ~LANG_CPP_ALL    },
+  { L_LONG,               LANG_ALL                          },
+  { L_MAYBE_UNUSED,       LANG_MIN(CPP_11)                  },
+  { L_MEMBER,             LANG_CPP_ALL                      },
+  { L_MUTABLE,            LANG_CPP_ALL                      },
+  { L_NODISCARD,          LANG_MIN(CPP_17)                  },
+  { L_NOEXCEPT,           LANG_MIN(CPP_11)                  },
+  { L_NON_MEMBER,         LANG_CPP_ALL                      },
+  { L_NORETURN,           LANG_MIN(C_11)                    },
 //{ L_OF,                               // too short
-  { L_OPERATOR,           LANG_MIN(CPP_MIN)               },
-  { L_OVERRIDE,           LANG_MIN(CPP_11)                },
-  { L_POINTER,            LANG_ALL                        },
-  { L_PREDEFINED,         LANG_ALL                        },
-  { L_PURE,               LANG_MIN(CPP_MIN)               },
-  { L_REFERENCE,          LANG_MIN(CPP_MIN)               },
-  { L_REGISTER,           LANG_ALL                        },
+  { L_OPERATOR,           LANG_CPP_ALL                      },
+  { L_OVERRIDE,           LANG_MIN(CPP_11)                  },
+  { L_POINTER,            LANG_ALL                          },
+  { L_PREDEFINED,         LANG_ALL                          },
+  { L_PURE,               LANG_CPP_ALL                      },
+  { L_REFERENCE,          LANG_CPP_ALL                      },
+  { L_REGISTER,           LANG_ALL                          },
 //  L_REINTERPRET,                      // handled in CDECL_COMMANDS
-  { L_REINTERPRET_CAST,   LANG_MIN(CPP_MIN)               },
-  { L_RESTRICT,           LANG_MIN(C_89) & ~LANG_CPP_ALL  },
-  { L_RETURNING,          LANG_ALL                        },
-  { L_RVALUE,             LANG_MIN(CPP_11)                },
-  { L_SHORT,              LANG_ALL                        },
-  { L_SIGNED,             LANG_MIN(C_89)                  },
-  { L_STATIC,             LANG_ALL                        },
-  { L_STATIC_CAST,        LANG_MIN(CPP_MIN)               },
-  { L_STRUCT,             LANG_ALL                        },
+  { L_REINTERPRET_CAST,   LANG_CPP_ALL                      },
+  { L_RESTRICT,           LANG_MIN(C_89) & ~LANG_CPP_ALL    },
+  { L_RETURNING,          LANG_ALL                          },
+  { L_RVALUE,             LANG_MIN(CPP_11)                  },
+  { L_SHORT,              LANG_ALL                          },
+  { L_SIGNED,             LANG_MIN(C_89)                    },
+  { L_STATIC,             LANG_ALL                          },
+  { L_STATIC_CAST,        LANG_CPP_ALL                      },
+  { L_STRUCT,             LANG_ALL                          },
 //  L_TO,                               // too short
-  { L_THREAD_LOCAL,       LANG_C_11 | LANG_MIN(CPP_11)    },
-  { L_THROW,              LANG_MIN(CPP_MIN)               },
-  { L_TRUE,               LANG_MIN(CPP_MIN)               },
-  { L_TYPEDEF,            LANG_ALL                        },
-  { L_UNION,              LANG_ALL                        },
-  { L_UNSIGNED,           LANG_ALL                        },
-  { L_USING,              LANG_MIN(CPP_11)                },
-  { L_VARIABLE,           LANG_MIN(C_99) & ~LANG_CPP_ALL  },
-  { L_VIRTUAL,            LANG_MIN(CPP_MIN)               },
-  { L_VOID,               LANG_MIN(C_89)                  },
-  { L_VOLATILE,           LANG_MIN(C_89)                  },
-  { L_WCHAR_T,            LANG_MIN(C_95)                  },
-  { NULL,                 LANG_NONE                       }
+  { L_THREAD_LOCAL,       LANG_C_MIN(11) | LANG_MIN(CPP_11) },
+  { L_THROW,              LANG_CPP_ALL                      },
+  { L_TRUE,               LANG_CPP_ALL                      },
+  { L_TYPEDEF,            LANG_ALL                          },
+  { L_UNION,              LANG_ALL                          },
+  { L_UNSIGNED,           LANG_ALL                          },
+  { L_USING,              LANG_MIN(CPP_11)                  },
+  { L_VARIABLE,           LANG_MIN(C_99) & ~LANG_CPP_ALL    },
+  { L_VIRTUAL,            LANG_CPP_ALL                      },
+  { L_VOID,               LANG_MIN(C_89)                    },
+  { L_VOLATILE,           LANG_MIN(C_89)                    },
+  { L_WCHAR_T,            LANG_MIN(C_95)                    },
+  { NULL,                 LANG_NONE                         }
 };
 
 /**
@@ -165,11 +166,14 @@ static char const *const CDECL_OPTIONS[] = {
   "c95",
   "c99",
   "c11",
+  "c18",
 //"c++",                                // too short
   "c++98",
   "c++03",
   "c++11",
   "c++14",
+  "c++17",
+  "c++20",
   "create",
 "nocreate",
 #ifdef ENABLE_CDECL_DEBUG
@@ -291,7 +295,7 @@ static char* keyword_completion( char const *text, int state ) {
     // "const cast ...", etc.
     //
     command = is_command( L_CAST ) ||
-      ( opt_lang >= LANG_CPP_MIN && (
+      ( C_LANG_IS_CPP() && (
         is_command( L_CONST       ) ||
         is_command( L_DYNAMIC     ) ||
         is_command( L_STATIC      ) ||

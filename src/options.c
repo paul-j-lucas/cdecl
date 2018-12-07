@@ -24,9 +24,8 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "color.h"
-#include "misc.h"
 #include "options.h"
 #include "util.h"
 
@@ -399,7 +398,7 @@ static void usage( void ) {
 
 void options_init( int *pargc, char const ***pargv ) {
   me = base_name( (*pargv)[0] );
-  opt_lang = is_cppdecl() ? LANG_CPP_MAX : LANG_C_MAX;
+  opt_lang = is_cppdecl() ? LANG_CPP_NEW : LANG_C_NEW;
   parse_options( *pargc, *pargv );
   c_lang_set( opt_lang );
   *pargc -= optind, *pargv += optind;

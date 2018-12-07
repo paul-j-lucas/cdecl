@@ -53,7 +53,7 @@
  */
 
 // local
-#include "config.h"
+#include "cdecl.h"                      /* must go first */
 #include "util.h"
 
 /**

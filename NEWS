@@ -10,6 +10,18 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 5.1
+
+** Added C++20 support
+Specifically, consteval functions, operator<=>(), and predefined typedefs were
+added: partial_ordering, strong_equality, strong_ordering, weak_equality, and
+weak_ordering.
+
+** Added C18 support
+Since C18 is only a bugfix version, "C18" is merely recognized as a valid
+version of C.
+
+
 * Changes in Cdecl 5.0
 
 ** Added all C/C++ keywords
@@ -263,6 +275,7 @@ New-style casts are now permitted as far back as C++98.
 
 ** Static & type-qualified arrays
 Added support for C99 static and type-qualified array function arguments, e.g.:
+
     void f( int a[static const 10] );
 
 ** Variable length arrays

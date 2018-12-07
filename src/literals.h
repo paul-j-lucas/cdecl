@@ -213,6 +213,11 @@ extern char const L_MAYBE_UNUSED2[];        // synonym for "maybe_unused"
 extern char const L_NODISCARD[];
 extern char const L_NON_DISCARDABLE[];      // synonym for "nodiscard"
 
+// C++20
+extern char const L_CONCEPT[];
+extern char const L_CONSTEVAL[];
+extern char const L_REQUIRES[];
+
 // Miscellaneous
 extern char const L___BLOCK[];              // Apple: storage class
 

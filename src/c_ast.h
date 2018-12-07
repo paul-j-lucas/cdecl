@@ -35,7 +35,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "c_kind.h"
 #include "c_operator.h"
 #include "c_type.h"

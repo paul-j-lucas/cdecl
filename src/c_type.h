@@ -27,7 +27,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "c_lang.h"                     /* for c_lang_id_t */
 #include "typedefs.h"                   /* for c_loc_t */
 
@@ -78,15 +78,16 @@
 #define T_TYPEDEF             0x0000000080000000ull /**< `typedef`            */
 
 // storage-class-like
-#define T_CONSTEXPR           0x0000000100000000ull /**< `constexpr`          */
-#define T_FINAL               0x0000000200000000ull /**< `final`              */
-#define T_FRIEND              0x0000000400000000ull /**< `friend`             */
-#define T_INLINE              0x0000000800000000ull /**< `inline`             */
-#define T_NOEXCEPT            0x0000001000000000ull /**< `noexcept`           */
-#define T_OVERRIDE            0x0000002000000000ull /**< `override`           */
-#define T_PURE_VIRTUAL        0x0000004000000000ull /**< `= 0`                */
-#define T_THROW               0x0000008000000000ull /**< `throw()`            */
-#define T_VIRTUAL             0x0000010000000000ull /**< `virtual`            */
+#define T_CONSTEVAL           0x0000000100000000ull /**< `consteval`          */
+#define T_CONSTEXPR           0x0000000200000000ull /**< `constexpr`          */
+#define T_FINAL               0x0000000400000000ull /**< `final`              */
+#define T_FRIEND              0x0000000800000000ull /**< `friend`             */
+#define T_INLINE              0x0000001000000000ull /**< `inline`             */
+#define T_NOEXCEPT            0x0000002000000000ull /**< `noexcept`           */
+#define T_OVERRIDE            0x0000004000000000ull /**< `override`           */
+#define T_PURE_VIRTUAL        0x0000008000000000ull /**< `= 0`                */
+#define T_THROW               0x0000010000000000ull /**< `throw()`            */
+#define T_VIRTUAL             0x0000020000000000ull /**< `virtual`            */
 
 // attributes
 #define T_CARRIES_DEPENDENCY  0x0000100000000000ull /**< `carries_dependency` */

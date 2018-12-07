@@ -32,7 +32,7 @@
 /** @endcond */
 
 // local
-#include "config.h"                     /* must come first */
+#include "cdecl.h"                      /* must come first */
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_keyword.h"
@@ -286,7 +286,7 @@ static void elaborate_error( char const *format, ... ) {
  * @return Returns `true` only of `_Noreturn` is OK.
  */
 static bool _Noreturn_ok( c_loc_t const *loc ) {
-  if ( opt_lang == LANG_C_11 )
+  if ( (opt_lang & LANG_C_MIN(11)) != LANG_NONE )
     return true;
   print_error( loc, "\"%s\" not supported in %s", lexer_token, C_LANG_NAME() );
   if ( opt_lang >= LANG_CPP_11 ) {
@@ -642,6 +642,12 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_NORETURN
 %token  <type_id>   Y_NODISCARD
 
+                    /* C++20 */
+%token  <oper_id>   Y_LESS_EQ_GREATER "<=>"
+%token              Y_CONCEPT
+%token  <type_id>   Y_CONSTEVAL
+%token              Y_REQUIRES
+
                     /* miscellaneous */
 %token  <type_id>   Y___BLOCK           /* Apple: block storage class */
 %token              Y_END
@@ -937,7 +943,7 @@ declare_english
 
   | Y_DECLARE error
     {
-      if ( opt_lang >= LANG_CPP_MIN )
+      if ( C_LANG_IS_CPP() )
         ELABORATE_ERROR( "name or %s expected", L_OPERATOR );
       else
         ELABORATE_ERROR( "name expected" );
@@ -965,6 +971,7 @@ storage_class_english
   : attribute_english
   | Y_AUTO_C
   | Y___BLOCK                           /* Apple extension */
+  | Y_CONSTEVAL
   | Y_CONSTEXPR
   | Y_EXTERN
   | Y_FINAL
@@ -1178,7 +1185,7 @@ explain_new_style_cast_c
       DUMP_END();
 
       bool ok = false;
-      if ( opt_lang < LANG_CPP_MIN ) {
+      if ( !C_LANG_IS_CPP() ) {
         print_error( &@2, "%s_cast not supported in %s", $2, C_LANG_NAME() );
       }
       else {
@@ -1818,7 +1825,7 @@ pointer_decl_english
 
   | Y_POINTER to_expected error
     {
-      if ( opt_lang >= LANG_CPP_MIN )
+      if ( C_LANG_IS_CPP() )
         ELABORATE_ERROR( "type name or \"%s\" expected", L_MEMBER );
       else
         ELABORATE_ERROR( "type name expected" );
@@ -2762,6 +2769,7 @@ storage_class_c
   : attribute_specifier_list_c
   | Y_AUTO_C
   | Y___BLOCK                           /* Apple extension */
+  | Y_CONSTEVAL
   | Y_CONSTEXPR
   | Y_EXTERN
   | Y_FINAL
@@ -3104,7 +3112,7 @@ class_struct_type_expected_c
   : class_struct_type_c
   | error
     {
-      if ( opt_lang >= LANG_CPP_MIN )
+      if ( C_LANG_IS_CPP() )
         ELABORATE_ERROR( "\"%s\" or \"%s\" expected", L_CLASS, L_STRUCT );
       else
         ELABORATE_ERROR( "\"%s\" expected", L_STRUCT );
@@ -3120,48 +3128,49 @@ comma_expected
   ;
 
 c_operator
-  : '!'                           { $$ = OP_EXCLAM     ; }
-  | "!="                          { $$ = OP_EXCLAM_EQ  ; }
-  | '%'                           { $$ = OP_PERCENT    ; }
-  | "%="                          { $$ = OP_PERCENT_EQ ; }
-  | '&'                           { $$ = OP_AMPER      ; }
-  | "&&"                          { $$ = OP_AMPER2     ; }
-  | "&="                          { $$ = OP_AMPER_EQ   ; }
-  | '(' rparen_expected           { $$ = OP_PARENS     ; }
-  | '*'                           { $$ = OP_STAR       ; }
-  | "*="                          { $$ = OP_STAR_EQ    ; }
-  | '+'                           { $$ = OP_PLUS       ; }
-  | "++"                          { $$ = OP_PLUS2      ; }
-  | "+="                          { $$ = OP_PLUS_EQ    ; }
-  | ','                           { $$ = OP_COMMA      ; }
-  | '-'                           { $$ = OP_MINUS      ; }
-  | "--"                          { $$ = OP_MINUS2     ; }
-  | "-="                          { $$ = OP_MINUS_EQ   ; }
-  | "->"                          { $$ = OP_ARROW      ; }
-  | "->*"                         { $$ = OP_ARROW_STAR ; }
-  | '.'                           { $$ = OP_DOT        ; }
-  | ".*"                          { $$ = OP_DOT_STAR   ; }
-  | '/'                           { $$ = OP_SLASH      ; }
-  | "/="                          { $$ = OP_SLASH_EQ   ; }
-  | "::"                          { $$ = OP_COLON2     ; }
-  | '<'                           { $$ = OP_LESS       ; }
-  | "<<"                          { $$ = OP_LESS2      ; }
-  | "<<="                         { $$ = OP_LESS2_EQ   ; }
-  | "<="                          { $$ = OP_LESS_EQ    ; }
-  | '='                           { $$ = OP_EQ         ; }
-  | "=="                          { $$ = OP_EQ2        ; }
-  | '>'                           { $$ = OP_GREATER    ; }
-  | ">>"                          { $$ = OP_GREATER2   ; }
-  | ">>="                         { $$ = OP_GREATER2_EQ; }
-  | ">="                          { $$ = OP_GREATER_EQ ; }
-  | "?:"                          { $$ = OP_QMARK_COLON; }
-  | '[' rbracket_expected         { $$ = OP_BRACKETS   ; }
-  | '^'                           { $$ = OP_CIRC       ; }
-  | "^="                          { $$ = OP_CIRC_EQ    ; }
-  | '|'                           { $$ = OP_PIPE       ; }
-  | "||"                          { $$ = OP_PIPE2      ; }
-  | "|="                          { $$ = OP_PIPE_EQ    ; }
-  | '~'                           { $$ = OP_TILDE      ; }
+  : '!'                           { $$ = OP_EXCLAM          ; }
+  | "!="                          { $$ = OP_EXCLAM_EQ       ; }
+  | '%'                           { $$ = OP_PERCENT         ; }
+  | "%="                          { $$ = OP_PERCENT_EQ      ; }
+  | '&'                           { $$ = OP_AMPER           ; }
+  | "&&"                          { $$ = OP_AMPER2          ; }
+  | "&="                          { $$ = OP_AMPER_EQ        ; }
+  | '(' rparen_expected           { $$ = OP_PARENS          ; }
+  | '*'                           { $$ = OP_STAR            ; }
+  | "*="                          { $$ = OP_STAR_EQ         ; }
+  | '+'                           { $$ = OP_PLUS            ; }
+  | "++"                          { $$ = OP_PLUS2           ; }
+  | "+="                          { $$ = OP_PLUS_EQ         ; }
+  | ','                           { $$ = OP_COMMA           ; }
+  | '-'                           { $$ = OP_MINUS           ; }
+  | "--"                          { $$ = OP_MINUS2          ; }
+  | "-="                          { $$ = OP_MINUS_EQ        ; }
+  | "->"                          { $$ = OP_ARROW           ; }
+  | "->*"                         { $$ = OP_ARROW_STAR      ; }
+  | '.'                           { $$ = OP_DOT             ; }
+  | ".*"                          { $$ = OP_DOT_STAR        ; }
+  | '/'                           { $$ = OP_SLASH           ; }
+  | "/="                          { $$ = OP_SLASH_EQ        ; }
+  | "::"                          { $$ = OP_COLON2          ; }
+  | '<'                           { $$ = OP_LESS            ; }
+  | "<<"                          { $$ = OP_LESS2           ; }
+  | "<<="                         { $$ = OP_LESS2_EQ        ; }
+  | "<="                          { $$ = OP_LESS_EQ         ; }
+  | "<=>"                         { $$ = OP_LESS_EQ_GREATER ; }
+  | '='                           { $$ = OP_EQ              ; }
+  | "=="                          { $$ = OP_EQ2             ; }
+  | '>'                           { $$ = OP_GREATER         ; }
+  | ">>"                          { $$ = OP_GREATER2        ; }
+  | ">>="                         { $$ = OP_GREATER2_EQ     ; }
+  | ">="                          { $$ = OP_GREATER_EQ      ; }
+  | "?:"                          { $$ = OP_QMARK_COLON     ; }
+  | '[' rbracket_expected         { $$ = OP_BRACKETS        ; }
+  | '^'                           { $$ = OP_CIRC            ; }
+  | "^="                          { $$ = OP_CIRC_EQ         ; }
+  | '|'                           { $$ = OP_PIPE            ; }
+  | "||"                          { $$ = OP_PIPE2           ; }
+  | "|="                          { $$ = OP_PIPE_EQ         ; }
+  | '~'                           { $$ = OP_TILDE           ; }
   ;
 
 equals_expected

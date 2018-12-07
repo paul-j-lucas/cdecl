@@ -24,7 +24,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "c_ast_util.h"
 #include "c_keyword.h"
 #include "c_type.h"
@@ -173,7 +173,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
         break;
 
       case K_NAME:
-        if ( opt_lang >= LANG_CPP_MIN ) {
+        if ( C_LANG_IS_CPP() ) {
           print_error( &arg_ast->loc, "C++ requires type specifier" );
           return false;
         }
@@ -562,14 +562,15 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       break;
 
     case K_OPERATOR: {
-      if ( opt_lang < LANG_CPP_MIN ) {
+      c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+      if ( (opt_lang & op->ok_langs) == LANG_NONE ) {
         print_error( &ast->loc,
-          "overloaded operators not supported in %s",
+          "overloading operator \"%s\" not supported in %s",
+          op->name,
           C_LANG_NAME()
         );
         return VISITOR_ERROR_FOUND;
       }
-      c_operator_t const *const op = op_get( ast->as.oper.oper_id );
       if ( (op->flags & OP_MASK_OVERLOAD) == OP_NOT_OVERLOADABLE ) {
         print_error( &ast->loc,
           "%s %s can not be overloaded",
@@ -577,21 +578,25 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         );
         return VISITOR_ERROR_FOUND;
       }
-      if ( ast->as.oper.oper_id == OP_ARROW ) {
-        //
-        // Special case for operator-> that must return a pointer to a struct,
-        // union, or class.
-        //
-        c_ast_t const *const ret_ast = ast->as.oper.ret_ast;
-        if ( !c_ast_is_ptr_to( ret_ast, (T_STRUCT | T_UNION | T_CLASS) ) ) {
-          print_error( &ret_ast->loc,
-            "%s -> must return a pointer to %s, %s, or %s",
-            L_OPERATOR, L_STRUCT, L_UNION, L_CLASS
-          );
-          return VISITOR_ERROR_FOUND;
+      switch ( ast->as.oper.oper_id ) {
+        case OP_ARROW: {
+          //
+          // Special case for operator-> that must return a pointer to a struct,
+          // union, or class.
+          //
+          c_ast_t const *const ret_ast = ast->as.oper.ret_ast;
+          if ( !c_ast_is_ptr_to( ret_ast, (T_STRUCT | T_UNION | T_CLASS) ) ) {
+            print_error( &ret_ast->loc,
+              "%s -> must return a pointer to %s, %s, or %s",
+              L_OPERATOR, L_STRUCT, L_UNION, L_CLASS
+            );
+            return VISITOR_ERROR_FOUND;
+          }
+          break;
         }
-      }
-      // FALLTHROUGH
+        default:
+          /* suppress warning */;
+      } // switch
     }
 
     case K_FUNCTION:
@@ -613,7 +618,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         }
       }
 
-      if ( opt_lang >= LANG_CPP_MIN ) {
+      if ( C_LANG_IS_CPP() ) {
         c_type_id_t const member_types = ast->type_id & T_MEMBER_ONLY;
         c_type_id_t const non_member_types = ast->type_id & T_NON_MEMBER_ONLY;
         if ( member_types != T_NONE && non_member_types != T_NONE ) {
@@ -733,7 +738,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       assert( ast->kind != K_PLACEHOLDER );
 
     case K_POINTER_TO_MEMBER:
-      if ( opt_lang < LANG_CPP_MIN )
+      if ( !C_LANG_IS_CPP() )
         return error_kind_not_supported( ast );
       // FALLTHROUGH
     case K_POINTER: {
@@ -760,7 +765,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         return error_kind_not_supported( ast );
       // FALLTHROUGH
     case K_REFERENCE: {
-      if ( opt_lang < LANG_CPP_MIN )
+      if ( !C_LANG_IS_CPP() )
         return error_kind_not_supported( ast );
       if ( (ast->type_id & (T_CONST | T_VOLATILE)) != T_NONE ) {
         print_error( &ast->loc,
@@ -790,6 +795,14 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       break;
     }
   } // switch
+
+  if ( ast->kind != K_FUNCTION && (ast->type_id & T_CONSTEVAL) != T_NONE ) {
+    print_error( &ast->loc,
+      "only functions can be %s",
+      L_CONSTEVAL
+    );
+    return VISITOR_ERROR_FOUND;
+  }
 
   return VISITOR_ERROR_NOT_FOUND;
 }

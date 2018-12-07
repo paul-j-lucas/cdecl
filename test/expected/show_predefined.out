@@ -65,6 +65,7 @@ define mbstate_t as struct __mbstate
 define mode_t as int32_t
 define nlink_t as uint32_t
 define off_t as int64_t
+define partial_ordering as struct partial_ordering
 define pid_t as int32_t
 define ptrdiff_t as long
 define rlim_t as uint32_t
@@ -73,6 +74,8 @@ define sa_family_t as uint32_t
 define size_t as unsigned long
 define socklen_t as uint32_t
 define ssize_t as long
+define strong_equality as struct strong_equality
+define strong_ordering as struct strong_ordering
 define suseconds_t as int64_t
 define time_t as int64_t
 define uid_t as uint32_t
@@ -91,4 +94,6 @@ define uint_least8_t as unsigned char
 define uintmax_t as unsigned long
 define uintptr_t as unsigned long
 define useconds_t as uint32_t
+define weak_equality as struct weak_equality
+define weak_ordering as struct weak_ordering
 define wint_t as int

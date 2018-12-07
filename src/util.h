@@ -27,8 +27,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
-#include "misc.h"                       /* for me */
+#include "cdecl.h"                      /* must go first */
 
 /// @cond DOXYGEN_IGNORE
 

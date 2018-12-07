@@ -24,7 +24,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 /// @cond DOXYGEN_IGNORE
 #define CDECL_LANG_INLINE _GL_EXTERN_INLINE
 /// @endcond
@@ -53,17 +53,19 @@ c_lang_t const C_LANG[] = {
   { "k&rc",    LANG_C_KNR   },          // synonym for "knr"
   { "knr",     LANG_C_KNR   },
   { "knrc",    LANG_C_KNR   },          // synonym for "knr"
-  { "c",       LANG_C_MAX   },
+  { "c",       LANG_C_NEW   },
   { "c89",     LANG_C_89,   },
   { "c95",     LANG_C_95    },
   { "c99",     LANG_C_99    },
   { "c11",     LANG_C_11    },
-  { "c++",     LANG_CPP_MAX },
+  { "c18",     LANG_C_18    },
+  { "c++",     LANG_CPP_NEW },
   { "c++98",   LANG_CPP_98  },
   { "c++03",   LANG_CPP_03  },
   { "c++11",   LANG_CPP_11  },
   { "c++14",   LANG_CPP_14  },
   { "c++17",   LANG_CPP_17  },
+  { "c++20",   LANG_CPP_20  },
   { NULL,      LANG_NONE    },
 };
 
@@ -89,11 +91,13 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
     case LANG_C_95  : return "C95";
     case LANG_C_99  : return "C99";
     case LANG_C_11  : return "C11";
+    case LANG_C_18  : return "C18";
     case LANG_CPP_98: return "C++98";
     case LANG_CPP_03: return "C++03";
     case LANG_CPP_11: return "C++11";
     case LANG_CPP_14: return "C++14";
     case LANG_CPP_17: return "C++17";
+    case LANG_CPP_20: return "C++20";
     default:
       INTERNAL_ERR( "\"%d\": unexpected value for lang\n", (int)lang_id );
   } // switch

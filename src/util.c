@@ -24,7 +24,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 /// @cond DOXYGEN_IGNORE
 #define CDECL_UTIL_INLINE _GL_EXTERN_INLINE
 /// @endcond

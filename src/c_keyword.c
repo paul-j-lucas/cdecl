@@ -24,7 +24,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_keyword.h"
@@ -38,6 +38,8 @@
 #include <string.h>
 
 /// @endcond
+
+#define LANG_C_CPP_11_MIN         (LANG_C_MIN(11) | LANG_MIN(CPP_11))
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -128,45 +130,45 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L__STATIC_ASSERT ,  Y__STATIC_ASSERT,   T_NONE,         LANG_MIN(C_11)    },
 
   // C++
-  { L_AND,              Y_AND,              T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_AND_EQ,           Y_AND_EQ,           T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_BITAND,           Y_BITAND,           T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_BITOR,            Y_BITOR,            T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_CATCH,            Y_CATCH,            T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_CLASS,            Y_CLASS,            T_CLASS,        LANG_MIN(CPP_MIN) },
-  { L_COMPL,            Y_COMPL,            T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_CONST_CAST,       Y_CONST_CAST,       T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_DELETE,           Y_DELETE,           T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_DYNAMIC_CAST,     Y_DYNAMIC_CAST,     T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_EXPLICIT,         Y_EXPLICIT,         T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_EXPORT,           Y_EXPORT,           T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_FALSE,            Y_FALSE,            T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_FRIEND,           Y_FRIEND,           T_FRIEND,       LANG_MIN(CPP_MIN) },
-  { L_MUTABLE,          Y_MUTABLE,          T_MUTABLE,      LANG_MIN(CPP_MIN) },
-  { L_NAMESPACE,        Y_NAMESPACE,        T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_NEW,              Y_NEW,              T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_NOT,              Y_NOT,              T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_NOT_EQ,           Y_NOT_EQ,           T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_OPERATOR,         Y_OPERATOR,         T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_OR,               Y_OR,               T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_OR_EQ,            Y_OR_EQ,            T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_PRIVATE,          Y_PRIVATE,          T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_PROTECTED,        Y_PROTECTED,        T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_PUBLIC,           Y_PUBLIC,           T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_REINTERPRET_CAST, Y_REINTERPRET_CAST, T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_STATIC_CAST,      Y_STATIC_CAST,      T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_TEMPLATE,         Y_TEMPLATE,         T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_THIS,             Y_THIS,             T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_THROW,            Y_THROW,            T_THROW,        LANG_MIN(CPP_MIN) },
-  { L_TRUE,             Y_TRUE,             T_NOEXCEPT,     LANG_MIN(CPP_MIN) },
-  { L_TRY,              Y_TRY,              T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_TRY,              Y_TRY,              T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_TYPEID,           Y_TYPEID,           T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_TYPENAME,         Y_TYPENAME,         T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_USING,            Y_USING,            T_TYPEDEF,      LANG_MIN(CPP_MIN) },
-  { L_VIRTUAL,          Y_VIRTUAL,          T_VIRTUAL,      LANG_MIN(CPP_MIN) },
-  { L_XOR,              Y_XOR,              T_NONE,         LANG_MIN(CPP_MIN) },
-  { L_XOR_EQ,           Y_XOR_EQ,           T_NONE,         LANG_MIN(CPP_MIN) },
+  { L_AND,              Y_AND,              T_NONE,         LANG_CPP_ALL      },
+  { L_AND_EQ,           Y_AND_EQ,           T_NONE,         LANG_CPP_ALL      },
+  { L_BITAND,           Y_BITAND,           T_NONE,         LANG_CPP_ALL      },
+  { L_BITOR,            Y_BITOR,            T_NONE,         LANG_CPP_ALL      },
+  { L_CATCH,            Y_CATCH,            T_NONE,         LANG_CPP_ALL      },
+  { L_CLASS,            Y_CLASS,            T_CLASS,        LANG_CPP_ALL      },
+  { L_COMPL,            Y_COMPL,            T_NONE,         LANG_CPP_ALL      },
+  { L_CONST_CAST,       Y_CONST_CAST,       T_NONE,         LANG_CPP_ALL      },
+  { L_DELETE,           Y_DELETE,           T_NONE,         LANG_CPP_ALL      },
+  { L_DYNAMIC_CAST,     Y_DYNAMIC_CAST,     T_NONE,         LANG_CPP_ALL      },
+  { L_EXPLICIT,         Y_EXPLICIT,         T_NONE,         LANG_CPP_ALL      },
+  { L_EXPORT,           Y_EXPORT,           T_NONE,         LANG_CPP_ALL      },
+  { L_FALSE,            Y_FALSE,            T_NONE,         LANG_CPP_ALL      },
+  { L_FRIEND,           Y_FRIEND,           T_FRIEND,       LANG_CPP_ALL      },
+  { L_MUTABLE,          Y_MUTABLE,          T_MUTABLE,      LANG_CPP_ALL      },
+  { L_NAMESPACE,        Y_NAMESPACE,        T_NONE,         LANG_CPP_ALL      },
+  { L_NEW,              Y_NEW,              T_NONE,         LANG_CPP_ALL      },
+  { L_NOT,              Y_NOT,              T_NONE,         LANG_CPP_ALL      },
+  { L_NOT_EQ,           Y_NOT_EQ,           T_NONE,         LANG_CPP_ALL      },
+  { L_OPERATOR,         Y_OPERATOR,         T_NONE,         LANG_CPP_ALL      },
+  { L_OR,               Y_OR,               T_NONE,         LANG_CPP_ALL      },
+  { L_OR_EQ,            Y_OR_EQ,            T_NONE,         LANG_CPP_ALL      },
+  { L_PRIVATE,          Y_PRIVATE,          T_NONE,         LANG_CPP_ALL      },
+  { L_PROTECTED,        Y_PROTECTED,        T_NONE,         LANG_CPP_ALL      },
+  { L_PUBLIC,           Y_PUBLIC,           T_NONE,         LANG_CPP_ALL      },
+  { L_REINTERPRET_CAST, Y_REINTERPRET_CAST, T_NONE,         LANG_CPP_ALL      },
+  { L_STATIC_CAST,      Y_STATIC_CAST,      T_NONE,         LANG_CPP_ALL      },
+  { L_TEMPLATE,         Y_TEMPLATE,         T_NONE,         LANG_CPP_ALL      },
+  { L_THIS,             Y_THIS,             T_NONE,         LANG_CPP_ALL      },
+  { L_THROW,            Y_THROW,            T_THROW,        LANG_CPP_ALL      },
+  { L_TRUE,             Y_TRUE,             T_NOEXCEPT,     LANG_CPP_ALL      },
+  { L_TRY,              Y_TRY,              T_NONE,         LANG_CPP_ALL      },
+  { L_TRY,              Y_TRY,              T_NONE,         LANG_CPP_ALL      },
+  { L_TYPEID,           Y_TYPEID,           T_NONE,         LANG_CPP_ALL      },
+  { L_TYPENAME,         Y_TYPENAME,         T_NONE,         LANG_CPP_ALL      },
+  { L_USING,            Y_USING,            T_TYPEDEF,      LANG_CPP_ALL      },
+  { L_VIRTUAL,          Y_VIRTUAL,          T_VIRTUAL,      LANG_CPP_ALL      },
+  { L_XOR,              Y_XOR,              T_NONE,         LANG_CPP_ALL      },
+  { L_XOR_EQ,           Y_XOR_EQ,           T_NONE,         LANG_CPP_ALL      },
 
   // C++11
   { L_ALIGNAS,          Y_ALIGNAS,          T_NONE,         LANG_MIN(CPP_11)  },
@@ -180,12 +182,14 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_OVERRIDE,         Y_OVERRIDE,         T_OVERRIDE,     LANG_MIN(CPP_11)  },
 
   // C11 & C++11
-  { L_CHAR16_T,         Y_CHAR16_T,         T_CHAR16_T,     LANG_C_11 |
-                                                            LANG_MIN(CPP_11) },
-  { L_CHAR32_T,         Y_CHAR32_T,         T_CHAR32_T,     LANG_C_11 |
-                                                            LANG_MIN(CPP_11) },
-  { L_THREAD_LOCAL,     Y_THREAD_LOCAL,     T_THREAD_LOCAL, LANG_C_11 |
-                                                            LANG_MIN(CPP_11) },
+  { L_CHAR16_T,         Y_CHAR16_T,         T_CHAR16_T,     LANG_C_CPP_11_MIN },
+  { L_CHAR32_T,         Y_CHAR32_T,         T_CHAR32_T,     LANG_C_CPP_11_MIN },
+  { L_THREAD_LOCAL,     Y_THREAD_LOCAL,     T_THREAD_LOCAL, LANG_C_CPP_11_MIN },
+
+  // C++20
+  { L_CONCEPT,          Y_CONCEPT,          T_NONE,         LANG_MIN(CPP_20)  },
+  { L_CONSTEVAL,        Y_CONSTEVAL,        T_CONSTEVAL,    LANG_MIN(CPP_20)  },
+  { L_REQUIRES,         Y_REQUIRES,         T_NONE,         LANG_MIN(CPP_20)  },
 
   // Apple extension    
   { L___BLOCK,          Y___BLOCK,          T_BLOCK,        LANG_ALL          },

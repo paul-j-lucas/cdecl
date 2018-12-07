@@ -24,7 +24,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "color.h"
 #include "diagnostics.h"
 #include "lexer.h"
@@ -79,7 +79,7 @@ static void print_caret( size_t error_column ) {
     // the user typed for the recent command, but we have to add the length of
     // the prompt.
     //
-    error_column_term += strlen( opt_lang >= LANG_CPP_MIN ? CPPDECL : PACKAGE )
+    error_column_term += strlen( C_LANG_IS_CPP() ? CPPDECL : PACKAGE )
       + 2 /* "> " */;
     if ( term_columns )
       error_column_term %= term_columns;

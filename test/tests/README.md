@@ -33,6 +33,7 @@ The characters are:
 + `g` = `register`
 + `h` = `short`
 + `i` = `inline` or `int`
++ `j` = `constexpr`
 + `k` = `struct`
 + `l` = `long`
 + `m` = `_Imaginary`, member of class, or `mutable`
@@ -43,7 +44,7 @@ The characters are:
 + `rr` = rvalue reference
 + `s` = `signed` or `static`
 + `t` = `nodiscard`, `throw`, `typedef`, or unknown type
-+ `u` = `maybe-unused` or `unsigned`
++ `u` = `maybe_unused` or `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
 + `x` = `constexpr`, `noexcept`,  or untyped K&R function argument

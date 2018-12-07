@@ -27,7 +27,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 #include "typedefs.h"                   /* for c_loc_t */
 
 ////////// extern functions ///////////////////////////////////////////////////

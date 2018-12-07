@@ -9,6 +9,6 @@ Valid set options (and command line equivalents) are:
 Current set option values are:
   nodebug
   nointeractive
-    lang=C11
+    lang=C18
     prompt
     semicolon

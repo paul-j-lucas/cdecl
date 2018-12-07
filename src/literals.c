@@ -210,6 +210,11 @@ char const L_MAYBE_UNUSED2[]        = "maybe-unused";
 char const L_NODISCARD[]            = "nodiscard";
 char const L_NON_DISCARDABLE[]      = "non-discardable";
 
+// C++20
+char const L_CONCEPT[]              = "concept";
+char const L_CONSTEVAL[]            = "consteval";
+char const L_REQUIRES[]             = "requires";
+
 // Miscellaneous
 char const L___BLOCK[]              = "__block";  // Apple: block storage class
 

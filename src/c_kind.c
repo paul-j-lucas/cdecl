@@ -24,7 +24,7 @@
  */
 
 // local
-#include "config.h"                     /* must go first */
+#include "cdecl.h"                      /* must go first */
 /// @cond DOXYGEN_IGNORE
 #define CDECL_KIND_INLINE _GL_EXTERN_INLINE
 /// @endcond
@@ -61,7 +61,7 @@ char const* c_kind_name( c_kind_t kind ) {
     case K_VARIADIC         : return "variadic";
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      if ( opt_lang >= LANG_CPP_MIN )
+      if ( opt_lang >= LANG_CPP_OLD )
         return "enum, class, struct, or union";
       if ( opt_lang >= LANG_C_89 )
         return "enum, struct, or union";

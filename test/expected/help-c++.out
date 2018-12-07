@@ -20,4 +20,4 @@ C++-type: bool char char16_t char32_t wchar_t int float double void
 cv-qual: const volatile
 fn-qual: const volatile [rvalue] reference
 modifier: short long signed unsigned const volatile
-store: constexpr extern friend register static thread_local [pure] virtual
+store: const{eval|expr} extern friend mutable static thread_local [pure] virtual

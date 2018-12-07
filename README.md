@@ -35,12 +35,14 @@ most notably:
   C95,
   C99,
   C11,
+  C18,
   C++98,
   C++03,
   C++11,
   C++14,
+  C++17,
   and
-  C++17.
+  C++20.
 * Support for C89
   `const`,
   `restrict`,
