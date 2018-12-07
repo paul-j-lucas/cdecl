@@ -1,5 +1,35 @@
+2018-12-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, c_keyword.c, c_keyword.h, c_operator.h, c_type.c,
+     errors.c, parser.y: s/ok_langs/lang_ids/
+   * AUTHORS, NEWS, cdecl.1, autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c,
+     c_ast_util.h, c_keyword.c, c_kind.c, c_kind.h, c_lang.c, c_lang.h,
+     c_operator.c, c_operator.h, c_type.c, c_type.h, c_typedef.c, c_typedef.h,
+     cdecl.c, color.h, debug.c, debug.h, diagnostics.c, diagnostics.h,
+     english.c, errors.c, gibberish.c, help.c, lexer.h, lexer.l, literals.c,
+     literals.h, options.c, options.h, parser.y, prompt.c, prompt.h,
+     red_black.c, red_black.h, set.c, slist.c, slist.h, util.c, util.h,
+     test/Makefile.am, cdecl--debug.out, cdecl-d.out, declare_jf_i.out,
+     declare_o_less_eq_greater_2rck_a.out, help-c++.out, set.out,
+     set_options.out, show_all.out, show_all_typedef.out, show_predefined.out,
+     show_predefined_typedef.out, declare_jf_i.test, declare_ji.test,
+     declare_o_less_eq_greater_2rck_a-c++17.test,
+     declare_o_less_eq_greater_2rck_a.test: Added support for C18 and C++20.
+
+2018-12-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l, test/Makefile.am, cdecl--no-typedefs.out, cdecl-t.out,
+     cdecl--no-typedefs.test, cdecl-t.test: Fixed crash with -t option.
+
+2018-12-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * Doxyfile: Changed vim comment.
+
 2018-11-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * slist.c: Added asserts.
+   * c_type.c: Comment fix.
+   * c_type.c: Simplification of is_long_int().
    * lib/Makefile.am, _Noreturn.h, limits.in.h, stdlib.in.h, unistd.in.h,
      errno_h.m4, gnulib-common.m4, gnulib-comp.m4, limits-h.m4, longlong.m4,
      stdarg.m4, stddef_h.m4, stdint.m4, unistd_h.m4: Updated GNUlib.
