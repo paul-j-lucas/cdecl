@@ -36,7 +36,7 @@ cdecl_SOURCES =	parser.y \
 		c_operator.c c_operator.h \
 		c_type.c c_type.h \
 		c_typedef.c c_typedef.h \
-		cdecl.c \
+		cdecl.c cdecl.h \
 		color.c color.h \
 		debug.h \
 		diagnostics.c diagnostics.h \
@@ -45,7 +45,6 @@ cdecl_SOURCES =	parser.y \
 		gibberish.c \
 		help.c \
 		literals.c literals.h \
-		misc.h \
 		options.c options.h \
 		prompt.c prompt.h \
 		red_black.c red_black.h \
