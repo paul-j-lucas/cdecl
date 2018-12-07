@@ -1,5 +1,6 @@
 2018-12-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Upped version to 5.1.
    * autocomplete.c, c_keyword.c, c_keyword.h, c_operator.h, c_type.c,
      errors.c, parser.y: s/ok_langs/lang_ids/
    * AUTHORS, NEWS, cdecl.1, autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c,
