@@ -48,7 +48,7 @@
  */
 struct ac_keyword {
   char const *keyword;                  ///< The keyword literal.
-  c_lang_id_t ok_langs;                 ///< Language(s) OK in.
+  c_lang_id_t lang_ids;                 ///< Language(s) OK in.
 };
 typedef struct ac_keyword ac_keyword_t;
 
@@ -211,7 +211,7 @@ static char* ac_keyword_find( ac_keyword_t const keywords[], char const *text,
                               size_t text_len, size_t *index ) {
   for ( ac_keyword_t const *k; (k = keywords + *index)->keyword != NULL; ) {
     ++*index;
-    if ( (k->ok_langs & opt_lang) == LANG_NONE )
+    if ( (k->lang_ids & opt_lang) == LANG_NONE )
       continue;
     if ( strncmp( text, k->keyword, text_len ) == 0 )
       return check_strdup( k->keyword );
@@ -306,7 +306,7 @@ static char* keyword_completion( char const *text, int state ) {
     //
     if ( command == NULL ) {
       for ( ac_keyword_t const *k = CDECL_COMMANDS; k->keyword; ++k ) {
-        if ( (k->ok_langs & opt_lang) != LANG_NONE &&
+        if ( (k->lang_ids & opt_lang) != LANG_NONE &&
              is_command( k->keyword ) ) {
           command = k->keyword;
           break;

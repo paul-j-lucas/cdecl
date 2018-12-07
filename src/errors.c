@@ -563,7 +563,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 
     case K_OPERATOR: {
       c_operator_t const *const op = op_get( ast->as.oper.oper_id );
-      if ( (opt_lang & op->ok_langs) == LANG_NONE ) {
+      if ( (opt_lang & op->lang_ids) == LANG_NONE ) {
         print_error( &ast->loc,
           "overloading operator \"%s\" not supported in %s",
           op->name,
@@ -819,9 +819,9 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   bool const is_func_arg = REINTERPRET_CAST( bool, data );
 
-  c_lang_id_t const ok_langs = c_type_check( ast->type_id );
-  if ( ok_langs != LANG_ALL ) {
-    if ( ok_langs == LANG_NONE )
+  c_lang_id_t const lang_ids = c_type_check( ast->type_id );
+  if ( lang_ids != LANG_ALL ) {
+    if ( lang_ids == LANG_NONE )
       print_error( &ast->loc,
         "\"%s\" is illegal", c_type_name_error( ast->type_id )
       );
@@ -933,7 +933,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     if ( k != NULL ) {
       print_warning( &ast->loc,
         "\"%s\" is a keyword in %s",
-        ast->name, c_lang_name( c_lang_oldest( k->ok_langs ) )
+        ast->name, c_lang_name( c_lang_oldest( k->lang_ids ) )
       );
     }
   }

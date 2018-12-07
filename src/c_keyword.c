@@ -209,7 +209,7 @@ c_keyword_t const* c_attribute_find( char const *literal ) {
 
 c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_id ) {
   for ( c_keyword_t const *k = C_KEYWORDS; k->literal != NULL; ++k ) {
-    if ( (k->ok_langs & lang_id) == LANG_NONE )
+    if ( (k->lang_ids & lang_id) == LANG_NONE )
       continue;
     if ( strcmp( literal, k->literal ) == 0 )
       return k;

@@ -2838,7 +2838,7 @@ attribute_name_c
       if ( a == NULL ) {
         print_warning( &@1, "\"%s\": unknown attribute", $1 );
       }
-      else if ( (opt_lang & a->ok_langs) == LANG_NONE ) {
+      else if ( (opt_lang & a->lang_ids) == LANG_NONE ) {
         print_warning( &@1, "\"%s\" not supported in %s", $1, C_LANG_NAME() );
       }
       else {

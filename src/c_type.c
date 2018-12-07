@@ -41,9 +41,9 @@
 #include <string.h>
 
 #define C_TYPE_CHECK(...) BLOCK(            \
-  c_lang_id_t const ok_langs = __VA_ARGS__; \
-  if ( ok_langs != LANG_ALL )               \
-    return ok_langs; )
+  c_lang_id_t const lang_ids = __VA_ARGS__; \
+  if ( lang_ids != LANG_ALL )               \
+    return lang_ids; )
 
 #define C_TYPE_CHECK_COMBO(TYPE,TYPES,OK_TYPE_LANGS) \
   c_type_check_combo( (TYPE), (TYPES), ARRAY_SIZE( TYPES ), OK_TYPE_LANGS )
@@ -101,7 +101,7 @@ struct c_type {
   c_type_id_t type_id;                  ///< The type.
   char const *literal;                  ///< C string literal of the type.
   char const *english;                  ///< English version (if not NULL).
-  c_lang_id_t ok_langs;                 ///< Language(s) OK in.
+  c_lang_id_t lang_ids;                 ///< Language(s) OK in.
 };
 typedef struct c_type c_type_t;
 
@@ -326,10 +326,10 @@ c_type_check_combo( c_type_id_t type_id, c_type_t const types[],
   for ( size_t row = 0; row < types_size; ++row ) {
     if ( (type_id & types[ row ].type_id) != T_NONE ) {
       for ( size_t col = 0; col <= row; ++col ) {
-        c_lang_id_t const ok_langs = type_langs[ row ][ col ];
+        c_lang_id_t const lang_ids = type_langs[ row ][ col ];
         if ( (type_id & types[ col ].type_id) != T_NONE &&
-             (opt_lang & ok_langs) == LANG_NONE ) {
-          return ok_langs;
+             (opt_lang & lang_ids) == LANG_NONE ) {
+          return lang_ids;
         }
       } // for
     }
@@ -351,8 +351,8 @@ c_type_check_legal( c_type_id_t type_id, c_type_t const types[],
   for ( size_t row = 0; row < types_size; ++row ) {
     c_type_t const *const ti = &types[ row ];
     if ( (type_id & ti->type_id) != T_NONE &&
-         (opt_lang & ti->ok_langs) == LANG_NONE ) {
-      return ti->ok_langs;
+         (opt_lang & ti->lang_ids) == LANG_NONE ) {
+      return ti->lang_ids;
     }
   } // for
   return LANG_ALL;

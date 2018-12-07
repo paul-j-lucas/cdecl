@@ -125,7 +125,7 @@ struct c_operator {
   unsigned    flags;                    ///< Bitwise-or of flags.
   unsigned    args_min;                 ///< Minumum number of arguments.
   unsigned    args_max;                 ///< Maximum number of arguments.
-  c_lang_id_t ok_langs;                 ///< Language(s) OK in.
+  c_lang_id_t lang_ids;                 ///< Language(s) OK in.
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
