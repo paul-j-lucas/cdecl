@@ -498,7 +498,7 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
     if ( ast->kind == K_OPERATOR ) {
       g_param_space( param );
       FPRINTF( param->gout,
-        "operator%s", op_get( ast->as.oper.oper_id )->name
+        "%s%s", L_OPERATOR, op_get( ast->as.oper.oper_id )->name
       );
     }
     else if ( ast->name != NULL ) {
