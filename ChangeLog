@@ -1,5 +1,44 @@
+2018-12-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_type.c,
+     gibberish.c, lexer.l, options.c, options.h, parser.y, set.c, typedefs.h,
+     test/Makefile.am, declare_digraphs_a9i.out,
+     declare_digraphs_nfi_v-c++.out, declare_trigraphs_a9i.out,
+     declare_trigraphs_nfi_v-c++.out, declare_trigraphs_o_circ_eq_i_rk.out,
+     declare_trigraphs_o_circ_rcki_k.out, declare_trigraphs_o_pipe2_2rck_b.out,
+     declare_trigraphs_o_pipe_2rck_k.out, declare_trigraphs_o_pipe_eq_i_rk.out,
+     declare_trigraphs_o_tilde_k.out, explain_digraphs_a9i.out,
+     explain_digraphs_nfi_v-c++.out, explain_nfi_v-c++.out,
+     explain_trigraphs_a9i.out, explain_trigraphs_nfi_v-c++.out,
+     explain_trigraphs_o_circ_eq_i_rk.out, explain_trigraphs_o_circ_rcki_k.out,
+     explain_trigraphs_o_pipe2_2rck_b.out, explain_trigraphs_o_pipe_2rck_k.out,
+     explain_trigraphs_o_pipe_eq_i_rk.out, explain_trigraphs_o_tilde_k.out,
+     set.out, set_digraphs.out, set_nographs.out, set_options.out,
+     set_trigraphs.out, cdecl-23.test, declare_digraphs_a9i.test,
+     declare_digraphs_nfi_v-c++.test, declare_trigraphs_a9i.test,
+     declare_trigraphs_nfi_v-c++.test, declare_trigraphs_o_circ_eq_i_rk.test,
+     declare_trigraphs_o_circ_rcki_k.test,
+     declare_trigraphs_o_pipe2_2rck_b.test,
+     declare_trigraphs_o_pipe_2rck_k.test,
+     declare_trigraphs_o_pipe_eq_i_rk.test, declare_trigraphs_o_tilde_k.test,
+     explain_digraphs_a9i.test, explain_digraphs_nfi_v-c++.test,
+     explain_nfi_v-c++-error.test, explain_nfi_v-c++.test,
+     explain_trigraphs_a9i.test, explain_trigraphs_nfi_v-c++.test,
+     explain_trigraphs_o_circ_eq_i_rk.test,
+     explain_trigraphs_o_circ_rcki_k.test,
+     explain_trigraphs_o_pipe2_2rck_b.test,
+     explain_trigraphs_o_pipe_2rck_k.test,
+     explain_trigraphs_o_pipe_eq_i_rk.test, explain_trigraphs_o_tilde_k.test,
+     set_digraphs.test, set_nographs.test, set_trigraphs.test: Added support
+     for digraphs & trigraphs.
+
+2018-12-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: s/operator/L_OPERATOR/
+
 2018-12-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * src/Makefile.am: s/misc.h/cdecl.h
    * configure.ac: Upped version to 5.1.
    * autocomplete.c, c_keyword.c, c_keyword.h, c_operator.h, c_type.c,
      errors.c, parser.y: s/ok_langs/lang_ids/
