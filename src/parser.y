@@ -167,6 +167,7 @@ struct in_attr {
 typedef struct in_attr in_attr_t;
 
 // extern functions
+extern char const*    c_graph_name( char const* );
 extern void           print_help( void );
 extern void           set_option( char const* );
 extern int            yylex( void );
@@ -1122,7 +1123,7 @@ explain_declaration_c
       C_AST_CHECK( ast, CHECK_DECL );
       char const *name;
       if ( ast->kind == K_OPERATOR ) {
-        name = op_get( ast->as.oper.oper_id )->name;
+        name = c_graph_name( op_get( ast->as.oper.oper_id )->name );
       } else {
         name = c_ast_take_name( ast );
       }

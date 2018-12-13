@@ -53,6 +53,7 @@ extern bool         opt_debug;          ///< Generate JSON-like debug output?
 #endif /* ENABLE_CDECL_DEBUG */
 extern char const  *opt_fin;            ///< File in path.
 extern char const  *opt_fout;           ///< File out path.
+extern c_graph_t    opt_graph;          ///< Di/Trigraph mode.
 extern bool         opt_interactive;    ///< Interactive mode?
 extern c_lang_id_t  opt_lang;           ///< Current language.
 extern bool         opt_no_conf;        ///< Do not read configuration file.

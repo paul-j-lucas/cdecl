@@ -62,6 +62,9 @@
 
 /// @endcond
 
+// extern functions
+extern char const*  c_graph_name( char const* );
+
 // local functions
 static char const* c_type_name_impl( c_type_id_t, bool );
 
@@ -460,10 +463,10 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     bool *const psep = brackets ? &comma : &space;
 
     if ( brackets )
-      STRCAT( name, "[[" );
+      STRCAT( name, c_graph_name( "[[" ) );
     C_TYPE_NAME_CAT( &name, type_id, C_ATTRIBUTE, is_error, sep, psep );
     if ( brackets )
-      STRCAT( name, "]]" );
+      STRCAT( name, c_graph_name( "]]" ) );
     space = true;
   }
 

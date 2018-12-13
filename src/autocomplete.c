@@ -162,35 +162,38 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
  * @hideinitializer
  */
 static char const *const CDECL_OPTIONS[] = {
-  "c89",
-  "c95",
-  "c99",
-  "c11",
-  "c18",
-//"c++",                                // too short
-  "c++98",
-  "c++03",
-  "c++11",
-  "c++14",
-  "c++17",
-  "c++20",
-  "create",
-"nocreate",
+   "c89",
+   "c95",
+   "c99",
+   "c11",
+   "c18",
+// "c++",                               // too short
+   "c++98",
+   "c++03",
+   "c++11",
+   "c++14",
+   "c++17",
+   "c++20",
+   "create",
+ "nocreate",
 #ifdef ENABLE_CDECL_DEBUG
-  "debug",
-"nodebug",
+   "debug",
+ "nodebug",
+ "nographs",
+ "digraphs",
+"trigraphs",
 #endif /* ENABLE_CDECL_DEBUG */
-  "knr"
-  "options",
-  "prompt",
-"noprompt",
-  "semicolon",
-"nosemicolon",
+   "knr"
+   "options",
+   "prompt",
+ "noprompt",
+   "semicolon",
+ "nosemicolon",
 #ifdef YYDEBUG
-  "yydebug",
-"noyydebug",
+   "yydebug",
+ "noyydebug",
 #endif /* YYDEBUG */
-  NULL
+   NULL
 };
 
 // local functions

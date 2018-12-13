@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "December 6, 2018" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "December 13, 2018" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -315,6 +315,13 @@ while the parser is reducing grammar productions.
 .B cdecl
 itself.)
 .TP
+.BR \-\-digraphs " | " \-2
+Turns on digraph output
+for
+\f(CW[\fP
+and
+\f(CW]\fP.
+.TP
 .BI \-\-file \f1=\fPf "\f1 | \fP" "" \-f " f"
 Reads commands from file
 .IR f .
@@ -370,6 +377,16 @@ Sends all non-error output to file
 .TP
 .BR \-\-quiet " | " \-q
 Be quiet by suppressing the prompt in interactive mode.
+.TP
+.BR \-\-trigraphs " | " \-3
+Turns on trigraph output
+for
+\f(CW[\fP,
+\f(CW]\fP,
+\f(CW^\fP,
+\f(CW|\fP,
+and
+\f(CW~\fP.
 .TP
 .BR \-\-version " | " \-v
 Prints the version number to standard error
@@ -956,6 +973,18 @@ Turns [off] on debugging output
 (if compiled in)
 \(em default is off.
 .TP
+.B nographs
+Turns off either digraph or trigraph output,
+i.e.,
+reverts to emitting all characters as-is.
+.TP
+.B digraphs
+Turns on digraph output
+for
+\f(CW[\fP
+and
+\f(CW]\fP.
+.TP
 .B options
 Prints the current value of all options.
 .TP
@@ -966,6 +995,16 @@ Turns [off] on the prompt
 .RB [ no ] semicolon
 Turns [off] on printing a semicolon at the end of a C (or C++) declaration
 \(em default is on.
+.TP
+.B trigraphs
+Turns on trigraph output
+for
+\f(CW[\fP,
+\f(CW]\fP,
+\f(CW^\fP,
+\f(CW|\fP,
+and
+\f(CW~\fP.
 .TP
 .RB [ no ] yydebug
 Turns [off] on

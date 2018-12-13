@@ -55,6 +55,7 @@ bool                opt_debug;
 #endif /* ENABLE_CDECL_DEBUG */
 char const         *opt_fin;
 char const         *opt_fout;
+c_graph_t           opt_graph;
 bool                opt_interactive;
 c_lang_id_t         opt_lang;
 bool                opt_no_conf;
@@ -72,6 +73,8 @@ FILE               *fout;
  * @hideinitializer
  */
 static struct option const LONG_OPTS[] = {
+  { "digraphs",     no_argument,        NULL, '2' },
+  { "trigraphs",    no_argument,        NULL, '3' },
   { "config",       required_argument,  NULL, 'c' },
   { "no-config",    no_argument,        NULL, 'C' },
 #ifdef ENABLE_CDECL_DEBUG
@@ -98,7 +101,7 @@ static struct option const LONG_OPTS[] = {
  *
  * @hideinitializer
  */
-static char const   SHORT_OPTS[] = "c:Cf:ik:o:qstvx:"
+static char const   SHORT_OPTS[] = "23c:Cf:ik:o:qstvx:"
 #ifdef ENABLE_CDECL_DEBUG
   "d"
 #endif /* ENABLE_CDECL_DEBUG */
@@ -312,6 +315,8 @@ static void parse_options( int argc, char const *argv[] ) {
       break;
     SET_OPTION( opt );
     switch ( opt ) {
+      case '2': opt_graph       = GRAPH_DI;                   break;
+      case '3': opt_graph       = GRAPH_TRI;                  break;
       case 'c': opt_conf_file   = optarg;                     break;
       case 'C': opt_no_conf     = true;                       break;
 #ifdef ENABLE_CDECL_DEBUG
@@ -334,7 +339,8 @@ static void parse_options( int argc, char const *argv[] ) {
     } // switch
   } // for
 
-  check_mutually_exclusive( "v", "cCdfikoqstxy" );
+  check_mutually_exclusive( "2", "3" );
+  check_mutually_exclusive( "v", "23cCdfikoqstxy" );
 
   if ( print_version ) {
     PRINT_ERR( "%s\n", PACKAGE_STRING );
@@ -370,6 +376,8 @@ static void usage( void ) {
 "       %s -v\n"
 "\n"
 "options:\n"
+"  -2       Print digraphs.\n"
+"  -3       Print trigraphs.\n"
 "  -c file  Specify the configuration file [default: ~/%s].\n"
 "  -C       Suppress reading configuration file.\n"
 #ifdef ENABLE_CDECL_DEBUG

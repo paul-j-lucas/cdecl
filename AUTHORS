@@ -90,6 +90,7 @@ Paul J. Lucas <paul@lucasmail.org>
 		and pure virtual C++ member function declarations
 	made "returning" optional
 	added binary, octal, and hexadecimal array sizes
+	added digraph & trigraph support
 	added better warning and error messages
 	now ignoring C /*...*/ and C++ // comments in lexer
 	now treating cdecl keywords in declarations as ordinary names

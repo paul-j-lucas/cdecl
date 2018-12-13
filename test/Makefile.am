@@ -40,7 +40,8 @@ endif
 # Command-line option error tests
 # ===============================
 #
-TESTS+=	tests/cdecl-xx.test
+TESTS+=	tests/cdecl-23.test \
+	tests/cdecl-xx.test
 
 ###############################################################################
 
@@ -479,6 +480,36 @@ TESTS+=	tests/explain_0f_v-02.test \
 	tests/explain_voyf-c.test \
 	tests/explain_w-c89.test \
 	tests/explain_xi-c.test
+
+#
+# C declare digraph & trigraph tests
+# ==================================
+#
+TESTS+=	tests/declare_digraphs_a9i.test \
+	tests/declare_digraphs_nfi_v-c++.test \
+	tests/declare_trigraphs_a9i.test \
+	tests/declare_trigraphs_nfi_v-c++.test \
+	tests/declare_trigraphs_o_circ_eq_i_rk.test \
+	tests/declare_trigraphs_o_circ_rcki_k.test \
+	tests/declare_trigraphs_o_pipe2_2rck_b.test \
+	tests/declare_trigraphs_o_pipe_2rck_k.test \
+	tests/declare_trigraphs_o_pipe_eq_i_rk.test \
+	tests/declare_trigraphs_o_tilde_k.test
+
+#
+# C explain digraph & trigraph tests
+# ==================================
+#
+TESTS+=	tests/explain_digraphs_a9i.test \
+	tests/explain_digraphs_nfi_v-c++.test \
+	tests/explain_trigraphs_a9i.test \
+	tests/explain_trigraphs_nfi_v-c++.test \
+	tests/explain_trigraphs_o_circ_eq_i_rk.test \
+	tests/explain_trigraphs_o_circ_rcki_k.test \
+	tests/explain_trigraphs_o_pipe2_2rck_b.test \
+	tests/explain_trigraphs_o_pipe_2rck_k.test \
+	tests/explain_trigraphs_o_pipe_eq_i_rk.test \
+	tests/explain_trigraphs_o_tilde_k.test
 
 ###############################################################################
 
@@ -939,6 +970,7 @@ TESTS+=	tests/explain_a.test \
 	tests/explain_fti_v.test \
 	tests/explain_fui_v.test \
 	tests/explain_mi.test \
+	tests/explain_nfi_v-c++.test \
 	tests/explain_oyf.test \
 	tests/explain_pmf_i.test \
 	tests/explain_pmf_pc.test \
@@ -979,7 +1011,7 @@ TESTS+=	tests/explain_ai-c++11.test \
 	tests/explain_frri_v-c++03.test \
 	tests/explain_fsf_v.test \
 	tests/explain_fx_v.test \
-	tests/explain_nfi_v-c++.test \
+	tests/explain_nfi_v-c++-error.test \
 	tests/explain_pmri.test \
 	tests/explain_pri.test \
 	tests/explain_prri.test \
@@ -1181,13 +1213,16 @@ TESTS+=	tests/help-c.test \
 	tests/set_c89.test \
 	tests/set_c99.test \
 	tests/set_cknr.test \
+	tests/set_digraphs.test \
 	tests/set_knr.test \
 	tests/set_knrc.test \
+	tests/set_nographs.test \
 	tests/set_noprompt.test \
 	tests/set_nosemicolon.test \
 	tests/set_options.test \
 	tests/set_prompt.test \
-	tests/set_semicolon.test
+	tests/set_semicolon.test \
+	tests/set_trigraphs.test
 
 if ENABLE_CDECL_DEBUG
 TESTS+=	tests/set_debug.test \

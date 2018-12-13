@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 5.2
+
+** Added digraph and trigraph support
+Added support for digraphs and trigraphs.
+
+
 * Changes in Cdecl 5.1
 
 ** Added C++20 support

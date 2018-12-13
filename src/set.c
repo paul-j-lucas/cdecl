@@ -66,6 +66,13 @@ void set_option( char const *opt ) {
     SET_OPTION( opt, "debug", opt_debug, true, false );
 #endif /* ENABLE_CDECL_DEBUG */
 
+    if ( strcmp( opt, "digraphs" ) == 0 )
+      { opt_graph = GRAPH_DI; return; }
+    if ( strcmp( opt, "trigraphs" ) == 0 )
+      { opt_graph = GRAPH_TRI; return; }
+    if ( strcmp( opt, "nographs" ) == 0 )
+      { opt_graph = GRAPH_NONE; return; }
+
     if ( strcmp( opt, "prompt" ) == 0 )
       { cdecl_prompt_enable( true ); return; }
     if ( strcmp( opt, "noprompt" ) == 0 )
@@ -86,26 +93,28 @@ void set_option( char const *opt ) {
     }
   }
 
-  printf( "\nValid set options (and command line equivalents) are:\n" );
-  printf( "  options\n" );
+  printf( "\nValid set options (and command line equivalents, if any) are:\n" );
+  printf( "   options\n" );
 #ifdef ENABLE_CDECL_DEBUG
-  printf( "  debug (-d, --debug) / nodebug\n" );
+  printf( "   debug (-d, --debug) / nodebug\n" );
 #endif /* ENABLE_CDECL_DEBUG */
-  printf( "  interactive (-i, --interactive) / nointeractive\n" );
-  printf( "  prompt / noprompt (-q, --quiet)\n" );
-  printf( "  semicolon / nosemicolon (-s, --no-semicolon)\n" );
+  printf( "   digraphs (-2, --digraphs) / trigraphs (-3, --trigraphs) / nographs\n" );
+  printf( "   interactive (-i, --interactive) / nointeractive\n" );
+  printf( "   prompt / noprompt (-q, --quiet)\n" );
+  printf( "   semicolon / nosemicolon (-s, --no-semicolon)\n" );
 #ifdef YYDEBUG
-  printf( "  yydebug (-y, --yydebug) / noyydebug\n" );
+  printf( "   yydebug (-y, --yydebug) / noyydebug\n" );
 #endif /* YYDEBUG */
 
   printf( "\nCurrent set option values are:\n" );
 #ifdef ENABLE_CDECL_DEBUG
-  printf( "  %sdebug\n", opt_debug ? "  " : "no" );
+  printf( "   %sdebug\n", opt_debug ? "  " : "no" );
 #endif /* ENABLE_CDECL_DEBUG */
-  printf( "  %sinteractive\n", opt_interactive ? "  " : "no" );
-  printf( "    lang=%s\n", C_LANG_NAME() );
-  printf( "  %sprompt\n", prompt[0][0] ? "  " : "no" );
-  printf( "  %ssemicolon\n", opt_semicolon ? "  " : "no" );
+  printf( "  %sgraphs\n", opt_graph == GRAPH_DI ? " di" : opt_graph == GRAPH_TRI ? "tri" : " no" );
+  printf( "   %sinteractive\n", opt_interactive ? "  " : "no" );
+  printf( "     lang=%s\n", C_LANG_NAME() );
+  printf( "   %sprompt\n", prompt[0][0] ? "  " : "no" );
+  printf( "   %ssemicolon\n", opt_semicolon ? "  " : "no" );
 #ifdef YYDEBUG
   printf( "  %syydebug\n", yydebug ? "  " : "no" );
 #endif /* YYDEBUG */

@@ -34,6 +34,15 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Di/Trigraph mode.
+ */
+enum c_graph {
+  GRAPH_NONE,                           ///< Ordinary characters.
+  GRAPH_DI,                             ///< Digraphs.
+  GRAPH_TRI                             ///< Trigraphs.
+};
+
+/**
  * Initialization state.
  *
  * We currently only need to discriminate between before and after reading the
@@ -79,6 +88,7 @@ typedef struct c_ast_pair   c_ast_pair_t;
 typedef struct c_array      c_array_t;
 typedef struct c_block      c_block_t;
 typedef enum   c_check      c_check_t;
+typedef enum   c_graph      c_graph_t;
 typedef enum   c_init       c_init_t;
 typedef struct c_lang       c_lang_t;
 typedef struct c_loc        c_loc_t;

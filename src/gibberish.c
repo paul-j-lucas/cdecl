@@ -67,12 +67,15 @@ struct g_param {
 };
 typedef struct g_param g_param_t;
 
+// extern functions
+extern char const*  c_graph_name( char const* );
+
 // local functions
-static void       c_ast_gibberish_impl( c_ast_t const*, g_param_t* );
-static void       c_ast_gibberish_postfix( c_ast_t const*, g_param_t* );
-static void       c_ast_gibberish_qual_name( c_ast_t const*, g_param_t const* );
-static void       c_ast_gibberish_space_name( c_ast_t const*, g_param_t* );
-static void       g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
+static void c_ast_gibberish_impl( c_ast_t const*, g_param_t* );
+static void c_ast_gibberish_postfix( c_ast_t const*, g_param_t* );
+static void c_ast_gibberish_qual_name( c_ast_t const*, g_param_t const* );
+static void c_ast_gibberish_space_name( c_ast_t const*, g_param_t* );
+static void g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -112,7 +115,7 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
   assert( ast->kind == K_ARRAY );
 
-  FPUTC( '[', param->gout );
+  FPUTS( c_graph_name( "[" ), param->gout );
   if ( ast->as.array.type_id != T_NONE )
     FPRINTF( param->gout, "%s ", c_type_name( ast->as.array.type_id ) );
   switch ( ast->as.array.size ) {
@@ -124,7 +127,7 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
     default:
       FPRINTF( param->gout, "%d", ast->as.array.size );
   } // switch
-  FPUTC( ']', param->gout );
+  FPUTS( c_graph_name( "]" ), param->gout );
 }
 
 /**
@@ -498,7 +501,8 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
     if ( ast->kind == K_OPERATOR ) {
       g_param_space( param );
       FPRINTF( param->gout,
-        "%s%s", L_OPERATOR, op_get( ast->as.oper.oper_id )->name
+        "%s%s",
+        L_OPERATOR, c_graph_name( op_get( ast->as.oper.oper_id )->name )
       );
     }
     else if ( ast->name != NULL ) {
@@ -539,6 +543,47 @@ void c_ast_gibberish_declare( c_ast_t const *ast, FILE *gout ) {
   g_param_t param;
   g_param_init( &param, ast, G_DECLARE, gout );
   c_ast_gibberish_impl( ast, &param );
+}
+
+/**
+ * Gets the digraph or trigraph (collectively, "graph") equivalent of \a token.
+ *
+ * @param token The token to get the equivalent name for.
+ * @return If \a token contains one or more characters that have a graph
+ * equivalent and we're emitting graphs, returns \a token with said characters
+ * replaced by their graphs; otherwise returns \a token as-is.
+ */
+char const* c_graph_name( char const *token ) {
+  assert( token != NULL );
+  switch ( opt_graph ) {
+    case GRAPH_NONE:
+      break;
+    //
+    // Even though this could be done character-by-character, it's easier for
+    // the calling code if multi-character tokens containing graph characters
+    // are returned as a single string.
+    //
+    case GRAPH_DI:
+      switch ( token[0] ) {
+        case '[': return token[1] == '[' ? "<:<:" : "<:";
+        case ']': return token[1] == ']' ? ":>:>" : ":>";
+      } // switch
+      break;
+    case GRAPH_TRI:
+      switch ( token[0] ) {
+        case '[': return token[1] == '[' ? "?\?(?\?(" : "?\?(";
+        case ']': return token[1] == ']' ? "?\?)?\?)" : "?\?)";
+        case '^': return token[1] == '=' ? "?\?'=" : "?\?'";
+        case '|': switch ( token[1] ) {
+                    case '=': return "?\?!=";
+                    case '|': return "?\?!?\?!";
+                  } // switch
+                  return "?\?!";
+        case '~': return "?\?-";
+      } // switch
+      break;
+  } // switch
+  return token;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
