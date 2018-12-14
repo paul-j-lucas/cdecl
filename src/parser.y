@@ -44,10 +44,10 @@
 #ifdef ENABLE_CDECL_DEBUG
 #include "debug.h"
 #endif /* ENABLE_CDECL_DEBUG */
-#include "diagnostics.h"
 #include "lexer.h"
 #include "literals.h"
 #include "options.h"
+#include "print.h"
 #include "slist.h"
 #include "typedefs.h"
 #include "util.h"

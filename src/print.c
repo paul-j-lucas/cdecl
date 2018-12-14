@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/diagnostics.c
+**      src/print.c
 **
 **      Copyright (C) 2017  Paul J. Lucas, et al.
 **
@@ -26,9 +26,9 @@
 // local
 #include "cdecl.h"                      /* must go first */
 #include "color.h"
-#include "diagnostics.h"
 #include "lexer.h"
 #include "options.h"
+#include "print.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

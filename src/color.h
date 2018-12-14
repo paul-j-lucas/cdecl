@@ -135,7 +135,7 @@ typedef enum color_when color_when_t;
 extern char const   COLORS_DEFAULT[];   ///< Default colors.
 
 // extern variables
-extern bool         colorize;           ///< Colorize diagnostics?
+extern bool         colorize;           ///< Colorize errors & warnings?
 extern char const  *sgr_caret;          ///< Color of the caret `^`.
 extern char const  *sgr_error;          ///< Color of `error`.
 extern char const  *sgr_help_keyword;   ///< Color of cdecl keyword.

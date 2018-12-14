@@ -308,7 +308,7 @@ bool parse_string( char const *s, size_t s_len ) {
   bool reset_command_line = false;
   if ( command_line == NULL ) {
     //
-    // The diagnostics code relies on command_line being set, so set it.
+    // The print code relies on command_line being set, so set it.
     //
     command_line = s;
     command_line_len = s_len;

@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/diagnostics.h
+**      src/print.h
 **
 **      Copyright (C) 2017  Paul J. Lucas, et al.
 **
@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_diagnostics_H
-#define cdecl_diagnostics_H
+#ifndef cdecl_print_H
+#define cdecl_print_H
 
 /**
  * @file
@@ -72,5 +72,5 @@ void print_warning( c_loc_t const *loc, char const *format, ... );
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif /* cdecl_diagnostics_H */
+#endif /* cdecl_print_H */
 /* vim:set et sw=2 ts=2: */

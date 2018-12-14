@@ -29,9 +29,9 @@
 #include "c_keyword.h"
 #include "c_type.h"
 #include "c_typedef.h"
-#include "diagnostics.h"
 #include "literals.h"
 #include "options.h"
+#include "print.h"
 
 /// @cond DOXYGEN_IGNORE
 

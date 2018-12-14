@@ -27,9 +27,9 @@
 #include "cdecl.h"                      /* must go first */
 #include "c_lang.h"
 #include "c_type.h"
-#include "diagnostics.h"
 #include "literals.h"
 #include "options.h"
+#include "print.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

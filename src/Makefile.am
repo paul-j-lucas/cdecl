@@ -39,13 +39,13 @@ cdecl_SOURCES =	parser.y \
 		cdecl.c cdecl.h \
 		color.c color.h \
 		debug.h \
-		diagnostics.c diagnostics.h \
 		english.c \
 		errors.c \
 		gibberish.c \
 		help.c \
 		literals.c literals.h \
 		options.c options.h \
+		print.c print.h \
 		prompt.c prompt.h \
 		red_black.c red_black.h \
 		set.c \
