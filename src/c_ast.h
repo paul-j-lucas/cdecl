@@ -47,7 +47,6 @@
 
 // standard
 #include <stdbool.h>
-#include <stddef.h>                     /* for offsetof() */
 #include <stdio.h>                      /* for FILE */
 
 _GL_INLINE_HEADER_BEGIN
