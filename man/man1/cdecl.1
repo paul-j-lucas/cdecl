@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "December 13, 2018" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 31, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1021,15 +1021,29 @@ file
 .BR ~/.cdeclrc )
 is used to configure
 .B cdecl
-by pre-defining types
-(via the
+by executing the contained commands
+on start-up
+(unless either the
+.B \-\-no-config
+or
+.B \-C
+option is specified).
+The commands useful within a configuration file are:
+.IP \(bu 3
 .BR define ,
 .BR typedef ,
 or
 .B using
-commands)
+to pre-define user-specific types
 so that they may be subsequently used
 when either composing or deciphering declarations.
+.IP \(bu
+.B set
+to set the initial language
+or enable digraph
+or trigraph
+support initially.
+.P
 Configuration files may include
 blank lines,
 C-style \f(CW/*\fP\ \f(CW*/\fP comments,
@@ -1047,7 +1061,7 @@ void *(*fptab[])();
 When you see this declaration in someone else's code,
 you can make sense out of it by doing:
 .cS
-explain void *(*fptab[])()
+cdecl> explain void *(*fptab[])()
 .cE
 The proper declaration for
 .BR signal (2),
