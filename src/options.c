@@ -251,7 +251,7 @@ static color_when_t parse_color_when( char const *when ) {
   } // for
 
   // name not found: construct valid name list for an error message
-  char *const names_buf = FREE_STRBUF_LATER( names_buf_size );
+  char names_buf[ names_buf_size ];
   char *pnames = names_buf;
   for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when != NULL; ++m ) {
     if ( pnames > names_buf )
@@ -282,7 +282,7 @@ static c_lang_id_t parse_lang( char const *s ) {
   } // for
 
   // name not found: construct valid name list for an error message
-  char *const langs_buf = FREE_STRBUF_LATER( langs_buf_size );
+  char langs_buf[ langs_buf_size ];
   char *plangs = langs_buf;
   for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
     if ( plangs > langs_buf )

@@ -64,9 +64,6 @@ _GL_INLINE_HEADER_BEGIN
 /** Frees the given C string later. */
 #define FREE_STR_LATER(PTR)       REINTERPRET_CAST( char*, free_later( PTR ) )
 
-/** Frees the newly allocated C string later. */
-#define FREE_STRBUF_LATER(SIZE)   FREE_STR_LATER( MALLOC( char, (SIZE) ) )
-
 /** Frees the duplicated C string later. */
 #define FREE_STRDUP_LATER(PTR)    FREE_STR_LATER( check_strdup( PTR ) )
 
