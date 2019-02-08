@@ -1,6 +1,5 @@
 
 Valid set options (and command line equivalents, if any) are:
-   options
    debug (-d, --debug) / nodebug
    digraphs (-2, --digraphs) / trigraphs (-3, --trigraphs) / nographs
    interactive (-i, --interactive) / nointeractive

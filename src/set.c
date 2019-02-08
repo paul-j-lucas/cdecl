@@ -94,7 +94,6 @@ void set_option( char const *opt ) {
   }
 
   printf( "\nValid set options (and command line equivalents, if any) are:\n" );
-  printf( "   options\n" );
 #ifdef ENABLE_CDECL_DEBUG
   printf( "   debug (-d, --debug) / nodebug\n" );
 #endif /* ENABLE_CDECL_DEBUG */
