@@ -210,7 +210,7 @@ static bool parse_command_line( char const *command, int argc,
     command_line_len += true_or_set( &space ) + strlen( argv[i] );
 
   command_line = MALLOC( char, command_line_len + 1/*null*/ );
-  char *s = (char*)command_line;
+  char *s = CONST_CAST(char*, command_line);
 
   // build cdecl command
   if ( (space = command != NULL) )

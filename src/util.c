@@ -163,10 +163,10 @@ unsigned get_term_columns( void ) {
     goto error;
   }
 
-  int setupterm_err;
-  if ( unlikely( setupterm( (char*)term, cterm_fd, &setupterm_err ) == ERR ) ) {
+  int sut_err;
+  if ( setupterm( CONST_CAST(char*, term), cterm_fd, &sut_err ) == ERR ) {
     reason = reason_buf;
-    switch ( setupterm_err ) {
+    switch ( sut_err ) {
       case -1:
         reason = "terminfo database not found";
         break;
@@ -182,7 +182,7 @@ unsigned get_term_columns( void ) {
       default:
         snprintf(
           reason_buf, sizeof reason_buf,
-          "setupterm(3) returned error code %d", setupterm_err
+          "setupterm(3) returned error code %d", sut_err
         );
     } // switch
     goto error;

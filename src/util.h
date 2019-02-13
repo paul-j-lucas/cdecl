@@ -114,6 +114,9 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define SP_BEFORE(S)              SP_IF(S), S
 
+/** Explicit C version of C++'s `static_cast`. */
+#define STATIC_CAST(T,EXPR)       ((T)(EXPR))
+
 /** Shorthand for calling **strerror**(3). */
 #define STRERROR                  strerror( errno )
 
@@ -167,7 +170,7 @@ _GL_INLINE_HEADER_BEGIN
  * @hideinitializer
  */
 #define MALLOC(TYPE,N) \
-  ((TYPE*)check_realloc( NULL, sizeof(TYPE) * (N) ))
+  STATIC_CAST(TYPE*, check_realloc( NULL, sizeof(TYPE) * (N) ))
 
 /**
  * Prints an error message to standard output and exits with \a STATUS code.
@@ -246,7 +249,7 @@ _GL_INLINE_HEADER_BEGIN
  * @hideinitializer
  */
 #define REALLOC(PTR,TYPE,N) \
-  (PTR) = (TYPE*)check_realloc( (PTR), sizeof(TYPE) * (N) )
+  (PTR) = STATIC_CAST(TYPE*, check_realloc( (PTR), sizeof(TYPE) * (N) ))
 
 ////////// extern functions ///////////////////////////////////////////////////
 
