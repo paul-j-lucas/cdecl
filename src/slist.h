@@ -75,8 +75,8 @@ struct slist {
  * Singly-linked-list node.
  */
 struct slist_node {
-  void *data;                           ///< Pointer to user data.
   slist_node_t *next;                   ///< Pointer to next node or null.
+  void *data;                           ///< Pointer to user data.
 };
 
 /**
