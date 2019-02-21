@@ -133,6 +133,30 @@ void slist_append_list( slist_t *dst, slist_t *src );
 void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn );
 
 /**
+ * Peeks at the data at the head of \a list.
+ *
+ * @param list A pointer to the <code>\ref slist</code>.
+ * @return Returns a pointer to the data from the node at the head of \a list
+ * or null if \a list is empty.
+ */
+CDECL_SLIST_INLINE void* slist_head( slist_t const *list ) {
+  return list->head != NULL ? list->head->data : NULL;
+}
+
+/**
+ * Convenience macro that peeks at the data at the head of \a LIST and casts it
+ * to the requested type.
+ *
+ * @param DATA_TYPE The type of the data.
+ * @param LIST A pointer to the <code>\ref slist</code>.
+ * @return Returns the data from the head of \a LIST cast to \a DATA_TYPE or
+ * null (or equivalent) if the <code>\ref slist</code> is empty.
+ * @hideinitializer
+ */
+#define SLIST_HEAD(DATA_TYPE,LIST) \
+  REINTERPRET_CAST( DATA_TYPE, slist_head( LIST ) )
+
+/**
  * Initializes \a list.  This is not necessary for either global or `static`
  * lists.
  *
@@ -157,7 +181,7 @@ unsigned slist_len( slist_t const *list );
  * @return Returns the data from the head of \a list.  The caller is
  * responsible for deleting it (if necessary).
  */
-void* slist_pop( slist_t *list );
+void* slist_pop_head( slist_t *list );
 
 /**
  * Convenience macro that pops data from the head of \a LIST and casts it to
@@ -170,40 +194,16 @@ void* slist_pop( slist_t *list );
  * responsible for deleting it (if necessary).
  * @hideinitializer
  */
-#define SLIST_POP(DATA_TYPE,LIST) \
-  REINTERPRET_CAST( DATA_TYPE, slist_pop( LIST ) )
+#define SLIST_POP_HEAD(DATA_TYPE,LIST) \
+  REINTERPRET_CAST( DATA_TYPE, slist_pop_head( LIST ) )
 
 /**
- * Pushes a node onto the front of \a list.
+ * Pushes a node onto the head of \a list.
  *
  * @param list A pointer to the <code>\ref slist</code>.
  * @param data The pointer to the data to add.
  */
-void slist_push( slist_t *list, void *data );
-
-/**
- * Peeks at the data at the head of \a list.
- *
- * @param list A pointer to the <code>\ref slist</code>.
- * @return Returns a pointer to the data from the node at the head of \a list
- * or null if \a list is empty.
- */
-CDECL_SLIST_INLINE void* slist_top( slist_t const *list ) {
-  return list->head != NULL ? list->head->data : NULL;
-}
-
-/**
- * Convenience macro that peeks at the data at the head of \a LIST and casts it
- * to the requested type.
- *
- * @param DATA_TYPE The type of the data.
- * @param LIST A pointer to the <code>\ref slist</code>.
- * @return Returns the data from the head of \a LIST cast to \a DATA_TYPE or
- * null (or equivalent) if the <code>\ref slist</code> is empty.
- * @hideinitializer
- */
-#define SLIST_TOP(DATA_TYPE,LIST) \
-  REINTERPRET_CAST( DATA_TYPE, slist_top( LIST ) )
+void slist_push_head( slist_t *list, void *data );
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -96,7 +96,7 @@ unsigned slist_len( slist_t const *list ) {
   return len;
 }
 
-void* slist_pop( slist_t *list ) {
+void* slist_pop_head( slist_t *list ) {
   assert( list != NULL );
   if ( list->head != NULL ) {
     void *const data = list->head->data;
@@ -110,7 +110,7 @@ void* slist_pop( slist_t *list ) {
   return NULL;
 }
 
-void slist_push( slist_t *list, void *data ) {
+void slist_push_head( slist_t *list, void *data ) {
   assert( list != NULL );
   slist_node_t *const new_head = MALLOC( slist_node_t, 1 );
   new_head->data = data;

@@ -197,7 +197,7 @@ static inline char const* printable_token( void ) {
  * @return Returns said `c_ast`.
  */
 static inline c_ast_t* type_peek( void ) {
-  return SLIST_TOP( c_ast_t*, &in_attr.type_stack );
+  return SLIST_HEAD( c_ast_t*, &in_attr.type_stack );
 }
 
 /**
@@ -206,7 +206,7 @@ static inline c_ast_t* type_peek( void ) {
  * @return Returns said `c_ast`.
  */
 static inline c_ast_t* type_pop( void ) {
-  return SLIST_POP( c_ast_t*, &in_attr.type_stack );
+  return SLIST_POP_HEAD( c_ast_t*, &in_attr.type_stack );
 }
 
 /**
@@ -215,7 +215,7 @@ static inline c_ast_t* type_pop( void ) {
  * @param ast The `c_ast` to push.
  */
 static inline void type_push( c_ast_t *ast ) {
-  slist_push( &in_attr.type_stack, ast );
+  slist_push_head( &in_attr.type_stack, ast );
 }
 
 /**
@@ -225,7 +225,7 @@ static inline void type_push( c_ast_t *ast ) {
  * @return Returns said qualifier.
  */
 static inline c_type_id_t qualifier_peek( void ) {
-  return SLIST_TOP( c_qualifier_t*, &in_attr.qualifier_stack )->type_id;
+  return SLIST_HEAD( c_qualifier_t*, &in_attr.qualifier_stack )->type_id;
 }
 
 /**
@@ -239,13 +239,13 @@ static inline c_type_id_t qualifier_peek( void ) {
  * @hideinitializer
  */
 #define qualifier_peek_loc() \
-  (SLIST_TOP( c_qualifier_t*, &in_attr.qualifier_stack )->loc)
+  (SLIST_HEAD( c_qualifier_t*, &in_attr.qualifier_stack )->loc)
 
 /**
  * Pops a qualifier from the qualifier inherited attribute stack and frees it.
  */
 static inline void qualifier_pop( void ) {
-  FREE( slist_pop( &in_attr.qualifier_stack ) );
+  FREE( slist_pop_head( &in_attr.qualifier_stack ) );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -386,7 +386,7 @@ static void qualifier_push( c_type_id_t qualifier, c_loc_t const *loc ) {
   c_qualifier_t *const qual = MALLOC( c_qualifier_t, 1 );
   qual->type_id = qualifier;
   qual->loc = *loc;
-  slist_push( &in_attr.qualifier_stack, qual );
+  slist_push_head( &in_attr.qualifier_stack, qual );
 }
 
 /**
