@@ -755,7 +755,7 @@ static void yyerror( char const *msg ) {
  * Bison %destructors.  We don't use the <identifier> syntax because older
  * versions of Bison don't support it.
  *
- * Clean-up of AST nodes is done via garbage collection; see c_ast::gc_next.
+ * Clean-up of AST nodes is done via garbage collection using ast_gc_list.
  */
 
 /* name */
