@@ -77,7 +77,7 @@
   BLOCK( if ( !c_ast_check( (AST), (CHECK) ) ) PARSE_ABORT(); )
 
 #define C_AST_NEW(KIND,LOC) \
-  SLIST_APPEND( c_ast_t*, &ast_gc_list, c_ast_new( (KIND), ast_depth, (LOC) ) )
+  SLIST_PUSH_TAIL( c_ast_t*, &ast_gc_list, c_ast_new( (KIND), ast_depth, (LOC) ) )
 
 #define C_TYPE_ADD(DST,SRC,LOC) \
   BLOCK( if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_ABORT(); )
@@ -1047,7 +1047,7 @@ define_english
           // parse to a separate ast_typedef_list that's freed only at program
           // termination.
           //
-          slist_append_list( &ast_typedef_list, &ast_gc_list );
+          slist_push_list_tail( &ast_typedef_list, &ast_gc_list );
         }
         else {
           print_error( &@5,
@@ -1425,7 +1425,7 @@ typedef_declaration_c
 
       if ( c_typedef_add( ast ) ) {
         // see comment in define_english about ast_typedef_list
-        slist_append_list( &ast_typedef_list, &ast_gc_list );
+        slist_push_list_tail( &ast_typedef_list, &ast_gc_list );
       }
       else {
         print_error( &@5,
@@ -1502,7 +1502,7 @@ using_declaration_c
 
       if ( c_typedef_add( ast ) ) {
         // see comment in define_english about ast_typedef_list
-        slist_append_list( &ast_typedef_list, &ast_gc_list );
+        slist_push_list_tail( &ast_typedef_list, &ast_gc_list );
       }
       else {
         print_error( &@5,
@@ -1704,7 +1704,7 @@ decl_list_english
       DUMP_AST( "decl_english", $1.ast );
 
       slist_init( &$$ );
-      (void)slist_append( &$$, $1.ast );
+      (void)slist_push_tail( &$$, $1.ast );
 
       DUMP_AST_LIST( "decl_list_opt_english", $$ );
       DUMP_END();
@@ -1718,7 +1718,7 @@ decl_list_english
       DUMP_AST( "decl_english", $3.ast );
 
       $$ = $1;
-      (void)slist_append( &$$, $3.ast );
+      (void)slist_push_tail( &$$, $3.ast );
 
       DUMP_AST_LIST( "decl_list_opt_english", $$ );
       DUMP_END();
@@ -2456,7 +2456,7 @@ arg_list_c
       DUMP_AST( "arg_c", $3.ast );
 
       $$ = $1;
-      (void)slist_append( &$$, $3.ast );
+      (void)slist_push_tail( &$$, $3.ast );
 
       DUMP_AST_LIST( "arg_list_c", $$ );
       DUMP_END();
@@ -2468,7 +2468,7 @@ arg_list_c
       DUMP_AST( "arg_c", $1.ast );
 
       slist_init( &$$ );
-      (void)slist_append( &$$, $1.ast );
+      (void)slist_push_tail( &$$, $1.ast );
 
       DUMP_AST_LIST( "arg_list_c", $$ );
       DUMP_END();

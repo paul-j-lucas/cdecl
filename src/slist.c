@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/slist.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -38,41 +38,6 @@
 /// @endcond
 
 ////////// extern functions ///////////////////////////////////////////////////
-
-void* slist_append( slist_t *list, void *data ) {
-  assert( list != NULL );
-  slist_node_t *const new_tail = MALLOC( slist_node_t, 1 );
-  new_tail->data = data;
-  new_tail->next = NULL;
-
-  if ( list->head == NULL ) {
-    assert( list->tail == NULL );
-    list->head = new_tail;
-  } else {
-    assert( list->tail != NULL );
-    assert( list->tail->next == NULL );
-    list->tail->next = new_tail;
-  }
-  list->tail = new_tail;
-  return data;
-}
-
-void slist_append_list( slist_t *dst, slist_t *src ) {
-  assert( dst != NULL );
-  assert( src != NULL );
-  if ( dst->head == NULL ) {
-    assert( dst->tail == NULL );
-    dst->head = src->head;
-    dst->tail = src->tail;
-  }
-  else if ( src->head != NULL ) {
-    assert( src->tail != NULL );
-    assert( dst->tail->next == NULL );
-    dst->tail->next = src->head;
-    dst->tail = src->tail;
-  }
-  src->head = src->tail = NULL;
-}
 
 void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn ) {
   if ( list != NULL ) {
@@ -118,6 +83,41 @@ void slist_push_head( slist_t *list, void *data ) {
   list->head = new_head;
   if ( list->tail == NULL )
     list->tail = new_head;
+}
+
+void slist_push_list_tail( slist_t *dst, slist_t *src ) {
+  assert( dst != NULL );
+  assert( src != NULL );
+  if ( dst->head == NULL ) {
+    assert( dst->tail == NULL );
+    dst->head = src->head;
+    dst->tail = src->tail;
+  }
+  else if ( src->head != NULL ) {
+    assert( src->tail != NULL );
+    assert( dst->tail->next == NULL );
+    dst->tail->next = src->head;
+    dst->tail = src->tail;
+  }
+  src->head = src->tail = NULL;
+}
+
+void* slist_push_tail( slist_t *list, void *data ) {
+  assert( list != NULL );
+  slist_node_t *const new_tail = MALLOC( slist_node_t, 1 );
+  new_tail->data = data;
+  new_tail->next = NULL;
+
+  if ( list->head == NULL ) {
+    assert( list->tail == NULL );
+    list->head = new_tail;
+  } else {
+    assert( list->tail != NULL );
+    assert( list->tail->next == NULL );
+    list->tail->next = new_tail;
+  }
+  list->tail = new_tail;
+  return data;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

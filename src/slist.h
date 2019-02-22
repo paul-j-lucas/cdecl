@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/slist.h
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -94,35 +94,6 @@ struct slist_node {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Appends \a data onto the end of \a list.
- *
- * @param list The <code>\ref slist</code> to append onto.
- * @param data The data to append.
- * @return Returns \a data.
- */
-void* slist_append( slist_t *list, void *data );
-
-/**
- * Convenience macro that appends \a DATA onto the end of \a LIST.
- *
- * @param DATA_TYPE The type of the data to cast to.
- * @param LIST A pointer to the <code>\ref slist</code> to append to.
- * @param DATA The data to append.
- * @return Returns \a DATA cast to \a DATA_TYPE.
- * @hideinitializer
- */
-#define SLIST_APPEND(DATA_TYPE,LIST,DATA) \
-  REINTERPRET_CAST( DATA_TYPE, slist_append( (LIST), REINTERPRET_CAST( void*, (DATA) ) ) )
-
-/**
- * Appends \a src onto the end of \a dst.
- *
- * @param dst The <code>\ref slist</code> to append onto.
- * @param src The <code>\ref slist</code> to append.  It is made empty.
- */
-void slist_append_list( slist_t *dst, slist_t *src );
-
-/**
  * Frees all memory associated with \a list.
  *
  * @param list A pointer to the <code>\ref slist</code>.  If null, does
@@ -204,6 +175,35 @@ void* slist_pop_head( slist_t *list );
  * @param data The pointer to the data to add.
  */
 void slist_push_head( slist_t *list, void *data );
+
+/**
+ * Appends \a src onto the tail of \a dst.
+ *
+ * @param dst The <code>\ref slist</code> to push onto.
+ * @param src The <code>\ref slist</code> to push.  It is made empty.
+ */
+void slist_push_list_tail( slist_t *dst, slist_t *src );
+
+/**
+ * Appends \a data onto the tail of \a list.
+ *
+ * @param list The <code>\ref slist</code> to push onto.
+ * @param data The data to pushed.
+ * @return Returns \a data.
+ */
+void* slist_push_tail( slist_t *list, void *data );
+
+/**
+ * Convenience macro that pushes \a DATA onto the tail of \a LIST.
+ *
+ * @param DATA_TYPE The type of the data to cast to.
+ * @param LIST A pointer to the <code>\ref slist</code> to push onto.
+ * @param DATA The data to pushed.
+ * @return Returns \a DATA cast to \a DATA_TYPE.
+ * @hideinitializer
+ */
+#define SLIST_PUSH_TAIL(DATA_TYPE,LIST,DATA) \
+  REINTERPRET_CAST( DATA_TYPE, slist_push_tail( (LIST), REINTERPRET_CAST( void*, (DATA) ) ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 
