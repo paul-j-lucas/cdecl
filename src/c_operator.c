@@ -148,7 +148,4 @@ unsigned op_get_overload( c_ast_t const *ast ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-_GL_INLINE_HEADER_END
-
 /* vim:set et sw=2 ts=2: */

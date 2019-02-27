@@ -121,7 +121,4 @@ void* slist_push_tail( slist_t *list, void *data ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-_GL_INLINE_HEADER_END
-
 /* vim:set et sw=2 ts=2: */
