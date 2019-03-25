@@ -169,7 +169,7 @@ typedef struct in_attr in_attr_t;
 
 // extern functions
 extern void           print_help( void );
-extern void           set_option( char const* );
+extern void           set_option( c_loc_t const*, char const* );
 extern int            yylex( void );
 
 // local variables
@@ -1494,7 +1494,7 @@ scope_typedef_or_using_declaration_c_opt
 /*****************************************************************************/
 
 set_command
-  : Y_SET set_option_name         { set_option( $2 ); FREE( $2 ); }
+  : Y_SET set_option_name         { set_option( &@2, $2 ); FREE( $2 ); }
   ;
 
 set_option_name

@@ -28,6 +28,7 @@
 #include "c_lang.h"
 #include "color.h"
 #include "options.h"
+#include "print.h"
 #include "prompt.h"
 #include "util.h"
 
@@ -38,11 +39,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define SET_OPTION(OPT,LITERAL,VAR,ON,NO) BLOCK(  \
-  if ( strcmp( (OPT), LITERAL ) == 0 )            \
-    { VAR = (ON); return; }                       \
-  if ( strcmp( (OPT), "no" LITERAL ) == 0 )       \
-    { VAR = (NO); return; } )
+#define IF_OPT(LITERAL,...) BLOCK( \
+  if ( strcmp( opt, (LITERAL) ) == 0 ) { __VA_ARGS__ return; } )
 
 /// @endcond
 
@@ -51,11 +49,16 @@
 /**
  * Implements the cdecl `set` command.
  *
+ * @param loc The location of the option token.
  * @param opt The name of the option to set. If null, displays the current
  * values of all options.
  */
-void set_option( char const *opt ) {
+void set_option( c_loc_t const *loc, char const *opt ) {
   if ( opt != NULL ) {
+    //
+    // First, check to see if the option is the name of a supported language:
+    // if so, switch to that language.
+    //
     c_lang_id_t const new_lang = c_lang_find( opt );
     if ( new_lang != LANG_NONE ) {
       c_lang_set( new_lang );
@@ -63,34 +66,23 @@ void set_option( char const *opt ) {
     }
 
 #ifdef ENABLE_CDECL_DEBUG
-    SET_OPTION( opt, "debug", opt_debug, true, false );
+    IF_OPT(    "debug",     opt_debug = true;             );
+    IF_OPT(  "nodebug",     opt_debug = false;            );
 #endif /* ENABLE_CDECL_DEBUG */
-
-    if ( strcmp( opt, "digraphs" ) == 0 )
-      { opt_graph = GRAPH_DI; return; }
-    if ( strcmp( opt, "trigraphs" ) == 0 )
-      { opt_graph = GRAPH_TRI; return; }
-    if ( strcmp( opt, "nographs" ) == 0 )
-      { opt_graph = GRAPH_NONE; return; }
-
-    if ( strcmp( opt, "prompt" ) == 0 )
-      { cdecl_prompt_enable( true ); return; }
-    if ( strcmp( opt, "noprompt" ) == 0 )
-      { cdecl_prompt_enable( false ); return; }
-
-    SET_OPTION( opt, "semicolon", opt_semicolon, true, false );
-
+    IF_OPT(  "digraphs",    opt_graph = GRAPH_DI;         );
+    IF_OPT( "trigraphs",    opt_graph = GRAPH_TRI;        );
+    IF_OPT(  "nographs",    opt_graph = GRAPH_NONE;       );
+    IF_OPT(    "prompt",    cdecl_prompt_enable( true );  );
+    IF_OPT(  "noprompt",    cdecl_prompt_enable( false ); );
+    IF_OPT(    "semicolon", opt_semicolon = true;         );
+    IF_OPT(  "nosemicolon", opt_semicolon = false;        );
 #ifdef YYDEBUG
-    SET_OPTION( opt, "yydebug", yydebug, true, false );
+    IF_OPT(    "yydebug",   yydebug = true;               );
+    IF_OPT(  "noyydebug",   yydebug = false;              );
 #endif /* YYDEBUG */
 
-    if ( strcmp( opt, "options" ) != 0 ) {
-      PRINT_ERR( "\"%s\": ", opt );
-      SGR_START_COLOR( stderr, error );
-      PUTS_ERR( "error" );
-      SGR_END_COLOR( stderr );
-      PUTS_ERR( ": unknown set option\n" );
-    }
+    if ( strcmp( opt, "options" ) != 0 )
+      print_error( loc, "\"%s\": unknown set option", opt );
   }
 
   printf( "\nValid set options (and command line equivalents, if any) are:\n" );
