@@ -20,7 +20,7 @@
 #       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-AC_INIT([cdecl], [5.2], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/cdecl])
+AC_INIT([cdecl], [6.0], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/cdecl])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
@@ -104,18 +104,18 @@ AS_IF([test x$enable_cdecl_debug = xyes],
     [Define to 1 if cdecl debugging is enabled.])]
 )
 
-# Program feature: term-columns (enabled by default)
-AC_ARG_ENABLE([term-columns],
-  AS_HELP_STRING([--disable-term-columns], [disable support for terminal columns]),
+# Program feature: term-size (enabled by default)
+AC_ARG_ENABLE([term-size],
+  AS_HELP_STRING([--disable-term-size], [disable support for terminal size]),
   [],
-  [enable_term_columns=yes]
+  [enable_term_size=yes]
 )
-AS_IF([test x$enable_term_columns = xyes -a x$ac_cv_search_endwin = xno],
-  [AC_MSG_ERROR([curses library for term-columns not found; use --disable-term-columns])]
+AS_IF([test x$enable_term_size = xyes -a x$ac_cv_search_endwin = xno],
+  [AC_MSG_ERROR([curses library for term-size not found; use --disable-term-size])]
 )
-AS_IF([test x$enable_term_columns = xyes],
-  [AC_DEFINE([ENABLE_TERM_COLUMNS], [1],
-    [Define to 1 if term-columns is enabled.])]
+AS_IF([test x$enable_term_size = xyes],
+  [AC_DEFINE([ENABLE_TERM_SIZE], [1],
+    [Define to 1 if term-size is enabled.])]
 )
 
 # Program feature: yacc debug (disabled by default)

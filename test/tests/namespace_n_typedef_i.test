@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -xc++ @ namespace A { union B { typedef int Int; }; }; show user typedef @ 0

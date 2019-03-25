@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/english.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@
 #include "c_ast_util.h"
 #include "c_operator.h"
 #include "c_typedef.h"
+#include "english.h"
+#include "gibberish.h"
 #include "literals.h"
 #include "util.h"
 
@@ -116,10 +118,11 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
             // there's no "as" part, so just let the K_NAME case below print
             // the name itself.
             //
-            char const *const name = c_ast_name( arg_ast, V_DOWN );
-            if ( name != NULL )
-              FPRINTF( eout, "%s %s ", name, L_AS );
-            else {
+            c_sname_t const *const sname = c_ast_find_name( arg_ast, V_DOWN );
+            if ( sname != NULL ) {
+              c_sname_english( sname, eout );
+              FPRINTF( eout, " %s ", L_AS );
+            } else {
               //
               // If there's no name, it's an unnamed argument, e.g.:
               //
@@ -150,15 +153,12 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      FPRINTF( eout,
-        "%s %s",
-        c_type_name( ast->type_id ), ast->as.ecsu.ecsu_name
-      );
+      FPRINTF( eout, "%s ", c_type_name( ast->type_id ) );
+      c_sname_english( &ast->as.ecsu.ecsu_sname, eout );
       break;
 
     case K_NAME:
-      if ( ast->name != NULL )
-        FPUTS( ast->name, eout );
+      c_sname_english( &ast->sname, eout );
       break;
 
     case K_NONE:
@@ -182,14 +182,16 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
         FPRINTF( eout, "%s ", c_type_name( qualifier ) );
       FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
       char const *const name = c_type_name( ast->type_id & ~T_MASK_QUALIFIER );
-      FPRINTF( eout, "%s%s%s ", SP_AFTER( name ), ast->as.ptr_mbr.class_name );
+      FPRINTF( eout, "%s%s", SP_AFTER( name ) );
+      c_sname_english( &ast->as.ptr_mbr.class_sname, eout );
+      FPUTC( ' ', eout );
       break;
     }
 
     case K_TYPEDEF:
       if ( ast->type_id != T_TYPEDEF_TYPE )
         FPRINTF( eout, "%s ", c_type_name( ast->type_id ) );
-      FPUTS( ast->as.c_typedef->ast->name, eout );
+      c_sname_english( &ast->as.c_typedef->ast->sname, eout );
       break;
 
     case K_VARIADIC:
@@ -205,6 +207,17 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_visit( nonconst_ast, V_DOWN, c_ast_visitor_english, eout );
+}
+
+void c_sname_english( c_sname_t const *sname, FILE *eout ) {
+  assert( sname != NULL );
+  if ( sname->tail != NULL ) {
+    FPUTS( C_SCOPE_NAME( sname->tail ), eout );
+    for ( c_scope_t const *scope = sname->head; scope != sname->tail;
+          scope = scope->next ) {
+      FPRINTF( eout, " %s %s %s", L_OF, L_SCOPE, C_SCOPE_NAME( scope ) );
+    } // for
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

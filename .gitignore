@@ -2,7 +2,7 @@
 *.in
 *.o
 *~
-.*.swp
+.*.sw[op]
 .deps
 .DS_Store
 Makefile

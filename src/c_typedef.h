@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/c_typedef.h
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -38,6 +38,15 @@
 
 /// @endcond
 
+/**
+ * Return value for c_typedef_add().
+ */
+enum td_add_rv {
+  TD_ADD_ADDED,                         ///< Type was added.
+  TD_ADD_EQUIV,                         ///< Type exists and is equivalent.
+  TD_ADD_DIFF                           ///< Type exists and is different.
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -65,11 +74,14 @@ typedef bool (*c_typedef_visitor_t)( c_typedef_t const *type, void *data );
  *
  * @param type_ast The AST of the type.  Ownership is taken only if the
  * function returns `true`.
- * @return Returns `true` only if the type was either added or
- * \a type_ast->name already exists and the types are equivalent; `false` if
- * \a type_ast->name already exists and the types are not equivalent.
+ * @return
+ * + #TD_ADD_ADDED only if the type was added;
+ * + #TD_ADD_EQUIV only if \a type_ast->name already exists and the types are
+ *   equivalent;
+ * + #TD_ADD_DIFF only if \a type_ast->name already exists and the types are
+ *   not equivalent.
  */
-bool c_typedef_add( c_ast_t const *type_ast );
+td_add_rv_t c_typedef_add( c_ast_t const *type_ast );
 
 /**
  * Cleans up `c_typedef` data.
@@ -79,11 +91,11 @@ void c_typedef_cleanup( void );
 /**
  * Gets the `c_typedef` for \a name.
  *
- * @param name The name to find.
+ * @param sname The scoped name to find.
  * @return Returns a pointer to the corresponding `c_typedef` or null for
  * none.
  */
-c_typedef_t const* c_typedef_find( char const *name );
+c_typedef_t const* c_typedef_find( c_sname_t const *sname );
 
 /**
  * Initializes `c_typedef` data.

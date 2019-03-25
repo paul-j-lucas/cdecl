@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/literals.h
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -171,6 +171,7 @@ extern char const L_PUBLIC[];
 extern char const L_PURE[];
 extern char const L_REINTERPRET[];
 extern char const L_REINTERPRET_CAST[];
+extern char const L_SCOPE[];
 extern char const L_STATIC_CAST[];
 extern char const L_TEMPLATE[];
 extern char const L_THIS[];

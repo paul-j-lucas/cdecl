@@ -2,7 +2,7 @@
 #	cdecl -- C gibberish translator
 #	Makefile.am
 #
-#	Copyright (C) 2017  Paul J. Lucas, et al.
+#	Copyright (C) 2017-2019  Paul J. Lucas, et al.
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -22,9 +22,9 @@ ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = m4/gnulib-cache.m4 README-2.5.txt README-blocks.txt README.md
 SUBDIRS = lib src man test
 
-.PHONY: docs
+.PHONY: doc docs
 
-docs:
+doc docs:
 	doxygen
 
 clean-local:

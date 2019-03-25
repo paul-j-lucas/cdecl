@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/c_ast_util.h
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 #include "cdecl.h"                      /* must go first */
 #include "c_ast.h"
 #include "c_type.h"
+#include "gibberish.h"
 #include "typedefs.h"
 #include "util.h"
 
@@ -87,8 +88,8 @@ bool c_ast_vistor_kind( c_ast_t *ast, void *data );
  * A visitor function used to find a name.
  *
  * @param ast The `c_ast` to check.
- * @param data Not used.
- * @return Returns `true` only if \a ast has a name.
+ * @param data The least number of names that the scoped name must have.
+ * @return Returns `true` only if \a ast has such a scoped name.
  */
 bool c_ast_visitor_name( c_ast_t *ast, void *data );
 
@@ -112,12 +113,13 @@ bool c_ast_vistor_type( c_ast_t *ast, void *data );
 c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array );
 
 /**
- * Adds a function (or block) to the AST being built.
+ * Adds a function, C++ operator, or block to the AST being built.
  *
  * @param ast The `c_ast` to append to.
- * @param ret_ast The `c_ast` of the return-type of the function (or block).
- * @param func The function (or block) `c_ast` to append.  Its "of" type must
- * be null.
+ * @param ret_ast The `c_ast` of the return-type of the function, operator, or
+ * block.
+ * @param func The function, operator, or block `c_ast` to append.  Its "of"
+ * type must be null.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func );
@@ -161,12 +163,13 @@ bool c_ast_is_ecsu( c_ast_t const *ast );
 bool c_ast_is_ptr_to( c_ast_t const *ast, c_type_id_t type_id );
 
 /**
- * Prints \a ast as pseudo-English.
+ * Traverses \a ast attempting to find an AST node having a name.
  *
- * @param ast The `c_ast` to print.  May be null.
- * @param fout The `FILE` to print to.
+ * @param ast The `c_ast` to begin the search at.
+ * @param dir The direction to search.
+ * @return Returns said name or null if none.
  */
-void c_ast_english( c_ast_t const *ast, FILE *fout );
+c_sname_t const* c_ast_find_name( c_ast_t const *ast, v_direction_t dir );
 
 /**
  * Traverses \a ast attempting to find an AST node having \a kind.
@@ -199,31 +202,6 @@ CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_type( c_ast_t *ast,
 }
 
 /**
- * Prints \a ast as a C/C++ cast.
- *
- * @param ast The `c_ast` to print.
- * @param fout The `FILE` to print to.
- */
-void c_ast_gibberish_cast( c_ast_t const *ast, FILE *fout );
-
-/**
- * Prints \a ast as a C/C++ declaration.
- *
- * @param ast The `c_ast` to print.
- * @param fout The `FILE` to print to.
- */
-void c_ast_gibberish_declare( c_ast_t const *ast, FILE *fout );
-
-/**
- * Gets the name from \a ast.
- *
- * @param ast The `c_ast` to begin the search at.
- * @param dir The direction to search.
- * @return Returns said name or null if none.
- */
-char const* c_ast_name( c_ast_t const *ast, v_direction_t dir );
-
-/**
  * "Patches" \a type_ast into \a decl_ast only if:
  *  + \a type_ast has no parent.
  *  + The depth of \a type_ast is less than that of \a decl_ast.
@@ -241,10 +219,9 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
  * (with the intent of giving it to another `c_ast`).
  *
  * @param ast The `c_ast` (or one of its child nodes) to take from.
- * @return Returns said name or null.  The caller is responsible for freeing
- * the string.
+ * @return Returns said name or en empty name.
  */
-char const* c_ast_take_name( c_ast_t *ast );
+c_sname_t c_ast_take_name( c_ast_t *ast );
 
 /**
  * Checks \a ast to see if it contains a `typedef`.

@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/util.h
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -116,6 +116,15 @@ _GL_INLINE_HEADER_BEGIN
 
 /** Explicit C version of C++'s `static_cast`. */
 #define STATIC_CAST(T,EXPR)       ((T)(EXPR))
+
+/**
+ * Convenience macro for calling strcpy_end() and updating \a DST.
+ *
+ * @param DST A pointer to receive the copy of \a SRC.  It is updated to the
+ * new end of \a DST.
+ * @param SRC The null-terminated string to copy.
+ */
+#define STRCAT(DST,SRC)           ((DST) = strcpy_end( (DST), (SRC) ))
 
 /** Shorthand for calling **strerror**(3). */
 #define STRERROR                  strerror( errno )
@@ -356,14 +365,17 @@ void* free_later( void *p );
  */
 void free_now( void );
 
-#ifdef ENABLE_TERM_COLUMNS
+#ifdef ENABLE_TERM_SIZE
 /**
- * Gets the number of columns of the terminal.
+ * Gets the number of columns and/or lines of the terminal.
  *
- * @return Returns said number of columns or 0 if it can not be determined.
+ * @param ncolumns If not NULL, receives the number of columns or 0 if can not
+ * be determined.
+ * @param nlines If not NULL, receives the number of lines or 0 if it can not
+ * be determined.
  */
-unsigned get_term_columns( void );
-#endif /* ENABLE_TERM_COLUMNS */
+void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines );
+#endif /* ENABLE_TERM_SIZE */
 
 /**
  * Gets the full path of the user's home directory.

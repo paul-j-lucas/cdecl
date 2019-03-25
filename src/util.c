@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/util.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -54,7 +54,7 @@
 # include <readline/history.h>
 #endif /* HAVE_READLINE_HISTORY_H */
 
-#ifdef ENABLE_TERM_COLUMNS
+#ifdef ENABLE_TERM_SIZE
 # include <fcntl.h>                     /* for open(2) */
 # if defined(HAVE_CURSES_H)
 #   define _BOOL                        /* prevents clash of bool on Solaris */
@@ -65,7 +65,7 @@
 # endif
 # include <term.h>                      /* for setupterm(3) */
 # include <unistd.h>                    /* for close(2) */
-#endif /* ENABLE_TERM_COLUMNS */
+#endif /* ENABLE_TERM_SIZE */
 
 /// @endcond
 
@@ -74,7 +74,27 @@
 // local variable definitions
 static slist_t free_later_list;         ///< List of stuff to free later.
 
-///////////////////////////////////////////////////////////////////////////////
+////////// local functions ////////////////////////////////////////////////////
+
+#ifdef ENABLE_TERM_SIZE
+/**
+ * Gets a terminal capability value and checks it for an error.
+ * If there is an error, prints an error message and exits.
+ *
+ * @param capname The name of the terminal capability.
+ * @return Returns said value or 0 if it could not be determined.
+ */
+static unsigned check_tigetnum( char const *capname ) {
+  int const num = tigetnum( CONST_CAST(char*, capname) );
+  if ( unlikely( num < 0 ) )
+    PMESSAGE_EXIT( EX_UNAVAILABLE,
+      "tigetnum(\"%s\") returned error code %d", capname, num
+    );
+  return (unsigned)num;
+}
+#endif /* ENABLE_TERM_SIZE */
+
+////////// extern functions ///////////////////////////////////////////////////
 
 char const* base_name( char const *path_name ) {
   assert( path_name != NULL );
@@ -136,12 +156,11 @@ void* free_later( void *p ) {
 }
 
 void free_now( void ) {
-  slist_free( &free_later_list, &free );
+  slist_free( &free_later_list, NULL, &free );
 }
 
-#ifdef ENABLE_TERM_COLUMNS
-unsigned get_term_columns( void ) {
-  unsigned    cols = 0;
+#ifdef ENABLE_TERM_SIZE
+void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines ) {
   int         cterm_fd = -1;
   char        reason_buf[ 128 ];
   char const *reason = NULL;
@@ -188,29 +207,21 @@ unsigned get_term_columns( void ) {
     goto error;
   }
 
-  int const ti_cols = tigetnum( (char*)"cols" );
-  if ( unlikely( ti_cols < 0 ) ) {
-    snprintf(
-      reason_buf, sizeof reason_buf,
-      "tigetnum(\"cols\") returned error code %d", ti_cols
-    );
-    goto error;
-  }
-
-  cols = (unsigned)ti_cols;
+  if ( ncolumns != NULL )
+    *ncolumns = check_tigetnum( "cols" );
+  if ( nlines != NULL )
+    *nlines = check_tigetnum( "lines" );
 
 error:
   if ( likely( cterm_fd != -1 ) )
     close( cterm_fd );
-  if ( reason != NULL )
+  if ( unlikely( reason != NULL ) )
     PMESSAGE_EXIT( EX_UNAVAILABLE,
-      "failed to determine number of columns in terminal: %s\n",
+      "failed to determine number of columns or lines in terminal: %s\n",
       reason
     );
-
-  return cols;
 }
-#endif /* ENABLE_TERM_COLUMNS */
+#endif /* ENABLE_TERM_SIZE */
 
 char const* home_dir( void ) {
   static char const *home;

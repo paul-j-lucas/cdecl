@@ -2,7 +2,7 @@
 #	cdecl -- C gibberish translator
 #	test/Makefile.am
 #
-#	Copyright (C) 2018  Paul J. Lucas, et al.
+#	Copyright (C) 2018-2019  Paul J. Lucas, et al.
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -161,6 +161,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 # Almost every test here has a corresponding explain_ error test.
 #
 TESTS+=	tests/declare_0f_v-c.test \
+	tests/declare_=i-c.test \
 	tests/declare_ac3i.test \
 	tests/declare_af.test \
 	tests/declare_as3i.test \
@@ -395,7 +396,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 # =====================
 # Almost every test here has a corresponding declare_ error test.
 #
-TESTS+=	tests/explain_0f_v-02.test \
+TESTS+=	tests/explain_+i-c.test \
+	tests/explain_0f_v-02.test \
 	tests/explain_0f_v-c.test \
 	tests/explain_ac9i.test \
 	tests/explain_af.test \
@@ -647,10 +649,19 @@ TESTS+=	tests/show_foo.test
 ###############################################################################
 
 #
-# C typedef & using tests
-# =======================
+# C++ namespace, typedef, & using tests
+# =====================================
 #
-TESTS+=	tests/typedef_fi_v_show_f.test \
+TESTS+=	tests/2c_typedef_i.test \
+	tests/namespace_+typedef_i.test \
+	tests/namespace_c_typedef_i.test \
+	tests/namespace_k_typedef_i.test \
+	tests/namespace_n_typedef_i.test \
+	tests/namespace_namespace_typedef_i-c++14.test \
+	tests/namespace_namespace_typedef_i.test \
+	tests/namespace_typedef_i.test \
+	tests/namespace_using_i.test \
+	tests/typedef_fi_v_show_f.test \
 	tests/typedef_i.test \
 	tests/typedef_i_declare_i.test \
 	tests/typedef_i_explain_i.test \
@@ -662,10 +673,12 @@ TESTS+=	tests/typedef_fi_v_show_f.test \
 	tests/using_i_int_least32_t.test
 
 #
-# C typedef & using error tests
-# =============================
+# C++ namespace, typedef & using error tests
+# ==========================================
 #
-TESTS+=	tests/typedef_ai.test \
+TESTS+=	tests/k_namespace_typedef_i.test \
+	tests/namespace_+typedef_i-c++14.test \
+	tests/typedef_ai.test \
 	tests/typedef_c_int_least32_t.test \
 	tests/typedef_ei.test \
 	tests/typedef_gi.test \
@@ -677,6 +690,12 @@ TESTS+=	tests/typedef_ai.test \
 	tests/using_i-c.test \
 	tests/using_si.test
 
+#
+# C++ typedef & using error tests
+# ===============================
+#
+TESTS+=	tests/typedef_i+.test
+
 ###############################################################################
 
 #
@@ -686,7 +705,8 @@ TESTS+=	tests/typedef_ai.test \
 TESTS+=	tests/define_i.test \
 	tests/define_i_declare_i.test \
 	tests/define_i_explain_i.test \
-	tests/define_i_int_least32_t.test
+	tests/define_i_int_least32_t.test \
+	tests/define_k_declare_k.test
 
 #
 # C define error tests
@@ -697,6 +717,23 @@ TESTS+=	tests/define_ai.test \
 	tests/define_ei.test \
 	tests/define_gi.test \
 	tests/define_si.test
+
+#
+# C++ define tests
+# ================
+#
+TESTS+=	tests/define_2=_i.test \
+	tests/define_=_i.test \
+	tests/define_=c_i.test \
+	tests/define_k_define_k_explain_k+k.test \
+	tests/define_k_explain_pmki.test
+
+#
+# C++ define error tests
+# ======================
+#
+TESTS+=	tests/define_namespace_=c_i.test \
+	tests/define_=sc_i.test
 
 ###############################################################################
 
@@ -714,7 +751,10 @@ TESTS+=	tests/declare_config_u.test \
 # C++ declare tests
 # =================
 #
-TESTS+=	tests/declare_0f_v.test \
+TESTS+=	tests/declare_+f_v.test \
+	tests/declare_0f_v.test \
+	tests/declare_2+f_v.test \
+	tests/declare_=i.test \
 	tests/declare_a.test \
 	tests/declare_af-c++.test \
 	tests/declare_cdfcdi_i.test \
@@ -727,6 +767,7 @@ TESTS+=	tests/declare_0f_v.test \
 	tests/declare_dui.test \
 	tests/declare_ec.test \
 	tests/declare_ek.test \
+	tests/declare_f+k_v.test \
 	tests/declare_f_pmi.test \
 	tests/declare_fcdi_i.test \
 	tests/declare_fdi_v.test \
@@ -858,7 +899,8 @@ TESTS+=	tests/declare_nmo_amper2_2rck_b.test \
 # C++ declare unspecified operator tests
 # ======================================
 #
-TESTS+=	tests/declare_o_amper2_2rck_b.test \
+TESTS+=	tests/declare_o2=_exclam_b.test \
+	tests/declare_o_amper2_2rck_b.test \
 	tests/declare_o_amper2_rck_b.test \
 	tests/declare_o_amper_2rck_k.test \
 	tests/declare_o_amper_eq_i_rk.test \
@@ -870,8 +912,8 @@ TESTS+=	tests/declare_o_amper2_2rck_b.test \
 	tests/declare_o_arrow_star_rki_rk.test \
 	tests/declare_o_circ_eq_i_rk.test \
 	tests/declare_o_comma_rki_rk.test \
-	tests/declare_o_eq_i_b.test \
-	tests/declare_o_eq_ki_b.test \
+	tests/declare_o_eq2_i_b.test \
+	tests/declare_o_eq2_ki_b.test \
 	tests/declare_o_exclam_b.test \
 	tests/declare_o_exclam_eq_i_b.test \
 	tests/declare_o_exclam_eq_ki_b.test \
@@ -969,6 +1011,9 @@ TESTS+=	tests/explain_a.test \
 	tests/explain_frri_v.test \
 	tests/explain_fti_v.test \
 	tests/explain_fui_v.test \
+	tests/explain_i+.test \
+	tests/explain_i2+.test \
+	tests/explain_ki+.test \
 	tests/explain_mi.test \
 	tests/explain_nfi_v-c++.test \
 	tests/explain_oyf.test \
@@ -1002,6 +1047,7 @@ TESTS+=	tests/explain_ai-c++11.test \
 	tests/explain_cdi.test \
 	tests/explain_ec.test \
 	tests/explain_ek.test \
+	tests/explain_f+_v.test \
 	tests/explain_f__v-c++03.test \
 	tests/explain_f_v__v.test \
 	tests/explain_fa_v.test \
@@ -1028,7 +1074,9 @@ TESTS+=	tests/explain_ai-c++11.test \
 # C++ explain operator tests
 # ==========================
 #
-TESTS+=	tests/explain_0o_amper_rk_pk.test \
+TESTS+=	tests/explain_+o_eq2_rcki_b.test \
+	tests/explain_+o_eq_rck_rk.test \
+	tests/explain_0o_amper_rk_pk.test \
 	tests/explain_0o_star_rk_rk.test \
 	tests/explain_co_amper_rk_pk.test \
 	tests/explain_co_star_rk_rk.test \
@@ -1053,8 +1101,8 @@ TESTS+=	tests/explain_0o_amper_rk_pk.test \
 	tests/explain_o_comma_i_rk.test \
 	tests/explain_o_comma_rcki_k.test \
 	tests/explain_o_comma_rki_rk.test \
-	tests/explain_o_eq_i_b.test \
-	tests/explain_o_eq_ki_b.test \
+	tests/explain_o_eq2_i_b.test \
+	tests/explain_o_eq2_ki_b.test \
 	tests/explain_o_exclam_b.test \
 	tests/explain_o_exclam_eq_i_b.test \
 	tests/explain_o_exclam_eq_ki_b.test \
@@ -1151,10 +1199,15 @@ TESTS+=	tests/explain_co_exclam_k_b.test \
 # C++ cast tests
 # ==============
 #
-TESTS+=	tests/cast_pmi.test \
+TESTS+=	tests/cast_+i.test \
+	tests/cast_pmi.test \
+	tests/const_cast_+pi.test \
 	tests/const_cast_pi.test \
+	tests/dynamic_cast_+pc.test \
 	tests/dynamic_cast_pc.test \
+	tests/reinterpret_cast_+pv.test \
 	tests/reinterpret_cast_pv.test \
+	tests/static_cast_+i.test \
 	tests/static_cast_i.test
 
 #
@@ -1162,9 +1215,14 @@ TESTS+=	tests/cast_pmi.test \
 # ======================
 #
 TESTS+=	tests/explain_cast_pmi.test \
+	tests/explain_cast_=pmi.test \
+	tests/explain_cast_pmc=i.test \
+	tests/explain_const_cast_+pi.test \
 	tests/explain_const_cast_pi.test \
+	tests/explain_dynamic_cast_p+c+.test \
 	tests/explain_dynamic_cast_pc.test \
 	tests/explain_reinterpret_cast_pv.test \
+	tests/explain_static_cast_i+.test \
 	tests/explain_static_cast_i.test
 
 ###############################################################################
@@ -1207,10 +1265,15 @@ TESTS+=	tests/help-c.test \
 	tests/set_c++.test \
 	tests/set_c++03.test \
 	tests/set_c++11.test \
+	tests/set_c++14.test \
+	tests/set_c++17.test \
+	tests/set_c++20.test \
 	tests/set_c++98.test \
 	tests/set_c.test \
 	tests/set_c11.test \
+	tests/set_c18.test \
 	tests/set_c89.test \
+	tests/set_c95.test \
 	tests/set_c99.test \
 	tests/set_cknr.test \
 	tests/set_digraphs.test \

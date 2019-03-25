@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/gibberish.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,9 +26,13 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
+/// @cond DOXYGEN_IGNORE
+#define CDECL_GIBBERISH_INLINE _GL_EXTERN_INLINE
+/// @endcond
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_typedef.h"
+#include "gibberish.h"
 #include "literals.h"
 #include "options.h"
 #include "util.h"
@@ -59,6 +63,7 @@ typedef enum g_kind g_kind_t;
  */
 struct g_param {
   g_kind_t        gkind;                ///< The kind of gibberish to create.
+  unsigned        flags;                ///< API flags to tweak output.
   FILE           *gout;                 ///< Where to write the gibberish.
   c_ast_t const  *leaf_ast;             ///< Leaf of AST.
   c_ast_t const  *root_ast;             ///< Root of AST.
@@ -67,15 +72,13 @@ struct g_param {
 };
 typedef struct g_param g_param_t;
 
-// extern functions
-extern char const*  c_graph_name( char const* );
-
 // local functions
-static void c_ast_gibberish_impl( c_ast_t const*, g_param_t* );
-static void c_ast_gibberish_postfix( c_ast_t const*, g_param_t* );
-static void c_ast_gibberish_qual_name( c_ast_t const*, g_param_t const* );
-static void c_ast_gibberish_space_name( c_ast_t const*, g_param_t* );
-static void g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
+static void         c_ast_gibberish_impl( c_ast_t const*, g_param_t* );
+static void         c_ast_gibberish_postfix( c_ast_t const*, g_param_t* );
+static void         c_ast_gibberish_qual_name( c_ast_t const*, g_param_t* );
+static void         c_ast_gibberish_space_name( c_ast_t const*, g_param_t* );
+static char const*  c_ast_sname_full_or_local( c_ast_t const*, g_param_t* );
+static void         g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -115,7 +118,7 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
   assert( ast->kind == K_ARRAY );
 
-  FPUTS( c_graph_name( "[" ), param->gout );
+  FPUTS( graph_name_c( "[" ), param->gout );
   if ( ast->as.array.type_id != T_NONE )
     FPRINTF( param->gout, "%s ", c_type_name( ast->as.array.type_id ) );
   switch ( ast->as.array.size ) {
@@ -127,7 +130,7 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
     default:
       FPRINTF( param->gout, "%d", ast->as.array.size );
   } // switch
-  FPUTS( c_graph_name( "]" ), param->gout );
+  FPUTS( graph_name_c( "]" ), param->gout );
 }
 
 /**
@@ -268,15 +271,16 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         ast_type &= ~(T_STRUCT | T_CLASS);
       }
       FPRINTF( param->gout,
-        "%s %s", c_type_name( ast_type ), ast->as.ecsu.ecsu_name
+        "%s %s", c_type_name( ast_type ),
+        c_sname_full_c( &ast->as.ecsu.ecsu_sname )
       );
       c_ast_gibberish_space_name( ast, param );
       g_param_leaf( param, ast );
       break;
 
     case K_NAME:
-      if ( ast->name != NULL && param->gkind != G_CAST )
-        FPUTS( ast->name, param->gout );
+      if ( !c_ast_sname_empty( ast ) && param->gkind != G_CAST )
+        FPUTS( c_ast_sname_full_or_local( ast, param ), param->gout );
       g_param_leaf( param, ast );
       break;
 
@@ -292,7 +296,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       if ( storage != T_NONE )
         FPRINTF( param->gout, "%s ", c_type_name( storage ) );
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
-      if ( param->gkind != G_CAST && c_ast_name( ast, V_UP ) != NULL &&
+      if ( param->gkind != G_CAST && c_ast_find_name( ast, V_UP ) != NULL &&
            !c_ast_find_kind( ast->parent, V_UP, K_FUNCTION_LIKE ) ) {
         //
         // For all kinds except functions and blocks, we want the output to be
@@ -329,7 +333,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_TYPEDEF:
       if ( ast_type != T_TYPEDEF_TYPE )
         FPRINTF( param->gout, "%s ", c_type_name( ast_type ) );
-      FPRINTF( param->gout, "%s", ast->as.c_typedef->ast->name );
+      FPRINTF( param->gout,
+        "%s", c_ast_sname_full_or_local( ast->as.c_typedef->ast, param )
+      );
       c_ast_gibberish_space_name( ast, param );
       g_param_leaf( param, ast );
       break;
@@ -452,8 +458,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
  * any, to print.
  * @param param The `g_param` to use.
  */
-static void c_ast_gibberish_qual_name( c_ast_t const *ast,
-                                       g_param_t const *param ) {
+static void c_ast_gibberish_qual_name( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
 
   switch ( ast->kind ) {
@@ -461,7 +466,9 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast,
       FPUTC( '*', param->gout );
       break;
     case K_POINTER_TO_MEMBER:
-      FPRINTF( param->gout, "%s::*", ast->as.ptr_mbr.class_name );
+      FPRINTF( param->gout,
+        "%s::*", c_sname_full_c( &ast->as.ptr_mbr.class_sname )
+      );
       break;
     case K_REFERENCE:
       FPUTC( '&', param->gout );
@@ -482,8 +489,8 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast,
     if ( param->gkind != G_CAST )
       FPUTC( ' ', param->gout );
   }
-  if ( ast->name != NULL && param->gkind != G_CAST )
-    FPUTS( ast->name, param->gout );
+  if ( !c_ast_sname_empty( ast ) && param->gkind != G_CAST )
+    FPUTS( c_ast_sname_full_or_local( ast, param ), param->gout );
 }
 
 /**
@@ -500,16 +507,63 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
   if ( param->gkind != G_CAST ) {
     if ( ast->kind == K_OPERATOR ) {
       g_param_space( param );
+      if ( !c_ast_sname_empty( ast ) )
+        FPRINTF( param->gout, "%s::", c_ast_sname_full_c( ast ) );
       FPRINTF( param->gout,
         "%s%s",
-        L_OPERATOR, c_graph_name( op_get( ast->as.oper.oper_id )->name )
+        L_OPERATOR, graph_name_c( op_get( ast->as.oper.oper_id )->name )
       );
     }
-    else if ( ast->name != NULL ) {
+    else if ( !c_ast_sname_empty( ast ) ) {
       g_param_space( param );
-      FPUTS( ast->name, param->gout );
+      FPUTS( c_ast_sname_full_or_local( ast, param ), param->gout );
     }
   }
+}
+
+/**
+ * Gets either the full or local name of \a ast based on whether we're emitting
+ * the gibberish for a `typedef` since it can't have a scoped name.
+ *
+ * @param ast The `c_ast` to get the name of.
+ * @param param The `g_param` to use.
+ * @return Returns said name.
+ */
+static char const* c_ast_sname_full_or_local( c_ast_t const *ast,
+                                              g_param_t *param ) {
+  if ( (param->flags & G_DECL_TYPEDEF) != 0 ) {
+    param->flags &= ~G_DECL_TYPEDEF;
+    return c_ast_sname_local( ast );
+  }
+  return c_ast_sname_full_c( ast );
+}
+
+/**
+ * Helper function for `c_sname_full_c()` and `c_sname_scope_c()` that writes
+ * the scope names from outermost to innermost separated by `::` into a buffer.
+ *
+ * @param name_buf The buffer to write into.
+ * @param sname The scoped name to write.
+ * @param end_scope The scope to stop before or null for all scopes.
+ * @return Returns \a name_buf if \a sname is not empty or null otherwise.
+ */
+static char const* c_sname_scope_c_impl( char *name_buf, c_sname_t const *sname,
+                                         c_scope_t const *end_scope ) {
+  assert( name_buf != NULL );
+  assert( sname != NULL );
+
+  char *name = name_buf;
+  name[0] = '\0';
+  bool colon2 = false;
+
+  for ( c_scope_t const *scope = sname->head; scope != end_scope;
+        scope = scope->next ) {
+    if ( true_or_set( &colon2 ) )
+      STRCAT( name, "::" );
+    STRCAT( name, C_SCOPE_NAME( scope ) );
+  } // for
+
+  return name_buf;
 }
 
 /**
@@ -533,27 +587,7 @@ static void g_param_init( g_param_t *param, c_ast_t const *root,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
-  g_param_t param;
-  g_param_init( &param, ast, G_CAST, gout );
-  c_ast_gibberish_impl( ast, &param );
-}
-
-void c_ast_gibberish_declare( c_ast_t const *ast, FILE *gout ) {
-  g_param_t param;
-  g_param_init( &param, ast, G_DECLARE, gout );
-  c_ast_gibberish_impl( ast, &param );
-}
-
-/**
- * Gets the digraph or trigraph (collectively, "graph") equivalent of \a token.
- *
- * @param token The token to get the equivalent name for.
- * @return If \a token contains one or more characters that have a graph
- * equivalent and we're emitting graphs, returns \a token with said characters
- * replaced by their graphs; otherwise returns \a token as-is.
- */
-char const* c_graph_name( char const *token ) {
+char const* graph_name_c( char const *token ) {
   assert( token != NULL );
   switch ( opt_graph ) {
     case GRAPH_NONE:
@@ -584,6 +618,29 @@ char const* c_graph_name( char const *token ) {
       break;
   } // switch
   return token;
+}
+
+char const* c_sname_full_c( c_sname_t const *sname ) {
+  static char name_buf[ 256 ];
+  return c_sname_scope_c_impl( name_buf, sname, NULL );
+}
+
+void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
+  g_param_t param;
+  g_param_init( &param, ast, G_CAST, gout );
+  c_ast_gibberish_impl( ast, &param );
+}
+
+void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout ) {
+  g_param_t param;
+  g_param_init( &param, ast, G_DECLARE, gout );
+  param.flags = flags;
+  c_ast_gibberish_impl( ast, &param );
+}
+
+char const* c_sname_scope_c( c_sname_t const *sname ) {
+  static char name_buf[ 256 ];
+  return c_sname_scope_c_impl( name_buf, sname, sname->tail );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

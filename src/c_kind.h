@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/c_kind.h
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@ enum c_kind {
   K_VARIADIC                = 0x0020,   ///< Variadic (`...`) function argument.
   // "parent" kinds
   K_ARRAY                   = 0x0040,   ///< Array.
-  K_BLOCK                   = 0x0080,   ///< Apple extension.
+  K_BLOCK                   = 0x0080,   ///< Block (Apple extension).
   K_FUNCTION                = 0x0100,   ///< Function.
   K_POINTER                 = 0x0200,   ///< Pointer.
   // "parent" kinds (C++ only)
@@ -71,8 +71,12 @@ enum c_kind {
   K_RVALUE_REFERENCE        = 0x2000,   ///< Rvalue reference (C++ only).
 };
 
-/// @cond DOXYGEN_IGNORE
+/**
+ * Shorthand for "function-like" kinds: #K_BLOCK, #K_FUNCTION, and #K_OPERATOR.
+ */
 #define K_FUNCTION_LIKE       (K_BLOCK | K_FUNCTION | K_OPERATOR)
+
+/// @cond DOXYGEN_IGNORE
 #define K_PARENT_MIN          K_ARRAY
 /// @endcond
 

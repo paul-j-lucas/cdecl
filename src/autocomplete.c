@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/autocomplete.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -58,20 +58,23 @@ typedef struct ac_keyword ac_keyword_t;
  * @hideinitializer
  */
 static ac_keyword_t const CDECL_COMMANDS[] = {
-  { L_CAST,         LANG_ALL      },
-  { L_CONST,        LANG_CPP_ALL  },    // const cast ...
-  { L_DECLARE,      LANG_ALL      },
-  { L_DEFINE,       LANG_ALL      },
-  { L_DYNAMIC,      LANG_CPP_ALL  },    // dynamic cast ...
-  { L_EXIT,         LANG_ALL      },
-  { L_EXPLAIN,      LANG_ALL      },
-  { L_HELP,         LANG_ALL      },
-  { L_QUIT,         LANG_ALL      },
-  { L_REINTERPRET,  LANG_CPP_ALL  },    // reinterpret cast ...
-  { L_SET,          LANG_ALL      },
-  { L_SHOW,         LANG_ALL      },
-  { L_STATIC,       LANG_CPP_ALL  },    // static cast ...
-  { NULL,           LANG_NONE     },
+  { L_CAST,         LANG_ALL          },
+  { L_CONST,        LANG_CPP_ALL      },// const cast ...
+  { L_DECLARE,      LANG_ALL          },
+  { L_DEFINE,       LANG_ALL          },
+  { L_DYNAMIC,      LANG_CPP_ALL      },// dynamic cast ...
+  { L_EXIT,         LANG_ALL          },
+  { L_EXPLAIN,      LANG_ALL          },
+  { L_HELP,         LANG_ALL          },
+  { L_NAMESPACE,    LANG_CPP_ALL      },
+  { L_QUIT,         LANG_ALL          },
+  { L_REINTERPRET,  LANG_CPP_ALL      },// reinterpret cast ...
+  { L_SET,          LANG_ALL          },
+  { L_SHOW,         LANG_ALL          },
+  { L_STATIC,       LANG_CPP_ALL      },// static cast ...
+  { L_TYPEDEF,      LANG_ALL          },
+  { L_USING,        LANG_MIN(CPP_11)  },
+  { NULL,           LANG_NONE         },
 };
 
 /**
@@ -118,6 +121,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_MAYBE_UNUSED,       LANG_MIN(CPP_11)                  },
   { L_MEMBER,             LANG_CPP_ALL                      },
   { L_MUTABLE,            LANG_CPP_ALL                      },
+//{ L_NAMESPACE,                        // handled in CDECL_COMMANDS
   { L_NODISCARD,          LANG_MIN(CPP_17)                  },
   { L_NOEXCEPT,           LANG_MIN(CPP_11)                  },
   { L_NON_MEMBER,         LANG_CPP_ALL                      },
@@ -135,6 +139,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_RESTRICT,           LANG_MIN(C_89) & ~LANG_CPP_ALL    },
   { L_RETURNING,          LANG_ALL                          },
   { L_RVALUE,             LANG_MIN(CPP_11)                  },
+  { L_SCOPE,              LANG_CPP_ALL                      },
   { L_SHORT,              LANG_ALL                          },
   { L_SIGNED,             LANG_MIN(C_89)                    },
   { L_STATIC,             LANG_ALL                          },
@@ -144,10 +149,10 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_THREAD_LOCAL,       LANG_C_MIN(11) | LANG_MIN(CPP_11) },
   { L_THROW,              LANG_CPP_ALL                      },
   { L_TRUE,               LANG_CPP_ALL                      },
-  { L_TYPEDEF,            LANG_ALL                          },
+//{ L_TYPEDEF,                          // handled in CDECL_COMMANDS
   { L_UNION,              LANG_ALL                          },
   { L_UNSIGNED,           LANG_ALL                          },
-  { L_USING,              LANG_MIN(CPP_11)                  },
+//{ L_USING,                            // handled in CDECL_COMMANDS
   { L_VARIABLE,           LANG_MIN(C_99) & ~LANG_CPP_ALL    },
   { L_VIRTUAL,            LANG_CPP_ALL                      },
   { L_VOID,               LANG_MIN(C_89)                    },

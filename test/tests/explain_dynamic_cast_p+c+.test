@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -xc++ @ explain dynamic_cast<class S::C*>(T::x) @ 0

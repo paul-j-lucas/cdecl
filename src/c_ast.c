@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/c_ast.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -123,7 +123,7 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
     case K_ENUM_CLASS_STRUCT_UNION: {
       c_ecsu_t const *const e_i = &ast_i->as.ecsu;
       c_ecsu_t const *const e_j = &ast_j->as.ecsu;
-      if ( strcmp( e_i->ecsu_name, e_j->ecsu_name ) != 0 )
+      if ( c_sname_cmp( &e_i->ecsu_sname, &e_j->ecsu_sname ) != 0 )
         return false;
       break;
     }
@@ -135,7 +135,7 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
     case K_POINTER_TO_MEMBER: {
       c_ptr_mbr_t const *const p_i = &ast_i->as.ptr_mbr;
       c_ptr_mbr_t const *const p_j = &ast_j->as.ptr_mbr;
-      if ( strcmp( p_i->class_name, p_j->class_name ) != 0 )
+      if ( c_sname_cmp( &p_i->class_sname, &p_j->class_sname ) != 0 )
         return false;
       break;
     }
@@ -172,13 +172,13 @@ void c_ast_free( c_ast_t *ast ) {
     assert( c_ast_count > 0 );
     --c_ast_count;
 
-    FREE( ast->name );
+    c_sname_free( &ast->sname );
     switch ( ast->kind ) {
       case K_ENUM_CLASS_STRUCT_UNION:
-        FREE( ast->as.ecsu.ecsu_name );
+        c_sname_free( &ast->as.ecsu.ecsu_sname );
         break;
       case K_POINTER_TO_MEMBER:
-        FREE( ast->as.ptr_mbr.class_name );
+        c_sname_free( &ast->as.ptr_mbr.class_sname );
         break;
       case K_TYPEDEF:
         // Do not free ast->as.c_typedef here since it's global data: it will
@@ -215,12 +215,6 @@ c_ast_t* c_ast_root( c_ast_t *ast ) {
   return ast;
 }
 
-void c_ast_set_name( c_ast_t *ast, char const *name ) {
-  assert( ast != NULL );
-  FREE( ast->name );
-  ast->name = name;
-}
-
 void c_ast_set_parent( c_ast_t *child, c_ast_t *parent ) {
   assert( child != NULL );
   assert( parent != NULL );
@@ -230,6 +224,45 @@ void c_ast_set_parent( c_ast_t *child, c_ast_t *parent ) {
   parent->as.parent.of_ast = child;
 
   assert( !c_ast_has_cycle( child ) );
+}
+
+c_sname_t c_ast_sname_dup( c_ast_t const *ast ) {
+  c_sname_t rv = c_sname_dup( &ast->sname );
+  //
+  // If the AST's type is class, namespace, struct, or union, adopt that type
+  // for the scoped name's type.
+  //
+  if ( (ast->type_id & (T_CLASS_STRUCT_UNION | T_NAMESPACE)) != T_NONE )
+    c_sname_set_type(
+      &rv, ast->type_id & (T_CLASS_STRUCT_UNION | T_INLINE | T_NAMESPACE)
+    );
+  return rv;
+}
+
+void c_ast_sname_set_name( c_ast_t *ast, char *name ) {
+  assert( ast != NULL );
+  assert( name != NULL );
+  c_sname_free( &ast->sname );
+  c_sname_append_name( &ast->sname, name );
+}
+
+void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname ) {
+  assert( ast != NULL );
+  assert( sname != NULL );
+  c_sname_free( &ast->sname );
+
+  //
+  // If the scoped name has no scope but the AST is one of a class, namespace,
+  // struct, or union type, adopt that type for the scoped type.
+  //
+  c_type_id_t sn_type = c_sname_type( sname );
+  if ( sn_type == T_NONE &&
+       (ast->type_id & (T_CLASS_STRUCT_UNION | T_NAMESPACE)) != T_NONE ) {
+    sn_type = ast->type_id & (T_CLASS_STRUCT_UNION | T_INLINE | T_NAMESPACE);
+  }
+  c_ast_sname_set_type( ast, sn_type );
+
+  c_sname_append_sname( &ast->sname, sname );
 }
 
 /// @cond DOXYGEN_IGNORE

@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -xc++ @ define S as struct S; define S::T as struct T; explain int S::T::x @ 0

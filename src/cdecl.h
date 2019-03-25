@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/cdecl.h
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@
 /**
  * @file
  * Includes platform configuration information in the right order.  Always
- * `#include` this file rather than `config.h` directly.  Additionally declares
- * miscellaneous macros and global variables.
+ * \c \#include this file rather than `config.h` directly.  Additionally
+ * declares miscellaneous macros and global variables.
  */
 
 /// @cond DOXYGEN_IGNORE

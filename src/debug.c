@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/debug.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 // local
 #include "cdecl.h"                      /* must go first */
 #include "c_ast.h"
+#include "c_ast_util.h"
 #include "c_type.h"
 #include "c_typedef.h"
 #include "debug.h"
@@ -46,6 +47,9 @@
 
 #define INDENT_PRINT_KV(KEY,VALUE) \
   BLOCK( print_indent( indent, dout ); print_kv( (KEY), (VALUE), dout ); )
+
+#define INDENT_PRINT_SNAME(KEY,SNAME) \
+  print_sname( indent, (KEY), (SNAME), dout )
 
 #define INDENT_PRINT_TYPE(TYPE) BLOCK(  \
   print_indent( indent, dout );         \
@@ -68,6 +72,27 @@ static void print_indent( unsigned indent, FILE *out ) {
   FPRINTF( out, "%*s", (int)(indent * DEBUG_INDENT), "" );
 }
 
+/**
+ * Prints a scoped name and its type.
+ *
+ * @param indent How much to indent.
+ * @param key The key to print.
+ * @param sname The scoped name to print.
+ * @param out The `FILE` to print to.
+ */
+static void print_sname( unsigned indent, char const *key,
+                         c_sname_t const *sname, FILE *out ) {
+  print_indent( indent, out );
+  char const *const full_name = c_sname_full_c( sname );
+  print_kv( key, full_name, out );
+  if ( full_name[0] != '\0' ) {
+    char const *const sn_type_name = c_type_name( c_sname_type( sname ) );
+    FPRINTF( out,
+      ", scope_type = %s", sn_type_name[0] != '\0' ? sn_type_name : "none"
+    );
+  }
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
@@ -80,12 +105,13 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
   if ( ast != NULL ) {
     ++indent;
 
+    INDENT_PRINT_SNAME( "sname", &ast->sname );
+    FPUTS( ",\n", dout );
     INDENT_PRINT( "id = %u,\n", ast->id );
     INDENT_PRINT_KV( "kind", c_kind_name( ast->kind ) );
     FPUTS( ",\n", dout );
     INDENT_PRINT( "depth = %u,\n", ast->depth );
-    INDENT_PRINT_KV( "name", ast->name );
-    FPUTS( ",\n", dout );
+
     INDENT_PRINT(
       "parent->id = %d,\n", ast->parent ? (int)ast->parent->id : -1
     );
@@ -150,12 +176,12 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_ENUM_CLASS_STRUCT_UNION:
         PRINT_COMMA;
-        INDENT_PRINT_KV( "ecsu_name", ast->as.ecsu.ecsu_name );
+        INDENT_PRINT_SNAME( "ecsu_sname", &ast->as.ecsu.ecsu_sname );
         break;
 
       case K_POINTER_TO_MEMBER:
         PRINT_COMMA;
-        INDENT_PRINT_KV( "class_name", ast->as.ptr_mbr.class_name );
+        INDENT_PRINT_SNAME( "class_sname", &ast->as.ptr_mbr.class_sname );
         FPUTS( ",\n", dout );
         // FALLTHROUGH
 
@@ -168,7 +194,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_TYPEDEF:
         PRINT_COMMA;
-        INDENT_PRINT_KV( "typedef_name", ast->as.c_typedef->ast->name );
+        INDENT_PRINT_SNAME( "typedef_name", &ast->as.c_typedef->ast->sname );
         break;
     } // switch
 
@@ -181,7 +207,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
 void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout ) {
   assert( list != NULL );
-  if ( list->head != NULL ) {
+  if ( !slist_empty( list ) ) {
     FPUTS( "[\n", dout );
     bool comma = false;
     for ( slist_node_t const *p = list->head; p != NULL; p = p->next ) {

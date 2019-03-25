@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/c_ast.h
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -38,7 +38,9 @@
 #include "cdecl.h"                      /* must go first */
 #include "c_kind.h"
 #include "c_operator.h"
+#include "c_sname.h"
 #include "c_type.h"
+#include "gibberish.h"
 #include "slist.h"
 #include "typedefs.h"
 #include "util.h"
@@ -73,7 +75,16 @@ _GL_INLINE_HEADER_BEGIN
  * @return Returns a pointer to the `c_ast`.
  * @hideinitializer
  */
-#define C_AST_DATA(NODE)          SLIST_DATA( c_ast_t*, (NODE) )
+#define C_AST_DATA(NODE)          SLIST_NODE_DATA( c_ast_t*, (NODE) )
+
+/**
+ * Convenience macro to get the name of a scope.
+ *
+ * @param NODE A pointer to an `slist_node`.
+ * @return Returns a pointer to the scope's name.
+ * @hideinitializer
+ */
+#define C_SCOPE_NAME(NODE)        SLIST_NODE_DATA( char const*, (NODE) )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -136,7 +147,7 @@ struct c_block {
  * AST node for a C/C++ `enum`, `class`, `struct`, or `union` type.
  */
 struct c_ecsu {
-  char const *ecsu_name;                ///< enum/class/struct/union name
+  c_sname_t ecsu_sname;                 ///< enum/class/struct/union name
 };
 
 /**
@@ -169,7 +180,7 @@ struct c_oper {
  */
 struct c_ptr_mbr {
   c_ast_t    *of_ast;                   ///< Member type.
-  char const *class_name;               ///< When a member function; or null.
+  c_sname_t   class_sname;              ///< When a member function; or empty.
 };
 
 /**
@@ -183,13 +194,13 @@ struct c_ptr_ref {
  * AST node for a parsed C/C++ declaration.
  */
 struct c_ast {
-  c_ast_depth_t depth;                  ///< How many `()` deep.
-  c_ast_id_t    id;                     ///< Unique id (starts at 1).
-  c_kind_t      kind;                   ///< Kind.
-  char const   *name;                   ///< Name, if any.
-  c_type_id_t   type_id;                ///< Type.
-  c_ast_t      *parent;                 ///< Parent `c_ast` node, if any.
-  c_loc_t       loc;                    ///< Source location.
+  c_ast_depth_t         depth;          ///< How many `()` deep.
+  c_ast_id_t            id;             ///< Unique id (starts at 1).
+  c_kind_t              kind;           ///< Kind.
+  c_sname_t             sname;          ///< Scoped name.
+  c_type_id_t           type_id;        ///< Type.
+  c_ast_t              *parent;         ///< Parent `c_ast` node, if any.
+  c_loc_t               loc;            ///< Source location.
 
   union {
     c_parent_t          parent;         ///< "Parent" member(s).
@@ -228,7 +239,7 @@ CDECL_AST_INLINE c_ast_arg_t const* c_ast_args( c_ast_t const *ast ) {
  * @param ast The `c_ast` to get the number of arguments of.
  * @return Returns said number of arguments.
  */
-CDECL_AST_INLINE unsigned c_ast_args_len( c_ast_t const *ast ) {
+CDECL_AST_INLINE size_t c_ast_args_count( c_ast_t const *ast ) {
   return slist_len( &ast->as.func.args );
 }
 
@@ -284,12 +295,14 @@ c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc );
 c_ast_t* c_ast_root( c_ast_t *ast );
 
 /**
- * Sets the name of \a ast.
+ * Convenience function for getting the head of the scope list.
  *
- * @param ast The `c_ast` node to set the name of.
- * @param name The name to set.  It is not copied.
+ * @param ast The `c_ast` to get the scope list of.
+ * @return Returns a pointer to the first scope entry.
  */
-void c_ast_set_name( c_ast_t *ast, char const *name );
+CDECL_AST_INLINE c_scope_t const* c_ast_scope( c_ast_t const *ast ) {
+  return ast->sname.head;
+}
 
 /**
  * Sets the two-way pointer links between parent/child `c_ast` nodes.
@@ -298,6 +311,142 @@ void c_ast_set_name( c_ast_t *ast, char const *name );
  * @param parent The "parent" `c_ast` node whose child node is set.
  */
 void c_ast_set_parent( c_ast_t *child, c_ast_t *parent );
+
+/**
+ * Appends \a sname to the name of \a ast.
+ *
+ * @param ast The `c_ast` to append to the name of.
+ * @param sname The scoped name to append.  It is cleared.
+ *
+ * @sa c_ast_sname_prepend_sname()
+ */
+CDECL_AST_INLINE void c_ast_sname_append_sname( c_ast_t *ast,
+                                                c_sname_t *sname ) {
+  c_sname_append_sname( &ast->sname, sname );
+}
+
+/**
+ * Gets the number of names of \a ast, e.g., `S::T::x` is 3.
+ *
+ * @param ast The `c_ast` to get the number of names of.
+ * @return Returns said number of names.
+ */
+CDECL_AST_INLINE size_t c_ast_sname_count( c_ast_t const *ast ) {
+  return c_sname_count( &ast->sname );
+}
+
+/**
+ * Duplicates the name of \a ast.
+ *
+ * @param ast The `c_ast` to duplicate the name of.
+ * @return Returns the name of \a ast duplicated.
+ */
+c_sname_t c_ast_sname_dup( c_ast_t const *ast );
+
+/**
+ * Checks whether the name of \a ast is empty.
+ *
+ * @param ast The `c_ast` to check.
+ * @return Returns `true` only if the name of \a ast is empty.
+ */
+CDECL_AST_INLINE bool c_ast_sname_empty( c_ast_t const *ast ) {
+  return c_sname_empty( &ast->sname );
+}
+
+/**
+ * Gets the fully scoped name of \a ast.
+ *
+ * @param ast The `c_ast` to get the scoped name of.
+ * @return Returns said name.
+ * @warning The pointer returned is to a static buffer, so you can't do
+ * something like call this twice in the same `printf()` statement.
+ */
+CDECL_AST_INLINE char const* c_ast_sname_full_c( c_ast_t const *ast ) {
+  return c_sname_full_c( &ast->sname );
+}
+
+/**
+ * Gets the local name of \a ast.
+ *
+ * @param ast The `c_ast` to get the local name of.
+ *
+ * @sa c_ast_sname_full_c()
+ * @sa c_ast_sname_scope_c()
+ */
+CDECL_AST_INLINE char const* c_ast_sname_local( c_ast_t const *ast ) {
+  return c_sname_local( &ast->sname );
+}
+
+/**
+ * Prepends \a sname to the name of \a ast.
+ *
+ * @param ast The `c_ast` to prepend to the name of.
+ * @param sname The scoped name to prepend.  It is cleared.
+ *
+ * @sa c_ast_sname_append_sname()
+ */
+CDECL_AST_INLINE void c_ast_sname_prepend_sname( c_ast_t *ast,
+                                                 c_sname_t *sname ) {
+  c_sname_prepend_sname( &ast->sname, sname );
+}
+
+/**
+ * Gets the scope name of \a ast in C++ form.
+ *
+ * @param ast The `c_ast` to get the scope name of.
+ * @return Returns said name or null if \a ast doesn't have a scope name.
+ *
+ * @sa c_ast_sname_full_c()
+ * @sa c_ast_sname_local()
+ */
+CDECL_AST_INLINE char const* c_ast_sname_scope_c( c_ast_t const *ast ) {
+  return c_sname_scope_c( &ast->sname );
+}
+
+/**
+ * Sets the name of \a ast.
+ *
+ * @param ast The `c_ast` node to set the name of.
+ * @param name The name to set.
+ *
+ * @sa c_ast_sname_set_sname()
+ */
+void c_ast_sname_set_name( c_ast_t *ast, char *name );
+
+/**
+ * Sets the name of \a ast.
+ *
+ * @param ast The `c_ast` node to set the name of.
+ * @param sname The scoped name to set.  It is not duplicated.
+ *
+ * @sa c_ast_sname_set_name()
+ */
+void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname );
+
+/**
+ * Sets the scope type of the name of \a ast.
+ *
+ * @param ast The `c_ast` to set the type of the name of.
+ * @param type_id The scope type.
+ *
+ * @sa c_ast_sname_type()
+ */
+CDECL_AST_INLINE void c_ast_sname_set_type( c_ast_t *ast,
+                                            c_type_id_t type_id ) {
+  c_sname_set_type( &ast->sname, type_id );
+}
+
+/**
+ * Gets the scope type of the name of \a ast.
+ *
+ * @param ast The `c_ast` node to get the scope type of the name of.
+ * @return Returns the scope type.
+ *
+ * @sa c_ast_sname_set_type()
+ */
+CDECL_AST_INLINE c_type_id_t c_ast_sname_type( c_ast_t const *ast ) {
+  return c_sname_type( &ast->sname );
+}
 
 /**
  * Does a depth-first, post-order traversal of an AST.

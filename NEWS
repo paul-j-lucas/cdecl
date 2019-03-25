@@ -1,6 +1,6 @@
 Cdecl NEWS -- history of user-visible changes.
 
-Copyright (C) 2018  Paul J. Lucas, et al.
+Copyright (C) 2018-2019  Paul J. Lucas, et al.
 See the end of the file for license conditions.
 
 Note: over its 30+ year history, cdecl has never had good version numbering.
@@ -9,6 +9,25 @@ version's author is given instead.  For the full (known) list of authors along
 with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
+
+* Changes in Cdecl 6.0
+
+** Added C++ scoped name support
+Added support for scoped names in C++.  For example:
+
+    cdecl> explain int S::x
+    declare x of scope S as int
+    cdecl> define S::T as struct T; explain S::T x
+    declare x as T of scope S
+
+** Added partial namespace support
+Specifically, you can now perform typedef and using declarations within
+namespaces or inline namespaces:
+
+    c++decl> namespace S { inline namespace T { typedef int Int; } }
+    c++decl> show user typedef
+    namespace S::T { typedef int Int; }
+
 
 * Changes in Cdecl 5.2
 

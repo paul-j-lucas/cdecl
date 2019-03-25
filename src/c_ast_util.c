@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/c_ast_util.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -174,12 +174,13 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
 }
 
 /**
- * Adds a function (or block) to the AST being built.
+ * Adds a function, C++ operator, or block to the AST being built.
  *
  * @param ast The `c_ast` to append to.
- * @param ret_ast The `c_ast` of the return-type of the function (or block).
- * @param func The function (or block) `c_ast` to append.  Its "of" type must
- * be null.
+ * @param ret_ast The `c_ast` of the return-type of the function, operator, or
+ * block.
+ * @param func The function, operator, or block `c_ast` to append.  Its "of"
+ * type must be null.
  * @return Returns the `c_ast` to be used as the grammar production's return
  * value.
  */
@@ -272,10 +273,18 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func ) {
   assert( ast != NULL );
   c_ast_t *const rv = c_ast_add_func_impl( ast, ret_ast, func );
   assert( rv != NULL );
-  if ( func->name == NULL )
-    func->name = c_ast_take_name( ast );
+  if ( c_ast_sname_empty( func ) )
+    func->sname = c_ast_take_name( ast );
   func->type_id |= c_ast_take_storage( func->as.func.ret_ast );
   return rv;
+}
+
+c_sname_t const* c_ast_find_name( c_ast_t const *ast, v_direction_t dir ) {
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+  c_ast_t *const found = c_ast_visit(
+    nonconst_ast, dir, c_ast_visitor_name, REINTERPRET_CAST( void*, 1 )
+  );
+  return found != NULL ? &found->sname : NULL;
 }
 
 bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t type_id ) {
@@ -300,13 +309,6 @@ bool c_ast_is_ptr_to( c_ast_t const *ast, c_type_id_t type_id ) {
   return false;
 }
 
-char const* c_ast_name( c_ast_t const *ast, v_direction_t dir ) {
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_t *const found =
-    c_ast_visit( nonconst_ast, dir, c_ast_visitor_name, NULL );
-  return found != NULL ? found->name : NULL;
-}
-
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   assert( type_ast != NULL );
   if ( decl_ast == NULL )
@@ -321,8 +323,8 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
         // The type_ast is the final AST -- decl_ast (containing a placeholder)
         // is discarded.
         //
-        if ( type_ast->name == NULL )
-          type_ast->name = c_ast_take_name( decl_ast );
+        if ( c_ast_sname_empty( type_ast ) )
+          type_ast->sname = c_ast_take_name( decl_ast );
         return type_ast;
       }
       //
@@ -344,14 +346,19 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   return decl_ast;
 }
 
-char const* c_ast_take_name( c_ast_t *ast ) {
+c_sname_t c_ast_take_name( c_ast_t *ast ) {
   assert( ast != NULL );
-  c_ast_t *const found = c_ast_visit( ast, V_DOWN, c_ast_visitor_name, NULL );
-  if ( found == NULL )
-    return NULL;
-  char const *const name = found->name;
-  found->name = NULL;
-  return name;
+  c_ast_t *const found = c_ast_visit(
+    ast, V_DOWN, c_ast_visitor_name, REINTERPRET_CAST( void*, 1 )
+  );
+  c_sname_t rv;
+  if ( found == NULL ) {
+    c_sname_init( &rv );
+    return rv;
+  }
+  rv = found->sname;
+  c_sname_init( &found->sname );
+  return rv;
 }
 
 bool c_ast_take_typedef( c_ast_t *ast ) {
@@ -384,8 +391,8 @@ bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
 
 bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  (void)data;
-  return ast->name != NULL;
+  size_t const at_least = REINTERPRET_CAST( size_t, data );
+  return c_ast_sname_count( ast ) >= at_least;
 }
 
 bool c_ast_vistor_type( c_ast_t *ast, void *data ) {

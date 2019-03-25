@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/typedefs.h
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -91,6 +91,7 @@ typedef enum   c_check      c_check_t;
 typedef enum   c_graph      c_graph_t;
 typedef enum   c_init       c_init_t;
 typedef struct c_lang       c_lang_t;
+typedef unsigned            c_lang_id_t;    ///< Languages bitmask.
 typedef struct c_loc        c_loc_t;
 typedef struct c_builtin    c_builtin_t;
 typedef struct c_ecsu       c_ecsu_t;
@@ -104,7 +105,11 @@ typedef struct c_operator   c_operator_t;
 typedef struct c_parent     c_parent_t;
 typedef struct c_ptr_mbr    c_ptr_mbr_t;
 typedef struct c_ptr_ref    c_ptr_ref_t;
+typedef struct slist_node   c_scope_t;      ///< Scope in a c_sname_t.
+typedef struct slist        c_sname_t;      ///< C++ scoped name.
 typedef struct c_typedef    c_typedef_t;
+typedef uint64_t            c_type_id_t;    ///< Type(s) bitmask.
+typedef enum   td_add_rv    td_add_rv_t;
 typedef enum   v_direction  v_direction_t;
 
 typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.

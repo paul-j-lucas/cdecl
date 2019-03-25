@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/c_typedef.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -223,7 +223,7 @@ static char const *const TYPEDEFS_MISC[] = {
 static int c_typedef_cmp( void const *data_i, void const *data_j ) {
   c_typedef_t const *const ti = REINTERPRET_CAST( c_typedef_t const*, data_i );
   c_typedef_t const *const tj = REINTERPRET_CAST( c_typedef_t const*, data_j );
-  return strcmp( ti->ast->name, tj->ast->name );
+  return c_sname_cmp( &ti->ast->sname, &tj->ast->sname );
 }
 
 /**
@@ -275,14 +275,14 @@ static bool rb_visitor( void *node_data, void *aux_data ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool c_typedef_add( c_ast_t const *ast ) {
+td_add_rv_t c_typedef_add( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->name != NULL );
+  assert( !c_ast_sname_empty( ast ) );
 
   c_typedef_t *const new_t = c_typedef_new( ast );
   rb_node_t const *const old_rb = rb_tree_insert( typedefs, new_t );
   if ( old_rb == NULL )                 // type's name doesn't exist
-    return true;
+    return TD_ADD_ADDED;
 
   //
   // A typedef having the same name already exists, so we don't need the new
@@ -299,7 +299,7 @@ bool c_typedef_add( c_ast_t const *ast ) {
   //      typedef double T;           // error: types aren't equivalent
   //
   c_typedef_t const *const old_t = rb_type_data( c_typedef_t const*, old_rb );
-  return c_ast_equiv( ast, old_t->ast );
+  return c_ast_equiv( ast, old_t->ast ) ? TD_ADD_EQUIV : TD_ADD_DIFF;
 }
 
 void c_typedef_cleanup( void ) {
@@ -307,12 +307,12 @@ void c_typedef_cleanup( void ) {
   typedefs = NULL;
 }
 
-c_typedef_t const* c_typedef_find( char const *type_name ) {
+c_typedef_t const* c_typedef_find( c_sname_t const *sname ) {
   //
   // Create a temporary c_typedef with just the name set in order to find it.
   //
   c_ast_t ast;
-  ast.name = type_name;
+  ast.sname = *sname;
   c_typedef_t type;
   type.ast = &ast;
 

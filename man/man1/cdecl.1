@@ -2,7 +2,7 @@
 .\"     cdecl -- C gibberish translator
 .\"     cdecl.1: manual page
 .\"
-.\"     Copyright (C) 2018  Paul J. Lucas, et al.
+.\"     Copyright (C) 2017-2019  Paul J. Lucas, et al.
 .\"
 .\"     This program is free software: you can redistribute it and/or modify
 .\"     it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 31, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "March 20, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -476,6 +476,8 @@ Use the C++98 version of the C++ language.
 Adds support for
 \f(CWclass\fP,
 exception specifications (\f(CWthrow\fP),
+\f(CWmutable\fP data members,
+namespaces,
 new-style casts,
 overloaded operators,
 references,
@@ -484,9 +486,7 @@ and \f(CWvirtual\fP functions.
 .TP
 .B C++03
 Use the C++03 version of the C++ language.
-Adds support for
-\f(CWmutable\fP
-data members.
+(Minor revision; no new features.)
 .TP
 .B C++11
 Use the C++11 version of the C++ language.
@@ -537,23 +537,36 @@ and
 has the following commands:
 .RS 4
 .TP 4
-.BI cast " name" " into" " english"
+.BI cast " s-name" " into" " english"
 Composes a C (or C++) cast from pseudo-English.
 .TP
-.RB "{ " const " | " dynamic " | " reinterpret " | " static " } " cast " \f2name\fP" " into" " \f2english\fP"
+.RB "{ " const " | " dynamic " | " reinterpret " | " static " } " cast " \f2s-name\fP" " into" " \f2english\fP"
 Composes a C++ new-style cast from pseudo-English.
 .TP
-.BI declare " \f1{\fP" "" " name" " \f1|\fP" " operator" " \f1}\fP" "" " as" " english"
+.BI declare " \f1{\fP" "" " s-name" " \f1|\fP" " operator" " \f1}\fP" "" " as" " english"
 Composes a C (or C++) declaration from pseudo-English.
 .TP
-.BI define " name" " as" " english"
+.BI define " s-name" " as" " english"
 Defines a type (\f(CWtypedef\fP) from pseudo-English.
 .TP
 .BI explain " gibberish"
-Deciphers a C (or C++) declaration or new-style cast into pseudo-English.
+Deciphers a C (or C++) declaration or new-style cast (C++ only)
+into pseudo-English.
 .TP
-.BR "explain (" \f2gibberish\fP ")" [ \f2name\fP ]
+.BR "explain (" \f2gibberish\fP ")" [ \f2s-name\fP ]
 Deciphers a C (or C++) cast into pseudo-English.
+.TP
+.IR "scope-c s-name \f3{\fP " "[ " scope-c " | {" " typedef " | " using " } " \f3;\fP " ] " \f3}\fP
+For C++ only,
+executes one of the
+.BR namespace ,
+.BR typedef ,
+or
+.B using
+commands
+within the scope of
+.I s-name
+thus declaring a type within that scope.
 .TP
 .BR set " [" \f2option\fP "] | " "set options"
 In the first form,
@@ -562,7 +575,7 @@ if not,
 it's equivalent to the second form
 that prints the current value of all options.
 .TP
-.BR show " { " \f2name\fP " | " all " | " predefined " | " user " } [" typedef ]
+.BR show " { " \f2s-name\fP " | " all " | " predefined " | " user " } [" typedef ]
 Shows the definition for a previously defined type
 (via
 .BR define ,
@@ -570,7 +583,7 @@ Shows the definition for a previously defined type
 or
 .BR using )
 having
-.IR name ;
+.IR s-name ;
 or shows
 all, predefined-only, or user-defined-only
 types.
@@ -585,7 +598,8 @@ the definitions are shown as \f(CWtypedef\fP declarations.
 Defines a type via a C (or C++) \f(CWtypedef\fP declaration.
 .TP
 .BI using " name" " = " gibberish
-Defines a type via a C++11 (or later) \f(CWusing\fP declaration.
+For C++11 or later only,
+defines a type via a \f(CWusing\fP declaration.
 .TP
 .BR help " | " ?
 Prints a
@@ -600,6 +614,53 @@ that's sensitive to the current programming language
 .BR exit " | " quit " | " q
 Quits
 .BR cdecl .
+.RE
+.P
+where:
+.RS 4
+.TP 10
+.I name
+A valid C (or C++) identifier.
+.TP
+.I operator
+A valid C++ operator.
+.TP
+.I s-name
+For C,
+is the same as
+.IR name ;
+for C++,
+is either the same as
+.IR name
+or is a scoped name
+that may always be specified using \f(CW::\fP,
+e.g.,
+\f(CWS::T::x\fP,
+or in an
+.I english
+context,
+may alternatively be specified as
+.I s-name
+.RB [ of
+.I scope-e
+.IR s-name ]*.
+.TP
+.I scope-c
+One of:
+.BR class ,
+.BR namespace ,
+.BR struct ,
+or
+.BR union .
+.TP
+.I scope-e
+One of:
+.BR class ,
+.BR namespace ,
+.BR scope ,
+.BR struct ,
+or
+.BR union .
 .RE
 .P
 Commands are terminated by either a semicolon or newline.
@@ -640,29 +701,29 @@ is one of:
 .br
 .BR \f2store\fP "* " \f2fn-qual\fP "* [[" non- "]" member "] " operator " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
 .br
-.BR \f2cv-qual\fP "* " "pointer to" " [" "member of class" " \f2name\fP" "" ] " \f2english\fP"
+.BR \f2cv-qual\fP "* " "pointer to" " [" "member of class" " \f2s-name\fP" "" ] " \f2english\fP"
 .br
 .RB [ rvalue "] " "reference to" " \f2english\fP"
 .br
 .IR store "* " modifier "* [" C-type ]
 .br
-.RB "{ " enum " [" class " | " struct "] | " class " | " struct " | " union " } \f2name\fP"
+.RB "{ " enum " [" class " | " struct "] | " class " | " struct " | " union " } \f2s-name\fP"
 .P
 where:
 .RS 4
-.TP 14
+.TP 10
 .I args
 A comma-separated list of
-.IR name ,
+.IR s-name ,
 .IR english ,
-.I name
-\f(CWas\fP
+.I s-name
+.B as
 .IR english ;
 or one of
-\f(CWvarargs\fP,
-\f(CWvariadic\fP,
+.BR varargs ,
+.BR variadic ,
 or
-\f(CW...\fP
+.B ...
 (ellipsis).
 .TP
 .I C-type
@@ -704,9 +765,6 @@ One of:
 \f(CW_Complex\fP,
 or
 \f(CW_Imaginary\fP.
-.TP
-.I name
-A valid C (or C++) identifier.
 .TP
 .I number
 One of a
@@ -1030,8 +1088,11 @@ or
 option is specified).
 The commands useful within a configuration file are:
 .IP \(bu 3
+.BR class ,
 .BR define ,
+.BR struct ,
 .BR typedef ,
+.BR union ,
 or
 .B using
 to pre-define user-specific types
@@ -1138,6 +1199,20 @@ c++decl> declare p as pointer to member of class C \\
 c++decl+     function (i as int, j as int) \\
 c++decl+     returning pointer to class D
 class D *(C::*p)(int i, int j)
+.cE
+To define types within scopes:
+.cS
+c++decl> define A::B::T1 as int
+c++decl> define T2 of scope A as int
+c++decl> define T3 of scope B of scope A as int
+c++decl> define T4 of scope A::B as int
+c++decl> define T5 of class C::D as int
+c++decl> class C { typedef int T; };
+c++decl> class C1 { class C2 { typedef int T; }; };
+c++decl> struct S { typedef int T; };
+c++decl> namespace N { typedef int T; };
+c++decl> namespace N::M { typedef int T; };
+c++decl> union U { typedef int T; };
 .cE 0
 .SH EXIT STATUS
 .PD 0
@@ -1341,10 +1416,11 @@ Only
 \f(CWstruct\fP,
 and
 \f(CWunion\fP
-names are supported;
+names and scoped type declarations are supported;
 complete declarations are not:
 .cS
 struct S s;                       // supported
+struct S { typedef int Int; };    // supported
 struct S { int i; char c; } s;    // not supported
 .cE 0
 .IP \n+[step].
@@ -1352,13 +1428,10 @@ The C11 (and C++11)
 \f(CWalignas\fP specifier
 is not supported.
 .IP \n+[step].
-Qualified C++ data members or member functions,
-or member functions that are deleted
+Member functions that are deleted
 are not supported:
 .cS
-int C::x;                         // not supported
-int C::f();                       // not supported
-int g() = delete;                 // not supported
+int f() = delete;                 // not supported
 .cE 0
 .IP \n+[step].
 C++
@@ -1382,6 +1455,11 @@ are supported.
 Arbitrary expressions for \f(CWnoexcept\fP
 or types for \f(CWthrow\fP
 are not supported.
+.IP \n+[step].
+Namespace alias declarations are not supported:
+.cS
+namespace ALN = A_Long_Name;      // not supported
+.cE 0
 .IP \n+[step].
 Only simple C++ attribute specifiers like \f(CW[[this]]\fP
 are supported.

@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/c_keyword.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -62,6 +62,18 @@ static c_keyword_t const C_ATTRIBUTES[] = {
   // C++17
   { L_MAYBE_UNUSED, Y_MAYBE_UNUSED, T_MAYBE_UNUSED, LANG_MIN(CPP_17)  },
   { L_NODISCARD,    Y_NODISCARD,    T_NODISCARD,    LANG_MIN(CPP_17)  },
+
+#if 0
+  // C++20                // Not implemented because:
+  { L_ASSERT,             // + These use arbitrary expressions that require
+  { L_ENSURES,            //   being able to parse them -- which is a lot of
+  { L_EXPECTS,            //   work for little benefit.
+
+  { L_LIKELY,             // + These are only for statements, not declarations.
+  { L_UNLIKELY,           //
+
+  { L_NO_UNIQUE_ADDRESS,  // + Just didn't do it (yet).
+#endif
 
   { NULL,           0,              T_NONE,         LANG_NONE         }
 };
@@ -145,7 +157,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_FALSE,            Y_FALSE,            T_NONE,         LANG_CPP_ALL      },
   { L_FRIEND,           Y_FRIEND,           T_FRIEND,       LANG_CPP_ALL      },
   { L_MUTABLE,          Y_MUTABLE,          T_MUTABLE,      LANG_CPP_ALL      },
-  { L_NAMESPACE,        Y_NAMESPACE,        T_NONE,         LANG_CPP_ALL      },
+  { L_NAMESPACE,        Y_NAMESPACE,        T_NAMESPACE,    LANG_CPP_ALL      },
   { L_NEW,              Y_NEW,              T_NONE,         LANG_CPP_ALL      },
   { L_NOT,              Y_NOT,              T_NONE,         LANG_CPP_ALL      },
   { L_NOT_EQ,           Y_NOT_EQ,           T_NONE,         LANG_CPP_ALL      },
@@ -156,6 +168,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_PROTECTED,        Y_PROTECTED,        T_NONE,         LANG_CPP_ALL      },
   { L_PUBLIC,           Y_PUBLIC,           T_NONE,         LANG_CPP_ALL      },
   { L_REINTERPRET_CAST, Y_REINTERPRET_CAST, T_NONE,         LANG_CPP_ALL      },
+  { L_SCOPE,            Y_SCOPE,            T_NONE,         LANG_CPP_ALL      },
   { L_STATIC_CAST,      Y_STATIC_CAST,      T_NONE,         LANG_CPP_ALL      },
   { L_TEMPLATE,         Y_TEMPLATE,         T_NONE,         LANG_CPP_ALL      },
   { L_THIS,             Y_THIS,             T_NONE,         LANG_CPP_ALL      },

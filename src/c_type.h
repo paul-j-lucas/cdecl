@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/c_type.h
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@
 // types
 #define T_NONE                0ull                  /**< No type.             */
 #define T_VOID                0x0000000000000001ull /**< `void`               */
-#define T_AUTO_CPP_11         0x0000000000000002ull /**< C++11's `auto`       */
+#define T_AUTO_CPP_11         0x0000000000000002ull /**< C++11's `auto`.      */
 #define T_BOOL                0x0000000000000004ull /**< `_Bool` or `bool`    */
 #define T_CHAR                0x0000000000000008ull /**< `char`               */
 #define T_CHAR16_T            0x0000000000000010ull /**< `char16_t`           */
@@ -65,11 +65,13 @@
 #define T_STRUCT              0x0000000000040000ull /**< `struct`             */
 #define T_UNION               0x0000000000080000ull /**< `union`              */
 #define T_CLASS               0x0000000000100000ull /**< `class`              */
-#define T_TYPEDEF_TYPE        0x0000000000200000ull /**< E.g., `size_t`       */
+#define T_NAMESPACE           0x0000000000200000ull /**< `namespace`          */
+#define T_SCOPE               0x0000000000400000ull /**< Generic scope.       */
+#define T_TYPEDEF_TYPE        0x0000000000800000ull /**< E.g., `size_t`       */
 
 // storage classes
-#define T_AUTO_C              0x0000000001000000ull /**< C's `auto`           */
-#define T_BLOCK               0x0000000002000000ull /**< Apple extension      */
+#define T_AUTO_C              0x0000000001000000ull /**< C's `auto`.          */
+#define T_BLOCK               0x0000000002000000ull /**< Apple extension.     */
 #define T_EXTERN              0x0000000004000000ull /**< `extern`             */
 #define T_MUTABLE             0x0000000008000000ull /**< `mutable`            */
 #define T_REGISTER            0x0000000010000000ull /**< `register`           */
@@ -114,14 +116,10 @@
 #define T_MASK_REF_QUALIFIER  0x0F00000000000000ull /**< Ref-qual bitmask.    */
 
 // shorthands
+#define T_CLASS_STRUCT_UNION  ( T_CLASS | T_STRUCT | T_UNION )
 #define T_MEMBER_ONLY         ( T_CONST | T_VOLATILE | T_OVERRIDE | T_FINAL \
                               | T_VIRTUAL | T_REFERENCE | T_RVALUE_REFERENCE )
 #define T_NON_MEMBER_ONLY     T_FRIEND
-
-/**
- * Bitmask for combination of type(s).
- */
-typedef uint64_t c_type_id_t;
 
 /**
  * Hexadecimal print conversion specifier for <code>\ref c_type_id_t</code>.

@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -xc++ @ define S::T as struct S; declare f as function (x as S::T) @ 0

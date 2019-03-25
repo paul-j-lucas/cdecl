@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/lexer.l
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -49,6 +49,7 @@
 
 // standard
 #include <assert.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>                     /* for strtol(3) */
 #include <string.h>
@@ -94,6 +95,25 @@
   SET_TOKEN_TO_AND_RETURN( (S), lexer_token[0] )
 
 /**
+ * Advances \a S over all \a CHARS.
+ *
+ * @param S The string pointer to advance.
+ * @param CHARS A string containing the characters to skip over.
+ * @return Returns the updated \a S.
+ * @hideinitializer
+ */
+#define SKIP_CHARS(S,CHARS)       ((S) += strspn( (S), (CHARS) ))
+
+/**
+ * Advances \a S over all whitespace.
+ *
+ * @param S The string pointer to advance.
+ * @return Returns the updated \a S.
+ * @hideinitializer
+ */
+#define SKIP_WS(S)                SKIP_CHARS( (S), " \f\r\t\v" )
+
+/**
  * Overrides flex's fatal error message to print the message in our format and
  * also exit with the status code we want.
  *
@@ -119,11 +139,19 @@
  *
  * @hideinitializer
  */
-#define YY_USER_ACTION                                \
+#define YY_USER_ACTION BLOCK(                         \
   yylloc.first_line   = yylloc.last_line = yylineno;  \
   yylloc.first_column = column;                       \
   yylloc.last_column  = column + yyleng - 1;          \
-  column += yyleng;
+  column += yyleng; );                  /* must include trailing ';' */
+
+/**
+ * This code must be manually inserted before a REJECT to undo YY_USER_ACTION.
+ *
+ * @hideinitializer
+ */
+#define YY_USER_ACTION_UNDO_FOR_REJECT \
+  column -= (int)yyleng
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -197,6 +225,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_RET,            TOKEN( Y_RETURNING )            },
   { L_RETURNING,      TOKEN( Y_RETURNING )            },
   { L_RVALUE,         TOKEN( Y_RVALUE )               },
+  { L_SCOPE,          TOKEN( Y_SCOPE ),               },
   { L_SET,            TOKEN( Y_SET )                  },
   { L_SHOW,           TOKEN( Y_SHOW )                 },
   { L_STRUCTURE,      C_SYN( L_STRUCT,        false ) },
@@ -222,9 +251,9 @@ struct hyphenated {
 typedef struct hyphenated hyphenated_t;
 
 /**
- * All hyphenated English keywords.  These are handled seperately because
- * hyphenated words are not valid identifiers (since `-` is not valid in an
- * identifier).
+ * All hyphenated English keywords that are synonyms for C/C++ keywords.  These
+ * are handled seperately because hyphenated words are not valid identifiers
+ * (since `-` is not valid in an identifier).
  *
  * @hideinitializer
  */
@@ -262,6 +291,7 @@ static void       lexer_fatal( char const* );
  * @return Returns a pointer to the corresponding keyword or null if not found.
  */
 static keyword_t const* cdecl_keyword_find( char const *s ) {
+  assert( s != NULL );
   for ( keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
     if ( strcmp( s, k->literal ) != 0 )
       continue;
@@ -274,12 +304,14 @@ static keyword_t const* cdecl_keyword_find( char const *s ) {
 }
 
 /**
- * Finds a hyphenated English literal.
+ * Finds a hyphenated English literal that is a synonym for a C/C++ language
+ * literal.
  *
  * @param s The string to find.
- * @return Returns the corresponding C language literal or null if none.
+ * @return Returns the corresponding C/C++ language literal or null if none.
  */
 static char const* hyphenated_find( char const *s ) {
+  assert( s != NULL );
   char const *literal = NULL;
   for ( hyphenated_t const *h = HYPHENATED_KEYWORDS; h->token; ++h ) {
     if ( strcmp( s, h->token ) == 0 ) {
@@ -309,6 +341,7 @@ static char const* hyphenated_find( char const *s ) {
  * @return Returns the number of bytes read.
  */
 static size_t lexer_get_input( char *buf, size_t buf_capacity ) {
+  assert( buf != NULL );
   size_t input_avail = input_len - input_sent;
   if ( input_avail == 0 ) {
     static size_t input_capacity;
@@ -341,6 +374,25 @@ static inline void newline( void ) {
 }
 
 /**
+ * Parses a C/C++ identifier.
+ *
+ * @param s The string to parse.
+ * @param end Upon successful return, set to point to one character past the
+ * end of the identifier.
+ * @return Returns `true` only if an identifier was parsed.
+ */
+static bool parse_identifier( char const *s, char const **end ) {
+  assert( s != NULL );
+  assert( end != NULL );
+  if ( !(isalpha( s[0] ) || s[0] == '_') )
+    return false;
+  while ( *++s != '\0' && (isalnum( *s ) || *s == '_') )
+    ;
+  *end = s;
+  return true;
+}
+
+/**
  * Parses an integer from <code>\ref lexer_token</code>.
  *
  * @param base The integer base to use.
@@ -355,6 +407,29 @@ static inline int parse_int( int base ) {
   // it if the base is 2.
   //
   return (int)strtol( lexer_token + (base == 2 ? 2 : 0), NULL, base );
+}
+
+/**
+ * Parses a scoped name, e.g. `a::b::c`.
+ *
+ * @param s The string to parse.
+ * @return Returns the scoped name.
+ */
+static c_sname_t parse_sname( char const *s ) {
+  assert( s != NULL );
+  c_sname_t rv;
+  c_sname_init( &rv );
+
+  for ( char const *end; parse_identifier( s, &end ); ) {
+    c_sname_append_name( &rv, strndup( s, end - s ) );
+    SKIP_WS( end );
+    if ( strncmp( end, "::", 2 ) != 0 )
+      break;
+    s = end + 2;
+    SKIP_WS( s );
+  } // for
+
+  return rv;
 }
 
 /**
@@ -396,8 +471,7 @@ void lexer_reset( bool hard_reset ) {
   }
   c_mode = MODE_ENGLISH_TO_GIBBERISH;
   input_len = input_sent = 0;
-  if ( lexer_token[0] == '\n' )
-    newline();
+  newline();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -420,6 +494,7 @@ hyphenated    {az}+-{az}+
 identifier    {letter}({letter}|{D})*
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
 lang_name     {cknr_name}|{cpp_name}
+scoped_name   {identifier}({S}*::{S}*{identifier})+
 
 bin_int       0[bB]{B}+{int_suffix}?
 oct_int       0{O}*{int_suffix}?
@@ -429,15 +504,31 @@ hex_int       0[xX]{H}+{int_suffix}?
 %%
 
               /*
-               * Special case: If the _Atomic keyword is immediately followed
-               * by a left parenthesis, it is interpreted as a type specifier
-               * ..., not as a type qualifier.
+               * Special case: if the _Atomic keyword is immediately followed
+               * by a '(', it is interpreted as a type specifier, not as a type
+               * qualifier.
                */
 _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
+
+{scoped_name} {
+                SET_TOKEN;
+                c_sname_t temp_name = parse_sname( lexer_token );
+                c_typedef_t const *const t = c_typedef_find( &temp_name );
+                c_sname_free( &temp_name );
+                if ( t != NULL ) {
+                  yylval.c_typedef = t;
+                  return Y_TYPEDEF_TYPE;
+                }
+                YY_USER_ACTION_UNDO_FOR_REJECT;
+                REJECT;
+              }
 
 {identifier}  {
                 SET_TOKEN;
 
+                //
+                // 1. See if it's a cdecl keyword.
+                //
                 keyword_t const *const ck = cdecl_keyword_find( lexer_token );
                 if ( ck != NULL ) {
                   if ( ck->c_keyword_synonym == NULL )
@@ -474,12 +565,19 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                   }
                 }
 
-                c_typedef_t const *const t = c_typedef_find( lexer_token );
+                //
+                // 2. See if it's a typedef'd type.
+                //
+                SLIST_TEMP_INIT_VAR( typedef_name, lexer_token );
+                c_typedef_t const *const t = c_typedef_find( &typedef_name );
                 if ( t != NULL ) {
                   yylval.c_typedef = t;
                   return Y_TYPEDEF_TYPE;
                 }
 
+                //
+                // 3. See if it's a C/C++ keyword.
+                //
         find_c_keyword:
                 NO_OP;
                 c_keyword_t const *k = c_keyword_find( lexer_token, opt_lang );
@@ -507,10 +605,19 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                   return k->y_token;
                 }
 
+                //
+                // 4. Otherwise, it's just an ordinary name.
+                //
                 yylval.name = check_strdup( lexer_token );
                 return Y_NAME;
               }
 
+              /*
+               * Special case for hyphenated cdecl keywords that are NOT
+               * synonyms for C/C++ keywords.  (Since there are currently only
+               * two of these, just enumerate them here inline rather than have
+               * a look-up table.)
+               */
 "non-member"  |
 "non-mbr"     {
                 ASSERT_MODE( ENGLISH_TO_GIBBERISH );
@@ -520,6 +627,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 
 {hyphenated}  {
                 ASSERT_MODE( ENGLISH_TO_GIBBERISH );
+                SET_TOKEN;
                 char const *const literal = hyphenated_find( yytext );
                 if ( literal == NULL )
                   return Y_ERROR;
@@ -556,6 +664,18 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 "??)"         { SET_TOKEN_TO_AND_RETURN_IT( "]" ); }
 "??-"         { SET_TOKEN_TO_AND_RETURN_IT( "~" ); }
 
+              /*
+               * Special case: if "::" is immediately followed by a '*', return
+               * a distinct token to make it possible to distinguish between:
+               *
+               *    <name>::<name>::<name>
+               *    <name>::<name>::*
+               *
+               * in an LALR(1) parser.
+               */
+"::"{S}*"*"   { SET_TOKEN; return Y_COLON2_STAR     ; }
+"::"          { SET_TOKEN; return Y_COLON2          ; }
+
 "!="          { SET_TOKEN; return Y_NOT_EQ          ; }
 "%="          { SET_TOKEN; return Y_PERCENT_EQ      ; }
 "&&"          { SET_TOKEN; return Y_AMPER2          ; }
@@ -570,7 +690,6 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 ".*"          { SET_TOKEN; return Y_DOT_STAR        ; }
 "..."         { SET_TOKEN; return Y_ELLIPSIS        ; }
 "/="          { SET_TOKEN; return Y_SLASH_EQ        ; }
-"::"          { SET_TOKEN; return Y_COLON2          ; }
 "<<"          { SET_TOKEN; return Y_LESS2           ; }
 "<<="         { SET_TOKEN; return Y_LESS2_EQ        ; }
 "<="          { SET_TOKEN; return Y_LESS_EQ         ; }
@@ -598,33 +717,29 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 "-"           |
 "."           |
 "/"           |
+";"           |
 "<"           |
 "="           |
 ">"           |
 "["           |
 "]"           |
 "^"           |
+"{"           |
 "|"           |
+"}"           |
 "~"           { SET_TOKEN; return lexer_token[0]; }
-";"           { SET_TOKEN; return Y_END; }
 
 "/*"          {                         /* ignore C-style comments */
-                for ( int c = input(), prev_c = '\0'; c != EOF;
+                for ( int c = input(), prev_c = '\0'; ;
                       prev_c = c, c = input() ) {
+                  if ( c == '\0' || c == EOF )
+                    return Y_ERROR;
                   ++column;
-                  switch ( c ) {
-                    case '\n':
-                      newline();
-                      break;
-                    case '/':
-                      if ( prev_c == '*' )
-                        goto c_comment_done;
-                      break;
-                  } // switch
+                  if ( c == '/' && prev_c == '*' )
+                    break;
+                  if ( c == '\n' )
+                    newline();
                 } // for
-
-        c_comment_done:
-                NO_OP;
               }
 
 "//".*        ;                         /* ignore C++-style comments */

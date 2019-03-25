@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/print.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -63,13 +63,12 @@ static size_t       token_len( char const* );
  * @param error_column The zero-based column of the offending token.
  */
 static void print_caret( size_t error_column ) {
-#ifdef ENABLE_TERM_COLUMNS
-  unsigned term_columns = get_term_columns();
+  unsigned term_columns = 0;
+#ifdef ENABLE_TERM_SIZE
+  get_term_columns_lines( &term_columns, NULL );
   if ( term_columns == 0 )
     term_columns = TERM_COLUMNS_DEFAULT;
-#else
-  unsigned term_columns = 0;
-#endif /* ENABLE_TERM_COLUMNS */
+#endif /* ENABLE_TERM_SIZE */
 
   size_t error_column_term = error_column;
 

@@ -8,6 +8,7 @@ Test files are as follows:
 + `cl-*`               = A command-line test.
 + `declare_*`          = A declare test.
 + `explain_*`          = An explain test.
++ `namespace_*`        = A namespace test.
 + `typedef_*`          = A typedef test.
 + `file-*`             = A file test.
 + `help-*`             = A help test.
@@ -20,10 +21,12 @@ Within each test, sequences of characters are used to denote a C/C++
 declaration as it is in English.
 The characters are:
 
++ `+` = scope (`S::x`; `2+` = `S::T::x`, etc.)
++ `=` = scope (`=` = `of scope S`; `2=` = `of scope S of scope T`, etc.)
 + `0` = pure virtual
 + `a` = array (following digits specify array size), `_Atomic`, or `auto`
 + `b` = block (Apple extension) or `bool`
-+ `c` = `char`, `class`,  or `const`
++ `c` = `char`, `class`, or `const`
 + `cd` = `carries_dependency`
 + `c16` = `char16_t`
 + `c32` = `char32_t`
@@ -47,10 +50,13 @@ The characters are:
 + `u` = `maybe_unused` or `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
-+ `x` = `constexpr`, `noexcept`,  or untyped K&R function argument
++ `x` = `constexpr`, `noexcept`, or untyped K&R function argument
 + `y` = `final`
 + `z` = `_Complex` or `size_t`
 + `zz` = `ssize_t`
+
+Characters may be preceded by a count,
+e.g., `2i` for 2 consecutive `int`.
 
 A function's return type is separated from its arguments by `_`
 using the traditional "leading" syntax

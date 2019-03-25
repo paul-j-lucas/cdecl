@@ -1,10 +1,10 @@
 [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere
 command:
-  explain <gibberish> | declare <name> as <english>
+  explain <gibberish>        | declare <name> as <english>
   cast <name> into <english>
   define <name> as <english> | typedef <gibberish>
-  show { <name> | all | predefined | user } [typedef]
-  set [options]              | help | ?            | exit | quit | q
+  show { <name> | all | predefined | user } [typedef] | set [options]
+  {help|?} | {exit|quit|q}
 english:
   <store>* array [[static] <cv-qual>* {<number>|*}] of <english>
   <store>* variable length array <cv-qual>* of <english>
@@ -18,4 +18,5 @@ gibberish: a C declaration, like "int x"; or cast, like "(int)x"
 C-type: bool char char16_t char32_t wchar_t int float double void
 cv-qual: _Atomic const restrict volatile
 modifier: short long signed unsigned atomic const restrict volatile
+name: a C identifier
 store: auto extern register static thread_local

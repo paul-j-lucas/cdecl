@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/c_type.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #include "cdecl.h"                      /* must go first */
 #include "c_lang.h"
 #include "c_type.h"
+#include "gibberish.h"
 #include "literals.h"
 #include "options.h"
 #include "print.h"
@@ -56,17 +57,14 @@
                    (IS_ERROR), (SEP), (PSEP) )
 
 #define CHRCAT(DST,SRC)           ((DST) = chrcpy_end( (DST), (SRC) ))
-#define STRCAT(DST,SRC)           ((DST) = strcpy_end( (DST), (SRC) ))
 
 #define LANG_C_CPP_11_MIN         (LANG_C_MIN(11) | LANG_MIN(CPP_11))
 
 /// @endcond
 
-// extern functions
-extern char const*  c_graph_name( char const* );
-
 // local functions
-static char const* c_type_name_impl( c_type_id_t, bool );
+static char const*  c_type_name_impl( c_type_id_t, bool );
+static char*        strcpy_sep( char*, char const*, char, bool* );
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -414,18 +412,17 @@ static char const* c_type_name_1( c_type_id_t type_id, bool is_error ) {
  * @param is_error `true` if concatenating the name for part of an error
  * message.
  * @param sep The separator character.
- * @param psep A pointer to a variable to keep track of whether \a sep has been
- * concatenated.
+ * @param sep_cpy A pointer to a variable to keep track of whether \a sep has
+ * been concatenated.
  */
 static void c_type_name_cat( char **pname, c_type_id_t type_id,
                              c_type_id_t const types[], size_t types_size,
-                             bool is_error, char sep, bool *psep ) {
+                             bool is_error, char sep, bool *sep_cpy ) {
   for ( size_t i = 0; i < types_size; ++i ) {
-    if ( (type_id & types[i]) != T_NONE ) {
-      if ( true_or_set( psep ) )
-        CHRCAT( *pname, sep );
-      STRCAT( *pname, c_type_name_1( types[i], is_error ) );
-    }
+    if ( (type_id & types[i]) != T_NONE )
+      *pname = strcpy_sep(
+        *pname, c_type_name_1( types[i], is_error ), sep, sep_cpy
+      );
   } // for
 }
 
@@ -460,13 +457,13 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
 
     bool comma = false;
     char const sep = brackets ? ',' : ' ';
-    bool *const psep = brackets ? &comma : &space;
+    bool *const sep_cpy = brackets ? &comma : &space;
 
     if ( brackets )
-      STRCAT( name, c_graph_name( "[[" ) );
-    C_TYPE_NAME_CAT( &name, type_id, C_ATTRIBUTE, is_error, sep, psep );
+      STRCAT( name, graph_name_c( "[[" ) );
+    C_TYPE_NAME_CAT( &name, type_id, C_ATTRIBUTE, is_error, sep, sep_cpy );
     if ( brackets )
-      STRCAT( name, c_graph_name( "]]" ) );
+      STRCAT( name, graph_name_c( "]]" ) );
     space = true;
   }
 
@@ -559,7 +556,29 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
 
   C_TYPE_NAME_CAT( &name, type_id, C_TYPE, is_error, ' ', &space );
 
+  // Special cases.
+  if ( (type_id & T_NAMESPACE) != T_NONE )
+    name = strcpy_sep( name, L_NAMESPACE, ' ', &space );
+  else if ( (type_id & T_SCOPE) != T_NONE )
+    name = strcpy_sep( name, L_SCOPE, ' ', &space );
+
   return name_buf;
+}
+
+/**
+ * Possibly copies \a sep followed by \a src to \a dst.
+ *
+ * @param dst A pointer to receive the copy of \a src.
+ * @param src The null-terminated string to copy.
+ * @param sep The separator character.
+ * @param sep_cpy A pointer to a variable to keep track of whether \a sep has
+ * been copied.
+ */
+static char* strcpy_sep( char *dst, char const *src, char sep, bool *sep_cpy ) {
+  if ( true_or_set( sep_cpy ) )
+    CHRCAT( dst, sep );
+  STRCAT( dst, src );
+  return dst;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

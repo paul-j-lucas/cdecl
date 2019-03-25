@@ -135,7 +135,7 @@ unsigned op_get_overload( c_ast_t const *ast ) {
   // No such qualifier: try to infer whether it's a member or non-member based
   // on the number of arguments given.
   //
-  unsigned const n_args = c_ast_args_len( ast );
+  size_t const n_args = c_ast_args_count( ast );
   if ( n_args == op->args_min )
     return OP_MEMBER;
   if ( n_args == op->args_max )

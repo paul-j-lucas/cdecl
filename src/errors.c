@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/errors.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -150,6 +150,12 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
       goto only_void;
 
     c_ast_t const *const arg_ast = C_AST_DATA( arg );
+
+    if ( c_ast_sname_count( arg_ast ) > 1 ) {
+      print_error( &arg_ast->loc, "argument names can not be scoped" );
+      return false;
+    }
+
     switch ( arg_ast->kind ) {
       case K_BUILTIN:
         if ( (arg_ast->type_id & T_AUTO_CPP_11) != T_NONE ) {
@@ -161,7 +167,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
           // Ordinarily, void arguments are invalid; but a single void function
           // "argument" is valid (as long as it doesn't have a name).
           //
-          if ( arg_ast->name != NULL ) {
+          if ( !c_ast_sname_empty( arg_ast ) ) {
             print_error( &arg_ast->loc, "arguments can not be %s", L_VOID );
             return false;
           }
@@ -546,7 +552,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      if ( (ast->type_id & (T_STRUCT | T_UNION | T_CLASS)) != T_NONE &&
+      if ( (ast->type_id & T_CLASS_STRUCT_UNION) != T_NONE &&
            (ast->type_id & T_REGISTER) != T_NONE ) {
         return error_kind_not_type( ast, T_REGISTER );
       }
@@ -585,7 +591,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           // union, or class.
           //
           c_ast_t const *const ret_ast = ast->as.oper.ret_ast;
-          if ( !c_ast_is_ptr_to( ret_ast, (T_STRUCT | T_UNION | T_CLASS) ) ) {
+          if ( !c_ast_is_ptr_to( ret_ast, T_CLASS_STRUCT_UNION ) ) {
             print_error( &ret_ast->loc,
               "%s -> must return a pointer to %s, %s, or %s",
               L_OPERATOR, L_STRUCT, L_UNION, L_CLASS
@@ -928,15 +934,17 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
       assert( ast->kind != K_PLACEHOLDER );
   } // switch
 
-  if ( ast->name != NULL ) {
-    c_keyword_t const *const k = c_keyword_find( ast->name, LANG_ALL );
-    if ( k != NULL ) {
+  for ( c_scope_t const *scope = c_ast_scope( ast ); scope != NULL;
+        scope = scope->next ) {
+    char const *const name = C_SCOPE_NAME( scope );
+    c_keyword_t const *const keyword = c_keyword_find( name, LANG_ALL );
+    if ( keyword != NULL ) {
       print_warning( &ast->loc,
         "\"%s\" is a keyword in %s",
-        ast->name, c_lang_name( c_lang_oldest( k->lang_ids ) )
+        name, c_lang_name( c_lang_oldest( keyword->lang_ids ) )
       );
     }
-  }
+  } // for
 
   return false;
 }
@@ -991,7 +999,7 @@ static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
 static bool error_unknown_type( c_ast_t const *ast ) {
-  print_error( &ast->loc, "\"%s\": unknown type", ast->name );
+  print_error( &ast->loc, "\"%s\": unknown type", c_ast_sname_full_c( ast ) );
   return VISITOR_ERROR_FOUND;
 }
 

@@ -1,63 +1,63 @@
 
-builtin_type_ast_c ::= builtin_type_c = {
-  builtin_type_c = "int" (0x100),
-  builtin_type_ast_c = {
+builtin_type_c_ast ::= builtin_type = {
+  builtin_type = "int" (0x100),
+  builtin_type_c_ast = {
+    sname = null,
     id = 100,
     kind = "built-in type",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 8-10,
     type = "int" (0x100)
   }
 }
 
-type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
-  unmodified_type_c = {
+type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
+  unmodified_type_c_ast = {
+    sname = null,
     id = 100,
     kind = "built-in type",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 8-10,
     type = "int" (0x100)
   },
-  type_modifier_list_opt_c = "" (0x0),
-  type_ast_c = {
+  type_modifier_list_c_type_opt = "" (0x0),
+  type_c_ast = {
+    sname = null,
     id = 100,
     kind = "built-in type",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 8-10,
     type = "int" (0x100)
   }
 }
 
-pointer_type_c ::= * type_qualifier_list_opt_c = {
-  (type_ast_c) = {
+pointer_type_c_ast ::= * type_qualifier_list_c_type_opt = {
+  (type_c_ast) = {
+    sname = null,
     id = 100,
     kind = "built-in type",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 8-10,
     type = "int" (0x100)
   },
-  type_qualifier_list_opt_c = "" (0x0),
-  pointer_type_c = {
+  type_qualifier_list_c_type_opt = "" (0x0),
+  pointer_type_c_ast = {
+    sname = null,
     id = 101,
     kind = "pointer",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 11-11,
     type = "" (0x0),
     to_ast = {
+      sname = null,
       id = 100,
       kind = "built-in type",
       depth = 0,
-      name = null,
       parent->id = 101,
       loc = 8-10,
       type = "int" (0x100)
@@ -65,39 +65,39 @@ pointer_type_c ::= * type_qualifier_list_opt_c = {
   }
 }
 
-name_c ::= NAME = {
-  (type_ast_c) = {
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = null,
     id = 101,
     kind = "pointer",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 11-11,
     type = "" (0x0),
     to_ast = {
+      sname = null,
       id = 100,
       kind = "built-in type",
       depth = 0,
-      name = null,
       parent->id = 101,
       loc = 8-10,
       type = "int" (0x100)
     }
   },
-  NAME = "f",
-  name_c = {
+  sname = "f",
+  sname_c_ast = {
+    sname = "f", scope_type = none,
     id = 101,
     kind = "pointer",
     depth = 0,
-    name = "f",
     parent->id = -1,
     loc = 11-11,
     type = "" (0x0),
     to_ast = {
+      sname = null,
       id = 100,
       kind = "built-in type",
       depth = 0,
-      name = null,
       parent->id = 101,
       loc = 8-10,
       type = "int" (0x100)
@@ -105,109 +105,109 @@ name_c ::= NAME = {
   }
 }
 
-builtin_type_ast_c ::= builtin_type_c = {
-  builtin_type_c = "int" (0x100),
-  builtin_type_ast_c = {
+builtin_type_c_ast ::= builtin_type = {
+  builtin_type = "int" (0x100),
+  builtin_type_c_ast = {
+    sname = null,
     id = 102,
     kind = "built-in type",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 15-17,
     type = "int" (0x100)
   }
 }
 
-type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
-  unmodified_type_c = {
+type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
+  unmodified_type_c_ast = {
+    sname = null,
     id = 102,
     kind = "built-in type",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 15-17,
     type = "int" (0x100)
   },
-  type_modifier_list_opt_c = "" (0x0),
-  type_ast_c = {
+  type_modifier_list_c_type_opt = "" (0x0),
+  type_c_ast = {
+    sname = null,
     id = 102,
     kind = "built-in type",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 15-17,
     type = "int" (0x100)
   }
 }
 
-name_c ::= NAME = {
-  (type_ast_c) = {
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = null,
     id = 102,
     kind = "built-in type",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 15-17,
     type = "int" (0x100)
   },
-  NAME = "x",
-  name_c = {
+  sname = "x",
+  sname_c_ast = {
+    sname = "x", scope_type = none,
     id = 102,
     kind = "built-in type",
     depth = 0,
-    name = "x",
     parent->id = -1,
     loc = 15-17,
     type = "int" (0x100)
   }
 }
 
-arg_c ::= type_ast_c cast_opt_c = {
-  type_ast_c = {
+arg_c_ast ::= type_c_ast cast_c_ast_opt = {
+  type_c_ast = {
+    sname = "x", scope_type = none,
     id = 102,
     kind = "built-in type",
     depth = 0,
-    name = "x",
     parent->id = -1,
     loc = 15-17,
     type = "int" (0x100)
   },
-  cast_opt_c = {
+  cast_c_ast_opt = {
+    sname = "x", scope_type = none,
     id = 102,
     kind = "built-in type",
     depth = 0,
-    name = "x",
     parent->id = -1,
     loc = 15-17,
     type = "int" (0x100)
   },
-  arg_c = {
+  arg_c_ast = {
+    sname = "x", scope_type = none,
     id = 102,
     kind = "built-in type",
     depth = 0,
-    name = "x",
     parent->id = -1,
     loc = 15-17,
     type = "int" (0x100)
   }
 }
 
-arg_list_c ::= arg_c = {
-  arg_c = {
+arg_list_c_ast ::= arg_c_ast = {
+  arg_c_ast = {
+    sname = "x", scope_type = none,
     id = 102,
     kind = "built-in type",
     depth = 0,
-    name = "x",
     parent->id = -1,
     loc = 15-17,
     type = "int" (0x100)
   },
-  arg_list_c = [
+  arg_list_c_ast = [
     {
+      sname = "x", scope_type = none,
       id = 102,
       kind = "built-in type",
       depth = 0,
-      name = "x",
       parent->id = -1,
       loc = 15-17,
       type = "int" (0x100)
@@ -215,129 +215,129 @@ arg_list_c ::= arg_c = {
   ]
 }
 
-builtin_type_ast_c ::= builtin_type_c = {
-  builtin_type_c = "int" (0x100),
-  builtin_type_ast_c = {
+builtin_type_c_ast ::= builtin_type = {
+  builtin_type = "int" (0x100),
+  builtin_type_c_ast = {
+    sname = null,
     id = 103,
     kind = "built-in type",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 22-24,
     type = "int" (0x100)
   }
 }
 
-type_ast_c ::= unmodified_type_c type_modifier_list_opt_c = {
-  unmodified_type_c = {
+type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
+  unmodified_type_c_ast = {
+    sname = null,
     id = 103,
     kind = "built-in type",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 22-24,
     type = "int" (0x100)
   },
-  type_modifier_list_opt_c = "" (0x0),
-  type_ast_c = {
+  type_modifier_list_c_type_opt = "" (0x0),
+  type_c_ast = {
+    sname = null,
     id = 103,
     kind = "built-in type",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 22-24,
     type = "int" (0x100)
   }
 }
 
-name_c ::= NAME = {
-  (type_ast_c) = {
+sname_c_ast ::= sname_c = {
+  (type_c_ast) = {
+    sname = null,
     id = 103,
     kind = "built-in type",
     depth = 0,
-    name = null,
     parent->id = -1,
     loc = 22-24,
     type = "int" (0x100)
   },
-  NAME = "y",
-  name_c = {
+  sname = "y",
+  sname_c_ast = {
+    sname = "y", scope_type = none,
     id = 103,
     kind = "built-in type",
     depth = 0,
-    name = "y",
     parent->id = -1,
     loc = 22-24,
     type = "int" (0x100)
   }
 }
 
-arg_c ::= type_ast_c cast_opt_c = {
-  type_ast_c = {
+arg_c_ast ::= type_c_ast cast_c_ast_opt = {
+  type_c_ast = {
+    sname = "y", scope_type = none,
     id = 103,
     kind = "built-in type",
     depth = 0,
-    name = "y",
     parent->id = -1,
     loc = 22-24,
     type = "int" (0x100)
   },
-  cast_opt_c = {
+  cast_c_ast_opt = {
+    sname = "y", scope_type = none,
     id = 103,
     kind = "built-in type",
     depth = 0,
-    name = "y",
     parent->id = -1,
     loc = 22-24,
     type = "int" (0x100)
   },
-  arg_c = {
+  arg_c_ast = {
+    sname = "y", scope_type = none,
     id = 103,
     kind = "built-in type",
     depth = 0,
-    name = "y",
     parent->id = -1,
     loc = 22-24,
     type = "int" (0x100)
   }
 }
 
-arg_list_c ::= arg_list_c ',' arg_c = {
-  arg_list_c = [
+arg_list_c_ast ::= arg_list_c_ast ',' arg_c_ast = {
+  arg_list_c_ast = [
     {
+      sname = "x", scope_type = none,
       id = 102,
       kind = "built-in type",
       depth = 0,
-      name = "x",
       parent->id = -1,
       loc = 15-17,
       type = "int" (0x100)
     }
   ],
-  arg_c = {
+  arg_c_ast = {
+    sname = "y", scope_type = none,
     id = 103,
     kind = "built-in type",
     depth = 0,
-    name = "y",
     parent->id = -1,
     loc = 22-24,
     type = "int" (0x100)
   },
-  arg_list_c = [
+  arg_list_c_ast = [
     {
+      sname = "x", scope_type = none,
       id = 102,
       kind = "built-in type",
       depth = 0,
-      name = "x",
       parent->id = -1,
       loc = 15-17,
       type = "int" (0x100)
     },
     {
+      sname = "y", scope_type = none,
       id = 103,
       kind = "built-in type",
       depth = 0,
-      name = "y",
       parent->id = -1,
       loc = 22-24,
       type = "int" (0x100)
@@ -345,111 +345,111 @@ arg_list_c ::= arg_list_c ',' arg_c = {
   ]
 }
 
-func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_ref_qualifier_opt_c func_noexcept_opt_c func_trailing_return_type_opt_c pure_virtual_opt_c = {
-  (type_ast_c) = {
+func_decl_c_ast ::= decl2_c_ast '(' arg_list_c_ast_opt ')' func_qualifier_list_c_type_opt func_ref_qualifier_c_type_opt func_noexcept_c_type_opt func_trailing_return_type_c_ast_opt pure_virtual_c_type_opt = {
+  (type_c_ast) = {
+    sname = "f", scope_type = none,
     id = 101,
     kind = "pointer",
     depth = 0,
-    name = "f",
     parent->id = -1,
     loc = 11-11,
     type = "" (0x0),
     to_ast = {
+      sname = null,
       id = 100,
       kind = "built-in type",
       depth = 0,
-      name = null,
       parent->id = 101,
       loc = 8-10,
       type = "int" (0x100)
     }
   },
-  decl2_c = {
+  decl2_c_ast = {
+    sname = "f", scope_type = none,
     id = 101,
     kind = "pointer",
     depth = 0,
-    name = "f",
     parent->id = -1,
     loc = 11-11,
     type = "" (0x0),
     to_ast = {
+      sname = null,
       id = 100,
       kind = "built-in type",
       depth = 0,
-      name = null,
       parent->id = 101,
       loc = 8-10,
       type = "int" (0x100)
     }
   },
-  arg_list_opt_c = [
+  arg_list_c_ast_opt = [
     {
+      sname = "x", scope_type = none,
       id = 102,
       kind = "built-in type",
       depth = 0,
-      name = "x",
       parent->id = -1,
       loc = 15-17,
       type = "int" (0x100)
     },
     {
+      sname = "y", scope_type = none,
       id = 103,
       kind = "built-in type",
       depth = 0,
-      name = "y",
       parent->id = -1,
       loc = 22-24,
       type = "int" (0x100)
     }
   ],
-  func_qualifier_list_opt_c = "" (0x0),
-  func_ref_qualifier_opt_c = "" (0x0),
-  func_noexcept_opt_c = "" (0x0),
-  func_trailing_return_type_opt_c = {
+  func_qualifier_list_c_type_opt = "" (0x0),
+  func_ref_qualifier_c_type_opt = "" (0x0),
+  func_noexcept_c_type_opt = "" (0x0),
+  func_trailing_return_type_c_ast_opt = {
   },
-  pure_virtual_opt_c = "" (0x0),
-  func_decl_c = {
+  pure_virtual_c_type_opt = "" (0x0),
+  func_decl_c_ast = {
+    sname = "f", scope_type = none,
     id = 104,
     kind = "function",
     depth = 0,
-    name = "f",
     parent->id = -1,
     loc = 13-27,
     type = "" (0x0),
     flags = 0x0,
     args = [
       {
+        sname = "x", scope_type = none,
         id = 102,
         kind = "built-in type",
         depth = 0,
-        name = "x",
         parent->id = -1,
         loc = 15-17,
         type = "int" (0x100)
       },
       {
+        sname = "y", scope_type = none,
         id = 103,
         kind = "built-in type",
         depth = 0,
-        name = "y",
         parent->id = -1,
         loc = 22-24,
         type = "int" (0x100)
       }
     ],
     ret_ast = {
+      sname = null,
       id = 101,
       kind = "pointer",
       depth = 0,
-      name = null,
       parent->id = 104,
       loc = 11-11,
       type = "" (0x0),
       to_ast = {
+        sname = null,
         id = 100,
         kind = "built-in type",
         depth = 0,
-        name = null,
         parent->id = 101,
         loc = 8-10,
         type = "int" (0x100)
@@ -458,115 +458,115 @@ func_decl_c ::= decl2_c '(' arg_list_opt_c ')' func_qualifier_list_opt_c func_re
   }
 }
 
-pointer_decl_c ::= pointer_type_c decl_c = {
-  pointer_type_c = {
+pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
+  pointer_type_c_ast = {
+    sname = null,
     id = 101,
     kind = "pointer",
     depth = 0,
-    name = null,
     parent->id = 104,
     loc = 11-11,
     type = "" (0x0),
     to_ast = {
+      sname = null,
       id = 100,
       kind = "built-in type",
       depth = 0,
-      name = null,
       parent->id = 101,
       loc = 8-10,
       type = "int" (0x100)
     }
   },
-  decl_c = {
+  decl_c_ast = {
+    sname = "f", scope_type = none,
     id = 104,
     kind = "function",
     depth = 0,
-    name = "f",
     parent->id = -1,
     loc = 13-27,
     type = "" (0x0),
     flags = 0x0,
     args = [
       {
+        sname = "x", scope_type = none,
         id = 102,
         kind = "built-in type",
         depth = 0,
-        name = "x",
         parent->id = -1,
         loc = 15-17,
         type = "int" (0x100)
       },
       {
+        sname = "y", scope_type = none,
         id = 103,
         kind = "built-in type",
         depth = 0,
-        name = "y",
         parent->id = -1,
         loc = 22-24,
         type = "int" (0x100)
       }
     ],
     ret_ast = {
+      sname = null,
       id = 101,
       kind = "pointer",
       depth = 0,
-      name = null,
       parent->id = 104,
       loc = 11-11,
       type = "" (0x0),
       to_ast = {
+        sname = null,
         id = 100,
         kind = "built-in type",
         depth = 0,
-        name = null,
         parent->id = 101,
         loc = 8-10,
         type = "int" (0x100)
       }
     }
   },
-  pointer_decl_c = {
+  pointer_decl_c_ast = {
+    sname = "f", scope_type = none,
     id = 104,
     kind = "function",
     depth = 0,
-    name = "f",
     parent->id = -1,
     loc = 13-27,
     type = "" (0x0),
     flags = 0x0,
     args = [
       {
+        sname = "x", scope_type = none,
         id = 102,
         kind = "built-in type",
         depth = 0,
-        name = "x",
         parent->id = -1,
         loc = 15-17,
         type = "int" (0x100)
       },
       {
+        sname = "y", scope_type = none,
         id = 103,
         kind = "built-in type",
         depth = 0,
-        name = "y",
         parent->id = -1,
         loc = 22-24,
         type = "int" (0x100)
       }
     ],
     ret_ast = {
+      sname = null,
       id = 101,
       kind = "pointer",
       depth = 0,
-      name = null,
       parent->id = 104,
       loc = 11-11,
       type = "" (0x0),
       to_ast = {
+        sname = null,
         id = 100,
         kind = "built-in type",
         depth = 0,
-        name = null,
         parent->id = 101,
         loc = 8-10,
         type = "int" (0x100)
@@ -575,58 +575,58 @@ pointer_decl_c ::= pointer_type_c decl_c = {
   }
 }
 
-explain_declaration_c ::= EXPLAIN type_ast_c decl_c = {
-  type_ast_c = {
+explain_c ::= EXPLAIN type_c_ast decl_c_ast = {
+  type_c_ast = {
+    sname = null,
     id = 100,
     kind = "built-in type",
     depth = 0,
-    name = null,
     parent->id = 101,
     loc = 8-10,
     type = "int" (0x100)
   },
-  decl_c = {
+  decl_c_ast = {
+    sname = "f", scope_type = none,
     id = 104,
     kind = "function",
     depth = 0,
-    name = "f",
     parent->id = -1,
     loc = 13-27,
     type = "" (0x0),
     flags = 0x0,
     args = [
       {
+        sname = "x", scope_type = none,
         id = 102,
         kind = "built-in type",
         depth = 0,
-        name = "x",
         parent->id = -1,
         loc = 15-17,
         type = "int" (0x100)
       },
       {
+        sname = "y", scope_type = none,
         id = 103,
         kind = "built-in type",
         depth = 0,
-        name = "y",
         parent->id = -1,
         loc = 22-24,
         type = "int" (0x100)
       }
     ],
     ret_ast = {
+      sname = null,
       id = 101,
       kind = "pointer",
       depth = 0,
-      name = null,
       parent->id = 104,
       loc = 11-11,
       type = "" (0x0),
       to_ast = {
+        sname = null,
         id = 100,
         kind = "built-in type",
         depth = 0,
-        name = null,
         parent->id = 101,
         loc = 8-10,
         type = "int" (0x100)

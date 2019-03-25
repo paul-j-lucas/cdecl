@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/help.c
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,14 +64,15 @@ static help_text_t const HELP_TEXT[] = {
 /* ===|==== */
 /*  1 |  1 */  { "[] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere", SAME_AS_C },
 /*  2 |  2 */  { "command:", SAME_AS_C },
-/*  3 |  3 */  { "  explain <gibberish> | declare <name> as <english>",
-                 "  explain <gibberish> | declare { <name> | <operator> } as <english>" },
+/*  3 |  3 */  { "  explain <gibberish>        | declare <name> as <english>",
+                 "  explain <gibberish>        | declare { <name> | <operator> } as <english>" },
 /*  4 |  5 */  { "  cast <name> into <english>",
                  "  [const | dynamic | reinterpret | static] cast <name> into <english>" },
 /*  5 |  6 */  { "  define <name> as <english> | typedef <gibberish>",
                  "  define <name> as <english> | typedef <gibberish> | using <name> = <gibberish>" },
-/*  6 |  7 */  { "  show { <name> | all | predefined | user } [typedef]", SAME_AS_C },
-/*  7 |  8 */  { "  set [options]              | help | ?            | exit | quit | q", SAME_AS_C },
+/*  6 |  7 */  { "  show { <name> | all | predefined | user } [typedef] | set [options]", SAME_AS_C },
+/*  7 |  8 */  { "  {help|?} | {exit|quit|q}",
+                 "  <scope-c> <name> \\{ {<scope-c>|<typedef>|<using>}; \\} | {help|?} | {exit|quit|q}" },
 /*  8 |  9 */  { "english:", SAME_AS_C },
 /*  9 | 10 */  { "  <store>* array [[static] <cv-qual>* {<number>|\\*}] of <english>",
                  "  <store>* array [<number>] of <english>" },
@@ -81,30 +83,66 @@ static help_text_t const HELP_TEXT[] = {
 /* -- | 13 */  { NOT_IN_LANG,
                  "  <store>* <fn-qual>* [[non-]member] operator [([<args>])] [returning <english>]" },
 /* 13 | 13 */  { "  <cv-qual>* pointer to <english>",
-                 "  <cv-qual>* pointer to [member of class <name>] <english>" },
-/* -- | 14 */  { NOT_IN_LANG,
-                 "  [rvalue] reference to <english>" },
-/* 14 | 15 */  { "  <store>* <modifier>* [<C-type>]",
-                 "  <store>* <modifier>* [<C++-type>]" },
-/* 15 | 16 */  { "  { enum | struct | union } <name>",
-                 "  { enum [class|struct] | struct | union | class } <name>" },
-/* 16 | 17 */  { "args: a comma separated list of <name>, <english>, or <name> as <english>",
+                 "  <cv-qual>* pointer to [member of {class|struct} <name>] <english>" },
+/* 14 | 14 */  { "  <store>* <modifier>* [<C-type>]",
+                 "  rvalue] reference to <english> | <store>* <modifier>* [<C++-type>]" },
+/* 15 | 15 */  { "  { enum | struct | union } <name>",
+                 "  { enum [class|struct] | class | struct | union } <name>" },
+/* 16 | 16 */  { "args: a comma separated list of <name>, <english>, or <name> as <english>",
                  "args: a comma separated list of <english> or <name> as <english>" },
-/* 17 | 18 */  { "gibberish: a C declaration, like \"int x\"; or cast, like \"(int)x\"",
+/* 17 | 17 */  { "gibberish: a C declaration, like \"int x\"; or cast, like \"(int)x\"",
                  "gibberish: a C++ declaration, like \"int x\"; or cast, like \"(int)x\"" },
-/* 18 | 19 */  { "C-type: bool char char16_t char32_t wchar_t int float double void",
+/* 18 | 18 */  { "C-type: bool char char16_t char32_t wchar_t int float double void",
                  "C++-type: bool char char16_t char32_t wchar_t int float double void" },
-/* 19 | 20 */  { "cv-qual: _Atomic const restrict volatile",
-                 "cv-qual: const volatile" },
-/* -- | 21 */  { NOT_IN_LANG,
-                 "fn-qual: const volatile [rvalue] reference" },
-/* 20 | 22 */  { "modifier: short long signed unsigned atomic const restrict volatile",
+/* 19 | 19 */  { "cv-qual: _Atomic const restrict volatile",
+                 "cv-qual: const volatile         | fn-qual: const volatile [rvalue] reference" },
+/* 20 | 20 */  { "modifier: short long signed unsigned atomic const restrict volatile",
                  "modifier: short long signed unsigned const volatile" },
-/* 21 | 23 */  { "store: auto extern register static thread_local",
+/* 21 | 21 */  { "name: a C identifier",
+                 "name: a C++ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*" },
+/* -- | 22 */  { NOT_IN_LANG,
+                 "scope-c: class struct union [inline] namespace | scope-e: <scope-c> scope" },
+/* 22 | 23 */  { "store: auto extern register static thread_local",
                  "store: const{eval|expr} extern friend mutable static thread_local [pure] virtual" },
 };
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Checks whether \a c is a title character.
+ *
+ * @param c The character to check.
+ * @return Returns `true` only if \a c is a title character.
+ */
+static bool is_title_char( char c ) {
+  switch ( c ) {
+    case '+':
+    case '-':
+    case '_':
+      return true;
+    default:
+      return isalpha( c );
+  } // switch
+}
+
+/**
+ * Checks whether the string \a s is a title.
+ *
+ * @param s The string to check.
+ * @return Returns `true` only if \a s is a title string.
+ */
+static bool is_title( char const *s ) {
+  assert( s != NULL );
+  if ( isalpha( *s ) ) {
+    while ( *++s != '\0' ) {
+      if ( *s == ':' )
+        return true;
+      if ( !is_title_char( *s ) )
+        break;
+    } // while
+  }
+  return false;
+}
 
 /**
  * Prints a line of help text (in color, if possible and requested).
@@ -112,24 +150,32 @@ static help_text_t const HELP_TEXT[] = {
  * @param line The line to print.
  */
 static void print_help_line( char const *line ) {
-  bool escaped = false;
+  bool is_escaped = false;              // was preceding char a '\'?
+  bool in_title = false;                // is current char within a title?
 
   for ( char const *c = line; *c != '\0'; ++c ) {
     switch ( *c ) {
+      case ':':
+        if ( in_title ) {
+          SGR_END_COLOR( stdout );
+          in_title = false;
+        }
+        break;
+
       case '\\':
-        if ( !escaped ) {
-          escaped = true;
+        if ( !is_escaped ) {
+          is_escaped = true;
           continue;
         }
         // FALLTHROUGH
       case '<':
-        if ( !escaped ) {
+        if ( !is_escaped ) {
           SGR_START_COLOR( stdout, help_nonterm );
           break;
         }
         // FALLTHROUGH
       case '>':
-        if ( !escaped ) {
+        if ( !is_escaped ) {
           PUTC_OUT( *c );
           SGR_END_COLOR( stdout );
           continue;
@@ -141,7 +187,7 @@ static void print_help_line( char const *line ) {
       case '{':
       case '|':
       case '}':
-        if ( !escaped ) {
+        if ( !is_escaped ) {
           SGR_START_COLOR( stdout, help_punct );
           PUTC_OUT( *c );
           SGR_END_COLOR( stdout );
@@ -150,17 +196,11 @@ static void print_help_line( char const *line ) {
         // FALLTHROUGH
 
       default:
-        if ( c == line && isalpha( *c ) ) {
+        if ( !in_title && is_title( c ) ) {
           SGR_START_COLOR( stdout, help_title );
-          for ( ; *c; ++c ) {
-            if ( *c == ':' ) {
-              SGR_END_COLOR( stdout );
-              break;
-            }
-            PUTC_OUT( *c );
-          } // for
+          in_title = true;
         }
-        escaped = false;
+        is_escaped = false;
     } // switch
     PUTC_OUT( *c );
   } // for

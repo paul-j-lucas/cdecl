@@ -2,7 +2,7 @@
 #	cdecl -- C gibberish translator
 #	src/Makefile.am
 #
-#	Copyright (C) 2017  Paul J. Lucas, et al.
+#	Copyright (C) 2017-2019  Paul J. Lucas, et al.
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -34,14 +34,15 @@ cdecl_SOURCES =	parser.y \
 		c_kind.c c_kind.h \
 		c_lang.c c_lang.h \
 		c_operator.c c_operator.h \
+		c_sname.c c_sname.h \
 		c_type.c c_type.h \
 		c_typedef.c c_typedef.h \
 		cdecl.c cdecl.h \
 		color.c color.h \
 		debug.h \
-		english.c \
+		english.c english.h \
 		errors.c \
-		gibberish.c \
+		gibberish.c gibberish.h \
 		help.c \
 		literals.c literals.h \
 		options.c options.h \

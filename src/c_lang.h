@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/c_lang.h
 **
-**      Copyright (C) 2017  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_C_MASK   0x00FF            /**< C languages bitmask. */
 #define LANG_CPP_MASK 0xFF00            /**< C++ languages bitmask. */
 
-/** Maximum allowed language, C & C++.. */
+/** Maximum allowed language, C & C++. */
 #define LANG_MAX(L)   ((LANG_ ## L) | ((LANG_ ## L) - 1u))
 
 /** Minimum allowed language, C & C++. */
@@ -80,11 +80,6 @@ _GL_INLINE_HEADER_BEGIN
 
 /** Minimum allowed language, C only. */
 #define LANG_C_MIN(L) (LANG_MIN( C_ ## L ) & LANG_C_MASK)
-
-/**
- * Bitmask for combination of language(s).
- */
-typedef unsigned c_lang_id_t;
 
 /**
  * A mapping between a language name and its corresponding `c_lang_id_t`.
@@ -116,8 +111,8 @@ c_lang_id_t c_lang_find( char const *name );
 /**
  * Gets whether \a lang_id is any version of C++.
  *
- * @param lang_id The The bitwise-or of language(s) to check.
- * @retur Returns `true` only if \a lang_id is C++.
+ * @param lang_id The bitwise-or of language(s) to check.
+ * @return Returns `true` only if \a lang_id is C++.
  */
 CDECL_LANG_INLINE bool c_lang_is_cpp( c_lang_id_t lang_id ) {
   return (lang_id & LANG_CPP_MASK) != LANG_NONE;

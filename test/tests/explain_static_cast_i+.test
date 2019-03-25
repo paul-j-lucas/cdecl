@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -xc++ @ explain static_cast<int>(S::x) @ 0
