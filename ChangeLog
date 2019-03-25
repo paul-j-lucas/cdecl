@@ -1,3 +1,112 @@
+2019-03-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, Doxyfile, Makefile.am, NEWS, configure.ac, man/Makefile.am,
+     man/man1/Makefile.am, cdecl.1, src/Makefile.am, autocomplete.c, c_ast.c,
+     c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c, c_keyword.h, c_kind.c,
+     c_kind.h, c_lang.c, c_lang.h, c_operator.c, c_sname.c, c_sname.h,
+     c_type.c, c_type.h, c_typedef.c, c_typedef.h, cdecl.c, cdecl.h, color.c,
+     color.h, debug.c, debug.h, english.c, english.h, errors.c, gibberish.c,
+     gibberish.h, help.c, lexer.h, lexer.l, literals.c, literals.h, options.c,
+     options.h, parser.y, print.c, print.h, prompt.c, prompt.h, red_black.c,
+     red_black.h, set.c, slist.c, slist.h, typedefs.h, util.c, util.h,
+     test/Makefile.am, 2c_typedef_i.out, cast_+i.out, cdecl--debug.out,
+     cdecl-d.out, const_cast_+pi.out, declare_+f_v.out, declare_2+f_v.out,
+     declare_=+i.out, declare_=i.out, declare_f+k_v.out, declare_i=+.out,
+     declare_o2=_exclam_b.out, define_2=_i.out, define_=_i.out,
+     define_=c_i.out, define_k_declare_k.out,
+     define_k_define_k_explain_k+k.out, define_k_explain_pmki.out,
+     dynamic_cast_+pc.out, explain_+o_eq2_rcki_b.out, explain_+o_eq_rck_rk.out,
+     explain_cast_=pmi.out, explain_cast_pmc=i.out, explain_const_cast_+pi.out,
+     explain_dynamic_cast_p+c+.out, explain_i+.out, explain_i2+.out,
+     explain_ki+.out, explain_static_cast_i+.out, help-c++.out, help-c.out,
+     namespace_+typedef_i.out, namespace_c_typedef_i.out,
+     namespace_k_typedef_i.out, namespace_n_typedef_i.out,
+     namespace_namespace_typedef_i-c++14.out,
+     namespace_namespace_typedef_i.out, namespace_typedef_i.out,
+     namespace_using_i.out, reinterpret_cast_+pv.out, set_c++14.out,
+     set_c++17.out, set_c++20.out, set_c18.out, set_c95.out,
+     static_cast_+i.out, run_test.sh, 2c_typedef_i.test, cast_+i.test,
+     const_cast_+pi.test, declare_+f_v.test, declare_2+f_v.test,
+     declare_=+i.test, declare_=i-c.test, declare_=i.test, declare_f+k_v.test,
+     declare_i=+.test, declare_o2=_exclam_b.test, define_2=_i.test,
+     define_=_i.test, define_=c_i.test, define_=sc_i.test,
+     define_k_declare_k.test, define_k_define_k_explain_k+k.test,
+     define_k_explain_pmki.test, define_namespace_=c_i.test,
+     dynamic_cast_+pc.test, explain_+i-c.test, explain_+o_eq2_rcki_b.test,
+     explain_+o_eq_rck_rk.test, explain_cast_=pmi.test,
+     explain_cast_pmc=i.test, explain_const_cast_+pi.test,
+     explain_dynamic_cast_p+c+.test, explain_f+_v.test, explain_i+.test,
+     explain_i2+.test, explain_ki+.test, explain_static_cast_i+.test,
+     k_namespace_typedef_i.test, namespace_+typedef_i-c++14.test,
+     namespace_+typedef_i.test, namespace_c_typedef_i.test,
+     namespace_k_typedef_i.test, namespace_n_typedef_i.test,
+     namespace_namespace_typedef_i-c++14.test,
+     namespace_namespace_typedef_i.test, namespace_typedef_i.test,
+     namespace_using_i.test, reinterpret_cast_+pv.test, set_c++14.test,
+     set_c++17.test, set_c++20.test, set_c18.test, set_c95.test,
+     static_cast_+i.test, typedef_i+.test: Added C++ scoped name support and
+     partial namespace support.
+
+2019-02-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_operator.c, slist.c: Removed unnecessary uses of _GL_INLINE_HEADER_END.
+
+2019-02-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, slist.c, slist.h, util.c: Some slist API renaming.
+
+2019-02-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, slist.c, slist.h: Made some slist functions more explicit about
+     referring to the head.
+   * parser.y: Fixed comment.
+
+2019-02-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * slist.h: Put "next" first.
+
+2019-02-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, util.c, util.h: Added STATIC_CAST; using CONST_CAST more.
+
+2019-02-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * set.c, set.out, set_options.out: Removed "options" from "set" output.
+
+2019-02-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.c, util.h: Now using C99 VLAs instead of FREE_STRBUF_LATER.
+
+2019-01-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Reworked CONFIGURATION FILE section: added that "set" can also be
+     used.
+
+2019-01-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h: Removed #include <stddef.h> -- not needed.
+
+2019-01-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, arg-nonnull.h, c++defs.h, errno.in.h, getdelim.c,
+     getline.c, getopt-cdefs.in.h, getopt-core.h, getopt-ext.h,
+     getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c,
+     getopt_int.h, gettext.h, limits.in.h, stdarg.in.h, stdbool.in.h,
+     stddef.in.h, stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h, strsep.c,
+     sys_types.in.h, sysexits.in.h, unistd.in.h, warn-on-use.h, 00gnulib.m4,
+     absolute-header.m4, errno_h.m4, extensions.m4, extern-inline.m4,
+     getdelim.m4, getline.m4, getopt.m4, gnulib-cache.m4, gnulib-common.m4,
+     gnulib-comp.m4, gnulib-tool.m4, include_next.m4, limits-h.m4, longlong.m4,
+     multiarch.m4, nocrash.m4, off_t.m4, ssize_t.m4, stdarg.m4, stdbool.m4,
+     stddef_h.m4, stdint.m4, stdio_h.m4, stdlib_h.m4, string_h.m4, strsep.m4,
+     sys_types_h.m4, sysexits.m4, unistd_h.m4, warn-on-use.m4, wchar_t.m4,
+     wint_t.m4: Updaed Gnulib.
+
+2018-12-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, c_type.c, cdecl.c, color.h, errors.c, parser.y: Renamed
+     diagnostics -> print.
+
 2018-12-13  Paul J. Lucas <paul@lucasmail.org>
 
    * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_type.c,
