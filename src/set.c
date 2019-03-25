@@ -112,7 +112,7 @@ void set_option( char const *opt ) {
   printf( "  %sgraphs\n", opt_graph == GRAPH_DI ? " di" : opt_graph == GRAPH_TRI ? "tri" : " no" );
   printf( "   %sinteractive\n", opt_interactive ? "  " : "no" );
   printf( "     lang=%s\n", C_LANG_NAME() );
-  printf( "   %sprompt\n", prompt[0][0] ? "  " : "no" );
+  printf( "   %sprompt\n", prompt[0][0] != '\0' ? "  " : "no" );
   printf( "   %ssemicolon\n", opt_semicolon ? "  " : "no" );
 #ifdef YYDEBUG
   printf( "  %syydebug\n", yydebug ? "  " : "no" );
