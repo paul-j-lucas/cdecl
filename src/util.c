@@ -151,8 +151,7 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
 
 void* free_later( void *p ) {
   assert( p != NULL );
-  slist_push_tail( &free_later_list, p );
-  return p;
+  return slist_push_tail( &free_later_list, p );
 }
 
 void free_now( void ) {
@@ -325,7 +324,7 @@ void path_append( char *path, char const *component ) {
   assert( component != NULL );
 
   size_t const len = strlen( path );
-  if ( len ) {
+  if ( len > 0 ) {
     path += len - 1;
     if ( *path != '/' )
       *++path = '/';
@@ -343,7 +342,7 @@ char* chrcpy_end( char *dst, char c ) {
 char* strcpy_end( char *dst, char const *src ) {
   assert( dst != NULL );
   assert( src != NULL );
-  while ( (*dst++ = *src++) )
+  while ( (*dst++ = *src++) != '\0' )
     /* empty */;
   return dst - 1;
 }
