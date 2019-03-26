@@ -21,6 +21,9 @@
 #ifndef cdecl_typedefs_H
 #define cdecl_typedefs_H
 
+// standard
+#include <stdint.h>                     /* for uint64_t */
+
 /**
  * @file
  * Declares many `typedef` definitions in one file.

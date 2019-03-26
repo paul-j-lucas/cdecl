@@ -36,7 +36,6 @@
 // standard
 #include <stdbool.h>
 #include <inttypes.h>                   /* for PRIX64, etc. */
-#include <stdint.h>
 
 /// @endcond
 
