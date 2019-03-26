@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.0.1
+
+** Fixed underfined uint64_t
+Fixed a compile-time error on some platforms.
+
+
 * Changes in Cdecl 6.0
 
 ** Added C++ scoped name support
