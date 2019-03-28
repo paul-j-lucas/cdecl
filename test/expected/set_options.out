@@ -1,10 +1,17 @@
 
 Valid set options (and command line equivalents, if any) are:
-   debug (-d, --debug) / nodebug
-   digraphs (-2, --digraphs) / trigraphs (-3, --trigraphs) / nographs
-   interactive (-i, --interactive) / nointeractive
-   prompt / noprompt (-q, --quiet)
-   semicolon / nosemicolon (-s, --no-semicolon)
+     debug        -d | --debug
+   nodebug
+   digraphs       -2 | --digraphs
+  trigraphs       -3 | --trigraphs
+   nographs
+     interactive  -i | --interactive
+   nointeractive
+     <lang>       -x | --language
+     prompt
+   noprompt       -q | --quiet
+     semicolon
+   nosemicolon    -s | --no-semicolon
 
 Current set option values are:
    nodebug
