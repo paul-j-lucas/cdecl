@@ -39,7 +39,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define IF_OPT(LITERAL,...) BLOCK( \
+#define IF_IS_OPT_DO(LITERAL,...) BLOCK( \
   if ( strcmp( opt, (LITERAL) ) == 0 ) { __VA_ARGS__ return; } )
 
 /// @endcond
@@ -66,19 +66,19 @@ void set_option( c_loc_t const *loc, char const *opt ) {
     }
 
 #ifdef ENABLE_CDECL_DEBUG
-    IF_OPT(    "debug",     opt_debug = true;             );
-    IF_OPT(  "nodebug",     opt_debug = false;            );
+    IF_IS_OPT_DO(    "debug",     opt_debug = true;             );
+    IF_IS_OPT_DO(  "nodebug",     opt_debug = false;            );
 #endif /* ENABLE_CDECL_DEBUG */
-    IF_OPT(  "digraphs",    opt_graph = GRAPH_DI;         );
-    IF_OPT( "trigraphs",    opt_graph = GRAPH_TRI;        );
-    IF_OPT(  "nographs",    opt_graph = GRAPH_NONE;       );
-    IF_OPT(    "prompt",    cdecl_prompt_enable( true );  );
-    IF_OPT(  "noprompt",    cdecl_prompt_enable( false ); );
-    IF_OPT(    "semicolon", opt_semicolon = true;         );
-    IF_OPT(  "nosemicolon", opt_semicolon = false;        );
+    IF_IS_OPT_DO(  "digraphs",    opt_graph = GRAPH_DI;         );
+    IF_IS_OPT_DO( "trigraphs",    opt_graph = GRAPH_TRI;        );
+    IF_IS_OPT_DO(  "nographs",    opt_graph = GRAPH_NONE;       );
+    IF_IS_OPT_DO(    "prompt",    cdecl_prompt_enable( true );  );
+    IF_IS_OPT_DO(  "noprompt",    cdecl_prompt_enable( false ); );
+    IF_IS_OPT_DO(    "semicolon", opt_semicolon = true;         );
+    IF_IS_OPT_DO(  "nosemicolon", opt_semicolon = false;        );
 #ifdef YYDEBUG
-    IF_OPT(    "yydebug",   yydebug = true;               );
-    IF_OPT(  "noyydebug",   yydebug = false;              );
+    IF_IS_OPT_DO(    "yydebug",   yydebug = true;               );
+    IF_IS_OPT_DO(  "noyydebug",   yydebug = false;              );
 #endif /* YYDEBUG */
 
     if ( strcmp( opt, "options" ) != 0 )
