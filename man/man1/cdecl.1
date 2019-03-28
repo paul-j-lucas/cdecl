@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "March 20, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "March 28, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1133,7 +1133,7 @@ language:
 .cS
 cdecl> declare signal as function \\
 cdecl+     returning pointer to function returning void
-void (*signal())()
+void (*signal())();
 .cE
 The function declaration that results has two sets of empty parentheses.
 The author of such a function might wonder where to put the parameters:
