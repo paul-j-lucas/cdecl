@@ -146,7 +146,7 @@ TEST=$1
 
 ########## Initialize #########################################################
 
-if [ "$COLOR_TESTS" = yes ]
+if [ "$COLOR_TESTS" = yes -a -t 1 ]
 then
   COLOR_BLUE="[1;34m"
   COLOR_GREEN="[0;32m"
