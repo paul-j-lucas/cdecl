@@ -56,7 +56,7 @@ _GL_INLINE_HEADER_BEGIN
 #define BLOCK(...)                do { __VA_ARGS__ } while (0)
 
 /** Explicit C version of C++'s `const_cast`. */
-#define CONST_CAST(T,EXPR)        ((T)(EXPR))
+#define CONST_CAST(T,EXPR)        ((T)(uintptr_t)(EXPR))
 
 /** Frees the given memory. */
 #define FREE(PTR)                 free( CONST_CAST( void*, (PTR) ) )
