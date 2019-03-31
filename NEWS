@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.0.2
+
+** Added strndup()
+Added Gnulib's strndup() for systems that don't have it.
+
+
 * Changes in Cdecl 6.0.1
 
 ** Fixed undefined uint64_t
