@@ -1,3 +1,35 @@
+2019-03-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, util.h: Fixed "cast to pointer from integer of different size"
+     warning.
+   * NEWS, configure.ac: Updated version.
+   * lib/Makefile.am, _Noreturn.h, gettext.h, stdio.in.h, stdlib.in.h,
+     strndup.c, strnlen.c, unistd.in.h, getdelim.m4, getline.m4,
+     gnulib-cache.m4, gnulib-common.m4, gnulib-comp.m4, stdlib_h.m4,
+     strndup.m4, strnlen.m4: Updaed Gnulib; added strndup().
+
+2019-03-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * run_test.sh: Now checking if connected to a terminal for color tests.
+
+2019-03-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Better English.
+   * cdecl.1: Added missing ';'.
+   * set.c: s/IF_OPT/IF_IS_OPT_DO/
+
+2019-03-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: Fixed typo.
+   * NEWS, configure.ac: Updated version to 6.0.1.
+   * c_type.h, typedefs.h: Fixes uint64_t being undefined.
+
+2019-03-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c: Explicit "if" conditions.
+   * parser.y, set.c: The "set" command now prints the ^ for an unknown option.
+   * set.c: Made comparison explicit.
+
 2019-03-24  Paul J. Lucas <paul@lucasmail.org>
 
    * AUTHORS, Doxyfile, Makefile.am, NEWS, configure.ac, man/Makefile.am,
