@@ -78,9 +78,9 @@ most notably:
 * Support for `inline` function and variable declarations.
 * Support for `typedef` declarations.
 * Support for variadic function arguments.
-* Support for C++ namespaces and scoped names.
 * Support for C++
   `mutable` data members,
+  namespaces and scoped names,
   new-style casts,
   `throw`,
   overloaded operators,
