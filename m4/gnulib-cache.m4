@@ -45,6 +45,7 @@
 #  stdbool \
 #  stddef \
 #  stdint \
+#  strndup \
 #  strsep \
 #  sysexits
 
@@ -58,6 +59,7 @@ gl_MODULES([
   stdbool
   stddef
   stdint
+  strndup
   strsep
   sysexits
 ])
