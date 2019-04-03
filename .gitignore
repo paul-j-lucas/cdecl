@@ -11,11 +11,13 @@ Makefile
 /autom4te.cache
 /cdecl-*.tar.gz
 /compile
+/confdefs.h
 /config.guess
 /config.log
 /config.status
 /config.sub
 /configure
+/conftest*
 /depcomp
 /docs
 /install-sh
