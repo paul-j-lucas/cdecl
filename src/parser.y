@@ -373,7 +373,7 @@ static void print_type_gibberish( c_typedef_t const *type ) {
     // so we have to wrap it in a scoped declaration, one of: class, namespace,
     // struct, or union.
     //
-    if ( (sn_type & T_NAMESPACE) == 0 || opt_lang >= LANG_CPP_17 ) {
+    if ( (sn_type & T_NAMESPACE) == T_NONE || opt_lang >= LANG_CPP_17 ) {
       //
       // All C++ versions support nested scope declarations, e.g.:
       //
@@ -411,7 +411,7 @@ static void print_type_gibberish( c_typedef_t const *type ) {
       FPUTS( " }", fout );
   }
 
-  if ( opt_semicolon && (sn_type & T_NAMESPACE) == 0 )
+  if ( opt_semicolon && (sn_type & T_NAMESPACE) == T_NONE )
     FPUTC( ';', fout );
   FPUTC( '\n', fout );
 }
@@ -446,7 +446,7 @@ static bool print_type_visitor( c_typedef_t const *type, void *data ) {
  * @param loc A pointer to the source location of the qualifier.
  */
 static void qualifier_push( c_type_id_t qualifier, c_loc_t const *loc ) {
-  assert( (qualifier & ~T_MASK_QUALIFIER) == 0 );
+  assert( (qualifier & ~T_MASK_QUALIFIER) == T_NONE );
   assert( loc != NULL );
 
   c_qualifier_t *const qual = MALLOC( c_qualifier_t, 1 );
