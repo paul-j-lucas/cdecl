@@ -357,7 +357,7 @@ c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data ) {
   assert( visitor != NULL );
   rb_visitor_data_t vd = { visitor, data };
   rb_node_t const *const rb = rb_tree_visit( typedefs, &rb_visitor, &vd );
-  return rb ? rb_type_data( c_typedef_t const*, rb ) : NULL;
+  return rb != NULL ? rb_type_data( c_typedef_t const*, rb ) : NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
