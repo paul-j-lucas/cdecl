@@ -317,7 +317,7 @@ c_typedef_t const* c_typedef_find( c_sname_t const *sname ) {
   type.ast = &ast;
 
   rb_node_t const *const rb_found = rb_tree_find( typedefs, &type );
-  return rb_found ? rb_type_data( c_typedef_t const*, rb_found ) : NULL;
+  return rb_found != NULL ? rb_type_data( c_typedef_t const*, rb_found ) : NULL;
 }
 
 void c_typedef_init( void ) {
