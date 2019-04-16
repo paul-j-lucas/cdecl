@@ -1,3 +1,24 @@
+2019-04-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * _Noreturn.h: Updated Gnulib.
+   * NEWS, configure.ac, c_type.c, explain_oo_amper_rk_pk.out,
+     explain_oo_minus2_i_rk.out, explain_oo_minus_rk_rk.out,
+     explain_oo_plus2_i_rk.out, explain_oo_plus_rk_rk.out,
+     explain_oo_star_rk_rk.out, explain_oyf.out, explain_voyf.out,
+     explain_yf.out, explain_yo_amper_rk_pk.out, explain_yo_minus2_i_rk.out,
+     explain_yo_minus_rk_rk.out, explain_yo_plus2_i_rk.out,
+     explain_yo_plus_rk_rk.out, explain_yo_star_rk_rk.out: Final or override
+     now implies virtual.
+
+2019-04-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c: Made test explicit.
+   * c_typedef.c: Made test explicit.
+
+2019-04-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: s/0/T_NONE/
+
 2019-03-30  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, util.h: Fixed "cast to pointer from integer of different size"
