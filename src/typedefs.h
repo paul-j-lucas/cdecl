@@ -83,24 +83,24 @@ enum c_mode {
   MODE_GIBBERISH_TO_ENGLISH             ///< Decipher gibberish into English.
 };
 
+typedef struct c_array      c_array_t;
 typedef struct c_ast        c_ast_t;
 typedef struct slist_node   c_ast_arg_t;    ///< AST-specific type alias.
 typedef unsigned            c_ast_depth_t;  ///< How many `()` deep.
 typedef unsigned            c_ast_id_t;     ///< Unique AST node id.
 typedef struct c_ast_pair   c_ast_pair_t;
-typedef struct c_array      c_array_t;
 typedef struct c_block      c_block_t;
+typedef struct c_builtin    c_builtin_t;
 typedef enum   c_check      c_check_t;
+typedef struct c_ecsu       c_ecsu_t;
+typedef struct c_func       c_func_t;
 typedef enum   c_graph      c_graph_t;
 typedef enum   c_init       c_init_t;
+typedef struct c_keyword    c_keyword_t;
+typedef enum   c_kind       c_kind_t;
 typedef struct c_lang       c_lang_t;
 typedef unsigned            c_lang_id_t;    ///< Languages bitmask.
 typedef struct c_loc        c_loc_t;
-typedef struct c_builtin    c_builtin_t;
-typedef struct c_ecsu       c_ecsu_t;
-typedef struct c_func       c_func_t;
-typedef struct c_keyword    c_keyword_t;
-typedef enum   c_kind       c_kind_t;
 typedef enum   c_mode       c_mode_t;
 typedef struct c_oper       c_oper_t;
 typedef enum   c_oper_id    c_oper_id_t;
