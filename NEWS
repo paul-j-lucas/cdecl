@@ -10,6 +10,15 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.1
+
+** Final or override now implies virtual
+Either final or override in a function's signature now implies it's virtual:
+
+    cdecl> explain void f() override
+    declare f as overridden virtual member function returning void
+
+
 * Changes in Cdecl 6.0.2
 
 ** Added strndup()

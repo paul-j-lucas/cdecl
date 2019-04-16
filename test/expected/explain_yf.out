@@ -1,1 +1,1 @@
-declare f as final member function returning void
+declare f as final virtual member function returning void

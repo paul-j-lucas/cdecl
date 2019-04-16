@@ -467,6 +467,20 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     space = true;
   }
 
+  // Special cases.
+  if ( (type_id & T_CHAR) == T_NONE ) {
+    // Explicit "signed" isn't needed for any type except char.
+    type_id &= ~T_SIGNED;
+  }
+  if ( (type_id & (T_UNSIGNED | T_SHORT | T_LONG | T_LONG_LONG)) != T_NONE ) {
+    // Explicit "int" isn't needed when at least one int modifier is present.
+    type_id &= ~T_INT;
+  }
+  if ( (type_id & (T_FINAL | T_OVERRIDE)) != T_NONE ) {
+    // Either "final" or "overrride" implies "virtual".
+    type_id |= T_VIRTUAL;
+  }
+
   static c_type_id_t const C_STORAGE_CLASS[] = {
 
     // This is first so we get named like "static int".
@@ -479,8 +493,6 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     T_STATIC,
     T_THREAD_LOCAL,
     T_TYPEDEF,
-    T_PURE_VIRTUAL,
-    T_VIRTUAL,
 
     // This is second so we get names like "static inline".
     T_INLINE,
@@ -488,10 +500,14 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     // These are third so we get names like "static inline final".
     T_OVERRIDE,
     T_FINAL,
+
+    // These are fourth so we get names like "overridden virtual".
+    T_PURE_VIRTUAL,
+    T_VIRTUAL,
     T_NOEXCEPT,
     T_THROW,
 
-    // This is fourth so we get names like "static inline constexpr".
+    // These are fifth so we get names like "static inline constexpr".
     T_CONSTEVAL,
     T_CONSTEXPR,
   };
@@ -538,25 +554,9 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     T_UNION,
     T_CLASS,
   };
-
-  if ( (type_id & T_CHAR) == T_NONE ) {
-    //
-    // Special case: explicit "signed" isn't needed for any type except char.
-    //
-    type_id &= ~T_SIGNED;
-  }
-
-  if ( (type_id & (T_UNSIGNED | T_SHORT | T_LONG | T_LONG_LONG)) != T_NONE ) {
-    //
-    // Special case: explicit "int" isn't needed when at least one int modifier
-    // is present.
-    //
-    type_id &= ~T_INT;
-  }
-
   C_TYPE_NAME_CAT( &name, type_id, C_TYPE, is_error, ' ', &space );
 
-  // Special cases.
+  // Really special cases.
   if ( (type_id & T_NAMESPACE) != T_NONE )
     name = strcpy_sep( name, L_NAMESPACE, ' ', &space );
   else if ( (type_id & T_SCOPE) != T_NONE )

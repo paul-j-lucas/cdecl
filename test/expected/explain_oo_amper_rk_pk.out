@@ -1,1 +1,1 @@
-declare & as overridden member operator (reference to S) returning pointer to S
+declare & as overridden virtual member operator (reference to S) returning pointer to S
