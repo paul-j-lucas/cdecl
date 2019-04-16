@@ -156,16 +156,27 @@ static char const *const TYPEDEFS_STDATOMIC_H[] = {
 };
 
 /**
+ * Types from C++11.
+ *
+ * @hideinitializer
+ */
+static char const *const TYPEDEFS_CPP_11[] = {
+  "namespace std { typedef void *nullptr_t; }",
+
+  NULL
+};
+
+/**
  * Types from `compare` for C++20 `operator<=>()`.
  *
  * @hideinitializer
  */
 static char const *const TYPEDEFS_CPP_20[] = {
-  "typedef struct partial_ordering  partial_ordering",
-  "typedef struct strong_equality   strong_equality",
-  "typedef struct strong_ordering   strong_ordering",
-  "typedef struct weak_equality     weak_equality",
-  "typedef struct weak_ordering     weak_ordering",
+  "namespace std { typedef struct partial_ordering  partial_ordering; }",
+  "namespace std { typedef struct strong_equality   strong_equality;  }",
+  "namespace std { typedef struct strong_ordering   strong_ordering;  }",
+  "namespace std { typedef struct weak_equality     weak_equality;    }",
+  "namespace std { typedef struct weak_ordering     weak_ordering;    }",
 
   NULL
 };
@@ -333,14 +344,15 @@ void c_typedef_init( void ) {
     opt_debug = false;
 #endif /* ENABLE_CDECL_DEBUG */
     //
-    // Temporarily set the language to the latest C version to allow all built-
-    // in typedefs.
+    // Temporarily set the language to the latest C++ version to allow all
+    // built-in typedefs.
     //
     c_lang_id_t const prev_lang = opt_lang;
-    opt_lang = LANG_C_NEW;
+    opt_lang = LANG_CPP_NEW;
 
     c_typedef_parse_builtins( TYPEDEFS_STDINT_H );    // must go first
     c_typedef_parse_builtins( TYPEDEFS_STDATOMIC_H );
+    c_typedef_parse_builtins( TYPEDEFS_CPP_11 );
     c_typedef_parse_builtins( TYPEDEFS_CPP_20 );
     c_typedef_parse_builtins( TYPEDEFS_MISC );
 
