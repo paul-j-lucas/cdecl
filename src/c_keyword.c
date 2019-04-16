@@ -160,7 +160,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_NAMESPACE,        Y_NAMESPACE,        T_NAMESPACE,    LANG_CPP_ALL      },
   { L_NEW,              Y_NEW,              T_NONE,         LANG_CPP_ALL      },
   { L_NOT,              Y_NOT,              T_NONE,         LANG_CPP_ALL      },
-  { L_NOT_EQ,           Y_NOT_EQ,           T_NONE,         LANG_CPP_ALL      },
+  { L_NOT_EQ,           Y_EXCLAM_EQ,        T_NONE,         LANG_CPP_ALL      },
   { L_OPERATOR,         Y_OPERATOR,         T_NONE,         LANG_CPP_ALL      },
   { L_OR,               Y_OR,               T_NONE,         LANG_CPP_ALL      },
   { L_OR_EQ,            Y_OR_EQ,            T_NONE,         LANG_CPP_ALL      },

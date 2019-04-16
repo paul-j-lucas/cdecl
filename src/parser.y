@@ -569,7 +569,7 @@ static void yyerror( char const *msg ) {
 %token  <oper_id>   '|'
 %token              '}'
 %token  <oper_id>   '~'
-%token  <oper_id>   Y_NOT_EQ      "!="
+%token  <oper_id>   Y_EXCLAM_EQ   "!="
 %token  <oper_id>   Y_PERCENT_EQ  "%="
 %token  <oper_id>   Y_AMPER2      "&&"
 %token  <oper_id>   Y_AMPER_EQ    "&="

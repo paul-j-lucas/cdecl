@@ -676,7 +676,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 "::"{S}*"*"   { SET_TOKEN; return Y_COLON2_STAR     ; }
 "::"          { SET_TOKEN; return Y_COLON2          ; }
 
-"!="          { SET_TOKEN; return Y_NOT_EQ          ; }
+"!="          { SET_TOKEN; return Y_EXCLAM_EQ       ; }
 "%="          { SET_TOKEN; return Y_PERCENT_EQ      ; }
 "&&"          { SET_TOKEN; return Y_AMPER2          ; }
 "&="          { SET_TOKEN; return Y_AMPER_EQ        ; }
