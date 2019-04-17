@@ -393,7 +393,7 @@ char const* home_dir( void );
  */
 CDECL_UTIL_INLINE bool is_blank_line( char const *s ) {
   s += strspn( s, " \t\r\n" );
-  return !*s;
+  return *s == '\0';
 }
 
 /**
