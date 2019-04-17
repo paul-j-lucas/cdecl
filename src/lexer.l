@@ -166,10 +166,24 @@ struct keyword {
 };
 typedef struct keyword keyword_t;
 
-/// @cond DOXYGEN_IGNORE
+/**
+ * Specify that the previosuly given literal is a synonym for \a C_KEYWORD.
+ *
+ * @param C_KEYWORD The C/C++ keyword literal (`L_xxx`) that is the synonym.
+ * @param ALLOW If `true, allow this synonym when explaining C/C++.
+ *
+ * @hideinitializer
+ */
 #define C_SYN(C_KEYWORD,ALLOW)  0, C_KEYWORD, ALLOW
+
+/**
+ * Specify that the previosuly given literal maps to Bison tokan \a T.
+ *
+ * @param T The Bison token ID (`Y_xxx`).
+ *
+ * @hideinitializer
+ */
 #define TOKEN(T)                T, NULL,      false
-/// @endcond
 
 /**
  * All cdecl keywords (that are not C/C++ keywords).
@@ -242,11 +256,11 @@ static keyword_t const CDECL_KEYWORDS[] = {
 };
 
 /**
- * Hyphenated English keyword-to-literal mapping.
+ * Hyphenated English-literal-to-C-literal mapping.
  */
 struct hyphenated {
-  char const *token;                    ///< Hyphenated English literal.
-  char const *literal;                  ///< C language literal it maps to.
+  char const *e_literal;                ///< Hyphenated English literal.
+  char const *c_literal;                ///< C language literal it maps to.
 };
 typedef struct hyphenated hyphenated_t;
 
@@ -312,11 +326,11 @@ static keyword_t const* cdecl_keyword_find( char const *s ) {
  */
 static char const* hyphenated_find( char const *s ) {
   assert( s != NULL );
-  char const *literal = NULL;
-  for ( hyphenated_t const *h = HYPHENATED_KEYWORDS; h->token; ++h ) {
-    if ( strcmp( s, h->token ) == 0 ) {
-      literal = h->literal;
-      if ( literal == L__NORETURN && C_LANG_IS_CPP() ) {
+  char const *c_literal = NULL;
+  for ( hyphenated_t const *h = HYPHENATED_KEYWORDS; h->e_literal; ++h ) {
+    if ( strcmp( s, h->e_literal ) == 0 ) {
+      c_literal = h->c_literal;
+      if ( c_literal == L__NORETURN && C_LANG_IS_CPP() ) {
         //
         // _Noreturn is a special case. In C11, it's "_Noreturn"; in C++11,
         // it's "noreturn".
@@ -324,12 +338,12 @@ static char const* hyphenated_find( char const *s ) {
         // Depending on the current language, we map "non-returning" either to
         // "_Noreturn" or "noreturn".
         //
-        literal = L_NORETURN;
+        c_literal = L_NORETURN;
       }
       break;
     }
   } // for
-  return literal;
+  return c_literal;
 }
 
 /**
