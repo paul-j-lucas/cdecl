@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "March 28, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 22, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -135,12 +135,17 @@ is one of
 .BR cast ,
 .BR const ,
 .BR declare ,
+.BR define ,
 .BR dynamic ,
 .BR explain ,
 .BR help ,
+.BR namespace ,
 .BR reinterpret ,
+.BR set ,
+.BR static ,
+.BR typedef ,
 or
-.BR static :
+.BR using :
 .cS
 $ cdecl declare p as pointer to array 4 of int
 int (*p)[4];

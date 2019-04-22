@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.2
+
+** More commands as first argument
+More commands (define, namespace, set, static, typedef, and using) are now
+recognized as such when they are the first argument.
+
+
 * Changes in Cdecl 6.1
 
 ** Final or override now implies virtual

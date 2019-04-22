@@ -69,7 +69,7 @@ extern void         yyrestart( FILE* );
 
 // local functions
 static void         cdecl_cleanup( void );
-static bool         is_command( char const* );
+static bool         is_command( char const*, bool );
 static bool         parse_argv( int, char const*[] );
 static bool         parse_command_line( char const*, int, char const*[] );
 static bool         parse_files( int, char const*[] );
@@ -107,26 +107,49 @@ int main( int argc, char const **argv ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Checks whether \a s is a cdecl command: `cast`, `declare`, `explain`, etc.
+ * Checks whether \a s is a cdecl command.
  *
  * @param s The null-terminated string to check.
+ * @param allow_any_command If `true`, allow any command; if `false`, allow
+ * only specific commands.
  * @return Returns `true` only if \a s is a command.
  */
-static bool is_command( char const *s ) {
-  static char const *const COMMANDS[] = {
-    L_CAST,
-    L_CONST,                            // cast ...
-    L_DECLARE,
-    L_DYNAMIC,                          // cast ...
-    L_EXPLAIN,
-    L_HELP,
-    L_REINTERPRET,                      // cast ...
-    L_STATIC,                           // cast ...
-    NULL
+static bool is_command( char const *s, bool allow_any_command ) {
+  struct argv_command {
+    char const *keyword;                // The keyword literal.
+    bool        allow_as_program_name;  // Allow as program name?
   };
-  for ( char const *const *c = COMMANDS; *c != NULL; ++c )
-    if ( strcmp( *c, s ) == 0 )
+  typedef struct argv_command argv_command_t;
+
+  //
+  // Subset of cdecl commands (see CDECL_COMMANDS in autocomplete.c) that can
+  // either be the program name or the first command-line argument.
+  //
+  static argv_command_t const ARGV_COMMANDS[] = {
+    { L_CAST,         true  },
+    { L_CONST,        false },          // const cast
+    { L_DECLARE,      true  },
+    { L_DEFINE,       false },
+    { L_DYNAMIC,      false },          // dynamic cast
+  //  L_EXIT                            // silly if allowed
+    { L_EXPLAIN,      true  },
+    { L_HELP,         false },
+    { L_NAMESPACE,    false },
+  //  L_QUIT                            // silly if allowed
+    { L_REINTERPRET,  false },          // reinterpret cast
+    { L_SET,          false },
+    { L_STATIC,       false },          // static cast
+    { L_TYPEDEF,      false },
+    { L_USING,        false },
+    { NULL,           false },
+  };
+
+  for ( argv_command_t const *c = ARGV_COMMANDS; c->keyword != NULL; ++c ) {
+    if ( (allow_any_command || c->allow_as_program_name) &&
+         strcmp( c->keyword, s ) == 0 ) {
       return true;
+    }
+  } // for
   return false;
 }
 
@@ -150,9 +173,13 @@ static void cdecl_cleanup( void ) {
 static bool parse_argv( int argc, char const *argv[] ) {
   if ( argc == 0 )                      // cdecl
     return parse_stdin();
-  if ( is_command( me ) )               // {cast|declare|explain} arg ...
+  if ( is_command( me, false ) )        // {cast|declare|explain} arg ...
     return parse_command_line( me, argc, argv );
-  if ( is_command( argv[0] ) )          // cdecl {cast|declare|explain} arg ...
+  //
+  // Note that options_init() adjusts argv such that argv[0] becomes the first
+  // argument (and no longer the program name).
+  //
+  if ( is_command( argv[0], true ) )    // cdecl <command>
     return parse_command_line( NULL, argc, argv );
 
   // cdecl '{cast|declare|explain} arg ...'
@@ -170,7 +197,7 @@ static bool parse_argv( int argc, char const *argv[] ) {
       continue;
     }
 
-    if ( is_command( first_word ) ) {
+    if ( is_command( first_word, true ) ) {
       //
       // Now that we've split off the command, set the argument to the
       // remaining characters.  E.g., given:
