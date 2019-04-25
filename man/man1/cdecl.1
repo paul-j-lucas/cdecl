@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 22, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 24, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -573,12 +573,15 @@ within the scope of
 .I s-name
 thus declaring a type within that scope.
 .TP
-.BR set " [" \f2option\fP "] | " "set options"
+.BR set " [" \f2option\fP "] | " "set options" " | " set " \f2lang\fP"
 In the first form,
 sets a particular option, if given;
 if not,
 it's equivalent to the second form
 that prints the current value of all options.
+In the third form,
+sets the current language to
+.IR lang .
 .TP
 .BR show " { " \f2s-name\fP " | " all " | " predefined " | " user " } [" typedef ]
 Shows the definition for a previously defined type
@@ -691,7 +694,11 @@ and
 The only punctuation characters used in pseudo-English
 are parentheses around
 and commas between
-function (or block) arguments.
+function,
+operator,
+or
+block
+arguments.
 .P
 .I English
 is one of:
