@@ -67,6 +67,9 @@ parser.output: parser.y
 	@rm -f parser.tab.c
 
 install-exec-hook:
-	cd "$(DESTDIR)$(bindir)" && $(LN_S) cdecl c++decl
+	$(LN_S) cdecl "$(DESTDIR)$(bindir)/c++decl"
+
+uninstall-hook:
+	rm -f "$(DESTDIR)$(bindir)/c++decl"
 
 # vim:set noet sw=8 ts=8:
