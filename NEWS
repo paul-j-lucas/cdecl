@@ -97,7 +97,10 @@ now issue warnings, e.g.:
     int class;
 
 ** Operator overloading
-Added support for composing and deciphering C++ overloaded operators.
+Added support for composing and deciphering C++ overloaded operators:
+
+    c++decl> explain bool operator()() const override
+    declare () as overridden virtual constant member operator returning bool
 
 ** Fixed const/volatile reference
 Declarations of the form:
