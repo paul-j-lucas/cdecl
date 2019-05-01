@@ -75,12 +75,17 @@ typedef unsigned long size_t;
 typedef uint32_t socklen_t;
 typedef long ssize_t;
 namespace std { typedef enum byte byte; }
+namespace std { typedef class exception exception; }
 namespace std { typedef void *nullptr_t; }
 namespace std { typedef struct partial_ordering partial_ordering; }
+namespace std { typedef class string string; }
 namespace std { typedef struct strong_equality strong_equality; }
 namespace std { typedef struct strong_ordering strong_ordering; }
+namespace std { typedef class u16string u16string; }
+namespace std { typedef class u32string u32string; }
 namespace std { typedef struct weak_equality weak_equality; }
 namespace std { typedef struct weak_ordering weak_ordering; }
+namespace std { typedef class wstring wstring; }
 typedef int64_t suseconds_t;
 typedef int64_t time_t;
 typedef uint32_t uid_t;

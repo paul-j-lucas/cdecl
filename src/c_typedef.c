@@ -156,12 +156,27 @@ static char const *const TYPEDEFS_STDATOMIC_H[] = {
 };
 
 /**
+ * Types from C++.
+ *
+ * @hideinitializer
+ */
+static char const *const TYPEDEFS_CPP[] = {
+  "namespace std { typedef class exception  exception;  }",
+  "namespace std { typedef class string     string;     }",
+  "namespace std { typedef class wstring    wstring;    }",
+
+  NULL
+};
+
+/**
  * Types from C++11.
  *
  * @hideinitializer
  */
 static char const *const TYPEDEFS_CPP_11[] = {
-  "namespace std { typedef void *nullptr_t; }",
+  "namespace std { typedef void            *nullptr_t;  }",
+  "namespace std { typedef class u16string  u16string;  }",
+  "namespace std { typedef class u32string  u32string;  }",
 
   NULL
 };
@@ -370,6 +385,7 @@ void c_typedef_init( void ) {
 
     c_typedef_parse_builtins( TYPEDEFS_STDINT_H );    // must go first
     c_typedef_parse_builtins( TYPEDEFS_STDATOMIC_H );
+    c_typedef_parse_builtins( TYPEDEFS_CPP );
     c_typedef_parse_builtins( TYPEDEFS_CPP_11 );
     c_typedef_parse_builtins( TYPEDEFS_CPP_17 );
     c_typedef_parse_builtins( TYPEDEFS_CPP_20 );
