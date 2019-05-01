@@ -360,6 +360,13 @@ void c_typedef_init( void ) {
     //
     c_lang_id_t const prev_lang = opt_lang;
     opt_lang = LANG_CPP_NEW;
+#ifdef YYDEBUG
+    //
+    // Temporarily turn off Bison debug output for built-in typedefs.
+    //
+    int const prev_yydebug = yydebug;
+    yydebug = 0;
+#endif /* YYDEBUG */
 
     c_typedef_parse_builtins( TYPEDEFS_STDINT_H );    // must go first
     c_typedef_parse_builtins( TYPEDEFS_STDATOMIC_H );
@@ -372,6 +379,9 @@ void c_typedef_init( void ) {
     opt_debug = prev_debug;
 #endif /* ENABLE_CDECL_DEBUG */
     opt_lang = prev_lang;
+#ifdef YYDEBUG
+    yydebug = prev_yydebug;
+#endif /* YYDEBUG */
   }
 
   user_defined = true;
