@@ -167,7 +167,18 @@ static char const *const TYPEDEFS_CPP_11[] = {
 };
 
 /**
- * Types from `compare` for C++20 `operator<=>()`.
+ * Types from C++17.
+ *
+ * @hideinitializer
+ */
+static char const *const TYPEDEFS_CPP_17[] = {
+  "namespace std { typedef enum byte byte; }",
+
+  NULL
+};
+
+/**
+ * Types from C++20.
  *
  * @hideinitializer
  */
@@ -353,6 +364,7 @@ void c_typedef_init( void ) {
     c_typedef_parse_builtins( TYPEDEFS_STDINT_H );    // must go first
     c_typedef_parse_builtins( TYPEDEFS_STDATOMIC_H );
     c_typedef_parse_builtins( TYPEDEFS_CPP_11 );
+    c_typedef_parse_builtins( TYPEDEFS_CPP_17 );
     c_typedef_parse_builtins( TYPEDEFS_CPP_20 );
     c_typedef_parse_builtins( TYPEDEFS_MISC );
 

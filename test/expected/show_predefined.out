@@ -73,6 +73,7 @@ define sa_family_t as uint32_t
 define size_t as unsigned long
 define socklen_t as uint32_t
 define ssize_t as long
+define byte of namespace std as enum byte
 define nullptr_t of namespace std as pointer to void
 define partial_ordering of namespace std as struct partial_ordering
 define strong_equality of namespace std as struct strong_equality
