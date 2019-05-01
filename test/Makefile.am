@@ -1308,4 +1308,19 @@ EXTRA_DIST = run_test.sh tests data expected
 dist-hook:
 	cd $(distdir)/tests && rm -f *.log *.trs
 
+CDECL = $(top_builddir)/src/cdecl
+#
+# Adding predefined types causes the output of cdecl to change so that the
+# expected results for the following tests no longer match and hence "fail."
+# This rule updates the expected results of said tests to match the current
+# cdecl output so the tests will pass again.
+#
+update-expected:
+	echo 'explain int* f(int x, int y)' | $(CDECL) -d > expected/cdecl-d.out
+	echo 'explain int* f(int x, int y)' | $(CDECL) --debug > expected/cdecl--debug.out
+	echo 'typedef int Int; show all' | $(CDECL) > expected/show_all.out
+	echo 'typedef int Int; show all typedef' | $(CDECL) > expected/show_all_typedef.out
+	echo 'typedef int Int; show predefined' | $(CDECL) > expected/show_predefined.out
+	echo 'typedef int Int; show predefined typedef' | $(CDECL) > expected/show_predefined_typedef.out
+
 # vim:set noet sw=8 ts=8:
