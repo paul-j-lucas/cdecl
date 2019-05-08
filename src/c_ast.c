@@ -103,7 +103,7 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
         return false;
       if ( a_i->type_id != a_j->type_id )
         return false;
-      if ( !c_ast_equiv( ast_i->as.array.of_ast, ast_j->as.array.of_ast ) )
+      if ( !c_ast_equiv( a_i->of_ast, a_j->of_ast ) )
         return false;
       break;
     }
