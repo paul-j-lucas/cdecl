@@ -65,7 +65,6 @@ CDECL_SNAME_INLINE void c_sname_append_name( c_sname_t *sname, char *name ) {
   (void)slist_push_tail( sname, name );
 }
 
-
 /**
  * Appends \a src onto the end of \a dst.
  *
