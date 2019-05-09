@@ -116,7 +116,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 /**
  * Checks an entire AST for semantic errors.
  *
- * @param ast The function (or block) `c_ast` to check.
+ * @param ast The `c_ast` to check.
  * @param is_func_arg If `true`, we're checking a function argument.
  * @return Returns `true` only if all checks passed.
  */
@@ -132,9 +132,9 @@ static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
 }
 
 /**
- * Checks all function (or operator or block) arguments for semantic errors.
+ * Checks all function-like arguments for semantic errors.
  *
- * @param ast The function (or block) `c_ast` to check.
+ * @param ast The function-like `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_func_args( c_ast_t const *ast ) {
@@ -428,10 +428,9 @@ only_void:
 }
 
 /**
- * Checks all function (or operator or block) arguments for semantic errors in
- * K&R C.
+ * Checks all function arguments for semantic errors in K&R C.
  *
- * @param ast The function (or block) `c_ast` to check.
+ * @param ast The function `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
