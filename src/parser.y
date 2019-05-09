@@ -287,7 +287,7 @@ static void elaborate_error( char const *format, ... ) {
  * @return Returns `true` only of `_Noreturn` is OK.
  */
 static bool _Noreturn_ok( c_loc_t const *loc ) {
-  if ( (opt_lang & LANG_C_MIN(11)) != LANG_NONE )
+  if ( c_init < INIT_READ_CONF || (opt_lang & LANG_C_MIN(11)) != LANG_NONE )
     return true;
   print_error( loc, "\"%s\" not supported in %s", lexer_token, C_LANG_NAME() );
   if ( opt_lang >= LANG_CPP_11 ) {
@@ -953,7 +953,7 @@ cast_english
 
       bool ok = false;
 
-      if ( opt_lang < LANG_CPP_11 ) {
+      if ( c_init >= INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
         print_error( &@1, "%s not supported in %s", $1, C_LANG_NAME() );
       }
       else if ( (ok = c_ast_check( $5.ast, CHECK_CAST )) ) {
@@ -1241,7 +1241,7 @@ explain_c
       DUMP_END();
 
       bool ok = false;
-      if ( !C_LANG_IS_CPP() ) {
+      if ( c_init >= INIT_READ_CONF && !C_LANG_IS_CPP() ) {
         print_error( &@2, "%s_cast not supported in %s", $2, C_LANG_NAME() );
       }
       else {
@@ -1328,7 +1328,7 @@ explain_c
       // declaration.
       //
       bool ok = false;
-      if ( opt_lang < LANG_CPP_11 ) {
+      if ( c_init >= INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
         print_error( &@2,
           "\"%s\" not supported in %s", L_USING, C_LANG_NAME()
         );
@@ -2440,7 +2440,7 @@ func_trailing_return_type_c_ast_opt
       // later in the AST because the AST has no "memory" of where the return-
       // type came from.
       //
-      if ( opt_lang < LANG_CPP_11 ) {
+      if ( c_init >= INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
         print_error( &@1,
           "trailing return type not supported in %s", C_LANG_NAME()
         );
@@ -3208,7 +3208,8 @@ attribute_name_c_type
       if ( a == NULL ) {
         print_warning( &@1, "\"%s\": unknown attribute", $1 );
       }
-      else if ( (opt_lang & a->lang_ids) == LANG_NONE ) {
+      else if ( c_init >= INIT_READ_CONF &&
+                (opt_lang & a->lang_ids) == LANG_NONE ) {
         print_warning( &@1, "\"%s\" not supported in %s", $1, C_LANG_NAME() );
       }
       else {
