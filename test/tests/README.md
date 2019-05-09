@@ -8,10 +8,13 @@ Test files are as follows:
 + `cl-*`               = A command-line test.
 + `declare_*`          = A declare test.
 + `explain_*`          = An explain test.
-+ `namespace_*`        = A namespace test.
-+ `typedef_*`          = A typedef test.
 + `file-*`             = A file test.
 + `help-*`             = A help test.
++ `*_mo_*`             = A member operator.
++ `namespace_*`        = A namespace test.
++ `*_nmo_*`            = A non-member operator.
++ `typedef_*`          = A typedef test.
++ `*_o_*`              = An operator.
 + `set_*`              = A set test.
 + `static_cast_*`      = A static cast test.
 + `reinterpret_cast_*` = A reinterpret cast test.
