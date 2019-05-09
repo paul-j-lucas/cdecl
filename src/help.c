@@ -85,7 +85,7 @@ static help_text_t const HELP_TEXT[] = {
 /* 13 | 13 */  { "  <cv-qual>* pointer to <english>",
                  "  <cv-qual>* pointer to [member of {class|struct} <name>] <english>" },
 /* 14 | 14 */  { "  <store>* <modifier>* [<C-type>]",
-                 "  rvalue] reference to <english> | <store>* <modifier>* [<C++-type>]" },
+                 "  [rvalue] reference to <english> | <store>* <modifier>* [<C++-type>]" },
 /* 15 | 15 */  { "  { enum | struct | union } <name>",
                  "  { enum [class|struct] | class | struct | union } <name>" },
 /* 16 | 16 */  { "args: a comma separated list of <name>, <english>, or <name> as <english>",
