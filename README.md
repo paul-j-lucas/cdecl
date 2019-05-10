@@ -97,6 +97,7 @@ most notably:
   `noexcept`,
   `override`,
   rvalue references,
+  user-defined literals,
   `using` (as a `typedef` synonym),
   the function trailing return-type syntax,
   and

@@ -245,11 +245,25 @@ c_sname_t c_ast_take_name( c_ast_t *ast );
 bool c_ast_take_typedef( c_ast_t *ast );
 
 /**
+ * Un-pointers \a ast, i.e., if \a ast is a <code>\ref K_POINTER</code>,
+ * returns the AST of the underlying type.
+ *
+ * @param ast The `c_ast` to un-pointer.
+ * @return Returns the AST of the underlying type or null if \a ast is null or
+ * not a pointer.
+ *
+ * @note Even though pointers are "dereferenced," This function isn't called
+ * `c_ast_dereference` to eliminate confustion with C++ references.
+ */
+c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
+
+/**
  * Un-references \a ast, i.e., if \a ast is a <code>\ref K_REFERENCE</code> or
  * <code>\ref K_RVALUE_REFERENCE</code> returns the AST of the underlying type.
  *
- * @param ast The `c_ast` to un-reference.
- * @return Returns the AST of the underlying type.
+ * @param ast The `c_ast` to un-reference or null.
+ * @return Returns the AST of the underlying type or null only if \a ast is
+ * null.
  */
 c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 
@@ -257,8 +271,9 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
  * Un-typedefs \a ast, i.e., if \a ast is a <code>\ref K_TYPEDEF</code>,
  * returns the AST of the underlying type.
  *
- * @param ast The `c_ast` to un-typedef.
- * @return Returns the AST of the underlying type.
+ * @param ast The `c_ast` to un-typedef or null.
+ * @return Returns the AST of the underlying type or null only if \a ast is
+ * null.
  */
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
 

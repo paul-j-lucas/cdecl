@@ -1,0 +1,1 @@
+declare _x as user-defined literal (wchar_t) returning int

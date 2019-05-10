@@ -115,6 +115,7 @@
 #define T_MASK_REF_QUALIFIER  0x0F00000000000000ull /**< Ref-qual bitmask.    */
 
 // shorthands
+#define T_ANY_CHAR            ( T_CHAR | T_WCHAR_T | T_CHAR16_T | T_CHAR32_T )
 #define T_CLASS_STRUCT_UNION  ( T_CLASS | T_STRUCT | T_UNION )
 #define T_MEMBER_ONLY         ( T_CONST | T_VOLATILE | T_OVERRIDE | T_FINAL \
                               | T_VIRTUAL | T_REFERENCE | T_RVALUE_REFERENCE )

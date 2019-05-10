@@ -190,11 +190,13 @@ char const L_CARRIES_DEPENDENCY2[]  = "carries-dependency";
 char const L_CONSTEXPR[]            = "constexpr";
 char const L_DECLTYPE[]             = "decltype";
 char const L_FINAL[]                = "final";
+char const L_LITERAL[]              = "literal";
 char const L_NOEXCEPT[]             = "noexcept";
 char const L_NULLPTR[]              = "nullptr";
 char const L_NO_EXCEPTION[]         = "no-exception";
 char const L_OVERRIDE[]             = "override";
 char const L_OVERRIDDEN[]           = "overridden";
+char const L_USER_DEFINED[]         = "user-defined";
 
 // C11 & C++11
 char const L_CHAR16_T[]             = "char16_t";

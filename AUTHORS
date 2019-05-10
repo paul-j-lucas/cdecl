@@ -84,6 +84,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added C++11 auto, constexpr, enum class, mutable, new-style casts,
 		noexcept, ref-qualifiers, rvalue references, and throw()
 	added C++11 function trailing return-type syntax
+	added C++11 user-defined literals
 	added C++11 and later attribute specifiers
 	added C++20 consteval
 	independently added typedef declarations

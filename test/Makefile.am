@@ -986,6 +986,12 @@ TESTS+=	tests/declare_co_exclam_k_b.test \
 	tests/declare_yo_exclam_k_b.test
 
 #
+# C++ declare user-defined literal tests
+# ======================================
+#
+TESTS+=	tests/declare_+udl_c_i.test
+
+#
 # C++ explain tests
 # =================
 #
@@ -1224,6 +1230,38 @@ TESTS+=	tests/explain_cast_pmi.test \
 	tests/explain_reinterpret_cast_pv.test \
 	tests/explain_static_cast_i+.test \
 	tests/explain_static_cast_i.test
+
+#
+# C++ explain user-defined literal tests
+# ======================================
+#
+TESTS+=	tests/explain_+udl_c_i.test \
+	tests/explain_udl_c16_i.test \
+	tests/explain_udl_c32_i.test \
+	tests/explain_udl_c_i.test \
+	tests/explain_udl_ld_i.test \
+	tests/explain_udl_pcc16ul_i.test \
+	tests/explain_udl_pcc16z_i.test \
+	tests/explain_udl_pcc32ul_i.test \
+	tests/explain_udl_pcc32z_i.test \
+	tests/explain_udl_pcc_i.test \
+	tests/explain_udl_pccul_i.test \
+	tests/explain_udl_pccz_i.test \
+	tests/explain_udl_pcwul_i.test \
+	tests/explain_udl_pcwz_i.test \
+	tests/explain_udl_ull_i.test \
+	tests/explain_udl_w_i.test
+
+#
+# C++ explain user-defined literal error tests
+# ============================================
+#
+TESTS+=	tests/explain_udl__i.test \
+	tests/explain_udl_2c_i.test \
+	tests/explain_udl_3c_i.test \
+	tests/explain_udl_c_i-c.test \
+	tests/explain_udl_piul_i.test \
+	tests/explain_udl_ul_i.test
 
 ###############################################################################
 

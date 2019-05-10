@@ -102,6 +102,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
       return false;
     case K_FUNCTION:
     case K_OPERATOR:
+    case K_USER_DEF_LITERAL:
       print_error( &ast->loc,
         "can not cast into %s",
         c_kind_name( ast->kind )
@@ -454,6 +455,90 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
 }
 
 /**
+ * Checks all user-defined literal arguments for semantic errors.
+ *
+ * @param ast The user-defined literal `c_ast` to check.
+ * @return Returns `true` only if all checks passed.
+ */
+static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_USER_DEF_LITERAL );
+
+  size_t const args_count = c_ast_args_count( ast );
+  if ( args_count == 0 ) {
+    print_error( &ast->loc,
+      "%s %s must have an argument", L_USER_DEFINED, L_LITERAL
+    );
+    return false;
+  }
+
+  c_ast_arg_t const *arg = c_ast_args( ast );
+  c_ast_t const *arg_ast = c_ast_untypedef( C_AST_DATA( arg ) );
+  c_ast_t const *tmp_ast = NULL;
+
+  switch ( args_count ) {
+    case 1: {
+      c_type_id_t const type_id = arg_ast->type_id & ~(T_CONST | T_VOLATILE);
+      switch ( type_id ) {
+        case T_CHAR:
+        case T_CHAR16_T:
+        case T_CHAR32_T:
+        case T_WCHAR_T:
+        case T_UNSIGNED | T_LONG | T_LONG_LONG:
+        case T_LONG | T_DOUBLE:
+          break;
+        default:                        // check for: char const*
+          tmp_ast = c_ast_untypedef( c_ast_unpointer( arg_ast ) );
+          if ( tmp_ast == NULL || tmp_ast->type_id != (T_CONST | T_CHAR) ) {
+            print_error( &arg_ast->loc,
+              "\"%s\": invalid argument type for %s %s; must be one of: "
+              "unsigned long long, long double, "
+              "char, const char*, char16_t, char32_t, wchar_t",
+              c_type_name( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
+            );
+            return false;
+          }
+      } // switch
+      break;
+    }
+
+    case 2:
+      tmp_ast = c_ast_untypedef( c_ast_unpointer( arg_ast ) );
+      if ( tmp_ast == NULL ||
+           !((tmp_ast->type_id & T_CONST) != 0 &&
+             (tmp_ast->type_id & T_ANY_CHAR) != 0) ) {
+        print_error( &arg_ast->loc,
+          "\"%s\": invalid argument type for %s %s; must be one of: "
+          "const (char|wchar_t|char16_t|char32_t)*",
+          c_type_name( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
+        );
+        return false;
+      }
+      arg = arg->next;
+      tmp_ast = c_ast_untypedef( C_AST_DATA( arg ) );
+      if ( tmp_ast == NULL || tmp_ast->type_id != (T_UNSIGNED | T_LONG) ) {
+        print_error( &arg_ast->loc,
+          "\"%s\": invalid argument type for %s %s; must be one of: "
+          "unsigned long, size_t",
+          c_type_name( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
+        );
+        return false;
+      }
+      break;
+
+    default:
+      arg = arg->next->next;
+      arg_ast = c_ast_untypedef( C_AST_DATA( arg ) );
+      print_error( &arg_ast->loc,
+        "%s %s may have at most 2 arguments", L_USER_DEFINED, L_LITERAL
+      );
+      return false;
+  } // switch
+
+  return true;
+}
+
+/**
  * Visitor function that checks an AST for semantic errors.
  *
  * @param ast The `c_ast` to check.
@@ -516,6 +601,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           break;
         case K_FUNCTION:
         case K_OPERATOR:
+        case K_USER_DEF_LITERAL:
           print_error( &ast->loc, "array of %s", c_kind_name( of_ast->kind ) );
           print_hint( "array of pointer to function" );
           return VISITOR_ERROR_FOUND;
@@ -602,6 +688,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         default:
           /* suppress warning */;
       } // switch
+      // FALLTHROUGH
     }
 
     case K_FUNCTION:
@@ -686,7 +773,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       }
       // FALLTHROUGH
 
-    case K_BLOCK: {                     // Apple extension
+    case K_BLOCK:                       // Apple extension
+    case K_USER_DEF_LITERAL: {
       tmp_type = (ast->type_id &
                   (T_AUTO_C | T_BLOCK | T_MUTABLE | T_REGISTER |
                    T_THREAD_LOCAL));
@@ -714,6 +802,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           break;
         case K_FUNCTION:
         case K_OPERATOR:
+        case K_USER_DEF_LITERAL:
           print_error( &ret_ast->loc,
             "%s returning %s",
             kind_name,
@@ -725,9 +814,12 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           /* suppress warning */;
       } // switch
 
-      bool const args_ok = opt_lang == LANG_C_KNR ?
-        c_ast_check_func_args_knr( ast ) :
-        c_ast_check_func_args( ast );
+      bool const args_ok =
+        ast->kind == K_USER_DEF_LITERAL ?
+          c_ast_check_user_def_lit_args( ast ) :
+          opt_lang == LANG_C_KNR ?
+            c_ast_check_func_args_knr( ast ) :
+            c_ast_check_func_args( ast );
       return args_ok ? VISITOR_ERROR_NOT_FOUND : VISITOR_ERROR_FOUND;
     }
 
@@ -842,6 +934,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
     case K_OPERATOR:
+    case K_USER_DEF_LITERAL:
       data = REINTERPRET_CAST( void*, true );
       for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
         if ( !c_ast_check_visitor( C_AST_DATA( arg ), c_ast_visitor_type,
@@ -895,6 +988,13 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
       // nothing to check
       break;
 
+    case K_USER_DEF_LITERAL:
+      if ( c_sname_local( &ast->sname )[0] != '_' )
+        print_warning( &ast->loc,
+          "%s %s not starting with '_' are reserved",
+          L_USER_DEFINED, L_LITERAL
+        );
+      // FALLTHROUGH
     case K_BLOCK:
     case K_FUNCTION:
     case K_OPERATOR: {

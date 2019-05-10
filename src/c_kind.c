@@ -58,6 +58,7 @@ char const* c_kind_name( c_kind_t kind ) {
     case K_REFERENCE        : return "reference";
     case K_RVALUE_REFERENCE : return "rvalue reference";
     case K_TYPEDEF          : return "typedef";
+    case K_USER_DEF_LITERAL : return "user-defined literal";
     case K_VARIADIC         : return "variadic";
 
     case K_ENUM_CLASS_STRUCT_UNION:

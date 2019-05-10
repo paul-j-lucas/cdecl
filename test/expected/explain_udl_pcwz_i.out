@@ -1,0 +1,1 @@
+declare _x as user-defined literal (pointer to constant wchar_t, size_t) returning int

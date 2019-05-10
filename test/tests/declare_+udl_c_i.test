@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -xc++ @ declare _x of scope S as user-defined literal (char) returning int @ 0

@@ -1,0 +1,1 @@
+int S::operator"" _x(char);

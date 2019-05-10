@@ -137,6 +137,9 @@ struct c_array {
 
 /**
  * AST node for a C/C++ block (Apple extension).
+ *
+ * @note Members are laid out in the same order as `c_func`: this is taken
+ * advantage of.
  */
 struct c_block {
   c_ast_t  *ret_ast;                    ///< Return type.
@@ -191,6 +194,17 @@ struct c_ptr_ref {
 };
 
 /**
+ * AST node for a C++ user-defined literal.
+ *
+ * @note Members are laid out in the same order as `c_func`: this is taken
+ * advantage of.
+ */
+struct c_user_def_lit {
+  c_ast_t  *ret_ast;                    ///< Return type.
+  slist_t   args;                       ///< Literal argument(s).
+};
+
+/**
  * AST node for a parsed C/C++ declaration.
  */
 struct c_ast {
@@ -214,6 +228,7 @@ struct c_ast {
     c_ptr_mbr_t         ptr_mbr;        ///< Pointer-to-member member(s).
     c_ptr_ref_t         ptr_ref;        ///< Pointer or reference member(s).
     c_typedef_t const  *c_typedef;      ///< `typedef` member(s).
+    c_user_def_lit_t    user_def_lit;   ///< User-defined literal member(s).
     // nothing needed for K_VARIADIC
   } as;                                 ///< Union discriminator.
 };
@@ -394,7 +409,8 @@ CDECL_AST_INLINE void c_ast_sname_prepend_sname( c_ast_t *ast,
  * Gets the scope name of \a ast in C++ form.
  *
  * @param ast The `c_ast` to get the scope name of.
- * @return Returns said name or null if \a ast doesn't have a scope name.
+ * @return Returns said name or the empty string if \a ast doesn't have a scope
+ * name.
  *
  * @sa c_ast_sname_full_c()
  * @sa c_ast_sname_local()

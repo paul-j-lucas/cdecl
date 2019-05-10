@@ -187,6 +187,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   switch ( ast->kind ) {
     case K_FUNCTION:
     case K_OPERATOR:
+    case K_USER_DEF_LITERAL:
       //
       // These things aren't printed as part of the type beforehand, so strip
       // them out of the type here, but print them after the arguments.
@@ -371,6 +372,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
       case K_BLOCK:                     // Apple extension
       case K_FUNCTION:
       case K_OPERATOR:
+      case K_USER_DEF_LITERAL:
         c_ast_gibberish_postfix( parent, param );
         break;
 
@@ -440,6 +442,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
     case K_OPERATOR:
+    case K_USER_DEF_LITERAL:
       c_ast_gibberish_func_args( ast, param );
       break;
     default:
@@ -505,19 +508,32 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
   assert( param != NULL );
 
   if ( param->gkind != G_CAST ) {
-    if ( ast->kind == K_OPERATOR ) {
-      g_param_space( param );
-      if ( !c_ast_sname_empty( ast ) )
-        FPRINTF( param->gout, "%s::", c_ast_sname_full_c( ast ) );
-      FPRINTF( param->gout,
-        "%s%s",
-        L_OPERATOR, graph_name_c( op_get( ast->as.oper.oper_id )->name )
-      );
-    }
-    else if ( !c_ast_sname_empty( ast ) ) {
-      g_param_space( param );
-      FPUTS( c_ast_sname_full_or_local( ast, param ), param->gout );
-    }
+    switch ( ast->kind ) {
+      case K_OPERATOR:
+        g_param_space( param );
+        if ( !c_ast_sname_empty( ast ) )
+          FPRINTF( param->gout, "%s::", c_ast_sname_full_c( ast ) );
+        FPRINTF( param->gout,
+          "%s%s",
+          L_OPERATOR, graph_name_c( op_get( ast->as.oper.oper_id )->name )
+        );
+        break;
+      case K_USER_DEF_LITERAL:
+        g_param_space( param );
+        if ( c_ast_sname_count( ast ) > 1 )
+          FPRINTF( param->gout, "%s::", c_ast_sname_scope_c( ast ) );
+        FPRINTF( param->gout,
+          "%s\"\" %s",
+          L_OPERATOR, c_ast_sname_local( ast )
+        );
+        break;
+      default:
+        if ( !c_ast_sname_empty( ast ) ) {
+          g_param_space( param );
+          FPUTS( c_ast_sname_full_or_local( ast, param ), param->gout );
+        }
+        break;
+    } // switch
   }
 }
 

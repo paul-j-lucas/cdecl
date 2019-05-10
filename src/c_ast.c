@@ -116,7 +116,8 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
       if ( ast_i->as.func.flags != ast_j->as.func.flags )
         return false;
       // FALLTHROUGH
-    case K_BLOCK: {
+    case K_BLOCK:
+    case K_USER_DEF_LITERAL: {
       if ( !c_ast_equiv( ast_i->as.func.ret_ast, ast_j->as.func.ret_ast ) )
         return false;
       c_ast_arg_t const *arg_i = c_ast_args( ast_i );

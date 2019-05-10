@@ -1,0 +1,1 @@
+declare _x as user-defined literal (unsigned long long) returning int

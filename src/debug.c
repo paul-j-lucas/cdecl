@@ -167,6 +167,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         // FALLTHROUGH
 
       case K_BLOCK:                     // Apple extension
+      case K_USER_DEF_LITERAL:
         PRINT_COMMA;
         INDENT_PRINT( "args = " );
         c_ast_list_debug( &ast->as.func.args, indent, dout );

@@ -217,6 +217,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_INTO,           TOKEN( Y_INTO )                 },
   { L_LEN,            TOKEN( Y_LENGTH )               },
   { L_LENGTH,         TOKEN( Y_LENGTH )               },
+  { L_LITERAL,        TOKEN( Y_LITERAL )              },
   { L_MBR,            TOKEN( Y_MEMBER ),              },
   { L_MEMBER,         TOKEN( Y_MEMBER ),              },
   { L_NON_MBR,        TOKEN( Y_NON_MEMBER ),          },
@@ -627,16 +628,19 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
               }
 
               /*
-               * Special case for hyphenated cdecl keywords that are NOT
-               * synonyms for C/C++ keywords.  (Since there are currently only
-               * two of these, just enumerate them here inline rather than have
-               * a look-up table.)
+               * Special cases for hyphenated cdecl keywords that are NOT
+               * synonyms for C/C++ keywords.
                */
 "non-member"  |
 "non-mbr"     {
                 ASSERT_MODE( ENGLISH_TO_GIBBERISH );
                 SET_TOKEN;
                 return Y_NON_MEMBER;
+              }
+"user-defined" {
+                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
+                SET_TOKEN;
+                return Y_USER_DEFINED;
               }
 
 {hyphenated}  {
@@ -691,6 +695,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 "::"          { SET_TOKEN; return Y_COLON2          ; }
 
 "!="          { SET_TOKEN; return Y_EXCLAM_EQ       ; }
+"\"\""        { SET_TOKEN; return Y_QUOTE2          ; }
 "%="          { SET_TOKEN; return Y_PERCENT_EQ      ; }
 "&&"          { SET_TOKEN; return Y_AMPER2          ; }
 "&="          { SET_TOKEN; return Y_AMPER_EQ        ; }

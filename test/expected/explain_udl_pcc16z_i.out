@@ -1,0 +1,1 @@
+declare _x as user-defined literal (pointer to constant char16_t, size_t) returning int

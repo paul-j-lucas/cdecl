@@ -194,10 +194,12 @@ extern char const L_CONSTEXPR[];
 extern char const L_DECLTYPE[];
 extern char const L_FINAL[];
 extern char const L_NOEXCEPT[];
+extern char const L_LITERAL[];
 extern char const L_NO_EXCEPTION[];         // synonym for "noexcept"
 extern char const L_NULLPTR[];
 extern char const L_OVERRIDE[];
 extern char const L_OVERRIDDEN[];           // synonym for "override"
+extern char const L_USER_DEFINED[];
 
 // C11 & C++11
 extern char const L_CHAR16_T[];

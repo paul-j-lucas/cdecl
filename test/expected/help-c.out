@@ -8,11 +8,11 @@ command:
 english:
   <store>* array [[static] <cv-qual>* {<number>|*}] of <english>
   <store>* variable length array <cv-qual>* of <english>
-  block [([<args>])] [returning <english>]
   <store>* function [([<args>])] [returning <english>]
   <cv-qual>* pointer to <english>
   <store>* <modifier>* [<C-type>]
   { enum | struct | union } <name>
+  block [([<args>])] [returning <english>]
 args: a comma separated list of <name>, <english>, or <name> as <english>
 gibberish: a C declaration, like "int x"; or cast, like "(int)x"
 C-type: bool char char16_t char32_t wchar_t int float double void

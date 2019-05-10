@@ -301,9 +301,9 @@ bool c_ast_is_ecsu( c_ast_t const *ast ) {
 }
 
 bool c_ast_is_ptr_to( c_ast_t const *ast, c_type_id_t type_id ) {
-  ast = c_ast_untypedef( ast );
-  if ( ast->kind == K_POINTER ) {
-    ast = c_ast_untypedef( ast->as.ptr_ref.to_ast );
+  ast = c_ast_unpointer( c_ast_untypedef( ast ) );
+  if ( ast != NULL ) {
+    ast = c_ast_untypedef( ast );
     return (ast->type_id & type_id) != T_NONE;
   }
   return false;
@@ -371,15 +371,24 @@ bool c_ast_take_typedef( c_ast_t *ast ) {
   return false;
 }
 
+c_ast_t const* c_ast_unpointer( c_ast_t const *ast ) {
+  ast = c_ast_untypedef( ast );
+  return ast != NULL && ast->kind == K_POINTER ? ast->as.ptr_ref.to_ast : NULL;
+}
+
 c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
-  while ( ast->kind == K_REFERENCE || ast->kind == K_RVALUE_REFERENCE )
-    ast = ast->as.ptr_ref.to_ast;
+  if ( ast != NULL ) {
+    while ( ast->kind == K_REFERENCE || ast->kind == K_RVALUE_REFERENCE )
+      ast = ast->as.ptr_ref.to_ast;
+  }
   return ast;
 }
 
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast ) {
-  while ( ast->kind == K_TYPEDEF )
-    ast = ast->as.c_typedef->ast;
+  if ( ast != NULL ) {
+    while ( ast->kind == K_TYPEDEF )
+      ast = ast->as.c_typedef->ast;
+  }
   return ast;
 }
 

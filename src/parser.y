@@ -334,11 +334,11 @@ static void print_type_english( c_typedef_t const *type ) {
   assert( type != NULL );
 
   FPRINTF( fout, "%s %s ", L_DEFINE, c_ast_sname_local( type->ast ) );
-  char const *const scope_name = c_ast_sname_scope_c( type->ast );
-  if ( scope_name[0] != '\0' )
+  if ( c_ast_sname_count( type->ast ) > 1 )
     FPRINTF( fout,
       "%s %s %s ",
-      L_OF, c_type_name( c_ast_sname_type( type->ast ) ), scope_name
+      L_OF, c_type_name( c_ast_sname_type( type->ast ) ),
+      c_ast_sname_scope_c( type->ast )
     );
   FPRINTF( fout, "%s ", L_AS );
   c_ast_english( type->ast, fout );
@@ -698,9 +698,12 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_CONSTEXPR
 %token              Y_DECLTYPE
 %token  <type_id>   Y_FINAL
+%token              Y_LITERAL
 %token  <type_id>   Y_NOEXCEPT
 %token              Y_NULLPTR
 %token  <type_id>   Y_OVERRIDE
+%token              Y_QUOTE2            /* for user-defined literals */
+%token              Y_USER_DEFINED
 
                     /* C11 & C++11 */
 %token  <type_id>   Y_CHAR16_T
@@ -771,6 +774,7 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   type_modifier_list_english_type
 %type   <type_id>   type_modifier_list_english_type_opt
 %type   <ast_pair>  unmodified_type_english_ast
+%type   <ast_pair>  user_defined_literal_decl_english_ast
 %type   <ast_pair>  var_decl_english_ast
 
 %type   <ast_pair>  cast_c_ast cast_c_ast_opt cast2_c_ast
@@ -801,6 +805,8 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  reference_decl_c_ast
 %type   <ast_pair>  reference_type_c_ast
 %type   <ast_pair>  unmodified_type_c_ast
+%type   <ast_pair>  user_defined_literal_c_ast
+%type   <ast_pair>  user_defined_literal_decl_c_ast
 
 %type   <ast_pair>  atomic_specifier_type_c_ast
 %type   <ast_pair>  builtin_type_c_ast
@@ -839,8 +845,8 @@ static void yyerror( char const *msg ) {
 %type   <literal>   new_style_cast_c new_style_cast_english
 %type   <sname>     of_scope_english
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
-%type   <sname>     oper_scope_sname_opt
 %type   <type_id>   scope_english_type scope_english_type_expected
+%type   <sname>     scope_sname_opt
 %type   <sname>     sname_c sname_c_expected sname_c_opt
 %type   <ast_pair>  sname_c_ast
 %type   <sname>     sname_english sname_english_expected
@@ -868,7 +874,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_english
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_list_english
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_list_english_opt
-%destructor { DTRACE; c_sname_free( &$$ ); } oper_scope_sname_opt
+%destructor { DTRACE; c_sname_free( &$$ ); } scope_sname_opt
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_c
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_c_expected
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_c_opt
@@ -1757,6 +1763,7 @@ name_or_typedef_type_c_ast
 decl_english_ast
   : array_decl_english_ast
   | qualified_decl_english_ast
+  | user_defined_literal_decl_english_ast
   | var_decl_english_ast
   ;
 
@@ -1873,7 +1880,7 @@ oper_decl_english_ast
                   "returning_english_ast_opt" );
       DUMP_TYPE( "ref_qualifier_english_type_opt", $3 );
       DUMP_NUM( "member_or_non_member_opt", $4 );
-      DUMP_AST_LIST( "decl_list_english_opt", $6 );
+      DUMP_AST_LIST( "paren_decl_list_english_opt", $6 );
       DUMP_AST( "returning_english_ast_opt", $7.ast );
 
       $$.ast = C_AST_NEW( K_OPERATOR, &@$ );
@@ -2112,6 +2119,41 @@ reference_english_ast
     }
   ;
 
+user_defined_literal_decl_english_ast
+  : Y_USER_DEFINED literal_expected paren_decl_list_english_opt
+    returning_english_ast_opt
+    {
+      //
+      // User-defined literals are supported only in C++11 and later.
+      // (However, we always allow them in configuration files.)
+      //
+      // This check is better to do now in the parser rather than later in the
+      // AST because it has to be done in fewer places in the code plus gives a
+      // better error location.
+      //
+      if ( c_init >= INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+        print_error( &@1,
+          "%s %s not supported in %s", L_USER_DEFINED, L_LITERAL, C_LANG_NAME()
+        );
+        PARSE_ABORT();
+      }
+
+      DUMP_START( "user_defined_literal_decl_english_ast",
+                  "USER-DEFINED LITERAL paren_decl_list_english_opt "
+                  "returning_english_ast_opt" );
+      DUMP_AST_LIST( "paren_decl_list_english_opt", $3 );
+      DUMP_AST( "returning_english_ast_opt", $4.ast );
+
+      $$.ast = C_AST_NEW( K_USER_DEF_LITERAL, &@$ );
+      $$.target_ast = NULL;
+      $$.ast->as.user_def_lit.args = $3;
+      c_ast_set_parent( $4.ast, $$.ast );
+
+      DUMP_AST( "user_defined_literal_decl_english_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
 var_decl_english_ast
   : sname_c Y_AS decl_english_ast
     {
@@ -2267,6 +2309,7 @@ decl2_c_ast
   | oper_decl_c_ast
   | sname_c_ast
   | typedef_type_c_ast
+  | user_defined_literal_decl_c_ast
   ;
 
 array_decl_c_ast
@@ -2600,11 +2643,11 @@ oper_decl_c_ast
   ;
 
 oper_c_ast
-  : /* type_c_ast */ oper_scope_sname_opt Y_OPERATOR c_operator
+  : /* type_c_ast */ scope_sname_opt Y_OPERATOR c_operator
     {
       DUMP_START( "oper_c_ast", "OPERATOR c_operator" );
       DUMP_AST( "(type_c_ast)", type_peek() );
-      DUMP_STR( "oper_scope_sname_opt", c_sname_full_c( &$1 ) );
+      DUMP_STR( "scope_sname_opt", c_sname_full_c( &$1 ) );
       DUMP_STR( "c_operator", op_get( $3 )->name );
 
       $$.ast = type_peek();
@@ -2614,34 +2657,6 @@ oper_c_ast
 
       DUMP_AST( "oper_c_ast", $$.ast );
       DUMP_END();
-    }
-  ;
-
-oper_scope_sname_opt
-  : /* empty */                   { c_sname_init( &$$ ); }
-  | sname_c "::"
-    {
-      $$ = $1;
-      if ( c_sname_type( &$$ ) == T_NONE ) {
-        //
-        // Since we know the name in this context (followed by "::") definitely
-        // refers to a scope, set the scoped name's type to T_SCOPE (if it
-        // doesn't already have a scope type).
-        //
-        c_sname_set_type( &$$, T_SCOPE );
-      }
-    }
-  | Y_TYPEDEF_TYPE "::"
-    {
-      //
-      // This is for a case like:
-      //
-      //      define S as struct S
-      //      explain bool S::operator!() const
-      //
-      // that is: a typedef'd type used for a scope.
-      //
-      $$ = c_ast_sname_dup( $1->ast );
     }
   ;
 
@@ -2775,6 +2790,59 @@ reference_type_c_ast
       c_ast_set_parent( type_peek(), $$.ast );
 
       DUMP_AST( "reference_type_c_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+user_defined_literal_decl_c_ast
+  : /* type_c_ast */ user_defined_literal_c_ast '(' arg_list_c_ast ')'
+    func_noexcept_c_type_opt func_trailing_return_type_c_ast_opt
+    {
+      DUMP_START( "user_defined_literal_decl_c_ast",
+                  "user_defined_literal_c_ast '(' arg_list_c_ast ')' "
+                  "func_noexcept_c_type_opt "
+                  "func_trailing_return_type_c_ast_opt" );
+      DUMP_AST( "(type_c_ast)", type_peek() );
+      DUMP_AST( "oper_c_ast", $1.ast );
+      DUMP_AST_LIST( "arg_list_c_ast", $3 );
+      DUMP_TYPE( "func_noexcept_c_type_opt", $5 );
+      DUMP_AST( "func_trailing_return_type_c_ast_opt", $6.ast );
+
+      c_ast_t *const lit = C_AST_NEW( K_USER_DEF_LITERAL, &@$ );
+      lit->as.user_def_lit.args = $3;
+
+      if ( $6.ast != NULL ) {
+        $$.ast = c_ast_add_func( $1.ast, $6.ast, lit );
+      }
+      else if ( $1.target_ast != NULL ) {
+        $$.ast = $1.ast;
+        (void)c_ast_add_func( $1.target_ast, type_peek(), lit );
+      }
+      else {
+        $$.ast = c_ast_add_func( $1.ast, type_peek(), lit );
+      }
+      $$.target_ast = lit->as.user_def_lit.ret_ast;
+
+      DUMP_AST( "user_defined_literal_decl_c_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+user_defined_literal_c_ast
+  : /* type_c_ast */ scope_sname_opt Y_OPERATOR quote2_expected
+    name_expected
+    {
+      DUMP_START( "user_defined_literal_c_ast", "OPERATOR \"\" NAME" );
+      DUMP_AST( "(type_c_ast)", type_peek() );
+      DUMP_STR( "scope_sname_opt", c_sname_full_c( &$1 ) );
+      DUMP_STR( "name", $4 );
+
+      $$.ast = type_peek();
+      $$.target_ast = NULL;
+      $$.ast->sname = $1;
+      c_sname_append_name( &$$.ast->sname, $4 );
+
+      DUMP_AST( "user_defined_literal_c_ast", $$.ast );
       DUMP_END();
     }
   ;
@@ -3578,6 +3646,14 @@ lbrace_expected
     }
   ;
 
+literal_expected
+  : Y_LITERAL
+  | error
+    {
+      ELABORATE_ERROR( "\"%s\" expected", L_LITERAL );
+    }
+  ;
+
 lparen_expected
   : '('
   | error
@@ -3700,6 +3776,14 @@ of_scope_list_english_opt
   | of_scope_list_english
   ;
 
+quote2_expected
+  : Y_QUOTE2
+  | error
+    {
+      ELABORATE_ERROR( "\"\" expected" );
+    }
+  ;
+
 rbrace_expected
   : '}'
   | error
@@ -3746,6 +3830,34 @@ scope_english_type_expected
         "\"%s\", \"%s\", \"%s\", \"%s\", or \"%s\" expected",
         L_CLASS, L_NAMESPACE, L_SCOPE, L_STRUCT, L_UNION
       );
+    }
+  ;
+
+scope_sname_opt
+  : /* empty */                   { c_sname_init( &$$ ); }
+  | sname_c "::"
+    {
+      $$ = $1;
+      if ( c_sname_type( &$$ ) == T_NONE ) {
+        //
+        // Since we know the name in this context (followed by "::") definitely
+        // refers to a scope, set the scoped name's type to T_SCOPE (if it
+        // doesn't already have a scope type).
+        //
+        c_sname_set_type( &$$, T_SCOPE );
+      }
+    }
+  | Y_TYPEDEF_TYPE "::"
+    {
+      //
+      // This is for a case like:
+      //
+      //      define S as struct S
+      //      explain bool S::operator!() const
+      //
+      // that is: a typedef'd type used for a scope.
+      //
+      $$ = c_ast_sname_dup( $1->ast );
     }
   ;
 

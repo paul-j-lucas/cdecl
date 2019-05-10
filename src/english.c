@@ -73,6 +73,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     case K_BLOCK:                       // Apple extension
     case K_FUNCTION:
     case K_OPERATOR:
+    case K_USER_DEF_LITERAL:
       if ( ast->type_id != T_NONE )     // storage class
         FPRINTF( eout, "%s ", c_type_name( ast->type_id ) );
 

@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 24, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "May 9, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -507,6 +507,7 @@ rvalue references,
 \f(CWthread_local\fP,
 \f(CWusing\fP,
 the function trailing return-type syntax,
+user-defined literals,
 and
 member function ref-qualfiers,
 \f(CWfinal\fP,
@@ -716,6 +717,8 @@ is one of:
 .BR \f2cv-qual\fP "* " "pointer to" " [" "member of class" " \f2s-name\fP" "" ] " \f2english\fP"
 .br
 .RB [ rvalue "] " "reference to" " \f2english\fP"
+.br
+.BR \f2store\fP "* " "user-defined literal" " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
 .br
 .IR store "* " modifier "* [" C-type ]
 .br
