@@ -18,6 +18,9 @@ Added support for user-defined literals.  For example:
     cdecl> explain int operator"" _a(unsigned long long x)
     declare _a as user-defined literal (x as unsigned long long) returning int
 
+** Added support for char8_t
+Now supports C++20's char8_t.
+
 
 * Changes in Cdecl 6.2
 

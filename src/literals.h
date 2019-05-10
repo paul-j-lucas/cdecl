@@ -217,6 +217,7 @@ extern char const L_NODISCARD[];
 extern char const L_NON_DISCARDABLE[];      // synonym for "nodiscard"
 
 // C++20
+extern char const L_CHAR8_T[];
 extern char const L_CONCEPT[];
 extern char const L_CONSTEVAL[];
 extern char const L_REQUIRES[];

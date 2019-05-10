@@ -719,9 +719,10 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_NODISCARD
 
                     /* C++20 */
-%token  <oper_id>   Y_LESS_EQ_GREATER "<=>"
+%token  <type_id>   Y_CHAR8_T
 %token              Y_CONCEPT
 %token  <type_id>   Y_CONSTEVAL
+%token  <oper_id>   Y_LESS_EQ_GREATER "<=>"
 %token              Y_REQUIRES
 
                     /* miscellaneous */
@@ -3071,6 +3072,7 @@ builtin_type
   | Y_AUTO_CPP_11
   | Y_BOOL
   | Y_CHAR
+  | Y_CHAR8_T
   | Y_CHAR16_T
   | Y_CHAR32_T
   | Y_WCHAR_T

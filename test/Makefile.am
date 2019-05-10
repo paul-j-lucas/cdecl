@@ -174,6 +174,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_c16-c99.test \
 	tests/declare_c32-c++03.test \
 	tests/declare_c32-c99.test \
+	tests/declare_c8-c++17.test \
 	tests/declare_cf_v-c.test \
 	tests/declare_ci-knr.test \
 	tests/declare_cnmf_v.test \
@@ -196,6 +197,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_hc.test \
 	tests/declare_hc16.test \
 	tests/declare_hc32.test \
+	tests/declare_hc8.test \
 	tests/declare_hd.test \
 	tests/declare_hf.test \
 	tests/declare_hl.test \
@@ -208,6 +210,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_lc.test \
 	tests/declare_lc16.test \
 	tests/declare_lc32.test \
+	tests/declare_lc8.test \
 	tests/declare_ld-knr.test \
 	tests/declare_lf-c.test \
 	tests/declare_ll-c89.test \
@@ -223,6 +226,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_sc-knr.test \
 	tests/declare_sc16.test \
 	tests/declare_sc32.test \
+	tests/declare_sc8.test \
 	tests/declare_si-knr.test \
 	tests/declare_sl-knr.test \
 	tests/declare_sv.test \
@@ -231,6 +235,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_ub.test \
 	tests/declare_uc16.test \
 	tests/declare_uc32.test \
+	tests/declare_uc8.test \
 	tests/declare_ud.test \
 	tests/declare_uf.test \
 	tests/declare_uv.test \
@@ -409,6 +414,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_c16-c99.test \
 	tests/explain_c32-c++03.test \
 	tests/explain_c32-c99.test \
+	tests/explain_c8-c++17.test \
 	tests/explain_cf_v-c.test \
 	tests/explain_ci-knr.test \
 	tests/explain_e-knr.test \
@@ -436,6 +442,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_hc.test \
 	tests/explain_hc16.test \
 	tests/explain_hc32.test \
+	tests/explain_hc8.test \
 	tests/explain_hd.test \
 	tests/explain_hf.test \
 	tests/explain_hl.test \
@@ -448,6 +455,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_lc.test \
 	tests/explain_lc16.test \
 	tests/explain_lc32.test \
+	tests/explain_lc8.test \
 	tests/explain_ld-knr.test \
 	tests/explain_lf-c.test \
 	tests/explain_ll-c89.test \
@@ -463,6 +471,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_sc-knr.test \
 	tests/explain_sc16.test \
 	tests/explain_sc32.test \
+	tests/explain_sc8.test \
 	tests/explain_si-knr.test \
 	tests/explain_sl-knr.test \
 	tests/explain_sv.test \
@@ -471,6 +480,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_ub.test \
 	tests/explain_uc16.test \
 	tests/explain_uc32.test \
+	tests/explain_uc8.test \
 	tests/explain_ud.test \
 	tests/explain_uf.test \
 	tests/explain_using_pfi_v-c.test \
@@ -1238,12 +1248,15 @@ TESTS+=	tests/explain_cast_pmi.test \
 TESTS+=	tests/explain_+udl_c_i.test \
 	tests/explain_udl_c16_i.test \
 	tests/explain_udl_c32_i.test \
+	tests/explain_udl_c8_i.test \
 	tests/explain_udl_c_i.test \
 	tests/explain_udl_ld_i.test \
 	tests/explain_udl_pcc16ul_i.test \
 	tests/explain_udl_pcc16z_i.test \
 	tests/explain_udl_pcc32ul_i.test \
 	tests/explain_udl_pcc32z_i.test \
+	tests/explain_udl_pcc8ul_i.test \
+	tests/explain_udl_pcc8z_i.test \
 	tests/explain_udl_pcc_i.test \
 	tests/explain_udl_pccul_i.test \
 	tests/explain_udl_pccz_i.test \

@@ -1,0 +1,1 @@
+declare _x as user-defined literal (char8_t) returning int

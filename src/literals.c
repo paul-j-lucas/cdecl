@@ -214,6 +214,7 @@ char const L_NODISCARD[]            = "nodiscard";
 char const L_NON_DISCARDABLE[]      = "non-discardable";
 
 // C++20
+char const L_CHAR8_T[]              = "char8_t";
 char const L_CONCEPT[]              = "concept";
 char const L_CONSTEVAL[]            = "consteval";
 char const L_REQUIRES[]             = "requires";

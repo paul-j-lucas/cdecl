@@ -200,6 +200,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_THREAD_LOCAL,     Y_THREAD_LOCAL,     T_THREAD_LOCAL, LANG_C_CPP_11_MIN },
 
   // C++20
+  { L_CHAR8_T,          Y_CHAR8_T,          T_CHAR8_T,      LANG_MIN(CPP_20)  },
   { L_CONCEPT,          Y_CONCEPT,          T_NONE,         LANG_MIN(CPP_20)  },
   { L_CONSTEVAL,        Y_CONSTEVAL,        T_CONSTEVAL,    LANG_MIN(CPP_20)  },
   { L_REQUIRES,         Y_REQUIRES,         T_NONE,         LANG_MIN(CPP_20)  },

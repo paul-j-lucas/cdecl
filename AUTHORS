@@ -86,7 +86,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added C++11 function trailing return-type syntax
 	added C++11 user-defined literals
 	added C++11 and later attribute specifiers
-	added C++20 consteval
+	added C++20 char8_t and consteval
 	independently added typedef declarations
 	added final, friend, const, override, volatile, virtual,
 		and pure virtual C++ member function declarations

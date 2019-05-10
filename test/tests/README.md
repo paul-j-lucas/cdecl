@@ -31,6 +31,7 @@ The characters are:
 + `b` = block (Apple extension) or `bool`
 + `c` = `char`, `class`, or `const`
 + `cd` = `carries_dependency`
++ `c8` = `char8_t`
 + `c16` = `char16_t`
 + `c32` = `char32_t`
 + `d` = `deprecated` or `double`

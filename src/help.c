@@ -94,7 +94,7 @@ static help_text_t const HELP_TEXT[] = {
 /* 17 | 17 */  { "gibberish: a C declaration, like \"int x\"; or cast, like \"(int)x\"",
                  "gibberish: a C++ declaration, like \"int x\"; or cast, like \"(int)x\"" },
 /* 18 | 18 */  { "C-type: bool char char16_t char32_t wchar_t int float double void",
-                 "C++-type: bool char char16_t char32_t wchar_t int float double void" },
+                 "C++-type: bool char char8_t char16_t char32_t wchar_t int float double void" },
 /* 19 | 19 */  { "cv-qual: _Atomic const restrict volatile",
                  "cv-qual: const volatile         | fn-qual: const volatile [rvalue] reference" },
 /* 20 | 20 */  { "modifier: short long signed unsigned atomic const restrict volatile",

@@ -15,7 +15,7 @@ english:
   user-defined literal [([<args>])] [returning <english>]
 args: a comma separated list of <english> or <name> as <english>
 gibberish: a C++ declaration, like "int x"; or cast, like "(int)x"
-C++-type: bool char char16_t char32_t wchar_t int float double void
+C++-type: bool char char8_t char16_t char32_t wchar_t int float double void
 cv-qual: const volatile         | fn-qual: const volatile [rvalue] reference
 modifier: short long signed unsigned const volatile
 name: a C++ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*

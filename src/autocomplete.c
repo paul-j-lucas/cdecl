@@ -93,6 +93,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_CARRIES_DEPENDENCY, LANG_MIN(CPP_11)                  },
   { L_CAST,               LANG_ALL                          },
   { L_CHAR,               LANG_ALL                          },
+  { L_CHAR8_T,            LANG_MIN(CPP_20)                  },
   { L_CHAR16_T,           LANG_MIN(CPP_11)                  },
   { L_CHAR32_T,           LANG_MIN(CPP_11)                  },
   { L_CLASS,              LANG_CPP_ALL                      },

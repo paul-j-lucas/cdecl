@@ -481,6 +481,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
       c_type_id_t const type_id = arg_ast->type_id & ~(T_CONST | T_VOLATILE);
       switch ( type_id ) {
         case T_CHAR:
+        case T_CHAR8_T:
         case T_CHAR16_T:
         case T_CHAR32_T:
         case T_WCHAR_T:
@@ -493,7 +494,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
             print_error( &arg_ast->loc,
               "\"%s\": invalid argument type for %s %s; must be one of: "
               "unsigned long long, long double, "
-              "char, const char*, char16_t, char32_t, wchar_t",
+              "char, const char*, char8_t, char16_t, char32_t, wchar_t",
               c_type_name( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
             );
             return false;
@@ -509,7 +510,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
              (tmp_ast->type_id & T_ANY_CHAR) != 0) ) {
         print_error( &arg_ast->loc,
           "\"%s\": invalid argument type for %s %s; must be one of: "
-          "const (char|wchar_t|char16_t|char32_t)*",
+          "const (char|wchar_t|char8_t|char16_t|char32_t)*",
           c_type_name( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
         );
         return false;
