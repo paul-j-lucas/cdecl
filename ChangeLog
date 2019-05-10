@@ -1,5 +1,8 @@
 2019-05-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added max_align_t, std::max_align_t, std::size_t, and std::ptrdiff_t.
    * cdecl.1: Added mention of char8_t.
    * AUTHORS, NEWS, autocomplete.c, c_keyword.c, c_type.c, c_type.h, errors.c,
      help.c, literals.c, literals.h, parser.y, test/Makefile.am,
