@@ -1,3 +1,96 @@
+2019-05-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added mention of char8_t.
+   * AUTHORS, NEWS, autocomplete.c, c_keyword.c, c_type.c, c_type.h, errors.c,
+     help.c, literals.c, literals.h, parser.y, test/Makefile.am,
+     cdecl--debug.out, cdecl-d.out, explain_udl_c8_i.out,
+     explain_udl_pcc8ul_i.out, explain_udl_pcc8z_i.out, help-c++.out,
+     declare_c8-c++17.test, declare_hc8.test, declare_lc8.test,
+     declare_sc8.test, declare_uc8.test, explain_c8-c++17.test,
+     explain_hc8.test, explain_lc8.test, explain_sc8.test, explain_uc8.test,
+     explain_udl_c8_i.test, explain_udl_pcc8ul_i.test,
+     explain_udl_pcc8z_i.test: Added support for char8_t.
+   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_ast.c, c_ast.h,
+     c_ast_util.c, c_ast_util.h, c_kind.c, c_kind.h, c_type.h, debug.c,
+     english.c, errors.c, gibberish.c, help.c, lexer.l, literals.c, literals.h,
+     parser.y, typedefs.h, test/Makefile.am, declare_+udl_c_i.out,
+     explain_+udl_c_i.out, explain_udl_c16_i.out, explain_udl_c32_i.out,
+     explain_udl_c_i.out, explain_udl_ld_i.out, explain_udl_pcc16ul_i.out,
+     explain_udl_pcc16z_i.out, explain_udl_pcc32ul_i.out,
+     explain_udl_pcc32z_i.out, explain_udl_pcc_i.out, explain_udl_pccul_i.out,
+     explain_udl_pccz_i.out, explain_udl_pcwul_i.out, explain_udl_pcwz_i.out,
+     explain_udl_ull_i.out, explain_udl_w_i.out, help-c++.out, help-c.out,
+     declare_+udl_c_i.test, explain_+udl_c_i.test, explain_udl_2c_i.test,
+     explain_udl_3c_i.test, explain_udl__i.test, explain_udl_c16_i.test,
+     explain_udl_c32_i.test, explain_udl_c_i-c.test, explain_udl_c_i.test,
+     explain_udl_ld_i.test, explain_udl_pcc16ul_i.test,
+     explain_udl_pcc16z_i.test, explain_udl_pcc32ul_i.test,
+     explain_udl_pcc32z_i.test, explain_udl_pcc_i.test,
+     explain_udl_pccul_i.test, explain_udl_pccz_i.test,
+     explain_udl_pccz_ul.test, explain_udl_pcwul_i.test,
+     explain_udl_pcwz_i.test, explain_udl_piul_i.test, explain_udl_ul_i.test,
+     explain_udl_ull_i.test, explain_udl_w_i.test: Added support for C++11's
+     user-defined literals.
+
+2019-05-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * help-c++.out: Fixed expected result to match help fix.
+   * help.c: Added missing [.
+   * parser.y: Now checking c_init >= INIT_READ_CONF in more places.
+   * errors.c: Tweaked comments.
+   * c_sname.h: Removed blank line.
+
+2019-05-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c: Simplified a bit of c_ast_equiv().
+   * c_ast.c: Added missing checks in c_ast_equiv().
+
+2019-05-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am: Added update-expected maintainer rule.
+   * c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added typedefs for std::exception, string, wstring, u16string, u32string.
+   * c_typedef.c: Now temporarily turning off Bison debug output for builtin
+     type declarations.
+   * c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added C++20 std::byte.
+
+2019-04-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: Added example for operator overloading.
+
+2019-04-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: Added uninstall-hook to remove c++decl.
+
+2019-04-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added: set _lang_.
+
+2019-04-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, cdecl.c: More commands are now recognized as
+     such when they are the first argument.
+   * autocomplete.c: Made check explicit.
+
+2019-04-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Renaming.
+   * util.h: Made check explicit.
+
+2019-04-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.c, lexer.l, parser.y: s/Y_NOT_EQ/Y_EXCLAM_EQ/
+   * cdecl--debug.out, cdecl-d.out, show_all.out, show_all_typedef.out,
+     show_predefined.out, show_predefined_typedef.out: Added std::nullptr_t.
+   * typedefs.h: Comment change.
+   * typedefs.h: Sorted typedefs.
+   * c_typedef.c, show_all.out, show_all_typedef.out, show_predefined.out,
+     show_predefined_typedef.out: Put partial_ordering, et al, into std
+     namespace; added nullptr_t.
+
 2019-04-15  Paul J. Lucas <paul@lucasmail.org>
 
    * _Noreturn.h: Updated Gnulib.
