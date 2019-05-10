@@ -56,51 +56,57 @@ static bool       user_defined;         ///< Are new `typedef`s used-defined?
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Types from `stdint.h`.
+ * Types from C.
  *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  *
  * @hideinitializer
  */
-static char const *const TYPEDEFS_STDINT_H[] = {
-  "typedef long double     max_align_t",// C11
-  "typedef          long   ptrdiff_t",
-  "typedef unsigned long  rsize_t",     // C11
-  "typedef          long  ssize_t",
-  "typedef unsigned long   size_t",
+static char const *const TYPEDEFS_STD_C[] = {
+  "typedef long double       max_align_t",// C11
+  "typedef          long     ptrdiff_t",
+  "typedef int               sig_atomic_t",
+  "typedef unsigned long    rsize_t",     // C11
+  "typedef          long    ssize_t",
+  "typedef unsigned long     size_t",
 
-  "typedef          long   intmax_t",
-  "typedef          long   intptr_t",
-  "typedef unsigned long  uintmax_t",
-  "typedef unsigned long  uintptr_t",
+  "typedef          long     intmax_t",
+  "typedef          long     intptr_t",
+  "typedef unsigned long    uintmax_t",
+  "typedef unsigned long    uintptr_t",
 
-  "typedef          char   int8_t",
-  "typedef          short  int16_t",
-  "typedef          int    int32_t",
-  "typedef          long   int64_t",
-  "typedef unsigned char  uint8_t",
-  "typedef unsigned short uint16_t",
-  "typedef unsigned int   uint32_t",
-  "typedef unsigned long  uint64_t",
+  "typedef struct     div_t     div_t",
+  "typedef struct imaxdiv_t imaxdiv_t",
+  "typedef struct    ldiv_t    ldiv_t",
+  "typedef struct   lldiv_t   lldiv_t",
 
-  "typedef          char   int_fast8_t",
-  "typedef          short  int_fast16_t",
-  "typedef          int    int_fast32_t",
-  "typedef          long   int_fast64_t",
-  "typedef unsigned char  uint_fast8_t",
-  "typedef unsigned short uint_fast16_t",
-  "typedef unsigned int   uint_fast32_t",
-  "typedef unsigned long  uint_fast64_t",
+  "typedef          char     int8_t",
+  "typedef          short    int16_t",
+  "typedef          int      int32_t",
+  "typedef          long     int64_t",
+  "typedef unsigned char    uint8_t",
+  "typedef unsigned short   uint16_t",
+  "typedef unsigned int     uint32_t",
+  "typedef unsigned long    uint64_t",
 
-  "typedef          char   int_least8_t",
-  "typedef          short  int_least16_t",
-  "typedef          int    int_least32_t",
-  "typedef          long   int_least64_t",
-  "typedef unsigned char  uint_least8_t",
-  "typedef unsigned short uint_least16_t",
-  "typedef unsigned int   uint_least32_t",
-  "typedef unsigned long  uint_least64_t",
+  "typedef          char     int_fast8_t",
+  "typedef          short    int_fast16_t",
+  "typedef          int      int_fast32_t",
+  "typedef          long     int_fast64_t",
+  "typedef unsigned char    uint_fast8_t",
+  "typedef unsigned short   uint_fast16_t",
+  "typedef unsigned int     uint_fast32_t",
+  "typedef unsigned long    uint_fast64_t",
+
+  "typedef          char     int_least8_t",
+  "typedef          short    int_least16_t",
+  "typedef          int      int_least32_t",
+  "typedef          long     int_least64_t",
+  "typedef unsigned char    uint_least8_t",
+  "typedef unsigned short   uint_least16_t",
+  "typedef unsigned int     uint_least32_t",
+  "typedef unsigned long    uint_least64_t",
 
   NULL
 };
@@ -110,7 +116,7 @@ static char const *const TYPEDEFS_STDINT_H[] = {
  *
  * @hideinitializer
  */
-static char const *const TYPEDEFS_STDATOMIC_H[] = {
+static char const *const TYPEDEFS_STD_ATOMIC_H[] = {
   "typedef _Atomic          _Bool     atomic_bool",
   "typedef _Atomic          char      atomic_char",
   "typedef _Atomic   signed char      atomic_schar",
@@ -161,19 +167,28 @@ static char const *const TYPEDEFS_STDATOMIC_H[] = {
  *
  * @hideinitializer
  */
-static char const *const TYPEDEFS_CPP[] = {
-  "namespace std { typedef class exception          exception;  }",
-  "namespace std { typedef          long            ptrdiff_t;  }",
-  "namespace std { typedef unsigned long            size_t;     }",
-  "namespace std { typedef class string             string;     }",
-  "namespace std { typedef class wstring            wstring;    }",
+static char const *const TYPEDEFS_STD_CPP[] = {
+  "namespace std { typedef struct   div_t           div_t;        }",
+  "namespace std { typedef struct  ldiv_t          ldiv_t;        }",
+  "namespace std { typedef class    exception       exception;    }",
+  "namespace std { typedef          long            ptrdiff_t;    }",
+  "namespace std { typedef          int             sig_atomic_t; }",
+  "namespace std { typedef unsigned long            size_t;       }",
+  "namespace std { typedef struct   streambuf       streambuf;    }",
+  "namespace std { typedef struct  wstreambuf      wstreambuf;    }",
+  "namespace std { typedef long     long            streamoff;    }",
+  "namespace std { typedef          long            streamsize;   }",
+  "namespace std { typedef class    string          string;       }",
+  "namespace std { typedef class   wstring         wstring;       }",
   // C++11
-  "namespace std { typedef long double              max_align_t;  }",
+  "namespace std { typedef struct imaxdiv_t     imaxdiv_t;        }",
+  "namespace std { typedef struct   lldiv_t       lldiv_t;        }",
+  "namespace std { typedef long     double          max_align_t;  }",
   "namespace std { typedef void                    *nullptr_t;    }",
-  "namespace std { typedef class u16string          u16string;    }",
-  "namespace std { typedef class u32string          u32string;    }",
+  "namespace std { typedef class    u16string       u16string;    }",
+  "namespace std { typedef class    u32string       u32string;    }",
   // C++17
-  "namespace std { typedef enum byte                byte; }",
+  "namespace std { typedef enum     byte            byte; }",
   // C++20
   "namespace std { typedef struct partial_ordering  partial_ordering; }",
   "namespace std { typedef struct strong_equality   strong_equality;  }",
@@ -378,10 +393,10 @@ void c_typedef_init( void ) {
     // There may be a better (order-independent) solution to this, but, until
     // that's figured out, this will have to do.
     //
-    c_typedef_parse_builtins( TYPEDEFS_CPP );
+    c_typedef_parse_builtins( TYPEDEFS_STD_CPP );
 
-    c_typedef_parse_builtins( TYPEDEFS_STDINT_H );
-    c_typedef_parse_builtins( TYPEDEFS_STDATOMIC_H );
+    c_typedef_parse_builtins( TYPEDEFS_STD_C );
+    c_typedef_parse_builtins( TYPEDEFS_STD_ATOMIC_H );
     c_typedef_parse_builtins( TYPEDEFS_MISC );
 
 #ifdef ENABLE_CDECL_DEBUG

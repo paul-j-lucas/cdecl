@@ -42,9 +42,11 @@ typedef int32_t blksize_t;
 typedef long clock_t;
 typedef long clockid_t;
 typedef int32_t dev_t;
+typedef struct div_t div_t;
 typedef int errno_t;
 typedef struct __fpos fpos_t;
 typedef uint32_t gid_t;
+typedef struct imaxdiv_t imaxdiv_t;
 typedef uint32_t in_addr_t;
 typedef uint16_t in_port_t;
 typedef int32_t ino_t;
@@ -62,6 +64,8 @@ typedef long int_least64_t;
 typedef char int_least8_t;
 typedef long intmax_t;
 typedef long intptr_t;
+typedef struct ldiv_t ldiv_t;
+typedef struct lldiv_t lldiv_t;
 typedef long double max_align_t;
 typedef struct __mbstate mbstate_t;
 typedef int32_t mode_t;
@@ -72,16 +76,25 @@ typedef long ptrdiff_t;
 typedef uint32_t rlim_t;
 typedef unsigned long rsize_t;
 typedef uint32_t sa_family_t;
+typedef int sig_atomic_t;
 typedef unsigned long size_t;
 typedef uint32_t socklen_t;
 typedef long ssize_t;
 namespace std { typedef enum byte byte; }
+namespace std { typedef struct div_t div_t; }
 namespace std { typedef class exception exception; }
+namespace std { typedef struct imaxdiv_t imaxdiv_t; }
+namespace std { typedef struct ldiv_t ldiv_t; }
+namespace std { typedef struct lldiv_t lldiv_t; }
 namespace std { typedef long double max_align_t; }
 namespace std { typedef void *nullptr_t; }
 namespace std { typedef struct partial_ordering partial_ordering; }
 namespace std { typedef long ptrdiff_t; }
+namespace std { typedef int sig_atomic_t; }
 namespace std { typedef unsigned long size_t; }
+namespace std { typedef struct streambuf streambuf; }
+namespace std { typedef long long streamoff; }
+namespace std { typedef long streamsize; }
 namespace std { typedef class string string; }
 namespace std { typedef struct strong_equality strong_equality; }
 namespace std { typedef struct strong_ordering strong_ordering; }
@@ -89,6 +102,7 @@ namespace std { typedef class u16string u16string; }
 namespace std { typedef class u32string u32string; }
 namespace std { typedef struct weak_equality weak_equality; }
 namespace std { typedef struct weak_ordering weak_ordering; }
+namespace std { typedef struct wstreambuf wstreambuf; }
 namespace std { typedef class wstring wstring; }
 typedef int64_t suseconds_t;
 typedef int64_t time_t;

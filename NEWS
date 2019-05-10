@@ -21,6 +21,10 @@ Added support for user-defined literals.  For example:
 ** Added support for char8_t
 Now supports C++20's char8_t.
 
+** Added support for more standard types
+Added typedef declarations for div_t, imaxdiv_t, ldiv_t, lldiv_t, sig_atomic_t,
+streambuf, streamoff, streamsize, and wstreambuf.
+
 
 * Changes in Cdecl 6.2
 
