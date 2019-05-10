@@ -1,5 +1,8 @@
 2019-05-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added typedef declarations for div_t, imaxdiv_t, etc.
    * c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added max_align_t, std::max_align_t, std::size_t, and std::ptrdiff_t.
