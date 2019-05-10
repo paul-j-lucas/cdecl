@@ -61,6 +61,7 @@ typedef long int_least64_t;
 typedef char int_least8_t;
 typedef long intmax_t;
 typedef long intptr_t;
+typedef long double max_align_t;
 typedef struct __mbstate mbstate_t;
 typedef int32_t mode_t;
 typedef uint32_t nlink_t;
@@ -75,8 +76,11 @@ typedef uint32_t socklen_t;
 typedef long ssize_t;
 namespace std { typedef enum byte byte; }
 namespace std { typedef class exception exception; }
+namespace std { typedef long double max_align_t; }
 namespace std { typedef void *nullptr_t; }
 namespace std { typedef struct partial_ordering partial_ordering; }
+namespace std { typedef long ptrdiff_t; }
+namespace std { typedef unsigned long size_t; }
 namespace std { typedef class string string; }
 namespace std { typedef struct strong_equality strong_equality; }
 namespace std { typedef struct strong_ordering strong_ordering; }

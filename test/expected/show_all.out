@@ -62,6 +62,7 @@ define int_least64_t as long
 define int_least8_t as char
 define intmax_t as long
 define intptr_t as long
+define max_align_t as long double
 define mbstate_t as struct __mbstate
 define mode_t as int32_t
 define nlink_t as uint32_t
@@ -76,8 +77,11 @@ define socklen_t as uint32_t
 define ssize_t as long
 define byte of namespace std as enum byte
 define exception of namespace std as class exception
+define max_align_t of namespace std as long double
 define nullptr_t of namespace std as pointer to void
 define partial_ordering of namespace std as struct partial_ordering
+define ptrdiff_t of namespace std as long
+define size_t of namespace std as unsigned long
 define string of namespace std as class string
 define strong_equality of namespace std as struct strong_equality
 define strong_ordering of namespace std as struct strong_ordering

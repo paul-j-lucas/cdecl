@@ -64,6 +64,7 @@ static bool       user_defined;         ///< Are new `typedef`s used-defined?
  * @hideinitializer
  */
 static char const *const TYPEDEFS_STDINT_H[] = {
+  "typedef long double     max_align_t",// C11
   "typedef          long   ptrdiff_t",
   "typedef unsigned long  rsize_t",     // C11
   "typedef          long  ssize_t",
@@ -161,43 +162,19 @@ static char const *const TYPEDEFS_STDATOMIC_H[] = {
  * @hideinitializer
  */
 static char const *const TYPEDEFS_CPP[] = {
-  "namespace std { typedef class exception  exception;  }",
-  "namespace std { typedef class string     string;     }",
-  "namespace std { typedef class wstring    wstring;    }",
-
-  NULL
-};
-
-/**
- * Types from C++11.
- *
- * @hideinitializer
- */
-static char const *const TYPEDEFS_CPP_11[] = {
-  "namespace std { typedef void            *nullptr_t;  }",
-  "namespace std { typedef class u16string  u16string;  }",
-  "namespace std { typedef class u32string  u32string;  }",
-
-  NULL
-};
-
-/**
- * Types from C++17.
- *
- * @hideinitializer
- */
-static char const *const TYPEDEFS_CPP_17[] = {
-  "namespace std { typedef enum byte byte; }",
-
-  NULL
-};
-
-/**
- * Types from C++20.
- *
- * @hideinitializer
- */
-static char const *const TYPEDEFS_CPP_20[] = {
+  "namespace std { typedef class exception          exception;  }",
+  "namespace std { typedef          long            ptrdiff_t;  }",
+  "namespace std { typedef unsigned long            size_t;     }",
+  "namespace std { typedef class string             string;     }",
+  "namespace std { typedef class wstring            wstring;    }",
+  // C++11
+  "namespace std { typedef long double              max_align_t;  }",
+  "namespace std { typedef void                    *nullptr_t;    }",
+  "namespace std { typedef class u16string          u16string;    }",
+  "namespace std { typedef class u32string          u32string;    }",
+  // C++17
+  "namespace std { typedef enum byte                byte; }",
+  // C++20
   "namespace std { typedef struct partial_ordering  partial_ordering; }",
   "namespace std { typedef struct strong_equality   strong_equality;  }",
   "namespace std { typedef struct strong_ordering   strong_ordering;  }",
@@ -383,12 +360,28 @@ void c_typedef_init( void ) {
     yydebug = 0;
 #endif /* YYDEBUG */
 
-    c_typedef_parse_builtins( TYPEDEFS_STDINT_H );    // must go first
-    c_typedef_parse_builtins( TYPEDEFS_STDATOMIC_H );
+    //
+    // These types have to be defined first so max_align_t, ptrdiff_t, and
+    // size_t are defined in the std namespace (for C++) before they are also
+    // defined in the global namespace (for C).
+    //
+    // If defined the other way around, i.e.:
+    //
+    //    typedef unsigned long size_t;
+    //    namespace std { typedef unsigned long size_t; }
+    //
+    // then the parser will interpret the second definition as trying to use an
+    // "unsigned long size_t" (i.e., the "unsigned long" modifying the size_t)
+    // rather than trying to define a new size_t as a synonym for "unsigned
+    // long."
+    //
+    // There may be a better (order-independent) solution to this, but, until
+    // that's figured out, this will have to do.
+    //
     c_typedef_parse_builtins( TYPEDEFS_CPP );
-    c_typedef_parse_builtins( TYPEDEFS_CPP_11 );
-    c_typedef_parse_builtins( TYPEDEFS_CPP_17 );
-    c_typedef_parse_builtins( TYPEDEFS_CPP_20 );
+
+    c_typedef_parse_builtins( TYPEDEFS_STDINT_H );
+    c_typedef_parse_builtins( TYPEDEFS_STDATOMIC_H );
     c_typedef_parse_builtins( TYPEDEFS_MISC );
 
 #ifdef ENABLE_CDECL_DEBUG
