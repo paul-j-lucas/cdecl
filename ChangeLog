@@ -1,3 +1,7 @@
+2019-05-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: New release is 6.2.
+
 2019-05-10  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
