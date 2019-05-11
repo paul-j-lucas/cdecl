@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 6.3
+* Changes in Cdecl 6.2
 
 ** Added C++11 user-defined literal support
 Added support for user-defined literals.  For example:
@@ -18,19 +18,16 @@ Added support for user-defined literals.  For example:
     cdecl> explain int operator"" _a(unsigned long long x)
     declare _a as user-defined literal (x as unsigned long long) returning int
 
+** More commands as first argument
+More commands (define, namespace, set, static, typedef, and using) are now
+recognized as such when they are the first argument.
+
 ** Added support for char8_t
 Now supports C++20's char8_t.
 
 ** Added support for more standard types
 Added typedef declarations for div_t, imaxdiv_t, ldiv_t, lldiv_t, sig_atomic_t,
 streambuf, streamoff, streamsize, and wstreambuf.
-
-
-* Changes in Cdecl 6.2
-
-** More commands as first argument
-More commands (define, namespace, set, static, typedef, and using) are now
-recognized as such when they are the first argument.
 
 
 * Changes in Cdecl 6.1
