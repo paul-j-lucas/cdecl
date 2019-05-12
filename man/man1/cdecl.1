@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "May 10, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "May 11, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -900,10 +900,17 @@ or
 option is specified):
 .P
 .RS 4
+\f(CWmax_align_t\fP,
 \f(CWptrdiff_t\fP,
 \f(CWrsize_t\fP,
+\f(CWsig_atomic_t\fP,
 \f(CWsize_t\fP,
-\f(CWssize_t\fP
+\f(CWssize_t\fP,
+.br
+\f(CWdiv_t\fP,
+\f(CWimaxdiv_t\fP,
+\f(CWldiv_t\fP,
+\f(CWlldiv_t\fP,
 .br
 \f(CWintmax_t\fP,
 \f(CWuintmax_t\fP,
@@ -1022,11 +1029,32 @@ option is specified):
 \f(CWsa_family_t\fP,
 \f(CWsocklen_t\fP,
 .P
-\f(CWpartial_ordering\fP,
-\f(CWstrong_equality\fP,
-\f(CWstrong_ordering\fP,
-\f(CWweak_equality\fP,
-\f(CWweak_ordering\fP
+\f(CWstd::byte\fP,
+\f(CWstd::exception\fP,
+\f(CWstd::max_align_t\fP,
+\f(CWstd::nullptr_t\fP,
+\f(CWstd::ptrdiff_t\fP,
+\f(CWstd::sig_atomic_t\fP,
+\f(CWstd::size_t\fP,
+\f(CWstd::div_t\fP,
+\f(CWstd::imaxdiv_t\fP,
+\f(CWstd::ldiv_t\fP,
+\f(CWstd::lldiv_t\fP,
+\f(CWstd::u16string\fP,
+\f(CWstd::u32string\fP,
+.br
+\f(CWstd::streambuf\fP,
+\f(CWstd::wstreambuf\fP,
+\f(CWstd::streamoff\fP,
+\f(CWstd::streamsize\fP,
+\f(CWstd::string\fP,
+\f(CWstd::wstring\fP,
+.br
+\f(CWstd::partial_ordering\fP,
+\f(CWstd::strong_equality\fP,
+\f(CWstd::strong_ordering\fP,
+\f(CWstd::weak_equality\fP,
+\f(CWstd::weak_ordering\fP
 .RE
 .SS Set Options
 The
