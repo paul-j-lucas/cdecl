@@ -1359,7 +1359,7 @@ EXTRA_DIST = run_test.sh tests data expected
 dist-hook:
 	cd $(distdir)/tests && rm -f *.log *.trs
 
-CDECL = $(top_builddir)/src/cdecl
+CDECL = $(top_builddir)/src/cdecl -C
 #
 # Adding predefined types causes the output of cdecl to change so that the
 # expected results for the following tests no longer match and hence "fail."
@@ -1367,6 +1367,8 @@ CDECL = $(top_builddir)/src/cdecl
 # cdecl output so the tests will pass again.
 #
 update-expected:
+	echo 'help' | $(CDECL) > expected/help-c.out
+	echo 'help' | $(CDECL) -xc++ > expected/help-c++.out
 	echo 'explain int* f(int x, int y)' | $(CDECL) -d > expected/cdecl-d.out
 	echo 'explain int* f(int x, int y)' | $(CDECL) --debug > expected/cdecl--debug.out
 	echo 'typedef int Int; show all' | $(CDECL) > expected/show_all.out
