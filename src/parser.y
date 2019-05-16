@@ -732,7 +732,7 @@ static void yyerror( char const *msg ) {
 %token  <name>      Y_LANG_NAME
 %token  <name>      Y_NAME
 %token  <number>    Y_NUMBER
-%token  <c_typedef> Y_TYPEDEF_NAME      /* e.g., typedef int Int */
+%token  <c_typedef> Y_TYPEDEF_NAME      /* e.g., S x */
 
                     /*
                      * Grammar rules are named according to the following
