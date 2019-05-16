@@ -22,9 +22,6 @@
  * @file
  * Defines functions for dealing with "sname" (C++ scoped name) objects, e.g.,
  * `S::T::x`.
- *
- * @note This file is needed to be a "host" for the `extern inline` definitions
- * for the `inline` functions declared in the header.
  */
 
 // local
@@ -32,7 +29,54 @@
 /// @cond DOXYGEN_IGNORE
 #define CDECL_SNAME_INLINE _GL_EXTERN_INLINE
 /// @endcond
+#include "c_ast.h"
 #include "c_sname.h"
+#include "util.h"
+
+// standard
+#include <assert.h>
+
+////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Helper function for `c_sname_full_c()` and `c_sname_scope_c()` that writes
+ * the scope names from outermost to innermost separated by `::` into a buffer.
+ *
+ * @param name_buf The buffer to write into.
+ * @param sname The scoped name to write.
+ * @param end_scope The scope to stop before or null for all scopes.
+ * @return Returns \a name_buf if \a sname is not empty or null otherwise.
+ */
+static char const* c_sname_scope_c_impl( char *name_buf, c_sname_t const *sname,
+                                         c_scope_t const *end_scope ) {
+  assert( name_buf != NULL );
+  assert( sname != NULL );
+
+  char *name = name_buf;
+  name[0] = '\0';
+  bool colon2 = false;
+
+  for ( c_scope_t const *scope = sname->head; scope != end_scope;
+        scope = scope->next ) {
+    if ( true_or_set( &colon2 ) )
+      STRCAT( name, "::" );
+    STRCAT( name, C_SCOPE_NAME( scope ) );
+  } // for
+
+  return name_buf;
+}
+
+////////// extern functions ///////////////////////////////////////////////////
+
+char const* c_sname_full_c( c_sname_t const *sname ) {
+  static char name_buf[ 256 ];
+  return c_sname_scope_c_impl( name_buf, sname, NULL );
+}
+
+char const* c_sname_scope_c( c_sname_t const *sname ) {
+  static char name_buf[ 256 ];
+  return c_sname_scope_c_impl( name_buf, sname, sname->tail );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

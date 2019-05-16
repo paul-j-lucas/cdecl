@@ -29,19 +29,12 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
-#include "c_sname.h"
 #include "typedefs.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <stdio.h>                      /* for FILE */
-
-_GL_INLINE_HEADER_BEGIN
-#ifndef CDECL_GIBBERISH_INLINE
-# define CDECL_GIBBERISH_INLINE _GL_INLINE
-#endif /* CDECL_GIBBERISH_INLINE */
-/// @endcond
 
 // Gibberish declaration flags.
 #define G_DECL_NONE           0u        /**< None. */
@@ -71,49 +64,6 @@ void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout );
 void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout );
 
 /**
- * Gets the fully scoped name of \a sname.
- *
- * @param sname The `c_sname_t` to get the full name of.
- * @return Returns said name or the empty string if \a sname is empty.
- * @warning The pointer returned is to a static buffer, so you can't do
- * something like call this twice in the same `printf()` statement.
- *
- * @sa c_sname_local
- * @sa c_sname_scope_c
- */
-char const* c_sname_full_c( c_sname_t const *sname );
-
-/**
- * Gets just the scope name of \a sname.
- * Examples:
- *  + For `a::b::c`, returns `a::b`.
- *  + For `c`, returns the empty string.
- *
- * @param sname The `c_sname_t` to get the scope name of.
- * @return Returns said name or the empty string if \a sname is empty or the
- * name is not within a scope.
- * @warning The pointer returned is to a static buffer, so you can't do
- * something like call this twice in the same `printf()` statement.
- *
- * @sa c_sname_full_c
- * @sa c_sname_local
- */
-char const* c_sname_scope_c( c_sname_t const *sname );
-
-/**
- * Gets the local (last) name of \a sname.
- *
- * @param sname The `c_sname_t` to get the local name of.
- * @return Returns said name or the empty string if \a sname is empty.
- *
- * @sa c_sname_full_c
- * @sa c_sname_scope_c
- */
-CDECL_GIBBERISH_INLINE char const* c_sname_local( c_sname_t const *sname ) {
-  return c_sname_empty( sname ) ? "" : SLIST_TAIL( char const*, sname );
-}
-
-/**
  * Gets the digraph or trigraph (collectively, "graph") equivalent of \a token.
  *
  * @param token The token to get the equivalent name for.
@@ -124,8 +74,6 @@ CDECL_GIBBERISH_INLINE char const* c_sname_local( c_sname_t const *sname ) {
 char const* graph_name_c( char const *token );
 
 ///////////////////////////////////////////////////////////////////////////////
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_gibberish_H */
 /* vim:set et sw=2 ts=2: */

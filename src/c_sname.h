@@ -39,7 +39,6 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
-#include <stdlib.h>                     /* for free(3) */
 #include <string.h>                     /* for str*(3) */
 
 _GL_INLINE_HEADER_BEGIN
@@ -134,6 +133,19 @@ CDECL_SNAME_INLINE void c_sname_free( c_sname_t *sname ) {
 }
 
 /**
+ * Gets the fully scoped name of \a sname.
+ *
+ * @param sname The `c_sname_t` to get the full name of.
+ * @return Returns said name or the empty string if \a sname is empty.
+ * @warning The pointer returned is to a static buffer, so you can't do
+ * something like call this twice in the same `printf()` statement.
+ *
+ * @sa c_sname_local
+ * @sa c_sname_scope_c
+ */
+char const* c_sname_full_c( c_sname_t const *sname );
+
+/**
  * Initializes \a sname.  This is not necessary for either global or `static`
  * scoped names.
  *
@@ -143,6 +155,19 @@ CDECL_SNAME_INLINE void c_sname_free( c_sname_t *sname ) {
  */
 CDECL_SNAME_INLINE void c_sname_init( c_sname_t *sname ) {
   slist_init( sname );
+}
+
+/**
+ * Gets the local (last) name of \a sname.
+ *
+ * @param sname The `c_sname_t` to get the local name of.
+ * @return Returns said name or the empty string if \a sname is empty.
+ *
+ * @sa c_sname_full_c
+ * @sa c_sname_scope_c
+ */
+CDECL_SNAME_INLINE char const* c_sname_local( c_sname_t const *sname ) {
+  return c_sname_empty( sname ) ? "" : SLIST_TAIL( char const*, sname );
 }
 
 /**
@@ -173,6 +198,23 @@ CDECL_SNAME_INLINE void c_sname_prepend_sname( c_sname_t *dst,
                                                c_sname_t *src ) {
   (void)slist_push_list_head( dst, src );
 }
+
+/**
+ * Gets just the scope name of \a sname.
+ * Examples:
+ *  + For `a::b::c`, returns `a::b`.
+ *  + For `c`, returns the empty string.
+ *
+ * @param sname The `c_sname_t` to get the scope name of.
+ * @return Returns said name or the empty string if \a sname is empty or the
+ * name is not within a scope.
+ * @warning The pointer returned is to a static buffer, so you can't do
+ * something like call this twice in the same `printf()` statement.
+ *
+ * @sa c_sname_full_c
+ * @sa c_sname_local
+ */
+char const* c_sname_scope_c( c_sname_t const *sname );
 
 /**
  * Sets the scope type of \a sname.
