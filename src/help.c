@@ -119,7 +119,6 @@ static bool is_title_char( char c ) {
   switch ( c ) {
     case '+':
     case '-':
-    case '_':
       return true;
     default:
       return isalpha( c );
