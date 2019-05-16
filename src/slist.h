@@ -210,8 +210,8 @@ void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
  * Peeks at the data at the head of \a list.
  *
  * @param list A pointer to the <code>\ref slist</code>.
- * @return Returns a pointer to the data from the node at the head of \a list
- * or null if \a list is empty.
+ * @return Returns the data from the node at the head of \a list or null if \a
+ * list is empty.
  */
 CDECL_SLIST_INLINE void* slist_head( slist_t const *list ) {
   return list->head != NULL ? list->head->data : NULL;
@@ -335,8 +335,8 @@ void* slist_push_tail( slist_t *list, void *data );
  * Peeks at the data at the tail of \a list.
  *
  * @param list A pointer to the <code>\ref slist</code>.
- * @return Returns a pointer to the data from the node at the tail of \a list
- * or null if \a list is empty.
+ * @return Returns the data from the node at the tail of \a list or null if \a
+ * list is empty.
  */
 CDECL_SLIST_INLINE void* slist_tail( slist_t const *list ) {
   return list->tail != NULL ? list->tail->data : NULL;
