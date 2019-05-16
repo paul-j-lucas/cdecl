@@ -532,7 +532,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 c_sname_free( &temp_name );
                 if ( t != NULL ) {
                   yylval.c_typedef = t;
-                  return Y_TYPEDEF_TYPE;
+                  return Y_TYPEDEF_NAME;
                 }
                 YY_USER_ACTION_UNDO_FOR_REJECT;
                 REJECT;
@@ -587,7 +587,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 c_typedef_t const *const t = c_typedef_find( &typedef_name );
                 if ( t != NULL ) {
                   yylval.c_typedef = t;
-                  return Y_TYPEDEF_TYPE;
+                  return Y_TYPEDEF_NAME;
                 }
 
                 //
