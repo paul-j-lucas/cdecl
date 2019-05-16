@@ -1854,7 +1854,7 @@ func_decl_english_ast
       DUMP_TYPE( "(qualifier)", qualifier_peek() );
       DUMP_TYPE( "ref_qualifier_english_type_opt", $1 );
       DUMP_NUM( "member_or_non_member_opt", $2 );
-      DUMP_AST_LIST( "decl_list_english_opt", $4 );
+      DUMP_AST_LIST( "paren_decl_list_english_opt", $4 );
       DUMP_AST( "returning_english_ast_opt", $5.ast );
 
       $$.ast = C_AST_NEW( K_FUNCTION, &@$ );
