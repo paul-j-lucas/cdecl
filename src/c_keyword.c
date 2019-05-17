@@ -152,7 +152,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_CONST_CAST,       Y_CONST_CAST,       T_NONE,         LANG_CPP_ALL      },
   { L_DELETE,           Y_DELETE,           T_NONE,         LANG_CPP_ALL      },
   { L_DYNAMIC_CAST,     Y_DYNAMIC_CAST,     T_NONE,         LANG_CPP_ALL      },
-  { L_EXPLICIT,         Y_EXPLICIT,         T_NONE,         LANG_CPP_ALL      },
+  { L_EXPLICIT,         Y_EXPLICIT,         T_EXPLICIT,     LANG_CPP_ALL      },
   { L_EXPORT,           Y_EXPORT,           T_NONE,         LANG_CPP_ALL      },
   { L_FALSE,            Y_FALSE,            T_NONE,         LANG_CPP_ALL      },
   { L_FRIEND,           Y_FRIEND,           T_FRIEND,       LANG_CPP_ALL      },

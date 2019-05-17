@@ -82,14 +82,15 @@
 // storage-class-like
 #define T_CONSTEVAL           0x0000001000000000ull /**< `consteval`          */
 #define T_CONSTEXPR           0x0000002000000000ull /**< `constexpr`          */
-#define T_FINAL               0x0000004000000000ull /**< `final`              */
-#define T_FRIEND              0x0000008000000000ull /**< `friend`             */
-#define T_INLINE              0x0000010000000000ull /**< `inline`             */
-#define T_NOEXCEPT            0x0000020000000000ull /**< `noexcept`           */
-#define T_OVERRIDE            0x0000040000000000ull /**< `override`           */
-#define T_PURE_VIRTUAL        0x0000080000000000ull /**< `= 0`                */
-#define T_THROW               0x0000100000000000ull /**< `throw()`            */
-#define T_VIRTUAL             0x0000200000000000ull /**< `virtual`            */
+#define T_EXPLICIT            0x0000004000000000ull /**< `explicit`           */
+#define T_FINAL               0x0000008000000000ull /**< `final`              */
+#define T_FRIEND              0x0000010000000000ull /**< `friend`             */
+#define T_INLINE              0x0000020000000000ull /**< `inline`             */
+#define T_NOEXCEPT            0x0000040000000000ull /**< `noexcept`           */
+#define T_OVERRIDE            0x0000080000000000ull /**< `override`           */
+#define T_PURE_VIRTUAL        0x0000100000000000ull /**< `= 0`                */
+#define T_THROW               0x0000200000000000ull /**< `throw()`            */
+#define T_VIRTUAL             0x0000400000000000ull /**< `virtual`            */
 
 // attributes
 #define T_CARRIES_DEPENDENCY  0x0001000000000000ull /**< `carries_dependency` */

@@ -660,7 +660,7 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_DELETE
 %token  <oper_id>   Y_DOT_STAR    ".*"
 %token  <literal>   Y_DYNAMIC_CAST
-%token              Y_EXPLICIT
+%token  <type_id>   Y_EXPLICIT
 %token              Y_EXPORT
 %token  <type_id>   Y_FALSE             /* for noexcept(false) */
 %token  <type_id>   Y_FRIEND
@@ -1093,6 +1093,7 @@ storage_class_english_type
   | Y___BLOCK                           /* Apple extension */
   | Y_CONSTEVAL
   | Y_CONSTEXPR
+  | Y_EXPLICIT
   | Y_EXTERN
   | Y_FINAL
   | Y_FRIEND
@@ -3159,6 +3160,7 @@ storage_class_c_type
   | Y___BLOCK                           /* Apple extension */
   | Y_CONSTEVAL
   | Y_CONSTEXPR
+  | Y_EXPLICIT
   | Y_EXTERN
   | Y_FINAL
   | Y_FRIEND
