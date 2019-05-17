@@ -175,7 +175,6 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_THROW,            Y_THROW,            T_THROW,        LANG_CPP_ALL      },
   { L_TRUE,             Y_TRUE,             T_NOEXCEPT,     LANG_CPP_ALL      },
   { L_TRY,              Y_TRY,              T_NONE,         LANG_CPP_ALL      },
-  { L_TRY,              Y_TRY,              T_NONE,         LANG_CPP_ALL      },
   { L_TYPEID,           Y_TYPEID,           T_NONE,         LANG_CPP_ALL      },
   { L_TYPENAME,         Y_TYPENAME,         T_NONE,         LANG_CPP_ALL      },
   { L_USING,            Y_USING,            T_TYPEDEF,      LANG_CPP_ALL      },
