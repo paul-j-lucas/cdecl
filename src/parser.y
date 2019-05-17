@@ -2749,6 +2749,61 @@ reference_type_c_ast
     }
   ;
 
+sname_c_ast
+  : /* type_c_ast */ sname_c
+    {
+      DUMP_START( "sname_c_ast", "sname_c" );
+      DUMP_AST( "(type_c_ast)", type_peek() );
+      DUMP_STR( "sname", c_sname_full_c( &$1 ) );
+
+      $$.ast = type_peek();
+      $$.target_ast = NULL;
+      c_ast_sname_set_sname( $$.ast, &$1 );
+
+      DUMP_AST( "sname_c_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+typedef_name_c_ast
+  : Y_TYPEDEF_SNAME
+    {
+      DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_SNAME" );
+      DUMP_AST( "type_ast", $1->ast );
+
+      $$.ast = C_AST_NEW( K_TYPEDEF, &@$ );
+      $$.target_ast = NULL;
+      $$.ast->as.c_typedef = $1;
+      $$.ast->type_id = T_TYPEDEF_TYPE;
+
+      DUMP_AST( "typedef_name_c_ast", $$.ast );
+      DUMP_END();
+    }
+  | /* type_c_ast */ Y_TYPEDEF_SNAME "::" sname_c
+    {
+      //
+      // This is for a case like:
+      //
+      //      define S as struct S
+      //      explain int S::x
+      //
+      // that is: a typedef'd type used for a scope.
+      //
+      DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_SNAME" );
+      DUMP_AST( "type_ast", $1->ast );
+      DUMP_STR( "sname_c", c_sname_full_c( &$3 ) );
+
+      $$.ast = type_peek();
+      $$.target_ast = NULL;
+      c_sname_t temp_name = c_ast_sname_dup( $1->ast );
+      c_ast_sname_set_sname( $$.ast, &temp_name );
+      c_ast_sname_append_sname( $$.ast, &$3 );
+
+      DUMP_AST( "typedef_name_c_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
 user_defined_literal_decl_c_ast
   : /* type_c_ast */ user_defined_literal_c_ast '(' arg_list_c_ast ')'
     func_noexcept_c_type_opt func_trailing_return_type_c_ast_opt
@@ -3067,45 +3122,6 @@ class_struct_type
 class_struct_union_type
   : class_struct_type
   | Y_UNION
-  ;
-
-typedef_name_c_ast
-  : Y_TYPEDEF_SNAME
-    {
-      DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_SNAME" );
-      DUMP_AST( "type_ast", $1->ast );
-
-      $$.ast = C_AST_NEW( K_TYPEDEF, &@$ );
-      $$.target_ast = NULL;
-      $$.ast->as.c_typedef = $1;
-      $$.ast->type_id = T_TYPEDEF_TYPE;
-
-      DUMP_AST( "typedef_name_c_ast", $$.ast );
-      DUMP_END();
-    }
-  | /* type_c_ast */ Y_TYPEDEF_SNAME "::" sname_c
-    {
-      //
-      // This is for a case like:
-      //
-      //      define S as struct S
-      //      explain int S::x
-      //
-      // that is: a typedef'd type used for a scope.
-      //
-      DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_SNAME" );
-      DUMP_AST( "type_ast", $1->ast );
-      DUMP_STR( "sname_c", c_sname_full_c( &$3 ) );
-
-      $$.ast = type_peek();
-      $$.target_ast = NULL;
-      c_sname_t temp_name = c_ast_sname_dup( $1->ast );
-      c_ast_sname_set_sname( $$.ast, &temp_name );
-      c_ast_sname_append_sname( $$.ast, &$3 );
-
-      DUMP_AST( "typedef_name_c_ast", $$.ast );
-      DUMP_END();
-    }
   ;
 
 type_qualifier_list_c_type_opt
@@ -3870,22 +3886,6 @@ sname_c
     {
       c_sname_init( &$$ );
       c_sname_append_name( &$$, $1 );
-    }
-  ;
-
-sname_c_ast
-  : /* type_c_ast */ sname_c
-    {
-      DUMP_START( "sname_c_ast", "sname_c" );
-      DUMP_AST( "(type_c_ast)", type_peek() );
-      DUMP_STR( "sname", c_sname_full_c( &$1 ) );
-
-      $$.ast = type_peek();
-      $$.target_ast = NULL;
-      c_ast_sname_set_sname( $$.ast, &$1 );
-
-      DUMP_AST( "sname_c_ast", $$.ast );
-      DUMP_END();
     }
   ;
 
