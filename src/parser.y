@@ -2529,59 +2529,6 @@ pure_virtual_c_type_opt
   | '=' zero_expected             { $$ = T_PURE_VIRTUAL; }
   ;
 
-sname_c_ast
-  : /* type_c_ast */ sname_c
-    {
-      DUMP_START( "sname_c_ast", "sname_c" );
-      DUMP_AST( "(type_c_ast)", type_peek() );
-      DUMP_STR( "sname", c_sname_full_c( &$1 ) );
-
-      $$.ast = type_peek();
-      $$.target_ast = NULL;
-      c_ast_sname_set_sname( $$.ast, &$1 );
-
-      DUMP_AST( "sname_c_ast", $$.ast );
-      DUMP_END();
-    }
-  ;
-
-sname_c
-  : sname_c "::" Y_NAME
-    {
-      // see the comment in "of_scope_list_english_opt"
-      if ( c_init >= INIT_READ_CONF && !C_LANG_IS_CPP() ) {
-        print_error( &@2, "scoped names not supported in %s", C_LANG_NAME() );
-        PARSE_ABORT();
-      }
-      $$ = $1;
-      c_type_id_t sn_type = c_sname_type( &$1 );
-      if ( sn_type == T_NONE )
-        sn_type = T_SCOPE;
-      c_sname_set_type( &$$, sn_type );
-      c_sname_append_name( &$$, $3 );
-    }
-  | sname_c "::" Y_TYPEDEF_NAME
-    {
-      //
-      // This is for a case like:
-      //
-      //      define S::int8_t as char
-      //
-      // that is: the type int8_t is an existing type in no scope being defined
-      // as a distinct type in a new scope.
-      //
-      $$ = $1;
-      c_sname_t temp = c_ast_sname_dup( $3->ast );
-      c_sname_set_type( &$$, c_sname_type( &temp ) );
-      c_sname_append_sname( &$$, &temp );
-    }
-  | Y_NAME
-    {
-      c_sname_init( &$$ );
-      c_sname_append_name( &$$, $1 );
-    }
-  ;
-
 nested_decl_c_ast
   : '(' placeholder_c_ast { type_push( $2.ast ); ++ast_depth; } decl_c_ast ')'
     {
@@ -3879,6 +3826,59 @@ semi_opt
 semi_or_end
   : ';'
   | Y_END
+  ;
+
+sname_c
+  : sname_c "::" Y_NAME
+    {
+      // see the comment in "of_scope_list_english_opt"
+      if ( c_init >= INIT_READ_CONF && !C_LANG_IS_CPP() ) {
+        print_error( &@2, "scoped names not supported in %s", C_LANG_NAME() );
+        PARSE_ABORT();
+      }
+      $$ = $1;
+      c_type_id_t sn_type = c_sname_type( &$1 );
+      if ( sn_type == T_NONE )
+        sn_type = T_SCOPE;
+      c_sname_set_type( &$$, sn_type );
+      c_sname_append_name( &$$, $3 );
+    }
+  | sname_c "::" Y_TYPEDEF_NAME
+    {
+      //
+      // This is for a case like:
+      //
+      //      define S::int8_t as char
+      //
+      // that is: the type int8_t is an existing type in no scope being defined
+      // as a distinct type in a new scope.
+      //
+      $$ = $1;
+      c_sname_t temp = c_ast_sname_dup( $3->ast );
+      c_sname_set_type( &$$, c_sname_type( &temp ) );
+      c_sname_append_sname( &$$, &temp );
+    }
+  | Y_NAME
+    {
+      c_sname_init( &$$ );
+      c_sname_append_name( &$$, $1 );
+    }
+  ;
+
+sname_c_ast
+  : /* type_c_ast */ sname_c
+    {
+      DUMP_START( "sname_c_ast", "sname_c" );
+      DUMP_AST( "(type_c_ast)", type_peek() );
+      DUMP_STR( "sname", c_sname_full_c( &$1 ) );
+
+      $$.ast = type_peek();
+      $$.target_ast = NULL;
+      c_ast_sname_set_sname( $$.ast, &$1 );
+
+      DUMP_AST( "sname_c_ast", $$.ast );
+      DUMP_END();
+    }
   ;
 
 sname_c_expected
