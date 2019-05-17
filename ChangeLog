@@ -1,5 +1,28 @@
+2019-05-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.c: Removed duplicate L_TRY entry.
+   * c_keyword.c, c_type.c, c_type.h, parser.y: Added a bit more support for
+     "explicit".
+   * lexer.l, parser.y, slist.h: Grammar rule clean-up.
+   * parser.y: Reordered sname_c rule.
+
+2019-05-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Tweaked comment.
+   * parser.y: Added comment.
+   * lexer.l, parser.y: s/Y_TYPEDEF_TYPE/Y_TYPEDEF_NAME/
+   * parser.y: DUMP_AST_LIST fix.
+   * help.c: Removed '_'.
+   * test/Makefile.am: Added help tests.
+   * c_sname.c, c_sname.h, gibberish.c, gibberish.h: Code re-org.
+
+2019-05-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: s/Sierra/Mojave/
+
 2019-05-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Added new typedefs to man page.
    * NEWS, configure.ac: New release is 6.2.
 
 2019-05-10  Paul J. Lucas <paul@lucasmail.org>
