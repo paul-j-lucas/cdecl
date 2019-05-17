@@ -1417,20 +1417,20 @@ scope_declaration_c
     typedef_sname_c__or_sname_c
     {
       if ( C_LANG_IS_CPP() ) {
+        c_type_id_t const cur_type = c_sname_type( &in_attr.current_scope );
+        if ( (cur_type & T_CLASS_STRUCT_UNION) != 0 ) {
+          char const *const cur_name = c_sname_local( &in_attr.current_scope );
+          char const *const mbr_name = SLIST_HEAD( char const*, &$3 );
+          if ( strcmp( mbr_name, cur_name ) == 0 ) {
+            print_error( &@3,
+              "\"%s\": member has the same name as its enclosing %s",
+              mbr_name, c_type_name( cur_type )
+            );
+            PARSE_ABORT();
+          }
+        }
         c_sname_set_type( &in_attr.current_scope, $1 );
         c_sname_append_sname( &in_attr.current_scope, &$3 );
-      }
-      else {
-        //
-        // In C, structs/unions do NOT create nested scopes:
-        //
-        //      struct A {
-        //        typedef int Int;
-        //      };
-        //      Int i;                  // legal in C
-        //
-        // so do NOT use in_attr.current_scope.
-        //
       }
     }
     lbrace_expected
@@ -1438,8 +1438,12 @@ scope_declaration_c
     rbrace_expected
     semi_expected                       /* ';' needed for class/struct/union */
     {
-      if ( !C_LANG_IS_CPP() )
-        print_warning( &@6, "types do not nest in C" );
+        if ( !C_LANG_IS_CPP() ) {
+          print_error( &@6,
+            "nested types are not supported in %s", C_LANG_NAME()
+          );
+          PARSE_ABORT();
+        }
     }
 
     /*

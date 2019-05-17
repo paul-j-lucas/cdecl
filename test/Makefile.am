@@ -686,7 +686,8 @@ TESTS+=	tests/2c_typedef_i.test \
 # C++ namespace, typedef & using error tests
 # ==========================================
 #
-TESTS+=	tests/k_namespace_typedef_i.test \
+TESTS+=	tests/2c_typedef_i.test \
+	tests/k_namespace_typedef_i.test \
 	tests/namespace_+typedef_i-c++14.test \
 	tests/typedef_ai.test \
 	tests/typedef_c_int_least32_t.test \

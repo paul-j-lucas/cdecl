@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -xc++ @ struct S { struct S { typedef int Int; }; }; @ 65
