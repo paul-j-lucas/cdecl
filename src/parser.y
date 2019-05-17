@@ -665,7 +665,7 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_FALSE             /* for noexcept(false) */
 %token  <type_id>   Y_FRIEND
 %token  <type_id>   Y_MUTABLE
-%token              Y_NAMESPACE
+%token  <type_id>   Y_NAMESPACE
 %token  <type_id>   Y_NEW
 %token              Y_NOT
 %token              Y_OPERATOR
@@ -826,6 +826,8 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   enum_class_struct_union_type
 %type   <type_id>   func_qualifier_c_type
 %type   <type_id>   func_qualifier_list_c_type_opt
+%type   <type_id>   namespace_expected
+%type   <type_id>   namespace_type
 %type   <type_id>   noexcept_bool_type
 %type   <type_id>   storage_class_c_type
 %type   <type_id>   type_modifier_c_type
@@ -842,7 +844,6 @@ static void yyerror( char const *msg ) {
 %type   <bitmask>   member_or_non_member_opt
 %type   <ast_pair>  name_ast
 %type   <name>      name_expected name_opt
-%type   <type_id>   namespace_type
 %type   <literal>   new_style_cast_c new_style_cast_english
 %type   <sname>     of_scope_english
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
@@ -3666,8 +3667,8 @@ namespace_expected
   ;
 
 namespace_type
-  : Y_NAMESPACE                   { $$ = T_NAMESPACE; }
-  | Y_INLINE namespace_expected   { $$ = T_INLINE | T_NAMESPACE; }
+  : Y_NAMESPACE
+  | Y_INLINE namespace_expected   { $$ = $1 | $2; }
   ;
 
 of_expected

@@ -168,7 +168,6 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_PROTECTED,        Y_PROTECTED,        T_NONE,         LANG_CPP_ALL      },
   { L_PUBLIC,           Y_PUBLIC,           T_NONE,         LANG_CPP_ALL      },
   { L_REINTERPRET_CAST, Y_REINTERPRET_CAST, T_NONE,         LANG_CPP_ALL      },
-  { L_SCOPE,            Y_SCOPE,            T_NONE,         LANG_CPP_ALL      },
   { L_STATIC_CAST,      Y_STATIC_CAST,      T_NONE,         LANG_CPP_ALL      },
   { L_TEMPLATE,         Y_TEMPLATE,         T_NONE,         LANG_CPP_ALL      },
   { L_THIS,             Y_THIS,             T_NONE,         LANG_CPP_ALL      },
