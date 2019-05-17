@@ -732,7 +732,7 @@ static void yyerror( char const *msg ) {
 %token  <name>      Y_LANG_NAME
 %token  <name>      Y_NAME
 %token  <number>    Y_NUMBER
-%token  <c_typedef> Y_TYPEDEF_NAME      /* e.g., S x */
+%token  <c_typedef> Y_TYPEDEF_SNAME     /* e.g., T x; S::T y */
 
                     /*
                      * Grammar rules are named according to the following
@@ -851,11 +851,12 @@ static void yyerror( char const *msg ) {
 %type   <sname>     sname_c sname_c_expected sname_c_opt
 %type   <ast_pair>  sname_c_ast
 %type   <sname>     sname_english sname_english_expected
-%type   <sname>     typedef_name_sname typedef_name_sname_expected
 %type   <name>      set_option_name
 %type   <bitmask>   show_which_types_opt
 %type   <type_id>   static_type_opt
 %type   <bitmask>   typedef_opt
+%type   <sname>     typedef_sname_c__or_sname_c
+%type   <sname>     typedef_sname_c__or_sname_c_expected
 
 /*
  * Bison %destructors.  We don't use the <identifier> syntax because older
@@ -881,8 +882,8 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_c_opt
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_english
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_english_expected
-%destructor { DTRACE; c_sname_free( &$$ ); } typedef_name_sname
-%destructor { DTRACE; c_sname_free( &$$ ); } typedef_name_sname_expected
+%destructor { DTRACE; c_sname_free( &$$ ); } typedef_sname_c__or_sname_c
+%destructor { DTRACE; c_sname_free( &$$ ); } typedef_sname_c__or_sname_c_expected
 
 /*****************************************************************************/
 %%
@@ -1411,7 +1412,7 @@ scope_declaration_c
       // see the comment in "explain"
       c_mode = MODE_GIBBERISH_TO_ENGLISH;
     }
-    typedef_name_sname
+    typedef_sname_c__or_sname_c
     {
       if ( C_LANG_IS_CPP() ) {
         c_sname_set_type( &in_attr.current_scope, $1 );
@@ -1514,7 +1515,7 @@ set_option_name
 /*****************************************************************************/
 
 show_command
-  : Y_SHOW Y_TYPEDEF_NAME typedef_opt
+  : Y_SHOW Y_TYPEDEF_SNAME typedef_opt
     {
       if ( $3 )
         print_type_gibberish( $2 );
@@ -2668,7 +2669,7 @@ pointer_to_member_decl_c_ast
   ;
 
 pointer_to_member_type_c_ast
-  : /* type_c_ast */ typedef_name_sname Y_COLON2_STAR
+  : /* type_c_ast */ typedef_sname_c__or_sname_c Y_COLON2_STAR
     cv_qualifier_list_c_type_opt
     {
       DUMP_START( "pointer_to_member_type_c_ast",
@@ -3029,7 +3030,7 @@ builtin_type
   ;
 
 enum_class_struct_union_ast
-  : enum_class_struct_union_type typedef_name_sname_expected
+  : enum_class_struct_union_type typedef_sname_c__or_sname_c_expected
     {
       DUMP_START( "enum_class_struct_union_ast",
                   "enum_class_struct_union_type sname" );
@@ -3063,9 +3064,9 @@ class_struct_union_type
   ;
 
 typedef_name_c_ast
-  : Y_TYPEDEF_NAME
+  : Y_TYPEDEF_SNAME
     {
-      DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_NAME" );
+      DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_SNAME" );
       DUMP_AST( "type_ast", $1->ast );
 
       $$.ast = C_AST_NEW( K_TYPEDEF, &@$ );
@@ -3076,7 +3077,7 @@ typedef_name_c_ast
       DUMP_AST( "typedef_name_c_ast", $$.ast );
       DUMP_END();
     }
-  | /* type_c_ast */ Y_TYPEDEF_NAME "::" sname_c
+  | /* type_c_ast */ Y_TYPEDEF_SNAME "::" sname_c
     {
       //
       // This is for a case like:
@@ -3086,7 +3087,7 @@ typedef_name_c_ast
       //
       // that is: a typedef'd type used for a scope.
       //
-      DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_NAME" );
+      DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_SNAME" );
       DUMP_AST( "type_ast", $1->ast );
       DUMP_STR( "sname_c", c_sname_full_c( &$3 ) );
 
@@ -3676,7 +3677,7 @@ of_expected
   ;
 
 of_scope_english
-  : Y_OF scope_english_type_expected typedef_name_sname_expected
+  : Y_OF scope_english_type_expected typedef_sname_c__or_sname_c_expected
     {
       //
       // Scoped names are supported only in C++.  (However, we always allow
@@ -3796,7 +3797,7 @@ scope_sname_opt
         c_sname_set_type( &$$, T_SCOPE );
       }
     }
-  | Y_TYPEDEF_NAME "::"
+  | Y_TYPEDEF_SNAME "::"
     {
       //
       // This is for a case like:
@@ -3843,7 +3844,7 @@ sname_c
       c_sname_set_type( &$$, sn_type );
       c_sname_append_name( &$$, $3 );
     }
-  | sname_c "::" Y_TYPEDEF_NAME
+  | sname_c "::" Y_TYPEDEF_SNAME
     {
       //
       // This is for a case like:
@@ -3896,7 +3897,7 @@ sname_c_opt
   ;
 
 sname_english
-  : typedef_name_sname of_scope_list_english_opt
+  : typedef_sname_c__or_sname_c of_scope_list_english_opt
     {
       $$ = $2;
       c_sname_set_type( &$$, c_sname_type( &$2 ) );
@@ -3913,9 +3914,9 @@ sname_english_expected
     }
   ;
 
-typedef_name_sname
-  : Y_TYPEDEF_NAME                { $$ = c_ast_sname_dup( $1->ast ); }
-  | Y_TYPEDEF_NAME "::" sname_c
+typedef_sname_c__or_sname_c
+  : Y_TYPEDEF_SNAME               { $$ = c_ast_sname_dup( $1->ast ); }
+  | Y_TYPEDEF_SNAME "::" sname_c
     {
       //
       // This is for a case like:
@@ -3930,8 +3931,8 @@ typedef_name_sname
   | sname_c
   ;
 
-typedef_name_sname_expected
-  : typedef_name_sname
+typedef_sname_c__or_sname_c_expected
+  : typedef_sname_c__or_sname_c
   | error
     {
       c_sname_init( &$$ );

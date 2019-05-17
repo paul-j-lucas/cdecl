@@ -532,7 +532,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 c_sname_free( &temp_name );
                 if ( t != NULL ) {
                   yylval.c_typedef = t;
-                  return Y_TYPEDEF_NAME;
+                  return Y_TYPEDEF_SNAME;
                 }
                 YY_USER_ACTION_UNDO_FOR_REJECT;
                 REJECT;
@@ -583,11 +583,11 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 //
                 // 2. See if it's a typedef'd type.
                 //
-                SLIST_TEMP_INIT_VAR( typedef_name, lexer_token );
+                SLIST_TEMP_INIT_VAR( typedef_name, lexer_token, NULL );
                 c_typedef_t const *const t = c_typedef_find( &typedef_name );
                 if ( t != NULL ) {
                   yylval.c_typedef = t;
-                  return Y_TYPEDEF_NAME;
+                  return Y_TYPEDEF_SNAME;
                 }
 
                 //

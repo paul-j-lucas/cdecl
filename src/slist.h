@@ -54,11 +54,12 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param VAR_NAME The name for the temporary `slist` variable.
  * @param NODE_DATA A pointer to the node data.
+ * @param LIST_DATA A pointer to the list data.
  * @hideinitializer
  */
-#define SLIST_TEMP_INIT_VAR(VAR_NAME,NODE_DATA)                               \
+#define SLIST_TEMP_INIT_VAR(VAR_NAME,NODE_DATA,LIST_DATA)                     \
   slist_node_t VAR_NAME##_node = { NULL, CONST_CAST( void*, (NODE_DATA) ) };  \
-  slist_t VAR_NAME = { &VAR_NAME##_node, &VAR_NAME##_node, 1, NULL }
+  slist_t VAR_NAME = { &VAR_NAME##_node, &VAR_NAME##_node, 1, (LIST_DATA) }
 
 ///////////////////////////////////////////////////////////////////////////////
 
