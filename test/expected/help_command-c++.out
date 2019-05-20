@@ -3,7 +3,7 @@ command:
   declare { <name> | <operator> } as <english>
   define <name> as <english>
   explain <gibberish>
-  { help | ? } [command | english]
+  { help | ? } [command[s] | english]
   set [options]
   show { <name> | all | predefined | user } [typedef]
   typedef <gibberish>
