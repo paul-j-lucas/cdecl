@@ -3893,8 +3893,11 @@ sname_c
       // as a distinct type in a new scope.
       //
       $$ = $1;
+      c_type_id_t sn_type = c_sname_type( &$$ );
+      if ( sn_type == T_NONE )
+        sn_type = T_SCOPE;
+      c_sname_set_type( &$$, sn_type );
       c_sname_t temp = c_ast_sname_dup( $3->ast );
-      c_sname_set_type( &$$, c_sname_type( &temp ) );
       c_sname_append_sname( &$$, &temp );
     }
   | Y_NAME
@@ -3922,7 +3925,10 @@ sname_english
   : typedef_sname_c__or_sname_c of_scope_list_english_opt
     {
       $$ = $2;
-      c_sname_set_type( &$$, c_sname_type( &$2 ) );
+      c_type_id_t sn_type = c_sname_type( &$2 );
+      if ( sn_type == T_NONE )
+        sn_type = c_sname_type( &$1 );
+      c_sname_set_type( &$$, sn_type );
       c_sname_append_sname( &$$, &$1 );
     }
   ;
