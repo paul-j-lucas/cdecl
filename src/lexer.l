@@ -512,7 +512,7 @@ hyphenated    {az}+-{az}+
 identifier    {letter}({letter}|{D})*
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
 lang_name     {cknr_name}|{cpp_name}
-scoped_name   {identifier}({S}*::{S}*{identifier})+
+sname         {identifier}({S}*::{S}*{identifier})+
 
 bin_int       0[bB]{B}+{int_suffix}?
 oct_int       0{O}*{int_suffix}?
@@ -528,7 +528,7 @@ hex_int       0[xX]{H}+{int_suffix}?
                */
 _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 
-{scoped_name} {
+{sname}       {
                 SET_TOKEN;
                 c_sname_t temp_name = parse_sname( lexer_token );
                 c_typedef_t const *const t = c_typedef_find( &temp_name );
