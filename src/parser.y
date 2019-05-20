@@ -104,11 +104,11 @@
 #define DUMP_NUM(KEY,NUM) \
   IF_DEBUG( DUMP_COMMA; printf( "  " KEY " = %d", (NUM) ); )
 
-#define DUMP_SNAME(KEY,SNAME) IF_DEBUG(                               \
-  DUMP_COMMA; PUTS_OUT( "  " );                                       \
-  print_kv( (KEY), c_sname_full_c( SNAME ), stdout );                 \
-  char const *const type_name = c_type_name( c_sname_type( SNAME ) ); \
-  FPRINTF( stdout, ", scope_type = %s", type_name[0] != '\0' ? type_name : "none" ); )
+#define DUMP_SNAME(KEY,SNAME) IF_DEBUG(               \
+  DUMP_COMMA; PUTS_OUT( "  " );                       \
+  print_kv( (KEY), c_sname_full_c( SNAME ), stdout ); \
+  PUTS_OUT( ", scope_type = " );                      \
+  c_type_debug( c_sname_type( SNAME ), stdout ); )
 
 #define DUMP_STR(KEY,NAME) IF_DEBUG(  \
   DUMP_COMMA; PUTS_OUT( "  " );       \
