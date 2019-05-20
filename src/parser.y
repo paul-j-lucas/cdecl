@@ -104,6 +104,12 @@
 #define DUMP_NUM(KEY,NUM) \
   IF_DEBUG( DUMP_COMMA; printf( "  " KEY " = %d", (NUM) ); )
 
+#define DUMP_SNAME(KEY,SNAME) IF_DEBUG(                               \
+  DUMP_COMMA; PUTS_OUT( "  " );                                       \
+  print_kv( (KEY), c_sname_full_c( SNAME ), stdout );                 \
+  char const *const type_name = c_type_name( c_sname_type( SNAME ) ); \
+  FPRINTF( stdout, ", scope_type = %s", type_name[0] != '\0' ? type_name : "none" ); )
+
 #define DUMP_STR(KEY,NAME) IF_DEBUG(  \
   DUMP_COMMA; PUTS_OUT( "  " );       \
   print_kv( (KEY), (NAME), stdout ); )
@@ -935,7 +941,7 @@ cast_english
     {
       DUMP_START( "cast_english",
                   "CAST sname_english_expected INTO decl_english_ast" );
-      DUMP_STR( "sname_english_expected", c_sname_full_c( &$2 ) );
+      DUMP_SNAME( "sname_english_expected", &$2 );
       DUMP_AST( "decl_english_ast", $4.ast );
       DUMP_END();
 
@@ -959,7 +965,7 @@ cast_english
                   "new_style_cast_english CAST sname_english_expected INTO "
                   "decl_english_ast" );
       DUMP_STR( "new_style_cast_english", $1 );
-      DUMP_STR( "sname_english_expected", c_sname_full_c( &$3 ) );
+      DUMP_SNAME( "sname_english_expected", &$3 );
       DUMP_AST( "decl_english_ast", $5.ast );
       DUMP_END();
 
@@ -1022,7 +1028,7 @@ declare_english
       DUMP_START( "declare_english",
                   "DECLARE sname AS storage_class_list_english_type_opt "
                   "decl_english_ast" );
-      DUMP_STR( "sname", c_sname_full_c( &$2 ) );
+      DUMP_SNAME( "sname", &$2 );
       DUMP_TYPE( "storage_class_list_english_type_opt", $4 );
 
       $5.ast->loc = @2;
@@ -1046,7 +1052,7 @@ declare_english
                   "storage_class_list_english_type_opt "
                   "oper_decl_english_ast" );
       DUMP_STR( "c_operator", op_get( $2 )->name );
-      DUMP_STR( "of_scope_list_english_opt", c_sname_full_c( &$3 ) );
+      DUMP_SNAME( "of_scope_list_english_opt", &$3 );
       DUMP_TYPE( "storage_class_list_english_type_opt", $5 );
 
       $6.ast->sname = $3;
@@ -1135,7 +1141,7 @@ define_english
       DUMP_START( "define_english",
                   "DEFINE sname_english AS "
                   "storage_class_list_english_type_opt decl_english_ast" );
-      DUMP_STR( "sname", c_sname_full_c( &$2 ) );
+      DUMP_SNAME( "sname", &$2 );
       DUMP_TYPE( "storage_class_list_english_type_opt", $4 );
       DUMP_AST( "decl_english_ast", $5.ast );
       DUMP_END();
@@ -1215,7 +1221,7 @@ explain_c
                   "EXPLAIN '(' type_c_ast cast_c_ast_opt ')' sname_c_opt" );
       DUMP_AST( "type_c_ast", $3.ast );
       DUMP_AST( "cast_c_ast_opt", $5.ast );
-      DUMP_STR( "sname_c_opt", c_sname_full_c( &$7 ) );
+      DUMP_SNAME( "sname_c_opt", &$7 );
 
       c_ast_t *const ast = c_ast_patch_placeholder( $3.ast, $5.ast );
       bool const ok = c_ast_check( ast, CHECK_CAST );
@@ -1250,7 +1256,7 @@ explain_c
       DUMP_STR( "new_style_cast_c", $2 );
       DUMP_AST( "type_c_ast", $4.ast );
       DUMP_AST( "cast_c_ast_opt", $6.ast );
-      DUMP_STR( "sname", c_sname_full_c( &$9 ) );
+      DUMP_SNAME( "sname", &$9 );
       DUMP_END();
 
       bool ok = false;
@@ -2008,7 +2014,7 @@ member_func_decl_english_ast
                   "paren_decl_list_english_opt returning_english_ast_opt" );
       DUMP_TYPE( "ref_qualifier_english_type_opt", $1 );
       DUMP_TYPE( "class_struct_type", $5 );
-      DUMP_STR( "sname", c_sname_full_c( &$6 ) );
+      DUMP_SNAME( "sname", &$6 );
       DUMP_AST_LIST( "paren_decl_list_english_opt", $7 );
       DUMP_AST( "returning_english_ast_opt", $8.ast );
 
@@ -2082,7 +2088,7 @@ pointer_decl_english_ast
                   "class_struct_type sname_english decl_english_ast" );
       DUMP_TYPE( "(qualifier)", qualifier_peek() );
       DUMP_TYPE( "class_struct_type", $5 );
-      DUMP_STR( "sname_english_expected", c_sname_full_c( &$6 ) );
+      DUMP_SNAME( "sname_english_expected", &$6 );
       DUMP_AST( "decl_english_ast", $7.ast );
 
       $$.ast = C_AST_NEW( K_POINTER_TO_MEMBER, &@$ );
@@ -2175,7 +2181,7 @@ var_decl_english_ast
   : sname_c Y_AS decl_english_ast
     {
       DUMP_START( "var_decl_english_ast", "NAME AS decl_english_ast" );
-      DUMP_STR( "sname", c_sname_full_c( &$1 ) );
+      DUMP_SNAME( "sname", &$1 );
       DUMP_AST( "decl_english_ast", $3.ast );
 
       if ( $3.ast->kind == K_NAME ) {   // see the comment in "declare_english"
@@ -2611,7 +2617,7 @@ oper_c_ast
     {
       DUMP_START( "oper_c_ast", "OPERATOR c_operator" );
       DUMP_AST( "(type_c_ast)", type_peek() );
-      DUMP_STR( "scope_sname_opt", c_sname_full_c( &$1 ) );
+      DUMP_SNAME( "scope_sname_opt", &$1 );
       DUMP_STR( "c_operator", op_get( $3 )->name );
 
       $$.ast = type_peek();
@@ -2690,7 +2696,7 @@ pointer_to_member_type_c_ast
       DUMP_START( "pointer_to_member_type_c_ast",
                   "sname ::* cv_qualifier_list_c_type_opt" );
       DUMP_AST( "(type_c_ast)", type_peek() );
-      DUMP_STR( "sname", c_sname_full_c( &$1 ) );
+      DUMP_SNAME( "sname", &$1 );
       DUMP_TYPE( "cv_qualifier_list_c_type_opt", $3 );
 
       $$.ast = C_AST_NEW( K_POINTER_TO_MEMBER, &@$ );
@@ -2763,7 +2769,7 @@ sname_c_ast
     {
       DUMP_START( "sname_c_ast", "sname_c" );
       DUMP_AST( "(type_c_ast)", type_peek() );
-      DUMP_STR( "sname", c_sname_full_c( &$1 ) );
+      DUMP_SNAME( "sname", &$1 );
 
       $$.ast = type_peek();
       $$.target_ast = NULL;
@@ -2800,7 +2806,7 @@ typedef_name_c_ast
       //
       DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_SNAME" );
       DUMP_AST( "type_ast", $1->ast );
-      DUMP_STR( "sname_c", c_sname_full_c( &$3 ) );
+      DUMP_SNAME( "sname_c", &$3 );
 
       $$.ast = type_peek();
       $$.target_ast = NULL;
@@ -2853,7 +2859,7 @@ user_defined_literal_c_ast
     {
       DUMP_START( "user_defined_literal_c_ast", "OPERATOR \"\" NAME" );
       DUMP_AST( "(type_c_ast)", type_peek() );
-      DUMP_STR( "scope_sname_opt", c_sname_full_c( &$1 ) );
+      DUMP_SNAME( "scope_sname_opt", &$1 );
       DUMP_STR( "name", $4 );
 
       $$.ast = type_peek();
@@ -3105,7 +3111,7 @@ enum_class_struct_union_ast
       DUMP_START( "enum_class_struct_union_ast",
                   "enum_class_struct_union_type sname" );
       DUMP_TYPE( "enum_class_struct_union_type", $1 );
-      DUMP_STR( "sname", c_sname_full_c( &$2 ) );
+      DUMP_SNAME( "sname", &$2 );
 
       $$.ast = C_AST_NEW( K_ENUM_CLASS_STRUCT_UNION, &@$ );
       $$.target_ast = NULL;
