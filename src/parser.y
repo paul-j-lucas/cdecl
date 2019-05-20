@@ -168,7 +168,7 @@ struct in_attr {
 typedef struct in_attr in_attr_t;
 
 // extern functions
-extern void           print_help( void );
+extern void           print_help( char const* );
 extern void           set_option( c_loc_t const*, char const* );
 extern int            yylex( void );
 
@@ -528,7 +528,9 @@ static void yyerror( char const *msg ) {
 %token              Y_ARRAY
 %token              Y_AS
 %token              Y_BLOCK             /* Apple: English for '^' */
+%token              Y_COMMANDS
 %token              Y_DYNAMIC
+%token              Y_ENGLISH
 %token              Y_FUNCTION
 %token              Y_INTO
 %token              Y_LENGTH
@@ -841,6 +843,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_list>  arg_list_c_ast arg_list_c_ast_opt
 %type   <type_id>   class_struct_union_type
 %type   <oper_id>   c_operator
+%type   <literal>   help_what_opt
 %type   <bitmask>   member_or_non_member_opt
 %type   <ast_pair>  name_ast
 %type   <name>      name_expected name_opt
@@ -1393,7 +1396,13 @@ new_style_cast_c
 /*****************************************************************************/
 
 help_command
-  : Y_HELP                        { print_help(); }
+  : Y_HELP help_what_opt          { print_help( $2 ); }
+  ;
+
+help_what_opt
+  : /* empty */                   { $$ = L_DEFAULT;   }
+  | Y_COMMANDS                    { $$ = L_COMMANDS;  }
+  | Y_ENGLISH                     { $$ = L_ENGLISH;   }
   ;
 
 /*****************************************************************************/

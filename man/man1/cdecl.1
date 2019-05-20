@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "May 13, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "May 20, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -611,7 +611,7 @@ Defines a type via a C (or C++) \f(CWtypedef\fP declaration.
 For C++11 or later only,
 defines a type via a \f(CWusing\fP declaration.
 .TP
-.BR help " | " ?
+.RB "{ " help " | " ? " } [ " command [ s ] " | " english " ]"
 Prints a
 .B cdecl
 language summary
@@ -834,6 +834,7 @@ The words on the left are synonyms for what's on the right:
              _Bool  bool
 carries-dependency  carries_dependency
          character  char
+           command  commands
            complex  _Complex
           constant  const
        enumeration  enum

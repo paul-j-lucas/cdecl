@@ -26,6 +26,7 @@
 // local
 #include "cdecl.h"                      /* must go first */
 #include "color.h"
+#include "literals.h"
 #include "options.h"
 #include "util.h"
 
@@ -38,7 +39,7 @@
 #include <stdlib.h>
 
 #define NOT_IN_LANG   "~"               /* don't print text for current lang */
-#define SAME_AS_C     ""                /* C++ text is the same as C */
+#define SAME_AS_C     "$"               /* C++ text is the same as C */
 
 /// @endcond
 
@@ -55,56 +56,73 @@ typedef struct help_text help_text_t;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Help text (limited to 80 columns and 23 lines so it fits on an 80x24
- * screen).
- */
-static help_text_t const HELP_TEXT[] = {
-/*  C | C++ */
-/* ===|==== */
-/*  1 |  1 */  { "[] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere", SAME_AS_C },
-/*  2 |  2 */  { "command:", SAME_AS_C },
-/*  3 |  3 */  { "  explain <gibberish>        | declare <name> as <english>",
-                 "  explain <gibberish>        | declare { <name> | <operator> } as <english>" },
-/*  4 |  4 */  { "  cast <name> into <english>",
-                 "  [const | dynamic | reinterpret | static] cast <name> into <english>" },
-/*  5 |  5 */  { "  define <name> as <english> | typedef <gibberish>",
-                 "  define <name> as <english> | typedef <gibberish> | using <name> = <gibberish>" },
-/*  6 |  6 */  { "  show { <name> | all | predefined | user } [typedef] | set [options]", SAME_AS_C },
-/*  7 |  7 */  { "  {help|?} | {exit|quit|q}",
-                 "  <scope-c> <name> \\{ {<scope-c>|<typedef>|<using>}; \\} | {help|?} | {exit|quit|q}" },
-/*  8 |  8 */  { "english:", SAME_AS_C },
-/*  9 |  9 */  { "  <store>* array [[static] <cv-qual>* {<number>|\\*}] of <english>",
-                 "  <store>* array [<number>] of <english>" },
-/* 10 | -- */  { "  <store>* variable length array <cv-qual>* of <english>", NOT_IN_LANG },
-/* 11 | 10 */  { "  <store>* function [([<args>])] [returning <english>]",
-                 "  <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]" },
-/* -- | 11 */  { NOT_IN_LANG,
-                 "  <store>* <fn-qual>* [[non-]member] operator [([<args>])] [returning <english>]" },
-/* 12 | 12 */  { "  <cv-qual>* pointer to <english>",
-                 "  <cv-qual>* pointer to [member of {class|struct} <name>] <english>" },
-/* 13 | 13 */  { "  <store>* <modifier>* [<C-type>]",
-                 "  [rvalue] reference to <english> | <store>* <modifier>* [<C++-type>]" },
-/* 14 | 14 */  { "  { enum | struct | union } <name>",
-                 "  { enum [class|struct] | class | struct | union } <name>" },
-/* 15 | 15 */  { "  block [([<args>])] [returning <english>]",
-                 "  user-defined literal [([<args>])] [returning <english>]" },
-/* 16 | 16 */  { "args: a comma separated list of <name>, <english>, or <name> as <english>",
-                 "args: a comma separated list of <english> or <name> as <english>" },
-/* 17 | 17 */  { "gibberish: a C declaration, like \"int x\"; or cast, like \"(int)x\"",
-                 "gibberish: a C++ declaration, like \"int x\"; or cast, like \"(int)x\"" },
-/* 18 | 18 */  { "C-type: bool char char16_t char32_t wchar_t int float double void",
-                 "C++-type: bool char char8_t char16_t char32_t wchar_t int float double void" },
-/* 19 | 19 */  { "cv-qual: _Atomic const restrict volatile",
-                 "cv-qual: const volatile         | fn-qual: const volatile [rvalue] reference" },
-/* 20 | 20 */  { "modifier: short long signed unsigned atomic const restrict volatile",
-                 "modifier: short long signed unsigned const volatile" },
-/* 21 | 21 */  { "name: a C identifier",
-                 "name: a C++ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*" },
-/* -- | 22 */  { NOT_IN_LANG,
-                 "scope-c: class struct union [inline] namespace | scope-e: <scope-c> scope" },
-/* 22 | 23 */  { "store: auto extern register static thread_local",
-                 "store: const{eval|expr} extern friend mutable static thread_local [pure] virtual" },
+static help_text_t const HELP_TEXT_COMMANDS[] = {
+  { "command:", SAME_AS_C },
+  { "  cast <name> into <english>",
+    "  [const | dynamic | reinterpret | static] cast <name> into <english>" },
+  { "  declare <name> as <english>",
+    "  declare { <name> | <operator> } as <english>" },
+  { "  define <name> as <english>", SAME_AS_C },
+  { "  explain <gibberish>", SAME_AS_C },
+  { "  { help | ? } [command[s] | english]", SAME_AS_C },
+  { "  set [options]", SAME_AS_C },
+  { "  show { <name> | all | predefined | user } [typedef]", SAME_AS_C },
+  { "  typedef <gibberish>", SAME_AS_C },
+  { NOT_IN_LANG,
+    "  <scope-c> <name> \\{ { <scope-c> | <typedef> | <using> } ; \\}" },
+  { NOT_IN_LANG,
+    "  using <name> = <gibberish>" },
+  { "  exit | quit | q", SAME_AS_C },
+  { "gibberish: a C declaration, like \"int x\"; or cast, like \"(int)x\"",
+    "gibberish: a C++ declaration, like \"int x\"; or cast, like \"(int)x\"" },
+  { NOT_IN_LANG,
+    "scope-c: class struct union [inline] namespace" },
+  { NOT_IN_LANG,
+    "scope-e: { <scope-c> | scope }" },
+  { "", "" },
+  { "where:", SAME_AS_C },
+  { "  [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere", SAME_AS_C },
+  { NULL, NULL }
+};
+
+static help_text_t const HELP_TEXT_ENGLISH[] = {
+  { "english:", SAME_AS_C },
+  { "  <store>* array [[static] <cv-qual>* {<number>|\\*}] of <english>",
+    "  <store>* array [<number>] of <english>" },
+  { "  <store>* variable length array <cv-qual>* of <english>", NOT_IN_LANG },
+  { "  <store>* function [([<args>])] [returning <english>]",
+    "  <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]" },
+  { NOT_IN_LANG,
+    "  <store>* <fn-qual>* [[non-]member] operator [([<args>])] [returning <english>]" },
+  { "  <cv-qual>* pointer to <english>",
+    "  <cv-qual>* pointer to [member of { class | struct } <name>] <english>" },
+
+  { "  { enum | struct | union } <name>",
+    "  { enum [class|struct] | class | struct | union } <name>" },
+  { NOT_IN_LANG,
+    "  [rvalue] reference to <english>" },
+  { "  block [([<args>])] [returning <english>]",
+    "  user-defined literal [([<args>])] [returning <english>]" },
+  { "  <store>* <modifier>* [<C-type>]",
+    "  <store>* <modifier>* [<C++-type>]" },
+  { "args: a comma separated list of <name>, <english>, or <name> as <english>",
+    "args: a comma separated list of <english> or <name> as <english>" },
+  { "C-type: bool char char16_t char32_t wchar_t int float double void",
+    "C++-type: bool char char8_t char16_t char32_t wchar_t int float double void" },
+  { "cv-qual: _Atomic const restrict volatile",
+    "cv-qual: const volatile" },
+  { NOT_IN_LANG,
+    "fn-qual: const volatile [rvalue] reference" },
+  { "modifier: short long signed unsigned atomic const restrict volatile",
+    "modifier: short long signed unsigned const volatile" },
+  { "name: a C identifier",
+    "name: a C++ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*" },
+  { "store: auto extern register static thread_local",
+    "store: const{eval|expr} extern friend mutable static thread_local [pure] virtual" },
+  { "", "" },
+  { "where:", SAME_AS_C },
+  { "  [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere", SAME_AS_C },
+  { NULL, NULL }
 };
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -207,16 +225,10 @@ static void print_help_line( char const *line ) {
   PUTC_OUT( '\n' );
 }
 
-////////// extern functions ///////////////////////////////////////////////////
-
-/**
- * Prints the help message to standard output.
- */
-void print_help( void ) {
+static void print_help_text( help_text_t const *help ) {
   bool const is_cpp = C_LANG_IS_CPP();
 
-  for ( size_t i = 0; i < ARRAY_SIZE( HELP_TEXT ); ++i ) {
-    help_text_t const *const help = &HELP_TEXT[i];
+  for ( ; help->text != NULL; ++help ) {
     if ( is_cpp ) {
       if ( help->cpp_text[0] == NOT_IN_LANG[0] )
         continue;
@@ -225,10 +237,29 @@ void print_help( void ) {
         continue;
       }
     }
-
     if ( help->text[0] != NOT_IN_LANG[0] )
       print_help_line( help->text );
   } // for
+}
+
+////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Prints the help message to standard output.
+ *
+ * @param what What to print help for.
+ */
+void print_help( char const *what ) {
+  // The == works because the parser gaurantees specific string literals.
+  if ( what == L_DEFAULT || what == L_COMMANDS ) {
+    print_help_text( HELP_TEXT_COMMANDS );
+    return;
+  }
+  if ( what == L_ENGLISH ) {
+    print_help_text( HELP_TEXT_ENGLISH );
+    return;
+  }
+  INTERNAL_ERR( "unexpected value (\"%s\") for what\n", what );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

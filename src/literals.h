@@ -34,8 +34,11 @@ extern char const L_ARRAY[];
 extern char const L_AS[];
 extern char const L_BLOCK[];                // Apple: Engligh for '^'
 extern char const L_CAST[];
+extern char const L_COMMAND[];              // synonym for "commands"
+extern char const L_COMMANDS[];
 extern char const L_DECLARE[];
 extern char const L_DEFINE[];
+extern char const L_ENGLISH[];
 extern char const L_EXIT[];
 extern char const L_EXPLAIN[];
 extern char const L_FUNC[];                 // synonym for "function"

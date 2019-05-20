@@ -1311,8 +1311,14 @@ TESTS+=	tests/file-cast_x.test \
 # Miscellaneous tests
 # ===================
 #
-TESTS+=	tests/help-c.test \
-	tests/help-c++.test \
+TESTS+=	tests/help-c++.test \
+	tests/help-c.test \
+	tests/help_command-c++.test \
+	tests/help_command-c.test \
+	tests/help_commands-c++.test \
+	tests/help_commands-c.test \
+	tests/help_english-c++.test \
+	tests/help_english-c.test \
 	tests/set.test \
 	tests/set_c++.test \
 	tests/set_c++03.test \
@@ -1370,6 +1376,12 @@ CDECL = $(top_builddir)/src/cdecl -C
 update-expected:
 	echo 'help' | $(CDECL) > expected/help-c.out
 	echo 'help' | $(CDECL) -xc++ > expected/help-c++.out
+	echo 'help command' | $(CDECL) > expected/help_command-c.out
+	echo 'help command' | $(CDECL) -xc++ > expected/help_command-c++.out
+	echo 'help commands' | $(CDECL) > expected/help_commands-c.out
+	echo 'help commands' | $(CDECL) -xc++ > expected/help_commands-c++.out
+	echo 'help english' | $(CDECL) > expected/help_english-c.out
+	echo 'help english' | $(CDECL) -xc++ > expected/help_english-c++.out
 	echo 'explain int* f(int x, int y)' | $(CDECL) -d > expected/cdecl-d.out
 	echo 'explain int* f(int x, int y)' | $(CDECL) --debug > expected/cdecl--debug.out
 	echo 'typedef int Int; show all' | $(CDECL) > expected/show_all.out
