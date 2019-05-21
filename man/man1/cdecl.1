@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "May 20, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "May 21, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -482,7 +482,7 @@ Adds support for
 \f(CWclass\fP,
 exception specifications (\f(CWthrow\fP),
 \f(CWmutable\fP data members,
-namespaces,
+\f(CWnamespace\fP,
 new-style casts,
 overloaded operators,
 references,
@@ -611,15 +611,26 @@ Defines a type via a C (or C++) \f(CWtypedef\fP declaration.
 For C++11 or later only,
 defines a type via a \f(CWusing\fP declaration.
 .TP
-.RB "{ " help " | " ? " } [ " command [ s ] " | " english " ]"
-Prints a
-.B cdecl
-language summary
+.RB "{ " help " | " ? " } [ " command [ s "] | " english " ]"
+Prints help that's sensitive to the current programming language
+(C or C++).
+By default
+or when
+.B command
+or
+.B commands
+is given,
+prints help on
+.BR cdecl 's
+commands
+(this section);
+if
+.B english
+is given,
+gives help on pseudo-English
 (see
 .B English
-below)
-that's sensitive to the current programming language
-(C or C++).
+below).
 .TP
 .BR exit " | " quit " | " q
 Quits
