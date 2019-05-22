@@ -12,6 +12,8 @@ Test files are as follows:
 + `help-*`             = A help test.
 + `*_mo_*`             = A member operator.
 + `namespace_*`        = A namespace test.
++ `*_ctor_*`           = A constructor.
++ `*_dtor_*`           = A destructor.
 + `*_nmo_*`            = A non-member operator.
 + `typedef_*`          = A typedef test.
 + `*_o_*`              = An operator.
@@ -35,7 +37,7 @@ The characters are:
 + `c16` = `char16_t`
 + `c32` = `char32_t`
 + `d` = `deprecated` or `double`
-+ `e` = `enum`, `extern`, or `...` (ellipsis)
++ `e` = `enum`, `explicit`, `extern`, or `...` (ellipsis)
 + `f` = `friend` or function
 + `g` = `register`
 + `h` = `short`

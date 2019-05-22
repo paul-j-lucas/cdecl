@@ -73,6 +73,14 @@ char const* c_sname_full_c( c_sname_t const *sname ) {
   return c_sname_scope_c_impl( name_buf, sname, NULL );
 }
 
+bool c_sname_is_ctor( c_sname_t const *sname ) {
+  if ( c_sname_count( sname ) < 2 )
+    return false;
+  char const *const class_name = SLIST_ROFFSET( char const*, sname, 1 );
+  char const *const local_name = SLIST_TAIL( char const*, sname );
+  return strcmp( local_name, class_name ) == 0;
+}
+
 char const* c_sname_scope_c( c_sname_t const *sname ) {
   static char name_buf[ 256 ];
   return c_sname_scope_c_impl( name_buf, sname, sname->tail );

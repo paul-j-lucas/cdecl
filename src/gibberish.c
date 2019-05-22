@@ -137,8 +137,8 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
  * function's arguments, if any.
  *
  * @param ast The `c_ast` that is either a <code>\ref K_BLOCK</code>,
- * <code>\ref K_FUNCTION</code> or <code>\ref K_OPERATOR</code> whose arguments
- * to print.
+ * <code>\ref K_CONSTRUCTOR</code>, <code>\ref K_FUNCTION</code> or <code>\ref
+ * K_OPERATOR</code> whose arguments to print.
  * @param param The `g_param` to use.
  */
 static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
@@ -184,6 +184,16 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   // be done, it's not worth having a pre-order version of c_ast_visit().
   //
   switch ( ast->kind ) {
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
+      //
+      // Since neither a constructor nor a destructor has a return type, no
+      // space needs to be printed before the constructor's or destructor's
+      // name, so lie and set the "space" flag.
+      //
+      param->space = true;
+      // FALLTHROUGH
+
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
@@ -228,11 +238,12 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_BLOCK:                       // Apple extension
       if ( ast_type != T_NONE )         // storage class
         FPRINTF( param->gout, "%s ", c_type_name( ast_type ) );
-      c_ast_gibberish_impl( ast->as.parent.of_ast, param );
+      if ( ast->as.parent.of_ast != NULL )
+        c_ast_gibberish_impl( ast->as.parent.of_ast, param );
       if ( false_set( &param->postfix ) ) {
         if ( param->gkind != G_CAST )
           g_param_space( param );
-        if ( ast == param->root_ast )
+        if ( ast == param->root_ast && param->leaf_ast != NULL )
           c_ast_gibberish_postfix( param->leaf_ast->parent, param );
         else
           c_ast_gibberish_postfix( ast, param );
@@ -369,6 +380,8 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
     switch ( parent->kind ) {
       case K_ARRAY:
       case K_BLOCK:                     // Apple extension
+      case K_CONSTRUCTOR:
+      case K_DESTRUCTOR:
       case K_FUNCTION:
       case K_OPERATOR:
       case K_USER_DEF_LITERAL:
@@ -439,6 +452,8 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
       c_ast_gibberish_array_size( ast, param );
       break;
     case K_BLOCK:                       // Apple extension
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
@@ -508,6 +523,24 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
 
   if ( param->gkind != G_CAST ) {
     switch ( ast->kind ) {
+      case K_CONSTRUCTOR:
+        FPUTS( c_ast_sname_full_c( ast ), param->gout );
+        if ( (ast->type_id & T_EXPLICIT) == T_NONE &&
+             c_ast_sname_count( ast ) == 1 ) {
+          //
+          // For non-explicit constructors, we have to repeat the local name
+          // since that's the name of the constructor at file-scope.
+          //
+          FPRINTF( param->gout, "::%s", c_ast_sname_local( ast ) );
+        }
+        break;
+      case K_DESTRUCTOR:
+        if ( c_ast_sname_count( ast ) > 1 )
+          FPUTS( c_ast_sname_scope_c( ast ), param->gout );
+        else
+          FPUTS( c_ast_sname_local( ast ), param->gout );
+        FPRINTF( param->gout, "::~%s", c_ast_sname_local( ast ) );
+        break;
       case K_OPERATOR:
         g_param_space( param );
         if ( !c_ast_sname_empty( ast ) )

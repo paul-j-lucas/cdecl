@@ -204,8 +204,10 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_COMMAND,        TOKEN( Y_COMMANDS )             },
   { L_COMMANDS,       TOKEN( Y_COMMANDS )             },
   { L_CONSTANT,       C_SYN( L_CONST,         false ) },
+  { L_CONSTRUCTOR,    TOKEN( Y_CONSTRUCTOR )          },
   { L_DECLARE,        TOKEN( Y_DECLARE )              },
   { L_DEFINE,         TOKEN( Y_DEFINE )               },
+  { L_DESTRUCTOR,     TOKEN( Y_DESTRUCTOR )           },
   { L_DYNAMIC,        TOKEN( Y_DYNAMIC )              },
   { L_ENGLISH,        TOKEN( Y_ENGLISH )              },
   { L_ENUMERATION,    C_SYN( L_ENUM,          false ) },
@@ -451,6 +453,37 @@ static c_sname_t parse_sname( char const *s ) {
 }
 
 /**
+ * Parses a scoped deestructor name, e.g. `S::T::~T()`.
+ *
+ * @param s The string to parse.
+ * @return Returns the scoped name.
+ */
+static c_sname_t parse_sname_dtor( char const *s ) {
+  assert( s != NULL );
+  bool parsed_tilde = false;
+  c_sname_t rv;
+  c_sname_init( &rv );
+
+  for ( char const *end; parse_identifier( s, &end ); ) {
+    c_sname_append_name( &rv, strndup( s, end - s ) );
+    if ( parsed_tilde )
+      break;
+    SKIP_WS( end );
+    if ( strncmp( end, "::", 2 ) != 0 )
+      break;
+    s = end + 2;
+    SKIP_WS( s );
+    if ( *s == '~' ) {
+      ++s;
+      SKIP_WS( s );
+      parsed_tilde = true;
+    }
+  } // for
+
+  return rv;
+}
+
+/**
  * Standard lex function to know whether to continue parsing upon reaching EOF.
  *
  * @return Returns 1 if done or 0 to continue parsing (a new file set via
@@ -499,17 +532,18 @@ void lexer_reset( bool hard_reset ) {
 %}
 
 letter        [A-Za-z_]
-az            [a-z]
 B             [01]
 O             [0-7]
 D             [0-9]
 H             [0-9A-Fa-f]
 S             [ \f\r\t\v]
 
+identifier    {letter}({letter}|{D})*
+
 cknr_name     ([cC][kK]&[rR])|([kK]&[rR][cC]?)
 cpp_name      [cC]"++"({D}{D})?
-hyphenated    {az}+-{az}+
-identifier    {letter}({letter}|{D})*
+dtor_sname    ({identifier}{S}*::{S}*)+~{identifier}
+hyphenated    [a-z]+-[a-z]+
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
 lang_name     {cknr_name}|{cpp_name}
 sname         {identifier}({S}*::{S}*{identifier})+
@@ -528,15 +562,75 @@ hex_int       0[xX]{H}+{int_suffix}?
                */
 _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 
+              /*
+               * Special case: similar to {sname} below, handle scoped
+               * destructor names in the lexer so destructor names are
+               * recognized as such, e.g.:
+               *
+               *      S::T::U           // not a destructor
+               *      S::T::~T          // a destructor
+               */
+{dtor_sname}  {
+                SET_TOKEN;
+
+                c_sname_t sname = parse_sname_dtor( lexer_token );
+                if ( c_sname_is_ctor( &sname ) ) {
+                  yylval.sname = sname;
+                  return Y_DESTRUCTOR_SNAME;
+                }
+
+                c_sname_free( &sname );
+                YY_USER_ACTION_UNDO_FOR_REJECT;
+                REJECT;
+              }
+
+              /*
+               * Special case: handle scoped names in the lexer so:
+               *
+               * 1. Previously declared scoped types are recognized as such,
+               *    e.g.:
+               *
+               *          define S::T as int
+               *          explain S::T x
+               *
+               * 2. Constructors are recognized as such, specifically, when the
+               *    scoped name's last two scopes match, e.g.:
+               *
+               *          A::B::C       // not a constructor
+               *          S::T::T       // a constructor
+               *
+               *    This is needed because constructors and ordinary
+               *    declarations are lexically ambiguous in a LALR(1) parser:
+               *
+               *          A::B(x);      // declare x as A::B with unneeded ()
+               *          S::S()        // define constructor for S
+               */
 {sname}       {
                 SET_TOKEN;
-                c_sname_t temp_name = parse_sname( lexer_token );
-                c_typedef_t const *const t = c_typedef_find( &temp_name );
-                c_sname_free( &temp_name );
+
+                //
+                // 1. See if it's a typedef'd type.
+                //
+                c_sname_t sname = parse_sname( lexer_token );
+                c_typedef_t const *const t = c_typedef_find( &sname );
                 if ( t != NULL ) {
                   yylval.c_typedef = t;
+                  c_sname_free( &sname );
                   return Y_TYPEDEF_SNAME;
                 }
+
+                //
+                // 2. See if it's a constructor name.
+                //
+                if ( c_sname_is_ctor( &sname ) ) {
+                  yylval.sname = sname;
+                  return Y_CONSTRUCTOR_SNAME;
+                }
+
+                //
+                // 3. Otherwise, reject it.
+                //
+                c_sname_free( &sname );
                 YY_USER_ACTION_UNDO_FOR_REJECT;
                 REJECT;
               }

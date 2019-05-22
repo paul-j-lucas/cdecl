@@ -158,9 +158,17 @@ CDECL_SNAME_INLINE void c_sname_init( c_sname_t *sname ) {
 }
 
 /**
+ * Gets whether \a sname is a constructor name, e.g. `S::T::T`.
+ *
+ * @param sname The scoped name to check.
+ * @return Returns `true` only if the last two names of \a sname match.
+ */
+bool c_sname_is_ctor( c_sname_t const *sname );
+
+/**
  * Gets the local (last) name of \a sname.
  *
- * @param sname The `c_sname_t` to get the local name of.
+ * @param sname The scoped name to get the local name of.
  * @return Returns said name or the empty string if \a sname is empty.
  *
  * @sa c_sname_full_c
@@ -168,6 +176,34 @@ CDECL_SNAME_INLINE void c_sname_init( c_sname_t *sname ) {
  */
 CDECL_SNAME_INLINE char const* c_sname_local( c_sname_t const *sname ) {
   return c_sname_empty( sname ) ? "" : SLIST_TAIL( char const*, sname );
+}
+
+/**
+ * Peeks at the name at \a offset of \a sname.
+ *
+ * @param sname The `c_sname_t` to get the name at \a offset of.
+ * @param offset The offset (starting at 0) of the name to get.
+ * @return Returns the name at \a offset or the empty string if \a offset &gt;=
+ * c_sname_count().
+ */
+CDECL_SNAME_INLINE char const* c_sname_offset( c_sname_t const *sname,
+                                               size_t offset ) {
+  char const *const temp = SLIST_OFFSET( char const*, sname, offset );
+  return temp != NULL ? temp : "";
+}
+
+/**
+ * Peeks at the name at \a roffset of \a sname.
+ *
+ * @param sname The `c_sname_t` to get the name at \a roffset of.
+ * @param roffset The reverse offset (starting at 0) of the name to get.
+ * @return Returns the name at \a roffset or the empty string if \a roffset
+ * &gt;= c_sname_count().
+ */
+CDECL_SNAME_INLINE char const* c_sname_roffset( c_sname_t const *sname,
+                                                size_t roffset ) {
+  char const *const temp = SLIST_ROFFSET( char const*, sname, roffset );
+  return temp != NULL ? temp : "";
 }
 
 /**

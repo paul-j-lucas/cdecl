@@ -100,6 +100,8 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
       print_error( &ast->loc, "can not cast into array" );
       print_hint( "cast into pointer" );
       return false;
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
@@ -600,6 +602,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           if ( (of_ast->type_id & T_REGISTER) != T_NONE )
             return error_kind_not_type( ast, T_REGISTER );
           break;
+        case K_CONSTRUCTOR:
+        case K_DESTRUCTOR:
         case K_FUNCTION:
         case K_OPERATOR:
         case K_USER_DEF_LITERAL:
@@ -776,12 +780,6 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 
     case K_BLOCK:                       // Apple extension
     case K_USER_DEF_LITERAL: {
-      tmp_type = (ast->type_id &
-                  (T_AUTO_C | T_BLOCK | T_MUTABLE | T_REGISTER |
-                   T_THREAD_LOCAL));
-      if ( tmp_type != T_NONE )
-        return error_kind_not_type( ast, tmp_type );
-
       char const *const kind_name = c_kind_name( ast->kind );
       c_ast_t const *const ret_ast = ast->as.func.ret_ast;
 
@@ -815,13 +813,41 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           /* suppress warning */;
       } // switch
 
+      tmp_type = ast->type_id & T_EXPLICIT;
+      if ( tmp_type != T_NONE )
+        return error_kind_not_type( ast, tmp_type );
+      // FALLTHROUGH
+    }
+
+    case K_CONSTRUCTOR: {
       bool const args_ok =
         ast->kind == K_USER_DEF_LITERAL ?
           c_ast_check_user_def_lit_args( ast ) :
           opt_lang == LANG_C_KNR ?
             c_ast_check_func_args_knr( ast ) :
             c_ast_check_func_args( ast );
-      return args_ok ? VISITOR_ERROR_NOT_FOUND : VISITOR_ERROR_FOUND;
+      if ( !args_ok )
+        return VISITOR_ERROR_FOUND;
+      // FALLTHROUGH
+
+    case K_DESTRUCTOR:
+      if ( (ast->kind & (K_CONSTRUCTOR | K_DESTRUCTOR)) != K_NONE ) {
+        if ( c_ast_sname_count( ast ) > 1 && !c_ast_sname_is_ctor( ast ) ) {
+          print_error( &ast->loc,
+            "\"%s\", \"%s\": class and %s names don't match",
+            c_ast_sname_roffset( ast, 1 ), c_ast_sname_local( ast ),
+            c_kind_name( ast->kind )
+          );
+          return VISITOR_ERROR_FOUND;
+        }
+      }
+
+      tmp_type = ast->type_id &
+                  (T_AUTO_C | T_BLOCK | T_MUTABLE | T_REGISTER |
+                   T_THREAD_LOCAL);
+      if ( tmp_type != T_NONE )
+        return error_kind_not_type( ast, tmp_type );
+      break;
     }
 
     case K_NAME:
@@ -933,6 +959,8 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
 
   switch ( ast->kind ) {
     case K_BLOCK:                       // Apple extension
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
@@ -979,6 +1007,8 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
     case K_ENUM_CLASS_STRUCT_UNION:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:

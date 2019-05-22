@@ -147,6 +147,17 @@ struct c_block {
 };
 
 /**
+ * AST Node for a C++ constructor.
+ *
+ * @note Members are laid out in the same order as `c_func`: this is taken
+ * advantage of.
+ */
+struct c_constructor {
+  void     *ret_ast_not_used;           ///< So `args` is at same offset.
+  slist_t   args;                       ///< Constructor argument(s), if any.
+};
+
+/**
  * AST node for a C/C++ `enum`, `class`, `struct`, or `union` type.
  */
 struct c_ecsu {
@@ -221,6 +232,8 @@ struct c_ast {
     c_array_t           array;          ///< Array member(s).
     c_block_t           block;          ///< Block member(s).
     // nothing needed for K_BUILTIN
+    c_constructor_t     constructor;    ///< Constructor member(s).
+    // nothing needed for K_DESTRUCTOR
     c_ecsu_t            ecsu;           ///< `enum`, `class`, `struct`, `union`
     c_func_t            func;           ///< Function member(s).
     // nothing needed for K_NAME
@@ -381,6 +394,19 @@ CDECL_AST_INLINE char const* c_ast_sname_full_c( c_ast_t const *ast ) {
 }
 
 /**
+ * Gets whether the scoped name of \a ast is a constructor name, e.g. `S::T::T`.
+ *
+ * @note This also checks for destructor names since the `~` is elided.
+ *
+ * @param ast The `c_ast` to check.
+ * @return Returns `true` only if the last two names of the scoped name of \a
+ * ast match.
+ */
+CDECL_AST_INLINE bool c_ast_sname_is_ctor( c_ast_t const *ast ) {
+  return c_sname_is_ctor( &ast->sname );
+}
+
+/**
  * Gets the local name of \a ast.
  *
  * @param ast The `c_ast` to get the local name of.
@@ -390,6 +416,32 @@ CDECL_AST_INLINE char const* c_ast_sname_full_c( c_ast_t const *ast ) {
  */
 CDECL_AST_INLINE char const* c_ast_sname_local( c_ast_t const *ast ) {
   return c_sname_local( &ast->sname );
+}
+
+/**
+ * Peeks at the name at \a offset of \a ast.
+ *
+ * @param ast The `c_ast` to get the name at \a offset of.
+ * @param offset The offset (starting at 0) of the name to get.
+ * @return Returns the name at \a offset or the empty string if \a offset &gt;=
+ * c_ast_sname_count().
+ */
+CDECL_AST_INLINE char const* c_ast_sname_offset( c_ast_t const *ast,
+                                                 size_t offset ) {
+  return c_sname_offset( &ast->sname, offset );
+}
+
+/**
+ * Peeks at the name at \a roffset of \a ast.
+ *
+ * @param ast The `c_ast` to get the name at \a offset of.
+ * @param roffset The reverse offset (starting at 0) of the name to get.
+ * @return Returns the name at \a offset or the empty string if \a offset &gt;=
+ * c_ast_sname_count().
+ */
+CDECL_AST_INLINE char const* c_ast_sname_roffset( c_ast_t const *ast,
+                                                  size_t roffset ) {
+  return c_sname_roffset( &ast->sname, roffset );
 }
 
 /**

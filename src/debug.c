@@ -124,6 +124,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
     switch ( ast->kind ) {
       case K_BUILTIN:
+      case K_DESTRUCTOR:
       case K_NAME:
       case K_NONE:
       case K_PLACEHOLDER:
@@ -167,12 +168,15 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         // FALLTHROUGH
 
       case K_BLOCK:                     // Apple extension
+      case K_CONSTRUCTOR:
       case K_USER_DEF_LITERAL:
         PRINT_COMMA;
         INDENT_PRINT( "args = " );
         c_ast_list_debug( &ast->as.func.args, indent, dout );
-        FPUTS( ",\n", dout );
-        c_ast_debug( ast->as.func.ret_ast, indent, "ret_ast", dout );
+        if ( ast->as.func.ret_ast != NULL ) {
+          FPUTS( ",\n", dout );
+          c_ast_debug( ast->as.func.ret_ast, indent, "ret_ast", dout );
+        }
         break;
 
       case K_ENUM_CLASS_STRUCT_UNION:

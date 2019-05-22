@@ -774,9 +774,12 @@ TESTS+=	tests/declare_+f_v.test \
 	tests/declare_cpmi.test \
 	tests/declare_crf_v.test \
 	tests/declare_crrf_v.test \
+	tests/declare_ctor.test \
+	tests/declare_ctor_i.test \
 	tests/declare_df_v.test \
 	tests/declare_dui.test \
 	tests/declare_ec.test \
+	tests/declare_ector_i.test \
 	tests/declare_ek.test \
 	tests/declare_f+k_v.test \
 	tests/declare_f_pmi.test \
@@ -821,8 +824,10 @@ TESTS+=	tests/declare_+f_v.test \
 # C++ declare error tests
 # =======================
 #
-TESTS+=	tests/declare_ai-c++11.test \
+TESTS+=	tests/declare_+ctor-error.test \
+	tests/declare_ai-c++11.test \
 	tests/declare_cdi.test \
+	tests/declare_ef.test \
 	tests/declare_fcf.test \
 	tests/declare_fco_exclam_b.test \
 	tests/declare_nfi_v-01.test \
@@ -1006,18 +1011,24 @@ TESTS+=	tests/declare_+udl_c_i.test
 # C++ explain tests
 # =================
 #
-TESTS+=	tests/explain_a.test \
+TESTS+=	tests/explain_+dtor.test \
+	tests/explain_2+dtor.test \
+	tests/explain_a.test \
 	tests/explain_cdfcdi_i.test \
 	tests/explain_cdfi_i.test \
 	tests/explain_cf_v.test \
 	tests/explain_cpmci.test \
 	tests/explain_cpmi.test \
 	tests/explain_crf_v.test \
+	tests/explain_ctor.test \
+	tests/explain_ctor_i.test \
 	tests/explain_cvf_v.test \
 	tests/explain_df_v.test \
 	tests/explain_di.test \
+	tests/explain_dtor.test \
 	tests/explain_dui-01.test \
 	tests/explain_dui-02.test \
+	tests/explain_ector_i.test \
 	tests/explain_f__pf__v.test \
 	tests/explain_f__pv.test \
 	tests/explain_f__v.test \
@@ -1060,7 +1071,9 @@ TESTS+=	tests/explain_a.test \
 # C++ explain error tests
 # =======================
 #
-TESTS+=	tests/explain_ai-c++11.test \
+TESTS+=	tests/explain_+ctor-error.test \
+	tests/explain_+dtor-error.test \
+	tests/explain_ai-c++11.test \
 	tests/explain_cdi.test \
 	tests/explain_ec.test \
 	tests/explain_ek.test \

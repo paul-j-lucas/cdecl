@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 22
+%expect 24
 
 %{
 /** @endcond */
@@ -665,7 +665,11 @@ static void yyerror( char const *msg ) {
 %token              Y_COLON2_STAR "::*"
 %token              Y_COMPL
 %token  <literal>   Y_CONST_CAST
+%token              Y_CONSTRUCTOR
+%token  <sname>     Y_CONSTRUCTOR_SNAME
 %token  <type_id>   Y_DELETE
+%token              Y_DESTRUCTOR
+%token  <sname>     Y_DESTRUCTOR_SNAME
 %token  <oper_id>   Y_DOT_STAR    ".*"
 %token  <literal>   Y_DYNAMIC_CAST
 %token  <type_id>   Y_EXPLICIT
@@ -764,6 +768,7 @@ static void yyerror( char const *msg ) {
 %type   <number>    array_size_num_opt
 %type   <type_id>   attribute_english_type
 %type   <ast_pair>  block_decl_english_ast
+%type   <ast_pair>  constructor_decl_english_ast
 %type   <ast_pair>  func_decl_english_ast
 %type   <ast_pair>  member_func_decl_english_ast
 %type   <ast_pair>  oper_decl_english_ast
@@ -820,10 +825,10 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  atomic_specifier_type_c_ast
 %type   <ast_pair>  builtin_type_c_ast
 %type   <ast_pair>  enum_class_struct_union_ast
-%type   <ast_pair>  name_or_typedef_name_c_ast
+%type   <ast_pair>  name_or_typedef_sname_c_ast_expected
 %type   <ast_pair>  placeholder_c_ast
 %type   <ast_pair>  type_c_ast
-%type   <ast_pair>  typedef_name_c_ast
+%type   <ast_pair>  typedef_sname_c_ast
 
 %type   <type_id>   attribute_name_c_type
 %type   <type_id>   attribute_name_list_c_type attribute_name_list_c_type_opt
@@ -853,6 +858,7 @@ static void yyerror( char const *msg ) {
 %type   <bitmask>   member_or_non_member_opt
 %type   <ast_pair>  name_ast
 %type   <name>      name_expected name_opt
+%type   <name>      name_or_typedef_name name_or_typedef_name_expected
 %type   <literal>   new_style_cast_c new_style_cast_english
 %type   <sname>     of_scope_english
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
@@ -878,6 +884,8 @@ static void yyerror( char const *msg ) {
 /* name */
 %destructor { DTRACE; FREE( $$ ); } name_expected
 %destructor { DTRACE; FREE( $$ ); } name_opt
+%destructor { DTRACE; FREE( $$ ); } name_or_typedef_name
+%destructor { DTRACE; FREE( $$ ); } name_or_typedef_name_expected
 %destructor { DTRACE; FREE( $$ ); } set_option_name
 %destructor { DTRACE; FREE( $$ ); } Y_LANG_NAME
 %destructor { DTRACE; FREE( $$ ); } Y_NAME
@@ -894,6 +902,8 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_english_expected
 %destructor { DTRACE; c_sname_free( &$$ ); } typedef_sname_c__or_sname_c
 %destructor { DTRACE; c_sname_free( &$$ ); } typedef_sname_c__or_sname_c_expected
+%destructor { DTRACE; c_sname_free( &$$ ); } Y_CONSTRUCTOR_SNAME
+%destructor { DTRACE; c_sname_free( &$$ ); } Y_DESTRUCTOR_SNAME
 
 /*****************************************************************************/
 %%
@@ -1039,6 +1049,23 @@ declare_english
       DUMP_END();
 
       c_ast_gibberish_declare( $5.ast, G_DECL_NONE, fout );
+      if ( opt_semicolon )
+        FPUTC( ';', fout );
+      FPUTC( '\n', fout );
+    }
+
+  | Y_DECLARE sname_english as_expected Y_DESTRUCTOR
+    {
+      DUMP_START( "declare_english",
+                  "DECLARE sname AS DESTRUCTOR" );
+      DUMP_STR( "sname", c_sname_full_c( &$2 ) );
+      DUMP_END();
+
+      c_ast_t *const ast = C_AST_NEW( K_DESTRUCTOR, &@$ );
+      ast->sname = $2;
+      C_AST_CHECK( ast, CHECK_DECL );
+
+      c_ast_gibberish_declare( ast, G_DECL_NONE, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
@@ -1319,6 +1346,124 @@ explain_c
       FPUTC( '\n', fout );
       if ( ast->kind != K_OPERATOR )
         c_sname_free( &sname );
+    }
+
+    /*
+     * In-class explicit constructor declaration.
+     */
+  | explain Y_EXPLICIT name_or_typedef_name_expected
+    lparen_expected arg_list_c_ast_opt ')' func_noexcept_c_type_opt
+    {
+      DUMP_START( "explain_c",
+                  "EXPLAIN EXPLICIT name_or_typedef_name_expected "
+                  "'(' arg_list_c_ast_opt ')'" );
+      DUMP_STR( "name", $3 );
+      DUMP_AST_LIST( "arg_list_c_ast_opt", $5 );
+      DUMP_TYPE( "func_noexcept_c_type_opt", $7 );
+      DUMP_END();
+
+      c_ast_t *const ast = C_AST_NEW( K_CONSTRUCTOR, &@$ );
+      ast->type_id = $2 | $7;
+      ast->as.constructor.args = $5;
+
+      bool const ok = c_ast_check( ast, CHECK_DECL );
+      if ( ok ) {
+        FPRINTF( fout, "%s %s %s ", L_DECLARE, $3, L_AS );
+        c_ast_english( ast, fout );
+        FPUTC( '\n', fout );
+      }
+
+      FREE( $3 );
+      if ( !ok )
+        PARSE_ABORT();
+    }
+
+    /*
+     * File-scope constructor definition, e.g.: S::S([args]).
+     */
+  | explain Y_CONSTRUCTOR_SNAME lparen_expected arg_list_c_ast_opt ')'
+    func_noexcept_c_type_opt
+    {
+      DUMP_START( "explain_c",
+                  "EXPLAIN CONSTRUCTOR_SNAME '(' arg_list_c_ast_opt ')'" );
+      DUMP_SNAME( "CONSTRUCTOR_SNAME", &$2 );
+      DUMP_AST_LIST( "arg_list_c_ast_opt", $4 );
+      DUMP_TYPE( "func_noexcept_c_type_opt", $6 );
+      DUMP_END();
+
+      c_ast_t *const ast = C_AST_NEW( K_CONSTRUCTOR, &@$ );
+      ast->type_id = $6;
+      ast->as.constructor.args = $4;
+
+      bool const ok = c_ast_check( ast, CHECK_DECL );
+      if ( ok ) {
+        char const *const local_name = c_sname_local( &$2 );
+        char const *const scope_name = c_sname_scope_c( &$2 );
+
+        FPRINTF( fout, "%s %s ", L_DECLARE, local_name );
+        if ( scope_name[0] != '\0' )
+          FPRINTF( fout, "%s %s %s ", L_OF, L_CLASS, scope_name );
+        FPRINTF( fout, "%s ", L_AS );
+        c_ast_english( ast, fout );
+        FPUTC( '\n', fout );
+      }
+
+      c_sname_free( &$2 );
+      if ( !ok )
+        PARSE_ABORT();
+    }
+
+    /*
+     * In-class destructor declaration, e.g.: ~S().
+     */
+  | explain '~' name_or_typedef_name_expected lparen_expected rparen_expected
+    {
+      DUMP_START( "explain_c",
+                  "EXPLAIN ~ name_or_typedef_name_expected '(' ')'" );
+      DUMP_STR( "name_or_typedef_name_expected", $3 );
+      DUMP_END();
+
+      c_ast_t *const ast = C_AST_NEW( K_DESTRUCTOR, &@$ );
+
+      bool const ok = c_ast_check( ast, CHECK_DECL );
+      if ( ok ) {
+        FPRINTF( fout, "%s %s %s ", L_DECLARE, $3, L_AS );
+        c_ast_english( ast, fout );
+        FPUTC( '\n', fout );
+      }
+
+      FREE( $3 );
+      if ( !ok )
+        PARSE_ABORT();
+    }
+
+    /*
+     * File scope destructor definition, e.g.: S::~S().
+     */
+  | explain Y_DESTRUCTOR_SNAME lparen_expected rparen_expected
+    {
+      DUMP_START( "explain_c",
+                  "EXPLAIN DESTRUCTOR_SNAME '(' ')'" );
+      DUMP_SNAME( "DESTRUCTOR_SNAME", &$2 );
+      DUMP_END();
+
+      c_ast_t *const ast = C_AST_NEW( K_DESTRUCTOR, &@$ );
+
+      bool const ok = c_ast_check( ast, CHECK_DECL );
+      if ( ok ) {
+        char const *const local_name = c_sname_local( &$2 );
+        char const *const scope_name = c_sname_scope_c( &$2 );
+        FPRINTF( fout,
+          "%s %s %s %s %s %s ",
+          L_DECLARE, local_name, L_OF, L_CLASS, scope_name, L_AS
+        );
+        c_ast_english( ast, fout );
+        FPUTC( '\n', fout );
+      }
+
+      c_sname_free( &$2 );
+      if ( !ok )
+        PARSE_ABORT();
     }
 
   | explain Y_USING name_expected equals_expected type_c_ast
@@ -1695,7 +1840,7 @@ using_declaration_c
       // see the comment in "explain"
       c_mode = MODE_GIBBERISH_TO_ENGLISH;
     }
-    name_or_typedef_name_c_ast equals_expected type_c_ast
+    name_or_typedef_sname_c_ast_expected equals_expected type_c_ast
     {
       // see the comment in "define_english" about T_TYPEDEF
       C_TYPE_ADD( &$5.ast->type_id, T_TYPEDEF, @5 );
@@ -1722,7 +1867,7 @@ using_declaration_c
       }
 
       DUMP_START( "using_declaration_c", "USING NAME = decl_c_ast" );
-      DUMP_AST( "name_or_typedef_name_c_ast", $3.ast );
+      DUMP_AST( "name_or_typedef_sname_c_ast_expected", $3.ast );
       DUMP_AST( "type_c_ast", $5.ast );
       DUMP_AST( "cast_c_ast_opt", $7.ast );
 
@@ -1770,9 +1915,9 @@ using_declaration_c
     }
   ;
 
-name_or_typedef_name_c_ast
+name_or_typedef_sname_c_ast_expected
   : name_ast
-  | typedef_name_c_ast
+  | typedef_sname_c_ast
   | error
     {
       ELABORATE_ERROR( "type name expected" );
@@ -1785,6 +1930,7 @@ name_or_typedef_name_c_ast
 
 decl_english_ast
   : array_decl_english_ast
+  | constructor_decl_english_ast
   | qualified_decl_english_ast
   | user_defined_literal_decl_english_ast
   | var_decl_english_ast
@@ -1860,6 +2006,22 @@ block_decl_english_ast                  /* Apple extension */
       $$.ast->as.block.args = $2;
 
       DUMP_AST( "block_decl_english_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+constructor_decl_english_ast
+  : Y_CONSTRUCTOR paren_decl_list_english_opt
+    {
+      DUMP_START( "constructor_decl_english_ast",
+                  "CONSTRUCTOR paren_decl_list_english_opt" );
+      DUMP_AST_LIST( "paren_decl_list_english_opt", $2 );
+
+      $$.ast = C_AST_NEW( K_CONSTRUCTOR, &@$ );
+      $$.target_ast = NULL;
+      $$.ast->as.func.args = $2;
+
+      DUMP_AST( "constructor_decl_english_ast", $$.ast );
       DUMP_END();
     }
   ;
@@ -2310,7 +2472,7 @@ type_attribute_english_type
 unmodified_type_english_ast
   : builtin_type_c_ast
   | enum_class_struct_union_ast
-  | typedef_name_c_ast
+  | typedef_sname_c_ast
   ;
 
 /*****************************************************************************/
@@ -2331,7 +2493,7 @@ decl2_c_ast
   | nested_decl_c_ast
   | oper_decl_c_ast
   | sname_c_ast
-  | typedef_name_c_ast
+  | typedef_sname_c_ast
   | user_defined_literal_decl_c_ast
   ;
 
@@ -2780,10 +2942,10 @@ sname_c_ast
     }
   ;
 
-typedef_name_c_ast
+typedef_sname_c_ast
   : Y_TYPEDEF_SNAME
     {
-      DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_SNAME" );
+      DUMP_START( "typedef_sname_c_ast", "Y_TYPEDEF_SNAME" );
       DUMP_AST( "type_ast", $1->ast );
 
       $$.ast = C_AST_NEW( K_TYPEDEF, &@$ );
@@ -2791,7 +2953,7 @@ typedef_name_c_ast
       $$.ast->as.c_typedef = $1;
       $$.ast->type_id = T_TYPEDEF_TYPE;
 
-      DUMP_AST( "typedef_name_c_ast", $$.ast );
+      DUMP_AST( "typedef_sname_c_ast", $$.ast );
       DUMP_END();
     }
   | /* type_c_ast */ Y_TYPEDEF_SNAME "::" sname_c
@@ -2804,7 +2966,7 @@ typedef_name_c_ast
       //
       // that is: a typedef'd type used for a scope.
       //
-      DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_SNAME" );
+      DUMP_START( "typedef_sname_c_ast", "Y_TYPEDEF_SNAME" );
       DUMP_AST( "type_ast", $1->ast );
       DUMP_SNAME( "sname_c", &$3 );
 
@@ -2814,7 +2976,7 @@ typedef_name_c_ast
       c_ast_sname_set_sname( $$.ast, &temp_name );
       c_ast_sname_append_sname( $$.ast, &$3 );
 
-      DUMP_AST( "typedef_name_c_ast", $$.ast );
+      DUMP_AST( "typedef_sname_c_ast", $$.ast );
       DUMP_END();
     }
   ;
@@ -3055,7 +3217,7 @@ unmodified_type_c_ast
   : atomic_specifier_type_c_ast
   | builtin_type_c_ast
   | enum_class_struct_union_ast
-  | typedef_name_c_ast
+  | typedef_sname_c_ast
   ;
 
 atomic_specifier_type_c_ast
@@ -3691,6 +3853,23 @@ name_expected
 name_opt
   : /* empty */                   { $$ = NULL; }
   | Y_NAME
+  ;
+
+name_or_typedef_name
+  : Y_NAME
+  | Y_TYPEDEF_SNAME
+    {
+      $$ = strdup( c_sname_local( &$1->ast->sname ) );
+    }
+  ;
+
+name_or_typedef_name_expected
+  : name_or_typedef_name
+  | error
+    {
+      $$ = NULL;
+      ELABORATE_ERROR( "name expected" );
+    }
   ;
 
 namespace_expected

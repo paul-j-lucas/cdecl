@@ -161,6 +161,8 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
 
     case K_NONE:
     case K_BUILTIN:
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
     case K_PLACEHOLDER:
     case K_POINTER:
     case K_REFERENCE:

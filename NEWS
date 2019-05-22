@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 6.3
 
+** Added support for constructors & destructors
+Now supports C++ constructors & destructors.
+
 ** Split up help command output
 The output of the "help" command has been split into "command" and "english"
 because the output has gotten too big for an 80x24 screen.

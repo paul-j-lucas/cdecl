@@ -90,6 +90,19 @@ void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
   }
 }
 
+void* slist_offset( slist_t const *list, size_t offset ) {
+  assert( list != NULL );
+  if ( offset >= list->len )
+    return NULL;
+
+  slist_node_t *p = list->head;
+  while ( offset-- > 0 )
+    p = p->next;
+
+  assert( p != NULL );
+  return p->data;
+}
+
 void* slist_pop_head( slist_t *list ) {
   assert( list != NULL );
   if ( list->head != NULL ) {

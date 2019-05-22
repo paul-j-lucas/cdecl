@@ -92,6 +92,7 @@ typedef struct c_ast_pair     c_ast_pair_t;
 typedef struct c_block        c_block_t;
 typedef struct c_builtin      c_builtin_t;
 typedef enum   c_check        c_check_t;
+typedef struct c_constructor  c_constructor_t;
 typedef struct c_ecsu         c_ecsu_t;
 typedef struct c_func         c_func_t;
 typedef enum   c_graph        c_graph_t;

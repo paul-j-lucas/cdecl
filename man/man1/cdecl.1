@@ -480,6 +480,8 @@ Use the latest supported version of the C++ language.
 Use the C++98 version of the C++ language.
 Adds support for
 \f(CWclass\fP,
+constructors,
+destructors,
 exception specifications (\f(CWthrow\fP),
 \f(CWmutable\fP data members,
 \f(CWnamespace\fP,
@@ -707,6 +709,7 @@ and
 The only punctuation characters used in pseudo-English
 are parentheses around
 and commas between
+constructor,
 function,
 operator,
 or
@@ -721,6 +724,10 @@ is one of:
 .BR \f2store\fP "* " variable " [" length "] " "array " \f2cv-qual\fP * " of" " \f2english\fP"
 .br
 .BR block " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
+.br
+.RB [ explicit "] " constructor " [" ( [ \f2args\fP ] ) ]
+.br
+.B destructor
 .br
 .BR \f2store\fP "* " \f2fn-qual\fP "* [[" non- "]" member "] " function " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
 .br
@@ -1461,10 +1468,10 @@ that do not provide genuine GNU
 .SS Unsupported Declarations
 The following types of declarations are not currently supported:
 .nr step 1 1
-.IP \n[step]. 3
+.IP \n[step]. 4
 Multiple comma-separated declarations are not supported:
 .cS
-int i, *p;                        // not supported
+int i, *p;                      // not supported
 .cE 0
 .IP \n+[step].
 Only
@@ -1476,24 +1483,39 @@ and
 names and scoped type declarations are supported;
 complete declarations are not:
 .cS
-struct S s;                       // supported
-struct S { typedef int Int; };    // supported
-struct S { int i; char c; } s;    // not supported
+struct S s;                     // supported
+struct S { typedef int Int; };  // supported
+struct S { int i; char c; } s;  // not supported
 .cE 0
 .IP \n+[step].
 The C11 (and C++11)
 \f(CWalignas\fP specifier
 is not supported.
 .IP \n+[step].
+While file-scope constructor declarations are supported,
+in-class non-explicit constructor declarations are not:
+.cS
+C::C()                          // supported
+C::C(int)                       // supported
+explicit C(int)                 // supported
+C()                             // not supported
+.cE 0
+.IP ""
+This is because in-class non-explicit constructor declarations
+and ordinary declarations are lexically ambiguous
+in a LALR(1) parser:
+.cS
+C(x)                            // declare x as C with unneeded ()
+C()                             // define constructor for C
+.cE 0
+.IP \n+[step].
 Member functions that are deleted
 are not supported:
 .cS
-int f() = delete;                 // not supported
+int f() = delete;               // not supported
 .cE 0
 .IP \n+[step].
 C++
-constructors,
-destructors,
 \f(CWdecltype\fP,
 function default arguments,
 overloaded conversion operators,
@@ -1515,7 +1537,7 @@ are not supported.
 .IP \n+[step].
 Namespace alias declarations are not supported:
 .cS
-namespace ALN = A_Long_Name;      // not supported
+namespace ALN = A_Long_Name;    // not supported
 .cE 0
 .IP \n+[step].
 Only simple C++ attribute specifiers like \f(CW[[this]]\fP
