@@ -284,8 +284,9 @@ static bool parse_files( int num_files, char const *files[] ) {
   bool ok = true;
 
   for ( int i = 0; i < num_files && ok; ++i ) {
-    if ( strcmp( files[i], "-" ) == 0 )
+    if ( strcmp( files[i], "-" ) == 0 ) {
       ok = parse_stdin();
+    }
     else {
       FILE *const fin = fopen( files[i], "r" );
       if ( unlikely( fin == NULL ) )
