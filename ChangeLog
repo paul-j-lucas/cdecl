@@ -1,5 +1,46 @@
+2019-05-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, NEWS, cdecl.1, autocomplete.c, c_ast.c, c_ast.h, c_kind.c,
+     c_kind.h, c_sname.c, c_sname.h, debug.c, english.c, errors.c, gibberish.c,
+     help.c, lexer.l, literals.c, literals.h, parser.y, slist.c, slist.h,
+     typedefs.h, test/Makefile.am, declare_ctor.out, declare_ctor_i.out,
+     declare_ector_i.out, explain_+dtor.out, explain_2+dtor.out,
+     explain_ctor.out, explain_ctor_i.out, explain_dtor.out,
+     explain_ector_i.out, help_english-c++.out, declare_+ctor-error.test,
+     declare_ctor.test, declare_ctor_i.test, declare_ector_i.test,
+     declare_ef.test, explain_+ctor-error.test, explain_+dtor-error.test,
+     explain_+dtor.test, explain_2+dtor.test, explain_ctor.test,
+     explain_ctor_i.test, explain_dtor.test, explain_ector_i.test: Added
+     support for constructors & destructors.
+
+2019-05-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Reworked help command.
+
+2019-05-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: s/scoped_name/sname/
+   * parser.y: Fixed crash with scope types.
+   * parser.y, cdecl--debug.out, cdecl-d.out: Now using c_type_debug() in
+     DUMP_SNAME().
+   * parser.y, cdecl--debug.out, cdecl-d.out: Added DUMP_SNAME().
+   * help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
+     help_commands-c++.out, help_commands-c.out: Fixed expected tests.
+   * slist.c: Added (void).
+   * NEWS, configure.ac, cdecl.1, autocomplete.c, help.c, lexer.l, literals.c,
+     literals.h, parser.y, test/Makefile.am, help-c++.out, help-c.out,
+     help_command-c++.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out, help_english-c++.out, help_english-c.out,
+     help_englisj-c++.out, help_englisj-c.out, help_command-c++.test,
+     help_command-c.test, help_commands-c++.test, help_commands-c.test,
+     help_english-c++.test, help_english-c.test: Split up help command output.
+
 2019-05-17  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Reorder rules.
+   * parser.y, test/Makefile.am, 2k_typedef_i.test: Now forbidding members with
+     the same name as their enclosing class.
+   * c_keyword.c, parser.y: namespace clean-up.
    * c_keyword.c: Removed duplicate L_TRY entry.
    * c_keyword.c, c_type.c, c_type.h, parser.y: Added a bit more support for
      "explicit".
