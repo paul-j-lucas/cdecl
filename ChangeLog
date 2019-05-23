@@ -1,5 +1,15 @@
 2019-05-22  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, configure.ac, errors.c, gibberish.c, parser.y, test/Makefile.am,
+     declare_+dtor.out, declare_dtor.out, declare_vdtor.out, explain_vdtor.out,
+     declare_+dtor.test, declare_dtor.test, declare_v+f_v.test,
+     declare_vdtor.test, explain_v+f_v.test, explain_vdtor.test: Added support
+     for noexcept constructors and noexcept and virtual destructors.
+   * cdecl.c: Minor reformatting.
+   * cdecl.1: Added "namespace" to set of cdeclrc commands.
+   * cdecl.1: Expanded "Gibberish" section to include constructor, destructor,
+     etc.
+   * cdecl.1: Added "hyphens in hyphenated words".
    * AUTHORS, NEWS, cdecl.1, autocomplete.c, c_ast.c, c_ast.h, c_kind.c,
      c_kind.h, c_sname.c, c_sname.h, debug.c, english.c, errors.c, gibberish.c,
      help.c, lexer.l, literals.c, literals.h, parser.y, slist.c, slist.h,
