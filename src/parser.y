@@ -873,6 +873,7 @@ static void yyerror( char const *msg ) {
 %type   <bitmask>   typedef_opt
 %type   <sname>     typedef_sname_c__or_sname_c
 %type   <sname>     typedef_sname_c__or_sname_c_expected
+%type   <type_id>   virtual_opt
 
 /*
  * Bison %destructors.  We don't use the <identifier> syntax because older
@@ -1054,7 +1055,8 @@ declare_english
       FPUTC( '\n', fout );
     }
 
-  | Y_DECLARE sname_english as_expected Y_DESTRUCTOR
+  | Y_DECLARE sname_english as_expected storage_class_list_english_type_opt
+    Y_DESTRUCTOR
     {
       DUMP_START( "declare_english",
                   "DECLARE sname AS DESTRUCTOR" );
@@ -1063,6 +1065,7 @@ declare_english
 
       c_ast_t *const ast = C_AST_NEW( K_DESTRUCTOR, &@$ );
       ast->sname = $2;
+      ast->type_id = $4;
       C_AST_CHECK( ast, CHECK_DECL );
 
       c_ast_gibberish_declare( ast, G_DECL_NONE, fout );
@@ -1356,7 +1359,7 @@ explain_c
     {
       DUMP_START( "explain_c",
                   "EXPLAIN EXPLICIT name_or_typedef_name_expected "
-                  "'(' arg_list_c_ast_opt ')'" );
+                  "'(' arg_list_c_ast_opt ')' func_noexcept_c_type_opt" );
       DUMP_STR( "name", $3 );
       DUMP_AST_LIST( "arg_list_c_ast_opt", $5 );
       DUMP_TYPE( "func_noexcept_c_type_opt", $7 );
@@ -1385,7 +1388,8 @@ explain_c
     func_noexcept_c_type_opt
     {
       DUMP_START( "explain_c",
-                  "EXPLAIN CONSTRUCTOR_SNAME '(' arg_list_c_ast_opt ')'" );
+                  "EXPLAIN CONSTRUCTOR_SNAME '(' arg_list_c_ast_opt ')' "
+                  "func_noexcept_c_type_opt" );
       DUMP_SNAME( "CONSTRUCTOR_SNAME", &$2 );
       DUMP_AST_LIST( "arg_list_c_ast_opt", $4 );
       DUMP_TYPE( "func_noexcept_c_type_opt", $6 );
@@ -1416,23 +1420,27 @@ explain_c
     /*
      * In-class destructor declaration, e.g.: ~S().
      */
-  | explain '~' name_or_typedef_name_expected lparen_expected rparen_expected
+  | explain virtual_opt '~' name_or_typedef_name_expected
+    lparen_expected rparen_expected func_noexcept_c_type_opt
     {
       DUMP_START( "explain_c",
                   "EXPLAIN ~ name_or_typedef_name_expected '(' ')'" );
-      DUMP_STR( "name_or_typedef_name_expected", $3 );
+      DUMP_TYPE( "virtual_opt", $2 );
+      DUMP_STR( "name_or_typedef_name_expected", $4 );
+      DUMP_TYPE( "func_noexcept_c_type_opt", $7 );
       DUMP_END();
 
       c_ast_t *const ast = C_AST_NEW( K_DESTRUCTOR, &@$ );
+      ast->type_id = $2 | $7;
 
       bool const ok = c_ast_check( ast, CHECK_DECL );
       if ( ok ) {
-        FPRINTF( fout, "%s %s %s ", L_DECLARE, $3, L_AS );
+        FPRINTF( fout, "%s %s %s ", L_DECLARE, $4, L_AS );
         c_ast_english( ast, fout );
         FPUTC( '\n', fout );
       }
 
-      FREE( $3 );
+      FREE( $4 );
       if ( !ok )
         PARSE_ABORT();
     }
@@ -1441,13 +1449,16 @@ explain_c
      * File scope destructor definition, e.g.: S::~S().
      */
   | explain Y_DESTRUCTOR_SNAME lparen_expected rparen_expected
+    func_noexcept_c_type_opt
     {
       DUMP_START( "explain_c",
-                  "EXPLAIN DESTRUCTOR_SNAME '(' ')'" );
+                  "EXPLAIN DESTRUCTOR_SNAME '(' ')' func_noexcept_c_type_opt" );
       DUMP_SNAME( "DESTRUCTOR_SNAME", &$2 );
+      DUMP_TYPE( "func_noexcept_c_type_opt", $5 );
       DUMP_END();
 
       c_ast_t *const ast = C_AST_NEW( K_DESTRUCTOR, &@$ );
+      ast->type_id = $5;
 
       bool const ok = c_ast_check( ast, CHECK_DECL );
       if ( ok ) {
@@ -4166,6 +4177,11 @@ virtual_expected
     {
       ELABORATE_ERROR( "\"%s\" expected", L_VIRTUAL );
     }
+  ;
+
+virtual_opt
+  : /* empty */                   { $$ = T_NONE; }
+  | Y_VIRTUAL
   ;
 
 zero_expected

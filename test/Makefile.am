@@ -762,7 +762,8 @@ TESTS+=	tests/declare_config_u.test \
 # C++ declare tests
 # =================
 #
-TESTS+=	tests/declare_+f_v.test \
+TESTS+=	tests/declare_+dtor.test \
+	tests/declare_+f_v.test \
 	tests/declare_0f_v.test \
 	tests/declare_2+f_v.test \
 	tests/declare_=i.test \
@@ -777,6 +778,7 @@ TESTS+=	tests/declare_+f_v.test \
 	tests/declare_ctor.test \
 	tests/declare_ctor_i.test \
 	tests/declare_df_v.test \
+	tests/declare_dtor.test \
 	tests/declare_dui.test \
 	tests/declare_ec.test \
 	tests/declare_ector_i.test \
@@ -814,6 +816,7 @@ TESTS+=	tests/declare_+f_v.test \
 	tests/declare_uf_v-02.test \
 	tests/declare_ui-01.test \
 	tests/declare_ui-02.test \
+	tests/declare_vdtor.test \
 	tests/declare_vf_v.test \
 	tests/declare_voyf.test \
 	tests/declare_xf.test \
@@ -836,7 +839,8 @@ TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_rf_v-01.test \
 	tests/declare_rgi.test \
 	tests/declare_rv.test \
-	tests/declare_smi.test
+	tests/declare_smi.test \
+	tests/declare_v+f_v.test
 
 #
 # C++ declare member operator tests
@@ -1060,6 +1064,7 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_ui.test \
 	tests/explain_using_a3i.test \
 	tests/explain_using_pfi_v.test \
+	tests/explain_vdtor.test \
 	tests/explain_voyf.test \
 	tests/explain_xf_v.test \
 	tests/explain_xff_v.test \
@@ -1098,7 +1103,8 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_smi.test \
 	tests/explain_srf_v.test \
 	tests/explain_srrf_v.test \
-	tests/explain_unknown_attribute.test
+	tests/explain_unknown_attribute.test \
+	tests/explain_v+f_v.test
 
 #
 # C++ explain operator tests

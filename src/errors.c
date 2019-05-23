@@ -755,8 +755,16 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
             break;
         } // switch
 
-        if ( (ast->type_id & T_PURE_VIRTUAL) != T_NONE &&
-             (ast->type_id & T_VIRTUAL) == T_NONE ) {
+        if ( (ast->type_id & T_VIRTUAL) != T_NONE ) {
+          if ( c_ast_sname_count( ast ) > 1 ) {
+            print_error( &ast->loc,
+              "\"%s\": %s can not be used in file-scoped %ss",
+              c_ast_sname_full_c( ast ), L_VIRTUAL, c_kind_name( ast->kind )
+            );
+            return VISITOR_ERROR_FOUND;
+          }
+        }
+        else if ( (ast->type_id & T_PURE_VIRTUAL) != T_NONE ) {
           print_error( &ast->loc,
             "non-%s %ss can not be %s",
             L_VIRTUAL, c_kind_name( ast->kind ), L_PURE

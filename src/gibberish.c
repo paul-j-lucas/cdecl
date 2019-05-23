@@ -536,10 +536,8 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
         break;
       case K_DESTRUCTOR:
         if ( c_ast_sname_count( ast ) > 1 )
-          FPUTS( c_ast_sname_scope_c( ast ), param->gout );
-        else
-          FPUTS( c_ast_sname_local( ast ), param->gout );
-        FPRINTF( param->gout, "::~%s", c_ast_sname_local( ast ) );
+          FPRINTF( param->gout, "%s::", c_ast_sname_scope_c( ast ) );
+        FPRINTF( param->gout, "~%s", c_ast_sname_local( ast ) );
         break;
       case K_OPERATOR:
         g_param_space( param );
