@@ -769,6 +769,7 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   attribute_english_type
 %type   <ast_pair>  block_decl_english_ast
 %type   <ast_pair>  constructor_decl_english_ast
+%type   <ast_pair>  destructor_decl_english_ast
 %type   <ast_pair>  func_decl_english_ast
 %type   <ast_pair>  member_func_decl_english_ast
 %type   <ast_pair>  oper_decl_english_ast
@@ -1050,25 +1051,6 @@ declare_english
       DUMP_END();
 
       c_ast_gibberish_declare( $5.ast, G_DECL_NONE, fout );
-      if ( opt_semicolon )
-        FPUTC( ';', fout );
-      FPUTC( '\n', fout );
-    }
-
-  | Y_DECLARE sname_english as_expected storage_class_list_english_type_opt
-    Y_DESTRUCTOR
-    {
-      DUMP_START( "declare_english",
-                  "DECLARE sname AS DESTRUCTOR" );
-      DUMP_STR( "sname", c_sname_full_c( &$2 ) );
-      DUMP_END();
-
-      c_ast_t *const ast = C_AST_NEW( K_DESTRUCTOR, &@$ );
-      ast->sname = $2;
-      ast->type_id = $4;
-      C_AST_CHECK( ast, CHECK_DECL );
-
-      c_ast_gibberish_declare( ast, G_DECL_NONE, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
@@ -1942,6 +1924,7 @@ name_or_typedef_sname_c_ast_expected
 decl_english_ast
   : array_decl_english_ast
   | constructor_decl_english_ast
+  | destructor_decl_english_ast
   | qualified_decl_english_ast
   | user_defined_literal_decl_english_ast
   | var_decl_english_ast
@@ -2033,6 +2016,20 @@ constructor_decl_english_ast
       $$.ast->as.func.args = $2;
 
       DUMP_AST( "constructor_decl_english_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+destructor_decl_english_ast
+  : Y_DESTRUCTOR
+    {
+      DUMP_START( "destructor_decl_english_ast",
+                  "DESTRUCTOR" );
+
+      $$.ast = C_AST_NEW( K_DESTRUCTOR, &@$ );
+      $$.target_ast = NULL;
+
+      DUMP_AST( "destructor_decl_english_ast", $$.ast );
       DUMP_END();
     }
   ;
