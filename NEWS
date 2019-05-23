@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.3.2
+
+** Added missing "virtual" for destructor
+Added "virtual" that was missing from the help and man page for destructor.
+
+
 * Changes in Cdecl 6.3.1
 
 ** Added support for noexcept constructors
