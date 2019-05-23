@@ -93,7 +93,7 @@ static help_text_t const HELP_TEXT_ENGLISH[] = {
   { NOT_IN_LANG,
     "  [explicit] constructor [([<args>])]" },
   { NOT_IN_LANG,
-    "  destructor" },
+    "  [virtual] destructor" },
   { "  <store>* function [([<args>])] [returning <english>]",
     "  <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]" },
   { NOT_IN_LANG,

@@ -1,7 +1,7 @@
 english:
   <store>* array [<number>] of <english>
   [explicit] constructor [([<args>])]
-  destructor
+  [virtual] destructor
   <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]
   <store>* <fn-qual>* [[non-]member] operator [([<args>])] [returning <english>]
   <cv-qual>* pointer to [member of { class | struct } <name>] <english>
