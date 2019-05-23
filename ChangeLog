@@ -1,3 +1,11 @@
+2019-05-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated.
+   * parser.y: Removed special-case for destructor; added
+     destructor_decl_english_ast rule.
+   * cdecl.1, help.c, help_english-c++.out: Added missing "virtual" for
+     destructor to help and man page.
+
 2019-05-22  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac, errors.c, gibberish.c, parser.y, test/Makefile.am,
