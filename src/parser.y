@@ -2088,12 +2088,6 @@ oper_decl_english_ast
     }
   ;
 
-ref_qualifier_english_type_opt
-  : /* empty */                   { $$ = T_NONE; }
-  | Y_REFERENCE                   { $$ = T_REFERENCE; }
-  | Y_RVALUE reference_expected   { $$ = T_RVALUE_REFERENCE; }
-  ;
-
 paren_decl_list_english_opt
   : /* empty */                   { slist_init( &$$ ); }
   | '(' decl_list_english_opt ')'
@@ -2140,6 +2134,12 @@ decl_list_english
       DUMP_AST_LIST( "decl_list_english", $$ );
       DUMP_END();
     }
+  ;
+
+ref_qualifier_english_type_opt
+  : /* empty */                   { $$ = T_NONE; }
+  | Y_REFERENCE                   { $$ = T_REFERENCE; }
+  | Y_RVALUE reference_expected   { $$ = T_RVALUE_REFERENCE; }
   ;
 
 returning_english_ast_opt
