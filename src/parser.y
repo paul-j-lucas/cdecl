@@ -1591,12 +1591,12 @@ scope_declaration_c
     rbrace_expected
     semi_expected                       /* ';' needed for class/struct/union */
     {
-        if ( !C_LANG_IS_CPP() ) {
-          print_error( &@6,
-            "nested types are not supported in %s", C_LANG_NAME()
-          );
-          PARSE_ABORT();
-        }
+      if ( !C_LANG_IS_CPP() ) {
+        print_error( &@6,
+          "nested types are not supported in %s", C_LANG_NAME()
+        );
+        PARSE_ABORT();
+      }
     }
 
     /*
