@@ -190,10 +190,10 @@ static char const *const CDECL_OPTIONS[] = {
 #ifdef ENABLE_CDECL_DEBUG
    "debug",
  "nodebug",
+#endif /* ENABLE_CDECL_DEBUG */
  "nographs",
  "digraphs",
 "trigraphs",
-#endif /* ENABLE_CDECL_DEBUG */
    "knr"
    "options",
    "prompt",
