@@ -117,9 +117,11 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
         return false;
       // FALLTHROUGH
     case K_BLOCK:
-    case K_USER_DEF_LITERAL: {
+    case K_USER_DEF_LITERAL:
       if ( !c_ast_equiv( ast_i->as.func.ret_ast, ast_j->as.func.ret_ast ) )
         return false;
+      // FALLTHROUGH
+    case K_CONSTRUCTOR: {
       c_ast_arg_t const *arg_i = c_ast_args( ast_i );
       c_ast_arg_t const *arg_j = c_ast_args( ast_j );
       for ( ; arg_i && arg_j; arg_i = arg_i->next, arg_j = arg_j->next ) {
@@ -161,7 +163,6 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
 
     case K_NONE:
     case K_BUILTIN:
-    case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_PLACEHOLDER:
     case K_POINTER:
