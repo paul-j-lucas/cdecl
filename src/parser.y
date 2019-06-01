@@ -343,7 +343,7 @@ static void print_type_english( c_typedef_t const *type ) {
   if ( c_ast_sname_count( type->ast ) > 1 )
     FPRINTF( fout,
       "%s %s %s ",
-      L_OF, c_type_name( c_ast_sname_type( type->ast ) ),
+      L_OF, c_ast_sname_type_name( type->ast ),
       c_ast_sname_scope_c( type->ast )
     );
   FPRINTF( fout, "%s ", L_AS );

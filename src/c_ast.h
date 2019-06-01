@@ -517,6 +517,18 @@ CDECL_AST_INLINE c_type_id_t c_ast_sname_type( c_ast_t const *ast ) {
 }
 
 /**
+ * Gets the type name of the sname of \a ast.
+ *
+ * @param ast The `c_ast` node to get the type name of.
+ * @return Returns said name.
+ * @warning The pointer returned is to a static buffer, so you can't do
+ * something like call this twice in the same `printf()` statement.
+ */
+CDECL_AST_INLINE char const* c_ast_sname_type_name( c_ast_t const *ast ) {
+  return c_type_name( c_ast_sname_type( ast ) );
+}
+
+/**
  * Does a depth-first, post-order traversal of an AST.
  *
  * @param ast The `c_ast` to begin at.  May be null.
