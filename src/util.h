@@ -105,15 +105,6 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define SP_AFTER(S)               S, SP_IF(S)
 
-/**
- * Conditionally returns space followed by \a S.
- *
- * @param S The C string to check.
- * @return If \a S is non-empty, returns `" "` followed by \a S; otherwise
- * returns `""` followed by `""`.
- */
-#define SP_BEFORE(S)              SP_IF(S), S
-
 /** Explicit C version of C++'s `static_cast`. */
 #define STATIC_CAST(T,EXPR)       ((T)(EXPR))
 
