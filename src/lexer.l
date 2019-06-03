@@ -453,7 +453,7 @@ static c_sname_t parse_sname( char const *s ) {
 }
 
 /**
- * Parses a scoped deestructor name, e.g. `S::T::~T()`.
+ * Parses a scoped destructor name, e.g. `S::T::~T()`.
  *
  * @param s The string to parse.
  * @return Returns the scoped name.
