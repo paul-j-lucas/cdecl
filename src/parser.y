@@ -3512,7 +3512,7 @@ arg_array_size_c_ast
     {
       $$ = C_AST_NEW( K_ARRAY, &@$ );
       $$->as.array.size = $4;
-      $$->as.array.type_id = T_STATIC | $3;
+      $$->as.array.type_id = $2 | $3;
     }
   | '[' type_qualifier_list_c_type_opt '*' ']'
     {
@@ -3524,7 +3524,7 @@ arg_array_size_c_ast
 
 static_type_opt
   : /* empty */                   { $$ = T_NONE; }
-  | Y_STATIC                      { $$ = T_STATIC; }
+  | Y_STATIC
   ;
 
 block_cast_c_ast                        /* Apple extension */
