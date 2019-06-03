@@ -339,7 +339,7 @@ exact:  print_error( &ast->loc,
         print_error( &ast->loc,
           "%s operators can not be %s",
           L_NON_MEMBER,
-          c_type_name( member_only_types )
+          c_type_name_error( member_only_types )
         );
         return false;
       }
@@ -376,7 +376,7 @@ exact:  print_error( &ast->loc,
         print_error( &ast->loc,
           "%s operators can not be %s",
           L_MEMBER,
-          c_type_name( non_member_only_types )
+          c_type_name_error( non_member_only_types )
         );
         return false;
       }
@@ -404,7 +404,7 @@ exact:  print_error( &ast->loc,
           print_error( &arg_ast->loc,
             "argument of postfix %s%s%s %s must be %s",
             SP_AFTER( op_type ), L_OPERATOR, op->name,
-            c_type_name( T_INT )
+            c_type_name_error( T_INT )
           );
           return false;
         }
@@ -497,7 +497,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
               "\"%s\": invalid argument type for %s %s; must be one of: "
               "unsigned long long, long double, "
               "char, const char*, char8_t, char16_t, char32_t, wchar_t",
-              c_type_name( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
+              c_type_name_error( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
             );
             return false;
           }
@@ -513,7 +513,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
         print_error( &arg_ast->loc,
           "\"%s\": invalid argument type for %s %s; must be one of: "
           "const (char|wchar_t|char8_t|char16_t|char32_t)*",
-          c_type_name( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
+          c_type_name_error( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
         );
         return false;
       }
@@ -523,7 +523,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
         print_error( &arg_ast->loc,
           "\"%s\": invalid argument type for %s %s; must be one of: "
           "unsigned long, size_t",
-          c_type_name( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
+          c_type_name_error( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
         );
         return false;
       }
@@ -720,12 +720,12 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         c_type_id_t const non_member_types = ast->type_id & T_NON_MEMBER_ONLY;
         if ( member_types != T_NONE && non_member_types != T_NONE ) {
           char const *const member_types_names =
-            FREE_STRDUP_LATER( c_type_name( member_types ) );
+            FREE_STRDUP_LATER( c_type_name_error( member_types ) );
           print_error( &ast->loc,
             "%ss can not be %s and %s",
             c_kind_name( ast->kind ),
             member_types_names,
-            c_type_name( non_member_types )
+            c_type_name_error( non_member_types )
           );
           return VISITOR_ERROR_FOUND;
         }
@@ -738,7 +738,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
               print_error( &ast->loc,
                 "%s %ss can not be %s",
                 L_MEMBER, c_kind_name( ast->kind ),
-                c_type_name( non_member_types )
+                c_type_name_error( non_member_types )
               );
               return VISITOR_ERROR_FOUND;
             }
@@ -748,7 +748,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
               print_error( &ast->loc,
                 "%s %ss can not be %s",
                 L_NON_MEMBER, c_kind_name( ast->kind ),
-                c_type_name( member_types )
+                c_type_name_error( member_types )
               );
               return VISITOR_ERROR_FOUND;
             }
@@ -902,11 +902,11 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       if ( (ast->type_id & (T_CONST | T_VOLATILE)) != T_NONE ) {
         print_error( &ast->loc,
           "references can not be %s",
-          c_type_name( ast->type_id & T_MASK_QUALIFIER )
+          c_type_name_error( ast->type_id & T_MASK_QUALIFIER )
         );
         print_hint(
           "reference to %s",
-          c_type_name( ast->type_id & T_MASK_QUALIFIER )
+          c_type_name_error( ast->type_id & T_MASK_QUALIFIER )
         );
         return VISITOR_ERROR_FOUND;
       }
