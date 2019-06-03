@@ -1,5 +1,29 @@
+2019-06-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Don't need to be explicit about T_STATIC.
+   * errors.c: s/c_type_name/c_type_name_error/
+   * lexer.l: Comment fix.
+
+2019-05-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c: Now using parent code to check ret_ast.
+   * c_ast.h, parser.y: Added c_ast_sname_type_name().
+   * util.h: Removed SP_BEFORE -- not used.
+   * autocomplete.c: Added "constructor" and "destructor" to autocomplete.
+
+2019-05-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Fixed cdecl autocomplete options.
+   * c_ast.c: Now properly comparing constructor argumentes.
+
+2019-05-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Rule reordering.
+   * parser.y: Indentation fix.
+
 2019-05-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: s/define/declare/
    * NEWS, configure.ac: Updated.
    * parser.y: Removed special-case for destructor; added
      destructor_decl_english_ast rule.
