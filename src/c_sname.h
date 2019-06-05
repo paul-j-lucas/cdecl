@@ -179,29 +179,29 @@ CDECL_SNAME_INLINE char const* c_sname_local_name( c_sname_t const *sname ) {
 }
 
 /**
- * Peeks at the name at \a offset of \a sname.
+ * Gets the name at \a offset of \a sname.
  *
  * @param sname The `c_sname_t` to get the name at \a offset of.
  * @param offset The offset (starting at 0) of the name to get.
  * @return Returns the name at \a offset or the empty string if \a offset &gt;=
  * c_sname_count().
  */
-CDECL_SNAME_INLINE char const* c_sname_offset( c_sname_t const *sname,
-                                               size_t offset ) {
+CDECL_SNAME_INLINE char const* c_sname_name_at( c_sname_t const *sname,
+                                                size_t offset ) {
   char const *const temp = SLIST_PEEK_AT( char const*, sname, offset );
   return temp != NULL ? temp : "";
 }
 
 /**
- * Peeks at the name at \a roffset of \a sname.
+ * Gets the name at \a roffset of \a sname.
  *
  * @param sname The `c_sname_t` to get the name at \a roffset of.
  * @param roffset The reverse offset (starting at 0) of the name to get.
  * @return Returns the name at \a roffset or the empty string if \a roffset
  * &gt;= c_sname_count().
  */
-CDECL_SNAME_INLINE char const* c_sname_roffset( c_sname_t const *sname,
-                                                size_t roffset ) {
+CDECL_SNAME_INLINE char const* c_sname_name_atr( c_sname_t const *sname,
+                                                 size_t roffset ) {
   char const *const temp = SLIST_PEEK_ATR( char const*, sname, roffset );
   return temp != NULL ? temp : "";
 }

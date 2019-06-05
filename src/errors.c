@@ -843,7 +843,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         if ( c_ast_sname_count( ast ) > 1 && !c_ast_sname_is_ctor( ast ) ) {
           print_error( &ast->loc,
             "\"%s\", \"%s\": class and %s names don't match",
-            c_ast_sname_roffset( ast, 1 ), c_ast_sname_local_name( ast ),
+            c_ast_sname_name_atr( ast, 1 ), c_ast_sname_local_name( ast ),
             c_kind_name( ast->kind )
           );
           return VISITOR_ERROR_FOUND;

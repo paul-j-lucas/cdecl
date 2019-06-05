@@ -419,29 +419,29 @@ CDECL_AST_INLINE char const* c_ast_sname_local_name( c_ast_t const *ast ) {
 }
 
 /**
- * Peeks at the name at \a offset of \a ast.
+ * Gets the name at \a offset of \a ast.
  *
  * @param ast The `c_ast` to get the name at \a offset of.
  * @param offset The offset (starting at 0) of the name to get.
  * @return Returns the name at \a offset or the empty string if \a offset &gt;=
  * c_ast_sname_count().
  */
-CDECL_AST_INLINE char const* c_ast_sname_offset( c_ast_t const *ast,
-                                                 size_t offset ) {
-  return c_sname_offset( &ast->sname, offset );
+CDECL_AST_INLINE char const* c_ast_sname_name_at( c_ast_t const *ast,
+                                                  size_t offset ) {
+  return c_sname_name_at( &ast->sname, offset );
 }
 
 /**
- * Peeks at the name at \a roffset of \a ast.
+ * Gets the name at \a roffset of \a ast.
  *
  * @param ast The `c_ast` to get the name at \a offset of.
  * @param roffset The reverse offset (starting at 0) of the name to get.
  * @return Returns the name at \a offset or the empty string if \a offset &gt;=
  * c_ast_sname_count().
  */
-CDECL_AST_INLINE char const* c_ast_sname_roffset( c_ast_t const *ast,
-                                                  size_t roffset ) {
-  return c_sname_roffset( &ast->sname, roffset );
+CDECL_AST_INLINE char const* c_ast_sname_name_atr( c_ast_t const *ast,
+                                                   size_t roffset ) {
+  return c_sname_name_atr( &ast->sname, roffset );
 }
 
 /**
