@@ -759,7 +759,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           if ( c_ast_sname_count( ast ) > 1 ) {
             print_error( &ast->loc,
               "\"%s\": %s can not be used in file-scoped %ss",
-              c_ast_sname_full_c( ast ), L_VIRTUAL, c_kind_name( ast->kind )
+              c_ast_sname_full_name( ast ), L_VIRTUAL, c_kind_name( ast->kind )
             );
             return VISITOR_ERROR_FOUND;
           }
@@ -843,7 +843,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         if ( c_ast_sname_count( ast ) > 1 && !c_ast_sname_is_ctor( ast ) ) {
           print_error( &ast->loc,
             "\"%s\", \"%s\": class and %s names don't match",
-            c_ast_sname_roffset( ast, 1 ), c_ast_sname_local( ast ),
+            c_ast_sname_roffset( ast, 1 ), c_ast_sname_local_name( ast ),
             c_kind_name( ast->kind )
           );
           return VISITOR_ERROR_FOUND;
@@ -1028,7 +1028,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
       break;
 
     case K_USER_DEF_LITERAL:
-      if ( c_sname_local( &ast->sname )[0] != '_' )
+      if ( c_sname_local_name( &ast->sname )[0] != '_' )
         print_warning( &ast->loc,
           "%s %s not starting with '_' are reserved",
           L_USER_DEFINED, L_LITERAL
@@ -1137,7 +1137,9 @@ static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
 static bool error_unknown_type( c_ast_t const *ast ) {
-  print_error( &ast->loc, "\"%s\": unknown type", c_ast_sname_full_c( ast ) );
+  print_error( &ast->loc,
+    "\"%s\": unknown type", c_ast_sname_full_name( ast )
+  );
   return VISITOR_ERROR_FOUND;
 }
 

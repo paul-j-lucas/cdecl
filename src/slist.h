@@ -174,6 +174,7 @@ int slist_cmp( slist_t const *list_i, slist_t const *list_j,
  * Duplicates \a src and all of its nodes.
  *
  * @param src The <code>\ref slist</code> to duplicate.  It may ne null.
+ * @param n The number of nodes to duplicate; -1 is equivalent to `slist_len()`.
  * @param data_dup_fn A pointer to a function to use to duplicate the data of
  * \a src or null if none is required (hence a shallow copy will be done).
  * @param node_data_dup_fn A pointer to a function to use to duplicate the data
@@ -181,7 +182,8 @@ int slist_cmp( slist_t const *list_i, slist_t const *list_j,
  * will be done).
  * @return Returns a duplicate of \a src.
  */
-slist_t slist_dup( slist_t const *src, slist_data_dup_fn_t data_dup_fn,
+slist_t slist_dup( slist_t const *src, ssize_t n,
+                   slist_data_dup_fn_t data_dup_fn,
                    slist_node_data_dup_fn_t node_data_dup_fn );
 
 /**

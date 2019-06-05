@@ -39,16 +39,18 @@
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Helper function for `c_sname_full_c()` and `c_sname_scope_c()` that writes
- * the scope names from outermost to innermost separated by `::` into a buffer.
+ * Helper function for `c_sname_full_name()` and `c_sname_scope_name()` that
+ * writes the scope names from outermost to innermost separated by `::` into a
+ * buffer.
  *
  * @param name_buf The buffer to write into.
  * @param sname The scoped name to write.
  * @param end_scope The scope to stop before or null for all scopes.
  * @return Returns \a name_buf if \a sname is not empty or null otherwise.
  */
-static char const* c_sname_scope_c_impl( char *name_buf, c_sname_t const *sname,
-                                         c_scope_t const *end_scope ) {
+static char const* c_sname_scope_name_impl( char *name_buf,
+                                            c_sname_t const *sname,
+                                            c_scope_t const *end_scope ) {
   assert( name_buf != NULL );
   assert( sname != NULL );
 
@@ -68,9 +70,9 @@ static char const* c_sname_scope_c_impl( char *name_buf, c_sname_t const *sname,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-char const* c_sname_full_c( c_sname_t const *sname ) {
+char const* c_sname_full_name( c_sname_t const *sname ) {
   static char name_buf[ 256 ];
-  return c_sname_scope_c_impl( name_buf, sname, NULL );
+  return c_sname_scope_name_impl( name_buf, sname, NULL );
 }
 
 bool c_sname_is_ctor( c_sname_t const *sname ) {
@@ -81,9 +83,9 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
   return strcmp( local_name, class_name ) == 0;
 }
 
-char const* c_sname_scope_c( c_sname_t const *sname ) {
+char const* c_sname_scope_name( c_sname_t const *sname ) {
   static char name_buf[ 256 ];
-  return c_sname_scope_c_impl( name_buf, sname, sname->tail );
+  return c_sname_scope_name_impl( name_buf, sname, sname->tail );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

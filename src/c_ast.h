@@ -389,8 +389,8 @@ CDECL_AST_INLINE bool c_ast_sname_empty( c_ast_t const *ast ) {
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  */
-CDECL_AST_INLINE char const* c_ast_sname_full_c( c_ast_t const *ast ) {
-  return c_sname_full_c( &ast->sname );
+CDECL_AST_INLINE char const* c_ast_sname_full_name( c_ast_t const *ast ) {
+  return c_sname_full_name( &ast->sname );
 }
 
 /**
@@ -411,11 +411,11 @@ CDECL_AST_INLINE bool c_ast_sname_is_ctor( c_ast_t const *ast ) {
  *
  * @param ast The `c_ast` to get the local name of.
  *
- * @sa c_ast_sname_full_c()
- * @sa c_ast_sname_scope_c()
+ * @sa c_ast_sname_full_name()
+ * @sa c_ast_sname_scope_name()
  */
-CDECL_AST_INLINE char const* c_ast_sname_local( c_ast_t const *ast ) {
-  return c_sname_local( &ast->sname );
+CDECL_AST_INLINE char const* c_ast_sname_local_name( c_ast_t const *ast ) {
+  return c_sname_local_name( &ast->sname );
 }
 
 /**
@@ -464,11 +464,11 @@ CDECL_AST_INLINE void c_ast_sname_prepend_sname( c_ast_t *ast,
  * @return Returns said name or the empty string if \a ast doesn't have a scope
  * name.
  *
- * @sa c_ast_sname_full_c()
- * @sa c_ast_sname_local()
+ * @sa c_ast_sname_full_name()
+ * @sa c_ast_sname_local_name()
  */
-CDECL_AST_INLINE char const* c_ast_sname_scope_c( c_ast_t const *ast ) {
-  return c_sname_scope_c( &ast->sname );
+CDECL_AST_INLINE char const* c_ast_sname_scope_name( c_ast_t const *ast ) {
+  return c_sname_scope_name( &ast->sname );
 }
 
 /**

@@ -109,7 +109,7 @@ CDECL_SNAME_INLINE size_t c_sname_count( c_sname_t const *sname ) {
  * @return Returns a duplicate of \a sname.
  */
 CDECL_SNAME_INLINE c_sname_t c_sname_dup( c_sname_t const *sname ) {
-  return slist_dup( sname, NULL, (slist_node_data_dup_fn_t)&strdup );
+  return slist_dup( sname, -1, NULL, (slist_node_data_dup_fn_t)&strdup );
 }
 
 /**
@@ -140,10 +140,10 @@ CDECL_SNAME_INLINE void c_sname_free( c_sname_t *sname ) {
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  *
- * @sa c_sname_local
- * @sa c_sname_scope_c
+ * @sa c_sname_local_name
+ * @sa c_sname_scope_name
  */
-char const* c_sname_full_c( c_sname_t const *sname );
+char const* c_sname_full_name( c_sname_t const *sname );
 
 /**
  * Initializes \a sname.  This is not necessary for either global or `static`
@@ -171,10 +171,10 @@ bool c_sname_is_ctor( c_sname_t const *sname );
  * @param sname The scoped name to get the local name of.
  * @return Returns said name or the empty string if \a sname is empty.
  *
- * @sa c_sname_full_c
- * @sa c_sname_scope_c
+ * @sa c_sname_full_name
+ * @sa c_sname_scope_name
  */
-CDECL_SNAME_INLINE char const* c_sname_local( c_sname_t const *sname ) {
+CDECL_SNAME_INLINE char const* c_sname_local_name( c_sname_t const *sname ) {
   return c_sname_empty( sname ) ? "" : SLIST_TAIL( char const*, sname );
 }
 
@@ -247,10 +247,10 @@ CDECL_SNAME_INLINE void c_sname_prepend_sname( c_sname_t *dst,
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  *
- * @sa c_sname_full_c
- * @sa c_sname_local
+ * @sa c_sname_full_name
+ * @sa c_sname_local_name
  */
-char const* c_sname_scope_c( c_sname_t const *sname );
+char const* c_sname_scope_name( c_sname_t const *sname );
 
 /**
  * Sets the scope type of \a sname.

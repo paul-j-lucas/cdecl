@@ -283,7 +283,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       }
       FPRINTF( param->gout,
         "%s %s", c_type_name( ast_type ),
-        c_sname_full_c( &ast->as.ecsu.ecsu_sname )
+        c_sname_full_name( &ast->as.ecsu.ecsu_sname )
       );
       c_ast_gibberish_space_name( ast, param );
       g_param_leaf( param, ast );
@@ -484,7 +484,7 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast, g_param_t *param ) {
       break;
     case K_POINTER_TO_MEMBER:
       FPRINTF( param->gout,
-        "%s::*", c_sname_full_c( &ast->as.ptr_mbr.class_sname )
+        "%s::*", c_sname_full_name( &ast->as.ptr_mbr.class_sname )
       );
       break;
     case K_REFERENCE:
@@ -524,25 +524,25 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
   if ( param->gkind != G_CAST ) {
     switch ( ast->kind ) {
       case K_CONSTRUCTOR:
-        FPUTS( c_ast_sname_full_c( ast ), param->gout );
+        FPUTS( c_ast_sname_full_name( ast ), param->gout );
         if ( (ast->type_id & T_EXPLICIT) == T_NONE &&
              c_ast_sname_count( ast ) == 1 ) {
           //
           // For non-explicit constructors, we have to repeat the local name
           // since that's the name of the constructor at file-scope.
           //
-          FPRINTF( param->gout, "::%s", c_ast_sname_local( ast ) );
+          FPRINTF( param->gout, "::%s", c_ast_sname_local_name( ast ) );
         }
         break;
       case K_DESTRUCTOR:
         if ( c_ast_sname_count( ast ) > 1 )
-          FPRINTF( param->gout, "%s::", c_ast_sname_scope_c( ast ) );
-        FPRINTF( param->gout, "~%s", c_ast_sname_local( ast ) );
+          FPRINTF( param->gout, "%s::", c_ast_sname_scope_name( ast ) );
+        FPRINTF( param->gout, "~%s", c_ast_sname_local_name( ast ) );
         break;
       case K_OPERATOR:
         g_param_space( param );
         if ( !c_ast_sname_empty( ast ) )
-          FPRINTF( param->gout, "%s::", c_ast_sname_full_c( ast ) );
+          FPRINTF( param->gout, "%s::", c_ast_sname_full_name( ast ) );
         FPRINTF( param->gout,
           "%s%s",
           L_OPERATOR, graph_name_c( op_get( ast->as.oper.oper_id )->name )
@@ -551,10 +551,10 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
       case K_USER_DEF_LITERAL:
         g_param_space( param );
         if ( c_ast_sname_count( ast ) > 1 )
-          FPRINTF( param->gout, "%s::", c_ast_sname_scope_c( ast ) );
+          FPRINTF( param->gout, "%s::", c_ast_sname_scope_name( ast ) );
         FPRINTF( param->gout,
           "%s\"\" %s",
-          L_OPERATOR, c_ast_sname_local( ast )
+          L_OPERATOR, c_ast_sname_local_name( ast )
         );
         break;
       default:
@@ -579,9 +579,9 @@ static char const* c_ast_sname_full_or_local( c_ast_t const *ast,
                                               g_param_t *param ) {
   if ( (param->flags & G_DECL_TYPEDEF) != 0 ) {
     param->flags &= ~G_DECL_TYPEDEF;
-    return c_ast_sname_local( ast );
+    return c_ast_sname_local_name( ast );
   }
-  return c_ast_sname_full_c( ast );
+  return c_ast_sname_full_name( ast );
 }
 
 /**

@@ -56,14 +56,16 @@ int slist_cmp( slist_t const *list_i, slist_t const *list_j,
   return node_i == NULL ? (node_j == NULL ? 0 : -1) : 1;
 }
 
-slist_t slist_dup( slist_t const *src, slist_data_dup_fn_t data_dup_fn,
+slist_t slist_dup( slist_t const *src, ssize_t n,
+                   slist_data_dup_fn_t data_dup_fn,
                    slist_node_data_dup_fn_t node_data_dup_fn ) {
   slist_t dst;
   slist_init( &dst );
 
-  if ( src != NULL ) {
+  if ( src != NULL && n != 0 ) {
+    size_t un = (size_t)n;
     dst.data = data_dup_fn != NULL ? (*data_dup_fn)( src->data ) : src->data;
-    for ( slist_node_t *src_node = src->head; src_node != NULL;
+    for ( slist_node_t *src_node = src->head; src_node != NULL && un-- > 0;
           src_node = src_node->next ) {
       void *const dst_data = node_data_dup_fn != NULL ?
         (*node_data_dup_fn)( src_node->data ) : src_node->data;

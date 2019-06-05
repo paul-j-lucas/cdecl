@@ -104,10 +104,10 @@
 #define DUMP_NUM(KEY,NUM) \
   IF_DEBUG( DUMP_COMMA; printf( "  " KEY " = %d", (NUM) ); )
 
-#define DUMP_SNAME(KEY,SNAME) IF_DEBUG(               \
-  DUMP_COMMA; PUTS_OUT( "  " );                       \
-  print_kv( (KEY), c_sname_full_c( SNAME ), stdout ); \
-  PUTS_OUT( ", scope_type = " );                      \
+#define DUMP_SNAME(KEY,SNAME) IF_DEBUG(                   \
+  DUMP_COMMA; PUTS_OUT( "  " );                           \
+  print_kv( (KEY), c_sname_full_name( SNAME ), stdout );  \
+  PUTS_OUT( ", scope_type = " );                          \
   c_type_debug( c_sname_type( SNAME ), stdout ); )
 
 #define DUMP_STR(KEY,NAME) IF_DEBUG(  \
@@ -339,12 +339,12 @@ static void parse_init( void ) {
 static void print_type_english( c_typedef_t const *type ) {
   assert( type != NULL );
 
-  FPRINTF( fout, "%s %s ", L_DEFINE, c_ast_sname_local( type->ast ) );
+  FPRINTF( fout, "%s %s ", L_DEFINE, c_ast_sname_local_name( type->ast ) );
   if ( c_ast_sname_count( type->ast ) > 1 )
     FPRINTF( fout,
       "%s %s %s ",
       L_OF, c_ast_sname_type_name( type->ast ),
-      c_ast_sname_scope_c( type->ast )
+      c_ast_sname_scope_name( type->ast )
     );
   FPRINTF( fout, "%s ", L_AS );
   c_ast_english( type->ast, fout );
@@ -390,7 +390,7 @@ static void print_type_gibberish( c_typedef_t const *type ) {
       //      namespace S::T { typedef int I; }
       //
       FPRINTF( fout,
-        "%s %s { ", c_type_name( sn_type ), c_sname_scope_c( sname )
+        "%s %s { ", c_type_name( sn_type ), c_sname_scope_name( sname )
       );
       scope_close_braces_to_print = 1;
     }
@@ -962,7 +962,7 @@ cast_english
       if ( ok ) {
         FPUTC( '(', fout );
         c_ast_gibberish_cast( $4.ast, fout );
-        FPRINTF( fout, ")%s\n", c_sname_full_c( &$2 ) );
+        FPRINTF( fout, ")%s\n", c_sname_full_name( &$2 ) );
       }
 
       c_sname_free( &$2 );
@@ -989,7 +989,7 @@ cast_english
       else if ( (ok = c_ast_check( $5.ast, CHECK_CAST )) ) {
         FPRINTF( fout, "%s<", $1 );
         c_ast_gibberish_cast( $5.ast, fout );
-        FPRINTF( fout, ">(%s)\n", c_sname_full_c( &$3 ) );
+        FPRINTF( fout, ">(%s)\n", c_sname_full_name( &$3 ) );
       }
 
       c_sname_free( &$3 );
@@ -1029,7 +1029,7 @@ declare_english
         //
         assert( !c_ast_sname_empty( $5.ast ) );
         print_error( &@5,
-          "\"%s\": unknown type", c_ast_sname_full_c( $5.ast )
+          "\"%s\": unknown type", c_ast_sname_full_name( $5.ast )
         );
         c_sname_free( &$2 );
         PARSE_ABORT();
@@ -1161,7 +1161,7 @@ define_english
       if ( $5.ast->kind == K_NAME ) {   // see the comment in "declare_english"
         assert( !c_ast_sname_empty( $5.ast ) );
         print_error( &@5,
-          "\"%s\": unknown type", c_ast_sname_full_c( $5.ast )
+          "\"%s\": unknown type", c_ast_sname_full_name( $5.ast )
         );
         c_sname_free( &$2 );
         PARSE_ABORT();
@@ -1197,7 +1197,7 @@ define_english
           case TD_ADD_DIFF:
             print_error( &@5,
               "\"%s\": \"%s\" redefinition with different type",
-              c_sname_full_c( &$2 ), L_TYPEDEF
+              c_sname_full_name( &$2 ), L_TYPEDEF
             );
             ok = false;
             break;
@@ -1309,11 +1309,11 @@ explain_c
 
       if ( ast->kind == K_OPERATOR ) {
         local_name = graph_name_c( op_get( ast->as.oper.oper_id )->name );
-        scope_name = c_sname_full_c( &sname );
+        scope_name = c_sname_full_name( &sname );
       } else {
         assert( !c_sname_empty( &sname ) );
-        local_name = c_sname_local( &sname );
-        scope_name = c_sname_scope_c( &sname );
+        local_name = c_sname_local_name( &sname );
+        scope_name = c_sname_scope_name( &sname );
       }
       assert( local_name != NULL );
 
@@ -1383,8 +1383,8 @@ explain_c
 
       bool const ok = c_ast_check( ast, CHECK_DECL );
       if ( ok ) {
-        char const *const local_name = c_sname_local( &$2 );
-        char const *const scope_name = c_sname_scope_c( &$2 );
+        char const *const local_name = c_sname_local_name( &$2 );
+        char const *const scope_name = c_sname_scope_name( &$2 );
 
         FPRINTF( fout, "%s %s ", L_DECLARE, local_name );
         if ( scope_name[0] != '\0' )
@@ -1444,8 +1444,8 @@ explain_c
 
       bool const ok = c_ast_check( ast, CHECK_DECL );
       if ( ok ) {
-        char const *const local_name = c_sname_local( &$2 );
-        char const *const scope_name = c_sname_scope_c( &$2 );
+        char const *const local_name = c_sname_local_name( &$2 );
+        char const *const scope_name = c_sname_scope_name( &$2 );
         FPRINTF( fout,
           "%s %s %s %s %s %s ",
           L_DECLARE, local_name, L_OF, L_CLASS, scope_name, L_AS
@@ -1572,7 +1572,8 @@ scope_declaration_c
       if ( C_LANG_IS_CPP() ) {
         c_type_id_t const cur_type = c_sname_type( &in_attr.current_scope );
         if ( (cur_type & T_CLASS_STRUCT_UNION) != 0 ) {
-          char const *const cur_name = c_sname_local( &in_attr.current_scope );
+          char const *const cur_name =
+            c_sname_local_name( &in_attr.current_scope );
           char const *const mbr_name = SLIST_HEAD( char const*, &$3 );
           if ( strcmp( mbr_name, cur_name ) == 0 ) {
             print_error( &@3,
@@ -1793,7 +1794,7 @@ typedef_declaration_c
       if ( c_ast_sname_count( ast ) > 1 ) {
         print_error( &@5,
           "%s names can not be scoped; use: %s %s { %s ... }",
-          L_TYPEDEF, L_NAMESPACE, c_ast_sname_scope_c( ast ), L_TYPEDEF
+          L_TYPEDEF, L_NAMESPACE, c_ast_sname_scope_name( ast ), L_TYPEDEF
         );
         PARSE_ABORT();
       }
@@ -1813,7 +1814,7 @@ typedef_declaration_c
         case TD_ADD_DIFF:
           print_error( &@5,
             "\"%s\": \"%s\" redefinition with different type",
-            c_ast_sname_full_c( ast ), L_TYPEDEF
+            c_ast_sname_full_name( ast ), L_TYPEDEF
           );
           PARSE_ABORT();
         case TD_ADD_EQUIV:
@@ -1874,7 +1875,7 @@ using_declaration_c
       if ( c_ast_sname_count( ast ) > 1 ) {
         print_error( &@5,
           "%s names can not be scoped; use: %s %s { %s ... }",
-          L_USING, L_NAMESPACE, c_ast_sname_scope_c( ast ), L_USING
+          L_USING, L_NAMESPACE, c_ast_sname_scope_name( ast ), L_USING
         );
         PARSE_ABORT();
       }
@@ -1898,7 +1899,7 @@ using_declaration_c
         case TD_ADD_DIFF:
           print_error( &@5,
             "\"%s\": \"%s\" redefinition with different type",
-            c_ast_sname_full_c( ast ), L_USING
+            c_ast_sname_full_name( ast ), L_USING
           );
           PARSE_ABORT();
         case TD_ADD_EQUIV:
@@ -2236,7 +2237,7 @@ pointer_decl_english_ast
       if ( $3.ast->kind == K_NAME ) {   // see the comment in "declare_english"
         assert( !c_ast_sname_empty( $3.ast ) );
         print_error( &@3,
-          "\"%s\": unknown type", c_ast_sname_full_c( $3.ast )
+          "\"%s\": unknown type", c_ast_sname_full_name( $3.ast )
         );
         PARSE_ABORT();
       }
@@ -2357,7 +2358,7 @@ var_decl_english_ast
       if ( $3.ast->kind == K_NAME ) {   // see the comment in "declare_english"
         assert( !c_ast_sname_empty( $3.ast ) );
         print_error( &@3,
-          "\"%s\": unknown type", c_ast_sname_full_c( $3.ast )
+          "\"%s\": unknown type", c_ast_sname_full_name( $3.ast )
         );
         PARSE_ABORT();
       }
@@ -3867,7 +3868,7 @@ name_or_typedef_name
   : Y_NAME
   | Y_TYPEDEF_SNAME
     {
-      $$ = strdup( c_sname_local( &$1->ast->sname ) );
+      $$ = strdup( c_sname_local_name( &$1->ast->sname ) );
     }
   ;
 
