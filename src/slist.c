@@ -95,9 +95,14 @@ void* slist_peek_at( slist_t const *list, size_t offset ) {
   if ( offset >= list->len )
     return NULL;
 
-  slist_node_t *p = list->head;
-  while ( offset-- > 0 )
-    p = p->next;
+  slist_node_t *p;
+
+  if ( offset == list->len - 1 ) {
+    p = list->tail;
+  } else {
+    for ( p = list->head; offset-- > 0; p = p->next )
+      ;
+  }
 
   assert( p != NULL );
   return p->data;
