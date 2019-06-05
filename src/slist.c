@@ -90,7 +90,7 @@ void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
   }
 }
 
-void* slist_offset( slist_t const *list, size_t offset ) {
+void* slist_peek_at( slist_t const *list, size_t offset ) {
   assert( list != NULL );
   if ( offset >= list->len )
     return NULL;

@@ -188,7 +188,7 @@ CDECL_SNAME_INLINE char const* c_sname_local( c_sname_t const *sname ) {
  */
 CDECL_SNAME_INLINE char const* c_sname_offset( c_sname_t const *sname,
                                                size_t offset ) {
-  char const *const temp = SLIST_OFFSET( char const*, sname, offset );
+  char const *const temp = SLIST_PEEK_AT( char const*, sname, offset );
   return temp != NULL ? temp : "";
 }
 
@@ -202,7 +202,7 @@ CDECL_SNAME_INLINE char const* c_sname_offset( c_sname_t const *sname,
  */
 CDECL_SNAME_INLINE char const* c_sname_roffset( c_sname_t const *sname,
                                                 size_t roffset ) {
-  char const *const temp = SLIST_ROFFSET( char const*, sname, roffset );
+  char const *const temp = SLIST_PEEK_ATR( char const*, sname, roffset );
   return temp != NULL ? temp : "";
 }
 

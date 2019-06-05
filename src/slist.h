@@ -252,6 +252,57 @@ CDECL_SLIST_INLINE size_t slist_len( slist_t const *list ) {
 }
 
 /**
+ * Peeks at the data at \a offset of \a list.
+ *
+ * @param list A pointer to the <code>\ref slist</code>.
+ * @param offset The offset (starting at 0) of the data to get.
+ * @return Returns the data from the node at \a offset or null if \a offset
+ * &gt;= slist_len().
+ */
+void* slist_peek_at( slist_t const *list, size_t offset );
+
+/**
+ * Convenience macro that peeks at the data at \a OFFSET of \a LIST and casts
+ * it to the requested type.
+ *
+ * @param DATA_TYPE The type of the data.
+ * @param LIST A pointer to the <code>\ref slist</code>.
+ * @param OFFSET The offset (starting at 0) of the data to get.
+ * @return Returns the data from the node at \a OFFSET cast to \a DATA_TYPE or
+ * null (or equivalent) if \a OFFSET &gt;= slist_len().
+ * @hideinitializer
+ */
+#define SLIST_PEEK_AT(DATA_TYPE,LIST,OFFSET) \
+  REINTERPRET_CAST( DATA_TYPE, slist_peek_at( (LIST), (OFFSET) ) )
+
+/**
+ * Peeks at the data at \a roffset from the tail of \a list.
+ *
+ * @param list A pointer to the <code>\ref slist</code>.
+ * @param roffset The reverse offset (starting at 0) of the data to get.
+ * @return Returns the data from the node at \a roffset or null if \a roffset
+ * &gt;= slist_len().
+ */
+CDECL_SLIST_INLINE void* slist_peek_atr( slist_t const *list, size_t roffset ) {
+  return roffset < list->len ?
+    slist_peek_at( list, list->len - (roffset + 1) ) : NULL;
+}
+
+/**
+ * Convenience macro that peeks at the data at \a ROFFSET of \a LIST and casts
+ * it to the requested type.
+ *
+ * @param DATA_TYPE The type of the data.
+ * @param LIST A pointer to the <code>\ref slist</code>.
+ * @param ROFFSET The reverse offset (starting at 0) of the data to get.
+ * @return Returns the data from the node at \a ROFFSET cast to \a DATA_TYPE or
+ * null (or equivalent) if \a ROFFSET &gt;= slist_len().
+ * @hideinitializer
+ */
+#define SLIST_PEEK_ATR(DATA_TYPE,LIST,ROFFSET) \
+  REINTERPRET_CAST( DATA_TYPE, slist_peek_atr( (LIST), (ROFFSET) ) )
+
+/**
  * Pops data from the head of \a list.
  *
  * @param list The pointer to the <code>\ref slist</code>.
@@ -273,57 +324,6 @@ void* slist_pop_head( slist_t *list );
  */
 #define SLIST_POP_HEAD(DATA_TYPE,LIST) \
   REINTERPRET_CAST( DATA_TYPE, slist_pop_head( LIST ) )
-
-/**
- * Peeks at the data at \a offset of \a list.
- *
- * @param list A pointer to the <code>\ref slist</code>.
- * @param offset The offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a offset or null if \a offset
- * &gt;= slist_len().
- */
-void* slist_offset( slist_t const *list, size_t offset );
-
-/**
- * Convenience macro that peeks at the data at \a OFFSET of \a LIST and casts
- * it to the requested type.
- *
- * @param DATA_TYPE The type of the data.
- * @param LIST A pointer to the <code>\ref slist</code>.
- * @param OFFSET The offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a OFFSET cast to \a DATA_TYPE or
- * null (or equivalent) if \a OFFSET &gt;= slist_len().
- * @hideinitializer
- */
-#define SLIST_OFFSET(DATA_TYPE,LIST,OFFSET) \
-  REINTERPRET_CAST( DATA_TYPE, slist_offset( (LIST), (OFFSET) ) )
-
-/**
- * Peeks at the data at \a roffset of \a list.
- *
- * @param list A pointer to the <code>\ref slist</code>.
- * @param roffset The reverse offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a roffset or null if \a roffset
- * &gt;= slist_len().
- */
-CDECL_SLIST_INLINE void* slist_roffset( slist_t const *list, size_t roffset ) {
-  return roffset < list->len ?
-    slist_offset( list, list->len - (roffset + 1) ) : NULL;
-}
-
-/**
- * Convenience macro that peeks at the data at \a ROFFSET of \a LIST and casts
- * it to the requested type.
- *
- * @param DATA_TYPE The type of the data.
- * @param LIST A pointer to the <code>\ref slist</code>.
- * @param ROFFSET The reverse offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a ROFFSET cast to \a DATA_TYPE or
- * null (or equivalent) if \a ROFFSET &gt;= slist_len().
- * @hideinitializer
- */
-#define SLIST_ROFFSET(DATA_TYPE,LIST,ROFFSET) \
-  REINTERPRET_CAST( DATA_TYPE, slist_roffset( (LIST), (ROFFSET) ) )
 
 /**
  * Pushes a node onto the head of \a list.
