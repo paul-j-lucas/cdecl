@@ -930,10 +930,10 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_english
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_list_english
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_list_english_opt
-%destructor { DTRACE; c_sname_free( &$$ ); } sname_c_scope_opt
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_c
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_c_expected
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_c_opt
+%destructor { DTRACE; c_sname_free( &$$ ); } sname_c_scope_opt
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_english
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_english_expected
 %destructor { DTRACE; c_sname_free( &$$ ); } typedef_sname_c__or_sname_c
