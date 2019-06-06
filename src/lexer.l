@@ -567,8 +567,10 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                * destructor names in the lexer so destructor names are
                * recognized as such, e.g.:
                *
+               *      S::T::T           // not a destructor
                *      S::T::U           // not a destructor
                *      S::T::~T          // a destructor
+               *      S::T::~U          // not a destructor (and an error)
                */
 {dtor_sname}  {
                 SET_TOKEN;
