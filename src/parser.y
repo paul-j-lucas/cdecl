@@ -864,7 +864,7 @@ static void yyerror( char const *msg ) {
 %type   <sname>     of_scope_english
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
 %type   <type_id>   scope_english_type scope_english_type_expected
-%type   <sname>     scope_sname_opt
+%type   <sname>     sname_c_scope_opt
 %type   <sname>     sname_c sname_c_expected sname_c_opt
 %type   <ast_pair>  sname_c_ast
 %type   <sname>     sname_english sname_english_expected
@@ -896,7 +896,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_english
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_list_english
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_list_english_opt
-%destructor { DTRACE; c_sname_free( &$$ ); } scope_sname_opt
+%destructor { DTRACE; c_sname_free( &$$ ); } sname_c_scope_opt
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_c
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_c_expected
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_c_opt
@@ -2784,11 +2784,11 @@ oper_decl_c_ast
   ;
 
 oper_c_ast
-  : /* type_c_ast */ scope_sname_opt Y_OPERATOR c_operator
+  : /* type_c_ast */ sname_c_scope_opt Y_OPERATOR c_operator
     {
       DUMP_START( "oper_c_ast", "OPERATOR c_operator" );
       DUMP_AST( "(type_c_ast)", type_peek() );
-      DUMP_SNAME( "scope_sname_opt", &$1 );
+      DUMP_SNAME( "sname_c_scope_opt", &$1 );
       DUMP_STR( "c_operator", op_get( $3 )->name );
 
       $$.ast = type_peek();
@@ -2935,61 +2935,6 @@ reference_type_c_ast
     }
   ;
 
-sname_c_ast
-  : /* type_c_ast */ sname_c
-    {
-      DUMP_START( "sname_c_ast", "sname_c" );
-      DUMP_AST( "(type_c_ast)", type_peek() );
-      DUMP_SNAME( "sname", &$1 );
-
-      $$.ast = type_peek();
-      $$.target_ast = NULL;
-      c_ast_sname_set_sname( $$.ast, &$1 );
-
-      DUMP_AST( "sname_c_ast", $$.ast );
-      DUMP_END();
-    }
-  ;
-
-typedef_sname_c_ast
-  : Y_TYPEDEF_SNAME
-    {
-      DUMP_START( "typedef_sname_c_ast", "Y_TYPEDEF_SNAME" );
-      DUMP_AST( "type_ast", $1->ast );
-
-      $$.ast = C_AST_NEW( K_TYPEDEF, &@$ );
-      $$.target_ast = NULL;
-      $$.ast->as.c_typedef = $1;
-      $$.ast->type_id = T_TYPEDEF_TYPE;
-
-      DUMP_AST( "typedef_sname_c_ast", $$.ast );
-      DUMP_END();
-    }
-  | /* type_c_ast */ Y_TYPEDEF_SNAME "::" sname_c
-    {
-      //
-      // This is for a case like:
-      //
-      //      define S as struct S
-      //      explain int S::x
-      //
-      // that is: a typedef'd type used for a scope.
-      //
-      DUMP_START( "typedef_sname_c_ast", "Y_TYPEDEF_SNAME" );
-      DUMP_AST( "type_ast", $1->ast );
-      DUMP_SNAME( "sname_c", &$3 );
-
-      $$.ast = type_peek();
-      $$.target_ast = NULL;
-      c_sname_t temp_name = c_ast_sname_dup( $1->ast );
-      c_ast_sname_set_sname( $$.ast, &temp_name );
-      c_ast_sname_append_sname( $$.ast, &$3 );
-
-      DUMP_AST( "typedef_sname_c_ast", $$.ast );
-      DUMP_END();
-    }
-  ;
-
 user_defined_literal_decl_c_ast
   : /* type_c_ast */ user_defined_literal_c_ast '(' arg_list_c_ast ')'
     func_noexcept_c_type_opt func_trailing_return_type_c_ast_opt
@@ -3025,12 +2970,12 @@ user_defined_literal_decl_c_ast
   ;
 
 user_defined_literal_c_ast
-  : /* type_c_ast */ scope_sname_opt Y_OPERATOR quote2_expected
+  : /* type_c_ast */ sname_c_scope_opt Y_OPERATOR quote2_expected
     name_expected
     {
       DUMP_START( "user_defined_literal_c_ast", "OPERATOR \"\" NAME" );
       DUMP_AST( "(type_c_ast)", type_peek() );
-      DUMP_SNAME( "scope_sname_opt", &$1 );
+      DUMP_SNAME( "sname_c_scope_opt", &$1 );
       DUMP_STR( "name", $4 );
 
       $$.ast = type_peek();
@@ -4009,34 +3954,6 @@ scope_english_type_expected
     }
   ;
 
-scope_sname_opt
-  : /* empty */                   { c_sname_init( &$$ ); }
-  | sname_c "::"
-    {
-      $$ = $1;
-      if ( c_sname_type( &$$ ) == T_NONE ) {
-        //
-        // Since we know the name in this context (followed by "::") definitely
-        // refers to a scope, set the scoped name's type to T_SCOPE (if it
-        // doesn't already have a scope type).
-        //
-        c_sname_set_type( &$$, T_SCOPE );
-      }
-    }
-  | Y_TYPEDEF_SNAME "::"
-    {
-      //
-      // This is for a case like:
-      //
-      //      define S as struct S
-      //      explain bool S::operator!() const
-      //
-      // that is: a typedef'd type used for a scope.
-      //
-      $$ = c_ast_sname_dup( $1->ast );
-    }
-  ;
-
 semi_expected
   : ';'
   | error
@@ -4095,12 +4012,56 @@ sname_c
     }
   ;
 
+sname_c_ast
+  : /* type_c_ast */ sname_c
+    {
+      DUMP_START( "sname_c_ast", "sname_c" );
+      DUMP_AST( "(type_c_ast)", type_peek() );
+      DUMP_SNAME( "sname", &$1 );
+
+      $$.ast = type_peek();
+      $$.target_ast = NULL;
+      c_ast_sname_set_sname( $$.ast, &$1 );
+
+      DUMP_AST( "sname_c_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
 sname_c_expected
   : sname_c
   | error
     {
       c_sname_init( &$$ );
       ELABORATE_ERROR( "name expected" );
+    }
+  ;
+
+sname_c_scope_opt
+  : /* empty */                   { c_sname_init( &$$ ); }
+  | sname_c "::"
+    {
+      $$ = $1;
+      if ( c_sname_type( &$$ ) == T_NONE ) {
+        //
+        // Since we know the name in this context (followed by "::") definitely
+        // refers to a scope, set the scoped name's type to T_SCOPE (if it
+        // doesn't already have a scope type).
+        //
+        c_sname_set_type( &$$, T_SCOPE );
+      }
+    }
+  | Y_TYPEDEF_SNAME "::"
+    {
+      //
+      // This is for a case like:
+      //
+      //      define S as struct S
+      //      explain bool S::operator!() const
+      //
+      // that is: a typedef'd type used for a scope.
+      //
+      $$ = c_ast_sname_dup( $1->ast );
     }
   ;
 
@@ -4145,6 +4106,45 @@ typedef_sname_c__or_sname_c
       c_sname_append_sname( &$$, &$3 );
     }
   | sname_c
+  ;
+
+typedef_sname_c_ast
+  : Y_TYPEDEF_SNAME
+    {
+      DUMP_START( "typedef_sname_c_ast", "Y_TYPEDEF_SNAME" );
+      DUMP_AST( "type_ast", $1->ast );
+
+      $$.ast = C_AST_NEW( K_TYPEDEF, &@$ );
+      $$.target_ast = NULL;
+      $$.ast->as.c_typedef = $1;
+      $$.ast->type_id = T_TYPEDEF_TYPE;
+
+      DUMP_AST( "typedef_sname_c_ast", $$.ast );
+      DUMP_END();
+    }
+  | /* type_c_ast */ Y_TYPEDEF_SNAME "::" sname_c
+    {
+      //
+      // This is for a case like:
+      //
+      //      define S as struct S
+      //      explain int S::x
+      //
+      // that is: a typedef'd type used for a scope.
+      //
+      DUMP_START( "typedef_sname_c_ast", "Y_TYPEDEF_SNAME" );
+      DUMP_AST( "type_ast", $1->ast );
+      DUMP_SNAME( "sname_c", &$3 );
+
+      $$.ast = type_peek();
+      $$.target_ast = NULL;
+      c_sname_t temp_name = c_ast_sname_dup( $1->ast );
+      c_ast_sname_set_sname( $$.ast, &temp_name );
+      c_ast_sname_append_sname( $$.ast, &$3 );
+
+      DUMP_AST( "typedef_sname_c_ast", $$.ast );
+      DUMP_END();
+    }
   ;
 
 typedef_sname_c__or_sname_c_expected
