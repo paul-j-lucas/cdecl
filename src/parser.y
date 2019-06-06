@@ -336,7 +336,7 @@ static void parse_init( void ) {
  *
  * @param type A pointer to the `c_typedef` to print.
  */
-static void print_type_english( c_typedef_t const *type ) {
+static void print_type_as_english( c_typedef_t const *type ) {
   assert( type != NULL );
 
   FPRINTF( fout, "%s %s ", L_DEFINE, c_ast_sname_local_name( type->ast ) );
@@ -352,11 +352,11 @@ static void print_type_english( c_typedef_t const *type ) {
 }
 
 /**
- * Prints a `c_typedef` in gibberish.
+ * Prints a `c_typedef` as a `typedef`.
  *
  * @param type A pointer to the `c_typedef` to print.
  */
-static void print_type_gibberish( c_typedef_t const *type ) {
+static void print_type_as_typedef( c_typedef_t const *type ) {
   assert( type != NULL );
 
   size_t scope_close_braces_to_print = 0;
@@ -1678,9 +1678,9 @@ show_command
   : Y_SHOW Y_TYPEDEF_SNAME typedef_opt
     {
       if ( $3 )
-        print_type_gibberish( $2 );
+        print_type_as_typedef( $2 );
       else
-        print_type_english( $2 );
+        print_type_as_english( $2 );
     }
 
   | Y_SHOW Y_NAME typedef_opt
@@ -1703,7 +1703,7 @@ show_command
   | Y_SHOW show_which_types_opt typedef_opt
     {
       print_type_info_t pti;
-      pti.print_fn = $3 ? &print_type_gibberish : &print_type_english;
+      pti.print_fn = $3 ? &print_type_as_typedef : &print_type_as_english;
       pti.show_which = $2;
       (void)c_typedef_visit( &print_type_visitor, &pti );
     }
