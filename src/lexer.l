@@ -686,7 +686,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 c_typedef_t const *const t = c_typedef_find( &typedef_name );
                 if ( t != NULL ) {
                   yylval.c_typedef = t;
-                  return Y_TYPEDEF_SNAME;
+                  return Y_TYPEDEF_NAME;
                 }
 
                 //

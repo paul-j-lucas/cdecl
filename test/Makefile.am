@@ -713,7 +713,8 @@ TESTS+=	tests/typedef_i+.test
 # C define tests
 # ==============
 #
-TESTS+=	tests/define_i.test \
+TESTS+=	tests/2define_k_define_2k_show.test \
+	tests/define_i.test \
 	tests/define_i_declare_i.test \
 	tests/define_i_explain_i.test \
 	tests/define_i_int_least32_t.test \
