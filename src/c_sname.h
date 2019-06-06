@@ -242,8 +242,8 @@ CDECL_SNAME_INLINE void c_sname_prepend_sname( c_sname_t *dst,
  *  + For `c`, returns the empty string.
  *
  * @param sname The `c_sname_t` to get the scope name of.
- * @return Returns said name or the empty string if \a sname is empty or the
- * name is not within a scope.
+ * @return Returns said name or the empty string if \a sname is empty or not
+ * within a scope.
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  *
