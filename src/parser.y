@@ -266,6 +266,40 @@ void parser_cleanup( void ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Adds a type to the global set.
+ *
+ * @param decl_keywotd The keyword used for the declaration.
+ * @param type_ast The `c_ast` of the type to add.
+ * @param type_decl_loc The location of the offending type declaration.
+ * @return Returns `true` either if the type was added or it's equivalent to
+ * the existing type; `false` if a different type already exists having the
+ * same name.
+ */
+static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
+                      c_loc_t const *type_decl_loc ) {
+  switch ( c_typedef_add( type_ast ) ) {
+    case TD_ADD_ADDED:
+      //
+      // We have to move the AST from the ast_gc_list so it won't be garbage
+      // collected at the end of the parse to a separate ast_typedef_list
+      // that's freed only at program termination.
+      //
+      slist_push_list_tail( &ast_typedef_list, &ast_gc_list );
+      break;
+    case TD_ADD_DIFF:
+      print_error( type_decl_loc,
+        "\"%s\": \"%s\" redefinition with different type",
+        c_ast_sname_full_name( type_ast ), decl_keyword
+      );
+      return false;
+    case TD_ADD_EQUIV:
+      // Do nothing.
+      break;
+  } // switch
+  return true;
+}
+
+/**
  * Prints an additional parsing error message to standard error that continues
  * from where `yyerror()` left off.
  *
@@ -1185,26 +1219,7 @@ define_english
         // Once the semantic checks pass, remove the T_TYPEDEF.
         (void)c_ast_take_typedef( $5.ast );
         c_ast_sname_set_sname( $5.ast, &$2 );
-        switch ( c_typedef_add( $5.ast ) ) {
-          case TD_ADD_ADDED:
-            //
-            // We have to move the AST from the ast_gc_list so it won't be
-            // garbage collected at the end of the parse to a separate
-            // ast_typedef_list that's freed only at program termination.
-            //
-            slist_push_list_tail( &ast_typedef_list, &ast_gc_list );
-            break;
-          case TD_ADD_DIFF:
-            print_error( &@5,
-              "\"%s\": \"%s\" redefinition with different type",
-              c_sname_full_name( &$2 ), L_TYPEDEF
-            );
-            ok = false;
-            break;
-          case TD_ADD_EQUIV:
-            // Do nothing.
-            break;
-        } // switch
+        ok = add_type( L_DEFINE, $5.ast, &@5 );
       }
 
       if ( !ok ) {
@@ -1806,21 +1821,8 @@ typedef_declaration_c
       c_ast_sname_set_type( ast, c_sname_type( &in_attr.current_scope ) );
       c_ast_sname_prepend_sname( ast, &temp_sname );
 
-      switch ( c_typedef_add( ast ) ) {
-        case TD_ADD_ADDED:
-          // See the comment in define_english about ast_typedef_list.
-          slist_push_list_tail( &ast_typedef_list, &ast_gc_list );
-          break;
-        case TD_ADD_DIFF:
-          print_error( &@5,
-            "\"%s\": \"%s\" redefinition with different type",
-            c_ast_sname_full_name( ast ), L_TYPEDEF
-          );
-          PARSE_ABORT();
-        case TD_ADD_EQUIV:
-          // Do nothing.
-          break;
-      } // switch
+      if ( !add_type( L_TYPEDEF, ast, &@5 ) )
+        PARSE_ABORT();
     }
   ;
 
@@ -1891,21 +1893,8 @@ using_declaration_c
       // see the comment in "define_english" about T_TYPEDEF
       (void)c_ast_take_typedef( ast );
 
-      switch ( c_typedef_add( ast ) ) {
-        case TD_ADD_ADDED:
-          // See the comment in "define_english" about ast_typedef_list.
-          slist_push_list_tail( &ast_typedef_list, &ast_gc_list );
-          break;
-        case TD_ADD_DIFF:
-          print_error( &@5,
-            "\"%s\": \"%s\" redefinition with different type",
-            c_ast_sname_full_name( ast ), L_USING
-          );
-          PARSE_ABORT();
-        case TD_ADD_EQUIV:
-          // Do nothing.
-          break;
-      } // switch
+      if ( !add_type( L_USING, ast, &@5 ) )
+        PARSE_ABORT();
     }
   ;
 
