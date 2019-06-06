@@ -1,3 +1,23 @@
+2019-06-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Sorted %destructors.
+   * parser.y: Added add_type().
+   * parser.y: s/print_type_gibberish/print_type_as_typedef/
+   * c_ast.c, gibberish.c, parser.y, slist.h, util.h: s/STRUCT_ZERO/MEM_ZERO/
+   * parser.y: Rule reordering.
+   * lexer.l: Added more to comment.
+
+2019-06-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, c_sname.h, errors.c: s/c_sname_offset/c_sname_name_at/
+   * c_ast.h, c_sname.c, c_sname.h, debug.c, errors.c, gibberish.c, parser.y,
+     slist.c, slist.h: slist_dup() now takes the number of nodes to duplicate;
+     other function renaming.
+   * slist.c: Added optimization for slist_peek_at() when offset == list->len -
+     1.
+   * c_sname.c, c_sname.h, slist.c, slist.h: s/slist_offset/slist_peek_at/,
+     etc.
+
 2019-06-03  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Don't need to be explicit about T_STATIC.
