@@ -318,7 +318,7 @@ static void parse_cleanup( bool hard_reset ) {
   c_sname_free( &in_attr.current_scope );
   slist_free( &in_attr.qualifier_stack, NULL, &free );
   slist_free( &in_attr.type_stack, NULL, NULL );
-  STRUCT_ZERO( &in_attr );
+  MEM_ZERO( &in_attr );
 }
 
 /**
@@ -487,7 +487,7 @@ static void quit( void ) {
  */
 static void yyerror( char const *msg ) {
   c_loc_t loc;
-  STRUCT_ZERO( &loc );
+  MEM_ZERO( &loc );
   lexer_loc( &loc.first_line, &loc.first_column );
   print_loc( &loc );
 

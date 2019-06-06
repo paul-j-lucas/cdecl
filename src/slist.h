@@ -240,7 +240,7 @@ CDECL_SLIST_INLINE void* slist_head( slist_t const *list ) {
  * @param list A pointer to the <code>\ref slist</code> to initialize.
  */
 CDECL_SLIST_INLINE void slist_init( slist_t *list ) {
-  STRUCT_ZERO( list );
+  MEM_ZERO( list );
 }
 
 /**
