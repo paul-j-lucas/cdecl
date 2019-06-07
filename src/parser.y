@@ -3179,9 +3179,7 @@ type_modifier_base_type
 
 unmodified_type_c_ast
   : atomic_specifier_type_c_ast
-  | builtin_type_c_ast
-  | enum_class_struct_union_ast
-  | any_typedef_ast
+  | unmodified_type_english_ast
   ;
 
 atomic_specifier_type_c_ast
