@@ -89,11 +89,10 @@ td_add_rv_t c_typedef_add( c_ast_t const *type_ast );
 void c_typedef_cleanup( void );
 
 /**
- * Gets the `c_typedef` for \a name.
+ * Gets the `c_typedef` for \a sname.
  *
  * @param sname The scoped name to find.
- * @return Returns a pointer to the corresponding `c_typedef` or null for
- * none.
+ * @return Returns a pointer to the corresponding `c_typedef` or null for none.
  */
 c_typedef_t const* c_typedef_find( c_sname_t const *sname );
 
