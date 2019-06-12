@@ -376,7 +376,9 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_sf_v.test \
 	tests/explain_si.test \
 	tests/explain_ti.test \
+	tests/explain_tii32.test \
 	tests/explain_tpfc_i.test \
+	tests/explain_tulz.test \
 	tests/explain_uc.test \
 	tests/explain_ull.test \
 	tests/explain_vcpi.test \
@@ -476,6 +478,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_sl-knr.test \
 	tests/explain_sv.test \
 	tests/explain_sw.test \
+	tests/explain_tci32.test \
 	tests/explain_type_i.test \
 	tests/explain_ub.test \
 	tests/explain_uc16.test \

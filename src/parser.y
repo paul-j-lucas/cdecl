@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 25
+%expect 27
 
 %{
 /** @endcond */
@@ -855,16 +855,17 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  pointer_type_c_ast
 %type   <ast_pair>  reference_decl_c_ast
 %type   <ast_pair>  reference_type_c_ast
+%type   <ast_pair>  typedef_type_decl_c_ast
 %type   <ast_pair>  unmodified_type_c_ast
 %type   <ast_pair>  user_defined_literal_c_ast
 %type   <ast_pair>  user_defined_literal_decl_c_ast
 
-%type   <ast_pair>  any_typedef_ast
 %type   <ast_pair>  atomic_specifier_type_c_ast
 %type   <ast_pair>  builtin_type_c_ast
 %type   <ast_pair>  enum_class_struct_union_ast
 %type   <ast_pair>  placeholder_c_ast
 %type   <ast_pair>  type_c_ast
+%type   <ast_pair>  typedef_type_c_ast
 
 %type   <type_id>   attribute_name_c_type
 %type   <type_id>   attribute_name_list_c_type attribute_name_list_c_type_opt
@@ -1321,7 +1322,29 @@ explain_c
       DUMP_AST( "decl_c_ast", $4.ast );
       DUMP_END();
 
-      c_ast_t *const ast = c_ast_patch_placeholder( $2.ast, $4.ast );
+      bool const is_typedef = c_ast_take_typedef( $2.ast );
+      c_ast_t *decl_ast = $4.ast;
+
+      if ( is_typedef && decl_ast->kind == K_TYPEDEF ) {
+        //
+        // This is for a case like:
+        //
+        //      explain typedef char int_least32_t;
+        //
+        // that is: explaining a typedef that's attempting to redefine it with
+        // a different type.
+        //
+        decl_ast = CONST_CAST( c_ast_t*, c_ast_untypedef( decl_ast ) );
+        if ( !c_ast_equiv( $2.ast, decl_ast ) ) {
+          print_error( &@4,
+            "\"%s\": \"%s\" redefinition with different type",
+            c_ast_sname_full_name( decl_ast ), L_TYPEDEF
+          );
+          PARSE_ABORT();
+        }
+      }
+
+      c_ast_t *const ast = c_ast_patch_placeholder( $2.ast, decl_ast );
       C_AST_CHECK( ast, CHECK_DECL );
 
       c_sname_t sname = c_ast_take_name( ast );
@@ -1346,7 +1369,7 @@ explain_c
       }
       FPRINTF( fout, "%s ", L_AS );
 
-      if ( c_ast_take_typedef( ast ) )
+      if ( is_typedef || c_ast_take_typedef( ast ) )
         FPRINTF( fout, "%s ", L_TYPE );
       c_ast_english( ast, fout );
       FPUTC( '\n', fout );
@@ -2492,7 +2515,7 @@ type_attribute_english_type
 unmodified_type_english_ast
   : builtin_type_c_ast
   | enum_class_struct_union_ast
-  | any_typedef_ast
+  | typedef_type_c_ast
   ;
 
 /*****************************************************************************/
@@ -2513,7 +2536,7 @@ decl2_c_ast
   | nested_decl_c_ast
   | oper_decl_c_ast
   | sname_c_ast
-  | any_typedef_ast
+  | typedef_type_decl_c_ast
   | user_defined_literal_decl_c_ast
   ;
 
@@ -2946,6 +2969,30 @@ reference_type_c_ast
     }
   ;
 
+typedef_type_decl_c_ast
+  : typedef_type_c_ast
+    {
+      DUMP_START( "typedef_type_decl_c_ast", "typedef_type_c_ast" );
+      DUMP_AST( "typedef_type_c_ast", $1.ast );
+
+      if ( (type_peek()->type_id & T_TYPEDEF) != T_NONE ) {
+        //
+        // If we're defining a type, pass the
+        //
+        $$.ast = $1.ast;
+      }
+      else {
+        c_ast_t const *const temp_ast = c_ast_untypedef( $1.ast );
+        $$.ast = CONST_CAST( c_ast_t*, temp_ast );
+        $$.ast->sname = c_ast_sname_dup( temp_ast );
+      }
+      $$.target_ast = NULL;
+
+      DUMP_AST( "typedef_type_c_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
 user_defined_literal_decl_c_ast
   : /* type_c_ast */ user_defined_literal_c_ast '(' arg_list_c_ast ')'
     func_noexcept_c_type_opt func_trailing_return_type_c_ast_opt
@@ -3158,6 +3205,28 @@ type_modifier_list_c_type
 
 type_modifier_c_type
   : type_modifier_base_type
+    {
+      $$ = $1;
+      //
+      // This is for a case like:
+      //
+      //      explain typeedef unsigned long size_t
+      //
+      // that is: explain a redefinition of a typdef'd type with the same type
+      // that contains only one or more type_modifier_base_type.  The problem
+      // is that, without an unmodified_type_c_ast (like int), the parser would
+      // ordinarily take the typedef'd type (here, the size_t) as part of the
+      // type_c_ast and then be out of tokens for the decl_c_ast -- at which
+      // time it'll complain.
+      //
+      // Since type modifiers can't apply to a typedef'd type (e.g., "long
+      // size_t" is illegal), we tell the lexer not to return either
+      // Y_TYPEDEF_NAME or Y_TYPEDEF_SNAME if we encounter at lease one type
+      // modifier (except "register" since it's is really a storage class --
+      // see the comment in type_modifier_base_type about "register").
+      //
+      lexer_find_typedef = $$ == T_REGISTER;
+    }
   | type_qualifier_c_type
   | storage_class_c_type
   ;
@@ -3422,6 +3491,7 @@ cast2_c_ast
   | func_cast_c_ast
   | nested_cast_c_ast
   | sname_c_ast
+/*| typedef_type_decl_c_ast */          /* you can't cast a type */
   ;
 
 array_cast_c_ast
@@ -3666,10 +3736,10 @@ any_typedef
   | Y_TYPEDEF_SNAME
   ;
 
-any_typedef_ast
+typedef_type_c_ast
   : any_typedef
     {
-      DUMP_START( "any_typedef_ast", "any_typedef" );
+      DUMP_START( "typedef_type_c_ast", "any_typedef" );
       DUMP_AST( "any_typedef", $1->ast );
 
       $$.ast = C_AST_NEW( K_TYPEDEF, &@$ );
@@ -3677,7 +3747,7 @@ any_typedef_ast
       $$.ast->as.c_typedef = $1;
       $$.ast->type_id = T_TYPEDEF_TYPE;
 
-      DUMP_AST( "any_typedef_ast", $$.ast );
+      DUMP_AST( "typedef_type_c_ast", $$.ast );
       DUMP_END();
     }
   | /* type_c_ast */ any_typedef "::" sname_c
@@ -3690,7 +3760,7 @@ any_typedef_ast
       //
       // that is: a typedef'd type used for a scope.
       //
-      DUMP_START( "any_typedef_ast",
+      DUMP_START( "typedef_type_c_ast",
                   "any_typedef :: sname_c" );
       DUMP_AST( "any_typedef", $1->ast );
       DUMP_SNAME( "sname_c", &$3 );
@@ -3701,7 +3771,32 @@ any_typedef_ast
       c_ast_sname_set_sname( $$.ast, &temp_name );
       c_ast_sname_append_sname( $$.ast, &$3 );
 
-      DUMP_AST( "any_typedef_ast", $$.ast );
+      DUMP_AST( "typedef_type_c_ast", $$.ast );
+      DUMP_END();
+    }
+  | /* type_c_ast */ any_typedef "::" typedef_sname_c
+    {
+      //
+      // This is for a case like:
+      //
+      //      define S as struct S
+      //      define T as struct T
+      //      explain int S::T::x
+      //
+      // that is: a typedef'd type used for an intermediate scope.
+      //
+      DUMP_START( "typedef_type_c_ast",
+                  "any_typedef :: typedef_sname_c" );
+      DUMP_AST( "any_typedef", $1->ast );
+      DUMP_SNAME( "typedef_sname_c", &$3 );
+
+      $$.ast = type_peek();
+      $$.target_ast = NULL;
+      c_sname_t temp_name = c_ast_sname_dup( $1->ast );
+      c_ast_sname_set_sname( $$.ast, &temp_name );
+      c_ast_sname_append_sname( $$.ast, &$3 );
+
+      DUMP_AST( "typedef_type_c_ast", $$.ast );
       DUMP_END();
     }
   ;
@@ -3855,8 +3950,7 @@ sname_english_expected
   ;
 
 typedef_sname_c
-  : any_typedef                   { $$ = c_ast_sname_dup( $1->ast ); }
-  | any_typedef "::" sname_c
+  : typedef_sname_c "::" sname_c
     {
       //
       // This is for a case like:
@@ -3864,11 +3958,11 @@ typedef_sname_c
       //      define S as struct S
       //      define S::T as struct T
       //
-      $$ = c_ast_sname_dup( $1->ast );
+      $$ = $1;
       c_sname_set_type( &$$, c_sname_type( &$3 ) );
       c_sname_append_sname( &$$, &$3 );
     }
-  | any_typedef "::" any_typedef
+  | typedef_sname_c "::" any_typedef
     {
       //
       // This is for a case like:
@@ -3877,11 +3971,12 @@ typedef_sname_c
       //      define T as struct T
       //      define S::T as struct S_T
       //
-      $$ = c_ast_sname_dup( $1->ast );
+      $$ = $1;
       c_sname_set_type( &$$, c_ast_sname_type( $3->ast ) );
       c_sname_t temp = c_ast_sname_dup( $3->ast );
       c_sname_append_sname( &$$, &temp );
     }
+  | any_typedef                   { $$ = c_ast_sname_dup( $1->ast ); }
   ;
 
 /*****************************************************************************/

@@ -286,8 +286,11 @@ static hyphenated_t const HYPHENATED_KEYWORDS[] = {
   { "non-throwing",       L_THROW               },
 };
 
-// extern variables
+
 static char const lexer_token_init_buf; ///< So lexer_token is never null.
+
+// extern variables
+bool              lexer_find_typedef = true;
 /** Guaranteed pointer of `yytext`. */
 char const       *lexer_token = &lexer_token_init_buf;
 
@@ -522,6 +525,7 @@ void lexer_reset( bool hard_reset ) {
   }
   c_mode = MODE_ENGLISH_TO_GIBBERISH;
   input_len = input_sent = 0;
+  lexer_find_typedef = true;
   newline();
 }
 
@@ -609,16 +613,18 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                */
 {sname}       {
                 SET_TOKEN;
-
-                //
-                // 1. See if it's a typedef'd type.
-                //
                 c_sname_t sname = parse_sname( lexer_token );
-                c_typedef_t const *const t = c_typedef_find( &sname );
-                if ( t != NULL ) {
-                  yylval.c_typedef = t;
-                  c_sname_free( &sname );
-                  return Y_TYPEDEF_SNAME;
+
+                if ( lexer_find_typedef ) {
+                  //
+                  // 1. See if it's a typedef'd type.
+                  //
+                  c_typedef_t const *const t = c_typedef_find( &sname );
+                  if ( t != NULL ) {
+                    yylval.c_typedef = t;
+                    c_sname_free( &sname );
+                    return Y_TYPEDEF_SNAME;
+                  }
                 }
 
                 //
@@ -679,14 +685,16 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                   }
                 }
 
-                //
-                // 2. See if it's a typedef'd type.
-                //
-                SLIST_TEMP_INIT_VAR( typedef_name, lexer_token, NULL );
-                c_typedef_t const *const t = c_typedef_find( &typedef_name );
-                if ( t != NULL ) {
-                  yylval.c_typedef = t;
-                  return Y_TYPEDEF_NAME;
+                if ( lexer_find_typedef ) {
+                  //
+                  // 2. See if it's a typedef'd type.
+                  //
+                  SLIST_TEMP_INIT_VAR( typedef_name, lexer_token, NULL );
+                  c_typedef_t const *const t = c_typedef_find( &typedef_name );
+                  if ( t != NULL ) {
+                    yylval.c_typedef = t;
+                    return Y_TYPEDEF_NAME;
+                  }
                 }
 
                 //
