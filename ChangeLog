@@ -1,5 +1,27 @@
+2019-06-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.h, lexer.l, parser.y, test/Makefile.am, explain_tii32.out,
+     explain_tulz.out, explain_tci32.test, explain_tii32.test,
+     explain_tulz.test: Reworked the say in which typedef'd names are parsed;
+     also fixed a few bugs.
+
+2019-06-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, c_typedef.h: s/type/t/
+
+2019-06-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Simplified unmodified_type_c_ast.
+   * parser.y: s/name_or_any_typedef_ast_expected/using_name_ast_expected/
+   * parser.y: Added (void).
+
 2019-06-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l, parser.y, test/Makefile.am, 2define_k_define_2k_show.out,
+     2define_k_define_2k_show.test: Now returning distinct token for
+     Y_TYPEDEF_NAME.
+   * parser.y: Put name rules into their own section.
+   * parser.y: Tweaked rules (again).
    * parser.y: Sorted %destructors.
    * parser.y: Added add_type().
    * parser.y: s/print_type_gibberish/print_type_as_typedef/
