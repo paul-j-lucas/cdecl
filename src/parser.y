@@ -701,6 +701,7 @@ static void yyerror( char const *msg ) {
 %token  <literal>   Y_CONST_CAST
 %token              Y_CONSTRUCTOR
 %token  <sname>     Y_CONSTRUCTOR_SNAME
+%token              Y_CONVERSION
 %token  <type_id>   Y_DELETE
 %token              Y_DESTRUCTOR
 %token  <sname>     Y_DESTRUCTOR_SNAME
@@ -857,8 +858,14 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  reference_type_c_ast
 %type   <ast_pair>  typedef_type_decl_c_ast
 %type   <ast_pair>  unmodified_type_c_ast
+%type   <ast_pair>  user_defined_conversion_decl_c_ast
 %type   <ast_pair>  user_defined_literal_c_ast
 %type   <ast_pair>  user_defined_literal_decl_c_ast
+
+%type   <ast_pair>  udc_decl_c_ast udc_decl_c_ast_opt
+%type   <ast_pair>  pointer_udc_decl_c_ast
+%type   <ast_pair>  pointer_to_member_udc_decl_c_ast
+%type   <ast_pair>  reference_udc_decl_c_ast
 
 %type   <ast_pair>  atomic_specifier_type_c_ast
 %type   <ast_pair>  builtin_type_c_ast
@@ -1123,6 +1130,30 @@ declare_english
       FPUTC( '\n', fout );
     }
 
+  | Y_DECLARE storage_class_list_english_type_opt Y_USER_DEFINED
+    conversion_expected operator_opt of_scope_list_english_opt
+    returning_expected decl_english_ast
+    {
+      DUMP_START( "declare_english",
+                  "DECLARE type_qualifier_list_c_type_opt "
+                  "USER-DEFINED CONVERSION OPERATOR "
+                  "RETURNING decl_english_ast" );
+      DUMP_TYPE( "storage_class_list_english_type_opt", $2 );
+      DUMP_SNAME( "of_scope_list_english_opt", &$6 );
+      DUMP_AST( "decl_english_ast", $8.ast );
+
+      c_ast_t *const ast = C_AST_NEW( K_USER_DEF_CONVERSION, &@$ );
+      ast->sname = $6;
+      ast->type_id = $2;
+      c_ast_set_parent( $8.ast, ast );
+      C_AST_CHECK( ast, CHECK_DECL );
+
+      c_ast_gibberish_declare( ast, G_DECL_NONE, fout );
+      if ( opt_semicolon )
+        FPUTC( ';', fout );
+      FPUTC( '\n', fout );
+    }
+
   | Y_DECLARE error
     {
       if ( C_LANG_IS_CPP() )
@@ -1329,12 +1360,19 @@ explain_c
         //
         // This is for a case like:
         //
-        //      explain typedef char int_least32_t;
+        //      explain typedef int int32_t;
         //
-        // that is: explaining a typedef that's attempting to redefine it with
-        // a different type.
+        // that is: explaining an existing typedef.  In order to do that, we
+        // have to un-typedef it so we explain the type that it's typedef'd as.
         //
         decl_ast = CONST_CAST( c_ast_t*, c_ast_untypedef( decl_ast ) );
+
+        //
+        // However, we also have to check whether the typedef being explained
+        // is not equivalent to the existing typedef.  This is for a case like:
+        //
+        //      explain typedef char int32_t;
+        //
         if ( !c_ast_equiv( $2.ast, decl_ast ) ) {
           print_error( &@4,
             "\"%s\": \"%s\" redefinition with different type",
@@ -1345,36 +1383,75 @@ explain_c
       }
 
       c_ast_t *const ast = c_ast_patch_placeholder( $2.ast, decl_ast );
+      if ( ast->kind == K_USER_DEF_CONVERSION )
+        ast->type_id |= $2.ast->type_id;
       C_AST_CHECK( ast, CHECK_DECL );
 
-      c_sname_t sname = c_ast_take_name( ast );
-      char const *local_name = NULL;
-      char const *scope_name = NULL;
-
-      if ( ast->kind == K_OPERATOR ) {
-        local_name = graph_name_c( op_get( ast->as.oper.oper_id )->name );
-        scope_name = c_sname_full_name( &sname );
-      } else {
-        assert( !c_sname_empty( &sname ) );
-        local_name = c_sname_local_name( &sname );
-        scope_name = c_sname_scope_name( &sname );
+      if ( ast->kind == K_USER_DEF_CONVERSION ) {
+        if ( c_ast_sname_type( ast ) == T_SCOPE )
+          c_ast_sname_set_type( ast, T_CLASS );
+        FPRINTF( fout, "%s ", L_DECLARE );
       }
-      assert( local_name != NULL );
+      else {
+        c_sname_t sname = c_ast_take_name( ast );
+        char const *local_name = NULL;
+        char const *scope_name = "";
 
-      FPRINTF( fout, "%s %s ", L_DECLARE, local_name );
-      if ( scope_name[0] != '\0' ) {
-        c_type_id_t const sn_type = c_sname_type( &sname );
-        assert( sn_type != T_NONE );
-        FPRINTF( fout, "%s %s %s ", L_OF, c_type_name( sn_type ), scope_name );
+        switch ( ast->kind ) {
+          case K_OPERATOR:
+            local_name = graph_name_c( op_get( ast->as.oper.oper_id )->name );
+            scope_name = c_sname_full_name( &sname );
+            break;
+          default:
+            assert( !c_sname_empty( &sname ) );
+            local_name = c_sname_local_name( &sname );
+            scope_name = c_sname_scope_name( &sname );
+            break;
+        } // switch
+
+        assert( local_name != NULL );
+        FPRINTF( fout, "%s %s ", L_DECLARE, local_name );
+        if ( scope_name[0] != '\0' ) {
+          c_type_id_t const sn_type = c_sname_type( &sname );
+          assert( sn_type != T_NONE );
+          FPRINTF( fout,
+            "%s %s %s ", L_OF, c_type_name( sn_type ), scope_name
+          );
+        }
+        FPRINTF( fout, "%s ", L_AS );
+        if ( is_typedef || c_ast_take_typedef( ast ) )
+          FPRINTF( fout, "%s ", L_TYPE );
+        if ( ast->kind != K_OPERATOR )
+          c_sname_free( &sname );
       }
-      FPRINTF( fout, "%s ", L_AS );
 
-      if ( is_typedef || c_ast_take_typedef( ast ) )
-        FPRINTF( fout, "%s ", L_TYPE );
       c_ast_english( ast, fout );
       FPUTC( '\n', fout );
-      if ( ast->kind != K_OPERATOR )
-        c_sname_free( &sname );
+    }
+
+    /*
+     * User-defined conversion operator declaration without a storage-class-
+     * like part.  This is for a case like:
+     *
+     *      explain operator int()
+     *
+     * User-defined conversion operator declarations with a storage-class-like
+     * part, e.g.:
+     *
+     *      explain explicit operator int()
+     *
+     * are handled by the rule above.
+     */
+  | explain user_defined_conversion_decl_c_ast
+    {
+      DUMP_START( "explain_c", "EXPLAIN user_defined_conversion_decl_c_ast" );
+      DUMP_AST( "user_defined_conversion_decl_c_ast", $2.ast );
+      DUMP_END();
+
+      C_AST_CHECK( $2.ast, CHECK_DECL );
+      FPRINTF( fout, "%s ", L_DECLARE );
+      c_ast_english( $2.ast, fout );
+      FPUTC( '\n', fout );
     }
 
     /*
@@ -2537,6 +2614,7 @@ decl2_c_ast
   | oper_decl_c_ast
   | sname_c_ast
   | typedef_type_decl_c_ast
+  | user_defined_conversion_decl_c_ast
   | user_defined_literal_decl_c_ast
   ;
 
@@ -2969,6 +3047,38 @@ reference_type_c_ast
     }
   ;
 
+
+user_defined_conversion_decl_c_ast
+  : /* type_c_ast */ scope_sname_c_opt Y_OPERATOR
+    type_c_ast { type_push( $3.ast ); } udc_decl_c_ast_opt '(' rparen_expected
+    func_qualifier_list_c_type_opt func_noexcept_c_type_opt
+    pure_virtual_c_type_opt
+    {
+      type_pop();
+
+      DUMP_START( "user_defined_conversion_decl_c_ast",
+                  "scope_sname_c_opt OPERATOR "
+                  "type_c_ast udc_decl_c_ast_opt '(' ')' "
+                  "func_qualifier_list_c_type_opt func_noexcept_c_type_opt "
+                  "pure_virtual_c_type_opt" );
+      DUMP_AST( "(type_c_ast)", type_peek() );
+      DUMP_SNAME( "scope_sname_c_opt", &$1 );
+      DUMP_AST( "type_c_ast", $3.ast );
+      DUMP_AST( "udc_decl_c_ast_opt", $5.ast );
+      DUMP_TYPE( "func_qualifier_list_c_type_opt", $8 );
+      DUMP_TYPE( "func_noexcept_c_type_opt", $9 );
+      DUMP_TYPE( "pure_virtual_c_type_opt", $10 );
+
+      $$.ast = C_AST_NEW( K_USER_DEF_CONVERSION, &@$ );
+      $$.ast->sname = $1;
+      $$.ast->type_id = $8 | $9 | $10;
+      $$.ast->as.user_def_conv.conv_ast = $5.ast != NULL ? $5.ast : $3.ast;
+      $$.target_ast = $$.ast->as.user_def_conv.conv_ast;
+
+      DUMP_AST( "user_defined_conversion_decl_c_ast", $$.ast );
+      DUMP_END();
+    }
+
 typedef_type_decl_c_ast
   : typedef_type_c_ast
     {
@@ -2977,14 +3087,15 @@ typedef_type_decl_c_ast
 
       if ( (type_peek()->type_id & T_TYPEDEF) != T_NONE ) {
         //
-        // If we're defining a type, pass the
+        // If we're defining a type, return the type as-is.
         //
         $$.ast = $1.ast;
       }
       else {
-        c_ast_t const *const temp_ast = c_ast_untypedef( $1.ast );
-        $$.ast = CONST_CAST( c_ast_t*, temp_ast );
-        $$.ast->sname = c_ast_sname_dup( temp_ast );
+        //
+        // Otherwise, return the type that it's typedef'd as.
+        //
+        $$.ast = CONST_CAST( c_ast_t*, c_ast_untypedef( $1.ast ) );
       }
       $$.target_ast = NULL;
 
@@ -3221,7 +3332,7 @@ type_modifier_c_type
       //
       // Since type modifiers can't apply to a typedef'd type (e.g., "long
       // size_t" is illegal), we tell the lexer not to return either
-      // Y_TYPEDEF_NAME or Y_TYPEDEF_SNAME if we encounter at lease one type
+      // Y_TYPEDEF_NAME or Y_TYPEDEF_SNAME if we encounter at least one type
       // modifier (except "register" since it's is really a storage class --
       // see the comment in type_modifier_base_type about "register").
       //
@@ -3696,6 +3807,80 @@ reference_cast_c_ast
   ;
 
 /*****************************************************************************/
+/*  user-defined conversion gibberish productions                            */
+/*                                                                           */
+/*  These are a subset of cast gibberish productions, specifically without   */
+/*  arrays, blocks, functions, or nested declarations, all of which are      */
+/*  either illegal or ambiguous.                                             */
+/*****************************************************************************/
+
+udc_decl_c_ast_opt
+  : /* empty */                   { $$.ast = $$.target_ast = NULL; }
+  | udc_decl_c_ast
+  ;
+
+udc_decl_c_ast
+  : pointer_udc_decl_c_ast
+  | pointer_to_member_udc_decl_c_ast
+  | reference_udc_decl_c_ast
+  | sname_c_ast
+  ;
+
+pointer_udc_decl_c_ast
+  : pointer_type_c_ast { type_push( $1.ast ); } udc_decl_c_ast_opt
+    {
+      type_pop();
+
+      DUMP_START( "pointer_udc_decl_c_ast",
+                  "pointer_type_c_ast udc_decl_c_ast_opt" );
+      DUMP_AST( "pointer_type_c_ast", $1.ast );
+      DUMP_AST( "udc_decl_c_ast_opt", $3.ast );
+
+      $$.ast = c_ast_patch_placeholder( $1.ast, $3.ast );
+      $$.target_ast = NULL;
+
+      DUMP_AST( "pointer_udc_decl_c_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+pointer_to_member_udc_decl_c_ast
+  : pointer_to_member_type_c_ast { type_push( $1.ast ); } udc_decl_c_ast_opt
+    {
+      type_pop();
+
+      DUMP_START( "pointer_to_member_udc_decl_c_ast",
+                  "pointer_to_member_type_c_ast udc_decl_c_ast_opt" );
+      DUMP_AST( "pointer_to_member_type_c_ast", $1.ast );
+      DUMP_AST( "udc_decl_c_ast_opt", $3.ast );
+
+      $$.ast = c_ast_patch_placeholder( $1.ast, $3.ast );
+      $$.target_ast = NULL;
+
+      DUMP_AST( "pointer_to_member_udc_decl_c_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+reference_udc_decl_c_ast
+  : reference_type_c_ast { type_push( $1.ast ); } udc_decl_c_ast_opt
+    {
+      type_pop();
+
+      DUMP_START( "reference_udc_decl_c_ast",
+                  "reference_type_c_ast udc_decl_c_ast_opt" );
+      DUMP_AST( "reference_type_c_ast", $1.ast );
+      DUMP_AST( "udc_decl_c_ast_opt", $3.ast );
+
+      $$.ast = c_ast_patch_placeholder( $1.ast, $3.ast );
+      $$.target_ast = NULL;
+
+      DUMP_AST( "reference_udc_decl_c_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+/*****************************************************************************/
 /*  name productions                                                         */
 /*****************************************************************************/
 
@@ -4026,6 +4211,14 @@ comma_expected
     }
   ;
 
+conversion_expected
+  : Y_CONVERSION
+  | error
+    {
+      ELABORATE_ERROR( "\"%s\" expected", L_CONVERSION );
+    }
+  ;
+
 c_operator
   : '!'                           { $$ = OP_EXCLAM          ; }
   | "!="                          { $$ = OP_EXCLAM_EQ       ; }
@@ -4213,6 +4406,11 @@ of_scope_list_english_opt
   | of_scope_list_english
   ;
 
+operator_opt
+  : /* empty */
+  | Y_OPERATOR
+  ;
+
 quote2_expected
   : Y_QUOTE2
   | error
@@ -4242,6 +4440,14 @@ reference_expected
   | error
     {
       ELABORATE_ERROR( "\"%s\" expected", L_REFERENCE );
+    }
+  ;
+
+returning_expected
+  : Y_RETURNING
+  | error
+    {
+      ELABORATE_ERROR( "\"%s\" expected", L_RETURNING );
     }
   ;
 

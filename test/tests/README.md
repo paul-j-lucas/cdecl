@@ -20,6 +20,7 @@ Test files are as follows:
 + `set_*`              = A set test.
 + `static_cast_*`      = A static cast test.
 + `reinterpret_cast_*` = A reinterpret cast test.
++ `*_udc_*`            = A user-defined conversion test.
 + `*_udl_*`            = A user-defined literal test.
 + `*-`*lang*`*`        = A test using *lang* explicitly.
 

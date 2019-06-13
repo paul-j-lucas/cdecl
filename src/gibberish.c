@@ -186,10 +186,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   switch ( ast->kind ) {
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
+    case K_USER_DEF_CONVERSION:
       //
-      // Since neither a constructor nor a destructor has a return type, no
-      // space needs to be printed before the constructor's or destructor's
-      // name, so lie and set the "space" flag.
+      // Since none of these have a return type, no space needs to be printed
+      // before the name, so lie and set the "space" flag.
       //
       param->space = true;
       // FALLTHROUGH
@@ -238,6 +238,11 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_BLOCK:                       // Apple extension
       if ( ast_type != T_NONE )         // storage class
         FPRINTF( param->gout, "%s ", c_type_name( ast_type ) );
+      if ( ast->kind == K_USER_DEF_CONVERSION ) {
+        if ( !c_ast_sname_empty( ast ) )
+          FPRINTF( param->gout, "%s::", c_ast_sname_full_name( ast ) );
+        FPRINTF( param->gout, "%s ", L_OPERATOR );
+      }
       if ( ast->as.parent.of_ast != NULL )
         c_ast_gibberish_impl( ast->as.parent.of_ast, param );
       if ( false_set( &param->postfix ) ) {
@@ -384,6 +389,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
       case K_DESTRUCTOR:
       case K_FUNCTION:
       case K_OPERATOR:
+      case K_USER_DEF_CONVERSION:
       case K_USER_DEF_LITERAL:
         c_ast_gibberish_postfix( parent, param );
         break;
@@ -458,6 +464,9 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
       c_ast_gibberish_func_args( ast, param );
+      break;
+    case K_USER_DEF_CONVERSION:
+      FPUTS( "()", param->gout );
       break;
     default:
       /* suppress warning */;
@@ -547,6 +556,9 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
           "%s%s",
           L_OPERATOR, graph_name_c( op_get( ast->as.oper.oper_id )->name )
         );
+        break;
+      case K_USER_DEF_CONVERSION:
+        // Do nothing since these don't have names.
         break;
       case K_USER_DEF_LITERAL:
         g_param_space( param );

@@ -105,6 +105,8 @@ static help_text_t const HELP_TEXT_ENGLISH[] = {
     "  { enum [class|struct] | class | struct | union } <name>" },
   { NOT_IN_LANG,
     "  [rvalue] reference to <english>" },
+  { NOT_IN_LANG,
+    "  user-defined conversion [operator] [of <scope-e> <name>]* returning <english>" },
   { "  block [([<args>])] [returning <english>]",
     "  user-defined literal [([<args>])] [returning <english>]" },
   { "  <store>* <modifier>* [<C-type>]",

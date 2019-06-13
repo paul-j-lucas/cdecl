@@ -205,6 +205,13 @@ struct c_ptr_ref {
 };
 
 /**
+ * AST Node for a C++ user-defined conversion operator.
+ */
+struct c_user_def_conv {
+  c_ast_t  *conv_ast;                   ///< Conversion type.
+};
+
+/**
  * AST node for a C++ user-defined literal.
  *
  * @note Members are laid out in the same order as `c_func`: this is taken
@@ -241,6 +248,7 @@ struct c_ast {
     c_ptr_mbr_t         ptr_mbr;        ///< Pointer-to-member member(s).
     c_ptr_ref_t         ptr_ref;        ///< Pointer or reference member(s).
     c_typedef_t const  *c_typedef;      ///< `typedef` member(s).
+    c_user_def_conv_t   user_def_conv;  ///< User-defined conversion member(s).
     c_user_def_lit_t    user_def_lit;   ///< User-defined literal member(s).
     // nothing needed for K_VARIADIC
   } as;                                 ///< Union discriminator.

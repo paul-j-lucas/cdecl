@@ -152,6 +152,7 @@ extern char const L_CLASS[];
 extern char const L_COMPL[];
 extern char const L_CONSTRUCTOR[];
 extern char const L_CONST_CAST[];
+extern char const L_CONVERSION[];
 extern char const L_DELETE[];
 extern char const L_DESTRUCTOR[];
 extern char const L_DYNAMIC[];

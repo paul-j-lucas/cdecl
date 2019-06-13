@@ -71,7 +71,8 @@ enum c_kind {
   K_POINTER_TO_MEMBER       = 0x02000,  ///< Pointer-to-member (C++ only).
   K_REFERENCE               = 0x04000,  ///< Reference (C++ only).
   K_RVALUE_REFERENCE        = 0x08000,  ///< Rvalue reference (C++ only).
-  K_USER_DEF_LITERAL        = 0x10000,  ///< User-defined literal (C++ only).
+  K_USER_DEF_CONVERSION     = 0x10000,  ///< User-defined conversion (C++ only).
+  K_USER_DEF_LITERAL        = 0x20000,  ///< User-defined literal (C++ only).
 };
 
 /**
@@ -80,7 +81,7 @@ enum c_kind {
  */
 #define K_FUNCTION_LIKE \
   (K_BLOCK | K_CONSTRUCTOR | K_DESTRUCTOR | K_FUNCTION | K_OPERATOR \
-  | K_USER_DEF_LITERAL)
+  | K_USER_DEF_CONVERSION | K_USER_DEF_LITERAL)
 
 /// @cond DOXYGEN_IGNORE
 #define K_PARENT_MIN          K_ARRAY

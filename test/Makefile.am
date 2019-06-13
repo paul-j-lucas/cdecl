@@ -1010,6 +1010,20 @@ TESTS+=	tests/declare_co_exclam_k_b.test \
 	tests/declare_yo_exclam_k_b.test
 
 #
+# C++ declare user-defined conversion tests
+# =========================================
+#
+TESTS+=	tests/declare_+udc_i.test \
+	tests/declare_udc_i.test \
+	tests/declare_udc_rcc.test
+
+#
+# C++ declare user-defined conversion error tests
+# ===============================================
+#
+TESTS+=	tests/declare_udc_a4i.test
+
+#
 # C++ declare user-defined literal tests
 # ======================================
 #
@@ -1266,6 +1280,15 @@ TESTS+=	tests/explain_cast_pmi.test \
 	tests/explain_static_cast_i.test
 
 #
+# C++ explain user-defined conversion tests
+# =========================================
+#
+TESTS+=	tests/explain_+udc_i.test \
+	tests/explain_f+udc_i.test \
+	tests/explain_udc_i.test \
+	tests/explain_udc_rcc.test
+
+#
 # C++ explain user-defined literal tests
 # ======================================
 #
@@ -1288,6 +1311,12 @@ TESTS+=	tests/explain_+udl_c_i.test \
 	tests/explain_udl_pcwz_i.test \
 	tests/explain_udl_ull_i.test \
 	tests/explain_udl_w_i.test
+
+#
+# C++ explain user-defined conversion error tests
+# ===============================================
+#
+TESTS+=	tests/explain_udc_a4i.test
 
 #
 # C++ explain user-defined literal error tests

@@ -166,6 +166,7 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
+    case K_USER_DEF_CONVERSION:         // conv_ast checked by parent code below
     case K_VARIADIC:
       // nothing to do
       break;

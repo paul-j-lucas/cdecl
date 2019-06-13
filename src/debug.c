@@ -201,6 +201,11 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         PRINT_COMMA;
         INDENT_PRINT_SNAME( "typedef_name", &ast->as.c_typedef->ast->sname );
         break;
+
+      case K_USER_DEF_CONVERSION:
+        PRINT_COMMA;
+        c_ast_debug( ast->as.user_def_conv.conv_ast, indent, "conv_ast", dout );
+        break;
     } // switch
 
     FPUTC( '\n', dout );

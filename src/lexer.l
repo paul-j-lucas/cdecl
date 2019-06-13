@@ -205,6 +205,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_COMMANDS,       TOKEN( Y_COMMANDS )             },
   { L_CONSTANT,       C_SYN( L_CONST,         false ) },
   { L_CONSTRUCTOR,    TOKEN( Y_CONSTRUCTOR )          },
+  { L_CONVERSION,     TOKEN( Y_CONVERSION )           },
   { L_DECLARE,        TOKEN( Y_DECLARE )              },
   { L_DEFINE,         TOKEN( Y_DEFINE )               },
   { L_DESTRUCTOR,     TOKEN( Y_DESTRUCTOR )           },

@@ -104,6 +104,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_CONSTEVAL,          LANG_MIN(CPP_20)                  },
   { L_CONSTEXPR,          LANG_MIN(CPP_11)                  },
   { L_CONSTRUCTOR,        LANG_CPP_ALL                      },
+  { L_CONVERSION,         LANG_CPP_ALL                      },
   { L_DEPRECATED,         LANG_MIN(CPP_14)                  },
   { L_DESTRUCTOR,         LANG_CPP_ALL                      },
   { L_DOUBLE,             LANG_ALL                          },
@@ -159,7 +160,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
 //{ L_TYPEDEF,                          // handled in CDECL_COMMANDS
   { L_UNION,              LANG_ALL                          },
   { L_UNSIGNED,           LANG_ALL                          },
-  { L_USER_DEFINED,       LANG_MIN(CPP_11)                  },
+  { L_USER_DEFINED,       LANG_CPP_ALL                      },
 //{ L_USING,                            // handled in CDECL_COMMANDS
   { L_VARIABLE,           LANG_MIN(C_99) & ~LANG_CPP_ALL    },
   { L_VIRTUAL,            LANG_CPP_ALL                      },

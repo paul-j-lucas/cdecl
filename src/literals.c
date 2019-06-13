@@ -149,6 +149,7 @@ char const L_CLASS[]                = "class";
 char const L_COMPL[]                = "compl";
 char const L_CONSTRUCTOR[]          = "constructor";
 char const L_CONST_CAST[]           = "const_cast";
+char const L_CONVERSION[]           = "conversion";
 char const L_DELETE[]               = "delete";
 char const L_DESTRUCTOR[]           = "destructor";
 char const L_DYNAMIC[]              = "dynamic";

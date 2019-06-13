@@ -41,6 +41,10 @@
 
 #define PLURAL_S(N)               ((N) == 1 ? "" : "s")
 
+#define T_USER_DEF_CONV                                                   \
+  ( T_CONSTEXPR | T_EXPLICIT | T_FINAL | T_FRIEND | T_INLINE | T_NOEXCEPT \
+  | T_OVERRIDE | T_THROW | T_PURE_VIRTUAL | T_VIRTUAL)
+
 // local constants
 static bool const VISITOR_ERROR_FOUND     = true;
 static bool const VISITOR_ERROR_NOT_FOUND = false;
@@ -104,6 +108,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
     case K_DESTRUCTOR:
     case K_FUNCTION:
     case K_OPERATOR:
+    case K_USER_DEF_CONVERSION:
     case K_USER_DEF_LITERAL:
       print_error( &ast->loc,
         "can not cast into %s",
@@ -606,6 +611,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         case K_DESTRUCTOR:
         case K_FUNCTION:
         case K_OPERATOR:
+        case K_USER_DEF_CONVERSION:
         case K_USER_DEF_LITERAL:
           print_error( &ast->loc, "array of %s", c_kind_name( of_ast->kind ) );
           print_hint( "array of pointer to function" );
@@ -620,7 +626,9 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
     }
 
     case K_BUILTIN:
-      if ( (ast->type_id & T_MASK_TYPE) == T_NONE ) {
+      if ( (ast->parent == NULL ||
+            ast->parent->kind != K_USER_DEF_CONVERSION) &&
+           (ast->type_id & T_MASK_TYPE) == T_NONE ) {
         print_error( &ast->loc,
           "implicit \"int\" is illegal in %s",
           C_LANG_NAME()
@@ -860,6 +868,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 
     case K_NAME:
     case K_TYPEDEF:
+    case K_USER_DEF_CONVERSION:
     case K_VARIADIC:
       // nothing to check
       break;
@@ -966,6 +975,35 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   }
 
   switch ( ast->kind ) {
+    case K_USER_DEF_CONVERSION: {
+      if ( (ast->type_id & ~T_USER_DEF_CONV) != T_NONE ) {
+        print_error( &ast->loc,
+          "%s %s %ss can only be: %s",
+          L_USER_DEFINED, L_CONVERSION, L_OPERATOR,
+          c_type_name_error( T_USER_DEF_CONV )
+        );
+        return VISITOR_ERROR_FOUND;
+      }
+      if ( (ast->type_id & T_FRIEND) != T_NONE && c_ast_sname_empty( ast ) ) {
+        print_error( &ast->loc,
+          "%s %s %s %s must use qualified name",
+          L_FRIEND, L_USER_DEFINED, L_CONVERSION, L_OPERATOR
+        );
+        return VISITOR_ERROR_FOUND;
+      }
+      c_ast_t const *const conv_ast =
+        c_ast_untypedef( ast->as.user_def_conv.conv_ast );
+      if ( conv_ast->kind == K_ARRAY ) {
+        print_error( &conv_ast->loc,
+          "%s %s %s can not convert to an %s",
+          L_USER_DEFINED, L_CONVERSION, L_OPERATOR, L_ARRAY
+        );
+        print_hint( "pointer to array" );
+        return VISITOR_ERROR_FOUND;
+      }
+      break;
+    }
+
     case K_BLOCK:                       // Apple extension
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
@@ -1023,6 +1061,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
     case K_TYPEDEF:
+    case K_USER_DEF_CONVERSION:
     case K_VARIADIC:
       // nothing to check
       break;
