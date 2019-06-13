@@ -1,3 +1,16 @@
+2019-06-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_ast.c, c_ast.h,
+     c_kind.c, c_kind.h, debug.c, english.c, errors.c, gibberish.c, help.c,
+     lexer.l, literals.c, literals.h, parser.y, typedefs.h, test/Makefile.am,
+     declare_+udc_i.out, declare_udc_i.out, declare_udc_rcc.out,
+     explain_+udc_i.out, explain_f+udc_i.out, explain_udc_i.out,
+     explain_udc_rcc.out, help_english-c++.out, declare_+udc_i.test,
+     declare_udc_a4i.test, declare_udc_i.test, declare_udc_rcc.test,
+     explain_+udc_i.test, explain_f+udc_i.test, explain_udc_a4i.test,
+     explain_udc_i.test, explain_udc_rcc.test: Added support for C++
+     user-defined conversion operators.
+
 2019-06-11  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.h, lexer.l, parser.y, test/Makefile.am, explain_tii32.out,
