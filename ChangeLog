@@ -1,5 +1,8 @@
 2019-06-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added predefined typedefs fd_set, nfds_t, and sigset_t.
    * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_ast.c, c_ast.h,
      c_kind.c, c_kind.h, debug.c, english.c, errors.c, gibberish.c, help.c,
      lexer.l, literals.c, literals.h, parser.y, typedefs.h, test/Makefile.am,
