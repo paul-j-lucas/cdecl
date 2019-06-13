@@ -208,11 +208,13 @@ static char const *const TYPEDEFS_MISC[] = {
   "typedef  int32_t         blkcnt_t",
   "typedef  int32_t         blksize_t",
   "typedef  int32_t         dev_t",
+  "typedef struct __fd_set  fd_set",
   "typedef struct __FILE    FILE",
   "typedef struct __fpos    fpos_t",
   "typedef  int32_t         ino_t",
   "typedef struct __mbstate mbstate_t",
   "typedef  int32_t         mode_t",
+  "typedef unsigned long    nfds_t",
   "typedef uint32_t         nlink_t",
   "typedef  int64_t         off_t",
 
@@ -233,6 +235,7 @@ static char const *const TYPEDEFS_MISC[] = {
 
   "typedef  int             errno_t",
   "typedef uint32_t         rlim_t",
+  "typedef unsigned long    sigset_t",
   "typedef  int             wint_t",
 
   NULL

@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** Added support for user-defined conversion operators
 Now supports C++ user-defined conversion operators.
 
+** Added more predefined typedefs
+More predefined typedefs were added: fd_set, nfds_t, and sigset_t.
+
 
 * Changes in Cdecl 6.3.2
 

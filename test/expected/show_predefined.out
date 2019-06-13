@@ -43,6 +43,7 @@ define clockid_t as long
 define dev_t as int32_t
 define div_t as struct div_t
 define errno_t as int
+define fd_set as struct __fd_set
 define fpos_t as struct __fpos
 define gid_t as uint32_t
 define imaxdiv_t as struct imaxdiv_t
@@ -68,6 +69,7 @@ define lldiv_t as struct lldiv_t
 define max_align_t as long double
 define mbstate_t as struct __mbstate
 define mode_t as int32_t
+define nfds_t as unsigned long
 define nlink_t as uint32_t
 define off_t as int64_t
 define pid_t as int32_t
@@ -76,6 +78,7 @@ define rlim_t as uint32_t
 define rsize_t as unsigned long
 define sa_family_t as uint32_t
 define sig_atomic_t as int
+define sigset_t as unsigned long
 define size_t as unsigned long
 define socklen_t as uint32_t
 define ssize_t as long
