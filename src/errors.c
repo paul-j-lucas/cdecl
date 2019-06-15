@@ -41,9 +41,9 @@
 
 #define PLURAL_S(N)               ((N) == 1 ? "" : "s")
 
-#define T_USER_DEF_CONV                                                   \
-  ( T_CONSTEXPR | T_EXPLICIT | T_FINAL | T_FRIEND | T_INLINE | T_NOEXCEPT \
-  | T_OVERRIDE | T_THROW | T_PURE_VIRTUAL | T_VIRTUAL)
+#define T_USER_DEF_CONV                                                 \
+  ( T_CONST | T_CONSTEXPR | T_EXPLICIT | T_FINAL | T_FRIEND | T_INLINE  \
+  | T_NOEXCEPT | T_OVERRIDE | T_THROW | T_PURE_VIRTUAL | T_VIRTUAL)
 
 // local constants
 static bool const VISITOR_ERROR_FOUND     = true;
