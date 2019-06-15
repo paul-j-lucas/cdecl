@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** Added support for user-defined conversion operators
 Now supports C++ user-defined conversion operators.
 
+    cdecl> explain operator int const*() const
+    declare constant user-defined conversion operator returning pointer to constant int
+
 ** Added more predefined typedefs
 More predefined typedefs were added: fd_set, nfds_t, and sigset_t.
 
