@@ -54,6 +54,7 @@ static bool const VISITOR_ERROR_NOT_FOUND = false;
 // local functions
 static bool c_ast_visitor_error( c_ast_t*, void* );
 static bool c_ast_visitor_type( c_ast_t*, void* );
+static bool error_kind_not_cast_into( c_ast_t const*, char const* );
 static bool error_kind_not_supported( c_ast_t const* );
 static bool error_kind_not_type( c_ast_t const*, c_type_id_t );
 static bool error_kind_to_type( c_ast_t const*, c_type_id_t );
@@ -110,21 +111,14 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      print_error( &ast->loc, "can not cast into array" );
-      print_hint( "cast into pointer" );
-      return false;
+      return error_kind_not_cast_into( ast, "pointer" );
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_CONVERSION:
     case K_USER_DEF_LITERAL:
-      print_error( &ast->loc,
-        "can not cast into %s",
-        c_kind_name( ast->kind )
-      );
-      print_hint( "cast into pointer to function" );
-      return false;
+      return error_kind_not_cast_into( ast, "pointer to function" );
     default:
       return true;
   } // switch
@@ -1164,6 +1158,20 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     }
   } // for
 
+  return false;
+}
+
+/**
+ * Print an error: `can not cast into <kind>`.
+ *
+ * @param ast The `c_ast` .
+ * @param hint The hint, if any.
+ * @return Always returns `false`.
+ */
+static bool error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
+  print_error( &ast->loc, "can not cast into %s", c_kind_name( ast->kind ) );
+  if ( hint != NULL )
+    print_hint( "cast into %s", hint );
   return false;
 }
 
