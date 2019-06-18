@@ -52,6 +52,7 @@ static bool const VISITOR_ERROR_NOT_FOUND = false;
 /// @endcond
 
 // local functions
+static bool c_ast_check_oper_args( c_ast_t const* );
 static bool c_ast_visitor_error( c_ast_t*, void* );
 static bool c_ast_visitor_type( c_ast_t*, void* );
 static bool error_kind_not_cast_into( c_ast_t const*, char const* );
@@ -230,199 +231,8 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
       return false;
   } // for
 
-  if ( ast->kind == K_OPERATOR ) {
-    unsigned user_overload_flags = ast->as.oper.flags & OP_MASK_OVERLOAD;
-    c_operator_t const *const op = op_get( ast->as.oper.oper_id );
-    unsigned const op_overload_flags = op->flags & OP_MASK_OVERLOAD;
-
-    char const *const op_type =
-      op_overload_flags == OP_MEMBER     ? L_MEMBER     :
-      op_overload_flags == OP_NON_MEMBER ? L_NON_MEMBER :
-      "";
-    char const *const user_type =
-      user_overload_flags == OP_MEMBER     ? L_MEMBER     :
-      user_overload_flags == OP_NON_MEMBER ? L_NON_MEMBER :
-      op_type;
-
-    if ( user_overload_flags == OP_UNSPECIFIED ) {
-      //
-      // If the user didn't specify either member or non-member explicitly...
-      //
-      switch ( op_overload_flags ) {
-        //
-        // ...and the operator can not be both, then assume the user meant the
-        // one the operator can only be.
-        //
-        case OP_MEMBER:
-        case OP_NON_MEMBER:
-          user_overload_flags = op_overload_flags;
-          break;
-        //
-        // ...and the operator can be either one, then infer which one based on
-        // the number of arguments given.
-        //
-        case OP_MEMBER | OP_NON_MEMBER:
-          if ( n_args == op->args_min )
-            user_overload_flags = OP_MEMBER;
-          else if ( n_args == op->args_max )
-            user_overload_flags = OP_NON_MEMBER;
-          break;
-      } // switch
-    }
-    else if ( (user_overload_flags & op_overload_flags) == 0 ) {
-      //
-      // The user specified either member or non-member, but the operator can't
-      // be that.
-      //
-      print_error( &ast->loc,
-        "%s %s can only be a %s",
-        L_OPERATOR, op->name, op_type
-      );
-      return false;
-    }
-
-    //
-    // Determine the minimum and maximum number of arguments the operator can
-    // have based on whether it's a member, non-member, or unspecified.
-    //
-    bool const is_ambiguous = op_is_ambiguous( op );
-    unsigned req_args_min = 0, req_args_max = 0;
-    switch ( user_overload_flags ) {
-      case OP_NON_MEMBER:
-        // Non-member operators must always take at least one argument (the
-        // enum, class, struct, or union for which it's overloaded).
-        req_args_min = is_ambiguous ? 1 : op->args_max;
-        req_args_max = op->args_max;
-        break;
-      case OP_MEMBER:
-        if ( op->args_max != OP_ARGS_UNLIMITED ) {
-          req_args_min = op->args_min;
-          req_args_max = is_ambiguous ? 1 : op->args_min;
-          break;
-        }
-        // FALLTHROUGH
-      case OP_UNSPECIFIED:
-        req_args_min = op->args_min;
-        req_args_max = op->args_max;
-        break;
-    } // switch
-
-    //
-    // Ensure the operator has the required number of arguments.
-    //
-    if ( n_args < req_args_min ) {
-      if ( req_args_min == req_args_max )
-exact:  print_error( &ast->loc,
-          "%s%s%s %s must have exactly %u argument%s",
-          SP_AFTER( user_type ), L_OPERATOR, op->name,
-          req_args_min, PLURAL_S( req_args_min )
-        );
-      else
-        print_error( &ast->loc,
-          "%s%s%s %s must have at least %u argument%s",
-          SP_AFTER( user_type ), L_OPERATOR, op->name,
-          req_args_min, PLURAL_S( req_args_min )
-        );
-      return false;
-    }
-    if ( n_args > req_args_max ) {
-      if ( op->args_min == req_args_max )
-        goto exact;
-      print_error( &ast->loc,
-        "%s%s%s %s can have at most %u argument%s",
-        SP_AFTER( user_type ), L_OPERATOR, op->name,
-        op->args_max, PLURAL_S( op->args_max )
-      );
-      return false;
-    }
-
-    bool const is_user_non_member = user_overload_flags == OP_NON_MEMBER;
-    if ( is_user_non_member ) {
-      //
-      // Ensure non-member operators are not const, overridden, final,
-      // reference, rvalue reference, nor virtual.
-      //
-      c_type_id_t const member_only_types = ast->type_id & T_MEMBER_ONLY;
-      if ( member_only_types != T_NONE ) {
-        print_error( &ast->loc,
-          "%s operators can not be %s",
-          L_NON_MEMBER,
-          c_type_name_error( member_only_types )
-        );
-        return false;
-      }
-
-      //
-      // Ensure non-member operators have at least one enum, class, struct, or
-      // union argument.
-      //
-      bool has_ecsu_arg = false;
-      for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-        c_ast_t const *const arg_ast = C_AST_DATA( arg );
-        if ( c_ast_is_ecsu( arg_ast ) ) {
-          has_ecsu_arg = true;
-          break;
-        }
-      } // for
-      if ( !has_ecsu_arg ) {
-        print_error( &ast->loc,
-          "at least 1 argument of a %s %s must be an %s"
-          "; or a %s or %s %s thereto",
-          L_NON_MEMBER, L_OPERATOR, c_kind_name( K_ENUM_CLASS_STRUCT_UNION ),
-          L_REFERENCE, L_RVALUE, L_REFERENCE
-        );
-        return false;
-      }
-    }
-    else if ( user_overload_flags == OP_MEMBER ) {
-      //
-      // Ensure member operators are not friend.
-      //
-      c_type_id_t const non_member_only_types =
-        ast->type_id & T_NON_MEMBER_ONLY;
-      if ( non_member_only_types != T_NONE ) {
-        print_error( &ast->loc,
-          "%s operators can not be %s",
-          L_MEMBER,
-          c_type_name_error( non_member_only_types )
-        );
-        return false;
-      }
-    }
-
-    switch ( ast->as.oper.oper_id ) {
-      case OP_MINUS2:
-      case OP_PLUS2: {
-        //
-        // Ensure that the dummy argument for postfix -- or ++ is type int (or
-        // is a typedef of int).
-        //
-        c_ast_arg_t const *arg = c_ast_args( ast );
-        if ( arg == NULL )              // member prefix
-          break;
-        if ( is_user_non_member ) {
-          arg = arg->next;
-          if ( arg == NULL )            // non-member prefix
-            break;
-        }
-        // At this point, it's either member or non-member postfix:
-        // operator++(int) or operator++(S&,int).
-        c_ast_t const *const arg_ast = C_AST_DATA( arg );
-        if ( !c_ast_is_builtin( arg_ast, T_INT ) ) {
-          print_error( &arg_ast->loc,
-            "argument of postfix %s%s%s %s must be %s",
-            SP_AFTER( op_type ), L_OPERATOR, op->name,
-            c_type_name_error( T_INT )
-          );
-          return false;
-        }
-        break;
-      }
-
-      default:
-        /* suppress warning */;
-    } // switch
-  }
+  if ( ast->kind == K_OPERATOR && !c_ast_check_oper_args( ast ) )
+    return false;
 
   if ( variadic_ast != NULL && n_args == 1 ) {
     print_error( &variadic_ast->loc,
@@ -461,6 +271,211 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
         return false;
     } // switch
   } // for
+  return true;
+}
+
+/**
+ * Checks all overloaded operator arguments for semantic errors.
+ *
+ * @param ast The overloaded operator `c_ast` to check.
+ * @return Returns `true` only if all checks passed.
+ */
+static bool c_ast_check_oper_args( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind == K_OPERATOR );
+
+  unsigned user_overload_flags = ast->as.oper.flags & OP_MASK_OVERLOAD;
+  c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+  unsigned const op_overload_flags = op->flags & OP_MASK_OVERLOAD;
+  size_t const n_args = c_ast_args_count( ast );
+
+  char const *const op_type =
+    op_overload_flags == OP_MEMBER     ? L_MEMBER     :
+    op_overload_flags == OP_NON_MEMBER ? L_NON_MEMBER :
+    "";
+  char const *const user_type =
+    user_overload_flags == OP_MEMBER     ? L_MEMBER     :
+    user_overload_flags == OP_NON_MEMBER ? L_NON_MEMBER :
+    op_type;
+
+  if ( user_overload_flags == OP_UNSPECIFIED ) {
+    //
+    // If the user didn't specify either member or non-member explicitly...
+    //
+    switch ( op_overload_flags ) {
+      //
+      // ...and the operator can not be both, then assume the user meant the
+      // one the operator can only be.
+      //
+      case OP_MEMBER:
+      case OP_NON_MEMBER:
+        user_overload_flags = op_overload_flags;
+        break;
+      //
+      // ...and the operator can be either one, then infer which one based on
+      // the number of arguments given.
+      //
+      case OP_MEMBER | OP_NON_MEMBER:
+        if ( n_args == op->args_min )
+          user_overload_flags = OP_MEMBER;
+        else if ( n_args == op->args_max )
+          user_overload_flags = OP_NON_MEMBER;
+        break;
+    } // switch
+  }
+  else if ( (user_overload_flags & op_overload_flags) == 0 ) {
+    //
+    // The user specified either member or non-member, but the operator can't
+    // be that.
+    //
+    print_error( &ast->loc,
+      "%s %s can only be a %s",
+      L_OPERATOR, op->name, op_type
+    );
+    return false;
+  }
+
+  //
+  // Determine the minimum and maximum number of arguments the operator can
+  // have based on whether it's a member, non-member, or unspecified.
+  //
+  bool const is_ambiguous = op_is_ambiguous( op );
+  unsigned req_args_min = 0, req_args_max = 0;
+  switch ( user_overload_flags ) {
+    case OP_NON_MEMBER:
+      // Non-member operators must always take at least one argument (the
+      // enum, class, struct, or union for which it's overloaded).
+      req_args_min = is_ambiguous ? 1 : op->args_max;
+      req_args_max = op->args_max;
+      break;
+    case OP_MEMBER:
+      if ( op->args_max != OP_ARGS_UNLIMITED ) {
+        req_args_min = op->args_min;
+        req_args_max = is_ambiguous ? 1 : op->args_min;
+        break;
+      }
+      // FALLTHROUGH
+    case OP_UNSPECIFIED:
+      req_args_min = op->args_min;
+      req_args_max = op->args_max;
+      break;
+  } // switch
+
+  //
+  // Ensure the operator has the required number of arguments.
+  //
+  if ( n_args < req_args_min ) {
+    if ( req_args_min == req_args_max )
+exact:  print_error( &ast->loc,
+        "%s%s%s %s must have exactly %u argument%s",
+        SP_AFTER( user_type ), L_OPERATOR, op->name,
+        req_args_min, PLURAL_S( req_args_min )
+      );
+    else
+      print_error( &ast->loc,
+        "%s%s%s %s must have at least %u argument%s",
+        SP_AFTER( user_type ), L_OPERATOR, op->name,
+        req_args_min, PLURAL_S( req_args_min )
+      );
+    return false;
+  }
+  if ( n_args > req_args_max ) {
+    if ( op->args_min == req_args_max )
+      goto exact;
+    print_error( &ast->loc,
+      "%s%s%s %s can have at most %u argument%s",
+      SP_AFTER( user_type ), L_OPERATOR, op->name,
+      op->args_max, PLURAL_S( op->args_max )
+    );
+    return false;
+  }
+
+  bool const is_user_non_member = user_overload_flags == OP_NON_MEMBER;
+  if ( is_user_non_member ) {
+    //
+    // Ensure non-member operators are not const, overridden, final,
+    // reference, rvalue reference, nor virtual.
+    //
+    c_type_id_t const member_only_types = ast->type_id & T_MEMBER_ONLY;
+    if ( member_only_types != T_NONE ) {
+      print_error( &ast->loc,
+        "%s operators can not be %s",
+        L_NON_MEMBER,
+        c_type_name_error( member_only_types )
+      );
+      return false;
+    }
+
+    //
+    // Ensure non-member operators have at least one enum, class, struct, or
+    // union argument.
+    //
+    bool has_ecsu_arg = false;
+    for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
+      c_ast_t const *const arg_ast = C_AST_DATA( arg );
+      if ( c_ast_is_ecsu( arg_ast ) ) {
+        has_ecsu_arg = true;
+        break;
+      }
+    } // for
+    if ( !has_ecsu_arg ) {
+      print_error( &ast->loc,
+        "at least 1 argument of a %s %s must be an %s"
+        "; or a %s or %s %s thereto",
+        L_NON_MEMBER, L_OPERATOR, c_kind_name( K_ENUM_CLASS_STRUCT_UNION ),
+        L_REFERENCE, L_RVALUE, L_REFERENCE
+      );
+      return false;
+    }
+  }
+  else if ( user_overload_flags == OP_MEMBER ) {
+    //
+    // Ensure member operators are not friend.
+    //
+    c_type_id_t const non_member_only_types =
+      ast->type_id & T_NON_MEMBER_ONLY;
+    if ( non_member_only_types != T_NONE ) {
+      print_error( &ast->loc,
+        "%s operators can not be %s",
+        L_MEMBER,
+        c_type_name_error( non_member_only_types )
+      );
+      return false;
+    }
+  }
+
+  switch ( ast->as.oper.oper_id ) {
+    case OP_MINUS2:
+    case OP_PLUS2: {
+      //
+      // Ensure that the dummy argument for postfix -- or ++ is type int (or
+      // is a typedef of int).
+      //
+      c_ast_arg_t const *arg = c_ast_args( ast );
+      if ( arg == NULL )              // member prefix
+        break;
+      if ( is_user_non_member ) {
+        arg = arg->next;
+        if ( arg == NULL )            // non-member prefix
+          break;
+      }
+      // At this point, it's either member or non-member postfix:
+      // operator++(int) or operator++(S&,int).
+      c_ast_t const *const arg_ast = C_AST_DATA( arg );
+      if ( !c_ast_is_builtin( arg_ast, T_INT ) ) {
+        print_error( &arg_ast->loc,
+          "argument of postfix %s%s%s %s must be %s",
+          SP_AFTER( op_type ), L_OPERATOR, op->name,
+          c_type_name_error( T_INT )
+        );
+        return false;
+      }
+      break;
+    }
+
+    default:
+      /* suppress warning */;
+  } // switch
   return true;
 }
 
