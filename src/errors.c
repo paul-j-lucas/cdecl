@@ -89,6 +89,49 @@ static inline bool c_ast_check_visitor( c_ast_t const *ast,
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Checks the `alignas` of an AST.
+ *
+ * @param ast The `c_ast` to check.
+ * @return Returns `true` only if all checks passed.
+ */
+static bool c_ast_check_alignas( c_ast_t *ast ) {
+  assert( ast != NULL );
+  assert( ast->align.kind != ALIGNAS_NONE );
+
+  if ( (ast->type_id & T_REGISTER) != T_NONE ) {
+    print_error( &ast->loc,
+      "\"%s\" can not be combined with \"%s\"", alignas_lang(), L_REGISTER
+    );
+    return false;
+  }
+  if ( (ast->kind & K_FUNCTION_LIKE) != K_NONE ) {
+    print_error( &ast->loc,
+      "%s can not be %s", c_kind_name( ast->kind ), L_ALIGNED
+    );
+    return false;
+  }
+  switch ( ast->align.kind ) {
+    case ALIGNAS_NONE:
+      break;
+    case ALIGNAS_EXPR: {
+      unsigned const alignment = ast->align.as.expr;
+      if ( !at_most_one_bit_set( alignment ) ) {
+        print_error( &ast->loc,
+          "\"%u\": alignment is not a power of 2", alignment
+        );
+        return false;
+      }
+      break;
+    }
+    case ALIGNAS_TYPE:
+      if ( !c_ast_check( ast->align.as.type_ast, CHECK_DECL ) )
+        return false;
+      break;
+  } // switch
+  return true;
+}
+
+/**
  * Performs additional checks on an entire AST for semantic errors when
  * casting.
  *
@@ -577,38 +620,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
   bool const is_func_arg = REINTERPRET_CAST( bool, data );
   c_type_id_t tmp_type;
 
-  if ( ast->align.kind != ALIGNAS_NONE ) {
-    if ( (ast->type_id & T_REGISTER) != T_NONE ) {
-      print_error( &ast->loc,
-        "\"%s\" can not be combined with \"%s\"", alignas_lang(), L_REGISTER
-      );
-      return VISITOR_ERROR_FOUND;
-    }
-    if ( (ast->kind & K_FUNCTION_LIKE) != K_NONE ) {
-      print_error( &ast->loc,
-        "%s can not be %s", c_kind_name( ast->kind ), L_ALIGNED
-      );
-      return VISITOR_ERROR_FOUND;
-    }
-    switch ( ast->align.kind ) {
-      case ALIGNAS_NONE:
-        break;
-      case ALIGNAS_EXPR: {
-        unsigned const alignment = ast->align.as.expr;
-        if ( !at_most_one_bit_set( alignment ) ) {
-          print_error( &ast->loc,
-            "\"%u\": alignment is not a power of 2", alignment
-          );
-          return VISITOR_ERROR_FOUND;
-        }
-        break;
-      }
-      case ALIGNAS_TYPE:
-        if ( !c_ast_check( ast->align.as.type_ast, CHECK_DECL ) )
-          return VISITOR_ERROR_FOUND;
-        break;
-    } // switch
-  }
+  if ( ast->align.kind != ALIGNAS_NONE && !c_ast_check_alignas( ast ) )
+    return VISITOR_ERROR_FOUND;
 
   switch ( ast->kind ) {
     case K_ARRAY: {
