@@ -222,6 +222,20 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_visit( nonconst_ast, V_DOWN, c_ast_visitor_english, eout );
+  switch ( ast->align.kind ) {
+    case ALIGNAS_NONE:
+      break;
+    case ALIGNAS_EXPR:
+      if ( ast->align.as.expr > 0 )
+        FPRINTF( eout,
+          " %s %s %u %s", L_ALIGNED, L_AS, ast->align.as.expr, L_BYTES
+        );
+      break;
+    case ALIGNAS_TYPE:
+      FPRINTF( eout, " %s %s ", L_ALIGNED, L_AS );
+      c_ast_english( ast->align.as.type_ast, eout );
+      break;
+  } // switch
 }
 
 void c_sname_english( c_sname_t const *sname, FILE *eout ) {

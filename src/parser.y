@@ -268,7 +268,7 @@ void parser_cleanup( void ) {
 /**
  * Adds a type to the global set.
  *
- * @param decl_keywotd The keyword used for the declaration.
+ * @param decl_keyword The keyword used for the declaration.
  * @param type_ast The `c_ast` of the type to add.
  * @param type_decl_loc The location of the offending type declaration.
  * @return Returns `true` either if the type was added or it's equivalent to
@@ -317,6 +317,115 @@ static void elaborate_error( char const *format, ... ) {
     PUTC_ERR( '\n' );
     error_newlined = true;
   }
+}
+
+/**
+ * Explains a declaration.
+ *
+ * @param align The `alignas` specifier, if any.
+ * @param align_loc The source location of \a align.
+ * @param type_ast The type `c_ast`.
+ * @param decl_ast The declaration `c_ast`.
+ * @param decl_loc The source location of \a decl_ast.
+ * @return Returns `true` only upon success.
+ */
+static bool explain_type_decl( c_alignas_t const *align,
+                               c_loc_t const *align_loc, c_ast_t *type_ast,
+                               c_ast_t *decl_ast, c_loc_t const *decl_loc ) {
+  (void)type_pop();
+
+  bool is_typedef = c_ast_take_typedef( type_ast );
+
+  if ( is_typedef && decl_ast->kind == K_TYPEDEF ) {
+    //
+    // This is for a case like:
+    //
+    //      explain typedef int int32_t;
+    //
+    // that is: explaining an existing typedef.  In order to do that, we
+    // have to un-typedef it so we explain the type that it's typedef'd as.
+    //
+    decl_ast = CONST_CAST( c_ast_t*, c_ast_untypedef( decl_ast ) );
+
+    //
+    // However, we also have to check whether the typedef being explained
+    // is not equivalent to the existing typedef.  This is for a case like:
+    //
+    //      explain typedef char int32_t;
+    //
+    if ( !c_ast_equiv( type_ast, decl_ast ) ) {
+      print_error( decl_loc,
+        "\"%s\": \"%s\" redefinition with different type",
+        c_ast_sname_full_name( decl_ast ), L_TYPEDEF
+      );
+      return false;
+    }
+  }
+
+  c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
+  is_typedef = is_typedef || c_ast_take_typedef( ast );
+
+  if ( align != NULL ) {
+    if ( is_typedef ) {
+      //
+      // We check for illegal aligned typedef here rather than in error.c
+      // because the "typedef-ness" needed to be removed (above) before the
+      // call to c_ast_check() below.
+      //
+      print_error( align_loc, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
+      return false;
+    }
+    ast->align = *align;
+  }
+
+  if ( ast->kind == K_USER_DEF_CONVERSION )
+    ast->type_id |= type_ast->type_id;
+
+  if ( !c_ast_check( ast, CHECK_DECL ) )
+    return false;
+
+  if ( ast->kind == K_USER_DEF_CONVERSION ) {
+    if ( c_ast_sname_type( ast ) == T_SCOPE )
+      c_ast_sname_set_type( ast, T_CLASS );
+    FPRINTF( fout, "%s ", L_DECLARE );
+  }
+  else {
+    c_sname_t sname = c_ast_take_name( ast );
+    char const *local_name = NULL;
+    char const *scope_name = "";
+
+    switch ( ast->kind ) {
+      case K_OPERATOR:
+        local_name = graph_name_c( op_get( ast->as.oper.oper_id )->name );
+        scope_name = c_sname_full_name( &sname );
+        break;
+      default:
+        assert( !c_sname_empty( &sname ) );
+        local_name = c_sname_local_name( &sname );
+        scope_name = c_sname_scope_name( &sname );
+        break;
+    } // switch
+
+    assert( local_name != NULL );
+    FPRINTF( fout, "%s %s ", L_DECLARE, local_name );
+    if ( scope_name[0] != '\0' ) {
+      c_type_id_t const sn_type = c_sname_type( &sname );
+      assert( sn_type != T_NONE );
+      FPRINTF( fout,
+        "%s %s %s ", L_OF, c_type_name( sn_type ), scope_name
+      );
+    }
+    FPRINTF( fout, "%s ", L_AS );
+    if ( is_typedef )
+      FPRINTF( fout, "%s ", L_TYPE );
+    if ( ast->kind != K_OPERATOR )
+      c_sname_free( &sname );
+  }
+
+  c_ast_english( ast, fout );
+  FPUTC( '\n', fout );
+
+  return true;
 }
 
 /**
@@ -540,6 +649,7 @@ static void yyerror( char const *msg ) {
 %}
 
 %union {
+  c_alignas_t         align;
   c_ast_t            *ast;
   slist_t             ast_list;   /* for function arguments */
   c_ast_pair_t        ast_pair;   /* for the AST being built */
@@ -564,10 +674,12 @@ static void yyerror( char const *msg ) {
 %token              Y_QUIT
 
                     /* english */
+%token              Y_ALIGNED
 %token              Y_ALL
 %token              Y_ARRAY
 %token              Y_AS
 %token              Y_BLOCK             /* Apple: English for '^' */
+%token              Y_BYTES
 %token              Y_COMMANDS
 %token              Y_DYNAMIC
 %token              Y_ENGLISH
@@ -799,6 +911,7 @@ static void yyerror( char const *msg ) {
                      *  4. Is expected, "_expected" is appended; is optional,
                      *     "_opt" is appended.
                      */
+%type   <align>     alignas_specifier_english alignas_specifier_english_opt
 %type   <ast_pair>  decl_english_ast
 %type   <ast_list>  decl_list_english decl_list_english_opt
 %type   <ast_pair>  array_decl_english_ast
@@ -902,6 +1015,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  typedef_name_ast
 %type   <ast_pair>  using_name_ast_expected
 
+%type   <align>     alignas_specifier_c
 %type   <name>      any_name any_name_expected
 %type   <sname>     any_sname_c any_sname_c_expected
 %type   <c_typedef> any_typedef
@@ -1059,7 +1173,7 @@ new_style_cast_english
 
 declare_english
   : Y_DECLARE sname_english as_expected storage_class_list_english_type_opt
-    decl_english_ast
+    decl_english_ast alignas_specifier_english_opt
     {
       if ( $5.ast->kind == K_NAME ) {
         //
@@ -1087,12 +1201,32 @@ declare_english
 
       DUMP_START( "declare_english",
                   "DECLARE sname AS storage_class_list_english_type_opt "
-                  "decl_english_ast" );
+                  "decl_english_ast alignas_specifier_english_opt" );
       DUMP_SNAME( "sname", &$2 );
       DUMP_TYPE( "storage_class_list_english_type_opt", $4 );
+      switch ( $6.kind ) {
+        case ALIGNAS_NONE:
+          break;
+        case ALIGNAS_EXPR:
+          DUMP_NUM( "alignas_specifier_english.as.expr", $6.as.expr );
+          break;
+        case ALIGNAS_TYPE:
+          DUMP_AST( "alignas_specifier_english.as.type_ast", $6.as.type_ast );
+          break;
+      } // switch
 
       $5.ast->loc = @2;
       C_TYPE_ADD( &$5.ast->type_id, $4, @4 );
+
+      if ( $6.kind != ALIGNAS_NONE ) {
+        $5.ast->align = $6;
+        if ( ($5.ast->type_id & T_TYPEDEF) != T_NONE ) {
+          // See comment in explain_type_decl().
+          print_error( &@6, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
+          PARSE_ABORT();
+        }
+      }
+
       C_AST_CHECK( $5.ast, CHECK_DECL );
 
       DUMP_AST( "decl_english_ast", $5.ast );
@@ -1202,6 +1336,34 @@ storage_class_english_type
   | Y_TYPEDEF
   | Y_VIRTUAL
   | Y_PURE virtual_expected       { $$ = T_PURE_VIRTUAL | T_VIRTUAL; }
+  ;
+
+alignas_specifier_english_opt
+  : /* empty */                   { MEM_ZERO( &$$ ); }
+  | alignas_specifier_english
+  ;
+
+alignas_specifier_english
+  : Y_ALIGNED as_opt Y_NUMBER bytes_opt
+    {
+      $$.kind = ALIGNAS_EXPR;
+      $$.as.expr = $3;
+    }
+  | Y_ALIGNED as_opt decl_english_ast
+    {
+      $$.kind = ALIGNAS_TYPE;
+      $$.as.type_ast = $3.ast;
+    }
+  | Y_ALIGNED as_opt error
+    {
+      MEM_ZERO( &$$ );
+      ELABORATE_ERROR( "number or type expected" );
+    }
+  ;
+
+bytes_opt
+  : /* empty */
+  | Y_BYTES
   ;
 
 attribute_english_type
@@ -1344,89 +1506,35 @@ explain_c
         PARSE_ABORT();
     }
 
+  | explain alignas_specifier_c type_c_ast { type_push( $3.ast ); } decl_c_ast
+    {
+      DUMP_START( "explain_c", "EXPLAIN ALIGNAS(...) type_c_ast decl_c_ast" );
+      switch ( $2.kind ) {
+        case ALIGNAS_NONE:
+          break;
+        case ALIGNAS_EXPR:
+          DUMP_NUM( "alignas_specifier_c.as.expr", $2.as.expr );
+          break;
+        case ALIGNAS_TYPE:
+          DUMP_AST( "alignas_specifier_c.as.type_ast", $2.as.type_ast );
+          break;
+      } // switch
+      DUMP_AST( "type_c_ast", $3.ast );
+      DUMP_AST( "decl_c_ast", $5.ast );
+      DUMP_END();
+      if ( !explain_type_decl( &$2, &@2, $3.ast, $5.ast, &@5 ) )
+        PARSE_ABORT();
+    }
+
   | explain type_c_ast { type_push( $2.ast ); } decl_c_ast
     {
-      (void)type_pop();
-
       DUMP_START( "explain_c", "EXPLAIN type_c_ast decl_c_ast" );
       DUMP_AST( "type_c_ast", $2.ast );
       DUMP_AST( "decl_c_ast", $4.ast );
       DUMP_END();
 
-      bool const is_typedef = c_ast_take_typedef( $2.ast );
-      c_ast_t *decl_ast = $4.ast;
-
-      if ( is_typedef && decl_ast->kind == K_TYPEDEF ) {
-        //
-        // This is for a case like:
-        //
-        //      explain typedef int int32_t;
-        //
-        // that is: explaining an existing typedef.  In order to do that, we
-        // have to un-typedef it so we explain the type that it's typedef'd as.
-        //
-        decl_ast = CONST_CAST( c_ast_t*, c_ast_untypedef( decl_ast ) );
-
-        //
-        // However, we also have to check whether the typedef being explained
-        // is not equivalent to the existing typedef.  This is for a case like:
-        //
-        //      explain typedef char int32_t;
-        //
-        if ( !c_ast_equiv( $2.ast, decl_ast ) ) {
-          print_error( &@4,
-            "\"%s\": \"%s\" redefinition with different type",
-            c_ast_sname_full_name( decl_ast ), L_TYPEDEF
-          );
-          PARSE_ABORT();
-        }
-      }
-
-      c_ast_t *const ast = c_ast_patch_placeholder( $2.ast, decl_ast );
-      if ( ast->kind == K_USER_DEF_CONVERSION )
-        ast->type_id |= $2.ast->type_id;
-      C_AST_CHECK( ast, CHECK_DECL );
-
-      if ( ast->kind == K_USER_DEF_CONVERSION ) {
-        if ( c_ast_sname_type( ast ) == T_SCOPE )
-          c_ast_sname_set_type( ast, T_CLASS );
-        FPRINTF( fout, "%s ", L_DECLARE );
-      }
-      else {
-        c_sname_t sname = c_ast_take_name( ast );
-        char const *local_name = NULL;
-        char const *scope_name = "";
-
-        switch ( ast->kind ) {
-          case K_OPERATOR:
-            local_name = graph_name_c( op_get( ast->as.oper.oper_id )->name );
-            scope_name = c_sname_full_name( &sname );
-            break;
-          default:
-            assert( !c_sname_empty( &sname ) );
-            local_name = c_sname_local_name( &sname );
-            scope_name = c_sname_scope_name( &sname );
-            break;
-        } // switch
-
-        assert( local_name != NULL );
-        FPRINTF( fout, "%s %s ", L_DECLARE, local_name );
-        if ( scope_name[0] != '\0' ) {
-          c_type_id_t const sn_type = c_sname_type( &sname );
-          assert( sn_type != T_NONE );
-          FPRINTF( fout,
-            "%s %s %s ", L_OF, c_type_name( sn_type ), scope_name
-          );
-        }
-        FPRINTF( fout, "%s ", L_AS );
-        if ( is_typedef || c_ast_take_typedef( ast ) )
-          FPRINTF( fout, "%s ", L_TYPE );
-        if ( ast->kind != K_OPERATOR )
-          c_sname_free( &sname );
-      }
-
-      c_ast_english( ast, fout );
-      FPUTC( '\n', fout );
+      if ( !explain_type_decl( NULL, NULL, $2.ast, $4.ast, &@4 ) )
+        PARSE_ABORT();
     }
 
     /*
@@ -1630,6 +1738,39 @@ explain_c
   | explain error
     {
       ELABORATE_ERROR( "cast or declaration expected" );
+    }
+  ;
+
+alignas_specifier_c
+  : Y_ALIGNAS lparen_expected Y_NUMBER rparen_expected
+    {
+      DUMP_START( "alignas_specifier_c", "ALIGNAS ( NUMBER )" );
+      DUMP_NUM( "NUMBER", $3 );
+      DUMP_END();
+
+      $$.kind = ALIGNAS_EXPR;
+      $$.as.expr = $3;
+    }
+  | Y_ALIGNAS lparen_expected type_c_ast { type_push( $3.ast ); }
+    cast_c_ast_opt rparen_expected
+    {
+      (void)type_pop();
+
+      DUMP_START( "alignas_specifier_c",
+                  "ALIGNAS ( type_c_ast cast_c_ast_opt )" );
+      DUMP_AST( "type_c_ast", $3.ast );
+      DUMP_AST( "cast_c_ast_opt", $5.ast );
+      DUMP_END();
+
+      c_ast_t *const ast = c_ast_patch_placeholder( $3.ast, $5.ast );
+
+      $$.kind = ALIGNAS_TYPE;
+      $$.as.type_ast = ast;
+    }
+  | Y_ALIGNAS lparen_expected error rparen_expected
+    {
+      ELABORATE_ERROR( "number or type expected" );
+      $$.kind = ALIGNAS_NONE;
     }
   ;
 
@@ -4182,6 +4323,11 @@ as_expected
     {
       ELABORATE_ERROR( "\"%s\" expected", L_AS );
     }
+  ;
+
+as_opt
+  : /* empty */
+  | Y_AS
   ;
 
 cast_expected

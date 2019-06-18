@@ -36,6 +36,8 @@
 // standard
 #include <stdio.h>                      /* for FILE */
 
+/// @endcond
+
 // Gibberish declaration flags.
 #define G_DECL_NONE           0u        /**< None. */
 #define G_DECL_TYPEDEF        (1u << 0) /**< Is a typedef. */

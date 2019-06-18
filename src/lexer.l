@@ -191,6 +191,8 @@ typedef struct keyword keyword_t;
  * @hideinitializer
  */
 static keyword_t const CDECL_KEYWORDS[] = {
+  { L__ALIGNAS,       C_SYN( L_ALIGNAS,       true  ) },
+  { L_ALIGNED,        TOKEN( Y_ALIGNED )              },
   { L_ALL,            TOKEN( Y_ALL )                  },
   { L_ARRAY,          TOKEN( Y_ARRAY )                },
   { L_AS,             TOKEN( Y_AS )                   },
@@ -198,6 +200,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_AUTOMATIC,      C_SYN( L_AUTO,          false ) },
   { L_BLOCK,          TOKEN( Y_BLOCK )                },  // Apple extension
   { L__BOOL,          C_SYN( L_BOOL,          true  ) },
+  { L_BYTES,          TOKEN( Y_BYTES )                },
   { L_CAST,           TOKEN( Y_CAST )                 },
   { L_CHARACTER,      C_SYN( L_CHAR,          false ) },
   { L_COMPLEX,        C_SYN( L__COMPLEX,      true  ) },

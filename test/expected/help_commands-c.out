@@ -1,6 +1,6 @@
 command:
   cast <name> into <english>
-  declare <name> as <english>
+  declare <name> as <english> [aligned [as] {<number> [bytes] | <english>}]
   define <name> as <english>
   explain <gibberish>
   { help | ? } [command[s] | english]

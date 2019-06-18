@@ -62,6 +62,15 @@ static bool error_unknown_type( c_ast_t const* );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
+ * Gets the alignas literal for the current language.
+ *
+ * @return Returns either `_Alignas` (for C) or `alignas` (for C++).
+ */
+static inline char const* alignas_lang( void ) {
+  return C_LANG_IS_CPP() ? L_ALIGNAS : L__ALIGNAS;
+}
+
+/**
  * Simple wrapper around `c_ast_found()`.
  *
  * @param ast The `c_ast` to check.
@@ -557,8 +566,40 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
 static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   bool const is_func_arg = REINTERPRET_CAST( bool, data );
-
   c_type_id_t tmp_type;
+
+  if ( ast->align.kind != ALIGNAS_NONE ) {
+    if ( (ast->type_id & T_REGISTER) != T_NONE ) {
+      print_error( &ast->loc,
+        "\"%s\" can not be combined with \"%s\"", alignas_lang(), L_REGISTER
+      );
+      return VISITOR_ERROR_FOUND;
+    }
+    if ( (ast->kind & K_FUNCTION_LIKE) != K_NONE ) {
+      print_error( &ast->loc,
+        "%s can not be %s", c_kind_name( ast->kind ), L_ALIGNED
+      );
+      return VISITOR_ERROR_FOUND;
+    }
+    switch ( ast->align.kind ) {
+      case ALIGNAS_NONE:
+        break;
+      case ALIGNAS_EXPR: {
+        unsigned const alignment = ast->align.as.expr;
+        if ( !at_most_one_bit_set( alignment ) ) {
+          print_error( &ast->loc,
+            "\"%u\": alignment is not a power of 2", alignment
+          );
+          return VISITOR_ERROR_FOUND;
+        }
+        break;
+      }
+      case ALIGNAS_TYPE:
+        if ( !c_ast_check( ast->align.as.type_ast, CHECK_DECL ) )
+          return VISITOR_ERROR_FOUND;
+        break;
+    } // switch
+  }
 
   switch ( ast->kind ) {
     case K_ARRAY: {

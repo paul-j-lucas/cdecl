@@ -60,8 +60,10 @@ static help_text_t const HELP_TEXT_COMMANDS[] = {
   { "command:", SAME_AS_C },
   { "  cast <name> into <english>",
     "  [const | dynamic | reinterpret | static] cast <name> into <english>" },
-  { "  declare <name> as <english>",
-    "  declare { <name> | <operator> } as <english>" },
+  { "  declare <name> as <english> [aligned [as] {<number> [bytes] | <english>}]",
+    SAME_AS_C },
+  { NOT_IN_LANG,
+    "  declare <operator> as <english>" },
   { "  define <name> as <english>", SAME_AS_C },
   { "  explain <gibberish>", SAME_AS_C },
   { "  { help | ? } [command[s] | english]", SAME_AS_C },
@@ -81,7 +83,8 @@ static help_text_t const HELP_TEXT_COMMANDS[] = {
     "scope-e: { <scope-c> | scope }" },
   { "", "" },
   { "where:", SAME_AS_C },
-  { "  [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere", SAME_AS_C },
+  { "  [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere",
+     SAME_AS_C },
   { NULL, NULL }
 };
 

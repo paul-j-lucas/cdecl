@@ -89,6 +89,26 @@ _GL_INLINE_HEADER_BEGIN
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * The argument type for the alignas specifier.
+ */
+enum c_alignas_arg {
+  ALIGNAS_NONE,                         ///< No alignas specifier.
+  ALIGNAS_EXPR,                         ///< `alignas(` _expr_ `)`
+  ALIGNAS_TYPE                          ///< `alignas(` _type_ `)`
+};
+
+/**
+ * Data for the alignas specifier.
+ */
+struct c_alignas {
+  union {
+    c_ast_t      *type_ast;             ///< Aligned the same as this type.
+    unsigned      expr;                 ///< Aligned to this number of bytes.
+  } as;                                 ///< Union discriminator.
+  c_alignas_arg_t kind;                 ///< Kind of alignas argument.
+};
+
+/**
  * The direction to traverse an AST using `c_ast_visit()`.
  */
 enum v_direction {
@@ -161,7 +181,7 @@ struct c_constructor {
  * AST node for a C/C++ `enum`, `class`, `struct`, or `union` type.
  */
 struct c_ecsu {
-  c_sname_t ecsu_sname;                 ///< enum/class/struct/union name
+  c_sname_t   ecsu_sname;               ///< enum/class/struct/union name
 };
 
 /**
@@ -201,7 +221,7 @@ struct c_ptr_mbr {
  * AST node for a C/C++ pointer, or a C++ reference or rvalue reference.
  */
 struct c_ptr_ref {
-  c_ast_t  *to_ast;                     ///< What it's a pointer/reference to.
+  c_ast_t    *to_ast;                   ///< What it's a pointer/reference to.
 };
 
 /**
@@ -226,6 +246,7 @@ struct c_user_def_lit {
  * AST node for a parsed C/C++ declaration.
  */
 struct c_ast {
+  c_alignas_t           align;          ///< Alignment (if any).
   c_ast_depth_t         depth;          ///< How many `()` deep.
   c_ast_id_t            id;             ///< Unique id (starts at 1).
   c_kind_t              kind;           ///< Kind.

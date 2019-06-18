@@ -29,10 +29,12 @@
 ////////// literals ///////////////////////////////////////////////////////////
 
 // english
+extern char const L_ALIGNED[];
 extern char const L_ALL[];
 extern char const L_ARRAY[];
 extern char const L_AS[];
 extern char const L_BLOCK[];                // Apple: Engligh for '^'
+extern char const L_BYTES[];
 extern char const L_CAST[];
 extern char const L_COMMAND[];              // synonym for "commands"
 extern char const L_COMMANDS[];

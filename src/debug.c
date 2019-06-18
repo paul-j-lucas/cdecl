@@ -115,6 +115,19 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
     INDENT_PRINT(
       "parent->id = %d,\n", ast->parent ? (int)ast->parent->id : -1
     );
+
+    switch ( ast->align.kind ) {
+      case ALIGNAS_NONE:
+        break;
+      case ALIGNAS_EXPR:
+        INDENT_PRINT( "alignas_expr = %u,\n", ast->align.as.expr );
+        break;
+      case ALIGNAS_TYPE:
+        c_ast_debug( ast->align.as.type_ast, indent, "alignas_type_ast", dout );
+        FPUTS( ",\n", dout );
+        break;
+    } // switch
+
     INDENT_PRINT(
       "loc = %d-%d,\n", ast->loc.first_column, ast->loc.last_column
     );

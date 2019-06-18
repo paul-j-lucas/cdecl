@@ -82,6 +82,15 @@ static void         g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
+ * Gets the alignas literal for the current language.
+ *
+ * @return Returns either `_Alignas` (for C) or `alignas` (for C++).
+ */
+static inline char const* alignas_lang( void ) {
+  return C_LANG_IS_CPP() ? L_ALIGNAS : L__ALIGNAS;
+}
+
+/**
  * Sets the leaf `c_ast`.
  *
  * @param param The `g_param` to use.
@@ -657,6 +666,19 @@ void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
 }
 
 void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout ) {
+  switch ( ast->align.kind ) {
+    case ALIGNAS_NONE:
+      break;
+    case ALIGNAS_EXPR:
+      FPRINTF( gout, "%s(%u) ", alignas_lang(), ast->align.as.expr );
+      break;
+    case ALIGNAS_TYPE:
+      FPRINTF( gout, "%s(", alignas_lang() );
+      c_ast_gibberish_declare( ast->align.as.type_ast, G_DECL_NONE, gout );
+      FPUTS( ") ", gout );
+      break;
+  } // switch
+
   g_param_t param;
   g_param_init( &param, ast, G_DECLARE, gout );
   param.flags = flags;

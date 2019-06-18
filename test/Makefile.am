@@ -70,6 +70,9 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_b.test \
 	tests/declare_bii_d.test \
 	tests/declare_c.test \
+	tests/declare_c_al0.test \
+	tests/declare_c_al8.test \
+	tests/declare_c_alpv.test \
 	tests/declare_ci.test \
 	tests/declare_constant.test \
 	tests/declare_cpa3cpa5i.test \
@@ -232,6 +235,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_sv.test \
 	tests/declare_sw.test \
 	tests/declare_t.test \
+	tests/declare_ti_al8.test \
 	tests/declare_ub.test \
 	tests/declare_uc16.test \
 	tests/declare_uc32.test \
@@ -280,6 +284,9 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_ai-01.test \
 	tests/explain_ai-02.test \
 	tests/explain_ai.test \
+	tests/explain_al0_c.test \
+	tests/explain_al8_c.test \
+	tests/explain_alpv_c.test \
 	tests/explain_api-01.test \
 	tests/explain_api-02.test \
 	tests/explain_b.test \
@@ -408,6 +415,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_0f_v-c.test \
 	tests/explain_ac9i.test \
 	tests/explain_af.test \
+	tests/explain_al3_c.test \
 	tests/explain_as9i.test \
 	tests/explain_b-c89.test \
 	tests/explain_b_ai.test \
@@ -773,6 +781,8 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_=i.test \
 	tests/declare_a.test \
 	tests/declare_af-c++.test \
+	tests/declare_c_al0-c++.test \
+	tests/declare_c_al8-c++.test \
 	tests/declare_cdfcdi_i.test \
 	tests/declare_cdfi_i.test \
 	tests/declare_cf_v.test \
@@ -1036,6 +1046,8 @@ TESTS+=	tests/declare_+udl_c_i.test
 TESTS+=	tests/explain_+dtor.test \
 	tests/explain_2+dtor.test \
 	tests/explain_a.test \
+	tests/explain_al0_c-c++.test \
+	tests/explain_al8_c-c++.test \
 	tests/explain_cdfcdi_i.test \
 	tests/explain_cdfi_i.test \
 	tests/explain_cf_v.test \

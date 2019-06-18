@@ -32,6 +32,7 @@ The characters are:
 + `=` = scope (`=` = `of scope S`; `2=` = `of scope S of scope T`, etc.)
 + `0` = pure virtual
 + `a` = array (following digits specify array size), `_Atomic`, or `auto`
++ `al` = `_Alignas` or `alignas`
 + `b` = block (Apple extension) or `bool`
 + `c` = `char`, `class`, or `const`
 + `cd` = `carries_dependency`

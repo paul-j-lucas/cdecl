@@ -26,10 +26,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // english
+char const L_ALIGNED[]              = "aligned";
 char const L_ALL[]                  = "all";
 char const L_ARRAY[]                = "array";
 char const L_AS[]                   = "as";
 char const L_BLOCK[]                = "block";    // Apple: English for '^'
+char const L_BYTES[]                = "bytes";
 char const L_CAST[]                 = "cast";
 char const L_COMMAND[]              = "command";
 char const L_COMMANDS[]             = "commands";

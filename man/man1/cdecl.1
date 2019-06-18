@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 13, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "June 17, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -460,6 +460,7 @@ function arguments.
 .B C11
 Use the C11 version of the C language.
 Adds support for
+\f(CW_Alignas\fP,
 \f(CW_Atomic\fP,
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
@@ -499,6 +500,7 @@ Use the C++03 version of the C++ language.
 .B C++11
 Use the C++11 version of the C++ language.
 Adds support for
+\f(CWalignas\fP,
 \f(CWauto\fP,
 \f(CW[[carries_dependency]]\fP,
 \f(CWchar16_t\fP,
@@ -553,8 +555,11 @@ Composes a C (or C++) cast from pseudo-English.
 .RB "{ " const " | " dynamic " | " reinterpret " | " static " } " cast " \f2s-name\fP" " into" " \f2english\fP"
 Composes a C++ new-style cast from pseudo-English.
 .TP
-.BI declare " \f1{\fP" "" " s-name" " \f1|\fP" " operator" " \f1}\fP" "" " as" " english"
+.BR declare " \f2s-name\fP" " as " \f2english\fP "" " [" aligned " [" as "] { " \f2number\fP " [" bytes "] | " \f2english\fP " }" \f1]\fP
 Composes a C (or C++) declaration from pseudo-English.
+.TP
+.BI declare " operator" " as" " english"
+Composes a C (or C++) overloaded operator declaration from pseudo-English.
 .TP
 .BI define " s-name" " as" " english"
 Defines a type (\f(CWtypedef\fP) from pseudo-English.
@@ -1499,10 +1504,6 @@ struct S { typedef int Int; };  // supported
 struct S { int i; char c; } s;  // not supported
 .cE 0
 .IP \n+[step].
-The C11 (and C++11)
-\f(CWalignas\fP specifier
-is not supported.
-.IP \n+[step].
 While file-scope constructor declarations are supported,
 in-class non-explicit constructor declarations are not:
 .cS
@@ -1549,6 +1550,11 @@ Namespace alias declarations are not supported:
 .cS
 namespace ALN = A_Long_Name;    // not supported
 .cE 0
+.IP \n+[step].
+Multiple \f(CW_Alignas\fP
+or \f(CWalignas\fP
+specifiers in the same declaration
+are not supported.
 .IP \n+[step].
 Only simple C++ attribute specifiers like \f(CW[[this]]\fP
 are supported.
