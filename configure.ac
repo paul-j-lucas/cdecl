@@ -4,7 +4,7 @@
 #       cdecl -- C gibberish translator
 #       configure.ac
 #
-#       Copyright (C) 2018  Paul J. Lucas, et al.
+#       Copyright (C) 2017-2019  Paul J. Lucas, et al.
 #
 #       This program is free software: you can redistribute it and/or modify
 #       it under the terms of the GNU General Public License as published by
@@ -20,19 +20,21 @@
 #       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-AC_INIT([cdecl], [6.4], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/cdecl])
+AC_INIT([cdecl], [6.4.1], [paul@lucasmail.org],,[https://github.com/paul-j-lucas/cdecl])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
 # Checks for programs.
 AC_PROG_CC_C99
 gl_EARLY
-AC_PROG_LEX
-test "x$LEX" = xflex ||
-  AC_MSG_ERROR([required program "flex" not found])
-AC_PROG_YACC
-test "x$YACC" = xyacc &&
-  AC_MSG_ERROR([required program "bison" or "byacc" not found])
+AX_PROG_FLEX(
+  [AC_DEFINE([LEX], [flex], ["flex" found])],
+  [AC_MSG_ERROR([required program "flex" not found])]
+)
+AX_PROG_BISON(
+  [AC_DEFINE([YACC], [bison], ["bison" found])],
+  [AC_MSG_ERROR([required program "bison" not found])]
+)
 AC_PROG_INSTALL
 AC_PROG_LN_S
 
