@@ -378,28 +378,9 @@ void c_typedef_init( void ) {
     yydebug = 0;
 #endif /* YYDEBUG */
 
-    //
-    // These types have to be defined first so max_align_t, ptrdiff_t, and
-    // size_t are defined in the std namespace (for C++) before they are also
-    // defined in the global namespace (for C).
-    //
-    // If defined the other way around, i.e.:
-    //
-    //    typedef unsigned long size_t;
-    //    namespace std { typedef unsigned long size_t; }
-    //
-    // then the parser will interpret the second definition as trying to use an
-    // "unsigned long size_t" (i.e., the "unsigned long" modifying the size_t)
-    // rather than trying to define a new size_t as a synonym for "unsigned
-    // long."
-    //
-    // There may be a better (order-independent) solution to this, but, until
-    // that's figured out, this will have to do.
-    //
-    c_typedef_parse_builtins( TYPEDEFS_STD_CPP );
-
     c_typedef_parse_builtins( TYPEDEFS_STD_C );
     c_typedef_parse_builtins( TYPEDEFS_STD_ATOMIC_H );
+    c_typedef_parse_builtins( TYPEDEFS_STD_CPP );
     c_typedef_parse_builtins( TYPEDEFS_MISC );
 
 #ifdef ENABLE_CDECL_DEBUG
