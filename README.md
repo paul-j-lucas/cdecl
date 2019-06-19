@@ -86,7 +86,7 @@ most notably:
   overloaded operators,
   and
   `friend`,
-  `virtual` and pure `virtual` member function declarations.
+  `virtual` and pure `virtual` member function declarations,
   and
   user-defined conversion operators.
 * Support for C++11
