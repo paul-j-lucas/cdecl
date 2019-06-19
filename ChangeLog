@@ -1,3 +1,28 @@
+2019-06-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * errors.c: Refactored error-checking code into smaller functions.
+   * errors.c: Added c_ast_check_alignas().
+   * errors.c: Added c_ast_check_oper_args().
+   * errors.c: Added error_kind_not_cast_into().
+   * NEWS, cdecl.1, c_ast.h, c_keyword.c, debug.c, english.c, errors.c,
+     gibberish.c, gibberish.h, help.c, lexer.l, literals.c, literals.h,
+     parser.y, typedefs.h, test/Makefile.am, declare_c_al0-c++.out,
+     declare_c_al0.out, declare_c_al8-c++.out, declare_c_al8.out,
+     declare_c_alpv.out, explain_al0_c-c++.out, explain_al0_c.out,
+     explain_al8_c-c++.out, explain_al8_c.out, explain_alpv_c.out,
+     help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
+     help_commands-c++.out, help_commands-c.out, declare_c_al0-c++.test,
+     declare_c_al0.test, declare_c_al3.test, declare_c_al8-c++.test,
+     declare_c_al8.test, declare_c_alpv.test, declare_ti_al8.test,
+     explain_al0_c-c++.test, explain_al0_c.test, explain_al3_c.test,
+     explain_al8_c-c++.test, explain_al8_c.test, explain_alpv_c.test: Added
+     _Alignas and alignas support.
+
+2019-06-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: Added user-defined conversion operator example.
+   * errors.c: Fixed allowing user-defined conversion operators to be const.
+
 2019-06-13  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
