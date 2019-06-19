@@ -86,10 +86,9 @@ most notably:
   overloaded operators,
   and
   `friend`,
-  `virtual`,
+  `virtual` and pure `virtual` member function declarations.
   and
-  pure `virtual`
-  member function declarations.
+  user-defined conversion operators.
 * Support for C++11
   `constexpr`,
   `enum class`,
