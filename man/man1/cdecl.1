@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 17, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "June 18, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1541,8 +1541,8 @@ only
 \f(CWnoexcept(false)\fP,
 and
 \f(CWthrow()\fP,
-are supported.
-Arbitrary expressions for \f(CWnoexcept\fP
+are supported;
+arbitrary expressions for \f(CWnoexcept\fP
 or types for \f(CWthrow\fP
 are not supported.
 .IP \n+[step].
@@ -1556,9 +1556,18 @@ or \f(CWalignas\fP
 specifiers in the same declaration
 are not supported.
 .IP \n+[step].
+Only integer literals
+or types
+as the argument to either the
+\f(CW_Alignas\fP
+or \f(CWalignas\fP
+specifier
+are supported;
+arbitrary expressions are not.
+.IP \n+[step].
 Only simple C++ attribute specifiers like \f(CW[[this]]\fP
-are supported.
-Attribute specifiers with namespaces or arguments are not.
+are supported;
+attribute specifiers with namespaces or arguments are not.
 .IP \n+[step].
 C++20 contracts
 (\f(CW[[assert]]\fP,
@@ -1702,6 +1711,11 @@ command),
 the underlying type is merely typical
 and does not necessarily match
 the underlying type on any particular platform.
+.IP \n+[step].
+An integer literal given as the argument for an alignment specifier
+is only checked to ensure it's either zero or a power of two;
+it is not checked to see whether it meets the minimum alignment
+for the type.
 .SH AUTHORS
 .B cdecl
 has been around since the mid-1980s
