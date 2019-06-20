@@ -39,10 +39,10 @@
 #if WITH_READLINE
 #include <readline/readline.h>          /* for rl_gnu_readline_p */
 
-#if !HAVE_RL_PROMPT_START_IGNORE
+#if !HAVE_DECL_RL_PROMPT_START_IGNORE
 # define RL_PROMPT_START_IGNORE   '\1'
 # define RL_PROMPT_END_IGNORE     '\2'
-#endif /* !HAVE_RL_PROMPT_START_IGNORE */
+#endif /* !HAVE_DECL_RL_PROMPT_START_IGNORE */
 #endif /* WITH_READLINE */
 
 /// @endcond
