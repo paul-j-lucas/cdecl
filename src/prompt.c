@@ -38,6 +38,11 @@
 
 #if WITH_READLINE
 #include <readline/readline.h>          /* for rl_gnu_readline_p */
+
+#if !HAVE_RL_PROMPT_START_IGNORE
+# define RL_PROMPT_START_IGNORE   '\1'
+# define RL_PROMPT_END_IGNORE     '\2'
+#endif /* !HAVE_RL_PROMPT_START_IGNORE */
 #endif /* WITH_READLINE */
 
 /// @endcond
@@ -92,7 +97,7 @@ static char* prompt_create( char suffix ) {
       1 /* RL_PROMPT_START_IGNORE */ +
       (sizeof( SGR_START SGR_EL ) - 1/*null*/) +
       (strlen( sgr_prompt )) +
-      1 /* RL_PROMPT_END_IGNORE */ +
+      2 /* RL_PROMPT_END_IGNORE */ +
       (sizeof( SGR_END SGR_EL ) - 1/*null*/);
   }
 #endif /* WITH_READLINE */

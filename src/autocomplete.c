@@ -39,6 +39,10 @@
 #include <string.h>
 #include <readline/readline.h>          /* must go last */
 
+#if !HAVE_DECL_RL_COMPLETION_MATCHES
+# define rl_completion_matches    completion_matches
+#endif /* !HAVE_DECL_RL_COMPLETION_MATCHES */
+
 /// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////

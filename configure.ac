@@ -89,6 +89,10 @@ AC_CHECK_DECLS([rl_completion_matches],[],[],
 [#include <stdio.h>
 #include <readline/readline.h>
 ])
+AC_CHECK_DECLS([RL_PROMPT_START_IGNORE],[],[],
+[#include <stdio.h>
+#include <readline/readline.h>
+])
 AC_CHECK_DECLS([rl_gnu_readline_p],[],[],
 [#include <stdio.h>
 #include <readline/readline.h>
@@ -100,10 +104,8 @@ AC_SEARCH_LIBS([endwin],[curses ncurses])
 
 # If readline wasn't disabled by the user, does it actually exist and is it a
 # proper readline?
-AS_IF([test x$with_readline = xyes -a \( \
-            x$ac_cv_search_readline = xno -o \
-            x$ac_cv_have_decl_rl_completion_matches = xno \)],
-  [AC_MSG_ERROR([proper readline library not found; use --without-readline])]
+AS_IF([test x$with_readline != xno -a x$ac_cv_search_readline = xno],
+  [AC_MSG_ERROR([readline library not found; use --without-readline])]
 )
 
 # Program feature: cdecl-debug (enabled by default)
