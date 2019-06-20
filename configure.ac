@@ -100,7 +100,7 @@ AC_SEARCH_LIBS([endwin],[curses ncurses])
 
 # If readline wasn't disabled by the user, does it actually exist and is it a
 # proper readline?
-AS_IF([test x$with_readline = xyes -a \( \
+AS_IF([test x$with_readline != xno -a \( \
             x$ac_cv_search_readline = xno -o \
             x$ac_cv_have_decl_rl_completion_matches = xno \)],
   [AC_MSG_ERROR([proper readline library not found; use --without-readline])]
