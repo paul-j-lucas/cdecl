@@ -85,6 +85,31 @@ AC_CHECK_MEMBERS([struct passwd.pw_dir],[],[],[[#include <pwd.h>]])
 
 # Checks for library functions.
 AC_FUNC_REALLOC
+AC_MSG_CHECKING([for rl_completion_func_t])
+#
+# We can't use AC_CHECK_DECLS to check for rl_completion_func_t (a typedef)
+# because that casts the symbol to void and that doesn't work for a typedef.
+#
+# We can't use AX_CHECK_TYPEDEF either because that allows only a single
+# #include and we need two.
+#
+# Therefore, we have to use AC_COMPILE_IFELSE directly.
+#
+AC_COMPILE_IFELSE(
+  [AC_LANG_PROGRAM([[#include <stdio.h>
+                     #include <readline/readline.h>]],
+                   [[(void)sizeof(rl_completion_func_t);]])],
+  [
+    AC_MSG_RESULT([yes])
+    AC_DEFINE([HAVE_DECL_RL_COMPLETION_FUNC_T], [1],
+      [Define to 1 if you have the declaraion of `rl_completion_func_t'.])
+  ],
+  [
+    AC_MSG_RESULT([no])
+    AC_DEFINE([HAVE_DECL_RL_COMPLETION_FUNC_T], [0],
+      [Define to 1 if you have the declaraion of `rl_completion_func_t`.])
+  ]
+)
 AC_CHECK_DECLS([rl_completion_matches],[],[],
 [#include <stdio.h>
 #include <readline/readline.h>

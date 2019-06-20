@@ -375,6 +375,18 @@ static char* keyword_completion( char const *text, int state ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+#if !HAVE_DECL_RL_COMPLETION_FUNC_T
+//
+// CPPFunction was the original typedef in Readline prior to 4.2.  In 4.2, it
+// was deprecated and replaced by rl_completion_func_t; in 6.3-5, CPPFunction
+// was removed.
+//
+// To support Readlines older than 4.2 (such as that on macOS Mojave -- which
+// is actually just a veneer on Editline), define rl_completion_func_t.
+//
+typedef CPPFunction rl_completion_func_t;
+#endif /* HAVE_DECL_RL_COMPLETION_FUNC_T */
+
 /**
  * Initializes readline.
  */
@@ -382,7 +394,7 @@ void readline_init( void ) {
   // allow conditional ~/.inputrc parsing
   rl_readline_name = CONST_CAST( char*, PACKAGE );
 
-  rl_attempted_completion_function = (CPPFunction*)attempt_completion;
+  rl_attempted_completion_function = (rl_completion_func_t*)attempt_completion;
   rl_completion_entry_function = (void*)keyword_completion;
   rl_instream = fin;
   rl_outstream = fout;
