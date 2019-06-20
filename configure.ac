@@ -38,6 +38,25 @@ AX_PROG_BISON(
 AC_PROG_INSTALL
 AC_PROG_LN_S
 
+# External dependency: readline (enabled by default)
+AC_ARG_WITH([readline],
+  AS_HELP_STRING([--without-readline], [disable support for readline]),
+  [],
+  [with_readline=yes]
+)
+AS_IF([test x$with_readline != xno],
+  [
+    AC_DEFINE([WITH_READLINE], [1],
+      [Define to 1 if readline support is enabled.])
+    AS_IF([test x$withval != xyes],
+      [
+        CPPFLAGS="-I${withval}/include ${CPPFLAGS}"
+        LDFLAGS="-L${withval}/lib ${LDFLAGS}"
+      ]
+    )
+  ]
+)
+
 # Checks for libraries.
 
 # Checks for header files.
@@ -79,20 +98,12 @@ AC_SEARCH_LIBS([readline],[readline])
 AC_SEARCH_LIBS([add_history],[readline history])
 AC_SEARCH_LIBS([endwin],[curses ncurses])
 
-# External dependency: readline (enabled by default)
-AC_ARG_WITH([readline],
-  AS_HELP_STRING([--without-readline], [disable support for readline]),
-  [],
-  [with_readline=yes]
-)
+# If readline wasn't disabled by the user, does it actually exist and is it a
+# proper readline?
 AS_IF([test x$with_readline = xyes -a \( \
             x$ac_cv_search_readline = xno -o \
             x$ac_cv_have_decl_rl_completion_matches = xno \)],
   [AC_MSG_ERROR([proper readline library not found; use --without-readline])]
-)
-AS_IF([test x$with_readline = xyes],
-  [AC_DEFINE([WITH_READLINE], [1],
-    [Define to 1 if readline support is enabled.])]
 )
 
 # Program feature: cdecl-debug (enabled by default)
@@ -132,7 +143,7 @@ AS_IF([test x$enable_yydebug = xyes],
 )
 
 # Makefile conditionals.
-AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline      = xyes])
+AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline      != xno])
 AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test x$enable_cdecl_debug = xyes])
 AM_CONDITIONAL([ENABLE_YYDEBUG],      [test x$enable_yydebug     = xyes])
 
