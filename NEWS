@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.4.1
+
+** Fixed use of GNU Readline
+Several things relating to the use of GNU Readline were fixed.
+
+
 * Changes in Cdecl 6.4
 
 ** Added support for user-defined conversion operators
