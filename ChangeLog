@@ -1,5 +1,27 @@
+2019-06-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: Updated.
+   * prompt.c: Fixed HAVE_DECL_RL_PROMPT_START_IGNORE.
+   * configure.ac, autocomplete.c: Work-around for CPPFunction deprecation
+     warning.
+   * configure.ac, autocomplete.c, prompt.c: Now falling back to
+     completion_matches for missing rl_completion_matches; now checking for
+     RL_PROMPT_START_IGNORE; fixed RL_PROMPT_END_IGNORE.
+   * configure.ac: Fixed handling of readline, part 2.
+   * configure.ac: Fixed handling of readline.
+
+2019-06-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, ax_prog_bison.m4, ax_prog_flex.m4: Now using AX_PROG_FLEX
+     and AX_PROG_BISON to get rid of a POSIX yacc warning.
+
 2019-06-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_typedef.c, cdecl--debug.out, cdecl-d.out: The reworking of the way in
+     which typedefs are parsed fixed things so that the predefined typedefs are
+     no longer order-dependent.
+   * cdecl.1: More info about _Alignas.
+   * lib/Makefile.am, unistd.in.h, unistd_h.m4: Updated Gnulib.
    * errors.c: Refactored error-checking code into smaller functions.
    * errors.c: Added c_ast_check_alignas().
    * errors.c: Added c_ast_check_oper_args().
