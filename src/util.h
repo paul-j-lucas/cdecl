@@ -189,7 +189,7 @@ _GL_INLINE_HEADER_BEGIN
  * @hideinitializer
  */
 #define FERROR(STREAM) \
-  BLOCK( if ( unlikely( ferror( STREAM ) ) ) perror_exit( EX_IOERR ); )
+  BLOCK( if ( unlikely( ferror( STREAM ) != 0 ) ) perror_exit( EX_IOERR ); )
 
 /**
  * Calls **fflush(3)** on \a STREAM.
