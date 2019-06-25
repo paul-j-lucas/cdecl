@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.4.2
+
+** More help
+The --help option now prints long options and project URLs.
+
+
 * Changes in Cdecl 6.4.1
 
 ** Fixed use of GNU Readline
