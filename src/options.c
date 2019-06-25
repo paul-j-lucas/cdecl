@@ -343,7 +343,7 @@ static void parse_options( int argc, char const *argv[] ) {
   check_mutually_exclusive( "v", "23cCdfikoqstxy" );
 
   if ( print_version ) {
-    PRINT_ERR( "%s\n", PACKAGE_STRING );
+    printf( "%s\n", PACKAGE_STRING );
     exit( EX_OK );
   }
 
@@ -370,33 +370,34 @@ static void parse_options( int argc, char const *argv[] ) {
  * Prints the usage message to standard error.
  */
 static void usage( void ) {
-  PRINT_ERR(
-"usage: %s [options] [command...]\n"
-"       %s [options] files...\n"
-"       %s -v\n"
-"\n"
+  printf(
+"usage: " PACKAGE " [options] [command...]\n"
+"       " PACKAGE " [options] files...\n"
 "options:\n"
-"  -2       Print digraphs.\n"
-"  -3       Print trigraphs.\n"
-"  -c file  Specify the configuration file [default: ~/%s].\n"
-"  -C       Suppress reading configuration file.\n"
+"  --color=when    | -k when  When to colorize output [default: not_file].\n"
+"  --config=file   | -c file  The configuration file [default: ~/%s].\n"
 #ifdef ENABLE_CDECL_DEBUG
-"  -d       Enable debug output.\n"
+"  --debug         | -d       Enable debug output.\n"
 #endif /* ENABLE_CDECL_DEBUG */
-"  -f file  Read from this file [default: stdin].\n"
-"  -h       Print this help and exit.\n"
-"  -i       Force interactive mode.\n"
-"  -k when  Specify when to colorize output [default: not_file].\n"
-"  -o file  Write to this file [default: stdout].\n"
-"  -q       Be quiet (disable prompt).\n"
-"  -s       Suppress trailing semicolon in declarations.\n"
-"  -t       Suppress predefining standard types.\n"
-"  -v       Print version and exit.\n"
-"  -x lang  Use <lang>.\n"
+"  --digraphs      | -2       Print digraphs.\n"
+"  --file=file     | -f file  Read from this file [default: stdin].\n"
+"  --help          | -h       Print this help and exit.\n"
+"  --interactive   | -i       Force interactive mode.\n"
+"  --language=lang | -x lang  Use <lang>.\n"
+"  --no-config     | -C       Suppress reading configuration file.\n"
+"  --no-semicolon  | -s       Suppress trailing semicolon in declarations.\n"
+"  --no-typedefs   | -t       Suppress predefining standard types.\n"
+"  --output=file   | -o file  Write to this file [default: stdout].\n"
+"  --quiet         | -q       Be quiet (disable prompt).\n"
+"  --trigraphs     | -3       Print trigraphs.\n"
+"  --version       | -v       Print version and exit.\n"
 #ifdef YYDEBUG
-"  -y       Enable Bison debug output.\n"
+"  --yydebug       | -y       Enable Bison debug output.\n"
 #endif /* YYDEBUG */
-    , me, me, me,
+"\n"
+"Report bugs to: " PACKAGE_BUGREPORT "\n"
+PACKAGE_NAME " home page: " PACKAGE_URL "\n"
+    ,
     CONF_FILE_NAME_DEFAULT
   );
   exit( EX_USAGE );
