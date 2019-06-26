@@ -26,6 +26,9 @@
 // local
 #include "cdecl.h"                      /* must go first */
 #include "c_lang.h"
+/// @cond DOXYGEN_IGNORE
+#define CDECL_TYPE_INLINE _GL_EXTERN_INLINE
+/// @endcond
 #include "c_type.h"
 #include "gibberish.h"
 #include "literals.h"

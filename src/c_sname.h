@@ -61,7 +61,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa c_sname_prepend_sname()
  */
 CDECL_SNAME_INLINE void c_sname_append_name( c_sname_t *sname, char *name ) {
-  (void)slist_push_tail( sname, name );
+  slist_push_tail( sname, name );
 }
 
 /**
@@ -217,7 +217,7 @@ CDECL_SNAME_INLINE char const* c_sname_name_atr( c_sname_t const *sname,
  * @sa c_sname_prepend_sname()
  */
 CDECL_SNAME_INLINE void c_sname_prepend_name( c_sname_t *sname, char *name ) {
-  (void)slist_push_head( sname, name );
+  slist_push_head( sname, name );
 }
 
 /**

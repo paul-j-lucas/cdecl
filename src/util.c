@@ -151,7 +151,8 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
 
 void* free_later( void *p ) {
   assert( p != NULL );
-  return slist_push_tail( &free_later_list, p );
+  slist_push_tail( &free_later_list, p );
+  return p;
 }
 
 void free_now( void ) {

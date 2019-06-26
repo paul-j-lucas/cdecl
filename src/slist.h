@@ -132,28 +132,6 @@ struct slist_node {
   void *data;                           ///< Pointer to user data.
 };
 
-/**
- * Convenience macro to get an slist's data cast to \a DATA_TYPE.
- *
- * @param DATA_TYPE The type of the data to cast to.
- * @param LIST The `slist` to get the data of.
- * @return Returns said data cast to \a DATA_TYPE.
- * @hideinitializer
- */
-#define SLIST_DATA(DATA_TYPE,LIST) \
-  REINTERPRET_CAST( DATA_TYPE, (LIST)->data )
-
-/**
- * Convenience macro to get an slist's node's data cast to \a DATA_TYPE.
- *
- * @param DATA_TYPE The type of the data to cast to.
- * @param NODE The `slist_node` to get the data of.
- * @return Returns said data cast to \a DATA_TYPE.
- * @hideinitializer
- */
-#define SLIST_NODE_DATA(DATA_TYPE,NODE) \
-  REINTERPRET_CAST( DATA_TYPE, (NODE)->data )
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -332,21 +310,8 @@ void* slist_pop_head( slist_t *list );
  *
  * @param list A pointer to the <code>\ref slist</code>.
  * @param data The pointer to the data to add.
- * @return Returns \a data.
  */
-void* slist_push_head( slist_t *list, void *data );
-
-/**
- * Convenience macro that pushes \a DATA onto the head of \a LIST.
- *
- * @param DATA_TYPE The type of the data to cast to.
- * @param LIST A pointer to the <code>\ref slist</code> to push onto.
- * @param DATA The data to pushed.
- * @return Returns \a DATA cast to \a DATA_TYPE.
- * @hideinitializer
- */
-#define SLIST_PUSH_HEAD(DATA_TYPE,LIST,DATA) \
-  REINTERPRET_CAST( DATA_TYPE, slist_push_head( (LIST), REINTERPRET_CAST( void*, (DATA) ) ) )
+void slist_push_head( slist_t *list, void *data );
 
 /**
  * Pushes \a src onto the head of \a dst.
@@ -369,21 +334,8 @@ void slist_push_list_tail( slist_t *dst, slist_t *src );
  *
  * @param list The <code>\ref slist</code> to push onto.
  * @param data The data to pushed.
- * @return Returns \a data.
  */
-void* slist_push_tail( slist_t *list, void *data );
-
-/**
- * Convenience macro that pushes \a DATA onto the tail of \a LIST.
- *
- * @param DATA_TYPE The type of the data to cast to.
- * @param LIST A pointer to the <code>\ref slist</code> to push onto.
- * @param DATA The data to pushed.
- * @return Returns \a DATA cast to \a DATA_TYPE.
- * @hideinitializer
- */
-#define SLIST_PUSH_TAIL(DATA_TYPE,LIST,DATA) \
-  REINTERPRET_CAST( DATA_TYPE, slist_push_tail( (LIST), REINTERPRET_CAST( void*, (DATA) ) ) )
+void slist_push_tail( slist_t *list, void *data );
 
 /**
  * Peeks at the data at the tail of \a list.

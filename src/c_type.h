@@ -30,12 +30,19 @@
 #include "cdecl.h"                      /* must go first */
 #include "c_lang.h"                     /* for c_lang_id_t */
 #include "typedefs.h"                   /* for c_loc_t */
+#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <stdbool.h>
 #include <inttypes.h>                   /* for PRIX64, etc. */
+#include <stdlib.h>                     /* for free(3) */
+
+_GL_INLINE_HEADER_BEGIN
+#ifndef CDECL_TYPE_INLINE
+# define CDECL_TYPE_INLINE _GL_INLINE
+#endif /* CDECL_TYPE_INLINE */
 
 /// @endcond
 
@@ -131,6 +138,55 @@
  */
 #define PRIX_C_TYPE_T         PRIX64
 
+////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Frees the data for a `c_type_id_t`.
+ * For platforms with 64-bit pointers, this is a no-op.
+ *
+ * @param data The data to free.
+ * @sa c_type_id_data_new(c_type_id_t)
+ */
+CDECL_TYPE_INLINE void c_type_id_data_free( void *data ) {
+#if SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP
+  free( data );
+#else
+  (void)data;
+#endif /* SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP */
+}
+
+/**
+ * Gets the `c_type_id_t` value from a `void*` data value.
+ *
+ * @param data The data to get the `c_type_id_t` from.
+ * @return Returns the `c_type_id_t`.
+ * @sa c_type_id_data_new(c_type_id_t)
+ */
+CDECL_TYPE_INLINE c_type_id_t c_type_id_data_get( void *data ) {
+#if SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP
+  return *REINTERPRET_CAST( c_type_id_t*, data );
+#else
+  return REINTERPRET_CAST( c_type_id_t, data );
+#endif /* SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP */
+}
+
+/**
+ * Creates an opaque data handle for a `c_type_id_t`.
+ *
+ * @param type_id The `c_type_id_t` to use.
+ * @return Returns said handle.
+ * @sa c_type_id_data_free(void*)
+ */
+CDECL_TYPE_INLINE void* c_type_id_data_new( c_type_id_t type_id ) {
+#if SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP
+  c_type_id_t *const p = MALLOC( c_type_id_t, 1 );
+  *p = type_id;
+  return p;
+#else
+  return REINTERPRET_CAST( void*, type_id );
+#endif /* SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP */
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -179,6 +235,8 @@ char const* c_type_name( c_type_id_t type_id );
 char const* c_type_name_error( c_type_id_t type_id );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+_GL_INLINE_HEADER_END
 
 #endif /* cdecl_c_type_H */
 /* vim:set et sw=2 ts=2: */

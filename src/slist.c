@@ -69,7 +69,7 @@ slist_t slist_dup( slist_t const *src, ssize_t n,
           src_node = src_node->next ) {
       void *const dst_data = node_data_dup_fn != NULL ?
         (*node_data_dup_fn)( src_node->data ) : src_node->data;
-      (void)slist_push_tail( &dst, dst_data );
+      slist_push_tail( &dst, dst_data );
     } // for
   }
 
@@ -125,7 +125,7 @@ void* slist_pop_head( slist_t *list ) {
   return NULL;
 }
 
-void* slist_push_head( slist_t *list, void *data ) {
+void slist_push_head( slist_t *list, void *data ) {
   assert( list != NULL );
   slist_node_t *const new_head = MALLOC( slist_node_t, 1 );
   new_head->data = data;
@@ -134,7 +134,6 @@ void* slist_push_head( slist_t *list, void *data ) {
   if ( list->tail == NULL )
     list->tail = new_head;
   ++list->len;
-  return data;
 }
 
 void slist_push_list_head( slist_t *dst, slist_t *src ) {
@@ -172,7 +171,7 @@ void slist_push_list_tail( slist_t *dst, slist_t *src ) {
   slist_init( src );
 }
 
-void* slist_push_tail( slist_t *list, void *data ) {
+void slist_push_tail( slist_t *list, void *data ) {
   assert( list != NULL );
   slist_node_t *const new_tail = MALLOC( slist_node_t, 1 );
   new_tail->data = data;
@@ -188,7 +187,6 @@ void* slist_push_tail( slist_t *list, void *data ) {
   }
   list->tail = new_tail;
   ++list->len;
-  return data;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

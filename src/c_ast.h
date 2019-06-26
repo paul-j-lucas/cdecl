@@ -75,7 +75,7 @@ _GL_INLINE_HEADER_BEGIN
  * @return Returns a pointer to the `c_ast`.
  * @hideinitializer
  */
-#define C_AST_DATA(NODE)          SLIST_NODE_DATA( c_ast_t*, (NODE) )
+#define C_AST_DATA(NODE)          REINTERPRET_CAST( c_ast_t*, (NODE)->data )
 
 /**
  * Convenience macro to get the name of a scope.
@@ -84,7 +84,7 @@ _GL_INLINE_HEADER_BEGIN
  * @return Returns a pointer to the scope's name.
  * @hideinitializer
  */
-#define C_SCOPE_NAME(NODE)        SLIST_NODE_DATA( char const*, (NODE) )
+#define C_SCOPE_NAME(NODE)        REINTERPRET_CAST( char const*, (NODE)->data )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -339,7 +339,7 @@ CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
  * @param kind The kind of `c_ast` to create.
  * @param depth How deep within `()` it is.
  * @param loc A pointer to the token location data.
- * @return Returns a pointer to a new c_ast.
+ * @return Returns a pointer to a new `c_ast`.
  */
 c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc );
 

@@ -26,9 +26,21 @@
  * Declares types and functions for kinds of things in C/C++ declarations.
  */
 
+#ifndef CDECL_CONFIGURE                 /* defined only during ../configure */
+//
+// During configure time, we need to get sizeof(c_kind_t), so we #include this
+// header.  However, this header indirectly includes config.h that doesn't get
+// created until after configure finishes.
+//
+// Therefore, configure defines CDECL_CONFIGURE so that we can #include this
+// header that will NOT #include anything else (or define anything that depends
+// on #include'd definitions).
+//
+
 // local
 #include "cdecl.h"                      /* must go first */
 #include "typedefs.h"
+#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -41,6 +53,13 @@ _GL_INLINE_HEADER_BEGIN
 #endif /* CDECL_KIND_INLINE */
 
 /// @endcond
+
+#else /* CDECL_CONFIGURE */
+
+// local
+#include "typedefs.h"                   /* for c_kind_t */
+
+#endif /* CDECL_CONFIGURE */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -75,6 +94,8 @@ enum c_kind {
   K_USER_DEF_LITERAL        = 0x20000,  ///< User-defined literal (C++ only).
 };
 
+#ifndef CDECL_CONFIGURE
+
 /**
  * Shorthand for "function-like" kinds: #K_BLOCK, #K_CONSTRUCTOR,
  * #K_DESTRUCTOR, #K_FUNCTION, #K_OPERATOR, and #K_USER_DEF_LITERAL.
@@ -87,7 +108,54 @@ enum c_kind {
 #define K_PARENT_MIN          K_ARRAY
 /// @endcond
 
-////////// extern functions ///////////////////////////////////////////////////
+////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Frees the data for a `c_kind_t`.
+ * @note
+ * For platforms with 64-bit pointers, this is a no-op.
+ *
+ * @param data The data to free.
+ */
+CDECL_KIND_INLINE void c_kind_data_free( void *data ) {
+#if SIZEOF_C_KIND_T > SIZEOF_VOIDP
+  free( data );
+#else
+  (void)data;
+#endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
+}
+
+/**
+ * Gets the `c_kind_t` value from a `void*` data value.
+ *
+ * @param data The data to get the `c_kind_t` from.
+ * @return Returns the `c_kind_t`.
+ * @sa c_kind_data_new(c_kind_t)
+ */
+CDECL_KIND_INLINE c_kind_t c_kind_data_get( void *data ) {
+#if SIZEOF_C_KIND_T > SIZEOF_VOIDP
+  return *REINTERPRET_CAST( c_kind_t*, data );
+#else
+  return REINTERPRET_CAST( c_kind_t, data );
+#endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
+}
+
+/**
+ * Creates an opaque data handle for a `c_kind_t`.
+ *
+ * @param kind The `c_kind_t` to use.
+ * @return Returns said handle.
+ * @sa c_kind_data_free(void*)
+ */
+CDECL_KIND_INLINE void* c_kind_data_new( c_kind_t kind ) {
+#if SIZEOF_C_KIND_T > SIZEOF_VOIDP
+  c_kind_t *const p = MALLOC( c_kind_t, 1 );
+  *p = kind;
+  return p;
+#else
+  return REINTERPRET_CAST( void*, kind );
+#endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
+}
 
 /**
  * Checks whether \a kind is a parent kind.
@@ -98,6 +166,8 @@ enum c_kind {
 CDECL_KIND_INLINE bool c_kind_is_parent( c_kind_t kind ) {
   return kind >= K_PARENT_MIN;
 }
+
+////////// extern functions ///////////////////////////////////////////////////
 
 /**
  * Gets the name of \a kind.
@@ -111,5 +181,6 @@ char const* c_kind_name( c_kind_t kind );
 
 _GL_INLINE_HEADER_END
 
+#endif /* CDECL_CONFIGURE */
 #endif /* cdecl_c_kind_H */
 /* vim:set et sw=2 ts=2: */

@@ -74,17 +74,6 @@
 #define rb_node_data(NODE_PTR) \
   (*REINTERPRET_CAST( void**, NODE_PTR ))
 
-/**
- * Gets a pointer to a node's data cast to \a TYPE.
- *
- * @param TYPE The type to cast the data to.
- * @param NODE_PTR A pointer to the node to get the data of.
- * @return Returns said pointer.
- * @hideinitializer
- */
-#define rb_type_data(TYPE,NODE_PTR) \
-  REINTERPRET_CAST( TYPE, rb_node_data( NODE_PTR ) )
-
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef struct rb_node rb_node_t;

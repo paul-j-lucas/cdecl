@@ -26,9 +26,6 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define CDECL_AST_UTIL_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "c_ast_util.h"
 #include "c_typedef.h"
 
@@ -279,12 +276,27 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func ) {
   return rv;
 }
 
+c_ast_t* c_ast_find_kind( c_ast_t *ast, v_direction_t dir, c_kind_t kind ) {
+  void *const data = c_kind_data_new( kind );
+  ast = c_ast_visit( ast, dir, c_ast_vistor_kind, data );
+  c_kind_data_free( data );
+  return ast;
+}
+
 c_sname_t const* c_ast_find_name( c_ast_t const *ast, v_direction_t dir ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_t *const found = c_ast_visit(
     nonconst_ast, dir, c_ast_visitor_name, REINTERPRET_CAST( void*, 1 )
   );
   return found != NULL ? &found->sname : NULL;
+}
+
+c_ast_t* c_ast_find_type( c_ast_t *ast, v_direction_t dir,
+                          c_type_id_t type_id ) {
+  void *const data = c_type_id_data_new( type_id );
+  ast = c_ast_visit( ast, dir, c_ast_vistor_type, data );
+  c_type_id_data_free( data );
+  return ast;
 }
 
 bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t type_id ) {
@@ -394,19 +406,19 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast ) {
 
 bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  c_kind_t const kind = REINTERPRET_CAST( c_kind_t, data );
+  c_kind_t const kind = c_kind_data_get( data );
   return (ast->kind & kind) != K_NONE;
 }
 
 bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  size_t const at_least = REINTERPRET_CAST( size_t, data );
+  uintptr_t const at_least = REINTERPRET_CAST( uintptr_t, data );
   return c_ast_sname_count( ast ) >= at_least;
 }
 
 bool c_ast_vistor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  c_type_id_t const type_id = REINTERPRET_CAST( c_type_id_t, data );
+  c_type_id_t const type_id = c_type_id_data_get( data );
   return (ast->type_id & type_id) != T_NONE;
 }
 

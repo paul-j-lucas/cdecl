@@ -35,15 +35,6 @@
 #include "typedefs.h"
 #include "util.h"
 
-/// @cond DOXYGEN_IGNORE
-
-_GL_INLINE_HEADER_BEGIN
-#ifndef CDECL_AST_UTIL_INLINE
-# define CDECL_AST_UTIL_INLINE _GL_INLINE
-#endif /* CDECL_AST_UTIL_INLINE */
-
-/// @endcond
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -179,12 +170,7 @@ c_sname_t const* c_ast_find_name( c_ast_t const *ast, v_direction_t dir );
  * @param kind The bitwise-or of <code>\ref c_kind</code> to find.
  * @return Returns a pointer to an AST node having \a kind or null if none.
  */
-CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_kind( c_ast_t *ast,
-                                                v_direction_t dir,
-                                                c_kind_t kind ) {
-  void *const data = REINTERPRET_CAST( void*, kind );
-  return c_ast_visit( ast, dir, c_ast_vistor_kind, data );
-}
+c_ast_t* c_ast_find_kind( c_ast_t *ast, v_direction_t dir, c_kind_t kind );
 
 /**
  * Traverses \a ast attempting to find an AST node having \a type_id.
@@ -194,12 +180,8 @@ CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_kind( c_ast_t *ast,
  * @param type_id The bitwise-or of of <code>\ref c_type_id_t</code> to find.
  * @return Returns a pointer to an AST node having \a type_id or null if none.
  */
-CDECL_AST_UTIL_INLINE c_ast_t* c_ast_find_type( c_ast_t *ast,
-                                                v_direction_t dir,
-                                                c_type_id_t type_id ) {
-  void *const data = REINTERPRET_CAST( void*, type_id );
-  return c_ast_visit( ast, dir, c_ast_vistor_type, data );
-}
+c_ast_t* c_ast_find_type( c_ast_t *ast, v_direction_t dir,
+                          c_type_id_t type_id );
 
 /**
  * "Patches" \a type_ast into \a decl_ast only if:
@@ -278,8 +260,6 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
 
 ///////////////////////////////////////////////////////////////////////////////
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_c_ast_util_H */
 /* vim:set et sw=2 ts=2: */
