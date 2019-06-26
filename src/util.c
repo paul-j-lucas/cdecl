@@ -250,6 +250,9 @@ void perror_exit( int status ) {
 }
 
 char* read_input_line( char const *ps1, char const *ps2 ) {
+  assert( ps1 != NULL );
+  assert( ps2 != NULL );
+
   static char *buf;
   size_t buf_len = 0;
 
