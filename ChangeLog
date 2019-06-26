@@ -1,3 +1,17 @@
+2019-06-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, ax_compile_check_sizeof.m4, c_ast.h, c_ast_util.c,
+     c_ast_util.h, c_kind.h, c_sname.h, c_type.c, c_type.h, c_typedef.c,
+     parser.y, red_black.h, slist.c, slist.h, util.c: Now 32-bit safe.
+   * NEWS, configure.ac: Updated.
+   * configure.ac: Added bug report URL.
+   * options.c: Now printing version and help to stdout per GNU guidelines;
+     added long options and home page to --help.
+
+2019-06-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Added explicit check.
+
 2019-06-20  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS: Updated.
