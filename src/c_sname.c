@@ -72,10 +72,12 @@ static char const* c_sname_scope_name_impl( char *name_buf,
 
 char const* c_sname_full_name( c_sname_t const *sname ) {
   static char name_buf[ 256 ];
+  assert( sname != NULL );
   return c_sname_scope_name_impl( name_buf, sname, NULL );
 }
 
 bool c_sname_is_ctor( c_sname_t const *sname ) {
+  assert( sname != NULL );
   if ( c_sname_count( sname ) < 2 )
     return false;
   char const *const class_name = SLIST_PEEK_ATR( char const*, sname, 1 );
@@ -85,6 +87,7 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
 
 char const* c_sname_scope_name( c_sname_t const *sname ) {
   static char name_buf[ 256 ];
+  assert( sname != NULL );
   return c_sname_scope_name_impl( name_buf, sname, sname->tail );
 }
 

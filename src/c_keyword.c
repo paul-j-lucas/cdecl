@@ -35,6 +35,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <assert.h>
 #include <string.h>
 
 /// @endcond
@@ -213,6 +214,7 @@ static c_keyword_t const C_KEYWORDS[] = {
 ////////// extern functions ///////////////////////////////////////////////////
 
 c_keyword_t const* c_attribute_find( char const *literal ) {
+  assert( literal != NULL );
   for ( c_keyword_t const *a = C_ATTRIBUTES; a->literal != NULL; ++a ) {
     if ( strcmp( literal, a->literal ) == 0 )
       return a;
@@ -221,6 +223,7 @@ c_keyword_t const* c_attribute_find( char const *literal ) {
 }
 
 c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_id ) {
+  assert( literal != NULL );
   for ( c_keyword_t const *k = C_KEYWORDS; k->literal != NULL; ++k ) {
     if ( (k->lang_ids & lang_id) == LANG_NONE )
       continue;
