@@ -390,16 +390,20 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast ) {
 
 c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
   if ( ast != NULL ) {
-    while ( ast->kind == K_REFERENCE || ast->kind == K_RVALUE_REFERENCE )
+    while ( ast->kind == K_REFERENCE || ast->kind == K_RVALUE_REFERENCE ) {
       ast = ast->as.ptr_ref.to_ast;
+      assert( ast != NULL );
+    } // while
   }
   return ast;
 }
 
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast ) {
   if ( ast != NULL ) {
-    while ( ast->kind == K_TYPEDEF )
+    while ( ast->kind == K_TYPEDEF ) {
       ast = ast->as.c_typedef->ast;
+      assert( ast != NULL );
+    } // while
   }
   return ast;
 }
