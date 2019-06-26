@@ -425,6 +425,7 @@ static char const* c_type_name_1( c_type_id_t type_id, bool is_error ) {
 static void c_type_name_cat( char **pname, c_type_id_t type_id,
                              c_type_id_t const types[], size_t types_size,
                              bool is_error, char sep, bool *sep_cpy ) {
+  assert( pname != NULL );
   for ( size_t i = 0; i < types_size; ++i ) {
     if ( (type_id & types[i]) != T_NONE )
       *pname = strcpy_sep(
@@ -584,6 +585,10 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
  * been copied.
  */
 static char* strcpy_sep( char *dst, char const *src, char sep, bool *sep_cpy ) {
+  assert( dst != NULL );
+  assert( src != NULL );
+  assert( sep_cpy != NULL );
+
   if ( true_or_set( sep_cpy ) )
     CHRCAT( dst, sep );
   STRCAT( dst, src );
@@ -595,6 +600,7 @@ static char* strcpy_sep( char *dst, char const *src, char sep, bool *sep_cpy ) {
 bool c_type_add( c_type_id_t *dest_type, c_type_id_t new_type,
                  c_loc_t const *new_loc ) {
   assert( dest_type != NULL );
+  assert( new_loc != NULL );
 
   if ( is_long_int( *dest_type ) && is_long_int( new_type ) ) {
     //

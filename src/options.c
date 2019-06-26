@@ -273,6 +273,7 @@ static color_when_t parse_color_when( char const *when ) {
  * @return Returns the <code>\ref c_lang_id_t</code> corresponding to \a s.
  */
 static c_lang_id_t parse_lang( char const *s ) {
+  assert( s != NULL );
   size_t langs_buf_size = 1;            // for trailing NULL
 
   for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
@@ -406,6 +407,9 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n"
 ////////// extern functions ///////////////////////////////////////////////////
 
 void options_init( int *pargc, char const ***pargv ) {
+  assert( pargc != NULL );
+  assert( pargv != NULL );
+
   me = base_name( (*pargv)[0] );
   opt_lang = is_cppdecl() ? LANG_CPP_NEW : LANG_C_NEW;
   parse_options( *pargc, *pargv );

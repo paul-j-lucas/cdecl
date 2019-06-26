@@ -1357,6 +1357,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
  * @return Always returns `false`.
  */
 static bool error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
+  assert( ast != NULL );
   print_error( &ast->loc, "can not cast into %s", c_kind_name( ast->kind ) );
   if ( hint != NULL )
     print_hint( "cast into %s", hint );
@@ -1400,6 +1401,7 @@ static bool error_kind_not_supported( c_ast_t const *ast ) {
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
 static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
+  assert( ast != NULL );
   print_error( &ast->loc,
     "%s to %s", c_kind_name( ast->kind ), c_type_name_error( type_id )
   );
@@ -1413,6 +1415,7 @@ static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
 static bool error_unknown_type( c_ast_t const *ast ) {
+  assert( ast != NULL );
   print_error( &ast->loc,
     "\"%s\": unknown type", c_ast_sname_full_name( ast )
   );

@@ -278,6 +278,7 @@ static int c_typedef_cmp( void const *data_i, void const *data_j ) {
  * @return Returns said `c_typedef`.
  */
 static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
+  assert( ast != NULL );
   c_typedef_t *const t = MALLOC( c_typedef_t, 1 );
   t->ast = ast;
   t->user_defined = user_defined;
@@ -353,6 +354,7 @@ void c_typedef_cleanup( void ) {
 }
 
 c_typedef_t const* c_typedef_find( c_sname_t const *sname ) {
+  assert( sname != NULL );
   //
   // Create a temporary c_typedef with just the name set in order to find it.
   //

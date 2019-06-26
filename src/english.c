@@ -53,6 +53,8 @@
  * @return Always returns `false`.
  */
 static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
+  assert( ast != NULL );
+
   FILE *const eout = REINTERPRET_CAST( FILE*, data );
   bool comma = false;
 
@@ -220,6 +222,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_english( c_ast_t const *ast, FILE *eout ) {
+  assert( ast != NULL );
+
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_visit( nonconst_ast, V_DOWN, c_ast_visitor_english, eout );
   switch ( ast->align.kind ) {

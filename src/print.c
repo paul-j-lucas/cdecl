@@ -193,6 +193,8 @@ static void print_caret( size_t error_column ) {
  * @return Returns the length of the token.
  */
 static size_t token_len( char const *s ) {
+  assert( s != NULL );
+
   char const *const s0 = s;
   bool const is_s0_space = isspace( *s0 );
   bool const is_s0_alnum = isalnum( *s0 );

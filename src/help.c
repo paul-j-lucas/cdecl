@@ -177,6 +177,8 @@ static bool is_title( char const *s ) {
  * @param line The line to print.
  */
 static void print_help_line( char const *line ) {
+  assert( line != NULL );
+
   bool is_escaped = false;              // was preceding char a '\'?
   bool in_title = false;                // is current char within a title?
 
@@ -235,6 +237,7 @@ static void print_help_line( char const *line ) {
 }
 
 static void print_help_text( help_text_t const *help ) {
+  assert( help != NULL );
   bool const is_cpp = C_LANG_IS_CPP();
 
   for ( ; help->text != NULL; ++help ) {
@@ -259,6 +262,8 @@ static void print_help_text( help_text_t const *help ) {
  * @param what What to print help for.
  */
 void print_help( char const *what ) {
+  assert( what != NULL );
+
   // The == works because the parser gaurantees specific string literals.
   if ( what == L_DEFAULT || what == L_COMMANDS ) {
     print_help_text( HELP_TEXT_COMMANDS );

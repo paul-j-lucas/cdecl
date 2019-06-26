@@ -82,6 +82,9 @@ static void print_indent( unsigned indent, FILE *out ) {
  */
 static void print_sname( unsigned indent, char const *key,
                          c_sname_t const *sname, FILE *out ) {
+  assert( key != NULL );
+  assert( sname != NULL );
+
   print_indent( indent, out );
   char const *const full_name = c_sname_full_name( sname );
   print_kv( key, full_name, out );

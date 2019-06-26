@@ -495,6 +495,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
  */
 static void c_ast_gibberish_qual_name( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
+  assert( param != NULL );
 
   switch ( ast->kind ) {
     case K_POINTER:
@@ -598,6 +599,9 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
  */
 static char const* c_ast_sname_full_or_local( c_ast_t const *ast,
                                               g_param_t *param ) {
+  assert( ast != NULL );
+  assert( param != NULL );
+
   if ( (param->flags & G_DECL_TYPEDEF) != 0 ) {
     param->flags &= ~G_DECL_TYPEDEF;
     return c_ast_sname_local_name( ast );
@@ -628,6 +632,7 @@ static void g_param_init( g_param_t *param, c_ast_t const *root,
 
 char const* graph_name_c( char const *token ) {
   assert( token != NULL );
+
   switch ( opt_graph ) {
     case GRAPH_NONE:
       break;
@@ -666,6 +671,8 @@ void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
 }
 
 void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout ) {
+  assert( ast != NULL );
+
   switch ( ast->align.kind ) {
     case ALIGNAS_NONE:
       break;
