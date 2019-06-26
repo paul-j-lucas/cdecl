@@ -142,7 +142,7 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Frees the data for a `c_type_id_t`.
- * For platforms with 64-bit pointers, this is a no-op.
+ * @note For platforms with 64-bit pointers, this is a no-op.
  *
  * @param data The data to free.
  * @sa c_type_id_data_new(c_type_id_t)
@@ -172,6 +172,8 @@ CDECL_TYPE_INLINE c_type_id_t c_type_id_data_get( void *data ) {
 
 /**
  * Creates an opaque data handle for a `c_type_id_t`.
+ * @note Callers _must_ eventually call c_type_id_data_free(void*) on the
+ * returned value.
  *
  * @param type_id The `c_type_id_t` to use.
  * @return Returns said handle.
