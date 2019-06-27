@@ -370,7 +370,7 @@ static size_t lexer_get_input( char *buf, size_t buf_capacity ) {
   if ( input_avail == 0 ) {
     static size_t input_capacity;
     ssize_t bytes_read = getline( &input_buf, &input_capacity, yyin );
-    if ( bytes_read == -1 ) {
+    if ( unlikely( bytes_read == -1 ) ) {
       FERROR( yyin );
       bytes_read = 0;
     }
