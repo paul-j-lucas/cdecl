@@ -139,11 +139,7 @@
  *
  * @hideinitializer
  */
-#define YY_USER_ACTION BLOCK(                         \
-  yylloc.first_line   = yylloc.last_line = yylineno;  \
-  yylloc.first_column = column;                       \
-  yylloc.last_column  = column + yyleng - 1;          \
-  column += yyleng; );                  /* must include trailing ';' */
+#define YY_USER_ACTION            lexer_update_loc(); /* must include ';' */
 
 /**
  * This code must be manually inserted before a REJECT to undo YY_USER_ACTION.
@@ -308,6 +304,7 @@ static bool       is_eof;               ///< Encountered EOF?
 
 // local functions
 static void       lexer_fatal( char const* );
+static void       lexer_update_loc( void );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -924,6 +921,17 @@ static void lexer_fatal( char const *msg ) {
 
   // Not reached -- "called" just to silence the "unused function" warning.
   yy_fatal_error( msg );
+}
+
+/**
+ * Update the parser's location.
+ * @note This is called by flex via `YY_USER_ACTION`.
+ */
+static void lexer_update_loc( void ) {
+  yylloc.first_line   = yylloc.last_line = yylineno;
+  yylloc.first_column = column;
+  yylloc.last_column  = column + yyleng - 1;
+  column += yyleng;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
