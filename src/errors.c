@@ -474,7 +474,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
     if ( ++n_args > 1 && void_ast != NULL )
       goto only_void;
 
-    c_ast_t const *const arg_ast = C_AST_DATA( arg );
+    c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
 
     if ( c_ast_sname_count( arg_ast ) > 1 ) {
       print_error( &arg_ast->loc, "argument names can not be scoped" );
@@ -573,7 +573,7 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
   assert( opt_lang == LANG_C_KNR );
 
   for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-    c_ast_t const *const arg_ast = C_AST_DATA( arg );
+    c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
     switch ( arg_ast->kind ) {
       case K_NAME:
         break;
@@ -776,7 +776,7 @@ same: print_error( &ast->loc,
     //
     bool has_ecsu_arg = false;
     for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-      c_ast_t const *const arg_ast = C_AST_DATA( arg );
+      c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
       if ( c_ast_is_ecsu( arg_ast ) ) {
         has_ecsu_arg = true;
         break;
@@ -825,7 +825,7 @@ same: print_error( &ast->loc,
       }
       // At this point, it's either member or non-member postfix:
       // operator++(int) or operator++(S&,int).
-      c_ast_t const *const arg_ast = C_AST_DATA( arg );
+      c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
       if ( !c_ast_is_builtin( arg_ast, T_INT ) ) {
         print_error( &arg_ast->loc,
           "argument of postfix %s%s%s %s must be %s",
@@ -995,7 +995,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
   }
 
   c_ast_arg_t const *arg = c_ast_args( ast );
-  c_ast_t const *arg_ast = c_ast_untypedef( C_AST_DATA( arg ) );
+  c_ast_t const *arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
   c_ast_t const *tmp_ast = NULL;
 
   switch ( args_count ) {
@@ -1038,7 +1038,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
         return false;
       }
       arg = arg->next;
-      tmp_ast = c_ast_untypedef( C_AST_DATA( arg ) );
+      tmp_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
       if ( tmp_ast == NULL || tmp_ast->type_id != (T_UNSIGNED | T_LONG) ) {
         print_error( &arg_ast->loc,
           "\"%s\": invalid argument type for %s %s; must be one of: "
@@ -1051,7 +1051,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
 
     default:
       arg = arg->next->next;
-      arg_ast = c_ast_untypedef( C_AST_DATA( arg ) );
+      arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
       print_error( &arg_ast->loc,
         "%s %s may have at most 2 arguments", L_USER_DEFINED, L_LITERAL
       );
@@ -1235,7 +1235,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
     case K_USER_DEF_LITERAL:
       data = REINTERPRET_CAST( void*, true );
       for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-        if ( !c_ast_check_visitor( C_AST_DATA( arg ), c_ast_visitor_type,
+        if ( !c_ast_check_visitor( c_ast_arg_ast( arg ), c_ast_visitor_type,
                                    data ) ) {
           return VISITOR_ERROR_FOUND;
         }
@@ -1309,7 +1309,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
       }
       for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
         (void)c_ast_check_visitor(
-          C_AST_DATA( arg ), c_ast_visitor_warning, data
+          c_ast_arg_ast( arg ), c_ast_visitor_warning, data
         );
       } // for
       break;
@@ -1336,7 +1336,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
 
   for ( c_scope_t const *scope = c_ast_scope( ast ); scope != NULL;
         scope = scope->next ) {
-    char const *const name = C_SCOPE_NAME( scope );
+    char const *const name = c_scope_name( scope );
     c_keyword_t const *const keyword = c_keyword_find( name, LANG_ALL );
     if ( keyword != NULL ) {
       print_warning( &ast->loc,

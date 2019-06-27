@@ -68,24 +68,6 @@ _GL_INLINE_HEADER_BEGIN
 // bit masks
 #define C_FUNC_MASK_MEMBER    0x3u      /**< Member/non-member bitmask. */
 
-/**
- * Convenience macro to get the `c_ast` given an `slist_node`.
- *
- * @param NODE A pointer to an `slist_node`.
- * @return Returns a pointer to the `c_ast`.
- * @hideinitializer
- */
-#define C_AST_DATA(NODE)          REINTERPRET_CAST( c_ast_t*, (NODE)->data )
-
-/**
- * Convenience macro to get the name of a scope.
- *
- * @param NODE A pointer to an `slist_node`.
- * @return Returns a pointer to the scope's name.
- * @hideinitializer
- */
-#define C_SCOPE_NAME(NODE)        REINTERPRET_CAST( char const*, (NODE)->data )
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -278,6 +260,16 @@ struct c_ast {
 /** @} */
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Convenience function to get the `c_ast` given an `c_ast_arg_t`.
+ *
+ * @param arg A pointer to an `c_ast_arg_t`.
+ * @return Returns a pointer to the `c_ast`.
+ */
+CDECL_AST_INLINE c_ast_t const* c_ast_arg_ast( c_ast_arg_t const *arg ) {
+  return REINTERPRET_CAST( c_ast_t const*, arg->data );
+}
 
 /**
  * Convenience function for getting function, operator, or block arguments.
@@ -597,6 +589,16 @@ CDECL_AST_INLINE bool c_ast_found( c_ast_t const *ast, v_direction_t dir,
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_t *const found_ast = c_ast_visit( nonconst_ast, dir, visitor, data );
   return found_ast != NULL;
+}
+
+/**
+ * Convenience function to get a scope's name.
+ *
+ * @param scope The scope to get the name of.
+ * @return Returns the scope's name.
+ */
+CDECL_AST_INLINE char const* c_scope_name( c_scope_t const *scope ) {
+  return REINTERPRET_CAST( char const*, scope->data );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

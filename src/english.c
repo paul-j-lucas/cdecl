@@ -109,7 +109,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
           if ( true_or_set( &comma ) )
             FPUTS( ", ", eout );
 
-          c_ast_t const *const arg_ast = C_AST_DATA( arg );
+          c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
           if ( arg_ast->kind != K_NAME ) {
             //
             // For all kinds except K_NAME, we have to print:
@@ -245,10 +245,10 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 void c_sname_english( c_sname_t const *sname, FILE *eout ) {
   assert( sname != NULL );
   if ( sname->tail != NULL ) {
-    FPUTS( C_SCOPE_NAME( sname->tail ), eout );
+    FPUTS( c_scope_name( sname->tail ), eout );
     for ( c_scope_t const *scope = sname->head; scope != sname->tail;
           scope = scope->next ) {
-      FPRINTF( eout, " %s %s %s", L_OF, L_SCOPE, C_SCOPE_NAME( scope ) );
+      FPRINTF( eout, " %s %s %s", L_OF, L_SCOPE, c_scope_name( scope ) );
     } // for
   }
 }

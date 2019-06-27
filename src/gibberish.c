@@ -159,7 +159,7 @@ static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
   for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", param->gout );
-    c_ast_t const *const arg_ast = C_AST_DATA( arg );
+    c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
     g_param_t args_param;
     g_param_init( &args_param, arg_ast, param->gkind, param->gout );
     c_ast_gibberish_impl( arg_ast, &args_param );

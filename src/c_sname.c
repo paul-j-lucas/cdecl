@@ -62,7 +62,7 @@ static char const* c_sname_scope_name_impl( char *name_buf,
         scope = scope->next ) {
     if ( true_or_set( &colon2 ) )
       STRCAT( name, "::" );
-    STRCAT( name, C_SCOPE_NAME( scope ) );
+    STRCAT( name, c_scope_name( scope ) );
   } // for
 
   return name_buf;

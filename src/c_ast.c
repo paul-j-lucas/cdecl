@@ -123,7 +123,7 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
       c_ast_arg_t const *arg_i = c_ast_args( ast_i );
       c_ast_arg_t const *arg_j = c_ast_args( ast_j );
       for ( ; arg_i && arg_j; arg_i = arg_i->next, arg_j = arg_j->next ) {
-        if ( !c_ast_equiv( C_AST_DATA( arg_i ), C_AST_DATA( arg_j ) ) )
+        if ( !c_ast_equiv( c_ast_arg_ast( arg_i ), c_ast_arg_ast( arg_j ) ) )
           return false;
       } // for
       if ( arg_i != NULL || arg_j != NULL )

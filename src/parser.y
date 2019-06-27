@@ -555,7 +555,7 @@ static void print_type_as_typedef( c_typedef_t const *type ) {
       //
       for ( c_scope_t const *scope = sname->head; scope != sname->tail;
             scope = scope->next ) {
-        FPRINTF( fout, "%s %s { ", L_NAMESPACE, C_SCOPE_NAME( scope ) );
+        FPRINTF( fout, "%s %s { ", L_NAMESPACE, c_scope_name( scope ) );
       } // for
       scope_close_braces_to_print = c_sname_count( sname ) - 1;
     }

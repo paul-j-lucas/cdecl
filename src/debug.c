@@ -239,7 +239,7 @@ void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout ) {
     for ( slist_node_t const *p = list->head; p != NULL; p = p->next ) {
       if ( true_or_set( &comma ) )
         FPUTS( ",\n", dout );
-      c_ast_debug( C_AST_DATA( p ), indent + 1, NULL, dout );
+      c_ast_debug( c_ast_arg_ast( p ), indent + 1, NULL, dout );
     } // for
     FPUTC( '\n', dout );
     INDENT_PRINT( "]" );
