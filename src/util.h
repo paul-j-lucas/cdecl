@@ -170,7 +170,7 @@ _GL_INLINE_HEADER_BEGIN
  * @hideinitializer
  */
 #define MALLOC(TYPE,N) \
-  STATIC_CAST(TYPE*, check_realloc( NULL, sizeof(TYPE) * (N) ))
+  STATIC_CAST( TYPE*, check_realloc( NULL, sizeof(TYPE) * (N) ) )
 
 /**
  * Prints an error message to standard output and exits with \a STATUS code.
