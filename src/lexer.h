@@ -41,7 +41,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
-extern bool         lexer_find_typedef; ///< Look-up typedef names?
+extern bool         lexer_find_typedef; ///< Look-up `typedef` names?
 extern char const  *lexer_token;        ///< Text of current token.
 
 /**
