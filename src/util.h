@@ -67,7 +67,7 @@ _GL_INLINE_HEADER_BEGIN
 /** Frees the duplicated C string later. */
 #define FREE_STRDUP_LATER(PTR)    FREE_STR_LATER( check_strdup( PTR ) )
 
-/** Zeros the given `struct`. */
+/** Zeros the memory. */
 #define MEM_ZERO(PTR)             memset( (PTR), 0, sizeof *(PTR) )
 
 /** No-operation statement.  (Useful for a `goto` target.) */
