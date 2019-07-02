@@ -46,6 +46,7 @@ cdecl_SOURCES =	parser.y \
 		help.c \
 		literals.c literals.h \
 		options.c options.h \
+		pjl_config.h \
 		print.c print.h \
 		prompt.c prompt.h \
 		red_black.c red_black.h \
