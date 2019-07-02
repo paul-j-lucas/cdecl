@@ -1431,6 +1431,7 @@ dist-hook:
 	cd $(distdir)/tests && rm -f *.log *.trs
 
 CDECL = $(top_builddir)/src/cdecl -C
+CPPDECL = $(CDECL) -xc++
 #
 # Adding predefined types causes the output of cdecl to change so that the
 # expected results for the following tests no longer match and hence "fail."
@@ -1439,13 +1440,13 @@ CDECL = $(top_builddir)/src/cdecl -C
 #
 update-expected:
 	echo 'help' | $(CDECL) > expected/help-c.out
-	echo 'help' | $(CDECL) -xc++ > expected/help-c++.out
+	echo 'help' | $(CPPDECL) > expected/help-c++.out
 	echo 'help command' | $(CDECL) > expected/help_command-c.out
-	echo 'help command' | $(CDECL) -xc++ > expected/help_command-c++.out
+	echo 'help command' | $(CPPDECL) > expected/help_command-c++.out
 	echo 'help commands' | $(CDECL) > expected/help_commands-c.out
-	echo 'help commands' | $(CDECL) -xc++ > expected/help_commands-c++.out
+	echo 'help commands' | $(CPPDECL) > expected/help_commands-c++.out
 	echo 'help english' | $(CDECL) > expected/help_english-c.out
-	echo 'help english' | $(CDECL) -xc++ > expected/help_english-c++.out
+	echo 'help english' | $(CPPDECL) > expected/help_english-c++.out
 	echo 'set' | $(CDECL) > expected/set.out
 	echo 'set options' | $(CDECL) > expected/set_options.out
 	echo 'explain int* f(int x, int y)' | $(CDECL) -d > expected/cdecl-d.out
