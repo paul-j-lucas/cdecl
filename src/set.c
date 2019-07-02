@@ -87,21 +87,21 @@ void set_option( c_loc_t const *loc, char const *opt ) {
 
   printf( "\nValid set options (and command line equivalents, if any) are:\n" );
 #ifdef ENABLE_CDECL_DEBUG
-  printf( "     debug        -d | --debug\n" );
+  printf( "     debug        --debug        (-d)\n" );
   printf( "   nodebug\n" );
 #endif /* ENABLE_CDECL_DEBUG */
-  printf( "   digraphs       -2 | --digraphs\n" );
-  printf( "  trigraphs       -3 | --trigraphs\n" );
+  printf( "   digraphs       --digraphs     (-2)\n" );
+  printf( "  trigraphs       --trigraphs    (-3)\n" );
   printf( "   nographs\n" );
-  printf( "     interactive  -i | --interactive\n" );
+  printf( "     interactive  --interactive  (-i)\n" );
   printf( "   nointeractive\n" );
-  printf( "     <lang>       -x | --language\n" );
+  printf( "     <lang>       --language     (-x)\n" );
   printf( "     prompt\n" );
-  printf( "   noprompt       -q | --quiet\n" );
+  printf( "   noprompt       --quiet        (-q)\n" );
   printf( "     semicolon\n" );
-  printf( "   nosemicolon    -s | --no-semicolon\n" );
+  printf( "   nosemicolon    --no-semicolon (-s)\n" );
 #ifdef YYDEBUG
-  printf( "     yydebug      -y | --yydebug\n" );
+  printf( "     yydebug      --yydebug      (-y)\n" );
   printf( "   noyydebug\n" );
 #endif /* YYDEBUG */
 

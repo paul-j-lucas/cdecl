@@ -1446,6 +1446,8 @@ update-expected:
 	echo 'help commands' | $(CDECL) -xc++ > expected/help_commands-c++.out
 	echo 'help english' | $(CDECL) > expected/help_english-c.out
 	echo 'help english' | $(CDECL) -xc++ > expected/help_english-c++.out
+	echo 'set' | $(CDECL) > expected/set.out
+	echo 'set options' | $(CDECL) > expected/set_options.out
 	echo 'explain int* f(int x, int y)' | $(CDECL) -d > expected/cdecl-d.out
 	echo 'explain int* f(int x, int y)' | $(CDECL) --debug > expected/cdecl--debug.out
 	echo 'typedef int Int; show all' | $(CDECL) > expected/show_all.out

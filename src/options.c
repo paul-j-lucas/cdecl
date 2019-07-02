@@ -375,31 +375,30 @@ static void usage( void ) {
 "usage: " PACKAGE " [options] [command...]\n"
 "       " PACKAGE " [options] files...\n"
 "options:\n"
-"  --color=when    | -k when  When to colorize output [default: not_file].\n"
-"  --config=file   | -c file  The configuration file [default: ~/%s].\n"
+"  --color=WHEN    (-k)  When to colorize output [default: not_file].\n"
+"  --config=FILE   (-c)  The configuration file [default: ~/%s].\n"
 #ifdef ENABLE_CDECL_DEBUG
-"  --debug         | -d       Enable debug output.\n"
+"  --debug         (-d)  Enable debug output.\n"
 #endif /* ENABLE_CDECL_DEBUG */
-"  --digraphs      | -2       Print digraphs.\n"
-"  --file=file     | -f file  Read from this file [default: stdin].\n"
-"  --help          | -h       Print this help and exit.\n"
-"  --interactive   | -i       Force interactive mode.\n"
-"  --language=lang | -x lang  Use <lang>.\n"
-"  --no-config     | -C       Suppress reading configuration file.\n"
-"  --no-semicolon  | -s       Suppress trailing semicolon in declarations.\n"
-"  --no-typedefs   | -t       Suppress predefining standard types.\n"
-"  --output=file   | -o file  Write to this file [default: stdout].\n"
-"  --quiet         | -q       Be quiet (disable prompt).\n"
-"  --trigraphs     | -3       Print trigraphs.\n"
-"  --version       | -v       Print version and exit.\n"
+"  --digraphs      (-2)  Print digraphs.\n"
+"  --file=FILE     (-f)  Read from this file [default: stdin].\n"
+"  --help          (-h)  Print this help and exit.\n"
+"  --interactive   (-i)  Force interactive mode.\n"
+"  --language=LANG (-x)  Use LANG.\n"
+"  --no-config     (-C)  Suppress reading configuration file.\n"
+"  --no-semicolon  (-s)  Suppress printing trailing semicolon in declarations.\n"
+"  --no-typedefs   (-t)  Suppress predefining standard types.\n"
+"  --output=FILE   (-o)  Write to this file [default: stdout].\n"
+"  --quiet         (-q)  Be quiet (disable prompt).\n"
+"  --trigraphs     (-3)  Print trigraphs.\n"
+"  --version       (-v)  Print version and exit.\n"
 #ifdef YYDEBUG
-"  --yydebug       | -y       Enable Bison debug output.\n"
+"  --yydebug       (-y)  Enable Bison debug output.\n"
 #endif /* YYDEBUG */
 "\n"
 "Report bugs to: " PACKAGE_BUGREPORT "\n"
 PACKAGE_NAME " home page: " PACKAGE_URL "\n"
-    ,
-    CONF_FILE_NAME_DEFAULT
+    , CONF_FILE_NAME_DEFAULT
   );
   exit( EX_USAGE );
 }
