@@ -313,7 +313,7 @@ bool c_ast_is_ecsu( c_ast_t const *ast ) {
 }
 
 bool c_ast_is_ptr_to( c_ast_t const *ast, c_type_id_t type_id ) {
-  ast = c_ast_unpointer( c_ast_untypedef( ast ) );
+  ast = c_ast_unpointer( ast );
   if ( ast != NULL ) {
     ast = c_ast_untypedef( ast );
     return (ast->type_id & type_id) != T_NONE;
@@ -389,6 +389,7 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast ) {
 }
 
 c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
+  ast = c_ast_untypedef( ast );
   if ( ast != NULL ) {
     while ( ast->kind == K_REFERENCE || ast->kind == K_RVALUE_REFERENCE ) {
       ast = ast->as.ptr_ref.to_ast;
