@@ -2910,7 +2910,7 @@ func_ref_qualifier_c_type_opt
 
 noexcept_c_type_opt
   : /* empty */                   { $$ = T_NONE; }
-  | Y_NOEXCEPT                    { $$ = T_NOEXCEPT; }
+  | Y_NOEXCEPT
   | Y_NOEXCEPT '(' noexcept_bool_type rparen_expected
     {
       $$ = $3;
