@@ -197,8 +197,24 @@ void c_ast_free( c_ast_t *ast ) {
         // Do not free ast->as.c_typedef here since it's global data: it will
         // be freed eventually via c_typedef_cleanup().
         break;
-      default:
-        /* suppress warning */;
+      case K_ARRAY:
+      case K_BLOCK:
+      case K_BUILTIN:
+      case K_CONSTRUCTOR:
+      case K_DESTRUCTOR:
+      case K_FUNCTION:
+      case K_NAME:
+      case K_NONE:
+      case K_OPERATOR:
+      case K_PLACEHOLDER:
+      case K_POINTER:
+      case K_REFERENCE:
+      case K_RVALUE_REFERENCE:
+      case K_USER_DEF_CONVERSION:
+      case K_USER_DEF_LITERAL:
+      case K_VARIADIC:
+        // nothing to do
+        break;
     } // switch
 
     FREE( ast );
