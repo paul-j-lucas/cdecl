@@ -809,6 +809,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_mi.test \
 	tests/declare_nfi_v-02-c++.test \
 	tests/declare_nfi_v-03-c++.test \
+	tests/declare_ntf.test \
 	tests/declare_oyf.test \
 	tests/declare_pfv_ri.test \
 	tests/declare_pmci.test \
