@@ -72,10 +72,10 @@ char const* c_kind_name( c_kind_t kind ) {
       assert( opt_lang == LANG_C_KNR );
       return "struct or union";
 
-    default:
-      INTERNAL_ERR( "unexpected value (%d) for c_kind\n", (int)kind );
-      return NULL;                      // suppress warning
   } // switch
+
+  INTERNAL_ERR( "unexpected value (%d) for c_kind\n", (int)kind );
+  return NULL;                          // suppress warning
 }
 
 ///////////////////////////////////////////////////////////////////////////////
