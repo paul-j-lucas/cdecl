@@ -345,7 +345,7 @@ arg_list_c_ast ::= arg_list_c_ast ',' arg_c_ast = {
   ]
 }
 
-func_decl_c_ast ::= decl2_c_ast '(' arg_list_c_ast_opt ')' func_qualifier_list_c_type_opt func_ref_qualifier_c_type_opt func_noexcept_c_type_opt func_trailing_return_type_c_ast_opt pure_virtual_c_type_opt = {
+func_decl_c_ast ::= decl2_c_ast '(' arg_list_c_ast_opt ')' func_qualifier_list_c_type_opt func_ref_qualifier_c_type_opt noexcept_c_type_opt trailing_return_type_c_ast_opt pure_virtual_c_type_opt = {
   (type_c_ast) = {
     sname = "f", scope_type = none,
     id = 135,
@@ -404,8 +404,8 @@ func_decl_c_ast ::= decl2_c_ast '(' arg_list_c_ast_opt ')' func_qualifier_list_c
   ],
   func_qualifier_list_c_type_opt = "" (0x0),
   func_ref_qualifier_c_type_opt = "" (0x0),
-  func_noexcept_c_type_opt = "" (0x0),
-  func_trailing_return_type_c_ast_opt = {
+  noexcept_c_type_opt = "" (0x0),
+  trailing_return_type_c_ast_opt = {
   },
   pure_virtual_c_type_opt = "" (0x0),
   func_decl_c_ast = {
