@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 18, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 5, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -559,7 +559,8 @@ Composes a C++ new-style cast from pseudo-English.
 Composes a C (or C++) declaration from pseudo-English.
 .TP
 .BI declare " operator" " as" " english"
-Composes a C (or C++) overloaded operator declaration from pseudo-English.
+For C++ only,
+composes an overloaded operator declaration from pseudo-English.
 .TP
 .BI define " s-name" " as" " english"
 Defines a type (\f(CWtypedef\fP) from pseudo-English.
