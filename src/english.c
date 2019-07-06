@@ -226,6 +226,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_visit( nonconst_ast, V_DOWN, c_ast_visitor_english, eout );
+
   switch ( ast->align.kind ) {
     case ALIGNAS_NONE:
       break;
