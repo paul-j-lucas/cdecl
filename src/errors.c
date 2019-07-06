@@ -580,7 +580,9 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
       case K_PLACEHOLDER:
         assert( arg_ast->kind != K_PLACEHOLDER );
       default:
-        print_error( &ast->loc, "function prototypes" );
+        print_error( &arg_ast->loc,
+          "function prototypes not supported in %s", C_LANG_NAME()
+        );
         return false;
     } // switch
   } // for

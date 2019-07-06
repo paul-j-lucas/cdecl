@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.4.3
+
+** Better K&R C protptypes error
+The error message given when attempting to use function prototypes in K&R C has
+been improved.
+
+
 * Changes in Cdecl 6.4.2
 
 ** Fixed 32-bit CPU support
