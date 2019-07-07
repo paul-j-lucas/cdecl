@@ -59,9 +59,9 @@ c_graph_t           opt_graph;
 bool                opt_interactive;
 c_lang_id_t         opt_lang;
 bool                opt_no_conf;
+bool                opt_prompt = true;
 bool                opt_semicolon = true;
 bool                opt_typedefs = true;
-bool                opt_quiet;
 
 // other extern variables
 FILE               *fin;
@@ -85,7 +85,7 @@ static struct option const LONG_OPTS[] = {
   { "interactive",  no_argument,        NULL, 'i' },
   { "color",        required_argument,  NULL, 'k' },
   { "output",       required_argument,  NULL, 'o' },
-  { "quiet",        no_argument,        NULL, 'q' },
+  { "no-prompt",    no_argument,        NULL, 'p' },
   { "no-semicolon", no_argument,        NULL, 's' },
   { "no-typedefs",  no_argument,        NULL, 't' },
   { "version",      no_argument,        NULL, 'v' },
@@ -101,7 +101,7 @@ static struct option const LONG_OPTS[] = {
  *
  * @hideinitializer
  */
-static char const   SHORT_OPTS[] = "23c:Cf:ik:o:qstvx:"
+static char const   SHORT_OPTS[] = "23c:Cf:ik:o:pstvx:"
 #ifdef ENABLE_CDECL_DEBUG
   "d"
 #endif /* ENABLE_CDECL_DEBUG */
@@ -328,7 +328,7 @@ static void parse_options( int argc, char const *argv[] ) {
       case 'i': opt_interactive = true;                       break;
       case 'k': color_when      = parse_color_when( optarg ); break;
       case 'o': opt_fout        = optarg;                     break;
-      case 'q': opt_quiet       = true;                       break;
+      case 'p': opt_prompt      = false;                      break;
       case 's': opt_semicolon   = false;                      break;
       case 't': opt_typedefs    = false;                      break;
       case 'v': print_version   = true;                       break;
@@ -341,7 +341,7 @@ static void parse_options( int argc, char const *argv[] ) {
   } // for
 
   check_mutually_exclusive( "2", "3" );
-  check_mutually_exclusive( "v", "23cCdfikoqstxy" );
+  check_mutually_exclusive( "v", "23cCdfikopstxy" );
 
   if ( print_version ) {
     printf( "%s\n", PACKAGE_STRING );
@@ -386,10 +386,10 @@ static void usage( void ) {
 "  --interactive   (-i)  Force interactive mode.\n"
 "  --language=LANG (-x)  Use LANG.\n"
 "  --no-config     (-C)  Suppress reading configuration file.\n"
+"  --no-prompt     (-p)  Suppress prompt.\n"
 "  --no-semicolon  (-s)  Suppress printing trailing semicolon in declarations.\n"
 "  --no-typedefs   (-t)  Suppress predefining standard types.\n"
 "  --output=FILE   (-o)  Write to this file [default: stdout].\n"
-"  --quiet         (-q)  Be quiet (disable prompt).\n"
 "  --trigraphs     (-3)  Print trigraphs.\n"
 "  --version       (-v)  Print version and exit.\n"
 #ifdef YYDEBUG

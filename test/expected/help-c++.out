@@ -5,13 +5,14 @@ command:
   define <name> as <english>
   explain <gibberish>
   { help | ? } [command[s] | english]
-  set [options]
+  set [<option> | options]
   show { <name> | all | predefined | user } [typedef]
   typedef <gibberish>
   <scope-c> <name> { { <scope-c> | <typedef> | <using> } ; }
   using <name> = <gibberish>
   exit | quit | q
 gibberish: a C++ declaration, like "int x"; or cast, like "(int)x"
+option: [no]debug {di|tri|no}graphs <lang> [no]prompt [no]semicolon
 scope-c: class struct union [inline] namespace
 scope-e: { <scope-c> | scope }
 

@@ -81,39 +81,19 @@ void set_option( c_loc_t const *loc, char const *opt ) {
     IF_IS_OPT_DO(  "noyydebug",   yydebug = false;              );
 #endif /* YYDEBUG */
 
-    if ( strcmp( opt, "options" ) != 0 )
+    if ( strcmp( opt, "options" ) != 0 ) {
       print_error( loc, "\"%s\": unknown set option", opt );
+      return;
+    }
   }
 
-  printf( "\nValid set options (and command line equivalents, if any) are:\n" );
 #ifdef ENABLE_CDECL_DEBUG
-  printf( "     debug        --debug        (-d)\n" );
-  printf( "   nodebug\n" );
+  printf( "  %sdebug\n", opt_debug ? "  " : "no" );
 #endif /* ENABLE_CDECL_DEBUG */
-  printf( "   digraphs       --digraphs     (-2)\n" );
-  printf( "  trigraphs       --trigraphs    (-3)\n" );
-  printf( "   nographs\n" );
-  printf( "     interactive  --interactive  (-i)\n" );
-  printf( "   nointeractive\n" );
-  printf( "     <lang>       --language     (-x)\n" );
-  printf( "     prompt\n" );
-  printf( "   noprompt       --quiet        (-q)\n" );
-  printf( "     semicolon\n" );
-  printf( "   nosemicolon    --no-semicolon (-s)\n" );
-#ifdef YYDEBUG
-  printf( "     yydebug      --yydebug      (-y)\n" );
-  printf( "   noyydebug\n" );
-#endif /* YYDEBUG */
-
-  printf( "\nCurrent set option values are:\n" );
-#ifdef ENABLE_CDECL_DEBUG
-  printf( "   %sdebug\n", opt_debug ? "  " : "no" );
-#endif /* ENABLE_CDECL_DEBUG */
-  printf( "  %sgraphs\n", opt_graph == GRAPH_DI ? " di" : opt_graph == GRAPH_TRI ? "tri" : " no" );
-  printf( "   %sinteractive\n", opt_interactive ? "  " : "no" );
-  printf( "     lang=%s\n", C_LANG_NAME() );
-  printf( "   %sprompt\n", prompt[0][0] != '\0' ? "  " : "no" );
-  printf( "   %ssemicolon\n", opt_semicolon ? "  " : "no" );
+  printf( " %sgraphs\n", opt_graph == GRAPH_DI ? " di" : opt_graph == GRAPH_TRI ? "tri" : " no" );
+  printf( "    lang=%s\n", C_LANG_NAME() );
+  printf( "  %sprompt\n", prompt[0][0] != '\0' ? "  " : "no" );
+  printf( "  %ssemicolon\n", opt_semicolon ? "  " : "no" );
 #ifdef YYDEBUG
   printf( "  %syydebug\n", yydebug ? "  " : "no" );
 #endif /* YYDEBUG */

@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "July 5, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 7, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -193,9 +193,9 @@ or
 \f(CWc++decl>\fP
 will be written to the terminal before each line of input.
 The prompt can be turned off by either the
-.B \-\-quiet
+.B \-\-no-prompt
 or
-.B \-q
+.B \-p
 option,
 or the
 .B set noprompt
@@ -223,9 +223,9 @@ for
 .BR explain .
 The results of this transformation are written to standard output
 (unless either the
-.B \-o
-or
 .B \-\-output
+or
+.B \-o
 option is given).
 .SH OPTIONS
 An option argument
@@ -338,6 +338,11 @@ Prints a help message to standard error and exits.
 Forces interactive mode,
 that is
 turns on prompting
+(unless either the
+.B \-\-no-prompt
+or
+.B \-p
+option is given)
 and
 enables line-editing and history.
 (This is the default when connected to a terminal.)
@@ -366,6 +371,9 @@ even one explicitly specified via either
 or
 .BR \-c .
 .TP
+.BR \-\-no-prompt " | " \-p
+Suppresses printing of the prompt in interactive mode.
+.TP
 .BR \-\-no-semicolon " | " \-s
 Suppresses printing of a trailing semicolon for C (and C++) declarations.
 .TP
@@ -379,9 +387,6 @@ etc.
 .BI \-\-output \f1=\fPf "\f1 | \fP" "" \-o " f"
 Sends all non-error output to file
 .IR f .
-.TP
-.BR \-\-quiet " | " \-q
-Be quiet by suppressing the prompt in interactive mode.
 .TP
 .BR \-\-trigraphs " | " \-3
 Turns on trigraph output
@@ -929,7 +934,7 @@ The following types are predefined
 .B \-\-no-typedefs
 or
 .B \-t
-option is specified):
+option is given):
 .P
 .RS 4
 \f(CWmax_align_t\fP,
@@ -1165,7 +1170,7 @@ on start-up
 .B \-\-no-config
 or
 .B \-C
-option is specified).
+option is given).
 The commands useful within a configuration file are:
 .IP \(bu 3
 .BR class ,

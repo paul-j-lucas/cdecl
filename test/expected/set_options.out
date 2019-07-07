@@ -1,22 +1,5 @@
-
-Valid set options (and command line equivalents, if any) are:
-     debug        --debug        (-d)
-   nodebug
-   digraphs       --digraphs     (-2)
-  trigraphs       --trigraphs    (-3)
-   nographs
-     interactive  --interactive  (-i)
-   nointeractive
-     <lang>       --language     (-x)
-     prompt
-   noprompt       --quiet        (-q)
-     semicolon
-   nosemicolon    --no-semicolon (-s)
-
-Current set option values are:
-   nodebug
-   nographs
-   nointeractive
-     lang=C18
-     prompt
-     semicolon
+  nodebug
+  nographs
+    lang=C18
+    prompt
+    semicolon

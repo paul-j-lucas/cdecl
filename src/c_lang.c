@@ -108,8 +108,9 @@ void c_lang_set( c_lang_id_t lang_id ) {
   opt_lang = lang_id;
 
   bool const prompt_enabled =
-    prompt[0] == NULL       // first time: cdecl_prompt_init() not called yet
-    || *prompt[0] != '\0';
+    opt_prompt && (
+    prompt[0] == NULL ||    // first time: cdecl_prompt_init() not called yet
+    *prompt[0] != '\0');
 
   cdecl_prompt_init();      // change prompt based on new language
   cdecl_prompt_enable( prompt_enabled );

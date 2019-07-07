@@ -309,7 +309,7 @@ static bool parse_stdin( void ) {
   is_input_a_tty = isatty( fileno( fin ) );
 
   if ( is_input_a_tty || opt_interactive ) {
-    if ( !opt_quiet )
+    if ( opt_prompt )
       FPRINTF( fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
     ok = true;
     for ( char *line; (line = read_input_line( prompt[0], prompt[1] )); )
