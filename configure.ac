@@ -108,12 +108,12 @@ AC_COMPILE_IFELSE(
   [
     AC_MSG_RESULT([yes])
     AC_DEFINE([HAVE_DECL_RL_COMPLETION_FUNC_T], [1],
-      [Define to 1 if you have the declaraion of `rl_completion_func_t'.])
+      [Define to 1 if you have the declaration of `rl_completion_func_t'.])
   ],
   [
     AC_MSG_RESULT([no])
     AC_DEFINE([HAVE_DECL_RL_COMPLETION_FUNC_T], [0],
-      [Define to 1 if you have the declaraion of `rl_completion_func_t`.])
+      [Define to 1 if you have the declaration of `rl_completion_func_t`.])
   ]
 )
 AC_CHECK_DECLS([rl_completion_matches],[],[],
