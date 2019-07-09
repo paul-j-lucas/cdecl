@@ -132,9 +132,9 @@ struct c_parent {
  * AST node for a C/C++ array.
  */
 struct c_array {
-  c_ast_t    *of_ast;                   ///< What it's an array of.
-  int         size;                     ///< Array size or `C_ARRAY_*`.
-  c_type_id_t type_id;                  ///< E.g., `array[static const 10]`
+  c_ast_t        *of_ast;               ///< What it's an array of.
+  c_array_size_t  size;                 ///< Array size or `C_ARRAY_*`.
+  c_type_id_t     type_id;              ///< E.g., `array[static const 10]`
 };
 
 /**
