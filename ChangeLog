@@ -1,3 +1,66 @@
+2019-07-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, typedefs.h: Added c_array_size_t.
+
+2019-07-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Fixed typo.
+
+2019-07-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * unistd.in.h: Updated Gnulib.
+   * NEWS, cdecl.1, c_lang.c, cdecl.c, help.c, options.c, options.h, set.c,
+     help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
+     help_commands-c++.out, help_commands-c.out, set.out, set_options.out:
+     Changed -q to -p; set now only prints current options; added set help to
+     help commands.
+
+2019-07-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * english.c: Added blank line.
+   * NEWS, errors.c: Improved K&R C function prototypes error message.
+   * cdecl.1: Only C++ has overloaded operators.
+
+2019-07-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c: Removed unecessary c_ast_untypedef() from c_ast_is_ptr_to();
+     added c_ast_untypedef() to c_ast_unreference().
+   * c_ast.c: Replaced "default" with explicit cases.
+   * c_kind.c: Removed default.
+   * parser.y: Removed unnecessary assignment.
+   * test/Makefile.am, declare_ntf.out, declare_ntf.test: Added non-throwing
+     test.
+   * parser.y, cdecl--debug.out, cdecl-d.out: Rule renaming.
+
+2019-07-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, cdecl.h, pjl_config.h: Split out pjl_config.h.
+   * test/Makefile.am: Added CPPDECL.
+
+2019-07-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Updated version.
+   * options.c, set.c, test/Makefile.am, set.out, set_options.out: Reworked
+     help and set option output.
+   * util.h: Fixed comment.
+
+2019-06-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Added unlikely.
+   * lexer.l: Added lexer_update_loc().
+
+2019-06-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Whitespace change.
+   * c_ast.c, c_ast.h, c_sname.c, debug.c, english.c, errors.c, gibberish.c,
+     parser.y: Now using more inline functions.
+   * util.c: More assert()s.
+   * c_type.c, c_typedef.c, debug.c, english.c, errors.c, gibberish.c, help.c,
+     options.c, print.c: More assert()s.
+   * c_keyword.c, c_sname.c: More assert()s.
+   * c_ast_util.c: Added more assert()s.
+   * c_type.h: Comment additions.
+
 2019-06-25  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac, ax_compile_check_sizeof.m4, c_ast.h, c_ast_util.c,
