@@ -253,7 +253,8 @@ void print_loc( c_loc_t const *loc ) {
 }
 
 void print_warning( c_loc_t const *loc, char const *format, ... ) {
-  print_loc( loc );
+  if ( loc != NULL )
+    print_loc( loc );
   SGR_START_COLOR( stderr, warning );
   PUTS_ERR( "warning" );
   SGR_END_COLOR( stderr );

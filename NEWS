@@ -16,7 +16,11 @@ with their complete changes, see the AUTHORS file.
 The --quiet and -q options (that were in the original cdecl) were changed to
 --no-prompt and -p so they're more explicit about what they do.
 
-** Set command changed
+** Trigraphs warning
+If the trigraphs option is set and the language is C++17 or later, a warning
+will be printed (since trigraphs were removed from C++17).
+
+** Set command output changed
 The "set" command now only prints the current options.  Its help has beed added
 to the "help" command.
 

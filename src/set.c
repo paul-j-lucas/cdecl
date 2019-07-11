@@ -62,6 +62,10 @@ void set_option( c_loc_t const *loc, char const *opt ) {
     c_lang_id_t const new_lang = c_lang_find( opt );
     if ( new_lang != LANG_NONE ) {
       c_lang_set( new_lang );
+      if ( opt_graph == GRAPH_TRI ) {
+        loc = NULL;
+        goto check_trigraphs_lang;
+      }
       return;
     }
 
@@ -70,7 +74,16 @@ void set_option( c_loc_t const *loc, char const *opt ) {
     IF_IS_OPT_DO(  "nodebug",     opt_debug = false;            );
 #endif /* ENABLE_CDECL_DEBUG */
     IF_IS_OPT_DO(  "digraphs",    opt_graph = GRAPH_DI;         );
-    IF_IS_OPT_DO( "trigraphs",    opt_graph = GRAPH_TRI;        );
+
+    IF_IS_OPT_DO( "trigraphs",
+      opt_graph = GRAPH_TRI;
+check_trigraphs_lang:
+      if ( opt_lang >= LANG_CPP_17 )
+        print_warning( loc,
+          "trigraphs are no longer supported in %s", C_LANG_NAME()
+        );
+    );
+
     IF_IS_OPT_DO(  "nographs",    opt_graph = GRAPH_NONE;       );
     IF_IS_OPT_DO(    "prompt",    cdecl_prompt_enable( true );  );
     IF_IS_OPT_DO(  "noprompt",    cdecl_prompt_enable( false ); );

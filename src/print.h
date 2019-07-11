@@ -65,7 +65,7 @@ void print_loc( c_loc_t const *loc );
 /**
  * Prints a warning message to standard error, including a newline.
  *
- * @param loc The location of the warning.
+ * @param loc The location of the warning; may be null.
  * @param format The `printf()` style format string.
  */
 void print_warning( c_loc_t const *loc, char const *format, ... );
