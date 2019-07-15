@@ -1119,8 +1119,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
             c_ast_check_func_args( ast );
       if ( !args_ok )
         return VISITOR_ERROR_FOUND;
-      // FALLTHROUGH
     }
+      // FALLTHROUGH
 
     case K_DESTRUCTOR: {
       if ( (ast->kind & (K_CONSTRUCTOR | K_DESTRUCTOR)) != K_NONE &&
