@@ -1,3 +1,40 @@
+2019-07-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_ast_util.c,
+     c_keyword.c, c_kind.h, c_operator.h, c_type.c, errors.c, gibberish.c,
+     gibberish.h, help.c, lexer.l, literals.c, literals.h, options.c,
+     options.h, parser.y, set.c, test/Makefile.am,
+     declare_alttokens_o_amper2_rck_b.out,
+     declare_alttokens_o_amper_eq_rki_rk.out,
+     declare_alttokens_o_amper_rcki_k.out,
+     declare_alttokens_o_circ_eq_i_rk.out, declare_alttokens_o_circ_rcki_k.out,
+     declare_alttokens_o_exclam_eq_rcki_b.out,
+     declare_alttokens_o_exclam_rck_b.out, declare_alttokens_o_pipe_2rck_k.out,
+     declare_alttokens_o_pipe_eq_i_rk.out, declare_alttokens_o_pipe_i_rk.out,
+     declare_alttokens_o_tilde_k.out, declare_o_exclam_rck_b.out,
+     explain_bitand_i.out, explain_compl_dtor.out, explain_vcompl_dtor.out,
+     help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
+     help_commands-c++.out, help_commands-c.out, set.out, set_options.out,
+     declare_alttokens_o_amper2_rck_b.test,
+     declare_alttokens_o_amper_eq_rki_rk.test,
+     declare_alttokens_o_amper_rcki_k.test,
+     declare_alttokens_o_circ_eq_i_rk.test,
+     declare_alttokens_o_circ_rcki_k.test,
+     declare_alttokens_o_exclam_eq_rcki_b.test,
+     declare_alttokens_o_exclam_rck_b.test,
+     declare_alttokens_o_pipe_2rck_k.test,
+     declare_alttokens_o_pipe_eq_i_rk.test, declare_alttokens_o_pipe_i_rk.test,
+     declare_alttokens_o_tilde_k.test, declare_o_exclam_rck_b.test,
+     explain_bitand_i.test, explain_compl_dtor.test, explain_vcompl_dtor.test:
+     Now handling "alternative tokens" much better.
+   * errors.c: Fixed fallthrough warning.
+   * cdecl.c: Added #include <limits.h> for PATH_MAX.
+
+2019-07-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, print.c, print.h, set.c: Now warning about trigraphs in C++17 or
+     later.
+
 2019-07-09  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.h, typedefs.h: Added c_array_size_t.
