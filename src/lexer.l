@@ -437,15 +437,28 @@ static inline int parse_int( int base ) {
  * Parses a scoped name, e.g. `a::b::c`.
  *
  * @param s The string to parse.
- * @return Returns the scoped name.
+ * @param sname The `c_sname` to parse into.
+ * @return Returns `true` only if the scoped name was successfully parsed.
  */
-static c_sname_t parse_sname( char const *s ) {
+static bool parse_sname( char const *s, c_sname_t *sname ) {
   assert( s != NULL );
+  assert( sname != NULL );
+
   c_sname_t rv;
   c_sname_init( &rv );
 
   for ( char const *end; parse_identifier( s, &end ); ) {
-    c_sname_append_name( &rv, strndup( s, end - s ) );
+    char *const name = strndup( s, end - s );
+
+    // Ensure that the name is NOT a keyword.
+    c_keyword_t const *const k = c_keyword_find( name, opt_lang );
+    if ( k != NULL ) {
+      FREE( name );
+      c_sname_free( &rv );
+      return false;
+    }
+
+    c_sname_append_name( &rv, name );
     SKIP_WS( end );
     if ( strncmp( end, "::", 2 ) != 0 )
       break;
@@ -453,23 +466,44 @@ static c_sname_t parse_sname( char const *s ) {
     SKIP_WS( s );
   } // for
 
-  return rv;
+  *sname = rv;
+  return true;
 }
 
 /**
  * Parses a scoped destructor name, e.g. `S::T::~T()`.
  *
  * @param s The string to parse.
- * @return Returns the scoped name.
+ * @param sname The `c_sname` to parse into.
+ * @return Returns `true` only if the scoped name was successfully parsed.
  */
-static c_sname_t parse_sname_dtor( char const *s ) {
+static bool parse_sname_dtor( char const *s, c_sname_t *sname ) {
   assert( s != NULL );
+  assert( sname != NULL );
+
   bool parsed_tilde = false;
   c_sname_t rv;
   c_sname_init( &rv );
 
   for ( char const *end; parse_identifier( s, &end ); ) {
-    c_sname_append_name( &rv, strndup( s, end - s ) );
+    char *const name = strndup( s, end - s );
+
+    // Ensure that the name is NOT a keyword.
+    c_keyword_t const *const k = c_keyword_find( name, opt_lang );
+    if ( k != NULL ) {
+      FREE( name );
+      if ( k->literal == L_COMPL ) {    // k->literal is set to L_* so == is OK
+        char const *const t = s + strlen( L_COMPL );
+        if ( isspace( *t ) ) {          // except treat "compl" as '~'
+          s = t + 1;
+          goto tilde;
+        }
+      }
+      c_sname_free( &rv );
+      return false;
+    }
+
+    c_sname_append_name( &rv, name );
     if ( parsed_tilde )
       break;
     SKIP_WS( end );
@@ -479,12 +513,14 @@ static c_sname_t parse_sname_dtor( char const *s ) {
     SKIP_WS( s );
     if ( *s == '~' ) {
       ++s;
+tilde:
       SKIP_WS( s );
       parsed_tilde = true;
     }
   } // for
 
-  return rv;
+  *sname = rv;
+  return true;
 }
 
 /**
@@ -547,7 +583,7 @@ identifier    {letter}({letter}|{D})*
 
 cknr_name     ([cC][kK]&[rR])|([kK]&[rR][cC]?)
 cpp_name      [cC]"++"({D}{D})?
-dtor_sname    ({identifier}{S}*::{S}*)+~{identifier}
+dtor_sname    ({identifier}{S}*::{S}*)+(~{S}*|compl{S}+){identifier}
 hyphenated    [a-z]+-[a-z]+
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
 lang_name     {cknr_name}|{cpp_name}
@@ -580,13 +616,14 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 {dtor_sname}  {
                 SET_TOKEN;
 
-                c_sname_t sname = parse_sname_dtor( lexer_token );
-                if ( c_sname_is_ctor( &sname ) ) {
-                  yylval.sname = sname;
-                  return Y_DESTRUCTOR_SNAME;
+                c_sname_t sname;
+                if ( parse_sname_dtor( lexer_token, &sname ) ) {
+                  if ( c_sname_is_ctor( &sname ) ) {
+                    yylval.sname = sname;
+                    return Y_DESTRUCTOR_SNAME;
+                  }
+                  c_sname_free( &sname );
                 }
-
-                c_sname_free( &sname );
                 YY_USER_ACTION_UNDO_FOR_REJECT;
                 REJECT;
               }
@@ -614,32 +651,33 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                */
 {sname}       {
                 SET_TOKEN;
-                c_sname_t sname = parse_sname( lexer_token );
-
-                if ( lexer_find_typedef ) {
-                  //
-                  // 1. See if it's a typedef'd type.
-                  //
-                  c_typedef_t const *const t = c_typedef_find( &sname );
-                  if ( t != NULL ) {
-                    yylval.c_typedef = t;
-                    c_sname_free( &sname );
-                    return Y_TYPEDEF_SNAME;
+                c_sname_t sname;
+                if ( parse_sname( lexer_token, &sname ) ) {
+                  if ( lexer_find_typedef ) {
+                    //
+                    // 1. See if it's a typedef'd type.
+                    //
+                    c_typedef_t const *const t = c_typedef_find( &sname );
+                    if ( t != NULL ) {
+                      yylval.c_typedef = t;
+                      c_sname_free( &sname );
+                      return Y_TYPEDEF_SNAME;
+                    }
                   }
-                }
 
-                //
-                // 2. See if it's a constructor name.
-                //
-                if ( c_sname_is_ctor( &sname ) ) {
-                  yylval.sname = sname;
-                  return Y_CONSTRUCTOR_SNAME;
-                }
+                  //
+                  // 2. See if it's a constructor name.
+                  //
+                  if ( c_sname_is_ctor( &sname ) ) {
+                    yylval.sname = sname;
+                    return Y_CONSTRUCTOR_SNAME;
+                  }
 
-                //
-                // 3. Otherwise, reject it.
-                //
-                c_sname_free( &sname );
+                  //
+                  // 3. Otherwise, reject it.
+                  //
+                  c_sname_free( &sname );
+                }
                 YY_USER_ACTION_UNDO_FOR_REJECT;
                 REJECT;
               }
@@ -739,6 +777,11 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                * Special cases for hyphenated cdecl keywords that are NOT
                * synonyms for C/C++ keywords.
                */
+"alt-tokens"  {
+                SET_TOKEN;
+                yylval.name = check_strdup( lexer_token );
+                return Y_ALT_TOKENS;
+              }
 "non-member"  |
 "non-mbr"     {
                 ASSERT_MODE( ENGLISH_TO_GIBBERISH );
@@ -772,23 +815,23 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 {dec_int}     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
 {hex_int}     { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
-"<:<:"        { SET_TOKEN_TO_AND_RETURN( "[[", Y_LBRACKET2 ); }
-":>:>"        { SET_TOKEN_TO_AND_RETURN( "]]", Y_RBRACKET2 ); }
+"<:<:"        { SET_TOKEN_TO_AND_RETURN   ( "[[", Y_LBRACKET2 ); }
+":>:>"        { SET_TOKEN_TO_AND_RETURN   ( "]]", Y_RBRACKET2 ); }
 
-"<:"          { SET_TOKEN_TO_AND_RETURN_IT( "[" ); }
-":>"          { SET_TOKEN_TO_AND_RETURN_IT( "]" ); }
+"<:"          { SET_TOKEN_TO_AND_RETURN_IT( "["               ); }
+":>"          { SET_TOKEN_TO_AND_RETURN_IT( "]"               ); }
 
-"??(??("      { SET_TOKEN_TO_AND_RETURN( "[[", Y_LBRACKET2 ); }
-"??)??)"      { SET_TOKEN_TO_AND_RETURN( "]]", Y_RBRACKET2 ); }
-"??'="        { SET_TOKEN_TO_AND_RETURN( "^=", Y_CIRC_EQ   ); }
-"??!="        { SET_TOKEN_TO_AND_RETURN( "|=", Y_PIPE_EQ   ); }
-"??!??!"      { SET_TOKEN_TO_AND_RETURN( "||", Y_PIPE2     ); }
+"??(??("      { SET_TOKEN_TO_AND_RETURN   ( "[[", Y_LBRACKET2 ); }
+"??)??)"      { SET_TOKEN_TO_AND_RETURN   ( "]]", Y_RBRACKET2 ); }
+"??'="        { SET_TOKEN_TO_AND_RETURN   ( "^=", Y_CIRC_EQ   ); }
+"??!="        { SET_TOKEN_TO_AND_RETURN   ( "|=", Y_PIPE_EQ   ); }
+"??!??!"      { SET_TOKEN_TO_AND_RETURN   ( "||", Y_PIPE2     ); }
 
-"??!"         { SET_TOKEN_TO_AND_RETURN_IT( "|" ); }
-"??'"         { SET_TOKEN_TO_AND_RETURN_IT( "^" ); }
-"??("         { SET_TOKEN_TO_AND_RETURN_IT( "[" ); }
-"??)"         { SET_TOKEN_TO_AND_RETURN_IT( "]" ); }
-"??-"         { SET_TOKEN_TO_AND_RETURN_IT( "~" ); }
+"??!"         { SET_TOKEN_TO_AND_RETURN   ( "|", Y_PIPE       ); }
+"??'"         { SET_TOKEN_TO_AND_RETURN   ( "^", Y_CIRC       ); }
+"??("         { SET_TOKEN_TO_AND_RETURN_IT( "["               ); }
+"??)"         { SET_TOKEN_TO_AND_RETURN_IT( "]"               ); }
+"??-"         { SET_TOKEN_TO_AND_RETURN   ( "~", Y_TILDE      ); }
 
               /*
                * Special case: if "::" is immediately followed by a '*', return
@@ -802,6 +845,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 "::"{S}*"*"   { SET_TOKEN; return Y_COLON2_STAR     ; }
 "::"          { SET_TOKEN; return Y_COLON2          ; }
 
+              /* Multi-character operators. */
 "!="          { SET_TOKEN; return Y_EXCLAM_EQ       ; }
 "\"\""        { SET_TOKEN; return Y_QUOTE2          ; }
 "%="          { SET_TOKEN; return Y_PERCENT_EQ      ; }
@@ -833,9 +877,15 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 "|="          { SET_TOKEN; return Y_PIPE_EQ         ; }
 "||"          { SET_TOKEN; return Y_PIPE2           ; }
 
-"!"           |
+              /* Single-character operators having alternative tokens. */
+"!"           { SET_TOKEN; return Y_EXCLAM          ; }
+"&"           { SET_TOKEN; return Y_AMPER           ; }
+"^"           { SET_TOKEN; return Y_CIRC            ; }
+"|"           { SET_TOKEN; return Y_PIPE            ; }
+"~"           { SET_TOKEN; return Y_TILDE           ; }
+
+              /* Single-character operators. */
 "%"           |
-"&"           |
 "("           |
 ")"           |
 "*"           |
@@ -850,11 +900,8 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 ">"           |
 "["           |
 "]"           |
-"^"           |
 "{"           |
-"|"           |
-"}"           |
-"~"           { SET_TOKEN; return lexer_token[0]; }
+"}"           { SET_TOKEN; return lexer_token[0]    ; }
 
 "/*"          {                         /* ignore C-style comments */
                 for ( int c = input(), prev_c = '\0'; ;

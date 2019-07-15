@@ -76,6 +76,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added inline functions and variables
 	added register and variadic function arguments
 	added typedef, using, define, and show commands
+	added alternative tokens
 	added C99 static, type-qualified, and variable length array
 		function arguments
 	added C99 standard types, e.g., int8_t, atomic_int, etc.

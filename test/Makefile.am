@@ -505,8 +505,24 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_xi-c.test
 
 #
-# C declare digraph & trigraph tests
-# ==================================
+# C++ declare alt-tokens tests
+# ============================
+#
+TESTS+=	tests/declare_alttokens_o_amper2_rck_b.test \
+	tests/declare_alttokens_o_amper_eq_rki_rk.test \
+	tests/declare_alttokens_o_amper_rcki_k.test \
+	tests/declare_alttokens_o_circ_eq_i_rk.test \
+	tests/declare_alttokens_o_circ_rcki_k.test \
+	tests/declare_alttokens_o_exclam_eq_rcki_b.test \
+	tests/declare_alttokens_o_exclam_rck_b.test \
+	tests/declare_alttokens_o_pipe_2rck_k.test \
+	tests/declare_alttokens_o_pipe_eq_i_rk.test \
+	tests/declare_alttokens_o_pipe_i_rk.test \
+	tests/declare_alttokens_o_tilde_k.test
+
+#
+# C++ declare digraph & trigraph tests
+# ====================================
 #
 TESTS+=	tests/declare_digraphs_a9i.test \
 	tests/declare_digraphs_nfi_v-c++.test \
@@ -520,8 +536,8 @@ TESTS+=	tests/declare_digraphs_a9i.test \
 	tests/declare_trigraphs_o_tilde_k.test
 
 #
-# C explain digraph & trigraph tests
-# ==================================
+# C++ explain digraph & trigraph tests
+# ====================================
 #
 TESTS+=	tests/explain_digraphs_a9i.test \
 	tests/explain_digraphs_nfi_v-c++.test \
@@ -1049,9 +1065,11 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_a.test \
 	tests/explain_al0_c-c++.test \
 	tests/explain_al8_c-c++.test \
+	tests/explain_bitand_i.test \
 	tests/explain_cdfcdi_i.test \
 	tests/explain_cdfi_i.test \
 	tests/explain_cf_v.test \
+	tests/explain_compl_dtor.test \
 	tests/explain_cpmci.test \
 	tests/explain_cpmi.test \
 	tests/explain_crf_v.test \
@@ -1095,6 +1113,7 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_ui.test \
 	tests/explain_using_a3i.test \
 	tests/explain_using_pfi_v.test \
+	tests/explain_vcompl_dtor.test \
 	tests/explain_vdtor.test \
 	tests/explain_voyf.test \
 	tests/explain_xf_v.test \

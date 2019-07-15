@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -a -xc++ @ define S as struct S; declare ! as operator (r as reference to const S) returning bool @ 0

@@ -31,6 +31,7 @@
 // english
 extern char const L_ALIGNED[];
 extern char const L_ALL[];
+extern char const L_ALT_TOKENS[];
 extern char const L_ARRAY[];
 extern char const L_AS[];
 extern char const L_BLOCK[];                // Apple: Engligh for '^'
@@ -145,13 +146,8 @@ extern char const L__STATIC_ASSERT[];
 extern char const L_STATIC_ASSERT[];
 
 // C++
-extern char const L_AND[];
-extern char const L_AND_EQ[];
-extern char const L_BITAND[];
-extern char const L_BITOR[];
 extern char const L_CATCH[];
 extern char const L_CLASS[];
-extern char const L_COMPL[];
 extern char const L_CONSTRUCTOR[];
 extern char const L_CONST_CAST[];
 extern char const L_CONVERSION[];
@@ -167,12 +163,8 @@ extern char const L_MUTABLE[];
 extern char const L_NAMESPACE[];
 extern char const L_NEW[];
 extern char const L_NON_THROWING[];         // synonym for "throw"
-extern char const L_NOT[];
-extern char const L_NOT_EQ[];
 extern char const L_OPER[];                 // synonym for "operator"
 extern char const L_OPERATOR[];
-extern char const L_OR[];
-extern char const L_OR_EQ[];
 extern char const L_PRIVATE[];
 extern char const L_PROTECTED[];
 extern char const L_PUBLIC[];
@@ -190,8 +182,6 @@ extern char const L_TYPEID[];
 extern char const L_TYPENAME[];
 extern char const L_USING[];
 extern char const L_VIRTUAL[];
-extern char const L_XOR[];
-extern char const L_XOR_EQ[];
 
 // C++11
 extern char const L_ALIGNAS[];
@@ -229,6 +219,19 @@ extern char const L_CHAR8_T[];
 extern char const L_CONCEPT[];
 extern char const L_CONSTEVAL[];
 extern char const L_REQUIRES[];
+
+// Alternative tokens
+extern char const L_AND[];                  // &&
+extern char const L_AND_EQ[];               // &=
+extern char const L_BITAND[];               // &
+extern char const L_BITOR[];                // |
+extern char const L_COMPL[];                // ~
+extern char const L_NOT[];                  // !
+extern char const L_NOT_EQ[];               // !=
+extern char const L_OR[];                   // ||
+extern char const L_OR_EQ[];                // |=
+extern char const L_XOR[];                  // ^
+extern char const L_XOR_EQ[];               // ^=
 
 // Miscellaneous
 extern char const L___BLOCK[];              // Apple: storage class

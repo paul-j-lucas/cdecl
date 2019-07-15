@@ -1,0 +1,1 @@
+S bitand operator and_eq(S bitand r, int x);

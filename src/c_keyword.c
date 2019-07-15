@@ -143,13 +143,8 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L__STATIC_ASSERT ,  Y__STATIC_ASSERT,   T_NONE,         LANG_MIN(C_11)    },
 
   // C++
-  { L_AND,              Y_AND,              T_NONE,         LANG_CPP_ALL      },
-  { L_AND_EQ,           Y_AND_EQ,           T_NONE,         LANG_CPP_ALL      },
-  { L_BITAND,           Y_BITAND,           T_NONE,         LANG_CPP_ALL      },
-  { L_BITOR,            Y_BITOR,            T_NONE,         LANG_CPP_ALL      },
   { L_CATCH,            Y_CATCH,            T_NONE,         LANG_CPP_ALL      },
   { L_CLASS,            Y_CLASS,            T_CLASS,        LANG_CPP_ALL      },
-  { L_COMPL,            Y_COMPL,            T_NONE,         LANG_CPP_ALL      },
   { L_CONST_CAST,       Y_CONST_CAST,       T_NONE,         LANG_CPP_ALL      },
   { L_DELETE,           Y_DELETE,           T_NONE,         LANG_CPP_ALL      },
   { L_DYNAMIC_CAST,     Y_DYNAMIC_CAST,     T_NONE,         LANG_CPP_ALL      },
@@ -160,11 +155,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_MUTABLE,          Y_MUTABLE,          T_MUTABLE,      LANG_CPP_ALL      },
   { L_NAMESPACE,        Y_NAMESPACE,        T_NAMESPACE,    LANG_CPP_ALL      },
   { L_NEW,              Y_NEW,              T_NONE,         LANG_CPP_ALL      },
-  { L_NOT,              Y_NOT,              T_NONE,         LANG_CPP_ALL      },
-  { L_NOT_EQ,           Y_EXCLAM_EQ,        T_NONE,         LANG_CPP_ALL      },
   { L_OPERATOR,         Y_OPERATOR,         T_NONE,         LANG_CPP_ALL      },
-  { L_OR,               Y_OR,               T_NONE,         LANG_CPP_ALL      },
-  { L_OR_EQ,            Y_OR_EQ,            T_NONE,         LANG_CPP_ALL      },
   { L_PRIVATE,          Y_PRIVATE,          T_NONE,         LANG_CPP_ALL      },
   { L_PROTECTED,        Y_PROTECTED,        T_NONE,         LANG_CPP_ALL      },
   { L_PUBLIC,           Y_PUBLIC,           T_NONE,         LANG_CPP_ALL      },
@@ -179,8 +170,6 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_TYPENAME,         Y_TYPENAME,         T_NONE,         LANG_CPP_ALL      },
   { L_USING,            Y_USING,            T_TYPEDEF,      LANG_CPP_ALL      },
   { L_VIRTUAL,          Y_VIRTUAL,          T_VIRTUAL,      LANG_CPP_ALL      },
-  { L_XOR,              Y_XOR,              T_NONE,         LANG_CPP_ALL      },
-  { L_XOR_EQ,           Y_XOR_EQ,           T_NONE,         LANG_CPP_ALL      },
 
   // C++11
   { L_ALIGNAS,          Y_ALIGNAS,          T_NONE,         LANG_MIN(CPP_11)  },
@@ -204,6 +193,19 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_CONCEPT,          Y_CONCEPT,          T_NONE,         LANG_MIN(CPP_20)  },
   { L_CONSTEVAL,        Y_CONSTEVAL,        T_CONSTEVAL,    LANG_MIN(CPP_20)  },
   { L_REQUIRES,         Y_REQUIRES,         T_NONE,         LANG_MIN(CPP_20)  },
+
+  // Alternative tokens
+  { L_AND,              Y_AMPER2,           T_NONE,         LANG_ALL          },
+  { L_AND_EQ,           Y_AMPER_EQ,         T_NONE,         LANG_ALL          },
+  { L_BITAND,           Y_AMPER,            T_NONE,         LANG_ALL          },
+  { L_BITOR,            Y_PIPE,             T_NONE,         LANG_ALL          },
+  { L_COMPL,            Y_TILDE,            T_NONE,         LANG_ALL          },
+  { L_NOT,              Y_EXCLAM,           T_NONE,         LANG_ALL          },
+  { L_NOT_EQ,           Y_EXCLAM_EQ,        T_NONE,         LANG_ALL          },
+  { L_OR,               Y_PIPE2,            T_NONE,         LANG_ALL          },
+  { L_OR_EQ,            Y_PIPE_EQ,          T_NONE,         LANG_ALL          },
+  { L_XOR,              Y_CIRC,             T_NONE,         LANG_ALL          },
+  { L_XOR_EQ,           Y_CIRC_EQ,          T_NONE,         LANG_ALL          },
 
   // Apple extension    
   { L___BLOCK,          Y___BLOCK,          T_BLOCK,        LANG_ALL          },

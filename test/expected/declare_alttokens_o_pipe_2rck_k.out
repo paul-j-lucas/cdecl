@@ -1,0 +1,1 @@
+S operator bitor(const S bitand x, const S bitand y);

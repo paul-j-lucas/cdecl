@@ -87,6 +87,7 @@ static ac_keyword_t const CDECL_COMMANDS[] = {
  * @hideinitializer
  */
 static ac_keyword_t const CDECL_KEYWORDS[] = {
+  { L_ALT_TOKENS,         LANG_ALL                          },
   { L_ARRAY,              LANG_ALL                          },
 //  L_AS,                               // too short
   { L_ATOMIC,             LANG_MIN(C_11)                    },

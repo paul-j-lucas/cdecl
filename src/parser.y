@@ -406,7 +406,7 @@ static bool explain_type_decl( c_alignas_t const *align,
 
     switch ( ast->kind ) {
       case K_OPERATOR:
-        local_name = graph_name_c( op_get( ast->as.oper.oper_id )->name );
+        local_name = op_token_c( ast->as.oper.oper_id );
         scope_name = c_sname_full_name( &sname );
         break;
       default:
@@ -673,7 +673,7 @@ static void yyerror( char const *msg ) {
   c_typedef_t const  *c_typedef;  /* typedef type */
 }
 
-                    /* commands */
+                    /* cdecl commands */
 %token              Y_CAST
 %token              Y_DECLARE
 %token              Y_DEFINE
@@ -712,10 +712,10 @@ static void yyerror( char const *msg ) {
 %token              Y_USER
 %token              Y_VARIABLE
 
-                    /* K&R C */
-%token  <oper_id>   '!'
+                    /* C & C++ operators (one-character) */
+%token  <oper_id>   Y_EXCLAM            /* '!' */
 %token  <oper_id>   '%'
-%token  <oper_id>   '&'
+%token  <oper_id>   Y_AMPER             /* '&' */
 %token  <oper_id>   '(' ')'
 %token  <oper_id>   '*'
 %token  <oper_id>   '+'
@@ -728,11 +728,13 @@ static void yyerror( char const *msg ) {
 %token  <oper_id>   '='
 %token  <oper_id>   Y_QMARK_COLON "?:"
 %token  <oper_id>   '[' ']'
-%token  <oper_id>   '^'
+%token  <oper_id>   Y_CIRC              /* '^' */
 %token              '{'
-%token  <oper_id>   '|'
+%token  <oper_id>   Y_PIPE              /* '|' */
 %token              '}'
-%token  <oper_id>   '~'
+%token  <oper_id>   Y_TILDE             /* '~' */
+
+                    /* C & C++ operators (two-character) */
 %token  <oper_id>   Y_EXCLAM_EQ   "!="
 %token  <oper_id>   Y_PERCENT_EQ  "%="
 %token  <oper_id>   Y_AMPER2      "&&"
@@ -754,6 +756,8 @@ static void yyerror( char const *msg ) {
 %token  <oper_id>   Y_CIRC_EQ     "^="
 %token  <oper_id>   Y_PIPE_EQ     "|="
 %token  <oper_id>   Y_PIPE2       "||"
+
+                    /* K&R C */
 %token  <type_id>   Y_AUTO_C            /* C version of "auto" */
 %token              Y_BREAK
 %token              Y_CASE
@@ -810,16 +814,11 @@ static void yyerror( char const *msg ) {
 %token              Y__STATIC_ASSERT
 
                     /* C++ */
-%token              Y_AND
-%token              Y_AND_EQ
 %token  <oper_id>   Y_ARROW_STAR  "->*"
-%token              Y_BITAND
-%token              Y_BITOR
 %token              Y_CATCH
 %token  <type_id>   Y_CLASS
 %token  <oper_id>   Y_COLON2      "::"
 %token              Y_COLON2_STAR "::*"
-%token              Y_COMPL
 %token  <literal>   Y_CONST_CAST
 %token              Y_CONSTRUCTOR
 %token  <sname>     Y_CONSTRUCTOR_SNAME
@@ -836,10 +835,7 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_MUTABLE
 %token  <type_id>   Y_NAMESPACE
 %token  <type_id>   Y_NEW
-%token              Y_NOT
 %token              Y_OPERATOR
-%token              Y_OR
-%token              Y_OR_EQ
 %token              Y_PRIVATE
 %token              Y_PROTECTED
 %token              Y_PUBLIC
@@ -854,8 +850,6 @@ static void yyerror( char const *msg ) {
 %token              Y_TYPENAME
 %token  <type_id>   Y_USING
 %token  <type_id>   Y_VIRTUAL
-%token              Y_XOR
-%token              Y_XOR_EQ
 
                     /* C++11 */
 %token              Y_LBRACKET2   "[["  /* for attribute specifiers */
@@ -898,6 +892,7 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y___BLOCK           /* Apple: block storage class */
 %token              Y_END
 %token              Y_ERROR
+%token  <name>      Y_ALT_TOKENS
 %token  <name>      Y_LANG_NAME
 %token  <name>      Y_NAME
 %token  <number>    Y_NUMBER
@@ -1060,6 +1055,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; FREE( $$ ); } name_expected
 %destructor { DTRACE; FREE( $$ ); } name_opt
 %destructor { DTRACE; FREE( $$ ); } set_option_name
+%destructor { DTRACE; FREE( $$ ); } Y_ALT_TOKENS
 %destructor { DTRACE; FREE( $$ ); } Y_LANG_NAME
 %destructor { DTRACE; FREE( $$ ); } Y_NAME
 
@@ -1641,8 +1637,8 @@ explain_c
     /*
      * In-class destructor declaration, e.g.: ~S().
      */
-  | explain virtual_opt '~' any_name_expected lparen_expected rparen_expected
-    noexcept_c_type_opt
+  | explain virtual_opt Y_TILDE any_name_expected
+    lparen_expected rparen_expected noexcept_c_type_opt
     {
       DUMP_START( "explain_c",
                   "EXPLAIN ~ any_name_expected '(' ')'" );
@@ -1939,6 +1935,7 @@ set_command
 
 set_option_name
   : name_opt
+  | Y_ALT_TOKENS
   | Y_LANG_NAME
   ;
 
@@ -2806,7 +2803,7 @@ array_size_c_num
   ;
 
 block_decl_c_ast                        /* Apple extension */
-  : /* type */ '(' '^'
+  : /* type */ '(' Y_CIRC
     {
       //
       // A block AST has to be the type inherited attribute for decl_c_ast so
@@ -2904,8 +2901,8 @@ func_qualifier_c_type
 
 func_ref_qualifier_c_type_opt
   : /* empty */                   { $$ = T_NONE; }
-  | '&'                           { $$ = T_REFERENCE; }
-  | "&&"                          { $$ = T_RVALUE_REFERENCE; }
+  | Y_AMPER                       { $$ = T_REFERENCE; }
+  | Y_AMPER2                      { $$ = T_RVALUE_REFERENCE; }
   ;
 
 noexcept_c_type_opt
@@ -3169,7 +3166,7 @@ reference_decl_c_ast
   ;
 
 reference_type_c_ast
-  : /* type_c_ast */ '&'
+  : /* type_c_ast */ Y_AMPER
     {
       DUMP_START( "reference_type_c_ast", "&" );
       DUMP_AST( "(type_c_ast)", type_peek() );
@@ -3182,7 +3179,7 @@ reference_type_c_ast
       DUMP_END();
     }
 
-  | /* type_c_ast */ "&&"
+  | /* type_c_ast */ Y_AMPER2
     {
       DUMP_START( "reference_type_c_ast", "&&" );
       DUMP_AST( "(type_c_ast)", type_peek() );
@@ -3810,7 +3807,7 @@ static_type_opt
   ;
 
 block_cast_c_ast                        /* Apple extension */
-  : /* type */ '(' '^'
+  : /* type */ '(' Y_CIRC
     {
       //
       // A block AST has to be the type inherited attribute for cast_c_ast_opt
@@ -4372,13 +4369,13 @@ conversion_expected
   ;
 
 c_operator
-  : '!'                           { $$ = OP_EXCLAM          ; }
-  | "!="                          { $$ = OP_EXCLAM_EQ       ; }
+  : Y_EXCLAM                      { $$ = OP_EXCLAM          ; }
+  | Y_EXCLAM_EQ                   { $$ = OP_EXCLAM_EQ       ; }
   | '%'                           { $$ = OP_PERCENT         ; }
   | "%="                          { $$ = OP_PERCENT_EQ      ; }
-  | '&'                           { $$ = OP_AMPER           ; }
-  | "&&"                          { $$ = OP_AMPER2          ; }
-  | "&="                          { $$ = OP_AMPER_EQ        ; }
+  | Y_AMPER                       { $$ = OP_AMPER           ; }
+  | Y_AMPER2                      { $$ = OP_AMPER2          ; }
+  | Y_AMPER_EQ                    { $$ = OP_AMPER_EQ        ; }
   | '(' rparen_expected           { $$ = OP_PARENS          ; }
   | '*'                           { $$ = OP_STAR            ; }
   | "*="                          { $$ = OP_STAR_EQ         ; }
@@ -4409,12 +4406,12 @@ c_operator
   | ">="                          { $$ = OP_GREATER_EQ      ; }
   | "?:"                          { $$ = OP_QMARK_COLON     ; }
   | '[' rbracket_expected         { $$ = OP_BRACKETS        ; }
-  | '^'                           { $$ = OP_CIRC            ; }
-  | "^="                          { $$ = OP_CIRC_EQ         ; }
-  | '|'                           { $$ = OP_PIPE            ; }
-  | "||"                          { $$ = OP_PIPE2           ; }
-  | "|="                          { $$ = OP_PIPE_EQ         ; }
-  | '~'                           { $$ = OP_TILDE           ; }
+  | Y_CIRC                        { $$ = OP_CIRC            ; }
+  | Y_CIRC_EQ                     { $$ = OP_CIRC_EQ         ; }
+  | Y_PIPE                        { $$ = OP_PIPE            ; }
+  | Y_PIPE2                       { $$ = OP_PIPE2           ; }
+  | Y_PIPE_EQ                     { $$ = OP_PIPE_EQ         ; }
+  | Y_TILDE                       { $$ = OP_TILDE           ; }
   ;
 
 equals_expected

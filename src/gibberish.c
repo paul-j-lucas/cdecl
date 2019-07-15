@@ -41,6 +41,7 @@
 
 // standard
 #include <assert.h>
+#include <ctype.h>
 #include <stdlib.h>
 
 /// @endcond
@@ -126,7 +127,7 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
   assert( ast->kind == K_ARRAY );
 
-  FPUTS( graph_name_c( "[" ), param->gout );
+  FPUTS( graph_token_c( "[" ), param->gout );
   if ( ast->as.array.type_id != T_NONE )
     FPRINTF( param->gout, "%s ", c_type_name( ast->as.array.type_id ) );
   switch ( ast->as.array.size ) {
@@ -138,7 +139,7 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
     default:
       FPRINTF( param->gout, "%d", ast->as.array.size );
   } // switch
-  FPUTS( graph_name_c( "]" ), param->gout );
+  FPUTS( graph_token_c( "]" ), param->gout );
 }
 
 /**
@@ -439,7 +440,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
         if ( c_ast_is_parent( parent->parent ) )
           c_ast_gibberish_postfix( parent, param );
 
-        if ( (ast->kind & (K_POINTER | K_POINTER_TO_MEMBER)) == K_NONE )
+        if ( (ast->kind & K_ANY_POINTER) == K_NONE )
           FPUTC( ')', param->gout );
         break;
 
@@ -507,16 +508,23 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast, g_param_t *param ) {
       );
       break;
     case K_REFERENCE:
-      FPUTC( '&', param->gout );
+      if ( opt_alt_tokens ) {
+        g_param_space( param );
+        FPRINTF( param->gout, "%s ", L_BITAND );
+      } else {
+        FPUTC( '&', param->gout );
+      }
       break;
     case K_RVALUE_REFERENCE:
-      FPUTS( "&&", param->gout );
+      if ( opt_alt_tokens ) {
+        g_param_space( param );
+        FPRINTF( param->gout, "%s ", L_AND );
+      } else {
+        FPUTS( "&&", param->gout );
+      }
       break;
     default:
-      assert(
-        ast->kind &
-          (K_POINTER | K_POINTER_TO_MEMBER | K_REFERENCE | K_RVALUE_REFERENCE)
-      );
+      assert( (ast->kind & (K_ANY_POINTER | K_ANY_REFERENCE)) != K_NONE );
   } // switch
 
   c_type_id_t const qualifier = (ast->type_id & T_MASK_QUALIFIER);
@@ -556,17 +564,23 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
       case K_DESTRUCTOR:
         if ( c_ast_sname_count( ast ) > 1 )
           FPRINTF( param->gout, "%s::", c_ast_sname_scope_name( ast ) );
-        FPRINTF( param->gout, "~%s", c_ast_sname_local_name( ast ) );
+        if ( opt_alt_tokens )
+          FPRINTF( param->gout, "%s ", L_COMPL );
+        else
+          FPUTC( '~', param->gout );
+        FPUTS( c_ast_sname_local_name( ast ), param->gout );
         break;
-      case K_OPERATOR:
+      case K_OPERATOR: {
         g_param_space( param );
         if ( !c_ast_sname_empty( ast ) )
           FPRINTF( param->gout, "%s::", c_ast_sname_full_name( ast ) );
+        c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+        char const *const token = graph_token_c( alt_token_c( op->name ) );
         FPRINTF( param->gout,
-          "%s%s",
-          L_OPERATOR, graph_name_c( op_get( ast->as.oper.oper_id )->name )
+          "%s%s%s", L_OPERATOR, isalpha( token[0] ) ? " " : "", token
         );
         break;
+      }
       case K_USER_DEF_CONVERSION:
         // Do nothing since these don't have names.
         break;
@@ -630,7 +644,64 @@ static void g_param_init( g_param_t *param, c_ast_t const *root,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-char const* graph_name_c( char const *token ) {
+char const* alt_token_c( char const *token ) {
+  assert( token != NULL );
+
+  if ( opt_alt_tokens ) {
+    switch ( token[0] ) {
+      case '!': switch ( token[1] ) {
+                  case '=': return L_NOT_EQ;
+                  default : return L_NOT;
+                }
+      case '&': switch ( token[1] ) {
+                  case '&': return L_AND;
+                  case '=': return L_AND_EQ;
+                  default : return L_BITAND;
+                } // switch
+      case '|': switch ( token[1] ) {
+                  case '|': return L_OR;
+                  case '=': return L_OR_EQ;
+                  default : return L_BITOR;
+                } // switch
+      case '~': return L_COMPL;
+      case '^': switch ( token[1] ) {
+                  case '=': return L_XOR_EQ;
+                  default : return L_XOR;
+                } // switch
+    } // switch
+  }
+  return token;
+}
+
+void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
+  g_param_t param;
+  g_param_init( &param, ast, G_CAST, gout );
+  c_ast_gibberish_impl( ast, &param );
+}
+
+void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout ) {
+  assert( ast != NULL );
+
+  switch ( ast->align.kind ) {
+    case ALIGNAS_NONE:
+      break;
+    case ALIGNAS_EXPR:
+      FPRINTF( gout, "%s(%u) ", alignas_lang(), ast->align.as.expr );
+      break;
+    case ALIGNAS_TYPE:
+      FPRINTF( gout, "%s(", alignas_lang() );
+      c_ast_gibberish_declare( ast->align.as.type_ast, G_DECL_NONE, gout );
+      FPUTS( ") ", gout );
+      break;
+  } // switch
+
+  g_param_t param;
+  g_param_init( &param, ast, G_DECLARE, gout );
+  param.flags = flags;
+  c_ast_gibberish_impl( ast, &param );
+}
+
+char const* graph_token_c( char const *token ) {
   assert( token != NULL );
 
   switch ( opt_graph ) {
@@ -662,34 +733,6 @@ char const* graph_name_c( char const *token ) {
       break;
   } // switch
   return token;
-}
-
-void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
-  g_param_t param;
-  g_param_init( &param, ast, G_CAST, gout );
-  c_ast_gibberish_impl( ast, &param );
-}
-
-void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout ) {
-  assert( ast != NULL );
-
-  switch ( ast->align.kind ) {
-    case ALIGNAS_NONE:
-      break;
-    case ALIGNAS_EXPR:
-      FPRINTF( gout, "%s(%u) ", alignas_lang(), ast->align.as.expr );
-      break;
-    case ALIGNAS_TYPE:
-      FPRINTF( gout, "%s(", alignas_lang() );
-      c_ast_gibberish_declare( ast->align.as.type_ast, G_DECL_NONE, gout );
-      FPUTS( ") ", gout );
-      break;
-  } // switch
-
-  g_param_t param;
-  g_param_init( &param, ast, G_DECLARE, gout );
-  param.flags = flags;
-  c_ast_gibberish_impl( ast, &param );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

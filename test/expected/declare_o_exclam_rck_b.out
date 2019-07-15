@@ -1,1 +1,1 @@
-bool operator!(S);
+bool operator!(const S&);

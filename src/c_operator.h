@@ -30,6 +30,7 @@
 #include "cdecl.h"                      /* must go first */
 #include "c_ast.h"
 #include "c_lang.h"
+#include "gibberish.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -141,7 +142,7 @@ c_operator_t const* op_get( c_oper_id_t oper_id );
 /**
  * Checks whether the C/C++ operator is ambiguous.
  *
- * The operators &, *, +, ++, -, and --, when declared as:
+ * The operators `&`, `*`, `+`, `++`, `-`, and `--`, when declared as:
  *
  *      T operator OP(U);
  *
@@ -176,6 +177,16 @@ CDECL_OP_INLINE bool op_is_ambiguous( c_operator_t const *op ) {
  * <code>\ref OP_NON_MEMBER</code>, or <code>\ref OP_UNSPECIFIED</code>.
  */
 unsigned op_get_overload( c_ast_t const *ast );
+
+/**
+ * Gets the C/C++ token for the operator having \a oper_id.
+ *
+ * @param oper_id The ID of the `c_operator` to get the token for.
+ * @return Returns said token; otherwise, returns theunaltered token.
+ */
+CDECL_OP_INLINE char const* op_token_c( c_oper_id_t oper_id ) {
+  return alt_token_c( graph_token_c( op_get( oper_id )->name ) );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -49,6 +49,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern option variables
+bool                opt_alt_tokens;
 char const         *opt_conf_file;
 #ifdef ENABLE_CDECL_DEBUG
 bool                opt_debug;
@@ -75,6 +76,7 @@ FILE               *fout;
 static struct option const LONG_OPTS[] = {
   { "digraphs",     no_argument,        NULL, '2' },
   { "trigraphs",    no_argument,        NULL, '3' },
+  { "alt-tokens",   no_argument,        NULL, 'a' },
   { "config",       required_argument,  NULL, 'c' },
   { "no-config",    no_argument,        NULL, 'C' },
 #ifdef ENABLE_CDECL_DEBUG
@@ -101,7 +103,7 @@ static struct option const LONG_OPTS[] = {
  *
  * @hideinitializer
  */
-static char const   SHORT_OPTS[] = "23c:Cf:ik:o:pstvx:"
+static char const   SHORT_OPTS[] = "23ac:Cf:ik:o:pstvx:"
 #ifdef ENABLE_CDECL_DEBUG
   "d"
 #endif /* ENABLE_CDECL_DEBUG */
@@ -318,6 +320,7 @@ static void parse_options( int argc, char const *argv[] ) {
     switch ( opt ) {
       case '2': opt_graph       = GRAPH_DI;                   break;
       case '3': opt_graph       = GRAPH_TRI;                  break;
+      case 'a': opt_alt_tokens  = true;                       break;
       case 'c': opt_conf_file   = optarg;                     break;
       case 'C': opt_no_conf     = true;                       break;
 #ifdef ENABLE_CDECL_DEBUG
@@ -341,7 +344,7 @@ static void parse_options( int argc, char const *argv[] ) {
   } // for
 
   check_mutually_exclusive( "2", "3" );
-  check_mutually_exclusive( "v", "23cCdfikopstxy" );
+  check_mutually_exclusive( "v", "23acCdfikopstxy" );
 
   if ( print_version ) {
     printf( "%s\n", PACKAGE_STRING );
@@ -375,6 +378,7 @@ static void usage( void ) {
 "usage: " PACKAGE " [options] [command...]\n"
 "       " PACKAGE " [options] files...\n"
 "options:\n"
+"  --alt-tokens    (-a)  Print alternative tokens.\n"
 "  --color=WHEN    (-k)  When to colorize output [default: not_file].\n"
 "  --config=FILE   (-c)  The configuration file [default: ~/%s].\n"
 #ifdef ENABLE_CDECL_DEBUG

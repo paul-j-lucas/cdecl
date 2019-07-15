@@ -391,7 +391,7 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast ) {
 c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
   ast = c_ast_untypedef( ast );
   if ( ast != NULL ) {
-    while ( ast->kind == K_REFERENCE || ast->kind == K_RVALUE_REFERENCE ) {
+    while ( (ast->kind & K_ANY_REFERENCE) != K_NONE ) {
       ast = ast->as.ptr_ref.to_ast;
       assert( ast != NULL );
     } // while

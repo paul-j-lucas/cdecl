@@ -69,11 +69,13 @@ void set_option( c_loc_t const *loc, char const *opt ) {
       return;
     }
 
+    IF_IS_OPT_DO(    "alt-tokens",  opt_alt_tokens = true;        );
+    IF_IS_OPT_DO(  "noalt-tokens",  opt_alt_tokens = false;       );
 #ifdef ENABLE_CDECL_DEBUG
-    IF_IS_OPT_DO(    "debug",     opt_debug = true;             );
-    IF_IS_OPT_DO(  "nodebug",     opt_debug = false;            );
+    IF_IS_OPT_DO(    "debug",       opt_debug = true;             );
+    IF_IS_OPT_DO(  "nodebug",       opt_debug = false;            );
 #endif /* ENABLE_CDECL_DEBUG */
-    IF_IS_OPT_DO(  "digraphs",    opt_graph = GRAPH_DI;         );
+    IF_IS_OPT_DO(  "digraphs",      opt_graph = GRAPH_DI;         );
 
     IF_IS_OPT_DO( "trigraphs",
       opt_graph = GRAPH_TRI;
@@ -84,14 +86,14 @@ check_trigraphs_lang:
         );
     );
 
-    IF_IS_OPT_DO(  "nographs",    opt_graph = GRAPH_NONE;       );
-    IF_IS_OPT_DO(    "prompt",    cdecl_prompt_enable( true );  );
-    IF_IS_OPT_DO(  "noprompt",    cdecl_prompt_enable( false ); );
-    IF_IS_OPT_DO(    "semicolon", opt_semicolon = true;         );
-    IF_IS_OPT_DO(  "nosemicolon", opt_semicolon = false;        );
+    IF_IS_OPT_DO(  "nographs",      opt_graph = GRAPH_NONE;       );
+    IF_IS_OPT_DO(    "prompt",      cdecl_prompt_enable( true );  );
+    IF_IS_OPT_DO(  "noprompt",      cdecl_prompt_enable( false ); );
+    IF_IS_OPT_DO(    "semicolon",   opt_semicolon = true;         );
+    IF_IS_OPT_DO(  "nosemicolon",   opt_semicolon = false;        );
 #ifdef YYDEBUG
-    IF_IS_OPT_DO(    "yydebug",   yydebug = true;               );
-    IF_IS_OPT_DO(  "noyydebug",   yydebug = false;              );
+    IF_IS_OPT_DO(    "yydebug",     yydebug = true;               );
+    IF_IS_OPT_DO(  "noyydebug",     yydebug = false;              );
 #endif /* YYDEBUG */
 
     if ( strcmp( opt, "options" ) != 0 ) {
@@ -100,6 +102,7 @@ check_trigraphs_lang:
     }
   }
 
+  printf( "  %salt-tokens\n", opt_alt_tokens ? "  " : "no" );
 #ifdef ENABLE_CDECL_DEBUG
   printf( "  %sdebug\n", opt_debug ? "  " : "no" );
 #endif /* ENABLE_CDECL_DEBUG */

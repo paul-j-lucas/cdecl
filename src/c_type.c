@@ -468,10 +468,10 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     bool *const sep_cpy = brackets ? &comma : &space;
 
     if ( brackets )
-      STRCAT( name, graph_name_c( "[[" ) );
+      STRCAT( name, graph_token_c( "[[" ) );
     C_TYPE_NAME_CAT( &name, type_id, C_ATTRIBUTE, is_error, sep, sep_cpy );
     if ( brackets )
-      STRCAT( name, graph_name_c( "]]" ) );
+      STRCAT( name, graph_token_c( "]]" ) );
     space = true;
   }
 

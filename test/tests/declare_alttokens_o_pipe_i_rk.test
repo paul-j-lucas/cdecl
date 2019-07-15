@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -a -xc++ @ define S as struct S; declare | as operator (x as int) returning reference to S @ 0

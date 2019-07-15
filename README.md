@@ -78,6 +78,8 @@ most notably:
 * Support for `inline` function and variable declarations.
 * Support for `typedef` declarations.
 * Support for variadic function arguments.
+* Support for C and C++ alternative tokens
+  (`and`, `and_eq`, etc.).
 * Support for C++
   `mutable` data members,
   namespaces and scoped names,

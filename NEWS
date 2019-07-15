@@ -10,7 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 6.4.3
+* Changes in Cdecl 6.5
+
+** Much better alternative tokens support
+Alternative tokens (and, and_eq, etc.) are now parsed correctly in all cases.
+Additionally, alternative tokens can be emitted via the new set alt-tokens
+option.
 
 ** Changed -q to -p
 The --quiet and -q options (that were in the original cdecl) were changed to

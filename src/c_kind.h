@@ -97,6 +97,16 @@ enum c_kind {
 #ifndef CDECL_CONFIGURE
 
 /**
+ * Shorthand for any kind of pointer: #K_POINTER or #K_POINTER_TO_MEMBER.
+ */
+#define K_ANY_POINTER         (K_POINTER | K_POINTER_TO_MEMBER)
+
+/**
+ * Shorthand for any kind of reference: #K_REFERENCE or #K_RVALUE_REFERENCE.
+ */
+#define K_ANY_REFERENCE       (K_REFERENCE | K_RVALUE_REFERENCE)
+
+/**
  * Shorthand for "function-like" kinds: #K_BLOCK, #K_CONSTRUCTOR,
  * #K_DESTRUCTOR, #K_FUNCTION, #K_OPERATOR, and #K_USER_DEF_LITERAL.
  */

@@ -47,6 +47,7 @@
  */
 
 // extern option variables
+extern bool         opt_alt_tokens;     ///< Print alternative tokens.
 extern char const  *opt_conf_file;      ///< Configuration file path.
 #ifdef ENABLE_CDECL_DEBUG
 extern bool         opt_debug;          ///< Generate JSON-like debug output?

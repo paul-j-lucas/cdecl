@@ -1,0 +1,1 @@
+S operator xor(const S bitand x, int n);

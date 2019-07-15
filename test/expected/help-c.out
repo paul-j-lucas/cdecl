@@ -9,7 +9,8 @@ command:
   typedef <gibberish>
   exit | quit | q
 gibberish: a C declaration, like "int x"; or cast, like "(int)x"
-option: [no]debug {di|tri|no}graphs <lang> [no]prompt [no]semicolon
+option: [no]alt-tokens [no]debug {di|tri|no}graphs <lang> [no]prompt
+        [no]semicolon
 
 where:
   [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere

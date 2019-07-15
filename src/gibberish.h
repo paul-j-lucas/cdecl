@@ -45,6 +45,16 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Gets the alternate token of \a token.
+ *
+ * @param token The token to get the alternate token for.
+ * @return If we're emitting alternate tokens and if \a token is a token that
+ * has an alternate token, returns said token; otherwise returns \a token as-
+ * is.
+ */
+char const* alt_token_c( char const *token );
+
+/**
  * Prints \a ast as a C/C++ cast.
  *
  * @param ast The `c_ast` to print.
@@ -68,12 +78,12 @@ void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout );
 /**
  * Gets the digraph or trigraph (collectively, "graph") equivalent of \a token.
  *
- * @param token The token to get the equivalent name for.
- * @return If \a token contains one or more characters that have a graph
- * equivalent and we're emitting graphs, returns \a token with said characters
- * replaced by their graphs; otherwise returns \a token as-is.
+ * @param token The token to get the graph token for.
+ * @return If we're emitting graphs and \a token contains one or more
+ * characters that have a graph equivalent, returns \a token with said
+ * characters replaced by their graphs; otherwise returns \a token as-is.
  */
-char const* graph_name_c( char const *token );
+char const* graph_token_c( char const *token );
 
 ///////////////////////////////////////////////////////////////////////////////
 

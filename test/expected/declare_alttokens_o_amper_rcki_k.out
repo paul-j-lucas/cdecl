@@ -1,0 +1,1 @@
+S operator bitand(const S bitand r, int x);

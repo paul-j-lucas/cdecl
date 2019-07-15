@@ -853,7 +853,7 @@ same: print_error( &ast->loc,
  */
 static bool c_ast_check_pointer( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & (K_POINTER | K_POINTER_TO_MEMBER)) != K_NONE );
+  assert( (ast->kind & K_ANY_POINTER) != K_NONE );
 
   c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
   switch ( to_ast->kind ) {
@@ -886,7 +886,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
  */
 static bool c_ast_check_reference( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & (K_REFERENCE | K_RVALUE_REFERENCE)) != K_NONE );
+  assert( (ast->kind & K_ANY_REFERENCE) != K_NONE );
 
   if ( !C_LANG_IS_CPP() ) {
     error_kind_not_supported( ast );

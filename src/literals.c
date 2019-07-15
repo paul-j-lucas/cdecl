@@ -28,6 +28,7 @@
 // english
 char const L_ALIGNED[]              = "aligned";
 char const L_ALL[]                  = "all";
+char const L_ALT_TOKENS[]           = "alt-tokens";
 char const L_ARRAY[]                = "array";
 char const L_AS[]                   = "as";
 char const L_BLOCK[]                = "block";    // Apple: English for '^'
@@ -142,13 +143,10 @@ char const L__STATIC_ASSERT[]       = "_Static_assert";
 char const L_STATIC_ASSERT[]        = "static_assert";
 
 // C++
-char const L_AND[]                  = "and";
-char const L_AND_EQ[]               = "and_eq";
-char const L_BITAND[]               = "bitand";
-char const L_BITOR[]                = "bitor";
+
 char const L_CATCH[]                = "catch";
 char const L_CLASS[]                = "class";
-char const L_COMPL[]                = "compl";
+
 char const L_CONSTRUCTOR[]          = "constructor";
 char const L_CONST_CAST[]           = "const_cast";
 char const L_CONVERSION[]           = "conversion";
@@ -164,12 +162,8 @@ char const L_MUTABLE[]              = "mutable";
 char const L_NAMESPACE[]            = "namespace";
 char const L_NEW[]                  = "new";
 char const L_NON_THROWING[]         = "non-throwing";
-char const L_NOT[]                  = "not";
-char const L_NOT_EQ[]               = "not_eq";
 char const L_OPER[]                 = "oper";
 char const L_OPERATOR[]             = "operator";
-char const L_OR[]                   = "or";
-char const L_OR_EQ[]                = "or_eq";
 char const L_PRIVATE[]              = "private";
 char const L_PROTECTED[]            = "protected";
 char const L_PUBLIC[]               = "public";
@@ -187,8 +181,6 @@ char const L_TYPEID[]               = "typeid";
 char const L_TYPENAME[]             = "typename";
 char const L_USING[]                = "using";
 char const L_VIRTUAL[]              = "virtual";
-char const L_XOR[]                  = "xor";
-char const L_XOR_EQ[]               = "xor_eq";
 
 // C++11
 char const L_ALIGNAS[]              = "alignas";
@@ -226,6 +218,19 @@ char const L_CHAR8_T[]              = "char8_t";
 char const L_CONCEPT[]              = "concept";
 char const L_CONSTEVAL[]            = "consteval";
 char const L_REQUIRES[]             = "requires";
+
+// Alternative tokens
+char const L_AND[]                  = "and";
+char const L_AND_EQ[]               = "and_eq";
+char const L_BITAND[]               = "bitand";
+char const L_BITOR[]                = "bitor";
+char const L_COMPL[]                = "compl";
+char const L_NOT[]                  = "not";
+char const L_NOT_EQ[]               = "not_eq";
+char const L_OR[]                   = "or";
+char const L_OR_EQ[]                = "or_eq";
+char const L_XOR[]                  = "xor";
+char const L_XOR_EQ[]               = "xor_eq";
 
 // Miscellaneous
 char const L___BLOCK[]              = "__block";  // Apple: block storage class
