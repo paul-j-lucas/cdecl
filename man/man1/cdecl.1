@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "July 12, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 16, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -237,6 +237,22 @@ and
 means
 .IR string .
 .TP 4
+.BR \-\-alt-tokens " | " \-a
+Turns on alternative token output.
+The alternative tokens are:
+\f(CWand\fP,
+\f(CWand_eq\fP,
+\f(CWbitand\fP,
+\f(CWbitor\fP,
+\f(CWcompl\fP,
+\f(CWnot\fP,
+\f(CWnot_eq\fP,
+\f(CWor\fP,
+\f(CWor_eq\fP,
+\f(CWxor\fP,
+and
+\f(CWxor_eq\fP.
+.TP
 .BI \-\-color \f1=\fPs "\f1 | \fP" "" \-k " s"
 Sets when to colorize output to
 .I s
@@ -1113,19 +1129,6 @@ for valid languages.)
 .TP
 .RB [ no ] alt-tokens
 Turns [off] on alternative token output.
-The alternative tokens are:
-\f(CWand\fP,
-\f(CWand_eq\fP,
-\f(CWbitand\fP,
-\f(CWbitor\fP,
-\f(CWcompl\fP,
-\f(CWnot\fP,
-\f(CWnot_eq\fP,
-\f(CWor\fP,
-\f(CWor_eq\fP,
-\f(CWxor\fP,
-and
-\f(CWxor_eq\fP.
 .TP
 .RB [ no ] debug
 Turns [off] on debugging output
