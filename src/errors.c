@@ -186,8 +186,8 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
   switch ( of_ast->kind ) {
     case K_BUILTIN:
       if ( (of_ast->type_id & T_VOID) != T_NONE ) {
-        print_error( &ast->loc, "array of void" );
-        print_hint( "array of pointer to void" );
+        print_error( &ast->loc, "array of %s", L_VOID );
+        print_hint( "array of pointer to %s", L_VOID );
         return false;
       }
       if ( (of_ast->type_id & T_REGISTER) != T_NONE ) {
@@ -228,20 +228,20 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
         ast->parent->kind != K_USER_DEF_CONVERSION) &&
         (ast->type_id & T_MASK_TYPE) == T_NONE ) {
     print_error( &ast->loc,
-      "implicit \"int\" is illegal in %s", C_LANG_NAME()
+      "implicit \"%s\" is illegal in %s", L_INT, C_LANG_NAME()
     );
     return false;
   }
 
   if ( (ast->type_id & T_VOID) != T_NONE && ast->parent == NULL ) {
-    print_error( &ast->loc, "variable of void" );
-    print_hint( "pointer to void" );
+    print_error( &ast->loc, "variable of %s", L_VOID );
+    print_hint( "pointer to %s", L_VOID );
     return false;
   }
 
   if ( (ast->type_id & T_INLINE) != T_NONE && opt_lang < LANG_CPP_17 ) {
     print_error( &ast->loc,
-      "inline variables not supported in %s", C_LANG_NAME()
+      "%s variables not supported in %s", L_INLINE, C_LANG_NAME()
     );
     return false;
   }
