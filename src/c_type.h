@@ -124,11 +124,19 @@ _GL_INLINE_HEADER_BEGIN
 #define T_MASK_REF_QUALIFIER  0xF000000000000000ull /**< Ref-qual bitmask.    */
 
 // shorthands
+
+/** Shorthand for any character type. */
 #define T_ANY_CHAR            ( T_CHAR | T_WCHAR_T \
                               | T_CHAR8_T | T_CHAR16_T | T_CHAR32_T )
+
+/** Shorthand for `class`, `struct`, or `union`. */
 #define T_CLASS_STRUCT_UNION  ( T_CLASS | T_STRUCT | T_UNION )
+
+/** The type(s) than can apply only to members. */
 #define T_MEMBER_ONLY         ( T_CONST | T_VOLATILE | T_OVERRIDE | T_FINAL \
                               | T_VIRTUAL | T_REFERENCE | T_RVALUE_REFERENCE )
+
+/** The type(s) than can apply only to non-members. */
 #define T_NON_MEMBER_ONLY     T_FRIEND
 
 /**
