@@ -44,10 +44,6 @@
 #define T_NOT_FOR_FUNC_LIKE \
   (T_AUTO_C | T_BLOCK | T_MUTABLE | T_REGISTER | T_THREAD_LOCAL)
 
-#define T_USER_DEF_CONV                                                 \
-  ( T_CONST | T_CONSTEXPR | T_EXPLICIT | T_FINAL | T_FRIEND | T_INLINE  \
-  | T_NOEXCEPT | T_OVERRIDE | T_THROW | T_PURE_VIRTUAL | T_VIRTUAL)
-
 // local constants
 static bool const VISITOR_ERROR_FOUND     = true;
 static bool const VISITOR_ERROR_NOT_FOUND = false;

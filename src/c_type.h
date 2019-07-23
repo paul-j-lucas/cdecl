@@ -139,6 +139,11 @@ _GL_INLINE_HEADER_BEGIN
 /** The type(s) than can apply only to non-members. */
 #define T_NON_MEMBER_ONLY     T_FRIEND
 
+/** The type(s) than can apply user-defined conversion operators. */
+#define T_USER_DEF_CONV       ( T_CONST | T_CONSTEXPR | T_EXPLICIT | T_FINAL  \
+                              | T_FRIEND | T_INLINE | T_NOEXCEPT | T_OVERRIDE \
+                              | T_THROW | T_PURE_VIRTUAL | T_VIRTUAL)
+
 /**
  * Hexadecimal print conversion specifier for <code>\ref c_type_id_t</code>.
  *
