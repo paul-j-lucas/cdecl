@@ -160,7 +160,7 @@ bool c_ast_is_ptr_to( c_ast_t const *ast, c_type_id_t type_id );
  * @param dir The direction to search.
  * @return Returns said name or null if none.
  */
-c_sname_t const* c_ast_find_name( c_ast_t const *ast, v_direction_t dir );
+c_sname_t* c_ast_find_name( c_ast_t const *ast, v_direction_t dir );
 
 /**
  * Traverses \a ast attempting to find an AST node having \a kind.

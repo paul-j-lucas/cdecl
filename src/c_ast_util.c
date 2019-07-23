@@ -283,7 +283,7 @@ c_ast_t* c_ast_find_kind( c_ast_t *ast, v_direction_t dir, c_kind_t kind ) {
   return ast;
 }
 
-c_sname_t const* c_ast_find_name( c_ast_t const *ast, v_direction_t dir ) {
+c_sname_t* c_ast_find_name( c_ast_t const *ast, v_direction_t dir ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_t *const found = c_ast_visit(
     nonconst_ast, dir, c_ast_visitor_name, REINTERPRET_CAST( void*, 1 )
@@ -366,16 +366,14 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
 
 c_sname_t c_ast_take_name( c_ast_t *ast ) {
   assert( ast != NULL );
-  c_ast_t *const found = c_ast_visit(
-    ast, V_DOWN, c_ast_visitor_name, REINTERPRET_CAST( void*, 1 )
-  );
+  c_sname_t *const found = c_ast_find_name( ast, V_DOWN );
   c_sname_t rv;
   if ( found == NULL ) {
     c_sname_init( &rv );
-    return rv;
+  } else {
+    rv = *found;
+    c_sname_init( found );
   }
-  rv = found->sname;
-  c_sname_init( &found->sname );
   return rv;
 }
 
