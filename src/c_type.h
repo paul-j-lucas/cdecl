@@ -129,6 +129,9 @@ _GL_INLINE_HEADER_BEGIN
 #define T_ANY_CHAR            ( T_CHAR | T_WCHAR_T \
                               | T_CHAR8_T | T_CHAR16_T | T_CHAR32_T )
 
+/** Shorthand for any reference type. */
+#define T_ANY_REFERENCE       ( T_REFERENCE | T_RVALUE_REFERENCE )
+
 /** Shorthand for `class`, `struct`, or `union`. */
 #define T_CLASS_STRUCT_UNION  ( T_CLASS | T_STRUCT | T_UNION )
 

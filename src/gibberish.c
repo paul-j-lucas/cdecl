@@ -179,13 +179,13 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   assert( param != NULL );
 
   c_type_id_t ast_type        = ast->type_id;
-  c_type_id_t cv_qualifier    = T_NONE;
+  c_type_id_t cv_qual_type    = T_NONE;
   bool        is_final        = false;
   bool        is_noexcept     = false;
   bool        is_override     = false;
   bool        is_pure_virtual = false;
   bool        is_throw        = false;
-  c_type_id_t ref_qualifier   = T_NONE;
+  c_type_id_t ref_qual_type   = T_NONE;
 
   //
   // This isn't implemented using a visitor because c_ast_visit() visits in
@@ -211,13 +211,13 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       // These things aren't printed as part of the type beforehand, so strip
       // them out of the type here, but print them after the arguments.
       //
-      cv_qualifier    = (ast_type & T_MASK_QUALIFIER);
+      cv_qual_type    = (ast_type & T_MASK_QUALIFIER);
       is_final        = (ast_type & T_FINAL) != T_NONE;
       is_noexcept     = (ast_type & T_NOEXCEPT) != T_NONE;
       is_override     = (ast_type & T_OVERRIDE) != T_NONE;
       is_pure_virtual = (ast_type & T_PURE_VIRTUAL) != T_NONE;
       is_throw        = (ast_type & T_THROW) != T_NONE;
-      ref_qualifier   = (ast_type & T_MASK_REF_QUALIFIER);
+      ref_qual_type   = (ast_type & T_MASK_REF_QUALIFIER);
 
       ast_type &= ~(T_MASK_QUALIFIER
                   | T_FINAL
@@ -263,10 +263,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         else
           c_ast_gibberish_postfix( ast, param );
       }
-      if ( cv_qualifier != T_NONE )
-        FPRINTF( param->gout, " %s", c_type_name( cv_qualifier ) );
-      if ( ref_qualifier != T_NONE )
-        FPUTS( (ref_qualifier & T_REFERENCE) ? " &" : " &&", param->gout );
+      if ( cv_qual_type != T_NONE )
+        FPRINTF( param->gout, " %s", c_type_name( cv_qual_type ) );
+      if ( ref_qual_type != T_NONE )
+        FPUTS( (ref_qual_type & T_REFERENCE) ? " &" : " &&", param->gout );
       if ( is_noexcept )
         FPRINTF( param->gout, " %s", L_NOEXCEPT );
       if ( is_throw )
