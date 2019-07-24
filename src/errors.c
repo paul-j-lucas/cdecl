@@ -39,8 +39,6 @@
 #include <assert.h>
 #include <stdbool.h>
 
-#define PLURAL_S(N)               ((N) == 1 ? "" : "s")
-
 #define T_NOT_FUNC_LIKE \
   (T_AUTO_C | T_BLOCK | T_MUTABLE | T_REGISTER | T_THREAD_LOCAL)
 
@@ -84,6 +82,16 @@ static inline bool c_ast_check_visitor( c_ast_t const *ast,
                                         c_ast_visitor_t visitor,
                                         void *data ) {
   return !c_ast_found( ast, V_DOWN, visitor, data );
+}
+
+/**
+ * Returns an "s" or not based on \a n to pluralize a word.
+ *
+ * @param n A quantity.
+ * @return Returns the empty string only if \a n == 1; otherwise returns "s".
+ */
+static inline char const* plural_s( uint64_t n ) {
+  return n == 1 ? "" : "s";
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -731,13 +739,13 @@ static bool c_ast_check_oper_args( c_ast_t const *ast ) {
 same: print_error( &ast->loc,
         "%s%s%s %s must have exactly %u argument%s",
         SP_AFTER( user_type ), L_OPERATOR, op->name,
-        req_args_min, PLURAL_S( req_args_min )
+        req_args_min, plural_s( req_args_min )
       );
     else
       print_error( &ast->loc,
         "%s%s%s %s must have at least %u argument%s",
         SP_AFTER( user_type ), L_OPERATOR, op->name,
-        req_args_min, PLURAL_S( req_args_min )
+        req_args_min, plural_s( req_args_min )
       );
     return false;
   }
@@ -747,7 +755,7 @@ same: print_error( &ast->loc,
     print_error( &ast->loc,
       "%s%s%s %s can have at most %u argument%s",
       SP_AFTER( user_type ), L_OPERATOR, op->name,
-      op->args_max, PLURAL_S( op->args_max )
+      op->args_max, plural_s( op->args_max )
     );
     return false;
   }
