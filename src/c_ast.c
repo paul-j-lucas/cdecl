@@ -144,9 +144,9 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
       break;
 
     case K_POINTER_TO_MEMBER: {
-      c_ptr_mbr_t const *const p_i = &ast_i->as.ptr_mbr;
-      c_ptr_mbr_t const *const p_j = &ast_j->as.ptr_mbr;
-      if ( c_sname_cmp( &p_i->class_sname, &p_j->class_sname ) != 0 )
+      c_ptr_mbr_t const *const pm_i = &ast_i->as.ptr_mbr;
+      c_ptr_mbr_t const *const pm_j = &ast_j->as.ptr_mbr;
+      if ( c_sname_cmp( &pm_i->class_sname, &pm_j->class_sname ) != 0 )
         return false;
       break;
     }

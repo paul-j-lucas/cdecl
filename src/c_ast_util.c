@@ -176,52 +176,44 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
  * @param ast The `c_ast` to append to.
  * @param ret_ast The `c_ast` of the return-type of the function, operator, or
  * block.
- * @param func The function, operator, or block `c_ast` to append.  Its "of"
- * type must be null.
+ * @param func_ast The function, operator, or block `c_ast` to append.  Its
+ * "of" type must be null.
  * @return Returns the `c_ast` to be used as the grammar production's return
  * value.
  */
 static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
-                                     c_ast_t *func ) {
+                                     c_ast_t *func_ast ) {
   assert( ast != NULL );
-  assert( func != NULL );
-  assert( (func->kind & K_FUNCTION_LIKE) != K_NONE );
+  assert( func_ast != NULL );
+  assert( (func_ast->kind & K_FUNCTION_LIKE) != K_NONE );
 
-  switch ( ast->kind ) {
-    case K_ARRAY:
-    case K_POINTER:
-    case K_POINTER_TO_MEMBER:
-    case K_REFERENCE:
-    case K_RVALUE_REFERENCE:
-      switch ( ast->as.parent.of_ast->kind ) {
-        case K_ARRAY:
-        case K_POINTER:
-        case K_POINTER_TO_MEMBER:
-        case K_REFERENCE:
-        case K_RVALUE_REFERENCE:
-          (void)c_ast_add_func_impl( ast->as.ptr_ref.to_ast, ret_ast, func );
-          return ast;
+  if ( (ast->kind & (K_ARRAY | K_ANY_POINTER | K_ANY_REFERENCE)) != K_NONE ) {
+    switch ( ast->as.parent.of_ast->kind ) {
+      case K_ARRAY:
+      case K_POINTER:
+      case K_POINTER_TO_MEMBER:
+      case K_REFERENCE:
+      case K_RVALUE_REFERENCE:
+        (void)c_ast_add_func_impl( ast->as.ptr_ref.to_ast, ret_ast, func_ast );
+        return ast;
 
-        case K_PLACEHOLDER:
-          if ( ret_ast == ast )
-            break;
-          c_ast_set_parent( func, ast );
-          // FALLTHROUGH
+      case K_PLACEHOLDER:
+        if ( ret_ast == ast )
+          break;
+        c_ast_set_parent( func_ast, ast );
+        // FALLTHROUGH
 
-        case K_BLOCK:                   // Apple extension
-          c_ast_set_parent( ret_ast, func );
-          return ast;
+      case K_BLOCK:                   // Apple extension
+        c_ast_set_parent( ret_ast, func_ast );
+        return ast;
 
-        default:
-          /* suppress warning */;
-      } // switch
+      default:
+        /* suppress warning */;
+    } // switch
+  }
 
-    default:
-      /* suppress warning */;
-  } // switch
-
-  c_ast_set_parent( ret_ast, func );
-  return func;
+  c_ast_set_parent( ret_ast, func_ast );
+  return func_ast;
 }
 
 /**
