@@ -318,9 +318,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE: {
-      c_type_id_t const storage = (ast_type & T_MASK_STORAGE);
-      if ( storage != T_NONE )
-        FPRINTF( param->gout, "%s ", c_type_name( storage ) );
+      c_type_id_t const storage_type = (ast_type & T_MASK_STORAGE);
+      if ( storage_type != T_NONE )
+        FPRINTF( param->gout, "%s ", c_type_name( storage_type ) );
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
       if ( param->gkind != G_CAST && c_ast_find_name( ast, V_UP ) != NULL &&
            !c_ast_find_kind( ast->parent, V_UP, K_FUNCTION_LIKE ) ) {
@@ -527,9 +527,9 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast, g_param_t *param ) {
       assert( (ast->kind & (K_ANY_POINTER | K_ANY_REFERENCE)) != K_NONE );
   } // switch
 
-  c_type_id_t const qualifier = (ast->type_id & T_MASK_QUALIFIER);
-  if ( qualifier != T_NONE ) {
-    FPUTS( c_type_name( qualifier ), param->gout );
+  c_type_id_t const qual_type = (ast->type_id & T_MASK_QUALIFIER);
+  if ( qual_type != T_NONE ) {
+    FPUTS( c_type_name( qual_type ), param->gout );
     if ( param->gkind != G_CAST )
       FPUTC( ' ', param->gout );
   }

@@ -268,9 +268,9 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
     c_ast_find_type( nonconst_ast, V_DOWN, T_MASK_STORAGE );
 
   if ( storage_ast != NULL ) {
-    c_type_id_t const storage = storage_ast->type_id & T_MASK_STORAGE;
+    c_type_id_t const storage_type = storage_ast->type_id & T_MASK_STORAGE;
     print_error( &ast->loc,
-      "can not cast into %s", c_type_name_error( storage )
+      "can not cast into %s", c_type_name_error( storage_type )
     );
     return false;
   }
@@ -445,11 +445,11 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     }
   }
   else {
-    c_type_id_t const qualifiers = ast->type_id & T_MASK_QUALIFIER;
-    if ( qualifiers != T_NONE ) {
+    c_type_id_t const qual_type = ast->type_id & T_MASK_QUALIFIER;
+    if ( qual_type != T_NONE ) {
       print_error( &ast->loc,
         "\"%s\" %ss not supported in %s",
-        c_type_name_error( qualifiers ),
+        c_type_name_error( qual_type ),
         c_kind_name( ast->kind ),
         C_LANG_NAME()
       );
@@ -533,13 +533,13 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
         /* suppress warning */;
     } // switch
 
-    c_type_id_t const storage =
+    c_type_id_t const storage_type =
       arg_ast->type_id & (T_MASK_STORAGE & ~T_REGISTER);
-    if ( storage != T_NONE ) {
+    if ( storage_type != T_NONE ) {
       print_error( &arg_ast->loc,
         "%s arguments can not be %s",
         c_kind_name( ast->kind ),
-        c_type_name_error( storage )
+        c_type_name_error( storage_type )
       );
       return false;
     }
