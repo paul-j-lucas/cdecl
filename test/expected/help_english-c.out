@@ -14,4 +14,4 @@ name: a C identifier
 store: auto extern register static thread_local
 
 where:
-  [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere
+  [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

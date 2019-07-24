@@ -13,4 +13,4 @@ option: [no]alt-tokens [no]debug {di|tri|no}graphs <lang> [no]prompt
         [no]semicolon
 
 where:
-  [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere
+  [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "July 16, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 24, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -754,7 +754,7 @@ is one of:
 .br
 .BR block " [" ( [ \f2args\fP ] ) "] [" returning " \f2english\fP" "" "]"
 .br
-.RB [ explicit "] " constructor " [" ( [ \f2args\fP ] ) ]
+.BR \f2store\fP "+ " constructor " [" ( [ \f2args\fP ] ) ]
 .br
 .RB [ virtual "] " destructor
 .br
@@ -1530,7 +1530,9 @@ struct S { int i; char c; } s;  // not supported
 .cE 0
 .IP \n+[step].
 While file-scope constructor declarations are supported,
-in-class non-explicit constructor declarations are not:
+in-class constructor declarations
+without at least one storage-class-like type
+are not:
 .cS
 C::C()                          // supported
 C::C(int)                       // supported
@@ -1538,12 +1540,13 @@ explicit C(int)                 // supported
 C()                             // not supported
 .cE 0
 .IP ""
-This is because in-class non-explicit constructor declarations
-and ordinary declarations are lexically ambiguous
-in a LALR(1) parser:
+This is because in-class constructor declarations
+without a storage-class-like type
+and ordinary function declarations are ambiguous
+in an LALR(1) parser:
 .cS
-C(x)                            // declare x as C with unneeded ()
-C()                             // declare constructor for C
+C(T)                            // constructor C with T argument
+C(x)                            // variable x of type C with unneeded ()
 .cE 0
 .IP \n+[step].
 Member functions that are deleted

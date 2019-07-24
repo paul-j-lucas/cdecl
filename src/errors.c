@@ -41,7 +41,7 @@
 
 #define PLURAL_S(N)               ((N) == 1 ? "" : "s")
 
-#define T_NOT_FOR_FUNC_LIKE \
+#define T_NOT_FUNC_LIKE \
   (T_AUTO_C | T_BLOCK | T_MUTABLE | T_REGISTER | T_THREAD_LOCAL)
 
 // local constants
@@ -1107,6 +1107,11 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       // FALLTHROUGH
 
     case K_CONSTRUCTOR: {
+      if ( ast->kind == K_CONSTRUCTOR ) {
+        c_type_id_t const t = ast->type_id & ~T_CONSTRUCTOR;
+        if ( t != T_NONE )
+          return error_kind_not_type( ast, t );
+      }
       bool const args_ok =
         ast->kind == K_USER_DEF_LITERAL ?
           c_ast_check_user_def_lit_args( ast ) :
@@ -1124,7 +1129,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         return VISITOR_ERROR_FOUND;
       }
 
-      c_type_id_t const t = ast->type_id & T_NOT_FOR_FUNC_LIKE;
+      c_type_id_t const t = ast->type_id & T_NOT_FUNC_LIKE;
       if ( t != T_NONE )
         return error_kind_not_type( ast, t );
       break;

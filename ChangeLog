@@ -1,5 +1,34 @@
+2019-07-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, c_type.c, c_type.h, errors.c, help.c,
+     parser.y, util.h, test/Makefile.am, explain_eictor_i.out,
+     explain_exctor_i.out, explain_fctor_i.out, explain_ictor_i.out,
+     explain_xctor.out, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out,
+     help_english-c++.out, help_english-c.out, explain_cector_i.test,
+     explain_eictor_i.test, explain_exctor_i.test, explain_fctor_i.test,
+     explain_ictor_i.test, explain_xctor.test: Now support all
+     storage-class-like types for constructors.
+
+2019-07-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.h, errors.c: Moved T_USER_DEF_CONV.
+   * c_ast_util.c, c_ast_util.h: c_ast_take_name() now uses c_ast_find_name().
+
+2019-07-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c: Now taking type_ast's name if decl_ast doesn't have one.
+   * c_type.h: Comments.
+
+2019-07-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * errors.c: Minor reformatting.
+   * c_ast.c: Added comment.
+   * cdecl.1: Added --alt-tokens/-a.
+
 2019-07-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS: Fixed typo.
    * AUTHORS, NEWS, configure.ac, cdecl.1, autocomplete.c, c_ast_util.c,
      c_keyword.c, c_kind.h, c_operator.h, c_type.c, errors.c, gibberish.c,
      gibberish.h, help.c, lexer.l, literals.c, literals.h, options.c,

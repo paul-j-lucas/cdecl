@@ -45,7 +45,6 @@ The characters are:
 + `g` = `register`
 + `h` = `short`
 + `i` = `inline` or `int`
-+ `j` = `constexpr`
 + `k` = `struct`
 + `l` = `long`
 + `m` = `_Imaginary`, member of class, or `mutable`

@@ -132,6 +132,13 @@ _GL_INLINE_HEADER_BEGIN
 /** Shorthand for `class`, `struct`, or `union`. */
 #define T_CLASS_STRUCT_UNION  ( T_CLASS | T_STRUCT | T_UNION )
 
+/** The only type(s) than can be applied to constructors. */
+#define T_CONSTRUCTOR         ( T_CONSTEXPR | T_EXPLICIT | T_FRIEND | T_INLINE \
+                              | T_NOEXCEPT | T_THROW )
+
+/** The type(s) than can apply only to constructors. */
+#define T_CONSTRUCTOR_ONLY    T_EXPLICIT
+
 /** The type(s) than can apply only to members. */
 #define T_MEMBER_ONLY         ( T_CONST | T_VOLATILE | T_OVERRIDE | T_FINAL \
                               | T_VIRTUAL | T_REFERENCE | T_RVALUE_REFERENCE )

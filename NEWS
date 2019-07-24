@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.5.1
+
+** Complete storage-class-like constructors
+Previously, only "explicit" was supported for constructors.  Now all of
+constexpr, explicit, friend, inline, and noexcept (or throw()) are supported.
+
+
 * Changes in Cdecl 6.5
 
 ** Much better alternative tokens support

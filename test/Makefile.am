@@ -1082,18 +1082,21 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_dui-01.test \
 	tests/explain_dui-02.test \
 	tests/explain_ector_i.test \
+	tests/explain_eictor_i.test \
 	tests/explain_f__pf__v.test \
 	tests/explain_f__pv.test \
 	tests/explain_f__v.test \
 	tests/explain_f_cpmi.test \
 	tests/explain_f_pmi.test \
 	tests/explain_fcdi_i.test \
+	tests/explain_fctor_i.test \
 	tests/explain_fdi_v.test \
 	tests/explain_frri_v.test \
 	tests/explain_fti_v.test \
 	tests/explain_fui_v.test \
 	tests/explain_i+.test \
 	tests/explain_i2+.test \
+	tests/explain_ictor_i.test \
 	tests/explain_ki+.test \
 	tests/explain_mi.test \
 	tests/explain_nfi_v-c++.test \
@@ -1116,6 +1119,8 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_vcompl_dtor.test \
 	tests/explain_vdtor.test \
 	tests/explain_voyf.test \
+	tests/explain_xctor.test \
+	tests/explain_exctor_i.test \
 	tests/explain_xf_v.test \
 	tests/explain_xff_v.test \
 	tests/explain_xi.test \
@@ -1130,6 +1135,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_+dtor-error.test \
 	tests/explain_ai-c++11.test \
 	tests/explain_cdi.test \
+	tests/explain_cector_i.test \
 	tests/explain_ec.test \
 	tests/explain_ek.test \
 	tests/explain_f+_v.test \

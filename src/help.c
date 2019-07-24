@@ -56,6 +56,9 @@ typedef struct help_text help_text_t;
 
 ///////////////////////////////////////////////////////////////////////////////
 
+static char const WHERE_TEXT[] =
+  "  [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate";
+
 static help_text_t const HELP_TEXT_COMMANDS[] = {
   { "command:", SAME_AS_C },
   { "  cast <name> into <english>",
@@ -87,8 +90,7 @@ static help_text_t const HELP_TEXT_COMMANDS[] = {
     "scope-e: { <scope-c> | scope }" },
   { "", "" },
   { "where:", SAME_AS_C },
-  { "  [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere",
-     SAME_AS_C },
+  { WHERE_TEXT, SAME_AS_C },
   { NULL, NULL }
 };
 
@@ -98,7 +100,7 @@ static help_text_t const HELP_TEXT_ENGLISH[] = {
     "  <store>* array [<number>] of <english>" },
   { "  <store>* variable length array <cv-qual>* of <english>", NOT_IN_LANG },
   { NOT_IN_LANG,
-    "  [explicit] constructor [([<args>])]" },
+    "  <store>+ constructor [([<args>])]" },
   { NOT_IN_LANG,
     "  [virtual] destructor" },
   { "  <store>* function [([<args>])] [returning <english>]",
@@ -134,7 +136,7 @@ static help_text_t const HELP_TEXT_ENGLISH[] = {
     "store: const{eval|expr} extern friend mutable static thread_local [pure] virtual" },
   { "", "" },
   { "where:", SAME_AS_C },
-  { "  [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere", SAME_AS_C },
+  { WHERE_TEXT, SAME_AS_C },
   { NULL, NULL }
 };
 

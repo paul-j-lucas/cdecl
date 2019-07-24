@@ -244,7 +244,7 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 
   { P1,P1,P1,XX,P1,XX,XX,  P2,P1,__,__,__,__,__,__,__,__,__,__ },// consteval
   { P1,P1,P1,XX,P1,XX,XX,  XX,P1,__,__,__,__,__,__,__,__,__,__ },// constexpr
-  { XX,XX,XX,XX,XX,XX,XX,  XX,XX,PP,__,__,__,__,__,__,__,__,__ },// explicit
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,PP,__,__,__,__,__,__,__,__,__ },// explicit
   { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,P1,__,__,__,__,__,__,__,__ },// final
   { XX,XX,XX,XX,XX,XX,XX,  P2,P1,XX,XX,PP,__,__,__,__,__,__,__ },// friend
   { XX,XX,C9,XX,C9,XX,XX,  P2,P1,PP,P1,PP,C9,__,__,__,__,__,__ },// inline

@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 27
+%expect 25
 
 %{
 /** @endcond */
@@ -388,8 +388,14 @@ static bool explain_type_decl( c_alignas_t const *align,
     ast->align = *align;
   }
 
-  if ( ast->kind == K_USER_DEF_CONVERSION )
-    ast->type_id |= type_ast->type_id;
+  switch ( ast->kind ) {
+    case K_CONSTRUCTOR:
+    case K_USER_DEF_CONVERSION:
+      ast->type_id |= type_ast->type_id;
+      break;
+    default:
+      /* suppress warning */;
+  } // switch
 
   if ( !c_ast_check( ast, CHECK_DECL ) )
     return false;
@@ -1566,36 +1572,6 @@ explain_c
       FPRINTF( fout, "%s ", L_DECLARE );
       c_ast_english( $2.ast, fout );
       FPUTC( '\n', fout );
-    }
-
-    /*
-     * In-class explicit constructor declaration.
-     */
-  | explain Y_EXPLICIT any_name_expected
-    lparen_expected arg_list_c_ast_opt ')' noexcept_c_type_opt
-    {
-      DUMP_START( "explain_c",
-                  "EXPLAIN EXPLICIT any_name_expected "
-                  "'(' arg_list_c_ast_opt ')' noexcept_c_type_opt" );
-      DUMP_STR( "name", $3 );
-      DUMP_AST_LIST( "arg_list_c_ast_opt", $5 );
-      DUMP_TYPE( "noexcept_c_type_opt", $7 );
-      DUMP_END();
-
-      c_ast_t *const ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-      ast->type_id = $2 | $7;
-      ast->as.constructor.args = $5;
-
-      bool const ok = c_ast_check( ast, CHECK_DECL );
-      if ( ok ) {
-        FPRINTF( fout, "%s %s %s ", L_DECLARE, $3, L_AS );
-        c_ast_english( ast, fout );
-        FPUTC( '\n', fout );
-      }
-
-      FREE( $3 );
-      if ( !ok )
-        PARSE_ABORT();
     }
 
     /*
@@ -2834,10 +2810,25 @@ block_decl_c_ast                        /* Apple extension */
   ;
 
 func_decl_c_ast
+    /*
+     * Function and C++ constructor declaration.
+     *
+     * This grammar rule handles both since they're so similar (and so would
+     * cause grammar conflicts if they were separate rules in an LALR(1)
+     * parser).
+     */
   : /* type_c_ast */ decl2_c_ast '(' arg_list_c_ast_opt ')'
     func_qualifier_list_c_type_opt func_ref_qualifier_c_type_opt
     noexcept_c_type_opt trailing_return_type_c_ast_opt pure_virtual_c_type_opt
     {
+      c_ast_t    *const decl2_ast = $1.ast;
+      c_type_id_t const func_qualifier_type = $5;
+      c_type_id_t const func_ref_qualifier_type = $6;
+      c_type_id_t const noexcept_type = $7;
+      c_type_id_t const pure_virtual_type = $9;
+      c_ast_t    *const trailing_ret_ast = $8.ast;
+      c_ast_t    *const type_ast = type_peek();
+
       DUMP_START( "func_decl_c_ast",
                   "decl2_c_ast '(' arg_list_c_ast_opt ')' "
                   "func_qualifier_list_c_type_opt "
@@ -2845,31 +2836,78 @@ func_decl_c_ast
                   "trailing_return_type_c_ast_opt "
                   "pure_virtual_c_type_opt" );
       DUMP_AST( "(type_c_ast)", type_peek() );
-      DUMP_AST( "decl2_c_ast", $1.ast );
+      DUMP_AST( "decl2_c_ast", decl2_ast );
       DUMP_AST_LIST( "arg_list_c_ast_opt", $3 );
-      DUMP_TYPE( "func_qualifier_list_c_type_opt", $5 );
-      DUMP_TYPE( "func_ref_qualifier_c_type_opt", $6 );
-      DUMP_TYPE( "noexcept_c_type_opt", $7 );
-      DUMP_AST( "trailing_return_type_c_ast_opt", $8.ast );
-      DUMP_TYPE( "pure_virtual_c_type_opt", $9 );
+      DUMP_TYPE( "func_qualifier_list_c_type_opt", func_qualifier_type );
+      DUMP_TYPE( "func_ref_qualifier_c_type_opt", func_ref_qualifier_type );
+      DUMP_TYPE( "noexcept_c_type_opt", noexcept_type );
+      DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
+      DUMP_TYPE( "pure_virtual_c_type_opt", pure_virtual_type );
       if ( $1.target_ast != NULL )
         DUMP_AST( "target_ast", $1.target_ast );
 
-      c_ast_t *const func = c_ast_new_gc( K_FUNCTION, &@$ );
-      func->type_id = $5 | $6 | $7 | $9;
-      func->as.func.args = $3;
+      //
+      // Cdecl can't know for certain whether a "function" name is really a
+      // constructor name because it:
+      //
+      //  1. Doesn't have the context of the surrounding class:
+      //
+      //          class T {
+      //          public:
+      //            T();                // <-- All cdecl usually has is this.
+      //            // ...
+      //          };
+      //
+      //  2. Can't check to see if the name is a typedef for a class, struct,
+      //     or union (even though that would greatly help) since:
+      //
+      //          T(U);
+      //
+      //     could be either:
+      //
+      //      + A constructor of type T with an argument of type U; or:
+      //      + A variable named U of type T (with unnecessary parentheses).
+      //
+      // Hence, we have to infer which of a function or a constructor was
+      // likely the one meant.  If the declaration has:
+      //
+      //  + Any constructor-only storage-class-like type (e.g., explicit); or:
+      //
+      //  + Only any number of storage-class-like types that may be applied to
+      //    constructors (e.g., constexpr, inline):
+      //
+      // then assume it's a constructor.
+      //
+      bool const assume_constructor =
+        (type_ast->type_id & T_CONSTRUCTOR_ONLY) != T_NONE ||
+          only_bits_in( type_ast->type_id, T_CONSTRUCTOR );
 
-      if ( $8.ast != NULL ) {
-        $$.ast = c_ast_add_func( $1.ast, $8.ast, func );
-      }
-      else if ( $1.target_ast != NULL ) {
-        $$.ast = $1.ast;
-        (void)c_ast_add_func( $1.target_ast, type_peek(), func );
+      c_ast_t *const func_ast =
+        c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );
+      func_ast->type_id = func_qualifier_type | func_ref_qualifier_type |
+                          noexcept_type | pure_virtual_type;
+      func_ast->as.func.args = $3;
+
+      if ( assume_constructor ) {
+        assert( trailing_ret_ast == NULL );
+        if ( c_ast_sname_empty( func_ast ) )
+          func_ast->sname = c_ast_take_name( decl2_ast );
+        $$.ast = func_ast;
       }
       else {
-        $$.ast = c_ast_add_func( $1.ast, type_peek(), func );
+        if ( trailing_ret_ast != NULL ) {
+          $$.ast = c_ast_add_func( $1.ast, trailing_ret_ast, func_ast );
+        }
+        else if ( $1.target_ast != NULL ) {
+          $$.ast = $1.ast;
+          (void)c_ast_add_func( $1.target_ast, type_ast, func_ast );
+        }
+        else {
+          $$.ast = c_ast_add_func( $1.ast, type_ast, func_ast );
+        }
       }
-      $$.target_ast = func->as.func.ret_ast;
+
+      $$.target_ast = func_ast->as.func.ret_ast;
 
       DUMP_AST( "func_decl_c_ast", $$.ast );
       DUMP_END();
@@ -2958,7 +2996,7 @@ trailing_return_type_c_ast_opt
       //
       if ( type_peek()->type_id != T_AUTO_CPP_11 ) {
         print_error( &type_peek()->loc,
-          "function with trailing return type must specify \"%s\"", L_AUTO
+          "function with trailing return type must only specify \"%s\"", L_AUTO
         );
         PARSE_ABORT();
       }

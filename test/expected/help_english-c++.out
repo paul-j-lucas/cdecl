@@ -1,6 +1,6 @@
 english:
   <store>* array [<number>] of <english>
-  [explicit] constructor [([<args>])]
+  <store>+ constructor [([<args>])]
   [virtual] destructor
   <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]
   <store>* <fn-qual>* [[non-]member] operator [([<args>])] [returning <english>]
@@ -19,4 +19,4 @@ name: a C++ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*
 store: const{eval|expr} extern friend mutable static thread_local [pure] virtual
 
 where:
-  [] = 0 or 1; * = 0 or more; {} = one of; | = alternate; <> = defined elsewhere
+  [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

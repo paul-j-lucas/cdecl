@@ -396,6 +396,19 @@ CDECL_UTIL_INLINE bool is_blank_line( char const *s ) {
 bool is_file( int fd );
 
 /**
+ * Checks whether the only bits set in \a bits are among the bits set in \a
+ * set.
+ *
+ * @param bits The bits to check.
+ * @param set The set of bits to check against.
+ * @return Returns `true` only if the bits set in \a bits are among the bits
+ * set in \a set.
+ */
+CDECL_UTIL_INLINE bool only_bits_in( uint64_t bits, uint64_t set ) {
+  return bits != 0 && (bits & set) == bits;
+}
+
+/**
  * Appends a component to a path ensuring that exactly one `/` separates them.
  *
  * @param path The path to append to.
