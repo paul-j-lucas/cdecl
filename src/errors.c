@@ -361,7 +361,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind & K_FUNCTION_LIKE) != K_NONE );
 
-  if ( (ast->type_id & (T_REFERENCE | T_RVALUE_REFERENCE)) != T_NONE ) {
+  if ( (ast->type_id & T_ANY_REFERENCE) != T_NONE ) {
     if ( opt_lang < LANG_CPP_11 ) {
       print_error( &ast->loc,
         "%s qualified %ss not supported in %s",
