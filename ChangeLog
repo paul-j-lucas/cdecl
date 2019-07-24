@@ -1,5 +1,10 @@
 2019-07-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_util.c, errors.c, gibberish.c: Clean-up.
+   * errors.c: s/PLURAL_S/plural_s/
+   * c_ast.c, c_ast_util.c, english.c: Clean-up.
+   * c_type.h, gibberish.c: Variable renaming.
+   * errors.c: Added T_ANY_REFERENCE.
    * NEWS, configure.ac, cdecl.1, c_type.c, c_type.h, errors.c, help.c,
      parser.y, util.h, test/Makefile.am, explain_eictor_i.out,
      explain_exctor_i.out, explain_fctor_i.out, explain_ictor_i.out,
