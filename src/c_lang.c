@@ -45,7 +45,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern constant definitions
-/// @hideinitializer
 c_lang_t const C_LANG[] = {
   { "ck&r",    LANG_C_KNR   },          // synonym for "knr"
   { "cknr",    LANG_C_KNR   },          // synonym for "knr"
