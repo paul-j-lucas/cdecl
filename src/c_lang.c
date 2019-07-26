@@ -84,6 +84,7 @@ c_lang_id_t c_lang_find( char const *name ) {
 }
 
 char const* c_lang_name( c_lang_id_t lang_id ) {
+  assert( exactly_one_bit_set( lang_id ) );
   switch ( lang_id ) {
     case LANG_NONE  : return "";
     case LANG_C_KNR : return "K&R C";
