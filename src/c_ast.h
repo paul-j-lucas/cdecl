@@ -561,18 +561,12 @@ CDECL_AST_INLINE char const* c_ast_sname_type_name( c_ast_t const *ast ) {
  * @param data Optional data passed to \a visitor.
  * @return Returns a pointer to the `c_ast` the visitor stopped on or null.
  *
- * @note Function, operator, or block argument(s) are \e not traversed into.
- * They're considered distinct ASTs.
+ * @note Constructor, function, operator, user-defined conversion, user-defined
+ * operator, or block arguments are \e not traversed into.  They're considered
+ * distinct ASTs.
  */
-CDECL_AST_INLINE c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir,
-                                       c_ast_visitor_t visitor, void *data ) {
-  c_ast_t* c_ast_visit_down( c_ast_t*, c_ast_visitor_t, void* );
-  c_ast_t* c_ast_visit_up( c_ast_t*, c_ast_visitor_t, void* );
-
-  return dir == V_DOWN ?
-    c_ast_visit_down( ast, visitor, data ) :
-    c_ast_visit_up( ast, visitor, data );
-}
+c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir, c_ast_visitor_t visitor,
+                      void *data );
 
 /**
  * Does a depth-first, post-order traversal of an AST looking for a `c_ast`
@@ -584,8 +578,9 @@ CDECL_AST_INLINE c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir,
  * @param data Optional data passed to \a visitor.
  * @return Returns `true` only if \a visitor ever returned `true`.
  *
- * @note Function, operator, or block argument(s) are \e not traversed into.
- * They're considered distinct ASTs.
+ * @note Constructor, function, operator, user-defined conversion, user-defined
+ * operator, or block arguments are \e not traversed into.  They're considered
+ * distinct ASTs.
  */
 CDECL_AST_INLINE bool c_ast_found( c_ast_t const *ast, v_direction_t dir,
                                    c_ast_visitor_t visitor, void *data ) {

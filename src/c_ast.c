@@ -298,24 +298,19 @@ void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname ) {
 
 /// @cond DOXYGEN_IGNORE
 
-c_ast_t* c_ast_visit_down( c_ast_t *ast, c_ast_visitor_t visitor, void *data ) {
-  if ( ast == NULL )
-    return NULL;
-  if ( visitor( ast, data ) )
+c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir, c_ast_visitor_t visitor,
+                      void *data ) {
+  if ( ast == NULL || visitor( ast, data ) )
     return ast;
-  if ( !c_ast_is_parent( ast ) )
-    return NULL;
-  return c_ast_visit_down( ast->as.parent.of_ast, visitor, data );
-}
-
-c_ast_t* c_ast_visit_up( c_ast_t *ast, c_ast_visitor_t visitor, void *data ) {
-  if ( ast == NULL )
-    return NULL;
-  if ( visitor( ast, data ) )
-    return ast;
-  if ( ast->parent == NULL )
-    return NULL;
-  return c_ast_visit_up( ast->parent, visitor, data );
+  switch ( dir ) {
+    case V_DOWN:
+      ast = c_ast_is_parent( ast ) ? ast->as.parent.of_ast : NULL;
+      break;
+    case V_UP:
+      ast = ast->parent;
+      break;
+  } // switch
+  return c_ast_visit( ast, dir, visitor, data );
 }
 
 /// @endcond
