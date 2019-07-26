@@ -69,8 +69,8 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_CPP_ALL  LANG_MIN(CPP_OLD) /**< All C++ languages. */
 
 // bit masks
-#define LANG_C_MASK   0x00FF            /**< C languages bitmask. */
-#define LANG_CPP_MASK 0xFF00            /**< C++ languages bitmask. */
+#define LANG_MASK_C   0x00FF            /**< C languages bitmask. */
+#define LANG_MASK_CPP 0xFF00            /**< C++ languages bitmask. */
 
 /** Maximum allowed language, C & C++. */
 #define LANG_MAX(L)   ((LANG_ ## L) | ((LANG_ ## L) - 1u))
@@ -79,7 +79,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_MIN(L)   (~((LANG_ ## L) - 1u))
 
 /** Minimum allowed language, C only. */
-#define LANG_C_MIN(L) (LANG_MIN( C_ ## L ) & LANG_C_MASK)
+#define LANG_C_MIN(L) (LANG_MIN( C_ ## L ) & LANG_MASK_C)
 
 /**
  * A mapping between a language name and its corresponding `c_lang_id_t`.
@@ -115,7 +115,7 @@ c_lang_id_t c_lang_find( char const *name );
  * @return Returns `true` only if \a lang_id is C++.
  */
 CDECL_LANG_INLINE bool c_lang_is_cpp( c_lang_id_t lang_id ) {
-  return (lang_id & LANG_CPP_MASK) != LANG_NONE;
+  return (lang_id & LANG_MASK_CPP) != LANG_NONE;
 }
 
 /**
