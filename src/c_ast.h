@@ -26,12 +26,15 @@
  * Declares types to represent an Abstract Syntax Tree (AST) for parsed C/C++
  * declarations as well as functions for traversing and manipulating an AST.
  *
- * In all cases where an AST node contains a pointer to another, that pointer
- * is always declared first.  Since all the different kinds of AST nodes are
- * declared within a `union`, all the pointers are at the same offset.  This
- * makes traversing the AST easy.
+ * In all cases where an AST node contains:
  *
- * Similar same-offset tricks are done for other `struct` members as well.
+ *  1. A pointer to another, that pointer is always declared first.
+ *  2. Arguments, they are always declared second.
+ *  3. Flags, they are always declared third.
+ *
+ * Since all the different kinds of AST nodes are declared within a `union`,
+ * these `struct` members are at the same offsets.  This makes traversing and
+ * manipulating the AST easy.
  */
 
 // local
@@ -125,7 +128,7 @@ typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
  * their first `struct` member: this is taken advantage of.
  */
 struct c_parent {
-  c_ast_t  *of_ast;                     ///< What it's a parent of.
+  c_ast_t    *of_ast;                   ///< What it's a parent of.
 };
 
 /**
@@ -144,8 +147,8 @@ struct c_array {
  * advantage of.
  */
 struct c_block {
-  c_ast_t  *ret_ast;                    ///< Return type.
-  slist_t   args;                       ///< Block argument(s), if any.
+  c_ast_t    *ret_ast;                  ///< Return type.
+  slist_t     args;                     ///< Block argument(s), if any.
 };
 
 /**
@@ -155,8 +158,8 @@ struct c_block {
  * advantage of.
  */
 struct c_constructor {
-  void     *ret_ast_not_used;           ///< So `args` is at same offset.
-  slist_t   args;                       ///< Constructor argument(s), if any.
+  void       *child_ast_not_used;       ///< So `args` is at same offset.
+  slist_t     args;                     ///< Constructor argument(s), if any.
 };
 
 /**
@@ -173,9 +176,9 @@ struct c_ecsu {
  * advantage of.
  */
 struct c_func {
-  c_ast_t  *ret_ast;                    ///< Return type.
-  slist_t   args;                       ///< Function argument(s), if any.
-  unsigned  flags;                      ///< Member vs. non-member.
+  c_ast_t    *ret_ast;                  ///< Return type.
+  slist_t     args;                     ///< Function argument(s), if any.
+  unsigned    flags;                    ///< Member vs. non-member.
 };
 
 /**
@@ -210,7 +213,7 @@ struct c_ptr_ref {
  * AST Node for a C++ user-defined conversion operator.
  */
 struct c_user_def_conv {
-  c_ast_t  *conv_ast;                   ///< Conversion type.
+  c_ast_t    *conv_ast;                 ///< Conversion type.
 };
 
 /**
@@ -220,8 +223,8 @@ struct c_user_def_conv {
  * advantage of.
  */
 struct c_user_def_lit {
-  c_ast_t  *ret_ast;                    ///< Return type.
-  slist_t   args;                       ///< Literal argument(s).
+  c_ast_t    *ret_ast;                  ///< Return type.
+  slist_t     args;                     ///< Literal argument(s).
 };
 
 /**
