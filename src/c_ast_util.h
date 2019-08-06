@@ -232,7 +232,7 @@ bool c_ast_take_typedef( c_ast_t *ast );
  *
  * @note `typedef`s are stripped.
  * @note Even though pointers are "dereferenced," This function isn't called
- * `c_ast_dereference` to eliminate confustion with C++ references.
+ * `c_ast_dereference` to eliminate confusion with C++ references.
  *
  * @param ast The `c_ast` to un-pointer.
  * @return Returns the AST of the underlying type, \a ast if it was not a
