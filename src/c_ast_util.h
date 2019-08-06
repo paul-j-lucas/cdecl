@@ -151,7 +151,7 @@ bool c_ast_is_ecsu( c_ast_t const *ast );
  * @param type_id The bitwise-or of type(s) to check against.
  * @return Returns `true` only if \a ast is a pointer to one of the types.
  */
-bool c_ast_is_ptr_to( c_ast_t const *ast, c_type_id_t type_id );
+bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_id_t type_id );
 
 /**
  * Traverses \a ast attempting to find an AST node having a name.

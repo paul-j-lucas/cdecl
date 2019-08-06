@@ -628,7 +628,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       // union, or class.
       //
       c_ast_t const *const ret_ast = ast->as.oper.ret_ast;
-      if ( !c_ast_is_ptr_to( ret_ast, T_CLASS_STRUCT_UNION ) ) {
+      if ( !c_ast_is_ptr_to_type( ret_ast, T_CLASS_STRUCT_UNION ) ) {
         print_error( &ret_ast->loc,
           "%s -> must return a pointer to %s, %s, or %s",
           L_OPERATOR, L_STRUCT, L_UNION, L_CLASS
