@@ -305,12 +305,10 @@ bool c_ast_is_ecsu( c_ast_t const *ast ) {
 }
 
 bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
+  ast = c_ast_untypedef( ast );
   ast = c_ast_unpointer( ast );
-  if ( ast != NULL ) {
-    ast = c_ast_untypedef( ast );
-    return (ast->type_id & type_id) != T_NONE;
-  }
-  return false;
+  ast = c_ast_untypedef( ast );
+  return ast != NULL && (ast->type_id & type_id) != T_NONE;
 }
 
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
