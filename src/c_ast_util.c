@@ -301,7 +301,7 @@ bool c_ast_is_ecsu( c_ast_t const *ast ) {
   ast = c_ast_untypedef( ast );
   ast = c_ast_unreference( ast );
   ast = c_ast_untypedef( ast );
-  return ast->kind == K_ENUM_CLASS_STRUCT_UNION;
+  return ast != NULL && ast->kind == K_ENUM_CLASS_STRUCT_UNION;
 }
 
 bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
