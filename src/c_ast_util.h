@@ -249,8 +249,8 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
  * <code>\ref K_RVALUE_REFERENCE</code>.
  *
  * @param ast The `c_ast` to un-reference or null.
- * @return Returns the AST of the underlying type or null only if \a ast is
- * null.
+ * @return Returns the AST of the underlying type, \a ast if it was not a
+ * reference, or null only if \a ast is null.
  */
 c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 
