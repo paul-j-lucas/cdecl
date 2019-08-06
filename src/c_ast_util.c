@@ -298,17 +298,13 @@ bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t type_id ) {
 }
 
 bool c_ast_is_ecsu( c_ast_t const *ast ) {
-  ast = c_ast_untypedef( ast );
   ast = c_ast_unreference( ast );
-  ast = c_ast_untypedef( ast );
   return ast != NULL && ast->kind == K_ENUM_CLASS_STRUCT_UNION;
 }
 
 bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
-  ast = c_ast_untypedef( ast );
-  ast = c_ast_unpointer( ast );
-  ast = c_ast_untypedef( ast );
-  return ast != NULL && (ast->type_id & type_id) != T_NONE;
+  return  (ast = c_ast_unpointer( ast )) != NULL &&
+          (ast->type_id & type_id) != T_NONE;
 }
 
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
@@ -379,27 +375,24 @@ bool c_ast_take_typedef( c_ast_t *ast ) {
 
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast ) {
   ast = c_ast_untypedef( ast );
-  return ast != NULL && ast->kind == K_POINTER ? ast->as.ptr_ref.to_ast : NULL;
+  return ast != NULL && ast->kind == K_POINTER ?
+    c_ast_untypedef( ast->as.ptr_ref.to_ast ) : NULL;
 }
 
 c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
-  ast = c_ast_untypedef( ast );
-  if ( ast != NULL ) {
-    while ( (ast->kind & K_ANY_REFERENCE) != K_NONE ) {
-      ast = ast->as.ptr_ref.to_ast;
-      assert( ast != NULL );
-    } // while
-  }
+  while ( (ast = c_ast_untypedef( ast )) != NULL &&
+          (ast->kind & K_REFERENCE) != K_NONE ) {
+    ast = ast->as.ptr_ref.to_ast;
+    assert( ast != NULL );
+  } // while
   return ast;
 }
 
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast ) {
-  if ( ast != NULL ) {
-    while ( ast->kind == K_TYPEDEF ) {
-      ast = ast->as.c_typedef->ast;
-      assert( ast != NULL );
-    } // while
-  }
+  while ( ast != NULL && ast->kind == K_TYPEDEF ) {
+    ast = ast->as.c_typedef->ast;
+    assert( ast != NULL );
+  } // while
   return ast;
 }
 
