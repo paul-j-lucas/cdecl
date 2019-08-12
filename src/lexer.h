@@ -71,5 +71,7 @@ void lexer_reset( bool hard_reset );
 
 ///////////////////////////////////////////////////////////////////////////////
 
+int yylex( void );
+
 #endif /* cdecl_lexer_H */
 /* vim:set et sw=2 ts=2: */
