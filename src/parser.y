@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 25
+%expect 24
 
 %{
 /** @endcond */
@@ -931,7 +931,6 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  constructor_decl_english_ast
 %type   <ast_pair>  destructor_decl_english_ast
 %type   <ast_pair>  func_decl_english_ast
-%type   <ast_pair>  member_func_decl_english_ast
 %type   <ast_pair>  oper_decl_english_ast
 %type   <ast_list>  paren_decl_list_english_opt
 %type   <ast_pair>  pointer_decl_english_ast
@@ -2409,33 +2408,6 @@ returning_english_ast_opt
     }
   ;
 
-member_func_decl_english_ast
-  : ref_qualifier_english_type_opt
-    Y_MEMBER function_expected of_expected class_struct_type_expected
-    sname_english_expected paren_decl_list_english_opt
-    returning_english_ast_opt
-    {
-      DUMP_START( "member_func_decl_english_ast",
-                  "ref_qualifier_english_type_opt "
-                  "MEMBER FUNCTION OF class_struct_type sname "
-                  "paren_decl_list_english_opt returning_english_ast_opt" );
-      DUMP_TYPE( "ref_qualifier_english_type_opt", $1 );
-      DUMP_TYPE( "class_struct_type", $5 );
-      DUMP_SNAME( "sname", &$6 );
-      DUMP_AST_LIST( "paren_decl_list_english_opt", $7 );
-      DUMP_AST( "returning_english_ast_opt", $8.ast );
-
-      $$.ast = c_ast_new_gc( K_FUNCTION, &@$ );
-      $$.target_ast = NULL;
-      c_ast_set_parent( $8.ast, $$.ast );
-      $$.ast->sname = $6;
-      $$.ast->as.func.args = $7;
-
-      DUMP_AST( "member_func_decl_english_ast", $$.ast );
-      DUMP_END();
-    }
-  ;
-
 qualified_decl_english_ast
   : type_qualifier_list_c_type_opt { qualifier_push( $1, &@1 ); }
     qualifiable_decl_english_ast
@@ -2457,7 +2429,6 @@ qualified_decl_english_ast
 qualifiable_decl_english_ast
   : block_decl_english_ast
   | func_decl_english_ast
-  | member_func_decl_english_ast
   | pointer_decl_english_ast
   | reference_decl_english_ast
   | type_english_ast
@@ -4471,14 +4442,6 @@ equals_expected
   | error
     {
       ELABORATE_ERROR( "'=' expected" );
-    }
-  ;
-
-function_expected
-  : Y_FUNCTION
-  | error
-    {
-      ELABORATE_ERROR( "\"%s\" expected", L_FUNCTION );
     }
   ;
 
