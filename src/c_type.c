@@ -256,8 +256,8 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
   { XX,XX,P1,XX,P1,XX,P1,  P2,P1,P1,P1,PP,P1,P1,P1,XX,P1,__,__,__,__ },// noexc
   { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,P1,XX,C1,XX,C1,P1,__,__,__ },// overr
   { XX,XX,PP,XX,PP,XX,PP,  P2,P1,P1,P1,PP,PP,XX,PP,XX,XX,PP,PP,__,__ },// throw
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,P1,XX,PP,XX,C1,P1,PP,PP,__ },// virt
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,XX,XX,PP,XX,C1,P1,PP,PP,PP },// pure
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P2,XX,XX,XX,P1,XX,PP,XX,C1,P1,PP,PP,__ },// virt
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P2,XX,XX,XX,XX,XX,PP,XX,C1,P1,PP,PP,PP },// pure
 };
 
 /**
