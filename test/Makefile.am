@@ -950,7 +950,9 @@ TESTS+=	tests/declare_nmo_amper2_2rck_b.test \
 # C++ declare unspecified operator tests
 # ======================================
 #
-TESTS+=	tests/declare_o2=_exclam_b.test \
+TESTS+=	tests/declare_+o_eq_rck_rk=default-01.test \
+	tests/declare_+o_eq_rck_rk=delete-01.test \
+	tests/declare_o2=_exclam_b.test \
 	tests/declare_o_amper2_2rck_b.test \
 	tests/declare_o_amper2_rck_b.test \
 	tests/declare_o_amper_2rck_k.test \
@@ -1168,6 +1170,8 @@ TESTS+=	tests/explain_+ctor-error.test \
 #
 TESTS+=	tests/explain_+o_eq2_rcki_b.test \
 	tests/explain_+o_eq_rck_rk.test \
+	tests/explain_+o_eq_rck_rk=default-01.test \
+	tests/explain_+o_eq_rck_rk=delete-01.test \
 	tests/explain_0o_amper_rk_pk.test \
 	tests/explain_0o_star_rk_rk.test \
 	tests/explain_co_amper_rk_pk.test \
@@ -1270,7 +1274,11 @@ TESTS+=	tests/explain_+o_eq2_rcki_b.test \
 # C++ explain operator error tests
 # ================================
 #
-TESTS+=	tests/explain_co_exclam_k_b.test \
+TESTS+=	tests/explain_+o_eq_rck_rk=default-02.test \
+	tests/explain_+o_eq_rck_rk=delete-02.test \
+	tests/explain_+o_exclam_eq_rck_rk=default.test \
+	tests/explain_+o_exclam_eq_rck_rk=delete.test \
+	tests/explain_co_exclam_k_b.test \
 	tests/explain_o_arrow_i.test \
 	tests/explain_o_brackets_2i_i.test \
 	tests/explain_o_exclam_2i.test \

@@ -427,6 +427,38 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
         break;
     } // switch
 
+    if ( (ast->type_id & (T_DEFAULT | T_DELETE)) != T_NONE ) {
+      switch ( ast->kind ) {
+        case K_OPERATOR: {              // C& operator=(C const&)
+          if ( ast->as.oper.oper_id != OP_EQ )
+            goto only_special;
+          c_ast_t const *ret_ast = ast->as.oper.ret_ast;
+          if ( !c_ast_is_ref_to_type( ret_ast, T_CLASS_STRUCT_UNION ) )
+            goto only_special;
+          // FALLTHROUGH
+        case K_CONSTRUCTOR:             // C(C const&)
+          if ( c_ast_args_count( ast ) != 1 )
+            goto only_special;
+          c_ast_t const *arg_ast = c_ast_arg_ast( c_ast_args( ast ) );
+          if ( !c_ast_is_ref_to_type( arg_ast, T_CLASS_STRUCT_UNION ) )
+            goto only_special;
+          if ( ast->kind == K_OPERATOR ) {
+            //
+            // For C& operator=(C const&), the argument and the return type
+            // must both be a reference to the same class, struct, or union.
+            //
+            arg_ast = c_ast_unreference( arg_ast );
+            ret_ast = c_ast_unreference( ret_ast );
+            if ( arg_ast != ret_ast )
+              goto only_special;
+          }
+          break;
+        }
+        default:
+          goto only_special;
+      } // switch
+    }
+
     if ( (ast->type_id & T_VIRTUAL) != T_NONE ) {
       if ( c_ast_sname_count( ast ) > 1 ) {
         print_error( &ast->loc,
@@ -458,6 +490,13 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   }
 
   return true;
+
+only_special:
+  print_error( &ast->loc,
+    "\"%s\" can be used only for special member functions",
+    c_type_name_error( ast->type_id )
+  );
+  return false;
 }
 
 /**
@@ -763,8 +802,8 @@ same: print_error( &ast->loc,
   bool const is_user_non_member = user_overload_flags == OP_NON_MEMBER;
   if ( is_user_non_member ) {
     //
-    // Ensure non-member operators are not const, overridden, final, reference,
-    // rvalue reference, nor virtual.
+    // Ensure non-member operators are not const, defaulted, deleted,
+    // overridden, final, reference, rvalue reference, nor virtual.
     //
     c_type_id_t const member_only_types = ast->type_id & T_MEMBER_ONLY;
     if ( member_only_types != T_NONE ) {
@@ -1017,7 +1056,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
         case T_LONG | T_DOUBLE:
           break;
         default:                        // check for: char const*
-          tmp_ast = c_ast_untypedef( c_ast_unpointer( arg_ast ) );
+          tmp_ast = c_ast_unpointer( arg_ast );
           if ( tmp_ast == NULL || tmp_ast->type_id != (T_CONST | T_CHAR) ) {
             print_error( &arg_ast->loc,
               "\"%s\": invalid argument type for %s %s; must be one of: "
@@ -1032,7 +1071,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
     }
 
     case 2:
-      tmp_ast = c_ast_untypedef( c_ast_unpointer( arg_ast ) );
+      tmp_ast = c_ast_unpointer( arg_ast );
       if ( tmp_ast == NULL ||
            !((tmp_ast->type_id & T_CONST) != 0 &&
              (tmp_ast->type_id & T_ANY_CHAR) != 0) ) {

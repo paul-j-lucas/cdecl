@@ -180,6 +180,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
 
   c_type_id_t ast_type        = ast->type_id;
   c_type_id_t cv_qual_type    = T_NONE;
+  bool        is_default      = false;
+  bool        is_deleted      = false;
   bool        is_final        = false;
   bool        is_noexcept     = false;
   bool        is_override     = false;
@@ -216,10 +218,14 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       is_noexcept     = (ast_type & T_NOEXCEPT) != T_NONE;
       is_override     = (ast_type & T_OVERRIDE) != T_NONE;
       is_pure_virtual = (ast_type & T_PURE_VIRTUAL) != T_NONE;
+      is_default      = (ast_type & T_DEFAULT) != T_NONE;
+      is_deleted      = (ast_type & T_DELETE) != T_NONE;
       is_throw        = (ast_type & T_THROW) != T_NONE;
       ref_qual_type   = (ast_type & T_MASK_REF_QUALIFIER);
 
       ast_type &= ~(T_MASK_QUALIFIER
+                  | T_DEFAULT
+                  | T_DELETE
                   | T_FINAL
                   | T_NOEXCEPT
                   | T_OVERRIDE
@@ -275,6 +281,10 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         FPRINTF( param->gout, " %s", L_OVERRIDE );
       if ( is_final )
         FPRINTF( param->gout, " %s", L_FINAL );
+      if ( is_default )
+        FPRINTF( param->gout, " = %s", L_DEFAULT );
+      if ( is_deleted )
+        FPRINTF( param->gout, " = %s", L_DELETE );
       if ( is_pure_virtual )
         FPUTS( " = 0", param->gout );
       break;

@@ -160,6 +160,8 @@ static c_type_t const C_STORAGE_INFO[] = {
   // storage-class-like
   { T_CONSTEVAL,    L_CONSTEVAL,        NULL, LANG_MIN(CPP_20)                },
   { T_CONSTEXPR,    L_CONSTEXPR,        NULL, LANG_MIN(CPP_11)                },
+  { T_DEFAULT,      L_DEFAULT,          NULL, LANG_CPP_ALL                    },
+  { T_DELETE,       L_DELETE,      L_DELETED, LANG_CPP_ALL                    },
   { T_EXPLICIT,     L_EXPLICIT,         NULL, LANG_CPP_ALL                    },
   { T_FINAL,        L_FINAL,            NULL, LANG_MIN(CPP_11)                },
   { T_FRIEND,       L_FRIEND,           NULL, LANG_CPP_ALL                    },
@@ -233,27 +235,29 @@ static c_type_t const C_TYPE_INFO[] = {
  */
 static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 // Only the lower triangle is used.
-//  a  b  e  r  s  tl td   cv cx ex fi fr in mu ne o  t  v  pv
-  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__ },// auto
-  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__ },// block
-  { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__ },// extern
-  { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__ },// register
-  { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__ },// static
-  { XX,E1,E1,XX,E1,E1,__,  __,__,__,__,__,__,__,__,__,__,__,__ },// thread_local
-  { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__,__,__,__,__,__ },// typedef
+//  a  b  e  r  s  tl td   cv cx df de ex fi fr in mu ne o  t  v  pv
+  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// auto
+  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// block
+  { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// extern
+  { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// regist
+  { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// static
+  { XX,E1,E1,XX,E1,E1,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// thread
+  { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// typed
 
-  { P1,P1,P1,XX,P1,XX,XX,  P2,P1,__,__,__,__,__,__,__,__,__,__ },// consteval
-  { P1,P1,P1,XX,P1,XX,XX,  XX,P1,__,__,__,__,__,__,__,__,__,__ },// constexpr
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,PP,__,__,__,__,__,__,__,__,__ },// explicit
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,P1,__,__,__,__,__,__,__,__ },// final
-  { XX,XX,XX,XX,XX,XX,XX,  P2,P1,XX,XX,PP,__,__,__,__,__,__,__ },// friend
-  { XX,XX,C9,XX,C9,XX,XX,  P2,P1,PP,P1,PP,C9,__,__,__,__,__,__ },// inline
-  { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,XX,XX,P3,__,__,__,__,__ },// mutable
-  { XX,XX,P1,XX,P1,XX,P1,  P2,P1,PP,P1,P1,P1,XX,P1,__,__,__,__ },// noexcept
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,P1,XX,C1,XX,C1,P1,__,__,__ },// overrride
-  { XX,XX,PP,XX,PP,XX,PP,  P2,P1,PP,PP,XX,PP,XX,XX,PP,PP,__,__ },// throw
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,P1,XX,PP,XX,C1,P1,PP,PP,__ },// virtual
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,PP,XX,C1,P1,PP,PP,PP },// pure
+  { P1,P1,P1,XX,P1,XX,XX,  P2,P1,__,__,__,__,__,__,__,__,__,__,__,__ },// c'eval
+  { P1,P1,P1,XX,P1,XX,XX,  XX,P1,__,__,__,__,__,__,__,__,__,__,__,__ },// c'expr
+  { XX,XX,XX,XX,XX,XX,XX,  P1,P1,P1,__,__,__,__,__,__,__,__,__,__,__ },// defaul
+  { XX,XX,XX,XX,XX,XX,XX,  P1,P1,XX,P1,__,__,__,__,__,__,__,__,__,__ },// delete
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,P1,P1,PP,__,__,__,__,__,__,__,__,__ },// explic
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,P1,__,__,__,__,__,__,__,__ },// final
+  { XX,XX,XX,XX,XX,XX,XX,  P2,P1,XX,XX,XX,XX,PP,__,__,__,__,__,__,__ },// friend
+  { XX,XX,C9,XX,C9,XX,XX,  P2,P1,P1,P1,PP,P1,PP,C9,__,__,__,__,__,__ },// inline
+  { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,XX,XX,XX,XX,P3,__,__,__,__,__ },// mut
+  { XX,XX,P1,XX,P1,XX,P1,  P2,P1,P1,P1,PP,P1,P1,P1,XX,P1,__,__,__,__ },// noexc
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,P1,XX,C1,XX,C1,P1,__,__,__ },// overr
+  { XX,XX,PP,XX,PP,XX,PP,  P2,P1,P1,P1,PP,PP,XX,PP,XX,XX,PP,PP,__,__ },// throw
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,P1,XX,PP,XX,C1,P1,PP,PP,__ },// virt
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,XX,XX,PP,XX,C1,P1,PP,PP,PP },// pure
 };
 
 /**
@@ -489,9 +493,14 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     type_id |= T_VIRTUAL;
   }
 
+  // Types here MUST have a corresponding row AND column in OK_STORAGE_LANGS.
   static c_type_id_t const C_STORAGE_CLASS[] = {
 
-    // This is first so we get named like "static int".
+    // These are first so we get names like "deleted constructor".
+    T_DEFAULT,
+    T_DELETE,
+
+    // These are second so we get names like "static int".
     T_AUTO_C,
     T_BLOCK,
     T_EXTERN,
@@ -502,21 +511,21 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     T_THREAD_LOCAL,
     T_TYPEDEF,
 
-    // This is second so we get names like "static inline".
+    // These are third so we get names like "static inline".
     T_EXPLICIT,
     T_INLINE,
 
-    // These are third so we get names like "static inline final".
+    // These are fourth so we get names like "static inline final".
     T_OVERRIDE,
     T_FINAL,
 
-    // These are fourth so we get names like "overridden virtual".
+    // These are fifth so we get names like "overridden virtual".
     T_PURE_VIRTUAL,
     T_VIRTUAL,
     T_NOEXCEPT,
     T_THROW,
 
-    // These are fifth so we get names like "static inline constexpr".
+    // These are sixth so we get names like "static inline constexpr".
     T_CONSTEVAL,
     T_CONSTEXPR,
   };

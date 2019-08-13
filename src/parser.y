@@ -768,7 +768,7 @@ static void yyerror( char const *msg ) {
 %token              Y_CASE
 %token  <type_id>   Y_CHAR
 %token              Y_CONTINUE
-%token              Y_DEFAULT
+%token  <type_id>   Y_DEFAULT
 %token              Y_DO
 %token  <type_id>   Y_DOUBLE
 %token              Y_ELSE
@@ -956,10 +956,10 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  array_cast_c_ast
 %type   <ast_pair>  block_cast_c_ast
 %type   <ast_pair>  func_cast_c_ast
+%type   <type_id>   func_equals_type_opt
 %type   <ast_pair>  nested_cast_c_ast
 %type   <ast_pair>  pointer_cast_c_ast
 %type   <ast_pair>  pointer_to_member_cast_c_ast
-%type   <type_id>   pure_virtual_c_type_opt
 %type   <ast_pair>  reference_cast_c_ast
 
 %type   <ast_pair>  decl_c_ast decl2_c_ast
@@ -1332,6 +1332,8 @@ storage_class_english_type
   | Y___BLOCK                           /* Apple extension */
   | Y_CONSTEVAL
   | Y_CONSTEXPR
+  | Y_DEFAULT
+  | Y_DELETE
   | Y_EXPLICIT
   | Y_EXTERN
   | Y_FINAL
@@ -2818,7 +2820,7 @@ func_decl_c_ast
      */
   : /* type_c_ast */ decl2_c_ast '(' arg_list_c_ast_opt ')'
     func_qualifier_list_c_type_opt func_ref_qualifier_c_type_opt
-    noexcept_c_type_opt trailing_return_type_c_ast_opt pure_virtual_c_type_opt
+    noexcept_c_type_opt trailing_return_type_c_ast_opt func_equals_type_opt
     {
       c_ast_t    *const decl2_ast = $1.ast;
       c_type_id_t const func_qualifier_type = $5;
@@ -2833,7 +2835,7 @@ func_decl_c_ast
                   "func_qualifier_list_c_type_opt "
                   "func_ref_qualifier_c_type_opt noexcept_c_type_opt "
                   "trailing_return_type_c_ast_opt "
-                  "pure_virtual_c_type_opt" );
+                  "func_equals_type_opt" );
       DUMP_AST( "(type_c_ast)", type_peek() );
       DUMP_AST( "decl2_c_ast", decl2_ast );
       DUMP_AST_LIST( "arg_list_c_ast_opt", $3 );
@@ -2841,7 +2843,7 @@ func_decl_c_ast
       DUMP_TYPE( "func_ref_qualifier_c_type_opt", func_ref_qualifier_type );
       DUMP_TYPE( "noexcept_c_type_opt", noexcept_type );
       DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
-      DUMP_TYPE( "pure_virtual_c_type_opt", pure_virtual_type );
+      DUMP_TYPE( "func_equals_type_opt", pure_virtual_type );
       if ( $1.target_ast != NULL )
         DUMP_AST( "target_ast", $1.target_ast );
 
@@ -3013,9 +3015,22 @@ trailing_return_type_c_ast_opt
     }
   ;
 
-pure_virtual_c_type_opt
+func_equals_type_opt
   : /* empty */                   { $$ = T_NONE; }
-  | '=' zero_expected             { $$ = T_PURE_VIRTUAL; }
+  | '=' Y_DEFAULT                 { $$ = $2; }
+  | '=' Y_DELETE                  { $$ = $2; }
+  | '=' Y_NUMBER
+    {
+      if ( $2 != 0 ) {
+        print_error( &@2, "'0' expected" );
+        PARSE_ABORT();
+      }
+      $$ = T_PURE_VIRTUAL;
+    }
+  | '=' error
+    {
+      ELABORATE_ERROR( "'0', \"%s\", or \"%s\" expected", L_DEFAULT, L_DELETE );
+    }
   ;
 
 nested_decl_c_ast
@@ -3039,14 +3054,14 @@ nested_decl_c_ast
 oper_decl_c_ast
   : /* type_c_ast */ oper_c_ast '(' arg_list_c_ast_opt ')'
     func_qualifier_list_c_type_opt func_ref_qualifier_c_type_opt
-    noexcept_c_type_opt trailing_return_type_c_ast_opt pure_virtual_c_type_opt
+    noexcept_c_type_opt trailing_return_type_c_ast_opt func_equals_type_opt
     {
       DUMP_START( "oper_decl_c_ast",
                   "oper_c_ast '(' arg_list_c_ast_opt ')' "
                   "func_qualifier_list_c_type_opt "
                   "func_ref_qualifier_c_type_opt noexcept_c_type_opt "
                   "trailing_return_type_c_ast_opt "
-                  "pure_virtual_c_type_opt" );
+                  "func_equals_type_opt" );
       DUMP_AST( "(type_c_ast)", type_peek() );
       DUMP_AST( "oper_c_ast", $1.ast );
       DUMP_AST_LIST( "arg_list_c_ast_opt", $3 );
@@ -3054,7 +3069,7 @@ oper_decl_c_ast
       DUMP_TYPE( "func_ref_qualifier_c_type_opt", $6 );
       DUMP_TYPE( "noexcept_c_type_opt", $7 );
       DUMP_AST( "trailing_return_type_c_ast_opt", $8.ast );
-      DUMP_TYPE( "pure_virtual_c_type_opt", $9 );
+      DUMP_TYPE( "func_equals_type_opt", $9 );
 
       c_ast_t *const oper = c_ast_new_gc( K_OPERATOR, &@$ );
       oper->type_id = $5 | $6 | $7 | $9;
@@ -3234,7 +3249,7 @@ reference_type_c_ast
 user_defined_conversion_decl_c_ast
   : /* type_c_ast */ scope_sname_c_opt Y_OPERATOR
     type_c_ast { type_push( $3.ast ); } udc_decl_c_ast_opt '(' rparen_expected
-    func_qualifier_list_c_type_opt noexcept_c_type_opt pure_virtual_c_type_opt
+    func_qualifier_list_c_type_opt noexcept_c_type_opt func_equals_type_opt
     {
       type_pop();
 
@@ -3242,14 +3257,14 @@ user_defined_conversion_decl_c_ast
                   "scope_sname_c_opt OPERATOR "
                   "type_c_ast udc_decl_c_ast_opt '(' ')' "
                   "func_qualifier_list_c_type_opt noexcept_c_type_opt "
-                  "pure_virtual_c_type_opt" );
+                  "func_equals_type_opt" );
       DUMP_AST( "(type_c_ast)", type_peek() );
       DUMP_SNAME( "scope_sname_c_opt", &$1 );
       DUMP_AST( "type_c_ast", $3.ast );
       DUMP_AST( "udc_decl_c_ast_opt", $5.ast );
       DUMP_TYPE( "func_qualifier_list_c_type_opt", $8 );
       DUMP_TYPE( "noexcept_c_type_opt", $9 );
-      DUMP_TYPE( "pure_virtual_c_type_opt", $10 );
+      DUMP_TYPE( "func_equals_type_opt", $10 );
 
       $$.ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
       $$.ast->sname = $1;
@@ -4704,20 +4719,6 @@ virtual_expected
 virtual_opt
   : /* empty */                   { $$ = T_NONE; }
   | Y_VIRTUAL
-  ;
-
-zero_expected
-  : Y_NUMBER
-    {
-      if ( $1 != 0 ) {
-        print_error( &@1, "'0' expected" );
-        PARSE_ABORT();
-      }
-    }
-  | error
-    {
-      ELABORATE_ERROR( "'0' expected" );
-    }
   ;
 
 %%

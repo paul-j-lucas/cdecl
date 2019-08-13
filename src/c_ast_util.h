@@ -154,6 +154,15 @@ bool c_ast_is_ecsu( c_ast_t const *ast );
 bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_id_t type_id );
 
 /**
+ * Checks whether \a ast is an AST for a reference to \a type_id.
+ *
+ * @param ast The `c_ast` to check.
+ * @param type_id The bitwise-or of type(s) to check against.
+ * @return Returns `true` only if \a ast is a reference to one of the types.
+ */
+bool c_ast_is_ref_to_type( c_ast_t const *ast, c_type_id_t type_id  );
+
+/**
  * Traverses \a ast attempting to find an AST node having a name.
  *
  * @param ast The `c_ast` to begin the search at.
@@ -237,6 +246,8 @@ bool c_ast_take_typedef( c_ast_t *ast );
  * @param ast The `c_ast` to un-pointer.
  * @return Returns the AST of the underlying type, \a ast if it was not a
  * pointer, or null if \a ast is null or not a pointer.
+ * @sa c_ast_unreference(c_ast_t const*)
+ * @sa c_ast_untypedef(c_ast_t const*)
  */
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
 
@@ -251,6 +262,8 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
  * @param ast The `c_ast` to un-reference or null.
  * @return Returns the AST of the underlying type, \a ast if it was not a
  * reference, or null only if \a ast is null.
+ * @sa c_ast_unpointer(c_ast_t const*)
+ * @sa c_ast_untypedef(c_ast_t const*)
  */
 c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 
@@ -261,6 +274,8 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
  * @param ast The `c_ast` to un-typedef or null.
  * @return Returns the AST of the underlying type, \a ast it it was not a
  * `typedef`, or null only if \a ast is null.
+ * @sa c_ast_unpointer(c_ast_t const*)
+ * @sa c_ast_unreference(c_ast_t const*)
  */
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
 

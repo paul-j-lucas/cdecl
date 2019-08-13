@@ -110,6 +110,8 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_CONSTEXPR,          LANG_MIN(CPP_11)                  },
   { L_CONSTRUCTOR,        LANG_CPP_ALL                      },
   { L_CONVERSION,         LANG_CPP_ALL                      },
+  { L_DEFAULT,            LANG_MIN(CPP_11)                  },
+  { L_DELETE,             LANG_MIN(CPP_11)                  },
   { L_DEPRECATED,         LANG_MIN(CPP_14)                  },
   { L_DESTRUCTOR,         LANG_CPP_ALL                      },
   { L_DOUBLE,             LANG_ALL                          },

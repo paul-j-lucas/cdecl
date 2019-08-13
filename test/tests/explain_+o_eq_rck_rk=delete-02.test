@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -xc++ @ define S as struct S; define T as struct T; explain S& S::operator=(T const&) = delete @ 65

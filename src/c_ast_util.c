@@ -307,6 +307,11 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
           (ast->type_id & type_id) != T_NONE;
 }
 
+bool c_ast_is_ref_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
+  return  (ast = c_ast_unreference( ast )) != NULL &&
+          (ast->type_id & type_id) != T_NONE;
+}
+
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   assert( type_ast != NULL );
   if ( decl_ast == NULL )

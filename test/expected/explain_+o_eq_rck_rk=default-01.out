@@ -1,0 +1,1 @@
+declare = of structure S as default member operator (reference to constant S) returning reference to S
