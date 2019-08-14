@@ -1045,7 +1045,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
 
   switch ( args_count ) {
     case 1: {
-      c_type_id_t const type_id = arg_ast->type_id & ~(T_CONST | T_VOLATILE);
+      c_type_id_t const type_id = arg_ast->type_id & ~T_MASK_QUALIFIER;
       switch ( type_id ) {
         case T_CHAR:
         case T_CHAR8_T:
