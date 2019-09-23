@@ -14,6 +14,7 @@ command:
 gibberish: a C++ declaration, like "int x"; or cast, like "(int)x"
 option: [no]alt-tokens [no]debug {di|tri|no}graphs <lang> [no]prompt
         [no]semicolon
+lang: C K&R C89 C95 C99 C11 C18 C++ C++98 C++03 C++11 C++14 C++17 C++20
 scope-c: class struct union [inline] namespace
 scope-e: { <scope-c> | scope }
 

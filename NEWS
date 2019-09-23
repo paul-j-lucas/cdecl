@@ -10,6 +10,15 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.6
+
+** Defaulted & deleted support
+Defaulted & deleted special member functions are now supported.
+
+** Virtual constexpr
+Virtual constexpr declarations are now only correctly allowed in C++20.
+
+
 * Changes in Cdecl 6.5.1
 
 ** Complete storage-class-like constructors
