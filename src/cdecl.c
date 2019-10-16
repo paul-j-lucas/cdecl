@@ -347,7 +347,7 @@ bool parse_string( char const *s, size_t s_len ) {
   FILE *const temp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
   yyrestart( temp );
   bool const ok = yyparse() == 0;
-  fclose( temp );
+  (void)fclose( temp );
 
   if ( reset_command_line ) {
     command_line = NULL;
@@ -389,7 +389,7 @@ static void read_conf_file( void ) {
   (void)parse_file( cin );
   opt_lang = orig_lang;
 
-  fclose( cin );
+  (void)fclose( cin );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
