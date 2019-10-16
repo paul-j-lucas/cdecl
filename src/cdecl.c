@@ -360,20 +360,20 @@ bool parse_string( char const *s, size_t s_len ) {
  * Reads the configuration file, if any.
  */
 static void read_conf_file( void ) {
-  static char conf_path_buf[ PATH_MAX ];
   bool const explicit_conf_file = (opt_conf_file != NULL);
 
   if ( !explicit_conf_file ) {
     char const *const home = home_dir();
     if ( home == NULL )
       return;
+    static char conf_path_buf[ PATH_MAX ];
     strcpy( conf_path_buf, home );
     path_append( conf_path_buf, CONF_FILE_NAME_DEFAULT );
     opt_conf_file = conf_path_buf;
   }
 
   FILE *const cin = fopen( opt_conf_file, "r" );
-  if ( unlikely( cin == NULL ) ) {
+  if ( cin == NULL ) {
     if ( explicit_conf_file )
       PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", opt_conf_file, STRERROR );
     return;
