@@ -294,7 +294,7 @@ static bool parse_files( int num_files, char const *files[] ) {
         PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", files[i], STRERROR );
       if ( !parse_file( fin ) )
         ok = false;
-      fclose( fin );
+      (void)fclose( fin );
     }
   } // for
   return ok;
