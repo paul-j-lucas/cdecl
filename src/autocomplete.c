@@ -73,7 +73,7 @@ static ac_keyword_t const CDECL_COMMANDS[] = {
   { L_NAMESPACE,    LANG_CPP_ALL      },
   { L_QUIT,         LANG_ALL          },
   { L_REINTERPRET,  LANG_CPP_ALL      },// reinterpret cast ...
-  { L_SET,          LANG_ALL          },
+  { L_SET_COMMAND,  LANG_ALL          },
   { L_SHOW,         LANG_ALL          },
   { L_STATIC,       LANG_CPP_ALL      },// static cast ...
   { L_TYPEDEF,      LANG_ALL          },
@@ -361,7 +361,7 @@ static char* keyword_completion( char const *text, int state ) {
   //
   // Special case: if it's the "set" command, complete options, not keywords.
   //
-  if ( strcmp( command, L_SET ) == 0 ) {
+  if ( strcmp( command, L_SET_COMMAND ) == 0 ) {
     for ( char const *option; (option = CDECL_OPTIONS[ index ]) != NULL; ) {
       ++index;
       if ( strncmp( text, option, text_len ) == 0 )

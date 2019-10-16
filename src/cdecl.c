@@ -138,7 +138,7 @@ static bool is_command( char const *s, bool allow_any_command ) {
     { L_NAMESPACE,    false },
   //  L_QUIT                            // silly if allowed
     { L_REINTERPRET,  false },          // reinterpret cast
-    { L_SET,          false },
+    { L_SET_COMMAND,  false },
     { L_STATIC,       false },          // static cast
     { L_TYPEDEF,      false },
     { L_USING,        false },

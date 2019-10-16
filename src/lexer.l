@@ -248,7 +248,7 @@ static keyword_t const CDECL_KEYWORDS[] = {
   { L_RETURNING,      TOKEN( Y_RETURNING )            },
   { L_RVALUE,         TOKEN( Y_RVALUE )               },
   { L_SCOPE,          TOKEN( Y_SCOPE ),               },
-  { L_SET,            TOKEN( Y_SET )                  },
+  { L_SET_COMMAND,    TOKEN( Y_SET )                  },
   { L_SHOW,           TOKEN( Y_SHOW )                 },
   { L_STRUCTURE,      C_SYN( L_STRUCT,        false ) },
   { L__THREAD_LOCAL,  C_SYN( L_THREAD_LOCAL,  true  ) },

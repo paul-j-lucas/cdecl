@@ -66,7 +66,7 @@ extern char const L_REFERENCE[];
 extern char const L_RET[];                  // synonym for "returning"
 extern char const L_RETURNING[];
 extern char const L_RVALUE[];
-extern char const L_SET[];
+extern char const L_SET_COMMAND[];          // L_SET is synonym for SEEK_SET
 extern char const L_SHOW[];
 extern char const L_TO[];
 extern char const L_USER[];
