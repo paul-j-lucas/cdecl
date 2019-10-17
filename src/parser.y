@@ -3488,7 +3488,7 @@ type_modifier_c_type
       //
       // This is for a case like:
       //
-      //      explain typeedef unsigned long size_t
+      //      explain typedef unsigned long size_t
       //
       // that is: explain a redefinition of a typdef'd type with the same type
       // that contains only one or more type_modifier_base_type.  The problem
