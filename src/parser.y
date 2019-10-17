@@ -3490,7 +3490,7 @@ type_modifier_c_type
       //
       //      explain typedef unsigned long size_t
       //
-      // that is: explain a redefinition of a typdef'd type with the same type
+      // that is: explain a redefinition of a typedef'd type with the same type
       // that contains only one or more type_modifier_base_type.  The problem
       // is that, without an unmodified_type_c_ast (like int), the parser would
       // ordinarily take the typedef'd type (here, the size_t) as part of the
