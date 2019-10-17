@@ -412,7 +412,7 @@ static bool parse_identifier( char const *s, char const **end ) {
   assert( end != NULL );
   if ( !(isalpha( s[0] ) || s[0] == '_') )
     return false;
-  while ( *++s != '\0' && (isalnum( *s ) || *s == '_') )
+  while ( *++s != '\0' && is_ident( *s ) )
     ;
   *end = s;
   return true;

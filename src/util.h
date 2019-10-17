@@ -32,6 +32,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <ctype.h>
 #include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
 #include <stdint.h>
@@ -394,6 +395,17 @@ CDECL_UTIL_INLINE bool is_blank_line( char const *s ) {
  * @return Returns `true` only if \a fd refers to a regular file.
  */
 bool is_file( int fd );
+
+/**
+ * Checks whether \a c is an identifier character.
+ *
+ * @param c The character to check.
+ * @return Returns `true` only if \a c is either an alphanumeric or `_`
+ * character.
+ */
+CDECL_UTIL_INLINE bool is_ident( char c ) {
+  return isalnum( c ) || c == '_';
+}
 
 /**
  * Checks whether the only bits set in \a bits are among the bits set in \a
