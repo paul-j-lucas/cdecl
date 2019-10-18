@@ -374,13 +374,13 @@ static void parse_options( int argc, char const *argv[] ) {
  * Prints the usage message to standard error.
  */
 static void usage( void ) {
-  printf(
+  PUTS_OUT(
 "usage: " PACKAGE " [options] [command...]\n"
 "       " PACKAGE " [options] files...\n"
 "options:\n"
 "  --alt-tokens    (-a)  Print alternative tokens.\n"
 "  --color=WHEN    (-k)  When to colorize output [default: not_file].\n"
-"  --config=FILE   (-c)  The configuration file [default: ~/%s].\n"
+"  --config=FILE   (-c)  The configuration file [default: ~/" CONF_FILE_NAME_DEFAULT "].\n"
 #ifdef ENABLE_CDECL_DEBUG
 "  --debug         (-d)  Enable debug output.\n"
 #endif /* ENABLE_CDECL_DEBUG */
@@ -402,7 +402,6 @@ static void usage( void ) {
 "\n"
 "Report bugs to: " PACKAGE_BUGREPORT "\n"
 PACKAGE_NAME " home page: " PACKAGE_URL "\n"
-    , CONF_FILE_NAME_DEFAULT
   );
   exit( EX_USAGE );
 }
