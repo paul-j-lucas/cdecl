@@ -39,10 +39,134 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define IF_IS_OPT_DO(LITERAL,...) BLOCK( \
-  if ( strcmp( opt, (LITERAL) ) == 0 ) { __VA_ARGS__ return; } )
-
 /// @endcond
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * The signature for a Set option function.
+ *
+ * @param enabled True if enabled.
+ * @param loc The location of the option name.
+ */
+typedef void (*set_opt_fn_t)( bool enabled, c_loc_t const *loc );
+
+/**
+ * cdecl `set` option.
+ */
+struct set_option {
+  char const   *name;                   ///< Option name.
+  bool          no_only;                ///< Valid only when "no...".
+  set_opt_fn_t  set_fn;                 ///< Set function.
+};
+typedef struct set_option set_option_t;
+
+////////// local functions ////////////////////////////////////////////////////
+
+static inline char const* maybe_no( bool enabled ) {
+  return enabled ? "  " : "no";
+}
+
+/**
+ * Prints the current option settings.
+ */
+static void print_options( void ) {
+  printf( "  %salt-tokens\n", maybe_no( opt_alt_tokens ) );
+#ifdef ENABLE_CDECL_DEBUG
+  printf( "  %sdebug\n", maybe_no( opt_debug ) );
+#endif /* ENABLE_CDECL_DEBUG */
+  printf( " %sgraphs\n", opt_graph == GRAPH_DI ? " di" : opt_graph == GRAPH_TRI ? "tri" : " no" );
+  printf( "    lang=%s\n", C_LANG_NAME() );
+  printf( "  %sprompt\n", maybe_no( prompt[0][0] != '\0' ) );
+  printf( "  %ssemicolon\n", maybe_no( opt_semicolon ) );
+#ifdef YYDEBUG
+  printf( "  %syydebug\n", maybe_no( yydebug ) );
+#endif /* YYDEBUG */
+}
+
+/**
+ * Sets the alt-tokens option.
+ *
+ * @param enabled True if enabled.
+ * @param loc The location of the option name.
+ */
+static void set_alt_tokens( bool enabled, c_loc_t const *loc ) {
+  (void)loc;
+  opt_alt_tokens = enabled;
+}
+
+#ifdef ENABLE_CDECL_DEBUG
+/**
+ * Sets the debug option.
+ *
+ * @param enabled True if enabled.
+ * @param loc The location of the option name.
+ */
+static void set_debug( bool enabled, c_loc_t const *loc ) {
+  (void)loc;
+  opt_debug = enabled;
+}
+#endif /* ENABLE_CDECL_DEBUG */
+
+/**
+ * Sets the digraphs-tokens option.
+ *
+ * @param enabled True if enabled.
+ * @param loc The location of the option name.
+ */
+static void set_digraphs( bool enabled, c_loc_t const *loc ) {
+  (void)loc;
+  opt_graph = enabled ? GRAPH_DI : GRAPH_NONE;
+}
+
+/**
+ * Sets the prompt option.
+ *
+ * @param enabled True if enabled.
+ * @param loc The location of the option name.
+ */
+static void set_prompt( bool enabled, c_loc_t const *loc ) {
+  (void)loc;
+  cdecl_prompt_enable( enabled );
+}
+
+/**
+ * Sets the semicolon option.
+ *
+ * @param enabled True if enabled.
+ * @param loc The location of the option name.
+ */
+static void set_semicolon( bool enabled, c_loc_t const *loc ) {
+  (void)loc;
+  opt_semicolon = enabled;
+}
+
+/**
+ * Sets the trigraphs option.
+ *
+ * @param enabled True if enabled.
+ * @param loc The location of the option name.
+ */
+static void set_trigraphs( bool enabled, c_loc_t const *loc ) {
+  opt_graph = enabled ? GRAPH_TRI : GRAPH_NONE;
+  if ( opt_graph && opt_lang >= LANG_CPP_17 )
+    print_warning( loc,
+      "trigraphs are no longer supported in %s", C_LANG_NAME()
+    );
+}
+
+#ifdef YYDEBUG
+/**
+ * Sets the yydebug option.
+ *
+ * @param enabled True if enabled.
+ * @param loc The location of the option name.
+ */
+static void set_yydebug( bool enabled, c_loc_t const *loc ) {
+  (void)loc;
+  yydebug = enabled;
+}
+#endif /* YYDEBUG */
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -50,69 +174,56 @@
  * Implements the cdecl `set` command.
  *
  * @param loc The location of the option token.
- * @param opt The name of the option to set. If null, displays the current
+ * @param opt_name The name of the option to set. If null, displays the current
  * values of all options.
  */
-void set_option( c_loc_t const *loc, char const *opt ) {
-  if ( opt != NULL ) {
-    //
-    // First, check to see if the option is the name of a supported language:
-    // if so, switch to that language.
-    //
-    c_lang_id_t const new_lang = c_lang_find( opt );
-    if ( new_lang != LANG_NONE ) {
-      c_lang_set( new_lang );
-      if ( opt_graph == GRAPH_TRI ) {
-        loc = NULL;
-        goto check_trigraphs_lang;
-      }
-      return;
-    }
-
-    IF_IS_OPT_DO(    "alt-tokens",  opt_alt_tokens = true;        );
-    IF_IS_OPT_DO(  "noalt-tokens",  opt_alt_tokens = false;       );
-#ifdef ENABLE_CDECL_DEBUG
-    IF_IS_OPT_DO(    "debug",       opt_debug = true;             );
-    IF_IS_OPT_DO(  "nodebug",       opt_debug = false;            );
-#endif /* ENABLE_CDECL_DEBUG */
-    IF_IS_OPT_DO(  "digraphs",      opt_graph = GRAPH_DI;         );
-
-    IF_IS_OPT_DO( "trigraphs",
-      opt_graph = GRAPH_TRI;
-check_trigraphs_lang:
-      if ( opt_lang >= LANG_CPP_17 )
-        print_warning( loc,
-          "trigraphs are no longer supported in %s", C_LANG_NAME()
-        );
-    );
-
-    IF_IS_OPT_DO(  "nographs",      opt_graph = GRAPH_NONE;       );
-    IF_IS_OPT_DO(    "prompt",      cdecl_prompt_enable( true );  );
-    IF_IS_OPT_DO(  "noprompt",      cdecl_prompt_enable( false ); );
-    IF_IS_OPT_DO(    "semicolon",   opt_semicolon = true;         );
-    IF_IS_OPT_DO(  "nosemicolon",   opt_semicolon = false;        );
-#ifdef YYDEBUG
-    IF_IS_OPT_DO(    "yydebug",     yydebug = true;               );
-    IF_IS_OPT_DO(  "noyydebug",     yydebug = false;              );
-#endif /* YYDEBUG */
-
-    if ( strcmp( opt, "options" ) != 0 ) {
-      print_error( loc, "\"%s\": unknown set option", opt );
-      return;
-    }
+void set_option( c_loc_t const *loc, char const *opt_name ) {
+  if ( opt_name == NULL || strcmp( opt_name, "options" ) == 0 ) {
+    print_options();
+    return;
   }
 
-  printf( "  %salt-tokens\n", opt_alt_tokens ? "  " : "no" );
+  c_lang_id_t const new_lang = c_lang_find( opt_name );
+  if ( new_lang != LANG_NONE ) {
+    c_lang_set( new_lang );
+    if ( opt_graph == GRAPH_TRI ) {
+      loc = NULL;
+      set_trigraphs( /*enabled=*/true, loc );
+    }
+    return;
+  }
+
+  char const *const orig_name = opt_name;
+  bool const enabled = strncmp( opt_name, "no", 2 ) != 0;
+  if ( enabled )
+    opt_name += 2/*no*/;
+
+  static set_option_t const SET_OPTIONS[] = {
+    { "alt-tokens", false,  &set_alt_tokens },
 #ifdef ENABLE_CDECL_DEBUG
-  printf( "  %sdebug\n", opt_debug ? "  " : "no" );
+    { "debug",      false,  &set_debug      },
 #endif /* ENABLE_CDECL_DEBUG */
-  printf( " %sgraphs\n", opt_graph == GRAPH_DI ? " di" : opt_graph == GRAPH_TRI ? "tri" : " no" );
-  printf( "    lang=%s\n", C_LANG_NAME() );
-  printf( "  %sprompt\n", prompt[0][0] != '\0' ? "  " : "no" );
-  printf( "  %ssemicolon\n", opt_semicolon ? "  " : "no" );
+    { "digraphs",   false,  &set_digraphs   },
+    { "graphs",     true,   &set_digraphs   },
+    { "prompt",     false,  &set_prompt     },
+    { "semicolon",  false,  &set_semicolon  },
+    { "trigraphs",  false,  &set_trigraphs  },
 #ifdef YYDEBUG
-  printf( "  %syydebug\n", yydebug ? "  " : "no" );
+    { "yydebug",    false,  &set_yydebug    },
 #endif /* YYDEBUG */
+    { NULL,         false,  NULL            }
+  };
+
+  for ( set_option_t const *opt = SET_OPTIONS; opt->name != NULL; ++opt ) {
+    if ( enabled && opt->no_only )
+      continue;
+    if ( strcmp( opt_name, opt->name ) == 0 ) {
+      (*opt->set_fn)( enabled, loc );
+      return;
+    }
+  } // for
+
+  print_error( loc, "\"%s\": unknown set option", orig_name );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
