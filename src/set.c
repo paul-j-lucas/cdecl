@@ -194,9 +194,10 @@ void set_option( c_loc_t const *loc, char const *opt_name ) {
   }
 
   char const *const orig_name = opt_name;
-  bool const enabled = strncmp( opt_name, "no", 2 ) != 0;
-  if ( enabled )
+  bool const is_no = strncmp( opt_name, "no", 2 ) == 0;
+  if ( is_no )
     opt_name += 2/*no*/;
+  size_t const opt_name_len = strlen( opt_name );
 
   static set_option_t const SET_OPTIONS[] = {
     { "alt-tokens", false,  &set_alt_tokens },
@@ -214,16 +215,28 @@ void set_option( c_loc_t const *loc, char const *opt_name ) {
     { NULL,         false,  NULL            }
   };
 
+  set_option_t const *found_opt = NULL;
   for ( set_option_t const *opt = SET_OPTIONS; opt->name != NULL; ++opt ) {
-    if ( enabled && opt->no_only )
+    if ( !is_no && opt->no_only )
       continue;
-    if ( strcmp( opt_name, opt->name ) == 0 ) {
-      (*opt->set_fn)( enabled, loc );
-      return;
+    if ( strncmp( opt->name, opt_name, opt_name_len ) == 0 ) {
+      if ( found_opt != NULL ) {
+        print_error( loc,
+          "\"%s\": ambiguous set option; could be \"%s%s\" or \"%s%s\"",
+          orig_name,
+          is_no ? "no" : "", found_opt->name,
+          is_no ? "no" : "", opt->name
+        );
+        return;
+      }
+      found_opt = opt;
     }
   } // for
 
-  print_error( loc, "\"%s\": unknown set option", orig_name );
+  if ( found_opt != NULL )
+    (*found_opt->set_fn)( !is_no, loc );
+  else
+    print_error( loc, "\"%s\": unknown set option", orig_name );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

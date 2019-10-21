@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** Defaulted & deleted support
 Defaulted & deleted special member functions are now supported.
 
+** Set option abbreviations
+Unambiguous option name abbreviations may now be used.
+
 ** Virtual constexpr
 Virtual constexpr declarations are now only correctly allowed in C++20.
 
