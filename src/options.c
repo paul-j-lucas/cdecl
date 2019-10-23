@@ -177,9 +177,9 @@ static char* format_opt( char short_opt, char buf[], size_t buf_size ) {
   char const *const long_opt = get_long_opt( short_opt );
   snprintf(
     buf, buf_size, "%s%s%s-%c",
-    *long_opt ? "--" : "",
+    *long_opt != '\0' ? "--" : "",
     long_opt,
-    *long_opt ? "/" : "",
+    *long_opt != '\0' ? "/" : "",
     short_opt
   );
   return buf;
