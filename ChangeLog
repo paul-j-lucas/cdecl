@@ -1,3 +1,94 @@
+2019-10-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, autocomplete.c, cdecl.c, cdecl.h, help.c, lexer.l,
+     options.c, options.h, parser.y, print.c, set.c, test/Makefile.am,
+     help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
+     help_commands-c++.out, help_commands-c.out, i.out, set.out,
+     set_explain-by-default.out, set_explain.out, set_noexplain-by-default.out,
+     set_noexplain.out, set_options.out, i.test, set_explain-by-default.test,
+     set_explain.test, set_noexplain-by-default.test, set_noexplain.test: Added
+     --explain/-e and explain-by-default option: when enabled, any input line
+     that doesn't start with a command is assumed to be "explain."
+
+2019-10-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, set.c: May now use unambiguous option name abbreviations.
+
+2019-10-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.c: Changed usage() to use fputs().
+   * set.c: Reworked set_option() code.
+
+2019-10-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l, util.h: Added is_ident().
+   * parser.y: Fixed typo.
+   * parser.y: Fixed typo.
+
+2019-10-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c: Added (void).
+   * cdecl.c: Added (void).
+   * autocomplete.c, cdecl.c, lexer.l, literals.c, literals.h:
+     s/L_SET/L_SET_COMMAND/ since L_SET is a synonym for SEEK_SET.
+   * cdecl.c: Moved declaration of conf_path_buf; removed unlikely().
+
+2019-09-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, stddef.in.h, stdint.in.h, stdlib.in.h, string.in.h,
+     unistd.in.h, extern-inline.m4, getdelim.m4, getline.m4, getopt.m4,
+     gnulib-common.m4, nocrash.m4, unistd_h.m4: Updated GNUlib.
+   * NEWS, configure.ac, help.c, help-c++.out, help-c.out,
+     help_command-c++.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out: Added "lang" to help.
+
+2019-08-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * errors.c: s/(T_CONST 
+
+2019-08-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Restricting virtual constexpr to C++20.
+   * parser.y: Removed useless member_func_decl_english_ast rule.
+
+2019-08-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1, autocomplete.c, c_ast_util.c, c_ast_util.h, c_keyword.c,
+     c_type.c, c_type.h, errors.c, gibberish.c, lexer.l, literals.c,
+     literals.h, parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d.out,
+     declare_+o_eq_rck_rk=default-01.out, declare_+o_eq_rck_rk=delete-01.out,
+     explain_+o_eq_rck_rk=default-01.out, explain_+o_eq_rck_rk=delete-01.out,
+     declare_+o_eq_rck_rk=default-01.test, declare_+o_eq_rck_rk=delete-01.test,
+     explain_+o_eq_rck_rk=default-01.test,
+     explain_+o_eq_rck_rk=default-02.test, explain_+o_eq_rck_rk=delete-01.test,
+     explain_+o_eq_rck_rk=delete-02.test,
+     explain_+o_exclam_eq_rck_rk=default.test,
+     explain_+o_exclam_eq_rck_rk=delete.test: Defaulted and deleted special
+     member functions are now supported.
+   * lexer.h, parser.y: Moved yylex() declaration.
+   * cdecl.1: Move comment to left.
+
+2019-08-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.h: Better @return for c_ast_unreference().
+   * c_ast_util.h: s/confustion/confusion/
+   * c_ast_util.c, c_ast_util.h: Reworked c_ast_is_ecsu(),
+     c_ast_is_ptr_to_type(), c_ast_unpointer(), c_ast_unreference(),
+     c_ast_untypedef().
+   * c_ast_util.c: Simplified c_ast_is_ptr_to_type().
+   * c_ast_util.c: Added ast != NULL.
+   * c_ast_util.c, c_ast_util.h, errors.c:
+     s/c_ast_is_ptr_to/c_ast_is_ptr_to_type/
+
+2019-07-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.c: Removed extraneous @hideinitializer.
+   * c_lang.c: Added assert().
+   * c_lang.h: Added 'u'.
+   * c_lang.h: s/LANG_C_MASK/LANG_MASK_C/
+   * c_ast.c, c_ast.h: Unified c_ast_visit().
+   * red_black.c: Clean-up.
+
 2019-07-24  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c, errors.c, gibberish.c: Clean-up.
