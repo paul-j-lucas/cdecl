@@ -52,15 +52,15 @@ extern char const  *opt_conf_file;      ///< Configuration file path.
 #ifdef ENABLE_CDECL_DEBUG
 extern bool         opt_debug;          ///< Generate JSON-like debug output?
 #endif /* ENABLE_CDECL_DEBUG */
-extern bool         opt_explain;        ///< Implicit `explain` if no command?
+extern bool         opt_explain;        ///< Assume `explain` if no command?
 extern char const  *opt_fin;            ///< File in path.
 extern char const  *opt_fout;           ///< File out path.
 extern c_graph_t    opt_graph;          ///< Di/Trigraph mode.
 extern bool         opt_interactive;    ///< Interactive mode?
 extern c_lang_id_t  opt_lang;           ///< Current language.
 extern bool         opt_no_conf;        ///< Do not read configuration file.
-extern bool         opt_prompt;         ///< Don't print the prompt.
-extern bool         opt_semicolon;      ///< Print `;` at end of gibberish.
+extern bool         opt_prompt;         ///< Print the prompt?
+extern bool         opt_semicolon;      ///< Print `;` at end of gibberish?
 extern bool         opt_typedefs;       ///< Load C/C++ standard `typedef`s.
 
 // other extern variables
