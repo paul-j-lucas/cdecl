@@ -54,11 +54,22 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * The type of cdecl command in least-to-most restrictive order.
+ */
+enum c_command {
+  COMMAND_ANY,                          ///< Any command.
+  COMMAND_FIRST_ARG,                    ///< `cdecl` _command_ _args_ ...
+  COMMAND_PROG_NAME                     ///< _command_ _args_ ...
+};
+typedef enum c_command c_command_t;
+
 // extern variable definitions
 c_init_t            c_init;             // initialization state
 c_mode_t            c_mode;             // parsing english or gibberish?
 char const         *command_line;       // command from command line, if any
 size_t              command_line_len;   // length of command_line
+size_t              inserted_len;       // length of inserted string
 bool                is_input_a_tty;     // is our input from a tty?
 char const         *me;                 // program name
 
@@ -70,7 +81,7 @@ extern void         yyrestart( FILE* );
 
 // local functions
 static void         cdecl_cleanup( void );
-static bool         is_command( char const*, bool );
+static bool         is_command( char const*, c_command_t );
 static bool         parse_argv( int, char const*[] );
 static bool         parse_command_line( char const*, int, char const*[] );
 static bool         parse_files( int, char const*[] );
@@ -115,10 +126,10 @@ int main( int argc, char const **argv ) {
  * only specific commands.
  * @return Returns `true` only if \a s is a command.
  */
-static bool is_command( char const *s, bool allow_any_command ) {
+static bool is_command( char const *s, c_command_t command_type ) {
   struct argv_command {
     char const *keyword;                // The keyword literal.
-    bool        allow_as_program_name;  // Allow as program name?
+    c_command_t command_type;           // The type of command.
   };
   typedef struct argv_command argv_command_t;
 
@@ -127,28 +138,35 @@ static bool is_command( char const *s, bool allow_any_command ) {
   // either be the program name or the first command-line argument.
   //
   static argv_command_t const ARGV_COMMANDS[] = {
-    { L_CAST,         true  },
-    { L_CONST,        false },          // const cast
-    { L_DECLARE,      true  },
-    { L_DEFINE,       false },
-    { L_DYNAMIC,      false },          // dynamic cast
-  //  L_EXIT                            // silly if allowed
-    { L_EXPLAIN,      true  },
-    { L_HELP,         false },
-    { L_NAMESPACE,    false },
-  //  L_QUIT                            // silly if allowed
-    { L_REINTERPRET,  false },          // reinterpret cast
-    { L_SET_COMMAND,  false },
-    { L_STATIC,       false },          // static cast
-    { L_TYPEDEF,      false },
-    { L_USING,        false },
-    { NULL,           false },
+    { L_CAST,         COMMAND_PROG_NAME },
+    { L_CONST,        COMMAND_FIRST_ARG },  // const cast
+    { L_DECLARE,      COMMAND_PROG_NAME },
+    { L_DEFINE,       COMMAND_FIRST_ARG },
+    { L_DYNAMIC,      COMMAND_FIRST_ARG },  // dynamic cast
+    { L_EXIT,         COMMAND_ANY       },
+    { L_EXPLAIN,      COMMAND_PROG_NAME },
+    { L_HELP,         COMMAND_FIRST_ARG },
+    { L_NAMESPACE,    COMMAND_FIRST_ARG },
+    { L_Q,            COMMAND_ANY       },
+    { L_QUIT,         COMMAND_ANY       },
+    { L_REINTERPRET,  COMMAND_FIRST_ARG },  // reinterpret cast
+    { L_SET_COMMAND,  COMMAND_FIRST_ARG },
+    { L_SHOW,         COMMAND_FIRST_ARG },
+    { L_STATIC,       COMMAND_FIRST_ARG },  // static cast
+    { L_TYPEDEF,      COMMAND_FIRST_ARG },
+    { L_USING,        COMMAND_FIRST_ARG },
+    { NULL,           COMMAND_FIRST_ARG },
   };
 
+  s += strspn( s, " \t" );
+
   for ( argv_command_t const *c = ARGV_COMMANDS; c->keyword != NULL; ++c ) {
-    if ( (allow_any_command || c->allow_as_program_name) &&
-         strcmp( c->keyword, s ) == 0 ) {
-      return true;
+    if ( c->command_type >= command_type ) {
+      size_t const keyword_len = strlen( c->keyword );
+      if ( strncmp( s, c->keyword, keyword_len ) == 0 &&
+           !is_ident( s[ keyword_len ] ) ) {
+        return true;
+      }
     }
   } // for
   return false;
@@ -174,45 +192,18 @@ static void cdecl_cleanup( void ) {
 static bool parse_argv( int argc, char const *argv[] ) {
   if ( argc == 0 )                      // cdecl
     return parse_stdin();
-  if ( is_command( me, false ) )        // {cast|declare|explain} arg ...
+  if ( is_command( me, COMMAND_PROG_NAME ) )
     return parse_command_line( me, argc, argv );
+
   //
   // Note that options_init() adjusts argv such that argv[0] becomes the first
   // argument (and no longer the program name).
   //
-  if ( is_command( argv[0], true ) )    // cdecl <command>
+  if ( is_command( argv[0], COMMAND_FIRST_ARG ) )
     return parse_command_line( NULL, argc, argv );
 
-  // cdecl '{cast|declare|explain} arg ...'
-  char *argv0 = CONST_CAST( char*, argv[0] );
-  for ( char *first_word; (first_word = strsep( &argv0, " \t" )) != NULL; ) {
-    if ( unlikely( first_word[0] == '\0' ) ) {
-      //
-      // Leading whitespace in a quoted argument, e.g.:
-      //
-      //      cdecl ' declare x as int'
-      //             ^
-      //
-      // results in an "empty field": skip it.
-      //
-      continue;
-    }
-
-    if ( is_command( first_word, true ) ) {
-      //
-      // Now that we've split off the command, set the argument to the
-      // remaining characters.  E.g., given:
-      //
-      //      cdecl 'declare x as int'
-      //
-      // set argv[0] to "x as int" by changing the pointer.
-      //
-      argv[0] = argv0;
-      return parse_command_line( first_word, argc, argv );
-    }
-
-    break;                              // nothing special about first argument
-  } // for
+  if ( opt_explain )
+    return parse_command_line( L_EXPLAIN, argc, argv );
 
   return parse_files( argc, argv );     // assume arguments are file names
 }
@@ -344,10 +335,29 @@ bool parse_string( char const *s, size_t s_len ) {
     reset_command_line = true;
   }
 
+  char *explain_buf = NULL;
+  if ( opt_explain && !is_command( s, COMMAND_ANY ) ) {
+    //
+    // The string doesn't start with a command: insert "explain " and set
+    // inserted_len so the print_*() functions subtract it from the error
+    // column to get the correct column within the original string.
+    //
+    inserted_len = strlen( L_EXPLAIN ) + 1/*space*/;
+    s_len += inserted_len;
+    explain_buf = MALLOC( char, s_len + 1/*NULL*/ );
+    char *p = strcpy_end( explain_buf, L_EXPLAIN );
+    p = chrcpy_end( p, ' ' );
+    (void)strcpy_end( p, s );
+    s = explain_buf;
+  }
+
   FILE *const temp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
   yyrestart( temp );
   bool const ok = yyparse() == 0;
   (void)fclose( temp );
+
+  free( explain_buf );
+  inserted_len = 0;
 
   if ( reset_command_line ) {
     command_line = NULL;

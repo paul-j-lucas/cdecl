@@ -154,13 +154,13 @@
 /**
  * cdecl keyword info.
  */
-struct keyword {
+struct cdecl_keyword {
   char const *literal;                  ///< C string literal of the keyword.
   int         y_token;                  ///< Bison token number.
   char const *c_keyword_synonym;        ///< Synonym of C/C++ keyword, if any.
   bool        allow_explain;            ///< Allow when explaining C/C++?
 };
-typedef struct keyword keyword_t;
+typedef struct cdecl_keyword cdecl_keyword_t;
 
 /**
  * Specify that the previosuly given literal is a synonym for \a C_KEYWORD.
@@ -186,7 +186,7 @@ typedef struct keyword keyword_t;
  *
  * @hideinitializer
  */
-static keyword_t const CDECL_KEYWORDS[] = {
+static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L__ALIGNAS,       C_SYN( L_ALIGNAS,       true  ) },
   { L_ALIGNED,        TOKEN( Y_ALIGNED )              },
   { L_ALL,            TOKEN( Y_ALL )                  },
@@ -266,11 +266,11 @@ static keyword_t const CDECL_KEYWORDS[] = {
 /**
  * Hyphenated English-literal-to-C-literal mapping.
  */
-struct hyphenated {
+struct c_hyphenated {
   char const *e_literal;                ///< Hyphenated English literal.
   char const *c_literal;                ///< C language literal it maps to.
 };
-typedef struct hyphenated hyphenated_t;
+typedef struct c_hyphenated c_hyphenated_t;
 
 /**
  * All hyphenated English keywords that are synonyms for C/C++ keywords.  These
@@ -279,15 +279,37 @@ typedef struct hyphenated hyphenated_t;
  *
  * @hideinitializer
  */
-static hyphenated_t const HYPHENATED_KEYWORDS[] = {
+static c_hyphenated_t const C_HYPHENATED_KEYWORDS[] = {
   { "carries-dependency", L_CARRIES_DEPENDENCY  },
   { "maybe-unused",       L_MAYBE_UNUSED        },
   { "no-exception",       L_NOEXCEPT            },
   { "non-discardable",    L_NODISCARD           },
   { "non-returning",      L__NORETURN           },
   { "non-throwing",       L_THROW               },
+  { NULL,                 NULL                  }
 };
 
+/**
+ * Hyphenated cdecl keyword English-literal-to-Bison-token mapping.
+ */
+struct cdecl_hyphenated {
+  char const *e_literal;                ///< Hyphenated English literal.
+  int         y_token;                  ///< Bison token number.
+};
+typedef struct cdecl_hyphenated cdecl_hyphenated_t;
+
+/**
+ * All hyphenated English keywords that are cdecl keywords.  These are handled
+ * seperately because hyphenated words are not valid identifiers (since `-` is
+ * not valid in an identifier).
+ */
+static cdecl_hyphenated_t const E_HYPHENATED_KEYWORDS[] = {
+  { "non-mbr",      Y_NON_MEMBER    },
+  { "non-member",   Y_NON_MEMBER    },
+  { "user-def",     Y_USER_DEFINED  },
+  { "user-defined", Y_USER_DEFINED  },
+  { NULL,           0               }
+};
 
 static char const lexer_token_init_buf; ///< So lexer_token is never null.
 
@@ -311,35 +333,16 @@ static void       lexer_update_loc( void );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Finds a cdecl keyword matching \a s, if any.
- *
- * @param s The string to find.
- * @return Returns a pointer to the corresponding keyword or null if not found.
- */
-static keyword_t const* cdecl_keyword_find( char const *s ) {
-  assert( s != NULL );
-  for ( keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
-    if ( strcmp( s, k->literal ) != 0 )
-      continue;
-    if ( c_mode == MODE_ENGLISH_TO_GIBBERISH ||
-         (k->c_keyword_synonym && k->allow_explain) )
-      return k;
-    break;
-  } // for
-  return NULL;
-}
-
-/**
  * Finds a hyphenated English literal that is a synonym for a C/C++ language
  * literal.
  *
  * @param s The string to find.
  * @return Returns the corresponding C/C++ language literal or null if none.
  */
-static char const* hyphenated_find( char const *s ) {
+static char const* c_hyphenated_find( char const *s ) {
   assert( s != NULL );
   char const *c_literal = NULL;
-  for ( hyphenated_t const *h = HYPHENATED_KEYWORDS; h->e_literal; ++h ) {
+  for ( c_hyphenated_t const *h = C_HYPHENATED_KEYWORDS; h->e_literal; ++h ) {
     if ( strcmp( s, h->e_literal ) == 0 ) {
       c_literal = h->c_literal;
       if ( c_literal == L__NORETURN && C_LANG_IS_CPP() ) {
@@ -356,6 +359,41 @@ static char const* hyphenated_find( char const *s ) {
     }
   } // for
   return c_literal;
+}
+
+/**
+ * Finds a hyphenated English literal that is a cdecl keyword.
+ *
+ * @param s The string to find.
+ * @return If found, returns the corresponding Bison token; otherwise returns
+ * Y_HYPHENATED_NAME.
+ */
+static int cdecl_hyphenated_find( char const *s ) {
+  assert( s != NULL );
+  for ( cdecl_hyphenated_t const *h = E_HYPHENATED_KEYWORDS; h->e_literal; ++h ) {
+    if ( strcmp( s, h->e_literal ) == 0 )
+      return h->y_token;
+  } // for
+  return Y_HYPHENATED_NAME;
+}
+
+/**
+ * Finds a cdecl keyword matching \a s, if any.
+ *
+ * @param s The string to find.
+ * @return Returns a pointer to the corresponding keyword or null if not found.
+ */
+static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
+  assert( s != NULL );
+  for ( cdecl_keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
+    if ( strcmp( s, k->literal ) != 0 )
+      continue;
+    if ( c_mode == MODE_ENGLISH_TO_GIBBERISH ||
+         (k->c_keyword_synonym && k->allow_explain) )
+      return k;
+    break;
+  } // for
+  return NULL;
 }
 
 /**
@@ -586,7 +624,7 @@ identifier    {letter}({letter}|{D})*
 cknr_name     ([cC][kK]&[rR])|([kK]&[rR][cC]?)
 cpp_name      [cC]"++"({D}{D})?
 dtor_sname    ({identifier}{S}*::{S}*)+(~{S}*|compl{S}+){identifier}
-hyphenated    [a-z]+-[a-z]+
+hyphenated    [a-z]+-([a-z]+-)*[a-z]+
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
 lang_name     {cknr_name}|{cpp_name}
 sname         {identifier}({S}*::{S}*{identifier})+
@@ -690,11 +728,11 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 //
                 // 1. See if it's a cdecl keyword.
                 //
-                keyword_t const *const ck = cdecl_keyword_find( lexer_token );
-                if ( ck != NULL ) {
-                  if ( ck->c_keyword_synonym == NULL )
-                    return ck->y_token;
-                  if ( ck->c_keyword_synonym == L__NORETURN &&
+                cdecl_keyword_t const *cdk = cdecl_keyword_find( lexer_token );
+                if ( cdk != NULL ) {
+                  if ( cdk->c_keyword_synonym == NULL )
+                    return cdk->y_token;
+                  if ( cdk->c_keyword_synonym == L__NORETURN &&
                        C_LANG_IS_CPP() ) {
                     //
                     // _Noreturn is a special case. In C11, it's "_Noreturn"
@@ -722,7 +760,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                     //
                   }
                   else {
-                    lexer_token = ck->c_keyword_synonym;
+                    lexer_token = cdk->c_keyword_synonym;
                   }
                 }
 
@@ -743,15 +781,15 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 //
         find_c_keyword:
                 NO_OP;
-                c_keyword_t const *k = c_keyword_find( lexer_token, opt_lang );
-                if ( k == NULL && c_mode == MODE_ENGLISH_TO_GIBBERISH ) {
+                c_keyword_t const *ck = c_keyword_find( lexer_token, opt_lang );
+                if ( ck == NULL && c_mode == MODE_ENGLISH_TO_GIBBERISH ) {
                   //
                   // We have to look-up attribute names when parsing English
                   // because there can't be any special syntax for them, e.g.:
                   //
                   //      declare x as deprecated int
                   //
-                  k = c_attribute_find( lexer_token );
+                  ck = c_attribute_find( lexer_token );
                 }
                 else {
                   //
@@ -763,9 +801,9 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                   // is legal.
                   //
                 }
-                if ( k != NULL ) {
-                  yylval.type_id = k->type_id;
-                  return k->y_token;
+                if ( ck != NULL ) {
+                  yylval.type_id = ck->type_id;
+                  return ck->y_token;
                 }
 
                 //
@@ -775,40 +813,22 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 return Y_NAME;
               }
 
-              /*
-               * Special cases for hyphenated cdecl keywords that are NOT
-               * synonyms for C/C++ keywords.
-               */
-"alt-tokens"  {
-                SET_TOKEN;
-                yylval.name = check_strdup( lexer_token );
-                return Y_ALT_TOKENS;
-              }
-"non-member"  |
-"non-mbr"     {
-                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
-                SET_TOKEN;
-                return Y_NON_MEMBER;
-              }
-"user-defined" {
-                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
-                SET_TOKEN;
-                return Y_USER_DEFINED;
-              }
-
 {hyphenated}  {
-                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
                 SET_TOKEN;
-                char const *const literal = hyphenated_find( yytext );
-                if ( literal == NULL )
-                  return Y_ERROR;
-                lexer_token = literal;
-                goto find_c_keyword;
+                char const *const c_literal = c_hyphenated_find( lexer_token );
+                if ( c_literal != NULL ) {
+                  ASSERT_MODE( ENGLISH_TO_GIBBERISH );
+                  lexer_token = c_literal;
+                  goto find_c_keyword;
+                }
+                int const y_token = cdecl_hyphenated_find( lexer_token );
+                if ( y_token == Y_HYPHENATED_NAME )
+                  yylval.name = check_strdup( lexer_token );
+                return y_token;
               }
 
 {lang_name}   {
                 SET_TOKEN;
-                yylval.name = check_strdup( lexer_token );
                 return Y_LANG_NAME;
               }
 

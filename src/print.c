@@ -63,6 +63,8 @@ static size_t       token_len( char const* );
  * @param error_column The zero-based column of the offending token.
  */
 static void print_caret( size_t error_column ) {
+  if ( error_column >= inserted_len )
+    error_column -= inserted_len;
   unsigned term_columns = 0;
 #ifdef ENABLE_TERM_SIZE
   get_term_columns_lines( &term_columns, NULL );
@@ -95,6 +97,10 @@ static void print_caret( size_t error_column ) {
       input_line = command_line;
       assert( input_line != NULL );
       input_line_len = command_line_len;
+    }
+    if ( input_line_len >= inserted_len ) {
+      input_line += inserted_len;
+      input_line_len -= inserted_len;
     }
     assert( error_column <= input_line_len );
 
@@ -247,7 +253,10 @@ void print_loc( c_loc_t const *loc ) {
   SGR_START_COLOR( stderr, locus );
   if ( opt_conf_file != NULL )
     PRINT_ERR( "%s:%d,", opt_conf_file, loc->first_line + 1 );
-  PRINT_ERR( "%d", loc->first_column + 1 );
+  size_t column = loc->first_column;
+  if ( column >= inserted_len )
+    column -= inserted_len;
+  PRINT_ERR( "%zu", column + 1 );
   SGR_END_COLOR( stderr );
   PUTS_ERR( ": " );
 }

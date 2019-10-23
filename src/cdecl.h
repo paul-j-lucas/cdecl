@@ -51,6 +51,7 @@ extern c_mode_t     c_mode;             ///< Parsing english or gibberish?
 extern c_init_t     c_init;             ///< Initialization state.
 extern char const  *command_line;       ///< Command from command line, if any.
 extern size_t       command_line_len;   ///< Length of `command_line`.
+extern size_t       inserted_len;       ///< Length of inserted string.
 extern bool         is_input_a_tty;     ///< Is our input from a TTY?
 extern char const  *me;                 ///< Program name.
 

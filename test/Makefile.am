@@ -406,6 +406,12 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_zz.test
 
 #
+# C explain-by-default tests
+# ==========================
+#
+TESTS+=	tests/i.test
+
+#
 # C explain error tests
 # =====================
 # Almost every test here has a corresponding declare_ error test.
@@ -1433,8 +1439,12 @@ TESTS+=	tests/help-c++.test \
 	tests/set_c99.test \
 	tests/set_cknr.test \
 	tests/set_digraphs.test \
+	tests/set_explain-by-default.test \
+	tests/set_explain.test \
 	tests/set_knr.test \
 	tests/set_knrc.test \
+	tests/set_noexplain-by-default.test \
+	tests/set_noexplain.test \
 	tests/set_nographs.test \
 	tests/set_noprompt.test \
 	tests/set_nosemicolon.test \

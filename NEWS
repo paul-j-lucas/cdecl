@@ -15,8 +15,12 @@ with their complete changes, see the AUTHORS file.
 ** Defaulted & deleted support
 Defaulted & deleted special member functions are now supported.
 
+** Explain-by-default option
+Both a command-line --explain/-e and explain-by-default set option have been
+added that assume a command that doesn't start with any command means "explain."
+
 ** Set option abbreviations
-Unambiguous option name abbreviations may now be used.
+Unambiguous set option name abbreviations may now be used.
 
 ** Virtual constexpr
 Virtual constexpr declarations are now only correctly allowed in C++20.

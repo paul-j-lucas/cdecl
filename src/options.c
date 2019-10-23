@@ -54,6 +54,7 @@ char const         *opt_conf_file;
 #ifdef ENABLE_CDECL_DEBUG
 bool                opt_debug;
 #endif /* ENABLE_CDECL_DEBUG */
+bool                opt_explain;
 char const         *opt_fin;
 char const         *opt_fout;
 c_graph_t           opt_graph;
@@ -82,6 +83,7 @@ static struct option const LONG_OPTS[] = {
 #ifdef ENABLE_CDECL_DEBUG
   { "debug",        no_argument,        NULL, 'd' },
 #endif /* ENABLE_CDECL_DEBUG */
+  { "explain",      no_argument,        NULL, 'e' },
   { "file",         required_argument,  NULL, 'f' },
   { "help",         no_argument,        NULL, 'h' },
   { "interactive",  no_argument,        NULL, 'i' },
@@ -103,7 +105,7 @@ static struct option const LONG_OPTS[] = {
  *
  * @hideinitializer
  */
-static char const   SHORT_OPTS[] = "23ac:Cf:ik:o:pstvx:"
+static char const   SHORT_OPTS[] = "23ac:Cef:ik:o:pstvx:"
 #ifdef ENABLE_CDECL_DEBUG
   "d"
 #endif /* ENABLE_CDECL_DEBUG */
@@ -326,6 +328,7 @@ static void parse_options( int argc, char const *argv[] ) {
 #ifdef ENABLE_CDECL_DEBUG
       case 'd': opt_debug       = true;                       break;
 #endif /* ENABLE_CDECL_DEBUG */
+      case 'e': opt_explain     = true;                       break;
       case 'f': opt_fin         = optarg;                     break;
    // case 'h': usage();        // default case handles this
       case 'i': opt_interactive = true;                       break;
@@ -344,7 +347,7 @@ static void parse_options( int argc, char const *argv[] ) {
   } // for
 
   check_mutually_exclusive( "2", "3" );
-  check_mutually_exclusive( "v", "23acCdfikopstxy" );
+  check_mutually_exclusive( "v", "23acCdefikopstxy" );
 
   if ( print_version ) {
     printf( "%s\n", PACKAGE_STRING );
@@ -385,6 +388,7 @@ static void usage( void ) {
 "  --debug         (-d)  Enable debug output.\n"
 #endif /* ENABLE_CDECL_DEBUG */
 "  --digraphs      (-2)  Print digraphs.\n"
+"  --explain       (-e)  Assume \"explain\" when no other command is given.\n"
 "  --file=FILE     (-f)  Read from this file [default: stdin].\n"
 "  --help          (-h)  Print this help and exit.\n"
 "  --interactive   (-i)  Force interactive mode.\n"

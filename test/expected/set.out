@@ -1,6 +1,7 @@
   noalt-tokens
   nodebug
   nographs
+  noexplain-by-default
     lang=C18
     prompt
     semicolon

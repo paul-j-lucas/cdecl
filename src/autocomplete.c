@@ -203,6 +203,7 @@ static char const *const CDECL_OPTIONS[] = {
 #endif /* ENABLE_CDECL_DEBUG */
  "nographs",
  "digraphs",
+ "explain-by-default",
 "trigraphs",
    "knr"
    "options",

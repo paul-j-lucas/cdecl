@@ -343,6 +343,10 @@ for
 and
 \f(CW]\fP.
 .TP
+.BR \-\-explain " | " \-e
+Assumes \f(CWexplain\fP
+when an input line doesn't start with any command.
+.TP
 .BI \-\-file \f1=\fPf "\f1 | \fP" "" \-f " f"
 Reads commands from file
 .IR f .
@@ -897,6 +901,7 @@ carries-dependency  carries_dependency
                mbr  member
       no-exception  noexcept
    non-discardable  nodiscard
+           non-mbr  non-member
      non-returning  _Noreturn
       non-throwing  throw()
           noreturn  _Noreturn
@@ -910,6 +915,7 @@ carries-dependency  carries_dependency
          structure  struct
               type  typedef
      _Thread_local  thread_local
+          user-def  user-defined
                var  variable
            varargs  ...
           variadic  ...
@@ -1116,7 +1122,8 @@ option is given):
 .SS Set Options
 The
 .B set
-command takes several options:
+command takes several options.
+Unambiguous option name abbreviations may be used.
 .RS 4
 .TP 6
 .I lang
@@ -1147,6 +1154,11 @@ for
 \f(CW[\fP
 and
 \f(CW]\fP.
+.TP
+.RB [ no ] explain-by-default
+Turns [off] on \f(CWexplain\fP being assumed
+when an input line doesn't start with any command
+\(em default is off.
 .TP
 .B options
 Prints the current value of all options.

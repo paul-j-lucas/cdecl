@@ -76,6 +76,7 @@ static void print_options( void ) {
   printf( "  %sdebug\n", maybe_no( opt_debug ) );
 #endif /* ENABLE_CDECL_DEBUG */
   printf( " %sgraphs\n", opt_graph == GRAPH_DI ? " di" : opt_graph == GRAPH_TRI ? "tri" : " no" );
+  printf( "  %sexplain-by-default\n", maybe_no( opt_explain ) );
   printf( "    lang=%s\n", C_LANG_NAME() );
   printf( "  %sprompt\n", maybe_no( prompt[0][0] != '\0' ) );
   printf( "  %ssemicolon\n", maybe_no( opt_semicolon ) );
@@ -117,6 +118,17 @@ static void set_debug( bool enabled, c_loc_t const *loc ) {
 static void set_digraphs( bool enabled, c_loc_t const *loc ) {
   (void)loc;
   opt_graph = enabled ? GRAPH_DI : GRAPH_NONE;
+}
+
+/**
+ * Sets the explain-by-default option.
+ *
+ * @param enabled True if enabled.
+ * @param loc The location of the option name.
+ */
+static void set_explain_by_default( bool enabled, c_loc_t const *loc ) {
+  (void)loc;
+  opt_explain = enabled;
 }
 
 /**
@@ -200,15 +212,16 @@ void set_option( c_loc_t const *loc, char const *opt_name ) {
   size_t const opt_name_len = strlen( opt_name );
 
   static set_option_t const SET_OPTIONS[] = {
-    { "alt-tokens", false,  &set_alt_tokens },
+    { "alt-tokens",         false,  &set_alt_tokens         },
 #ifdef ENABLE_CDECL_DEBUG
-    { "debug",      false,  &set_debug      },
+    { "debug",              false,  &set_debug              },
 #endif /* ENABLE_CDECL_DEBUG */
-    { "digraphs",   false,  &set_digraphs   },
-    { "graphs",     true,   &set_digraphs   },
-    { "prompt",     false,  &set_prompt     },
-    { "semicolon",  false,  &set_semicolon  },
-    { "trigraphs",  false,  &set_trigraphs  },
+    { "digraphs",           false,  &set_digraphs           },
+    { "graphs",             true,   &set_digraphs           },
+    { "explain-by-default", false,  &set_explain_by_default },
+    { "prompt",             false,  &set_prompt             },
+    { "semicolon",          false,  &set_semicolon          },
+    { "trigraphs",          false,  &set_trigraphs          },
 #ifdef YYDEBUG
     { "yydebug",    false,  &set_yydebug    },
 #endif /* YYDEBUG */
