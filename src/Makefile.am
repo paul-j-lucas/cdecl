@@ -68,6 +68,7 @@ parser.output: parser.y
 	@rm -f parser.tab.c
 
 install-exec-hook:
+	rm -f "$(DESTDIR)$(bindir)/c++decl"
 	$(LN_S) cdecl "$(DESTDIR)$(bindir)/c++decl"
 
 uninstall-hook:
