@@ -47,13 +47,13 @@
 //
 //      ...
 //
-//    MacOS X 10.9 and later define __header_inline indicating the bug is fixed
+//    MacOS 10.9 and later define __header_inline indicating the bug is fixed
 //    for C and for clang but remains for g++; see
 //    <https://trac.macports.org/ticket/41033>.
 //
-// Mac OS X 10.9 and later define __header_inline in sys/cdefs.h that is
-// included from stdlib.h, so include the latter to define it if applicable.
-// This MUST be #include'd before config.h since it tests for __header_inline.
+// MacOS 10.9 and later define __header_inline in sys/cdefs.h that is included
+// from stdlib.h, so include the latter to define it if applicable.  This MUST
+// be #include'd before config.h since it tests for __header_inline.
 //
 # include <stdlib.h>
 #endif
