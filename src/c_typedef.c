@@ -246,7 +246,7 @@ static char const *const TYPEDEFS_MISC[] = {
 /**
  * Gets a pointer to a red-black tree node's data cast to `c_typedef_t const*`.
  *
- * @param NODE_PTR A pointer to the node to get the data of.
+ * @param node A pointer to the node to get the data of.
  * @return Returns said pointer.
  */
 static inline

@@ -146,6 +146,7 @@ static bool c_ast_check_alignas( c_ast_t *ast ) {
  * Checks an array AST for errors.
  *
  * @param ast The array `c_ast` to check.
+ * @param is_func_arg If `true`, \a ast is an AST for a function-like argument.
  * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
@@ -293,7 +294,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
 /**
  * Checks a constructor or destructor AST for errors.
  *
- * @param The constructor or destructor `c_ast` to check.
+ * @param ast The constructor or destructor `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {

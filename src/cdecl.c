@@ -122,8 +122,7 @@ int main( int argc, char const **argv ) {
  * Checks whether \a s is a cdecl command.
  *
  * @param s The null-terminated string to check.
- * @param allow_any_command If `true`, allow any command; if `false`, allow
- * only specific commands.
+ * @param command_type The type of commands to check against.
  * @return Returns `true` only if \a s is a command.
  */
 static bool is_command( char const *s, c_command_t command_type ) {
