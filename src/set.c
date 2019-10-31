@@ -223,9 +223,9 @@ void set_option( c_loc_t const *loc, char const *opt_name ) {
     { "semicolon",          false,  &set_semicolon          },
     { "trigraphs",          false,  &set_trigraphs          },
 #ifdef YYDEBUG
-    { "yydebug",    false,  &set_yydebug    },
+    { "yydebug",            false,  &set_yydebug            },
 #endif /* YYDEBUG */
-    { NULL,         false,  NULL            }
+    { NULL,                 false,  NULL                    }
   };
 
   set_option_t const *found_opt = NULL;
