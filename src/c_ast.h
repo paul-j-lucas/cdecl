@@ -83,14 +83,14 @@ enum c_alignas_arg {
 };
 
 /**
- * Data for the alignas specifier.
+ * Data for the `alignas` specifier.
  */
 struct c_alignas {
   union {
     c_ast_t      *type_ast;             ///< Aligned the same as this type.
     unsigned      expr;                 ///< Aligned to this number of bytes.
   } as;                                 ///< Union discriminator.
-  c_alignas_arg_t kind;                 ///< Kind of alignas argument.
+  c_alignas_arg_t kind;                 ///< Kind of `alignas` argument.
 };
 
 /**

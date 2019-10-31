@@ -61,7 +61,7 @@ extern c_lang_id_t  opt_lang;           ///< Current language.
 extern bool         opt_no_conf;        ///< Do not read configuration file.
 extern bool         opt_prompt;         ///< Print the prompt?
 extern bool         opt_semicolon;      ///< Print `;` at end of gibberish?
-extern bool         opt_typedefs;       ///< Load C/C++ standard `typedef`s.
+extern bool         opt_typedefs;       ///< Load C/C++ standard `typedef`s?
 
 // other extern variables
 extern FILE        *fin;                ///< File in.
