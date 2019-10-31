@@ -185,8 +185,6 @@ void c_ast_free( c_ast_t *ast ) {
     assert( c_ast_count > 0 );
     --c_ast_count;
 
-    // Do not free ast->align.as.type_ast here since it's global data: it will
-    // be freed eventually via c_typedef_cleanup().
     c_sname_free( &ast->sname );
     switch ( ast->kind ) {
       case K_ENUM_CLASS_STRUCT_UNION:
