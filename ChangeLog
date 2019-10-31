@@ -1,5 +1,29 @@
+2019-10-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated to 6.6.1.
+   * set.c: Whitespace fix.
+   * c_ast.h, options.h: Comment clean-up.
+   * c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.h, errors.c, gibberish.c,
+     parser.y: Comment clean-up.
+   * c_ast.c: Removed odd DOXYGEN_IGNORE.
+   * c_typedef.c, cdecl.c, errors.c: Fixed Doxygen errors.
+   * c_ast.c, color.c: Comment fixes.
+
+2019-10-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.h, c_keyword.h, c_type.h, c_typedef.h: Comment fixes.
+
+2019-10-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl_config.h: s/Mac OS X/MacOS/
+
+2019-10-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: Added "rm -f" for c++decl symlink.
+
 2019-10-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * options.c: More explicit about check.
    * NEWS, cdecl.1, autocomplete.c, cdecl.c, cdecl.h, help.c, lexer.l,
      options.c, options.h, parser.y, print.c, set.c, test/Makefile.am,
      help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
