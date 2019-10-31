@@ -294,8 +294,6 @@ void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname ) {
   c_sname_append_sname( &ast->sname, sname );
 }
 
-/// @cond DOXYGEN_IGNORE
-
 c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir, c_ast_visitor_t visitor,
                       void *data ) {
   if ( ast == NULL || visitor( ast, data ) )
@@ -310,8 +308,6 @@ c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir, c_ast_visitor_t visitor,
   } // switch
   return c_ast_visit( ast, dir, visitor, data );
 }
-
-/// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */
