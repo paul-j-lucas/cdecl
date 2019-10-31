@@ -73,7 +73,7 @@ typedef bool (*c_typedef_visitor_t)( c_typedef_t const *type, void *data );
  * Adds a new `c_typedef` to the global set.
  *
  * @param type_ast The AST of the type.  Ownership is taken only if the
- * function returns `true`.
+ * function returns #TD_ADD_ADDED.
  * @return
  * + #TD_ADD_ADDED only if the type was added;
  * + #TD_ADD_EQUIV only if \a type_ast->name already exists and the types are

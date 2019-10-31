@@ -24,7 +24,7 @@
 /**
  * @file
  * Declares types and functions for looking up C/C++ keyword or C++11 (or
- * later) attributeinformation.
+ * later) attribute information.
  */
 
 // local

@@ -66,7 +66,7 @@ enum c_check {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A visitor function used to find an AST node of a particular kind.
+ * A visitor function to find an AST node having a particular kind.
  *
  * @param ast The `c_ast` to check.
  * @param data The bitwise-or of <code>\ref c_kind</code> (cast to `void*`) to
@@ -76,7 +76,7 @@ enum c_check {
 bool c_ast_vistor_kind( c_ast_t *ast, void *data );
 
 /**
- * A visitor function used to find a name.
+ * A visitor function to find an AST node having a particular name.
  *
  * @param ast The `c_ast` to check.
  * @param data The least number of names that the scoped name must have.
@@ -85,7 +85,7 @@ bool c_ast_vistor_kind( c_ast_t *ast, void *data );
 bool c_ast_visitor_name( c_ast_t *ast, void *data );
 
 /**
- * A visitor function used to find a type.
+ * A visitor function to find an AST node having a particular type.
  *
  * @param ast The `c_ast` to check.
  * @param data The bitwise-or of <code>\ref c_type_id_t</code> (cast to
@@ -120,7 +120,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func );
  *
  * @param ast The `c_ast` to check.
  * @param check The kind of checks to perform.
- * @return Returns `true` only if \a ast  error-free.
+ * @return Returns `true` only if \a ast error-free.
  */
 bool c_ast_check( c_ast_t const *ast, c_check_t check );
 
@@ -240,7 +240,7 @@ bool c_ast_take_typedef( c_ast_t *ast );
  * returns the AST of the underlying type.
  *
  * @note `typedef`s are stripped.
- * @note Even though pointers are "dereferenced," This function isn't called
+ * @note Even though pointers are "dereferenced," this function isn't called
  * `c_ast_dereference` to eliminate confusion with C++ references.
  *
  * @param ast The `c_ast` to un-pointer.
