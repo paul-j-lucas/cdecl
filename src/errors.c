@@ -363,7 +363,7 @@ static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
 /**
  * Checks a function-like AST for errors.
  *
- * @param ast The function-like `c_ast` to check.
+ * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_func( c_ast_t const *ast ) {
@@ -503,7 +503,7 @@ only_special:
 /**
  * Checks all function-like arguments for semantic errors.
  *
- * @param ast The function-like `c_ast` to check.
+ * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_func_args( c_ast_t const *ast ) {
@@ -608,7 +608,7 @@ only_void:
 /**
  * Checks all function arguments for semantic errors in K&R C.
  *
- * @param ast The function-like `c_ast` to check.
+ * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
@@ -974,7 +974,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
 /**
  * Checks the return type of a function-like AST for errors.
  *
- * @param ast The function-like `c_ast` to check the return type of.
+ * @param ast The function-like AST to check the return type of.
  * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_ret_type( c_ast_t const *ast ) {

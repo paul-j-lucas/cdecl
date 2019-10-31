@@ -143,8 +143,8 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
 }
 
 /**
- * Helper function for `c_ast_gibberish_impl()` that prints a block's or
- * function's arguments, if any.
+ * Helper function for `c_ast_gibberish_impl()` that prints a function-like
+ * AST's arguments, if any.
  *
  * @param ast The `c_ast` that is either a <code>\ref K_BLOCK</code>,
  * <code>\ref K_CONSTRUCTOR</code>, <code>\ref K_FUNCTION</code> or <code>\ref
@@ -335,13 +335,13 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       if ( param->gkind != G_CAST && c_ast_find_name( ast, V_UP ) != NULL &&
            !c_ast_find_kind( ast->parent, V_UP, K_FUNCTION_LIKE ) ) {
         //
-        // For all kinds except functions and blocks, we want the output to be
+        // For all kinds except function-like ASTs, we want the output to be
         // like:
         //
         //      type *var
         //
-        // i.e., the '*', '&', or "&&" adjacent to the variable; for functions,
-        // blocks, when there's no name for a function argument, or when we're
+        // i.e., the '*', '&', or "&&" adjacent to the variable; for function-
+        // like ASTs, when there's no name for an argument, or when we're
         // casting, we want the output to be like:
         //
         //      type* func()            // function

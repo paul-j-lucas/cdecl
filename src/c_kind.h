@@ -107,8 +107,8 @@ enum c_kind {
 #define K_ANY_REFERENCE       (K_REFERENCE | K_RVALUE_REFERENCE)
 
 /**
- * Shorthand for "function-like" kinds: #K_BLOCK, #K_CONSTRUCTOR,
- * #K_DESTRUCTOR, #K_FUNCTION, #K_OPERATOR, and #K_USER_DEF_LITERAL.
+ * Shorthand for function-like kinds: #K_BLOCK, #K_CONSTRUCTOR, #K_DESTRUCTOR,
+ * #K_FUNCTION, #K_OPERATOR, and #K_USER_DEF_LITERAL.
  */
 #define K_FUNCTION_LIKE \
   (K_BLOCK | K_CONSTRUCTOR | K_DESTRUCTOR | K_FUNCTION | K_OPERATOR \

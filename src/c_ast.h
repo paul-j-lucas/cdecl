@@ -275,7 +275,7 @@ CDECL_AST_INLINE c_ast_t const* c_ast_arg_ast( c_ast_arg_t const *arg ) {
 }
 
 /**
- * Convenience function for getting function, operator, or block arguments.
+ * Convenience function for getting function-like arguments.
  *
  * @param ast The `c_ast` to get the arguments of.
  * @return Returns a pointer to the first argument or null if none.
@@ -285,8 +285,7 @@ CDECL_AST_INLINE c_ast_arg_t const* c_ast_args( c_ast_t const *ast ) {
 }
 
 /**
- * Convenience function for getting the number of function, operator, or block
- * arguments.
+ * Convenience function for getting the number of function-like arguments.
  *
  * @param ast The `c_ast` to get the number of arguments of.
  * @return Returns said number of arguments.
@@ -561,8 +560,7 @@ CDECL_AST_INLINE char const* c_ast_sname_type_name( c_ast_t const *ast ) {
  * @param data Optional data passed to \a visitor.
  * @return Returns a pointer to the `c_ast` the visitor stopped on or null.
  *
- * @note Constructor, function, operator, user-defined conversion, user-defined
- * operator, or block arguments are \e not traversed into.  They're considered
+ * @note Function-like arguments are \e not traversed into.  They're considered
  * distinct ASTs.
  */
 c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir, c_ast_visitor_t visitor,
@@ -578,8 +576,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir, c_ast_visitor_t visitor,
  * @param data Optional data passed to \a visitor.
  * @return Returns `true` only if \a visitor ever returned `true`.
  *
- * @note Constructor, function, operator, user-defined conversion, user-defined
- * operator, or block arguments are \e not traversed into.  They're considered
+ * @note Function-like arguments are \e not traversed into.  They're considered
  * distinct ASTs.
  */
 CDECL_AST_INLINE bool c_ast_found( c_ast_t const *ast, v_direction_t dir,

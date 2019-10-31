@@ -171,13 +171,12 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
 }
 
 /**
- * Adds a function, C++ operator, or block to the AST being built.
+ * Adds a function-like AST to the AST being built.
  *
  * @param ast The `c_ast` to append to.
- * @param ret_ast The `c_ast` of the return-type of the function, operator, or
- * block.
- * @param func_ast The function, operator, or block `c_ast` to append.  Its
- * "of" type must be null.
+ * @param ret_ast The `c_ast` of the return-type of the function-like AST.
+ * @param func_ast The function-like AST to append.  Its "of" type must be
+ * null.
  * @return Returns the `c_ast` to be used as the grammar production's return
  * value.
  */

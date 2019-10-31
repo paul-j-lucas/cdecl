@@ -3814,7 +3814,7 @@ array_cast_c_ast
 
       c_ast_set_parent( c_ast_new_gc( K_PLACEHOLDER, &@1 ), $2 );
 
-      if ( $1.target_ast != NULL ) {    // array-of or function/block-ret type
+      if ( $1.target_ast != NULL ) {    // array-of or function-like-ret type
         $$.ast = $1.ast;
         $$.target_ast = c_ast_add_array( $1.target_ast, $2 );
       } else {
