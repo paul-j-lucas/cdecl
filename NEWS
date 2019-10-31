@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.6.1
+
+** Fixed upgrade install
+When installing an upgrade, no longer fails when a c++decl symbolic link
+already exists.
+
+
 * Changes in Cdecl 6.6
 
 ** Defaulted & deleted support
