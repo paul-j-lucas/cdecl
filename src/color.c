@@ -129,7 +129,7 @@ static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
  *
  * @param sgr_color The null-terminated allegedly SGR string to parse.
  * @return Returns `true` only if \a sgr_color contains a valid SGR value.
- * @see http://en.wikipedia.org/wiki/ANSI_escape_code
+ * @sa http://en.wikipedia.org/wiki/ANSI_escape_code
  */
 static bool parse_sgr( char const *sgr_color ) {
   if ( sgr_color == NULL )

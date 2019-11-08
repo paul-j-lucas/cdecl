@@ -141,7 +141,7 @@ _GL_INLINE_HEADER_BEGIN
  * magrinally better performance.
  *
  * @param EXPR An expression that can be cast to `bool`.
- * @see http://lwn.net/Articles/255364/
+ * @sa http://lwn.net/Articles/255364/
  * @hideinitializer
  */
 #define likely(EXPR)              __builtin_expect( !!(EXPR), 1 )
@@ -152,7 +152,7 @@ _GL_INLINE_HEADER_BEGIN
  * magrinally better performance.
  *
  * @param EXPR An expression that can be cast to `bool`.
- * @see http://lwn.net/Articles/255364/
+ * @sa http://lwn.net/Articles/255364/
  * @hideinitializer
  */
 #define unlikely(EXPR)            __builtin_expect( !!(EXPR), 0 )
