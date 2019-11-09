@@ -138,6 +138,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * @defgroup parser-group Parser
+ * Helper macros, data structures, variables, functions, and the grammar for
+ * C/C++ declarations.
+ * @{
+ */
+
+/**
  * Print type function signature for print_type_visitor().
  */
 typedef void (*print_type_t)( c_typedef_t const* );
@@ -657,6 +664,8 @@ static void yyerror( char const *msg ) {
 
   parse_cleanup( false );
 }
+
+/** @} */
 
 ///////////////////////////////////////////////////////////////////////////////
 
