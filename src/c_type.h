@@ -46,6 +46,12 @@ _GL_INLINE_HEADER_BEGIN
 
 /// @endcond
 
+/**
+ * @defgroup types-group C/C++ Types
+ * Constants, types, and functions for C/C++ types.
+ * @{
+ */
+
 ////////// types //////////////////////////////////////////////////////////////
 
 // types
@@ -263,6 +269,8 @@ char const* c_type_name( c_type_id_t type_id );
 char const* c_type_name_error( c_type_id_t type_id );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 _GL_INLINE_HEADER_END
 

@@ -38,6 +38,13 @@
 
 /// @endcond
 
+/**
+ * @defgroup gibberish-group Printing Gibberish
+ * Declares functions for printing an AST in gibberish, aka, a C/C++
+ * declaration.
+ * @{
+
+ */
 // Gibberish declaration flags.
 #define G_DECL_NONE           0u        /**< None. */
 #define G_DECL_TYPEDEF        (1u << 0) /**< Is a typedef. */

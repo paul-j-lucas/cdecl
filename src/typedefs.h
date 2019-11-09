@@ -34,6 +34,12 @@
  * `typedef` definitions in one file.
  */
 
+/**
+ * @defgroup typedef-declarations-group Typedef Declarations
+ * Declares many `typedef` definitions in one file.
+ * @{
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -127,6 +133,8 @@ typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
 /// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_typedefs_H */
 /* vim:set et sw=2 ts=2: */

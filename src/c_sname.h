@@ -48,6 +48,12 @@ _GL_INLINE_HEADER_BEGIN
 
 /// @endcond
 
+/**
+ * @defgroup sname-group Scoped Names
+ * Functions for accessing and manipulating C++ scoped names.
+ * @{
+ */
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -278,6 +284,8 @@ CDECL_SNAME_INLINE c_type_id_t c_sname_type( c_sname_t const *sname ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 _GL_INLINE_HEADER_END
 

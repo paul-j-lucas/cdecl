@@ -26,6 +26,12 @@
  * Declares constants for cdecl and C/C++ language literals.
  */
 
+/**
+ * @defgroup literals-group Literal Strings
+ * Constants for cdecl and C/C++ language literals.
+ * @{
+ */
+
 ////////// literals ///////////////////////////////////////////////////////////
 
 // english
@@ -239,6 +245,8 @@ extern char const L_XOR_EQ[];               // ^=
 extern char const L___BLOCK[];              // Apple: storage class
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_literals_H */
 /* vim:set et sw=2 ts=2: */

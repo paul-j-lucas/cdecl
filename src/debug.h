@@ -39,6 +39,12 @@
 
 /// @endcond
 
+/**
+ * @defgroup debug-group Printing Debug Output
+ * Functions for printing an AST for debugging.
+ * @{
+ */
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -80,6 +86,8 @@ void c_type_debug( c_type_id_t type_id, FILE *dout );
 void print_kv( char const *key, char const *value, FILE *out );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_debug_H */
 /* vim:set et sw=2 ts=2: */

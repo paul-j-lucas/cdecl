@@ -61,6 +61,12 @@ _GL_INLINE_HEADER_BEGIN
 
 #endif /* CDECL_CONFIGURE */
 
+/**
+ * @defgroup kinds-group Kinds of Declarations
+ * Types and functions for kinds of things in C/C++ declarations.
+ * @{
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -188,6 +194,8 @@ CDECL_KIND_INLINE bool c_kind_is_parent( c_kind_t kind ) {
 char const* c_kind_name( c_kind_t kind );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 _GL_INLINE_HEADER_END
 

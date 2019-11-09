@@ -36,6 +36,12 @@
 
 /// @endcond
 
+/**
+ * @defgroup prompt-group Prompt
+ * Global variables and functions for the prompt.
+ * @{
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -66,6 +72,8 @@ void cdecl_prompt_enable( bool enable );
 void cdecl_prompt_init( void );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_prompt_H */
 /* vim:set et sw=2 ts=2: */

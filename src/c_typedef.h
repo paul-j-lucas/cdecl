@@ -38,6 +38,14 @@
 
 /// @endcond
 
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * @defgroup typedef-group C/C++ Typedef Declarations
+ * Types and functions for adding and looking up C/C++ `typedef` declarations.
+ * @{
+ */
+
 /**
  * Return value for c_typedef_add().
  */
@@ -46,8 +54,6 @@ enum td_add_rv {
   TD_ADD_EQUIV,                         ///< Type exists and is equivalent.
   TD_ADD_DIFF                           ///< Type exists and is different.
 };
-
-///////////////////////////////////////////////////////////////////////////////
 
 /**
  * C/C++ language typedef information.
@@ -111,6 +117,8 @@ void c_typedef_init( void );
 c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_c_typedef_H */
 /* vim:set et sw=2 ts=2: */

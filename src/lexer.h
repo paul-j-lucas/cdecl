@@ -38,6 +38,12 @@
 
 /// @endcond
 
+/**
+ * @defgroup lexer-group Lexical Analyzer
+ * Global variables and functions interacting with the lexical analyzer.
+ * @{
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
@@ -69,9 +75,16 @@ void lexer_loc( int *pline, int *pcolumn );
  */
 void lexer_reset( bool hard_reset );
 
+/**
+ * The main Bison entrypoint for the lexical analyzer.
+ *
+ * @return Returns the token ID.
+ */
+int yylex( void );
+
 ///////////////////////////////////////////////////////////////////////////////
 
-int yylex( void );
+/** @} */
 
 #endif /* cdecl_lexer_H */
 /* vim:set et sw=2 ts=2: */

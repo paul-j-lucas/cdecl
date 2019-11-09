@@ -37,6 +37,12 @@
 
 /// @endcond
 
+/**
+ * @defgroup english-group Printing English
+ * Functions for printing an AST in pseudo-English.
+ * @{
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -56,6 +62,8 @@ void c_ast_english( c_ast_t const *ast, FILE *eout );
 void c_sname_english( c_sname_t const *sname, FILE *eout );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_english_H */
 /* vim:set et sw=2 ts=2: */

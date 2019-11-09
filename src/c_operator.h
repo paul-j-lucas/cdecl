@@ -44,6 +44,12 @@ _GL_INLINE_HEADER_BEGIN
 
 /// @endcond
 
+/**
+ * @defgroup operators-group C++ Operators
+ * Macros, types, and functions for C++ operators.
+ * @{
+ */
+
 #define OP_ARGS_UNLIMITED     (~0u)     /**< Unlimited args for operator(). */
 
 // overloadability
@@ -189,6 +195,8 @@ CDECL_OP_INLINE char const* op_token_c( c_oper_id_t oper_id ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 _GL_INLINE_HEADER_END
 

@@ -30,6 +30,12 @@
 #include "cdecl.h"                      /* must go first */
 #include "typedefs.h"                   /* for c_loc_t */
 
+/**
+ * @defgroup printing-group Printing Errors & Warnings
+ * Functions for printing error and warning messages.
+ * @{
+ */
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -37,6 +43,7 @@
  *
  * @param loc The location of the error.
  * @param format The `printf()` style format string.
+ * @param ... `printf()` arguments.
  */
 void print_error( c_loc_t const *loc, char const *format, ... );
 
@@ -48,6 +55,7 @@ void print_error( c_loc_t const *loc, char const *format, ... );
  * where `_____` is the hint.
  *
  * @param format The `printf()` style format string.
+ * @param ... `printf()` arguments.
  */
 void print_hint( char const *format, ... );
 
@@ -59,6 +67,8 @@ void print_hint( char const *format, ... );
  *  + The error column.
  *
  * A newline is \e not printed.
+ *
+ * @param loc The location to print.
  */
 void print_loc( c_loc_t const *loc );
 
@@ -67,10 +77,13 @@ void print_loc( c_loc_t const *loc );
  *
  * @param loc The location of the warning; may be null.
  * @param format The `printf()` style format string.
+ * @param ... `printf()` arguments.
  */
 void print_warning( c_loc_t const *loc, char const *format, ... );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_print_H */
 /* vim:set et sw=2 ts=2: */
