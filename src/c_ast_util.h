@@ -66,6 +66,11 @@ enum c_check {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * @addtogroup AST-functions-group
+ * @{
+ */
+
+/**
  * A visitor function to find an AST node having a particular kind.
  *
  * @param ast The `c_ast` to check.
@@ -278,6 +283,8 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_c_ast_util_H */
 /* vim:set et sw=2 ts=2: */
