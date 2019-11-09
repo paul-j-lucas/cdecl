@@ -31,7 +31,7 @@
 #include "typedefs.h"                   /* for c_loc_t */
 
 /**
- * @defgroup printing-group Printing Errors & Warnings
+ * @defgroup printing-errors-warnings-group Printing Errors & Warnings
  * Functions for printing error and warning messages.
  * @{
  */

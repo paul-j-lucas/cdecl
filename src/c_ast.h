@@ -114,7 +114,7 @@ enum v_direction {
 typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
 
 /**
- * @defgroup AST-nodes-group AST Nodes
+ * @defgroup ast-nodes-group AST Nodes
  * The AST node `struct`s  contain data specific to each
  * <code>\ref c_kind_t</code>.
  * All `struct`s are placed into a `union` within `c_ast`.
@@ -265,7 +265,7 @@ struct c_ast {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * @defgroup AST-functions-group AST Functions
+ * @defgroup ast-functions-group AST Functions
  * Functions for accessing and manipulating AST nodes.
  * @{
  */

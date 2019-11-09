@@ -47,7 +47,7 @@ _GL_INLINE_HEADER_BEGIN
 /// @endcond
 
 /**
- * @defgroup types-group C/C++ Types
+ * @defgroup c-types-group C/C++ Types
  * Constants, types, and functions for C/C++ types.
  * @{
  */

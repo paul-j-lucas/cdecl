@@ -41,7 +41,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @defgroup typedef-group C/C++ Typedef Declarations
+ * @defgroup c-typedef-group C/C++ Typedef Declarations
  * Types and functions for adding and looking up C/C++ `typedef` declarations.
  * @{
  */

@@ -38,7 +38,7 @@
 /// @endcond
 
 /**
- * @defgroup english-group Printing English
+ * @defgroup printing-english-group Printing English
  * Functions for printing an AST in pseudo-English.
  * @{
  */

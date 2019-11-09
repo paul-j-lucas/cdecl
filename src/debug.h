@@ -40,7 +40,7 @@
 /// @endcond
 
 /**
- * @defgroup debug-group Printing Debug Output
+ * @defgroup printing-debug-group Printing Debug Output
  * Functions for printing an AST for debugging.
  * @{
  */

@@ -39,7 +39,7 @@
 /// @endcond
 
 /**
- * @defgroup gibberish-group Printing Gibberish
+ * @defgroup printing-gibberish-group Printing Gibberish
  * Declares functions for printing an AST in gibberish, aka, a C/C++
  * declaration.
  * @{
@@ -93,6 +93,8 @@ void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout );
 char const* graph_token_c( char const *token );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_gibberish_H */
 /* vim:set et sw=2 ts=2: */

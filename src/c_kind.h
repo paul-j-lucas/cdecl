@@ -62,7 +62,7 @@ _GL_INLINE_HEADER_BEGIN
 #endif /* CDECL_CONFIGURE */
 
 /**
- * @defgroup kinds-group Kinds of Declarations
+ * @defgroup c-kinds-group C/C++ Kinds of Declarations
  * Types and functions for kinds of things in C/C++ declarations.
  * @{
  */

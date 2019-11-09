@@ -45,7 +45,7 @@ _GL_INLINE_HEADER_BEGIN
 /// @endcond
 
 /**
- * @defgroup operators-group C++ Operators
+ * @defgroup cpp-operators-group C++ Operators
  * Macros, types, and functions for C++ operators.
  * @{
  */
