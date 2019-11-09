@@ -40,7 +40,7 @@
 /// @endcond
 
 /**
- * @defgroup color-group Color
+ * @defgroup color-group Printing in Color
  * Declares constants, macros, types, global variables, and functions for
  * printing to an ANSI terminal in color using Select Graphics Rendition (SGR)
  * codes.

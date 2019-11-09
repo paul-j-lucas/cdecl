@@ -41,7 +41,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @defgroup options-group Options
+ * @defgroup cli-options-group Command-Line Options
  * Declares global variables and functions for command-line options.
  * @{
  */
