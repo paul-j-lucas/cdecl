@@ -355,9 +355,9 @@ static void parse_options( int argc, char const *argv[] ) {
   }
 
   if ( opt_fin != NULL && (fin = fopen( opt_fin, "r" )) == NULL )
-    PMESSAGE_EXIT( EX_NOINPUT, "\"%s\": %s\n", opt_fin, STRERROR );
+    PMESSAGE_EXIT( EX_NOINPUT, "\"%s\": %s\n", opt_fin, STRERROR() );
   if ( opt_fout != NULL && (fout = fopen( opt_fout, "w" )) == NULL )
-    PMESSAGE_EXIT( EX_CANTCREAT, "\"%s\": %s\n", opt_fout, STRERROR );
+    PMESSAGE_EXIT( EX_CANTCREAT, "\"%s\": %s\n", opt_fout, STRERROR() );
 
   if ( fin == NULL )
     fin = stdin;

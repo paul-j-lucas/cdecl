@@ -178,7 +178,7 @@ void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines ) {
   }
 
   if ( unlikely( (cterm_fd = open( cterm_path, O_RDWR )) == -1 ) ) {
-    reason = STRERROR;
+    reason = STRERROR();
     goto error;
   }
 

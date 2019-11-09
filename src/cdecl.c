@@ -281,7 +281,7 @@ static bool parse_files( int num_files, char const *files[] ) {
     else {
       FILE *const fin = fopen( files[i], "r" );
       if ( unlikely( fin == NULL ) )
-        PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", files[i], STRERROR );
+        PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", files[i], STRERROR() );
       if ( !parse_file( fin ) )
         ok = false;
       (void)fclose( fin );
@@ -384,7 +384,7 @@ static void read_conf_file( void ) {
   FILE *const cin = fopen( opt_conf_file, "r" );
   if ( cin == NULL ) {
     if ( explicit_conf_file )
-      PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", opt_conf_file, STRERROR );
+      PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", opt_conf_file, STRERROR() );
     return;
   }
 

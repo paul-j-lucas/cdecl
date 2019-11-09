@@ -48,48 +48,283 @@ _GL_INLINE_HEADER_BEGIN
 
 /// @endcond
 
+/**
+ * @defgroup util-group Utility Macros & Functions
+ * Declares utility constants, macros, and functions.
+ * @{
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
-/** Gets the number of elements of the given array. */
+/**
+ * Gets the number of elements of the given array.
+ *
+ * @param A The array to get the number of elements of.
+ *
+ * @hideinitializer
+ */
 #define ARRAY_SIZE(A)             (sizeof(A) / sizeof(A[0]))
 
-/** Embeds the given statements into a compount statement block. */
+/**
+ * Embeds the given statements into a compound statement block.
+ *
+ * @param ... The statement(s) to embed.
+ *
+ * @hideinitializer
+ */
 #define BLOCK(...)                do { __VA_ARGS__ } while (0)
 
-/** Explicit C version of C++'s `const_cast`. */
+/**
+ * Explicit C version of C++'s `const_cast`.
+ *
+ * @param T The type to cast to.
+ * @param EXPR The expression to cast.
+ *
+ * @sa REINTERPRET_CAST
+ * @sa STATIC_CAST
+ * @hideinitializer
+ */
 #define CONST_CAST(T,EXPR)        ((T)(uintptr_t)(EXPR))
 
-/** Frees the given memory. */
+/**
+ * Calls **ferror**(3) and exits if there was an error on \a STREAM.
+ *
+ * @param STREAM The `FILE` stream to check for an error.
+ *
+ * @hideinitializer
+ */
+#define FERROR(STREAM) \
+  BLOCK( if ( unlikely( ferror( STREAM ) != 0 ) ) perror_exit( EX_IOERR ); )
+
+/**
+ * Calls **fflush(3)** on \a STREAM, checks for an error, and exits if there
+ * was one.
+ *
+ * @param STREAM The `FILE` stream to flush.
+ *
+ * @hideinitializer
+ */
+#define FFLUSH(STREAM) BLOCK( \
+  if ( unlikely( fflush( STREAM ) != 0 ) ) perror_exit( EX_IOERR ); )
+
+/**
+ * Calls **fprintf**(3) on \a STREAM, checks for an error, and exits if there
+ * was one.
+ *
+ * @param STREAM The `FILE` stream to print to.
+ *
+ * @hideinitializer
+ */
+#define FPRINTF(STREAM,...) BLOCK( \
+  if ( unlikely( fprintf( (STREAM), __VA_ARGS__ ) < 0 ) ) perror_exit( EX_IOERR ); )
+
+/**
+ * Calls **putc**(3), checks for an error, and exits if there was one.
+ *
+ * @param C The character to print.
+ * @param STREAM The `FILE` stream to print to.
+ *
+ * @sa FPRINTF
+ * @sa FPUTC
+ * @sa FPUTS
+ * @hideinitializer
+ */
+#define FPUTC(C,STREAM) BLOCK( \
+  if ( unlikely( putc( (C), (STREAM) ) == EOF ) ) perror_exit( EX_IOERR ); )
+
+/**
+ * Calls **fputs**(3), checks for an error, and exits if there was one.
+ *
+ * @param S The C string to print.
+ * @param STREAM The `FILE` stream to print to.
+ *
+ * @sa FPRINTF
+ * @sa FPUTC
+ * @hideinitializer
+ */
+#define FPUTS(S,STREAM) BLOCK( \
+  if ( unlikely( fputs( (S), (STREAM) ) == EOF ) ) perror_exit( EX_IOERR ); )
+
+/**
+ * Frees the given memory.
+ *
+ * @param PTR The pointer to the memory to free.
+ *
+ * @remarks
+ * This macro exists since free'ing a pointer-to const generates a warning.
+ *
+ * @sa FREE_STR_LATER
+ * @hideinitializer
+ */
 #define FREE(PTR)                 free( CONST_CAST( void*, (PTR) ) )
 
-/** Frees the given C string later. */
+/**
+ * Calls free_later() and casts the result to `char*`.
+ *
+ * @param PTR The pointer to the C string to free later.
+ *
+ * @sa FREE
+ * @hideinitializer
+ */
 #define FREE_STR_LATER(PTR)       REINTERPRET_CAST( char*, free_later( PTR ) )
 
-/** Frees the duplicated C string later. */
+/**
+ * Frees the duplicated C string later.
+ *
+ * @param PTR The pointer to the C string to duplicate and free later.
+ *
+ * @hideinitializer
+ */
 #define FREE_STRDUP_LATER(PTR)    FREE_STR_LATER( check_strdup( PTR ) )
 
-/** Zeros the memory. */
+/**
+ * Calls **fstat**(3), checks for an error, and exits if there was one.
+ *
+ * @param FD The file descriptor to stat.
+ * @param STAT A pointer to a `struct stat` to receive the result.
+ *
+ * @hideinitializer
+ */
+#define FSTAT(FD,STAT) BLOCK( \
+  if ( unlikely( fstat( (FD), (STAT) ) < 0 ) ) perror_exit( EX_IOERR ); )
+
+/**
+ * Prints an error message and exits in response to an internal error.
+ *
+ * @param FORMAT The `printf()` format to use.
+ * @param ... Ordinary `printf()` arguments.
+ *
+ * @hideinitializer
+ */
+#define INTERNAL_ERR(FORMAT,...) \
+  PMESSAGE_EXIT( EX_SOFTWARE, "internal error: " FORMAT, __VA_ARGS__ )
+
+/**
+ * Calls **malloc**(3) and casts the result to \a TYPE.
+ *
+ * @param TYPE The type to cast the pointer returned by **malloc**(3) to.
+ * @param N The number of objects of \a TYPE to allocate.
+ * @return Returns a pointer to \a N uninitialized objects of \a TYPE.
+ *
+ * @sa REALLOC
+ * @hideinitializer
+ */
+#define MALLOC(TYPE,N) \
+  STATIC_CAST( TYPE*, check_realloc( NULL, sizeof(TYPE) * (N) ) )
+
+/**
+ * Zeros the memory pointed to by \a PTR.
+ *
+ * @param PTR The pointer to the memory to zero.  The number of bytes to zero
+ * is given by `sizeof *(PTR)`.
+ *
+ * @hideinitializer
+ */
 #define MEM_ZERO(PTR)             memset( (PTR), 0, sizeof *(PTR) )
 
-/** No-operation statement.  (Useful for a `goto` target.) */
+/**
+ * No-operation statement.  (Useful for a `goto` target.)
+ *
+ * @hideinitializer
+ */
 #define NO_OP                     ((void)0)
 
-/** Shorthand for printing to standard error. */
+/**
+ * Prints an error message to standard error and exits with \a STATUS code.
+ *
+ * @param STATUS The status code to **exit**(3) with.
+ * @param FORMAT The `printf()` format to use.
+ *
+ * @hideinitializer
+ */
+#define PMESSAGE_EXIT(STATUS,FORMAT,...) \
+  BLOCK( PRINT_ERR( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
+
+/**
+ * Shorthand for printing to standard error.
+ *
+ * @param ... Ordinary `printf()` arguments.
+ *
+ * @sa PUTC_ERR
+ * @sa PUTS_ERR
+ * @hideinitializer
+ */
 #define PRINT_ERR(...)            fprintf( stderr, __VA_ARGS__ )
 
-/** Shorthand for printing a character to standard error. */
+/**
+ * Shorthand for printing a character to standard error.
+ *
+ * @param C The character to print.
+ *
+ * @sa PRINT_ERR
+ * @sa PUTC_OUT
+ * @hideinitializer
+ */
 #define PUTC_ERR(C)               FPUTC( (C), stderr )
 
-/** Shorthand for printing a character to standard output. */
+/**
+ * Shorthand for printing a character to standard output.
+ *
+ * @param C The character to print.
+ *
+ * @sa PRINT_ERR
+ * @sa PUTC_ERR
+ * @sa PUTS_ERR
+ * @sa PUTS_OUT
+ * @hideinitializer
+ */
 #define PUTC_OUT(C)               FPUTC( (C), stdout )
 
-/** Shorthand for printing a string to standard error. */
+/**
+ * Shorthand for printing a C string to standard error.
+ *
+ * @param S The C string to print.
+ *
+ * @sa PRINT_ERR
+ * @sa PUTC_ERR
+ * @sa PUTC_OUT
+ * @sa PUTS_OUT
+ * @hideinitializer
+ */
 #define PUTS_ERR(S)               FPUTS( (S), stderr )
 
-/** Shorthand for printing a string to standard output. */
+/**
+ * Shorthand for printing a C string to standard output.
+ *
+ * @param S The C string to print.
+ *
+ * @sa PRINT_ERR
+ * @sa PUTC_ERR
+ * @sa PUTC_OUT
+ * @sa PUTS_ERR
+ * @hideinitializer
+ */
 #define PUTS_OUT(S)               FPUTS( (S), stdout )
 
-/** Explicit C version of C++'s `reinterpret_cast`. */
+/**
+ * Calls **realloc**(3) and resets \a PTR.
+ *
+ * @param PTR The pointer to memory to reallocate.  It is set to the newly
+ * reallocated memory.
+ * @param TYPE The type to cast the pointer returned by **realloc**(3) to.
+ * @param N The number of objects of \a TYPE to reallocate.
+ *
+ * @sa MALLOC
+ * @hideinitializer
+ */
+#define REALLOC(PTR,TYPE,N) \
+  ((PTR) = STATIC_CAST(TYPE*, check_realloc( (PTR), sizeof(TYPE) * (N) )))
+
+/**
+ * Explicit C version of C++'s `reinterpret_cast`.
+ *
+ * @param T The type to cast to.
+ * @param EXPR The expression to cast.
+ *
+ * @sa CONST_CAST
+ * @sa STATIC_CAST
+ * @hideinitializer
+ */
 #define REINTERPRET_CAST(T,EXPR)  ((T)(uintptr_t)(EXPR))
 
 /**
@@ -97,6 +332,9 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param S The C string to check.
  * @return If \a S is non-empty, returns `" "`; otherwise returns `""`.
+ *
+ * @sa SP_AFTER
+ * @hideinitializer
  */
 #define SP_IF(S)                  (S[0] != '\0' ? " " : "")
 
@@ -106,10 +344,21 @@ _GL_INLINE_HEADER_BEGIN
  * @param S The C string to check.
  * @return If \a S is non-empty, returns \a S followed by `" "`; otherwise
  * returns `""` followed by `""`.
+ *
+ * @sa SP_IF
  */
 #define SP_AFTER(S)               S, SP_IF(S)
 
-/** Explicit C version of C++'s `static_cast`. */
+/**
+ * Explicit C version of C++'s `static_cast`.
+ *
+ * @param T The type to cast to.
+ * @param EXPR The expression to cast.
+ *
+ * @sa CONST_CAST
+ * @sa REINTERPRET_CAST
+ * @hideinitializer
+ */
 #define STATIC_CAST(T,EXPR)       ((T)(EXPR))
 
 /**
@@ -118,20 +367,17 @@ _GL_INLINE_HEADER_BEGIN
  * @param DST A pointer to receive the copy of \a SRC.  It is updated to the
  * new end of \a DST.
  * @param SRC The null-terminated string to copy.
+ *
+ * @hideinitializer
  */
 #define STRCAT(DST,SRC)           ((DST) = strcpy_end( (DST), (SRC) ))
 
-/** Shorthand for calling **strerror**(3). */
-#define STRERROR                  strerror( errno )
-
 /**
- * Prints an error message and exits in response to an internal error.
+ * Shorthand for calling **strerror**(3).
  *
- * @param FORMAT The `printf()` format to use.
  * @hideinitializer
  */
-#define INTERNAL_ERR(FORMAT,...) \
-  PMESSAGE_EXIT( EX_SOFTWARE, "internal error: " FORMAT, __VA_ARGS__ )
+#define STRERROR()                strerror( errno )
 
 #ifdef __GNUC__
 
@@ -141,6 +387,8 @@ _GL_INLINE_HEADER_BEGIN
  * magrinally better performance.
  *
  * @param EXPR An expression that can be cast to `bool`.
+ *
+ * @sa unlikely
  * @sa http://lwn.net/Articles/255364/
  * @hideinitializer
  */
@@ -152,6 +400,8 @@ _GL_INLINE_HEADER_BEGIN
  * magrinally better performance.
  *
  * @param EXPR An expression that can be cast to `bool`.
+ *
+ * @sa likely
  * @sa http://lwn.net/Articles/255364/
  * @hideinitializer
  */
@@ -161,96 +411,6 @@ _GL_INLINE_HEADER_BEGIN
 # define likely(EXPR)             (EXPR)
 # define unlikely(EXPR)           (EXPR)
 #endif /* __GNUC__ */
-
-/**
- * Calls **malloc**(3) and casts the result to \a TYPE.
- *
- * @param TYPE The type to cast the pointer returned by **malloc**(3) to.
- * @param N The number of objects of \a TYPE to allocate.
- * @return Returns a pointer to \a N uninitialized objects of \a TYPE.
- * @hideinitializer
- */
-#define MALLOC(TYPE,N) \
-  STATIC_CAST( TYPE*, check_realloc( NULL, sizeof(TYPE) * (N) ) )
-
-/**
- * Prints an error message to standard output and exits with \a STATUS code.
- *
- * @param STATUS The status code to **exit**(3) with.
- * @param FORMAT The `printf()` format to use.
- * @hideinitializer
- */
-#define PMESSAGE_EXIT(STATUS,FORMAT,...) \
-  BLOCK( PRINT_ERR( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
-
-/**
- * Calls **ferror**(3) and exits if there was an error on \a STREAM.
- *
- * @param STREAM The `FILE` stream to check for an error.
- * @hideinitializer
- */
-#define FERROR(STREAM) \
-  BLOCK( if ( unlikely( ferror( STREAM ) != 0 ) ) perror_exit( EX_IOERR ); )
-
-/**
- * Calls **fflush(3)** on \a STREAM.
- *
- * @param STREAM The `FILE` stream to flush.
- * @hideinitializer
- */
-#define FFLUSH(STREAM) BLOCK( \
-  if ( unlikely( fflush( STREAM ) != 0 ) ) perror_exit( EX_IOERR ); )
-
-/**
- * Calls **fprintf**(3), checks for an error, and exits if there was one.
- *
- * @param STREAM The `FILE` stream to print to.
- * @hideinitializer
- */
-#define FPRINTF(STREAM,...) BLOCK( \
-  if ( unlikely( fprintf( (STREAM), __VA_ARGS__ ) < 0 ) ) perror_exit( EX_IOERR ); )
-
-/**
- * Calls **putc**(3), checks for an error, and exits if there was one.
- *
- * @param C The character to print.
- * @param STREAM The `FILE` stream to print to.
- * @hideinitializer
- */
-#define FPUTC(C,STREAM) BLOCK( \
-  if ( unlikely( putc( (C), (STREAM) ) == EOF ) ) perror_exit( EX_IOERR ); )
-
-/**
- * Calls **fputs**(3), checks for an error, and exits if there was one.
- *
- * @param S The string to print.
- * @param STREAM The `FILE` stream to print to.
- * @hideinitializer
- */
-#define FPUTS(S,STREAM) BLOCK( \
-  if ( unlikely( fputs( (S), (STREAM) ) == EOF ) ) perror_exit( EX_IOERR ); )
-
-/**
- * Calls **fstat**(3), checks for an error, and exits if there was one.
- *
- * @param FD The file descriptor to stat.
- * @param STAT A pointer to a `struct stat` to receive the result.
- * @hideinitializer
- */
-#define FSTAT(FD,STAT) BLOCK( \
-  if ( unlikely( fstat( (FD), (STAT) ) < 0 ) ) perror_exit( EX_IOERR ); )
-
-/**
- * Calls **realloc**(3) and resets \a PTR.
- *
- * @param PTR The pointer to memory to reallocate.  It is set to the newly
- * reallocated memory.
- * @param TYPE The type to cast the pointer returned by **realloc**(3) to.
- * @param N The number of objects of \a TYPE to reallocate.
- * @hideinitializer
- */
-#define REALLOC(PTR,TYPE,N) \
-  (PTR) = STATIC_CAST(TYPE*, check_realloc( (PTR), sizeof(TYPE) * (N) ))
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -483,6 +643,8 @@ CDECL_UTIL_INLINE bool true_or_set( bool *flag ) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 _GL_INLINE_HEADER_END
 
