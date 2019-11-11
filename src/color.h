@@ -44,10 +44,17 @@
  * Declares constants, macros, types, global variables, and functions for
  * printing to an ANSI terminal in color using Select Graphics Rendition (SGR)
  * codes.
- * @{
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * @defgroup sgr-group Select Graphics Rendition (SGR) Macros
+ * Macros for Select Graphics Rendition (SGR) colors and other terminal
+ * cababilities.
+ * @ingroup printing-color-group
+ * @{
+ */
 
 #define SGR_BG_BLACK        "40"        /**< Background black.   */
 #define SGR_BG_RED          "41"        /**< Background red.     */
@@ -75,6 +82,13 @@
 #define SGR_END             "\33[m"     /**< End color sequence. */
 #define SGR_EL              "\33[K"     /**< Erase in Line (EL) sequence */
 
+/** @} */
+
+/**
+ * @addtogroup printing-color-group
+ * @{
+ */
+
 /** When to colorize default. */
 #define COLOR_WHEN_DEFAULT  COLOR_NOT_FILE
 
@@ -83,7 +97,9 @@
  *
  * @param STREAM The `FILE` to use.
  * @param COLOR The predefined color.
- * @hideinitializer
+ *
+ * @sa SGR_END_COLOR
+ * @sa SGR_SSTART_COLOR
  */
 #define SGR_START_COLOR(STREAM,COLOR) BLOCK(  \
   if ( colorize && (sgr_ ## COLOR) != NULL )  \
@@ -95,7 +111,9 @@
  *
  * @param STRING The string to write to.
  * @param COLOR The predefined color.
- * @hideinitializer
+ *
+ * @sa SGR_END_COLOR
+ * @sa SGR_START_COLOR
  */
 #define SGR_SSTART_COLOR(STRING,COLOR) BLOCK( \
   if ( colorize && (sgr_ ## COLOR) != NULL )  \
@@ -105,7 +123,9 @@
  * Ends printing in color.
  *
  * @param STREAM The `FILE` to use.
- * @hideinitializer
+ *
+ * @sa SGR_START_COLOR
+ * @sa SGR_SSTART_COLOR
  */
 #define SGR_END_COLOR(STREAM) \
   BLOCK( if ( colorize ) FPUTS( SGR_END SGR_EL, (STREAM) ); )
@@ -115,7 +135,6 @@
  * printing in color.
  *
  * @param STRING The string to write to.
- * @hideinitializer
  */
 #define SGR_SEND_COLOR(STRING) \
   BLOCK( if ( colorize ) strcpy( (STRING), SGR_END SGR_EL ); )
