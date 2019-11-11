@@ -1036,7 +1036,7 @@ static void yyerror( char const *msg ) {
 
 %type   <align>     alignas_specifier_c
 %type   <name>      any_name any_name_expected
-%type   <sname>     any_sname_c any_sname_c_expected
+%type   <sname>     any_sname_c any_sname_c_expected any_sname_c_opt
 %type   <c_typedef> any_typedef
 %type   <oper_id>   c_operator
 %type   <literal>   help_what_opt
@@ -3631,6 +3631,15 @@ enum_class_struct_union_ast
       DUMP_AST( "enum_class_struct_union_ast", $$.ast );
       DUMP_END();
     }
+
+  | enum_class_struct_union_type any_sname_c_opt '{'
+    {
+      print_error( &@3,
+        "%s definitions are not supported",
+        c_type_name( $1 )
+      );
+      PARSE_ABORT();
+    }
   ;
 
 enum_class_struct_union_type
@@ -4120,6 +4129,11 @@ any_sname_c_expected
       c_sname_init( &$$ );
       ELABORATE_ERROR( "name expected" );
     }
+  ;
+
+any_sname_c_opt
+  : /* empty */                   { c_sname_init( &$$ ); }
+  | any_sname_c
   ;
 
 any_typedef
