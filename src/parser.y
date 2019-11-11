@@ -63,24 +63,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/// @endcond
-
-///////////////////////////////////////////////////////////////////////////////
-
-/// @cond DOXYGEN_IGNORE
-
-#ifdef ENABLE_CDECL_DEBUG
-#define IF_DEBUG(...)             BLOCK( if ( opt_debug ) { __VA_ARGS__ } )
-#else
-#define IF_DEBUG(...)             /* nothing */
-#endif /* ENABLE_CDECL_DEBUG */
-
-#define C_AST_CHECK(AST,CHECK) \
-  BLOCK( if ( !c_ast_check( (AST), (CHECK) ) ) PARSE_ABORT(); )
-
-#define C_TYPE_ADD(DST,SRC,LOC) \
-  BLOCK( if ( !c_type_add( (DST), (SRC), &(LOC) ) ) PARSE_ABORT(); )
-
 // Developer aid for tracing when Bison %destructors are called.
 #if 0
 #define DTRACE                    PRINT_ERR( "%d: destructor\n", __LINE__ )
@@ -88,50 +70,11 @@
 #define DTRACE                    NO_OP
 #endif
 
-#define DUMP_COMMA \
-  BLOCK( if ( true_or_set( &debug_comma ) ) PUTS_OUT( ",\n" ); )
-
-#define DUMP_AST(KEY,AST) \
-  IF_DEBUG( DUMP_COMMA; c_ast_debug( (AST), 1, (KEY), stdout ); )
-
-#define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
-  DUMP_COMMA; PUTS_OUT( "  " KEY " = " );     \
-  c_ast_list_debug( &(AST_LIST), 1, stdout ); )
-
-#define DUMP_NUM(KEY,NUM) \
-  IF_DEBUG( DUMP_COMMA; printf( "  " KEY " = %d", (NUM) ); )
-
-#define DUMP_SNAME(KEY,SNAME) IF_DEBUG(                   \
-  DUMP_COMMA; PUTS_OUT( "  " );                           \
-  print_kv( (KEY), c_sname_full_name( SNAME ), stdout );  \
-  PUTS_OUT( ", scope_type = " );                          \
-  c_type_debug( c_sname_type( SNAME ), stdout ); )
-
-#define DUMP_STR(KEY,NAME) IF_DEBUG(  \
-  DUMP_COMMA; PUTS_OUT( "  " );       \
-  print_kv( (KEY), (NAME), stdout ); )
-
 #ifdef ENABLE_CDECL_DEBUG
-#define DUMP_START(NAME,PROD) \
-  bool debug_comma = false;   \
-  IF_DEBUG( PUTS_OUT( "\n" NAME " ::= " PROD " = {\n" ); )
+#define IF_DEBUG(...)             BLOCK( if ( opt_debug ) { __VA_ARGS__ } )
 #else
-#define DUMP_START(NAME,PROD)     /* nothing */
-#endif
-
-#define DUMP_END()                IF_DEBUG( PUTS_OUT( "\n}\n" ); )
-
-#define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
-  DUMP_COMMA; PUTS_OUT( "  " KEY " = " ); c_type_debug( TYPE, stdout ); )
-
-#define ELABORATE_ERROR(...) \
-  BLOCK( elaborate_error( __VA_ARGS__ ); PARSE_ABORT(); )
-
-#define PARSE_ABORT()             BLOCK( parse_cleanup( true ); YYABORT; )
-
-#define SHOW_ALL_TYPES            (~0u)
-#define SHOW_PREDEFINED_TYPES     0x01u
-#define SHOW_USER_TYPES           0x02u
+#define IF_DEBUG(...)             /* nothing */
+#endif /* ENABLE_CDECL_DEBUG */
 
 /// @endcond
 
@@ -141,6 +84,162 @@
  * @defgroup parser-group Parser
  * Helper macros, data structures, variables, functions, and the grammar for
  * C/C++ declarations.
+ * @{
+ */
+
+/**
+ * Calls c_ast_check(): if the check fails, calls PARSE_ABORT().
+ *
+ * @param AST The `c_ast` to check.
+ * @param CHECK The kind of checks to perform.
+ */
+#define C_AST_CHECK(AST,CHECK) \
+  BLOCK( if ( !c_ast_check( (AST), (CHECK) ) ) PARSE_ABORT(); )
+
+/**
+ * Calls c_type_add(): if adding the type fails, calls PARSE_ABORT().
+ *
+ * @param DEST_TYPE A pointer to the <code>\ref c_type_id_t</code> to add to.
+ * @param NEW_TYPE The <code>\ref c_type_id_t</code> to add.
+ * @param LOC The source location of \a NEW_TYPE.
+ */
+#define C_TYPE_ADD(DEST_TYPE,NEW_TYPE,LOC) \
+  BLOCK( if ( !c_type_add( (DEST_TYPE), (NEW_TYPE), &(LOC) ) ) PARSE_ABORT(); )
+
+/**
+ * Calls elaborate_error() followed by PARSE_ABORT().
+ *
+ * @param ... Arguments passed to elaborate_error().
+ *
+ * @note
+ * This must be used _only_ after an `error` token, e.g.:
+ * @code
+ *  | YDEFINE error
+ *    {
+ *      ELABORATE_ERROR( "name expected" );
+ *    }
+ * @endcode
+ */
+#define ELABORATE_ERROR(...) \
+  BLOCK( elaborate_error( __VA_ARGS__ ); PARSE_ABORT(); )
+
+/**
+ * Aborts the current parse (presumably after an error message has been
+ * printed).
+ */
+#define PARSE_ABORT()             BLOCK( parse_cleanup( true ); YYABORT; )
+
+#define SHOW_ALL_TYPES            (~0u) ///< Show all types.
+#define SHOW_PREDEFINED_TYPES     0x01u ///< Show only predefined types.
+#define SHOW_USER_TYPES           0x02u ///< Show only user-defined types.
+
+/** @} */
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * @defgroup parser-dump-group Debugging Macros
+ * Macros that are used to dump a trace during parsing when `opt_debug` is
+ * `true`.
+ * @ingroup parser-group
+ * @{
+ */
+
+/**
+ * Dumps a comma followed by a newline the _second_ and subsequent times it's
+ * called.  It's ussed to separate items being dumped.
+ */
+#define DUMP_COMMA \
+  BLOCK( if ( true_or_set( &debug_comma ) ) PUTS_OUT( ",\n" ); )
+
+/**
+ * Dumps a `c_ast`.
+ *
+ * @param KEY The key name to print.
+ * @param AST The `c_ast` to dump.
+ */
+#define DUMP_AST(KEY,AST) \
+  IF_DEBUG( DUMP_COMMA; c_ast_debug( (AST), 1, (KEY), stdout ); )
+
+/**
+ * Dumps an `s_list` of `c_ast`.
+ *
+ * @param KEY The key name to print.
+ * @param AST_LIST The `s_list` of `c_ast` to dump.
+ */
+#define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
+  DUMP_COMMA; PUTS_OUT( "  " KEY " = " );     \
+  c_ast_list_debug( &(AST_LIST), 1, stdout ); )
+
+/**
+ * Dumps an integer.
+ *
+ * @param KEY The key name to print.
+ * @param NUM The integer to dump.
+ */
+#define DUMP_NUM(KEY,NUM) \
+  IF_DEBUG( DUMP_COMMA; printf( "  " KEY " = %d", (NUM) ); )
+
+/**
+ * Dumps a scoped name.
+ *
+ * @param KEY The key name to print.
+ * @param SNAME The scoped name to dump.
+ */
+#define DUMP_SNAME(KEY,SNAME) IF_DEBUG(                   \
+  DUMP_COMMA; PUTS_OUT( "  " );                           \
+  print_kv( (KEY), c_sname_full_name( SNAME ), stdout );  \
+  PUTS_OUT( ", scope_type = " );                          \
+  c_type_debug( c_sname_type( SNAME ), stdout ); )
+
+/**
+ * Dumps a C string.
+ *
+ * @param KEY The key name to print.
+ * @param STR The C string to dump.
+ */
+#define DUMP_STR(KEY,STR) IF_DEBUG(   \
+  DUMP_COMMA; PUTS_OUT( "  " );       \
+  print_kv( (KEY), (STR), stdout ); )
+
+#ifdef ENABLE_CDECL_DEBUG
+/**
+ * Starts a dump block.
+ *
+ * @param NAME The grammar production name.
+ * @param PROD The grammar production rule.
+ *
+ * @sa DUMP_END
+ */
+#define DUMP_START(NAME,PROD)                               \
+  bool debug_comma = false;                                 \
+  IF_DEBUG( PUTS_OUT( "\n" NAME " ::= " PROD " = {\n" ); )
+#else
+#define DUMP_START(NAME,PROD)     /* nothing */
+#endif
+
+/**
+ * Ends a dump block.
+ *
+ * @sa DUMP_START
+ */
+#define DUMP_END()                IF_DEBUG( PUTS_OUT( "\n}\n" ); )
+
+/**
+ * Dumps the numeric value and name of a `c_type_t`.
+ *
+ * @param KEY The key name to print.
+ * @param TYPE The type to dump.
+ */
+#define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
+  DUMP_COMMA; PUTS_OUT( "  " KEY " = " ); c_type_debug( TYPE, stdout ); )
+
+/** @} */
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * @addtogroup parser-group
  * @{
  */
 
