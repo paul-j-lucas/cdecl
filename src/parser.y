@@ -358,7 +358,6 @@ static inline c_type_id_t qualifier_peek( void ) {
  * a reference (not a pointer), but C doesn't have references.
  *
  * @return Returns said qualifier location.
- * @hideinitializer
  */
 #define qualifier_peek_loc() \
   (SLIST_HEAD( c_qualifier_t*, &in_attr.qualifier_stack )->loc)

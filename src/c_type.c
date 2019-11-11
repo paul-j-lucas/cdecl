@@ -111,8 +111,6 @@ typedef struct c_type c_type_t;
 
 /**
  * Type mapping for attributes.
- *
- * @hideinitializer
  */
 static c_type_t const C_ATTRIBUTE_INFO[] = {
   { T_CARRIES_DEPENDENCY,
@@ -129,8 +127,6 @@ static c_type_t const C_ATTRIBUTE_INFO[] = {
 
 /**
  * Type mapping for qualifiers.
- *
- * @hideinitializer
  */
 static c_type_t const C_QUALIFIER_INFO[] = {
   { T_ATOMIC,       L__ATOMIC,      L_ATOMIC, LANG_MIN(C_11)                  },
@@ -144,8 +140,6 @@ static c_type_t const C_QUALIFIER_INFO[] = {
 
 /**
  * Type mapping for storage classes (or storage-class-like).
- *
- * @hideinitializer
  */
 static c_type_t const C_STORAGE_INFO[] = {
   // storage classes
@@ -177,8 +171,6 @@ static c_type_t const C_STORAGE_INFO[] = {
 
 /**
  * Type mapping for simpler types.
- *
- * @hideinitializer
  */
 static c_type_t const C_TYPE_INFO[] = {
   { T_VOID,         L_VOID,             NULL, LANG_MIN(C_89)                  },
@@ -230,8 +222,6 @@ static c_type_t const C_TYPE_INFO[] = {
 
 /**
  * Legal combinations of storage classes in languages.
- *
- * @hideinitializer
  */
 static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 // Only the lower triangle is used.
@@ -262,8 +252,6 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 
 /**
  * Legal combinations of types in languages.
- *
- * @hideinitializer
  */
 static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 // Only the lower triangle is used.

@@ -46,8 +46,6 @@
 
 /**
  * Array of all C++ attributes.
- *
- * @hideinitializer
  */
 static c_keyword_t const C_ATTRIBUTES[] = {
   // C++11
@@ -85,8 +83,6 @@ static c_keyword_t const C_ATTRIBUTES[] = {
  * @note There are two rows for `auto` since it has two meanings (one as a
  * storage class in C and C++ up to C++03 and the other as an automatically
  * deduced type in C++11 and later).
- *
- * @hideinitializer
  */
 static c_keyword_t const C_KEYWORDS[] = {
   // K&R C

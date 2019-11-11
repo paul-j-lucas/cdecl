@@ -39,8 +39,6 @@
 
 /**
  * Array of `c_operator` for all C/C++ operators indexed by a `c_oper_id`.
- *
- * @hideinitializer
  */
 static c_operator_t const C_OPERATOR[] = {
   { "",     OP_NOT_OVERLOADABLE,  0, 0,                 LANG_NONE         },

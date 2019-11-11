@@ -60,8 +60,6 @@ static bool       user_defined;         ///< Are new `typedef`s used-defined?
  *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
- *
- * @hideinitializer
  */
 static char const *const TYPEDEFS_STD_C[] = {
   "typedef long double       max_align_t",// C11
@@ -113,8 +111,6 @@ static char const *const TYPEDEFS_STD_C[] = {
 
 /**
  * Types from `stdatomic.h`.
- *
- * @hideinitializer
  */
 static char const *const TYPEDEFS_STD_ATOMIC_H[] = {
   "typedef _Atomic          _Bool     atomic_bool",
@@ -164,8 +160,6 @@ static char const *const TYPEDEFS_STD_ATOMIC_H[] = {
 
 /**
  * Types from C++.
- *
- * @hideinitializer
  */
 static char const *const TYPEDEFS_STD_CPP[] = {
   "namespace std { typedef struct   div_t           div_t;            }",
@@ -201,8 +195,6 @@ static char const *const TYPEDEFS_STD_CPP[] = {
 
 /**
  * Miscellaneous standard types.
- *
- * @hideinitializer
  */
 static char const *const TYPEDEFS_MISC[] = {
   "typedef  int32_t         blkcnt_t",

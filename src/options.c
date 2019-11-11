@@ -71,8 +71,6 @@ FILE               *fout;
 
 /**
  * Long options.
- *
- * @hideinitializer
  */
 static struct option const LONG_OPTS[] = {
   { "digraphs",     no_argument,        NULL, '2' },
@@ -102,8 +100,6 @@ static struct option const LONG_OPTS[] = {
 
 /**
  * Short options.
- *
- * @hideinitializer
  */
 static char const   SHORT_OPTS[] = "23ac:Cef:ik:o:pstvx:"
 #ifdef ENABLE_CDECL_DEBUG

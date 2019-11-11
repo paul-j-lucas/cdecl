@@ -55,7 +55,6 @@ _GL_INLINE_HEADER_BEGIN
  * @param VAR_NAME The name for the temporary `slist` variable.
  * @param NODE_DATA A pointer to the node data.
  * @param LIST_DATA A pointer to the list data.
- * @hideinitializer
  */
 #define SLIST_TEMP_INIT_VAR(VAR_NAME,NODE_DATA,LIST_DATA)                     \
   slist_node_t VAR_NAME##_node = { NULL, CONST_CAST( void*, (NODE_DATA) ) };  \
@@ -206,7 +205,6 @@ CDECL_SLIST_INLINE void* slist_head( slist_t const *list ) {
  * @param LIST A pointer to the <code>\ref slist</code>.
  * @return Returns the data from the head of \a LIST cast to \a DATA_TYPE or
  * null (or equivalent) if the <code>\ref slist</code> is empty.
- * @hideinitializer
  */
 #define SLIST_HEAD(DATA_TYPE,LIST) \
   REINTERPRET_CAST( DATA_TYPE, slist_head( LIST ) )
@@ -250,7 +248,6 @@ void* slist_peek_at( slist_t const *list, size_t offset );
  * @param OFFSET The offset (starting at 0) of the data to get.
  * @return Returns the data from the node at \a OFFSET cast to \a DATA_TYPE or
  * null (or equivalent) if \a OFFSET &gt;= slist_len().
- * @hideinitializer
  */
 #define SLIST_PEEK_AT(DATA_TYPE,LIST,OFFSET) \
   REINTERPRET_CAST( DATA_TYPE, slist_peek_at( (LIST), (OFFSET) ) )
@@ -277,7 +274,6 @@ CDECL_SLIST_INLINE void* slist_peek_atr( slist_t const *list, size_t roffset ) {
  * @param ROFFSET The reverse offset (starting at 0) of the data to get.
  * @return Returns the data from the node at \a ROFFSET cast to \a DATA_TYPE or
  * null (or equivalent) if \a ROFFSET &gt;= slist_len().
- * @hideinitializer
  */
 #define SLIST_PEEK_ATR(DATA_TYPE,LIST,ROFFSET) \
   REINTERPRET_CAST( DATA_TYPE, slist_peek_atr( (LIST), (ROFFSET) ) )
@@ -300,7 +296,6 @@ void* slist_pop_head( slist_t *list );
  * @return Returns the data from the head of \a LIST cast to \a DATA_TYPE or
  * null (or equivalent) if the <code>\ref slist</code> is empty.  The caller is
  * responsible for deleting it (if necessary).
- * @hideinitializer
  */
 #define SLIST_POP_HEAD(DATA_TYPE,LIST) \
   REINTERPRET_CAST( DATA_TYPE, slist_pop_head( LIST ) )
@@ -356,7 +351,6 @@ CDECL_SLIST_INLINE void* slist_tail( slist_t const *list ) {
  * @param LIST A pointer to the <code>\ref slist</code>.
  * @return Returns the data from the tail of \a LIST cast to \a DATA_TYPE or
  * null (or equivalent) if the <code>\ref slist</code> is empty.
- * @hideinitializer
  */
 #define SLIST_TAIL(DATA_TYPE,LIST) \
   REINTERPRET_CAST( DATA_TYPE, slist_tail( LIST ) )

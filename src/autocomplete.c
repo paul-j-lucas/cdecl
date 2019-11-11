@@ -58,8 +58,6 @@ typedef struct ac_keyword ac_keyword_t;
 
 /**
  * Subset of cdecl keywords that are commands.
- *
- * @hideinitializer
  */
 static ac_keyword_t const CDECL_COMMANDS[] = {
   { L_CAST,         LANG_ALL          },
@@ -83,8 +81,6 @@ static ac_keyword_t const CDECL_COMMANDS[] = {
 
 /**
  * Subset of cdecl keywords that are completable.
- *
- * @hideinitializer
  */
 static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_ALT_TOKENS,         LANG_ALL                          },
@@ -179,8 +175,6 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
 
 /**
  * cdecl options.
- *
- * @hideinitializer
  */
 static char const *const CDECL_OPTIONS[] = {
    "c89",

@@ -69,7 +69,6 @@
  *
  * @param NODE_PTR A pointer to the node to get the data of.
  * @return Returns said pointer.
- * @hideinitializer
  */
 #define rb_node_data(NODE_PTR) \
   (*REINTERPRET_CAST( void**, NODE_PTR ))

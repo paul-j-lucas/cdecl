@@ -100,7 +100,6 @@
  * @param S The string pointer to advance.
  * @param CHARS A string containing the characters to skip over.
  * @return Returns the updated \a S.
- * @hideinitializer
  */
 #define SKIP_CHARS(S,CHARS)       ((S) += strspn( (S), (CHARS) ))
 
@@ -109,7 +108,6 @@
  *
  * @param S The string pointer to advance.
  * @return Returns the updated \a S.
- * @hideinitializer
  */
 #define SKIP_WS(S)                SKIP_CHARS( (S), " \f\r\t\v" )
 
@@ -118,7 +116,6 @@
  * also exit with the status code we want.
  *
  * @param MSG The error message to print.
- * @hideinitializer
  */
 #define YY_FATAL_ERROR(MSG)       lexer_fatal( (MSG) )
 
@@ -128,7 +125,6 @@
  * @param BUF The buffer to use.
  * @param BYTES_READ Set to the number of bytes read.
  * @param BYTES_MAX The maximum number of bytes to read.
- * @hideinitializer
  */
 #define YY_INPUT(BUF,BYTES_READ,BYTES_MAX) \
   (BYTES_READ) = lexer_get_input( (BUF), (BYTES_MAX) )
@@ -136,15 +132,11 @@
 /**
  * This code is inserted by flex at the beginning of each rule to set the
  * current token location information.
- *
- * @hideinitializer
  */
 #define YY_USER_ACTION            lexer_update_loc(); /* must include ';' */
 
 /**
  * This code must be manually inserted before a REJECT to undo YY_USER_ACTION.
- *
- * @hideinitializer
  */
 #define YY_USER_ACTION_UNDO_FOR_REJECT \
   column -= (int)yyleng
@@ -167,8 +159,6 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  *
  * @param C_KEYWORD The C/C++ keyword literal (`L_xxx`) that is the synonym.
  * @param ALLOW If `true, allow this synonym when explaining C/C++.
- *
- * @hideinitializer
  */
 #define C_SYN(C_KEYWORD,ALLOW)  0, C_KEYWORD, ALLOW
 
@@ -176,15 +166,11 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  * Specify that the previosuly given literal maps to Bison tokan \a T.
  *
  * @param T The Bison token ID (`Y_xxx`).
- *
- * @hideinitializer
  */
 #define TOKEN(T)                T, NULL,      false
 
 /**
  * All cdecl keywords (that are not C/C++ keywords).
- *
- * @hideinitializer
  */
 static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L__ALIGNAS,       C_SYN( L_ALIGNAS,       true  ) },
@@ -276,8 +262,6 @@ typedef struct c_hyphenated c_hyphenated_t;
  * All hyphenated English keywords that are synonyms for C/C++ keywords.  These
  * are handled seperately because hyphenated words are not valid identifiers
  * (since `-` is not valid in an identifier).
- *
- * @hideinitializer
  */
 static c_hyphenated_t const C_HYPHENATED_KEYWORDS[] = {
   { "carries-dependency", L_CARRIES_DEPENDENCY  },

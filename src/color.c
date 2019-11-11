@@ -78,10 +78,8 @@ char const *sgr_prompt;
 char const *sgr_warning;
 
 /**
- * Color capabilities table.  Upper-case names are unique to us and upper-case
- * to avoid conflict with gcc.
- *
- * @hideinitializer
+ * Color capabilities table.  Upper-case names are unique to cdecl and upper-
+ * case to avoid conflict with gcc.
  */
 static color_cap_t const COLOR_CAPS[] = {
   { "caret",        &sgr_caret        },

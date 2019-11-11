@@ -60,8 +60,6 @@ _GL_INLINE_HEADER_BEGIN
  * Gets the number of elements of the given array.
  *
  * @param A The array to get the number of elements of.
- *
- * @hideinitializer
  */
 #define ARRAY_SIZE(A)             (sizeof(A) / sizeof(A[0]))
 
@@ -69,8 +67,6 @@ _GL_INLINE_HEADER_BEGIN
  * Embeds the given statements into a compound statement block.
  *
  * @param ... The statement(s) to embed.
- *
- * @hideinitializer
  */
 #define BLOCK(...)                do { __VA_ARGS__ } while (0)
 
@@ -82,7 +78,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa REINTERPRET_CAST
  * @sa STATIC_CAST
- * @hideinitializer
  */
 #define CONST_CAST(T,EXPR)        ((T)(uintptr_t)(EXPR))
 
@@ -90,8 +85,6 @@ _GL_INLINE_HEADER_BEGIN
  * Calls **ferror**(3) and exits if there was an error on \a STREAM.
  *
  * @param STREAM The `FILE` stream to check for an error.
- *
- * @hideinitializer
  */
 #define FERROR(STREAM) \
   BLOCK( if ( unlikely( ferror( STREAM ) != 0 ) ) perror_exit( EX_IOERR ); )
@@ -101,8 +94,6 @@ _GL_INLINE_HEADER_BEGIN
  * was one.
  *
  * @param STREAM The `FILE` stream to flush.
- *
- * @hideinitializer
  */
 #define FFLUSH(STREAM) BLOCK( \
   if ( unlikely( fflush( STREAM ) != 0 ) ) perror_exit( EX_IOERR ); )
@@ -112,8 +103,6 @@ _GL_INLINE_HEADER_BEGIN
  * was one.
  *
  * @param STREAM The `FILE` stream to print to.
- *
- * @hideinitializer
  */
 #define FPRINTF(STREAM,...) BLOCK( \
   if ( unlikely( fprintf( (STREAM), __VA_ARGS__ ) < 0 ) ) perror_exit( EX_IOERR ); )
@@ -127,7 +116,6 @@ _GL_INLINE_HEADER_BEGIN
  * @sa FPRINTF
  * @sa FPUTC
  * @sa FPUTS
- * @hideinitializer
  */
 #define FPUTC(C,STREAM) BLOCK( \
   if ( unlikely( putc( (C), (STREAM) ) == EOF ) ) perror_exit( EX_IOERR ); )
@@ -140,7 +128,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa FPRINTF
  * @sa FPUTC
- * @hideinitializer
  */
 #define FPUTS(S,STREAM) BLOCK( \
   if ( unlikely( fputs( (S), (STREAM) ) == EOF ) ) perror_exit( EX_IOERR ); )
@@ -154,7 +141,6 @@ _GL_INLINE_HEADER_BEGIN
  * This macro exists since free'ing a pointer-to const generates a warning.
  *
  * @sa FREE_STR_LATER
- * @hideinitializer
  */
 #define FREE(PTR)                 free( CONST_CAST( void*, (PTR) ) )
 
@@ -164,7 +150,6 @@ _GL_INLINE_HEADER_BEGIN
  * @param PTR The pointer to the C string to free later.
  *
  * @sa FREE
- * @hideinitializer
  */
 #define FREE_STR_LATER(PTR)       REINTERPRET_CAST( char*, free_later( PTR ) )
 
@@ -172,8 +157,6 @@ _GL_INLINE_HEADER_BEGIN
  * Frees the duplicated C string later.
  *
  * @param PTR The pointer to the C string to duplicate and free later.
- *
- * @hideinitializer
  */
 #define FREE_STRDUP_LATER(PTR)    FREE_STR_LATER( check_strdup( PTR ) )
 
@@ -182,8 +165,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param FD The file descriptor to stat.
  * @param STAT A pointer to a `struct stat` to receive the result.
- *
- * @hideinitializer
  */
 #define FSTAT(FD,STAT) BLOCK( \
   if ( unlikely( fstat( (FD), (STAT) ) < 0 ) ) perror_exit( EX_IOERR ); )
@@ -193,8 +174,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param FORMAT The `printf()` format to use.
  * @param ... Ordinary `printf()` arguments.
- *
- * @hideinitializer
  */
 #define INTERNAL_ERR(FORMAT,...) \
   PMESSAGE_EXIT( EX_SOFTWARE, "internal error: " FORMAT, __VA_ARGS__ )
@@ -207,7 +186,6 @@ _GL_INLINE_HEADER_BEGIN
  * @return Returns a pointer to \a N uninitialized objects of \a TYPE.
  *
  * @sa REALLOC
- * @hideinitializer
  */
 #define MALLOC(TYPE,N) \
   STATIC_CAST( TYPE*, check_realloc( NULL, sizeof(TYPE) * (N) ) )
@@ -217,15 +195,11 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param PTR The pointer to the memory to zero.  The number of bytes to zero
  * is given by `sizeof *(PTR)`.
- *
- * @hideinitializer
  */
 #define MEM_ZERO(PTR)             memset( (PTR), 0, sizeof *(PTR) )
 
 /**
  * No-operation statement.  (Useful for a `goto` target.)
- *
- * @hideinitializer
  */
 #define NO_OP                     ((void)0)
 
@@ -234,8 +208,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param STATUS The status code to **exit**(3) with.
  * @param FORMAT The `printf()` format to use.
- *
- * @hideinitializer
  */
 #define PMESSAGE_EXIT(STATUS,FORMAT,...) \
   BLOCK( PRINT_ERR( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
@@ -247,7 +219,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa PUTC_ERR
  * @sa PUTS_ERR
- * @hideinitializer
  */
 #define PRINT_ERR(...)            fprintf( stderr, __VA_ARGS__ )
 
@@ -258,7 +229,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa PRINT_ERR
  * @sa PUTC_OUT
- * @hideinitializer
  */
 #define PUTC_ERR(C)               FPUTC( (C), stderr )
 
@@ -271,7 +241,6 @@ _GL_INLINE_HEADER_BEGIN
  * @sa PUTC_ERR
  * @sa PUTS_ERR
  * @sa PUTS_OUT
- * @hideinitializer
  */
 #define PUTC_OUT(C)               FPUTC( (C), stdout )
 
@@ -284,7 +253,6 @@ _GL_INLINE_HEADER_BEGIN
  * @sa PUTC_ERR
  * @sa PUTC_OUT
  * @sa PUTS_OUT
- * @hideinitializer
  */
 #define PUTS_ERR(S)               FPUTS( (S), stderr )
 
@@ -297,7 +265,6 @@ _GL_INLINE_HEADER_BEGIN
  * @sa PUTC_ERR
  * @sa PUTC_OUT
  * @sa PUTS_ERR
- * @hideinitializer
  */
 #define PUTS_OUT(S)               FPUTS( (S), stdout )
 
@@ -310,7 +277,6 @@ _GL_INLINE_HEADER_BEGIN
  * @param N The number of objects of \a TYPE to reallocate.
  *
  * @sa MALLOC
- * @hideinitializer
  */
 #define REALLOC(PTR,TYPE,N) \
   ((PTR) = STATIC_CAST(TYPE*, check_realloc( (PTR), sizeof(TYPE) * (N) )))
@@ -323,7 +289,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa CONST_CAST
  * @sa STATIC_CAST
- * @hideinitializer
  */
 #define REINTERPRET_CAST(T,EXPR)  ((T)(uintptr_t)(EXPR))
 
@@ -334,7 +299,6 @@ _GL_INLINE_HEADER_BEGIN
  * @return If \a S is non-empty, returns `" "`; otherwise returns `""`.
  *
  * @sa SP_AFTER
- * @hideinitializer
  */
 #define SP_IF(S)                  (S[0] != '\0' ? " " : "")
 
@@ -357,7 +321,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa CONST_CAST
  * @sa REINTERPRET_CAST
- * @hideinitializer
  */
 #define STATIC_CAST(T,EXPR)       ((T)(EXPR))
 
@@ -367,15 +330,11 @@ _GL_INLINE_HEADER_BEGIN
  * @param DST A pointer to receive the copy of \a SRC.  It is updated to the
  * new end of \a DST.
  * @param SRC The null-terminated string to copy.
- *
- * @hideinitializer
  */
 #define STRCAT(DST,SRC)           ((DST) = strcpy_end( (DST), (SRC) ))
 
 /**
  * Shorthand for calling **strerror**(3).
- *
- * @hideinitializer
  */
 #define STRERROR()                strerror( errno )
 
@@ -390,7 +349,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa unlikely
  * @sa http://lwn.net/Articles/255364/
- * @hideinitializer
  */
 #define likely(EXPR)              __builtin_expect( !!(EXPR), 1 )
 
@@ -403,7 +361,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa likely
  * @sa http://lwn.net/Articles/255364/
- * @hideinitializer
  */
 #define unlikely(EXPR)            __builtin_expect( !!(EXPR), 0 )
 

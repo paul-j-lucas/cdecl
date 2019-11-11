@@ -165,8 +165,6 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Hexadecimal print conversion specifier for <code>\ref c_type_id_t</code>.
- *
- * @hideinitializer
  */
 #define PRIX_C_TYPE_T         PRIX64
 
