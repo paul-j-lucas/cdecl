@@ -55,10 +55,10 @@ enum c_graph {
  * Initialization state.
  *
  * We currently only need to discriminate between before and after reading the
- * configuration file, if any, to know whether we should restrict "using"
- * declarations to C++11 and later.  Hence, this could have been a simple bool.
- * However, it was made an enum in the event that discriminating between more
- * initialization states becomes needed in the future.
+ * configuration file, if any, to know whether we should restrict `using`
+ * declarations to C++11 and later.  Hence, this could have been a simple
+ * `bool`.  However, it was made an `enum` in the event that discriminating
+ * between more initialization states becomes needed in the future.
  */
 enum c_init {
   INIT_BEGIN,                           ///< Very beginning of initialization.
