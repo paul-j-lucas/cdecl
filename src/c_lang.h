@@ -42,6 +42,12 @@ _GL_INLINE_HEADER_BEGIN
 
 /// @endcond
 
+/**
+ * @defgroup c-lang-group C/C++ Language Versions
+ * Constants, types, and functions for C/C++ language versions.
+ * @{
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // languages supported
@@ -159,6 +165,8 @@ char const* c_lang_name( c_lang_id_t lang_id );
 void c_lang_set( c_lang_id_t lang_id );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 _GL_INLINE_HEADER_END
 

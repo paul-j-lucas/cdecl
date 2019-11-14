@@ -32,6 +32,12 @@
 #include "c_type.h"
 #include "typedefs.h"
 
+/**
+ * @defgroup c-keywords-group C/C++ Keywords
+ * Types and functions for C/C++ keywords or C++11 (or later) attributes.
+ * @{
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -68,6 +74,8 @@ c_keyword_t const* c_attribute_find( char const *literal );
 c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_id );
 
 ///////////////////////////////////////////////////////////////////////////////
+
+/** @} */
 
 #endif /* cdecl_c_keyword_H */
 /* vim:set et sw=2 ts=2: */
