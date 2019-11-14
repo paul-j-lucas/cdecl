@@ -130,6 +130,7 @@ static void rb_rotate_right( rb_tree_t*, rb_node_t* );
  *
  * @param node A pointer to the `rb_node` to check.
  * @return Returns `true` only if \a node is black.
+ * @sa is_red()
  */
 static inline bool is_black( rb_node_t *node ) {
   return node->color == RB_BLACK;
@@ -141,6 +142,7 @@ static inline bool is_black( rb_node_t *node ) {
  *
  * @param node A pointer to the `rb_node` to check.
  * @return Returns `true` only if \a node is the left child of its parent.
+ * @sa is_right()
  */
 static inline bool is_left( rb_node_t *node ) {
   return node == node->parent->left;
@@ -151,6 +153,7 @@ static inline bool is_left( rb_node_t *node ) {
  *
  * @param node A pointer to the `rb_node` to check.
  * @return Returns `true` only if \a node is red.
+ * @sa is_black()
  */
 static inline bool is_red( rb_node_t *node ) {
   return node->color == RB_RED;
@@ -162,6 +165,7 @@ static inline bool is_red( rb_node_t *node ) {
  *
  * @param node A pointer to the `rb_node` to check.
  * @return Returns `true` only if \a node is the right child of its parent.
+ * @sa is_left()
  */
 static inline bool is_right( rb_node_t *node ) {
   return node == node->parent->right;
@@ -304,6 +308,7 @@ static void rb_tree_repair( rb_tree_t *tree, rb_node_t *node ) {
  *
  * @param tree A pointer to the red-black tree to manipulate.
  * @param node A pointer to the `rb_node` to rotate.
+ * @sa rb_rotate_right
  */
 static void rb_rotate_left( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
@@ -330,6 +335,7 @@ static void rb_rotate_left( rb_tree_t *tree, rb_node_t *node ) {
  *
  * @param tree A pointer to the red-black tree to manipulate.
  * @param node A pointer to the `rb_node` to rotate.
+ * @sa rb_rotate_left
  */
 static void rb_rotate_right( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
