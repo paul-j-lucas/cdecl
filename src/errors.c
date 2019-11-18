@@ -51,6 +51,8 @@ static bool const VISITOR_ERROR_NOT_FOUND = false;
 // local functions
 static bool c_ast_check_oper_args( c_ast_t const* );
 static bool c_ast_check_ret_type( c_ast_t const* );
+static bool c_ast_check_func_c( c_ast_t const* );
+static bool c_ast_check_func_cpp( c_ast_t const* );
 static bool c_ast_visitor_error( c_ast_t*, void* );
 static bool c_ast_visitor_type( c_ast_t*, void* );
 static bool error_kind_not_cast_into( c_ast_t const*, char const* );
@@ -367,139 +369,9 @@ static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
  * @return Returns `true` only if all checks passed.
  */
 static bool c_ast_check_func( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  assert( (ast->kind & K_FUNCTION_LIKE) != K_NONE );
-
-  if ( (ast->type_id & T_ANY_REFERENCE) != T_NONE ) {
-    if ( opt_lang < LANG_CPP_11 ) {
-      print_error( &ast->loc,
-        "%s qualified %ss not supported in %s",
-        L_REFERENCE, c_kind_name( ast->kind ), C_LANG_NAME()
-      );
-      return false;
-    }
-    if ( (ast->type_id & (T_EXTERN | T_STATIC)) != T_NONE ) {
-      print_error( &ast->loc,
-        "%s qualified %ss can not be %s",
-        L_REFERENCE, c_kind_name( ast->kind ),
-        c_type_name_error( ast->type_id & (T_EXTERN | T_STATIC) )
-      );
-      return false;
-    }
-  }
-
-  if ( C_LANG_IS_CPP() ) {
-    c_type_id_t const member_types = ast->type_id & T_MEMBER_ONLY;
-    c_type_id_t const non_member_types = ast->type_id & T_NON_MEMBER_ONLY;
-    if ( member_types != T_NONE && non_member_types != T_NONE ) {
-      char const *const member_types_names =
-        FREE_STRDUP_LATER( c_type_name_error( member_types ) );
-      print_error( &ast->loc,
-        "%ss can not be %s and %s",
-        c_kind_name( ast->kind ),
-        member_types_names,
-        c_type_name_error( non_member_types )
-      );
-      return false;
-    }
-
-    unsigned const user_overload_flags =
-      ast->as.func.flags & C_FUNC_MASK_MEMBER;
-    switch ( user_overload_flags ) {
-      case C_FUNC_MEMBER:
-        if ( non_member_types != T_NONE ) {
-          print_error( &ast->loc,
-            "%s %ss can not be %s",
-            L_MEMBER, c_kind_name( ast->kind ),
-            c_type_name_error( non_member_types )
-          );
-          return false;
-        }
-        break;
-      case C_FUNC_NON_MEMBER:
-        if ( member_types != T_NONE ) {
-          print_error( &ast->loc,
-            "%s %ss can not be %s",
-            L_NON_MEMBER, c_kind_name( ast->kind ),
-            c_type_name_error( member_types )
-          );
-          return false;
-        }
-        break;
-    } // switch
-
-    if ( (ast->type_id & (T_DEFAULT | T_DELETE)) != T_NONE ) {
-      c_ast_t const *ret_ast = NULL;
-      switch ( ast->kind ) {
-        case K_OPERATOR:                // C& operator=(C const&)
-          if ( ast->as.oper.oper_id != OP_EQ )
-            goto only_special;
-          ret_ast = ast->as.oper.ret_ast;
-          if ( !c_ast_is_ref_to_type( ret_ast, T_CLASS_STRUCT_UNION ) )
-            goto only_special;
-          // FALLTHROUGH
-        case K_CONSTRUCTOR: {           // C(C const&)
-          if ( c_ast_args_count( ast ) != 1 )
-            goto only_special;
-          c_ast_t const *arg_ast = c_ast_arg_ast( c_ast_args( ast ) );
-          if ( !c_ast_is_ref_to_type( arg_ast, T_CLASS_STRUCT_UNION ) )
-            goto only_special;
-          if ( ast->kind == K_OPERATOR ) {
-            assert( ret_ast != NULL );
-            //
-            // For C& operator=(C const&), the argument and the return type
-            // must both be a reference to the same class, struct, or union.
-            //
-            arg_ast = c_ast_unreference( arg_ast );
-            ret_ast = c_ast_unreference( ret_ast );
-            if ( arg_ast != ret_ast )
-              goto only_special;
-          }
-          break;
-        }
-        default:
-          goto only_special;
-      } // switch
-    }
-
-    if ( (ast->type_id & T_VIRTUAL) != T_NONE ) {
-      if ( c_ast_sname_count( ast ) > 1 ) {
-        print_error( &ast->loc,
-          "\"%s\": %s can not be used in file-scoped %ss",
-          c_ast_sname_full_name( ast ), L_VIRTUAL, c_kind_name( ast->kind )
-        );
-        return false;
-      }
-    }
-    else if ( (ast->type_id & T_PURE_VIRTUAL) != T_NONE ) {
-      print_error( &ast->loc,
-        "non-%s %ss can not be %s",
-        L_VIRTUAL, c_kind_name( ast->kind ), L_PURE
-      );
-      return false;
-    }
-  }
-  else {
-    c_type_id_t const qual_type = ast->type_id & T_MASK_QUALIFIER;
-    if ( qual_type != T_NONE ) {
-      print_error( &ast->loc,
-        "\"%s\" %ss not supported in %s",
-        c_type_name_error( qual_type ),
-        c_kind_name( ast->kind ),
-        C_LANG_NAME()
-      );
-      return false;
-    }
-  }
-
-  return true;
-
-only_special:
-  print_error( &ast->loc,
-    "\"%s\" can be used only for special member functions",
-    c_type_name_error( ast->type_id )
-  );
-  return false;
+  if ( C_LANG_IS_CPP() )
+    return c_ast_check_func_cpp( ast );
+  return c_ast_check_func_c( ast );
 }
 
 /**
@@ -615,7 +487,7 @@ only_void:
  */
 static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & K_FUNCTION_LIKE) != K_NONE );
+  assert( (ast->kind & (K_BLOCK | K_FUNCTION)) != K_NONE );
   assert( opt_lang == LANG_C_KNR );
 
   for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
@@ -633,6 +505,158 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
     } // switch
   } // for
   return true;
+}
+
+/**
+ * Checks a C function (or block) AST for errors.
+ *
+ * @param ast The function (or block) AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+static bool c_ast_check_func_c( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( (ast->kind & (K_BLOCK | K_FUNCTION)) != K_NONE );
+  assert( !C_LANG_IS_CPP() );
+
+  c_type_id_t const qual_type = ast->type_id & T_MASK_QUALIFIER;
+  if ( qual_type != T_NONE ) {
+    print_error( &ast->loc,
+      "\"%s\" %ss not supported in %s",
+      c_type_name_error( qual_type ),
+      c_kind_name( ast->kind ),
+      C_LANG_NAME()
+    );
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Checks a C++ function-like AST for errors.
+ *
+ * @param ast The function-like AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( (ast->kind & K_FUNCTION_LIKE) != K_NONE );
+  assert( C_LANG_IS_CPP() );
+
+  if ( (ast->type_id & T_ANY_REFERENCE) != T_NONE ) {
+    if ( opt_lang < LANG_CPP_11 ) {
+      print_error( &ast->loc,
+        "%s qualified %ss not supported in %s",
+        L_REFERENCE, c_kind_name( ast->kind ), C_LANG_NAME()
+      );
+      return false;
+    }
+    if ( (ast->type_id & (T_EXTERN | T_STATIC)) != T_NONE ) {
+      print_error( &ast->loc,
+        "%s qualified %ss can not be %s",
+        L_REFERENCE, c_kind_name( ast->kind ),
+        c_type_name_error( ast->type_id & (T_EXTERN | T_STATIC) )
+      );
+      return false;
+    }
+  }
+
+  c_type_id_t const member_types = ast->type_id & T_MEMBER_ONLY;
+  c_type_id_t const non_member_types = ast->type_id & T_NON_MEMBER_ONLY;
+  if ( member_types != T_NONE && non_member_types != T_NONE ) {
+    char const *const member_types_names =
+      FREE_STRDUP_LATER( c_type_name_error( member_types ) );
+    print_error( &ast->loc,
+      "%ss can not be %s and %s",
+      c_kind_name( ast->kind ),
+      member_types_names,
+      c_type_name_error( non_member_types )
+    );
+    return false;
+  }
+
+  unsigned const user_overload_flags = ast->as.func.flags & C_FUNC_MASK_MEMBER;
+  switch ( user_overload_flags ) {
+    case C_FUNC_MEMBER:
+      if ( non_member_types != T_NONE ) {
+        print_error( &ast->loc,
+          "%s %ss can not be %s",
+          L_MEMBER, c_kind_name( ast->kind ),
+          c_type_name_error( non_member_types )
+        );
+        return false;
+      }
+      break;
+    case C_FUNC_NON_MEMBER:
+      if ( member_types != T_NONE ) {
+        print_error( &ast->loc,
+          "%s %ss can not be %s",
+          L_NON_MEMBER, c_kind_name( ast->kind ),
+          c_type_name_error( member_types )
+        );
+        return false;
+      }
+      break;
+  } // switch
+
+  if ( (ast->type_id & (T_DEFAULT | T_DELETE)) != T_NONE ) {
+    c_ast_t const *ret_ast = NULL;
+    switch ( ast->kind ) {
+      case K_OPERATOR:                // C& operator=(C const&)
+        if ( ast->as.oper.oper_id != OP_EQ )
+          goto only_special;
+        ret_ast = ast->as.oper.ret_ast;
+        if ( !c_ast_is_ref_to_type( ret_ast, T_CLASS_STRUCT_UNION ) )
+          goto only_special;
+        // FALLTHROUGH
+      case K_CONSTRUCTOR: {           // C(C const&)
+        if ( c_ast_args_count( ast ) != 1 )
+          goto only_special;
+        c_ast_t const *arg_ast = c_ast_arg_ast( c_ast_args( ast ) );
+        if ( !c_ast_is_ref_to_type( arg_ast, T_CLASS_STRUCT_UNION ) )
+          goto only_special;
+        if ( ast->kind == K_OPERATOR ) {
+          assert( ret_ast != NULL );
+          //
+          // For C& operator=(C const&), the argument and the return type
+          // must both be a reference to the same class, struct, or union.
+          //
+          arg_ast = c_ast_unreference( arg_ast );
+          ret_ast = c_ast_unreference( ret_ast );
+          if ( arg_ast != ret_ast )
+            goto only_special;
+        }
+        break;
+      }
+      default:
+        goto only_special;
+    } // switch
+  }
+
+  if ( (ast->type_id & T_VIRTUAL) != T_NONE ) {
+    if ( c_ast_sname_count( ast ) > 1 ) {
+      print_error( &ast->loc,
+        "\"%s\": %s can not be used in file-scoped %ss",
+        c_ast_sname_full_name( ast ), L_VIRTUAL, c_kind_name( ast->kind )
+      );
+      return false;
+    }
+  }
+  else if ( (ast->type_id & T_PURE_VIRTUAL) != T_NONE ) {
+    print_error( &ast->loc,
+      "non-%s %ss can not be %s",
+      L_VIRTUAL, c_kind_name( ast->kind ), L_PURE
+    );
+    return false;
+  }
+
+  return true;
+
+only_special:
+  print_error( &ast->loc,
+    "\"%s\" can be used only for special member functions",
+    c_type_name_error( ast->type_id )
+  );
+  return false;
 }
 
 /**
