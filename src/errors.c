@@ -429,21 +429,23 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     } // switch
 
     if ( (ast->type_id & (T_DEFAULT | T_DELETE)) != T_NONE ) {
+      c_ast_t const *ret_ast = NULL;
       switch ( ast->kind ) {
-        case K_OPERATOR: {              // C& operator=(C const&)
+        case K_OPERATOR:                // C& operator=(C const&)
           if ( ast->as.oper.oper_id != OP_EQ )
             goto only_special;
-          c_ast_t const *ret_ast = ast->as.oper.ret_ast;
+          ret_ast = ast->as.oper.ret_ast;
           if ( !c_ast_is_ref_to_type( ret_ast, T_CLASS_STRUCT_UNION ) )
             goto only_special;
           // FALLTHROUGH
-        case K_CONSTRUCTOR:             // C(C const&)
+        case K_CONSTRUCTOR: {           // C(C const&)
           if ( c_ast_args_count( ast ) != 1 )
             goto only_special;
           c_ast_t const *arg_ast = c_ast_arg_ast( c_ast_args( ast ) );
           if ( !c_ast_is_ref_to_type( arg_ast, T_CLASS_STRUCT_UNION ) )
             goto only_special;
           if ( ast->kind == K_OPERATOR ) {
+            assert( ret_ast != NULL );
             //
             // For C& operator=(C const&), the argument and the return type
             // must both be a reference to the same class, struct, or union.
