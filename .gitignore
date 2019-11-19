@@ -3,12 +3,12 @@
 *.o
 *~
 .*.sw[op]
-.deps
+.deps/
 .DS_Store
 Makefile
 /aclocal.m4
 /ar-lib
-/autom4te.cache
+/autom4te.cache/
 /cdecl-*.tar.gz
 /compile
 /confdefs.h
@@ -19,7 +19,7 @@ Makefile
 /configure
 /conftest*
 /depcomp
-/docs
+/docs/
 /install-sh
 /missing
 /ylwrap
