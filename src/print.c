@@ -47,7 +47,9 @@
 // local constants
 static char const*    MORE[]     = { "...", "..." };
 static size_t const   MORE_LEN[] = { 3,     3 };
+#ifdef ENABLE_TERM_SIZE
 static unsigned const TERM_COLUMNS_DEFAULT = 80;
+#endif /* ENABLE_TERM_SIZE */
 
 /// @endcond
 
