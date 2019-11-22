@@ -38,8 +38,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NOT_IN_LANG   "~"               /* don't print text for current lang */
-#define SAME_AS_C     "$"               /* C++ text is the same as C */
+#define NOT_IN_LANG   ((char const*)1)  /* don't print text for current lang */
+#define SAME_AS_C     ((char const*)2)  /* C++ text is the same as C */
 
 /// @endcond
 
@@ -250,14 +250,14 @@ static void print_help_text( help_text_t const *help ) {
 
   for ( ; help->text != NULL; ++help ) {
     if ( is_cpp ) {
-      if ( help->cpp_text[0] == NOT_IN_LANG[0] )
+      if ( help->cpp_text == NOT_IN_LANG )
         continue;
-      if ( help->cpp_text[0] != SAME_AS_C[0] ) {
+      if ( help->cpp_text != SAME_AS_C ) {
         print_help_line( help->cpp_text );
         continue;
       }
     }
-    if ( help->text[0] != NOT_IN_LANG[0] )
+    if ( help->text != NOT_IN_LANG )
       print_help_line( help->text );
   } // for
 }
