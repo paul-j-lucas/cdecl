@@ -29,11 +29,13 @@ AC_PROG_CC_C99
 gl_EARLY
 AX_PROG_FLEX(
   [AC_DEFINE([LEX], [flex], ["flex" found])],
-  [AC_MSG_ERROR([required program "flex" not found])]
+  AS_IF([test ! -f "$srcdir/src/lexer.c"],
+        [AC_MSG_ERROR([required program "flex" not found])])
 )
 AX_PROG_BISON(
   [AC_DEFINE([YACC], [bison], ["bison" found])],
-  [AC_MSG_ERROR([required program "bison" not found])]
+  AS_IF([test ! -f "$srcdir/src/parser.c"],
+        [AC_MSG_ERROR([required program "bison" not found])])
 )
 AC_PROG_INSTALL
 AC_PROG_LN_S
