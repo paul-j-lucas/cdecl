@@ -3,6 +3,7 @@ define atomic_bool as _Atomic bool
 define atomic_char as _Atomic char
 define atomic_char16_t as _Atomic char16_t
 define atomic_char32_t as _Atomic char32_t
+define atomic_char8_t as _Atomic char8_t
 define atomic_int as _Atomic int
 define atomic_int_fast16_t as _Atomic int_fast16_t
 define atomic_int_fast32_t as _Atomic int_fast32_t

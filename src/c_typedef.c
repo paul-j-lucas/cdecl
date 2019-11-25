@@ -116,6 +116,7 @@ static char const *const TYPEDEFS_STD_ATOMIC_H[] = {
   "typedef _Atomic          _Bool     atomic_bool",
   "typedef _Atomic          char      atomic_char",
   "typedef _Atomic   signed char      atomic_schar",
+  "typedef _Atomic          char8_t   atomic_char8_t",
   "typedef _Atomic          char16_t  atomic_char16_t",
   "typedef _Atomic          char32_t  atomic_char32_t",
   "typedef _Atomic          wchar_t   atomic_wchar_t",

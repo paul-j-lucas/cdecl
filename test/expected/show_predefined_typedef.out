@@ -3,6 +3,7 @@ typedef _Atomic bool atomic_bool;
 typedef _Atomic char atomic_char;
 typedef _Atomic char16_t atomic_char16_t;
 typedef _Atomic char32_t atomic_char32_t;
+typedef _Atomic char8_t atomic_char8_t;
 typedef _Atomic int atomic_int;
 typedef _Atomic int_fast16_t atomic_int_fast16_t;
 typedef _Atomic int_fast32_t atomic_int_fast32_t;
