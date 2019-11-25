@@ -24,7 +24,7 @@
 /**
  * @file
  * Includes platform configuration information in the right order.  Always
- * `#include` this file rather than `config.h` directly.
+ * \c \#include this file rather than `config.h` directly.
  */
 
 /// @cond DOXYGEN_IGNORE
