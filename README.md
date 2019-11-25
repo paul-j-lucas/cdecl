@@ -1,5 +1,7 @@
 # cdecl
 
+## Introduction
+
 > *I’m still uncertain about the language declaration syntax, where in
 > declarations, syntax is used that mimics the use of the variables being
 > declared.  It is one of the things that draws strong criticism, but it has a
