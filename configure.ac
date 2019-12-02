@@ -189,6 +189,9 @@ AX_CFLAGS_GCC_OPTION([-Wcast-align])
 AX_CFLAGS_GCC_OPTION([-Wextra])
 AX_CFLAGS_GCC_OPTION([-Wimplicit-fallthrough=4])
 AX_CFLAGS_GCC_OPTION([-Wredundant-decls])
+AX_CFLAGS_GCC_OPTION([-Wshadow])
+AX_CFLAGS_GCC_OPTION([-Wuninitialized])
+AX_CFLAGS_GCC_OPTION([-Wunused])
 AX_CFLAGS_GCC_OPTION([-Wwrite-strings])
 
 # Generate files.

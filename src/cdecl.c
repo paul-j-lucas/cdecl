@@ -249,17 +249,17 @@ static bool parse_command_line( char const *command, int argc,
 /**
  * Parses a file.
  *
- * @param fin The FILE to read from.
+ * @param file The FILE to read from.
  * @return Returns `true` only upon success.
  */
-static bool parse_file( FILE *fin ) {
+static bool parse_file( FILE *file ) {
   bool ok = true;
 
-  for ( char buf[ 1024 ]; fgets( buf, sizeof buf, fin ) != NULL; ) {
+  for ( char buf[ 1024 ]; fgets( buf, sizeof buf, file ) != NULL; ) {
     if ( !parse_string( buf, 0 ) )
       ok = false;
   } // for
-  FERROR( fin );
+  FERROR( file );
 
   return ok;
 }
@@ -279,12 +279,12 @@ static bool parse_files( int num_files, char const *files[] ) {
       ok = parse_stdin();
     }
     else {
-      FILE *const fin = fopen( files[i], "r" );
-      if ( unlikely( fin == NULL ) )
+      FILE *const file = fopen( files[i], "r" );
+      if ( unlikely( file == NULL ) )
         PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", files[i], STRERROR() );
-      if ( !parse_file( fin ) )
+      if ( !parse_file( file ) )
         ok = false;
-      (void)fclose( fin );
+      (void)fclose( file );
     }
   } // for
   return ok;

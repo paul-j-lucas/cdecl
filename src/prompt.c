@@ -102,8 +102,8 @@ static char* prompt_create( char suffix ) {
   }
 #endif /* WITH_READLINE */
 
-  char *const prompt_buf = MALLOC( char, prompt_len + 1/*null*/ );
-  char *p = prompt_buf;
+  char *const buf = MALLOC( char, prompt_len + 1/*null*/ );
+  char *p = buf;
 
 #ifdef WITH_READLINE
   char color_buf[20];
@@ -131,7 +131,7 @@ static char* prompt_create( char suffix ) {
   *p++ = ' ';
   *p = '\0';
 
-  return prompt_buf;
+  return buf;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
