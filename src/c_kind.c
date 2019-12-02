@@ -71,10 +71,9 @@ char const* c_kind_name( c_kind_t kind ) {
         return "enum, struct, or union";
       assert( opt_lang == LANG_C_KNR );
       return "struct or union";
-
   } // switch
 
-  INTERNAL_ERR( "unexpected value (%d) for c_kind\n", (int)kind );
+  UNEXPECTED_INT_VALUE( kind );
   return NULL;                          // suppress warning
 }
 

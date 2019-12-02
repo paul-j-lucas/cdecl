@@ -55,7 +55,7 @@
 #include <string.h>
 
 #ifdef __GNUC__
-// Silence the "redundant redeclaration" warnings for yylex() and yywrap().
+// Silence these warnings for flex-generated code.
 #pragma GCC diagnostic ignored "-Wredundant-decls"
 #endif /* __GNUC__ */
 

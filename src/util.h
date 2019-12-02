@@ -170,10 +170,15 @@ _GL_INLINE_HEADER_BEGIN
   if ( unlikely( fstat( (FD), (STAT) ) < 0 ) ) perror_exit( EX_IOERR ); )
 
 /**
- * Prints an error message and exits in response to an internal error.
+ * Prints an error message to standard error and exits in response to an
+ * internal error.
  *
  * @param FORMAT The `printf()` format to use.
  * @param ... Ordinary `printf()` arguments.
+ *
+ * @sa PMESSAGE_EXIT
+ * @sa UNEXPECTED_INT_VALUE
+ * @sa UNEXPECTED_STR_VALUE
  */
 #define INTERNAL_ERR(FORMAT,...) \
   PMESSAGE_EXIT( EX_SOFTWARE, "internal error: " FORMAT, __VA_ARGS__ )
@@ -208,6 +213,10 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param STATUS The status code to **exit**(3) with.
  * @param FORMAT The `printf()` format to use.
+ *
+ * @sa INTERNAL_ERR
+ * @sa UNEXPECTED_INT_VALUE
+ * @sa UNEXPECTED_STR_VALUE
  */
 #define PMESSAGE_EXIT(STATUS,FORMAT,...) \
   BLOCK( PRINT_ERR( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
@@ -368,6 +377,28 @@ _GL_INLINE_HEADER_BEGIN
 # define likely(EXPR)             (EXPR)
 # define unlikely(EXPR)           (EXPR)
 #endif /* __GNUC__ */
+
+/**
+ * Prints that an `int` value was unexpected to standard error and exits.
+ *
+ * @param EXPR The expression having the unexpected value.
+ *
+ * @sa INTERNAL_ERR
+ * @sa PMESSAGE_EXIT
+ * @sa UNEXPECTED_STR_VALUE
+ */
+#define UNEXPECTED_INT_VALUE(EXPR) \
+  INTERNAL_ERR( "\"%d\": unexpected value for " #EXPR "\n", (int)(EXPR) )
+
+/**
+ * Prints that a string value was unexpected to standard error and exits.
+ *
+ * @sa INTERNAL_ERR
+ * @sa PMESSAGE_EXIT
+ * @sa UNEXPECTED_INT_VALUE
+ */
+#define UNEXPECTED_STR_VALUE(EXPR) \
+  INTERNAL_ERR( "\"%s\": unexpected value for " #EXPR "\n", (EXPR) )
 
 ////////// extern functions ///////////////////////////////////////////////////
 

@@ -281,7 +281,7 @@ void print_help( char const *what ) {
     print_help_text( HELP_TEXT_ENGLISH );
     return;
   }
-  INTERNAL_ERR( "unexpected value (\"%s\") for what\n", what );
+  UNEXPECTED_STR_VALUE( what );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

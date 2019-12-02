@@ -91,7 +91,7 @@ static c_operator_t const C_OPERATOR[] = {
 
 c_operator_t const* op_get( c_oper_id_t oper_id ) {
   if ( unlikely( oper_id > OP_TILDE ) )
-    INTERNAL_ERR( "\"%d\": unexpected value for operator\n", (int)oper_id );
+    UNEXPECTED_INT_VALUE( oper_id );
   return &C_OPERATOR[ oper_id ];
 }
 

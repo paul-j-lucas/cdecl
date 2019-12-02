@@ -398,7 +398,7 @@ static char const* c_type_name_1( c_type_id_t type_id, bool is_error ) {
     if ( type_id == C_TYPE_INFO[i].type_id )
       return c_type_literal( &C_TYPE_INFO[i], is_error );
 
-  INTERNAL_ERR( "unexpected value (0x%" PRIX_C_TYPE_T ") for type\n", type_id );
+  UNEXPECTED_INT_VALUE( type_id );
 }
 
 /**

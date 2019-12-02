@@ -99,7 +99,7 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
     case LANG_CPP_17: return "C++17";
     case LANG_CPP_20: return "C++20";
     default:
-      INTERNAL_ERR( "\"%d\": unexpected value for lang\n", (int)lang_id );
+      UNEXPECTED_INT_VALUE( lang_id );
   } // switch
 }
 
