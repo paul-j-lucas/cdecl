@@ -63,6 +63,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef __GNUC__
+// Silence these warnings for bison-generated code.
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif /* __GNUC__ */
+
 // Developer aid for tracing when Bison %destructors are called.
 #if 0
 #define DTRACE                    PRINT_ERR( "%d: destructor\n", __LINE__ )
@@ -1466,7 +1471,7 @@ alignas_specifier_english
   : Y_ALIGNED as_opt Y_NUMBER bytes_opt
     {
       $$.kind = ALIGNAS_EXPR;
-      $$.as.expr = $3;
+      $$.as.expr = (unsigned)$3;
     }
   | Y_ALIGNED as_opt decl_english_ast
     {
@@ -1838,7 +1843,7 @@ alignas_specifier_c
       DUMP_END();
 
       $$.kind = ALIGNAS_EXPR;
-      $$.as.expr = $3;
+      $$.as.expr = (unsigned)$3;
     }
   | Y_ALIGNAS lparen_expected type_c_ast { type_push( $3.ast ); }
     cast_c_ast_opt rparen_expected

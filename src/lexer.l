@@ -132,7 +132,7 @@
  * @param BYTES_MAX The maximum number of bytes to read.
  */
 #define YY_INPUT(BUF,BYTES_READ,BYTES_MAX) \
-  (BYTES_READ) = lexer_get_input( (BUF), (BYTES_MAX) )
+  (BYTES_READ) = (int)lexer_get_input( (BUF), (size_t)(BYTES_MAX) )
 
 /**
  * This code is inserted by flex at the beginning of each rule to set the
@@ -477,7 +477,7 @@ static bool parse_sname( char const *s, c_sname_t *sname ) {
   c_sname_init( &rv );
 
   for ( char const *end; parse_identifier( s, &end ); ) {
-    char *const name = strndup( s, end - s );
+    char *const name = strndup( s, (size_t)(end - s) );
 
     // Ensure that the name is NOT a keyword.
     c_keyword_t const *const k = c_keyword_find( name, opt_lang );
@@ -515,7 +515,7 @@ static bool parse_sname_dtor( char const *s, c_sname_t *sname ) {
   c_sname_init( &rv );
 
   for ( char const *end; parse_identifier( s, &end ); ) {
-    char *const name = strndup( s, end - s );
+    char *const name = strndup( s, (size_t)(end - s) );
 
     // Ensure that the name is NOT a keyword.
     c_keyword_t const *const k = c_keyword_find( name, opt_lang );
@@ -581,7 +581,7 @@ void lexer_loc( int *pline, int *pcolumn ) {
   else if ( lexer_token[0] == '\n' )
     *pcolumn = column;
   else
-    *pcolumn = column - strlen( lexer_token );
+    *pcolumn = column - (int)strlen( lexer_token );
 }
 
 void lexer_reset( bool hard_reset ) {

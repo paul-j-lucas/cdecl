@@ -40,9 +40,9 @@
 #include <string.h>
 #include <sysexits.h>
 
-#define GAVE_OPTION(OPT)          (opts_given[ (unsigned char)(OPT) ])
-#define OPT_BUF_SIZE              32    /* used for format_opt() */
-#define SET_OPTION(OPT)           (opts_given[ (unsigned char)(OPT) ] = (OPT))
+#define GAVE_OPTION(OPT)    (opts_given[ (unsigned char)(OPT) ])
+#define OPT_BUF_SIZE        32          /* used for format_opt() */
+#define SET_OPTION(OPT)     (opts_given[ (unsigned char)(OPT) ] = (char)(OPT))
 
 /// @endcond
 

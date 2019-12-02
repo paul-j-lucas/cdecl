@@ -119,8 +119,8 @@ static void print_caret( size_t error_column ) {
     if ( error_column > 0 && input_line[ error_column ] == '\0' )
       --error_column;
 
-    size_t const    token_columns = token_len( input_line + error_column );
-    unsigned const  error_end_column = error_column + token_columns - 1;
+    size_t const token_columns = token_len( input_line + error_column );
+    size_t const error_end_column = error_column + token_columns - 1;
 
     //
     // Start with the number of printable columns equal to the length of the
@@ -220,7 +220,7 @@ static size_t token_len( char const *s ) {
         break;
     }
   } // for
-  return s - s0;
+  return (size_t)(s - s0);
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -251,11 +251,11 @@ void print_hint( char const *format, ... ) {
 
 void print_loc( c_loc_t const *loc ) {
   assert( loc != NULL );
-  print_caret( loc->first_column );
+  print_caret( (size_t)loc->first_column );
   SGR_START_COLOR( stderr, locus );
   if ( opt_conf_file != NULL )
     PRINT_ERR( "%s:%d,", opt_conf_file, loc->first_line + 1 );
-  size_t column = loc->first_column;
+  size_t column = (size_t)loc->first_column;
   if ( column >= inserted_len )
     column -= inserted_len;
   PRINT_ERR( "%zu", column + 1 );
