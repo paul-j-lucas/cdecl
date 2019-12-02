@@ -54,6 +54,11 @@
 #include <stdlib.h>                     /* for strtol(3) */
 #include <string.h>
 
+#ifdef __GNUC__
+// Silence the "redundant redeclaration" warnings for yylex() and yywrap().
+#pragma GCC diagnostic ignored "-Wredundant-decls"
+#endif /* __GNUC__ */
+
 /// @endcond
 
 /**
