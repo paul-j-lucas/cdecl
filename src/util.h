@@ -86,8 +86,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param STREAM The `FILE` stream to check for an error.
  */
-#define FERROR(STREAM) \
-  BLOCK( if ( unlikely( ferror( STREAM ) != 0 ) ) perror_exit( EX_IOERR ); )
+#define FERROR(STREAM)            IF_EXIT( ferror( STREAM ) != 0, EX_IOERR )
 
 /**
  * Calls **fflush(3)** on \a STREAM, checks for an error, and exits if there
@@ -95,8 +94,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param STREAM The `FILE` stream to flush.
  */
-#define FFLUSH(STREAM) BLOCK( \
-  if ( unlikely( fflush( STREAM ) != 0 ) ) perror_exit( EX_IOERR ); )
+#define FFLUSH(STREAM)            IF_EXIT( fflush( STREAM ) != 0, EX_IOERR )
 
 /**
  * Calls **fprintf**(3) on \a STREAM, checks for an error, and exits if there
@@ -104,8 +102,8 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param STREAM The `FILE` stream to print to.
  */
-#define FPRINTF(STREAM,...) BLOCK( \
-  if ( unlikely( fprintf( (STREAM), __VA_ARGS__ ) < 0 ) ) perror_exit( EX_IOERR ); )
+#define FPRINTF(STREAM,...) \
+  IF_EXIT( fprintf( (STREAM), __VA_ARGS__ ) < 0, EX_IOERR )
 
 /**
  * Calls **putc**(3), checks for an error, and exits if there was one.
@@ -117,8 +115,8 @@ _GL_INLINE_HEADER_BEGIN
  * @sa FPUTC
  * @sa FPUTS
  */
-#define FPUTC(C,STREAM) BLOCK( \
-  if ( unlikely( putc( (C), (STREAM) ) == EOF ) ) perror_exit( EX_IOERR ); )
+#define FPUTC(C,STREAM) \
+  IF_EXIT( putc( (C), (STREAM) ) == EOF, EX_IOERR )
 
 /**
  * Calls **fputs**(3), checks for an error, and exits if there was one.
@@ -129,8 +127,8 @@ _GL_INLINE_HEADER_BEGIN
  * @sa FPRINTF
  * @sa FPUTC
  */
-#define FPUTS(S,STREAM) BLOCK( \
-  if ( unlikely( fputs( (S), (STREAM) ) == EOF ) ) perror_exit( EX_IOERR ); )
+#define FPUTS(S,STREAM) \
+  IF_EXIT( fputs( (S), (STREAM) ) == EOF, EX_IOERR )
 
 /**
  * Frees the given memory.
@@ -166,8 +164,17 @@ _GL_INLINE_HEADER_BEGIN
  * @param FD The file descriptor to stat.
  * @param STAT A pointer to a `struct stat` to receive the result.
  */
-#define FSTAT(FD,STAT) BLOCK( \
-  if ( unlikely( fstat( (FD), (STAT) ) < 0 ) ) perror_exit( EX_IOERR ); )
+#define FSTAT(FD,STAT) \
+  IF_EXIT( fstat( (FD), (STAT) ) < 0, EX_IOERR )
+
+/**
+ * Evaluates \a EXPR: if it returns `true`, calls perror_exit() with \a ERR.
+ *
+ * @param EXPR The expression to evaluate.
+ * @param ERR The exit status code to use.
+ */
+#define IF_EXIT(EXPR,ERR) \
+  BLOCK( if ( unlikely( EXPR ) ) perror_exit( ERR ); )
 
 /**
  * Prints an error message to standard error and exits in response to an

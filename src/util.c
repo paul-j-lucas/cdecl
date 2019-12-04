@@ -115,8 +115,7 @@ void* check_realloc( void *p, size_t size ) {
   if ( unlikely( size == 0 ) )
     size = 1;
   void *const r = p != NULL ? realloc( p, size ) : malloc( size );
-  if ( unlikely( r == NULL ) )
-    perror_exit( EX_OSERR );
+  IF_EXIT( r == NULL, EX_OSERR );
   return r;
 }
 
@@ -124,8 +123,7 @@ char* check_strdup( char const *s ) {
   if ( s == NULL )
     return NULL;
   char *const dup = strdup( s );
-  if ( unlikely( dup == NULL ) )
-    perror_exit( EX_OSERR );
+  IF_EXIT( dup == NULL, EX_OSERR );
   return dup;
 }
 
@@ -138,12 +136,10 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
 #endif /* NDEBUG */
 
   FILE *const tmp = tmpfile();
-  if ( unlikely( tmp == NULL ) )
-    perror_exit( EX_OSERR );
+  IF_EXIT( tmp == NULL, EX_OSERR );
   if ( likely( size > 0 ) ) {
-    if ( unlikely( fwrite( buf, 1, size, tmp ) != size ) )
-      perror_exit( EX_OSERR );
-    rewind( tmp );
+    IF_EXIT( fwrite( buf, 1, size, tmp ) != size, EX_IOERR );
+    IF_EXIT( fseek( tmp, 0L, SEEK_SET ) != 0, EX_IOERR );
   }
   return tmp;
 }
