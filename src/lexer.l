@@ -223,7 +223,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_NORETURN,       C_SYN( L__NORETURN,     true  ) },
   { L_OF,             TOKEN( Y_OF ),                  },
   { L_OPER,           TOKEN( Y_OPERATOR )             },
-  { L_OVERRIDDEN,     C_SYN( L_OVERRIDE,      false ) },
+  { L_OVERRIDDEN_ENG, C_SYN( L_OVERRIDE,      false ) },
   { L_POINTER,        TOKEN( Y_POINTER )              },
   { L_PREDEF,         TOKEN( Y_PREDEFINED )           },
   { L_PREDEFINED,     TOKEN( Y_PREDEFINED )           },
@@ -275,6 +275,7 @@ static c_hyphenated_t const C_HYPHENATED_KEYWORDS[] = {
   { "non-discardable",    L_NODISCARD           },
   { "non-returning",      L__NORETURN           },
   { "non-throwing",       L_THROW               },
+  { "thread-local",       L_THREAD_LOCAL        },
   { NULL,                 NULL                  }
 };
 

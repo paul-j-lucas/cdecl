@@ -115,14 +115,14 @@ typedef struct c_type c_type_t;
 static c_type_t const C_ATTRIBUTE_INFO[] = {
   { T_CARRIES_DEPENDENCY,
                     L_CARRIES_DEPENDENCY,
-                    L_CARRIES_DEPENDENCY2,    LANG_MIN(CPP_11)                },
+                    L_CARRIES_DEPENDENCY_ENG, LANG_MIN(CPP_11)                },
   { T_DEPRECATED,   L_DEPRECATED,       NULL, LANG_MIN(CPP_11)                },
   { T_MAYBE_UNUSED, L_MAYBE_UNUSED,
-                    L_MAYBE_UNUSED2,          LANG_MIN(CPP_17)                },
+                    L_MAYBE_UNUSED_ENG,       LANG_MIN(CPP_17)                },
   { T_NODISCARD,    L_NODISCARD,
-                    L_NON_DISCARDABLE,        LANG_MIN(CPP_11)                },
+                    L_NON_DISCARDABLE_ENG,    LANG_MIN(CPP_11)                },
   { T_NORETURN,     L__NORETURN,
-                    L_NON_RETURNING,          LANG_C_CPP_11_MIN               },
+                    L_NON_RETURNING_ENG,      LANG_C_CPP_11_MIN               },
 };
 
 /**
@@ -148,7 +148,8 @@ static c_type_t const C_STORAGE_INFO[] = {
   { T_EXTERN,       L_EXTERN,     L_EXTERNAL, LANG_ALL                        },
   { T_REGISTER,     L_REGISTER,         NULL, LANG_ALL                        },
   { T_STATIC,       L_STATIC,           NULL, LANG_ALL                        },
-  { T_THREAD_LOCAL, L_THREAD_LOCAL,     NULL, LANG_C_CPP_11_MIN               },
+  { T_THREAD_LOCAL, L_THREAD_LOCAL,
+                    L_THREAD_LOCAL_ENG,       LANG_C_CPP_11_MIN               },
   { T_TYPEDEF,      L_TYPEDEF,          NULL, LANG_ALL                        },
 
   // storage-class-like
@@ -162,9 +163,11 @@ static c_type_t const C_STORAGE_INFO[] = {
   { T_INLINE,       L_INLINE,           NULL, LANG_MIN(C_99)                  },
   { T_MUTABLE,      L_MUTABLE,          NULL, LANG_CPP_ALL                    },
   { T_NOEXCEPT,     L_NOEXCEPT,
-                    L_NO_EXCEPTION,           LANG_MIN(CPP_11)                },
-  { T_OVERRIDE,     L_OVERRIDE, L_OVERRIDDEN, LANG_MIN(CPP_11)                },
-  { T_THROW,        L_THROW,  L_NON_THROWING, LANG_CPP_ALL                    },
+                    L_NO_EXCEPTION_ENG,       LANG_MIN(CPP_11)                },
+  { T_OVERRIDE,     L_OVERRIDE,
+                    L_OVERRIDDEN_ENG,         LANG_MIN(CPP_11)                },
+  { T_THROW,        L_THROW,
+                    L_NON_THROWING_ENG,       LANG_CPP_ALL                    },
   { T_VIRTUAL,      L_VIRTUAL,          NULL, LANG_CPP_ALL                    },
   { T_PURE_VIRTUAL, L_PURE,             NULL, LANG_CPP_ALL                    },
 };

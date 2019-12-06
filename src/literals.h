@@ -148,7 +148,7 @@ extern char const L__ATOMIC[];
 extern char const L_ATOMIC[];               // synonym for "_Atomic"
 extern char const L__GENERIC[];
 extern char const L__NORETURN[];
-extern char const L_NON_RETURNING[];        // synonym for "_Noreturn"
+extern char const L_NON_RETURNING_ENG[];    // English for "_Noreturn"
 extern char const L_NORETURN[];             // synonym for "_Noreturn"
 extern char const L__STATIC_ASSERT[];
 extern char const L_STATIC_ASSERT[];
@@ -170,7 +170,7 @@ extern char const L_FRIEND[];
 extern char const L_MUTABLE[];
 extern char const L_NAMESPACE[];
 extern char const L_NEW[];
-extern char const L_NON_THROWING[];         // synonym for "throw"
+extern char const L_NON_THROWING_ENG[];     // synonym for "throw"
 extern char const L_OPER[];                 // synonym for "operator"
 extern char const L_OPERATOR[];
 extern char const L_PRIVATE[];
@@ -195,22 +195,23 @@ extern char const L_VIRTUAL[];
 extern char const L_ALIGNAS[];
 extern char const L_ALIGNOF[];
 extern char const L_CARRIES_DEPENDENCY[];
-extern char const L_CARRIES_DEPENDENCY2[];  // synonym for "carries_dependency"
+extern char const L_CARRIES_DEPENDENCY_ENG[];
 extern char const L_CONSTEXPR[];
 extern char const L_DECLTYPE[];
 extern char const L_FINAL[];
 extern char const L_NOEXCEPT[];
 extern char const L_LITERAL[];
-extern char const L_NO_EXCEPTION[];         // synonym for "noexcept"
+extern char const L_NO_EXCEPTION_ENG[];     // English for "noexcept"
 extern char const L_NULLPTR[];
 extern char const L_OVERRIDE[];
-extern char const L_OVERRIDDEN[];           // synonym for "override"
+extern char const L_OVERRIDDEN_ENG[];       // English for "override"
 extern char const L_USER_DEFINED[];
 
 // C11 & C++11
 extern char const L_CHAR16_T[];
 extern char const L_CHAR32_T[];
 extern char const L_THREAD_LOCAL[];
+extern char const L_THREAD_LOCAL_ENG[];     // English for "thread_local"
 extern char const L__THREAD_LOCAL[];        // synonym for "thread_local"
 
 // C++14
@@ -218,9 +219,9 @@ extern char const L_DEPRECATED[];
 
 // C++17
 extern char const L_MAYBE_UNUSED[];
-extern char const L_MAYBE_UNUSED2[];        // synonym for "maybe_unused"
+extern char const L_MAYBE_UNUSED_ENG[];     // English for "maybe_unused"
 extern char const L_NODISCARD[];
-extern char const L_NON_DISCARDABLE[];      // synonym for "nodiscard"
+extern char const L_NON_DISCARDABLE_ENG[];  // English for "nodiscard"
 
 // C++20
 extern char const L_CHAR8_T[];

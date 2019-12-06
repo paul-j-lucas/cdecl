@@ -1,1 +1,1 @@
-declare x as thread_local int
+declare x as thread-local int
