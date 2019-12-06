@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "December 3, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "December 6, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -495,9 +495,9 @@ and
 .TP
 .B C18
 Use the C18 version of the C language.
-(Since C18 is only a bugfix version,
-the argument is merely recognized
-as a valid version of C.)
+(Minor revision:
+no new features.
+Equivalent to C11.)
 .TP
 .B C++
 Use the latest supported version of the C++ language.
@@ -520,7 +520,9 @@ and \f(CWvirtual\fP functions.
 .TP
 .B C++03
 Use the C++03 version of the C++ language.
-(Minor revision; no new features.)
+(Minor revision;
+no new features.
+Equivalent to C++98.)
 .TP
 .B C++11
 Use the C++11 version of the C++ language.
