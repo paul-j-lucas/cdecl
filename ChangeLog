@@ -1,3 +1,95 @@
+2019-12-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Moved check for libcurses before libreadline since some
+     implementations of the latter depend on the former (e.g., on Solaris 11).
+
+2019-12-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1, c_type.c, lexer.l, literals.c, literals.h, explain_oi.out: Added
+     missing "thread-local".
+   * cdecl.1: Added "Equivalent to...."
+
+2019-12-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c, util.h: Added IF_EXIT() macro.
+
+2019-12-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: s/type declarations/declarations/
+   * _Noreturn.h, stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h,
+     unistd.in.h, gnulib-common.m4: Updated GNUlib.
+
+2019-12-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Added -Wlogical-op.
+   * configure.ac, lexer.l, options.c, parser.y, print.c, slist.c: Added
+     -Wconversion warning.
+   * configure.ac, cdecl.c, prompt.c: Added more gcc warnings.
+   * c_kind.c, c_lang.c, c_operator.c, c_type.c, help.c, lexer.l, util.h: Added
+     UNEXPECTED_INT_VALUE() and UNEXPECTED_STR_VALUE().
+   * configure.ac: Added -Wimplicit-fallthrough=4.
+   * lexer.l: Silence the "redundant redeclaration" warnings for yylex() and
+     yywrap().
+
+2019-11-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added atomic_char8_t typedef for C++20.
+   * pjl_config.h: Fixed Doxygen complain about #include.
+   * Doxyfile: Changed ALPHABETICAL_INDEX = YES.
+
+2019-11-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Now insists on flex/bison only when lexer.c/parser.c don't
+     exist.
+   * help.c: Now using special pointer values.
+
+2019-11-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c: Added #ifdef ENABLE_TERM_SIZE to silence warning when building
+     with --disable-term-size.
+
+2019-11-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * errors.c: Split out c_ast_check_func_c() and c_ast_check_func_cpp().
+   * errors.c: Fixed "‘ret_ast’ may be used uninitialized in this function"
+     warning.
+
+2019-11-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c, red_black.h, slist.h: More Doxygen @sa.
+   * typedefs.h: Tweaked Doxygen.
+   * c_keyword.h, c_lang.h: More Doxygen groups.
+
+2019-11-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, c_keyword.c, c_operator.c, c_type.c, c_type.h,
+     c_typedef.c, color.c, lexer.l, options.c, parser.y, red_black.h, slist.h,
+     util.h: Removed @hideinitializer -- not needed.
+   * color.h: Doxygen SGR sub-group.
+   * parser.y: Added Doxygen for DUMP_* macros.
+   * parser.y: Can now explicitly give an "structure definitions are not
+     supported" error.
+
+2019-11-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added Doxygen parser group.
+   * c_ast.h, c_kind.h, c_operator.h, c_type.h, c_typedef.h, color.h, debug.h,
+     english.h, gibberish.h, print.h: Tweaked Doxygen groups.
+   * Doxyfile: Added SORT_GROUP_NAMES = YES.
+   * color.h, options.h: Renamed groups.
+
+2019-11-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, c_kind.h, c_operator.h, c_sname.h, c_type.h, c_typedef.h,
+     debug.h, english.h, gibberish.h, lexer.h, literals.h, print.h, prompt.h,
+     typedefs.h: More Doxygen groups.
+   * c_ast.h, c_ast_util.h: More Doxygen groups.
+   * cdecl.c, options.c, util.c, util.h: More Doxygen.
+   * color.c, prompt.c, red_black.c, red_black.h, util.h: s/@see/@sa/ for
+     consistency.
+
 2019-10-31  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac: Updated to 6.6.1.

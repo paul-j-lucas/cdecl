@@ -10,6 +10,35 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.6.2
+
+** Added atomic_char8_t
+Added atomic_char8_t typedef for C++20.
+
+** Fixed flex & bison dependency
+Now insists on flex & bison only when lexer.c & parser.c don't exist (i.e.,
+when building from a git clone that doesn't include those files rather than an
+official release that does).
+
+** Explicit structure definition error
+Structure declarations (that were never supported) now produce a specific error
+message:
+
+    cdecl> explain struct S { int x; };
+                            ^
+    18: error: structure definitions are not supported
+
+** Fixed libreadline/libcurses dependency
+Moved check for libcurses before libreadline since some implementations of the
+latter depend on the former (e.g., Solaris 11).
+
+** More gcc warnings
+Enabled more gcc warnings and fixed them.
+
+** thread-local
+Added this (with a '-') as an English synonym for thread_local (with an '_').
+
+
 * Changes in Cdecl 6.6.1
 
 ** Fixed upgrade install
