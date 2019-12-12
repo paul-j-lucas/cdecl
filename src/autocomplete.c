@@ -309,7 +309,7 @@ static char* keyword_completion( char const *text, int state ) {
     text_len = strlen( text );
 
     //
-    // Special case: the "cast" command is begin by either "cast" or, if C++11
+    // Special case: the "cast" command is begun by either "cast" or, if C++11
     // or later, any one of "const", "dynamic", "static", or "reinterpret" for
     // "const cast ...", etc.
     //
