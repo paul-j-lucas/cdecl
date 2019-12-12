@@ -43,7 +43,63 @@
 
 /// @endcond
 
+// local functions
+static bool c_ast_visitor_english( c_ast_t*, void* );
+
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Helper function for `c_ast_visitor_english()` that prints a function-like
+ * AST's arguments, if any.
+ *
+ * @param arg The `c_ast_arg` that is the first argument to print.
+ * @param eout The `FILE` to emit to.
+ */
+static void c_ast_english_func_args( c_ast_arg_t const *arg, FILE *eout ) {
+  assert( arg != NULL );
+  assert( eout != NULL );
+
+  FPUTC( '(', eout );
+
+  bool comma = false;
+  for ( ; arg != NULL; arg = arg->next ) {
+    if ( true_or_set( &comma ) )
+      FPUTS( ", ", eout );
+
+    c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
+    if ( arg_ast->kind != K_NAME ) {
+      //
+      // For all kinds except K_NAME, we have to print:
+      //
+      //      <name> as <english>
+      //
+      // For K_NAME, e.g.:
+      //
+      //      void f(x)                 // untyped K&R C function argument
+      //
+      // there's no "as <english>" part.
+      //
+      c_sname_t const *const sname = c_ast_find_name( arg_ast, V_DOWN );
+      if ( sname != NULL ) {
+        c_sname_english( sname, eout );
+        FPRINTF( eout, " %s ", L_AS );
+      } else {
+        //
+        // If there's no name, it's an unnamed argument, e.g.:
+        //
+        //      void f(int)
+        //
+        // so there's no "<name> as" part.
+        //
+      }
+    }
+
+    c_ast_t *const nonconst_arg = CONST_CAST( c_ast_t*, arg_ast );
+    c_ast_visit( nonconst_arg, V_DOWN, c_ast_visitor_english, eout );
+  } // for
+
+  FPUTC( ')', eout );
+}
 
 /**
  * Visitor function that prints \a ast as pseudo-English.
@@ -100,52 +156,11 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       } // switch
 
       FPUTS( c_kind_name( ast->kind ), eout );
-
-      if ( c_ast_args( ast ) != NULL ) {
-        FPUTS( " (", eout );            // print function arguments
-
-        bool comma = false;
-        for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg != NULL;
-              arg = arg->next ) {
-          if ( true_or_set( &comma ) )
-            FPUTS( ", ", eout );
-
-          c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
-          if ( arg_ast->kind != K_NAME ) {
-            //
-            // For all kinds except K_NAME, we have to print:
-            //
-            //      <name> as <english>
-            //
-            // For K_NAME, e.g.:
-            //
-            //      void f(x)           // untyped K&R C function argument
-            //
-            // there's no "as" part, so just let the K_NAME case below print
-            // the name itself.
-            //
-            c_sname_t const *const sname = c_ast_find_name( arg_ast, V_DOWN );
-            if ( sname != NULL ) {
-              c_sname_english( sname, eout );
-              FPRINTF( eout, " %s ", L_AS );
-            } else {
-              //
-              // If there's no name, it's an unnamed argument, e.g.:
-              //
-              //    void f(int)
-              //
-              // so there's no "<name> as" part.
-              //
-            }
-          }
-
-          c_ast_t *const nonconst_arg = CONST_CAST( c_ast_t*, arg_ast );
-          c_ast_visit( nonconst_arg, V_DOWN, c_ast_visitor_english, data );
-        } // for
-
-        FPUTC( ')', eout );
+      c_ast_arg_t const *const arg = c_ast_args( ast );
+      if ( arg != NULL ) {
+        FPUTC( ' ', eout );
+        c_ast_english_func_args( arg, eout );
       }
-
       if ( ast->as.func.ret_ast != NULL )
         FPRINTF( eout, " %s ", L_RETURNING );
       break;
