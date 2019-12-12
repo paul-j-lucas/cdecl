@@ -139,11 +139,6 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
             }
           }
 
-          //
-          // For all kinds except K_NAME, we'e already printed the name above,
-          // so we have to suppress printing the name again; hence, pass false
-          // for print_names here.
-          //
           c_ast_t *const nonconst_arg = CONST_CAST( c_ast_t*, arg_ast );
           c_ast_visit( nonconst_arg, V_DOWN, c_ast_visitor_english, data );
         } // for
