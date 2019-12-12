@@ -57,7 +57,6 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
   assert( data != NULL );
 
   FILE *const eout = REINTERPRET_CAST( FILE*, data );
-  bool comma = false;
 
   switch ( ast->kind ) {
     case K_ARRAY:
@@ -105,6 +104,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       if ( c_ast_args( ast ) != NULL ) {
         FPUTS( " (", eout );            // print function arguments
 
+        bool comma = false;
         for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg != NULL;
               arg = arg->next ) {
           if ( true_or_set( &comma ) )
