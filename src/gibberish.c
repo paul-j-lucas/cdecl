@@ -645,6 +645,7 @@ static void g_param_init( g_param_t *param, c_ast_t const *root,
                           g_kind_t gkind, FILE *gout ) {
   assert( param != NULL );
   assert( root != NULL );
+  assert( gout != NULL );
 
   MEM_ZERO( param );
   param->gkind = gkind;
@@ -691,6 +692,7 @@ void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
 
 void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout ) {
   assert( ast != NULL );
+  assert( gout != NULL );
 
   switch ( ast->align.kind ) {
     case ALIGNAS_NONE:
