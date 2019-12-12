@@ -146,9 +146,8 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
  * Helper function for `c_ast_gibberish_impl()` that prints a function-like
  * AST's arguments, if any.
  *
- * @param ast The `c_ast` that is either a <code>\ref K_BLOCK</code>,
- * <code>\ref K_CONSTRUCTOR</code>, <code>\ref K_FUNCTION</code> or <code>\ref
- * K_OPERATOR</code> whose arguments to print.
+ * @param ast The `c_ast` that is a <code>\ref K_FUNCTION_LIKE</code> whose
+ * arguments to print.
  * @param param The `g_param` to use.
  */
 static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
