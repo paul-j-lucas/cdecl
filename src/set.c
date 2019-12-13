@@ -75,8 +75,8 @@ static void print_options( void ) {
 #ifdef ENABLE_CDECL_DEBUG
   printf( "  %sdebug\n", maybe_no( opt_debug ) );
 #endif /* ENABLE_CDECL_DEBUG */
-  printf( " %sgraphs\n", opt_graph == GRAPH_DI ? " di" : opt_graph == GRAPH_TRI ? "tri" : " no" );
   printf( "  %sexplain-by-default\n", maybe_no( opt_explain ) );
+  printf( " %sgraphs\n", opt_graph == GRAPH_DI ? " di" : opt_graph == GRAPH_TRI ? "tri" : " no" );
   printf( "    lang=%s\n", C_LANG_NAME() );
   printf( "  %sprompt\n", maybe_no( prompt[0][0] != '\0' ) );
   printf( "  %ssemicolon\n", maybe_no( opt_semicolon ) );
