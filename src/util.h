@@ -245,6 +245,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa PRINT_ERR
  * @sa PUTC_OUT
+ * @sa PUTS_ERR
  */
 #define PUTC_ERR(C)               FPUTC( (C), stderr )
 
@@ -253,9 +254,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param C The character to print.
  *
- * @sa PRINT_ERR
  * @sa PUTC_ERR
- * @sa PUTS_ERR
  * @sa PUTS_OUT
  */
 #define PUTC_OUT(C)               FPUTC( (C), stdout )
@@ -267,7 +266,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa PRINT_ERR
  * @sa PUTC_ERR
- * @sa PUTC_OUT
  * @sa PUTS_OUT
  */
 #define PUTS_ERR(S)               FPUTS( (S), stderr )
@@ -277,8 +275,6 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param S The C string to print.
  *
- * @sa PRINT_ERR
- * @sa PUTC_ERR
  * @sa PUTC_OUT
  * @sa PUTS_ERR
  */
@@ -602,8 +598,9 @@ void perror_exit( int status );
  *
  *  + Adds non-whitespace-only lines to the history.
  *
- * @param ps1 The primary prompt to use.
- * @param ps2 The secondary prompt to use.
+ * @param prompt The primary prompt to use.
+ * @param ps2 The secondary prompt to use for a continuation line (a line after
+ * ones ending with `\`).
  * @return Returns the line read or null for EOF.
  */
 char* read_input_line( char const *ps1, char const *ps2 );
