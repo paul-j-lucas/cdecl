@@ -193,7 +193,7 @@
  */
 #define DUMP_SNAME(KEY,SNAME) IF_DEBUG(                   \
   DUMP_COMMA; PUTS_OUT( "  " );                           \
-  print_kv( (KEY), c_sname_full_name( SNAME ), stdout );  \
+  kv_debug( (KEY), c_sname_full_name( SNAME ), stdout );  \
   PUTS_OUT( ", scope_type = " );                          \
   c_type_debug( c_sname_type( SNAME ), stdout ); )
 
@@ -205,7 +205,7 @@
  */
 #define DUMP_STR(KEY,STR) IF_DEBUG(   \
   DUMP_COMMA; PUTS_OUT( "  " );       \
-  print_kv( (KEY), (STR), stdout ); )
+  kv_debug( (KEY), (STR), stdout ); )
 
 #ifdef ENABLE_CDECL_DEBUG
 /**

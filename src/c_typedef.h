@@ -91,6 +91,8 @@ td_add_rv_t c_typedef_add( c_ast_t const *type_ast );
 
 /**
  * Cleans up `c_typedef` data.
+ *
+ * @sa c_typedef_init()
  */
 void c_typedef_cleanup( void );
 
@@ -104,6 +106,8 @@ c_typedef_t const* c_typedef_find( c_sname_t const *sname );
 
 /**
  * Initializes `c_typedef` data.
+ *
+ * @sa c_typedef_cleanup()
  */
 void c_typedef_init( void );
 

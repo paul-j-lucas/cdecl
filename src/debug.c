@@ -46,7 +46,7 @@
   BLOCK( print_indent( indent, dout ); FPRINTF( dout, __VA_ARGS__ ); )
 
 #define INDENT_PRINT_KV(KEY,VALUE) \
-  BLOCK( print_indent( indent, dout ); print_kv( (KEY), (VALUE), dout ); )
+  BLOCK( print_indent( indent, dout ); kv_debug( (KEY), (VALUE), dout ); )
 
 #define INDENT_PRINT_SNAME(KEY,SNAME) \
   print_sname( indent, (KEY), (SNAME), dout )
@@ -87,7 +87,7 @@ static void print_sname( unsigned indent, char const *key,
 
   print_indent( indent, out );
   char const *const full_name = c_sname_full_name( sname );
-  print_kv( key, full_name, out );
+  kv_debug( key, full_name, out );
   if ( full_name[0] != '\0' ) {
     char const *const sn_type_name = c_type_name( c_sname_type( sname ) );
     FPRINTF( out,
@@ -255,12 +255,12 @@ void c_type_debug( c_type_id_t type_id, FILE *dout ) {
   );
 }
 
-void print_kv( char const *key, char const *value, FILE *out ) {
+void kv_debug( char const *key, char const *value, FILE *dout ) {
   assert( key != NULL );
   if ( value != NULL && *value != '\0' )
-    FPRINTF( out, "%s = \"%s\"", key, value );
+    FPRINTF( dout, "%s = \"%s\"", key, value );
   else
-    FPRINTF( out, "%s = null", key );
+    FPRINTF( dout, "%s = null", key );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

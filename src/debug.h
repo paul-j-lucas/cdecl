@@ -76,14 +76,14 @@ void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout );
 void c_type_debug( c_type_id_t type_id, FILE *dout );
 
 /**
- * Prints a key/value pair.
+ * Prints a key/value pair (for debugging).
  *
  * @param key The key to print.
  * @param value The value to print, if any.  If either null or the empty
  * string, `null` is printed instead of the value.
- * @param out The `FILE` to print to.
+ * @param out The `FILE` to dump to.
  */
-void print_kv( char const *key, char const *value, FILE *out );
+void kv_debug( char const *key, char const *value, FILE *out );
 
 ///////////////////////////////////////////////////////////////////////////////
 
