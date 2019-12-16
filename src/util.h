@@ -598,7 +598,7 @@ void perror_exit( int status );
  *
  *  + Adds non-whitespace-only lines to the history.
  *
- * @param prompt The primary prompt to use.
+ * @param ps1 The primary prompt to use.
  * @param ps2 The secondary prompt to use for a continuation line (a line after
  * ones ending with `\`).
  * @return Returns the line read or null for EOF.
