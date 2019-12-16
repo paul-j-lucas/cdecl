@@ -122,9 +122,9 @@ void* check_realloc( void *p, size_t size ) {
 char* check_strdup( char const *s ) {
   if ( s == NULL )
     return NULL;
-  char *const dup = strdup( s );
-  IF_EXIT( dup == NULL, EX_OSERR );
-  return dup;
+  char *const s_dup = strdup( s );
+  IF_EXIT( s_dup == NULL, EX_OSERR );
+  return s_dup;
 }
 
 #ifndef HAVE_FMEMOPEN
