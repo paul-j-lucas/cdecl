@@ -71,35 +71,6 @@ enum c_check {
  */
 
 /**
- * A visitor function to find an AST node having a particular kind.
- *
- * @param ast The `c_ast` to check.
- * @param data The bitwise-or of <code>\ref c_kind</code> (cast to `void*`) to
- * find.
- * @return Returns `true` only if the kind of \a ast is one of \a data.
- */
-bool c_ast_vistor_kind( c_ast_t *ast, void *data );
-
-/**
- * A visitor function to find an AST node having a particular name.
- *
- * @param ast The `c_ast` to check.
- * @param data The least number of names that the scoped name must have.
- * @return Returns `true` only if \a ast has such a scoped name.
- */
-bool c_ast_visitor_name( c_ast_t *ast, void *data );
-
-/**
- * A visitor function to find an AST node having a particular type.
- *
- * @param ast The `c_ast` to check.
- * @param data The bitwise-or of <code>\ref c_type_id_t</code> (cast to
- * `void*`) to find.
- * @return Returns `true` only if the type of \a ast is one of \a data.
- */
-bool c_ast_vistor_type( c_ast_t *ast, void *data );
-
-/**
  * Adds an array to the AST being built.
  *
  * @param ast The `c_ast` to append to.

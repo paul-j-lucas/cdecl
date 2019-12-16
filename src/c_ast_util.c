@@ -247,6 +247,47 @@ static c_type_id_t c_ast_take_storage( c_ast_t *ast ) {
   return storage_type;
 }
 
+/**
+ * A visitor function to find an AST node having a particular kind.
+ *
+ * @param ast The `c_ast` to check.
+ * @param data The bitwise-or of <code>\ref c_kind</code> (cast to `void*`) to
+ * find.
+ * @return Returns `true` only if the kind of \a ast is one of \a data.
+ */
+static bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
+  assert( ast != NULL );
+  c_kind_t const kind = c_kind_data_get( data );
+  return (ast->kind & kind) != K_NONE;
+}
+
+/**
+ * A visitor function to find an AST node having a particular name.
+ *
+ * @param ast The `c_ast` to check.
+ * @param data The least number of names that the scoped name must have.
+ * @return Returns `true` only if \a ast has such a scoped name.
+ */
+static bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
+  assert( ast != NULL );
+  uintptr_t const at_least = REINTERPRET_CAST( uintptr_t, data );
+  return c_ast_sname_count( ast ) >= at_least;
+}
+
+/**
+ * A visitor function to find an AST node having a particular type.
+ *
+ * @param ast The `c_ast` to check.
+ * @param data The bitwise-or of <code>\ref c_type_id_t</code> (cast to
+ * `void*`) to find.
+ * @return Returns `true` only if the type of \a ast is one of \a data.
+ */
+static bool c_ast_vistor_type( c_ast_t *ast, void *data ) {
+  assert( ast != NULL );
+  c_type_id_t const type_id = c_type_id_data_get( data );
+  return (ast->type_id & type_id) != T_NONE;
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
@@ -400,24 +441,6 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast ) {
     } // while
   }
   return ast;
-}
-
-bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
-  assert( ast != NULL );
-  c_kind_t const kind = c_kind_data_get( data );
-  return (ast->kind & kind) != K_NONE;
-}
-
-bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
-  assert( ast != NULL );
-  uintptr_t const at_least = REINTERPRET_CAST( uintptr_t, data );
-  return c_ast_sname_count( ast ) >= at_least;
-}
-
-bool c_ast_vistor_type( c_ast_t *ast, void *data ) {
-  assert( ast != NULL );
-  c_type_id_t const type_id = c_type_id_data_get( data );
-  return (ast->type_id & type_id) != T_NONE;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
