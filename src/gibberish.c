@@ -20,8 +20,7 @@
 
 /**
  * @file
- * Defines functions for printing an AST in gibberish, aka, a C/C++
- * declaration.
+ * Defines functions for printing in gibberish, aka, a C/C++ declaration.
  */
 
 // local

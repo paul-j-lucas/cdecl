@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines functions for printing an AST in pseudo-English.
+ * Defines functions for printing in pseudo-English.
  */
 
 // local

@@ -23,8 +23,7 @@
 
 /**
  * @file
- * Declares functions for printing an AST in gibberish, aka, a C/C++
- * declaration.
+ * Declares functions for printing in gibberish, aka, a C/C++ declaration.
  */
 
 // local
@@ -40,8 +39,7 @@
 
 /**
  * @defgroup printing-gibberish-group Printing Gibberish
- * Declares functions for printing an AST in gibberish, aka, a C/C++
- * declaration.
+ * Declares functions for printing in gibberish, aka, a C/C++ declaration.
  * @{
 
  */

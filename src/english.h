@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Defines functions for printing an AST in pseudo-English.
+ * Defines functions for printing in pseudo-English.
  */
 
 // local
@@ -39,7 +39,7 @@
 
 /**
  * @defgroup printing-english-group Printing English
- * Functions for printing an AST in pseudo-English.
+ * Functions for printing in pseudo-English.
  * @{
  */
 
