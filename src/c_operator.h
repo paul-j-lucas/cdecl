@@ -73,50 +73,50 @@ _GL_INLINE_HEADER_BEGIN
  * operator.
  */
 enum c_oper_id {
-  OP_NONE,
-  OP_EXCLAM,          // !
-  OP_EXCLAM_EQ,       // !=
-  OP_PERCENT,         // %
-  OP_PERCENT_EQ,      // %=
-  OP_AMPER,           // &
-  OP_AMPER2,          // &&
-  OP_AMPER_EQ,        // &=
-  OP_PARENS,          // ()
-  OP_STAR,            // *
-  OP_STAR_EQ,         // *=
-  OP_PLUS,            // +
-  OP_PLUS2,           // ++
-  OP_PLUS_EQ,         // +=
-  OP_COMMA,           // ,
-  OP_MINUS,           // -
-  OP_MINUS2,          // --
-  OP_MINUS_EQ,        // -=
-  OP_ARROW,           // ->
-  OP_ARROW_STAR,      // ->*
-  OP_DOT,             // .
-  OP_DOT_STAR,        // .*
-  OP_SLASH,           // /
-  OP_SLASH_EQ,        // /=
-  OP_COLON2,          // ::
-  OP_LESS,            // <
-  OP_LESS2,           // <<
-  OP_LESS2_EQ,        // <<=
-  OP_LESS_EQ,         // <=
-  OP_LESS_EQ_GREATER, // <=>
-  OP_EQ,              // =
-  OP_EQ2,             // ==
-  OP_GREATER,         // >
-  OP_GREATER_EQ,      // >=
-  OP_GREATER2,        // >>
-  OP_GREATER2_EQ,     // >>=
-  OP_QMARK_COLON,     // ?:
-  OP_BRACKETS,        // []
-  OP_CIRC,            // ^
-  OP_CIRC_EQ,         // ^=
-  OP_PIPE,            // |
-  OP_PIPE_EQ,         // |=
-  OP_PIPE2,           // ||
-  OP_TILDE,           // ~
+  OP_NONE,            ///< No operator.
+  OP_EXCLAM,          ///< The `!` operator.
+  OP_EXCLAM_EQ,       ///< The `!=` operator.
+  OP_PERCENT,         ///< The `%` operator.
+  OP_PERCENT_EQ,      ///< The `%=` operator.
+  OP_AMPER,           ///< The `&` operator.
+  OP_AMPER2,          ///< The `&&` operator.
+  OP_AMPER_EQ,        ///< The `&=` operator.
+  OP_PARENS,          ///< The `()` operator.
+  OP_STAR,            ///< The `*` operator.
+  OP_STAR_EQ,         ///< The `*=` operator.
+  OP_PLUS,            ///< The `+` operator.
+  OP_PLUS2,           ///< The `++` operator.
+  OP_PLUS_EQ,         ///< The `+=` operator.
+  OP_COMMA,           ///< The `,` operator.
+  OP_MINUS,           ///< The `-` operator.
+  OP_MINUS2,          ///< The `--` operator.
+  OP_MINUS_EQ,        ///< The `-=` operator.
+  OP_ARROW,           ///< The `->` operator.
+  OP_ARROW_STAR,      ///< The `->*` operator.
+  OP_DOT,             ///< The `.` operator.
+  OP_DOT_STAR,        ///< The `.*` operator.
+  OP_SLASH,           ///< The `/` operator.
+  OP_SLASH_EQ,        ///< The `/=` operator.
+  OP_COLON2,          ///< The `::` operator.
+  OP_LESS,            ///< The `<` operator.
+  OP_LESS2,           ///< The `<<` operator.
+  OP_LESS2_EQ,        ///< The `<<=` operator.
+  OP_LESS_EQ,         ///< The `<=` operator.
+  OP_LESS_EQ_GREATER, ///< The `<=>` operator.
+  OP_EQ,              ///< The `=` operator.
+  OP_EQ2,             ///< The `==` operator.
+  OP_GREATER,         ///< The `>` operator.
+  OP_GREATER_EQ,      ///< The `>=` operator.
+  OP_GREATER2,        ///< The `>>` operator.
+  OP_GREATER2_EQ,     ///< The `>>=` operator.
+  OP_QMARK_COLON,     ///< The `?:` operator.
+  OP_BRACKETS,        ///< The `[]` operator.
+  OP_CIRC,            ///< The `^` operator.
+  OP_CIRC_EQ,         ///< The `^=` operator.
+  OP_PIPE,            ///< The `|` operator.
+  OP_PIPE_EQ,         ///< The `|=` operator.
+  OP_PIPE2,           ///< The `||` operator.
+  OP_TILDE,           ///< The `~` operator.
 };
 
 /**
