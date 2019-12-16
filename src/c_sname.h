@@ -147,6 +147,8 @@ CDECL_SNAME_INLINE void c_sname_free( c_sname_t *sname ) {
  * something like call this twice in the same `printf()` statement.
  *
  * @sa c_sname_local_name
+ * @sa c_sname_name_at()
+ * @sa c_sname_name_atr()
  * @sa c_sname_scope_name
  */
 char const* c_sname_full_name( c_sname_t const *sname );
@@ -178,6 +180,8 @@ bool c_sname_is_ctor( c_sname_t const *sname );
  * @return Returns said name or the empty string if \a sname is empty.
  *
  * @sa c_sname_full_name
+ * @sa c_sname_name_at()
+ * @sa c_sname_name_atr()
  * @sa c_sname_scope_name
  */
 CDECL_SNAME_INLINE char const* c_sname_local_name( c_sname_t const *sname ) {
@@ -191,6 +195,10 @@ CDECL_SNAME_INLINE char const* c_sname_local_name( c_sname_t const *sname ) {
  * @param offset The offset (starting at 0) of the name to get.
  * @return Returns the name at \a offset or the empty string if \a offset &gt;=
  * c_sname_count().
+ *
+ * @sa c_sname_full_name
+ * @sa c_sname_name_atr()
+ * @sa c_sname_scope_name
  */
 CDECL_SNAME_INLINE char const* c_sname_name_at( c_sname_t const *sname,
                                                 size_t offset ) {
@@ -205,6 +213,10 @@ CDECL_SNAME_INLINE char const* c_sname_name_at( c_sname_t const *sname,
  * @param roffset The reverse offset (starting at 0) of the name to get.
  * @return Returns the name at \a roffset or the empty string if \a roffset
  * &gt;= c_sname_count().
+ *
+ * @sa c_sname_full_name
+ * @sa c_sname_name_at()
+ * @sa c_sname_scope_name
  */
 CDECL_SNAME_INLINE char const* c_sname_name_atr( c_sname_t const *sname,
                                                  size_t roffset ) {
@@ -255,6 +267,8 @@ CDECL_SNAME_INLINE void c_sname_prepend_sname( c_sname_t *dst,
  *
  * @sa c_sname_full_name
  * @sa c_sname_local_name
+ * @sa c_sname_name_at()
+ * @sa c_sname_name_atr()
  */
 char const* c_sname_scope_name( c_sname_t const *sname );
 
