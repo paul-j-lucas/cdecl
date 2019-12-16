@@ -320,6 +320,8 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j );
  * Frees all the memory used by \a ast.
  *
  * @param ast The `c_ast` to free.  May be null.
+ *
+ * @sa c_ast_new()
  */
 void c_ast_free( c_ast_t *ast );
 
@@ -340,6 +342,8 @@ CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
  * @param depth How deep within `()` it is.
  * @param loc A pointer to the token location data.
  * @return Returns a pointer to a new `c_ast`.
+ *
+ * @sa c_ast_free()
  */
 c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc );
 
@@ -454,6 +458,8 @@ CDECL_AST_INLINE char const* c_ast_sname_local_name( c_ast_t const *ast ) {
  * @param offset The offset (starting at 0) of the name to get.
  * @return Returns the name at \a offset or the empty string if \a offset &gt;=
  * c_ast_sname_count().
+ *
+ * @sa c_ast_sname_name_atr()
  */
 CDECL_AST_INLINE char const* c_ast_sname_name_at( c_ast_t const *ast,
                                                   size_t offset ) {
@@ -467,6 +473,8 @@ CDECL_AST_INLINE char const* c_ast_sname_name_at( c_ast_t const *ast,
  * @param roffset The reverse offset (starting at 0) of the name to get.
  * @return Returns the name at \a offset or the empty string if \a offset &gt;=
  * c_ast_sname_count().
+ *
+ * @sa c_ast_sname_name_at()
  */
 CDECL_AST_INLINE char const* c_ast_sname_name_atr( c_ast_t const *ast,
                                                    size_t roffset ) {
