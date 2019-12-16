@@ -593,8 +593,8 @@ c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir, c_ast_visitor_t visitor,
  * @note Function-like arguments are \e not traversed into.  They're considered
  * distinct ASTs.
  */
-CDECL_AST_INLINE bool c_ast_found( c_ast_t const *ast, v_direction_t dir,
-                                   c_ast_visitor_t visitor, void *data ) {
+CDECL_AST_INLINE bool c_ast_find( c_ast_t const *ast, v_direction_t dir,
+                                  c_ast_visitor_t visitor, void *data ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_t *const found_ast = c_ast_visit( nonconst_ast, dir, visitor, data );
   return found_ast != NULL;

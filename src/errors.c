@@ -73,7 +73,7 @@ static inline char const* alignas_lang( void ) {
 }
 
 /**
- * Simple wrapper around `c_ast_found()`.
+ * Simple wrapper around `c_ast_find()`.
  *
  * @param ast The `c_ast` to check.
  * @param visitor The visitor to use.
@@ -83,7 +83,7 @@ static inline char const* alignas_lang( void ) {
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
                                         c_ast_visitor_t visitor,
                                         void *data ) {
-  return !c_ast_found( ast, V_DOWN, visitor, data );
+  return !c_ast_find( ast, V_DOWN, visitor, data );
 }
 
 /**
