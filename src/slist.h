@@ -128,7 +128,7 @@ struct slist {
  */
 struct slist_node {
   slist_node_t *next;                   ///< Pointer to next node or null.
-  void *data;                           ///< Pointer to user data.
+  void         *data;                   ///< Pointer to user data.
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
