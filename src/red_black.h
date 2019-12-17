@@ -117,6 +117,7 @@ typedef bool (*rb_visitor_t)( void *node_data, void *aux_data );
  * @param node A pointer to the node to delete.
  * @return Returns a pointer to the data of \a node.  It is the caller's
  * responsibility to delete said data if necessary.
+ *
  * @sa rb_tree_insert()
  */
 void* rb_node_delete( rb_tree_t *tree, rb_node_t *node );
@@ -137,6 +138,7 @@ rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data );
  * @param tree The red-black tree to free.
  * @param data_free_fn A pointer to a function used to free data associated
  * with each node or null if unnecessary.
+ *
  * @sa rb_tree_new()
  */
 void rb_tree_free( rb_tree_t *tree, rb_data_free_t data_free_fn );
@@ -148,6 +150,7 @@ void rb_tree_free( rb_tree_t *tree, rb_data_free_t data_free_fn );
  * @param data A pointer to the data to insert.
  * @return Returns null if \a data is inserted or a pointer to a node if \a
  * data already exists.
+ *
  * @sa rb_node_delete()
  */
 rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
@@ -157,6 +160,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
  *
  * @param data_cmp_fn A pointer to the data comparison function to use.
  * @return Returns a pointer to a new red-black tree.
+ *
  * @sa rb_tree_free()
  */
 rb_tree_t* rb_tree_new( rb_data_cmp_t data_cmp_fn );

@@ -146,6 +146,7 @@ CDECL_KIND_INLINE void c_kind_data_free( void *data ) {
  *
  * @param data The data to get the `c_kind_t` from.
  * @return Returns the `c_kind_t`.
+ *
  * @sa c_kind_data_new(c_kind_t)
  */
 CDECL_KIND_INLINE c_kind_t c_kind_data_get( void *data ) {
@@ -161,6 +162,7 @@ CDECL_KIND_INLINE c_kind_t c_kind_data_get( void *data ) {
  *
  * @param kind The `c_kind_t` to use.
  * @return Returns said handle.
+ *
  * @sa c_kind_data_free(void*)
  */
 CDECL_KIND_INLINE void* c_kind_data_new( c_kind_t kind ) {

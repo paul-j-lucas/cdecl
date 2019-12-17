@@ -69,6 +69,7 @@ static char        *prompt_buf[2];      ///< Buffers for prompts.
  * disable color prompts.
  *
  * @return Returns `true` only if we're running genuine GNU readline.
+ *
  * @sa https://tiswww.case.edu/php/chet/readline/rltop.html
  * @sa http://stackoverflow.com/a/31333315/99089
  */

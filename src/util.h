@@ -476,6 +476,7 @@ CDECL_UTIL_INLINE bool exactly_one_bit_set( uint64_t n ) {
  * @param flag A pointer to the Boolean flag to be tested and, if `false`,
  * sets it to `true`.
  * @return Returns `true` only if `*flag` is `false` initially.
+ *
  * @sa true_or_set()
  */
 CDECL_UTIL_INLINE bool false_set( bool *flag ) {
@@ -630,6 +631,7 @@ char* strcpy_end( char *dst, char const *src );
  * @param flag A pointer to the Boolean flag to be tested and, if `false`, sets
  * it to `true`.
  * @return Returns `true` only if `*flag` is `true` initially.
+ *
  * @sa false_set()
  */
 CDECL_UTIL_INLINE bool true_or_set( bool *flag ) {
