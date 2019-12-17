@@ -50,17 +50,17 @@ _GL_INLINE_HEADER_BEGIN
  * @{
  */
 
-#define OP_ARGS_UNLIMITED     (~0u)     /**< Unlimited args for operator(). */
+#define C_OP_ARGS_UNLIMITED     (~0u)   /**< Unlimited args for operator(). */
 
 // overloadability
-#define OP_NOT_OVERLOADABLE   0u        /**< Operator is not overloadable. */
-#define OP_UNSPECIFIED        C_FUNC_UNSPECIFIED
-#define OP_MEMBER             C_FUNC_MEMBER
-#define OP_NON_MEMBER         C_FUNC_NON_MEMBER
-#define OP_OVERLOADABLE       (OP_MEMBER | OP_NON_MEMBER)
+#define C_OP_NOT_OVERLOADABLE   0u      /**< Operator is not overloadable. */
+#define C_OP_UNSPECIFIED        C_FUNC_UNSPECIFIED
+#define C_OP_MEMBER             C_FUNC_MEMBER
+#define C_OP_NON_MEMBER         C_FUNC_NON_MEMBER
+#define C_OP_OVERLOADABLE       (C_OP_MEMBER | C_OP_NON_MEMBER)
 
 // bit masks
-#define OP_MASK_OVERLOAD      C_FUNC_MASK_MEMBER
+#define C_OP_MASK_OVERLOAD      C_FUNC_MASK_MEMBER
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -73,50 +73,50 @@ _GL_INLINE_HEADER_BEGIN
  * operator.
  */
 enum c_oper_id {
-  OP_NONE,            ///< No operator.
-  OP_EXCLAM,          ///< The `!` operator.
-  OP_EXCLAM_EQ,       ///< The `!=` operator.
-  OP_PERCENT,         ///< The `%` operator.
-  OP_PERCENT_EQ,      ///< The `%=` operator.
-  OP_AMPER,           ///< The `&` operator.
-  OP_AMPER2,          ///< The `&&` operator.
-  OP_AMPER_EQ,        ///< The `&=` operator.
-  OP_PARENS,          ///< The `()` operator.
-  OP_STAR,            ///< The `*` operator.
-  OP_STAR_EQ,         ///< The `*=` operator.
-  OP_PLUS,            ///< The `+` operator.
-  OP_PLUS2,           ///< The `++` operator.
-  OP_PLUS_EQ,         ///< The `+=` operator.
-  OP_COMMA,           ///< The `,` operator.
-  OP_MINUS,           ///< The `-` operator.
-  OP_MINUS2,          ///< The `--` operator.
-  OP_MINUS_EQ,        ///< The `-=` operator.
-  OP_ARROW,           ///< The `->` operator.
-  OP_ARROW_STAR,      ///< The `->*` operator.
-  OP_DOT,             ///< The `.` operator.
-  OP_DOT_STAR,        ///< The `.*` operator.
-  OP_SLASH,           ///< The `/` operator.
-  OP_SLASH_EQ,        ///< The `/=` operator.
-  OP_COLON2,          ///< The `::` operator.
-  OP_LESS,            ///< The `<` operator.
-  OP_LESS2,           ///< The `<<` operator.
-  OP_LESS2_EQ,        ///< The `<<=` operator.
-  OP_LESS_EQ,         ///< The `<=` operator.
-  OP_LESS_EQ_GREATER, ///< The `<=>` operator.
-  OP_EQ,              ///< The `=` operator.
-  OP_EQ2,             ///< The `==` operator.
-  OP_GREATER,         ///< The `>` operator.
-  OP_GREATER_EQ,      ///< The `>=` operator.
-  OP_GREATER2,        ///< The `>>` operator.
-  OP_GREATER2_EQ,     ///< The `>>=` operator.
-  OP_QMARK_COLON,     ///< The `?:` operator.
-  OP_BRACKETS,        ///< The `[]` operator.
-  OP_CIRC,            ///< The `^` operator.
-  OP_CIRC_EQ,         ///< The `^=` operator.
-  OP_PIPE,            ///< The `|` operator.
-  OP_PIPE_EQ,         ///< The `|=` operator.
-  OP_PIPE2,           ///< The `||` operator.
-  OP_TILDE,           ///< The `~` operator.
+  C_OP_NONE,            ///< No operator.
+  C_OP_EXCLAM,          ///< The `!` operator.
+  C_OP_EXCLAM_EQ,       ///< The `!=` operator.
+  C_OP_PERCENT,         ///< The `%` operator.
+  C_OP_PERCENT_EQ,      ///< The `%=` operator.
+  C_OP_AMPER,           ///< The `&` operator.
+  C_OP_AMPER2,          ///< The `&&` operator.
+  C_OP_AMPER_EQ,        ///< The `&=` operator.
+  C_OP_PARENS,          ///< The `()` operator.
+  C_OP_STAR,            ///< The `*` operator.
+  C_OP_STAR_EQ,         ///< The `*=` operator.
+  C_OP_PLUS,            ///< The `+` operator.
+  C_OP_PLUS2,           ///< The `++` operator.
+  C_OP_PLUS_EQ,         ///< The `+=` operator.
+  C_OP_COMMA,           ///< The `,` operator.
+  C_OP_MINUS,           ///< The `-` operator.
+  C_OP_MINUS2,          ///< The `--` operator.
+  C_OP_MINUS_EQ,        ///< The `-=` operator.
+  C_OP_ARROW,           ///< The `->` operator.
+  C_OP_ARROW_STAR,      ///< The `->*` operator.
+  C_OP_DOT,             ///< The `.` operator.
+  C_OP_DOT_STAR,        ///< The `.*` operator.
+  C_OP_SLASH,           ///< The `/` operator.
+  C_OP_SLASH_EQ,        ///< The `/=` operator.
+  C_OP_COLON2,          ///< The `::` operator.
+  C_OP_LESS,            ///< The `<` operator.
+  C_OP_LESS2,           ///< The `<<` operator.
+  C_OP_LESS2_EQ,        ///< The `<<=` operator.
+  C_OP_LESS_EQ,         ///< The `<=` operator.
+  C_OP_LESS_EQ_GREATER, ///< The `<=>` operator.
+  C_OP_EQ,              ///< The `=` operator.
+  C_OP_EQ2,             ///< The `==` operator.
+  C_OP_GREATER,         ///< The `>` operator.
+  C_OP_GREATER_EQ,      ///< The `>=` operator.
+  C_OP_GREATER2,        ///< The `>>` operator.
+  C_OP_GREATER2_EQ,     ///< The `>>=` operator.
+  C_OP_QMARK_COLON,     ///< The `?:` operator.
+  C_OP_BRACKETS,        ///< The `[]` operator.
+  C_OP_CIRC,            ///< The `^` operator.
+  C_OP_CIRC_EQ,         ///< The `^=` operator.
+  C_OP_PIPE,            ///< The `|` operator.
+  C_OP_PIPE_EQ,         ///< The `|=` operator.
+  C_OP_PIPE2,           ///< The `||` operator.
+  C_OP_TILDE,           ///< The `~` operator.
 };
 
 /**
@@ -179,8 +179,8 @@ CDECL_OP_INLINE bool op_is_ambiguous( c_operator_t const *op ) {
  * Gets whether the operator is a member, non-member, or unspecified.
  *
  * @param ast The `c_ast` of the operator.
- * @return Returns one of <code>\ref OP_MEMBER</code>,
- * <code>\ref OP_NON_MEMBER</code>, or <code>\ref OP_UNSPECIFIED</code>.
+ * @return Returns one of <code>\ref C_OP_MEMBER</code>,
+ * <code>\ref C_OP_NON_MEMBER</code>, or <code>\ref C_OP_UNSPECIFIED</code>.
  */
 unsigned op_get_overload( c_ast_t const *ast );
 

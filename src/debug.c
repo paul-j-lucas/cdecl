@@ -120,12 +120,12 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
     );
 
     switch ( ast->align.kind ) {
-      case ALIGNAS_NONE:
+      case C_ALIGNAS_NONE:
         break;
-      case ALIGNAS_EXPR:
+      case C_ALIGNAS_EXPR:
         INDENT_PRINT( "alignas_expr = %u,\n", ast->align.as.expr );
         break;
-      case ALIGNAS_TYPE:
+      case C_ALIGNAS_TYPE:
         c_ast_debug( ast->align.as.type_ast, indent, "alignas_type_ast", dout );
         FPUTS( ",\n", dout );
         break;

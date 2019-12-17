@@ -76,7 +76,7 @@ static void print_options( void ) {
   printf( "  %sdebug\n", maybe_no( opt_debug ) );
 #endif /* ENABLE_CDECL_DEBUG */
   printf( "  %sexplain-by-default\n", maybe_no( opt_explain ) );
-  printf( " %sgraphs\n", opt_graph == GRAPH_DI ? " di" : opt_graph == GRAPH_TRI ? "tri" : " no" );
+  printf( " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
   printf( "    lang=%s\n", C_LANG_NAME() );
   printf( "  %sprompt\n", maybe_no( prompt[0][0] != '\0' ) );
   printf( "  %ssemicolon\n", maybe_no( opt_semicolon ) );
@@ -117,7 +117,7 @@ static void set_debug( bool enabled, c_loc_t const *loc ) {
  */
 static void set_digraphs( bool enabled, c_loc_t const *loc ) {
   (void)loc;
-  opt_graph = enabled ? GRAPH_DI : GRAPH_NONE;
+  opt_graph = enabled ? C_GRAPH_DI : C_GRAPH_NONE;
 }
 
 /**
@@ -160,7 +160,7 @@ static void set_semicolon( bool enabled, c_loc_t const *loc ) {
  * @param loc The location of the option name.
  */
 static void set_trigraphs( bool enabled, c_loc_t const *loc ) {
-  opt_graph = enabled ? GRAPH_TRI : GRAPH_NONE;
+  opt_graph = enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
   if ( opt_graph && opt_lang >= LANG_CPP_17 )
     print_warning( loc,
       "trigraphs are no longer supported in %s", C_LANG_NAME()
@@ -198,7 +198,7 @@ void set_option( c_loc_t const *loc, char const *opt_name ) {
   c_lang_id_t const new_lang = c_lang_find( opt_name );
   if ( new_lang != LANG_NONE ) {
     c_lang_set( new_lang );
-    if ( opt_graph == GRAPH_TRI ) {
+    if ( opt_graph == C_GRAPH_TRI ) {
       loc = NULL;
       set_trigraphs( /*enabled=*/true, loc );
     }

@@ -83,7 +83,7 @@ static inline char const* alignas_lang( void ) {
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
                                         c_ast_visitor_t visitor,
                                         void *data ) {
-  return !c_ast_find( ast, V_DOWN, visitor, data );
+  return !c_ast_find( ast, C_VISIT_DOWN, visitor, data );
 }
 
 /**
@@ -106,7 +106,7 @@ static inline char const* plural_s( uint64_t n ) {
  */
 static bool c_ast_check_alignas( c_ast_t *ast ) {
   assert( ast != NULL );
-  assert( ast->align.kind != ALIGNAS_NONE );
+  assert( ast->align.kind != C_ALIGNAS_NONE );
 
   if ( (ast->type_id & T_REGISTER) != T_NONE ) {
     print_error( &ast->loc,
@@ -123,9 +123,9 @@ static bool c_ast_check_alignas( c_ast_t *ast ) {
   }
 
   switch ( ast->align.kind ) {
-    case ALIGNAS_NONE:
+    case C_ALIGNAS_NONE:
       break;
-    case ALIGNAS_EXPR: {
+    case C_ALIGNAS_EXPR: {
       unsigned const alignment = ast->align.as.expr;
       if ( !at_most_one_bit_set( alignment ) ) {
         print_error( &ast->loc,
@@ -135,8 +135,8 @@ static bool c_ast_check_alignas( c_ast_t *ast ) {
       }
       break;
     }
-    case ALIGNAS_TYPE:
-      if ( !c_ast_check( ast->align.as.type_ast, CHECK_DECL ) )
+    case C_ALIGNAS_TYPE:
+      if ( !c_ast_check( ast->align.as.type_ast, C_CHECK_DECL ) )
         return false;
       break;
   } // switch
@@ -268,7 +268,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
 
   c_ast_t const *const storage_ast =
-    c_ast_find_type( nonconst_ast, V_DOWN, T_MASK_STORAGE );
+    c_ast_find_type( nonconst_ast, C_VISIT_DOWN, T_MASK_STORAGE );
 
   if ( storage_ast != NULL ) {
     c_type_id_t const storage_type = storage_ast->type_id & T_MASK_STORAGE;
@@ -331,7 +331,7 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( c_mode == MODE_GIBBERISH_TO_ENGLISH &&
+  if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
        (ast->type_id & T_ENUM) != T_NONE &&
        (ast->type_id & (T_STRUCT | T_CLASS)) != T_NONE ) {
     print_error( &ast->loc,
@@ -429,7 +429,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
         break;
 
       case K_VARIADIC:
-        if ( ast->kind == K_OPERATOR && ast->as.oper.oper_id != OP_PARENS ) {
+        if ( ast->kind == K_OPERATOR && ast->as.oper.oper_id != C_OP_PARENS ) {
           print_error( &arg_ast->loc,
             "%s %s can not have a variadic argument",
             L_OPERATOR, op_get( ast->as.oper.oper_id )->name
@@ -602,7 +602,7 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
     c_ast_t const *ret_ast = NULL;
     switch ( ast->kind ) {
       case K_OPERATOR:                // C& operator=(C const&)
-        if ( ast->as.oper.oper_id != OP_EQ )
+        if ( ast->as.oper.oper_id != C_OP_EQ )
           goto only_special;
         ret_ast = ast->as.oper.ret_ast;
         if ( !c_ast_is_ref_to_type( ret_ast, T_CLASS_STRUCT_UNION ) )
@@ -679,7 +679,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( (op->flags & OP_MASK_OVERLOAD) == OP_NOT_OVERLOADABLE ) {
+  if ( (op->flags & C_OP_MASK_OVERLOAD) == C_OP_NOT_OVERLOADABLE ) {
     print_error( &ast->loc,
       "%s %s can not be overloaded",
       L_OPERATOR, op->name
@@ -688,7 +688,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
   }
 
   switch ( ast->as.oper.oper_id ) {
-    case OP_ARROW: {
+    case C_OP_ARROW: {
       //
       // Special case for operator-> that must return a pointer to a struct,
       // union, or class.
@@ -720,21 +720,21 @@ static bool c_ast_check_oper_args( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind == K_OPERATOR );
 
-  unsigned user_overload_flags = ast->as.oper.flags & OP_MASK_OVERLOAD;
+  unsigned user_overload_flags = ast->as.oper.flags & C_OP_MASK_OVERLOAD;
   c_operator_t const *const op = op_get( ast->as.oper.oper_id );
-  unsigned const op_overload_flags = op->flags & OP_MASK_OVERLOAD;
+  unsigned const op_overload_flags = op->flags & C_OP_MASK_OVERLOAD;
   size_t const n_args = c_ast_args_count( ast );
 
   char const *const op_type =
-    op_overload_flags == OP_MEMBER     ? L_MEMBER     :
-    op_overload_flags == OP_NON_MEMBER ? L_NON_MEMBER :
+    op_overload_flags == C_OP_MEMBER     ? L_MEMBER     :
+    op_overload_flags == C_OP_NON_MEMBER ? L_NON_MEMBER :
     "";
   char const *const user_type =
-    user_overload_flags == OP_MEMBER     ? L_MEMBER     :
-    user_overload_flags == OP_NON_MEMBER ? L_NON_MEMBER :
+    user_overload_flags == C_OP_MEMBER     ? L_MEMBER     :
+    user_overload_flags == C_OP_NON_MEMBER ? L_NON_MEMBER :
     op_type;
 
-  if ( user_overload_flags == OP_UNSPECIFIED ) {
+  if ( user_overload_flags == C_OP_UNSPECIFIED ) {
     //
     // If the user didn't specify either member or non-member explicitly...
     //
@@ -743,19 +743,19 @@ static bool c_ast_check_oper_args( c_ast_t const *ast ) {
       // ...and the operator can not be both, then assume the user meant the
       // one the operator can only be.
       //
-      case OP_MEMBER:
-      case OP_NON_MEMBER:
+      case C_OP_MEMBER:
+      case C_OP_NON_MEMBER:
         user_overload_flags = op_overload_flags;
         break;
       //
       // ...and the operator can be either one, then infer which one based on
       // the number of arguments given.
       //
-      case OP_MEMBER | OP_NON_MEMBER:
+      case C_OP_MEMBER | C_OP_NON_MEMBER:
         if ( n_args == op->args_min )
-          user_overload_flags = OP_MEMBER;
+          user_overload_flags = C_OP_MEMBER;
         else if ( n_args == op->args_max )
-          user_overload_flags = OP_NON_MEMBER;
+          user_overload_flags = C_OP_NON_MEMBER;
         break;
     } // switch
   }
@@ -778,20 +778,20 @@ static bool c_ast_check_oper_args( c_ast_t const *ast ) {
   bool const is_ambiguous = op_is_ambiguous( op );
   unsigned req_args_min = 0, req_args_max = 0;
   switch ( user_overload_flags ) {
-    case OP_NON_MEMBER:
+    case C_OP_NON_MEMBER:
       // Non-member operators must always take at least one argument (the enum,
       // class, struct, or union for which it's overloaded).
       req_args_min = is_ambiguous ? 1 : op->args_max;
       req_args_max = op->args_max;
       break;
-    case OP_MEMBER:
-      if ( op->args_max != OP_ARGS_UNLIMITED ) {
+    case C_OP_MEMBER:
+      if ( op->args_max != C_OP_ARGS_UNLIMITED ) {
         req_args_min = op->args_min;
         req_args_max = is_ambiguous ? 1 : op->args_min;
         break;
       }
       // FALLTHROUGH
-    case OP_UNSPECIFIED:
+    case C_OP_UNSPECIFIED:
       req_args_min = op->args_min;
       req_args_max = op->args_max;
       break;
@@ -826,7 +826,7 @@ same: print_error( &ast->loc,
     return false;
   }
 
-  bool const is_user_non_member = user_overload_flags == OP_NON_MEMBER;
+  bool const is_user_non_member = user_overload_flags == C_OP_NON_MEMBER;
   if ( is_user_non_member ) {
     //
     // Ensure non-member operators are not const, defaulted, deleted,
@@ -864,7 +864,7 @@ same: print_error( &ast->loc,
       return false;
     }
   }
-  else if ( user_overload_flags == OP_MEMBER ) {
+  else if ( user_overload_flags == C_OP_MEMBER ) {
     //
     // Ensure member operators are not friend.
     //
@@ -881,8 +881,8 @@ same: print_error( &ast->loc,
   }
 
   switch ( ast->as.oper.oper_id ) {
-    case OP_MINUS2:
-    case OP_PLUS2: {
+    case C_OP_MINUS2:
+    case C_OP_PLUS2: {
       //
       // Ensure that the dummy argument for postfix -- or ++ is type int (or is
       // a typedef of int).
@@ -1145,7 +1145,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   bool const is_func_arg = REINTERPRET_CAST( bool, data );
 
-  if ( ast->align.kind != ALIGNAS_NONE && !c_ast_check_alignas( ast ) )
+  if ( ast->align.kind != C_ALIGNAS_NONE && !c_ast_check_alignas( ast ) )
     return VISITOR_ERROR_FOUND;
 
   switch ( ast->kind ) {
@@ -1503,7 +1503,7 @@ static bool error_unknown_type( c_ast_t const *ast ) {
 
 bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
   assert( ast != NULL );
-  if ( check == CHECK_CAST && !c_ast_check_cast( ast ) )
+  if ( check == C_CHECK_CAST && !c_ast_check_cast( ast ) )
     return false;
   if ( !c_ast_check_errors( ast, false ) )
     return false;

@@ -307,7 +307,7 @@ static inline bool is_long_int( c_type_id_t type_id ) {
  * @return Returns said literal.
  */
 static inline char const* c_type_literal( c_type_t const *t, bool is_error ) {
-  bool const is_english = c_mode == MODE_ENGLISH_TO_GIBBERISH;
+  bool const is_english = c_mode == C_ENGLISH_TO_GIBBERISH;
   return is_english == is_error && t->english != NULL ? t->english : t->literal;
 }
 
@@ -455,7 +455,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
 
     bool const brackets =
       C_LANG_IS_CPP() &&
-      c_mode == MODE_ENGLISH_TO_GIBBERISH &&
+      c_mode == C_ENGLISH_TO_GIBBERISH &&
       !is_error;
 
     bool comma = false;

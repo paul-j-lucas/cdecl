@@ -68,7 +68,7 @@
  * @param MODE The `c_mode` we're asserting.
  */
 #define ASSERT_MODE(MODE) \
-  BLOCK( if ( c_mode != MODE_ ## MODE ) return Y_ERROR; )
+  BLOCK( if ( c_mode != C_ ## MODE ) return Y_ERROR; )
 
 /**
  * Sets <code>\ref lexer_token</code> to the current Flex token.
@@ -378,7 +378,7 @@ static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   for ( cdecl_keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
     if ( strcmp( s, k->literal ) != 0 )
       continue;
-    if ( c_mode == MODE_ENGLISH_TO_GIBBERISH ||
+    if ( c_mode == C_ENGLISH_TO_GIBBERISH ||
          (k->c_keyword_synonym && k->allow_explain) )
       return k;
     break;
@@ -590,7 +590,7 @@ void lexer_reset( bool hard_reset ) {
     is_eof = false;
     yylineno = 0;
   }
-  c_mode = MODE_ENGLISH_TO_GIBBERISH;
+  c_mode = C_ENGLISH_TO_GIBBERISH;
   input_len = input_sent = 0;
   lexer_find_typedef = true;
   newline();
@@ -772,7 +772,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
         find_c_keyword:
                 NO_OP;
                 c_keyword_t const *ck = c_keyword_find( lexer_token, opt_lang );
-                if ( ck == NULL && c_mode == MODE_ENGLISH_TO_GIBBERISH ) {
+                if ( ck == NULL && c_mode == C_ENGLISH_TO_GIBBERISH ) {
                   //
                   // We have to look-up attribute names when parsing English
                   // because there can't be any special syntax for them, e.g.:

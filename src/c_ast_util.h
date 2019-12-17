@@ -59,8 +59,8 @@ struct c_ast_pair {
  * The kind of semantic checks to perform on an AST.
  */
 enum c_check {
-  CHECK_CAST,                           ///< Perform checks for casts.
-  CHECK_DECL                            ///< Perform checks for declarations.
+  C_CHECK_CAST,                         ///< Perform checks for casts.
+  C_CHECK_DECL                          ///< Perform checks for declarations.
 };
 
 ///////////////////////////////////////////////////////////////////////////////

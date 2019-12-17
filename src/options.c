@@ -316,8 +316,8 @@ static void parse_options( int argc, char const *argv[] ) {
       break;
     SET_OPTION( opt );
     switch ( opt ) {
-      case '2': opt_graph       = GRAPH_DI;                   break;
-      case '3': opt_graph       = GRAPH_TRI;                  break;
+      case '2': opt_graph       = C_GRAPH_DI;                 break;
+      case '3': opt_graph       = C_GRAPH_TRI;                break;
       case 'a': opt_alt_tokens  = true;                       break;
       case 'c': opt_conf_file   = optarg;                     break;
       case 'C': opt_no_conf     = true;                       break;

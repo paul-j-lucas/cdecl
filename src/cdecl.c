@@ -107,11 +107,11 @@ int main( int argc, char const **argv ) {
   if ( !opt_no_conf )
     read_conf_file();
   opt_conf_file = NULL;                 // don't print in errors any more
-  c_init = INIT_READ_CONF;
+  c_init = C_INIT_READ_CONF;
 
   // ...
 
-  c_init = INIT_DONE;
+  c_init = C_INIT_DONE;
   bool const ok = parse_argv( argc, argv );
   exit( ok ? EX_OK : EX_DATAERR );
 }

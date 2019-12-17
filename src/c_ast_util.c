@@ -239,7 +239,8 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
 static c_type_id_t c_ast_take_storage( c_ast_t *ast ) {
   assert( ast != NULL );
   c_type_id_t storage_type = T_NONE;
-  c_ast_t *const found = c_ast_find_kind( ast, V_DOWN, K_BUILTIN | K_TYPEDEF );
+  c_ast_t *const found
+    = c_ast_find_kind( ast, C_VISIT_DOWN, K_BUILTIN | K_TYPEDEF );
   if ( found != NULL ) {
     storage_type = found->type_id & (T_MASK_ATTRIBUTE | T_MASK_STORAGE);
     found->type_id &= ~(T_MASK_ATTRIBUTE | T_MASK_STORAGE);
@@ -359,7 +360,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
 
   if ( type_ast->parent == NULL ) {
     c_ast_t *const placeholder =
-      c_ast_find_kind( decl_ast, V_DOWN, K_PLACEHOLDER );
+      c_ast_find_kind( decl_ast, C_VISIT_DOWN, K_PLACEHOLDER );
     if ( placeholder != NULL ) {
       if ( type_ast->depth >= decl_ast->depth ) {
         //
@@ -397,7 +398,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
 
 c_sname_t c_ast_take_name( c_ast_t *ast ) {
   assert( ast != NULL );
-  c_sname_t *const found = c_ast_find_name( ast, V_DOWN );
+  c_sname_t *const found = c_ast_find_name( ast, C_VISIT_DOWN );
   c_sname_t rv;
   if ( found == NULL ) {
     c_sname_init( &rv );
@@ -410,7 +411,7 @@ c_sname_t c_ast_take_name( c_ast_t *ast ) {
 
 bool c_ast_take_typedef( c_ast_t *ast ) {
   assert( ast != NULL );
-  c_ast_t *const found = c_ast_find_type( ast, V_DOWN, T_TYPEDEF );
+  c_ast_t *const found = c_ast_find_type( ast, C_VISIT_DOWN, T_TYPEDEF );
   if ( found != NULL ) {
     found->type_id &= ~T_TYPEDEF;
     return true;

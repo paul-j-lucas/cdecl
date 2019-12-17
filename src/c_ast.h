@@ -77,9 +77,9 @@ _GL_INLINE_HEADER_BEGIN
  * The argument type for the alignas specifier.
  */
 enum c_alignas_arg {
-  ALIGNAS_NONE,                         ///< No alignas specifier.
-  ALIGNAS_EXPR,                         ///< `alignas(` _expr_ `)`
-  ALIGNAS_TYPE                          ///< `alignas(` _type_ `)`
+  C_ALIGNAS_NONE,                       ///< No alignas specifier.
+  C_ALIGNAS_EXPR,                       ///< `alignas(` _expr_ `)`
+  C_ALIGNAS_TYPE                        ///< `alignas(` _type_ `)`
 };
 
 /**
@@ -97,8 +97,8 @@ struct c_alignas {
  * The direction to traverse an AST using `c_ast_visit()`.
  */
 enum v_direction {
-  V_DOWN,                               ///< Root to leaves.
-  V_UP                                  ///< Leaf to root.
+  C_VISIT_DOWN,                         ///< Root to leaves.
+  C_VISIT_UP                            ///< Leaf to root.
 };
 
 ///////////////////////////////////////////////////////////////////////////////

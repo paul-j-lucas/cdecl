@@ -46,9 +46,9 @@
  * Di/Trigraph mode.
  */
 enum c_graph {
-  GRAPH_NONE,                           ///< Ordinary characters.
-  GRAPH_DI,                             ///< Digraphs.
-  GRAPH_TRI                             ///< Trigraphs.
+  C_GRAPH_NONE,                         ///< Ordinary characters.
+  C_GRAPH_DI,                           ///< Digraphs.
+  C_GRAPH_TRI                           ///< Trigraphs.
 };
 
 /**
@@ -61,9 +61,9 @@ enum c_graph {
  * between more initialization states becomes needed in the future.
  */
 enum c_init {
-  INIT_BEGIN,                           ///< Very beginning of initialization.
-  INIT_READ_CONF,                       ///< Read configuration file.
-  INIT_DONE                             ///< Initialization done.
+  C_INIT_BEGIN,                         ///< Very beginning of initialization.
+  C_INIT_READ_CONF,                     ///< Read configuration file.
+  C_INIT_DONE                           ///< Initialization done.
 };
 
 /**
@@ -85,8 +85,8 @@ struct c_loc {
  * Mode of operation.
  */
 enum c_mode {
-  MODE_ENGLISH_TO_GIBBERISH,            ///< Convert English into gibberish.
-  MODE_GIBBERISH_TO_ENGLISH             ///< Decipher gibberish into English.
+  C_ENGLISH_TO_GIBBERISH,               ///< Convert English into gibberish.
+  C_GIBBERISH_TO_ENGLISH                ///< Decipher gibberish into English.
 };
 
 typedef struct c_alignas        c_alignas_t;

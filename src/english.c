@@ -79,7 +79,7 @@ static void c_ast_english_func_args( c_ast_arg_t const *arg, FILE *eout ) {
       //
       // there's no "as <english>" part.
       //
-      c_sname_t const *const sname = c_ast_find_name( arg_ast, V_DOWN );
+      c_sname_t const *const sname = c_ast_find_name( arg_ast, C_VISIT_DOWN );
       if ( sname != NULL ) {
         c_sname_english( sname, eout );
         FPRINTF( eout, " %s ", L_AS );
@@ -95,7 +95,7 @@ static void c_ast_english_func_args( c_ast_arg_t const *arg, FILE *eout ) {
     }
 
     c_ast_t *const nonconst_arg = CONST_CAST( c_ast_t*, arg_ast );
-    c_ast_visit( nonconst_arg, V_DOWN, c_ast_visitor_english, eout );
+    c_ast_visit( nonconst_arg, C_VISIT_DOWN, c_ast_visitor_english, eout );
   } // for
 
   FPUTC( ')', eout );
@@ -145,8 +145,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
         case K_OPERATOR: {
           unsigned const overload_flags = op_get_overload( ast );
           char const *const op_literal =
-            overload_flags == OP_MEMBER     ? L_MEMBER      :
-            overload_flags == OP_NON_MEMBER ? L_NON_MEMBER  :
+            overload_flags == C_OP_MEMBER     ? L_MEMBER      :
+            overload_flags == C_OP_NON_MEMBER ? L_NON_MEMBER  :
             "";
           FPRINTF( eout, "%s%s", SP_AFTER( op_literal ) );
           break;
@@ -236,18 +236,18 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
 
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_visit( nonconst_ast, V_DOWN, c_ast_visitor_english, eout );
+  c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, eout );
 
   switch ( ast->align.kind ) {
-    case ALIGNAS_NONE:
+    case C_ALIGNAS_NONE:
       break;
-    case ALIGNAS_EXPR:
+    case C_ALIGNAS_EXPR:
       if ( ast->align.as.expr > 0 )
         FPRINTF( eout,
           " %s %s %u %s", L_ALIGNED, L_AS, ast->align.as.expr, L_BYTES
         );
       break;
-    case ALIGNAS_TYPE:
+    case C_ALIGNAS_TYPE:
       FPRINTF( eout, " %s %s ", L_ALIGNED, L_AS );
       c_ast_english( ast->align.as.type_ast, eout );
       break;

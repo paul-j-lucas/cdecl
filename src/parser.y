@@ -507,7 +507,7 @@ static bool explain_type_decl( c_alignas_t const *align,
       /* suppress warning */;
   } // switch
 
-  if ( !c_ast_check( ast, CHECK_DECL ) )
+  if ( !c_ast_check( ast, C_CHECK_DECL ) )
     return false;
 
   if ( ast->kind == K_USER_DEF_CONVERSION ) {
@@ -562,11 +562,11 @@ static bool explain_type_decl( c_alignas_t const *align,
  * @return Returns `true` only of `_Noreturn` is OK.
  */
 static bool _Noreturn_ok( c_loc_t const *loc ) {
-  if ( c_init < INIT_READ_CONF || (opt_lang & LANG_C_MIN(11)) != LANG_NONE )
+  if ( c_init < C_INIT_READ_CONF || (opt_lang & LANG_C_MIN(11)) != LANG_NONE )
     return true;
   print_error( loc, "\"%s\" not supported in %s", lexer_token, C_LANG_NAME() );
   if ( opt_lang >= LANG_CPP_11 ) {
-    if ( c_mode == MODE_ENGLISH_TO_GIBBERISH )
+    if ( c_mode == C_ENGLISH_TO_GIBBERISH )
       print_hint( "\"%s\"", L_NORETURN );
     else
       print_hint( "[[%s]]", L_NORETURN );
@@ -631,7 +631,7 @@ static void print_type_as_typedef( c_typedef_t const *type ) {
   size_t scope_close_braces_to_print = 0;
   c_type_id_t sn_type = T_NONE;
 
-  c_sname_t const *const sname = c_ast_find_name( type->ast, V_DOWN );
+  c_sname_t const *const sname = c_ast_find_name( type->ast, C_VISIT_DOWN );
   if ( sname != NULL && c_sname_count( sname ) > 1 ) {
     sn_type = c_sname_type( sname );
     assert( sn_type != T_NONE );
@@ -1241,7 +1241,7 @@ cast_english
       DUMP_AST( "decl_english_ast", $4.ast );
       DUMP_END();
 
-      bool const ok = c_ast_check( $4.ast, CHECK_CAST );
+      bool const ok = c_ast_check( $4.ast, C_CHECK_CAST );
 
       if ( ok ) {
         FPUTC( '(', fout );
@@ -1267,10 +1267,10 @@ cast_english
 
       bool ok = false;
 
-      if ( c_init >= INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
         print_error( &@1, "%s not supported in %s", $1, C_LANG_NAME() );
       }
-      else if ( (ok = c_ast_check( $5.ast, CHECK_CAST )) ) {
+      else if ( (ok = c_ast_check( $5.ast, C_CHECK_CAST )) ) {
         FPRINTF( fout, "%s<", $1 );
         c_ast_gibberish_cast( $5.ast, fout );
         FPRINTF( fout, ">(%s)\n", c_sname_full_name( &$3 ) );
@@ -1327,12 +1327,12 @@ declare_english
       DUMP_SNAME( "sname", &$2 );
       DUMP_TYPE( "storage_class_list_english_type_opt", $4 );
       switch ( $6.kind ) {
-        case ALIGNAS_NONE:
+        case C_ALIGNAS_NONE:
           break;
-        case ALIGNAS_EXPR:
+        case C_ALIGNAS_EXPR:
           DUMP_NUM( "alignas_specifier_english.as.expr", $6.as.expr );
           break;
-        case ALIGNAS_TYPE:
+        case C_ALIGNAS_TYPE:
           DUMP_AST( "alignas_specifier_english.as.type_ast", $6.as.type_ast );
           break;
       } // switch
@@ -1340,7 +1340,7 @@ declare_english
       $5.ast->loc = @2;
       C_TYPE_ADD( &$5.ast->type_id, $4, @4 );
 
-      if ( $6.kind != ALIGNAS_NONE ) {
+      if ( $6.kind != C_ALIGNAS_NONE ) {
         $5.ast->align = $6;
         if ( ($5.ast->type_id & T_TYPEDEF) != T_NONE ) {
           // See comment in explain_type_decl().
@@ -1349,7 +1349,7 @@ declare_english
         }
       }
 
-      C_AST_CHECK( $5.ast, CHECK_DECL );
+      C_AST_CHECK( $5.ast, C_CHECK_DECL );
 
       DUMP_AST( "decl_english_ast", $5.ast );
       DUMP_END();
@@ -1379,7 +1379,7 @@ declare_english
       DUMP_AST( "oper_decl_english_ast", $6.ast );
       DUMP_END();
 
-      C_AST_CHECK( $6.ast, CHECK_DECL );
+      C_AST_CHECK( $6.ast, C_CHECK_DECL );
       c_ast_gibberish_declare( $6.ast, G_DECL_NONE, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
@@ -1402,7 +1402,7 @@ declare_english
       ast->sname = $6;
       ast->type_id = $2;
       c_ast_set_parent( $8.ast, ast );
-      C_AST_CHECK( ast, CHECK_DECL );
+      C_AST_CHECK( ast, C_CHECK_DECL );
 
       c_ast_gibberish_declare( ast, G_DECL_NONE, fout );
       if ( opt_semicolon )
@@ -1470,12 +1470,12 @@ alignas_specifier_english_opt
 alignas_specifier_english
   : Y_ALIGNED as_opt Y_NUMBER bytes_opt
     {
-      $$.kind = ALIGNAS_EXPR;
+      $$.kind = C_ALIGNAS_EXPR;
       $$.as.expr = (unsigned)$3;
     }
   | Y_ALIGNED as_opt decl_english_ast
     {
-      $$.kind = ALIGNAS_TYPE;
+      $$.kind = C_ALIGNAS_TYPE;
       $$.as.type_ast = $3.ast;
     }
   | Y_ALIGNED as_opt error
@@ -1537,7 +1537,7 @@ define_english
       //
       bool ok = c_type_add( &$5.ast->type_id, T_TYPEDEF, &@4 ) &&
                 c_type_add( &$5.ast->type_id, $4, &@4 ) &&
-                c_ast_check( $5.ast, CHECK_DECL );
+                c_ast_check( $5.ast, C_CHECK_DECL );
 
       if ( ok ) {
         // Once the semantic checks pass, remove the T_TYPEDEF.
@@ -1575,7 +1575,7 @@ explain_c
       DUMP_SNAME( "sname_c_opt", &$7 );
 
       c_ast_t *const ast = c_ast_patch_placeholder( $3.ast, $5.ast );
-      bool const ok = c_ast_check( ast, CHECK_CAST );
+      bool const ok = c_ast_check( ast, C_CHECK_CAST );
       if ( ok ) {
         FPUTS( L_CAST, fout );
         if ( !c_sname_empty( &$7 ) ) {
@@ -1611,12 +1611,12 @@ explain_c
       DUMP_END();
 
       bool ok = false;
-      if ( c_init >= INIT_READ_CONF && !C_LANG_IS_CPP() ) {
+      if ( c_init >= C_INIT_READ_CONF && !C_LANG_IS_CPP() ) {
         print_error( &@2, "%s_cast not supported in %s", $2, C_LANG_NAME() );
       }
       else {
         c_ast_t *const ast = c_ast_patch_placeholder( $4.ast, $6.ast );
-        if ( (ok = c_ast_check( ast, CHECK_CAST )) ) {
+        if ( (ok = c_ast_check( ast, C_CHECK_CAST )) ) {
           FPRINTF( fout, "%s %s ", $2, L_CAST );
           c_sname_english( &$9, fout );
           FPRINTF( fout, " %s ", L_INTO );
@@ -1634,12 +1634,12 @@ explain_c
     {
       DUMP_START( "explain_c", "EXPLAIN ALIGNAS(...) type_c_ast decl_c_ast" );
       switch ( $2.kind ) {
-        case ALIGNAS_NONE:
+        case C_ALIGNAS_NONE:
           break;
-        case ALIGNAS_EXPR:
+        case C_ALIGNAS_EXPR:
           DUMP_NUM( "alignas_specifier_c.as.expr", $2.as.expr );
           break;
-        case ALIGNAS_TYPE:
+        case C_ALIGNAS_TYPE:
           DUMP_AST( "alignas_specifier_c.as.type_ast", $2.as.type_ast );
           break;
       } // switch
@@ -1680,7 +1680,7 @@ explain_c
       DUMP_AST( "user_defined_conversion_decl_c_ast", $2.ast );
       DUMP_END();
 
-      C_AST_CHECK( $2.ast, CHECK_DECL );
+      C_AST_CHECK( $2.ast, C_CHECK_DECL );
       FPRINTF( fout, "%s ", L_DECLARE );
       c_ast_english( $2.ast, fout );
       FPUTC( '\n', fout );
@@ -1704,7 +1704,7 @@ explain_c
       ast->type_id = $6;
       ast->as.constructor.args = $4;
 
-      bool const ok = c_ast_check( ast, CHECK_DECL );
+      bool const ok = c_ast_check( ast, C_CHECK_DECL );
       if ( ok ) {
         char const *const local_name = c_sname_local_name( &$2 );
         char const *const scope_name = c_sname_scope_name( &$2 );
@@ -1738,7 +1738,7 @@ explain_c
       c_ast_t *const ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
       ast->type_id = $2 | $7;
 
-      bool const ok = c_ast_check( ast, CHECK_DECL );
+      bool const ok = c_ast_check( ast, C_CHECK_DECL );
       if ( ok ) {
         FPRINTF( fout, "%s %s %s ", L_DECLARE, $4, L_AS );
         c_ast_english( ast, fout );
@@ -1765,7 +1765,7 @@ explain_c
       c_ast_t *const ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
       ast->type_id = $5;
 
-      bool const ok = c_ast_check( ast, CHECK_DECL );
+      bool const ok = c_ast_check( ast, C_CHECK_DECL );
       if ( ok ) {
         char const *const local_name = c_sname_local_name( &$2 );
         char const *const scope_name = c_sname_scope_name( &$2 );
@@ -1808,14 +1808,14 @@ explain_c
       // declaration.
       //
       bool ok = false;
-      if ( c_init >= INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
         print_error( &@2,
           "\"%s\" not supported in %s", L_USING, C_LANG_NAME()
         );
       }
       else {
         c_ast_t *const ast = c_ast_patch_placeholder( $5.ast, $7.ast );
-        if ( (ok = c_ast_check( ast, CHECK_DECL )) ) {
+        if ( (ok = c_ast_check( ast, C_CHECK_DECL )) ) {
           // Once the semantic checks pass, remove the T_TYPEDEF.
           (void)c_ast_take_typedef( ast );
           FPRINTF( fout, "%s %s %s %s ", L_DECLARE, $3, L_AS, L_TYPE );
@@ -1842,7 +1842,7 @@ alignas_specifier_c
       DUMP_NUM( "NUMBER", $3 );
       DUMP_END();
 
-      $$.kind = ALIGNAS_EXPR;
+      $$.kind = C_ALIGNAS_EXPR;
       $$.as.expr = (unsigned)$3;
     }
   | Y_ALIGNAS lparen_expected type_c_ast { type_push( $3.ast ); }
@@ -1858,13 +1858,13 @@ alignas_specifier_c
 
       c_ast_t *const ast = c_ast_patch_placeholder( $3.ast, $5.ast );
 
-      $$.kind = ALIGNAS_TYPE;
+      $$.kind = C_ALIGNAS_TYPE;
       $$.as.type_ast = ast;
     }
   | Y_ALIGNAS lparen_expected error rparen_expected
     {
       ELABORATE_ERROR( "number or type expected" );
-      $$.kind = ALIGNAS_NONE;
+      $$.kind = C_ALIGNAS_NONE;
     }
   ;
 
@@ -1880,7 +1880,7 @@ explain
       //
       // would result in a parser error.
       //
-      c_mode = MODE_GIBBERISH_TO_ENGLISH;
+      c_mode = C_GIBBERISH_TO_ENGLISH;
     }
   ;
 
@@ -1921,7 +1921,7 @@ scope_declaration_c
   : class_struct_union_type
     {
       // see the comment in "explain"
-      c_mode = MODE_GIBBERISH_TO_ENGLISH;
+      c_mode = C_GIBBERISH_TO_ENGLISH;
     }
     any_sname_c
     {
@@ -1963,7 +1963,7 @@ scope_declaration_c
   | namespace_type
     {
       // see the comment in "explain"
-      c_mode = MODE_GIBBERISH_TO_ENGLISH;
+      c_mode = C_GIBBERISH_TO_ENGLISH;
     }
     sname_c
     {
@@ -1975,7 +1975,7 @@ scope_declaration_c
       // AST because the AST has no "memory" of how a namespace was
       // constructed.
       //
-      if ( c_init >= INIT_READ_CONF && opt_lang < LANG_CPP_17 &&
+      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_17 &&
             c_sname_count( &$3 ) > 1 ) {
         print_error( &@3,
           "nested %s declarations not supported until %s",
@@ -2119,7 +2119,7 @@ typedef_declaration_c
   : Y_TYPEDEF
     {
       // see the comment in "explain"
-      c_mode = MODE_GIBBERISH_TO_ENGLISH;
+      c_mode = C_GIBBERISH_TO_ENGLISH;
     }
     type_c_ast
     {
@@ -2174,7 +2174,7 @@ typedef_declaration_c
         c_ast_sname_set_sname( ast, &temp_sname );
       }
 
-      C_AST_CHECK( ast, CHECK_DECL );
+      C_AST_CHECK( ast, C_CHECK_DECL );
       // see the comment in define_english about T_TYPEDEF
       (void)c_ast_take_typedef( ast );
 
@@ -2206,7 +2206,7 @@ using_declaration_c
   : Y_USING
     {
       // see the comment in "explain"
-      c_mode = MODE_GIBBERISH_TO_ENGLISH;
+      c_mode = C_GIBBERISH_TO_ENGLISH;
     }
     using_name_ast_expected equals_expected type_c_ast
     {
@@ -2227,7 +2227,7 @@ using_declaration_c
       // and the AST has no "memory" that such a declaration was a using
       // declaration.
       //
-      if ( c_init >= INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
         print_error( &@1,
           "\"%s\" not supported in %s", L_USING, C_LANG_NAME()
         );
@@ -2261,7 +2261,7 @@ using_declaration_c
       DUMP_AST( "using_declaration_c", ast );
       DUMP_END();
 
-      C_AST_CHECK( ast, CHECK_DECL );
+      C_AST_CHECK( ast, C_CHECK_DECL );
       // see the comment in "define_english" about T_TYPEDEF
       (void)c_ast_take_typedef( ast );
 
@@ -2674,7 +2674,7 @@ user_defined_literal_decl_english_ast
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( c_init >= INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
         print_error( &@1,
           "%s %s not supported in %s", L_USER_DEFINED, L_LITERAL, C_LANG_NAME()
         );
@@ -3088,7 +3088,7 @@ trailing_return_type_c_ast_opt
       // later in the AST because the AST has no "memory" of where the return-
       // type came from.
       //
-      if ( c_init >= INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
         print_error( &@1,
           "trailing return type not supported in %s", C_LANG_NAME()
         );
@@ -3512,7 +3512,7 @@ arg_c_ast
 
       $$ = $3.ast != NULL ? $3 : $1;
       if ( c_ast_sname_empty( $$.ast ) )
-        $$.ast->sname = c_sname_dup( c_ast_find_name( $$.ast, V_DOWN ) );
+        $$.ast->sname = c_sname_dup( c_ast_find_name( $$.ast, C_VISIT_DOWN ) );
 
       DUMP_AST( "arg_c_ast", $$.ast );
       DUMP_END();
@@ -3886,7 +3886,7 @@ attribute_name_c_type
       if ( a == NULL ) {
         print_warning( &@1, "\"%s\": unknown attribute", $1 );
       }
-      else if ( c_init >= INIT_READ_CONF &&
+      else if ( c_init >= C_INIT_READ_CONF &&
                 (opt_lang & a->lang_ids) == LANG_NONE ) {
         print_warning( &@1, "\"%s\" not supported in %s", $1, C_LANG_NAME() );
       }
@@ -4370,7 +4370,7 @@ sname_c
   : sname_c "::" Y_NAME
     {
       // see the comment in "of_scope_list_english_opt"
-      if ( c_init >= INIT_READ_CONF && !C_LANG_IS_CPP() ) {
+      if ( c_init >= C_INIT_READ_CONF && !C_LANG_IS_CPP() ) {
         print_error( &@2, "scoped names not supported in %s", C_LANG_NAME() );
         PARSE_ABORT();
       }
@@ -4548,49 +4548,49 @@ conversion_expected
   ;
 
 c_operator
-  : Y_EXCLAM                      { $$ = OP_EXCLAM          ; }
-  | Y_EXCLAM_EQ                   { $$ = OP_EXCLAM_EQ       ; }
-  | '%'                           { $$ = OP_PERCENT         ; }
-  | "%="                          { $$ = OP_PERCENT_EQ      ; }
-  | Y_AMPER                       { $$ = OP_AMPER           ; }
-  | Y_AMPER2                      { $$ = OP_AMPER2          ; }
-  | Y_AMPER_EQ                    { $$ = OP_AMPER_EQ        ; }
-  | '(' rparen_expected           { $$ = OP_PARENS          ; }
-  | '*'                           { $$ = OP_STAR            ; }
-  | "*="                          { $$ = OP_STAR_EQ         ; }
-  | '+'                           { $$ = OP_PLUS            ; }
-  | "++"                          { $$ = OP_PLUS2           ; }
-  | "+="                          { $$ = OP_PLUS_EQ         ; }
-  | ','                           { $$ = OP_COMMA           ; }
-  | '-'                           { $$ = OP_MINUS           ; }
-  | "--"                          { $$ = OP_MINUS2          ; }
-  | "-="                          { $$ = OP_MINUS_EQ        ; }
-  | "->"                          { $$ = OP_ARROW           ; }
-  | "->*"                         { $$ = OP_ARROW_STAR      ; }
-  | '.'                           { $$ = OP_DOT             ; }
-  | ".*"                          { $$ = OP_DOT_STAR        ; }
-  | '/'                           { $$ = OP_SLASH           ; }
-  | "/="                          { $$ = OP_SLASH_EQ        ; }
-  | "::"                          { $$ = OP_COLON2          ; }
-  | '<'                           { $$ = OP_LESS            ; }
-  | "<<"                          { $$ = OP_LESS2           ; }
-  | "<<="                         { $$ = OP_LESS2_EQ        ; }
-  | "<="                          { $$ = OP_LESS_EQ         ; }
-  | "<=>"                         { $$ = OP_LESS_EQ_GREATER ; }
-  | '='                           { $$ = OP_EQ              ; }
-  | "=="                          { $$ = OP_EQ2             ; }
-  | '>'                           { $$ = OP_GREATER         ; }
-  | ">>"                          { $$ = OP_GREATER2        ; }
-  | ">>="                         { $$ = OP_GREATER2_EQ     ; }
-  | ">="                          { $$ = OP_GREATER_EQ      ; }
-  | "?:"                          { $$ = OP_QMARK_COLON     ; }
-  | '[' rbracket_expected         { $$ = OP_BRACKETS        ; }
-  | Y_CIRC                        { $$ = OP_CIRC            ; }
-  | Y_CIRC_EQ                     { $$ = OP_CIRC_EQ         ; }
-  | Y_PIPE                        { $$ = OP_PIPE            ; }
-  | Y_PIPE2                       { $$ = OP_PIPE2           ; }
-  | Y_PIPE_EQ                     { $$ = OP_PIPE_EQ         ; }
-  | Y_TILDE                       { $$ = OP_TILDE           ; }
+  : Y_EXCLAM                      { $$ = C_OP_EXCLAM          ; }
+  | Y_EXCLAM_EQ                   { $$ = C_OP_EXCLAM_EQ       ; }
+  | '%'                           { $$ = C_OP_PERCENT         ; }
+  | "%="                          { $$ = C_OP_PERCENT_EQ      ; }
+  | Y_AMPER                       { $$ = C_OP_AMPER           ; }
+  | Y_AMPER2                      { $$ = C_OP_AMPER2          ; }
+  | Y_AMPER_EQ                    { $$ = C_OP_AMPER_EQ        ; }
+  | '(' rparen_expected           { $$ = C_OP_PARENS          ; }
+  | '*'                           { $$ = C_OP_STAR            ; }
+  | "*="                          { $$ = C_OP_STAR_EQ         ; }
+  | '+'                           { $$ = C_OP_PLUS            ; }
+  | "++"                          { $$ = C_OP_PLUS2           ; }
+  | "+="                          { $$ = C_OP_PLUS_EQ         ; }
+  | ','                           { $$ = C_OP_COMMA           ; }
+  | '-'                           { $$ = C_OP_MINUS           ; }
+  | "--"                          { $$ = C_OP_MINUS2          ; }
+  | "-="                          { $$ = C_OP_MINUS_EQ        ; }
+  | "->"                          { $$ = C_OP_ARROW           ; }
+  | "->*"                         { $$ = C_OP_ARROW_STAR      ; }
+  | '.'                           { $$ = C_OP_DOT             ; }
+  | ".*"                          { $$ = C_OP_DOT_STAR        ; }
+  | '/'                           { $$ = C_OP_SLASH           ; }
+  | "/="                          { $$ = C_OP_SLASH_EQ        ; }
+  | "::"                          { $$ = C_OP_COLON2          ; }
+  | '<'                           { $$ = C_OP_LESS            ; }
+  | "<<"                          { $$ = C_OP_LESS2           ; }
+  | "<<="                         { $$ = C_OP_LESS2_EQ        ; }
+  | "<="                          { $$ = C_OP_LESS_EQ         ; }
+  | "<=>"                         { $$ = C_OP_LESS_EQ_GREATER ; }
+  | '='                           { $$ = C_OP_EQ              ; }
+  | "=="                          { $$ = C_OP_EQ2             ; }
+  | '>'                           { $$ = C_OP_GREATER         ; }
+  | ">>"                          { $$ = C_OP_GREATER2        ; }
+  | ">>="                         { $$ = C_OP_GREATER2_EQ     ; }
+  | ">="                          { $$ = C_OP_GREATER_EQ      ; }
+  | "?:"                          { $$ = C_OP_QMARK_COLON     ; }
+  | '[' rbracket_expected         { $$ = C_OP_BRACKETS        ; }
+  | Y_CIRC                        { $$ = C_OP_CIRC            ; }
+  | Y_CIRC_EQ                     { $$ = C_OP_CIRC_EQ         ; }
+  | Y_PIPE                        { $$ = C_OP_PIPE            ; }
+  | Y_PIPE2                       { $$ = C_OP_PIPE2           ; }
+  | Y_PIPE_EQ                     { $$ = C_OP_PIPE_EQ         ; }
+  | Y_TILDE                       { $$ = C_OP_TILDE           ; }
   ;
 
 equals_expected
@@ -4687,7 +4687,7 @@ of_scope_english
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( c_init >= INIT_READ_CONF && !C_LANG_IS_CPP() ) {
+      if ( c_init >= C_INIT_READ_CONF && !C_LANG_IS_CPP() ) {
         print_error( &@2, "scoped names not supported in %s", C_LANG_NAME() );
         PARSE_ABORT();
       }

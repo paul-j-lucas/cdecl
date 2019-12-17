@@ -299,10 +299,10 @@ c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir, c_ast_visitor_t visitor,
   if ( ast == NULL || visitor( ast, data ) )
     return ast;
   switch ( dir ) {
-    case V_DOWN:
+    case C_VISIT_DOWN:
       ast = c_ast_is_parent( ast ) ? ast->as.parent.of_ast : NULL;
       break;
-    case V_UP:
+    case C_VISIT_UP:
       ast = ast->parent;
       break;
   } // switch

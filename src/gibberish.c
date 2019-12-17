@@ -330,8 +330,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       if ( storage_type != T_NONE )
         FPRINTF( param->gout, "%s ", c_type_name( storage_type ) );
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
-      if ( param->gkind != G_CAST && c_ast_find_name( ast, V_UP ) != NULL &&
-           !c_ast_find_kind( ast->parent, V_UP, K_FUNCTION_LIKE ) ) {
+      if ( param->gkind != G_CAST &&
+           c_ast_find_name( ast, C_VISIT_UP ) != NULL &&
+           !c_ast_find_kind( ast->parent, C_VISIT_UP, K_FUNCTION_LIKE ) ) {
         //
         // For all kinds except function-like ASTs, we want the output to be
         // like:
@@ -693,12 +694,12 @@ void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout ) {
   assert( gout != NULL );
 
   switch ( ast->align.kind ) {
-    case ALIGNAS_NONE:
+    case C_ALIGNAS_NONE:
       break;
-    case ALIGNAS_EXPR:
+    case C_ALIGNAS_EXPR:
       FPRINTF( gout, "%s(%u) ", alignas_lang(), ast->align.as.expr );
       break;
-    case ALIGNAS_TYPE:
+    case C_ALIGNAS_TYPE:
       FPRINTF( gout, "%s(", alignas_lang() );
       c_ast_gibberish_declare( ast->align.as.type_ast, G_DECL_NONE, gout );
       FPUTS( ") ", gout );
@@ -715,20 +716,20 @@ char const* graph_token_c( char const *token ) {
   assert( token != NULL );
 
   switch ( opt_graph ) {
-    case GRAPH_NONE:
+    case C_GRAPH_NONE:
       break;
     //
     // Even though this could be done character-by-character, it's easier for
     // the calling code if multi-character tokens containing graph characters
     // are returned as a single string.
     //
-    case GRAPH_DI:
+    case C_GRAPH_DI:
       switch ( token[0] ) {
         case '[': return token[1] == '[' ? "<:<:" : "<:";
         case ']': return token[1] == ']' ? ":>:>" : ":>";
       } // switch
       break;
-    case GRAPH_TRI:
+    case C_GRAPH_TRI:
       switch ( token[0] ) {
         case '[': return token[1] == '[' ? "?\?(?\?(" : "?\?(";
         case ']': return token[1] == ']' ? "?\?)?\?)" : "?\?)";
