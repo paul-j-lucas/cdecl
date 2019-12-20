@@ -83,7 +83,7 @@
 #include <stdio.h>                      /* for NULL */
 
 #define RB_FIRST(TREE)  (RB_ROOT(TREE)->left)
-#define RB_NIL(TREE)    (&(TREE)->nil)
+#define RB_NIL          (&rb_nil)
 #define RB_ROOT(TREE)   (&(TREE)->root)
 
 /// @endcond
@@ -115,13 +115,15 @@ struct rb_node {
  */
 struct rb_tree {
   rb_node_t     root;                   ///< Root node.
-  rb_node_t     nil;                    ///< Sentinel node.
   rb_data_cmp_t data_cmp_fn;            ///< Data comparison function.
 };
 
 // local functions
 static void rb_rotate_left( rb_tree_t*, rb_node_t* );
 static void rb_rotate_right( rb_tree_t*, rb_node_t* );
+
+// local variables
+static rb_node_t rb_nil = { NULL, RB_BLACK, RB_NIL, RB_NIL, RB_NIL };
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -180,16 +182,13 @@ static inline bool is_right( rb_node_t *node ) {
 /**
  * Initializes an `rb_node`.
  *
- * @param tree A pointer to the red-black tree to which \a node belongs.
  * @param node A pointer to the `rb_node` to initialize.
  */
-static void rb_node_init( rb_tree_t *tree, rb_node_t *node ) {
-  assert( tree != NULL );
+static void rb_node_init( rb_node_t *node ) {
   assert( node != NULL );
-
   node->data = NULL;
   node->color = RB_BLACK;
-  node->left = node->right = node->parent = RB_NIL(tree);
+  node->left = node->right = node->parent = RB_NIL;
 }
 
 /**
@@ -207,7 +206,7 @@ static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
   assert( tree != NULL );
   assert( node != NULL );
 
-  if ( node == RB_NIL(tree) )
+  if ( node == RB_NIL )
     return NULL;
 
   rb_node_t *const stopped_node =
@@ -234,7 +233,7 @@ static void rb_tree_free_impl( rb_tree_t *tree, rb_node_t *node,
   assert( tree != NULL );
   assert( node != NULL );
 
-  if ( node != RB_NIL(tree) ) {
+  if ( node != RB_NIL ) {
     rb_tree_free_impl( tree, node->left, data_free_fn );
     rb_tree_free_impl( tree, node->right, data_free_fn );
     if ( data_free_fn != NULL )
@@ -322,7 +321,7 @@ static void rb_rotate_left( rb_tree_t *tree, rb_node_t *node ) {
   rb_node_t *const child = node->right;
   node->right = child->left;
 
-  if ( child->left != RB_NIL(tree) )
+  if ( child->left != RB_NIL )
     child->left->parent = node;
   child->parent = node->parent;
 
@@ -350,7 +349,7 @@ static void rb_rotate_right( rb_tree_t *tree, rb_node_t *node ) {
   rb_node_t *const child = node->left;
   node->left = child->right;
 
-  if ( child->right != RB_NIL(tree) )
+  if ( child->right != RB_NIL )
     child->right->parent = node;
   child->parent = node->parent;
 
@@ -376,15 +375,15 @@ static rb_node_t* rb_successor( rb_tree_t *tree, rb_node_t *node ) {
 
   rb_node_t *succ = node->right;
 
-  if ( succ != RB_NIL(tree) ) {
-    while ( succ->left != RB_NIL(tree) )
+  if ( succ != RB_NIL ) {
+    while ( succ->left != RB_NIL )
       succ = succ->left;
   } else {
     // No right child, move up until we find it or hit the root.
     for ( succ = node->parent; node == succ->right; succ = succ->parent )
       node = succ;
     if ( succ == RB_ROOT(tree) )
-      succ = RB_NIL(tree);
+      succ = RB_NIL;
   }
   return succ;
 }
@@ -398,11 +397,11 @@ void* rb_node_delete( rb_tree_t *tree, rb_node_t *delete_node ) {
   void *const data = delete_node->data;
 
   rb_node_t *const y =
-    delete_node->left == RB_NIL(tree) || delete_node->right == RB_NIL(tree) ?
+    delete_node->left == RB_NIL || delete_node->right == RB_NIL ?
       delete_node :
       rb_successor( tree, delete_node );
 
-  rb_node_t *const x = y->left == RB_NIL(tree) ? y->right : y->left;
+  rb_node_t *const x = y->left == RB_NIL ? y->right : y->left;
 
   if ( (x->parent = y->parent) == RB_ROOT(tree) ) {
     RB_FIRST(tree) = x;
@@ -436,7 +435,7 @@ rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data ) {
   assert( tree != NULL );
   assert( data != NULL );
 
-  for ( rb_node_t *node = RB_FIRST(tree); node != RB_NIL(tree); ) {
+  for ( rb_node_t *node = RB_FIRST(tree); node != RB_NIL; ) {
     int const cmp = tree->data_cmp_fn( data, node->data );
     if ( cmp == 0 )
       return node;
@@ -460,7 +459,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   rb_node_t *parent = RB_ROOT(tree);
 
   // Find correct insertion point.
-  while ( node != RB_NIL(tree) ) {
+  while ( node != RB_NIL ) {
     parent = node;
     int const cmp = tree->data_cmp_fn( data, node->data );
     if ( cmp == 0 )
@@ -471,7 +470,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   node = MALLOC( rb_node_t, 1 );
   node->data = data;
   node->color = RB_RED;
-  node->left = node->right = RB_NIL(tree);
+  node->left = node->right = RB_NIL;
   node->parent = parent;
 
   if ( parent == RB_ROOT(tree) || tree->data_cmp_fn( data, parent->data ) < 0 )
@@ -541,8 +540,7 @@ rb_tree_t* rb_tree_new( rb_data_cmp_t data_cmp_fn ) {
   assert( data_cmp_fn != NULL );
 
   rb_tree_t *const tree = MALLOC( rb_tree_t, 1 );
-  rb_node_init( tree, RB_ROOT(tree) );
-  rb_node_init( tree, RB_NIL(tree) );
+  rb_node_init( RB_ROOT(tree) );
   tree->data_cmp_fn = data_cmp_fn;
 
   return tree;
