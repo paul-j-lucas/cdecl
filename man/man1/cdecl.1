@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "December 6, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "December 26, 2019" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -613,14 +613,16 @@ thus declaring a type within that scope.
 .TP
 .BR set " [" \f2option\fP "] | " "set options" " | " set " \f2lang\fP"
 In the first form,
-sets a particular option, if given;
+sets a particular option, if given
+(see
+.B Set Options
+for valid options);
 if not,
 it's equivalent to the second form
 that prints the current value of all options.
 In the third form,
 sets the current language to
 .IR lang .
-Unambiguous option name abbreviations may be used.
 .TP
 .BR show " { " \f2s-name\fP " | " all " | " predefined " | " user " } [" typedef ]
 Shows the definition for a previously defined type
@@ -1124,8 +1126,9 @@ option is given):
 .SS Set Options
 The
 .B set
-command takes several options.
-Unambiguous option name abbreviations may be used.
+command takes several options
+(which ignore hyphens).
+Unambiguous option abbreviations may be used.
 .RS 4
 .TP 6
 .I lang
