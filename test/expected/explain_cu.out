@@ -1,1 +1,1 @@
-declare x as constant unsigned
+declare x as constant unsigned int

@@ -137,6 +137,9 @@ _GL_INLINE_HEADER_BEGIN
 #define T_ANY_CHAR            ( T_CHAR | T_WCHAR_T \
                               | T_CHAR8_T | T_CHAR16_T | T_CHAR32_T )
 
+/** Shorthand for any floating-point type. */
+#define T_ANY_FLOAT           ( T_FLOAT | T_DOUBLE )
+
 /** Shorthand for any reference type. */
 #define T_ANY_REFERENCE       ( T_REFERENCE | T_RVALUE_REFERENCE )
 
@@ -149,6 +152,10 @@ _GL_INLINE_HEADER_BEGIN
 
 /** The type(s) that can apply only to constructors. */
 #define T_CONSTRUCTOR_ONLY    T_EXPLICIT
+
+/** Shorthand for an `int` modifier. */
+#define T_INT_MODIFIER        ( T_SHORT | T_LONG | T_LONG_LONG | T_SIGNED \
+                              | T_UNSIGNED )
 
 /** The type(s) that can apply only to members. */
 #define T_MEMBER_ONLY         ( T_CONST | T_VOLATILE | T_DEFAULT | T_DELETE \

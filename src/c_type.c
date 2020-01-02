@@ -474,9 +474,19 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     // Explicit "signed" isn't needed for any type except char.
     type_id &= ~T_SIGNED;
   }
-  if ( (type_id & (T_UNSIGNED | T_SHORT | T_LONG | T_LONG_LONG)) != T_NONE ) {
-    // Explicit "int" isn't needed when at least one int modifier is present.
-    type_id &= ~T_INT;
+  if ( c_mode == C_GIBBERISH_TO_ENGLISH ) {
+    if ( (type_id & T_INT_MODIFIER) != T_NONE &&
+         (type_id & T_ANY_CHAR) == T_NONE &&
+         (type_id & T_ANY_FLOAT) == T_NONE ) {
+      // In English, be explicit about "int".
+      type_id |= T_INT;
+    }
+  } else /* c_mode == C_ENGLISH_TO_GIBBERISH */ {
+    if ( (type_id & T_INT_MODIFIER) != T_NONE ) {
+      // In C/C++, explicit "int" isn't needed when at least one int modifier
+      // is present.
+      type_id &= ~T_INT;
+    }
   }
   if ( (type_id & (T_FINAL | T_OVERRIDE)) != T_NONE ) {
     // Either "final" or "overrride" implies "virtual".

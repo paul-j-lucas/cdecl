@@ -1,1 +1,1 @@
-declare x as unsigned long long
+declare x as unsigned long long int
