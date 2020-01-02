@@ -301,8 +301,7 @@ static inline bool is_long_int( c_type_id_t type_id ) {
  * Gets the literal of a given <code>\ref c_type</code>, either gibberish
  * or, if appropriate and available, English.
  *
- * @param t A pointer to the <code>\ref c_type</code> to get the literal
- * of.
+ * @param t A pointer to the <code>\ref c_type</code> to get the literal of.
  * @param is_error `true` if getting the literal for part of an error message.
  * @return Returns said literal.
  */
