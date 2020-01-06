@@ -1,0 +1,8 @@
+short int x;
+int x;
+long int x;
+long long int x;
+unsigned short int x;
+unsigned int x;
+unsigned long int x;
+unsigned long long int x;

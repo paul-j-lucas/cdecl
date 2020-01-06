@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/c_type.c
 **
-**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2020  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -482,7 +482,9 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
       type_id |= T_INT;
     }
   } else /* c_mode == C_ENGLISH_TO_GIBBERISH */ {
-    if ( (type_id & T_INT_MODIFIER) != T_NONE ) {
+    if ( is_explicit_int( type_id ) ) {
+      type_id |= T_INT;
+    } else if ( (type_id & T_INT_MODIFIER) != T_NONE ) {
       // In C/C++, explicit "int" isn't needed when at least one int modifier
       // is present.
       type_id &= ~T_INT;

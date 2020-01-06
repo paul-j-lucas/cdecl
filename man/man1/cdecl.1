@@ -2,7 +2,7 @@
 .\"     cdecl -- C gibberish translator
 .\"     cdecl.1: manual page
 .\"
-.\"     Copyright (C) 2017-2019  Paul J. Lucas, et al.
+.\"     Copyright (C) 2017-2020  Paul J. Lucas, et al.
 .\"
 .\"     This program is free software: you can redistribute it and/or modify
 .\"     it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "December 26, 2019" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 6, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -346,6 +346,51 @@ and
 .BR \-\-explain " | " \-e
 Assumes \f(CWexplain\fP
 when an input line doesn't start with any command.
+.TP
+.BI \-\-explicit-int \f1=\fPs "\f1 | \fP" "" \-I " s"
+Sets the integer types to
+.I s
+(which is case-insensitive)
+that should have \f(CWint\fP explicitly included in declarations.
+(Normally,
+\f(CWint\fP is omitted for \f(CWshort\fP,
+\f(CWlong\fP,
+\f(CWlong long\fP,
+or
+\f(CWunsigned\fP
+declarations
+where \f(CWint\fP is implied.)
+Valid formats for
+.I s
+are:
+.RS
+.TP 4
+.B i
+All signed integer types.
+.TP
+.B u
+All unsigned integer types.
+.TP
+.RB [ \f(CWu\fP ]{ \f(CWi\fP | \f(CWs\fP | \f(CWl\fP [ \f(CWl\fP ]}
+Possibly \f(CWunsigned\fP \f(CWint\fP,
+\f(CWshort\fP,
+\f(CWlong\fP,
+or
+\f(CWlong long\fP.
+.RE
+.IP ""
+Multiple formats may be given,
+one immediately after the other,
+e.g., \f(CWusl\fP
+means \f(CWunsigned short\fP and \f(CWlong\fP.
+Parsing is greedy so commas may be used to separate formats.
+For example,
+\f(CWulll\fP is parsed as \f(CWunsigned long long\fP
+and \f(CWlong\fP
+whereas \f(CWul,ll\fP is parsed as \f(CWunsigned long\fP and \f(CWlong long\fP.
+Note that since \f(CWu\fP is both a shorthand and a modifier,
+\f(CWiu\fP means all signed and unsigned integer types
+whereas \f(CWui\fP means just \f(CWunsigned int\fP.
 .TP
 .BI \-\-file \f1=\fPf "\f1 | \fP" "" \-f " f"
 Reads commands from file
@@ -1164,6 +1209,19 @@ and
 Turns [off] on \f(CWexplain\fP being assumed
 when an input line doesn't start with any command
 \(em default is off.
+.TP
+.BI explicit-int \f1=\fPs
+Turns on explicit \f(CWint\fP for the integer types
+.IR s
+\(em default is none.
+(See the
+.B \-\-explicit-int
+or
+.B \-I
+option for details.)
+.TP
+.B noexplicit-int
+Turns off explicit \f(CWint\fP for all integer types.
 .TP
 .B options
 Prints the current value of all options.

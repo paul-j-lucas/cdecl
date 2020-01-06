@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/options.h
 **
-**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2020  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 // local
 #include "cdecl.h"                      /* must go first */
 #include "c_lang.h"                     /* for c_lang_id_t */
+#include "c_type.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -63,6 +64,24 @@ extern bool         opt_prompt;         ///< Print the prompt?
 extern bool         opt_semicolon;      ///< Print `;` at end of gibberish?
 extern bool         opt_typedefs;       ///< Load C/C++ standard `typedef`s?
 
+/**
+ * The integer type(s) that `int` shall be print explicitly for in C/C++
+ * declarations even when not needed because the type(s) contain at least one
+ * integer modifier, e.g., `unsigned`.
+ *
+ * The elements are:
+ *
+ *  Idx | Contains type(s) for
+ *  ----|---------------------
+ *  `0` | signed integers
+ *  `1` | unsigned integers
+ *
+ * @sa is_explicit_int()
+ * @sa parse_opt_explicit_int()
+ * @sa set_opt_explicit_int()
+ */
+extern c_type_id_t  opt_explicit_int[2];
+
 // other extern variables
 extern FILE        *fin;                ///< File in.
 extern FILE        *fout;               ///< File out.
@@ -73,6 +92,14 @@ extern int          yydebug;            ///< Bison debugging.
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Checks whether \a type_id shall have `int` be printed explicitly for it.
+ *
+ * @param type_id The type to check.
+ * @return Returns `true` only if `int` shall be printed explicitly.
+ */
+bool is_explicit_int( c_type_id_t type_id );
+
+/**
  * Initializes command-line option variables.
  * On return, `*pargc` and `*pargv` are updated to reflect the remaining
  * command-line with the options removed.
@@ -81,6 +108,40 @@ extern int          yydebug;            ///< Bison debugging.
  * @param pargv A pointer to the argument values from `main()`.
  */
 void options_init( int *pargc, char const ***pargv );
+
+/**
+ * Parses the explicit `int` option.
+ *
+ * @param loc The location of \a s.  If not null and \a s is invalid, calls
+ * print_error(); if null and a s is invalid, calls PMESSAGE_EXIT().
+ * @param s The null-terminated string to parse.  Valid formats are:
+ * @par
+ *  Format            | Meaning
+ *  ------------------|----------------------------
+ *     `i`            | All signed integer types.
+ *  `u`               | All unsigned integer types.
+ *  [`u`]{`isl`[`l`]} | Possibly `unsigned` `int`, `short`, `long`, or `long long`.
+ * @par
+ * Multiple formats may be given, one immediately after the other, e.g., `usl`
+ * means `unsigned short` and `long`.  Parsing is greedy so commas may be used
+ * to separate formats.  For example, `ulll` is parsed as `unsigned long long`
+ * and `long` whereas `ul,ll` is parsed as `unsigned long` and `long long`.
+ * @par If invalid, an error message is printed to standard error.
+ */
+void parse_opt_explicit_int( c_loc_t const *loc, char const *s );
+
+/**
+ * Sets the given integer type(s) that `int` shall print explicitly for in
+ * C/C++ declarations even when not needed because \a type_id contains at least
+ * one integer modifier, e.g., `unsigned`.
+ *
+ * @param type_id The type(s) to print `int` explicitly for.  When multiple
+ * type bits are set simultaneously, they are all considered either signed or
+ * unsigned.
+ *
+ * @sa is_explicit_int()
+ */
+void set_opt_explicit_int( c_type_id_t type_id );
 
 ///////////////////////////////////////////////////////////////////////////////
 

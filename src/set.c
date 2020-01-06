@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/set.c
 **
-**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2020  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -48,9 +48,11 @@
  * The signature for a Set option function.
  *
  * @param enabled True if enabled.
- * @param loc The location of the option name.
+ * @param opt_name_loc The location of the option name.
  */
-typedef void (*set_opt_fn_t)( bool enabled, c_loc_t const *loc );
+typedef void (*set_opt_fn_t)( bool enabled, c_loc_t const *opt_name_loc,
+                              char const *opt_value,
+                              c_loc_t const *opt_value_loc );
 
 /**
  * cdecl `set` option.
@@ -58,6 +60,7 @@ typedef void (*set_opt_fn_t)( bool enabled, c_loc_t const *loc );
 struct set_option {
   char const   *name;                   ///< Option name.
   bool          no_only;                ///< Valid only when "no...".
+  bool          takes_value;            ///< Takes a value?
   set_opt_fn_t  set_fn;                 ///< Set function.
 };
 typedef struct set_option set_option_t;
@@ -69,6 +72,41 @@ static inline char const* maybe_no( bool enabled ) {
 }
 
 /**
+ * Prints the string representation of the explicit `int` option.
+ */
+static void print_opt_explicit_int( void ) {
+  bool const is_explicit_s   = is_explicit_int( T_SHORT );
+  bool const is_explicit_i   = is_explicit_int( T_INT );
+  bool const is_explicit_l   = is_explicit_int( T_LONG );
+  bool const is_explicit_ll  = is_explicit_int( T_LONG_LONG );
+
+  bool const is_explicit_us  = is_explicit_int( T_UNSIGNED | T_SHORT );
+  bool const is_explicit_ui  = is_explicit_int( T_UNSIGNED | T_INT );
+  bool const is_explicit_ul  = is_explicit_int( T_UNSIGNED | T_LONG );
+  bool const is_explicit_ull = is_explicit_int( T_UNSIGNED | T_LONG_LONG );
+
+  if ( is_explicit_s & is_explicit_i && is_explicit_l && is_explicit_ll ) {
+    PUTC_OUT( 'i' );
+  }
+  else {
+    if ( is_explicit_s   ) PUTC_OUT(  's'  );
+    if ( is_explicit_i   ) PUTC_OUT(  'i'  );
+    if ( is_explicit_l   ) PUTC_OUT(  'l'  );
+    if ( is_explicit_ll  ) PUTS_OUT(  "ll" );
+  }
+
+  if ( is_explicit_us & is_explicit_ui && is_explicit_ul && is_explicit_ull ) {
+    PUTC_OUT( 'u' );
+  }
+  else {
+    if ( is_explicit_us  ) PUTS_OUT( "us"  );
+    if ( is_explicit_ui  ) PUTS_OUT( "ui"  );
+    if ( is_explicit_ul  ) PUTS_OUT( "ul"  );
+    if ( is_explicit_ull ) PUTS_OUT( "ull" );
+  }
+}
+
+/**
  * Prints the current option settings.
  */
 static void print_options( void ) {
@@ -77,6 +115,15 @@ static void print_options( void ) {
   printf( "  %sdebug\n", maybe_no( opt_debug ) );
 #endif /* ENABLE_CDECL_DEBUG */
   printf( "  %sexplain-by-default\n", maybe_no( opt_explain ) );
+
+  if ( opt_explicit_int[0] != T_NONE || opt_explicit_int[1] != T_NONE ) {
+    PUTS_OUT( "    explicit-int=" );
+    print_opt_explicit_int();
+    PUTC_OUT( '\n' );
+  } else {
+    PUTS_OUT( "  noexplicit-int\n" );
+  }
+
   printf( " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
   printf( "    lang=%s\n", C_LANG_NAME() );
   printf( "  %sprompt\n", maybe_no( prompt[0][0] != '\0' ) );
@@ -90,10 +137,16 @@ static void print_options( void ) {
  * Sets the alt-tokens option.
  *
  * @param enabled True if enabled.
- * @param loc The location of the option name.
+ * @param opt_name_loc The location of the option name.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
  */
-static void set_alt_tokens( bool enabled, c_loc_t const *loc ) {
-  (void)loc;
+static void set_alt_tokens( bool enabled, c_loc_t const *opt_name_loc,
+                            char const *opt_value,
+                            c_loc_t const *opt_value_loc ) {
+  (void)opt_name_loc;
+  (void)opt_value;
+  (void)opt_value_loc;
   opt_alt_tokens = enabled;
 }
 
@@ -102,10 +155,16 @@ static void set_alt_tokens( bool enabled, c_loc_t const *loc ) {
  * Sets the debug option.
  *
  * @param enabled True if enabled.
- * @param loc The location of the option name.
+ * @param opt_name_loc The location of the option name.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
  */
-static void set_debug( bool enabled, c_loc_t const *loc ) {
-  (void)loc;
+static void set_debug( bool enabled, c_loc_t const *opt_name_loc,
+                       char const *opt_value,
+                       c_loc_t const *opt_value_loc ) {
+  (void)opt_name_loc;
+  (void)opt_value;
+  (void)opt_value_loc;
   opt_debug = enabled;
 }
 #endif /* ENABLE_CDECL_DEBUG */
@@ -114,10 +173,16 @@ static void set_debug( bool enabled, c_loc_t const *loc ) {
  * Sets the digraphs-tokens option.
  *
  * @param enabled True if enabled.
- * @param loc The location of the option name.
+ * @param opt_name_loc The location of the option name.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
  */
-static void set_digraphs( bool enabled, c_loc_t const *loc ) {
-  (void)loc;
+static void set_digraphs( bool enabled, c_loc_t const *opt_name_loc,
+                          char const *opt_value,
+                          c_loc_t const *opt_value_loc ) {
+  (void)opt_name_loc;
+  (void)opt_value;
+  (void)opt_value_loc;
   opt_graph = enabled ? C_GRAPH_DI : C_GRAPH_NONE;
 }
 
@@ -125,21 +190,51 @@ static void set_digraphs( bool enabled, c_loc_t const *loc ) {
  * Sets the explain-by-default option.
  *
  * @param enabled True if enabled.
- * @param loc The location of the option name.
+ * @param opt_name_loc The location of the option name.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
  */
-static void set_explain_by_default( bool enabled, c_loc_t const *loc ) {
-  (void)loc;
+static void set_explain_by_default( bool enabled, c_loc_t const *opt_name_loc,
+                                    char const *opt_value,
+                                    c_loc_t const *opt_value_loc ) {
+  (void)opt_name_loc;
+  (void)opt_value;
+  (void)opt_value_loc;
   opt_explain = enabled;
+}
+
+/**
+ * Sets the explicit-int option.
+ *
+ * @param enabled True if enabled.
+ * @param opt_name_loc The location of the option name.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
+ */
+static void set_explicit_int( bool enabled, c_loc_t const *opt_name_loc,
+                              char const *opt_value,
+                              c_loc_t const *opt_value_loc ) {
+  (void)opt_name_loc;
+  if ( enabled )
+    parse_opt_explicit_int( opt_value_loc, opt_value );
+  else
+    set_opt_explicit_int( T_NONE );
 }
 
 /**
  * Sets the prompt option.
  *
  * @param enabled True if enabled.
- * @param loc The location of the option name.
+ * @param opt_name_loc The location of the option name.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
  */
-static void set_prompt( bool enabled, c_loc_t const *loc ) {
-  (void)loc;
+static void set_prompt( bool enabled, c_loc_t const *opt_name_loc,
+                        char const *opt_value,
+                        c_loc_t const *opt_value_loc ) {
+  (void)opt_name_loc;
+  (void)opt_value;
+  (void)opt_value_loc;
   cdecl_prompt_enable( enabled );
 }
 
@@ -147,10 +242,16 @@ static void set_prompt( bool enabled, c_loc_t const *loc ) {
  * Sets the semicolon option.
  *
  * @param enabled True if enabled.
- * @param loc The location of the option name.
+ * @param opt_name_loc The location of the option name.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
  */
-static void set_semicolon( bool enabled, c_loc_t const *loc ) {
-  (void)loc;
+static void set_semicolon( bool enabled, c_loc_t const *opt_name_loc,
+                           char const *opt_value,
+                           c_loc_t const *opt_value_loc ) {
+  (void)opt_name_loc;
+  (void)opt_value;
+  (void)opt_value_loc;
   opt_semicolon = enabled;
 }
 
@@ -158,12 +259,18 @@ static void set_semicolon( bool enabled, c_loc_t const *loc ) {
  * Sets the trigraphs option.
  *
  * @param enabled True if enabled.
- * @param loc The location of the option name.
+ * @param opt_name_loc The location of the option name.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
  */
-static void set_trigraphs( bool enabled, c_loc_t const *loc ) {
+static void set_trigraphs( bool enabled, c_loc_t const *opt_name_loc,
+                           char const *opt_value,
+                           c_loc_t const *opt_value_loc ) {
+  (void)opt_value;
+  (void)opt_value_loc;
   opt_graph = enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
   if ( opt_graph && opt_lang >= LANG_CPP_17 )
-    print_warning( loc,
+    print_warning( opt_name_loc,
       "trigraphs are no longer supported in %s", C_LANG_NAME()
     );
 }
@@ -173,10 +280,16 @@ static void set_trigraphs( bool enabled, c_loc_t const *loc ) {
  * Sets the yydebug option.
  *
  * @param enabled True if enabled.
- * @param loc The location of the option name.
+ * @param opt_name_loc The location of the option name.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
  */
-static void set_yydebug( bool enabled, c_loc_t const *loc ) {
-  (void)loc;
+static void set_yydebug( bool enabled, c_loc_t const *opt_name_loc,
+                         char const *opt_value,
+                         c_loc_t const *opt_value_loc ) {
+  (void)opt_name_loc;
+  (void)opt_value;
+  (void)opt_value_loc;
   yydebug = enabled;
 }
 #endif /* YYDEBUG */
@@ -210,11 +323,14 @@ static int strn_nohyphen_cmp( char const *s1, char const *s2, size_t n ) {
 /**
  * Implements the cdecl `set` command.
  *
- * @param loc The location of the option token.
  * @param opt_name The name of the option to set. If null, displays the current
  * values of all options.
+ * @param opt_name_loc The location of the option token.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
  */
-void set_option( c_loc_t const *loc, char const *opt_name ) {
+void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
+                 char const *opt_value, c_loc_t const *opt_value_loc ) {
   if ( opt_name == NULL || strcmp( opt_name, "options" ) == 0 ) {
     print_options();
     return;
@@ -224,8 +340,8 @@ void set_option( c_loc_t const *loc, char const *opt_name ) {
   if ( new_lang != LANG_NONE ) {
     c_lang_set( new_lang );
     if ( opt_graph == C_GRAPH_TRI ) {
-      loc = NULL;
-      set_trigraphs( /*enabled=*/true, loc );
+      opt_name_loc = NULL;
+      set_trigraphs( /*enabled=*/true, opt_name_loc, NULL, NULL );
     }
     return;
   }
@@ -237,20 +353,21 @@ void set_option( c_loc_t const *loc, char const *opt_name ) {
   size_t const opt_name_len = strlen( opt_name );
 
   static set_option_t const SET_OPTIONS[] = {
-    { "alt-tokens",         false,  &set_alt_tokens         },
+    { "alt-tokens",         false,  false,  &set_alt_tokens         },
 #ifdef ENABLE_CDECL_DEBUG
-    { "debug",              false,  &set_debug              },
+    { "debug",              false,  false,  &set_debug              },
 #endif /* ENABLE_CDECL_DEBUG */
-    { "digraphs",           false,  &set_digraphs           },
-    { "graphs",             true,   &set_digraphs           },
-    { "explain-by-default", false,  &set_explain_by_default },
-    { "prompt",             false,  &set_prompt             },
-    { "semicolon",          false,  &set_semicolon          },
-    { "trigraphs",          false,  &set_trigraphs          },
+    { "digraphs",           false,  false,  &set_digraphs           },
+    { "graphs",             true,   false,  &set_digraphs           },
+    { "explain-by-default", false,  false,  &set_explain_by_default },
+    { "explicit-int",       false,  true,   &set_explicit_int       },
+    { "prompt",             false,  false,  &set_prompt             },
+    { "semicolon",          false,  false,  &set_semicolon          },
+    { "trigraphs",          false,  false,  &set_trigraphs          },
 #ifdef YYDEBUG
-    { "yydebug",            false,  &set_yydebug            },
+    { "yydebug",            false,  false,  &set_yydebug            },
 #endif /* YYDEBUG */
-    { NULL,                 false,  NULL                    }
+    { NULL,                 false,  false,  NULL                    }
   };
 
   set_option_t const *found_opt = NULL;
@@ -259,7 +376,7 @@ void set_option( c_loc_t const *loc, char const *opt_name ) {
       continue;
     if ( strn_nohyphen_cmp( opt->name, opt_name, opt_name_len ) == 0 ) {
       if ( found_opt != NULL ) {
-        print_error( loc,
+        print_error( opt_name_loc,
           "\"%s\": ambiguous set option; could be \"%s%s\" or \"%s%s\"",
           orig_name,
           is_no ? "no" : "", found_opt->name,
@@ -271,10 +388,34 @@ void set_option( c_loc_t const *loc, char const *opt_name ) {
     }
   } // for
 
-  if ( found_opt != NULL )
-    (*found_opt->set_fn)( !is_no, loc );
-  else
-    print_error( loc, "\"%s\": unknown set option", orig_name );
+  if ( found_opt == NULL ) {
+    print_error( opt_name_loc, "\"%s\": unknown set option", orig_name );
+    return;
+  }
+
+  if ( opt_value == NULL ) {
+    if ( !is_no && found_opt->takes_value ) {
+      print_error( opt_name_loc,
+        "\"%s\": set option requires value",
+        orig_name
+      );
+      return;
+    }
+  } else {
+    if ( is_no ) {
+      print_error( opt_value_loc, "\"no\" set options take no value" );
+      return;
+    }
+    if ( !found_opt->takes_value ) {
+      print_error( opt_value_loc,
+        "\"%s\": set option \"%s\" takes no value",
+        opt_value, orig_name
+      );
+      return;
+    }
+  }
+
+  (*found_opt->set_fn)( !is_no, opt_name_loc, opt_value, opt_value_loc );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

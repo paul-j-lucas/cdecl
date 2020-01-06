@@ -1,6 +1,6 @@
 Cdecl NEWS -- history of user-visible changes.
 
-Copyright (C) 2018-2019  Paul J. Lucas, et al.
+Copyright (C) 2018-2020  Paul J. Lucas, et al.
 See the end of the file for license conditions.
 
 Note: over its 30+ year history, cdecl has never had good version numbering.
@@ -9,6 +9,14 @@ version's author is given instead.  For the full (known) list of authors along
 with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
+
+* Changes in Cdecl 6.7
+
+** Added explicit-int option
+Both a command-line --explicit-int/-I and explicit-int set option have been
+added that set which integer types have "int" explicitly included in
+declarations.
+
 
 * Changes in Cdecl 6.6.2
 

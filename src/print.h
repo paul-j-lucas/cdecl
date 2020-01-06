@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/print.h
 **
-**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2020  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@
 /**
  * Prints an error message to standard error, including a newline.
  *
- * @param loc The location of the error.
+ * @param loc The location of the error; may be null.
  * @param format The `printf()` style format string.
  * @param ... `printf()` arguments.
  */

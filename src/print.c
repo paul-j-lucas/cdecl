@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/print.c
 **
-**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2020  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -226,11 +226,13 @@ static size_t token_len( char const *s ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void print_error( c_loc_t const *loc, char const *format, ... ) {
-  print_loc( loc );
-  SGR_START_COLOR( stderr, error );
-  PUTS_ERR( "error" );
-  SGR_END_COLOR( stderr );
-  PUTS_ERR( ": " );
+  if ( loc != NULL ) {
+    print_loc( loc );
+    SGR_START_COLOR( stderr, error );
+    PUTS_ERR( "error" );
+    SGR_END_COLOR( stderr );
+    PUTS_ERR( ": " );
+  }
 
   va_list args;
   va_start( args, format );

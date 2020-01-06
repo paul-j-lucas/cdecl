@@ -1,6 +1,7 @@
   noalt-tokens
   nodebug
   noexplain-by-default
+  noexplicit-int
   nographs
     lang=C18
     prompt

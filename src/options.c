@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/options.c
 **
-**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2020  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #include "cdecl.h"                      /* must go first */
 #include "color.h"
 #include "options.h"
+#include "print.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -55,6 +56,7 @@ char const         *opt_conf_file;
 bool                opt_debug;
 #endif /* ENABLE_CDECL_DEBUG */
 bool                opt_explain;
+c_type_id_t         opt_explicit_int[2];
 char const         *opt_fin;
 char const         *opt_fout;
 c_graph_t           opt_graph;
@@ -85,6 +87,7 @@ static struct option const LONG_OPTS[] = {
   { "file",         required_argument,  NULL, 'f' },
   { "help",         no_argument,        NULL, 'h' },
   { "interactive",  no_argument,        NULL, 'i' },
+  { "explicit-int", required_argument,  NULL, 'I' },
   { "color",        required_argument,  NULL, 'k' },
   { "output",       required_argument,  NULL, 'o' },
   { "no-prompt",    no_argument,        NULL, 'p' },
@@ -101,7 +104,7 @@ static struct option const LONG_OPTS[] = {
 /**
  * Short options.
  */
-static char const   SHORT_OPTS[] = "23ac:Cef:ik:o:pstvx:"
+static char const   SHORT_OPTS[] = "23ac:Cef:iI:k:o:pstvx:"
 #ifdef ENABLE_CDECL_DEBUG
   "d"
 #endif /* ENABLE_CDECL_DEBUG */
@@ -222,7 +225,7 @@ static bool is_cppdecl( void ) {
  * @return Returns the associated <code>\ref color_when</code> or prints an
  * error message and exits if \a when is invalid.
  */
-static color_when_t parse_color_when( char const *when ) {
+static color_when_t parse_opt_color_when( char const *when ) {
   struct colorize_map {
     char const   *map_when;
     color_when_t  map_colorization;
@@ -272,7 +275,7 @@ static color_when_t parse_color_when( char const *when ) {
  * @param s The null-terminated string to parse.
  * @return Returns the <code>\ref c_lang_id_t</code> corresponding to \a s.
  */
-static c_lang_id_t parse_lang( char const *s ) {
+static c_lang_id_t parse_opt_lang( char const *s ) {
   assert( s != NULL );
   size_t langs_buf_size = 1;            // for trailing NULL
 
@@ -316,27 +319,28 @@ static void parse_options( int argc, char const *argv[] ) {
       break;
     SET_OPTION( opt );
     switch ( opt ) {
-      case '2': opt_graph       = C_GRAPH_DI;                 break;
-      case '3': opt_graph       = C_GRAPH_TRI;                break;
-      case 'a': opt_alt_tokens  = true;                       break;
-      case 'c': opt_conf_file   = optarg;                     break;
-      case 'C': opt_no_conf     = true;                       break;
+      case '2': opt_graph       = C_GRAPH_DI;                     break;
+      case '3': opt_graph       = C_GRAPH_TRI;                    break;
+      case 'a': opt_alt_tokens  = true;                           break;
+      case 'c': opt_conf_file   = optarg;                         break;
+      case 'C': opt_no_conf     = true;                           break;
 #ifdef ENABLE_CDECL_DEBUG
-      case 'd': opt_debug       = true;                       break;
+      case 'd': opt_debug       = true;                           break;
 #endif /* ENABLE_CDECL_DEBUG */
-      case 'e': opt_explain     = true;                       break;
-      case 'f': opt_fin         = optarg;                     break;
+      case 'e': opt_explain     = true;                           break;
+      case 'f': opt_fin         = optarg;                         break;
    // case 'h': usage();        // default case handles this
-      case 'i': opt_interactive = true;                       break;
-      case 'k': color_when      = parse_color_when( optarg ); break;
-      case 'o': opt_fout        = optarg;                     break;
-      case 'p': opt_prompt      = false;                      break;
-      case 's': opt_semicolon   = false;                      break;
-      case 't': opt_typedefs    = false;                      break;
-      case 'v': print_version   = true;                       break;
-      case 'x': opt_lang        = parse_lang( optarg );       break;
+      case 'i': opt_interactive = true;                           break;
+      case 'I': parse_opt_explicit_int( NULL, optarg );           break;
+      case 'k': color_when      = parse_opt_color_when( optarg ); break;
+      case 'o': opt_fout        = optarg;                         break;
+      case 'p': opt_prompt      = false;                          break;
+      case 's': opt_semicolon   = false;                          break;
+      case 't': opt_typedefs    = false;                          break;
+      case 'v': print_version   = true;                           break;
+      case 'x': opt_lang        = parse_opt_lang( optarg );       break;
 #ifdef YYDEBUG
-      case 'y': yydebug         = true;                       break;
+      case 'y': yydebug         = true;                           break;
 #endif /* YYDEBUG */
       default : usage();
     } // switch
@@ -408,6 +412,88 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n"
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+bool is_explicit_int( c_type_id_t type_id ) {
+  if ( type_id == T_UNSIGNED ) {
+    //
+    // Special case: "unsigned" by itself means "unsigned int."
+    //
+    type_id |= T_INT;
+  }
+  else if ( (type_id & T_LONG_LONG) != T_NONE ) {
+    //
+    // Special case: for long long, its type is always combined with T_LONG,
+    // i.e., two bits are set.  Therefore, to check for explicit int for long
+    // long, we first have to turn off the T_LONG bit.
+    //
+    type_id &= ~T_LONG;
+  }
+  bool const is_unsigned = (type_id & T_UNSIGNED) != T_NONE;
+  type_id &= ~T_UNSIGNED;
+  return (type_id & opt_explicit_int[ is_unsigned ]) != T_NONE;
+}
+
+void parse_opt_explicit_int( c_loc_t const *loc, char const *s ) {
+  assert( s != NULL );
+
+  char opt_buf[ OPT_BUF_SIZE ];
+  c_type_id_t type_id = T_NONE;
+
+  for ( ; *s != '\0'; ++s ) {
+    switch ( *s ) {
+      case 'i':
+      case 'I':
+        if ( (type_id & T_UNSIGNED) == T_NONE ) {
+          // If only 'i' is specified, it means all signed integer types shall
+          // be explicit.
+          type_id |= T_SHORT | T_INT | T_LONG | T_LONG_LONG;
+        } else {
+          type_id |= T_INT;
+        }
+        break;
+      case 'l':
+      case 'L':
+        if ( s[1] == 'l' || s[1] == 'L' ) {
+          type_id |= T_LONG_LONG;
+          ++s;
+        } else {
+          type_id |= T_LONG;
+        }
+        break;
+      case 's':
+      case 'S':
+        type_id |= T_SHORT;
+        break;
+      case 'u':
+      case 'U':
+        type_id |= T_UNSIGNED;
+        if ( s[1] == '\0' || s[1] == ',' ) {
+          // If only 'u' is specified, it means all unsigned integer types
+          // shall be explicit.
+          type_id |= T_SHORT | T_INT | T_LONG | T_LONG_LONG;
+          break;
+        }
+        continue;
+      case ',':
+        break;
+      default:
+        if ( loc == NULL )
+          PMESSAGE_EXIT( EX_USAGE,
+            "\"%s\": invalid explicit int for %s:"
+            " '%c': must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
+            s, format_opt( 'I', opt_buf, sizeof opt_buf ), *s
+          );
+        print_error( loc,
+          "\"%s\": invalid explicit-int:"
+          " must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
+          s
+        );
+        return;
+    } // switch
+    set_opt_explicit_int( type_id );
+    type_id = T_NONE;
+  } // for
+}
+
 void options_init( int *pargc, char const ***pargv ) {
   assert( pargc != NULL );
   assert( pargv != NULL );
@@ -417,6 +503,11 @@ void options_init( int *pargc, char const ***pargv ) {
   parse_options( *pargc, *pargv );
   c_lang_set( opt_lang );
   *pargc -= optind, *pargv += optind;
+}
+
+void set_opt_explicit_int( c_type_id_t type_id ) {
+  bool const is_unsigned = (type_id & T_UNSIGNED) != T_NONE;
+  opt_explicit_int[ is_unsigned ] |= type_id & ~T_UNSIGNED;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

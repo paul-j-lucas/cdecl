@@ -2,7 +2,7 @@
 #	cdecl -- C gibberish translator
 #	test/Makefile.am
 #
-#	Copyright (C) 2018-2019  Paul J. Lucas, et al.
+#	Copyright (C) 2018-2020  Paul J. Lucas, et al.
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -28,6 +28,21 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 #
 TESTS =	tests/cdecl--no-semicolon.test \
 	tests/cdecl--no-typedefs.test \
+	tests/cdecl-Ii.test \
+	tests/cdecl-Iiu.test \
+	tests/cdecl-Il.test \
+	tests/cdecl-Ill.test \
+	tests/cdecl-Ilull.test \
+	tests/cdecl-Is.test \
+	tests/cdecl-Iu.test \
+	tests/cdecl-Iui.test \
+	tests/cdecl-Iul,ll.test \
+	tests/cdecl-Iul.test \
+	tests/cdecl-Iull.test \
+	tests/cdecl-Iulll.test \
+	tests/cdecl-Iulull.test \
+	tests/cdecl-Ius.test \
+	tests/cdecl-Ix.test \
 	tests/cdecl-s.test \
 	tests/cdecl-t.test
 

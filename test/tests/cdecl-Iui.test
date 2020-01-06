@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -Iui @ declare x as short; declare x as int; declare x as long; declare x as long long; declare x as unsigned short; declare x as unsigned; declare x as unsigned long; declare x as unsigned long long @ 0

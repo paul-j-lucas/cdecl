@@ -2,7 +2,7 @@
 **      cdecl -- C gibberish translator
 **      src/parser.y
 **
-**      Copyright (C) 2017-2019  Paul J. Lucas, et al.
+**      Copyright (C) 2017-2020  Paul J. Lucas, et al.
 **
 **      This program is free software: you can redistribute it and/or modify
 **      it under the terms of the GNU General Public License as published by
@@ -283,7 +283,8 @@ typedef struct in_attr in_attr_t;
 
 // extern functions
 extern void           print_help( char const* );
-extern void           set_option( c_loc_t const*, char const* );
+extern void           set_option( char const*, c_loc_t const*,
+                                  char const*, c_loc_t const* );
 
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
@@ -1152,7 +1153,7 @@ static void yyerror( char const *msg ) {
 %type   <sname>     scope_sname_c_opt
 %type   <sname>     sname_c sname_c_expected sname_c_opt
 %type   <sname>     sname_english sname_english_expected
-%type   <name>      set_option_name set_option_name_free
+%type   <name>      set_option_name set_option_name_free set_option_value_opt
 %type   <bitmask>   show_which_types_opt
 %type   <type_id>   static_type_opt
 %type   <bitmask>   typedef_opt
@@ -1172,6 +1173,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; FREE( $$ ); } name_expected
 %destructor { DTRACE; FREE( $$ ); } name_opt
 %destructor { DTRACE; FREE( $$ ); } set_option_name set_option_name_free
+%destructor { DTRACE; FREE( $$ ); } set_option_value_opt
 %destructor { DTRACE; FREE( $$ ); } Y_HYPHENATED_NAME
 %destructor { DTRACE; FREE( $$ ); } Y_NAME
 
@@ -2018,13 +2020,14 @@ scope_typedef_or_using_declaration_c_opt
 /*****************************************************************************/
 
 set_command
-  : Y_SET set_option_name
+  : Y_SET set_option_name set_option_value_opt
     {
-      set_option( &@2, $2 );
+      set_option( $2, &@2, $3, &@3 );
       if ( free_set_option_name ) {
         FREE( $2 );
         free_set_option_name = false;
       }
+      FREE( $3 );
     }
   ;
 
@@ -2055,6 +2058,11 @@ set_option_name_free
 set_option_name_nofree
   : Y_EXPLAIN
   | Y_LANG_NAME
+  ;
+
+set_option_value_opt
+  : /* empty */                   { $$ = NULL; }
+  | '=' Y_NAME                    { $$ = $2; @$ = @2; }
   ;
 
 /*****************************************************************************/
