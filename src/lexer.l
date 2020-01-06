@@ -987,10 +987,10 @@ static void lexer_fatal( char const *msg ) {
  * @note This is called by flex via `YY_USER_ACTION`.
  */
 static void lexer_update_loc( void ) {
-  yylloc.first_line   = yylloc.last_line = yylineno;
+  yylloc.first_line   = yylloc.last_line = (int)yylineno;
   yylloc.first_column = column;
-  yylloc.last_column  = column + yyleng - 1;
-  column += yyleng;
+  yylloc.last_column  = column + (int)yyleng - 1;
+  column += (int)yyleng;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
