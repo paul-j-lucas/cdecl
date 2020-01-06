@@ -12,6 +12,17 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 6.7
 
+** Explicit int in English
+Previously when explaining integer declarations, "int" was implicit:
+
+    cdecl> explain unsigned x
+    declare x as unsigned
+
+Now "int" is explicit:
+
+    cdecl> explain unsigned x
+    declare x as unsigned int
+
 ** Added explicit-int option
 Both a command-line --explicit-int/-I and explicit-int set option have been
 added that set which integer types have "int" explicitly included in
