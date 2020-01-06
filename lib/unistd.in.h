@@ -1,5 +1,5 @@
 /* Substitute for and wrapper around <unistd.h>.
-   Copyright (C) 2003-2019 Free Software Foundation, Inc.
+   Copyright (C) 2003-2020 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as published by
@@ -21,7 +21,7 @@
 #endif
 @PRAGMA_COLUMNS@
 
-#ifdef _GL_INCLUDING_UNISTD_H
+#if @HAVE_UNISTD_H@ && defined _GL_INCLUDING_UNISTD_H
 /* Special invocation convention:
    - On Mac OS X 10.3.9 we have a sequence of nested includes
      <unistd.h> -> <signal.h> -> <pthread.h> -> <unistd.h>
@@ -141,7 +141,7 @@
 
 
 /* Get getopt(), optarg, optind, opterr, optopt.  */
-#if @GNULIB_UNISTD_H_GETOPT@ && !defined _GL_SYSTEM_GETOPT
+#if @GNULIB_GETOPT_POSIX@ && @GNULIB_UNISTD_H_GETOPT@ && !defined _GL_SYSTEM_GETOPT
 # include <getopt-cdefs.h>
 # include <getopt-pfx-core.h>
 #endif
@@ -905,6 +905,11 @@ _GL_WARN_ON_USE (getlogin_r, "getlogin_r is unportable - "
 _GL_FUNCDECL_RPL (getpagesize, int, (void));
 _GL_CXXALIAS_RPL (getpagesize, int, (void));
 # else
+/* On HP-UX, getpagesize exists, but it is not declared in <unistd.h> even if
+   the compiler options -D_HPUX_SOURCE -D_XOPEN_SOURCE=600 are used.  */
+#  if defined __hpux
+_GL_FUNCDECL_SYS (getpagesize, int, (void));
+#  endif
 #  if !@HAVE_GETPAGESIZE@
 #   if !defined getpagesize
 /* This is for POSIX systems.  */
@@ -1672,7 +1677,9 @@ _GL_CXXALIAS_RPL (usleep, int, (useconds_t n));
 #  if !@HAVE_USLEEP@
 _GL_FUNCDECL_SYS (usleep, int, (useconds_t n));
 #  endif
-_GL_CXXALIAS_SYS (usleep, int, (useconds_t n));
+/* Need to cast, because on Haiku, the first parameter is
+                                     unsigned int n.  */
+_GL_CXXALIAS_SYS_CAST (usleep, int, (useconds_t n));
 # endif
 _GL_CXXALIASWARN (usleep);
 #elif defined GNULIB_POSIXCHECK

@@ -1,6 +1,6 @@
 /* A GNU-like <stdlib.h>.
 
-   Copyright (C) 1995, 2001-2004, 2006-2019 Free Software Foundation, Inc.
+   Copyright (C) 1995, 2001-2004, 2006-2020 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as published by
@@ -200,6 +200,10 @@ _GL_FUNCDECL_SYS (canonicalize_file_name, char *, (const char *name)
                                                   _GL_ARG_NONNULL ((1)));
 #  endif
 _GL_CXXALIAS_SYS (canonicalize_file_name, char *, (const char *name));
+# endif
+# ifndef GNULIB_defined_canonicalize_file_name
+#  define GNULIB_defined_canonicalize_file_name \
+     (!@HAVE_CANONICALIZE_FILE_NAME@ || @REPLACE_CANONICALIZE_FILE_NAME@)
 # endif
 _GL_CXXALIASWARN (canonicalize_file_name);
 #elif defined GNULIB_POSIXCHECK
@@ -516,6 +520,9 @@ _GL_FUNCDECL_SYS (ptsname_r, int, (int fd, char *buf, size_t len));
 #  endif
 _GL_CXXALIAS_SYS (ptsname_r, int, (int fd, char *buf, size_t len));
 # endif
+# ifndef GNULIB_defined_ptsname_r
+#  define GNULIB_defined_ptsname_r (!@HAVE_PTSNAME_R@ || @REPLACE_PTSNAME_R@)
+# endif
 _GL_CXXALIASWARN (ptsname_r);
 #elif defined GNULIB_POSIXCHECK
 # undef ptsname_r
@@ -599,7 +606,9 @@ _GL_CXXALIAS_RPL (random, long, (void));
 #  if !@HAVE_RANDOM@
 _GL_FUNCDECL_SYS (random, long, (void));
 #  endif
-_GL_CXXALIAS_SYS (random, long, (void));
+/* Need to cast, because on Haiku, the return type is
+                               int.  */
+_GL_CXXALIAS_SYS_CAST (random, long, (void));
 # endif
 _GL_CXXALIASWARN (random);
 #elif defined GNULIB_POSIXCHECK
@@ -766,9 +775,11 @@ _GL_FUNCDECL_SYS (initstate_r, int,
                    struct random_data *rand_state)
                   _GL_ARG_NONNULL ((2, 4)));
 #  endif
-_GL_CXXALIAS_SYS (initstate_r, int,
-                  (unsigned int seed, char *buf, size_t buf_size,
-                   struct random_data *rand_state));
+/* Need to cast, because on Haiku, the third parameter is
+                                                     unsigned long buf_size.  */
+_GL_CXXALIAS_SYS_CAST (initstate_r, int,
+                       (unsigned int seed, char *buf, size_t buf_size,
+                        struct random_data *rand_state));
 # endif
 _GL_CXXALIASWARN (initstate_r);
 #elif defined GNULIB_POSIXCHECK
@@ -796,8 +807,10 @@ _GL_FUNCDECL_SYS (setstate_r, int,
                   (char *arg_state, struct random_data *rand_state)
                   _GL_ARG_NONNULL ((1, 2)));
 #  endif
-_GL_CXXALIAS_SYS (setstate_r, int,
-                  (char *arg_state, struct random_data *rand_state));
+/* Need to cast, because on Haiku, the first parameter is
+                        void *arg_state.  */
+_GL_CXXALIAS_SYS_CAST (setstate_r, int,
+                       (char *arg_state, struct random_data *rand_state));
 # endif
 _GL_CXXALIASWARN (setstate_r);
 #elif defined GNULIB_POSIXCHECK

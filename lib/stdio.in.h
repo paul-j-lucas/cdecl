@@ -1,6 +1,6 @@
 /* A GNU-like <stdio.h>.
 
-   Copyright (C) 2004, 2007-2019 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2007-2020 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as published by
@@ -1259,7 +1259,9 @@ _GL_FUNCDECL_SYS (vdprintf, int, (int fd, const char *format, va_list args)
 _GL_CXXALIAS_SYS_CAST (vdprintf, int,
                        (int fd, const char *format, va_list args));
 # endif
+# if __GLIBC__ >= 2
 _GL_CXXALIASWARN (vdprintf);
+# endif
 #elif defined GNULIB_POSIXCHECK
 # undef vdprintf
 # if HAVE_RAW_DECL_VDPRINTF
