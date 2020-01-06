@@ -1,5 +1,82 @@
+2020-01-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, c_type.c, options.c, options.h, parser.y,
+     print.c, print.h, set.c, test/Makefile.am, cdecl-Ii.out, cdecl-Iis.out,
+     cdecl-Iiu.out, cdecl-Il.out, cdecl-Ill.out, cdecl-Ilull.out, cdecl-Is.out,
+     cdecl-Iu.out, cdecl-Iui.out, cdecl-Iul,ll.out, cdecl-Iul.out,
+     cdecl-Iull.out, cdecl-Iulll.out, cdecl-Iulull.out, cdecl-Ius.out, set.out,
+     set_options.out, cdecl-Ii.test, cdecl-Iis.test, cdecl-Iiu.test,
+     cdecl-Il.test, cdecl-Ill.test, cdecl-Ilull.test, cdecl-Is.test,
+     cdecl-Iu.test, cdecl-Iui.test, cdecl-Iul,ll.test, cdecl-Iul.test,
+     cdecl-Iull.test, cdecl-Iulll.test, cdecl-Iulull.test, cdecl-Ius.test,
+     cdecl-Ix.test: Added --explicit-int/-I and explicit-int set option.
+   * lexer.l: Added casts to eliminate warnings with some versions of flex.
+   * lib/Makefile.am, _Noreturn.h, arg-nonnull.h, c++defs.h, errno.in.h,
+     getdelim.c, getline.c, getopt-cdefs.in.h, getopt-core.h, getopt-ext.h,
+     getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c,
+     getopt_int.h, gettext.h, limits.in.h, stdarg.in.h, stdbool.in.h,
+     stddef.in.h, stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h, strndup.c,
+     strnlen.c, strsep.c, sys_types.in.h, sysexits.in.h, unistd.in.h,
+     warn-on-use.h, 00gnulib.m4, absolute-header.m4, errno_h.m4, extensions.m4,
+     extern-inline.m4, getdelim.m4, getline.m4, getopt.m4, gnulib-cache.m4,
+     gnulib-common.m4, gnulib-comp.m4, gnulib-tool.m4, include_next.m4,
+     limits-h.m4, multiarch.m4, nocrash.m4, off_t.m4, ssize_t.m4, stdarg.m4,
+     stdbool.m4, stddef_h.m4, stdint.m4, stdio_h.m4, stdlib_h.m4, string_h.m4,
+     strndup.m4, strnlen.m4, strsep.m4, sys_types_h.m4, sysexits.m4,
+     unistd_h.m4, warn-on-use.m4, wchar_t.m4, wint_t.m4: Updated GnuLib.
+
+2020-01-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c, c_type.h, explain_cast_ll.out, explain_cast_ull.out,
+     explain_cu.out, explain_ll.out, explain_tulz.out,
+     explain_udl_pcc16ul_i.out, explain_udl_pcc32ul_i.out,
+     explain_udl_pcc8ul_i.out, explain_udl_pccul_i.out,
+     explain_udl_pcwul_i.out, explain_udl_ull_i.out, explain_ull.out: Now
+     explicit about "int" in English.
+   * c_type.c: Comment reformatting.
+
+2019-12-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1, set.c: Now ignoring hyphens for set options.
+
+2019-12-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c: Made rb_nil static.
+
+2019-12-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.h, c_kind.h, c_type.h, color.c, prompt.c, red_black.c,
+     red_black.h, slist.h, util.h: Consistent @sa spacing.
+   * c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_operator.c, c_operator.h,
+     c_type.c, cdecl.c, debug.c, english.c, errors.c, gibberish.c, lexer.l,
+     options.c, parser.y, set.c, typedefs.h: More consistent C_ prefix.
+   * slist.c: Somewhat clearer.
+
+2019-12-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.h, cdecl.h, debug.c, debug.h, parser.y: s/print_kv/kv_debug/
+   * c_sname.h: More docs.
+   * c_operator.h: More operator docs.
+   * util.h: Fixed dox.
+   * c_ast.h, errors.c: s/c_ast_found/c_ast_find/
+   * c_ast_util.c, c_ast_util.h: Made some AST util functions static.
+   * c_ast.h: More @sa in docs.
+   * util.c: s/dup/s_dup/ to fix shadow warning.
+
+2019-12-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * set.c, set.out, set_options.out: Sorted printing of "set" options.
+   * c_ast_util.c: Reworked loop in c_ast_untypedef().
+   * autocomplete.c: s/begin/begun/
+   * english.c: Added c_ast_english_func_args().
+   * gibberish.c: Tweaked comment.
+   * english.c: Moved "comma" declaration close to point of first use.
+   * english.c: Removed comment that no longer makes any sense.
+   * english.c, gibberish.c: Added assert()s.
+
 2019-12-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, configure.ac: Updated to 6.6.2.
    * configure.ac: Moved check for libcurses before libreadline since some
      implementations of the latter depend on the former (e.g., on Solaris 11).
 
