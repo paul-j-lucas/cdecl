@@ -82,7 +82,7 @@ static help_text_t const HELP_TEXT_COMMANDS[] = {
     "gibberish: a C++ declaration, like \"int x\"; or cast, like \"(int)x\"" },
   { "option: [no]alt-tokens [no]debug {di|tri|no}graphs [no]explain-by-default",
     SAME_AS_C },
-  { "        <lang> [no]prompt [no]semicolon",
+  { "        [no]explicit-int[=<types>] <lang> [no]prompt [no]semicolon",
     SAME_AS_C },
   { "lang: C K&R C89 C95 C99 C11 C18 C++ C++98 C++03 C++11 C++14 C++17 C++20",
     SAME_AS_C },
