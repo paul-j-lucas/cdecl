@@ -425,6 +425,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
  * from where `yyerror()` left off.
  *
  * @param format A `printf()` style format string.
+ * @param ... Arguments to print.
  */
 static void elaborate_error( char const *format, ... ) {
   if ( !error_newlined ) {
