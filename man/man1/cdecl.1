@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 6, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 10, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -656,18 +656,19 @@ within the scope of
 .I s-name
 thus declaring a type within that scope.
 .TP
-.BR set " [" \f2option\fP "] | " "set options" " | " set " \f2lang\fP"
+.BR set " [" \f2option\fP " [" "= " \f2value\fP "" "] | " \f2options\fP " | " \f2lang\fP ]
 In the first form,
-sets a particular option, if given
+sets a particular option
 (see
 .B Set Options
 for valid options);
-if not,
-it's equivalent to the second form
-that prints the current value of all options.
-In the third form,
+in the second form,
+prints the current value of all options;
+in the third form,
 sets the current language to
 .IR lang .
+If no argument is given,
+it's equivalent to the second form.
 .TP
 .BR show " { " \f2s-name\fP " | " all " | " predefined " | " user " } [" typedef ]
 Shows the definition for a previously defined type
@@ -1175,19 +1176,10 @@ command takes several options
 (which ignore hyphens).
 Unambiguous option abbreviations may be used.
 .RS 4
-.TP 6
-.I lang
-Use
-.I lang
-(which is case-insensitive)
-as the current language.
-(See
-.B C AND C++ LANGUAGE VERSIONS
-for valid languages.)
 .TP
 .RB [ no ] alt-tokens
 Turns [off] on alternative token output.
-.TP
+.TP 6
 .RB [ no ] debug
 Turns [off] on debugging output
 (if compiled in)
@@ -1222,6 +1214,19 @@ option for details.)
 .TP
 .B noexplicit-int
 Turns off explicit \f(CWint\fP for all integer types.
+.TP
+.BI lang \f1=\fPs
+Use
+.I s
+(which is case-insensitive)
+as the current language.
+(See
+.B C AND C++ LANGUAGE VERSIONS
+for valid languages.)
+.TP
+.I lang
+Shorthand for
+.BI lang= lang \f1.\fP
 .TP
 .B options
 Prints the current value of all options.

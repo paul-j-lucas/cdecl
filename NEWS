@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.8
+
+** Added set lang=<lang>
+Since the set explicit-int option was added (an option that takes a value), a
+set lang=<lang> option was added.
+
+
 * Changes in Cdecl 6.7
 
 ** Explicit int in English

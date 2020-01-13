@@ -1,3 +1,24 @@
+2020-01-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated version.
+   * cdecl.1, help.c, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out: Reworked
+     help to match new "set" command.
+   * lexer.l: Added comment.
+   * src/Makefile.am: Added (commented out) AM_LFLAGS.
+   * src/Makefile.am, lexer.l, parser.y: Simplified set options.
+
+2020-01-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added @param for elaborate_error().
+
+2020-01-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c, lexer.l, parser.y, set.c, help-c++.out, help-c.out,
+     help_command-c++.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out: Now allowing set lang=<lang>.
+   * help.c: Added explicit-int to set options in help.
+
 2020-01-06  Paul J. Lucas <paul@lucasmail.org>
 
    * Doxyfile, Makefile.am, man/Makefile.am, man/man1/Makefile.am,

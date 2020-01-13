@@ -611,12 +611,10 @@ S             [ \f\r\t\v]
 
 identifier    {letter}({letter}|{D})*
 
-cknr_name     ([cC][kK]&[rR])|([kK]&[rR][cC]?)
-cpp_name      [cC]"++"({D}{D})?
 dtor_sname    ({identifier}{S}*::{S}*)+(~{S}*|compl{S}+){identifier}
 hyphenated    [a-z]+-([a-z]+-)*[a-z]+
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
-lang_name     {cknr_name}|{cpp_name}
+set_option    [^=; \f\n\r\t\v]+
 sname         {identifier}({S}*::{S}*{identifier})+
 
 bin_int       0[bB]{B}+{int_suffix}?
@@ -624,8 +622,13 @@ oct_int       0{O}*{int_suffix}?
 dec_int       [1-9]{D}*{int_suffix}?
 hex_int       0[xX]{H}+{int_suffix}?
 
-%%
+/*
+ * For the "set" command, we want to allow (almost) any character sequence for
+ * the command's options, so we use an exclusive start state.
+ */
+%x SET_COMMAND
 
+%%
               /*
                * Special case: if the _Atomic keyword is immediately followed
                * by a '(', it is interpreted as a type specifier, not as a type
@@ -720,8 +723,17 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 //
                 cdecl_keyword_t const *cdk = cdecl_keyword_find( lexer_token );
                 if ( cdk != NULL ) {
-                  if ( cdk->c_keyword_synonym == NULL )
+                  if ( cdk->c_keyword_synonym == NULL ) {
+                    if ( cdk->literal == L_SET_COMMAND ) {
+                      //
+                      // For the "set" command, we want to allow (almost) any
+                      // character sequence for the command's options, so we
+                      // use an exclusive start state.
+                      //
+                      BEGIN( SET_COMMAND );
+                    }
                     return cdk->y_token;
+                  }
                   if ( cdk->c_keyword_synonym == L__NORETURN &&
                        C_LANG_IS_CPP() ) {
                     //
@@ -817,11 +829,6 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 return y_token;
               }
 
-{lang_name}   {
-                SET_TOKEN;
-                return Y_LANG_NAME;
-              }
-
 {bin_int}     { SET_TOKEN; yylval.number = parse_int(  2 ); return Y_NUMBER; }
 {oct_int}     { SET_TOKEN; yylval.number = parse_int(  8 ); return Y_NUMBER; }
 {dec_int}     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
@@ -908,14 +915,14 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 "/"           |
 ";"           |
 "<"           |
-"="           |
+<*>"="        |
 ">"           |
 "["           |
 "]"           |
 "{"           |
 "}"           { SET_TOKEN; return lexer_token[0]    ; }
 
-"/*"          {                         /* ignore C-style comments */
+<*>"/*"       {                         /* ignore C-style comments */
                 for ( int c = input(), prev_c = '\0'; ;
                       prev_c = c, c = input() ) {
                   if ( c == '\0' || c == EOF )
@@ -928,20 +935,41 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 } // for
               }
 
-"//".*        ;                         /* ignore C++-style comments */
-#.*           ;                         /* ignore preprocessor directives */
-{S}+          ;                         /* ignore all other whitespace */
-\\\n          ;                         /* eat escaped newlines */
+<*>"//".*     ;                         /* ignore C++-style comments */
+<*>#.*        ;                         /* ignore preprocessor directives */
+<*>{S}+       ;                         /* ignore all other whitespace */
+<*>\\\n       ;                         /* eat escaped newlines */
 
-\n            {
+<*>\n         {
                 SET_TOKEN;
                 newline();
+                BEGIN( INITIAL );
                 return Y_END;
               }
 
-<<EOF>>       {
+<SET_COMMAND>{
+  ";"         {
+                SET_TOKEN;
+                BEGIN( INITIAL );
+                return lexer_token[0];
+              }
+
+  {set_option} {
+                SET_TOKEN;
+                yylval.name = check_strdup( lexer_token );
+                return Y_SET_OPTION;
+              }
+}
+
+<*>.          {
+                SET_TOKEN;
+                return Y_ERROR;
+              }
+
+<*><<EOF>>    {
                 SET_TOKEN;
                 newline();
+                BEGIN( INITIAL );
                 //
                 // The first time we encounter EOF, we want to treat it as if
                 // it were a newline by returning Y_END so commands in the
@@ -952,11 +980,6 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 // encounter EOF, treat it as EOF by returning no token.
                 //
                 return (is_eof = !is_eof) ? Y_END : YY_NULL;
-              }
-
-.             {
-                SET_TOKEN;
-                return Y_ERROR;
               }
 
 %%

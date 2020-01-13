@@ -291,7 +291,6 @@ static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
 static slist_t        ast_gc_list;      ///< `c_ast` nodes freed after parse.
 static slist_t        ast_typedef_list; ///< `c_ast` nodes for `typedef`s.
 static bool           error_newlined = true;
-static bool           free_set_option_name;
 static in_attr_t      in_attr;          ///< Inherited attributes.
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -1013,9 +1012,9 @@ static void yyerror( char const *msg ) {
 %token              Y_END
 %token              Y_ERROR
 %token  <name>      Y_HYPHENATED_NAME
-%token              Y_LANG_NAME
 %token  <name>      Y_NAME
 %token  <number>    Y_NUMBER
+%token  <name>      Y_SET_OPTION
 %token  <c_typedef> Y_TYPEDEF_NAME      /* e.g., T x */
 %token  <c_typedef> Y_TYPEDEF_SNAME     /* e.g., S::T y */
 
@@ -1146,7 +1145,7 @@ static void yyerror( char const *msg ) {
 %type   <oper_id>   c_operator
 %type   <literal>   help_what_opt
 %type   <bitmask>   member_or_non_member_opt
-%type   <name>      name_expected name_opt
+%type   <name>      name_expected
 %type   <literal>   new_style_cast_c new_style_cast_english
 %type   <sname>     of_scope_english
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
@@ -1154,7 +1153,7 @@ static void yyerror( char const *msg ) {
 %type   <sname>     scope_sname_c_opt
 %type   <sname>     sname_c sname_c_expected sname_c_opt
 %type   <sname>     sname_english sname_english_expected
-%type   <name>      set_option_name set_option_name_free set_option_value_opt
+%type   <name>      set_option_value_opt
 %type   <bitmask>   show_which_types_opt
 %type   <type_id>   static_type_opt
 %type   <bitmask>   typedef_opt
@@ -1172,13 +1171,14 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; FREE( $$ ); } any_name
 %destructor { DTRACE; FREE( $$ ); } any_name_expected
 %destructor { DTRACE; FREE( $$ ); } name_expected
-%destructor { DTRACE; FREE( $$ ); } name_opt
-%destructor { DTRACE; FREE( $$ ); } set_option_name set_option_name_free
 %destructor { DTRACE; FREE( $$ ); } set_option_value_opt
 %destructor { DTRACE; FREE( $$ ); } Y_HYPHENATED_NAME
 %destructor { DTRACE; FREE( $$ ); } Y_NAME
+%destructor { DTRACE; FREE( $$ ); } Y_SET_OPTION
 
 /* sname */
+%destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c
+%destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c_expected
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_english
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_list_english
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_list_english_opt
@@ -1189,8 +1189,6 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_english
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_english_expected
 %destructor { DTRACE; c_sname_free( &$$ ); } typedef_sname_c
-%destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c
-%destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c_expected
 %destructor { DTRACE; c_sname_free( &$$ ); } Y_CONSTRUCTOR_SNAME
 %destructor { DTRACE; c_sname_free( &$$ ); } Y_DESTRUCTOR_SNAME
 
@@ -2021,49 +2019,26 @@ scope_typedef_or_using_declaration_c_opt
 /*****************************************************************************/
 
 set_command
-  : Y_SET set_option_name set_option_value_opt
+  : Y_SET
+    {
+      set_option( NULL, NULL, NULL, NULL );
+    }
+  | Y_SET Y_SET_OPTION set_option_value_opt
     {
       set_option( $2, &@2, $3, &@3 );
-      if ( free_set_option_name ) {
-        FREE( $2 );
-        free_set_option_name = false;
-      }
+      FREE( $2 );
       FREE( $3 );
     }
   ;
 
-set_option_name
-  : set_option_name_free
-    {
-      $$ = $1;
-      free_set_option_name = true;
-    }
-  | set_option_name_nofree
-    {
-      $$ = CONST_CAST( char*, lexer_token );
-      free_set_option_name = false;
-    }
-  ;
-
-  /*
-   * These set yylval.name to strdup( lexer_token ) and so must be free'd.
-   */
-set_option_name_free
-  : name_opt
-  | Y_HYPHENATED_NAME
-  ;
-
-  /*
-   * These rely on lexer_token directly and so must NOT be free'd.
-   */
-set_option_name_nofree
-  : Y_EXPLAIN
-  | Y_LANG_NAME
-  ;
-
 set_option_value_opt
   : /* empty */                   { $$ = NULL; }
-  | '=' Y_NAME                    { $$ = $2; @$ = @2; }
+  | '=' Y_SET_OPTION              { $$ = $2; @$ = @2; }
+  | '=' error
+    {
+      $$ = NULL; @$ = @2;
+      ELABORATE_ERROR( "option value expected" );
+    }
   ;
 
 /*****************************************************************************/
@@ -4340,11 +4315,6 @@ name_expected
       $$ = NULL;
       ELABORATE_ERROR( "name expected" );
     }
-  ;
-
-name_opt
-  : /* empty */                   { $$ = NULL; }
-  | Y_NAME
   ;
 
 scope_sname_c_opt

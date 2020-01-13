@@ -35,6 +35,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <assert.h>
 #include <stdint.h>                     /* for uint8_t */
 #include <stdio.h>
 #include <stdlib.h>
@@ -55,15 +56,28 @@ typedef void (*set_opt_fn_t)( bool enabled, c_loc_t const *opt_name_loc,
                               c_loc_t const *opt_value_loc );
 
 /**
+ * cdecl `set` option type.
+ */
+enum set_option_type {
+  SET_TOGGLE,                           ///< Toggle: `foo` & `nofoo`.
+  SET_AFF_ONLY,                         ///< Affirmative only, e.g., `foo`.
+  SET_NEG_ONLY                          ///< Negative only, e.g., `nofoo`.
+};
+typedef enum set_option_type set_option_type_t;
+
+/**
  * cdecl `set` option.
  */
 struct set_option {
-  char const   *name;                   ///< Option name.
-  bool          no_only;                ///< Valid only when "no...".
-  bool          takes_value;            ///< Takes a value?
-  set_opt_fn_t  set_fn;                 ///< Set function.
+  char const       *name;               ///< Option name.
+  set_option_type_t type;               ///< Option type.
+  bool              takes_value;        ///< Takes a value?
+  set_opt_fn_t      set_fn;             ///< Set function.
 };
 typedef struct set_option set_option_t;
+
+// local functions
+static void set_trigraphs( bool, c_loc_t const*, char const*, c_loc_t const* );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -222,6 +236,29 @@ static void set_explicit_int( bool enabled, c_loc_t const *opt_name_loc,
 }
 
 /**
+ * Sets the current language.
+ *
+ * @param enabled True if enabled.
+ * @param opt_name_loc The location of the option name.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
+ */
+static void set_lang( bool enabled, c_loc_t const *opt_name_loc,
+                      char const *opt_value, c_loc_t const *opt_value_loc ) {
+  assert( enabled );
+  (void)opt_name_loc;
+
+  c_lang_id_t const new_lang = c_lang_find( opt_value );
+  if ( new_lang != LANG_NONE ) {
+    c_lang_set( new_lang );
+    if ( opt_graph == C_GRAPH_TRI )
+      set_trigraphs( /*enabled=*/true, NULL, NULL, NULL );
+  } else {
+    print_error( opt_value_loc, "\"%s\": unknown language", opt_value );
+  }
+}
+
+/**
  * Sets the prompt option.
  *
  * @param enabled True if enabled.
@@ -353,27 +390,26 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   size_t const opt_name_len = strlen( opt_name );
 
   static set_option_t const SET_OPTIONS[] = {
-    { "alt-tokens",         false,  false,  &set_alt_tokens         },
+    { "alt-tokens",         SET_TOGGLE,   false,  &set_alt_tokens         },
 #ifdef ENABLE_CDECL_DEBUG
-    { "debug",              false,  false,  &set_debug              },
+    { "debug",              SET_TOGGLE,   false,  &set_debug              },
 #endif /* ENABLE_CDECL_DEBUG */
-    { "digraphs",           false,  false,  &set_digraphs           },
-    { "graphs",             true,   false,  &set_digraphs           },
-    { "explain-by-default", false,  false,  &set_explain_by_default },
-    { "explicit-int",       false,  true,   &set_explicit_int       },
-    { "prompt",             false,  false,  &set_prompt             },
-    { "semicolon",          false,  false,  &set_semicolon          },
-    { "trigraphs",          false,  false,  &set_trigraphs          },
+    { "digraphs",           SET_AFF_ONLY, false,  &set_digraphs           },
+    { "graphs",             SET_NEG_ONLY, false,  &set_digraphs           },
+    { "explain-by-default", SET_TOGGLE,   false,  &set_explain_by_default },
+    { "explicit-int",       SET_TOGGLE,   true,   &set_explicit_int       },
+    { "lang",               SET_AFF_ONLY, true,   &set_lang               },
+    { "prompt",             SET_TOGGLE,   false,  &set_prompt             },
+    { "semicolon",          SET_TOGGLE,   false,  &set_semicolon          },
+    { "trigraphs",          SET_AFF_ONLY, false,  &set_trigraphs          },
 #ifdef YYDEBUG
-    { "yydebug",            false,  false,  &set_yydebug            },
+    { "yydebug",            SET_TOGGLE,   false,  &set_yydebug            },
 #endif /* YYDEBUG */
-    { NULL,                 false,  false,  NULL                    }
+    { NULL,                 SET_TOGGLE,   false,  NULL                    }
   };
 
   set_option_t const *found_opt = NULL;
   for ( set_option_t const *opt = SET_OPTIONS; opt->name != NULL; ++opt ) {
-    if ( !is_no && opt->no_only )
-      continue;
     if ( strn_nohyphen_cmp( opt->name, opt_name, opt_name_len ) == 0 ) {
       if ( found_opt != NULL ) {
         print_error( opt_name_loc,
@@ -393,10 +429,31 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
     return;
   }
 
+  switch ( found_opt->type ) {
+    case SET_TOGGLE:
+      break;
+    case SET_AFF_ONLY:
+      if ( is_no ) {
+        print_error( opt_name_loc,
+          "\"no\" not valid for \"%s\"", found_opt->name
+        );
+        return;
+      }
+      break;
+    case SET_NEG_ONLY:
+      if ( !is_no ) {
+        print_error( opt_name_loc,
+          "\"no\" required for \"%s\"", found_opt->name
+        );
+        return;
+      }
+      break;
+  } // switch
+
   if ( opt_value == NULL ) {
     if ( !is_no && found_opt->takes_value ) {
       print_error( opt_name_loc,
-        "\"%s\": set option requires value",
+        "\"%s\" set option requires =<value>",
         orig_name
       );
       return;
