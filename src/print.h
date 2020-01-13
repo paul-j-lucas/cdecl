@@ -43,7 +43,7 @@
  *
  * @param loc The location of the error; may be null.
  * @param format The `printf()` style format string.
- * @param ... `printf()` arguments.
+ * @param ... The `printf()` arguments.
  */
 void print_error( c_loc_t const *loc, char const *format, ... );
 
@@ -55,7 +55,7 @@ void print_error( c_loc_t const *loc, char const *format, ... );
  * where `_____` is the hint.
  *
  * @param format The `printf()` style format string.
- * @param ... `printf()` arguments.
+ * @param ... The `printf()` arguments.
  */
 void print_hint( char const *format, ... );
 
@@ -77,7 +77,7 @@ void print_loc( c_loc_t const *loc );
  *
  * @param loc The location of the warning; may be null.
  * @param format The `printf()` style format string.
- * @param ... `printf()` arguments.
+ * @param ... The `printf()` arguments.
  */
 void print_warning( c_loc_t const *loc, char const *format, ... );
 

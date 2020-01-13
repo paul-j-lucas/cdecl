@@ -101,6 +101,7 @@ _GL_INLINE_HEADER_BEGIN
  * was one.
  *
  * @param STREAM The `FILE` stream to print to.
+ * @param ... The `fprintf()` arguments.
  */
 #define FPRINTF(STREAM,...) \
   IF_EXIT( fprintf( (STREAM), __VA_ARGS__ ) < 0, EX_IOERR )
@@ -181,7 +182,7 @@ _GL_INLINE_HEADER_BEGIN
  * internal error.
  *
  * @param FORMAT The `printf()` format to use.
- * @param ... Ordinary `printf()` arguments.
+ * @param ... The `printf()` arguments.
  *
  * @sa PMESSAGE_EXIT
  * @sa UNEXPECTED_INT_VALUE
@@ -220,6 +221,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param STATUS The status code to **exit**(3) with.
  * @param FORMAT The `printf()` format to use.
+ * @param ... The `printf()` arguments.
  *
  * @sa INTERNAL_ERR
  * @sa UNEXPECTED_INT_VALUE
@@ -231,7 +233,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Shorthand for printing to standard error.
  *
- * @param ... Ordinary `printf()` arguments.
+ * @param ... The `printf()` arguments.
  *
  * @sa PUTC_ERR
  * @sa PUTS_ERR
