@@ -60,7 +60,7 @@ _GL_INLINE_HEADER_BEGIN
  * Appends \a name onto the end of \a sname.
  *
  * @param sname The scoped name to append to.
- * @param name The name to append.
+ * @param name The name to append.  Ownership is taken.
  *
  * @sa c_sname_append_sname()
  * @sa c_sname_prepend_name()
@@ -228,7 +228,7 @@ CDECL_SNAME_INLINE char const* c_sname_name_atr( c_sname_t const *sname,
  * Prepends \a name onto the beginning of \a sname.
  *
  * @param sname The scoped name to prepend to.
- * @param name The name to prepend.
+ * @param name The name to prepend.  Ownership is taken.
  *
  * @sa c_sname_append_name()
  * @sa c_sname_append_sname()
