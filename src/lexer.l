@@ -132,7 +132,7 @@
  * @param BYTES_MAX The maximum number of bytes to read.
  */
 #define YY_INPUT(BUF,BYTES_READ,BYTES_MAX) \
-  (BYTES_READ) = (int)lexer_get_input( (BUF), (size_t)(BYTES_MAX) )
+  (BYTES_READ) = lexer_get_input( (BUF), (yy_size_t)(BYTES_MAX) )
 
 /**
  * This code is inserted by flex at the beginning of each rule to set the
@@ -394,9 +394,9 @@ static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
  * @param buf_capacity The capacity of \a buf.
  * @return Returns the number of bytes read.
  */
-static size_t lexer_get_input( char *buf, size_t buf_capacity ) {
+static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
   assert( buf != NULL );
-  size_t input_avail = input_len - input_sent;
+  yy_size_t input_avail = input_len - input_sent;
   if ( input_avail == 0 ) {
     static size_t input_capacity;
     ssize_t bytes_read = getline( &input_buf, &input_capacity, yyin );
@@ -404,7 +404,7 @@ static size_t lexer_get_input( char *buf, size_t buf_capacity ) {
       FERROR( yyin );
       bytes_read = 0;
     }
-    input_avail = input_len = (size_t)bytes_read;
+    input_avail = input_len = (yy_size_t)bytes_read;
     input_sent = 0;
   }
   //
@@ -561,39 +561,6 @@ tilde:
  */
 static int yywrap( void ) {
   return 1 /* done */;
-}
-
-////////// extern functions ///////////////////////////////////////////////////
-
-char const* lexer_input_line( size_t *plen ) {
-  if ( plen != NULL )
-    *plen = input_len;
-  return input_buf;
-}
-
-void lexer_loc( int *pline, int *pcolumn ) {
-  assert( pline != NULL );
-  assert( pcolumn != NULL );
-
-  *pline = yylineno;
-
-  if ( column == 0 )
-    *pcolumn = column_newline;
-  else if ( lexer_token[0] == '\n' )
-    *pcolumn = column;
-  else
-    *pcolumn = column - (int)strlen( lexer_token );
-}
-
-void lexer_reset( bool hard_reset ) {
-  if ( hard_reset ) {
-    is_eof = false;
-    yylineno = 0;
-  }
-  c_mode = C_ENGLISH_TO_GIBBERISH;
-  input_len = input_sent = 0;
-  lexer_find_typedef = true;
-  newline();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -986,7 +953,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 
 /// @endcond
 
-///////////////////////////////////////////////////////////////////////////////
+////////// local functions ////////////////////////////////////////////////////
 
 /**
  * Called by flex only when there's a fatal error.
@@ -1014,6 +981,40 @@ static void lexer_update_loc( void ) {
   yylloc.first_column = column;
   yylloc.last_column  = column + (int)yyleng - 1;
   column += (int)yyleng;
+}
+
+////////// extern functions ///////////////////////////////////////////////////
+
+char const* lexer_input_line( size_t *plen ) {
+  if ( plen != NULL )
+    *plen = input_len;
+  return input_buf;
+}
+
+void lexer_loc( int *pline, int *pcolumn ) {
+  assert( pline != NULL );
+  assert( pcolumn != NULL );
+
+  *pline = yylineno;
+
+  if ( column == 0 )
+    *pcolumn = column_newline;
+  else if ( lexer_token[0] == '\n' )
+    *pcolumn = column;
+  else
+    *pcolumn = column - (int)strlen( lexer_token );
+}
+
+void lexer_reset( bool hard_reset ) {
+  if ( hard_reset ) {
+    is_eof = false;
+    yylineno = 0;
+  }
+  BEGIN( INITIAL );
+  c_mode = C_ENGLISH_TO_GIBBERISH;
+  input_len = input_sent = 0;
+  lexer_find_typedef = true;
+  newline();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
