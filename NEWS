@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.8.1
+
+** Reset lexer start-state
+In 6.8, start states were added to the lexer.  Resetting the lexer now includes
+also resetting the start state.
+
+
 * Changes in Cdecl 6.8
 
 ** Added set lang=<lang>
