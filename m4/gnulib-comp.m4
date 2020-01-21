@@ -357,4 +357,5 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/warn-on-use.m4
   m4/wchar_t.m4
   m4/wint_t.m4
+  m4/zzgnulib.m4
 ])
