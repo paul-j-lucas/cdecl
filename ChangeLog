@@ -1,12 +1,19 @@
-2020-01-10  Paul J. Lucas <paul@lucasmail.org>
+2020-01-21  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac: Updated version.
-   * cdecl.1, help.c, help-c++.out, help-c.out, help_command-c++.out,
-     help_command-c.out, help_commands-c++.out, help_commands-c.out: Reworked
-     help to match new "set" command.
-   * lexer.l: Added comment.
-   * src/Makefile.am: Added (commented out) AM_LFLAGS.
-   * src/Makefile.am, lexer.l, parser.y: Simplified set options.
+   * 00gnulib.m4, gnulib-common.m4, gnulib-comp.m4, zzgnulib.m4: Updated
+     GNUlib.
+
+2020-01-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.h: Tweaked comment.
+   * lexer.l: Added BEGIN( INITIAL ) to lexer_reset().
+
+2020-01-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, src/Makefile.am, help.c, lexer.l, parser.y,
+     set.c, help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
+     help_commands-c++.out, help_commands-c.out: Now allowing set lang=<lang>.
 
 2020-01-09  Paul J. Lucas <paul@lucasmail.org>
 
@@ -14,9 +21,6 @@
 
 2020-01-07  Paul J. Lucas <paul@lucasmail.org>
 
-   * help.c, lexer.l, parser.y, set.c, help-c++.out, help-c.out,
-     help_command-c++.out, help_command-c.out, help_commands-c++.out,
-     help_commands-c.out: Now allowing set lang=<lang>.
    * help.c: Added explicit-int to set options in help.
 
 2020-01-06  Paul J. Lucas <paul@lucasmail.org>
