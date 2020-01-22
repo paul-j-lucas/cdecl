@@ -66,6 +66,7 @@
 #ifdef __GNUC__
 // Silence these warnings for bison-generated code.
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wunreachable-code"
 #endif /* __GNUC__ */
 
 // Developer aid for tracing when Bison %destructors are called.

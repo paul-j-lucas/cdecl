@@ -502,7 +502,8 @@ void options_init( int *pargc, char const ***pargv ) {
   opt_lang = is_cppdecl() ? LANG_CPP_NEW : LANG_C_NEW;
   parse_options( *pargc, *pargv );
   c_lang_set( opt_lang );
-  *pargc -= optind, *pargv += optind;
+  *pargc -= optind;
+  *pargv += optind;
 }
 
 void set_opt_explicit_int( c_type_id_t type_id ) {

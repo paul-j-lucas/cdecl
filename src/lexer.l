@@ -57,6 +57,7 @@
 #ifdef __GNUC__
 // Silence these warnings for flex-generated code.
 #pragma GCC diagnostic ignored "-Wredundant-decls"
+#pragma GCC diagnostic ignored "-Wshorten-64-to-32"
 #endif /* __GNUC__ */
 
 /// @endcond

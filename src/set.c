@@ -349,7 +349,7 @@ static int strn_nohyphen_cmp( char const *s1, char const *s2, size_t n ) {
     else if ( (int)(uint8_t)*s1 != (int)(uint8_t)*s2 )
       break;
     else
-      ++s1, ++s2;
+      (void)++s1, (void)++s2;
   } // while
 
   return (int)(uint8_t)*s1 - (int)(uint8_t)*s2;
