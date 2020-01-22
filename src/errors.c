@@ -253,6 +253,13 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
     return false;
   }
 
+  if ( (ast->type_id & T_REGISTER) != T_NONE && opt_lang >= LANG_CPP_17 ) {
+    print_error( &ast->loc,
+      "\"%s\" is reserved in %s", L_REGISTER, C_LANG_NAME()
+    );
+    return false;
+  }
+
   return true;
 }
 
@@ -1393,7 +1400,8 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     }
 
     case K_BUILTIN:
-      if ( (ast->type_id & T_REGISTER) != T_NONE && opt_lang >= LANG_CPP_11 ) {
+      if ( (ast->type_id & T_REGISTER) != T_NONE &&
+           opt_lang >= LANG_CPP_11 && opt_lang < LANG_CPP_17 ) {
         print_warning( &ast->loc,
           "\"%s\" is deprecated in %s", L_REGISTER, C_LANG_NAME()
         );
