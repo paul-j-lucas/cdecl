@@ -10,6 +10,16 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.8.2
+
+** Explain-by-default for const and static
+When in explain-by-default mode, a special case has to be made for const and
+static since explain is implied only when NOT followed by "cast":
+
+    const int *p                        // Implies explain.
+    const cast p into pointer to int    // Does NOT imply explain.
+
+
 * Changes in Cdecl 6.8.1
 
 ** Reset lexer start-state
