@@ -87,6 +87,7 @@ static bool         parse_command_line( char const*, int, char const*[] );
 static bool         parse_files( int, char const*[] );
 static bool         parse_stdin( void );
 static void         read_conf_file( void );
+static bool         starts_with_keyword( char const*, char const*, size_t );
 
 ////////// main ///////////////////////////////////////////////////////////////
 
@@ -162,8 +163,23 @@ static bool is_command( char const *s, c_command_t command_type ) {
   for ( argv_command_t const *c = ARGV_COMMANDS; c->keyword != NULL; ++c ) {
     if ( c->command_type >= command_type ) {
       size_t const keyword_len = strlen( c->keyword );
-      if ( strncmp( s, c->keyword, keyword_len ) == 0 &&
-           !is_ident( s[ keyword_len ] ) ) {
+      if ( starts_with_keyword( s, c->keyword, keyword_len ) ) {
+        if ( c->keyword == L_CONST || c->keyword == L_STATIC ) {
+          //
+          // When in explain-by-default mode, a special case has to be made for
+          // const and static since explain is implied only when NOT followed
+          // by "cast":
+          //
+          //      const int *p                      // Implies explain.
+          //      const cast p into pointer to int  // Does NOT imply explain.
+          //
+          char const *p = s + keyword_len;
+          if ( isspace( *p ) ) {
+            p += strspn( p, " \t" );
+            if ( !starts_with_keyword( p, L_CAST, 4 ) )
+              break;
+          }
+        }
         return true;
       }
     }
@@ -399,6 +415,20 @@ static void read_conf_file( void ) {
   opt_lang = orig_lang;
 
   (void)fclose( cin );
+}
+
+/**
+ * Checks whether \a s start with a keyword.
+ *
+ * @param s The null-terminated string to check.
+ * @param keyword The keyword to check against.
+ * @param keyword_len The length of \a keyword.
+ * @return Returns `true` only if \a s starts with \a keyword.
+ */
+static bool starts_with_keyword( char const *s, char const *keyword,
+                                 size_t keyword_len ) {
+  return  strncmp( s, keyword, keyword_len ) == 0 &&
+          !is_ident( keyword[ keyword_len ] );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

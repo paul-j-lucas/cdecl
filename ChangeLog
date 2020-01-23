@@ -1,5 +1,19 @@
+2020-01-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, cdecl.c, test/Makefile.am, cdecl-e-const_cast_pi.out,
+     ci.out, cdecl-e-const_cast_pi.test, ci.test: Made special-case for const
+     and static for explain-by-default.
+
+2020-01-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Supressed more warnings for flex-generatwd code.
+   * errors.c: "register" is now reserved in C++17 or later.
+   * configure.ac, lexer.l, options.c, parser.y, set.c: Added more warnings.
+
 2020-01-21  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c: Removed unnecessary call to c_ast_equiv() because of_ast is
+     checked below.
    * NEWS, configure.ac: Updated version.
    * 00gnulib.m4, gnulib-common.m4, gnulib-comp.m4, zzgnulib.m4: Updated
      GNUlib.

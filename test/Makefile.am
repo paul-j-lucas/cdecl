@@ -28,6 +28,7 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 #
 TESTS =	tests/cdecl--no-semicolon.test \
 	tests/cdecl--no-typedefs.test \
+	tests/cdecl-e-const_cast_pi.test \
 	tests/cdecl-Ii.test \
 	tests/cdecl-Iiu.test \
 	tests/cdecl-Il.test \
@@ -424,7 +425,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 # C explain-by-default tests
 # ==========================
 #
-TESTS+=	tests/i.test
+TESTS+=	tests/ci.test \
+	tests/i.test
 
 #
 # C explain error tests
