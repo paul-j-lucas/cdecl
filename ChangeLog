@@ -1,5 +1,12 @@
+2020-01-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, help.c, parser.y, help-c++.out, help-c.out,
+     help_command-c++.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out: Cast now accepts "as" and "to" in addition to "into".
+
 2020-01-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS: Updated.
    * configure.ac, cdecl.c, test/Makefile.am, cdecl-e-const_cast_pi.out,
      ci.out, cdecl-e-const_cast_pi.test, ci.test: Made special-case for const
      and static for explain-by-default.
