@@ -61,8 +61,8 @@ static char const WHERE_TEXT[] =
 
 static help_text_t const HELP_TEXT_COMMANDS[] = {
   { "command:", SAME_AS_C },
-  { "  cast <name> into <english>",
-    "  [const | dynamic | reinterpret | static] cast <name> into <english>" },
+  { "  cast <name> {as|into|to} <english>",
+    "  [const | dynamic | reinterpret | static] cast <name> {as|into|to} <english>" },
   { "  declare <name> as <english> [aligned [as] {<number> [bytes] | <english>}]",
     SAME_AS_C },
   { NOT_IN_LANG,

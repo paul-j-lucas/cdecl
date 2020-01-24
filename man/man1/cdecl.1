@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 10, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 24, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -621,13 +621,13 @@ and
 has the following commands:
 .RS 4
 .TP 4
-.BI cast " s-name" " into" " english"
+.BR cast "" " \f2s-name\fP " { as | into | to } " english"
 Composes a C (or C++) cast from pseudo-English.
 .TP
-.RB "{ " const " | " dynamic " | " reinterpret " | " static " } " cast " \f2s-name\fP" " into" " \f2english\fP"
+.RB { const | dynamic | reinterpret | static } " cast" " \f2s-name\fP " { as | into | to "} " \f2english\fP
 Composes a C++ new-style cast from pseudo-English.
 .TP
-.BR declare " \f2s-name\fP" " as " \f2english\fP "" " [" aligned " [" as "] { " \f2number\fP " [" bytes "] | " \f2english\fP " }" \f1]\fP
+.BR declare " \f2s-name\fP" " as " \f2english\fP "" " [" aligned " [" as "] {" \f2number\fP " [" bytes "] | " \f2english\fP } \f1]\fP
 Composes a C (or C++) declaration from pseudo-English.
 .TP
 .BI declare " operator" " as" " english"

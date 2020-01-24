@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.9
+
+** Cast accepts "as" and "to"
+The "cast" command now accepts "as" and "to" in addition to "into".
+
+
 * Changes in Cdecl 6.8.2
 
 ** Explain-by-default for const and static

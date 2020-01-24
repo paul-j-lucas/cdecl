@@ -1235,7 +1235,7 @@ command
 /*****************************************************************************/
 
 cast_english
-  : Y_CAST sname_english_expected into_expected decl_english_ast
+  : Y_CAST sname_english_expected as_into_to_expected decl_english_ast
     {
       DUMP_START( "cast_english",
                   "CAST sname_english_expected INTO decl_english_ast" );
@@ -1256,8 +1256,8 @@ cast_english
         PARSE_ABORT();
     }
 
-  | new_style_cast_english cast_expected sname_english_expected into_expected
-    decl_english_ast
+  | new_style_cast_english cast_expected sname_english_expected
+    as_into_to_expected decl_english_ast
     {
       DUMP_START( "cast_english",
                   "new_style_cast_english CAST sname_english_expected INTO "
@@ -4487,6 +4487,19 @@ as_expected
     }
   ;
 
+as_into_to_expected
+  : Y_AS
+  | Y_INTO
+  | Y_TO
+  | error
+    {
+      ELABORATE_ERROR(
+        "\"%s\", \"%s\", or \"%s\" expected",
+        L_AS, L_INTO, L_TO
+      );
+    }
+  ;
+
 as_opt
   : /* empty */
   | Y_AS
@@ -4586,14 +4599,6 @@ gt_expected
   | error
     {
       ELABORATE_ERROR( "'>' expected" );
-    }
-  ;
-
-into_expected
-  : Y_INTO
-  | error
-    {
-      ELABORATE_ERROR( "\"%s\" expected", L_INTO );
     }
   ;
 

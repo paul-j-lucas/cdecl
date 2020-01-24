@@ -1,5 +1,5 @@
 command:
-  [const | dynamic | reinterpret | static] cast <name> into <english>
+  [const | dynamic | reinterpret | static] cast <name> {as|into|to} <english>
   declare <name> as <english> [aligned [as] {<number> [bytes] | <english>}]
   declare <operator> as <english>
   define <name> as <english>
