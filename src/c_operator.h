@@ -130,7 +130,7 @@ enum c_oper_id {
 struct c_operator {
   char const *name;                     ///< Name.
   unsigned    flags;                    ///< Bitwise-or of flags.
-  unsigned    args_min;                 ///< Minumum number of arguments.
+  unsigned    args_min;                 ///< Minimum number of arguments.
   unsigned    args_max;                 ///< Maximum number of arguments.
   c_lang_id_t lang_ids;                 ///< Language(s) OK in.
 };
