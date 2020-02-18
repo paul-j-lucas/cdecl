@@ -436,7 +436,7 @@ rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data ) {
   assert( data != NULL );
 
   for ( rb_node_t *node = RB_FIRST(tree); node != RB_NIL; ) {
-    int const cmp = tree->data_cmp_fn( data, node->data );
+    int const cmp = (*tree->data_cmp_fn)( data, node->data );
     if ( cmp == 0 )
       return node;
     node = cmp < 0 ? node->left : node->right;
@@ -461,7 +461,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   // Find correct insertion point.
   while ( node != RB_NIL ) {
     parent = node;
-    int const cmp = tree->data_cmp_fn( data, node->data );
+    int const cmp = (*tree->data_cmp_fn)( data, node->data );
     if ( cmp == 0 )
       return node;
     node = cmp < 0 ? node->left : node->right;
@@ -473,10 +473,12 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   node->left = node->right = RB_NIL;
   node->parent = parent;
 
-  if ( parent == RB_ROOT(tree) || tree->data_cmp_fn( data, parent->data ) < 0 )
+  if ( parent == RB_ROOT(tree) ||
+       (*tree->data_cmp_fn)( data, parent->data ) < 0 ) {
     parent->left = node;
-  else
+  } else {
     parent->right = node;
+  }
 
   //
   // If the parent node is black, we're all set; if it's red, we have the
