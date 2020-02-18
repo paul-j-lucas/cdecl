@@ -49,7 +49,7 @@ int slist_cmp( slist_t const *list_i, slist_t const *list_j,
         node_i = node_i->next, node_j = node_j->next ) {
     int const cmp = data_cmp_fn != NULL ?
       (*data_cmp_fn)( node_i->data, node_j->data ) :
-      (int)(node_j->data - node_i->data);
+      (int)(node_i->data - node_j->data);
     if ( cmp != 0 )
       return cmp;
   } // for
