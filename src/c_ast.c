@@ -117,7 +117,7 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
       if ( ast_i->as.func.flags != ast_j->as.func.flags )
         return false;
       // FALLTHROUGH
-    case K_BLOCK:
+    case K_BLOCK:                       // Apple extension
       // ret_ast is checked by the parent code below
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL: {
@@ -164,10 +164,10 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
     case K_BUILTIN:
     case K_DESTRUCTOR:
     case K_PLACEHOLDER:
-    case K_POINTER:
-    case K_REFERENCE:
-    case K_RVALUE_REFERENCE:
-    case K_USER_DEF_CONVERSION:         // conv_ast checked by parent code below
+    case K_POINTER:                     // checked by parent code below
+    case K_REFERENCE:                   // checked by parent code below
+    case K_RVALUE_REFERENCE:            // checked by parent code below
+    case K_USER_DEF_CONVERSION:         // checked by parent code below
     case K_VARIADIC:
       // nothing to do
       break;
