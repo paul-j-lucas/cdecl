@@ -85,10 +85,13 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
   // If only one of the ASTs is a typedef, compare the other AST to the
   // typedef's AST.
   //
-  if ( ast_i->kind == K_TYPEDEF && ast_j->kind != K_TYPEDEF )
-    return c_ast_equiv( ast_i->as.c_typedef->ast, ast_j );
-  if ( ast_i->kind != K_TYPEDEF && ast_j->kind == K_TYPEDEF )
-    return c_ast_equiv( ast_i, ast_j->as.c_typedef->ast );
+  if ( ast_i->kind == K_TYPEDEF ) {
+    if ( ast_j->kind != K_TYPEDEF )
+      return c_ast_equiv( ast_i->as.c_typedef->ast, ast_j );
+  } else {
+    if ( ast_j->kind == K_TYPEDEF )
+      return c_ast_equiv( ast_i, ast_j->as.c_typedef->ast );
+  }
 
   if ( ast_i->kind != ast_j->kind )
     return false;
