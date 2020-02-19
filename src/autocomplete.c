@@ -195,9 +195,10 @@ static char const *const CDECL_OPTIONS[] = {
    "debug",
  "nodebug",
 #endif /* ENABLE_CDECL_DEBUG */
+   "explain-by-default",
+   "explicit-int",
  "nographs",
  "digraphs",
- "explain-by-default",
 "trigraphs",
    "knr"
    "options",
