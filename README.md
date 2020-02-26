@@ -25,7 +25,7 @@ declarations or casts, aka ‘‘gibberish.’’
 It can be used interactively on a terminal or
 accept input from either the command line or standard input.
 
-This version fixes virtually all the deficiencies in earlier versions
+This codebase fixes virtually all the deficiencies in earlier versions
 as well as adds many new features,
 most notably:
 
