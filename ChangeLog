@@ -1,3 +1,28 @@
+2020-02-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: Updated.
+
+2020-02-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * _Noreturn.h, c++defs.h, stdio.in.h, stdlib.in.h, string.in.h, unistd.in.h,
+     gnulib-common.m4, stdio_h.m4, stdlib_h.m4, string_h.m4, unistd_h.m4:
+     Updated Gnulib.
+
+2020-02-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c: Comments.
+   * c_ast.c: Slightly more efficient check.
+   * autocomplete.c: Added missing explain-by-default.
+
+2020-02-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c: Explicit about calling pointer-to-function.
+   * slist.c: Fixed slist_cmp().
+
+2020-01-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_operator.h: s/Minumum/Minimum/
+
 2020-01-24  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac, cdecl.1, help.c, parser.y, help-c++.out, help-c.out,
