@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** Cast accepts "as" and "to"
 The "cast" command now accepts "as" and "to" in addition to "into".
 
+** Autocomplete of explain-by-default
+Autocomplete was missing explain-by-default; fixed.
+
 
 * Changes in Cdecl 6.8.2
 
