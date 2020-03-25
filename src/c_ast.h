@@ -61,15 +61,23 @@ _GL_INLINE_HEADER_BEGIN
 
 /// @endcond
 
-#define C_ARRAY_SIZE_NONE     (-1)      /**< For `array[]`. */
-#define C_ARRAY_SIZE_VARIABLE (-2)      /**< For `array[*]`. */
+/** For c_array.size, denotes `array[]`. */
+#define C_ARRAY_SIZE_NONE     (-1)
 
-#define C_FUNC_UNSPECIFIED    0u        /**< Function is unspecified. */
-#define C_FUNC_MEMBER         (1u << 0) /**< Function is a member. */
-#define C_FUNC_NON_MEMBER     (1u << 1) /**< Function is a non-member. */
+/** For c_array.size, denotes `array[*]`. */
+#define C_ARRAY_SIZE_VARIABLE (-2)
 
-// bit masks
-#define C_FUNC_MASK_MEMBER    0x3u      /**< Member/non-member bitmask. */
+/** For c_func.flags, denotes that function is unspecified. */
+#define C_FUNC_UNSPECIFIED    0u
+
+/** For c_func.flags, denotes that function is a member. */
+#define C_FUNC_MEMBER         (1u << 0)
+
+/** For c_func.flags, denotes that function is a non-member. */
+#define C_FUNC_NON_MEMBER     (1u << 1)
+
+/** For c_func.flags, member bitmask. */
+#define C_FUNC_MASK_MEMBER    0x3u
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -136,7 +144,16 @@ struct c_parent {
  */
 struct c_array {
   c_ast_t        *of_ast;               ///< What it's an array of.
-  c_array_size_t  size;                 ///< Array size or `C_ARRAY_*`.
+
+  /**
+   * One of:
+   *
+   *  + The actual size of a C array.
+   *  + #C_ARRAY_SIZE_NONE
+   *  + #C_ARRAY_SIZE_VARIABLE
+   */
+  c_array_size_t  size;
+
   c_type_id_t     type_id;              ///< E.g., `array[static const 10]`
 };
 

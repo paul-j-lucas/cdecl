@@ -92,7 +92,16 @@ enum c_mode {
 typedef struct c_alignas        c_alignas_t;
 typedef enum   c_alignas_arg    c_alignas_arg_t;
 typedef struct c_array          c_array_t;
-typedef int                     c_array_size_t; ///< C array size.
+
+/**
+ * One of:
+ *
+ *  + The actual size of a C array.
+ *  + #C_ARRAY_SIZE_NONE
+ *  + #C_ARRAY_SIZE_VARIABLE
+ */
+typedef int                     c_array_size_t;
+
 typedef struct c_ast            c_ast_t;
 typedef struct slist_node       c_ast_arg_t;    ///< Function argument.
 typedef unsigned                c_ast_depth_t;  ///< How many `()` deep.
