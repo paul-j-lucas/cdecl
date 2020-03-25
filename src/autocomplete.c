@@ -189,8 +189,6 @@ static char const *const CDECL_OPTIONS[] = {
    "c++14",
    "c++17",
    "c++20",
-   "create",
- "nocreate",
 #ifdef ENABLE_CDECL_DEBUG
    "debug",
  "nodebug",
