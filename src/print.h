@@ -45,6 +45,7 @@
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
  */
+C_PRINTF_LIKE_FUNC(2)
 void print_error( c_loc_t const *loc, char const *format, ... );
 
 /**
@@ -57,6 +58,7 @@ void print_error( c_loc_t const *loc, char const *format, ... );
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
  */
+C_PRINTF_LIKE_FUNC(1)
 void print_hint( char const *format, ... );
 
 /**
@@ -79,6 +81,7 @@ void print_loc( c_loc_t const *loc );
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
  */
+C_PRINTF_LIKE_FUNC(2)
 void print_warning( c_loc_t const *loc, char const *format, ... );
 
 ///////////////////////////////////////////////////////////////////////////////

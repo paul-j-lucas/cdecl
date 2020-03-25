@@ -303,6 +303,7 @@ static in_attr_t      in_attr;          ///< Inherited attributes.
  * @param loc A pointer to the token location data.
  * @return Returns a pointer to a new `c_ast`.
  */
+C_WARN_UNUSED_RESULT
 static inline c_ast_t* c_ast_new_gc( c_kind_t kind, c_loc_t *loc ) {
   c_ast_t *const ast = c_ast_new( kind, ast_depth, loc );
   slist_push_tail( &ast_gc_list, ast );
@@ -314,6 +315,7 @@ static inline c_ast_t* c_ast_new_gc( c_kind_t kind, c_loc_t *loc ) {
  *
  * @return Returns said string.
  */
+C_WARN_UNUSED_RESULT
 static inline char const* printable_token( void ) {
   return lexer_token[0] == '\n' ? "\\n" : lexer_token;
 }
@@ -324,6 +326,7 @@ static inline char const* printable_token( void ) {
  *
  * @return Returns said `c_ast`.
  */
+C_WARN_UNUSED_RESULT
 static inline c_ast_t* type_peek( void ) {
   return SLIST_HEAD( c_ast_t*, &in_attr.type_stack );
 }
@@ -352,6 +355,7 @@ static inline void type_push( c_ast_t *ast ) {
  *
  * @return Returns said qualifier.
  */
+C_WARN_UNUSED_RESULT
 static inline c_type_id_t qualifier_peek( void ) {
   return SLIST_HEAD( c_qualifier_t*, &in_attr.qualifier_stack )->type_id;
 }
@@ -396,6 +400,7 @@ void parser_cleanup( void ) {
  * the existing type; `false` if a different type already exists having the
  * same name.
  */
+C_WARN_UNUSED_RESULT
 static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
                       c_loc_t const *type_decl_loc ) {
   switch ( c_typedef_add( type_ast ) ) {
@@ -427,6 +432,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
  * @param format A `printf()` style format string.
  * @param ... Arguments to print.
  */
+C_PRINTF_LIKE_FUNC(1)
 static void elaborate_error( char const *format, ... ) {
   if ( !error_newlined ) {
     PUTS_ERR( ": " );
@@ -451,6 +457,7 @@ static void elaborate_error( char const *format, ... ) {
  * @param decl_loc The source location of \a decl_ast.
  * @return Returns `true` only upon success.
  */
+C_WARN_UNUSED_RESULT
 static bool explain_type_decl( c_alignas_t const *align,
                                c_loc_t const *align_loc, c_ast_t *type_ast,
                                c_ast_t *decl_ast, c_loc_t const *decl_loc ) {
@@ -561,8 +568,9 @@ static bool explain_type_decl( c_alignas_t const *align,
  * prints an error message (and perhaps a hint).
  *
  * @param loc The location of the `_Noreturn` token.
- * @return Returns `true` only of `_Noreturn` is OK.
+ * @return Returns `true` only if `_Noreturn` is OK.
  */
+C_WARN_UNUSED_RESULT
 static bool _Noreturn_ok( c_loc_t const *loc ) {
   if ( c_init < C_INIT_READ_CONF || (opt_lang & LANG_C_MIN(11)) != LANG_NONE )
     return true;
@@ -701,6 +709,7 @@ static void print_type_as_typedef( c_typedef_t const *type ) {
  * of which `typedef`s to print.
  * @return Always returns `false`.
  */
+C_WARN_UNUSED_RESULT
 static bool print_type_visitor( c_typedef_t const *type, void *data ) {
   assert( type != NULL );
 
@@ -734,6 +743,10 @@ static void qualifier_push( c_type_id_t qualifier, c_loc_t const *loc ) {
 
 /**
  * Implements the cdecl `quit` command.
+ *
+ * @note
+ * This should be marked #C_NORETURN but isn't since that would generate a
+ * warning that a `break` in the Bison-generated code won't be executed.
  */
 static void quit( void ) {
   exit( EX_OK );

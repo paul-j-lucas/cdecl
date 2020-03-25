@@ -242,8 +242,9 @@ static char const *const TYPEDEFS_MISC[] = {
  * @param node A pointer to the node to get the data of.
  * @return Returns said pointer.
  */
-static inline
-c_typedef_t const* c_typedef_node_data_get( rb_node_t const *node ) {
+C_WARN_UNUSED_RESULT
+static inline c_typedef_t const*
+c_typedef_node_data_get( rb_node_t const *node ) {
   return REINTERPRET_CAST( c_typedef_t const*, rb_node_data( node ) );
 }
 
@@ -258,6 +259,7 @@ c_typedef_t const* c_typedef_node_data_get( rb_node_t const *node ) {
  * to whether the `typedef` name pointed to by \a data_i is less than, equal
  * to, or greater than the `typedef` name pointed to by \a data_j.
  */
+C_WARN_UNUSED_RESULT
 static int c_typedef_cmp( void const *data_i, void const *data_j ) {
   c_typedef_t const *const ti = REINTERPRET_CAST( c_typedef_t const*, data_i );
   c_typedef_t const *const tj = REINTERPRET_CAST( c_typedef_t const*, data_j );
@@ -270,6 +272,7 @@ static int c_typedef_cmp( void const *data_i, void const *data_j ) {
  * @param ast The `c_ast` of the type.
  * @return Returns said `c_typedef`.
  */
+C_WARN_UNUSED_RESULT
 static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
   assert( ast != NULL );
   c_typedef_t *const t = MALLOC( c_typedef_t, 1 );
@@ -302,6 +305,7 @@ static void c_typedef_parse_builtins( char const *const types[] ) {
  * @return Returning `true` will cause traversal to stop and the current node
  * to be returned to the caller of `rb_tree_visit()`.
  */
+C_WARN_UNUSED_RESULT
 static bool rb_visitor( void *node_data, void *aux_data ) {
   c_typedef_t const *const t =
     REINTERPRET_CAST( c_typedef_t const*, node_data );

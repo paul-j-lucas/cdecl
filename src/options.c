@@ -117,8 +117,12 @@ static char const   SHORT_OPTS[] = "23ac:Cef:iI:k:o:pstvx:"
 static char         opts_given[ 128 ];  ///< Table of options that were given.
 
 // local functions
+C_WARN_UNUSED_RESULT
 static char*        format_opt( char, char[], size_t );
+
+C_WARN_UNUSED_RESULT
 static char const*  get_long_opt( char );
+
 static void         usage( void );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -172,6 +176,7 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
  * @param buf_size The size of \a buf.
  * @return Returns \a buf.
  */
+C_WARN_UNUSED_RESULT
 static char* format_opt( char short_opt, char buf[], size_t buf_size ) {
   char const *const long_opt = get_long_opt( short_opt );
   snprintf(
@@ -190,6 +195,7 @@ static char* format_opt( char short_opt, char buf[], size_t buf_size ) {
  * @param short_opt The short option to get the corresponding long option for.
  * @return Returns the said option or the empty string if none.
  */
+C_WARN_UNUSED_RESULT
 static char const* get_long_opt( char short_opt ) {
   for ( struct option const *long_opt = LONG_OPTS; long_opt->name != NULL;
         ++long_opt ) {
@@ -204,6 +210,7 @@ static char const* get_long_opt( char short_opt ) {
  *
  * @returns Returns `true` only if we are.
  */
+C_WARN_UNUSED_RESULT
 static bool is_cppdecl( void ) {
   static char const *const NAMES[] = {
     CPPDECL,
@@ -225,6 +232,7 @@ static bool is_cppdecl( void ) {
  * @return Returns the associated <code>\ref color_when</code> or prints an
  * error message and exits if \a when is invalid.
  */
+C_WARN_UNUSED_RESULT
 static color_when_t parse_opt_color_when( char const *when ) {
   struct colorize_map {
     char const   *map_when;
@@ -275,6 +283,7 @@ static color_when_t parse_opt_color_when( char const *when ) {
  * @param s The null-terminated string to parse.
  * @return Returns the <code>\ref c_lang_id_t</code> corresponding to \a s.
  */
+C_WARN_UNUSED_RESULT
 static c_lang_id_t parse_opt_lang( char const *s ) {
   assert( s != NULL );
   size_t langs_buf_size = 1;            // for trailing NULL
@@ -368,7 +377,7 @@ static void parse_options( int argc, char const *argv[] ) {
   if ( colorize ) {
     if ( !(colors_parse( getenv( "CDECL_COLORS" ) )
         || colors_parse( getenv( "GCC_COLORS" ) )) ) {
-      colors_parse( COLORS_DEFAULT );
+      (void)colors_parse( COLORS_DEFAULT );
     }
   }
 }

@@ -55,9 +55,9 @@
 #include <stdio.h>                      /* for FILE */
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef CDECL_AST_INLINE
-# define CDECL_AST_INLINE _GL_INLINE
-#endif /* CDECL_AST_INLINE */
+#ifndef C_AST_INLINE
+# define C_AST_INLINE _GL_INLINE
+#endif /* C_AST_INLINE */
 
 /// @endcond
 
@@ -293,7 +293,8 @@ struct c_ast {
  * @param arg A pointer to an `c_ast_arg_t`.
  * @return Returns a pointer to the `c_ast`.
  */
-CDECL_AST_INLINE c_ast_t const* c_ast_arg_ast( c_ast_arg_t const *arg ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+c_ast_t const* c_ast_arg_ast( c_ast_arg_t const *arg ) {
   return REINTERPRET_CAST( c_ast_t const*, arg->data );
 }
 
@@ -303,7 +304,8 @@ CDECL_AST_INLINE c_ast_t const* c_ast_arg_ast( c_ast_arg_t const *arg ) {
  * @param ast The `c_ast` to get the arguments of.
  * @return Returns a pointer to the first argument or null if none.
  */
-CDECL_AST_INLINE c_ast_arg_t const* c_ast_args( c_ast_t const *ast ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+c_ast_arg_t const* c_ast_args( c_ast_t const *ast ) {
   return ast->as.func.args.head;
 }
 
@@ -313,7 +315,8 @@ CDECL_AST_INLINE c_ast_arg_t const* c_ast_args( c_ast_t const *ast ) {
  * @param ast The `c_ast` to get the number of arguments of.
  * @return Returns said number of arguments.
  */
-CDECL_AST_INLINE size_t c_ast_args_count( c_ast_t const *ast ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+size_t c_ast_args_count( c_ast_t const *ast ) {
   return slist_len( &ast->as.func.args );
 }
 
@@ -331,6 +334,7 @@ void c_ast_cleanup( void );
  * @param ast_j The second `c_ast`.
  * @return Returns `true` only if the two ASTs are equivalent.
  */
+C_WARN_UNUSED_RESULT
 bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j );
 
 /**
@@ -348,7 +352,8 @@ void c_ast_free( c_ast_t *ast );
  * @param ast The `c_ast` to check.  May be null.
  * @return Returns `true` only if it is.
  */
-CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+bool c_ast_is_parent( c_ast_t const *ast ) {
   return ast != NULL && c_kind_is_parent( ast->kind );
 }
 
@@ -362,6 +367,7 @@ CDECL_AST_INLINE bool c_ast_is_parent( c_ast_t const *ast ) {
  *
  * @sa c_ast_free()
  */
+C_WARN_UNUSED_RESULT
 c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc );
 
 /**
@@ -370,6 +376,7 @@ c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc );
  * @param ast The `c_ast` node to get the root of.
  * @return Returns said `c_ast` node.
  */
+C_WARN_UNUSED_RESULT
 c_ast_t* c_ast_root( c_ast_t *ast );
 
 /**
@@ -378,7 +385,8 @@ c_ast_t* c_ast_root( c_ast_t *ast );
  * @param ast The `c_ast` to get the scope list of.
  * @return Returns a pointer to the first scope entry.
  */
-CDECL_AST_INLINE c_scope_t const* c_ast_scope( c_ast_t const *ast ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+c_scope_t const* c_ast_scope( c_ast_t const *ast ) {
   return ast->sname.head;
 }
 
@@ -398,7 +406,7 @@ void c_ast_set_parent( c_ast_t *child, c_ast_t *parent );
  *
  * @sa c_ast_sname_prepend_sname()
  */
-CDECL_AST_INLINE void c_ast_sname_append_sname( c_ast_t *ast,
+C_AST_INLINE void c_ast_sname_append_sname( c_ast_t *ast,
                                                 c_sname_t *sname ) {
   c_sname_append_sname( &ast->sname, sname );
 }
@@ -409,7 +417,8 @@ CDECL_AST_INLINE void c_ast_sname_append_sname( c_ast_t *ast,
  * @param ast The `c_ast` to get the number of names of.
  * @return Returns said number of names.
  */
-CDECL_AST_INLINE size_t c_ast_sname_count( c_ast_t const *ast ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+size_t c_ast_sname_count( c_ast_t const *ast ) {
   return c_sname_count( &ast->sname );
 }
 
@@ -419,6 +428,7 @@ CDECL_AST_INLINE size_t c_ast_sname_count( c_ast_t const *ast ) {
  * @param ast The `c_ast` to duplicate the name of.
  * @return Returns the name of \a ast duplicated.
  */
+C_WARN_UNUSED_RESULT
 c_sname_t c_ast_sname_dup( c_ast_t const *ast );
 
 /**
@@ -427,7 +437,8 @@ c_sname_t c_ast_sname_dup( c_ast_t const *ast );
  * @param ast The `c_ast` to check.
  * @return Returns `true` only if the name of \a ast is empty.
  */
-CDECL_AST_INLINE bool c_ast_sname_empty( c_ast_t const *ast ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+bool c_ast_sname_empty( c_ast_t const *ast ) {
   return c_sname_empty( &ast->sname );
 }
 
@@ -439,7 +450,8 @@ CDECL_AST_INLINE bool c_ast_sname_empty( c_ast_t const *ast ) {
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  */
-CDECL_AST_INLINE char const* c_ast_sname_full_name( c_ast_t const *ast ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+char const* c_ast_sname_full_name( c_ast_t const *ast ) {
   return c_sname_full_name( &ast->sname );
 }
 
@@ -452,7 +464,8 @@ CDECL_AST_INLINE char const* c_ast_sname_full_name( c_ast_t const *ast ) {
  * @return Returns `true` only if the last two names of the scoped name of \a
  * ast match.
  */
-CDECL_AST_INLINE bool c_ast_sname_is_ctor( c_ast_t const *ast ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+bool c_ast_sname_is_ctor( c_ast_t const *ast ) {
   return c_sname_is_ctor( &ast->sname );
 }
 
@@ -464,7 +477,8 @@ CDECL_AST_INLINE bool c_ast_sname_is_ctor( c_ast_t const *ast ) {
  * @sa c_ast_sname_full_name()
  * @sa c_ast_sname_scope_name()
  */
-CDECL_AST_INLINE char const* c_ast_sname_local_name( c_ast_t const *ast ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+char const* c_ast_sname_local_name( c_ast_t const *ast ) {
   return c_sname_local_name( &ast->sname );
 }
 
@@ -478,8 +492,8 @@ CDECL_AST_INLINE char const* c_ast_sname_local_name( c_ast_t const *ast ) {
  *
  * @sa c_ast_sname_name_atr()
  */
-CDECL_AST_INLINE char const* c_ast_sname_name_at( c_ast_t const *ast,
-                                                  size_t offset ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+char const* c_ast_sname_name_at( c_ast_t const *ast, size_t offset ) {
   return c_sname_name_at( &ast->sname, offset );
 }
 
@@ -493,8 +507,8 @@ CDECL_AST_INLINE char const* c_ast_sname_name_at( c_ast_t const *ast,
  *
  * @sa c_ast_sname_name_at()
  */
-CDECL_AST_INLINE char const* c_ast_sname_name_atr( c_ast_t const *ast,
-                                                   size_t roffset ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+char const* c_ast_sname_name_atr( c_ast_t const *ast, size_t roffset ) {
   return c_sname_name_atr( &ast->sname, roffset );
 }
 
@@ -506,8 +520,8 @@ CDECL_AST_INLINE char const* c_ast_sname_name_atr( c_ast_t const *ast,
  *
  * @sa c_ast_sname_append_sname()
  */
-CDECL_AST_INLINE void c_ast_sname_prepend_sname( c_ast_t *ast,
-                                                 c_sname_t *sname ) {
+C_AST_INLINE
+void c_ast_sname_prepend_sname( c_ast_t *ast, c_sname_t *sname ) {
   c_sname_prepend_sname( &ast->sname, sname );
 }
 
@@ -521,7 +535,8 @@ CDECL_AST_INLINE void c_ast_sname_prepend_sname( c_ast_t *ast,
  * @sa c_ast_sname_full_name()
  * @sa c_ast_sname_local_name()
  */
-CDECL_AST_INLINE char const* c_ast_sname_scope_name( c_ast_t const *ast ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+char const* c_ast_sname_scope_name( c_ast_t const *ast ) {
   return c_sname_scope_name( &ast->sname );
 }
 
@@ -553,8 +568,8 @@ void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname );
  *
  * @sa c_ast_sname_type()
  */
-CDECL_AST_INLINE void c_ast_sname_set_type( c_ast_t *ast,
-                                            c_type_id_t type_id ) {
+C_AST_INLINE
+void c_ast_sname_set_type( c_ast_t *ast, c_type_id_t type_id ) {
   c_sname_set_type( &ast->sname, type_id );
 }
 
@@ -566,7 +581,8 @@ CDECL_AST_INLINE void c_ast_sname_set_type( c_ast_t *ast,
  *
  * @sa c_ast_sname_set_type()
  */
-CDECL_AST_INLINE c_type_id_t c_ast_sname_type( c_ast_t const *ast ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+c_type_id_t c_ast_sname_type( c_ast_t const *ast ) {
   return c_sname_type( &ast->sname );
 }
 
@@ -578,7 +594,8 @@ CDECL_AST_INLINE c_type_id_t c_ast_sname_type( c_ast_t const *ast ) {
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  */
-CDECL_AST_INLINE char const* c_ast_sname_type_name( c_ast_t const *ast ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+char const* c_ast_sname_type_name( c_ast_t const *ast ) {
   return c_type_name( c_ast_sname_type( ast ) );
 }
 
@@ -594,6 +611,7 @@ CDECL_AST_INLINE char const* c_ast_sname_type_name( c_ast_t const *ast ) {
  * @note Function-like arguments are \e not traversed into.  They're considered
  * distinct ASTs.
  */
+C_WARN_UNUSED_RESULT
 c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir, c_ast_visitor_t visitor,
                       void *data );
 
@@ -610,8 +628,9 @@ c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir, c_ast_visitor_t visitor,
  * @note Function-like arguments are \e not traversed into.  They're considered
  * distinct ASTs.
  */
-CDECL_AST_INLINE bool c_ast_find( c_ast_t const *ast, v_direction_t dir,
-                                  c_ast_visitor_t visitor, void *data ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+bool c_ast_find( c_ast_t const *ast, v_direction_t dir,
+                 c_ast_visitor_t visitor, void *data ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_t *const found_ast = c_ast_visit( nonconst_ast, dir, visitor, data );
   return found_ast != NULL;
@@ -623,7 +642,8 @@ CDECL_AST_INLINE bool c_ast_find( c_ast_t const *ast, v_direction_t dir,
  * @param scope The scope to get the name of.
  * @return Returns the scope's name.
  */
-CDECL_AST_INLINE char const* c_scope_name( c_scope_t const *scope ) {
+C_AST_INLINE C_WARN_UNUSED_RESULT
+char const* c_scope_name( c_scope_t const *scope ) {
   return REINTERPRET_CAST( char const*, scope->data );
 }
 

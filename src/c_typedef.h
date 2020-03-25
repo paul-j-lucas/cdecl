@@ -87,6 +87,7 @@ typedef bool (*c_typedef_visitor_t)( c_typedef_t const *type, void *data );
  * + #TD_ADD_DIFF only if \a type_ast->name already exists and the types are
  *   not equivalent.
  */
+C_WARN_UNUSED_RESULT
 td_add_rv_t c_typedef_add( c_ast_t const *type_ast );
 
 /**
@@ -102,6 +103,7 @@ void c_typedef_cleanup( void );
  * @param sname The scoped name to find.
  * @return Returns a pointer to the corresponding `c_typedef` or null for none.
  */
+C_WARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_find( c_sname_t const *sname );
 
 /**
@@ -118,6 +120,7 @@ void c_typedef_init( void );
  * @param data Optional data passed to \a visitor.
  * @return Returns a pointer to the `c_typedef` the visitor stopped on or null.
  */
+C_WARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data );
 
 ///////////////////////////////////////////////////////////////////////////////

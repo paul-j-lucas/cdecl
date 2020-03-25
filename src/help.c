@@ -150,6 +150,7 @@ static help_text_t const HELP_TEXT_ENGLISH[] = {
  * @param c The character to check.
  * @return Returns `true` only if \a c is a title character.
  */
+C_WARN_UNUSED_RESULT
 static bool is_title_char( char c ) {
   switch ( c ) {
     case '+':
@@ -166,6 +167,7 @@ static bool is_title_char( char c ) {
  * @param s The string to check.
  * @return Returns `true` only if \a s is a title string.
  */
+C_WARN_UNUSED_RESULT
 static bool is_title( char const *s ) {
   assert( s != NULL );
   if ( isalpha( *s ) ) {

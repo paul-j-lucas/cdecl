@@ -26,7 +26,7 @@
 // local
 #include "cdecl.h"                      /* must go first */
 /// @cond DOXYGEN_IGNORE
-#define CDECL_OP_INLINE _GL_EXTERN_INLINE
+#define C_OP_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_ast.h"
 #include "c_operator.h"

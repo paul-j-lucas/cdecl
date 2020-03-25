@@ -212,6 +212,7 @@ static char const *const CDECL_OPTIONS[] = {
 };
 
 // local functions
+C_WARN_UNUSED_RESULT
 static char*  command_generator( char const*, int );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -225,6 +226,7 @@ static char*  command_generator( char const*, int );
  * @param index A pointer to the current index into \a keywords to update.
  * @return Returns a copy of the keyword or null if not found.
  */
+C_WARN_UNUSED_RESULT
 static char* ac_keyword_find( ac_keyword_t const keywords[], char const *text,
                               size_t text_len, size_t *index ) {
   for ( ac_keyword_t const *k; (k = keywords + *index)->keyword != NULL; ) {
@@ -245,6 +247,7 @@ static char* ac_keyword_find( ac_keyword_t const keywords[], char const *text,
  * @param end The ending character position of \a text.
  * @return Returns an array of C strings of possible matches.
  */
+C_WARN_UNUSED_RESULT
 static char** attempt_completion( char const *text, int start, int end ) {
   assert( text != NULL );
   (void)end;
@@ -281,6 +284,7 @@ static char* command_generator( char const *text, int state ) {
  * @param command The command to check for.
  * @return Returns `true` only if it is.
  */
+C_WARN_UNUSED_RESULT
 static bool is_command( char const *command ) {
   size_t const command_len = strlen( command );
   if ( command_len > (size_t)rl_end )   // more chars than in rl_line_buffer?
@@ -296,6 +300,7 @@ static bool is_command( char const *command ) {
  * continue to next match, if any.
  * @return Returns a copy of the keyword or null if none.
  */
+C_WARN_UNUSED_RESULT
 static char* keyword_completion( char const *text, int state ) {
   static char const  *command;          // current command
   static size_t       index;

@@ -50,6 +50,7 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t* );
  * @return Returns the `c_ast` to be used as the grammar production's return
  * value.
  */
+C_WARN_UNUSED_RESULT
 static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
   assert( array != NULL );
   assert( array->kind == K_ARRAY );
@@ -126,6 +127,7 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
  * @param array The array `c_ast` to append.  Its "of" type must be null.
  * @return If \a ast is an array, returns \a ast; otherwise returns \a array.
  */
+C_WARN_UNUSED_RESULT
 static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
   assert( ast != NULL );
   assert( array != NULL );
@@ -180,6 +182,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
  * @return Returns the `c_ast` to be used as the grammar production's return
  * value.
  */
+C_WARN_UNUSED_RESULT
 static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
                                      c_ast_t *func_ast ) {
   assert( ast != NULL );
@@ -236,6 +239,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
  * @param ast The `c_ast` to take trom.
  * @return Returns said storage class or <code>\ref T_NONE</code>.
  */
+C_WARN_UNUSED_RESULT
 static c_type_id_t c_ast_take_storage( c_ast_t *ast ) {
   assert( ast != NULL );
   c_type_id_t storage_type = T_NONE;
@@ -256,6 +260,7 @@ static c_type_id_t c_ast_take_storage( c_ast_t *ast ) {
  * find.
  * @return Returns `true` only if the kind of \a ast is one of \a data.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   c_kind_t const kind = c_kind_data_get( data );
@@ -269,6 +274,7 @@ static bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
  * @param data The least number of names that the scoped name must have.
  * @return Returns `true` only if \a ast has such a scoped name.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   uintptr_t const at_least = REINTERPRET_CAST( uintptr_t, data );
@@ -283,6 +289,7 @@ static bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
  * `void*`) to find.
  * @return Returns `true` only if the type of \a ast is one of \a data.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_vistor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   c_type_id_t const type_id = c_type_id_data_get( data );

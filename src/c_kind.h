@@ -48,9 +48,9 @@
 #include <stdbool.h>
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef CDECL_KIND_INLINE
-# define CDECL_KIND_INLINE _GL_INLINE
-#endif /* CDECL_KIND_INLINE */
+#ifndef C_KIND_INLINE
+# define C_KIND_INLINE _GL_INLINE
+#endif /* C_KIND_INLINE */
 
 /// @endcond
 
@@ -133,7 +133,8 @@ enum c_kind {
  *
  * @param data The data to free.
  */
-CDECL_KIND_INLINE void c_kind_data_free( void *data ) {
+C_KIND_INLINE
+void c_kind_data_free( void *data ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
   free( data );
 #else
@@ -149,7 +150,8 @@ CDECL_KIND_INLINE void c_kind_data_free( void *data ) {
  *
  * @sa c_kind_data_new(c_kind_t)
  */
-CDECL_KIND_INLINE c_kind_t c_kind_data_get( void *data ) {
+C_KIND_INLINE C_WARN_UNUSED_RESULT
+c_kind_t c_kind_data_get( void *data ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
   return *REINTERPRET_CAST( c_kind_t*, data );
 #else
@@ -165,7 +167,8 @@ CDECL_KIND_INLINE c_kind_t c_kind_data_get( void *data ) {
  *
  * @sa c_kind_data_free(void*)
  */
-CDECL_KIND_INLINE void* c_kind_data_new( c_kind_t kind ) {
+C_KIND_INLINE C_WARN_UNUSED_RESULT
+void* c_kind_data_new( c_kind_t kind ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
   c_kind_t *const p = MALLOC( c_kind_t, 1 );
   *p = kind;
@@ -181,7 +184,8 @@ CDECL_KIND_INLINE void* c_kind_data_new( c_kind_t kind ) {
  * @param kind The <code>\ref c_kind</code> to check.
  * @return Returns `true` only if it is.
  */
-CDECL_KIND_INLINE bool c_kind_is_parent( c_kind_t kind ) {
+C_KIND_INLINE C_WARN_UNUSED_RESULT
+bool c_kind_is_parent( c_kind_t kind ) {
   return kind >= K_PARENT_MIN;
 }
 
@@ -193,6 +197,7 @@ CDECL_KIND_INLINE bool c_kind_is_parent( c_kind_t kind ) {
  * @param kind The <code>\ref c_kind</code> to get the name for.
  * @return Returns said name.
  */
+C_WARN_UNUSED_RESULT
 char const* c_kind_name( c_kind_t kind );
 
 ///////////////////////////////////////////////////////////////////////////////

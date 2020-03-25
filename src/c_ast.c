@@ -26,7 +26,7 @@
 // local
 #include "cdecl.h"                      /* must go first */
 /// @cond DOXYGEN_IGNORE
-#define CDECL_AST_INLINE _GL_EXTERN_INLINE
+#define C_AST_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_ast.h"
 #include "c_typedef.h"
@@ -57,6 +57,7 @@ static unsigned   c_ast_count;          ///< ASTs allocated but not yet freed.
  * @param ast The `c_ast` node to begin at.
  * @return Returns `true` only if there is a cycle.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_has_cycle( c_ast_t const *ast ) {
   assert( ast != NULL );
   for ( c_ast_t const *const start_ast = ast; ast->parent != NULL; ) {

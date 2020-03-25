@@ -320,7 +320,9 @@ static size_t     input_sent;           ///< How many bytes returned to flex.
 static bool       is_eof;               ///< Encountered EOF?
 
 // local functions
+C_NORETURN
 static void       lexer_fatal( char const* );
+
 static void       lexer_update_loc( void );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -332,6 +334,7 @@ static void       lexer_update_loc( void );
  * @param s The string to find.
  * @return Returns the corresponding C/C++ language literal or null if none.
  */
+C_WARN_UNUSED_RESULT
 static char const* c_hyphenated_find( char const *s ) {
   assert( s != NULL );
   char const *c_literal = NULL;
@@ -361,6 +364,7 @@ static char const* c_hyphenated_find( char const *s ) {
  * @return If found, returns the corresponding Bison token; otherwise returns
  * Y_HYPHENATED_NAME.
  */
+C_WARN_UNUSED_RESULT
 static int cdecl_hyphenated_find( char const *s ) {
   assert( s != NULL );
   for ( cdecl_hyphenated_t const *h = E_HYPHENATED_KEYWORDS; h->e_literal; ++h ) {
@@ -376,6 +380,7 @@ static int cdecl_hyphenated_find( char const *s ) {
  * @param s The string to find.
  * @return Returns a pointer to the corresponding keyword or null if not found.
  */
+C_WARN_UNUSED_RESULT
 static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   assert( s != NULL );
   for ( cdecl_keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
@@ -397,6 +402,7 @@ static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
  * @param buf_capacity The capacity of \a buf.
  * @return Returns the number of bytes read.
  */
+C_WARN_UNUSED_RESULT
 static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
   assert( buf != NULL );
   yy_size_t input_avail = input_len - input_sent;
@@ -438,6 +444,7 @@ static inline void newline( void ) {
  * end of the identifier.
  * @return Returns `true` only if an identifier was parsed.
  */
+C_WARN_UNUSED_RESULT
 static bool parse_identifier( char const *s, char const **end ) {
   assert( s != NULL );
   assert( end != NULL );
@@ -455,6 +462,7 @@ static bool parse_identifier( char const *s, char const **end ) {
  * @param base The integer base to use.
  * @return Returns the integer value.
  */
+C_WARN_UNUSED_RESULT
 static inline int parse_int( int base ) {
   //
   // We don't need to check for errors from strtol(3) here since the lexer
@@ -473,6 +481,7 @@ static inline int parse_int( int base ) {
  * @param sname The `c_sname` to parse into.
  * @return Returns `true` only if the scoped name was successfully parsed.
  */
+C_WARN_UNUSED_RESULT
 static bool parse_sname( char const *s, c_sname_t *sname ) {
   assert( s != NULL );
   assert( sname != NULL );
@@ -510,6 +519,7 @@ static bool parse_sname( char const *s, c_sname_t *sname ) {
  * @param sname The `c_sname` to parse into.
  * @return Returns `true` only if the scoped name was successfully parsed.
  */
+C_WARN_UNUSED_RESULT
 static bool parse_sname_dtor( char const *s, c_sname_t *sname ) {
   assert( s != NULL );
   assert( sname != NULL );
@@ -562,6 +572,7 @@ tilde:
  * @return Returns 1 if done or 0 to continue parsing (a new file set via
  * \c yyin).
  */
+C_WARN_UNUSED_RESULT
 static int yywrap( void ) {
   return 1 /* done */;
 }
@@ -963,6 +974,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
  *
  * @param msg The error message to print.
  */
+C_NORETURN
 static void lexer_fatal( char const *msg ) {
   //
   // This is defined down here to avoid having to declare yy_fatal_error
@@ -988,6 +1000,7 @@ static void lexer_update_loc( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+C_WARN_UNUSED_RESULT
 char const* lexer_input_line( size_t *plen ) {
   if ( plen != NULL )
     *plen = input_len;

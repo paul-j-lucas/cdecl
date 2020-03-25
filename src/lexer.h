@@ -57,6 +57,7 @@ extern char const  *lexer_token;        ///< Text of current token.
  * line.
  * @return Returns said line.
  */
+C_WARN_UNUSED_RESULT
 char const* lexer_input_line( size_t *plen );
 
 /**
@@ -80,6 +81,7 @@ void lexer_reset( bool hard_reset );
  *
  * @return Returns the token ID.
  */
+C_WARN_UNUSED_RESULT
 int yylex( void );
 
 ///////////////////////////////////////////////////////////////////////////////

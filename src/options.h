@@ -97,6 +97,7 @@ extern int          yydebug;            ///< Bison debugging.
  * @param type_id The type to check.
  * @return Returns `true` only if `int` shall be printed explicitly.
  */
+C_WARN_UNUSED_RESULT
 bool is_explicit_int( c_type_id_t type_id );
 
 /**

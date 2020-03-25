@@ -40,9 +40,9 @@
 #include <stdlib.h>                     /* for free(3) */
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef CDECL_TYPE_INLINE
-# define CDECL_TYPE_INLINE _GL_INLINE
-#endif /* CDECL_TYPE_INLINE */
+#ifndef C_TYPE_INLINE
+# define C_TYPE_INLINE _GL_INLINE
+#endif /* C_TYPE_INLINE */
 
 /// @endcond
 
@@ -185,7 +185,8 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa c_type_id_data_new(c_type_id_t)
  */
-CDECL_TYPE_INLINE void c_type_id_data_free( void *data ) {
+C_TYPE_INLINE
+void c_type_id_data_free( void *data ) {
 #if SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP
   free( data );
 #else
@@ -201,7 +202,8 @@ CDECL_TYPE_INLINE void c_type_id_data_free( void *data ) {
  *
  * @sa c_type_id_data_new(c_type_id_t)
  */
-CDECL_TYPE_INLINE c_type_id_t c_type_id_data_get( void *data ) {
+C_TYPE_INLINE C_WARN_UNUSED_RESULT
+c_type_id_t c_type_id_data_get( void *data ) {
 #if SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP
   return *REINTERPRET_CAST( c_type_id_t*, data );
 #else
@@ -219,7 +221,8 @@ CDECL_TYPE_INLINE c_type_id_t c_type_id_data_get( void *data ) {
  *
  * @sa c_type_id_data_free(void*)
  */
-CDECL_TYPE_INLINE void* c_type_id_data_new( c_type_id_t type_id ) {
+C_TYPE_INLINE C_WARN_UNUSED_RESULT
+void* c_type_id_data_new( c_type_id_t type_id ) {
 #if SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP
   c_type_id_t *const p = MALLOC( c_type_id_t, 1 );
   *p = type_id;
@@ -243,6 +246,7 @@ CDECL_TYPE_INLINE void* c_type_id_data_new( c_type_id_t type_id ) {
  * @param new_loc The source location of \a new_type.
  * @return Returns `true` only if the type added successfully.
  */
+C_WARN_UNUSED_RESULT
 bool c_type_add( c_type_id_t *dest_type, c_type_id_t new_type,
                  c_loc_t const *new_loc );
 
@@ -252,6 +256,7 @@ bool c_type_add( c_type_id_t *dest_type, c_type_id_t new_type,
  * @param type_id The <code>\ref c_type_id_t</code> to check.
  * @return Returns the bitwise-or of the language(s) \a type_id is legal in.
  */
+C_WARN_UNUSED_RESULT
 c_lang_id_t c_type_check( c_type_id_t type_id );
 
 /**
@@ -262,6 +267,7 @@ c_lang_id_t c_type_check( c_type_id_t type_id );
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  */
+C_WARN_UNUSED_RESULT
 char const* c_type_name( c_type_id_t type_id );
 
 /**
@@ -274,6 +280,7 @@ char const* c_type_name( c_type_id_t type_id );
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  */
+C_WARN_UNUSED_RESULT
 char const* c_type_name_error( c_type_id_t type_id );
 
 ///////////////////////////////////////////////////////////////////////////////

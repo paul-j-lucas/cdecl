@@ -42,9 +42,9 @@
 #include <sysexits.h>
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef CDECL_UTIL_INLINE
-# define CDECL_UTIL_INLINE _GL_INLINE
-#endif /* CDECL_UTIL_INLINE */
+#ifndef C_UTIL_INLINE
+# define C_UTIL_INLINE _GL_INLINE
+#endif /* C_UTIL_INLINE */
 
 /// @endcond
 
@@ -413,7 +413,8 @@ _GL_INLINE_HEADER_BEGIN
  * @param n The number to check.
  * @return Returns `true` only if at most 1 bit is set.
  */
-CDECL_UTIL_INLINE bool at_most_one_bit_set( uint64_t n ) {
+C_UTIL_INLINE C_WARN_UNUSED_RESULT
+bool at_most_one_bit_set( uint64_t n ) {
   return (n & (n - 1)) == 0;
 }
 
@@ -429,6 +430,7 @@ CDECL_UTIL_INLINE bool at_most_one_bit_set( uint64_t n ) {
  * If \a path_name consists entirely of `/` characters, a pointer to the string
  * `/` is returned.
  */
+C_WARN_UNUSED_RESULT
 char const* base_name( char const *path_name );
 
 /**
@@ -439,6 +441,7 @@ char const* base_name( char const *path_name );
  * @param size The number of bytes to allocate.
  * @return Returns a pointer to the allocated memory.
  */
+C_WARN_UNUSED_RESULT
 void* check_realloc( void *p, size_t size );
 
 /**
@@ -448,6 +451,7 @@ void* check_realloc( void *p, size_t size );
  * @param s The null-terminated string to duplicate or null.
  * @return Returns a copy of \a s or null if \a s is null.
  */
+C_WARN_UNUSED_RESULT
 char* check_strdup( char const *s );
 
 /**
@@ -458,7 +462,8 @@ char* check_strdup( char const *s );
  * @param c The character to check for.
  * @return Returns `true` only if \a ends with \a c.
  */
-CDECL_UTIL_INLINE bool ends_with_chr( char const *s, size_t s_len, char c ) {
+C_UTIL_INLINE C_WARN_UNUSED_RESULT
+bool ends_with_chr( char const *s, size_t s_len, char c ) {
   return s_len > 0 && s[ s_len - 1 ] == c;
 }
 
@@ -468,7 +473,8 @@ CDECL_UTIL_INLINE bool ends_with_chr( char const *s, size_t s_len, char c ) {
  * @param n The number to check.
  * @return Returns `true` only if exactly 1 bit is set.
  */
-CDECL_UTIL_INLINE bool exactly_one_bit_set( uint64_t n ) {
+C_UTIL_INLINE C_WARN_UNUSED_RESULT
+bool exactly_one_bit_set( uint64_t n ) {
   return n != 0 && at_most_one_bit_set( n );
 }
 
@@ -481,7 +487,8 @@ CDECL_UTIL_INLINE bool exactly_one_bit_set( uint64_t n ) {
  *
  * @sa true_or_set()
  */
-CDECL_UTIL_INLINE bool false_set( bool *flag ) {
+C_UTIL_INLINE C_WARN_UNUSED_RESULT
+bool false_set( bool *flag ) {
   return !*flag && (*flag = true);
 }
 
@@ -496,6 +503,7 @@ CDECL_UTIL_INLINE bool false_set( bool *flag ) {
  * @param mode The open mode.  It \e must contain `r`.
  * @return Returns a `FILE` containing the contents of \a buf.
  */
+C_WARN_UNUSED_RESULT
 FILE* fmemopen( void *buf, size_t size, char const *mode );
 #endif /* HAVE_FMEMOPEN */
 
@@ -505,6 +513,7 @@ FILE* fmemopen( void *buf, size_t size, char const *mode );
  * @param p The pointer to add.
  * @return Returns \a p.
  */
+C_WARN_UNUSED_RESULT
 void* free_later( void *p );
 
 /**
@@ -529,6 +538,7 @@ void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines );
  *
  * @return Returns said directory or null if it is not obtainable.
  */
+C_WARN_UNUSED_RESULT
 char const* home_dir( void );
 
 /**
@@ -538,7 +548,8 @@ char const* home_dir( void );
  * @param s The null-terminated string to check.
  * @return Returns `true` only if \a s is a blank line.
  */
-CDECL_UTIL_INLINE bool is_blank_line( char const *s ) {
+C_UTIL_INLINE C_WARN_UNUSED_RESULT
+bool is_blank_line( char const *s ) {
   s += strspn( s, " \t\r\n" );
   return *s == '\0';
 }
@@ -549,6 +560,7 @@ CDECL_UTIL_INLINE bool is_blank_line( char const *s ) {
  * @param fd The file descriptor to check.
  * @return Returns `true` only if \a fd refers to a regular file.
  */
+C_WARN_UNUSED_RESULT
 bool is_file( int fd );
 
 /**
@@ -558,7 +570,8 @@ bool is_file( int fd );
  * @return Returns `true` only if \a c is either an alphanumeric or `_`
  * character.
  */
-CDECL_UTIL_INLINE bool is_ident( char c ) {
+C_UTIL_INLINE C_WARN_UNUSED_RESULT
+bool is_ident( char c ) {
   return isalnum( c ) || c == '_';
 }
 
@@ -571,7 +584,8 @@ CDECL_UTIL_INLINE bool is_ident( char c ) {
  * @return Returns `true` only if the bits set in \a bits are among the bits
  * set in \a set.
  */
-CDECL_UTIL_INLINE bool only_bits_in( uint64_t bits, uint64_t set ) {
+C_UTIL_INLINE C_WARN_UNUSED_RESULT
+bool only_bits_in( uint64_t bits, uint64_t set ) {
   return bits != 0 && (bits & set) == bits;
 }
 
@@ -589,6 +603,7 @@ void path_append( char *path, char const *component );
  *
  * @param status The exit status code.
  */
+C_NORETURN
 void perror_exit( int status );
 
 /**
@@ -606,6 +621,7 @@ void perror_exit( int status );
  * ones ending with `\`).
  * @return Returns the line read or null for EOF.
  */
+C_WARN_UNUSED_RESULT
 char* read_input_line( char const *ps1, char const *ps2 );
 
 /**
@@ -615,6 +631,7 @@ char* read_input_line( char const *ps1, char const *ps2 );
  * @param c The character to copy.
  * @return Returns a pointer to the new end of \a dst.
  */
+C_WARN_UNUSED_RESULT
 char* chrcpy_end( char *dst, char c );
 
 /**
@@ -625,6 +642,7 @@ char* chrcpy_end( char *dst, char c );
  * @param src The null-terminated string to copy.
  * @return Returns a pointer to the new end of \a dst.
  */
+C_WARN_UNUSED_RESULT
 char* strcpy_end( char *dst, char const *src );
 
 /**
@@ -636,7 +654,8 @@ char* strcpy_end( char *dst, char const *src );
  *
  * @sa false_set()
  */
-CDECL_UTIL_INLINE bool true_or_set( bool *flag ) {
+C_UTIL_INLINE C_WARN_UNUSED_RESULT
+bool true_or_set( bool *flag ) {
   return *flag || !(*flag = true);
 }
 

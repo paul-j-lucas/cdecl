@@ -36,9 +36,9 @@
 #include <stdbool.h>
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef CDECL_LANG_INLINE
-# define CDECL_LANG_INLINE _GL_INLINE
-#endif /* CDECL_LANG_INLINE */
+#ifndef C_LANG_INLINE
+# define C_LANG_INLINE _GL_INLINE
+#endif /* C_LANG_INLINE */
 
 /// @endcond
 
@@ -112,6 +112,7 @@ extern c_lang_t const C_LANG[];
  * @return Returns said language or <code>\ref LANG_NONE</code> if \a name
  * doesn't correspond to any supported language.
  */
+C_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_find( char const *name );
 
 /**
@@ -120,7 +121,8 @@ c_lang_id_t c_lang_find( char const *name );
  * @param lang_id The bitwise-or of language(s) to check.
  * @return Returns `true` only if \a lang_id is C++.
  */
-CDECL_LANG_INLINE bool c_lang_is_cpp( c_lang_id_t lang_id ) {
+C_LANG_INLINE C_WARN_UNUSED_RESULT
+bool c_lang_is_cpp( c_lang_id_t lang_id ) {
   return (lang_id & LANG_MASK_CPP) != LANG_NONE;
 }
 
@@ -138,7 +140,8 @@ CDECL_LANG_INLINE bool c_lang_is_cpp( c_lang_id_t lang_id ) {
  * @param lang_id The bitwise-or of language(s).
  * @return Returns said language.
  */
-CDECL_LANG_INLINE c_lang_id_t c_lang_oldest( c_lang_id_t lang_id ) {
+C_LANG_INLINE C_WARN_UNUSED_RESULT
+c_lang_id_t c_lang_oldest( c_lang_id_t lang_id ) {
   return lang_id & ~(lang_id - 1u);
 }
 
@@ -148,6 +151,7 @@ CDECL_LANG_INLINE c_lang_id_t c_lang_oldest( c_lang_id_t lang_id ) {
  * @param lang_id The <code>\ref c_lang_id_t</code> to get the name of.
  * @return Returns said name.
  */
+C_WARN_UNUSED_RESULT
 char const* c_lang_name( c_lang_id_t lang_id );
 
 /**

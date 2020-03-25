@@ -27,6 +27,8 @@
  * \c \#include this file rather than `config.h` directly.
  */
 
+///////////////////////////////////////////////////////////////////////////////
+
 /// @cond DOXYGEN_IGNORE
 
 #ifdef __APPLE__
@@ -62,6 +64,48 @@
 
 // local
 #include "config.h"                     /* must go first */
+
+////////// compiler attributes ////////////////////////////////////////////////
+
+#ifdef HAVE___ATTRIBUTE__
+
+/**
+ * Denote that a function does not return.
+ */
+#define C_NORETURN                __attribute__ ((noreturn))
+
+/**
+ * Denote a function declaration takes a `printf`-like format string followed
+ * by a variable number of arguments.
+ *
+ * @param N The position (starting at 1) of the argument that contains the
+ * format string.
+ */
+#define C_PRINTF_LIKE_FUNC(N)     __attribute__ ((format(printf, (N), (N)+1)))
+
+/**
+ * Denote that a function's return value should never be ignored.
+ *
+ * @sa #C_NOWARN_UNUSED_RESULT
+ */
+#define C_WARN_UNUSED_RESULT      __attribute__ ((warn_unused_result))
+
+#else
+#define C_NORETURN                /* nothing */
+#define C_PRINTF_LIKE_FUNC(N)     /* nothing */
+#define C_WARN_UNUSED_RESULT      /* nothing */
+#endif /* HAVE___ATTRIBUTE__ */
+
+/**
+ * Denote that a function's return value may be ignored without warning.
+ *
+ * @note
+ * There is no compiler attribute for this.  It's just a visual cue in code
+ * that #C_WARN_UNUSED_RESULT wasn't forgotten.
+ */
+#define C_NOWARN_UNUSED_RESULT    /* nothing */
+
+///////////////////////////////////////////////////////////////////////////////
 
 #endif /* pjl_config_H */
 /* vim:set et sw=2 ts=2: */

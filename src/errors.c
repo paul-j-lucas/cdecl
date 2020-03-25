@@ -49,16 +49,37 @@ static bool const VISITOR_ERROR_NOT_FOUND = false;
 /// @endcond
 
 // local functions
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_args( c_ast_t const* );
+
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_ret_type( c_ast_t const* );
+
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_func_c( c_ast_t const* );
+
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_func_cpp( c_ast_t const* );
+
+C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_error( c_ast_t*, void* );
+
+C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_type( c_ast_t*, void* );
+
+C_NOWARN_UNUSED_RESULT
 static bool error_kind_not_cast_into( c_ast_t const*, char const* );
+
+C_NOWARN_UNUSED_RESULT
 static bool error_kind_not_supported( c_ast_t const* );
+
+C_NOWARN_UNUSED_RESULT
 static bool error_kind_not_type( c_ast_t const*, c_type_id_t );
+
+C_NOWARN_UNUSED_RESULT
 static bool error_kind_to_type( c_ast_t const*, c_type_id_t );
+
+C_NOWARN_UNUSED_RESULT
 static bool error_unknown_type( c_ast_t const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -68,6 +89,7 @@ static bool error_unknown_type( c_ast_t const* );
  *
  * @return Returns either `_Alignas` (for C) or `alignas` (for C++).
  */
+C_WARN_UNUSED_RESULT
 static inline char const* alignas_lang( void ) {
   return C_LANG_IS_CPP() ? L_ALIGNAS : L__ALIGNAS;
 }
@@ -80,9 +102,9 @@ static inline char const* alignas_lang( void ) {
  * @param data Optional data passed to `c_ast_visit()`.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
-                                        c_ast_visitor_t visitor,
-                                        void *data ) {
+                                        c_ast_visitor_t visitor, void *data ) {
   return !c_ast_find( ast, C_VISIT_DOWN, visitor, data );
 }
 
@@ -92,6 +114,7 @@ static inline bool c_ast_check_visitor( c_ast_t const *ast,
  * @param n A quantity.
  * @return Returns the empty string only if \a n == 1; otherwise returns "s".
  */
+C_WARN_UNUSED_RESULT
 static inline char const* plural_s( uint64_t n ) {
   return n == 1 ? "" : "s";
 }
@@ -104,6 +127,7 @@ static inline char const* plural_s( uint64_t n ) {
  * @param ast The `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_alignas( c_ast_t *ast ) {
   assert( ast != NULL );
   assert( ast->align.kind != C_ALIGNAS_NONE );
@@ -151,6 +175,7 @@ static bool c_ast_check_alignas( c_ast_t *ast ) {
  * @param is_func_arg If `true`, \a ast is an AST for a function-like argument.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
   assert( ast != NULL );
   assert( ast->kind == K_ARRAY );

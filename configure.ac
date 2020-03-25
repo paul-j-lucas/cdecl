@@ -184,6 +184,9 @@ AM_CONDITIONAL([ENABLE_YYDEBUG],      [test x$enable_yydebug     = xyes])
 
 # Miscellaneous.
 AC_LANG(C)
+AX_C___ATTRIBUTE__
+
+# Compiler warnings.
 AX_CFLAGS_WARN_ALL
 AX_CFLAGS_GCC_OPTION([-Wcast-align])
 AX_CFLAGS_GCC_OPTION([-Wcomma])

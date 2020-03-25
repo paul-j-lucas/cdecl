@@ -24,7 +24,7 @@ PROJECT_BRIEF           = "Compose and decipher C (or C++) type declarations or 
 INPUT                   = README.md src
 EXTENSION_MAPPING       = l=C y=C
 FILE_PATTERNS           = *.c *.h *.l *.md *.y
-FILTER_PATTERNS         = "*.h=sed s/CDECL[A-Z_]*INLINE/inline/"
+FILTER_PATTERNS         = "*.h=sed s/C_[A-Z_]*_INLINE/inline/"
 PREDEFINED              = __GNUC__ \
                           WITH_READLINE \
                           WITH_TERM_COLUMNS

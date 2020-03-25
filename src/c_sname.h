@@ -42,9 +42,9 @@
 #include <string.h>                     /* for str*(3) */
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef CDECL_SNAME_INLINE
-# define CDECL_SNAME_INLINE _GL_INLINE
-#endif /* CDECL_SNAME_INLINE */
+#ifndef C_SNAME_INLINE
+# define C_SNAME_INLINE _GL_INLINE
+#endif /* C_SNAME_INLINE */
 
 /// @endcond
 
@@ -66,7 +66,8 @@ _GL_INLINE_HEADER_BEGIN
  * @sa c_sname_prepend_name()
  * @sa c_sname_prepend_sname()
  */
-CDECL_SNAME_INLINE void c_sname_append_name( c_sname_t *sname, char *name ) {
+C_SNAME_INLINE
+void c_sname_append_name( c_sname_t *sname, char *name ) {
   slist_push_tail( sname, name );
 }
 
@@ -80,7 +81,8 @@ CDECL_SNAME_INLINE void c_sname_append_name( c_sname_t *sname, char *name ) {
  * @sa c_sname_prepend_name()
  * @sa c_sname_prepend_sname()
  */
-CDECL_SNAME_INLINE void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
+C_SNAME_INLINE
+void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
   (void)slist_push_list_tail( dst, src );
 }
 
@@ -92,8 +94,8 @@ CDECL_SNAME_INLINE void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
  * @return Returns a number less than 0, 0, or greater than 0 if \a sname_i is
  * less than, equal to, or greater than \a sname_j, respectively.
  */
-CDECL_SNAME_INLINE int c_sname_cmp( c_sname_t const *sname_i,
-                                    c_sname_t const *sname_j ) {
+C_SNAME_INLINE C_WARN_UNUSED_RESULT
+int c_sname_cmp( c_sname_t const *sname_i, c_sname_t const *sname_j ) {
   return slist_cmp( sname_i, sname_j, (slist_node_data_cmp_fn_t)&strcmp );
 }
 
@@ -103,7 +105,8 @@ CDECL_SNAME_INLINE int c_sname_cmp( c_sname_t const *sname_i,
  * @param sname The scoped name to get the number of names of.
  * @return Returns said number of names.
  */
-CDECL_SNAME_INLINE size_t c_sname_count( c_sname_t const *sname ) {
+C_SNAME_INLINE C_WARN_UNUSED_RESULT
+size_t c_sname_count( c_sname_t const *sname ) {
   return slist_len( sname );
 }
 
@@ -114,7 +117,8 @@ CDECL_SNAME_INLINE size_t c_sname_count( c_sname_t const *sname ) {
  * @param sname The scoped name to duplicate.
  * @return Returns a duplicate of \a sname.
  */
-CDECL_SNAME_INLINE c_sname_t c_sname_dup( c_sname_t const *sname ) {
+C_SNAME_INLINE C_WARN_UNUSED_RESULT
+c_sname_t c_sname_dup( c_sname_t const *sname ) {
   return slist_dup( sname, -1, NULL, (slist_node_data_dup_fn_t)&strdup );
 }
 
@@ -124,7 +128,8 @@ CDECL_SNAME_INLINE c_sname_t c_sname_dup( c_sname_t const *sname ) {
  * @param sname The scoped name to check.
  * @return Returns `true` only if \a sname is empty.
  */
-CDECL_SNAME_INLINE bool c_sname_empty( c_sname_t const *sname ) {
+C_SNAME_INLINE C_WARN_UNUSED_RESULT
+bool c_sname_empty( c_sname_t const *sname ) {
   return slist_empty( sname );
 }
 
@@ -134,7 +139,8 @@ CDECL_SNAME_INLINE bool c_sname_empty( c_sname_t const *sname ) {
  * @param sname The scoped name to free.  If null, does nothing; otherwise,
  * reinitializes it upon completion.
  */
-CDECL_SNAME_INLINE void c_sname_free( c_sname_t *sname ) {
+C_SNAME_INLINE
+void c_sname_free( c_sname_t *sname ) {
   slist_free( sname, NULL, &free );
 }
 
@@ -151,6 +157,7 @@ CDECL_SNAME_INLINE void c_sname_free( c_sname_t *sname ) {
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name
  */
+C_WARN_UNUSED_RESULT
 char const* c_sname_full_name( c_sname_t const *sname );
 
 /**
@@ -161,7 +168,8 @@ char const* c_sname_full_name( c_sname_t const *sname );
  *
  * @sa c_sname_free()
  */
-CDECL_SNAME_INLINE void c_sname_init( c_sname_t *sname ) {
+C_SNAME_INLINE
+void c_sname_init( c_sname_t *sname ) {
   slist_init( sname );
 }
 
@@ -171,6 +179,7 @@ CDECL_SNAME_INLINE void c_sname_init( c_sname_t *sname ) {
  * @param sname The scoped name to check.
  * @return Returns `true` only if the last two names of \a sname match.
  */
+C_WARN_UNUSED_RESULT
 bool c_sname_is_ctor( c_sname_t const *sname );
 
 /**
@@ -184,7 +193,8 @@ bool c_sname_is_ctor( c_sname_t const *sname );
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name
  */
-CDECL_SNAME_INLINE char const* c_sname_local_name( c_sname_t const *sname ) {
+C_SNAME_INLINE C_WARN_UNUSED_RESULT
+char const* c_sname_local_name( c_sname_t const *sname ) {
   return c_sname_empty( sname ) ? "" : SLIST_TAIL( char const*, sname );
 }
 
@@ -200,8 +210,8 @@ CDECL_SNAME_INLINE char const* c_sname_local_name( c_sname_t const *sname ) {
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name
  */
-CDECL_SNAME_INLINE char const* c_sname_name_at( c_sname_t const *sname,
-                                                size_t offset ) {
+C_SNAME_INLINE C_WARN_UNUSED_RESULT
+char const* c_sname_name_at( c_sname_t const *sname, size_t offset ) {
   char const *const temp = SLIST_PEEK_AT( char const*, sname, offset );
   return temp != NULL ? temp : "";
 }
@@ -218,8 +228,8 @@ CDECL_SNAME_INLINE char const* c_sname_name_at( c_sname_t const *sname,
  * @sa c_sname_name_at()
  * @sa c_sname_scope_name
  */
-CDECL_SNAME_INLINE char const* c_sname_name_atr( c_sname_t const *sname,
-                                                 size_t roffset ) {
+C_SNAME_INLINE C_WARN_UNUSED_RESULT
+char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
   char const *const temp = SLIST_PEEK_ATR( char const*, sname, roffset );
   return temp != NULL ? temp : "";
 }
@@ -234,7 +244,8 @@ CDECL_SNAME_INLINE char const* c_sname_name_atr( c_sname_t const *sname,
  * @sa c_sname_append_sname()
  * @sa c_sname_prepend_sname()
  */
-CDECL_SNAME_INLINE void c_sname_prepend_name( c_sname_t *sname, char *name ) {
+C_SNAME_INLINE
+void c_sname_prepend_name( c_sname_t *sname, char *name ) {
   slist_push_head( sname, name );
 }
 
@@ -248,8 +259,8 @@ CDECL_SNAME_INLINE void c_sname_prepend_name( c_sname_t *sname, char *name ) {
  * @sa c_sname_append_sname()
  * @sa c_sname_prepend_name()
  */
-CDECL_SNAME_INLINE void c_sname_prepend_sname( c_sname_t *dst,
-                                               c_sname_t *src ) {
+C_SNAME_INLINE
+void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
   (void)slist_push_list_head( dst, src );
 }
 
@@ -270,6 +281,7 @@ CDECL_SNAME_INLINE void c_sname_prepend_sname( c_sname_t *dst,
  * @sa c_sname_name_at()
  * @sa c_sname_name_atr()
  */
+C_WARN_UNUSED_RESULT
 char const* c_sname_scope_name( c_sname_t const *sname );
 
 /**
@@ -280,8 +292,8 @@ char const* c_sname_scope_name( c_sname_t const *sname );
  *
  * @sa c_sname_type()
  */
-CDECL_SNAME_INLINE void c_sname_set_type( c_sname_t *sname,
-                                          c_type_id_t type_id ) {
+C_SNAME_INLINE
+void c_sname_set_type( c_sname_t *sname, c_type_id_t type_id ) {
   sname->data = CONST_CAST( void*, type_id );
 }
 
@@ -293,7 +305,8 @@ CDECL_SNAME_INLINE void c_sname_set_type( c_sname_t *sname,
  *
  * @sa c_sname_set_type()
  */
-CDECL_SNAME_INLINE c_type_id_t c_sname_type( c_sname_t const *sname ) {
+C_SNAME_INLINE
+c_type_id_t c_sname_type( c_sname_t const *sname ) {
   return REINTERPRET_CAST( c_type_id_t, sname->data );
 }
 

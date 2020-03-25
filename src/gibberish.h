@@ -57,6 +57,7 @@
  * has an alternate token, returns said token; otherwise returns \a token as-
  * is.
  */
+C_WARN_UNUSED_RESULT
 char const* alt_token_c( char const *token );
 
 /**
@@ -88,6 +89,7 @@ void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout );
  * characters that have a graph equivalent, returns \a token with said
  * characters replaced by their graphs; otherwise returns \a token as-is.
  */
+C_WARN_UNUSED_RESULT
 char const* graph_token_c( char const *token );
 
 ///////////////////////////////////////////////////////////////////////////////

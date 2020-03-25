@@ -26,7 +26,7 @@
 // local
 #include "cdecl.h"                      /* must go first */
 /// @cond DOXYGEN_IGNORE
-#define CDECL_UTIL_INLINE _GL_EXTERN_INLINE
+#define C_UTIL_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "slist.h"
 #include "util.h"
@@ -84,6 +84,7 @@ static slist_t free_later_list;         ///< List of stuff to free later.
  * @param capname The name of the terminal capability.
  * @return Returns said value or 0 if it could not be determined.
  */
+C_WARN_UNUSED_RESULT
 static unsigned check_tigetnum( char const *capname ) {
   int const num = tigetnum( CONST_CAST(char*, capname) );
   if ( unlikely( num < 0 ) )

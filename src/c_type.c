@@ -27,7 +27,7 @@
 #include "cdecl.h"                      /* must go first */
 #include "c_lang.h"
 /// @cond DOXYGEN_IGNORE
-#define CDECL_TYPE_INLINE _GL_EXTERN_INLINE
+#define C_TYPE_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_type.h"
 #include "gibberish.h"
@@ -66,7 +66,10 @@
 /// @endcond
 
 // local functions
+C_WARN_UNUSED_RESULT
 static char const*  c_type_name_impl( c_type_id_t, bool );
+
+C_WARN_UNUSED_RESULT
 static char*        strcpy_sep( char*, char const*, char, bool* );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -293,6 +296,7 @@ static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
  * @param type_id The <code>\ref c_type_id_t</code> to check.
  * @return Returns `true` only if \a type_id is some form of `long int`.
  */
+C_WARN_UNUSED_RESULT
 static inline bool is_long_int( c_type_id_t type_id ) {
   return (type_id & (T_LONG | T_FLOAT | T_DOUBLE)) == T_LONG;
 }
@@ -305,6 +309,7 @@ static inline bool is_long_int( c_type_id_t type_id ) {
  * @param is_error `true` if getting the literal for part of an error message.
  * @return Returns said literal.
  */
+C_WARN_UNUSED_RESULT
 static inline char const* c_type_literal( c_type_t const *t, bool is_error ) {
   bool const is_english = c_mode == C_ENGLISH_TO_GIBBERISH;
   return is_english == is_error && t->english != NULL ? t->english : t->literal;
@@ -321,6 +326,7 @@ static inline char const* c_type_literal( c_type_t const *t, bool is_error ) {
  * @param type_langs The type/languages array to check against.
  * @return Returns the bitwise-or of the language(s) \a type_id is legal in.
  */
+C_WARN_UNUSED_RESULT
 static c_lang_id_t
 c_type_check_combo( c_type_id_t type_id, c_type_t const types[],
                     size_t types_size,
@@ -347,6 +353,7 @@ c_type_check_combo( c_type_id_t type_id, c_type_t const types[],
  * @param types_size The size of \a types.
  * @return Returns the bitwise-or of the language(s) \a type_id is legal in.
  */
+C_WARN_UNUSED_RESULT
 static c_lang_id_t
 c_type_check_legal( c_type_id_t type_id, c_type_t const types[],
                     size_t types_size ) {
@@ -368,6 +375,7 @@ c_type_check_legal( c_type_id_t type_id, c_type_t const types[],
  * @param is_error `true` if getting the name for part of an error message.
  * @return Returns said name.
  */
+C_WARN_UNUSED_RESULT
 static char const* c_type_name_1( c_type_id_t type_id, bool is_error ) {
   assert( exactly_one_bit_set( type_id ) );
 
@@ -437,6 +445,7 @@ static void c_type_name_cat( char **pname, c_type_id_t type_id,
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  */
+C_WARN_UNUSED_RESULT
 static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
   static char name_buf[ 256 ];
   char *name = name_buf;
@@ -595,6 +604,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
  * @param sep_cpy A pointer to a variable to keep track of whether \a sep has
  * been copied.
  */
+C_WARN_UNUSED_RESULT
 static char* strcpy_sep( char *dst, char const *src, char sep, bool *sep_cpy ) {
   assert( dst != NULL );
   assert( src != NULL );

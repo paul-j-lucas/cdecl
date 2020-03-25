@@ -174,6 +174,7 @@ extern char const  *sgr_warning;        ///< Color of `warning`.
  * @return Returns `true` only if at least one capability was parsed
  * successfully.
  */
+C_WARN_UNUSED_RESULT
 bool colors_parse( char const *capabilities );
 
 /**
@@ -182,6 +183,7 @@ bool colors_parse( char const *capabilities );
  * @param when The `color_when` value.
  * @return Returns `true` only if we should do color.
  */
+C_WARN_UNUSED_RESULT
 bool should_colorize( color_when_t when );
 
 ///////////////////////////////////////////////////////////////////////////////

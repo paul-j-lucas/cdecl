@@ -44,6 +44,7 @@
 /// @endcond
 
 // local functions
+C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_english( c_ast_t*, void* );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -95,7 +96,9 @@ static void c_ast_english_func_args( c_ast_arg_t const *arg, FILE *eout ) {
     }
 
     c_ast_t *const nonconst_arg = CONST_CAST( c_ast_t*, arg_ast );
-    c_ast_visit( nonconst_arg, C_VISIT_DOWN, c_ast_visitor_english, eout );
+    (void)c_ast_visit(
+      nonconst_arg, C_VISIT_DOWN, c_ast_visitor_english, eout
+    );
   } // for
 
   FPUTC( ')', eout );
@@ -108,6 +111,7 @@ static void c_ast_english_func_args( c_ast_arg_t const *arg, FILE *eout ) {
  * @param data A pointer to a `FILE` to emit to.
  * @return Always returns `false`.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   assert( data != NULL );
@@ -236,7 +240,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
 
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, eout );
+  (void)c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, eout );
 
   switch ( ast->align.kind ) {
     case C_ALIGNAS_NONE:

@@ -77,6 +77,7 @@ enum c_check {
  * @param array The array `c_ast` to append.  Its "of" type must be null.
  * @return Returns the AST to be used as the grammar production's return value.
  */
+C_WARN_UNUSED_RESULT
 c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array );
 
 /**
@@ -87,6 +88,7 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array );
  * @param func The function-like AST to append.  Its "of" type must be null.
  * @return Returns the AST to be used as the grammar production's return value.
  */
+C_WARN_UNUSED_RESULT
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func );
 
 /**
@@ -96,6 +98,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func );
  * @param check The kind of checks to perform.
  * @return Returns `true` only if \a ast error-free.
  */
+C_WARN_UNUSED_RESULT
 bool c_ast_check( c_ast_t const *ast, c_check_t check );
 
 /**
@@ -106,6 +109,7 @@ bool c_ast_check( c_ast_t const *ast, c_check_t check );
  * <code>\ref T_NONE</code> for any builtin type.
  * @return Returns `true` only if \a ast is a builtin type.
  */
+C_WARN_UNUSED_RESULT
 bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t type_id );
 
 /**
@@ -116,6 +120,7 @@ bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t type_id );
  * @return Returns `true` only if \a ast is an `enum`, `class`, `struct`, or
  * `union` or a reference or rvalue reference thereto.
  */
+C_WARN_UNUSED_RESULT
 bool c_ast_is_ecsu( c_ast_t const *ast );
 
 /**
@@ -125,6 +130,7 @@ bool c_ast_is_ecsu( c_ast_t const *ast );
  * @param type_id The bitwise-or of type(s) to check against.
  * @return Returns `true` only if \a ast is a pointer to one of the types.
  */
+C_WARN_UNUSED_RESULT
 bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_id_t type_id );
 
 /**
@@ -143,6 +149,7 @@ bool c_ast_is_ref_to_type( c_ast_t const *ast, c_type_id_t type_id  );
  * @param dir The direction to search.
  * @return Returns said name or null if none.
  */
+C_WARN_UNUSED_RESULT
 c_sname_t* c_ast_find_name( c_ast_t const *ast, v_direction_t dir );
 
 /**
@@ -153,6 +160,7 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, v_direction_t dir );
  * @param kind The bitwise-or of <code>\ref c_kind</code> to find.
  * @return Returns a pointer to an AST node having \a kind or null if none.
  */
+C_WARN_UNUSED_RESULT
 c_ast_t* c_ast_find_kind( c_ast_t *ast, v_direction_t dir, c_kind_t kind );
 
 /**
@@ -163,6 +171,7 @@ c_ast_t* c_ast_find_kind( c_ast_t *ast, v_direction_t dir, c_kind_t kind );
  * @param type_id The bitwise-or of of <code>\ref c_type_id_t</code> to find.
  * @return Returns a pointer to an AST node having \a type_id or null if none.
  */
+C_WARN_UNUSED_RESULT
 c_ast_t* c_ast_find_type( c_ast_t *ast, v_direction_t dir,
                           c_type_id_t type_id );
 
@@ -177,6 +186,7 @@ c_ast_t* c_ast_find_type( c_ast_t *ast, v_direction_t dir,
  * @param decl_ast The `c_ast` of a declaration.  May be null.
  * @return Returns the final `c_ast`.
  */
+C_WARN_UNUSED_RESULT
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
 
 /**
@@ -186,6 +196,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
  * @param ast The `c_ast` (or one of its child nodes) to take from.
  * @return Returns said name or en empty name.
  */
+C_WARN_UNUSED_RESULT
 c_sname_t c_ast_take_name( c_ast_t *ast );
 
 /**
@@ -207,6 +218,7 @@ c_sname_t c_ast_take_name( c_ast_t *ast );
  * @param ast The `c_ast` to check.
  * @return Returns `true` only if \a ast contains a `typedef`.
  */
+C_WARN_UNUSED_RESULT
 bool c_ast_take_typedef( c_ast_t *ast );
 
 /**
@@ -224,6 +236,7 @@ bool c_ast_take_typedef( c_ast_t *ast );
  * @sa c_ast_unreference(c_ast_t const*)
  * @sa c_ast_untypedef(c_ast_t const*)
  */
+C_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
 
 /**
@@ -241,6 +254,7 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
  * @sa c_ast_unpointer(c_ast_t const*)
  * @sa c_ast_untypedef(c_ast_t const*)
  */
+C_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 
 /**
@@ -254,6 +268,7 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
  * @sa c_ast_unpointer(c_ast_t const*)
  * @sa c_ast_unreference(c_ast_t const*)
  */
+C_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
 
 ///////////////////////////////////////////////////////////////////////////////

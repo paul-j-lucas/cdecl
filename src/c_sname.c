@@ -27,7 +27,7 @@
 // local
 #include "cdecl.h"                      /* must go first */
 /// @cond DOXYGEN_IGNORE
-#define CDECL_SNAME_INLINE _GL_EXTERN_INLINE
+#define C_SNAME_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_ast.h"
 #include "c_sname.h"
@@ -48,6 +48,7 @@
  * @param end_scope The scope to stop before or null for all scopes.
  * @return Returns \a name_buf if \a sname is not empty or null otherwise.
  */
+C_WARN_UNUSED_RESULT
 static char const* c_sname_scope_name_impl( char *name_buf,
                                             c_sname_t const *sname,
                                             c_scope_t const *end_scope ) {

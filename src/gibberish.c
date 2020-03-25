@@ -25,9 +25,6 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define CDECL_GIBBERISH_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_typedef.h"
@@ -76,6 +73,7 @@ static void         c_ast_gibberish_impl( c_ast_t const*, g_param_t* );
 static void         c_ast_gibberish_postfix( c_ast_t const*, g_param_t* );
 static void         c_ast_gibberish_qual_name( c_ast_t const*, g_param_t* );
 static void         c_ast_gibberish_space_name( c_ast_t const*, g_param_t* );
+C_WARN_UNUSED_RESULT
 static char const*  c_ast_sname_full_or_local( c_ast_t const*, g_param_t* );
 static void         g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
 
@@ -86,6 +84,7 @@ static void         g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
  *
  * @return Returns either `_Alignas` (for C) or `alignas` (for C++).
  */
+C_WARN_UNUSED_RESULT
 static inline char const* alignas_lang( void ) {
   return C_LANG_IS_CPP() ? L_ALIGNAS : L__ALIGNAS;
 }
@@ -620,6 +619,7 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
  * @param param The `g_param` to use.
  * @return Returns said name.
  */
+C_WARN_UNUSED_RESULT
 static char const* c_ast_sname_full_or_local( c_ast_t const *ast,
                                               g_param_t *param ) {
   assert( ast != NULL );

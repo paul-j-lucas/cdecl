@@ -38,9 +38,9 @@
 #include <stdbool.h>
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef CDECL_OP_INLINE
-# define CDECL_OP_INLINE _GL_INLINE
-#endif /* CDECL_OP_INLINE */
+#ifndef C_OP_INLINE
+# define C_OP_INLINE _GL_INLINE
+#endif /* C_OP_INLINE */
 
 /// @endcond
 
@@ -143,6 +143,7 @@ struct c_operator {
  * @param oper_id The ID of the `c_operator` to get.
  * @return Returns a pointer to said `c_operator`.
  */
+C_WARN_UNUSED_RESULT
 c_operator_t const* op_get( c_oper_id_t oper_id );
 
 /**
@@ -171,7 +172,8 @@ c_operator_t const* op_get( c_oper_id_t oper_id );
  * @param op The C/C++ operator to check.
  * @return Returns `true` only if the operator is ambiguous.
  */
-CDECL_OP_INLINE bool op_is_ambiguous( c_operator_t const *op ) {
+C_OP_INLINE C_WARN_UNUSED_RESULT
+bool op_is_ambiguous( c_operator_t const *op ) {
   return op->args_min == 0 && op->args_max == 2;
 }
 
@@ -182,6 +184,7 @@ CDECL_OP_INLINE bool op_is_ambiguous( c_operator_t const *op ) {
  * @return Returns one of <code>\ref C_OP_MEMBER</code>,
  * <code>\ref C_OP_NON_MEMBER</code>, or <code>\ref C_OP_UNSPECIFIED</code>.
  */
+C_WARN_UNUSED_RESULT
 unsigned op_get_overload( c_ast_t const *ast );
 
 /**
@@ -190,7 +193,8 @@ unsigned op_get_overload( c_ast_t const *ast );
  * @param oper_id The ID of the `c_operator` to get the token for.
  * @return Returns said token; otherwise, returns theunaltered token.
  */
-CDECL_OP_INLINE char const* op_token_c( c_oper_id_t oper_id ) {
+C_OP_INLINE C_WARN_UNUSED_RESULT
+char const* op_token_c( c_oper_id_t oper_id ) {
   return alt_token_c( graph_token_c( op_get( oper_id )->name ) );
 }
 
