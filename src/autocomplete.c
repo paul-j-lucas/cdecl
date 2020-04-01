@@ -377,7 +377,7 @@ static char* keyword_completion( char const *text, int state ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-#if !HAVE_DECL_RL_COMPLETION_FUNC_T
+#if !HAVE_RL_COMPLETION_FUNC_T
 //
 // CPPFunction was the original typedef in Readline prior to 4.2.  In 4.2, it
 // was deprecated and replaced by rl_completion_func_t; in 6.3-5, CPPFunction
@@ -387,7 +387,7 @@ static char* keyword_completion( char const *text, int state ) {
 // is actually just a veneer on Editline), define rl_completion_func_t.
 //
 typedef CPPFunction rl_completion_func_t;
-#endif /* HAVE_DECL_RL_COMPLETION_FUNC_T */
+#endif /* HAVE_RL_COMPLETION_FUNC_T */
 
 /**
  * Initializes readline.
