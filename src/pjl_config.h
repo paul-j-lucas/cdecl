@@ -113,7 +113,7 @@
  * @param FN_CALL The function call.
  */
 #define C_IGNORE_RV(FN_CALL) \
-  do { __typeof__(FN_CALL) _ignore __attribute__((unused)) = (FN_CALL); } while (0)
+  do { __typeof__(FN_CALL) _rv __attribute__((unused)) = (FN_CALL); } while (0)
 #else
 #define C_IGNORE_RV(FN_CALL)      do { (void)(FN_CALL); } while (0)
 #endif /* HAVE___TYPEOF__ */
