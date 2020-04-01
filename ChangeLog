@@ -1,5 +1,10 @@
 2020-04-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added types from pthread.h and threads.h (C11).
+   * autocomplete.c:
+     s/HAVE_DECL_RL_COMPLETION_FUNC_T/HAVE_RL_COMPLETION_FUNC_T/
    * configure.ac: Whitespace change.
    * configure.ac, pjl_compile.m4, pjl_config.h: Now using PJL_COMPILE macro.
    * configure.ac, c_ast_util.c, c_sname.h, cdecl.c, english.c, errors.c,
