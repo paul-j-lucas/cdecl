@@ -1,5 +1,7 @@
 2020-04-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Added types from pthread.h and threads.h (C11).
+   * c_typedef.c: Whitespace change.
    * c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added types from pthread.h and threads.h (C11).
