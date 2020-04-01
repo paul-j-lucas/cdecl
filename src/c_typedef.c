@@ -182,13 +182,13 @@ static char const *const TYPEDEFS_PTHREAD_H[] = {
  * Types from `threads.h` (C11).
  */
 static char const *const TYPEDEFS_THREADS_H[] = {
-  "typedef pthread_t                    thrd_t",
-  "typedef pthread_cond_t               cnd_t",
-  "typedef pthread_mutex_t              mtx_t",
-  "typedef int                          once_flag",
-  "typedef int                        (*thrd_start_t)(void*)",
-  "typedef void                       (*tss_dtor_t)(void*)",
-  "typedef void*                        tss_t",
+  "typedef pthread_t        thrd_t",
+  "typedef pthread_cond_t   cnd_t",
+  "typedef pthread_mutex_t  mtx_t",
+  "typedef int              once_flag",
+  "typedef int            (*thrd_start_t)(void*)",
+  "typedef void           (*tss_dtor_t)(void*)",
+  "typedef void*            tss_t",
 
   NULL
 };
