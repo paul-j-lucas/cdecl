@@ -1,3 +1,10 @@
+2020-04-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Whitespace change.
+   * configure.ac, pjl_compile.m4, pjl_config.h: Now using PJL_COMPILE macro.
+   * configure.ac, c_ast_util.c, c_sname.h, cdecl.c, english.c, errors.c,
+     options.c, parser.y, pjl_config.h: Added C_IGNORE_RV.
+
 2020-03-25  Paul J. Lucas <paul@lucasmail.org>
 
    * Doxyfile, configure.ac, ax_c___attribute__.m4, autocomplete.c, c_ast.c,
