@@ -41,6 +41,7 @@ define blkcnt_t as int32_t
 define blksize_t as int32_t
 define clock_t as long
 define clockid_t as long
+define cnd_t as pthread_cond_t
 define dev_t as int32_t
 define div_t as struct div_t
 define errno_t as int
@@ -70,10 +71,23 @@ define lldiv_t as struct lldiv_t
 define max_align_t as long double
 define mbstate_t as struct __mbstate
 define mode_t as int32_t
+define mtx_t as pthread_mutex_t
 define nfds_t as unsigned long
 define nlink_t as uint32_t
 define off_t as int64_t
+define once_flag as int
 define pid_t as int32_t
+define pthread_barrier_t as struct pthread_barrier_t
+define pthread_barrierattr_t as struct pthread_barrierattr_t
+define pthread_cond_t as struct pthread_cond_t
+define pthread_condattr_t as struct pthread_condattr_t
+define pthread_mutex_t as struct pthread_mutex_t
+define pthread_mutexattr_t as struct pthread_mutexattr_t
+define pthread_once_t as int
+define pthread_rwlock_t as struct pthread_rwlock_t
+define pthread_rwlockattr_t as struct pthread_rwlockattr_t
+define pthread_spinlock_t as volatile int
+define pthread_t as unsigned long
 define ptrdiff_t as long
 define rlim_t as uint32_t
 define rsize_t as unsigned long
@@ -108,7 +122,11 @@ define weak_ordering of namespace std as struct weak_ordering
 define wstreambuf of namespace std as struct wstreambuf
 define wstring of namespace std as class wstring
 define suseconds_t as int64_t
+define thrd_start_t as pointer to function (pointer to void) returning int
+define thrd_t as pthread_t
 define time_t as int64_t
+define tss_dtor_t as pointer to function (pointer to void) returning void
+define tss_t as pointer to void
 define uid_t as uint32_t
 define uint16_t as unsigned short
 define uint32_t as unsigned

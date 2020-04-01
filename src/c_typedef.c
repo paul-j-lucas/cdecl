@@ -160,6 +160,40 @@ static char const *const TYPEDEFS_STD_ATOMIC_H[] = {
 };
 
 /**
+ * Types from `pthread.h`.
+ */
+static char const *const TYPEDEFS_PTHREAD_H[] = {
+  "typedef unsigned long                pthread_t",
+  "typedef struct pthread_barrier_t     pthread_barrier_t",
+  "typedef struct pthread_barrierattr_t pthread_barrierattr_t",
+  "typedef struct pthread_cond_t        pthread_cond_t",
+  "typedef struct pthread_condattr_t    pthread_condattr_t",
+  "typedef struct pthread_mutex_t       pthread_mutex_t",
+  "typedef struct pthread_mutexattr_t   pthread_mutexattr_t",
+  "typedef int                          pthread_once_t",
+  "typedef struct pthread_rwlock_t      pthread_rwlock_t",
+  "typedef struct pthread_rwlockattr_t  pthread_rwlockattr_t",
+  "typedef volatile int                 pthread_spinlock_t",
+
+  NULL
+};
+
+/**
+ * Types from `threads.h` (C11).
+ */
+static char const *const TYPEDEFS_THREADS_H[] = {
+  "typedef pthread_t                    thrd_t",
+  "typedef pthread_cond_t               cnd_t",
+  "typedef pthread_mutex_t              mtx_t",
+  "typedef int                          once_flag",
+  "typedef int                        (*thrd_start_t)(void*)",
+  "typedef void                       (*tss_dtor_t)(void*)",
+  "typedef void*                        tss_t",
+
+  NULL
+};
+
+/**
  * Types from C++.
  */
 static char const *const TYPEDEFS_STD_CPP[] = {
@@ -392,6 +426,8 @@ void c_typedef_init( void ) {
 
     c_typedef_parse_builtins( TYPEDEFS_STD_C );
     c_typedef_parse_builtins( TYPEDEFS_STD_ATOMIC_H );
+    c_typedef_parse_builtins( TYPEDEFS_PTHREAD_H );
+    c_typedef_parse_builtins( TYPEDEFS_THREADS_H );
     c_typedef_parse_builtins( TYPEDEFS_STD_CPP );
     c_typedef_parse_builtins( TYPEDEFS_MISC );
 
