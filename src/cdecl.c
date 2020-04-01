@@ -315,7 +315,7 @@ static bool parse_files( int num_files, char const *files[] ) {
         PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", files[i], STRERROR() );
       if ( !parse_file( file ) )
         ok = false;
-      (void)fclose( file );
+      C_IGNORE_RV( fclose( file ) );
     }
   } // for
   return ok;
@@ -379,14 +379,14 @@ bool parse_string( char const *s, size_t s_len ) {
     explain_buf = MALLOC( char, s_len + 1/*NULL*/ );
     char *p = strcpy_end( explain_buf, L_EXPLAIN );
     p = chrcpy_end( p, ' ' );
-    (void)strcpy_end( p, s );
+    C_IGNORE_RV( strcpy_end( p, s ) );
     s = explain_buf;
   }
 
   FILE *const temp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
   yyrestart( temp );
   bool const ok = yyparse() == 0;
-  (void)fclose( temp );
+  C_IGNORE_RV( fclose( temp ) );
 
   free( explain_buf );
   inserted_len = 0;
@@ -428,10 +428,10 @@ static void read_conf_file( void ) {
   //
   c_lang_id_t const orig_lang = opt_lang;
   opt_lang = LANG_CPP_NEW;
-  (void)parse_file( cin );
+  C_IGNORE_RV( parse_file( cin ) );
   opt_lang = orig_lang;
 
-  (void)fclose( cin );
+  C_IGNORE_RV( fclose( cin ) );
 }
 
 /**

@@ -377,7 +377,7 @@ static void parse_options( int argc, char const *argv[] ) {
   if ( colorize ) {
     if ( !(colors_parse( getenv( "CDECL_COLORS" ) )
         || colors_parse( getenv( "GCC_COLORS" ) )) ) {
-      (void)colors_parse( COLORS_DEFAULT );
+      C_IGNORE_RV( colors_parse( COLORS_DEFAULT ) );
     }
   }
 }

@@ -91,6 +91,21 @@ AX_COMPILE_CHECK_SIZEOF(c_kind_t, $cdecl_headers)
 cdecl_headers='#include "src/typedefs.h"'
 AX_COMPILE_CHECK_SIZEOF(c_type_id_t, $cdecl_headers)
 
+AC_MSG_CHECKING([for __typeof__])
+AC_COMPILE_IFELSE(
+  [AC_LANG_PROGRAM([[]],[[__typeof__(1) x __attribute((unused)) = 1;]])],
+  [
+    AC_MSG_RESULT([yes])
+    AC_DEFINE([HAVE___TYPEOF__], [1],
+      [Define to 1 if you have `__typeof__'.])
+  ],
+  [
+    AC_MSG_RESULT([no])
+    AC_DEFINE([HAVE___TYPEOF__], [0],
+      [Define to 1 if you have `__typeof__`.])
+  ]
+)
+
 # Checks for library functions.
 AC_FUNC_REALLOC
 AC_MSG_CHECKING([for rl_completion_func_t])

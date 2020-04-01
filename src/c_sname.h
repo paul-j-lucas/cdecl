@@ -83,7 +83,7 @@ void c_sname_append_name( c_sname_t *sname, char *name ) {
  */
 C_SNAME_INLINE
 void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
-  (void)slist_push_list_tail( dst, src );
+  slist_push_list_tail( dst, src );
 }
 
 /**
@@ -261,7 +261,7 @@ void c_sname_prepend_name( c_sname_t *sname, char *name ) {
  */
 C_SNAME_INLINE
 void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
-  (void)slist_push_list_head( dst, src );
+  slist_push_list_head( dst, src );
 }
 
 /**

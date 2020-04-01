@@ -105,6 +105,19 @@
  */
 #define C_NOWARN_UNUSED_RESULT    /* nothing */
 
+#ifdef HAVE___TYPEOF__
+/**
+ * Ignore the return value of a function even if it was declared with
+ * #C_WARN_UNUSED_RESULT.
+ *
+ * @param FN_CALL The function call.
+ */
+#define C_IGNORE_RV(FN_CALL) \
+  do { __typeof__(FN_CALL) _ignore __attribute__((unused)) = (FN_CALL); } while (0)
+#else
+#define C_IGNORE_RV(FN_CALL)      do { (void)(FN_CALL); } while (0)
+#endif /* HAVE___TYPEOF__ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif /* pjl_config_H */

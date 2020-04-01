@@ -1417,8 +1417,10 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
         );
       }
       for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-        (void)c_ast_check_visitor(
-          c_ast_arg_ast( arg ), c_ast_visitor_warning, data
+        C_IGNORE_RV(
+          c_ast_check_visitor(
+            c_ast_arg_ast( arg ), c_ast_visitor_warning, data
+          )
         );
       } // for
       break;
@@ -1540,7 +1542,7 @@ bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
     return false;
   if ( !c_ast_check_errors( ast, false ) )
     return false;
-  (void)c_ast_check_visitor( ast, c_ast_visitor_warning, NULL );
+  C_IGNORE_RV( c_ast_check_visitor( ast, c_ast_visitor_warning, NULL ) );
   return true;
 }
 

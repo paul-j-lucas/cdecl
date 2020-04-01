@@ -96,8 +96,8 @@ static void c_ast_english_func_args( c_ast_arg_t const *arg, FILE *eout ) {
     }
 
     c_ast_t *const nonconst_arg = CONST_CAST( c_ast_t*, arg_ast );
-    (void)c_ast_visit(
-      nonconst_arg, C_VISIT_DOWN, c_ast_visitor_english, eout
+    C_IGNORE_RV(
+      c_ast_visit( nonconst_arg, C_VISIT_DOWN, c_ast_visitor_english, eout )
     );
   } // for
 
@@ -240,7 +240,9 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
 
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  (void)c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, eout );
+  C_IGNORE_RV(
+    c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, eout )
+  );
 
   switch ( ast->align.kind ) {
     case C_ALIGNAS_NONE:
