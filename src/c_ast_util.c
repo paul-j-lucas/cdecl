@@ -72,7 +72,7 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
     default:
       //
       // An AST node's "depth" says how nested within () it is and controls the
-      // precendence of what is an array of what.
+      // precedence of what is an array of what.
       //
       if ( ast->depth > array->depth ) {
         //
