@@ -380,7 +380,7 @@ td_add_rv_t c_typedef_add( c_ast_t const *ast ) {
 }
 
 void c_typedef_cleanup( void ) {
-  rb_tree_free( typedefs, NULL );
+  rb_tree_free( typedefs );
   typedefs = NULL;
 }
 
@@ -400,7 +400,7 @@ c_typedef_t const* c_typedef_find( c_sname_t const *sname ) {
 
 void c_typedef_init( void ) {
   assert( typedefs == NULL );
-  typedefs = rb_tree_new( &c_typedef_cmp );
+  typedefs = rb_tree_new( &c_typedef_cmp, NULL );
 
   if ( opt_typedefs ) {
 #ifdef ENABLE_CDECL_DEBUG

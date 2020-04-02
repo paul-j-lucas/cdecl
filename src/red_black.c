@@ -114,8 +114,9 @@ struct rb_node {
  * A red-black tree.
  */
 struct rb_tree {
-  rb_node_t     root;                   ///< Root node.
-  rb_data_cmp_t data_cmp_fn;            ///< Data comparison function.
+  rb_node_t       root;                 ///< Root node.
+  rb_data_cmp_t   data_cmp_fn;          ///< Data comparison function.
+  rb_data_free_t  data_free_fn;         ///< Data free function.
 };
 
 // local functions
@@ -228,21 +229,18 @@ static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
 /**
  * Frees all memory associated with \a tree.
  *
- * @param tree A pointer to the red-black tree to free.
  * @param node A pointer to the `rb_node` to free.
- * @param data_free_fn A pointer to the function to use to free data associated
- * with each `rb_node`, if any.
+ * @param data_free_fn A pointer to a function used to free data associated
+ * with each node or null if unnecessary.
  */
-static void rb_tree_free_impl( rb_tree_t *tree, rb_node_t *node,
-                               rb_data_free_t data_free_fn ) {
-  assert( tree != NULL );
+static void rb_tree_free_impl( rb_node_t *node, rb_data_free_t data_free_fn ) {
   assert( node != NULL );
 
   if ( node != RB_NIL ) {
-    rb_tree_free_impl( tree, node->left, data_free_fn );
-    rb_tree_free_impl( tree, node->right, data_free_fn );
+    rb_tree_free_impl( node->left, data_free_fn );
+    rb_tree_free_impl( node->right, data_free_fn );
     if ( data_free_fn != NULL )
-      data_free_fn( node->data );
+      (*data_free_fn)( node->data );
     FREE( node );
   }
 }
@@ -450,9 +448,9 @@ rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data ) {
   return NULL;
 }
 
-void rb_tree_free( rb_tree_t *tree, rb_data_free_t data_free_fn ) {
+void rb_tree_free( rb_tree_t *tree ) {
   if ( tree != NULL ) {
-    rb_tree_free_impl( tree, RB_FIRST(tree), data_free_fn );
+    rb_tree_free_impl( RB_FIRST(tree), tree->data_free_fn );
     FREE( tree );
   }
 }
@@ -544,12 +542,14 @@ do_red: node->parent->color = RB_BLACK;
   return NULL;
 }
 
-rb_tree_t* rb_tree_new( rb_data_cmp_t data_cmp_fn ) {
+rb_tree_t* rb_tree_new( rb_data_cmp_t data_cmp_fn,
+                        rb_data_free_t data_free_fn ) {
   assert( data_cmp_fn != NULL );
 
   rb_tree_t *const tree = MALLOC( rb_tree_t, 1 );
   rb_node_init( RB_ROOT(tree) );
   tree->data_cmp_fn = data_cmp_fn;
+  tree->data_free_fn = data_free_fn;
 
   return tree;
 }
