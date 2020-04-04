@@ -150,7 +150,7 @@ void c_kind_data_free( void *data ) {
  *
  * @sa c_kind_data_new(c_kind_t)
  */
-C_KIND_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_KIND_INLINE
 c_kind_t c_kind_data_get( void *data ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
   return *REINTERPRET_CAST( c_kind_t*, data );
@@ -167,7 +167,7 @@ c_kind_t c_kind_data_get( void *data ) {
  *
  * @sa c_kind_data_free(void*)
  */
-C_KIND_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_KIND_INLINE
 void* c_kind_data_new( c_kind_t kind ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
   c_kind_t *const p = MALLOC( c_kind_t, 1 );
@@ -184,7 +184,7 @@ void* c_kind_data_new( c_kind_t kind ) {
  * @param kind The <code>\ref c_kind</code> to check.
  * @return Returns `true` only if it is.
  */
-C_KIND_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_KIND_INLINE
 bool c_kind_is_parent( c_kind_t kind ) {
   return kind >= K_PARENT_MIN;
 }

@@ -413,7 +413,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param n The number to check.
  * @return Returns `true` only if at most 1 bit is set.
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_UTIL_INLINE
 bool at_most_one_bit_set( uint64_t n ) {
   return (n & (n - 1)) == 0;
 }
@@ -462,7 +462,7 @@ char* check_strdup( char const *s );
  * @param c The character to check for.
  * @return Returns `true` only if \a ends with \a c.
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_UTIL_INLINE
 bool ends_with_chr( char const *s, size_t s_len, char c ) {
   return s_len > 0 && s[ s_len - 1 ] == c;
 }
@@ -473,7 +473,7 @@ bool ends_with_chr( char const *s, size_t s_len, char c ) {
  * @param n The number to check.
  * @return Returns `true` only if exactly 1 bit is set.
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_UTIL_INLINE
 bool exactly_one_bit_set( uint64_t n ) {
   return n != 0 && at_most_one_bit_set( n );
 }
@@ -487,7 +487,7 @@ bool exactly_one_bit_set( uint64_t n ) {
  *
  * @sa true_or_set()
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_UTIL_INLINE
 bool false_set( bool *flag ) {
   return !*flag && (*flag = true);
 }
@@ -548,7 +548,7 @@ char const* home_dir( void );
  * @param s The null-terminated string to check.
  * @return Returns `true` only if \a s is a blank line.
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_UTIL_INLINE
 bool is_blank_line( char const *s ) {
   s += strspn( s, " \t\r\n" );
   return *s == '\0';
@@ -570,7 +570,7 @@ bool is_file( int fd );
  * @return Returns `true` only if \a c is either an alphanumeric or `_`
  * character.
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_UTIL_INLINE
 bool is_ident( char c ) {
   return isalnum( c ) || c == '_';
 }
@@ -584,7 +584,7 @@ bool is_ident( char c ) {
  * @return Returns `true` only if the bits set in \a bits are among the bits
  * set in \a set.
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_UTIL_INLINE
 bool only_bits_in( uint64_t bits, uint64_t set ) {
   return bits != 0 && (bits & set) == bits;
 }
@@ -654,7 +654,7 @@ char* strcpy_end( char *dst, char const *src );
  *
  * @sa false_set()
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_UTIL_INLINE
 bool true_or_set( bool *flag ) {
   return *flag || !(*flag = true);
 }

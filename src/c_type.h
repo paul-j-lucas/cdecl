@@ -202,7 +202,7 @@ void c_type_id_data_free( void *data ) {
  *
  * @sa c_type_id_data_new(c_type_id_t)
  */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_TYPE_INLINE
 c_type_id_t c_type_id_data_get( void *data ) {
 #if SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP
   return *REINTERPRET_CAST( c_type_id_t*, data );
@@ -221,7 +221,7 @@ c_type_id_t c_type_id_data_get( void *data ) {
  *
  * @sa c_type_id_data_free(void*)
  */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_TYPE_INLINE
 void* c_type_id_data_new( c_type_id_t type_id ) {
 #if SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP
   c_type_id_t *const p = MALLOC( c_type_id_t, 1 );

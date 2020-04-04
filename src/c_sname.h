@@ -94,7 +94,7 @@ void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
  * @return Returns a number less than 0, 0, or greater than 0 if \a sname_i is
  * less than, equal to, or greater than \a sname_j, respectively.
  */
-C_SNAME_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_SNAME_INLINE
 int c_sname_cmp( c_sname_t const *sname_i, c_sname_t const *sname_j ) {
   return slist_cmp( sname_i, sname_j, (slist_node_data_cmp_fn_t)&strcmp );
 }
@@ -105,7 +105,7 @@ int c_sname_cmp( c_sname_t const *sname_i, c_sname_t const *sname_j ) {
  * @param sname The scoped name to get the number of names of.
  * @return Returns said number of names.
  */
-C_SNAME_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_SNAME_INLINE
 size_t c_sname_count( c_sname_t const *sname ) {
   return slist_len( sname );
 }
@@ -117,7 +117,7 @@ size_t c_sname_count( c_sname_t const *sname ) {
  * @param sname The scoped name to duplicate.
  * @return Returns a duplicate of \a sname.
  */
-C_SNAME_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_SNAME_INLINE
 c_sname_t c_sname_dup( c_sname_t const *sname ) {
   return slist_dup( sname, -1, NULL, (slist_node_data_dup_fn_t)&strdup );
 }
@@ -128,7 +128,7 @@ c_sname_t c_sname_dup( c_sname_t const *sname ) {
  * @param sname The scoped name to check.
  * @return Returns `true` only if \a sname is empty.
  */
-C_SNAME_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_SNAME_INLINE
 bool c_sname_empty( c_sname_t const *sname ) {
   return slist_empty( sname );
 }
@@ -193,7 +193,7 @@ bool c_sname_is_ctor( c_sname_t const *sname );
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name
  */
-C_SNAME_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_SNAME_INLINE
 char const* c_sname_local_name( c_sname_t const *sname ) {
   return c_sname_empty( sname ) ? "" : SLIST_TAIL( char const*, sname );
 }
@@ -210,7 +210,7 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name
  */
-C_SNAME_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_SNAME_INLINE
 char const* c_sname_name_at( c_sname_t const *sname, size_t offset ) {
   char const *const temp = SLIST_PEEK_AT( char const*, sname, offset );
   return temp != NULL ? temp : "";
@@ -228,7 +228,7 @@ char const* c_sname_name_at( c_sname_t const *sname, size_t offset ) {
  * @sa c_sname_name_at()
  * @sa c_sname_scope_name
  */
-C_SNAME_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_SNAME_INLINE
 char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
   char const *const temp = SLIST_PEEK_ATR( char const*, sname, roffset );
   return temp != NULL ? temp : "";

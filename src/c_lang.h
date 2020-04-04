@@ -121,7 +121,7 @@ c_lang_id_t c_lang_find( char const *name );
  * @param lang_id The bitwise-or of language(s) to check.
  * @return Returns `true` only if \a lang_id is C++.
  */
-C_LANG_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_LANG_INLINE
 bool c_lang_is_cpp( c_lang_id_t lang_id ) {
   return (lang_id & LANG_MASK_CPP) != LANG_NONE;
 }
@@ -140,7 +140,7 @@ bool c_lang_is_cpp( c_lang_id_t lang_id ) {
  * @param lang_id The bitwise-or of language(s).
  * @return Returns said language.
  */
-C_LANG_INLINE C_WARN_UNUSED_RESULT
+C_WARN_UNUSED_RESULT C_LANG_INLINE
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_id ) {
   return lang_id & ~(lang_id - 1u);
 }
