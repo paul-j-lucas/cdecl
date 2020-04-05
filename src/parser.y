@@ -403,6 +403,10 @@ void parser_cleanup( void ) {
 C_WARN_UNUSED_RESULT
 static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
                       c_loc_t const *type_decl_loc ) {
+  assert( decl_keyword != NULL );
+  assert( type_ast != NULL );
+  assert( type_decl_loc != NULL );
+
   switch ( c_typedef_add( type_ast ) ) {
     case TD_ADD_ADDED:
       //
@@ -434,6 +438,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
  */
 C_PRINTF_LIKE_FUNC(1)
 static void elaborate_error( char const *format, ... ) {
+  assert( format != NULL );
   if ( !error_newlined ) {
     PUTS_ERR( ": " );
     if ( lexer_token[0] != '\0' )
@@ -451,7 +456,7 @@ static void elaborate_error( char const *format, ... ) {
  * Explains a declaration.
  *
  * @param align The `alignas` specifier, if any.
- * @param align_loc The source location of \a align.
+ * @param align_loc The source location of \a align, if any.
  * @param type_ast The type `c_ast`.
  * @param decl_ast The declaration `c_ast`.
  * @param decl_loc The source location of \a decl_ast.
@@ -461,6 +466,10 @@ C_WARN_UNUSED_RESULT
 static bool explain_type_decl( c_alignas_t const *align,
                                c_loc_t const *align_loc, c_ast_t *type_ast,
                                c_ast_t *decl_ast, c_loc_t const *decl_loc ) {
+  assert( type_ast != NULL );
+  assert( decl_ast != NULL );
+  assert( decl_loc != NULL );
+
   C_IGNORE_RV( type_pop() );
 
   bool is_typedef = c_ast_take_typedef( type_ast );
@@ -572,6 +581,8 @@ static bool explain_type_decl( c_alignas_t const *align,
  */
 C_WARN_UNUSED_RESULT
 static bool _Noreturn_ok( c_loc_t const *loc ) {
+  assert( loc != NULL );
+
   if ( c_init < C_INIT_READ_CONF || (opt_lang & LANG_C_MIN(11)) != LANG_NONE )
     return true;
   print_error( loc, "\"%s\" not supported in %s", lexer_token, C_LANG_NAME() );
@@ -770,6 +781,8 @@ static void quit( void ) {
  * @param msg The error message to print.
  */
 static void yyerror( char const *msg ) {
+  assert( msg != NULL );
+
   c_loc_t loc;
   MEM_ZERO( &loc );
   lexer_loc( &loc.first_line, &loc.first_column );
