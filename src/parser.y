@@ -64,7 +64,7 @@
 #include <stdlib.h>
 
 #ifdef __GNUC__
-// Silence these warnings for bison-generated code.
+// Silence these warnings for Bison-generated code.
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wunreachable-code"
 #endif /* __GNUC__ */
