@@ -184,7 +184,7 @@
  * @param NUM The integer to dump.
  */
 #define DUMP_NUM(KEY,NUM) \
-  IF_DEBUG( DUMP_COMMA; printf( "  " KEY " = %d", (NUM) ); )
+  IF_DEBUG( DUMP_COMMA; printf( "  " KEY " = %d", (int)(NUM) ); )
 
 /**
  * Dumps a scoped name.
