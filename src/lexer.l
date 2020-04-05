@@ -55,7 +55,7 @@
 #include <string.h>
 
 #ifdef __GNUC__
-// Silence these warnings for flex-generated code.
+// Silence these warnings for Flex-generated code.
 #pragma GCC diagnostic ignored "-Wimplicit-int-conversion"
 #pragma GCC diagnostic ignored "-Wredundant-decls"
 #pragma GCC diagnostic ignored "-Wshorten-64-to-32"
@@ -120,7 +120,7 @@
 #define SKIP_WS(S)                SKIP_CHARS( (S), " \f\r\t\v" )
 
 /**
- * Overrides flex's fatal error message to print the message in our format and
+ * Overrides Flex's fatal error message to print the message in our format and
  * also exit with the status code we want.
  *
  * @param MSG The error message to print.
@@ -128,7 +128,7 @@
 #define YY_FATAL_ERROR(MSG)       lexer_fatal( (MSG) )
 
 /**
- * Overrides flex's input.
+ * Overrides Flex's input.
  *
  * @param BUF The buffer to use.
  * @param BYTES_READ Set to the number of bytes read.
@@ -138,7 +138,7 @@
   (BYTES_READ) = lexer_get_input( (BUF), (yy_size_t)(BYTES_MAX) )
 
 /**
- * This code is inserted by flex at the beginning of each rule to set the
+ * This code is inserted by Flex at the beginning of each rule to set the
  * current token location information.
  */
 #define YY_USER_ACTION            lexer_update_loc(); /* must include ';' */
@@ -316,7 +316,7 @@ static int        column;               ///< Column position of current token.
 static int        column_newline;       ///< Column position of newline.
 static char      *input_buf;            ///< Entire current input line.
 static size_t     input_len;            ///< Length of line in `input_buf`.
-static size_t     input_sent;           ///< How many bytes returned to flex.
+static size_t     input_sent;           ///< How many bytes returned to Flex.
 static bool       is_eof;               ///< Encountered EOF?
 
 // local functions
@@ -396,7 +396,7 @@ static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
 }
 
 /**
- * Gets a line of input for flex and keeps a copy for use later if printing an
+ * Gets a line of input for Flex and keeps a copy for use later if printing an
  * error message.
  *
  * @param buf A pointer to the buffer to write into.
@@ -418,7 +418,7 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
     input_sent = 0;
   }
   //
-  // Given that the default buffer capacity (YY_READ_BUF_SIZE) for flex is
+  // Given that the default buffer capacity (YY_READ_BUF_SIZE) for Flex is
   // 8192, it's unlikely that this will ever be true and that we'll have to
   // return the input line in chunks; but might as well code for the case.
   //
@@ -971,7 +971,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Called by flex only when there's a fatal error.
+ * Called by Flex only when there's a fatal error.
  *
  * @param msg The error message to print.
  */
@@ -980,7 +980,7 @@ static void lexer_fatal( char const *msg ) {
   //
   // This is defined down here to avoid having to declare yy_fatal_error
   // ourselves and having to get it right being subject to possible changes in
-  // its signature in different flex versions.
+  // its signature in different Flex versions.
   //
   INTERNAL_ERR( "%s\n", msg );
 
@@ -990,7 +990,7 @@ static void lexer_fatal( char const *msg ) {
 
 /**
  * Update the parser's location.
- * @note This is called by flex via `YY_USER_ACTION`.
+ * @note This is called by Flex via `YY_USER_ACTION`.
  */
 static void lexer_update_loc( void ) {
   yylloc.first_line   = yylloc.last_line = (int)yylineno;
