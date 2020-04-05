@@ -296,7 +296,7 @@ typedef struct cdecl_hyphenated cdecl_hyphenated_t;
  * seperately because hyphenated words are not valid identifiers (since `-` is
  * not valid in an identifier).
  */
-static cdecl_hyphenated_t const E_HYPHENATED_KEYWORDS[] = {
+static cdecl_hyphenated_t const CDECL_HYPHENATED_KEYWORDS[] = {
   { "non-mbr",      Y_NON_MEMBER    },
   { "non-member",   Y_NON_MEMBER    },
   { "user-def",     Y_USER_DEFINED  },
@@ -367,7 +367,8 @@ static char const* c_hyphenated_find( char const *s ) {
 C_WARN_UNUSED_RESULT
 static int cdecl_hyphenated_find( char const *s ) {
   assert( s != NULL );
-  for ( cdecl_hyphenated_t const *h = E_HYPHENATED_KEYWORDS; h->e_literal; ++h ) {
+  for ( cdecl_hyphenated_t const *h = CDECL_HYPHENATED_KEYWORDS; h->e_literal;
+        ++h ) {
     if ( strcmp( s, h->e_literal ) == 0 )
       return h->y_token;
   } // for
