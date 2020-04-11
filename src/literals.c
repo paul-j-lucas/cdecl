@@ -145,10 +145,8 @@ char const L__STATIC_ASSERT[]         = "_Static_assert";
 char const L_STATIC_ASSERT[]          = "static_assert";
 
 // C++
-
 char const L_CATCH[]                  = "catch";
 char const L_CLASS[]                  = "class";
-
 char const L_CONSTRUCTOR[]            = "constructor";
 char const L_CONST_CAST[]             = "const_cast";
 char const L_CONVERSION[]             = "conversion";
