@@ -1,3 +1,30 @@
+2020-04-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, c_keyword.c, c_type.c, c_type.h, lexer.l, literals.c,
+     literals.h, parser.y, cdecl--debug.out, cdecl-d.out: Added GNU C's
+     __auto_type extension.
+   * NEWS, configure.ac, c_type.c: Fixed "long long" type: no longer allowed in
+     C89.
+   * c_lang.h, errors.c, parser.y: Added c_lang_is_c() and C_LANG_IS_C().
+
+2020-04-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * literals.c: Removed blank lines.
+
+2020-04-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: More asserts.
+   * parser.y: Added (int).
+   * parser.y: s/bison/Bison/
+   * lexer.l: s/flex/Flex/
+   * lexer.l: Renaming.
+
+2020-04-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c: Comment fix.
+   * c_typedef.c, red_black.c, red_black.h: Changed red-black tree to include
+     data_free_fn.
+
 2020-04-01  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: Added types from pthread.h and threads.h (C11).
