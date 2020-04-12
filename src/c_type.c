@@ -190,7 +190,7 @@ static c_type_t const C_TYPE_INFO[] = {
   { T_SHORT,        L_SHORT,            NULL, LANG_ALL                        },
   { T_INT,          L_INT,              NULL, LANG_ALL                        },
   { T_LONG,         L_LONG,             NULL, LANG_ALL                        },
-  { T_LONG_LONG,    L_LONG_LONG,        NULL, LANG_MIN(C_89)                  },
+  { T_LONG_LONG,    L_LONG_LONG,        NULL, LANG_MIN(C_99)                  },
   { T_SIGNED,       L_SIGNED,           NULL, LANG_MIN(C_89)                  },
   { T_UNSIGNED,     L_UNSIGNED,         NULL, LANG_ALL                        },
   { T_FLOAT,        L_FLOAT,            NULL, LANG_ALL                        },
