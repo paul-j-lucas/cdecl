@@ -548,7 +548,7 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
 static bool c_ast_check_func_c( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind & (K_BLOCK | K_FUNCTION)) != K_NONE );
-  assert( !C_LANG_IS_CPP() );
+  assert( C_LANG_IS_C() );
 
   c_type_id_t const qual_type = ast->type_id & T_MASK_QUALIFIER;
   if ( qual_type != T_NONE ) {
@@ -990,7 +990,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind & K_ANY_REFERENCE) != K_NONE );
 
-  if ( !C_LANG_IS_CPP() ) {
+  if ( C_LANG_IS_C() ) {
     error_kind_not_supported( ast );
     return false;
   }
@@ -1254,7 +1254,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       assert( ast->kind != K_PLACEHOLDER );
 
     case K_POINTER_TO_MEMBER:
-      if ( !C_LANG_IS_CPP() )
+      if ( C_LANG_IS_C() )
         return error_kind_not_supported( ast );
       // FALLTHROUGH
     case K_POINTER:

@@ -1639,7 +1639,7 @@ explain_c
       DUMP_END();
 
       bool ok = false;
-      if ( c_init >= C_INIT_READ_CONF && !C_LANG_IS_CPP() ) {
+      if ( c_init >= C_INIT_READ_CONF && C_LANG_IS_C() ) {
         print_error( &@2, "%s_cast not supported in %s", $2, C_LANG_NAME() );
       }
       else {
@@ -1976,7 +1976,7 @@ scope_declaration_c
     rbrace_expected
     semi_expected                       /* ';' needed for class/struct/union */
     {
-      if ( !C_LANG_IS_CPP() ) {
+      if ( C_LANG_IS_C() ) {
         print_error( &@6,
           "nested types are not supported in %s", C_LANG_NAME()
         );
@@ -4376,7 +4376,7 @@ sname_c
   : sname_c "::" Y_NAME
     {
       // see the comment in "of_scope_list_english_opt"
-      if ( c_init >= C_INIT_READ_CONF && !C_LANG_IS_CPP() ) {
+      if ( c_init >= C_INIT_READ_CONF && C_LANG_IS_C() ) {
         print_error( &@2, "scoped names not supported in %s", C_LANG_NAME() );
         PARSE_ABORT();
       }
@@ -4698,7 +4698,7 @@ of_scope_english
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( c_init >= C_INIT_READ_CONF && !C_LANG_IS_CPP() ) {
+      if ( c_init >= C_INIT_READ_CONF && C_LANG_IS_C() ) {
         print_error( &@2, "scoped names not supported in %s", C_LANG_NAME() );
         PARSE_ABORT();
       }

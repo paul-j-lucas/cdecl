@@ -116,15 +116,38 @@ C_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_find( char const *name );
 
 /**
+ * Gets whether \a lang_id is any version of C.
+ *
+ * @param lang_id The bitwise-or of language(s) to check.
+ * @return Returns `true` only if \a lang_id is C.
+ *
+ * @sa c_lang_is_cpp()
+ */
+C_WARN_UNUSED_RESULT C_LANG_INLINE
+bool c_lang_is_c( c_lang_id_t lang_id ) {
+  return (lang_id & LANG_MASK_C) != LANG_NONE;
+}
+
+/**
  * Gets whether \a lang_id is any version of C++.
  *
  * @param lang_id The bitwise-or of language(s) to check.
  * @return Returns `true` only if \a lang_id is C++.
+ *
+ * @sa c_lang_is_c()
  */
 C_WARN_UNUSED_RESULT C_LANG_INLINE
 bool c_lang_is_cpp( c_lang_id_t lang_id ) {
   return (lang_id & LANG_MASK_CPP) != LANG_NONE;
 }
+
+/**
+ * Shorthand for the common case of getting whether the current language is any
+ * version of C.
+ *
+ * @return Returns `true` only if the current language is C.
+ */
+#define C_LANG_IS_C()             c_lang_is_c( opt_lang )
 
 /**
  * Shorthand for the common case of getting whether the current language is any
