@@ -136,7 +136,10 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L__ATOMIC,          Y_ATOMIC_QUAL,      T_ATOMIC,       LANG_MIN(C_11)    },
   { L__GENERIC,         Y__GENERIC,         T_NONE,         LANG_MIN(C_11)    },
   { L__NORETURN,        Y__NORETURN,        T_NORETURN,     LANG_MIN(C_11)    },
-  { L__STATIC_ASSERT ,  Y__STATIC_ASSERT,   T_NONE,         LANG_MIN(C_11)    },
+  { L__STATIC_ASSERT,   Y__STATIC_ASSERT,   T_NONE,         LANG_MIN(C_11)    },
+
+  // GNU C extensions
+  { L___AUTO_TYPE,      Y___AUTO_TYPE,      T___AUTO_TYPE,  LANG_MAX(C_NEW)   },
 
   // C++
   { L_CATCH,            Y_CATCH,            T_NONE,         LANG_CPP_ALL      },

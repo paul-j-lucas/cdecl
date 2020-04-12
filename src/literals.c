@@ -144,6 +144,9 @@ char const L_NORETURN[]               = "noreturn";
 char const L__STATIC_ASSERT[]         = "_Static_assert";
 char const L_STATIC_ASSERT[]          = "static_assert";
 
+// GNU C extensions
+char const L___AUTO_TYPE[]            = "__auto_type";
+
 // C++
 char const L_CATCH[]                  = "catch";
 char const L_CLASS[]                  = "class";

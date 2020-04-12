@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 1, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 12, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1795,8 +1795,8 @@ or
 from its output.
 .IP \n+[step].
 When converting from pseudo-English to a C++ declaration
-for either
-\f(CWauto\fP
+for \f(CWauto\fP
+(or \f(CW__auto_type\fP in GNU C)
 or a reference or an rvalue reference variable
 that is not a function argument,
 the output doesn't include an initializer:

@@ -997,6 +997,9 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_USING
 %token  <type_id>   Y_VIRTUAL
 
+                    /* GNU C extensions */
+%token  <type_id>   Y___AUTO_TYPE
+
                     /* C++11 */
 %token              Y_LBRACKET2   "[["  /* for attribute specifiers */
 %token              Y_RBRACKET2   "]]"  /* for attribute specifiers */
@@ -3717,6 +3720,7 @@ builtin_type_c_ast
 
 builtin_type
   : Y_VOID
+  | Y___AUTO_TYPE
   | Y_AUTO_CPP_11
   | Y_BOOL
   | Y_CHAR

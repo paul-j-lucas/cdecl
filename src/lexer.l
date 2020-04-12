@@ -716,11 +716,18 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                     }
                     return cdk->y_token;
                   }
-                  if ( cdk->c_keyword_synonym == L__NORETURN &&
-                       C_LANG_IS_CPP() ) {
+                  if ( cdk->c_keyword_synonym == L_AUTO && C_LANG_IS_C() ) {
+                    //
+                    // When converting "automatic" in English to C, convert it
+                    // to GNU C's "__auto_type".
+                    //
+                    lexer_token = L___AUTO_TYPE;
+                  }
+                  else if ( cdk->c_keyword_synonym == L__NORETURN &&
+                            C_LANG_IS_CPP() ) {
                     //
                     // _Noreturn is a special case. In C11, it's "_Noreturn"
-                    // and is a reserved word. In C++11, it's "noreturn", but
+                    // and is a reserved word; in C++11, it's "noreturn", but
                     // is NOT a reserved word.
                     //
                     // When parsing C11, we also want to allow "noreturn" as a

@@ -80,7 +80,7 @@ extern char const L_VECTOR[];               // synonym for "array"
 
 // K&R
 extern char const L_AUTO[];
-extern char const L_AUTOMATIC[];            // synonym for "auto"
+extern char const L_AUTOMATIC[];            // synonym for "auto", "__auto_type"
 extern char const L_BREAK[];
 extern char const L_CASE[];
 extern char const L_CHAR[];
@@ -152,6 +152,9 @@ extern char const L_NON_RETURNING_ENG[];    // English for "_Noreturn"
 extern char const L_NORETURN[];             // synonym for "_Noreturn"
 extern char const L__STATIC_ASSERT[];
 extern char const L_STATIC_ASSERT[];
+
+// GNU C extensions
+extern char const L___AUTO_TYPE[];
 
 // C++
 extern char const L_CATCH[];

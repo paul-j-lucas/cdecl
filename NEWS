@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 6.10
 
+** Added __auto_type
+Added GNU C's __auto_type.
+
 ** Fixed "long long" C version
 The "long long" type was incorrectly allowed in C89; it wasn't added until C99.
 
