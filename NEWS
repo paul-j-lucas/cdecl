@@ -18,6 +18,14 @@ Added GNU C's __auto_type.
 ** Fixed "long long" C version
 The "long long" type was incorrectly allowed in C89; it wasn't added until C99.
 
+** Added pthread.h, threads.h, and C++ thread types
+The types pthread_t, pthread_barrier_t, pthread_barrierattr_t, pthread_cond_t,
+pthread_condattr_t, pthread_mutex_t, pthread_mutexattr_t, pthread_once_t,
+pthread_rwlock_t, pthread_rwlockattr_t, and pthread_spinlock_t from <pthread.h>
+(POSIX); the types thrd_t, cnd_t, mtx_t, once_flag, thrd_start_t, tss_dtor_t,
+and tss_t from <thread.h> (C11); and std::thread (C++11) and std::jthread
+(C++20) from <thread> to the set of predefined types.
+
 
 * Changes in Cdecl 6.9
 

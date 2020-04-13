@@ -102,6 +102,7 @@ define byte of namespace std as enum byte
 define div_t of namespace std as struct div_t
 define exception of namespace std as class exception
 define imaxdiv_t of namespace std as struct imaxdiv_t
+define jthread of namespace std as class jthread
 define ldiv_t of namespace std as struct ldiv_t
 define lldiv_t of namespace std as struct lldiv_t
 define max_align_t of namespace std as long double
@@ -116,6 +117,7 @@ define streamsize of namespace std as long
 define string of namespace std as class string
 define strong_equality of namespace std as struct strong_equality
 define strong_ordering of namespace std as struct strong_ordering
+define thread of namespace std as class thread
 define u16string of namespace std as class u16string
 define u32string of namespace std as class u32string
 define weak_equality of namespace std as struct weak_equality

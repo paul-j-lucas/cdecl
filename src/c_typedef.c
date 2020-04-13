@@ -214,11 +214,13 @@ static char const *const TYPEDEFS_STD_CPP[] = {
   "namespace std { typedef struct   lldiv_t       lldiv_t;            }",
   "namespace std { typedef long     double          max_align_t;      }",
   "namespace std { typedef void                    *nullptr_t;        }",
+  "namespace std { typedef class    thread          thread;           }",
   "namespace std { typedef class    u16string       u16string;        }",
   "namespace std { typedef class    u32string       u32string;        }",
   // C++17
   "namespace std { typedef enum     byte            byte;             }",
   // C++20
+  "namespace std { typedef class  jthread           jthread;          }",
   "namespace std { typedef struct partial_ordering  partial_ordering; }",
   "namespace std { typedef struct strong_equality   strong_equality;  }",
   "namespace std { typedef struct strong_ordering   strong_ordering;  }",

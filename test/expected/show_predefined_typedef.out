@@ -101,6 +101,7 @@ namespace std { typedef enum byte byte; }
 namespace std { typedef struct div_t div_t; }
 namespace std { typedef class exception exception; }
 namespace std { typedef struct imaxdiv_t imaxdiv_t; }
+namespace std { typedef class jthread jthread; }
 namespace std { typedef struct ldiv_t ldiv_t; }
 namespace std { typedef struct lldiv_t lldiv_t; }
 namespace std { typedef long double max_align_t; }
@@ -115,6 +116,7 @@ namespace std { typedef long streamsize; }
 namespace std { typedef class string string; }
 namespace std { typedef struct strong_equality strong_equality; }
 namespace std { typedef struct strong_ordering strong_ordering; }
+namespace std { typedef class thread thread; }
 namespace std { typedef class u16string u16string; }
 namespace std { typedef class u32string u32string; }
 namespace std { typedef struct weak_equality weak_equality; }
