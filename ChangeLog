@@ -1,3 +1,10 @@
+2020-04-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * getopt-pfx-core.h: Updated Gnulib.
+   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added std::thread and std::jthread to predefined types.
+
 2020-04-12  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, cdecl.1, c_keyword.c, c_type.c, c_type.h, lexer.l, literals.c,
