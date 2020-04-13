@@ -349,7 +349,7 @@ static bool rb_visitor( void *node_data, void *aux_data ) {
   rb_visitor_data_t const *const vd =
     REINTERPRET_CAST( rb_visitor_data_t*, aux_data );
 
-  return vd->visitor( t, vd->data );
+  return (*vd->visitor)( t, vd->data );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
