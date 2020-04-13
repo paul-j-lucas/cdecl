@@ -38,6 +38,7 @@
 /// @endcond
 
 // local functions
+C_WARN_UNUSED_RESULT
 static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t* );
 
 ////////// local functions ////////////////////////////////////////////////////
