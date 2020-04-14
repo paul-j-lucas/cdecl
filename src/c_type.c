@@ -134,7 +134,7 @@ static c_type_t const C_ATTRIBUTE_INFO[] = {
 static c_type_t const C_QUALIFIER_INFO[] = {
   { T_ATOMIC,       L__ATOMIC,      L_ATOMIC, LANG_MIN(C_11)                  },
   { T_CONST,        L_CONST,      L_CONSTANT, LANG_MIN(C_89)                  },
-  { T_REFERENCE,    L_REFERENCE,        NULL, LANG_MIN(CPP_11)                },
+  { T_REFERENCE,    L_REFERENCE,        NULL, LANG_MIN(CPP_OLD)               },
   { T_RVALUE_REFERENCE,
                     L_RVALUE_REFERENCE, NULL, LANG_MIN(CPP_11)                },
   { T_RESTRICT,     L_RESTRICT, L_RESTRICTED, LANG_MIN(C_89) & ~LANG_CPP_ALL  },
