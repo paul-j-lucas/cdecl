@@ -296,7 +296,7 @@ void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname ) {
   c_sname_append_sname( &ast->sname, sname );
 }
 
-c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir, c_ast_visitor_t visitor,
+c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
                       void *data ) {
   if ( ast == NULL || (*visitor)( ast, data ) )
     return ast;

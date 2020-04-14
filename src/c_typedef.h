@@ -49,7 +49,7 @@
 /**
  * Return value for c_typedef_add().
  */
-enum td_add_rv {
+enum c_typedef_add_rv {
   TD_ADD_ADDED,                         ///< Type was added.
   TD_ADD_EQUIV,                         ///< Type exists and is equivalent.
   TD_ADD_DIFF                           ///< Type exists and is different.
@@ -88,7 +88,7 @@ typedef bool (*c_typedef_visitor_t)( c_typedef_t const *type, void *data );
  *   not equivalent.
  */
 C_WARN_UNUSED_RESULT
-td_add_rv_t c_typedef_add( c_ast_t const *type_ast );
+c_typedef_add_rv_t c_typedef_add( c_ast_t const *type_ast );
 
 /**
  * Cleans up `c_typedef` data.

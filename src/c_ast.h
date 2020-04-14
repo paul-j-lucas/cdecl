@@ -104,7 +104,7 @@ struct c_alignas {
 /**
  * The direction to traverse an AST using `c_ast_visit()`.
  */
-enum v_direction {
+enum c_visit_dir {
   C_VISIT_DOWN,                         ///< Root to leaves.
   C_VISIT_UP                            ///< Leaf to root.
 };
@@ -612,7 +612,7 @@ char const* c_ast_sname_type_name( c_ast_t const *ast ) {
  * distinct ASTs.
  */
 C_WARN_UNUSED_RESULT
-c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir, c_ast_visitor_t visitor,
+c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
                       void *data );
 
 /**
@@ -629,7 +629,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, v_direction_t dir, c_ast_visitor_t visitor,
  * distinct ASTs.
  */
 C_WARN_UNUSED_RESULT C_AST_INLINE
-bool c_ast_find( c_ast_t const *ast, v_direction_t dir,
+bool c_ast_find( c_ast_t const *ast, c_visit_dir_t dir,
                  c_ast_visitor_t visitor, void *data ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_t *const found_ast = c_ast_visit( nonconst_ast, dir, visitor, data );

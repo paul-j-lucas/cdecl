@@ -129,11 +129,11 @@ typedef struct c_ptr_ref        c_ptr_ref_t;
 typedef struct slist_node       c_scope_t;      ///< Scope in a c_sname_t.
 typedef struct slist            c_sname_t;      ///< C++ scoped name.
 typedef struct c_typedef        c_typedef_t;
+typedef enum   c_typedef_add_rv c_typedef_add_rv_t;
 typedef uint64_t                c_type_id_t;    ///< Type(s) bitmask.
 typedef struct c_user_def_conv  c_user_def_conv_t;
 typedef struct c_user_def_lit   c_user_def_lit_t;
-typedef enum   td_add_rv        td_add_rv_t;
-typedef enum   v_direction      v_direction_t;
+typedef enum   c_visit_dir      c_visit_dir_t;
 
 typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
 /// @cond DOXYGEN_IGNORE

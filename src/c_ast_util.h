@@ -150,7 +150,7 @@ bool c_ast_is_ref_to_type( c_ast_t const *ast, c_type_id_t type_id  );
  * @return Returns said name or null if none.
  */
 C_WARN_UNUSED_RESULT
-c_sname_t* c_ast_find_name( c_ast_t const *ast, v_direction_t dir );
+c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
 
 /**
  * Traverses \a ast attempting to find an AST node having \a kind.
@@ -161,7 +161,7 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, v_direction_t dir );
  * @return Returns a pointer to an AST node having \a kind or null if none.
  */
 C_WARN_UNUSED_RESULT
-c_ast_t* c_ast_find_kind( c_ast_t *ast, v_direction_t dir, c_kind_t kind );
+c_ast_t* c_ast_find_kind( c_ast_t *ast, c_visit_dir_t dir, c_kind_t kind );
 
 /**
  * Traverses \a ast attempting to find an AST node having \a type_id.
@@ -172,7 +172,7 @@ c_ast_t* c_ast_find_kind( c_ast_t *ast, v_direction_t dir, c_kind_t kind );
  * @return Returns a pointer to an AST node having \a type_id or null if none.
  */
 C_WARN_UNUSED_RESULT
-c_ast_t* c_ast_find_type( c_ast_t *ast, v_direction_t dir,
+c_ast_t* c_ast_find_type( c_ast_t *ast, c_visit_dir_t dir,
                           c_type_id_t type_id );
 
 /**

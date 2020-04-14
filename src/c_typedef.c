@@ -43,11 +43,11 @@
 /**
  * Data passed to our red-black tree visitor function.
  */
-struct rb_visitor_data {
+struct td_rb_visitor_data {
   c_typedef_visitor_t visitor;          ///< Caller's visitor function.
   void *data;                           ///< Caller's optional data.
 };
-typedef struct rb_visitor_data rb_visitor_data_t;
+typedef struct td_rb_visitor_data td_rb_visitor_data_t;
 
 // local variable definitions
 static rb_tree_t *typedefs;             ///< Global set of `typedef`s.
@@ -346,15 +346,15 @@ static bool rb_visitor( void *node_data, void *aux_data ) {
   c_typedef_t const *const t =
     REINTERPRET_CAST( c_typedef_t const*, node_data );
 
-  rb_visitor_data_t const *const vd =
-    REINTERPRET_CAST( rb_visitor_data_t*, aux_data );
+  td_rb_visitor_data_t const *const vd =
+    REINTERPRET_CAST( td_rb_visitor_data_t*, aux_data );
 
   return (*vd->visitor)( t, vd->data );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-td_add_rv_t c_typedef_add( c_ast_t const *ast ) {
+c_typedef_add_rv_t c_typedef_add( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( !c_ast_sname_empty( ast ) );
 
@@ -447,7 +447,7 @@ void c_typedef_init( void ) {
 
 c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data ) {
   assert( visitor != NULL );
-  rb_visitor_data_t vd = { visitor, data };
+  td_rb_visitor_data_t vd = { visitor, data };
   rb_node_t const *const rb = rb_tree_visit( typedefs, &rb_visitor, &vd );
   return rb != NULL ? c_typedef_node_data_get( rb ) : NULL;
 }
