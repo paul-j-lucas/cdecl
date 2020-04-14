@@ -149,7 +149,7 @@ static c_type_t const C_STORAGE_INFO[] = {
   { T_AUTO_C,       L_AUTO,        L_AUTOMATIC, LANG_MAX(CPP_03)              },
   { T_BLOCK,        L___BLOCK,            NULL, LANG_ALL                      },
   { T_EXTERN,       L_EXTERN,       L_EXTERNAL, LANG_ALL                      },
-  { T_REGISTER,     L_REGISTER,           NULL, LANG_ALL                      },
+  { T_REGISTER,     L_REGISTER,           NULL, LANG_MAX(CPP_14)              },
   { T_STATIC,       L_STATIC,             NULL, LANG_ALL                      },
   { T_THREAD_LOCAL, L_THREAD_LOCAL,
                     L_THREAD_LOCAL_ENG,         LANG_C_CPP_11_MIN             },
