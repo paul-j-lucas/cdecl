@@ -225,9 +225,9 @@ c_type_id_t c_type_id_data_get( void *data ) {
 C_WARN_UNUSED_RESULT C_TYPE_INLINE
 void* c_type_id_data_new( c_type_id_t type_id ) {
 #if SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP
-  c_type_id_t *const p = MALLOC( c_type_id_t, 1 );
-  *p = type_id;
-  return p;
+  c_type_id_t *const data = MALLOC( c_type_id_t, 1 );
+  *data = type_id;
+  return data;
 #else
   return REINTERPRET_CAST( void*, type_id );
 #endif /* SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP */

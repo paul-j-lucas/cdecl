@@ -170,9 +170,9 @@ c_kind_t c_kind_data_get( void *data ) {
 C_WARN_UNUSED_RESULT C_KIND_INLINE
 void* c_kind_data_new( c_kind_t kind ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
-  c_kind_t *const p = MALLOC( c_kind_t, 1 );
-  *p = kind;
-  return p;
+  c_kind_t *const data = MALLOC( c_kind_t, 1 );
+  *data = kind;
+  return data;
 #else
   return REINTERPRET_CAST( void*, kind );
 #endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
