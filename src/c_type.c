@@ -158,8 +158,8 @@ static c_type_t const C_STORAGE_INFO[] = {
   // storage-class-like
   { T_CONSTEVAL,    L_CONSTEVAL,          NULL, LANG_MIN(CPP_20)              },
   { T_CONSTEXPR,    L_CONSTEXPR,          NULL, LANG_MIN(CPP_11)              },
-  { T_DEFAULT,      L_DEFAULT,            NULL, LANG_CPP_ALL                  },
-  { T_DELETE,       L_DELETE,        L_DELETED, LANG_CPP_ALL                  },
+  { T_DEFAULT,      L_DEFAULT,            NULL, LANG_MIN(CPP_11)              },
+  { T_DELETE,       L_DELETE,        L_DELETED, LANG_MIN(CPP_11)              },
   { T_EXPLICIT,     L_EXPLICIT,           NULL, LANG_CPP_ALL                  },
   { T_FINAL,        L_FINAL,              NULL, LANG_MIN(CPP_11)              },
   { T_FRIEND,       L_FRIEND,             NULL, LANG_CPP_ALL                  },

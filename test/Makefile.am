@@ -973,8 +973,8 @@ TESTS+=	tests/declare_nmo_amper2_2rck_b.test \
 # C++ declare unspecified operator tests
 # ======================================
 #
-TESTS+=	tests/declare_+o_eq_rck_rk=default-01.test \
-	tests/declare_+o_eq_rck_rk=delete-01.test \
+TESTS+=	tests/declare_+o_eq_rck_rk=default.test \
+	tests/declare_+o_eq_rck_rk=delete.test \
 	tests/declare_o2=_exclam_b.test \
 	tests/declare_o_amper2_2rck_b.test \
 	tests/declare_o_amper2_rck_b.test \
@@ -1032,7 +1032,9 @@ TESTS+=	tests/declare_+o_eq_rck_rk=default-01.test \
 # C++ declare operator error tests
 # ================================
 #
-TESTS+=	tests/declare_co_exclam_k_b.test \
+TESTS+=	tests/declare_+o_eq_rck_rk=default-c++03.test \
+	tests/declare_+o_eq_rck_rk=delete-c++03.test \
+	tests/declare_co_exclam_k_b.test \
 	tests/declare_fmo_star_rk_rk.test \
 	tests/declare_mo_arrow_i.test \
 	tests/declare_nmo_amper_i_i.test \

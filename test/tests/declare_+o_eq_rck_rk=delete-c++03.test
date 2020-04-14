@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -xc++03 @ define S as struct S; declare = of structure S as deleted member operator (reference to constant S) returning reference to S @ 65
