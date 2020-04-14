@@ -426,17 +426,17 @@ static char const* c_type_name_1( c_type_id_t type_id, bool is_error ) {
  * @param is_error `true` if concatenating the name for part of an error
  * message.
  * @param sep The separator character.
- * @param sep_cpy A pointer to a variable to keep track of whether \a sep has
+ * @param sep_cat A pointer to a variable to keep track of whether \a sep has
  * been concatenated.
  */
 static void c_type_name_cat( char **pname, c_type_id_t type_id,
                              c_type_id_t const types[], size_t types_size,
-                             bool is_error, char sep, bool *sep_cpy ) {
+                             bool is_error, char sep, bool *sep_cat ) {
   assert( pname != NULL );
   for ( size_t i = 0; i < types_size; ++i ) {
     if ( (type_id & types[i]) != T_NONE )
       *pname = strcpy_sep(
-        *pname, c_type_name_1( types[i], is_error ), sep, sep_cpy
+        *pname, c_type_name_1( types[i], is_error ), sep, sep_cat
       );
   } // for
 }
@@ -473,11 +473,11 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
 
     bool comma = false;
     char const sep = brackets ? ',' : ' ';
-    bool *const sep_cpy = brackets ? &comma : &space;
+    bool *const sep_cat = brackets ? &comma : &space;
 
     if ( brackets )
       STRCAT( name, graph_token_c( "[[" ) );
-    C_TYPE_NAME_CAT( &name, type_id, C_ATTRIBUTE, is_error, sep, sep_cpy );
+    C_TYPE_NAME_CAT( &name, type_id, C_ATTRIBUTE, is_error, sep, sep_cat );
     if ( brackets )
       STRCAT( name, graph_token_c( "]]" ) );
     space = true;
@@ -607,16 +607,16 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
  * @param dst A pointer to receive the copy of \a src.
  * @param src The null-terminated string to copy.
  * @param sep The separator character.
- * @param sep_cpy A pointer to a variable to keep track of whether \a sep has
- * been copied.
+ * @param sep_cat A pointer to a variable to keep track of whether \a sep has
+ * been concatenated.
  */
 C_WARN_UNUSED_RESULT
-static char* strcpy_sep( char *dst, char const *src, char sep, bool *sep_cpy ) {
+static char* strcpy_sep( char *dst, char const *src, char sep, bool *sep_cat ) {
   assert( dst != NULL );
   assert( src != NULL );
-  assert( sep_cpy != NULL );
+  assert( sep_cat != NULL );
 
-  if ( true_or_set( sep_cpy ) )
+  if ( true_or_set( sep_cat ) )
     CHRCAT( dst, sep );
   STRCAT( dst, src );
   return dst;
