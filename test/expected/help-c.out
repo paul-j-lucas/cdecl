@@ -5,7 +5,7 @@ command:
   explain <gibberish>
   { help | ? } [command[s] | english]
   set [<option> [= <value>] | options | <lang>]
-  show { <name> | all | predefined | user } [typedef]
+  show [<name> | all | predefined | user] [typedef]
   typedef <gibberish>
   exit | quit | q
 gibberish: a C declaration, like "int x"; or cast, like "(int)x"

@@ -71,7 +71,7 @@ static help_text_t const HELP_TEXT_COMMANDS[] = {
   { "  explain <gibberish>", SAME_AS_C },
   { "  { help | ? } [command[s] | english]", SAME_AS_C },
   { "  set [<option> [= <value>] | options | <lang>]", SAME_AS_C },
-  { "  show { <name> | all | predefined | user } [typedef]", SAME_AS_C },
+  { "  show [<name> | all | predefined | user] [typedef]", SAME_AS_C },
   { "  typedef <gibberish>", SAME_AS_C },
   { NOT_IN_LANG,
     "  <scope-c> <name> \\{ { <scope-c> | <typedef> | <using> } ; \\}" },
