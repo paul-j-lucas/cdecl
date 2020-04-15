@@ -64,24 +64,6 @@ extern bool         opt_prompt;         ///< Print the prompt?
 extern bool         opt_semicolon;      ///< Print `;` at end of gibberish?
 extern bool         opt_typedefs;       ///< Load C/C++ standard `typedef`s?
 
-/**
- * The integer type(s) that `int` shall be print explicitly for in C/C++
- * declarations even when not needed because the type(s) contain at least one
- * integer modifier, e.g., `unsigned`.
- *
- * The elements are:
- *
- *  Idx | Contains type(s) for
- *  ----|---------------------
- *  `0` | signed integers
- *  `1` | unsigned integers
- *
- * @sa is_explicit_int()
- * @sa parse_opt_explicit_int()
- * @sa set_opt_explicit_int()
- */
-extern c_type_id_t  opt_explicit_int[2];
-
 // other extern variables
 extern FILE        *fin;                ///< File in.
 extern FILE        *fout;               ///< File out.
@@ -92,10 +74,22 @@ extern int          yydebug;            ///< Bison debugging.
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Checks if any explicit `int` is set.
+ *
+ * @return Returns `true` if at least one explicit `int` is set.
+ *
+ * @sa is_explicit_int()
+ */
+C_WARN_UNUSED_RESULT
+bool any_explicit_int( void );
+
+/**
  * Checks whether \a type_id shall have `int` be printed explicitly for it.
  *
  * @param type_id The type to check.
  * @return Returns `true` only if `int` shall be printed explicitly.
+ *
+ * @sa any_explicit_int()
  */
 C_WARN_UNUSED_RESULT
 bool is_explicit_int( c_type_id_t type_id );
@@ -132,17 +126,9 @@ void options_init( int *pargc, char const ***pargv );
 void parse_opt_explicit_int( c_loc_t const *loc, char const *s );
 
 /**
- * Sets the given integer type(s) that `int` shall print explicitly for in
- * C/C++ declarations even when not needed because \a type_id contains at least
- * one integer modifier, e.g., `unsigned`.
- *
- * @param type_id The type(s) to print `int` explicitly for.  When multiple
- * type bits are set simultaneously, they are all considered either signed or
- * unsigned.
- *
- * @sa is_explicit_int()
+ * Prints the string representation of the explicit `int` option.
  */
-void set_opt_explicit_int( c_type_id_t type_id );
+void print_opt_explicit_int( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 

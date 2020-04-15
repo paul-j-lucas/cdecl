@@ -86,41 +86,6 @@ static inline char const* maybe_no( bool enabled ) {
 }
 
 /**
- * Prints the string representation of the explicit `int` option.
- */
-static void print_opt_explicit_int( void ) {
-  bool const is_explicit_s   = is_explicit_int( T_SHORT );
-  bool const is_explicit_i   = is_explicit_int( T_INT );
-  bool const is_explicit_l   = is_explicit_int( T_LONG );
-  bool const is_explicit_ll  = is_explicit_int( T_LONG_LONG );
-
-  bool const is_explicit_us  = is_explicit_int( T_UNSIGNED | T_SHORT );
-  bool const is_explicit_ui  = is_explicit_int( T_UNSIGNED | T_INT );
-  bool const is_explicit_ul  = is_explicit_int( T_UNSIGNED | T_LONG );
-  bool const is_explicit_ull = is_explicit_int( T_UNSIGNED | T_LONG_LONG );
-
-  if ( is_explicit_s & is_explicit_i && is_explicit_l && is_explicit_ll ) {
-    PUTC_OUT( 'i' );
-  }
-  else {
-    if ( is_explicit_s   ) PUTC_OUT(  's'  );
-    if ( is_explicit_i   ) PUTC_OUT(  'i'  );
-    if ( is_explicit_l   ) PUTC_OUT(  'l'  );
-    if ( is_explicit_ll  ) PUTS_OUT(  "ll" );
-  }
-
-  if ( is_explicit_us & is_explicit_ui && is_explicit_ul && is_explicit_ull ) {
-    PUTC_OUT( 'u' );
-  }
-  else {
-    if ( is_explicit_us  ) PUTS_OUT( "us"  );
-    if ( is_explicit_ui  ) PUTS_OUT( "ui"  );
-    if ( is_explicit_ul  ) PUTS_OUT( "ul"  );
-    if ( is_explicit_ull ) PUTS_OUT( "ull" );
-  }
-}
-
-/**
  * Prints the current option settings.
  */
 static void print_options( void ) {
@@ -130,7 +95,7 @@ static void print_options( void ) {
 #endif /* ENABLE_CDECL_DEBUG */
   printf( "  %sexplain-by-default\n", maybe_no( opt_explain ) );
 
-  if ( opt_explicit_int[0] != T_NONE || opt_explicit_int[1] != T_NONE ) {
+  if ( any_explicit_int() ) {
     PUTS_OUT( "    explicit-int=" );
     print_opt_explicit_int();
     PUTC_OUT( '\n' );
@@ -232,7 +197,7 @@ static void set_explicit_int( bool enabled, c_loc_t const *opt_name_loc,
   if ( enabled )
     parse_opt_explicit_int( opt_value_loc, opt_value );
   else
-    set_opt_explicit_int( T_NONE );
+    parse_opt_explicit_int( NULL, "" );
 }
 
 /**

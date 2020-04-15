@@ -56,7 +56,6 @@ char const         *opt_conf_file;
 bool                opt_debug;
 #endif /* ENABLE_CDECL_DEBUG */
 bool                opt_explain;
-c_type_id_t         opt_explicit_int[2];
 char const         *opt_fin;
 char const         *opt_fout;
 c_graph_t           opt_graph;
@@ -70,6 +69,25 @@ bool                opt_typedefs = true;
 // other extern variables
 FILE               *fin;
 FILE               *fout;
+
+/**
+ * The integer type(s) that `int` shall be print explicitly for in C/C++
+ * declarations even when not needed because the type(s) contain at least one
+ * integer modifier, e.g., `unsigned`.
+ *
+ * The elements are:
+ *
+ *  Idx | Contains type(s) for
+ *  ----|---------------------
+ *  `0` | signed integers
+ *  `1` | unsigned integers
+ *
+ * @sa any_explicit_int()
+ * @sa is_explicit_int()
+ * @sa parse_opt_explicit_int()
+ * @sa set_opt_explicit_int()
+ */
+static c_type_id_t  opt_explicit_int[2];
 
 /**
  * Long options.
@@ -124,6 +142,24 @@ C_WARN_UNUSED_RESULT
 static char const*  get_long_opt( char );
 
 static void         usage( void );
+
+////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Sets the given integer type(s) that `int` shall print explicitly for in
+ * C/C++ declarations even when not needed because \a type_id contains at least
+ * one integer modifier, e.g., `unsigned`.
+ *
+ * @param type_id The type(s) to print `int` explicitly for.  When multiple
+ * type bits are set simultaneously, they are all considered either signed or
+ * unsigned.
+ *
+ * @sa is_explicit_int()
+ */
+static inline void set_opt_explicit_int( c_type_id_t type_id ) {
+  bool const is_unsigned = (type_id & T_UNSIGNED) != T_NONE;
+  opt_explicit_int[ is_unsigned ] |= type_id & ~T_UNSIGNED;
+}
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -421,6 +457,10 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n"
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+bool any_explicit_int( void ) {
+  return opt_explicit_int[0] != T_NONE || opt_explicit_int[1] != T_NONE;
+}
+
 bool is_explicit_int( c_type_id_t type_id ) {
   if ( type_id == T_UNSIGNED ) {
     //
@@ -503,6 +543,38 @@ void parse_opt_explicit_int( c_loc_t const *loc, char const *s ) {
   } // for
 }
 
+void print_opt_explicit_int( void ) {
+  bool const is_explicit_s   = is_explicit_int( T_SHORT );
+  bool const is_explicit_i   = is_explicit_int( T_INT );
+  bool const is_explicit_l   = is_explicit_int( T_LONG );
+  bool const is_explicit_ll  = is_explicit_int( T_LONG_LONG );
+
+  bool const is_explicit_us  = is_explicit_int( T_UNSIGNED | T_SHORT );
+  bool const is_explicit_ui  = is_explicit_int( T_UNSIGNED | T_INT );
+  bool const is_explicit_ul  = is_explicit_int( T_UNSIGNED | T_LONG );
+  bool const is_explicit_ull = is_explicit_int( T_UNSIGNED | T_LONG_LONG );
+
+  if ( is_explicit_s & is_explicit_i && is_explicit_l && is_explicit_ll ) {
+    PUTC_OUT( 'i' );
+  }
+  else {
+    if ( is_explicit_s   ) PUTC_OUT(  's'  );
+    if ( is_explicit_i   ) PUTC_OUT(  'i'  );
+    if ( is_explicit_l   ) PUTC_OUT(  'l'  );
+    if ( is_explicit_ll  ) PUTS_OUT(  "ll" );
+  }
+
+  if ( is_explicit_us & is_explicit_ui && is_explicit_ul && is_explicit_ull ) {
+    PUTC_OUT( 'u' );
+  }
+  else {
+    if ( is_explicit_us  ) PUTS_OUT( "us"  );
+    if ( is_explicit_ui  ) PUTS_OUT( "ui"  );
+    if ( is_explicit_ul  ) PUTS_OUT( "ul"  );
+    if ( is_explicit_ull ) PUTS_OUT( "ull" );
+  }
+}
+
 void options_init( int *pargc, char const ***pargv ) {
   assert( pargc != NULL );
   assert( pargv != NULL );
@@ -513,11 +585,6 @@ void options_init( int *pargc, char const ***pargv ) {
   c_lang_set( opt_lang );
   *pargc -= optind;
   *pargv += optind;
-}
-
-void set_opt_explicit_int( c_type_id_t type_id ) {
-  bool const is_unsigned = (type_id & T_UNSIGNED) != T_NONE;
-  opt_explicit_int[ is_unsigned ] |= type_id & ~T_UNSIGNED;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
