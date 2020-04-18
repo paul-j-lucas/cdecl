@@ -721,6 +721,7 @@ TESTS+=	tests/2c_typedef_i.test \
 	tests/namespace_namespace_typedef_i.test \
 	tests/namespace_typedef_i.test \
 	tests/namespace_using_i.test \
+	tests/retypedef-01.test \
 	tests/typedef_fi_v_show_f.test \
 	tests/typedef_i.test \
 	tests/typedef_i_declare_i.test \

@@ -2152,28 +2152,23 @@ typedef_declaration_c
       c_ast_t *ast;
       c_sname_t temp_sname;
 
-      if ( $3.ast->kind == K_TYPEDEF && $5.ast->kind == K_TYPEDEF ) {
+      if ( $5.ast->kind == K_TYPEDEF ) {
         //
-        // This is for a case like:
+        // This is for the following cases:
         //
-        //      typedef size_t foo;
+        //  1. typedef size_t foo;
         //
-        // that is: an existing typedef name followed by a new name.
+        //     that is: an existing typedef name followed by a new name.
         //
-        ast = $3.ast;
-      }
-      else if ( $5.ast->kind == K_TYPEDEF ) {
+        //  2. typedef int int_least32_t;
         //
-        // This is for a case like:
-        //
-        //      typedef int int_least32_t;
-        //
-        // that is: a type followed by an existing typedef name, i.e.,
-        // redefining an existing typedef name to be the same type.
+        //     that is: a non-typedef name followed by an existing typedef
+        //     name, i.e., redefining an existing typedef name to be the same
+        //     type.
         //
         ast = $3.ast;
-        temp_sname = c_ast_sname_dup( $5.ast->as.c_typedef->ast );
-        c_ast_sname_set_sname( ast, &temp_sname );
+        if ( c_ast_sname_empty( ast ) )
+          ast->sname = c_ast_sname_dup( $5.ast->as.c_typedef->ast );
       }
       else {
         //
@@ -2200,12 +2195,12 @@ typedef_declaration_c
         PARSE_ABORT();
       }
 
-      DUMP_AST( "typedef_declaration_c", ast );
-      DUMP_END();
-
       temp_sname = c_sname_dup( &in_attr.current_scope );
       c_ast_sname_set_type( ast, c_sname_type( &in_attr.current_scope ) );
       c_ast_sname_prepend_sname( ast, &temp_sname );
+
+      DUMP_AST( "typedef_declaration_c", ast );
+      DUMP_END();
 
       if ( !add_type( L_TYPEDEF, ast, &@5 ) )
         PARSE_ABORT();
@@ -3407,6 +3402,7 @@ typedef_type_decl_c_ast
   : typedef_type_c_ast
     {
       DUMP_START( "typedef_type_decl_c_ast", "typedef_type_c_ast" );
+      DUMP_AST( "(type_c_ast)", type_peek() );
       DUMP_AST( "typedef_type_c_ast", $1.ast );
 
       if ( (type_peek()->type_id & T_TYPEDEF) != T_NONE ) {
