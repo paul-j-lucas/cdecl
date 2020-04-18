@@ -2156,15 +2156,17 @@ typedef_declaration_c
         //
         // This is for the following cases:
         //
-        //  1. typedef size_t foo;
-        //
-        //     that is: an existing typedef name followed by a new name.
-        //
-        //  2. typedef int int_least32_t;
+        //  1. typedef int int32_t;
         //
         //     that is: a non-typedef name followed by an existing typedef
-        //     name, i.e., redefining an existing typedef name to be the same
-        //     type.
+        //     name.
+        //
+        //  2. typedef int32_t int_least32_t;
+        //
+        //     that is: a typedef name followed by another typedef name.
+        //
+        // In either case, it's redefining an existing typedef name to be the
+        // same type.
         //
         ast = $3.ast;
         if ( c_ast_sname_empty( ast ) )
