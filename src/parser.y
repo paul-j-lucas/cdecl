@@ -2154,19 +2154,12 @@ typedef_declaration_c
 
       if ( $5.ast->kind == K_TYPEDEF ) {
         //
-        // This is for the following cases:
+        // This is for either of the following cases:
         //
-        //  1. typedef int int32_t;
+        //      typedef int int32_t;
+        //      typedef int32_t int_least32_t;
         //
-        //     that is: a non-typedef name followed by an existing typedef
-        //     name.
-        //
-        //  2. typedef int32_t int_least32_t;
-        //
-        //     that is: a typedef name followed by another typedef name.
-        //
-        // In either case, it's redefining an existing typedef name to be the
-        // same type.
+        // that is: any type name followed by an existing typedef name.
         //
         ast = $3.ast;
         if ( c_ast_sname_empty( ast ) )
@@ -2174,11 +2167,12 @@ typedef_declaration_c
       }
       else {
         //
-        // This is for a case like:
+        // This is for either of the following cases:
         //
         //      typedef int foo;
+        //      typedef int32_t foo;
         //
-        // that is: a type followed by a new name.
+        // that is: any type name followed by a new name.
         //
         ast = c_ast_patch_placeholder( $3.ast, $5.ast );
         temp_sname = c_ast_take_name( $5.ast );
