@@ -1,5 +1,175 @@
+define ATOM as WORD
+define BOOL as int
+define BOOLEAN as BYTE
+define BYTE as unsigned char
+define CCHAR as char
+define CHAR as char
+define COLORREF as DWORD
+define DWORD as unsigned long
+define DWORD32 as unsigned
+define DWORD64 as unsigned long
+define DWORDLONG as unsigned long
+define DWORD_PTR as ULONG_PTR
 define FILE as struct __FILE
+define FLOAT as float
+define HALF_PTR as int
+define HANDLE as PVOID
+define HBITMAP as HANDLE
+define HBRUSH as HANDLE
+define HCOLORSPACE as HANDLE
+define HCONV as HANDLE
+define HCONVLIST as HANDLE
+define HCURSOR as HICON
+define HDC as HANDLE
+define HDDEDATA as HANDLE
+define HDESK as HANDLE
+define HDROP as HANDLE
+define HDWP as HANDLE
+define HENHMETAFILE as HANDLE
+define HFILE as int
+define HFONT as HANDLE
+define HGDIOBJ as HANDLE
+define HGLOBAL as HANDLE
+define HHOOK as HANDLE
+define HICON as HANDLE
+define HINSTANCE as HANDLE
+define HKEY as HANDLE
+define HKL as HANDLE
+define HLOCAL as HANDLE
+define HMENU as HANDLE
+define HMETAFILE as HANDLE
+define HMODULE as HINSTANCE
+define HMONITOR as HANDLE
+define HPALETTE as HANDLE
+define HPEN as HANDLE
+define HRESULT as long
+define HRGN as HANDLE
+define HRSRC as HANDLE
+define HSZ as HANDLE
+define HWINSTA as HANDLE
+define HWND as HANDLE
+define INT as int
+define INT16 as short
+define INT32 as int
+define INT64 as long
+define INT8 as signed char
+define INT_PTR as __int64
 define Int as int
+define LANGID as WORD
+define LARGE_INTEGER as union _LARGE_INTEGER
+define LCID as DWORD
+define LCTYPE as DWORD
+define LGRPID as DWORD
+define LONG as long
+define LONG32 as int
+define LONG64 as __int64
+define LONGLONG as long long
+define LONG_PTR as __int64
+define LPBOOL as pointer to BOOL
+define LPBYTE as pointer to BYTE
+define LPCHAR as pointer to CHAR
+define LPCOLORREF as pointer to COLORREF
+define LPCSTR as pointer to const CHAR
+define LPCTSTR as LPCWSTR
+define LPCVOID as pointer to const void
+define LPCWSTR as pointer to const WCHAR
+define LPDWORD as pointer to DWORD
+define LPHANDLE as pointer to HANDLE
+define LPINT as pointer to int
+define LPLONG as pointer to long
+define LPSTR as pointer to CHAR
+define LPTSTR as LPWSTR
+define LPVOID as pointer to void
+define LPWORD as pointer to WORD
+define LPWSTR as pointer to WCHAR
+define LRESULT as LONG_PTR
+define PBOOL as pointer to BOOL
+define PBOOLEAN as pointer to BOOLEAN
+define PBYTE as pointer to BYTE
+define PCHAR as pointer to CHAR
+define PCSTR as pointer to const CHAR
+define PCTSTR as LPCWSTR
+define PCWSTR as pointer to const WCHAR
+define PDWORD as pointer to DWORD
+define PDWORD32 as pointer to DWORD32
+define PDWORD64 as pointer to DWORD64
+define PDWORDLONG as pointer to DWORDLONG
+define PDWORD_PTR as pointer to DWORD_PTR
+define PFLOAT as pointer to FLOAT
+define PHALF_PTR as pointer to HALF_PTR
+define PHANDLE as pointer to HANDLE
+define PHKEY as pointer to HKEY
+define PINT as pointer to INT
+define PINT16 as pointer to INT16
+define PINT32 as pointer to INT32
+define PINT64 as pointer to INT64
+define PINT8 as pointer to INT8
+define PINT_PTR as pointer to INT_PTR
+define PLCID as PDWORD
+define PLONG as pointer to LONG
+define PLONG32 as pointer to LONG32
+define PLONG64 as pointer to LONG64
+define PLONGLONG as pointer to LONGLONG
+define PLONG_PTR as pointer to LONG_PTR
+define PSHORT as pointer to SHORT
+define PSIZE_T as pointer to SIZE_T
+define PSSIZE_T as pointer to SSIZE_T
+define PSTR as pointer to CHAR
+define PTBYTE as pointer to TBYTE
+define PTCHAR as pointer to TCHAR
+define PTSTR as LPWSTR
+define PUCHAR as pointer to UCHAR
+define PUHALF_PTR as pointer to UHALF_PTR
+define PUINT as pointer to UINT
+define PUINT16 as pointer to UINT16
+define PUINT32 as pointer to UINT32
+define PUINT64 as pointer to UINT64
+define PUINT8 as pointer to UINT8
+define PUINT_PTR as pointer to UINT_PTR
+define PULONG as pointer to ULONG
+define PULONG32 as pointer to ULONG32
+define PULONG64 as pointer to ULONG64
+define PULONGLONG as pointer to ULONGLONG
+define PULONG_PTR as pointer to ULONG_PTR
+define PUSHORT as pointer to USHORT
+define PVOID as pointer to void
+define PWCHAR as pointer to WCHAR
+define PWORD as pointer to WORD
+define PWSTR as pointer to WCHAR
+define QWORD as unsigned long long
+define SC_HANDLE as HANDLE
+define SC_LOCK as LPVOID
+define SERVICE_STATUS_HANDLE as HANDLE
+define SHORT as short
+define SIZE_T as ULONG_PTR
+define SSIZE_T as LONG_PTR
+define TBYTE as WCHAR
+define TCHAR as WCHAR
+define UCHAR as unsigned char
+define UHALF_PTR as unsigned
+define UINT as unsigned
+define UINT16 as unsigned short
+define UINT32 as unsigned
+define UINT64 as unsigned long
+define UINT8 as unsigned char
+define UINT_PTR as unsigned long
+define ULARGE_INTEGER as union _ULARGE_INTEGER
+define ULONG as unsigned long
+define ULONG32 as unsigned
+define ULONG64 as unsigned long
+define ULONGLONG as unsigned long long
+define ULONG_PTR as unsigned long
+define UNICODE_STRING as struct _UNICODE_STRING
+define USHORT as unsigned short
+define USN as LONGLONG
+define WCHAR as wchar_t
+define WORD as unsigned short
+define WPARAM as UINT_PTR
+define __int16 as short
+define __int32 as int
+define __int64 as long
+define __int8 as char
+define __wchar_t as wchar_t
 define atomic_bool as _Atomic bool
 define atomic_char as _Atomic char
 define atomic_char16_t as _Atomic char16_t
