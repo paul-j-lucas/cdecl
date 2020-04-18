@@ -1,5 +1,46 @@
+2020-04-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated.
+   * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added WIN32 types.
+   * cdecl.1: Turned off hyphenation and justification for predefined types.
+   * cdecl.1: Reworked predefined types order.
+   * parser.y: Fixed a bug where redefining one typedef'd type as another would
+     crash, part 2.
+   * parser.y, test/Makefile.am, retypedef-01.out, retypedef-01.test: Fixed a
+     bug where redefining one typedef'd type as another would crash.
+
+2020-04-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.h: Comment rewording.
+
+2020-04-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.c, options.h, set.c: Made opt_explicit_int local to options.c.
+   * cdecl.1, help.c, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out: Updaded
+     help and man page to reflect reality that the "show" command can take no
+     argument.
+
+2020-04-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Renaming.
+   * c_type.c, test/Makefile.am, declare_+o_eq_rck_rk=default-c++03.test,
+     declare_+o_eq_rck_rk=delete-c++03.test: "default" and "delete" are now
+     allowed only in C++11 or later.
+   * c_type.c, errors.c: Simplified "register" handling.
+   * c_type.c: s/LANG_MIN(CPP_11)/LANG_MIN(CPP_11)/ for T_REFERENCE.
+   * c_kind.h, c_type.h: Renaming.
+   * c_kind.h: Added K_USER_DEF_CONVERSION to comment.
+   * c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_typedef.c, c_typedef.h,
+     typedefs.h: Renamed some types.
+
 2020-04-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_util.c: Added C_WARN_UNUSED_RESULT.
+   * c_ast.c: Being explicit about pointer-to-function call.
+   * c_typedef.c: Being explicit about pointer-to-function call.
    * getopt-pfx-core.h: Updated Gnulib.
    * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
