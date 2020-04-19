@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 18, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 19, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1985,6 +1985,28 @@ An integer literal given as the argument for an alignment specifier
 is only checked to ensure it's either zero or a power of two;
 it is not checked to see whether it meets the minimum alignment
 for the type.
+.IP \n+[step].
+In Microsoft C/C++,
+the types
+\f(CW__int8\fP,
+\f(CW__int16\fP,
+\f(CW__int32\fP,
+\f(CW__int64\fP,
+and
+\f(CW__wchar_t\fP
+are keyword synonyms,
+not \f(CWtypedef\fPs as they are in
+.BR cdecl ,
+which means
+you can add type modifiers:
+.cS
+unsigned __int32 x;             // legal in Microsoft C/C++
+.cE 0
+.IP ""
+As \f(CWtypedef\fPs,
+that's illegal in C
+which means it's also illegal in
+.BR cdecl .
 .SH AUTHORS
 .B cdecl
 has been around since the mid-1980s
