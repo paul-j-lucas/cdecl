@@ -166,7 +166,7 @@ define WORD as unsigned short
 define WPARAM as UINT_PTR
 define __int16 as short
 define __int32 as int
-define __int64 as long
+define __int64 as long long
 define __int8 as char
 define __wchar_t as wchar_t
 define atomic_bool as _Atomic bool

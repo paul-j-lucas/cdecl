@@ -307,7 +307,7 @@ static char const *const TYPEDEFS_WIN32[] = {
   "typedef char                   __int8",
   "typedef short                  __int16",
   "typedef int                    __int32",
-  "typedef long                   __int64",
+  "typedef long long              __int64",
   "typedef wchar_t                __wchar_t",
 
   "typedef int                    BOOL",
