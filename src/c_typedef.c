@@ -276,6 +276,34 @@ static char const *const TYPEDEFS_MISC[] = {
  * @sa https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types
  */
 static char const *const TYPEDEFS_WIN32[] = {
+  //
+  // In Microsoft C/C++, these are keyword synonyms, not typedefs, which means
+  // you can add type modifiers:
+  //
+  //      unsigned __int32 x;
+  //
+  // As typedefs, that's illegal in C which means it's also illegal in cdecl.
+  //
+  // To make them keyword synonyms in cdecl also, there would need to be
+  // distinct literals, tokens, and types.  The types have to be distinct in
+  // order to be round-trippable with English.  If they reused T_CHAR, T_SHORT,
+  // etc., then you'd get this:
+  //
+  //      cdecl> declare x as __int32
+  //      int x;                        // should be: __int32
+  //      cdecl> explain __int32 x
+  //      declare x as int              // should be: __int32
+  //
+  // At least with typedefs, you still get the typedef:
+  //
+  //      cdecl> declare x as __int32
+  //      __int32 x;                    // correct
+  //      cdecl> explain __int32 x
+  //      declare x as __int32          // correct
+  //
+  // Hence, it's too much work to support these types as keyword synonyms and
+  // we'll live with not being able to apply type modifiers to them.
+  //
   "typedef char                   __int8",
   "typedef short                  __int16",
   "typedef int                    __int32",
