@@ -280,7 +280,7 @@ static char const *const TYPEDEFS_WIN32[] = {
   // In Microsoft C/C++, these are keyword synonyms, not typedefs, which means
   // you can add type modifiers:
   //
-  //      unsigned __int32 x;
+  //      unsigned __int32 x;           // legal in Microsoft C/C++
   //
   // As typedefs, that's illegal in C which means it's also illegal in cdecl.
   //
