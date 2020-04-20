@@ -143,6 +143,9 @@ static c_type_t const C_QUALIFIER_INFO[] = {
 
 /**
  * Type mapping for storage classes (or storage-class-like).
+ *
+ * @note
+ * This array _must_ have the same size and order as OK_STORAGE_LANGS.
  */
 static c_type_t const C_STORAGE_INFO[] = {
   // storage classes
@@ -177,6 +180,9 @@ static c_type_t const C_STORAGE_INFO[] = {
 
 /**
  * Type mapping for simpler types.
+ *
+ * @note
+ * This array _must_ have the same size and order as OK_TYPE_LANGS.
  */
 static c_type_t const C_TYPE_INFO[] = {
   { T_VOID,         L_VOID,               NULL, LANG_MIN(C_89)                },
@@ -229,6 +235,9 @@ static c_type_t const C_TYPE_INFO[] = {
 
 /**
  * Legal combinations of storage classes in languages.
+ *
+ * @note
+ * This array _must_ have the same size and order as C_STORAGE_INFO.
  */
 static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 // Only the lower triangle is used.
@@ -261,7 +270,7 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
  * Legal combinations of types in languages.
  *
  * @note
- * These _must_ be in the same order as C_TYPE_INFO.
+ * This array _must_ have the same size and order as C_TYPE_INFO.
  */
 static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 // Only the lower triangle is used.
