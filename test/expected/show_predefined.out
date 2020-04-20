@@ -164,6 +164,17 @@ define USN as LONGLONG
 define WCHAR as wchar_t
 define WORD as unsigned short
 define WPARAM as UINT_PTR
+define _Decimal128 as long double
+define _Decimal32 as float
+define _Decimal64 as double
+define _Float128 as long double
+define _Float16 as float
+define _Float64x as double
+define __float128 as _Float128
+define __float80 as _Float64x
+define __fp16 as _Float16
+define __ibm128 as long double
+define __int128 as long long
 define __int16 as short
 define __int32 as int
 define __int64 as long long

@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 19, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 20, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1166,6 +1166,18 @@ option is given):
 \f(CWstd::weak_equality\fP,
 \f(CWstd::weak_ordering\fP,
 .P
+\f(CW_Decimal32\fP,
+\f(CW_Decimal64\fP,
+\f(CW_Decimal128\fP,
+\f(CW_Float128\fP,
+\f(CW__float128\fP,
+\f(CW_Float16\fP,
+\f(CW__fp16\fP,
+\f(CW__ibm128\fP,
+\f(CW_Float64x\fP,
+\f(CW__float80\fP,
+\f(CW__int128\fP,
+.P
 \f(CWATOM\fP,
 \f(CWBOOL\fP,
 \f(CWBOOLEAN\fP,
@@ -1986,7 +1998,11 @@ is only checked to ensure it's either zero or a power of two;
 it is not checked to see whether it meets the minimum alignment
 for the type.
 .IP \n+[step].
-In Microsoft C/C++,
+In GNU C,
+the type
+\f(CW__int128\fP
+is a distinct type;
+in Microsoft C,
 the types
 \f(CW__int8\fP,
 \f(CW__int16\fP,
@@ -1994,19 +2010,18 @@ the types
 \f(CW__int64\fP,
 and
 \f(CW__wchar_t\fP
-are keyword synonyms,
-not \f(CWtypedef\fPs as they are in
-.BR cdecl ,
-which means
-you can add type modifiers:
+are keyword synonyms.
+These types can take modifiers:
 .cS
-unsigned __int32 x;             // legal in Microsoft C/C++
+unsigned __int128 x128;         // legal in GNU C
+unsigned __int32  x32;          // legal in Microsoft C
 .cE 0
 .IP ""
-As \f(CWtypedef\fPs,
-that's illegal in C
-which means it's also illegal in
-.BR cdecl .
+In
+.BR cdecl ,
+these types are \f(CWtypedef\fPs
+and can't take modifiers
+since that's illegal in C.
 .SH AUTHORS
 .B cdecl
 has been around since the mid-1980s

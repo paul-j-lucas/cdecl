@@ -271,38 +271,60 @@ static char const *const TYPEDEFS_MISC[] = {
 };
 
 /**
+ * GNU C types.
+ */
+static char const *const TYPEDEFS_GNUC[] = {
+  "typedef float        _Decimal32",
+  "typedef double       _Decimal64",
+  "typedef long double  _Decimal128",
+  "typedef long double  _Float128",
+  "typedef _Float128   __float128",
+  "typedef float        _Float16",
+  "typedef _Float16    __fp16",
+  "typedef long double __ibm128",
+  "typedef double       _Float64x",
+  "typedef _Float64x   __float80",
+  //
+  // In GNU C, this is a distinct type, not a typedef, which means you can add
+  // type modifiers:
+  //
+  //      unsigned __int128 x;          // legal in GNU C
+  //
+  // As a typedef, that's illegal in C which means it's also illegal in cdecl.
+  //
+  // To make it a distinct type in cdecl also, there would need to be a
+  // distinct literal, token, and type.  The type has to be distinct in order
+  // to be round-trippable with English.  If it reused T_LONG_LONG, then you'd
+  // get:
+  //
+  //      cdecl> declare x as __int128
+  //      long long x;                  // should be: __int128
+  //      cdecl> explain __int128 x
+  //      declare x as long long        // should be: __int128
+  //
+  // At least with a typedef, you still get the typedef:
+  //
+  //      cdecl> declare x as __int128
+  //      __int128 x;                   // correct
+  //      cdecl> explain __int128 x
+  //      declare x as __int128         // correct
+  //
+  // Hence, it's too much work to support this type as distinct and we'll live
+  // with not being able to apply type modifiers.
+  //
+  "typedef long long   __int128",
+
+  NULL
+};
+
+/**
  * Windows types.
  *
  * @sa https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types
  */
 static char const *const TYPEDEFS_WIN32[] = {
   //
-  // In Microsoft C/C++, these are keyword synonyms, not typedefs, which means
-  // you can add type modifiers:
-  //
-  //      unsigned __int32 x;           // legal in Microsoft C/C++
-  //
-  // As typedefs, that's illegal in C which means it's also illegal in cdecl.
-  //
-  // To make them keyword synonyms in cdecl also, there would need to be
-  // distinct literals, tokens, and types.  The types have to be distinct in
-  // order to be round-trippable with English.  If they reused T_CHAR, T_SHORT,
-  // etc., then you'd get this:
-  //
-  //      cdecl> declare x as __int32
-  //      int x;                        // should be: __int32
-  //      cdecl> explain __int32 x
-  //      declare x as int              // should be: __int32
-  //
-  // At least with typedefs, you still get the typedef:
-  //
-  //      cdecl> declare x as __int32
-  //      __int32 x;                    // correct
-  //      cdecl> explain __int32 x
-  //      declare x as __int32          // correct
-  //
-  // Hence, it's too much work to support these types as keyword synonyms and
-  // we'll live with not being able to apply type modifiers to them.
+  // The comment about GNU C's __int128 type applies to these also.
   //
   "typedef char                   __int8",
   "typedef short                  __int16",
@@ -649,6 +671,7 @@ void c_typedef_init( void ) {
     c_typedef_parse_builtins( TYPEDEFS_THREADS_H );
     c_typedef_parse_builtins( TYPEDEFS_STD_CPP );
     c_typedef_parse_builtins( TYPEDEFS_MISC );
+    c_typedef_parse_builtins( TYPEDEFS_GNUC );
     c_typedef_parse_builtins( TYPEDEFS_WIN32 );
 
 #ifdef ENABLE_CDECL_DEBUG

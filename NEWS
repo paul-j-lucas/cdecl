@@ -12,6 +12,11 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 6.11
 
+** Added GNU C types
+The GNU C types _Decimal32, _Decimal64, _Decimal128, _Float128, __float128,
+_Float16, __fp16, __ibm128, _Float64x, __float80, and __int128 were added to
+the set of predefined types.
+
 ** Added WIN32 types
 All of the Windows types, e.g., DWORD, HANDLE, INT, etc., given here
 <https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types>
