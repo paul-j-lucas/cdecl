@@ -95,8 +95,8 @@ enum c_alignas_arg {
  */
 struct c_alignas {
   union {
-    c_ast_t      *type_ast;             ///< Aligned the same as this type.
     unsigned      expr;                 ///< Aligned to this number of bytes.
+    c_ast_t      *type_ast;             ///< Aligned the same as this type.
   } as;                                 ///< Union discriminator.
   c_alignas_arg_t kind;                 ///< Kind of `alignas` argument.
 };
