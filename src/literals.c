@@ -144,9 +144,6 @@ char const L_NORETURN[]               = "noreturn";
 char const L__STATIC_ASSERT[]         = "_Static_assert";
 char const L_STATIC_ASSERT[]          = "static_assert";
 
-// GNU C extensions
-char const L___AUTO_TYPE[]            = "__auto_type";
-
 // C++
 char const L_CATCH[]                  = "catch";
 char const L_CLASS[]                  = "class";
@@ -236,7 +233,12 @@ char const L_OR_EQ[]                  = "or_eq";
 char const L_XOR[]                    = "xor";
 char const L_XOR_EQ[]                 = "xor_eq";
 
-// Miscellaneous
+// GNU C extensions
+char const L___AUTO_TYPE[]            = "__auto_type";
+char const L___INLINE__[]             = "__inline__";
+char const L___RESTRICT__[]           = "__restrict__";
+
+// Apple extensions
 char const L___BLOCK[]                = "__block";
 
 ///////////////////////////////////////////////////////////////////////////////

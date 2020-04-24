@@ -1,0 +1,1 @@
+declare _x as user-defined literal (pointer to constant char, unsigned long int) returning int

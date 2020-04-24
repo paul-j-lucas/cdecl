@@ -57,34 +57,33 @@ _GL_INLINE_HEADER_BEGIN
 // types
 #define T_NONE                0ull                  /**< No type.             */
 #define T_VOID                0x0000000000000001ull /**< `void`               */
-#define T_AUTO_CPP_11         0x0000000000000002ull /**< C++11's `auto`.      */
-#define T___AUTO_TYPE         0x0000000000000004ull /**< GNU C: `__auto_type` */
-#define T_BOOL                0x0000000000000008ull /**< `_Bool` or `bool`    */
-#define T_CHAR                0x0000000000000010ull /**< `char`               */
-#define T_CHAR8_T             0x0000000000000020ull /**< `char8_t`            */
-#define T_CHAR16_T            0x0000000000000040ull /**< `char16_t`           */
-#define T_CHAR32_T            0x0000000000000080ull /**< `char32_t`           */
-#define T_WCHAR_T             0x0000000000000100ull /**< `wchar_t`            */
-#define T_SHORT               0x0000000000000200ull /**< `short`              */
-#define T_INT                 0x0000000000000400ull /**< `int`                */
-#define T_LONG                0x0000000000000800ull /**< `long`               */
-#define T_LONG_LONG           0x0000000000001000ull /**< `long long`          */
-#define T_SIGNED              0x0000000000002000ull /**< `signed`             */
-#define T_UNSIGNED            0x0000000000004000ull /**< `unsigned`           */
-#define T_FLOAT               0x0000000000008000ull /**< `float`              */
-#define T_DOUBLE              0x0000000000010000ull /**< `double`             */
-#define T_COMPLEX             0x0000000000020000ull /**< `_Complex`           */
-#define T_IMAGINARY           0x0000000000040000ull /**< `_Imaginary`         */
-#define T_ENUM                0x0000000000080000ull /**< `enum`               */
-#define T_STRUCT              0x0000000000100000ull /**< `struct`             */
-#define T_UNION               0x0000000000200000ull /**< `union`              */
-#define T_CLASS               0x0000000000400000ull /**< `class`              */
-#define T_NAMESPACE           0x0000000000800000ull /**< `namespace`          */
-#define T_SCOPE               0x0000000001000000ull /**< Generic scope.       */
-#define T_TYPEDEF_TYPE        0x0000000002000000ull /**< E.g., `size_t`       */
+#define T_AUTO_TYPE           0x0000000000000002ull /**< C++11's `auto`.      */
+#define T_BOOL                0x0000000000000004ull /**< `_Bool` or `bool`    */
+#define T_CHAR                0x0000000000000008ull /**< `char`               */
+#define T_CHAR8_T             0x0000000000000010ull /**< `char8_t`            */
+#define T_CHAR16_T            0x0000000000000020ull /**< `char16_t`           */
+#define T_CHAR32_T            0x0000000000000040ull /**< `char32_t`           */
+#define T_WCHAR_T             0x0000000000000080ull /**< `wchar_t`            */
+#define T_SHORT               0x0000000000000100ull /**< `short`              */
+#define T_INT                 0x0000000000000200ull /**< `int`                */
+#define T_LONG                0x0000000000000400ull /**< `long`               */
+#define T_LONG_LONG           0x0000000000000800ull /**< `long long`          */
+#define T_SIGNED              0x0000000000001000ull /**< `signed`             */
+#define T_UNSIGNED            0x0000000000002000ull /**< `unsigned`           */
+#define T_FLOAT               0x0000000000004000ull /**< `float`              */
+#define T_DOUBLE              0x0000000000008000ull /**< `double`             */
+#define T_COMPLEX             0x0000000000010000ull /**< `_Complex`           */
+#define T_IMAGINARY           0x0000000000020000ull /**< `_Imaginary`         */
+#define T_ENUM                0x0000000000040000ull /**< `enum`               */
+#define T_STRUCT              0x0000000000080000ull /**< `struct`             */
+#define T_UNION               0x0000000000100000ull /**< `union`              */
+#define T_CLASS               0x0000000000200000ull /**< `class`              */
+#define T_NAMESPACE           0x0000000000400000ull /**< `namespace`          */
+#define T_SCOPE               0x0000000000800000ull /**< Generic scope.       */
+#define T_TYPEDEF_TYPE        0x0000000001000000ull /**< E.g., `size_t`       */
 
 // storage classes
-#define T_AUTO_C              0x0000000010000000ull /**< C's `auto`.          */
+#define T_AUTO_STORAGE        0x0000000010000000ull /**< C's `auto`.          */
 #define T_BLOCK               0x0000000020000000ull /**< Apple extension.     */
 #define T_EXTERN              0x0000000040000000ull /**< `extern`             */
 #define T_MUTABLE             0x0000000080000000ull /**< `mutable`            */
@@ -161,7 +160,7 @@ _GL_INLINE_HEADER_BEGIN
 /** The type(s) that can apply only to members. */
 #define T_MEMBER_ONLY         ( T_CONST | T_VOLATILE | T_DEFAULT | T_DELETE \
                               | T_OVERRIDE | T_FINAL | T_VIRTUAL \
-                              | T_REFERENCE | T_RVALUE_REFERENCE )
+                              | T_REFERENCE | T_RESTRICT | T_RVALUE_REFERENCE )
 
 /** The type(s) that can apply only to non-members. */
 #define T_NON_MEMBER_ONLY     T_FRIEND

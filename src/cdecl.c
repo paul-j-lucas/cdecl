@@ -89,7 +89,7 @@ C_WARN_UNUSED_RESULT
 static bool         parse_command_line( char const*, int, char const*[] );
 
 C_WARN_UNUSED_RESULT
-static bool         parse_files( int, char const*[] );
+static bool         parse_files( int, char const*const[] );
 
 C_WARN_UNUSED_RESULT
 static bool         parse_stdin( void );
@@ -139,7 +139,7 @@ int main( int argc, char const **argv ) {
 C_WARN_UNUSED_RESULT
 static bool is_command( char const *s, c_command_t command_type ) {
   struct argv_command {
-    char const *keyword;                // The keyword literal.
+    char const *const keyword;          // The keyword literal.
     c_command_t command_type;           // The type of command.
   };
   typedef struct argv_command argv_command_t;
@@ -302,7 +302,7 @@ static bool parse_file( FILE *file ) {
  * @return Returns `true` only upon success.
  */
 C_WARN_UNUSED_RESULT
-static bool parse_files( int num_files, char const *files[] ) {
+static bool parse_files( int num_files, char const *const files[] ) {
   bool ok = true;
 
   for ( int i = 0; i < num_files && ok; ++i ) {

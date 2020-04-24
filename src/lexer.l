@@ -155,9 +155,9 @@
  * cdecl keyword info.
  */
 struct cdecl_keyword {
-  char const *literal;                  ///< C string literal of the keyword.
+  char const *const literal;            ///< C string literal of the keyword.
   int         y_token;                  ///< Bison token number.
-  char const *c_keyword_synonym;        ///< Synonym of C/C++ keyword, if any.
+  char const *const c_keyword_synonym;  ///< Synonym of C/C++ keyword, if any.
   bool        allow_explain;            ///< Allow when explaining C/C++?
 };
 typedef struct cdecl_keyword cdecl_keyword_t;
@@ -261,8 +261,8 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
  * Hyphenated English-literal-to-C-literal mapping.
  */
 struct c_hyphenated {
-  char const *e_literal;                ///< Hyphenated English literal.
-  char const *c_literal;                ///< C language literal it maps to.
+  char const *const e_literal;          ///< Hyphenated English literal.
+  char const *const c_literal;          ///< C language literal it maps to.
 };
 typedef struct c_hyphenated c_hyphenated_t;
 
@@ -286,7 +286,7 @@ static c_hyphenated_t const C_HYPHENATED_KEYWORDS[] = {
  * Hyphenated cdecl keyword English-literal-to-Bison-token mapping.
  */
 struct cdecl_hyphenated {
-  char const *e_literal;                ///< Hyphenated English literal.
+  char const *const e_literal;          ///< Hyphenated English literal.
   int         y_token;                  ///< Bison token number.
 };
 typedef struct cdecl_hyphenated cdecl_hyphenated_t;
@@ -705,6 +705,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 //
                 cdecl_keyword_t const *cdk = cdecl_keyword_find( lexer_token );
                 if ( cdk != NULL ) {
+
                   if ( cdk->c_keyword_synonym == NULL ) {
                     if ( cdk->literal == L_SET_COMMAND ) {
                       //
@@ -716,6 +717,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                     }
                     return cdk->y_token;
                   }
+
                   if ( cdk->c_keyword_synonym == L_AUTO && C_LANG_IS_C() ) {
                     //
                     // When converting "automatic" in English to C, convert it
@@ -750,6 +752,15 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                     // nothing.
                     //
                   }
+                  else if ( cdk->c_keyword_synonym == L_RESTRICT &&
+                            C_LANG_IS_CPP() ) {
+                    //
+                    // When converting "restricted" in English to C++, convert
+                    // it to GNU C's "__restrict__".
+                    //
+                    lexer_token = L___RESTRICT__;
+                  }
+
                   else {
                     lexer_token = cdk->c_keyword_synonym;
                   }

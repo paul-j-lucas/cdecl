@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 20, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "April 22, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -382,7 +382,7 @@ or
 Multiple formats may be given,
 one immediately after the other,
 e.g., \f(CWusl\fP
-means \f(CWunsigned short\fP and \f(CWlong\fP.
+means \f(CWunsigned short\fP and (signed) \f(CWlong\fP.
 Parsing is greedy so commas may be used to separate formats.
 For example,
 \f(CWulll\fP is parsed as \f(CWunsigned long long\fP
@@ -996,11 +996,18 @@ and
 for unsupported declarations.)
 .P
 .I Gibberish
-also includes support
-for Apple's ``blocks'' syntax
+also includes support for the following:
+.IP \(bu 3
+Apple's ``blocks'' syntax
 and the
 \f(CW__block\fP
 storage class.
+.IP \(bu
+GNU C's
+\f(CW__auto_type\fP (C only),
+\f(CW__inline__\fP,
+and
+\f(CW__restrict__\fP.
 .SS Predefined Types
 The following types are predefined
 (unless either the
@@ -1228,10 +1235,10 @@ option is given):
 \f(CWHWINSTA\fP,
 \f(CWHWND\fP,
 \f(CWINT\fP,
+\f(CW__int8\fP,
 \f(CW__int16\fP,
 \f(CW__int32\fP,
 \f(CW__int64\fP,
-\f(CW__int8\fP,
 \f(CWINT_PTR\fP,
 \f(CWLANGID\fP,
 \f(CWLARGE_INTEGER\fP,

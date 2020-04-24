@@ -904,7 +904,7 @@ static void yyerror( char const *msg ) {
 %token  <oper_id>   Y_PIPE2       "||"
 
                     /* K&R C */
-%token  <type_id>   Y_AUTO_C            /* C version of "auto" */
+%token  <type_id>   Y_AUTO_STORAGE      /* C version of "auto" */
 %token              Y_BREAK
 %token              Y_CASE
 %token  <type_id>   Y_CHAR
@@ -998,14 +998,14 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_VIRTUAL
 
                     /* GNU C extensions */
-%token  <type_id>   Y___AUTO_TYPE
+%token  <type_id>   Y___RESTRICT__
 
                     /* C++11 */
 %token              Y_LBRACKET2   "[["  /* for attribute specifiers */
 %token              Y_RBRACKET2   "]]"  /* for attribute specifiers */
 %token              Y_ALIGNAS
 %token              Y_ALIGNOF
-%token  <type_id>   Y_AUTO_CPP_11       /* C++11 version of "auto" */
+%token  <type_id>   Y_AUTO_TYPE         /* C++11 version of "auto" */
 %token  <type_id>   Y_CARRIES_DEPENDENCY
 %token  <type_id>   Y_CONSTEXPR
 %token              Y_DECLTYPE
@@ -1470,7 +1470,7 @@ storage_class_list_english_type_opt
 
 storage_class_english_type
   : attribute_english_type
-  | Y_AUTO_C
+  | Y_AUTO_STORAGE
   | Y___BLOCK                           /* Apple extension */
   | Y_CONSTEVAL
   | Y_CONSTEXPR
@@ -3054,6 +3054,11 @@ func_qualifier_c_type
   : cv_qualifier_type
   | Y_FINAL
   | Y_OVERRIDE
+  /*
+   * GNU C allows restricted-pointer member functions:
+   * <https://gcc.gnu.org/onlinedocs/gcc/Restricted-Pointers.html>
+   */
+  | Y___RESTRICT__
   ;
 
 func_ref_qualifier_c_type_opt
@@ -3113,7 +3118,7 @@ trailing_return_type_c_ast_opt
       // C++11 and the AST node for the placeholder is discarded and never made
       // part of the AST.
       //
-      if ( type_peek()->type_id != T_AUTO_CPP_11 ) {
+      if ( type_peek()->type_id != T_AUTO_TYPE ) {
         print_error( &type_peek()->loc,
           "function with trailing return type must only specify \"%s\"", L_AUTO
         );
@@ -3712,8 +3717,7 @@ builtin_type_c_ast
 
 builtin_type
   : Y_VOID
-  | Y___AUTO_TYPE
-  | Y_AUTO_CPP_11
+  | Y_AUTO_TYPE
   | Y_BOOL
   | Y_CHAR
   | Y_CHAR8_T
@@ -3795,6 +3799,23 @@ type_qualifier_c_type
   : cv_qualifier_type
   | Y_ATOMIC_QUAL
   | Y_RESTRICT
+    {
+      //
+      // "restrict" is supported only in GNU C.
+      //
+      // This check has to be done now in the parser rather than later in the
+      // AST since both "restrict" and "__restrict__" map to T_RESTRICT and the
+      // AST has no "memory" of which it was.
+      //
+      if ( C_LANG_IS_CPP() ) {
+        print_error( &@1,
+          "\"%s\" not supported in %s; use \"%s\" instead",
+          L_RESTRICT, C_LANG_NAME(), L___RESTRICT__
+        );
+        PARSE_ABORT();
+      }
+    }
+  | Y___RESTRICT__
   ;
 
 cv_qualifier_list_c_type_opt
@@ -3821,7 +3842,7 @@ cv_qualifier_type
 
 storage_class_c_type
   : attribute_specifier_list_c_type
-  | Y_AUTO_C
+  | Y_AUTO_STORAGE
   | Y___BLOCK                           /* Apple extension */
   | Y_CONSTEVAL
   | Y_CONSTEXPR

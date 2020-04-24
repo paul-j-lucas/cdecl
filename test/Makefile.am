@@ -130,6 +130,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fv_pa3pi.test \
 	tests/declare_fv_v.test \
 	tests/declare_fx_pi.test \
+	tests/declare_ga.test \
 	tests/declare_gi.test \
 	tests/declare_if_v.test \
 	tests/declare_jf_i.test \
@@ -240,7 +241,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_ni.test \
 	tests/declare_pk.test \
 	tests/declare_pv-knr.test \
-	tests/declare_rf_v-c.test \
+	tests/declare_rtf_v-c.test \
 	tests/declare_sb.test \
 	tests/declare_sc-knr.test \
 	tests/declare_sc16.test \
@@ -289,6 +290,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_a3a5pfv_i.test \
 	tests/explain_a3a5pfv_pi.test \
 	tests/explain_a3a5pfv_ppa7a9i.test \
+	tests/explain_a3a5pfv_ppa7a9pc.test \
 	tests/explain_a3a5pfv_ppa7i.test \
 	tests/explain_a3a5pfv_ppa7pi.test \
 	tests/explain_a3a5pfv_ppi.test \
@@ -308,6 +310,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_b.test \
 	tests/explain_bii_d.test \
 	tests/explain_c.test \
+	tests/explain_cast_pbv_pi.test \
 	tests/explain_ci.test \
 	tests/explain_ck.test \
 	tests/explain_co_minus2_i_rk.test \
@@ -352,7 +355,9 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fv_pi.test \
 	tests/explain_fv_v.test \
 	tests/explain_fx_pi.test \
+	tests/explain_ga.test \
 	tests/explain_gi.test \
+	tests/explain_gif_v.test \
 	tests/explain_ic.test \
 	tests/explain_if_v.test \
 	tests/explain_ig.test \
@@ -389,11 +394,11 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_ro_minus_rk_rk.test \
 	tests/explain_ro_plus2_i_rk.test \
 	tests/explain_ro_plus_rk_rk.test \
-	tests/explain_rpi.test \
 	tests/explain_rro_minus2_i_rk.test \
 	tests/explain_rro_minus_rk_rk.test \
 	tests/explain_rro_plus2_i_rk.test \
 	tests/explain_rro_plus_rk_rk.test \
+	tests/explain_rtpi.test \
 	tests/explain_sa2i.test \
 	tests/explain_sc.test \
 	tests/explain_sf_v.test \
@@ -448,6 +453,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_c32-c++03.test \
 	tests/explain_c32-c99.test \
 	tests/explain_c8-c++17.test \
+	tests/explain_c_al3.test \
 	tests/explain_cf_v-c.test \
 	tests/explain_ci-knr.test \
 	tests/explain_e-knr.test \
@@ -498,8 +504,8 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_lw.test \
 	tests/explain_pmi-c.test \
 	tests/explain_pv-knr.test \
-	tests/explain_rf_v-01.test \
 	tests/explain_ri-c.test \
+	tests/explain_rtf_v-error.test \
 	tests/explain_sb.test \
 	tests/explain_sc-knr.test \
 	tests/explain_sc16.test \
@@ -590,12 +596,14 @@ TESTS+=	tests/cast_bii_d.test \
 	tests/cast_cpbv_pi.test \
 	tests/cast_cpcpi.test \
 	tests/cast_cpfv_pi.test \
+	tests/cast_cpi.test \
 	tests/cast_cppi.test \
 	tests/cast_cvpi.test \
 	tests/cast_ll.test \
 	tests/cast_pa3cpa5i.test \
 	tests/cast_pa3pa5i.test \
 	tests/cast_pa9i.test \
+	tests/cast_pbv_pi.test \
 	tests/cast_pci.test \
 	tests/cast_pcpi.test \
 	tests/cast_pf_i-01.test \
@@ -621,6 +629,7 @@ TESTS+=	tests/cast_bii_d.test \
 #
 TESTS+=	tests/cast_a3i.test \
 	tests/cast_f_i.test \
+	tests/cast_gi.test \
 	tests/cast_ti.test \
 	tests/cast_type.test \
 	tests/const_cast_pi-c.test \
@@ -662,7 +671,7 @@ TESTS+=	tests/explain_cast_ci.test \
 	tests/explain_cast_pic.test \
 	tests/explain_cast_ppi.test \
 	tests/explain_cast_ri.test \
-	tests/explain_cast_rpi.test \
+	tests/explain_cast_rtpi.test \
 	tests/explain_cast_ull.test \
 	tests/explain_cast_vcpi.test \
 	tests/explain_cast_vpi.test
@@ -738,6 +747,7 @@ TESTS+=	tests/2c_typedef_i.test \
 # ==========================================
 #
 TESTS+=	tests/2c_typedef_i.test \
+	tests/2k_typedef_i.test \
 	tests/k_namespace_typedef_i.test \
 	tests/namespace_+typedef_i-c++14.test \
 	tests/typedef_ai.test \
@@ -818,8 +828,10 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_+f_v.test \
 	tests/declare_0f_v.test \
 	tests/declare_2+f_v.test \
+	tests/declare_=+i.test \
 	tests/declare_=i.test \
 	tests/declare_a.test \
+	tests/declare_a3a5pfv_ppa7a9pc.test \
 	tests/declare_af-c++.test \
 	tests/declare_c_al0-c++.test \
 	tests/declare_c_al8-c++.test \
@@ -846,6 +858,9 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_fti_v-02.test \
 	tests/declare_fui_v-01.test \
 	tests/declare_fui_v-02.test \
+	tests/declare_grtpi.test \
+	tests/declare_i=+.test \
+	tests/declare_ii-c++.test \
 	tests/declare_mi.test \
 	tests/declare_nfi_v-02-c++.test \
 	tests/declare_nfi_v-03-c++.test \
@@ -864,6 +879,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_ri.test \
 	tests/declare_rpi.test \
 	tests/declare_rrf_v.test \
+	tests/declare_rtf_v.test \
 	tests/declare_sxi.test \
 	tests/declare_tf_i-01.test \
 	tests/declare_tf_i-02.test \
@@ -888,10 +904,10 @@ TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_ef.test \
 	tests/declare_fcf.test \
 	tests/declare_fco_exclam_b.test \
+	tests/declare_nfi_v-01-c++.test \
 	tests/declare_nfi_v-01.test \
 	tests/declare_pmri.test \
 	tests/declare_pri.test \
-	tests/declare_rf_v-01.test \
 	tests/declare_rgi.test \
 	tests/declare_rv.test \
 	tests/declare_smi.test \
@@ -1082,7 +1098,8 @@ TESTS+=	tests/declare_udc_a4i.test
 # C++ declare user-defined literal tests
 # ======================================
 #
-TESTS+=	tests/declare_+udl_c_i.test
+TESTS+=	tests/declare_+udl_c_i.test \
+	tests/explain_udl_pccz_ul.test
 
 #
 # C++ explain tests
@@ -1111,6 +1128,7 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_dui-02.test \
 	tests/explain_ector_i.test \
 	tests/explain_eictor_i.test \
+	tests/explain_exctor_i.test \
 	tests/explain_f__pf__v.test \
 	tests/explain_f__pv.test \
 	tests/explain_f__v.test \
@@ -1122,9 +1140,11 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_frri_v.test \
 	tests/explain_fti_v.test \
 	tests/explain_fui_v.test \
+	tests/explain_grtpi.test \
 	tests/explain_i+.test \
 	tests/explain_i2+.test \
 	tests/explain_ictor_i.test \
+	tests/explain_ii-c++.test \
 	tests/explain_ki+.test \
 	tests/explain_mi.test \
 	tests/explain_nfi_v-c++.test \
@@ -1148,7 +1168,6 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_vdtor.test \
 	tests/explain_voyf.test \
 	tests/explain_xctor.test \
-	tests/explain_exctor_i.test \
 	tests/explain_xf_v.test \
 	tests/explain_xff_v.test \
 	tests/explain_xi.test \
@@ -1183,6 +1202,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_rf_v-c++03.test \
 	tests/explain_rgi.test \
 	tests/explain_rrf_v-c++03.test \
+	tests/explain_rtpi-c++-error.test \
 	tests/explain_rv.test \
 	tests/explain_smi.test \
 	tests/explain_srf_v.test \

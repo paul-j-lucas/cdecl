@@ -128,7 +128,7 @@ enum c_oper_id {
  * operator, use only `args_max`; if you don't know which, use both.
  */
 struct c_operator {
-  char const *name;                     ///< Name.
+  char const *const name;               ///< Name.
   unsigned    flags;                    ///< Bitwise-or of flags.
   unsigned    args_min;                 ///< Minimum number of arguments.
   unsigned    args_max;                 ///< Maximum number of arguments.

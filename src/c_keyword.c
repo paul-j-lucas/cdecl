@@ -86,7 +86,7 @@ static c_keyword_t const C_ATTRIBUTES[] = {
  */
 static c_keyword_t const C_KEYWORDS[] = {
   // K&R C
-  { L_AUTO,             Y_AUTO_C,           T_AUTO_C,       LANG_MAX(CPP_03)  },
+  { L_AUTO,             Y_AUTO_STORAGE,     T_AUTO_STORAGE, LANG_MAX(CPP_03)  },
   { L_BREAK,            Y_BREAK,            T_NONE,         LANG_ALL          },
   { L_CASE,             Y_CASE,             T_NONE,         LANG_ALL          },
   { L_CHAR,             Y_CHAR,             T_CHAR,         LANG_ALL          },
@@ -126,8 +126,8 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_BOOL,             Y_BOOL,             T_BOOL,         LANG_MIN(C_99)    },
   { L__COMPLEX,         Y__COMPLEX,         T_COMPLEX,      LANG_MIN(C_99)    },
   { L__IMAGINARY,       Y__IMAGINARY,       T_IMAGINARY,    LANG_MIN(C_99)    },
-  { L_INLINE,           Y_INLINE,           T_INLINE,       LANG_MIN(C_99)    },
-  { L_RESTRICT,         Y_RESTRICT,         T_RESTRICT,     LANG_MIN(C_99)    },
+  { L_INLINE,           Y_INLINE,           T_INLINE,       LANG_MIN(C_89)    },
+  { L_RESTRICT,         Y_RESTRICT,         T_RESTRICT,     LANG_MIN(C_89)    },
   { L_WCHAR_T,          Y_WCHAR_T,          T_WCHAR_T,      LANG_MIN(C_99)    },
 
   // C11
@@ -139,7 +139,9 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L__STATIC_ASSERT,   Y__STATIC_ASSERT,   T_NONE,         LANG_MIN(C_11)    },
 
   // GNU C extensions
-  { L___AUTO_TYPE,      Y___AUTO_TYPE,      T___AUTO_TYPE,  LANG_MAX(C_NEW)   },
+  { L___AUTO_TYPE,      Y_AUTO_TYPE,        T_AUTO_TYPE,    LANG_MIN(C_89)    },
+  { L___INLINE__,       Y_INLINE,           T_INLINE,       LANG_MIN(C_89)    },
+  { L___RESTRICT__,     Y___RESTRICT__,     T_RESTRICT,     LANG_MIN(C_89)    },
 
   // C++
   { L_CATCH,            Y_CATCH,            T_NONE,         LANG_CPP_ALL      },
@@ -173,7 +175,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   // C++11
   { L_ALIGNAS,          Y_ALIGNAS,          T_NONE,         LANG_MIN(CPP_11)  },
   { L_ALIGNOF,          Y_ALIGNOF,          T_NONE,         LANG_MIN(CPP_11)  },
-  { L_AUTO,             Y_AUTO_CPP_11,      T_AUTO_CPP_11,  LANG_MIN(CPP_11)  },
+  { L_AUTO,             Y_AUTO_TYPE,        T_AUTO_TYPE,    LANG_MIN(CPP_11)  },
   { L_CONSTEXPR,        Y_CONSTEXPR,        T_CONSTEXPR,    LANG_MIN(CPP_11)  },
   { L_DECLTYPE,         Y_DECLTYPE,         T_NONE,         LANG_MIN(CPP_11)  },
   { L_FINAL,            Y_FINAL,            T_FINAL,        LANG_MIN(CPP_11)  },

@@ -106,8 +106,8 @@ static char const L_TYPEDEF_TYPE[] = "";
  */
 struct c_type {
   c_type_id_t type_id;                  ///< The type.
-  char const *literal;                  ///< C string literal of the type.
-  char const *english;                  ///< English version (if not NULL).
+  char const *const literal;            ///< C string literal of the type.
+  char const *const english;            ///< English version (if not NULL).
   c_lang_id_t lang_ids;                 ///< Language(s) OK in.
 };
 typedef struct c_type c_type_t;
@@ -118,27 +118,24 @@ typedef struct c_type c_type_t;
 static c_type_t const C_ATTRIBUTE_INFO[] = {
   { T_CARRIES_DEPENDENCY,
                     L_CARRIES_DEPENDENCY,
-                      L_CARRIES_DEPENDENCY_ENG, LANG_MIN(CPP_11)              },
-  { T_DEPRECATED,   L_DEPRECATED,         NULL, LANG_MIN(CPP_11)              },
-  { T_MAYBE_UNUSED, L_MAYBE_UNUSED,
-                      L_MAYBE_UNUSED_ENG,       LANG_MIN(CPP_17)              },
-  { T_NODISCARD,    L_NODISCARD,
-                      L_NON_DISCARDABLE_ENG,    LANG_MIN(CPP_11)              },
-  { T_NORETURN,     L__NORETURN,
-                      L_NON_RETURNING_ENG,      LANG_C_CPP_11_MIN             },
+                                    L_CARRIES_DEPENDENCY_ENG,
+                                                            LANG_MIN(CPP_11)  },
+  { T_DEPRECATED,   L_DEPRECATED,   NULL,                   LANG_MIN(CPP_11)  },
+  { T_MAYBE_UNUSED, L_MAYBE_UNUSED, L_MAYBE_UNUSED_ENG,     LANG_MIN(CPP_17)  },
+  { T_NODISCARD,    L_NODISCARD,    L_NON_DISCARDABLE_ENG,  LANG_MIN(CPP_11)  },
+  { T_NORETURN,     L__NORETURN,    L_NON_RETURNING_ENG,    LANG_C_CPP_11_MIN },
 };
 
 /**
  * Type mapping for qualifiers.
  */
 static c_type_t const C_QUALIFIER_INFO[] = {
-  { T_ATOMIC,       L__ATOMIC,      L_ATOMIC, LANG_MIN(C_11)                  },
-  { T_CONST,        L_CONST,      L_CONSTANT, LANG_MIN(C_89)                  },
-  { T_REFERENCE,    L_REFERENCE,        NULL, LANG_MIN(CPP_OLD)               },
-  { T_RVALUE_REFERENCE,
-                    L_RVALUE_REFERENCE, NULL, LANG_MIN(CPP_11)                },
-  { T_RESTRICT,     L_RESTRICT, L_RESTRICTED, LANG_MIN(C_89) & ~LANG_CPP_ALL  },
-  { T_VOLATILE,     L_VOLATILE,         NULL, LANG_MIN(C_89)                  },
+  { T_ATOMIC,           L__ATOMIC,      L_ATOMIC, LANG_MIN(C_11)    },
+  { T_CONST,            L_CONST,      L_CONSTANT, LANG_MIN(C_89)    },
+  { T_REFERENCE,        L_REFERENCE,        NULL, LANG_MIN(CPP_OLD) },
+  { T_RVALUE_REFERENCE, L_RVALUE_REFERENCE, NULL, LANG_MIN(CPP_11)  },
+  { T_RESTRICT,         L_RESTRICT, L_RESTRICTED, LANG_MIN(C_89)    },
+  { T_VOLATILE,         L_VOLATILE,         NULL, LANG_MIN(C_89)    },
 };
 
 /**
@@ -149,7 +146,7 @@ static c_type_t const C_QUALIFIER_INFO[] = {
  */
 static c_type_t const C_STORAGE_INFO[] = {
   // storage classes
-  { T_AUTO_C,       L_AUTO,        L_AUTOMATIC, LANG_MAX(CPP_03)              },
+  { T_AUTO_STORAGE, L_AUTO,        L_AUTOMATIC, LANG_MAX(CPP_03)              },
   { T_BLOCK,        L___BLOCK,            NULL, LANG_ALL                      },
   { T_EXTERN,       L_EXTERN,       L_EXTERNAL, LANG_ALL                      },
   { T_REGISTER,     L_REGISTER,           NULL, LANG_MAX(CPP_14)              },
@@ -166,7 +163,7 @@ static c_type_t const C_STORAGE_INFO[] = {
   { T_EXPLICIT,     L_EXPLICIT,           NULL, LANG_CPP_ALL                  },
   { T_FINAL,        L_FINAL,              NULL, LANG_MIN(CPP_11)              },
   { T_FRIEND,       L_FRIEND,             NULL, LANG_CPP_ALL                  },
-  { T_INLINE,       L_INLINE,             NULL, LANG_MIN(C_99)                },
+  { T_INLINE,       L_INLINE,             NULL, LANG_MIN(C_89)                },
   { T_MUTABLE,      L_MUTABLE,            NULL, LANG_CPP_ALL                  },
   { T_NOEXCEPT,     L_NOEXCEPT,
                     L_NO_EXCEPTION_ENG,         LANG_MIN(CPP_11)              },
@@ -186,8 +183,7 @@ static c_type_t const C_STORAGE_INFO[] = {
  */
 static c_type_t const C_TYPE_INFO[] = {
   { T_VOID,         L_VOID,               NULL, LANG_MIN(C_89)                },
-  { T___AUTO_TYPE,  L___AUTO_TYPE, L_AUTOMATIC, LANG_MAX(C_NEW)               },
-  { T_AUTO_CPP_11,  L_AUTO,        L_AUTOMATIC, LANG_MIN(CPP_11)              },
+  { T_AUTO_TYPE,    L_AUTO,        L_AUTOMATIC, LANG_MIN(C_89)                },
   { T_BOOL,         L_BOOL,               NULL, LANG_MIN(C_89)                },
   { T_CHAR,         L_CHAR,               NULL, LANG_ALL                      },
   { T_CHAR8_T,      L_CHAR8_T,            NULL, LANG_MIN(CPP_20)              },
@@ -257,7 +253,7 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
   { XX,XX,XX,XX,XX,XX,XX,  XX,P1,P1,P1,PP,__,__,__,__,__,__,__,__,__ },// explic
   { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,P1,__,__,__,__,__,__,__,__ },// final
   { XX,XX,XX,XX,XX,XX,XX,  P2,P1,XX,XX,XX,XX,PP,__,__,__,__,__,__,__ },// friend
-  { XX,XX,C9,XX,C9,XX,XX,  P2,P1,P1,P1,PP,P1,PP,C9,__,__,__,__,__,__ },// inline
+  { XX,XX,C8,XX,C8,XX,XX,  P2,P1,P1,P1,PP,P1,PP,C8,__,__,__,__,__,__ },// inline
   { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,XX,XX,XX,XX,P3,__,__,__,__,__ },// mut
   { XX,XX,P1,XX,P1,XX,P1,  P2,P1,P1,P1,PP,P1,P1,P1,XX,P1,__,__,__,__ },// noexc
   { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,P1,XX,C1,XX,C1,P1,__,__,__ },// overr
@@ -274,31 +270,30 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
  */
 static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 // Only the lower triangle is used.
-//  v  at a1 b  c  8  16 32 wc s  i  l  ll s  u  f  d  co im e  st un cl t
-  { C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// void
-  { XX,C_,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// __au
-  { XX,XX,P1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// auto
-  { XX,XX,XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// bool
-  { XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char
-  { XX,XX,XX,XX,XX,P2,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c8
-  { XX,XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c16
-  { XX,XX,XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c32
-  { XX,XX,XX,XX,XX,XX,XX,XX,C5,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// wcha
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// shor
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// int
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// long
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,__,C9,__,__,__,__,__,__,__,__,__,__,__ },// llon
-  { XX,XX,XX,XX,C8,XX,XX,XX,XX,C8,C8,C8,C8,C8,__,__,__,__,__,__,__,__,__,__ },// sign
-  { XX,XX,XX,XX,__,XX,XX,XX,XX,__,__,__,C8,XX,__,__,__,__,__,__,__,__,__,__ },// unsi
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,KR,XX,XX,XX,__,__,__,__,__,__,__,__,__ },// floa
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,XX,XX,XX,XX,__,__,__,__,__,__,__,__ },// doub
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,C9,__,__,__,__,__,__ },// comp
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,XX,C9,__,__,__,__,__ },// imag
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,__,__,__,__ },// enum
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P1,__,__,__,__ },// stru
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__ },// unio
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P1,XX,XX,PP,__ },// clas
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__ },// type
+//  v  a1 b  c  8  16 32 wc s  i  l  ll s  u  f  d  co im e  st un cl t
+  { C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// void
+  { XX,C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// auto
+  { XX,XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// bool
+  { XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char
+  { XX,XX,XX,XX,P2,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c8
+  { XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c16
+  { XX,XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c32
+  { XX,XX,XX,XX,XX,XX,XX,C5,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// wcha
+  { XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// shor
+  { XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// int
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// long
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,__,C9,__,__,__,__,__,__,__,__,__,__,__ },// llon
+  { XX,XX,XX,C8,XX,XX,XX,XX,C8,C8,C8,C8,C8,__,__,__,__,__,__,__,__,__,__ },// sign
+  { XX,XX,XX,__,XX,XX,XX,XX,__,__,__,C8,XX,__,__,__,__,__,__,__,__,__,__ },// unsi
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,KR,XX,XX,XX,__,__,__,__,__,__,__,__,__ },// floa
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,XX,XX,XX,XX,__,__,__,__,__,__,__,__ },// doub
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,C9,__,__,__,__,__,__ },// comp
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,XX,C9,__,__,__,__,__ },// imag
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,__,__,__,__ },// enum
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P1,__,__,__,__ },// stru
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__ },// unio
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P1,XX,XX,PP,__ },// clas
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__ },// type
 };
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -372,10 +367,10 @@ static c_lang_id_t
 c_type_check_legal( c_type_id_t type_id, c_type_t const types[],
                     size_t types_size ) {
   for ( size_t row = 0; row < types_size; ++row ) {
-    c_type_t const *const ti = &types[ row ];
-    if ( (type_id & ti->type_id) != T_NONE &&
-         (opt_lang & ti->lang_ids) == LANG_NONE ) {
-      return ti->lang_ids;
+    c_type_t const *const t = &types[ row ];
+    if ( (type_id & t->type_id) != T_NONE &&
+         (opt_lang & t->lang_ids) == LANG_NONE ) {
+      return t->lang_ids;
     }
   } // for
   return LANG_ALL;
@@ -394,33 +389,47 @@ static char const* c_type_name_1( c_type_id_t type_id, bool is_error ) {
   assert( exactly_one_bit_set( type_id ) );
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_ATTRIBUTE_INFO ); ++i ) {
-    if ( type_id == C_ATTRIBUTE_INFO[i].type_id ) {
-      char const *literal = c_type_literal( &C_ATTRIBUTE_INFO[i], is_error );
-      if ( literal == L__NORETURN && C_LANG_IS_CPP() ) {
-        //
-        // _Noreturn is a special case.  In C11, it's "_Noreturn"; in C++11,
-        // it's "noreturn".  Since this is the only special case like this,
-        // it's not worth extending c_type to handle language-specific
-        // literals, so we just check for "_Noreturn" here and change it to
-        // "noreturn" when translating to C++.
-        //
+    c_type_t const *const t = &C_ATTRIBUTE_INFO[i];
+    if ( type_id == t->type_id ) {
+      char const *literal = c_type_literal( t, is_error );
+      if ( literal == L__NORETURN && C_LANG_IS_CPP() )
         literal = L_NORETURN;
+      return literal;
+    }
+  } // for
+
+  for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i ) {
+    c_type_t const *const t = &C_QUALIFIER_INFO[i];
+    if ( type_id == t->type_id ) {
+      char const *literal = c_type_literal( t, is_error );
+      if ( literal == L_RESTRICT &&
+           (opt_lang < LANG_C_99 || C_LANG_IS_CPP()) &&
+           (c_mode == C_ENGLISH_TO_GIBBERISH || is_error) ) {
+        literal = L___RESTRICT__;
       }
       return literal;
     }
   } // for
 
-  for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i )
-    if ( type_id == C_QUALIFIER_INFO[i].type_id )
-      return c_type_literal( &C_QUALIFIER_INFO[i], is_error );
+  for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_INFO ); ++i ) {
+    c_type_t const *const t = &C_STORAGE_INFO[i];
+    if ( type_id == t->type_id ) {
+      char const *literal = c_type_literal( t, is_error );
+      if ( literal == L_INLINE && opt_lang < LANG_C_99 )
+        literal = L___INLINE__;
+      return literal;
+    }
+  } // for
 
-  for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_INFO ); ++i )
-    if ( type_id == C_STORAGE_INFO[i].type_id )
-      return c_type_literal( &C_STORAGE_INFO[i], is_error );
-
-  for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i )
-    if ( type_id == C_TYPE_INFO[i].type_id )
-      return c_type_literal( &C_TYPE_INFO[i], is_error );
+  for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i ) {
+    c_type_t const *const t = &C_TYPE_INFO[i];
+    if ( type_id == t->type_id ) {
+      char const *literal = c_type_literal( t, is_error );
+      if ( literal == L_AUTO && opt_lang < LANG_CPP_11 )
+        literal = L___AUTO_TYPE;
+      return literal;
+    }
+  } // for
 
   UNEXPECTED_INT_VALUE( type_id );
 }
@@ -526,7 +535,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     T_DELETE,
 
     // These are second so we get names like "static int".
-    T_AUTO_C,
+    T_AUTO_STORAGE,
     T_BLOCK,
     T_EXTERN,
     T_FRIEND,
@@ -580,8 +589,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     T_SHORT,
 
     T_VOID,
-    T___AUTO_TYPE,
-    T_AUTO_CPP_11,
+    T_AUTO_TYPE,
     T_BOOL,
     T_CHAR,
     T_CHAR8_T,

@@ -43,6 +43,9 @@ The characters are:
 + `e` = `enum`, `explicit`, `extern`, or `...` (ellipsis)
 + `f` = `friend` or function
 + `g` = `register`
++ `ga` = GNU C `__auto_type`
++ `gi` = GNU C `__inline__`
++ `grt` = GNU C `__restrict__`
 + `h` = `short`
 + `i` = `inline` or `int`
 + `k` = `struct`
@@ -52,8 +55,9 @@ The characters are:
 + `nt` = non-throwing
 + `o` = `operator`, `override`, or `thread_local`
 + `p` = pointer
-+ `r` = `restrict` or reference
++ `r` = reference
 + `rr` = rvalue reference
++ `rt` = `restrict`
 + `s` = `signed` or `static`
 + `t` = `nodiscard`, `throw`, `typedef`, or unknown type
 + `u` = `maybe_unused` or `unsigned`

@@ -40,7 +40,7 @@
 #include <stdbool.h>
 
 #define T_NOT_FUNC_LIKE \
-  (T_AUTO_C | T_BLOCK | T_MUTABLE | T_REGISTER | T_THREAD_LOCAL)
+  (T_AUTO_STORAGE | T_BLOCK | T_MUTABLE | T_REGISTER | T_THREAD_LOCAL)
 
 // local constants
 static bool const VISITOR_ERROR_FOUND     = true;
@@ -426,7 +426,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
 
     switch ( arg_ast->kind ) {
       case K_BUILTIN:
-        if ( (arg_ast->type_id & T_AUTO_CPP_11) != T_NONE ) {
+        if ( (arg_ast->type_id & T_AUTO_TYPE) != T_NONE ) {
           print_error( &arg_ast->loc, "arguments can not be %s", L_AUTO );
           return false;
         }
@@ -1042,7 +1042,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       return false;
     case K_BUILTIN:
       if ( opt_lang < LANG_CPP_14 ) {
-        if ( (ret_ast->type_id & T_AUTO_CPP_11) != T_NONE ) {
+        if ( (ret_ast->type_id & T_AUTO_TYPE) != T_NONE ) {
           print_error( &ret_ast->loc,
             "\"%s\" return type not supported in %s",
             L_AUTO, C_LANG_NAME()
@@ -1362,6 +1362,24 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
         return VISITOR_ERROR_FOUND;
       }
   } // switch
+
+  if ( (ast->type_id & T_RESTRICT) != T_NONE ) {
+    switch ( ast->kind ) {
+      case K_FUNCTION:
+      case K_OPERATOR:
+      case K_REFERENCE:
+      case K_RVALUE_REFERENCE:
+      case K_USER_DEF_CONVERSION:
+        //
+        // These being declared "restrict" in C is already made an error by
+        // checks elsewhere.
+        //
+      case K_POINTER:
+        break;
+      default:
+        return error_kind_not_type( ast, T_RESTRICT );
+    } // switch
+  }
 
   return VISITOR_ERROR_NOT_FOUND;
 }

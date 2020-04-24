@@ -153,9 +153,6 @@ extern char const L_NORETURN[];             // synonym for "_Noreturn"
 extern char const L__STATIC_ASSERT[];
 extern char const L_STATIC_ASSERT[];
 
-// GNU C extensions
-extern char const L___AUTO_TYPE[];
-
 // C++
 extern char const L_CATCH[];
 extern char const L_CLASS[];
@@ -245,8 +242,13 @@ extern char const L_OR_EQ[];                // |=
 extern char const L_XOR[];                  // ^
 extern char const L_XOR_EQ[];               // ^=
 
-// Miscellaneous
-extern char const L___BLOCK[];              // Apple: storage class
+// GNU C extensions
+extern char const L___AUTO_TYPE[];
+extern char const L___INLINE__[];
+extern char const L___RESTRICT__[];
+
+// Apple extensions
+extern char const L___BLOCK[];              // storage class
 
 ///////////////////////////////////////////////////////////////////////////////
 
