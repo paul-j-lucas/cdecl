@@ -237,6 +237,7 @@ char const L_XOR_EQ[]                 = "xor_eq";
 char const L___AUTO_TYPE[]            = "__auto_type";
 char const L___INLINE__[]             = "__inline__";
 char const L___RESTRICT__[]           = "__restrict__";
+char const L___THREAD[]               = "__thread";
 
 // Apple extensions
 char const L___BLOCK[]                = "__block";

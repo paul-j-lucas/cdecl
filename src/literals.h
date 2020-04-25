@@ -246,6 +246,7 @@ extern char const L_XOR_EQ[];               // ^=
 extern char const L___AUTO_TYPE[];
 extern char const L___INLINE__[];
 extern char const L___RESTRICT__[];
+extern char const L___THREAD[];
 
 // Apple extensions
 extern char const L___BLOCK[];              // storage class

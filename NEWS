@@ -12,8 +12,8 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 6.11
 
-** Added __inline__ and __restrict__
-Added GNU C's __inline__ and __restrict__.
+** Added __inline__, __restrict__, and __thread
+Added GNU C's __inline__, __restrict__, and __thread.
 
 ** Added GNU C types
 The GNU C types _Decimal32, _Decimal64, _Decimal128, _Float128, __float128,

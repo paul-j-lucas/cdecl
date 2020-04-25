@@ -203,7 +203,8 @@ static c_type_t const C_STORAGE_INFO[] = {
     (c_lang_lit_t[]){ { LANG_ALL, L_STATIC } } },
 
   { T_THREAD_LOCAL, LANG_C_CPP_11_MIN, L_THREAD_LOCAL_ENG,
-    (c_lang_lit_t[]){ { LANG_ALL, L_THREAD_LOCAL } } },
+    (c_lang_lit_t[]){ { LANG_MAX(CPP_03), L___THREAD     },
+                      { LANG_ALL,         L_THREAD_LOCAL } } },
 
   { T_TYPEDEF, LANG_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_TYPEDEF } } },

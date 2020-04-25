@@ -142,6 +142,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L___AUTO_TYPE,      Y_AUTO_TYPE,        T_AUTO_TYPE,    LANG_MIN(C_89)    },
   { L___INLINE__,       Y_INLINE,           T_INLINE,       LANG_MIN(C_89)    },
   { L___RESTRICT__,     Y___RESTRICT__,     T_RESTRICT,     LANG_MIN(C_89)    },
+  { L___THREAD,         Y_THREAD_LOCAL,     T_THREAD_LOCAL, LANG_MIN(C_89)    },
 
   // C++
   { L_CATCH,            Y_CATCH,            T_NONE,         LANG_CPP_ALL      },
