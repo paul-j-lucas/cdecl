@@ -770,7 +770,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                   //
                   // 2. See if it's a typedef'd type.
                   //
-                  SLIST_TEMP_INIT_VAR( typedef_name, lexer_token, NULL );
+                  SLIST_VAR_INIT( typedef_name, NULL, lexer_token );
                   c_typedef_t const *const t = c_typedef_find( &typedef_name );
                   if ( t != NULL ) {
                     yylval.c_typedef = t;
