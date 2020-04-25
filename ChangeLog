@@ -1,3 +1,44 @@
+2020-04-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, red_black.c, red_black.h: Reverted red-black tree NOT to have
+     rb_data_free_t function in rb_tree.
+   * slist.h: s/SLIST_TEMP_INIT_VAR/SLIST_VAR_INIT/
+
+2020-04-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, c_keyword.c, c_type.c, literals.c, literals.h: Added
+     support for GNU C's __thread.
+   * autocomplete.c, c_keyword.h, c_lang.h, c_operator.h, c_type.c,
+     c_typedef.c, cdecl.c, help.c, lexer.l: Undid pointless *const.
+   * c_type.c: Changed c_type struct to have language-specific literals.
+   * c_ast.h: Tweaked c_alignas.
+   * cdecl.1: Fixed formatting of "options".
+   * NEWS: Added __inline__ and __restrict__.
+   * cdecl.1, autocomplete.c, c_keyword.c, c_keyword.h, c_lang.h, c_operator.h,
+     c_type.c, c_type.h, cdecl.c, errors.c, help.c, lexer.l, literals.c,
+     literals.h, parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d.out,
+     declare_ga.out, declare_grtpi.out, declare_rtf_v.out,
+     explain_cast_rtpi.out, explain_ga.out, explain_gif_v.out,
+     explain_grtpi.out, explain_rtpi.out, explain_udl_pccz_ul.out,
+     not_in_Makefile.sh, declare_ga.test, declare_grtpi.test,
+     declare_rtf_v-c.test, declare_rtf_v.test, explain_cast_rtpi.test,
+     explain_ga.test, explain_gif_v.test, explain_grtpi.test,
+     explain_rtpi-c++-error.test, explain_rtpi.test: Added support for GNU C's
+     __inline__ and __restrict__.
+
+2020-04-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added GNU C types.
+
+2020-04-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added caveat about __int8, etc., types.
+   * c_typedef.c, show_all.out, show_all_typedef.out, show_predefined.out,
+     show_predefined_typedef.out: Changed __int64 to long long.
+   * c_typedef.c: Added comment about Windows __int8, etc., types.
+
 2020-04-18  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac: Updated.
