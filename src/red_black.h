@@ -91,7 +91,7 @@ typedef struct rb_tree rb_tree_t;
 typedef int (*rb_data_cmp_t)( void const *data_i, void const *data_j );
 
 /**
- * The signature for a function passed to `rb_tree_new()` used to free data
+ * The signature for a function passed to `rb_tree_free()` used to free data
  * associated with each node (if necessary).
  *
  * @param data A pointer to the data to free.
@@ -138,10 +138,12 @@ rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data );
  * Frees all memory associated with \a tree.
  *
  * @param tree The red-black tree to free.
+ * @param data_free_fn A pointer to a function used to free data associated
+ * with each node or null if unnecessary.
  *
  * @sa rb_tree_new()
  */
-void rb_tree_free( rb_tree_t *tree );
+void rb_tree_free( rb_tree_t *tree, rb_data_free_t data_free_fn );
 
 /**
  * Inserts \a data into \a tree.
@@ -161,15 +163,12 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
  *
  * @param data_cmp_fn A pointer to a function used to compare data between
  * nodes.
- * @param data_free_fn A pointer to a function used to free data associated
- * with each node or null if unnecessary.
  * @return Returns a pointer to a new red-black tree.
  *
  * @sa rb_tree_free()
  */
 C_WARN_UNUSED_RESULT
-rb_tree_t* rb_tree_new( rb_data_cmp_t data_cmp_fn,
-                        rb_data_free_t data_free_fn );
+rb_tree_t* rb_tree_new( rb_data_cmp_t data_cmp_fn );
 
 /**
  * Performs an in-order traversal of \a tree.

@@ -114,9 +114,8 @@ struct rb_node {
  * A red-black tree.
  */
 struct rb_tree {
-  rb_node_t       root;                 ///< Root node.
-  rb_data_cmp_t   data_cmp_fn;          ///< Data comparison function.
-  rb_data_free_t  data_free_fn;         ///< Data free function.
+  rb_node_t     root;                   ///< Root node.
+  rb_data_cmp_t data_cmp_fn;            ///< Data comparison function.
 };
 
 // local functions
@@ -448,9 +447,9 @@ rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data ) {
   return NULL;
 }
 
-void rb_tree_free( rb_tree_t *tree ) {
+void rb_tree_free( rb_tree_t *tree, rb_data_free_t data_free_fn ) {
   if ( tree != NULL ) {
-    rb_tree_free_impl( RB_FIRST(tree), tree->data_free_fn );
+    rb_tree_free_impl( RB_FIRST(tree), data_free_fn );
     FREE( tree );
   }
 }
@@ -542,14 +541,12 @@ do_red: node->parent->color = RB_BLACK;
   return NULL;
 }
 
-rb_tree_t* rb_tree_new( rb_data_cmp_t data_cmp_fn,
-                        rb_data_free_t data_free_fn ) {
+rb_tree_t* rb_tree_new( rb_data_cmp_t data_cmp_fn ) {
   assert( data_cmp_fn != NULL );
 
   rb_tree_t *const tree = MALLOC( rb_tree_t, 1 );
   rb_node_init( RB_ROOT(tree) );
   tree->data_cmp_fn = data_cmp_fn;
-  tree->data_free_fn = data_free_fn;
 
   return tree;
 }
