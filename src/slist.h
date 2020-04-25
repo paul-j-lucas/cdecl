@@ -49,14 +49,13 @@ _GL_INLINE_HEADER_BEGIN
  */
 
 /**
- * Creates a temporary `slist` on the stack having a single node with
- * \a NODE_DATA.
+ * Creates a single-node `slist` on the stack with \a NODE_DATA.
  *
- * @param VAR_NAME The name for the temporary `slist` variable.
- * @param NODE_DATA A pointer to the node data.
+ * @param VAR_NAME The name for the `slist` variable.
  * @param LIST_DATA A pointer to the list data.
+ * @param NODE_DATA A pointer to the node data.
  */
-#define SLIST_TEMP_INIT_VAR(VAR_NAME,NODE_DATA,LIST_DATA)                     \
+#define SLIST_VAR_INIT(VAR_NAME,LIST_DATA,NODE_DATA)                          \
   slist_node_t VAR_NAME##_node = { NULL, CONST_CAST( void*, (NODE_DATA) ) };  \
   slist_t VAR_NAME = { &VAR_NAME##_node, &VAR_NAME##_node, 1, (LIST_DATA) }
 
