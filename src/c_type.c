@@ -112,8 +112,8 @@ static char const L_TYPEDEF_TYPE[] = "";
  * e.g., "_Noreturn" for C and "noreturn" for C++.
  */
 struct c_lang_lit {
-  c_lang_id_t       lang_ids;
-  char const *const literal;
+  c_lang_id_t   lang_ids;
+  char const   *literal;
 };
 typedef struct c_lang_lit c_lang_lit_t;
 
@@ -121,9 +121,9 @@ typedef struct c_lang_lit c_lang_lit_t;
  * Mapping between C type bits, literals, and valid language(s).
  */
 struct c_type {
-  c_type_id_t       type_id;            ///< The type.
-  c_lang_id_t       lang_ids;           ///< Language(s) OK in.
-  char const *const english;            ///< English version (if not NULL).
+  c_type_id_t         type_id;          ///< The type.
+  c_lang_id_t         lang_ids;         ///< Language(s) OK in.
+  char const         *english;          ///< English version (if not NULL).
 
   /**
    * Array of language(s)/literal pair(s).  The array is terminated by an
@@ -131,7 +131,7 @@ struct c_type {
    * cases come first and, failing to match opt_lang against any of those,
    * matches the last (default) element.
    */
-  c_lang_lit_t const *const lang_lit;
+  c_lang_lit_t const *lang_lit;
 };
 
 /**

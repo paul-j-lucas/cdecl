@@ -91,8 +91,8 @@ _GL_INLINE_HEADER_BEGIN
  * A mapping between a language name and its corresponding `c_lang_id_t`.
  */
 struct c_lang {
-  char const *const name;               ///< Language name.
-  c_lang_id_t lang_id;                  ///< Language bit.
+  char const   *name;                   ///< Language name.
+  c_lang_id_t   lang_id;                ///< Language bit.
 };
 
 /**

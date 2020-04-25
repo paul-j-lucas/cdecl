@@ -49,8 +49,8 @@
  * Help text.
  */
 struct help_text {
-  char const *const text;               ///< Generic text.
-  char const *const cpp_text;           ///< C++ specific text.
+  char const *text;                     ///< Generic text.
+  char const *cpp_text;                 ///< C++ specific text.
 };
 typedef struct help_text help_text_t;
 

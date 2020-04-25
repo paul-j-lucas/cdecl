@@ -139,8 +139,8 @@ int main( int argc, char const **argv ) {
 C_WARN_UNUSED_RESULT
 static bool is_command( char const *s, c_command_t command_type ) {
   struct argv_command {
-    char const *const keyword;          // The keyword literal.
-    c_command_t command_type;           // The type of command.
+    char const   *keyword;              // The keyword literal.
+    c_command_t   command_type;         // The type of command.
   };
   typedef struct argv_command argv_command_t;
 

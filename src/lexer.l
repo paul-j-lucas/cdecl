@@ -155,9 +155,9 @@
  * cdecl keyword info.
  */
 struct cdecl_keyword {
-  char const *const literal;            ///< C string literal of the keyword.
+  char const *literal;                  ///< C string literal of the keyword.
   int         y_token;                  ///< Bison token number.
-  char const *const c_keyword_synonym;  ///< Synonym of C/C++ keyword, if any.
+  char const *c_keyword_synonym;        ///< Synonym of C/C++ keyword, if any.
   bool        allow_explain;            ///< Allow when explaining C/C++?
 };
 typedef struct cdecl_keyword cdecl_keyword_t;
@@ -261,8 +261,8 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
  * Hyphenated English-literal-to-C-literal mapping.
  */
 struct c_hyphenated {
-  char const *const e_literal;          ///< Hyphenated English literal.
-  char const *const c_literal;          ///< C language literal it maps to.
+  char const *e_literal;                ///< Hyphenated English literal.
+  char const *c_literal;                ///< C language literal it maps to.
 };
 typedef struct c_hyphenated c_hyphenated_t;
 
@@ -286,7 +286,7 @@ static c_hyphenated_t const C_HYPHENATED_KEYWORDS[] = {
  * Hyphenated cdecl keyword English-literal-to-Bison-token mapping.
  */
 struct cdecl_hyphenated {
-  char const *const e_literal;          ///< Hyphenated English literal.
+  char const *e_literal;                ///< Hyphenated English literal.
   int         y_token;                  ///< Bison token number.
 };
 typedef struct cdecl_hyphenated cdecl_hyphenated_t;

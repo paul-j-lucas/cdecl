@@ -51,8 +51,8 @@
  * C/C++ autocompletion keyword.
  */
 struct ac_keyword {
-  char const *const keyword;            ///< The keyword literal.
-  c_lang_id_t lang_ids;                 ///< Language(s) OK in.
+  char const   *keyword;                ///< The keyword literal.
+  c_lang_id_t   lang_ids;               ///< Language(s) OK in.
 };
 typedef struct ac_keyword ac_keyword_t;
 

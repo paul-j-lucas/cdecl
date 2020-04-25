@@ -44,8 +44,8 @@
  * Data passed to our red-black tree visitor function.
  */
 struct td_rb_visitor_data {
-  c_typedef_visitor_t visitor;          ///< Caller's visitor function.
-  void *data;                           ///< Caller's optional data.
+  c_typedef_visitor_t   visitor;        ///< Caller's visitor function.
+  void                 *data;           ///< Caller's optional data.
 };
 typedef struct td_rb_visitor_data td_rb_visitor_data_t;
 
