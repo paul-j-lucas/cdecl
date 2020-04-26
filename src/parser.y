@@ -515,14 +515,8 @@ static bool explain_type_decl( c_alignas_t const *align,
     ast->align = *align;
   }
 
-  switch ( ast->kind ) {
-    case K_CONSTRUCTOR:
-    case K_USER_DEF_CONVERSION:
-      ast->type_id |= type_ast->type_id;
-      break;
-    default:
-      /* suppress warning */;
-  } // switch
+  if ( (ast->kind & (K_CONSTRUCTOR | K_USER_DEF_CONVERSION)) != K_NONE )
+    ast->type_id |= type_ast->type_id;
 
   if ( !c_ast_check( ast, C_CHECK_DECL ) )
     return false;
