@@ -1,5 +1,18 @@
+2020-04-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, c_type.c, parser.y, test/Makefile.am,
+     declare_ovc_udc_i.out, explain_oc_udc_i.out, declare_ovc_udc_i.test,
+     explain_oc_udc_i.test: Can now declare const/volatile user-defined
+     conversion operators.
+   * parser.y: Change from "switch" to "if".
+   * parser.y: Change from "switch" to "if".
+   * parser.y: Comments.
+   * parser.y: Moved type_pop() out of explain_type_decl().
+   * parser.y: Made type_pop() be C_NOWARN_UNUSED_RESULT.
+
 2020-04-25  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: s/SLIST_TEMP_INIT_VAR/SLIST_VAR_INIT/, part 2.
    * c_typedef.c, red_black.c, red_black.h: Reverted red-black tree NOT to have
      rb_data_free_t function in rb_tree.
    * slist.h: s/SLIST_TEMP_INIT_VAR/SLIST_VAR_INIT/
