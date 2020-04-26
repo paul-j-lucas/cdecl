@@ -471,8 +471,6 @@ static bool explain_type_decl( c_alignas_t const *align,
   assert( decl_ast != NULL );
   assert( decl_loc != NULL );
 
-  type_pop();
-
   bool is_typedef = c_ast_take_typedef( type_ast );
 
   if ( is_typedef && decl_ast->kind == K_TYPEDEF ) {
@@ -1664,6 +1662,8 @@ explain_c
 
   | explain alignas_specifier_c type_c_ast { type_push( $3.ast ); } decl_c_ast
     {
+      type_pop();
+
       DUMP_START( "explain_c", "EXPLAIN ALIGNAS(...) type_c_ast decl_c_ast" );
       switch ( $2.kind ) {
         case C_ALIGNAS_NONE:
@@ -1684,6 +1684,8 @@ explain_c
 
   | explain type_c_ast { type_push( $2.ast ); } decl_c_ast
     {
+      type_pop();
+
       DUMP_START( "explain_c", "EXPLAIN type_c_ast decl_c_ast" );
       DUMP_AST( "type_c_ast", $2.ast );
       DUMP_AST( "decl_c_ast", $4.ast );
