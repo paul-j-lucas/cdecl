@@ -539,17 +539,14 @@ static bool explain_type_decl( c_alignas_t const *align,
     char const *local_name = NULL;
     char const *scope_name = "";
 
-    switch ( ast->kind ) {
-      case K_OPERATOR:
-        local_name = op_token_c( ast->as.oper.oper_id );
-        scope_name = c_sname_full_name( &sname );
-        break;
-      default:
-        assert( !c_sname_empty( &sname ) );
-        local_name = c_sname_local_name( &sname );
-        scope_name = c_sname_scope_name( &sname );
-        break;
-    } // switch
+    if ( ast->kind == K_OPERATOR ) {
+      local_name = op_token_c( ast->as.oper.oper_id );
+      scope_name = c_sname_full_name( &sname );
+    } else {
+      assert( !c_sname_empty( &sname ) );
+      local_name = c_sname_local_name( &sname );
+      scope_name = c_sname_scope_name( &sname );
+    }
 
     assert( local_name != NULL );
     FPRINTF( fout, "%s %s ", L_DECLARE, local_name );
