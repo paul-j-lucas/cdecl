@@ -1415,22 +1415,25 @@ declare_english
       FPUTC( '\n', fout );
     }
 
-  | Y_DECLARE storage_class_list_english_type_opt Y_USER_DEFINED
-    conversion_expected operator_opt of_scope_list_english_opt
+  | Y_DECLARE storage_class_list_english_type_opt cv_qualifier_list_c_type_opt
+    Y_USER_DEFINED conversion_expected operator_opt of_scope_list_english_opt
     returning_expected decl_english_ast
     {
       DUMP_START( "declare_english",
-                  "DECLARE type_qualifier_list_c_type_opt "
+                  "DECLARE storage_class_list_english_type_opt "
+                  "cv_qualifier_list_c_type_opt "
                   "USER-DEFINED CONVERSION OPERATOR "
+                  "of_scope_list_english_opt "
                   "RETURNING decl_english_ast" );
       DUMP_TYPE( "storage_class_list_english_type_opt", $2 );
-      DUMP_SNAME( "of_scope_list_english_opt", &$6 );
-      DUMP_AST( "decl_english_ast", $8.ast );
+      DUMP_TYPE( "cv_qualifier_list_c_type_opt", $3 );
+      DUMP_SNAME( "of_scope_list_english_opt", &$7 );
+      DUMP_AST( "decl_english_ast", $9.ast );
 
       c_ast_t *const ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
-      ast->sname = $6;
-      ast->type_id = $2;
-      c_ast_set_parent( $8.ast, ast );
+      ast->sname = $7;
+      ast->type_id = $2 | $3;
+      c_ast_set_parent( $9.ast, ast );
       C_AST_CHECK( ast, C_CHECK_DECL );
 
       c_ast_gibberish_declare( ast, G_DECL_NONE, fout );

@@ -1085,6 +1085,7 @@ TESTS+=	tests/declare_+o_eq_rck_rk=default-c++03.test \
 # =========================================
 #
 TESTS+=	tests/declare_+udc_i.test \
+	tests/declare_ovc_udc_i.test \
 	tests/declare_udc_i.test \
 	tests/declare_udc_rcc.test
 
@@ -1377,6 +1378,7 @@ TESTS+=	tests/explain_cast_pmi.test \
 #
 TESTS+=	tests/explain_+udc_i.test \
 	tests/explain_f+udc_i.test \
+	tests/explain_oc_udc_i.test \
 	tests/explain_udc_i.test \
 	tests/explain_udc_rcc.test
 

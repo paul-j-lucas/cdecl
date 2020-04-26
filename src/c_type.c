@@ -624,6 +624,10 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
       // In English, be explicit about "int".
       type_id |= T_INT;
     }
+    if ( (type_id & (T_FINAL | T_OVERRIDE)) != T_NONE ) {
+      // In English, either "final" or "overrride" implies "virtual".
+      type_id |= T_VIRTUAL;
+    }
   } else /* c_mode == C_ENGLISH_TO_GIBBERISH */ {
     if ( is_explicit_int( type_id ) ) {
       type_id |= T_INT;
@@ -632,10 +636,11 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
       // is present.
       type_id &= ~T_INT;
     }
-  }
-  if ( (type_id & (T_FINAL | T_OVERRIDE)) != T_NONE ) {
-    // Either "final" or "overrride" implies "virtual".
-    type_id |= T_VIRTUAL;
+    if ( (type_id & (T_FINAL | T_OVERRIDE)) != T_NONE ) {
+      // In C/C++, explicit "virtual" shouldn't be present when either "final"
+      // or "overrride" is.
+      type_id &= ~T_VIRTUAL;
+    }
   }
 
   // Types here MUST have a corresponding row AND column in OK_STORAGE_LANGS.

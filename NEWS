@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 6.11.1
+
+** Declare const/volatile user-defined conversion operators
+Can now declare const/volatile user-defined conversion operators.
+
+
 * Changes in Cdecl 6.11
 
 ** Added __inline__, __restrict__, and __thread
