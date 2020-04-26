@@ -528,9 +528,17 @@ static bool explain_type_decl( c_alignas_t const *align,
     return false;
 
   if ( ast->kind == K_USER_DEF_CONVERSION ) {
-    if ( c_ast_sname_type( ast ) == T_SCOPE )
-      c_ast_sname_set_type( ast, T_CLASS );
+    //
+    // User-defined conversions don't have names.
+    //
     FPRINTF( fout, "%s ", L_DECLARE );
+    if ( c_ast_sname_type( ast ) == T_SCOPE ) {
+      //
+      // But they can still have a scope.  Since only classes can have them, if
+      // the scope is still T_SCOPE, change it to T_CLASS.
+      //
+      c_ast_sname_set_type( ast, T_CLASS );
+    }
   }
   else {
     c_sname_t sname = c_ast_take_name( ast );
