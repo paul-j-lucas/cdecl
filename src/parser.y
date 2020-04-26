@@ -336,6 +336,7 @@ static inline c_ast_t* type_peek( void ) {
  *
  * @return Returns said `c_ast`.
  */
+C_NOWARN_UNUSED_RESULT
 static inline c_ast_t* type_pop( void ) {
   return SLIST_POP_HEAD( c_ast_t*, &in_attr.type_stack );
 }
@@ -470,7 +471,7 @@ static bool explain_type_decl( c_alignas_t const *align,
   assert( decl_ast != NULL );
   assert( decl_loc != NULL );
 
-  C_IGNORE_RV( type_pop() );
+  type_pop();
 
   bool is_typedef = c_ast_take_typedef( type_ast );
 
@@ -1597,7 +1598,7 @@ explain_c
   : explain '(' type_c_ast { type_push( $3.ast ); } cast_c_ast_opt ')'
     sname_c_opt
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       DUMP_START( "explain_c",
                   "EXPLAIN '(' type_c_ast cast_c_ast_opt ')' sname_c_opt" );
@@ -1630,7 +1631,7 @@ explain_c
     lt_expected type_c_ast { type_push( $4.ast ); } cast_c_ast_opt gt_expected
     lparen_expected sname_c_expected rparen_expected
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       DUMP_START( "explain_c",
                   "EXPLAIN new_style_cast_c '<' type_c_ast cast_c_ast_opt '>' "
@@ -1821,7 +1822,7 @@ explain_c
     }
     cast_c_ast_opt
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       DUMP_START( "explain_c",
                   "EXPLAIN USING NAME = type_c_ast cast_c_ast_opt" );
@@ -1879,7 +1880,7 @@ alignas_specifier_c
   | Y_ALIGNAS lparen_expected type_c_ast { type_push( $3.ast ); }
     cast_c_ast_opt rparen_expected
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       DUMP_START( "alignas_specifier_c",
                   "ALIGNAS ( type_c_ast cast_c_ast_opt )" );
@@ -2143,7 +2144,7 @@ typedef_declaration_c
     }
     decl_c_ast
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       DUMP_START( "typedef_declaration_c", "TYPEDEF type_c_ast decl_c_ast" );
       DUMP_AST( "type_c_ast", $3.ast );
@@ -2221,7 +2222,7 @@ using_declaration_c
     }
     cast_c_ast_opt
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       //
       // Using declarations are supported only in C++11 and later.  (However,
@@ -3090,7 +3091,7 @@ trailing_return_type_c_ast_opt
   : /* empty */                   { $$.ast = $$.target_ast = NULL; }
   | "->" type_c_ast { type_push( $2.ast ); } cast_c_ast_opt
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       //
       // The function trailing return-type syntax is supported only in C++11
@@ -3159,7 +3160,7 @@ func_equals_type_opt
 nested_decl_c_ast
   : '(' placeholder_c_ast { type_push( $2.ast ); ++ast_depth; } decl_c_ast ')'
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
       --ast_depth;
 
       DUMP_START( "nested_decl_c_ast",
@@ -3245,7 +3246,7 @@ placeholder_c_ast
 pointer_decl_c_ast
   : pointer_type_c_ast { type_push( $1.ast ); } decl_c_ast
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       DUMP_START( "pointer_decl_c_ast", "pointer_type_c_ast decl_c_ast" );
       DUMP_AST( "pointer_type_c_ast", $1.ast );
@@ -3279,7 +3280,7 @@ pointer_type_c_ast
 pointer_to_member_decl_c_ast
   : pointer_to_member_type_c_ast { type_push( $1.ast ); } decl_c_ast
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       DUMP_START( "pointer_to_member_decl_c_ast",
                   "pointer_to_member_type_c_ast decl_c_ast" );
@@ -3327,7 +3328,7 @@ pointer_to_member_type_c_ast
 reference_decl_c_ast
   : reference_type_c_ast { type_push( $1.ast ); } decl_c_ast
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       DUMP_START( "reference_decl_c_ast", "reference_type_c_ast decl_c_ast" );
       DUMP_AST( "reference_type_c_ast", $1.ast );
@@ -3515,7 +3516,7 @@ arg_list_c_ast
 arg_c_ast
   : type_c_ast { type_push( $1.ast ); } cast_c_ast_opt
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       DUMP_START( "arg_c_ast", "type_c_ast cast_c_ast_opt" );
       DUMP_AST( "type_c_ast", $1.ast );
@@ -3685,7 +3686,7 @@ unmodified_type_c_ast
 atomic_specifier_type_c_ast
   : Y_ATOMIC_SPEC '(' type_c_ast { type_push( $3.ast ); } cast_c_ast_opt ')'
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       DUMP_START( "atomic_specifier_type_c_ast",
                   "ATOMIC '(' type_c_ast cast_c_ast_opt ')'" );
@@ -4084,7 +4085,7 @@ nested_cast_c_ast
     }
     cast_c_ast_opt ')'
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
       --ast_depth;
 
       DUMP_START( "nested_cast_c_ast",
@@ -4102,7 +4103,7 @@ nested_cast_c_ast
 pointer_cast_c_ast
   : pointer_type_c_ast { type_push( $1.ast ); } cast_c_ast_opt
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       DUMP_START( "pointer_cast_c_ast", "pointer_type_c_ast cast_c_ast_opt" );
       DUMP_AST( "pointer_type_c_ast", $1.ast );
@@ -4119,7 +4120,7 @@ pointer_cast_c_ast
 pointer_to_member_cast_c_ast
   : pointer_to_member_type_c_ast { type_push( $1.ast ); } cast_c_ast_opt
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       DUMP_START( "pointer_to_member_cast_c_ast",
                   "pointer_to_member_type_c_ast cast_c_ast_opt" );
@@ -4137,7 +4138,7 @@ pointer_to_member_cast_c_ast
 reference_cast_c_ast
   : reference_type_c_ast { type_push( $1.ast ); } cast_c_ast_opt
     {
-      C_IGNORE_RV( type_pop() );
+      type_pop();
 
       DUMP_START( "reference_cast_c_ast",
                   "reference_type_c_ast cast_c_ast_opt" );
