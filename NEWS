@@ -23,6 +23,12 @@ they print the type of scope ("class", "struct", "union", or "namespace"):
     c++decl> explain S::Int x
     declare x as Int of structure S
 
+** Fixed unknown type in typedef
+Fixed a crash caused by a case like:
+
+    define S as struct S
+    explain S::T x
+
 
 * Changes in Cdecl 6.11
 

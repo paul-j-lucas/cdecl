@@ -2959,7 +2959,7 @@ func_decl_c_ast
                   "func_ref_qualifier_c_type_opt noexcept_c_type_opt "
                   "trailing_return_type_c_ast_opt "
                   "func_equals_type_opt" );
-      DUMP_AST( "(type_c_ast)", type_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl2_c_ast", decl2_ast );
       DUMP_AST_LIST( "arg_list_c_ast_opt", $3 );
       DUMP_TYPE( "func_qualifier_list_c_type_opt", func_qualifier_type );
@@ -4303,8 +4303,14 @@ typedef_type_c_ast
       //
       DUMP_START( "typedef_type_c_ast",
                   "any_typedef :: sname_c" );
+      DUMP_AST( "(type_c_ast)", type_peek() );
       DUMP_AST( "any_typedef", $1->ast );
       DUMP_SNAME( "sname_c", &$3 );
+
+      if ( !type_peek() ) {
+        print_error( &@3, "\"%s\": unknown type", c_sname_full_name( &$3 ) );
+        PARSE_ABORT();
+      }
 
       $$.ast = type_peek();
       $$.target_ast = NULL;
@@ -4328,8 +4334,14 @@ typedef_type_c_ast
       //
       DUMP_START( "typedef_type_c_ast",
                   "any_typedef :: typedef_sname_c" );
+      DUMP_AST( "(type_c_ast)", type_peek() );
       DUMP_AST( "any_typedef", $1->ast );
       DUMP_SNAME( "typedef_sname_c", &$3 );
+
+      if ( !type_peek() ) {
+        print_error( &@3, "\"%s\": unknown type", c_sname_full_name( &$3 ) );
+        PARSE_ABORT();
+      }
 
       $$.ast = type_peek();
       $$.target_ast = NULL;
