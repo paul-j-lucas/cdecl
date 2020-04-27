@@ -722,6 +722,7 @@ TESTS+=	tests/show_foo.test
 # =====================================
 #
 TESTS+=	tests/2c_typedef_i.test \
+	tests/k_typedef_i_explain_i.test \
 	tests/namespace_+typedef_i.test \
 	tests/namespace_c_typedef_i.test \
 	tests/namespace_k_typedef_i.test \

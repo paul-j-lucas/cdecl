@@ -266,7 +266,10 @@ void c_sname_english( c_sname_t const *sname, FILE *eout ) {
     FPUTS( c_scope_name( sname->tail ), eout );
     for ( c_scope_t const *scope = sname->head; scope != sname->tail;
           scope = scope->next ) {
-      FPRINTF( eout, " %s %s %s", L_OF, L_SCOPE, c_scope_name( scope ) );
+      FPRINTF( eout,
+        " %s %s %s",
+        L_OF, c_type_name( c_sname_type( sname ) ), c_scope_name( scope )
+      );
     } // for
   }
 }

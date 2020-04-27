@@ -15,6 +15,14 @@ with their complete changes, see the AUTHORS file.
 ** Declare const/volatile user-defined conversion operators
 Can now declare const/volatile user-defined conversion operators.
 
+** Correct scope names for nested types
+Previously, scope names for nested types were always printed as "of scope"; now
+they print the type of scope ("class", "struct", "union", or "namespace"):
+
+    c++decl> struct S { typedef int Int; };
+    c++decl> explain S::Int x
+    declare x as Int of structure S
+
 
 * Changes in Cdecl 6.11
 
