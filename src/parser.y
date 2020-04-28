@@ -3122,7 +3122,10 @@ func_qualifier_c_type
   | Y_FINAL
   | Y_OVERRIDE
   /*
-   * GNU C allows restricted-pointer member functions:
+   * GNU C++ allows restricted-this-pointer member functions:
+   *
+   *      void S::f() __restrict__;
+   *
    * <https://gcc.gnu.org/onlinedocs/gcc/Restricted-Pointers.html>
    */
   | Y___RESTRICT__
@@ -3865,10 +3868,8 @@ type_qualifier_list_c_type
 type_qualifier_c_type
   : cv_qualifier_type
   | Y_ATOMIC_QUAL
-  | Y_RESTRICT
+  | Y_RESTRICT                          /* C only */
     {
-      //
-      // "restrict" is supported only in GNU C.
       //
       // This check has to be done now in the parser rather than later in the
       // AST since both "restrict" and "__restrict__" map to T_RESTRICT and the
@@ -3882,7 +3883,7 @@ type_qualifier_c_type
         PARSE_ABORT();
       }
     }
-  | Y___RESTRICT__
+  | Y___RESTRICT__                      /* GNU C/C++ extension */
   ;
 
 cv_qualifier_list_c_type_opt
