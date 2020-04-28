@@ -454,8 +454,33 @@ static void elaborate_error( char const *format, ... ) {
 }
 
 /**
+ * Checks whether the `typename` is OK since the type's name is a qualified
+ * name.
+ *
+ * @param ast The `c_ast` to check.
+ * @param ast_loc The source location of \a ast.
+ * @return Returns `true` only upon success.
+ */
+C_WARN_UNUSED_RESULT
+static bool typename_ok( c_ast_t const *ast, c_loc_t const *ast_loc ) {
+  assert( ast != NULL );
+  assert( ast_loc != NULL );
+
+  c_sname_t const *const sname = ast->kind == K_TYPEDEF ?
+    &ast->as.c_typedef->ast->sname :
+    &ast->sname;
+
+  if ( c_sname_count( sname ) < 2 ) {
+    print_error( ast_loc, "qualified name expected after \"%s\"", L_TYPENAME );
+    return false;
+  }
+  return true;
+}
+
+/**
  * Explains a declaration.
  *
+ * @param has_typename `true` only if the declaration includes `typename`.
  * @param align The `alignas` specifier, if any.
  * @param align_loc The source location of \a align, if any.
  * @param type_ast The type `c_ast`.
@@ -464,12 +489,17 @@ static void elaborate_error( char const *format, ... ) {
  * @return Returns `true` only upon success.
  */
 C_WARN_UNUSED_RESULT
-static bool explain_type_decl( c_alignas_t const *align,
-                               c_loc_t const *align_loc, c_ast_t *type_ast,
+static bool explain_type_decl( bool has_typename,
+                               c_alignas_t const *align,
+                               c_loc_t const *align_loc,
+                               c_ast_t *type_ast, c_loc_t const *type_loc,
                                c_ast_t *decl_ast, c_loc_t const *decl_loc ) {
   assert( type_ast != NULL );
   assert( decl_ast != NULL );
   assert( decl_loc != NULL );
+
+  if ( has_typename && !typename_ok( type_ast, type_loc ) )
+    return false;
 
   bool is_typedef = c_ast_take_typedef( type_ast );
 
@@ -808,6 +838,7 @@ static void yyerror( char const *msg ) {
   slist_t             ast_list;   /* for function arguments */
   c_ast_pair_t        ast_pair;   /* for the AST being built */
   unsigned            bitmask;    /* multipurpose bitmask (used by show) */
+  bool                flag;       /* simple flag */
   char const         *literal;    /* token literal (for new-style casts) */
   char               *name;       /* name being declared or explained */
   int                 number;     /* for array sizes */
@@ -991,7 +1022,7 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_TRUE              /* for noexcept(true) */
 %token              Y_TRY
 %token              Y_TYPEID
-%token              Y_TYPENAME
+%token  <flag>      Y_TYPENAME
 %token  <type_id>   Y_USING
 %token  <type_id>   Y_VIRTUAL
 
@@ -1184,7 +1215,7 @@ static void yyerror( char const *msg ) {
 %type   <name>      set_option_value_opt
 %type   <bitmask>   show_which_types_opt
 %type   <type_id>   static_type_opt
-%type   <bitmask>   typedef_opt
+%type   <flag>      typedef_opt typename_opt
 %type   <sname>     typedef_sname_c
 %type   <type_id>   virtual_opt
 
@@ -1662,11 +1693,32 @@ explain_c
         PARSE_ABORT();
     }
 
-  | explain alignas_specifier_c type_c_ast { type_push( $3.ast ); } decl_c_ast
+    /*
+     * Common declaration, e.g.: T x.
+     */
+  | explain type_c_ast { type_push( $2.ast ); } decl_c_ast
     {
       type_pop();
 
-      DUMP_START( "explain_c", "EXPLAIN ALIGNAS(...) type_c_ast decl_c_ast" );
+      DUMP_START( "explain_c", "EXPLAIN type_c_ast decl_c_ast" );
+      DUMP_AST( "type_c_ast", $2.ast );
+      DUMP_AST( "decl_c_ast", $4.ast );
+      DUMP_END();
+
+      if ( !explain_type_decl( false, NULL, NULL, $2.ast, &@2, $4.ast, &@4 ) )
+        PARSE_ABORT();
+    }
+
+    /*
+     * Declaration with alignas, e.g.: alignas(8) T x.
+     */
+  | explain alignas_specifier_c typename_opt
+    type_c_ast { type_push( $4.ast ); } decl_c_ast
+    {
+      type_pop();
+
+      DUMP_START( "explain_c",
+                  "EXPLAIN ALIGNAS(...) [TYPENAME] type_c_ast decl_c_ast" );
       switch ( $2.kind ) {
         case C_ALIGNAS_NONE:
           break;
@@ -1677,23 +1729,29 @@ explain_c
           DUMP_AST( "alignas_specifier_c.as.type_ast", $2.as.type_ast );
           break;
       } // switch
-      DUMP_AST( "type_c_ast", $3.ast );
-      DUMP_AST( "decl_c_ast", $5.ast );
+      DUMP_AST( "type_c_ast", $4.ast );
+      DUMP_AST( "decl_c_ast", $6.ast );
       DUMP_END();
-      if ( !explain_type_decl( &$2, &@2, $3.ast, $5.ast, &@5 ) )
+
+      if ( !explain_type_decl( $3, &$2, &@2, $4.ast, &@4, $6.ast, &@6 ) )
         PARSE_ABORT();
     }
 
-  | explain type_c_ast { type_push( $2.ast ); } decl_c_ast
+    /*
+     * Declaration using typename (without alignas), e.g.: typename T::U x.
+     * (We can't use typename_opt because it would introduce more shift/reduce
+     * conflicts.)
+     */
+  | explain Y_TYPENAME type_c_ast { type_push( $3.ast ); } decl_c_ast
     {
       type_pop();
 
-      DUMP_START( "explain_c", "EXPLAIN type_c_ast decl_c_ast" );
-      DUMP_AST( "type_c_ast", $2.ast );
-      DUMP_AST( "decl_c_ast", $4.ast );
+      DUMP_START( "explain_c", "EXPLAIN TYPENAME type_c_ast decl_c_ast" );
+      DUMP_AST( "type_c_ast", $3.ast );
+      DUMP_AST( "decl_c_ast", $5.ast );
       DUMP_END();
 
-      if ( !explain_type_decl( NULL, NULL, $2.ast, $4.ast, &@4 ) )
+      if ( !explain_type_decl( true, NULL, NULL, $3.ast, &@3, $5.ast, &@5 ) )
         PARSE_ABORT();
     }
 
@@ -2135,7 +2193,7 @@ show_which_types_opt
 /*****************************************************************************/
 
 typedef_declaration_c
-  : Y_TYPEDEF
+  : Y_TYPEDEF typename_opt
     {
       // see the comment in "explain"
       c_mode = C_GIBBERISH_TO_ENGLISH;
@@ -2143,21 +2201,25 @@ typedef_declaration_c
     type_c_ast
     {
       // see the comment in define_english about T_TYPEDEF
-      C_TYPE_ADD( &$3.ast->type_id, T_TYPEDEF, @3 );
-      type_push( $3.ast );
+      C_TYPE_ADD( &$4.ast->type_id, T_TYPEDEF, @4 );
+      type_push( $4.ast );
     }
     decl_c_ast
     {
       type_pop();
 
-      DUMP_START( "typedef_declaration_c", "TYPEDEF type_c_ast decl_c_ast" );
-      DUMP_AST( "type_c_ast", $3.ast );
-      DUMP_AST( "decl_c_ast", $5.ast );
+      DUMP_START( "typedef_declaration_c",
+                  "TYPEDEF [TYPENAME] type_c_ast decl_c_ast" );
+      DUMP_AST( "type_c_ast", $4.ast );
+      DUMP_AST( "decl_c_ast", $6.ast );
 
       c_ast_t *ast;
       c_sname_t temp_sname;
 
-      if ( $5.ast->kind == K_TYPEDEF ) {
+      if ( $2 && !typename_ok( $4.ast, &@4 ) )
+        PARSE_ABORT();
+
+      if ( $6.ast->kind == K_TYPEDEF ) {
         //
         // This is for either of the following cases:
         //
@@ -2166,9 +2228,9 @@ typedef_declaration_c
         //
         // that is: any type name followed by an existing typedef name.
         //
-        ast = $3.ast;
+        ast = $4.ast;
         if ( c_ast_sname_empty( ast ) )
-          ast->sname = c_ast_sname_dup( $5.ast->as.c_typedef->ast );
+          ast->sname = c_ast_sname_dup( $6.ast->as.c_typedef->ast );
       }
       else {
         //
@@ -2179,8 +2241,8 @@ typedef_declaration_c
         //
         // that is: any type name followed by a new name.
         //
-        ast = c_ast_patch_placeholder( $3.ast, $5.ast );
-        temp_sname = c_ast_take_name( $5.ast );
+        ast = c_ast_patch_placeholder( $4.ast, $6.ast );
+        temp_sname = c_ast_take_name( $6.ast );
         c_ast_sname_set_sname( ast, &temp_sname );
       }
 
@@ -2189,7 +2251,7 @@ typedef_declaration_c
       C_IGNORE_RV( c_ast_take_typedef( ast ) );
 
       if ( c_ast_sname_count( ast ) > 1 ) {
-        print_error( &@5,
+        print_error( &@6,
           "%s names can not be scoped; use: %s %s { %s ... }",
           L_TYPEDEF, L_NAMESPACE, c_ast_sname_scope_name( ast ), L_TYPEDEF
         );
@@ -2203,7 +2265,7 @@ typedef_declaration_c
       DUMP_AST( "typedef_declaration_c", ast );
       DUMP_END();
 
-      if ( !add_type( L_TYPEDEF, ast, &@5 ) )
+      if ( !add_type( L_TYPEDEF, ast, &@6 ) )
         PARSE_ABORT();
     }
   ;
@@ -4870,6 +4932,11 @@ to_expected
 typedef_opt
   : /* empty */                   { $$ = false; }
   | Y_TYPEDEF                     { $$ = true; }
+  ;
+
+typename_opt
+  : /* empty */                   { $$ = false; }
+  | Y_TYPENAME                    { $$ = true; }
   ;
 
 virtual_expected

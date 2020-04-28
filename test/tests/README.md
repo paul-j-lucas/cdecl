@@ -59,7 +59,7 @@ The characters are:
 + `rr` = rvalue reference
 + `rt` = `restrict`
 + `s` = `signed` or `static`
-+ `t` = `nodiscard`, `throw`, `typedef`, or unknown type
++ `t` = `nodiscard`, `throw`, `typedef`, `typename`, or unknown type
 + `u` = `maybe_unused` or `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`

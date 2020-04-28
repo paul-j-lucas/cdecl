@@ -10,7 +10,14 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 6.11.1
+* Changes in Cdecl 6.12
+
+** Added typename
+Now allowing "typename" in declarations (even though it's not needed):
+
+    struct S { typedef int I; };
+    explain typename S::I x
+    typedef typename S::I T
 
 ** Declare const/volatile user-defined conversion operators
 Can now declare const/volatile user-defined conversion operators.

@@ -1,0 +1,2 @@
+define Int of struct S as int
+define T as Int of struct S
