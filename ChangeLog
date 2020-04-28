@@ -1,3 +1,14 @@
+2020-04-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, parser.y, test/Makefile.am, typedef_tki.out,
+     typedef_ti.test, typedef_tki.test: Now allowing use of "typename".
+
+2020-04-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, parser.y: Fixed unknown type crash.
+   * NEWS, english.c, test/Makefile.am, k_typedef_i_explain_i.out,
+     k_typedef_i_explain_i.test: Print type of scope for nested types.
+
 2020-04-26  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac, c_type.c, parser.y, test/Makefile.am,
