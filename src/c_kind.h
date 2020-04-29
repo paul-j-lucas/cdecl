@@ -86,7 +86,7 @@ enum c_kind {
   K_VARIADIC                = 0x00020,  ///< Variadic (`...`) function argument.
   // "parent" kinds
   K_ARRAY                   = 0x00040,  ///< Array.
-  K_BLOCK                   = 0x00080,  ///< Block (Apple extension).
+  K_APPLE_BLOCK             = 0x00080,  ///< Block.
   K_FUNCTION                = 0x00100,  ///< Function.
   K_POINTER                 = 0x00200,  ///< Pointer.
   // "parent" kinds (C++ only)
@@ -113,11 +113,12 @@ enum c_kind {
 #define K_ANY_REFERENCE       (K_REFERENCE | K_RVALUE_REFERENCE)
 
 /**
- * Shorthand for function-like kinds: #K_BLOCK, #K_CONSTRUCTOR, #K_DESTRUCTOR,
- * #K_FUNCTION, #K_OPERATOR, #K_USER_DEF_CONVERSION, and #K_USER_DEF_LITERAL.
+ * Shorthand for function-like kinds: #K_APPLE_BLOCK, #K_CONSTRUCTOR,
+ * #K_DESTRUCTOR, #K_FUNCTION, #K_OPERATOR, #K_USER_DEF_CONVERSION, and
+ * #K_USER_DEF_LITERAL.
  */
 #define K_FUNCTION_LIKE \
-  (K_BLOCK | K_CONSTRUCTOR | K_DESTRUCTOR | K_FUNCTION | K_OPERATOR \
+  (K_APPLE_BLOCK | K_CONSTRUCTOR | K_DESTRUCTOR | K_FUNCTION | K_OPERATOR \
   | K_USER_DEF_CONVERSION | K_USER_DEF_LITERAL)
 
 /// @cond DOXYGEN_IGNORE

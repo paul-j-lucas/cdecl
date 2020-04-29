@@ -118,7 +118,7 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
       if ( ast_i->as.func.flags != ast_j->as.func.flags )
         return false;
       // FALLTHROUGH
-    case K_BLOCK:                       // Apple extension
+    case K_APPLE_BLOCK:
       // ret_ast is checked by the parent code below
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL: {
@@ -200,7 +200,7 @@ void c_ast_free( c_ast_t *ast ) {
         // be freed eventually via c_typedef_cleanup().
         break;
       case K_ARRAY:
-      case K_BLOCK:
+      case K_APPLE_BLOCK:
       case K_BUILTIN:
       case K_CONSTRUCTOR:
       case K_DESTRUCTOR:

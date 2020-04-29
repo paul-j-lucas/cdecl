@@ -172,8 +172,8 @@ static c_type_t const C_QUALIFIER_INFO[] = {
     (c_lang_lit_t[]){ { LANG_ALL, L_RVALUE_REFERENCE } } },
 
   { T_RESTRICT, LANG_MIN(C_89), L_RESTRICTED,
-    (c_lang_lit_t[]){ { LANG_C_KNR | LANG_CPP_ALL, L___RESTRICT__ },
-                      { LANG_ALL,                  L_RESTRICT     } } },
+    (c_lang_lit_t[]){ { LANG_C_KNR | LANG_CPP_ALL, L_GNU___RESTRICT__ },
+                      { LANG_ALL,                  L_RESTRICT         } } },
 
   { T_VOLATILE, LANG_MIN(C_89), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_VOLATILE } } },
@@ -190,8 +190,8 @@ static c_type_t const C_STORAGE_INFO[] = {
   { T_AUTO_STORAGE, LANG_MAX(CPP_03), L_AUTOMATIC,
     (c_lang_lit_t[]){ { LANG_ALL, L_AUTO } } },
 
-  { T_BLOCK, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L___BLOCK } } },
+  { T_APPLE_BLOCK, LANG_ALL, NULL,
+    (c_lang_lit_t[]){ { LANG_ALL, L_APPLE___BLOCK } } },
 
   { T_EXTERN, LANG_ALL, L_EXTERNAL,
     (c_lang_lit_t[]){ { LANG_ALL, L_EXTERN } } },
@@ -203,8 +203,8 @@ static c_type_t const C_STORAGE_INFO[] = {
     (c_lang_lit_t[]){ { LANG_ALL, L_STATIC } } },
 
   { T_THREAD_LOCAL, LANG_C_CPP_11_MIN, L_THREAD_LOCAL_ENG,
-    (c_lang_lit_t[]){ { LANG_MAX(CPP_03), L___THREAD     },
-                      { LANG_ALL,         L_THREAD_LOCAL } } },
+    (c_lang_lit_t[]){ { LANG_MAX(CPP_03), L_GNU___THREAD  },
+                      { LANG_ALL,         L_THREAD_LOCAL  } } },
 
   { T_TYPEDEF, LANG_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_TYPEDEF } } },
@@ -232,8 +232,8 @@ static c_type_t const C_STORAGE_INFO[] = {
     (c_lang_lit_t[]){ { LANG_ALL, L_FRIEND } } },
 
   { T_INLINE, LANG_MIN(C_89), NULL,
-    (c_lang_lit_t[]){ { LANG_C_KNR, L___INLINE__  },
-                      { LANG_ALL,   L_INLINE      } } },
+    (c_lang_lit_t[]){ { LANG_C_KNR, L_GNU___INLINE__ },
+                      { LANG_ALL,   L_INLINE         } } },
 
   { T_MUTABLE, LANG_CPP_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_MUTABLE } } },
@@ -265,8 +265,8 @@ static c_type_t const C_TYPE_INFO[] = {
     (c_lang_lit_t[]){ { LANG_ALL, L_VOID } } },
 
   { T_AUTO_TYPE, LANG_MIN(C_89), L_AUTOMATIC,
-    (c_lang_lit_t[]){ { LANG_MAX(CPP_03), L___AUTO_TYPE },
-                      { LANG_ALL,         L_AUTO        } } },
+    (c_lang_lit_t[]){ { LANG_MAX(CPP_03), L_GNU___AUTO_TYPE },
+                      { LANG_ALL,         L_AUTO            } } },
 
   { T_BOOL, LANG_MIN(C_89), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_BOOL } } },
@@ -652,7 +652,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
 
     // These are second so we get names like "static int".
     T_AUTO_STORAGE,
-    T_BLOCK,
+    T_APPLE_BLOCK,
     T_EXTERN,
     T_FRIEND,
     T_REGISTER,

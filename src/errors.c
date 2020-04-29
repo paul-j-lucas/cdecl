@@ -40,7 +40,7 @@
 #include <stdbool.h>
 
 #define T_NOT_FUNC_LIKE \
-  (T_AUTO_STORAGE | T_BLOCK | T_MUTABLE | T_REGISTER | T_THREAD_LOCAL)
+  (T_AUTO_STORAGE | T_APPLE_BLOCK | T_MUTABLE | T_REGISTER | T_THREAD_LOCAL)
 
 // local constants
 static bool const VISITOR_ERROR_FOUND     = true;
@@ -512,7 +512,7 @@ only_void:
  */
 static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & (K_BLOCK | K_FUNCTION)) != K_NONE );
+  assert( (ast->kind & (K_APPLE_BLOCK | K_FUNCTION)) != K_NONE );
   assert( opt_lang == LANG_C_KNR );
 
   for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
@@ -540,7 +540,7 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
  */
 static bool c_ast_check_func_c( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind & (K_BLOCK | K_FUNCTION)) != K_NONE );
+  assert( (ast->kind & (K_APPLE_BLOCK | K_FUNCTION)) != K_NONE );
   assert( C_LANG_IS_C() );
 
   c_type_id_t const qual_type = ast->type_id & T_MASK_QUALIFIER;
@@ -1199,7 +1199,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         return VISITOR_ERROR_FOUND;
       // FALLTHROUGH
 
-    case K_BLOCK:                       // Apple extension
+    case K_APPLE_BLOCK:
     case K_USER_DEF_LITERAL:
       if ( !c_ast_check_ret_type( ast ) )
         return VISITOR_ERROR_FOUND;
@@ -1329,7 +1329,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
       break;
     }
 
-    case K_BLOCK:                       // Apple extension
+    case K_APPLE_BLOCK:
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_FUNCTION:
@@ -1416,7 +1416,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
           L_USER_DEFINED, L_LITERAL
         );
       // FALLTHROUGH
-    case K_BLOCK:
+    case K_APPLE_BLOCK:
     case K_FUNCTION:
     case K_OPERATOR: {
       c_ast_t const *const ret_ast = ast->as.func.ret_ast;

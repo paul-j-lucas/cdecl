@@ -248,7 +248,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       // FALLTHROUGH
 
     case K_ARRAY:
-    case K_BLOCK:                       // Apple extension
+    case K_APPLE_BLOCK:
       if ( ast_type != T_NONE )         // storage class
         FPRINTF( param->gout, "%s ", c_type_name( ast_type ) );
       if ( ast->kind == K_USER_DEF_CONVERSION ) {
@@ -402,7 +402,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
   if ( parent != NULL ) {
     switch ( parent->kind ) {
       case K_ARRAY:
-      case K_BLOCK:                     // Apple extension
+      case K_APPLE_BLOCK:
       case K_CONSTRUCTOR:
       case K_DESTRUCTOR:
       case K_FUNCTION:
@@ -416,7 +416,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
       case K_POINTER_TO_MEMBER:
       case K_REFERENCE:
         switch ( ast->kind ) {
-          case K_BLOCK:                 // Apple extension
+          case K_APPLE_BLOCK:
             FPUTS( "(^", param->gout );
             break;
           default:
@@ -460,10 +460,10 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
     // We've reached the root of the AST that has the name of the thing we're
     // printing the gibberish for.
     //
-    if ( ast->kind == K_BLOCK )
+    if ( ast->kind == K_APPLE_BLOCK )
       FPUTS( "(^", param->gout );
     c_ast_gibberish_space_name( ast, param );
-    if ( ast->kind == K_BLOCK )
+    if ( ast->kind == K_APPLE_BLOCK )
       FPUTC( ')', param->gout );
   }
 
@@ -475,7 +475,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
     case K_ARRAY:
       c_ast_gibberish_array_size( ast, param );
       break;
-    case K_BLOCK:                       // Apple extension
+    case K_APPLE_BLOCK:
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_FUNCTION:

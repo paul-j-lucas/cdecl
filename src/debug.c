@@ -183,7 +183,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         INDENT_PRINT( "flags = 0x%x,\n", ast->as.func.flags );
         // FALLTHROUGH
 
-      case K_BLOCK:                     // Apple extension
+      case K_APPLE_BLOCK:
       case K_CONSTRUCTOR:
       case K_USER_DEF_LITERAL:
         PRINT_COMMA;

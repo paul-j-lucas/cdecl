@@ -84,7 +84,7 @@ _GL_INLINE_HEADER_BEGIN
 
 // storage classes
 #define T_AUTO_STORAGE        0x0000000010000000ull /**< C's `auto`.          */
-#define T_BLOCK               0x0000000020000000ull /**< Apple extension.     */
+#define T_APPLE_BLOCK         0x0000000020000000ull /**< Block.               */
 #define T_EXTERN              0x0000000040000000ull /**< `extern`             */
 #define T_MUTABLE             0x0000000080000000ull /**< `mutable`            */
 #define T_REGISTER            0x0000000100000000ull /**< `register`           */

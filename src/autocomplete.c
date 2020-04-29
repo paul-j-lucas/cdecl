@@ -88,8 +88,8 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
 //  L_AS,                               // too short
   { L_ATOMIC,             LANG_MIN(C_11)                    },
   { L_AUTO,               LANG_ALL                          },
-  { L_BLOCK,              LANG_ALL                          },
-  { L___BLOCK,            LANG_ALL                          },
+  { L_APPLE_BLOCK,        LANG_ALL                          },
+  { L_APPLE___BLOCK,      LANG_ALL                          },
   { L_BOOL,               LANG_MIN(C_99)                    },
   { L_CARRIES_DEPENDENCY, LANG_MIN(CPP_11)                  },
   { L_CAST,               LANG_ALL                          },

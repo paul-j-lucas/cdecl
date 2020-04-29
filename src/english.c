@@ -132,7 +132,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       FPRINTF( eout, "%s ", L_OF );
       break;
 
-    case K_BLOCK:                       // Apple extension
+    case K_APPLE_BLOCK:
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_FUNCTION:

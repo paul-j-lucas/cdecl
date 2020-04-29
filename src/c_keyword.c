@@ -138,12 +138,6 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L__NORETURN,        Y__NORETURN,        T_NORETURN,     LANG_MIN(C_11)    },
   { L__STATIC_ASSERT,   Y__STATIC_ASSERT,   T_NONE,         LANG_MIN(C_11)    },
 
-  // GNU C extensions
-  { L___AUTO_TYPE,      Y_AUTO_TYPE,        T_AUTO_TYPE,    LANG_MIN(C_89)    },
-  { L___INLINE__,       Y_INLINE,           T_INLINE,       LANG_MIN(C_89)    },
-  { L___RESTRICT__,     Y___RESTRICT__,     T_RESTRICT,     LANG_MIN(C_89)    },
-  { L___THREAD,         Y_THREAD_LOCAL,     T_THREAD_LOCAL, LANG_MIN(C_89)    },
-
   // C++
   { L_CATCH,            Y_CATCH,            T_NONE,         LANG_CPP_ALL      },
   { L_CLASS,            Y_CLASS,            T_CLASS,        LANG_CPP_ALL      },
@@ -209,8 +203,14 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_XOR,              Y_CIRC,             T_NONE,         LANG_ALL          },
   { L_XOR_EQ,           Y_CIRC_EQ,          T_NONE,         LANG_ALL          },
 
-  // Apple extension    
-  { L___BLOCK,          Y___BLOCK,          T_BLOCK,        LANG_ALL          },
+  // GNU extensions
+  { L_GNU___AUTO_TYPE,  Y_AUTO_TYPE,        T_AUTO_TYPE,    LANG_MIN(C_89)    },
+  { L_GNU___INLINE__,   Y_INLINE,           T_INLINE,       LANG_MIN(C_89)    },
+  { L_GNU___RESTRICT__, Y_GNU___RESTRICT__, T_RESTRICT,     LANG_MIN(C_89)    },
+  { L_GNU___THREAD,     Y_THREAD_LOCAL,     T_THREAD_LOCAL, LANG_MIN(C_89)    },
+
+  // Apple extensions
+  { L_APPLE___BLOCK,    Y_APPLE___BLOCK,    T_APPLE_BLOCK,  LANG_ALL          },
 
   { NULL,               0,                  T_NONE,         LANG_NONE         }
 };

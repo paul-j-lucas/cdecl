@@ -208,7 +208,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
         c_ast_set_parent( func_ast, ast );
         // FALLTHROUGH
 
-      case K_BLOCK:                   // Apple extension
+      case K_APPLE_BLOCK:
         c_ast_set_parent( ret_ast, func_ast );
         return ast;
 

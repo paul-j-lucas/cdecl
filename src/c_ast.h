@@ -163,7 +163,7 @@ struct c_array {
  * @note Members are laid out in the same order as `c_func`: this is taken
  * advantage of.
  */
-struct c_block {
+struct c_apple_block {
   c_ast_t    *ret_ast;                  ///< Return type.
   slist_t     args;                     ///< Block argument(s), if any.
 };

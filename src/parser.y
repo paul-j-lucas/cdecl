@@ -863,7 +863,6 @@ static void yyerror( char const *msg ) {
 %token              Y_ALL
 %token              Y_ARRAY
 %token              Y_AS
-%token              Y_BLOCK             /* Apple: English for '^' */
 %token              Y_BYTES
 %token              Y_COMMANDS
 %token              Y_DYNAMIC
@@ -1026,9 +1025,6 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_USING
 %token  <type_id>   Y_VIRTUAL
 
-                    /* GNU C extensions */
-%token  <type_id>   Y___RESTRICT__
-
                     /* C++11 */
 %token              Y_LBRACKET2   "[["  /* for attribute specifiers */
 %token              Y_RBRACKET2   "]]"  /* for attribute specifiers */
@@ -1066,8 +1062,14 @@ static void yyerror( char const *msg ) {
 %token  <oper_id>   Y_LESS_EQ_GREATER "<=>"
 %token              Y_REQUIRES
 
+                    /* GNU extensions */
+%token  <type_id>   Y_GNU___RESTRICT__
+
+                    /* Apple extensions */
+%token  <type_id>   Y_APPLE___BLOCK     /* __block storage class */
+%token              Y_APPLE_BLOCK       /* English for '^' */
+
                     /* miscellaneous */
-%token  <type_id>   Y___BLOCK           /* Apple: block storage class */
 %token              Y_END
 %token              Y_ERROR
 %token  <name>      Y_HYPHENATED_NAME
@@ -1503,7 +1505,7 @@ storage_class_list_english_type_opt
 storage_class_english_type
   : attribute_english_type
   | Y_AUTO_STORAGE
-  | Y___BLOCK                           /* Apple extension */
+  | Y_APPLE___BLOCK
   | Y_CONSTEVAL
   | Y_CONSTEXPR
   | Y_DEFAULT
@@ -2434,7 +2436,7 @@ length_opt
   ;
 
 block_decl_english_ast                  /* Apple extension */
-  : Y_BLOCK paren_decl_list_english_opt returning_english_ast_opt
+  : Y_APPLE_BLOCK paren_decl_list_english_opt returning_english_ast_opt
     {
       DUMP_START( "block_decl_english_ast",
                   "BLOCK paren_decl_list_english_opt "
@@ -2443,7 +2445,7 @@ block_decl_english_ast                  /* Apple extension */
       DUMP_AST_LIST( "paren_decl_list_english_opt", $2 );
       DUMP_AST( "returning_english_ast_opt", $3.ast );
 
-      $$.ast = c_ast_new_gc( K_BLOCK, &@$ );
+      $$.ast = c_ast_new_gc( K_APPLE_BLOCK, &@$ );
       $$.target_ast = NULL;
       $$.ast->type_id = qualifier_peek();
       c_ast_set_parent( $3.ast, $$.ast );
@@ -2971,7 +2973,7 @@ block_decl_c_ast                        /* Apple extension */
       // A block AST has to be the type inherited attribute for decl_c_ast so
       // we have to create it here.
       //
-      type_push( c_ast_new_gc( K_BLOCK, &@$ ) );
+      type_push( c_ast_new_gc( K_APPLE_BLOCK, &@$ ) );
     }
     type_qualifier_list_c_type_opt decl_c_ast ')' '(' arg_list_c_ast_opt ')'
     {
@@ -3128,7 +3130,7 @@ func_qualifier_c_type
    *
    * <https://gcc.gnu.org/onlinedocs/gcc/Restricted-Pointers.html>
    */
-  | Y___RESTRICT__
+  | Y_GNU___RESTRICT__
   ;
 
 func_ref_qualifier_c_type_opt
@@ -3878,12 +3880,12 @@ type_qualifier_c_type
       if ( C_LANG_IS_CPP() ) {
         print_error( &@1,
           "\"%s\" not supported in %s; use \"%s\" instead",
-          L_RESTRICT, C_LANG_NAME(), L___RESTRICT__
+          L_RESTRICT, C_LANG_NAME(), L_GNU___RESTRICT__
         );
         PARSE_ABORT();
       }
     }
-  | Y___RESTRICT__                      /* GNU C/C++ extension */
+  | Y_GNU___RESTRICT__                  /* GNU C/C++ extension */
   ;
 
 cv_qualifier_list_c_type_opt
@@ -3911,7 +3913,7 @@ cv_qualifier_type
 storage_class_c_type
   : attribute_specifier_list_c_type
   | Y_AUTO_STORAGE
-  | Y___BLOCK                           /* Apple extension */
+  | Y_APPLE___BLOCK
   | Y_CONSTEVAL
   | Y_CONSTEXPR
   | Y_EXPLICIT
@@ -4083,7 +4085,7 @@ block_cast_c_ast                        /* Apple extension */
       // A block AST has to be the type inherited attribute for cast_c_ast_opt
       // so we have to create it here.
       //
-      type_push( c_ast_new_gc( K_BLOCK, &@$ ) );
+      type_push( c_ast_new_gc( K_APPLE_BLOCK, &@$ ) );
     }
     type_qualifier_list_c_type_opt cast_c_ast_opt ')' '(' arg_list_c_ast_opt ')'
     {

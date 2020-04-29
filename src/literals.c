@@ -31,7 +31,6 @@ char const L_ALL[]                    = "all";
 char const L_ALT_TOKENS[]             = "alt-tokens";
 char const L_ARRAY[]                  = "array";
 char const L_AS[]                     = "as";
-char const L_BLOCK[]                  = "block";    // Apple: English for '^'
 char const L_BYTES[]                  = "bytes";
 char const L_CAST[]                   = "cast";
 char const L_COMMAND[]                = "command";
@@ -233,14 +232,15 @@ char const L_OR_EQ[]                  = "or_eq";
 char const L_XOR[]                    = "xor";
 char const L_XOR_EQ[]                 = "xor_eq";
 
-// GNU C extensions
-char const L___AUTO_TYPE[]            = "__auto_type";
-char const L___INLINE__[]             = "__inline__";
-char const L___RESTRICT__[]           = "__restrict__";
-char const L___THREAD[]               = "__thread";
+// GNU extensions
+char const L_GNU___AUTO_TYPE[]        = "__auto_type";
+char const L_GNU___INLINE__[]         = "__inline__";
+char const L_GNU___RESTRICT__[]       = "__restrict__";
+char const L_GNU___THREAD[]           = "__thread";
 
 // Apple extensions
-char const L___BLOCK[]                = "__block";
+char const L_APPLE___BLOCK[]          = "__block";
+char const L_APPLE_BLOCK[]            = "block";    // English for '^'
 
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

@@ -188,7 +188,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_AS,             TOKEN( Y_AS )                   },
   { L_ATOMIC,         C_SYN( L__ATOMIC,       false ) },
   { L_AUTOMATIC,      C_SYN( L_AUTO,          false ) },
-  { L_BLOCK,          TOKEN( Y_BLOCK )                },  // Apple extension
+  { L_APPLE_BLOCK,    TOKEN( Y_APPLE_BLOCK )          },
   { L__BOOL,          C_SYN( L_BOOL,          true  ) },
   { L_BYTES,          TOKEN( Y_BYTES )                },
   { L_CAST,           TOKEN( Y_CAST )                 },
@@ -721,9 +721,9 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                   if ( cdk->c_keyword_synonym == L_AUTO && C_LANG_IS_C() ) {
                     //
                     // When converting "automatic" in English to C, convert it
-                    // to GNU C's "__auto_type".
+                    // to GNU's "__auto_type".
                     //
-                    lexer_token = L___AUTO_TYPE;
+                    lexer_token = L_GNU___AUTO_TYPE;
                   }
                   else if ( cdk->c_keyword_synonym == L__NORETURN &&
                             C_LANG_IS_CPP() ) {
@@ -756,9 +756,9 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                             C_LANG_IS_CPP() ) {
                     //
                     // When converting "restricted" in English to C++, convert
-                    // it to GNU C's "__restrict__".
+                    // it to GNU's "__restrict__".
                     //
-                    lexer_token = L___RESTRICT__;
+                    lexer_token = L_GNU___RESTRICT__;
                   }
 
                   else {

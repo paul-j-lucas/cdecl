@@ -40,7 +40,6 @@ extern char const L_ALL[];
 extern char const L_ALT_TOKENS[];
 extern char const L_ARRAY[];
 extern char const L_AS[];
-extern char const L_BLOCK[];                // Apple: Engligh for '^'
 extern char const L_BYTES[];
 extern char const L_CAST[];
 extern char const L_COMMAND[];              // synonym for "commands"
@@ -242,14 +241,15 @@ extern char const L_OR_EQ[];                // |=
 extern char const L_XOR[];                  // ^
 extern char const L_XOR_EQ[];               // ^=
 
-// GNU C extensions
-extern char const L___AUTO_TYPE[];
-extern char const L___INLINE__[];
-extern char const L___RESTRICT__[];
-extern char const L___THREAD[];
+// GNU extensions
+extern char const L_GNU___AUTO_TYPE[];
+extern char const L_GNU___INLINE__[];
+extern char const L_GNU___RESTRICT__[];
+extern char const L_GNU___THREAD[];
 
 // Apple extensions
-extern char const L___BLOCK[];              // storage class
+extern char const L_APPLE___BLOCK[];        // storage class
+extern char const L_APPLE_BLOCK[];          // Engligh for '^'
 
 ///////////////////////////////////////////////////////////////////////////////
 
