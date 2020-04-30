@@ -74,9 +74,14 @@ bool                is_input_a_tty;     // is our input from a tty?
 char const         *me;                 // program name
 
 // extern functions
+C_WARN_UNUSED_RESULT
 extern bool         parse_string( char const*, size_t );
+
 extern void         parser_cleanup( void );
+
+C_WARN_UNUSED_RESULT
 extern int          yyparse( void );
+
 extern void         yyrestart( FILE* );
 
 // local functions
