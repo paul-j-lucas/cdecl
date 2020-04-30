@@ -194,8 +194,11 @@ static char const *const CDECL_OPTIONS[] = {
  "nodebug",
 #endif /* ENABLE_CDECL_DEBUG */
    "east-const",
+ "noeast-const",
    "explain-by-default",
+ "noexplain-by-default",
    "explicit-int",
+ "noexplicit-int",
  "nographs",
  "digraphs",
 "trigraphs",
