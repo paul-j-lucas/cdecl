@@ -53,9 +53,9 @@
  * @param opt_value The option value, if any.
  * @param opt_value_loc The location of \a opt_value.
  */
-typedef void (*set_opt_fn_t)( bool enabled, c_loc_t const *opt_name_loc,
-                              char const *opt_value,
-                              c_loc_t const *opt_value_loc );
+typedef void (*set_option_fn_t)( bool enabled, c_loc_t const *opt_name_loc,
+                                 char const *opt_value,
+                                 c_loc_t const *opt_value_loc );
 
 /**
  * cdecl `set` option type.
@@ -74,7 +74,7 @@ struct set_option {
   char const       *name;               ///< Option name.
   set_option_type_t type;               ///< Option type.
   bool              takes_value;        ///< Takes a value?
-  set_opt_fn_t      set_fn;             ///< Set function.
+  set_option_fn_t   set_fn;             ///< Set function.
 };
 typedef struct set_option set_option_t;
 
