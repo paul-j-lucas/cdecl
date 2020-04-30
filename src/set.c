@@ -297,27 +297,24 @@ static void set_yydebug( bool enabled, c_loc_t const *opt_name_loc,
 #endif /* YYDEBUG */
 
 /**
- * Compares strings ignoring hyphens.
+ * Compares strings for at most \a n characters ignoring hyphens for equality.
  *
  * @param s1 The first string.
  * @param s2 The second string.
  * @param n The maximum number of characters to check.
- * @return Returns an integer less than, equal to, or greater than 0 depending
- * upon whether \a s1 is less than, equal to, or greater than \a s2.
+ * @return Returns `true` only if \a s1 equals \a s2 for \a n characters.
  */
-static int strn_nohyphen_cmp( char const *s1, char const *s2, size_t n ) {
+static bool strn_nohyphen_eq( char const *s1, char const *s2, size_t n ) {
   while ( n-- > 0 ) {
     if ( *s1 == '-' )
       ++s1;
     else if ( *s2 == '-' )
       ++s2;
-    else if ( (int)(uint8_t)*s1 != (int)(uint8_t)*s2 )
-      break;
-    else
-      (void)++s1, (void)++s2;
+    else if ( *s1 != *s2 )
+      return false;
+    (void)++s1, (void)++s2;
   } // while
-
-  return (int)(uint8_t)*s1 - (int)(uint8_t)*s2;
+  return true;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -375,7 +372,7 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
 
   set_option_t const *found_opt = NULL;
   for ( set_option_t const *opt = SET_OPTIONS; opt->name != NULL; ++opt ) {
-    if ( strn_nohyphen_cmp( opt->name, opt_name, opt_name_len ) == 0 ) {
+    if ( strn_nohyphen_eq( opt->name, opt_name, opt_name_len ) ) {
       if ( found_opt != NULL ) {
         print_error( opt_name_loc,
           "\"%s\": ambiguous set option; could be \"%s%s\" or \"%s%s\"",
