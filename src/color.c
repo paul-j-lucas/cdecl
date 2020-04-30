@@ -132,6 +132,7 @@ static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
  *
  * @sa http://en.wikipedia.org/wiki/ANSI_escape_code
  */
+C_WARN_UNUSED_RESULT
 static bool parse_sgr( char const *sgr_color ) {
   if ( sgr_color == NULL )
     return false;
