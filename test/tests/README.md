@@ -22,6 +22,7 @@ Test files are as follows:
 + `reinterpret_cast_*` = A reinterpret cast test.
 + `*_udc_*`            = A user-defined conversion test.
 + `*_udl_*`            = A user-defined literal test.
+| `*-ec`               = An "east const" test.
 + `*-`*lang*`*`        = A test using *lang* explicitly.
 
 Within each test, sequences of characters are used to denote a C/C++

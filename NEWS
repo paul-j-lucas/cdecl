@@ -12,7 +12,14 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 6.12
 
-** Added typename
+** East const
+New -E/--east-const command-line and east-const set options to use "east const"
+in gibberish:
+
+    cdecl> declare x as const int
+    int const x;
+
+** Typename
 Now allowing "typename" in declarations (even though it's not needed):
 
     struct S { typedef int I; };

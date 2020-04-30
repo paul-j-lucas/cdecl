@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -E @ declare x as pointer to const int @ 0

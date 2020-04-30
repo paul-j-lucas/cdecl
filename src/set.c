@@ -95,6 +95,7 @@ static void print_options( void ) {
 #ifdef ENABLE_CDECL_DEBUG
   printf( "  %sdebug\n", maybe_no( opt_debug ) );
 #endif /* ENABLE_CDECL_DEBUG */
+  printf( "  %seast-const\n", maybe_no( opt_east_const ) );
   printf( "  %sexplain-by-default\n", maybe_no( opt_explain ) );
 
   if ( any_explicit_int() ) {
@@ -165,6 +166,23 @@ static void set_digraphs( bool enabled, c_loc_t const *opt_name_loc,
   (void)opt_value;
   (void)opt_value_loc;
   opt_graph = enabled ? C_GRAPH_DI : C_GRAPH_NONE;
+}
+
+/**
+ * Sets the east-const option.
+ *
+ * @param enabled True if enabled.
+ * @param opt_name_loc The location of the option name.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
+ */
+static void set_east_const( bool enabled, c_loc_t const *opt_name_loc,
+                            char const *opt_value,
+                            c_loc_t const *opt_value_loc ) {
+  (void)opt_name_loc;
+  (void)opt_value;
+  (void)opt_value_loc;
+  opt_east_const = enabled;
 }
 
 /**
@@ -360,6 +378,7 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
 #endif /* ENABLE_CDECL_DEBUG */
     { "digraphs",           SET_AFF_ONLY, false,  &set_digraphs           },
     { "graphs",             SET_NEG_ONLY, false,  &set_digraphs           },
+    { "east-const",         SET_TOGGLE,   false,  &set_east_const         },
     { "explain-by-default", SET_TOGGLE,   false,  &set_explain_by_default },
     { "explicit-int",       SET_TOGGLE,   true,   &set_explicit_int       },
     { "lang",               SET_AFF_ONLY, true,   &set_lang               },

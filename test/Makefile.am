@@ -89,7 +89,12 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_c_al0.test \
 	tests/declare_c_al8.test \
 	tests/declare_c_alpv.test \
+	tests/declare_ci-ec.test \
 	tests/declare_ci.test \
+	tests/declare_ck-ec.test \
+	tests/declare_ck.test \
+	tests/declare_ck2-ec.test \
+	tests/declare_ck2.test \
 	tests/declare_constant.test \
 	tests/declare_cpa3cpa5i.test \
 	tests/declare_cpa3pa5i.test \
@@ -102,6 +107,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_cppi.test \
 	tests/declare_cu.test \
 	tests/declare_cvpi.test \
+	tests/declare_cz-ec.test \
 	tests/declare_cz.test \
 	tests/declare_e.test \
 	tests/declare_ea2i.test \
@@ -149,6 +155,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_pa9i.test \
 	tests/declare_pai-01.test \
 	tests/declare_pbv_pi.test \
+	tests/declare_pci-ec.test \
 	tests/declare_pcpi.test \
 	tests/declare_pfv_pi.test \
 	tests/declare_pfx_i.test \

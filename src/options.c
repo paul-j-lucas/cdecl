@@ -55,6 +55,7 @@ char const         *opt_conf_file;
 #ifdef ENABLE_CDECL_DEBUG
 bool                opt_debug;
 #endif /* ENABLE_CDECL_DEBUG */
+bool                opt_east_const;
 bool                opt_explain;
 char const         *opt_fin;
 char const         *opt_fout;
@@ -102,6 +103,7 @@ static struct option const LONG_OPTS[] = {
   { "debug",        no_argument,        NULL, 'd' },
 #endif /* ENABLE_CDECL_DEBUG */
   { "explain",      no_argument,        NULL, 'e' },
+  { "east-const",   no_argument,        NULL, 'E' },
   { "file",         required_argument,  NULL, 'f' },
   { "help",         no_argument,        NULL, 'h' },
   { "interactive",  no_argument,        NULL, 'i' },
@@ -122,7 +124,7 @@ static struct option const LONG_OPTS[] = {
 /**
  * Short options.
  */
-static char const   SHORT_OPTS[] = "23ac:Cef:iI:k:o:pstvx:"
+static char const   SHORT_OPTS[] = "23ac:CeEf:iI:k:o:pstvx:"
 #ifdef ENABLE_CDECL_DEBUG
   "d"
 #endif /* ENABLE_CDECL_DEBUG */
@@ -373,6 +375,7 @@ static void parse_options( int argc, char const *argv[] ) {
       case 'd': opt_debug       = true;                           break;
 #endif /* ENABLE_CDECL_DEBUG */
       case 'e': opt_explain     = true;                           break;
+      case 'E': opt_east_const  = true;                           break;
       case 'f': opt_fin         = optarg;                         break;
    // case 'h': usage();        // default case handles this
       case 'i': opt_interactive = true;                           break;
@@ -433,6 +436,7 @@ static void usage( void ) {
 "  --debug         (-d)  Enable debug output.\n"
 #endif /* ENABLE_CDECL_DEBUG */
 "  --digraphs      (-2)  Print digraphs.\n"
+"  --east-const    (-E)  Print in \"east const\" form.\n"
 "  --explain       (-e)  Assume \"explain\" when no other command is given.\n"
 "  --file=FILE     (-f)  Read from this file [default: stdin].\n"
 "  --help          (-h)  Print this help and exit.\n"

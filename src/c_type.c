@@ -681,6 +681,12 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
   };
   C_TYPE_NAME_CAT( &name, type_id, C_STORAGE_CLASS, is_error, ' ', &space );
 
+  c_type_id_t east_cv_type = T_NONE;
+  if ( opt_east_const ) {
+    east_cv_type = type_id & (T_CONST | T_VOLATILE);
+    type_id &= ~(T_CONST | T_VOLATILE);
+  }
+
   static c_type_id_t const C_QUALIFIER[] = {
     T_CONST,
     T_RESTRICT,
@@ -724,6 +730,9 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     T_CLASS,
   };
   C_TYPE_NAME_CAT( &name, type_id, C_TYPE, is_error, ' ', &space );
+
+  if ( east_cv_type != T_NONE )
+    C_TYPE_NAME_CAT( &name, east_cv_type, C_QUALIFIER, is_error, ' ', &space );
 
   // Really special cases.
   if ( (type_id & T_NAMESPACE) != T_NONE )

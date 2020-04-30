@@ -176,7 +176,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
   assert( param != NULL );
 
   c_type_id_t ast_type        = ast->type_id;
-  c_type_id_t cv_qual_type    = T_NONE;
+  c_type_id_t cv_type         = T_NONE;
   bool        is_default      = false;
   bool        is_deleted      = false;
   bool        is_final        = false;
@@ -210,7 +210,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       // These things aren't printed as part of the type beforehand, so strip
       // them out of the type here, but print them after the arguments.
       //
-      cv_qual_type    = (ast_type & T_MASK_QUALIFIER);
+      cv_type         = (ast_type & T_MASK_QUALIFIER);
       is_final        = (ast_type & T_FINAL) != T_NONE;
       is_noexcept     = (ast_type & T_NOEXCEPT) != T_NONE;
       is_override     = (ast_type & T_OVERRIDE) != T_NONE;
@@ -266,8 +266,8 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         else
           c_ast_gibberish_postfix( ast, param );
       }
-      if ( cv_qual_type != T_NONE )
-        FPRINTF( param->gout, " %s", c_type_name( cv_qual_type ) );
+      if ( cv_type != T_NONE )
+        FPRINTF( param->gout, " %s", c_type_name( cv_type ) );
       if ( ref_qual_type != T_NONE )
         FPUTS( (ref_qual_type & T_REFERENCE) ? " &" : " &&", param->gout );
       if ( is_noexcept )
@@ -303,10 +303,20 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         //
         ast_type &= ~(T_STRUCT | T_CLASS);
       }
+
+      if ( opt_east_const ) {
+        cv_type = ast_type & (T_CONST | T_VOLATILE);
+        ast_type &= ~(T_CONST | T_VOLATILE);
+      }
+
       FPRINTF( param->gout,
         "%s %s", c_type_name( ast_type ),
         c_sname_full_name( &ast->as.ecsu.ecsu_sname )
       );
+
+      if ( cv_type != T_NONE )
+        FPRINTF( param->gout, " %s", c_type_name( cv_type ) );
+
       c_ast_gibberish_space_name( ast, param );
       g_param_leaf( param, ast );
       break;
@@ -365,11 +375,13 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       break;
 
     case K_TYPEDEF:
-      if ( ast_type != T_TYPEDEF_TYPE )
+      if ( !opt_east_const && ast_type != T_TYPEDEF_TYPE )
         FPRINTF( param->gout, "%s ", c_type_name( ast_type ) );
       FPRINTF( param->gout,
         "%s", c_ast_sname_full_or_local( ast->as.c_typedef->ast, param )
       );
+      if ( opt_east_const && ast_type != T_TYPEDEF_TYPE )
+        FPRINTF( param->gout, " %s", c_type_name( ast_type ) );
       c_ast_gibberish_space_name( ast, param );
       g_param_leaf( param, ast );
       break;
