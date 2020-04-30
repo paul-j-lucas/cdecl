@@ -49,7 +49,9 @@
  * The signature for a Set option function.
  *
  * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
+ * @param opt_name_loc The location of the option token.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
  */
 typedef void (*set_opt_fn_t)( bool enabled, c_loc_t const *opt_name_loc,
                               char const *opt_value,
