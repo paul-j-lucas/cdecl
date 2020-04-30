@@ -158,7 +158,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_STRUCT,             LANG_ALL                          },
 //  L_TO,                               // too short
   { L_THREAD_LOCAL,       LANG_C_MIN(11) | LANG_MIN(CPP_11) },
-  { L_THROW,              LANG_CPP_ALL                      },
+  { L_THROW,              LANG_CPP_MAX(17)                  },
   { L_TRUE,               LANG_CPP_ALL                      },
 //{ L_TYPEDEF,                          // handled in CDECL_COMMANDS
   { L_UNION,              LANG_ALL                          },

@@ -1427,6 +1427,11 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
           L_NODISCARD, c_kind_name( ast->kind ), L_VOID
         );
       }
+      if ( (ast->type_id & T_THROW) != T_NONE && opt_lang >= LANG_CPP_11 )
+        print_warning( &ast->loc,
+          "\"%s\" is deprecated in %s", L_THROW, C_LANG_NAME()
+        );
+
       for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
         C_IGNORE_RV(
           c_ast_check_visitor(

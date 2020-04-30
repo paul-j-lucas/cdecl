@@ -159,7 +159,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_STATIC_CAST,      Y_STATIC_CAST,      T_NONE,         LANG_CPP_ALL      },
   { L_TEMPLATE,         Y_TEMPLATE,         T_NONE,         LANG_CPP_ALL      },
   { L_THIS,             Y_THIS,             T_NONE,         LANG_CPP_ALL      },
-  { L_THROW,            Y_THROW,            T_THROW,        LANG_CPP_ALL      },
+  { L_THROW,            Y_THROW,            T_THROW,        LANG_CPP_MAX(17)  },
   { L_TRUE,             Y_TRUE,             T_NOEXCEPT,     LANG_CPP_ALL      },
   { L_TRY,              Y_TRY,              T_NONE,         LANG_CPP_ALL      },
   { L_TYPEID,           Y_TYPEID,           T_NONE,         LANG_CPP_ALL      },

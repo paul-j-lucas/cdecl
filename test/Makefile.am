@@ -1170,7 +1170,7 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_ri.test \
 	tests/explain_rrf_v.test \
 	tests/explain_sxi.test \
-	tests/explain_tf_v.test \
+	tests/explain_tf_v-c++17.test \
 	tests/explain_uf_v.test \
 	tests/explain_ui.test \
 	tests/explain_using_a3i.test \
@@ -1218,6 +1218,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_smi.test \
 	tests/explain_srf_v.test \
 	tests/explain_srrf_v.test \
+	tests/explain_tf_v.test \
 	tests/explain_unknown_attribute.test \
 	tests/explain_v+f_v.test
 

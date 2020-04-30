@@ -79,13 +79,16 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_MASK_CPP 0xFF00u           /**< C++ languages bitmask. */
 
 /** Maximum allowed language, C & C++. */
-#define LANG_MAX(L)   ((LANG_ ## L) | ((LANG_ ## L) - 1u))
+#define LANG_MAX(L)               ((LANG_ ## L) | ((LANG_ ## L) - 1u))
 
 /** Minimum allowed language, C & C++. */
-#define LANG_MIN(L)   (~((LANG_ ## L) - 1u))
+#define LANG_MIN(L)               (~((LANG_ ## L) - 1u))
 
 /** Minimum allowed language, C only. */
-#define LANG_C_MIN(L) (LANG_MIN( C_ ## L ) & LANG_MASK_C)
+#define LANG_C_MIN(L)             (LANG_MIN( C_ ## L ) & LANG_MASK_C)
+
+/* Maximum allowed laguage, C++ only. */
+#define LANG_CPP_MAX(L)           (LANG_MAX( CPP_ ## L ) & LANG_MASK_CPP)
 
 /**
  * A mapping between a language name and its corresponding `c_lang_id_t`.
