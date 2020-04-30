@@ -1,3 +1,21 @@
+2020-04-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, autocomplete.c, c_type.c, gibberish.c, help.c, options.c,
+     options.h, set.c, test/Makefile.am, declare_ci-ec.out, declare_ck-ec.out,
+     declare_ck.out, declare_ck2-ec.out, declare_ck2.out, declare_cz-ec.out,
+     declare_pci-ec.out, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out, set.out,
+     set_options.out, declare_ci-ec.test, declare_ck-ec.test, declare_ck.test,
+     declare_ck2-ec.test, declare_ck2.test, declare_cz-ec.test,
+     declare_pci-ec.test: Added support for east-const.
+   * set.c: s/set_opt_fn_t/set_option_fn_t/
+   * set.c: Comment fix.
+   * set.c: Improved set option matching.
+   * autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c, c_keyword.c, c_kind.c,
+     c_kind.h, c_type.c, c_type.h, debug.c, english.c, errors.c, gibberish.c,
+     lexer.l, literals.c, literals.h, parser.y, typedefs.h: Renamed all
+     extension symbols to include either APPLE or GNU.
+
 2020-04-28  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac, parser.y, test/Makefile.am, typedef_tki.out,
