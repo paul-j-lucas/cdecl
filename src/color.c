@@ -95,7 +95,8 @@ static color_cap_t const COLOR_CAPS[] = {
 };
 
 // local functions
-C_WARN_UNUSED_RESULT static bool parse_sgr( char const* );
+C_WARN_UNUSED_RESULT
+static bool parse_sgr( char const* );
 
 ////////// local functions ////////////////////////////////////////////////////
 
