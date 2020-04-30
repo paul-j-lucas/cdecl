@@ -126,7 +126,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_INLINE,             LANG_MIN(C_99)                    },
   { L_INT,                LANG_ALL                          },
 //{ L_INTO,                             // special case (see below)
-  { L_LENGTH,             LANG_MIN(C_99) & ~LANG_CPP_ALL    },
+  { L_LENGTH,             LANG_C_MIN(99)                    },
   { L_LITERAL,            LANG_MIN(CPP_11)                  },
   { L_LONG,               LANG_ALL                          },
   { L_MAYBE_UNUSED,       LANG_MIN(CPP_11)                  },
@@ -147,7 +147,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_REGISTER,           LANG_ALL                          },
 //  L_REINTERPRET,                      // handled in CDECL_COMMANDS
   { L_REINTERPRET_CAST,   LANG_CPP_ALL                      },
-  { L_RESTRICT,           LANG_MIN(C_89) & ~LANG_CPP_ALL    },
+  { L_RESTRICT,           LANG_C_MIN(89)                    },
   { L_RETURNING,          LANG_ALL                          },
   { L_RVALUE,             LANG_MIN(CPP_11)                  },
   { L_SCOPE,              LANG_CPP_ALL                      },
@@ -165,7 +165,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_UNSIGNED,           LANG_ALL                          },
   { L_USER_DEFINED,       LANG_CPP_ALL                      },
 //{ L_USING,                            // handled in CDECL_COMMANDS
-  { L_VARIABLE,           LANG_MIN(C_99) & ~LANG_CPP_ALL    },
+  { L_VARIABLE,           LANG_C_MIN(99)                    },
   { L_VIRTUAL,            LANG_CPP_ALL                      },
   { L_VOID,               LANG_MIN(C_89)                    },
   { L_VOLATILE,           LANG_MIN(C_89)                    },
