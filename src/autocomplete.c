@@ -60,6 +60,9 @@ typedef struct ac_keyword ac_keyword_t;
  * Subset of cdecl keywords that are commands.
  */
 static ac_keyword_t const CDECL_COMMANDS[] = {
+  //
+  // If this array is modified, also check ARGV_COMMANDS[] in is_command().
+  //
   { L_CAST,         LANG_ALL          },
   { L_CONST,        LANG_CPP_ALL      },// const cast ...
   { L_DECLARE,      LANG_ALL          },
@@ -83,7 +86,6 @@ static ac_keyword_t const CDECL_COMMANDS[] = {
  * Subset of cdecl keywords that are completable.
  */
 static ac_keyword_t const CDECL_KEYWORDS[] = {
-  { L_ALT_TOKENS,         LANG_ALL                          },
   { L_ARRAY,              LANG_ALL                          },
 //  L_AS,                               // too short
   { L_ATOMIC,             LANG_MIN(C_11)                    },
@@ -177,6 +179,8 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
  * cdecl options.
  */
 static char const *const CDECL_OPTIONS[] = {
+   "alt-tokens",
+ "noalt-tokens",
    "c89",
    "c95",
    "c99",
