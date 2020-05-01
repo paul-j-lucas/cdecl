@@ -484,6 +484,7 @@ static bool typename_ok( c_ast_t const *ast, c_loc_t const *ast_loc ) {
  * @param align The `alignas` specifier, if any.
  * @param align_loc The source location of \a align, if any.
  * @param type_ast The type `c_ast`.
+ * @param type_loc The source location of \a type_ast.
  * @param decl_ast The declaration `c_ast`.
  * @param decl_loc The source location of \a decl_ast.
  * @return Returns `true` only upon success.
