@@ -37,7 +37,6 @@
 // english
 extern char const L_ALIGNED[];
 extern char const L_ALL[];
-extern char const L_ALT_TOKENS[];
 extern char const L_ARRAY[];
 extern char const L_AS[];
 extern char const L_BYTES[];

@@ -28,7 +28,6 @@
 // english
 char const L_ALIGNED[]                = "aligned";
 char const L_ALL[]                    = "all";
-char const L_ALT_TOKENS[]             = "alt-tokens";
 char const L_ARRAY[]                  = "array";
 char const L_AS[]                     = "as";
 char const L_BYTES[]                  = "bytes";
