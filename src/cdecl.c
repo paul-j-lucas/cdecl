@@ -154,6 +154,10 @@ static bool is_command( char const *s, c_command_t command_type ) {
   // either be the program name or the first command-line argument.
   //
   static argv_command_t const ARGV_COMMANDS[] = {
+    //
+    // If this array is modified, also check CDECL_COMMANDS[] in
+    // autocomplete.c.
+    //
     { L_CAST,         COMMAND_PROG_NAME },
     { L_CONST,        COMMAND_FIRST_ARG },  // const cast
     { L_DECLARE,      COMMAND_PROG_NAME },

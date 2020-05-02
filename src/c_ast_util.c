@@ -246,11 +246,11 @@ C_WARN_UNUSED_RESULT
 static c_type_id_t c_ast_take_storage( c_ast_t *ast ) {
   assert( ast != NULL );
   c_type_id_t storage_type = T_NONE;
-  c_ast_t *const found
+  c_ast_t *const found_ast
     = c_ast_find_kind( ast, C_VISIT_DOWN, K_BUILTIN | K_TYPEDEF );
-  if ( found != NULL ) {
-    storage_type = found->type_id & (T_MASK_ATTRIBUTE | T_MASK_STORAGE);
-    found->type_id &= ~(T_MASK_ATTRIBUTE | T_MASK_STORAGE);
+  if ( found_ast != NULL ) {
+    storage_type = found_ast->type_id & (T_MASK_ATTRIBUTE | T_MASK_STORAGE);
+    found_ast->type_id &= ~(T_MASK_ATTRIBUTE | T_MASK_STORAGE);
   }
   return storage_type;
 }
@@ -328,10 +328,10 @@ c_ast_t* c_ast_find_kind( c_ast_t *ast, c_visit_dir_t dir, c_kind_t kind ) {
 
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_t *const found = c_ast_visit(
+  c_ast_t *const found_ast = c_ast_visit(
     nonconst_ast, dir, c_ast_visitor_name, REINTERPRET_CAST( void*, 1 )
   );
-  return found != NULL ? &found->sname : NULL;
+  return found_ast != NULL ? &found_ast->sname : NULL;
 }
 
 c_ast_t* c_ast_find_type( c_ast_t *ast, c_visit_dir_t dir,
@@ -421,9 +421,9 @@ c_sname_t c_ast_take_name( c_ast_t *ast ) {
 
 bool c_ast_take_typedef( c_ast_t *ast ) {
   assert( ast != NULL );
-  c_ast_t *const found = c_ast_find_type( ast, C_VISIT_DOWN, T_TYPEDEF );
-  if ( found != NULL ) {
-    found->type_id &= ~T_TYPEDEF;
+  c_ast_t *const found_ast = c_ast_find_type( ast, C_VISIT_DOWN, T_TYPEDEF );
+  if ( found_ast != NULL ) {
+    found_ast->type_id &= ~T_TYPEDEF;
     return true;
   }
   return false;

@@ -178,7 +178,10 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
 /**
  * cdecl options.
  */
-static char const *const CDECL_OPTIONS[] = {
+static char const *const SET_OPTIONS[] = {
+  //
+  // If this array is modified, also check SET_OPTIONS[] in set.c.
+  //
    "alt-tokens",
  "noalt-tokens",
    "c89",
@@ -274,6 +277,7 @@ static char** attempt_completion( char const *text, int start, int end ) {
  * continue to next match, if any.
  * @return Returns a copy of the command or null if not found.
  */
+C_WARN_UNUSED_RESULT
 static char* command_generator( char const *text, int state ) {
   static size_t index;
   static size_t text_len;
@@ -369,7 +373,7 @@ static char* keyword_completion( char const *text, int state ) {
   // Special case: if it's the "set" command, complete options, not keywords.
   //
   if ( strcmp( command, L_SET_COMMAND ) == 0 ) {
-    for ( char const *option; (option = CDECL_OPTIONS[ index ]) != NULL; ) {
+    for ( char const *option; (option = SET_OPTIONS[ index ]) != NULL; ) {
       ++index;
       if ( strncmp( text, option, text_len ) == 0 )
         return check_strdup( option );

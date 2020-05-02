@@ -372,6 +372,9 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   size_t const opt_name_len = strlen( opt_name );
 
   static set_option_t const SET_OPTIONS[] = {
+    //
+    // If this array is modified, also check SET_OPTIONS[] in autocomplete.c.
+    //
     { "alt-tokens",         SET_TOGGLE,   false,  &set_alt_tokens         },
 #ifdef ENABLE_CDECL_DEBUG
     { "debug",              SET_TOGGLE,   false,  &set_debug              },
