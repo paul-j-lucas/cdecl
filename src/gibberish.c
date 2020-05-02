@@ -144,13 +144,13 @@ static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
  * Helper function for `c_ast_gibberish_impl()` that prints a function-like
  * AST's arguments, if any.
  *
- * @param ast The `c_ast` that is a <code>\ref K_FUNCTION_LIKE</code> whose
+ * @param ast The `c_ast` that is <code>\ref K_MASK_FUNCTION_LIKE</code> whose
  * arguments to print.
  * @param param The `g_param` to use.
  */
 static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
   assert( ast != NULL );
-  assert( (ast->kind & K_FUNCTION_LIKE) != K_NONE );
+  assert( (ast->kind & K_MASK_FUNCTION_LIKE) != K_NONE );
 
   bool comma = false;
   FPUTC( '(', param->gout );
@@ -341,7 +341,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
       if ( param->gkind != G_CAST &&
            c_ast_find_name( ast, C_VISIT_UP ) != NULL &&
-           !c_ast_find_kind( ast->parent, C_VISIT_UP, K_FUNCTION_LIKE ) ) {
+           !c_ast_find_kind( ast->parent, C_VISIT_UP, K_MASK_FUNCTION_LIKE ) ) {
         //
         // For all kinds except function-like ASTs, we want the output to be
         // like:

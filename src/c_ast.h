@@ -354,7 +354,7 @@ void c_ast_free( c_ast_t *ast );
  */
 C_WARN_UNUSED_RESULT C_AST_INLINE
 bool c_ast_is_parent( c_ast_t const *ast ) {
-  return ast != NULL && c_kind_is_parent( ast->kind );
+  return ast != NULL && (ast->kind & K_MASK_PARENT) != K_NONE;
 }
 
 /**

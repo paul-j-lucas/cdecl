@@ -85,19 +85,20 @@ enum c_kind {
   K_TYPEDEF                 = 0x00010,  ///< `typedef` type, e.g., `size_t`.
   K_VARIADIC                = 0x00020,  ///< Variadic (`...`) function argument.
   // "parent" kinds
-  K_ARRAY                   = 0x00040,  ///< Array.
-  K_APPLE_BLOCK             = 0x00080,  ///< Block.
-  K_FUNCTION                = 0x00100,  ///< Function.
+  K_ARRAY                   = 0x00100,  ///< Array.
   K_POINTER                 = 0x00200,  ///< Pointer.
-  // "parent" kinds (C++ only)
-  K_CONSTRUCTOR             = 0x00400,  ///< Constructor.
-  K_DESTRUCTOR              = 0x00800,  ///< Destructor.
-  K_OPERATOR                = 0x01000,  ///< Overloaded operator (C++ only).
-  K_POINTER_TO_MEMBER       = 0x02000,  ///< Pointer-to-member (C++ only).
-  K_REFERENCE               = 0x04000,  ///< Reference (C++ only).
-  K_RVALUE_REFERENCE        = 0x08000,  ///< Rvalue reference (C++ only).
-  K_USER_DEF_CONVERSION     = 0x10000,  ///< User-defined conversion (C++ only).
-  K_USER_DEF_LITERAL        = 0x20000,  ///< User-defined literal (C++ only).
+  K_POINTER_TO_MEMBER       = 0x00400,  ///< Pointer-to-member (C++ only).
+  K_REFERENCE               = 0x00800,  ///< Reference (C++ only).
+  K_RVALUE_REFERENCE        = 0x01000,  ///< Rvalue reference (C++ only).
+  // function-like "parent" kinds
+  K_CONSTRUCTOR             = 0x02000,  ///< Constructor (C++ only).
+  K_DESTRUCTOR              = 0x04000,  ///< Destructor (C++ only).
+  // function-like "parent" kinds that have return values
+  K_APPLE_BLOCK             = 0x08000,  ///< Block.
+  K_FUNCTION                = 0x10000,  ///< Function.
+  K_OPERATOR                = 0x20000,  ///< Overloaded operator (C++ only).
+  K_USER_DEF_CONVERSION     = 0x40000,  ///< User-defined conversion (C++ only).
+  K_USER_DEF_LITERAL        = 0x80000,  ///< User-defined literal (C++ only).
 };
 
 #ifndef CDECL_CONFIGURE
@@ -112,18 +113,8 @@ enum c_kind {
  */
 #define K_ANY_REFERENCE       (K_REFERENCE | K_RVALUE_REFERENCE)
 
-/**
- * Shorthand for function-like kinds: #K_APPLE_BLOCK, #K_CONSTRUCTOR,
- * #K_DESTRUCTOR, #K_FUNCTION, #K_OPERATOR, #K_USER_DEF_CONVERSION, and
- * #K_USER_DEF_LITERAL.
- */
-#define K_FUNCTION_LIKE \
-  (K_APPLE_BLOCK | K_CONSTRUCTOR | K_DESTRUCTOR | K_FUNCTION | K_OPERATOR \
-  | K_USER_DEF_CONVERSION | K_USER_DEF_LITERAL)
-
-/// @cond DOXYGEN_IGNORE
-#define K_PARENT_MIN          K_ARRAY
-/// @endcond
+#define K_MASK_PARENT         0xFFF00   /**< Parent bitmask. */
+#define K_MASK_FUNCTION_LIKE  0xFE000   /**< Function-like bitmask. */
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -177,17 +168,6 @@ void* c_kind_data_new( c_kind_t kind ) {
 #else
   return REINTERPRET_CAST( void*, kind );
 #endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
-}
-
-/**
- * Checks whether \a kind is a parent kind.
- *
- * @param kind The <code>\ref c_kind</code> to check.
- * @return Returns `true` only if it is.
- */
-C_WARN_UNUSED_RESULT C_KIND_INLINE
-bool c_kind_is_parent( c_kind_t kind ) {
-  return kind >= K_PARENT_MIN;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
