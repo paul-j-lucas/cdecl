@@ -95,6 +95,19 @@ static inline char const* alignas_lang( void ) {
 }
 
 /**
+ * Checks a function-like AST for errors.
+ *
+ * @param ast The function-like AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+C_WARN_UNUSED_RESULT
+static bool c_ast_check_func( c_ast_t const *ast ) {
+  return C_LANG_IS_C() ?
+    c_ast_check_func_c( ast ) :
+    c_ast_check_func_cpp( ast );
+}
+
+/**
  * Simple wrapper around `c_ast_find()`.
  *
  * @param ast The `c_ast` to check.
@@ -388,18 +401,6 @@ static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
 }
 
 /**
- * Checks a function-like AST for errors.
- *
- * @param ast The function-like AST to check.
- * @return Returns `true` only if all checks passed.
- */
-static bool c_ast_check_func( c_ast_t const *ast ) {
-  if ( C_LANG_IS_CPP() )
-    return c_ast_check_func_cpp( ast );
-  return c_ast_check_func_c( ast );
-}
-
-/**
  * Checks all function-like arguments for semantic errors.
  *
  * @param ast The function-like AST to check.
@@ -421,6 +422,17 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
 
     if ( c_ast_sname_count( arg_ast ) > 1 ) {
       print_error( &arg_ast->loc, "argument names can not be scoped" );
+      return false;
+    }
+
+    c_type_id_t const arg_storage_type =
+      arg_ast->type_id & (T_MASK_STORAGE & ~T_REGISTER);
+    if ( arg_storage_type != T_NONE ) {
+      print_error( &arg_ast->loc,
+        "%s arguments can not be %s",
+        c_kind_name( ast->kind ),
+        c_type_name_error( arg_storage_type )
+      );
       return false;
     }
 
@@ -471,17 +483,6 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
       default:
         /* suppress warning */;
     } // switch
-
-    c_type_id_t const storage_type =
-      arg_ast->type_id & (T_MASK_STORAGE & ~T_REGISTER);
-    if ( storage_type != T_NONE ) {
-      print_error( &arg_ast->loc,
-        "%s arguments can not be %s",
-        c_kind_name( ast->kind ),
-        c_type_name_error( storage_type )
-      );
-      return false;
-    }
 
     if ( !c_ast_check_errors( arg_ast, true ) )
       return false;
@@ -655,6 +656,11 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
       default:
         goto only_special;
     } // switch
+  }
+
+  if ( (ast->type_id & T_NO_UNIQUE_ADDRESS) != T_NONE ) {
+    error_kind_not_type( ast, T_NO_UNIQUE_ADDRESS );
+    return false;
   }
 
   if ( (ast->type_id & T_VIRTUAL) != T_NONE ) {

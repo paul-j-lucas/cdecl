@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 24
+%expect 26
 
 %{
 /** @endcond */
@@ -1061,6 +1061,7 @@ static void yyerror( char const *msg ) {
 %token              Y_CONCEPT
 %token  <type_id>   Y_CONSTEVAL
 %token  <oper_id>   Y_LESS_EQ_GREATER "<=>"
+%token  <type_id>   Y_NO_UNIQUE_ADDRESS
 %token              Y_REQUIRES
 
                     /* GNU extensions */
@@ -2900,6 +2901,7 @@ type_attribute_english_type
   | Y_DEPRECATED
   | Y_MAYBE_UNUSED
   | Y_NODISCARD
+  | Y_NO_UNIQUE_ADDRESS
   ;
 
 unmodified_type_english_ast

@@ -909,6 +909,7 @@ TESTS+=	tests/declare_+dtor.test \
 # =======================
 #
 TESTS+=	tests/declare_+ctor-error.test \
+	tests/declare_a_nua_f.test \
 	tests/declare_ai-c++11.test \
 	tests/declare_cdi.test \
 	tests/declare_ef.test \
@@ -1119,6 +1120,8 @@ TESTS+=	tests/declare_+udl_c_i.test \
 TESTS+=	tests/explain_+dtor.test \
 	tests/explain_2+dtor.test \
 	tests/explain_a.test \
+	tests/explain_a_nua_k-1.test \
+	tests/explain_a_nua_k-2.test \
 	tests/explain_al0_c-c++.test \
 	tests/explain_al8_c-c++.test \
 	tests/explain_bitand_i.test \
@@ -1192,6 +1195,7 @@ TESTS+=	tests/explain_+dtor.test \
 TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_+dtor-error.test \
 	tests/explain_ai-c++11.test \
+	tests/explain_a_nua_f.test \
 	tests/explain_cdi.test \
 	tests/explain_cector_i.test \
 	tests/explain_ec.test \

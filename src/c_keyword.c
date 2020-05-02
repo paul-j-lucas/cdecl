@@ -62,17 +62,20 @@ static c_keyword_t const C_ATTRIBUTES[] = {
   { L_MAYBE_UNUSED, Y_MAYBE_UNUSED, T_MAYBE_UNUSED, LANG_MIN(CPP_17)  },
   { L_NODISCARD,    Y_NODISCARD,    T_NODISCARD,    LANG_MIN(CPP_17)  },
 
-#if 0
   // C++20                // Not implemented because:
+#if 0
   { L_ASSERT,             // + These use arbitrary expressions that require
   { L_ENSURES,            //   being able to parse them -- which is a lot of
   { L_EXPECTS,            //   work for little benefit.
 
   { L_LIKELY,             // + These are only for statements, not declarations.
   { L_UNLIKELY,           //
-
-  { L_NO_UNIQUE_ADDRESS,  // + Just didn't do it (yet).
 #endif
+
+  { L_NO_UNIQUE_ADDRESS,
+                    Y_NO_UNIQUE_ADDRESS,
+                                    T_NO_UNIQUE_ADDRESS,
+                                                    LANG_MIN(CPP_20)  },
 
   { NULL,           0,              T_NONE,         LANG_NONE         }
 };

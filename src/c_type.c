@@ -153,6 +153,9 @@ static c_type_t const C_ATTRIBUTE_INFO[] = {
   { T_NORETURN, LANG_C_CPP_11_MIN, L_NON_RETURNING_ENG,
     (c_lang_lit_t[]){ { LANG_CPP_ALL, L_NORETURN  },
                       { LANG_ALL,     L__NORETURN } } },
+
+  { T_NO_UNIQUE_ADDRESS, LANG_MIN(CPP_20), L_NON_UNIQUE_ADDRESS,
+    (c_lang_lit_t[]){ { LANG_ALL, L_NO_UNIQUE_ADDRESS } } },
 };
 
 /**
@@ -593,6 +596,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
       T_MAYBE_UNUSED,
       T_NODISCARD,
       T_NORETURN,
+      T_NO_UNIQUE_ADDRESS,
     };
 
     bool const brackets =

@@ -19,16 +19,6 @@ in gibberish:
     cdecl> declare x as const int
     int const x;
 
-** Typename
-Now allowing "typename" in declarations (even though it's not needed):
-
-    struct S { typedef int I; };
-    explain typename S::I x
-    typedef typename S::I T
-
-** Declare const/volatile user-defined conversion operators
-Can now declare const/volatile user-defined conversion operators.
-
 ** Correct scope names for nested types
 Previously, scope names for nested types were always printed as "of scope"; now
 they print the type of scope ("class", "struct", "union", or "namespace"):
@@ -36,6 +26,19 @@ they print the type of scope ("class", "struct", "union", or "namespace"):
     c++decl> struct S { typedef int Int; };
     c++decl> explain S::Int x
     declare x as Int of structure S
+
+** Declare const/volatile user-defined conversion operators
+Can now declare const/volatile user-defined conversion operators.
+
+** no_unique_address
+Added support for the [[no_unique_address]] attribute in C++20.
+
+** Typename
+Now allowing "typename" in declarations (even though it's not needed):
+
+    struct S { typedef int I; };
+    explain typename S::I x
+    typedef typename S::I T
 
 ** throw() deprecated/removed
 throw() has been deprecated starting with C++11 and removed in C++20.

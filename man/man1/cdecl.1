@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "April 28, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "May 2, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -958,6 +958,7 @@ carries-dependency  carries_dependency
                mbr  member
       no-exception  noexcept
    non-discardable  nodiscard
+non-unique-address  no_unique_address
            non-mbr  non-member
      non-returning  _Noreturn
       non-throwing  throw()
@@ -971,6 +972,7 @@ carries-dependency  carries_dependency
                ret  returning
          structure  struct
               type  typedef
+      thread-local  thread_local
      _Thread_local  thread_local
           user-def  user-defined
                var  variable

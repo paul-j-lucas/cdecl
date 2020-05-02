@@ -139,6 +139,7 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
   { L_NOEXCEPT,           LANG_MIN(CPP_11)                  },
   { L_NON_MEMBER,         LANG_CPP_ALL                      },
   { L_NORETURN,           LANG_MIN(C_11)                    },
+  { L_NO_UNIQUE_ADDRESS,  LANG_MIN(CPP_20)                  },
 //{ L_OF,                               // too short
   { L_OPERATOR,           LANG_CPP_ALL                      },
   { L_OVERRIDE,           LANG_MIN(CPP_11)                  },

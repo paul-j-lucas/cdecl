@@ -272,14 +272,15 @@ typedef struct c_hyphenated c_hyphenated_t;
  * (since `-` is not valid in an identifier).
  */
 static c_hyphenated_t const C_HYPHENATED_KEYWORDS[] = {
-  { "carries-dependency", L_CARRIES_DEPENDENCY  },
-  { "maybe-unused",       L_MAYBE_UNUSED        },
-  { "no-exception",       L_NOEXCEPT            },
-  { "non-discardable",    L_NODISCARD           },
-  { "non-returning",      L__NORETURN           },
-  { "non-throwing",       L_THROW               },
-  { "thread-local",       L_THREAD_LOCAL        },
-  { NULL,                 NULL                  }
+  { L_CARRIES_DEPENDENCY_ENG, L_CARRIES_DEPENDENCY  },
+  { L_MAYBE_UNUSED_ENG,       L_MAYBE_UNUSED        },
+  { L_NO_EXCEPTION_ENG,       L_NOEXCEPT            },
+  { L_NON_DISCARDABLE_ENG,    L_NODISCARD           },
+  { L_NON_RETURNING_ENG,      L__NORETURN           },
+  { L_NON_THROWING_ENG,       L_THROW               },
+  { L_NON_UNIQUE_ADDRESS,     L_NO_UNIQUE_ADDRESS   },
+  { L_THREAD_LOCAL_ENG,       L_THREAD_LOCAL        },
+  { NULL,                     NULL                  }
 };
 
 /**

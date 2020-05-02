@@ -113,6 +113,7 @@ _GL_INLINE_HEADER_BEGIN
 #define T_MAYBE_UNUSED        0x0008000000000000ull /**< `maybe_unused`       */
 #define T_NODISCARD           0x0010000000000000ull /**< `nodiscard`          */
 #define T_NORETURN            0x0020000000000000ull /**< `noreturn`           */
+#define T_NO_UNIQUE_ADDRESS   0x0040000000000000ull /**< `no_unique_address`  */
 
 // qualifiers
 #define T_ATOMIC              0x0100000000000000ull /**< `_Atomic`            */
@@ -127,7 +128,7 @@ _GL_INLINE_HEADER_BEGIN
 // bit masks
 #define T_MASK_TYPE           0x000000000FFFFFFFull /**< Type bitmask.        */
 #define T_MASK_STORAGE        0x0001FFFFF0000000ull /**< Storage bitmask.     */
-#define T_MASK_ATTRIBUTE      0x003E000000000000ull /**< Attribute bitmask.   */
+#define T_MASK_ATTRIBUTE      0x00FE000000000000ull /**< Attribute bitmask.   */
 #define T_MASK_QUALIFIER      0x0F00000000000000ull /**< Qualifier bitmask.   */
 #define T_MASK_REF_QUALIFIER  0xF000000000000000ull /**< Ref-qual bitmask.    */
 
