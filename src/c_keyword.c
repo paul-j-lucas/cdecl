@@ -71,7 +71,6 @@ static c_keyword_t const C_ATTRIBUTES[] = {
   { L_LIKELY,             // + These are only for statements, not declarations.
   { L_UNLIKELY,           //
 #endif
-
   { L_NO_UNIQUE_ADDRESS,
                     Y_NO_UNIQUE_ADDRESS,
                                     T_NO_UNIQUE_ADDRESS,
