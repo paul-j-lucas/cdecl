@@ -181,7 +181,8 @@ static ac_keyword_t const CDECL_KEYWORDS[] = {
  */
 static char const *const SET_OPTIONS[] = {
   //
-  // If this array is modified, also check SET_OPTIONS[] in set.c.
+  // If this array is modified, also check C_LANG[] in c_lanc.c and
+  // SET_OPTIONS[] in set.c.
   //
    "alt-tokens",
  "noalt-tokens",

@@ -46,6 +46,9 @@
 
 // extern constant definitions
 c_lang_t const C_LANG[] = {
+  //
+  // If this array is modified, also check SET_OPTIONS[] in autocomplete.c.
+  //
   { "ck&r",    LANG_C_KNR   },          // synonym for "knr"
   { "cknr",    LANG_C_KNR   },          // synonym for "knr"
   { "k&r",     LANG_C_KNR   },          // synonym for "knr"
