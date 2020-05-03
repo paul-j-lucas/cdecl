@@ -206,6 +206,7 @@ extern char const L_NO_EXCEPTION[];         // English for "noexcept"
 extern char const L_NULLPTR[];
 extern char const L_OVERRIDE[];
 extern char const L_OVERRIDDEN[];           // English for "override"
+extern char const L_USER_DEF[];             // synonym for "user-defined"
 extern char const L_USER_DEFINED[];
 
 // C11 & C++11

@@ -194,6 +194,7 @@ char const L_NULLPTR[]              = "nullptr";
 char const L_NO_EXCEPTION[]         = "no-exception";
 char const L_OVERRIDE[]             = "override";
 char const L_OVERRIDDEN[]           = "overridden";
+char const L_USER_DEF[]             = "user-def";
 char const L_USER_DEFINED[]         = "user-defined";
 
 // C11 & C++11

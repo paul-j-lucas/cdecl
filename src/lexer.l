@@ -298,10 +298,10 @@ typedef struct cdecl_hyphenated cdecl_hyphenated_t;
  * not valid in an identifier).
  */
 static cdecl_hyphenated_t const CDECL_HYPHENATED_KEYWORDS[] = {
-  { "non-mbr",      Y_NON_MEMBER    },
-  { "non-member",   Y_NON_MEMBER    },
-  { "user-def",     Y_USER_DEFINED  },
-  { "user-defined", Y_USER_DEFINED  },
+  { L_NON_MBR,      Y_NON_MEMBER    },
+  { L_NON_MEMBER,   Y_NON_MEMBER    },
+  { L_USER_DEF,     Y_USER_DEFINED  },
+  { L_USER_DEFINED, Y_USER_DEFINED  },
   { NULL,           0               }
 };
 
