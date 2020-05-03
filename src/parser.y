@@ -1074,7 +1074,7 @@ static void yyerror( char const *msg ) {
                     /* miscellaneous */
 %token              Y_END
 %token              Y_ERROR
-%token  <name>      Y_HYPHENATED_NAME
+%token  <name>      Y_HYPHEN_NAME
 %token  <name>      Y_NAME
 %token  <number>    Y_NUMBER
 %token  <name>      Y_SET_OPTION
@@ -1235,7 +1235,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; FREE( $$ ); } any_name_expected
 %destructor { DTRACE; FREE( $$ ); } name_expected
 %destructor { DTRACE; FREE( $$ ); } set_option_value_opt
-%destructor { DTRACE; FREE( $$ ); } Y_HYPHENATED_NAME
+%destructor { DTRACE; FREE( $$ ); } Y_HYPHEN_NAME
 %destructor { DTRACE; FREE( $$ ); } Y_NAME
 %destructor { DTRACE; FREE( $$ ); } Y_SET_OPTION
 

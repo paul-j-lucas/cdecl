@@ -260,18 +260,18 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 /**
  * Hyphenated English-literal-to-C-literal mapping.
  */
-struct c_hyphenated {
+struct c_hyphen {
   char const *e_literal;                ///< Hyphenated English literal.
-  char const *c_literal;                ///< C language literal it maps to.
+  char const *c_keyword;                ///< C/C++ keyword it maps to.
 };
-typedef struct c_hyphenated c_hyphenated_t;
+typedef struct c_hyphen c_hyphen_t;
 
 /**
  * All hyphenated English keywords that are synonyms for C/C++ keywords.  These
  * are handled seperately because hyphenated words are not valid identifiers
  * (since `-` is not valid in an identifier).
  */
-static c_hyphenated_t const C_HYPHENATED_KEYWORDS[] = {
+static c_hyphen_t const C_HYPHEN_KEYWORDS[] = {
   { L_CARRIES_DEPENDENCY_H, L_CARRIES_DEPENDENCY  },
   { L_MAYBE_UNUSED_H,       L_MAYBE_UNUSED        },
   { L_NO_EXCEPTION,         L_NOEXCEPT            },
@@ -286,18 +286,18 @@ static c_hyphenated_t const C_HYPHENATED_KEYWORDS[] = {
 /**
  * Hyphenated cdecl keyword English-literal-to-Bison-token mapping.
  */
-struct cdecl_hyphenated {
+struct cdecl_hyphen {
   char const *e_literal;                ///< Hyphenated English literal.
   int         y_token;                  ///< Bison token number.
 };
-typedef struct cdecl_hyphenated cdecl_hyphenated_t;
+typedef struct cdecl_hyphen cdecl_hyphen_t;
 
 /**
  * All hyphenated English keywords that are cdecl keywords.  These are handled
  * seperately because hyphenated words are not valid identifiers (since `-` is
  * not valid in an identifier).
  */
-static cdecl_hyphenated_t const CDECL_HYPHENATED_KEYWORDS[] = {
+static cdecl_hyphen_t const CDECL_HYPHEN_KEYWORDS[] = {
   { L_NON_MBR,      Y_NON_MEMBER    },
   { L_NON_MEMBER,   Y_NON_MEMBER    },
   { L_USER_DEF,     Y_USER_DEFINED  },
@@ -336,13 +336,11 @@ static void       lexer_update_loc( void );
  * @return Returns the corresponding C/C++ language literal or null if none.
  */
 C_WARN_UNUSED_RESULT
-static char const* c_hyphenated_find( char const *s ) {
+static char const* c_hyphen_find( char const *s ) {
   assert( s != NULL );
-  char const *c_literal = NULL;
-  for ( c_hyphenated_t const *h = C_HYPHENATED_KEYWORDS; h->e_literal; ++h ) {
+  for ( c_hyphen_t const *h = C_HYPHEN_KEYWORDS; h->e_literal; ++h ) {
     if ( strcmp( s, h->e_literal ) == 0 ) {
-      c_literal = h->c_literal;
-      if ( c_literal == L__NORETURN && C_LANG_IS_CPP() ) {
+      if ( h->c_keyword == L__NORETURN && C_LANG_IS_CPP() ) {
         //
         // _Noreturn is a special case. In C11, it's "_Noreturn"; in C++11,
         // it's "noreturn".
@@ -350,12 +348,12 @@ static char const* c_hyphenated_find( char const *s ) {
         // Depending on the current language, we map "non-returning" either to
         // "_Noreturn" or "noreturn".
         //
-        c_literal = L_NORETURN;
+        return L_NORETURN;
       }
-      break;
+      return h->c_keyword;
     }
   } // for
-  return c_literal;
+  return NULL;
 }
 
 /**
@@ -363,17 +361,16 @@ static char const* c_hyphenated_find( char const *s ) {
  *
  * @param s The string to find.
  * @return If found, returns the corresponding Bison token; otherwise returns
- * Y_HYPHENATED_NAME.
+ * Y_HYPHEN_NAME.
  */
 C_WARN_UNUSED_RESULT
-static int cdecl_hyphenated_find( char const *s ) {
+static int cdecl_hyphen_find( char const *s ) {
   assert( s != NULL );
-  for ( cdecl_hyphenated_t const *h = CDECL_HYPHENATED_KEYWORDS; h->e_literal;
-        ++h ) {
+  for ( cdecl_hyphen_t const *h = CDECL_HYPHEN_KEYWORDS; h->e_literal; ++h ) {
     if ( strcmp( s, h->e_literal ) == 0 )
       return h->y_token;
   } // for
-  return Y_HYPHENATED_NAME;
+  return Y_HYPHEN_NAME;
 }
 
 /**
@@ -818,15 +815,23 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 
 {hyphenated}  {
                 SET_TOKEN;
-                char const *const c_literal = c_hyphenated_find( lexer_token );
-                if ( c_literal != NULL ) {
+
+                char const *const c_keyword = c_hyphen_find( lexer_token );
+                if ( c_keyword != NULL ) {
                   ASSERT_MODE( ENGLISH_TO_GIBBERISH );
-                  lexer_token = c_literal;
+                  //
+                  // The hyphenated token is an English synonym for a C/C++
+                  // keyword, so set the lexer's token to that and go to the
+                  // keyword-finding code.
+                  //
+                  lexer_token = c_keyword;
                   goto find_c_keyword;
                 }
-                int const y_token = cdecl_hyphenated_find( lexer_token );
-                if ( y_token == Y_HYPHENATED_NAME )
+
+                int const y_token = cdecl_hyphen_find( lexer_token );
+                if ( y_token == Y_HYPHEN_NAME )
                   yylval.name = check_strdup( lexer_token );
+
                 return y_token;
               }
 
