@@ -156,8 +156,8 @@
  */
 struct cdecl_keyword {
   char const *literal;                  ///< C string literal of the keyword.
-  int         y_token;                  ///< Bison token number.
-  char const *c_keyword_synonym;        ///< Synonym of C/C++ keyword, if any.
+  int         y_token;                  ///< Bison token number ...
+  char const *c_keyword_synonym;        ///< ... or C/C++ keyword synonym.
   bool        allow_explain;            ///< Allow when explaining C/C++?
 };
 typedef struct cdecl_keyword cdecl_keyword_t;
@@ -171,11 +171,11 @@ typedef struct cdecl_keyword cdecl_keyword_t;
 #define C_SYN(C_KEYWORD,ALLOW)  0, C_KEYWORD, ALLOW
 
 /**
- * Specify that the previosuly given literal maps to Bison tokan \a T.
+ * Specify that the previosuly given literal maps to Bison tokan \a Y_ID.
  *
- * @param T The Bison token ID (`Y_xxx`).
+ * @param Y_ID The Bison token ID (`Y_xxx`).
  */
-#define TOKEN(T)                T, NULL,      false
+#define TOKEN(Y_ID)             Y_ID, NULL, false
 
 /**
  * All cdecl keywords (that are not C/C++ keywords).
@@ -226,7 +226,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_NORETURN,       C_SYN( L__NORETURN,     true  ) },
   { L_OF,             TOKEN( Y_OF ),                  },
   { L_OPER,           TOKEN( Y_OPERATOR )             },
-  { L_OVERRIDDEN_ENG, C_SYN( L_OVERRIDE,      false ) },
+  { L_OVERRIDDEN,     C_SYN( L_OVERRIDE,      false ) },
   { L_POINTER,        TOKEN( Y_POINTER )              },
   { L_PREDEF,         TOKEN( Y_PREDEFINED )           },
   { L_PREDEFINED,     TOKEN( Y_PREDEFINED )           },
@@ -272,15 +272,15 @@ typedef struct c_hyphenated c_hyphenated_t;
  * (since `-` is not valid in an identifier).
  */
 static c_hyphenated_t const C_HYPHENATED_KEYWORDS[] = {
-  { L_CARRIES_DEPENDENCY_ENG, L_CARRIES_DEPENDENCY  },
-  { L_MAYBE_UNUSED_ENG,       L_MAYBE_UNUSED        },
-  { L_NO_EXCEPTION_ENG,       L_NOEXCEPT            },
-  { L_NON_DISCARDABLE_ENG,    L_NODISCARD           },
-  { L_NON_RETURNING_ENG,      L__NORETURN           },
-  { L_NON_THROWING_ENG,       L_THROW               },
-  { L_NON_UNIQUE_ADDRESS,     L_NO_UNIQUE_ADDRESS   },
-  { L_THREAD_LOCAL_ENG,       L_THREAD_LOCAL        },
-  { NULL,                     NULL                  }
+  { L_CARRIES_DEPENDENCY_H, L_CARRIES_DEPENDENCY  },
+  { L_MAYBE_UNUSED_H,       L_MAYBE_UNUSED        },
+  { L_NO_EXCEPTION,         L_NOEXCEPT            },
+  { L_NON_DISCARDABLE,      L_NODISCARD           },
+  { L_NON_RETURNING,        L__NORETURN           },
+  { L_NON_THROWING,         L_THROW               },
+  { L_NON_UNIQUE_ADDRESS,   L_NO_UNIQUE_ADDRESS   },
+  { L_THREAD_LOCAL_H,       L_THREAD_LOCAL        },
+  { NULL,                   NULL                  }
 };
 
 /**

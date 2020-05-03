@@ -138,19 +138,19 @@ struct c_type {
  * Type mapping for attributes.
  */
 static c_type_t const C_ATTRIBUTE_INFO[] = {
-  { T_CARRIES_DEPENDENCY, LANG_MIN(CPP_11), L_CARRIES_DEPENDENCY_ENG,
+  { T_CARRIES_DEPENDENCY, LANG_MIN(CPP_11), L_CARRIES_DEPENDENCY_H,
     (c_lang_lit_t[]){ { LANG_ALL, L_CARRIES_DEPENDENCY } } },
 
   { T_DEPRECATED, LANG_MIN(CPP_11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_DEPRECATED } } },
 
-  { T_MAYBE_UNUSED, LANG_MIN(CPP_17), L_MAYBE_UNUSED_ENG,
+  { T_MAYBE_UNUSED, LANG_MIN(CPP_17), L_MAYBE_UNUSED_H,
     (c_lang_lit_t[]){ { LANG_ALL, L_MAYBE_UNUSED } } },
 
-  { T_NODISCARD, LANG_MIN(CPP_11), L_NON_DISCARDABLE_ENG,
+  { T_NODISCARD, LANG_MIN(CPP_11), L_NON_DISCARDABLE,
     (c_lang_lit_t[]){ { LANG_ALL, L_NODISCARD } } },
 
-  { T_NORETURN, LANG_C_CPP_11_MIN, L_NON_RETURNING_ENG,
+  { T_NORETURN, LANG_C_CPP_11_MIN, L_NON_RETURNING,
     (c_lang_lit_t[]){ { LANG_CPP_ALL, L_NORETURN  },
                       { LANG_ALL,     L__NORETURN } } },
 
@@ -205,7 +205,7 @@ static c_type_t const C_STORAGE_INFO[] = {
   { T_STATIC, LANG_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_STATIC } } },
 
-  { T_THREAD_LOCAL, LANG_C_CPP_11_MIN, L_THREAD_LOCAL_ENG,
+  { T_THREAD_LOCAL, LANG_C_CPP_11_MIN, L_THREAD_LOCAL_H,
     (c_lang_lit_t[]){ { LANG_MAX(CPP_03), L_GNU___THREAD  },
                       { LANG_ALL,         L_THREAD_LOCAL  } } },
 
@@ -241,13 +241,13 @@ static c_type_t const C_STORAGE_INFO[] = {
   { T_MUTABLE, LANG_CPP_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_MUTABLE } } },
 
-  { T_NOEXCEPT, LANG_MIN(CPP_11), L_NO_EXCEPTION_ENG,
+  { T_NOEXCEPT, LANG_MIN(CPP_11), L_NO_EXCEPTION,
     (c_lang_lit_t[]){ { LANG_ALL, L_NOEXCEPT } } },
 
-  { T_OVERRIDE, LANG_MIN(CPP_11), L_OVERRIDDEN_ENG,
+  { T_OVERRIDE, LANG_MIN(CPP_11), L_OVERRIDDEN,
     (c_lang_lit_t[]){ { LANG_ALL, L_OVERRIDE } } },
 
-  { T_THROW, LANG_CPP_ALL, L_NON_THROWING_ENG,
+  { T_THROW, LANG_CPP_ALL, L_NON_THROWING,
     (c_lang_lit_t[]){ { LANG_ALL, L_THROW } } },
 
   { T_VIRTUAL, LANG_CPP_ALL, NULL,
