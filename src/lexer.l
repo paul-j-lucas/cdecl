@@ -360,8 +360,7 @@ static char const* c_hyphen_find( char const *s ) {
  * Finds a hyphenated English literal that is a cdecl keyword.
  *
  * @param s The string to find.
- * @return If found, returns the corresponding Bison token; otherwise returns
- * Y_HYPHEN_NAME.
+ * @return Returns the corresponding Bison token, if found; Y_ERROR otherwise.
  */
 C_WARN_UNUSED_RESULT
 static int cdecl_hyphen_find( char const *s ) {
@@ -370,7 +369,7 @@ static int cdecl_hyphen_find( char const *s ) {
     if ( strcmp( s, h->e_literal ) == 0 )
       return h->y_token;
   } // for
-  return Y_HYPHEN_NAME;
+  return Y_ERROR;
 }
 
 /**
@@ -828,11 +827,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                   goto find_c_keyword;
                 }
 
-                int const y_token = cdecl_hyphen_find( lexer_token );
-                if ( y_token == Y_HYPHEN_NAME )
-                  yylval.name = check_strdup( lexer_token );
-
-                return y_token;
+                return cdecl_hyphen_find( lexer_token );
               }
 
 {bin_int}     { SET_TOKEN; yylval.number = parse_int(  2 ); return Y_NUMBER; }
@@ -921,7 +916,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
 "/"           |
 ";"           |
 "<"           |
-<*>"="        |
+<*>"="        | /* allow in "set" command also, e.g.: set lang=c++ */
 ">"           |
 "["           |
 "]"           |
