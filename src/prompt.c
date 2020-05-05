@@ -55,7 +55,7 @@ char const         *prompt[2];
 // local variable definitions
 static char        *prompt_buf[2];      ///< Buffers for prompts.
 
-////////// local functions ////////////////////////////////////////////////////
+////////// inline functions ///////////////////////////////////////////////////
 
 #ifdef WITH_READLINE
 /**
@@ -82,6 +82,8 @@ static inline bool have_genuine_gnu_readline( void ) {
 #endif /* HAVE_DECL_RL_GNU_READLINE_P */
 }
 #endif /* WITH_READLINE */
+
+////////// local functions ////////////////////////////////////////////////////
 
 /**
  * Creates a prompt.
