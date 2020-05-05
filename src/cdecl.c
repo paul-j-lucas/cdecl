@@ -178,7 +178,7 @@ static bool is_command( char const *s, c_command_t command_type ) {
     { NULL,           COMMAND_FIRST_ARG },
   };
 
-  s += strspn( s, " \t" );
+  SKIP_WS( s );
 
   for ( argv_command_t const *c = ARGV_COMMANDS; c->keyword != NULL; ++c ) {
     if ( c->command_type >= command_type ) {
@@ -195,7 +195,7 @@ static bool is_command( char const *s, c_command_t command_type ) {
           //
           char const *p = s + keyword_len;
           if ( isspace( *p ) ) {
-            p += strspn( p, " \t" );
+            SKIP_WS( p );
             if ( !starts_with_keyword( p, L_CAST, 4 ) )
               break;
           }

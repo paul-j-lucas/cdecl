@@ -307,6 +307,23 @@ _GL_INLINE_HEADER_BEGIN
 #define REINTERPRET_CAST(T,EXPR)  ((T)(uintptr_t)(EXPR))
 
 /**
+ * Advances \a S over all \a CHARS.
+ *
+ * @param S The string pointer to advance.
+ * @param CHARS A string containing the characters to skip over.
+ * @return Returns the updated \a S.
+ */
+#define SKIP_CHARS(S,CHARS)       ((S) += strspn( (S), (CHARS) ))
+
+/**
+ * Advances \a S over all whitespace.
+ *
+ * @param S The string pointer to advance.
+ * @return Returns the updated \a S.
+ */
+#define SKIP_WS(S)                SKIP_CHARS( (S), " \f\r\t\v" )
+
+/**
  * Conditionally returns a space or an empty string.
  *
  * @param S The C string to check.
@@ -550,7 +567,7 @@ char const* home_dir( void );
  */
 C_WARN_UNUSED_RESULT C_UTIL_INLINE
 bool is_blank_line( char const *s ) {
-  s += strspn( s, " \t\r\n" );
+  SKIP_WS( s );
   return *s == '\0';
 }
 

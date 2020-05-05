@@ -103,23 +103,6 @@
   SET_TOKEN_TO_AND_RETURN( (S), lexer_token[0] )
 
 /**
- * Advances \a S over all \a CHARS.
- *
- * @param S The string pointer to advance.
- * @param CHARS A string containing the characters to skip over.
- * @return Returns the updated \a S.
- */
-#define SKIP_CHARS(S,CHARS)       ((S) += strspn( (S), (CHARS) ))
-
-/**
- * Advances \a S over all whitespace.
- *
- * @param S The string pointer to advance.
- * @return Returns the updated \a S.
- */
-#define SKIP_WS(S)                SKIP_CHARS( (S), " \f\r\t\v" )
-
-/**
  * Overrides Flex's fatal error message to print the message in our format and
  * also exit with the status code we want.
  *
