@@ -395,7 +395,7 @@ static void parse_options( int argc, char const *argv[] ) {
   } // for
 
   check_mutually_exclusive( "2", "3" );
-  check_mutually_exclusive( "v", "23acCdefikopstxy" );
+  check_mutually_exclusive( "v", "23acCdeEfhiIkopstxy" );
 
   if ( print_version ) {
     printf( "%s\n", PACKAGE_STRING );
