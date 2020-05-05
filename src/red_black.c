@@ -136,7 +136,7 @@ static rb_node_t rb_nil = { NULL, RB_BLACK, RB_NIL, RB_NIL, RB_NIL };
  * @sa is_red()
  */
 C_WARN_UNUSED_RESULT
-static inline bool is_black( rb_node_t *node ) {
+static inline bool is_black( rb_node_t const *node ) {
   return node->color == RB_BLACK;
 }
 
@@ -150,7 +150,7 @@ static inline bool is_black( rb_node_t *node ) {
  * @sa is_right()
  */
 C_WARN_UNUSED_RESULT
-static inline bool is_left( rb_node_t *node ) {
+static inline bool is_left( rb_node_t const *node ) {
   return node == node->parent->left;
 }
 
@@ -163,7 +163,7 @@ static inline bool is_left( rb_node_t *node ) {
  * @sa is_black()
  */
 C_WARN_UNUSED_RESULT
-static inline bool is_red( rb_node_t *node ) {
+static inline bool is_red( rb_node_t const *node ) {
   return node->color == RB_RED;
 }
 
@@ -177,7 +177,7 @@ static inline bool is_red( rb_node_t *node ) {
  * @sa is_left()
  */
 C_WARN_UNUSED_RESULT
-static inline bool is_right( rb_node_t *node ) {
+static inline bool is_right( rb_node_t const *node ) {
   return node == node->parent->right;
 }
 
