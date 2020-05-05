@@ -54,11 +54,11 @@ enum g_kind {
 typedef enum g_kind g_kind_t;
 
 /**
- * Parameters used by `c_ast_gibberish_cast()` and `c_ast_gibberish_declare()`
+ * State maintained by `c_ast_gibberish_cast()` and `c_ast_gibberish_declare()`
  * (because there'd be too many function arguments otherwise).
  */
-struct g_param {
-  g_kind_t        gkind;                ///< The kind of gibberish to create.
+struct g_state {
+  g_kind_t        kind;                 ///< The kind of gibberish to create.
   unsigned        flags;                ///< API flags to tweak output.
   FILE           *gout;                 ///< Where to write the gibberish.
   c_ast_t const  *leaf_ast;             ///< Leaf of AST.
@@ -66,16 +66,16 @@ struct g_param {
   bool            postfix;              ///< Doing postfix gibberish?
   bool            space;                ///< Printed a space yet?
 };
-typedef struct g_param g_param_t;
+typedef struct g_state g_state_t;
 
 // local functions
-static void         c_ast_gibberish_impl( c_ast_t const*, g_param_t* );
-static void         c_ast_gibberish_postfix( c_ast_t const*, g_param_t* );
-static void         c_ast_gibberish_qual_name( c_ast_t const*, g_param_t* );
-static void         c_ast_gibberish_space_name( c_ast_t const*, g_param_t* );
+static void         g_impl( g_state_t*, c_ast_t const* );
+static void         g_init( g_state_t*, c_ast_t const*, g_kind_t, FILE* );
+static void         g_postfix( g_state_t*, c_ast_t const* );
+static void         g_qual_name( g_state_t*, c_ast_t const* );
 C_WARN_UNUSED_RESULT
-static char const*  c_ast_sname_full_or_local( c_ast_t const*, g_param_t* );
-static void         g_param_init( g_param_t*, c_ast_t const*, g_kind_t, FILE* );
+static char const*  g_sname_full_or_local( g_state_t*, c_ast_t const* );
+static void         g_space_name( g_state_t*, c_ast_t const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -90,90 +90,92 @@ static inline char const* alignas_lang( void ) {
 }
 
 /**
- * Sets the leaf `c_ast`.
+ * Prints a space only if we haven't printed one yet.
  *
- * @param param The `g_param` to use.
- * @param ast The `c_ast` to set the leaf to.
+ * @param g The `g_state` to use.
  */
-static inline void g_param_leaf( g_param_t *param, c_ast_t const *ast ) {
-  assert( param->leaf_ast == NULL );
-  assert( ast != NULL );
-  param->leaf_ast = ast;
+static inline void g_print_space( g_state_t *g ) {
+  if ( false_set( &g->space ) )
+    FPUTC( ' ', g->gout );
 }
 
 /**
- * Prints a space only if we haven't printed one yet.
+ * Sets the leaf `c_ast`.
  *
- * @param param The `g_param` to use.
+ * @param g The `g_state` to use.
+ * @param ast The `c_ast` to set the leaf to.
  */
-static inline void g_param_space( g_param_t *param ) {
-  if ( false_set( &param->space ) )
-    FPUTC( ' ', param->gout );
+static inline void g_set_leaf( g_state_t *g, c_ast_t const *ast ) {
+  assert( g->leaf_ast == NULL );
+  assert( ast != NULL );
+  g->leaf_ast = ast;
 }
 
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Helper function for `c_ast_gibberish_impl()` that prints an array's size as
- * well as the size for all child arrays, if any.
+ * Helper function for `g_impl()` that prints an array's size as well as the
+ * size for all child arrays, if any.
  *
+ * @param g The `g_state` to use.
  * @param ast The `c_ast` that is a <code>\ref K_ARRAY</code> whose size to
  * print.
- * @param param The `g_param` to use.
  */
-static void c_ast_gibberish_array_size( c_ast_t const *ast, g_param_t *param ) {
+static void g_array_size( g_state_t const *g, c_ast_t const *ast ) {
+  assert( g != NULL );
   assert( ast != NULL );
   assert( ast->kind == K_ARRAY );
 
-  FPUTS( graph_token_c( "[" ), param->gout );
+  FPUTS( graph_token_c( "[" ), g->gout );
   if ( ast->as.array.type_id != T_NONE )
-    FPRINTF( param->gout, "%s ", c_type_name( ast->as.array.type_id ) );
+    FPRINTF( g->gout, "%s ", c_type_name( ast->as.array.type_id ) );
   switch ( ast->as.array.size ) {
     case C_ARRAY_SIZE_NONE:
       break;
     case C_ARRAY_SIZE_VARIABLE:
-      FPUTC( '*', param->gout );
+      FPUTC( '*', g->gout );
       break;
     default:
-      FPRINTF( param->gout, "%d", ast->as.array.size );
+      FPRINTF( g->gout, "%d", ast->as.array.size );
   } // switch
-  FPUTS( graph_token_c( "]" ), param->gout );
+  FPUTS( graph_token_c( "]" ), g->gout );
 }
 
 /**
- * Helper function for `c_ast_gibberish_impl()` that prints a function-like
- * AST's arguments, if any.
+ * Helper function for `g_impl()` that prints a function-like AST's arguments,
+ * if any.
  *
+ * @param g The `g_state` to use.
  * @param ast The `c_ast` that is <code>\ref K_MASK_FUNCTION_LIKE</code> whose
  * arguments to print.
- * @param param The `g_param` to use.
  */
-static void c_ast_gibberish_func_args( c_ast_t const *ast, g_param_t *param ) {
+static void g_func_args( g_state_t const *g, c_ast_t const *ast ) {
+  assert( g != NULL );
   assert( ast != NULL );
   assert( (ast->kind & K_MASK_FUNCTION_LIKE) != K_NONE );
 
   bool comma = false;
-  FPUTC( '(', param->gout );
+  FPUTC( '(', g->gout );
   for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
     if ( true_or_set( &comma ) )
-      FPUTS( ", ", param->gout );
+      FPUTS( ", ", g->gout );
     c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
-    g_param_t args_param;
-    g_param_init( &args_param, arg_ast, param->gkind, param->gout );
-    c_ast_gibberish_impl( arg_ast, &args_param );
+    g_state_t args_g;
+    g_init( &args_g, arg_ast, g->kind, g->gout );
+    g_impl( &args_g, arg_ast );
   } // for
-  FPUTC( ')', param->gout );
+  FPUTC( ')', g->gout );
 }
 
 /**
  * Prints \a ast as gibberish, aka, a C/C++ declaration.
  *
+ * @param g The `g_state` to use.
  * @param ast The `c_ast` to print.
- * @param param The `g_param` to use.
  */
-static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
+static void g_impl( g_state_t *g, c_ast_t const *ast ) {
+  assert( g != NULL );
   assert( ast != NULL );
-  assert( param != NULL );
 
   c_type_id_t ast_type        = ast->type_id;
   c_type_id_t cv_type         = T_NONE;
@@ -200,7 +202,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
       // Since none of these have a return type, no space needs to be printed
       // before the name, so lie and set the "space" flag.
       //
-      param->space = true;
+      g->space = true;
       // FALLTHROUGH
 
     case K_FUNCTION:
@@ -250,46 +252,46 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_ARRAY:
     case K_APPLE_BLOCK:
       if ( ast_type != T_NONE )         // storage class
-        FPRINTF( param->gout, "%s ", c_type_name( ast_type ) );
+        FPRINTF( g->gout, "%s ", c_type_name( ast_type ) );
       if ( ast->kind == K_USER_DEF_CONVERSION ) {
         if ( !c_ast_sname_empty( ast ) )
-          FPRINTF( param->gout, "%s::", c_ast_sname_full_name( ast ) );
-        FPRINTF( param->gout, "%s ", L_OPERATOR );
+          FPRINTF( g->gout, "%s::", c_ast_sname_full_name( ast ) );
+        FPRINTF( g->gout, "%s ", L_OPERATOR );
       }
       if ( ast->as.parent.of_ast != NULL )
-        c_ast_gibberish_impl( ast->as.parent.of_ast, param );
-      if ( false_set( &param->postfix ) ) {
-        if ( param->gkind != G_CAST )
-          g_param_space( param );
-        if ( ast == param->root_ast && param->leaf_ast != NULL )
-          c_ast_gibberish_postfix( param->leaf_ast->parent, param );
+        g_impl( g, ast->as.parent.of_ast );
+      if ( false_set( &g->postfix ) ) {
+        if ( g->kind == G_DECLARE )
+          g_print_space( g );
+        if ( ast == g->root_ast && g->leaf_ast != NULL )
+          g_postfix( g, g->leaf_ast->parent );
         else
-          c_ast_gibberish_postfix( ast, param );
+          g_postfix( g, ast );
       }
       if ( cv_type != T_NONE )
-        FPRINTF( param->gout, " %s", c_type_name( cv_type ) );
+        FPRINTF( g->gout, " %s", c_type_name( cv_type ) );
       if ( ref_qual_type != T_NONE )
-        FPUTS( (ref_qual_type & T_REFERENCE) ? " &" : " &&", param->gout );
+        FPUTS( (ref_qual_type & T_REFERENCE) ? " &" : " &&", g->gout );
       if ( is_noexcept )
-        FPRINTF( param->gout, " %s", L_NOEXCEPT );
+        FPRINTF( g->gout, " %s", L_NOEXCEPT );
       if ( is_throw )
-        FPRINTF( param->gout, " %s()", L_THROW );
+        FPRINTF( g->gout, " %s()", L_THROW );
       if ( is_override )
-        FPRINTF( param->gout, " %s", L_OVERRIDE );
+        FPRINTF( g->gout, " %s", L_OVERRIDE );
       if ( is_final )
-        FPRINTF( param->gout, " %s", L_FINAL );
+        FPRINTF( g->gout, " %s", L_FINAL );
       if ( is_default )
-        FPRINTF( param->gout, " = %s", L_DEFAULT );
+        FPRINTF( g->gout, " = %s", L_DEFAULT );
       if ( is_deleted )
-        FPRINTF( param->gout, " = %s", L_DELETE );
+        FPRINTF( g->gout, " = %s", L_DELETE );
       if ( is_pure_virtual )
-        FPUTS( " = 0", param->gout );
+        FPUTS( " = 0", g->gout );
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name( ast_type ), param->gout );
-      c_ast_gibberish_space_name( ast, param );
-      g_param_leaf( param, ast );
+      FPUTS( c_type_name( ast_type ), g->gout );
+      g_space_name( g, ast );
+      g_set_leaf( g, ast );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
@@ -309,22 +311,22 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         ast_type &= ~(T_CONST | T_VOLATILE);
       }
 
-      FPRINTF( param->gout,
+      FPRINTF( g->gout,
         "%s %s", c_type_name( ast_type ),
         c_sname_full_name( &ast->as.ecsu.ecsu_sname )
       );
 
       if ( cv_type != T_NONE )
-        FPRINTF( param->gout, " %s", c_type_name( cv_type ) );
+        FPRINTF( g->gout, " %s", c_type_name( cv_type ) );
 
-      c_ast_gibberish_space_name( ast, param );
-      g_param_leaf( param, ast );
+      g_space_name( g, ast );
+      g_set_leaf( g, ast );
       break;
 
     case K_NAME:
-      if ( !c_ast_sname_empty( ast ) && param->gkind != G_CAST )
-        FPUTS( c_ast_sname_full_or_local( ast, param ), param->gout );
-      g_param_leaf( param, ast );
+      if ( !c_ast_sname_empty( ast ) && g->kind == G_DECLARE )
+        FPUTS( g_sname_full_or_local( g, ast ), g->gout );
+      g_set_leaf( g, ast );
       break;
 
     case K_NONE:
@@ -337,9 +339,9 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
     case K_RVALUE_REFERENCE: {
       c_type_id_t const storage_type = (ast_type & T_MASK_STORAGE);
       if ( storage_type != T_NONE )
-        FPRINTF( param->gout, "%s ", c_type_name( storage_type ) );
-      c_ast_gibberish_impl( ast->as.ptr_ref.to_ast, param );
-      if ( param->gkind != G_CAST &&
+        FPRINTF( g->gout, "%s ", c_type_name( storage_type ) );
+      g_impl( g, ast->as.ptr_ref.to_ast );
+      if ( g->kind == G_DECLARE &&
            c_ast_find_name( ast, C_VISIT_UP ) != NULL &&
            !c_ast_find_kind( ast->parent, C_VISIT_UP, K_MASK_FUNCTION_LIKE ) ) {
         //
@@ -359,55 +361,74 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, g_param_t *param ) {
         //
         // i.e., the '*', '&', or "&&" adjacent to the type.
         //
-        g_param_space( param );
+        g_print_space( g );
       }
-      if ( !param->postfix )
-        c_ast_gibberish_qual_name( ast, param );
+      if ( !g->postfix )
+        g_qual_name( g, ast );
       break;
     }
 
     case K_POINTER_TO_MEMBER:
-      c_ast_gibberish_impl( ast->as.ptr_mbr.of_ast, param );
-      if ( !param->postfix ) {
-        FPUTC( ' ', param->gout );
-        c_ast_gibberish_qual_name( ast, param );
+      g_impl( g, ast->as.ptr_mbr.of_ast );
+      if ( !g->postfix ) {
+        FPUTC( ' ', g->gout );
+        g_qual_name( g, ast );
       }
       break;
 
     case K_TYPEDEF:
       if ( !opt_east_const && ast_type != T_TYPEDEF_TYPE )
-        FPRINTF( param->gout, "%s ", c_type_name( ast_type ) );
-      FPRINTF( param->gout,
-        "%s", c_ast_sname_full_or_local( ast->as.c_typedef->ast, param )
+        FPRINTF( g->gout, "%s ", c_type_name( ast_type ) );
+      FPRINTF( g->gout,
+        "%s", g_sname_full_or_local( g, ast->as.c_typedef->ast )
       );
       if ( opt_east_const && ast_type != T_TYPEDEF_TYPE )
-        FPRINTF( param->gout, " %s", c_type_name( ast_type ) );
-      c_ast_gibberish_space_name( ast, param );
-      g_param_leaf( param, ast );
+        FPRINTF( g->gout, " %s", c_type_name( ast_type ) );
+      g_space_name( g, ast );
+      g_set_leaf( g, ast );
       break;
 
     case K_VARIADIC:
-      FPUTS( L_ELLIPSIS, param->gout );
-      g_param_leaf( param, ast );
+      FPUTS( L_ELLIPSIS, g->gout );
+      g_set_leaf( g, ast );
       break;
   } // switch
 }
 
 /**
- * Helper function for `c_ast_gibberish_impl()` that handles the printing of
- * "postfix" cases:
+ * Initializes a `g_state`.
+ *
+ * @param g The `g_state` to initialize.
+ * @param kind The <code>\ref g_kind</code> of gibberish to print.
+ * @param root The `c_ast` root.
+ * @param gout The `FILE` to print it to.
+ */
+static void g_init( g_state_t *g, c_ast_t const *root, g_kind_t kind,
+                    FILE *gout ) {
+  assert( g != NULL );
+  assert( root != NULL );
+  assert( gout != NULL );
+
+  MEM_ZERO( g );
+  g->kind = kind;
+  g->gout = gout;
+  g->root_ast = root;
+}
+
+/**
+ * Helper function for `g_impl()` that handles the printing of "postfix" cases:
  *
  *  + Array of pointer to function.
  *  + Pointer to array.
  *  + Reference to array.
  *
+ * @param g The `g_state` to use.
  * @param ast The `c_ast`.
- * @param param The `g_param` to use.
  */
-static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
+static void g_postfix( g_state_t *g, c_ast_t const *ast ) {
+  assert( g != NULL );
   assert( ast != NULL );
   assert( c_ast_is_parent( ast ) );
-  assert( param != NULL );
 
   c_ast_t const *const parent = ast->parent;
 
@@ -421,7 +442,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
       case K_OPERATOR:
       case K_USER_DEF_CONVERSION:
       case K_USER_DEF_LITERAL:
-        c_ast_gibberish_postfix( parent, param );
+        g_postfix( g, parent );
         break;
 
       case K_POINTER:
@@ -429,7 +450,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
       case K_REFERENCE:
         switch ( ast->kind ) {
           case K_APPLE_BLOCK:
-            FPUTS( "(^", param->gout );
+            FPUTS( "(^", g->gout );
             break;
           default:
             //
@@ -441,7 +462,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
             //
             // so we need to add parentheses.
             //
-            FPUTC( '(', param->gout );
+            FPUTC( '(', g->gout );
             break;
           case K_POINTER:
             //
@@ -456,12 +477,12 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
             break;
         } // switch
 
-        c_ast_gibberish_qual_name( parent, param );
+        g_qual_name( g, parent );
         if ( c_ast_is_parent( parent->parent ) )
-          c_ast_gibberish_postfix( parent, param );
+          g_postfix( g, parent );
 
         if ( (ast->kind & K_ANY_POINTER) == K_NONE )
-          FPUTC( ')', param->gout );
+          FPUTC( ')', g->gout );
         break;
 
       default:
@@ -473,10 +494,10 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
     // printing the gibberish for.
     //
     if ( ast->kind == K_APPLE_BLOCK )
-      FPUTS( "(^", param->gout );
-    c_ast_gibberish_space_name( ast, param );
+      FPUTS( "(^", g->gout );
+    g_space_name( g, ast );
     if ( ast->kind == K_APPLE_BLOCK )
-      FPUTC( ')', param->gout );
+      FPUTC( ')', g->gout );
   }
 
   //
@@ -485,7 +506,7 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
   //
   switch ( ast->kind ) {
     case K_ARRAY:
-      c_ast_gibberish_array_size( ast, param );
+      g_array_size( g, ast );
       break;
     case K_APPLE_BLOCK:
     case K_CONSTRUCTOR:
@@ -493,10 +514,10 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
-      c_ast_gibberish_func_args( ast, param );
+      g_func_args( g, ast );
       break;
     case K_USER_DEF_CONVERSION:
-      FPUTS( "()", param->gout );
+      FPUTS( "()", g->gout );
       break;
     default:
       /* suppress warning */;
@@ -504,43 +525,42 @@ static void c_ast_gibberish_postfix( c_ast_t const *ast, g_param_t *param ) {
 }
 
 /**
- * Helper function for `c_ast_gibberish_impl()` that prints a pointer, pointer-
- * to-member, reference, or rvalue reference, its qualifier, if any, and the
- * name, if any.
+ * Helper function for `g_impl()` that prints a pointer, pointer-to-member,
+ * reference, or rvalue reference, its qualifier, if any, and the name, if any.
  *
+ * @param g The `g_state` to use.
  * @param ast The `c_ast` that is one of <code>\ref K_POINTER</code>,
  * <code>\ref K_POINTER_TO_MEMBER</code>, <code>\ref K_REFERENCE</code>, or
  * <code>\ref K_RVALUE_REFERENCE</code> whose qualifier, if any, and name, if
  * any, to print.
- * @param param The `g_param` to use.
  */
-static void c_ast_gibberish_qual_name( c_ast_t const *ast, g_param_t *param ) {
+static void g_qual_name( g_state_t *g, c_ast_t const *ast ) {
+  assert( g != NULL );
   assert( ast != NULL );
-  assert( param != NULL );
 
   switch ( ast->kind ) {
     case K_POINTER:
-      FPUTC( '*', param->gout );
+      FPUTC( '*', g->gout );
       break;
     case K_POINTER_TO_MEMBER:
-      FPRINTF( param->gout,
+      FPRINTF( g->gout,
         "%s::*", c_sname_full_name( &ast->as.ptr_mbr.class_sname )
       );
       break;
     case K_REFERENCE:
       if ( opt_alt_tokens ) {
-        g_param_space( param );
-        FPRINTF( param->gout, "%s ", L_BITAND );
+        g_print_space( g );
+        FPRINTF( g->gout, "%s ", L_BITAND );
       } else {
-        FPUTC( '&', param->gout );
+        FPUTC( '&', g->gout );
       }
       break;
     case K_RVALUE_REFERENCE:
       if ( opt_alt_tokens ) {
-        g_param_space( param );
-        FPRINTF( param->gout, "%s ", L_AND );
+        g_print_space( g );
+        FPRINTF( g->gout, "%s ", L_AND );
       } else {
-        FPUTS( "&&", param->gout );
+        FPUTS( "&&", g->gout );
       }
       break;
     default:
@@ -549,54 +569,74 @@ static void c_ast_gibberish_qual_name( c_ast_t const *ast, g_param_t *param ) {
 
   c_type_id_t const qual_type = (ast->type_id & T_MASK_QUALIFIER);
   if ( qual_type != T_NONE ) {
-    FPUTS( c_type_name( qual_type ), param->gout );
-    if ( param->gkind != G_CAST )
-      FPUTC( ' ', param->gout );
+    FPUTS( c_type_name( qual_type ), g->gout );
+    if ( g->kind == G_DECLARE )
+      FPUTC( ' ', g->gout );
   }
-  if ( !c_ast_sname_empty( ast ) && param->gkind != G_CAST )
-    FPUTS( c_ast_sname_full_or_local( ast, param ), param->gout );
+  if ( !c_ast_sname_empty( ast ) && g->kind == G_DECLARE )
+    FPUTS( g_sname_full_or_local( g, ast ), g->gout );
 }
 
 /**
- * Helper function for `c_ast_gibberish_impl()` that prints a space (if it
- * hasn't printed one before) and an AST node's name, if any.
+ * Gets either the full or local name of \a ast based on whether we're emitting
+ * the gibberish for a `typedef` since it can't have a scoped name.
  *
- * @param ast The `c_ast` to print the name of, if any.
- * @param param The `g_param` to use.
+ * @param g The `g_state` to use.
+ * @param ast The `c_ast` to get the name of.
+ * @return Returns said name.
  */
-static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
+C_WARN_UNUSED_RESULT
+static char const* g_sname_full_or_local( g_state_t *g, c_ast_t const *ast ) {
+  assert( g != NULL );
   assert( ast != NULL );
-  assert( param != NULL );
 
-  if ( param->gkind != G_CAST ) {
+  if ( (g->flags & G_DECL_TYPEDEF) != 0 ) {
+    g->flags &= ~G_DECL_TYPEDEF;
+    return c_ast_sname_local_name( ast );
+  }
+  return c_ast_sname_full_name( ast );
+}
+
+/**
+ * Helper function for `g_impl()` that prints a space (if it hasn't printed one
+ * before) and an AST node's name, if any.
+ *
+ * @param g The `g_state` to use.
+ * @param ast The `c_ast` to print the name of, if any.
+ */
+static void g_space_name( g_state_t *g, c_ast_t const *ast ) {
+  assert( g != NULL );
+  assert( ast != NULL );
+
+  if ( g->kind == G_DECLARE ) {
     switch ( ast->kind ) {
       case K_CONSTRUCTOR:
-        FPUTS( c_ast_sname_full_name( ast ), param->gout );
+        FPUTS( c_ast_sname_full_name( ast ), g->gout );
         if ( (ast->type_id & T_EXPLICIT) == T_NONE &&
              c_ast_sname_count( ast ) == 1 ) {
           //
           // For non-explicit constructors, we have to repeat the local name
           // since that's the name of the constructor at file-scope.
           //
-          FPRINTF( param->gout, "::%s", c_ast_sname_local_name( ast ) );
+          FPRINTF( g->gout, "::%s", c_ast_sname_local_name( ast ) );
         }
         break;
       case K_DESTRUCTOR:
         if ( c_ast_sname_count( ast ) > 1 )
-          FPRINTF( param->gout, "%s::", c_ast_sname_scope_name( ast ) );
+          FPRINTF( g->gout, "%s::", c_ast_sname_scope_name( ast ) );
         if ( opt_alt_tokens )
-          FPRINTF( param->gout, "%s ", L_COMPL );
+          FPRINTF( g->gout, "%s ", L_COMPL );
         else
-          FPUTC( '~', param->gout );
-        FPUTS( c_ast_sname_local_name( ast ), param->gout );
+          FPUTC( '~', g->gout );
+        FPUTS( c_ast_sname_local_name( ast ), g->gout );
         break;
       case K_OPERATOR: {
-        g_param_space( param );
+        g_print_space( g );
         if ( !c_ast_sname_empty( ast ) )
-          FPRINTF( param->gout, "%s::", c_ast_sname_full_name( ast ) );
+          FPRINTF( g->gout, "%s::", c_ast_sname_full_name( ast ) );
         c_operator_t const *const op = op_get( ast->as.oper.oper_id );
         char const *const token = graph_token_c( alt_token_c( op->name ) );
-        FPRINTF( param->gout,
+        FPRINTF( g->gout,
           "%s%s%s", L_OPERATOR, isalpha( token[0] ) ? " " : "", token
         );
         break;
@@ -605,63 +645,22 @@ static void c_ast_gibberish_space_name( c_ast_t const *ast, g_param_t *param ) {
         // Do nothing since these don't have names.
         break;
       case K_USER_DEF_LITERAL:
-        g_param_space( param );
+        g_print_space( g );
         if ( c_ast_sname_count( ast ) > 1 )
-          FPRINTF( param->gout, "%s::", c_ast_sname_scope_name( ast ) );
-        FPRINTF( param->gout,
+          FPRINTF( g->gout, "%s::", c_ast_sname_scope_name( ast ) );
+        FPRINTF( g->gout,
           "%s\"\" %s",
           L_OPERATOR, c_ast_sname_local_name( ast )
         );
         break;
       default:
         if ( !c_ast_sname_empty( ast ) ) {
-          g_param_space( param );
-          FPUTS( c_ast_sname_full_or_local( ast, param ), param->gout );
+          g_print_space( g );
+          FPUTS( g_sname_full_or_local( g, ast ), g->gout );
         }
         break;
     } // switch
   }
-}
-
-/**
- * Gets either the full or local name of \a ast based on whether we're emitting
- * the gibberish for a `typedef` since it can't have a scoped name.
- *
- * @param ast The `c_ast` to get the name of.
- * @param param The `g_param` to use.
- * @return Returns said name.
- */
-C_WARN_UNUSED_RESULT
-static char const* c_ast_sname_full_or_local( c_ast_t const *ast,
-                                              g_param_t *param ) {
-  assert( ast != NULL );
-  assert( param != NULL );
-
-  if ( (param->flags & G_DECL_TYPEDEF) != 0 ) {
-    param->flags &= ~G_DECL_TYPEDEF;
-    return c_ast_sname_local_name( ast );
-  }
-  return c_ast_sname_full_name( ast );
-}
-
-/**
- * Initializes a `g_param`.
- *
- * @param param The `g_param` to initialize.
- * @param gkind The <code>\ref g_kind</code> of gibberish to print.
- * @param root The `c_ast` root.
- * @param gout The `FILE` to print it to.
- */
-static void g_param_init( g_param_t *param, c_ast_t const *root,
-                          g_kind_t gkind, FILE *gout ) {
-  assert( param != NULL );
-  assert( root != NULL );
-  assert( gout != NULL );
-
-  MEM_ZERO( param );
-  param->gkind = gkind;
-  param->gout = gout;
-  param->root_ast = root;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -696,9 +695,9 @@ char const* alt_token_c( char const *token ) {
 }
 
 void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
-  g_param_t param;
-  g_param_init( &param, ast, G_CAST, gout );
-  c_ast_gibberish_impl( ast, &param );
+  g_state_t g;
+  g_init( &g, ast, G_CAST, gout );
+  g_impl( &g, ast );
 }
 
 void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout ) {
@@ -718,10 +717,10 @@ void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout ) {
       break;
   } // switch
 
-  g_param_t param;
-  g_param_init( &param, ast, G_DECLARE, gout );
-  param.flags = flags;
-  c_ast_gibberish_impl( ast, &param );
+  g_state_t g;
+  g_init( &g, ast, G_DECLARE, gout );
+  g.flags = flags;
+  g_impl( &g, ast );
 }
 
 char const* graph_token_c( char const *token ) {
