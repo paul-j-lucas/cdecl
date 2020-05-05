@@ -101,7 +101,7 @@ static inline char const* alignas_lang( void ) {
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_func( c_ast_t const *ast ) {
+static inline bool c_ast_check_func( c_ast_t const *ast ) {
   return C_LANG_IS_C() ?
     c_ast_check_func_c( ast ) :
     c_ast_check_func_cpp( ast );
