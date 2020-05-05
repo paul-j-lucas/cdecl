@@ -420,7 +420,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa UNEXPECTED_INT_VALUE
  */
 #define UNEXPECTED_STR_VALUE(EXPR) \
-  INTERNAL_ERR( "\"%s\": unexpected value for " #EXPR "\n", (EXPR) )
+  INTERNAL_ERR( "\"%s\": unexpected value for " #EXPR "\n", (char const*)(EXPR) )
 
 ////////// extern functions ///////////////////////////////////////////////////
 
