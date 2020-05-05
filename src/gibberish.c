@@ -608,59 +608,60 @@ static void g_space_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
-  if ( g->kind == G_DECLARE ) {
-    switch ( ast->kind ) {
-      case K_CONSTRUCTOR:
-        FPUTS( c_ast_sname_full_name( ast ), g->gout );
-        if ( (ast->type_id & T_EXPLICIT) == T_NONE &&
-             c_ast_sname_count( ast ) == 1 ) {
-          //
-          // For non-explicit constructors, we have to repeat the local name
-          // since that's the name of the constructor at file-scope.
-          //
-          FPRINTF( g->gout, "::%s", c_ast_sname_local_name( ast ) );
-        }
-        break;
-      case K_DESTRUCTOR:
-        if ( c_ast_sname_count( ast ) > 1 )
-          FPRINTF( g->gout, "%s::", c_ast_sname_scope_name( ast ) );
-        if ( opt_alt_tokens )
-          FPRINTF( g->gout, "%s ", L_COMPL );
-        else
-          FPUTC( '~', g->gout );
-        FPUTS( c_ast_sname_local_name( ast ), g->gout );
-        break;
-      case K_OPERATOR: {
-        g_print_space( g );
-        if ( !c_ast_sname_empty( ast ) )
-          FPRINTF( g->gout, "%s::", c_ast_sname_full_name( ast ) );
-        c_operator_t const *const op = op_get( ast->as.oper.oper_id );
-        char const *const token = graph_token_c( alt_token_c( op->name ) );
-        FPRINTF( g->gout,
-          "%s%s%s", L_OPERATOR, isalpha( token[0] ) ? " " : "", token
-        );
-        break;
+  if ( g->kind == G_CAST )
+    return;
+
+  switch ( ast->kind ) {
+    case K_CONSTRUCTOR:
+      FPUTS( c_ast_sname_full_name( ast ), g->gout );
+      if ( (ast->type_id & T_EXPLICIT) == T_NONE &&
+            c_ast_sname_count( ast ) == 1 ) {
+        //
+        // For non-explicit constructors, we have to repeat the local name
+        // since that's the name of the constructor at file-scope.
+        //
+        FPRINTF( g->gout, "::%s", c_ast_sname_local_name( ast ) );
       }
-      case K_USER_DEF_CONVERSION:
-        // Do nothing since these don't have names.
-        break;
-      case K_USER_DEF_LITERAL:
+      break;
+    case K_DESTRUCTOR:
+      if ( c_ast_sname_count( ast ) > 1 )
+        FPRINTF( g->gout, "%s::", c_ast_sname_scope_name( ast ) );
+      if ( opt_alt_tokens )
+        FPRINTF( g->gout, "%s ", L_COMPL );
+      else
+        FPUTC( '~', g->gout );
+      FPUTS( c_ast_sname_local_name( ast ), g->gout );
+      break;
+    case K_OPERATOR: {
+      g_print_space( g );
+      if ( !c_ast_sname_empty( ast ) )
+        FPRINTF( g->gout, "%s::", c_ast_sname_full_name( ast ) );
+      c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+      char const *const token = graph_token_c( alt_token_c( op->name ) );
+      FPRINTF( g->gout,
+        "%s%s%s", L_OPERATOR, isalpha( token[0] ) ? " " : "", token
+      );
+      break;
+    }
+    case K_USER_DEF_CONVERSION:
+      // Do nothing since these don't have names.
+      break;
+    case K_USER_DEF_LITERAL:
+      g_print_space( g );
+      if ( c_ast_sname_count( ast ) > 1 )
+        FPRINTF( g->gout, "%s::", c_ast_sname_scope_name( ast ) );
+      FPRINTF( g->gout,
+        "%s\"\" %s",
+        L_OPERATOR, c_ast_sname_local_name( ast )
+      );
+      break;
+    default:
+      if ( !c_ast_sname_empty( ast ) ) {
         g_print_space( g );
-        if ( c_ast_sname_count( ast ) > 1 )
-          FPRINTF( g->gout, "%s::", c_ast_sname_scope_name( ast ) );
-        FPRINTF( g->gout,
-          "%s\"\" %s",
-          L_OPERATOR, c_ast_sname_local_name( ast )
-        );
-        break;
-      default:
-        if ( !c_ast_sname_empty( ast ) ) {
-          g_print_space( g );
-          FPUTS( g_sname_full_or_local( g, ast ), g->gout );
-        }
-        break;
-    } // switch
-  }
+        FPUTS( g_sname_full_or_local( g, ast ), g->gout );
+      }
+      break;
+  } // switch
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
