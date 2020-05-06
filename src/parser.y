@@ -585,9 +585,7 @@ static bool explain_type_decl( bool has_typename,
     if ( scope_name[0] != '\0' ) {
       c_type_id_t const sn_type = c_sname_type( &sname );
       assert( sn_type != T_NONE );
-      FPRINTF( fout,
-        "%s %s %s ", L_OF, c_type_name( sn_type ), scope_name
-      );
+      FPRINTF( fout, "%s %s %s ", L_OF, c_type_name( sn_type ), scope_name );
     }
     FPRINTF( fout, "%s ", L_AS );
     if ( is_typedef )
