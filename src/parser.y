@@ -496,6 +496,7 @@ static bool explain_type_decl( bool has_typename,
                                c_ast_t *type_ast, c_loc_t const *type_loc,
                                c_ast_t *decl_ast, c_loc_t const *decl_loc ) {
   assert( type_ast != NULL );
+  assert( type_loc != NULL );
   assert( decl_ast != NULL );
   assert( decl_loc != NULL );
 
@@ -768,15 +769,15 @@ static bool print_type_visitor( c_typedef_t const *type, void *data ) {
 /**
  * Pushes a qualifier onto the qualifier inherited attribute stack.
  *
- * @param qualifier The qualifier to push.
+ * @param qual_type The qualifier to push.
  * @param loc A pointer to the source location of the qualifier.
  */
-static void qualifier_push( c_type_id_t qualifier, c_loc_t const *loc ) {
-  assert( (qualifier & ~T_MASK_QUALIFIER) == T_NONE );
+static void qualifier_push( c_type_id_t qual_type, c_loc_t const *loc ) {
+  assert( (qual_type & ~T_MASK_QUALIFIER) == T_NONE );
   assert( loc != NULL );
 
   c_qualifier_t *const qual = MALLOC( c_qualifier_t, 1 );
-  qual->type_id = qualifier;
+  qual->type_id = qual_type;
   qual->loc = *loc;
   slist_push_head( &in_attr.qualifier_stack, qual );
 }
