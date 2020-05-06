@@ -592,8 +592,7 @@ static bool explain_type_decl( bool has_typename,
     FPRINTF( fout, "%s ", L_AS );
     if ( is_typedef )
       FPRINTF( fout, "%s ", L_TYPE );
-    if ( ast->kind != K_OPERATOR )
-      c_sname_free( &sname );
+    c_sname_free( &sname );
   }
 
   c_ast_english( ast, fout );
