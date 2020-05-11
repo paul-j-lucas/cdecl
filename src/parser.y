@@ -4371,7 +4371,7 @@ typedef_type_c_ast
       DUMP_AST( "any_typedef", $1->ast );
       DUMP_SNAME( "sname_c", &$3 );
 
-      if ( !type_peek() ) {
+      if ( type_peek() == NULL ) {
         print_error( &@3, "\"%s\": unknown type", c_sname_full_name( &$3 ) );
         PARSE_ABORT();
       }
@@ -4402,7 +4402,7 @@ typedef_type_c_ast
       DUMP_AST( "any_typedef", $1->ast );
       DUMP_SNAME( "typedef_sname_c", &$3 );
 
-      if ( !type_peek() ) {
+      if ( type_peek() == NULL ) {
         print_error( &@3, "\"%s\": unknown type", c_sname_full_name( &$3 ) );
         PARSE_ABORT();
       }
