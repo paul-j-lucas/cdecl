@@ -251,7 +251,7 @@ struct c_ast {
   c_alignas_t           align;          ///< Alignment (if any).
   c_ast_depth_t         depth;          ///< How many `()` deep.
   c_ast_id_t            id;             ///< Unique id (starts at 1).
-  c_kind_t              kind;           ///< Kind.
+  c_kind_t              kind_id;        ///< Kind.
   c_sname_t             sname;          ///< Scoped name.
   c_type_id_t           type_id;        ///< Type.
   c_ast_t              *parent;         ///< Parent `c_ast` node, if any.
@@ -354,13 +354,13 @@ void c_ast_free( c_ast_t *ast );
  */
 C_WARN_UNUSED_RESULT C_AST_INLINE
 bool c_ast_is_parent( c_ast_t const *ast ) {
-  return ast != NULL && (ast->kind & K_MASK_PARENT) != K_NONE;
+  return ast != NULL && (ast->kind_id & K_MASK_PARENT) != K_NONE;
 }
 
 /**
  * Creates a new `c_ast`.
  *
- * @param kind The kind of `c_ast` to create.
+ * @param kind_id The kind_id of `c_ast` to create.
  * @param depth How deep within `()` it is.
  * @param loc A pointer to the token location data.
  * @return Returns a pointer to a new `c_ast`.
@@ -368,7 +368,7 @@ bool c_ast_is_parent( c_ast_t const *ast ) {
  * @sa c_ast_free()
  */
 C_WARN_UNUSED_RESULT
-c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc );
+c_ast_t* c_ast_new( c_kind_t kind_id, c_ast_depth_t depth, c_loc_t const *loc );
 
 /**
  * Gets the root `c_ast` node of \a ast.

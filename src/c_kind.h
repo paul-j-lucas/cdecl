@@ -154,32 +154,32 @@ c_kind_t c_kind_data_get( void *data ) {
 /**
  * Creates an opaque data handle for a `c_kind_t`.
  *
- * @param kind The `c_kind_t` to use.
+ * @param kind_id The `c_kind_t` to use.
  * @return Returns said handle.
  *
  * @sa c_kind_data_free(void*)
  */
 C_WARN_UNUSED_RESULT C_KIND_INLINE
-void* c_kind_data_new( c_kind_t kind ) {
+void* c_kind_data_new( c_kind_t kind_id ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
   c_kind_t *const data = MALLOC( c_kind_t, 1 );
-  *data = kind;
+  *data = kind_id;
   return data;
 #else
-  return REINTERPRET_CAST( void*, kind );
+  return REINTERPRET_CAST( void*, kind_id );
 #endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Gets the name of \a kind.
+ * Gets the name of \a kind_id.
  *
- * @param kind The <code>\ref c_kind</code> to get the name for.
+ * @param kind_id The <code>\ref c_kind</code> to get the name for.
  * @return Returns said name.
  */
 C_WARN_UNUSED_RESULT
-char const* c_kind_name( c_kind_t kind );
+char const* c_kind_name( c_kind_t kind_id );
 
 ///////////////////////////////////////////////////////////////////////////////
 

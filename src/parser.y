@@ -299,13 +299,13 @@ static in_attr_t      in_attr;          ///< Inherited attributes.
 /**
  * Creates a new `c_ast` and adds it to the garbage-collection list.
  *
- * @param kind The kind of `c_ast` to create.
+ * @param kind_id The kind of `c_ast` to create.
  * @param loc A pointer to the token location data.
  * @return Returns a pointer to a new `c_ast`.
  */
 C_WARN_UNUSED_RESULT
-static inline c_ast_t* c_ast_new_gc( c_kind_t kind, c_loc_t *loc ) {
-  c_ast_t *const ast = c_ast_new( kind, ast_depth, loc );
+static inline c_ast_t* c_ast_new_gc( c_kind_t kind_id, c_loc_t *loc ) {
+  c_ast_t *const ast = c_ast_new( kind_id, ast_depth, loc );
   slist_push_tail( &ast_gc_list, ast );
   return ast;
 }
@@ -466,7 +466,7 @@ static bool typename_ok( c_ast_t const *ast, c_loc_t const *ast_loc ) {
   assert( ast != NULL );
   assert( ast_loc != NULL );
 
-  c_sname_t const *const sname = ast->kind == K_TYPEDEF ?
+  c_sname_t const *const sname = ast->kind_id == K_TYPEDEF ?
     &ast->as.c_typedef->ast->sname :
     &ast->sname;
 
@@ -505,7 +505,7 @@ static bool explain_type_decl( bool has_typename,
 
   bool is_typedef = c_ast_take_typedef( type_ast );
 
-  if ( is_typedef && decl_ast->kind == K_TYPEDEF ) {
+  if ( is_typedef && decl_ast->kind_id == K_TYPEDEF ) {
     //
     // This is for a case like:
     //
@@ -550,7 +550,7 @@ static bool explain_type_decl( bool has_typename,
   if ( !c_ast_check( ast, C_CHECK_DECL ) )
     return false;
 
-  if ( ast->kind == K_USER_DEF_CONVERSION ) {
+  if ( ast->kind_id == K_USER_DEF_CONVERSION ) {
     //
     // User-defined conversions don't have names.
     //
@@ -568,7 +568,7 @@ static bool explain_type_decl( bool has_typename,
     char const *local_name = NULL;
     char const *scope_name = "";
 
-    if ( ast->kind == K_OPERATOR ) {
+    if ( ast->kind_id == K_OPERATOR ) {
       local_name = op_token_c( ast->as.oper.oper_id );
       scope_name = c_sname_full_name( &sname );
     } else {
@@ -1354,7 +1354,7 @@ declare_english
   : Y_DECLARE sname_english as_expected storage_class_list_english_type_opt
     decl_english_ast alignas_specifier_english_opt
     {
-      if ( $5.ast->kind == K_NAME ) {
+      if ( $5.ast->kind_id == K_NAME ) {
         //
         // This checks for a case like:
         //
@@ -1576,7 +1576,7 @@ define_english
       DUMP_AST( "decl_english_ast", $5.ast );
       DUMP_END();
 
-      if ( $5.ast->kind == K_NAME ) {   // see the comment in "declare_english"
+      if ( $5.ast->kind_id == K_NAME ) {// see the comment in "declare_english"
         assert( !c_ast_sname_empty( $5.ast ) );
         print_error( &@5,
           "\"%s\": unknown type", c_ast_sname_full_name( $5.ast )
@@ -2216,7 +2216,7 @@ typedef_declaration_c
       if ( $2 && !typename_ok( $4.ast, &@4 ) )
         PARSE_ABORT();
 
-      if ( $6.ast->kind == K_TYPEDEF ) {
+      if ( $6.ast->kind_id == K_TYPEDEF ) {
         //
         // This is for either of the following cases:
         //
@@ -2310,7 +2310,7 @@ using_declaration_c
 
       c_ast_t *const ast = c_ast_patch_placeholder( $5.ast, $7.ast );
 
-      c_sname_t sname = $3.ast->kind == K_TYPEDEF ?
+      c_sname_t sname = $3.ast->kind_id == K_TYPEDEF ?
         c_ast_sname_dup( $3.ast->as.c_typedef->ast ) :
         c_ast_take_name( $3.ast );
       c_ast_sname_set_sname( ast, &sname );
@@ -2652,7 +2652,7 @@ pointer_decl_english_ast
       DUMP_TYPE( "(qualifier)", qualifier_peek() );
       DUMP_AST( "decl_english_ast", $3.ast );
 
-      if ( $3.ast->kind == K_NAME ) {   // see the comment in "declare_english"
+      if ( $3.ast->kind_id == K_NAME ) {// see the comment in "declare_english"
         assert( !c_ast_sname_empty( $3.ast ) );
         print_error( &@3,
           "\"%s\": unknown type", c_ast_sname_full_name( $3.ast )
@@ -2773,7 +2773,7 @@ var_decl_english_ast
       DUMP_SNAME( "sname", &$1 );
       DUMP_AST( "decl_english_ast", $3.ast );
 
-      if ( $3.ast->kind == K_NAME ) {   // see the comment in "declare_english"
+      if ( $3.ast->kind_id == K_NAME ) {// see the comment in "declare_english"
         assert( !c_ast_sname_empty( $3.ast ) );
         print_error( &@3,
           "\"%s\": unknown type", c_ast_sname_full_name( $3.ast )

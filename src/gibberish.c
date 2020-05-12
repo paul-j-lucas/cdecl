@@ -124,7 +124,7 @@ static inline void g_set_leaf( g_state_t *g, c_ast_t const *ast ) {
 static void g_array_size( g_state_t const *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
-  assert( ast->kind == K_ARRAY );
+  assert( ast->kind_id == K_ARRAY );
 
   FPUTS( graph_token_c( "[" ), g->gout );
   if ( ast->as.array.type_id != T_NONE )
@@ -152,7 +152,7 @@ static void g_array_size( g_state_t const *g, c_ast_t const *ast ) {
 static void g_func_args( g_state_t const *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
-  assert( (ast->kind & K_MASK_FUNCTION_LIKE) != K_NONE );
+  assert( (ast->kind_id & K_MASK_FUNCTION_LIKE) != K_NONE );
 
   bool comma = false;
   FPUTC( '(', g->gout );
@@ -194,7 +194,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
   // pre-order.  Since this is the only case where a pre-order traversal has to
   // be done, it's not worth having a pre-order version of c_ast_visit().
   //
-  switch ( ast->kind ) {
+  switch ( ast->kind_id ) {
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_USER_DEF_CONVERSION:
@@ -253,7 +253,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
     case K_APPLE_BLOCK:
       if ( ast_type != T_NONE )         // storage class
         FPRINTF( g->gout, "%s ", c_type_name( ast_type ) );
-      if ( ast->kind == K_USER_DEF_CONVERSION ) {
+      if ( ast->kind_id == K_USER_DEF_CONVERSION ) {
         if ( !c_ast_sname_empty( ast ) )
           FPRINTF( g->gout, "%s::", c_ast_sname_full_name( ast ) );
         FPRINTF( g->gout, "%s ", L_OPERATOR );
@@ -330,9 +330,9 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_NONE:
-      assert( ast->kind != K_NONE );
+      assert( ast->kind_id != K_NONE );
     case K_PLACEHOLDER:
-      assert( ast->kind != K_PLACEHOLDER );
+      assert( ast->kind_id != K_PLACEHOLDER );
 
     case K_POINTER:
     case K_REFERENCE:
@@ -433,7 +433,7 @@ static void g_postfix( g_state_t *g, c_ast_t const *ast ) {
   c_ast_t const *const parent = ast->parent;
 
   if ( parent != NULL ) {
-    switch ( parent->kind ) {
+    switch ( parent->kind_id ) {
       case K_ARRAY:
       case K_APPLE_BLOCK:
       case K_CONSTRUCTOR:
@@ -448,7 +448,7 @@ static void g_postfix( g_state_t *g, c_ast_t const *ast ) {
       case K_POINTER:
       case K_POINTER_TO_MEMBER:
       case K_REFERENCE:
-        switch ( ast->kind ) {
+        switch ( ast->kind_id ) {
           case K_APPLE_BLOCK:
             FPUTS( "(^", g->gout );
             break;
@@ -481,7 +481,7 @@ static void g_postfix( g_state_t *g, c_ast_t const *ast ) {
         if ( c_ast_is_parent( parent->parent ) )
           g_postfix( g, parent );
 
-        if ( (ast->kind & K_ANY_POINTER) == K_NONE )
+        if ( (ast->kind_id & K_ANY_POINTER) == K_NONE )
           FPUTC( ')', g->gout );
         break;
 
@@ -493,10 +493,10 @@ static void g_postfix( g_state_t *g, c_ast_t const *ast ) {
     // We've reached the root of the AST that has the name of the thing we're
     // printing the gibberish for.
     //
-    if ( ast->kind == K_APPLE_BLOCK )
+    if ( ast->kind_id == K_APPLE_BLOCK )
       FPUTS( "(^", g->gout );
     g_space_name( g, ast );
-    if ( ast->kind == K_APPLE_BLOCK )
+    if ( ast->kind_id == K_APPLE_BLOCK )
       FPUTC( ')', g->gout );
   }
 
@@ -504,7 +504,7 @@ static void g_postfix( g_state_t *g, c_ast_t const *ast ) {
   // We're now unwinding the recursion: print the "postfix" things (size for
   // arrays, arguments for functions) in root-to-leaf order.
   //
-  switch ( ast->kind ) {
+  switch ( ast->kind_id ) {
     case K_ARRAY:
       g_array_size( g, ast );
       break;
@@ -538,7 +538,7 @@ static void g_qual_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
-  switch ( ast->kind ) {
+  switch ( ast->kind_id ) {
     case K_POINTER:
       FPUTC( '*', g->gout );
       break;
@@ -564,7 +564,7 @@ static void g_qual_name( g_state_t *g, c_ast_t const *ast ) {
       }
       break;
     default:
-      assert( (ast->kind & (K_ANY_POINTER | K_ANY_REFERENCE)) != K_NONE );
+      assert( (ast->kind_id & (K_ANY_POINTER | K_ANY_REFERENCE)) != K_NONE );
   } // switch
 
   c_type_id_t const qual_type = (ast->type_id & T_MASK_QUALIFIER);
@@ -611,7 +611,7 @@ static void g_space_name( g_state_t *g, c_ast_t const *ast ) {
   if ( g->kind == G_CAST )
     return;
 
-  switch ( ast->kind ) {
+  switch ( ast->kind_id ) {
     case K_CONSTRUCTOR:
       FPUTS( c_ast_sname_full_name( ast ), g->gout );
       if ( (ast->type_id & T_EXPLICIT) == T_NONE &&

@@ -68,7 +68,7 @@ static void c_ast_english_func_args( c_ast_arg_t const *arg, FILE *eout ) {
       FPUTS( ", ", eout );
 
     c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
-    if ( arg_ast->kind != K_NAME ) {
+    if ( arg_ast->kind_id != K_NAME ) {
       //
       // For all kinds except K_NAME, we have to print:
       //
@@ -118,7 +118,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
   FILE *const eout = REINTERPRET_CAST( FILE*, data );
 
-  switch ( ast->kind ) {
+  switch ( ast->kind_id ) {
     case K_ARRAY:
       if ( ast->type_id != T_NONE )     // storage class
         FPRINTF( eout, "%s ", c_type_name( ast->type_id ) );
@@ -141,7 +141,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       if ( ast->type_id != T_NONE )     // storage class
         FPRINTF( eout, "%s ", c_type_name( ast->type_id ) );
 
-      switch ( ast->kind ) {
+      switch ( ast->kind_id ) {
         case K_FUNCTION:
           if ( (ast->type_id & T_MEMBER_ONLY) != T_NONE )
             FPRINTF( eout, "%s ", L_MEMBER );
@@ -159,7 +159,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
           /* suppress warning */;
       } // switch
 
-      FPUTS( c_kind_name( ast->kind ), eout );
+      FPUTS( c_kind_name( ast->kind_id ), eout );
       c_ast_arg_t const *const arg = c_ast_args( ast );
       if ( arg != NULL ) {
         FPUTC( ' ', eout );
@@ -183,9 +183,9 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       break;
 
     case K_NONE:
-      assert( ast->kind != K_NONE );
+      assert( ast->kind_id != K_NONE );
     case K_PLACEHOLDER:
-      assert( ast->kind != K_PLACEHOLDER );
+      assert( ast->kind_id != K_PLACEHOLDER );
 
     case K_POINTER:
     case K_REFERENCE:
@@ -193,7 +193,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       c_type_id_t const qual_type = (ast->type_id & T_MASK_QUALIFIER);
       if ( qual_type != T_NONE )
         FPRINTF( eout, "%s ", c_type_name( qual_type ) );
-      FPRINTF( eout, "%s %s ", c_kind_name( ast->kind ), L_TO );
+      FPRINTF( eout, "%s %s ", c_kind_name( ast->kind_id ), L_TO );
       break;
     }
 
@@ -217,7 +217,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
     case K_USER_DEF_CONVERSION: {
       char const *const name = c_type_name( ast->type_id );
-      FPRINTF( eout, "%s%s%s", SP_AFTER( name ), c_kind_name( ast->kind ) );
+      FPRINTF( eout, "%s%s%s", SP_AFTER( name ), c_kind_name( ast->kind_id ) );
       if ( !c_ast_sname_empty( ast ) ) {
         FPRINTF( eout, " %s %s ", L_OF, c_ast_sname_type_name( ast ) );
         c_sname_english( &ast->sname, eout );
@@ -227,7 +227,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     }
 
     case K_VARIADIC:
-      FPUTS( c_kind_name( ast->kind ), eout );
+      FPUTS( c_kind_name( ast->kind_id ), eout );
       break;
   } // switch
 

@@ -43,8 +43,8 @@
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-char const* c_kind_name( c_kind_t kind ) {
-  switch ( kind ) {
+char const* c_kind_name( c_kind_t kind_id ) {
+  switch ( kind_id ) {
     case K_ARRAY              : return "array";
     case K_APPLE_BLOCK        : return "block";
     case K_BUILTIN            : return "built-in type";
@@ -73,7 +73,7 @@ char const* c_kind_name( c_kind_t kind ) {
       return "struct or union";
   } // switch
 
-  UNEXPECTED_INT_VALUE( kind );
+  UNEXPECTED_INT_VALUE( kind_id );
   return NULL;                          // suppress warning
 }
 

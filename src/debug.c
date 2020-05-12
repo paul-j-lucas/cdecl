@@ -111,7 +111,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
     INDENT_PRINT_SNAME( "sname", &ast->sname );
     FPUTS( ",\n", dout );
     INDENT_PRINT( "id = %u,\n", ast->id );
-    INDENT_PRINT_KV( "kind", c_kind_name( ast->kind ) );
+    INDENT_PRINT_KV( "kind", c_kind_name( ast->kind_id ) );
     FPUTS( ",\n", dout );
     INDENT_PRINT( "depth = %u,\n", ast->depth );
 
@@ -138,7 +138,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
     bool comma = false;
 
-    switch ( ast->kind ) {
+    switch ( ast->kind_id ) {
       case K_BUILTIN:
       case K_DESTRUCTOR:
       case K_NAME:

@@ -86,20 +86,20 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
   // If only one of the ASTs is a typedef, compare the other AST to the
   // typedef's AST.
   //
-  if ( ast_i->kind == K_TYPEDEF ) {
-    if ( ast_j->kind != K_TYPEDEF )
+  if ( ast_i->kind_id == K_TYPEDEF ) {
+    if ( ast_j->kind_id != K_TYPEDEF )
       return c_ast_equiv( ast_i->as.c_typedef->ast, ast_j );
   } else {
-    if ( ast_j->kind == K_TYPEDEF )
+    if ( ast_j->kind_id == K_TYPEDEF )
       return c_ast_equiv( ast_i, ast_j->as.c_typedef->ast );
   }
 
-  if ( ast_i->kind != ast_j->kind )
+  if ( ast_i->kind_id != ast_j->kind_id )
     return false;
   if ( ast_i->type_id != ast_j->type_id )
     return false;
 
-  switch ( ast_i->kind ) {
+  switch ( ast_i->kind_id ) {
     case K_ARRAY: {
       c_array_t const *const a_i = &ast_i->as.array;
       c_array_t const *const a_j = &ast_j->as.array;
@@ -188,7 +188,7 @@ void c_ast_free( c_ast_t *ast ) {
     --c_ast_count;
 
     c_sname_free( &ast->sname );
-    switch ( ast->kind ) {
+    switch ( ast->kind_id ) {
       case K_ENUM_CLASS_STRUCT_UNION:
         c_sname_free( &ast->as.ecsu.ecsu_sname );
         break;
@@ -223,7 +223,8 @@ void c_ast_free( c_ast_t *ast ) {
   }
 }
 
-c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc ) {
+c_ast_t* c_ast_new( c_kind_t kind_id, c_ast_depth_t depth,
+                    c_loc_t const *loc ) {
   assert( loc != NULL );
   static c_ast_id_t next_id;
 
@@ -232,7 +233,7 @@ c_ast_t* c_ast_new( c_kind_t kind, c_ast_depth_t depth, c_loc_t const *loc ) {
 
   ast->depth = depth;
   ast->id = ++next_id;
-  ast->kind = kind;
+  ast->kind_id = kind_id;
   ast->loc = *loc;
 
   ++c_ast_count;

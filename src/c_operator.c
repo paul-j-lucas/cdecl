@@ -94,7 +94,7 @@ c_operator_t const* op_get( c_oper_id_t oper_id ) {
 }
 
 unsigned op_get_overload( c_ast_t const *ast ) {
-  assert( ast->kind == K_OPERATOR );
+  assert( ast->kind_id == K_OPERATOR );
 
   //
   // If the operator is either member or non-member only, then it's that.

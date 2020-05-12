@@ -54,12 +54,12 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t* );
 C_WARN_UNUSED_RESULT
 static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
   assert( array != NULL );
-  assert( array->kind == K_ARRAY );
+  assert( array->kind_id == K_ARRAY );
 
   if ( ast == NULL )
     return array;
 
-  switch ( ast->kind ) {
+  switch ( ast->kind_id ) {
     case K_ARRAY:
       return c_ast_append_array( ast, array );
 
@@ -133,7 +133,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
   assert( ast != NULL );
   assert( array != NULL );
 
-  switch ( ast->kind ) {
+  switch ( ast->kind_id ) {
     case K_POINTER:
       //
       // If there's an intervening pointer, e.g.:
@@ -162,8 +162,8 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
       /* suppress warning */;
   } // switch
 
-  assert( array->kind == K_ARRAY );
-  assert( array->as.array.of_ast->kind == K_PLACEHOLDER );
+  assert( array->kind_id == K_ARRAY );
+  assert( array->as.array.of_ast->kind_id == K_PLACEHOLDER );
   //
   // We've reached the end of the array chain: make the new array be an array
   // of this AST node and return the array so the parent will now point to it
@@ -188,10 +188,11 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
                                      c_ast_t *func_ast ) {
   assert( ast != NULL );
   assert( func_ast != NULL );
-  assert( (func_ast->kind & K_MASK_FUNCTION_LIKE) != K_NONE );
+  assert( (func_ast->kind_id & K_MASK_FUNCTION_LIKE) != K_NONE );
 
-  if ( (ast->kind & (K_ARRAY | K_ANY_POINTER | K_ANY_REFERENCE)) != K_NONE ) {
-    switch ( ast->as.parent.of_ast->kind ) {
+  if ( (ast->kind_id &
+        (K_ARRAY | K_ANY_POINTER | K_ANY_REFERENCE)) != K_NONE ) {
+    switch ( ast->as.parent.of_ast->kind_id ) {
       case K_ARRAY:
       case K_POINTER:
       case K_POINTER_TO_MEMBER:
@@ -266,8 +267,8 @@ static c_type_id_t c_ast_take_storage( c_ast_t *ast ) {
 C_WARN_UNUSED_RESULT
 static bool c_ast_vistor_kind( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  c_kind_t const kind = c_kind_data_get( data );
-  return (ast->kind & kind) != K_NONE;
+  c_kind_t const kind_id = c_kind_data_get( data );
+  return (ast->kind_id & kind_id) != K_NONE;
 }
 
 /**
@@ -319,8 +320,8 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func ) {
   return rv;
 }
 
-c_ast_t* c_ast_find_kind( c_ast_t *ast, c_visit_dir_t dir, c_kind_t kind ) {
-  void *const data = c_kind_data_new( kind );
+c_ast_t* c_ast_find_kind( c_ast_t *ast, c_visit_dir_t dir, c_kind_t kind_id ) {
+  void *const data = c_kind_data_new( kind_id );
   ast = c_ast_visit( ast, dir, c_ast_vistor_kind, data );
   c_kind_data_free( data );
   return ast;
@@ -344,13 +345,13 @@ c_ast_t* c_ast_find_type( c_ast_t *ast, c_visit_dir_t dir,
 
 bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t type_id ) {
   ast = c_ast_untypedef( ast );
-  return  ast->kind == K_BUILTIN &&
+  return  ast->kind_id == K_BUILTIN &&
           (type_id == T_NONE || (ast->type_id & type_id) != T_NONE);
 }
 
 bool c_ast_is_ecsu( c_ast_t const *ast ) {
   ast = c_ast_unreference( ast );
-  return ast != NULL && ast->kind == K_ENUM_CLASS_STRUCT_UNION;
+  return ast != NULL && ast->kind_id == K_ENUM_CLASS_STRUCT_UNION;
 }
 
 bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
@@ -431,13 +432,13 @@ bool c_ast_take_typedef( c_ast_t *ast ) {
 
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast ) {
   ast = c_ast_untypedef( ast );
-  return ast != NULL && ast->kind == K_POINTER ?
+  return ast != NULL && ast->kind_id == K_POINTER ?
     c_ast_untypedef( ast->as.ptr_ref.to_ast ) : NULL;
 }
 
 c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
   while ( (ast = c_ast_untypedef( ast )) != NULL &&
-          (ast->kind & K_REFERENCE) != K_NONE ) {
+          (ast->kind_id & K_REFERENCE) != K_NONE ) {
     ast = ast->as.ptr_ref.to_ast;
     assert( ast != NULL );
   } // while
@@ -446,7 +447,7 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
 
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast ) {
   if ( ast != NULL ) {
-    while ( ast->kind == K_TYPEDEF ) {
+    while ( ast->kind_id == K_TYPEDEF ) {
       ast = ast->as.c_typedef->ast;
       assert( ast != NULL );
     } // while

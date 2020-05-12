@@ -153,15 +153,15 @@ C_WARN_UNUSED_RESULT
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
 
 /**
- * Traverses \a ast attempting to find an AST node having \a kind.
+ * Traverses \a ast attempting to find an AST node having \a kind_id.
  *
  * @param ast The `c_ast` to begin at.
  * @param dir The direction to visit.
- * @param kind The bitwise-or of <code>\ref c_kind</code> to find.
- * @return Returns a pointer to an AST node having \a kind or null if none.
+ * @param kind_id The bitwise-or of <code>\ref c_kind</code> to find.
+ * @return Returns a pointer to an AST node having \a kind_id or null if none.
  */
 C_WARN_UNUSED_RESULT
-c_ast_t* c_ast_find_kind( c_ast_t *ast, c_visit_dir_t dir, c_kind_t kind );
+c_ast_t* c_ast_find_kind( c_ast_t *ast, c_visit_dir_t dir, c_kind_t kind_id );
 
 /**
  * Traverses \a ast attempting to find an AST node having \a type_id.
