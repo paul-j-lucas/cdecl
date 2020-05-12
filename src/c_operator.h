@@ -28,9 +28,8 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
-#include "c_ast.h"
-#include "c_lang.h"
 #include "gibberish.h"
+#include "typedefs.h"
 
 /// @cond DOXYGEN_IGNORE
 

@@ -30,7 +30,6 @@
 /// @endcond
 #include "c_ast.h"
 #include "c_operator.h"
-#include "util.h"
 
 // standard
 #include <assert.h>
@@ -90,8 +89,7 @@ static c_operator_t const C_OPERATOR[] = {
 ////////// extern functions ///////////////////////////////////////////////////
 
 c_operator_t const* op_get( c_oper_id_t oper_id ) {
-  if ( unlikely( oper_id > C_OP_TILDE ) )
-    UNEXPECTED_INT_VALUE( oper_id );
+  assert( oper_id <= C_OP_TILDE );
   return &C_OPERATOR[ oper_id ];
 }
 
