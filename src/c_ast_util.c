@@ -102,8 +102,8 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
         //
         //      [ast] --> [array] --> [parent]
         //
-        if ( c_ast_is_parent( ast->parent ) )
-          c_ast_set_parent( array, ast->parent );
+        if ( c_ast_is_parent( ast->parent_ast ) )
+          c_ast_set_parent( array, ast->parent_ast );
         c_ast_set_parent( ast, array );
         return array;
       }
@@ -369,7 +369,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   if ( decl_ast == NULL )
     return type_ast;
 
-  if ( type_ast->parent == NULL ) {
+  if ( type_ast->parent_ast == NULL ) {
     c_ast_t *const placeholder =
       c_ast_find_kind( decl_ast, C_VISIT_DOWN, K_PLACEHOLDER );
     if ( placeholder != NULL ) {
@@ -394,7 +394,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
       //      [type] --> ... --> [type-root] --> [placeholder-parent]
       //
       c_ast_t *const type_root_ast = c_ast_root( type_ast );
-      c_ast_set_parent( type_root_ast, placeholder->parent );
+      c_ast_set_parent( type_root_ast, placeholder->parent_ast );
     }
   }
 

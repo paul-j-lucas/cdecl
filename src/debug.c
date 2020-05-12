@@ -116,7 +116,8 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
     INDENT_PRINT( "depth = %u,\n", ast->depth );
 
     INDENT_PRINT(
-      "parent->id = %d,\n", ast->parent ? (int)ast->parent->id : -1
+      "parent->id = %d,\n",
+      ast->parent_ast != NULL ? (int)ast->parent_ast->id : -1
     );
 
     switch ( ast->align.kind ) {

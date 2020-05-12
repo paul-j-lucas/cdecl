@@ -269,8 +269,8 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_BUILTIN );
 
-  if ( (ast->parent == NULL ||
-        ast->parent->kind_id != K_USER_DEF_CONVERSION) &&
+  if ( (ast->parent_ast == NULL ||
+        ast->parent_ast->kind_id != K_USER_DEF_CONVERSION) &&
         (ast->type_id & T_MASK_TYPE) == T_NONE ) {
     print_error( &ast->loc,
       "implicit \"%s\" is illegal in %s", L_INT, C_LANG_NAME()
@@ -278,7 +278,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( (ast->type_id & T_VOID) != T_NONE && ast->parent == NULL ) {
+  if ( (ast->type_id & T_VOID) != T_NONE && ast->parent_ast == NULL ) {
     print_error( &ast->loc, "variable of %s", L_VOID );
     print_hint( "pointer to %s", L_VOID );
     return false;

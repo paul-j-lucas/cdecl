@@ -60,8 +60,8 @@ static unsigned   c_ast_count;          ///< ASTs allocated but not yet freed.
 C_WARN_UNUSED_RESULT
 static bool c_ast_has_cycle( c_ast_t const *ast ) {
   assert( ast != NULL );
-  for ( c_ast_t const *const start_ast = ast; ast->parent != NULL; ) {
-    ast = ast->parent;
+  for ( c_ast_t const *const start_ast = ast; ast->parent_ast != NULL; ) {
+    ast = ast->parent_ast;
     if ( unlikely( ast == start_ast ) )
       return true;
   } // for
@@ -242,20 +242,20 @@ c_ast_t* c_ast_new( c_kind_t kind_id, c_ast_depth_t depth,
 
 c_ast_t* c_ast_root( c_ast_t *ast ) {
   assert( ast != NULL );
-  while ( ast->parent != NULL )
-    ast = ast->parent;
+  while ( ast->parent_ast != NULL )
+    ast = ast->parent_ast;
   return ast;
 }
 
-void c_ast_set_parent( c_ast_t *child, c_ast_t *parent ) {
-  assert( child != NULL );
-  assert( parent != NULL );
-  assert( c_ast_is_parent( parent ) );
+void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
+  assert( child_ast != NULL );
+  assert( parent_ast != NULL );
+  assert( c_ast_is_parent( parent_ast ) );
 
-  child->parent = parent;
-  parent->as.parent.of_ast = child;
+  child_ast->parent_ast = parent_ast;
+  parent_ast->as.parent.of_ast = child_ast;
 
-  assert( !c_ast_has_cycle( child ) );
+  assert( !c_ast_has_cycle( child_ast ) );
 }
 
 c_sname_t c_ast_sname_dup( c_ast_t const *ast ) {
@@ -306,7 +306,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
       ast = c_ast_is_parent( ast ) ? ast->as.parent.of_ast : NULL;
       break;
     case C_VISIT_UP:
-      ast = ast->parent;
+      ast = ast->parent_ast;
       break;
   } // switch
   return c_ast_visit( ast, dir, visitor, data );

@@ -254,7 +254,7 @@ struct c_ast {
   c_kind_t              kind_id;        ///< Kind.
   c_sname_t             sname;          ///< Scoped name.
   c_type_id_t           type_id;        ///< Type.
-  c_ast_t              *parent;         ///< Parent `c_ast` node, if any.
+  c_ast_t              *parent_ast;     ///< Parent `c_ast` node, if any.
   c_loc_t               loc;            ///< Source location.
 
   union {
@@ -393,10 +393,10 @@ c_scope_t const* c_ast_scope( c_ast_t const *ast ) {
 /**
  * Sets the two-way pointer links between parent/child `c_ast` nodes.
  *
- * @param child The "child" `c_ast` node to set the parent of.
- * @param parent The "parent" `c_ast` node whose child node is set.
+ * @param child_ast The "child" `c_ast` node to set the parent of.
+ * @param parent_ast The "parent" `c_ast` node whose child node is set.
  */
-void c_ast_set_parent( c_ast_t *child, c_ast_t *parent );
+void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
 
 /**
  * Appends \a sname to the name of \a ast.

@@ -264,7 +264,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
         if ( g->kind == G_DECLARE )
           g_print_space( g );
         if ( ast == g->root_ast && g->leaf_ast != NULL )
-          g_postfix( g, g->leaf_ast->parent );
+          g_postfix( g, g->leaf_ast->parent_ast );
         else
           g_postfix( g, ast );
       }
@@ -343,7 +343,8 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       g_impl( g, ast->as.ptr_ref.to_ast );
       if ( g->kind == G_DECLARE &&
            c_ast_find_name( ast, C_VISIT_UP ) != NULL &&
-           !c_ast_find_kind( ast->parent, C_VISIT_UP, K_MASK_FUNCTION_LIKE ) ) {
+           !c_ast_find_kind( ast->parent_ast, C_VISIT_UP,
+                             K_MASK_FUNCTION_LIKE ) ) {
         //
         // For all kinds except function-like ASTs, we want the output to be
         // like:
@@ -430,10 +431,10 @@ static void g_postfix( g_state_t *g, c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( c_ast_is_parent( ast ) );
 
-  c_ast_t const *const parent = ast->parent;
+  c_ast_t const *const parent_ast = ast->parent_ast;
 
-  if ( parent != NULL ) {
-    switch ( parent->kind_id ) {
+  if ( parent_ast != NULL ) {
+    switch ( parent_ast->kind_id ) {
       case K_ARRAY:
       case K_APPLE_BLOCK:
       case K_CONSTRUCTOR:
@@ -442,7 +443,7 @@ static void g_postfix( g_state_t *g, c_ast_t const *ast ) {
       case K_OPERATOR:
       case K_USER_DEF_CONVERSION:
       case K_USER_DEF_LITERAL:
-        g_postfix( g, parent );
+        g_postfix( g, parent_ast );
         break;
 
       case K_POINTER:
@@ -477,9 +478,9 @@ static void g_postfix( g_state_t *g, c_ast_t const *ast ) {
             break;
         } // switch
 
-        g_qual_name( g, parent );
-        if ( c_ast_is_parent( parent->parent ) )
-          g_postfix( g, parent );
+        g_qual_name( g, parent_ast );
+        if ( c_ast_is_parent( parent_ast->parent_ast ) )
+          g_postfix( g, parent_ast );
 
         if ( (ast->kind_id & K_ANY_POINTER) == K_NONE )
           FPUTC( ')', g->gout );
