@@ -1290,6 +1290,9 @@ command
 /*****************************************************************************/
 
 cast_english
+    /*
+     * C-style cast.
+     */
   : Y_CAST sname_english_expected as_into_to_expected decl_english_ast
     {
       DUMP_START( "cast_english",
@@ -1311,6 +1314,9 @@ cast_english
         PARSE_ABORT();
     }
 
+    /*
+     * New C++-style cast.
+     */
   | new_style_cast_english cast_expected sname_english_expected
     as_into_to_expected decl_english_ast
     {
@@ -1351,6 +1357,9 @@ new_style_cast_english
 /*****************************************************************************/
 
 declare_english
+    /*
+     * Common declaration, e.g.: declare x as int.
+     */
   : Y_DECLARE sname_english as_expected storage_class_list_english_type_opt
     decl_english_ast alignas_specifier_english_opt
     {
@@ -1417,6 +1426,9 @@ declare_english
       FPUTC( '\n', fout );
     }
 
+    /*
+     * C++ overloaded operator declaration.
+     */
   | Y_DECLARE c_operator of_scope_list_english_opt as_expected
     storage_class_list_english_type_opt oper_decl_english_ast
     {
@@ -1443,6 +1455,9 @@ declare_english
       FPUTC( '\n', fout );
     }
 
+    /*
+     * C++ user-defined conversion operator declaration.
+     */
   | Y_DECLARE storage_class_list_english_type_opt cv_qualifier_list_c_type_opt
     Y_USER_DEFINED conversion_expected operator_opt of_scope_list_english_opt
     returning_expected decl_english_ast
@@ -1623,6 +1638,9 @@ define_english
 /*****************************************************************************/
 
 explain_c
+    /*
+     * C-style cast.
+     */
   : explain '(' type_c_ast { type_push( $3.ast ); } cast_c_ast_opt ')'
     sname_c_opt
     {
@@ -1655,6 +1673,9 @@ explain_c
       DUMP_END();
     }
 
+    /*
+     * New C++-style cast.
+     */
   | explain new_style_cast_c
     lt_expected type_c_ast { type_push( $4.ast ); } cast_c_ast_opt gt_expected
     lparen_expected sname_c_expected rparen_expected
@@ -1735,7 +1756,7 @@ explain_c
     }
 
     /*
-     * Declaration using typename (without alignas), e.g.: typename T::U x.
+     * C++ declaration using typename (without alignas), e.g.: typename T::U x.
      * (We can't use typename_opt because it would introduce more shift/reduce
      * conflicts.)
      */
@@ -1778,7 +1799,7 @@ explain_c
     }
 
     /*
-     * File-scope constructor definition, e.g.: S::S([args]).
+     * C++ file-scope constructor definition, e.g.: S::S([args]).
      */
   | explain Y_CONSTRUCTOR_SNAME lparen_expected arg_list_c_ast_opt ')'
     noexcept_c_type_opt
@@ -1814,7 +1835,7 @@ explain_c
     }
 
     /*
-     * In-class destructor declaration, e.g.: ~S().
+     * C++ in-class destructor declaration, e.g.: ~S().
      */
   | explain virtual_opt Y_TILDE any_name_expected
     lparen_expected rparen_expected noexcept_c_type_opt
@@ -1842,7 +1863,7 @@ explain_c
     }
 
     /*
-     * File scope destructor definition, e.g.: S::~S().
+     * C++ file scope destructor definition, e.g.: S::~S().
      */
   | explain Y_DESTRUCTOR_SNAME lparen_expected rparen_expected
     noexcept_c_type_opt
@@ -1873,6 +1894,9 @@ explain_c
         PARSE_ABORT();
     }
 
+    /*
+     * C++ using declaration.
+     */
   | explain Y_USING name_expected equals_expected type_c_ast
     {
       // see the comment in "define_english" about T_TYPEDEF
@@ -2009,6 +2033,9 @@ quit_command
 /*****************************************************************************/
 
 scope_declaration_c
+    /*
+     * C++ scoped declaration, e.g.: class C { typedef int I; };
+     */
   : class_struct_union_type
     {
       // see the comment in "explain"
@@ -2048,6 +2075,8 @@ scope_declaration_c
     }
 
     /*
+     * C++ namespace declaration, e.g.: namespace NS { typedef int I; }
+     *
      * Namespace needs its own rule since class/struct/union requires a
      * trailing ';' whereas namespace does not.
      */
@@ -2646,6 +2675,9 @@ qualifiable_decl_english_ast
   ;
 
 pointer_decl_english_ast
+    /*
+     * Ordinary pointer declaration.
+     */
   : Y_POINTER to_expected decl_english_ast
     {
       DUMP_START( "pointer_decl_english_ast", "POINTER TO decl_english_ast" );
@@ -2669,6 +2701,9 @@ pointer_decl_english_ast
       DUMP_END();
     }
 
+    /*
+     * C++ pointer-to-member declaration.
+     */
   | Y_POINTER to_expected Y_MEMBER of_expected class_struct_type_expected
     sname_english_expected decl_english_ast
     {
@@ -2767,6 +2802,9 @@ user_defined_literal_decl_english_ast
   ;
 
 var_decl_english_ast
+    /*
+     * Ordinary variable declaration.
+     */
   : sname_c Y_AS decl_english_ast
     {
       DUMP_START( "var_decl_english_ast", "NAME AS decl_english_ast" );
@@ -2789,11 +2827,15 @@ var_decl_english_ast
     }
 
     /*
-     * K&R C type-less variable declaration.  This doesn't need to be a scoped
-     * name since C doesn't have scoped names.
+     * K&R C type-less variable declaration.
+     *
+     * This doesn't need to be a scoped name since C doesn't have scoped names.
      */
   | name_ast
 
+    /*
+     * Varargs declaration.
+     */
   | "..."
     {
       DUMP_START( "var_decl_english_ast", "..." );
@@ -3584,6 +3626,9 @@ arg_list_c_ast
   ;
 
 arg_c_ast
+    /*
+     * Ordinary function argument declaration.
+     */
   : type_c_ast { type_push( $1.ast ); } cast_c_ast_opt
     {
       type_pop();
@@ -3600,8 +3645,14 @@ arg_c_ast
       DUMP_END();
     }
 
-  | name_ast                            /* K&R C type-less argument */
+    /*
+     * K&R C type-less function argument declaration.
+     */
+  | name_ast
 
+    /*
+     * Varargs declaration.
+     */
   | "..."
     {
       DUMP_START( "argc", "..." );
@@ -4021,7 +4072,7 @@ cast2_c_ast
   ;
 
 array_cast_c_ast
-  : /* type */ cast_c_ast_opt arg_array_size_c_ast
+  : /* type_c_ast */ cast_c_ast_opt arg_array_size_c_ast
     {
       DUMP_START( "array_cast_c_ast", "cast_c_ast_opt array_size_c_num" );
       DUMP_AST( "(type_c_ast)", type_peek() );
@@ -4355,6 +4406,7 @@ typedef_type_c_ast
       DUMP_AST( "typedef_type_c_ast", $$.ast );
       DUMP_END();
     }
+
   | /* type_c_ast */ any_typedef "::" sname_c
     {
       //
@@ -4385,6 +4437,7 @@ typedef_type_c_ast
       DUMP_AST( "typedef_type_c_ast", $$.ast );
       DUMP_END();
     }
+
   | /* type_c_ast */ any_typedef "::" typedef_sname_c
     {
       //
@@ -4444,6 +4497,7 @@ name_expected
 
 scope_sname_c_opt
   : /* empty */                   { c_sname_init( &$$ ); }
+
   | sname_c "::"
     {
       $$ = $1;
@@ -4456,6 +4510,7 @@ scope_sname_c_opt
         c_sname_set_type( &$$, T_SCOPE );
       }
     }
+
   | any_typedef "::"
     {
       //
@@ -4485,6 +4540,7 @@ sname_c
       c_sname_set_type( &$$, sn_type );
       c_sname_append_name( &$$, $3 );
     }
+
   | sname_c "::" any_typedef
     {
       //
@@ -4503,6 +4559,7 @@ sname_c
       c_sname_t temp = c_ast_sname_dup( $3->ast );
       c_sname_append_sname( &$$, &temp );
     }
+
   | Y_NAME
     {
       c_sname_init( &$$ );
@@ -4574,6 +4631,7 @@ typedef_sname_c
       c_sname_set_type( &$$, c_sname_type( &$3 ) );
       c_sname_append_sname( &$$, &$3 );
     }
+
   | typedef_sname_c "::" any_typedef
     {
       //
@@ -4588,6 +4646,7 @@ typedef_sname_c
       c_sname_t temp = c_ast_sname_dup( $3->ast );
       c_sname_append_sname( &$$, &temp );
     }
+
   | any_typedef                   { $$ = c_ast_sname_dup( $1->ast ); }
   ;
 
