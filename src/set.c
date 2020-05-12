@@ -233,9 +233,9 @@ static void set_lang( bool enabled, c_loc_t const *opt_name_loc,
   assert( enabled );
   (void)opt_name_loc;
 
-  c_lang_id_t const new_lang = c_lang_find( opt_value );
-  if ( new_lang != LANG_NONE ) {
-    c_lang_set( new_lang );
+  c_lang_id_t const new_lang_id = c_lang_find( opt_value );
+  if ( new_lang_id != LANG_NONE ) {
+    c_lang_set( new_lang_id );
     if ( opt_graph == C_GRAPH_TRI )
       set_trigraphs( /*enabled=*/true, NULL, NULL, NULL );
   } else {
@@ -355,9 +355,9 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
     return;
   }
 
-  c_lang_id_t const new_lang = c_lang_find( opt_name );
-  if ( new_lang != LANG_NONE ) {
-    c_lang_set( new_lang );
+  c_lang_id_t const new_lang_id = c_lang_find( opt_name );
+  if ( new_lang_id != LANG_NONE ) {
+    c_lang_set( new_lang_id );
     if ( opt_graph == C_GRAPH_TRI ) {
       opt_name_loc = NULL;
       set_trigraphs( /*enabled=*/true, opt_name_loc, NULL, NULL );
