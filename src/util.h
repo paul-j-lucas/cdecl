@@ -148,7 +148,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param PTR The pointer to the C string to free later.
  *
- * @sa FREE
+ * @sa FREE_STRDUP_LATER
  */
 #define FREE_STR_LATER(PTR)       REINTERPRET_CAST( char*, free_later( PTR ) )
 
@@ -156,6 +156,8 @@ _GL_INLINE_HEADER_BEGIN
  * Frees the duplicated C string later.
  *
  * @param PTR The pointer to the C string to duplicate and free later.
+ *
+ * @sa FREE_STR_LATER
  */
 #define FREE_STRDUP_LATER(PTR)    FREE_STR_LATER( check_strdup( PTR ) )
 
