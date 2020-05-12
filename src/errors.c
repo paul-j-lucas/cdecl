@@ -590,14 +590,18 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   c_type_id_t const member_func_types = ast->type_id & T_MEMBER_FUNC_ONLY;
   c_type_id_t const nonmember_func_types = ast->type_id & T_NONMEMBER_FUNC_ONLY;
   if ( member_func_types != T_NONE && nonmember_func_types != T_NONE ) {
+    // Need this since c_type_name_error() can't be called more than once in
+    // the same expression.
     char const *const member_func_types_names =
-      FREE_STRDUP_LATER( c_type_name_error( member_func_types ) );
+      strdup( c_type_name_error( member_func_types ) );
+
     print_error( &ast->loc,
       "%ss can not be %s and %s",
       c_kind_name( ast->kind_id ),
       member_func_types_names,
       c_type_name_error( nonmember_func_types )
     );
+    FREE( member_func_types_names );
     return false;
   }
 

@@ -784,12 +784,15 @@ bool c_type_add( c_type_id_t *dest_type, c_type_id_t new_type,
   }
 
   if ( (*dest_type & new_type) != T_NONE ) {
-    char const *const new_name =
-      FREE_STRDUP_LATER( c_type_name_error( new_type ) );
+    // Need this since c_type_name_error() can't be called more than once in
+    // the same expression.
+    char const *const new_name = strdup( c_type_name_error( new_type ) );
+
     print_error( new_loc,
       "\"%s\" can not be combined with \"%s\"",
       new_name, c_type_name_error( *dest_type )
     );
+    FREE( new_name );
     return false;
   }
 
