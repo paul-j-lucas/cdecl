@@ -547,9 +547,6 @@ static bool explain_type_decl( bool has_typename,
     ast->align = *align;
   }
 
-  if ( (ast->kind & (K_CONSTRUCTOR | K_USER_DEF_CONVERSION)) != K_NONE )
-    ast->type_id |= type_ast->type_id;
-
   if ( !c_ast_check( ast, C_CHECK_DECL ) )
     return false;
 
@@ -3077,6 +3074,7 @@ func_decl_c_ast
 
       if ( assume_constructor ) {
         assert( trailing_ret_ast == NULL );
+        func_ast->type_id |= type_ast->type_id;
         if ( c_ast_sname_empty( func_ast ) )
           func_ast->sname = c_ast_take_name( decl2_ast );
         $$.ast = func_ast;
@@ -3463,6 +3461,8 @@ user_defined_conversion_decl_c_ast
       $$.ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
       $$.ast->sname = $1;
       $$.ast->type_id = $8 | $9 | $10;
+      if ( type_peek() != NULL )
+        $$.ast->type_id |= type_peek()->type_id;
       $$.ast->as.user_def_conv.conv_ast = $5.ast != NULL ? $5.ast : $3.ast;
       $$.target_ast = $$.ast->as.user_def_conv.conv_ast;
 
