@@ -250,7 +250,7 @@ struct c_user_def_lit {
 struct c_ast {
   c_alignas_t           align;          ///< Alignment (if any).
   c_ast_depth_t         depth;          ///< How many `()` deep.
-  c_ast_id_t            id;             ///< Unique id (starts at 1).
+  c_ast_id_t            unique_id;      ///< Unique id (starts at 1).
   c_kind_t              kind_id;        ///< Kind.
   c_sname_t             sname;          ///< Scoped name.
   c_type_id_t           type_id;        ///< Type.

@@ -232,7 +232,7 @@ c_ast_t* c_ast_new( c_kind_t kind_id, c_ast_depth_t depth,
   MEM_ZERO( ast );
 
   ast->depth = depth;
-  ast->id = ++next_id;
+  ast->unique_id = ++next_id;
   ast->kind_id = kind_id;
   ast->loc = *loc;
 

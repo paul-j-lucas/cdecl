@@ -110,14 +110,14 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
     INDENT_PRINT_SNAME( "sname", &ast->sname );
     FPUTS( ",\n", dout );
-    INDENT_PRINT( "id = %u,\n", ast->id );
+    INDENT_PRINT( "unique_id = %u,\n", ast->unique_id );
     INDENT_PRINT_KV( "kind", c_kind_name( ast->kind_id ) );
     FPUTS( ",\n", dout );
     INDENT_PRINT( "depth = %u,\n", ast->depth );
 
     INDENT_PRINT(
-      "parent->id = %d,\n",
-      ast->parent_ast != NULL ? (int)ast->parent_ast->id : -1
+      "parent->unique_id = %d,\n",
+      ast->parent_ast != NULL ? (int)ast->parent_ast->unique_id : -1
     );
 
     switch ( ast->align.kind ) {
