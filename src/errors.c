@@ -587,16 +587,16 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
     }
   }
 
-  c_type_id_t const member_types = ast->type_id & T_MEMBER_ONLY;
-  c_type_id_t const non_member_types = ast->type_id & T_NON_MEMBER_ONLY;
-  if ( member_types != T_NONE && non_member_types != T_NONE ) {
-    char const *const member_types_names =
-      FREE_STRDUP_LATER( c_type_name_error( member_types ) );
+  c_type_id_t const member_func_types = ast->type_id & T_MEMBER_FUNC_ONLY;
+  c_type_id_t const nonmember_func_types = ast->type_id & T_NONMEMBER_FUNC_ONLY;
+  if ( member_func_types != T_NONE && nonmember_func_types != T_NONE ) {
+    char const *const member_func_types_names =
+      FREE_STRDUP_LATER( c_type_name_error( member_func_types ) );
     print_error( &ast->loc,
       "%ss can not be %s and %s",
       c_kind_name( ast->kind_id ),
-      member_types_names,
-      c_type_name_error( non_member_types )
+      member_func_types_names,
+      c_type_name_error( nonmember_func_types )
     );
     return false;
   }
@@ -604,21 +604,21 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   unsigned const user_overload_flags = ast->as.func.flags & C_FUNC_MASK_MEMBER;
   switch ( user_overload_flags ) {
     case C_FUNC_MEMBER:
-      if ( non_member_types != T_NONE ) {
+      if ( nonmember_func_types != T_NONE ) {
         print_error( &ast->loc,
           "%s %ss can not be %s",
           L_MEMBER, c_kind_name( ast->kind_id ),
-          c_type_name_error( non_member_types )
+          c_type_name_error( nonmember_func_types )
         );
         return false;
       }
       break;
     case C_FUNC_NON_MEMBER:
-      if ( member_types != T_NONE ) {
+      if ( member_func_types != T_NONE ) {
         print_error( &ast->loc,
           "%s %ss can not be %s",
           L_NON_MEMBER, c_kind_name( ast->kind_id ),
-          c_type_name_error( member_types )
+          c_type_name_error( member_func_types )
         );
         return false;
       }
@@ -864,7 +864,7 @@ same: print_error( &ast->loc,
     // Ensure non-member operators are not const, defaulted, deleted,
     // overridden, final, reference, rvalue reference, nor virtual.
     //
-    c_type_id_t const member_only_types = ast->type_id & T_MEMBER_ONLY;
+    c_type_id_t const member_only_types = ast->type_id & T_MEMBER_FUNC_ONLY;
     if ( member_only_types != T_NONE ) {
       print_error( &ast->loc,
         "%s operators can not be %s",
@@ -901,7 +901,7 @@ same: print_error( &ast->loc,
     // Ensure member operators are not friend.
     //
     c_type_id_t const non_member_only_types =
-      ast->type_id & T_NON_MEMBER_ONLY;
+      ast->type_id & T_NONMEMBER_FUNC_ONLY;
     if ( non_member_only_types != T_NONE ) {
       print_error( &ast->loc,
         "%s operators can not be %s",

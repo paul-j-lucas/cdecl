@@ -143,7 +143,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
       switch ( ast->kind_id ) {
         case K_FUNCTION:
-          if ( (ast->type_id & T_MEMBER_ONLY) != T_NONE )
+          if ( (ast->type_id & T_MEMBER_FUNC_ONLY) != T_NONE )
             FPRINTF( eout, "%s ", L_MEMBER );
           break;
         case K_OPERATOR: {

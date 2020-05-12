@@ -122,9 +122,9 @@ unsigned op_get_overload( c_ast_t const *ast ) {
   // The user didn't specify either member or non-member explicitly: see if it
   // has a member-only or non-member-only type qualifier.
   //
-  if ( (ast->type_id & T_MEMBER_ONLY) != T_NONE )
+  if ( (ast->type_id & T_MEMBER_FUNC_ONLY) != T_NONE )
     return C_OP_MEMBER;
-  if ( (ast->type_id & T_NON_MEMBER_ONLY) != T_NONE )
+  if ( (ast->type_id & T_NONMEMBER_FUNC_ONLY) != T_NONE )
     return C_OP_NON_MEMBER;
 
   //

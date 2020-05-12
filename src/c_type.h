@@ -158,13 +158,13 @@ _GL_INLINE_HEADER_BEGIN
 #define T_INT_MODIFIER        ( T_SHORT | T_LONG | T_LONG_LONG | T_SIGNED \
                               | T_UNSIGNED )
 
-/** The type(s) that can apply only to members. */
-#define T_MEMBER_ONLY         ( T_CONST | T_VOLATILE | T_DEFAULT | T_DELETE \
+/** The type(s) that can apply only to member functions or operators. */
+#define T_MEMBER_FUNC_ONLY    ( T_CONST | T_VOLATILE | T_DEFAULT | T_DELETE \
                               | T_OVERRIDE | T_FINAL | T_VIRTUAL \
                               | T_REFERENCE | T_RESTRICT | T_RVALUE_REFERENCE )
 
-/** The type(s) that can apply only to non-members. */
-#define T_NON_MEMBER_ONLY     T_FRIEND
+/** The type(s) that can apply only to non-member functions or operators. */
+#define T_NONMEMBER_FUNC_ONLY T_FRIEND
 
 /** The type(s) that can apply to user-defined conversion operators. */
 #define T_USER_DEF_CONV       ( T_CONST | T_CONSTEXPR | T_EXPLICIT | T_FINAL  \
