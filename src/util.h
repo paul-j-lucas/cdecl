@@ -228,7 +228,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa UNEXPECTED_STR_VALUE
  */
 #define PMESSAGE_EXIT(STATUS,FORMAT,...) \
-  BLOCK( PRINT_ERR( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
+  BLOCK( PRINTF_ERR( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
 
 /**
  * Shorthand for printing to standard error.
@@ -238,14 +238,14 @@ _GL_INLINE_HEADER_BEGIN
  * @sa PUTC_ERR
  * @sa PUTS_ERR
  */
-#define PRINT_ERR(...)            fprintf( stderr, __VA_ARGS__ )
+#define PRINTF_ERR(...)           fprintf( stderr, __VA_ARGS__ )
 
 /**
  * Shorthand for printing a character to standard error.
  *
  * @param C The character to print.
  *
- * @sa PRINT_ERR
+ * @sa PRINTF_ERR
  * @sa PUTC_OUT
  * @sa PUTS_ERR
  */
@@ -266,7 +266,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param S The C string to print.
  *
- * @sa PRINT_ERR
+ * @sa PRINTF_ERR
  * @sa PUTC_ERR
  * @sa PUTS_OUT
  */

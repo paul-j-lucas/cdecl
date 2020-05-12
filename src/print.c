@@ -171,14 +171,14 @@ static void print_caret( size_t error_column ) {
       print_offset = 0;
     }
 
-    PRINT_ERR( "%s%.*s%s\n",
+    PRINTF_ERR( "%s%.*s%s\n",
       (more[0] ? MORE[0] : ""),
       (int)print_columns, input_line + print_offset,
       (more[1] ? MORE[1] : "")
     );
   }
 
-  PRINT_ERR( "%*s", (int)error_column_term, "" );
+  PRINTF_ERR( "%*s", (int)error_column_term, "" );
   SGR_START_COLOR( stderr, caret );
   PUTC_ERR( '^' );
   SGR_END_COLOR( stderr );
@@ -257,11 +257,11 @@ void print_loc( c_loc_t const *loc ) {
   print_caret( (size_t)loc->first_column );
   SGR_START_COLOR( stderr, locus );
   if ( opt_conf_file != NULL )
-    PRINT_ERR( "%s:%d,", opt_conf_file, loc->first_line + 1 );
+    PRINTF_ERR( "%s:%d,", opt_conf_file, loc->first_line + 1 );
   size_t column = (size_t)loc->first_column;
   if ( column >= inserted_len )
     column -= inserted_len;
-  PRINT_ERR( "%zu", column + 1 );
+  PRINTF_ERR( "%zu", column + 1 );
   SGR_END_COLOR( stderr );
   PUTS_ERR( ": " );
 }

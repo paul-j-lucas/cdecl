@@ -71,7 +71,7 @@
 
 // Developer aid for tracing when Bison %destructors are called.
 #if 0
-#define DTRACE                    PRINT_ERR( "%d: destructor\n", __LINE__ )
+#define DTRACE                    PRINTF_ERR( "%d: destructor\n", __LINE__ )
 #else
 #define DTRACE                    NO_OP
 #endif
@@ -443,7 +443,7 @@ static void elaborate_error( char const *format, ... ) {
   if ( !error_newlined ) {
     PUTS_ERR( ": " );
     if ( lexer_token[0] != '\0' )
-      PRINT_ERR( "\"%s\": ", printable_token() );
+      PRINTF_ERR( "\"%s\": ", printable_token() );
     va_list args;
     va_start( args, format );
     vfprintf( stderr, format, args );
