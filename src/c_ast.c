@@ -113,11 +113,11 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
     case K_OPERATOR:
       if ( ast_i->as.oper.oper_id != ast_j->as.oper.oper_id )
         return false;
-      // FALLTHROUGH
+      C_FALLTHROUGH;
     case K_FUNCTION:
       if ( ast_i->as.func.flags != ast_j->as.func.flags )
         return false;
-      // FALLTHROUGH
+      C_FALLTHROUGH;
     case K_APPLE_BLOCK:
       // ret_ast is checked by the parent code below
     case K_CONSTRUCTOR:

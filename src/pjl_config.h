@@ -35,7 +35,7 @@
 //
 // From config.h:
 //
-//    Suppress extern inline (with or without __attribute__ ((__gnu_inline__)))
+//    Suppress extern inline (with or without __attribute__((__gnu_inline__)))
 //    on configurations that mistakenly use 'static inline' to implement
 //    functions or macros in standard C headers like <ctype.h>.  For example,
 //    if isdigit is mistakenly implemented via a static inline function, a
@@ -65,14 +65,32 @@
 // local
 #include "config.h"                     /* must go first */
 
+#ifndef __has_attribute
+# define __has_attribute(X)       0
+#endif
+
+#if defined(__GNUC__) && !(defined(__clang__) || defined(__INTEL_COMPILER))
+# define GCC_AT_LEAST_VERSION(MAJOR,MINOR) \
+    (__GNUC__ > (MAJOR) || (__GNUC__ == (MAJOR) && __GNUC_MINOR__ >= (MINOR)))
+#else
+# define GCC_AT_LEAST_VERSION(MAJOR,MINOR) 0
+#endif
+
 ////////// compiler attributes ////////////////////////////////////////////////
 
 #ifdef HAVE___ATTRIBUTE__
 
 /**
+ * Intentionally fall through to the next `switch` `case`.
+ */
+#if __has_attribute(fallthrough) || GCC_AT_LEAST_VERSION(7,0)
+#define C_FALLTHROUGH             __attribute__((fallthrough))
+#endif
+
+/**
  * Denote that a function does not return.
  */
-#define C_NORETURN                __attribute__ ((noreturn))
+#define C_NORETURN                __attribute__((noreturn))
 
 /**
  * Denote a function declaration takes a `printf`-like format string followed
@@ -81,20 +99,32 @@
  * @param N The position (starting at 1) of the argument that contains the
  * format string.
  */
-#define C_PRINTF_LIKE_FUNC(N)     __attribute__ ((format(printf, (N), (N)+1)))
+#define C_PRINTF_LIKE_FUNC(N)     __attribute__((format(printf, (N), (N)+1)))
 
 /**
  * Denote that a function's return value should never be ignored.
  *
  * @sa #C_NOWARN_UNUSED_RESULT
  */
-#define C_WARN_UNUSED_RESULT      __attribute__ ((warn_unused_result))
+#define C_WARN_UNUSED_RESULT      __attribute__((warn_unused_result))
 
-#else
-#define C_NORETURN                /* nothing */
-#define C_PRINTF_LIKE_FUNC(N)     /* nothing */
-#define C_WARN_UNUSED_RESULT      /* nothing */
 #endif /* HAVE___ATTRIBUTE__ */
+
+#ifndef C_FALLTHROUGH
+#define C_FALLTHROUGH             ((void)0)
+#endif /* C_FALLTHROUGH */
+
+#ifndef C_NORETURN
+#define C_NORETURN                /* nothing */
+#endif /* C_NORETURN */
+
+#ifndef C_PRINTF_LIKE_FUNC
+#define C_PRINTF_LIKE_FUNC(N)     /* nothing */
+#endif /* C_PRINTF_LIKE_FUNC */
+
+#ifndef C_WARN_UNUSED_RESULT
+#define C_WARN_UNUSED_RESULT      /* nothing */
+#endif /* C_WARN_UNUSED_RESULT */
 
 /**
  * Denote that a function's return value may be ignored without warning.

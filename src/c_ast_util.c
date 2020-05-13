@@ -68,7 +68,7 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
         C_IGNORE_RV( c_ast_add_array_impl( ast->as.ptr_ref.to_ast, array ) );
         return ast;
       }
-      // FALLTHROUGH
+      C_FALLTHROUGH;
 
     default:
       //
@@ -146,7 +146,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
       //
       if ( array->depth >= ast->depth )
         break;
-      // FALLTHROUGH
+      C_FALLTHROUGH;
 
     case K_ARRAY: {
       //
@@ -207,7 +207,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
         if ( ret_ast == ast )
           break;
         c_ast_set_parent( func_ast, ast );
-        // FALLTHROUGH
+        C_FALLTHROUGH;
 
       case K_APPLE_BLOCK:
         c_ast_set_parent( ret_ast, func_ast );

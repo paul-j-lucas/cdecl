@@ -203,7 +203,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       // before the name, so lie and set the "space" flag.
       //
       g->space = true;
-      // FALLTHROUGH
+      C_FALLTHROUGH;
 
     case K_FUNCTION:
     case K_OPERATOR:
@@ -247,7 +247,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
           is_throw = false;
         }
       }
-      // FALLTHROUGH
+      C_FALLTHROUGH;
 
     case K_ARRAY:
     case K_APPLE_BLOCK:
@@ -331,8 +331,10 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
 
     case K_NONE:
       assert( ast->kind_id != K_NONE );
+      C_FALLTHROUGH;
     case K_PLACEHOLDER:
       assert( ast->kind_id != K_PLACEHOLDER );
+      C_FALLTHROUGH;
 
     case K_POINTER:
     case K_REFERENCE:

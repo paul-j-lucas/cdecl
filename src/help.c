@@ -208,20 +208,20 @@ static void print_help_line( char const *line ) {
           is_escaped = true;
           continue;
         }
-        // FALLTHROUGH
+        C_FALLTHROUGH;
       case '<':
         if ( !is_escaped ) {
           SGR_START_COLOR( stdout, help_nonterm );
           break;
         }
-        // FALLTHROUGH
+        C_FALLTHROUGH;
       case '>':
         if ( !is_escaped ) {
           PUTC_OUT( *c );
           SGR_END_COLOR( stdout );
           continue;
         }
-        // FALLTHROUGH
+        C_FALLTHROUGH;
       case '*':
       case '[':
       case ']':
@@ -234,7 +234,7 @@ static void print_help_line( char const *line ) {
           SGR_END_COLOR( stdout );
           continue;
         }
-        // FALLTHROUGH
+        C_FALLTHROUGH;
 
       default:
         if ( !in_title && is_title( c ) ) {

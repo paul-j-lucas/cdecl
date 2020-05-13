@@ -524,6 +524,7 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
         break;
       case K_PLACEHOLDER:
         assert( arg_ast->kind_id != K_PLACEHOLDER );
+        C_FALLTHROUGH;
       default:
         print_error( &arg_ast->loc,
           "function prototypes not supported in %s", C_LANG_NAME()
@@ -638,7 +639,7 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
         ret_ast = ast->as.oper.ret_ast;
         if ( !c_ast_is_ref_to_type( ret_ast, T_CLASS_STRUCT_UNION ) )
           goto only_special;
-        // FALLTHROUGH
+        C_FALLTHROUGH;
       case K_CONSTRUCTOR: {           // C(C const&)
         if ( c_ast_args_count( ast ) != 1 )
           goto only_special;
@@ -826,7 +827,7 @@ static bool c_ast_check_oper_args( c_ast_t const *ast ) {
         req_args_max = is_ambiguous ? 1 : op->args_min;
         break;
       }
-      // FALLTHROUGH
+      C_FALLTHROUGH;
     case C_OP_UNSPECIFIED:
       req_args_min = op->args_min;
       req_args_max = op->args_max;
@@ -1203,18 +1204,18 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
     case K_OPERATOR:
       if ( !c_ast_check_oper( ast ) )
         return VISITOR_ERROR_FOUND;
-      // FALLTHROUGH
+      C_FALLTHROUGH;
 
     case K_FUNCTION:
       if ( !c_ast_check_func( ast ) )
         return VISITOR_ERROR_FOUND;
-      // FALLTHROUGH
+      C_FALLTHROUGH;
 
     case K_APPLE_BLOCK:
     case K_USER_DEF_LITERAL:
       if ( !c_ast_check_ret_type( ast ) )
         return VISITOR_ERROR_FOUND;
-      // FALLTHROUGH
+      C_FALLTHROUGH;
 
     case K_CONSTRUCTOR: {
       if ( ast->kind_id == K_CONSTRUCTOR ) {
@@ -1231,7 +1232,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       if ( !args_ok )
         return VISITOR_ERROR_FOUND;
     }
-      // FALLTHROUGH
+      C_FALLTHROUGH;
 
     case K_DESTRUCTOR: {
       if ( (ast->kind_id & (K_CONSTRUCTOR | K_DESTRUCTOR)) != K_NONE &&
@@ -1254,13 +1255,15 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 
     case K_NONE:
       assert( ast->kind_id != K_NONE );
+      C_FALLTHROUGH;
     case K_PLACEHOLDER:
       assert( ast->kind_id != K_PLACEHOLDER );
+      C_FALLTHROUGH;
 
     case K_POINTER_TO_MEMBER:
       if ( C_LANG_IS_C() )
         return error_kind_not_supported( ast );
-      // FALLTHROUGH
+      C_FALLTHROUGH;
     case K_POINTER:
       if ( !c_ast_check_pointer( ast ) )
         return VISITOR_ERROR_FOUND;
@@ -1269,7 +1272,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
     case K_RVALUE_REFERENCE:
       if ( opt_lang < LANG_CPP_11 )
         return error_kind_not_supported( ast );
-      // FALLTHROUGH
+      C_FALLTHROUGH;
     case K_REFERENCE:
       if ( !c_ast_check_reference( ast ) )
         return VISITOR_ERROR_FOUND;
@@ -1355,7 +1358,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
       } // for
       if ( (ast->kind_id & (K_FUNCTION | K_OPERATOR)) != K_NONE )
         break;
-      // FALLTHROUGH
+      C_FALLTHROUGH;
 
     default:
       if ( !is_func_arg && (ast->type_id & T_CARRIES_DEPENDENCY) != T_NONE ) {
@@ -1426,7 +1429,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
           "%s %s not starting with '_' are reserved",
           L_USER_DEFINED, L_LITERAL
         );
-      // FALLTHROUGH
+      C_FALLTHROUGH;
     case K_APPLE_BLOCK:
     case K_FUNCTION:
     case K_OPERATOR: {
@@ -1468,6 +1471,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
 
     case K_NONE:
       assert( ast->kind_id != K_NONE );
+      C_FALLTHROUGH;
     case K_PLACEHOLDER:
       assert( ast->kind_id != K_PLACEHOLDER );
   } // switch

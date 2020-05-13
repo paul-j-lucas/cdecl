@@ -184,8 +184,10 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
     case K_NONE:
       assert( ast->kind_id != K_NONE );
+      C_FALLTHROUGH;
     case K_PLACEHOLDER:
       assert( ast->kind_id != K_PLACEHOLDER );
+      C_FALLTHROUGH;
 
     case K_POINTER:
     case K_REFERENCE:
