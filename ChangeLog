@@ -1,5 +1,7 @@
 2020-05-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, configure.ac: Updated version to 7.0.
+   * AUTHORS: Added mention of "east const" and typename.
    * parser.y: Comments.
 
 2020-05-12  Paul J. Lucas <paul@lucasmail.org>
