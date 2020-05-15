@@ -77,11 +77,13 @@ Paul J. Lucas <paul@lucasmail.org>
 	added register and variadic function arguments
 	added typedef, using, define, and show commands
 	added alternative tokens
+	added "east const" option
 	added C99 static, type-qualified, and variable length array
 		function arguments
 	added C99 standard types, e.g., int8_t, atomic_int, etc.
 	added C++ constructors & destructors, namespaces & scoped names,
-		overloaded operators, and user-defined conversion operators
+		overloaded operators, and typename, and user-defined conversion
+		operators
 	added C++11 auto, constexpr, enum class, function trailing return-type
 		syntax, mutable, new-style casts, noexcept, ref-qualifiers,
 		rvalue references, and user-defined literals, throw()
