@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 6.12
+* Changes in Cdecl 7.0
 
 ** East const
 New -E/--east-const command-line and east-const set options to use "east const"
