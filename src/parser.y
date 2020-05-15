@@ -3670,6 +3670,11 @@ arg_c_ast
 /*****************************************************************************/
 
 type_c_ast
+    /*
+     * Type-modifier-only (implicit int) declarations:
+     *
+     *      unsigned i;
+     */
   : type_modifier_list_c_type           /* allows implicit int in K&R C */
     {
       DUMP_START( "type_c_ast", "type_modifier_list_c_type" );
@@ -3700,6 +3705,11 @@ type_c_ast
       DUMP_END();
     }
 
+    /*
+     * Type-modifier type with optional trailing type-modifier(s) declarations:
+     *
+     *      unsigned int const i;       // uncommon, but legal
+     */
   | type_modifier_list_c_type unmodified_type_c_ast
     type_modifier_list_c_type_opt
     {
@@ -3718,6 +3728,11 @@ type_c_ast
       DUMP_END();
     }
 
+    /*
+     * Type with trailing type-modifier(s) declarations:
+     *
+     *      int const i;                // uncommon, but legal
+     */
   | unmodified_type_c_ast type_modifier_list_c_type_opt
     {
       DUMP_START( "type_c_ast",
@@ -4129,7 +4144,7 @@ static_type_opt
   ;
 
 block_cast_c_ast                        /* Apple extension */
-  : /* type */ '(' Y_CIRC
+  : /* type_c_ast */ '(' Y_CIRC
     {
       //
       // A block AST has to be the type inherited attribute for cast_c_ast_opt
