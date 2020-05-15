@@ -1,3 +1,89 @@
+2020-05-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Comments.
+
+2020-05-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac, c_ast.c, c_ast_util.c, debug.c, english.c, errors.c,
+     gibberish.c, help.c, lexer.l, pjl_config.h: Fixed fallthrough warning.
+   * util.h: Comments.
+   * limits.in.h, stdio.in.h, stdlib.in.h, string.in.h, warn-on-use.h,
+     gnulib-common.m4, wint_t.m4: Updated Gnulib.
+   * parser.y, print.c, util.h: s/PRINT_ERR/PRINTF_ERR/
+   * c_type.c, errors.c: Removed a few uses of FREE_STRDUP_LATER.
+   * c_operator.c, c_type.h, english.c, errors.c:
+     s/T_MEMBER_ONLY/T_MEMBER_FUNC_ONLY/;
+     s/T_NON_MEMBER_ONLY/T_NONMEMBER_FUNC_ONLY/
+   * parser.y: Comment additions.
+   * set.c: s/*lang/*lang_id/
+   * c_ast.c, c_ast.h, debug.c, cdecl--debug.out, cdecl-d.out: s/id/unique_id/
+   * c_ast.c, c_ast.h, c_ast_util.c, debug.c, errors.c, gibberish.c:
+     s/parent/parent_ast/
+   * c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.c, c_kind.h,
+     c_operator.c, debug.c, english.c, errors.c, gibberish.c, parser.y:
+     s/kind/kind_id/
+   * c_operator.c, c_operator.h: Replaced UNEXPECTED_INT_VALUE with assert();
+     #include clean-up.
+
+2020-05-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Removed special-case code for constructors and user-defined
+     conversion operators.
+   * parser.y: s/!/== NULL/
+
+2020-05-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Now always free'ing sname.
+   * parser.y: Added assert().
+
+2020-05-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Added explicit cast.
+   * cdecl.c, lexer.l, util.h: Consolidated SKIP_WS().
+   * red_black.c: Added "const".
+   * options.c: Added missing options for check_mutually_exclusive( "v", "..."
+     );
+   * gibberish.c: Clean-up.
+   * gibberish.c: Simplification.
+   * errors.c: Added missing "inline".
+
+2020-05-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, c_lang.c: Comments.
+   * lexer.l, parser.y: Got rid of Y_HYPHEN_NAME.
+   * lexer.l, parser.y: Clean-up.
+   * lexer.l, literals.c, literals.h: Added L_USER_DEF.
+   * c_type.c, lexer.l, literals.c, literals.h: Literal clean-up.
+   * c_keyword.c: Blank line.
+
+2020-05-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, c_ast_util.c, c_kind.h, errors.c, gibberish.c: Changed K_PARENT
+     and K_MASK_FUNCTION_LIKE be proper bitmasks.
+   * NEWS, cdecl.1, autocomplete.c, c_keyword.c, c_type.c, c_type.h, errors.c,
+     lexer.l, literals.c, literals.h, parser.y, test/Makefile.am,
+     explain_a_nua_k-1.out, explain_a_nua_k-2.out, declare_a_nua_f.test,
+     explain_a_nua_f.test, explain_a_nua_k-1.test, explain_a_nua_k-2.test:
+     Added [[no_unique_address]].
+
+2020-05-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * literals.c, literals.h: Not needed.
+   * autocomplete.c: Moved alt-tokens to where it belongs.
+   * parser.y: Updated Doxygen.
+
+2020-04-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * color.c: Added C_WARN_UNUSED_RESULT.
+   * color.c: Reformatting.
+   * cdecl.c: Added C_WARN_UNUSED_RESULT.
+   * autocomplete.c: Added missing noeast-const, noexplain-by-default, and
+     noexplicit-int.
+   * autocomplete.c: Now using LANG_C_MIN.
+   * NEWS, autocomplete.c, c_keyword.c, c_lang.h, errors.c, test/Makefile.am,
+     explain_tf_v-c++17.out, explain_tf_v-c++17.test, explain_tf_v.test:
+     throw() deprecated/removed.
+
 2020-04-29  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, cdecl.1, autocomplete.c, c_type.c, gibberish.c, help.c, options.c,
