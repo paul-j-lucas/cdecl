@@ -1,1 +1,1 @@
-define int8_t as char
+define int8_t as signed char

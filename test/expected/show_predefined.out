@@ -178,7 +178,7 @@ define __int128 as long long
 define __int16 as short
 define __int32 as int
 define __int64 as long long
-define __int8 as char
+define __int8 as signed char
 define __wchar_t as wchar_t
 define atomic_bool as _Atomic bool
 define atomic_char as _Atomic char
@@ -236,15 +236,15 @@ define ino_t as int32_t
 define int16_t as short
 define int32_t as int
 define int64_t as long
-define int8_t as char
+define int8_t as signed char
 define int_fast16_t as short
 define int_fast32_t as int
 define int_fast64_t as long
-define int_fast8_t as char
+define int_fast8_t as signed char
 define int_least16_t as short
 define int_least32_t as int
 define int_least64_t as long
-define int_least8_t as char
+define int_least8_t as signed char
 define intmax_t as long
 define intptr_t as long
 define ldiv_t as struct ldiv_t

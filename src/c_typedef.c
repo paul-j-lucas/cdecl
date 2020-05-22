@@ -79,7 +79,7 @@ static char const *const TYPEDEFS_STD_C[] = {
   "typedef struct    ldiv_t    ldiv_t",
   "typedef struct   lldiv_t   lldiv_t",
 
-  "typedef          char     int8_t",
+  "typedef   signed char     int8_t",
   "typedef          short    int16_t",
   "typedef          int      int32_t",
   "typedef          long     int64_t",
@@ -88,7 +88,7 @@ static char const *const TYPEDEFS_STD_C[] = {
   "typedef unsigned int     uint32_t",
   "typedef unsigned long    uint64_t",
 
-  "typedef          char     int_fast8_t",
+  "typedef   signed char     int_fast8_t",
   "typedef          short    int_fast16_t",
   "typedef          int      int_fast32_t",
   "typedef          long     int_fast64_t",
@@ -97,7 +97,7 @@ static char const *const TYPEDEFS_STD_C[] = {
   "typedef unsigned int     uint_fast32_t",
   "typedef unsigned long    uint_fast64_t",
 
-  "typedef          char     int_least8_t",
+  "typedef   signed char     int_least8_t",
   "typedef          short    int_least16_t",
   "typedef          int      int_least32_t",
   "typedef          long     int_least64_t",
@@ -326,7 +326,7 @@ static char const *const TYPEDEFS_WIN32[] = {
   //
   // The comment about GNU C's __int128 type applies to these also.
   //
-  "typedef char                   __int8",
+  "typedef signed char            __int8",
   "typedef short                  __int16",
   "typedef int                    __int32",
   "typedef long long              __int64",
