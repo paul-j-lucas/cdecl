@@ -260,7 +260,7 @@ struct c_ast {
   union {
     c_parent_t          parent;         ///< "Parent" member(s).
     c_array_t           array;          ///< Array member(s).
-    c_block_t           block;          ///< Block member(s).
+    c_apple_block_t     block;          ///< Block member(s).
     // nothing needed for K_BUILTIN
     c_constructor_t     constructor;    ///< Constructor member(s).
     // nothing needed for K_DESTRUCTOR

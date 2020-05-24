@@ -3015,7 +3015,7 @@ block_decl_c_ast                        /* Apple extension */
     }
     type_qualifier_list_c_type_opt decl_c_ast ')' '(' arg_list_c_ast_opt ')'
     {
-      c_ast_t *const block = type_pop();
+      c_ast_t *const block_ast = type_pop();
 
       DUMP_START( "block_decl_c_ast",
                   "'(' '^' type_qualifier_list_c_type_opt decl_c_ast ')' "
@@ -3025,10 +3025,10 @@ block_decl_c_ast                        /* Apple extension */
       DUMP_AST( "decl_c_ast", $5.ast );
       DUMP_AST_LIST( "arg_list_c_ast_opt", $8 );
 
-      C_TYPE_ADD( &block->type_id, $4, @4 );
-      block->as.block.args = $8;
-      $$.ast = c_ast_add_func( $5.ast, type_peek(), block );
-      $$.target_ast = block->as.block.ret_ast;
+      C_TYPE_ADD( &block_ast->type_id, $4, @4 );
+      block_ast->as.block.args = $8;
+      $$.ast = c_ast_add_func( $5.ast, type_peek(), block_ast );
+      $$.target_ast = block_ast->as.block.ret_ast;
 
       DUMP_AST( "block_decl_c_ast", $$.ast );
       DUMP_END();
@@ -4154,7 +4154,7 @@ block_cast_c_ast                        /* Apple extension */
     }
     type_qualifier_list_c_type_opt cast_c_ast_opt ')' '(' arg_list_c_ast_opt ')'
     {
-      c_ast_t *const block = type_pop();
+      c_ast_t *const block_ast = type_pop();
 
       DUMP_START( "block_cast_c_ast",
                   "'(' '^' type_qualifier_list_c_type_opt cast_c_ast_opt ')' "
@@ -4164,10 +4164,10 @@ block_cast_c_ast                        /* Apple extension */
       DUMP_AST( "cast_c_ast_opt", $5.ast );
       DUMP_AST_LIST( "arg_list_c_ast_opt", $8 );
 
-      C_TYPE_ADD( &block->type_id, $4, @4 );
-      block->as.block.args = $8;
-      $$.ast = c_ast_add_func( $5.ast, type_peek(), block );
-      $$.target_ast = block->as.block.ret_ast;
+      C_TYPE_ADD( &block_ast->type_id, $4, @4 );
+      block_ast->as.block.args = $8;
+      $$.ast = c_ast_add_func( $5.ast, type_peek(), block_ast );
+      $$.target_ast = block_ast->as.block.ret_ast;
 
       DUMP_AST( "block_cast_c_ast", $$.ast );
       DUMP_END();
