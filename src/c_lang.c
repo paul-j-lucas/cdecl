@@ -44,30 +44,33 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// extern constant definitions
-c_lang_t const C_LANG[] = {
+/**
+ * Array of `c_lang` for all supported languages. The last entry is
+ * `{ NULL, LANG_NONE }`.
+ */
+static c_lang_t const C_LANG[] = {
   //
   // If this array is modified, also check SET_OPTIONS[] in autocomplete.c.
   //
-  { "ck&r",    LANG_C_KNR   },          // synonym for "knr"
-  { "cknr",    LANG_C_KNR   },          // synonym for "knr"
-  { "k&r",     LANG_C_KNR   },          // synonym for "knr"
-  { "k&rc",    LANG_C_KNR   },          // synonym for "knr"
-  { "knr",     LANG_C_KNR   },
-  { "knrc",    LANG_C_KNR   },          // synonym for "knr"
-  { "c",       LANG_C_NEW   },
-  { "c89",     LANG_C_89,   },
-  { "c95",     LANG_C_95    },
-  { "c99",     LANG_C_99    },
-  { "c11",     LANG_C_11    },
-  { "c18",     LANG_C_18    },
-  { "c++",     LANG_CPP_NEW },
-  { "c++98",   LANG_CPP_98  },
-  { "c++03",   LANG_CPP_03  },
-  { "c++11",   LANG_CPP_11  },
-  { "c++14",   LANG_CPP_14  },
-  { "c++17",   LANG_CPP_17  },
-  { "c++20",   LANG_CPP_20  },
+  { "CK&R",    LANG_C_KNR   },          // synonym for "knr"
+  { "CKNR",    LANG_C_KNR   },          // synonym for "knr"
+  { "K&R",     LANG_C_KNR   },          // synonym for "knr"
+  { "K&RC",    LANG_C_KNR   },          // synonym for "knr"
+  { "KNR",     LANG_C_KNR   },
+  { "KNRC",    LANG_C_KNR   },          // synonym for "knr"
+  { "C",       LANG_C_NEW   },
+  { "C89",     LANG_C_89,   },
+  { "C95",     LANG_C_95    },
+  { "C99",     LANG_C_99    },
+  { "C11",     LANG_C_11    },
+  { "C18",     LANG_C_18    },
+  { "C++",     LANG_CPP_NEW },
+  { "C++98",   LANG_CPP_98  },
+  { "C++03",   LANG_CPP_03  },
+  { "C++11",   LANG_CPP_11  },
+  { "C++14",   LANG_CPP_14  },
+  { "C++17",   LANG_CPP_17  },
+  { "C++20",   LANG_CPP_20  },
   { NULL,      LANG_NONE    },
 };
 
@@ -104,6 +107,31 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
     default:
       UNEXPECTED_INT_VALUE( lang_id );
   } // switch
+}
+
+char const* c_lang_names( void ) {
+  static char *names;
+
+  if ( names == NULL ) {
+    size_t names_len = 1;               // for trailing NULL
+    for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
+      if ( lang > C_LANG )
+        names_len += 2;                 // ", "
+      names_len += strlen( lang->name );
+    } // for
+
+    names = FREE_STR_LATER( MALLOC( char, names_len ) );
+    names[0] = '\0';
+
+    char *s = names;
+    for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
+      if ( s > names )
+        s = strcpy_end( s, ", " );
+      s = strcpy_end( s, lang->name );
+    } // for
+  }
+
+  return names;
 }
 
 void c_lang_set( c_lang_id_t lang_id ) {

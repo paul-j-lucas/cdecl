@@ -324,27 +324,15 @@ static color_when_t parse_opt_color_when( char const *when ) {
 C_WARN_UNUSED_RESULT
 static c_lang_id_t parse_opt_lang( char const *s ) {
   assert( s != NULL );
-  size_t langs_buf_size = 1;            // for trailing NULL
 
-  for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
-    if ( strcasecmp( s, lang->name ) == 0 )
-      return lang->lang_id;
-    langs_buf_size += strlen( lang->name ) + 2 /* ", " */;
-  } // for
-
-  // name not found: construct valid name list for an error message
-  char langs_buf[ langs_buf_size ];
-  char *plangs = langs_buf;
-  for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
-    if ( plangs > langs_buf )
-      plangs = strcpy_end( plangs, ", " );
-    plangs = strcpy_end( plangs, lang->name );
-  } // for
+  c_lang_id_t const lang_id = c_lang_find( s );
+  if ( lang_id != LANG_NONE )
+    return lang_id;
 
   char opt_buf[ OPT_BUF_SIZE ];
   PMESSAGE_EXIT( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of:\n\t%s\n",
-    s, format_opt( 'x', opt_buf, sizeof opt_buf ), langs_buf
+    s, format_opt( 'x', opt_buf, sizeof opt_buf ), c_lang_names()
   );
 }
 

@@ -98,12 +98,6 @@ struct c_lang {
   c_lang_id_t   lang_id;                ///< Language bit.
 };
 
-/**
- * Array of `c_lang` for all supported languages. The last entry is
- * `{ NULL, LANG_NONE }`.
- */
-extern c_lang_t const C_LANG[];
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -159,6 +153,14 @@ bool c_lang_is_cpp( c_lang_id_t lang_id ) {
  * @return Returns `true` only if the current language is C++.
  */
 #define C_LANG_IS_CPP()           c_lang_is_cpp( opt_lang )
+
+/**
+ * Gets a comma-separated string of all supported language names.
+ *
+ * @return Returns said string.
+ */
+C_WARN_UNUSED_RESULT
+char const* c_lang_names( void );
 
 /**
  * Gets the oldest language of the given set.
