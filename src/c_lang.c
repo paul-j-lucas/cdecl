@@ -45,6 +45,15 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * A mapping between a language name and its corresponding `c_lang_id_t`.
+ */
+struct c_lang {
+  char const   *name;                   ///< Language name.
+  c_lang_id_t   lang_id;                ///< Language bit.
+};
+typedef struct c_lang c_lang_t;
+
+/**
  * Array of `c_lang` for all supported languages. The last entry is
  * `{ NULL, LANG_NONE }`.
  */

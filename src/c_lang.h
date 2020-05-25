@@ -90,14 +90,6 @@ _GL_INLINE_HEADER_BEGIN
 /* Maximum allowed laguage, C++ only. */
 #define LANG_CPP_MAX(L)           (LANG_MAX( CPP_ ## L ) & LANG_MASK_CPP)
 
-/**
- * A mapping between a language name and its corresponding `c_lang_id_t`.
- */
-struct c_lang {
-  char const   *name;                   ///< Language name.
-  c_lang_id_t   lang_id;                ///< Language bit.
-};
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**

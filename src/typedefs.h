@@ -116,7 +116,6 @@ typedef enum   c_graph          c_graph_t;
 typedef enum   c_init           c_init_t;
 typedef struct c_keyword        c_keyword_t;
 typedef enum   c_kind           c_kind_t;
-typedef struct c_lang           c_lang_t;
 typedef unsigned                c_lang_id_t;    ///< Languages bitmask.
 typedef struct c_loc            c_loc_t;
 typedef enum   c_mode           c_mode_t;
