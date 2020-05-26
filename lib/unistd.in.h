@@ -763,6 +763,22 @@ _GL_WARN_ON_USE (getdtablesize, "getdtablesize is unportable - "
 #endif
 
 
+#if @GNULIB_GETENTROPY@
+/* Fill a buffer with random bytes.  */
+# if !@HAVE_GETENTROPY@
+_GL_FUNCDECL_SYS (getentropy, int, (void *buffer, size_t length));
+# endif
+_GL_CXXALIAS_SYS (getentropy, int, (void *buffer, size_t length));
+_GL_CXXALIASWARN (getentropy);
+#elif defined GNULIB_POSIXCHECK
+# undef getentropy
+# if HAVE_RAW_DECL_GETENTROPY
+_GL_WARN_ON_USE (getentropy, "getentropy is unportable - "
+                 "use gnulib module getentropy for portability");
+# endif
+#endif
+
+
 #if @GNULIB_GETGROUPS@
 /* Return the supplemental groups that the current process belongs to.
    It is unspecified whether the effective group id is in the list.
@@ -1010,6 +1026,24 @@ _GL_CXXALIASWARN (getpass);
 # if HAVE_RAW_DECL_GETPASS
 _GL_WARN_ON_USE (getpass, "getpass is unportable - "
                  "use gnulib module getpass or getpass-gnu for portability");
+# endif
+#endif
+
+
+#if @GNULIB_GETRANDOM@
+/* Fill a buffer with random bytes.  */
+# if !@HAVE_GETRANDOM@
+_GL_FUNCDECL_SYS (getrandom, int, (void *buffer, size_t length,
+                                   unsigned int flags));
+# endif
+_GL_CXXALIAS_SYS (getrandom, int, (void *buffer, size_t length,
+                                   unsigned int flags));
+_GL_CXXALIASWARN (getrandom);
+#elif defined GNULIB_POSIXCHECK
+# undef getrandom
+# if HAVE_RAW_DECL_GETRANDOM
+_GL_WARN_ON_USE (getrandom, "getrandom is unportable - "
+                 "use gnulib module getrandom for portability");
 # endif
 #endif
 

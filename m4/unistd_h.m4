@@ -43,8 +43,8 @@ AC_DEFUN([gl_UNISTD_H],
 #endif
     ]], [access chdir chown dup dup2 dup3 environ euidaccess faccessat fchdir
     fchownat fdatasync fsync ftruncate getcwd getdomainname getdtablesize
-    getgroups gethostname getlogin getlogin_r getpagesize getpass
-    getusershell setusershell endusershell
+    getentropy getgroups gethostname getlogin getlogin_r getpagesize getpass
+    getrandom getusershell setusershell endusershell
     group_member isatty lchown link linkat lseek pipe pipe2 pread pwrite
     readlink readlinkat rmdir sethostname sleep symlink symlinkat
     truncate ttyname_r unlink unlinkat usleep])
@@ -82,6 +82,7 @@ AC_DEFUN([gl_UNISTD_H_DEFAULTS],
   GNULIB_GETCWD=0;               AC_SUBST([GNULIB_GETCWD])
   GNULIB_GETDOMAINNAME=0;        AC_SUBST([GNULIB_GETDOMAINNAME])
   GNULIB_GETDTABLESIZE=0;        AC_SUBST([GNULIB_GETDTABLESIZE])
+  GNULIB_GETENTROPY=0;           AC_SUBST([GNULIB_GETENTROPY])
   GNULIB_GETGROUPS=0;            AC_SUBST([GNULIB_GETGROUPS])
   GNULIB_GETHOSTNAME=0;          AC_SUBST([GNULIB_GETHOSTNAME])
   GNULIB_GETLOGIN=0;             AC_SUBST([GNULIB_GETLOGIN])
@@ -89,6 +90,7 @@ AC_DEFUN([gl_UNISTD_H_DEFAULTS],
   GNULIB_GETOPT_POSIX=0;         AC_SUBST([GNULIB_GETOPT_POSIX])
   GNULIB_GETPAGESIZE=0;          AC_SUBST([GNULIB_GETPAGESIZE])
   GNULIB_GETPASS=0;              AC_SUBST([GNULIB_GETPASS])
+  GNULIB_GETRANDOM=0;            AC_SUBST([GNULIB_GETRANDOM])
   GNULIB_GETUSERSHELL=0;         AC_SUBST([GNULIB_GETUSERSHELL])
   GNULIB_GROUP_MEMBER=0;         AC_SUBST([GNULIB_GROUP_MEMBER])
   GNULIB_ISATTY=0;               AC_SUBST([GNULIB_ISATTY])
@@ -129,11 +131,13 @@ AC_DEFUN([gl_UNISTD_H_DEFAULTS],
   HAVE_FSYNC=1;           AC_SUBST([HAVE_FSYNC])
   HAVE_FTRUNCATE=1;       AC_SUBST([HAVE_FTRUNCATE])
   HAVE_GETDTABLESIZE=1;   AC_SUBST([HAVE_GETDTABLESIZE])
+  HAVE_GETENTROPY=1;      AC_SUBST([HAVE_GETENTROPY])
   HAVE_GETGROUPS=1;       AC_SUBST([HAVE_GETGROUPS])
   HAVE_GETHOSTNAME=1;     AC_SUBST([HAVE_GETHOSTNAME])
   HAVE_GETLOGIN=1;        AC_SUBST([HAVE_GETLOGIN])
   HAVE_GETPAGESIZE=1;     AC_SUBST([HAVE_GETPAGESIZE])
   HAVE_GETPASS=1;         AC_SUBST([HAVE_GETPASS])
+  HAVE_GETRANDOM=1;       AC_SUBST([HAVE_GETRANDOM])
   HAVE_GROUP_MEMBER=1;    AC_SUBST([HAVE_GROUP_MEMBER])
   HAVE_LCHOWN=1;          AC_SUBST([HAVE_LCHOWN])
   HAVE_LINK=1;            AC_SUBST([HAVE_LINK])

@@ -848,6 +848,7 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's/@''GNULIB_GETCWD''@/$(GNULIB_GETCWD)/g' \
 	      -e 's/@''GNULIB_GETDOMAINNAME''@/$(GNULIB_GETDOMAINNAME)/g' \
 	      -e 's/@''GNULIB_GETDTABLESIZE''@/$(GNULIB_GETDTABLESIZE)/g' \
+	      -e 's/@''GNULIB_GETENTROPY''@/$(GNULIB_GETENTROPY)/g' \
 	      -e 's/@''GNULIB_GETGROUPS''@/$(GNULIB_GETGROUPS)/g' \
 	      -e 's/@''GNULIB_GETHOSTNAME''@/$(GNULIB_GETHOSTNAME)/g' \
 	      -e 's/@''GNULIB_GETLOGIN''@/$(GNULIB_GETLOGIN)/g' \
@@ -855,6 +856,7 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's/@''GNULIB_GETOPT_POSIX''@/$(GNULIB_GETOPT_POSIX)/g' \
 	      -e 's/@''GNULIB_GETPAGESIZE''@/$(GNULIB_GETPAGESIZE)/g' \
 	      -e 's/@''GNULIB_GETPASS''@/$(GNULIB_GETPASS)/g' \
+	      -e 's/@''GNULIB_GETRANDOM''@/$(GNULIB_GETRANDOM)/g' \
 	      -e 's/@''GNULIB_GETUSERSHELL''@/$(GNULIB_GETUSERSHELL)/g' \
 	      -e 's/@''GNULIB_GROUP_MEMBER''@/$(GNULIB_GROUP_MEMBER)/g' \
 	      -e 's/@''GNULIB_ISATTY''@/$(GNULIB_ISATTY)/g' \
@@ -896,10 +898,12 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's|@''HAVE_FSYNC''@|$(HAVE_FSYNC)|g' \
 	      -e 's|@''HAVE_FTRUNCATE''@|$(HAVE_FTRUNCATE)|g' \
 	      -e 's|@''HAVE_GETDTABLESIZE''@|$(HAVE_GETDTABLESIZE)|g' \
+	      -e 's|@''HAVE_GETENTROPY''@|$(HAVE_GETENTROPY)|g' \
 	      -e 's|@''HAVE_GETGROUPS''@|$(HAVE_GETGROUPS)|g' \
 	      -e 's|@''HAVE_GETHOSTNAME''@|$(HAVE_GETHOSTNAME)|g' \
 	      -e 's|@''HAVE_GETPAGESIZE''@|$(HAVE_GETPAGESIZE)|g' \
 	      -e 's|@''HAVE_GETPASS''@|$(HAVE_GETPASS)|g' \
+	      -e 's|@''HAVE_GETRANDOM''@|$(HAVE_GETRANDOM)|g' \
 	      -e 's|@''HAVE_GROUP_MEMBER''@|$(HAVE_GROUP_MEMBER)|g' \
 	      -e 's|@''HAVE_LCHOWN''@|$(HAVE_LCHOWN)|g' \
 	      -e 's|@''HAVE_LINK''@|$(HAVE_LINK)|g' \
