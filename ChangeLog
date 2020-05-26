@@ -1,3 +1,33 @@
+2020-05-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, unistd.in.h, getdelim.m4, unistd_h.m4: Updated GnuLib.
+   * NEWS, configure.ac, cdecl.1, autocomplete.c, c_keyword.c, c_lang.c,
+     c_lang.h, c_type.c, lexer.l, literals.c, literals.h, parser.y, typedefs.h,
+     test/Makefile.am, declare_b-c++.out, declare_b.out, declare_ci-knr.out,
+     declare_grtpi.out, declare_rtf_v.out, declare_vi-knr.out, explain_b.out,
+     explain_keywords.out, show_all.out, show_all_typedef.out,
+     show_predefined.out, show_predefined_typedef.out, declare_b-c++.test,
+     declare_ci-knr.test, declare_vi-knr.test, explain_grtpi.test: Added more
+     GNU extensions. Split bool and _Bool. "register" is now max C++14.
+     "restrict" is now min C99.
+
+2020-05-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.c, c_lang.h, typedefs.h: Moved struct c_lang to c_lang.c.
+   * c_lang.c, c_lang.h, options.c: Made C_LANG static; added c_lang_names().
+
+2020-05-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, parser.y, typedefs.h: s/c_block_t/c_apple_block_t/;
+     s/block/block_ast/
+
+2020-05-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, show_all.out, show_all_typedef.out, show_int8_t.out,
+     show_int8_t_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     The types int8_t, int_fast8_t, int_least8_t, and __int8 are now typedef'd
+     from signed char.
+
 2020-05-15  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac: Updated version to 7.0.
