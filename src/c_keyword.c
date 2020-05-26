@@ -40,7 +40,7 @@
 
 /// @endcond
 
-#define LANG_C_CPP_11_MIN         (LANG_C_MIN(11) | LANG_MIN(CPP_11))
+#define LANG_C_CPP_11_MIN         LANG_C_CPP_MIN(11, 11)
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -52,15 +52,15 @@ static c_keyword_t const C_ATTRIBUTES[] = {
   { L_CARRIES_DEPENDENCY,
                     Y_CARRIES_DEPENDENCY,
                                     T_CARRIES_DEPENDENCY,
-                                                    LANG_MIN(CPP_11)  },
-  { L_NORETURN,     Y_NORETURN,     T_NORETURN,     LANG_MIN(CPP_11)  },
+                                                    LANG_CPP_MIN(11)  },
+  { L_NORETURN,     Y_NORETURN,     T_NORETURN,     LANG_CPP_MIN(11)  },
 
   // C++14
-  { L_DEPRECATED,   Y_DEPRECATED,   T_DEPRECATED,   LANG_MIN(CPP_14)  },
+  { L_DEPRECATED,   Y_DEPRECATED,   T_DEPRECATED,   LANG_CPP_MIN(14)  },
 
   // C++17
-  { L_MAYBE_UNUSED, Y_MAYBE_UNUSED, T_MAYBE_UNUSED, LANG_MIN(CPP_17)  },
-  { L_NODISCARD,    Y_NODISCARD,    T_NODISCARD,    LANG_MIN(CPP_17)  },
+  { L_MAYBE_UNUSED, Y_MAYBE_UNUSED, T_MAYBE_UNUSED, LANG_CPP_MIN(17)  },
+  { L_NODISCARD,    Y_NODISCARD,    T_NODISCARD,    LANG_CPP_MIN(17)  },
 
   // C++20                // Not implemented because:
 #if 0
@@ -74,7 +74,7 @@ static c_keyword_t const C_ATTRIBUTES[] = {
   { L_NO_UNIQUE_ADDRESS,
                     Y_NO_UNIQUE_ADDRESS,
                                     T_NO_UNIQUE_ADDRESS,
-                                                    LANG_MIN(CPP_20)  },
+                                                    LANG_CPP_MIN(20)  },
 
   { NULL,           0,              T_NONE,         LANG_NONE         }
 };
@@ -104,7 +104,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_IF,               Y_IF,               T_NONE,         LANG_ALL          },
   { L_INT,              Y_INT,              T_INT,          LANG_ALL          },
   { L_LONG,             Y_LONG,             T_LONG,         LANG_ALL          },
-  { L_REGISTER,         Y_REGISTER,         T_REGISTER,     LANG_ALL          },
+  { L_REGISTER,         Y_REGISTER,         T_REGISTER,     LANG_MAX(CPP_14)  },
   { L_RETURN,           Y_RETURN,           T_NONE,         LANG_ALL          },
   { L_SHORT,            Y_SHORT,            T_SHORT,        LANG_ALL          },
   { L_SIZEOF,           Y_SIZEOF,           T_NONE,         LANG_ALL          },
@@ -125,12 +125,12 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_VOLATILE,         Y_VOLATILE,         T_VOLATILE,     LANG_MIN(C_89)    },
 
   // C99
-  { L_BOOL,             Y_BOOL,             T_BOOL,         LANG_MIN(C_99)    },
-  { L__COMPLEX,         Y__COMPLEX,         T_COMPLEX,      LANG_MIN(C_99)    },
-  { L__IMAGINARY,       Y__IMAGINARY,       T_IMAGINARY,    LANG_MIN(C_99)    },
-  { L_INLINE,           Y_INLINE,           T_INLINE,       LANG_MIN(C_89)    },
-  { L_RESTRICT,         Y_RESTRICT,         T_RESTRICT,     LANG_MIN(C_89)    },
-  { L_WCHAR_T,          Y_WCHAR_T,          T_WCHAR_T,      LANG_MIN(C_99)    },
+  { L__BOOL,            Y__BOOL,            T_BOOL,         LANG_MIN(C_99)    },
+  { L__COMPLEX,         Y__COMPLEX,         T_COMPLEX,      LANG_C_MIN(99)    },
+  { L__IMAGINARY,       Y__IMAGINARY,       T_IMAGINARY,    LANG_C_MIN(99)    },
+  { L_INLINE,           Y_INLINE,           T_INLINE,       LANG_MIN(C_99)    },
+  { L_RESTRICT,         Y_RESTRICT,         T_RESTRICT,     LANG_C_MIN(99)    },
+  { L_WCHAR_T,          Y_WCHAR_T,          T_WCHAR_T,      LANG_MIN(C_95)    },
 
   // C11
   { L__ALIGNAS,         Y__ALIGNAS,         T_NONE,         LANG_MIN(C_11)    },
@@ -141,6 +141,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L__STATIC_ASSERT,   Y__STATIC_ASSERT,   T_NONE,         LANG_MIN(C_11)    },
 
   // C++
+  { L_BOOL,             Y_BOOL,             T_BOOL,         LANG_CPP_ALL      },
   { L_CATCH,            Y_CATCH,            T_NONE,         LANG_CPP_ALL      },
   { L_CLASS,            Y_CLASS,            T_CLASS,        LANG_CPP_ALL      },
   { L_CONST_CAST,       Y_CONST_CAST,       T_NONE,         LANG_CPP_ALL      },
@@ -170,15 +171,15 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_VIRTUAL,          Y_VIRTUAL,          T_VIRTUAL,      LANG_CPP_ALL      },
 
   // C++11
-  { L_ALIGNAS,          Y_ALIGNAS,          T_NONE,         LANG_MIN(CPP_11)  },
-  { L_ALIGNOF,          Y_ALIGNOF,          T_NONE,         LANG_MIN(CPP_11)  },
-  { L_AUTO,             Y_AUTO_TYPE,        T_AUTO_TYPE,    LANG_MIN(CPP_11)  },
-  { L_CONSTEXPR,        Y_CONSTEXPR,        T_CONSTEXPR,    LANG_MIN(CPP_11)  },
-  { L_DECLTYPE,         Y_DECLTYPE,         T_NONE,         LANG_MIN(CPP_11)  },
-  { L_FINAL,            Y_FINAL,            T_FINAL,        LANG_MIN(CPP_11)  },
-  { L_NOEXCEPT,         Y_NOEXCEPT,         T_NOEXCEPT,     LANG_MIN(CPP_11)  },
-  { L_NULLPTR,          Y_NULLPTR,          T_NONE,         LANG_MIN(CPP_11)  },
-  { L_OVERRIDE,         Y_OVERRIDE,         T_OVERRIDE,     LANG_MIN(CPP_11)  },
+  { L_ALIGNAS,          Y_ALIGNAS,          T_NONE,         LANG_CPP_MIN(11)  },
+  { L_ALIGNOF,          Y_ALIGNOF,          T_NONE,         LANG_CPP_MIN(11)  },
+  { L_AUTO,             Y_AUTO_TYPE,        T_AUTO_TYPE,    LANG_CPP_MIN(11)  },
+  { L_CONSTEXPR,        Y_CONSTEXPR,        T_CONSTEXPR,    LANG_CPP_MIN(11)  },
+  { L_DECLTYPE,         Y_DECLTYPE,         T_NONE,         LANG_CPP_MIN(11)  },
+  { L_FINAL,            Y_FINAL,            T_FINAL,        LANG_CPP_MIN(11)  },
+  { L_NOEXCEPT,         Y_NOEXCEPT,         T_NOEXCEPT,     LANG_CPP_MIN(11)  },
+  { L_NULLPTR,          Y_NULLPTR,          T_NONE,         LANG_CPP_MIN(11)  },
+  { L_OVERRIDE,         Y_OVERRIDE,         T_OVERRIDE,     LANG_CPP_MIN(11)  },
 
   // C11 & C++11
   { L_ALIGNAS,          Y_ALIGNAS,          T_NONE,         LANG_C_CPP_11_MIN },
@@ -187,10 +188,10 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_THREAD_LOCAL,     Y_THREAD_LOCAL,     T_THREAD_LOCAL, LANG_C_CPP_11_MIN },
 
   // C++20
-  { L_CHAR8_T,          Y_CHAR8_T,          T_CHAR8_T,      LANG_MIN(CPP_20)  },
-  { L_CONCEPT,          Y_CONCEPT,          T_NONE,         LANG_MIN(CPP_20)  },
-  { L_CONSTEVAL,        Y_CONSTEVAL,        T_CONSTEVAL,    LANG_MIN(CPP_20)  },
-  { L_REQUIRES,         Y_REQUIRES,         T_NONE,         LANG_MIN(CPP_20)  },
+  { L_CHAR8_T,          Y_CHAR8_T,          T_CHAR8_T,      LANG_CPP_MIN(20)  },
+  { L_CONCEPT,          Y_CONCEPT,          T_NONE,         LANG_CPP_MIN(20)  },
+  { L_CONSTEVAL,        Y_CONSTEVAL,        T_CONSTEVAL,    LANG_CPP_MIN(20)  },
+  { L_REQUIRES,         Y_REQUIRES,         T_NONE,         LANG_CPP_MIN(20)  },
 
   // Alternative tokens
   { L_AND,              Y_AMPER2,           T_NONE,         LANG_ALL          },
@@ -206,10 +207,19 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_XOR_EQ,           Y_CIRC_EQ,          T_NONE,         LANG_ALL          },
 
   // GNU extensions
-  { L_GNU___AUTO_TYPE,  Y_AUTO_TYPE,        T_AUTO_TYPE,    LANG_MIN(C_89)    },
-  { L_GNU___INLINE__,   Y_INLINE,           T_INLINE,       LANG_MIN(C_89)    },
-  { L_GNU___RESTRICT__, Y_GNU___RESTRICT__, T_RESTRICT,     LANG_MIN(C_89)    },
-  { L_GNU___THREAD,     Y_THREAD_LOCAL,     T_THREAD_LOCAL, LANG_MIN(C_89)    },
+  { L_GNU___AUTO_TYPE,  Y_AUTO_TYPE,        T_AUTO_TYPE,    LANG_ALL          },
+  { L_GNU___COMPLEX,    Y__COMPLEX,         T_COMPLEX,      LANG_ALL          },
+  { L_GNU___COMPLEX__,  Y__COMPLEX,         T_COMPLEX,      LANG_ALL          },
+  { L_GNU___CONST,      Y_CONST,            T_CONST,        LANG_ALL          },
+  { L_GNU___INLINE,     Y_INLINE,           T_INLINE,       LANG_ALL          },
+  { L_GNU___INLINE__,   Y_INLINE,           T_INLINE,       LANG_ALL          },
+  { L_GNU___RESTRICT,   Y_GNU___RESTRICT,   T_RESTRICT,     LANG_ALL          },
+  { L_GNU___RESTRICT__, Y_GNU___RESTRICT,   T_RESTRICT,     LANG_ALL          },
+  { L_GNU___SIGNED,     Y_SIGNED,           T_SIGNED,       LANG_ALL          },
+  { L_GNU___SIGNED__,   Y_SIGNED,           T_SIGNED,       LANG_ALL          },
+  { L_GNU___THREAD,     Y_THREAD_LOCAL,     T_THREAD_LOCAL, LANG_ALL          },
+  { L_GNU___VOLATILE,   Y_VOLATILE,         T_VOLATILE,     LANG_ALL          },
+  { L_GNU___VOLATILE__, Y_VOLATILE,         T_VOLATILE,     LANG_ALL          },
 
   // Apple extensions
   { L_APPLE___BLOCK,    Y_APPLE___BLOCK,    T_APPLE_BLOCK,  LANG_ALL          },
@@ -217,26 +227,39 @@ static c_keyword_t const C_KEYWORDS[] = {
   { NULL,               0,                  T_NONE,         LANG_NONE         }
 };
 
-////////// extern functions ///////////////////////////////////////////////////
+////////// local functions ////////////////////////////////////////////////////
 
-c_keyword_t const* c_attribute_find( char const *literal ) {
+/**
+ * Given a literal, gets the `c_keyword` for the corresponding C/C++ keyword in
+ * \a lang_id.
+ *
+ * @param literal The literal to find.
+ * @param keywords The array of `c_keyword` to look in.
+ * @param lang_id The bitwise-or of language(s) to look for the keyword in.
+ * @return Returns a pointer to the corresponding `c_keyword` or null for none.
+ */
+C_WARN_UNUSED_RESULT
+static c_keyword_t const* c_keyword_find_impl( char const *literal,
+                                               c_keyword_t const keywords[],
+                                               c_lang_id_t lang_id ) {
   assert( literal != NULL );
-  for ( c_keyword_t const *a = C_ATTRIBUTES; a->literal != NULL; ++a ) {
-    if ( strcmp( literal, a->literal ) == 0 )
-      return a;
-  } // for
-  return NULL;
-}
-
-c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_id ) {
-  assert( literal != NULL );
-  for ( c_keyword_t const *k = C_KEYWORDS; k->literal != NULL; ++k ) {
+  for ( c_keyword_t const *k = keywords; k->literal != NULL; ++k ) {
     if ( (k->lang_ids & lang_id) == LANG_NONE )
       continue;
     if ( strcmp( literal, k->literal ) == 0 )
       return k;
   } // for
   return NULL;
+}
+
+////////// extern functions ///////////////////////////////////////////////////
+
+c_keyword_t const* c_attribute_find( char const *literal ) {
+  return c_keyword_find_impl( literal, C_ATTRIBUTES, LANG_ALL );
+}
+
+c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_id ) {
+  return c_keyword_find_impl( literal, C_KEYWORDS, lang_id );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

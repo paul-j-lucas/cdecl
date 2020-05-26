@@ -10,6 +10,19 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 7.1
+
+** Added more GNU extensions
+Added GNU C's __complex, __complex__, __const, __inline, __restrict, __signed,
+__signed__, __volatile, and __volatile__.
+
+* _Bool in C
+In C, _Bool is now emitted rather than bool.
+
+* register removed
+register is now removed (but still reserved) in C++17 and later.
+
+
 * Changes in Cdecl 7.0
 
 ** East const

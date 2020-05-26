@@ -79,16 +79,38 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_MASK_CPP 0xFF00u           /**< C++ languages bitmask. */
 
 /** Maximum allowed language, C & C++. */
-#define LANG_MAX(L)               ((LANG_ ## L) | ((LANG_ ## L) - 1u))
+#define LANG_MAX(L)               (LANG_ ## L | (LANG_ ## L - 1u))
 
 /** Minimum allowed language, C & C++. */
-#define LANG_MIN(L)               (~((LANG_ ## L) - 1u))
+#define LANG_MIN(L)               (~(LANG_ ## L - 1u))
+
+/** Maximum allowed language, C only. */
+#define LANG_C_MAX(L)             LANG_MAX( C_ ## L )
 
 /** Minimum allowed language, C only. */
 #define LANG_C_MIN(L)             (LANG_MIN( C_ ## L ) & LANG_MASK_C)
 
-/* Maximum allowed laguage, C++ only. */
+/* Maximum allowed language, C++ only. */
 #define LANG_CPP_MAX(L)           (LANG_MAX( CPP_ ## L ) & LANG_MASK_CPP)
+
+/* Minimum allowed language, C++ only. */
+#define LANG_CPP_MIN(L)           LANG_MIN( CPP_ ## L )
+
+/* Maximum allowed language, C & C++ seperately. */
+#define LANG_C_CPP_MAX(CL,CPPL)   (LANG_C_MAX(CL) | LANG_CPP_MAX(CPPL))
+
+/* Minimum allowed language, C & C++ seperately. */
+#define LANG_C_CPP_MIN(CL,CPPL)   (LANG_C_MIN(CL) | LANG_CPP_MIN(CPPL))
+
+/**
+ * C/C++ language(s)/literal pairs: for the given language(s) only, use the
+ * given literal.  This allows different languages to use different literals,
+ * e.g., "_Noreturn" for C and "noreturn" for C++.
+ */
+struct c_lang_lit {
+  c_lang_id_t   lang_ids;               ///< Language(s) literal is in.
+  char const   *literal;                ///< The literal.
+};
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -145,6 +167,16 @@ bool c_lang_is_cpp( c_lang_id_t lang_id ) {
  * @return Returns `true` only if the current language is C++.
  */
 #define C_LANG_IS_CPP()           c_lang_is_cpp( opt_lang )
+
+/**
+ * Gets the literal appropriate for the current language.
+ *
+ * @param lang_lit A c_lang_lit_t array.  The last element _must_ always have a
+ * `lang_ids` value of #LANG_ALL.
+ * @return Returns said literal.
+ */
+C_WARN_UNUSED_RESULT
+char const* c_lang_literal( c_lang_lit_t const lang_lit[] );
 
 /**
  * Gets a comma-separated string of all supported language names.

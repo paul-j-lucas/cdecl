@@ -968,7 +968,7 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_WCHAR_T
 
                     /* C99 */
-%token  <type_id>   Y_BOOL
+%token  <type_id>   Y__BOOL
 %token  <type_id>   Y__COMPLEX
 %token  <type_id>   Y__IMAGINARY
 %token  <type_id>   Y_INLINE
@@ -984,6 +984,7 @@ static void yyerror( char const *msg ) {
 %token              Y__STATIC_ASSERT
 
                     /* C++ */
+%token  <type_id>   Y_BOOL
 %token  <oper_id>   Y_ARROW_STAR  "->*"
 %token              Y_CATCH
 %token  <type_id>   Y_CLASS
@@ -1060,7 +1061,7 @@ static void yyerror( char const *msg ) {
 %token              Y_REQUIRES
 
                     /* GNU extensions */
-%token  <type_id>   Y_GNU___RESTRICT__
+%token  <type_id>   Y_GNU___RESTRICT
 
                     /* Apple extensions */
 %token  <type_id>   Y_APPLE___BLOCK     /* __block storage class */
@@ -3165,11 +3166,11 @@ func_qualifier_c_type
   /*
    * GNU C++ allows restricted-this-pointer member functions:
    *
-   *      void S::f() __restrict__;
+   *      void S::f() __restrict;
    *
    * <https://gcc.gnu.org/onlinedocs/gcc/Restricted-Pointers.html>
    */
-  | Y_GNU___RESTRICT__
+  | Y_GNU___RESTRICT
   ;
 
 func_ref_qualifier_c_type_opt
@@ -3855,6 +3856,7 @@ builtin_type_c_ast
 builtin_type
   : Y_VOID
   | Y_AUTO_TYPE
+  | Y__BOOL
   | Y_BOOL
   | Y_CHAR
   | Y_CHAR8_T
@@ -3939,18 +3941,18 @@ type_qualifier_c_type
     {
       //
       // This check has to be done now in the parser rather than later in the
-      // AST since both "restrict" and "__restrict__" map to T_RESTRICT and the
+      // AST since both "restrict" and "__restrict" map to T_RESTRICT and the
       // AST has no "memory" of which it was.
       //
       if ( C_LANG_IS_CPP() ) {
         print_error( &@1,
           "\"%s\" not supported in %s; use \"%s\" instead",
-          L_RESTRICT, C_LANG_NAME(), L_GNU___RESTRICT__
+          L_RESTRICT, C_LANG_NAME(), L_GNU___RESTRICT
         );
         PARSE_ABORT();
       }
     }
-  | Y_GNU___RESTRICT__                  /* GNU C/C++ extension */
+  | Y_GNU___RESTRICT                    /* GNU C/C++ extension */
   ;
 
 cv_qualifier_list_c_type_opt

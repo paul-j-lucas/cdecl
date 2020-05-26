@@ -77,6 +77,9 @@ struct c_loc {
   //
   int first_line;                       ///< First line of location range.
   int first_column;                     ///< First column of location range.
+  //
+  // Cdecl doesn't use either of these.
+  //
   int last_line;                        ///< Last line of location range.
   int last_column;                      ///< Last column of location range.
 };
@@ -117,6 +120,7 @@ typedef enum   c_init           c_init_t;
 typedef struct c_keyword        c_keyword_t;
 typedef enum   c_kind           c_kind_t;
 typedef unsigned                c_lang_id_t;    ///< Languages bitmask.
+typedef struct c_lang_lit       c_lang_lit_t;
 typedef struct c_loc            c_loc_t;
 typedef enum   c_mode           c_mode_t;
 typedef struct c_oper           c_oper_t;

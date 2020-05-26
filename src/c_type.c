@@ -61,10 +61,26 @@
 
 #define CHRCAT(DST,SRC)           ((DST) = chrcpy_end( (DST), (SRC) ))
 
-#define LANG_C_CPP_11_MIN         (LANG_C_MIN(11) | LANG_MIN(CPP_11))
-
 /// @endcond
 
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Mapping between C type bits, literals, and valid language(s).
+ */
+struct c_type {
+  c_type_id_t         type_id;          ///< The type.
+  c_lang_id_t         lang_ids;         ///< Language(s) OK in.
+  char const         *english;          ///< English version (if not NULL).
+
+  /**
+   * Array of language(s)/literal pair(s).  The array is terminated by an
+   * element that has #LANG_ALL for lang_ids; hence subset(s) of language(s)
+   * cases come first and, failing to match opt_lang against any of those,
+   * matches the last (default) element.
+   */
+  c_lang_lit_t const *lang_lit;
+};
 typedef struct c_type c_type_t;
 
 // local functions
@@ -107,54 +123,26 @@ static char const L_RVALUE_REFERENCE[] = "rvalue reference";
 static char const L_TYPEDEF_TYPE[] = "";
 
 /**
- * C/C++ language(s)/literal pairs: for the given language(s) only, use the
- * given literal.  This allows different languages to use different literals,
- * e.g., "_Noreturn" for C and "noreturn" for C++.
- */
-struct c_lang_lit {
-  c_lang_id_t   lang_ids;
-  char const   *literal;
-};
-typedef struct c_lang_lit c_lang_lit_t;
-
-/**
- * Mapping between C type bits, literals, and valid language(s).
- */
-struct c_type {
-  c_type_id_t         type_id;          ///< The type.
-  c_lang_id_t         lang_ids;         ///< Language(s) OK in.
-  char const         *english;          ///< English version (if not NULL).
-
-  /**
-   * Array of language(s)/literal pair(s).  The array is terminated by an
-   * element that has #LANG_ALL for lang_ids; hence subset(s) of language(s)
-   * cases come first and, failing to match opt_lang against any of those,
-   * matches the last (default) element.
-   */
-  c_lang_lit_t const *lang_lit;
-};
-
-/**
  * Type mapping for attributes.
  */
 static c_type_t const C_ATTRIBUTE_INFO[] = {
-  { T_CARRIES_DEPENDENCY, LANG_MIN(CPP_11), L_CARRIES_DEPENDENCY_H,
+  { T_CARRIES_DEPENDENCY, LANG_CPP_MIN(11), L_CARRIES_DEPENDENCY_H,
     (c_lang_lit_t[]){ { LANG_ALL, L_CARRIES_DEPENDENCY } } },
 
-  { T_DEPRECATED, LANG_MIN(CPP_11), NULL,
+  { T_DEPRECATED, LANG_CPP_MIN(11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_DEPRECATED } } },
 
-  { T_MAYBE_UNUSED, LANG_MIN(CPP_17), L_MAYBE_UNUSED_H,
+  { T_MAYBE_UNUSED, LANG_CPP_MIN(17), L_MAYBE_UNUSED_H,
     (c_lang_lit_t[]){ { LANG_ALL, L_MAYBE_UNUSED } } },
 
-  { T_NODISCARD, LANG_MIN(CPP_11), L_NON_DISCARDABLE,
+  { T_NODISCARD, LANG_CPP_MIN(11), L_NON_DISCARDABLE,
     (c_lang_lit_t[]){ { LANG_ALL, L_NODISCARD } } },
 
-  { T_NORETURN, LANG_C_CPP_11_MIN, L_NON_RETURNING,
+  { T_NORETURN, LANG_C_CPP_MIN(11, 11), L_NON_RETURNING,
     (c_lang_lit_t[]){ { LANG_CPP_ALL, L_NORETURN  },
                       { LANG_ALL,     L__NORETURN } } },
 
-  { T_NO_UNIQUE_ADDRESS, LANG_MIN(CPP_20), L_NON_UNIQUE_ADDRESS,
+  { T_NO_UNIQUE_ADDRESS, LANG_CPP_MIN(20), L_NON_UNIQUE_ADDRESS,
     (c_lang_lit_t[]){ { LANG_ALL, L_NO_UNIQUE_ADDRESS } } },
 };
 
@@ -165,21 +153,23 @@ static c_type_t const C_QUALIFIER_INFO[] = {
   { T_ATOMIC, LANG_MIN(C_11), L_ATOMIC,
     (c_lang_lit_t[]){ { LANG_ALL, L__ATOMIC } } },
 
-  { T_CONST, LANG_MIN(C_89), L_CONSTANT,
-    (c_lang_lit_t[]){ { LANG_ALL, L_CONST } } },
+  { T_CONST, LANG_ALL, L_CONSTANT,
+    (c_lang_lit_t[]){ { LANG_C_KNR, L_GNU___CONST },
+                      { LANG_ALL,   L_CONST       } } },
 
-  { T_REFERENCE, LANG_MIN(CPP_OLD), NULL,
+  { T_REFERENCE, LANG_CPP_MIN(OLD), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_REFERENCE } } },
 
-  { T_RVALUE_REFERENCE, LANG_MIN(CPP_11), NULL,
+  { T_RVALUE_REFERENCE, LANG_CPP_MIN(11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_RVALUE_REFERENCE } } },
 
-  { T_RESTRICT, LANG_MIN(C_89), L_RESTRICTED,
-    (c_lang_lit_t[]){ { LANG_C_KNR | LANG_CPP_ALL, L_GNU___RESTRICT__ },
-                      { LANG_ALL,                  L_RESTRICT         } } },
+  { T_RESTRICT, LANG_ALL, L_RESTRICTED,
+    (c_lang_lit_t[]){ { LANG_C_MAX(95) | LANG_CPP_ALL, L_GNU___RESTRICT },
+                      { LANG_ALL,                      L_RESTRICT       } } },
 
-  { T_VOLATILE, LANG_MIN(C_89), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_VOLATILE } } },
+  { T_VOLATILE, LANG_ALL, NULL,
+    (c_lang_lit_t[]){ { LANG_C_KNR, L_GNU___VOLATILE },
+                      { LANG_ALL,   L_VOLATILE       } } },
 };
 
 /**
@@ -205,46 +195,46 @@ static c_type_t const C_STORAGE_INFO[] = {
   { T_STATIC, LANG_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_STATIC } } },
 
-  { T_THREAD_LOCAL, LANG_C_CPP_11_MIN, L_THREAD_LOCAL_H,
-    (c_lang_lit_t[]){ { LANG_MAX(CPP_03), L_GNU___THREAD  },
-                      { LANG_ALL,         L_THREAD_LOCAL  } } },
+  { T_THREAD_LOCAL, LANG_ALL, L_THREAD_LOCAL_H,
+    (c_lang_lit_t[]){ { LANG_C_MAX(99) | LANG_CPP_MAX(03), L_GNU___THREAD  },
+                      { LANG_ALL, L_THREAD_LOCAL  } } },
 
   { T_TYPEDEF, LANG_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_TYPEDEF } } },
 
   // storage-class-like
-  { T_CONSTEVAL, LANG_MIN(CPP_20), NULL,
+  { T_CONSTEVAL, LANG_CPP_MIN(20), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_CONSTEVAL } } },
 
-  { T_CONSTEXPR, LANG_MIN(CPP_11), NULL,
+  { T_CONSTEXPR, LANG_CPP_MIN(11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_CONSTEXPR } } },
 
-  { T_DEFAULT, LANG_MIN(CPP_11), NULL,
+  { T_DEFAULT, LANG_CPP_MIN(11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_DEFAULT } } },
 
-  { T_DELETE, LANG_MIN(CPP_11), L_DELETED,
+  { T_DELETE, LANG_CPP_MIN(11), L_DELETED,
     (c_lang_lit_t[]){ { LANG_ALL, L_DELETE } } },
 
   { T_EXPLICIT, LANG_CPP_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_EXPLICIT } } },
 
-  { T_FINAL, LANG_MIN(CPP_11), NULL,
+  { T_FINAL, LANG_CPP_MIN(11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_FINAL } } },
 
   { T_FRIEND, LANG_CPP_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_FRIEND } } },
 
-  { T_INLINE, LANG_MIN(C_89), NULL,
-    (c_lang_lit_t[]){ { LANG_C_KNR, L_GNU___INLINE__ },
-                      { LANG_ALL,   L_INLINE         } } },
+  { T_INLINE, LANG_ALL, NULL,
+    (c_lang_lit_t[]){ { LANG_C_KNR, L_GNU___INLINE },
+                      { LANG_ALL,   L_INLINE       } } },
 
   { T_MUTABLE, LANG_CPP_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_MUTABLE } } },
 
-  { T_NOEXCEPT, LANG_MIN(CPP_11), L_NO_EXCEPTION,
+  { T_NOEXCEPT, LANG_CPP_MIN(11), L_NO_EXCEPTION,
     (c_lang_lit_t[]){ { LANG_ALL, L_NOEXCEPT } } },
 
-  { T_OVERRIDE, LANG_MIN(CPP_11), L_OVERRIDDEN,
+  { T_OVERRIDE, LANG_CPP_MIN(11), L_OVERRIDDEN,
     (c_lang_lit_t[]){ { LANG_ALL, L_OVERRIDE } } },
 
   { T_THROW, LANG_CPP_ALL, L_NON_THROWING,
@@ -271,19 +261,20 @@ static c_type_t const C_TYPE_INFO[] = {
     (c_lang_lit_t[]){ { LANG_MAX(CPP_03), L_GNU___AUTO_TYPE },
                       { LANG_ALL,         L_AUTO            } } },
 
-  { T_BOOL, LANG_MIN(C_89), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_BOOL } } },
+  { T_BOOL, LANG_MIN(C_99), NULL,
+    (c_lang_lit_t[]){ { LANG_C_ALL, L__BOOL },
+                      { LANG_ALL,   L_BOOL  } } },
 
   { T_CHAR, LANG_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_CHAR } } },
 
-  { T_CHAR8_T, LANG_MIN(CPP_20), NULL,
+  { T_CHAR8_T, LANG_CPP_MIN(20), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_CHAR8_T } } },
 
-  { T_CHAR16_T, LANG_C_CPP_11_MIN, NULL,
+  { T_CHAR16_T, LANG_C_CPP_MIN(11, 11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_CHAR16_T } } },
 
-  { T_CHAR32_T, LANG_C_CPP_11_MIN, NULL,
+  { T_CHAR32_T, LANG_C_CPP_MIN(11, 11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_CHAR32_T } } },
 
   { T_WCHAR_T, LANG_MIN(C_95), NULL,
@@ -301,8 +292,9 @@ static c_type_t const C_TYPE_INFO[] = {
   { T_LONG_LONG, LANG_MIN(C_99), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_LONG_LONG } } },
 
-  { T_SIGNED, LANG_MIN(C_89), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_SIGNED } } },
+  { T_SIGNED, LANG_ALL, NULL,
+    (c_lang_lit_t[]){ { LANG_C_KNR, L_GNU___SIGNED },
+                      { LANG_ALL,   L_SIGNED       } } },
 
   { T_UNSIGNED, LANG_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_UNSIGNED } } },
@@ -313,10 +305,11 @@ static c_type_t const C_TYPE_INFO[] = {
   { T_DOUBLE, LANG_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_DOUBLE } } },
 
-  { T_COMPLEX, LANG_MIN(C_99), L_COMPLEX,
-    (c_lang_lit_t[]){ { LANG_ALL, L__COMPLEX } } },
+  { T_COMPLEX, LANG_C_ALL, L_COMPLEX,
+    (c_lang_lit_t[]){ { LANG_C_MAX(95), L_GNU___COMPLEX },
+                      { LANG_ALL,       L__COMPLEX      } } },
 
-  { T_IMAGINARY, LANG_MIN(C_99), L_IMAGINARY,
+  { T_IMAGINARY, LANG_C_MIN(99), L_IMAGINARY,
     (c_lang_lit_t[]){ { LANG_ALL, L__IMAGINARY } } },
 
   { T_ENUM, LANG_MIN(C_89), L_ENUMERATION,
@@ -341,16 +334,15 @@ static c_type_t const C_TYPE_INFO[] = {
 #define __          LANG_ALL
 #define XX          LANG_NONE
 #define KR          LANG_C_KNR
-#define C_          LANG_MAX(C_NEW)
 #define C8          LANG_MIN(C_89)
 #define C5          LANG_MIN(C_95)
 #define C9          LANG_MIN(C_99)
 #define C1          LANG_MIN(C_11)
 #define PP          LANG_CPP_ALL
-#define P3          LANG_MIN(CPP_03)
-#define P1          LANG_MIN(CPP_11)
-#define P2          LANG_MIN(CPP_20)
-#define E1          LANG_C_CPP_11_MIN
+#define P3          LANG_CPP_MIN(03)
+#define P1          LANG_CPP_MIN(11)
+#define P2          LANG_CPP_MIN(20)
+#define E1          LANG_C_CPP_MIN(11, 11)
 
 /// @endcond
 
@@ -371,7 +363,7 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
   { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// extern
   { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// regist
   { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// static
-  { XX,E1,E1,XX,E1,E1,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// thread
+  { XX,__,__,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// thread
   { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// typed
 
   { P1,P1,P1,XX,P1,XX,XX,  P2,P1,__,__,__,__,__,__,__,__,__,__,__,__ },// c'eval
@@ -381,7 +373,7 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
   { XX,XX,XX,XX,XX,XX,XX,  XX,P1,P1,P1,PP,__,__,__,__,__,__,__,__,__ },// explic
   { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,P1,__,__,__,__,__,__,__,__ },// final
   { XX,XX,XX,XX,XX,XX,XX,  P2,P1,XX,XX,XX,XX,PP,__,__,__,__,__,__,__ },// friend
-  { XX,XX,C8,XX,C8,XX,XX,  P2,P1,P1,P1,PP,P1,PP,C8,__,__,__,__,__,__ },// inline
+  { XX,XX,__,XX,__,XX,XX,  P2,P1,P1,P1,PP,P1,PP,__,__,__,__,__,__,__ },// inline
   { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,XX,XX,XX,XX,P3,__,__,__,__,__ },// mut
   { XX,XX,P1,XX,P1,XX,P1,  P2,P1,P1,P1,PP,P1,P1,P1,XX,P1,__,__,__,__ },// noexc
   { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,P1,XX,C1,XX,C1,P1,__,__,__ },// overr
@@ -503,10 +495,7 @@ static char const* c_type_literal( c_type_t const *t, bool is_error ) {
   bool const is_english = c_mode == C_ENGLISH_TO_GIBBERISH;
   if ( is_english == is_error && t->english != NULL )
     return t->english;
-  for ( c_lang_lit_t const *ll = t->lang_lit; true; ++ll ) {
-    if ( (ll->lang_ids & opt_lang) != LANG_NONE )
-      return ll->literal;
-  } // for
+  return c_lang_literal( t->lang_lit );
 }
 
 /**

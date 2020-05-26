@@ -1,1 +1,1 @@
-declare func as function (array as array of constant char, pointer as pointer to void, cast as bool) returning int
+declare func as function (array as array of constant char, pointer as pointer to void, cast as _Bool) returning int

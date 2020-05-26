@@ -180,7 +180,7 @@ define __int32 as int
 define __int64 as long long
 define __int8 as signed char
 define __wchar_t as wchar_t
-define atomic_bool as _Atomic bool
+define atomic_bool as _Atomic _Bool
 define atomic_char as _Atomic char
 define atomic_char16_t as _Atomic char16_t
 define atomic_char32_t as _Atomic char32_t

@@ -90,6 +90,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_c_al8.test \
 	tests/declare_c_alpv.test \
 	tests/declare_ci-ec.test \
+	tests/declare_ci-knr.test \
 	tests/declare_ci.test \
 	tests/declare_ck-ec.test \
 	tests/declare_ck.test \
@@ -175,6 +176,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_ui.test \
 	tests/declare_ull.test \
 	tests/declare_vcpi.test \
+	tests/declare_vi-knr.test \
 	tests/declare_vpi.test \
 	tests/declare_w.test \
 	tests/declare_z.test \
@@ -203,7 +205,6 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_c32-c99.test \
 	tests/declare_c8-c++17.test \
 	tests/declare_cf_v-c.test \
-	tests/declare_ci-knr.test \
 	tests/declare_cnmf_v.test \
 	tests/declare_cri.test \
 	tests/declare_e-knr.test \
@@ -271,7 +272,6 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_uz.test \
 	tests/declare_v.test \
 	tests/declare_vf_v-c.test \
-	tests/declare_vi-knr.test \
 	tests/declare_vri.test \
 	tests/declare_w-c89.test \
 	tests/declare_xi-c.test
@@ -843,6 +843,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_a.test \
 	tests/declare_a3a5pfv_ppa7a9pc.test \
 	tests/declare_af-c++.test \
+	tests/declare_b-c++.test \
 	tests/declare_c_al0-c++.test \
 	tests/declare_c_al8-c++.test \
 	tests/declare_cdfcdi_i.test \

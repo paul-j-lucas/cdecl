@@ -1,1 +1,1 @@
-int *__restrict__ p;
+int *__restrict p;

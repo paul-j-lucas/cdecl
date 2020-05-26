@@ -115,8 +115,8 @@ char const L_VOID[]                 = "void";
 char const L_VOLATILE[]             = "volatile";
 
 // C99
-char const L_BOOL[]                 = "bool";
 char const L__BOOL[]                = "_Bool";
+char const L_BOOL[]                 = "bool";
 char const L__COMPLEX[]             = "_Complex";
 char const L_COMPLEX[]              = "complex";
 char const L__IMAGINARY[]           = "_Imaginary";
@@ -236,9 +236,18 @@ char const L_XOR_EQ[]               = "xor_eq";
 
 // GNU extensions
 char const L_GNU___AUTO_TYPE[]      = "__auto_type";
+char const L_GNU___COMPLEX[]        = "__complex";
+char const L_GNU___COMPLEX__[]      = "__complex__";
+char const L_GNU___CONST[]          = "__const";
+char const L_GNU___INLINE[]         = "__inline";
 char const L_GNU___INLINE__[]       = "__inline__";
+char const L_GNU___RESTRICT[]       = "__restrict";
 char const L_GNU___RESTRICT__[]     = "__restrict__";
+char const L_GNU___SIGNED[]         = "__signed";
+char const L_GNU___SIGNED__[]       = "__signed__";
 char const L_GNU___THREAD[]         = "__thread";
+char const L_GNU___VOLATILE[]       = "__volatile";
+char const L_GNU___VOLATILE__[]     = "__volatile__";
 
 // Apple extensions
 char const L_APPLE___BLOCK[]        = "__block";

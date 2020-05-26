@@ -1,1 +1,1 @@
-bool x;
+_Bool x;

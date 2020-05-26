@@ -140,106 +140,143 @@
  * cdecl keyword info.
  */
 struct cdecl_keyword {
-  char const *literal;                  ///< C string literal of the keyword.
-  int         y_token;                  ///< Bison token number ...
-  char const *c_keyword_synonym;        ///< ... or C/C++ keyword synonym.
-  bool        allow_explain;            ///< Allow when explaining C/C++?
+  char const         *literal;          ///< C string literal of the keyword.
+  bool                allow_explain;    ///< Allow when explaining C/C++?
+  int                 y_token;          ///< Bison token number; or:
+
+  /**
+   * Array of language(s)/synonym-keyword pair(s).  The array is terminated by
+   * an element that has #LANG_ALL for lang_ids; hence subset(s) of language(s)
+   * cases come first and, failing to match opt_lang against any of those,
+   * matches the last (default) element.
+   */
+  c_lang_lit_t const *lang_syn;
 };
 typedef struct cdecl_keyword cdecl_keyword_t;
 
 /**
  * Specify that the previosuly given literal is a synonym for \a C_KEYWORD.
  *
- * @param C_KEYWORD The C/C++ keyword literal (`L_xxx`) that is the synonym.
  * @param ALLOW If `true, allow this synonym when explaining C/C++.
+ * @param ... Array of `c_lang_lit`.
  */
-#define C_SYN(C_KEYWORD,ALLOW)  0, C_KEYWORD, ALLOW
+#define C_SYN(ALLOW,...)          ALLOW, 0, (c_lang_lit_t[])__VA_ARGS__
+
+/**
+ * Special-case of #C_SYN when there is only one language(s)/literal pair.
+ *
+ * @param C_KEYWORD The C/C++ keyword literal (`L_xxx`) that is the synonym.
+ */
+#define C_SY1(ALLOW,C_KEYWORD)    C_SYN( ALLOW, { { LANG_ALL, C_KEYWORD } } )
 
 /**
  * Specify that the previosuly given literal maps to Bison tokan \a Y_ID.
  *
+ * @param ALLOW If `true, allow this synonym when explaining C/C++.
  * @param Y_ID The Bison token ID (`Y_xxx`).
  */
-#define TOKEN(Y_ID)             Y_ID, NULL, false
+#define TOKEN(Y_ID)               false, Y_ID, NULL
 
 /**
- * All cdecl keywords (that are not C/C++ keywords).
+ * All cdecl keywords that are (mostly) not C/C++ keywords.
+ *
+ * Exceptions are `bool`, `_Complex`, `const`, and `volatile` that we want to
+ * treat as English so they map to the appropriate language-specific literal.
  */
 static cdecl_keyword_t const CDECL_KEYWORDS[] = {
-  { L__ALIGNAS,       C_SYN( L_ALIGNAS,       true  ) },
-  { L_ALIGNED,        TOKEN( Y_ALIGNED )              },
-  { L_ALL,            TOKEN( Y_ALL )                  },
-  { L_ARRAY,          TOKEN( Y_ARRAY )                },
-  { L_AS,             TOKEN( Y_AS )                   },
-  { L_ATOMIC,         C_SYN( L__ATOMIC,       false ) },
-  { L_AUTOMATIC,      C_SYN( L_AUTO,          false ) },
-  { L_APPLE_BLOCK,    TOKEN( Y_APPLE_BLOCK )          },
-  { L__BOOL,          C_SYN( L_BOOL,          true  ) },
-  { L_BYTES,          TOKEN( Y_BYTES )                },
-  { L_CAST,           TOKEN( Y_CAST )                 },
-  { L_CHARACTER,      C_SYN( L_CHAR,          false ) },
-  { L_COMPLEX,        C_SYN( L__COMPLEX,      true  ) },
-  { L_COMMAND,        TOKEN( Y_COMMANDS )             },
-  { L_COMMANDS,       TOKEN( Y_COMMANDS )             },
-  { L_CONSTANT,       C_SYN( L_CONST,         false ) },
-  { L_CONSTRUCTOR,    TOKEN( Y_CONSTRUCTOR )          },
-  { L_CONVERSION,     TOKEN( Y_CONVERSION )           },
-  { L_DECLARE,        TOKEN( Y_DECLARE )              },
-  { L_DEFAULTED,      C_SYN( L_DEFAULT,       false ) },
-  { L_DEFINE,         TOKEN( Y_DEFINE )               },
-  { L_DELETED,        C_SYN( L_DELETE,        false ) },
-  { L_DESTRUCTOR,     TOKEN( Y_DESTRUCTOR )           },
-  { L_DYNAMIC,        TOKEN( Y_DYNAMIC )              },
-  { L_ENGLISH,        TOKEN( Y_ENGLISH )              },
-  { L_ENUMERATION,    C_SYN( L_ENUM,          false ) },
-  { L_EXIT,           TOKEN( Y_QUIT )                 },
-  { L_EXPLAIN,        TOKEN( Y_EXPLAIN )              },
-  { L_EXTERNAL,       C_SYN( L_EXTERN,        false ) },
-  { L_FUNC,           TOKEN( Y_FUNCTION )             },
-  { L_FUNCTION,       TOKEN( Y_FUNCTION )             },
-  { L_HELP,           TOKEN( Y_HELP )                 },
-  { L_IMAGINARY,      C_SYN( L__IMAGINARY,    true  ) },
-  { L_INTEGER,        C_SYN( L_INT,           false ) },
-  { L_INTO,           TOKEN( Y_INTO )                 },
-  { L_LEN,            TOKEN( Y_LENGTH )               },
-  { L_LENGTH,         TOKEN( Y_LENGTH )               },
-  { L_LITERAL,        TOKEN( Y_LITERAL )              },
-  { L_MBR,            TOKEN( Y_MEMBER ),              },
-  { L_MEMBER,         TOKEN( Y_MEMBER ),              },
-  { L_NON_MBR,        TOKEN( Y_NON_MEMBER ),          },
-  { L_NON_MEMBER,     TOKEN( Y_NON_MEMBER ),          },
-  { L_NORETURN,       C_SYN( L__NORETURN,     true  ) },
-  { L_OF,             TOKEN( Y_OF ),                  },
-  { L_OPER,           TOKEN( Y_OPERATOR )             },
-  { L_OVERRIDDEN,     C_SYN( L_OVERRIDE,      false ) },
-  { L_POINTER,        TOKEN( Y_POINTER )              },
-  { L_PREDEF,         TOKEN( Y_PREDEFINED )           },
-  { L_PREDEFINED,     TOKEN( Y_PREDEFINED )           },
-  { L_PTR,            TOKEN( Y_POINTER )              },
-  { L_PURE,           TOKEN( Y_PURE )                 },
-  { L_Q,              TOKEN( Y_QUIT )                 },
-  { L_QUIT,           TOKEN( Y_QUIT )                 },
-  { L_REF,            TOKEN( Y_REFERENCE )            },
-  { L_REFERENCE,      TOKEN( Y_REFERENCE )            },
-  { L_REINTERPRET,    TOKEN( Y_REINTERPRET )          },
-  { L_RESTRICTED,     C_SYN( L_RESTRICT,      false ) },
-  { L_RET,            TOKEN( Y_RETURNING )            },
-  { L_RETURNING,      TOKEN( Y_RETURNING )            },
-  { L_RVALUE,         TOKEN( Y_RVALUE )               },
-  { L_SCOPE,          TOKEN( Y_SCOPE ),               },
-  { L_SET_COMMAND,    TOKEN( Y_SET )                  },
-  { L_SHOW,           TOKEN( Y_SHOW )                 },
-  { L_STRUCTURE,      C_SYN( L_STRUCT,        false ) },
-  { L__THREAD_LOCAL,  C_SYN( L_THREAD_LOCAL,  true  ) },
-  { L_TO,             TOKEN( Y_TO )                   },
-  { L_TYPE,           C_SYN( L_TYPEDEF,       false ) },
-  { L_USER,           TOKEN( Y_USER )                 },
-  { L_VAR,            TOKEN( Y_VARIABLE )             },
-  { L_VARARGS,        C_SYN( L_ELLIPSIS,      false ) },
-  { L_VARIABLE,       TOKEN( Y_VARIABLE )             },
-  { L_VARIADIC,       C_SYN( L_ELLIPSIS,      false ) },
-  { L_VECTOR,         TOKEN( Y_ARRAY )                },
-  { NULL,             TOKEN( 0 )                      }
+  { L__ALIGNAS,       C_SY1( true, L_ALIGNAS      ) },
+  { L_ALIGNED,        TOKEN( Y_ALIGNED            ) },
+  { L_ALL,            TOKEN( Y_ALL                ) },
+  { L_ARRAY,          TOKEN( Y_ARRAY              ) },
+  { L_AS,             TOKEN( Y_AS                 ) },
+  { L_ATOMIC,         C_SY1( false, L__ATOMIC     ) },
+  { L_AUTOMATIC,      C_SY1( false, L_AUTO        ) },
+  { L_APPLE_BLOCK,    TOKEN( Y_APPLE_BLOCK        ) },
+  { L_BOOL,           C_SYN( true,
+                        { { LANG_C_MIN(99), L__BOOL },
+                          { LANG_ALL,       L_BOOL  } } ) },
+  { L_BYTES,          TOKEN( Y_BYTES              ) },
+  { L_CAST,           TOKEN( Y_CAST               ) },
+  { L_CHARACTER,      C_SY1( false, L_CHAR        ) },
+  { L_COMPLEX,        C_SYN( true,
+                        { { LANG_C_MAX(95), L_GNU___COMPLEX },
+                          { LANG_C_MIN(99), L__COMPLEX      },
+                          { LANG_ALL,       L_COMPLEX       } } ) },
+  { L_COMMAND,        TOKEN( Y_COMMANDS           ) },
+  { L_COMMANDS,       TOKEN( Y_COMMANDS           ) },
+  { L_CONST,          C_SYN( false,
+                        { { LANG_C_KNR, L_GNU___CONST },
+                          { LANG_ALL,   L_CONST       } } ) },
+  { L_CONSTANT,       C_SYN( false,
+                        { { LANG_C_KNR, L_GNU___CONST },
+                          { LANG_ALL,   L_CONST       } } ) },
+  { L_CONSTRUCTOR,    TOKEN( Y_CONSTRUCTOR        ) },
+  { L_CONVERSION,     TOKEN( Y_CONVERSION         ) },
+  { L_DECLARE,        TOKEN( Y_DECLARE            ) },
+  { L_DEFAULTED,      C_SY1( false, L_DEFAULT     ) },
+  { L_DEFINE,         TOKEN( Y_DEFINE             ) },
+  { L_DELETED,        C_SY1( false, L_DELETE      ) },
+  { L_DESTRUCTOR,     TOKEN( Y_DESTRUCTOR         ) },
+  { L_DYNAMIC,        TOKEN( Y_DYNAMIC            ) },
+  { L_ENGLISH,        TOKEN( Y_ENGLISH            ) },
+  { L_ENUMERATION,    C_SY1( false, L_ENUM        ) },
+  { L_EXIT,           TOKEN( Y_QUIT               ) },
+  { L_EXPLAIN,        TOKEN( Y_EXPLAIN            ) },
+  { L_EXTERNAL,       C_SY1( false, L_EXTERN      ) },
+  { L_FUNC,           TOKEN( Y_FUNCTION           ) },
+  { L_FUNCTION,       TOKEN( Y_FUNCTION           ) },
+  { L_HELP,           TOKEN( Y_HELP               ) },
+  { L_IMAGINARY,      C_SY1( true,  L__IMAGINARY  ) },
+  { L_INTEGER,        C_SY1( false, L_INT         ) },
+  { L_INTO,           TOKEN( Y_INTO               ) },
+  { L_LEN,            TOKEN( Y_LENGTH             ) },
+  { L_LENGTH,         TOKEN( Y_LENGTH             ) },
+  { L_LITERAL,        TOKEN( Y_LITERAL            ) },
+  { L_MBR,            TOKEN( Y_MEMBER             ) },
+  { L_MEMBER,         TOKEN( Y_MEMBER             ) },
+  { L_NON_MBR,        TOKEN( Y_NON_MEMBER         ) },
+  { L_NON_MEMBER,     TOKEN( Y_NON_MEMBER         ) },
+  { L_NORETURN,       C_SYN( true,
+                        { { LANG_CPP_ALL, L_NORETURN  },
+                          { LANG_ALL,     L__NORETURN } } ) },
+  { L_OF,             TOKEN( Y_OF                 ) },
+  { L_OPER,           TOKEN( Y_OPERATOR           ) },
+  { L_OVERRIDDEN,     C_SY1( false, L_OVERRIDE    ) },
+  { L_POINTER,        TOKEN( Y_POINTER            ) },
+  { L_PREDEF,         TOKEN( Y_PREDEFINED         ) },
+  { L_PREDEFINED,     TOKEN( Y_PREDEFINED         ) },
+  { L_PTR,            TOKEN( Y_POINTER            ) },
+  { L_PURE,           TOKEN( Y_PURE               ) },
+  { L_Q,              TOKEN( Y_QUIT               ) },
+  { L_QUIT,           TOKEN( Y_QUIT               ) },
+  { L_REF,            TOKEN( Y_REFERENCE          ) },
+  { L_REFERENCE,      TOKEN( Y_REFERENCE          ) },
+  { L_REINTERPRET,    TOKEN( Y_REINTERPRET        ) },
+  { L_RESTRICTED,     C_SYN( false,
+                        { { LANG_C_MAX(95) | LANG_CPP_ALL, L_GNU___RESTRICT },
+                          { LANG_ALL, L_RESTRICT } } ) },
+  { L_RET,            TOKEN( Y_RETURNING          ) },
+  { L_RETURNING,      TOKEN( Y_RETURNING          ) },
+  { L_RVALUE,         TOKEN( Y_RVALUE             ) },
+  { L_SCOPE,          TOKEN( Y_SCOPE              ) },
+  { L_SET_COMMAND,    TOKEN( Y_SET                ) },
+  { L_SHOW,           TOKEN( Y_SHOW               ) },
+  { L_STRUCTURE,      C_SY1( false, L_STRUCT      ) },
+  { L__THREAD_LOCAL,  C_SYN( true,
+                        { { LANG_C_CPP_MAX(99, 03), L_GNU___THREAD },
+                          { LANG_ALL,               L_THREAD_LOCAL } } ) },
+  { L_TO,             TOKEN( Y_TO                 ) },
+  { L_TYPE,           C_SY1( false, L_TYPEDEF     ) },
+  { L_USER,           TOKEN( Y_USER               ) },
+  { L_VAR,            TOKEN( Y_VARIABLE           ) },
+  { L_VARARGS,        C_SY1( false, L_ELLIPSIS    ) },
+  { L_VARIABLE,       TOKEN( Y_VARIABLE           ) },
+  { L_VARIADIC,       C_SY1( false, L_ELLIPSIS    ) },
+  { L_VECTOR,         TOKEN( Y_ARRAY              ) },
+  { L_VOLATILE,       C_SYN( false,
+                        { { LANG_C_KNR, L_GNU___VOLATILE },
+                          { LANG_ALL,   L_VOLATILE       } } ) },
+  { NULL,             TOKEN( 0                    ) }
 };
 
 /**
@@ -247,7 +284,14 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
  */
 struct c_hyphen {
   char const *e_literal;                ///< Hyphenated English literal.
-  char const *c_keyword;                ///< C/C++ keyword it maps to.
+
+  /**
+   * Array of language(s)/literal pair(s).  The array is terminated by an
+   * element that has #LANG_ALL for lang_ids; hence subset(s) of language(s)
+   * cases come first and, failing to match opt_lang against any of those,
+   * matches the last (default) element.
+   */
+  c_lang_lit_t const *lang_lit;
 };
 typedef struct c_hyphen c_hyphen_t;
 
@@ -257,15 +301,34 @@ typedef struct c_hyphen c_hyphen_t;
  * (since `-` is not valid in an identifier).
  */
 static c_hyphen_t const C_HYPHEN_KEYWORDS[] = {
-  { L_CARRIES_DEPENDENCY_H, L_CARRIES_DEPENDENCY  },
-  { L_MAYBE_UNUSED_H,       L_MAYBE_UNUSED        },
-  { L_NO_EXCEPTION,         L_NOEXCEPT            },
-  { L_NON_DISCARDABLE,      L_NODISCARD           },
-  { L_NON_RETURNING,        L__NORETURN           },
-  { L_NON_THROWING,         L_THROW               },
-  { L_NON_UNIQUE_ADDRESS,   L_NO_UNIQUE_ADDRESS   },
-  { L_THREAD_LOCAL_H,       L_THREAD_LOCAL        },
-  { NULL,                   NULL                  }
+  { L_CARRIES_DEPENDENCY_H,
+    (c_lang_lit_t[]){ { LANG_ALL, L_CARRIES_DEPENDENCY } } },
+
+  { L_MAYBE_UNUSED_H,
+    (c_lang_lit_t[]){ { LANG_ALL, L_MAYBE_UNUSED } } },
+
+  { L_NO_EXCEPTION,
+    (c_lang_lit_t[]){ { LANG_ALL, L_NOEXCEPT } } },
+
+  { L_NON_DISCARDABLE,
+    (c_lang_lit_t[]){ { LANG_ALL, L_NODISCARD } } },
+
+  { L_NON_RETURNING,
+    (c_lang_lit_t[]){ { LANG_CPP_ALL, L_NORETURN  },
+                      { LANG_ALL,     L__NORETURN } } },
+
+  { L_NON_THROWING,
+    (c_lang_lit_t[]){ { LANG_ALL, L_THROW } } },
+
+  { L_NON_UNIQUE_ADDRESS,
+    (c_lang_lit_t[]){ { LANG_ALL, L_NO_UNIQUE_ADDRESS } } },
+
+  { L_THREAD_LOCAL_H,
+    (c_lang_lit_t[]){ { LANG_C_CPP_MAX(99, 03), L_GNU___THREAD },
+                      { LANG_ALL,               L_THREAD_LOCAL } } },
+
+  { NULL,
+    (c_lang_lit_t[]){ { LANG_ALL, NULL } } }
 };
 
 /**
@@ -307,9 +370,9 @@ static bool       is_eof;               ///< Encountered EOF?
 
 // local functions
 C_NORETURN
-static void       lexer_fatal( char const* );
+static void         lexer_fatal( char const* );
 
-static void       lexer_update_loc( void );
+static void         lexer_update_loc( void );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -324,19 +387,8 @@ C_WARN_UNUSED_RESULT
 static char const* c_hyphen_find( char const *s ) {
   assert( s != NULL );
   for ( c_hyphen_t const *h = C_HYPHEN_KEYWORDS; h->e_literal; ++h ) {
-    if ( strcmp( s, h->e_literal ) == 0 ) {
-      if ( h->c_keyword == L__NORETURN && C_LANG_IS_CPP() ) {
-        //
-        // _Noreturn is a special case. In C11, it's "_Noreturn"; in C++11,
-        // it's "noreturn".
-        //
-        // Depending on the current language, we map "non-returning" either to
-        // "_Noreturn" or "noreturn".
-        //
-        return L_NORETURN;
-      }
-      return h->c_keyword;
-    }
+    if ( strcmp( s, h->e_literal ) == 0 )
+      return c_lang_literal( h->lang_lit );
   } // for
   return NULL;
 }
@@ -366,11 +418,11 @@ static int cdecl_hyphen_find( char const *s ) {
 C_WARN_UNUSED_RESULT
 static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   assert( s != NULL );
-  for ( cdecl_keyword_t const *k = CDECL_KEYWORDS; k->literal; ++k ) {
+  for ( cdecl_keyword_t const *k = CDECL_KEYWORDS; k->literal != NULL; ++k ) {
     if ( strcmp( s, k->literal ) != 0 )
       continue;
     if ( c_mode == C_ENGLISH_TO_GIBBERISH ||
-         (k->c_keyword_synonym && k->allow_explain) )
+         (k->lang_syn != NULL && k->allow_explain) )
       return k;
     break;
   } // for
@@ -687,8 +739,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                 //
                 cdecl_keyword_t const *cdk = cdecl_keyword_find( lexer_token );
                 if ( cdk != NULL ) {
-
-                  if ( cdk->c_keyword_synonym == NULL ) {
+                  if ( cdk->lang_syn == NULL ) {
                     if ( cdk->literal == L_SET_COMMAND ) {
                       //
                       // For the "set" command, we want to allow (almost) any
@@ -699,56 +750,9 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
                     }
                     return cdk->y_token;
                   }
-
-                  if ( cdk->c_keyword_synonym == L_AUTO && C_LANG_IS_C() ) {
-                    //
-                    // When converting "automatic" in English to C, convert it
-                    // to GNU's "__auto_type".
-                    //
-                    lexer_token = L_GNU___AUTO_TYPE;
-                  }
-                  else if ( cdk->c_keyword_synonym == L__NORETURN &&
-                            C_LANG_IS_CPP() ) {
-                    //
-                    // _Noreturn is a special case. In C11, it's "_Noreturn"
-                    // and is a reserved word; in C++11, it's "noreturn", but
-                    // is NOT a reserved word.
-                    //
-                    // When parsing C11, we also want to allow "noreturn" as a
-                    // synonym (since that's provided via <stdnoreturn.h>).
-                    //
-                    // When parsing C++11, we want to recognize "noreturn" only
-                    // when it's an attribute as [[noreturn]].
-                    //
-                    // When parsing English:
-                    //
-                    //  + We want to allow "_Noreturn" when we're translating
-                    //    to C only and not C++.
-                    //
-                    //  + We want to allow either "noreturn" or "non-returning"
-                    //    in all cases.
-                    //
-                    // However, when either parsing or translating to C++, we
-                    // do NOT want to allow "noreturn" to be a synonym for
-                    // "_Noreturn" since that's illegal in C++.  Hence, we do
-                    // nothing.
-                    //
-                  }
-                  else if ( cdk->c_keyword_synonym == L_RESTRICT &&
-                            C_LANG_IS_CPP() ) {
-                    //
-                    // When converting "restricted" in English to C++, convert
-                    // it to GNU's "__restrict__".
-                    //
-                    lexer_token = L_GNU___RESTRICT__;
-                  }
-
-                  else {
-                    lexer_token = cdk->c_keyword_synonym;
-                  }
+                  lexer_token = c_lang_literal( cdk->lang_syn );
                 }
-
-                if ( lexer_find_typedef ) {
+                else if ( lexer_find_typedef ) {
                   //
                   // 2. See if it's a typedef'd type.
                   //

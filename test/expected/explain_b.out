@@ -1,1 +1,1 @@
-declare x as bool
+declare x as _Bool

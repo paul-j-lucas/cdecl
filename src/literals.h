@@ -127,8 +127,8 @@ extern char const L_VOID[];
 extern char const L_VOLATILE[];
 
 // C99
-extern char const L_BOOL[];
-extern char const L__BOOL[];                // synonym for "bool"
+extern char const L__BOOL[];
+extern char const L_BOOL[];                 // synonym for "_Bool"
 extern char const L__COMPLEX[];
 extern char const L_COMPLEX[];              // synonym for "_Complex"
 extern char const L__IMAGINARY[];
@@ -248,9 +248,18 @@ extern char const L_XOR_EQ[];               // ^=
 
 // GNU extensions
 extern char const L_GNU___AUTO_TYPE[];
+extern char const L_GNU___COMPLEX[];
+extern char const L_GNU___COMPLEX__[];
+extern char const L_GNU___CONST[];
+extern char const L_GNU___INLINE[];
 extern char const L_GNU___INLINE__[];
+extern char const L_GNU___RESTRICT[];
 extern char const L_GNU___RESTRICT__[];
+extern char const L_GNU___SIGNED[];
+extern char const L_GNU___SIGNED__[];
 extern char const L_GNU___THREAD[];
+extern char const L_GNU___VOLATILE[];
+extern char const L_GNU___VOLATILE__[];
 
 // Apple extensions
 extern char const L_APPLE___BLOCK[];        // storage class
