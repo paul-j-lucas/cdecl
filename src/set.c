@@ -26,7 +26,6 @@
 // local
 #include "cdecl.h"                      /* must go first */
 #include "c_lang.h"
-#include "color.h"
 #include "options.h"
 #include "print.h"
 #include "prompt.h"
@@ -36,9 +35,7 @@
 
 // standard
 #include <assert.h>
-#include <stdint.h>                     /* for uint8_t */
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 /// @endcond
