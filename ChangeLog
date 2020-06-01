@@ -1,3 +1,18 @@
+2020-06-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, literals.h: Added comments.
+   * autocomplete.c: Now using c_lang_lit_t rather than ac_keyword_t.
+   * autocomplete.c: Moved declaration of rl_completion_func_t.
+
+2020-05-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * set.c: Removed uncessary #includes.
+
+2020-05-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * Doxyfile: Disabled LaTeX generation.
+   * lexer.l: Fixed Doxygen.
+
 2020-05-26  Paul J. Lucas <paul@lucasmail.org>
 
    * lib/Makefile.am, unistd.in.h, getdelim.m4, unistd_h.m4: Updated GnuLib.
