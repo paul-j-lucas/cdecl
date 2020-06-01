@@ -49,8 +49,8 @@
 // is actually just a veneer on Editline), define rl_completion_func_t.
 //
 typedef CPPFunction rl_completion_func_t;
-
 #endif /* HAVE_RL_COMPLETION_FUNC_T */
+
 #if !HAVE_DECL_RL_COMPLETION_MATCHES
 # define rl_completion_matches    completion_matches
 #endif /* !HAVE_DECL_RL_COMPLETION_MATCHES */
