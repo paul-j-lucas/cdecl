@@ -60,132 +60,123 @@ typedef CPPFunction rl_completion_func_t;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * C/C++ autocompletion keyword.
- */
-struct ac_keyword {
-  char const   *keyword;                ///< The keyword literal.
-  c_lang_id_t   lang_ids;               ///< Language(s) OK in.
-};
-typedef struct ac_keyword ac_keyword_t;
-
-/**
  * Subset of cdecl keywords that are commands.
  */
-static ac_keyword_t const CDECL_COMMANDS[] = {
+static c_lang_lit_t const CDECL_COMMANDS[] = {
   //
   // If this array is modified, also check ARGV_COMMANDS[] in is_command().
   //
-  { L_CAST,         LANG_ALL          },
-  { L_CONST,        LANG_CPP_ALL      },// const cast ...
-  { L_DECLARE,      LANG_ALL          },
-  { L_DEFINE,       LANG_ALL          },
-  { L_DYNAMIC,      LANG_CPP_ALL      },// dynamic cast ...
-  { L_EXIT,         LANG_ALL          },
-  { L_EXPLAIN,      LANG_ALL          },
-  { L_HELP,         LANG_ALL          },
-  { L_NAMESPACE,    LANG_CPP_ALL      },
-  { L_QUIT,         LANG_ALL          },
-  { L_REINTERPRET,  LANG_CPP_ALL      },// reinterpret cast ...
-  { L_SET_COMMAND,  LANG_ALL          },
-  { L_SHOW,         LANG_ALL          },
-  { L_STATIC,       LANG_CPP_ALL      },// static cast ...
-  { L_TYPEDEF,      LANG_ALL          },
-  { L_USING,        LANG_CPP_MIN(11)  },
-  { NULL,           LANG_NONE         },
+  { LANG_ALL,         L_CAST        },
+  { LANG_CPP_ALL,     L_CONST       },  // const cast ...
+  { LANG_ALL,         L_DECLARE     },
+  { LANG_ALL,         L_DEFINE      },
+  { LANG_CPP_ALL,     L_DYNAMIC     },  // dynamic cast ...
+  { LANG_ALL,         L_EXIT        },
+  { LANG_ALL,         L_EXPLAIN     },
+  { LANG_ALL,         L_HELP        },
+  { LANG_CPP_ALL,     L_NAMESPACE   },
+  { LANG_ALL,         L_QUIT        },
+  { LANG_CPP_ALL,     L_REINTERPRET },  // reinterpret cast ...
+  { LANG_ALL,         L_SET_COMMAND },
+  { LANG_ALL,         L_SHOW        },
+  { LANG_CPP_ALL,     L_STATIC      },  // static cast ...
+  { LANG_ALL,         L_TYPEDEF     },
+  { LANG_CPP_MIN(11), L_USING       },
+  { LANG_NONE,        NULL          }
 };
 
 /**
  * Subset of cdecl keywords that are completable.
  */
-static ac_keyword_t const CDECL_KEYWORDS[] = {
-  { L_ARRAY,              LANG_ALL                },
-//  L_AS,                               // too short
-  { L_ATOMIC,             LANG_MIN(C_11)          },
-  { L_AUTO,               LANG_ALL                },
-  { L_APPLE_BLOCK,        LANG_ALL                },
-  { L_APPLE___BLOCK,      LANG_ALL                },
-  { L_BOOL,               LANG_MIN(C_99)          },
-  { L_CARRIES_DEPENDENCY, LANG_CPP_MIN(11)        },
-  { L_CAST,               LANG_ALL                },
-  { L_CHAR,               LANG_ALL                },
-  { L_CHAR8_T,            LANG_CPP_MIN(20)        },
-  { L_CHAR16_T,           LANG_CPP_MIN(11)        },
-  { L_CHAR32_T,           LANG_CPP_MIN(11)        },
-  { L_CLASS,              LANG_CPP_ALL            },
-  { L_COMMANDS,           LANG_ALL                },
-  { L_COMPLEX,            LANG_MIN(C_99)          },
-  { L_CONST,              LANG_MIN(C_89)          },
-  { L_CONST_CAST,         LANG_CPP_ALL            },
-  { L_CONSTEVAL,          LANG_CPP_MIN(20)        },
-  { L_CONSTEXPR,          LANG_CPP_MIN(11)        },
-  { L_CONSTRUCTOR,        LANG_CPP_ALL            },
-  { L_CONVERSION,         LANG_CPP_ALL            },
-  { L_DEFAULT,            LANG_CPP_MIN(11)        },
-  { L_DELETE,             LANG_CPP_MIN(11)        },
-  { L_DEPRECATED,         LANG_CPP_MIN(14)        },
-  { L_DESTRUCTOR,         LANG_CPP_ALL            },
-  { L_DOUBLE,             LANG_ALL                },
-//  L_DYNAMIC,                          // handled in CDECL_COMMANDS
-  { L_DYNAMIC_CAST,       LANG_CPP_MIN(11)        },
-  { L_ENGLISH,            LANG_ALL                },
-  { L_ENUM,               LANG_MIN(C_89)          },
-  { L_EXPLICIT,           LANG_CPP_ALL            },
-  { L_EXTERN,             LANG_ALL                },
-  { L_FALSE,              LANG_CPP_ALL            },
-  { L_FINAL,              LANG_CPP_MIN(11)        },
-  { L_FLOAT,              LANG_ALL                },
-  { L_FRIEND,             LANG_CPP_ALL            },
-  { L_FUNCTION,           LANG_ALL                },
-  { L_IMAGINARY,          LANG_MIN(C_99)          },
-  { L_INLINE,             LANG_MIN(C_99)          },
-  { L_INT,                LANG_ALL                },
-//{ L_INTO,                             // special case (see below)
-  { L_LENGTH,             LANG_C_MIN(99)          },
-  { L_LITERAL,            LANG_CPP_MIN(11)        },
-  { L_LONG,               LANG_ALL                },
-  { L_MAYBE_UNUSED,       LANG_CPP_MIN(11)        },
-  { L_MEMBER,             LANG_CPP_ALL            },
-  { L_MUTABLE,            LANG_CPP_ALL            },
-//{ L_NAMESPACE,                        // handled in CDECL_COMMANDS
-  { L_NODISCARD,          LANG_CPP_MIN(17)        },
-  { L_NOEXCEPT,           LANG_CPP_MIN(11)        },
-  { L_NON_MEMBER,         LANG_CPP_ALL            },
-  { L_NORETURN,           LANG_MIN(C_11)          },
-  { L_NO_UNIQUE_ADDRESS,  LANG_CPP_MIN(20)        },
-//{ L_OF,                               // too short
-  { L_OPERATOR,           LANG_CPP_ALL            },
-  { L_OVERRIDE,           LANG_CPP_MIN(11)        },
-  { L_POINTER,            LANG_ALL                },
-  { L_PREDEFINED,         LANG_ALL                },
-  { L_PURE,               LANG_CPP_ALL            },
-  { L_REFERENCE,          LANG_CPP_ALL            },
-  { L_REGISTER,           LANG_MAX(CPP_14)        },
-//  L_REINTERPRET,                      // handled in CDECL_COMMANDS
-  { L_REINTERPRET_CAST,   LANG_CPP_ALL            },
-  { L_RESTRICT,           LANG_C_MIN(99)          },
-  { L_RETURNING,          LANG_ALL                },
-  { L_RVALUE,             LANG_CPP_MIN(11)        },
-  { L_SCOPE,              LANG_CPP_ALL            },
-  { L_SHORT,              LANG_ALL                },
-  { L_SIGNED,             LANG_MIN(C_89)          },
-  { L_STATIC,             LANG_ALL                },
-  { L_STATIC_CAST,        LANG_CPP_ALL            },
-  { L_STRUCT,             LANG_ALL                },
-//  L_TO,                               // too short
-  { L_THREAD_LOCAL,       LANG_C_CPP_MIN(11, 11)  },
-  { L_THROW,              LANG_CPP_MAX(17)        },
-  { L_TRUE,               LANG_CPP_ALL            },
-//{ L_TYPEDEF,                          // handled in CDECL_COMMANDS
-  { L_UNION,              LANG_ALL                },
-  { L_UNSIGNED,           LANG_ALL                },
-  { L_USER_DEFINED,       LANG_CPP_ALL            },
-//{ L_USING,                            // handled in CDECL_COMMANDS
-  { L_VARIABLE,           LANG_C_MIN(99)          },
-  { L_VIRTUAL,            LANG_CPP_ALL            },
-  { L_VOID,               LANG_MIN(C_89)          },
-  { L_VOLATILE,           LANG_MIN(C_89)          },
-  { L_WCHAR_T,            LANG_MIN(C_95)          },
-  { NULL,                 LANG_NONE               }
+static c_lang_lit_t const CDECL_KEYWORDS[] = {
+  { LANG_ALL,               L_ARRAY               },
+  //                        L_AS          // too short
+  { LANG_MIN(C_11),         L_ATOMIC              },
+  { LANG_ALL,               L_AUTO                },
+  { LANG_ALL,               L_APPLE_BLOCK         },
+  { LANG_ALL,               L_APPLE___BLOCK       },
+  { LANG_MIN(C_99),         L_BOOL                },
+  { LANG_CPP_MIN(11),       L_CARRIES_DEPENDENCY  },
+  { LANG_ALL,               L_CAST                },
+  { LANG_ALL,               L_CHAR                },
+  { LANG_CPP_MIN(20),       L_CHAR8_T             },
+  { LANG_CPP_MIN(11),       L_CHAR16_T            },
+  { LANG_CPP_MIN(11),       L_CHAR32_T            },
+  { LANG_CPP_ALL,           L_CLASS               },
+  { LANG_ALL,               L_COMMANDS            },
+  { LANG_MIN(C_99),         L_COMPLEX             },
+  { LANG_MIN(C_89),         L_CONST               },
+  { LANG_CPP_ALL,           L_CONST_CAST          },
+  { LANG_CPP_MIN(20),       L_CONSTEVAL           },
+  { LANG_CPP_MIN(11),       L_CONSTEXPR           },
+  { LANG_CPP_ALL,           L_CONSTRUCTOR         },
+  { LANG_CPP_ALL,           L_CONVERSION          },
+  { LANG_CPP_MIN(11),       L_DEFAULT             },
+  { LANG_CPP_MIN(11),       L_DELETE              },
+  { LANG_CPP_MIN(14),       L_DEPRECATED          },
+  { LANG_CPP_ALL,           L_DESTRUCTOR          },
+  { LANG_ALL,               L_DOUBLE              },
+  //                        L_DYNAMIC     // handled in CDECL_COMMANDS
+  { LANG_CPP_MIN(11),       L_DYNAMIC_CAST      },
+  { LANG_ALL,               L_ENGLISH           },
+  { LANG_MIN(C_89),         L_ENUM              },
+  { LANG_CPP_ALL,           L_EXPLICIT          },
+  { LANG_ALL,               L_EXTERN            },
+  { LANG_CPP_ALL,           L_FALSE             },
+  { LANG_CPP_MIN(11),       L_FINAL             },
+  { LANG_ALL,               L_FLOAT             },
+  { LANG_CPP_ALL,           L_FRIEND            },
+  { LANG_ALL,               L_FUNCTION          },
+  { LANG_MIN(C_99),         L_IMAGINARY         },
+  { LANG_MIN(C_99),         L_INLINE            },
+  { LANG_ALL,               L_INT               },
+  //                        L_INTO        // special case (see below)
+  { LANG_C_MIN(99),         L_LENGTH            },
+  { LANG_CPP_MIN(11),       L_LITERAL           },
+  { LANG_ALL,               L_LONG              },
+  { LANG_CPP_MIN(11),       L_MAYBE_UNUSED      },
+  { LANG_CPP_ALL,           L_MEMBER            },
+  { LANG_CPP_ALL,           L_MUTABLE           },
+  //                        L_NAMESPACE   // handled in CDECL_COMMANDS
+  { LANG_CPP_MIN(17),       L_NODISCARD         },
+  { LANG_CPP_MIN(11),       L_NOEXCEPT          },
+  { LANG_CPP_ALL,           L_NON_MEMBER        },
+  { LANG_MIN(C_11),         L_NORETURN          },
+  { LANG_CPP_MIN(20),       L_NO_UNIQUE_ADDRESS },
+  //                        L_OF          // too short
+  { LANG_CPP_ALL,           L_OPERATOR          },
+  { LANG_CPP_MIN(11),       L_OVERRIDE          },
+  { LANG_ALL,               L_POINTER           },
+  { LANG_ALL,               L_PREDEFINED        },
+  { LANG_CPP_ALL,           L_PURE              },
+  { LANG_CPP_ALL,           L_REFERENCE         },
+  { LANG_MAX(CPP_14),       L_REGISTER          },
+  //                        L_REINTERPRET // handled in CDECL_COMMANDS
+  { LANG_CPP_ALL,           L_REINTERPRET_CAST  },
+  { LANG_C_MIN(99),         L_RESTRICT          },
+  { LANG_ALL,               L_RETURNING         },
+  { LANG_CPP_MIN(11),       L_RVALUE            },
+  { LANG_CPP_ALL,           L_SCOPE             },
+  { LANG_ALL,               L_SHORT             },
+  { LANG_MIN(C_89),         L_SIGNED            },
+  { LANG_ALL,               L_STATIC            },
+  { LANG_CPP_ALL,           L_STATIC_CAST       },
+  { LANG_ALL,               L_STRUCT            },
+  //                        L_TO          // too short
+  { LANG_C_CPP_MIN(11,11),  L_THREAD_LOCAL      },
+  { LANG_CPP_MAX(17),       L_THROW             },
+  { LANG_CPP_ALL,           L_TRUE              },
+  //                        L_TYPEDEF     // handled in CDECL_COMMANDS
+  { LANG_ALL,               L_UNION             },
+  { LANG_ALL,               L_UNSIGNED          },
+  { LANG_CPP_ALL,           L_USER_DEFINED      },
+  //                        L_USING       // handled in CDECL_COMMANDS
+  { LANG_C_MIN(99),         L_VARIABLE          },
+  { LANG_CPP_ALL,           L_VIRTUAL           },
+  { LANG_MIN(C_89),         L_VOID              },
+  { LANG_MIN(C_89),         L_VOLATILE          },
+  { LANG_MIN(C_95),         L_WCHAR_T           },
+  { LANG_NONE,              NULL                }
 };
 
 /**
@@ -240,29 +231,10 @@ static char const *const SET_OPTIONS[] = {
 C_WARN_UNUSED_RESULT
 static char*  command_generator( char const*, int );
 
-////////// local functions ////////////////////////////////////////////////////
-
-/**
- * Attempts to find the `ac_keyword` (partially) matching the given text.
- *
- * @param keywords The array of keywords to search through.
- * @param text The text to search for.
- * @param text_len The length of text to (partially) match.
- * @param index A pointer to the current index into \a keywords to update.
- * @return Returns a copy of the keyword or null if not found.
- */
 C_WARN_UNUSED_RESULT
-static char* ac_keyword_find( ac_keyword_t const keywords[], char const *text,
-                              size_t text_len, size_t *index ) {
-  for ( ac_keyword_t const *k; (k = keywords + *index)->keyword != NULL; ) {
-    ++*index;
-    if ( (k->lang_ids & opt_lang) == LANG_NONE )
-      continue;
-    if ( strncmp( text, k->keyword, text_len ) == 0 )
-      return check_strdup( k->keyword );
-  } // for
-  return NULL;
-}
+static char* find_keyword( c_lang_lit_t const[], char const*, size_t, size_t* );
+
+////////// local functions ////////////////////////////////////////////////////
 
 /**
  * Attempts command completion for `readline()`.
@@ -301,7 +273,30 @@ static char* command_generator( char const *text, int state ) {
     text_len = strlen( text );
   }
 
-  return ac_keyword_find( CDECL_COMMANDS, text, text_len, &index );
+  return find_keyword( CDECL_COMMANDS, text, text_len, &index );
+}
+
+/**
+ * Attempts to find the keyword (partially) matching \a text.
+ *
+ * @param keywords The c_lang_lit_t array to search through.  The last element
+ * _must_ have a `literal` of NULL.
+ * @param text The text to search for.
+ * @param text_len The length of text to (partially) match.
+ * @param index A pointer to the current index into \a keywords to update.
+ * @return Returns a copy of the keyword or null if not found.
+ */
+C_WARN_UNUSED_RESULT
+static char* find_keyword( c_lang_lit_t const keywords[], char const *text,
+                           size_t text_len, size_t *index ) {
+  for ( c_lang_lit_t const *ll; (ll = keywords + *index)->literal != NULL; ) {
+    ++*index;
+    if ( (ll->lang_ids & opt_lang) == LANG_NONE )
+      continue;
+    if ( strncmp( text, ll->literal, text_len ) == 0 )
+      return check_strdup( ll->literal );
+  } // for
+  return NULL;
 }
 
 /**
@@ -354,10 +349,11 @@ static char* keyword_completion( char const *text, int state ) {
     // If it's not the "cast" command, see if it's any other command.
     //
     if ( command == NULL ) {
-      for ( ac_keyword_t const *k = CDECL_COMMANDS; k->keyword != NULL; ++k ) {
-        if ( (k->lang_ids & opt_lang) != LANG_NONE &&
-             is_command( k->keyword ) ) {
-          command = k->keyword;
+      for ( c_lang_lit_t const *ll = CDECL_COMMANDS; ll->literal != NULL;
+            ++ll ) {
+        if ( (ll->lang_ids & opt_lang) != LANG_NONE &&
+             is_command( ll->literal ) ) {
+          command = ll->literal;
           break;
         }
       } // for
@@ -398,7 +394,7 @@ static char* keyword_completion( char const *text, int state ) {
   //
   // Otherwise, just attempt to match any keyword.
   //
-  return ac_keyword_find( CDECL_KEYWORDS, text, text_len, &index );
+  return find_keyword( CDECL_KEYWORDS, text, text_len, &index );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
