@@ -39,6 +39,18 @@
 #include <string.h>
 #include <readline/readline.h>          /* must go last */
 
+#if !HAVE_RL_COMPLETION_FUNC_T
+//
+// CPPFunction was the original typedef in Readline prior to 4.2.  In 4.2, it
+// was deprecated and replaced by rl_completion_func_t; in 6.3-5, CPPFunction
+// was removed.
+//
+// To support Readlines older than 4.2 (such as that on macOS Mojave -- which
+// is actually just a veneer on Editline), define rl_completion_func_t.
+//
+typedef CPPFunction rl_completion_func_t;
+
+#endif /* HAVE_RL_COMPLETION_FUNC_T */
 #if !HAVE_DECL_RL_COMPLETION_MATCHES
 # define rl_completion_matches    completion_matches
 #endif /* !HAVE_DECL_RL_COMPLETION_MATCHES */
@@ -390,18 +402,6 @@ static char* keyword_completion( char const *text, int state ) {
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
-
-#if !HAVE_RL_COMPLETION_FUNC_T
-//
-// CPPFunction was the original typedef in Readline prior to 4.2.  In 4.2, it
-// was deprecated and replaced by rl_completion_func_t; in 6.3-5, CPPFunction
-// was removed.
-//
-// To support Readlines older than 4.2 (such as that on macOS Mojave -- which
-// is actually just a veneer on Editline), define rl_completion_func_t.
-//
-typedef CPPFunction rl_completion_func_t;
-#endif /* HAVE_RL_COMPLETION_FUNC_T */
 
 /**
  * Initializes readline.
