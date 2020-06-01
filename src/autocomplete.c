@@ -86,7 +86,7 @@ static c_lang_lit_t const CDECL_COMMANDS[] = {
 };
 
 /**
- * Subset of cdecl keywords that are completable.
+ * Subset of cdecl and C/C++ keywords that are completable.
  */
 static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_ALL,               L_ARRAY               },

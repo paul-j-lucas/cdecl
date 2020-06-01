@@ -37,6 +37,14 @@
 // A literal that ends in "_H" is English for the literal without the "_H" and
 // are spelled the same except that '-' replaces '_' ("_H" for "hyphen").
 
+// If you add a new literal and it is:
+//
+//  + A cdecl command, update CDECL_COMMANDS in autocomplete.c (if you want it
+//    auto-completable).
+//
+//  + A cdecl or C/C++ keyword, update CDECL_KEYWORDS is autocomplete.c (if you
+//    want it auto-completable).
+
 // english
 extern char const L_ALIGNED[];
 extern char const L_ALL[];
