@@ -135,7 +135,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   // C11
   { L__ALIGNAS,         Y__ALIGNAS,         T_NONE,         LANG_MIN(C_11)    },
   { L__ALIGNOF,         Y__ALIGNOF,         T_NONE,         LANG_MIN(C_11)    },
-  { L__ATOMIC,          Y_ATOMIC_QUAL,      T_ATOMIC,       LANG_MIN(C_11)    },
+  { L__ATOMIC,          Y__ATOMIC_QUAL,     T_ATOMIC,       LANG_MIN(C_11)    },
   { L__GENERIC,         Y__GENERIC,         T_NONE,         LANG_MIN(C_11)    },
   { L__NORETURN,        Y__NORETURN,        T_NORETURN,     LANG_MIN(C_11)    },
   { L__STATIC_ASSERT,   Y__STATIC_ASSERT,   T_NONE,         LANG_MIN(C_11)    },

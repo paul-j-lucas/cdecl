@@ -650,7 +650,7 @@ hex_int       0[xX]{H}+{int_suffix}?
                * by a '(', it is interpreted as a type specifier, not as a type
                * qualifier.
                */
-_Atomic/{S}*\(  { SET_TOKEN; return Y_ATOMIC_SPEC; }
+_Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
 
               /*
                * Special case: similar to {sname} below, handle scoped

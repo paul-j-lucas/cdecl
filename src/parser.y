@@ -977,8 +977,8 @@ static void yyerror( char const *msg ) {
                     /* C11 */
 %token              Y__ALIGNAS
 %token              Y__ALIGNOF
-%token  <type_id>   Y_ATOMIC_QUAL       /* qualifier: _Atomic type */
-%token  <type_id>   Y_ATOMIC_SPEC       /* specifier: _Atomic (type) */
+%token  <type_id>   Y__ATOMIC_QUAL      /* qualifier: _Atomic type */
+%token  <type_id>   Y__ATOMIC_SPEC      /* specifier: _Atomic (type) */
 %token              Y__GENERIC
 %token  <type_id>   Y__NORETURN
 %token              Y__STATIC_ASSERT
@@ -3821,7 +3821,7 @@ unmodified_type_c_ast
   ;
 
 atomic_specifier_type_c_ast
-  : Y_ATOMIC_SPEC '(' type_c_ast { type_push( $3.ast ); } cast_c_ast_opt ')'
+  : Y__ATOMIC_SPEC '(' type_c_ast { type_push( $3.ast ); } cast_c_ast_opt ')'
     {
       type_pop();
 
@@ -3936,7 +3936,7 @@ type_qualifier_list_c_type
 
 type_qualifier_c_type
   : cv_qualifier_type
-  | Y_ATOMIC_QUAL
+  | Y__ATOMIC_QUAL
   | Y_RESTRICT                          /* C only */
     {
       //
