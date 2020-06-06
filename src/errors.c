@@ -194,7 +194,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
   assert( ast->kind_id == K_ARRAY );
 
   if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE ) {
-    if ( (opt_lang & (LANG_MIN(C_99) & ~LANG_CPP_ALL)) == LANG_NONE ) {
+    if ( (opt_lang & LANG_C_MIN(99)) == LANG_NONE ) {
       print_error( &ast->loc,
         "variable length arrays not supported in %s",
         C_LANG_NAME()
@@ -210,7 +210,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
   }
 
   if ( ast->as.array.type_id != T_NONE ) {
-    if ( (opt_lang & (LANG_MIN(C_99) & ~LANG_CPP_ALL)) == LANG_NONE ) {
+    if ( (opt_lang & LANG_C_MIN(99)) == LANG_NONE ) {
       print_error( &ast->loc,
         "\"%s\" arrays not supported in %s",
         c_type_name_error( ast->as.array.type_id ),
