@@ -431,6 +431,8 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param n The number to check.
  * @return Returns `true` only if at most 1 bit is set.
+ *
+ * @sa exactly_one_bit_set()
  */
 C_WARN_UNUSED_RESULT C_UTIL_INLINE
 bool at_most_one_bit_set( uint64_t n ) {
@@ -491,6 +493,8 @@ bool ends_with_chr( char const *s, size_t s_len, char c ) {
  *
  * @param n The number to check.
  * @return Returns `true` only if exactly 1 bit is set.
+ *
+ * @sa at_most_one_bit_set()
  */
 C_WARN_UNUSED_RESULT C_UTIL_INLINE
 bool exactly_one_bit_set( uint64_t n ) {
