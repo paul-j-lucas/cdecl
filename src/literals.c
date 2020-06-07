@@ -116,7 +116,6 @@ char const L_VOLATILE[]             = "volatile";
 
 // C99
 char const L__BOOL[]                = "_Bool";
-char const L_BOOL[]                 = "bool";
 char const L__COMPLEX[]             = "_Complex";
 char const L_COMPLEX[]              = "complex";
 char const L__IMAGINARY[]           = "_Imaginary";
@@ -138,11 +137,12 @@ char const L_ATOMIC[]               = "atomic";
 char const L__GENERIC[]             = "_Generic";
 char const L__NORETURN[]            = "_Noreturn";
 char const L_NON_RETURNING[]        = "non-returning";
-char const L_NORETURN[]             = "noreturn";
 char const L__STATIC_ASSERT[]       = "_Static_assert";
-char const L_STATIC_ASSERT[]        = "static_assert";
+char const L__THREAD_LOCAL[]        = "_Thread_local";
+char const L_THREAD_LOCAL_H[]       = "thread-local";
 
 // C++
+char const L_BOOL[]                 = "bool";
 char const L_CATCH[]                = "catch";
 char const L_CLASS[]                = "class";
 char const L_CONSTRUCTOR[]          = "constructor";
@@ -190,19 +190,19 @@ char const L_DECLTYPE[]             = "decltype";
 char const L_FINAL[]                = "final";
 char const L_LITERAL[]              = "literal";
 char const L_NOEXCEPT[]             = "noexcept";
-char const L_NULLPTR[]              = "nullptr";
+char const L_NORETURN[]             = "noreturn";
 char const L_NO_EXCEPTION[]         = "no-exception";
+char const L_NULLPTR[]              = "nullptr";
 char const L_OVERRIDE[]             = "override";
 char const L_OVERRIDDEN[]           = "overridden";
+char const L_STATIC_ASSERT[]        = "static_assert";
+char const L_THREAD_LOCAL[]         = "thread_local";
 char const L_USER_DEF[]             = "user-def";
 char const L_USER_DEFINED[]         = "user-defined";
 
 // C11 & C++11
 char const L_CHAR16_T[]             = "char16_t";
 char const L_CHAR32_T[]             = "char32_t";
-char const L_THREAD_LOCAL[]         = "thread_local";
-char const L_THREAD_LOCAL_H[]       = "thread-local";
-char const L__THREAD_LOCAL[]        = "_Thread_local";
 
 // C++14
 char const L_DEPRECATED[]           = "deprecated";

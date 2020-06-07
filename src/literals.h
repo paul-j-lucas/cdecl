@@ -136,18 +136,17 @@ extern char const L_VOLATILE[];
 
 // C99
 extern char const L__BOOL[];
-extern char const L_BOOL[];                 // synonym for "_Bool"
 extern char const L__COMPLEX[];
 extern char const L_COMPLEX[];              // synonym for "_Complex"
 extern char const L__IMAGINARY[];
 extern char const L_IMAGINARY[];            // synonym for "_Imaginary"
 extern char const L_INLINE[];
 extern char const L_LEN[];                  // synonym for "length"
-extern char const L_LENGTH[];
+extern char const L_LENGTH[];               // for "variable [length] array"
 extern char const L_RESTRICT[];
 extern char const L_RESTRICTED[];           // synonym for "restrict"
 extern char const L_VAR[];                  // synonym for "variable"
-extern char const L_VARIABLE[];
+extern char const L_VARIABLE[];             // for "variable [length] array"
 extern char const L_WCHAR_T[];
 
 // C11
@@ -158,11 +157,12 @@ extern char const L_ATOMIC[];               // synonym for "_Atomic"
 extern char const L__GENERIC[];
 extern char const L__NORETURN[];
 extern char const L_NON_RETURNING[];        // English for "_Noreturn"
-extern char const L_NORETURN[];             // synonym for "_Noreturn"
 extern char const L__STATIC_ASSERT[];
-extern char const L_STATIC_ASSERT[];
+extern char const L__THREAD_LOCAL[];
+extern char const L_THREAD_LOCAL_H[];       // English for "_Thread_local"
 
 // C++
+extern char const L_BOOL[];
 extern char const L_CATCH[];
 extern char const L_CLASS[];
 extern char const L_CONSTRUCTOR[];
@@ -209,20 +209,20 @@ extern char const L_CONSTEXPR[];
 extern char const L_DECLTYPE[];
 extern char const L_FINAL[];
 extern char const L_NOEXCEPT[];
+extern char const L_NORETURN[];
 extern char const L_LITERAL[];
 extern char const L_NO_EXCEPTION[];         // English for "noexcept"
 extern char const L_NULLPTR[];
 extern char const L_OVERRIDE[];
 extern char const L_OVERRIDDEN[];           // English for "override"
+extern char const L_STATIC_ASSERT[];
+extern char const L_THREAD_LOCAL[];
 extern char const L_USER_DEF[];             // synonym for "user-defined"
 extern char const L_USER_DEFINED[];
 
 // C11 & C++11
 extern char const L_CHAR16_T[];
 extern char const L_CHAR32_T[];
-extern char const L_THREAD_LOCAL[];
-extern char const L_THREAD_LOCAL_H[];       // English for "thread_local"
-extern char const L__THREAD_LOCAL[];        // synonym for "thread_local"
 
 // C++14
 extern char const L_DEPRECATED[];

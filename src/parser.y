@@ -982,6 +982,7 @@ static void yyerror( char const *msg ) {
 %token              Y__GENERIC
 %token  <type_id>   Y__NORETURN
 %token              Y__STATIC_ASSERT
+%token  <type_id>   Y__THREAD_LOCAL
 
                     /* C++ */
 %token  <type_id>   Y_BOOL
@@ -1038,12 +1039,12 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_OVERRIDE
 %token              Y_QUOTE2            /* for user-defined literals */
 %token              Y_STATIC_ASSERT
+%token  <type_id>   Y_THREAD_LOCAL
 %token              Y_USER_DEFINED
 
                     /* C11 & C++11 */
 %token  <type_id>   Y_CHAR16_T
 %token  <type_id>   Y_CHAR32_T
-%token  <type_id>   Y_THREAD_LOCAL
 
                     /* C++14 */
 %token  <type_id>   Y_DEPRECATED
@@ -1532,6 +1533,7 @@ storage_class_english_type
   | Y_OVERRIDE
 /*| Y_REGISTER */                       /* in type_modifier_list_english_type */
   | Y_STATIC
+  | Y__THREAD_LOCAL
   | Y_THREAD_LOCAL
   | Y_THROW
   | Y_TYPEDEF
@@ -3990,16 +3992,17 @@ storage_class_c_type
   | Y_FRIEND
   | Y_INLINE
   | Y_MUTABLE
-  | Y_NORETURN
   | Y__NORETURN
     {
       if ( !_Noreturn_ok( &@1 ) )
         PARSE_ABORT();
     }
+  | Y_NORETURN
   | Y_OVERRIDE
 /*| Y_REGISTER */                       /* in type_modifier_base_type */
   | Y_STATIC
   | Y_TYPEDEF
+  | Y__THREAD_LOCAL
   | Y_THREAD_LOCAL
   | Y_VIRTUAL
   ;

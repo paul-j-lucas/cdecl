@@ -180,7 +180,7 @@ typedef struct cdecl_keyword cdecl_keyword_t;
 /**
  * All cdecl keywords that are (mostly) not C/C++ keywords.
  *
- * Exceptions are `bool`, `_Complex`, `const`, and `volatile` that we want to
+ * Exceptions are `bool`, `complex`, `const`, and `volatile` that we want to
  * treat as English so they map to the appropriate language-specific literal.
  */
 static cdecl_keyword_t const CDECL_KEYWORDS[] = {
@@ -237,8 +237,8 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_NON_MBR,        TOKEN( Y_NON_MEMBER         ) },
   { L_NON_MEMBER,     TOKEN( Y_NON_MEMBER         ) },
   { L_NORETURN,       C_SYN( true,
-                        { { LANG_CPP_ALL, L_NORETURN  },
-                          { LANG_ALL,     L__NORETURN } } ) },
+                        { { LANG_C_MIN(11), L__NORETURN },
+                          { LANG_ALL,       L_NORETURN  } } ) },
   { L_OF,             TOKEN( Y_OF                 ) },
   { L_OPER,           TOKEN( Y_OPERATOR           ) },
   { L_OVERRIDDEN,     C_SY1( false, L_OVERRIDE    ) },
@@ -262,9 +262,10 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_SET_COMMAND,    TOKEN( Y_SET                ) },
   { L_SHOW,           TOKEN( Y_SHOW               ) },
   { L_STRUCTURE,      C_SY1( false, L_STRUCT      ) },
-  { L__THREAD_LOCAL,  C_SYN( true,
-                        { { LANG_C_CPP_MAX(99, 03), L_GNU___THREAD },
-                          { LANG_ALL,               L_THREAD_LOCAL } } ) },
+  { L_THREAD_LOCAL,   C_SYN( true,
+                        { { LANG_C_CPP_MAX(99,03), L_GNU___THREAD  },
+                          { LANG_C_MIN(11),        L__THREAD_LOCAL },
+                          { LANG_ALL,              L_THREAD_LOCAL  } } ) },
   { L_TO,             TOKEN( Y_TO                 ) },
   { L_TYPE,           C_SY1( false, L_TYPEDEF     ) },
   { L_USER,           TOKEN( Y_USER               ) },

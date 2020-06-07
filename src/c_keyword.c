@@ -139,6 +139,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L__GENERIC,         Y__GENERIC,         T_NONE,         LANG_C_MIN(11)    },
   { L__NORETURN,        Y__NORETURN,        T_NORETURN,     LANG_C_MIN(11)    },
   { L__STATIC_ASSERT,   Y__STATIC_ASSERT,   T_NONE,         LANG_C_MIN(11)    },
+  { L__THREAD_LOCAL,    Y__THREAD_LOCAL,    T_THREAD_LOCAL, LANG_C_MIN(11)    },
 
   // C++
   { L_BOOL,             Y_BOOL,             T_BOOL,         LANG_CPP_ALL      },
@@ -181,12 +182,12 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_NULLPTR,          Y_NULLPTR,          T_NONE,         LANG_CPP_MIN(11)  },
   { L_OVERRIDE,         Y_OVERRIDE,         T_OVERRIDE,     LANG_CPP_MIN(11)  },
   { L_STATIC_ASSERT,    Y_STATIC_ASSERT,    T_NONE,         LANG_CPP_MIN(11)  },
+  { L_THREAD_LOCAL,     Y_THREAD_LOCAL,     T_THREAD_LOCAL, LANG_CPP_MIN(11)  },
 
   // C11 & C++11
   { L_ALIGNAS,          Y_ALIGNAS,          T_NONE,         LANG_C_CPP_11_MIN },
   { L_CHAR16_T,         Y_CHAR16_T,         T_CHAR16_T,     LANG_C_CPP_11_MIN },
   { L_CHAR32_T,         Y_CHAR32_T,         T_CHAR32_T,     LANG_C_CPP_11_MIN },
-  { L_THREAD_LOCAL,     Y_THREAD_LOCAL,     T_THREAD_LOCAL, LANG_C_CPP_11_MIN },
 
   // C++20
   { L_CHAR8_T,          Y_CHAR8_T,          T_CHAR8_T,      LANG_CPP_MIN(20)  },
