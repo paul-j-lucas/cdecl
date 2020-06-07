@@ -133,12 +133,12 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_WCHAR_T,          Y_WCHAR_T,          T_WCHAR_T,      LANG_MIN(C_95)    },
 
   // C11
-  { L__ALIGNAS,         Y__ALIGNAS,         T_NONE,         LANG_MIN(C_11)    },
-  { L__ALIGNOF,         Y__ALIGNOF,         T_NONE,         LANG_MIN(C_11)    },
+  { L__ALIGNAS,         Y__ALIGNAS,         T_NONE,         LANG_C_MIN(11)    },
+  { L__ALIGNOF,         Y__ALIGNOF,         T_NONE,         LANG_C_MIN(11)    },
   { L__ATOMIC,          Y__ATOMIC_QUAL,     T_ATOMIC,       LANG_MIN(C_11)    },
-  { L__GENERIC,         Y__GENERIC,         T_NONE,         LANG_MIN(C_11)    },
-  { L__NORETURN,        Y__NORETURN,        T_NORETURN,     LANG_MIN(C_11)    },
-  { L__STATIC_ASSERT,   Y__STATIC_ASSERT,   T_NONE,         LANG_MIN(C_11)    },
+  { L__GENERIC,         Y__GENERIC,         T_NONE,         LANG_C_MIN(11)    },
+  { L__NORETURN,        Y__NORETURN,        T_NORETURN,     LANG_C_MIN(11)    },
+  { L__STATIC_ASSERT,   Y__STATIC_ASSERT,   T_NONE,         LANG_C_MIN(11)    },
 
   // C++
   { L_BOOL,             Y_BOOL,             T_BOOL,         LANG_CPP_ALL      },
