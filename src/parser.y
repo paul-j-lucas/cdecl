@@ -597,29 +597,6 @@ static bool explain_type_decl( bool has_typename,
 }
 
 /**
- * Checks whether the `_Noreturn` token is OK in the current language.  If not,
- * prints an error message (and perhaps a hint).
- *
- * @param loc The location of the `_Noreturn` token.
- * @return Returns `true` only if `_Noreturn` is OK.
- */
-C_WARN_UNUSED_RESULT
-static bool _Noreturn_ok( c_loc_t const *loc ) {
-  assert( loc != NULL );
-
-  if ( c_init < C_INIT_READ_CONF || (opt_lang & LANG_C_MIN(11)) != LANG_NONE )
-    return true;
-  print_error( loc, "\"%s\" not supported in %s", lexer_token, C_LANG_NAME() );
-  if ( opt_lang >= LANG_CPP_11 ) {
-    if ( c_mode == C_ENGLISH_TO_GIBBERISH )
-      print_hint( "\"%s\"", L_NORETURN );
-    else
-      print_hint( "[[%s]]", L_NORETURN );
-  }
-  return false;
-}
-
-/**
  * Cleans-up parser data after each parse.
  *
  * @param hard_reset If `true`, does a "hard" reset that currently resets the
@@ -1571,12 +1548,8 @@ bytes_opt
 
 attribute_english_type
   : type_attribute_english_type
-  | Y_NORETURN
   | Y__NORETURN
-    {
-      if ( !_Noreturn_ok( &@1 ) )
-        PARSE_ABORT();
-    }
+  | Y_NORETURN
   ;
 
 /*****************************************************************************/
@@ -3993,10 +3966,6 @@ storage_class_c_type
   | Y_INLINE
   | Y_MUTABLE
   | Y__NORETURN
-    {
-      if ( !_Noreturn_ok( &@1 ) )
-        PARSE_ABORT();
-    }
   | Y_NORETURN
   | Y_OVERRIDE
 /*| Y_REGISTER */                       /* in type_modifier_base_type */
