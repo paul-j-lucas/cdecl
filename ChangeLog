@@ -1,3 +1,23 @@
+2020-06-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Upped version to 7.1.1.
+   * parser.y: Removed special-case _Noreturn code.
+   * c_keyword.c, lexer.l, literals.c, literals.h, parser.y: Clean-up of
+     _Thread_local and _Noreturn.
+   * c_keyword.c, parser.y: Added missing static_assert for C++11.
+   * c_keyword.c: Undid removal of throw in C++20: it's still a keyword.
+   * c_keyword.c: Made _Alignas, _Alignof, _Generic, _Noreturn, and
+     _Static_assert be C only.
+
+2020-06-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * errors.c: Using LANG_C_MIN() more.
+   * util.h: Tweaked comments.
+
+2020-06-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.c, lexer.l, parser.y: s/Y_ATOMIC*/Y__ATOMIC*/
+
 2020-06-01  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c, literals.h: Added comments.

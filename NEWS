@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 7.1.1
+
+** throw() put back
+"throw" is still a keyword so it was put back in C++20.
+
+
 * Changes in Cdecl 7.1
 
 ** Added more GNU extensions
