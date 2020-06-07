@@ -1037,6 +1037,7 @@ static void yyerror( char const *msg ) {
 %token              Y_NULLPTR
 %token  <type_id>   Y_OVERRIDE
 %token              Y_QUOTE2            /* for user-defined literals */
+%token              Y_STATIC_ASSERT
 %token              Y_USER_DEFINED
 
                     /* C11 & C++11 */

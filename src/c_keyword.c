@@ -180,6 +180,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_NOEXCEPT,         Y_NOEXCEPT,         T_NOEXCEPT,     LANG_CPP_MIN(11)  },
   { L_NULLPTR,          Y_NULLPTR,          T_NONE,         LANG_CPP_MIN(11)  },
   { L_OVERRIDE,         Y_OVERRIDE,         T_OVERRIDE,     LANG_CPP_MIN(11)  },
+  { L_STATIC_ASSERT,    Y_STATIC_ASSERT,    T_NONE,         LANG_CPP_MIN(11)  },
 
   // C11 & C++11
   { L_ALIGNAS,          Y_ALIGNAS,          T_NONE,         LANG_C_CPP_11_MIN },
