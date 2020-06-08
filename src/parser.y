@@ -1928,7 +1928,7 @@ explain_c
   ;
 
 alignas_specifier_c
-  : Y_ALIGNAS lparen_expected Y_NUMBER rparen_expected
+  : alignas lparen_expected Y_NUMBER rparen_expected
     {
       DUMP_START( "alignas_specifier_c", "ALIGNAS ( NUMBER )" );
       DUMP_NUM( "NUMBER", $3 );
@@ -1937,7 +1937,7 @@ alignas_specifier_c
       $$.kind = C_ALIGNAS_EXPR;
       $$.as.expr = (unsigned)$3;
     }
-  | Y_ALIGNAS lparen_expected type_c_ast { type_push( $3.ast ); }
+  | alignas lparen_expected type_c_ast { type_push( $3.ast ); }
     cast_c_ast_opt rparen_expected
     {
       type_pop();
@@ -1953,11 +1953,16 @@ alignas_specifier_c
       $$.kind = C_ALIGNAS_TYPE;
       $$.as.type_ast = ast;
     }
-  | Y_ALIGNAS lparen_expected error rparen_expected
+  | alignas lparen_expected error rparen_expected
     {
       ELABORATE_ERROR( "number or type expected" );
       $$.kind = C_ALIGNAS_NONE;
     }
+  ;
+
+alignas
+  : Y__ALIGNAS
+  | Y_ALIGNAS
   ;
 
 explain

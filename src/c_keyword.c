@@ -184,7 +184,6 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_THREAD_LOCAL,     Y_THREAD_LOCAL,     T_THREAD_LOCAL, LANG_CPP_MIN(11)  },
 
   // C11 & C++11
-  { L_ALIGNAS,          Y_ALIGNAS,          T_NONE,         LANG_C_CPP_11_MIN },
   { L_CHAR16_T,         Y_CHAR16_T,         T_CHAR16_T,     LANG_C_CPP_11_MIN },
   { L_CHAR32_T,         Y_CHAR32_T,         T_CHAR32_T,     LANG_C_CPP_11_MIN },
 
