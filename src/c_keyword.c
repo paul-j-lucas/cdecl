@@ -118,7 +118,6 @@ static c_keyword_t const C_KEYWORDS[] = {
 
   // C89
   { L_CONST,            Y_CONST,            T_CONST,        LANG_MIN(C_89)    },
-  { L_ELLIPSIS,         Y_ELLIPSIS,         T_NONE,         LANG_MIN(C_89)    },
   { L_ENUM,             Y_ENUM,             T_ENUM,         LANG_MIN(C_89)    },
   { L_SIGNED,           Y_SIGNED,           T_SIGNED,       LANG_MIN(C_89)    },
   { L_VOID,             Y_VOID,             T_VOID,         LANG_MIN(C_89)    },
