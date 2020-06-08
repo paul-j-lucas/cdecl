@@ -314,8 +314,8 @@ static c_hyphen_t const C_HYPHEN_KEYWORDS[] = {
     (c_lang_lit_t[]){ { LANG_ALL, L_NODISCARD } } },
 
   { L_NON_RETURNING,
-    (c_lang_lit_t[]){ { LANG_CPP_ALL, L_NORETURN  },
-                      { LANG_ALL,     L__NORETURN } } },
+    (c_lang_lit_t[]){ { LANG_C_ALL, L__NORETURN  },
+                      { LANG_ALL,   L_NORETURN } } },
 
   { L_NON_THROWING,
     (c_lang_lit_t[]){ { LANG_ALL, L_THROW } } },
@@ -324,8 +324,9 @@ static c_hyphen_t const C_HYPHEN_KEYWORDS[] = {
     (c_lang_lit_t[]){ { LANG_ALL, L_NO_UNIQUE_ADDRESS } } },
 
   { L_THREAD_LOCAL_H,
-    (c_lang_lit_t[]){ { LANG_C_CPP_MAX(99, 03), L_GNU___THREAD },
-                      { LANG_ALL,               L_THREAD_LOCAL } } },
+    (c_lang_lit_t[]){ { LANG_C_CPP_MAX(99,03), L_GNU___THREAD  },
+                      { LANG_C_ALL,            L__THREAD_LOCAL },
+                      { LANG_ALL,              L_THREAD_LOCAL  } } },
 
   { NULL,
     (c_lang_lit_t[]){ { LANG_ALL, NULL } } }
