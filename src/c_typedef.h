@@ -120,7 +120,7 @@ void c_typedef_init( void );
  * @param data Optional data passed to \a visitor.
  * @return Returns a pointer to the `c_typedef` the visitor stopped on or null.
  */
-C_WARN_UNUSED_RESULT
+C_NOWARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data );
 
 ///////////////////////////////////////////////////////////////////////////////

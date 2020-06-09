@@ -2177,7 +2177,7 @@ show_command
       print_type_info_t pti;
       pti.print_fn = $3 ? &print_type_as_typedef : &print_type_as_english;
       pti.show_which = $2;
-      C_IGNORE_RV( c_typedef_visit( &print_type_visitor, &pti ) );
+      c_typedef_visit( &print_type_visitor, &pti );
     }
 
   | Y_SHOW error
