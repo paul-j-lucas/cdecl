@@ -331,10 +331,10 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
 
     case K_NONE:
       assert( ast->kind_id != K_NONE );
-      C_FALLTHROUGH;
+      break;
     case K_PLACEHOLDER:
       assert( ast->kind_id != K_PLACEHOLDER );
-      C_FALLTHROUGH;
+      break;
 
     case K_POINTER:
     case K_REFERENCE:

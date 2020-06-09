@@ -611,7 +611,7 @@ char const* c_ast_sname_type_name( c_ast_t const *ast ) {
  * @note Function-like arguments are \e not traversed into.  They're considered
  * distinct ASTs.
  */
-C_WARN_UNUSED_RESULT
+C_NOWARN_UNUSED_RESULT
 c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
                       void *data );
 

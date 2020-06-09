@@ -96,9 +96,7 @@ static void c_ast_english_func_args( c_ast_arg_t const *arg, FILE *eout ) {
     }
 
     c_ast_t *const nonconst_arg = CONST_CAST( c_ast_t*, arg_ast );
-    C_IGNORE_RV(
-      c_ast_visit( nonconst_arg, C_VISIT_DOWN, c_ast_visitor_english, eout )
-    );
+    c_ast_visit( nonconst_arg, C_VISIT_DOWN, c_ast_visitor_english, eout );
   } // for
 
   FPUTC( ')', eout );
@@ -184,10 +182,10 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
     case K_NONE:
       assert( ast->kind_id != K_NONE );
-      C_FALLTHROUGH;
+      break;
     case K_PLACEHOLDER:
       assert( ast->kind_id != K_PLACEHOLDER );
-      C_FALLTHROUGH;
+      break;
 
     case K_POINTER:
     case K_REFERENCE:

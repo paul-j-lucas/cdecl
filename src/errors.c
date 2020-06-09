@@ -524,7 +524,7 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
         break;
       case K_PLACEHOLDER:
         assert( arg_ast->kind_id != K_PLACEHOLDER );
-        C_FALLTHROUGH;
+        break;
       default:
         print_error( &arg_ast->loc,
           "function prototypes not supported in %s", C_LANG_NAME()
@@ -1255,10 +1255,10 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 
     case K_NONE:
       assert( ast->kind_id != K_NONE );
-      C_FALLTHROUGH;
+      break;
     case K_PLACEHOLDER:
       assert( ast->kind_id != K_PLACEHOLDER );
-      C_FALLTHROUGH;
+      break;
 
     case K_POINTER_TO_MEMBER:
       if ( C_LANG_IS_C() )
@@ -1471,9 +1471,10 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
 
     case K_NONE:
       assert( ast->kind_id != K_NONE );
-      C_FALLTHROUGH;
+      break;
     case K_PLACEHOLDER:
       assert( ast->kind_id != K_PLACEHOLDER );
+      break;
   } // switch
 
   for ( c_scope_t const *scope = c_ast_scope( ast ); scope != NULL;
