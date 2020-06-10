@@ -32,6 +32,7 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
+#include "c_type.h"
 #include "slist.h"
 #include "typedefs.h"
 #include "util.h"
@@ -111,15 +112,17 @@ size_t c_sname_count( c_sname_t const *sname ) {
 }
 
 /**
- * Duplicates \a sname.  The caller is responsible for calling c_sname_free on
- * the duplicate.
+ * Duplicates \a sname.  The caller is responsible for calling c_sname_free()
+ * on the duplicate.
  *
  * @param sname The scoped name to duplicate.
  * @return Returns a duplicate of \a sname.
  */
 C_WARN_UNUSED_RESULT C_SNAME_INLINE
 c_sname_t c_sname_dup( c_sname_t const *sname ) {
-  return slist_dup( sname, -1, NULL, (slist_node_data_dup_fn_t)&strdup );
+  return slist_dup(
+    sname, -1, &c_type_id_data_dup, (slist_node_data_dup_fn_t)&strdup
+  );
 }
 
 /**
@@ -141,7 +144,7 @@ bool c_sname_empty( c_sname_t const *sname ) {
  */
 C_SNAME_INLINE
 void c_sname_free( c_sname_t *sname ) {
-  slist_free( sname, NULL, &free );
+  slist_free( sname, &c_type_id_data_free, &free );
 }
 
 /**
@@ -294,7 +297,7 @@ char const* c_sname_scope_name( c_sname_t const *sname );
  */
 C_SNAME_INLINE
 void c_sname_set_type( c_sname_t *sname, c_type_id_t type_id ) {
-  sname->data = CONST_CAST( void*, type_id );
+  sname->data = c_type_id_data_new( type_id );
 }
 
 /**
@@ -307,7 +310,7 @@ void c_sname_set_type( c_sname_t *sname, c_type_id_t type_id ) {
  */
 C_SNAME_INLINE
 c_type_id_t c_sname_type( c_sname_t const *sname ) {
-  return REINTERPRET_CAST( c_type_id_t, sname->data );
+  return c_type_id_data_get( sname->data );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
