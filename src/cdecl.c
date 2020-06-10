@@ -411,9 +411,9 @@ bool parse_string( char const *s, size_t s_len ) {
  * Reads the configuration file, if any.
  */
 static void read_conf_file( void ) {
-  bool const explicit_conf_file = (opt_conf_file != NULL);
+  bool const is_explicit_conf_file = (opt_conf_file != NULL);
 
-  if ( !explicit_conf_file ) {
+  if ( !is_explicit_conf_file ) {
     char const *const home = home_dir();
     if ( home == NULL )
       return;
@@ -425,7 +425,7 @@ static void read_conf_file( void ) {
 
   FILE *const cin = fopen( opt_conf_file, "r" );
   if ( cin == NULL ) {
-    if ( explicit_conf_file )
+    if ( is_explicit_conf_file )
       PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", opt_conf_file, STRERROR() );
     return;
   }
