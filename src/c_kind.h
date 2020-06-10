@@ -143,9 +143,9 @@ void c_kind_data_free( void *data ) {
  * @sa c_kind_data_new(c_kind_t)
  */
 C_WARN_UNUSED_RESULT C_KIND_INLINE
-c_kind_t c_kind_data_get( void *data ) {
+c_kind_t c_kind_data_get( void const *data ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
-  return *REINTERPRET_CAST( c_kind_t*, data );
+  return *REINTERPRET_CAST( c_kind_t const*, data );
 #else
   return REINTERPRET_CAST( c_kind_t, data );
 #endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
