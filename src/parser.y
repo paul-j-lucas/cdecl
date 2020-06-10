@@ -658,11 +658,6 @@ static void print_type_as_typedef( c_typedef_t const *type ) {
     sn_type = c_sname_type( sname );
     assert( sn_type != T_NONE );
     //
-    // Replace the generic "scope" with "namespace" for C++.
-    //
-    if ( (sn_type & T_SCOPE) != T_NONE )
-      sn_type = (sn_type & ~T_SCOPE) | T_NAMESPACE;
-    //
     // A type name can't be scoped in a typedef declaration, e.g.:
     //
     //      typedef int S::T::I;        // illegal
@@ -1594,6 +1589,17 @@ define_english
       if ( ok ) {
         // Once the semantic checks pass, remove the T_TYPEDEF.
         C_IGNORE_RV( c_ast_take_typedef( $5.ast ) );
+
+        if ( c_sname_count( &$2 ) > 1 ) {
+          c_type_id_t sn_type = c_sname_type( &$2 );
+          if ( (sn_type & T_SCOPE) != T_NONE ) {
+            //
+            // Replace the generic "scope" with "namespace".
+            //
+            sn_type = (sn_type & ~T_SCOPE) | T_NAMESPACE;
+            c_sname_set_type( &$2, sn_type );
+          }
+        }
         c_ast_sname_set_sname( $5.ast, &$2 );
         ok = add_type( L_DEFINE, $5.ast, &@5 );
       }
