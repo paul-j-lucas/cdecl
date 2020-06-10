@@ -413,7 +413,7 @@ bool parse_string( char const *s, size_t s_len ) {
 static void read_conf_file( void ) {
   bool const is_explicit_conf_file = (opt_conf_file != NULL);
 
-  if ( !is_explicit_conf_file ) {
+  if ( !is_explicit_conf_file ) {       // no explicit conf file: use default
     char const *const home = home_dir();
     if ( home == NULL )
       return;
@@ -423,8 +423,8 @@ static void read_conf_file( void ) {
     opt_conf_file = conf_path_buf;
   }
 
-  FILE *const cin = fopen( opt_conf_file, "r" );
-  if ( cin == NULL ) {
+  FILE *const fconf = fopen( opt_conf_file, "r" );
+  if ( fconf == NULL ) {
     if ( is_explicit_conf_file )
       PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", opt_conf_file, STRERROR() );
     return;
@@ -437,10 +437,10 @@ static void read_conf_file( void ) {
   //
   c_lang_id_t const orig_lang = opt_lang;
   opt_lang = LANG_CPP_NEW;
-  C_IGNORE_RV( parse_file( cin ) );
+  C_IGNORE_RV( parse_file( fconf ) );
   opt_lang = orig_lang;
 
-  C_IGNORE_RV( fclose( cin ) );
+  C_IGNORE_RV( fclose( fconf ) );
 }
 
 /**
