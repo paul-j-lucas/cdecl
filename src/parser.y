@@ -2155,6 +2155,10 @@ set_option_value_opt
 show_command
   : Y_SHOW any_typedef typedef_opt
     {
+      DUMP_START( "show_command", "SHOW any_typedef [typedef]" );
+      DUMP_AST( "any_typedef.ast", $2->ast );
+      DUMP_END();
+
       if ( $3 )
         print_type_as_typedef( $2 );
       else
