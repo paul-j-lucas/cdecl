@@ -4492,7 +4492,7 @@ name_c_ast
 name_english_ast
   : Y_NAME of_scope_list_english_opt
     {
-      DUMP_START( "name_english_ast of_scope_list_english_opt", "NAME" );
+      DUMP_START( "Y_NAME of_scope_list_english_opt", "NAME" );
       DUMP_STR( "NAME", $1 );
       DUMP_SNAME( "of_scope_list_english_opt", &$2 );
 
