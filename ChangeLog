@@ -1,5 +1,42 @@
+2020-06-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c, print.h: s/print_error()/print_error_impl()/ and added
+     print_error() macro that passes file & line information for debugging.
+   * parser.y: Fixed dump of name_english_ast.
+   * NEWS, c_ast.h, parser.y: Now support scoped English types ("declare x as
+     Int of struct S").
+   * c_ast.h: Fixed c_ast_sname_append_sname() declaration.
+
+2020-06-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: Added assert().
+   * parser.y: Added debug output to "show" command.
+
+2020-06-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c: Added comment; s/cin/fconf/
+   * cdecl.c: Renaming.
+   * c_sname.h, c_type.c, c_type.h: Fixed a latent bug with the c_type_id_t
+     stored in a c_sname on 32-bit platforms.
+   * c_kind.h: Added missing "const".
+   * parser.y: Moved special-case namespace code for namespaces out of
+     print_type_as_typedef() and into define_english.
+
+2020-06-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, english.c, errors.c, gibberish.c: Made c_ast_visit() be
+     C_NOWARN_UNUSED_RESULT; replaced some C_FALLTHROUGH with break.
+   * c_typedef.h, parser.y: Made c_typedef_visit() be C_NOWARN_UNUSED_RESULT.
+
+2020-06-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Added missing L__THREAD_LOCAL.
+   * c_keyword.c, lexer.l, parser.y: Cleaned-up _Alignas and alignas.
+   * c_keyword.c: Removed L_ELLIPSIS from keywords table: it's not a keyword.
+
 2020-06-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS: Changes.
    * configure.ac: Upped version to 7.1.1.
    * parser.y: Removed special-case _Noreturn code.
    * c_keyword.c, lexer.l, literals.c, literals.h, parser.y: Clean-up of
