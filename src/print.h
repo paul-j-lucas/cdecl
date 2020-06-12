@@ -40,13 +40,37 @@
 
 /**
  * Prints an error message to standard error, including a newline.
+ * In debug mode, also prints the file & line where the function was called
+ * from.
  *
+ * @note
+ * This function shouldn't be called directly; use the #print_error() macro
+ * instead.
+ *
+ * @param file The name of the file where this function was called from.
+ * @param line The line number within \a file where this function was called
+ * from.
  * @param loc The location of the error; may be null.
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
+ *
+ * @sa #print_error()
  */
-C_PRINTF_LIKE_FUNC(2)
-void print_error( c_loc_t const *loc, char const *format, ... );
+C_PRINTF_LIKE_FUNC(4)
+void print_error_impl( char const *file, int line, c_loc_t const *loc,
+                       char const *format, ... );
+
+/**
+ * Prints an error message to standard error, including a newline.
+ * In debug mode, also prints the file & line where the function was called
+ * from.
+ *
+ * @param ... The arguments for print_error_impl().
+ *
+ * @sa print_error_impl()
+ */
+#define print_error(...) \
+  print_error_impl( __FILE__, __LINE__, __VA_ARGS__ )
 
 /**
  * Prints a hint message to standard error in the form:

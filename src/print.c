@@ -226,7 +226,8 @@ static size_t token_len( char const *s ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void print_error( c_loc_t const *loc, char const *format, ... ) {
+void print_error_impl( char const *file, int line, c_loc_t const *loc,
+                       char const *format, ... ) {
   if ( loc != NULL ) {
     print_loc( loc );
     SGR_START_COLOR( stderr, error );
@@ -239,6 +240,9 @@ void print_error( c_loc_t const *loc, char const *format, ... ) {
   va_start( args, format );
   vfprintf( stderr, format, args );
   va_end( args );
+
+  if ( opt_debug )
+    PRINTF_ERR( " (%s:%d)", file, line );
 
   PUTC_ERR( '\n' );
 }
