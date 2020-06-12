@@ -1165,10 +1165,10 @@ static void yyerror( char const *msg ) {
 %type   <ast>       arg_array_size_c_ast
 %type   <ast_pair>  arg_c_ast
 %type   <ast_list>  arg_list_c_ast arg_list_c_ast_opt
-%type   <ast_pair>  name_ast
+%type   <ast_pair>  name_c_ast name_english_ast
 %type   <ast_pair>  sname_c_ast
-%type   <ast_pair>  typedef_name_ast
-%type   <ast_pair>  using_name_ast_expected
+%type   <ast_pair>  typedef_name_c_ast
+%type   <ast_pair>  using_name_c_ast_expected
 
 %type   <align>     alignas_specifier_c
 %type   <name>      any_name any_name_expected
@@ -2298,7 +2298,7 @@ using_declaration_c
       // see the comment in "explain"
       c_mode = C_GIBBERISH_TO_ENGLISH;
     }
-    using_name_ast_expected equals_expected type_c_ast
+    using_name_c_ast_expected equals_expected type_c_ast
     {
       // see the comment in "define_english" about T_TYPEDEF
       C_TYPE_ADD( &$5.ast->type_id, T_TYPEDEF, @5 );
@@ -2325,7 +2325,7 @@ using_declaration_c
       }
 
       DUMP_START( "using_declaration_c", "USING NAME = decl_c_ast" );
-      DUMP_AST( "using_name_ast_expected", $3.ast );
+      DUMP_AST( "using_name_c_ast_expected", $3.ast );
       DUMP_AST( "type_c_ast", $5.ast );
       DUMP_AST( "cast_c_ast_opt", $7.ast );
 
@@ -2360,19 +2360,19 @@ using_declaration_c
     }
   ;
 
-using_name_ast_expected
-  : name_ast
-  | typedef_name_ast
+using_name_c_ast_expected
+  : name_c_ast
+  | typedef_name_c_ast
   | error
     {
       ELABORATE_ERROR( "type name expected" );
     }
   ;
 
-typedef_name_ast
+typedef_name_c_ast
   : Y_TYPEDEF_NAME
     {
-      DUMP_START( "typedef_name_ast", "Y_TYPEDEF_NAME" );
+      DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_NAME" );
       DUMP_AST( "Y_TYPEDEF_NAME", $1->ast );
 
       $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
@@ -2380,7 +2380,7 @@ typedef_name_ast
       $$.ast->as.c_typedef = $1;
       $$.ast->type_id = T_TYPEDEF_TYPE;
 
-      DUMP_AST( "typedef_name_ast", $$.ast );
+      DUMP_AST( "typedef_name_c_ast", $$.ast );
       DUMP_END();
     }
   ;
@@ -2820,10 +2820,8 @@ var_decl_english_ast
 
     /*
      * K&R C type-less variable declaration.
-     *
-     * This doesn't need to be a scoped name since C doesn't have scoped names.
      */
-  | name_ast
+  | name_english_ast
 
     /*
      * Varargs declaration.
@@ -3640,7 +3638,7 @@ arg_c_ast
     /*
      * K&R C type-less function argument declaration.
      */
-  | name_ast
+  | name_c_ast
 
     /*
      * Varargs declaration.
@@ -4476,17 +4474,47 @@ typedef_type_c_ast
     }
   ;
 
-name_ast
+name_c_ast
   : Y_NAME
     {
-      DUMP_START( "name_ast", "NAME" );
+      DUMP_START( "name_c_ast", "NAME" );
       DUMP_STR( "NAME", $1 );
 
       $$.ast = c_ast_new_gc( K_NAME, &@$ );
       $$.target_ast = NULL;
       c_ast_sname_set_name( $$.ast, $1 );
 
-      DUMP_AST( "name_ast", $$.ast );
+      DUMP_AST( "name_c_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+name_english_ast
+  : Y_NAME of_scope_list_english_opt
+    {
+      DUMP_START( "name_english_ast of_scope_list_english_opt", "NAME" );
+      DUMP_STR( "NAME", $1 );
+      DUMP_SNAME( "of_scope_list_english_opt", &$2 );
+
+      c_sname_t sname = $2;
+      c_sname_append_name( &sname, $1 );
+
+      //
+      // See if the full name is the name of a typedef'd type.
+      //
+      c_typedef_t const *const t = c_typedef_find( &sname );
+      if ( t != NULL ) {
+        $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
+        $$.ast->as.c_typedef = t;
+        $$.ast->type_id = T_TYPEDEF_TYPE;
+        c_sname_free( &sname );
+      } else {
+        $$.ast = c_ast_new_gc( K_NAME, &@$ );
+        c_ast_sname_set_sname( $$.ast, &sname );
+      }
+      $$.target_ast = NULL;
+
+      DUMP_AST( "name_english_ast", $$.ast );
       DUMP_END();
     }
   ;
@@ -4533,7 +4561,7 @@ scope_sname_c_opt
 sname_c
   : sname_c "::" Y_NAME
     {
-      // see the comment in "of_scope_list_english_opt"
+      // see the comment in "of_scope_english"
       if ( c_init >= C_INIT_READ_CONF && C_LANG_IS_C() ) {
         print_error( &@2, "scoped names not supported in %s", C_LANG_NAME() );
         PARSE_ABORT();

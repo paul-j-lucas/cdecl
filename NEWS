@@ -12,6 +12,18 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 7.1.1
 
+** English scoped types
+Given:
+
+    struct S { typedef int Int; }
+    explain S::Int x
+
+the explanation is:
+
+    declare x as Int of structure S
+
+but English types ("T of ...") weren't legal in cdecl's grammar.  They are now.
+
 ** throw() put back
 "throw" is still a keyword so it was put back in C++20.
 

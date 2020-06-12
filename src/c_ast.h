@@ -399,6 +399,17 @@ c_scope_t const* c_ast_scope( c_ast_t const *ast ) {
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
 
 /**
+ * Appends \a name to the name of \a ast.
+ *
+ * @param ast The `c_ast` to append to the name of.
+ * @param name The name to append.  Ownership is taken.
+ */
+C_AST_INLINE
+void c_ast_sname_append_name( c_ast_t *ast, char *name ) {
+  c_sname_append_name( &ast->sname, name );
+}
+
+/**
  * Appends \a sname to the name of \a ast.
  *
  * @param ast The `c_ast` to append to the name of.
