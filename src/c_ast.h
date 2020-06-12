@@ -406,8 +406,8 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
  *
  * @sa c_ast_sname_prepend_sname()
  */
-C_AST_INLINE void c_ast_sname_append_sname( c_ast_t *ast,
-                                                c_sname_t *sname ) {
+C_AST_INLINE
+void c_ast_sname_append_sname( c_ast_t *ast, c_sname_t *sname ) {
   c_sname_append_sname( &ast->sname, sname );
 }
 
