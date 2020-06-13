@@ -590,6 +590,24 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
 
   c_type_id_t const member_func_types = ast->type_id & T_MEMBER_FUNC_ONLY;
   c_type_id_t const nonmember_func_types = ast->type_id & T_NONMEMBER_FUNC_ONLY;
+
+  if ( member_func_types != T_NONE &&
+       (ast->type_id & (T_EXTERN | T_STATIC)) != T_NONE ) {
+    // Need this since c_type_name_error() can't be called more than once in
+    // the same expression.
+    char const *const member_func_types_names =
+      strdup( c_type_name_error( member_func_types ) );
+
+    print_error( &ast->loc,
+      "%s %ss can not be %s",
+      c_type_name_error( ast->type_id & (T_EXTERN | T_STATIC) ),
+      c_kind_name( ast->kind_id ),
+      member_func_types_names
+    );
+    FREE( member_func_types_names );
+    return false;
+  }
+
   if ( member_func_types != T_NONE && nonmember_func_types != T_NONE ) {
     // Need this since c_type_name_error() can't be called more than once in
     // the same expression.

@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 7.1.1
 
+** extern & static functions
+Extern or static functions can not be const.
+
 ** English scoped types
 Given:
 

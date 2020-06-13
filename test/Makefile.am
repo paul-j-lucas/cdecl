@@ -1195,8 +1195,8 @@ TESTS+=	tests/explain_+dtor.test \
 #
 TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_+dtor-error.test \
-	tests/explain_ai-c++11.test \
 	tests/explain_a_nua_f.test \
+	tests/explain_ai-c++11.test \
 	tests/explain_cdi.test \
 	tests/explain_cector_i.test \
 	tests/explain_ec.test \
@@ -1220,6 +1220,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_rrf_v-c++03.test \
 	tests/explain_rtpi-c++-error.test \
 	tests/explain_rv.test \
+	tests/explain_scf_v.test \
 	tests/explain_smi.test \
 	tests/explain_srf_v.test \
 	tests/explain_srrf_v.test \
