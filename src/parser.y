@@ -1414,6 +1414,7 @@ declare_english
       DUMP_STR( "c_operator", op_get( $2 )->name );
       DUMP_SNAME( "of_scope_list_english_opt", &$3 );
       DUMP_TYPE( "storage_class_list_english_type_opt", $5 );
+      DUMP_AST( "oper_decl_english_ast", $6.ast );
 
       $6.ast->sname = $3;
       $6.ast->loc = @2;
