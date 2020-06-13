@@ -640,7 +640,7 @@ static void g_space_name( g_state_t *g, c_ast_t const *ast ) {
       if ( !c_ast_sname_empty( ast ) )
         FPRINTF( g->gout, "%s::", c_ast_sname_full_name( ast ) );
       c_operator_t const *const op = op_get( ast->as.oper.oper_id );
-      char const *const token = graph_token_c( alt_token_c( op->name ) );
+      char const *const token = alt_token_c( graph_token_c( op->name ) );
       FPRINTF( g->gout,
         "%s%s%s", L_OPERATOR, isalpha( token[0] ) ? " " : "", token
       );
@@ -730,34 +730,37 @@ void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout ) {
 char const* graph_token_c( char const *token ) {
   assert( token != NULL );
 
-  switch ( opt_graph ) {
-    case C_GRAPH_NONE:
-      break;
-    //
-    // Even though this could be done character-by-character, it's easier for
-    // the calling code if multi-character tokens containing graph characters
-    // are returned as a single string.
-    //
-    case C_GRAPH_DI:
-      switch ( token[0] ) {
-        case '[': return token[1] == '[' ? "<:<:" : "<:";
-        case ']': return token[1] == ']' ? ":>:>" : ":>";
-      } // switch
-      break;
-    case C_GRAPH_TRI:
-      switch ( token[0] ) {
-        case '[': return token[1] == '[' ? "?\?(?\?(" : "?\?(";
-        case ']': return token[1] == ']' ? "?\?)?\?)" : "?\?)";
-        case '^': return token[1] == '=' ? "?\?'=" : "?\?'";
-        case '|': switch ( token[1] ) {
-                    case '=': return "?\?!=";
-                    case '|': return "?\?!?\?!";
-                  } // switch
-                  return "?\?!";
-        case '~': return "?\?-";
-      } // switch
-      break;
-  } // switch
+  if ( !opt_alt_tokens ) {
+    switch ( opt_graph ) {
+      case C_GRAPH_NONE:
+        break;
+      //
+      // Even though this could be done character-by-character, it's easier for
+      // the calling code if multi-character tokens containing graph characters
+      // are returned as a single string.
+      //
+      case C_GRAPH_DI:
+        switch ( token[0] ) {
+          case '[': return token[1] == '[' ? "<:<:" : "<:";
+          case ']': return token[1] == ']' ? ":>:>" : ":>";
+        } // switch
+        break;
+      case C_GRAPH_TRI:
+        switch ( token[0] ) {
+          case '[': return token[1] == '[' ? "?\?(?\?(" : "?\?(";
+          case ']': return token[1] == ']' ? "?\?)?\?)" : "?\?)";
+          case '^': return token[1] == '=' ? "?\?'=" : "?\?'";
+          case '|': switch ( token[1] ) {
+                      case '=': return "?\?!=";
+                      case '|': return "?\?!?\?!";
+                    } // switch
+                    return "?\?!";
+          case '~': return "?\?-";
+        } // switch
+        break;
+    } // switch
+  }
+
   return token;
 }
 
