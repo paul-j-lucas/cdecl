@@ -147,7 +147,7 @@ struct c_operator {
  * @return Returns a pointer to said `c_operator`.
  */
 C_WARN_UNUSED_RESULT
-c_operator_t const* op_get( c_oper_id_t oper_id );
+c_operator_t const* c_oper_get( c_oper_id_t oper_id );
 
 /**
  * Checks whether the C/C++ operator is ambiguous.
@@ -176,7 +176,7 @@ c_operator_t const* op_get( c_oper_id_t oper_id );
  * @return Returns `true` only if the operator is ambiguous.
  */
 C_WARN_UNUSED_RESULT C_OP_INLINE
-bool op_is_ambiguous( c_operator_t const *op ) {
+bool c_oper_is_ambiguous( c_operator_t const *op ) {
   return op->args_min == 0 && op->args_max == 2;
 }
 
@@ -188,17 +188,17 @@ bool op_is_ambiguous( c_operator_t const *op ) {
  * <code>\ref C_OP_NON_MEMBER</code>, or <code>\ref C_OP_UNSPECIFIED</code>.
  */
 C_WARN_UNUSED_RESULT
-unsigned op_get_overload( c_ast_t const *ast );
+unsigned c_oper_get_overload( c_ast_t const *ast );
 
 /**
  * Gets the C/C++ token for the operator having \a oper_id.
  *
  * @param oper_id The ID of the `c_operator` to get the token for.
- * @return Returns said token; otherwise, returns theunaltered token.
+ * @return Returns said token; otherwise, returns the unaltered token.
  */
 C_WARN_UNUSED_RESULT C_OP_INLINE
-char const* op_token_c( c_oper_id_t oper_id ) {
-  return alt_token_c( graph_token_c( op_get( oper_id )->name ) );
+char const* c_oper_token_c( c_oper_id_t oper_id ) {
+  return alt_token_c( graph_token_c( c_oper_get( oper_id )->name ) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

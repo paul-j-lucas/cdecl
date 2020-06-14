@@ -639,7 +639,7 @@ static void g_space_name( g_state_t *g, c_ast_t const *ast ) {
       g_print_space( g );
       if ( !c_ast_sname_empty( ast ) )
         FPRINTF( g->gout, "%s::", c_ast_sname_full_name( ast ) );
-      c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+      c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
       char const *const token = alt_token_c( graph_token_c( op->name ) );
       FPRINTF( g->gout,
         "%s%s%s", L_OPERATOR, isalpha( token[0] ) ? " " : "", token

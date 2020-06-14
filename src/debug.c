@@ -174,7 +174,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         PRINT_COMMA;
         INDENT_PRINT( "oper_id = %u,\n", ast->as.oper.oper_id );
         INDENT_PRINT_KV(
-          "operator_name", op_get( ast->as.oper.oper_id )->name
+          "operator_name", c_oper_get( ast->as.oper.oper_id )->name
         );
         FPUTS( ",\n", dout );
         C_FALLTHROUGH;

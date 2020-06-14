@@ -95,18 +95,18 @@ static c_operator_t const C_OPERATOR[] = {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_operator_t const* op_get( c_oper_id_t oper_id ) {
+c_operator_t const* c_oper_get( c_oper_id_t oper_id ) {
   assert( oper_id <= C_OP_TILDE );
   return &C_OPERATOR[ oper_id ];
 }
 
-unsigned op_get_overload( c_ast_t const *ast ) {
+unsigned c_oper_get_overload( c_ast_t const *ast ) {
   assert( ast->kind_id == K_OPERATOR );
 
   //
   // If the operator is either member or non-member only, then it's that.
   //
-  c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
   unsigned const op_overload_flags = op->flags & C_OP_MASK_OVERLOAD;
   switch ( op_overload_flags ) {
     case C_OP_MEMBER:

@@ -145,7 +145,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
             FPRINTF( eout, "%s ", L_MEMBER );
           break;
         case K_OPERATOR: {
-          unsigned const overload_flags = op_get_overload( ast );
+          unsigned const overload_flags = c_oper_get_overload( ast );
           char const *const op_literal =
             overload_flags == C_OP_MEMBER     ? L_MEMBER      :
             overload_flags == C_OP_NON_MEMBER ? L_NON_MEMBER  :

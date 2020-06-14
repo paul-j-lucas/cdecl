@@ -476,7 +476,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
              ast->as.oper.oper_id != C_OP_PARENS ) {
           print_error( &arg_ast->loc,
             "%s %s can not have a %s argument",
-            L_OPERATOR, op_get( ast->as.oper.oper_id )->name, L_VARIADIC
+            L_OPERATOR, c_oper_get( ast->as.oper.oper_id )->name, L_VARIADIC
           );
           return false;
         }
@@ -731,7 +731,7 @@ only_special:
 static bool c_ast_check_oper( c_ast_t const *ast ) {
   assert( ast != NULL );
 
-  c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
 
   if ( (opt_lang & op->lang_ids) == LANG_NONE ) {
     print_error( &ast->loc,
@@ -834,7 +834,7 @@ static bool c_ast_check_oper_args( c_ast_t const *ast ) {
   assert( ast->kind_id == K_OPERATOR );
 
   unsigned user_overload_flags = ast->as.oper.flags & C_OP_MASK_OVERLOAD;
-  c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
   unsigned const op_overload_flags = op->flags & C_OP_MASK_OVERLOAD;
   size_t const n_args = c_ast_args_count( ast );
 
@@ -888,7 +888,7 @@ static bool c_ast_check_oper_args( c_ast_t const *ast ) {
   // Determine the minimum and maximum number of arguments the operator can
   // have based on whether it's a member, non-member, or unspecified.
   //
-  bool const is_ambiguous = op_is_ambiguous( op );
+  bool const is_ambiguous = c_oper_is_ambiguous( op );
   unsigned req_args_min = 0, req_args_max = 0;
   switch ( user_overload_flags ) {
     case C_OP_NON_MEMBER:
@@ -1049,7 +1049,7 @@ static bool c_ast_check_oper_delete_args( c_ast_t const *ast ) {
   assert( ast->as.oper.oper_id == C_OP_DELETE ||
           ast->as.oper.oper_id == C_OP_DELETE_ARRAY );
 
-  c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
 
   size_t const args_count = c_ast_args_count( ast );
   if ( args_count == 0 ) {
@@ -1087,7 +1087,7 @@ static bool c_ast_check_oper_new_args( c_ast_t const *ast ) {
   assert( ast->as.oper.oper_id == C_OP_NEW ||
           ast->as.oper.oper_id == C_OP_NEW_ARRAY );
 
-  c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
 
   size_t const args_count = c_ast_args_count( ast );
   if ( args_count == 0 ) {

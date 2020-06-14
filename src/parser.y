@@ -568,7 +568,7 @@ static bool explain_type_decl( bool has_typename,
     char const *local_name, *scope_name;
 
     if ( ast->kind_id == K_OPERATOR ) {
-      local_name = op_token_c( ast->as.oper.oper_id );
+      local_name = c_oper_token_c( ast->as.oper.oper_id );
       scope_name = found_sname != NULL ? c_sname_full_name( found_sname ) : "";
     } else {
       assert( found_sname != NULL );
@@ -1409,7 +1409,7 @@ declare_english
                   "DECLARE c_operator of_scope_list_english_opt AS "
                   "storage_class_list_english_type_opt "
                   "oper_decl_english_ast" );
-      DUMP_STR( "c_operator", op_get( $2 )->name );
+      DUMP_STR( "c_operator", c_oper_get( $2 )->name );
       DUMP_SNAME( "of_scope_list_english_opt", &$3 );
       DUMP_TYPE( "storage_class_list_english_type_opt", $5 );
       DUMP_AST( "oper_decl_english_ast", $6.ast );
@@ -3338,7 +3338,7 @@ oper_c_ast
       DUMP_START( "oper_c_ast", "OPERATOR c_operator" );
       DUMP_AST( "(type_c_ast)", type_peek() );
       DUMP_SNAME( "scope_sname_c_opt", &$1 );
-      DUMP_STR( "c_operator", op_get( $3 )->name );
+      DUMP_STR( "c_operator", c_oper_get( $3 )->name );
 
       $$.ast = type_peek();
       $$.target_ast = NULL;
