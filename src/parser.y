@@ -1381,6 +1381,9 @@ declare_english
       $5.ast->loc = @2;
       C_TYPE_ADD( &$5.ast->type_id, $4, @4 );
 
+      DUMP_AST( "decl_english_ast", $5.ast );
+      DUMP_END();
+
       if ( $6.kind != C_ALIGNAS_NONE ) {
         $5.ast->align = $6;
         if ( ($5.ast->type_id & T_TYPEDEF) != T_NONE ) {
@@ -1391,9 +1394,6 @@ declare_english
       }
 
       C_AST_CHECK( $5.ast, C_CHECK_DECL );
-
-      DUMP_AST( "decl_english_ast", $5.ast );
-      DUMP_END();
 
       c_ast_gibberish_declare( $5.ast, G_DECL_NONE, fout );
       if ( opt_semicolon )
