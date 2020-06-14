@@ -30,6 +30,9 @@ but English types ("T of ...") weren't legal in cdecl's grammar.  They are now.
 ** throw() put back
 "throw" is still a keyword so it was put back in C++20.
 
+** Fixed user-defined literal argument
+Explicitly specifying "int" is now accepted.
+
 
 * Changes in Cdecl 7.1
 

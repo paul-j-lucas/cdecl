@@ -1135,6 +1135,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
         case T_CHAR32_T:
         case T_WCHAR_T:
         case T_UNSIGNED | T_LONG | T_LONG_LONG:
+        case T_UNSIGNED | T_LONG | T_LONG_LONG | T_INT:
         case T_LONG | T_DOUBLE:
           break;
         default:                        // check for: char const*
