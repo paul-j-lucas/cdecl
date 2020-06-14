@@ -250,21 +250,14 @@
  */
 
 /**
- * Print type function signature for print_type_visitor().
- *
- * @param type The `c_typedef` to print.
- * @param fout The `FILE` to print to.
+ * Inherited attributes.
  */
-typedef void (*print_type_t)( c_typedef_t const *type, FILE *fout );
-
-/**
- * Information for print_type_visitor().
- */
-struct print_type_info {
-  print_type_t  print_fn;               ///< Print English or gibberish?
-  unsigned      show_which;             ///< Predefined, user, or both?
+struct in_attr {
+  c_sname_t current_scope;              ///< C++ only: current scope, if any.
+  slist_t   qualifier_stack;            ///< Qualifier stack.
+  slist_t   type_stack;                 ///< Type stack.
 };
-typedef struct print_type_info print_type_info_t;
+typedef struct in_attr in_attr_t;
 
 /**
  * Qualifier and its source location.
@@ -276,14 +269,21 @@ struct c_qualifier {
 typedef struct c_qualifier c_qualifier_t;
 
 /**
- * Inherited attributes.
+ * Print type function signature for show_type_visitor().
+ *
+ * @param type The `c_typedef` to print.
+ * @param fout The `FILE` to print to.
  */
-struct in_attr {
-  c_sname_t current_scope;              ///< C++ only: current scope, if any.
-  slist_t   qualifier_stack;            ///< Qualifier stack.
-  slist_t   type_stack;                 ///< Type stack.
+typedef void (*show_type_fn_t)( c_typedef_t const *type, FILE *fout );
+
+/**
+ * Information for show_type_visitor().
+ */
+struct show_type_info {
+  show_type_fn_t  show_fn;              ///< The show function to use.
+  unsigned        show_which;           ///< Predefined, user, or both?
 };
-typedef struct in_attr in_attr_t;
+typedef struct show_type_info show_type_info_t;
 
 // extern functions
 extern void           print_help( char const* );
@@ -625,30 +625,6 @@ static void parse_init( void ) {
 }
 
 /**
- * Prints the definition of a `typedef`.
- *
- * @param type A pointer to the `c_typedef` to print.
- * @param data Optional data passed to the visitor: in this case, the bitmask
- * of which `typedef`s to print.
- * @return Always returns `false`.
- */
-C_WARN_UNUSED_RESULT
-static bool print_type_visitor( c_typedef_t const *type, void *data ) {
-  assert( type != NULL );
-
-  print_type_info_t const *const pti =
-    REINTERPRET_CAST( print_type_info_t const*, data );
-
-  bool const show_it = type->user_defined ?
-    (pti->show_which & SHOW_USER_TYPES) != 0 :
-    (pti->show_which & SHOW_PREDEFINED_TYPES) != 0;
-
-  if ( show_it )
-    (*pti->print_fn)( type, fout );
-  return false;
-}
-
-/**
  * Pushes a qualifier onto the qualifier inherited attribute stack.
  *
  * @param qual_type The qualifier to push.
@@ -673,6 +649,30 @@ static void qualifier_push( c_type_id_t qual_type, c_loc_t const *loc ) {
  */
 static void quit( void ) {
   exit( EX_OK );
+}
+
+/**
+ * Prints the definition of a `typedef`.
+ *
+ * @param type The `c_typedef` to print.
+ * @param data Optional data passed to the visitor: in this case, the bitmask
+ * of which `typedef`s to print.
+ * @return Always returns `false`.
+ */
+C_WARN_UNUSED_RESULT
+static bool show_type_visitor( c_typedef_t const *type, void *data ) {
+  assert( type != NULL );
+
+  show_type_info_t const *const sti =
+    REINTERPRET_CAST( show_type_info_t const*, data );
+
+  bool const show_it = type->user_defined ?
+    (sti->show_which & SHOW_USER_TYPES) != 0 :
+    (sti->show_which & SHOW_PREDEFINED_TYPES) != 0;
+
+  if ( show_it )
+    (*sti->show_fn)( type, fout );
+  return false;
 }
 
 /**
@@ -2116,10 +2116,10 @@ show_command
 
   | Y_SHOW show_which_types_opt typedef_opt
     {
-      print_type_info_t pti;
-      pti.print_fn = $3 ? &c_typedef_gibberish : &c_typedef_english;
-      pti.show_which = $2;
-      c_typedef_visit( &print_type_visitor, &pti );
+      show_type_info_t sti;
+      sti.show_fn = $3 ? &c_typedef_gibberish : &c_typedef_english;
+      sti.show_which = $2;
+      c_typedef_visit( &show_type_visitor, &sti );
     }
 
   | Y_SHOW error
