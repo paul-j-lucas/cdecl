@@ -468,13 +468,13 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
         if ( ast->kind_id == K_OPERATOR &&
              ast->as.oper.oper_id != C_OP_PARENS ) {
           print_error( &arg_ast->loc,
-            "%s %s can not have a variadic argument",
-            L_OPERATOR, op_get( ast->as.oper.oper_id )->name
+            "%s %s can not have a %s argument",
+            L_OPERATOR, op_get( ast->as.oper.oper_id )->name, L_VARIADIC
           );
           return false;
         }
         if ( arg->next != NULL ) {
-          print_error( &arg_ast->loc, "variadic specifier must be last" );
+          print_error( &arg_ast->loc, "%s specifier must be last", L_VARIADIC );
           return false;
         }
         variadic_ast = arg_ast;
@@ -493,7 +493,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
 
   if ( variadic_ast != NULL && n_args == 1 ) {
     print_error( &variadic_ast->loc,
-      "variadic specifier can not be only argument"
+      "%s specifier can not be only argument", L_VARIADIC
     );
     return false;
   }
@@ -501,7 +501,9 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
   return true;
 
 only_void:
-  print_error( &void_ast->loc, "\"void\" must be only parameter if specified" );
+  print_error( &void_ast->loc,
+    "\"%s\" must be only parameter if specified", L_VOID
+  );
   return false;
 }
 
@@ -526,7 +528,7 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
         break;
       default:
         print_error( &arg_ast->loc,
-          "function prototypes not supported in %s", C_LANG_NAME()
+          "%s prototypes not supported in %s", L_FUNCTION, C_LANG_NAME()
         );
         return false;
     } // switch
@@ -726,9 +728,8 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
 
   if ( (opt_lang & op->lang_ids) == LANG_NONE ) {
     print_error( &ast->loc,
-      "overloading operator \"%s\" not supported in %s",
-      op->name,
-      C_LANG_NAME()
+      "overloading %s \"%s\" not supported in %s",
+      L_OPERATOR, op->name, C_LANG_NAME()
     );
     return false;
   }
@@ -750,8 +751,8 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       c_ast_t const *const ret_ast = ast->as.oper.ret_ast;
       if ( !c_ast_is_ptr_to_type( ret_ast, T_CLASS_STRUCT_UNION ) ) {
         print_error( &ret_ast->loc,
-          "%s -> must return a pointer to %s, %s, or %s",
-          L_OPERATOR, L_STRUCT, L_UNION, L_CLASS
+          "%s %s must return a %s to %s, %s, or %s",
+          L_OPERATOR, op->name, L_POINTER, L_STRUCT, L_UNION, L_CLASS
         );
         return false;
       }
@@ -1066,7 +1067,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
 
   switch ( ret_ast->kind_id ) {
     case K_ARRAY:
-      print_error( &ret_ast->loc, "%s returning array", kind_name );
+      print_error( &ret_ast->loc, "%s returning %s", kind_name, L_ARRAY );
       print_hint( "%s returning %s", kind_name, L_POINTER );
       return false;
     case K_BUILTIN:
@@ -1085,8 +1086,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
     case K_USER_DEF_LITERAL:
       print_error( &ret_ast->loc,
         "%s returning %s",
-        kind_name,
-        c_kind_name( ret_ast->kind_id )
+        kind_name, c_kind_name( ret_ast->kind_id )
       );
       print_hint( "%s returning %s to %s", kind_name, L_POINTER, L_FUNCTION );
       return false;
@@ -1519,7 +1519,9 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
  */
 static bool error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
   assert( ast != NULL );
-  print_error( &ast->loc, "can not cast into %s", c_kind_name( ast->kind_id ) );
+  print_error( &ast->loc,
+    "can not %s %s %s", L_CAST, L_INTO, c_kind_name( ast->kind_id )
+  );
   if ( hint != NULL )
     print_hint( "%s %s %s", L_CAST, L_INTO, hint );
   return false;
