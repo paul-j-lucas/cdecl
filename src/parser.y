@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 26
+%expect 27
 
 %{
 /** @endcond */
@@ -564,30 +564,29 @@ static bool explain_type_decl( bool has_typename,
     }
   }
   else {
-    c_sname_t sname = c_ast_take_name( ast );
-    char const *local_name = NULL;
-    char const *scope_name = "";
+    c_sname_t const *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
+    char const *local_name, *scope_name;
 
     if ( ast->kind_id == K_OPERATOR ) {
       local_name = op_token_c( ast->as.oper.oper_id );
-      scope_name = c_sname_full_name( &sname );
+      scope_name = found_sname != NULL ? c_sname_full_name( found_sname ) : "";
     } else {
-      assert( !c_sname_empty( &sname ) );
-      local_name = c_sname_local_name( &sname );
-      scope_name = c_sname_scope_name( &sname );
+      assert( found_sname != NULL );
+      assert( !c_sname_empty( found_sname ) );
+      local_name = c_sname_local_name( found_sname );
+      scope_name = c_sname_scope_name( found_sname );
     }
 
     assert( local_name != NULL );
     FPRINTF( fout, "%s %s ", L_DECLARE, local_name );
     if ( scope_name[0] != '\0' ) {
-      c_type_id_t const sn_type = c_sname_type( &sname );
+      c_type_id_t const sn_type = c_sname_type( found_sname );
       assert( sn_type != T_NONE );
       FPRINTF( fout, "%s %s %s ", L_OF, c_type_name( sn_type ), scope_name );
     }
     FPRINTF( fout, "%s ", L_AS );
     if ( is_typedef )
       FPRINTF( fout, "%s ", L_TYPE );
-    c_sname_free( &sname );
   }
 
   c_ast_english( ast, fout );
@@ -4758,49 +4757,53 @@ conversion_expected
   ;
 
 c_operator
-  : Y_EXCLAM                      { $$ = C_OP_EXCLAM          ; }
-  | Y_EXCLAM_EQ                   { $$ = C_OP_EXCLAM_EQ       ; }
-  | '%'                           { $$ = C_OP_PERCENT         ; }
-  | "%="                          { $$ = C_OP_PERCENT_EQ      ; }
-  | Y_AMPER                       { $$ = C_OP_AMPER           ; }
-  | Y_AMPER2                      { $$ = C_OP_AMPER2          ; }
-  | Y_AMPER_EQ                    { $$ = C_OP_AMPER_EQ        ; }
-  | '(' rparen_expected           { $$ = C_OP_PARENS          ; }
-  | '*'                           { $$ = C_OP_STAR            ; }
-  | "*="                          { $$ = C_OP_STAR_EQ         ; }
-  | '+'                           { $$ = C_OP_PLUS            ; }
-  | "++"                          { $$ = C_OP_PLUS2           ; }
-  | "+="                          { $$ = C_OP_PLUS_EQ         ; }
-  | ','                           { $$ = C_OP_COMMA           ; }
-  | '-'                           { $$ = C_OP_MINUS           ; }
-  | "--"                          { $$ = C_OP_MINUS2          ; }
-  | "-="                          { $$ = C_OP_MINUS_EQ        ; }
-  | "->"                          { $$ = C_OP_ARROW           ; }
-  | "->*"                         { $$ = C_OP_ARROW_STAR      ; }
-  | '.'                           { $$ = C_OP_DOT             ; }
-  | ".*"                          { $$ = C_OP_DOT_STAR        ; }
-  | '/'                           { $$ = C_OP_SLASH           ; }
-  | "/="                          { $$ = C_OP_SLASH_EQ        ; }
-  | "::"                          { $$ = C_OP_COLON2          ; }
-  | '<'                           { $$ = C_OP_LESS            ; }
-  | "<<"                          { $$ = C_OP_LESS2           ; }
-  | "<<="                         { $$ = C_OP_LESS2_EQ        ; }
-  | "<="                          { $$ = C_OP_LESS_EQ         ; }
-  | "<=>"                         { $$ = C_OP_LESS_EQ_GREATER ; }
-  | '='                           { $$ = C_OP_EQ              ; }
-  | "=="                          { $$ = C_OP_EQ2             ; }
-  | '>'                           { $$ = C_OP_GREATER         ; }
-  | ">>"                          { $$ = C_OP_GREATER2        ; }
-  | ">>="                         { $$ = C_OP_GREATER2_EQ     ; }
-  | ">="                          { $$ = C_OP_GREATER_EQ      ; }
-  | "?:"                          { $$ = C_OP_QMARK_COLON     ; }
-  | '[' rbracket_expected         { $$ = C_OP_BRACKETS        ; }
-  | Y_CIRC                        { $$ = C_OP_CIRC            ; }
-  | Y_CIRC_EQ                     { $$ = C_OP_CIRC_EQ         ; }
-  | Y_PIPE                        { $$ = C_OP_PIPE            ; }
-  | Y_PIPE2                       { $$ = C_OP_PIPE2           ; }
-  | Y_PIPE_EQ                     { $$ = C_OP_PIPE_EQ         ; }
-  | Y_TILDE                       { $$ = C_OP_TILDE           ; }
+  : Y_NEW                           { $$ = C_OP_NEW             ; }
+  | Y_NEW '[' rbracket_expected     { $$ = C_OP_NEW_ARRAY       ; }
+  | Y_DELETE                        { $$ = C_OP_DELETE          ; }
+  | Y_DELETE '[' rbracket_expected  { $$ = C_OP_DELETE_ARRAY    ; }
+  | Y_EXCLAM                        { $$ = C_OP_EXCLAM          ; }
+  | Y_EXCLAM_EQ                     { $$ = C_OP_EXCLAM_EQ       ; }
+  | '%'                             { $$ = C_OP_PERCENT         ; }
+  | "%="                            { $$ = C_OP_PERCENT_EQ      ; }
+  | Y_AMPER                         { $$ = C_OP_AMPER           ; }
+  | Y_AMPER2                        { $$ = C_OP_AMPER2          ; }
+  | Y_AMPER_EQ                      { $$ = C_OP_AMPER_EQ        ; }
+  | '(' rparen_expected             { $$ = C_OP_PARENS          ; }
+  | '*'                             { $$ = C_OP_STAR            ; }
+  | "*="                            { $$ = C_OP_STAR_EQ         ; }
+  | '+'                             { $$ = C_OP_PLUS            ; }
+  | "++"                            { $$ = C_OP_PLUS2           ; }
+  | "+="                            { $$ = C_OP_PLUS_EQ         ; }
+  | ','                             { $$ = C_OP_COMMA           ; }
+  | '-'                             { $$ = C_OP_MINUS           ; }
+  | "--"                            { $$ = C_OP_MINUS2          ; }
+  | "-="                            { $$ = C_OP_MINUS_EQ        ; }
+  | "->"                            { $$ = C_OP_ARROW           ; }
+  | "->*"                           { $$ = C_OP_ARROW_STAR      ; }
+  | '.'                             { $$ = C_OP_DOT             ; }
+  | ".*"                            { $$ = C_OP_DOT_STAR        ; }
+  | '/'                             { $$ = C_OP_SLASH           ; }
+  | "/="                            { $$ = C_OP_SLASH_EQ        ; }
+  | "::"                            { $$ = C_OP_COLON2          ; }
+  | '<'                             { $$ = C_OP_LESS            ; }
+  | "<<"                            { $$ = C_OP_LESS2           ; }
+  | "<<="                           { $$ = C_OP_LESS2_EQ        ; }
+  | "<="                            { $$ = C_OP_LESS_EQ         ; }
+  | "<=>"                           { $$ = C_OP_LESS_EQ_GREATER ; }
+  | '='                             { $$ = C_OP_EQ              ; }
+  | "=="                            { $$ = C_OP_EQ2             ; }
+  | '>'                             { $$ = C_OP_GREATER         ; }
+  | ">>"                            { $$ = C_OP_GREATER2        ; }
+  | ">>="                           { $$ = C_OP_GREATER2_EQ     ; }
+  | ">="                            { $$ = C_OP_GREATER_EQ      ; }
+  | "?:"                            { $$ = C_OP_QMARK_COLON     ; }
+  | '[' rbracket_expected           { $$ = C_OP_BRACKETS        ; }
+  | Y_CIRC                          { $$ = C_OP_CIRC            ; }
+  | Y_CIRC_EQ                       { $$ = C_OP_CIRC_EQ         ; }
+  | Y_PIPE                          { $$ = C_OP_PIPE            ; }
+  | Y_PIPE2                         { $$ = C_OP_PIPE2           ; }
+  | Y_PIPE_EQ                       { $$ = C_OP_PIPE_EQ         ; }
+  | Y_TILDE                         { $$ = C_OP_TILDE           ; }
   ;
 
 equals_expected

@@ -1,0 +1,1 @@
+declare new[] of structure S as member operator (n as size_t of namespace std) returning pointer to void

@@ -1,0 +1,1 @@
+declare delete as static member operator (p as pointer to void) returning void

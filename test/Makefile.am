@@ -876,6 +876,10 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_nfi_v-02-c++.test \
 	tests/declare_nfi_v-03-c++.test \
 	tests/declare_ntf.test \
+	tests/declare_o_delete_a_pv_v.test \
+	tests/declare_o_delete_pv_v.test \
+	tests/declare_o_new_a_z_pv.test \
+	tests/declare_o_new_z_pv.test \
 	tests/declare_oyf.test \
 	tests/declare_pfv_ri.test \
 	tests/declare_pmci.test \
@@ -929,7 +933,11 @@ TESTS+=	tests/declare_+ctor-error.test \
 # C++ declare member operator tests
 # =================================
 #
-TESTS+=	tests/declare_mo_amper2_rck_b.test \
+TESTS+=	tests/declare_+o_delete_a_pv_v.test \
+	tests/declare_+o_delete_pv_v.test \
+	tests/declare_+o_new_a_z_pv.test \
+	tests/declare_+o_new_z_pv.test \
+	tests/declare_mo_amper2_rck_b.test \
 	tests/declare_mo_amper_eq_i_rk.test \
 	tests/declare_mo_amper_i_rk.test \
 	tests/declare_mo_amper_pk.test \
@@ -959,7 +967,8 @@ TESTS+=	tests/declare_mo_amper2_rck_b.test \
 	tests/declare_mo_star_eq_i_rk.test \
 	tests/declare_mo_star_i_rk.test \
 	tests/declare_mo_star_rk.test \
-	tests/declare_mo_tilde_k.test
+	tests/declare_mo_tilde_k.test \
+	tests/declare_so_delete_pv_v.test
 
 #
 # C++ declare non-member operator tests
@@ -1163,6 +1172,8 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_ki+.test \
 	tests/explain_mi.test \
 	tests/explain_nfi_v-c++.test \
+	tests/explain_o_new_a_z_pv.test \
+	tests/explain_o_new_z_pv.test \
 	tests/explain_oyf.test \
 	tests/explain_pmf_i.test \
 	tests/explain_pmf_pc.test \
@@ -1236,6 +1247,10 @@ TESTS+=	tests/explain_+o_eq2_rcki_b.test \
 	tests/explain_+o_eq_rck_rk.test \
 	tests/explain_+o_eq_rck_rk=default-01.test \
 	tests/explain_+o_eq_rck_rk=delete-01.test \
+	tests/explain_+o_delete_a_pv_v.test \
+	tests/explain_+o_delete_pv_v.test \
+	tests/explain_+o_new_a_z_pv.test \
+	tests/explain_+o_new_z_pv.test \
 	tests/explain_0o_amper_rk_pk.test \
 	tests/explain_0o_star_rk_rk.test \
 	tests/explain_co_amper_rk_pk.test \
@@ -1261,6 +1276,8 @@ TESTS+=	tests/explain_+o_eq2_rcki_b.test \
 	tests/explain_o_comma_i_rk.test \
 	tests/explain_o_comma_rcki_k.test \
 	tests/explain_o_comma_rki_rk.test \
+	tests/explain_o_delete_a_pv_v.test \
+	tests/explain_o_delete_pv_v.test \
 	tests/explain_o_eq2_i_b.test \
 	tests/explain_o_eq2_ki_b.test \
 	tests/explain_o_exclam_b.test \
@@ -1329,6 +1346,8 @@ TESTS+=	tests/explain_+o_eq2_rcki_b.test \
 	tests/explain_ro_star_rk_rk.test \
 	tests/explain_rro_amper_rk_pk.test \
 	tests/explain_rro_star_rk_rk.test \
+	tests/explain_so_delete_pv_v.test \
+	tests/explain_so_new_z_pv.test \
 	tests/explain_vo_amper_rk_pk.test \
 	tests/explain_vo_star_rk_rk.test \
 	tests/explain_yo_amper_rk_pk.test \
@@ -1349,6 +1368,7 @@ TESTS+=	tests/explain_+o_eq_rck_rk=default-02.test \
 	tests/explain_o_minus2_d_rk.test \
 	tests/explain_o_minus2_rkd_rk.test \
 	tests/explain_o_minus_ie_i.test \
+	tests/explain_o_new_z_z.test \
 	tests/explain_o_oexclam_k_b.test \
 	tests/explain_o_plus2_d_rk.test \
 	tests/explain_o_plus2_rkd_rk.test \

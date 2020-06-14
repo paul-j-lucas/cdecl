@@ -10,7 +10,11 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 7.1.1
+* Changes in Cdecl 7.2
+
+** new & delete operator overloading
+Added support for composing and deciphering C++ overloaded new, new[], delete,
+and delete[] operators.
 
 ** extern & static functions
 Extern or static functions can not be const.
@@ -26,6 +30,9 @@ the explanation is:
     declare x as Int of structure S
 
 but English types ("T of ...") weren't legal in cdecl's grammar.  They are now.
+
+** More C++ std types
+Added types std::align_val_t, std::destroying_delete_t, and std::nothrow_t.
 
 ** throw() put back
 "throw" is still a keyword so it was put back in C++20.

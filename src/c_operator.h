@@ -73,6 +73,10 @@ _GL_INLINE_HEADER_BEGIN
  */
 enum c_oper_id {
   C_OP_NONE,            ///< No operator.
+  C_OP_NEW,             ///< The `new` operator.
+  C_OP_NEW_ARRAY,       ///< The `new[]` operator.
+  C_OP_DELETE,          ///< The `delete` operator.
+  C_OP_DELETE_ARRAY,    ///< The `delete[]` operator.
   C_OP_EXCLAM,          ///< The `!` operator.
   C_OP_EXCLAM_EQ,       ///< The `!=` operator.
   C_OP_PERCENT,         ///< The `%` operator.

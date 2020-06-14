@@ -1,0 +1,1 @@
+declare delete[] of structure S as member operator (p as pointer to void) returning void

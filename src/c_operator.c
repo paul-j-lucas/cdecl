@@ -30,9 +30,12 @@
 /// @endcond
 #include "c_ast.h"
 #include "c_operator.h"
+#include "literals.h"
 
 // standard
 #include <assert.h>
+
+#define UNLIMITED                 C_OP_ARGS_UNLIMITED
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -40,50 +43,54 @@
  * Array of `c_operator` for all C/C++ operators indexed by a `c_oper_id`.
  */
 static c_operator_t const C_OPERATOR[] = {
-  { "",     C_OP_NOT_OVERLOADABLE,  0, 0,                   LANG_NONE         },
-  { "!",    C_OP_OVERLOADABLE,      0, 1,                   LANG_CPP_ALL      },
-  { "!=",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "%",    C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "%=",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "&",    C_OP_OVERLOADABLE,      0, 2,                   LANG_CPP_ALL      },
-  { "&&",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "&=",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "()",   C_OP_MEMBER,            0, C_OP_ARGS_UNLIMITED, LANG_CPP_ALL      },
-  { "*",    C_OP_OVERLOADABLE,      0, 2,                   LANG_CPP_ALL      },
-  { "*=",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "+",    C_OP_OVERLOADABLE,      0, 2,                   LANG_CPP_ALL      },
-  { "++",   C_OP_OVERLOADABLE,      0, 2,                   LANG_CPP_ALL      },
-  { "+=",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { ",",    C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "-",    C_OP_OVERLOADABLE,      0, 2,                   LANG_CPP_ALL      },
-  { "--",   C_OP_OVERLOADABLE,      0, 2,                   LANG_CPP_ALL      },
-  { "-=",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "->",   C_OP_MEMBER,            0, 0,                   LANG_CPP_ALL      },
-  { "->*",  C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { ".",    C_OP_NOT_OVERLOADABLE,  0, 0,                   LANG_CPP_ALL      },
-  { ".*",   C_OP_NOT_OVERLOADABLE,  0, 0,                   LANG_CPP_ALL      },
-  { "/",    C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "/=",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "::",   C_OP_NOT_OVERLOADABLE,  0, 0,                   LANG_CPP_ALL      },
-  { "<",    C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "<<",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "<<=",  C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "<=",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "<=>",  C_OP_OVERLOADABLE,      1, 2,                   LANG_MIN(CPP_20)  },
-  { "=",    C_OP_MEMBER,            1, 1,                   LANG_CPP_ALL      },
-  { "==",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { ">",    C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { ">=",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { ">>",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { ">>=",  C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "?:",   C_OP_NOT_OVERLOADABLE,  0, 0,                   LANG_CPP_ALL      },
-  { "[]",   C_OP_MEMBER,            1, 1,                   LANG_CPP_ALL      },
-  { "^",    C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "^=",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "|",    C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "|=",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "||",   C_OP_OVERLOADABLE,      1, 2,                   LANG_CPP_ALL      },
-  { "~",    C_OP_OVERLOADABLE,      0, 1,                   LANG_CPP_ALL      },
+  { "",         C_OP_NOT_OVERLOADABLE,  0, 0,         LANG_NONE         },
+  { L_NEW,      C_OP_OVERLOADABLE,      1, UNLIMITED, LANG_CPP_ALL      },
+  { "new[]",    C_OP_OVERLOADABLE,      1, UNLIMITED, LANG_CPP_ALL      },
+  { L_DELETE,   C_OP_OVERLOADABLE,      1, UNLIMITED, LANG_CPP_ALL      },
+  { "delete[]", C_OP_OVERLOADABLE,      1, UNLIMITED, LANG_CPP_ALL      },
+  { "!",        C_OP_OVERLOADABLE,      0, 1,         LANG_CPP_ALL      },
+  { "!=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "%",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "%=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "&",        C_OP_OVERLOADABLE,      0, 2,         LANG_CPP_ALL      },
+  { "&&",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "&=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "()",       C_OP_MEMBER,            0, UNLIMITED, LANG_CPP_ALL      },
+  { "*",        C_OP_OVERLOADABLE,      0, 2,         LANG_CPP_ALL      },
+  { "*=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "+",        C_OP_OVERLOADABLE,      0, 2,         LANG_CPP_ALL      },
+  { "++",       C_OP_OVERLOADABLE,      0, 2,         LANG_CPP_ALL      },
+  { "+=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { ",",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "-",        C_OP_OVERLOADABLE,      0, 2,         LANG_CPP_ALL      },
+  { "--",       C_OP_OVERLOADABLE,      0, 2,         LANG_CPP_ALL      },
+  { "-=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "->",       C_OP_MEMBER,            0, 0,         LANG_CPP_ALL      },
+  { "->*",      C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { ".",        C_OP_NOT_OVERLOADABLE,  0, 0,         LANG_CPP_ALL      },
+  { ".*",       C_OP_NOT_OVERLOADABLE,  0, 0,         LANG_CPP_ALL      },
+  { "/",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "/=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "::",       C_OP_NOT_OVERLOADABLE,  0, 0,         LANG_CPP_ALL      },
+  { "<",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "<<",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "<<=",      C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "<=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "<=>",      C_OP_OVERLOADABLE,      1, 2,         LANG_MIN(CPP_20)  },
+  { "=",        C_OP_MEMBER,            1, 1,         LANG_CPP_ALL      },
+  { "==",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { ">",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { ">=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { ">>",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { ">>=",      C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "?:",       C_OP_NOT_OVERLOADABLE,  0, 0,         LANG_CPP_ALL      },
+  { "[]",       C_OP_MEMBER,            1, 1,         LANG_CPP_ALL      },
+  { "^",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "^=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "|",        C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "|=",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "||",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
+  { "~",        C_OP_OVERLOADABLE,      0, 1,         LANG_CPP_ALL      },
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -126,6 +133,21 @@ unsigned op_get_overload( c_ast_t const *ast ) {
     return C_OP_MEMBER;
   if ( (ast->type_id & T_NONMEMBER_FUNC_ONLY) != T_NONE )
     return C_OP_NON_MEMBER;
+
+  //
+  // Special case for new & delete operators: they're member operators if they
+  // have a name (of a class) or declared static.
+  //
+  switch ( ast->as.oper.oper_id ) {
+    case C_OP_NEW:
+    case C_OP_NEW_ARRAY:
+    case C_OP_DELETE:
+    case C_OP_DELETE_ARRAY:
+      return !c_ast_sname_empty( ast ) || (ast->type_id & T_STATIC) != T_NONE ?
+        C_OP_MEMBER : C_OP_NON_MEMBER;
+    default:
+      /* suppress warning */;
+  } // switch
 
   //
   // No such qualifier: try to infer whether it's a member or non-member based

@@ -163,6 +163,10 @@ _GL_INLINE_HEADER_BEGIN
                               | T_OVERRIDE | T_FINAL | T_VIRTUAL \
                               | T_REFERENCE | T_RESTRICT | T_RVALUE_REFERENCE )
 
+/** The type(s) that can apply to operators new, new[], delete, & delete[] . */
+#define T_NEW_DELETE_OPER     ( T_EXTERN | T_FRIEND | T_NOEXCEPT | T_STATIC \
+                              | T_THROW )
+
 /** The type(s) that can apply only to non-member functions or operators. */
 #define T_NONMEMBER_FUNC_ONLY T_FRIEND
 

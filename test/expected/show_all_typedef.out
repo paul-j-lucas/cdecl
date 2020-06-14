@@ -279,7 +279,9 @@ typedef unsigned long sigset_t;
 typedef unsigned long size_t;
 typedef uint32_t socklen_t;
 typedef long ssize_t;
+namespace std { typedef enum align_val_t align_val_t; }
 namespace std { typedef enum byte byte; }
+namespace std { typedef struct destroying_delete_t destroying_delete_t; }
 namespace std { typedef struct div_t div_t; }
 namespace std { typedef class exception exception; }
 namespace std { typedef struct imaxdiv_t imaxdiv_t; }
@@ -287,6 +289,7 @@ namespace std { typedef class jthread jthread; }
 namespace std { typedef struct ldiv_t ldiv_t; }
 namespace std { typedef struct lldiv_t lldiv_t; }
 namespace std { typedef long double max_align_t; }
+namespace std { typedef struct nothrow_t nothrow_t; }
 namespace std { typedef void *nullptr_t; }
 namespace std { typedef struct partial_ordering partial_ordering; }
 namespace std { typedef long ptrdiff_t; }

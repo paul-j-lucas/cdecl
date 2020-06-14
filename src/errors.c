@@ -62,6 +62,12 @@ C_WARN_UNUSED_RESULT
 static bool c_ast_check_func_cpp( c_ast_t const* );
 
 C_WARN_UNUSED_RESULT
+static bool c_ast_check_oper_new_args( c_ast_t const* );
+
+C_WARN_UNUSED_RESULT
+static bool c_ast_check_oper_delete_args( c_ast_t const* );
+
+C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_error( c_ast_t*, void* );
 
 C_WARN_UNUSED_RESULT
@@ -373,7 +379,8 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
 
   if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
        (ast->type_id & T_ENUM) != T_NONE &&
-       (ast->type_id & (T_STRUCT | T_CLASS)) != T_NONE ) {
+       (ast->type_id & (T_STRUCT | T_CLASS)) != T_NONE &&
+       (ast->type_id & T_TYPEDEF) == T_NONE ) {
     print_error( &ast->loc,
       "\"%s\": %s classes must just use \"%s\"",
       c_type_name_error( ast->type_id ), L_ENUM, L_ENUM
@@ -743,12 +750,34 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
   }
 
   switch ( ast->as.oper.oper_id ) {
-    case C_OP_ARROW: {
+    case C_OP_NEW:
+    case C_OP_NEW_ARRAY:
+    case C_OP_DELETE:
+    case C_OP_DELETE_ARRAY:
+      //
+      // Special case for operators new, new[], delete, and delete[] that can
+      // only have specific types.
+      //
+      if ( (ast->type_id & ~T_NEW_DELETE_OPER) != T_NONE ) {
+        print_error( &ast->loc,
+          "%s %s can not be %s",
+          L_OPERATOR, op->name, c_type_name_error( ast->type_id )
+        );
+        return false;
+      }
+      break;
+    default:
+      /* suppress warning */;
+  } // switch
+
+  c_ast_t const *const ret_ast = ast->as.oper.ret_ast;
+
+  switch ( ast->as.oper.oper_id ) {
+    case C_OP_ARROW:
       //
       // Special case for operator-> that must return a pointer to a struct,
       // union, or class.
       //
-      c_ast_t const *const ret_ast = ast->as.oper.ret_ast;
       if ( !c_ast_is_ptr_to_type( ret_ast, T_CLASS_STRUCT_UNION ) ) {
         print_error( &ret_ast->loc,
           "%s %s must return a %s to %s, %s, or %s",
@@ -757,7 +786,36 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
         return false;
       }
       break;
-    }
+
+    case C_OP_DELETE:
+    case C_OP_DELETE_ARRAY:
+      //
+      // Special case for operators delete and delete[] that must return void.
+      //
+      if ( ret_ast->type_id != T_VOID ) {
+        print_error( &ret_ast->loc,
+          "%s %s must return %s",
+          L_OPERATOR, op->name, L_VOID
+        );
+        return false;
+      }
+      break;
+
+    case C_OP_NEW:
+    case C_OP_NEW_ARRAY:
+      //
+      // Special case for operators new and new[] that must return pointer to
+      // void.
+      //
+      if ( !c_ast_is_ptr_to_type( ret_ast, T_VOID ) ) {
+        print_error( &ret_ast->loc,
+          "%s %s must return a %s to %s",
+          L_OPERATOR, op->name, L_POINTER, L_VOID
+        );
+        return false;
+      }
+      break;
+
     default:
       /* suppress warning */;
   } // switch
@@ -890,8 +948,8 @@ same: print_error( &ast->loc,
     c_type_id_t const member_only_types = ast->type_id & T_MEMBER_FUNC_ONLY;
     if ( member_only_types != T_NONE ) {
       print_error( &ast->loc,
-        "%s operators can not be %s",
-        L_NON_MEMBER,
+        "%s %ss can not be %s",
+        L_NON_MEMBER, L_OPERATOR,
         c_type_name_error( member_only_types )
       );
       return false;
@@ -964,9 +1022,93 @@ same: print_error( &ast->loc,
       break;
     }
 
+    case C_OP_DELETE:
+    case C_OP_DELETE_ARRAY:
+      return c_ast_check_oper_delete_args( ast );
+
+    case C_OP_NEW:
+    case C_OP_NEW_ARRAY:
+      return c_ast_check_oper_new_args( ast );
+
     default:
       /* suppress warning */;
   } // switch
+  return true;
+}
+
+/**
+ * Checks overloaded operator `delete` and `delete[]` arguments for semantic
+ * errors.
+ *
+ * @param ast The user-defined operator `delete` `c_ast` to check.
+ * @return Returns `true` only if all checks passed.
+ */
+static bool c_ast_check_oper_delete_args( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind_id == K_OPERATOR );
+  assert( ast->as.oper.oper_id == C_OP_DELETE ||
+          ast->as.oper.oper_id == C_OP_DELETE_ARRAY );
+
+  c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+
+  size_t const args_count = c_ast_args_count( ast );
+  if ( args_count == 0 ) {
+    print_error( &ast->loc,
+      "%s %s must have at least one argument",
+      L_OPERATOR, op->name
+    );
+    return false;
+  }
+
+  c_ast_arg_t const *const arg = c_ast_args( ast );
+  c_ast_t const *const arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
+
+  if ( !c_ast_is_ptr_to_type( arg_ast, T_VOID | T_CLASS_STRUCT_UNION ) ) {
+    print_error( &arg_ast->loc,
+      "invalid argument type for %s %s; must be a %s to %s, %s, %s, or %s",
+      L_OPERATOR, op->name,
+      L_POINTER, L_VOID, L_CLASS, L_STRUCT, L_UNION
+    );
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Checks overloaded operator `new` and `new[]` arguments for semantic errors.
+ *
+ * @param ast The user-defined operator `new` `c_ast` to check.
+ * @return Returns `true` only if all checks passed.
+ */
+static bool c_ast_check_oper_new_args( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind_id == K_OPERATOR );
+  assert( ast->as.oper.oper_id == C_OP_NEW ||
+          ast->as.oper.oper_id == C_OP_NEW_ARRAY );
+
+  c_operator_t const *const op = op_get( ast->as.oper.oper_id );
+
+  size_t const args_count = c_ast_args_count( ast );
+  if ( args_count == 0 ) {
+    print_error( &ast->loc,
+      "%s %s must have at least one argument",
+      L_OPERATOR, op->name
+    );
+    return false;
+  }
+
+  c_ast_arg_t const *const arg = c_ast_args( ast );
+  c_ast_t const *const arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
+
+  if ( !c_type_is_size_t( arg_ast->type_id ) ) {
+    print_error( &arg_ast->loc,
+      "invalid argument type for %s %s; must be std::size_t (or equivalent)",
+      L_OPERATOR, op->name
+    );
+    return false;
+  }
+
   return true;
 }
 
@@ -1168,8 +1310,8 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
       arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
       if ( arg_ast == NULL || !c_type_is_size_t( arg_ast->type_id ) ) {
         print_error( &arg_ast->loc,
-          "invalid argument type for %s %s; must be one of: "
-          "unsigned long, size_t",
+          "invalid argument type for %s %s; "
+          "must be std::size_t (or equivalent)",
           L_USER_DEFINED, L_LITERAL
         );
         return false;

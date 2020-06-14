@@ -1,0 +1,1 @@
+cdecl @ /dev/null @ -xc++ @ define S as struct S; explain void* S::operator new[](std::size_t n) @ 0

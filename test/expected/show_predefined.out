@@ -278,7 +278,9 @@ define sigset_t as unsigned long
 define size_t as unsigned long
 define socklen_t as uint32_t
 define ssize_t as long
+define align_val_t of namespace std as enum class align_val_t
 define byte of namespace std as enum byte
+define destroying_delete_t of namespace std as struct destroying_delete_t
 define div_t of namespace std as struct div_t
 define exception of namespace std as class exception
 define imaxdiv_t of namespace std as struct imaxdiv_t
@@ -286,6 +288,7 @@ define jthread of namespace std as class jthread
 define ldiv_t of namespace std as struct ldiv_t
 define lldiv_t of namespace std as struct lldiv_t
 define max_align_t of namespace std as long double
+define nothrow_t of namespace std as struct nothrow_t
 define nullptr_t of namespace std as pointer to void
 define partial_ordering of namespace std as struct partial_ordering
 define ptrdiff_t of namespace std as long
