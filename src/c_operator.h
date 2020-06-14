@@ -175,7 +175,7 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
  * @param op The C/C++ operator to check.
  * @return Returns `true` only if the operator is ambiguous.
  */
-C_WARN_UNUSED_RESULT C_OP_INLINE
+C_OP_INLINE C_WARN_UNUSED_RESULT
 bool c_oper_is_ambiguous( c_operator_t const *op ) {
   return op->args_min == 0 && op->args_max == 2;
 }
@@ -196,7 +196,7 @@ unsigned c_oper_get_overload( c_ast_t const *ast );
  * @param oper_id The ID of the `c_operator` to get the token for.
  * @return Returns said token; otherwise, returns the unaltered token.
  */
-C_WARN_UNUSED_RESULT C_OP_INLINE
+C_OP_INLINE C_WARN_UNUSED_RESULT
 char const* c_oper_token_c( c_oper_id_t oper_id ) {
   return alt_token_c( graph_token_c( c_oper_get( oper_id )->name ) );
 }

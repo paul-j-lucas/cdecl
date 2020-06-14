@@ -170,7 +170,7 @@ slist_t slist_dup( slist_t const *src, ssize_t n,
  * @param list A pointer to the <code>\ref slist</code> to check.
  * @return Returns `true` only if \a list is empty.
  */
-C_WARN_UNUSED_RESULT C_SLIST_INLINE
+C_SLIST_INLINE C_WARN_UNUSED_RESULT
 bool slist_empty( slist_t const *list ) {
   return list->head == NULL;
 }
@@ -198,7 +198,7 @@ void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
  * @sa SLIST_HEAD()
  * @sa slist_tail()
  */
-C_WARN_UNUSED_RESULT C_SLIST_INLINE
+C_SLIST_INLINE C_WARN_UNUSED_RESULT
 void* slist_head( slist_t const *list ) {
   return list->head != NULL ? list->head->data : NULL;
 }
@@ -235,7 +235,7 @@ void slist_init( slist_t *list ) {
  * @param list A pointer to the <code>\ref slist</code> to get the length of.
  * @return Returns said length.
  */
-C_WARN_UNUSED_RESULT C_SLIST_INLINE
+C_SLIST_INLINE C_WARN_UNUSED_RESULT
 size_t slist_len( slist_t const *list ) {
   return list->len;
 }
@@ -281,7 +281,7 @@ void* slist_peek_at( slist_t const *list, size_t offset );
  * @sa slist_peek_at()
  * @sa SLIST_PEEK_ATR()
  */
-C_WARN_UNUSED_RESULT C_SLIST_INLINE
+C_SLIST_INLINE C_WARN_UNUSED_RESULT
 void* slist_peek_atr( slist_t const *list, size_t roffset ) {
   return roffset < list->len ?
     slist_peek_at( list, list->len - (roffset + 1) ) : NULL;
@@ -384,7 +384,7 @@ void slist_push_tail( slist_t *list, void *data );
  * @sa slist_head()
  * @sa SLIST_TAIL()
  */
-C_WARN_UNUSED_RESULT C_SLIST_INLINE
+C_SLIST_INLINE C_WARN_UNUSED_RESULT
 void* slist_tail( slist_t const *list ) {
   return list->tail != NULL ? list->tail->data : NULL;
 }

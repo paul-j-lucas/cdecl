@@ -142,7 +142,7 @@ void c_kind_data_free( void *data ) {
  *
  * @sa c_kind_data_new(c_kind_t)
  */
-C_WARN_UNUSED_RESULT C_KIND_INLINE
+C_KIND_INLINE C_WARN_UNUSED_RESULT
 c_kind_t c_kind_data_get( void const *data ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
   return *REINTERPRET_CAST( c_kind_t const*, data );
@@ -159,7 +159,7 @@ c_kind_t c_kind_data_get( void const *data ) {
  *
  * @sa c_kind_data_free(void*)
  */
-C_WARN_UNUSED_RESULT C_KIND_INLINE
+C_KIND_INLINE C_WARN_UNUSED_RESULT
 void* c_kind_data_new( c_kind_t kind_id ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
   c_kind_t *const data = MALLOC( c_kind_t, 1 );

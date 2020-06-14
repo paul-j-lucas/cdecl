@@ -134,7 +134,7 @@ c_lang_id_t c_lang_find( char const *name );
  *
  * @sa c_lang_is_cpp()
  */
-C_WARN_UNUSED_RESULT C_LANG_INLINE
+C_LANG_INLINE C_WARN_UNUSED_RESULT
 bool c_lang_is_c( c_lang_id_t lang_id ) {
   return (lang_id & LANG_MASK_C) != LANG_NONE;
 }
@@ -147,7 +147,7 @@ bool c_lang_is_c( c_lang_id_t lang_id ) {
  *
  * @sa c_lang_is_c()
  */
-C_WARN_UNUSED_RESULT C_LANG_INLINE
+C_LANG_INLINE C_WARN_UNUSED_RESULT
 bool c_lang_is_cpp( c_lang_id_t lang_id ) {
   return (lang_id & LANG_MASK_CPP) != LANG_NONE;
 }
@@ -192,7 +192,7 @@ char const* c_lang_names( void );
  * @param lang_id The bitwise-or of language(s).
  * @return Returns said language.
  */
-C_WARN_UNUSED_RESULT C_LANG_INLINE
+C_LANG_INLINE C_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_id ) {
   return lang_id & ~(lang_id - 1u);
 }
