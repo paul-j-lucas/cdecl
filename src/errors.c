@@ -232,7 +232,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
     case K_BUILTIN:
       if ( (of_ast->type_id & T_VOID) != T_NONE ) {
         print_error( &ast->loc, "array of %s", L_VOID );
-        print_hint( "array of pointer to %s", L_VOID );
+        print_hint( "%s of %s to %s", L_ARRAY, L_POINTER, L_VOID );
         return false;
       }
       if ( (of_ast->type_id & T_REGISTER) != T_NONE ) {
@@ -247,7 +247,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
     case K_USER_DEF_CONVERSION:
     case K_USER_DEF_LITERAL:
       print_error( &ast->loc, "array of %s", c_kind_name( of_ast->kind_id ) );
-      print_hint( "array of pointer to function" );
+      print_hint( "%s of %s to %s", L_ARRAY, L_POINTER, L_FUNCTION );
       return false;
     case K_NAME:
       error_unknown_type( of_ast );
@@ -280,7 +280,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
 
   if ( (ast->type_id & T_VOID) != T_NONE && ast->parent_ast == NULL ) {
     print_error( &ast->loc, "variable of %s", L_VOID );
-    print_hint( "pointer to %s", L_VOID );
+    print_hint( "%s to %s", L_POINTER, L_VOID );
     return false;
   }
 
@@ -1021,8 +1021,8 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
       c_type_name_error( ast->type_id & T_MASK_QUALIFIER )
     );
     print_hint(
-      "reference to %s",
-      c_type_name_error( ast->type_id & T_MASK_QUALIFIER )
+      "%s to %s",
+      L_REFERENCE, c_type_name_error( ast->type_id & T_MASK_QUALIFIER )
     );
     return false;
   }
@@ -1042,7 +1042,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
 
   if ( (to_ast->type_id & T_VOID) != T_NONE ) {
     error_kind_to_type( ast, T_VOID );
-    print_hint( "pointer to void" );
+    print_hint( "%s to %s", L_POINTER, L_VOID );
     return false;
   }
 
@@ -1065,7 +1065,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   switch ( ret_ast->kind_id ) {
     case K_ARRAY:
       print_error( &ret_ast->loc, "%s returning array", kind_name );
-      print_hint( "%s returning pointer", kind_name );
+      print_hint( "%s returning %s", kind_name, L_POINTER );
       return false;
     case K_BUILTIN:
       if ( opt_lang < LANG_CPP_14 ) {
@@ -1086,7 +1086,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
         kind_name,
         c_kind_name( ret_ast->kind_id )
       );
-      print_hint( "%s returning pointer to function", kind_name );
+      print_hint( "%s returning %s to %s", kind_name, L_POINTER, L_FUNCTION );
       return false;
     default:
       /* suppress warning */;
@@ -1353,7 +1353,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
           "%s %s %s can not convert to an %s",
           L_USER_DEFINED, L_CONVERSION, L_OPERATOR, L_ARRAY
         );
-        print_hint( "pointer to array" );
+        print_hint( "%s to %s", L_POINTER, L_ARRAY );
         return VISITOR_ERROR_FOUND;
       }
       break;
@@ -1519,7 +1519,7 @@ static bool error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
   assert( ast != NULL );
   print_error( &ast->loc, "can not cast into %s", c_kind_name( ast->kind_id ) );
   if ( hint != NULL )
-    print_hint( "cast into %s", hint );
+    print_hint( "%s %s %s", L_CAST, L_INTO, hint );
   return false;
 }
 
