@@ -1,5 +1,50 @@
+2020-06-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, c_operator.c, c_operator.h, c_type.h,
+     c_typedef.c, errors.c, parser.y, test/Makefile.am, cdecl--debug.out,
+     cdecl-d.out, declare_+o_delete_a_pv_v.out, declare_+o_delete_pv_v.out,
+     declare_+o_new_a_z_pv.out, declare_+o_new_z_pv.out,
+     declare_o_delete_a_pv_v.out, declare_o_delete_pv_v.out,
+     declare_o_new_a_z_pv.out, declare_o_new_z_pv.out,
+     declare_so_delete_pv_v.out, explain_+o_delete_a_pv_v.out,
+     explain_+o_delete_pv_v.out, explain_+o_new_a_z_pv.out,
+     explain_+o_new_z_pv.out, explain_o_delete_a_pv_v.out,
+     explain_o_delete_pv_v.out, explain_o_new_a_z_pv.out,
+     explain_o_new_z_pv.out, explain_so_delete_pv_v.out,
+     explain_so_new_z_pv.out, show_all.out, show_all_typedef.out,
+     show_predefined.out, show_predefined_typedef.out,
+     declare_+o_delete_a_pv_v.test, declare_+o_delete_pv_v.test,
+     declare_+o_new_a_z_pv.test, declare_+o_new_z_pv.test,
+     declare_o_delete_a_pv_v.test, declare_o_delete_pv_v.test,
+     declare_o_new_a_z_pv.test, declare_o_new_z_pv.test,
+     declare_so_delete_pv_v.test, explain_+o_delete_a_pv_v.test,
+     explain_+o_delete_pv_v.test, explain_+o_new_a_z_pv.test,
+     explain_+o_new_z_pv.test, explain_o_delete_a_pv_v.test,
+     explain_o_delete_pv_v.test, explain_o_new_a_z_pv.test,
+     explain_o_new_z_pv.test, explain_o_new_z_z.test,
+     explain_so_delete_pv_v.test, explain_so_new_z_pv.test: Can now
+     explain/declare overloaded operator new/delete.
+   * errors.c: print_error() clean-up.
+   * errors.c: print_error() clean-up; now printing "class" or "structure" when
+     constructor/destructor names do not match.
+   * parser.y: Moved DUMP_AST( "decl_english_ast", $5.ast ) before
+     C_AST_CHECK() to complete dump before check.
+   * errors.c: print_hint() clean-up.
+   * errors.c: Simplified c_ast_check_errors().
+   * errors.c: Removed c_type_name_error() when the type can be not a simple
+     type.
+   * errors.c: Correctly reset arg_ast.
+   * c_type.h, errors.c: Explicitly specifying "int" is now accepted, part 2.
+   * NEWS, errors.c: Explicitly specifying "int" is now accepted.
+   * NEWS, errors.c, test/Makefile.am, explain_scf_v.test: Extern or static
+     functions can not be const.
+
 2020-06-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * gibberish.c: Alternative tokens now take precedence over di/trigraph
+     tokens.
+   * parser.y: Added missing dump of oper_decl_english_ast for overloaded
+     operator declaration.
    * print.c, print.h: s/print_error()/print_error_impl()/ and added
      print_error() macro that passes file & line information for debugging.
    * parser.y: Fixed dump of name_english_ast.
