@@ -1,3 +1,17 @@
+2020-06-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.h, c_kind.h, c_type.c,
+     parser.y, print.h, util.h: Doxygen clean-up.
+   * parser.y: Renamed show type functions and struct.
+   * english.c, english.h, gibberish.c, gibberish.h, parser.y: Moved c_typdef
+     English- and gibberish-printing code to english.c and gibberish.c,
+     respectively.
+   * c_ast.h, c_kind.h, c_lang.h, c_operator.h, c_sname.h, c_type.h, slist.h,
+     util.h: Put C_WARN_UNUSED_RESULT last.
+   * c_operator.c, c_operator.h, debug.c, english.c, errors.c, gibberish.c,
+     parser.y: Renaming.
+   * parser.y: Put DUMP_END() in the right place for several rules.
+
 2020-06-13  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac, cdecl.1, c_operator.c, c_operator.h, c_type.h,
