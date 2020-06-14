@@ -267,6 +267,20 @@ C_WARN_UNUSED_RESULT
 c_lang_id_t c_type_check( c_type_id_t type_id );
 
 /**
+ * Checks if \a type_id is equivalent to `size_t`.
+ *
+ * @note
+ * In cdecl, `size_t` is `typedef`d to be `unsigned long` in `c_typedef.c`.
+ *
+ * @param type_id The <code>\ref c_type_id_t</code> to check.
+ * @return Returns `true` only if \a type_id is `size_t`.
+ */
+C_WARN_UNUSED_RESULT C_TYPE_INLINE
+bool c_type_is_size_t( c_type_id_t type_id ) {
+  return ((type_id & ~T_INT) & (T_UNSIGNED | T_LONG)) == (T_UNSIGNED | T_LONG);
+}
+
+/**
  * Gets the name of \a type_id.
  *
  * @param type_id The <code>\ref c_type_id_t</code> to get the name of.

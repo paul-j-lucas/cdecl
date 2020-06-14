@@ -1167,7 +1167,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
       }
       arg = arg->next;
       tmp_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
-      if ( tmp_ast == NULL || tmp_ast->type_id != (T_UNSIGNED | T_LONG) ) {
+      if ( tmp_ast == NULL || !c_type_is_size_t( tmp_ast->type_id ) ) {
         print_error( &arg_ast->loc,
           "\"%s\": invalid argument type for %s %s; must be one of: "
           "unsigned long, size_t",
