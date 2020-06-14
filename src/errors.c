@@ -231,7 +231,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
   switch ( of_ast->kind_id ) {
     case K_BUILTIN:
       if ( (of_ast->type_id & T_VOID) != T_NONE ) {
-        print_error( &ast->loc, "array of %s", L_VOID );
+        print_error( &ast->loc, "%s of %s", L_ARRAY, L_VOID );
         print_hint( "%s of %s to %s", L_ARRAY, L_POINTER, L_VOID );
         return false;
       }
@@ -246,7 +246,9 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
     case K_OPERATOR:
     case K_USER_DEF_CONVERSION:
     case K_USER_DEF_LITERAL:
-      print_error( &ast->loc, "array of %s", c_kind_name( of_ast->kind_id ) );
+      print_error( &ast->loc,
+        "%s of %s", L_ARRAY, c_kind_name( of_ast->kind_id )
+      );
       print_hint( "%s of %s to %s", L_ARRAY, L_POINTER, L_FUNCTION );
       return false;
     case K_NAME:
@@ -311,7 +313,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
   if ( storage_ast != NULL ) {
     c_type_id_t const storage_type = storage_ast->type_id & T_MASK_STORAGE;
     print_error( &ast->loc,
-      "can not cast into %s", c_type_name_error( storage_type )
+      "can not %s %s %s", L_CAST, L_INTO, c_type_name_error( storage_type )
     );
     return false;
   }
@@ -343,9 +345,9 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
 
   if ( c_ast_sname_count( ast ) > 1 && !c_ast_sname_is_ctor( ast ) ) {
     print_error( &ast->loc,
-      "\"%s\", \"%s\": class and %s names don't match",
+      "\"%s\", \"%s\": %s and %s names don't match",
       c_ast_sname_name_atr( ast, 1 ), c_ast_sname_local_name( ast ),
-      c_kind_name( ast->kind_id )
+      c_type_name_error( c_ast_sname_type( ast ) ), c_kind_name( ast->kind_id )
     );
     return false;
   }
