@@ -393,11 +393,8 @@ static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
   assert( ast != NULL );
   // check in major-to-minor error order
   void *const data = REINTERPRET_CAST( void*, is_func_arg );
-  if ( !c_ast_check_visitor( ast, c_ast_visitor_error, data ) )
-    return false;
-  if ( !c_ast_check_visitor( ast, c_ast_visitor_type, data ) )
-    return false;
-  return true;
+  return  c_ast_check_visitor( ast, c_ast_visitor_error, data ) &&
+          c_ast_check_visitor( ast, c_ast_visitor_type, data );
 }
 
 /**
