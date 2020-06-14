@@ -1380,7 +1380,7 @@ declare_english
       $5.ast->loc = @2;
       C_TYPE_ADD( &$5.ast->type_id, $4, @4 );
 
-      DUMP_AST( "decl_english_ast", $5.ast );
+      DUMP_AST( "decl_english", $5.ast );
       DUMP_END();
 
       if ( $6.kind != C_ALIGNAS_NONE ) {
@@ -1393,7 +1393,6 @@ declare_english
       }
 
       C_AST_CHECK( $5.ast, C_CHECK_DECL );
-
       c_ast_gibberish_declare( $5.ast, G_DECL_NONE, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
@@ -1420,7 +1419,7 @@ declare_english
       $6.ast->as.oper.oper_id = $2;
       C_TYPE_ADD( &$6.ast->type_id, $5, @5 );
 
-      DUMP_AST( "oper_decl_english_ast", $6.ast );
+      DUMP_AST( "declare_english", $6.ast );
       DUMP_END();
 
       C_AST_CHECK( $6.ast, C_CHECK_DECL );
@@ -1452,8 +1451,11 @@ declare_english
       ast->sname = $7;
       ast->type_id = $2 | $3;
       c_ast_set_parent( $9.ast, ast );
-      C_AST_CHECK( ast, C_CHECK_DECL );
 
+      DUMP_AST( "declare_english", ast );
+      DUMP_END();
+
+      C_AST_CHECK( ast, C_CHECK_DECL );
       c_ast_gibberish_declare( ast, G_DECL_NONE, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
@@ -1636,6 +1638,10 @@ explain_c
       DUMP_SNAME( "sname_c_opt", &$7 );
 
       c_ast_t *const ast = c_ast_patch_placeholder( $3.ast, $5.ast );
+
+      DUMP_AST( "explain_c", ast );
+      DUMP_END();
+
       bool const ok = c_ast_check( ast, C_CHECK_CAST );
       if ( ok ) {
         FPUTS( L_CAST, fout );
@@ -1651,9 +1657,6 @@ explain_c
       c_sname_free( &$7 );
       if ( !ok )
         PARSE_ABORT();
-
-      DUMP_AST( "explain_c", ast );
-      DUMP_END();
     }
 
     /*
@@ -1672,6 +1675,10 @@ explain_c
       DUMP_AST( "type_c_ast", $4.ast );
       DUMP_AST( "cast_c_ast_opt", $6.ast );
       DUMP_SNAME( "sname", &$9 );
+
+      c_ast_t const *const ast = c_ast_patch_placeholder( $4.ast, $6.ast );
+
+      DUMP_AST( "explain_c", ast );
       DUMP_END();
 
       bool ok = false;
@@ -1679,7 +1686,6 @@ explain_c
         print_error( &@2, "%s_cast not supported in %s", $2, C_LANG_NAME() );
       }
       else {
-        c_ast_t *const ast = c_ast_patch_placeholder( $4.ast, $6.ast );
         if ( (ok = c_ast_check( ast, C_CHECK_CAST )) ) {
           FPRINTF( fout, "%s %s ", $2, L_CAST );
           c_sname_english( &$9, fout );
@@ -1793,11 +1799,13 @@ explain_c
       DUMP_SNAME( "CONSTRUCTOR_SNAME", &$2 );
       DUMP_AST_LIST( "arg_list_c_ast_opt", $4 );
       DUMP_TYPE( "noexcept_c_type_opt", $6 );
-      DUMP_END();
 
       c_ast_t *const ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
       ast->type_id = $6;
       ast->as.constructor.args = $4;
+
+      DUMP_AST( "explain_c", ast );
+      DUMP_END();
 
       bool const ok = c_ast_check( ast, C_CHECK_DECL );
       if ( ok ) {
@@ -1828,10 +1836,12 @@ explain_c
       DUMP_TYPE( "virtual_opt", $2 );
       DUMP_STR( "any_name_expected", $4 );
       DUMP_TYPE( "noexcept_c_type_opt", $7 );
-      DUMP_END();
 
       c_ast_t *const ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
       ast->type_id = $2 | $7;
+
+      DUMP_AST( "explain_c", ast );
+      DUMP_END();
 
       bool const ok = c_ast_check( ast, C_CHECK_DECL );
       if ( ok ) {
@@ -1855,10 +1865,12 @@ explain_c
                   "EXPLAIN DESTRUCTOR_SNAME '(' ')' noexcept_c_type_opt" );
       DUMP_SNAME( "DESTRUCTOR_SNAME", &$2 );
       DUMP_TYPE( "noexcept_c_type_opt", $5 );
-      DUMP_END();
 
       c_ast_t *const ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
       ast->type_id = $5;
+
+      DUMP_AST( "explain_c", ast );
+      DUMP_END();
 
       bool const ok = c_ast_check( ast, C_CHECK_DECL );
       if ( ok ) {
@@ -1895,6 +1907,10 @@ explain_c
       DUMP_STR( "NAME", $3 );
       DUMP_AST( "type_c_ast", $5.ast );
       DUMP_AST( "cast_c_ast_opt", $7.ast );
+
+      c_ast_t *const ast = c_ast_patch_placeholder( $5.ast, $7.ast );
+
+      DUMP_AST( "explain_c", ast );
       DUMP_END();
 
       //
@@ -1912,7 +1928,6 @@ explain_c
         );
       }
       else {
-        c_ast_t *const ast = c_ast_patch_placeholder( $5.ast, $7.ast );
         if ( (ok = c_ast_check( ast, C_CHECK_DECL )) ) {
           // Once the semantic checks pass, remove the T_TYPEDEF.
           C_IGNORE_RV( c_ast_take_typedef( ast ) );
