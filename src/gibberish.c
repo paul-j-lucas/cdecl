@@ -727,6 +727,68 @@ void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout ) {
   g_impl( &g, ast );
 }
 
+void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
+  assert( type != NULL );
+  assert( gout != NULL );
+
+  size_t scope_close_braces_to_print = 0;
+  c_type_id_t sn_type = T_NONE;
+
+  c_sname_t const *const sname = c_ast_find_name( type->ast, C_VISIT_DOWN );
+  if ( sname != NULL && c_sname_count( sname ) > 1 ) {
+    sn_type = c_sname_type( sname );
+    assert( sn_type != T_NONE );
+    //
+    // A type name can't be scoped in a typedef declaration, e.g.:
+    //
+    //      typedef int S::T::I;        // illegal
+    //
+    // so we have to wrap it in a scoped declaration, one of: class, namespace,
+    // struct, or union.
+    //
+    if ( (sn_type & T_NAMESPACE) == T_NONE || opt_lang >= LANG_CPP_17 ) {
+      //
+      // All C++ versions support nested scope declarations, e.g.:
+      //
+      //      struct S::T { typedef int I; }
+      //
+      // However, only C++17 and later support nested namespace declarations:
+      //
+      //      namespace S::T { typedef int I; }
+      //
+      FPRINTF( gout,
+        "%s %s { ", c_type_name( sn_type ), c_sname_scope_name( sname )
+      );
+      scope_close_braces_to_print = 1;
+    }
+    else {
+      //
+      // Namespaces in C++14 and earlier require distinct declarations:
+      //
+      //      namespace S { namespace T { typedef int I; } }
+      //
+      for ( c_scope_t const *scope = sname->head; scope != sname->tail;
+            scope = scope->next ) {
+        FPRINTF( gout, "%s %s { ", L_NAMESPACE, c_scope_name( scope ) );
+      } // for
+      scope_close_braces_to_print = c_sname_count( sname ) - 1;
+    }
+  }
+
+  FPRINTF( gout, "%s ", L_TYPEDEF );
+  c_ast_gibberish_declare( type->ast, G_DECL_TYPEDEF, gout );
+
+  if ( scope_close_braces_to_print > 0 ) {
+    FPUTC( ';', gout );
+    while ( scope_close_braces_to_print-- > 0 )
+      FPUTS( " }", gout );
+  }
+
+  if ( opt_semicolon && (sn_type & T_NAMESPACE) == T_NONE )
+    FPUTC( ';', gout );
+  FPUTC( '\n', gout );
+}
+
 char const* graph_token_c( char const *token ) {
   assert( token != NULL );
 

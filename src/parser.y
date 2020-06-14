@@ -251,8 +251,11 @@
 
 /**
  * Print type function signature for print_type_visitor().
+ *
+ * @param type The `c_typedef` to print.
+ * @param fout The `FILE` to print to.
  */
-typedef void (*print_type_t)( c_typedef_t const* );
+typedef void (*print_type_t)( c_typedef_t const *type, FILE *fout );
 
 /**
  * Information for print_type_visitor().
@@ -622,92 +625,6 @@ static void parse_init( void ) {
 }
 
 /**
- * Prints a `c_typedef` in English.
- *
- * @param type A pointer to the `c_typedef` to print.
- */
-static void print_type_as_english( c_typedef_t const *type ) {
-  assert( type != NULL );
-
-  FPRINTF( fout, "%s %s ", L_DEFINE, c_ast_sname_local_name( type->ast ) );
-  if ( c_ast_sname_count( type->ast ) > 1 )
-    FPRINTF( fout,
-      "%s %s %s ",
-      L_OF, c_ast_sname_type_name( type->ast ),
-      c_ast_sname_scope_name( type->ast )
-    );
-  FPRINTF( fout, "%s ", L_AS );
-  c_ast_english( type->ast, fout );
-  FPUTC( '\n', fout );
-}
-
-/**
- * Prints a `c_typedef` as a `typedef`.
- *
- * @param type A pointer to the `c_typedef` to print.
- */
-static void print_type_as_typedef( c_typedef_t const *type ) {
-  assert( type != NULL );
-
-  size_t scope_close_braces_to_print = 0;
-  c_type_id_t sn_type = T_NONE;
-
-  c_sname_t const *const sname = c_ast_find_name( type->ast, C_VISIT_DOWN );
-  if ( sname != NULL && c_sname_count( sname ) > 1 ) {
-    sn_type = c_sname_type( sname );
-    assert( sn_type != T_NONE );
-    //
-    // A type name can't be scoped in a typedef declaration, e.g.:
-    //
-    //      typedef int S::T::I;        // illegal
-    //
-    // so we have to wrap it in a scoped declaration, one of: class, namespace,
-    // struct, or union.
-    //
-    if ( (sn_type & T_NAMESPACE) == T_NONE || opt_lang >= LANG_CPP_17 ) {
-      //
-      // All C++ versions support nested scope declarations, e.g.:
-      //
-      //      struct S::T { typedef int I; }
-      //
-      // However, only C++17 and later support nested namespace declarations:
-      //
-      //      namespace S::T { typedef int I; }
-      //
-      FPRINTF( fout,
-        "%s %s { ", c_type_name( sn_type ), c_sname_scope_name( sname )
-      );
-      scope_close_braces_to_print = 1;
-    }
-    else {
-      //
-      // Namespaces in C++14 and earlier require distinct declarations:
-      //
-      //      namespace S { namespace T { typedef int I; } }
-      //
-      for ( c_scope_t const *scope = sname->head; scope != sname->tail;
-            scope = scope->next ) {
-        FPRINTF( fout, "%s %s { ", L_NAMESPACE, c_scope_name( scope ) );
-      } // for
-      scope_close_braces_to_print = c_sname_count( sname ) - 1;
-    }
-  }
-
-  FPRINTF( fout, "%s ", L_TYPEDEF );
-  c_ast_gibberish_declare( type->ast, G_DECL_TYPEDEF, fout );
-
-  if ( scope_close_braces_to_print > 0 ) {
-    FPUTC( ';', fout );
-    while ( scope_close_braces_to_print-- > 0 )
-      FPUTS( " }", fout );
-  }
-
-  if ( opt_semicolon && (sn_type & T_NAMESPACE) == T_NONE )
-    FPUTC( ';', fout );
-  FPUTC( '\n', fout );
-}
-
-/**
  * Prints the definition of a `typedef`.
  *
  * @param type A pointer to the `c_typedef` to print.
@@ -727,7 +644,7 @@ static bool print_type_visitor( c_typedef_t const *type, void *data ) {
     (pti->show_which & SHOW_PREDEFINED_TYPES) != 0;
 
   if ( show_it )
-    (*pti->print_fn)( type );
+    (*pti->print_fn)( type, fout );
   return false;
 }
 
@@ -2175,9 +2092,9 @@ show_command
       DUMP_END();
 
       if ( $3 )
-        print_type_as_typedef( $2 );
+        c_typedef_gibberish( $2, fout );
       else
-        print_type_as_english( $2 );
+        c_typedef_english( $2, fout );
     }
 
   | Y_SHOW Y_NAME typedef_opt
@@ -2200,7 +2117,7 @@ show_command
   | Y_SHOW show_which_types_opt typedef_opt
     {
       print_type_info_t pti;
-      pti.print_fn = $3 ? &print_type_as_typedef : &print_type_as_english;
+      pti.print_fn = $3 ? &c_typedef_gibberish : &c_typedef_english;
       pti.show_which = $2;
       c_typedef_visit( &print_type_visitor, &pti );
     }

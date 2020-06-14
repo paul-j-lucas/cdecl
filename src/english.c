@@ -274,5 +274,20 @@ void c_sname_english( c_sname_t const *sname, FILE *eout ) {
   }
 }
 
+void c_typedef_english( c_typedef_t const *type, FILE *eout ) {
+  assert( type != NULL );
+
+  FPRINTF( eout, "%s %s ", L_DEFINE, c_ast_sname_local_name( type->ast ) );
+  if ( c_ast_sname_count( type->ast ) > 1 )
+    FPRINTF( eout,
+      "%s %s %s ",
+      L_OF, c_ast_sname_type_name( type->ast ),
+      c_ast_sname_scope_name( type->ast )
+    );
+  FPRINTF( eout, "%s ", L_AS );
+  c_ast_english( type->ast, eout );
+  FPUTC( '\n', eout );
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */
