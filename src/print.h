@@ -92,7 +92,7 @@ void print_hint( char const *format, ... );
  *  + A `^` (in color, if possible and requested) under the offending token.
  *  + The error column.
  *
- * A newline is \e not printed.
+ * A newline is _not_ printed.
  *
  * @param loc The location to print.
  */

@@ -55,7 +55,7 @@ struct c_keyword {
 /**
  * Given a literal, gets the `c_keyword` for the corresponding C++11 (or later)
  * attribute, e.g., `[[deprecated]]`.
- * @note The search is \e sensitive to the current language.
+ * @note The search is _sensitive_ to the current language.
  *
  * @param literal The literal to find.
  * @return Returns a pointer to the corresponding attribute (`c_keyword`) or
@@ -66,7 +66,7 @@ c_keyword_t const* c_attribute_find( char const *literal );
 
 /**
  * Given a literal, gets the `c_keyword` for the corresponding C/C++ keyword.
- * @note The search is \e insensitive to the current language.
+ * @note The search is _insensitive_ to the current language.
  *
  * @param literal The literal to find.
  * @param lang_id The bitwise-or of language(s) to look for the keyword in.

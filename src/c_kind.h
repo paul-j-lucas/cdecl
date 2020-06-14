@@ -72,9 +72,9 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Kinds of things comprising a C/C++ declaration.
  *
- * A given thing may only have a single kind and \e not be a bitwise-or of
+ * A given thing may only have a single kind and _not_ be a bitwise-or of
  * kinds.  However, a bitwise-or of kinds may be used to test whether a given
- * thing is any \e one of those kinds.
+ * thing is any _one_ of those kinds.
  */
 enum c_kind {
   K_NONE                    = 0,        ///< No kind.

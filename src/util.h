@@ -374,7 +374,7 @@ _GL_INLINE_HEADER_BEGIN
 #ifdef __GNUC__
 
 /**
- * Specifies that \a EXPR is \e very likely (as in 99.99% of the time) to be
+ * Specifies that \a EXPR is _very_ likely (as in 99.99% of the time) to be
  * non-zero (true) allowing the compiler to better order code blocks for
  * magrinally better performance.
  *
@@ -386,7 +386,7 @@ _GL_INLINE_HEADER_BEGIN
 #define likely(EXPR)              __builtin_expect( !!(EXPR), 1 )
 
 /**
- * Specifies that \a EXPR is \e very unlikely (as in .01% of the time) to be
+ * Specifies that \a EXPR is _very_ unlikely (as in .01% of the time) to be
  * non-zero (true) allowing the compiler to better order code blocks for
  * magrinally better performance.
  *
@@ -523,7 +523,7 @@ bool false_set( bool *flag ) {
  * @param buf A pointer to the buffer to use.  The pointer must remain valid
  * for as along as the `FILE` is open.
  * @param size The size of \a buf.
- * @param mode The open mode.  It \e must contain `r`.
+ * @param mode The open mode.  It _must_ contain `r`.
  * @return Returns a `FILE` containing the contents of \a buf.
  */
 C_WARN_UNUSED_RESULT

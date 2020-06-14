@@ -210,7 +210,7 @@ c_sname_t c_ast_take_name( c_ast_t *ast );
  * @code
  *  declare p as type pointer to int
  * @endcode
- * and \e not:
+ * and _not_:
  * @code
  *  declare p as pointer to typedef int
  * @endcode

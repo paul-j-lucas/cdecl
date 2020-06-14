@@ -233,7 +233,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
  * @code
  *  declare f as static function () returning int
  * @endcode
- * and \e not:
+ * and _not_:
  * @code
  *  declare f as function () returning static int
  * @endcode

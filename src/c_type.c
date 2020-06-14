@@ -419,8 +419,8 @@ static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Checks whether \a type_id is some form of <code>long int</code> only, and \e
- * not either `long float` (K&R) or `long double` (C89).
+ * Checks whether \a type_id is some form of <code>long int</code> only, and
+ * _not_ either `long float` (K&R) or `long double` (C89).
  *
  * @param type_id The <code>\ref c_type_id_t</code> to check.
  * @return Returns `true` only if \a type_id is some form of `long int`.

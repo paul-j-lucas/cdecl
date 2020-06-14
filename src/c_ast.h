@@ -619,7 +619,7 @@ char const* c_ast_sname_type_name( c_ast_t const *ast ) {
  * @param data Optional data passed to \a visitor.
  * @return Returns a pointer to the `c_ast` the visitor stopped on or null.
  *
- * @note Function-like arguments are \e not traversed into.  They're considered
+ * @note Function-like arguments are _not_ traversed into.  They're considered
  * distinct ASTs.
  */
 C_NOWARN_UNUSED_RESULT
@@ -636,7 +636,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
  * @param data Optional data passed to \a visitor.
  * @return Returns `true` only if \a visitor ever returned `true`.
  *
- * @note Function-like arguments are \e not traversed into.  They're considered
+ * @note Function-like arguments are _not_ traversed into.  They're considered
  * distinct ASTs.
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT

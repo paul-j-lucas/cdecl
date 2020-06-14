@@ -679,8 +679,8 @@ static bool show_type_visitor( c_typedef_t const *type, void *data ) {
  * Prints a parsing error message to standard error.  This function is called
  * directly by Bison to print just `syntax error` (usually).
  *
- * @note A newline is \e not printed since the error message will be appended
- * to by `elaborate_error()`.  For example, the parts of an error message are
+ * @note A newline is _not_ printed since the error message will be appended to
+ * by `elaborate_error()`.  For example, the parts of an error message are
  * printed by the functions shown:
  *
  *      42: syntax error: "int": "into" expected
