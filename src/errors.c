@@ -1142,10 +1142,10 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
           tmp_ast = c_ast_unpointer( arg_ast );
           if ( tmp_ast == NULL || tmp_ast->type_id != (T_CONST | T_CHAR) ) {
             print_error( &arg_ast->loc,
-              "\"%s\": invalid argument type for %s %s; must be one of: "
+              "invalid argument type for %s %s; must be one of: "
               "unsigned long long, long double, "
               "char, const char*, char8_t, char16_t, char32_t, wchar_t",
-              c_type_name_error( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
+              L_USER_DEFINED, L_LITERAL
             );
             return false;
           }
@@ -1159,9 +1159,9 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
            !((tmp_ast->type_id & T_CONST) != 0 &&
              (tmp_ast->type_id & T_ANY_CHAR) != 0) ) {
         print_error( &arg_ast->loc,
-          "\"%s\": invalid argument type for %s %s; must be one of: "
+          "invalid argument type for %s %s; must be one of: "
           "const (char|wchar_t|char8_t|char16_t|char32_t)*",
-          c_type_name_error( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
+          L_USER_DEFINED, L_LITERAL
         );
         return false;
       }
@@ -1169,9 +1169,9 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
       arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
       if ( arg_ast == NULL || !c_type_is_size_t( arg_ast->type_id ) ) {
         print_error( &arg_ast->loc,
-          "\"%s\": invalid argument type for %s %s; must be one of: "
+          "invalid argument type for %s %s; must be one of: "
           "unsigned long, size_t",
-          c_type_name_error( arg_ast->type_id ), L_USER_DEFINED, L_LITERAL
+          L_USER_DEFINED, L_LITERAL
         );
         return false;
       }
