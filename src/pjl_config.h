@@ -91,10 +91,8 @@
 #ifdef HAVE___ATTRIBUTE__
 
 /**
- * @def C_FALLTHROUGH
- *
- * @brief
  * Intentionally fall through to the next `switch` `case`.
+ * @def C_FALLTHROUGH
  */
 #if __has_attribute(fallthrough) || GCC_AT_LEAST_VERSION(7,0)
 #define C_FALLTHROUGH             __attribute__((fallthrough))
