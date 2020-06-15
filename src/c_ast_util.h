@@ -66,7 +66,7 @@ enum c_check {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @addtogroup AST-functions-group
+ * @addtogroup ast-functions-group
  * @{
  */
 
