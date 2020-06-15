@@ -60,14 +60,14 @@
 # include <stdlib.h>
 #endif
 
+#ifndef __has_attribute
+# define __has_attribute(X)       0
+#endif
+
 /// @endcond
 
 // local
 #include "config.h"                     /* must go first */
-
-#ifndef __has_attribute
-# define __has_attribute(X)       0
-#endif
 
 #if defined(__GNUC__) && !(defined(__clang__) || defined(__INTEL_COMPILER))
 /**
@@ -87,6 +87,9 @@
 #ifdef HAVE___ATTRIBUTE__
 
 /**
+ * @def C_FALLTHROUGH
+ *
+ * @brief
  * Intentionally fall through to the next `switch` `case`.
  */
 #if __has_attribute(fallthrough) || GCC_AT_LEAST_VERSION(7,0)
