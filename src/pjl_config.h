@@ -70,6 +70,12 @@
 #endif
 
 #if defined(__GNUC__) && !(defined(__clang__) || defined(__INTEL_COMPILER))
+/**
+ * Checks whether the compiler is gcc and its version &gt;= MAJOR.MINOR.
+ *
+ * @param MAJOR The major part of the version number.
+ * @param MINOR The minor part of the version number.
+ */
 # define GCC_AT_LEAST_VERSION(MAJOR,MINOR) \
     (__GNUC__ > (MAJOR) || (__GNUC__ == (MAJOR) && __GNUC_MINOR__ >= (MINOR)))
 #else
