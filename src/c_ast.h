@@ -188,9 +188,6 @@ struct c_ecsu {
 
 /**
  * AST node for a C/C++ function.
- *
- * @note Members are laid out in the same order as `c_block`: this is taken
- * advantage of.
  */
 struct c_func {
   c_ast_t    *ret_ast;                  ///< Return type.
