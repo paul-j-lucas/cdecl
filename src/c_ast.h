@@ -552,7 +552,7 @@ char const* c_ast_sname_scope_name( c_ast_t const *ast ) {
  * Sets the name of \a ast.
  *
  * @param ast The `c_ast` node to set the name of.
- * @param name The name to set.
+ * @param name The name to set.  Ownership is taken.
  *
  * @sa c_ast_sname_set_sname()
  */
