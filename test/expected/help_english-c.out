@@ -1,6 +1,6 @@
 english:
   <store>* array [[static] <cv-qual>* {<number>|*}] of <english>
-  <store>* variable length array <cv-qual>* of <english>
+  <store>* variable [length] array <cv-qual>* of <english>
   <store>* function [([<args>])] [returning <english>]
   <cv-qual>* pointer to <english>
   { enum | struct | union } <name>

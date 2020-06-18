@@ -102,7 +102,7 @@ static help_text_t const HELP_TEXT_ENGLISH[] = {
   { "english:", SAME_AS_C },
   { "  <store>* array [[static] <cv-qual>* {<number>|\\*}] of <english>",
     "  <store>* array [<number>] of <english>" },
-  { "  <store>* variable length array <cv-qual>* of <english>", NOT_IN_LANG },
+  { "  <store>* variable [length] array <cv-qual>* of <english>", NOT_IN_LANG },
   { NOT_IN_LANG,
     "  <store>+ constructor [([<args>])]" },
   { NOT_IN_LANG,
