@@ -188,7 +188,7 @@ static char const *const TYPEDEFS_THREADS_H[] = {
   "typedef int              once_flag",
   "typedef int            (*thrd_start_t)(void*)",
   "typedef void           (*tss_dtor_t)(void*)",
-  "typedef void*            tss_t",
+  "typedef void            *tss_t",
 
   NULL
 };
