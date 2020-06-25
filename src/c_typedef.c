@@ -62,49 +62,67 @@ static bool       user_defined;         ///< Are new `typedef`s used-defined?
  * necessarily match the underlying type on any particular platform.
  */
 static char const *const TYPEDEFS_STD_C[] = {
-  "typedef long double       max_align_t",// C11
-  "typedef          long     ptrdiff_t",
-  "typedef int               sig_atomic_t",
-  "typedef unsigned long    rsize_t",     // C11
-  "typedef          long    ssize_t",
-  "typedef unsigned long     size_t",
+  "typedef   signed char        int8_t",
+  "typedef          short       int16_t",
+  "typedef          int         int32_t",
+  "typedef          long        int64_t",
+  "typedef unsigned char       uint8_t",
+  "typedef unsigned short      uint16_t",
+  "typedef unsigned int        uint32_t",
+  "typedef unsigned long       uint64_t",
 
-  "typedef          long     intmax_t",
-  "typedef          long     intptr_t",
-  "typedef unsigned long    uintmax_t",
-  "typedef unsigned long    uintptr_t",
+  "typedef struct __atomic_flag atomic_flag",
+  "typedef          long        clock_t",
+  "typedef          int         errno_t",
+  "typedef struct __FILE        FILE",
+  "typedef struct __fpos        fpos_t",
+  "typedef          int         jmp_buf[37]",
+  "typedef long double          max_align_t", // C11
+  "typedef struct __mbstate     mbstate_t",
+  "typedef enum memory_order    memory_order",
+  "typedef          long        ptrdiff_t",
+  "typedef          int         sig_atomic_t",
+  "typedef unsigned long       rsize_t",      // C11
+  "typedef          long       ssize_t",
+  "typedef unsigned long        size_t",
+  "typedef  int64_t             time_t",
+  "typedef          void       *va_list",
+  "typedef          int         wctrans_t",
+  "typedef unsigned long        wctype_t",
+  "typedef          int         wint_t",
+
+  "typedef          long        intmax_t",
+  "typedef          long        intptr_t",
+  "typedef unsigned long       uintmax_t",
+  "typedef unsigned long       uintptr_t",
+
+  "typedef          double      double_t",
+  "typedef          int         fenv_t",
+  "typedef unsigned short       fexcept_t",
+  "typedef          float       float_t",
 
   "typedef struct     div_t     div_t",
   "typedef struct imaxdiv_t imaxdiv_t",
   "typedef struct    ldiv_t    ldiv_t",
   "typedef struct   lldiv_t   lldiv_t",
 
-  "typedef   signed char     int8_t",
-  "typedef          short    int16_t",
-  "typedef          int      int32_t",
-  "typedef          long     int64_t",
-  "typedef unsigned char    uint8_t",
-  "typedef unsigned short   uint16_t",
-  "typedef unsigned int     uint32_t",
-  "typedef unsigned long    uint64_t",
+  "typedef   signed char        int_fast8_t",
+  "typedef          short       int_fast16_t",
+  "typedef          int         int_fast32_t",
+  "typedef          long        int_fast64_t",
+  "typedef unsigned char       uint_fast8_t",
+  "typedef unsigned short      uint_fast16_t",
+  "typedef unsigned int        uint_fast32_t",
+  "typedef unsigned long       uint_fast64_t",
 
-  "typedef   signed char     int_fast8_t",
-  "typedef          short    int_fast16_t",
-  "typedef          int      int_fast32_t",
-  "typedef          long     int_fast64_t",
-  "typedef unsigned char    uint_fast8_t",
-  "typedef unsigned short   uint_fast16_t",
-  "typedef unsigned int     uint_fast32_t",
-  "typedef unsigned long    uint_fast64_t",
-
-  "typedef   signed char     int_least8_t",
-  "typedef          short    int_least16_t",
-  "typedef          int      int_least32_t",
-  "typedef          long     int_least64_t",
-  "typedef unsigned char    uint_least8_t",
-  "typedef unsigned short   uint_least16_t",
-  "typedef unsigned int     uint_least32_t",
-  "typedef unsigned long    uint_least64_t",
+  "typedef   signed char        int_least8_t",
+  "typedef          short       int_least16_t",
+  "typedef          int         int_least32_t",
+  "typedef          long        int_least64_t",
+  "typedef unsigned char       uint_least8_t",
+  "typedef unsigned short      uint_least16_t",
+  "typedef unsigned int        uint_least32_t",
+  "typedef unsigned long       uint_least64_t",
 
   NULL
 };
@@ -234,25 +252,22 @@ static char const *const TYPEDEFS_STD_CPP[] = {
 };
 
 /**
- * Miscellaneous standard types.
+ * Miscellaneous standard-ish types.
  */
 static char const *const TYPEDEFS_MISC[] = {
   "typedef  int32_t         blkcnt_t",
   "typedef  int32_t         blksize_t",
   "typedef  int32_t         dev_t",
   "typedef struct __fd_set  fd_set",
-  "typedef struct __FILE    FILE",
-  "typedef struct __fpos    fpos_t",
   "typedef  int32_t         ino_t",
-  "typedef struct __mbstate mbstate_t",
   "typedef  int32_t         mode_t",
   "typedef unsigned long    nfds_t",
   "typedef uint32_t         nlink_t",
   "typedef  int64_t         off_t",
+  "typedef uint32_t         rlim_t",
+  "typedef unsigned long    sigset_t",
 
-  "typedef  long            clock_t",
   "typedef  long            clockid_t",
-  "typedef  int64_t         time_t",
   "typedef  int64_t         suseconds_t",
   "typedef uint32_t         useconds_t",
 
@@ -264,11 +279,6 @@ static char const *const TYPEDEFS_MISC[] = {
   "typedef uint16_t         in_port_t",
   "typedef uint32_t         sa_family_t",
   "typedef uint32_t         socklen_t",
-
-  "typedef  int             errno_t",
-  "typedef uint32_t         rlim_t",
-  "typedef unsigned long    sigset_t",
-  "typedef  int             wint_t",
 
   NULL
 };

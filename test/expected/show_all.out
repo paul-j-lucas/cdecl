@@ -186,6 +186,7 @@ define atomic_char as _Atomic char
 define atomic_char16_t as _Atomic char16_t
 define atomic_char32_t as _Atomic char32_t
 define atomic_char8_t as _Atomic char8_t
+define atomic_flag as struct __atomic_flag
 define atomic_int as _Atomic int
 define atomic_int_fast16_t as _Atomic int_fast16_t
 define atomic_int_fast32_t as _Atomic int_fast32_t
@@ -226,8 +227,12 @@ define clockid_t as long
 define cnd_t as pthread_cond_t
 define dev_t as int32_t
 define div_t as struct div_t
+define double_t as double
 define errno_t as int
 define fd_set as struct __fd_set
+define fenv_t as int
+define fexcept_t as unsigned short
+define float_t as float
 define fpos_t as struct __fpos
 define gid_t as uint32_t
 define imaxdiv_t as struct imaxdiv_t
@@ -248,10 +253,12 @@ define int_least64_t as long
 define int_least8_t as signed char
 define intmax_t as long
 define intptr_t as long
+define jmp_buf as array 37 of int
 define ldiv_t as struct ldiv_t
 define lldiv_t as struct lldiv_t
 define max_align_t as long double
 define mbstate_t as struct __mbstate
+define memory_order as enum memory_order
 define mode_t as int32_t
 define mtx_t as pthread_mutex_t
 define nfds_t as unsigned long
@@ -330,4 +337,7 @@ define uint_least8_t as unsigned char
 define uintmax_t as unsigned long
 define uintptr_t as unsigned long
 define useconds_t as uint32_t
+define va_list as pointer to void
+define wctrans_t as int
+define wctype_t as unsigned long
 define wint_t as int
