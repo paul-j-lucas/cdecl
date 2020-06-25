@@ -3559,7 +3559,9 @@ arg_c_ast
       DUMP_AST( "type_c_ast", $1.ast );
       DUMP_AST( "cast_c_ast_opt", $3.ast );
 
-      $$ = $3.ast != NULL ? $3 : $1;
+      $$.ast = c_ast_patch_placeholder( $1.ast, $3.ast );
+      $$.target_ast = NULL;
+
       if ( c_ast_sname_empty( $$.ast ) )
         $$.ast->sname = c_sname_dup( c_ast_find_name( $$.ast, C_VISIT_DOWN ) );
 

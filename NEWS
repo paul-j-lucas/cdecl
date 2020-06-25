@@ -10,6 +10,16 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 7.2.1
+
+** Fixed explaining pointer-to-array function arguments
+Explaining a declaration like:
+
+    cdecl> explain void f(double (*a)[5])
+
+crashed; fixed.
+
+
 * Changes in Cdecl 7.2
 
 ** new & delete operator overloading
