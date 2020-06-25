@@ -2891,7 +2891,7 @@ decl2_c_ast
   ;
 
 array_decl_c_ast
-  : decl2_c_ast array_size_c_num
+  : /* type_c_ast */ decl2_c_ast array_size_c_num
     {
       DUMP_START( "array_decl_c_ast", "decl2_c_ast array_size_c_num" );
       DUMP_AST( "(type_c_ast)", type_peek() );
