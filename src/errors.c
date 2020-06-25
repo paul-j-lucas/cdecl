@@ -273,6 +273,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
  * @param ast The built-in `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_builtin( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_BUILTIN );
@@ -309,6 +310,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
  * @param ast The `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_cast( c_ast_t const *ast ) {
   assert( ast != NULL );
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
@@ -345,6 +347,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
  * @param ast The constructor or destructor `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & (K_CONSTRUCTOR | K_DESTRUCTOR)) != K_NONE );
@@ -367,6 +370,7 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
  * @param ast The `enum`, `class`, `struct`, or union `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_ecsu( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_ENUM_CLASS_STRUCT_UNION );
@@ -398,6 +402,7 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
  * @param is_func_arg If `true`, we're checking a function argument.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
   assert( ast != NULL );
   // check in major-to-minor error order
@@ -412,6 +417,7 @@ static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
  * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_func_args( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & K_MASK_FUNCTION_LIKE) != K_NONE );
@@ -520,6 +526,7 @@ only_void:
  * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & (K_APPLE_BLOCK | K_FUNCTION)) != K_NONE );
@@ -549,6 +556,7 @@ static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
  * @param ast The function (or block) AST to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_func_c( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & (K_APPLE_BLOCK | K_FUNCTION)) != K_NONE );
@@ -573,6 +581,7 @@ static bool c_ast_check_func_c( c_ast_t const *ast ) {
  * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & K_MASK_FUNCTION_LIKE) != K_NONE );
@@ -728,6 +737,7 @@ only_special:
  * @param ast The overloaded operator `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_oper( c_ast_t const *ast ) {
   assert( ast != NULL );
 
@@ -829,6 +839,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
  * @param ast The overloaded operator `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_args( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_OPERATOR );
@@ -1043,6 +1054,7 @@ same: print_error( &ast->loc,
  * @param ast The user-defined operator `delete` `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_delete_args( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_OPERATOR );
@@ -1081,6 +1093,7 @@ static bool c_ast_check_oper_delete_args( c_ast_t const *ast ) {
  * @param ast The user-defined operator `new` `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_new_args( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_OPERATOR );
@@ -1118,6 +1131,7 @@ static bool c_ast_check_oper_new_args( c_ast_t const *ast ) {
  * @param ast The pointer or pointer-to-member `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_pointer( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & K_ANY_POINTER) != K_NONE );
@@ -1146,11 +1160,12 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
 }
 
 /**
- * Checks a pointer or pointer-to-member AST for errors.
+ * Checks a reference or rvalue reference AST for errors.
  *
  * @param ast The pointer or pointer-to-member `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_reference( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & K_ANY_REFERENCE) != K_NONE );
@@ -1200,6 +1215,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
  * @param ast The function-like AST to check the return type of.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & K_MASK_FUNCTION_LIKE) != K_NONE );
@@ -1250,6 +1266,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
  * @param ast The user-defined literal `c_ast` to check.
  * @return Returns `true` only if all checks passed.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_USER_DEF_LITERAL );
@@ -1338,6 +1355,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
  * @return Returns `VISITOR_ERROR_FOUND` if an error was found;
  * `VISITOR_ERROR_NOT_FOUND` if not.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   bool const is_func_arg = REINTERPRET_CAST( bool, data );
@@ -1455,6 +1473,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
  * @return Returns `VISITOR_ERROR_FOUND` if an error was found;
  * `VISITOR_ERROR_NOT_FOUND` if not.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   bool const is_func_arg = REINTERPRET_CAST( bool, data );
@@ -1565,6 +1584,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
  * @param data Not used.
  * @return Always returns `false`.
  */
+C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
 
@@ -1659,6 +1679,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
  * @param hint The hint, if any.
  * @return Always returns `false`.
  */
+C_WARN_UNUSED_RESULT
 static bool error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
   assert( ast != NULL );
   print_error( &ast->loc,
@@ -1676,6 +1697,7 @@ static bool error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
  * @param type_id The bad type.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
+C_WARN_UNUSED_RESULT
 static bool error_kind_not_type( c_ast_t const *ast, c_type_id_t type_id ) {
   assert( ast != NULL );
   print_error( &ast->loc,
@@ -1691,6 +1713,7 @@ static bool error_kind_not_type( c_ast_t const *ast, c_type_id_t type_id ) {
  * @param ast The `c_ast` having the bad kind.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
+C_WARN_UNUSED_RESULT
 static bool error_kind_not_supported( c_ast_t const *ast ) {
   assert( ast != NULL );
   print_error( &ast->loc,
@@ -1706,6 +1729,7 @@ static bool error_kind_not_supported( c_ast_t const *ast ) {
  * @param type_id The bad type.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
+C_WARN_UNUSED_RESULT
 static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
   assert( ast != NULL );
   print_error( &ast->loc,
@@ -1720,6 +1744,7 @@ static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
  * @param ast The `c_ast` of the unknown type.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
+C_WARN_UNUSED_RESULT
 static bool error_unknown_type( c_ast_t const *ast ) {
   assert( ast != NULL );
   print_error( &ast->loc,
