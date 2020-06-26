@@ -632,6 +632,54 @@ explain_c ::= EXPLAIN type_c_ast decl_c_ast = {
         type = "int" (0x200)
       }
     }
+  },
+  explain_c = {
+    sname = "f", scope_type = none,
+    unique_id = 432,
+    kind = "function",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 13-27,
+    type = "" (0x0),
+    flags = 0x0,
+    args = [
+      {
+        sname = "x", scope_type = none,
+        unique_id = 430,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 15-17,
+        type = "int" (0x200)
+      },
+      {
+        sname = "y", scope_type = none,
+        unique_id = 431,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = -1,
+        loc = 22-24,
+        type = "int" (0x200)
+      }
+    ],
+    ret_ast = {
+      sname = null,
+      unique_id = 429,
+      kind = "pointer",
+      depth = 0,
+      parent->unique_id = 432,
+      loc = 11-11,
+      type = "" (0x0),
+      to_ast = {
+        sname = null,
+        unique_id = 428,
+        kind = "built-in type",
+        depth = 0,
+        parent->unique_id = 429,
+        loc = 8-10,
+        type = "int" (0x200)
+      }
+    }
   }
 }
 declare f as function (x as int, y as int) returning pointer to int

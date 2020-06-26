@@ -290,6 +290,10 @@ extern void           print_help( char const* );
 extern void           set_option( char const*, c_loc_t const*,
                                   char const*, c_loc_t const* );
 
+// local functions
+C_WARN_UNUSED_RESULT
+static bool typename_ok( c_ast_t const*, c_loc_t const* );
+
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
 static slist_t        ast_gc_list;      ///< `c_ast` nodes freed after parse.
@@ -434,6 +438,143 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
 }
 
 /**
+ * Prints the pseudo English explanation for an AST.
+ *
+ * @param ast The `c_ast` to explain.
+ * @param is_typedef Whether \a ast is a `typedef`.
+ */
+static void c_ast_explain( c_ast_t const *ast, bool is_typedef ) {
+  assert( ast != NULL );
+
+  if ( ast->kind_id == K_USER_DEF_CONVERSION ) {
+    //
+    // User-defined conversions don't have names.
+    //
+    FPRINTF( fout, "%s ", L_DECLARE );
+  }
+  else {
+    c_sname_t const *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
+    char const *local_name, *scope_name;
+
+    if ( ast->kind_id == K_OPERATOR ) {
+      local_name = c_oper_token_c( ast->as.oper.oper_id );
+      scope_name = found_sname != NULL ? c_sname_full_name( found_sname ) : "";
+    } else {
+      assert( found_sname != NULL );
+      assert( !c_sname_empty( found_sname ) );
+      local_name = c_sname_local_name( found_sname );
+      scope_name = c_sname_scope_name( found_sname );
+    }
+
+    assert( local_name != NULL );
+    FPRINTF( fout, "%s %s ", L_DECLARE, local_name );
+    if ( scope_name[0] != '\0' ) {
+      c_type_id_t const sn_type = c_sname_type( found_sname );
+      assert( sn_type != T_NONE );
+      FPRINTF( fout, "%s %s %s ", L_OF, c_type_name( sn_type ), scope_name );
+    }
+    FPRINTF( fout, "%s ", L_AS );
+    if ( is_typedef )
+      FPRINTF( fout, "%s ", L_TYPE );
+  }
+
+  c_ast_english( ast, fout );
+  FPUTC( '\n', fout );
+}
+
+/**
+ * Finish constructing the final AST for _explain_.
+ *
+ * @param has_typename `true` only if the declaration includes `typename`.
+ * @param align The `alignas` specifier, if any.
+ * @param align_loc The source location of \a align, if any.
+ * @param type_ast The type `c_ast`.
+ * @param type_loc The source location of \a type_ast.
+ * @param decl_ast The declaration `c_ast`.
+ * @param decl_loc The source location of \a decl_ast.
+ * @param past A pointer to the pointer for the final `c_ast`.
+ * @param pis_typedef A pointer to receive whether this is a `typedef`.
+ * @return Returns `true` only upon success.
+ */
+C_WARN_UNUSED_RESULT
+static bool c_ast_finish_explain( bool has_typename,
+                                  c_alignas_t const *align,
+                                  c_loc_t const *align_loc,
+                                  c_ast_t *type_ast, c_loc_t const *type_loc,
+                                  c_ast_t *decl_ast, c_loc_t const *decl_loc,
+                                  c_ast_t const **past, bool *pis_typedef ) {
+  assert( type_ast != NULL );
+  assert( type_loc != NULL );
+  assert( decl_ast != NULL );
+  assert( decl_loc != NULL );
+  assert( past != NULL );
+  assert( pis_typedef != NULL );
+
+  *past = NULL;
+
+  if ( has_typename && !typename_ok( type_ast, type_loc ) )
+    return false;
+
+  *pis_typedef = c_ast_take_typedef( type_ast );
+
+  if ( *pis_typedef && decl_ast->kind_id == K_TYPEDEF ) {
+    //
+    // This is for a case like:
+    //
+    //      explain typedef int int32_t;
+    //
+    // that is: explaining an existing typedef.  In order to do that, we
+    // have to un-typedef it so we explain the type that it's typedef'd as.
+    //
+    decl_ast = CONST_CAST( c_ast_t*, c_ast_untypedef( decl_ast ) );
+
+    //
+    // However, we also have to check whether the typedef being explained
+    // is not equivalent to the existing typedef.  This is for a case like:
+    //
+    //      explain typedef char int32_t;
+    //
+    if ( !c_ast_equiv( type_ast, decl_ast ) ) {
+      print_error( decl_loc,
+        "\"%s\": \"%s\" redefinition with different type",
+        c_ast_sname_full_name( decl_ast ), L_TYPEDEF
+      );
+      return false;
+    }
+  }
+
+  c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
+  *past = ast;
+
+  *pis_typedef = *pis_typedef || c_ast_take_typedef( ast );
+
+  if ( align != NULL ) {
+    ast->align = *align;
+    if ( *pis_typedef ) {
+      //
+      // We check for illegal aligned typedef here rather than in error.c
+      // because the "typedef-ness" needed to be removed (above) before the
+      // call to c_ast_check() below.
+      //
+      print_error( align_loc, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
+      return false;
+    }
+  }
+
+  if ( ast->kind_id == K_USER_DEF_CONVERSION &&
+       c_ast_sname_type( ast ) == T_SCOPE ) {
+    //
+    // User-defined conversions don't have names, but they can still have a
+    // scope.  Since only classes can have them, if the scope is still T_SCOPE,
+    // change it to T_CLASS.
+    //
+    c_ast_sname_set_type( ast, T_CLASS );
+  }
+
+  return c_ast_check( ast, C_CHECK_DECL );
+}
+
+/**
  * Prints an additional parsing error message to standard error that continues
  * from where `yyerror()` left off.
  *
@@ -477,124 +618,6 @@ static bool typename_ok( c_ast_t const *ast, c_loc_t const *ast_loc ) {
     print_error( ast_loc, "qualified name expected after \"%s\"", L_TYPENAME );
     return false;
   }
-  return true;
-}
-
-/**
- * Explains a declaration.
- *
- * @param has_typename `true` only if the declaration includes `typename`.
- * @param align The `alignas` specifier, if any.
- * @param align_loc The source location of \a align, if any.
- * @param type_ast The type `c_ast`.
- * @param type_loc The source location of \a type_ast.
- * @param decl_ast The declaration `c_ast`.
- * @param decl_loc The source location of \a decl_ast.
- * @return Returns `true` only upon success.
- */
-C_WARN_UNUSED_RESULT
-static bool explain_type_decl( bool has_typename,
-                               c_alignas_t const *align,
-                               c_loc_t const *align_loc,
-                               c_ast_t *type_ast, c_loc_t const *type_loc,
-                               c_ast_t *decl_ast, c_loc_t const *decl_loc ) {
-  assert( type_ast != NULL );
-  assert( type_loc != NULL );
-  assert( decl_ast != NULL );
-  assert( decl_loc != NULL );
-
-  if ( has_typename && !typename_ok( type_ast, type_loc ) )
-    return false;
-
-  bool is_typedef = c_ast_take_typedef( type_ast );
-
-  if ( is_typedef && decl_ast->kind_id == K_TYPEDEF ) {
-    //
-    // This is for a case like:
-    //
-    //      explain typedef int int32_t;
-    //
-    // that is: explaining an existing typedef.  In order to do that, we
-    // have to un-typedef it so we explain the type that it's typedef'd as.
-    //
-    decl_ast = CONST_CAST( c_ast_t*, c_ast_untypedef( decl_ast ) );
-
-    //
-    // However, we also have to check whether the typedef being explained
-    // is not equivalent to the existing typedef.  This is for a case like:
-    //
-    //      explain typedef char int32_t;
-    //
-    if ( !c_ast_equiv( type_ast, decl_ast ) ) {
-      print_error( decl_loc,
-        "\"%s\": \"%s\" redefinition with different type",
-        c_ast_sname_full_name( decl_ast ), L_TYPEDEF
-      );
-      return false;
-    }
-  }
-
-  c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
-  is_typedef = is_typedef || c_ast_take_typedef( ast );
-
-  if ( align != NULL ) {
-    if ( is_typedef ) {
-      //
-      // We check for illegal aligned typedef here rather than in error.c
-      // because the "typedef-ness" needed to be removed (above) before the
-      // call to c_ast_check() below.
-      //
-      print_error( align_loc, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
-      return false;
-    }
-    ast->align = *align;
-  }
-
-  if ( !c_ast_check( ast, C_CHECK_DECL ) )
-    return false;
-
-  if ( ast->kind_id == K_USER_DEF_CONVERSION ) {
-    //
-    // User-defined conversions don't have names.
-    //
-    FPRINTF( fout, "%s ", L_DECLARE );
-    if ( c_ast_sname_type( ast ) == T_SCOPE ) {
-      //
-      // But they can still have a scope.  Since only classes can have them, if
-      // the scope is still T_SCOPE, change it to T_CLASS.
-      //
-      c_ast_sname_set_type( ast, T_CLASS );
-    }
-  }
-  else {
-    c_sname_t const *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
-    char const *local_name, *scope_name;
-
-    if ( ast->kind_id == K_OPERATOR ) {
-      local_name = c_oper_token_c( ast->as.oper.oper_id );
-      scope_name = found_sname != NULL ? c_sname_full_name( found_sname ) : "";
-    } else {
-      assert( found_sname != NULL );
-      assert( !c_sname_empty( found_sname ) );
-      local_name = c_sname_local_name( found_sname );
-      scope_name = c_sname_scope_name( found_sname );
-    }
-
-    assert( local_name != NULL );
-    FPRINTF( fout, "%s %s ", L_DECLARE, local_name );
-    if ( scope_name[0] != '\0' ) {
-      c_type_id_t const sn_type = c_sname_type( found_sname );
-      assert( sn_type != T_NONE );
-      FPRINTF( fout, "%s %s %s ", L_OF, c_type_name( sn_type ), scope_name );
-    }
-    FPRINTF( fout, "%s ", L_AS );
-    if ( is_typedef )
-      FPRINTF( fout, "%s ", L_TYPE );
-  }
-
-  c_ast_english( ast, fout );
-  FPUTC( '\n', fout );
-
   return true;
 }
 
@@ -1303,7 +1326,7 @@ declare_english
       if ( $6.kind != C_ALIGNAS_NONE ) {
         $5.ast->align = $6;
         if ( ($5.ast->type_id & T_TYPEDEF) != T_NONE ) {
-          // See comment in explain_type_decl().
+          // See comment in c_ast_finish_explain().
           print_error( &@6, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
           PARSE_ABORT();
         }
@@ -1627,10 +1650,21 @@ explain_c
       DUMP_START( "explain_c", "EXPLAIN type_c_ast decl_c_ast" );
       DUMP_AST( "type_c_ast", $2.ast );
       DUMP_AST( "decl_c_ast", $4.ast );
+
+      c_ast_t const *ast;
+      bool is_typedef;
+      bool const ok =
+        c_ast_finish_explain(
+          false, NULL, NULL, $2.ast, &@2, $4.ast, &@4, &ast, &is_typedef
+        );
+
+      if ( ast != NULL )
+        DUMP_AST( "explain_c", ast );
       DUMP_END();
 
-      if ( !explain_type_decl( false, NULL, NULL, $2.ast, &@2, $4.ast, &@4 ) )
+      if ( !ok )
         PARSE_ABORT();
+      c_ast_explain( ast, is_typedef );
     }
 
     /*
@@ -1655,10 +1689,19 @@ explain_c
       } // switch
       DUMP_AST( "type_c_ast", $4.ast );
       DUMP_AST( "decl_c_ast", $6.ast );
+
+      c_ast_t const *ast;
+      bool is_typedef;
+      bool const ok = c_ast_finish_explain(
+        $3, &$2, &@2, $4.ast, &@4, $6.ast, &@6, &ast, &is_typedef
+      );
+
+      DUMP_AST( "explain_c", ast );
       DUMP_END();
 
-      if ( !explain_type_decl( $3, &$2, &@2, $4.ast, &@4, $6.ast, &@6 ) )
+      if ( !ok )
         PARSE_ABORT();
+      c_ast_explain( ast, is_typedef );
     }
 
     /*
@@ -1673,10 +1716,19 @@ explain_c
       DUMP_START( "explain_c", "EXPLAIN TYPENAME type_c_ast decl_c_ast" );
       DUMP_AST( "type_c_ast", $3.ast );
       DUMP_AST( "decl_c_ast", $5.ast );
+
+      c_ast_t const *ast;
+      bool is_typedef;
+      bool const ok = c_ast_finish_explain(
+        true, NULL, NULL, $3.ast, &@3, $5.ast, &@5, &ast, &is_typedef
+      );
+
+      DUMP_AST( "explain_c", ast );
       DUMP_END();
 
-      if ( !explain_type_decl( true, NULL, NULL, $3.ast, &@3, $5.ast, &@5 ) )
+      if ( !ok )
         PARSE_ABORT();
+      c_ast_explain( ast, is_typedef );
     }
 
     /*
