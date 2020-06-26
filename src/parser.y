@@ -292,7 +292,7 @@ extern void           set_option( char const*, c_loc_t const*,
 
 // local functions
 C_WARN_UNUSED_RESULT
-static bool typename_ok( c_ast_t const*, c_loc_t const* );
+static bool typename_ok( c_ast_t const* );
 
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
@@ -489,7 +489,6 @@ static void c_ast_explain( c_ast_t const *ast, bool is_typedef ) {
  * @param align The `alignas` specifier, if any.
  * @param align_loc The source location of \a align, if any.
  * @param type_ast The type `c_ast`.
- * @param type_loc The source location of \a type_ast.
  * @param decl_ast The declaration `c_ast`.
  * @param decl_loc The source location of \a decl_ast.
  * @param past A pointer to the pointer for the final `c_ast`.
@@ -500,11 +499,10 @@ C_WARN_UNUSED_RESULT
 static bool c_ast_finish_explain( bool has_typename,
                                   c_alignas_t const *align,
                                   c_loc_t const *align_loc,
-                                  c_ast_t *type_ast, c_loc_t const *type_loc,
+                                  c_ast_t *type_ast,
                                   c_ast_t *decl_ast, c_loc_t const *decl_loc,
                                   c_ast_t const **past, bool *pis_typedef ) {
   assert( type_ast != NULL );
-  assert( type_loc != NULL );
   assert( decl_ast != NULL );
   assert( decl_loc != NULL );
   assert( past != NULL );
@@ -512,7 +510,7 @@ static bool c_ast_finish_explain( bool has_typename,
 
   *past = NULL;
 
-  if ( has_typename && !typename_ok( type_ast, type_loc ) )
+  if ( has_typename && !typename_ok( type_ast ) )
     return false;
 
   *pis_typedef = c_ast_take_typedef( type_ast );
@@ -602,20 +600,20 @@ static void elaborate_error( char const *format, ... ) {
  * name.
  *
  * @param ast The `c_ast` to check.
- * @param ast_loc The source location of \a ast.
  * @return Returns `true` only upon success.
  */
 C_WARN_UNUSED_RESULT
-static bool typename_ok( c_ast_t const *ast, c_loc_t const *ast_loc ) {
+static bool typename_ok( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast_loc != NULL );
 
   c_sname_t const *const sname = ast->kind_id == K_TYPEDEF ?
     &ast->as.c_typedef->ast->sname :
     &ast->sname;
 
   if ( c_sname_count( sname ) < 2 ) {
-    print_error( ast_loc, "qualified name expected after \"%s\"", L_TYPENAME );
+    print_error( &ast->loc,
+      "qualified name expected after \"%s\"", L_TYPENAME
+    );
     return false;
   }
   return true;
@@ -1655,7 +1653,7 @@ explain_c
       bool is_typedef;
       bool const ok =
         c_ast_finish_explain(
-          false, NULL, NULL, $2.ast, &@2, $4.ast, &@4, &ast, &is_typedef
+          false, NULL, NULL, $2.ast, $4.ast, &@4, &ast, &is_typedef
         );
 
       if ( ast != NULL )
@@ -1693,7 +1691,7 @@ explain_c
       c_ast_t const *ast;
       bool is_typedef;
       bool const ok = c_ast_finish_explain(
-        $3, &$2, &@2, $4.ast, &@4, $6.ast, &@6, &ast, &is_typedef
+        $3, &$2, &@2, $4.ast, $6.ast, &@6, &ast, &is_typedef
       );
 
       DUMP_AST( "explain_c", ast );
@@ -1720,7 +1718,7 @@ explain_c
       c_ast_t const *ast;
       bool is_typedef;
       bool const ok = c_ast_finish_explain(
-        true, NULL, NULL, $3.ast, &@3, $5.ast, &@5, &ast, &is_typedef
+        true, NULL, NULL, $3.ast, $5.ast, &@5, &ast, &is_typedef
       );
 
       DUMP_AST( "explain_c", ast );
@@ -2218,7 +2216,7 @@ typedef_declaration_c
       c_ast_t *ast;
       c_sname_t temp_sname;
 
-      if ( $2 && !typename_ok( $4.ast, &@4 ) )
+      if ( $2 && !typename_ok( $4.ast ) )
         PARSE_ABORT();
 
       if ( $6.ast->kind_id == K_TYPEDEF ) {
