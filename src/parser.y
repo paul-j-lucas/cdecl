@@ -487,7 +487,6 @@ static void c_ast_explain( c_ast_t const *ast, bool is_typedef ) {
  *
  * @param has_typename `true` only if the declaration includes `typename`.
  * @param align The `alignas` specifier, if any.
- * @param align_loc The source location of \a align, if any.
  * @param type_ast The type `c_ast`.
  * @param decl_ast The declaration `c_ast`.
  * @param decl_loc The source location of \a decl_ast.
@@ -496,9 +495,7 @@ static void c_ast_explain( c_ast_t const *ast, bool is_typedef ) {
  * @return Returns `true` only upon success.
  */
 C_WARN_UNUSED_RESULT
-static bool c_ast_finish_explain( bool has_typename,
-                                  c_alignas_t const *align,
-                                  c_loc_t const *align_loc,
+static bool c_ast_finish_explain( bool has_typename, c_alignas_t const *align,
                                   c_ast_t *type_ast,
                                   c_ast_t *decl_ast, c_loc_t const *decl_loc,
                                   c_ast_t const **past, bool *pis_typedef ) {
@@ -554,7 +551,7 @@ static bool c_ast_finish_explain( bool has_typename,
       // because the "typedef-ness" needed to be removed (above) before the
       // call to c_ast_check() below.
       //
-      print_error( align_loc, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
+      print_error( &align->loc, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
       return false;
     }
   }
@@ -1462,16 +1459,19 @@ alignas_specifier_english
   : Y_ALIGNED as_opt Y_NUMBER bytes_opt
     {
       $$.kind = C_ALIGNAS_EXPR;
+      $$.loc = @1;
       $$.as.expr = (unsigned)$3;
     }
   | Y_ALIGNED as_opt decl_english_ast
     {
       $$.kind = C_ALIGNAS_TYPE;
+      $$.loc = @1;
       $$.as.type_ast = $3.ast;
     }
   | Y_ALIGNED as_opt error
     {
       MEM_ZERO( &$$ );
+      $$.loc = @1;
       ELABORATE_ERROR( "number or type expected" );
     }
   ;
@@ -1653,7 +1653,7 @@ explain_c
       bool is_typedef;
       bool const ok =
         c_ast_finish_explain(
-          false, NULL, NULL, $2.ast, $4.ast, &@4, &ast, &is_typedef
+          false, NULL, $2.ast, $4.ast, &@4, &ast, &is_typedef
         );
 
       if ( ast != NULL )
@@ -1691,7 +1691,7 @@ explain_c
       c_ast_t const *ast;
       bool is_typedef;
       bool const ok = c_ast_finish_explain(
-        $3, &$2, &@2, $4.ast, $6.ast, &@6, &ast, &is_typedef
+        $3, &$2, $4.ast, $6.ast, &@6, &ast, &is_typedef
       );
 
       DUMP_AST( "explain_c", ast );
@@ -1718,7 +1718,7 @@ explain_c
       c_ast_t const *ast;
       bool is_typedef;
       bool const ok = c_ast_finish_explain(
-        true, NULL, NULL, $3.ast, $5.ast, &@5, &ast, &is_typedef
+        true, NULL, $3.ast, $5.ast, &@5, &ast, &is_typedef
       );
 
       DUMP_AST( "explain_c", ast );
@@ -1923,6 +1923,7 @@ alignas_specifier_c
       DUMP_END();
 
       $$.kind = C_ALIGNAS_EXPR;
+      $$.loc = @1;
       $$.as.expr = (unsigned)$3;
     }
   | alignas lparen_expected type_c_ast { type_push( $3.ast ); }
@@ -1939,12 +1940,14 @@ alignas_specifier_c
       c_ast_t *const ast = c_ast_patch_placeholder( $3.ast, $5.ast );
 
       $$.kind = C_ALIGNAS_TYPE;
+      $$.loc = @1;
       $$.as.type_ast = ast;
     }
   | alignas lparen_expected error rparen_expected
     {
       ELABORATE_ERROR( "number or type expected" );
       $$.kind = C_ALIGNAS_NONE;
+      $$.loc = @1;
     }
   ;
 

@@ -99,6 +99,7 @@ struct c_alignas {
     c_ast_t      *type_ast;             ///< Aligned the same as this type.
   } as;                                 ///< Union discriminator.
   c_alignas_arg_t kind;                 ///< Kind of `alignas` argument.
+  c_loc_t         loc;                  ///< Source location.
 };
 
 /**
