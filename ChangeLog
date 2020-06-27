@@ -1,3 +1,46 @@
+2020-06-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added comment for Y_DELETE.
+   * parser.y: Y_NEW is oper_id.
+   * parser.y: Comment fix.
+   * parser.y: Comment fix.
+   * NEWS, configure.ac: Changed version to 7.3.
+
+2020-06-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, debug.c, parser.y: Added "loc" member to struct c_align.
+   * parser.y: Removed unnecessary c_ast_t argument from typename_ok().
+   * parser.y, cdecl--debug.out, cdecl-d.out: Now printing final AST for
+     "explain" in more cases.
+
+2020-06-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * errors.c: Added more C_WARN_UNUSED_RESULT.
+   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added types atomic_flag, double_t, fenv_t, fexcept_t, float_t, jmp_buf,
+     memory_order, va_list, wctrans_t, and wctype_t.
+   * NEWS, configure.ac, parser.y, test/Makefile.am, explain_fpa5d_v.out,
+     explain_fpa5d_v.test: Fixed explaining pointer-to-array function
+     arguments.
+   * parser.y: Added comment.
+
+2020-06-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c, help_english-c.out: Made "length" optional in help.
+   * c_typedef.c: Reformatting.
+   * cdecl.1: Added "namespace" to English.
+   * cdecl.1: Added mention of user-defined literal.
+   * c_ast.h: Added comment.
+
+2020-06-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * pjl_config.h: Work around Doxygen quirk.
+   * c_ast_util.h: Fixed @addtogroup ast-functions-group.
+   * pjl_config.h: Added defensive #error about config.h.
+   * pjl_config.h: Hide __has_attribute from Doxygen.
+   * pjl_config.h: Added comment.
+
 2020-06-14  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.h, c_kind.h, c_type.c,
