@@ -911,7 +911,7 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_FRIEND
 %token  <type_id>   Y_MUTABLE
 %token  <type_id>   Y_NAMESPACE
-%token  <type_id>   Y_NEW
+%token  <oper_id>   Y_NEW
 %token              Y_OPERATOR
 %token              Y_PRIVATE
 %token              Y_PROTECTED
