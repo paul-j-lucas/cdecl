@@ -548,7 +548,7 @@ static bool c_ast_finish_explain( bool has_typename, c_alignas_t const *align,
     if ( *pis_typedef ) {
       //
       // We check for illegal aligned typedef here rather than in error.c
-      // because the "typedef-ness" needed to be removed (above) before the
+      // because the "typedef-ness" needed to be removed previously before the
       // call to c_ast_check() below.
       //
       print_error( &align->loc, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
