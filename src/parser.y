@@ -900,7 +900,6 @@ static void yyerror( char const *msg ) {
 %token              Y_CONSTRUCTOR
 %token  <sname>     Y_CONSTRUCTOR_SNAME
 %token              Y_CONVERSION
-%token  <type_id>   Y_DELETE
 %token              Y_DESTRUCTOR
 %token  <sname>     Y_DESTRUCTOR_SNAME
 %token  <oper_id>   Y_DOT_STAR    ".*"
@@ -927,6 +926,18 @@ static void yyerror( char const *msg ) {
 %token  <flag>      Y_TYPENAME
 %token  <type_id>   Y_USING
 %token  <type_id>   Y_VIRTUAL
+                    /*
+                     * The "delete" token is used in two different contexts:
+                     *
+                     *  1. For deleted functions ("= delete").
+                     *  2. For operator delete().
+                     *
+                     * Rather than having two distinct "delete" tokens (that
+                     * would require more communication from the parser to the
+                     * lexer), just have one and use the larger type of
+                     * c_type_id_t and c_oper_id_t which is c_type_id_t.
+                     */
+%token  <type_id>   Y_DELETE
 
                     /* C++11 */
 %token              Y_LBRACKET2   "[["  /* for attribute specifiers */
