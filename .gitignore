@@ -1,4 +1,5 @@
 *.a
+*.gz
 *.in
 *.o
 *~
@@ -7,16 +8,13 @@
 .DS_Store
 Makefile
 
+/*.[ch]
+/*-t
 /aclocal.m4
 /ar-lib
 /autom4te.cache/
-/cdecl-*.tar.gz
 /compile
-/confdefs.h
-/config.guess
-/config.log
-/config.status
-/config.sub
+/config.*
 /configure
 /conftest*
 /depcomp
