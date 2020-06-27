@@ -10,7 +10,11 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 7.2.1
+* Changes in Cdecl 7.3
+
+** More C standard types
+Added the standard C types atomic_flag, double_t, fenv_t, fexcept_t, float_t,
+jmp_buf, memory_order, va_list, wctrans_t, and wctype_t.
 
 ** Fixed explaining pointer-to-array function arguments
 Explaining a declaration like:
@@ -18,10 +22,6 @@ Explaining a declaration like:
     cdecl> explain void f(double (*a)[5])
 
 crashed; fixed.
-
-** More C standard types
-Added types atomic_flag, double_t, fenv_t, fexcept_t, float_t, jmp_buf,
-memory_order, va_list, wctrans_t, and wctype_t.
 
 
 * Changes in Cdecl 7.2
