@@ -593,8 +593,7 @@ static void elaborate_error( char const *format, ... ) {
 }
 
 /**
- * Checks whether the `typename` is OK since the type's name is a qualified
- * name.
+ * Checks whether `typename` is OK since the type's name is a qualified name.
  *
  * @param ast The `c_ast` to check.
  * @return Returns `true` only upon success.
