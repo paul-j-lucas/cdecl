@@ -62,6 +62,9 @@ C_WARN_UNUSED_RESULT
 static bool c_ast_check_func_cpp( c_ast_t const* );
 
 C_WARN_UNUSED_RESULT
+static bool c_ast_check_func_main( c_ast_t const* );
+
+C_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_new_args( c_ast_t const* );
 
 C_WARN_UNUSED_RESULT
@@ -98,19 +101,6 @@ static bool error_unknown_type( c_ast_t const* );
 C_WARN_UNUSED_RESULT
 static inline char const* alignas_lang( void ) {
   return C_LANG_IS_CPP() ? L_ALIGNAS : L__ALIGNAS;
-}
-
-/**
- * Checks a function-like AST for errors.
- *
- * @param ast The function-like AST to check.
- * @return Returns `true` only if all checks passed.
- */
-C_WARN_UNUSED_RESULT
-static inline bool c_ast_check_func( c_ast_t const *ast ) {
-  return C_LANG_IS_C() ?
-    c_ast_check_func_c( ast ) :
-    c_ast_check_func_cpp( ast );
 }
 
 /**
@@ -409,6 +399,29 @@ static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
   void *const data = REINTERPRET_CAST( void*, is_func_arg );
   return  c_ast_check_visitor( ast, c_ast_visitor_error, data ) &&
           c_ast_check_visitor( ast, c_ast_visitor_type, data );
+}
+
+/**
+ * Checks a function-like AST for errors.
+ *
+ * @param ast The function-like AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+C_WARN_UNUSED_RESULT
+static bool c_ast_check_func( c_ast_t const *ast ) {
+  assert( ast != NULL );
+
+  if ( ast->kind_id == K_FUNCTION ) {
+    SLIST_VAR_INIT( main_sname, NULL, "main" );
+    if ( c_sname_cmp( &ast->sname, &main_sname ) == 0 &&
+         !c_ast_check_func_main( ast ) ) {
+      return false;
+    }
+  }
+
+  return C_LANG_IS_C() ?
+    c_ast_check_func_c( ast ) :
+    c_ast_check_func_cpp( ast );
 }
 
 /**
@@ -732,6 +745,89 @@ only_special:
 }
 
 /**
+ * Checks the return type and arguments for `main()`.
+ *
+ * @param ast The main function AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+C_WARN_UNUSED_RESULT
+static bool c_ast_check_func_main( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind_id == K_FUNCTION );
+
+  if ( ast->type_id != T_NONE ) {
+    print_error( &ast->loc,
+      "main() can not be %s",
+      c_type_name_error( ast->type_id )
+    );
+    return false;
+  }
+
+  c_ast_t const *const ret_ast = ast->as.func.ret_ast;
+  if ( !c_ast_is_builtin( ret_ast, T_INT ) ) {
+    print_error( &ret_ast->loc, "main() must return int" );
+    return false;
+  }
+
+  c_ast_t const *arg_ast;
+
+  switch ( c_ast_args_count( ast ) ) {
+    case 0:                             // main()
+      break;
+
+    case 1:                             // main(void) ?
+      arg_ast = c_ast_arg_ast( c_ast_args( ast ) );
+      if ( !c_ast_is_builtin( arg_ast, T_VOID ) ) {
+        print_error( &arg_ast->loc,
+          "a single argument for main() must be %s", L_VOID
+        );
+        return false;
+      }
+      break;
+
+    case 2: {                           // main( int, char *argv[] ) ?
+      c_ast_arg_t const *arg = c_ast_args( ast );
+      arg_ast = c_ast_arg_ast( arg );
+      if ( !c_ast_is_builtin( arg_ast, T_INT ) ) {
+        print_error( &arg_ast->loc, "main()'s first argument must be int" );
+        return false;
+      }
+      arg = arg->next;
+      arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
+      switch ( arg_ast->kind_id ) {
+        case K_ARRAY:                   // main( int, char *argv[] )
+        case K_POINTER: {               // main( int, char **argv )
+          c_ast_t const *of_ast = c_ast_untypedef( arg_ast->as.parent.of_ast );
+          if ( of_ast->kind_id != K_POINTER ) {
+arg2_must:  print_error( &arg_ast->loc,
+              "main()'s second argument must be %s %s %s to %s",
+              c_kind_name( arg_ast->kind_id ),
+              arg_ast->kind_id == K_ARRAY ? "of" : "to",
+              L_POINTER, L_CHAR
+            );
+            return false;
+          }
+          of_ast = c_ast_unpointer( of_ast );
+          if ( !c_ast_is_builtin( of_ast, T_CHAR ) )
+            goto arg2_must;
+          break;
+        }
+        default:                        // main( int, ??? )
+          print_error( &arg_ast->loc, "illegal signature for main()" );
+          return false;
+      } // switch
+      break;
+    }
+
+    default:
+      print_error( &ast->loc, "main() must have either zero or two arguments" );
+      return false;
+  } // switch
+
+  return true;
+}
+
+/**
  * Checks an overloaded operator AST for errors.
  *
  * @param ast The overloaded operator `c_ast` to check.
@@ -740,6 +836,7 @@ only_special:
 C_WARN_UNUSED_RESULT
 static bool c_ast_check_oper( c_ast_t const *ast ) {
   assert( ast != NULL );
+  assert( ast->kind_id == K_OPERATOR );
 
   c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
 
@@ -1384,32 +1481,32 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         return VISITOR_ERROR_FOUND;
       C_FALLTHROUGH;
 
-    case K_FUNCTION:
-      if ( !c_ast_check_func( ast ) )
-        return VISITOR_ERROR_FOUND;
-      C_FALLTHROUGH;
-
     case K_APPLE_BLOCK:
+    case K_FUNCTION:
+    case K_USER_DEF_CONVERSION:
     case K_USER_DEF_LITERAL:
       if ( !c_ast_check_ret_type( ast ) )
         return VISITOR_ERROR_FOUND;
       C_FALLTHROUGH;
 
-    case K_CONSTRUCTOR: {
+    case K_CONSTRUCTOR:
+      if ( !c_ast_check_func( ast ) )
+        return VISITOR_ERROR_FOUND;
       if ( ast->kind_id == K_CONSTRUCTOR ) {
         c_type_id_t const t = ast->type_id & ~T_CONSTRUCTOR;
         if ( t != T_NONE )
           return error_kind_not_type( ast, t );
       }
-      bool const args_ok =
-        ast->kind_id == K_USER_DEF_LITERAL ?
-          c_ast_check_user_def_lit_args( ast ) :
-          opt_lang == LANG_C_KNR ?
-            c_ast_check_func_args_knr( ast ) :
-            c_ast_check_func_args( ast );
-      if ( !args_ok )
-        return VISITOR_ERROR_FOUND;
-    }
+      {
+        bool const args_ok =
+          ast->kind_id == K_USER_DEF_LITERAL ?
+            c_ast_check_user_def_lit_args( ast ) :
+            opt_lang == LANG_C_KNR ?
+              c_ast_check_func_args_knr( ast ) :
+              c_ast_check_func_args( ast );
+        if ( !args_ok )
+          return VISITOR_ERROR_FOUND;
+      }
       C_FALLTHROUGH;
 
     case K_DESTRUCTOR: {
@@ -1426,7 +1523,6 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 
     case K_NAME:
     case K_TYPEDEF:
-    case K_USER_DEF_CONVERSION:
     case K_VARIADIC:
       // nothing to check
       break;

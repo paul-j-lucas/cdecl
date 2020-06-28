@@ -376,6 +376,12 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_ld.test \
 	tests/explain_lf.test \
 	tests/explain_ll.test \
+	tests/explain_main_f_i.test \
+	tests/explain_main_fiapc_i.test \
+	tests/explain_main_fiapcc_i.test \
+	tests/explain_main_fippc_i.test \
+	tests/explain_main_fippcc_i.test \
+	tests/explain_main_fv_i.test \
 	tests/explain_md.test \
 	tests/explain_mf.test \
 	tests/explain_n.test \
@@ -510,6 +516,12 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_lll.test \
 	tests/explain_lv.test \
 	tests/explain_lw.test \
+	tests/explain_main_f2c_i.test \
+	tests/explain_main_f_v.test \
+	tests/explain_main_fi_i.test \
+	tests/explain_main_fic_i.test \
+	tests/explain_main_fipc_i.test \
+	tests/explain_main_fippi_i.test \
 	tests/explain_pmi-c.test \
 	tests/explain_pv-knr.test \
 	tests/explain_ri-c.test \

@@ -1,0 +1,1 @@
+declare main as function (int, argv as array of pointer to char) returning int

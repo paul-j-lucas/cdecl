@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 7.3
 
+** Checking main()'s signature
+The signature of main() is now checked.
+
 ** More C standard types
 Added the standard C types atomic_flag, double_t, fenv_t, fexcept_t, float_t,
 jmp_buf, memory_order, va_list, wctrans_t, and wctype_t.
