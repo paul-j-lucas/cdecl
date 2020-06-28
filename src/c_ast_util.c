@@ -436,6 +436,7 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast ) {
 }
 
 c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
+  // This is a loop in order to implement the reference-collapsing rule.
   while ( (ast = c_ast_untypedef( ast )) != NULL &&
           ast->kind_id == K_REFERENCE ) {
     ast = ast->as.ptr_ref.to_ast;
