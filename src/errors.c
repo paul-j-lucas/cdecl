@@ -685,14 +685,14 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
         if ( ast->as.oper.oper_id != C_OP_EQ )
           goto only_special;
         ret_ast = ast->as.oper.ret_ast;
-        if ( !c_ast_is_ref_to_type( ret_ast, T_CLASS_STRUCT_UNION ) )
+        if ( !c_ast_is_ref_to_type_any( ret_ast, T_CLASS_STRUCT_UNION ) )
           goto only_special;
         C_FALLTHROUGH;
       case K_CONSTRUCTOR: {           // C(C const&)
         if ( c_ast_args_count( ast ) != 1 )
           goto only_special;
         c_ast_t const *arg_ast = c_ast_arg_ast( c_ast_args( ast ) );
-        if ( !c_ast_is_ref_to_type( arg_ast, T_CLASS_STRUCT_UNION ) )
+        if ( !c_ast_is_ref_to_type_any( arg_ast, T_CLASS_STRUCT_UNION ) )
           goto only_special;
         if ( ast->kind_id == K_OPERATOR ) {
           assert( ret_ast != NULL );
@@ -885,7 +885,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       // Special case for operator-> that must return a pointer to a struct,
       // union, or class.
       //
-      if ( !c_ast_is_ptr_to_type( ret_ast, T_CLASS_STRUCT_UNION ) ) {
+      if ( !c_ast_is_ptr_to_type_any( ret_ast, T_CLASS_STRUCT_UNION ) ) {
         print_error( &ret_ast->loc,
           "%s %s must return a %s to %s, %s, or %s",
           L_OPERATOR, op->name, L_POINTER, L_STRUCT, L_UNION, L_CLASS
@@ -914,7 +914,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       // Special case for operators new and new[] that must return pointer to
       // void.
       //
-      if ( !c_ast_is_ptr_to_type( ret_ast, T_VOID ) ) {
+      if ( !c_ast_is_ptr_to_type_any( ret_ast, T_VOID ) ) {
         print_error( &ret_ast->loc,
           "%s %s must return a %s to %s",
           L_OPERATOR, op->name, L_POINTER, L_VOID
@@ -1070,7 +1070,7 @@ same: print_error( &ast->loc,
     bool has_ecsu_arg = false;
     for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
       c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
-      if ( c_ast_is_ecsu( arg_ast ) ) {
+      if ( c_ast_is_kind_any( arg_ast, K_ENUM_CLASS_STRUCT_UNION ) ) {
         has_ecsu_arg = true;
         break;
       }
@@ -1172,7 +1172,7 @@ static bool c_ast_check_oper_delete_args( c_ast_t const *ast ) {
   c_ast_arg_t const *const arg = c_ast_args( ast );
   c_ast_t const *const arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
 
-  if ( !c_ast_is_ptr_to_type( arg_ast, T_VOID | T_CLASS_STRUCT_UNION ) ) {
+  if ( !c_ast_is_ptr_to_type_any( arg_ast, T_VOID | T_CLASS_STRUCT_UNION ) ) {
     print_error( &arg_ast->loc,
       "invalid argument type for %s %s; must be a %s to %s, %s, %s, or %s",
       L_OPERATOR, op->name,

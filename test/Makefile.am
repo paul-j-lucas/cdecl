@@ -519,6 +519,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_main_f2c_i.test \
 	tests/explain_main_f_v.test \
 	tests/explain_main_fi_i.test \
+	tests/explain_main_fiapc_hi.test \
 	tests/explain_main_fic_i.test \
 	tests/explain_main_fipc_i.test \
 	tests/explain_main_fippi_i.test \
