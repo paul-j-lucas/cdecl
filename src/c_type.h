@@ -147,30 +147,66 @@ _GL_INLINE_HEADER_BEGIN
 /** Shorthand for `class`, `struct`, or `union`. */
 #define T_CLASS_STRUCT_UNION  ( T_CLASS | T_STRUCT | T_UNION )
 
-/** The only type(s) that can be applied to constructors. */
+/**
+ * The only types that can be applied to constructors.
+ *
+ * @sa #T_CONSTRUCTOR_ONLY
+ * @sa #T_FUNC_LIKE
+ */
 #define T_CONSTRUCTOR         ( T_CONSTEXPR | T_EXPLICIT | T_FRIEND | T_INLINE \
                               | T_NOEXCEPT | T_THROW )
 
-/** The type(s) that can apply only to constructors. */
+/**
+ * The types that can apply only to constructors.
+ *
+ * @sa #T_CONSTRUCTOR
+ */
 #define T_CONSTRUCTOR_ONLY    T_EXPLICIT
+
+/**
+ * The only types that can be applied to function-like things (functions,
+ * blocks, and operators).
+ *
+ * @sa #T_CONSTRUCTOR
+ * @sa #T_NEW_DELETE_OPER
+ * @sa #T_USER_DEF_CONV
+ */
+#define T_FUNC_LIKE          ~( T_AUTO_STORAGE | T_APPLE_BLOCK | T_MUTABLE \
+                              | T_REGISTER | T_THREAD_LOCAL )
 
 /** Shorthand for an `int` modifier. */
 #define T_INT_MODIFIER        ( T_SHORT | T_LONG | T_LONG_LONG | T_SIGNED \
                               | T_UNSIGNED )
 
-/** The type(s) that can apply only to member functions or operators. */
+/**
+ * The types that can apply only to member functions or operators.
+ *
+ * @sa #T_NONMEMBER_FUNC_ONLY
+ */
 #define T_MEMBER_FUNC_ONLY    ( T_CONST | T_VOLATILE | T_DEFAULT | T_DELETE \
                               | T_OVERRIDE | T_FINAL | T_VIRTUAL \
                               | T_REFERENCE | T_RESTRICT | T_RVALUE_REFERENCE )
 
-/** The type(s) that can apply to operators new, new[], delete, & delete[] . */
+/**
+ * The only types that can apply to operators new, new[], delete, & delete[].
+ *
+ * @sa #T_FUNC_LIKE
+ */
 #define T_NEW_DELETE_OPER     ( T_EXTERN | T_FRIEND | T_NOEXCEPT | T_STATIC \
                               | T_THROW )
 
-/** The type(s) that can apply only to non-member functions or operators. */
+/**
+ * The types that can apply only to non-member functions or operators.
+ *
+ * @sa T_MEMBER_FUNC_ONLY
+ */
 #define T_NONMEMBER_FUNC_ONLY T_FRIEND
 
-/** The type(s) that can apply to user-defined conversion operators. */
+/**
+ * The types that can apply to user-defined conversion operators.
+ *
+ * @sa #T_FUNC_LIKE
+ */
 #define T_USER_DEF_CONV       ( T_CONST | T_CONSTEXPR | T_EXPLICIT | T_FINAL  \
                               | T_FRIEND | T_INLINE | T_NOEXCEPT | T_OVERRIDE \
                               | T_THROW | T_PURE_VIRTUAL | T_VIRTUAL)
@@ -184,13 +220,13 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Duplicates the `c_type_id_t` referred to by \a data.
- * @note Callers _must_ eventually call c_type_id_data_free(void*) on the
+ * @note Callers _must_ eventually call c_type_id_data_free() on the
  * returned value.
  *
  * @param data The `c_type_id_t` to duplicate.  May be NULL.
  * @return Returns said `c_type_id_t` or T_NONE if \a data is NULL.
  *
- * @sa c_type_id_data_free(void*)
+ * @sa c_type_id_data_free()
  */
 C_WARN_UNUSED_RESULT
 void* c_type_id_data_dup( void const *data );
@@ -201,7 +237,7 @@ void* c_type_id_data_dup( void const *data );
  *
  * @param data The data to free.
  *
- * @sa c_type_id_data_new(c_type_id_t)
+ * @sa c_type_id_data_new()
  */
 void c_type_id_data_free( void *data );
 
@@ -211,7 +247,7 @@ void c_type_id_data_free( void *data );
  * @param data The data to get the `c_type_id_t` from.  May be NULL.
  * @return Returns said `c_type_id_t` or T_NONE if \a data is NULL.
  *
- * @sa c_type_id_data_new(c_type_id_t)
+ * @sa c_type_id_data_new()
  */
 C_TYPE_INLINE C_WARN_UNUSED_RESULT
 c_type_id_t c_type_id_data_get( void const *data ) {
@@ -230,7 +266,7 @@ c_type_id_t c_type_id_data_get( void const *data ) {
  * @param type_id The `c_type_id_t` to use.
  * @return Returns said handle.
  *
- * @sa c_type_id_data_free(void*)
+ * @sa c_type_id_data_free()
  */
 C_TYPE_INLINE C_WARN_UNUSED_RESULT
 void* c_type_id_data_new( c_type_id_t type_id ) {

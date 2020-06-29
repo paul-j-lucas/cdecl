@@ -39,9 +39,6 @@
 #include <assert.h>
 #include <stdbool.h>
 
-#define T_NOT_FUNC_LIKE \
-  (T_AUTO_STORAGE | T_APPLE_BLOCK | T_MUTABLE | T_REGISTER | T_THREAD_LOCAL)
-
 // local constants
 static bool const VISITOR_ERROR_FOUND     = true;
 static bool const VISITOR_ERROR_NOT_FOUND = false;
@@ -1515,7 +1512,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         return VISITOR_ERROR_FOUND;
       }
 
-      c_type_id_t const t = ast->type_id & T_NOT_FUNC_LIKE;
+      c_type_id_t const t = ast->type_id & ~T_FUNC_LIKE;
       if ( t != T_NONE )
         return error_kind_not_type( ast, t );
       break;
