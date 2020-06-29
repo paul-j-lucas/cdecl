@@ -236,8 +236,8 @@ bool c_ast_take_typedef( c_ast_t *ast );
  * @return Returns the AST of the underlying type, \a ast if it was not a
  * pointer, or null if \a ast is null or not a pointer.
  *
- * @sa c_ast_unreference(c_ast_t const*)
- * @sa c_ast_untypedef(c_ast_t const*)
+ * @sa c_ast_unreference()
+ * @sa c_ast_untypedef()
  */
 C_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
@@ -254,8 +254,8 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
  * @return Returns the AST of the underlying type, \a ast if it was not a
  * reference, or null only if \a ast is null.
  *
- * @sa c_ast_unpointer(c_ast_t const*)
- * @sa c_ast_untypedef(c_ast_t const*)
+ * @sa c_ast_unpointer()
+ * @sa c_ast_untypedef()
  */
 C_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unreference( c_ast_t const *ast );
@@ -268,8 +268,8 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
  * @return Returns the AST of the underlying type, \a ast if it was not a
  * `typedef`, or null only if \a ast is null.
  *
- * @sa c_ast_unpointer(c_ast_t const*)
- * @sa c_ast_unreference(c_ast_t const*)
+ * @sa c_ast_unpointer()
+ * @sa c_ast_unreference()
  */
 C_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast );

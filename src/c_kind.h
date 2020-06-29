@@ -140,7 +140,7 @@ void c_kind_data_free( void *data ) {
  * @param data The data to get the `c_kind_t` from.
  * @return Returns the `c_kind_t`.
  *
- * @sa c_kind_data_new(c_kind_t)
+ * @sa c_kind_data_new()
  */
 C_KIND_INLINE C_WARN_UNUSED_RESULT
 c_kind_t c_kind_data_get( void const *data ) {
@@ -157,7 +157,7 @@ c_kind_t c_kind_data_get( void const *data ) {
  * @param kind_id The `c_kind_t` to use.
  * @return Returns said handle.
  *
- * @sa c_kind_data_free(void*)
+ * @sa c_kind_data_free()
  */
 C_KIND_INLINE C_WARN_UNUSED_RESULT
 void* c_kind_data_new( c_kind_t kind_id ) {
