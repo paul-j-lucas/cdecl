@@ -1,5 +1,29 @@
+2020-06-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Cleaned-up SET_TOKEN* macros.
+   * c_ast_util.h, c_kind.h: Tweaked Doxygen.
+   * c_type.h, errors.c: Added T_FUNC_LIKE; more documentation.
+   * c_ast_util.h: Fixed @param.
+
+2020-06-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c: Added comment.
+   * c_ast_util.c: Cleaned up c_ast_unreference().
+   * c_ast_util.c, c_ast_util.h, errors.c, test/Makefile.am,
+     explain_main_fiapc_hi.test: Reworked the c_ast_is_*() functions; fixed so
+     main() can't return short int.
+
 2020-06-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, errors.c, test/Makefile.am, explain_main_f_i.out,
+     explain_main_fiapc_i.out, explain_main_fiapcc_i.out,
+     explain_main_fippc_i.out, explain_main_fippcc_i.out,
+     explain_main_fv_i.out, explain_main_f2c_i.test, explain_main_f_i.test,
+     explain_main_f_v.test, explain_main_fi_i.test, explain_main_fiapc_i.test,
+     explain_main_fiapcc_i.test, explain_main_fic_i.test,
+     explain_main_fipc_i.test, explain_main_fippc_i.test,
+     explain_main_fippcc_i.test, explain_main_fippi_i.test,
+     explain_main_fv_i.test: Now checking main()'s signature.
    * parser.y: Added comment for Y_DELETE.
    * parser.y: Y_NEW is oper_id.
    * parser.y: Comment fix.
