@@ -88,21 +88,12 @@
 #define SET_TOKEN_TO(S)           (lexer_token = (S))
 
 /**
- * Sets <code>\ref lexer_token</code> to \a S and returns \a T.
- *
- * @param S The string to set the token to.
- * @param T The token to return.
- */
-#define SET_TOKEN_TO_AND_RETURN(S,T) \
-  BLOCK( SET_TOKEN_TO(S); return (T); )
-
-/**
  * Sets <code>\ref lexer_token</code> to \a S and returns \a S[0].
  *
  * @param S The string to set the token to.
  */
-#define SET_TOKEN_TO_AND_RETURN_IT(S) \
-  SET_TOKEN_TO_AND_RETURN( (S), lexer_token[0] )
+#define SET_TOKEN_TO_AND_RETURN(S) \
+  BLOCK( SET_TOKEN_TO(S); return lexer_token[0]; )
 
 /**
  * Overrides Flex's fatal error message to print the message in our format and
@@ -825,23 +816,23 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
 {dec_int}     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
 {hex_int}     { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
 
-"<:<:"        { SET_TOKEN_TO_AND_RETURN   ( "[[", Y_LBRACKET2 ); }
-":>:>"        { SET_TOKEN_TO_AND_RETURN   ( "]]", Y_RBRACKET2 ); }
+"<:<:"        { SET_TOKEN_TO( "[[" ); return Y_LBRACKET2; }
+":>:>"        { SET_TOKEN_TO( "]]" ); return Y_RBRACKET2; }
 
-"<:"          { SET_TOKEN_TO_AND_RETURN_IT( "["               ); }
-":>"          { SET_TOKEN_TO_AND_RETURN_IT( "]"               ); }
+"<:"          { SET_TOKEN_TO_AND_RETURN( "[" ); }
+":>"          { SET_TOKEN_TO_AND_RETURN( "]" ); }
 
-"??(??("      { SET_TOKEN_TO_AND_RETURN   ( "[[", Y_LBRACKET2 ); }
-"??)??)"      { SET_TOKEN_TO_AND_RETURN   ( "]]", Y_RBRACKET2 ); }
-"??'="        { SET_TOKEN_TO_AND_RETURN   ( "^=", Y_CIRC_EQ   ); }
-"??!="        { SET_TOKEN_TO_AND_RETURN   ( "|=", Y_PIPE_EQ   ); }
-"??!??!"      { SET_TOKEN_TO_AND_RETURN   ( "||", Y_PIPE2     ); }
+"??(??("      { SET_TOKEN_TO( "[[" ); return Y_LBRACKET2; }
+"??)??)"      { SET_TOKEN_TO( "]]" ); return Y_RBRACKET2; }
+"??'="        { SET_TOKEN_TO( "^=" ); return Y_CIRC_EQ  ; }
+"??!="        { SET_TOKEN_TO( "|=" ); return Y_PIPE_EQ  ; }
+"??!??!"      { SET_TOKEN_TO( "||" ); return Y_PIPE2    ; }
 
-"??!"         { SET_TOKEN_TO_AND_RETURN   ( "|", Y_PIPE       ); }
-"??'"         { SET_TOKEN_TO_AND_RETURN   ( "^", Y_CIRC       ); }
-"??("         { SET_TOKEN_TO_AND_RETURN_IT( "["               ); }
-"??)"         { SET_TOKEN_TO_AND_RETURN_IT( "]"               ); }
-"??-"         { SET_TOKEN_TO_AND_RETURN   ( "~", Y_TILDE      ); }
+"??!"         { SET_TOKEN_TO( "|" ); return Y_PIPE      ; }
+"??'"         { SET_TOKEN_TO( "^" ); return Y_CIRC      ; }
+"??("         { SET_TOKEN_TO_AND_RETURN( "[" ); }
+"??)"         { SET_TOKEN_TO_AND_RETURN( "]" ); }
+"??-"         { SET_TOKEN_TO( "~" ); return Y_TILDE     ; }
 
               /*
                * Special case: if "::" is immediately followed by a '*', return
