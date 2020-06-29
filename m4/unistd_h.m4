@@ -1,4 +1,4 @@
-# unistd_h.m4 serial 78
+# unistd_h.m4 serial 80
 dnl Copyright (C) 2006-2020 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -44,7 +44,7 @@ AC_DEFUN([gl_UNISTD_H],
     ]], [access chdir chown dup dup2 dup3 environ euidaccess faccessat fchdir
     fchownat fdatasync fsync ftruncate getcwd getdomainname getdtablesize
     getentropy getgroups gethostname getlogin getlogin_r getpagesize getpass
-    getrandom getusershell setusershell endusershell
+    getusershell setusershell endusershell
     group_member isatty lchown link linkat lseek pipe pipe2 pread pwrite
     readlink readlinkat rmdir sethostname sleep symlink symlinkat
     truncate ttyname_r unlink unlinkat usleep])
@@ -90,7 +90,6 @@ AC_DEFUN([gl_UNISTD_H_DEFAULTS],
   GNULIB_GETOPT_POSIX=0;         AC_SUBST([GNULIB_GETOPT_POSIX])
   GNULIB_GETPAGESIZE=0;          AC_SUBST([GNULIB_GETPAGESIZE])
   GNULIB_GETPASS=0;              AC_SUBST([GNULIB_GETPASS])
-  GNULIB_GETRANDOM=0;            AC_SUBST([GNULIB_GETRANDOM])
   GNULIB_GETUSERSHELL=0;         AC_SUBST([GNULIB_GETUSERSHELL])
   GNULIB_GROUP_MEMBER=0;         AC_SUBST([GNULIB_GROUP_MEMBER])
   GNULIB_ISATTY=0;               AC_SUBST([GNULIB_ISATTY])
@@ -137,7 +136,6 @@ AC_DEFUN([gl_UNISTD_H_DEFAULTS],
   HAVE_GETLOGIN=1;        AC_SUBST([HAVE_GETLOGIN])
   HAVE_GETPAGESIZE=1;     AC_SUBST([HAVE_GETPAGESIZE])
   HAVE_GETPASS=1;         AC_SUBST([HAVE_GETPASS])
-  HAVE_GETRANDOM=1;       AC_SUBST([HAVE_GETRANDOM])
   HAVE_GROUP_MEMBER=1;    AC_SUBST([HAVE_GROUP_MEMBER])
   HAVE_LCHOWN=1;          AC_SUBST([HAVE_LCHOWN])
   HAVE_LINK=1;            AC_SUBST([HAVE_LINK])
@@ -202,6 +200,7 @@ AC_DEFUN([gl_UNISTD_H_DEFAULTS],
   REPLACE_UNLINKAT=0;     AC_SUBST([REPLACE_UNLINKAT])
   REPLACE_USLEEP=0;       AC_SUBST([REPLACE_USLEEP])
   REPLACE_WRITE=0;        AC_SUBST([REPLACE_WRITE])
+  UNISTD_H_HAVE_SYS_RANDOM_H=0; AC_SUBST([UNISTD_H_HAVE_SYS_RANDOM_H])
   UNISTD_H_HAVE_WINSOCK2_H=0; AC_SUBST([UNISTD_H_HAVE_WINSOCK2_H])
   UNISTD_H_HAVE_WINSOCK2_H_AND_USE_SOCKETS=0;
                            AC_SUBST([UNISTD_H_HAVE_WINSOCK2_H_AND_USE_SOCKETS])
