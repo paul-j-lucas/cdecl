@@ -143,7 +143,7 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_id_t type_ids );
  * one of \a type_ids.
  */
 C_WARN_UNUSED_RESULT
-bool c_ast_is_ref_to_type_any( c_ast_t const *ast, c_type_id_t type_id  );
+bool c_ast_is_ref_to_type_any( c_ast_t const *ast, c_type_id_t type_ids );
 
 /**
  * Traverses \a ast attempting to find an AST node having a name.
