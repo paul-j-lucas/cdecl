@@ -744,6 +744,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
  * @param sep The separator character.
  * @param sep_cat A pointer to a variable to keep track of whether \a sep has
  * been concatenated.
+ * @return Returns a pointer to the new end of \a dst.
  */
 C_WARN_UNUSED_RESULT
 static char* strcpy_sep( char *dst, char const *src, char sep, bool *sep_cat ) {
