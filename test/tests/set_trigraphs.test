@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ set trigraphs @ 0
+cdecl @ /dev/null @ @ set trigraphs; declare x as array of int @ 0

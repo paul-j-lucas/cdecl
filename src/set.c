@@ -319,7 +319,8 @@ static void set_yydebug( bool enabled, c_loc_t const *opt_name_loc,
  * @param s1 The first string.
  * @param s2 The second string.
  * @param n The maximum number of characters to check.
- * @return Returns `true` only if \a s1 equals \a s2 for \a n characters.
+ * @return Returns `true` only if \a s1 equals \a s2 (ignoring hyphens)
+ * for \a n characters.
  */
 static bool strn_nohyphen_eq( char const *s1, char const *s2, size_t n ) {
   while ( n-- > 0 ) {
@@ -327,9 +328,8 @@ static bool strn_nohyphen_eq( char const *s1, char const *s2, size_t n ) {
       ++s1;
     else if ( *s2 == '-' )
       ++s2;
-    else if ( *s1 != *s2 )
+    else if ( *s1++ != *s2++ )
       return false;
-    (void)++s1, (void)++s2;
   } // while
   return true;
 }

@@ -1517,6 +1517,7 @@ TESTS+=	tests/help-c++.test \
 	tests/help_english-c++.test \
 	tests/help_english-c.test \
 	tests/set.test \
+	tests/set_-e-a--st-.test \
 	tests/set_c++.test \
 	tests/set_c++03.test \
 	tests/set_c++11.test \
@@ -1532,6 +1533,10 @@ TESTS+=	tests/help-c++.test \
 	tests/set_c99.test \
 	tests/set_cknr.test \
 	tests/set_digraphs.test \
+	tests/set_ea.test \
+	tests/set_east-const.test \
+	tests/set_east.test \
+	tests/set_eastconst.test \
 	tests/set_explain-by-default.test \
 	tests/set_explain.test \
 	tests/set_knr.test \

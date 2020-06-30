@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ set digraphs @ 0
+cdecl @ /dev/null @ @ set digraphs; declare x as array of int @ 0

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ set nosemicolon @ 0
+cdecl @ /dev/null @ @ set nosemicolon; declare x as int @ 0
