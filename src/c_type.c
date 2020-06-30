@@ -814,7 +814,6 @@ c_lang_id_t c_type_check( c_type_id_t type_id ) {
 }
 
 // This is out-of-line since its address is taken.
-C_WARN_UNUSED_RESULT
 void* c_type_id_data_dup( void const *data ) {
   return c_type_id_data_new( c_type_id_data_get( data ) );
 }
