@@ -104,7 +104,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_IF,               Y_IF,               T_NONE,         LANG_ALL          },
   { L_INT,              Y_INT,              T_INT,          LANG_ALL          },
   { L_LONG,             Y_LONG,             T_LONG,         LANG_ALL          },
-  { L_REGISTER,         Y_REGISTER,         T_REGISTER,     LANG_MAX(CPP_14)  },
+  { L_REGISTER,         Y_REGISTER,         T_REGISTER,     LANG_ALL          },
   { L_RETURN,           Y_RETURN,           T_NONE,         LANG_ALL          },
   { L_SHORT,            Y_SHORT,            T_SHORT,        LANG_ALL          },
   { L_SIZEOF,           Y_SIZEOF,           T_NONE,         LANG_ALL          },
