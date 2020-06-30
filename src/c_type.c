@@ -820,6 +820,7 @@ void* c_type_id_data_dup( void const *data ) {
 }
 
 void c_type_id_data_free( void *data ) {
+  // This is out-of-line since its address is taken.
 #if SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP
   free( data );
 #else
