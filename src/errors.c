@@ -50,9 +50,6 @@ C_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_args( c_ast_t const* );
 
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_ret_type( c_ast_t const* );
-
-C_WARN_UNUSED_RESULT
 static bool c_ast_check_func_c( c_ast_t const* );
 
 C_WARN_UNUSED_RESULT
