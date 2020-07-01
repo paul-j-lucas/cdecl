@@ -10,6 +10,21 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 7.4
+
+** Bison debugging change
+Changed --enable--yydebug configure option to --enable-bison-debug,
+--yydebug/-y cdecl options to --bison-debug/-F, and yydebug to bison-debug set
+option.
+
+** Added Flex debugging
+Added --enable-flex-debug configure option, --flex-debug/-F cdecl options, and
+flex-debug set option.
+
+** Fixed set options
+Finally fixed parsing of set options.
+
+
 * Changes in Cdecl 7.3
 
 ** Checking main()'s signature
