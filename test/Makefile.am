@@ -1556,7 +1556,7 @@ TESTS+=	tests/set_debug.test \
 	tests/set_nodebug.test
 endif
 
-if ENABLE_YYDEBUG
+if ENABLE_BISON_DEBUG
 TESTS+=	tests/set_yydebug.test \
 	tests/set_noyydebug.test
 endif

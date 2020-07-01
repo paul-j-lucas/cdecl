@@ -145,21 +145,33 @@ AS_IF([test x$enable_term_size = xyes],
     [Define to 1 if term-size is enabled.])]
 )
 
-# Program feature: yacc debug (disabled by default)
-AC_ARG_ENABLE([yydebug],
-  AS_HELP_STRING([--enable-yydebug], [enable support for yacc debugging]),
+# Program feature: Flex debug (disabled by default)
+AC_ARG_ENABLE([flex-debug],
+  AS_HELP_STRING([--enable-flex-debug], [enable support for Flex debugging]),
   [],
-  [enable_yydebug=no]
+  [enable_flex_debug=no]
 )
-AS_IF([test x$enable_yydebug = xyes],
+AS_IF([test x$enable_flex_debug = xyes],
+  [AC_DEFINE([ENABLE_FLEX_DEBUG], [1],
+    [Define to 1 if Flex debugging is enabled.])]
+)
+
+# Program feature: Bison debug (disabled by default)
+AC_ARG_ENABLE([bison-debug],
+  AS_HELP_STRING([--enable-bison-debug], [enable support for Bison debugging]),
+  [],
+  [enable_bison_debug=no]
+)
+AS_IF([test x$enable_bison_debug = xyes],
   [AC_DEFINE([YYDEBUG], [1],
-    [Define to 1 if yacc debugging is enabled.])]
+    [Define to 1 if Bison debugging is enabled.])]
 )
 
 # Makefile conditionals.
 AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline      != xno])
 AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test x$enable_cdecl_debug = xyes])
-AM_CONDITIONAL([ENABLE_YYDEBUG],      [test x$enable_yydebug     = xyes])
+AM_CONDITIONAL([ENABLE_BISON_DEBUG],  [test x$enable_bison_debug = xyes])
+AM_CONDITIONAL([ENABLE_FLEX_DEBUG],   [test x$enable_flex_debug  = xyes])
 
 # Miscellaneous.
 AC_LANG(C)

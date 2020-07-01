@@ -77,7 +77,8 @@
 #endif
 
 #ifdef ENABLE_CDECL_DEBUG
-#define IF_DEBUG(...)             BLOCK( if ( opt_debug ) { __VA_ARGS__ } )
+#define IF_DEBUG(...) \
+  BLOCK( if ( opt_cdecl_debug ) { __VA_ARGS__ } )
 #else
 #define IF_DEBUG(...)             /* nothing */
 #endif /* ENABLE_CDECL_DEBUG */
@@ -145,8 +146,8 @@
 
 /**
  * @defgroup parser-dump-group Debugging Macros
- * Macros that are used to dump a trace during parsing when `opt_debug` is
- * `true`.
+ * Macros that are used to dump a trace during parsing when `opt_cdecl_debug`
+ * is `true`.
  * @ingroup parser-group
  * @{
  */

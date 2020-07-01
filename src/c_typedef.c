@@ -661,8 +661,8 @@ void c_typedef_init( void ) {
     //
     // Temporarily turn off debug output for built-in typedefs.
     //
-    bool const prev_debug = opt_debug;
-    opt_debug = false;
+    bool const prev_cdecl_debug = opt_cdecl_debug;
+    opt_cdecl_debug = false;
 #endif /* ENABLE_CDECL_DEBUG */
     //
     // Temporarily set the language to the latest C++ version to allow all
@@ -670,12 +670,19 @@ void c_typedef_init( void ) {
     //
     c_lang_id_t const prev_lang = opt_lang;
     opt_lang = LANG_CPP_NEW;
+#ifdef ENABLE_FLEX_DEBUG
+    //
+    // Temporarily turn off Flex debug output for built-in typedefs.
+    //
+    int const prev_flex_debug = opt_flex_debug;
+    opt_flex_debug = false;
+#endif /* ENABLE_FLEX_DEBUG */
 #ifdef YYDEBUG
     //
     // Temporarily turn off Bison debug output for built-in typedefs.
     //
-    int const prev_yydebug = yydebug;
-    yydebug = 0;
+    int const prev_bison_debug = opt_bison_debug;
+    opt_bison_debug = false;
 #endif /* YYDEBUG */
 
     c_typedef_parse_builtins( TYPEDEFS_STD_C );
@@ -688,11 +695,14 @@ void c_typedef_init( void ) {
     c_typedef_parse_builtins( TYPEDEFS_WIN32 );
 
 #ifdef ENABLE_CDECL_DEBUG
-    opt_debug = prev_debug;
+    opt_cdecl_debug = prev_cdecl_debug;
 #endif /* ENABLE_CDECL_DEBUG */
     opt_lang = prev_lang;
+#ifdef ENABLE_FLEX_DEBUG
+    opt_flex_debug = prev_flex_debug;
+#endif /* ENABLE_FLEX_DEBUG */
 #ifdef YYDEBUG
-    yydebug = prev_yydebug;
+    opt_bison_debug = prev_bison_debug;
 #endif /* YYDEBUG */
   }
 

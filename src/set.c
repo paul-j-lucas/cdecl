@@ -89,8 +89,11 @@ static inline char const* maybe_no( bool enabled ) {
  */
 static void print_options( void ) {
   printf( "  %salt-tokens\n", maybe_no( opt_alt_tokens ) );
+#ifdef YYDEBUG
+  printf( "  %sbison-debug\n", maybe_no( opt_bison_debug ) );
+#endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
-  printf( "  %sdebug\n", maybe_no( opt_debug ) );
+  printf( "  %sdebug\n", maybe_no( opt_cdecl_debug ) );
 #endif /* ENABLE_CDECL_DEBUG */
   printf( "  %seast-const\n", maybe_no( opt_east_const ) );
   printf( "  %sexplain-by-default\n", maybe_no( opt_explain ) );
@@ -103,13 +106,13 @@ static void print_options( void ) {
     PUTS_OUT( "  noexplicit-int\n" );
   }
 
+#ifdef ENABLE_FLEX_DEBUG
+  printf( "  %sflex-debug\n", maybe_no( opt_flex_debug ) );
+#endif /* ENABLE_FLEX_DEBUG */
   printf( " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
   printf( "    lang=%s\n", C_LANG_NAME() );
   printf( "  %sprompt\n", maybe_no( prompt[0][0] != '\0' ) );
   printf( "  %ssemicolon\n", maybe_no( opt_semicolon ) );
-#ifdef YYDEBUG
-  printf( "  %syydebug\n", maybe_no( yydebug ) );
-#endif /* YYDEBUG */
 }
 
 /**
@@ -129,6 +132,25 @@ static void set_alt_tokens( bool enabled, c_loc_t const *opt_name_loc,
   opt_alt_tokens = enabled;
 }
 
+#ifdef YYDEBUG
+/**
+ * Sets the Bison debugging option.
+ *
+ * @param enabled True if enabled.
+ * @param opt_name_loc The location of the option name.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
+ */
+static void set_bison_debug( bool enabled, c_loc_t const *opt_name_loc,
+                             char const *opt_value,
+                             c_loc_t const *opt_value_loc ) {
+  (void)opt_name_loc;
+  (void)opt_value;
+  (void)opt_value_loc;
+  opt_bison_debug = enabled;
+}
+#endif /* YYDEBUG */
+
 #ifdef ENABLE_CDECL_DEBUG
 /**
  * Sets the debug option.
@@ -144,7 +166,7 @@ static void set_debug( bool enabled, c_loc_t const *opt_name_loc,
   (void)opt_name_loc;
   (void)opt_value;
   (void)opt_value_loc;
-  opt_debug = enabled;
+  opt_cdecl_debug = enabled;
 }
 #endif /* ENABLE_CDECL_DEBUG */
 
@@ -216,6 +238,25 @@ static void set_explicit_int( bool enabled, c_loc_t const *opt_name_loc,
   else
     parse_opt_explicit_int( NULL, "" );
 }
+
+#ifdef ENABLE_FLEX_DEBUG
+/**
+ * Sets the Flex debugging option.
+ *
+ * @param enabled True if enabled.
+ * @param opt_name_loc The location of the option name.
+ * @param opt_value The option value, if any.
+ * @param opt_value_loc The location of \a opt_value.
+ */
+static void set_flex_debug( bool enabled, c_loc_t const *opt_name_loc,
+                            char const *opt_value,
+                            c_loc_t const *opt_value_loc ) {
+  (void)opt_name_loc;
+  (void)opt_value;
+  (void)opt_value_loc;
+  opt_flex_debug = enabled;
+}
+#endif /* ENABLE_FLEX_DEBUG */
 
 /**
  * Sets the current language.
@@ -294,25 +335,6 @@ static void set_trigraphs( bool enabled, c_loc_t const *opt_name_loc,
     );
 }
 
-#ifdef YYDEBUG
-/**
- * Sets the yydebug option.
- *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
- */
-static void set_yydebug( bool enabled, c_loc_t const *opt_name_loc,
-                         char const *opt_value,
-                         c_loc_t const *opt_value_loc ) {
-  (void)opt_name_loc;
-  (void)opt_value;
-  (void)opt_value_loc;
-  yydebug = enabled;
-}
-#endif /* YYDEBUG */
-
 /**
  * Compares strings for at most \a n characters ignoring hyphens for equality.
  *
@@ -373,6 +395,9 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
     // If this array is modified, also check SET_OPTIONS[] in autocomplete.c.
     //
     { "alt-tokens",         SET_TOGGLE,   false,  &set_alt_tokens         },
+#ifdef YYDEBUG
+    { "bison-debug",        SET_TOGGLE,   false,  &set_bison_debug        },
+#endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
     { "debug",              SET_TOGGLE,   false,  &set_debug              },
 #endif /* ENABLE_CDECL_DEBUG */
@@ -381,13 +406,13 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
     { "east-const",         SET_TOGGLE,   false,  &set_east_const         },
     { "explain-by-default", SET_TOGGLE,   false,  &set_explain_by_default },
     { "explicit-int",       SET_TOGGLE,   true,   &set_explicit_int       },
+#ifdef ENABLE_FLEX_DEBUG
+    { "flex-debug",         SET_TOGGLE,   false,  &set_flex_debug         },
+#endif /* ENABLE_FLEX_DEBUG */
     { "lang",               SET_AFF_ONLY, true,   &set_lang               },
     { "prompt",             SET_TOGGLE,   false,  &set_prompt             },
     { "semicolon",          SET_TOGGLE,   false,  &set_semicolon          },
     { "trigraphs",          SET_AFF_ONLY, false,  &set_trigraphs          },
-#ifdef YYDEBUG
-    { "yydebug",            SET_TOGGLE,   false,  &set_yydebug            },
-#endif /* YYDEBUG */
     { NULL,                 SET_TOGGLE,   false,  NULL                    }
   };
 

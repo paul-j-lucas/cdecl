@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 25, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "June 30, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -253,6 +253,17 @@ The alternative tokens are:
 and
 \f(CWxor_eq\fP.
 .TP
+.BR \-\-bison-debug " | " \-B
+Turns on
+.BR bison (1)
+debugging output
+(if compiled in).
+The additional output is of grammar productions
+as they are being reduced by the parser.
+(This is a debugging aid for developers of
+.B cdecl
+itself.)
+.TP
 .BI \-\-color \f1=\fPs "\f1 | \fP" "" \-k " s"
 Sets when to colorize output to
 .I s
@@ -403,6 +414,17 @@ whereas \f(CWui\fP means just \f(CWunsigned int\fP.
 Reads commands from file
 .IR f .
 .TP
+.BR \-\-flex-debug " | " \-F
+Turns on
+.BR flex (1)
+debugging output
+(if compiled in).
+The additional output is of lexer rules
+as they are being tokenized by the lexer.
+(This is a debugging aid for developers of
+.B cdecl
+itself.)
+.TP
 .BR \-\-help " | " \-h
 Prints a help message to standard error and exits.
 .TP
@@ -473,17 +495,6 @@ and
 .BR \-\-version " | " \-v
 Prints the version number to standard error
 and exits.
-.TP
-.BR \-\-yydebug " | " \-y
-Turns on
-.BR bison (1)
-debugging output
-(if compiled in).
-The additional output is of grammar productions
-as they are being reduced by the parser.
-(This is a debugging aid for developers of
-.B cdecl
-itself.)
 .SH C AND C++ LANGUAGE VERSIONS
 The argument to the
 .B \-\-language
@@ -1395,10 +1406,17 @@ command takes several options
 (which ignore hyphens).
 Unambiguous option abbreviations may be used.
 .RS 4
-.TP
+.TP 6
 .RB [ no ] alt-tokens
 Turns [off] on alternative token output.
-.TP 6
+.TP
+.RB [ no ] bison-debug
+Turns [off] on
+.BR bison (1)
+debugging output
+(if compiled in)
+\(em default is off.
+.TP
 .RB [ no ] debug
 Turns [off] on debugging output
 (if compiled in)
@@ -1441,6 +1459,13 @@ option for details.)
 .B noexplicit-int
 Turns off explicit \f(CWint\fP for all integer types.
 .TP
+.RB [ no ] flex-debug
+Turns [off] on
+.BR flex (1)
+debugging output
+(if compiled in)
+\(em default is off.
+.TP
 .BI lang \f1=\fPs
 Use
 .I s
@@ -1474,13 +1499,6 @@ for
 \f(CW|\fP,
 and
 \f(CW~\fP.
-.TP
-.RB [ no ] yydebug
-Turns [off] on
-.BR bison (1)
-debugging output
-(if compiled in)
-\(em default is off.
 .RE
 .SH CONFIGURATION FILE
 The

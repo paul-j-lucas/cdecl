@@ -241,7 +241,7 @@ void print_error_impl( char const *file, int line, c_loc_t const *loc,
   vfprintf( stderr, format, args );
   va_end( args );
 
-  if ( opt_debug )
+  if ( opt_cdecl_debug )
     PRINTF_ERR( " (%s:%d)", file, line );
 
   PUTC_ERR( '\n' );

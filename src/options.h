@@ -49,10 +49,10 @@
 
 // extern option variables
 extern bool         opt_alt_tokens;     ///< Print alternative tokens.
-extern char const  *opt_conf_file;      ///< Configuration file path.
 #ifdef ENABLE_CDECL_DEBUG
-extern bool         opt_debug;          ///< Generate JSON-like debug output?
+extern bool         opt_cdecl_debug;    ///< Generate JSON-like debug output?
 #endif /* ENABLE_CDECL_DEBUG */
+extern char const  *opt_conf_file;      ///< Configuration file path.
 extern bool         opt_east_const;     ///< Print in "east const" form?
 extern bool         opt_explain;        ///< Assume `explain` if no command?
 extern char const  *opt_fin;            ///< File in path.
@@ -68,8 +68,13 @@ extern bool         opt_typedefs;       ///< Load C/C++ standard `typedef`s?
 // other extern variables
 extern FILE        *fin;                ///< File in.
 extern FILE        *fout;               ///< File out.
+#ifdef ENABLE_FLEX_DEBUG
+extern int          yy_flex_debug;      ///< Flex variable for debugging.
+#define opt_flex_debug  yy_flex_debug   ///< Flex debugging.
+#endif /* ENABLE_FLEX_DEBUG */
 #ifdef YYDEBUG
-extern int          yydebug;            ///< Bison debugging.
+extern int          yydebug;            ///< Bison variable for debugging.
+#define opt_bison_debug yydebug         ///< Bison debugging.
 #endif /* YYDEBUG */
 
 ////////// extern functions ///////////////////////////////////////////////////

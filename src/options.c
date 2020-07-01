@@ -51,10 +51,10 @@
 
 // extern option variables
 bool                opt_alt_tokens;
-char const         *opt_conf_file;
 #ifdef ENABLE_CDECL_DEBUG
-bool                opt_debug;
+bool                opt_cdecl_debug;
 #endif /* ENABLE_CDECL_DEBUG */
+char const         *opt_conf_file;
 bool                opt_east_const;
 bool                opt_explain;
 char const         *opt_fin;
@@ -97,6 +97,9 @@ static struct option const LONG_OPTS[] = {
   { "digraphs",     no_argument,        NULL, '2' },
   { "trigraphs",    no_argument,        NULL, '3' },
   { "alt-tokens",   no_argument,        NULL, 'a' },
+#ifdef YYDEBUG
+  { "bison-debug",  no_argument,        NULL, 'B' },
+#endif /* YYDEBUG */
   { "config",       required_argument,  NULL, 'c' },
   { "no-config",    no_argument,        NULL, 'C' },
 #ifdef ENABLE_CDECL_DEBUG
@@ -105,6 +108,9 @@ static struct option const LONG_OPTS[] = {
   { "explain",      no_argument,        NULL, 'e' },
   { "east-const",   no_argument,        NULL, 'E' },
   { "file",         required_argument,  NULL, 'f' },
+#ifdef ENABLE_FLEX_DEBUG
+  { "flex-debug",   no_argument,        NULL, 'F' },
+#endif /* ENABLE_FLEX_DEBUG */
   { "help",         no_argument,        NULL, 'h' },
   { "interactive",  no_argument,        NULL, 'i' },
   { "explicit-int", required_argument,  NULL, 'I' },
@@ -115,9 +121,6 @@ static struct option const LONG_OPTS[] = {
   { "no-typedefs",  no_argument,        NULL, 't' },
   { "version",      no_argument,        NULL, 'v' },
   { "language",     required_argument,  NULL, 'x' },
-#ifdef YYDEBUG
-  { "yydebug",      no_argument,        NULL, 'y' },
-#endif /* YYDEBUG */
   { NULL,           0,                  NULL, 0   }
 };
 
@@ -128,8 +131,11 @@ static char const   SHORT_OPTS[] = "23ac:CeEf:iI:k:o:pstvx:"
 #ifdef ENABLE_CDECL_DEBUG
   "d"
 #endif /* ENABLE_CDECL_DEBUG */
+#ifdef ENABLE_FLEX_DEBUG
+  "F"
+#endif /* ENABLE_FLEX_DEBUG */
 #ifdef YYDEBUG
-  "y"
+  "B"
 #endif /* YYDEBUG */
 ;
 
@@ -357,14 +363,20 @@ static void parse_options( int argc, char const *argv[] ) {
       case '2': opt_graph       = C_GRAPH_DI;                     break;
       case '3': opt_graph       = C_GRAPH_TRI;                    break;
       case 'a': opt_alt_tokens  = true;                           break;
+#ifdef YYDEBUG
+      case 'B': opt_bison_debug = true;                           break;
+#endif /* YYDEBUG */
       case 'c': opt_conf_file   = optarg;                         break;
       case 'C': opt_no_conf     = true;                           break;
 #ifdef ENABLE_CDECL_DEBUG
-      case 'd': opt_debug       = true;                           break;
+      case 'd': opt_cdecl_debug = true;                           break;
 #endif /* ENABLE_CDECL_DEBUG */
       case 'e': opt_explain     = true;                           break;
       case 'E': opt_east_const  = true;                           break;
       case 'f': opt_fin         = optarg;                         break;
+#ifdef ENABLE_FLEX_DEBUG
+      case 'F': opt_flex_debug  = true;                           break;
+#endif /* ENABLE_FLEX_DEBUG */
    // case 'h': usage();        // default case handles this
       case 'i': opt_interactive = true;                           break;
       case 'I': parse_opt_explicit_int( NULL, optarg );           break;
@@ -375,9 +387,6 @@ static void parse_options( int argc, char const *argv[] ) {
       case 't': opt_typedefs    = false;                          break;
       case 'v': print_version   = true;                           break;
       case 'x': opt_lang        = parse_opt_lang( optarg );       break;
-#ifdef YYDEBUG
-      case 'y': yydebug         = true;                           break;
-#endif /* YYDEBUG */
       default : usage();
     } // switch
   } // for
@@ -418,6 +427,9 @@ static void usage( void ) {
 "       " PACKAGE " [options] files...\n"
 "options:\n"
 "  --alt-tokens    (-a)  Print alternative tokens.\n"
+#ifdef YYDEBUG
+"  --bison-debug   (-B)  Enable Bison debug output.\n"
+#endif /* YYDEBUG */
 "  --color=WHEN    (-k)  When to colorize output [default: not_file].\n"
 "  --config=FILE   (-c)  The configuration file [default: ~/" CONF_FILE_NAME_DEFAULT "].\n"
 #ifdef ENABLE_CDECL_DEBUG
@@ -427,6 +439,9 @@ static void usage( void ) {
 "  --east-const    (-E)  Print in \"east const\" form.\n"
 "  --explain       (-e)  Assume \"explain\" when no other command is given.\n"
 "  --file=FILE     (-f)  Read from this file [default: stdin].\n"
+#ifdef ENABLE_FLEX_DEBUG
+"  --flex-debug    (-F)  Enable Flex debug output.\n"
+#endif /* ENABLE_FLEX_DEBUG */
 "  --help          (-h)  Print this help and exit.\n"
 "  --interactive   (-i)  Force interactive mode.\n"
 "  --language=LANG (-x)  Use LANG.\n"
@@ -437,9 +452,6 @@ static void usage( void ) {
 "  --output=FILE   (-o)  Write to this file [default: stdout].\n"
 "  --trigraphs     (-3)  Print trigraphs.\n"
 "  --version       (-v)  Print version and exit.\n"
-#ifdef YYDEBUG
-"  --yydebug       (-y)  Enable Bison debug output.\n"
-#endif /* YYDEBUG */
 "\n"
 "Report bugs to: " PACKAGE_BUGREPORT "\n"
 PACKAGE_NAME " home page: " PACKAGE_URL "\n"
@@ -573,6 +585,12 @@ void options_init( int *pargc, char const ***pargv ) {
 
   me = base_name( (*pargv)[0] );
   opt_lang = is_cppdecl() ? LANG_CPP_NEW : LANG_C_NEW;
+#ifdef ENABLE_FLEX_DEBUG
+  //
+  // When -d is specified, Flex enables debugging by default -- undo that.
+  //
+  opt_flex_debug = false;
+#endif /* ENABLE_FLEX_DEBUG */
   parse_options( *pargc, *pargv );
   c_lang_set( opt_lang );
   *pargc -= optind;

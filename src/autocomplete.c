@@ -201,6 +201,10 @@ static char const *const SET_OPTIONS[] = {
    "c++14",
    "c++17",
    "c++20",
+#ifdef YYDEBUG
+   "bison-debug",
+ "nobison-debug",
+#endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
    "debug",
  "nodebug",
@@ -211,6 +215,10 @@ static char const *const SET_OPTIONS[] = {
  "noexplain-by-default",
    "explicit-int",
  "noexplicit-int",
+#ifdef ENABLE_FLEX_DEBUG
+   "flex-debug",
+ "noflex-debug",
+#endif /* ENABLE_FLEX_DEBUG */
  "nographs",
  "digraphs",
 "trigraphs",
@@ -220,10 +228,6 @@ static char const *const SET_OPTIONS[] = {
  "noprompt",
    "semicolon",
  "nosemicolon",
-#ifdef YYDEBUG
-   "yydebug",
- "noyydebug",
-#endif /* YYDEBUG */
    NULL
 };
 

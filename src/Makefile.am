@@ -21,7 +21,9 @@
 bin_PROGRAMS = cdecl
 
 AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib
-#AM_LFLAGS = -d
+if ENABLE_FLEX_DEBUG
+AM_LFLAGS = -d
+endif
 AM_YFLAGS = -d
 LDADD = $(top_builddir)/lib/libgnu.a
 
