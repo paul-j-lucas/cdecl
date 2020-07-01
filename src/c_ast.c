@@ -264,9 +264,9 @@ c_sname_t c_ast_sname_dup( c_ast_t const *ast ) {
   // If the AST's type is class, namespace, struct, or union, adopt that type
   // for the scoped name's type.
   //
-  if ( (ast->type_id & (T_CLASS_STRUCT_UNION | T_NAMESPACE)) != T_NONE )
+  if ( (ast->type_id & (T_ANY_CLASS | T_NAMESPACE)) != T_NONE )
     c_sname_set_type(
-      &rv, ast->type_id & (T_CLASS_STRUCT_UNION | T_INLINE | T_NAMESPACE)
+      &rv, ast->type_id & (T_ANY_CLASS | T_INLINE | T_NAMESPACE)
     );
   return rv;
 }
@@ -289,8 +289,8 @@ void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname ) {
   //
   c_type_id_t sn_type = c_sname_type( sname );
   if ( sn_type == T_NONE &&
-       (ast->type_id & (T_CLASS_STRUCT_UNION | T_NAMESPACE)) != T_NONE ) {
-    sn_type = ast->type_id & (T_CLASS_STRUCT_UNION | T_INLINE | T_NAMESPACE);
+       (ast->type_id & (T_ANY_CLASS | T_NAMESPACE)) != T_NONE ) {
+    sn_type = ast->type_id & (T_ANY_CLASS | T_INLINE | T_NAMESPACE);
   }
   c_ast_sname_set_type( ast, sn_type );
 

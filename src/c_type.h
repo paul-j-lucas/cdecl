@@ -138,14 +138,14 @@ _GL_INLINE_HEADER_BEGIN
 #define T_ANY_CHAR            ( T_CHAR | T_WCHAR_T \
                               | T_CHAR8_T | T_CHAR16_T | T_CHAR32_T )
 
+/** Shorthand for `class`, `struct`, or `union`. */
+#define T_ANY_CLASS           ( T_CLASS | T_STRUCT | T_UNION )
+
 /** Shorthand for any floating-point type. */
 #define T_ANY_FLOAT           ( T_FLOAT | T_DOUBLE )
 
 /** Shorthand for any reference type. */
 #define T_ANY_REFERENCE       ( T_REFERENCE | T_RVALUE_REFERENCE )
-
-/** Shorthand for `class`, `struct`, or `union`. */
-#define T_CLASS_STRUCT_UNION  ( T_CLASS | T_STRUCT | T_UNION )
 
 /**
  * The only types that can be applied to constructors.

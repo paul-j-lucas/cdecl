@@ -2029,7 +2029,7 @@ scope_declaration_c
     {
       if ( C_LANG_IS_CPP() ) {
         c_type_id_t const cur_type = c_sname_type( &in_attr.current_scope );
-        if ( (cur_type & T_CLASS_STRUCT_UNION) != 0 ) {
+        if ( (cur_type & T_ANY_CLASS) != T_NONE ) {
           char const *const cur_name =
             c_sname_local_name( &in_attr.current_scope );
           char const *const mbr_name = SLIST_HEAD( char const*, &$3 );
@@ -2093,7 +2093,7 @@ scope_declaration_c
       // Ensure that "namespace" isn't nested within a class/struct/union.
       //
       c_type_id_t const outer_type = c_sname_type( &in_attr.current_scope );
-      if ( (outer_type & T_CLASS_STRUCT_UNION) != T_NONE ) {
+      if ( (outer_type & T_ANY_CLASS) != T_NONE ) {
         print_error( &@1,
           "\"%s\" may only be nested within a %s", L_NAMESPACE, L_NAMESPACE
         );
@@ -3409,7 +3409,7 @@ pointer_to_member_type_c_ast
       // T_CLASS.
       //
       c_type_id_t sn_type = c_sname_type( &$1 );
-      if ( (sn_type & (T_CLASS_STRUCT_UNION | T_NAMESPACE)) == T_NONE )
+      if ( (sn_type & (T_ANY_CLASS | T_NAMESPACE)) == T_NONE )
         sn_type = T_CLASS;
 
       $$.ast->type_id = sn_type | $3;
@@ -4909,7 +4909,7 @@ of_scope_list_english
       c_type_id_t const inner_type = c_sname_type( &$1 );
       c_type_id_t const outer_type = c_sname_type( &$2 );
       if ( (inner_type & (T_NAMESPACE | T_SCOPE)) != T_NONE &&
-           (outer_type & T_CLASS_STRUCT_UNION) != T_NONE ) {
+           (outer_type & T_ANY_CLASS) != T_NONE ) {
         print_error( &@2,
           "\"%s\" may only be nested within a %s or %s",
           c_type_name( inner_type ), L_NAMESPACE, L_SCOPE
