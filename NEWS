@@ -14,7 +14,7 @@ with their complete changes, see the AUTHORS file.
 
 ** Bison debugging change
 Changed --enable--yydebug configure option to --enable-bison-debug,
---yydebug/-y cdecl options to --bison-debug/-F, and yydebug to bison-debug set
+--yydebug/-y cdecl options to --bison-debug/-B, and yydebug to bison-debug set
 option.
 
 ** Added Flex debugging
