@@ -224,7 +224,7 @@ _GL_INLINE_HEADER_BEGIN
  * returned value.
  *
  * @param data The `c_type_id_t` to duplicate.  May be NULL.
- * @return Returns said `c_type_id_t` or T_NONE if \a data is NULL.
+ * @return Returns a duplicate of the data.
  *
  * @sa c_type_id_data_free()
  */
