@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 7.4.1
+
+** Allowing signed main()
+The legal "signed main()" signature is now accepted.
+
+
 * Changes in Cdecl 7.4
 
 ** Bison debugging change
