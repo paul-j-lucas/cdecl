@@ -105,7 +105,8 @@ bool c_ast_check( c_ast_t const *ast, c_check_t check );
  * Checks whether \a ast is an AST for a builtin type.
  *
  * @param ast The `c_ast` to check.
- * @param type_id The specific type \a ast can be.
+ * @param type_id The specific type \a ast can be.  It must contain only type
+ * bits (no attributes, storage classes, etc.).
  * @return Returns `true` only if the type of \a ast is \a type_id.
  */
 C_WARN_UNUSED_RESULT

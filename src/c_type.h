@@ -344,6 +344,18 @@ char const* c_type_name( c_type_id_t type_id );
 C_WARN_UNUSED_RESULT
 char const* c_type_name_error( c_type_id_t type_id );
 
+/**
+ * "Normalize" \a type_id:
+ *
+ *  1. If it's #T_SIGNED and not #T_CHAR, remove #T_SIGNED.
+ *  2. If it becomes #T_NONE, add #T_INT.
+ *
+ * @param type_id The type to normalize.
+ * @return Returns the normalized type.
+ */
+C_WARN_UNUSED_RESULT
+c_type_id_t c_type_normalize( c_type_id_t type_id );
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */

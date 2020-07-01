@@ -344,8 +344,14 @@ c_ast_t* c_ast_find_type( c_ast_t *ast, c_visit_dir_t dir,
 }
 
 bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t type_id ) {
+  assert( (type_id & T_MASK_TYPE) != T_NONE );
+  assert( (type_id & ~T_MASK_TYPE) == T_NONE );
+
   ast = c_ast_untypedef( ast );
-  return ast->kind_id == K_BUILTIN && (ast->type_id & T_MASK_TYPE) == type_id;
+  if ( ast->kind_id != K_BUILTIN )
+    return false;
+  c_type_id_t const t = c_type_normalize( ast->type_id ) & T_MASK_TYPE;
+  return t == type_id;
 }
 
 bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_t kind_ids ) {

@@ -605,11 +605,9 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     space = true;
   }
 
+  type_id = c_type_normalize( type_id );
+
   // Special cases.
-  if ( (type_id & T_CHAR) == T_NONE ) {
-    // Explicit "signed" isn't needed for any type except char.
-    type_id &= ~T_SIGNED;
-  }
   if ( c_mode == C_GIBBERISH_TO_ENGLISH ) {
     if ( (type_id & T_INT_MODIFIER) != T_NONE &&
          (type_id & T_ANY_CHAR) == T_NONE &&
@@ -834,6 +832,15 @@ char const* c_type_name( c_type_id_t type_id ) {
 
 char const* c_type_name_error( c_type_id_t type_id ) {
   return c_type_name_impl( type_id, /*is_error=*/true );
+}
+
+c_type_id_t c_type_normalize( c_type_id_t type_id ) {
+  if ( (type_id & T_SIGNED) != T_NONE && (type_id & T_CHAR) == T_NONE ) {
+    type_id &= ~T_SIGNED;
+    if ( (type_id & T_MASK_TYPE) == T_NONE )
+      type_id |= T_INT;
+  }
+  return type_id;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

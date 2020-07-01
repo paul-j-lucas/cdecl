@@ -377,6 +377,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_lf.test \
 	tests/explain_ll.test \
 	tests/explain_main_f_i.test \
+	tests/explain_main_f_s.test \
 	tests/explain_main_fiapc_i.test \
 	tests/explain_main_fiapcc_i.test \
 	tests/explain_main_fippc_i.test \
