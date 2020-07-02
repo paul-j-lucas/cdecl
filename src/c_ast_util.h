@@ -161,23 +161,24 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
  *
  * @param ast The `c_ast` to begin at.
  * @param dir The direction to visit.
- * @param kind_id The bitwise-or of <code>\ref c_kind</code> to find.
+ * @param kind_ids The bitwise-or of kind(s) to find.
  * @return Returns a pointer to an AST node having \a kind_id or null if none.
  */
 C_WARN_UNUSED_RESULT
-c_ast_t* c_ast_find_kind( c_ast_t *ast, c_visit_dir_t dir, c_kind_t kind_id );
+c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
+                              c_kind_t kind_ids );
 
 /**
  * Traverses \a ast attempting to find an AST node having \a type_id.
  *
  * @param ast The `c_ast` to begin at.
  * @param dir The direction to visit.
- * @param type_id The bitwise-or of of <code>\ref c_type_id_t</code> to find.
+ * @param type_ids The bitwise-or of type(s) to find.
  * @return Returns a pointer to an AST node having \a type_id or null if none.
  */
 C_WARN_UNUSED_RESULT
-c_ast_t* c_ast_find_type( c_ast_t *ast, c_visit_dir_t dir,
-                          c_type_id_t type_id );
+c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
+                              c_type_id_t type_ids );
 
 /**
  * "Patches" \a type_ast into \a decl_ast only if:

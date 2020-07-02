@@ -300,7 +300,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
 
   c_ast_t const *const storage_ast =
-    c_ast_find_type( nonconst_ast, C_VISIT_DOWN, T_MASK_STORAGE );
+    c_ast_find_type_any( nonconst_ast, C_VISIT_DOWN, T_MASK_STORAGE );
 
   if ( storage_ast != NULL ) {
     c_type_id_t const storage_type = storage_ast->type_id & T_MASK_STORAGE;
