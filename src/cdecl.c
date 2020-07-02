@@ -42,7 +42,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include <limits.h>                     /* for PATH_MAX */
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>

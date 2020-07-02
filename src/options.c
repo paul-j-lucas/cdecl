@@ -25,8 +25,10 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
-#include "color.h"
 #include "options.h"
+#include "c_lang.h"
+#include "c_type.h"
+#include "color.h"
 #include "print.h"
 #include "util.h"
 

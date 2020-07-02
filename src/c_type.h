@@ -28,8 +28,7 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
-#include "c_lang.h"                     /* for c_lang_id_t */
-#include "types.h"                      /* for c_loc_t */
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -37,7 +36,6 @@
 // standard
 #include <stdbool.h>
 #include <inttypes.h>                   /* for PRIX64, etc. */
-#include <stdlib.h>                     /* for free(3) */
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef C_TYPE_INLINE

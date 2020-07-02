@@ -269,6 +269,8 @@ static char** attempt_completion( char const *text, int start, int end ) {
  */
 C_WARN_UNUSED_RESULT
 static char* command_generator( char const *text, int state ) {
+  assert( text != NULL );
+
   static size_t index;
   static size_t text_len;
 
@@ -293,6 +295,9 @@ static char* command_generator( char const *text, int state ) {
 C_WARN_UNUSED_RESULT
 static char* find_keyword( c_lang_lit_t const keywords[], char const *text,
                            size_t text_len, size_t *index ) {
+  assert( text != NULL );
+  assert( index != NULL );
+
   for ( c_lang_lit_t const *ll; (ll = keywords + *index)->literal != NULL; ) {
     ++*index;
     if ( (ll->lang_ids & opt_lang) == LANG_NONE )
@@ -311,6 +316,7 @@ static char* find_keyword( c_lang_lit_t const keywords[], char const *text,
  */
 C_WARN_UNUSED_RESULT
 static bool is_command( char const *command ) {
+  assert( command != NULL );
   size_t const command_len = strlen( command );
   if ( command_len > (size_t)rl_end )   // more chars than in rl_line_buffer?
     return false;
@@ -327,6 +333,8 @@ static bool is_command( char const *command ) {
  */
 C_WARN_UNUSED_RESULT
 static char* keyword_completion( char const *text, int state ) {
+  assert( text != NULL );
+
   static char const  *command;          // current command
   static size_t       index;
   static bool         no_more_matches;

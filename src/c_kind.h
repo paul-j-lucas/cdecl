@@ -46,6 +46,9 @@
 
 // standard
 #include <stdbool.h>
+#if SIZEOF_C_KIND_T > SIZEOF_VOIDP
+#include <stdlib.h>                     /* for free(3) */
+#endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef C_KIND_INLINE

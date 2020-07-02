@@ -25,8 +25,9 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
-#include "c_ast.h"
 #include "c_typedef.h"
+#include "c_ast.h"
+#include "c_lang.h"
 #include "options.h"
 #include "red_black.h"
 #include "util.h"

@@ -28,8 +28,6 @@
  */
 
 // local
-#include "c_lang.h"
-#include "c_type.h"
 #include "types.h"
 
 /**

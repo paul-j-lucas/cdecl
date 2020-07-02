@@ -29,6 +29,7 @@
 #define C_KIND_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_kind.h"
+#include "c_lang.h"
 #include "options.h"
 #include "util.h"
 

@@ -43,7 +43,6 @@
 #include "c_operator.h"
 #include "c_sname.h"
 #include "c_type.h"
-#include "gibberish.h"
 #include "slist.h"
 #include "types.h"
 #include "util.h"

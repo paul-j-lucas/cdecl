@@ -28,8 +28,7 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
-#include "c_lang.h"                     /* for c_lang_id_t */
-#include "c_type.h"
+#include "types.h"                      /* for c_lang_id_t */
 
 /// @cond DOXYGEN_IGNORE
 

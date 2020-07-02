@@ -25,6 +25,8 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
+#include "prompt.h"
+#include "c_lang.h"
 #include "color.h"
 #include "options.h"
 #include "util.h"

@@ -35,7 +35,6 @@
 #include "c_type.h"
 #include "slist.h"
 #include "types.h"
-#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 

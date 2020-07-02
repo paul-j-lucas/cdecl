@@ -28,8 +28,9 @@
 /// @cond DOXYGEN_IGNORE
 #define C_OP_INLINE _GL_EXTERN_INLINE
 /// @endcond
-#include "c_ast.h"
 #include "c_operator.h"
+#include "c_ast.h"
+#include "c_lang.h"
 #include "literals.h"
 
 // standard

@@ -25,11 +25,10 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
+#include "debug.h"
 #include "c_ast.h"
-#include "c_ast_util.h"
 #include "c_type.h"
 #include "c_typedef.h"
-#include "debug.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

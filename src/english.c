@@ -25,12 +25,11 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
+#include "english.h"
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_operator.h"
 #include "c_typedef.h"
-#include "english.h"
-#include "gibberish.h"
 #include "literals.h"
 #include "util.h"
 
@@ -38,8 +37,6 @@
 
 // standard
 #include <assert.h>
-#include <stdlib.h>
-#include <sysexits.h>
 
 /// @endcond
 

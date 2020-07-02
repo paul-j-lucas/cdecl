@@ -35,7 +35,6 @@
 
 // standard
 #include <stdbool.h>
-#include <stddef.h>                     /* for NULL */
 
 /// @endcond
 

@@ -31,15 +31,13 @@
 #include "c_ast.h"
 #include "c_typedef.h"
 #include "literals.h"
-#include "options.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
-#include <stdlib.h>
-#include <sysexits.h>
+#include <stdbool.h>
 
 /// @endcond
 

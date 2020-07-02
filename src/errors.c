@@ -27,6 +27,7 @@
 #include "cdecl.h"                      /* must go first */
 #include "c_ast_util.h"
 #include "c_keyword.h"
+#include "c_lang.h"
 #include "c_type.h"
 #include "c_typedef.h"
 #include "literals.h"
@@ -37,7 +38,6 @@
 
 // standard
 #include <assert.h>
-#include <stdbool.h>
 
 // local constants
 static bool const VISITOR_ERROR_FOUND     = true;
