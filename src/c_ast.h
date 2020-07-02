@@ -45,7 +45,7 @@
 #include "c_type.h"
 #include "gibberish.h"
 #include "slist.h"
-#include "typedefs.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

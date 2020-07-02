@@ -34,7 +34,7 @@
 #include "cdecl.h"                      /* must go first */
 #include "c_type.h"
 #include "slist.h"
-#include "typedefs.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

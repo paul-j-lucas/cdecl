@@ -51,7 +51,7 @@
 #include "options.h"
 #include "print.h"
 #include "slist.h"
-#include "typedefs.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

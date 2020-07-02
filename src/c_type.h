@@ -29,7 +29,7 @@
 // local
 #include "cdecl.h"                      /* must go first */
 #include "c_lang.h"                     /* for c_lang_id_t */
-#include "typedefs.h"                   /* for c_loc_t */
+#include "types.h"                      /* for c_loc_t */
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

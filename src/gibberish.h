@@ -28,7 +28,7 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
-#include "typedefs.h"
+#include "types.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -41,11 +41,11 @@
  * @defgroup printing-gibberish-group Printing Gibberish
  * Declares functions for printing in gibberish, aka, a C/C++ declaration.
  * @{
-
  */
+
 // Gibberish declaration flags.
 #define G_DECL_NONE           0u        /**< None. */
-#define G_DECL_TYPEDEF        (1u << 0) /**< Is a typedef. */
+#define G_DECL_TYPEDEF        (1u << 0) /**< Is a `typedef`. */
 
 ///////////////////////////////////////////////////////////////////////////////
 

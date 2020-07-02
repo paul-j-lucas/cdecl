@@ -55,7 +55,7 @@ cdecl_SOURCES =	parser.y \
 		red_black.c red_black.h \
 		set.c \
 		slist.c slist.h \
-		typedefs.h \
+		types.h \
 		util.c util.h
 
 if ENABLE_CDECL_DEBUG

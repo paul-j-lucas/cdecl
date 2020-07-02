@@ -28,7 +28,7 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
-#include "typedefs.h"                   /* for c_loc_t */
+#include "types.h"                      /* for c_loc_t */
 
 /**
  * @defgroup printing-errors-warnings-group Printing Errors & Warnings

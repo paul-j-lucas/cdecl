@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/typedefs.h
+**      src/types.h
 **
 **      Copyright (C) 2017-2020  Paul J. Lucas, et al.
 **
@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_typedefs_H
-#define cdecl_typedefs_H
+#ifndef cdecl_types_H
+#define cdecl_types_H
 
 // standard
 #include <stdint.h>                     /* for uint64_t */
@@ -148,5 +148,5 @@ typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
 
 /** @} */
 
-#endif /* cdecl_typedefs_H */
+#endif /* cdecl_types_H */
 /* vim:set et sw=2 ts=2: */

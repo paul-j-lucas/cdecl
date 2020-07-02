@@ -39,7 +39,7 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
-#include "typedefs.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -57,7 +57,7 @@ _GL_INLINE_HEADER_BEGIN
 #else /* CDECL_CONFIGURE */
 
 // local
-#include "typedefs.h"                   /* for c_kind_t */
+#include "types.h"                      /* for c_kind_t */
 
 #endif /* CDECL_CONFIGURE */
 

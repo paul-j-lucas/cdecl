@@ -32,7 +32,7 @@
 #include "c_ast.h"
 #include "c_type.h"
 #include "gibberish.h"
-#include "typedefs.h"
+#include "types.h"
 #include "util.h"
 
 ///////////////////////////////////////////////////////////////////////////////

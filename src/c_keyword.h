@@ -30,7 +30,7 @@
 // local
 #include "c_lang.h"
 #include "c_type.h"
-#include "typedefs.h"
+#include "types.h"
 
 /**
  * @defgroup c-keywords-group C/C++ Keywords
