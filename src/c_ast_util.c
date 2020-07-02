@@ -188,7 +188,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
                                      c_ast_t *func_ast ) {
   assert( ast != NULL );
   assert( func_ast != NULL );
-  assert( (func_ast->kind_id & K_MASK_FUNCTION_LIKE) != K_NONE );
+  assert( (func_ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
 
   if ( (ast->kind_id &
         (K_ARRAY | K_ANY_POINTER | K_ANY_REFERENCE)) != K_NONE ) {

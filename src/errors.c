@@ -142,7 +142,7 @@ static bool c_ast_check_alignas( c_ast_t *ast ) {
     return false;
   }
 
-  if ( (ast->kind_id & K_MASK_FUNCTION_LIKE) != K_NONE ) {
+  if ( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE ) {
     print_error( &ast->loc,
       "%s can not be %s", c_kind_name( ast->kind_id ), L_ALIGNED
     );
@@ -427,7 +427,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
 C_WARN_UNUSED_RESULT
 static bool c_ast_check_func_args( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind_id & K_MASK_FUNCTION_LIKE) != K_NONE );
+  assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
   assert( opt_lang != LANG_C_KNR );
 
   c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
@@ -591,7 +591,7 @@ static bool c_ast_check_func_c( c_ast_t const *ast ) {
 C_WARN_UNUSED_RESULT
 static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind_id & K_MASK_FUNCTION_LIKE) != K_NONE );
+  assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
   assert( C_LANG_IS_CPP() );
 
   if ( (ast->type_id & T_ANY_REFERENCE) != T_NONE ) {
@@ -1309,7 +1309,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
 C_WARN_UNUSED_RESULT
 static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind_id & K_MASK_FUNCTION_LIKE) != K_NONE );
+  assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
 
   char const *const kind_name = c_kind_name( ast->kind_id );
   c_ast_t const *const ret_ast = ast->as.func.ret_ast;

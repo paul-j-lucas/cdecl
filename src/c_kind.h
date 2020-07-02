@@ -104,6 +104,16 @@ enum c_kind {
 #ifndef CDECL_CONFIGURE
 
 /**
+ * Shorthand for any kind of function-like parent.
+ */
+#define K_ANY_FUNCTION_LIKE   0xFE000
+
+/**
+ * Shorthand for any kind of parent.
+ */
+#define K_ANY_PARENT          0xFFF00
+
+/**
  * Shorthand for any kind of pointer: #K_POINTER or #K_POINTER_TO_MEMBER.
  */
 #define K_ANY_POINTER         (K_POINTER | K_POINTER_TO_MEMBER)
@@ -112,9 +122,6 @@ enum c_kind {
  * Shorthand for any kind of reference: #K_REFERENCE or #K_RVALUE_REFERENCE.
  */
 #define K_ANY_REFERENCE       (K_REFERENCE | K_RVALUE_REFERENCE)
-
-#define K_MASK_PARENT         0xFFF00   /**< Parent bitmask. */
-#define K_MASK_FUNCTION_LIKE  0xFE000   /**< Function-like bitmask. */
 
 ////////// inline functions ///////////////////////////////////////////////////
 

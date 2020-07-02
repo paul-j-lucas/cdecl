@@ -146,13 +146,13 @@ static void g_array_size( g_state_t const *g, c_ast_t const *ast ) {
  * if any.
  *
  * @param g The `g_state` to use.
- * @param ast The `c_ast` that is <code>\ref K_MASK_FUNCTION_LIKE</code> whose
+ * @param ast The `c_ast` that is <code>\ref K_ANY_FUNCTION_LIKE</code> whose
  * arguments to print.
  */
 static void g_func_args( g_state_t const *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
-  assert( (ast->kind_id & K_MASK_FUNCTION_LIKE) != K_NONE );
+  assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
 
   bool comma = false;
   FPUTC( '(', g->gout );
@@ -346,7 +346,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       if ( g->kind == G_DECLARE &&
            c_ast_find_name( ast, C_VISIT_UP ) != NULL &&
            !c_ast_find_kind_any( ast->parent_ast, C_VISIT_UP,
-                                 K_MASK_FUNCTION_LIKE ) ) {
+                                 K_ANY_FUNCTION_LIKE ) ) {
         //
         // For all kinds except function-like ASTs, we want the output to be
         // like:
