@@ -274,7 +274,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
  * Hyphenated English-literal-to-C-literal mapping.
  */
 struct c_hyphen {
-  char const *e_literal;                ///< Hyphenated English literal.
+  char const *literal;                  ///< Hyphenated English literal.
 
   /**
    * Array of language(s)/literal pair(s).  The array is terminated by an
@@ -327,7 +327,7 @@ static c_hyphen_t const C_HYPHEN_KEYWORDS[] = {
  * Hyphenated cdecl keyword English-literal-to-Bison-token mapping.
  */
 struct cdecl_hyphen {
-  char const *e_literal;                ///< Hyphenated English literal.
+  char const *literal;                  ///< Hyphenated English literal.
   int         yy_token_id;              ///< Bison token number.
 };
 typedef struct cdecl_hyphen cdecl_hyphen_t;
@@ -378,8 +378,8 @@ static void         lexer_update_loc( void );
 C_WARN_UNUSED_RESULT
 static char const* c_hyphen_find( char const *s ) {
   assert( s != NULL );
-  for ( c_hyphen_t const *h = C_HYPHEN_KEYWORDS; h->e_literal; ++h ) {
-    if ( strcmp( s, h->e_literal ) == 0 )
+  for ( c_hyphen_t const *h = C_HYPHEN_KEYWORDS; h->literal; ++h ) {
+    if ( strcmp( s, h->literal ) == 0 )
       return c_lang_literal( h->lang_lit );
   } // for
   return NULL;
@@ -394,8 +394,8 @@ static char const* c_hyphen_find( char const *s ) {
 C_WARN_UNUSED_RESULT
 static int cdecl_hyphen_find( char const *s ) {
   assert( s != NULL );
-  for ( cdecl_hyphen_t const *h = CDECL_HYPHEN_KEYWORDS; h->e_literal; ++h ) {
-    if ( strcmp( s, h->e_literal ) == 0 )
+  for ( cdecl_hyphen_t const *h = CDECL_HYPHEN_KEYWORDS; h->literal; ++h ) {
+    if ( strcmp( s, h->literal ) == 0 )
       return h->yy_token_id;
   } // for
   return Y_ERROR;
