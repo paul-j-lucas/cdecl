@@ -50,11 +50,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Gets the alternate token of \a token.
+ * Gets the alternative token of \a token.
  *
- * @param token The token to get the alternate token for.
- * @return If we're emitting alternate tokens and if \a token is a token that
- * has an alternate token, returns said token; otherwise returns \a token as-
+ * @param token The token to get the alternative token for.
+ * @return If we're emitting alternative tokens and if \a token is a token that
+ * has an alternative token, returns said token; otherwise returns \a token as-
  * is.
  */
 C_WARN_UNUSED_RESULT

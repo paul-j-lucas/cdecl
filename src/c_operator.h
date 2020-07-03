@@ -219,7 +219,8 @@ unsigned c_oper_get_overload( c_ast_t const *ast );
  * Gets the C/C++ token for the operator having \a oper_id.
  *
  * @param oper_id The ID of the `c_operator` to get the token for.
- * @return Returns said token; otherwise, returns the unaltered token.
+ * @return Returns said token (including alternative or graph tokens, if either
+ * is enabled); otherwise, returns the unaltered token.
  */
 C_OP_INLINE C_WARN_UNUSED_RESULT
 char const* c_oper_token_c( c_oper_id_t oper_id ) {
