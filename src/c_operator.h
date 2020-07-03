@@ -49,16 +49,41 @@ _GL_INLINE_HEADER_BEGIN
  * @{
  */
 
-#define C_OP_ARGS_UNLIMITED     (~0u)   /**< Unlimited args for operator(). */
+/** Denotes an unlimited number of arguments (for `operator()()`). */
+#define C_OP_ARGS_UNLIMITED     (~0u)
 
 // overloadability
-#define C_OP_NOT_OVERLOADABLE   0u      /**< Operator is not overloadable. */
+
+/**
+ * For `c_operator.flags`, denotes that the operator is not overloadable.
+ */
+#define C_OP_NOT_OVERLOADABLE   0u
+
+/**
+ * For `c_operator.flags`, denotes that the operator overloadability (member
+ * vs. non-member) is unspecified.
+ */
 #define C_OP_UNSPECIFIED        C_FUNC_UNSPECIFIED
+
+/**
+ * For `c_operator.flags`, denotes that the operator is overload{able|ed} as a
+ * member only.
+ */
 #define C_OP_MEMBER             C_FUNC_MEMBER
+
+/**
+ * For `c_operator.flags`, denotes that the operator is overload{able|ed} as a
+ * non-member.
+ */
 #define C_OP_NON_MEMBER         C_FUNC_NON_MEMBER
+
+/**
+ * For `c_operator.flags`, denotes that the operator is overloadable as either
+ * a member or non-member.
+ */
 #define C_OP_OVERLOADABLE       (C_OP_MEMBER | C_OP_NON_MEMBER)
 
-// bit masks
+/** For `c_operator.flags`, overloadability bitmask. */
 #define C_OP_MASK_OVERLOAD      C_FUNC_MASK_MEMBER
 
 ///////////////////////////////////////////////////////////////////////////////

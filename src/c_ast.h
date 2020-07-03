@@ -60,22 +60,22 @@ _GL_INLINE_HEADER_BEGIN
 
 /// @endcond
 
-/** For c_array.size, denotes `array[]`. */
+/** For `c_array.size`, denotes `array[]`. */
 #define C_ARRAY_SIZE_NONE     (-1)
 
-/** For c_array.size, denotes `array[*]`. */
+/** For `c_array.size`, denotes `array[*]`. */
 #define C_ARRAY_SIZE_VARIABLE (-2)
 
-/** For c_func.flags, denotes that function is unspecified. */
+/** For `c_func.flags`, denotes that the function is unspecified. */
 #define C_FUNC_UNSPECIFIED    0u
 
-/** For c_func.flags, denotes that function is a member. */
+/** For `c_func.flags`, denotes that the function is a member. */
 #define C_FUNC_MEMBER         (1u << 0)
 
-/** For c_func.flags, denotes that function is a non-member. */
+/** For `c_func.flags`, denotes that the function is a non-member. */
 #define C_FUNC_NON_MEMBER     (1u << 1)
 
-/** For c_func.flags, member bitmask. */
+/** For `c_func.flags`, member bitmask. */
 #define C_FUNC_MASK_MEMBER    0x3u
 
 ///////////////////////////////////////////////////////////////////////////////
