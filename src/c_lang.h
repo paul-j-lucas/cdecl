@@ -78,28 +78,62 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_MASK_C   0x00FFu           /**< C languages bitmask. */
 #define LANG_MASK_CPP 0xFF00u           /**< C++ languages bitmask. */
 
-/** Maximum allowed language, C & C++. */
+/**
+ * Maximum allowed language, C & C++.
+ *
+ * @param L The language _without_ the `LANG_` prefix.
+ */
 #define LANG_MAX(L)               (LANG_ ## L | (LANG_ ## L - 1u))
 
-/** Minimum allowed language, C & C++. */
+/**
+ * Minimum allowed language, C & C++.
+ *
+ * @param L The language _without_ the `LANG_` prefix.
+ */
 #define LANG_MIN(L)               (~(LANG_ ## L - 1u))
 
-/** Maximum allowed language, C only. */
+/**
+ * Maximum allowed language, C only.
+ *
+ * @param L The language _without_ the `LANG_` prefix.
+ */
 #define LANG_C_MAX(L)             LANG_MAX( C_ ## L )
 
-/** Minimum allowed language, C only. */
+/**
+ * Minimum allowed language, C only.
+ *
+ * @param L The language _without_ the `LANG_` prefix.
+ */
 #define LANG_C_MIN(L)             (LANG_MIN( C_ ## L ) & LANG_MASK_C)
 
-/** Maximum allowed language, C++ only. */
+/**
+ * Maximum allowed language, C++ only.
+ *
+ * @param L The language _without_ the `LANG_` prefix.
+ */
 #define LANG_CPP_MAX(L)           (LANG_MAX( CPP_ ## L ) & LANG_MASK_CPP)
 
-/** Minimum allowed language, C++ only. */
+/**
+ * Minimum allowed language, C++ only.
+ *
+ * @param L The language _without_ the `LANG_` prefix.
+ */
 #define LANG_CPP_MIN(L)           LANG_MIN( CPP_ ## L )
 
-/** Maximum allowed language, C & C++ seperately. */
+/**
+ * Maximum allowed language, C & C++ seperately.
+ *
+ * @param CL The C language _without_ the `LANG_` prefix.
+ * @param CPPL The C++ language _without_ the `LANG_` prefix.
+ */
 #define LANG_C_CPP_MAX(CL,CPPL)   (LANG_C_MAX(CL) | LANG_CPP_MAX(CPPL))
 
-/** Minimum allowed language, C & C++ seperately. */
+/**
+ * Minimum allowed language, C & C++ seperately.
+ *
+ * @param CL The C language _without_ the `LANG_` prefix.
+ * @param CPPL The C++ language _without_ the `LANG_` prefix.
+ */
 #define LANG_C_CPP_MIN(CL,CPPL)   (LANG_C_MIN(CL) | LANG_CPP_MIN(CPPL))
 
 /**
