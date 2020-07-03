@@ -90,16 +90,16 @@ _GL_INLINE_HEADER_BEGIN
 /** Minimum allowed language, C only. */
 #define LANG_C_MIN(L)             (LANG_MIN( C_ ## L ) & LANG_MASK_C)
 
-/* Maximum allowed language, C++ only. */
+/** Maximum allowed language, C++ only. */
 #define LANG_CPP_MAX(L)           (LANG_MAX( CPP_ ## L ) & LANG_MASK_CPP)
 
-/* Minimum allowed language, C++ only. */
+/** Minimum allowed language, C++ only. */
 #define LANG_CPP_MIN(L)           LANG_MIN( CPP_ ## L )
 
-/* Maximum allowed language, C & C++ seperately. */
+/** Maximum allowed language, C & C++ seperately. */
 #define LANG_C_CPP_MAX(CL,CPPL)   (LANG_C_MAX(CL) | LANG_CPP_MAX(CPPL))
 
-/* Minimum allowed language, C & C++ seperately. */
+/** Minimum allowed language, C & C++ seperately. */
 #define LANG_C_CPP_MIN(CL,CPPL)   (LANG_C_MIN(CL) | LANG_CPP_MIN(CPPL))
 
 /**
@@ -122,6 +122,8 @@ struct c_lang_lit {
  * c_lang_id_t</code> for.
  * @return Returns said language or <code>\ref LANG_NONE</code> if \a name
  * doesn't correspond to any supported language.
+ *
+ * @sa c_lang_name()
  */
 C_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_find( char const *name );
@@ -129,9 +131,10 @@ c_lang_id_t c_lang_find( char const *name );
 /**
  * Gets whether \a lang_id is any version of C.
  *
- * @param lang_id The bitwise-or of language(s) to check.
- * @return Returns `true` only if \a lang_id is C.
+ * @param lang_id The language to check.
+ * @return Returns `true` only if \a lang_id is a version of C.
  *
+ * @sa #C_LANG_IS_C()
  * @sa c_lang_is_cpp()
  */
 C_LANG_INLINE C_WARN_UNUSED_RESULT
@@ -142,9 +145,10 @@ bool c_lang_is_c( c_lang_id_t lang_id ) {
 /**
  * Gets whether \a lang_id is any version of C++.
  *
- * @param lang_id The bitwise-or of language(s) to check.
- * @return Returns `true` only if \a lang_id is C++.
+ * @param lang_id The language to check.
+ * @return Returns `true` only if \a lang_id is a version of C++.
  *
+ * @sa #C_LANG_IS_CPP()
  * @sa c_lang_is_c()
  */
 C_LANG_INLINE C_WARN_UNUSED_RESULT
@@ -157,6 +161,8 @@ bool c_lang_is_cpp( c_lang_id_t lang_id ) {
  * version of C.
  *
  * @return Returns `true` only if the current language is C.
+ *
+ * @sa #C_LANG_IS_CPP()
  */
 #define C_LANG_IS_C()             c_lang_is_c( opt_lang )
 
@@ -165,6 +171,8 @@ bool c_lang_is_cpp( c_lang_id_t lang_id ) {
  * version of C++.
  *
  * @return Returns `true` only if the current language is C++.
+ *
+ * @sa #C_LANG_IS_C()
  */
 #define C_LANG_IS_CPP()           c_lang_is_cpp( opt_lang )
 
@@ -179,29 +187,12 @@ C_WARN_UNUSED_RESULT
 char const* c_lang_literal( c_lang_lit_t const lang_lit[] );
 
 /**
- * Gets a comma-separated string of all supported language names.
- *
- * @return Returns said string.
- */
-C_WARN_UNUSED_RESULT
-char const* c_lang_names( void );
-
-/**
- * Gets the oldest language of the given set.
- *
- * @param lang_id The bitwise-or of language(s).
- * @return Returns said language.
- */
-C_LANG_INLINE C_WARN_UNUSED_RESULT
-c_lang_id_t c_lang_oldest( c_lang_id_t lang_id ) {
-  return lang_id & ~(lang_id - 1u);
-}
-
-/**
  * Gets the printable name of \a lang_id.
  *
- * @param lang_id The <code>\ref c_lang_id_t</code> to get the name of.
+ * @param lang_id The language to get the name of.
  * @return Returns said name.
+ *
+ * @sa c_lang+find()
  */
 C_WARN_UNUSED_RESULT
 char const* c_lang_name( c_lang_id_t lang_id );
@@ -212,6 +203,25 @@ char const* c_lang_name( c_lang_id_t lang_id );
  * @return Returns said name.
  */
 #define C_LANG_NAME()             c_lang_name( opt_lang )
+
+/**
+ * Gets a comma-separated string of all supported language names.
+ *
+ * @return Returns said string.
+ */
+C_WARN_UNUSED_RESULT
+char const* c_lang_names( void );
+
+/**
+ * Gets the oldest language of the given set.
+ *
+ * @param lang_ids The bitwise-or of language(s).
+ * @return Returns said language.
+ */
+C_LANG_INLINE C_WARN_UNUSED_RESULT
+c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
+  return lang_ids & ~(lang_ids - 1u);
+}
 
 /**
  * Sets the current language and the corresponding prompt.
