@@ -43,7 +43,7 @@
  */
 struct c_keyword {
   char const   *literal;                ///< C string literal of the keyword.
-  int           y_token;                ///< Bison token number.
+  int           yy_token_id;            ///< Bison token number.
   c_type_id_t   type_id;                ///< Type the keyword maps to.
   c_lang_id_t   lang_ids;               ///< Language(s) OK in.
 };

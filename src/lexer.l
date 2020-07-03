@@ -133,7 +133,7 @@
 struct cdecl_keyword {
   char const         *literal;          ///< C string literal of the keyword.
   bool                allow_explain;    ///< Allow when explaining C/C++?
-  int                 y_token;          ///< Bison token number; or:
+  int                 yy_token_id;      ///< Bison token number; or:
 
   /**
    * Array of language(s)/synonym-keyword pair(s).  The array is terminated by
@@ -328,7 +328,7 @@ static c_hyphen_t const C_HYPHEN_KEYWORDS[] = {
  */
 struct cdecl_hyphen {
   char const *e_literal;                ///< Hyphenated English literal.
-  int         y_token;                  ///< Bison token number.
+  int         yy_token_id;              ///< Bison token number.
 };
 typedef struct cdecl_hyphen cdecl_hyphen_t;
 
@@ -396,7 +396,7 @@ static int cdecl_hyphen_find( char const *s ) {
   assert( s != NULL );
   for ( cdecl_hyphen_t const *h = CDECL_HYPHEN_KEYWORDS; h->e_literal; ++h ) {
     if ( strcmp( s, h->e_literal ) == 0 )
-      return h->y_token;
+      return h->yy_token_id;
   } // for
   return Y_ERROR;
 }
@@ -740,7 +740,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                       //
                       BEGIN( SET_COMMAND );
                     }
-                    return cdk->y_token;
+                    return cdk->yy_token_id;
                   }
                   lexer_token = c_lang_literal( cdk->lang_syn );
                 }
@@ -783,7 +783,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                 }
                 if ( ck != NULL ) {
                   yylval.type_id = ck->type_id;
-                  return ck->y_token;
+                  return ck->yy_token_id;
                 }
 
                 //
