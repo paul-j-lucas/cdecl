@@ -1428,7 +1428,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
 
     default:
       arg = arg->next->next;
-      arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
+      arg_ast = c_ast_arg_ast( arg );
       print_error( &arg_ast->loc,
         "%s %s may have at most 2 arguments", L_USER_DEFINED, L_LITERAL
       );
