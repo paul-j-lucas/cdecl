@@ -43,10 +43,6 @@
  * @{
  */
 
-// Gibberish declaration flags.
-#define G_DECL_NONE           0u        /**< None. */
-#define G_DECL_TYPEDEF        (1u << 0) /**< Is a `typedef`. */
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -74,15 +70,14 @@ void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout );
  * Prints \a ast as a C/C++ declaration.
  *
  * @param ast The `c_ast` to print.
- * @param flags The bitwise-or of gibberish declaration flags.
  * @param gout The `FILE` to print to.
  *
  * @sa c_ast_gibberish_cast()
  */
-void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout );
+void c_ast_gibberish_declare( c_ast_t const *ast, FILE *gout );
 
 /**
- * Prints \a as a `typedef`.
+ * Prints \a type as a `typedef`.
  *
  * @param type The `c_typedef` to print.
  * @param gout The `FILE` to print to.

@@ -1339,7 +1339,7 @@ declare_english
       }
 
       C_AST_CHECK( $5.ast, C_CHECK_DECL );
-      c_ast_gibberish_declare( $5.ast, G_DECL_NONE, fout );
+      c_ast_gibberish_declare( $5.ast, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
@@ -1369,7 +1369,7 @@ declare_english
       DUMP_END();
 
       C_AST_CHECK( $6.ast, C_CHECK_DECL );
-      c_ast_gibberish_declare( $6.ast, G_DECL_NONE, fout );
+      c_ast_gibberish_declare( $6.ast, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
@@ -1402,7 +1402,7 @@ declare_english
       DUMP_END();
 
       C_AST_CHECK( ast, C_CHECK_DECL );
-      c_ast_gibberish_declare( ast, G_DECL_NONE, fout );
+      c_ast_gibberish_declare( ast, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );

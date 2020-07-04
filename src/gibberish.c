@@ -43,24 +43,19 @@
 
 /// @endcond
 
-///////////////////////////////////////////////////////////////////////////////
+// Gibberish flags.
+#define G_NONE        (0u)              /**< Gibberish is a declaration. */
+#define G_IS_CAST     (1u << 0)         /**< Gibberish is a cast. */
+#define G_IS_TYPEDEF  (1u << 1)         /**< Gibberish is a `typedef`. */
 
-/**
- * The kind of gibberish to create.
- */
-enum g_kind {
-  G_CAST,                               ///< Omit names and unneeded whitespace.
-  G_DECLARE                             ///< Regular C/C++ declarations.
-};
-typedef enum g_kind g_kind_t;
+///////////////////////////////////////////////////////////////////////////////
 
 /**
  * State maintained by `c_ast_gibberish_cast()` and `c_ast_gibberish_declare()`
  * (because there'd be too many function arguments otherwise).
  */
 struct g_state {
-  g_kind_t        kind;                 ///< The kind of gibberish to create.
-  unsigned        flags;                ///< API flags to tweak output.
+  unsigned        flags;                ///< Flags to tweak output.
   FILE           *gout;                 ///< Where to write the gibberish.
   c_ast_t const  *leaf_ast;             ///< Leaf of AST.
   c_ast_t const  *root_ast;             ///< Root of AST.
@@ -71,7 +66,7 @@ typedef struct g_state g_state_t;
 
 // local functions
 static void         g_impl( g_state_t*, c_ast_t const* );
-static void         g_init( g_state_t*, c_ast_t const*, g_kind_t, FILE* );
+static void         g_init( g_state_t*, c_ast_t const*, unsigned, FILE* );
 static void         g_postfix( g_state_t*, c_ast_t const* );
 static void         g_qual_name( g_state_t*, c_ast_t const* );
 C_WARN_UNUSED_RESULT
@@ -113,6 +108,35 @@ static inline void g_set_leaf( g_state_t *g, c_ast_t const *ast ) {
 }
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Prints \a ast as a C/C++ declaration.
+ *
+ * @param ast The `c_ast` to print.
+ * @param flags The bitwise-or of gibberish declaration flags.
+ * @param gout The `FILE` to print to.
+ */
+static void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout ) {
+  assert( ast != NULL );
+  assert( gout != NULL );
+
+  switch ( ast->align.kind ) {
+    case C_ALIGNAS_NONE:
+      break;
+    case C_ALIGNAS_EXPR:
+      FPRINTF( gout, "%s(%u) ", alignas_lang(), ast->align.as.expr );
+      break;
+    case C_ALIGNAS_TYPE:
+      FPRINTF( gout, "%s(", alignas_lang() );
+      c_ast_gibberish_declare( ast->align.as.type_ast, gout );
+      FPUTS( ") ", gout );
+      break;
+  } // switch
+
+  g_state_t g;
+  g_init( &g, ast, flags, gout );
+  g_impl( &g, ast );
+}
 
 /**
  * Helper function for `g_impl()` that prints an array's size as well as the
@@ -162,7 +186,7 @@ static void g_func_args( g_state_t const *g, c_ast_t const *ast ) {
       FPUTS( ", ", g->gout );
     c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
     g_state_t args_g;
-    g_init( &args_g, arg_ast, g->kind, g->gout );
+    g_init( &args_g, arg_ast, g->flags, g->gout );
     g_impl( &args_g, arg_ast );
   } // for
   FPUTC( ')', g->gout );
@@ -262,7 +286,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       if ( ast->as.parent.of_ast != NULL )
         g_impl( g, ast->as.parent.of_ast );
       if ( false_set( &g->postfix ) ) {
-        if ( g->kind == G_DECLARE )
+        if ( (g->flags & G_IS_CAST) == 0 )
           g_print_space( g );
         if ( ast == g->root_ast && g->leaf_ast != NULL )
           g_postfix( g, g->leaf_ast->parent_ast );
@@ -325,7 +349,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_NAME:
-      if ( !c_ast_sname_empty( ast ) && g->kind == G_DECLARE )
+      if ( !c_ast_sname_empty( ast ) && (g->flags & G_IS_CAST) == 0 )
         FPUTS( g_sname_full_or_local( g, ast ), g->gout );
       g_set_leaf( g, ast );
       break;
@@ -344,7 +368,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       if ( storage_type != T_NONE )
         FPRINTF( g->gout, "%s ", c_type_name( storage_type ) );
       g_impl( g, ast->as.ptr_ref.to_ast );
-      if ( g->kind == G_DECLARE &&
+      if ( (g->flags & G_IS_CAST) == 0 &&
            c_ast_find_name( ast, C_VISIT_UP ) != NULL &&
            !c_ast_find_kind_any( ast->parent_ast, C_VISIT_UP,
                                  K_ANY_FUNCTION_LIKE ) ) {
@@ -403,18 +427,18 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
  * Initializes a `g_state`.
  *
  * @param g The `g_state` to initialize.
- * @param kind The <code>\ref g_kind</code> of gibberish to print.
+ * @param flags Flags to tweak output.
  * @param root The `c_ast` root.
  * @param gout The `FILE` to print it to.
  */
-static void g_init( g_state_t *g, c_ast_t const *root, g_kind_t kind,
+static void g_init( g_state_t *g, c_ast_t const *root, unsigned flags,
                     FILE *gout ) {
   assert( g != NULL );
   assert( root != NULL );
   assert( gout != NULL );
 
   MEM_ZERO( g );
-  g->kind = kind;
+  g->flags = flags;
   g->gout = gout;
   g->root_ast = root;
 }
@@ -574,10 +598,10 @@ static void g_qual_name( g_state_t *g, c_ast_t const *ast ) {
   c_type_id_t const qual_type = (ast->type_id & T_MASK_QUALIFIER);
   if ( qual_type != T_NONE ) {
     FPUTS( c_type_name( qual_type ), g->gout );
-    if ( g->kind == G_DECLARE )
+    if ( (g->flags & G_IS_CAST) == 0 )
       FPUTC( ' ', g->gout );
   }
-  if ( !c_ast_sname_empty( ast ) && g->kind == G_DECLARE )
+  if ( !c_ast_sname_empty( ast ) && (g->flags & G_IS_CAST) == 0 )
     FPUTS( g_sname_full_or_local( g, ast ), g->gout );
 }
 
@@ -594,8 +618,8 @@ static char const* g_sname_full_or_local( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
-  if ( (g->flags & G_DECL_TYPEDEF) != 0 ) {
-    g->flags &= ~G_DECL_TYPEDEF;
+  if ( (g->flags & G_IS_TYPEDEF) != 0 ) {
+    g->flags &= ~G_IS_TYPEDEF;
     return c_ast_sname_local_name( ast );
   }
   return c_ast_sname_full_name( ast );
@@ -603,17 +627,18 @@ static char const* g_sname_full_or_local( g_state_t *g, c_ast_t const *ast ) {
 
 /**
  * Helper function for `g_impl()` that prints a space (if it hasn't printed one
- * before) and an AST node's name, if any.
+ * before) and an AST node's name, if any; but only if we're printing a
+ * declaration (not a cast).
  *
  * @param g The `g_state` to use.
- * @param ast The `c_ast` to print the name of, if any.
+ * @param ast The `c_ast` to print the name (if any) of.
  */
 static void g_space_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
-  if ( g->kind == G_CAST )
-    return;
+  if ( (g->flags & G_IS_CAST) != 0 )
+    return;                             // for casts, print nothing
 
   switch ( ast->kind_id ) {
     case K_CONSTRUCTOR:
@@ -700,32 +725,11 @@ char const* alt_token_c( char const *token ) {
 }
 
 void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
-  g_state_t g;
-  g_init( &g, ast, G_CAST, gout );
-  g_impl( &g, ast );
+  c_ast_gibberish( ast, G_IS_CAST, gout );
 }
 
-void c_ast_gibberish_declare( c_ast_t const *ast, unsigned flags, FILE *gout ) {
-  assert( ast != NULL );
-  assert( gout != NULL );
-
-  switch ( ast->align.kind ) {
-    case C_ALIGNAS_NONE:
-      break;
-    case C_ALIGNAS_EXPR:
-      FPRINTF( gout, "%s(%u) ", alignas_lang(), ast->align.as.expr );
-      break;
-    case C_ALIGNAS_TYPE:
-      FPRINTF( gout, "%s(", alignas_lang() );
-      c_ast_gibberish_declare( ast->align.as.type_ast, G_DECL_NONE, gout );
-      FPUTS( ") ", gout );
-      break;
-  } // switch
-
-  g_state_t g;
-  g_init( &g, ast, G_DECLARE, gout );
-  g.flags = flags;
-  g_impl( &g, ast );
+void c_ast_gibberish_declare( c_ast_t const *ast, FILE *gout ) {
+  c_ast_gibberish( ast, G_NONE, gout );
 }
 
 void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
@@ -777,7 +781,7 @@ void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
   }
 
   FPRINTF( gout, "%s ", L_TYPEDEF );
-  c_ast_gibberish_declare( type->ast, G_DECL_TYPEDEF, gout );
+  c_ast_gibberish( type->ast, G_IS_TYPEDEF, gout );
 
   if ( scope_close_braces_to_print > 0 ) {
     FPUTC( ';', gout );
