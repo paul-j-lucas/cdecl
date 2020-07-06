@@ -1559,8 +1559,8 @@ TESTS+=	tests/set_debug.test \
 endif
 
 if ENABLE_BISON_DEBUG
-TESTS+=	tests/set_yydebug.test \
-	tests/set_noyydebug.test
+TESTS+=	tests/set_bison-debug.test \
+	tests/set_nobison-debug.test
 endif
 
 ###############################################################################
