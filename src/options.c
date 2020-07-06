@@ -96,6 +96,11 @@ static c_type_id_t  opt_explicit_int[2];
  * Long options.
  */
 static struct option const LONG_OPTS[] = {
+  //
+  // If this array is modified, also modify SHORT_OPTS, the call(s) to
+  // check_mutually_exclusive() in parse_options(), the message in usage(), and
+  // the corresponding "set" option in SET_OPTIONS in set.c.
+  //
   { "digraphs",     no_argument,        NULL, '2' },
   { "trigraphs",    no_argument,        NULL, '3' },
   { "alt-tokens",   no_argument,        NULL, 'a' },
