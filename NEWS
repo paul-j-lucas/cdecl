@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** Allowing signed main()
 The legal "signed main()" signature is now accepted.
 
+** Ignoring east-const in English
+East const is now ignored when explaining gibberish.
+
 
 * Changes in Cdecl 7.4
 

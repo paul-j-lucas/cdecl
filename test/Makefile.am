@@ -318,6 +318,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_bii_d.test \
 	tests/explain_c.test \
 	tests/explain_cast_pbv_pi.test \
+	tests/explain_ci-ec.test \
 	tests/explain_ci.test \
 	tests/explain_ck.test \
 	tests/explain_co_minus2_i_rk.test \
