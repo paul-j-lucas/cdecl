@@ -195,17 +195,17 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_REQUIRES,         Y_REQUIRES,         T_NONE,         LANG_CPP_MIN(20)  },
 
   // Alternative tokens
-  { L_AND,              Y_AMPER2,           T_NONE,         LANG_ALL          },
-  { L_AND_EQ,           Y_AMPER_EQ,         T_NONE,         LANG_ALL          },
-  { L_BITAND,           Y_AMPER,            T_NONE,         LANG_ALL          },
-  { L_BITOR,            Y_PIPE,             T_NONE,         LANG_ALL          },
-  { L_COMPL,            Y_TILDE,            T_NONE,         LANG_ALL          },
-  { L_NOT,              Y_EXCLAM,           T_NONE,         LANG_ALL          },
-  { L_NOT_EQ,           Y_EXCLAM_EQ,        T_NONE,         LANG_ALL          },
-  { L_OR,               Y_PIPE2,            T_NONE,         LANG_ALL          },
-  { L_OR_EQ,            Y_PIPE_EQ,          T_NONE,         LANG_ALL          },
-  { L_XOR,              Y_CIRC,             T_NONE,         LANG_ALL          },
-  { L_XOR_EQ,           Y_CIRC_EQ,          T_NONE,         LANG_ALL          },
+  { L_AND,              Y_AMPER2,           T_NONE,         LANG_MIN(C_89)    },
+  { L_AND_EQ,           Y_AMPER_EQ,         T_NONE,         LANG_MIN(C_89)    },
+  { L_BITAND,           Y_AMPER,            T_NONE,         LANG_MIN(C_89)    },
+  { L_BITOR,            Y_PIPE,             T_NONE,         LANG_MIN(C_89)    },
+  { L_COMPL,            Y_TILDE,            T_NONE,         LANG_MIN(C_89)    },
+  { L_NOT,              Y_EXCLAM,           T_NONE,         LANG_MIN(C_89)    },
+  { L_NOT_EQ,           Y_EXCLAM_EQ,        T_NONE,         LANG_MIN(C_89)    },
+  { L_OR,               Y_PIPE2,            T_NONE,         LANG_MIN(C_89)    },
+  { L_OR_EQ,            Y_PIPE_EQ,          T_NONE,         LANG_MIN(C_89)    },
+  { L_XOR,              Y_CIRC,             T_NONE,         LANG_MIN(C_89)    },
+  { L_XOR_EQ,           Y_CIRC_EQ,          T_NONE,         LANG_MIN(C_89)    },
 
   // GNU extensions
   { L_GNU___AUTO_TYPE,  Y_AUTO_TYPE,        T_AUTO_TYPE,    LANG_ALL          },
