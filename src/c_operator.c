@@ -133,6 +133,7 @@ static char const* alt_token_c( char const *token ) {
                 } // switch
     } // switch
   }
+
   return token;
 }
 
