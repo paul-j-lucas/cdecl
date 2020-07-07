@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 30, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 6, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -389,8 +389,9 @@ All signed integer types.
 .B u
 All unsigned integer types.
 .TP
-.RB [ \f(CWu\fP ]{ \f(CWi\fP | \f(CWs\fP | \f(CWl\fP [ \f(CWl\fP ]}
-Possibly \f(CWunsigned\fP \f(CWint\fP,
+.RB [ u ]{ i | s | l [ l ]}
+Possibly \f(CWunsigned\fP:
+\f(CWint\fP,
 \f(CWshort\fP,
 \f(CWlong\fP,
 or
@@ -639,10 +640,10 @@ and
 has the following commands:
 .RS 4
 .TP 4
-.BR cast "" " \f2s-name\fP " { as | into | to } " english"
+.BR cast " \f2s-name\fP" "" " {" as | into | to "} " \f2english\fP
 Composes a C (or C++) cast from pseudo-English.
 .TP
-.RB { const | dynamic | reinterpret | static } " cast" " \f2s-name\fP " { as | into | to "} " \f2english\fP
+.RB { const | dynamic | reinterpret | static } " cast \f2s-name\fP" " {" as | into | to "} " \f2english\fP
 Composes a C++ new-style cast from pseudo-English.
 .TP
 .BR declare " \f2s-name\fP" " as " \f2english\fP "" " [" aligned " [" as "] {" \f2number\fP " [" bytes "] | " \f2english\fP } \f1]\fP
@@ -662,7 +663,7 @@ into pseudo-English.
 .BR "explain (" \f2gibberish\fP ")" [ \f2s-name\fP ]
 Deciphers a C (or C++) cast into pseudo-English.
 .TP
-.IR "scope-c s-name \f3{\fP " "[ " scope-c " | {" " typedef " | " using " } " \f3;\fP " ] " \f3}\fP
+.IR "scope-c s-name \f3{\fP " [ " scope-c " "| {" " namespace " | " typedef " | " using " } " \f3;\fP " ] " \f3}\fP
 For C++ only,
 executes one of the
 .BR namespace ,
