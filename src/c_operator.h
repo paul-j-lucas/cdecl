@@ -23,7 +23,7 @@
 
 /**
  * @file
- * Declares constants, macros, types, and functions for C/C++ operators.
+ * Declares constants, macros, types, and functions for C++ operators.
  */
 
 // local
@@ -89,7 +89,7 @@ _GL_INLINE_HEADER_BEGIN
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * C/C++ operators.
+ * C++ operators.
  *
  * @note Operators are named based on the characters comprising them rather
  * than their semantics because many operators have more than one meaning
@@ -148,7 +148,7 @@ enum c_oper_id {
 };
 
 /**
- * C/C++ operator information.
+ * C++ operator information.
  *
  * @note: `args_min` and `args_max` comprise the inclusive range for the union
  * of member and non-member versions.  If you know you're dealing with a member
@@ -175,7 +175,7 @@ C_WARN_UNUSED_RESULT
 c_operator_t const* c_oper_get( c_oper_id_t oper_id );
 
 /**
- * Checks whether the C/C++ operator is ambiguous.
+ * Checks whether the C++ operator is ambiguous.
  *
  * The operators `&`, `*`, `+`, `++`, `-`, and `--`, when declared as:
  *
@@ -197,7 +197,7 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
  * We can tell if an operator is ambiguous if it can take 1 argument (when the
  * minimum is 0 and the maximum is 2).
  *
- * @param op The C/C++ operator to check.
+ * @param op The C++ operator to check.
  * @return Returns `true` only if the operator is ambiguous.
  */
 C_OP_INLINE C_WARN_UNUSED_RESULT
@@ -216,9 +216,9 @@ C_WARN_UNUSED_RESULT
 unsigned c_oper_get_overload( c_ast_t const *ast );
 
 /**
- * Gets the C/C++ token for the operator having \a oper_id.
+ * Gets the C++ token for the operator having \a oper_id.
  *
- * @param oper_id The ID of the `c_operator` to get the token for.
+ * @param oper_id The ID of the C++ to get the token for.
  * @return Returns said token (including alternative or graph tokens, if either
  * is enabled); otherwise, returns the unaltered token.
  */
