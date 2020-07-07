@@ -73,7 +73,7 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * For `c_operator.flags`, denotes that the operator is overload{able|ed} as a
- * non-member.
+ * non-member only.
  */
 #define C_OP_NON_MEMBER         C_FUNC_NON_MEMBER
 
