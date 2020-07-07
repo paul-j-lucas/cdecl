@@ -20,4 +20,7 @@
 
 dist_man1_MANS = cdecl.1 c++decl.1
 
+cdecl.ps: cdecl.1
+	groff -man -Tps cdecl.1 > $@
+
 # vim:set noet sw=8 ts=8:
