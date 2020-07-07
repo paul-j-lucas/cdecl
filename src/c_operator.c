@@ -31,7 +31,9 @@
 #include "c_operator.h"
 #include "c_ast.h"
 #include "c_lang.h"
+#include "gibberish.h"
 #include "literals.h"
+#include "options.h"
 
 // standard
 #include <assert.h>
@@ -93,6 +95,46 @@ static c_operator_t const C_OPERATOR[] = {
   { "||",       C_OP_OVERLOADABLE,      1, 2,         LANG_CPP_ALL      },
   { "~",        C_OP_OVERLOADABLE,      0, 1,         LANG_CPP_ALL      },
 };
+
+////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Gets the alternative token of a C++ operator \a token.
+ *
+ * @param token The C++ operator token to get the alternative token for.
+ * @return If we're emitting alternative tokens and if \a token is a token that
+ * has an alternative token, returns said token; otherwise returns \a token as-
+ * is.
+ */
+C_WARN_UNUSED_RESULT
+static char const* alt_token_c( char const *token ) {
+  assert( token != NULL );
+
+  if ( opt_alt_tokens ) {
+    switch ( token[0] ) {
+      case '!': switch ( token[1] ) {
+                  case '=': return L_NOT_EQ;
+                  default : return L_NOT;
+                }
+      case '&': switch ( token[1] ) {
+                  case '&': return L_AND;
+                  case '=': return L_AND_EQ;
+                  default : return L_BITAND;
+                } // switch
+      case '|': switch ( token[1] ) {
+                  case '|': return L_OR;
+                  case '=': return L_OR_EQ;
+                  default : return L_BITOR;
+                } // switch
+      case '~': return L_COMPL;
+      case '^': switch ( token[1] ) {
+                  case '=': return L_XOR_EQ;
+                  default : return L_XOR;
+                } // switch
+    } // switch
+  }
+  return token;
+}
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -164,6 +206,10 @@ unsigned c_oper_get_overload( c_ast_t const *ast ) {
   // We can't determine which one, so give up.
   //
   return C_OP_UNSPECIFIED;
+}
+
+char const* c_oper_token_c( c_oper_id_t oper_id ) {
+  return alt_token_c( graph_token_c( c_oper_get( oper_id )->name ) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

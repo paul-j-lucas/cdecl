@@ -694,35 +694,6 @@ static void g_space_name( g_state_t *g, c_ast_t const *ast ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-char const* alt_token_c( char const *token ) {
-  assert( token != NULL );
-
-  if ( opt_alt_tokens ) {
-    switch ( token[0] ) {
-      case '!': switch ( token[1] ) {
-                  case '=': return L_NOT_EQ;
-                  default : return L_NOT;
-                }
-      case '&': switch ( token[1] ) {
-                  case '&': return L_AND;
-                  case '=': return L_AND_EQ;
-                  default : return L_BITAND;
-                } // switch
-      case '|': switch ( token[1] ) {
-                  case '|': return L_OR;
-                  case '=': return L_OR_EQ;
-                  default : return L_BITOR;
-                } // switch
-      case '~': return L_COMPL;
-      case '^': switch ( token[1] ) {
-                  case '=': return L_XOR_EQ;
-                  default : return L_XOR;
-                } // switch
-    } // switch
-  }
-  return token;
-}
-
 void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
   c_ast_gibberish( ast, G_IS_CAST, gout );
 }

@@ -28,7 +28,6 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
-#include "gibberish.h"
 #include "types.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -222,10 +221,8 @@ unsigned c_oper_get_overload( c_ast_t const *ast );
  * @return Returns said token (including alternative or graph tokens, if either
  * is enabled); otherwise, returns the unaltered token.
  */
-C_OP_INLINE C_WARN_UNUSED_RESULT
-char const* c_oper_token_c( c_oper_id_t oper_id ) {
-  return alt_token_c( graph_token_c( c_oper_get( oper_id )->name ) );
-}
+C_WARN_UNUSED_RESULT
+char const* c_oper_token_c( c_oper_id_t oper_id );
 
 ///////////////////////////////////////////////////////////////////////////////
 
