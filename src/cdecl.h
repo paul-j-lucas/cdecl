@@ -47,8 +47,8 @@
 #define CPPDECL                   "c++decl"
 
 // extern variables
-extern c_mode_t     c_mode;             ///< Parsing English or gibberish?
 extern c_init_t     c_init;             ///< Initialization state.
+extern c_mode_t     c_mode;             ///< Parsing English or gibberish?
 extern char const  *command_line;       ///< Command from command line, if any.
 extern size_t       command_line_len;   ///< Length of `command_line`.
 extern size_t       inserted_len;       ///< Length of inserted string.
