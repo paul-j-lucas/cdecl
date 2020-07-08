@@ -226,7 +226,7 @@ char const* c_lang_literal( c_lang_lit_t const lang_lit[] );
  * @param lang_id The language to get the name of.
  * @return Returns said name.
  *
- * @sa c_lang+find()
+ * @sa c_lang_find()
  */
 C_WARN_UNUSED_RESULT
 char const* c_lang_name( c_lang_id_t lang_id );
