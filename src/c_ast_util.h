@@ -52,14 +52,6 @@ struct c_ast_pair {
   c_ast_t *target_ast;
 };
 
-/**
- * The kind of semantic checks to perform on an AST.
- */
-enum c_check {
-  C_CHECK_CAST,                         ///< Perform checks for casts.
-  C_CHECK_DECL                          ///< Perform checks for declarations.
-};
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -89,14 +81,28 @@ C_WARN_UNUSED_RESULT
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func );
 
 /**
+ * Performs additional checks on an entire AST for semantic errors when
+ * casting.
+ *
+ * @param ast The `c_ast` to check.
+ * @return Returns `true` only if all checks passed.
+ *
+ * @sa c_ast_check_declaration()
+ */
+C_WARN_UNUSED_RESULT
+bool c_ast_check_cast( c_ast_t const *ast );
+
+/**
  * Checks an entire AST for semantic errors and warnings.
  *
  * @param ast The `c_ast` to check.
  * @param check The kind of checks to perform.
  * @return Returns `true` only if \a ast error-free.
+ *
+ * @sa c_ast_check_cast()
  */
 C_WARN_UNUSED_RESULT
-bool c_ast_check( c_ast_t const *ast, c_check_t check );
+bool c_ast_check_declaration( c_ast_t const *ast );
 
 /**
  * Checks whether \a ast is an AST for a builtin type.

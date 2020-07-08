@@ -111,7 +111,6 @@ typedef struct slist_node       c_ast_arg_t;    ///< Function argument.
 typedef unsigned                c_ast_depth_t;  ///< How many `()` deep.
 typedef unsigned                c_ast_id_t;     ///< Unique AST node id.
 typedef struct c_ast_pair       c_ast_pair_t;
-typedef enum   c_check          c_check_t;
 typedef struct c_constructor    c_constructor_t;
 typedef struct c_ecsu           c_ecsu_t;
 typedef struct c_func           c_func_t;

@@ -95,12 +95,12 @@
  */
 
 /**
- * Calls c_ast_check(): if the check fails, calls PARSE_ABORT().
+ * Calls c_ast_check_declaration(): if the check fails, calls PARSE_ABORT().
  *
  * @param AST The `c_ast` to check.
  */
 #define C_AST_CHECK_DECL(AST) \
-  BLOCK( if ( !c_ast_check( (AST), C_CHECK_DECL ) ) PARSE_ABORT(); )
+  BLOCK( if ( !c_ast_check_declaration( AST ) ) PARSE_ABORT(); )
 
 /**
  * Calls c_type_add(): if adding the type fails, calls PARSE_ABORT().
@@ -549,7 +549,7 @@ static bool c_ast_finish_explain( bool has_typename, c_alignas_t const *align,
       //
       // We check for illegal aligned typedef here rather than in error.c
       // because the "typedef-ness" needed to be removed previously before the
-      // call to c_ast_check() below.
+      // call to c_ast_check_declaration() below.
       //
       print_error( &align->loc, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
       return false;
@@ -566,7 +566,7 @@ static bool c_ast_finish_explain( bool has_typename, c_alignas_t const *align,
     c_ast_sname_set_type( ast, T_CLASS );
   }
 
-  return c_ast_check( ast, C_CHECK_DECL );
+  return c_ast_check_declaration( ast );
 }
 
 /**
@@ -1220,7 +1220,7 @@ cast_english
       DUMP_AST( "decl_english_ast", $4.ast );
       DUMP_END();
 
-      bool const ok = c_ast_check( $4.ast, C_CHECK_CAST );
+      bool const ok = c_ast_check_cast( $4.ast );
 
       if ( ok ) {
         FPUTC( '(', fout );
@@ -1252,7 +1252,7 @@ cast_english
       if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
         print_error( &@1, "%s not supported in %s", $1, C_LANG_NAME() );
       }
-      else if ( (ok = c_ast_check( $5.ast, C_CHECK_CAST )) ) {
+      else if ( (ok = c_ast_check_cast( $5.ast )) ) {
         FPRINTF( fout, "%s<", $1 );
         c_ast_gibberish_cast( $5.ast, fout );
         FPRINTF( fout, ">(%s)\n", c_sname_full_name( &$3 ) );
@@ -1534,7 +1534,7 @@ define_english
       //
       bool ok = c_type_add( &$5.ast->type_id, T_TYPEDEF, &@4 ) &&
                 c_type_add( &$5.ast->type_id, $4, &@4 ) &&
-                c_ast_check( $5.ast, C_CHECK_DECL );
+                c_ast_check_declaration( $5.ast );
 
       if ( ok ) {
         // Once the semantic checks pass, remove the T_TYPEDEF.
@@ -1590,7 +1590,7 @@ explain_c
       DUMP_AST( "explain_c", ast );
       DUMP_END();
 
-      bool const ok = c_ast_check( ast, C_CHECK_CAST );
+      bool const ok = c_ast_check_cast( ast );
       if ( ok ) {
         FPUTS( L_CAST, fout );
         if ( !c_sname_empty( &$7 ) ) {
@@ -1634,7 +1634,7 @@ explain_c
         print_error( &@2, "%s_cast not supported in %s", $2, C_LANG_NAME() );
       }
       else {
-        if ( (ok = c_ast_check( ast, C_CHECK_CAST )) ) {
+        if ( (ok = c_ast_check_cast( ast )) ) {
           FPRINTF( fout, "%s %s ", $2, L_CAST );
           c_sname_english( &$9, fout );
           FPRINTF( fout, " %s ", L_INTO );
@@ -1784,7 +1784,7 @@ explain_c
       DUMP_AST( "explain_c", ast );
       DUMP_END();
 
-      bool const ok = c_ast_check( ast, C_CHECK_DECL );
+      bool const ok = c_ast_check_declaration( ast );
       if ( ok ) {
         char const *const local_name = c_sname_local_name( &$2 );
         char const *const scope_name = c_sname_scope_name( &$2 );
@@ -1820,7 +1820,7 @@ explain_c
       DUMP_AST( "explain_c", ast );
       DUMP_END();
 
-      bool const ok = c_ast_check( ast, C_CHECK_DECL );
+      bool const ok = c_ast_check_declaration( ast );
       if ( ok ) {
         FPRINTF( fout, "%s %s %s ", L_DECLARE, $4, L_AS );
         c_ast_english( ast, fout );
@@ -1849,7 +1849,7 @@ explain_c
       DUMP_AST( "explain_c", ast );
       DUMP_END();
 
-      bool const ok = c_ast_check( ast, C_CHECK_DECL );
+      bool const ok = c_ast_check_declaration( ast );
       if ( ok ) {
         char const *const local_name = c_sname_local_name( &$2 );
         char const *const scope_name = c_sname_scope_name( &$2 );
@@ -1905,7 +1905,7 @@ explain_c
         );
       }
       else {
-        if ( (ok = c_ast_check( ast, C_CHECK_DECL )) ) {
+        if ( (ok = c_ast_check_declaration( ast )) ) {
           // Once the semantic checks pass, remove the T_TYPEDEF.
           C_IGNORE_RV( c_ast_take_typedef( ast ) );
           FPRINTF( fout, "%s %s %s %s ", L_DECLARE, $3, L_AS, L_TYPE );
@@ -3670,7 +3670,8 @@ type_c_ast
       //
       // Prior to C99, typeless declarations are implicitly int, so we set it
       // here.  In C99 and later, however, implicit int is an error, so we
-      // don't set it here and c_ast_check() will catch the error later.
+      // don't set it here and c_ast_check_declaration() will catch the error
+      // later.
       //
       // Note that type modifiers, e.g., unsigned, count as a type since that
       // means unsigned int; however, neither qualifiers, e.g., const, nor

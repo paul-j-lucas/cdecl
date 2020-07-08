@@ -163,7 +163,7 @@ static bool c_ast_check_alignas( c_ast_t *ast ) {
       break;
     }
     case C_ALIGNAS_TYPE:
-      if ( !c_ast_check( ast->align.as.type_ast, C_CHECK_DECL ) )
+      if ( !c_ast_check_declaration( ast->align.as.type_ast ) )
         return false;
       break;
   } // switch
@@ -285,44 +285,6 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
   }
 
   return true;
-}
-
-/**
- * Performs additional checks on an entire AST for semantic errors when
- * casting.
- *
- * @param ast The `c_ast` to check.
- * @return Returns `true` only if all checks passed.
- */
-C_WARN_UNUSED_RESULT
-static bool c_ast_check_cast( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-
-  c_ast_t const *const storage_ast =
-    c_ast_find_type_any( nonconst_ast, C_VISIT_DOWN, T_MASK_STORAGE );
-
-  if ( storage_ast != NULL ) {
-    c_type_id_t const storage_type = storage_ast->type_id & T_MASK_STORAGE;
-    print_error( &ast->loc,
-      "can not %s %s %s", L_CAST, L_INTO, c_type_name_error( storage_type )
-    );
-    return false;
-  }
-
-  switch ( ast->kind_id ) {
-    case K_ARRAY:
-      return error_kind_not_cast_into( ast, "pointer" );
-    case K_CONSTRUCTOR:
-    case K_DESTRUCTOR:
-    case K_FUNCTION:
-    case K_OPERATOR:
-    case K_USER_DEF_CONVERSION:
-    case K_USER_DEF_LITERAL:
-      return error_kind_not_cast_into( ast, "pointer to function" );
-    default:
-      return true;
-  } // switch
 }
 
 /**
@@ -1845,10 +1807,40 @@ static bool error_unknown_type( c_ast_t const *ast ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool c_ast_check( c_ast_t const *ast, c_check_t check ) {
+bool c_ast_check_cast( c_ast_t const *ast ) {
   assert( ast != NULL );
-  if ( check == C_CHECK_CAST && !c_ast_check_cast( ast ) )
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+
+  c_ast_t const *const storage_ast =
+    c_ast_find_type_any( nonconst_ast, C_VISIT_DOWN, T_MASK_STORAGE );
+
+  if ( storage_ast != NULL ) {
+    c_type_id_t const storage_type = storage_ast->type_id & T_MASK_STORAGE;
+    print_error( &ast->loc,
+      "can not %s %s %s", L_CAST, L_INTO, c_type_name_error( storage_type )
+    );
     return false;
+  }
+
+  switch ( ast->kind_id ) {
+    case K_ARRAY:
+      return error_kind_not_cast_into( ast, "pointer" );
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
+    case K_FUNCTION:
+    case K_OPERATOR:
+    case K_USER_DEF_CONVERSION:
+    case K_USER_DEF_LITERAL:
+      return error_kind_not_cast_into( ast, "pointer to function" );
+    default:
+      /* suppress warning */;
+  } // switch
+
+  return c_ast_check_declaration( ast );
+}
+
+bool c_ast_check_declaration( c_ast_t const *ast ) {
+  assert( ast != NULL );
   if ( !c_ast_check_errors( ast, false ) )
     return false;
   C_IGNORE_RV( c_ast_check_visitor( ast, c_ast_visitor_warning, NULL ) );
