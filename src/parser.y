@@ -98,10 +98,9 @@
  * Calls c_ast_check(): if the check fails, calls PARSE_ABORT().
  *
  * @param AST The `c_ast` to check.
- * @param CHECK The kind of checks to perform.
  */
-#define C_AST_CHECK(AST,CHECK) \
-  BLOCK( if ( !c_ast_check( (AST), (CHECK) ) ) PARSE_ABORT(); )
+#define C_AST_CHECK_DECL(AST) \
+  BLOCK( if ( !c_ast_check( (AST), C_CHECK_DECL ) ) PARSE_ABORT(); )
 
 /**
  * Calls c_type_add(): if adding the type fails, calls PARSE_ABORT().
@@ -1338,7 +1337,7 @@ declare_english
         }
       }
 
-      C_AST_CHECK( $5.ast, C_CHECK_DECL );
+      C_AST_CHECK_DECL( $5.ast );
       c_ast_gibberish_declare( $5.ast, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
@@ -1368,7 +1367,7 @@ declare_english
       DUMP_AST( "declare_english", $6.ast );
       DUMP_END();
 
-      C_AST_CHECK( $6.ast, C_CHECK_DECL );
+      C_AST_CHECK_DECL( $6.ast );
       c_ast_gibberish_declare( $6.ast, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
@@ -1401,7 +1400,7 @@ declare_english
       DUMP_AST( "declare_english", ast );
       DUMP_END();
 
-      C_AST_CHECK( ast, C_CHECK_DECL );
+      C_AST_CHECK_DECL( ast );
       c_ast_gibberish_declare( ast, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
@@ -1759,7 +1758,7 @@ explain_c
       DUMP_AST( "user_defined_conversion_decl_c_ast", $2.ast );
       DUMP_END();
 
-      C_AST_CHECK( $2.ast, C_CHECK_DECL );
+      C_AST_CHECK_DECL( $2.ast );
       FPRINTF( fout, "%s ", L_DECLARE );
       c_ast_english( $2.ast, fout );
       FPUTC( '\n', fout );
@@ -2260,7 +2259,7 @@ typedef_declaration_c
         c_ast_sname_set_sname( ast, &temp_sname );
       }
 
-      C_AST_CHECK( ast, C_CHECK_DECL );
+      C_AST_CHECK_DECL( ast );
       // see the comment in define_english about T_TYPEDEF
       C_IGNORE_RV( c_ast_take_typedef( ast ) );
 
@@ -2347,7 +2346,7 @@ using_declaration_c
       DUMP_AST( "using_declaration_c", ast );
       DUMP_END();
 
-      C_AST_CHECK( ast, C_CHECK_DECL );
+      C_AST_CHECK_DECL( ast );
       // see the comment in "define_english" about T_TYPEDEF
       C_IGNORE_RV( c_ast_take_typedef( ast ) );
 
