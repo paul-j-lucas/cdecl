@@ -47,20 +47,20 @@
  */
 
 /**
+ * C/C++ language typedef information.
+ */
+struct c_typedef {
+  c_ast_t const  *ast;                  ///< AST representing the type.
+  bool            user_defined;         ///< Is the type user-defined?
+};
+
+/**
  * Return value for c_typedef_add().
  */
 enum c_typedef_add_rv {
   TD_ADD_ADDED,                         ///< Type was added.
   TD_ADD_EQUIV,                         ///< Type exists and is equivalent.
   TD_ADD_DIFF                           ///< Type exists and is different.
-};
-
-/**
- * C/C++ language typedef information.
- */
-struct c_typedef {
-  c_ast_t const  *ast;                  ///< AST representing the type.
-  bool            user_defined;         ///< Is the type user-defined?
 };
 
 /**
