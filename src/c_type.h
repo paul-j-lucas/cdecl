@@ -217,29 +217,6 @@ _GL_INLINE_HEADER_BEGIN
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Duplicates the `c_type_id_t` referred to by \a data.
- * @note Callers _must_ eventually call c_type_id_data_free() on the
- * returned value.
- *
- * @param data The `c_type_id_t` to duplicate.  May be NULL.
- * @return Returns a duplicate of the data.
- *
- * @sa c_type_id_data_free()
- */
-C_WARN_UNUSED_RESULT
-void* c_type_id_data_dup( void const *data );
-
-/**
- * Frees the `c_type_id_t` referred to by \a data.
- * @note For platforms with 64-bit pointers, this is a no-op.
- *
- * @param data The data to free.
- *
- * @sa c_type_id_data_new()
- */
-void c_type_id_data_free( void *data );
-
-/**
  * Gets the `c_type_id_t` value referred to by \a data.
  *
  * @param data The data to get the `c_type_id_t` from.  May be NULL.
@@ -303,6 +280,29 @@ bool c_type_add( c_type_id_t *dest_type, c_type_id_t new_type,
  */
 C_WARN_UNUSED_RESULT
 c_lang_id_t c_type_check( c_type_id_t type_id );
+
+/**
+ * Duplicates the `c_type_id_t` referred to by \a data.
+ * @note Callers _must_ eventually call c_type_id_data_free() on the
+ * returned value.
+ *
+ * @param data The `c_type_id_t` to duplicate.  May be NULL.
+ * @return Returns a duplicate of the data.
+ *
+ * @sa c_type_id_data_free()
+ */
+C_WARN_UNUSED_RESULT
+void* c_type_id_data_dup( void const *data );
+
+/**
+ * Frees the `c_type_id_t` referred to by \a data.
+ * @note For platforms with 64-bit pointers, this is a no-op.
+ *
+ * @param data The data to free.
+ *
+ * @sa c_type_id_data_new()
+ */
+void c_type_id_data_free( void *data );
 
 /**
  * Checks if \a type_id is equivalent to `size_t`.
