@@ -1,5 +1,90 @@
+2020-07-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.h, errors.c, parser.y, types.h: Eliminated c_check.
+   * parser.y: s/C_AST_CHECK()/C_AST_CHECK_DECL()/
+
+2020-07-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.c: Alternative tokens are C89 and later only.
+   * c_operator.c: Whitespace.
+   * c_operator.c, c_operator.h, gibberish.c, gibberish.h: Moved alt_token_c()
+     into c_operator.c.
+   * gibberish.c: Now calling c_oper_token_c().
+   * c_operator.h: The operator code is only for C++.
+   * c_operator.h: Added "only".
+
+2020-07-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * man/man1/Makefile.am: Added cdecl.ps man target.
+   * cdecl.1: Fixed formatting.
+   * test/Makefile.am, set_bison-debug.test, set_nobison-debug.test: Fixed
+     bison-debug tests.
+   * NEWS, c_type.c, test/Makefile.am, explain_ci-ec.out, explain_ci-ec.test:
+     East const is now ignored when explaining gibberish.
+   * options.c: Added comment.
+
+2020-07-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * errors.c: Removed unnecessary call to c_ast_untypedef().
+
+2020-07-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c, gibberish.h, parser.y: Simplified internal gibberish API.
+   * c_operator.h, gibberish.h: Doxygen.
+   * c_ast.h, c_operator.h: Doxygen
+   * c_lang.h: Doxygen
+   * c_lang.h: Doxygen
+   * lexer.l: s/e_literal/literal/
+   * c_keyword.h, lexer.l: /y_token/yy_token_id/
+
+2020-07-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, c_ast.c, c_ast.h, c_ast_util.h, c_keyword.c, c_keyword.h,
+     c_kind.c, c_kind.h, c_lang.c, c_operator.c, c_sname.h, c_type.c, c_type.h,
+     c_typedef.c, cdecl.c, color.h, debug.c, debug.h, english.c, errors.c,
+     gibberish.c, help.c, options.c, options.h, print.c, prompt.c, util.c:
+     Clean-up of #include lines.
+   * configure.ac: s/typedefs.h/types.h/
+   * c_ast.h, c_ast_util.c, c_kind.h, errors.c, gibberish.c:
+     s/K_MASK_PARENT/K_ANY_PARENT/; s/K_MASK_FUNCTION_LIKE/K_ANY_FUNCTION_LIKE/
+   * c_ast_util.c, c_ast_util.h, errors.c, gibberish.c: Renamed some functions
+     with _any.
+   * src/Makefile.am, c_ast.h, c_ast_util.h, c_keyword.h, c_kind.h, c_lang.h,
+     c_operator.h, c_sname.h, c_type.h, c_typedef.h, cdecl.h, english.h,
+     gibberish.h, parser.y, print.h: s/typedefs.h/types.h/
+
+2020-07-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.h: Comment fix.
+   * c_ast.c, c_type.h, errors.c, parser.y: s/T_CLASS_STRUCT_UNION/T_ANY_CLASS/
+   * NEWS, configure.ac: Updated version to 7.4.1; updated NEWS.
+   * c_ast_util.c, c_ast_util.h, c_type.c, c_type.h, test/Makefile.am,
+     explain_main_f_s.out, explain_main_f_s.test: Now accepts "signed main()"
+     as valid.
+   * options.c: Fixed check_mutually_exclusive() for new -B and -F options.
+   * NEWS: Fixed -F to -B.
+
+2020-06-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated versio and NEWS.
+   * configure.ac, cdecl.1, src/Makefile.am, autocomplete.c, c_typedef.c,
+     options.c, options.h, parser.y, print.c, set.c, test/Makefile.am: Added
+     ability to enable Flex debugging; renamed Bison debugging.
+   * set.c, test/Makefile.am, set_-e-a--st-.out, set_digraphs.out, set_ea.out,
+     set_east-const.out, set_east.out, set_eastconst.out, set_nosemicolon.out,
+     set_trigraphs.out, set_-e-a--st-.test, set_digraphs.test, set_ea.test,
+     set_east-const.test, set_east.test, set_eastconst.test,
+     set_nosemicolon.test, set_trigraphs.test: Fixed parsing of "set" options.
+   * c_type.c: Added missing comment.
+   * c_type.c: Don't need C_WARN_UNUSED_RESULT here.
+   * c_type.c: Moved comment.
+   * c_type.c: Added comment.
+   * c_keyword.c: Re-recognizing "register" in C++17 and later.
+   * errors.c: Removed unneeded declaration.
+
 2020-06-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * lib/Makefile.am, getopt.c, unistd.in.h, unistd_h.m4: Updated Gnulib.
    * lexer.l: Cleaned-up SET_TOKEN* macros.
    * c_ast_util.h, c_kind.h: Tweaked Doxygen.
    * c_type.h, errors.c: Added T_FUNC_LIKE; more documentation.
