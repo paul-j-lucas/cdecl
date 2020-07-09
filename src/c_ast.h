@@ -164,8 +164,8 @@ struct c_array {
  * advantage of.
  */
 struct c_apple_block {
-  c_ast_t    *ret_ast;                  ///< Return type.
-  slist_t     args;                     ///< Block argument(s), if any.
+  c_ast_t      *ret_ast;                ///< Return type.
+  c_ast_args_t  args;                   ///< Block argument(s), if any.
 };
 
 /**
@@ -175,24 +175,24 @@ struct c_apple_block {
  * advantage of.
  */
 struct c_constructor {
-  void       *child_ast_not_used;       ///< So `args` is at same offset.
-  slist_t     args;                     ///< Constructor argument(s), if any.
+  void         *child_ast_not_used;     ///< So `args` is at same offset.
+  c_ast_args_t  args;                   ///< Constructor argument(s), if any.
 };
 
 /**
  * AST node for a C/C++ `enum`, `class`, `struct`, or `union` type.
  */
 struct c_ecsu {
-  c_sname_t   ecsu_sname;               ///< enum/class/struct/union name
+  c_sname_t     ecsu_sname;             ///< enum/class/struct/union name
 };
 
 /**
  * AST node for a C/C++ function.
  */
 struct c_func {
-  c_ast_t    *ret_ast;                  ///< Return type.
-  slist_t     args;                     ///< Function argument(s), if any.
-  unsigned    flags;                    ///< Member vs. non-member.
+  c_ast_t      *ret_ast;                ///< Return type.
+  c_ast_args_t  args;                   ///< Function argument(s), if any.
+  unsigned      flags;                  ///< Member vs. non-member.
 };
 
 /**
@@ -202,32 +202,32 @@ struct c_func {
  * advantage of.
  */
 struct c_oper {
-  c_ast_t    *ret_ast;                  ///< Return type.
-  slist_t     args;                     ///< Operator argument(s), if any.
-  unsigned    flags;                    ///< Member vs. non-member.
-  c_oper_id_t oper_id;                  ///< Which operator it is.
+  c_ast_t      *ret_ast;                ///< Return type.
+  c_ast_args_t  args;                   ///< Operator argument(s), if any.
+  unsigned      flags;                  ///< Member vs. non-member.
+  c_oper_id_t   oper_id;                ///< Which operator it is.
 };
 
 /**
  * AST node for a C++ pointer-to-member of a class.
  */
 struct c_ptr_mbr {
-  c_ast_t    *of_ast;                   ///< Member type.
-  c_sname_t   class_sname;              ///< When a member function; or empty.
+  c_ast_t      *of_ast;                 ///< Member type.
+  c_sname_t     class_sname;            ///< When a member function; or empty.
 };
 
 /**
  * AST node for a C/C++ pointer, or a C++ reference or rvalue reference.
  */
 struct c_ptr_ref {
-  c_ast_t    *to_ast;                   ///< What it's a pointer/reference to.
+  c_ast_t      *to_ast;                 ///< What it's a pointer/reference to.
 };
 
 /**
  * AST Node for a C++ user-defined conversion operator.
  */
 struct c_user_def_conv {
-  c_ast_t    *conv_ast;                 ///< Conversion type.
+  c_ast_t      *conv_ast;               ///< Conversion type.
 };
 
 /**
@@ -237,8 +237,8 @@ struct c_user_def_conv {
  * advantage of.
  */
 struct c_user_def_lit {
-  c_ast_t    *ret_ast;                  ///< Return type.
-  slist_t     args;                     ///< Literal argument(s).
+  c_ast_t      *ret_ast;                ///< Return type.
+  c_ast_args_t  args;                   ///< Literal argument(s).
 };
 
 /**

@@ -107,7 +107,8 @@ typedef int                     c_array_size_t;
 
 typedef struct c_apple_block    c_apple_block_t;
 typedef struct c_ast            c_ast_t;
-typedef struct slist_node       c_ast_arg_t;    ///< Function argument.
+typedef struct slist            c_ast_args_t;   ///< Function-like arguments.
+typedef struct slist_node       c_ast_arg_t;    ///< Function-like argument.
 typedef unsigned                c_ast_depth_t;  ///< How many `()` deep.
 typedef unsigned                c_ast_id_t;     ///< Unique AST node id.
 typedef struct c_ast_pair       c_ast_pair_t;
