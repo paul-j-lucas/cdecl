@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ define S as struct S; explain bool operator!(S) final @ 65
+cdecl @ @ -xc++ @ define S as struct S; explain bool operator!(S) final @ 65

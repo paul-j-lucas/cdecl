@@ -188,13 +188,13 @@ run_cdecl_test() {
 
   COMMAND=`echo $COMMAND`               # trims whitespace
   CONFIG=`echo $CONFIG`                 # trims whitespace
-  [ "$CONFIG" != /dev/null ] && CONFIG=$DATA_DIR/$CONFIG
+  [ "$CONFIG" ] && CONFIG="-c $DATA_DIR/$CONFIG"
   EXPECTED_EXIT=`echo $EXPECTED_EXIT`   # trims whitespace
   EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
 
-  #echo "$INPUT" \| $COMMAND -c $CONFIG "$OPTIONS" \> $OUTPUT
+  #echo "$INPUT" \| $COMMAND $CONFIG "$OPTIONS" \> $OUTPUT
   if echo "$INPUT" | sed 's/^ //' |
-     $COMMAND -c $CONFIG $OPTIONS > $OUTPUT 2> $LOG_FILE
+     $COMMAND $CONFIG $OPTIONS > $OUTPUT 2> $LOG_FILE
   then
     if [ 0 -eq $EXPECTED_EXIT ]
     then

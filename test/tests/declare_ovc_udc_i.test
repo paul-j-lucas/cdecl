@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare overridden virtual constant user-defined conversion operator returning int @ 0
+cdecl @ @ -xc++ @ declare overridden virtual constant user-defined conversion operator returning int @ 0

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ define SI as extern int @ 65
+cdecl @ @ @ define SI as extern int @ 65

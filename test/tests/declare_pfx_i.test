@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ declare p as pointer to function (x) returning int @ 0
+cdecl @ @ @ declare p as pointer to function (x) returning int @ 0

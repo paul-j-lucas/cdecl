@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain X::C() @ 65
+cdecl @ @ -xc++ @ explain X::C() @ 65

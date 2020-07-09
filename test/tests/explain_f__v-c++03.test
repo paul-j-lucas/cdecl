@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++03 @ explain auto f() -> void @ 65
+cdecl @ @ -xc++03 @ explain auto f() -> void @ 65

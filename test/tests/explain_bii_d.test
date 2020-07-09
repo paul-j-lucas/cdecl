@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ explain double (^x)(int x, int y) @ 0
+cdecl @ @ @ explain double (^x)(int x, int y) @ 0

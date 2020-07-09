@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ define S as struct S; declare &= as member operator (int) returning reference to S @ 0
+cdecl @ @ -xc++ @ define S as struct S; declare &= as member operator (int) returning reference to S @ 0

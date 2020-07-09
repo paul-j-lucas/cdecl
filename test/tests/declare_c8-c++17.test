@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++17 @ declare x as char8_t @ 65
+cdecl @ @ -xc++17 @ declare x as char8_t @ 65

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc89 @ declare x as long long x @ 65
+cdecl @ @ -xc89 @ declare x as long long x @ 65

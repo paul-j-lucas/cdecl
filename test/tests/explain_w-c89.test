@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc89 @ explain wchar_t x @ 65
+cdecl @ @ -xc89 @ explain wchar_t x @ 65

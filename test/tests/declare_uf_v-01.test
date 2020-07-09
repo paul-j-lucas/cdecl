@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare f as maybe_unused function @ 0
+cdecl @ @ -xc++ @ declare f as maybe_unused function @ 0

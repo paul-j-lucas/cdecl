@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain A::C::~C() @ 0
+cdecl @ @ -xc++ @ explain A::C::~C() @ 0

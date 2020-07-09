@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare p as restricted pointer to int @ 0
+cdecl @ @ -xc++ @ declare p as restricted pointer to int @ 0

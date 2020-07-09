@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain void operator()(int, int) @ 0
+cdecl @ @ -xc++ @ explain void operator()(int, int) @ 0

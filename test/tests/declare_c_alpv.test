@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ declare c as char aligned as pointer to void @ 0
+cdecl @ @ @ declare c as char aligned as pointer to void @ 0

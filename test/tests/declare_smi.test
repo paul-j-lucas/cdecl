@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare x as static mutable int @ 65
+cdecl @ @ -xc++ @ declare x as static mutable int @ 65

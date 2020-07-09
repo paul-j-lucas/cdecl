@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare f as function (r as rvalue reference to int) returning void @ 0
+cdecl @ @ -xc++ @ declare f as function (r as rvalue reference to int) returning void @ 0

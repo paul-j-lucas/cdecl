@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -2 -xc++ @ declare f as non-returning function (int) returning void @ 0
+cdecl @ @ -2 -xc++ @ declare f as non-returning function (int) returning void @ 0

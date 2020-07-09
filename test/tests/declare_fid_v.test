@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ declare f as function (i as int, d as double) returning void @ 0
+cdecl @ @ @ declare f as function (i as int, d as double) returning void @ 0

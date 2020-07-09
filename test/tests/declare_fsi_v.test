@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ declare f as function (x as static int) @ 65
+cdecl @ @ @ declare f as function (x as static int) @ 65

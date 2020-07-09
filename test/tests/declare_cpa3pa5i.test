@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ declare x as const pointer to array 3 of pointer to array 5 of int @ 0
+cdecl @ @ @ declare x as const pointer to array 3 of pointer to array 5 of int @ 0

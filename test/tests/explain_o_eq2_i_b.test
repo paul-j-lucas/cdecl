@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain bool operator ==(int) @ 0
+cdecl @ @ -xc++ @ explain bool operator ==(int) @ 0

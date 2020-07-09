@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ struct S { typedef int I; }; explain S::I x @ 0
+cdecl @ @ -xc++ @ struct S { typedef int I; }; explain S::I x @ 0

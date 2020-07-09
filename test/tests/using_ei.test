@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ using SI = extern int @ 65
+cdecl @ @ -xc++ @ using SI = extern int @ 65

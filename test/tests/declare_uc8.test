@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare x as unsigned char8_t @ 65
+cdecl @ @ -xc++ @ declare x as unsigned char8_t @ 65

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ namespace NS { typedef int Int; }; show user typedef @ 0
+cdecl @ @ -xc++ @ namespace NS { typedef int Int; }; show user typedef @ 0

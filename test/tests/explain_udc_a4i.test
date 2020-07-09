@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ typedef int A4[4]; explain operator A4() @ 65
+cdecl @ @ -xc++ @ typedef int A4[4]; explain operator A4() @ 65

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -3 -xc++ @ define S as struct S; explain S& operator??'=(int) @ 0
+cdecl @ @ -3 -xc++ @ define S as struct S; explain S& operator??'=(int) @ 0

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare f as _Noreturn function (int) returning void @ 65
+cdecl @ @ -xc++ @ declare f as _Noreturn function (int) returning void @ 65

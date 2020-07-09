@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -e @ const int x @ 0
+cdecl @ @ -e @ const int x @ 0

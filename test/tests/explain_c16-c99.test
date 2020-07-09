@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc99 @ explain char16_t x @ 65
+cdecl @ @ -xc99 @ explain char16_t x @ 65

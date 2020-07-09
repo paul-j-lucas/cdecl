@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare c as char aligned as 8 bytes @ 0
+cdecl @ @ -xc++ @ declare c as char aligned as 8 bytes @ 0

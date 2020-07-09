@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ explain void (*signal(int sig, void (*f)(int)))(int) @ 0
+cdecl @ @ @ explain void (*signal(int sig, void (*f)(int)))(int) @ 0

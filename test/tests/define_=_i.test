@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ define Int of scope S as int; show user typedef @ 0
+cdecl @ @ -xc++ @ define Int of scope S as int; show user typedef @ 0

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare f as function (x as deprecated int) @ 0
+cdecl @ @ -xc++ @ declare f as function (x as deprecated int) @ 0

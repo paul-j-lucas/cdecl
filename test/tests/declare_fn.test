@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ declare f as function (x as y) @ 65
+cdecl @ @ @ declare f as function (x as y) @ 65

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ explain void f(int x[const *]) @ 0
+cdecl @ @ @ explain void f(int x[const *]) @ 0

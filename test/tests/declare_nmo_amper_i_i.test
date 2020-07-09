@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare & as non-member operator (int) returning int @ 65
+cdecl @ @ -xc++ @ declare & as non-member operator (int) returning int @ 65

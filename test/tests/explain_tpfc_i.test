@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ explain typedef int (*x)(char) @ 0
+cdecl @ @ @ explain typedef int (*x)(char) @ 0

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain int bitand x @ 0
+cdecl @ @ -xc++ @ explain int bitand x @ 0

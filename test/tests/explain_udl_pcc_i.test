@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain int operator"" _x(const char*) @ 0
+cdecl @ @ -xc++ @ explain int operator"" _x(const char*) @ 0

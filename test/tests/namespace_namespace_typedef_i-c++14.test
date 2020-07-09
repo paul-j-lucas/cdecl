@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++14 @ namespace A { namespace B { typedef int Int; } }; show user typedef @ 0
+cdecl @ @ -xc++14 @ namespace A { namespace B { typedef int Int; } }; show user typedef @ 0

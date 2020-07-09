@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare S::f as function @ 0
+cdecl @ @ -xc++ @ declare S::f as function @ 0

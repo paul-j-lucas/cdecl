@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain using f = void (*)(int) @ 0
+cdecl @ @ -xc++ @ explain using f = void (*)(int) @ 0

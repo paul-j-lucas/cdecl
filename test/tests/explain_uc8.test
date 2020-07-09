@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain unsigned char8_t x @ 65
+cdecl @ @ -xc++ @ explain unsigned char8_t x @ 65

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ explain int main( int, char **argv ) @ 0
+cdecl @ @ @ explain int main( int, char **argv ) @ 0

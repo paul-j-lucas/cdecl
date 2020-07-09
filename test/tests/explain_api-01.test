@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ explain int *_Atomic x @ 0
+cdecl @ @ @ explain int *_Atomic x @ 0

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ cast x into const pointer to array 3 of pointer to array 5 of int @ 0
+cdecl @ @ @ cast x into const pointer to array 3 of pointer to array 5 of int @ 0

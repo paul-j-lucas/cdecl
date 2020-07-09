@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare ! as member operator returning bool @ 0
+cdecl @ @ -xc++ @ declare ! as member operator returning bool @ 0

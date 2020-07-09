@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ using SI = static int @ 65
+cdecl @ @ -xc++ @ using SI = static int @ 65

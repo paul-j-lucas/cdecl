@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ declare x as consteval int @ 65
+cdecl @ @ @ declare x as consteval int @ 65

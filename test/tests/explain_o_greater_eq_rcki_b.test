@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ define S as struct S; explain bool operator>=(const S&, int) @ 0
+cdecl @ @ -xc++ @ define S as struct S; explain bool operator>=(const S&, int) @ 0

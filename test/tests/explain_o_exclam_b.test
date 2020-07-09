@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain bool operator!() @ 0
+cdecl @ @ -xc++ @ explain bool operator!() @ 0

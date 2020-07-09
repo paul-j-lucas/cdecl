@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare f as deprecated function returning void @ 0
+cdecl @ @ -xc++ @ declare f as deprecated function returning void @ 0

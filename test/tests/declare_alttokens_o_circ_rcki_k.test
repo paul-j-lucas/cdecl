@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -a -xc++ @ define S as struct S; declare xor as operator (x as reference to constant S, n as int) returning S @ 0
+cdecl @ @ -a -xc++ @ define S as struct S; declare xor as operator (x as reference to constant S, n as int) returning S @ 0

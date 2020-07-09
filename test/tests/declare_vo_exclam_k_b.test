@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ define S as struct S; declare ! as virtual operator (S) returning bool @ 65
+cdecl @ @ -xc++ @ define S as struct S; declare ! as virtual operator (S) returning bool @ 65

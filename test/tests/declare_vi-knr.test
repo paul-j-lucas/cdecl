@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xknr @ declare x as volatile int @ 0
+cdecl @ @ -xknr @ declare x as volatile int @ 0

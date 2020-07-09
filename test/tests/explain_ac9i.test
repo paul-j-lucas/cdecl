@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ explain int a[const 9] @ 65
+cdecl @ @ @ explain int a[const 9] @ 65

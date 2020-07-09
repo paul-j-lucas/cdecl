@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ define S as struct S; explain int S::*p @ 0
+cdecl @ @ -xc++ @ define S as struct S; explain int S::*p @ 0

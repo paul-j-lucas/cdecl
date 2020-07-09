@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain int operator"" _x(unsigned long) @ 65
+cdecl @ @ -xc++ @ explain int operator"" _x(unsigned long) @ 65

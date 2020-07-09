@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ static cast x into int @ 0
+cdecl @ @ -xc++ @ static cast x into int @ 0

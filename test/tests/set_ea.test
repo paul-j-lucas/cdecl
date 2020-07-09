@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ set ea; declare x as const int @ 0
+cdecl @ @ @ set ea; declare x as const int @ 0

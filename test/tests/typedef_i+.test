@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ typedef int S::Int @ 65
+cdecl @ @ -xc++ @ typedef int S::Int @ 65

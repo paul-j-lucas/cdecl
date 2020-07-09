@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ set east; declare x as const int @ 0
+cdecl @ @ @ set east; declare x as const int @ 0

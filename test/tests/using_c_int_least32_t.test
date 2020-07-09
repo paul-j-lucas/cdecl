@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ using int_least32_t = char @ 65
+cdecl @ @ -xc++ @ using int_least32_t = char @ 65

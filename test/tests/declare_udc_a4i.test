@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ typedef int A4[4]; declare user-defined conversion operator returning A4 @ 65
+cdecl @ @ -xc++ @ typedef int A4[4]; declare user-defined conversion operator returning A4 @ 65

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain virtual ~C() @ 0
+cdecl @ @ -xc++ @ explain virtual ~C() @ 0

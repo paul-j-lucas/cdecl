@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare f of scope S as virtual function @ 65
+cdecl @ @ -xc++ @ declare f of scope S as virtual function @ 65

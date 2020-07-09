@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ dynamic cast S::x into pointer to class C @ 0
+cdecl @ @ -xc++ @ dynamic cast S::x into pointer to class C @ 0

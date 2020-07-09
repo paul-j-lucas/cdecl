@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc99 @ declare x as char16_t @ 65
+cdecl @ @ -xc99 @ declare x as char16_t @ 65

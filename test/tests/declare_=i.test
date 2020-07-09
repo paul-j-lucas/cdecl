@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare x of scope s as int @ 0
+cdecl @ @ -xc++ @ declare x of scope s as int @ 0

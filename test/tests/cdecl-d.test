@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -d @ explain int* f(int x, int y) @ 0
+cdecl @ @ -d @ explain int* f(int x, int y) @ 0

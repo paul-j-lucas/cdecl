@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain int s::x @ 0
+cdecl @ @ -xc++ @ explain int s::x @ 0

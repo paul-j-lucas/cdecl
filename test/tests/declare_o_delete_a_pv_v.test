@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare delete[] as operator (p as pointer to void) returning void @ 0
+cdecl @ @ -xc++ @ declare delete[] as operator (p as pointer to void) returning void @ 0

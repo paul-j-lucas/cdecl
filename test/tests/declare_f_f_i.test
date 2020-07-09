@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ declare f as function returning function returning int @ 65
+cdecl @ @ @ declare f as function returning function returning int @ 65

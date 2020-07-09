@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain constexpr C() @ 0
+cdecl @ @ -xc++ @ explain constexpr C() @ 0

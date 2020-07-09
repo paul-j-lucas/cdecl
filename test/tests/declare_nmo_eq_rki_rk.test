@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ define S as struct S; declare = as non-member operator (reference to S, int) @ 65
+cdecl @ @ -xc++ @ define S as struct S; declare = as non-member operator (reference to S, int) @ 65

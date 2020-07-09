@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ define S as struct S; declare x as const S @ 0
+cdecl @ @ @ define S as struct S; declare x as const S @ 0

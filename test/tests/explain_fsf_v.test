@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain friend static void f() @ 65
+cdecl @ @ -xc++ @ explain friend static void f() @ 65

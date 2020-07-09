@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -a -3 -xc++ @ define S as struct S; declare bitor as operator (x as reference to constant S, y as reference to constant S) returning S @ 0
+cdecl @ @ -a -3 -xc++ @ define S as struct S; declare bitor as operator (x as reference to constant S, y as reference to constant S) returning S @ 0

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain virtual void C::f() @ 65
+cdecl @ @ -xc++ @ explain virtual void C::f() @ 65

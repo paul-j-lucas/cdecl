@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ declare a as pointer to array 9 of int @ 0
+cdecl @ @ @ declare a as pointer to array 9 of int @ 0

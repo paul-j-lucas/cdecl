@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ explain int C::*p @ 65
+cdecl @ @ @ explain int C::*p @ 65

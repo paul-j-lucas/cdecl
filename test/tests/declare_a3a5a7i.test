@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ declare x as array 3 of array 5 of array 7 of int @ 0
+cdecl @ @ @ declare x as array 3 of array 5 of array 7 of int @ 0

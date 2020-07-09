@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ explain short int main( int, char *argv[] ) @ 65
+cdecl @ @ @ explain short int main( int, char *argv[] ) @ 65

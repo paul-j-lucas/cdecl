@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain using v3 = int[3] @ 0
+cdecl @ @ -xc++ @ explain using v3 = int[3] @ 0

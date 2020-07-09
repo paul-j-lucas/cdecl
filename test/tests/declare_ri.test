@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare x as reference to int @ 0
+cdecl @ @ -xc++ @ declare x as reference to int @ 0

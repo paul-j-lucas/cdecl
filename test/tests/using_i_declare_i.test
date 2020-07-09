@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ using Int = int; declare x as Int @ 0
+cdecl @ @ -xc++ @ using Int = int; declare x as Int @ 0

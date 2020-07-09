@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ explain (int(*const(*const)[3])[5])x @ 0
+cdecl @ @ @ explain (int(*const(*const)[3])[5])x @ 0

@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare C of class X as constructor @ 65
+cdecl @ @ -xc++ @ declare C of class X as constructor @ 65

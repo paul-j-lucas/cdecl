@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ explain void f( char const *fmt, ... ) @ 0
+cdecl @ @ @ explain void f( char const *fmt, ... ) @ 0

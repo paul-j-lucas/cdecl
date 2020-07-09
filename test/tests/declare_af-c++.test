@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ declare f as function returning auto @ 0
+cdecl @ @ -xc++ @ declare f as function returning auto @ 0

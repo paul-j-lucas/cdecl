@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain int C::* f() @ 0
+cdecl @ @ -xc++ @ explain int C::* f() @ 0

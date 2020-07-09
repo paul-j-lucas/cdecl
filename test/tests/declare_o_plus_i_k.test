@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ define S as struct S; declare + as operator (int) returning S @ 0
+cdecl @ @ -xc++ @ define S as struct S; declare + as operator (int) returning S @ 0

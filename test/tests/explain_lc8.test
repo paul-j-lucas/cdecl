@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xc++ @ explain long char8_t x @ 65
+cdecl @ @ -xc++ @ explain long char8_t x @ 65

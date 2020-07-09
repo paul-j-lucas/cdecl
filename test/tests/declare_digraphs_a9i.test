@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -2 @ declare a as array 9 of int @ 0
+cdecl @ @ -2 @ declare a as array 9 of int @ 0

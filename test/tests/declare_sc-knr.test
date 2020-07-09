@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ -xknr @ declare x as signed char @ 65
+cdecl @ @ -xknr @ declare x as signed char @ 65

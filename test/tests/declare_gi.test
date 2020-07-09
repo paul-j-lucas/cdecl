@@ -1,1 +1,1 @@
-cdecl @ /dev/null @ @ declare x as register int @ 0
+cdecl @ @ @ declare x as register int @ 0
