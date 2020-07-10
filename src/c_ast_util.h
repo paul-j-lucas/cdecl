@@ -96,7 +96,6 @@ bool c_ast_check_cast( c_ast_t const *ast );
  * Checks an entire AST for semantic errors and warnings.
  *
  * @param ast The `c_ast` to check.
- * @param check The kind of checks to perform.
  * @return Returns `true` only if \a ast error-free.
  *
  * @sa c_ast_check_cast()
@@ -131,13 +130,24 @@ bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_t kind_ids );
  * Checks whether \a ast is an AST for a pointer to \a type_id.
  *
  * @param ast The `c_ast` to check.
- * @param type_id The exact type to check against.
- * @return Returns `true` only if \a ast is a pointer to \a type_id.
+ * @param ast_type_mask The type mask to apply to the type of \a ast before
+ * equality comparison with \a type_id.  For example:
+ *  + `c_ast_is_ptr_to_type(ast, ~T_NONE, T_CHAR)` returns `true` only if \a
+ *    ast is pointer to `char` (`char*`) _exactly_.
+ *  + `c_ast_is_ptr_to_type(ast, ~T_NONE, T_CONST | T_CHAR)` returns `true`
+ *    only if \a ast is a pointer to `const` `char` (`char const*`) _exactly_.
+ *  + `c_ast_is_ptr_to_type(ast, ~T_CONST, T_CHAR)` returns `true` if \a ast is
+ *    a pointer to `char` regardless of `const` (`char*` or `char const*`).
+ *
+ * @param type_id The _exact_ type to check against.
+ * @return Returns `true` only if \a ast (masked with \a ast_type_mask) is a
+ * pointer to \a type_id.
  *
  * @sa c_ast_is_ptr_to_type_any()
  */
 C_WARN_UNUSED_RESULT
-bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_id_t type_id );
+bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_id_t ast_type_mask,
+                           c_type_id_t type_id );
 
 /**
  * Checks whether \a ast is an AST for a pointer to one of \a type_ids.
