@@ -756,10 +756,10 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
           if ( !c_ast_is_ptr_to_type( arg_ast->as.parent.of_ast,
                                       ~T_CONST, T_CHAR ) ) {
             print_error( &arg_ast->loc,
-              "main()'s second argument must be %s %s %s to %s",
+              "main()'s second argument must be %s %s %s to [%s] %s",
               c_kind_name( arg_ast->kind_id ),
               arg_ast->kind_id == K_ARRAY ? "of" : "to",
-              L_POINTER, L_CHAR
+              L_POINTER, L_CONST, L_CHAR
             );
             return false;
           }
