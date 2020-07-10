@@ -108,7 +108,7 @@ bool c_ast_check_declaration( c_ast_t const *ast );
  *
  * @param ast The `c_ast` to check.
  * @param type_id The specific type \a ast can be.  It must contain only type
- * bits (no attributes, storage classes, etc.).
+ * bits (no attributes, qualifiers, storage classes, etc.).
  * @return Returns `true` only if the type of \a ast is \a type_id.
  */
 C_WARN_UNUSED_RESULT
@@ -257,15 +257,14 @@ bool c_ast_take_typedef( c_ast_t *ast );
 
 /**
  * Un-pointers \a ast, i.e., if \a ast is a <code>\ref K_POINTER</code>,
- * returns the AST of the underlying type.
+ * returns the pointed-to AST.
  *
  * @note `typedef`s are stripped.
  * @note Even though pointers are "dereferenced," this function isn't called
  * `c_ast_dereference` to eliminate confusion with C++ references.
  *
  * @param ast The `c_ast` to un-pointer.
- * @return Returns the AST of the underlying type, \a ast if it was not a
- * pointer, or null if \a ast is null or not a pointer.
+ * @return Returns the pointed-to AST or null if \a ast is not a pointer.
  *
  * @sa c_ast_unreference()
  * @sa c_ast_untypedef()
@@ -275,15 +274,14 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
 
 /**
  * Un-references \a ast, i.e., if \a ast is a <code>\ref K_REFERENCE</code>
- * returns the AST of the underlying type.
+ * returns the referenced AST.
  *
  * @note `typedef`s are stripped.
  * @note Only <code>\ref K_REFERENCE</code> is un-referenced, not
  * <code>\ref K_RVALUE_REFERENCE</code>.
  *
- * @param ast The `c_ast` to un-reference or null.
- * @return Returns the AST of the underlying type, \a ast if it was not a
- * reference, or null only if \a ast is null.
+ * @param ast The `c_ast` to un-reference.
+ * @return Returns the referenced AST or \a ast if \a ast is not a reference.
  *
  * @sa c_ast_unpointer()
  * @sa c_ast_untypedef()
@@ -293,11 +291,11 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 
 /**
  * Un-typedefs \a ast, i.e., if \a ast is a <code>\ref K_TYPEDEF</code>,
- * returns the AST of the underlying type.
+ * returns the underlying type AST.
  *
- * @param ast The `c_ast` to un-typedef or null.
- * @return Returns the AST of the underlying type, \a ast if it was not a
- * `typedef`, or null only if \a ast is null.
+ * @param ast The `c_ast` to un-typedef.
+ * @return Returns the underlying type AST or \a ast if \a ast is not a
+ * `typedef`.
  *
  * @sa c_ast_unpointer()
  * @sa c_ast_unreference()

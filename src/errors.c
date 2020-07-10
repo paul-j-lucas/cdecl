@@ -1125,7 +1125,7 @@ static bool c_ast_check_oper_delete_args( c_ast_t const *ast ) {
   }
 
   c_ast_arg_t const *const arg = c_ast_args( ast );
-  c_ast_t const *const arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
+  c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
 
   if ( !c_ast_is_ptr_to_type_any( arg_ast, T_VOID | T_ANY_CLASS ) ) {
     print_error( &arg_ast->loc,
