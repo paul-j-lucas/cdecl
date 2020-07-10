@@ -1096,6 +1096,7 @@ same: print_error( &ast->loc,
     default:
       /* suppress warning */;
   } // switch
+
   return true;
 }
 
