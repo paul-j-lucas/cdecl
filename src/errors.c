@@ -1364,8 +1364,8 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
     case 2:
       tmp_ast = c_ast_unpointer( arg_ast );
       if ( tmp_ast == NULL ||
-           !((tmp_ast->type_id & T_CONST) != 0 &&
-             (tmp_ast->type_id & T_ANY_CHAR) != 0) ) {
+           !((tmp_ast->type_id & T_CONST) != T_NONE &&
+             (tmp_ast->type_id & T_ANY_CHAR) != T_NONE) ) {
         print_error( &arg_ast->loc,
           "invalid argument type for %s %s; must be one of: "
           "const (char|wchar_t|char8_t|char16_t|char32_t)*",
