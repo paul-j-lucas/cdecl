@@ -752,10 +752,10 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
       arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
       switch ( arg_ast->kind_id ) {
         case K_ARRAY:                   // main( int, char *argv[] )
-        case K_POINTER: {               // main( int, char **argv )
-          c_ast_t const *of_ast = c_ast_untypedef( arg_ast->as.parent.of_ast );
-          if ( of_ast->kind_id != K_POINTER ) {
-arg2_must:  print_error( &arg_ast->loc,
+        case K_POINTER:                 // main( int, char **argv )
+          if ( !c_ast_is_ptr_to_type( arg_ast->as.parent.of_ast,
+                                      ~T_CONST, T_CHAR ) ) {
+            print_error( &arg_ast->loc,
               "main()'s second argument must be %s %s %s to %s",
               c_kind_name( arg_ast->kind_id ),
               arg_ast->kind_id == K_ARRAY ? "of" : "to",
@@ -763,10 +763,8 @@ arg2_must:  print_error( &arg_ast->loc,
             );
             return false;
           }
-          if ( !c_ast_is_ptr_to_type( of_ast, ~T_CONST, T_CHAR ) )
-            goto arg2_must;
           break;
-        }
+
         default:                        // main( int, ??? )
           print_error( &arg_ast->loc, "illegal signature for main()" );
           return false;
