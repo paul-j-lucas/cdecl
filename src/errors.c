@@ -1350,8 +1350,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
         case T_LONG | T_DOUBLE:
           break;
         default:                        // check for: char const*
-          tmp_ast = c_ast_unpointer( arg_ast );
-          if ( tmp_ast == NULL || tmp_ast->type_id != (T_CONST | T_CHAR) ) {
+          if ( !c_ast_is_ptr_to_type( arg_ast, T_CONST | T_CHAR ) ) {
             print_error( &arg_ast->loc,
               "invalid argument type for %s %s; must be one of: "
               "unsigned long long, long double, "

@@ -358,6 +358,10 @@ bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_t kind_ids ) {
   return ast != NULL && (ast->kind_id & kind_ids) != K_NONE;
 }
 
+bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
+  return (ast = c_ast_unpointer( ast )) != NULL && ast->type_id == type_id;
+}
+
 bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_id_t type_ids ) {
   return  (ast = c_ast_unpointer( ast )) != NULL &&
           (ast->type_id & type_ids) != T_NONE;
