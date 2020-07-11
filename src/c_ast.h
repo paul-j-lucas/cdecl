@@ -25,16 +25,6 @@
  * @file
  * Declares types to represent an Abstract Syntax Tree (AST) for parsed C/C++
  * declarations as well as functions for traversing and manipulating an AST.
- *
- * In all cases where an AST node contains:
- *
- *  1. A pointer to another, that pointer is always declared first.
- *  2. Arguments, they are always declared second.
- *  3. Flags, they are always declared third.
- *
- * Since all the different kinds of AST nodes are declared within a `union`,
- * these `struct` members are at the same offsets.  This makes traversing and
- * manipulating the AST easy.
  */
 
 // local
@@ -125,7 +115,15 @@ typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
  * @defgroup ast-nodes-group AST Nodes
  * The AST node `struct`s  contain data specific to each
  * <code>\ref c_kind_id_t</code>.
- * All `struct`s are placed into a `union` within `c_ast`.
+ * In all cases where an AST node contains:
+ *
+ *  1. A pointer to another, that pointer is always declared first.
+ *  2. Arguments, they are always declared second.
+ *  3. Flags, they are always declared third.
+ *
+ * Since all the different kinds of AST nodes are declared within a `union`,
+ * these `struct` members are at the same offsets.  This makes traversing and
+ * manipulating an AST easy.
  * @{
  */
 
