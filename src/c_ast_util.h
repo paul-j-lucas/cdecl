@@ -124,7 +124,7 @@ bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t type_id );
  * or rvalue reference thereto.
  */
 C_WARN_UNUSED_RESULT
-bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_t kind_ids );
+bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids );
 
 /**
  * Checks whether \a ast is an AST for a pointer to \a type_id.
@@ -194,7 +194,7 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
  */
 C_WARN_UNUSED_RESULT
 c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
-                              c_kind_t kind_ids );
+                              c_kind_id_t kind_ids );
 
 /**
  * Traverses \a ast attempting to find an AST node having \a type_id.

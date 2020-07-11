@@ -221,7 +221,7 @@ void c_ast_free( c_ast_t *ast ) {
   }
 }
 
-c_ast_t* c_ast_new( c_kind_t kind_id, c_ast_depth_t depth,
+c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
                     c_loc_t const *loc ) {
   assert( loc != NULL );
   static c_ast_id_t next_id;

@@ -28,9 +28,9 @@
 
 #ifndef CDECL_CONFIGURE                 /* defined only during ../configure */
 //
-// During configure time, we need to get sizeof(c_kind_t), so we #include this
-// header.  However, this header indirectly includes config.h that doesn't get
-// created until after configure finishes.
+// During configure time, we need to get sizeof(c_kind_id_t), so we #include
+// this header.  However, this header indirectly includes config.h that doesn't
+// get created until after configure finishes.
 //
 // Therefore, configure defines CDECL_CONFIGURE so that we can #include this
 // header that will NOT #include anything else (or define anything that depends
@@ -60,7 +60,7 @@ _GL_INLINE_HEADER_BEGIN
 #else /* CDECL_CONFIGURE */
 
 // local
-#include "types.h"                      /* for c_kind_t */
+#include "types.h"                      /* for c_kind_id_t */
 
 #endif /* CDECL_CONFIGURE */
 
@@ -79,7 +79,7 @@ _GL_INLINE_HEADER_BEGIN
  * kinds.  However, a bitwise-or of kinds may be used to test whether a given
  * thing is any _one_ of those kinds.
  */
-enum c_kind {
+enum c_kind_id {
   K_NONE                    = 0,        ///< No kind.
   K_PLACEHOLDER             = 0x00001,  ///< Temporary node in AST.
   K_BUILTIN                 = 0x00002,  ///< `void,` `char,` `int,` etc.
@@ -129,7 +129,7 @@ enum c_kind {
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Frees the data for a `c_kind_t`.
+ * Frees the data for a `c_kind_id_t`.
  * @note
  * For platforms with 64-bit pointers, this is a no-op.
  *
@@ -145,34 +145,34 @@ void c_kind_data_free( void *data ) {
 }
 
 /**
- * Gets the `c_kind_t` value from a `void*` data value.
+ * Gets the `c_kind_id_t` value from a `void*` data value.
  *
- * @param data The data to get the `c_kind_t` from.
- * @return Returns the `c_kind_t`.
+ * @param data The data to get the `c_kind_id_t` from.
+ * @return Returns the `c_kind_id_t`.
  *
  * @sa c_kind_data_new()
  */
 C_KIND_INLINE C_WARN_UNUSED_RESULT
-c_kind_t c_kind_data_get( void const *data ) {
+c_kind_id_t c_kind_data_get( void const *data ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
-  return *REINTERPRET_CAST( c_kind_t const*, data );
+  return *REINTERPRET_CAST( c_kind_id_t const*, data );
 #else
-  return REINTERPRET_CAST( c_kind_t, data );
+  return REINTERPRET_CAST( c_kind_id_t, data );
 #endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
 }
 
 /**
- * Creates an opaque data handle for a `c_kind_t`.
+ * Creates an opaque data handle for a `c_kind_id_t`.
  *
- * @param kind_id The `c_kind_t` to use.
+ * @param kind_id The `c_kind_id_t` to use.
  * @return Returns said handle.
  *
  * @sa c_kind_data_free()
  */
 C_KIND_INLINE C_WARN_UNUSED_RESULT
-void* c_kind_data_new( c_kind_t kind_id ) {
+void* c_kind_data_new( c_kind_id_t kind_id ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
-  c_kind_t *const data = MALLOC( c_kind_t, 1 );
+  c_kind_id_t *const data = MALLOC( c_kind_id_t, 1 );
   *data = kind_id;
   return data;
 #else
@@ -185,11 +185,11 @@ void* c_kind_data_new( c_kind_t kind_id ) {
 /**
  * Gets the name of \a kind_id.
  *
- * @param kind_id The <code>\ref c_kind</code> to get the name for.
+ * @param kind_id The <code>\ref c_kind_id</code> to get the name for.
  * @return Returns said name.
  */
 C_WARN_UNUSED_RESULT
-char const* c_kind_name( c_kind_t kind_id );
+char const* c_kind_name( c_kind_id_t kind_id );
 
 ///////////////////////////////////////////////////////////////////////////////
 

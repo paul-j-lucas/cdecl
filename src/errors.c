@@ -80,7 +80,7 @@ C_NOWARN_UNUSED_RESULT
 static bool error_kind_not_type( c_ast_t const*, c_type_id_t );
 
 C_NOWARN_UNUSED_RESULT
-static bool error_kind_to_kind( c_ast_t const*, c_kind_t );
+static bool error_kind_to_kind( c_ast_t const*, c_kind_id_t );
 
 C_NOWARN_UNUSED_RESULT
 static bool error_kind_to_type( c_ast_t const*, c_type_id_t );
@@ -1778,10 +1778,10 @@ static bool error_kind_not_supported( c_ast_t const *ast ) {
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
 C_NOWARN_UNUSED_RESULT
-static bool error_kind_to_kind( c_ast_t const *ast, c_kind_t kind ) {
+static bool error_kind_to_kind( c_ast_t const *ast, c_kind_id_t kind_id ) {
   assert( ast != NULL );
   print_error( &ast->loc,
-    "%s to %s", c_kind_name( ast->kind_id ), c_kind_name( kind )
+    "%s to %s", c_kind_name( ast->kind_id ), c_kind_name( kind_id )
   );
   return VISITOR_ERROR_FOUND;
 }

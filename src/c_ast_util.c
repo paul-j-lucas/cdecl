@@ -266,7 +266,7 @@ static c_type_id_t c_ast_take_storage( c_ast_t *ast ) {
 C_WARN_UNUSED_RESULT
 static bool c_ast_vistor_kind_any( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  c_kind_t const kind_id = c_kind_data_get( data );
+  c_kind_id_t const kind_id = c_kind_data_get( data );
   return (ast->kind_id & kind_id) != K_NONE;
 }
 
@@ -319,7 +319,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func ) {
 }
 
 c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
-                              c_kind_t kind_ids ) {
+                              c_kind_id_t kind_ids ) {
   void *const data = c_kind_data_new( kind_ids );
   ast = c_ast_visit( ast, dir, c_ast_vistor_kind_any, data );
   c_kind_data_free( data );
@@ -354,7 +354,7 @@ bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t type_id ) {
   return t == type_id;
 }
 
-bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_t kind_ids ) {
+bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids ) {
   ast = c_ast_unreference( ast );
   return (ast->kind_id & kind_ids) != K_NONE;
 }

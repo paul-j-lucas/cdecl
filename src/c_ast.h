@@ -124,7 +124,7 @@ typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
 /**
  * @defgroup ast-nodes-group AST Nodes
  * The AST node `struct`s  contain data specific to each
- * <code>\ref c_kind_t</code>.
+ * <code>\ref c_kind_id_t</code>.
  * All `struct`s are placed into a `union` within `c_ast`.
  * @{
  */
@@ -248,7 +248,7 @@ struct c_ast {
   c_alignas_t           align;          ///< Alignment (if any).
   c_ast_depth_t         depth;          ///< How many `()` deep.
   c_ast_id_t            unique_id;      ///< Unique id (starts at 1).
-  c_kind_t              kind_id;        ///< Kind.
+  c_kind_id_t           kind_id;        ///< Kind.
   c_sname_t             sname;          ///< Scoped name.
   c_type_id_t           type_id;        ///< Type.
   c_ast_t              *parent_ast;     ///< Parent `c_ast` node, if any.
@@ -365,7 +365,8 @@ bool c_ast_is_parent( c_ast_t const *ast ) {
  * @sa c_ast_free()
  */
 C_WARN_UNUSED_RESULT
-c_ast_t* c_ast_new( c_kind_t kind_id, c_ast_depth_t depth, c_loc_t const *loc );
+c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
+                    c_loc_t const *loc );
 
 /**
  * Gets the root `c_ast` node of \a ast.
