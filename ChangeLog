@@ -1,5 +1,17 @@
+2020-07-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_type.h, parser.y: Added T_ANY_SCOPE.
+   * c_ast.h: Moved some documentation.
+   * configure.ac, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.c,
+     c_kind.h, errors.c, parser.y, types.h: s/c_kind/c_kind_id/
+   * NEWS, errors.c, test/Makefile.am, explain_rr.test, explain_rrr-1.test,
+     explain_rrr-2.test, explain_rrrr.test: References to references are now
+     illegal.
+
 2020-07-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: -Wimplicit-int-conversion and -Wshorten-64-to-32 and clang only.
+   * c_ast_util.c: Now calling c_type_normalize() in more places.
    * errors.c: s/0/T_NONE/
    * errors.c: Added [const] to error message.
    * errors.c: Simplified c_ast_check_func_main().
