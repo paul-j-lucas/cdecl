@@ -3408,7 +3408,7 @@ pointer_to_member_type_c_ast
       // T_CLASS.
       //
       c_type_id_t sn_type = c_sname_type( &$1 );
-      if ( (sn_type & (T_ANY_CLASS | T_NAMESPACE)) == T_NONE )
+      if ( (sn_type & T_ANY_SCOPE) == T_NONE )
         sn_type = T_CLASS;
 
       $$.ast->type_id = sn_type | $3;

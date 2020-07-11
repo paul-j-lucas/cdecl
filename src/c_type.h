@@ -145,6 +145,9 @@ _GL_INLINE_HEADER_BEGIN
 /** Shorthand for any reference type. */
 #define T_ANY_REFERENCE       ( T_REFERENCE | T_RVALUE_REFERENCE )
 
+/** Shorthand for `class`, `struct`, `union`, or `namespace. */
+#define T_ANY_SCOPE           ( T_ANY_CLASS | T_NAMESPACE )
+
 /**
  * The only types that can be applied to constructors.
  *
