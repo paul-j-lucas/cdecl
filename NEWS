@@ -18,6 +18,9 @@ The legal "signed main()" signature is now accepted.
 ** Ignoring east-const in English
 East const is now ignored when explaining gibberish.
 
+** Disallowing reference to reference
+References to references are now errors.
+
 
 * Changes in Cdecl 7.4
 

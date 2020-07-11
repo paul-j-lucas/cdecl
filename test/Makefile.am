@@ -1244,7 +1244,11 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_prri.test \
 	tests/explain_rf_v-c++03.test \
 	tests/explain_rgi.test \
+	tests/explain_rr.test \
 	tests/explain_rrf_v-c++03.test \
+	tests/explain_rrr-1.test \
+	tests/explain_rrr-2.test \
+	tests/explain_rrrr.test \
 	tests/explain_rtpi-c++-error.test \
 	tests/explain_rv.test \
 	tests/explain_scf_v.test \

@@ -80,6 +80,9 @@ C_NOWARN_UNUSED_RESULT
 static bool error_kind_not_type( c_ast_t const*, c_type_id_t );
 
 C_NOWARN_UNUSED_RESULT
+static bool error_kind_to_kind( c_ast_t const*, c_kind_t );
+
+C_NOWARN_UNUSED_RESULT
 static bool error_kind_to_type( c_ast_t const*, c_type_id_t );
 
 C_NOWARN_UNUSED_RESULT
@@ -1221,20 +1224,10 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & K_ANY_REFERENCE) != K_NONE );
 
-  if ( C_LANG_IS_C() ) {
-    error_kind_not_supported( ast );
-    return false;
-  }
-
   if ( (ast->type_id & (T_CONST | T_VOLATILE)) != T_NONE ) {
-    print_error( &ast->loc,
-      "references can not be %s",
-      c_type_name_error( ast->type_id & T_MASK_QUALIFIER )
-    );
-    print_hint(
-      "%s to %s",
-      L_REFERENCE, c_type_name_error( ast->type_id & T_MASK_QUALIFIER )
-    );
+    c_type_id_t const t = ast->type_id & T_MASK_QUALIFIER;
+    error_kind_not_type( ast, t );
+    print_hint( "%s to %s", L_REFERENCE, c_type_name_error( t ) );
     return false;
   }
 
@@ -1242,6 +1235,10 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   switch ( to_ast->kind_id ) {
     case K_NAME:
       return error_unknown_type( to_ast );
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+      error_kind_to_kind( ast, to_ast->kind_id );
+      return false;
     default:
       /* suppress warning */;
   } // switch
@@ -1501,6 +1498,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         return error_kind_not_supported( ast );
       C_FALLTHROUGH;
     case K_REFERENCE:
+      if ( C_LANG_IS_C() )
+        return error_kind_not_supported( ast );
       if ( !c_ast_check_reference( ast ) )
         return VISITOR_ERROR_FOUND;
       break;
@@ -1728,7 +1727,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
  * @param hint The hint, if any.
  * @return Always returns `false`.
  */
-C_WARN_UNUSED_RESULT
+C_NOWARN_UNUSED_RESULT
 static bool error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
   assert( ast != NULL );
   print_error( &ast->loc,
@@ -1746,7 +1745,7 @@ static bool error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
  * @param type_id The bad type.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
-C_WARN_UNUSED_RESULT
+C_NOWARN_UNUSED_RESULT
 static bool error_kind_not_type( c_ast_t const *ast, c_type_id_t type_id ) {
   assert( ast != NULL );
   print_error( &ast->loc,
@@ -1762,11 +1761,27 @@ static bool error_kind_not_type( c_ast_t const *ast, c_type_id_t type_id ) {
  * @param ast The `c_ast` having the bad kind.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
-C_WARN_UNUSED_RESULT
+C_NOWARN_UNUSED_RESULT
 static bool error_kind_not_supported( c_ast_t const *ast ) {
   assert( ast != NULL );
   print_error( &ast->loc,
     "%s not supported in %s", c_kind_name( ast->kind_id ), C_LANG_NAME()
+  );
+  return VISITOR_ERROR_FOUND;
+}
+
+/**
+ * Prints an error: `<kind> to <kind>`.
+ *
+ * @param ast The `c_ast` having the bad kind.
+ * @param kind_id The other kind.
+ * @return Always returns `VISITOR_ERROR_FOUND`.
+ */
+C_NOWARN_UNUSED_RESULT
+static bool error_kind_to_kind( c_ast_t const *ast, c_kind_t kind ) {
+  assert( ast != NULL );
+  print_error( &ast->loc,
+    "%s to %s", c_kind_name( ast->kind_id ), c_kind_name( kind )
   );
   return VISITOR_ERROR_FOUND;
 }
@@ -1778,7 +1793,7 @@ static bool error_kind_not_supported( c_ast_t const *ast ) {
  * @param type_id The bad type.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
-C_WARN_UNUSED_RESULT
+C_NOWARN_UNUSED_RESULT
 static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
   assert( ast != NULL );
   print_error( &ast->loc,
@@ -1793,7 +1808,7 @@ static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
  * @param ast The `c_ast` of the unknown type.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
-C_WARN_UNUSED_RESULT
+C_NOWARN_UNUSED_RESULT
 static bool error_unknown_type( c_ast_t const *ast ) {
   assert( ast != NULL );
   print_error( &ast->loc,
