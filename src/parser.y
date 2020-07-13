@@ -2160,7 +2160,32 @@ show_command
         c_typedef_english( $2, fout );
     }
 
-  | Y_SHOW Y_NAME typedef_opt
+  | Y_SHOW any_typedef Y_AS typedef_expected
+    {
+      DUMP_START( "show_command", "SHOW any_typedef AS typedef" );
+      DUMP_AST( "any_typedef.ast", $2->ast );
+      DUMP_END();
+
+      c_typedef_gibberish( $2, fout );
+    }
+
+  | Y_SHOW show_which_types_opt typedef_opt
+    {
+      show_type_info_t sti;
+      sti.show_fn = $3 ? &c_typedef_gibberish : &c_typedef_english;
+      sti.show_which = $2;
+      c_typedef_visit( &show_type_visitor, &sti );
+    }
+
+  | Y_SHOW show_which_types_opt Y_AS typedef_expected
+    {
+      show_type_info_t sti;
+      sti.show_fn = &c_typedef_gibberish;
+      sti.show_which = $2;
+      c_typedef_visit( &show_type_visitor, &sti );
+    }
+
+  | Y_SHOW Y_NAME
     {
       if ( opt_lang < LANG_CPP_11 ) {
         print_error( &@2,
@@ -2175,14 +2200,6 @@ show_command
       }
       FREE( $2 );
       PARSE_ABORT();
-    }
-
-  | Y_SHOW show_which_types_opt typedef_opt
-    {
-      show_type_info_t sti;
-      sti.show_fn = $3 ? &c_typedef_gibberish : &c_typedef_english;
-      sti.show_which = $2;
-      c_typedef_visit( &show_type_visitor, &sti );
     }
 
   | Y_SHOW error
@@ -5022,6 +5039,14 @@ to_expected
   | error
     {
       ELABORATE_ERROR( "\"%s\" expected", L_TO );
+    }
+  ;
+
+typedef_expected
+  : Y_TYPEDEF
+  | error
+    {
+      ELABORATE_ERROR( "\"%s\" expected", L_TYPEDEF );
     }
   ;
 
