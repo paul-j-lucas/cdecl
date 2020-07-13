@@ -1,12 +1,12 @@
 command:
   [const | dynamic | reinterpret | static] cast <name> {as|into|to} <english>
-  declare <name> as <english> [aligned [as] {<number> [bytes] | <english>}]
+  declare <name> as <english> [aligned [as|to] {<number> [bytes] | <english>}]
   declare <operator> as <english>
   define <name> as <english>
   explain <gibberish>
   { help | ? } [command[s] | english]
   set [<option> [= <value>] | options | <lang>]
-  show [<name> | all | predefined | user] [typedef]
+  show [<name> | all | predefined | user] [[as] typedef]
   typedef <gibberish>
   <scope-c> <name> { { <scope-c> | <typedef> | <using> } ; }
   using <name> = <gibberish>

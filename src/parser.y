@@ -1466,24 +1466,30 @@ alignas_specifier_english_opt
   ;
 
 alignas_specifier_english
-  : Y_ALIGNED as_opt Y_NUMBER bytes_opt
+  : Y_ALIGNED as_or_to_opt Y_NUMBER bytes_opt
     {
       $$.kind = C_ALIGNAS_EXPR;
       $$.loc = @1;
       $$.as.expr = (unsigned)$3;
     }
-  | Y_ALIGNED as_opt decl_english_ast
+  | Y_ALIGNED as_or_to_opt decl_english_ast
     {
       $$.kind = C_ALIGNAS_TYPE;
       $$.loc = @1;
       $$.as.type_ast = $3.ast;
     }
-  | Y_ALIGNED as_opt error
+  | Y_ALIGNED as_or_to_opt error
     {
       MEM_ZERO( &$$ );
       $$.loc = @1;
       ELABORATE_ERROR( "number or type expected" );
     }
+  ;
+
+as_or_to_opt
+  : /* empty */
+  | Y_AS
+  | Y_TO
   ;
 
 bytes_opt
@@ -4729,11 +4735,6 @@ as_into_to_expected
         L_AS, L_INTO, L_TO
       );
     }
-  ;
-
-as_opt
-  : /* empty */
-  | Y_AS
   ;
 
 cast_expected

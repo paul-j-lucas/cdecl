@@ -10,6 +10,15 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 7.4.2
+
+** Aligned to
+Now allowing "to" in addition to "as" for "... aligned [as|to] ...".
+
+** Show as
+Now allowing an optional "as" in "show ... [as] typedef".
+
+
 * Changes in Cdecl 7.4.1
 
 ** Allowing signed main()
