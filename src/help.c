@@ -80,14 +80,14 @@ static help_text_t const HELP_TEXT_COMMANDS[] = {
     "  using <name> = <gibberish>" },
   { "  exit | quit | q", SAME_AS_C },
   { "gibberish: a C declaration, like \"int x\"; or cast, like \"(int)x\"",
-    "gibberish: a C++ declaration, like \"int x\"; or cast, like \"(int)x\"" },
+    "gibberish: a C\\+\\+ declaration, like \"int x\"; or cast, like \"(int)x\"" },
   { "option: [no]alt-tokens [no]debug {di|tri|no}graphs [no]east-const",
     SAME_AS_C },
   { "        [no]explain-by-default [no]explicit-int[=<types>] lang=<lang>",
     SAME_AS_C },
   { "        [no]prompt [no]semicolon",
     SAME_AS_C },
-  { "lang: C K&R C89 C95 C99 C11 C18 C++ C++98 C++03 C++11 C++14 C++17 C++20",
+  { "lang: C K&R C89 C95 C99 C11 C18 C\\+\\+ C\\+\\+98 C\\+\\+03 C\\+\\+11 C\\+\\+14 C\\+\\+17 C\\+\\+20",
     SAME_AS_C },
   { NOT_IN_LANG,
     "scope-c: class struct union [inline] namespace" },
@@ -124,11 +124,11 @@ static help_text_t const HELP_TEXT_ENGLISH[] = {
   { "  block [([<args>])] [returning <english>]",
     "  user-defined literal [([<args>])] [returning <english>]" },
   { "  <store>* <modifier>* [<C-type>]",
-    "  <store>* <modifier>* [<C++-type>]" },
+    "  <store>* <modifier>* [<C\\+\\+-type>]" },
   { "args: a comma separated list of <name>, <english>, or <name> as <english>",
     "args: a comma separated list of <english> or <name> as <english>" },
   { "C-type: bool char char16_t char32_t wchar_t int float double void",
-    "C++-type: bool char char8_t char16_t char32_t wchar_t int float double void" },
+    "C\\+\\+-type: bool char char8_t char16_t char32_t wchar_t int float double void" },
   { "cv-qual: _Atomic const restrict volatile",
     "cv-qual: const volatile" },
   { NOT_IN_LANG,
@@ -136,7 +136,7 @@ static help_text_t const HELP_TEXT_ENGLISH[] = {
   { "modifier: short long signed unsigned atomic const restrict volatile",
     "modifier: short long signed unsigned const volatile" },
   { "name: a C identifier",
-    "name: a C++ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*" },
+    "name: a C\\+\\+ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*" },
   { "store: auto extern register static thread_local",
     "store: const{eval|expr} extern friend mutable static thread_local [pure] virtual" },
   { "", "" },
@@ -158,6 +158,7 @@ static bool is_title_char( char c ) {
   switch ( c ) {
     case '+':
     case '-':
+    case '\\':
       return true;
     default:
       return isalpha( c );
@@ -184,6 +185,7 @@ static bool is_title( char const *s ) {
   return false;
 }
 
+
 /**
  * Prints a line of help text (in color, if possible and requested).
  *
@@ -197,33 +199,31 @@ static void print_help_line( char const *line ) {
 
   for ( char const *c = line; *c != '\0'; ++c ) {
     switch ( *c ) {
-      case ':':
+      case '\\':                        // escapes next char
+        if ( !is_escaped ) {
+          is_escaped = true;
+          continue;
+        }
+        break;
+      case ':':                         // ends a title
         if ( in_title ) {
           SGR_END_COLOR( stdout );
           in_title = false;
         }
         break;
-
-      case '\\':
-        if ( !is_escaped ) {
-          is_escaped = true;
-          continue;
-        }
-        C_FALLTHROUGH;
-      case '<':
-        if ( !is_escaped ) {
+      case '<':                         // begins non-terminal
+        if ( !is_escaped )
           SGR_START_COLOR( stdout, help_nonterm );
-          break;
-        }
-        C_FALLTHROUGH;
-      case '>':
+        break;
+      case '>':                         // ends non-terminal
         if ( !is_escaped ) {
           PUTC_OUT( *c );
           SGR_END_COLOR( stdout );
           continue;
         }
-        C_FALLTHROUGH;
-      case '*':
+        break;
+      case '*':                         // other EBNF chars
+      case '+':
       case '[':
       case ']':
       case '{':
@@ -235,16 +235,16 @@ static void print_help_line( char const *line ) {
           SGR_END_COLOR( stdout );
           continue;
         }
-        C_FALLTHROUGH;
-
-      default:
-        if ( !in_title && is_title( c ) ) {
-          SGR_START_COLOR( stdout, help_title );
-          in_title = true;
-        }
-        is_escaped = false;
+        break;
     } // switch
+
+    if ( c == line && is_title( c ) ) {
+      SGR_START_COLOR( stdout, help_title );
+      in_title = true;
+    }
+
     PUTC_OUT( *c );
+    is_escaped = false;
   } // for
   PUTC_OUT( '\n' );
 }
