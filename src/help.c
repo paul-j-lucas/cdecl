@@ -60,6 +60,8 @@ typedef struct help_text help_text_t;
 static char const WHERE_TEXT[] =
   "  [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate";
 
+// Ideally, help text should be 23 lines or less.
+
 static help_text_t const HELP_TEXT_COMMANDS[] = {
   { "command:", SAME_AS_C },
   { "  cast <name> {as|into|to} <english>",
