@@ -47,7 +47,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Help text.
+ * A single line of help text.
  */
 struct help_text {
   char const *text;                     ///< Generic text.
@@ -57,11 +57,17 @@ typedef struct help_text help_text_t;
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * The help text for "where ...".
+ */
 static char const WHERE_TEXT[] =
   "  [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate";
 
 // Ideally, help text should be 23 lines or less.
 
+/**
+ * The help text for commands.
+ */
 static help_text_t const HELP_TEXT_COMMANDS[] = {
   { "command:", SAME_AS_C },
   { "  cast <name> {as|into|to} <english>",
@@ -101,6 +107,9 @@ static help_text_t const HELP_TEXT_COMMANDS[] = {
   { NULL, NULL }
 };
 
+/**
+ * The help text for pseudo-English.
+ */
 static help_text_t const HELP_TEXT_ENGLISH[] = {
   { "english:", SAME_AS_C },
   { "  <store>* array [[static] <cv-qual>* {<number>|\\*}] of <english>",
@@ -186,7 +195,6 @@ static bool is_title( char const *s ) {
   }
   return false;
 }
-
 
 /**
  * Prints a line of help text (in color, if possible and requested).
@@ -274,7 +282,8 @@ static void print_help_text( help_text_t const *help ) {
 /**
  * Prints the help message to standard output.
  *
- * @param what What to print help for.
+ * @param what What to print help for, one of: L_COMMANDS, L_DEFAULT, or
+ * L_ENGLISH.
  */
 void print_help( char const *what ) {
   assert( what != NULL );
