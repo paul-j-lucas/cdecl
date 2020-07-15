@@ -207,8 +207,8 @@ static void print_help_line( char const *line ) {
   bool is_escaped = false;              // was preceding char a '\'?
   bool in_title = false;                // is current char within a title?
 
-  for ( char const *c = line; *c != '\0'; ++c ) {
-    switch ( *c ) {
+  for ( char const *s = line; *s != '\0'; ++s ) {
+    switch ( *s ) {
       case '\\':                        // escapes next char
         if ( !is_escaped ) {
           is_escaped = true;
@@ -227,7 +227,7 @@ static void print_help_line( char const *line ) {
         break;
       case '>':                         // ends non-terminal
         if ( !is_escaped ) {
-          PUTC_OUT( *c );
+          PUTC_OUT( *s );
           SGR_END_COLOR( stdout );
           continue;
         }
@@ -241,19 +241,19 @@ static void print_help_line( char const *line ) {
       case '}':
         if ( !is_escaped ) {
           SGR_START_COLOR( stdout, help_punct );
-          PUTC_OUT( *c );
+          PUTC_OUT( *s );
           SGR_END_COLOR( stdout );
           continue;
         }
         break;
     } // switch
 
-    if ( c == line && is_title( c ) ) {
+    if ( s == line && is_title( s ) ) {
       SGR_START_COLOR( stdout, help_title );
       in_title = true;
     }
 
-    PUTC_OUT( *c );
+    PUTC_OUT( *s );
     is_escaped = false;
   } // for
   PUTC_OUT( '\n' );
