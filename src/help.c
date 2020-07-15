@@ -205,7 +205,10 @@ static void print_help_line( char const *line ) {
   assert( line != NULL );
 
   bool is_escaped = false;              // was preceding char a '\'?
-  bool in_title = false;                // is current char within a title?
+  bool in_title = is_title( line );     // is current char within a title?
+
+  if ( in_title )
+    SGR_START_COLOR( stdout, help_title );
 
   for ( char const *s = line; *s != '\0'; ++s ) {
     switch ( *s ) {
@@ -247,11 +250,6 @@ static void print_help_line( char const *line ) {
         }
         break;
     } // switch
-
-    if ( s == line && is_title( s ) ) {
-      SGR_START_COLOR( stdout, help_title );
-      in_title = true;
-    }
 
     PUTC_OUT( *s );
     is_escaped = false;
