@@ -1,5 +1,24 @@
+2020-07-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c: Added comment.
+   * help.c: Simplified help-printing code; now also highlighting '+'.
+
+2020-07-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, help.c, parser.y, help-c++.out, help-c.out,
+     help_command-c++.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out: Now allowing "to" in addition to "as" for "...
+     aligned [as
+
+2020-07-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1, help.c, parser.y: Now allowing an optional "as" in "show ... [as]
+     typedef".
+
 2020-07-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * lib/Makefile.am, string.in.h, unistd.in.h, string_h.m4, unistd_h.m4:
+     Updated GNUlib.
    * c_ast.c, c_type.h, parser.y: Added T_ANY_SCOPE.
    * c_ast.h: Moved some documentation.
    * configure.ac, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.c,
