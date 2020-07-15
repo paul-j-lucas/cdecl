@@ -194,9 +194,9 @@ bool should_colorize( color_when_t when ) {
   if ( term == NULL || *term == '\0' || strcmp( term, "dumb" ) == 0 )
     return false;
 
-  int const fd_out = fileno( fout );
+  int const fout_fd = fileno( fout );
   if ( when == COLOR_ISATTY )           // emulate gcc's --color=auto
-    return isatty( fd_out );
+    return isatty( fout_fd );
 
   assert( when == COLOR_NOT_FILE );
   //
@@ -216,7 +216,7 @@ bool should_colorize( color_when_t when ) {
   //
   // Hence, we want to do color _except_ when ISREG=T.
   //
-  return !is_file( fd_out );
+  return !is_file( fout_fd );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
