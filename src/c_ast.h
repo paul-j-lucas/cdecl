@@ -643,17 +643,6 @@ bool c_ast_find( c_ast_t const *ast, c_visit_dir_t dir,
   return found_ast != NULL;
 }
 
-/**
- * Convenience function to get a scope's name.
- *
- * @param scope The scope to get the name of.
- * @return Returns the scope's name.
- */
-C_AST_INLINE C_WARN_UNUSED_RESULT
-char const* c_scope_name( c_scope_t const *scope ) {
-  return REINTERPRET_CAST( char const*, scope->data );
-}
-
 /** @} */
 
 ///////////////////////////////////////////////////////////////////////////////

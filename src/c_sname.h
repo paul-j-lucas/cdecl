@@ -57,6 +57,17 @@ _GL_INLINE_HEADER_BEGIN
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Convenience function to get a scope's name.
+ *
+ * @param scope The scope to get the name of.
+ * @return Returns the scope's name.
+ */
+C_SNAME_INLINE C_WARN_UNUSED_RESULT
+char const* c_scope_name( c_scope_t const *scope ) {
+  return REINTERPRET_CAST( char const*, scope->data );
+}
+
+/**
  * Appends \a name onto the end of \a sname.
  *
  * @param sname The scoped name to append to.
