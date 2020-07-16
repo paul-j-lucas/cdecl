@@ -35,8 +35,8 @@
  */
 
 /**
- * @defgroup typedef-declarations-group Typedef Declarations
- * Declares many `typedef` definitions in one file.
+ * @defgroup type-declarations-group Type Declarations
+ * Declares many types and `typedef` declarations in one file.
  * @{
  */
 
@@ -143,6 +143,24 @@ typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
 #define YYLTYPE_IS_DECLARED       1
 #define YYLTYPE_IS_TRIVIAL        1
 /// @endcond
+
+/**
+ * A pair of `c_ast` pointers used as one of the synthesized attribute types in
+ * the parser.
+ */
+struct c_ast_pair {
+  /**
+   * A pointer to the AST being built.
+   */
+  c_ast_t *ast;
+
+  /**
+   * Array and function-like declarations need a separate `c_ast` pointer that
+   * points to their `of_ast` or `ret_ast` (respectively) to be the "target" of
+   * subsequent additions to the AST.
+   */
+  c_ast_t *target_ast;
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 

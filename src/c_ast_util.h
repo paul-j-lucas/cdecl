@@ -29,28 +29,7 @@
 
 // local
 #include "cdecl.h"                      /* must go first */
-#include "c_ast.h"
 #include "types.h"
-
-///////////////////////////////////////////////////////////////////////////////
-
-/**
- * A pair of `c_ast` pointers used as one of the synthesized attribute types in
- * the parser.
- */
-struct c_ast_pair {
-  /**
-   * A pointer to the AST being built.
-   */
-  c_ast_t *ast;
-
-  /**
-   * Array and function-like declarations need a separate `c_ast` pointer that
-   * points to their `of_ast` or `ret_ast` (respectively) to be the "target" of
-   * subsequent additions to the AST.
-   */
-  c_ast_t *target_ast;
-};
 
 ///////////////////////////////////////////////////////////////////////////////
 
