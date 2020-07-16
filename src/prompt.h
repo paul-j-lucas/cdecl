@@ -52,7 +52,7 @@
  *
  * @note These may contain SGR color codes.
  */
-extern char const  *prompt[2];
+extern char const  *cdecl_prompt[2];
 
 ////////// extern functions ///////////////////////////////////////////////////
 

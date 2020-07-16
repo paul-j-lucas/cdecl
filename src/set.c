@@ -111,7 +111,7 @@ static void print_options( void ) {
 #endif /* ENABLE_FLEX_DEBUG */
   printf( " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
   printf( "    lang=%s\n", C_LANG_NAME() );
-  printf( "  %sprompt\n", maybe_no( prompt[0][0] != '\0' ) );
+  printf( "  %sprompt\n", maybe_no( cdecl_prompt[0][0] != '\0' ) );
   printf( "  %ssemicolon\n", maybe_no( opt_semicolon ) );
 }
 

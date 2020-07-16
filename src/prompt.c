@@ -52,7 +52,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variable definitions
-char const         *prompt[2];
+char const         *cdecl_prompt[2];
 
 // local variable definitions
 static char        *prompt_buf[2];      ///< Buffers for prompts.
@@ -145,16 +145,16 @@ static char* prompt_create( char suffix ) {
 
 void cdecl_prompt_enable( bool enable ) {
   if ( enable ) {
-    prompt[0] = prompt_buf[0];
-    prompt[1] = prompt_buf[1];
+    cdecl_prompt[0] = prompt_buf[0];
+    cdecl_prompt[1] = prompt_buf[1];
   } else {
-    prompt[0] = prompt[1] = "";
+    cdecl_prompt[0] = cdecl_prompt[1] = "";
   }
 }
 
 void cdecl_prompt_init( void ) {
-  prompt[0] = prompt_buf[0] = FREE_STR_LATER( prompt_create( '>' ) );
-  prompt[1] = prompt_buf[1] = FREE_STR_LATER( prompt_create( '+' ) );
+  cdecl_prompt[0] = prompt_buf[0] = FREE_STR_LATER( prompt_create( '>' ) );
+  cdecl_prompt[1] = prompt_buf[1] = FREE_STR_LATER( prompt_create( '+' ) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

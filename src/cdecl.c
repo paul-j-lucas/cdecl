@@ -343,8 +343,12 @@ static bool parse_stdin( void ) {
     if ( opt_prompt )
       FPRINTF( fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
     ok = true;
-    for ( char *line; (line = read_input_line( prompt[0], prompt[1] )); )
+    for (;;) {
+      char *const line = read_input_line( cdecl_prompt[0], cdecl_prompt[1] );
+      if ( line == NULL )
+        break;
       ok = parse_string( line, 0 );
+    } // for
   } else {
     ok = parse_file( fin );
   }
