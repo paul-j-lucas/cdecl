@@ -293,16 +293,16 @@ void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname ) {
 
 c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
                       void *data ) {
-  while ( ast != NULL && !(*visitor)( ast, data ) ) {
-    switch ( dir ) {
-      case C_VISIT_DOWN:
+  switch ( dir ) {
+    case C_VISIT_DOWN:
+      while ( ast != NULL && !(*visitor)( ast, data ) )
         ast = c_ast_is_parent( ast ) ? ast->as.parent.of_ast : NULL;
-        break;
-      case C_VISIT_UP:
+      break;
+    case C_VISIT_UP:
+      while ( ast != NULL && !(*visitor)( ast, data ) )
         ast = ast->parent_ast;
-        break;
-    } // switch
-  } // while
+      break;
+  } // switch
   return ast;
 }
 
