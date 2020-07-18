@@ -2106,8 +2106,8 @@ scope_declaration_c
         PARSE_ABORT();
       }
 
-      c_sname_set_type( &in_attr.current_scope, $1 );
       c_sname_append_sname( &in_attr.current_scope, &$3 );
+      c_sname_set_type( &in_attr.current_scope, $1 );
     }
     lbrace_expected
     scope_typedef_or_using_declaration_c_opt
