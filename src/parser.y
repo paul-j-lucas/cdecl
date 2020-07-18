@@ -4379,7 +4379,7 @@ any_name
   | Y_TYPEDEF_NAME
     {
       assert( c_ast_sname_count( $1->ast ) == 1 );
-      $$ = strdup( c_ast_sname_local_name( $1->ast ) );
+      $$ = check_strdup( c_ast_sname_local_name( $1->ast ) );
     }
   ;
 
