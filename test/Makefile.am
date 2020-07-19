@@ -1188,6 +1188,7 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_ki+.test \
 	tests/explain_mi.test \
 	tests/explain_nfi_v-c++.test \
+	tests/explain_nsct.test \
 	tests/explain_o_new_a_z_pv.test \
 	tests/explain_o_new_z_pv.test \
 	tests/explain_oyf.test \

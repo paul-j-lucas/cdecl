@@ -12,6 +12,15 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 7.4.2
 
+** Per-scope types; fixed English scope name order
+Each scope of a scoped name (sname) now has its own type.  Additionally, the
+English printed order is now (correctly) inner-to-outermost.  For example:
+
+    c++decl> namespace N { class C { typedef int I; }; }
+    c++decl> explain N::C::I x
+    declare x as I of class C of namespace N
+
+
 ** Aligned to
 Now allowing "to" in addition to "as" for "... aligned [as|to] ...".
 

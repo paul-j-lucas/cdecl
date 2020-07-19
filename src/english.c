@@ -231,15 +231,31 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
   return false;
 }
 
+/**
+ * Helper function for `c_sname_english()` that prints the scopes' types and
+ * names in inner-to-outer order except for the inner-most scope.  For example,
+ * `S::T::x` is printed as "of scope T of scope S."
+ *
+ * @param scope A pointer to the outermost scope.
+ * @param eout The `FILE` to emit to.
+ */
+static void c_sname_english_impl( c_scope_t const *scope, FILE *eout ) {
+  if ( scope->next != NULL ) {
+    c_sname_english_impl( scope->next, eout );
+    FPRINTF( eout,
+      " %s %s %s",
+      L_OF, c_type_name( c_scope_type( scope ) ), c_scope_name( scope )
+    );
+  }
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
 
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  C_IGNORE_RV(
-    c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, eout )
-  );
+  c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, eout );
 
   switch ( ast->align.kind ) {
     case C_ALIGNAS_NONE:
@@ -259,15 +275,10 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 
 void c_sname_english( c_sname_t const *sname, FILE *eout ) {
   assert( sname != NULL );
-  if ( sname->tail != NULL ) {
-    FPUTS( c_scope_name( sname->tail ), eout );
-    for ( c_scope_t const *scope = sname->head; scope != sname->tail;
-          scope = scope->next ) {
-      FPRINTF( eout,
-        " %s %s %s",
-        L_OF, c_type_name( c_sname_type( sname ) ), c_scope_name( scope )
-      );
-    } // for
+  char const *const local_name = c_sname_local_name( sname );
+  if ( local_name[0] != '\0' ) {
+    FPUTS( local_name, eout );
+    c_sname_english_impl( sname->head, eout );
   }
 }
 

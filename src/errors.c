@@ -372,7 +372,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   assert( ast != NULL );
 
   if ( ast->kind_id == K_FUNCTION ) {
-    SLIST_VAR_INIT( main_sname, NULL, "main" );
+    SNAME_VAR_INIT( main_sname, "main" );
     if ( c_sname_cmp( &ast->sname, &main_sname ) == 0 &&
          !c_ast_check_func_main( ast ) ) {
       return false;

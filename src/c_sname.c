@@ -69,7 +69,51 @@ static char const* c_sname_scope_name_impl( char *name_buf,
   return name_buf;
 }
 
+/**
+ * Helper function for `c_sname_type()`.
+ *
+ * @param scope A pointer to a scope.
+ * @return Returns the scope type.
+ */
+C_WARN_UNUSED_RESULT
+static c_type_id_t c_sname_type_impl( c_scope_t const *scope ) {
+  c_scope_t const *const next = scope->next;
+  if ( next != NULL ) {
+    c_type_id_t const t = c_scope_type( next );
+    if ( t != T_NONE )
+      return c_sname_type_impl( next );
+  }
+  return c_scope_type( scope );
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
+
+int c_scope_data_cmp( c_scope_data_t *data_i, c_scope_data_t *data_j ) {
+  return strcmp( data_i->name, data_j->name );
+}
+
+c_scope_data_t* c_scope_data_dup( c_scope_data_t const *src ) {
+  c_scope_data_t *const dst = MALLOC( c_scope_data_t, 1 );
+  dst->name = check_strdup( src->name );
+  dst->type_id = src->type_id;
+  return dst;
+}
+
+void c_scope_data_free( c_scope_data_t *data ) {
+  if ( data != NULL ) {
+    FREE( data->name );
+    free( data );
+  }
+}
+
+void c_sname_append_name( c_sname_t *sname, char *name ) {
+  assert( sname != NULL );
+  assert( name != NULL );
+  c_scope_data_t *const data = MALLOC( c_scope_data_t, 1 );
+  data->name = name;
+  data->type_id = T_NONE;
+  slist_push_tail( sname, data );
+}
 
 char const* c_sname_full_name( c_sname_t const *sname ) {
   static char name_buf[ 256 ];
@@ -81,15 +125,29 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
   assert( sname != NULL );
   if ( c_sname_count( sname ) < 2 )
     return false;
-  char const *const class_name = SLIST_PEEK_ATR( char const*, sname, 1 );
-  char const *const local_name = SLIST_TAIL( char const*, sname );
+  char const *const class_name = c_sname_name_atr( sname, 1 );
+  char const *const local_name = SLIST_TAIL( c_scope_data_t*, sname )->name;
   return strcmp( local_name, class_name ) == 0;
+}
+
+void c_sname_prepend_name( c_sname_t *sname, char *name ) {
+  assert( sname != NULL );
+  assert( name != NULL );
+  c_scope_data_t *const data = MALLOC( c_scope_data_t, 1 );
+  data->name = name;
+  data->type_id = T_NONE;
+  slist_push_head( sname, data );
 }
 
 char const* c_sname_scope_name( c_sname_t const *sname ) {
   static char name_buf[ 256 ];
   assert( sname != NULL );
   return c_sname_scope_name_impl( name_buf, sname, sname->tail );
+}
+
+c_type_id_t c_sname_type( c_sname_t const *sname ) {
+  assert( sname != NULL );
+  return c_sname_empty( sname ) ? T_NONE : c_sname_type_impl( sname->head );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

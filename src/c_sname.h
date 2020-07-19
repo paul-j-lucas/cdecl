@@ -54,17 +54,99 @@ _GL_INLINE_HEADER_BEGIN
  * @{
  */
 
+/**
+ * Creates an sname variable on the stack having \a NAME.
+ *
+ * @param VAR_NAME The name for the sname variable.
+ * @param NAME The name.
+ */
+#define SNAME_VAR_INIT(VAR_NAME,NAME)                   \
+  c_scope_data_t VAR_NAME##_data = { (NAME), T_NONE };  \
+  SLIST_VAR_INIT( VAR_NAME, NULL, &VAR_NAME##_data )
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Data for each scope of an sname.
+ */
+struct c_scope_data {
+  /**
+   * The scope's name.
+   */
+  char const *name;
+
+  /**
+   * The scope's type, one of: T_CLASS, T_STRUCT, T_UNION, [T_INLINE]
+   * T_NAMESPACE, or T_SCOPE.
+   */
+  c_type_id_t type_id;
+};
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Convenience function to get a scope's name.
+ * Compares two scope datas.
+ *
+ * @param data_i The first scope data to compare.
+ * @param data_j The second scope data to compare.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a data_i is
+ * less than, equal to, or greater than \a data_j, respectively.
+ */
+C_WARN_UNUSED_RESULT
+int c_scope_data_cmp( c_scope_data_t *data_i, c_scope_data_t *data_j );
+
+/**
+ * Duplicates \a data.  The caller is responsible for calling
+ * c_scope_data_free() on the duplicate.
+ *
+ * @param data The scope data to duplicate.
+ * @return Returns a duplicate of \a data.
+ */
+C_WARN_UNUSED_RESULT
+c_scope_data_t* c_scope_data_dup( c_scope_data_t const *data );
+
+/**
+ * Frees all memory associated with \a data.
+ *
+ * @param data The scope data to free.  If null, does nothing.
+ */
+void c_scope_data_free( c_scope_data_t *data );
+
+/**
+ * Gets a scope's name.
  *
  * @param scope The scope to get the name of.
  * @return Returns the scope's name.
  */
 C_SNAME_INLINE C_WARN_UNUSED_RESULT
 char const* c_scope_name( c_scope_t const *scope ) {
-  return REINTERPRET_CAST( char const*, scope->data );
+  return REINTERPRET_CAST( c_scope_data_t*, scope->data )->name;
+}
+
+/**
+ * Sets a scope's type.
+ *
+ * @param scope The scope to set the type of.
+ * @param type_id The type.
+ *
+ * @sa c_scope_type()
+ */
+C_SNAME_INLINE
+void c_scope_set_type( c_scope_t *scope, c_type_id_t type_id ) {
+  REINTERPRET_CAST( c_scope_data_t*, scope->data )->type_id = type_id;
+}
+
+/**
+ * Gets a scope's type
+ *
+ * @param scope The scope to get the type of.
+ * @return Returns the scope's type.
+ *
+ * @sa c_scope_set_type()
+ */
+C_SNAME_INLINE C_WARN_UNUSED_RESULT
+c_type_id_t c_scope_type( c_scope_t const *scope ) {
+  return REINTERPRET_CAST( c_scope_data_t*, scope->data )->type_id;
 }
 
 /**
@@ -77,10 +159,7 @@ char const* c_scope_name( c_scope_t const *scope ) {
  * @sa c_sname_prepend_name()
  * @sa c_sname_prepend_sname()
  */
-C_SNAME_INLINE
-void c_sname_append_name( c_sname_t *sname, char *name ) {
-  slist_push_tail( sname, name );
-}
+void c_sname_append_name( c_sname_t *sname, char *name );
 
 /**
  * Appends \a src onto the end of \a dst.
@@ -107,7 +186,9 @@ void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
  */
 C_SNAME_INLINE C_WARN_UNUSED_RESULT
 int c_sname_cmp( c_sname_t const *sname_i, c_sname_t const *sname_j ) {
-  return slist_cmp( sname_i, sname_j, (slist_node_data_cmp_fn_t)&strcmp );
+  return slist_cmp(
+    sname_i, sname_j, (slist_node_data_cmp_fn_t)&c_scope_data_cmp
+  );
 }
 
 /**
@@ -131,7 +212,7 @@ size_t c_sname_count( c_sname_t const *sname ) {
 C_SNAME_INLINE C_WARN_UNUSED_RESULT
 c_sname_t c_sname_dup( c_sname_t const *sname ) {
   return slist_dup(
-    sname, -1, &c_type_id_data_dup, (slist_node_data_dup_fn_t)&strdup
+    sname, -1, NULL, (slist_node_data_dup_fn_t)&c_scope_data_dup
   );
 }
 
@@ -154,7 +235,7 @@ bool c_sname_empty( c_sname_t const *sname ) {
  */
 C_SNAME_INLINE
 void c_sname_free( c_sname_t *sname ) {
-  slist_free( sname, &c_type_id_data_free, &free );
+  slist_free( sname, NULL, (slist_data_free_fn_t)&c_scope_data_free );
 }
 
 /**
@@ -208,7 +289,8 @@ bool c_sname_is_ctor( c_sname_t const *sname );
  */
 C_SNAME_INLINE C_WARN_UNUSED_RESULT
 char const* c_sname_local_name( c_sname_t const *sname ) {
-  return c_sname_empty( sname ) ? "" : SLIST_TAIL( char const*, sname );
+  return c_sname_empty( sname ) ?
+    "" : SLIST_TAIL( c_scope_data_t*, sname )->name;
 }
 
 /**
@@ -225,8 +307,9 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
  */
 C_SNAME_INLINE C_WARN_UNUSED_RESULT
 char const* c_sname_name_at( c_sname_t const *sname, size_t offset ) {
-  char const *const temp = SLIST_PEEK_AT( char const*, sname, offset );
-  return temp != NULL ? temp : "";
+  c_scope_data_t const *const data =
+    SLIST_PEEK_AT( c_scope_data_t*, sname, offset );
+  return data != NULL ? data->name : "";
 }
 
 /**
@@ -243,8 +326,9 @@ char const* c_sname_name_at( c_sname_t const *sname, size_t offset ) {
  */
 C_SNAME_INLINE C_WARN_UNUSED_RESULT
 char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
-  char const *const temp = SLIST_PEEK_ATR( char const*, sname, roffset );
-  return temp != NULL ? temp : "";
+  c_scope_data_t const *const data =
+    SLIST_PEEK_ATR( c_scope_data_t*, sname, roffset );
+  return data != NULL ? data->name : "";
 }
 
 /**
@@ -258,9 +342,7 @@ char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
  * @sa c_sname_prepend_sname()
  */
 C_SNAME_INLINE
-void c_sname_prepend_name( c_sname_t *sname, char *name ) {
-  slist_push_head( sname, name );
-}
+void c_sname_prepend_name( c_sname_t *sname, char *name );
 
 /**
  * Prepends \a src onto the beginning of \a dst.
@@ -298,30 +380,27 @@ C_WARN_UNUSED_RESULT
 char const* c_sname_scope_name( c_sname_t const *sname );
 
 /**
- * Sets the scope type of \a sname.
+ * Sets the scope type of \a sname (which is the type of the innermost scope).
  *
  * @param sname The scoped name to set the scope type of.
- * @param type_id The scope type.
+ * @param type_id The type.
  *
  * @sa c_sname_type()
  */
 C_SNAME_INLINE
 void c_sname_set_type( c_sname_t *sname, c_type_id_t type_id ) {
-  sname->data = c_type_id_data_new( type_id );
+  c_scope_set_type( sname->tail, type_id );
 }
 
 /**
- * Gets the scope type of \a sname.
+ * Gets the scope type of \a sname (which is the type of the innermost scope).
  *
  * @param sname The scoped name to get the scope type of.
  * @return Returns the scope type.
  *
  * @sa c_sname_set_type()
  */
-C_SNAME_INLINE
-c_type_id_t c_sname_type( c_sname_t const *sname ) {
-  return c_type_id_data_get( sname->data );
-}
+c_type_id_t c_sname_type( c_sname_t const *sname );
 
 ///////////////////////////////////////////////////////////////////////////////
 

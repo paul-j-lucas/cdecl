@@ -130,6 +130,7 @@ typedef struct c_parent         c_parent_t;
 typedef struct c_ptr_mbr        c_ptr_mbr_t;
 typedef struct c_ptr_ref        c_ptr_ref_t;
 typedef struct slist_node       c_scope_t;      ///< Scope in a c_sname_t.
+typedef struct c_scope_data     c_scope_data_t;
 typedef struct slist            c_sname_t;      ///< C++ scoped name.
 typedef struct c_typedef        c_typedef_t;
 typedef enum   c_typedef_add_rv c_typedef_add_rv_t;

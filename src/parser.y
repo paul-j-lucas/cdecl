@@ -2032,23 +2032,21 @@ scope_declaration_c
     }
     any_sname_c
     {
-      if ( C_LANG_IS_CPP() ) {
-        c_type_id_t const cur_type = c_sname_type( &in_attr.current_scope );
-        if ( (cur_type & T_ANY_CLASS) != T_NONE ) {
-          char const *const cur_name =
-            c_sname_local_name( &in_attr.current_scope );
-          char const *const mbr_name = SLIST_HEAD( char const*, &$3 );
-          if ( strcmp( mbr_name, cur_name ) == 0 ) {
-            print_error( &@3,
-              "\"%s\": member has the same name as its enclosing %s",
-              mbr_name, c_type_name( cur_type )
-            );
-            PARSE_ABORT();
-          }
+      c_type_id_t const cur_type = c_sname_type( &in_attr.current_scope );
+      if ( (cur_type & T_ANY_CLASS) != T_NONE ) {
+        char const *const cur_name =
+          c_sname_local_name( &in_attr.current_scope );
+        char const *const mbr_name = c_sname_local_name( &$3 );
+        if ( strcmp( mbr_name, cur_name ) == 0 ) {
+          print_error( &@3,
+            "\"%s\": %s has the same name as its enclosing %s",
+            mbr_name, L_MEMBER, c_type_name( cur_type )
+          );
+          PARSE_ABORT();
         }
-        c_sname_set_type( &in_attr.current_scope, $1 );
-        c_sname_append_sname( &in_attr.current_scope, &$3 );
       }
+      c_sname_set_type( &$3, $1 );
+      c_sname_append_sname( &in_attr.current_scope, &$3 );
     }
     lbrace_expected
     scope_typedef_or_using_declaration_c_opt
@@ -2106,8 +2104,8 @@ scope_declaration_c
         PARSE_ABORT();
       }
 
+      c_sname_set_type( &$3, $1 );
       c_sname_append_sname( &in_attr.current_scope, &$3 );
-      c_sname_set_type( &in_attr.current_scope, $1 );
     }
     lbrace_expected
     scope_typedef_or_using_declaration_c_opt
@@ -3425,16 +3423,19 @@ pointer_to_member_type_c_ast
       $$.ast = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
       $$.target_ast = NULL;
 
-      //
-      // If the scoped name has a class, namespace, struct, or union scoped
-      // type, adopt that type for the AST's type; otherwise default to
-      // T_CLASS.
-      //
       c_type_id_t sn_type = c_sname_type( &$1 );
-      if ( (sn_type & T_ANY_SCOPE) == T_NONE )
+      if ( (sn_type & T_ANY_SCOPE) == T_NONE ) {
+        //
+        // The sname has no scope type, but we now know there's a pointer-to-
+        // member of it, so it must be a class.  (It could alternatively be a
+        // struct, but we have no context to know, so just pick class because
+        // it's more C++-like.)
+        //
         sn_type = T_CLASS;
+        c_sname_set_type( &$1, sn_type );
+      }
 
-      $$.ast->type_id = sn_type | $3;
+      $$.ast->type_id = $3 | sn_type;   // adopt sname's scope type for the AST
       $$.ast->as.ptr_mbr.class_sname = $1;
       c_ast_set_parent( type_peek(), $$.ast );
 
@@ -4587,11 +4588,9 @@ sname_c
         print_error( &@2, "scoped names not supported in %s", C_LANG_NAME() );
         PARSE_ABORT();
       }
+      if ( c_sname_type( &$1 ) == T_NONE )
+        c_sname_set_type( &$1, T_SCOPE );
       $$ = $1;
-      c_type_id_t sn_type = c_sname_type( &$1 );
-      if ( sn_type == T_NONE )
-        sn_type = T_SCOPE;
-      c_sname_set_type( &$$, sn_type );
       c_sname_append_name( &$$, $3 );
     }
 
@@ -4605,11 +4604,9 @@ sname_c
       // that is: the type int8_t is an existing type in no scope being defined
       // as a distinct type in a new scope.
       //
+      if ( c_sname_type( &$1 ) == T_NONE )
+        c_sname_set_type( &$1, T_SCOPE );
       $$ = $1;
-      c_type_id_t sn_type = c_sname_type( &$$ );
-      if ( sn_type == T_NONE )
-        sn_type = T_SCOPE;
-      c_sname_set_type( &$$, sn_type );
       c_sname_t temp = c_ast_sname_dup( $3->ast );
       c_sname_append_sname( &$$, &temp );
     }
@@ -4654,12 +4651,12 @@ sname_c_opt
 sname_english
   : any_sname_c of_scope_list_english_opt
     {
-      $$ = $2;
       c_type_id_t sn_type = c_sname_type( &$2 );
       if ( sn_type == T_NONE )
         sn_type = c_sname_type( &$1 );
-      c_sname_set_type( &$$, sn_type );
+      $$ = $2;
       c_sname_append_sname( &$$, &$1 );
+      c_sname_set_type( &$$, sn_type );
     }
   ;
 
@@ -4682,8 +4679,8 @@ typedef_sname_c
       //      define S::T as struct T
       //
       $$ = $1;
-      c_sname_set_type( &$$, c_sname_type( &$3 ) );
       c_sname_append_sname( &$$, &$3 );
+      c_sname_set_type( &$$, c_sname_type( &$3 ) );
     }
 
   | typedef_sname_c "::" any_typedef
