@@ -568,7 +568,8 @@ void c_ast_sname_set_name( c_ast_t *ast, char *name );
 void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname );
 
 /**
- * Sets the scope type of the name of \a ast.
+ * Sets the scope type of the name of \a ast (which is the type of the
+ * innermost scope).
  *
  * @param ast The `c_ast` to set the type of the name of.
  * @param type_id The scope type.
@@ -581,7 +582,8 @@ void c_ast_sname_set_type( c_ast_t *ast, c_type_id_t type_id ) {
 }
 
 /**
- * Gets the scope type of the name of \a ast.
+ * Gets the scope type of the name of \a ast (which is the type of the
+ * innermost scope).
  *
  * @param ast The `c_ast` node to get the scope type of the name of.
  * @return Returns the scope type.
