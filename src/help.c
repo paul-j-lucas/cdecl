@@ -100,7 +100,7 @@ static help_text_t const HELP_TEXT_COMMANDS[] = {
   { NOT_IN_LANG,
     "scope-c: class struct union [inline] namespace" },
   { NOT_IN_LANG,
-    "scope-e: { <scope-c> | scope }" },
+    "scope-e: <scope-c> | scope" },
   { "", "" },
   { "where:", SAME_AS_C },
   { WHERE_TEXT, SAME_AS_C },
