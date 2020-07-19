@@ -8,7 +8,7 @@ command:
   set [<option> [= <value>] | options | <lang>]
   show [<name> | all | predefined | user] [[as] typedef]
   typedef <gibberish>
-  <scope-c> <name> { { <scope-c> | <typedef> | <using> } ; }
+  <scope-c> <name> { [{ <scope-c> | <typedef> | <using> } ;]* }
   using <name> = <gibberish>
   exit | quit | q
 gibberish: a C++ declaration, like "int x"; or cast, like "(int)x"

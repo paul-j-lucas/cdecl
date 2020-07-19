@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "July 13, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 19, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -663,14 +663,16 @@ into pseudo-English.
 .BR "explain (" \f2gibberish\fP ")" [ \f2s-name\fP ]
 Deciphers a C (or C++) cast into pseudo-English.
 .TP
-.IR "scope-c s-name \f3{\fP " [ " scope-c " "| {" " namespace " | " typedef " | " using " } " \f3;\fP " ] " \f3}\fP
+.IR "scope-c s-name \f3{\fP " [{ " scope-c " | " typedef " | " using " } " \f3;\fP" ]* " \f3}\fP
 For C++ only,
-executes one of the
+executes one of
+.BR class ,
 .BR namespace ,
+.BR struct ,
 .BR typedef ,
+.BR union ,
 or
 .B using
-commands
 within the scope of
 .I s-name
 thus declaring a type within that scope.

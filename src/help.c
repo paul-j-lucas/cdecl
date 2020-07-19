@@ -83,7 +83,7 @@ static help_text_t const HELP_TEXT_COMMANDS[] = {
   { "  show [<name> | all | predefined | user] [[as] typedef]", SAME_AS_C },
   { "  typedef <gibberish>", SAME_AS_C },
   { NOT_IN_LANG,
-    "  <scope-c> <name> \\{ { <scope-c> | <typedef> | <using> } ; \\}" },
+    "  <scope-c> <name> \\{ [{ <scope-c> | <typedef> | <using> } ;]* \\}" },
   { NOT_IN_LANG,
     "  using <name> = <gibberish>" },
   { "  exit | quit | q", SAME_AS_C },
