@@ -39,6 +39,16 @@
 
 /// @endcond
 
+/**
+ * Creates a `c_typedef_t` variable on the stack having \a SNAME.
+ *
+ * @param VAR_NAME The name for the `c_typedef`` variable.
+ * @param SNAME The sname.
+ */
+#define C_TYPEDEF_VAR_INIT(VAR_NAME,SNAME)          \
+  c_ast_t VAR_NAME##_ast = { .sname = *(SNAME) };   \
+  c_typedef_t VAR_NAME = { .ast = &VAR_NAME##_ast }
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -641,14 +651,7 @@ void c_typedef_cleanup( void ) {
 
 c_typedef_t const* c_typedef_find( c_sname_t const *sname ) {
   assert( sname != NULL );
-  //
-  // Create a temporary c_typedef with just the name set in order to find it.
-  //
-  c_ast_t ast;
-  ast.sname = *sname;
-  c_typedef_t t;
-  t.ast = &ast;
-
+  C_TYPEDEF_VAR_INIT( t, sname );
   rb_node_t const *const rb_found = rb_tree_find( typedefs, &t );
   return rb_found != NULL ? c_typedef_node_data_get( rb_found ) : NULL;
 }
