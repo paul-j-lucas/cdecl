@@ -2032,6 +2032,13 @@ scope_declaration_c
     }
     any_sname_c
     {
+      if ( C_LANG_IS_C() && !c_sname_empty( &in_attr.current_scope ) ) {
+        print_error( &@1,
+          "nested types are not supported in %s", C_LANG_NAME()
+        );
+        PARSE_ABORT();
+      }
+
       c_type_id_t const cur_type = c_sname_type( &in_attr.current_scope );
       if ( (cur_type & T_ANY_CLASS) != T_NONE ) {
         char const *const cur_name =
@@ -2052,14 +2059,6 @@ scope_declaration_c
     scope_typedef_or_using_declaration_c_opt
     rbrace_expected
     semi_expected                       /* ';' needed for class/struct/union */
-    {
-      if ( C_LANG_IS_C() ) {
-        print_error( &@6,
-          "nested types are not supported in %s", C_LANG_NAME()
-        );
-        PARSE_ABORT();
-      }
-    }
 
     /*
      * C++ namespace declaration, e.g.: namespace NS { typedef int I; }
