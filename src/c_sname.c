@@ -87,10 +87,13 @@ static c_type_id_t c_sname_type_impl( c_scope_t const *scope ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 int c_scope_data_cmp( c_scope_data_t *data_i, c_scope_data_t *data_j ) {
+  assert( data_i != NULL );
+  assert( data_j != NULL );
   return strcmp( data_i->name, data_j->name );
 }
 
 c_scope_data_t* c_scope_data_dup( c_scope_data_t const *src ) {
+  assert( src != NULL );
   c_scope_data_t *const dst = MALLOC( c_scope_data_t, 1 );
   dst->name = check_strdup( src->name );
   dst->type_id = src->type_id;
