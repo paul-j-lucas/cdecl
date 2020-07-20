@@ -275,24 +275,17 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 
 void c_sname_english( c_sname_t const *sname, FILE *eout ) {
   assert( sname != NULL );
-  char const *const local_name = c_sname_local_name( sname );
-  if ( local_name[0] != '\0' ) {
-    FPUTS( local_name, eout );
+  if ( !c_sname_empty( sname ) ) {
+    FPUTS( c_sname_local_name( sname ), eout );
     c_sname_english_impl( sname->head, eout );
   }
 }
 
 void c_typedef_english( c_typedef_t const *type, FILE *eout ) {
   assert( type != NULL );
-
-  FPRINTF( eout, "%s %s ", L_DEFINE, c_ast_sname_local_name( type->ast ) );
-  if ( c_ast_sname_count( type->ast ) > 1 )
-    FPRINTF( eout,
-      "%s %s %s ",
-      L_OF, c_ast_sname_type_name( type->ast ),
-      c_ast_sname_scope_name( type->ast )
-    );
-  FPRINTF( eout, "%s ", L_AS );
+  FPRINTF( eout, "%s ", L_DEFINE );
+  c_sname_english( &type->ast->sname, eout );
+  FPRINTF( eout, " %s ", L_AS );
   c_ast_english( type->ast, eout );
   FPUTC( '\n', eout );
 }
