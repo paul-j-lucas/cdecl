@@ -2051,6 +2051,15 @@ scope_declaration_c
         }
       }
       c_sname_set_type( &$3, $1 );
+
+      DUMP_START( "scope_declaration_c",
+                  "class_struct_union_type sname { "
+                  "scope_typedef_or_using_declaration_c_opt "
+                  "} ;" );
+      DUMP_TYPE( "class_struct_union_type", $1 );
+      DUMP_SNAME( "any_sname_c", &$3 );
+      DUMP_END();
+
       c_sname_append_sname( &in_attr.current_scope, &$3 );
     }
     lbrace_expected
@@ -2105,7 +2114,15 @@ scope_declaration_c
       // Make every scope's type be $1 for nested namespaces.
       //
       for ( c_scope_t *scope = $3.head; scope != NULL; scope = scope->next )
-        c_scope_set_type( scope, $1 );
+        c_scope_set_type( scope, (c_scope_type( scope ) & ~T_SCOPE) | $1 );
+
+      DUMP_START( "scope_declaration_c",
+                  "[INLINE] NAMESPACE sname { "
+                  "scope_typedef_or_using_declaration_c_opt "
+                  "} [;]" );
+      DUMP_TYPE( "namespace_type", $1 );
+      DUMP_SNAME( "any_sname_c", &$3 );
+      DUMP_END();
 
       c_sname_append_sname( &in_attr.current_scope, &$3 );
     }
