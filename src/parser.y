@@ -2103,7 +2103,12 @@ scope_declaration_c
         PARSE_ABORT();
       }
 
-      c_sname_set_type( &$3, $1 );
+      //
+      // Make every scope's type be $1 for nested namespaces.
+      //
+      for ( c_scope_t *scope = $3.head; scope != NULL; scope = scope->next )
+        c_scope_set_type( scope, $1 );
+
       c_sname_append_sname( &in_attr.current_scope, &$3 );
     }
     lbrace_expected
