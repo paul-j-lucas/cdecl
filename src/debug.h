@@ -67,6 +67,14 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout );
 
 /**
+ * Dumps \a sname (for debugging).
+ *
+ * @param sname The scoped name to dump.
+ * @param dout The `FILE` to dump to.
+ */
+void c_sname_debug( c_sname_t const *sname, FILE *dout );
+
+/**
  * Dumps \a type_id (for debugging).
  *
  * @param type_id The <code>\ref c_type_id_t</code> to print.

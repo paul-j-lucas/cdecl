@@ -184,7 +184,7 @@
  * @param NUM The integer to dump.
  */
 #define DUMP_NUM(KEY,NUM) \
-  IF_DEBUG( DUMP_COMMA; printf( "  " KEY " = %d", (int)(NUM) ); )
+  IF_DEBUG( DUMP_COMMA; FPRINTF( stdout, "  " KEY " = %d", (int)(NUM) ); )
 
 /**
  * Dumps a scoped name.
@@ -192,11 +192,9 @@
  * @param KEY The key name to print.
  * @param SNAME The scoped name to dump.
  */
-#define DUMP_SNAME(KEY,SNAME) IF_DEBUG(                   \
-  DUMP_COMMA; PUTS_OUT( "  " );                           \
-  kv_debug( (KEY), c_sname_full_name( SNAME ), stdout );  \
-  PUTS_OUT( ", scope_type = " );                          \
-  c_type_debug( c_sname_type( SNAME ), stdout ); )
+#define DUMP_SNAME(KEY,SNAME) IF_DEBUG(   \
+  DUMP_COMMA; PUTS_OUT( "  " KEY " = " ); \
+  c_sname_debug( (SNAME), stdout ); )
 
 /**
  * Dumps a C string.

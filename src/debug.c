@@ -47,8 +47,10 @@
 #define INDENT_PRINT_KV(KEY,VALUE) \
   BLOCK( print_indent( indent, dout ); kv_debug( (KEY), (VALUE), dout ); )
 
-#define INDENT_PRINT_SNAME(KEY,SNAME) \
-  print_sname( indent, (KEY), (SNAME), dout )
+#define INDENT_PRINT_SNAME(KEY,SNAME) BLOCK(  \
+  print_indent( indent, dout );               \
+  FPUTS( KEY " = ", dout );                   \
+  c_sname_debug( (SNAME), dout ); )
 
 #define INDENT_PRINT_TYPE(TYPE) BLOCK(  \
   print_indent( indent, dout );         \
@@ -69,30 +71,6 @@
  */
 static void print_indent( unsigned indent, FILE *out ) {
   FPRINTF( out, "%*s", (int)(indent * DEBUG_INDENT), "" );
-}
-
-/**
- * Prints a scoped name and its type.
- *
- * @param indent How much to indent.
- * @param key The key to print.
- * @param sname The scoped name to print.
- * @param out The `FILE` to print to.
- */
-static void print_sname( unsigned indent, char const *key,
-                         c_sname_t const *sname, FILE *out ) {
-  assert( key != NULL );
-  assert( sname != NULL );
-
-  print_indent( indent, out );
-  char const *const full_name = c_sname_full_name( sname );
-  kv_debug( key, full_name, out );
-  if ( full_name[0] != '\0' ) {
-    char const *const sn_type_name = c_type_name( c_sname_type( sname ) );
-    FPRINTF( out,
-      ", scope_type = %s", sn_type_name[0] != '\0' ? sn_type_name : "none"
-    );
-  }
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -254,6 +232,23 @@ void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout ) {
     INDENT_PRINT( "]" );
   } else {
     FPUTS( "[]", dout );
+  }
+}
+
+void c_sname_debug( c_sname_t const *sname, FILE *dout ) {
+  assert( sname != NULL );
+  FPRINTF( dout, "\"%s\"", c_sname_full_name( sname ) );
+  if ( !c_sname_empty( sname ) ) {
+    FPUTS( " (", dout );
+    bool comma = false;
+    for ( c_scope_t const *scope = sname->head; scope != NULL;
+          scope = scope->next ) {
+      if ( true_or_set( &comma ) )
+        FPUTS( "::", dout );
+      c_type_id_t const t = c_scope_type( scope );
+      FPUTS( t != T_NONE ? c_type_name( t ) : "none", dout );
+    } // for
+    FPUTC( ')', dout );
   }
 }
 
