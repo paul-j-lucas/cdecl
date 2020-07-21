@@ -131,15 +131,6 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
   return strcmp( local_name, class_name ) == 0;
 }
 
-void c_sname_prepend_name( c_sname_t *sname, char *name ) {
-  assert( sname != NULL );
-  assert( name != NULL );
-  c_scope_data_t *const data = MALLOC( c_scope_data_t, 1 );
-  data->name = name;
-  data->type_id = T_NONE;
-  slist_push_head( sname, data );
-}
-
 char const* c_sname_scope_name( c_sname_t const *sname ) {
   static char name_buf[ 256 ];
   assert( sname != NULL );

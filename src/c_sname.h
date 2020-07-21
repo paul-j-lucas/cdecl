@@ -162,7 +162,6 @@ c_type_id_t c_scope_type( c_scope_t const *scope ) {
  * @param name The name to append.  Ownership is taken.
  *
  * @sa c_sname_append_sname()
- * @sa c_sname_prepend_name()
  * @sa c_sname_prepend_sname()
  */
 void c_sname_append_name( c_sname_t *sname, char *name );
@@ -174,7 +173,6 @@ void c_sname_append_name( c_sname_t *sname, char *name );
  * @param src The scoped name to append.
  *
  * @sa c_sname_append_name()
- * @sa c_sname_prepend_name()
  * @sa c_sname_prepend_sname()
  */
 C_SNAME_INLINE
@@ -349,19 +347,6 @@ char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
 }
 
 /**
- * Prepends \a name onto the beginning of \a sname.
- *
- * @param sname The scoped name to prepend to.
- * @param name The name to prepend.  Ownership is taken.
- *
- * @sa c_sname_append_name()
- * @sa c_sname_append_sname()
- * @sa c_sname_prepend_sname()
- */
-C_SNAME_INLINE
-void c_sname_prepend_name( c_sname_t *sname, char *name );
-
-/**
  * Prepends \a src onto the beginning of \a dst.
  *
  * @param dst The scoped name to prepend to.
@@ -369,7 +354,6 @@ void c_sname_prepend_name( c_sname_t *sname, char *name );
  *
  * @sa c_sname_append_name()
  * @sa c_sname_append_sname()
- * @sa c_sname_prepend_name()
  */
 C_SNAME_INLINE
 void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
