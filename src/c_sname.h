@@ -24,8 +24,8 @@
 /**
  * @file
  * Declares functions for dealing with "sname" (C++ scoped name) objects, e.g.,
- * `S::T::x`. An sname also has a type that is one of #T_NONE, #T_CLASS,
- * #T_NAMESPACE, #T_SCOPE, #T_STRUCT, or #T_UNION.
+ * `S::T::x`. An sname also has a type (one of of #T_CLASS, #T_NAMESPACE,
+ * #T_SCOPE, #T_STRUCT, or #T_UNION) for each scope.
  *
  * @note For C, an sname is simply a single (unscoped) name, e.g., `x`.
  */
@@ -76,8 +76,8 @@ struct c_scope_data {
   char const *name;
 
   /**
-   * The scope's type, one of: T_CLASS, T_STRUCT, T_UNION, [T_INLINE]
-   * T_NAMESPACE, or T_SCOPE.
+   * The scope's type, one of: #T_CLASS, #T_STRUCT, #T_UNION, [#T_INLINE]
+   * #T_NAMESPACE, or #T_SCOPE.
    */
   c_type_id_t type_id;
 };
@@ -383,7 +383,7 @@ char const* c_sname_scope_name( c_sname_t const *sname );
  * Gets the scope type of the scope of \a sname.
  *
  * @param sname The scoped name to get the scope type of the scope of.
- * @return Returns said type or T_NONE if \a sname is empty or not within a
+ * @return Returns said type or #T_NONE if \a sname is empty or not within a
  * scope.
  * @sa c_sname_type()
  */
