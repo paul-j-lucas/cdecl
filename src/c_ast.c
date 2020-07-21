@@ -273,7 +273,7 @@ c_sname_t c_ast_sname_dup( c_ast_t const *ast ) {
   // for the scoped name's type.
   //
   if ( (ast->type_id & T_ANY_SCOPE) != T_NONE )
-    c_sname_set_type( &rv, ast->type_id & (T_ANY_SCOPE | T_INLINE) );
+    c_sname_set_local_type( &rv, ast->type_id & (T_ANY_SCOPE | T_INLINE) );
   return rv;
 }
 
@@ -289,7 +289,7 @@ void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname ) {
   assert( sname != NULL );
   c_sname_free( &ast->sname );
 
-  c_type_id_t sn_type = c_sname_type( sname );
+  c_type_id_t sn_type = c_sname_local_type( sname );
 
   c_ast_sname_append_sname( ast, sname );
 
@@ -299,7 +299,7 @@ void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname ) {
   //
   if ( sn_type == T_NONE && (ast->type_id & T_ANY_SCOPE) != T_NONE )
     sn_type = ast->type_id & (T_ANY_SCOPE | T_INLINE);
-  c_ast_sname_set_type( ast, sn_type );
+  c_ast_sname_set_local_type( ast, sn_type );
 }
 
 c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,

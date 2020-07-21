@@ -70,18 +70,18 @@ static char const* c_sname_scope_name_impl( char *name_buf,
 }
 
 /**
- * Helper function for `c_sname_type()` that returns the scope type of the
+ * Helper function for `c_sname_local_type()` that returns the scope type of the
  * innermost scope (that has a type).
  *
  * @param scope A pointer to a scope.
  * @return Returns the scope type.
  */
 C_WARN_UNUSED_RESULT
-static c_type_id_t c_sname_type_impl( c_scope_t const *scope ) {
+static c_type_id_t c_sname_local_type_impl( c_scope_t const *scope ) {
   assert( scope != NULL );
   c_scope_t const *const next = scope->next;
   return next != NULL && c_scope_type( next ) != T_NONE ?
-    c_sname_type_impl( next ) : c_scope_type( scope );
+    c_sname_local_type_impl( next ) : c_scope_type( scope );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -146,9 +146,10 @@ char const* c_sname_scope_name( c_sname_t const *sname ) {
   return c_sname_scope_name_impl( name_buf, sname, sname->tail );
 }
 
-c_type_id_t c_sname_type( c_sname_t const *sname ) {
+c_type_id_t c_sname_local_type( c_sname_t const *sname ) {
   assert( sname != NULL );
-  return c_sname_empty( sname ) ? T_NONE : c_sname_type_impl( sname->head );
+  return c_sname_empty( sname ) ?
+    T_NONE : c_sname_local_type_impl( sname->head );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

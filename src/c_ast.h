@@ -490,6 +490,20 @@ char const* c_ast_sname_local_name( c_ast_t const *ast ) {
 }
 
 /**
+ * Gets the scope type of the name of \a ast (which is the type of the
+ * innermost scope).
+ *
+ * @param ast The `c_ast` node to get the scope type of the name of.
+ * @return Returns the scope type.
+ *
+ * @sa c_ast_sname_set_local_type()
+ */
+C_AST_INLINE C_WARN_UNUSED_RESULT
+c_type_id_t c_ast_sname_local_type( c_ast_t const *ast ) {
+  return c_sname_local_type( &ast->sname );
+}
+
+/**
  * Gets the name at \a offset of \a ast.
  *
  * @param ast The `c_ast` to get the name at \a offset of.
@@ -548,6 +562,20 @@ char const* c_ast_sname_scope_name( c_ast_t const *ast ) {
 }
 
 /**
+ * Sets the scope type of the name of \a ast (which is the type of the
+ * innermost scope).
+ *
+ * @param ast The `c_ast` to set the type of the name of.
+ * @param type_id The scope type.
+ *
+ * @sa c_ast_sname_local_type()
+ */
+C_AST_INLINE
+void c_ast_sname_set_local_type( c_ast_t *ast, c_type_id_t type_id ) {
+  c_sname_set_local_type( &ast->sname, type_id );
+}
+
+/**
  * Sets the name of \a ast.
  *
  * @param ast The `c_ast` node to set the name of.
@@ -566,47 +594,6 @@ void c_ast_sname_set_name( c_ast_t *ast, char *name );
  * @sa c_ast_sname_set_name()
  */
 void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname );
-
-/**
- * Sets the scope type of the name of \a ast (which is the type of the
- * innermost scope).
- *
- * @param ast The `c_ast` to set the type of the name of.
- * @param type_id The scope type.
- *
- * @sa c_ast_sname_type()
- */
-C_AST_INLINE
-void c_ast_sname_set_type( c_ast_t *ast, c_type_id_t type_id ) {
-  c_sname_set_type( &ast->sname, type_id );
-}
-
-/**
- * Gets the scope type of the name of \a ast (which is the type of the
- * innermost scope).
- *
- * @param ast The `c_ast` node to get the scope type of the name of.
- * @return Returns the scope type.
- *
- * @sa c_ast_sname_set_type()
- */
-C_AST_INLINE C_WARN_UNUSED_RESULT
-c_type_id_t c_ast_sname_type( c_ast_t const *ast ) {
-  return c_sname_type( &ast->sname );
-}
-
-/**
- * Gets the type name of the sname of \a ast.
- *
- * @param ast The `c_ast` node to get the type name of.
- * @return Returns said name.
- * @warning The pointer returned is to a static buffer, so you can't do
- * something like call this twice in the same `printf()` statement.
- */
-C_AST_INLINE C_WARN_UNUSED_RESULT
-char const* c_ast_sname_type_name( c_ast_t const *ast ) {
-  return c_type_name( c_ast_sname_type( ast ) );
-}
 
 /**
  * Does a depth-first, post-order traversal of an AST.

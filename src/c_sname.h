@@ -24,8 +24,14 @@
 /**
  * @file
  * Declares functions for dealing with "sname" (C++ scoped name) objects, e.g.,
- * `S::T::x`. An sname also has a type (one of of #T_CLASS, #T_NAMESPACE,
- * #T_SCOPE, #T_STRUCT, or #T_UNION) for each scope.
+ * `S::T::x`.
+ *
+ * + An sname also has a type (one of of #T_CLASS, #T_NAMESPACE, #T_SCOPE,
+ *   #T_STRUCT, or #T_UNION) for each scope.
+ * + The "local" of an sname is the innermost scope, e.g., `x`.  A non-empty
+ *   sname always has a local.
+ * + The "scope" of an sname is all but the innermost scope, e.g., `S::T`.  A
+ *   non-empty sname may or may not have a scope.
  *
  * @note For C, an sname is simply a single (unscoped) name, e.g., `x`.
  */
@@ -294,6 +300,17 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
 }
 
 /**
+ * Gets the scope type of \a sname (which is the type of the innermost scope).
+ *
+ * @param sname The scoped name to get the scope type of.
+ * @return Returns the scope type.
+ *
+ * @sa c_sname_scope_type()
+ * @sa c_sname_set_local_type()
+ */
+c_type_id_t c_sname_local_type( c_sname_t const *sname );
+
+/**
  * Gets the name at \a offset of \a sname.
  *
  * @param sname The `c_sname_t` to get the name at \a offset of.
@@ -385,7 +402,7 @@ char const* c_sname_scope_name( c_sname_t const *sname );
  * @param sname The scoped name to get the scope type of the scope of.
  * @return Returns said type or #T_NONE if \a sname is empty or not within a
  * scope.
- * @sa c_sname_type()
+ * @sa c_sname_local_type()
  */
 C_SNAME_INLINE C_WARN_UNUSED_RESULT
 c_type_id_t c_sname_scope_type( c_sname_t const *sname ) {
@@ -400,23 +417,12 @@ c_type_id_t c_sname_scope_type( c_sname_t const *sname ) {
  * @param sname The scoped name to set the scope type of.
  * @param type_id The type.
  *
- * @sa c_sname_type()
+ * @sa c_sname_local_type()
  */
 C_SNAME_INLINE
-void c_sname_set_type( c_sname_t *sname, c_type_id_t type_id ) {
+void c_sname_set_local_type( c_sname_t *sname, c_type_id_t type_id ) {
   c_scope_set_type( sname->tail, type_id );
 }
-
-/**
- * Gets the scope type of \a sname (which is the type of the innermost scope).
- *
- * @param sname The scoped name to get the scope type of.
- * @return Returns the scope type.
- *
- * @sa c_sname_scope_type()
- * @sa c_sname_set_type()
- */
-c_type_id_t c_sname_type( c_sname_t const *sname );
 
 ///////////////////////////////////////////////////////////////////////////////
 

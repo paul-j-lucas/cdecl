@@ -467,7 +467,7 @@ static void c_ast_explain( c_ast_t const *ast, bool is_typedef ) {
     assert( local_name != NULL );
     FPRINTF( fout, "%s %s ", L_DECLARE, local_name );
     if ( scope_name[0] != '\0' ) {
-      c_type_id_t const sn_type = c_sname_type( found_sname );
+      c_type_id_t const sn_type = c_sname_local_type( found_sname );
       assert( sn_type != T_NONE );
       FPRINTF( fout, "%s %s %s ", L_OF, c_type_name( sn_type ), scope_name );
     }
@@ -555,13 +555,13 @@ static bool c_ast_finish_explain( bool has_typename, c_alignas_t const *align,
   }
 
   if ( ast->kind_id == K_USER_DEF_CONVERSION &&
-       c_ast_sname_type( ast ) == T_SCOPE ) {
+       c_ast_sname_local_type( ast ) == T_SCOPE ) {
     //
     // User-defined conversions don't have names, but they can still have a
     // scope.  Since only classes can have them, if the scope is still T_SCOPE,
     // change it to T_CLASS.
     //
-    c_ast_sname_set_type( ast, T_CLASS );
+    c_ast_sname_set_local_type( ast, T_CLASS );
   }
 
   return c_ast_check_declaration( ast );
@@ -1545,13 +1545,13 @@ define_english
         C_IGNORE_RV( c_ast_take_typedef( $5.ast ) );
 
         if ( c_sname_count( &$2 ) > 1 ) {
-          c_type_id_t sn_type = c_sname_type( &$2 );
+          c_type_id_t sn_type = c_sname_local_type( &$2 );
           if ( (sn_type & T_SCOPE) != T_NONE ) {
             //
             // Replace the generic "scope" with "namespace".
             //
             sn_type = (sn_type & ~T_SCOPE) | T_NAMESPACE;
-            c_sname_set_type( &$2, sn_type );
+            c_sname_set_local_type( &$2, sn_type );
           }
         }
         c_ast_sname_set_sname( $5.ast, &$2 );
@@ -2037,7 +2037,7 @@ scope_declaration_c
         PARSE_ABORT();
       }
 
-      c_type_id_t const cur_type = c_sname_type( &in_attr.current_scope );
+      c_type_id_t const cur_type = c_sname_local_type( &in_attr.current_scope );
       if ( (cur_type & T_ANY_CLASS) != T_NONE ) {
         char const *const cur_name =
           c_sname_local_name( &in_attr.current_scope );
@@ -2050,7 +2050,7 @@ scope_declaration_c
           PARSE_ABORT();
         }
       }
-      c_sname_set_type( &$3, $1 );
+      c_sname_set_local_type( &$3, $1 );
 
       DUMP_START( "scope_declaration_c",
                   "class_struct_union_type sname { "
@@ -2101,7 +2101,8 @@ scope_declaration_c
       //
       // Ensure that "namespace" isn't nested within a class/struct/union.
       //
-      c_type_id_t const outer_type = c_sname_type( &in_attr.current_scope );
+      c_type_id_t const outer_type =
+        c_sname_local_type( &in_attr.current_scope );
       if ( (outer_type & T_ANY_CLASS) != T_NONE ) {
         print_error( &@1,
           "\"%s\" may only be nested within a %s", L_NAMESPACE, L_NAMESPACE
@@ -2312,7 +2313,9 @@ typedef_declaration_c
       }
 
       temp_sname = c_sname_dup( &in_attr.current_scope );
-      c_ast_sname_set_type( ast, c_sname_type( &in_attr.current_scope ) );
+      c_ast_sname_set_local_type(
+        ast, c_sname_local_type( &in_attr.current_scope )
+      );
       c_ast_sname_prepend_sname( ast, &temp_sname );
 
       DUMP_AST( "typedef_declaration_c", ast );
@@ -2380,7 +2383,9 @@ using_declaration_c
       }
 
       c_sname_t temp_sname = c_sname_dup( &in_attr.current_scope );
-      c_ast_sname_set_type( ast, c_sname_type( &in_attr.current_scope ) );
+      c_ast_sname_set_local_type(
+        ast, c_sname_local_type( &in_attr.current_scope )
+      );
       c_ast_sname_prepend_sname( ast, &temp_sname );
 
       DUMP_AST( "using_declaration_c", ast );
@@ -3442,7 +3447,7 @@ pointer_to_member_type_c_ast
       $$.ast = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
       $$.target_ast = NULL;
 
-      c_type_id_t sn_type = c_sname_type( &$1 );
+      c_type_id_t sn_type = c_sname_local_type( &$1 );
       if ( (sn_type & T_ANY_SCOPE) == T_NONE ) {
         //
         // The sname has no scope type, but we now know there's a pointer-to-
@@ -3451,7 +3456,7 @@ pointer_to_member_type_c_ast
         // it's more C++-like.)
         //
         sn_type = T_CLASS;
-        c_sname_set_type( &$1, sn_type );
+        c_sname_set_local_type( &$1, sn_type );
       }
 
       $$.ast->type_id = $3 | sn_type;   // adopt sname's scope type for the AST
@@ -4575,13 +4580,13 @@ scope_sname_c_opt
   | sname_c "::"
     {
       $$ = $1;
-      if ( c_sname_type( &$$ ) == T_NONE ) {
+      if ( c_sname_local_type( &$$ ) == T_NONE ) {
         //
         // Since we know the name in this context (followed by "::") definitely
         // refers to a scope, set the scoped name's type to T_SCOPE (if it
         // doesn't already have a scope type).
         //
-        c_sname_set_type( &$$, T_SCOPE );
+        c_sname_set_local_type( &$$, T_SCOPE );
       }
     }
 
@@ -4607,8 +4612,8 @@ sname_c
         print_error( &@2, "scoped names not supported in %s", C_LANG_NAME() );
         PARSE_ABORT();
       }
-      if ( c_sname_type( &$1 ) == T_NONE )
-        c_sname_set_type( &$1, T_SCOPE );
+      if ( c_sname_local_type( &$1 ) == T_NONE )
+        c_sname_set_local_type( &$1, T_SCOPE );
       $$ = $1;
       c_sname_append_name( &$$, $3 );
     }
@@ -4623,8 +4628,8 @@ sname_c
       // that is: the type int8_t is an existing type in no scope being defined
       // as a distinct type in a new scope.
       //
-      if ( c_sname_type( &$1 ) == T_NONE )
-        c_sname_set_type( &$1, T_SCOPE );
+      if ( c_sname_local_type( &$1 ) == T_NONE )
+        c_sname_set_local_type( &$1, T_SCOPE );
       $$ = $1;
       c_sname_t temp = c_ast_sname_dup( $3->ast );
       c_sname_append_sname( &$$, &temp );
@@ -4670,12 +4675,12 @@ sname_c_opt
 sname_english
   : any_sname_c of_scope_list_english_opt
     {
-      c_type_id_t sn_type = c_sname_type( &$2 );
+      c_type_id_t sn_type = c_sname_local_type( &$2 );
       if ( sn_type == T_NONE )
-        sn_type = c_sname_type( &$1 );
+        sn_type = c_sname_local_type( &$1 );
       $$ = $2;
       c_sname_append_sname( &$$, &$1 );
-      c_sname_set_type( &$$, sn_type );
+      c_sname_set_local_type( &$$, sn_type );
     }
   ;
 
@@ -4699,7 +4704,7 @@ typedef_sname_c
       //
       $$ = $1;
       c_sname_append_sname( &$$, &$3 );
-      c_sname_set_type( &$$, c_sname_type( &$3 ) );
+      c_sname_set_local_type( &$$, c_sname_local_type( &$3 ) );
     }
 
   | typedef_sname_c "::" any_typedef
@@ -4712,7 +4717,7 @@ typedef_sname_c
       //      define S::T as struct S_T
       //
       $$ = $1;
-      c_sname_set_type( &$$, c_ast_sname_type( $3->ast ) );
+      c_sname_set_local_type( &$$, c_ast_sname_local_type( $3->ast ) );
       c_sname_t temp = c_ast_sname_dup( $3->ast );
       c_sname_append_sname( &$$, &temp );
     }
@@ -4929,7 +4934,7 @@ of_scope_english
         PARSE_ABORT();
       }
       $$ = $3;
-      c_sname_set_type( &$$, $2 );
+      c_sname_set_local_type( &$$, $2 );
     }
   ;
 
@@ -4940,8 +4945,8 @@ of_scope_list_english
       // Ensure that neither "namespace" nor "scope" are nested within a
       // class/struct/union.
       //
-      c_type_id_t const inner_type = c_sname_type( &$1 );
-      c_type_id_t const outer_type = c_sname_type( &$2 );
+      c_type_id_t const inner_type = c_sname_local_type( &$1 );
+      c_type_id_t const outer_type = c_sname_local_type( &$2 );
       if ( (inner_type & (T_NAMESPACE | T_SCOPE)) != T_NONE &&
            (outer_type & T_ANY_CLASS) != T_NONE ) {
         print_error( &@2,
@@ -4952,7 +4957,7 @@ of_scope_list_english
       }
 
       $$ = $2;                          // "of scope X of scope Y" means Y::X
-      c_sname_set_type( &$$, inner_type );
+      c_sname_set_local_type( &$$, inner_type );
       c_sname_append_sname( &$$, &$1 );
     }
   | of_scope_english
