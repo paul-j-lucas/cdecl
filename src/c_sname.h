@@ -383,7 +383,7 @@ char const* c_sname_scope_name( c_sname_t const *sname );
  * Gets the scope type of the scope of \a sname.
  *
  * @param sname The scoped name to get the scope type of the scope of.
- * @return Returns said type of T_NONE if \a sname is empty or not within a
+ * @return Returns said type or T_NONE if \a sname is empty or not within a
  * scope.
  * @sa c_sname_type()
  */
