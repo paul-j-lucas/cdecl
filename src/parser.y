@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 27
+%expect 28
 
 %{
 /** @endcond */
@@ -2058,14 +2058,31 @@ scope_declaration_c
                   "} ;" );
       DUMP_TYPE( "class_struct_union_type", $1 );
       DUMP_SNAME( "any_sname_c", &$3 );
-      DUMP_END();
 
       c_sname_append_sname( &in_attr.current_scope, &$3 );
+
+      c_ast_t *const ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
+      ast->sname = c_sname_dup( &in_attr.current_scope );
+      ast->type_id = $1;
+      c_sname_append_name(
+        &ast->as.ecsu.ecsu_sname,
+        check_strdup( c_sname_local_name( &in_attr.current_scope ) )
+      );
+
+      DUMP_AST( "ast", ast );
+      DUMP_END();
+
+      if ( !add_type( c_type_name( $1 ), ast, &@1 ) )
+        PARSE_ABORT();
     }
     lbrace_expected
     scope_typedef_or_using_declaration_c_opt
     rbrace_expected
-    semi_expected                       /* ';' needed for class/struct/union */
+    /*
+     * ';' is required after class/struct/union in C++, but we let it be
+     * optional.
+     */
+    semi_opt
 
     /*
      * C++ namespace declaration, e.g.: namespace NS { typedef int I; }

@@ -67,6 +67,7 @@ static c_lang_lit_t const CDECL_COMMANDS[] = {
   // If this array is modified, also check ARGV_COMMANDS[] in is_command().
   //
   { LANG_ALL,         L_CAST        },
+  { LANG_CPP_ALL,     L_CLASS       },
   { LANG_CPP_ALL,     L_CONST       },  // const cast ...
   { LANG_ALL,         L_DECLARE     },
   { LANG_ALL,         L_DEFINE      },
@@ -80,7 +81,9 @@ static c_lang_lit_t const CDECL_COMMANDS[] = {
   { LANG_ALL,         L_SET_COMMAND },
   { LANG_ALL,         L_SHOW        },
   { LANG_CPP_ALL,     L_STATIC      },  // static cast ...
+  { LANG_ALL,         L_STRUCT      },
   { LANG_ALL,         L_TYPEDEF     },
+  { LANG_ALL,         L_UNION       },
   { LANG_CPP_MIN(11), L_USING       },
   { LANG_NONE,        NULL          }
 };

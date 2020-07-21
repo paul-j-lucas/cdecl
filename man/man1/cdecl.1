@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "July 19, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 21, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -133,6 +133,7 @@ on the command-line
 or the first whitespace separated word thereof
 is one of
 .BR cast ,
+.BR class ,
 .BR const ,
 .BR declare ,
 .BR define ,
@@ -143,7 +144,9 @@ is one of
 .BR reinterpret ,
 .BR set ,
 .BR static ,
+.BR struct ,
 .BR typedef ,
+.BR union ,
 or
 .BR using :
 .cS
@@ -665,9 +668,19 @@ Deciphers a C (or C++) cast into pseudo-English.
 .TP
 .IR "scope-c s-name \f3{\fP " [{ " scope-c " | " typedef " | " using " } " \f3;\fP" ]* " \f3}\fP
 For C++ only,
-executes one of
+for
 .BR class ,
-.BR namespace ,
+.BR struct ,
+or
+.B union
+(but not
+.BR namespace ),
+defines
+.I s-name
+as a type.
+Additionally,
+executes zero or more of
+.BR class ,
 .BR struct ,
 .BR typedef ,
 .BR union ,
@@ -675,7 +688,7 @@ or
 .B using
 within the scope of
 .I s-name
-thus declaring a type within that scope.
+thus declaring type(s) within that scope.
 .TP
 .BR set " [" \f2option\fP " [" "= " \f2value\fP "" "] | " options " | " \f2lang\fP ]
 In the first form,

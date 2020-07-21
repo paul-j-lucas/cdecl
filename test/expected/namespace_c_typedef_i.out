@@ -1,1 +1,2 @@
+namespace A { typedef class B B; }
 class A::B { typedef int Int; };

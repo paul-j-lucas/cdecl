@@ -158,6 +158,7 @@ static bool is_command( char const *s, c_command_t command_type ) {
     // autocomplete.c.
     //
     { L_CAST,         COMMAND_PROG_NAME },
+    { L_CLASS,        COMMAND_FIRST_ARG },
     { L_CONST,        COMMAND_FIRST_ARG },  // const cast
     { L_DECLARE,      COMMAND_PROG_NAME },
     { L_DEFINE,       COMMAND_FIRST_ARG },
@@ -172,7 +173,9 @@ static bool is_command( char const *s, c_command_t command_type ) {
     { L_SET_COMMAND,  COMMAND_FIRST_ARG },
     { L_SHOW,         COMMAND_FIRST_ARG },
     { L_STATIC,       COMMAND_FIRST_ARG },  // static cast
+    { L_STRUCT,       COMMAND_FIRST_ARG },
     { L_TYPEDEF,      COMMAND_FIRST_ARG },
+    { L_UNION,        COMMAND_FIRST_ARG },
     { L_USING,        COMMAND_FIRST_ARG },
     { NULL,           COMMAND_FIRST_ARG },
   };

@@ -10,7 +10,32 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 7.4.2
+* Changes in Cdecl 7.5
+
+** class, struct, & union optional ';'
+Semicolons are now optional after "class", "struct", or "union" declarations.
+
+** class, struct, & union define themselves
+Before now:
+
+    class C { typedef int Int; }
+
+would define only C::Int as a type.  Now, the enclosing class, struct, or union
+is also defined as a type.  Hence, the above is now equivalent to:
+
+    define C as class C
+    define C::Int as int
+
+This also means that:
+
+    class C { }
+
+is eqivalent to:
+
+    define C as class C
+
+** class, struct, & union commands
+"class", "struct", and "union" are now commands (just like namespace).
 
 ** Per-scope types; fixed English scope name order
 Each scope of a scoped name (sname) now has its own type.  Additionally, the

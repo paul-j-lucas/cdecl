@@ -1,1 +1,2 @@
+namespace A { typedef union B B; }
 union A::B { typedef int Int; };

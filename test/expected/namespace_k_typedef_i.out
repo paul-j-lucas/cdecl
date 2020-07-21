@@ -1,1 +1,2 @@
+namespace A { typedef struct B B; }
 struct A::B { typedef int Int; };
