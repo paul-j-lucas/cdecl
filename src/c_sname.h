@@ -380,6 +380,21 @@ C_WARN_UNUSED_RESULT
 char const* c_sname_scope_name( c_sname_t const *sname );
 
 /**
+ * Gets the scope type of the scope of \a sname.
+ *
+ * @param sname The scoped name to get the scope type of the scope of.
+ * @return Returns said type of T_NONE if \a sname is empty or not within a
+ * scope.
+ * @sa c_sname_type()
+ */
+C_SNAME_INLINE C_WARN_UNUSED_RESULT
+c_type_id_t c_sname_scope_type( c_sname_t const *sname ) {
+  c_scope_data_t const *const data =
+    SLIST_PEEK_ATR( c_scope_data_t*, sname, 1 );
+  return data != NULL ? data->type_id : T_NONE;
+}
+
+/**
  * Sets the scope type of \a sname (which is the type of the innermost scope).
  *
  * @param sname The scoped name to set the scope type of.
@@ -398,6 +413,7 @@ void c_sname_set_type( c_sname_t *sname, c_type_id_t type_id ) {
  * @param sname The scoped name to get the scope type of.
  * @return Returns the scope type.
  *
+ * @sa c_sname_scope_type()
  * @sa c_sname_set_type()
  */
 c_type_id_t c_sname_type( c_sname_t const *sname );

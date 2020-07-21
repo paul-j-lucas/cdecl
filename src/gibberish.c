@@ -711,7 +711,7 @@ void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
 
   c_sname_t const *const sname = c_ast_find_name( type->ast, C_VISIT_DOWN );
   if ( sname != NULL && c_sname_count( sname ) > 1 ) {
-    sn_type = c_sname_type( sname );
+    sn_type = c_scope_type( sname->head );
     assert( sn_type != T_NONE );
     //
     // A type name can't be scoped in a typedef declaration, e.g.:
@@ -723,7 +723,7 @@ void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
     //
     if ( (sn_type & T_NAMESPACE) == T_NONE || opt_lang >= LANG_CPP_17 ) {
       //
-      // All C++ versions support nested scope declarations, e.g.:
+      // All C++ versions support nested class/struct/union declarations, e.g.:
       //
       //      struct S::T { typedef int I; }
       //
@@ -731,6 +731,9 @@ void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
       //
       //      namespace S::T { typedef int I; }
       //
+      sn_type = c_sname_scope_type( sname );
+      if ( sn_type == T_SCOPE )
+        sn_type = T_NAMESPACE;
       FPRINTF( gout,
         "%s %s { ", c_type_name( sn_type ), c_sname_scope_name( sname )
       );
@@ -744,7 +747,13 @@ void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
       //
       for ( c_scope_t const *scope = sname->head; scope != sname->tail;
             scope = scope->next ) {
-        FPRINTF( gout, "%s %s { ", L_NAMESPACE, c_scope_name( scope ) );
+        sn_type = c_scope_type( scope );
+        if ( sn_type == T_SCOPE )
+          sn_type = T_NAMESPACE;
+        FPRINTF( gout,
+          "%s %s { ",
+          c_type_name( sn_type ), c_scope_name( scope )
+        );
       } // for
       scope_close_braces_to_print = c_sname_count( sname ) - 1;
     }
