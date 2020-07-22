@@ -101,8 +101,6 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
     case K_ARRAY: {
       c_array_t const *const a_i = &ast_i->as.array;
       c_array_t const *const a_j = &ast_j->as.array;
-      assert( a_i != NULL );
-      assert( a_j != NULL );
       if ( a_i->size != a_j->size )
         return false;
       if ( a_i->type_id != a_j->type_id )
@@ -137,8 +135,6 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
     case K_ENUM_CLASS_STRUCT_UNION: {
       c_ecsu_t const *const e_i = &ast_i->as.ecsu;
       c_ecsu_t const *const e_j = &ast_j->as.ecsu;
-      assert( e_i != NULL );
-      assert( e_j != NULL );
       if ( c_sname_cmp( &e_i->ecsu_sname, &e_j->ecsu_sname ) != 0 )
         return false;
       break;
@@ -151,8 +147,6 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
     case K_POINTER_TO_MEMBER: {
       c_ptr_mbr_t const *const pm_i = &ast_i->as.ptr_mbr;
       c_ptr_mbr_t const *const pm_j = &ast_j->as.ptr_mbr;
-      assert( pm_i != NULL );
-      assert( pm_j != NULL );
       if ( c_sname_cmp( &pm_i->class_sname, &pm_j->class_sname ) != 0 )
         return false;
       break;
@@ -161,8 +155,6 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
     case K_TYPEDEF: {
       c_typedef_t const *const t_i = ast_i->as.c_typedef;
       c_typedef_t const *const t_j = ast_j->as.c_typedef;
-      assert( t_i != NULL );
-      assert( t_j != NULL );
       if ( !c_ast_equiv( t_i->ast, t_j->ast ) )
         return false;
       break;
