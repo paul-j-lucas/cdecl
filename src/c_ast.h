@@ -435,8 +435,10 @@ size_t c_ast_sname_count( c_ast_t const *ast ) {
  * @param ast The `c_ast` to duplicate the name of.
  * @return Returns the name of \a ast duplicated.
  */
-C_WARN_UNUSED_RESULT
-c_sname_t c_ast_sname_dup( c_ast_t const *ast );
+C_AST_INLINE C_WARN_UNUSED_RESULT
+c_sname_t c_ast_sname_dup( c_ast_t const *ast ) {
+  return c_sname_dup( &ast->sname );
+}
 
 /**
  * Checks whether the name of \a ast is empty.

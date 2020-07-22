@@ -265,18 +265,6 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
   assert( !c_ast_has_cycle( child_ast ) );
 }
 
-c_sname_t c_ast_sname_dup( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  c_sname_t rv = c_sname_dup( &ast->sname );
-  //
-  // If the AST's type is class, namespace, struct, or union, adopt that type
-  // for the scoped name's type.
-  //
-  if ( (ast->type_id & T_ANY_SCOPE) != T_NONE )
-    c_sname_set_local_type( &rv, ast->type_id & (T_ANY_SCOPE | T_INLINE) );
-  return rv;
-}
-
 void c_ast_sname_set_name( c_ast_t *ast, char *name ) {
   assert( ast != NULL );
   assert( name != NULL );
