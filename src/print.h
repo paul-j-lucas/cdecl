@@ -101,12 +101,34 @@ void print_loc( c_loc_t const *loc );
 /**
  * Prints a warning message to standard error, including a newline.
  *
+ * @note
+ * This function shouldn't be called directly; use the #print_warning() macro
+ * instead.
+ *
+ * @param file The name of the file where this function was called from.
+ * @param line The line number within \a file where this function was called
+ * from.
  * @param loc The location of the warning; may be null.
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
+ *
+ * @sa #print_warning()
  */
-C_PRINTF_LIKE_FUNC(2)
-void print_warning( c_loc_t const *loc, char const *format, ... );
+C_PRINTF_LIKE_FUNC(4)
+void print_warning_impl( char const *file, int line, c_loc_t const *loc,
+                         char const *format, ... );
+
+/**
+ * Prints an warning message to standard error, including a newline.
+ * In debug mode, also prints the file & line where the function was called
+ * from.
+ *
+ * @param ... The arguments for print_warning_impl().
+ *
+ * @sa print_warning_impl()
+ */
+#define print_warning(...) \
+  print_warning_impl( __FILE__, __LINE__, __VA_ARGS__ )
 
 ///////////////////////////////////////////////////////////////////////////////
 
