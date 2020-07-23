@@ -608,7 +608,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
 
   // Special cases.
   if ( c_mode == C_GIBBERISH_TO_ENGLISH ) {
-    if ( (type_id & T_INT_MODIFIER) != T_NONE &&
+    if ( (type_id & T_ANY_MODIFIER) != T_NONE &&
          (type_id & T_ANY_CHAR) == T_NONE &&
          (type_id & T_ANY_FLOAT) == T_NONE ) {
       // In English, be explicit about "int".
@@ -621,7 +621,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
   } else /* c_mode == C_ENGLISH_TO_GIBBERISH */ {
     if ( is_explicit_int( type_id ) ) {
       type_id |= T_INT;
-    } else if ( (type_id & T_INT_MODIFIER) != T_NONE ) {
+    } else if ( (type_id & T_ANY_MODIFIER) != T_NONE ) {
       // In C/C++, explicit "int" isn't needed when at least one int modifier
       // is present.
       type_id &= ~T_INT;

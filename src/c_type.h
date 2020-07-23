@@ -142,6 +142,10 @@ _GL_INLINE_HEADER_BEGIN
 /** Shorthand for any floating-point type. */
 #define T_ANY_FLOAT           ( T_FLOAT | T_DOUBLE )
 
+/** Shorthand for an any modifier. */
+#define T_ANY_MODIFIER        ( T_SHORT | T_LONG | T_LONG_LONG | T_SIGNED \
+                              | T_UNSIGNED )
+
 /** Shorthand for any reference type. */
 #define T_ANY_REFERENCE       ( T_REFERENCE | T_RVALUE_REFERENCE )
 
@@ -174,10 +178,6 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define T_FUNC_LIKE          ~( T_AUTO_STORAGE | T_APPLE_BLOCK | T_MUTABLE \
                               | T_REGISTER | T_THREAD_LOCAL )
-
-/** Shorthand for an `int` modifier. */
-#define T_INT_MODIFIER        ( T_SHORT | T_LONG | T_LONG_LONG | T_SIGNED \
-                              | T_UNSIGNED )
 
 /**
  * The types that can apply only to member functions or operators.
