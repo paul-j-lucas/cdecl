@@ -270,6 +270,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_VOLATILE,       C_SYN( false,
                         { { LANG_C_KNR, L_GNU___VOLATILE },
                           { LANG_ALL,   L_VOLATILE       } } ) },
+
   { NULL,             TOKEN( 0                    ) }
 };
 
@@ -381,6 +382,7 @@ static void         lexer_update_loc( void );
 C_WARN_UNUSED_RESULT
 static char const* c_hyphen_find( char const *s ) {
   assert( s != NULL );
+  // the list is small, so linear search is good enough
   for ( c_hyphen_t const *h = C_HYPHEN_KEYWORDS; h->literal; ++h ) {
     if ( strcmp( s, h->literal ) == 0 )
       return c_lang_literal( h->lang_lit );
@@ -397,6 +399,7 @@ static char const* c_hyphen_find( char const *s ) {
 C_WARN_UNUSED_RESULT
 static int cdecl_hyphen_find( char const *s ) {
   assert( s != NULL );
+  // the list is small, so linear search is good enough
   for ( cdecl_hyphen_t const *h = CDECL_HYPHEN_KEYWORDS; h->literal; ++h ) {
     if ( strcmp( s, h->literal ) == 0 )
       return h->yy_token_id;
@@ -413,6 +416,7 @@ static int cdecl_hyphen_find( char const *s ) {
 C_WARN_UNUSED_RESULT
 static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   assert( s != NULL );
+  // the list is small, so linear search is good enough
   for ( cdecl_keyword_t const *k = CDECL_KEYWORDS; k->literal != NULL; ++k ) {
     if ( strcmp( s, k->literal ) != 0 )
       continue;
