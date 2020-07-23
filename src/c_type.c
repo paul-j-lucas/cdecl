@@ -156,7 +156,7 @@ static c_type_t const C_QUALIFIER_INFO[] = {
     (c_lang_lit_t[]){ { LANG_C_KNR, L_GNU___CONST },
                       { LANG_ALL,   L_CONST       } } },
 
-  { T_REFERENCE, LANG_CPP_MIN(OLD), NULL,
+  { T_REFERENCE, LANG_CPP_MIN(11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_REFERENCE } } },
 
   { T_RVALUE_REFERENCE, LANG_CPP_MIN(11), NULL,
