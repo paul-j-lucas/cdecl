@@ -177,7 +177,7 @@ esac
 DATA_DIR=$srcdir/data
 EXPECTED_DIR=$srcdir/expected
 TEST_NAME=`local_basename "$TEST_NAME"`
-OUTPUT=/tmp/cdecl_test_output_$$_
+ACTUAL_OUTPUT=/tmp/cdecl_test_output_$$_
 
 ########## Run test ###########################################################
 
@@ -192,14 +192,14 @@ run_cdecl_test() {
   EXPECTED_EXIT=`echo $EXPECTED_EXIT`   # trims whitespace
   EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
 
-  #echo "$INPUT" \| $COMMAND $CONFIG "$OPTIONS" \> $OUTPUT
+  #echo "$INPUT" \| $COMMAND $CONFIG "$OPTIONS" \> $ACTUAL_OUTPUT
   if echo "$INPUT" | sed 's/^ //' |
-     $COMMAND $CONFIG $OPTIONS > $OUTPUT 2> $LOG_FILE
+     $COMMAND $CONFIG $OPTIONS > $ACTUAL_OUTPUT 2> $LOG_FILE
   then
     if [ 0 -eq $EXPECTED_EXIT ]
     then
-      if diff $EXPECTED_OUTPUT $OUTPUT > $LOG_FILE
-      then pass; mv $OUTPUT $LOG_FILE
+      if diff $EXPECTED_OUTPUT $ACTUAL_OUTPUT > $LOG_FILE
+      then pass; mv $ACTUAL_OUTPUT $LOG_FILE
       else fail
       fi
     else
