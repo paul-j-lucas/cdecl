@@ -1570,7 +1570,8 @@ endif
 
 ###############################################################################
 
-AM_TESTS_ENVIRONMENT = BUILD_SRC=$(top_builddir)/src; export BUILD_SRC ;
+BUILD_SRC = $(top_builddir)/src
+AM_TESTS_ENVIRONMENT = BUILD_SRC=$(BUILD_SRC); export BUILD_SRC ;
 TEST_EXTENSIONS = .test 
 
 TEST_LOG_DRIVER = $(srcdir)/run_test.sh
@@ -1579,30 +1580,32 @@ EXTRA_DIST = run_test.sh tests data expected
 dist-hook:
 	cd $(distdir)/tests && rm -f *.log *.trs
 
-CDECL = $(top_builddir)/src/cdecl -C
-CPPDECL = $(CDECL) -xc++
 #
-# Adding predefined types causes the output of cdecl to change so that the
-# expected results for the following tests no longer match and hence "fail."
-# This rule updates the expected results of said tests to match the current
-# cdecl output so the tests will pass again.
+# Adding predefined types, changing the help text, etc., causes the output of
+# cdecl to change so that the expected results for the following tests no
+# longer match and hence "fail."  This rule updates the expected results of
+# said tests to match the current cdecl output so the tests will pass again.
 #
-update-expected:
-	echo 'help' | $(CDECL) > expected/help-c.out
-	echo 'help' | $(CPPDECL) > expected/help-c++.out
-	echo 'help command' | $(CDECL) > expected/help_command-c.out
-	echo 'help command' | $(CPPDECL) > expected/help_command-c++.out
-	echo 'help commands' | $(CDECL) > expected/help_commands-c.out
-	echo 'help commands' | $(CPPDECL) > expected/help_commands-c++.out
-	echo 'help english' | $(CDECL) > expected/help_english-c.out
-	echo 'help english' | $(CPPDECL) > expected/help_english-c++.out
-	echo 'set' | $(CDECL) > expected/set.out
-	echo 'set options' | $(CDECL) > expected/set_options.out
-	echo 'explain int* f(int x, int y)' | $(CDECL) -d > expected/cdecl-d.out
-	echo 'explain int* f(int x, int y)' | $(CDECL) --debug > expected/cdecl--debug.out
-	echo 'typedef int Int; show all' | $(CDECL) > expected/show_all.out
-	echo 'typedef int Int; show all typedef' | $(CDECL) > expected/show_all_typedef.out
-	echo 'typedef int Int; show predefined' | $(CDECL) > expected/show_predefined.out
-	echo 'typedef int Int; show predefined typedef' | $(CDECL) > expected/show_predefined_typedef.out
+UPDATE_TESTS = \
+	tests/cdecl--debug.test \
+	tests/cdecl-d.test \
+	tests/help-c++.test \
+	tests/help-c.test \
+	tests/help_command-c++.test \
+	tests/help_command-c.test \
+	tests/help_commands-c++.test \
+	tests/help_commands-c.test \
+	tests/help_english-c++.test \
+	tests/help_english-c.test \
+	tests/set.test \
+	tests/set_options.test \
+	tests/show_all.test \
+	tests/show_all_typedef.test \
+	tests/show_predefined.test \
+	tests/show_predefined_typedef.test
+
+UPDATE_TEST = $(srcdir)/update_test.sh
+update:
+	BUILD_SRC=$(BUILD_SRC) $(UPDATE_TEST) $(UPDATE_TESTS)
 
 # vim:set noet sw=8 ts=8:
