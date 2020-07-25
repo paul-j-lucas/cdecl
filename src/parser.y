@@ -4062,14 +4062,23 @@ storage_class_c_type
   ;
 
 attribute_specifier_list_c_type
-  : "[[" attribute_name_list_c_type_opt "]]"
+  : "[["
+    {
+      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+        print_error( &@1,
+          "\"[[\" attribute syntax not supported in %s", C_LANG_NAME()
+        );
+        PARSE_ABORT();
+      }
+    }
+    attribute_name_list_c_type_opt "]]"
     {
       DUMP_START( "attribute_specifier_list_c_type",
                   "[[ attribute_name_list_c_type_opt ]]" );
-      DUMP_TYPE( "attribute_name_list_c_type_opt", $2 );
+      DUMP_TYPE( "attribute_name_list_c_type_opt", $3 );
       DUMP_END();
 
-      $$ = $2;
+      $$ = $3;
     }
   ;
 

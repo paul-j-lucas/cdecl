@@ -23,6 +23,9 @@ Added support for Embedded C:
 Since the Embedded C standard is based on C99, support for Embedded C is
 available only when the language is set to C99.
 
+** Forbidding attribute syntax
+The [[xxx]] attribute syntax is now forbidden until C++11.
+
 ** class, struct, & union optional ';'
 Semicolons are now optional after "class", "struct", or "union" declarations.
 
