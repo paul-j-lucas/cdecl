@@ -403,7 +403,7 @@ _GL_INLINE_HEADER_BEGIN
 #endif /* __GNUC__ */
 
 /**
- * Prints that an `int` value was unexpected to standard error and exits.
+ * Prints that an integer value was unexpected to standard error and exits.
  *
  * @param EXPR The expression having the unexpected value.
  *
@@ -412,7 +412,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa UNEXPECTED_STR_VALUE
  */
 #define UNEXPECTED_INT_VALUE(EXPR) \
-  INTERNAL_ERR( "\"%d\": unexpected value for " #EXPR "\n", (int)(EXPR) )
+  INTERNAL_ERR( "%lld (0x%llX): unexpected value for " #EXPR "\n", (long long)(EXPR), (long long)(EXPR) )
 
 /**
  * Prints that a string value was unexpected to standard error and exits.
