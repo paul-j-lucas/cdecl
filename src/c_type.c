@@ -325,6 +325,16 @@ static c_type_t const C_TYPE_INFO[] = {
 
   { T_TYPEDEF_TYPE, LANG_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_TYPEDEF_TYPE } } },
+
+  // Embedded C extensions
+  { T_EMBC_ACCUM, LANG_C_99, L_EMBC_ACCUM,
+    (c_lang_lit_t[]){ { LANG_ALL, L_EMBC__ACCUM } } },
+
+  { T_EMBC_FRACT, LANG_C_99, L_EMBC_FRACT,
+    (c_lang_lit_t[]){ { LANG_ALL, L_EMBC__FRACT } } },
+
+  { T_EMBC_SAT, LANG_C_99, L_EMBC_SATURATED,
+    (c_lang_lit_t[]){ { LANG_ALL, L_EMBC__SAT } } },
 };
 
 /// @cond DOXYGEN_IGNORE
@@ -389,30 +399,33 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
  */
 static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 // Only the lower triangle is used.
-//  v  a1 b  c  8  16 32 wc s  i  l  ll s  u  f  d  co im e  st un cl t
-  { C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// void
-  { XX,C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// auto
-  { XX,XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// bool
-  { XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char
-  { XX,XX,XX,XX,P2,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char8_t
-  { XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char16_t
-  { XX,XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char32_t
-  { XX,XX,XX,XX,XX,XX,XX,C5,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// wchar_t
-  { XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// short
-  { XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// int
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// long
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,__,C9,__,__,__,__,__,__,__,__,__,__,__ },// long long
-  { XX,XX,XX,C8,XX,XX,XX,XX,C8,C8,C8,C8,C8,__,__,__,__,__,__,__,__,__,__ },// signed
-  { XX,XX,XX,__,XX,XX,XX,XX,__,__,__,C8,XX,__,__,__,__,__,__,__,__,__,__ },// unsigned
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,KR,XX,XX,XX,__,__,__,__,__,__,__,__,__ },// float
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,XX,XX,XX,XX,__,__,__,__,__,__,__,__ },// double
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,C9,__,__,__,__,__,__ },// complex
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,XX,C9,__,__,__,__,__ },// imaginary
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,__,__,__,__ },// enum
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P1,__,__,__,__ },// struct
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__ },// union
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P1,XX,XX,PP,__ },// class
-  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__ },// typedef
+//  v  a1 b  c  8  16 32 wc s  i  l  ll s  u  f  d  co im e  st un cl t  ac fr sa
+  { C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// void
+  { XX,C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// auto
+  { XX,XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// bool
+  { XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char
+  { XX,XX,XX,XX,P2,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char8_t
+  { XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char16_t
+  { XX,XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char32_t
+  { XX,XX,XX,XX,XX,XX,XX,C5,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// wchar_t
+  { XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// short
+  { XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// int
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// long
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,__,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// long long
+  { XX,XX,XX,C8,XX,XX,XX,XX,C8,C8,C8,C8,C8,__,__,__,__,__,__,__,__,__,__,__,__,__ },// signed
+  { XX,XX,XX,__,XX,XX,XX,XX,__,__,__,C8,XX,__,__,__,__,__,__,__,__,__,__,__,__,__ },// unsigned
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,KR,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__ },// float
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,XX,XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__ },// double
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,C9,__,__,__,__,__,__,__,__,__ },// complex
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,XX,C9,__,__,__,__,__,__,__,__ },// imaginary
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C8,__,__,__,__,__,__,__ },// enum
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P1,__,__,__,__,__,__,__ },// struct
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__,__,__ },// union
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P1,XX,XX,PP,__,__,__,__ },// class
+  { XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,__,__,__,__ },// typedef
+  { XX,XX,XX,XX,XX,XX,XX,XX,C9,XX,C9,XX,C9,C9,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,__,__ },// _Accum
+  { XX,XX,XX,XX,XX,XX,XX,XX,C9,XX,C9,XX,C9,C9,XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,__ },// _Fract
+  { XX,XX,XX,XX,XX,XX,XX,XX,C9,XX,C9,XX,C9,C9,XX,XX,XX,XX,XX,XX,XX,XX,XX,C9,C9,C9 },// _Sat
 };
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -609,8 +622,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
   // Special cases.
   if ( c_mode == C_GIBBERISH_TO_ENGLISH ) {
     if ( (type_id & T_ANY_MODIFIER) != T_NONE &&
-         (type_id & T_ANY_CHAR) == T_NONE &&
-         (type_id & T_ANY_FLOAT) == T_NONE ) {
+         (type_id & (T_ANY_CHAR | T_ANY_FLOAT | T_ANY_EMBC)) == T_NONE ) {
       // In English, be explicit about "int".
       type_id |= T_INT;
     }
@@ -700,6 +712,9 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     T_LONG,
     T_SHORT,
 
+    // This is third so we get names like "unsigned long _Sat _Fract".
+    T_EMBC_SAT,
+
     T_VOID,
     T_AUTO_TYPE,
     T_BOOL,
@@ -718,6 +733,9 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     T_STRUCT,
     T_UNION,
     T_CLASS,
+
+    T_EMBC_ACCUM,
+    T_EMBC_FRACT,
   };
   C_TYPE_NAME_CAT( &name, type_id, C_TYPE, is_error, ' ', &space );
 

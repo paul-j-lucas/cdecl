@@ -1512,6 +1512,36 @@ TESTS+=	tests/file-cast_x.test \
 ###############################################################################
 
 #
+# Embedded C tests
+# ================
+#
+TESTS+=	tests/xec_explain_a.test \
+	tests/xec_explain_ha.test \
+	tests/xec_explain_hr.test \
+	tests/xec_explain_la.test \
+	tests/xec_explain_lr.test \
+	tests/xec_explain_r.test \
+	tests/xec_explain_ta.test \
+	tests/xec_explain_tr.test \
+	tests/xec_explain_tua.test \
+	tests/xec_explain_ua.test \
+	tests/xec_explain_uhta.test \
+	tests/xec_explain_uhtr.test \
+	tests/xec_explain_ur.test \
+	tests/xec_explain_uta.test
+
+#
+# Embedded C error tests
+# ======================
+#
+TESTS+=	tests/xec_explain_lla.test \
+	tests/xec_explain_llr.test \
+	tests/xec_explain_t.test \
+	tests/xec_explain_ti.test
+
+###############################################################################
+
+#
 # Miscellaneous tests
 # ===================
 #

@@ -247,10 +247,16 @@ define int_fast16_t as short
 define int_fast32_t as int
 define int_fast64_t as long
 define int_fast8_t as signed char
+define int_hk_t as short _Accum
+define int_hr_t as short _Fract
+define int_k_t as _Accum
 define int_least16_t as short
 define int_least32_t as int
 define int_least64_t as long
 define int_least8_t as signed char
+define int_lk_t as long _Accum
+define int_lr_t as long _Fract
+define int_r_t as _Fract
 define intmax_t as long
 define intptr_t as long
 define jmp_buf as array 37 of int
@@ -334,6 +340,12 @@ define uint_least16_t as unsigned short
 define uint_least32_t as unsigned
 define uint_least64_t as unsigned long
 define uint_least8_t as unsigned char
+define uint_uhk_t as unsigned short _Accum
+define uint_uhr_t as unsigned short _Fract
+define uint_uk_t as unsigned _Accum
+define uint_ulk_t as unsigned long _Accum
+define uint_ulr_t as unsigned long _Fract
+define uint_ur_t as unsigned _Fract
 define uintmax_t as unsigned long
 define uintptr_t as unsigned long
 define useconds_t as uint32_t

@@ -80,6 +80,11 @@ _GL_INLINE_HEADER_BEGIN
 #define T_SCOPE               0x0000000000800000ull /**< Generic scope.       */
 #define T_TYPEDEF_TYPE        0x0000000001000000ull /**< E.g., `size_t`       */
 
+// Embedded C types
+#define T_EMBC_ACCUM          0x0000000002000000ull /**< `_Accum`             */
+#define T_EMBC_FRACT          0x0000000004000000ull /**< `_Fract`             */
+#define T_EMBC_SAT            0x0000000008000000ull /**< `_Sat`               */
+
 // storage classes
 #define T_AUTO_STORAGE        0x0000000010000000ull /**< C's `auto`.          */
 #define T_APPLE_BLOCK         0x0000000020000000ull /**< Block.               */
@@ -138,6 +143,9 @@ _GL_INLINE_HEADER_BEGIN
 
 /** Shorthand for `class`, `struct`, or `union`. */
 #define T_ANY_CLASS           ( T_CLASS | T_STRUCT | T_UNION )
+
+/** Shorthand for any Embedded C type. */
+#define T_ANY_EMBC            ( T_EMBC_ACCUM | T_EMBC_FRACT )
 
 /** Shorthand for any floating-point type. */
 #define T_ANY_FLOAT           ( T_FLOAT | T_DOUBLE )

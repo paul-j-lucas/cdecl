@@ -234,6 +234,15 @@ char const L_OR_EQ[]                = "or_eq";
 char const L_XOR[]                  = "xor";
 char const L_XOR_EQ[]               = "xor_eq";
 
+// Embedded C extensions
+char const L_EMBC__ACCUM[]          = "_Accum";
+char const L_EMBC_ACCUM[]           = "accum";
+char const L_EMBC__FRACT[]          = "_Fract";
+char const L_EMBC_FRACT[]           = "fract";
+char const L_EMBC__SAT[]            = "_Sat";
+char const L_EMBC_SAT[]             = "sat";
+char const L_EMBC_SATURATED[]       = "saturated";
+
 // GNU extensions
 char const L_GNU___AUTO_TYPE[]      = "__auto_type";
 char const L_GNU___COMPLEX[]        = "__complex";

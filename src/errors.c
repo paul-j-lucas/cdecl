@@ -288,6 +288,14 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
     return false;
   }
 
+  if ( (ast->type_id & T_EMBC_SAT) && (ast->type_id & T_ANY_EMBC) == T_NONE ) {
+    print_error( &ast->loc,
+      "\"%s\" requires either \"%s\" or \"%s\"",
+      L_EMBC__SAT, L_EMBC__ACCUM, L_EMBC__FRACT
+    );
+    return false;
+  }
+
   return true;
 }
 

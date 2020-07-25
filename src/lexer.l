@@ -271,6 +271,20 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
                         { { LANG_C_KNR, L_GNU___VOLATILE },
                           { LANG_ALL,   L_VOLATILE       } } ) },
 
+  // Embedded C extensions
+  { L_EMBC_ACCUM,     C_SYN( true,
+                        { { LANG_C_99, L_EMBC__ACCUM },
+                          { LANG_ALL,  NULL          } } ) },
+  { L_EMBC_FRACT,     C_SYN( true,
+                        { { LANG_C_99, L_EMBC__FRACT },
+                          { LANG_ALL,  NULL          } } ) },
+  { L_EMBC_SAT,       C_SYN( false,
+                        { { LANG_C_99, L_EMBC__SAT },
+                          { LANG_ALL,  NULL        } } ) },
+  { L_EMBC_SATURATED, C_SYN( true,
+                        { { LANG_C_99, L_EMBC__SAT },
+                          { LANG_ALL,  NULL        } } ) },
+
   { NULL,             TOKEN( 0                    ) }
 };
 
@@ -749,9 +763,14 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                     }
                     return cdk->yy_token_id;
                   }
-                  lexer_token = c_lang_literal( cdk->lang_syn );
+                  char const *const literal = c_lang_literal( cdk->lang_syn );
+                  if ( literal != NULL ) {
+                    SET_TOKEN_TO( literal );
+                    goto find_c_keyword;
+                  }
                 }
-                else if ( lexer_find_typedef ) {
+
+                if ( lexer_find_typedef ) {
                   //
                   // 2. See if it's a typedef'd type.
                   //
@@ -811,7 +830,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                   // keyword, so set the lexer's token to that and go to the
                   // keyword-finding code.
                   //
-                  lexer_token = c_keyword;
+                  SET_TOKEN_TO( c_keyword );
                   goto find_c_keyword;
                 }
 

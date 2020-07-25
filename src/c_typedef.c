@@ -295,6 +295,26 @@ static char const *const TYPEDEFS_MISC[] = {
 };
 
 /**
+ * Embedded C types.
+ */
+static char const *const TYPEDEFS_EMBEDDED_C[] = {
+  "typedef          short _Accum int_hk_t",
+  "typedef          short _Fract int_hr_t",
+  "typedef                _Accum int_k_t",
+  "typedef          long  _Accum int_lk_t",
+  "typedef          long  _Fract int_lr_t",
+  "typedef                _Fract int_r_t",
+  "typedef unsigned short _Accum uint_uhk_t",
+  "typedef unsigned short _Fract uint_uhr_t",
+  "typedef unsigned       _Accum uint_uk_t",
+  "typedef unsigned long  _Accum uint_ulk_t",
+  "typedef unsigned long  _Fract uint_ulr_t",
+  "typedef unsigned       _Fract uint_ur_t",
+
+  NULL
+};
+
+/**
  * GNU C types.
  */
 static char const *const TYPEDEFS_GNUC[] = {
@@ -702,6 +722,10 @@ void c_typedef_init( void ) {
     c_typedef_parse_builtins( TYPEDEFS_MISC );
     c_typedef_parse_builtins( TYPEDEFS_GNUC );
     c_typedef_parse_builtins( TYPEDEFS_WIN32 );
+
+    // Embedded C extensions are available only in C99.
+    opt_lang = LANG_C_99;
+    c_typedef_parse_builtins( TYPEDEFS_EMBEDDED_C );
 
 #ifdef ENABLE_CDECL_DEBUG
     opt_cdecl_debug = prev_cdecl_debug;

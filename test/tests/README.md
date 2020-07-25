@@ -24,6 +24,7 @@ Test files are as follows:
 + `*_udl_*`            = A user-defined literal test.
 | `*-ec`               = An "east const" test.
 + `*-`*lang*`*`        = A test using *lang* explicitly.
++ `xec_*`              = An Embedded C test.
 
 Within each test, sequences of characters are used to denote a C/C++
 declaration as it is in English.
@@ -70,6 +71,12 @@ The characters are:
 + `y` = `final`
 + `z` = `_Complex` or `size_t`
 + `zz` = `ssize_t`
+
+For an Embedded C test, some characters change meaning:
+
++ `a` = `_Accum`
++ `r` = `_Fract`
++ `t` = `_Sat`
 
 Characters may be preceded by a count,
 e.g., `2i` for 2 consecutive `int`.

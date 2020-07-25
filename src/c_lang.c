@@ -104,21 +104,22 @@ char const* c_lang_literal( c_lang_lit_t const lang_lit[] ) {
 }
 
 char const* c_lang_name( c_lang_id_t lang_id ) {
-  assert( exactly_one_bit_set( lang_id ) );
+  assert( exactly_one_bit_set( lang_id & ~LANGX_MASK ) );
   switch ( lang_id ) {
-    case LANG_NONE  : return "";
-    case LANG_C_KNR : return "K&R C";
-    case LANG_C_89  : return "C89";
-    case LANG_C_95  : return "C95";
-    case LANG_C_99  : return "C99";
-    case LANG_C_11  : return "C11";
-    case LANG_C_18  : return "C18";
-    case LANG_CPP_98: return "C++98";
-    case LANG_CPP_03: return "C++03";
-    case LANG_CPP_11: return "C++11";
-    case LANG_CPP_14: return "C++14";
-    case LANG_CPP_17: return "C++17";
-    case LANG_CPP_20: return "C++20";
+    case LANG_NONE    : return "";
+    case LANG_C_KNR   : return "K&R C";
+    case LANG_C_89    : return "C89";
+    case LANG_C_95    : return "C95";
+    case LANG_C_99    : return "C99";
+    case LANG_C_99_EMB: return "C99 (with Embedded C extensions)";
+    case LANG_C_11    : return "C11";
+    case LANG_C_18    : return "C18";
+    case LANG_CPP_98  : return "C++98";
+    case LANG_CPP_03  : return "C++03";
+    case LANG_CPP_11  : return "C++11";
+    case LANG_CPP_14  : return "C++14";
+    case LANG_CPP_17  : return "C++17";
+    case LANG_CPP_20  : return "C++20";
     default:
       UNEXPECTED_INT_VALUE( lang_id );
   } // switch

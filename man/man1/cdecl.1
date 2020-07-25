@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "July 21, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 23, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -968,6 +968,7 @@ it's equivalent to
 Some synonyms are permitted within pseudo-English.
 The words on the left are synonyms for what's on the right:
 .cS
+             accum  _Accum
             atomic  _Atomic
          automatic  auto
              _Bool  bool
@@ -978,6 +979,7 @@ carries-dependency  carries_dependency
           constant  const
        enumeration  enum
           external  extern
+             fract  _Fract
               func  function
          imaginary  _Imaginary
            integer  int
@@ -998,6 +1000,8 @@ non-unique-address  no_unique_address
                ref  reference
         restricted  restrict
                ret  returning
+               sat  _Sat
+         saturated  _Sat
          structure  struct
               type  typedef
       thread-local  thread_local
@@ -1039,6 +1043,16 @@ Apple's ``blocks'' syntax
 and the
 \f(CW__block\fP
 storage class.
+.IP \(bu
+For C99 only,
+Embedded C's
+\f(CW_Accum\fP
+and
+\f(CW_Fract\fP
+types,
+and the
+\f(CW_Sat\fP
+modifier.
 .IP \(bu
 GNU C's
 \f(CW__auto_type\fP,
@@ -1203,6 +1217,19 @@ option is given):
 \f(CWpthread_rwlock_t\fP,
 \f(CWpthread_rwlockattr_t\fP,
 \f(CWpthread_spinlock_t\fP,
+.P
+\f(CWint_hk_t\fP,
+\f(CWint_hr_t\fP,
+\f(CWint_k_t\fP,
+\f(CWint_lk_t\fP,
+\f(CWint_lr_t\fP,
+\f(CWint_r_t\fP,
+\f(CWuint_uhk_t\fP,
+\f(CWuint_uhr_t\fP,
+\f(CWuint_uk_t\fP,
+\f(CWuint_ulk_t\fP,
+\f(CWuint_ulr_t\fP,
+\f(CWuint_ur_t\fP,
 .P
 \f(CWstd::align_val_t\fP,
 \f(CWstd::byte\fP,

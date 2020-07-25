@@ -207,6 +207,11 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_XOR,              Y_CIRC,             T_NONE,         LANG_MIN(C_89)    },
   { L_XOR_EQ,           Y_CIRC_EQ,          T_NONE,         LANG_MIN(C_89)    },
 
+  // Embedded C extensions
+  { L_EMBC__ACCUM,      Y_EMBC__ACCUM,      T_EMBC_ACCUM,   LANG_C_99_EMB     },
+  { L_EMBC__FRACT,      Y_EMBC__FRACT,      T_EMBC_FRACT,   LANG_C_99_EMB     },
+  { L_EMBC__SAT,        Y_EMBC__SAT,        T_EMBC_SAT,     LANG_C_99_EMB     },
+
   // GNU extensions
   { L_GNU___AUTO_TYPE,  Y_AUTO_TYPE,        T_AUTO_TYPE,    LANG_ALL          },
   { L_GNU___COMPLEX,    Y__COMPLEX,         T_COMPLEX,      LANG_ALL          },
@@ -232,20 +237,21 @@ static c_keyword_t const C_KEYWORDS[] = {
 
 /**
  * Given a literal, gets the `c_keyword` for the corresponding C/C++ keyword in
- * \a lang_id.
+ * \a lang_ids.
  *
  * @param literal The literal to find.
  * @param keywords The array of `c_keyword` to look in.
- * @param lang_id The bitwise-or of language(s) to look for the keyword in.
+ * @param lang_ids The bitwise-or of language(s) to look for the keyword in.
  * @return Returns a pointer to the corresponding `c_keyword` or null for none.
  */
 C_WARN_UNUSED_RESULT
 static c_keyword_t const* c_keyword_find_impl( char const *literal,
                                                c_keyword_t const keywords[],
-                                               c_lang_id_t lang_id ) {
+                                               c_lang_id_t lang_ids ) {
   assert( literal != NULL );
+
   for ( c_keyword_t const *k = keywords; k->literal != NULL; ++k ) {
-    if ( (k->lang_ids & lang_id) == LANG_NONE )
+    if ( (k->lang_ids & lang_ids) == LANG_NONE )
       continue;
     if ( strcmp( literal, k->literal ) == 0 )
       return k;

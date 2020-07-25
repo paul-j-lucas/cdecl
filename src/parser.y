@@ -976,6 +976,11 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_NO_UNIQUE_ADDRESS
 %token              Y_REQUIRES
 
+                    /* Embedded C extensions */
+%token  <type_id>   Y_EMBC__ACCUM
+%token  <type_id>   Y_EMBC__FRACT
+%token  <type_id>   Y_EMBC__SAT
+
                     /* GNU extensions */
 %token  <type_id>   Y_GNU___RESTRICT
 
@@ -2970,6 +2975,7 @@ type_modifier_english_type
   | Y_SHORT
   | Y_SIGNED
   | Y_UNSIGNED
+  | Y_EMBC__SAT
   /*
    * Register is here (rather than in storage_class_english_type) because it's
    * the only storage class that can be specified for function arguments.
@@ -3859,6 +3865,7 @@ type_modifier_base_type
   | Y_SHORT
   | Y_SIGNED
   | Y_UNSIGNED
+  | Y_EMBC__SAT
   /*
    * Register is here (rather than in storage_class_c_type) because it's the
    * only storage class that can be specified for function arguments.
@@ -3918,6 +3925,8 @@ builtin_type
   | Y_INT
   | Y_FLOAT
   | Y_DOUBLE
+  | Y_EMBC__ACCUM
+  | Y_EMBC__FRACT
   ;
 
 enum_class_struct_union_ast

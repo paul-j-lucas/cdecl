@@ -12,6 +12,17 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 7.5
 
+** Embedded C support
+Added support for Embedded C:
+
++ Added types "_Accum" and "_Fract" (and "accum" and "fract").
++ Added modifier "_Sat" (and "sat" and "saturated").
++ Added the typedefs int_hk_t, int_hr_t, int_k_t, int_lk_t, int_lr_t, int_r_t,
+  uint_uhk_t, uint_uhr_t, uint_uk_t, uint_ulk_t, uint_ulr_t, and uint_ur_t.
+
+Since the Embedded C standard is based on C99, support for Embedded C is
+available only when the language is set to C99.
+
 ** class, struct, & union optional ';'
 Semicolons are now optional after "class", "struct", or "union" declarations.
 
@@ -44,7 +55,6 @@ English printed order is now (correctly) inner-to-outermost.  For example:
     c++decl> namespace N { class C { typedef int I; }; }
     c++decl> explain N::C::I x
     declare x as I of class C of namespace N
-
 
 ** Aligned to
 Now allowing "to" in addition to "as" for "... aligned [as|to] ...".

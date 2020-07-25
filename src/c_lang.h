@@ -72,11 +72,33 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_CPP_17   (1u << 12)        /**< C++ 17. */
 #define LANG_CPP_20   (1u << 13)        /**< C++ 20. */
 #define LANG_CPP_NEW  LANG_CPP_20       /**< Newest supported C++ language. */
-#define LANG_CPP_ALL  LANG_MIN(CPP_OLD) /**< All C++ languages. */
+#define LANG_CPP_ALL  LANG_MASK_CPP     /**< All C++ languages. */
+
+/**< Language eXtensions for Embedded C. */
+#define LANGX_EMBC    (1u << 7)
+
+/**
+ * Embedded C, or more formally, "Programming languages - C - Extensions to
+ * support embedded processors," ISO/IEC TR 18037:2008, which is based on C99,
+ * ISO/IEC 9899:1999.
+ *
+ * @note
+ * This is not a distinct language in cdecl, i.e., the user can't set the
+ * language to "Embedded C" specifically.  It's used to mark keywords as being
+ * available only in the Embedded C extensions to C99 instead of "plain" C99 so
+ * that if a user does:
+ *
+ *      cdecl> declare _Sat as int
+ *      9: warning: "_Sat" is a keyword in C99 (with Embedded C extensions)
+ *
+ * in a language other than C99, they'll get a warning.
+ */
+#define LANG_C_99_EMB (LANG_C_99 | LANGX_EMBC)
 
 // bit masks
-#define LANG_MASK_C   0x00FFu           /**< C languages bitmask. */
-#define LANG_MASK_CPP 0xFF00u           /**< C++ languages bitmask. */
+#define LANG_MASK_C   LANG_MAX(C_NEW)   /**< C languages bitmask. */
+#define LANG_MASK_CPP (LANG_MAX(CPP_NEW) & 0xFF00) /**< C++ languages bitmask. */
+#define LANGX_MASK    0xC0C0u           /**< Language extensions bitmask. */
 
 /**
  * Maximum allowed language, C & C++.
@@ -214,8 +236,10 @@ bool c_lang_is_cpp( c_lang_id_t lang_id ) {
  * Gets the literal appropriate for the current language.
  *
  * @param lang_lit A c_lang_lit_t array.  The last element _must_ always have a
- * `lang_ids` value of #LANG_ALL.
- * @return Returns said literal.
+ * `lang_ids` value of #LANG_ALL.  If the corresponding `literal` value is
+ * NULL, it means there is no appropriate literal for the current language.
+ * @return Returns said literal or NULL if there is no appropriate literal for
+ * the current language.
  */
 C_WARN_UNUSED_RESULT
 char const* c_lang_literal( c_lang_lit_t const lang_lit[] );
@@ -254,7 +278,7 @@ char const* c_lang_names( void );
  */
 C_LANG_INLINE C_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
-  return lang_ids & ~(lang_ids - 1u);
+  return (lang_ids & ~(lang_ids - 1u)) | (lang_ids & LANGX_MASK);
 }
 
 /**
