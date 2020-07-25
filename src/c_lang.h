@@ -51,8 +51,8 @@ _GL_INLINE_HEADER_BEGIN
 ///////////////////////////////////////////////////////////////////////////////
 
 // languages supported
-#define LANG_NONE     (0u)              /**< No languages. */
-#define LANG_ALL      (~LANG_NONE)      /**< All supported languages. */
+#define LANG_NONE     ((c_lang_id_t)0)  /**< No languages. */
+#define LANG_ALL      ((c_lang_id_t)~0) /**< All supported languages. */
 
 #define LANG_C_OLD    LANG_C_KNR        /**< Oldest supported C language. */
 #define LANG_C_KNR    (1u << 0)         /**< K&R (pre-ANSI) C. */
@@ -96,9 +96,9 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_C_99_EMB (LANG_C_99 | LANGX_EMBC)
 
 // bit masks
-#define LANG_MASK_C   LANG_MAX(C_NEW)   /**< C languages bitmask. */
-#define LANG_MASK_CPP (LANG_MAX(CPP_NEW) & 0xFF00) /**< C++ languages bitmask. */
-#define LANGX_MASK    0xC0C0u           /**< Language extensions bitmask. */
+#define LANG_MASK_C   0x00FFu           /**< C languages bitmask. */
+#define LANG_MASK_CPP 0xFF00u           /**< C++ languages bitmask. */
+#define LANGX_MASK    0x0080u           /**< Language extensions bitmask. */
 
 /**
  * Maximum allowed language, C & C++.
@@ -112,7 +112,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param L The language _without_ the `LANG_` prefix.
  */
-#define LANG_MIN(L)               (~(LANG_ ## L - 1u))
+#define LANG_MIN(L)               ((c_lang_id_t)~(LANG_ ## L - 1u))
 
 /**
  * Maximum allowed language, C only.
