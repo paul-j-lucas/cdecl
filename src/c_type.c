@@ -137,7 +137,7 @@ static c_type_t const C_ATTRIBUTE_INFO[] = {
   { T_NODISCARD, LANG_CPP_MIN(11), L_NON_DISCARDABLE,
     (c_lang_lit_t[]){ { LANG_ALL, L_NODISCARD } } },
 
-  { T_NORETURN, LANG_C_CPP_MIN(11, 11), L_NON_RETURNING,
+  { T_NORETURN, LANG_C_CPP_MIN(11,11), L_NON_RETURNING,
     (c_lang_lit_t[]){ { LANG_CPP_ALL, L_NORETURN  },
                       { LANG_ALL,     L__NORETURN } } },
 
@@ -270,10 +270,10 @@ static c_type_t const C_TYPE_INFO[] = {
   { T_CHAR8_T, LANG_CPP_MIN(20), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_CHAR8_T } } },
 
-  { T_CHAR16_T, LANG_C_CPP_MIN(11, 11), NULL,
+  { T_CHAR16_T, LANG_C_CPP_MIN(11,11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_CHAR16_T } } },
 
-  { T_CHAR32_T, LANG_C_CPP_MIN(11, 11), NULL,
+  { T_CHAR32_T, LANG_C_CPP_MIN(11,11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_CHAR32_T } } },
 
   { T_WCHAR_T, LANG_MIN(C_95), NULL,
@@ -351,7 +351,7 @@ static c_type_t const C_TYPE_INFO[] = {
 #define P3          LANG_CPP_MIN(03)
 #define P1          LANG_CPP_MIN(11)
 #define P2          LANG_CPP_MIN(20)
-#define E1          LANG_C_CPP_MIN(11, 11)
+#define E1          LANG_C_CPP_MIN(11,11)
 
 /// @endcond
 

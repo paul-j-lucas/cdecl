@@ -41,7 +41,7 @@
 
 /// @endcond
 
-#define LANG_C_CPP_11_MIN         LANG_C_CPP_MIN(11, 11)
+#define LANG_C_CPP_11_MIN         LANG_C_CPP_MIN(11,11)
 
 ///////////////////////////////////////////////////////////////////////////////
 
