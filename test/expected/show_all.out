@@ -166,11 +166,19 @@ define WCHAR as wchar_t
 define WORD as unsigned short
 define WPARAM as UINT_PTR
 define _Decimal128 as long double
+define _Decimal128x as _Decimal128
 define _Decimal32 as float
+define _Decimal32_t as _Decimal32
 define _Decimal64 as double
+define _Decimal64_t as _Decimal64
+define _Decimal64x as _Decimal64
 define _Float128 as long double
+define _Float128x as _Float128
 define _Float16 as float
-define _Float64x as double
+define _Float32 as float
+define _Float32x as _Float32
+define _Float64 as double
+define _Float64x as _Float64
 define __float128 as _Float128
 define __float80 as _Float64x
 define __fp16 as _Float16
@@ -230,7 +238,8 @@ define div_t as struct div_t
 define double_t as double
 define errno_t as int
 define fd_set as struct __fd_set
-define fenv_t as int
+define femode_t as struct femode_t
+define fenv_t as struct fenv_t
 define fexcept_t as unsigned short
 define float_t as float
 define fpos_t as struct __fpos
@@ -262,6 +271,7 @@ define intptr_t as long
 define jmp_buf as array 37 of int
 define ldiv_t as struct ldiv_t
 define lldiv_t as struct lldiv_t
+define long_double_t as long double
 define max_align_t as long double
 define mbstate_t as struct __mbstate
 define memory_order as enum memory_order

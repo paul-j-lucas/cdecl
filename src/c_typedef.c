@@ -107,11 +107,6 @@ static char const *const TYPEDEFS_STD_C[] = {
   "typedef unsigned long       uintmax_t",
   "typedef unsigned long       uintptr_t",
 
-  "typedef          double      double_t",
-  "typedef          int         fenv_t",
-  "typedef unsigned short       fexcept_t",
-  "typedef          float       float_t",
-
   "typedef struct     div_t     div_t",
   "typedef struct imaxdiv_t imaxdiv_t",
   "typedef struct    ldiv_t    ldiv_t",
@@ -184,6 +179,37 @@ static char const *const TYPEDEFS_STD_ATOMIC_H[] = {
   "typedef _Atomic uint_least16_t     atomic_uint_least16_t",
   "typedef _Atomic uint_least32_t     atomic_uint_least32_t",
   "typedef _Atomic uint_least64_t     atomic_uint_least64_t",
+
+  NULL
+};
+
+/**
+ * Types from Floating-point extensions for C.
+ */
+static char const *const TYPEDEFS_FLOATING_POINT_EXTENSIONS[] = {
+  "typedef          float       _Float16",
+  "typedef          float       _Float32",
+  "typedef          _Float32    _Float32x",
+  "typedef          double      _Float64",
+  "typedef          _Float64    _Float64x",
+  "typedef long     double      _Float128",
+  "typedef          _Float128   _Float128x",
+
+  "typedef          float       _Decimal32",
+  "typedef          _Decimal32  _Decimal32_t",
+  "typedef          double      _Decimal64",
+  "typedef          _Decimal64  _Decimal64x",
+  "typedef          _Decimal64  _Decimal64_t",
+  "typedef long     double      _Decimal128",
+  "typedef          _Decimal128 _Decimal128x",
+
+  "typedef          double      double_t",
+  "typedef          float       float_t",
+  "typedef long     double      long_double_t",
+
+  "typedef struct   femode_t    femode_t",
+  "typedef struct   fenv_t      fenv_t",
+  "typedef unsigned short       fexcept_t",
 
   NULL
 };
@@ -318,15 +344,9 @@ static char const *const TYPEDEFS_EMBEDDED_C[] = {
  * GNU C types.
  */
 static char const *const TYPEDEFS_GNUC[] = {
-  "typedef float        _Decimal32",
-  "typedef double       _Decimal64",
-  "typedef long double  _Decimal128",
-  "typedef long double  _Float128",
   "typedef _Float128   __float128",
-  "typedef float        _Float16",
   "typedef _Float16    __fp16",
   "typedef long double __ibm128",
-  "typedef double       _Float64x",
   "typedef _Float64x   __float80",
   //
   // In GNU C, this is a distinct type, not a typedef, which means you can add
@@ -716,6 +736,7 @@ void c_typedef_init( void ) {
 
     c_typedef_parse_builtins( TYPEDEFS_STD_C );
     c_typedef_parse_builtins( TYPEDEFS_STD_ATOMIC_H );
+    c_typedef_parse_builtins( TYPEDEFS_FLOATING_POINT_EXTENSIONS );
     c_typedef_parse_builtins( TYPEDEFS_PTHREAD_H );
     c_typedef_parse_builtins( TYPEDEFS_THREADS_H );
     c_typedef_parse_builtins( TYPEDEFS_STD_CPP );

@@ -66,6 +66,10 @@ English printed order is now (correctly) inner-to-outermost.  For example:
     c++decl> explain N::C::I x
     declare x as I of class C of namespace N
 
+** Floating-point extensions for C types
+Added types _Decimal32_t, _Decimal64_t, _Decimal64x, _Decimal128x, _Float32,
+_Float32x, _Float64, _Float128, _Float128x, femode_t, and long_double_t.
+
 ** Aligned to
 Now allowing "to" in addition to "as" for "... aligned [as|to] ...".
 
