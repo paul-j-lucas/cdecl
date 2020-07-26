@@ -491,7 +491,7 @@ static void c_ast_explain( c_ast_t const *ast, c_type_id_t taken_type_ids ) {
 }
 
 /**
- * Finish constructing the final AST for _explain_.
+ * "Pre-explain" an AST by finishing constructing it for _explain_.
  *
  * @param has_typename `true` only if the declaration includes `typename`.
  * @param align The `alignas` specifier, if any.
@@ -503,11 +503,11 @@ static void c_ast_explain( c_ast_t const *ast, c_type_id_t taken_type_ids ) {
  * @return Returns `true` only upon success.
  */
 C_WARN_UNUSED_RESULT
-static bool c_ast_finish_explain( bool has_typename, c_alignas_t const *align,
-                                  c_ast_t *type_ast,
-                                  c_ast_t *decl_ast, c_loc_t const *decl_loc,
-                                  c_ast_t const **past,
-                                  c_type_id_t *ptaken_type_ids ) {
+static bool c_ast_pre_explain( bool has_typename, c_alignas_t const *align,
+                               c_ast_t *type_ast,
+                               c_ast_t *decl_ast, c_loc_t const *decl_loc,
+                               c_ast_t const **past,
+                               c_type_id_t *ptaken_type_ids ) {
   assert( type_ast != NULL );
   assert( decl_ast != NULL );
   assert( decl_loc != NULL );
@@ -1690,7 +1690,7 @@ explain_c
       c_ast_t const *ast;
       c_type_id_t taken_type_ids;
       bool const ok =
-        c_ast_finish_explain(
+        c_ast_pre_explain(
           false, NULL, $2.ast, $4.ast, &@4, &ast, &taken_type_ids
         );
 
@@ -1728,7 +1728,7 @@ explain_c
 
       c_ast_t const *ast;
       c_type_id_t taken_type_ids;
-      bool const ok = c_ast_finish_explain(
+      bool const ok = c_ast_pre_explain(
         $3, &$2, $4.ast, $6.ast, &@6, &ast, &taken_type_ids
       );
 
@@ -1755,7 +1755,7 @@ explain_c
 
       c_ast_t const *ast;
       c_type_id_t taken_type_ids;
-      bool const ok = c_ast_finish_explain(
+      bool const ok = c_ast_pre_explain(
         true, NULL, $3.ast, $5.ast, &@5, &ast, &taken_type_ids
       );
 
