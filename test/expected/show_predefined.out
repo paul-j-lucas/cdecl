@@ -165,6 +165,7 @@ define WCHAR as wchar_t
 define WORD as unsigned short
 define WPARAM as UINT_PTR
 define _Decimal128 as long double
+define _Decimal128_t as _Decimal128
 define _Decimal128x as _Decimal128
 define _Decimal32 as float
 define _Decimal32_t as _Decimal32
@@ -172,11 +173,15 @@ define _Decimal64 as double
 define _Decimal64_t as _Decimal64
 define _Decimal64x as _Decimal64
 define _Float128 as long double
+define _Float128_t as _Float128
 define _Float128x as _Float128
 define _Float16 as float
+define _Float16_t as _Float16
 define _Float32 as float
+define _Float32_t as _Float32
 define _Float32x as _Float32
 define _Float64 as double
+define _Float64_t as _Float64
 define _Float64x as _Float64
 define __float128 as _Float128
 define __float80 as _Float64x

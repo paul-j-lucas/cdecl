@@ -188,11 +188,15 @@ static char const *const TYPEDEFS_STD_ATOMIC_H[] = {
  */
 static char const *const TYPEDEFS_FLOATING_POINT_EXTENSIONS[] = {
   "typedef          float       _Float16",
+  "typedef          _Float16    _Float16_t",
   "typedef          float       _Float32",
+  "typedef          _Float32    _Float32_t",
   "typedef          _Float32    _Float32x",
   "typedef          double      _Float64",
+  "typedef          _Float64    _Float64_t",
   "typedef          _Float64    _Float64x",
   "typedef long     double      _Float128",
+  "typedef          _Float128   _Float128_t",
   "typedef          _Float128   _Float128x",
 
   "typedef          float       _Decimal32",
@@ -201,6 +205,7 @@ static char const *const TYPEDEFS_FLOATING_POINT_EXTENSIONS[] = {
   "typedef          _Decimal64  _Decimal64x",
   "typedef          _Decimal64  _Decimal64_t",
   "typedef long     double      _Decimal128",
+  "typedef          _Decimal128 _Decimal128_t",
   "typedef          _Decimal128 _Decimal128x",
 
   "typedef          double      double_t",
