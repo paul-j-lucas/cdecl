@@ -1,3 +1,129 @@
+2020-07-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS: Added more stuff added.
+   * Makefile.am: Added "update-gnulib" rule.
+   * gnulib-common.m4, multiarch.m4: Updated Gnulib.
+   * cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added yet more types _Float16_t, _Float32_t, _Float64_t, _Float128_t,
+     _Decimal128_t.
+
+2020-07-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added types from Floating-point extensions for C.
+   * c_lang.c: s/K&R C/K&RC/ for consistency.
+   * NEWS, cdecl.1, autocomplete.c, c_keyword.c, c_lang.c, c_lang.h, c_type.c,
+     parser.y, set.out, set_options.out: Added support for C2X.
+   * cdecl.c, cdecl.h, parser.y, types.h: Replaced c_init_t by bool.
+   * parser.y: Added unsupported().
+   * c_lang.h, types.h: Reworked LANG_*.
+   * util.h: UNEXPECTED_INT_VALUE() now also prints in hex.
+   * NEWS, parser.y: The [[xxx]] attribute syntax is now forbidden until C++11.
+   * c_keyword.c, c_type.c: Reformatting.
+   * NEWS, cdecl.1, autocomplete.c, c_keyword.c, c_keyword.h, c_lang.c,
+     c_lang.h, c_type.c, c_type.h, c_typedef.c, errors.c, lexer.l, literals.c,
+     literals.h, parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d.out,
+     show_all.out, show_all_typedef.out, show_predefined.out,
+     show_predefined_typedef.out, xec_explain_a.out, xec_explain_ha.out,
+     xec_explain_hr.out, xec_explain_la.out, xec_explain_lr.out,
+     xec_explain_r.out, xec_explain_ta.out, xec_explain_tr.out,
+     xec_explain_tua.out, xec_explain_ua.out, xec_explain_uhta.out,
+     xec_explain_uhtr.out, xec_explain_ur.out, xec_explain_uta.out,
+     xec_explain_a.test, xec_explain_ha.test, xec_explain_hr.test,
+     xec_explain_la.test, xec_explain_lla.test, xec_explain_llr.test,
+     xec_explain_lr.test, xec_explain_r.test, xec_explain_t.test,
+     xec_explain_ta.test, xec_explain_ti.test, xec_explain_tr.test,
+     xec_explain_tua.test, xec_explain_ua.test, xec_explain_uhta.test,
+     xec_explain_uhtr.test, xec_explain_ur.test, xec_explain_uta.test: Added
+     support for Embedded C extensions.
+
+2020-07-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am, update_test.sh: Added update_test.sh script.
+   * run_test.sh: s/OUTPUT/ACTUAL_OUTPUT/
+
+2020-07-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c, print.h: Now printing file & line where print_warning() was
+     called from in debug mode.
+   * c_type.c, c_type.h: s/T_INT_MODIFIER/T_ANY_MODIFIER/
+   * c_type.c: Reference qualifiers are only in C++11 and later.
+   * lexer.l: Added comments.
+
+2020-07-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c: Removed silly assert()s.
+   * c_ast.c: Cleaned-up c_ast_sname_set_sname().
+   * c_ast.c, c_ast.h: Made c_ast_sname_dup() inline.
+   * c_sname.c, c_sname.h: Removed c_sname_prepend_name() -- not used.
+   * NEWS, configure.ac, cdecl.1, autocomplete.c, cdecl.c, parser.y,
+     2c_typedef_i.out, namespace_c_typedef_i.out, namespace_k_typedef_i.out,
+     namespace_n_typedef_i.out, typedef_tki.out: class/struct/union addionally
+     define themselves. Added "class", "struct", and "union" as commands. ';'
+     is now optional after class/struct/union.
+   * c_ast.c, c_ast.h, c_sname.c, c_sname.h, english.c, errors.c, parser.y:
+     Changed *_type to *_local_type to be clearer.
+   * c_sname.h: Comment fixes.
+   * c_sname.h: Typo.
+   * c_sname.h, gibberish.c: Fixed printing scoped types in gibberish for
+     recent sname scoping changes.
+
+2020-07-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added debug information to scope_declaration_c.
+   * english.c: Simplified c_sname_english() and c_typedef_english().
+   * debug.c, debug.h, parser.y, cdecl--debug.out, cdecl-d.out: Now including
+     scope types for all scopes in sname debug output.
+
+2020-07-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Now setting the scope type to "namespace" for all scopes in a
+     namespace declaration.
+   * c_ast.c, c_sname.c, c_typedef.c: Added assert()s.
+   * c_sname.c: Simplified c_sname_type_impl().
+   * c_ast.h: Comment additions.
+   * parser.y: Moved check for nested types in C only if a nested type is
+     actually attempted.
+   * cdecl.1, help.c, help-c++.out, help_command-c++.out,
+     help_commands-c++.out: Tweaked help & man page for scope-c.
+   * help.c, help-c++.out, help_command-c++.out, help_commands-c++.out: Removed
+     {} from scope-e in help.
+   * c_typedef.c: Added C_TYPEDEF_VAR_INIT().
+
+2020-07-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_sname.c, c_sname.h, english.c, errors.c, lexer.l, parser.y,
+     types.h, test/Makefile.am, explain_nsct.out, explain_nsct.test: Each scope
+     of a scoped name (sname) now has its own type.  Additionally, the English
+     printed order is now (correctly) inner-to-outermost.
+
+2020-07-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c: Reworked c_ast_sname_set_sname().
+   * c_ast.c: s/c_sname_append_sname/c_ast_sname_append_sname/
+   * parser.y: Flipper c_sname_append_sname() & c_sname_set_type() order.
+   * c_type.c, errors.c, parser.y: s/strdup/check_strdup/
+
+2020-07-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, c_sname.h: Moved c_scope_name() from c_ast.h to c_sname.h.
+   * prompt.c: Now always freeing old prompt.
+   * c_lang.c, cdecl.c, prompt.c, prompt.h, set.c: s/prompt/cdecl_prompt/
+   * c_ast_util.h: Sorted functions.
+   * c_ast_util.c, c_ast_util.h, errors.c, types.h: Moved c_ast_pair to
+     types.h.
+   * c_ast.c: Pulled switch() out of loop in c_ast_visit().
+   * c_ast.c: Changed c_ast_visit() from recursive to iterative.
+
+2020-07-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * color.c: s/fd_out/fout_fd/
+   * help.c: Hoisted is_title() check out of the loop.
+   * help.c: s/c/s/
+   * help.c: Comments.
+
 2020-07-14  Paul J. Lucas <paul@lucasmail.org>
 
    * help.c: Added comment.
