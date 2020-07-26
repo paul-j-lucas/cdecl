@@ -53,15 +53,15 @@ static c_keyword_t const C_ATTRIBUTES[] = {
   { L_CARRIES_DEPENDENCY,
                     Y_CARRIES_DEPENDENCY,
                                     T_CARRIES_DEPENDENCY,
-                                                    LANG_CPP_MIN(11)  },
-  { L_NORETURN,     Y_NORETURN,     T_NORETURN,     LANG_CPP_MIN(11)  },
+                                                    LANG_CPP_MIN(11)      },
+  { L_NORETURN,     Y_NORETURN,     T_NORETURN,     LANG_CPP_MIN(11)      },
 
-  // C++14
-  { L_DEPRECATED,   Y_DEPRECATED,   T_DEPRECATED,   LANG_CPP_MIN(14)  },
+  // C2X & C++14
+  { L_DEPRECATED,   Y_DEPRECATED,   T_DEPRECATED,   LANG_C_CPP_MIN(2X,14) },
 
-  // C++17
-  { L_MAYBE_UNUSED, Y_MAYBE_UNUSED, T_MAYBE_UNUSED, LANG_CPP_MIN(17)  },
-  { L_NODISCARD,    Y_NODISCARD,    T_NODISCARD,    LANG_CPP_MIN(17)  },
+  // C2X & C++17
+  { L_MAYBE_UNUSED, Y_MAYBE_UNUSED, T_MAYBE_UNUSED, LANG_C_CPP_MIN(2X,17) },
+  { L_NODISCARD,    Y_NODISCARD,    T_NODISCARD,    LANG_C_CPP_MIN(2X,17) },
 
   // C++20                // Not implemented because:
 #if 0
@@ -75,9 +75,9 @@ static c_keyword_t const C_ATTRIBUTES[] = {
   { L_NO_UNIQUE_ADDRESS,
                     Y_NO_UNIQUE_ADDRESS,
                                     T_NO_UNIQUE_ADDRESS,
-                                                    LANG_CPP_MIN(20)  },
+                                                    LANG_CPP_MIN(20)      },
 
-  { NULL,           0,              T_NONE,         LANG_NONE         }
+  { NULL,           0,              T_NONE,         LANG_NONE             }
 };
 
 /**
@@ -188,8 +188,10 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_CHAR16_T,         Y_CHAR16_T,         T_CHAR16_T,     LANG_C_CPP_11_MIN },
   { L_CHAR32_T,         Y_CHAR32_T,         T_CHAR32_T,     LANG_C_CPP_11_MIN },
 
+  // C2X & C++20
+  { L_CHAR8_T,          Y_CHAR8_T,          T_CHAR8_T,  LANG_C_CPP_MIN(2X,20) },
+
   // C++20
-  { L_CHAR8_T,          Y_CHAR8_T,          T_CHAR8_T,      LANG_CPP_MIN(20)  },
   { L_CONCEPT,          Y_CONCEPT,          T_NONE,         LANG_CPP_MIN(20)  },
   { L_CONSTEVAL,        Y_CONSTEVAL,        T_CONSTEVAL,    LANG_CPP_MIN(20)  },
   { L_REQUIRES,         Y_REQUIRES,         T_NONE,         LANG_CPP_MIN(20)  },

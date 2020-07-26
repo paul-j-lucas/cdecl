@@ -4,6 +4,6 @@
   noexplain-by-default
   noexplicit-int
   nographs
-    lang=C18
+    lang=C2X
     prompt
     semicolon

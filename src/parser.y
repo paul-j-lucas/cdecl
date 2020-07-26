@@ -949,9 +949,15 @@ static void yyerror( char const *msg ) {
                      */
 %token  <type_id>   Y_DELETE
 
-                    /* C++11 */
+                    /* C11 & C++11 */
+%token  <type_id>   Y_CHAR16_T
+%token  <type_id>   Y_CHAR32_T
+
+                    /* C2X & C++11 */
 %token              Y_LBRACKET2   "[["  /* for attribute specifiers */
 %token              Y_RBRACKET2   "]]"  /* for attribute specifiers */
+
+                    /* C++11 */
 %token              Y_ALIGNAS
 %token              Y_ALIGNOF
 %token  <type_id>   Y_AUTO_TYPE         /* C++11 version of "auto" */
@@ -968,20 +974,20 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_THREAD_LOCAL
 %token              Y_USER_DEFINED
 
-                    /* C11 & C++11 */
-%token  <type_id>   Y_CHAR16_T
-%token  <type_id>   Y_CHAR32_T
-
-                    /* C++14 */
+                    /* C2X & C++14 */
 %token  <type_id>   Y_DEPRECATED
 
-                    /* C++17 */
+                    /* C2X & C++17 */
 %token  <type_id>   Y_MAYBE_UNUSED
-%token  <type_id>   Y_NORETURN
 %token  <type_id>   Y_NODISCARD
 
-                    /* C++20 */
+                    /* C++17 */
+%token  <type_id>   Y_NORETURN
+
+                    /* C2X & C++20 */
 %token  <type_id>   Y_CHAR8_T
+
+                    /* C++20 */
 %token              Y_CONCEPT
 %token  <type_id>   Y_CONSTEVAL
 %token  <oper_id>   Y_LESS_EQ_GREATER "<=>"
@@ -4075,7 +4081,7 @@ storage_class_c_type
 attribute_specifier_list_c_type
   : "[["
     {
-      if ( unsupported( LANG_MIN(CPP_11) ) ) {
+      if ( unsupported( LANG_C_CPP_MIN(2X,11)) ) {
         print_error( &@1,
           "\"[[\" attribute syntax not supported in %s", C_LANG_NAME()
         );

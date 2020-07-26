@@ -454,7 +454,7 @@ to use.
 .B C AND C++ LANGUAGE VERSIONS
 for valid languages.)
 The default is
-.B C18
+.B C2X
 (for
 .BR cdecl )
 and
@@ -565,6 +565,15 @@ Use the C18 version of the C language.
 (Minor revision:
 no new features.
 Equivalent to C11.)
+.TP
+.B C2X
+Use the C2X version of the C language.
+Adds support for
+\f(CWchar8_t\fP,
+\f(CW[[deprecated]]\fP,
+\f(CW[[maybe_unused]]\fP,
+and
+\f(CW[[nodiscard]]\fP.
 .TP
 .B C++
 Use the latest supported version of the C++ language.

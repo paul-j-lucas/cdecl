@@ -12,6 +12,13 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 7.5
 
+** C2X support
+Added support for C2X:
+
++ Added type char8_t.
++ Added [[...]] syntax for attributes.
++ Added [[deprecated]], [[maybe_unused]], and [[nodiscard]] attributes.
+
 ** Embedded C support
 Added support for Embedded C:
 
@@ -24,7 +31,7 @@ Since the Embedded C standard is based on C99, support for Embedded C is
 available only when the language is set to C99.
 
 ** Forbidding attribute syntax
-The [[xxx]] attribute syntax is now forbidden until C++11.
+The [[xxx]] attribute syntax is now forbidden until either C2X or C++11.
 
 ** class, struct, & union optional ';'
 Semicolons are now optional after "class", "struct", or "union" declarations.

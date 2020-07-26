@@ -128,13 +128,13 @@ static c_type_t const C_ATTRIBUTE_INFO[] = {
   { T_CARRIES_DEPENDENCY, LANG_CPP_MIN(11), L_CARRIES_DEPENDENCY_H,
     (c_lang_lit_t[]){ { LANG_ALL, L_CARRIES_DEPENDENCY } } },
 
-  { T_DEPRECATED, LANG_CPP_MIN(11), NULL,
+  { T_DEPRECATED, LANG_C_CPP_MIN(2X,11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_DEPRECATED } } },
 
-  { T_MAYBE_UNUSED, LANG_CPP_MIN(17), L_MAYBE_UNUSED_H,
+  { T_MAYBE_UNUSED, LANG_C_CPP_MIN(2X,17), L_MAYBE_UNUSED_H,
     (c_lang_lit_t[]){ { LANG_ALL, L_MAYBE_UNUSED } } },
 
-  { T_NODISCARD, LANG_CPP_MIN(11), L_NON_DISCARDABLE,
+  { T_NODISCARD, LANG_C_CPP_MIN(2X,17), L_NON_DISCARDABLE,
     (c_lang_lit_t[]){ { LANG_ALL, L_NODISCARD } } },
 
   { T_NORETURN, LANG_C_CPP_MIN(11,11), L_NON_RETURNING,
@@ -267,7 +267,7 @@ static c_type_t const C_TYPE_INFO[] = {
   { T_CHAR, LANG_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_CHAR } } },
 
-  { T_CHAR8_T, LANG_CPP_MIN(20), NULL,
+  { T_CHAR8_T, LANG_C_CPP_MIN(2X,20), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_CHAR8_T } } },
 
   { T_CHAR16_T, LANG_C_CPP_MIN(11,11), NULL,
@@ -347,6 +347,7 @@ static c_type_t const C_TYPE_INFO[] = {
 #define C5          LANG_MIN(C_95)
 #define C9          LANG_MIN(C_99)
 #define C1          LANG_MIN(C_11)
+#define C2          LANG_C_CPP_MIN(2X,20)
 #define PP          LANG_CPP_ALL
 #define P3          LANG_CPP_MIN(03)
 #define P1          LANG_CPP_MIN(11)
@@ -404,7 +405,7 @@ static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
   { XX,C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// auto
   { XX,XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// bool
   { XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char
-  { XX,XX,XX,XX,P2,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char8_t
+  { XX,XX,XX,XX,C2,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char8_t
   { XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char16_t
   { XX,XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char32_t
   { XX,XX,XX,XX,XX,XX,XX,C5,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// wchar_t

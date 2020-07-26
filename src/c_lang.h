@@ -61,7 +61,8 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_C_99     (1u << 3)         /**< C 99. */
 #define LANG_C_11     (1u << 4)         /**< C 11. */
 #define LANG_C_18     (1u << 5)         /**< C 18. */
-#define LANG_C_NEW    LANG_C_18         /**< Newest supported C language. */
+#define LANG_C_2X     (1u << 6)         /**< C 2X. */
+#define LANG_C_NEW    LANG_C_2X         /**< Newest supported C language. */
 #define LANG_C_ALL    LANG_MAX(C_NEW)   /**< All C languages. */
 
 #define LANG_CPP_OLD  LANG_CPP_98       /**< Oldest supported C++ language. */
