@@ -95,7 +95,7 @@ static help_text_t const HELP_TEXT_COMMANDS[] = {
     SAME_AS_C },
   { "        [no]prompt [no]semicolon",
     SAME_AS_C },
-  { "lang: C K&R C89 C95 C99 C11 C18 C\\+\\+ C\\+\\+98 C\\+\\+03 C\\+\\+11 C\\+\\+14 C\\+\\+17 C\\+\\+20",
+  { "lang: C K&R C89 C95 C99 C11 C18 C2X C\\+\\+ C\\+\\+98 C\\+\\+03 C\\+\\+11 C\\+\\+14 C\\+\\+17 C\\+\\+20",
     SAME_AS_C },
   { NOT_IN_LANG,
     "scope-c: class struct union [inline] namespace" },
