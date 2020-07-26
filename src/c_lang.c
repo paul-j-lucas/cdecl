@@ -108,7 +108,7 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
   assert( exactly_one_bit_set( lang_id & ~LANGX_MASK ) );
   switch ( lang_id ) {
     case LANG_NONE    : return "";
-    case LANG_C_KNR   : return "K&R C";
+    case LANG_C_KNR   : return "K&RC";
     case LANG_C_89    : return "C89";
     case LANG_C_95    : return "C95";
     case LANG_C_99    : return "C99";
