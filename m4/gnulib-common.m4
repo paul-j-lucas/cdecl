@@ -1,4 +1,4 @@
-# gnulib-common.m4 serial 50
+# gnulib-common.m4 serial 52
 dnl Copyright (C) 2007-2020 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -292,6 +292,20 @@ AC_DEFUN([gl_COMMON_BODY], [
        that may clobber errno, it needs to save and restore the value of
        errno.  */
 #define _GL_ASYNC_SAFE
+])
+  AH_VERBATIM([micro_optimizations],
+[/* _GL_CMP (n1, n2) performs a three-valued comparison on n1 vs. n2.
+   It returns
+     1  if n1 > n2
+     0  if n1 == n2
+     -1 if n1 < n2
+   The naïve code   (n1 > n2 ? 1 : n1 < n2 ? -1 : 0)  produces a conditional
+   jump with nearly all GCC versions up to GCC 10.
+   This variant     (n1 < n2 ? -1 : n1 > n2)  produces a conditional with many
+   GCC versions up to GCC 9.
+   The better code  (n1 > n2) - (n1 < n2)  from Hacker's Delight § 2-9
+   avoids conditional jumps in all GCC versions >= 3.4.  */
+#define _GL_CMP(n1, n2) (((n1) > (n2)) - ((n1) < (n2)))
 ])
   dnl Hint which direction to take regarding cross-compilation guesses:
   dnl When a user installs a program on a platform they are not intimately
@@ -610,6 +624,15 @@ AC_DEFUN([AC_C_RESTRICT],
 AC_DEFUN([gl_BIGENDIAN],
 [
   AC_C_BIGENDIAN
+])
+
+# gl_SILENT(command)
+# executes command, but without the normal configure output.
+AC_DEFUN([gl_SILENT],
+[
+  {
+    $1
+  } AS_MESSAGE_FD>/dev/null
 ])
 
 # gl_CACHE_VAL_SILENT(cache-id, command-to-set-it)
