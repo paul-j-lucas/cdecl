@@ -3966,7 +3966,7 @@ enum_class_struct_union_ast
   | enum_class_struct_union_type any_sname_c_opt '{'
     {
       print_error( &@3,
-        "%s definitions are not supported",
+        "explaining %s definitions is not supported",
         c_type_name( $1 )
       );
       PARSE_ABORT();
