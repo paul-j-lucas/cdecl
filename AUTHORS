@@ -68,16 +68,18 @@ Paul J. Lucas <paul@lucasmail.org>
 	added more semantic checks
 	added long options
 	added multi-line input
-	now distinguishing among K&R C, C89, C95, C99, C11, C18, C++98, C++03,
-		C++11, C++14, C++17, and C++20
+	now distinguishing among K&R C, C89, C95, C99, C11, C18, C2X, C++98,
+		C++03, C++11, C++14, C++17, and C++20
 	now using a proper abstract syntax tree data structure
-	added _Atomic, bool, char16_t, char32_t, _Complex, _Imaginary,
+	added _Atomic, bool, char8_t, char16_t, char32_t, _Complex, _Imaginary,
 		noreturn, restrict, thread_local, wchar_t
 	added inline functions and variables
 	added register and variadic function arguments
 	added typedef, using, define, and show commands
 	added alternative tokens
 	added "east const" option
+	added GNU __auto_type and GNU's alternate spellings of __const, etc.
+	added all Win32 types
 	added C99 static, type-qualified, and variable length array
 		function arguments
 	added C99 standard types, e.g., int8_t, atomic_int, etc.
@@ -87,8 +89,9 @@ Paul J. Lucas <paul@lucasmail.org>
 	added C++11 auto, constexpr, enum class, function trailing return-type
 		syntax, mutable, new-style casts, noexcept, ref-qualifiers,
 		rvalue references, and user-defined literals, throw()
-	added C++11 and later attribute specifiers
-	added C++20 char8_t and consteval
+	added C2X and C++11 later attribute specifiers
+	added C++20 consteval
+	added Embedded C types _Accum, _Fract, _Sat, and typedefs.
 	independently added typedef declarations
 	added final, friend, const, override, volatile, virtual,
 		and pure virtual C++ member function declarations
