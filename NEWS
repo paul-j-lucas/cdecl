@@ -47,9 +47,10 @@ is also defined as a type.  Hence, the above is now equivalent to:
     define C as class C
     define C::Int as int
 
-This also means that:
+This also means that either
 
     class C { }
+    class C
 
 is eqivalent to:
 

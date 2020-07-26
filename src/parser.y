@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 28
+%expect 27
 
 %{
 /** @endcond */
@@ -2098,14 +2098,7 @@ scope_declaration_c
       if ( !add_type( c_type_name( $1 ), ast, &@1 ) )
         PARSE_ABORT();
     }
-    lbrace_expected
-    in_scope_declaration_c_opt
-    rbrace_expected
-    /*
-     * ';' is required after class/struct/union in C++, but we let it be
-     * optional.
-     */
-    semi_opt
+    in_scope_declaration_c_opt_opt
 
     /*
      * C++ namespace declaration, e.g.: namespace NS { typedef int I; }
@@ -2166,10 +2159,12 @@ scope_declaration_c
 
       c_sname_append_sname( &in_attr.current_scope, &$3 );
     }
-    lbrace_expected
-    in_scope_declaration_c_opt
-    rbrace_expected
-    semi_opt                            /* ';' optional for namespace */
+    in_scope_declaration_c_opt_opt
+  ;
+
+in_scope_declaration_c_opt_opt
+  : /* empty */
+  | '{' in_scope_declaration_c_opt rbrace_expected semi_opt
   ;
 
 in_scope_declaration_c_opt
@@ -4907,14 +4902,6 @@ gt_expected
   | error
     {
       ELABORATE_ERROR( "'>' expected" );
-    }
-  ;
-
-lbrace_expected
-  : '{'
-  | error
-    {
-      ELABORATE_ERROR( "'{' expected" );
     }
   ;
 
