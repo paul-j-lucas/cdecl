@@ -2077,7 +2077,7 @@ scope_declaration_c
 
       DUMP_START( "scope_declaration_c",
                   "class_struct_union_type sname { "
-                  "scope_typedef_or_using_declaration_c_opt "
+                  "in_scope_declaration_c_opt "
                   "} ;" );
       DUMP_TYPE( "class_struct_union_type", $1 );
       DUMP_SNAME( "any_sname_c", &$3 );
@@ -2099,7 +2099,7 @@ scope_declaration_c
         PARSE_ABORT();
     }
     lbrace_expected
-    scope_typedef_or_using_declaration_c_opt
+    in_scope_declaration_c_opt
     rbrace_expected
     /*
      * ';' is required after class/struct/union in C++, but we let it be
@@ -2158,7 +2158,7 @@ scope_declaration_c
 
       DUMP_START( "scope_declaration_c",
                   "[INLINE] NAMESPACE sname { "
-                  "scope_typedef_or_using_declaration_c_opt "
+                  "in_scope_declaration_c_opt "
                   "} [;]" );
       DUMP_TYPE( "namespace_type", $1 );
       DUMP_SNAME( "any_sname_c", &$3 );
@@ -2167,12 +2167,12 @@ scope_declaration_c
       c_sname_append_sname( &in_attr.current_scope, &$3 );
     }
     lbrace_expected
-    scope_typedef_or_using_declaration_c_opt
+    in_scope_declaration_c_opt
     rbrace_expected
     semi_opt                            /* ';' optional for namespace */
   ;
 
-scope_typedef_or_using_declaration_c_opt
+in_scope_declaration_c_opt
   : /* empty */
   | scope_declaration_c
   | typedef_declaration_c semi_expected
