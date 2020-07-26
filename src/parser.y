@@ -456,13 +456,11 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
 static void c_ast_explain( c_ast_t const *ast, c_type_id_t taken_type_ids ) {
   assert( ast != NULL );
 
-  if ( ast->kind_id == K_USER_DEF_CONVERSION ) {
+  FPRINTF( fout, "%s ", L_DECLARE );
+  if ( ast->kind_id != K_USER_DEF_CONVERSION ) {
     //
-    // User-defined conversions don't have names.
+    // Every kind but a user-defined conversion has a name.
     //
-    FPRINTF( fout, "%s ", L_DECLARE );
-  }
-  else {
     c_sname_t const *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
     char const *local_name, *scope_name;
 
@@ -477,7 +475,7 @@ static void c_ast_explain( c_ast_t const *ast, c_type_id_t taken_type_ids ) {
     }
 
     assert( local_name != NULL );
-    FPRINTF( fout, "%s %s ", L_DECLARE, local_name );
+    FPRINTF( fout, "%s ", local_name );
     if ( scope_name[0] != '\0' ) {
       c_type_id_t const sn_type = c_sname_local_type( found_sname );
       assert( sn_type != T_NONE );
