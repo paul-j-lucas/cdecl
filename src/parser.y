@@ -451,9 +451,9 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
  * Prints the pseudo English explanation for an AST.
  *
  * @param ast The `c_ast` to explain.
- * @param is_typedef Whether \a ast is a `typedef`.
+ * @param taken_type_ids The type(s) taken away from \a ast.
  */
-static void c_ast_explain( c_ast_t const *ast, bool is_typedef ) {
+static void c_ast_explain( c_ast_t const *ast, c_type_id_t taken_type_ids ) {
   assert( ast != NULL );
 
   if ( ast->kind_id == K_USER_DEF_CONVERSION ) {
@@ -484,7 +484,7 @@ static void c_ast_explain( c_ast_t const *ast, bool is_typedef ) {
       FPRINTF( fout, "%s %s %s ", L_OF, c_type_name( sn_type ), scope_name );
     }
     FPRINTF( fout, "%s ", L_AS );
-    if ( is_typedef )
+    if ( (taken_type_ids & T_TYPEDEF) != T_NONE )
       FPRINTF( fout, "%s ", L_TYPE );
   }
 
@@ -501,28 +501,30 @@ static void c_ast_explain( c_ast_t const *ast, bool is_typedef ) {
  * @param decl_ast The declaration `c_ast`.
  * @param decl_loc The source location of \a decl_ast.
  * @param past A pointer to the pointer for the final `c_ast`.
- * @param pis_typedef A pointer to receive whether this is a `typedef`.
+ * @param ptaken_type_ids A pointer to receive the taken type(s).
  * @return Returns `true` only upon success.
  */
 C_WARN_UNUSED_RESULT
 static bool c_ast_finish_explain( bool has_typename, c_alignas_t const *align,
                                   c_ast_t *type_ast,
                                   c_ast_t *decl_ast, c_loc_t const *decl_loc,
-                                  c_ast_t const **past, bool *pis_typedef ) {
+                                  c_ast_t const **past,
+                                  c_type_id_t *ptaken_type_ids ) {
   assert( type_ast != NULL );
   assert( decl_ast != NULL );
   assert( decl_loc != NULL );
   assert( past != NULL );
-  assert( pis_typedef != NULL );
+  assert( ptaken_type_ids != NULL );
 
   *past = NULL;
 
   if ( has_typename && !typename_ok( type_ast ) )
     return false;
 
-  *pis_typedef = c_ast_take_typedef( type_ast );
+  *ptaken_type_ids = c_ast_take_type_any( type_ast, T_TYPEDEF );
+  bool is_typedef = (*ptaken_type_ids & T_TYPEDEF) != T_NONE;
 
-  if ( *pis_typedef && decl_ast->kind_id == K_TYPEDEF ) {
+  if ( is_typedef && decl_ast->kind_id == K_TYPEDEF ) {
     //
     // This is for a case like:
     //
@@ -551,11 +553,12 @@ static bool c_ast_finish_explain( bool has_typename, c_alignas_t const *align,
   c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
   *past = ast;
 
-  *pis_typedef = *pis_typedef || c_ast_take_typedef( ast );
+  *ptaken_type_ids |= c_ast_take_type_any( ast, T_TYPEDEF );
+  is_typedef = (*ptaken_type_ids & T_TYPEDEF) != T_NONE;
 
   if ( align != NULL ) {
     ast->align = *align;
-    if ( *pis_typedef ) {
+    if ( is_typedef ) {
       //
       // We check for illegal aligned typedef here rather than in error.c
       // because the "typedef-ness" needed to be removed previously before the
@@ -1565,7 +1568,7 @@ define_english
 
       if ( ok ) {
         // Once the semantic checks pass, remove the T_TYPEDEF.
-        C_IGNORE_RV( c_ast_take_typedef( $5.ast ) );
+        C_IGNORE_RV( c_ast_take_type_any( $5.ast, T_TYPEDEF ) );
 
         if ( c_sname_count( &$2 ) > 1 ) {
           c_type_id_t sn_type = c_sname_local_type( &$2 );
@@ -1687,10 +1690,10 @@ explain_c
       DUMP_AST( "decl_c_ast", $4.ast );
 
       c_ast_t const *ast;
-      bool is_typedef;
+      c_type_id_t taken_type_ids;
       bool const ok =
         c_ast_finish_explain(
-          false, NULL, $2.ast, $4.ast, &@4, &ast, &is_typedef
+          false, NULL, $2.ast, $4.ast, &@4, &ast, &taken_type_ids
         );
 
       if ( ast != NULL )
@@ -1699,7 +1702,7 @@ explain_c
 
       if ( !ok )
         PARSE_ABORT();
-      c_ast_explain( ast, is_typedef );
+      c_ast_explain( ast, taken_type_ids );
     }
 
     /*
@@ -1726,9 +1729,9 @@ explain_c
       DUMP_AST( "decl_c_ast", $6.ast );
 
       c_ast_t const *ast;
-      bool is_typedef;
+      c_type_id_t taken_type_ids;
       bool const ok = c_ast_finish_explain(
-        $3, &$2, $4.ast, $6.ast, &@6, &ast, &is_typedef
+        $3, &$2, $4.ast, $6.ast, &@6, &ast, &taken_type_ids
       );
 
       DUMP_AST( "explain_c", ast );
@@ -1736,7 +1739,7 @@ explain_c
 
       if ( !ok )
         PARSE_ABORT();
-      c_ast_explain( ast, is_typedef );
+      c_ast_explain( ast, taken_type_ids );
     }
 
     /*
@@ -1753,9 +1756,9 @@ explain_c
       DUMP_AST( "decl_c_ast", $5.ast );
 
       c_ast_t const *ast;
-      bool is_typedef;
+      c_type_id_t taken_type_ids;
       bool const ok = c_ast_finish_explain(
-        true, NULL, $3.ast, $5.ast, &@5, &ast, &is_typedef
+        true, NULL, $3.ast, $5.ast, &@5, &ast, &taken_type_ids
       );
 
       DUMP_AST( "explain_c", ast );
@@ -1763,7 +1766,7 @@ explain_c
 
       if ( !ok )
         PARSE_ABORT();
-      c_ast_explain( ast, is_typedef );
+      c_ast_explain( ast, taken_type_ids );
     }
 
     /*
@@ -1934,7 +1937,7 @@ explain_c
       else {
         if ( (ok = c_ast_check_declaration( ast )) ) {
           // Once the semantic checks pass, remove the T_TYPEDEF.
-          C_IGNORE_RV( c_ast_take_typedef( ast ) );
+          C_IGNORE_RV( c_ast_take_type_any( ast, T_TYPEDEF ) );
           FPRINTF( fout, "%s %s %s %s ", L_DECLARE, $3, L_AS, L_TYPE );
           c_ast_english( ast, fout );
           FPUTC( '\n', fout );
@@ -2336,7 +2339,7 @@ typedef_declaration_c
 
       C_AST_CHECK_DECL( ast );
       // see the comment in define_english about T_TYPEDEF
-      C_IGNORE_RV( c_ast_take_typedef( ast ) );
+      C_IGNORE_RV( c_ast_take_type_any( ast, T_TYPEDEF ) );
 
       if ( c_ast_sname_count( ast ) > 1 ) {
         print_error( &@6,
@@ -2427,7 +2430,7 @@ using_declaration_c
 
       C_AST_CHECK_DECL( ast );
       // see the comment in "define_english" about T_TYPEDEF
-      C_IGNORE_RV( c_ast_take_typedef( ast ) );
+      C_IGNORE_RV( c_ast_take_type_any( ast, T_TYPEDEF ) );
 
       if ( !add_type( L_USING, ast, &@5 ) )
         PARSE_ABORT();

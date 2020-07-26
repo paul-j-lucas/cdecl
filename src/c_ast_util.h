@@ -213,8 +213,8 @@ C_WARN_UNUSED_RESULT
 c_sname_t c_ast_take_name( c_ast_t *ast );
 
 /**
- * Checks \a ast to see if it contains a `typedef`.
- * If so, removes it.
+ * Checks \a ast to see if it contains ore or more of \a type_ids.
+ * If so, removes them.
  * This is used in cases like:
  * @code
  *  explain typedef int *p
@@ -229,10 +229,11 @@ c_sname_t c_ast_take_name( c_ast_t *ast );
  * @endcode
  *
  * @param ast The `c_ast` to check.
- * @return Returns `true` only if \a ast contains a `typedef`.
+ * @param type_ids The bitwise-or of type(s) to find.
+ * @return Returns `true` only if \a ast contains any one of \a type_ids.
  */
 C_WARN_UNUSED_RESULT
-bool c_ast_take_typedef( c_ast_t *ast );
+c_type_id_t c_ast_take_type_any( c_ast_t *ast, c_type_id_t type_ids );
 
 /**
  * Un-pointers \a ast, i.e., if \a ast is a <code>\ref K_POINTER</code>,

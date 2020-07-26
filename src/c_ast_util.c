@@ -439,15 +439,15 @@ c_sname_t c_ast_take_name( c_ast_t *ast ) {
   return rv;
 }
 
-bool c_ast_take_typedef( c_ast_t *ast ) {
+c_type_id_t c_ast_take_type_any( c_ast_t *ast, c_type_id_t type_ids ) {
   assert( ast != NULL );
-  c_ast_t *const found_ast =
-    c_ast_find_type_any( ast, C_VISIT_DOWN, T_TYPEDEF );
+  c_type_id_t rv = T_NONE;
+  c_ast_t *const found_ast = c_ast_find_type_any( ast, C_VISIT_DOWN, type_ids );
   if ( found_ast != NULL ) {
-    found_ast->type_id &= ~T_TYPEDEF;
-    return true;
+    rv = found_ast->type_id & type_ids;
+    found_ast->type_id &= ~type_ids;
   }
-  return false;
+  return rv;
 }
 
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast ) {
