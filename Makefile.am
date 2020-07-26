@@ -30,4 +30,8 @@ doc docs:
 clean-local:
 	rm -rf docs
 
+update-gnulib:
+	gnulib --add-import
+	rm -f m4/.gitignore
+
 # vim:set noet sw=8 ts=8:
