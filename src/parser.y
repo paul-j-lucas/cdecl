@@ -385,6 +385,18 @@ static inline void qualifier_pop( void ) {
   FREE( slist_pop_head( &in_attr.qualifier_stack ) );
 }
 
+/**
+ * Checks if the current language is _not_ among \a lang_ids.
+ *
+ * @param lang_ids The bitwise-or of language(s).
+ * @return Returns `true` only if cdecl has been initialized and `opt_lang` is
+ * _not_ among \a lang_ids.
+ */
+C_WARN_UNUSED_RESULT
+static inline bool unsupported( c_lang_id_t lang_ids ) {
+  return c_init >= C_INIT_READ_CONF && (opt_lang & lang_ids) == LANG_NONE;
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -1252,7 +1264,7 @@ cast_english
 
       bool ok = false;
 
-      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+      if ( unsupported( LANG_MIN(CPP_11) ) ) {
         print_error( &@1, "%s not supported in %s", $1, C_LANG_NAME() );
       }
       else if ( (ok = c_ast_check_cast( $5.ast )) ) {
@@ -1639,7 +1651,7 @@ explain_c
       DUMP_END();
 
       bool ok = false;
-      if ( c_init >= C_INIT_READ_CONF && C_LANG_IS_C() ) {
+      if ( unsupported( LANG_CPP_ALL ) ) {
         print_error( &@2, "%s_cast not supported in %s", $2, C_LANG_NAME() );
       }
       else {
@@ -1908,7 +1920,7 @@ explain_c
       // declaration.
       //
       bool ok = false;
-      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+      if ( unsupported( LANG_MIN(CPP_11) ) ) {
         print_error( &@2,
           "\"%s\" not supported in %s", L_USING, C_LANG_NAME()
         );
@@ -2110,8 +2122,7 @@ scope_declaration_c
       // AST because the AST has no "memory" of how a namespace was
       // constructed.
       //
-      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_17 &&
-            c_sname_count( &$3 ) > 1 ) {
+      if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_MIN(CPP_17) ) ) {
         print_error( &@3,
           "nested %s declarations not supported until %s",
           L_NAMESPACE, c_lang_name( LANG_CPP_17 )
@@ -2377,7 +2388,7 @@ using_declaration_c
       // and the AST has no "memory" that such a declaration was a using
       // declaration.
       //
-      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+      if ( unsupported( LANG_MIN(CPP_11) ) ) {
         print_error( &@1,
           "\"%s\" not supported in %s", L_USING, C_LANG_NAME()
         );
@@ -2832,7 +2843,7 @@ user_defined_literal_decl_english_ast
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+      if ( unsupported( LANG_MIN(CPP_11) ) ) {
         print_error( &@1,
           "%s %s not supported in %s", L_USER_DEFINED, L_LITERAL, C_LANG_NAME()
         );
@@ -3262,7 +3273,7 @@ trailing_return_type_c_ast_opt
       // later in the AST because the AST has no "memory" of where the return-
       // type came from.
       //
-      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+      if ( unsupported( LANG_MIN(CPP_11) ) ) {
         print_error( &@1,
           "trailing return type not supported in %s", C_LANG_NAME()
         );
@@ -4064,7 +4075,7 @@ storage_class_c_type
 attribute_specifier_list_c_type
   : "[["
     {
-      if ( c_init >= C_INIT_READ_CONF && opt_lang < LANG_CPP_11 ) {
+      if ( unsupported( LANG_MIN(CPP_11) ) ) {
         print_error( &@1,
           "\"[[\" attribute syntax not supported in %s", C_LANG_NAME()
         );
@@ -4118,8 +4129,7 @@ attribute_name_c_type
       if ( a == NULL ) {
         print_warning( &@1, "\"%s\": unknown attribute", $1 );
       }
-      else if ( c_init >= C_INIT_READ_CONF &&
-                (opt_lang & a->lang_ids) == LANG_NONE ) {
+      else if ( unsupported( a->lang_ids ) ) {
         print_warning( &@1, "\"%s\" not supported in %s", $1, C_LANG_NAME() );
       }
       else {
@@ -4643,7 +4653,7 @@ sname_c
   : sname_c "::" Y_NAME
     {
       // see the comment in "of_scope_english"
-      if ( c_init >= C_INIT_READ_CONF && C_LANG_IS_C() ) {
+      if ( unsupported( LANG_CPP_ALL ) ) {
         print_error( &@2, "scoped names not supported in %s", C_LANG_NAME() );
         PARSE_ABORT();
       }
@@ -4964,7 +4974,7 @@ of_scope_english
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( c_init >= C_INIT_READ_CONF && C_LANG_IS_C() ) {
+      if ( unsupported( LANG_CPP_ALL ) ) {
         print_error( &@2, "scoped names not supported in %s", C_LANG_NAME() );
         PARSE_ABORT();
       }
