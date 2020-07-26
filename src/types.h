@@ -52,21 +52,6 @@ enum c_graph {
 };
 
 /**
- * Initialization state.
- *
- * We currently only need to discriminate between before and after reading the
- * configuration file, if any, to know whether we should restrict `using`
- * declarations to C++11 and later.  Hence, this could have been a simple
- * `bool`.  However, it was made an `enum` in the event that discriminating
- * between more initialization states becomes needed in the future.
- */
-enum c_init {
-  C_INIT_BEGIN,                         ///< Very beginning of initialization.
-  C_INIT_READ_CONF,                     ///< Read configuration file.
-  C_INIT_DONE                           ///< Initialization done.
-};
-
-/**
  * The source location used by Bison.
  */
 struct c_loc {
@@ -116,7 +101,6 @@ typedef struct c_constructor    c_constructor_t;
 typedef struct c_ecsu           c_ecsu_t;
 typedef struct c_func           c_func_t;
 typedef enum   c_graph          c_graph_t;
-typedef enum   c_init           c_init_t;
 typedef struct c_keyword        c_keyword_t;
 typedef enum   c_kind_id        c_kind_id_t;
 typedef uint16_t                c_lang_id_t;    ///< Languages bitmask.

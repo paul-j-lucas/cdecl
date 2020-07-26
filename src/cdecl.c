@@ -64,7 +64,7 @@ enum c_command {
 typedef enum c_command c_command_t;
 
 // extern variable definitions
-c_init_t            c_init;             // initialization state
+bool                c_initialized;
 c_mode_t            c_mode;             // parsing english or gibberish?
 char const         *command_line;       // command from command line, if any
 size_t              command_line_len;   // length of command_line
@@ -122,11 +122,8 @@ int main( int argc, char const **argv ) {
   if ( !opt_no_conf )
     read_conf_file();
   opt_conf_file = NULL;                 // don't print in errors any more
-  c_init = C_INIT_READ_CONF;
+  c_initialized = true;
 
-  // ...
-
-  c_init = C_INIT_DONE;
   bool const ok = parse_argv( argc, argv );
   exit( ok ? EX_OK : EX_DATAERR );
 }

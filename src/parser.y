@@ -394,7 +394,7 @@ static inline void qualifier_pop( void ) {
  */
 C_WARN_UNUSED_RESULT
 static inline bool unsupported( c_lang_id_t lang_ids ) {
-  return c_init >= C_INIT_READ_CONF && (opt_lang & lang_ids) == LANG_NONE;
+  return c_initialized && (opt_lang & lang_ids) == LANG_NONE;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
