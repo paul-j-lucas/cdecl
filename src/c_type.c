@@ -684,9 +684,9 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
   };
   C_TYPE_NAME_CAT( &name, type_id, C_STORAGE_CLASS, is_error, ' ', &space );
 
-  c_type_id_t east_cv_type_id = T_NONE;
+  c_type_id_t east_type_id = T_NONE;
   if ( opt_east_const && c_mode == C_ENGLISH_TO_GIBBERISH ) {
-    east_cv_type_id = type_id & (T_CONST | T_VOLATILE);
+    east_type_id = type_id & (T_CONST | T_VOLATILE);
     type_id &= ~(T_CONST | T_VOLATILE);
   }
 
@@ -740,8 +740,8 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
   };
   C_TYPE_NAME_CAT( &name, type_id, C_TYPE, is_error, ' ', &space );
 
-  if ( east_cv_type_id != T_NONE )
-    C_TYPE_NAME_CAT( &name, east_cv_type_id, C_QUALIFIER, is_error, ' ', &space );
+  if ( east_type_id != T_NONE )
+    C_TYPE_NAME_CAT( &name, east_type_id, C_QUALIFIER, is_error, ' ', &space );
 
   // Really special cases.
   if ( (type_id & T_NAMESPACE) != T_NONE )

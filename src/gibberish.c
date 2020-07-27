@@ -428,19 +428,19 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
  *
  * @param g The `g_state` to initialize.
  * @param flags Flags to tweak output.
- * @param root The AST root.
+ * @param root_ast The AST root.
  * @param gout The `FILE` to print it to.
  */
-static void g_init( g_state_t *g, c_ast_t const *root, unsigned flags,
+static void g_init( g_state_t *g, c_ast_t const *root_ast, unsigned flags,
                     FILE *gout ) {
   assert( g != NULL );
-  assert( root != NULL );
+  assert( root_ast != NULL );
   assert( gout != NULL );
 
   MEM_ZERO( g );
   g->flags = flags;
   g->gout = gout;
-  g->root_ast = root;
+  g->root_ast = root_ast;
 }
 
 /**

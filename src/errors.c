@@ -667,8 +667,8 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
         if ( ast->kind_id == K_OPERATOR ) {
           assert( ret_ast != NULL );
           //
-          // For C& operator=(C const&), the argument and the return type
-          // must both be a reference to the same class, struct, or union.
+          // For C& operator=(C const&), the argument and the return type must
+          // both be a reference to the same class, struct, or union.
           //
           arg_ast = c_ast_unreference( arg_ast );
           ret_ast = c_ast_unreference( ret_ast );
