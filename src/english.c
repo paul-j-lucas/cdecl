@@ -44,6 +44,8 @@
 C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_english( c_ast_t*, void* );
 
+static void non_type_name( c_type_id_t, FILE* );
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -115,8 +117,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
   switch ( ast->kind_id ) {
     case K_ARRAY:
-      if ( ast->type_id != T_NONE )     // storage class
-        FPRINTF( eout, "%s ", c_type_name( ast->type_id ) );
+      non_type_name( ast->type_id, eout );
       if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE )
         FPRINTF( eout, "%s %s ", L_VARIABLE, L_LENGTH );
       FPRINTF( eout, "%s ", L_ARRAY );
@@ -133,8 +134,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
-      if ( ast->type_id != T_NONE )     // storage class
-        FPRINTF( eout, "%s ", c_type_name( ast->type_id ) );
+      non_type_name( ast->type_id, eout );
 
       switch ( ast->kind_id ) {
         case K_FUNCTION:
@@ -186,20 +186,15 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
     case K_POINTER:
     case K_REFERENCE:
-    case K_RVALUE_REFERENCE: {
-      c_type_id_t const qual_type = (ast->type_id & T_MASK_QUALIFIER);
-      if ( qual_type != T_NONE )
-        FPRINTF( eout, "%s ", c_type_name( qual_type ) );
+    case K_RVALUE_REFERENCE:
+      non_type_name( ast->type_id, eout );
       FPRINTF( eout, "%s %s ", c_kind_name( ast->kind_id ), L_TO );
       break;
-    }
 
     case K_POINTER_TO_MEMBER: {
-      c_type_id_t const qual_type = (ast->type_id & T_MASK_QUALIFIER);
-      if ( qual_type != T_NONE )
-        FPRINTF( eout, "%s ", c_type_name( qual_type ) );
+      non_type_name( ast->type_id, eout );
       FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
-      char const *const name = c_type_name( ast->type_id & ~T_MASK_QUALIFIER );
+      char const *const name = c_type_name( ast->type_id & T_MASK_TYPE );
       FPRINTF( eout, "%s%s", SP_AFTER( name ) );
       c_sname_english( &ast->as.ptr_mbr.class_sname, eout );
       FPUTC( ' ', eout );
@@ -249,6 +244,19 @@ static void c_sname_english_impl( c_scope_t const *scope, FILE *eout ) {
       L_OF, c_type_name( c_scope_type( scope ) ), c_scope_name( scope )
     );
   }
+}
+
+/**
+ * Prints the non-type (attribute(s), storage class, qualifier(s), etc.) parts
+ * of \a type_ids, if any.
+ *
+ * @param type_ids The type to perhaps print.
+ * @param eout The `FILE` to emit to.
+ */
+static void non_type_name( c_type_id_t type_ids, FILE *eout ) {
+  type_ids &= ~T_MASK_TYPE;
+  if ( type_ids != T_NONE )
+    FPRINTF( eout, "%s ", c_type_name( type_ids ) );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

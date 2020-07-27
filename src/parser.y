@@ -451,9 +451,8 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
  * Prints the pseudo English explanation for an AST.
  *
  * @param ast The `c_ast` to explain.
- * @param taken_type_ids The type(s) taken away from \a ast.
  */
-static void c_ast_explain( c_ast_t const *ast, c_type_id_t taken_type_ids ) {
+static void c_ast_explain( c_ast_t const *ast ) {
   assert( ast != NULL );
 
   FPRINTF( fout, "%s ", L_DECLARE );
@@ -482,8 +481,6 @@ static void c_ast_explain( c_ast_t const *ast, c_type_id_t taken_type_ids ) {
       FPRINTF( fout, "%s %s %s ", L_OF, c_type_name( sn_type ), scope_name );
     }
     FPRINTF( fout, "%s ", L_AS );
-    if ( (taken_type_ids & T_TYPEDEF) != T_NONE )
-      FPRINTF( fout, "%s ", L_TYPE );
   }
 
   c_ast_english( ast, fout );
@@ -491,38 +488,31 @@ static void c_ast_explain( c_ast_t const *ast, c_type_id_t taken_type_ids ) {
 }
 
 /**
- * "Pre-explain" an AST by finishing constructing it for _explain_.
+ * Joins \a type_ast and \a decl_ast into a single AST.
  *
  * @param has_typename `true` only if the declaration includes `typename`.
  * @param align The `alignas` specifier, if any.
  * @param type_ast The type `c_ast`.
  * @param decl_ast The declaration `c_ast`.
  * @param decl_loc The source location of \a decl_ast.
- * @param past A pointer to the pointer for the final `c_ast`.
- * @param ptaken_type_ids A pointer to receive the taken type(s).
- * @return Returns `true` only upon success.
+ * @return Returns The final AST on success or NULL on error.
  */
 C_WARN_UNUSED_RESULT
-static bool c_ast_pre_explain( bool has_typename, c_alignas_t const *align,
-                               c_ast_t *type_ast,
-                               c_ast_t *decl_ast, c_loc_t const *decl_loc,
-                               c_ast_t const **past,
-                               c_type_id_t *ptaken_type_ids ) {
+static c_ast_t const* join_type_decl_ast( bool has_typename,
+                                          c_alignas_t const *align,
+                                          c_ast_t *type_ast,
+                                          c_ast_t *decl_ast,
+                                          c_loc_t const *decl_loc ) {
   assert( type_ast != NULL );
   assert( decl_ast != NULL );
   assert( decl_loc != NULL );
-  assert( past != NULL );
-  assert( ptaken_type_ids != NULL );
-
-  *past = NULL;
 
   if ( has_typename && !typename_ok( type_ast ) )
-    return false;
+    return NULL;
 
-  *ptaken_type_ids = c_ast_take_type_any( type_ast, T_TYPEDEF );
-  bool is_typedef = (*ptaken_type_ids & T_TYPEDEF) != T_NONE;
+  c_type_id_t t = c_ast_take_type_any( type_ast, T_MASK_ATTRIBUTE | T_TYPEDEF );
 
-  if ( is_typedef && decl_ast->kind_id == K_TYPEDEF ) {
+  if ( (t & T_TYPEDEF) != T_NONE && decl_ast->kind_id == K_TYPEDEF ) {
     //
     // This is for a case like:
     //
@@ -544,26 +534,24 @@ static bool c_ast_pre_explain( bool has_typename, c_alignas_t const *align,
         "\"%s\": \"%s\" redefinition with different type",
         c_ast_sname_full_name( decl_ast ), L_TYPEDEF
       );
-      return false;
+      return NULL;
     }
   }
 
   c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
-  *past = ast;
-
-  *ptaken_type_ids |= c_ast_take_type_any( ast, T_TYPEDEF );
-  is_typedef = (*ptaken_type_ids & T_TYPEDEF) != T_NONE;
+  t |= c_ast_take_type_any( ast, T_MASK_ATTRIBUTE | T_TYPEDEF );
+  ast->type_id |= t;
 
   if ( align != NULL ) {
     ast->align = *align;
-    if ( is_typedef ) {
+    if ( (t & T_TYPEDEF) != T_NONE ) {
       //
       // We check for illegal aligned typedef here rather than in error.c
       // because the "typedef-ness" needed to be removed previously before the
       // call to c_ast_check_declaration() below.
       //
       print_error( &align->loc, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
-      return false;
+      return NULL;
     }
   }
 
@@ -577,7 +565,7 @@ static bool c_ast_pre_explain( bool has_typename, c_alignas_t const *align,
     c_ast_sname_set_local_type( ast, T_CLASS );
   }
 
-  return c_ast_check_declaration( ast );
+  return c_ast_check_declaration( ast ) ? ast : NULL;
 }
 
 /**
@@ -1687,20 +1675,16 @@ explain_c
       DUMP_AST( "type_c_ast", $2.ast );
       DUMP_AST( "decl_c_ast", $4.ast );
 
-      c_ast_t const *ast;
-      c_type_id_t taken_type_ids;
-      bool const ok =
-        c_ast_pre_explain(
-          false, NULL, $2.ast, $4.ast, &@4, &ast, &taken_type_ids
-        );
+      c_ast_t const *const ast =
+        join_type_decl_ast( false, NULL, $2.ast, $4.ast, &@4 );
 
       if ( ast != NULL )
         DUMP_AST( "explain_c", ast );
       DUMP_END();
 
-      if ( !ok )
+      if ( ast == NULL )
         PARSE_ABORT();
-      c_ast_explain( ast, taken_type_ids );
+      c_ast_explain( ast );
     }
 
     /*
@@ -1726,18 +1710,16 @@ explain_c
       DUMP_AST( "type_c_ast", $4.ast );
       DUMP_AST( "decl_c_ast", $6.ast );
 
-      c_ast_t const *ast;
-      c_type_id_t taken_type_ids;
-      bool const ok = c_ast_pre_explain(
-        $3, &$2, $4.ast, $6.ast, &@6, &ast, &taken_type_ids
-      );
+      c_ast_t const *const ast =
+        join_type_decl_ast( $3, &$2, $4.ast, $6.ast, &@6 );
 
-      DUMP_AST( "explain_c", ast );
+      if ( ast != NULL )
+        DUMP_AST( "explain_c", ast );
       DUMP_END();
 
-      if ( !ok )
+      if ( ast == NULL )
         PARSE_ABORT();
-      c_ast_explain( ast, taken_type_ids );
+      c_ast_explain( ast );
     }
 
     /*
@@ -1753,18 +1735,16 @@ explain_c
       DUMP_AST( "type_c_ast", $3.ast );
       DUMP_AST( "decl_c_ast", $5.ast );
 
-      c_ast_t const *ast;
-      c_type_id_t taken_type_ids;
-      bool const ok = c_ast_pre_explain(
-        true, NULL, $3.ast, $5.ast, &@5, &ast, &taken_type_ids
-      );
+      c_ast_t const *const ast =
+        join_type_decl_ast( true, NULL, $3.ast, $5.ast, &@5 );
 
-      DUMP_AST( "explain_c", ast );
+      if ( ast != NULL )
+        DUMP_AST( "explain_c", ast );
       DUMP_END();
 
-      if ( !ok )
+      if ( ast == NULL )
         PARSE_ABORT();
-      c_ast_explain( ast, taken_type_ids );
+      c_ast_explain( ast );
     }
 
     /*
