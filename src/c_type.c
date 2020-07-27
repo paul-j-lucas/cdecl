@@ -198,7 +198,7 @@ static c_type_t const C_STORAGE_INFO[] = {
     (c_lang_lit_t[]){ { LANG_C_MAX(99) | LANG_CPP_MAX(03), L_GNU___THREAD  },
                       { LANG_ALL, L_THREAD_LOCAL  } } },
 
-  { T_TYPEDEF, LANG_ALL, NULL,
+  { T_TYPEDEF, LANG_ALL, L_TYPE,
     (c_lang_lit_t[]){ { LANG_ALL, L_TYPEDEF } } },
 
   // storage-class-like
