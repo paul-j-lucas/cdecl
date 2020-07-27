@@ -123,6 +123,7 @@ extern char const L_UNSIGNED[];
 extern char const L_WHILE[];
 
 // C89
+extern char const L_ASM[];
 extern char const L_CONST[];
 extern char const L_CONSTANT[];             // synonym for "const"
 extern char const L_ELLIPSIS[];             // ...

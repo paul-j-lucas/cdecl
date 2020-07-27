@@ -860,6 +860,7 @@ static void yyerror( char const *msg ) {
 %token              Y_WHILE
 
                     /* C89 */
+%token              Y_ASM
 %token  <type_id>   Y_CONST
 %token              Y_ELLIPSIS    "..." /* for varargs */
 %token  <type_id>   Y_ENUM

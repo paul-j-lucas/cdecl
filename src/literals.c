@@ -103,6 +103,7 @@ char const L_UNSIGNED[]             = "unsigned";
 char const L_WHILE[]                = "while";
 
 // C89
+char const L_ASM[]                  = "asm";
 char const L_CONST[]                = "const";
 char const L_CONSTANT[]             = "constant";
 char const L_ELLIPSIS[]             = "...";

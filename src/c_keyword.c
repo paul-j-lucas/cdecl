@@ -118,6 +118,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_WHILE,            Y_WHILE,            T_NONE,         LANG_ALL          },
 
   // C89
+  { L_ASM,              Y_ASM,              T_NONE,         LANG_MIN(C_89)    },
   { L_CONST,            Y_CONST,            T_CONST,        LANG_MIN(C_89)    },
   { L_ENUM,             Y_ENUM,             T_ENUM,         LANG_MIN(C_89)    },
   { L_SIGNED,           Y_SIGNED,           T_SIGNED,       LANG_MIN(C_89)    },

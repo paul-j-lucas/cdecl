@@ -77,6 +77,9 @@ Now allowing "to" in addition to "as" for "... aligned [as|to] ...".
 ** Show as
 Now allowing an optional "as" in "show ... [as] typedef".
 
+** asm
+Added "asm" keyword to prevent declarations from using it.
+
 
 * Changes in Cdecl 7.4.1
 
