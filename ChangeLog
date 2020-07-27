@@ -1,5 +1,7 @@
 2020-07-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_util.c, c_type.c, c_type.h, errors.c, gibberish.c, parser.y:
+     Renaming all c_type_id_t to end in _id.
    * NEWS, configure.ac: Upped version to 8.0.
    * c_ast_util.h, c_type.c, english.c, errors.c, gibberish.c: Clean-up.
    * english.c, parser.y: Simplified explaining typedefs.
