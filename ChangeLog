@@ -1,5 +1,23 @@
 2020-07-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, configure.ac: Upped version to 8.0.
+   * c_ast_util.h, c_type.c, english.c, errors.c, gibberish.c: Clean-up.
+   * english.c, parser.y: Simplified explaining typedefs.
+   * english.c: Reformatting.
+   * c_type.c: Added L_TYPE for English version of T_TYPEDEF.
+   * parser.y: s/c_ast_finish_explain/c_ast_pre_explain/
+   * parser.y: Simplified c_ast_explain() a bit.
+   * c_ast_util.c, c_ast_util.h, parser.y:
+     s/c_ast_take_typedef/c_ast_take_type_any/
+   * NEWS, cdecl.1, help.c, parser.y, help-c++.out, help_command-c++.out,
+     help_commands-c++.out: {} are now optional for class/struct/union-alone
+     declarations.
+   * help.c, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out: Added C2X
+     to help.
+   * parser.y:
+     s/scope_typedef_or_using_declaration_c_opt/in_scope_declaration_c_opt/
+   * parser.y: Tweaked "structure definitions are not supported" error message.
    * AUTHORS: Added more stuff added.
    * Makefile.am: Added "update-gnulib" rule.
    * gnulib-common.m4, multiarch.m4: Updated Gnulib.
