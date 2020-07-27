@@ -591,6 +591,8 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
   name[0] = '\0';
   bool space = false;
 
+  type_id = c_type_normalize( type_id );
+
   if ( (type_id & T_MASK_ATTRIBUTE) != T_NONE ) {
     static c_type_id_t const C_ATTRIBUTE[] = {
       T_CARRIES_DEPENDENCY,
@@ -617,8 +619,6 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
       STRCAT( name, graph_token_c( "]]" ) );
     space = true;
   }
-
-  type_id = c_type_normalize( type_id );
 
   // Special cases.
   if ( c_mode == C_GIBBERISH_TO_ENGLISH ) {

@@ -364,7 +364,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE: {
-      c_type_id_t const storage_type = (ast_type & T_MASK_STORAGE);
+      c_type_id_t const storage_type = ast_type & T_MASK_STORAGE;
       if ( storage_type != T_NONE )
         FPRINTF( g->gout, "%s ", c_type_name( storage_type ) );
       g_impl( g, ast->as.ptr_ref.to_ast );
@@ -595,7 +595,7 @@ static void g_qual_name( g_state_t *g, c_ast_t const *ast ) {
       assert( (ast->kind_id & (K_ANY_POINTER | K_ANY_REFERENCE)) != K_NONE );
   } // switch
 
-  c_type_id_t const qual_type = (ast->type_id & T_MASK_QUALIFIER);
+  c_type_id_t const qual_type = ast->type_id & T_MASK_QUALIFIER;
   if ( qual_type != T_NONE ) {
     FPUTS( c_type_name( qual_type ), g->gout );
     if ( (g->flags & G_IS_CAST) == 0 )

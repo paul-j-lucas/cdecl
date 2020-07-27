@@ -135,7 +135,6 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
       non_type_name( ast->type_id, eout );
-
       switch ( ast->kind_id ) {
         case K_FUNCTION:
           if ( (ast->type_id & T_MEMBER_FUNC_ONLY) != T_NONE )
@@ -248,15 +247,15 @@ static void c_sname_english_impl( c_scope_t const *scope, FILE *eout ) {
 
 /**
  * Prints the non-type (attribute(s), storage class, qualifier(s), etc.) parts
- * of \a type_ids, if any.
+ * of \a type_id, if any.
  *
- * @param type_ids The type to perhaps print.
+ * @param type_id The type to perhaps print.
  * @param eout The `FILE` to emit to.
  */
-static void non_type_name( c_type_id_t type_ids, FILE *eout ) {
-  type_ids &= ~T_MASK_TYPE;
-  if ( type_ids != T_NONE )
-    FPRINTF( eout, "%s ", c_type_name( type_ids ) );
+static void non_type_name( c_type_id_t type_id, FILE *eout ) {
+  type_id &= ~T_MASK_TYPE;
+  if ( type_id != T_NONE )
+    FPRINTF( eout, "%s ", c_type_name( type_id ) );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

@@ -106,7 +106,7 @@ C_WARN_UNUSED_RESULT
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
 
 /**
- * Traverses \a ast attempting to find an AST node having \a type_id.
+ * Traverses \a ast attempting to find an AST node having \a type_ids.
  *
  * @param ast The `c_ast` to begin at.
  * @param dir The direction to visit.
@@ -213,7 +213,7 @@ C_WARN_UNUSED_RESULT
 c_sname_t c_ast_take_name( c_ast_t *ast );
 
 /**
- * Checks \a ast to see if it contains ore or more of \a type_ids.
+ * Checks \a ast to see if it contains one or more of \a type_ids.
  * If so, removes them.
  * This is used in cases like:
  * @code
