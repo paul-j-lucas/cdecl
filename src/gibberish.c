@@ -96,10 +96,10 @@ static inline void g_print_space( g_state_t *g ) {
 }
 
 /**
- * Sets the leaf `c_ast`.
+ * Sets the leaf AST.
  *
  * @param g The `g_state` to use.
- * @param ast The `c_ast` to set the leaf to.
+ * @param ast The AST to set the leaf to.
  */
 static inline void g_set_leaf( g_state_t *g, c_ast_t const *ast ) {
   assert( g->leaf_ast == NULL );
@@ -112,7 +112,7 @@ static inline void g_set_leaf( g_state_t *g, c_ast_t const *ast ) {
 /**
  * Prints \a ast as a C/C++ declaration.
  *
- * @param ast The `c_ast` to print.
+ * @param ast The AST to print.
  * @param flags The bitwise-or of gibberish declaration flags.
  * @param gout The `FILE` to print to.
  */
@@ -143,7 +143,7 @@ static void c_ast_gibberish( c_ast_t const *ast, unsigned flags, FILE *gout ) {
  * size for all child arrays, if any.
  *
  * @param g The `g_state` to use.
- * @param ast The `c_ast` that is a <code>\ref K_ARRAY</code> whose size to
+ * @param ast The AST that is a <code>\ref K_ARRAY</code> whose size to
  * print.
  */
 static void g_array_size( g_state_t const *g, c_ast_t const *ast ) {
@@ -171,7 +171,7 @@ static void g_array_size( g_state_t const *g, c_ast_t const *ast ) {
  * if any.
  *
  * @param g The `g_state` to use.
- * @param ast The `c_ast` that is <code>\ref K_ANY_FUNCTION_LIKE</code> whose
+ * @param ast The AST that is <code>\ref K_ANY_FUNCTION_LIKE</code> whose
  * arguments to print.
  */
 static void g_func_args( g_state_t const *g, c_ast_t const *ast ) {
@@ -196,7 +196,7 @@ static void g_func_args( g_state_t const *g, c_ast_t const *ast ) {
  * Prints \a ast as gibberish, aka, a C/C++ declaration.
  *
  * @param g The `g_state` to use.
- * @param ast The `c_ast` to print.
+ * @param ast The AST to print.
  */
 static void g_impl( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
@@ -428,7 +428,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
  *
  * @param g The `g_state` to initialize.
  * @param flags Flags to tweak output.
- * @param root The `c_ast` root.
+ * @param root The AST root.
  * @param gout The `FILE` to print it to.
  */
 static void g_init( g_state_t *g, c_ast_t const *root, unsigned flags,
@@ -451,7 +451,7 @@ static void g_init( g_state_t *g, c_ast_t const *root, unsigned flags,
  *  + Reference to array.
  *
  * @param g The `g_state` to use.
- * @param ast The `c_ast`.
+ * @param ast The AST.
  */
 static void g_postfix( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
@@ -557,7 +557,7 @@ static void g_postfix( g_state_t *g, c_ast_t const *ast ) {
  * reference, or rvalue reference, its qualifier, if any, and the name, if any.
  *
  * @param g The `g_state` to use.
- * @param ast The `c_ast` that is one of <code>\ref K_POINTER</code>,
+ * @param ast The AST that is one of <code>\ref K_POINTER</code>,
  * <code>\ref K_POINTER_TO_MEMBER</code>, <code>\ref K_REFERENCE</code>, or
  * <code>\ref K_RVALUE_REFERENCE</code> whose qualifier, if any, and name, if
  * any, to print.
@@ -610,7 +610,7 @@ static void g_qual_name( g_state_t *g, c_ast_t const *ast ) {
  * the gibberish for a `typedef` since it can't have a scoped name.
  *
  * @param g The `g_state` to use.
- * @param ast The `c_ast` to get the name of.
+ * @param ast The AST to get the name of.
  * @return Returns said name.
  */
 C_WARN_UNUSED_RESULT
@@ -631,7 +631,7 @@ static char const* g_sname_full_or_local( g_state_t *g, c_ast_t const *ast ) {
  * declaration (not a cast).
  *
  * @param g The `g_state` to use.
- * @param ast The `c_ast` to print the name (if any) of.
+ * @param ast The AST to print the name (if any) of.
  */
 static void g_space_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );

@@ -49,7 +49,7 @@
 /**
  * Dumps \a ast (for debugging).
  *
- * @param ast The `c_ast` to dump.
+ * @param ast The AST to dump.
  * @param indent The initial indent.
  * @param key0 The initial key or null for none.
  * @param dout The `FILE` to dump to.

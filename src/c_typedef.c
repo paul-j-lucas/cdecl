@@ -615,7 +615,7 @@ static int c_typedef_cmp( void const *data_i, void const *data_j ) {
 /**
  * Creates a new `c_typedef`.
  *
- * @param ast The `c_ast` of the type.
+ * @param ast The AST of the type.
  * @return Returns said `c_typedef`.
  */
 C_WARN_UNUSED_RESULT

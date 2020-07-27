@@ -130,8 +130,8 @@ typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
 /// @endcond
 
 /**
- * A pair of `c_ast` pointers used as one of the synthesized attribute types in
- * the parser.
+ * A pair of AST pointers used as one of the synthesized attribute types in the
+ * parser.
  */
 struct c_ast_pair {
   /**
@@ -140,7 +140,7 @@ struct c_ast_pair {
   c_ast_t *ast;
 
   /**
-   * Array and function-like declarations need a separate `c_ast` pointer that
+   * Array and function-like declarations need a separate AST pointer that
    * points to their `of_ast` or `ret_ast` (respectively) to be the "target" of
    * subsequent additions to the AST.
    */

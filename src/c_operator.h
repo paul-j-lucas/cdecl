@@ -207,7 +207,7 @@ bool c_oper_is_ambiguous( c_operator_t const *op ) {
 /**
  * Gets whether the operator is a member, non-member, or unspecified.
  *
- * @param ast The `c_ast` of the operator.
+ * @param ast The AST of the operator.
  * @return Returns one of <code>\ref C_OP_MEMBER</code>,
  * <code>\ref C_OP_NON_MEMBER</code>, or <code>\ref C_OP_UNSPECIFIED</code>.
  */

@@ -48,7 +48,7 @@
 /**
  * Prints \a ast in pseudo-English.
  *
- * @param ast The `c_ast` to print.
+ * @param ast The AST to print.
  * @param eout The `FILE` to print to.
  */
 void c_ast_english( c_ast_t const *ast, FILE *eout );

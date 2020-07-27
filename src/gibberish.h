@@ -48,7 +48,7 @@
 /**
  * Prints \a ast as a C/C++ cast.
  *
- * @param ast The `c_ast` to print.
+ * @param ast The AST to print.
  * @param gout The `FILE` to print to.
  *
  * @sa c_ast_gibberish_declare()
@@ -58,7 +58,7 @@ void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout );
 /**
  * Prints \a ast as a C/C++ declaration.
  *
- * @param ast The `c_ast` to print.
+ * @param ast The AST to print.
  * @param gout The `FILE` to print to.
  *
  * @sa c_ast_gibberish_cast()

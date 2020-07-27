@@ -104,7 +104,7 @@ static inline char const* alignas_lang( void ) {
 /**
  * Simple wrapper around `c_ast_find()`.
  *
- * @param ast The `c_ast` to check.
+ * @param ast The AST to check.
  * @param visitor The visitor to use.
  * @param data Optional data passed to `c_ast_visit()`.
  * @return Returns `true` only if all checks passed.
@@ -131,7 +131,7 @@ static inline char const* plural_s( uint64_t n ) {
 /**
  * Checks the `alignas` of an AST for errors.
  *
- * @param ast The `c_ast` to check.
+ * @param ast The AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
@@ -178,7 +178,7 @@ static bool c_ast_check_alignas( c_ast_t *ast ) {
 /**
  * Checks an array AST for errors.
  *
- * @param ast The array `c_ast` to check.
+ * @param ast The array AST to check.
  * @param is_func_arg If `true`, \a ast is an AST for a function-like argument.
  * @return Returns `true` only if all checks passed.
  */
@@ -258,7 +258,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
 /**
  * Checks a built-in type AST for errors.
  *
- * @param ast The built-in `c_ast` to check.
+ * @param ast The built-in AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
@@ -303,7 +303,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
 /**
  * Checks a constructor or destructor AST for errors.
  *
- * @param ast The constructor or destructor `c_ast` to check.
+ * @param ast The constructor or destructor AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
@@ -327,7 +327,7 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
 /**
  * Checks an `enum`, `class`, `struct`, or `union` AST for errors.
  *
- * @param ast The `enum`, `class`, `struct`, or union `c_ast` to check.
+ * @param ast The `enum`, `class`, `struct`, or union AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
@@ -358,7 +358,7 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
 /**
  * Checks an entire AST for semantic errors.
  *
- * @param ast The `c_ast` to check.
+ * @param ast The AST to check.
  * @param is_func_arg If `true`, we're checking a function argument.
  * @return Returns `true` only if all checks passed.
  */
@@ -797,7 +797,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
 /**
  * Checks an overloaded operator AST for errors.
  *
- * @param ast The overloaded operator `c_ast` to check.
+ * @param ast The overloaded operator AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
@@ -900,7 +900,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
 /**
  * Checks all overloaded operator arguments for semantic errors.
  *
- * @param ast The overloaded operator `c_ast` to check.
+ * @param ast The overloaded operator AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
@@ -1116,7 +1116,7 @@ same: print_error( &ast->loc,
  * Checks overloaded operator `delete` and `delete[]` arguments for semantic
  * errors.
  *
- * @param ast The user-defined operator `delete` `c_ast` to check.
+ * @param ast The user-defined operator `delete` AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
@@ -1155,7 +1155,7 @@ static bool c_ast_check_oper_delete_args( c_ast_t const *ast ) {
 /**
  * Checks overloaded operator `new` and `new[]` arguments for semantic errors.
  *
- * @param ast The user-defined operator `new` `c_ast` to check.
+ * @param ast The user-defined operator `new` AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
@@ -1193,7 +1193,7 @@ static bool c_ast_check_oper_new_args( c_ast_t const *ast ) {
 /**
  * Checks a pointer or pointer-to-member AST for errors.
  *
- * @param ast The pointer or pointer-to-member `c_ast` to check.
+ * @param ast The pointer or pointer-to-member AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
@@ -1227,7 +1227,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
 /**
  * Checks a reference or rvalue reference AST for errors.
  *
- * @param ast The pointer or pointer-to-member `c_ast` to check.
+ * @param ast The pointer or pointer-to-member AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
@@ -1322,7 +1322,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
 /**
  * Checks all user-defined literal arguments for semantic errors.
  *
- * @param ast The user-defined literal `c_ast` to check.
+ * @param ast The user-defined literal AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
@@ -1408,7 +1408,7 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
 /**
  * Visitor function that checks an AST for semantic errors.
  *
- * @param ast The `c_ast` to check.
+ * @param ast The AST to check.
  * @param data Cast to `bool`, indicates if \a ast is a function argument.
  * @return Returns `VISITOR_ERROR_FOUND` if an error was found;
  * `VISITOR_ERROR_NOT_FOUND` if not.
@@ -1527,7 +1527,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 /**
  * Visitor function that checks an AST for type errors.
  *
- * @param ast The `c_ast` to visit.
+ * @param ast The AST to visit.
  * @param data Cast to `bool`, indicates if \a ast is a function argument.
  * @return Returns `VISITOR_ERROR_FOUND` if an error was found;
  * `VISITOR_ERROR_NOT_FOUND` if not.
@@ -1639,7 +1639,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
 /**
  * Visitor function that checks an AST for semantic warnings.
  *
- * @param ast The `c_ast` to check.
+ * @param ast The AST to check.
  * @param data Not used.
  * @return Always returns `false`.
  */
@@ -1734,7 +1734,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
 /**
  * Print an error: `can not cast into <kind>`.
  *
- * @param ast The `c_ast` .
+ * @param ast The AST .
  * @param hint The hint, if any.
  * @return Always returns `false`.
  */
@@ -1752,7 +1752,7 @@ static bool error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
 /**
  * Prints an error: `<kind> can not be <type>`.
  *
- * @param ast The `c_ast` .
+ * @param ast The AST .
  * @param type_id The bad type.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
@@ -1769,7 +1769,7 @@ static bool error_kind_not_type( c_ast_t const *ast, c_type_id_t type_id ) {
 /**
  * Prints an error: `<kind> not supported in <lang>`.
  *
- * @param ast The `c_ast` having the bad kind.
+ * @param ast The AST having the bad kind.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
 C_NOWARN_UNUSED_RESULT
@@ -1784,7 +1784,7 @@ static bool error_kind_not_supported( c_ast_t const *ast ) {
 /**
  * Prints an error: `<kind> to <kind>`.
  *
- * @param ast The `c_ast` having the bad kind.
+ * @param ast The AST having the bad kind.
  * @param kind_id The other kind.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
@@ -1800,7 +1800,7 @@ static bool error_kind_to_kind( c_ast_t const *ast, c_kind_id_t kind_id ) {
 /**
  * Prints an error: `<kind> to <type>`.
  *
- * @param ast The `c_ast` having the bad kind.
+ * @param ast The AST having the bad kind.
  * @param type_id The bad type.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
@@ -1816,7 +1816,7 @@ static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t type_id ) {
 /**
  * Prints an error: `"<identifier>": unknown type`.
  *
- * @param ast The `c_ast` of the unknown type.
+ * @param ast The AST of the unknown type.
  * @return Always returns `VISITOR_ERROR_FOUND`.
  */
 C_NOWARN_UNUSED_RESULT

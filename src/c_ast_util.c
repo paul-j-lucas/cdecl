@@ -47,26 +47,27 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t* );
 /**
  * Adds an array to the AST being built.
  *
- * @param ast The `c_ast` to append to.
- * @param array The array `c_ast` to append.  Its "of" type must be null.
- * @return Returns the `c_ast` to be used as the grammar production's return
- * value.
+ * @param ast The AST to append to.
+ * @param array_ast The array AST to append.  Its "of" type must be null.
+ * @return Returns the AST to be used as the grammar production's return value.
  */
 C_WARN_UNUSED_RESULT
-static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
-  assert( array != NULL );
-  assert( array->kind_id == K_ARRAY );
+static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast ) {
+  assert( array_ast != NULL );
+  assert( array_ast->kind_id == K_ARRAY );
 
   if ( ast == NULL )
-    return array;
+    return array_ast;
 
   switch ( ast->kind_id ) {
     case K_ARRAY:
-      return c_ast_append_array( ast, array );
+      return c_ast_append_array( ast, array_ast );
 
     case K_POINTER:
-      if ( ast->depth > array->depth ) {
-        C_IGNORE_RV( c_ast_add_array_impl( ast->as.ptr_ref.to_ast, array ) );
+      if ( ast->depth > array_ast->depth ) {
+        C_IGNORE_RV(
+          c_ast_add_array_impl( ast->as.ptr_ref.to_ast, array_ast )
+        );
         return ast;
       }
       C_FALLTHROUGH;
@@ -76,20 +77,20 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
       // An AST node's "depth" says how nested within () it is and controls the
       // precedence of what is an array of what.
       //
-      if ( ast->depth > array->depth ) {
+      if ( ast->depth > array_ast->depth ) {
         //
         // Before:
         //
         //      [ast-child] --> [ast]
-        //      [array]
+        //      [array_ast]
         //
         // After:
         //
-        //      [ast-child] --> [array] --> [ast]
+        //      [ast-child] --> [array_ast] --> [ast]
         //
         if ( c_ast_is_parent( ast ) )
-          c_ast_set_parent( ast->as.parent.of_ast, array );
-        c_ast_set_parent( array, ast );
+          c_ast_set_parent( ast->as.parent.of_ast, array_ast );
+        c_ast_set_parent( array_ast, ast );
         return ast;
       }
       else {
@@ -97,42 +98,43 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array ) {
         // Before:
         //
         //      [ast] --> [parent]
-        //      [array]
+        //      [array_ast]
         //
         // After:
         //
-        //      [ast] --> [array] --> [parent]
+        //      [ast] --> [array_ast] --> [parent]
         //
         if ( c_ast_is_parent( ast->parent_ast ) )
-          c_ast_set_parent( array, ast->parent_ast );
-        c_ast_set_parent( ast, array );
-        return array;
+          c_ast_set_parent( array_ast, ast->parent_ast );
+        c_ast_set_parent( ast, array_ast );
+        return array_ast;
       }
   } // switch
 }
 
 /**
  * If \a ast is:
- *  + Not an array, makes \a array an array of \a ast.
- *  + An array, appends \a array to the end of the array AST chain.
+ *  + Not an array, makes \a array_ast an array of \a ast.
+ *  + An array, appends \a array_ast to the end of the array AST chain.
  *
  * For example, given:
  *
  *  + \a ast = <code>array 3 of array 5 of int</code>
- *  + \a array = <code>array 7 of NULL</code>
+ *  + \a array_ast = <code>array 7 of NULL</code>
  *
  * this function returns:
  *
  *  + <code>array 3 of array 5 of array 7 of int</code>
  *
- * @param ast The `c_ast` to append to.
- * @param array The array `c_ast` to append.  Its "of" type must be null.
- * @return If \a ast is an array, returns \a ast; otherwise returns \a array.
+ * @param ast The AST to append to.
+ * @param array_ast The array AST to append.  Its "of" type must be null.
+ * @return If \a ast is an array, returns \a ast; otherwise returns \a
+ * array_ast.
  */
 C_WARN_UNUSED_RESULT
-static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
+static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast ) {
   assert( ast != NULL );
-  assert( array != NULL );
+  assert( array_ast != NULL );
 
   switch ( ast->kind_id ) {
     case K_POINTER:
@@ -145,7 +147,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
       // have to recurse "through" it if its depth < the array's depth; else
       // we'd end up with a "pointer to array 3 of array 5 of pointer to int."
       //
-      if ( array->depth >= ast->depth )
+      if ( array_ast->depth >= ast->depth )
         break;
       C_FALLTHROUGH;
 
@@ -154,8 +156,8 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
       // On the next-to-last recursive call, this sets this array to be an
       // array of the new array; for all prior recursive calls, it's a no-op.
       //
-      c_ast_t *const temp = c_ast_append_array( ast->as.array.of_ast, array );
-      c_ast_set_parent( temp, ast );
+      c_ast_t *const a = c_ast_append_array( ast->as.array.of_ast, array_ast );
+      c_ast_set_parent( a, ast );
       return ast;
     }
 
@@ -163,26 +165,25 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array ) {
       /* suppress warning */;
   } // switch
 
-  assert( array->kind_id == K_ARRAY );
-  assert( array->as.array.of_ast->kind_id == K_PLACEHOLDER );
+  assert( array_ast->kind_id == K_ARRAY );
+  assert( array_ast->as.array.of_ast->kind_id == K_PLACEHOLDER );
   //
   // We've reached the end of the array chain: make the new array be an array
   // of this AST node and return the array so the parent will now point to it
   // instead.
   //
-  c_ast_set_parent( ast, array );
-  return array;
+  c_ast_set_parent( ast, array_ast );
+  return array_ast;
 }
 
 /**
  * Adds a function-like AST to the AST being built.
  *
- * @param ast The `c_ast` to append to.
- * @param ret_ast The `c_ast` of the return-type of the function-like AST.
+ * @param ast The AST to append to.
+ * @param ret_ast The AST of the return-type of the function-like AST.
  * @param func_ast The function-like AST to append.  Its "of" type must be
  * null.
- * @return Returns the `c_ast` to be used as the grammar production's return
- * value.
+ * @return Returns the AST to be used as the grammar production's return value.
  */
 C_WARN_UNUSED_RESULT
 static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
@@ -225,7 +226,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
 
 /**
  * Takes the storage type, if any, away from \a ast
- * (with the intent of giving it to another `c_ast`).
+ * (with the intent of giving it to another AST).
  * This is used is cases like:
  * @code
  *  explain static int f()
@@ -241,7 +242,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
  * i.e., the `static` has to be taken away from `int` and given to the function
  * because it's the function that's `static`, not the `int`.
  *
- * @param ast The `c_ast` to take trom.
+ * @param ast The AST to take trom.
  * @return Returns said storage class or <code>\ref T_NONE</code>.
  */
 C_WARN_UNUSED_RESULT
@@ -260,7 +261,7 @@ static c_type_id_t c_ast_take_storage( c_ast_t *ast ) {
 /**
  * A visitor function to find an AST node having a particular kind(s).
  *
- * @param ast The `c_ast` to check.
+ * @param ast The AST to check.
  * @param data The bitwise-or of the kind(s) (cast to `void*`) \a ast can be.
  * @return Returns `true` only if the kind of \a ast is one of the kinds.
  */
@@ -274,7 +275,7 @@ static bool c_ast_vistor_kind_any( c_ast_t *ast, void *data ) {
 /**
  * A visitor function to find an AST node having a particular name.
  *
- * @param ast The `c_ast` to check.
+ * @param ast The AST to check.
  * @param data The least number of names that the scoped name must have.
  * @return Returns `true` only if \a ast has such a scoped name.
  */
@@ -288,7 +289,7 @@ static bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
 /**
  * A visitor function to find an AST node having a particular type(s).
  *
- * @param ast The `c_ast` to check.
+ * @param ast The AST to check.
  * @param data The bitwise-or of the type(s) (cast to `void*`) \a ast can be.
  * @return Returns `true` only if the type of \a ast is one of the types.
  */
@@ -301,22 +302,22 @@ static bool c_ast_vistor_type_any( c_ast_t *ast, void *data ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array ) {
+c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast ) {
   assert( ast != NULL );
-  c_ast_t *const rv = c_ast_add_array_impl( ast, array );
-  assert( rv != NULL );
-  array->type_id |= c_ast_take_storage( array->as.array.of_ast );
-  return rv;
+  c_ast_t *const rv_ast = c_ast_add_array_impl( ast, array_ast );
+  assert( rv_ast != NULL );
+  array_ast->type_id |= c_ast_take_storage( array_ast->as.array.of_ast );
+  return rv_ast;
 }
 
-c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func ) {
+c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast ) {
   assert( ast != NULL );
-  c_ast_t *const rv = c_ast_add_func_impl( ast, ret_ast, func );
-  assert( rv != NULL );
-  if ( c_ast_sname_empty( func ) )
-    func->sname = c_ast_take_name( ast );
-  func->type_id |= c_ast_take_storage( func->as.func.ret_ast );
-  return rv;
+  c_ast_t *const rv_ast = c_ast_add_func_impl( ast, ret_ast, func_ast );
+  assert( rv_ast != NULL );
+  if ( c_ast_sname_empty( func_ast ) )
+    func_ast->sname = c_ast_take_name( ast );
+  func_ast->type_id |= c_ast_take_storage( func_ast->as.func.ret_ast );
+  return rv_ast;
 }
 
 c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
@@ -441,13 +442,13 @@ c_sname_t c_ast_take_name( c_ast_t *ast ) {
 
 c_type_id_t c_ast_take_type_any( c_ast_t *ast, c_type_id_t type_ids ) {
   assert( ast != NULL );
-  c_type_id_t rv = T_NONE;
+  c_type_id_t rv_type_ids = T_NONE;
   c_ast_t *const found_ast = c_ast_find_type_any( ast, C_VISIT_DOWN, type_ids );
   if ( found_ast != NULL ) {
-    rv = found_ast->type_id & type_ids;
+    rv_type_ids = found_ast->type_id & type_ids;
     found_ast->type_id &= ~type_ids;
   }
-  return rv;
+  return rv_type_ids;
 }
 
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast ) {

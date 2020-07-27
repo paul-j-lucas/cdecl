@@ -104,7 +104,7 @@ enum c_visit_dir {
 /**
  * The signature for functions passed to `c_ast_visit()`.
  *
- * @param ast The `c_ast` to visit.
+ * @param ast The AST to visit.
  * @param data Optional data passed to `c_ast_visit()`.
  * @return Returning `true` will cause traversal to stop and \a ast to be
  * returned to the caller of `c_ast_visit()`.
@@ -130,7 +130,7 @@ typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
 /**
  * Generic "parent" AST node.
  *
- * @note All parent nodes have a `c_ast` pointer to what they're a parent of as
+ * @note All parent nodes have a AST pointer to what they're a parent of as
  * their first `struct` member: this is taken advantage of.
  */
 struct c_parent {
@@ -249,7 +249,7 @@ struct c_ast {
   c_kind_id_t           kind_id;        ///< Kind.
   c_sname_t             sname;          ///< Scoped name.
   c_type_id_t           type_id;        ///< Type.
-  c_ast_t              *parent_ast;     ///< Parent `c_ast` node, if any.
+  c_ast_t              *parent_ast;     ///< Parent AST node, if any.
   c_loc_t               loc;            ///< Source location.
 
   union {
@@ -283,10 +283,10 @@ struct c_ast {
  */
 
 /**
- * Convenience function to get the `c_ast` given an `c_ast_arg_t`.
+ * Convenience function to get the AST given an `c_ast_arg_t`.
  *
  * @param arg A pointer to an `c_ast_arg_t`.
- * @return Returns a pointer to the `c_ast`.
+ * @return Returns a pointer to the AST.
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_arg_ast( c_ast_arg_t const *arg ) {
@@ -296,7 +296,7 @@ c_ast_t const* c_ast_arg_ast( c_ast_arg_t const *arg ) {
 /**
  * Convenience function for getting function-like arguments.
  *
- * @param ast The `c_ast` to get the arguments of.
+ * @param ast The AST to get the arguments of.
  * @return Returns a pointer to the first argument or null if none.
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT
@@ -307,7 +307,7 @@ c_ast_arg_t const* c_ast_args( c_ast_t const *ast ) {
 /**
  * Convenience function for getting the number of function-like arguments.
  *
- * @param ast The `c_ast` to get the number of arguments of.
+ * @param ast The AST to get the number of arguments of.
  * @return Returns said number of arguments.
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT
@@ -317,16 +317,16 @@ size_t c_ast_args_count( c_ast_t const *ast ) {
 
 /**
  * Cleans-up all AST data.
- * (Currently, this checks that the number of `c_ast` nodes freed match the
- * number allocated.)
+ * (Currently, this checks that the number of AST nodes freed match the number
+ * allocated.)
  */
 void c_ast_cleanup( void );
 
 /**
  * Checks whether the two ASTs are equivalent, i.e., represent the same type.
  *
- * @param ast_i The first `c_ast`.
- * @param ast_j The second `c_ast`.
+ * @param ast_i The first AST.
+ * @param ast_j The second AST.
  * @return Returns `true` only if the two ASTs are equivalent.
  */
 C_WARN_UNUSED_RESULT
@@ -335,7 +335,7 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j );
 /**
  * Frees all the memory used by \a ast.
  *
- * @param ast The `c_ast` to free.  May be null.
+ * @param ast The AST to free.  May be null.
  *
  * @sa c_ast_new()
  */
@@ -344,7 +344,7 @@ void c_ast_free( c_ast_t *ast );
 /**
  * Checks whether \a ast is a parent node.
  *
- * @param ast The `c_ast` to check.  May be null.
+ * @param ast The AST to check.  May be null.
  * @return Returns `true` only if it is.
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT
@@ -353,12 +353,12 @@ bool c_ast_is_parent( c_ast_t const *ast ) {
 }
 
 /**
- * Creates a new `c_ast`.
+ * Creates a new AST node.
  *
- * @param kind_id The kind_id of `c_ast` to create.
+ * @param kind_id The kind of AST to create.
  * @param depth How deep within `()` it is.
  * @param loc A pointer to the token location data.
- * @return Returns a pointer to a new `c_ast`.
+ * @return Returns a pointer to a new AST.
  *
  * @sa c_ast_free()
  */
@@ -367,10 +367,10 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
                     c_loc_t const *loc );
 
 /**
- * Gets the root `c_ast` node of \a ast.
+ * Gets the root AST node of \a ast.
  *
- * @param ast The `c_ast` node to get the root of.
- * @return Returns said `c_ast` node.
+ * @param ast The AST node to get the root of.
+ * @return Returns said AST node.
  */
 C_WARN_UNUSED_RESULT
 c_ast_t* c_ast_root( c_ast_t *ast );
@@ -378,7 +378,7 @@ c_ast_t* c_ast_root( c_ast_t *ast );
 /**
  * Convenience function for getting the head of the scope list.
  *
- * @param ast The `c_ast` to get the scope list of.
+ * @param ast The AST to get the scope list of.
  * @return Returns a pointer to the first scope entry.
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT
@@ -387,17 +387,17 @@ c_scope_t const* c_ast_scope( c_ast_t const *ast ) {
 }
 
 /**
- * Sets the two-way pointer links between parent/child `c_ast` nodes.
+ * Sets the two-way pointer links between parent/child AST nodes.
  *
- * @param child_ast The "child" `c_ast` node to set the parent of.
- * @param parent_ast The "parent" `c_ast` node whose child node is set.
+ * @param child_ast The "child" AST node to set the parent of.
+ * @param parent_ast The "parent" AST node whose child node is set.
  */
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
 
 /**
  * Appends \a name to the name of \a ast.
  *
- * @param ast The `c_ast` to append to the name of.
+ * @param ast The AST to append to the name of.
  * @param name The name to append.  Ownership is taken.
  */
 C_AST_INLINE
@@ -408,7 +408,7 @@ void c_ast_sname_append_name( c_ast_t *ast, char *name ) {
 /**
  * Appends \a sname to the name of \a ast.
  *
- * @param ast The `c_ast` to append to the name of.
+ * @param ast The AST to append to the name of.
  * @param sname The scoped name to append.  It is cleared.
  *
  * @sa c_ast_sname_prepend_sname()
@@ -421,7 +421,7 @@ void c_ast_sname_append_sname( c_ast_t *ast, c_sname_t *sname ) {
 /**
  * Gets the number of names of \a ast, e.g., `S::T::x` is 3.
  *
- * @param ast The `c_ast` to get the number of names of.
+ * @param ast The AST to get the number of names of.
  * @return Returns said number of names.
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT
@@ -432,7 +432,7 @@ size_t c_ast_sname_count( c_ast_t const *ast ) {
 /**
  * Duplicates the name of \a ast.
  *
- * @param ast The `c_ast` to duplicate the name of.
+ * @param ast The AST to duplicate the name of.
  * @return Returns the name of \a ast duplicated.
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT
@@ -443,7 +443,7 @@ c_sname_t c_ast_sname_dup( c_ast_t const *ast ) {
 /**
  * Checks whether the name of \a ast is empty.
  *
- * @param ast The `c_ast` to check.
+ * @param ast The AST to check.
  * @return Returns `true` only if the name of \a ast is empty.
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT
@@ -454,7 +454,7 @@ bool c_ast_sname_empty( c_ast_t const *ast ) {
 /**
  * Gets the fully scoped name of \a ast.
  *
- * @param ast The `c_ast` to get the scoped name of.
+ * @param ast The AST to get the scoped name of.
  * @return Returns said name.
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
@@ -465,11 +465,12 @@ char const* c_ast_sname_full_name( c_ast_t const *ast ) {
 }
 
 /**
- * Gets whether the scoped name of \a ast is a constructor name, e.g. `S::T::T`.
+ * Gets whether the scoped name of \a ast is a constructor name, e.g.,
+ * `S::T::T`.
  *
  * @note This also checks for destructor names since the `~` is elided.
  *
- * @param ast The `c_ast` to check.
+ * @param ast The AST to check.
  * @return Returns `true` only if the last two names of the scoped name of \a
  * ast match.
  */
@@ -481,7 +482,7 @@ bool c_ast_sname_is_ctor( c_ast_t const *ast ) {
 /**
  * Gets the local name of \a ast.
  *
- * @param ast The `c_ast` to get the local name of.
+ * @param ast The AST to get the local name of.
  *
  * @sa c_ast_sname_full_name()
  * @sa c_ast_sname_scope_name()
@@ -495,7 +496,7 @@ char const* c_ast_sname_local_name( c_ast_t const *ast ) {
  * Gets the scope type of the name of \a ast (which is the type of the
  * innermost scope).
  *
- * @param ast The `c_ast` node to get the scope type of the name of.
+ * @param ast The AST node to get the scope type of the name of.
  * @return Returns the scope type.
  *
  * @sa c_ast_sname_set_local_type()
@@ -508,7 +509,7 @@ c_type_id_t c_ast_sname_local_type( c_ast_t const *ast ) {
 /**
  * Gets the name at \a offset of \a ast.
  *
- * @param ast The `c_ast` to get the name at \a offset of.
+ * @param ast The AST to get the name at \a offset of.
  * @param offset The offset (starting at 0) of the name to get.
  * @return Returns the name at \a offset or the empty string if \a offset &gt;=
  * c_ast_sname_count().
@@ -523,7 +524,7 @@ char const* c_ast_sname_name_at( c_ast_t const *ast, size_t offset ) {
 /**
  * Gets the name at \a roffset of \a ast.
  *
- * @param ast The `c_ast` to get the name at \a offset of.
+ * @param ast The AST to get the name at \a offset of.
  * @param roffset The reverse offset (starting at 0) of the name to get.
  * @return Returns the name at \a offset or the empty string if \a offset &gt;=
  * c_ast_sname_count().
@@ -538,7 +539,7 @@ char const* c_ast_sname_name_atr( c_ast_t const *ast, size_t roffset ) {
 /**
  * Prepends \a sname to the name of \a ast.
  *
- * @param ast The `c_ast` to prepend to the name of.
+ * @param ast The AST to prepend to the name of.
  * @param sname The scoped name to prepend.  It is cleared.
  *
  * @sa c_ast_sname_append_sname()
@@ -551,7 +552,7 @@ void c_ast_sname_prepend_sname( c_ast_t *ast, c_sname_t *sname ) {
 /**
  * Gets the scope name of \a ast in C++ form.
  *
- * @param ast The `c_ast` to get the scope name of.
+ * @param ast The AST to get the scope name of.
  * @return Returns said name or the empty string if \a ast doesn't have a scope
  * name.
  *
@@ -567,7 +568,7 @@ char const* c_ast_sname_scope_name( c_ast_t const *ast ) {
  * Sets the scope type of the name of \a ast (which is the type of the
  * innermost scope).
  *
- * @param ast The `c_ast` to set the type of the name of.
+ * @param ast The AST to set the type of the name of.
  * @param type_id The scope type.
  *
  * @sa c_ast_sname_local_type()
@@ -580,7 +581,7 @@ void c_ast_sname_set_local_type( c_ast_t *ast, c_type_id_t type_id ) {
 /**
  * Sets the name of \a ast.
  *
- * @param ast The `c_ast` node to set the name of.
+ * @param ast The AST node to set the name of.
  * @param name The name to set.  Ownership is taken.
  *
  * @sa c_ast_sname_set_sname()
@@ -590,7 +591,7 @@ void c_ast_sname_set_name( c_ast_t *ast, char *name );
 /**
  * Sets the name of \a ast.
  *
- * @param ast The `c_ast` node to set the name of.
+ * @param ast The AST node to set the name of.
  * @param sname The scoped name to set.  It is not duplicated.
  *
  * @sa c_ast_sname_set_name()
@@ -600,11 +601,11 @@ void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname );
 /**
  * Does a depth-first, post-order traversal of an AST.
  *
- * @param ast The `c_ast` to begin at.  May be null.
+ * @param ast The AST to begin at.  May be null.
  * @param dir The direction to visit.
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.
- * @return Returns a pointer to the `c_ast` the visitor stopped on or null.
+ * @return Returns a pointer to the AST the visitor stopped on or null.
  *
  * @note Function-like arguments are _not_ traversed into.  They're considered
  * distinct ASTs.
@@ -614,10 +615,10 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
                       void *data );
 
 /**
- * Does a depth-first, post-order traversal of an AST looking for a `c_ast`
+ * Does a depth-first, post-order traversal of an AST looking for a AST
  * node that satisfies the visitor.
  *
- * @param ast The `c_ast` to begin at.
+ * @param ast The AST to begin at.
  * @param dir The direction to visit.
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.

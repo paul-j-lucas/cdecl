@@ -52,7 +52,7 @@ static unsigned   c_ast_count;          ///< ASTs allocated but not yet freed.
 /**
  * Checks \a ast for a cycle.
  *
- * @param ast The `c_ast` node to begin at.
+ * @param ast The AST node to begin at.
  * @return Returns `true` only if there is a cycle.
  */
 C_WARN_UNUSED_RESULT

@@ -97,7 +97,7 @@
 /**
  * Calls c_ast_check_declaration(): if the check fails, calls PARSE_ABORT().
  *
- * @param AST The `c_ast` to check.
+ * @param AST The AST to check.
  */
 #define C_AST_CHECK_DECL(AST) \
   BLOCK( if ( !c_ast_check_declaration( AST ) ) PARSE_ABORT(); )
@@ -159,19 +159,19 @@
   BLOCK( if ( true_or_set( &debug_comma ) ) PUTS_OUT( ",\n" ); )
 
 /**
- * Dumps a `c_ast`.
+ * Dumps an AST.
  *
  * @param KEY The key name to print.
- * @param AST The `c_ast` to dump.
+ * @param AST The AST to dump.
  */
 #define DUMP_AST(KEY,AST) \
   IF_DEBUG( DUMP_COMMA; c_ast_debug( (AST), 1, (KEY), stdout ); )
 
 /**
- * Dumps an `s_list` of `c_ast`.
+ * Dumps an `s_list` of AST.
  *
  * @param KEY The key name to print.
- * @param AST_LIST The `s_list` of `c_ast` to dump.
+ * @param AST_LIST The `s_list` of AST to dump.
  */
 #define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
   DUMP_COMMA; PUTS_OUT( "  " KEY " = " );     \
@@ -302,11 +302,11 @@ static in_attr_t      in_attr;          ///< Inherited attributes.
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Creates a new `c_ast` and adds it to the garbage-collection list.
+ * Creates a new AST and adds it to the garbage-collection list.
  *
- * @param kind_id The kind of `c_ast` to create.
+ * @param kind_id The kind of AST to create.
  * @param loc A pointer to the token location data.
- * @return Returns a pointer to a new `c_ast`.
+ * @return Returns a pointer to a new AST.
  */
 C_WARN_UNUSED_RESULT
 static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t *loc ) {
@@ -326,10 +326,9 @@ static inline char const* printable_token( void ) {
 }
 
 /**
- * Peeks at the type `c_ast` at the top of the type AST inherited attribute
- * stack.
+ * Peeks at the type AST at the top of the type AST inherited attribute stack.
  *
- * @return Returns said `c_ast`.
+ * @return Returns said AST.
  */
 C_WARN_UNUSED_RESULT
 static inline c_ast_t* type_peek( void ) {
@@ -337,9 +336,9 @@ static inline c_ast_t* type_peek( void ) {
 }
 
 /**
- * Pops a type `c_ast` from the type AST inherited attribute stack.
+ * Pops a type AST from the type AST inherited attribute stack.
  *
- * @return Returns said `c_ast`.
+ * @return Returns said AST.
  */
 C_NOWARN_UNUSED_RESULT
 static inline c_ast_t* type_pop( void ) {
@@ -347,9 +346,9 @@ static inline c_ast_t* type_pop( void ) {
 }
 
 /**
- * Pushes a type `c_ast` onto the type AST inherited attribute stack.
+ * Pushes a type AST onto the type AST inherited attribute stack.
  *
- * @param ast The `c_ast` to push.
+ * @param ast The AST to push.
  */
 static inline void type_push( c_ast_t *ast ) {
   slist_push_head( &in_attr.type_stack, ast );
@@ -412,7 +411,7 @@ void parser_cleanup( void ) {
  * Adds a type to the global set.
  *
  * @param decl_keyword The keyword used for the declaration.
- * @param type_ast The `c_ast` of the type to add.
+ * @param type_ast The AST of the type to add.
  * @param type_decl_loc The location of the offending type declaration.
  * @return Returns `true` either if the type was added or it's equivalent to
  * the existing type; `false` if a different type already exists having the
@@ -450,7 +449,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
 /**
  * Prints the pseudo English explanation for an AST.
  *
- * @param ast The `c_ast` to explain.
+ * @param ast The AST to explain.
  */
 static void c_ast_explain( c_ast_t const *ast ) {
   assert( ast != NULL );
@@ -492,8 +491,8 @@ static void c_ast_explain( c_ast_t const *ast ) {
  *
  * @param has_typename `true` only if the declaration includes `typename`.
  * @param align The `alignas` specifier, if any.
- * @param type_ast The type `c_ast`.
- * @param decl_ast The declaration `c_ast`.
+ * @param type_ast The type AST.
+ * @param decl_ast The declaration AST.
  * @param decl_loc The source location of \a decl_ast.
  * @return Returns The final AST on success or NULL on error.
  */
@@ -594,7 +593,7 @@ static void elaborate_error( char const *format, ... ) {
 /**
  * Checks whether `typename` is OK since the type's name is a qualified name.
  *
- * @param ast The `c_ast` to check.
+ * @param ast The AST to check.
  * @return Returns `true` only upon success.
  */
 C_WARN_UNUSED_RESULT

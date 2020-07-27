@@ -104,7 +104,7 @@ static void c_ast_english_func_args( c_ast_arg_t const *arg, FILE *eout ) {
 /**
  * Visitor function that prints \a ast as pseudo-English.
  *
- * @param ast The `c_ast` to print.
+ * @param ast The AST to print.
  * @param data A pointer to a `FILE` to emit to.
  * @return Always returns `false`.
  */
