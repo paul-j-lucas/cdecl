@@ -108,7 +108,7 @@ bool is_explicit_int( c_type_id_t type_id );
  * @param pargc A pointer to the argument count from `main()`.
  * @param pargv A pointer to the argument values from `main()`.
  */
-void options_init( int *pargc, char const ***pargv );
+void options_init( int *pargc, char const **pargv[] );
 
 /**
  * Parses the explicit `int` option.

@@ -112,7 +112,7 @@ static bool         starts_with_keyword( char const*, char const*, size_t );
  * @param argv The command-line argument values.
  * @return Returns 0 on success, non-zero on failure.
  */
-int main( int argc, char const **argv ) {
+int main( int argc, char const *argv[] ) {
   atexit( cdecl_cleanup );
   options_init( &argc, &argv );
 

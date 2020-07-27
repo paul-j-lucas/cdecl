@@ -586,7 +586,7 @@ void print_opt_explicit_int( void ) {
   }
 }
 
-void options_init( int *pargc, char const ***pargv ) {
+void options_init( int *pargc, char const **pargv[] ) {
   assert( pargc != NULL );
   assert( pargv != NULL );
 
