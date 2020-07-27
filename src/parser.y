@@ -476,9 +476,9 @@ static void c_ast_explain( c_ast_t const *ast ) {
     assert( local_name != NULL );
     FPRINTF( fout, "%s ", local_name );
     if ( scope_name[0] != '\0' ) {
-      c_type_id_t const sn_type = c_sname_local_type( found_sname );
-      assert( sn_type != T_NONE );
-      FPRINTF( fout, "%s %s %s ", L_OF, c_type_name( sn_type ), scope_name );
+      c_type_id_t const sn_type_id = c_sname_local_type( found_sname );
+      assert( sn_type_id != T_NONE );
+      FPRINTF( fout, "%s %s %s ", L_OF, c_type_name( sn_type_id ), scope_name );
     }
     FPRINTF( fout, "%s ", L_AS );
   }
@@ -643,15 +643,15 @@ static void parse_init( void ) {
 /**
  * Pushes a qualifier onto the qualifier inherited attribute stack.
  *
- * @param qual_type The qualifier to push.
+ * @param qual_type_id The qualifier to push.
  * @param loc A pointer to the source location of the qualifier.
  */
-static void qualifier_push( c_type_id_t qual_type, c_loc_t const *loc ) {
-  assert( (qual_type & ~T_MASK_QUALIFIER) == T_NONE );
+static void qualifier_push( c_type_id_t qual_type_id, c_loc_t const *loc ) {
+  assert( (qual_type_id & ~T_MASK_QUALIFIER) == T_NONE );
   assert( loc != NULL );
 
   c_qualifier_t *const qual = MALLOC( c_qualifier_t, 1 );
-  qual->type_id = qual_type;
+  qual->type_id = qual_type_id;
   qual->loc = *loc;
   slist_push_head( &in_attr.qualifier_stack, qual );
 }
@@ -1557,13 +1557,13 @@ define_english
         C_IGNORE_RV( c_ast_take_type_any( $5.ast, T_TYPEDEF ) );
 
         if ( c_sname_count( &$2 ) > 1 ) {
-          c_type_id_t sn_type = c_sname_local_type( &$2 );
-          if ( (sn_type & T_SCOPE) != T_NONE ) {
+          c_type_id_t sn_type_id = c_sname_local_type( &$2 );
+          if ( (sn_type_id & T_SCOPE) != T_NONE ) {
             //
             // Replace the generic "scope" with "namespace".
             //
-            sn_type = (sn_type & ~T_SCOPE) | T_NAMESPACE;
-            c_sname_set_local_type( &$2, sn_type );
+            sn_type_id = (sn_type_id & ~T_SCOPE) | T_NAMESPACE;
+            c_sname_set_local_type( &$2, sn_type_id );
           }
         }
         c_ast_sname_set_sname( $5.ast, &$2 );
@@ -2041,15 +2041,16 @@ scope_declaration_c
         PARSE_ABORT();
       }
 
-      c_type_id_t const cur_type = c_sname_local_type( &in_attr.current_scope );
-      if ( (cur_type & T_ANY_CLASS) != T_NONE ) {
+      c_type_id_t const cur_type_id =
+        c_sname_local_type( &in_attr.current_scope );
+      if ( (cur_type_id & T_ANY_CLASS) != T_NONE ) {
         char const *const cur_name =
           c_sname_local_name( &in_attr.current_scope );
         char const *const mbr_name = c_sname_local_name( &$3 );
         if ( strcmp( mbr_name, cur_name ) == 0 ) {
           print_error( &@3,
             "\"%s\": %s has the same name as its enclosing %s",
-            mbr_name, L_MEMBER, c_type_name( cur_type )
+            mbr_name, L_MEMBER, c_type_name( cur_type_id )
           );
           PARSE_ABORT();
         }
@@ -2114,9 +2115,9 @@ scope_declaration_c
       //
       // Ensure that "namespace" isn't nested within a class/struct/union.
       //
-      c_type_id_t const outer_type =
+      c_type_id_t const outer_type_id =
         c_sname_local_type( &in_attr.current_scope );
-      if ( (outer_type & T_ANY_CLASS) != T_NONE ) {
+      if ( (outer_type_id & T_ANY_CLASS) != T_NONE ) {
         print_error( &@1,
           "\"%s\" may only be nested within a %s", L_NAMESPACE, L_NAMESPACE
         );
@@ -3094,10 +3095,10 @@ func_decl_c_ast
     noexcept_c_type_opt trailing_return_type_c_ast_opt func_equals_type_opt
     {
       c_ast_t    *const decl2_ast = $1.ast;
-      c_type_id_t const func_qualifier_type = $5;
-      c_type_id_t const func_ref_qualifier_type = $6;
-      c_type_id_t const noexcept_type = $7;
-      c_type_id_t const pure_virtual_type = $9;
+      c_type_id_t const func_qualifier_type_id = $5;
+      c_type_id_t const func_ref_qualifier_type_id = $6;
+      c_type_id_t const noexcept_type_id = $7;
+      c_type_id_t const pure_virtual_type_id = $9;
       c_ast_t    *const trailing_ret_ast = $8.ast;
       c_ast_t    *const type_ast = type_peek();
 
@@ -3110,11 +3111,11 @@ func_decl_c_ast
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl2_c_ast", decl2_ast );
       DUMP_AST_LIST( "arg_list_c_ast_opt", $3 );
-      DUMP_TYPE( "func_qualifier_list_c_type_opt", func_qualifier_type );
-      DUMP_TYPE( "func_ref_qualifier_c_type_opt", func_ref_qualifier_type );
-      DUMP_TYPE( "noexcept_c_type_opt", noexcept_type );
+      DUMP_TYPE( "func_qualifier_list_c_type_opt", func_qualifier_type_id );
+      DUMP_TYPE( "func_ref_qualifier_c_type_opt", func_ref_qualifier_type_id );
+      DUMP_TYPE( "noexcept_c_type_opt", noexcept_type_id );
       DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
-      DUMP_TYPE( "func_equals_type_opt", pure_virtual_type );
+      DUMP_TYPE( "func_equals_type_opt", pure_virtual_type_id );
       if ( $1.target_ast != NULL )
         DUMP_AST( "target_ast", $1.target_ast );
 
@@ -3156,8 +3157,8 @@ func_decl_c_ast
 
       c_ast_t *const func_ast =
         c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );
-      func_ast->type_id = func_qualifier_type | func_ref_qualifier_type |
-                          noexcept_type | pure_virtual_type;
+      func_ast->type_id = func_qualifier_type_id | func_ref_qualifier_type_id |
+                          noexcept_type_id | pure_virtual_type_id;
       func_ast->as.func.args = $3;
 
       if ( assume_constructor ) {
@@ -3463,19 +3464,21 @@ pointer_to_member_type_c_ast
       $$.ast = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
       $$.target_ast = NULL;
 
-      c_type_id_t sn_type = c_sname_local_type( &$1 );
-      if ( (sn_type & T_ANY_SCOPE) == T_NONE ) {
+      c_type_id_t sn_type_id = c_sname_local_type( &$1 );
+      if ( (sn_type_id & T_ANY_SCOPE) == T_NONE ) {
         //
         // The sname has no scope type, but we now know there's a pointer-to-
         // member of it, so it must be a class.  (It could alternatively be a
         // struct, but we have no context to know, so just pick class because
         // it's more C++-like.)
         //
-        sn_type = T_CLASS;
-        c_sname_set_local_type( &$1, sn_type );
+        sn_type_id = T_CLASS;
+        c_sname_set_local_type( &$1, sn_type_id );
       }
 
-      $$.ast->type_id = $3 | sn_type;   // adopt sname's scope type for the AST
+      // adopt sname's scope type for the AST
+      $$.ast->type_id = $3 | sn_type_id;
+
       $$.ast->as.ptr_mbr.class_sname = $1;
       c_ast_set_parent( type_peek(), $$.ast );
 
@@ -4702,12 +4705,12 @@ sname_c_opt
 sname_english
   : any_sname_c of_scope_list_english_opt
     {
-      c_type_id_t sn_type = c_sname_local_type( &$2 );
-      if ( sn_type == T_NONE )
-        sn_type = c_sname_local_type( &$1 );
+      c_type_id_t sn_type_id = c_sname_local_type( &$2 );
+      if ( sn_type_id == T_NONE )
+        sn_type_id = c_sname_local_type( &$1 );
       $$ = $2;
       c_sname_append_sname( &$$, &$1 );
-      c_sname_set_local_type( &$$, sn_type );
+      c_sname_set_local_type( &$$, sn_type_id );
     }
   ;
 
@@ -4964,19 +4967,19 @@ of_scope_list_english
       // Ensure that neither "namespace" nor "scope" are nested within a
       // class/struct/union.
       //
-      c_type_id_t const inner_type = c_sname_local_type( &$1 );
-      c_type_id_t const outer_type = c_sname_local_type( &$2 );
-      if ( (inner_type & (T_NAMESPACE | T_SCOPE)) != T_NONE &&
-           (outer_type & T_ANY_CLASS) != T_NONE ) {
+      c_type_id_t const inner_type_id = c_sname_local_type( &$1 );
+      c_type_id_t const outer_type_id = c_sname_local_type( &$2 );
+      if ( (inner_type_id & (T_NAMESPACE | T_SCOPE)) != T_NONE &&
+           (outer_type_id & T_ANY_CLASS) != T_NONE ) {
         print_error( &@2,
           "\"%s\" may only be nested within a %s or %s",
-          c_type_name( inner_type ), L_NAMESPACE, L_SCOPE
+          c_type_name( inner_type_id ), L_NAMESPACE, L_SCOPE
         );
         PARSE_ABORT();
       }
 
       $$ = $2;                          // "of scope X of scope Y" means Y::X
-      c_sname_set_local_type( &$$, inner_type );
+      c_sname_set_local_type( &$$, inner_type_id );
       c_sname_append_sname( &$$, &$1 );
     }
   | of_scope_english

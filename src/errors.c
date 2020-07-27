@@ -420,13 +420,13 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
       return false;
     }
 
-    c_type_id_t const arg_storage_type =
+    c_type_id_t const arg_storage_type_id =
       arg_ast->type_id & (T_MASK_STORAGE & ~T_REGISTER);
-    if ( arg_storage_type != T_NONE ) {
+    if ( arg_storage_type_id != T_NONE ) {
       print_error( &arg_ast->loc,
         "%s arguments can not be %s",
         c_kind_name( ast->kind_id ),
-        c_type_name_error( arg_storage_type )
+        c_type_name_error( arg_storage_type_id )
       );
       return false;
     }
@@ -545,11 +545,11 @@ static bool c_ast_check_func_c( c_ast_t const *ast ) {
   assert( (ast->kind_id & (K_APPLE_BLOCK | K_FUNCTION)) != K_NONE );
   assert( C_LANG_IS_C() );
 
-  c_type_id_t const qual_type = ast->type_id & T_MASK_QUALIFIER;
-  if ( qual_type != T_NONE ) {
+  c_type_id_t const qual_type_id = ast->type_id & T_MASK_QUALIFIER;
+  if ( qual_type_id != T_NONE ) {
     print_error( &ast->loc,
       "\"%s\" %ss not supported in %s",
-      c_type_name_error( qual_type ),
+      c_type_name_error( qual_type_id ),
       c_kind_name( ast->kind_id ),
       C_LANG_NAME()
     );
@@ -1838,9 +1838,9 @@ bool c_ast_check_cast( c_ast_t const *ast ) {
     c_ast_find_type_any( nonconst_ast, C_VISIT_DOWN, T_MASK_STORAGE );
 
   if ( storage_ast != NULL ) {
-    c_type_id_t const storage_type = storage_ast->type_id & T_MASK_STORAGE;
+    c_type_id_t const storage_type_id = storage_ast->type_id & T_MASK_STORAGE;
     print_error( &ast->loc,
-      "can not %s %s %s", L_CAST, L_INTO, c_type_name_error( storage_type )
+      "can not %s %s %s", L_CAST, L_INTO, c_type_name_error( storage_type_id )
     );
     return false;
   }

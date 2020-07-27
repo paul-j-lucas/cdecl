@@ -684,9 +684,9 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
   };
   C_TYPE_NAME_CAT( &name, type_id, C_STORAGE_CLASS, is_error, ' ', &space );
 
-  c_type_id_t east_cv_type = T_NONE;
+  c_type_id_t east_cv_type_id = T_NONE;
   if ( opt_east_const && c_mode == C_ENGLISH_TO_GIBBERISH ) {
-    east_cv_type = type_id & (T_CONST | T_VOLATILE);
+    east_cv_type_id = type_id & (T_CONST | T_VOLATILE);
     type_id &= ~(T_CONST | T_VOLATILE);
   }
 
@@ -740,8 +740,8 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
   };
   C_TYPE_NAME_CAT( &name, type_id, C_TYPE, is_error, ' ', &space );
 
-  if ( east_cv_type != T_NONE )
-    C_TYPE_NAME_CAT( &name, east_cv_type, C_QUALIFIER, is_error, ' ', &space );
+  if ( east_cv_type_id != T_NONE )
+    C_TYPE_NAME_CAT( &name, east_cv_type_id, C_QUALIFIER, is_error, ' ', &space );
 
   // Really special cases.
   if ( (type_id & T_NAMESPACE) != T_NONE )
@@ -776,33 +776,34 @@ static char* strcpy_sep( char *dst, char const *src, char sep, bool *sep_cat ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool c_type_add( c_type_id_t *dest_type, c_type_id_t new_type,
+bool c_type_add( c_type_id_t *pdest_type_id, c_type_id_t new_type_id,
                  c_loc_t const *new_loc ) {
-  assert( dest_type != NULL );
+  assert( pdest_type_id != NULL );
   assert( new_loc != NULL );
 
-  if ( is_long_int( *dest_type ) && is_long_int( new_type ) ) {
+  if ( is_long_int( *pdest_type_id ) && is_long_int( new_type_id ) ) {
     //
     // If the existing type is "long" and the new type is "long", turn the new
     // type into "long long".
     //
-    new_type = T_LONG_LONG;
+    new_type_id = T_LONG_LONG;
   }
 
-  if ( (*dest_type & new_type) != T_NONE ) {
+  if ( (*pdest_type_id & new_type_id) != T_NONE ) {
     // Need this since c_type_name_error() can't be called more than once in
     // the same expression.
-    char const *const new_name = check_strdup( c_type_name_error( new_type ) );
+    char const *const new_name =
+      check_strdup( c_type_name_error( new_type_id ) );
 
     print_error( new_loc,
       "\"%s\" can not be combined with \"%s\"",
-      new_name, c_type_name_error( *dest_type )
+      new_name, c_type_name_error( *pdest_type_id )
     );
     FREE( new_name );
     return false;
   }
 
-  *dest_type |= new_type;
+  *pdest_type_id |= new_type_id;
   return true;
 }
 

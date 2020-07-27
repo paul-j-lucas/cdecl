@@ -202,16 +202,16 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
-  c_type_id_t ast_type        = ast->type_id;
-  c_type_id_t cv_type         = T_NONE;
-  bool        is_default      = false;
-  bool        is_deleted      = false;
-  bool        is_final        = false;
-  bool        is_noexcept     = false;
-  bool        is_override     = false;
-  bool        is_pure_virtual = false;
-  bool        is_throw        = false;
-  c_type_id_t ref_qual_type   = T_NONE;
+  c_type_id_t ast_type_id       = ast->type_id;
+  c_type_id_t cv_type_id        = T_NONE;
+  bool        is_default        = false;
+  bool        is_deleted        = false;
+  bool        is_final          = false;
+  bool        is_noexcept       = false;
+  bool        is_override       = false;
+  bool        is_pure_virtual   = false;
+  bool        is_throw          = false;
+  c_type_id_t ref_qual_type_id  = T_NONE;
 
   //
   // This isn't implemented using a visitor because c_ast_visit() visits in
@@ -237,25 +237,25 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       // These things aren't printed as part of the type beforehand, so strip
       // them out of the type here, but print them after the arguments.
       //
-      cv_type         = (ast_type & T_MASK_QUALIFIER);
-      is_final        = (ast_type & T_FINAL) != T_NONE;
-      is_noexcept     = (ast_type & T_NOEXCEPT) != T_NONE;
-      is_override     = (ast_type & T_OVERRIDE) != T_NONE;
-      is_pure_virtual = (ast_type & T_PURE_VIRTUAL) != T_NONE;
-      is_default      = (ast_type & T_DEFAULT) != T_NONE;
-      is_deleted      = (ast_type & T_DELETE) != T_NONE;
-      is_throw        = (ast_type & T_THROW) != T_NONE;
-      ref_qual_type   = (ast_type & T_MASK_REF_QUALIFIER);
+      cv_type_id        = (ast_type_id & T_MASK_QUALIFIER);
+      is_final          = (ast_type_id & T_FINAL) != T_NONE;
+      is_noexcept       = (ast_type_id & T_NOEXCEPT) != T_NONE;
+      is_override       = (ast_type_id & T_OVERRIDE) != T_NONE;
+      is_pure_virtual   = (ast_type_id & T_PURE_VIRTUAL) != T_NONE;
+      is_default        = (ast_type_id & T_DEFAULT) != T_NONE;
+      is_deleted        = (ast_type_id & T_DELETE) != T_NONE;
+      is_throw          = (ast_type_id & T_THROW) != T_NONE;
+      ref_qual_type_id  = (ast_type_id & T_MASK_REF_QUALIFIER);
 
-      ast_type &= ~(T_MASK_QUALIFIER
-                  | T_DEFAULT
-                  | T_DELETE
-                  | T_FINAL
-                  | T_NOEXCEPT
-                  | T_OVERRIDE
-                  | T_PURE_VIRTUAL
-                  | T_THROW
-                  | T_MASK_REF_QUALIFIER);
+      ast_type_id &= ~(T_MASK_QUALIFIER
+                     | T_DEFAULT
+                     | T_DELETE
+                     | T_FINAL
+                     | T_NOEXCEPT
+                     | T_OVERRIDE
+                     | T_PURE_VIRTUAL
+                     | T_THROW
+                     | T_MASK_REF_QUALIFIER);
 
       //
       // Depending on the C++ language version, change noexcept to throw() or
@@ -276,8 +276,8 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
 
     case K_ARRAY:
     case K_APPLE_BLOCK:
-      if ( ast_type != T_NONE )         // storage class
-        FPRINTF( g->gout, "%s ", c_type_name( ast_type ) );
+      if ( ast_type_id != T_NONE )       // storage class
+        FPRINTF( g->gout, "%s ", c_type_name( ast_type_id ) );
       if ( ast->kind_id == K_USER_DEF_CONVERSION ) {
         if ( !c_ast_sname_empty( ast ) )
           FPRINTF( g->gout, "%s::", c_ast_sname_full_name( ast ) );
@@ -293,10 +293,10 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
         else
           g_postfix( g, ast );
       }
-      if ( cv_type != T_NONE )
-        FPRINTF( g->gout, " %s", c_type_name( cv_type ) );
-      if ( ref_qual_type != T_NONE )
-        FPUTS( (ref_qual_type & T_REFERENCE) ? " &" : " &&", g->gout );
+      if ( cv_type_id != T_NONE )
+        FPRINTF( g->gout, " %s", c_type_name( cv_type_id ) );
+      if ( ref_qual_type_id != T_NONE )
+        FPUTS( (ref_qual_type_id & T_REFERENCE) ? " &" : " &&", g->gout );
       if ( is_noexcept )
         FPRINTF( g->gout, " %s", L_NOEXCEPT );
       if ( is_throw )
@@ -314,13 +314,13 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name( ast_type ), g->gout );
+      FPUTS( c_type_name( ast_type_id ), g->gout );
       g_space_name( g, ast );
       g_set_leaf( g, ast );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      if ( (ast_type & T_ENUM) != T_NONE ) {
+      if ( (ast_type_id & T_ENUM) != T_NONE ) {
         //
         // Special case: an enum class must be written as just "enum" when
         // doing an elaborated-type-specifier:
@@ -328,21 +328,21 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
         //      c++decl> declare e as enum class C
         //      enum C e;                   // not: enum class C e;
         //
-        ast_type &= ~(T_STRUCT | T_CLASS);
+        ast_type_id &= ~(T_STRUCT | T_CLASS);
       }
 
       if ( opt_east_const ) {
-        cv_type = ast_type & (T_CONST | T_VOLATILE);
-        ast_type &= ~(T_CONST | T_VOLATILE);
+        cv_type_id = ast_type_id & (T_CONST | T_VOLATILE);
+        ast_type_id &= ~(T_CONST | T_VOLATILE);
       }
 
       FPRINTF( g->gout,
-        "%s %s", c_type_name( ast_type ),
+        "%s %s", c_type_name( ast_type_id ),
         c_sname_full_name( &ast->as.ecsu.ecsu_sname )
       );
 
-      if ( cv_type != T_NONE )
-        FPRINTF( g->gout, " %s", c_type_name( cv_type ) );
+      if ( cv_type_id != T_NONE )
+        FPRINTF( g->gout, " %s", c_type_name( cv_type_id ) );
 
       g_space_name( g, ast );
       g_set_leaf( g, ast );
@@ -364,9 +364,9 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE: {
-      c_type_id_t const storage_type = ast_type & T_MASK_STORAGE;
-      if ( storage_type != T_NONE )
-        FPRINTF( g->gout, "%s ", c_type_name( storage_type ) );
+      c_type_id_t const storage_type_id = ast_type_id & T_MASK_STORAGE;
+      if ( storage_type_id != T_NONE )
+        FPRINTF( g->gout, "%s ", c_type_name( storage_type_id ) );
       g_impl( g, ast->as.ptr_ref.to_ast );
       if ( (g->flags & G_IS_CAST) == 0 &&
            c_ast_find_name( ast, C_VISIT_UP ) != NULL &&
@@ -405,13 +405,13 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_TYPEDEF:
-      if ( !opt_east_const && ast_type != T_TYPEDEF_TYPE )
-        FPRINTF( g->gout, "%s ", c_type_name( ast_type ) );
+      if ( !opt_east_const && ast_type_id != T_TYPEDEF_TYPE )
+        FPRINTF( g->gout, "%s ", c_type_name( ast_type_id ) );
       FPRINTF( g->gout,
         "%s", g_sname_full_or_local( g, ast->as.c_typedef->ast )
       );
-      if ( opt_east_const && ast_type != T_TYPEDEF_TYPE )
-        FPRINTF( g->gout, " %s", c_type_name( ast_type ) );
+      if ( opt_east_const && ast_type_id != T_TYPEDEF_TYPE )
+        FPRINTF( g->gout, " %s", c_type_name( ast_type_id ) );
       g_space_name( g, ast );
       g_set_leaf( g, ast );
       break;
@@ -595,9 +595,9 @@ static void g_qual_name( g_state_t *g, c_ast_t const *ast ) {
       assert( (ast->kind_id & (K_ANY_POINTER | K_ANY_REFERENCE)) != K_NONE );
   } // switch
 
-  c_type_id_t const qual_type = ast->type_id & T_MASK_QUALIFIER;
-  if ( qual_type != T_NONE ) {
-    FPUTS( c_type_name( qual_type ), g->gout );
+  c_type_id_t const qual_type_id = ast->type_id & T_MASK_QUALIFIER;
+  if ( qual_type_id != T_NONE ) {
+    FPUTS( c_type_name( qual_type_id ), g->gout );
     if ( (g->flags & G_IS_CAST) == 0 )
       FPUTC( ' ', g->gout );
   }
@@ -707,12 +707,12 @@ void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
   assert( gout != NULL );
 
   size_t scope_close_braces_to_print = 0;
-  c_type_id_t sn_type = T_NONE;
+  c_type_id_t sn_type_id = T_NONE;
 
   c_sname_t const *const sname = c_ast_find_name( type->ast, C_VISIT_DOWN );
   if ( sname != NULL && c_sname_count( sname ) > 1 ) {
-    sn_type = c_scope_type( sname->head );
-    assert( sn_type != T_NONE );
+    sn_type_id = c_scope_type( sname->head );
+    assert( sn_type_id != T_NONE );
     //
     // A type name can't be scoped in a typedef declaration, e.g.:
     //
@@ -721,7 +721,7 @@ void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
     // so we have to wrap it in a scoped declaration, one of: class, namespace,
     // struct, or union.
     //
-    if ( (sn_type & T_NAMESPACE) == T_NONE || opt_lang >= LANG_CPP_17 ) {
+    if ( (sn_type_id & T_NAMESPACE) == T_NONE || opt_lang >= LANG_CPP_17 ) {
       //
       // All C++ versions support nested class/struct/union declarations, e.g.:
       //
@@ -731,11 +731,11 @@ void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
       //
       //      namespace S::T { typedef int I; }
       //
-      sn_type = c_sname_scope_type( sname );
-      if ( sn_type == T_SCOPE )
-        sn_type = T_NAMESPACE;
+      sn_type_id = c_sname_scope_type( sname );
+      if ( sn_type_id == T_SCOPE )
+        sn_type_id = T_NAMESPACE;
       FPRINTF( gout,
-        "%s %s { ", c_type_name( sn_type ), c_sname_scope_name( sname )
+        "%s %s { ", c_type_name( sn_type_id ), c_sname_scope_name( sname )
       );
       scope_close_braces_to_print = 1;
     }
@@ -747,12 +747,12 @@ void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
       //
       for ( c_scope_t const *scope = sname->head; scope != sname->tail;
             scope = scope->next ) {
-        sn_type = c_scope_type( scope );
-        if ( sn_type == T_SCOPE )
-          sn_type = T_NAMESPACE;
+        sn_type_id = c_scope_type( scope );
+        if ( sn_type_id == T_SCOPE )
+          sn_type_id = T_NAMESPACE;
         FPRINTF( gout,
           "%s %s { ",
-          c_type_name( sn_type ), c_scope_name( scope )
+          c_type_name( sn_type_id ), c_scope_name( scope )
         );
       } // for
       scope_close_braces_to_print = c_sname_count( sname ) - 1;
@@ -768,7 +768,7 @@ void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
       FPUTS( " }", gout );
   }
 
-  if ( opt_semicolon && (sn_type & T_NAMESPACE) == T_NONE )
+  if ( opt_semicolon && (sn_type_id & T_NAMESPACE) == T_NONE )
     FPUTC( ';', gout );
   FPUTC( '\n', gout );
 }

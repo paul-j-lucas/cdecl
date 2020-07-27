@@ -274,13 +274,14 @@ void* c_type_id_data_new( c_type_id_t type_id ) {
  * A special case has to be made for `long` to allow for `long long` yet not
  * allow for `long long long`.
  *
- * @param dest_type A pointer to the <code>\ref c_type_id_t</code> to add to.
- * @param new_type The <code>\ref c_type_id_t</code> to add.
- * @param new_loc The source location of \a new_type.
+ * @param pdest_type_id A pointer to the <code>\ref c_type_id_t</code> to add
+ * to.
+ * @param new_type_id The <code>\ref c_type_id_t</code> to add.
+ * @param new_loc The source location of \a new_type_id.
  * @return Returns `true` only if the type added successfully.
  */
 C_WARN_UNUSED_RESULT
-bool c_type_add( c_type_id_t *dest_type, c_type_id_t new_type,
+bool c_type_add( c_type_id_t *pdest_type_id, c_type_id_t new_type_id,
                  c_loc_t const *new_loc );
 
 /**
