@@ -52,6 +52,7 @@ The characters are:
 + `h` = `short`
 + `i` = `inline` or `int`
 + `k` = `struct`
++ `kr` = untyped K&R C function argument
 + `l` = `long`
 + `m` = `_Imaginary`, member of class, or `mutable`
 + `n` = name, nested, or `union`
@@ -70,7 +71,7 @@ The characters are:
 + `u` = `maybe_unused` or `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
-+ `x` = `constexpr` or untyped K&R function argument
++ `x` = `constexpr`
 + `y` = `final`
 + `z` = `_Complex` or `size_t`
 + `zz` = `ssize_t`

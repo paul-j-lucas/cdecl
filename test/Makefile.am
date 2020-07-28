@@ -128,6 +128,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fid_v.test \
 	tests/declare_fipfi_v_pfi_v.test \
 	tests/declare_fixiy_v.test \
+	tests/declare_fkr_pi.test \
 	tests/declare_fpc_pi.test \
 	tests/declare_fpci_pi.test \
 	tests/declare_fpfc_i_d.test \
@@ -136,7 +137,6 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fv_pa3i.test \
 	tests/declare_fv_pa3pi.test \
 	tests/declare_fv_v.test \
-	tests/declare_fx_pi.test \
 	tests/declare_ga.test \
 	tests/declare_gi.test \
 	tests/declare_if_v.test \
@@ -158,8 +158,8 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_pbv_pi.test \
 	tests/declare_pci-ec.test \
 	tests/declare_pcpi.test \
+	tests/declare_pfkr_i.test \
 	tests/declare_pfv_pi.test \
-	tests/declare_pfx_i.test \
 	tests/declare_pi.test \
 	tests/declare_ppi.test \
 	tests/declare_sa2i.test \
@@ -353,6 +353,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fid_v.test \
 	tests/explain_fipfi_v_pfi_v.test \
 	tests/explain_fixiy_v.test \
+	tests/explain_fkr_pi.test \
 	tests/explain_fpa5d_v.test \
 	tests/explain_fpc_pi.test \
 	tests/explain_fpci_pi.test \
@@ -363,7 +364,6 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fv_pa3pi.test \
 	tests/explain_fv_pi.test \
 	tests/explain_fv_v.test \
-	tests/explain_fx_pi.test \
 	tests/explain_ga.test \
 	tests/explain_gi.test \
 	tests/explain_gif_v.test \
@@ -1236,9 +1236,9 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_fac3_v-c++.test \
 	tests/explain_fas3_v-c++.test \
 	tests/explain_fav_v-c++.test \
+	tests/explain_fkr_v.test \
 	tests/explain_frri_v-c++03.test \
 	tests/explain_fsf_v.test \
-	tests/explain_fx_v.test \
 	tests/explain_nrfi_v-c++-error.test \
 	tests/explain_pmri.test \
 	tests/explain_pri.test \
