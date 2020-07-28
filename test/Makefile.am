@@ -274,7 +274,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_vf_v-c.test \
 	tests/declare_vri.test \
 	tests/declare_w-c89.test \
-	tests/declare_xi-c.test
+	tests/declare_xxi-c.test
 
 ###############################################################################
 
@@ -554,7 +554,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_vi-knr.test \
 	tests/explain_voyf-c.test \
 	tests/explain_w-c89.test \
-	tests/explain_xi-c.test
+	tests/explain_xxi-c.test
 
 #
 # C++ declare alt-tokens tests
@@ -914,7 +914,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_rpi.test \
 	tests/declare_rrf_v.test \
 	tests/declare_rtf_v.test \
-	tests/declare_sxi.test \
+	tests/declare_sxxi.test \
 	tests/declare_uf_v-01.test \
 	tests/declare_uf_v-02.test \
 	tests/declare_ui-01.test \
@@ -922,7 +922,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_vdtor.test \
 	tests/declare_vf_v.test \
 	tests/declare_voyf.test \
-	tests/declare_xi.test \
+	tests/declare_xxi.test \
 	tests/declare_yf.test
 
 #
@@ -1204,7 +1204,7 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_rf_v.test \
 	tests/explain_ri.test \
 	tests/explain_rrf_v.test \
-	tests/explain_sxi.test \
+	tests/explain_sxxi.test \
 	tests/explain_tf_v-c++17.test \
 	tests/explain_uf_v.test \
 	tests/explain_ui.test \
@@ -1213,8 +1213,8 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_vcompl_dtor.test \
 	tests/explain_vdtor.test \
 	tests/explain_voyf.test \
-	tests/explain_xctor.test \
-	tests/explain_xi.test \
+	tests/explain_xxctor.test \
+	tests/explain_xxi.test \
 	tests/explain_yf.test
 
 #

@@ -71,7 +71,7 @@ The characters are:
 + `u` = `maybe_unused` or `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
-+ `x` = `constexpr`
++ `xx` = `constexpr`
 + `y` = `final`
 + `z` = `_Complex` or `size_t`
 + `zz` = `ssize_t`
