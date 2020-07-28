@@ -54,7 +54,8 @@ The characters are:
 + `k` = `struct`
 + `l` = `long`
 + `m` = `_Imaginary`, member of class, or `mutable`
-+ `n` = name, nested, `noreturn`, or `union`
++ `n` = name, nested, or `union`
++ `nr` = `noreturn`
 + `ns` = `namespace`
 + `nt` = non-throwing
 + `o` = `operator`, `override`, or `thread_local`

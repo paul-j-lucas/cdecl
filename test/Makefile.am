@@ -148,9 +148,9 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_md.test \
 	tests/declare_mf.test \
 	tests/declare_n.test \
-	tests/declare_nfi_v-01.test \
-	tests/declare_nfi_v-02.test \
-	tests/declare_nfi_v-03.test \
+	tests/declare_nrfi_v-01.test \
+	tests/declare_nrfi_v-02.test \
+	tests/declare_nrfi_v-03.test \
 	tests/declare_pa3cpa5i.test \
 	tests/declare_pa3pa5i.test \
 	tests/declare_pa9i.test \
@@ -246,7 +246,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_lll.test \
 	tests/declare_lv.test \
 	tests/declare_lw.test \
-	tests/declare_ni.test \
+	tests/declare_nri.test \
 	tests/declare_pk.test \
 	tests/declare_pv-knr.test \
 	tests/declare_rtf_v-c.test \
@@ -388,8 +388,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_mf.test \
 	tests/explain_n.test \
 	tests/explain_nfi_c.test \
-	tests/explain_nfi_v.test \
 	tests/explain_ni.test \
+	tests/explain_nrfi_v.test \
 	tests/explain_oi.test \
 	tests/explain_oo_minus2_i_rk.test \
 	tests/explain_oo_minus_rk_rk.test \
@@ -577,9 +577,9 @@ TESTS+=	tests/declare_alttokens_o_amper2_rck_b.test \
 # ====================================
 #
 TESTS+=	tests/declare_digraphs_a9i.test \
-	tests/declare_digraphs_nfi_v-c++.test \
+	tests/declare_digraphs_nrfi_v-c++.test \
 	tests/declare_trigraphs_a9i.test \
-	tests/declare_trigraphs_nfi_v-c++.test \
+	tests/declare_trigraphs_nrfi_v-c++.test \
 	tests/declare_trigraphs_o_circ_eq_i_rk.test \
 	tests/declare_trigraphs_o_circ_rcki_k.test \
 	tests/declare_trigraphs_o_pipe2_2rck_b.test \
@@ -592,9 +592,9 @@ TESTS+=	tests/declare_digraphs_a9i.test \
 # ====================================
 #
 TESTS+=	tests/explain_digraphs_a9i.test \
-	tests/explain_digraphs_nfi_v-c++.test \
+	tests/explain_digraphs_nrfi_v-c++.test \
 	tests/explain_trigraphs_a9i.test \
-	tests/explain_trigraphs_nfi_v-c++.test \
+	tests/explain_trigraphs_nrfi_v-c++.test \
 	tests/explain_trigraphs_o_circ_eq_i_rk.test \
 	tests/explain_trigraphs_o_circ_rcki_k.test \
 	tests/explain_trigraphs_o_pipe2_2rck_b.test \
@@ -889,8 +889,8 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_i=+.test \
 	tests/declare_ii-c++.test \
 	tests/declare_mi.test \
-	tests/declare_nfi_v-02-c++.test \
-	tests/declare_nfi_v-03-c++.test \
+	tests/declare_nrfi_v-02-c++.test \
+	tests/declare_nrfi_v-03-c++.test \
 	tests/declare_ntf.test \
 	tests/declare_o_delete_a_pv_v.test \
 	tests/declare_o_delete_pv_v.test \
@@ -936,8 +936,8 @@ TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_ef.test \
 	tests/declare_fcf.test \
 	tests/declare_fco_exclam_b.test \
-	tests/declare_nfi_v-01-c++.test \
-	tests/declare_nfi_v-01.test \
+	tests/declare_nrfi_v-01-c++.test \
+	tests/declare_nrfi_v-01.test \
 	tests/declare_pmri.test \
 	tests/declare_pri.test \
 	tests/declare_rgi.test \
@@ -1187,7 +1187,7 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_ii-c++.test \
 	tests/explain_ki+.test \
 	tests/explain_mi.test \
-	tests/explain_nfi_v-c++.test \
+	tests/explain_nrfi_v-c++.test \
 	tests/explain_nsct.test \
 	tests/explain_o_new_a_z_pv.test \
 	tests/explain_o_new_z_pv.test \
@@ -1239,7 +1239,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_frri_v-c++03.test \
 	tests/explain_fsf_v.test \
 	tests/explain_fx_v.test \
-	tests/explain_nfi_v-c++-error.test \
+	tests/explain_nrfi_v-c++-error.test \
 	tests/explain_pmri.test \
 	tests/explain_pri.test \
 	tests/explain_prri.test \
