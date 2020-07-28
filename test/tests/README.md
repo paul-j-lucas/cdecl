@@ -58,6 +58,7 @@ The characters are:
 + `nr` = `noreturn`
 + `ns` = `namespace`
 + `nt` = non-throwing
++ `nx` = `noexcept`
 + `o` = `operator`, `override`, or `thread_local`
 + `p` = pointer
 + `r` = reference
@@ -68,7 +69,7 @@ The characters are:
 + `u` = `maybe_unused` or `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
-+ `x` = `constexpr`, `noexcept`, or untyped K&R function argument
++ `x` = `constexpr` or untyped K&R function argument
 + `y` = `final`
 + `z` = `_Complex` or `size_t`
 + `zz` = `ssize_t`

@@ -892,6 +892,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_nrfi_v-02-c++.test \
 	tests/declare_nrfi_v-03-c++.test \
 	tests/declare_ntf.test \
+	tests/declare_nxf.test \
 	tests/declare_o_delete_a_pv_v.test \
 	tests/declare_o_delete_pv_v.test \
 	tests/declare_o_new_a_z_pv.test \
@@ -921,7 +922,6 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_vdtor.test \
 	tests/declare_vf_v.test \
 	tests/declare_voyf.test \
-	tests/declare_xf.test \
 	tests/declare_xi.test \
 	tests/declare_yf.test
 
@@ -1168,7 +1168,7 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_dui-02.test \
 	tests/explain_ector_i.test \
 	tests/explain_eictor_i.test \
-	tests/explain_exctor_i.test \
+	tests/explain_enxctor_i.test \
 	tests/explain_f__pf__v.test \
 	tests/explain_f__pv.test \
 	tests/explain_f__v.test \
@@ -1189,6 +1189,9 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_mi.test \
 	tests/explain_nrfi_v-c++.test \
 	tests/explain_nsct.test \
+	tests/explain_nxf_v.test \
+	tests/explain_nxff_v.test \
+	tests/explain_nxtf_v.test \
 	tests/explain_o_new_a_z_pv.test \
 	tests/explain_o_new_z_pv.test \
 	tests/explain_oyf.test \
@@ -1211,10 +1214,7 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_vdtor.test \
 	tests/explain_voyf.test \
 	tests/explain_xctor.test \
-	tests/explain_xf_v.test \
-	tests/explain_xff_v.test \
 	tests/explain_xi.test \
-	tests/explain_xtf_v.test \
 	tests/explain_yf.test
 
 #
