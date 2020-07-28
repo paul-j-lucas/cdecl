@@ -55,6 +55,7 @@ The characters are:
 + `l` = `long`
 + `m` = `_Imaginary`, member of class, or `mutable`
 + `n` = name, nested, or `union`
++ `nd` = `nodiscard`
 + `nr` = `noreturn`
 + `ns` = `namespace`
 + `nt` = non-throwing
@@ -65,7 +66,7 @@ The characters are:
 + `rr` = rvalue reference
 + `rt` = `restrict`
 + `s` = `signed` or `static`
-+ `t` = `nodiscard`, `throw`, `typedef`, `typename`, or unknown type
++ `t` = `throw`, `typedef`, `typename`, or unknown type
 + `u` = `maybe_unused` or `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = `wchar_t`
