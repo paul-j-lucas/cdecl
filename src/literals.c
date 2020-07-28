@@ -218,6 +218,7 @@ char const L_NON_DISCARDABLE[]      = "non-discardable";
 char const L_CHAR8_T[]              = "char8_t";
 char const L_CONCEPT[]              = "concept";
 char const L_CONSTEVAL[]            = "consteval";
+char const L_CONSTINIT[]            = "constinit";
 char const L_NO_UNIQUE_ADDRESS[]    = "no_unique_address";
 char const L_NON_UNIQUE_ADDRESS[]   = "non-unique-address";
 char const L_REQUIRES[]             = "requires";

@@ -208,6 +208,9 @@ static c_type_t const C_STORAGE_INFO[] = {
   { T_CONSTEXPR, LANG_CPP_MIN(11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_CONSTEXPR } } },
 
+  { T_CONSTINIT, LANG_CPP_MIN(20), NULL,
+    (c_lang_lit_t[]){ { LANG_ALL, L_CONSTINIT } } },
+
   { T_DEFAULT, LANG_CPP_MIN(11), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_DEFAULT } } },
 
@@ -367,29 +370,30 @@ static c_type_t const C_TYPE_INFO[] = {
  */
 static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 // Only the lower triangle is used.
-//  a  b  e  r  s  tl td   cv cx df de ex fi fr in mu ne o  t  v  pv
-  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// auto
-  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// block
-  { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// extern
-  { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// regist
-  { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// static
-  { XX,__,__,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// thread
-  { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__ },// typed
+//  a  b  e  r  s  th td   cv cx ci df de ex fi fr in mu ne o  t  v  pv
+  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// auto
+  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// block
+  { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// extern
+  { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// regist
+  { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// static
+  { XX,__,__,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// thread
+  { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// typedef
 
-  { P1,P1,P1,XX,P1,XX,XX,  P2,P1,__,__,__,__,__,__,__,__,__,__,__,__ },// c'eval
-  { P1,P1,P1,XX,P1,XX,XX,  XX,P1,__,__,__,__,__,__,__,__,__,__,__,__ },// c'expr
-  { XX,XX,XX,XX,XX,XX,XX,  P1,P1,P1,__,__,__,__,__,__,__,__,__,__,__ },// defaul
-  { XX,XX,XX,XX,XX,XX,XX,  P1,P1,XX,P1,__,__,__,__,__,__,__,__,__,__ },// delete
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,P1,P1,PP,__,__,__,__,__,__,__,__,__ },// explic
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,P1,__,__,__,__,__,__,__,__ },// final
-  { XX,XX,XX,XX,XX,XX,XX,  P2,P1,XX,XX,XX,XX,PP,__,__,__,__,__,__,__ },// friend
-  { XX,XX,__,XX,__,XX,XX,  P2,P1,P1,P1,PP,P1,PP,__,__,__,__,__,__,__ },// inline
-  { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,XX,XX,XX,XX,P3,__,__,__,__,__ },// mut
-  { XX,XX,P1,XX,P1,XX,P1,  P2,P1,P1,P1,PP,P1,P1,P1,XX,P1,__,__,__,__ },// noexc
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,P1,XX,C1,XX,C1,P1,__,__,__ },// overr
-  { XX,XX,PP,XX,PP,XX,PP,  P2,P1,P1,P1,PP,PP,XX,PP,XX,XX,PP,PP,__,__ },// throw
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P2,XX,XX,XX,P1,XX,PP,XX,C1,P1,PP,PP,__ },// virt
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P2,XX,XX,XX,XX,XX,PP,XX,C1,P1,PP,PP,PP },// pure
+  { P1,P1,P1,XX,P1,XX,XX,  P2,P1,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c'eval
+  { P1,P1,P1,XX,P1,XX,XX,  XX,P1,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c'expr
+  { XX,XX,P2,XX,P2,P2,XX,  XX,XX,P2,__,__,__,__,__,__,__,__,__,__,__,__ },// c'init
+  { XX,XX,XX,XX,XX,XX,XX,  P1,P1,XX,P1,__,__,__,__,__,__,__,__,__,__,__ },// defaul
+  { XX,XX,XX,XX,XX,XX,XX,  P1,P1,XX,XX,P1,__,__,__,__,__,__,__,__,__,__ },// delete
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,P1,P1,PP,__,__,__,__,__,__,__,__,__ },// explic
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,XX,P1,__,__,__,__,__,__,__,__ },// final
+  { XX,XX,XX,XX,XX,XX,XX,  P2,P1,XX,XX,XX,XX,XX,PP,__,__,__,__,__,__,__ },// friend
+  { XX,XX,__,XX,__,XX,XX,  P2,P1,P2,P1,P1,PP,P1,PP,__,__,__,__,__,__,__ },// inline
+  { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,XX,XX,XX,XX,XX,P3,__,__,__,__,__ },// mutable
+  { XX,XX,P1,XX,P1,XX,P1,  P2,P1,XX,P1,P1,PP,P1,P1,P1,XX,P1,__,__,__,__ },// noexc
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,XX,P1,XX,C1,XX,C1,P1,__,__,__ },// overr
+  { XX,XX,PP,XX,PP,XX,PP,  P2,P1,XX,P1,P1,PP,PP,XX,PP,XX,XX,PP,PP,__,__ },// throw
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P2,XX,XX,XX,XX,P1,XX,PP,XX,C1,P1,PP,PP,__ },// virt
+  { XX,XX,XX,XX,XX,XX,XX,  XX,P2,XX,XX,XX,XX,XX,XX,PP,XX,C1,P1,PP,PP,PP },// pure
 };
 
 /**
@@ -681,6 +685,7 @@ static char const* c_type_name_impl( c_type_id_t type_id, bool is_error ) {
     // These are sixth so we get names like "static inline constexpr".
     T_CONSTEVAL,
     T_CONSTEXPR,
+    T_CONSTINIT,
   };
   C_TYPE_NAME_CAT( &name, type_id, C_STORAGE_CLASS, is_error, ' ', &space );
 

@@ -570,6 +570,11 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
   assert( C_LANG_IS_CPP() );
 
+  if ( (ast->type_id & T_CONSTINIT) != T_NONE ) {
+    error_kind_not_type( ast, T_CONSTINIT );
+    return false;
+  }
+
   if ( (ast->type_id & T_ANY_REFERENCE) != T_NONE ) {
     if ( opt_lang < LANG_CPP_11 ) {
       print_error( &ast->loc,

@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "July 26, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "July 28, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -644,6 +644,7 @@ Use the C++20 version of the C++ language.
 Adds support for
 \f(CWchar8_t\fP,
 \f(CWconsteval\fP,
+\f(CWconstinit\fP,
 and
 \f(CWoperator<=>\fP.
 .SH CDECL LANGUAGE
@@ -2083,9 +2084,13 @@ from its output.
 .IP \n+[step].
 When converting from pseudo-English to a C++ declaration
 for \f(CWauto\fP
-(or \f(CW__auto_type\fP in GNU C)
-or a reference or an rvalue reference variable
-that is not a function argument,
+(or \f(CW__auto_type\fP in GNU C),
+or a
+\f(CWconst\fP,
+\f(CWconstinit\fP,
+reference,
+or an rvalue reference
+variable that is not a function argument,
 the output doesn't include an initializer:
 .cS
 c++decl> declare x as auto
@@ -2095,9 +2100,7 @@ int &r;
 .cE 0
 .IP ""
 These are illegal C++ declarations
-since
-\f(CWauto\fP
-and such references
+since such declarations
 .I must
 be initialized.
 .IP \n+[step].

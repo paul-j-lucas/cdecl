@@ -979,6 +979,7 @@ static void yyerror( char const *msg ) {
                     /* C++20 */
 %token              Y_CONCEPT
 %token  <type_id>   Y_CONSTEVAL
+%token  <type_id>   Y_CONSTINIT
 %token  <oper_id>   Y_LESS_EQ_GREATER "<=>"
 %token  <type_id>   Y_NO_UNIQUE_ADDRESS
 %token              Y_REQUIRES
@@ -1450,6 +1451,7 @@ storage_class_english_type
   | Y_APPLE___BLOCK
   | Y_CONSTEVAL
   | Y_CONSTEXPR
+  | Y_CONSTINIT
   | Y_DEFAULT
   | Y_DELETE
   | Y_EXPLICIT
@@ -4040,6 +4042,7 @@ storage_class_c_type
   | Y_APPLE___BLOCK
   | Y_CONSTEVAL
   | Y_CONSTEXPR
+  | Y_CONSTINIT
   | Y_EXPLICIT
   | Y_EXTERN
   | Y_FINAL

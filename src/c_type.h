@@ -98,25 +98,26 @@ _GL_INLINE_HEADER_BEGIN
 // storage-class-like
 #define T_CONSTEVAL           0x0000001000000000ull /**< `consteval`          */
 #define T_CONSTEXPR           0x0000002000000000ull /**< `constexpr`          */
-#define T_DEFAULT             0x0000004000000000ull /**< `= default`          */
-#define T_DELETE              0x0000008000000000ull /**< `= delete`           */
-#define T_EXPLICIT            0x0000010000000000ull /**< `explicit`           */
-#define T_FINAL               0x0000020000000000ull /**< `final`              */
-#define T_FRIEND              0x0000040000000000ull /**< `friend`             */
-#define T_INLINE              0x0000080000000000ull /**< `inline`             */
-#define T_NOEXCEPT            0x0000100000000000ull /**< `noexcept`           */
-#define T_OVERRIDE            0x0000200000000000ull /**< `override`           */
-#define T_PURE_VIRTUAL        0x0000400000000000ull /**< `= 0`                */
-#define T_THROW               0x0000800000000000ull /**< `throw()`            */
-#define T_VIRTUAL             0x0001000000000000ull /**< `virtual`            */
+#define T_CONSTINIT           0x0000004000000000ull /**< `constinit`          */
+#define T_DEFAULT             0x0000008000000000ull /**< `= default`          */
+#define T_DELETE              0x0000010000000000ull /**< `= delete`           */
+#define T_EXPLICIT            0x0000020000000000ull /**< `explicit`           */
+#define T_FINAL               0x0000040000000000ull /**< `final`              */
+#define T_FRIEND              0x0000080000000000ull /**< `friend`             */
+#define T_INLINE              0x0000100000000000ull /**< `inline`             */
+#define T_NOEXCEPT            0x0000200000000000ull /**< `noexcept`           */
+#define T_OVERRIDE            0x0000400000000000ull /**< `override`           */
+#define T_PURE_VIRTUAL        0x0000800000000000ull /**< `= 0`                */
+#define T_THROW               0x0001000000000000ull /**< `throw()`            */
+#define T_VIRTUAL             0x0002000000000000ull /**< `virtual`            */
 
 // attributes
-#define T_CARRIES_DEPENDENCY  0x0002000000000000ull /**< `carries_dependency` */
-#define T_DEPRECATED          0x0004000000000000ull /**< `deprecated`         */
-#define T_MAYBE_UNUSED        0x0008000000000000ull /**< `maybe_unused`       */
-#define T_NODISCARD           0x0010000000000000ull /**< `nodiscard`          */
-#define T_NORETURN            0x0020000000000000ull /**< `noreturn`           */
-#define T_NO_UNIQUE_ADDRESS   0x0040000000000000ull /**< `no_unique_address`  */
+#define T_CARRIES_DEPENDENCY  0x0004000000000000ull /**< `carries_dependency` */
+#define T_DEPRECATED          0x0008000000000000ull /**< `deprecated`         */
+#define T_MAYBE_UNUSED        0x0010000000000000ull /**< `maybe_unused`       */
+#define T_NODISCARD           0x0020000000000000ull /**< `nodiscard`          */
+#define T_NORETURN            0x0040000000000000ull /**< `noreturn`           */
+#define T_NO_UNIQUE_ADDRESS   0x0080000000000000ull /**< `no_unique_address`  */
 
 // qualifiers
 #define T_ATOMIC              0x0100000000000000ull /**< `_Atomic`            */
@@ -130,8 +131,8 @@ _GL_INLINE_HEADER_BEGIN
 
 // bit masks
 #define T_MASK_TYPE           0x000000000FFFFFFFull /**< Type bitmask.        */
-#define T_MASK_STORAGE        0x0001FFFFF0000000ull /**< Storage bitmask.     */
-#define T_MASK_ATTRIBUTE      0x00FE000000000000ull /**< Attribute bitmask.   */
+#define T_MASK_STORAGE        0x0003FFFFF0000000ull /**< Storage bitmask.     */
+#define T_MASK_ATTRIBUTE      0x00FC000000000000ull /**< Attribute bitmask.   */
 #define T_MASK_QUALIFIER      0x0F00000000000000ull /**< Qualifier bitmask.   */
 #define T_MASK_REF_QUALIFIER  0xF000000000000000ull /**< Ref-qual bitmask.    */
 

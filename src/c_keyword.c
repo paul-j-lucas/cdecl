@@ -195,6 +195,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   // C++20
   { L_CONCEPT,          Y_CONCEPT,          T_NONE,         LANG_CPP_MIN(20)  },
   { L_CONSTEVAL,        Y_CONSTEVAL,        T_CONSTEVAL,    LANG_CPP_MIN(20)  },
+  { L_CONSTINIT,        Y_CONSTINIT,        T_CONSTINIT,    LANG_CPP_MIN(20)  },
   { L_REQUIRES,         Y_REQUIRES,         T_NONE,         LANG_CPP_MIN(20)  },
 
   // Alternative tokens

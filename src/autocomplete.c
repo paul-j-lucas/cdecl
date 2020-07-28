@@ -112,6 +112,7 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_CPP_ALL,           L_CONST_CAST          },
   { LANG_CPP_MIN(20),       L_CONSTEVAL           },
   { LANG_CPP_MIN(11),       L_CONSTEXPR           },
+  { LANG_CPP_MIN(20),       L_CONSTINIT           },
   { LANG_CPP_ALL,           L_CONSTRUCTOR         },
   { LANG_CPP_ALL,           L_CONVERSION          },
   { LANG_CPP_MIN(11),       L_DEFAULT             },

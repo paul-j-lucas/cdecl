@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ declare x as constinit constant int @ 0

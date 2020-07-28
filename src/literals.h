@@ -238,6 +238,7 @@ extern char const L_NON_DISCARDABLE[];      // English for "nodiscard"
 extern char const L_CHAR8_T[];
 extern char const L_CONCEPT[];
 extern char const L_CONSTEVAL[];
+extern char const L_CONSTINIT[];
 extern char const L_NO_UNIQUE_ADDRESS[];
 extern char const L_NON_UNIQUE_ADDRESS[];
 extern char const L_REQUIRES[];

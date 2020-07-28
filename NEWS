@@ -19,6 +19,9 @@ Added support for C2X:
 + Added [[...]] syntax for attributes.
 + Added [[deprecated]], [[maybe_unused]], and [[nodiscard]] attributes.
 
+** C++20 constinit support
+Added support for "constinit" in C++20.
+
 ** Embedded C support
 Added support for Embedded C:
 

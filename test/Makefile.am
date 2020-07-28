@@ -880,9 +880,9 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_f_pmi.test \
 	tests/declare_fcdi_i.test \
 	tests/declare_fdi_v.test \
-	tests/declare_frri_v.test \
 	tests/declare_fndi_v-01.test \
 	tests/declare_fndi_v-02.test \
+	tests/declare_frri_v.test \
 	tests/declare_fui_v-01.test \
 	tests/declare_fui_v-02.test \
 	tests/declare_grtpi.test \
@@ -922,6 +922,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_vdtor.test \
 	tests/declare_vf_v.test \
 	tests/declare_voyf.test \
+	tests/declare_xici.test \
 	tests/declare_xxi.test \
 	tests/declare_yf.test
 
@@ -1258,7 +1259,8 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_srrf_v.test \
 	tests/explain_tf_v.test \
 	tests/explain_unknown_attribute.test \
-	tests/explain_v+f_v.test
+	tests/explain_v+f_v.test \
+	tests/explain_xif_i.test
 
 #
 # C++ explain operator tests
