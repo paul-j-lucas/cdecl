@@ -111,7 +111,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_cz-ec.test \
 	tests/declare_cz.test \
 	tests/declare_e.test \
-	tests/declare_ea2i.test \
+	tests/declare_eta2i.test \
 	tests/declare_f.test \
 	tests/declare_f_pi.test \
 	tests/declare_facs3_v.test \
@@ -209,7 +209,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_cri.test \
 	tests/declare_e-knr.test \
 	tests/declare_ec-c.test \
-	tests/declare_esf_v.test \
+	tests/declare_etsf_v.test \
 	tests/declare_f_ai.test \
 	tests/declare_f_f_i.test \
 	tests/declare_ff_v-c.test \
@@ -340,7 +340,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_cu.test \
 	tests/explain_cvpi.test \
 	tests/explain_e.test \
-	tests/explain_ea2i.test \
+	tests/explain_eta2i.test \
 	tests/explain_f_pi.test \
 	tests/explain_fac_v.test \
 	tests/explain_facs3_v.test \
@@ -475,7 +475,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_cf_v-c.test \
 	tests/explain_ci-knr.test \
 	tests/explain_e-knr.test \
-	tests/explain_esf_v.test \
+	tests/explain_etsf_v.test \
 	tests/explain_f_ai.test \
 	tests/explain_fasv_v.test \
 	tests/explain_fccel_v.test \
@@ -711,7 +711,7 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 	tests/explain_cast_a3a5i.test \
 	tests/explain_cast_a3i.test \
 	tests/explain_cast_ai.test \
-	tests/explain_cast_ei.test \
+	tests/explain_cast_eti.test \
 	tests/explain_cast_gi.test \
 	tests/explain_cast_lll.test \
 	tests/explain_cast_si.test \
@@ -781,13 +781,13 @@ TESTS+=	tests/2c_typedef_i.test \
 	tests/namespace_+typedef_i-c++14.test \
 	tests/typedef_ai.test \
 	tests/typedef_c_int_least32_t.test \
-	tests/typedef_ei.test \
+	tests/typedef_eti.test \
 	tests/typedef_gi.test \
 	tests/typedef_si.test \
 	tests/typedef_ti.test \
 	tests/using_ai.test \
 	tests/using_c_int_least32_t.test \
-	tests/using_ei.test \
+	tests/using_eti.test \
 	tests/using_gi.test \
 	tests/using_i-c.test \
 	tests/using_si.test
@@ -817,7 +817,7 @@ TESTS+=	tests/2define_k_define_2k_show.test \
 #
 TESTS+=	tests/define_ai.test \
 	tests/define_c_int_least32_t.test \
-	tests/define_ei.test \
+	tests/define_eti.test \
 	tests/define_gi.test \
 	tests/define_si.test
 
