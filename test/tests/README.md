@@ -43,8 +43,8 @@ The characters are:
 + `c16` = `char16_t`
 + `c32` = `char32_t`
 + `d` = `deprecated` or `double`
-+ `e` = `enum`
 + `el` = `...` (ellipsis)
++ `en` = `enum`
 + `ep` = `explicit`
 + `et` = `extern`
 + `f` = `friend` or function
