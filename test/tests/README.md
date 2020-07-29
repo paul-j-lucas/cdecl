@@ -43,7 +43,8 @@ The characters are:
 + `c16` = `char16_t`
 + `c32` = `char32_t`
 + `d` = `deprecated` or `double`
-+ `e` = `enum`, `explicit`, `extern`, or `...` (ellipsis)
++ `e` = `enum`, `explicit`, or `extern`
++ `el` = `...` (ellipsis)
 + `f` = `friend` or function
 + `g` = `register`
 + `ga` = GNU C `__auto_type`

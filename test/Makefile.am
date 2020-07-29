@@ -119,9 +119,9 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fas3_v.test \
 	tests/declare_fasc3_v.test \
 	tests/declare_fav_v.test \
-	tests/declare_fcce_v-01.test \
-	tests/declare_fcce_v-02.test \
-	tests/declare_fcce_v-03.test \
+	tests/declare_fccel_v-01.test \
+	tests/declare_fccel_v-02.test \
+	tests/declare_fccel_v-03.test \
 	tests/declare_ff_v.test \
 	tests/declare_fg_v-c89.test \
 	tests/declare_fgi_v.test \
@@ -348,7 +348,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fas3_v.test \
 	tests/explain_fasc3_v.test \
 	tests/explain_fav_v.test \
-	tests/explain_fcce_v.test \
+	tests/explain_fccel_v.test \
 	tests/explain_ff_v.test \
 	tests/explain_fg_v-c89.test \
 	tests/explain_fgi_v.test \
@@ -478,11 +478,11 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_esf_v.test \
 	tests/explain_f_ai.test \
 	tests/explain_fasv_v.test \
-	tests/explain_fcce_v.test \
-	tests/explain_fe_v.test \
-	tests/explain_fecc_v.test \
-	tests/explain_fee_v.test \
-	tests/explain_fev_v.test \
+	tests/explain_fccel_v.test \
+	tests/explain_fel_v.test \
+	tests/explain_felcc_v.test \
+	tests/explain_felel_v.test \
+	tests/explain_felv_v.test \
 	tests/explain_ff_v-c.test \
 	tests/explain_fg_v.test \
 	tests/explain_fiiv_v.test \
@@ -490,7 +490,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_fkr_pi.test
 	tests/explain_fn.test \
 	tests/explain_fsi_v.test \
-	tests/explain_fve_v.test \
+	tests/explain_fvel_v.test \
 	tests/explain_fvi_v.test \
 	tests/explain_fvv_v.test \
 	tests/explain_fvx_v.test \
@@ -1111,11 +1111,11 @@ TESTS+=	tests/declare_+o_eq_rck_rk=default-c++03.test \
 	tests/declare_o_less_eq_greater_2rck_a-c++17.test \
 	tests/declare_o_minus2_d_rk.test \
 	tests/declare_o_minus2_rkd_rk.test \
-	tests/declare_o_minus_ie_i.test \
+	tests/declare_o_minus_iel_i.test \
 	tests/declare_o_oexclam_k_b.test \
 	tests/declare_o_plus2_d_rk.test \
 	tests/declare_o_plus2_rkd_rk.test \
-	tests/declare_o_plus_ie_i.test \
+	tests/declare_o_plus_iel_i.test \
 	tests/declare_o_qmark_colon_k2i_i.test \
 	tests/declare_ro_exclam_k_b.test \
 	tests/declare_rro_exclam_k_b.test \
@@ -1394,12 +1394,12 @@ TESTS+=	tests/explain_+o_eq_rck_rk=default-02.test \
 	tests/explain_o_exclam_2i.test \
 	tests/explain_o_minus2_d_rk.test \
 	tests/explain_o_minus2_rkd_rk.test \
-	tests/explain_o_minus_ie_i.test \
+	tests/explain_o_minus_iel_i.test \
 	tests/explain_o_new_z_z.test \
 	tests/explain_o_oexclam_k_b.test \
 	tests/explain_o_plus2_d_rk.test \
 	tests/explain_o_plus2_rkd_rk.test \
-	tests/explain_o_plus_ie_i.test \
+	tests/explain_o_plus_iel_i.test \
 	tests/explain_o_qmark_colon_k2i_i.test \
 	tests/explain_ro_exclam_k_b.test \
 	tests/explain_rro_exclam_k_b.test \
