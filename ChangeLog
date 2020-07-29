@@ -1,3 +1,19 @@
+2020-07-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, autocomplete.c, c_keyword.c, c_type.c, c_type.h, errors.c,
+     literals.c, literals.h, parser.y, test/Makefile.am, declare_xici.out,
+     declare_xici.test, explain_xif_i.test: Added "constinit".
+   * test/Makefile.am: Test renaming.
+   * test/Makefile.am: Test renaming.
+   * test/Makefile.am: Test renaming.
+   * test/Makefile.am: Test renaming.
+   * test/Makefile.am: Test renaming.
+
+2020-07-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_keyword.c, literals.c, literals.h, parser.y: Added "asm".
+   * cdecl.c, options.c, options.h: Uniform declaration of argv.
+
 2020-07-26  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c, c_type.c, c_type.h, errors.c, gibberish.c, parser.y:
