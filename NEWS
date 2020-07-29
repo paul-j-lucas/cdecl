@@ -20,8 +20,8 @@ Added support for C2X:
 + Added [[deprecated]], [[maybe_unused]], and [[nodiscard]] attributes.
 + Removed support for typeless function arguments in K&R C.
 
-** C++20 constinit support
-Added support for "constinit" in C++20.
+** More C++20 support
+Added support for "constinit" and "export" in C++20.
 
 ** Embedded C support
 Added support for Embedded C:

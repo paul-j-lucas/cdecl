@@ -150,7 +150,6 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_DELETE,           Y_DELETE,           T_DELETE,       LANG_CPP_ALL      },
   { L_DYNAMIC_CAST,     Y_DYNAMIC_CAST,     T_NONE,         LANG_CPP_ALL      },
   { L_EXPLICIT,         Y_EXPLICIT,         T_EXPLICIT,     LANG_CPP_ALL      },
-  { L_EXPORT,           Y_EXPORT,           T_NONE,         LANG_CPP_ALL      },
   { L_FALSE,            Y_FALSE,            T_NONE,         LANG_CPP_ALL      },
   { L_FRIEND,           Y_FRIEND,           T_FRIEND,       LANG_CPP_ALL      },
   { L_MUTABLE,          Y_MUTABLE,          T_MUTABLE,      LANG_CPP_ALL      },
@@ -196,6 +195,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_CONCEPT,          Y_CONCEPT,          T_NONE,         LANG_CPP_MIN(20)  },
   { L_CONSTEVAL,        Y_CONSTEVAL,        T_CONSTEVAL,    LANG_CPP_MIN(20)  },
   { L_CONSTINIT,        Y_CONSTINIT,        T_CONSTINIT,    LANG_CPP_MIN(20)  },
+  { L_EXPORT,           Y_EXPORT,           T_EXPORT,       LANG_CPP_MIN(20)  },
   { L_REQUIRES,         Y_REQUIRES,         T_NONE,         LANG_CPP_MIN(20)  },
 
   // Alternative tokens

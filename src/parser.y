@@ -904,7 +904,6 @@ static void yyerror( char const *msg ) {
 %token  <oper_id>   Y_DOT_STAR    ".*"
 %token  <literal>   Y_DYNAMIC_CAST
 %token  <type_id>   Y_EXPLICIT
-%token              Y_EXPORT
 %token  <type_id>   Y_FALSE             /* for noexcept(false) */
 %token  <type_id>   Y_FRIEND
 %token  <type_id>   Y_MUTABLE
@@ -980,6 +979,7 @@ static void yyerror( char const *msg ) {
 %token              Y_CONCEPT
 %token  <type_id>   Y_CONSTEVAL
 %token  <type_id>   Y_CONSTINIT
+%token  <type_id>   Y_EXPORT
 %token  <oper_id>   Y_LESS_EQ_GREATER "<=>"
 %token  <type_id>   Y_NO_UNIQUE_ADDRESS
 %token              Y_REQUIRES
@@ -1455,6 +1455,7 @@ storage_class_english_type
   | Y_DEFAULT
   | Y_DELETE
   | Y_EXPLICIT
+  | Y_EXPORT
   | Y_EXTERN
   | Y_FINAL
   | Y_FRIEND
@@ -4044,6 +4045,7 @@ storage_class_c_type
   | Y_CONSTEXPR
   | Y_CONSTINIT
   | Y_EXPLICIT
+  | Y_EXPORT
   | Y_EXTERN
   | Y_FINAL
   | Y_FRIEND

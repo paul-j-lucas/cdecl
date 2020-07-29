@@ -125,6 +125,7 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_ALL,               L_ENGLISH           },
   { LANG_MIN(C_89),         L_ENUM              },
   { LANG_CPP_ALL,           L_EXPLICIT          },
+  { LANG_CPP_MIN(20),       L_EXPORT            },
   { LANG_ALL,               L_EXTERN            },
   { LANG_CPP_ALL,           L_FALSE             },
   { LANG_CPP_MIN(11),       L_FINAL             },

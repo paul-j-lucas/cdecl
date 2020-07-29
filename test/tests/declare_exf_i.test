@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ declare f as exported function returning int @ 0

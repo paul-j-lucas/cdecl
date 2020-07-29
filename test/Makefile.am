@@ -880,6 +880,8 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_enc.test \
 	tests/declare_enk.test \
 	tests/declare_epctor_i.test \
+	tests/declare_exf_i.test \
+	tests/declare_exi.test \
 	tests/declare_f+k_v.test \
 	tests/declare_f_pmi.test \
 	tests/declare_fcdi_i.test \
@@ -939,6 +941,7 @@ TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_ai-c++11.test \
 	tests/declare_cdi.test \
 	tests/declare_epf.test \
+	tests/declare_exsi.test \
 	tests/declare_fcf.test \
 	tests/declare_fco_exclam_b.test \
 	tests/declare_nrfi_v-01-c++.test \
@@ -1174,6 +1177,8 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_epctor_i.test \
 	tests/explain_epictor_i.test \
 	tests/explain_epnxctor_i.test \
+	tests/explain_exf_i.test \
+	tests/explain_exi.test \
 	tests/explain_f__pf__v.test \
 	tests/explain_f__pv.test \
 	tests/explain_f__v.test \
@@ -1234,6 +1239,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_cepctor_i.test \
 	tests/explain_enc.test \
 	tests/explain_enk.test \
+	tests/explain_exsi.test \
 	tests/explain_f+_v.test \
 	tests/explain_f__v-c++03.test \
 	tests/explain_f_v__v.test \

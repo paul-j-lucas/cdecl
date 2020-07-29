@@ -47,6 +47,7 @@ The characters are:
 + `en` = `enum`
 + `ep` = `explicit`
 + `et` = `extern`
++ `ex` = `export`
 + `f` = `friend` or function
 + `g` = `register`
 + `ga` = GNU C `__auto_type`

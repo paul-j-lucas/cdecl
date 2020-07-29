@@ -215,6 +215,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_ENUMERATION,    C_SY1( false, L_ENUM        ) },
   { L_EXIT,           TOKEN( Y_QUIT               ) },
   { L_EXPLAIN,        TOKEN( Y_EXPLAIN            ) },
+  { L_EXPORTED,       C_SY1( false, L_EXPORT      ) },
   { L_EXTERNAL,       C_SY1( false, L_EXTERN      ) },
   { L_FUNC,           TOKEN( Y_FUNCTION           ) },
   { L_FUNCTION,       TOKEN( Y_FUNCTION           ) },

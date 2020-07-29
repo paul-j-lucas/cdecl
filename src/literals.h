@@ -174,7 +174,6 @@ extern char const L_DESTRUCTOR[];
 extern char const L_DYNAMIC[];
 extern char const L_DYNAMIC_CAST[];
 extern char const L_EXPLICIT[];
-extern char const L_EXPORT[];
 extern char const L_FALSE[];
 extern char const L_FRIEND[];
 extern char const L_MUTABLE[];
@@ -239,6 +238,8 @@ extern char const L_CHAR8_T[];
 extern char const L_CONCEPT[];
 extern char const L_CONSTEVAL[];
 extern char const L_CONSTINIT[];
+extern char const L_EXPORT[];
+extern char const L_EXPORTED[];             // English for "export"
 extern char const L_NO_UNIQUE_ADDRESS[];
 extern char const L_NON_UNIQUE_ADDRESS[];
 extern char const L_REQUIRES[];
