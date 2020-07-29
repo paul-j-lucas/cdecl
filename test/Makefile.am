@@ -128,7 +128,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fid_v.test \
 	tests/declare_fipfi_v_pfi_v.test \
 	tests/declare_fixiy_v.test \
-	tests/declare_fkr_pi.test \
+	tests/declare_fkr_pi-c18.test \
 	tests/declare_fpc_pi.test \
 	tests/declare_fpci_pi.test \
 	tests/declare_fpfc_i_d.test \
@@ -158,7 +158,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_pbv_pi.test \
 	tests/declare_pci-ec.test \
 	tests/declare_pcpi.test \
-	tests/declare_pfkr_i.test \
+	tests/declare_pfkr_i-c18.test \
 	tests/declare_pfv_pi.test \
 	tests/declare_pi.test \
 	tests/declare_ppi.test \
@@ -216,6 +216,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_fg_v.test \
 	tests/declare_fiiv_v.test \
 	tests/declare_fiv_v.test \
+	tests/declare_fkr_pi.test \
 	tests/declare_fmf_v.test \
 	tests/declare_fn.test \
 	tests/declare_fsi_v.test \
@@ -247,6 +248,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_lv.test \
 	tests/declare_lw.test \
 	tests/declare_nri.test \
+	tests/declare_pfkr_i.test \
 	tests/declare_pk.test \
 	tests/declare_pv-knr.test \
 	tests/declare_rtf_v-c.test \
@@ -353,7 +355,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fid_v.test \
 	tests/explain_fipfi_v_pfi_v.test \
 	tests/explain_fixiy_v.test \
-	tests/explain_fkr_pi.test \
+	tests/explain_fkr_pi-c18.test \
 	tests/explain_fpa5d_v.test \
 	tests/explain_fpc_pi.test \
 	tests/explain_fpci_pi.test \
@@ -485,6 +487,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_fg_v.test \
 	tests/explain_fiiv_v.test \
 	tests/explain_fiv_v.test \
+	tests/explain_fkr_pi.test
 	tests/explain_fn.test \
 	tests/explain_fsi_v.test \
 	tests/explain_fve_v.test \
@@ -633,7 +636,7 @@ TESTS+=	tests/cast_bii_d.test \
 	tests/cast_pf_i-02.test \
 	tests/cast_pfii_i.test \
 	tests/cast_pfv_pi.test \
-	tests/cast_pfx_i.test \
+	tests/cast_pfx_i-c18.test \
 	tests/cast_pi.test \
 	tests/cast_ppi.test \
 	tests/cast_sc.test \
@@ -653,6 +656,7 @@ TESTS+=	tests/cast_bii_d.test \
 TESTS+=	tests/cast_a3i.test \
 	tests/cast_f_i.test \
 	tests/cast_gi.test \
+	tests/cast_pfx_i.test \
 	tests/cast_ti.test \
 	tests/cast_type.test \
 	tests/const_cast_pi-c.test \

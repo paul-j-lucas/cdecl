@@ -454,8 +454,10 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
         break;
 
       case K_NAME:
-        if ( C_LANG_IS_CPP() ) {
-          print_error( &arg_ast->loc, "C++ requires type specifier" );
+        if ( opt_lang >= LANG_C_2X ) {
+          print_error( &arg_ast->loc,
+            "%s requires type specifier", C_LANG_NAME()
+          );
           return false;
         }
         break;

@@ -1,1 +1,1 @@
-cdecl @ @ @ declare f as function (x) returning pointer to int @ 0
+cdecl @ @ @ declare f as function (x) returning pointer to int @ 65

@@ -18,6 +18,7 @@ Added support for C2X:
 + Added type char8_t.
 + Added [[...]] syntax for attributes.
 + Added [[deprecated]], [[maybe_unused]], and [[nodiscard]] attributes.
++ Removed support for typeless function arguments in K&R C.
 
 ** C++20 constinit support
 Added support for "constinit" in C++20.
