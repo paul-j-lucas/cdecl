@@ -31,7 +31,7 @@ clean-local:
 	rm -rf docs
 
 update-gnulib:
-	gnulib --add-import
+	gnulib-tool --add-import
 	rm -f m4/.gitignore
 
 # vim:set noet sw=8 ts=8:
