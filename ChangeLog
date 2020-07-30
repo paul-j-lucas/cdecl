@@ -1,12 +1,24 @@
+2020-07-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * Makefile.am: s/gnulib/gnulib-tool/
+   * types.h: Made c_lang_id_t be uint32_t to avoid warnings.
+   * NEWS, cdecl.1, autocomplete.c, c_keyword.c, c_type.c, c_type.h, lexer.l,
+     literals.c, literals.h, parser.y, test/Makefile.am, declare_exf_i.out,
+     declare_exi.out, explain_exf_i.out, explain_exi.out, declare_exf_i.test,
+     declare_exi.test, declare_exsi.test, explain_exf_i.test, explain_exi.test,
+     explain_exsi.test: Added support for C++20's "export".
+   * test/Makefile.am: Test renaming.
+
 2020-07-28  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, errors.c, lexer.l, test/Makefile.am, cast_pfx_i-c18.test,
+     cast_pfx_i.test, declare_fkr_pi-c18.test, declare_fkr_pi.test,
+     declare_pfkr_i-c18.test, declare_pfkr_i.test, explain_fkr_pi-c18.test,
+     explain_fkr_pi.test: Removed support for typeless function arguments in
+     C2X.
    * NEWS, cdecl.1, autocomplete.c, c_keyword.c, c_type.c, c_type.h, errors.c,
      literals.c, literals.h, parser.y, test/Makefile.am, declare_xici.out,
      declare_xici.test, explain_xif_i.test: Added "constinit".
-   * test/Makefile.am: Test renaming.
-   * test/Makefile.am: Test renaming.
-   * test/Makefile.am: Test renaming.
-   * test/Makefile.am: Test renaming.
    * test/Makefile.am: Test renaming.
 
 2020-07-27  Paul J. Lucas <paul@lucasmail.org>
@@ -717,7 +729,6 @@
    * c_operator.h, gibberish.h: Doxygen.
    * c_ast.h, c_operator.h: Doxygen
    * c_lang.h: Doxygen
-   * c_lang.h: Doxygen
    * lexer.l: s/e_literal/literal/
    * c_keyword.h, lexer.l: /y_token/yy_token_id/
 
@@ -795,7 +806,6 @@
      explain_main_fv_i.test: Now checking main()'s signature.
    * parser.y: Added comment for Y_DELETE.
    * parser.y: Y_NEW is oper_id.
-   * parser.y: Comment fix.
    * parser.y: Comment fix.
    * NEWS, configure.ac: Changed version to 7.3.
 
@@ -1118,7 +1128,6 @@
      declare_ovc_udc_i.out, explain_oc_udc_i.out, declare_ovc_udc_i.test,
      explain_oc_udc_i.test: Can now declare const/volatile user-defined
      conversion operators.
-   * parser.y: Change from "switch" to "if".
    * parser.y: Change from "switch" to "if".
    * parser.y: Comments.
    * parser.y: Moved type_pop() out of explain_type_decl().
@@ -1569,11 +1578,9 @@
 
    * lexer.l, util.h: Added is_ident().
    * parser.y: Fixed typo.
-   * parser.y: Fixed typo.
 
 2019-10-16  Paul J. Lucas <paul@lucasmail.org>
 
-   * cdecl.c: Added (void).
    * cdecl.c: Added (void).
    * autocomplete.c, cdecl.c, lexer.l, literals.c, literals.h:
      s/L_SET/L_SET_COMMAND/ since L_SET is a synonym for SEEK_SET.
@@ -2111,7 +2118,6 @@
 
 2019-04-11  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_typedef.c: Made test explicit.
    * c_typedef.c: Made test explicit.
 
 2019-04-05  Paul J. Lucas <paul@lucasmail.org>
@@ -3176,7 +3182,6 @@
 2017-10-10  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Comment removal.
-   * parser.y: Explicit comparison.
    * parser.y: Explicit comparison.
    * options.c, util.c: Clean-up.
    * gibberish.c: More explicit comparison.
@@ -4901,7 +4906,6 @@
 2017-02-13  Paul J. Lucas <paul@lucasmail.org>
 
    * cdgram.y: Clean-up.
-   * cdgram.y: Clean-up.
    * cdgram.y, options.c, util.h, set_options.out: Clean-up.
    * cdgram.y, options.c, options.h: Added special long long handling.
    * readline_support.c: Added bool and wchar_t.
@@ -4940,7 +4944,6 @@
      explain_cast_pcc-02.test, explain_f_rpi.test, explain_fpc_rpi.test,
      explain_fv_rpi.test, explain_fx_rpi.test, explain_pc.test, help_c.test,
      help_cxx.test, set_options.test: Some tests.
-   * cdgram.y: Clean-up.
    * cdgram.y: Clean-up.
    * cdlex.l: Added Apple comment.
    * cdlex.l: Cleaned-up.
