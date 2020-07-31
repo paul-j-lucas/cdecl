@@ -1649,6 +1649,7 @@ explain_c
       DUMP_END();
 
       bool ok = false;
+
       if ( unsupported( LANG_CPP_ALL ) ) {
         print_error( &@2, "%s_cast not supported in %s", $2, C_LANG_NAME() );
       }
@@ -1901,6 +1902,8 @@ explain_c
       DUMP_AST( "explain_c", ast );
       DUMP_END();
 
+      bool ok = false;
+
       //
       // Using declarations are supported only in C++11 and later.
       //
@@ -1909,7 +1912,6 @@ explain_c
       // and the AST has no "memory" that such a declaration was a using
       // declaration.
       //
-      bool ok = false;
       if ( unsupported( LANG_MIN(CPP_11) ) ) {
         print_error( &@2,
           "\"%s\" not supported in %s", L_USING, C_LANG_NAME()
@@ -3253,6 +3255,17 @@ trailing_return_type_c_ast_opt
     {
       type_pop();
 
+      DUMP_START( "trailing_return_type_c_ast_opt",
+                  "type_c_ast cast_c_ast_opt" );
+      DUMP_AST( "(type_c_ast)", type_peek() );
+      DUMP_AST( "type_c_ast", $2.ast );
+      DUMP_AST( "cast_c_ast_opt", $4.ast );
+
+      $$ = $4.ast != NULL ? $4 : $2;
+
+      DUMP_AST( "trailing_return_type_c_ast_opt", $$.ast );
+      DUMP_END();
+
       //
       // The function trailing return-type syntax is supported only in C++11
       // and later.  This check has to be done now in the parser rather than
@@ -3285,17 +3298,6 @@ trailing_return_type_c_ast_opt
         );
         PARSE_ABORT();
       }
-
-      DUMP_START( "trailing_return_type_c_ast_opt",
-                  "type_c_ast cast_c_ast_opt" );
-      DUMP_AST( "(type_c_ast)", type_peek() );
-      DUMP_AST( "type_c_ast", $2.ast );
-      DUMP_AST( "cast_c_ast_opt", $4.ast );
-
-      $$ = $4.ast != NULL ? $4 : $2;
-
-      DUMP_AST( "trailing_return_type_c_ast_opt", $$.ast );
-      DUMP_END();
     }
   ;
 
