@@ -734,7 +734,7 @@ static void yyerror( char const *msg ) {
 %union {
   c_alignas_t         align;
   c_ast_t            *ast;
-  slist_t             ast_list;   /* for function arguments */
+  c_ast_args_t        ast_list;   /* for function arguments */
   c_ast_pair_t        ast_pair;   /* for the AST being built */
   unsigned            bitmask;    /* multipurpose bitmask (used by show) */
   bool                flag;       /* simple flag */
