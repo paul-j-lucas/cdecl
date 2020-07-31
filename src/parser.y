@@ -2101,36 +2101,6 @@ scope_declaration_c
     sname_c
     {
       //
-      // Nested namespace declarations are supported only in C++17 and later.
-      // (However, we always allow them in configuration files.)
-      //
-      // This check has to be done now in the parser rather than later in the
-      // AST because the AST has no "memory" of how a namespace was
-      // constructed.
-      //
-      if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_MIN(CPP_17) ) ) {
-        print_error( &@3,
-          "nested %s declarations not supported until %s",
-          L_NAMESPACE, c_lang_name( LANG_CPP_17 )
-        );
-        c_sname_free( &$3 );
-        PARSE_ABORT();
-      }
-
-      //
-      // Ensure that "namespace" isn't nested within a class/struct/union.
-      //
-      c_type_id_t const outer_type_id =
-        c_sname_local_type( &in_attr.current_scope );
-      if ( (outer_type_id & T_ANY_CLASS) != T_NONE ) {
-        print_error( &@1,
-          "\"%s\" may only be nested within a %s", L_NAMESPACE, L_NAMESPACE
-        );
-        c_sname_free( &$3 );
-        PARSE_ABORT();
-      }
-
-      //
       // Make every scope's type be $1 for nested namespaces.
       //
       for ( c_scope_t *scope = $3.head; scope != NULL; scope = scope->next )
@@ -2143,6 +2113,40 @@ scope_declaration_c
       DUMP_TYPE( "namespace_type", $1 );
       DUMP_SNAME( "any_sname_c", &$3 );
       DUMP_END();
+
+      bool ok = false;
+
+      //
+      // Nested namespace declarations are supported only in C++17 and later.
+      // (However, we always allow them in configuration files.)
+      //
+      // This check has to be done now in the parser rather than later in the
+      // AST because the AST has no "memory" of how a namespace was
+      // constructed.
+      //
+      if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_MIN(CPP_17) ) ) {
+        print_error( &@3,
+          "nested %s declarations not supported until %s",
+          L_NAMESPACE, c_lang_name( LANG_CPP_17 )
+        );
+      }
+      else {
+        //
+        // Ensure that "namespace" isn't nested within a class/struct/union.
+        //
+        c_type_id_t const outer_type_id =
+          c_sname_local_type( &in_attr.current_scope );
+        if ( !(ok = (outer_type_id & T_ANY_CLASS) == T_NONE) ) {
+          print_error( &@1,
+            "\"%s\" may only be nested within a %s", L_NAMESPACE, L_NAMESPACE
+          );
+        }
+      }
+
+      if ( !ok ) {
+        c_sname_free( &$3 );
+        PARSE_ABORT();
+      }
 
       c_sname_append_sname( &in_attr.current_scope, &$3 );
     }
