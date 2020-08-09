@@ -65,9 +65,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Mapping between C type bits, literals, and valid language(s).
+ * Mapping between C type bits, valid language(s), and literals.
  */
-struct c_type {
+struct c_type_info {
   c_type_id_t         type_id;          ///< The type.
   c_lang_id_t         lang_ids;         ///< Language(s) OK in.
   char const         *english;          ///< English version (if not NULL).
@@ -80,11 +80,11 @@ struct c_type {
    */
   c_lang_lit_t const *lang_lit;
 };
-typedef struct c_type c_type_t;
+typedef struct c_type_info c_type_info_t;
 
 // local functions
 C_WARN_UNUSED_RESULT
-static char const*  c_type_literal( c_type_t const*, bool );
+static char const*  c_type_literal( c_type_info_t const*, bool );
 
 C_WARN_UNUSED_RESULT
 static char const*  c_type_name_impl( c_type_id_t, bool );
@@ -124,7 +124,7 @@ static char const L_TYPEDEF_TYPE[] = "";
 /**
  * Type mapping for attributes.
  */
-static c_type_t const C_ATTRIBUTE_INFO[] = {
+static c_type_info_t const C_ATTRIBUTE_INFO[] = {
   { T_CARRIES_DEPENDENCY, LANG_CPP_MIN(11), L_CARRIES_DEPENDENCY_H,
     (c_lang_lit_t[]){ { LANG_ALL, L_CARRIES_DEPENDENCY } } },
 
@@ -148,7 +148,7 @@ static c_type_t const C_ATTRIBUTE_INFO[] = {
 /**
  * Type mapping for qualifiers.
  */
-static c_type_t const C_QUALIFIER_INFO[] = {
+static c_type_info_t const C_QUALIFIER_INFO[] = {
   { T_ATOMIC, LANG_MIN(C_11), L_ATOMIC,
     (c_lang_lit_t[]){ { LANG_ALL, L__ATOMIC } } },
 
@@ -177,7 +177,7 @@ static c_type_t const C_QUALIFIER_INFO[] = {
  * @note
  * This array _must_ have the same size and order as OK_STORAGE_LANGS.
  */
-static c_type_t const C_STORAGE_INFO[] = {
+static c_type_info_t const C_STORAGE_INFO[] = {
   // storage classes
   { T_AUTO_STORAGE, LANG_MAX(CPP_03), L_AUTOMATIC,
     (c_lang_lit_t[]){ { LANG_ALL, L_AUTO } } },
@@ -258,7 +258,7 @@ static c_type_t const C_STORAGE_INFO[] = {
  * @note
  * This array _must_ have the same size and order as OK_TYPE_LANGS.
  */
-static c_type_t const C_TYPE_INFO[] = {
+static c_type_info_t const C_TYPE_INFO[] = {
   { T_VOID, LANG_MIN(C_89), NULL,
     (c_lang_lit_t[]){ { LANG_ALL, L_VOID } } },
 
@@ -457,21 +457,22 @@ static inline bool is_long_int( c_type_id_t type_id ) {
  * Checks that the type combination is legal in the current language.
  *
  * @param type_id The <code>\ref c_type_id_t</code> to check.
- * @param types The array of types to check against.
- * @param types_size The size of \a types.
+ * @param type_infos The array of <code>\ref c_type_info_t</code> to check
+ * against.
+ * @param type_infos_size The size of \a type_infos.
  * @param type_langs The type/languages array to check against.
  * @return Returns the bitwise-or of the language(s) \a type_id is legal in.
  */
 C_WARN_UNUSED_RESULT
 static c_lang_id_t
-c_type_check_combo( c_type_id_t type_id, c_type_t const types[],
-                    size_t types_size,
-                    c_lang_id_t const type_langs[][types_size] ) {
-  for ( size_t row = 0; row < types_size; ++row ) {
-    if ( (type_id & types[ row ].type_id) != T_NONE ) {
+c_type_check_combo( c_type_id_t type_id, c_type_info_t const type_infos[],
+                    size_t type_infos_size,
+                    c_lang_id_t const type_langs[][type_infos_size] ) {
+  for ( size_t row = 0; row < type_infos_size; ++row ) {
+    if ( (type_id & type_infos[ row ].type_id) != T_NONE ) {
       for ( size_t col = 0; col <= row; ++col ) {
         c_lang_id_t const lang_ids = type_langs[ row ][ col ];
-        if ( (type_id & types[ col ].type_id) != T_NONE &&
+        if ( (type_id & type_infos[ col ].type_id) != T_NONE &&
              (opt_lang & lang_ids) == LANG_NONE ) {
           return lang_ids;
         }
@@ -485,38 +486,40 @@ c_type_check_combo( c_type_id_t type_id, c_type_t const types[],
  * Checks that \a type_id is legal in the current language.
  *
  * @param type_id The <code>\ref c_type_id_t</code> to check.
- * @param types The array of types to check against.
- * @param types_size The size of \a types.
+ * @param type_infos The array of <code>\ref c_type_info_t</code> to check
+ * against.
+ * @param type_infos_size The size of \a type_infos.
  * @return Returns the bitwise-or of the language(s) \a type_id is legal in.
  */
 C_WARN_UNUSED_RESULT
 static c_lang_id_t
-c_type_check_legal( c_type_id_t type_id, c_type_t const types[],
-                    size_t types_size ) {
-  for ( size_t row = 0; row < types_size; ++row ) {
-    c_type_t const *const t = &types[ row ];
-    if ( (type_id & t->type_id) != T_NONE &&
-         (opt_lang & t->lang_ids) == LANG_NONE ) {
-      return t->lang_ids;
+c_type_check_legal( c_type_id_t type_id, c_type_info_t const type_infos[],
+                    size_t type_infos_size ) {
+  for ( size_t row = 0; row < type_infos_size; ++row ) {
+    c_type_info_t const *const ti = &type_infos[ row ];
+    if ( (type_id & ti->type_id) != T_NONE &&
+         (opt_lang & ti->lang_ids) == LANG_NONE ) {
+      return ti->lang_ids;
     }
   } // for
   return LANG_ALL;
 }
 
 /**
- * Gets the literal of a given <code>\ref c_type</code>, either gibberish or,
- * if appropriate and available, English.
+ * Gets the literal of a given <code>\ref c_type_info_t</code>, either
+ * gibberish or, if appropriate and available, English.
  *
- * @param t A pointer to the <code>\ref c_type</code> to get the literal of.
+ * @param ti A pointer to the <code>\ref c_type_info_t</code> to get the
+ * literal of.
  * @param is_error `true` if getting the literal for part of an error message.
  * @return Returns said literal.
  */
 C_WARN_UNUSED_RESULT
-static char const* c_type_literal( c_type_t const *t, bool is_error ) {
+static char const* c_type_literal( c_type_info_t const *ti, bool is_error ) {
   bool const is_english = c_mode == C_ENGLISH_TO_GIBBERISH;
-  if ( is_english == is_error && t->english != NULL )
-    return t->english;
-  return c_lang_literal( t->lang_lit );
+  if ( is_english == is_error && ti->english != NULL )
+    return ti->english;
+  return c_lang_literal( ti->lang_lit );
 }
 
 /**
@@ -532,27 +535,27 @@ static char const* c_type_name_1( c_type_id_t type_id, bool is_error ) {
   assert( exactly_one_bit_set( type_id ) );
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_ATTRIBUTE_INFO ); ++i ) {
-    c_type_t const *const t = &C_ATTRIBUTE_INFO[i];
-    if ( type_id == t->type_id )
-      return c_type_literal( t, is_error );
+    c_type_info_t const *const ti = &C_ATTRIBUTE_INFO[i];
+    if ( type_id == ti->type_id )
+      return c_type_literal( ti, is_error );
   } // for
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i ) {
-    c_type_t const *const t = &C_QUALIFIER_INFO[i];
-    if ( type_id == t->type_id )
-      return c_type_literal( t, is_error );
+    c_type_info_t const *const ti = &C_QUALIFIER_INFO[i];
+    if ( type_id == ti->type_id )
+      return c_type_literal( ti, is_error );
   } // for
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_INFO ); ++i ) {
-    c_type_t const *const t = &C_STORAGE_INFO[i];
-    if ( type_id == t->type_id )
-      return c_type_literal( t, is_error );
+    c_type_info_t const *const ti = &C_STORAGE_INFO[i];
+    if ( type_id == ti->type_id )
+      return c_type_literal( ti, is_error );
   } // for
 
   for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i ) {
-    c_type_t const *const t = &C_TYPE_INFO[i];
-    if ( type_id == t->type_id )
-      return c_type_literal( t, is_error );
+    c_type_info_t const *const ti = &C_TYPE_INFO[i];
+    if ( type_id == ti->type_id )
+      return c_type_literal( ti, is_error );
   } // for
 
   UNEXPECTED_INT_VALUE( type_id );
@@ -564,7 +567,7 @@ static char const* c_type_name_1( c_type_id_t type_id, bool is_error ) {
  * @param pname A pointer to the pointer to the name to concatenate to.
  * @param type_id The <code>\ref c_type_id_t</code> to concatenate the name of.
  * @param types The array of types to use.
- * @param types_size The size of \a types.
+ * @param type_infos_size The size of \a types.
  * @param is_error `true` if concatenating the name for part of an error
  * message.
  * @param sep The separator character.
