@@ -10,7 +10,7 @@ define DWORD32 as unsigned
 define DWORD64 as unsigned long
 define DWORDLONG as unsigned long
 define DWORD_PTR as ULONG_PTR
-define FILE as struct __FILE
+define FILE as struct FILE
 define FLOAT as float
 define HALF_PTR as int
 define HANDLE as PVOID
@@ -159,7 +159,7 @@ define ULONG32 as unsigned
 define ULONG64 as unsigned long
 define ULONGLONG as unsigned long long
 define ULONG_PTR as unsigned long
-define UNICODE_STRING as struct _UNICODE_STRING
+define UNICODE_STRING as struct UNICODE_STRING
 define USHORT as unsigned short
 define USN as LONGLONG
 define WCHAR as wchar_t
@@ -199,7 +199,7 @@ define atomic_char as _Atomic char
 define atomic_char16_t as _Atomic char16_t
 define atomic_char32_t as _Atomic char32_t
 define atomic_char8_t as _Atomic char8_t
-define atomic_flag as struct __atomic_flag
+define atomic_flag as struct atomic_flag
 define atomic_int as _Atomic int
 define atomic_int_fast16_t as _Atomic int_fast16_t
 define atomic_int_fast32_t as _Atomic int_fast32_t
@@ -242,12 +242,12 @@ define dev_t as int32_t
 define div_t as struct div_t
 define double_t as double
 define errno_t as int
-define fd_set as struct __fd_set
+define fd_set as struct fd_set
 define femode_t as struct femode_t
 define fenv_t as struct fenv_t
 define fexcept_t as unsigned short
 define float_t as float
-define fpos_t as struct __fpos
+define fpos_t as struct fpos_t
 define gid_t as uint32_t
 define imaxdiv_t as struct imaxdiv_t
 define in_addr_t as uint32_t
@@ -278,7 +278,7 @@ define ldiv_t as struct ldiv_t
 define lldiv_t as struct lldiv_t
 define long_double_t as long double
 define max_align_t as long double
-define mbstate_t as struct __mbstate
+define mbstate_t as struct mbstate_t
 define memory_order as enum memory_order
 define mode_t as int32_t
 define mtx_t as pthread_mutex_t
@@ -309,6 +309,8 @@ define socklen_t as uint32_t
 define ssize_t as long
 define align_val_t of namespace std as enum class align_val_t
 define byte of namespace std as enum byte
+define condition_variable of namespace std as class condition_variable
+define condition_variable_any of namespace std as class condition_variable_any
 define destroying_delete_t of namespace std as struct destroying_delete_t
 define div_t of namespace std as struct div_t
 define exception of namespace std as class exception
@@ -317,19 +319,27 @@ define jthread of namespace std as class jthread
 define ldiv_t of namespace std as struct ldiv_t
 define lldiv_t of namespace std as struct lldiv_t
 define max_align_t of namespace std as long double
+define mutex of namespace std as class mutex
 define nothrow_t of namespace std as struct nothrow_t
 define nullptr_t of namespace std as pointer to void
 define partial_ordering of namespace std as struct partial_ordering
 define ptrdiff_t of namespace std as long
+define recursive_mutex of namespace std as class recursive_mutex
+define recursive_timed_mutex of namespace std as class recursive_timed_mutex
+define regex of namespace std as class regex
+define shared_mutex of namespace std as class shared_mutex
+define shared_timed_mutex of namespace std as class shared_timed_mutex
 define sig_atomic_t of namespace std as int
 define size_t of namespace std as unsigned long
 define streambuf of namespace std as struct streambuf
 define streamoff of namespace std as long long
 define streamsize of namespace std as long
 define string of namespace std as class string
+define string_view of namespace std as class string_view
 define strong_equality of namespace std as struct strong_equality
 define strong_ordering of namespace std as struct strong_ordering
 define thread of namespace std as class thread
+define timed_mutex of namespace std as class timed_mutex
 define u16string of namespace std as class u16string
 define u32string of namespace std as class u32string
 define weak_equality of namespace std as struct weak_equality

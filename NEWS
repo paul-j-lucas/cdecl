@@ -10,6 +10,15 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 8.1
+
+** More C++ std types
+Added types std::condition_variable, std::condition_variable_any, std::mutex,
+std::recursive_mutex, std::recursive_timed_mutex, std::regex,
+std::shared_mutex, std::shared_timed_mutex, std::string_view, and
+std::timed_mutex.
+
+
 * Changes in Cdecl 8.0
 
 ** C2X support

@@ -10,7 +10,7 @@ typedef unsigned DWORD32;
 typedef unsigned long DWORD64;
 typedef unsigned long DWORDLONG;
 typedef ULONG_PTR DWORD_PTR;
-typedef struct __FILE FILE;
+typedef struct FILE FILE;
 typedef float FLOAT;
 typedef int HALF_PTR;
 typedef PVOID HANDLE;
@@ -159,7 +159,7 @@ typedef unsigned ULONG32;
 typedef unsigned long ULONG64;
 typedef unsigned long long ULONGLONG;
 typedef unsigned long ULONG_PTR;
-typedef struct _UNICODE_STRING UNICODE_STRING;
+typedef struct UNICODE_STRING UNICODE_STRING;
 typedef unsigned short USHORT;
 typedef LONGLONG USN;
 typedef wchar_t WCHAR;
@@ -199,7 +199,7 @@ typedef _Atomic char atomic_char;
 typedef _Atomic char16_t atomic_char16_t;
 typedef _Atomic char32_t atomic_char32_t;
 typedef _Atomic char8_t atomic_char8_t;
-typedef struct __atomic_flag atomic_flag;
+typedef struct atomic_flag atomic_flag;
 typedef _Atomic int atomic_int;
 typedef _Atomic int_fast16_t atomic_int_fast16_t;
 typedef _Atomic int_fast32_t atomic_int_fast32_t;
@@ -242,12 +242,12 @@ typedef int32_t dev_t;
 typedef struct div_t div_t;
 typedef double double_t;
 typedef int errno_t;
-typedef struct __fd_set fd_set;
+typedef struct fd_set fd_set;
 typedef struct femode_t femode_t;
 typedef struct fenv_t fenv_t;
 typedef unsigned short fexcept_t;
 typedef float float_t;
-typedef struct __fpos fpos_t;
+typedef struct fpos_t fpos_t;
 typedef uint32_t gid_t;
 typedef struct imaxdiv_t imaxdiv_t;
 typedef uint32_t in_addr_t;
@@ -278,7 +278,7 @@ typedef struct ldiv_t ldiv_t;
 typedef struct lldiv_t lldiv_t;
 typedef long double long_double_t;
 typedef long double max_align_t;
-typedef struct __mbstate mbstate_t;
+typedef struct mbstate_t mbstate_t;
 typedef enum memory_order memory_order;
 typedef int32_t mode_t;
 typedef pthread_mutex_t mtx_t;
@@ -309,6 +309,8 @@ typedef uint32_t socklen_t;
 typedef long ssize_t;
 namespace std { typedef enum align_val_t align_val_t; }
 namespace std { typedef enum byte byte; }
+namespace std { typedef class condition_variable condition_variable; }
+namespace std { typedef class condition_variable_any condition_variable_any; }
 namespace std { typedef struct destroying_delete_t destroying_delete_t; }
 namespace std { typedef struct div_t div_t; }
 namespace std { typedef class exception exception; }
@@ -317,19 +319,27 @@ namespace std { typedef class jthread jthread; }
 namespace std { typedef struct ldiv_t ldiv_t; }
 namespace std { typedef struct lldiv_t lldiv_t; }
 namespace std { typedef long double max_align_t; }
+namespace std { typedef class mutex mutex; }
 namespace std { typedef struct nothrow_t nothrow_t; }
 namespace std { typedef void *nullptr_t; }
 namespace std { typedef struct partial_ordering partial_ordering; }
 namespace std { typedef long ptrdiff_t; }
+namespace std { typedef class recursive_mutex recursive_mutex; }
+namespace std { typedef class recursive_timed_mutex recursive_timed_mutex; }
+namespace std { typedef class regex regex; }
+namespace std { typedef class shared_mutex shared_mutex; }
+namespace std { typedef class shared_timed_mutex shared_timed_mutex; }
 namespace std { typedef int sig_atomic_t; }
 namespace std { typedef unsigned long size_t; }
 namespace std { typedef struct streambuf streambuf; }
 namespace std { typedef long long streamoff; }
 namespace std { typedef long streamsize; }
 namespace std { typedef class string string; }
+namespace std { typedef class string_view string_view; }
 namespace std { typedef struct strong_equality strong_equality; }
 namespace std { typedef struct strong_ordering strong_ordering; }
 namespace std { typedef class thread thread; }
+namespace std { typedef class timed_mutex timed_mutex; }
 namespace std { typedef class u16string u16string; }
 namespace std { typedef class u32string u32string; }
 namespace std { typedef struct weak_equality weak_equality; }
