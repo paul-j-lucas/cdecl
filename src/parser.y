@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 27
+%expect 26
 
 %{
 /** @endcond */
@@ -2085,7 +2085,7 @@ scope_declaration_c
       if ( !add_type( c_type_name( $1 ), ast, &@1 ) )
         PARSE_ABORT();
     }
-    in_scope_declaration_c_opt_opt
+    brace_in_scope_declaration_c_opt
 
     /*
      * C++ namespace declaration, e.g.: namespace NS { typedef int I; }
@@ -2150,17 +2150,21 @@ scope_declaration_c
 
       c_sname_append_sname( &in_attr.current_scope, &$3 );
     }
-    in_scope_declaration_c_opt_opt
+    brace_in_scope_declaration_c
   ;
 
-in_scope_declaration_c_opt_opt
+brace_in_scope_declaration_c_opt
   : /* empty */
-  | '{' in_scope_declaration_c_opt rbrace_expected semi_opt
+  | brace_in_scope_declaration_c
   ;
 
-in_scope_declaration_c_opt
-  : /* empty */
-  | scope_declaration_c
+brace_in_scope_declaration_c
+  : '{' '}'
+  | '{' in_scope_declaration_c semi_opt rbrace_expected
+  ;
+
+in_scope_declaration_c
+  : scope_declaration_c
   | typedef_declaration_c semi_expected
   | using_declaration_c semi_expected
   ;

@@ -18,6 +18,14 @@ std::recursive_mutex, std::recursive_timed_mutex, std::regex,
 std::shared_mutex, std::shared_timed_mutex, std::string_view, and
 std::timed_mutex.
 
+** Fixed class declarations
+Declaring a class as either:
+
+    class C1
+    class C2;
+
+now works.
+
 
 * Changes in Cdecl 8.0
 
@@ -60,7 +68,7 @@ is also defined as a type.  Hence, the above is now equivalent to:
     define C as class C
     define C::Int as int
 
-This also means that either
+This also means that either:
 
     class C { }
     class C
