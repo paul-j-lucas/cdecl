@@ -29,6 +29,7 @@
 // local
 #include "cdecl.h"                      /* must go first */
 #include "types.h"
+#include "util.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -66,17 +67,17 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_C_ALL    LANG_MAX(C_NEW)   /**< All C languages. */
 
 #define LANG_CPP_OLD  LANG_CPP_98       /**< Oldest supported C++ language. */
-#define LANG_CPP_98   (1u << 8)         /**< C++ 98. */
-#define LANG_CPP_03   (1u << 9)         /**< C++ 03. */
-#define LANG_CPP_11   (1u << 10)        /**< C++ 11. */
-#define LANG_CPP_14   (1u << 11)        /**< C++ 14. */
-#define LANG_CPP_17   (1u << 12)        /**< C++ 17. */
-#define LANG_CPP_20   (1u << 13)        /**< C++ 20. */
+#define LANG_CPP_98   (1u << 9)         /**< C++ 98. */
+#define LANG_CPP_03   (1u << 10)        /**< C++ 03. */
+#define LANG_CPP_11   (1u << 11)        /**< C++ 11. */
+#define LANG_CPP_14   (1u << 12)        /**< C++ 14. */
+#define LANG_CPP_17   (1u << 13)        /**< C++ 17. */
+#define LANG_CPP_20   (1u << 14)        /**< C++ 20. */
 #define LANG_CPP_NEW  LANG_CPP_20       /**< Newest supported C++ language. */
 #define LANG_CPP_ALL  LANG_MASK_CPP     /**< All C++ languages. */
 
 /**< Language eXtensions for Embedded C. */
-#define LANGX_EMBC    (1u << 7)
+#define LANGX_EMC     (1u << 7)
 
 /**
  * Embedded C, or more formally, "Programming languages - C - Extensions to
@@ -94,12 +95,12 @@ _GL_INLINE_HEADER_BEGIN
  *
  * in a language other than C99, they'll get a warning.
  */
-#define LANG_C_99_EMB (LANG_C_99 | LANGX_EMBC)
+#define LANG_C_99_EMC (LANG_C_99 | LANGX_EMC)
 
 // bit masks
-#define LANG_MASK_C   0x00FFu           /**< C languages bitmask. */
-#define LANG_MASK_CPP 0xFF00u           /**< C++ languages bitmask. */
-#define LANGX_MASK    0x0080u           /**< Language extensions bitmask. */
+#define LANG_MASK_C   0x01FFu           /**< C languages bitmask. */
+#define LANG_MASK_CPP 0xFE00u           /**< C++ languages bitmask. */
+#define LANGX_MASK    0x0180u           /**< Language extensions bitmask. */
 
 /**
  * Maximum allowed language, C & C++.
@@ -279,7 +280,7 @@ char const* c_lang_names( void );
  */
 C_LANG_INLINE C_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
-  return (lang_ids & ~(lang_ids - 1u)) | (lang_ids & LANGX_MASK);
+  return LSB_SET( lang_ids );
 }
 
 /**

@@ -238,13 +238,13 @@ char const L_XOR[]                  = "xor";
 char const L_XOR_EQ[]               = "xor_eq";
 
 // Embedded C extensions
-char const L_EMBC__ACCUM[]          = "_Accum";
-char const L_EMBC_ACCUM[]           = "accum";
-char const L_EMBC__FRACT[]          = "_Fract";
-char const L_EMBC_FRACT[]           = "fract";
-char const L_EMBC__SAT[]            = "_Sat";
-char const L_EMBC_SAT[]             = "sat";
-char const L_EMBC_SATURATED[]       = "saturated";
+char const L_EMC__ACCUM[]           = "_Accum";
+char const L_EMC_ACCUM[]            = "accum";
+char const L_EMC__FRACT[]           = "_Fract";
+char const L_EMC_FRACT[]            = "fract";
+char const L_EMC__SAT[]             = "_Sat";
+char const L_EMC_SAT[]              = "sat";
+char const L_EMC_SATURATED[]        = "saturated";
 
 // GNU extensions
 char const L_GNU___AUTO_TYPE[]      = "__auto_type";

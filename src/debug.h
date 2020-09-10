@@ -75,12 +75,20 @@ void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout );
 void c_sname_debug( c_sname_t const *sname, FILE *dout );
 
 /**
- * Dumps \a type_id (for debugging).
+ * Dumps \a tid (for debugging).
  *
- * @param type_id The <code>\ref c_type_id_t</code> to print.
+ * @param tid The <code>\ref c_type_id_t</code> to print.
  * @param dout The `FILE` to dump to.
  */
-void c_type_debug( c_type_id_t type_id, FILE *dout );
+void c_type_id_debug( c_type_id_t tid, FILE *dout );
+
+/**
+ * Dumps \a type (for debugging).
+ *
+ * @param type The <code>\ref c_type</code> to print.
+ * @param dout The `FILE` to dump to.
+ */
+void c_type_debug( c_type_t const *type, FILE *dout );
 
 /**
  * Prints a key/value pair (for debugging).

@@ -121,22 +121,6 @@
 
 #endif /* HAVE___ATTRIBUTE__ */
 
-#ifndef C_FALLTHROUGH
-#define C_FALLTHROUGH             ((void)0)
-#endif /* C_FALLTHROUGH */
-
-#ifndef C_NORETURN
-#define C_NORETURN                /* nothing */
-#endif /* C_NORETURN */
-
-#ifndef C_PRINTF_LIKE_FUNC
-#define C_PRINTF_LIKE_FUNC(N)     /* nothing */
-#endif /* C_PRINTF_LIKE_FUNC */
-
-#ifndef C_WARN_UNUSED_RESULT
-#define C_WARN_UNUSED_RESULT      /* nothing */
-#endif /* C_WARN_UNUSED_RESULT */
-
 /**
  * Denote that a function's return value may be ignored without warning.
  *
@@ -155,9 +139,27 @@
  */
 #define C_IGNORE_RV(FN_CALL) \
   do { __typeof__(FN_CALL) _rv __attribute__((unused)) = (FN_CALL); } while (0)
-#else
+#endif /* HAVE___TYPEOF__ */
+
+#ifndef C_FALLTHROUGH
+#define C_FALLTHROUGH             ((void)0)
+#endif /* C_FALLTHROUGH */
+
+#ifndef C_IGNORE_RV
 #define C_IGNORE_RV(FN_CALL)      do { (void)(FN_CALL); } while (0)
 #endif /* HAVE___TYPEOF__ */
+
+#ifndef C_NORETURN
+#define C_NORETURN                /* nothing */
+#endif /* C_NORETURN */
+
+#ifndef C_PRINTF_LIKE_FUNC
+#define C_PRINTF_LIKE_FUNC(N)     /* nothing */
+#endif /* C_PRINTF_LIKE_FUNC */
+
+#ifndef C_WARN_UNUSED_RESULT
+#define C_WARN_UNUSED_RESULT      /* nothing */
+#endif /* C_WARN_UNUSED_RESULT */
 
 ///////////////////////////////////////////////////////////////////////////////
 

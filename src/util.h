@@ -194,6 +194,14 @@ _GL_INLINE_HEADER_BEGIN
   PMESSAGE_EXIT( EX_SOFTWARE, "internal error: " FORMAT, __VA_ARGS__ )
 
 /**
+ * Gets only the least significant bit of \a N that is set.
+ *
+ * @param N The integer to get the least significant bit of.
+ * @return Returns the value of said bit.
+ */
+#define LSB_SET(N)                ((N) & ~((N) - 1u))
+
+/**
  * Calls **malloc**(3) and casts the result to \a TYPE.
  *
  * @param TYPE The type to cast the pointer returned by **malloc**(3) to.

@@ -39,19 +39,35 @@
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Helper function for `c_sname_local_type()` that returns the scope type of the
+ * innermost scope (that has a type).
+ *
+ * @param scope A pointer to a scope.
+ * @return Returns the scope type.
+ */
+C_WARN_UNUSED_RESULT
+static c_type_t const* c_sname_local_type_impl( c_scope_t const *scope ) {
+  assert( scope != NULL );
+  c_scope_t const *const next = scope->next;
+  return next != NULL && !c_type_is_none( c_scope_type( next ) ) ?
+    c_sname_local_type_impl( next ) : c_scope_type( scope );
+}
+
+/**
  * Helper function for `c_sname_full_name()` and `c_sname_scope_name()` that
  * writes the scope names from outermost to innermost separated by `::` into a
  * buffer.
  *
  * @param name_buf The buffer to write into.
+ * @param name_size The size of \a name_buf.
  * @param sname The scoped name to write.
  * @param end_scope The scope to stop before or null for all scopes.
  * @return Returns \a name_buf.
  */
 C_WARN_UNUSED_RESULT
-static char const* c_sname_scope_name_impl( char *name_buf,
-                                            c_sname_t const *sname,
-                                            c_scope_t const *end_scope ) {
+static char const* scope_name_impl( char *name_buf, size_t name_size,
+                                    c_sname_t const *sname,
+                                    c_scope_t const *end_scope ) {
   assert( name_buf != NULL );
   assert( sname != NULL );
 
@@ -64,24 +80,10 @@ static char const* c_sname_scope_name_impl( char *name_buf,
     if ( true_or_set( &colon2 ) )
       STRCAT( name, "::" );
     STRCAT( name, c_scope_name( scope ) );
+    assert( name < name_buf + name_size );
   } // for
 
   return name_buf;
-}
-
-/**
- * Helper function for `c_sname_local_type()` that returns the scope type of the
- * innermost scope (that has a type).
- *
- * @param scope A pointer to a scope.
- * @return Returns the scope type.
- */
-C_WARN_UNUSED_RESULT
-static c_type_id_t c_sname_local_type_impl( c_scope_t const *scope ) {
-  assert( scope != NULL );
-  c_scope_t const *const next = scope->next;
-  return next != NULL && c_scope_type( next ) != T_NONE ?
-    c_sname_local_type_impl( next ) : c_scope_type( scope );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -96,7 +98,7 @@ c_scope_data_t* c_scope_data_dup( c_scope_data_t const *src ) {
   assert( src != NULL );
   c_scope_data_t *const dst = MALLOC( c_scope_data_t, 1 );
   dst->name = check_strdup( src->name );
-  dst->type_id = src->type_id;
+  dst->type = src->type;
   return dst;
 }
 
@@ -112,14 +114,14 @@ void c_sname_append_name( c_sname_t *sname, char *name ) {
   assert( name != NULL );
   c_scope_data_t *const data = MALLOC( c_scope_data_t, 1 );
   data->name = name;
-  data->type_id = T_NONE;
+  data->type = T_NONE;
   slist_push_tail( sname, data );
 }
 
 char const* c_sname_full_name( c_sname_t const *sname ) {
   static char name_buf[ 256 ];
   assert( sname != NULL );
-  return c_sname_scope_name_impl( name_buf, sname, NULL );
+  return scope_name_impl( name_buf, sizeof name_buf, sname, NULL );
 }
 
 bool c_sname_is_ctor( c_sname_t const *sname ) {
@@ -134,13 +136,13 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
 char const* c_sname_scope_name( c_sname_t const *sname ) {
   static char name_buf[ 256 ];
   assert( sname != NULL );
-  return c_sname_scope_name_impl( name_buf, sname, sname->tail );
+  return scope_name_impl( name_buf, sizeof name_buf, sname, sname->tail );
 }
 
-c_type_id_t c_sname_local_type( c_sname_t const *sname ) {
+c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
   assert( sname != NULL );
   return c_sname_empty( sname ) ?
-    T_NONE : c_sname_local_type_impl( sname->head );
+    &T_NONE : c_sname_local_type_impl( sname->head );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

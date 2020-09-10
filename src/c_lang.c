@@ -112,7 +112,7 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
     case LANG_C_89    : return "C89";
     case LANG_C_95    : return "C95";
     case LANG_C_99    : return "C99";
-    case LANG_C_99_EMB: return "C99 (with Embedded C extensions)";
+    case LANG_C_99_EMC: return "C99 (with Embedded C extensions)";
     case LANG_C_11    : return "C11";
     case LANG_C_18    : return "C18";
     case LANG_C_2X    : return "C2X";

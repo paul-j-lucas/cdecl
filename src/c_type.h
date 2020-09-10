@@ -34,6 +34,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <assert.h>
 #include <stdbool.h>
 #include <inttypes.h>                   /* for PRIX64, etc. */
 
@@ -52,220 +53,300 @@ _GL_INLINE_HEADER_BEGIN
 
 ////////// types //////////////////////////////////////////////////////////////
 
-// types
-#define T_NONE                0ull                  /**< No type.             */
-#define T_VOID                0x0000000000000001ull /**< `void`               */
-#define T_AUTO_TYPE           0x0000000000000002ull /**< C++11's `auto`.      */
-#define T_BOOL                0x0000000000000004ull /**< `_Bool` or `bool`    */
-#define T_CHAR                0x0000000000000008ull /**< `char`               */
-#define T_CHAR8_T             0x0000000000000010ull /**< `char8_t`            */
-#define T_CHAR16_T            0x0000000000000020ull /**< `char16_t`           */
-#define T_CHAR32_T            0x0000000000000040ull /**< `char32_t`           */
-#define T_WCHAR_T             0x0000000000000080ull /**< `wchar_t`            */
-#define T_SHORT               0x0000000000000100ull /**< `short`              */
-#define T_INT                 0x0000000000000200ull /**< `int`                */
-#define T_LONG                0x0000000000000400ull /**< `long`               */
-#define T_LONG_LONG           0x0000000000000800ull /**< `long long`          */
-#define T_SIGNED              0x0000000000001000ull /**< `signed`             */
-#define T_UNSIGNED            0x0000000000002000ull /**< `unsigned`           */
-#define T_FLOAT               0x0000000000004000ull /**< `float`              */
-#define T_DOUBLE              0x0000000000008000ull /**< `double`             */
-#define T_COMPLEX             0x0000000000010000ull /**< `_Complex`           */
-#define T_IMAGINARY           0x0000000000020000ull /**< `_Imaginary`         */
-#define T_ENUM                0x0000000000040000ull /**< `enum`               */
-#define T_STRUCT              0x0000000000080000ull /**< `struct`             */
-#define T_UNION               0x0000000000100000ull /**< `union`              */
-#define T_CLASS               0x0000000000200000ull /**< `class`              */
-#define T_NAMESPACE           0x0000000000400000ull /**< `namespace`          */
-#define T_SCOPE               0x0000000000800000ull /**< Generic scope.       */
-#define T_TYPEDEF_TYPE        0x0000000001000000ull /**< E.g., `size_t`       */
+/**
+ * The C/C++ type of an identifier (variable, function, etc.). A type is split
+ * into parts because the number of distinct bits needed in total exceeds 64.
+ */
+struct c_type {
+  /**
+   * The base types (`int`, `double`, etc.) including user-defined types
+   * (`enum`, `struct`, etc.), modifiers (`short`, `unsigned`, etc.), and also
+   * `namespace` and the generic `scope` since it makes sense to store those
+   * with other scoped types (like `struct`).
+   *
+   * Constants for base types begin with `TB_`.
+   */
+  c_type_id_t base_tid;
 
-// Embedded C types
-#define T_EMBC_ACCUM          0x0000000002000000ull /**< `_Accum`             */
-#define T_EMBC_FRACT          0x0000000004000000ull /**< `_Fract`             */
-#define T_EMBC_SAT            0x0000000008000000ull /**< `_Sat`               */
+  /**
+   * The storage classes (`extern`, `static`, etc., including `typedef`),
+   * storage-class-like things (`default`, `friend`, `inline`, etc.), and also
+   * qualifiers (`_Atomic`, `const`, etc.) and ref-qualifiers (`&`, `&&`).
+   *
+   * Constants for storage-class-like things begin with `TS_`.
+   */
+  c_type_id_t store_tid;
+
+  /**
+   * Attributes.
+   *
+   * Constants for attributes begin with `TA_`.
+   */
+  c_type_id_t attr_tid;
+};
+
+/**
+ * Convenience macro for specifying a complete <code>\ref c_type</code>
+ * literal.
+ *
+ * @param BASE_TID The base <code>\ref c_type_id_t</code>.
+ * @param STORE_TID The storage <code>\ref c_type_id_t</code>.
+ * @param ATTR_TID The attribute(s) <code>\ref c_type_id_t</code>.
+ * @return Returns a reference to said literal.
+ *
+ * @sa C_TYPE_LIT_A()
+ * @sa C_TYPE_LIT_B()
+ * @sa C_TYPE_LIT_S()
+ */
+#define C_TYPE_LIT(BASE_TID,STORE_TID,ATTR_TID) \
+  (c_type_t const){ (BASE_TID), (STORE_TID), (ATTR_TID) }
+
+/**
+ * Convenience macro for specifying a <code>\ref c_type</code> literal from
+ * \a ATTR_TID.
+ *
+ * @param ATTR_TID The attribute(s) <code>\ref c_type_id_t</code>.
+ * @return Returns a reference to said literal.
+ *
+ * @sa C_TYPE_LIT()
+ * @sa C_TYPE_LIT_B()
+ * @sa C_TYPE_LIT_S()
+ */
+#define C_TYPE_LIT_A(ATTR_TID) \
+  C_TYPE_LIT( TB_NONE, TS_NONE, (ATTR_TID) )
+
+/**
+ * Convenience macro for specifying a <code>\ref c_type</code> literal from
+ * \a BASE_TID.
+ *
+ * @param BASE_TID The base <code>\ref c_type_id_t</code>.
+ * @return Returns a reference to said literal.
+ *
+ * @sa C_TYPE_LIT()
+ * @sa C_TYPE_LIT_A()
+ * @sa C_TYPE_LIT_S()
+ */
+#define C_TYPE_LIT_B(BASE_TID) \
+  C_TYPE_LIT( (BASE_TID), TS_NONE, TA_NONE )
+
+/**
+ * Convenience macro for specifying a <code>\ref c_type</code> literal from
+ * \a STORE_TID.
+ *
+ * @param STORE_TID The storage <code>\ref c_type_id_t</code>.
+ * @return Returns a reference to said literal.
+ *
+ * @sa C_TYPE_LIT()
+ * @sa C_TYPE_LIT_A()
+ * @sa C_TYPE_LIT_B()
+ */
+#define C_TYPE_LIT_S(STORE_TID) \
+  C_TYPE_LIT( TB_NONE, (STORE_TID), TA_NONE )
+
+/**
+ * For <code>\ref c_type_id_t</code> values, the low-order 4 bits specify the
+ * <code>\ref c_type_part_id</code> and thus how the value should be
+ * interpreted.
+ */
+enum c_type_part_id {
+  //
+  // Type part IDs start at 1 so we know a c_type_id_t value has been
+  // initialized properly as opposed to it being 0 by default.
+  //
+  TPID_BASE = 1,                        ///< Base type, e.g., `int`.
+  TPID_STORE,                           ///< Storage types, e.g., `static`.
+  TPID_ATTR                             ///< Attributes.
+};
+
+// base types & modifiers
+#define TB_NONE               0x0000000000000001ull /**< No type.             */
+#define TB_ANY                0xFFFFFFFFFFFFFFF1ull /**< Any type.            */
+#define TB_VOID               0x0000000000000011ull /**< `void`               */
+#define TB_AUTO               0x0000000000000021ull /**< C++11's `auto`.      */
+#define TB_BOOL               0x0000000000000041ull /**< `_Bool` or `bool`    */
+#define TB_CHAR               0x0000000000000081ull /**< `char`               */
+#define TB_CHAR8_T            0x0000000000000101ull /**< `char8_t`            */
+#define TB_CHAR16_T           0x0000000000000201ull /**< `char16_t`           */
+#define TB_CHAR32_T           0x0000000000000401ull /**< `char32_t`           */
+#define TB_WCHAR_T            0x0000000000000801ull /**< `wchar_t`            */
+#define TB_SHORT              0x0000000000001001ull /**< `short`              */
+#define TB_INT                0x0000000000002001ull /**< `int`                */
+#define TB_LONG               0x0000000000004001ull /**< `long`               */
+#define TB_LONG_LONG          0x0000000000008001ull /**< `long long`          */
+#define TB_SIGNED             0x0000000000010001ull /**< `signed`             */
+#define TB_UNSIGNED           0x0000000000020001ull /**< `unsigned`           */
+#define TB_FLOAT              0x0000000000040001ull /**< `float`              */
+#define TB_DOUBLE             0x0000000000080001ull /**< `double`             */
+#define TB_COMPLEX            0x0000000000100001ull /**< `_Complex`           */
+#define TB_IMAGINARY          0x0000000000200001ull /**< `_Imaginary`         */
+#define TB_ENUM               0x0000000000400001ull /**< `enum`               */
+#define TB_STRUCT             0x0000000000800001ull /**< `struct`             */
+#define TB_UNION              0x0000000001000001ull /**< `union`              */
+#define TB_CLASS              0x0000000002000001ull /**< `class`              */
+#define TB_NAMESPACE          0x0000000004000001ull /**< `namespace`          */
+#define TB_SCOPE              0x0000000008000001ull /**< Generic scope.       */
+#define TB_TYPEDEF            0x0000000010000001ull /**< E.g., `size_t`       */
+
+// Embedded C types & modifiers
+#define TB_EMC_ACCUM          0x0000000020000001ull /**< `_Accum`             */
+#define TB_EMC_FRACT          0x0000000040000001ull /**< `_Fract`             */
+#define TB_EMC_SAT            0x0000000080000001ull /**< `_Sat`               */
 
 // storage classes
-#define T_AUTO_STORAGE        0x0000000010000000ull /**< C's `auto`.          */
-#define T_APPLE_BLOCK         0x0000000020000000ull /**< Block.               */
-#define T_EXTERN              0x0000000040000000ull /**< `extern`             */
-#define T_MUTABLE             0x0000000080000000ull /**< `mutable`            */
-#define T_REGISTER            0x0000000100000000ull /**< `register`           */
-#define T_STATIC              0x0000000200000000ull /**< `static`             */
-#define T_THREAD_LOCAL        0x0000000400000000ull /**< `thread_local`       */
-#define T_TYPEDEF             0x0000000800000000ull /**< `typedef`            */
+#define TS_NONE               0x0000000000000002ull /**< No storage.          */
+#define TS_ANY                0xFFFFFFFFFFFFFFF2ull /**< Any storage.         */
+#define TS_AUTO               0x0000000000000012ull /**< C's `auto`.          */
+#define TS_APPLE_BLOCK        0x0000000000000022ull /**< Block.               */
+#define TS_EXTERN             0x0000000000000042ull /**< `extern`             */
+#define TS_MUTABLE            0x0000000000000082ull /**< `mutable`            */
+#define TS_REGISTER           0x0000000000000102ull /**< `register`           */
+#define TS_STATIC             0x0000000000000202ull /**< `static`             */
+#define TS_THREAD_LOCAL       0x0000000000000402ull /**< `thread_local`       */
+#define TS_TYPEDEF            0x0000000000000802ull /**< `typedef`            */
 
 // storage-class-like
-#define T_CONSTEVAL           0x0000001000000000ull /**< `consteval`          */
-#define T_CONSTEXPR           0x0000002000000000ull /**< `constexpr`          */
-#define T_CONSTINIT           0x0000004000000000ull /**< `constinit`          */
-#define T_DEFAULT             0x0000008000000000ull /**< `= default`          */
-#define T_DELETE              0x0000010000000000ull /**< `= delete`           */
-#define T_EXPLICIT            0x0000020000000000ull /**< `explicit`           */
-#define T_EXPORT              0x0000040000000000ull /**< `expoty`             */
-#define T_FINAL               0x0000080000000000ull /**< `final`              */
-#define T_FRIEND              0x0000100000000000ull /**< `friend`             */
-#define T_INLINE              0x0000200000000000ull /**< `inline`             */
-#define T_NOEXCEPT            0x0000400000000000ull /**< `noexcept`           */
-#define T_OVERRIDE            0x0000800000000000ull /**< `override`           */
-#define T_PURE_VIRTUAL        0x0001000000000000ull /**< `= 0`                */
-#define T_THROW               0x0002000000000000ull /**< `throw()`            */
-#define T_VIRTUAL             0x0004000000000000ull /**< `virtual`            */
-
-// attributes
-#define T_CARRIES_DEPENDENCY  0x0008000000000000ull /**< `carries_dependency` */
-#define T_DEPRECATED          0x0010000000000000ull /**< `deprecated`         */
-#define T_MAYBE_UNUSED        0x0020000000000000ull /**< `maybe_unused`       */
-#define T_NODISCARD           0x0040000000000000ull /**< `nodiscard`          */
-#define T_NORETURN            0x0080000000000000ull /**< `noreturn`           */
-#define T_NO_UNIQUE_ADDRESS   0x0100000000000000ull /**< `no_unique_address`  */
+#define TS_CONSTEVAL          0x0000000000001002ull /**< `consteval`          */
+#define TS_CONSTEXPR          0x0000000000002002ull /**< `constexpr`          */
+#define TS_CONSTINIT          0x0000000000004002ull /**< `constinit`          */
+#define TS_DEFAULT            0x0000000000008002ull /**< `= default`          */
+#define TS_DELETE             0x0000000000010002ull /**< `= delete`           */
+#define TS_EXPLICIT           0x0000000000020002ull /**< `explicit`           */
+#define TS_EXPORT             0x0000000000040002ull /**< `export`             */
+#define TS_FINAL              0x0000000000080002ull /**< `final`              */
+#define TS_FRIEND             0x0000000000100002ull /**< `friend`             */
+#define TS_INLINE             0x0000000000200002ull /**< `inline`             */
+#define TS_NOEXCEPT           0x0000000000400002ull /**< `noexcept`           */
+#define TS_OVERRIDE           0x0000000000800002ull /**< `override`           */
+#define TS_PURE_VIRTUAL       0x0000000001000002ull /**< `= 0`                */
+#define TS_THROW              0x0000000002000002ull /**< `throw()`            */
+#define TS_VIRTUAL            0x0000000004000002ull /**< `virtual`            */
 
 // qualifiers
-#define T_ATOMIC              0x0200000000000000ull /**< `_Atomic`            */
-#define T_CONST               0x0400000000000000ull /**< `const`              */
-#define T_RESTRICT            0x0800000000000000ull /**< `restrict`           */
-#define T_VOLATILE            0x1000000000000000ull /**< `volatile`           */
+#define TS_ATOMIC             0x0000000008000002ull /**< `_Atomic`            */
+#define TS_CONST              0x0000000010000002ull /**< `const`              */
+#define TS_RESTRICT           0x0000000020000002ull /**< `restrict`           */
+#define TS_VOLATILE           0x0000000040000002ull /**< `volatile`           */
 
 // ref-qualifiers
-#define T_REFERENCE           0x2000000000000000ull /**< `void f() &`         */
-#define T_RVALUE_REFERENCE    0x4000000000000000ull /**< `void f() &&`        */
+#define TS_REFERENCE          0x0000000080000002ull /**< `void f() &`         */
+#define TS_RVALUE_REFERENCE   0x0000000100000002ull /**< `void f() &&`        */
+
+// attributes
+#define TA_NONE               0x0000000000000003ull /**< No attribute.        */
+#define TA_ANY                0xFFFFFFFFFFFFFFF3ull /**< Any attribute.       */
+#define TA_CARRIES_DEPENDENCY 0x0000000000000013ull /**< `carries_dependency` */
+#define TA_DEPRECATED         0x0000000000000023ull /**< `deprecated`         */
+#define TA_MAYBE_UNUSED       0x0000000000000043ull /**< `maybe_unused`       */
+#define TA_NODISCARD          0x0000000000000083ull /**< `nodiscard`          */
+#define TA_NORETURN           0x0000000000000103ull /**< `noreturn`           */
+#define TA_NO_UNIQUE_ADDRESS  0x0000000000000203ull /**< `no_unique_address`  */
 
 // bit masks
-#define T_MASK_TYPE           0x000000000FFFFFFFull /**< Type bitmask.        */
-#define T_MASK_STORAGE        0x0007FFFFF0000000ull /**< Storage bitmask.     */
-#define T_MASK_ATTRIBUTE      0x01F8000000000000ull /**< Attribute bitmask.   */
-#define T_MASK_QUALIFIER      0x1E00000000000000ull /**< Qualifier bitmask.   */
-#define T_MASK_REF_QUALIFIER  0x6000000000000000ull /**< Ref-qual bitmask.    */
+#define T_MASK_PART_ID        0x000000000000000Full /**< Type part ID bitmask.*/
+#define TS_MASK_STORAGE       0x0000000007FFFFF2ull /**< Storage bitmask.     */
+#define TS_MASK_QUALIFIER     0x0000000078000002ull /**< Qualifier bitmask.   */
+#define TS_MASK_REF_QUALIFIER 0x0000000180000002ull /**< Ref-qual bitmask.    */
+
+extern c_type_t const T_NONE;           ///< No type.
+extern c_type_t const T_ANY;            ///< All types.
 
 // shorthands
 
 /** Shorthand for any character type. */
-#define T_ANY_CHAR            ( T_CHAR | T_WCHAR_T \
-                              | T_CHAR8_T | T_CHAR16_T | T_CHAR32_T )
+#define TB_ANY_CHAR           ( TB_CHAR | TB_WCHAR_T \
+                              | TB_CHAR8_T | TB_CHAR16_T | TB_CHAR32_T )
 
 /** Shorthand for `class`, `struct`, or `union`. */
-#define T_ANY_CLASS           ( T_CLASS | T_STRUCT | T_UNION )
+#define TB_ANY_CLASS          ( TB_CLASS | TB_STRUCT | TB_UNION )
 
 /** Shorthand for any Embedded C type. */
-#define T_ANY_EMBC            ( T_EMBC_ACCUM | T_EMBC_FRACT )
+#define TB_ANY_EMC            ( TB_EMC_ACCUM | TB_EMC_FRACT )
 
 /** Shorthand for any floating-point type. */
-#define T_ANY_FLOAT           ( T_FLOAT | T_DOUBLE )
+#define TB_ANY_FLOAT          ( TB_FLOAT | TB_DOUBLE )
 
 /** Shorthand for an any modifier. */
-#define T_ANY_MODIFIER        ( T_SHORT | T_LONG | T_LONG_LONG | T_SIGNED \
-                              | T_UNSIGNED )
+#define TB_ANY_MODIFIER       ( TB_SHORT | TB_LONG | TB_LONG_LONG | TB_SIGNED \
+                              | TB_UNSIGNED )
+
+/** Shorthand for `class`, `struct`, `union`, or `namespace`. */
+#define TB_ANY_SCOPE          ( TB_ANY_CLASS | TB_NAMESPACE )
 
 /** Shorthand for any reference type. */
-#define T_ANY_REFERENCE       ( T_REFERENCE | T_RVALUE_REFERENCE )
-
-/** Shorthand for `class`, `struct`, `union`, or `namespace. */
-#define T_ANY_SCOPE           ( T_ANY_CLASS | T_NAMESPACE )
+#define TS_ANY_REFERENCE      ( TS_REFERENCE | TS_RVALUE_REFERENCE )
 
 /**
  * The only types that can be applied to constructors.
  *
- * @sa #T_CONSTRUCTOR_ONLY
- * @sa #T_FUNC_LIKE
+ * @sa #TS_CONSTRUCTOR_ONLY
+ * @sa #TS_FUNC_LIKE
  */
-#define T_CONSTRUCTOR         ( T_CONSTEXPR | T_EXPLICIT | T_FRIEND | T_INLINE \
-                              | T_NOEXCEPT | T_THROW )
+#define TS_CONSTRUCTOR        ( TS_CONSTEXPR | TS_EXPLICIT | TS_FRIEND \
+                              | TS_INLINE | TS_NOEXCEPT | TS_THROW )
 
 /**
  * The types that can apply only to constructors.
  *
- * @sa #T_CONSTRUCTOR
+ * @sa #TS_CONSTRUCTOR
  */
-#define T_CONSTRUCTOR_ONLY    T_EXPLICIT
+#define TS_CONSTRUCTOR_ONLY   TS_EXPLICIT
 
 /**
  * The only types that can be applied to function-like things (functions,
  * blocks, and operators).
  *
- * @sa #T_CONSTRUCTOR
- * @sa #T_NEW_DELETE_OPER
- * @sa #T_USER_DEF_CONV
+ * @sa #TS_CONSTRUCTOR
+ * @sa #TS_NEW_DELETE_OPER
+ * @sa #TS_USER_DEF_CONV
  */
-#define T_FUNC_LIKE          ~( T_AUTO_STORAGE | T_APPLE_BLOCK | T_MUTABLE \
-                              | T_REGISTER | T_THREAD_LOCAL )
+#define TS_FUNC_LIKE          ( TS_EXTERN | TS_STATIC | TS_TYPEDEF \
+                              | TS_CONSTEVAL | TS_CONSTEXPR | TS_DEFAULT \
+                              | TS_DELETE | TS_EXPLICIT | TS_EXPORT \
+                              | TS_FINAL | TS_FRIEND | TS_INLINE \
+                              | TS_NOEXCEPT | TS_OVERRIDE | TS_PURE_VIRTUAL \
+                              | TS_THROW | TS_VIRTUAL | TS_CONST \
+                              | TS_RESTRICT | TS_VOLATILE | TS_REFERENCE \
+                              | TS_RVALUE_REFERENCE )
 
 /**
  * The types that can apply only to member functions or operators.
  *
- * @sa #T_NONMEMBER_FUNC_ONLY
+ * @sa #TS_NONMEMBER_FUNC_ONLY
  */
-#define T_MEMBER_FUNC_ONLY    ( T_CONST | T_VOLATILE | T_DEFAULT | T_DELETE \
-                              | T_OVERRIDE | T_FINAL | T_VIRTUAL \
-                              | T_REFERENCE | T_RESTRICT | T_RVALUE_REFERENCE )
+#define TS_MEMBER_FUNC_ONLY   ( TS_CONST | TS_VOLATILE | TS_DEFAULT \
+                              | TS_DELETE | TS_OVERRIDE | TS_FINAL \
+                              | TS_VIRTUAL | TS_REFERENCE | TS_RESTRICT \
+                              | TS_RVALUE_REFERENCE )
 
 /**
  * The only types that can apply to operators new, new[], delete, & delete[].
  *
- * @sa #T_FUNC_LIKE
+ * @sa #TS_FUNC_LIKE
  */
-#define T_NEW_DELETE_OPER     ( T_EXTERN | T_FRIEND | T_NOEXCEPT | T_STATIC \
-                              | T_THROW )
+#define TS_NEW_DELETE_OPER    ( TS_EXTERN | TS_FRIEND | TS_NOEXCEPT \
+                              | TS_STATIC | TS_THROW )
 
 /**
  * The types that can apply only to non-member functions or operators.
  *
- * @sa T_MEMBER_FUNC_ONLY
+ * @sa TS_MEMBER_FUNC_ONLY
  */
-#define T_NONMEMBER_FUNC_ONLY T_FRIEND
+#define TS_NONMEMBER_FUNC_ONLY TS_FRIEND
 
 /**
  * The types that can apply to user-defined conversion operators.
  *
- * @sa #T_FUNC_LIKE
+ * @sa #TS_FUNC_LIKE
  */
-#define T_USER_DEF_CONV       ( T_CONST | T_CONSTEXPR | T_EXPLICIT | T_FINAL  \
-                              | T_FRIEND | T_INLINE | T_NOEXCEPT | T_OVERRIDE \
-                              | T_THROW | T_PURE_VIRTUAL | T_VIRTUAL)
+#define TS_USER_DEF_CONV      ( TS_CONST | TS_CONSTEXPR | TS_EXPLICIT \
+                              | TS_FINAL | TS_FRIEND | TS_INLINE \
+                              | TS_NOEXCEPT | TS_OVERRIDE | TS_THROW \
+                              | TS_PURE_VIRTUAL | TS_VIRTUAL)
 
 /**
  * Hexadecimal print conversion specifier for <code>\ref c_type_id_t</code>.
  */
 #define PRIX_C_TYPE_T         PRIX64
-
-////////// inline functions ///////////////////////////////////////////////////
-
-/**
- * Gets the `c_type_id_t` value referred to by \a data.
- *
- * @param data The data to get the `c_type_id_t` from.  May be NULL.
- * @return Returns said `c_type_id_t` or T_NONE if \a data is NULL.
- *
- * @sa c_type_id_data_new()
- */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
-c_type_id_t c_type_id_data_get( void const *data ) {
-#if SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP
-  return data != NULL ? *REINTERPRET_CAST( c_type_id_t const*, data ) : T_NONE;
-#else
-  return REINTERPRET_CAST( c_type_id_t, data );
-#endif /* SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP */
-}
-
-/**
- * Creates an opaque data handle for a `c_type_id_t`.
- * @note Callers _must_ eventually call c_type_id_data_free(void*) on the
- * returned value.
- *
- * @param type_id The `c_type_id_t` to use.
- * @return Returns said handle.
- *
- * @sa c_type_id_data_free()
- */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
-void* c_type_id_data_new( c_type_id_t type_id ) {
-#if SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP
-  c_type_id_t *const data = MALLOC( c_type_id_t, 1 );
-  *data = type_id;
-  return data;
-#else
-  return REINTERPRET_CAST( void*, type_id );
-#endif /* SIZEOF_C_TYPE_ID_T > SIZEOF_VOIDP */
-}
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -276,97 +357,426 @@ void* c_type_id_data_new( c_type_id_t type_id ) {
  * A special case has to be made for `long` to allow for `long long` yet not
  * allow for `long long long`.
  *
- * @param pdest_type_id A pointer to the <code>\ref c_type_id_t</code> to add
- * to.
- * @param new_type_id The <code>\ref c_type_id_t</code> to add.
- * @param new_loc The source location of \a new_type_id.
- * @return Returns `true` only if the type added successfully.
+ * @param dst_type The <code>\ref c_type</code> to add to.
+ * @param new_type The <code>\ref c_type</code> to add.
+ * @param new_loc The source location of \a new_type.
+ * @return Returns `true` only if \a new_type added successfully.
+ *
+ * @sa c_type_add_tid()
+ * @sa c_type_id_add(()
+ * @sa c_type_or_eq()
  */
 C_WARN_UNUSED_RESULT
-bool c_type_add( c_type_id_t *pdest_type_id, c_type_id_t new_type_id,
+bool c_type_add( c_type_t *dst_type, c_type_t const *new_type,
                  c_loc_t const *new_loc );
 
 /**
- * Checks that \a type_id is valid.
+ * Adds \a new_tid to \a dst_type.
  *
- * @param type_id The <code>\ref c_type_id_t</code> to check.
- * @return Returns the bitwise-or of the language(s) \a type_id is legal in.
+ * @param dst_type The <code>\ref c_type</code> to add to.
+ * @param new_tid The <code>\ref c_type_id_t</code> to add.
+ * @param new_loc The source location of \a new_tid.
+ * @return Returns `true` only if \a new_tid added successfully.
+ *
+ * @sa c_type_add()
  */
 C_WARN_UNUSED_RESULT
-c_lang_id_t c_type_check( c_type_id_t type_id );
+bool c_type_add_tid( c_type_t *dst_type, c_type_id_t new_tid,
+                     c_loc_t const *new_loc );
 
 /**
- * Duplicates the `c_type_id_t` referred to by \a data.
- * @note Callers _must_ eventually call c_type_id_data_free() on the
- * returned value.
+ * Checks that \a type is valid.
  *
- * @param data The `c_type_id_t` to duplicate.  May be NULL.
+ * @param type The <code>\ref c_type</code> to check.
+ * @return Returns the bitwise-or of the language(s) \a type is legal in.
+ */
+C_WARN_UNUSED_RESULT
+c_lang_id_t c_type_check( c_type_t const *type );
+
+/**
+ * Duplicates the <code>\ref c_type</code> referred to by \a data.
+ * @note Callers _must_ eventually call c_type_data_free() on the returned
+ * value.
+ *
+ * @param data The <code>\ref c_type</code> to duplicate.  May be NULL.
  * @return Returns a duplicate of the data.
  *
- * @sa c_type_id_data_free()
+ * @sa c_type_data_free()
  */
 C_WARN_UNUSED_RESULT
-void* c_type_id_data_dup( void const *data );
+void* c_type_data_dup( void const *data );
 
 /**
- * Frees the `c_type_id_t` referred to by \a data.
+ * Frees the <code>\ref c_type_id_t</code> referred to by \a data.
  * @note For platforms with 64-bit pointers, this is a no-op.
  *
  * @param data The data to free.
  *
- * @sa c_type_id_data_new()
+ * @sa c_type_data_new()
  */
-void c_type_id_data_free( void *data );
+void c_type_data_free( void *data );
 
 /**
- * Checks if \a type_id is equivalent to `size_t`.
+ * Adds a type to an existing type, e.g., `short` to `int`, ensuring that a
+ * particular type is never added more than once, e.g., `short` to `short int`.
+ *
+ * A special case has to be made for `long` to allow for `long long` yet not
+ * allow for `long long long`.
+ *
+ * @param dst_tid The <code>\ref c_type_id_t</code> to add to.
+ * @param new_tid The <code>\ref c_type_id_t</code> to add.
+ * @param new_loc The source location of \a new_id.
+ * @return Returns `true` only if the type added successfully.
+ *
+ * @sa c_type_add(()
+ */
+C_WARN_UNUSED_RESULT
+bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
+                    c_loc_t const *new_loc );
+
+/**
+ * Performs the bitwise-and of all the parts of \a i_type and \a j_type.
+ *
+ * @param i_type The first <code>\ref c_type</code>.
+ * @param j_type The second <code>\ref c_type</code>.
+ * @return Returns the resultant <code>\ref c_type</code>.
+ *
+ * @sa c_type_and_eq_compl()
+ * @sa c_type_or()
+ */
+C_WARN_UNUSED_RESULT
+c_type_t c_type_and( c_type_t const *i_type, c_type_t const *j_type );
+
+/**
+ * Performs the bitwise-and of all the parts of \a dst_type with the complement
+ * of \a rm_type and stores the result in \a dst_type.
+ *
+ * @param dst_type The type to modify.
+ * @param rm_type The type to remove from \a dst_type.
+ *
+ * @sa c_type_or_eq()
+ */
+void c_type_and_eq_compl( c_type_t *dst_type, c_type_t const *rm_type );
+
+/**
+ * Checks whether \a i_type and \a j_type are equal.
+ *
+ * @param i_type The first <code>\ref c_type</code>.
+ * @param j_type The second <code>\ref c_type</code>.
+ * @return Returns `true` only if \a i_type equals \a j_type.
+ *
+ * @sa c_type_is_none()
+ */
+C_WARN_UNUSED_RESULT
+bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type );
+
+/**
+ * Gets a pointer to the <code>\ref c_type_id_t</code> of \a type that
+ * corresponds to the part of \a tid.
+ *
+ * @param type The <code>\ref c_type</code> to get a pointer to the <code>\ref
+ * c_type_id_t</code> of.
+ * @param tid The <code>\ref c_type_id_t</code> that specifies the part of \a
+ * type to get the pointer to.
+ * @return Returns a pointer to the corresponding <code>\ref c_type_id_t</code>
+ * of \a type for the part of \a tid.
+ */
+C_WARN_UNUSED_RESULT
+c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid );
+
+/**
+ * Gets the name of \a tid.
+ *
+ * @param tid The <code>\ref c_type_id_t</code> to get the name of.
+ * @return Returns said name.
+ * @warning The pointer returned is to a small number of static buffers, so you
+ * can't do something like call this more than twice in the same `printf()`
+ * statement.
+ *
+ * @sa c_type_id_name_error()
+ * @sa c_type_name()
+ */
+C_WARN_UNUSED_RESULT
+char const* c_type_id_name( c_type_id_t tid );
+
+/**
+ * Gets the name of \a tid for part of an error message.  If translating from
+ * English to gibberish and the type has an English alias, return the alias,
+ * e.g., `non-returning` rather than `noreturn`.
+ *
+ * @param tid The <code>\ref c_type_id_t</code> to get the name of.
+ * @return Returns said name.
+ * @warning The pointer returned is to a small number of static buffers, so you
+ * can't do something like call this more than twice in the same `printf()`
+ * statement.
+ *
+ * @sa c_type_id_name()
+ * @sa c_type_name_error()
+ */
+C_WARN_UNUSED_RESULT
+char const* c_type_id_name_error( c_type_id_t tid );
+
+/**
+ * "Normalize" \a tid:
+ *
+ *  1. If it's #TB_SIGNED and not #TB_CHAR, remove #TB_SIGNED.
+ *  2. If it becomes #TB_NONE, add #TB_INT.
+ *
+ * @param tid The type to normalize.
+ * @return Returns the normalized type.
+ */
+C_WARN_UNUSED_RESULT
+c_type_id_t c_type_id_normalize( c_type_id_t tid );
+
+/**
+ * Checks whether any bits of \a i_type intersects those of \a j_type.
+ *
+ * @param i_type The first <code>\ref c_type</code>.
+ * @param j_type The second <code>\ref c_type</code>.
+ * @return Returns `true` only if any bits of \a i_type intersects with \a
+ * j_type.
+ */
+C_WARN_UNUSED_RESULT
+bool c_type_intersects( c_type_t const *i_type, c_type_t const *j_type );
+
+/**
+ * Checks whether \a type is TG_NONE.
+ *
+ * @param type The <code>\ref c_type</code> to check.
+ * @return Returns `true` only if \a type is none.
+ *
+ * @sa c_type_equal()
+ */
+C_TYPE_INLINE C_WARN_UNUSED_RESULT
+bool c_type_is_none( c_type_t const *type ) {
+  return c_type_equal( type, &T_NONE );
+}
+
+/**
+ * Gets the name of \a type.
+ *
+ * @param type The <code>\ref c_type</code> to get the name of.
+ * @return Returns said name.
+ * @warning The pointer returned is to a small number of static buffers, so you
+ * can't do something like call this more than twice in the same `printf()`
+ * statement.
+ *
+ * @sa c_type_id_name()
+ * @sa c_type_name_error()
+ */
+C_WARN_UNUSED_RESULT
+char const* c_type_name( c_type_t const *type );
+
+/**
+ * Gets the name of \a type for part of an error message.  If translating
+ * from English to gibberish and the type has an English alias, return the
+ * alias, e.g., `non-returning` rather than `noreturn`.
+ *
+ * @param type The <code>\ref c_type</code> to get the name of.
+ * @return Returns said name.
+ * @warning The pointer returned is to a small number of static buffers, so you
+ * can't do something like call this more than twice in the same `printf()`
+ * statement.
+ *
+ * @sa c_type_id_name_error()
+ * @sa c_type_name()
+ */
+C_WARN_UNUSED_RESULT
+char const* c_type_name_error( c_type_t const *type );
+
+/**
+ * Performs the bitwise-or of \a i_type and \a j_type.
+ *
+ * @param i_type The first type.
+ * @param j_type The second type.
+ * @return Returns the bitwise-or of \a i_type and \a j_type.
+ *
+ * @sa c_type_and()
+ * @sa c_type_and_eq_compl();
+ * @sa c_type_or_eq()
+ */
+C_WARN_UNUSED_RESULT
+c_type_t c_type_or( c_type_t const *i_type, c_type_t const *j_type );
+
+/**
+ * Performs the bitwise-or or all the parts of \a dst_type with \a add_type and
+ * stores the result in \a dst_type.
+ * @note Unlike c_type_add(), no checks are made.
+ *
+ * @param dst_type The type to modify.
+ * @param add_type The source type.
+ *
+ * @sa c_type_add()
+ * @sa c_type_and_eq_compl()
+ * @sa c_type_or()
+ */
+void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type );
+
+////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Gets the <code>\ref c_type_id_t</code> of \a type that corresponds to the
+ * part of \a tid.
+ *
+ * @param type The <code>\ref c_type</code> to get the <code>\ref
+ * c_type_id_t</code> of.
+ * @param tid The <code>\ref c_type_id_t</code> whose part ID specifies which
+ * <code>\ref c_type_id_t</code> of \a type to get.
+ * @return Returns the corresponding <code>\ref c_type_id_t</code> of \a type
+ * for the part of \a tid.
+ */
+C_TYPE_INLINE C_WARN_UNUSED_RESULT
+c_type_id_t c_type_get_tid( c_type_t const *type, c_type_id_t tid ) {
+  return *c_type_get_tid_ptr( CONST_CAST( c_type_t*, type ), tid );
+}
+
+/**
+ * Checks whether \a tid has been complemented via `~`.
+ *
+ * @param tid The <code>\ref c_type_id_t</code> to check.
+ * @return Returns `true` only if \a tid has been complemented.
+ */
+C_TYPE_INLINE C_WARN_UNUSED_RESULT
+bool c_type_id_is_compl( c_type_id_t tid ) {
+  //
+  // The low-order 4 bits specify the c_type_part_id.  Currently, part IDs are
+  // 0 (0b0000), 1 (0b0001), and 2 (0b0010).  If tid is 0b1xxx, it means that
+  // it was complemented.
+  //
+  return (tid & 0x8) != 0;
+}
+
+/**
+ * Bitwise-complements \a tid.  The `~` operator can't be used alone because
+ * the part ID of \a tid would be complemented also.  This function
+ * complements \a tid while preserving the original part ID.
+ *
+ * @param tid The <code>\ref c_type_id_t</code> to complement.
+ * @return Returns \a tid complemented.
+ */
+C_TYPE_INLINE C_WARN_UNUSED_RESULT
+c_type_id_t c_type_id_compl( c_type_id_t tid ) {
+  assert( !c_type_id_is_compl( tid ) );
+  return ~tid ^ T_MASK_PART_ID;
+}
+
+/**
+ * Gets the type ID value without the part ID.
+ *
+ * @param tid The <code>\ref c_type_id_t</code> to get the value of.
+ * @return Returns the type ID value without the part ID.
+ */
+C_TYPE_INLINE C_WARN_UNUSED_RESULT
+c_type_id_t c_type_id_no_part( c_type_id_t tid ) {
+  return tid & ~T_MASK_PART_ID;
+}
+
+/**
+ * Gets the `c_type_part_id_t` from \a tid.
+ *
+ * @param tid The type ID.
+ * @return Returns said `c_type_part_id_t`.
+ */
+C_TYPE_INLINE C_WARN_UNUSED_RESULT
+c_type_part_id_t c_type_id_part_id( c_type_id_t tid ) {
+  //
+  // If tid has been complemented, e.g., ~TS_REGISTER to denote "all but
+  // register," then we have to complement tid back first.
+  //
+  if ( c_type_id_is_compl( tid ) )
+    tid = ~tid;
+  tid &= T_MASK_PART_ID;
+  assert( tid <= TPID_ATTR );
+  return STATIC_CAST( c_type_part_id_t, tid );
+}
+
+/**
+ * Gets whether the two <code>\ref c_type_id_t</code>s intersect.
+ *
+ * @param i_tid The first <code>\ref c_type_id_t</code>.
+ * @param j_tid The second <code>\ref c_type_id_t</code>.
+ * @return Returns `true` only if \a i_tid intersects \a j_tid.
+ */
+C_WARN_UNUSED_RESULT C_TYPE_INLINE
+bool c_type_id_intersects( c_type_id_t i_tid, c_type_id_t j_tid ) {
+  assert( c_type_id_part_id( i_tid ) == c_type_id_part_id( j_tid ) );
+  return c_type_id_no_part( i_tid & j_tid ) != 0;
+}
+
+/**
+ * Checks whether \a tid is "none."
+ *
+ * @note This function is useful only when the part ID of \a tid can be any
+ * part ID.
+ * @param tid The <code>\ref c_type_id_t</code> to check.
+ * @return Returns `true` only if \a tid is `Tx_NONE`.
+ *
+ * @sa c_type_is_none()
+ */
+C_TYPE_INLINE C_WARN_UNUSED_RESULT
+bool c_type_id_is_none( c_type_id_t tid ) {
+  return c_type_id_no_part( tid ) == 0;
+}
+
+/**
+ * Checks if \a tid is equivalent to `size_t`.
  *
  * @note
  * In cdecl, `size_t` is `typedef`d to be `unsigned long` in `c_typedef.c`.
  *
- * @param type_id The <code>\ref c_type_id_t</code> to check.
- * @return Returns `true` only if \a type_id is `size_t`.
+ * @param tid The <code>\ref c_type_id_t</code> to check.
+ * @return Returns `true` only if \a tid is `size_t`.
  */
 C_TYPE_INLINE C_WARN_UNUSED_RESULT
-bool c_type_is_size_t( c_type_id_t type_id ) {
-  return ((type_id & ~T_INT) & (T_UNSIGNED | T_LONG)) == (T_UNSIGNED | T_LONG);
+bool c_type_id_is_size_t( c_type_id_t tid ) {
+  assert( (tid & T_MASK_PART_ID) == TPID_BASE );
+  return ((tid & c_type_id_compl( TB_INT )) & (TB_UNSIGNED | TB_LONG)) == (TB_UNSIGNED | TB_LONG);
 }
 
 /**
- * Gets the name of \a type_id.
+ * Gets the <code>\ref c_type</code> referred to by \a data.
  *
- * @param type_id The <code>\ref c_type_id_t</code> to get the name of.
- * @return Returns said name.
- * @warning The pointer returned is to a static buffer, so you can't do
- * something like call this twice in the same `printf()` statement.
+ * @param data The data to get the <code>\ref c_type</code> from.  May be NULL.
+ * @return Returns said <code>\ref c_type</code> or NULL if \a data is NULL.
+ *
+ * @sa c_type_data_new()
  */
-C_WARN_UNUSED_RESULT
-char const* c_type_name( c_type_id_t type_id );
+C_TYPE_INLINE C_WARN_UNUSED_RESULT
+c_type_t const* c_type_data_get( void const *data ) {
+  return data != NULL ? REINTERPRET_CAST( c_type_t const*, data ) : NULL;
+}
 
 /**
- * Gets the name of \a type_id for part of an error message.  If translating
- * from English to gibberish and the type has an English alias, return the
- * alias, e.g., `non-returning` rather than `noreturn`.
+ * Creates an opaque data handle for a <code>\ref c_type</code>.
+ * @note Callers _must_ eventually call c_type_data_free(void*) on the
+ * returned value.
  *
- * @param type_id The <code>\ref c_type_id_t</code> to get the name of.
- * @return Returns said name.
- * @warning The pointer returned is to a static buffer, so you can't do
- * something like call this twice in the same `printf()` statement.
+ * @param type The <code>\ref c_type</code> to use.
+ * @return Returns said handle.
+ *
+ * @sa c_type_data_free()
  */
-C_WARN_UNUSED_RESULT
-char const* c_type_name_error( c_type_id_t type_id );
+C_TYPE_INLINE C_WARN_UNUSED_RESULT
+void* c_type_data_new( c_type_t const *type ) {
+  c_type_t *const new_type = MALLOC( c_type_t, 1 );
+  *new_type = *type;
+  return new_type;
+}
 
 /**
- * "Normalize" \a type_id:
+ * Checks whether the relevant <code>\ref c_type_id_t</code> of \a type is any
+ * of \a tids.
  *
- *  1. If it's #T_SIGNED and not #T_CHAR, remove #T_SIGNED.
- *  2. If it becomes #T_NONE, add #T_INT.
- *
- * @param type_id The type to normalize.
- * @return Returns the normalized type.
+ * @param type The <code>\ref c_type</code> to check.
+ * @param tids The <code>\ref c_type_id_t</code> to check against.
+ * @return Returns `true` only if the relevant <code>\ref c_type_id_t</code> of
+ * \a type contains any of \a tids.
  */
-C_WARN_UNUSED_RESULT
-c_type_id_t c_type_normalize( c_type_id_t type_id );
+C_TYPE_INLINE C_WARN_UNUSED_RESULT
+bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids ) {
+  c_type_id_t const tid = c_type_get_tid( type, tids );
+  return c_type_id_intersects( tid, tids );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 

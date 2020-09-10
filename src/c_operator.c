@@ -173,9 +173,9 @@ unsigned c_oper_get_overload( c_ast_t const *ast ) {
   // The user didn't specify either member or non-member explicitly: see if it
   // has a member-only or non-member-only type qualifier.
   //
-  if ( (ast->type_id & T_MEMBER_FUNC_ONLY) != T_NONE )
+  if ( c_type_is_tid_any( &ast->type, TS_MEMBER_FUNC_ONLY ) )
     return C_OP_MEMBER;
-  if ( (ast->type_id & T_NONMEMBER_FUNC_ONLY) != T_NONE )
+  if ( c_type_is_tid_any( &ast->type, TS_NONMEMBER_FUNC_ONLY ) )
     return C_OP_NON_MEMBER;
 
   //
@@ -187,7 +187,8 @@ unsigned c_oper_get_overload( c_ast_t const *ast ) {
     case C_OP_NEW_ARRAY:
     case C_OP_DELETE:
     case C_OP_DELETE_ARRAY:
-      return !c_ast_sname_empty( ast ) || (ast->type_id & T_STATIC) != T_NONE ?
+      return  !c_ast_sname_empty( ast ) ||
+              c_type_is_tid_any( &ast->type, TS_STATIC ) ?
         C_OP_MEMBER : C_OP_NON_MEMBER;
     default:
       /* suppress warning */;

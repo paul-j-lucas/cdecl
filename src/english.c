@@ -44,7 +44,7 @@
 C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_english( c_ast_t*, void* );
 
-static void non_type_name( c_type_id_t, FILE* );
+static void non_type_name( c_type_t const*, FILE* );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -117,12 +117,13 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
   switch ( ast->kind_id ) {
     case K_ARRAY:
-      non_type_name( ast->type_id, eout );
+      non_type_name( &ast->type, eout );
       if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE )
         FPRINTF( eout, "%s %s ", L_VARIABLE, L_LENGTH );
       FPRINTF( eout, "%s ", L_ARRAY );
-      if ( ast->as.array.type_id != T_NONE )
-        FPRINTF( eout, "%s ", c_type_name( ast->as.array.type_id ) );
+      if ( ast->as.array.store_tid != TS_NONE ) {
+        FPRINTF( eout, "%s ", c_type_id_name( ast->as.array.store_tid ) );
+      }
       if ( ast->as.array.size >= 0 )
         FPRINTF( eout, "%d ", ast->as.array.size );
       FPRINTF( eout, "%s ", L_OF );
@@ -134,10 +135,10 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
-      non_type_name( ast->type_id, eout );
+      non_type_name( &ast->type, eout );
       switch ( ast->kind_id ) {
         case K_FUNCTION:
-          if ( (ast->type_id & T_MEMBER_FUNC_ONLY) != T_NONE )
+          if ( c_type_is_tid_any( &ast->type, TS_MEMBER_FUNC_ONLY ) )
             FPRINTF( eout, "%s ", L_MEMBER );
           break;
         case K_OPERATOR: {
@@ -164,11 +165,11 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name( ast->type_id ), eout );
+      FPUTS( c_type_name( &ast->type ), eout );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      FPRINTF( eout, "%s ", c_type_name( ast->type_id ) );
+      FPRINTF( eout, "%s ", c_type_name( &ast->type ) );
       c_sname_english( &ast->as.ecsu.ecsu_sname, eout );
       break;
 
@@ -186,14 +187,14 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      non_type_name( ast->type_id, eout );
+      non_type_name( &ast->type, eout );
       FPRINTF( eout, "%s %s ", c_kind_name( ast->kind_id ), L_TO );
       break;
 
     case K_POINTER_TO_MEMBER: {
-      non_type_name( ast->type_id, eout );
+      non_type_name( &ast->type, eout );
       FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
-      char const *const name = c_type_name( ast->type_id & T_MASK_TYPE );
+      char const *const name = c_type_id_name( ast->type.base_tid );
       FPRINTF( eout, "%s%s", SP_AFTER( name ) );
       c_sname_english( &ast->as.ptr_mbr.class_sname, eout );
       FPUTC( ' ', eout );
@@ -201,13 +202,13 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     }
 
     case K_TYPEDEF:
-      if ( ast->type_id != T_TYPEDEF_TYPE )
-        FPRINTF( eout, "%s ", c_type_name( ast->type_id ) );
+      if ( !c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) ) )
+        FPRINTF( eout, "%s ", c_type_name( &ast->type ) );
       c_sname_english( &ast->as.c_typedef->ast->sname, eout );
       break;
 
     case K_USER_DEF_CONVERSION: {
-      char const *const name = c_type_name( ast->type_id );
+      char const *const name = c_type_name( &ast->type );
       FPRINTF( eout, "%s%s%s", SP_AFTER( name ), c_kind_name( ast->kind_id ) );
       if ( !c_ast_sname_empty( ast ) ) {
         FPRINTF( eout,
@@ -247,15 +248,16 @@ static void c_sname_english_impl( c_scope_t const *scope, FILE *eout ) {
 
 /**
  * Prints the non-type (attribute(s), storage class, qualifier(s), etc.) parts
- * of \a type_id, if any.
+ * of \a type, if any.
  *
- * @param type_id The type to perhaps print.
+ * @param type The type to perhaps print.
  * @param eout The `FILE` to emit to.
  */
-static void non_type_name( c_type_id_t type_id, FILE *eout ) {
-  type_id &= ~T_MASK_TYPE;
-  if ( type_id != T_NONE )
-    FPRINTF( eout, "%s ", c_type_name( type_id ) );
+static void non_type_name( c_type_t const *type, FILE *eout ) {
+  assert( type != NULL );
+  c_type_t const temp_type = { TB_NONE, type->store_tid, type->attr_tid };
+  if ( !c_type_is_none( &temp_type ) )
+    FPRINTF( eout, "%s ", c_type_name( &temp_type ) );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

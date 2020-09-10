@@ -273,17 +273,17 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
                           { LANG_ALL,   L_VOLATILE       } } ) },
 
   // Embedded C extensions
-  { L_EMBC_ACCUM,     C_SYN( true,
-                        { { LANG_C_99, L_EMBC__ACCUM },
+  { L_EMC_ACCUM,      C_SYN( true,
+                        { { LANG_C_99, L_EMC__ACCUM },
                           { LANG_ALL,  NULL          } } ) },
-  { L_EMBC_FRACT,     C_SYN( true,
-                        { { LANG_C_99, L_EMBC__FRACT },
+  { L_EMC_FRACT,      C_SYN( true,
+                        { { LANG_C_99, L_EMC__FRACT },
                           { LANG_ALL,  NULL          } } ) },
-  { L_EMBC_SAT,       C_SYN( false,
-                        { { LANG_C_99, L_EMBC__SAT },
+  { L_EMC_SAT,        C_SYN( false,
+                        { { LANG_C_99, L_EMC__SAT },
                           { LANG_ALL,  NULL        } } ) },
-  { L_EMBC_SATURATED, C_SYN( true,
-                        { { LANG_C_99, L_EMBC__SAT },
+  { L_EMC_SATURATED,  C_SYN( true,
+                        { { LANG_C_99, L_EMC__SAT },
                           { LANG_ALL,  NULL        } } ) },
 
   { NULL,             TOKEN( 0                    ) }

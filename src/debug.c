@@ -121,7 +121,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
     INDENT_PRINT(
       "loc = %d-%d,\n", ast->loc.first_column, ast->loc.last_column
     );
-    INDENT_PRINT_TYPE( ast->type_id );
+    INDENT_PRINT_TYPE( &ast->type );
 
     bool comma = false;
 
@@ -149,8 +149,9 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
             FPRINTF( dout, "%d", ast->as.array.size );
         } // switch
         FPUTS( ",\n", dout );
-        if ( ast->as.array.type_id != T_NONE ) {
-          INDENT_PRINT_TYPE( ast->as.array.type_id );
+        if ( ast->as.array.store_tid != TS_NONE ) {
+          c_type_t const type = C_TYPE_LIT_S( ast->as.array.store_tid );
+          INDENT_PRINT_TYPE( &type );
           FPUTS( ",\n", dout );
         }
         c_ast_debug( ast->as.array.of_ast, indent, "of_ast", dout );
@@ -245,17 +246,27 @@ void c_sname_debug( c_sname_t const *sname, FILE *dout ) {
           scope = scope->next ) {
       if ( true_or_set( &comma ) )
         FPUTS( "::", dout );
-      c_type_id_t const t = c_scope_type( scope );
-      FPUTS( t != T_NONE ? c_type_name( t ) : "none", dout );
+      c_type_t const *const scope_ts = c_scope_type( scope );
+      FPUTS(
+        c_type_is_none( scope_ts ) ? "none" : c_type_name( scope_ts ),
+        dout
+      );
     } // for
     FPUTC( ')', dout );
   }
 }
 
-void c_type_debug( c_type_id_t type_id, FILE *dout ) {
+void c_type_id_debug( c_type_id_t tid, FILE *dout ) {
+  FPRINTF( dout, "\"%s\" (0x%" PRIX_C_TYPE_T ")", c_type_id_name( tid ), tid );
+}
+
+void c_type_debug( c_type_t const *type, FILE *dout ) {
   FPRINTF( dout,
-    "\"%s\" (0x%" PRIX_C_TYPE_T ")",
-    c_type_name( type_id ), type_id
+    "\"%s\" "
+    "(0x%" PRIX_C_TYPE_T
+    ",0x%" PRIX_C_TYPE_T
+    ",0x%" PRIX_C_TYPE_T ")",
+    c_type_name( type ), type->base_tid, type->store_tid, type->attr_tid
   );
 }
 

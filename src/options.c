@@ -90,7 +90,7 @@ FILE               *fout;
  * @sa parse_opt_explicit_int()
  * @sa set_opt_explicit_int()
  */
-static c_type_id_t  opt_explicit_int[2];
+static c_type_id_t  opt_explicit_int[] = { TB_NONE, TB_NONE };
 
 /**
  * Long options.
@@ -162,18 +162,19 @@ static void         usage( void );
 
 /**
  * Sets the given integer type(s) that `int` shall print explicitly for in
- * C/C++ declarations even when not needed because \a type_id contains at least
- * one integer modifier, e.g., `unsigned`.
+ * C/C++ declarations even when not needed because \a tid contains at least one
+ * integer modifier, e.g., `unsigned`.
  *
- * @param type_id The type(s) to print `int` explicitly for.  When multiple
- * type bits are set simultaneously, they are all considered either signed or
+ * @param tid The type(s) to print `int` explicitly for.  When multiple type
+ * bits are set simultaneously, they are all considered either signed or
  * unsigned.
  *
  * @sa is_explicit_int()
  */
-static inline void set_opt_explicit_int( c_type_id_t type_id ) {
-  bool const is_unsigned = (type_id & T_UNSIGNED) != T_NONE;
-  opt_explicit_int[ is_unsigned ] |= type_id & ~T_UNSIGNED;
+static inline void set_opt_explicit_int( c_type_id_t tid ) {
+  assert( c_type_id_part_id( tid ) == TPID_BASE );
+  bool const is_unsigned = (tid & TB_UNSIGNED) != TB_NONE;
+  opt_explicit_int[ is_unsigned ] |= tid & c_type_id_compl( TB_UNSIGNED );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -469,67 +470,69 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n"
 ////////// extern functions ///////////////////////////////////////////////////
 
 bool any_explicit_int( void ) {
-  return opt_explicit_int[0] != T_NONE || opt_explicit_int[1] != T_NONE;
+  return opt_explicit_int[0] != TB_NONE || opt_explicit_int[1] != TB_NONE;
 }
 
-bool is_explicit_int( c_type_id_t type_id ) {
-  if ( type_id == T_UNSIGNED ) {
+bool is_explicit_int( c_type_id_t tid ) {
+  assert( c_type_id_part_id( tid ) == TPID_BASE );
+
+  if ( tid == TB_UNSIGNED ) {
     //
     // Special case: "unsigned" by itself means "unsigned int."
     //
-    type_id |= T_INT;
+    tid |= TB_INT;
   }
-  else if ( (type_id & T_LONG_LONG) != T_NONE ) {
+  else if ( (tid & TB_LONG_LONG) != TB_NONE ) {
     //
-    // Special case: for long long, its type is always combined with T_LONG,
+    // Special case: for long long, its type is always combined with TB_LONG,
     // i.e., two bits are set.  Therefore, to check for explicit int for long
-    // long, we first have to turn off the T_LONG bit.
+    // long, we first have to turn off the TB_LONG bit.
     //
-    type_id &= ~T_LONG;
+    tid &= c_type_id_compl( TB_LONG );
   }
-  bool const is_unsigned = (type_id & T_UNSIGNED) != T_NONE;
-  type_id &= ~T_UNSIGNED;
-  return (type_id & opt_explicit_int[ is_unsigned ]) != T_NONE;
+  bool const is_unsigned = (tid & TB_UNSIGNED) != TB_NONE;
+  tid &= c_type_id_compl( TB_UNSIGNED );
+  return (tid & opt_explicit_int[ is_unsigned ]) != TB_NONE;
 }
 
 void parse_opt_explicit_int( c_loc_t const *loc, char const *s ) {
   assert( s != NULL );
 
   char opt_buf[ OPT_BUF_SIZE ];
-  c_type_id_t type_id = T_NONE;
+  c_type_id_t tid = TB_NONE;
 
   for ( ; *s != '\0'; ++s ) {
     switch ( *s ) {
       case 'i':
       case 'I':
-        if ( (type_id & T_UNSIGNED) == T_NONE ) {
+        if ( (tid & TB_UNSIGNED) == TB_NONE ) {
           // If only 'i' is specified, it means all signed integer types shall
           // be explicit.
-          type_id |= T_SHORT | T_INT | T_LONG | T_LONG_LONG;
+          tid |= TB_SHORT | TB_INT | TB_LONG | TB_LONG_LONG;
         } else {
-          type_id |= T_INT;
+          tid |= TB_INT;
         }
         break;
       case 'l':
       case 'L':
         if ( s[1] == 'l' || s[1] == 'L' ) {
-          type_id |= T_LONG_LONG;
+          tid |= TB_LONG_LONG;
           ++s;
         } else {
-          type_id |= T_LONG;
+          tid |= TB_LONG;
         }
         break;
       case 's':
       case 'S':
-        type_id |= T_SHORT;
+        tid |= TB_SHORT;
         break;
       case 'u':
       case 'U':
-        type_id |= T_UNSIGNED;
+        tid |= TB_UNSIGNED;
         if ( s[1] == '\0' || s[1] == ',' ) {
           // If only 'u' is specified, it means all unsigned integer types
           // shall be explicit.
-          type_id |= T_SHORT | T_INT | T_LONG | T_LONG_LONG;
+          tid |= TB_SHORT | TB_INT | TB_LONG | TB_LONG_LONG;
           break;
         }
         continue;
@@ -549,21 +552,21 @@ void parse_opt_explicit_int( c_loc_t const *loc, char const *s ) {
         );
         return;
     } // switch
-    set_opt_explicit_int( type_id );
-    type_id = T_NONE;
+    set_opt_explicit_int( tid );
+    tid = TB_NONE;
   } // for
 }
 
 void print_opt_explicit_int( void ) {
-  bool const is_explicit_s   = is_explicit_int( T_SHORT );
-  bool const is_explicit_i   = is_explicit_int( T_INT );
-  bool const is_explicit_l   = is_explicit_int( T_LONG );
-  bool const is_explicit_ll  = is_explicit_int( T_LONG_LONG );
+  bool const is_explicit_s   = is_explicit_int( TB_SHORT );
+  bool const is_explicit_i   = is_explicit_int( TB_INT );
+  bool const is_explicit_l   = is_explicit_int( TB_LONG );
+  bool const is_explicit_ll  = is_explicit_int( TB_LONG_LONG );
 
-  bool const is_explicit_us  = is_explicit_int( T_UNSIGNED | T_SHORT );
-  bool const is_explicit_ui  = is_explicit_int( T_UNSIGNED | T_INT );
-  bool const is_explicit_ul  = is_explicit_int( T_UNSIGNED | T_LONG );
-  bool const is_explicit_ull = is_explicit_int( T_UNSIGNED | T_LONG_LONG );
+  bool const is_explicit_us  = is_explicit_int( TB_UNSIGNED | TB_SHORT );
+  bool const is_explicit_ui  = is_explicit_int( TB_UNSIGNED | TB_INT );
+  bool const is_explicit_ul  = is_explicit_int( TB_UNSIGNED | TB_LONG );
+  bool const is_explicit_ull = is_explicit_int( TB_UNSIGNED | TB_LONG_LONG );
 
   if ( is_explicit_s & is_explicit_i && is_explicit_l && is_explicit_ll ) {
     PUTC_OUT( 'i' );

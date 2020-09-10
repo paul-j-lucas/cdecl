@@ -225,8 +225,8 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
 }
 
 /**
- * Takes the storage type, if any, away from \a ast
- * (with the intent of giving it to another AST).
+ * Takes the storage (and attributes), if any, away from \a ast
+ * (with the intent of giving them to another AST).
  * This is used is cases like:
  * @code
  *  explain static int f()
@@ -242,20 +242,22 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
  * i.e., the `static` has to be taken away from `int` and given to the function
  * because it's the function that's `static`, not the `int`.
  *
- * @param ast The AST to take trom.
- * @return Returns said storage class or <code>\ref T_NONE</code>.
+ * @param ast The AST to take from.
+ * @return Returns said storage (and attributes) or <code>\ref T_NONE</code>.
  */
 C_WARN_UNUSED_RESULT
-static c_type_id_t c_ast_take_storage( c_ast_t *ast ) {
+static c_type_t c_ast_take_storage( c_ast_t *ast ) {
   assert( ast != NULL );
-  c_type_id_t storage_type_id = T_NONE;
+  c_type_t rv_type = T_NONE;
   c_ast_t *const found_ast =
     c_ast_find_kind_any( ast, C_VISIT_DOWN, K_BUILTIN | K_TYPEDEF );
   if ( found_ast != NULL ) {
-    storage_type_id = found_ast->type_id & (T_MASK_ATTRIBUTE | T_MASK_STORAGE);
-    found_ast->type_id &= ~(T_MASK_ATTRIBUTE | T_MASK_STORAGE);
+    rv_type.store_tid = found_ast->type.store_tid & TS_MASK_STORAGE;
+    rv_type.attr_tid = found_ast->type.attr_tid;
+    found_ast->type.store_tid &= c_type_id_compl( TS_MASK_STORAGE );
+    found_ast->type.attr_tid = TA_NONE;
   }
-  return storage_type_id;
+  return rv_type;
 }
 
 /**
@@ -296,8 +298,8 @@ static bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
 C_WARN_UNUSED_RESULT
 static bool c_ast_vistor_type_any( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  c_type_id_t const type_id = c_type_id_data_get( data );
-  return (ast->type_id & type_id) != T_NONE;
+  c_type_t const *const type = c_type_data_get( data );
+  return c_type_intersects( &ast->type, type );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -306,7 +308,9 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast ) {
   assert( ast != NULL );
   c_ast_t *const rv_ast = c_ast_add_array_impl( ast, array_ast );
   assert( rv_ast != NULL );
-  array_ast->type_id |= c_ast_take_storage( array_ast->as.array.of_ast );
+  c_type_t const taken_type = c_ast_take_storage( array_ast->as.array.of_ast );
+  array_ast->type.store_tid |= taken_type.store_tid;
+  array_ast->type.attr_tid |= taken_type.attr_tid;
   return rv_ast;
 }
 
@@ -316,7 +320,8 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast ) {
   assert( rv_ast != NULL );
   if ( c_ast_sname_empty( func_ast ) )
     func_ast->sname = c_ast_take_name( ast );
-  func_ast->type_id |= c_ast_take_storage( func_ast->as.func.ret_ast );
+  c_type_t const taken_type = c_ast_take_storage( func_ast->as.func.ret_ast );
+  c_type_or_eq( &func_ast->type, &taken_type );
   return rv_ast;
 }
 
@@ -337,23 +342,21 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir ) {
 }
 
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
-                              c_type_id_t type_ids ) {
-  void *const data = c_type_id_data_new( type_ids );
-  ast = c_ast_visit( ast, dir, c_ast_vistor_type_any, data );
-  c_type_id_data_free( data );
-  return ast;
+                              c_type_t const *type ) {
+  return c_ast_visit(
+    ast, dir, c_ast_vistor_type_any, CONST_CAST( void*, type )
+  );
 }
 
-bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t type_id ) {
+bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t builtin_tid ) {
   assert( ast != NULL );
-  assert( (type_id & T_MASK_TYPE) != T_NONE );
-  assert( (type_id & ~T_MASK_TYPE) == T_NONE );
+  assert( c_type_id_part_id( builtin_tid ) == TPID_BASE );
 
   ast = c_ast_untypedef( ast );
   if ( ast->kind_id != K_BUILTIN )
     return false;
-  c_type_id_t const t = c_type_normalize( ast->type_id & T_MASK_TYPE );
-  return t == type_id;
+  c_type_id_t const base_tid = c_type_id_normalize( ast->type.base_tid );
+  return base_tid == builtin_tid;
 }
 
 bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids ) {
@@ -361,27 +364,35 @@ bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids ) {
   return (ast->kind_id & kind_ids) != K_NONE;
 }
 
-bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_id_t ast_type_mask,
-                           c_type_id_t type_id ) {
+bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
+                           c_type_t const *equal_type ) {
+  assert( mask_type != NULL );
+
   ast = c_ast_unpointer( ast );
   if ( ast == NULL )
     return false;
-  c_type_id_t const t = c_type_normalize( ast->type_id & ast_type_mask );
-  return t == type_id;
+  c_type_t const masked_type = {
+    c_type_id_normalize( ast->type.base_tid ) & mask_type->base_tid,
+    ast->type.store_tid & mask_type->store_tid,
+    ast->type.attr_tid & mask_type->attr_tid
+  };
+  return c_type_equal( &masked_type, equal_type );
 }
 
-bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_id_t type_ids ) {
+bool c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
+  assert( c_type_id_part_id( tids ) == TPID_BASE );
   ast = c_ast_unpointer( ast );
   if ( ast == NULL )
     return false;
-  c_type_id_t const t = c_type_normalize( ast->type_id );
-  return (t & type_ids) != T_NONE;
+  c_type_id_t const base_tid = c_type_id_normalize( ast->type.base_tid );
+  return (base_tid & tids) != TB_NONE;
 }
 
-bool c_ast_is_ref_to_type_any( c_ast_t const *ast, c_type_id_t type_ids ) {
+bool c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
+  assert( c_type_id_part_id( tids ) == TPID_BASE );
   ast = c_ast_unreference( ast );
-  c_type_id_t const t = c_type_normalize( ast->type_id );
-  return (t & type_ids) != T_NONE;
+  c_type_id_t const base_tid = c_type_id_normalize( ast->type.base_tid );
+  return (base_tid & tids) != TB_NONE;
 }
 
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
@@ -440,15 +451,15 @@ c_sname_t c_ast_take_name( c_ast_t *ast ) {
   return rv;
 }
 
-c_type_id_t c_ast_take_type_any( c_ast_t *ast, c_type_id_t type_ids ) {
+c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type ) {
   assert( ast != NULL );
-  c_type_id_t rv_type_ids = T_NONE;
-  c_ast_t *const found_ast = c_ast_find_type_any( ast, C_VISIT_DOWN, type_ids );
-  if ( found_ast != NULL ) {
-    rv_type_ids = found_ast->type_id & type_ids;
-    found_ast->type_id &= ~type_ids;
-  }
-  return rv_type_ids;
+  assert( type != NULL );
+  c_ast_t *const found_ast = c_ast_find_type_any( ast, C_VISIT_DOWN, type );
+  if ( found_ast == NULL )
+    return T_NONE;
+  c_type_t const rv_type = c_type_and( &found_ast->type, type );
+  c_type_and_eq_compl( &found_ast->type, type );
+  return rv_type;
 }
 
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast ) {

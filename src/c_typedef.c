@@ -373,7 +373,7 @@ static char const *const TYPEDEFS_GNUC[] = {
   //
   // To make it a distinct type in cdecl also, there would need to be a
   // distinct literal, token, and type.  The type has to be distinct in order
-  // to be round-trippable with English.  If it reused T_LONG_LONG, then you'd
+  // to be round-trippable with English.  If it reused TB_LONG_LONG, then you'd
   // get:
   //
   //      cdecl> declare x as __int128

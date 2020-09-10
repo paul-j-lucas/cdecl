@@ -26,8 +26,8 @@
  * Declares functions for dealing with "sname" (C++ scoped name) objects, e.g.,
  * `S::T::x`.
  *
- * + An sname also has a type (one of of #T_CLASS, #T_NAMESPACE, #T_SCOPE,
- *   #T_STRUCT, or #T_UNION) for each scope.
+ * + An sname also has a type (one of of #TB_CLASS, #TB_NAMESPACE, #TB_SCOPE,
+ *   #TB_STRUCT, or #TB_UNION) for each scope.
  * + The "local" of an sname is the innermost scope, e.g., `x`.  A non-empty
  *   sname always has a local.
  * + The "scope" of an sname is all but the innermost scope, e.g., `S::T`.  A
@@ -82,10 +82,10 @@ struct c_scope_data {
   char const *name;
 
   /**
-   * The scope's type, one of: #T_CLASS, #T_STRUCT, #T_UNION, [#T_INLINE]
-   * #T_NAMESPACE, or #T_SCOPE.
+   * The scope's type, one of: #TB_CLASS, #TB_STRUCT, #TB_UNION, [#TS_INLINE]
+   * #TB_NAMESPACE, or #TB_SCOPE.
    */
-  c_type_id_t type_id;
+  c_type_t type;
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -133,13 +133,13 @@ char const* c_scope_name( c_scope_t const *scope ) {
  * Sets a scope's type.
  *
  * @param scope The scope to set the type of.
- * @param type_id The type.
+ * @param type The type.
  *
  * @sa c_scope_type()
  */
 C_SNAME_INLINE
-void c_scope_set_type( c_scope_t *scope, c_type_id_t type_id ) {
-  REINTERPRET_CAST( c_scope_data_t*, scope->data )->type_id = type_id;
+void c_scope_set_type( c_scope_t *scope, c_type_t const *type ) {
+  REINTERPRET_CAST( c_scope_data_t*, scope->data )->type = *type;
 }
 
 /**
@@ -151,8 +151,8 @@ void c_scope_set_type( c_scope_t *scope, c_type_id_t type_id ) {
  * @sa c_scope_set_type()
  */
 C_SNAME_INLINE C_WARN_UNUSED_RESULT
-c_type_id_t c_scope_type( c_scope_t const *scope ) {
-  return REINTERPRET_CAST( c_scope_data_t*, scope->data )->type_id;
+c_type_t const* c_scope_type( c_scope_t const *scope ) {
+  return &REINTERPRET_CAST( c_scope_data_t*, scope->data )->type;
 }
 
 /**
@@ -306,7 +306,7 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
  * @sa c_sname_scope_type()
  * @sa c_sname_set_local_type()
  */
-c_type_id_t c_sname_local_type( c_sname_t const *sname );
+c_type_t const* c_sname_local_type( c_sname_t const *sname );
 
 /**
  * Gets the name at \a offset of \a sname.
@@ -389,23 +389,23 @@ char const* c_sname_scope_name( c_sname_t const *sname );
  * @sa c_sname_local_type()
  */
 C_SNAME_INLINE C_WARN_UNUSED_RESULT
-c_type_id_t c_sname_scope_type( c_sname_t const *sname ) {
+c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
   c_scope_data_t const *const data =
     SLIST_PEEK_ATR( c_scope_data_t*, sname, 1 );
-  return data != NULL ? data->type_id : T_NONE;
+  return data != NULL ? &data->type : &T_NONE;
 }
 
 /**
  * Sets the scope type of \a sname (which is the type of the innermost scope).
  *
  * @param sname The scoped name to set the scope type of.
- * @param type_id The type.
+ * @param type The type.
  *
  * @sa c_sname_local_type()
  */
 C_SNAME_INLINE
-void c_sname_set_local_type( c_sname_t *sname, c_type_id_t type_id ) {
-  c_scope_set_type( sname->tail, type_id );
+void c_sname_set_local_type( c_sname_t *sname, c_type_t const *type ) {
+  c_scope_set_type( sname->tail, type );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

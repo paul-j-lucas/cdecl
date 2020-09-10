@@ -258,13 +258,13 @@ extern char const L_XOR[];                  // ^
 extern char const L_XOR_EQ[];               // ^=
 
 // Embedded C extensions
-extern char const L_EMBC__ACCUM[];
-extern char const L_EMBC_ACCUM[];           // synonym for "_Accum"
-extern char const L_EMBC__FRACT[];
-extern char const L_EMBC_FRACT[];           // synonym for "_Fract"
-extern char const L_EMBC__SAT[];
-extern char const L_EMBC_SAT[];             // synonym for "_Sat"
-extern char const L_EMBC_SATURATED[];       // English for "_Sat"
+extern char const L_EMC__ACCUM[];
+extern char const L_EMC_ACCUM[];            // synonym for "_Accum"
+extern char const L_EMC__FRACT[];
+extern char const L_EMC_FRACT[];            // synonym for "_Fract"
+extern char const L_EMC__SAT[];
+extern char const L_EMC_SAT[];              // synonym for "_Sat"
+extern char const L_EMC_SATURATED[];        // English for "_Sat"
 
 // GNU extensions
 extern char const L_GNU___AUTO_TYPE[];

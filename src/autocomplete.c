@@ -183,9 +183,9 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_MIN(C_95),         L_WCHAR_T           },
 
   // Embedded C extensions
-  { LANG_C_99,              L_EMBC_ACCUM        },
-  { LANG_C_99,              L_EMBC_FRACT        },
-  { LANG_C_99,              L_EMBC_SATURATED    },
+  { LANG_C_99,              L_EMC_ACCUM         },
+  { LANG_C_99,              L_EMC_FRACT         },
+  { LANG_C_99,              L_EMC_SATURATED     },
 
   { LANG_NONE,              NULL                }
 };

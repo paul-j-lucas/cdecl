@@ -94,7 +94,7 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
 
   if ( ast_i->kind_id != ast_j->kind_id )
     return false;
-  if ( ast_i->type_id != ast_j->type_id )
+  if ( !c_type_equal( &ast_i->type, &ast_j->type ) )
     return false;
 
   switch ( ast_i->kind_id ) {
@@ -103,7 +103,7 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
       c_array_t const *const a_j = &ast_j->as.array;
       if ( a_i->size != a_j->size )
         return false;
-      if ( a_i->type_id != a_j->type_id )
+      if ( a_i->store_tid != a_j->store_tid )
         return false;
       break;
     }
@@ -233,7 +233,34 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
   ast->depth = depth;
   ast->unique_id = ++next_id;
   ast->kind_id = kind_id;
+  ast->type = T_NONE;
   ast->loc = *loc;
+
+  switch ( kind_id ) {
+    case K_ARRAY:
+      ast->as.array.store_tid = TS_NONE;
+      break;
+    case K_APPLE_BLOCK:
+    case K_BUILTIN:
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
+    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_FUNCTION:
+    case K_NAME:
+    case K_NONE:
+    case K_OPERATOR:
+    case K_PLACEHOLDER:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+    case K_TYPEDEF:
+    case K_USER_DEF_CONVERSION:
+    case K_USER_DEF_LITERAL:
+    case K_VARIADIC:
+      // nothing to do
+      break;
+  } // switch
 
   ++c_ast_count;
   return ast;
@@ -271,9 +298,15 @@ void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname ) {
   // If the scoped name has no scope type but the AST is one of a class,
   // namespace, struct, or union type, adopt that type for the scope type.
   //
-  if ( c_sname_local_type( sname ) == T_NONE &&
-       (ast->type_id & T_ANY_SCOPE) != T_NONE ) {
-    c_sname_set_local_type( sname, ast->type_id & (T_ANY_SCOPE | T_INLINE) );
+  if ( c_type_is_none( c_sname_local_type( sname ) ) &&
+       c_type_is_tid_any( &ast->type, TB_ANY_SCOPE ) ) {
+    c_sname_set_local_type( sname,
+      &C_TYPE_LIT(
+        ast->type.base_tid & TB_ANY_SCOPE,
+        ast->type.store_tid & TS_INLINE,
+        TA_NONE
+      )
+    );
   }
 
   c_sname_free( &ast->sname );
