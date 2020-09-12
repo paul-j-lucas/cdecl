@@ -22,6 +22,14 @@ Added support for Unified Parallel C:
 Since the Unified Parallel C standard is based on C99, support for Unified
 Parallel C is available only when the language is set to C99.
 
+** Restricted References
+GNU C++ allows references to be restricted:
+
+    void f( int &__restrict r )
+    void g( int &&__restrict rr )
+
+Now, cdecl does too.
+
 ** More C++ std types
 Added types std::condition_variable, std::condition_variable_any, std::mutex,
 std::recursive_mutex, std::recursive_timed_mutex, std::regex,

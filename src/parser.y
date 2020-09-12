@@ -1196,6 +1196,8 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   namespace_expected
 %type   <type>      namespace_type
 %type   <type_id>   no_except_bool_tid
+%type   <type_id>   reference_qualifier_c_tid_opt
+%type   <type_id>   restrict_qualifier_tid
 %type   <type>      storage_class_c_type
 %type   <type>      type_modifier_c_type
 %type   <type>      type_modifier_base_type
@@ -3617,26 +3619,30 @@ reference_decl_c_ast
   ;
 
 reference_type_c_ast
-  : /* type_c_ast */ Y_AMPER
+  : /* type_c_ast */ Y_AMPER reference_qualifier_c_tid_opt
     {
       DUMP_START( "reference_type_c_ast", "&" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
+      DUMP_TYPE_ID( "reference_qualifier_c_tid_opt", $2 );
 
       $$.ast = c_ast_new_gc( K_REFERENCE, &@$ );
       $$.target_ast = NULL;
+      $$.ast->type.store_tid = $2;
       c_ast_set_parent( type_ast_peek(), $$.ast );
 
       DUMP_AST( "reference_type_c_ast", $$.ast );
       DUMP_END();
     }
 
-  | /* type_c_ast */ Y_AMPER2
+  | /* type_c_ast */ Y_AMPER2 reference_qualifier_c_tid_opt
     {
       DUMP_START( "reference_type_c_ast", "&&" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
+      DUMP_TYPE_ID( "reference_qualifier_c_tid_opt", $2 );
 
       $$.ast = c_ast_new_gc( K_RVALUE_REFERENCE, &@$ );
       $$.target_ast = NULL;
+      $$.ast->type.store_tid = $2;
       c_ast_set_parent( type_ast_peek(), $$.ast );
 
       DUMP_AST( "reference_type_c_ast", $$.ast );
@@ -3644,6 +3650,10 @@ reference_type_c_ast
     }
   ;
 
+reference_qualifier_c_tid_opt
+  : /* empty */                   { $$ = TS_NONE; }
+  | restrict_qualifier_tid
+  ;
 
 user_defined_conversion_decl_c_ast
   : /* type_c_ast */ scope_sname_c_opt Y_OPERATOR type_c_ast
@@ -4112,38 +4122,17 @@ type_qualifier_list_c_tid
   ;
 
 type_qualifier_c_tid
-  : cv_qualifier_tid
-  | Y__ATOMIC_QUAL
-  | Y_RESTRICT                          /* C only */
-    {
-      //
-      // This check has to be done now in the parser rather than later in the
-      // AST since both "restrict" and "__restrict" map to TS_RESTRICT and the
-      // AST has no "memory" of which it was.
-      //
-      if ( C_LANG_IS_CPP() ) {
-        print_error( &@1,
-          "\"%s\" not supported in %s; use \"%s\" instead",
-          L_RESTRICT, C_LANG_NAME(), L_GNU___RESTRICT
-        );
-        PARSE_ABORT();
-      }
-    }
-  | Y_GNU___RESTRICT                    /* GNU C/C++ extension */
+  : Y__ATOMIC_QUAL
+  | cv_qualifier_tid
+  | restrict_qualifier_tid
   | Y_UPC_RELAXED
   | Y_UPC_SHARED upc_layout_qualifier_opt
   | Y_UPC_STRICT
   ;
 
-upc_layout_qualifier_opt
-  : /* empty */
-  | '[' ']'
-  | '[' Y_NUMBER ']'
-  | '[' '*' ']'
-  | '[' error ']'
-    {
-      ELABORATE_ERROR( "one of nothing, number, or '*' expected" );
-    }
+cv_qualifier_tid
+  : Y_CONST
+  | Y_VOLATILE
   ;
 
 cv_qualifier_list_c_tid_opt
@@ -4163,9 +4152,34 @@ cv_qualifier_list_c_tid_opt
     }
   ;
 
-cv_qualifier_tid
-  : Y_CONST
-  | Y_VOLATILE
+restrict_qualifier_tid
+  : Y_RESTRICT                          /* C only */
+    {
+      //
+      // This check has to be done now in the parser rather than later in the
+      // AST since both "restrict" and "__restrict" map to TS_RESTRICT and the
+      // AST has no "memory" of which it was.
+      //
+      if ( C_LANG_IS_CPP() ) {
+        print_error( &@1,
+          "\"%s\" not supported in %s; use \"%s\" instead",
+          L_RESTRICT, C_LANG_NAME(), L_GNU___RESTRICT
+        );
+        PARSE_ABORT();
+      }
+    }
+  | Y_GNU___RESTRICT                    /* GNU C/C++ extension */
+  ;
+
+upc_layout_qualifier_opt
+  : /* empty */
+  | '[' ']'
+  | '[' Y_NUMBER ']'
+  | '[' '*' ']'
+  | '[' error ']'
+    {
+      ELABORATE_ERROR( "one of nothing, number, or '*' expected" );
+    }
   ;
 
 storage_class_c_type

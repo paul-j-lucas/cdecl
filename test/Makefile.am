@@ -1191,6 +1191,8 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_frri_v.test \
 	tests/explain_fui_v.test \
 	tests/explain_grtpi.test \
+	tests/explain_grtri.test \
+	tests/explain_grtrri.test \
 	tests/explain_i+.test \
 	tests/explain_i2+.test \
 	tests/explain_ictor_i.test \

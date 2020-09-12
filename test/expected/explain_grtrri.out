@@ -1,0 +1,1 @@
+declare x as restricted rvalue reference to int
