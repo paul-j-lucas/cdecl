@@ -667,7 +667,8 @@ static c_type_t c_type_from_tid( c_type_id_t tid ) {
  */
 C_WARN_UNUSED_RESULT
 static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
-  static unsigned const NUM_BUFS = 2;
+# define NUM_BUFS 2
+
   static char name_buf[ NUM_BUFS ][ 256 ];
   static unsigned buf_index;
 
@@ -849,6 +850,8 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
     name = strcpy_sep( name, L_SCOPE, ' ', &space );
 
   return name_buf[ buf_index ];
+
+# undef NUM_BUFS
 }
 
 /**
