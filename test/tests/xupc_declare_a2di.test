@@ -1,0 +1,1 @@
+cdecl @ @ -xc99 @ declare x as array 2 of shared int @ 0

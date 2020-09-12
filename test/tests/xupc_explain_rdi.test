@@ -1,0 +1,1 @@
+cdecl @ @ -xc99 @ explain relaxed shared int x @ 0

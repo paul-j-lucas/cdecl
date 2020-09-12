@@ -227,9 +227,14 @@ enum c_type_part_id {
 #define TS_RESTRICT           0x0000000020000002ull /**< `restrict`           */
 #define TS_VOLATILE           0x0000000040000002ull /**< `volatile`           */
 
+// Unified Parallel C qualifiers
+#define TS_UPC_RELAXED        0x0000000080000002ull /**< `relaxed`            */
+#define TS_UPC_SHARED         0x0000000100000002ull /**< `shared`             */
+#define TS_UPC_STRICT         0x0000000200000002ull /**< `strict`             */
+
 // ref-qualifiers
-#define TS_REFERENCE          0x0000000080000002ull /**< `void f() &`         */
-#define TS_RVALUE_REFERENCE   0x0000000100000002ull /**< `void f() &&`        */
+#define TS_REFERENCE          0x0000000400000002ull /**< `void f() &`         */
+#define TS_RVALUE_REFERENCE   0x0000000800000002ull /**< `void f() &&`        */
 
 // attributes
 #define TA_NONE               0x0000000000000003ull /**< No attribute.        */
@@ -244,8 +249,8 @@ enum c_type_part_id {
 // bit masks
 #define T_MASK_PART_ID        0x000000000000000Full /**< Type part ID bitmask.*/
 #define TS_MASK_STORAGE       0x0000000007FFFFF2ull /**< Storage bitmask.     */
-#define TS_MASK_QUALIFIER     0x0000000078000002ull /**< Qualifier bitmask.   */
-#define TS_MASK_REF_QUALIFIER 0x0000000180000002ull /**< Ref-qual bitmask.    */
+#define TS_MASK_QUALIFIER     0x00000003F8000002ull /**< Qualifier bitmask.   */
+#define TS_MASK_REF_QUALIFIER 0x0000000C00000002ull /**< Ref-qual bitmask.    */
 
 extern c_type_t const T_NONE;           ///< No type.
 extern c_type_t const T_ANY;            ///< All types.
@@ -272,7 +277,7 @@ extern c_type_t const T_ANY;            ///< All types.
 /** Shorthand for `class`, `struct`, `union`, or `namespace`. */
 #define TB_ANY_SCOPE          ( TB_ANY_CLASS | TB_NAMESPACE )
 
-/** Shorthand for any reference type. */
+/** Shorthand for any reference qualifier. */
 #define TS_ANY_REFERENCE      ( TS_REFERENCE | TS_RVALUE_REFERENCE )
 
 /**

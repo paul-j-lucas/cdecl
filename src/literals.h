@@ -266,6 +266,11 @@ extern char const L_EMC__SAT[];
 extern char const L_EMC_SAT[];              // synonym for "_Sat"
 extern char const L_EMC_SATURATED[];        // English for "_Sat"
 
+// Unified Parallel C extensions
+extern char const L_UPC_RELAXED[];
+extern char const L_UPC_SHARED[];
+extern char const L_UPC_STRICT[];
+
 // GNU extensions
 extern char const L_GNU___AUTO_TYPE[];
 extern char const L_GNU___COMPLEX[];

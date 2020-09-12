@@ -79,6 +79,9 @@ _GL_INLINE_HEADER_BEGIN
 /**< Language eXtensions for Embedded C. */
 #define LANGX_EMC     (1u << 7)
 
+/**< Language eXtensions for Unified Parallel C. */
+#define LANGX_UPC     (1u << 8)
+
 /**
  * Embedded C, or more formally, "Programming languages - C - Extensions to
  * support embedded processors," ISO/IEC TR 18037:2008, which is based on C99,
@@ -96,6 +99,12 @@ _GL_INLINE_HEADER_BEGIN
  * in a language other than C99, they'll get a warning.
  */
 #define LANG_C_99_EMC (LANG_C_99 | LANGX_EMC)
+
+/**
+ * UPC: Unified Parallel [extension to] C, which is based on C99, ISO/IEC
+ * 9899:1999.
+ */
+#define LANG_C_99_UPC (LANG_C_99 | LANGX_UPC)
 
 // bit masks
 #define LANG_MASK_C   0x01FFu           /**< C languages bitmask. */

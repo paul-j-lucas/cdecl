@@ -216,6 +216,11 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_EMC__FRACT,       Y_EMC__FRACT,       TB_EMC_FRACT,   LANG_C_99_EMC     },
   { L_EMC__SAT,         Y_EMC__SAT,         TB_EMC_SAT,     LANG_C_99_EMC     },
 
+  // Unified Parallel C extensions
+  { L_UPC_RELAXED,      Y_UPC_RELAXED,      TS_UPC_RELAXED, LANG_C_99_UPC     },
+  { L_UPC_SHARED,       Y_UPC_SHARED,       TS_UPC_SHARED,  LANG_C_99_UPC     },
+  { L_UPC_STRICT,       Y_UPC_STRICT,       TS_UPC_STRICT,  LANG_C_99_UPC     },
+
   // GNU extensions
   { L_GNU___AUTO_TYPE,  Y_AUTO_TYPE,        TB_AUTO,        LANG_ALL          },
   { L_GNU___COMPLEX,    Y__COMPLEX,         TB_COMPLEX,     LANG_ALL          },

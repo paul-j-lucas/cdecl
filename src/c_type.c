@@ -49,10 +49,10 @@
     return lang_ids; )
 
 #define C_TYPE_ID_CHECK_COMBO(TYPE,TYPES,OK_TYPE_LANGS) \
-  c_type_id_check_combo( (TYPE), (TYPES), ARRAY_SIZE( TYPES ), OK_TYPE_LANGS )
+  C_TYPE_CHECK( c_type_id_check_combo( (TYPE), (TYPES), ARRAY_SIZE( TYPES ), OK_TYPE_LANGS ) )
 
 #define C_TYPE_ID_CHECK_LEGAL(TYPE,TYPES) \
-  c_type_id_check_legal( (TYPE), (TYPES), ARRAY_SIZE( TYPES ) )
+  C_TYPE_CHECK( c_type_id_check_legal( (TYPE), (TYPES), ARRAY_SIZE( TYPES ) ) )
 
 #define C_TYPE_ID_NAME_CAT(PNAME,TYPE,TYPES,IS_ERROR,SEP,PSEP)        \
   c_type_id_name_cat( (PNAME), (TYPE), (TYPES), ARRAY_SIZE( TYPES ),  \
@@ -150,6 +150,9 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
 
 /**
  * Type mapping for qualifiers.
+ *
+ * @note
+ * This array _must_ have the same size and order as OK_QUALIFIER_LANGS.
  */
 static c_type_info_t const C_QUALIFIER_INFO[] = {
   { TS_ATOMIC, LANG_MIN(C_11), L_ATOMIC,
@@ -172,6 +175,16 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
   { TS_VOLATILE, LANG_ALL, NULL,
     (c_lang_lit_t[]){ { LANG_C_KNR, L_GNU___VOLATILE },
                       { LANG_ALL,   L_VOLATILE       } } },
+
+  // Unified Parallel C extensions
+  { TS_UPC_RELAXED, LANG_C_99, NULL,
+    (c_lang_lit_t[]){ { LANG_ALL, L_UPC_RELAXED } } },
+
+  { TS_UPC_SHARED, LANG_C_99, NULL,
+    (c_lang_lit_t[]){ { LANG_ALL, L_UPC_SHARED } } },
+
+  { TS_UPC_STRICT, LANG_C_99, NULL,
+    (c_lang_lit_t[]){ { LANG_ALL, L_UPC_STRICT } } },
 };
 
 /**
@@ -354,6 +367,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define KR          LANG_C_KNR
 #define C8          LANG_MIN(C_89)
 #define C5          LANG_MIN(C_95)
+#define c9          LANG_C_99
 #define C9          LANG_MIN(C_99)
 #define C1          LANG_MIN(C_11)
 #define C2          LANG_C_CPP_MIN(2X,20)
@@ -367,6 +381,28 @@ static c_type_info_t const C_TYPE_INFO[] = {
 
 // There is no OK_ATTRIBUTE_LANGS because all combinations of attributes are
 // legal.
+
+/**
+ * Legal combinations of qualifiers in languages.
+ *
+ * @note
+ * This array _must_ have the same size and order as C_QUALIFIER_INFO.
+ */
+static c_lang_id_t const OK_QUALIFIER_LANGS[][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] = {
+// Only the lower triangle is used.
+//  a  c  r  rr re v    rx sh st
+  { E1,__,__,__,__,__,  __,__,__ }, // atomic
+  { E1,__,__,__,__,__,  __,__,__ }, // const
+  { XX,PP,PP,__,__,__,  __,__,__ }, // reference
+  { XX,P1,XX,P1,__,__,  __,__,__ }, // rvalue reference
+  { XX,__,PP,P1,__,__,  __,__,__ }, // restrict
+  { E1,__,PP,P1,__,__,  __,__,__ }, // volatile
+
+  // Unified Parallel C extensions
+  { XX,c9,XX,XX,c9,c9,  c9,__,__ }, // relaxed
+  { XX,c9,XX,XX,c9,c9,  c9,c9,__ }, // shared
+  { XX,c9,XX,XX,c9,c9,  XX,c9,c9 }, // strict
+};
 
 /**
  * Legal combinations of storage classes in languages.
@@ -748,10 +784,17 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
   }
 
   static c_type_id_t const C_QUALIFIER[] = {
+    // These are before "shared" so we get names like "strict shared".
+    TS_UPC_RELAXED,
+    TS_UPC_STRICT,
+
+    TS_UPC_SHARED,
+
     TS_CONST,
     TS_RESTRICT,
     TS_VOLATILE,
 
+    // These are next so we get names like "const reference".
     TS_REFERENCE,
     TS_RVALUE_REFERENCE,
 
@@ -761,16 +804,15 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
   C_TYPE_ID_NAME_CAT( &name, store_tid, C_QUALIFIER, is_error, ' ', &space );
 
   static c_type_id_t const C_TYPE[] = {
-
     // These are first so we get names like "unsigned int".
     TB_SIGNED,
     TB_UNSIGNED,
 
-    // These are second so we get names like "unsigned long int".
+    // These are next so we get names like "unsigned long int".
     TB_LONG,
     TB_SHORT,
 
-    // This is third so we get names like "unsigned long _Sat _Fract".
+    // This is next so we get names like "unsigned long _Sat _Fract".
     TB_EMC_SAT,
 
     TB_VOID,
@@ -835,26 +877,25 @@ static char* strcpy_sep( char *dst, char const *src, char sep, bool *sep_cat ) {
 
 c_lang_id_t c_type_check( c_type_t const *type ) {
   // Check that the attribute(s) are legal in the current language.
-  C_TYPE_CHECK( C_TYPE_ID_CHECK_LEGAL( type->attr_tid, C_ATTRIBUTE_INFO ) );
+  C_TYPE_ID_CHECK_LEGAL( type->attr_tid, C_ATTRIBUTE_INFO );
 
   // Check that the storage class is legal in the current language.
-  C_TYPE_CHECK( C_TYPE_ID_CHECK_LEGAL( type->store_tid, C_STORAGE_INFO ) );
+  C_TYPE_ID_CHECK_LEGAL( type->store_tid, C_STORAGE_INFO );
 
   // Check that the type is legal in the current language.
-  C_TYPE_CHECK( C_TYPE_ID_CHECK_LEGAL( type->base_tid, C_TYPE_INFO ) );
+  C_TYPE_ID_CHECK_LEGAL( type->base_tid, C_TYPE_INFO );
 
   // Check that the qualifier(s) are legal in the current language.
-  C_TYPE_CHECK( C_TYPE_ID_CHECK_LEGAL( type->store_tid, C_QUALIFIER_INFO ) );
+  C_TYPE_ID_CHECK_LEGAL( type->store_tid, C_QUALIFIER_INFO );
 
   // Check that the storage class combination is legal in the current language.
-  C_TYPE_CHECK(
-    C_TYPE_ID_CHECK_COMBO( type->store_tid, C_STORAGE_INFO, OK_STORAGE_LANGS )
-  );
+  C_TYPE_ID_CHECK_COMBO( type->store_tid, C_STORAGE_INFO, OK_STORAGE_LANGS );
 
   // Check that the type combination is legal in the current language.
-  C_TYPE_CHECK(
-    C_TYPE_ID_CHECK_COMBO( type->base_tid, C_TYPE_INFO, OK_TYPE_LANGS )
-  );
+  C_TYPE_ID_CHECK_COMBO( type->base_tid, C_TYPE_INFO, OK_TYPE_LANGS );
+
+  // Check that the qualifier combination is legal in the current language.
+  C_TYPE_ID_CHECK_COMBO( type->store_tid, C_QUALIFIER_INFO, OK_QUALIFIER_LANGS );
 
   return LANG_ALL;
 }

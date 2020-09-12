@@ -1551,6 +1551,31 @@ TESTS+=	tests/xec_explain_lla.test \
 	tests/xec_explain_t.test \
 	tests/xec_explain_ti.test
 
+#
+# Unified Parallel C tests
+# ========================
+#
+TESTS+=	tests/xupc_declare_a2di.test \
+	tests/xupc_declare_dpi.test \
+	tests/xupc_declare_pdi.test \
+	tests/xupc_declare_ptdi.test \
+	tests/xupc_declare_rdi.test \
+	tests/xupc_declare_rdpi.test \
+	tests/xupc_declare_tdi.test \
+	tests/xupc_explain_da2i.test \
+	tests/xupc_explain_dpi.test \
+	tests/xupc_explain_pdi.test \
+	tests/xupc_explain_ptdi.test \
+	tests/xupc_explain_rdi.test \
+	tests/xupc_explain_rdpi.test \
+	tests/xupc_explain_tdi.test
+
+#
+# Unified Parallel C error tests
+# ==============================
+#
+TESTS+=	tests/xupc_explain_ri.test
+
 ###############################################################################
 
 #

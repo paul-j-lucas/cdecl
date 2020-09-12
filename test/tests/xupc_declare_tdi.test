@@ -1,0 +1,1 @@
+cdecl @ @ -xc99 @ declare x as strict shared int @ 0

@@ -187,6 +187,11 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_C_99,              L_EMC_FRACT         },
   { LANG_C_99,              L_EMC_SATURATED     },
 
+  // Unified Parallel C extensions
+  { LANG_C_99,              L_UPC_RELAXED       },
+  { LANG_C_99,              L_UPC_SHARED        },
+  { LANG_C_99,              L_UPC_STRICT        },
+
   { LANG_NONE,              NULL                }
 };
 

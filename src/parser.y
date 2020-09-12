@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 26
+%expect 27
 
 %{
 /** @endcond */
@@ -1068,6 +1068,11 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_EMC__ACCUM
 %token  <type_id>   Y_EMC__FRACT
 %token  <type_id>   Y_EMC__SAT
+
+                    /* Unified Parallel C extensions */
+%token  <type_id>   Y_UPC_RELAXED
+%token  <type_id>   Y_UPC_SHARED
+%token  <type_id>   Y_UPC_STRICT
 
                     /* GNU extensions */
 %token  <type_id>   Y_GNU___RESTRICT
@@ -3319,7 +3324,7 @@ func_qualified_c_tid
    *
    * <https://gcc.gnu.org/onlinedocs/gcc/Restricted-Pointers.html>
    */
-  | Y_GNU___RESTRICT
+  | Y_GNU___RESTRICT                    /* GNU C++ extension */
   ;
 
 func_ref_qualifier_c_tid_opt
@@ -4125,6 +4130,20 @@ type_qualifier_c_tid
       }
     }
   | Y_GNU___RESTRICT                    /* GNU C/C++ extension */
+  | Y_UPC_RELAXED
+  | Y_UPC_SHARED upc_layout_qualifier_opt
+  | Y_UPC_STRICT
+  ;
+
+upc_layout_qualifier_opt
+  : /* empty */
+  | '[' ']'
+  | '[' Y_NUMBER ']'
+  | '[' '*' ']'
+  | '[' error ']'
+    {
+      ELABORATE_ERROR( "one of nothing, number, or '*' expected" );
+    }
   ;
 
 cv_qualifier_list_c_tid_opt

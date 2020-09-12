@@ -246,6 +246,11 @@ char const L_EMC__SAT[]             = "_Sat";
 char const L_EMC_SAT[]              = "sat";
 char const L_EMC_SATURATED[]        = "saturated";
 
+// Unified Parallel C extensions
+char const L_UPC_RELAXED[]          = "relaxed";
+char const L_UPC_SHARED[]           = "shared";
+char const L_UPC_STRICT[]           = "strict";
+
 // GNU extensions
 char const L_GNU___AUTO_TYPE[]      = "__auto_type";
 char const L_GNU___COMPLEX[]        = "__complex";

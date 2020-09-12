@@ -300,10 +300,20 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
   }
 
   if ( c_type_is_tid_any( &ast->type, TB_EMC_SAT ) &&
-       !c_type_is_tid_any( &ast->type, TB_ANY_EMC ) ) {
+      !c_type_is_tid_any( &ast->type, TB_ANY_EMC ) ) {
     print_error( &ast->loc,
       "\"%s\" requires either \"%s\" or \"%s\"",
       L_EMC__SAT, L_EMC__ACCUM, L_EMC__FRACT
+    );
+    return false;
+  }
+
+  if ( c_type_is_tid_any( &ast->type, TS_UPC_RELAXED | TS_UPC_STRICT ) &&
+      !c_type_is_tid_any( &ast->type, TS_UPC_SHARED ) ) {
+    print_error( &ast->loc,
+      "\"%s\" requires \"%s\"",
+      c_type_name_error( &ast->type ),
+      L_UPC_SHARED
     );
     return false;
   }
@@ -355,7 +365,7 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
   if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
        c_type_is_tid_any( &ast->type, TB_ENUM ) &&
        c_type_is_tid_any( &ast->type, TB_STRUCT | TB_CLASS ) &&
-       !c_type_is_tid_any( &ast->type, TS_TYPEDEF ) ) {
+      !c_type_is_tid_any( &ast->type, TS_TYPEDEF ) ) {
     print_error( &ast->loc,
       "\"%s\": %s classes must just use \"%s\"",
       c_type_name_error( &ast->type ), L_ENUM, L_ENUM
@@ -395,7 +405,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   if ( ast->kind_id == K_FUNCTION ) {
     SNAME_VAR_INIT( main_sname, "main" );
     if ( c_sname_cmp( &ast->sname, &main_sname ) == 0 &&
-         !c_ast_check_func_main( ast ) ) {
+        !c_ast_check_func_main( ast ) ) {
       return false;
     }
   }
@@ -1384,8 +1394,8 @@ static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
     case 2:
       tmp_ast = c_ast_unpointer( arg_ast );
       if ( tmp_ast == NULL ||
-           !(c_type_is_tid_any( &tmp_ast->type, TS_CONST ) &&
-             c_type_is_tid_any( &tmp_ast->type, TB_ANY_CHAR )) ) {
+          !(c_type_is_tid_any( &tmp_ast->type, TS_CONST ) &&
+            c_type_is_tid_any( &tmp_ast->type, TB_ANY_CHAR )) ) {
         print_error( &arg_ast->loc,
           "invalid argument type for %s %s; must be one of: "
           "const (char|wchar_t|char8_t|char16_t|char32_t)*",
@@ -1485,7 +1495,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 
     case K_DESTRUCTOR: {
       if ( (ast->kind_id & (K_CONSTRUCTOR | K_DESTRUCTOR)) != K_NONE &&
-           !c_ast_check_ctor_dtor( ast ) ) {
+          !c_ast_check_ctor_dtor( ast ) ) {
         return VISITOR_ERROR_FOUND;
       }
 

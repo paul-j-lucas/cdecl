@@ -25,6 +25,7 @@ Test files are as follows:
 | `*-ec`               = An "east const" test.
 + `*-`*lang*`*`        = A test using *lang* explicitly.
 + `xec_*`              = An Embedded C test.
++ `xupc_*`             = A Unified Parallel C test.
 
 Within each test, sequences of characters are used to denote a C/C++
 declaration as it is in English.
@@ -86,6 +87,12 @@ For an Embedded C test, some characters change meaning:
 + `a` = `_Accum`
 + `r` = `_Fract`
 + `t` = `_Sat`
+
+For a Unified Parallel C test, some characters change meaning:
+
++ `r` = `relaxed`
++ `d` = `shared`
++ `t` = `strict`
 
 Characters may be preceded by a count,
 e.g., `2i` for 2 consecutive `int`.

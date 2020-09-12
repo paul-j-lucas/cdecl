@@ -1,0 +1,1 @@
+cdecl @ @ -xc99 @ explain shared int *p @ 0
