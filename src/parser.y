@@ -123,7 +123,6 @@
  * @param NEW_LOC The source location of \a NEW_TID.
  *
  * @sa C_TYPE_ADD()
- * @sa C_TYPE_ADD_TID()
  * @sa C_TYPE_ID_ADD()
  */
 #define C_TYPE_ADD_TID(DST_TYPE,NEW_TID,NEW_LOC) BLOCK( \
