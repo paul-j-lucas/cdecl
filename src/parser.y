@@ -182,7 +182,7 @@
 
 /**
  * Dumps a comma followed by a newline the _second_ and subsequent times it's
- * called.  It's ussed to separate items being dumped.
+ * called.  It's used to separate items being dumped.
  */
 #define DUMP_COMMA \
   BLOCK( if ( true_or_set( &debug_comma ) ) PUTS_OUT( ",\n" ); )
