@@ -190,7 +190,7 @@ struct c_ecsu_ast {
 struct c_function_ast {
   c_ast_t      *ret_ast;                ///< Return type.
   c_ast_args_t  args;                   ///< Function argument(s), if any.
-  unsigned      flags;                  ///< Member vs. non-member.
+  unsigned      flags;                  ///< Member or non-member.
 };
 
 /**
@@ -202,7 +202,7 @@ struct c_function_ast {
 struct c_operator_ast {
   c_ast_t      *ret_ast;                ///< Return type.
   c_ast_args_t  args;                   ///< Operator argument(s), if any.
-  unsigned      flags;                  ///< Member vs. non-member.
+  unsigned      flags;                  ///< Member or non-member.
   c_oper_id_t   oper_id;                ///< Which operator it is.
 };
 

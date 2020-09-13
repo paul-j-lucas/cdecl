@@ -59,8 +59,8 @@ _GL_INLINE_HEADER_BEGIN
 #define C_OP_NOT_OVERLOADABLE   0u
 
 /**
- * For `c_operator.flags`, denotes that the operator overloadability (member
- * vs. non-member) is unspecified.
+ * For `c_operator.flags`, denotes that the operator overloadability (member or
+ * non-member) is unspecified.
  */
 #define C_OP_UNSPECIFIED        C_FUNC_UNSPECIFIED
 
