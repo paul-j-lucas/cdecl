@@ -38,6 +38,7 @@ most notably:
   C99,
   C11,
   C18,
+  C2X,
   C++98,
   C++03,
   C++11,
