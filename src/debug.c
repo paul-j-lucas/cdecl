@@ -47,6 +47,9 @@
 #define INDENT_PRINT_KV(KEY,VALUE) \
   BLOCK( print_indent( indent, dout ); kv_debug( (KEY), (VALUE), dout ); )
 
+#define INDENT_PRINT_LOC(KEY,LOC) \
+  INDENT_PRINT( KEY " = %d-%d,\n", (LOC)->first_column, (LOC)->last_column )
+
 #define INDENT_PRINT_SNAME(KEY,SNAME) BLOCK(  \
   print_indent( indent, dout );               \
   FPUTS( KEY " = ", dout );                   \
@@ -112,15 +115,10 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
           FPUTS( ",\n", dout );
           break;
       } // switch
-      INDENT_PRINT(
-        "alignas_loc = %d-%d,\n",
-        ast->align.loc.first_column, ast->align.loc.last_column
-      );
+      INDENT_PRINT_LOC( "alignas_loc", &ast->align.loc );
     }
 
-    INDENT_PRINT(
-      "loc = %d-%d,\n", ast->loc.first_column, ast->loc.last_column
-    );
+    INDENT_PRINT_LOC( "loc", &ast->loc );
     INDENT_PRINT_TYPE( &ast->type );
 
     bool comma = false;
