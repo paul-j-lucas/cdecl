@@ -429,7 +429,7 @@ func_decl_c_ast ::= decl2_c_ast '(' arg_list_c_ast_opt ')' func_qualifier_list_c
     parent->unique_id = -1,
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
-    flags = 0x0,
+    flags = unspecified (0x0),
     args = [
       {
         sname = "x" (none),
@@ -498,7 +498,7 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
     parent->unique_id = -1,
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
-    flags = 0x0,
+    flags = unspecified (0x0),
     args = [
       {
         sname = "x" (none),
@@ -546,7 +546,7 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
     parent->unique_id = -1,
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
-    flags = 0x0,
+    flags = unspecified (0x0),
     args = [
       {
         sname = "x" (none),
@@ -606,7 +606,7 @@ explain_c ::= EXPLAIN type_c_ast decl_c_ast = {
     parent->unique_id = -1,
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
-    flags = 0x0,
+    flags = unspecified (0x0),
     args = [
       {
         sname = "x" (none),
@@ -654,7 +654,7 @@ explain_c ::= EXPLAIN type_c_ast decl_c_ast = {
     parent->unique_id = -1,
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
-    flags = 0x0,
+    flags = unspecified (0x0),
     args = [
       {
         sname = "x" (none),
