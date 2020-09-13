@@ -29,6 +29,7 @@
 #include "c_ast.h"
 #include "c_type.h"
 #include "c_typedef.h"
+#include "literals.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -138,7 +139,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         INDENT_PRINT( "size = " );
         switch ( ast->as.array.size ) {
           case C_ARRAY_SIZE_NONE:
-            FPRINTF( dout, "unspecified" );
+            FPUTS( "unspecified", dout );
             break;
           case C_ARRAY_SIZE_VARIABLE:
             FPUTC( '*', dout );
@@ -166,7 +167,25 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_FUNCTION:
         PRINT_COMMA;
-        INDENT_PRINT( "flags = 0x%x,\n", ast->as.func.flags );
+        INDENT_PRINT( "flags = " );
+        switch ( ast->as.func.flags & C_FUNC_MASK_MEMBER ) {
+          case C_FUNC_UNSPECIFIED:
+            FPUTS( "unspecified", dout );
+            break;
+          case C_FUNC_MEMBER:
+            FPUTS( L_MEMBER, dout );
+            break;
+          case C_FUNC_NON_MEMBER:
+            FPUTS( L_NON_MEMBER, dout );
+            break;
+          case C_OP_OVERLOADABLE:
+            FPUTS( "overloadable", dout );
+            break;
+          default:
+            FPUTC( '?', dout );
+            break;
+        } // switch
+        FPRINTF( dout, " (0x%x),\n", ast->as.func.flags );
         C_FALLTHROUGH;
 
       case K_APPLE_BLOCK:
