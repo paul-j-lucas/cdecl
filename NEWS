@@ -28,7 +28,7 @@ Added support for Unified Parallel C:
 Since the Unified Parallel C standard is based on C99, support for Unified
 Parallel C is available only when the language is set to C99.
 
-** Restricted References
+** Restricted references
 GNU C++ allows references to be restricted:
 
     void f( int &__restrict r )
