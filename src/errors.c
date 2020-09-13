@@ -1349,7 +1349,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_user_def_lit_args( c_ast_t const *ast ) {
+static bool c_ast_check_udef_lit_args( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_USER_DEF_LITERAL );
 
@@ -1484,7 +1484,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       {
         bool const args_ok =
           ast->kind_id == K_USER_DEF_LITERAL ?
-            c_ast_check_user_def_lit_args( ast ) :
+            c_ast_check_udef_lit_args( ast ) :
             opt_lang == LANG_C_KNR ?
               c_ast_check_func_args_knr( ast ) :
               c_ast_check_func_args( ast );
@@ -1595,7 +1595,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
         return VISITOR_ERROR_FOUND;
       }
       c_ast_t const *const conv_ast =
-        c_ast_untypedef( ast->as.user_def_conv.conv_ast );
+        c_ast_untypedef( ast->as.udef_conv.conv_ast );
       if ( conv_ast->kind_id == K_ARRAY ) {
         print_error( &conv_ast->loc,
           "%s %s %s can not convert to an %s",

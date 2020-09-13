@@ -50,22 +50,22 @@ _GL_INLINE_HEADER_BEGIN
 
 /// @endcond
 
-/** For `c_array.size`, denotes `array[]`. */
+/** For `c_array_ast.size`, denotes `array[]`. */
 #define C_ARRAY_SIZE_NONE     (-1)
 
-/** For `c_array.size`, denotes `array[*]`. */
+/** For `c_array_ast.size`, denotes `array[*]`. */
 #define C_ARRAY_SIZE_VARIABLE (-2)
 
-/** For `c_func.flags`, denotes that the function is unspecified. */
+/** For `c_function_ast.flags`, denotes that the function is unspecified. */
 #define C_FUNC_UNSPECIFIED    0u
 
-/** For `c_func.flags`, denotes that the function is a member. */
+/** For `c_function_ast.flags`, denotes that the function is a member. */
 #define C_FUNC_MEMBER         (1u << 0)
 
-/** For `c_func.flags`, denotes that the function is a non-member. */
+/** For `c_function_ast.flags`, denotes that the function is a non-member. */
 #define C_FUNC_NON_MEMBER     (1u << 1)
 
-/** For `c_func.flags`, member bitmask. */
+/** For `c_function_ast.flags`, member bitmask. */
 #define C_FUNC_MASK_MEMBER    0x3u
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -133,14 +133,14 @@ typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
  * @note All parent nodes have a AST pointer to what they're a parent of as
  * their first `struct` member: this is taken advantage of.
  */
-struct c_parent {
+struct c_parent_ast {
   c_ast_t    *of_ast;                   ///< What it's a parent of.
 };
 
 /**
  * AST node for a C/C++ array.
  */
-struct c_array {
+struct c_array_ast {
   c_ast_t        *of_ast;               ///< What it's an array of.
 
   /**
@@ -158,10 +158,10 @@ struct c_array {
 /**
  * AST node for a C/C++ block (Apple extension).
  *
- * @note Members are laid out in the same order as `c_func`: this is taken
- * advantage of.
+ * @note Members are laid out in the same order as `c_function_ast`: this is
+ * taken advantage of.
  */
-struct c_apple_block {
+struct c_apple_block_ast {
   c_ast_t      *ret_ast;                ///< Return type.
   c_ast_args_t  args;                   ///< Block argument(s), if any.
 };
@@ -169,10 +169,10 @@ struct c_apple_block {
 /**
  * AST Node for a C++ constructor.
  *
- * @note Members are laid out in the same order as `c_func`: this is taken
- * advantage of.
+ * @note Members are laid out in the same order as `c_function_ast`: this is
+ * taken advantage of.
  */
-struct c_constructor {
+struct c_constructor_ast {
   void         *child_ast_not_used;     ///< So `args` is at same offset.
   c_ast_args_t  args;                   ///< Constructor argument(s), if any.
 };
@@ -180,14 +180,14 @@ struct c_constructor {
 /**
  * AST node for a C/C++ `enum`, `class`, `struct`, or `union` type.
  */
-struct c_ecsu {
+struct c_ecsu_ast {
   c_sname_t     ecsu_sname;             ///< enum/class/struct/union name
 };
 
 /**
  * AST node for a C/C++ function.
  */
-struct c_func {
+struct c_function_ast {
   c_ast_t      *ret_ast;                ///< Return type.
   c_ast_args_t  args;                   ///< Function argument(s), if any.
   unsigned      flags;                  ///< Member vs. non-member.
@@ -196,10 +196,10 @@ struct c_func {
 /**
  * AST node for a C++ overloaded operator.
  *
- * @note Members are laid out in the same order as `c_func`: this is taken
- * advantage of.
+ * @note Members are laid out in the same order as `c_function_ast`: this is
+ * taken advantage of.
  */
-struct c_oper {
+struct c_operator_ast {
   c_ast_t      *ret_ast;                ///< Return type.
   c_ast_args_t  args;                   ///< Operator argument(s), if any.
   unsigned      flags;                  ///< Member vs. non-member.
@@ -209,7 +209,7 @@ struct c_oper {
 /**
  * AST node for a C++ pointer-to-member of a class.
  */
-struct c_ptr_mbr {
+struct c_ptr_mbr_ast {
   c_ast_t      *of_ast;                 ///< Member type.
   c_sname_t     class_sname;            ///< When a member function; or empty.
 };
@@ -217,24 +217,24 @@ struct c_ptr_mbr {
 /**
  * AST node for a C/C++ pointer, or a C++ reference or rvalue reference.
  */
-struct c_ptr_ref {
+struct c_ptr_ref_ast {
   c_ast_t      *to_ast;                 ///< What it's a pointer/reference to.
 };
 
 /**
  * AST Node for a C++ user-defined conversion operator.
  */
-struct c_user_def_conv {
+struct c_udef_conv_ast {
   c_ast_t      *conv_ast;               ///< Conversion type.
 };
 
 /**
  * AST node for a C++ user-defined literal.
  *
- * @note Members are laid out in the same order as `c_func`: this is taken
- * advantage of.
+ * @note Members are laid out in the same order as `c_function_ast`: this is
+ * taken advantage of.
  */
-struct c_user_def_lit {
+struct c_udef_lit_ast {
   c_ast_t      *ret_ast;                ///< Return type.
   c_ast_args_t  args;                   ///< Literal argument(s).
 };
@@ -253,21 +253,21 @@ struct c_ast {
   c_loc_t               loc;            ///< Source location.
 
   union {
-    c_parent_t          parent;         ///< "Parent" member(s).
-    c_array_t           array;          ///< Array member(s).
-    c_apple_block_t     block;          ///< Block member(s).
+    c_parent_ast_t      parent;         ///< "Parent" member(s).
+    c_array_ast_t       array;          ///< Array member(s).
+    c_apple_block_ast_t block;          ///< Block member(s).
     // nothing needed for K_BUILTIN
-    c_constructor_t     constructor;    ///< Constructor member(s).
+    c_constructor_ast_t constructor;    ///< Constructor member(s).
     // nothing needed for K_DESTRUCTOR
-    c_ecsu_t            ecsu;           ///< `enum`, `class`, `struct`, `union`
-    c_func_t            func;           ///< Function member(s).
+    c_ecsu_ast_t        ecsu;           ///< `enum`, `class`, `struct`, `union`
+    c_function_ast_t    func;           ///< Function member(s).
     // nothing needed for K_NAME
-    c_oper_t            oper;           ///< Operator member(s).
-    c_ptr_mbr_t         ptr_mbr;        ///< Pointer-to-member member(s).
-    c_ptr_ref_t         ptr_ref;        ///< Pointer or reference member(s).
+    c_operator_ast_t    oper;           ///< Operator member(s).
+    c_ptr_mbr_ast_t     ptr_mbr;        ///< Pointer-to-member member(s).
+    c_ptr_ref_ast_t     ptr_ref;        ///< Pointer or reference member(s).
     c_typedef_t const  *c_typedef;      ///< `typedef` member(s).
-    c_user_def_conv_t   user_def_conv;  ///< User-defined conversion member(s).
-    c_user_def_lit_t    user_def_lit;   ///< User-defined literal member(s).
+    c_udef_conv_ast_t   udef_conv;      ///< User-defined conversion member(s).
+    c_udef_lit_ast_t    udef_lit;       ///< User-defined literal member(s).
     // nothing needed for K_VARIADIC
   } as;                                 ///< Union discriminator.
 };
@@ -325,12 +325,12 @@ void c_ast_cleanup( void );
 /**
  * Checks whether the two ASTs are equivalent, i.e., represent the same type.
  *
- * @param ast_i The first AST.
- * @param ast_j The second AST.
+ * @param i_ast The first AST.
+ * @param j_ast The second AST.
  * @return Returns `true` only if the two ASTs are equivalent.
  */
 C_WARN_UNUSED_RESULT
-bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j );
+bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast );
 
 /**
  * Frees all the memory used by \a ast.

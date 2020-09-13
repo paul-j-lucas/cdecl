@@ -79,7 +79,7 @@ enum c_mode {
 
 typedef struct c_alignas        c_alignas_t;
 typedef enum   c_alignas_arg    c_alignas_arg_t;
-typedef struct c_array          c_array_t;
+typedef struct c_array_ast      c_array_ast_t;
 
 /**
  * One of:
@@ -90,40 +90,40 @@ typedef struct c_array          c_array_t;
  */
 typedef int                     c_array_size_t;
 
-typedef struct c_apple_block    c_apple_block_t;
-typedef struct c_ast            c_ast_t;
-typedef struct slist            c_ast_args_t;   ///< Function-like arguments.
-typedef struct slist_node       c_ast_arg_t;    ///< Function-like argument.
-typedef unsigned                c_ast_depth_t;  ///< How many `()` deep.
-typedef unsigned                c_ast_id_t;     ///< Unique AST node id.
-typedef struct c_ast_pair       c_ast_pair_t;
-typedef struct c_constructor    c_constructor_t;
-typedef struct c_ecsu           c_ecsu_t;
-typedef struct c_func           c_func_t;
-typedef enum   c_graph          c_graph_t;
-typedef struct c_keyword        c_keyword_t;
-typedef enum   c_kind_id        c_kind_id_t;
-typedef uint32_t                c_lang_id_t;    ///< Languages bitmask.
-typedef struct c_lang_lit       c_lang_lit_t;
-typedef struct c_loc            c_loc_t;
-typedef enum   c_mode           c_mode_t;
-typedef struct c_oper           c_oper_t;
-typedef enum   c_oper_id        c_oper_id_t;
-typedef struct c_operator       c_operator_t;
-typedef struct c_parent         c_parent_t;
-typedef struct c_ptr_mbr        c_ptr_mbr_t;
-typedef struct c_ptr_ref        c_ptr_ref_t;
-typedef struct slist_node       c_scope_t;      ///< Scope in a c_sname_t.
-typedef struct c_scope_data     c_scope_data_t;
-typedef struct slist            c_sname_t;      ///< C++ scoped name.
-typedef struct c_typedef        c_typedef_t;
-typedef enum   c_typedef_add_rv c_typedef_add_rv_t;
-typedef struct c_type           c_type_t;
-typedef uint64_t                c_type_id_t;    ///< Type(s) bitmask.
-typedef enum   c_type_part_id   c_type_part_id_t;
-typedef struct c_user_def_conv  c_user_def_conv_t;
-typedef struct c_user_def_lit   c_user_def_lit_t;
-typedef enum   c_visit_dir      c_visit_dir_t;
+typedef struct c_apple_block_ast  c_apple_block_ast_t;
+typedef struct c_ast              c_ast_t;
+typedef struct slist              c_ast_args_t;   ///< Function-like arguments.
+typedef struct slist_node         c_ast_arg_t;    ///< Function-like argument.
+typedef unsigned                  c_ast_depth_t;  ///< How many `()` deep.
+typedef unsigned                  c_ast_id_t;     ///< Unique AST node id.
+typedef struct c_ast_pair         c_ast_pair_t;
+typedef struct c_constructor_ast  c_constructor_ast_t;
+typedef struct c_ecsu_ast         c_ecsu_ast_t;
+typedef struct c_function_ast     c_function_ast_t;
+typedef enum   c_graph            c_graph_t;
+typedef struct c_keyword          c_keyword_t;
+typedef enum   c_kind_id          c_kind_id_t;
+typedef uint32_t                  c_lang_id_t;    ///< Languages bitmask.
+typedef struct c_lang_lit         c_lang_lit_t;
+typedef struct c_loc              c_loc_t;
+typedef enum   c_mode             c_mode_t;
+typedef struct c_operator_ast     c_operator_ast_t;
+typedef enum   c_oper_id          c_oper_id_t;
+typedef struct c_operator         c_operator_t;
+typedef struct c_parent_ast       c_parent_ast_t;
+typedef struct c_ptr_mbr_ast      c_ptr_mbr_ast_t;
+typedef struct c_ptr_ref_ast      c_ptr_ref_ast_t;
+typedef struct slist_node         c_scope_t;      ///< Scope in a c_sname_t.
+typedef struct c_scope_data       c_scope_data_t;
+typedef struct slist              c_sname_t;      ///< C++ scoped name.
+typedef struct c_typedef          c_typedef_t;
+typedef enum   c_typedef_add_rv   c_typedef_add_rv_t;
+typedef struct c_type             c_type_t;
+typedef uint64_t                  c_type_id_t;    ///< Type(s) bitmask.
+typedef enum   c_type_part_id     c_type_part_id_t;
+typedef struct c_udef_conv_ast    c_udef_conv_ast_t;
+typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
+typedef enum   c_visit_dir        c_visit_dir_t;
 
 typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
 /// @cond DOXYGEN_IGNORE

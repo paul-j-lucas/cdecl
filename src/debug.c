@@ -225,7 +225,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_USER_DEF_CONVERSION:
         PRINT_COMMA;
-        c_ast_debug( ast->as.user_def_conv.conv_ast, indent, "conv_ast", dout );
+        c_ast_debug( ast->as.udef_conv.conv_ast, indent, "conv_ast", dout );
         break;
     } // switch
 

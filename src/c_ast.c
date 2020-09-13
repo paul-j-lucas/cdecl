@@ -74,68 +74,68 @@ void c_ast_cleanup( void ) {
     INTERNAL_ERR( "number of c_ast objects (%u) > 0\n", c_ast_count );
 }
 
-bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
-  if ( ast_i == ast_j )
+bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
+  if ( i_ast == j_ast )
     return true;
-  if ( (ast_i != NULL && ast_j == NULL) || (ast_i == NULL && ast_j != NULL) )
+  if ( (i_ast != NULL && j_ast == NULL) || (i_ast == NULL && j_ast != NULL) )
     return false;
 
   //
   // If only one of the ASTs is a typedef, compare the other AST to the
   // typedef's AST.
   //
-  if ( ast_i->kind_id == K_TYPEDEF ) {
-    if ( ast_j->kind_id != K_TYPEDEF )
-      return c_ast_equiv( ast_i->as.c_typedef->ast, ast_j );
+  if ( i_ast->kind_id == K_TYPEDEF ) {
+    if ( j_ast->kind_id != K_TYPEDEF )
+      return c_ast_equiv( i_ast->as.c_typedef->ast, j_ast );
   } else {
-    if ( ast_j->kind_id == K_TYPEDEF )
-      return c_ast_equiv( ast_i, ast_j->as.c_typedef->ast );
+    if ( j_ast->kind_id == K_TYPEDEF )
+      return c_ast_equiv( i_ast, j_ast->as.c_typedef->ast );
   }
 
-  if ( ast_i->kind_id != ast_j->kind_id )
+  if ( i_ast->kind_id != j_ast->kind_id )
     return false;
-  if ( !c_type_equal( &ast_i->type, &ast_j->type ) )
+  if ( !c_type_equal( &i_ast->type, &j_ast->type ) )
     return false;
 
-  switch ( ast_i->kind_id ) {
+  switch ( i_ast->kind_id ) {
     case K_ARRAY: {
-      c_array_t const *const a_i = &ast_i->as.array;
-      c_array_t const *const a_j = &ast_j->as.array;
-      if ( a_i->size != a_j->size )
+      c_array_ast_t const *const ai_ast = &i_ast->as.array;
+      c_array_ast_t const *const aj_ast = &j_ast->as.array;
+      if ( ai_ast->size != aj_ast->size )
         return false;
-      if ( a_i->store_tid != a_j->store_tid )
+      if ( ai_ast->store_tid != aj_ast->store_tid )
         return false;
       break;
     }
 
     case K_OPERATOR:
-      if ( ast_i->as.oper.oper_id != ast_j->as.oper.oper_id )
+      if ( i_ast->as.oper.oper_id != j_ast->as.oper.oper_id )
         return false;
       C_FALLTHROUGH;
     case K_FUNCTION:
-      if ( ast_i->as.func.flags != ast_j->as.func.flags )
+      if ( i_ast->as.func.flags != j_ast->as.func.flags )
         return false;
       C_FALLTHROUGH;
     case K_APPLE_BLOCK:
       // ret_ast is checked by the parent code below
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL: {
-      c_ast_arg_t const *arg_i = c_ast_args( ast_i );
-      c_ast_arg_t const *arg_j = c_ast_args( ast_j );
-      for ( ; arg_i != NULL && arg_j != NULL;
-              arg_i = arg_i->next, arg_j = arg_j->next ) {
-        if ( !c_ast_equiv( c_ast_arg_ast( arg_i ), c_ast_arg_ast( arg_j ) ) )
+      c_ast_arg_t const *i_arg = c_ast_args( i_ast );
+      c_ast_arg_t const *j_arg = c_ast_args( j_ast );
+      for ( ; i_arg != NULL && j_arg != NULL;
+              i_arg = i_arg->next, j_arg = j_arg->next ) {
+        if ( !c_ast_equiv( c_ast_arg_ast( i_arg ), c_ast_arg_ast( j_arg ) ) )
           return false;
       } // for
-      if ( arg_i != NULL || arg_j != NULL )
+      if ( i_arg != NULL || j_arg != NULL )
         return false;
       break;
     }
 
     case K_ENUM_CLASS_STRUCT_UNION: {
-      c_ecsu_t const *const e_i = &ast_i->as.ecsu;
-      c_ecsu_t const *const e_j = &ast_j->as.ecsu;
-      if ( c_sname_cmp( &e_i->ecsu_sname, &e_j->ecsu_sname ) != 0 )
+      c_ecsu_ast_t const *const ei_ast = &i_ast->as.ecsu;
+      c_ecsu_ast_t const *const ej_ast = &j_ast->as.ecsu;
+      if ( c_sname_cmp( &ei_ast->ecsu_sname, &ej_ast->ecsu_sname ) != 0 )
         return false;
       break;
     }
@@ -145,17 +145,17 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
       break;
 
     case K_POINTER_TO_MEMBER: {
-      c_ptr_mbr_t const *const pm_i = &ast_i->as.ptr_mbr;
-      c_ptr_mbr_t const *const pm_j = &ast_j->as.ptr_mbr;
-      if ( c_sname_cmp( &pm_i->class_sname, &pm_j->class_sname ) != 0 )
+      c_ptr_mbr_ast_t const *const pmi_ast = &i_ast->as.ptr_mbr;
+      c_ptr_mbr_ast_t const *const pmj_ast = &j_ast->as.ptr_mbr;
+      if ( c_sname_cmp( &pmi_ast->class_sname, &pmj_ast->class_sname ) != 0 )
         return false;
       break;
     }
 
     case K_TYPEDEF: {
-      c_typedef_t const *const t_i = ast_i->as.c_typedef;
-      c_typedef_t const *const t_j = ast_j->as.c_typedef;
-      if ( !c_ast_equiv( t_i->ast, t_j->ast ) )
+      c_typedef_t const *const i_td = i_ast->as.c_typedef;
+      c_typedef_t const *const j_td = j_ast->as.c_typedef;
+      if ( !c_ast_equiv( i_td->ast, j_td->ast ) )
         return false;
       break;
     }
@@ -173,12 +173,12 @@ bool c_ast_equiv( c_ast_t const *ast_i, c_ast_t const *ast_j ) {
       break;
   } // switch
 
-  if ( !c_ast_is_parent( ast_i ) ) {
-    assert( !c_ast_is_parent( ast_j ) );
+  if ( !c_ast_is_parent( i_ast ) ) {
+    assert( !c_ast_is_parent( j_ast ) );
     return true;
   }
-  assert( c_ast_is_parent( ast_j ) );
-  return c_ast_equiv( ast_i->as.parent.of_ast, ast_j->as.parent.of_ast );
+  assert( c_ast_is_parent( j_ast ) );
+  return c_ast_equiv( i_ast->as.parent.of_ast, j_ast->as.parent.of_ast );
 }
 
 void c_ast_free( c_ast_t *ast ) {

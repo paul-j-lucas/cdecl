@@ -2955,7 +2955,7 @@ user_defined_literal_decl_english_ast
 
       $$.ast = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
       $$.target_ast = NULL;
-      $$.ast->as.user_def_lit.args = $3;
+      $$.ast->as.udef_lit.args = $3;
       c_ast_set_parent( $4.ast, $$.ast );
 
       DUMP_AST( "user_defined_literal_decl_english_ast", $$.ast );
@@ -3681,8 +3681,8 @@ user_defined_conversion_decl_c_ast
       $$.ast->type.store_tid = $8 | $9 | $10;
       if ( type_ast_peek() != NULL )
         c_type_or_eq( &$$.ast->type, &type_ast_peek()->type );
-      $$.ast->as.user_def_conv.conv_ast = $5.ast != NULL ? $5.ast : $3.ast;
-      $$.target_ast = $$.ast->as.user_def_conv.conv_ast;
+      $$.ast->as.udef_conv.conv_ast = $5.ast != NULL ? $5.ast : $3.ast;
+      $$.target_ast = $$.ast->as.udef_conv.conv_ast;
 
       DUMP_AST( "user_defined_conversion_decl_c_ast", $$.ast );
       DUMP_END();
@@ -3728,7 +3728,7 @@ user_defined_literal_decl_c_ast
       DUMP_AST( "trailing_return_type_c_ast_opt", $6.ast );
 
       c_ast_t *const lit = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
-      lit->as.user_def_lit.args = $3;
+      lit->as.udef_lit.args = $3;
 
       if ( $6.ast != NULL ) {
         $$.ast = c_ast_add_func( $1.ast, $6.ast, lit );
@@ -3740,7 +3740,7 @@ user_defined_literal_decl_c_ast
       else {
         $$.ast = c_ast_add_func( $1.ast, type_ast_peek(), lit );
       }
-      $$.target_ast = lit->as.user_def_lit.ret_ast;
+      $$.target_ast = lit->as.udef_lit.ret_ast;
 
       DUMP_AST( "user_defined_literal_decl_c_ast", $$.ast );
       DUMP_END();
