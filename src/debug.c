@@ -244,9 +244,9 @@ void c_sname_debug( c_sname_t const *sname, FILE *dout ) {
           scope = scope->next ) {
       if ( true_or_set( &comma ) )
         FPUTS( "::", dout );
-      c_type_t const *const scope_ts = c_scope_type( scope );
+      c_type_t const *const scope_type = c_scope_type( scope );
       FPUTS(
-        c_type_is_none( scope_ts ) ? "none" : c_type_name( scope_ts ),
+        c_type_is_none( scope_type ) ? "none" : c_type_name( scope_type ),
         dout
       );
     } // for
