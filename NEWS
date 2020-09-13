@@ -12,6 +12,13 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 8.1
 
+** Enum declarations
+
+Enumerations can now be declared in the same abbreviated manner as classes:
+
+    enum E
+    enum class E2
+
 ** Unified Parallel C support
 Added support for Unified Parallel C:
 
@@ -31,10 +38,66 @@ GNU C++ allows references to be restricted:
 Now, cdecl does too.
 
 ** More C++ std types
-Added types std::condition_variable, std::condition_variable_any, std::mutex,
-std::recursive_mutex, std::recursive_timed_mutex, std::regex,
-std::shared_mutex, std::shared_timed_mutex, std::string_view, and
-std::timed_mutex.
+Added types std::adopt_lock_t, std::align_val_t, std::ambiguous_local_time,
+std::atomic_bool, std::atomic_char, std::atomic_char16_t, std::atomic_char32_t,
+std::atomic_char8_t, std::atomic_flag, std::atomic_int, std::atomic_int16_t,
+std::atomic_int32_t, std::atomic_int64_t, std::atomic_int8_t,
+std::atomic_int_fast16_t, std::atomic_int_fast32_t, std::atomic_int_fast64_t,
+std::atomic_int_fast8_t, std::atomic_int_least16_t, std::atomic_int_least32_t,
+std::atomic_int_least64_t, std::atomic_int_least8_t, std::atomic_intmax_t,
+std::atomic_intptr_t, std::atomic_llong, std::atomic_long,
+std::atomic_ptrdiff_t, std::atomic_schar, std::atomic_short,
+std::atomic_signed_lock_free, std::atomic_size_t, std::atomic_uchar,
+std::atomic_uint, std::atomic_uint16_t, std::atomic_uint32_t,
+std::atomic_uint64_t, std::atomic_uint8_t, std::atomic_uint_fast16_t,
+std::atomic_uint_fast32_t, std::atomic_uint_fast64_t, std::atomic_uint_fast8_t,
+std::atomic_uint_least16_t, std::atomic_uint_least32_t,
+std::atomic_uint_least64_t, std::atomic_uint_least8_t, std::atomic_uintmax_t,
+std::atomic_uintptr_t, std::atomic_ullong, std::atomic_ulong,
+std::atomic_unsigned_lock_free, std::atomic_ushort, std::atomic_wchar_t,
+std::bad_alloc, std::bad_any_cast, std::bad_array_new_length, std::bad_cast,
+std::bad_exception, std::bad_function_call, std::bad_optional_access,
+std::bad_type_id, std::bad_variant_access, std::bad_weak_ptr, std::byte,
+std::chrono::choose, std::chrono::day, std::chrono::file_clock,
+std::chrono::gps_clock, std::chrono::high_resolution_clock,
+std::chrono::is_clock, std::chrono::last_spec, std::chrono::leap_second,
+std::chrono::local_info, std::chrono::local_t, std::chrono::month,
+std::chrono::month_day, std::chrono::month_day_last,
+std::chrono::month_weekday, std::chrono::month_weekday_last,
+std::chrono::nonexistent_local_time, std::chrono::steady_clock,
+std::chrono::sys_info, std::chrono::system_clock, std::chrono::tai_clock,
+std::chrono::time_zone, std::chrono::time_zone_link, std::chrono::tzdb,
+std::chrono::tzdb_list, std::chrono::utc_clock, std::chrono::weekday,
+std::chrono::weekday_indexed, std::chrono::weekday_last, std::chrono::year,
+std::chrono::year_month, std::chrono::year_month_day,
+std::chrono::year_month_day_last, std::chrono::year_month_weekday,
+std::chrono::year_month_weekday_last, std::codecvt_base,
+std::condition_variable, std::condition_variable_any, std::ctype_base,
+std::cv_status, std::defer_lock_t, std::domain_error, std::error_category,
+std::error_code, std::error_condition, std::filebuf,
+std::filesystem::copy_options, std::filesystem::directory_entry,
+std::filesystem::directory_iterator, std::filesystem::directory_options,
+std::filesystem::file_status, std::filesystem::filesystem_error,
+std::filesystem::file_type, std::filesystem::path,
+std::filesystem::perm_options, std::filesystem::perms,
+std::filesystem::recursive_directory_iterator, std::filesystem::space_info,
+std::format_error, std::fstream, std::future_errc, std::future_error,
+std::future_status, std::ifstream, std::invalid_argument, std::ios,
+std::ios_base::failure, std::iostream, std::istream, std::istringstream,
+std::length_error, std::locale, std::logic_error, std::messages_base,
+std::money_base, std::mutex, std::nonstopstate_t, std::ofstream, std::ostream,
+std::ostringstream, std::osyncstream, std::out_of_range, std::overflow_error,
+std::range_error, std::recursive_mutex, std::recursive_timed_mutex, std::regex,
+std::regex_error, std::runtime_error, std::shared_mutex,
+std::shared_timed_mutex, std::stop_source, std::stop_token, std::streambuf,
+std::stringbuf, std::stringstream, std::string_view, std::syncbuf,
+std::system_error, std::time_base, std::timed_mutex.  std::try_to_lock_t,
+std::u16string_view, std::u32string_view, std::u8string_view,
+std::underflow_error, std::wfilebuf, std::wfstream, std::wifstream, std::wios,
+std::wiostream, std::wistream, std::wistringstream, std::wofstream,
+std::wostream, std::wostringstream, std::wosyncstream, std::wregex,
+std::wstreambuf, std::wstringbuf, std::wstringstream, std::wstring_view, and
+std::wsyncbuf.
 
 ** Fixed class declarations
 Declaring a class as either:
