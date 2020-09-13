@@ -1,3 +1,77 @@
+2020-09-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, debug.c, errors.c, parser.y, types.h: Renaming.
+   * cdecl--debug.out, cdecl-d.out: Now debug printing function flags better,
+     part 2.
+   * debug.c: Now debug printing function flags better.
+   * debug.c: Renamed variable.
+   * debug.c: Added INDENT_PRINT_LOC().
+   * NEWS, cdecl.1, c_typedef.c, parser.y, cdecl--debug.out, cdecl-d.out,
+     show_all.out, show_all_typedef.out, show_predefined.out,
+     show_predefined_typedef.out: Added many more standard C++ types.
+
+2020-09-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Comment fix.
+   * parser.y: COmment fix.
+   * parser.y: Parser macro clean-up.
+   * NEWS, parser.y, test/Makefile.am, explain_grtri.out, explain_grtrri.out,
+     explain_grtri.test, explain_grtrri.test: Added support for restricted
+     references.
+
+2020-09-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Fix build error on Linux.
+   * NEWS, configure.ac, cdecl.1, autocomplete.c, c_keyword.c, c_lang.c,
+     c_lang.h, c_type.c, c_type.h, errors.c, literals.c, literals.h, parser.y,
+     test/Makefile.am, xupc_declare_a2di.out, xupc_declare_da2i.out,
+     xupc_declare_dpi.out, xupc_declare_pdi.out, xupc_declare_ptdi.out,
+     xupc_declare_rdi.out, xupc_declare_rdpi.out, xupc_declare_tdi.out,
+     xupc_explain_da2i.out, xupc_explain_dpi.out, xupc_explain_pdi.out,
+     xupc_explain_ptdi.out, xupc_explain_rdi.out, xupc_explain_rdpi.out,
+     xupc_explain_tdi.out, xupc_declare_a2di.test, xupc_declare_dpi.test,
+     xupc_declare_pdi.test, xupc_declare_ptdi.test, xupc_declare_rdi.test,
+     xupc_declare_rdpi.test, xupc_declare_tdi.test, xupc_explain_da2i.test,
+     xupc_explain_dpi.test, xupc_explain_pdi.test, xupc_explain_ptdi.test,
+     xupc_explain_rdi.test, xupc_explain_rdpi.test, xupc_explain_ri.test,
+     xupc_explain_tdi.test: Added support for Unified Parallel C.
+
+2020-09-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c,
+     c_lang.c, c_lang.h, c_operator.c, c_sname.c, c_sname.h, c_type.c,
+     c_type.h, c_typedef.c, debug.c, debug.h, english.c, errors.c, gibberish.c,
+     lexer.l, literals.c, literals.h, options.c, parser.y, pjl_config.h,
+     types.h, util.h, cdecl--debug.out, cdecl-d.out: Now using multi-part C/C++
+     types for >64 bits of type information.
+
+2020-08-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_typedef.c, parser.y: Can now declare a class as just "class C[;]".
+
+2020-08-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
+     show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
+     Added types std::condition_variable, std::condition_variable_any,
+     std::mutex, std::recursive_mutex, std::recursive_timed_mutex, std::regex,
+     std::shared_mutex, std::shared_timed_mutex, std::string_view, and
+     std::timed_mutex.
+
+2020-08-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added more mentions of Embedded C types.
+   * cdecl.1: Added misssing "final", "override", and "export".
+   * cdecl.1: Storage is * for constructor.
+   * c_type.c: Renaming.
+
+2020-07-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: s/slist_t/c_ast_args_t/
+   * parser.y: Moved more calls to DUMP_* macros before PARSE_ABORT().
+   * parser.y: For trailing_return_type_c_ast_opt, move DUMP_* calls before
+     checks.
+
 2020-07-29  Paul J. Lucas <paul@lucasmail.org>
 
    * Makefile.am: s/gnulib/gnulib-tool/
