@@ -13,7 +13,6 @@ with their complete changes, see the AUTHORS file.
 * Changes in Cdecl 8.1
 
 ** Enum declarations
-
 Enumerations can now be declared in the same abbreviated manner as classes:
 
     enum E
