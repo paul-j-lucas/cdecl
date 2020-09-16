@@ -1172,8 +1172,9 @@ static void yyerror( char const *msg ) {
 %type   <ast>       arg_array_size_c_ast
 %type   <ast_pair>  arg_c_ast
 %type   <ast_list>  arg_list_c_ast arg_list_c_ast_opt
-%type   <ast_pair>  name_c_ast name_english_ast
+%type   <ast_pair>  name_ast
 %type   <ast_pair>  sname_c_ast
+%type   <ast_pair>  sname_english_ast
 %type   <ast_pair>  typedef_name_c_ast
 %type   <ast_pair>  using_name_c_ast_expected
 
@@ -2531,7 +2532,7 @@ using_declaration_c
   ;
 
 using_name_c_ast_expected
-  : name_c_ast
+  : name_ast
   | typedef_name_c_ast
   | error
     {
@@ -2991,7 +2992,7 @@ var_decl_english_ast
     /*
      * K&R C type-less variable declaration.
      */
-  | name_english_ast
+  | sname_english_ast
 
     /*
      * Varargs declaration.
@@ -3826,7 +3827,7 @@ arg_c_ast
     /*
      * K&R C type-less function argument declaration.
      */
-  | name_c_ast
+  | name_ast
 
     /*
      * Varargs declaration.
@@ -4625,6 +4626,30 @@ any_typedef
   | Y_TYPEDEF_SNAME
   ;
 
+name_ast
+  : Y_NAME
+    {
+      DUMP_START( "name_ast", "NAME" );
+      DUMP_STR( "NAME", $1 );
+
+      $$.ast = c_ast_new_gc( K_NAME, &@$ );
+      $$.target_ast = NULL;
+      c_ast_sname_set_name( $$.ast, $1 );
+
+      DUMP_AST( "name_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+name_expected
+  : Y_NAME
+  | error
+    {
+      $$ = NULL;
+      ELABORATE_ERROR( "name expected" );
+    }
+  ;
+
 typedef_type_c_ast
   : any_typedef
     {
@@ -4701,60 +4726,6 @@ typedef_type_c_ast
 
       DUMP_AST( "typedef_type_c_ast", $$.ast );
       DUMP_END();
-    }
-  ;
-
-name_c_ast
-  : Y_NAME
-    {
-      DUMP_START( "name_c_ast", "NAME" );
-      DUMP_STR( "NAME", $1 );
-
-      $$.ast = c_ast_new_gc( K_NAME, &@$ );
-      $$.target_ast = NULL;
-      c_ast_sname_set_name( $$.ast, $1 );
-
-      DUMP_AST( "name_c_ast", $$.ast );
-      DUMP_END();
-    }
-  ;
-
-name_english_ast
-  : Y_NAME of_scope_list_english_opt
-    {
-      DUMP_START( "Y_NAME of_scope_list_english_opt", "NAME" );
-      DUMP_STR( "NAME", $1 );
-      DUMP_SNAME( "of_scope_list_english_opt", &$2 );
-
-      c_sname_t sname = $2;
-      c_sname_append_name( &sname, $1 );
-
-      //
-      // See if the full name is the name of a typedef'd type.
-      //
-      c_typedef_t const *const t = c_typedef_find( &sname );
-      if ( t != NULL ) {
-        $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
-        $$.ast->as.c_typedef = t;
-        $$.ast->type.base_tid = TB_TYPEDEF;
-        c_sname_free( &sname );
-      } else {
-        $$.ast = c_ast_new_gc( K_NAME, &@$ );
-        c_ast_sname_set_sname( $$.ast, &sname );
-      }
-      $$.target_ast = NULL;
-
-      DUMP_AST( "name_english_ast", $$.ast );
-      DUMP_END();
-    }
-  ;
-
-name_expected
-  : Y_NAME
-  | error
-    {
-      $$ = NULL;
-      ELABORATE_ERROR( "name expected" );
     }
   ;
 
@@ -4896,6 +4867,36 @@ sname_english
       c_sname_set_local_type( &$$, local_type );
 
       DUMP_SNAME( "sname_english", &$$ );
+      DUMP_END();
+    }
+  ;
+
+sname_english_ast
+  : Y_NAME of_scope_list_english_opt
+    {
+      DUMP_START( "Y_NAME of_scope_list_english_opt", "NAME" );
+      DUMP_STR( "NAME", $1 );
+      DUMP_SNAME( "of_scope_list_english_opt", &$2 );
+
+      c_sname_t sname = $2;
+      c_sname_append_name( &sname, $1 );
+
+      //
+      // See if the full name is the name of a typedef'd type.
+      //
+      c_typedef_t const *const t = c_typedef_find( &sname );
+      if ( t != NULL ) {
+        $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
+        $$.ast->as.c_typedef = t;
+        $$.ast->type.base_tid = TB_TYPEDEF;
+        c_sname_free( &sname );
+      } else {
+        $$.ast = c_ast_new_gc( K_NAME, &@$ );
+        c_ast_sname_set_sname( $$.ast, &sname );
+      }
+      $$.target_ast = NULL;
+
+      DUMP_AST( "sname_english_ast", $$.ast );
       DUMP_END();
     }
   ;
