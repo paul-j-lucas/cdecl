@@ -206,7 +206,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
 
   c_type_id_t cv_qual_tid     = TS_NONE;
   bool        is_default      = false;
-  bool        is_deleted      = false;
+  bool        is_delete       = false;
   bool        is_final        = false;
   bool        is_noexcept     = false;
   bool        is_override     = false;
@@ -244,7 +244,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       is_override     = (type.store_tid & TS_OVERRIDE) != TS_NONE;
       is_pure_virtual = (type.store_tid & TS_PURE_VIRTUAL) != TS_NONE;
       is_default      = (type.store_tid & TS_DEFAULT) != TS_NONE;
-      is_deleted      = (type.store_tid & TS_DELETE) != TS_NONE;
+      is_delete       = (type.store_tid & TS_DELETE) != TS_NONE;
       is_throw        = (type.store_tid & TS_THROW) != TS_NONE;
       ref_qual_tid    = (type.store_tid & TS_MASK_REF_QUALIFIER);
 
@@ -314,7 +314,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
         FPRINTF( g->gout, " %s", L_FINAL );
       if ( is_default )
         FPRINTF( g->gout, " = %s", L_DEFAULT );
-      if ( is_deleted )
+      if ( is_delete )
         FPRINTF( g->gout, " = %s", L_DELETE );
       if ( is_pure_virtual )
         FPUTS( " = 0", g->gout );
