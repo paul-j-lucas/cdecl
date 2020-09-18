@@ -120,14 +120,16 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       // ret_ast is checked by the parent code below
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL: {
-      c_ast_arg_t const *i_arg = c_ast_args( i_ast );
-      c_ast_arg_t const *j_arg = c_ast_args( j_ast );
-      for ( ; i_arg != NULL && j_arg != NULL;
-              i_arg = i_arg->next, j_arg = j_arg->next ) {
-        if ( !c_ast_equiv( c_ast_arg_ast( i_arg ), c_ast_arg_ast( j_arg ) ) )
+      c_ast_param_t const *i_param = c_ast_params( i_ast );
+      c_ast_param_t const *j_param = c_ast_params( j_ast );
+      for ( ; i_param != NULL && j_param != NULL;
+              i_param = i_param->next, j_param = j_param->next ) {
+        if ( !c_ast_equiv( c_ast_param_ast( i_param ),
+                           c_ast_param_ast( j_param ) ) ) {
           return false;
+        }
       } // for
-      if ( i_arg != NULL || j_arg != NULL )
+      if ( i_param != NULL || j_param != NULL )
         return false;
       break;
     }

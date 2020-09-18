@@ -92,11 +92,11 @@ typedef int                     c_array_size_t;
 
 typedef struct c_apple_block_ast  c_apple_block_ast_t;
 typedef struct c_ast              c_ast_t;
-typedef struct slist              c_ast_args_t;   ///< Function-like arguments.
-typedef struct slist_node         c_ast_arg_t;    ///< Function-like argument.
 typedef unsigned                  c_ast_depth_t;  ///< How many `()` deep.
 typedef unsigned                  c_ast_id_t;     ///< Unique AST node id.
 typedef struct c_ast_pair         c_ast_pair_t;
+typedef struct slist              c_ast_params_t; ///< Function-like parameters.
+typedef struct slist_node         c_ast_param_t;  ///< Function-like parameter.
 typedef struct c_constructor_ast  c_constructor_ast_t;
 typedef struct c_ecsu_ast         c_ecsu_ast_t;
 typedef struct c_function_ast     c_function_ast_t;

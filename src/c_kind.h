@@ -80,28 +80,28 @@ _GL_INLINE_HEADER_BEGIN
  * thing is any _one_ of those kinds.
  */
 enum c_kind_id {
-  K_NONE                    = 0,        ///< No kind.
-  K_PLACEHOLDER             = 0x00001,  ///< Temporary node in AST.
-  K_BUILTIN                 = 0x00002,  ///< `void,` `char,` `int,` etc.
-  K_ENUM_CLASS_STRUCT_UNION = 0x00004,  ///< `enum,` `class,` `struct,` `union`
-  K_NAME                    = 0x00008,  ///< Typeless function argument in K&R C
-  K_TYPEDEF                 = 0x00010,  ///< `typedef` type, e.g., `size_t`.
-  K_VARIADIC                = 0x00020,  ///< Variadic (`...`) function argument.
+  K_NONE                    = 0,       ///< No kind.
+  K_PLACEHOLDER             = 0x00001, ///< Temporary node in AST.
+  K_BUILTIN                 = 0x00002, ///< `void,` `char,` `int,` etc.
+  K_ENUM_CLASS_STRUCT_UNION = 0x00004, ///< `enum,` `class,` `struct,` `union`
+  K_NAME                    = 0x00008, ///< Typeless function parameter in K&R C
+  K_TYPEDEF                 = 0x00010, ///< `typedef` type, e.g., `size_t`.
+  K_VARIADIC                = 0x00020, ///< Variadic (`...`) function parameter.
   // "parent" kinds
-  K_ARRAY                   = 0x00100,  ///< Array.
-  K_POINTER                 = 0x00200,  ///< Pointer.
-  K_POINTER_TO_MEMBER       = 0x00400,  ///< Pointer-to-member (C++ only).
-  K_REFERENCE               = 0x00800,  ///< Reference (C++ only).
-  K_RVALUE_REFERENCE        = 0x01000,  ///< Rvalue reference (C++ only).
+  K_ARRAY                   = 0x00100, ///< Array.
+  K_POINTER                 = 0x00200, ///< Pointer.
+  K_POINTER_TO_MEMBER       = 0x00400, ///< Pointer-to-member (C++ only).
+  K_REFERENCE               = 0x00800, ///< Reference (C++ only).
+  K_RVALUE_REFERENCE        = 0x01000, ///< Rvalue reference (C++ only).
   // function-like "parent" kinds
-  K_CONSTRUCTOR             = 0x02000,  ///< Constructor (C++ only).
-  K_DESTRUCTOR              = 0x04000,  ///< Destructor (C++ only).
+  K_CONSTRUCTOR             = 0x02000, ///< Constructor (C++ only).
+  K_DESTRUCTOR              = 0x04000, ///< Destructor (C++ only).
   // function-like "parent" kinds that have return values
-  K_APPLE_BLOCK             = 0x08000,  ///< Block.
-  K_FUNCTION                = 0x10000,  ///< Function.
-  K_OPERATOR                = 0x20000,  ///< Overloaded operator (C++ only).
-  K_USER_DEF_CONVERSION     = 0x40000,  ///< User-defined conversion (C++ only).
-  K_USER_DEF_LITERAL        = 0x80000,  ///< User-defined literal (C++ only).
+  K_APPLE_BLOCK             = 0x08000, ///< Block.
+  K_FUNCTION                = 0x10000, ///< Function.
+  K_OPERATOR                = 0x20000, ///< Overloaded operator (C++ only).
+  K_USER_DEF_CONVERSION     = 0x40000, ///< User-defined conversion (C++ only).
+  K_USER_DEF_LITERAL        = 0x80000, ///< User-defined literal (C++ only).
 };
 
 #ifndef CDECL_CONFIGURE

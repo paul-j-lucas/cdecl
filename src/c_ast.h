@@ -118,7 +118,7 @@ typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
  * In all cases where an AST node contains:
  *
  *  1. A pointer to another, that pointer is always declared first.
- *  2. Arguments, they are always declared second.
+ *  2. Parameters, they are always declared second.
  *  3. Flags, they are always declared third.
  *
  * Since all the different kinds of AST nodes are declared within a `union`,
@@ -162,8 +162,8 @@ struct c_array_ast {
  * taken advantage of.
  */
 struct c_apple_block_ast {
-  c_ast_t      *ret_ast;                ///< Return type.
-  c_ast_args_t  args;                   ///< Block argument(s), if any.
+  c_ast_t        *ret_ast;              ///< Return type.
+  c_ast_params_t  params;               ///< Block parameters(s), if any.
 };
 
 /**
@@ -173,8 +173,8 @@ struct c_apple_block_ast {
  * taken advantage of.
  */
 struct c_constructor_ast {
-  void         *child_ast_not_used;     ///< So `args` is at same offset.
-  c_ast_args_t  args;                   ///< Constructor argument(s), if any.
+  void           *child_ast_not_used;   ///< So `params` is at same offset.
+  c_ast_params_t  params;               ///< Constructor parameters(s), if any.
 };
 
 /**
@@ -188,9 +188,9 @@ struct c_ecsu_ast {
  * AST node for a C/C++ function.
  */
 struct c_function_ast {
-  c_ast_t      *ret_ast;                ///< Return type.
-  c_ast_args_t  args;                   ///< Function argument(s), if any.
-  unsigned      flags;                  ///< Member or non-member.
+  c_ast_t        *ret_ast;              ///< Return type.
+  c_ast_params_t  params;               ///< Function parameter(s), if any.
+  unsigned        flags;                ///< Member or non-member.
 };
 
 /**
@@ -200,10 +200,10 @@ struct c_function_ast {
  * taken advantage of.
  */
 struct c_operator_ast {
-  c_ast_t      *ret_ast;                ///< Return type.
-  c_ast_args_t  args;                   ///< Operator argument(s), if any.
-  unsigned      flags;                  ///< Member or non-member.
-  c_oper_id_t   oper_id;                ///< Which operator it is.
+  c_ast_t        *ret_ast;              ///< Return type.
+  c_ast_params_t  params;               ///< Operator parameter(s), if any.
+  unsigned        flags;                ///< Member or non-member.
+  c_oper_id_t     oper_id;              ///< Which operator it is.
 };
 
 /**
@@ -235,8 +235,8 @@ struct c_udef_conv_ast {
  * taken advantage of.
  */
 struct c_udef_lit_ast {
-  c_ast_t      *ret_ast;                ///< Return type.
-  c_ast_args_t  args;                   ///< Literal argument(s).
+  c_ast_t        *ret_ast;              ///< Return type.
+  c_ast_params_t  params;               ///< Literal parameter(s).
 };
 
 /**
@@ -281,39 +281,6 @@ struct c_ast {
  * Functions for accessing and manipulating AST nodes.
  * @{
  */
-
-/**
- * Convenience function to get the AST given an `c_ast_arg_t`.
- *
- * @param arg A pointer to an `c_ast_arg_t`.
- * @return Returns a pointer to the AST.
- */
-C_AST_INLINE C_WARN_UNUSED_RESULT
-c_ast_t const* c_ast_arg_ast( c_ast_arg_t const *arg ) {
-  return REINTERPRET_CAST( c_ast_t const*, arg->data );
-}
-
-/**
- * Convenience function for getting function-like arguments.
- *
- * @param ast The AST to get the arguments of.
- * @return Returns a pointer to the first argument or null if none.
- */
-C_AST_INLINE C_WARN_UNUSED_RESULT
-c_ast_arg_t const* c_ast_args( c_ast_t const *ast ) {
-  return ast->as.func.args.head;
-}
-
-/**
- * Convenience function for getting the number of function-like arguments.
- *
- * @param ast The AST to get the number of arguments of.
- * @return Returns said number of arguments.
- */
-C_AST_INLINE C_WARN_UNUSED_RESULT
-size_t c_ast_args_count( c_ast_t const *ast ) {
-  return slist_len( &ast->as.func.args );
-}
 
 /**
  * Cleans-up all AST data.
@@ -365,6 +332,48 @@ bool c_ast_is_parent( c_ast_t const *ast ) {
 C_WARN_UNUSED_RESULT
 c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
                     c_loc_t const *loc );
+
+/**
+ * Convenience function for getting function-like parameters.
+ *
+ * @param ast The AST to get the parameters of.
+ * @return Returns a pointer to the first parameter or null if none.
+ */
+C_AST_INLINE C_WARN_UNUSED_RESULT
+c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
+  return ast->as.func.params.head;
+}
+
+/**
+ * Convenience macro for iterating over all function-like parameters.
+ *
+ * @param PARAM The `c_ast_param_t` loop variable.
+ * @param AST The AST to iterate the parameters of.
+ */
+#define FOREACH_PARAM(PARAM,AST) \
+  for ( c_ast_param_t const *PARAM = c_ast_params( AST ); PARAM != NULL; PARAM = PARAM->next )
+
+/**
+ * Convenience function for getting the number of function-like parameters.
+ *
+ * @param ast The AST to get the number of parameters of.
+ * @return Returns said number of parameters.
+ */
+C_AST_INLINE C_WARN_UNUSED_RESULT
+size_t c_ast_params_count( c_ast_t const *ast ) {
+  return slist_len( &ast->as.func.params );
+}
+
+/**
+ * Convenience function to get the AST given an `c_ast_param_t`.
+ *
+ * @param param A pointer to an `c_ast_param_t`.
+ * @return Returns a pointer to the AST.
+ */
+C_AST_INLINE C_WARN_UNUSED_RESULT
+c_ast_t const* c_ast_param_ast( c_ast_param_t const *param ) {
+  return REINTERPRET_CAST( c_ast_t const*, param->data );
+}
 
 /**
  * Gets the root AST node of \a ast.
@@ -607,7 +616,7 @@ void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname );
  * @param data Optional data passed to \a visitor.
  * @return Returns a pointer to the AST the visitor stopped on or null.
  *
- * @note Function-like arguments are _not_ traversed into.  They're considered
+ * @note Function-like parameters are _not_ traversed into.  They're considered
  * distinct ASTs.
  */
 C_NOWARN_UNUSED_RESULT
@@ -624,7 +633,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
  * @param data Optional data passed to \a visitor.
  * @return Returns `true` only if \a visitor ever returned `true`.
  *
- * @note Function-like arguments are _not_ traversed into.  They're considered
+ * @note Function-like parameters are _not_ traversed into.  They're considered
  * distinct ASTs.
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT

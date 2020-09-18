@@ -192,8 +192,8 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_CONSTRUCTOR:
       case K_USER_DEF_LITERAL:
         PRINT_COMMA;
-        INDENT_PRINT( "args = " );
-        c_ast_list_debug( &ast->as.func.args, indent, dout );
+        INDENT_PRINT( "params = " );
+        c_ast_list_debug( &ast->as.func.params, indent, dout );
         if ( ast->as.func.ret_ast != NULL ) {
           FPUTS( ",\n", dout );
           c_ast_debug( ast->as.func.ret_ast, indent, "ret_ast", dout );
@@ -244,7 +244,7 @@ void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout ) {
     for ( slist_node_t const *p = list->head; p != NULL; p = p->next ) {
       if ( true_or_set( &comma ) )
         FPUTS( ",\n", dout );
-      c_ast_debug( c_ast_arg_ast( p ), indent + 1, NULL, dout );
+      c_ast_debug( c_ast_param_ast( p ), indent + 1, NULL, dout );
     } // for
     FPUTC( '\n', dout );
     INDENT_PRINT( "]" );

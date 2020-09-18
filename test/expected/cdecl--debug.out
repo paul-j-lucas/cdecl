@@ -172,7 +172,7 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-arg_c_ast ::= type_c_ast cast_c_ast_opt = {
+param_c_ast ::= type_c_ast cast_c_ast_opt = {
   type_c_ast = {
     sname = "x" (none),
     unique_id = 635,
@@ -191,7 +191,7 @@ arg_c_ast ::= type_c_ast cast_c_ast_opt = {
     loc = 15-17,
     type = "int" (0x2001,0x2,0x3)
   },
-  arg_c_ast = {
+  param_c_ast = {
     sname = "x" (none),
     unique_id = 635,
     kind = "built-in type",
@@ -202,8 +202,8 @@ arg_c_ast ::= type_c_ast cast_c_ast_opt = {
   }
 }
 
-arg_list_c_ast ::= arg_c_ast = {
-  arg_c_ast = {
+param_list_c_ast ::= param_c_ast = {
+  param_c_ast = {
     sname = "x" (none),
     unique_id = 635,
     kind = "built-in type",
@@ -212,7 +212,7 @@ arg_list_c_ast ::= arg_c_ast = {
     loc = 15-17,
     type = "int" (0x2001,0x2,0x3)
   },
-  arg_list_c_ast = [
+  param_list_c_ast = [
     {
       sname = "x" (none),
       unique_id = 635,
@@ -287,7 +287,7 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-arg_c_ast ::= type_c_ast cast_c_ast_opt = {
+param_c_ast ::= type_c_ast cast_c_ast_opt = {
   type_c_ast = {
     sname = "y" (none),
     unique_id = 636,
@@ -306,7 +306,7 @@ arg_c_ast ::= type_c_ast cast_c_ast_opt = {
     loc = 22-24,
     type = "int" (0x2001,0x2,0x3)
   },
-  arg_c_ast = {
+  param_c_ast = {
     sname = "y" (none),
     unique_id = 636,
     kind = "built-in type",
@@ -317,8 +317,8 @@ arg_c_ast ::= type_c_ast cast_c_ast_opt = {
   }
 }
 
-arg_list_c_ast ::= arg_list_c_ast ',' arg_c_ast = {
-  arg_list_c_ast = [
+param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
+  param_list_c_ast = [
     {
       sname = "x" (none),
       unique_id = 635,
@@ -329,7 +329,7 @@ arg_list_c_ast ::= arg_list_c_ast ',' arg_c_ast = {
       type = "int" (0x2001,0x2,0x3)
     }
   ],
-  arg_c_ast = {
+  param_c_ast = {
     sname = "y" (none),
     unique_id = 636,
     kind = "built-in type",
@@ -338,7 +338,7 @@ arg_list_c_ast ::= arg_list_c_ast ',' arg_c_ast = {
     loc = 22-24,
     type = "int" (0x2001,0x2,0x3)
   },
-  arg_list_c_ast = [
+  param_list_c_ast = [
     {
       sname = "x" (none),
       unique_id = 635,
@@ -360,7 +360,7 @@ arg_list_c_ast ::= arg_list_c_ast ',' arg_c_ast = {
   ]
 }
 
-func_decl_c_ast ::= decl2_c_ast '(' arg_list_c_ast_opt ')' func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_tid_opt = {
+func_decl_c_ast ::= decl2_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_tid_opt = {
   (type_c_ast) = {
     sname = "f" (none),
     unique_id = 634,
@@ -397,7 +397,7 @@ func_decl_c_ast ::= decl2_c_ast '(' arg_list_c_ast_opt ')' func_qualifier_list_c
       type = "int" (0x2001,0x2,0x3)
     }
   },
-  arg_list_c_ast_opt = [
+  param_list_c_ast_opt = [
     {
       sname = "x" (none),
       unique_id = 635,
@@ -430,7 +430,7 @@ func_decl_c_ast ::= decl2_c_ast '(' arg_list_c_ast_opt ')' func_qualifier_list_c
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
     flags = unspecified (0x0),
-    args = [
+    params = [
       {
         sname = "x" (none),
         unique_id = 635,
@@ -499,7 +499,7 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
     flags = unspecified (0x0),
-    args = [
+    params = [
       {
         sname = "x" (none),
         unique_id = 635,
@@ -547,7 +547,7 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
     flags = unspecified (0x0),
-    args = [
+    params = [
       {
         sname = "x" (none),
         unique_id = 635,
@@ -607,7 +607,7 @@ explain_c ::= EXPLAIN type_c_ast decl_c_ast = {
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
     flags = unspecified (0x0),
-    args = [
+    params = [
       {
         sname = "x" (none),
         unique_id = 635,
@@ -655,7 +655,7 @@ explain_c ::= EXPLAIN type_c_ast decl_c_ast = {
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
     flags = unspecified (0x0),
-    args = [
+    params = [
       {
         sname = "x" (none),
         unique_id = 635,

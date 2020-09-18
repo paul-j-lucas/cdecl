@@ -48,7 +48,7 @@ static bool const VISITOR_ERROR_NOT_FOUND = false;
 
 // local functions
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_args( c_ast_t const* );
+static bool c_ast_check_oper_params( c_ast_t const* );
 
 C_WARN_UNUSED_RESULT
 static bool c_ast_check_func_c( c_ast_t const* );
@@ -60,10 +60,10 @@ C_WARN_UNUSED_RESULT
 static bool c_ast_check_func_main( c_ast_t const* );
 
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_new_args( c_ast_t const* );
+static bool c_ast_check_oper_new_params( c_ast_t const* );
 
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_delete_args( c_ast_t const* );
+static bool c_ast_check_oper_delete_params( c_ast_t const* );
 
 C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_error( c_ast_t*, void* );
@@ -190,11 +190,12 @@ static bool c_ast_check_alignas( c_ast_t *ast ) {
  * Checks an array AST for errors.
  *
  * @param ast The array AST to check.
- * @param is_func_arg If `true`, \a ast is an AST for a function-like argument.
+ * @param is_func_param If `true`, \a ast is an AST for a function-like
+ * parameter.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
+static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_ARRAY );
 
@@ -206,9 +207,9 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
       );
       return false;
     }
-    if ( !is_func_arg ) {
+    if ( !is_func_param ) {
       print_error( &ast->loc,
-        "variable length arrays are illegal outside of function arguments"
+        "variable length arrays are illegal outside of function parameters"
       );
       return false;
     }
@@ -223,9 +224,9 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_arg ) {
       );
       return false;
     }
-    if ( !is_func_arg ) {
+    if ( !is_func_param ) {
       print_error( &ast->loc,
-        "\"%s\" arrays are illegal outside of function arguments",
+        "\"%s\" arrays are illegal outside of function parameters",
         c_type_id_name_error( ast->as.array.store_tid )
       );
       return false;
@@ -380,14 +381,14 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
  * Checks an entire AST for semantic errors.
  *
  * @param ast The AST to check.
- * @param is_func_arg If `true`, we're checking a function argument.
+ * @param is_func_param If `true`, we're checking a function parameter.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_arg ) {
+static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_param ) {
   assert( ast != NULL );
   // check in major-to-minor error order
-  void *const data = REINTERPRET_CAST( void*, is_func_arg );
+  void *const data = REINTERPRET_CAST( void*, is_func_param );
   return  c_ast_check_visitor( ast, c_ast_visitor_error, data ) &&
           c_ast_check_visitor( ast, c_ast_visitor_type, data );
 }
@@ -416,60 +417,60 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
 }
 
 /**
- * Checks all function-like arguments for semantic errors.
+ * Checks all function-like parameters for semantic errors.
  *
  * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_func_args( c_ast_t const *ast ) {
+static bool c_ast_check_func_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
   assert( opt_lang != LANG_C_KNR );
 
   c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
-  unsigned n_args = 0;
+  unsigned n_params = 0;
 
-  for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-    if ( ++n_args > 1 && void_ast != NULL )
+  FOREACH_PARAM( param, ast ) {
+    if ( ++n_params > 1 && void_ast != NULL )
       goto only_void;
 
-    c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
+    c_ast_t const *const param_ast = c_ast_param_ast( param );
 
-    if ( c_ast_sname_count( arg_ast ) > 1 ) {
-      print_error( &arg_ast->loc, "argument names can not be scoped" );
+    if ( c_ast_sname_count( param_ast ) > 1 ) {
+      print_error( &param_ast->loc, "parameter names can not be scoped" );
       return false;
     }
 
-    c_type_id_t const arg_store_tid =
+    c_type_id_t const param_store_tid =
       TS_MASK_STORAGE &
-      arg_ast->type.store_tid & c_type_id_compl( TS_REGISTER );
-    if ( arg_store_tid != TS_NONE ) {
-      print_error( &arg_ast->loc,
-        "%s arguments can not be %s",
+      param_ast->type.store_tid & c_type_id_compl( TS_REGISTER );
+    if ( param_store_tid != TS_NONE ) {
+      print_error( &param_ast->loc,
+        "%s parameters can not be %s",
         c_kind_name( ast->kind_id ),
-        c_type_id_name_error( arg_store_tid )
+        c_type_id_name_error( param_store_tid )
       );
       return false;
     }
 
-    switch ( arg_ast->kind_id ) {
+    switch ( param_ast->kind_id ) {
       case K_BUILTIN:
-        if ( c_type_is_tid_any( &arg_ast->type, TB_AUTO ) ) {
-          print_error( &arg_ast->loc, "arguments can not be %s", L_AUTO );
+        if ( c_type_is_tid_any( &param_ast->type, TB_AUTO ) ) {
+          print_error( &param_ast->loc, "parameters can not be %s", L_AUTO );
           return false;
         }
-        if ( c_type_is_tid_any( &arg_ast->type, TB_VOID ) ) {
+        if ( c_type_is_tid_any( &param_ast->type, TB_VOID ) ) {
           //
-          // Ordinarily, void arguments are invalid; but a single void function
-          // "argument" is valid (as long as it doesn't have a name).
+          // Ordinarily, void parameters are invalid; but a single void
+          // function "parameter" is valid (as long as it doesn't have a name).
           //
-          if ( !c_ast_sname_empty( arg_ast ) ) {
-            print_error( &arg_ast->loc, "arguments can not be %s", L_VOID );
+          if ( !c_ast_sname_empty( param_ast ) ) {
+            print_error( &param_ast->loc, "parameters can not be %s", L_VOID );
             return false;
           }
-          void_ast = arg_ast;
-          if ( n_args > 1 )
+          void_ast = param_ast;
+          if ( n_params > 1 )
             goto only_void;
           continue;
         }
@@ -477,7 +478,7 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
 
       case K_NAME:
         if ( opt_lang >= LANG_C_2X ) {
-          print_error( &arg_ast->loc,
+          print_error( &param_ast->loc,
             "%s requires type specifier", C_LANG_NAME()
           );
           return false;
@@ -487,33 +488,35 @@ static bool c_ast_check_func_args( c_ast_t const *ast ) {
       case K_VARIADIC:
         if ( ast->kind_id == K_OPERATOR &&
              ast->as.oper.oper_id != C_OP_PARENS ) {
-          print_error( &arg_ast->loc,
-            "%s %s can not have a %s argument",
+          print_error( &param_ast->loc,
+            "%s %s can not have a %s parameter",
             L_OPERATOR, c_oper_get( ast->as.oper.oper_id )->name, L_VARIADIC
           );
           return false;
         }
-        if ( arg->next != NULL ) {
-          print_error( &arg_ast->loc, "%s specifier must be last", L_VARIADIC );
+        if ( param->next != NULL ) {
+          print_error( &param_ast->loc,
+            "%s specifier must be last", L_VARIADIC
+          );
           return false;
         }
-        variadic_ast = arg_ast;
+        variadic_ast = param_ast;
         continue;
 
       default:
         /* suppress warning */;
     } // switch
 
-    if ( !c_ast_check_errors( arg_ast, true ) )
+    if ( !c_ast_check_errors( param_ast, true ) )
       return false;
   } // for
 
-  if ( ast->kind_id == K_OPERATOR && !c_ast_check_oper_args( ast ) )
+  if ( ast->kind_id == K_OPERATOR && !c_ast_check_oper_params( ast ) )
     return false;
 
-  if ( variadic_ast != NULL && n_args == 1 ) {
+  if ( variadic_ast != NULL && n_params == 1 ) {
     print_error( &variadic_ast->loc,
-      "%s specifier can not be only argument", L_VARIADIC
+      "%s specifier can not be only parameter", L_VARIADIC
     );
     return false;
   }
@@ -528,27 +531,27 @@ only_void:
 }
 
 /**
- * Checks all function arguments for semantic errors in K&R C.
+ * Checks all function parameters for semantic errors in K&R C.
  *
  * @param ast The function-like AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_func_args_knr( c_ast_t const *ast ) {
+static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & (K_APPLE_BLOCK | K_FUNCTION)) != K_NONE );
   assert( opt_lang == LANG_C_KNR );
 
-  for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-    c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
-    switch ( arg_ast->kind_id ) {
+  FOREACH_PARAM( param, ast ) {
+    c_ast_t const *const param_ast = c_ast_param_ast( param );
+    switch ( param_ast->kind_id ) {
       case K_NAME:
         break;
       case K_PLACEHOLDER:
-        assert( arg_ast->kind_id != K_PLACEHOLDER );
+        assert( param_ast->kind_id != K_PLACEHOLDER );
         break;
       default:
-        print_error( &arg_ast->loc,
+        print_error( &param_ast->loc,
           "%s prototypes not supported in %s", L_FUNCTION, C_LANG_NAME()
         );
         return false;
@@ -680,20 +683,20 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
           goto only_special;
         C_FALLTHROUGH;
       case K_CONSTRUCTOR: {           // C(C const&)
-        if ( c_ast_args_count( ast ) != 1 )
+        if ( c_ast_params_count( ast ) != 1 )
           goto only_special;
-        c_ast_t const *arg_ast = c_ast_arg_ast( c_ast_args( ast ) );
-        if ( !c_ast_is_ref_to_tid_any( arg_ast, TB_ANY_CLASS ) )
+        c_ast_t const *param_ast = c_ast_param_ast( c_ast_params( ast ) );
+        if ( !c_ast_is_ref_to_tid_any( param_ast, TB_ANY_CLASS ) )
           goto only_special;
         if ( ast->kind_id == K_OPERATOR ) {
           assert( ret_ast != NULL );
           //
-          // For C& operator=(C const&), the argument and the return type must
+          // For C& operator=(C const&), the parameter and the return type must
           // both be a reference to the same class, struct, or union.
           //
-          arg_ast = c_ast_unreference( arg_ast );
+          param_ast = c_ast_unreference( param_ast );
           ret_ast = c_ast_unreference( ret_ast );
-          if ( arg_ast != ret_ast )
+          if ( param_ast != ret_ast )
             goto only_special;
         }
         break;
@@ -736,7 +739,7 @@ only_special:
 }
 
 /**
- * Checks the return type and arguments for `main()`.
+ * Checks the return type and parameters for `main()`.
  *
  * @param ast The main function AST to check.
  * @return Returns `true` only if all checks passed.
@@ -760,41 +763,41 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
     return false;
   }
 
-  c_ast_t const *arg_ast;
+  c_ast_t const *param_ast;
 
-  switch ( c_ast_args_count( ast ) ) {
+  switch ( c_ast_params_count( ast ) ) {
     case 0:                             // main()
       break;
 
     case 1:                             // main(void) ?
-      arg_ast = c_ast_arg_ast( c_ast_args( ast ) );
-      if ( !c_ast_is_builtin( arg_ast, TB_VOID ) ) {
-        print_error( &arg_ast->loc,
-          "a single argument for main() must be %s", L_VOID
+      param_ast = c_ast_param_ast( c_ast_params( ast ) );
+      if ( !c_ast_is_builtin( param_ast, TB_VOID ) ) {
+        print_error( &param_ast->loc,
+          "a single parameter for main() must be %s", L_VOID
         );
         return false;
       }
       break;
 
     case 2: {                           // main( int, char *argv[] ) ?
-      c_ast_arg_t const *arg = c_ast_args( ast );
-      arg_ast = c_ast_arg_ast( arg );
-      if ( !c_ast_is_builtin( arg_ast, TB_INT ) ) {
-        print_error( &arg_ast->loc, "main()'s first argument must be int" );
+      c_ast_param_t const *param = c_ast_params( ast );
+      param_ast = c_ast_param_ast( param );
+      if ( !c_ast_is_builtin( param_ast, TB_INT ) ) {
+        print_error( &param_ast->loc, "main()'s first parameter must be int" );
         return false;
       }
-      arg = arg->next;
-      arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
-      switch ( arg_ast->kind_id ) {
+      param = param->next;
+      param_ast = c_ast_untypedef( c_ast_param_ast( param ) );
+      switch ( param_ast->kind_id ) {
         case K_ARRAY:                   // main( int, char *argv[] )
         case K_POINTER:                 // main( int, char **argv )
-          if ( !c_ast_is_ptr_to_type( arg_ast->as.parent.of_ast,
+          if ( !c_ast_is_ptr_to_type( param_ast->as.parent.of_ast,
                   &C_TYPE_LIT( TB_ANY, c_type_id_compl( TS_CONST ), TA_ANY ),
                   &C_TYPE_LIT_B( TB_CHAR ) ) ) {
-            print_error( &arg_ast->loc,
-              "main()'s second argument must be %s %s %s to [%s] %s",
-              c_kind_name( arg_ast->kind_id ),
-              arg_ast->kind_id == K_ARRAY ? "of" : "to",
+            print_error( &param_ast->loc,
+              "main()'s second parameter must be %s %s %s to [%s] %s",
+              c_kind_name( param_ast->kind_id ),
+              param_ast->kind_id == K_ARRAY ? "of" : "to",
               L_POINTER, L_CONST, L_CHAR
             );
             return false;
@@ -802,14 +805,16 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
           break;
 
         default:                        // main( int, ??? )
-          print_error( &arg_ast->loc, "illegal signature for main()" );
+          print_error( &param_ast->loc, "illegal signature for main()" );
           return false;
       } // switch
       break;
     }
 
     default:
-      print_error( &ast->loc, "main() must have either zero or two arguments" );
+      print_error( &ast->loc,
+        "main() must have either zero or two parameters"
+      );
       return false;
   } // switch
 
@@ -920,20 +925,20 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
 }
 
 /**
- * Checks all overloaded operator arguments for semantic errors.
+ * Checks all overloaded operator parameters for semantic errors.
  *
  * @param ast The overloaded operator AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_args( c_ast_t const *ast ) {
+static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_OPERATOR );
 
   unsigned user_overload_flags = ast->as.oper.flags & C_OP_MASK_OVERLOAD;
   c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
   unsigned const op_overload_flags = op->flags & C_OP_MASK_OVERLOAD;
-  size_t const n_args = c_ast_args_count( ast );
+  size_t const n_params = c_ast_params_count( ast );
 
   char const *const op_type =
     op_overload_flags == C_OP_MEMBER     ? L_MEMBER     :
@@ -959,12 +964,12 @@ static bool c_ast_check_oper_args( c_ast_t const *ast ) {
         break;
       //
       // ...and the operator can be either one, then infer which one based on
-      // the number of arguments given.
+      // the number of parameters given.
       //
       case C_OP_MEMBER | C_OP_NON_MEMBER:
-        if ( n_args == op->args_min )
+        if ( n_params == op->params_min )
           user_overload_flags = C_OP_MEMBER;
-        else if ( n_args == op->args_max )
+        else if ( n_params == op->params_max )
           user_overload_flags = C_OP_NON_MEMBER;
         break;
     } // switch
@@ -982,56 +987,56 @@ static bool c_ast_check_oper_args( c_ast_t const *ast ) {
   }
 
   //
-  // Determine the minimum and maximum number of arguments the operator can
+  // Determine the minimum and maximum number of parameters the operator can
   // have based on whether it's a member, non-member, or unspecified.
   //
   bool const is_ambiguous = c_oper_is_ambiguous( op );
-  unsigned req_args_min = 0, req_args_max = 0;
+  unsigned req_params_min = 0, req_params_max = 0;
   switch ( user_overload_flags ) {
     case C_OP_NON_MEMBER:
-      // Non-member operators must always take at least one argument (the enum,
-      // class, struct, or union for which it's overloaded).
-      req_args_min = is_ambiguous ? 1 : op->args_max;
-      req_args_max = op->args_max;
+      // Non-member operators must always take at least one parameter (the
+      // enum, class, struct, or union for which it's overloaded).
+      req_params_min = is_ambiguous ? 1 : op->params_max;
+      req_params_max = op->params_max;
       break;
     case C_OP_MEMBER:
-      if ( op->args_max != C_OP_ARGS_UNLIMITED ) {
-        req_args_min = op->args_min;
-        req_args_max = is_ambiguous ? 1 : op->args_min;
+      if ( op->params_max != C_OP_PARAMS_UNLIMITED ) {
+        req_params_min = op->params_min;
+        req_params_max = is_ambiguous ? 1 : op->params_min;
         break;
       }
       C_FALLTHROUGH;
     case C_OP_UNSPECIFIED:
-      req_args_min = op->args_min;
-      req_args_max = op->args_max;
+      req_params_min = op->params_min;
+      req_params_max = op->params_max;
       break;
   } // switch
 
   //
-  // Ensure the operator has the required number of arguments.
+  // Ensure the operator has the required number of parameters.
   //
-  if ( n_args < req_args_min ) {
-    if ( req_args_min == req_args_max )
+  if ( n_params < req_params_min ) {
+    if ( req_params_min == req_params_max )
 same: print_error( &ast->loc,
-        "%s%s%s %s must have exactly %u argument%s",
+        "%s%s%s %s must have exactly %u parameter%s",
         SP_AFTER( user_type ), L_OPERATOR, op->name,
-        req_args_min, plural_s( req_args_min )
+        req_params_min, plural_s( req_params_min )
       );
     else
       print_error( &ast->loc,
-        "%s%s%s %s must have at least %u argument%s",
+        "%s%s%s %s must have at least %u parameter%s",
         SP_AFTER( user_type ), L_OPERATOR, op->name,
-        req_args_min, plural_s( req_args_min )
+        req_params_min, plural_s( req_params_min )
       );
     return false;
   }
-  if ( n_args > req_args_max ) {
-    if ( op->args_min == req_args_max )
+  if ( n_params > req_params_max ) {
+    if ( op->params_min == req_params_max )
       goto same;
     print_error( &ast->loc,
-      "%s%s%s %s can have at most %u argument%s",
+      "%s%s%s %s can have at most %u parameter%s",
       SP_AFTER( user_type ), L_OPERATOR, op->name,
-      op->args_max, plural_s( op->args_max )
+      op->params_max, plural_s( op->params_max )
     );
     return false;
   }
@@ -1055,19 +1060,19 @@ same: print_error( &ast->loc,
 
     //
     // Ensure non-member operators have at least one enum, class, struct, or
-    // union argument.
+    // union parameter.
     //
-    bool has_ecsu_arg = false;
-    for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-      c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
-      if ( c_ast_is_kind_any( arg_ast, K_ENUM_CLASS_STRUCT_UNION ) ) {
-        has_ecsu_arg = true;
+    bool has_ecsu_param = false;
+    FOREACH_PARAM( param, ast ) {
+      c_ast_t const *const param_ast = c_ast_param_ast( param );
+      if ( c_ast_is_kind_any( param_ast, K_ENUM_CLASS_STRUCT_UNION ) ) {
+        has_ecsu_param = true;
         break;
       }
     } // for
-    if ( !has_ecsu_arg ) {
+    if ( !has_ecsu_param ) {
       print_error( &ast->loc,
-        "at least 1 argument of a %s %s must be an %s"
+        "at least 1 parameter of a %s %s must be an %s"
         "; or a %s or %s %s thereto",
         L_NON_MEMBER, L_OPERATOR, c_kind_name( K_ENUM_CLASS_STRUCT_UNION ),
         L_REFERENCE, L_RVALUE, L_REFERENCE
@@ -1095,23 +1100,23 @@ same: print_error( &ast->loc,
     case C_OP_MINUS2:
     case C_OP_PLUS2: {
       //
-      // Ensure that the dummy argument for postfix -- or ++ is type int (or is
-      // a typedef of int).
+      // Ensure that the dummy parameter for postfix -- or ++ is type int (or
+      // is a typedef of int).
       //
-      c_ast_arg_t const *arg = c_ast_args( ast );
-      if ( arg == NULL )              // member prefix
+      c_ast_param_t const *param = c_ast_params( ast );
+      if ( param == NULL )              // member prefix
         break;
       if ( is_user_non_member ) {
-        arg = arg->next;
-        if ( arg == NULL )            // non-member prefix
+        param = param->next;
+        if ( param == NULL )            // non-member prefix
           break;
       }
       // At this point, it's either member or non-member postfix:
       // operator++(int) or operator++(S&,int).
-      c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
-      if ( !c_ast_is_builtin( arg_ast, TB_INT ) ) {
-        print_error( &arg_ast->loc,
-          "argument of postfix %s%s%s %s must be %s",
+      c_ast_t const *const param_ast = c_ast_param_ast( param );
+      if ( !c_ast_is_builtin( param_ast, TB_INT ) ) {
+        print_error( &param_ast->loc,
+          "parameter of postfix %s%s%s %s must be %s",
           SP_AFTER( op_type ), L_OPERATOR, op->name,
           c_type_id_name_error( TB_INT )
         );
@@ -1122,11 +1127,11 @@ same: print_error( &ast->loc,
 
     case C_OP_DELETE:
     case C_OP_DELETE_ARRAY:
-      return c_ast_check_oper_delete_args( ast );
+      return c_ast_check_oper_delete_params( ast );
 
     case C_OP_NEW:
     case C_OP_NEW_ARRAY:
-      return c_ast_check_oper_new_args( ast );
+      return c_ast_check_oper_new_params( ast );
 
     default:
       /* suppress warning */;
@@ -1136,14 +1141,14 @@ same: print_error( &ast->loc,
 }
 
 /**
- * Checks overloaded operator `delete` and `delete[]` arguments for semantic
+ * Checks overloaded operator `delete` and `delete[]` parameters for semantic
  * errors.
  *
  * @param ast The user-defined operator `delete` AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_delete_args( c_ast_t const *ast ) {
+static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_OPERATOR );
   assert( ast->as.oper.oper_id == C_OP_DELETE ||
@@ -1151,21 +1156,21 @@ static bool c_ast_check_oper_delete_args( c_ast_t const *ast ) {
 
   c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
 
-  size_t const args_count = c_ast_args_count( ast );
-  if ( args_count == 0 ) {
+  size_t const n_params = c_ast_params_count( ast );
+  if ( n_params == 0 ) {
     print_error( &ast->loc,
-      "%s %s must have at least one argument",
+      "%s %s must have at least one parameter",
       L_OPERATOR, op->name
     );
     return false;
   }
 
-  c_ast_arg_t const *const arg = c_ast_args( ast );
-  c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
+  c_ast_param_t const *const param = c_ast_params( ast );
+  c_ast_t const *const param_ast = c_ast_param_ast( param );
 
-  if ( !c_ast_is_ptr_to_tid_any( arg_ast, TB_VOID | TB_ANY_CLASS ) ) {
-    print_error( &arg_ast->loc,
-      "invalid argument type for %s %s; must be a %s to %s, %s, %s, or %s",
+  if ( !c_ast_is_ptr_to_tid_any( param_ast, TB_VOID | TB_ANY_CLASS ) ) {
+    print_error( &param_ast->loc,
+      "invalid parameter type for %s %s; must be a %s to %s, %s, %s, or %s",
       L_OPERATOR, op->name,
       L_POINTER, L_VOID, L_CLASS, L_STRUCT, L_UNION
     );
@@ -1176,13 +1181,13 @@ static bool c_ast_check_oper_delete_args( c_ast_t const *ast ) {
 }
 
 /**
- * Checks overloaded operator `new` and `new[]` arguments for semantic errors.
+ * Checks overloaded operator `new` and `new[]` parameters for semantic errors.
  *
  * @param ast The user-defined operator `new` AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_new_args( c_ast_t const *ast ) {
+static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_OPERATOR );
   assert( ast->as.oper.oper_id == C_OP_NEW ||
@@ -1190,21 +1195,21 @@ static bool c_ast_check_oper_new_args( c_ast_t const *ast ) {
 
   c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
 
-  size_t const args_count = c_ast_args_count( ast );
-  if ( args_count == 0 ) {
+  size_t const n_params = c_ast_params_count( ast );
+  if ( n_params == 0 ) {
     print_error( &ast->loc,
-      "%s %s must have at least one argument",
+      "%s %s must have at least one parameter",
       L_OPERATOR, op->name
     );
     return false;
   }
 
-  c_ast_arg_t const *const arg = c_ast_args( ast );
-  c_ast_t const *const arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
+  c_ast_param_t const *const param = c_ast_params( ast );
+  c_ast_t const *const param_ast = c_ast_untypedef( c_ast_param_ast( param ) );
 
-  if ( !c_type_id_is_size_t( arg_ast->type.base_tid ) ) {
-    print_error( &arg_ast->loc,
-      "invalid argument type for %s %s; must be std::size_t (or equivalent)",
+  if ( !c_type_id_is_size_t( param_ast->type.base_tid ) ) {
+    print_error( &param_ast->loc,
+      "invalid parameter type for %s %s; must be std::size_t (or equivalent)",
       L_OPERATOR, op->name
     );
     return false;
@@ -1343,31 +1348,31 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
 }
 
 /**
- * Checks all user-defined literal arguments for semantic errors.
+ * Checks all user-defined literal parameters for semantic errors.
  *
  * @param ast The user-defined literal AST to check.
  * @return Returns `true` only if all checks passed.
  */
 C_WARN_UNUSED_RESULT
-static bool c_ast_check_udef_lit_args( c_ast_t const *ast ) {
+static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_USER_DEF_LITERAL );
 
-  size_t const args_count = c_ast_args_count( ast );
-  if ( args_count == 0 ) {
+  size_t const n_params = c_ast_params_count( ast );
+  if ( n_params == 0 ) {
     print_error( &ast->loc,
-      "%s %s must have an argument", L_USER_DEFINED, L_LITERAL
+      "%s %s must have an parameter", L_USER_DEFINED, L_LITERAL
     );
     return false;
   }
 
-  c_ast_arg_t const *arg = c_ast_args( ast );
-  c_ast_t const *arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
+  c_ast_param_t const *param = c_ast_params( ast );
+  c_ast_t const *param_ast = c_ast_untypedef( c_ast_param_ast( param ) );
   c_ast_t const *tmp_ast = NULL;
 
-  switch ( args_count ) {
+  switch ( n_params ) {
     case 1:
-      switch ( arg_ast->type.base_tid ) {
+      switch ( param_ast->type.base_tid ) {
         case TB_CHAR:
         case TB_CHAR8_T:
         case TB_CHAR16_T:
@@ -1378,10 +1383,10 @@ static bool c_ast_check_udef_lit_args( c_ast_t const *ast ) {
         case TB_LONG | TB_DOUBLE:
           break;
         default:                        // check for: char const*
-          if ( !c_ast_is_ptr_to_type( arg_ast,
+          if ( !c_ast_is_ptr_to_type( param_ast,
                   &T_ANY, &C_TYPE_LIT( TB_CHAR, TS_CONST, TA_NONE ) ) ) {
-            print_error( &arg_ast->loc,
-              "invalid argument type for %s %s; must be one of: "
+            print_error( &param_ast->loc,
+              "invalid parameter type for %s %s; must be one of: "
               "unsigned long long, long double, "
               "char, const char*, char8_t, char16_t, char32_t, wchar_t",
               L_USER_DEFINED, L_LITERAL
@@ -1392,22 +1397,23 @@ static bool c_ast_check_udef_lit_args( c_ast_t const *ast ) {
       break;
 
     case 2:
-      tmp_ast = c_ast_unpointer( arg_ast );
+      tmp_ast = c_ast_unpointer( param_ast );
       if ( tmp_ast == NULL ||
           !(c_type_is_tid_any( &tmp_ast->type, TS_CONST ) &&
             c_type_is_tid_any( &tmp_ast->type, TB_ANY_CHAR )) ) {
-        print_error( &arg_ast->loc,
-          "invalid argument type for %s %s; must be one of: "
+        print_error( &param_ast->loc,
+          "invalid parameter type for %s %s; must be one of: "
           "const (char|wchar_t|char8_t|char16_t|char32_t)*",
           L_USER_DEFINED, L_LITERAL
         );
         return false;
       }
-      arg = arg->next;
-      arg_ast = c_ast_untypedef( c_ast_arg_ast( arg ) );
-      if ( arg_ast == NULL || !c_type_id_is_size_t( arg_ast->type.base_tid ) ) {
-        print_error( &arg_ast->loc,
-          "invalid argument type for %s %s; "
+      param = param->next;
+      param_ast = c_ast_untypedef( c_ast_param_ast( param ) );
+      if ( param_ast == NULL ||
+           !c_type_id_is_size_t( param_ast->type.base_tid ) ) {
+        print_error( &param_ast->loc,
+          "invalid parameter type for %s %s; "
           "must be std::size_t (or equivalent)",
           L_USER_DEFINED, L_LITERAL
         );
@@ -1416,10 +1422,10 @@ static bool c_ast_check_udef_lit_args( c_ast_t const *ast ) {
       break;
 
     default:
-      arg = arg->next->next;
-      arg_ast = c_ast_arg_ast( arg );
-      print_error( &arg_ast->loc,
-        "%s %s may have at most 2 arguments", L_USER_DEFINED, L_LITERAL
+      param = param->next->next;
+      param_ast = c_ast_param_ast( param );
+      print_error( &param_ast->loc,
+        "%s %s may have at most 2 parameters", L_USER_DEFINED, L_LITERAL
       );
       return false;
   } // switch
@@ -1431,21 +1437,21 @@ static bool c_ast_check_udef_lit_args( c_ast_t const *ast ) {
  * Visitor function that checks an AST for semantic errors.
  *
  * @param ast The AST to check.
- * @param data Cast to `bool`, indicates if \a ast is a function argument.
+ * @param data Cast to `bool`, indicates if \a ast is a function parameter.
  * @return Returns `VISITOR_ERROR_FOUND` if an error was found;
  * `VISITOR_ERROR_NOT_FOUND` if not.
  */
 C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  bool const is_func_arg = REINTERPRET_CAST( bool, data );
+  bool const is_func_param = REINTERPRET_CAST( bool, data );
 
   if ( ast->align.kind != C_ALIGNAS_NONE && !c_ast_check_alignas( ast ) )
     return VISITOR_ERROR_FOUND;
 
   switch ( ast->kind_id ) {
     case K_ARRAY:
-      if ( !c_ast_check_array( ast, is_func_arg ) )
+      if ( !c_ast_check_array( ast, is_func_param ) )
         return VISITOR_ERROR_FOUND;
       break;
 
@@ -1482,13 +1488,13 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
           return error_kind_not_type( ast, tid );
       }
       {
-        bool const args_ok =
+        bool const params_ok =
           ast->kind_id == K_USER_DEF_LITERAL ?
-            c_ast_check_udef_lit_args( ast ) :
+            c_ast_check_udef_lit_params( ast ) :
             opt_lang == LANG_C_KNR ?
-              c_ast_check_func_args_knr( ast ) :
-              c_ast_check_func_args( ast );
-        if ( !args_ok )
+              c_ast_check_func_params_knr( ast ) :
+              c_ast_check_func_params( ast );
+        if ( !params_ok )
           return VISITOR_ERROR_FOUND;
       }
       C_FALLTHROUGH;
@@ -1553,14 +1559,14 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
  * Visitor function that checks an AST for type errors.
  *
  * @param ast The AST to visit.
- * @param data Cast to `bool`, indicates if \a ast is a function argument.
+ * @param data Cast to `bool`, indicates if \a ast is a function parameter.
  * @return Returns `VISITOR_ERROR_FOUND` if an error was found;
  * `VISITOR_ERROR_NOT_FOUND` if not.
  */
 C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  bool const is_func_arg = REINTERPRET_CAST( bool, data );
+  bool const is_func_param = REINTERPRET_CAST( bool, data );
 
   c_lang_id_t const lang_ids = c_type_check( &ast->type );
   if ( lang_ids != LANG_ALL ) {
@@ -1614,8 +1620,8 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
       data = REINTERPRET_CAST( void*, true );
-      for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
-        if ( !c_ast_check_visitor( c_ast_arg_ast( arg ), c_ast_visitor_type,
+      FOREACH_PARAM( param, ast ) {
+        if ( !c_ast_check_visitor( c_ast_param_ast( param ), c_ast_visitor_type,
                                    data ) ) {
           return VISITOR_ERROR_FOUND;
         }
@@ -1625,10 +1631,10 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
       C_FALLTHROUGH;
 
     default:
-      if ( !is_func_arg &&
+      if ( !is_func_param &&
            c_type_is_tid_any( &ast->type, TA_CARRIES_DEPENDENCY ) ) {
         print_error( &ast->loc,
-          "\"%s\" can only appear on functions or function arguments",
+          "\"%s\" can only appear on functions or function parameters",
           c_type_id_name_error( TA_CARRIES_DEPENDENCY )
         );
         return VISITOR_ERROR_FOUND;
@@ -1714,10 +1720,10 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
         );
       }
 
-      for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
+      FOREACH_PARAM( param, ast ) {
         C_IGNORE_RV(
           c_ast_check_visitor(
-            c_ast_arg_ast( arg ), c_ast_visitor_warning, data
+            c_ast_param_ast( param ), c_ast_visitor_warning, data
           )
         );
       } // for

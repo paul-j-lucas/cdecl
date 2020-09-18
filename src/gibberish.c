@@ -167,27 +167,27 @@ static void g_array_size( g_state_t const *g, c_ast_t const *ast ) {
 }
 
 /**
- * Helper function for `g_impl()` that prints a function-like AST's arguments,
+ * Helper function for `g_impl()` that prints a function-like AST's parameters,
  * if any.
  *
  * @param g The `g_state` to use.
  * @param ast The AST that is <code>\ref K_ANY_FUNCTION_LIKE</code> whose
- * arguments to print.
+ * parameters to print.
  */
-static void g_func_args( g_state_t const *g, c_ast_t const *ast ) {
+static void g_func_params( g_state_t const *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
   assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
 
   bool comma = false;
   FPUTC( '(', g->gout );
-  for ( c_ast_arg_t const *arg = c_ast_args( ast ); arg; arg = arg->next ) {
+  FOREACH_PARAM( param, ast ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", g->gout );
-    c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
-    g_state_t args_g;
-    g_init( &args_g, arg_ast, g->flags, g->gout );
-    g_impl( &args_g, arg_ast );
+    c_ast_t const *const param_ast = c_ast_param_ast( param );
+    g_state_t params_g;
+    g_init( &params_g, param_ast, g->flags, g->gout );
+    g_impl( &params_g, param_ast );
   } // for
   FPUTC( ')', g->gout );
 }
@@ -236,7 +236,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
     case K_USER_DEF_LITERAL:
       //
       // These things aren't printed as part of the type beforehand, so strip
-      // them out of the type here, but print them after the arguments.
+      // them out of the type here, but print them after the parameters.
       //
       cv_qual_tid     = (type.store_tid & TS_MASK_QUALIFIER);
       is_final        = (type.store_tid & TS_FINAL) != TS_NONE;
@@ -386,12 +386,12 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
         //      type *var
         //
         // i.e., the '*', '&', or "&&" adjacent to the variable; for function-
-        // like ASTs, when there's no name for an argument, or when we're
+        // like ASTs, when there's no name for a parameter, or when we're
         // casting, we want the output to be like:
         //
         //      type* func()            // function
         //      type* (^block)()        // block
-        //      func(type*)             // nameless function argument
+        //      func(type*)             // nameless function parameter
         //      (type*)expr             // cast
         //
         // i.e., the '*', '&', or "&&" adjacent to the type.
@@ -540,7 +540,7 @@ static void g_postfix( g_state_t *g, c_ast_t const *ast ) {
 
   //
   // We're now unwinding the recursion: print the "postfix" things (size for
-  // arrays, arguments for functions) in root-to-leaf order.
+  // arrays, parameters for functions) in root-to-leaf order.
   //
   switch ( ast->kind_id ) {
     case K_ARRAY:
@@ -552,7 +552,7 @@ static void g_postfix( g_state_t *g, c_ast_t const *ast ) {
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
-      g_func_args( g, ast );
+      g_func_params( g, ast );
       break;
     case K_USER_DEF_CONVERSION:
       FPUTS( "()", g->gout );

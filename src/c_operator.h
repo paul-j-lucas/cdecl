@@ -48,15 +48,15 @@ _GL_INLINE_HEADER_BEGIN
  * @{
  */
 
-/** Denotes an unlimited number of arguments (for `operator()()`). */
-#define C_OP_ARGS_UNLIMITED     (~0u)
-
 // overloadability
 
 /**
  * For `c_operator.flags`, denotes that the operator is not overloadable.
  */
 #define C_OP_NOT_OVERLOADABLE   0u
+
+/** Denotes an unlimited number of parameters (for `operator()()`). */
+#define C_OP_PARAMS_UNLIMITED     (~0u)
 
 /**
  * For `c_operator.flags`, denotes that the operator overloadability (member or
@@ -149,16 +149,17 @@ enum c_oper_id {
 /**
  * C++ operator information.
  *
- * @note: `args_min` and `args_max` comprise the inclusive range for the union
- * of member and non-member versions.  If you know you're dealing with a member
- * operator, use only `args_min`; if you know you're dealing with a non-member
- * operator, use only `args_max`; if you don't know which, use both.
+ * @note: `params_min` and `params_max` comprise the inclusive range for the
+ * union of member and non-member versions.  If you know you're dealing with a
+ * member operator, use only `params_min`; if you know you're dealing with a
+ * non-member operator, use only `params_max`; if you don't know which, use
+ * both.
  */
 struct c_operator {
   char const *name;                     ///< Name.
   unsigned    flags;                    ///< Bitwise-or of flags.
-  unsigned    args_min;                 ///< Minimum number of arguments.
-  unsigned    args_max;                 ///< Maximum number of arguments.
+  unsigned    params_min;               ///< Minimum number of parameters.
+  unsigned    params_max;               ///< Maximum number of parameters.
   c_lang_id_t lang_ids;                 ///< Language(s) OK in.
 };
 
@@ -180,7 +181,7 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
  *
  *      T operator OP(U);
  *
- * i.e., taking one argument, are ambiguous (to cdecl) between being a member
+ * i.e., having one parameter, are ambiguous (to cdecl) between being a member
  * or non-member operator since cdecl doesn't have the context in which the
  * operator is declared.  If it were declared in-class, e.g.:
  *
@@ -193,7 +194,7 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
  * then clearly it's a member operator; if it were declared at file scope, then
  * clearly it's a non-member operator; but cdecl doesn't have this context.
  *
- * We can tell if an operator is ambiguous if it can take 1 argument (when the
+ * We can tell if an operator is ambiguous if it can take 1 parameter (when the
  * minimum is 0 and the maximum is 2).
  *
  * @param op The C++ operator to check.
@@ -201,7 +202,7 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
  */
 C_OP_INLINE C_WARN_UNUSED_RESULT
 bool c_oper_is_ambiguous( c_operator_t const *op ) {
-  return op->args_min == 0 && op->args_max == 2;
+  return op->params_min == 0 && op->params_max == 2;
 }
 
 /**

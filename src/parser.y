@@ -777,7 +777,7 @@ static void yyerror( char const *msg ) {
 %union {
   c_alignas_t         align;
   c_ast_t            *ast;
-  c_ast_args_t        ast_list;   /* for function arguments */
+  c_ast_params_t      ast_list;   /* for function parameters */
   c_ast_pair_t        ast_pair;   /* for the AST being built */
   unsigned            bitmask;    /* multipurpose bitmask (used by show) */
   bool                flag;       /* simple flag */
@@ -1169,10 +1169,10 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   type_qualifier_c_tid
 %type   <type_id>   type_qualifier_list_c_tid type_qualifier_list_c_tid_opt
 
-%type   <ast>       arg_array_size_c_ast
-%type   <ast_pair>  arg_c_ast
-%type   <ast_list>  arg_list_c_ast arg_list_c_ast_opt
+%type   <ast>       array_size_c_ast
 %type   <ast_pair>  name_ast
+%type   <ast_pair>  param_c_ast
+%type   <ast_list>  param_list_c_ast param_list_c_ast_opt
 %type   <ast_pair>  sname_c_ast
 %type   <ast_pair>  sname_english_ast
 %type   <ast_pair>  typedef_name_c_ast
@@ -1837,21 +1837,21 @@ explain_c
     }
 
     /*
-     * C++ file-scope constructor definition, e.g.: S::S([args]).
+     * C++ file-scope constructor definition, e.g.: S::S([params]).
      */
-  | explain Y_CONSTRUCTOR_SNAME lparen_expected arg_list_c_ast_opt ')'
+  | explain Y_CONSTRUCTOR_SNAME lparen_expected param_list_c_ast_opt ')'
     noexcept_c_tid_opt
     {
       DUMP_START( "explain_c",
-                  "EXPLAIN CONSTRUCTOR_SNAME '(' arg_list_c_ast_opt ')' "
+                  "EXPLAIN CONSTRUCTOR_SNAME '(' param_list_c_ast_opt ')' "
                   "noexcept_c_tid_opt" );
       DUMP_SNAME( "CONSTRUCTOR_SNAME", &$2 );
-      DUMP_AST_LIST( "arg_list_c_ast_opt", $4 );
+      DUMP_AST_LIST( "param_list_c_ast_opt", $4 );
       DUMP_TID( "noexcept_c_tid_opt", $6 );
 
       c_ast_t *const ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
       ast->type.store_tid = $6;
-      ast->as.constructor.args = $4;
+      ast->as.constructor.params = $4;
 
       DUMP_AST( "explain_c", ast );
       DUMP_END();
@@ -2636,7 +2636,7 @@ block_decl_english_ast                  /* Apple extension */
       $$.target_ast = NULL;
       $$.ast->type.store_tid = qualifier_tid_peek();
       c_ast_set_parent( $3.ast, $$.ast );
-      $$.ast->as.block.args = $2;
+      $$.ast->as.block.params = $2;
 
       DUMP_AST( "block_decl_english_ast", $$.ast );
       DUMP_END();
@@ -2652,7 +2652,7 @@ constructor_decl_english_ast
 
       $$.ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
       $$.target_ast = NULL;
-      $$.ast->as.func.args = $2;
+      $$.ast->as.func.params = $2;
 
       DUMP_AST( "constructor_decl_english_ast", $$.ast );
       DUMP_END();
@@ -2691,7 +2691,7 @@ func_decl_english_ast
       $$.ast = c_ast_new_gc( K_FUNCTION, &@$ );
       $$.target_ast = NULL;
       $$.ast->type.store_tid = qualifier_tid_peek() | $1;
-      $$.ast->as.func.args = $4;
+      $$.ast->as.func.params = $4;
       $$.ast->as.func.flags = $2;
       c_ast_set_parent( $5.ast, $$.ast );
 
@@ -2718,7 +2718,7 @@ oper_decl_english_ast
       $$.ast = c_ast_new_gc( K_OPERATOR, &@$ );
       $$.target_ast = NULL;
       $$.ast->type.store_tid = $1 | $3;
-      $$.ast->as.oper.args = $6;
+      $$.ast->as.oper.params = $6;
       $$.ast->as.oper.flags = $4;
       c_ast_set_parent( $7.ast, $$.ast );
 
@@ -2956,7 +2956,7 @@ user_defined_literal_decl_english_ast
 
       $$.ast = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
       $$.target_ast = NULL;
-      $$.ast->as.udef_lit.args = $3;
+      $$.ast->as.udef_lit.params = $3;
       c_ast_set_parent( $4.ast, $$.ast );
 
       DUMP_AST( "user_defined_literal_decl_english_ast", $$.ast );
@@ -3162,20 +3162,20 @@ block_decl_c_ast                        /* Apple extension */
       //
       type_ast_push( c_ast_new_gc( K_APPLE_BLOCK, &@$ ) );
     }
-    type_qualifier_list_c_tid_opt decl_c_ast ')' '(' arg_list_c_ast_opt ')'
+    type_qualifier_list_c_tid_opt decl_c_ast ')' '(' param_list_c_ast_opt ')'
     {
       c_ast_t *const block_ast = type_ast_pop();
 
       DUMP_START( "block_decl_c_ast",
                   "'(' '^' type_qualifier_list_c_tid_opt decl_c_ast ')' "
-                  "'(' arg_list_c_ast_opt ')'" );
+                  "'(' param_list_c_ast_opt ')'" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
       DUMP_TID( "type_qualifier_list_c_tid_opt", $4 );
       DUMP_AST( "decl_c_ast", $5.ast );
-      DUMP_AST_LIST( "arg_list_c_ast_opt", $8 );
+      DUMP_AST_LIST( "param_list_c_ast_opt", $8 );
 
       C_TYPE_ADD_TID( &block_ast->type, $4, @4 );
-      block_ast->as.block.args = $8;
+      block_ast->as.block.params = $8;
       $$.ast = c_ast_add_func( $5.ast, type_ast_peek(), block_ast );
       $$.target_ast = block_ast->as.block.ret_ast;
 
@@ -3192,7 +3192,7 @@ func_decl_c_ast
      * cause grammar conflicts if they were separate rules in an LALR(1)
      * parser).
      */
-  : /* type_c_ast */ decl2_c_ast '(' arg_list_c_ast_opt ')'
+  : /* type_c_ast */ decl2_c_ast '(' param_list_c_ast_opt ')'
     func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
     noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_tid_opt
     {
@@ -3205,14 +3205,14 @@ func_decl_c_ast
       c_ast_t    *const type_ast = type_ast_peek();
 
       DUMP_START( "func_decl_c_ast",
-                  "decl2_c_ast '(' arg_list_c_ast_opt ')' "
+                  "decl2_c_ast '(' param_list_c_ast_opt ')' "
                   "func_qualifier_list_c_tid_opt "
                   "func_ref_qualifier_c_tid_opt noexcept_c_tid_opt "
                   "trailing_return_type_c_ast_opt "
                   "func_equals_tid_opt" );
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl2_c_ast", decl2_ast );
-      DUMP_AST_LIST( "arg_list_c_ast_opt", $3 );
+      DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
       DUMP_TID( "func_qualifier_list_c_tid_opt", func_qualifier_tid );
       DUMP_TID( "func_ref_qualifier_c_tid_opt", func_ref_qualifier_tid );
       DUMP_TID( "noexcept_c_tid_opt", noexcept_tid );
@@ -3239,7 +3239,7 @@ func_decl_c_ast
       //
       //     could be either:
       //
-      //      + A constructor of type T with an argument of type U; or:
+      //      + A constructor of type T with a parameter of type U; or:
       //      + A variable named U of type T (with unnecessary parentheses).
       //
       // Hence, we have to infer which of a function or a constructor was
@@ -3268,7 +3268,7 @@ func_decl_c_ast
       func_ast->type.store_tid =
         func_qualifier_tid | func_ref_qualifier_tid | noexcept_tid |
         pure_virtual_tid;
-      func_ast->as.func.args = $3;
+      func_ast->as.func.params = $3;
 
       if ( assume_constructor ) {
         assert( trailing_ret_ast == NULL );
@@ -3447,19 +3447,19 @@ nested_decl_c_ast
   ;
 
 oper_decl_c_ast
-  : /* type_c_ast */ oper_c_ast '(' arg_list_c_ast_opt ')'
+  : /* type_c_ast */ oper_c_ast '(' param_list_c_ast_opt ')'
     func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
     noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_tid_opt
     {
       DUMP_START( "oper_decl_c_ast",
-                  "oper_c_ast '(' arg_list_c_ast_opt ')' "
+                  "oper_c_ast '(' param_list_c_ast_opt ')' "
                   "func_qualifier_list_c_tid_opt "
                   "func_ref_qualifier_c_tid_opt noexcept_c_tid_opt "
                   "trailing_return_type_c_ast_opt "
                   "func_equals_tid_opt" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
       DUMP_AST( "oper_c_ast", $1.ast );
-      DUMP_AST_LIST( "arg_list_c_ast_opt", $3 );
+      DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
       DUMP_TID( "func_qualifier_list_c_tid_opt", $5 );
       DUMP_TID( "func_ref_qualifier_c_tid_opt", $6 );
       DUMP_TID( "noexcept_c_tid_opt", $7 );
@@ -3468,7 +3468,7 @@ oper_decl_c_ast
 
       c_ast_t *const oper = c_ast_new_gc( K_OPERATOR, &@$ );
       oper->type.store_tid = $5 | $6 | $7 | $9;
-      oper->as.oper.args = $3;
+      oper->as.oper.params = $3;
       oper->as.oper.oper_id = $1.ast->as.oper.oper_id;
 
       if ( $8.ast != NULL ) {
@@ -3716,20 +3716,20 @@ typedef_type_decl_c_ast
   ;
 
 user_defined_literal_decl_c_ast
-  : /* type_c_ast */ user_defined_literal_c_ast '(' arg_list_c_ast ')'
+  : /* type_c_ast */ user_defined_literal_c_ast '(' param_list_c_ast ')'
     noexcept_c_tid_opt trailing_return_type_c_ast_opt
     {
       DUMP_START( "user_defined_literal_decl_c_ast",
-                  "user_defined_literal_c_ast '(' arg_list_c_ast ')' "
+                  "user_defined_literal_c_ast '(' param_list_c_ast ')' "
                   "noexcept_c_tid_opt trailing_return_type_c_ast_opt" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
       DUMP_AST( "oper_c_ast", $1.ast );
-      DUMP_AST_LIST( "arg_list_c_ast", $3 );
+      DUMP_AST_LIST( "param_list_c_ast", $3 );
       DUMP_TID( "noexcept_c_tid_opt", $5 );
       DUMP_AST( "trailing_return_type_c_ast_opt", $6.ast );
 
       c_ast_t *const lit = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
-      lit->as.udef_lit.args = $3;
+      lit->as.udef_lit.params = $3;
 
       if ( $6.ast != NULL ) {
         $$.ast = c_ast_add_func( $1.ast, $6.ast, lit );
@@ -3767,50 +3767,50 @@ user_defined_literal_c_ast
   ;
 
 /*****************************************************************************/
-/*  function argument gibberish productions                                  */
+/*  function parameter gibberish productions                                 */
 /*****************************************************************************/
 
-arg_list_c_ast_opt
+param_list_c_ast_opt
   : /* empty */                   { slist_init( &$$ ); }
-  | arg_list_c_ast
+  | param_list_c_ast
   ;
 
-arg_list_c_ast
-  : arg_list_c_ast comma_expected arg_c_ast
+param_list_c_ast
+  : param_list_c_ast comma_expected param_c_ast
     {
-      DUMP_START( "arg_list_c_ast", "arg_list_c_ast ',' arg_c_ast" );
-      DUMP_AST_LIST( "arg_list_c_ast", $1 );
-      DUMP_AST( "arg_c_ast", $3.ast );
+      DUMP_START( "param_list_c_ast", "param_list_c_ast ',' param_c_ast" );
+      DUMP_AST_LIST( "param_list_c_ast", $1 );
+      DUMP_AST( "param_c_ast", $3.ast );
 
       $$ = $1;
       slist_push_tail( &$$, $3.ast );
 
-      DUMP_AST_LIST( "arg_list_c_ast", $$ );
+      DUMP_AST_LIST( "param_list_c_ast", $$ );
       DUMP_END();
     }
 
-  | arg_c_ast
+  | param_c_ast
     {
-      DUMP_START( "arg_list_c_ast", "arg_c_ast" );
-      DUMP_AST( "arg_c_ast", $1.ast );
+      DUMP_START( "param_list_c_ast", "param_c_ast" );
+      DUMP_AST( "param_c_ast", $1.ast );
 
       slist_init( &$$ );
       slist_push_tail( &$$, $1.ast );
 
-      DUMP_AST_LIST( "arg_list_c_ast", $$ );
+      DUMP_AST_LIST( "param_list_c_ast", $$ );
       DUMP_END();
     }
   ;
 
-arg_c_ast
+param_c_ast
     /*
-     * Ordinary function argument declaration.
+     * Ordinary function parameter declaration.
      */
   : type_c_ast { type_ast_push( $1.ast ); } cast_c_ast_opt
     {
       type_ast_pop();
 
-      DUMP_START( "arg_c_ast", "type_c_ast cast_c_ast_opt" );
+      DUMP_START( "param_c_ast", "type_c_ast cast_c_ast_opt" );
       DUMP_AST( "type_c_ast", $1.ast );
       DUMP_AST( "cast_c_ast_opt", $3.ast );
 
@@ -3820,12 +3820,12 @@ arg_c_ast
       if ( c_ast_sname_empty( $$.ast ) )
         $$.ast->sname = c_sname_dup( c_ast_find_name( $$.ast, C_VISIT_DOWN ) );
 
-      DUMP_AST( "arg_c_ast", $$.ast );
+      DUMP_AST( "param_c_ast", $$.ast );
       DUMP_END();
     }
 
     /*
-     * K&R C type-less function argument declaration.
+     * K&R C type-less function parameter declaration.
      */
   | name_ast
 
@@ -3834,12 +3834,12 @@ arg_c_ast
      */
   | "..."
     {
-      DUMP_START( "argc", "..." );
+      DUMP_START( "param_c_ast", "..." );
 
       $$.ast = c_ast_new_gc( K_VARIADIC, &@$ );
       $$.target_ast = NULL;
 
-      DUMP_AST( "arg_c_ast", $$.ast );
+      DUMP_AST( "param_c_ast", $$.ast );
       DUMP_END();
     }
   ;
@@ -3989,7 +3989,7 @@ type_modifier_base_type
   | Y_EMC__SAT                    { $$ = C_TYPE_LIT_B( $1 ); }
   /*
    * Register is here (rather than in storage_class_c_type) because it's the
-   * only storage class that can be specified for function arguments.
+   * only storage class that can be specified for function parameters.
    * Therefore, it's simpler to treat it as any other type modifier.
    */
   | Y_REGISTER                    { $$ = C_TYPE_LIT_S( $1 ); }
@@ -4308,13 +4308,13 @@ cast2_c_ast
   ;
 
 array_cast_c_ast
-  : /* type_c_ast */ cast_c_ast_opt arg_array_size_c_ast
+  : /* type_c_ast */ cast_c_ast_opt array_size_c_ast
     {
       DUMP_START( "array_cast_c_ast", "cast_c_ast_opt array_size_c_num" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
       DUMP_AST( "cast_c_ast_opt", $1.ast );
       DUMP_AST( "target_ast", $1.target_ast );
-      DUMP_AST( "arg_array_size_c_ast", $2 );
+      DUMP_AST( "array_size_c_ast", $2 );
 
       c_ast_set_parent( c_ast_new_gc( K_PLACEHOLDER, &@1 ), $2 );
 
@@ -4332,7 +4332,7 @@ array_cast_c_ast
     }
   ;
 
-arg_array_size_c_ast
+array_size_c_ast
   : array_size_c_num
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
@@ -4372,20 +4372,21 @@ block_cast_c_ast                        /* Apple extension */
       //
       type_ast_push( c_ast_new_gc( K_APPLE_BLOCK, &@$ ) );
     }
-    type_qualifier_list_c_tid_opt cast_c_ast_opt ')' '(' arg_list_c_ast_opt ')'
+    type_qualifier_list_c_tid_opt cast_c_ast_opt ')'
+    lparen_expected param_list_c_ast_opt ')'
     {
       c_ast_t *const block_ast = type_ast_pop();
 
       DUMP_START( "block_cast_c_ast",
                   "'(' '^' type_qualifier_list_c_tid_opt cast_c_ast_opt ')' "
-                  "'(' arg_list_c_ast_opt ')'" );
+                  "'(' param_list_c_ast_opt ')'" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
       DUMP_TID( "type_qualifier_list_c_tid_opt", $4 );
       DUMP_AST( "cast_c_ast_opt", $5.ast );
-      DUMP_AST_LIST( "arg_list_c_ast_opt", $8 );
+      DUMP_AST_LIST( "param_list_c_ast_opt", $8 );
 
       C_TYPE_ADD_TID( &block_ast->type, $4, @4 );
-      block_ast->as.block.args = $8;
+      block_ast->as.block.params = $8;
       $$.ast = c_ast_add_func( $5.ast, type_ast_peek(), block_ast );
       $$.target_ast = block_ast->as.block.ret_ast;
 
@@ -4395,23 +4396,23 @@ block_cast_c_ast                        /* Apple extension */
   ;
 
 func_cast_c_ast
-  : /* type_c_ast */ cast2_c_ast '(' arg_list_c_ast_opt ')'
+  : /* type_c_ast */ cast2_c_ast '(' param_list_c_ast_opt ')'
     func_qualifier_list_c_tid_opt trailing_return_type_c_ast_opt
     {
       DUMP_START( "func_cast_c_ast",
-                  "cast2_c_ast '(' arg_list_c_ast_opt ')' "
+                  "cast2_c_ast '(' param_list_c_ast_opt ')' "
                   "func_qualifier_list_c_tid_opt "
                   "trailing_return_type_c_ast_opt" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
       DUMP_AST( "cast2_c_ast", $1.ast );
-      DUMP_AST_LIST( "arg_list_c_ast_opt", $3 );
+      DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
       DUMP_TID( "func_qualifier_list_c_tid_opt", $5 );
       DUMP_AST( "trailing_return_type_c_ast_opt", $6.ast );
       DUMP_AST( "target_ast", $1.target_ast );
 
       c_ast_t *const func = c_ast_new_gc( K_FUNCTION, &@$ );
       func->type.store_tid = $5;
-      func->as.func.args = $3;
+      func->as.func.params = $3;
 
       if ( $6.ast != NULL ) {
         $$.ast = c_ast_add_func( $1.ast, $6.ast, func );

@@ -50,24 +50,25 @@ static void non_type_name( c_type_t const*, FILE* );
 
 /**
  * Helper function for `c_ast_visitor_english()` that prints a function-like
- * AST's arguments, if any.
+ * AST's parameters, if any.
  *
- * @param arg The `c_ast_arg` that is the first argument to print.
+ * @param param The `c_ast_param` that is the first parameter to print.
  * @param eout The `FILE` to emit to.
  */
-static void c_ast_english_func_args( c_ast_arg_t const *arg, FILE *eout ) {
-  assert( arg != NULL );
+static void c_ast_english_func_params( c_ast_param_t const *param,
+                                       FILE *eout ) {
+  assert( param != NULL );
   assert( eout != NULL );
 
   FPUTC( '(', eout );
 
   bool comma = false;
-  for ( ; arg != NULL; arg = arg->next ) {
+  for ( ; param != NULL; param = param->next ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", eout );
 
-    c_ast_t const *const arg_ast = c_ast_arg_ast( arg );
-    if ( arg_ast->kind_id != K_NAME ) {
+    c_ast_t const *const param_ast = c_ast_param_ast( param );
+    if ( param_ast->kind_id != K_NAME ) {
       //
       // For all kinds except K_NAME, we have to print:
       //
@@ -75,17 +76,17 @@ static void c_ast_english_func_args( c_ast_arg_t const *arg, FILE *eout ) {
       //
       // For K_NAME, e.g.:
       //
-      //      void f(x)                 // untyped K&R C function argument
+      //      void f(x)                 // untyped K&R C function parameter
       //
       // there's no "as <english>" part.
       //
-      c_sname_t const *const sname = c_ast_find_name( arg_ast, C_VISIT_DOWN );
+      c_sname_t const *const sname = c_ast_find_name( param_ast, C_VISIT_DOWN );
       if ( sname != NULL ) {
         c_sname_english( sname, eout );
         FPRINTF( eout, " %s ", L_AS );
       } else {
         //
-        // If there's no name, it's an unnamed argument, e.g.:
+        // If there's no name, it's an unnamed parameter, e.g.:
         //
         //      void f(int)
         //
@@ -94,8 +95,8 @@ static void c_ast_english_func_args( c_ast_arg_t const *arg, FILE *eout ) {
       }
     }
 
-    c_ast_t *const nonconst_arg = CONST_CAST( c_ast_t*, arg_ast );
-    c_ast_visit( nonconst_arg, C_VISIT_DOWN, c_ast_visitor_english, eout );
+    c_ast_t *const nonconst_param = CONST_CAST( c_ast_t*, param_ast );
+    c_ast_visit( nonconst_param, C_VISIT_DOWN, c_ast_visitor_english, eout );
   } // for
 
   FPUTC( ')', eout );
@@ -155,10 +156,10 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       } // switch
 
       FPUTS( c_kind_name( ast->kind_id ), eout );
-      c_ast_arg_t const *const arg = c_ast_args( ast );
-      if ( arg != NULL ) {
+      c_ast_param_t const *const param = c_ast_params( ast );
+      if ( param != NULL ) {
         FPUTC( ' ', eout );
-        c_ast_english_func_args( arg, eout );
+        c_ast_english_func_params( param, eout );
       }
       if ( ast->as.func.ret_ast != NULL )
         FPRINTF( eout, " %s ", L_RETURNING );

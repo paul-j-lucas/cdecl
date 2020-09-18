@@ -38,7 +38,7 @@
 // standard
 #include <assert.h>
 
-#define UNLIMITED                 C_OP_ARGS_UNLIMITED
+#define UNLIMITED                 C_OP_PARAMS_UNLIMITED
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -196,12 +196,12 @@ unsigned c_oper_get_overload( c_ast_t const *ast ) {
 
   //
   // No such qualifier: try to infer whether it's a member or non-member based
-  // on the number of arguments given.
+  // on the number of parameters given.
   //
-  size_t const n_args = c_ast_args_count( ast );
-  if ( n_args == op->args_min )
+  size_t const n_params = c_ast_params_count( ast );
+  if ( n_params == op->params_min )
     return C_OP_MEMBER;
-  if ( n_args == op->args_max )
+  if ( n_params == op->params_max )
     return C_OP_NON_MEMBER;
 
   //
