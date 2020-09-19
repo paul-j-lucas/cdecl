@@ -365,17 +365,6 @@ size_t c_ast_params_count( c_ast_t const *ast ) {
 }
 
 /**
- * Convenience function to get the AST given an `c_ast_param_t`.
- *
- * @param param A pointer to an `c_ast_param_t`.
- * @return Returns a pointer to the AST.
- */
-C_AST_INLINE C_WARN_UNUSED_RESULT
-c_ast_t const* c_ast_param_ast( c_ast_param_t const *param ) {
-  return REINTERPRET_CAST( c_ast_t const*, param->data );
-}
-
-/**
  * Gets the root AST node of \a ast.
  *
  * @param ast The AST node to get the root of.
@@ -642,6 +631,17 @@ bool c_ast_find( c_ast_t const *ast, c_visit_dir_t dir,
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_t *const found_ast = c_ast_visit( nonconst_ast, dir, visitor, data );
   return found_ast != NULL;
+}
+
+/**
+ * Convenience function to get the AST given a `c_ast_param_t`.
+ *
+ * @param param A pointer to a `c_ast_param_t`.
+ * @return Returns a pointer to the AST.
+ */
+C_AST_INLINE C_WARN_UNUSED_RESULT
+c_ast_t const* c_param_ast( c_ast_param_t const *param ) {
+  return REINTERPRET_CAST( c_ast_t const*, param->data );
 }
 
 /** @} */

@@ -184,7 +184,7 @@ static void g_func_params( g_state_t const *g, c_ast_t const *ast ) {
   FOREACH_PARAM( param, ast ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", g->gout );
-    c_ast_t const *const param_ast = c_ast_param_ast( param );
+    c_ast_t const *const param_ast = c_param_ast( param );
     g_state_t params_g;
     g_init( &params_g, param_ast, g->flags, g->gout );
     g_impl( &params_g, param_ast );

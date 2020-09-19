@@ -124,10 +124,8 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       c_ast_param_t const *j_param = c_ast_params( j_ast );
       for ( ; i_param != NULL && j_param != NULL;
               i_param = i_param->next, j_param = j_param->next ) {
-        if ( !c_ast_equiv( c_ast_param_ast( i_param ),
-                           c_ast_param_ast( j_param ) ) ) {
+        if ( !c_ast_equiv( c_param_ast( i_param ), c_param_ast( j_param ) ) )
           return false;
-        }
       } // for
       if ( i_param != NULL || j_param != NULL )
         return false;

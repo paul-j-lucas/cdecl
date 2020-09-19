@@ -435,7 +435,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
     if ( ++n_params > 1 && void_ast != NULL )
       goto only_void;
 
-    c_ast_t const *const param_ast = c_ast_param_ast( param );
+    c_ast_t const *const param_ast = c_param_ast( param );
 
     if ( c_ast_sname_count( param_ast ) > 1 ) {
       print_error( &param_ast->loc, "parameter names can not be scoped" );
@@ -543,7 +543,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
   assert( opt_lang == LANG_C_KNR );
 
   FOREACH_PARAM( param, ast ) {
-    c_ast_t const *const param_ast = c_ast_param_ast( param );
+    c_ast_t const *const param_ast = c_param_ast( param );
     switch ( param_ast->kind_id ) {
       case K_NAME:
         break;
@@ -685,7 +685,7 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
       case K_CONSTRUCTOR: {           // C(C const&)
         if ( c_ast_params_count( ast ) != 1 )
           goto only_special;
-        c_ast_t const *param_ast = c_ast_param_ast( c_ast_params( ast ) );
+        c_ast_t const *param_ast = c_param_ast( c_ast_params( ast ) );
         if ( !c_ast_is_ref_to_tid_any( param_ast, TB_ANY_CLASS ) )
           goto only_special;
         if ( ast->kind_id == K_OPERATOR ) {
@@ -770,7 +770,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
       break;
 
     case 1:                             // main(void) ?
-      param_ast = c_ast_param_ast( c_ast_params( ast ) );
+      param_ast = c_param_ast( c_ast_params( ast ) );
       if ( !c_ast_is_builtin( param_ast, TB_VOID ) ) {
         print_error( &param_ast->loc,
           "a single parameter for main() must be %s", L_VOID
@@ -781,13 +781,13 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
 
     case 2: {                           // main( int, char *argv[] ) ?
       c_ast_param_t const *param = c_ast_params( ast );
-      param_ast = c_ast_param_ast( param );
+      param_ast = c_param_ast( param );
       if ( !c_ast_is_builtin( param_ast, TB_INT ) ) {
         print_error( &param_ast->loc, "main()'s first parameter must be int" );
         return false;
       }
       param = param->next;
-      param_ast = c_ast_untypedef( c_ast_param_ast( param ) );
+      param_ast = c_ast_untypedef( c_param_ast( param ) );
       switch ( param_ast->kind_id ) {
         case K_ARRAY:                   // main( int, char *argv[] )
         case K_POINTER:                 // main( int, char **argv )
@@ -1064,7 +1064,7 @@ same: print_error( &ast->loc,
     //
     bool has_ecsu_param = false;
     FOREACH_PARAM( param, ast ) {
-      c_ast_t const *const param_ast = c_ast_param_ast( param );
+      c_ast_t const *const param_ast = c_param_ast( param );
       if ( c_ast_is_kind_any( param_ast, K_ENUM_CLASS_STRUCT_UNION ) ) {
         has_ecsu_param = true;
         break;
@@ -1113,7 +1113,7 @@ same: print_error( &ast->loc,
       }
       // At this point, it's either member or non-member postfix:
       // operator++(int) or operator++(S&,int).
-      c_ast_t const *const param_ast = c_ast_param_ast( param );
+      c_ast_t const *const param_ast = c_param_ast( param );
       if ( !c_ast_is_builtin( param_ast, TB_INT ) ) {
         print_error( &param_ast->loc,
           "parameter of postfix %s%s%s %s must be %s",
@@ -1166,7 +1166,7 @@ static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
   }
 
   c_ast_param_t const *const param = c_ast_params( ast );
-  c_ast_t const *const param_ast = c_ast_param_ast( param );
+  c_ast_t const *const param_ast = c_param_ast( param );
 
   if ( !c_ast_is_ptr_to_tid_any( param_ast, TB_VOID | TB_ANY_CLASS ) ) {
     print_error( &param_ast->loc,
@@ -1205,7 +1205,7 @@ static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
   }
 
   c_ast_param_t const *const param = c_ast_params( ast );
-  c_ast_t const *const param_ast = c_ast_untypedef( c_ast_param_ast( param ) );
+  c_ast_t const *const param_ast = c_ast_untypedef( c_param_ast( param ) );
 
   if ( !c_type_id_is_size_t( param_ast->type.base_tid ) ) {
     print_error( &param_ast->loc,
@@ -1367,7 +1367,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
   }
 
   c_ast_param_t const *param = c_ast_params( ast );
-  c_ast_t const *param_ast = c_ast_untypedef( c_ast_param_ast( param ) );
+  c_ast_t const *param_ast = c_ast_untypedef( c_param_ast( param ) );
   c_ast_t const *tmp_ast = NULL;
 
   switch ( n_params ) {
@@ -1409,7 +1409,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
         return false;
       }
       param = param->next;
-      param_ast = c_ast_untypedef( c_ast_param_ast( param ) );
+      param_ast = c_ast_untypedef( c_param_ast( param ) );
       if ( param_ast == NULL ||
            !c_type_id_is_size_t( param_ast->type.base_tid ) ) {
         print_error( &param_ast->loc,
@@ -1423,7 +1423,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
 
     default:
       param = param->next->next;
-      param_ast = c_ast_param_ast( param );
+      param_ast = c_param_ast( param );
       print_error( &param_ast->loc,
         "%s %s may have at most 2 parameters", L_USER_DEFINED, L_LITERAL
       );
@@ -1621,7 +1621,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
     case K_USER_DEF_LITERAL:
       data = REINTERPRET_CAST( void*, true );
       FOREACH_PARAM( param, ast ) {
-        if ( !c_ast_check_visitor( c_ast_param_ast( param ), c_ast_visitor_type,
+        if ( !c_ast_check_visitor( c_param_ast( param ), c_ast_visitor_type,
                                    data ) ) {
           return VISITOR_ERROR_FOUND;
         }
@@ -1723,7 +1723,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
       FOREACH_PARAM( param, ast ) {
         C_IGNORE_RV(
           c_ast_check_visitor(
-            c_ast_param_ast( param ), c_ast_visitor_warning, data
+            c_param_ast( param ), c_ast_visitor_warning, data
           )
         );
       } // for

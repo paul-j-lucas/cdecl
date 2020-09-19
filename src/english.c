@@ -67,7 +67,7 @@ static void c_ast_english_func_params( c_ast_param_t const *param,
     if ( true_or_set( &comma ) )
       FPUTS( ", ", eout );
 
-    c_ast_t const *const param_ast = c_ast_param_ast( param );
+    c_ast_t const *const param_ast = c_param_ast( param );
     if ( param_ast->kind_id != K_NAME ) {
       //
       // For all kinds except K_NAME, we have to print:
