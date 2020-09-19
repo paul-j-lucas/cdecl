@@ -188,6 +188,15 @@ void c_ast_free( c_ast_t *ast ) {
 
     c_sname_free( &ast->sname );
     switch ( ast->kind_id ) {
+      case K_APPLE_BLOCK:
+      case K_CONSTRUCTOR:
+      case K_FUNCTION:
+      case K_OPERATOR:
+      case K_USER_DEF_LITERAL:
+        // Do not pass &c_ast_free as the second argument since all ASTs are
+        // free'd independently. Just free the list nodes.
+        slist_free( &ast->as.func.params, NULL, NULL );
+        break;
       case K_ENUM_CLASS_STRUCT_UNION:
         c_sname_free( &ast->as.ecsu.ecsu_sname );
         break;
@@ -199,20 +208,15 @@ void c_ast_free( c_ast_t *ast ) {
         // be freed eventually via c_typedef_cleanup().
         break;
       case K_ARRAY:
-      case K_APPLE_BLOCK:
       case K_BUILTIN:
-      case K_CONSTRUCTOR:
       case K_DESTRUCTOR:
-      case K_FUNCTION:
       case K_NAME:
       case K_NONE:
-      case K_OPERATOR:
       case K_PLACEHOLDER:
       case K_POINTER:
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
       case K_USER_DEF_CONVERSION:
-      case K_USER_DEF_LITERAL:
       case K_VARIADIC:
         // nothing to do
         break;
