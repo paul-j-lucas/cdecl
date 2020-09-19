@@ -630,7 +630,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
  * @param dir The direction to visit.
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.
- * @return Returns `true` only if \a visitor ever returned `true`.
+ * @return Returns `true` only if \a visitor ever returned non-null.
  *
  * @note Function-like parameters are _not_ traversed into.  They're considered
  * distinct ASTs.
