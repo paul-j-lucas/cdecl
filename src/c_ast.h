@@ -397,6 +397,8 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
  *
  * @param ast The AST to append to the name of.
  * @param name The name to append.  Ownership is taken.
+ *
+ * @sa c_ast_sname_append_sname();
  */
 C_AST_INLINE
 void c_ast_sname_append_name( c_ast_t *ast, char *name ) {
@@ -409,6 +411,7 @@ void c_ast_sname_append_name( c_ast_t *ast, char *name ) {
  * @param ast The AST to append to the name of.
  * @param sname The scoped name to append.  It is cleared.
  *
+ * @sa c_ast_sname_append_name();
  * @sa c_ast_sname_prepend_sname()
  */
 C_AST_INLINE
@@ -456,6 +459,9 @@ bool c_ast_sname_empty( c_ast_t const *ast ) {
  * @return Returns said name.
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
+ *
+ * @sa c_ast_sname_local_name()
+ * @sa c_ast_sname_scope_name()
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT
 char const* c_ast_sname_full_name( c_ast_t const *ast ) {
@@ -512,6 +518,8 @@ c_type_t const* c_ast_sname_local_type( c_ast_t const *ast ) {
  * @return Returns the name at \a offset or the empty string if \a offset &gt;=
  * c_ast_sname_count().
  *
+ * @sa c_ast_sname_full_name()
+ * @sa c_ast_sname_local_name()
  * @sa c_ast_sname_name_atr()
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT
@@ -527,6 +535,8 @@ char const* c_ast_sname_name_at( c_ast_t const *ast, size_t offset ) {
  * @return Returns the name at \a offset or the empty string if \a offset &gt;=
  * c_ast_sname_count().
  *
+ * @sa c_ast_sname_full_name()
+ * @sa c_ast_sname_local_name()
  * @sa c_ast_sname_name_at()
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT
