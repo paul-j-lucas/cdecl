@@ -1696,7 +1696,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
       break;
 
     case K_USER_DEF_LITERAL:
-      if ( c_sname_local_name( &ast->sname )[0] != '_' )
+      if ( c_ast_sname_local_name( ast )[0] != '_' )
         print_warning( &ast->loc,
           "%s %s not starting with '_' are reserved",
           L_USER_DEFINED, L_LITERAL
