@@ -3759,7 +3759,7 @@ user_defined_literal_c_ast
       $$.ast = type_ast_peek();
       $$.target_ast = NULL;
       $$.ast->sname = $1;
-      c_sname_append_name( &$$.ast->sname, $4 );
+      c_ast_sname_append_name( $$.ast, $4 );
 
       DUMP_AST( "user_defined_literal_c_ast", $$.ast );
       DUMP_END();
