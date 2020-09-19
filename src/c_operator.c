@@ -187,7 +187,7 @@ unsigned c_oper_get_overload( c_ast_t const *ast ) {
     case C_OP_NEW_ARRAY:
     case C_OP_DELETE:
     case C_OP_DELETE_ARRAY:
-      return  !c_ast_sname_empty( ast ) ||
+      return  !c_ast_empty_name( ast ) ||
               c_type_is_tid_any( &ast->type, TS_STATIC ) ?
         C_OP_MEMBER : C_OP_NON_MEMBER;
     default:

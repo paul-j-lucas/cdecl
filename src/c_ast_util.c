@@ -285,7 +285,7 @@ C_WARN_UNUSED_RESULT
 static bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   uintptr_t const at_least = REINTERPRET_CAST( uintptr_t, data );
-  return c_ast_sname_count( ast ) >= at_least;
+  return c_ast_count_name( ast ) >= at_least;
 }
 
 /**
@@ -318,7 +318,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast ) {
   assert( ast != NULL );
   c_ast_t *const rv_ast = c_ast_add_func_impl( ast, ret_ast, func_ast );
   assert( rv_ast != NULL );
-  if ( c_ast_sname_empty( func_ast ) )
+  if ( c_ast_empty_name( func_ast ) )
     func_ast->sname = c_ast_take_name( ast );
   c_type_t const taken_type = c_ast_take_storage( func_ast->as.func.ret_ast );
   c_type_or_eq( &func_ast->type, &taken_type );
@@ -409,7 +409,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
         // The type_ast is the final AST -- decl_ast (containing a placeholder)
         // is discarded.
         //
-        if ( c_ast_sname_empty( type_ast ) )
+        if ( c_ast_empty_name( type_ast ) )
           type_ast->sname = c_ast_take_name( decl_ast );
         return type_ast;
       }
@@ -433,7 +433,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   // The decl_ast is the final AST -- type_ast may be discarded (if it wasn't
   // patched in), so take its name if we don't have one already.
   //
-  if ( c_ast_sname_empty( decl_ast ) )
+  if ( c_ast_empty_name( decl_ast ) )
     decl_ast->sname = c_ast_take_name( type_ast );
   return decl_ast;
 }

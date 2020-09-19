@@ -333,11 +333,11 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & (K_CONSTRUCTOR | K_DESTRUCTOR)) != K_NONE );
 
-  if ( c_ast_sname_count( ast ) > 1 && !c_ast_sname_is_ctor( ast ) ) {
+  if ( c_ast_count_name( ast ) > 1 && !c_ast_is_ctor_name( ast ) ) {
     print_error( &ast->loc,
       "\"%s\", \"%s\": %s and %s names don't match",
-      c_ast_sname_name_atr( ast, 1 ), c_ast_sname_local_name( ast ),
-      c_type_name_error( c_ast_sname_local_type( ast ) ),
+      c_ast_name_atr( ast, 1 ), c_ast_local_name( ast ),
+      c_type_name_error( c_ast_local_name_type( ast ) ),
       c_kind_name( ast->kind_id )
     );
     return false;
@@ -437,7 +437,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
     c_ast_t const *const param_ast = c_param_ast( param );
 
-    if ( c_ast_sname_count( param_ast ) > 1 ) {
+    if ( c_ast_count_name( param_ast ) > 1 ) {
       print_error( &param_ast->loc, "parameter names can not be scoped" );
       return false;
     }
@@ -465,7 +465,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           // Ordinarily, void parameters are invalid; but a single void
           // function "parameter" is valid (as long as it doesn't have a name).
           //
-          if ( !c_ast_sname_empty( param_ast ) ) {
+          if ( !c_ast_empty_name( param_ast ) ) {
             print_error( &param_ast->loc, "parameters can not be %s", L_VOID );
             return false;
           }
@@ -712,10 +712,10 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   }
 
   if ( c_type_is_tid_any( &ast->type, TS_VIRTUAL ) ) {
-    if ( c_ast_sname_count( ast ) > 1 ) {
+    if ( c_ast_count_name( ast ) > 1 ) {
       print_error( &ast->loc,
         "\"%s\": %s can not be used in file-scoped %ss",
-        c_ast_sname_full_name( ast ), L_VIRTUAL, c_kind_name( ast->kind_id )
+        c_ast_full_name( ast ), L_VIRTUAL, c_kind_name( ast->kind_id )
       );
       return false;
     }
@@ -1593,7 +1593,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
         return VISITOR_ERROR_FOUND;
       }
       if ( c_type_is_tid_any( &ast->type, TS_FRIEND ) &&
-           c_ast_sname_empty( ast ) ) {
+           c_ast_empty_name( ast ) ) {
         print_error( &ast->loc,
           "%s %s %s %s must use qualified name",
           L_FRIEND, L_USER_DEFINED, L_CONVERSION, L_OPERATOR
@@ -1696,7 +1696,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
       break;
 
     case K_USER_DEF_LITERAL:
-      if ( c_ast_sname_local_name( ast )[0] != '_' )
+      if ( c_ast_local_name( ast )[0] != '_' )
         print_warning( &ast->loc,
           "%s %s not starting with '_' are reserved",
           L_USER_DEFINED, L_LITERAL
@@ -1857,9 +1857,7 @@ static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t tid ) {
 C_NOWARN_UNUSED_RESULT
 static bool error_unknown_type( c_ast_t const *ast ) {
   assert( ast != NULL );
-  print_error( &ast->loc,
-    "\"%s\": unknown type", c_ast_sname_full_name( ast )
-  );
+  print_error( &ast->loc, "\"%s\": unknown type", c_ast_full_name( ast ) );
   return VISITOR_ERROR_FOUND;
 }
 

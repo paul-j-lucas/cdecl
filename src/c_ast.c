@@ -284,14 +284,14 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
   assert( !c_ast_has_cycle( child_ast ) );
 }
 
-void c_ast_sname_set_name( c_ast_t *ast, char *name ) {
+void c_ast_set_name( c_ast_t *ast, char *name ) {
   assert( ast != NULL );
   assert( name != NULL );
   c_sname_free( &ast->sname );
   c_sname_append_name( &ast->sname, name );
 }
 
-void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname ) {
+void c_ast_set_sname( c_ast_t *ast, c_sname_t *sname ) {
   assert( ast != NULL );
   assert( sname != NULL );
   //
@@ -310,7 +310,7 @@ void c_ast_sname_set_sname( c_ast_t *ast, c_sname_t *sname ) {
   }
 
   c_sname_free( &ast->sname );
-  c_ast_sname_append_sname( ast, sname );
+  c_ast_append_sname( ast, sname );
 }
 
 c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,

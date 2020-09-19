@@ -282,8 +282,8 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       if ( !c_type_is_none( &type ) )
         FPRINTF( g->gout, "%s ", c_type_name( &type ) );
       if ( ast->kind_id == K_USER_DEF_CONVERSION ) {
-        if ( !c_ast_sname_empty( ast ) )
-          FPRINTF( g->gout, "%s::", c_ast_sname_full_name( ast ) );
+        if ( !c_ast_empty_name( ast ) )
+          FPRINTF( g->gout, "%s::", c_ast_full_name( ast ) );
         FPRINTF( g->gout, "%s ", L_OPERATOR );
       }
       if ( ast->as.parent.of_ast != NULL )
@@ -356,7 +356,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_NAME:
-      if ( !c_ast_sname_empty( ast ) && (g->flags & G_IS_CAST) == 0 )
+      if ( !c_ast_empty_name( ast ) && (g->flags & G_IS_CAST) == 0 )
         FPUTS( g_sname_full_or_local( g, ast ), g->gout );
       g_set_leaf( g, ast );
       break;
@@ -611,7 +611,7 @@ static void g_qual_name( g_state_t *g, c_ast_t const *ast ) {
     if ( (g->flags & G_IS_CAST) == 0 )
       FPUTC( ' ', g->gout );
   }
-  if ( !c_ast_sname_empty( ast ) && (g->flags & G_IS_CAST) == 0 )
+  if ( !c_ast_empty_name( ast ) && (g->flags & G_IS_CAST) == 0 )
     FPUTS( g_sname_full_or_local( g, ast ), g->gout );
 }
 
@@ -630,9 +630,9 @@ static char const* g_sname_full_or_local( g_state_t *g, c_ast_t const *ast ) {
 
   if ( (g->flags & G_IS_TYPEDEF) != 0 ) {
     g->flags &= ~G_IS_TYPEDEF;
-    return c_ast_sname_local_name( ast );
+    return c_ast_local_name( ast );
   }
-  return c_ast_sname_full_name( ast );
+  return c_ast_full_name( ast );
 }
 
 /**
@@ -652,30 +652,30 @@ static void g_space_name( g_state_t *g, c_ast_t const *ast ) {
 
   switch ( ast->kind_id ) {
     case K_CONSTRUCTOR:
-      FPUTS( c_ast_sname_full_name( ast ), g->gout );
+      FPUTS( c_ast_full_name( ast ), g->gout );
 
       if ( !c_type_is_tid_any( &ast->type, TS_EXPLICIT ) &&
-           c_ast_sname_count( ast ) == 1 ) {
+           c_ast_count_name( ast ) == 1 ) {
         //
         // For non-explicit constructors, we have to repeat the local name
         // since that's the name of the constructor at file-scope.
         //
-        FPRINTF( g->gout, "::%s", c_ast_sname_local_name( ast ) );
+        FPRINTF( g->gout, "::%s", c_ast_local_name( ast ) );
       }
       break;
     case K_DESTRUCTOR:
-      if ( c_ast_sname_count( ast ) > 1 )
-        FPRINTF( g->gout, "%s::", c_ast_sname_scope_name( ast ) );
+      if ( c_ast_count_name( ast ) > 1 )
+        FPRINTF( g->gout, "%s::", c_ast_scope_name( ast ) );
       if ( opt_alt_tokens )
         FPRINTF( g->gout, "%s ", L_COMPL );
       else
         FPUTC( '~', g->gout );
-      FPUTS( c_ast_sname_local_name( ast ), g->gout );
+      FPUTS( c_ast_local_name( ast ), g->gout );
       break;
     case K_OPERATOR: {
       g_print_space( g );
-      if ( !c_ast_sname_empty( ast ) )
-        FPRINTF( g->gout, "%s::", c_ast_sname_full_name( ast ) );
+      if ( !c_ast_empty_name( ast ) )
+        FPRINTF( g->gout, "%s::", c_ast_full_name( ast ) );
       char const *const token = c_oper_token_c( ast->as.oper.oper_id );
       FPRINTF( g->gout,
         "%s%s%s", L_OPERATOR, isalpha( token[0] ) ? " " : "", token
@@ -687,15 +687,12 @@ static void g_space_name( g_state_t *g, c_ast_t const *ast ) {
       break;
     case K_USER_DEF_LITERAL:
       g_print_space( g );
-      if ( c_ast_sname_count( ast ) > 1 )
-        FPRINTF( g->gout, "%s::", c_ast_sname_scope_name( ast ) );
-      FPRINTF( g->gout,
-        "%s\"\" %s",
-        L_OPERATOR, c_ast_sname_local_name( ast )
-      );
+      if ( c_ast_count_name( ast ) > 1 )
+        FPRINTF( g->gout, "%s::", c_ast_scope_name( ast ) );
+      FPRINTF( g->gout, "%s\"\" %s", L_OPERATOR, c_ast_local_name( ast ) );
       break;
     default:
-      if ( !c_ast_sname_empty( ast ) ) {
+      if ( !c_ast_empty_name( ast ) ) {
         g_print_space( g );
         FPUTS( g_sname_full_or_local( g, ast ), g->gout );
       }

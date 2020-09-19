@@ -850,7 +850,7 @@ static bool rb_visitor( void *node_data, void *aux_data ) {
 
 c_typedef_add_rv_t c_typedef_add( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( !c_ast_sname_empty( ast ) );
+  assert( !c_ast_empty_name( ast ) );
 
   c_typedef_t *const new_t = c_typedef_new( ast );
   rb_node_t const *const old_rb = rb_tree_insert( typedefs, new_t );
