@@ -251,7 +251,6 @@ void c_sname_free( c_sname_t *sname ) {
  * something like call this twice in the same `printf()` statement.
  *
  * @sa c_sname_local_name
- * @sa c_sname_name_at()
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name
  */
@@ -287,7 +286,6 @@ bool c_sname_is_ctor( c_sname_t const *sname );
  * @return Returns said name or the empty string if \a sname is empty.
  *
  * @sa c_sname_full_name
- * @sa c_sname_name_at()
  * @sa c_sname_name_atr()
  * @sa c_sname_scope_name
  */
@@ -309,25 +307,6 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
 c_type_t const* c_sname_local_type( c_sname_t const *sname );
 
 /**
- * Gets the name at \a offset of \a sname.
- *
- * @param sname The `c_sname_t` to get the name at \a offset of.
- * @param offset The offset (starting at 0) of the name to get.
- * @return Returns the name at \a offset or the empty string if \a offset &gt;=
- * c_sname_count().
- *
- * @sa c_sname_full_name
- * @sa c_sname_name_atr()
- * @sa c_sname_scope_name
- */
-C_SNAME_INLINE C_WARN_UNUSED_RESULT
-char const* c_sname_name_at( c_sname_t const *sname, size_t offset ) {
-  c_scope_data_t const *const data =
-    SLIST_PEEK_AT( c_scope_data_t*, sname, offset );
-  return data != NULL ? data->name : "";
-}
-
-/**
  * Gets the name at \a roffset of \a sname.
  *
  * @param sname The `c_sname_t` to get the name at \a roffset of.
@@ -336,7 +315,6 @@ char const* c_sname_name_at( c_sname_t const *sname, size_t offset ) {
  * &gt;= c_sname_count().
  *
  * @sa c_sname_full_name
- * @sa c_sname_name_at()
  * @sa c_sname_scope_name
  */
 C_SNAME_INLINE C_WARN_UNUSED_RESULT
@@ -374,7 +352,6 @@ void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
  *
  * @sa c_sname_full_name
  * @sa c_sname_local_name
- * @sa c_sname_name_at()
  * @sa c_sname_name_atr()
  */
 C_WARN_UNUSED_RESULT

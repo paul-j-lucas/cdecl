@@ -453,23 +453,6 @@ c_type_t const* c_ast_local_name_type( c_ast_t const *ast ) {
 }
 
 /**
- * Gets the name at \a offset of \a ast.
- *
- * @param ast The AST to get the name at \a offset of.
- * @param offset The offset (starting at 0) of the name to get.
- * @return Returns the name at \a offset or the empty string if \a offset &gt;=
- * c_ast_count_name().
- *
- * @sa c_ast_full_name()
- * @sa c_ast_local_name()
- * @sa c_ast_name_atr()
- */
-C_AST_INLINE C_WARN_UNUSED_RESULT
-char const* c_ast_name_at( c_ast_t const *ast, size_t offset ) {
-  return c_sname_name_at( &ast->sname, offset );
-}
-
-/**
  * Gets the name at \a roffset of \a ast.
  *
  * @param ast The AST to get the name at \a offset of.
@@ -479,7 +462,6 @@ char const* c_ast_name_at( c_ast_t const *ast, size_t offset ) {
  *
  * @sa c_ast_full_name()
  * @sa c_ast_local_name()
- * @sa c_ast_name_at()
  */
 C_AST_INLINE C_WARN_UNUSED_RESULT
 char const* c_ast_name_atr( c_ast_t const *ast, size_t roffset ) {
