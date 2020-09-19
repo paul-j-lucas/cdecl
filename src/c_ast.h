@@ -320,20 +320,6 @@ bool c_ast_is_parent( c_ast_t const *ast ) {
 }
 
 /**
- * Creates a new AST node.
- *
- * @param kind_id The kind of AST to create.
- * @param depth How deep within `()` it is.
- * @param loc A pointer to the token location data.
- * @return Returns a pointer to a new AST.
- *
- * @sa c_ast_free()
- */
-C_WARN_UNUSED_RESULT
-c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
-                    c_loc_t const *loc );
-
-/**
  * Appends \a name to the name of \a ast.
  *
  * @param ast The AST to append to the name of.
@@ -467,6 +453,20 @@ C_AST_INLINE C_WARN_UNUSED_RESULT
 char const* c_ast_name_atr( c_ast_t const *ast, size_t roffset ) {
   return c_sname_name_atr( &ast->sname, roffset );
 }
+
+/**
+ * Creates a new AST node.
+ *
+ * @param kind_id The kind of AST to create.
+ * @param depth How deep within `()` it is.
+ * @param loc A pointer to the token location data.
+ * @return Returns a pointer to a new AST.
+ *
+ * @sa c_ast_free()
+ */
+C_WARN_UNUSED_RESULT
+c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
+                    c_loc_t const *loc );
 
 /**
  * Convenience function for getting function-like parameters.
