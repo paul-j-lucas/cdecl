@@ -173,7 +173,7 @@ struct c_apple_block_ast {
  * taken advantage of.
  */
 struct c_constructor_ast {
-  void           *child_ast_not_used;   ///< So `params` is at same offset.
+  void           *not_used;             ///< So `params` is at same offset.
   c_ast_params_t  params;               ///< Constructor parameters(s), if any.
 };
 
