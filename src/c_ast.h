@@ -50,22 +50,55 @@ _GL_INLINE_HEADER_BEGIN
 
 /// @endcond
 
-/** For `c_array_ast.size`, denotes `array[]`. */
+/**
+ * For `c_array_ast.size`, denotes `array[]`.
+ *
+ * @sa C_ARRAY_SIZE_VARIABLE
+ */
 #define C_ARRAY_SIZE_NONE     (-1)
 
-/** For `c_array_ast.size`, denotes `array[*]`. */
+/**
+ * For `c_array_ast.size`, denotes `array[*]`.
+ *
+ * @sa C_ARRAY_SIZE_NONE
+ */
 #define C_ARRAY_SIZE_VARIABLE (-2)
 
-/** For `c_function_ast.flags`, denotes that the function is unspecified. */
+/**
+ * For `c_function_ast.flags`, denotes that the function is unspecified
+ * (unknown whether it's a member or non-member).
+ *
+ * @sa C_FUNC_MASK_MEMBER
+ * @sa C_FUNC_MEMBER
+ * @sa C_FUNC_NON_MEMBER
+ */
 #define C_FUNC_UNSPECIFIED    0u
 
-/** For `c_function_ast.flags`, denotes that the function is a member. */
+/**
+ * For `c_function_ast.flags`, denotes that the function is a member.
+ *
+ * @sa C_FUNC_MASK_MEMBER
+ * @sa C_FUNC_NON_MEMBER
+ * @sa C_FUNC_UNSPECIFIED
+ */
 #define C_FUNC_MEMBER         (1u << 0)
 
-/** For `c_function_ast.flags`, denotes that the function is a non-member. */
+/**
+ * For `c_function_ast.flags`, denotes that the function is a non-member.
+ *
+ * @sa C_FUNC_MASK_MEMBER
+ * @sa C_FUNC_MEMBER
+ * @sa C_FUNC_UNSPECIFIED
+ */
 #define C_FUNC_NON_MEMBER     (1u << 1)
 
-/** For `c_function_ast.flags`, member bitmask. */
+/**
+ * For `c_function_ast.flags`, member bitmask.
+ *
+ * @sa C_FUNC_MEMBER
+ * @sa C_FUNC_NON_MEMBER
+ * @sa C_FUNC_UNSPECIFIED
+ */
 #define C_FUNC_MASK_MEMBER    0x3u
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -160,6 +193,9 @@ struct c_array_ast {
  *
  * @note Members are laid out in the same order as `c_function_ast`: this is
  * taken advantage of.
+ *
+ * @sa https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks/Articles/00_Introduction.html
+ * @sa http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf
  */
 struct c_apple_block_ast {
   c_ast_t        *ret_ast;              ///< Return type.
