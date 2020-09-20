@@ -42,41 +42,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Di/Trigraph mode.
- */
-enum c_graph {
-  C_GRAPH_NONE,                         ///< Ordinary characters.
-  C_GRAPH_DI,                           ///< Digraphs.
-  C_GRAPH_TRI                           ///< Trigraphs.
-};
-
-/**
- * The source location used by Bison.
- */
-struct c_loc {
-  //
-  // These should be either unsigned or size_t, but Bison generates code that
-  // tests these for >= 0 which is always true for unsigned types so it
-  // generates warnings; hence these are kept as int to eliminate the warnings.
-  //
-  int first_line;                       ///< First line of location range.
-  int first_column;                     ///< First column of location range.
-  //
-  // Cdecl doesn't use either of these.
-  //
-  int last_line;                        ///< Last line of location range.
-  int last_column;                      ///< Last column of location range.
-};
-
-/**
- * Mode of operation.
- */
-enum c_mode {
-  C_ENGLISH_TO_GIBBERISH,               ///< Convert English into gibberish.
-  C_GIBBERISH_TO_ENGLISH                ///< Decipher gibberish into English.
-};
-
 typedef struct c_alignas          c_alignas_t;
 typedef enum   c_alignas_arg      c_alignas_arg_t;
 typedef struct c_array_ast        c_array_ast_t;
@@ -147,6 +112,41 @@ struct c_ast_pair {
    * subsequent additions to the AST.
    */
   c_ast_t *target_ast;
+};
+
+/**
+ * Di/Trigraph mode.
+ */
+enum c_graph {
+  C_GRAPH_NONE,                         ///< Ordinary characters.
+  C_GRAPH_DI,                           ///< Digraphs.
+  C_GRAPH_TRI                           ///< Trigraphs.
+};
+
+/**
+ * The source location used by Bison.
+ */
+struct c_loc {
+  //
+  // These should be either unsigned or size_t, but Bison generates code that
+  // tests these for >= 0 which is always true for unsigned types so it
+  // generates warnings; hence these are kept as int to eliminate the warnings.
+  //
+  int first_line;                       ///< First line of location range.
+  int first_column;                     ///< First column of location range.
+  //
+  // Cdecl doesn't use either of these.
+  //
+  int last_line;                        ///< Last line of location range.
+  int last_column;                      ///< Last column of location range.
+};
+
+/**
+ * Mode of operation.
+ */
+enum c_mode {
+  C_ENGLISH_TO_GIBBERISH,               ///< Convert English into gibberish.
+  C_GIBBERISH_TO_ENGLISH                ///< Decipher gibberish into English.
 };
 
 ///////////////////////////////////////////////////////////////////////////////
