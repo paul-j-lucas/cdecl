@@ -92,16 +92,6 @@ static bool error_unknown_type( c_ast_t const* );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Gets the alignas literal for the current language.
- *
- * @return Returns either `_Alignas` (for C) or `alignas` (for C++).
- */
-C_WARN_UNUSED_RESULT
-static inline char const* alignas_lang( void ) {
-  return C_LANG_IS_CPP() ? L_ALIGNAS : L__ALIGNAS;
-}
-
-/**
  * Simple wrapper around `c_ast_find()`.
  *
  * @param ast The AST to check.

@@ -82,16 +82,6 @@ static void         g_space_name( g_state_t*, c_ast_t const* );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Gets the alignas literal for the current language.
- *
- * @return Returns either `_Alignas` (for C) or `alignas` (for C++).
- */
-C_WARN_UNUSED_RESULT
-static inline char const* alignas_lang( void ) {
-  return C_LANG_IS_CPP() ? L_ALIGNAS : L__ALIGNAS;
-}
-
-/**
  * Prints a space only if we haven't printed one yet.
  *
  * @param g The `g_state` to use.

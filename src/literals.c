@@ -23,6 +23,13 @@
  * Defines constants for cdecl and C/C++ language literals.
  */
 
+// local
+#include "cdecl.h"                      /* must go first */
+/// @cond DOXYGEN_IGNORE
+#define C_LITERALS_INLINE _GL_EXTERN_INLINE
+/// @endcond
+#include "literals.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // english

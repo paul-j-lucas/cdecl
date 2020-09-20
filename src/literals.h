@@ -26,6 +26,19 @@
  * Declares constants for cdecl and C/C++ language literals.
  */
 
+// local
+#include "c_lang.h"                     /* must go first */
+#include "options.h"
+
+/// @cond DOXYGEN_IGNORE
+
+_GL_INLINE_HEADER_BEGIN
+#ifndef C_LITERALS_INLINE
+# define C_LITERALS_INLINE _GL_INLINE
+#endif /* C_LITERALS_INLINE */
+
+/// @endcond
+
 /**
  * @defgroup literals-group Literal Strings
  * Constants for cdecl and C/C++ language literals.
@@ -42,7 +55,7 @@
 //  + A cdecl command, update CDECL_COMMANDS in autocomplete.c (if you want it
 //    auto-completable).
 //
-//  + A cdecl or C/C++ keyword, update CDECL_KEYWORDS is autocomplete.c (if you
+//  + A cdecl or C/C++ keyword, update CDECL_KEYWORDS in autocomplete.c (if you
 //    want it auto-completable).
 
 // english
@@ -289,6 +302,18 @@ extern char const L_GNU___VOLATILE__[];
 // Apple extensions
 extern char const L_APPLE___BLOCK[];        // storage class
 extern char const L_APPLE_BLOCK[];          // Engligh for '^'
+
+////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Gets the alignas literal for the current language.
+ *
+ * @return Returns either `_Alignas` (for C) or `alignas` (for C++).
+ */
+C_LITERALS_INLINE C_WARN_UNUSED_RESULT
+char const* alignas_lang( void ) {
+  return C_LANG_IS_CPP() ? L_ALIGNAS : L__ALIGNAS;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
