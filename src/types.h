@@ -77,9 +77,9 @@ enum c_mode {
   C_GIBBERISH_TO_ENGLISH                ///< Decipher gibberish into English.
 };
 
-typedef struct c_alignas        c_alignas_t;
-typedef enum   c_alignas_arg    c_alignas_arg_t;
-typedef struct c_array_ast      c_array_ast_t;
+typedef struct c_alignas          c_alignas_t;
+typedef enum   c_alignas_arg      c_alignas_arg_t;
+typedef struct c_array_ast        c_array_ast_t;
 
 /**
  * One of:
@@ -88,7 +88,7 @@ typedef struct c_array_ast      c_array_ast_t;
  *  + #C_ARRAY_SIZE_NONE
  *  + #C_ARRAY_SIZE_VARIABLE
  */
-typedef int                     c_array_size_t;
+typedef int                       c_array_size_t;
 
 typedef struct c_apple_block_ast  c_apple_block_ast_t;
 typedef struct c_ast              c_ast_t;
