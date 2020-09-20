@@ -52,6 +52,11 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * For `c_operator.flags`, denotes that the operator is not overloadable.
+ *
+ * @sa C_OP_MEMBER
+ * @sa C_OP_NON_MEMBER
+ * @sa C_OP_OVERLOADABLE
+ * @sa C_OP_UNSPECIFIED
  */
 #define C_OP_NOT_OVERLOADABLE   0u
 
@@ -61,24 +66,44 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * For `c_operator.flags`, denotes that the operator overloadability (member or
  * non-member) is unspecified.
+ *
+ * @sa C_OP_MEMBER
+ * @sa C_OP_NON_MEMBER
+ * @sa C_OP_NOT_OVERLOADABLE
+ * @sa C_OP_OVERLOADABLE
  */
 #define C_OP_UNSPECIFIED        C_FUNC_UNSPECIFIED
 
 /**
  * For `c_operator.flags`, denotes that the operator is overload{able|ed} as a
  * member only.
+ *
+ * @sa C_OP_NON_MEMBER
+ * @sa C_OP_NOT_OVERLOADABLE
+ * @sa C_OP_OVERLOADABLE
+ * @sa C_OP_UNSPECIFIED
  */
 #define C_OP_MEMBER             C_FUNC_MEMBER
 
 /**
  * For `c_operator.flags`, denotes that the operator is overload{able|ed} as a
  * non-member only.
+ *
+ * @sa C_OP_MEMBER
+ * @sa C_OP_NOT_OVERLOADABLE
+ * @sa C_OP_OVERLOADABLE
+ * @sa C_OP_UNSPECIFIED
  */
 #define C_OP_NON_MEMBER         C_FUNC_NON_MEMBER
 
 /**
  * For `c_operator.flags`, denotes that the operator is overloadable as either
  * a member or non-member.
+ *
+ * @sa C_OP_MEMBER
+ * @sa C_OP_NON_MEMBER
+ * @sa C_OP_NOT_OVERLOADABLE
+ * @sa C_OP_UNSPECIFIED
  */
 #define C_OP_OVERLOADABLE       (C_OP_MEMBER | C_OP_NON_MEMBER)
 
