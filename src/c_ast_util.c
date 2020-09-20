@@ -342,9 +342,9 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir ) {
 }
 
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
-                              c_type_t const *type ) {
+                              c_type_t const *types ) {
   return c_ast_visit(
-    ast, dir, c_ast_vistor_type_any, CONST_CAST( void*, type )
+    ast, dir, c_ast_vistor_type_any, CONST_CAST( void*, types )
   );
 }
 

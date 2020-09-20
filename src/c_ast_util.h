@@ -84,7 +84,7 @@ C_WARN_UNUSED_RESULT
 bool c_ast_check_declaration( c_ast_t const *ast );
 
 /**
- * Traverses \a ast attempting to find an AST node having \a kind_id.
+ * Traverses \a ast attempting to find an AST node having \a kind_ids.
  *
  * @param ast The AST to begin at.
  * @param dir The direction to visit.
@@ -107,17 +107,17 @@ C_WARN_UNUSED_RESULT
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
 
 /**
- * Traverses \a ast attempting to find an AST node having \a type_ids.
+ * Traverses \a ast attempting to find an AST node having one of \a types.
  *
  * @param ast The AST to begin at.
  * @param dir The direction to visit.
- * @param type The bitwise-or of type(s) to find.
+ * @param types The bitwise-or of type(s) to find.
  * @return Returns a pointer to an AST node having one of \a type_ids or null
  * if none.
  */
 C_WARN_UNUSED_RESULT
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
-                              c_type_t const *type );
+                              c_type_t const *types );
 
 /**
  * Checks whether \a ast is an AST for a builtin type.
@@ -151,28 +151,26 @@ bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids );
  * @return Returns `true` only if \a ast is a pointer to one of \a tids.
  *
  * @sa c_ast_is_ptr_to_type()
+ * @sa c_ast_is_ref_to_tid_any()
  */
 C_WARN_UNUSED_RESULT
 bool c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
 
 /**
  * Checks whether \a ast is an AST for a pointer to a certain type.
+ * For example:
+ *  + `c_ast_is_ptr_to_type( ast, &T_ANY, &C_TYPE_LIT_B(TB_CHAR) )`
+ *    returns `true` only if \a ast is pointer to `char` (`char*`) _exactly_.
+ *  + `c_ast_is_ptr_to_type( ast, &T_ANY, &C_TYPE_LIT(TB_CHAR, TS_CONST, TA_NONE) )`
+ *    returns `true` only if \a ast is a pointer to `const` `char` (`char
+ *    const*`) _exactly_.
+ *  + `c_ast_is_ptr_to_type( ast, &C_TYPE_LIT_S(c_type_id_compl( TS_CONST )), &C_TYPE_LIT_B(TB_CHAR) )`
+ *    returns `true` if \a ast is a pointer to `char` regardless of `const`
+ *    (`char*` or `char const*`).
  *
  * @param ast The AST to check.
  * @param mask_type The type mask to apply to the type of \a ast before
- * equality comparison with \a equal_type.  For example:
- *  + This:
- *    ```
- *    c_ast_is_ptr_to_type(ast, &T_ANY, &C_TYPE_LIT_B(TB_CHAR))
- *    ```
- *    returns `true` only if \a ast is pointer to `char` (`char*`) _exactly_.
- *  + `c_ast_is_ptr_to_type(ast, &T_ANY,
- *    &C_TYPE_LIT(TB_CHAR,TS_CONST,TA_NONE))` returns `true` only if \a ast is
- *    a pointer to `const` `char` (`char const*`) _exactly_.
- *  + `c_ast_is_ptr_to_type(ast, &C_TYPE_LIT_S(~TS_CONST),
- *    &C_TYPE_LIT_B(TB_CHAR))` returns `true` if \a ast is a pointer to `char`
- *    regardless of `const` (`char*` or `char const*`).
- *
+ * equality comparison with \a equal_type.
  * @param equal_type The _exact_ type to check against.
  * @return Returns `true` only if \a ast (masked with \a mask_type) is a
  * pointer to \a equal_type.
@@ -191,6 +189,8 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
  * @param tids The bitwise-or of type(s) to check against.
  * @return Returns `true` only if \a ast is a reference or rvalue reference to
  * one of \a tids.
+ *
+ * @sa c_ast_is_ptr_to_tid_any()
  */
 C_WARN_UNUSED_RESULT
 bool c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
