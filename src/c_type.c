@@ -572,7 +572,7 @@ static char const* c_type_literal( c_type_info_t const *ti, bool is_error ) {
  */
 C_WARN_UNUSED_RESULT
 static char const* c_type_id_name_1( c_type_id_t tid, bool is_error ) {
-  assert( exactly_one_bit_set( c_type_id_no_part( tid ) ) );
+  assert( exactly_one_bit_set( c_type_id_no_part_id( tid ) ) );
 
   switch ( c_type_id_part_id( tid ) ) {
     case TPID_BASE:

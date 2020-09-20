@@ -3250,8 +3250,8 @@ func_decl_c_ast
         type_ast->type.base_tid == TB_NONE && (
           c_type_is_tid_any( &type_ast->type, TS_CONSTRUCTOR_ONLY ) ||
           only_bits_in(
-            c_type_id_no_part( type_ast->type.store_tid ),
-            c_type_id_no_part( TS_CONSTRUCTOR )
+            c_type_id_no_part_id( type_ast->type.store_tid ),
+            c_type_id_no_part_id( TS_CONSTRUCTOR )
           )
         );
 

@@ -485,6 +485,8 @@ bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type );
  * type to get the pointer to.
  * @return Returns a pointer to the corresponding <code>\ref c_type_id_t</code>
  * of \a type for the part of \a tid.
+ *
+ * @sa c_type_get_tid()
  */
 C_WARN_UNUSED_RESULT
 c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid );
@@ -629,6 +631,8 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type );
  * <code>\ref c_type_id_t</code> of \a type to get.
  * @return Returns the corresponding <code>\ref c_type_id_t</code> of \a type
  * for the part of \a tid.
+ *
+ * @sa c_type_get_tid_ptr()
  */
 C_TYPE_INLINE C_WARN_UNUSED_RESULT
 c_type_id_t c_type_get_tid( c_type_t const *type, c_type_id_t tid ) {
@@ -640,6 +644,8 @@ c_type_id_t c_type_get_tid( c_type_t const *type, c_type_id_t tid ) {
  *
  * @param tid The <code>\ref c_type_id_t</code> to check.
  * @return Returns `true` only if \a tid has been complemented.
+ *
+ * @sa c_type_id_compl()
  */
 C_TYPE_INLINE C_WARN_UNUSED_RESULT
 bool c_type_id_is_compl( c_type_id_t tid ) {
@@ -658,6 +664,8 @@ bool c_type_id_is_compl( c_type_id_t tid ) {
  *
  * @param tid The <code>\ref c_type_id_t</code> to complement.
  * @return Returns \a tid complemented.
+ *
+ * @sa c_type_id_is_compl()
  */
 C_TYPE_INLINE C_WARN_UNUSED_RESULT
 c_type_id_t c_type_id_compl( c_type_id_t tid ) {
@@ -670,9 +678,11 @@ c_type_id_t c_type_id_compl( c_type_id_t tid ) {
  *
  * @param tid The <code>\ref c_type_id_t</code> to get the value of.
  * @return Returns the type ID value without the part ID.
+ *
+ * @sa c_type_id_part_id()
  */
 C_TYPE_INLINE C_WARN_UNUSED_RESULT
-c_type_id_t c_type_id_no_part( c_type_id_t tid ) {
+c_type_id_t c_type_id_no_part_id( c_type_id_t tid ) {
   return tid & ~T_MASK_PART_ID;
 }
 
@@ -681,6 +691,8 @@ c_type_id_t c_type_id_no_part( c_type_id_t tid ) {
  *
  * @param tid The type ID.
  * @return Returns said `c_type_part_id_t`.
+ *
+ * @sa c_type_id_no_part_id()
  */
 C_TYPE_INLINE C_WARN_UNUSED_RESULT
 c_type_part_id_t c_type_id_part_id( c_type_id_t tid ) {
@@ -705,7 +717,7 @@ c_type_part_id_t c_type_id_part_id( c_type_id_t tid ) {
 C_WARN_UNUSED_RESULT C_TYPE_INLINE
 bool c_type_id_intersects( c_type_id_t i_tid, c_type_id_t j_tid ) {
   assert( c_type_id_part_id( i_tid ) == c_type_id_part_id( j_tid ) );
-  return c_type_id_no_part( i_tid & j_tid ) != 0;
+  return c_type_id_no_part_id( i_tid & j_tid ) != 0;
 }
 
 /**
@@ -720,7 +732,7 @@ bool c_type_id_intersects( c_type_id_t i_tid, c_type_id_t j_tid ) {
  */
 C_TYPE_INLINE C_WARN_UNUSED_RESULT
 bool c_type_id_is_none( c_type_id_t tid ) {
-  return c_type_id_no_part( tid ) == 0;
+  return c_type_id_no_part_id( tid ) == 0;
 }
 
 /**
