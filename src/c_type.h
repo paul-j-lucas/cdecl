@@ -645,7 +645,7 @@ C_TYPE_INLINE C_WARN_UNUSED_RESULT
 bool c_type_id_is_compl( c_type_id_t tid ) {
   //
   // The low-order 4 bits specify the c_type_part_id.  Currently, part IDs are
-  // 0 (0b0000), 1 (0b0001), and 2 (0b0010).  If tid is 0b1xxx, it means that
+  // 0 (0b0001), 1 (0b0010), and 2 (0b0011).  If tid is 0b1xxx, it means that
   // it was complemented.
   //
   return (tid & 0x8) != 0;
