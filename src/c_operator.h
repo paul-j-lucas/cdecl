@@ -60,7 +60,10 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define C_OP_NOT_OVERLOADABLE   0u
 
-/** Denotes an unlimited number of parameters (for `operator()()`). */
+/**
+ * For `c_operator.params_max` of `operator()()`, denotes an unlimited number
+ * of parameters.
+ */
 #define C_OP_PARAMS_UNLIMITED     (~0u)
 
 /**
@@ -107,7 +110,9 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define C_OP_OVERLOADABLE       (C_OP_MEMBER | C_OP_NON_MEMBER)
 
-/** For `c_operator.flags`, overloadability bitmask. */
+/**
+ * For `c_operator.flags`, overloadability bitmask.
+ */
 #define C_OP_MASK_OVERLOAD      C_FUNC_MASK_MEMBER
 
 ///////////////////////////////////////////////////////////////////////////////
