@@ -662,6 +662,8 @@ static bool typename_ok( c_ast_t const *ast ) {
  * @param hard_reset If `true`, does a "hard" reset that currently resets the
  * EOF flag of the lexer.  This should be `true` if an error occurs and
  * `YYABORT` is called.
+ *
+ * @sa parse_init()
  */
 static void parse_cleanup( bool hard_reset ) {
   lexer_reset( hard_reset );
@@ -674,6 +676,8 @@ static void parse_cleanup( bool hard_reset ) {
 
 /**
  * Gets ready to parse a command.
+ *
+ * @sa parse_cleanup()
  */
 static void parse_init( void ) {
   if ( !error_newlined ) {
