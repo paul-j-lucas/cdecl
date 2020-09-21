@@ -661,6 +661,8 @@ char* read_input_line( char const *ps1, char const *ps2 );
  * @param dst A pointer to receive \a c.
  * @param c The character to copy.
  * @return Returns a pointer to the new end of \a dst.
+ *
+ * @sa strcpy_end()
  */
 C_WARN_UNUSED_RESULT
 char* chrcpy_end( char *dst, char c );
@@ -672,6 +674,8 @@ char* chrcpy_end( char *dst, char c );
  * @param dst A pointer to receive the copy of \a src.
  * @param src The null-terminated string to copy.
  * @return Returns a pointer to the new end of \a dst.
+ *
+ * @sa chrcpy_end()
  */
 C_WARN_UNUSED_RESULT
 char* strcpy_end( char *dst, char const *src );
