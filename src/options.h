@@ -89,16 +89,16 @@ C_WARN_UNUSED_RESULT
 bool any_explicit_int( void );
 
 /**
- * Checks whether \a type_id shall have `int` be printed explicitly for it.
+ * Checks whether \a tid shall have `int` be printed explicitly for it.
  *
- * @param type_id The integer type to check.
- * @return Returns `true` only if the type given by \a type_id shall have `int`
+ * @param tid The integer type to check.
+ * @return Returns `true` only if the type given by \a tid shall have `int`
  * printed explicitly.
  *
  * @sa any_explicit_int()
  */
 C_WARN_UNUSED_RESULT
-bool is_explicit_int( c_type_id_t type_id );
+bool is_explicit_int( c_type_id_t tid );
 
 /**
  * Initializes command-line option variables.
