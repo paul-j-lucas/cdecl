@@ -93,13 +93,13 @@ struct c_scope_data {
 /**
  * Compares two scope datas.
  *
- * @param data_i The first scope data to compare.
- * @param data_j The second scope data to compare.
- * @return Returns a number less than 0, 0, or greater than 0 if \a data_i is
- * less than, equal to, or greater than \a data_j, respectively.
+ * @param i_data The first scope data to compare.
+ * @param j_data The second scope data to compare.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a i_data is
+ * less than, equal to, or greater than \a j_data, respectively.
  */
 C_WARN_UNUSED_RESULT
-int c_scope_data_cmp( c_scope_data_t *data_i, c_scope_data_t *data_j );
+int c_scope_data_cmp( c_scope_data_t *i_data, c_scope_data_t *j_data );
 
 /**
  * Duplicates \a data.  The caller is responsible for calling
@@ -183,15 +183,15 @@ void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
 /**
  * Compares two scoped names.
  *
- * @param sname_i The first scoped name to compare.
- * @param sname_j The second scoped name to compare.
- * @return Returns a number less than 0, 0, or greater than 0 if \a sname_i is
- * less than, equal to, or greater than \a sname_j, respectively.
+ * @param i_sname The first scoped name to compare.
+ * @param i_sname The second scoped name to compare.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a i_sname is
+ * less than, equal to, or greater than \a i_sname, respectively.
  */
 C_SNAME_INLINE C_WARN_UNUSED_RESULT
-int c_sname_cmp( c_sname_t const *sname_i, c_sname_t const *sname_j ) {
+int c_sname_cmp( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
   return slist_cmp(
-    sname_i, sname_j, (slist_node_data_cmp_fn_t)&c_scope_data_cmp
+    i_sname, j_sname, (slist_node_data_cmp_fn_t)&c_scope_data_cmp
   );
 }
 

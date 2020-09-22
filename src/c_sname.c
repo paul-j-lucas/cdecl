@@ -88,10 +88,10 @@ static char const* scope_name_impl( char *name_buf, size_t name_size,
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-int c_scope_data_cmp( c_scope_data_t *data_i, c_scope_data_t *data_j ) {
-  assert( data_i != NULL );
-  assert( data_j != NULL );
-  return strcmp( data_i->name, data_j->name );
+int c_scope_data_cmp( c_scope_data_t *i_data, c_scope_data_t *j_data ) {
+  assert( i_data != NULL );
+  assert( j_data != NULL );
+  return strcmp( i_data->name, j_data->name );
 }
 
 c_scope_data_t* c_scope_data_dup( c_scope_data_t const *src ) {
