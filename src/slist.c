@@ -39,21 +39,21 @@
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-int slist_cmp( slist_t const *list_i, slist_t const *list_j,
+int slist_cmp( slist_t const *i_list, slist_t const *j_list,
                slist_node_data_cmp_fn_t data_cmp_fn ) {
-  assert( list_i != NULL );
-  assert( list_j != NULL );
+  assert( i_list != NULL );
+  assert( j_list != NULL );
 
-  slist_node_t const *node_i = list_i->head, *node_j = list_j->head;
-  for ( ; node_i != NULL && node_j != NULL;
-        node_i = node_i->next, node_j = node_j->next ) {
+  slist_node_t const *i_node = i_list->head, *j_node = j_list->head;
+  for ( ; i_node != NULL && j_node != NULL;
+        i_node = i_node->next, j_node = j_node->next ) {
     int const cmp = data_cmp_fn != NULL ?
-      (*data_cmp_fn)( node_i->data, node_j->data ) :
-      (int)(node_i->data - node_j->data);
+      (*data_cmp_fn)( i_node->data, j_node->data ) :
+      (int)(i_node->data - j_node->data);
     if ( cmp != 0 )
       return cmp;
   } // for
-  return node_i == NULL ? (node_j == NULL ? 0 : -1) : 1;
+  return i_node == NULL ? (j_node == NULL ? 0 : -1) : 1;
 }
 
 slist_t slist_dup( slist_t const *src, ssize_t n,

@@ -135,16 +135,16 @@ struct slist_node {
 /**
  * Compares two lists.
  *
- * @param list_i The first list.
- * @param list_j The second list.
+ * @param i_list The first list.
+ * @param j_list The second list.
  * @param data_cmp_fn A pointer to a function to use to compare data at each
- * node of \a list_i and \a list_j or null if none is required (hence the data
+ * node of \a i_list and \a j_list or null if none is required (hence the data
  * will be compared directly).
- * @return Returns a number less than 0, 0, or greater than 0 if \a list_i is
- * less than, equal to, or greater than \a list_j, respectively.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a i_list is
+ * less than, equal to, or greater than \a j_list, respectively.
  */
 C_WARN_UNUSED_RESULT
-int slist_cmp( slist_t const *list_i, slist_t const *list_j,
+int slist_cmp( slist_t const *i_list, slist_t const *j_list,
                slist_node_data_cmp_fn_t data_cmp_fn );
 
 /**
