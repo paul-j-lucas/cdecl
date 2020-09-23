@@ -340,6 +340,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/multiarch.m4
   m4/nocrash.m4
   m4/off_t.m4
+  m4/pid_t.m4
   m4/ssize_t.m4
   m4/stdarg.m4
   m4/stdbool.m4
