@@ -38,6 +38,7 @@
 #include <stdint.h>
 #include <stdio.h>                      /* for FILE */
 #include <stdlib.h>
+#include <stdnoreturn.h>
 #include <string.h>
 #include <sysexits.h>
 
@@ -634,7 +635,7 @@ void path_append( char *path, char const *component );
  *
  * @param status The exit status code.
  */
-C_NORETURN
+noreturn
 void perror_exit( int status );
 
 /**

@@ -52,6 +52,7 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>                     /* for strtol(3) */
+#include <stdnoreturn.h>
 #include <string.h>
 
 #ifdef __GNUC__
@@ -380,7 +381,7 @@ static size_t     input_sent;           ///< How many bytes returned to Flex.
 static bool       is_eof;               ///< Encountered EOF?
 
 // local functions
-C_NORETURN
+noreturn
 static void         lexer_fatal( char const* );
 
 static void         lexer_update_loc( void );
@@ -1002,7 +1003,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
  *
  * @param msg The error message to print.
  */
-C_NORETURN
+noreturn
 static void lexer_fatal( char const *msg ) {
   //
   // This is defined down here to avoid having to declare yy_fatal_error

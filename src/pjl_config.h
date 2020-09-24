@@ -99,11 +99,6 @@
 #endif
 
 /**
- * Denote that a function does not return.
- */
-#define C_NORETURN                __attribute__((noreturn))
-
-/**
  * Denote a function declaration takes a `printf`-like format string followed
  * by a variable number of arguments.
  *
@@ -148,10 +143,6 @@
 #ifndef C_IGNORE_RV
 #define C_IGNORE_RV(FN_CALL)      do { (void)(FN_CALL); } while (0)
 #endif /* HAVE___TYPEOF__ */
-
-#ifndef C_NORETURN
-#define C_NORETURN                /* nothing */
-#endif /* C_NORETURN */
 
 #ifndef C_PRINTF_LIKE_FUNC
 #define C_PRINTF_LIKE_FUNC(N)     /* nothing */

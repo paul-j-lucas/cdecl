@@ -706,7 +706,7 @@ static void qualifier_tid_push( c_type_id_t qual_tid, c_loc_t const *loc ) {
  * Implements the cdecl `quit` command.
  *
  * @note
- * This should be marked #C_NORETURN but isn't since that would generate a
+ * This should be marked `noreturn` but isn't since that would generate a
  * warning that a `break` in the Bison-generated code won't be executed.
  */
 static void quit( void ) {

@@ -45,6 +45,7 @@
 #  stdbool \
 #  stddef \
 #  stdint \
+#  stdnoreturn \
 #  strndup \
 #  strsep \
 #  sysexits
@@ -59,6 +60,7 @@ gl_MODULES([
   stdbool
   stddef
   stdint
+  stdnoreturn
   strndup
   strsep
   sysexits
