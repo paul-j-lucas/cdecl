@@ -382,9 +382,9 @@ static bool       is_eof;               ///< Encountered EOF?
 
 // local functions
 noreturn
-static void         lexer_fatal( char const* );
+static void       lexer_fatal( char const* );
 
-static void         lexer_update_loc( void );
+static void       lexer_update_loc( void );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -1003,8 +1003,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
  *
  * @param msg The error message to print.
  */
-noreturn
-static void lexer_fatal( char const *msg ) {
+static noreturn void lexer_fatal( char const *msg ) {
   //
   // This is defined down here to avoid having to declare yy_fatal_error
   // ourselves and having to get it right being subject to possible changes in

@@ -635,8 +635,7 @@ void path_append( char *path, char const *component );
  *
  * @param status The exit status code.
  */
-noreturn
-void perror_exit( int status );
+noreturn void perror_exit( int status );
 
 /**
  * Reads an input line:
