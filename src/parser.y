@@ -1064,8 +1064,8 @@ static void yyerror( char const *msg ) {
 %token  <name>      Y_NAME
 %token  <number>    Y_NUMBER
 %token  <name>      Y_SET_OPTION
-%token  <ast>       Y_TYPEDEF_NAME      /* e.g., T x */
-%token  <ast>       Y_TYPEDEF_SNAME     /* e.g., S::T y */
+%token  <ast>       Y_TYPEDEF_NAME      /* e.g., size_t */
+%token  <ast>       Y_TYPEDEF_SNAME     /* e.g., std::string */
 
                     /*
                      * Grammar rules are named according to the following
