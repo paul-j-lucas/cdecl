@@ -207,6 +207,16 @@
   c_ast_list_debug( &(AST_LIST), 1, stdout ); )
 
 /**
+ * Dumps a `bool`.
+ *
+ * @param KEY The key name to print.
+ * @param BOOL The `bool` to dump.
+ */
+#define DUMP_BOOL(KEY,BOOL)  IF_DEBUG(  \
+  DUMP_COMMA;                           \
+  FPRINTF( stdout, "  %s = %s", (KEY), ((BOOL) ? "true" : "false") ); )
+
+/**
  * Dumps an integer.
  *
  * @param KEY The key name to print.
@@ -1772,6 +1782,7 @@ explain_c
           DUMP_AST( "alignas_specifier_c.as.type_ast", $2.as.type_ast );
           break;
       } // switch
+      DUMP_BOOL( "typename_opt", $3 );
       DUMP_AST( "type_c_ast", $4.ast );
       DUMP_AST( "decl_c_ast", $6.ast );
 
@@ -1796,6 +1807,7 @@ explain_c
       type_ast_pop();
 
       DUMP_START( "explain_c", "EXPLAIN TYPENAME type_c_ast decl_c_ast" );
+      DUMP_BOOL( "TYPENAME", $2 );
       DUMP_AST( "type_c_ast", $3.ast );
       DUMP_AST( "decl_c_ast", $5.ast );
 
@@ -2304,6 +2316,7 @@ show_command
     {
       DUMP_START( "show_command", "SHOW any_typedef_ast [typedef]" );
       DUMP_AST( "any_typedef_ast", $2 );
+      DUMP_BOOL( "typedef_opt", $3 );
       DUMP_END();
 
       if ( $3 )
@@ -2392,6 +2405,7 @@ typedef_declaration_c
 
       DUMP_START( "typedef_declaration_c",
                   "TYPEDEF [TYPENAME] type_c_ast decl_c_ast" );
+      DUMP_BOOL( "typename_opt", $2 );
       DUMP_AST( "type_c_ast", $4.ast );
       DUMP_AST( "decl_c_ast", $6.ast );
 
