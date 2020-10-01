@@ -66,12 +66,12 @@ void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout );
 void c_ast_gibberish_declare( c_ast_t const *ast, FILE *gout );
 
 /**
- * Prints \a type as a `typedef`.
+ * Prints \a typedef_ast as a `typedef`.
  *
- * @param type The `c_typedef` to print.
+ * @param typedef_ast The `typedef` AST to print.
  * @param gout The `FILE` to print to.
  */
-void c_typedef_gibberish( c_typedef_t const *type, FILE *gout );
+void c_typedef_gibberish( c_ast_t const *typedef_ast, FILE *gout );
 
 /**
  * Gets the digraph or trigraph (collectively, "graph") equivalent of \a token.

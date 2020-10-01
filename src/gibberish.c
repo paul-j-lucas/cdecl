@@ -412,7 +412,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       if ( !opt_east_const && !is_typedef )
         FPRINTF( g->gout, "%s ", c_type_name( &ast->type ) );
       FPRINTF( g->gout,
-        "%s", g_sname_full_or_local( g, ast->as.c_typedef->ast )
+        "%s", g_sname_full_or_local( g, ast->as.typedef_ast )
       );
       if ( opt_east_const && !is_typedef )
         FPRINTF( g->gout, " %s", c_type_name( &ast->type ) );
@@ -705,14 +705,14 @@ void c_ast_gibberish_declare( c_ast_t const *ast, FILE *gout ) {
   c_ast_gibberish( ast, G_DECL, gout );
 }
 
-void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
-  assert( type != NULL );
+void c_typedef_gibberish( c_ast_t const *typedef_ast, FILE *gout ) {
+  assert( typedef_ast != NULL );
   assert( gout != NULL );
 
   size_t scope_close_braces_to_print = 0;
   c_type_t scope_type = T_NONE;
 
-  c_sname_t const *const sname = c_ast_find_name( type->ast, C_VISIT_DOWN );
+  c_sname_t const *const sname = c_ast_find_name( typedef_ast, C_VISIT_DOWN );
   if ( sname != NULL && c_sname_count( sname ) > 1 ) {
     scope_type = *c_scope_type( sname->head );
     //
@@ -762,7 +762,7 @@ void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
   }
 
   FPRINTF( gout, "%s ", L_TYPEDEF );
-  c_ast_gibberish( type->ast, G_TYPEDEF, gout );
+  c_ast_gibberish( typedef_ast, G_TYPEDEF, gout );
 
   if ( scope_close_braces_to_print > 0 ) {
     FPUTC( ';', gout );

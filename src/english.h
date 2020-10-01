@@ -62,12 +62,12 @@ void c_ast_english( c_ast_t const *ast, FILE *eout );
 void c_sname_english( c_sname_t const *sname, FILE *eout );
 
 /**
- * Prints \a type in pseudo-English.
+ * Prints \a typedef_ast in pseudo-English.
  *
- * @param type The `c_typedef` to print.
+ * @param typedef_ast The `typedef` AST to print.
  * @param eout The `FILE` to print to.
  */
-void c_typedef_english( c_typedef_t const *type, FILE *eout );
+void c_typedef_english( c_ast_t const *typedef_ast, FILE *eout );
 
 ///////////////////////////////////////////////////////////////////////////////
 

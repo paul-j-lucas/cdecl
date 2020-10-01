@@ -28,7 +28,6 @@
 #include "debug.h"
 #include "c_ast.h"
 #include "c_type.h"
-#include "c_typedef.h"
 #include "literals.h"
 #include "util.h"
 
@@ -220,7 +219,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_TYPEDEF:
         PRINT_COMMA;
-        INDENT_PRINT_SNAME( "typedef_name", &ast->as.c_typedef->ast->sname );
+        INDENT_PRINT_SNAME( "typedef_name", &ast->as.typedef_ast->sname );
         break;
 
       case K_USER_DEF_CONVERSION:

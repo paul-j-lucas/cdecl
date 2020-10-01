@@ -28,7 +28,6 @@
 #include "cdecl.h"                      /* must go first */
 #include "c_ast_util.h"
 #include "c_ast.h"
-#include "c_typedef.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -483,7 +482,7 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast ) {
     assert( ast != NULL );
     if ( ast->kind_id != K_TYPEDEF )
       return ast;
-    ast = ast->as.c_typedef->ast;
+    ast = ast->as.typedef_ast;
   } // for
 }
 

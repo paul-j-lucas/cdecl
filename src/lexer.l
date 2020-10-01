@@ -723,7 +723,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                     //
                     c_typedef_t const *const t = c_typedef_find( &sname );
                     if ( t != NULL ) {
-                      yylval.c_typedef = t;
+                      yylval.ast = CONST_CAST( c_ast_t*, t->ast );
                       c_sname_free( &sname );
                       return Y_TYPEDEF_SNAME;
                     }
@@ -779,7 +779,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                   SNAME_VAR_INIT( typedef_name, lexer_token );
                   c_typedef_t const *const t = c_typedef_find( &typedef_name );
                   if ( t != NULL ) {
-                    yylval.c_typedef = t;
+                    yylval.ast = CONST_CAST( c_ast_t*, t->ast );
                     return Y_TYPEDEF_NAME;
                   }
                 }

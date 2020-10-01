@@ -205,7 +205,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     case K_TYPEDEF:
       if ( !c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) ) )
         FPRINTF( eout, "%s ", c_type_name( &ast->type ) );
-      c_sname_english( &ast->as.c_typedef->ast->sname, eout );
+      c_sname_english( &ast->as.typedef_ast->sname, eout );
       break;
 
     case K_USER_DEF_CONVERSION: {
@@ -293,12 +293,12 @@ void c_sname_english( c_sname_t const *sname, FILE *eout ) {
   }
 }
 
-void c_typedef_english( c_typedef_t const *type, FILE *eout ) {
-  assert( type != NULL );
+void c_typedef_english( c_ast_t const *typedef_ast, FILE *eout ) {
+  assert( typedef_ast != NULL );
   FPRINTF( eout, "%s ", L_DEFINE );
-  c_sname_english( &type->ast->sname, eout );
+  c_sname_english( &typedef_ast->sname, eout );
   FPRINTF( eout, " %s ", L_AS );
-  c_ast_english( type->ast, eout );
+  c_ast_english( typedef_ast, eout );
   FPUTC( '\n', eout );
 }
 

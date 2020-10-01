@@ -307,10 +307,10 @@ typedef struct c_qualifier c_qualifier_t;
 /**
  * Print type function signature for show_type_visitor().
  *
- * @param type The `c_typedef` to print.
+ * @param typedef_ast The `typedef` AST to print.
  * @param fout The `FILE` to print to.
  */
-typedef void (*show_type_fn_t)( c_typedef_t const *type, FILE *fout );
+typedef void (*show_type_fn_t)( c_ast_t const *typedef_ast, FILE *fout );
 
 /**
  * Information for show_type_visitor().
@@ -644,7 +644,7 @@ static bool typename_ok( c_ast_t const *ast ) {
   assert( ast != NULL );
 
   c_sname_t const *const sname = ast->kind_id == K_TYPEDEF ?
-    &ast->as.c_typedef->ast->sname :
+    &ast->as.typedef_ast->sname :
     &ast->sname;
 
   if ( c_sname_count( sname ) < 2 ) {
@@ -733,7 +733,7 @@ static bool show_type_visitor( c_typedef_t const *type, void *data ) {
     (sti->show_which & SHOW_PREDEFINED_TYPES) != 0;
 
   if ( show_it )
-    (*sti->show_fn)( type, fout );
+    (*sti->show_fn)( type->ast, fout );
   return false;
 }
 
@@ -792,7 +792,6 @@ static void yyerror( char const *msg ) {
   c_sname_t           sname;      /* name being declared or explained */
   c_type_t            type;       /* complete type */
   c_type_id_t         type_id;    /* built-ins, storage classes, & qualifiers */
-  c_typedef_t const  *c_typedef;  /* typedef type */
 }
 
                     /* cdecl commands */
@@ -1055,8 +1054,8 @@ static void yyerror( char const *msg ) {
 %token  <name>      Y_NAME
 %token  <number>    Y_NUMBER
 %token  <name>      Y_SET_OPTION
-%token  <c_typedef> Y_TYPEDEF_NAME      /* e.g., T x */
-%token  <c_typedef> Y_TYPEDEF_SNAME     /* e.g., S::T y */
+%token  <ast>       Y_TYPEDEF_NAME      /* e.g., T x */
+%token  <ast>       Y_TYPEDEF_SNAME     /* e.g., S::T y */
 
                     /*
                      * Grammar rules are named according to the following
@@ -1185,7 +1184,7 @@ static void yyerror( char const *msg ) {
 %type   <align>     alignas_specifier_c
 %type   <name>      any_name any_name_expected
 %type   <sname>     any_sname_c any_sname_c_expected any_sname_c_opt
-%type   <c_typedef> any_typedef
+%type   <ast>       any_typedef_ast
 %type   <oper_id>   c_operator
 %type   <literal>   help_what_opt
 %type   <bitmask>   member_or_non_member_opt
@@ -2301,10 +2300,10 @@ set_option_value_opt
 /*****************************************************************************/
 
 show_command
-  : Y_SHOW any_typedef typedef_opt
+  : Y_SHOW any_typedef_ast typedef_opt
     {
-      DUMP_START( "show_command", "SHOW any_typedef [typedef]" );
-      DUMP_AST( "any_typedef.ast", $2->ast );
+      DUMP_START( "show_command", "SHOW any_typedef_ast [typedef]" );
+      DUMP_AST( "any_typedef_ast", $2 );
       DUMP_END();
 
       if ( $3 )
@@ -2313,10 +2312,10 @@ show_command
         c_typedef_english( $2, fout );
     }
 
-  | Y_SHOW any_typedef Y_AS typedef_expected
+  | Y_SHOW any_typedef_ast Y_AS typedef_expected
     {
-      DUMP_START( "show_command", "SHOW any_typedef AS typedef" );
-      DUMP_AST( "any_typedef.ast", $2->ast );
+      DUMP_START( "show_command", "SHOW any_typedef_ast AS typedef" );
+      DUMP_AST( "any_typedef_ast", $2 );
       DUMP_END();
 
       c_typedef_gibberish( $2, fout );
@@ -2413,7 +2412,7 @@ typedef_declaration_c
         //
         ast = $4.ast;
         if ( c_ast_empty_name( ast ) )
-          ast->sname = c_ast_dup_name( $6.ast->as.c_typedef->ast );
+          ast->sname = c_ast_dup_name( $6.ast->as.typedef_ast );
       }
       else {
         //
@@ -2500,7 +2499,7 @@ using_declaration_c
       c_ast_t *const ast = c_ast_patch_placeholder( $5.ast, $7.ast );
 
       c_sname_t sname = $3.ast->kind_id == K_TYPEDEF ?
-        c_ast_dup_name( $3.ast->as.c_typedef->ast ) :
+        c_ast_dup_name( $3.ast->as.typedef_ast ) :
         c_ast_take_name( $3.ast );
       c_ast_set_sname( ast, &sname );
 
@@ -2544,11 +2543,11 @@ typedef_name_c_ast
   : Y_TYPEDEF_NAME
     {
       DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_NAME" );
-      DUMP_AST( "Y_TYPEDEF_NAME", $1->ast );
+      DUMP_AST( "Y_TYPEDEF_NAME", $1 );
 
       $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
       $$.target_ast = NULL;
-      $$.ast->as.c_typedef = $1;
+      $$.ast->as.typedef_ast = $1;
       $$.ast->type.base_tid = TB_TYPEDEF;
 
       DUMP_AST( "typedef_name_c_ast", $$.ast );
@@ -4585,8 +4584,8 @@ any_name
   : Y_NAME
   | Y_TYPEDEF_NAME
     {
-      assert( c_ast_count_name( $1->ast ) == 1 );
-      $$ = check_strdup( c_ast_local_name( $1->ast ) );
+      assert( c_ast_count_name( $1 ) == 1 );
+      $$ = check_strdup( c_ast_local_name( $1 ) );
     }
   ;
 
@@ -4618,7 +4617,7 @@ any_sname_c_opt
   | any_sname_c
   ;
 
-any_typedef
+any_typedef_ast
   : Y_TYPEDEF_NAME
   | Y_TYPEDEF_SNAME
   ;
@@ -4648,21 +4647,21 @@ name_expected
   ;
 
 typedef_type_c_ast
-  : any_typedef
+  : any_typedef_ast
     {
-      DUMP_START( "typedef_type_c_ast", "any_typedef" );
-      DUMP_AST( "any_typedef", $1->ast );
+      DUMP_START( "typedef_type_c_ast", "any_typedef_ast" );
+      DUMP_AST( "any_typedef_ast", $1 );
 
       $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
       $$.target_ast = NULL;
-      $$.ast->as.c_typedef = $1;
+      $$.ast->as.typedef_ast = $1;
       $$.ast->type.base_tid = TB_TYPEDEF;
 
       DUMP_AST( "typedef_type_c_ast", $$.ast );
       DUMP_END();
     }
 
-  | /* type_c_ast */ any_typedef "::" sname_c
+  | /* type_c_ast */ any_typedef_ast "::" sname_c
     {
       //
       // This is for a case like:
@@ -4673,9 +4672,9 @@ typedef_type_c_ast
       // that is: a typedef'd type used for a scope.
       //
       DUMP_START( "typedef_type_c_ast",
-                  "any_typedef :: sname_c" );
+                  "any_typedef_ast :: sname_c" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
-      DUMP_AST( "any_typedef", $1->ast );
+      DUMP_AST( "any_typedef_ast", $1 );
       DUMP_SNAME( "sname_c", &$3 );
 
       if ( type_ast_peek() == NULL ) {
@@ -4685,7 +4684,7 @@ typedef_type_c_ast
 
       $$.ast = type_ast_peek();
       $$.target_ast = NULL;
-      c_sname_t temp_name = c_ast_dup_name( $1->ast );
+      c_sname_t temp_name = c_ast_dup_name( $1 );
       c_ast_set_sname( $$.ast, &temp_name );
       c_ast_append_sname( $$.ast, &$3 );
 
@@ -4693,7 +4692,7 @@ typedef_type_c_ast
       DUMP_END();
     }
 
-  | /* type_c_ast */ any_typedef "::" typedef_sname_c
+  | /* type_c_ast */ any_typedef_ast "::" typedef_sname_c
     {
       //
       // This is for a case like:
@@ -4705,9 +4704,9 @@ typedef_type_c_ast
       // that is: a typedef'd type used for an intermediate scope.
       //
       DUMP_START( "typedef_type_c_ast",
-                  "any_typedef :: typedef_sname_c" );
+                  "any_typedef_ast :: typedef_sname_c" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
-      DUMP_AST( "any_typedef", $1->ast );
+      DUMP_AST( "any_typedef_ast", $1 );
       DUMP_SNAME( "typedef_sname_c", &$3 );
 
       if ( type_ast_peek() == NULL ) {
@@ -4717,7 +4716,7 @@ typedef_type_c_ast
 
       $$.ast = type_ast_peek();
       $$.target_ast = NULL;
-      c_sname_t temp_name = c_ast_dup_name( $1->ast );
+      c_sname_t temp_name = c_ast_dup_name( $1 );
       c_ast_set_sname( $$.ast, &temp_name );
       c_ast_append_sname( $$.ast, &$3 );
 
@@ -4742,7 +4741,7 @@ scope_sname_c_opt
       }
     }
 
-  | any_typedef "::"
+  | any_typedef_ast "::"
     {
       //
       // This is for a case like:
@@ -4752,7 +4751,7 @@ scope_sname_c_opt
       //
       // that is: a typedef'd type used for a scope.
       //
-      $$ = c_ast_dup_name( $1->ast );
+      $$ = c_ast_dup_name( $1 );
     }
   ;
 
@@ -4779,12 +4778,12 @@ sname_c
       DUMP_END();
     }
 
-  | sname_c "::" any_typedef
+  | sname_c "::" any_typedef_ast
     {
       DUMP_START( "sname_c",
-                  "sname_c :: any_typedef" );
+                  "sname_c :: any_typedef_ast" );
       DUMP_SNAME( "sname_c", &$1 );
-      DUMP_AST( "any_typedef.ast", $3->ast );
+      DUMP_AST( "any_typedef_ast", $3 );
 
       //
       // This is for a case like:
@@ -4797,7 +4796,7 @@ sname_c
       if ( c_type_is_none( c_sname_local_type( &$1 ) ) )
         c_sname_set_local_type( &$1, &C_TYPE_LIT_B( TB_SCOPE ) );
       $$ = $1;
-      c_sname_t temp = c_ast_dup_name( $3->ast );
+      c_sname_t temp = c_ast_dup_name( $3 );
       c_sname_append_sname( &$$, &temp );
 
       DUMP_SNAME( "sname_c", &$$ );
@@ -4884,7 +4883,7 @@ sname_english_ast
       c_typedef_t const *const t = c_typedef_find( &sname );
       if ( t != NULL ) {
         $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
-        $$.ast->as.c_typedef = t;
+        $$.ast->as.typedef_ast = t->ast;
         $$.ast->type.base_tid = TB_TYPEDEF;
         c_sname_free( &sname );
       } else {
@@ -4928,12 +4927,12 @@ typedef_sname_c
       DUMP_END();
     }
 
-  | typedef_sname_c "::" any_typedef
+  | typedef_sname_c "::" any_typedef_ast
     {
       DUMP_START( "typedef_sname_c",
-                  "typedef_sname_c :: any_typedef" );
+                  "typedef_sname_c :: any_typedef_ast" );
       DUMP_SNAME( "typedef_sname_c", &$1 );
-      DUMP_AST( "any_typedef.ast", $3->ast );
+      DUMP_AST( "any_typedef_ast", $3 );
 
       //
       // This is for a case like:
@@ -4943,15 +4942,15 @@ typedef_sname_c
       //      define S::T as struct S_T
       //
       $$ = $1;
-      c_sname_set_local_type( &$$, c_ast_local_name_type( $3->ast ) );
-      c_sname_t temp = c_ast_dup_name( $3->ast );
+      c_sname_set_local_type( &$$, c_ast_local_name_type( $3 ) );
+      c_sname_t temp = c_ast_dup_name( $3 );
       c_sname_append_sname( &$$, &temp );
 
       DUMP_SNAME( "typedef_sname_c", &$$ );
       DUMP_END();
     }
 
-  | any_typedef                   { $$ = c_ast_dup_name( $1->ast ); }
+  | any_typedef_ast               { $$ = c_ast_dup_name( $1 ); }
   ;
 
 /*****************************************************************************/

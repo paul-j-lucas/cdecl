@@ -29,7 +29,6 @@
 #define C_AST_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_ast.h"
-#include "c_typedef.h"
 #include "literals.h"
 #include "util.h"
 
@@ -86,10 +85,10 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
   //
   if ( i_ast->kind_id == K_TYPEDEF ) {
     if ( j_ast->kind_id != K_TYPEDEF )
-      return c_ast_equiv( i_ast->as.c_typedef->ast, j_ast );
+      return c_ast_equiv( i_ast->as.typedef_ast, j_ast );
   } else {
     if ( j_ast->kind_id == K_TYPEDEF )
-      return c_ast_equiv( i_ast, j_ast->as.c_typedef->ast );
+      return c_ast_equiv( i_ast, j_ast->as.typedef_ast );
   }
 
   if ( i_ast->kind_id != j_ast->kind_id )
@@ -152,13 +151,10 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       break;
     }
 
-    case K_TYPEDEF: {
-      c_typedef_t const *const i_td = i_ast->as.c_typedef;
-      c_typedef_t const *const j_td = j_ast->as.c_typedef;
-      if ( !c_ast_equiv( i_td->ast, j_td->ast ) )
+    case K_TYPEDEF:
+      if ( !c_ast_equiv( i_ast->as.typedef_ast, j_ast->as.typedef_ast ) )
         return false;
       break;
-    }
 
     case K_NONE:
     case K_BUILTIN:
@@ -203,10 +199,6 @@ void c_ast_free( c_ast_t *ast ) {
       case K_POINTER_TO_MEMBER:
         c_sname_free( &ast->as.ptr_mbr.class_sname );
         break;
-      case K_TYPEDEF:
-        // Do not free ast->as.c_typedef here since it's global data: it will
-        // be freed eventually via c_typedef_cleanup().
-        break;
       case K_ARRAY:
       case K_BUILTIN:
       case K_DESTRUCTOR:
@@ -216,6 +208,7 @@ void c_ast_free( c_ast_t *ast ) {
       case K_POINTER:
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
+      case K_TYPEDEF:
       case K_USER_DEF_CONVERSION:
       case K_VARIADIC:
         // nothing to do
