@@ -240,10 +240,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 static void c_sname_english_impl( c_scope_t const *scope, FILE *eout ) {
   if ( scope->next != NULL ) {
     c_sname_english_impl( scope->next, eout );
-    FPRINTF( eout,
-      " %s %s %s",
-      L_OF, c_type_name( c_scope_type( scope ) ), c_scope_name( scope )
-    );
+    c_scope_data_t const *const data = c_scope_data( scope );
+    FPRINTF( eout, " %s %s %s", L_OF, c_type_name( &data->type ), data->name );
   }
 }
 

@@ -1743,7 +1743,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
 
   for ( c_scope_t const *scope = c_ast_scope( ast ); scope != NULL;
         scope = scope->next ) {
-    char const *const name = c_scope_name( scope );
+    char const *const name = c_scope_data( scope )->name;
     c_keyword_t const *const keyword = c_keyword_find( name, LANG_ALL );
     if ( keyword != NULL ) {
       print_warning( &ast->loc,

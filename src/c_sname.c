@@ -49,8 +49,8 @@ C_WARN_UNUSED_RESULT
 static c_type_t const* c_sname_local_type_impl( c_scope_t const *scope ) {
   assert( scope != NULL );
   c_scope_t const *const next = scope->next;
-  return next != NULL && !c_type_is_none( c_scope_type( next ) ) ?
-    c_sname_local_type_impl( next ) : c_scope_type( scope );
+  return next != NULL && !c_type_is_none( &c_scope_data( next )->type ) ?
+    c_sname_local_type_impl( next ) : &c_scope_data( scope )->type;
 }
 
 /**
@@ -79,7 +79,7 @@ static char const* scope_name_impl( char *name_buf, size_t name_size,
         scope = scope->next ) {
     if ( true_or_set( &colon2 ) )
       STRCAT( name, "::" );
-    STRCAT( name, c_scope_name( scope ) );
+    STRCAT( name, c_scope_data( scope )->name );
     assert( name < name_buf + name_size );
   } // for
 

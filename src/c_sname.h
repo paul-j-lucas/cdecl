@@ -70,6 +70,16 @@ _GL_INLINE_HEADER_BEGIN
   c_scope_data_t VAR_NAME##_data = { (NAME), T_NONE };  \
   SLIST_VAR_INIT( VAR_NAME, NULL, &VAR_NAME##_data )
 
+/**
+ * Gets the data associated with \a SCOPE.
+ * @param SCOPE The `c_scope_t` to get the data of.
+ *
+ * @note This is a macro instead of an inline function so it'll work with
+ * either `const` or non-`const` \a SCOPE.
+ */
+#define c_scope_data(SCOPE) \
+  REINTERPRET_CAST( c_scope_data_t*, (SCOPE)->data )
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -117,43 +127,6 @@ c_scope_data_t* c_scope_data_dup( c_scope_data_t const *data );
  * @param data The scope data to free.  If null, does nothing.
  */
 void c_scope_data_free( c_scope_data_t *data );
-
-/**
- * Gets a scope's name.
- *
- * @param scope The scope to get the name of.
- * @return Returns the scope's name.
- */
-C_SNAME_INLINE C_WARN_UNUSED_RESULT
-char const* c_scope_name( c_scope_t const *scope ) {
-  return REINTERPRET_CAST( c_scope_data_t*, scope->data )->name;
-}
-
-/**
- * Sets a scope's type.
- *
- * @param scope The scope to set the type of.
- * @param type The type.
- *
- * @sa c_scope_type()
- */
-C_SNAME_INLINE
-void c_scope_set_type( c_scope_t *scope, c_type_t const *type ) {
-  REINTERPRET_CAST( c_scope_data_t*, scope->data )->type = *type;
-}
-
-/**
- * Gets a scope's type
- *
- * @param scope The scope to get the type of.
- * @return Returns the scope's type.
- *
- * @sa c_scope_set_type()
- */
-C_SNAME_INLINE C_WARN_UNUSED_RESULT
-c_type_t const* c_scope_type( c_scope_t const *scope ) {
-  return &REINTERPRET_CAST( c_scope_data_t*, scope->data )->type;
-}
 
 /**
  * Appends \a name onto the end of \a sname.
@@ -382,7 +355,7 @@ c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
  */
 C_SNAME_INLINE
 void c_sname_set_local_type( c_sname_t *sname, c_type_t const *type ) {
-  c_scope_set_type( sname->tail, type );
+  c_scope_data( sname->tail )->type = *type;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

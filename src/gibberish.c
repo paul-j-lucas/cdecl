@@ -714,7 +714,7 @@ void c_typedef_gibberish( c_ast_t const *typedef_ast, FILE *gout ) {
 
   c_sname_t const *const sname = c_ast_find_name( typedef_ast, C_VISIT_DOWN );
   if ( sname != NULL && c_sname_count( sname ) > 1 ) {
-    scope_type = *c_scope_type( sname->head );
+    scope_type = c_scope_data( sname->head )->type;
     //
     // A type name can't be scoped in a typedef declaration, e.g.:
     //
@@ -749,12 +749,12 @@ void c_typedef_gibberish( c_ast_t const *typedef_ast, FILE *gout ) {
       //
       for ( c_scope_t const *scope = sname->head; scope != sname->tail;
             scope = scope->next ) {
-        scope_type = *c_scope_type( scope );
+        scope_type = c_scope_data( scope )->type;
         if ( scope_type.base_tid == TB_SCOPE )
           scope_type.base_tid = TB_NAMESPACE;
         FPRINTF( gout,
           "%s %s { ",
-          c_type_name( &scope_type ), c_scope_name( scope )
+          c_type_name( &scope_type ), c_scope_data( scope )->name
         );
       } // for
       scope_close_braces_to_print = c_sname_count( sname ) - 1;

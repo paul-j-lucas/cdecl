@@ -2211,10 +2211,10 @@ scope_declaration_c
       // Make every scope's type be $1 for nested namespaces.
       //
       for ( c_scope_t *scope = $3.head; scope != NULL; scope = scope->next ) {
-        c_type_t scope_type = *c_scope_type( scope );
+        c_type_t scope_type = c_scope_data( scope )->type;
         scope_type.base_tid =
           (scope_type.base_tid & c_type_id_compl( TB_SCOPE )) | $1.base_tid;
-        c_scope_set_type( scope, &scope_type );
+        c_scope_data( scope )->type = scope_type;
       }
 
       DUMP_START( "scope_declaration_c",
