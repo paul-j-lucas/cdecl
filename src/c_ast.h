@@ -167,7 +167,7 @@ typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
  * their first `struct` member: this is taken advantage of.
  */
 struct c_parent_ast {
-  c_ast_t    *of_ast;                   ///< What it's a parent of.
+  c_ast_t        *of_ast;               ///< What it's a parent of.
 };
 
 /**
@@ -217,7 +217,7 @@ struct c_constructor_ast {
  * AST node for a C/C++ `enum`, `class`, `struct`, or `union` type.
  */
 struct c_ecsu_ast {
-  c_sname_t     ecsu_sname;             ///< enum/class/struct/union name
+  c_sname_t       ecsu_sname;           ///< enum/class/struct/union name
 };
 
 /**
@@ -246,15 +246,15 @@ struct c_operator_ast {
  * AST node for a C++ pointer-to-member of a class.
  */
 struct c_ptr_mbr_ast {
-  c_ast_t      *of_ast;                 ///< Member type.
-  c_sname_t     class_sname;            ///< When a member function; or empty.
+  c_ast_t        *of_ast;               ///< Member type.
+  c_sname_t       class_sname;          ///< When a member function; or empty.
 };
 
 /**
  * AST node for a C/C++ pointer, or a C++ reference or rvalue reference.
  */
 struct c_ptr_ref_ast {
-  c_ast_t      *to_ast;                 ///< What it's a pointer/reference to.
+  c_ast_t        *to_ast;               ///< What it's a pointer/reference to.
 };
 
 /**
@@ -268,7 +268,7 @@ struct c_typedef_ast {
  * AST Node for a C++ user-defined conversion operator.
  */
 struct c_udef_conv_ast {
-  c_ast_t      *conv_ast;               ///< Conversion type.
+  c_ast_t        *conv_ast;             ///< Conversion type.
 };
 
 /**
