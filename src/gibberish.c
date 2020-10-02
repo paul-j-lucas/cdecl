@@ -412,7 +412,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       if ( !opt_east_const && !is_typedef )
         FPRINTF( g->gout, "%s ", c_type_name( &ast->type ) );
       FPRINTF( g->gout,
-        "%s", g_sname_full_or_local( g, ast->as.typedef_ast )
+        "%s", g_sname_full_or_local( g, ast->as.c_typedef.of_ast )
       );
       if ( opt_east_const && !is_typedef )
         FPRINTF( g->gout, " %s", c_type_name( &ast->type ) );

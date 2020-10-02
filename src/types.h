@@ -83,6 +83,7 @@ typedef struct c_scope_data       c_scope_data_t;
 typedef struct slist              c_sname_t;      ///< C++ scoped name.
 typedef struct c_typedef          c_typedef_t;
 typedef enum   c_typedef_add_rv   c_typedef_add_rv_t;
+typedef struct c_typedef_ast      c_typedef_ast_t;
 typedef struct c_type             c_type_t;
 typedef uint64_t                  c_type_id_t;    ///< Type(s) bitmask.
 typedef enum   c_type_part_id     c_type_part_id_t;
