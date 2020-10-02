@@ -2098,48 +2098,20 @@ quit_command
   ;
 
 /*****************************************************************************/
-/*  scope                                                                    */
+/*  scoped declarations                                                      */
 /*****************************************************************************/
 
 scope_declaration_c
-    /*
-     * C/C++ enum declaration.
-     */
-  : enum_tid
-    {
-      // see the comment in "explain"
-      c_mode = C_GIBBERISH_TO_ENGLISH;
-    }
-    any_sname_c
-    {
-      c_sname_set_local_type( &$3, &C_TYPE_LIT_B( $1 ) );
+  : class_struct_union_declaration_c
+  | enum_declaration_c
+  | namespace_declaration_c
+  ;
 
-      DUMP_START( "scope_declaration_c",
-                  "enum_tid sname ;" );
-      DUMP_TID( "enum_tid", $1 );
-      DUMP_SNAME( "any_sname_c", &$3 );
-
-      c_sname_append_sname( &in_attr.current_scope, &$3 );
-
-      c_ast_t *const ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
-      ast->sname = c_sname_dup( &in_attr.current_scope );
-      ast->type.base_tid = $1;
-      c_sname_append_name(
-        &ast->as.ecsu.ecsu_sname,
-        check_strdup( c_sname_local_name( &in_attr.current_scope ) )
-      );
-
-      DUMP_AST( "ast", ast );
-      DUMP_END();
-
-      if ( !add_type( c_type_id_name( $1 ), ast, &@1 ) )
-        PARSE_ABORT();
-    }
-
+class_struct_union_declaration_c
     /*
      * C++ scoped declaration, e.g.: class C { typedef int I; };
      */
-  | class_struct_union_tid
+  : class_struct_union_tid
     {
       // see the comment in "explain"
       c_mode = C_GIBBERISH_TO_ENGLISH;
@@ -2193,14 +2165,49 @@ scope_declaration_c
         PARSE_ABORT();
     }
     brace_in_scope_declaration_c_opt
+  ;
 
+enum_declaration_c
+    /*
+     * C/C++ enum declaration, e.g.: enum E;
+     */
+  : enum_tid
+    {
+      // see the comment in "explain"
+      c_mode = C_GIBBERISH_TO_ENGLISH;
+    }
+    any_sname_c
+    {
+      c_sname_set_local_type( &$3, &C_TYPE_LIT_B( $1 ) );
+
+      DUMP_START( "scope_declaration_c",
+                  "enum_tid sname ;" );
+      DUMP_TID( "enum_tid", $1 );
+      DUMP_SNAME( "any_sname_c", &$3 );
+
+      c_sname_append_sname( &in_attr.current_scope, &$3 );
+
+      c_ast_t *const ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
+      ast->sname = c_sname_dup( &in_attr.current_scope );
+      ast->type.base_tid = $1;
+      c_sname_append_name(
+        &ast->as.ecsu.ecsu_sname,
+        check_strdup( c_sname_local_name( &in_attr.current_scope ) )
+      );
+
+      DUMP_AST( "ast", ast );
+      DUMP_END();
+
+      if ( !add_type( c_type_id_name( $1 ), ast, &@1 ) )
+        PARSE_ABORT();
+    }
+  ;
+
+namespace_declaration_c
     /*
      * C++ namespace declaration, e.g.: namespace NS { typedef int I; }
-     *
-     * Namespace needs its own rule since class/struct/union requires a
-     * trailing ';' whereas namespace does not.
      */
-  | namespace_type
+  : namespace_type
     {
       // see the comment in "explain"
       c_mode = C_GIBBERISH_TO_ENGLISH;
