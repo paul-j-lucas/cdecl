@@ -2141,7 +2141,7 @@ class_struct_union_declaration_c
       }
       c_sname_set_local_type( &$3, &C_TYPE_LIT_B( $1 ) );
 
-      DUMP_START( "scope_declaration_c",
+      DUMP_START( "class_struct_union_declaration_c",
                   "class_struct_union_tid sname { "
                   "in_scope_declaration_c_opt "
                   "} ;" );
@@ -2180,7 +2180,7 @@ enum_declaration_c
     {
       c_sname_set_local_type( &$3, &C_TYPE_LIT_B( $1 ) );
 
-      DUMP_START( "scope_declaration_c",
+      DUMP_START( "enum_declaration_c",
                   "enum_tid sname ;" );
       DUMP_TID( "enum_tid", $1 );
       DUMP_SNAME( "any_sname_c", &$3 );
@@ -2224,7 +2224,7 @@ namespace_declaration_c
         c_scope_data( scope )->type = scope_type;
       }
 
-      DUMP_START( "scope_declaration_c",
+      DUMP_START( "namespace_declaration_c",
                   "[INLINE] NAMESPACE sname { "
                   "in_scope_declaration_c_opt "
                   "} [;]" );
