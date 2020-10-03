@@ -50,7 +50,7 @@
  * type.
  */
 enum g_type {
-  G_DECL,                               ///< Gibberish is a declaration
+  G_DECL,                               ///< Gibberish is a declaration.
   G_CAST,                               ///< Gibberish is a cast.
   G_TYPEDEF                             ///< Gibberish is a `typedef`.
 };
