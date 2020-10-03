@@ -46,12 +46,24 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Prints \a ast in pseudo-English.
+ * Prints \a ast as a declaration in pseudo-English.
  *
  * @param ast The AST to print.
  * @param eout The `FILE` to print to.
+ *
+ * @sa c_ast_english_type()
  */
 void c_ast_english( c_ast_t const *ast, FILE *eout );
+
+/**
+ * Prints \a ast as a type in pseudo-English.
+ *
+ * @param ast The AST to print.
+ * @param eout The `FILE` to print to.
+ *
+ * @sa c_ast_english()
+ */
+void c_ast_english_type( c_ast_t const *ast, FILE *eout );
 
 /**
  * Prints \a sname in pseudo-English.
@@ -60,14 +72,6 @@ void c_ast_english( c_ast_t const *ast, FILE *eout );
  * @param eout The `FILE` to print to.
  */
 void c_sname_english( c_sname_t const *sname, FILE *eout );
-
-/**
- * Prints \a typedef_ast in pseudo-English.
- *
- * @param typedef_ast The `typedef` AST to print.
- * @param eout The `FILE` to print to.
- */
-void c_typedef_english( c_ast_t const *typedef_ast, FILE *eout );
 
 ///////////////////////////////////////////////////////////////////////////////
 

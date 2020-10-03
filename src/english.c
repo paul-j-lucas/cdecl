@@ -283,21 +283,21 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   } // switch
 }
 
+void c_ast_english_type( c_ast_t const *ast, FILE *eout ) {
+  assert( ast != NULL );
+  FPRINTF( eout, "%s ", L_DEFINE );
+  c_sname_english( &ast->sname, eout );
+  FPRINTF( eout, " %s ", L_AS );
+  c_ast_english( ast, eout );
+  FPUTC( '\n', eout );
+}
+
 void c_sname_english( c_sname_t const *sname, FILE *eout ) {
   assert( sname != NULL );
   if ( !c_sname_empty( sname ) ) {
     FPUTS( c_sname_local_name( sname ), eout );
     c_sname_english_impl( sname->head, eout );
   }
-}
-
-void c_typedef_english( c_ast_t const *typedef_ast, FILE *eout ) {
-  assert( typedef_ast != NULL );
-  FPRINTF( eout, "%s ", L_DEFINE );
-  c_sname_english( &typedef_ast->sname, eout );
-  FPRINTF( eout, " %s ", L_AS );
-  c_ast_english( typedef_ast, eout );
-  FPUTC( '\n', eout );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

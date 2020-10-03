@@ -10,7 +10,7 @@ typedef unsigned DWORD32;
 typedef unsigned long DWORD64;
 typedef unsigned long DWORDLONG;
 typedef ULONG_PTR DWORD_PTR;
-typedef struct FILE FILE;
+struct FILE;
 typedef float FLOAT;
 typedef int HALF_PTR;
 typedef PVOID HANDLE;
@@ -55,7 +55,7 @@ typedef long INT64;
 typedef signed char INT8;
 typedef __int64 INT_PTR;
 typedef WORD LANGID;
-typedef union _LARGE_INTEGER LARGE_INTEGER;
+union LARGE_INTEGER;
 typedef DWORD LCID;
 typedef DWORD LCTYPE;
 typedef DWORD LGRPID;
@@ -152,13 +152,13 @@ typedef unsigned UINT32;
 typedef unsigned long UINT64;
 typedef unsigned char UINT8;
 typedef unsigned long UINT_PTR;
-typedef union _ULARGE_INTEGER ULARGE_INTEGER;
+union ULARGE_INTEGER;
 typedef unsigned long ULONG;
 typedef unsigned ULONG32;
 typedef unsigned long ULONG64;
 typedef unsigned long long ULONGLONG;
 typedef unsigned long ULONG_PTR;
-typedef struct UNICODE_STRING UNICODE_STRING;
+struct UNICODE_STRING;
 typedef unsigned short USHORT;
 typedef LONGLONG USN;
 typedef wchar_t WCHAR;
@@ -198,7 +198,7 @@ typedef _Atomic char atomic_char;
 typedef _Atomic char16_t atomic_char16_t;
 typedef _Atomic char32_t atomic_char32_t;
 typedef _Atomic char8_t atomic_char8_t;
-typedef struct atomic_flag atomic_flag;
+struct atomic_flag;
 typedef _Atomic int atomic_int;
 typedef _Atomic int_fast16_t atomic_int_fast16_t;
 typedef _Atomic int_fast32_t atomic_int_fast32_t;
@@ -238,17 +238,17 @@ typedef long clock_t;
 typedef long clockid_t;
 typedef pthread_cond_t cnd_t;
 typedef int32_t dev_t;
-typedef struct div_t div_t;
+struct div_t;
 typedef double double_t;
 typedef int errno_t;
-typedef struct fd_set fd_set;
-typedef struct femode_t femode_t;
-typedef struct fenv_t fenv_t;
+struct fd_set;
+struct femode_t;
+struct fenv_t;
 typedef unsigned short fexcept_t;
 typedef float float_t;
-typedef struct fpos_t fpos_t;
+struct fpos_t;
 typedef uint32_t gid_t;
-typedef struct imaxdiv_t imaxdiv_t;
+struct imaxdiv_t;
 typedef uint32_t in_addr_t;
 typedef uint16_t in_port_t;
 typedef int32_t ino_t;
@@ -273,12 +273,12 @@ typedef _Fract int_r_t;
 typedef long intmax_t;
 typedef long intptr_t;
 typedef int jmp_buf[37];
-typedef struct ldiv_t ldiv_t;
-typedef struct lldiv_t lldiv_t;
+struct ldiv_t;
+struct lldiv_t;
 typedef long double long_double_t;
 typedef long double max_align_t;
-typedef struct mbstate_t mbstate_t;
-typedef enum memory_order memory_order;
+struct mbstate_t;
+enum memory_order;
 typedef int32_t mode_t;
 typedef pthread_mutex_t mtx_t;
 typedef unsigned long nfds_t;
@@ -286,15 +286,15 @@ typedef uint32_t nlink_t;
 typedef int64_t off_t;
 typedef int once_flag;
 typedef int32_t pid_t;
-typedef struct pthread_barrier_t pthread_barrier_t;
-typedef struct pthread_barrierattr_t pthread_barrierattr_t;
-typedef struct pthread_cond_t pthread_cond_t;
-typedef struct pthread_condattr_t pthread_condattr_t;
-typedef struct pthread_mutex_t pthread_mutex_t;
-typedef struct pthread_mutexattr_t pthread_mutexattr_t;
+struct pthread_barrier_t;
+struct pthread_barrierattr_t;
+struct pthread_cond_t;
+struct pthread_condattr_t;
+struct pthread_mutex_t;
+struct pthread_mutexattr_t;
 typedef int pthread_once_t;
-typedef struct pthread_rwlock_t pthread_rwlock_t;
-typedef struct pthread_rwlockattr_t pthread_rwlockattr_t;
+struct pthread_rwlock_t;
+struct pthread_rwlockattr_t;
 typedef volatile int pthread_spinlock_t;
 typedef unsigned long pthread_t;
 typedef long ptrdiff_t;
@@ -306,217 +306,217 @@ typedef unsigned long sigset_t;
 typedef unsigned long size_t;
 typedef uint32_t socklen_t;
 typedef long ssize_t;
-namespace std { typedef struct adopt_lock_t adopt_lock_t; }
-namespace std { typedef enum align_val_t align_val_t; }
-namespace std { typedef class ambiguous_local_time ambiguous_local_time; }
-namespace std { typedef struct atomic_bool atomic_bool; }
-namespace std { typedef struct atomic_char atomic_char; }
-namespace std { typedef struct atomic_char16_t atomic_char16_t; }
-namespace std { typedef struct atomic_char32_t atomic_char32_t; }
-namespace std { typedef struct atomic_char8_t atomic_char8_t; }
-namespace std { typedef struct atomic_flag atomic_flag; }
-namespace std { typedef struct atomic_int atomic_int; }
-namespace std { typedef struct atomic_int16_t atomic_int16_t; }
-namespace std { typedef struct atomic_int32_t atomic_int32_t; }
-namespace std { typedef struct atomic_int64_t atomic_int64_t; }
-namespace std { typedef struct atomic_int8_t atomic_int8_t; }
-namespace std { typedef struct atomic_int_fast16_t atomic_int_fast16_t; }
-namespace std { typedef struct atomic_int_fast32_t atomic_int_fast32_t; }
-namespace std { typedef struct atomic_int_fast64_t atomic_int_fast64_t; }
-namespace std { typedef struct atomic_int_fast8_t atomic_int_fast8_t; }
-namespace std { typedef struct atomic_int_least16_t atomic_int_least16_t; }
-namespace std { typedef struct atomic_int_least32_t atomic_int_least32_t; }
-namespace std { typedef struct atomic_int_least64_t atomic_int_least64_t; }
-namespace std { typedef struct atomic_int_least8_t atomic_int_least8_t; }
-namespace std { typedef struct atomic_intmax_t atomic_intmax_t; }
-namespace std { typedef struct atomic_intptr_t atomic_intptr_t; }
-namespace std { typedef struct atomic_llong atomic_llong; }
-namespace std { typedef struct atomic_long atomic_long; }
-namespace std { typedef struct atomic_ptrdiff_t atomic_ptrdiff_t; }
-namespace std { typedef struct atomic_schar atomic_schar; }
-namespace std { typedef struct atomic_short atomic_short; }
-namespace std { typedef struct atomic_signed_lock_free atomic_signed_lock_free; }
-namespace std { typedef struct atomic_size_t atomic_size_t; }
-namespace std { typedef struct atomic_uchar atomic_uchar; }
-namespace std { typedef struct atomic_uint atomic_uint; }
-namespace std { typedef struct atomic_uint16_t atomic_uint16_t; }
-namespace std { typedef struct atomic_uint32_t atomic_uint32_t; }
-namespace std { typedef struct atomic_uint64_t atomic_uint64_t; }
-namespace std { typedef struct atomic_uint8_t atomic_uint8_t; }
-namespace std { typedef struct atomic_uint_fast16_t atomic_uint_fast16_t; }
-namespace std { typedef struct atomic_uint_fast32_t atomic_uint_fast32_t; }
-namespace std { typedef struct atomic_uint_fast64_t atomic_uint_fast64_t; }
-namespace std { typedef struct atomic_uint_fast8_t atomic_uint_fast8_t; }
-namespace std { typedef struct atomic_uint_least16_t atomic_uint_least16_t; }
-namespace std { typedef struct atomic_uint_least32_t atomic_uint_least32_t; }
-namespace std { typedef struct atomic_uint_least64_t atomic_uint_least64_t; }
-namespace std { typedef struct atomic_uint_least8_t atomic_uint_least8_t; }
-namespace std { typedef struct atomic_uintmax_t atomic_uintmax_t; }
-namespace std { typedef struct atomic_uintptr_t atomic_uintptr_t; }
-namespace std { typedef struct atomic_ullong atomic_ullong; }
-namespace std { typedef struct atomic_ulong atomic_ulong; }
-namespace std { typedef struct atomic_unsigned_lock_free atomic_unsigned_lock_free; }
-namespace std { typedef struct atomic_ushort atomic_ushort; }
-namespace std { typedef struct atomic_wchar_t atomic_wchar_t; }
-namespace std { typedef class bad_alloc bad_alloc; }
-namespace std { typedef class bad_any_cast bad_any_cast; }
-namespace std { typedef class bad_array_new_length bad_array_new_length; }
-namespace std { typedef class bad_cast bad_cast; }
-namespace std { typedef class bad_exception bad_exception; }
-namespace std { typedef class bad_function_call bad_function_call; }
-namespace std { typedef class bad_optional_access bad_optional_access; }
-namespace std { typedef class bad_type_id bad_type_id; }
-namespace std { typedef class bad_variant_access bad_variant_access; }
-namespace std { typedef class bad_weak_ptr bad_weak_ptr; }
-namespace std { typedef enum byte byte; }
-namespace std { namespace chrono { typedef enum choose choose; } }
-namespace std { namespace chrono { typedef class day day; } }
-namespace std { namespace chrono { typedef struct file_clock file_clock; } }
-namespace std { namespace chrono { typedef struct gps_clock gps_clock; } }
-namespace std { namespace chrono { typedef class high_resolution_clock high_resolution_clock; } }
-namespace std { namespace chrono { typedef struct is_clock is_clock; } }
-namespace std { namespace chrono { typedef struct last_spec last_spec; } }
-namespace std { namespace chrono { typedef class leap_second leap_second; } }
-namespace std { namespace chrono { typedef struct local_info local_info; } }
-namespace std { namespace chrono { typedef struct local_t local_t; } }
-namespace std { namespace chrono { typedef class month month; } }
-namespace std { namespace chrono { typedef class month_day month_day; } }
-namespace std { namespace chrono { typedef class month_day_last month_day_last; } }
-namespace std { namespace chrono { typedef class month_weekday month_weekday; } }
-namespace std { namespace chrono { typedef class month_weekday_last month_weekday_last; } }
-namespace std { namespace chrono { typedef class nonexistent_local_time nonexistent_local_time; } }
-namespace std { namespace chrono { typedef class steady_clock steady_clock; } }
-namespace std { namespace chrono { typedef struct sys_info sys_info; } }
-namespace std { namespace chrono { typedef class system_clock system_clock; } }
-namespace std { namespace chrono { typedef struct tai_clock tai_clock; } }
-namespace std { namespace chrono { typedef struct time_zone time_zone; } }
-namespace std { namespace chrono { typedef class time_zone_link time_zone_link; } }
-namespace std { namespace chrono { typedef struct tzdb tzdb; } }
-namespace std { namespace chrono { typedef struct tzdb_list tzdb_list; } }
-namespace std { namespace chrono { typedef struct utc_clock utc_clock; } }
-namespace std { namespace chrono { typedef class weekday weekday; } }
-namespace std { namespace chrono { typedef class weekday_indexed weekday_indexed; } }
-namespace std { namespace chrono { typedef class weekday_last weekday_last; } }
-namespace std { namespace chrono { typedef class year year; } }
-namespace std { namespace chrono { typedef class year_month year_month; } }
-namespace std { namespace chrono { typedef class year_month_day year_month_day; } }
-namespace std { namespace chrono { typedef class year_month_day_last year_month_day_last; } }
-namespace std { namespace chrono { typedef class year_month_weekday year_month_weekday; } }
-namespace std { namespace chrono { typedef class year_month_weekday_last year_month_weekday_last; } }
-namespace std { typedef class codecvt_base codecvt_base; }
-namespace std { typedef class condition_variable condition_variable; }
-namespace std { typedef class condition_variable_any condition_variable_any; }
-namespace std { typedef class ctype_base ctype_base; }
-namespace std { typedef enum cv_status cv_status; }
-namespace std { typedef struct defer_lock_t defer_lock_t; }
-namespace std { typedef struct destroying_delete_t destroying_delete_t; }
-namespace std { typedef struct div_t div_t; }
-namespace std { typedef class domain_error domain_error; }
-namespace std { typedef class error_category error_category; }
-namespace std { typedef class error_code error_code; }
-namespace std { typedef class error_condition error_condition; }
-namespace std { typedef class exception exception; }
-namespace std { typedef class filebuf filebuf; }
-namespace std { namespace filesystem { typedef enum copy_options copy_options; } }
-namespace std { namespace filesystem { typedef class directory_entry directory_entry; } }
-namespace std { namespace filesystem { typedef class directory_iterator directory_iterator; } }
-namespace std { namespace filesystem { typedef enum directory_options directory_options; } }
-namespace std { namespace filesystem { typedef class file_status file_status; } }
-namespace std { namespace filesystem { typedef enum file_type file_type; } }
-namespace std { namespace filesystem { typedef class filesystem_error filesystem_error; } }
-namespace std { namespace filesystem { typedef class path path; } }
-namespace std { namespace filesystem { typedef enum perm_options perm_options; } }
-namespace std { namespace filesystem { typedef enum perms perms; } }
-namespace std { namespace filesystem { typedef class recursive_directory_iterator recursive_directory_iterator; } }
-namespace std { namespace filesystem { typedef struct space_info space_info; } }
-namespace std { typedef class format_error format_error; }
-namespace std { typedef class fstream fstream; }
-namespace std { typedef enum future_errc future_errc; }
-namespace std { typedef class future_error future_error; }
-namespace std { typedef enum future_status future_status; }
-namespace std { typedef class ifstream ifstream; }
-namespace std { typedef struct imaxdiv_t imaxdiv_t; }
-namespace std { typedef class invalid_argument invalid_argument; }
-namespace std { typedef class ios ios; }
-namespace std { typedef class ios_base ios_base; }
-namespace std { class ios_base { typedef class failure failure; } };
-namespace std { typedef class iostream iostream; }
-namespace std { typedef class istream istream; }
-namespace std { typedef class istringstream istringstream; }
-namespace std { typedef class jthread jthread; }
-namespace std { typedef struct ldiv_t ldiv_t; }
-namespace std { typedef class length_error length_error; }
-namespace std { typedef struct lldiv_t lldiv_t; }
-namespace std { typedef class locale locale; }
-namespace std { typedef class logic_error logic_error; }
+namespace std { struct adopt_lock_t; }
+namespace std { enum align_val_t; }
+namespace std { class ambiguous_local_time; }
+namespace std { struct atomic_bool; }
+namespace std { struct atomic_char; }
+namespace std { struct atomic_char16_t; }
+namespace std { struct atomic_char32_t; }
+namespace std { struct atomic_char8_t; }
+namespace std { struct atomic_flag; }
+namespace std { struct atomic_int; }
+namespace std { struct atomic_int16_t; }
+namespace std { struct atomic_int32_t; }
+namespace std { struct atomic_int64_t; }
+namespace std { struct atomic_int8_t; }
+namespace std { struct atomic_int_fast16_t; }
+namespace std { struct atomic_int_fast32_t; }
+namespace std { struct atomic_int_fast64_t; }
+namespace std { struct atomic_int_fast8_t; }
+namespace std { struct atomic_int_least16_t; }
+namespace std { struct atomic_int_least32_t; }
+namespace std { struct atomic_int_least64_t; }
+namespace std { struct atomic_int_least8_t; }
+namespace std { struct atomic_intmax_t; }
+namespace std { struct atomic_intptr_t; }
+namespace std { struct atomic_llong; }
+namespace std { struct atomic_long; }
+namespace std { struct atomic_ptrdiff_t; }
+namespace std { struct atomic_schar; }
+namespace std { struct atomic_short; }
+namespace std { struct atomic_signed_lock_free; }
+namespace std { struct atomic_size_t; }
+namespace std { struct atomic_uchar; }
+namespace std { struct atomic_uint; }
+namespace std { struct atomic_uint16_t; }
+namespace std { struct atomic_uint32_t; }
+namespace std { struct atomic_uint64_t; }
+namespace std { struct atomic_uint8_t; }
+namespace std { struct atomic_uint_fast16_t; }
+namespace std { struct atomic_uint_fast32_t; }
+namespace std { struct atomic_uint_fast64_t; }
+namespace std { struct atomic_uint_fast8_t; }
+namespace std { struct atomic_uint_least16_t; }
+namespace std { struct atomic_uint_least32_t; }
+namespace std { struct atomic_uint_least64_t; }
+namespace std { struct atomic_uint_least8_t; }
+namespace std { struct atomic_uintmax_t; }
+namespace std { struct atomic_uintptr_t; }
+namespace std { struct atomic_ullong; }
+namespace std { struct atomic_ulong; }
+namespace std { struct atomic_unsigned_lock_free; }
+namespace std { struct atomic_ushort; }
+namespace std { struct atomic_wchar_t; }
+namespace std { class bad_alloc; }
+namespace std { class bad_any_cast; }
+namespace std { class bad_array_new_length; }
+namespace std { class bad_cast; }
+namespace std { class bad_exception; }
+namespace std { class bad_function_call; }
+namespace std { class bad_optional_access; }
+namespace std { class bad_type_id; }
+namespace std { class bad_variant_access; }
+namespace std { class bad_weak_ptr; }
+namespace std { enum byte; }
+namespace std { namespace chrono { enum choose; } }
+namespace std { namespace chrono { class day; } }
+namespace std { namespace chrono { struct file_clock; } }
+namespace std { namespace chrono { struct gps_clock; } }
+namespace std { namespace chrono { class high_resolution_clock; } }
+namespace std { namespace chrono { struct is_clock; } }
+namespace std { namespace chrono { struct last_spec; } }
+namespace std { namespace chrono { class leap_second; } }
+namespace std { namespace chrono { struct local_info; } }
+namespace std { namespace chrono { struct local_t; } }
+namespace std { namespace chrono { class month; } }
+namespace std { namespace chrono { class month_day; } }
+namespace std { namespace chrono { class month_day_last; } }
+namespace std { namespace chrono { class month_weekday; } }
+namespace std { namespace chrono { class month_weekday_last; } }
+namespace std { namespace chrono { class nonexistent_local_time; } }
+namespace std { namespace chrono { class steady_clock; } }
+namespace std { namespace chrono { struct sys_info; } }
+namespace std { namespace chrono { class system_clock; } }
+namespace std { namespace chrono { struct tai_clock; } }
+namespace std { namespace chrono { struct time_zone; } }
+namespace std { namespace chrono { class time_zone_link; } }
+namespace std { namespace chrono { struct tzdb; } }
+namespace std { namespace chrono { struct tzdb_list; } }
+namespace std { namespace chrono { struct utc_clock; } }
+namespace std { namespace chrono { class weekday; } }
+namespace std { namespace chrono { class weekday_indexed; } }
+namespace std { namespace chrono { class weekday_last; } }
+namespace std { namespace chrono { class year; } }
+namespace std { namespace chrono { class year_month; } }
+namespace std { namespace chrono { class year_month_day; } }
+namespace std { namespace chrono { class year_month_day_last; } }
+namespace std { namespace chrono { class year_month_weekday; } }
+namespace std { namespace chrono { class year_month_weekday_last; } }
+namespace std { class codecvt_base; }
+namespace std { class condition_variable; }
+namespace std { class condition_variable_any; }
+namespace std { class ctype_base; }
+namespace std { enum cv_status; }
+namespace std { struct defer_lock_t; }
+namespace std { struct destroying_delete_t; }
+namespace std { struct div_t; }
+namespace std { class domain_error; }
+namespace std { class error_category; }
+namespace std { class error_code; }
+namespace std { class error_condition; }
+namespace std { class exception; }
+namespace std { class filebuf; }
+namespace std { namespace filesystem { enum copy_options; } }
+namespace std { namespace filesystem { class directory_entry; } }
+namespace std { namespace filesystem { class directory_iterator; } }
+namespace std { namespace filesystem { enum directory_options; } }
+namespace std { namespace filesystem { class file_status; } }
+namespace std { namespace filesystem { enum file_type; } }
+namespace std { namespace filesystem { class filesystem_error; } }
+namespace std { namespace filesystem { class path; } }
+namespace std { namespace filesystem { enum perm_options; } }
+namespace std { namespace filesystem { enum perms; } }
+namespace std { namespace filesystem { class recursive_directory_iterator; } }
+namespace std { namespace filesystem { struct space_info; } }
+namespace std { class format_error; }
+namespace std { class fstream; }
+namespace std { enum future_errc; }
+namespace std { class future_error; }
+namespace std { enum future_status; }
+namespace std { class ifstream; }
+namespace std { struct imaxdiv_t; }
+namespace std { class invalid_argument; }
+namespace std { class ios; }
+namespace std { class ios_base; }
+namespace std { class ios_base { class failure; } };
+namespace std { class iostream; }
+namespace std { class istream; }
+namespace std { class istringstream; }
+namespace std { class jthread; }
+namespace std { struct ldiv_t; }
+namespace std { class length_error; }
+namespace std { struct lldiv_t; }
+namespace std { class locale; }
+namespace std { class logic_error; }
 namespace std { typedef long double max_align_t; }
-namespace std { typedef class messages_base messages_base; }
-namespace std { typedef class money_base money_base; }
-namespace std { typedef class mutex mutex; }
-namespace std { typedef struct nonstopstate_t nonstopstate_t; }
-namespace std { typedef struct nothrow_t nothrow_t; }
+namespace std { class messages_base; }
+namespace std { class money_base; }
+namespace std { class mutex; }
+namespace std { struct nonstopstate_t; }
+namespace std { struct nothrow_t; }
 namespace std { typedef void *nullptr_t; }
-namespace std { typedef class ofstream ofstream; }
-namespace std { typedef class ostream ostream; }
-namespace std { typedef class ostringstream ostringstream; }
-namespace std { typedef class osyncstream osyncstream; }
-namespace std { typedef class out_of_range out_of_range; }
-namespace std { typedef class overflow_error overflow_error; }
-namespace std { typedef struct partial_ordering partial_ordering; }
+namespace std { class ofstream; }
+namespace std { class ostream; }
+namespace std { class ostringstream; }
+namespace std { class osyncstream; }
+namespace std { class out_of_range; }
+namespace std { class overflow_error; }
+namespace std { struct partial_ordering; }
 namespace std { typedef long ptrdiff_t; }
-namespace std { typedef class range_error range_error; }
-namespace std { typedef class recursive_mutex recursive_mutex; }
-namespace std { typedef class recursive_timed_mutex recursive_timed_mutex; }
-namespace std { typedef class regex regex; }
-namespace std { typedef struct regex_error regex_error; }
-namespace std { typedef class runtime_error runtime_error; }
-namespace std { typedef class shared_mutex shared_mutex; }
-namespace std { typedef class shared_timed_mutex shared_timed_mutex; }
+namespace std { class range_error; }
+namespace std { class recursive_mutex; }
+namespace std { class recursive_timed_mutex; }
+namespace std { class regex; }
+namespace std { struct regex_error; }
+namespace std { class runtime_error; }
+namespace std { class shared_mutex; }
+namespace std { class shared_timed_mutex; }
 namespace std { typedef int sig_atomic_t; }
 namespace std { typedef unsigned long size_t; }
-namespace std { typedef class stop_source stop_source; }
-namespace std { typedef class stop_token stop_token; }
-namespace std { typedef class streambuf streambuf; }
+namespace std { class stop_source; }
+namespace std { class stop_token; }
+namespace std { class streambuf; }
 namespace std { typedef long long streamoff; }
 namespace std { typedef long streamsize; }
-namespace std { typedef class string string; }
-namespace std { typedef class string_view string_view; }
-namespace std { typedef class stringbuf stringbuf; }
-namespace std { typedef class stringstream stringstream; }
-namespace std { typedef struct strong_equality strong_equality; }
-namespace std { typedef struct strong_ordering strong_ordering; }
-namespace std { typedef class syncbuf syncbuf; }
-namespace std { typedef struct system_error system_error; }
-namespace std { typedef class thread thread; }
-namespace std { typedef class time_base time_base; }
-namespace std { typedef class timed_mutex timed_mutex; }
-namespace std { typedef struct try_to_lock_t try_to_lock_t; }
-namespace std { typedef class u16string u16string; }
-namespace std { typedef class u16string_view u16string_view; }
-namespace std { typedef class u32string u32string; }
-namespace std { typedef class u32string_view u32string_view; }
-namespace std { typedef class u8string_view u8string_view; }
-namespace std { typedef class underflow_error underflow_error; }
-namespace std { typedef struct weak_equality weak_equality; }
-namespace std { typedef struct weak_ordering weak_ordering; }
-namespace std { typedef class wfilebuf wfilebuf; }
-namespace std { typedef class wfstream wfstream; }
-namespace std { typedef class wifstream wifstream; }
-namespace std { typedef class wios wios; }
-namespace std { typedef class wiostream wiostream; }
-namespace std { typedef class wistream wistream; }
-namespace std { typedef class wistringstream wistringstream; }
-namespace std { typedef class wofstream wofstream; }
-namespace std { typedef class wostream wostream; }
-namespace std { typedef class wostringstream wostringstream; }
-namespace std { typedef class wosyncstream wosyncstream; }
-namespace std { typedef class wregex wregex; }
-namespace std { typedef class wstreambuf wstreambuf; }
-namespace std { typedef class wstring wstring; }
-namespace std { typedef class wstring_view wstring_view; }
-namespace std { typedef class wstringbuf wstringbuf; }
-namespace std { typedef class wstringstream wstringstream; }
-namespace std { typedef class wsyncbuf wsyncbuf; }
+namespace std { class string; }
+namespace std { class string_view; }
+namespace std { class stringbuf; }
+namespace std { class stringstream; }
+namespace std { struct strong_equality; }
+namespace std { struct strong_ordering; }
+namespace std { class syncbuf; }
+namespace std { struct system_error; }
+namespace std { class thread; }
+namespace std { class time_base; }
+namespace std { class timed_mutex; }
+namespace std { struct try_to_lock_t; }
+namespace std { class u16string; }
+namespace std { class u16string_view; }
+namespace std { class u32string; }
+namespace std { class u32string_view; }
+namespace std { class u8string_view; }
+namespace std { class underflow_error; }
+namespace std { struct weak_equality; }
+namespace std { struct weak_ordering; }
+namespace std { class wfilebuf; }
+namespace std { class wfstream; }
+namespace std { class wifstream; }
+namespace std { class wios; }
+namespace std { class wiostream; }
+namespace std { class wistream; }
+namespace std { class wistringstream; }
+namespace std { class wofstream; }
+namespace std { class wostream; }
+namespace std { class wostringstream; }
+namespace std { class wosyncstream; }
+namespace std { class wregex; }
+namespace std { class wstreambuf; }
+namespace std { class wstring; }
+namespace std { class wstring_view; }
+namespace std { class wstringbuf; }
+namespace std { class wstringstream; }
+namespace std { class wsyncbuf; }
 typedef int64_t suseconds_t;
 typedef int (*thrd_start_t)(void*);
 typedef pthread_t thrd_t;

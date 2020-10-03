@@ -2327,9 +2327,9 @@ show_command
       DUMP_END();
 
       if ( $3 )
-        c_typedef_gibberish( $2, fout );
+        c_ast_gibberish_type( $2, fout );
       else
-        c_typedef_english( $2, fout );
+        c_ast_english_type( $2, fout );
     }
 
   | Y_SHOW any_typedef_ast Y_AS typedef_expected
@@ -2338,13 +2338,13 @@ show_command
       DUMP_AST( "any_typedef_ast", $2 );
       DUMP_END();
 
-      c_typedef_gibberish( $2, fout );
+      c_ast_gibberish_type( $2, fout );
     }
 
   | Y_SHOW show_which_types_opt typedef_opt
     {
       show_type_info_t sti;
-      sti.show_fn = $3 ? &c_typedef_gibberish : &c_typedef_english;
+      sti.show_fn = $3 ? &c_ast_gibberish_type : &c_ast_english_type;
       sti.show_which = $2;
       c_typedef_visit( &show_type_visitor, &sti );
     }
@@ -2352,7 +2352,7 @@ show_command
   | Y_SHOW show_which_types_opt Y_AS typedef_expected
     {
       show_type_info_t sti;
-      sti.show_fn = &c_typedef_gibberish;
+      sti.show_fn = &c_ast_gibberish_type;
       sti.show_which = $2;
       c_typedef_visit( &show_type_visitor, &sti );
     }
