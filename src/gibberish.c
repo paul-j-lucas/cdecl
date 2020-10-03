@@ -725,7 +725,8 @@ void c_ast_gibberish_type( c_ast_t const *ast, FILE *gout ) {
     // so we have to wrap it in a scoped declaration, one of: class, namespace,
     // struct, or union.
     //
-    if ( scope_type.base_tid != TB_NAMESPACE || opt_lang >= LANG_CPP_17 ) {
+    if ( scope_type.base_tid != TB_NAMESPACE ||
+         (opt_lang & (LANG_CPP_MIN(17) | LANG_C_ALL)) ) {
       //
       // All C++ versions support nested class/struct/union declarations, e.g.:
       //
@@ -734,6 +735,9 @@ void c_ast_gibberish_type( c_ast_t const *ast, FILE *gout ) {
       // However, only C++17 and later support nested namespace declarations:
       //
       //      namespace S::T { typedef int I; }
+      //
+      // If the current language is any version of C, also print in nested
+      // namespace form.
       //
       scope_type = *c_sname_scope_type( sname );
       if ( scope_type.base_tid == TB_SCOPE )
