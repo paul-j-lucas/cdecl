@@ -33,6 +33,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // english
+char const L_ALIGN[]                = "align";
 char const L_ALIGNED[]              = "aligned";
 char const L_ALL[]                  = "all";
 char const L_ARRAY[]                = "array";

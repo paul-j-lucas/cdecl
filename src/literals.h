@@ -59,6 +59,7 @@ _GL_INLINE_HEADER_BEGIN
 //    want it auto-completable).
 
 // english
+extern char const L_ALIGN[];
 extern char const L_ALIGNED[];
 extern char const L_ALL[];
 extern char const L_ARRAY[];

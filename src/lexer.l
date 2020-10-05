@@ -179,6 +179,7 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  * treat as English so they map to the appropriate language-specific literal.
  */
 static cdecl_keyword_t const CDECL_KEYWORDS[] = {
+  { L_ALIGN,          TOKEN( Y_ALIGNED            ) },
   { L_ALIGNED,        TOKEN( Y_ALIGNED            ) },
   { L_ALL,            TOKEN( Y_ALL                ) },
   { L_ARRAY,          TOKEN( Y_ARRAY              ) },
