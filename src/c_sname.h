@@ -157,9 +157,9 @@ void c_sname_append_sname( c_sname_t *dst, c_sname_t *src ) {
  * Compares two scoped names.
  *
  * @param i_sname The first scoped name to compare.
- * @param i_sname The second scoped name to compare.
+ * @param j_sname The second scoped name to compare.
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_sname is
- * less than, equal to, or greater than \a i_sname, respectively.
+ * less than, equal to, or greater than \a j_sname, respectively.
  */
 C_SNAME_INLINE C_WARN_UNUSED_RESULT
 int c_sname_cmp( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
