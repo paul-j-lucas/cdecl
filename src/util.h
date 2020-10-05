@@ -72,6 +72,14 @@ _GL_INLINE_HEADER_BEGIN
 #define BLOCK(...)                do { __VA_ARGS__ } while (0)
 
 /**
+ * Gets a pointer to one past the end of \a BUF.
+ *
+ * @param BUF The buffer.
+ * @return Returns a pointer to one past the end of \a BUF.
+ */
+#define BUF_END(BUF)              ((BUF) + sizeof( BUF ))
+
+/**
  * Explicit C version of C++'s `const_cast`.
  *
  * @param T The type to cast to.

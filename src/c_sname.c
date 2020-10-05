@@ -59,13 +59,13 @@ static c_type_t const* c_sname_local_type_impl( c_scope_t const *scope ) {
  * buffer.
  *
  * @param name_buf The buffer to write into.
- * @param name_size The size of \a name_buf.
+ * @param name_end One past the end of \a name_buf.
  * @param sname The scoped name to write.
  * @param end_scope The scope to stop before or null for all scopes.
  * @return Returns \a name_buf.
  */
 C_WARN_UNUSED_RESULT
-static char const* scope_name_impl( char *name_buf, size_t name_size,
+static char const* scope_name_impl( char *name_buf, char const *name_end,
                                     c_sname_t const *sname,
                                     c_scope_t const *end_scope ) {
   assert( name_buf != NULL );
@@ -80,7 +80,7 @@ static char const* scope_name_impl( char *name_buf, size_t name_size,
     if ( true_or_set( &colon2 ) )
       STRCAT( name, "::" );
     STRCAT( name, c_scope_data( scope )->name );
-    assert( name < name_buf + name_size );
+    assert( name < name_end );
   } // for
 
   return name_buf;
@@ -121,7 +121,7 @@ void c_sname_append_name( c_sname_t *sname, char *name ) {
 char const* c_sname_full_name( c_sname_t const *sname ) {
   static char name_buf[ 256 ];
   assert( sname != NULL );
-  return scope_name_impl( name_buf, sizeof name_buf, sname, NULL );
+  return scope_name_impl( name_buf, BUF_END( name_buf ), sname, NULL );
 }
 
 bool c_sname_is_ctor( c_sname_t const *sname ) {
@@ -136,7 +136,7 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
 char const* c_sname_scope_name( c_sname_t const *sname ) {
   static char name_buf[ 256 ];
   assert( sname != NULL );
-  return scope_name_impl( name_buf, sizeof name_buf, sname, sname->tail );
+  return scope_name_impl( name_buf, BUF_END( name_buf ), sname, sname->tail );
 }
 
 c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
