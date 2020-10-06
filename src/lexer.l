@@ -175,8 +175,46 @@ typedef struct cdecl_keyword cdecl_keyword_t;
 /**
  * All cdecl keywords that are (mostly) not C/C++ keywords.
  *
- * Exceptions are `bool`, `complex`, `const`, and `volatile` that we want to
- * treat as English so they map to the appropriate language-specific literal.
+ * To have a literal for a cdecl keyword map to its corresponding token, use
+ * #TOKEN:
+ *
+ *      // The "aligned" literal maps to the Y_ALIGNED token:
+ *      { L_ALIGNED,        TOKEN( Y_ALIGNED            ) }
+ *
+ * To have a literal that is a synonym for another literal for a cdecl keyword
+ * map to the other literal's same token, use #TOKEN with the other literal's
+ * token:
+ *
+ *      // The "align" literal synonym also maps to the Y_ALIGNED token:
+ *      { L_ALIGN,          TOKEN( Y_ALIGNED            ) },
+ *
+ * To have a literal that is English be a synonym for exactly one corresponding
+ * C/C++ keyword literal, but only when converting English to gibberish, use
+ * #C_SY1 with `false`:
+ *
+ *      // The "atomic" literal is a synonym for the "_Atomic" literal, but
+ *      // only when converting from English to gibberish:
+ *      { L_ATOMIC,         C_SY1( false, L__ATOMIC     ) },
+ *
+ * To do the same, but allow the literal at any time (i.e., also when
+ * converting gibberish to English), use #C_SY1 with `true`:
+ *
+ *      // The "imaginary" literal is always a synonym for the "_Imaginary"
+ *      // literal.
+ *      { L_IMAGINARY,      C_SY1( true,  L__IMAGINARY  ) },
+ *
+ * To have a literal that is English be a synonym for more than one
+ * corresponding C/C++ keyword depending on the current language, use #C_SYN
+ * with the last row always containing LANG_ALL:
+ *
+ *      // The "noreturn" literal is a synonym for the "_Noreturn" literal only
+ *      // in C11 and later.
+ *      { L_NORETURN,       C_SYN( true,
+ *                            { { LANG_C_MIN(11), L__NORETURN },
+ *                              { LANG_ALL,       L_NORETURN  } } ) },
+ *
+ * Exceptions are `bool`, `complex`, `const`, and `volatile` that are included
+ * here as cdecl keywords so each maps to its language-specific literal.
  */
 static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_ALIGN,          TOKEN( Y_ALIGNED            ) },
