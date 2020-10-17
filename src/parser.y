@@ -2347,17 +2347,15 @@ show_command
 
   | Y_SHOW show_which_types_opt typedef_opt
     {
-      show_type_info_t sti;
-      sti.show_fn = $3 ? &c_ast_gibberish_type : &c_ast_english_type;
-      sti.show_which = $2;
+      show_type_info_t sti = {
+        $3 ? &c_ast_gibberish_type : &c_ast_english_type, $2
+      };
       c_typedef_visit( &show_type_visitor, &sti );
     }
 
   | Y_SHOW show_which_types_opt Y_AS typedef_expected
     {
-      show_type_info_t sti;
-      sti.show_fn = &c_ast_gibberish_type;
-      sti.show_which = $2;
+      show_type_info_t sti = { &c_ast_gibberish_type, $2 };
       c_typedef_visit( &show_type_visitor, &sti );
     }
 
