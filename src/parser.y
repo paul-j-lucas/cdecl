@@ -742,8 +742,10 @@ static bool show_type_visitor( c_typedef_t const *type, void *data ) {
     (sti->show_which & SHOW_USER_TYPES) != 0 :
     (sti->show_which & SHOW_PREDEFINED_TYPES) != 0;
 
-  if ( show_it )
+  if ( show_it ) {
     (*sti->show_fn)( type->ast, fout );
+    FPUTC( '\n', fout );
+  }
   return false;
 }
 
@@ -2330,6 +2332,7 @@ show_command
         c_ast_gibberish_type( $2, fout );
       else
         c_ast_english_type( $2, fout );
+      FPUTC( '\n', fout );
     }
 
   | Y_SHOW any_typedef_ast Y_AS typedef_expected
@@ -2339,6 +2342,7 @@ show_command
       DUMP_END();
 
       c_ast_gibberish_type( $2, fout );
+      FPUTC( '\n', fout );
     }
 
   | Y_SHOW show_which_types_opt typedef_opt

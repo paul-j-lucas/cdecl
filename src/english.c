@@ -289,7 +289,6 @@ void c_ast_english_type( c_ast_t const *ast, FILE *eout ) {
   c_sname_english( &ast->sname, eout );
   FPRINTF( eout, " %s ", L_AS );
   c_ast_english( ast, eout );
-  FPUTC( '\n', eout );
 }
 
 void c_sname_english( c_sname_t const *sname, FILE *eout ) {

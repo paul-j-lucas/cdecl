@@ -780,7 +780,6 @@ void c_ast_gibberish_type( c_ast_t const *ast, FILE *gout ) {
 
   if ( opt_semicolon && scope_type.base_tid != TB_NAMESPACE )
     FPUTC( ';', gout );
-  FPUTC( '\n', gout );
 }
 
 char const* graph_token_c( char const *token ) {
