@@ -352,34 +352,34 @@ typedef struct c_hyphen c_hyphen_t;
  */
 static c_hyphen_t const C_HYPHEN_KEYWORDS[] = {
   { L_CARRIES_DEPENDENCY_H,
-    (c_lang_lit_t[]){ { LANG_ALL, L_CARRIES_DEPENDENCY } } },
+    C_LANG_LIT( { LANG_ALL, L_CARRIES_DEPENDENCY } ) },
 
   { L_MAYBE_UNUSED_H,
-    (c_lang_lit_t[]){ { LANG_ALL, L_MAYBE_UNUSED } } },
+    C_LANG_LIT( { LANG_ALL, L_MAYBE_UNUSED } ) },
 
   { L_NO_EXCEPTION,
-    (c_lang_lit_t[]){ { LANG_ALL, L_NOEXCEPT } } },
+    C_LANG_LIT( { LANG_ALL, L_NOEXCEPT } ) },
 
   { L_NON_DISCARDABLE,
-    (c_lang_lit_t[]){ { LANG_ALL, L_NODISCARD } } },
+    C_LANG_LIT( { LANG_ALL, L_NODISCARD } ) },
 
   { L_NON_RETURNING,
-    (c_lang_lit_t[]){ { LANG_C_ALL, L__NORETURN  },
-                      { LANG_ALL,   L_NORETURN } } },
+    C_LANG_LIT( { LANG_C_ALL, L__NORETURN  },
+                { LANG_ALL,   L_NORETURN } ) },
 
   { L_NON_THROWING,
-    (c_lang_lit_t[]){ { LANG_ALL, L_THROW } } },
+    C_LANG_LIT( { LANG_ALL, L_THROW } ) },
 
   { L_NON_UNIQUE_ADDRESS,
-    (c_lang_lit_t[]){ { LANG_ALL, L_NO_UNIQUE_ADDRESS } } },
+    C_LANG_LIT( { LANG_ALL, L_NO_UNIQUE_ADDRESS } ) },
 
   { L_THREAD_LOCAL_H,
-    (c_lang_lit_t[]){ { LANG_C_CPP_MAX(99,03), L_GNU___THREAD  },
-                      { LANG_C_ALL,            L__THREAD_LOCAL },
-                      { LANG_ALL,              L_THREAD_LOCAL  } } },
+    C_LANG_LIT( { LANG_C_CPP_MAX(99,03), L_GNU___THREAD  },
+                { LANG_C_ALL,            L__THREAD_LOCAL },
+                { LANG_ALL,              L_THREAD_LOCAL  } ) },
 
   { NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, NULL } } }
+    C_LANG_LIT( { LANG_ALL, NULL } ) }
 };
 
 /**

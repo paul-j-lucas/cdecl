@@ -179,6 +179,14 @@ struct c_lang_lit {
   char const   *literal;                ///< The literal.
 };
 
+/**
+ * Convenience macro for specifying a constant array of
+ * <code>\ref c_lant_lit</code>.
+ *
+ * @param ... The array of <code>\ref c_lant_lit</code> elements.
+ */
+#define C_LANG_LIT(...)           (c_lang_lit_t const[]){ __VA_ARGS__ }
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**

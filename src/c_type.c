@@ -129,23 +129,23 @@ static char const L_TYPEDEF_TYPE[] = "";
  */
 static c_type_info_t const C_ATTRIBUTE_INFO[] = {
   { TA_CARRIES_DEPENDENCY, LANG_CPP_MIN(11), L_CARRIES_DEPENDENCY_H,
-    (c_lang_lit_t[]){ { LANG_ALL, L_CARRIES_DEPENDENCY } } },
+    C_LANG_LIT( { LANG_ALL, L_CARRIES_DEPENDENCY } ) },
 
   { TA_DEPRECATED, LANG_C_CPP_MIN(2X,11), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_DEPRECATED } } },
+    C_LANG_LIT( { LANG_ALL, L_DEPRECATED } ) },
 
   { TA_MAYBE_UNUSED, LANG_C_CPP_MIN(2X,17), L_MAYBE_UNUSED_H,
-    (c_lang_lit_t[]){ { LANG_ALL, L_MAYBE_UNUSED } } },
+    C_LANG_LIT( { LANG_ALL, L_MAYBE_UNUSED } ) },
 
   { TA_NODISCARD, LANG_C_CPP_MIN(2X,17), L_NON_DISCARDABLE,
-    (c_lang_lit_t[]){ { LANG_ALL, L_NODISCARD } } },
+    C_LANG_LIT( { LANG_ALL, L_NODISCARD } ) },
 
   { TA_NORETURN, LANG_C_CPP_MIN(11,11), L_NON_RETURNING,
-    (c_lang_lit_t[]){ { LANG_CPP_ALL, L_NORETURN  },
-                      { LANG_ALL,     L__NORETURN } } },
+    C_LANG_LIT( { LANG_CPP_ALL, L_NORETURN  },
+                { LANG_ALL,     L__NORETURN } ) },
 
   { TA_NO_UNIQUE_ADDRESS, LANG_CPP_MIN(20), L_NON_UNIQUE_ADDRESS,
-    (c_lang_lit_t[]){ { LANG_ALL, L_NO_UNIQUE_ADDRESS } } },
+    C_LANG_LIT( { LANG_ALL, L_NO_UNIQUE_ADDRESS } ) },
 };
 
 /**
@@ -156,35 +156,35 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
  */
 static c_type_info_t const C_QUALIFIER_INFO[] = {
   { TS_ATOMIC, LANG_MIN(C_11), L_ATOMIC,
-    (c_lang_lit_t[]){ { LANG_ALL, L__ATOMIC } } },
+    C_LANG_LIT( { LANG_ALL, L__ATOMIC } ) },
 
   { TS_CONST, LANG_ALL, L_CONSTANT,
-    (c_lang_lit_t[]){ { LANG_C_KNR, L_GNU___CONST },
-                      { LANG_ALL,   L_CONST       } } },
+    C_LANG_LIT( { LANG_C_KNR, L_GNU___CONST },
+                { LANG_ALL,   L_CONST       } ) },
 
   { TS_REFERENCE, LANG_CPP_MIN(11), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_REFERENCE } } },
+    C_LANG_LIT( { LANG_ALL, L_REFERENCE } ) },
 
   { TS_RVALUE_REFERENCE, LANG_CPP_MIN(11), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_RVALUE_REFERENCE } } },
+    C_LANG_LIT( { LANG_ALL, L_RVALUE_REFERENCE } ) },
 
   { TS_RESTRICT, LANG_ALL, L_RESTRICTED,
-    (c_lang_lit_t[]){ { LANG_C_MAX(95) | LANG_CPP_ALL, L_GNU___RESTRICT },
-                      { LANG_ALL,                      L_RESTRICT       } } },
+    C_LANG_LIT( { LANG_C_MAX(95) | LANG_CPP_ALL, L_GNU___RESTRICT },
+                { LANG_ALL,                      L_RESTRICT       } ) },
 
   { TS_VOLATILE, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_C_KNR, L_GNU___VOLATILE },
-                      { LANG_ALL,   L_VOLATILE       } } },
+    C_LANG_LIT( { LANG_C_KNR, L_GNU___VOLATILE },
+                { LANG_ALL,   L_VOLATILE       } ) },
 
   // Unified Parallel C extensions
   { TS_UPC_RELAXED, LANG_C_99, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_UPC_RELAXED } } },
+    C_LANG_LIT( { LANG_ALL, L_UPC_RELAXED } ) },
 
   { TS_UPC_SHARED, LANG_C_99, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_UPC_SHARED } } },
+    C_LANG_LIT( { LANG_ALL, L_UPC_SHARED } ) },
 
   { TS_UPC_STRICT, LANG_C_99, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_UPC_STRICT } } },
+    C_LANG_LIT( { LANG_ALL, L_UPC_STRICT } ) },
 };
 
 /**
@@ -196,76 +196,76 @@ static c_type_info_t const C_QUALIFIER_INFO[] = {
 static c_type_info_t const C_STORAGE_INFO[] = {
   // storage classes
   { TS_AUTO, LANG_MAX(CPP_03), L_AUTOMATIC,
-    (c_lang_lit_t[]){ { LANG_ALL, L_AUTO } } },
+    C_LANG_LIT( { LANG_ALL, L_AUTO } ) },
 
   { TS_APPLE_BLOCK, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_APPLE___BLOCK } } },
+    C_LANG_LIT( { LANG_ALL, L_APPLE___BLOCK } ) },
 
   { TS_EXTERN, LANG_ALL, L_EXTERNAL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_EXTERN } } },
+    C_LANG_LIT( { LANG_ALL, L_EXTERN } ) },
 
   { TS_REGISTER, LANG_MAX(CPP_14), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_REGISTER } } },
+    C_LANG_LIT( { LANG_ALL, L_REGISTER } ) },
 
   { TS_STATIC, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_STATIC } } },
+    C_LANG_LIT( { LANG_ALL, L_STATIC } ) },
 
   { TS_THREAD_LOCAL, LANG_ALL, L_THREAD_LOCAL_H,
-    (c_lang_lit_t[]){ { LANG_C_MAX(99) | LANG_CPP_MAX(03), L_GNU___THREAD  },
-                      { LANG_ALL, L_THREAD_LOCAL  } } },
+    C_LANG_LIT( { LANG_C_MAX(99) | LANG_CPP_MAX(03),  L_GNU___THREAD  },
+                { LANG_ALL,                           L_THREAD_LOCAL  } ) },
 
   { TS_TYPEDEF, LANG_ALL, L_TYPE,
-    (c_lang_lit_t[]){ { LANG_ALL, L_TYPEDEF } } },
+    C_LANG_LIT( { LANG_ALL, L_TYPEDEF } ) },
 
   // storage-class-like
   { TS_CONSTEVAL, LANG_CPP_MIN(20), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_CONSTEVAL } } },
+    C_LANG_LIT( { LANG_ALL, L_CONSTEVAL } ) },
 
   { TS_CONSTEXPR, LANG_CPP_MIN(11), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_CONSTEXPR } } },
+    C_LANG_LIT( { LANG_ALL, L_CONSTEXPR } ) },
 
   { TS_CONSTINIT, LANG_CPP_MIN(20), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_CONSTINIT } } },
+    C_LANG_LIT( { LANG_ALL, L_CONSTINIT } ) },
 
   { TS_DEFAULT, LANG_CPP_MIN(11), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_DEFAULT } } },
+    C_LANG_LIT( { LANG_ALL, L_DEFAULT } ) },
 
   { TS_DELETE, LANG_CPP_MIN(11), L_DELETED,
-    (c_lang_lit_t[]){ { LANG_ALL, L_DELETE } } },
+    C_LANG_LIT( { LANG_ALL, L_DELETE } ) },
 
   { TS_EXPLICIT, LANG_CPP_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_EXPLICIT } } },
+    C_LANG_LIT( { LANG_ALL, L_EXPLICIT } ) },
 
   { TS_EXPORT, LANG_CPP_MIN(20), L_EXPORTED,
-    (c_lang_lit_t[]){ { LANG_ALL, L_EXPORT } } },
+    C_LANG_LIT( { LANG_ALL, L_EXPORT } ) },
 
   { TS_FINAL, LANG_CPP_MIN(11), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_FINAL } } },
+    C_LANG_LIT( { LANG_ALL, L_FINAL } ) },
 
   { TS_FRIEND, LANG_CPP_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_FRIEND } } },
+    C_LANG_LIT( { LANG_ALL, L_FRIEND } ) },
 
   { TS_INLINE, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_C_KNR, L_GNU___INLINE },
-                      { LANG_ALL,   L_INLINE       } } },
+    C_LANG_LIT( { LANG_C_KNR, L_GNU___INLINE },
+                { LANG_ALL,   L_INLINE       } ) },
 
   { TS_MUTABLE, LANG_CPP_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_MUTABLE } } },
+    C_LANG_LIT( { LANG_ALL, L_MUTABLE } ) },
 
   { TS_NOEXCEPT, LANG_CPP_MIN(11), L_NO_EXCEPTION,
-    (c_lang_lit_t[]){ { LANG_ALL, L_NOEXCEPT } } },
+    C_LANG_LIT( { LANG_ALL, L_NOEXCEPT } ) },
 
   { TS_OVERRIDE, LANG_CPP_MIN(11), L_OVERRIDDEN,
-    (c_lang_lit_t[]){ { LANG_ALL, L_OVERRIDE } } },
+    C_LANG_LIT( { LANG_ALL, L_OVERRIDE } ) },
 
   { TS_THROW, LANG_CPP_ALL, L_NON_THROWING,
-    (c_lang_lit_t[]){ { LANG_ALL, L_THROW } } },
+    C_LANG_LIT( { LANG_ALL, L_THROW } ) },
 
   { TS_VIRTUAL, LANG_CPP_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_VIRTUAL } } },
+    C_LANG_LIT( { LANG_ALL, L_VIRTUAL } ) },
 
   { TS_PURE_VIRTUAL, LANG_CPP_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_PURE } } },
+    C_LANG_LIT( { LANG_ALL, L_PURE } ) },
 };
 
 /**
@@ -276,87 +276,87 @@ static c_type_info_t const C_STORAGE_INFO[] = {
  */
 static c_type_info_t const C_TYPE_INFO[] = {
   { TB_VOID, LANG_MIN(C_89), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_VOID } } },
+    C_LANG_LIT( { LANG_ALL, L_VOID } ) },
 
   { TB_AUTO, LANG_MIN(C_89), L_AUTOMATIC,
-    (c_lang_lit_t[]){ { LANG_MAX(CPP_03), L_GNU___AUTO_TYPE },
-                      { LANG_ALL,         L_AUTO            } } },
+    C_LANG_LIT( { LANG_MAX(CPP_03), L_GNU___AUTO_TYPE },
+                { LANG_ALL,         L_AUTO            } ) },
 
   { TB_BOOL, LANG_MIN(C_99), NULL,
-    (c_lang_lit_t[]){ { LANG_C_ALL, L__BOOL },
-                      { LANG_ALL,   L_BOOL  } } },
+    C_LANG_LIT( { LANG_C_ALL, L__BOOL },
+                { LANG_ALL,   L_BOOL  } ) },
 
   { TB_CHAR, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_CHAR } } },
+    C_LANG_LIT( { LANG_ALL, L_CHAR } ) },
 
   { TB_CHAR8_T, LANG_C_CPP_MIN(2X,20), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_CHAR8_T } } },
+    C_LANG_LIT( { LANG_ALL, L_CHAR8_T } ) },
 
   { TB_CHAR16_T, LANG_C_CPP_MIN(11,11), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_CHAR16_T } } },
+    C_LANG_LIT( { LANG_ALL, L_CHAR16_T } ) },
 
   { TB_CHAR32_T, LANG_C_CPP_MIN(11,11), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_CHAR32_T } } },
+    C_LANG_LIT( { LANG_ALL, L_CHAR32_T } ) },
 
   { TB_WCHAR_T, LANG_MIN(C_95), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_WCHAR_T } } },
+    C_LANG_LIT( { LANG_ALL, L_WCHAR_T } ) },
 
   { TB_SHORT, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_SHORT } } },
+    C_LANG_LIT( { LANG_ALL, L_SHORT } ) },
 
   { TB_INT, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_INT } } },
+    C_LANG_LIT( { LANG_ALL, L_INT } ) },
 
   { TB_LONG, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_LONG } } },
+    C_LANG_LIT( { LANG_ALL, L_LONG } ) },
 
   { TB_LONG_LONG, LANG_MIN(C_99), NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_LONG_LONG } } },
+    C_LANG_LIT( { LANG_ALL, L_LONG_LONG } ) },
 
   { TB_SIGNED, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_C_KNR, L_GNU___SIGNED },
-                      { LANG_ALL,   L_SIGNED       } } },
+    C_LANG_LIT( { LANG_C_KNR, L_GNU___SIGNED },
+                { LANG_ALL,   L_SIGNED       } ) },
 
   { TB_UNSIGNED, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_UNSIGNED } } },
+    C_LANG_LIT( { LANG_ALL, L_UNSIGNED } ) },
 
   { TB_FLOAT, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_FLOAT } } },
+    C_LANG_LIT( { LANG_ALL, L_FLOAT } ) },
 
   { TB_DOUBLE, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_DOUBLE } } },
+    C_LANG_LIT( { LANG_ALL, L_DOUBLE } ) },
 
   { TB_COMPLEX, LANG_C_ALL, L_COMPLEX,
-    (c_lang_lit_t[]){ { LANG_C_MAX(95), L_GNU___COMPLEX },
-                      { LANG_ALL,       L__COMPLEX      } } },
+    C_LANG_LIT( { LANG_C_MAX(95), L_GNU___COMPLEX },
+                { LANG_ALL,       L__COMPLEX      } ) },
 
   { TB_IMAGINARY, LANG_C_MIN(99), L_IMAGINARY,
-    (c_lang_lit_t[]){ { LANG_ALL, L__IMAGINARY } } },
+    C_LANG_LIT( { LANG_ALL, L__IMAGINARY } ) },
 
   { TB_ENUM, LANG_MIN(C_89), L_ENUMERATION,
-    (c_lang_lit_t[]){ { LANG_ALL, L_ENUM } } },
+    C_LANG_LIT( { LANG_ALL, L_ENUM } ) },
 
   { TB_STRUCT, LANG_ALL, L_STRUCTURE,
-    (c_lang_lit_t[]){ { LANG_ALL, L_STRUCT } } },
+    C_LANG_LIT( { LANG_ALL, L_STRUCT } ) },
 
   { TB_UNION, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_UNION } } },
+    C_LANG_LIT( { LANG_ALL, L_UNION } ) },
 
   { TB_CLASS, LANG_CPP_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_CLASS } } },
+    C_LANG_LIT( { LANG_ALL, L_CLASS } ) },
 
   { TB_TYPEDEF, LANG_ALL, NULL,
-    (c_lang_lit_t[]){ { LANG_ALL, L_TYPEDEF_TYPE } } },
+    C_LANG_LIT( { LANG_ALL, L_TYPEDEF_TYPE } ) },
 
   // Embedded C extensions
   { TB_EMC_ACCUM, LANG_C_99, L_EMC_ACCUM,
-    (c_lang_lit_t[]){ { LANG_ALL, L_EMC__ACCUM } } },
+    C_LANG_LIT( { LANG_ALL, L_EMC__ACCUM } ) },
 
   { TB_EMC_FRACT, LANG_C_99, L_EMC_FRACT,
-    (c_lang_lit_t[]){ { LANG_ALL, L_EMC__FRACT } } },
+    C_LANG_LIT( { LANG_ALL, L_EMC__FRACT } ) },
 
   { TB_EMC_SAT, LANG_C_99, L_EMC_SATURATED,
-    (c_lang_lit_t[]){ { LANG_ALL, L_EMC__SAT } } },
+    C_LANG_LIT( { LANG_ALL, L_EMC__SAT } ) },
 };
 
 /// @cond DOXYGEN_IGNORE
