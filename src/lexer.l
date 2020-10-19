@@ -155,7 +155,7 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  * @param ALLOW If `true`, allow this synonym when explaining C/C++.
  * @param ... Array of `c_lang_lit`.
  */
-#define C_SYN(ALLOW,...)          ALLOW, 0, (c_lang_lit_t[])__VA_ARGS__
+#define C_SYN(ALLOW,...)          ALLOW, 0, (c_lang_lit_t const[])__VA_ARGS__
 
 /**
  * Special-case of #C_SYN when there is only one language(s)/literal pair.
