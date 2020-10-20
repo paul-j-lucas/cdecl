@@ -16,6 +16,7 @@ cv-qual: const volatile
 fn-qual: const volatile [rvalue] reference
 modifier: short long signed unsigned const volatile
 name: a C++ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*
+scope-e: scope class struct union [inline] namespace
 store: const{eval|expr} extern friend mutable static thread_local [pure] virtual
 
 where:
