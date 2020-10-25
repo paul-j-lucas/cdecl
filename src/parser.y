@@ -272,10 +272,10 @@
  * Dumps a <code>\ref c_type_id_t</code>.
  *
  * @param KEY The key name to print.
- * @param TYPE_ID The <code>\ref c_type_id_t</code> to dump.
+ * @param TID The <code>\ref c_type_id_t</code> to dump.
  */
-#define DUMP_TID(KEY,TYPE_ID) IF_DEBUG( \
-  DUMP_COMMA; PUTS_OUT( "  " KEY " = " ); c_type_id_debug( TYPE_ID, stdout ); )
+#define DUMP_TID(KEY,TID) IF_DEBUG( \
+  DUMP_COMMA; PUTS_OUT( "  " KEY " = " ); c_type_id_debug( (TID), stdout ); )
 
 /**
  * Dumps a <code>\ref c_type</code>.
