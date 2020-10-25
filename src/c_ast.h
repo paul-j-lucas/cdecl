@@ -203,7 +203,7 @@ struct c_apple_block_ast {
 };
 
 /**
- * AST Node for a C++ constructor.
+ * AST node for a C++ constructor.
  *
  * @note Members are laid out in the same order as `c_function_ast`: this is
  * taken advantage of.
@@ -265,7 +265,7 @@ struct c_typedef_ast {
 };
 
 /**
- * AST Node for a C++ user-defined conversion operator.
+ * AST node for a C++ user-defined conversion operator.
  */
 struct c_udef_conv_ast {
   c_ast_t        *conv_ast;             ///< Conversion type.
