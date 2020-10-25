@@ -147,7 +147,7 @@ static bool c_ast_check_alignas( c_ast_t *ast ) {
     return false;
   }
 
-  if ( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE ) {
+  if ( (ast->kind_id & K_ANY_OBJECT) == K_NONE ) {
     print_error( &ast->loc,
       "%s can not be %s", c_kind_name( ast->kind_id ), L_ALIGNED
     );

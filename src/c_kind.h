@@ -112,6 +112,14 @@ enum c_kind_id {
 #define K_ANY_FUNCTION_LIKE   0xFE000
 
 /**
+ * Shorthand for any kind of "object" that can be the type of a variable or
+ * constant, i.e., something to which `sizeof` can be applied: #K_ARRAY,
+ * #K_BUILTIN, #K_ENUM_CLASS_STRUCT_UNION, #K_POINTER, #K_POINTER_TO_MEMBER,
+ * #K_REFERENCE, or #K_RVALUE_REFERENCE.
+ */
+#define K_ANY_OBJECT          0x01F06
+
+/**
  * Shorthand for any kind of parent.
  */
 #define K_ANY_PARENT          0xFFF00
