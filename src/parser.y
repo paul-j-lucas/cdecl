@@ -214,7 +214,7 @@
  */
 #define DUMP_BOOL(KEY,BOOL)  IF_DEBUG(  \
   DUMP_COMMA;                           \
-  FPRINTF( stdout, "  %s = %s", (KEY), ((BOOL) ? "true" : "false") ); )
+  FPRINTF( stdout, "  " KEY " = %s", ((BOOL) ? "true" : "false") ); )
 
 /**
  * Dumps an integer.
@@ -284,7 +284,7 @@
  * @param TYPE The <code>\ref c_type</code> to dump.
  */
 #define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
-  DUMP_COMMA; PUTS_OUT( "  " KEY " = " ); c_type_debug( TYPE, stdout ); )
+  DUMP_COMMA; PUTS_OUT( "  " KEY " = " ); c_type_debug( (TYPE), stdout ); )
 
 /** @} */
 
