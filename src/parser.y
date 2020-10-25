@@ -1328,7 +1328,7 @@ cast_english
 
       bool ok = false;
 
-      if ( unsupported( LANG_MIN(CPP_11) ) ) {
+      if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1, "%s not supported in %s", $1, C_LANG_NAME() );
       }
       else if ( (ok = c_ast_check_cast( $5.ast )) ) {
@@ -1985,7 +1985,7 @@ explain_c
       // and the AST has no "memory" that such a declaration was a using
       // declaration.
       //
-      if ( unsupported( LANG_MIN(CPP_11) ) ) {
+      if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@2,
           "\"%s\" not supported in %s", L_USING, C_LANG_NAME()
         );
@@ -2244,7 +2244,7 @@ namespace_declaration_c
       // AST because the AST has no "memory" of how a namespace was
       // constructed.
       //
-      if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_MIN(CPP_17) ) ) {
+      if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_CPP_MIN(17) ) ) {
         print_error( &@3,
           "nested %s declarations not supported until %s",
           L_NAMESPACE, c_lang_name( LANG_CPP_17 )
@@ -2507,7 +2507,7 @@ using_declaration_c
       // and the AST has no "memory" that such a declaration was a using
       // declaration.
       //
-      if ( unsupported( LANG_MIN(CPP_11) ) ) {
+      if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
           "\"%s\" not supported in %s", L_USING, C_LANG_NAME()
         );
@@ -2961,7 +2961,7 @@ user_defined_literal_decl_english_ast
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( unsupported( LANG_MIN(CPP_11) ) ) {
+      if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
           "%s %s not supported in %s", L_USER_DEFINED, L_LITERAL, C_LANG_NAME()
         );
@@ -3394,7 +3394,7 @@ trailing_return_type_c_ast_opt
       // later in the AST because the AST has no "memory" of where the return-
       // type came from.
       //
-      if ( unsupported( LANG_MIN(CPP_11) ) ) {
+      if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
           "trailing return type not supported in %s", C_LANG_NAME()
         );
