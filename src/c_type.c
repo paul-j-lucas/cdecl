@@ -931,16 +931,6 @@ c_type_t c_type_and( c_type_t const *i_type, c_type_t const *j_type ) {
   );
 }
 
-// This is out-of-line since its address is taken.
-void* c_type_data_dup( void const *data ) {
-  return c_type_data_new( c_type_data_get( data ) );
-}
-
-// This is out-of-line since its address is taken.
-void c_type_data_free( void *data ) {
-  free( data );
-}
-
 bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type ) {
   assert( i_type != NULL );
   assert( j_type != NULL );

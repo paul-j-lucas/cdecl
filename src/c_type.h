@@ -399,29 +399,6 @@ C_WARN_UNUSED_RESULT
 c_lang_id_t c_type_check( c_type_t const *type );
 
 /**
- * Duplicates the <code>\ref c_type</code> referred to by \a data.
- * @note Callers _must_ eventually call c_type_data_free() on the returned
- * value.
- *
- * @param data The <code>\ref c_type</code> to duplicate.  May be NULL.
- * @return Returns a duplicate of the data.
- *
- * @sa c_type_data_free()
- */
-C_WARN_UNUSED_RESULT
-void* c_type_data_dup( void const *data );
-
-/**
- * Frees the <code>\ref c_type_id_t</code> referred to by \a data.
- * @note For platforms with 64-bit pointers, this is a no-op.
- *
- * @param data The data to free.
- *
- * @sa c_type_data_new()
- */
-void c_type_data_free( void *data );
-
-/**
  * Adds a type to an existing type, e.g., `short` to `int`, ensuring that a
  * particular type is never added more than once, e.g., `short` to `short int`.
  *
@@ -755,29 +732,10 @@ bool c_type_id_is_size_t( c_type_id_t tid ) {
  *
  * @param data The data to get the <code>\ref c_type</code> from.  May be NULL.
  * @return Returns said <code>\ref c_type</code> or NULL if \a data is NULL.
- *
- * @sa c_type_data_new()
  */
 C_TYPE_INLINE C_WARN_UNUSED_RESULT
 c_type_t const* c_type_data_get( void const *data ) {
   return data != NULL ? REINTERPRET_CAST( c_type_t const*, data ) : NULL;
-}
-
-/**
- * Creates an opaque data handle for a <code>\ref c_type</code>.
- * @note Callers _must_ eventually call c_type_data_free(void*) on the
- * returned value.
- *
- * @param type The <code>\ref c_type</code> to use.
- * @return Returns said handle.
- *
- * @sa c_type_data_free()
- */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
-void* c_type_data_new( c_type_t const *type ) {
-  c_type_t *const new_type = MALLOC( c_type_t, 1 );
-  *new_type = *type;
-  return new_type;
 }
 
 /**
