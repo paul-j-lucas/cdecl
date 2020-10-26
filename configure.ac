@@ -88,8 +88,6 @@ AX_COMPILE_CHECK_SIZEOF(void*)
 cdecl_headers='#define CDECL_CONFIGURE
 #include "src/c_kind.h"'
 AX_COMPILE_CHECK_SIZEOF(c_kind_id_t, $cdecl_headers)
-cdecl_headers='#include "src/types.h"'
-AX_COMPILE_CHECK_SIZEOF(c_type_id_t, $cdecl_headers)
 PJL_COMPILE([__typeof__],[],[__typeof__(1) x __attribute((unused)) = 1;])
 
 # Checks for library functions.
