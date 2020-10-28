@@ -253,13 +253,17 @@ void path_append( char *path, char const *component ) {
   assert( path != NULL );
   assert( component != NULL );
 
-  size_t const len = strlen( path );
-  if ( len > 0 ) {
-    path += len - 1;
-    if ( *path != '/' )
-      *++path = '/';
-    strcpy( ++path, component );
+  char *end = path + strlen( path );
+  if ( end > path ) {
+    if ( end[-1] == '/' ) {
+      if ( component[0] == '/' )
+        ++component;
+    } else {
+      if ( component[0] != '/' )
+        *end++ = '/';
+    }
   }
+  strcpy( end, component );
 }
 
 void perror_exit( int status ) {
