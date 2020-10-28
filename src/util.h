@@ -122,7 +122,6 @@ _GL_INLINE_HEADER_BEGIN
  * @param STREAM The `FILE` stream to print to.
  *
  * @sa FPRINTF
- * @sa FPUTC
  * @sa FPUTS
  */
 #define FPUTC(C,STREAM) \
