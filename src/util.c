@@ -128,6 +128,13 @@ char* check_strdup( char const *s ) {
   return s_dup;
 }
 
+char* chrcpy_end( char *dst, char c ) {
+  assert( dst != NULL );
+  *dst = c;
+  *++dst = '\0';
+  return dst;
+}
+
 #ifndef HAVE_FMEMOPEN
 FILE* fmemopen( void *buf, size_t size, char const *mode ) {
   assert( buf != NULL );
@@ -242,6 +249,19 @@ bool is_file( int fd ) {
   return S_ISREG( fd_stat.st_mode );
 }
 
+void path_append( char *path, char const *component ) {
+  assert( path != NULL );
+  assert( component != NULL );
+
+  size_t const len = strlen( path );
+  if ( len > 0 ) {
+    path += len - 1;
+    if ( *path != '/' )
+      *++path = '/';
+    strcpy( ++path, component );
+  }
+}
+
 void perror_exit( int status ) {
   perror( me );
   exit( status );
@@ -319,26 +339,6 @@ char* read_input_line( char const *ps1, char const *ps2 ) {
 check_for_error:
   FERROR( stdin );
   return NULL;
-}
-
-void path_append( char *path, char const *component ) {
-  assert( path != NULL );
-  assert( component != NULL );
-
-  size_t const len = strlen( path );
-  if ( len > 0 ) {
-    path += len - 1;
-    if ( *path != '/' )
-      *++path = '/';
-    strcpy( ++path, component );
-  }
-}
-
-char* chrcpy_end( char *dst, char c ) {
-  assert( dst != NULL );
-  *dst = c;
-  *++dst = '\0';
-  return dst;
 }
 
 char* strcpy_end( char *dst, char const *src ) {
