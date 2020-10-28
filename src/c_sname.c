@@ -69,6 +69,7 @@ static char const* scope_name_impl( char *name_buf, char const *name_end,
                                     c_sname_t const *sname,
                                     c_scope_t const *end_scope ) {
   assert( name_buf != NULL );
+  assert( name_end != NULL );
   assert( sname != NULL );
 
   char *name = name_buf;
