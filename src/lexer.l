@@ -425,6 +425,9 @@ static void       lexer_fatal( char const* );
 
 static void       lexer_update_loc( void );
 
+C_WARN_UNUSED_RESULT
+static bool parse_identifier( char const*, char const** );
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -481,6 +484,98 @@ static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
     break;
   } // for
   return NULL;
+}
+
+/**
+ * Parses a scoped name, e.g. `a::b::c`.
+ *
+ * @param s The string to parse.
+ * @param sname The `c_sname` to parse into.
+ * @return Returns `true` only if the scoped name was successfully parsed.
+ */
+C_WARN_UNUSED_RESULT
+static bool c_sname_parse( char const *s, c_sname_t *sname ) {
+  assert( s != NULL );
+  assert( sname != NULL );
+
+  c_sname_t rv;
+  c_sname_init( &rv );
+
+  for ( char const *end; parse_identifier( s, &end ); ) {
+    char *const name = strndup( s, (size_t)(end - s) );
+
+    // Ensure that the name is NOT a keyword.
+    c_keyword_t const *const k = c_keyword_find( name, opt_lang );
+    if ( k != NULL ) {
+      FREE( name );
+      c_sname_free( &rv );
+      return false;
+    }
+
+    c_sname_append_name( &rv, name );
+    SKIP_WS( end );
+    if ( strncmp( end, "::", 2 ) != 0 )
+      break;
+    s = end + 2;
+    SKIP_WS( s );
+  } // for
+
+  *sname = rv;
+  return true;
+}
+
+/**
+ * Parses a scoped destructor name, e.g. `S::T::~T()`.
+ *
+ * @param s The string to parse.
+ * @param sname The `c_sname` to parse into.
+ * @return Returns `true` only if the scoped name was successfully parsed.
+ */
+C_WARN_UNUSED_RESULT
+static bool c_sname_parse_dtor( char const *s, c_sname_t *sname ) {
+  assert( s != NULL );
+  assert( sname != NULL );
+
+  bool parsed_tilde = false;
+  c_sname_t rv;
+  c_sname_init( &rv );
+
+  for ( char const *end; parse_identifier( s, &end ); ) {
+    char *const name = strndup( s, (size_t)(end - s) );
+
+    // Ensure that the name is NOT a keyword.
+    c_keyword_t const *const k = c_keyword_find( name, opt_lang );
+    if ( k != NULL ) {
+      FREE( name );
+      if ( k->literal == L_COMPL ) {    // k->literal is set to L_* so == is OK
+        char const *const t = s + strlen( L_COMPL );
+        if ( isspace( *t ) ) {          // except treat "compl" as '~'
+          s = t + 1;
+          goto tilde;
+        }
+      }
+      c_sname_free( &rv );
+      return false;
+    }
+
+    c_sname_append_name( &rv, name );
+    if ( parsed_tilde )
+      break;
+    SKIP_WS( end );
+    if ( strncmp( end, "::", 2 ) != 0 )
+      break;
+    s = end + 2;
+    SKIP_WS( s );
+    if ( *s == '~' ) {
+      ++s;
+tilde:
+      SKIP_WS( s );
+      parsed_tilde = true;
+    }
+  } // for
+
+  *sname = rv;
+  return true;
 }
 
 /**
@@ -564,98 +659,6 @@ static inline int parse_int( int base ) {
 }
 
 /**
- * Parses a scoped name, e.g. `a::b::c`.
- *
- * @param s The string to parse.
- * @param sname The `c_sname` to parse into.
- * @return Returns `true` only if the scoped name was successfully parsed.
- */
-C_WARN_UNUSED_RESULT
-static bool parse_sname( char const *s, c_sname_t *sname ) {
-  assert( s != NULL );
-  assert( sname != NULL );
-
-  c_sname_t rv;
-  c_sname_init( &rv );
-
-  for ( char const *end; parse_identifier( s, &end ); ) {
-    char *const name = strndup( s, (size_t)(end - s) );
-
-    // Ensure that the name is NOT a keyword.
-    c_keyword_t const *const k = c_keyword_find( name, opt_lang );
-    if ( k != NULL ) {
-      FREE( name );
-      c_sname_free( &rv );
-      return false;
-    }
-
-    c_sname_append_name( &rv, name );
-    SKIP_WS( end );
-    if ( strncmp( end, "::", 2 ) != 0 )
-      break;
-    s = end + 2;
-    SKIP_WS( s );
-  } // for
-
-  *sname = rv;
-  return true;
-}
-
-/**
- * Parses a scoped destructor name, e.g. `S::T::~T()`.
- *
- * @param s The string to parse.
- * @param sname The `c_sname` to parse into.
- * @return Returns `true` only if the scoped name was successfully parsed.
- */
-C_WARN_UNUSED_RESULT
-static bool parse_sname_dtor( char const *s, c_sname_t *sname ) {
-  assert( s != NULL );
-  assert( sname != NULL );
-
-  bool parsed_tilde = false;
-  c_sname_t rv;
-  c_sname_init( &rv );
-
-  for ( char const *end; parse_identifier( s, &end ); ) {
-    char *const name = strndup( s, (size_t)(end - s) );
-
-    // Ensure that the name is NOT a keyword.
-    c_keyword_t const *const k = c_keyword_find( name, opt_lang );
-    if ( k != NULL ) {
-      FREE( name );
-      if ( k->literal == L_COMPL ) {    // k->literal is set to L_* so == is OK
-        char const *const t = s + strlen( L_COMPL );
-        if ( isspace( *t ) ) {          // except treat "compl" as '~'
-          s = t + 1;
-          goto tilde;
-        }
-      }
-      c_sname_free( &rv );
-      return false;
-    }
-
-    c_sname_append_name( &rv, name );
-    if ( parsed_tilde )
-      break;
-    SKIP_WS( end );
-    if ( strncmp( end, "::", 2 ) != 0 )
-      break;
-    s = end + 2;
-    SKIP_WS( s );
-    if ( *s == '~' ) {
-      ++s;
-tilde:
-      SKIP_WS( s );
-      parsed_tilde = true;
-    }
-  } // for
-
-  *sname = rv;
-  return true;
-}
-
-/**
  * Standard lex function to know whether to continue parsing upon reaching EOF.
  *
  * @return Returns 1 if done or 0 to continue parsing (a new file set via
@@ -720,7 +723,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                 SET_TOKEN;
 
                 c_sname_t sname;
-                if ( parse_sname_dtor( lexer_token, &sname ) ) {
+                if ( c_sname_parse_dtor( lexer_token, &sname ) ) {
                   if ( c_sname_is_ctor( &sname ) ) {
                     yylval.sname = sname;
                     return Y_DESTRUCTOR_SNAME;
@@ -755,7 +758,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
 {sname}       {
                 SET_TOKEN;
                 c_sname_t sname;
-                if ( parse_sname( lexer_token, &sname ) ) {
+                if ( c_sname_parse( lexer_token, &sname ) ) {
                   if ( lexer_find_typedef ) {
                     //
                     // 1. See if it's a typedef'd type.
