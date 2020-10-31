@@ -174,7 +174,7 @@ static bool is_command( char const *s, c_command_t command_type ) {
     { L_TYPEDEF,      COMMAND_FIRST_ARG },
     { L_UNION,        COMMAND_FIRST_ARG },
     { L_USING,        COMMAND_FIRST_ARG },
-    { NULL,           COMMAND_FIRST_ARG },
+    { NULL,           COMMAND_ANY       },
   };
 
   SKIP_WS( s );
