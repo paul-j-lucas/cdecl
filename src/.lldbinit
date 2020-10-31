@@ -1,0 +1,3 @@
+command script import cdecl_lldb.py
+
+# vim:set et sw=2 ts=2:
