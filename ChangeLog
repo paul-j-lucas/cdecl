@@ -1,3 +1,168 @@
+2020-11-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated to 8.2.
+   * cdecl.1, help.c, parser.y, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out: The "set"
+     command can now take multiple options.
+   * set.c: Added asserts.
+
+2020-10-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c: s/COMMAND_FIRST_ARG/COMMAND_ANY/
+   * .lldbinit, cdecl_lldb.py: Added LLDB formater for c_sname_t.
+   * lexer.l: Renamed c_sname parsing functions.
+
+2020-10-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.c: path_append() now handles case of component starting with '/'.
+   * util.c: Sorted functions.
+   * util.h: Removed self @sa.
+   * c_sname.c: Added assert().
+
+2020-10-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c, c_type.h: Removed c_type_data_dup(), c_type_data_free(), and
+     c_type_data_new() -- no longer used.
+   * configure.ac: Removed AX_COMPILE_CHECK_SIZEOF(c_type_id_t...) -- no longer
+     needed.
+
+2020-10-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_kind.h, errors.c: Added K_ANY_OBJECT.
+   * parser.y: s/LANG_MIN/LANG_CPP_MIN/
+   * parser.y: s/TYPE_ID/TID/
+   * c_lang.h: s/c_lant_lit/c_lang_lit/
+
+2020-10-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c, help-c++.out, help_command-c++.out, help_commands-c++.out,
+     help_english-c++.out: Moved scope-e in help.
+
+2020-10-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.h, c_type.c, lexer.l: Added C_LANG_LIT() macro.
+   * lexer.l: Added "const".
+
+2020-10-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Now initializing show_type_info_t directly.
+   * english.c, gibberish.c, parser.y: Removed newlines from
+     c_ast_gibberish_type() and c_ast_english_type().
+
+2020-10-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * ax_append_flag.m4, ax_check_compile_flag.m4: Updated m4 macros.
+
+2020-10-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out: Removed []
+     from aligned in help since other words don't have [].
+
+2020-10-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Doxygen.
+   * c_sname.h: Doxygen fix.
+   * help.c, lexer.l, literals.c, literals.h, help-c++.out, help-c.out,
+     help_command-c++.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out: Now allowing "align" in English.
+
+2020-10-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c, util.h: Added BUF_END().
+
+2020-10-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c, show_all_typedef.out, show_predefined_typedef.out: Now
+     printing types in nested namespace form when the language is any version
+     of C.
+   * english.c, english.h, gibberish.c, gibberish.h, parser.y,
+     2c_typedef_i.out, namespace_c_typedef_i.out, namespace_k_typedef_i.out,
+     namespace_n_typedef_i.out, show_all_typedef.out,
+     show_predefined_typedef.out: Now showing types in abbreviated form rather
+     than always typedefs.
+
+2020-10-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Rework scoped declarations, part 2.
+   * parser.y: Rework scoped declarations.
+   * c_sname.c, c_sname.h, debug.c, english.c, errors.c, gibberish.c, parser.y:
+     Added c_scope_data(); removed c_scope_name(), c_scope_type(),
+     c_scope_set_type().
+
+2020-10-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h: Whitespace change.
+   * c_ast.c, c_ast.h, c_ast_util.c, debug.c, english.c, gibberish.c, parser.y,
+     types.h: Added c_typedef_ast_t.
+   * parser.y: Added DUMP_BOOL().
+   * c_ast.c, c_ast.h, c_ast_util.c, debug.c, english.c, english.h,
+     gibberish.c, gibberish.h, lexer.l, parser.y: Replaced c_typedef by
+     typedef_ast.
+
+2020-09-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, stdnoreturn.in.h, gnulib-cache.m4, gnulib-comp.m4,
+     stdnoreturn.m4, lexer.l, parser.y, pjl_config.h, util.h: Now using
+     Gnulib's stdnoreturn.h.
+
+2020-09-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, arg-nonnull.h, c++defs.h, getopt-cdefs.in.h, stddef.in.h,
+     stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h, unistd.in.h,
+     warn-on-use.h, 00gnulib.m4, absolute-header.m4, gnulib-common.m4,
+     gnulib-comp.m4, include_next.m4, pid_t.m4, stddef_h.m4, stdint.m4,
+     string_h.m4, warn-on-use.m4, wint_t.m4: Updated Gnulib.
+
+2020-09-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c, c_sname.h: Renaming.
+   * options.h: Renaming.
+   * slist.c, slist.h: Renaming.
+
+2020-09-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Doxygen.
+   * util.h: Doxygen.
+   * c_operator.h: Doxygen.
+
+2020-09-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_operator.h: Doxygen.
+   * types.h: Whitespace change.
+   * c_type.c, c_type.h, parser.y: Doxygen;
+     s/c_type_id_no_part()/c_type_id_no_part_id()/
+   * errors.c, gibberish.c, literals.c, literals.h: Unified alignas_lang().
+   * gibberish.c: Change gibberish type eo an enum.
+   * c_ast.h: Doxygen.
+
+2020-09-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.h: Comment fix.
+   * c_ast.c: Now free'ing function parameter list nodes.
+   * c_ast.c: Sorted functions.
+   * c_ast.h: Sorted functions.
+   * c_ast.h, c_sname.h: Removed unused functions.
+   * c_ast.c, c_ast.h, c_ast_util.c, c_operator.c, c_typedef.c, english.c,
+     errors.c, gibberish.c, parser.y: Renaming.
+   * c_ast.h: More Doxygen.
+   * parser.y: s/c_sname_append_name/c_ast_sname_append_name/
+   * errors.c: s/c_sname_local_name/c_ast_sname_local_name/
+   * c_ast.c, c_ast.h, debug.c, english.c, errors.c, gibberish.c:
+     s/c_ast_param_ast/c_param_ast/
+
+2020-09-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: s/is_deleted/is_delete/
+   * c_ast.c, c_ast.h, c_kind.h, c_operator.c, c_operator.h, debug.c,
+     english.c, errors.c, gibberish.c, parser.y, types.h, cdecl--debug.out,
+     cdecl-d.out: Changed "arguments" to "parameters" since that's technically
+     correct.
+
+2020-09-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Clean-up.
+
 2020-09-13  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c, c_ast.h, debug.c, errors.c, parser.y, types.h: Renaming.
