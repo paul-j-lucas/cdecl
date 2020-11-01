@@ -41,7 +41,7 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * @defgroup literals-group Literal Strings
- * Constants for cdecl and C/C++ language literals.
+ * Declares constants for cdecl and C/C++ language literals.
  * @{
  */
 

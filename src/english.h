@@ -39,7 +39,7 @@
 
 /**
  * @defgroup printing-english-group Printing English
- * Functions for printing in pseudo-English.
+ * Declares functions for printing in pseudo-English.
  * @{
  */
 

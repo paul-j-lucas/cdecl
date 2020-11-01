@@ -40,7 +40,8 @@
 
 /**
  * @defgroup lexer-group Lexical Analyzer
- * Global variables and functions interacting with the lexical analyzer.
+ * Declares global variables and functions interacting with the lexical
+ * analyzer.
  * @{
  */
 
