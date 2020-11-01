@@ -43,7 +43,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * The signature for a Set option function.
+ * The signature for a `set` option function.
  *
  * @param enabled True if enabled.
  * @param opt_name_loc The location of the option token.
@@ -373,6 +373,9 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
     print_options();
     return;
   }
+
+  assert( opt_name_loc != NULL );
+  assert( opt_value == NULL || opt_value_loc != NULL );
 
   c_lang_id_t const new_lang_id = c_lang_find( opt_name );
   if ( new_lang_id != LANG_NONE ) {
