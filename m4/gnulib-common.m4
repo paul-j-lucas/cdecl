@@ -1,4 +1,4 @@
-# gnulib-common.m4 serial 60
+# gnulib-common.m4 serial 62
 dnl Copyright (C) 2007-2020 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -483,23 +483,17 @@ AC_DEFUN([gl_FEATURES_H],
 # gl_PROG_CC_C99
 # Modifies the value of the shell variable CC in an attempt to make $CC
 # understand ISO C99 source code.
-# This is like AC_PROG_CC_C99, except that
-# - AC_PROG_CC_C99 does not mix well with AC_PROG_CC_STDC
-#   <https://lists.gnu.org/r/bug-gnulib/2011-09/msg00367.html>,
-#   but many more packages use AC_PROG_CC_STDC than AC_PROG_CC_C99
-#   <https://lists.gnu.org/r/bug-gnulib/2011-09/msg00441.html>.
-# Remaining problems:
-# - When AC_PROG_CC_STDC is invoked twice, it adds the C99 enabling options
-#   to CC twice
-#   <https://lists.gnu.org/r/bug-gnulib/2011-09/msg00431.html>.
-# - AC_PROG_CC_STDC is likely to change now that C11 is an ISO standard.
 AC_DEFUN([gl_PROG_CC_C99],
 [
-  dnl Change that version number to the minimum Autoconf version that supports
-  dnl mixing AC_PROG_CC_C99 calls with AC_PROG_CC_STDC calls.
-  m4_version_prereq([9.0],
-    [AC_REQUIRE([AC_PROG_CC_C99])],
-    [AC_REQUIRE([AC_PROG_CC_STDC])])
+  dnl Just use AC_PROG_CC_C99.
+  dnl When AC_PROG_CC_C99 and AC_PROG_CC_STDC are used together, the substituted
+  dnl value of CC will contain the C99 enabling options twice. But this is only
+  dnl a cosmetic problem.
+  dnl With Autoconf >= 2.69c, use AC_PROG_CC since it implies AC_PROG_CC_C99;
+  dnl this avoids a "warning: The macro `AC_PROG_CC_C99' is obsolete."
+  m4_version_prereq([2.69c],
+    [AC_REQUIRE([AC_PROG_CC])],
+    [AC_REQUIRE([AC_PROG_CC_C99])])
 ])
 
 # gl_PROG_AR_RANLIB
@@ -653,10 +647,9 @@ AC_DEFUN([gl_SILENT],
 # by an AC_MSG_CHECKING/AC_MSG_RESULT pair.
 AC_DEFUN([gl_CACHE_VAL_SILENT],
 [
-  saved_as_echo_n="$as_echo_n"
-  as_echo_n=':'
-  AC_CACHE_VAL([$1], [$2])
-  as_echo_n="$saved_as_echo_n"
+  gl_SILENT([
+    AC_CACHE_VAL([$1], [$2])
+  ])
 ])
 
 dnl Expands to some code for use in .c programs that, on native Windows, defines

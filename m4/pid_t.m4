@@ -1,11 +1,11 @@
-# pid_t.m4 serial 2
+# pid_t.m4 serial 3
 dnl Copyright (C) 2020 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
 
 # The following implementation works around a problem in autoconf <= 2.69.
-m4_version_prereq([2.70], [] ,[
+m4_version_prereq([2.69c], [] ,[
 
 dnl Define pid_t if the headers don't define it.
 AC_DEFUN([AC_TYPE_PID_T],
