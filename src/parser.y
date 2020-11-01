@@ -2294,15 +2294,21 @@ in_scope_declaration_c
 /*****************************************************************************/
 
 set_command
-  : Y_SET
+  : Y_SET                         { set_option( NULL, NULL, NULL, NULL ); }
+  | Y_SET set_option_list
+  ;
+
+set_option_list
+  : set_option_list set_option
+  | set_option
+  ;
+
+set_option
+  : Y_SET_OPTION set_option_value_opt
     {
-      set_option( NULL, NULL, NULL, NULL );
-    }
-  | Y_SET Y_SET_OPTION set_option_value_opt
-    {
-      set_option( $2, &@2, $3, &@3 );
+      set_option( $1, &@1, $2, &@2 );
+      FREE( $1 );
       FREE( $2 );
-      FREE( $3 );
     }
   ;
 
@@ -2311,7 +2317,7 @@ set_option_value_opt
   | '=' Y_SET_OPTION              { $$ = $2; @$ = @2; }
   | '=' error
     {
-      $$ = NULL; @$ = @2;
+      $$ = NULL;
       ELABORATE_ERROR( "option value expected" );
     }
   ;

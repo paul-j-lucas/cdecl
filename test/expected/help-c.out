@@ -4,7 +4,7 @@ command:
   define <name> as <english>
   explain <gibberish>
   { help | ? } [command[s] | english]
-  set [<option> [= <value>] | options | <lang>]
+  set [<option> [= <value>] | options | <lang>]*
   show [<name> | all | predefined | user] [[as] typedef]
   typedef <gibberish>
   exit | quit | q
