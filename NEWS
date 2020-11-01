@@ -10,6 +10,21 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 8.2
+
+** Added `align`
+Pseudo-English now allows `align` as a synonym for `aligned`.
+
+** Multiple `set` options
+The `set` command can now take multiple options.
+
+** Show abbreviated form
+When showing types in pseudo-English, the abbreviated form is used, e.g.:
+
+    cdecl> show
+    struct S;                           // instead of: typedef struct S S;
+
+
 * Changes in Cdecl 8.1
 
 ** Enum declarations
