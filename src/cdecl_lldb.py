@@ -23,7 +23,7 @@ import lldb
 ###############################################################################
 
 def __lldb_init_module(debugger, internal_dict):
-    cmd_prefix = 'type summary add -F ' + __name__;
+    cmd_prefix = 'type summary add -F ' + __name__
     debugger.HandleCommand(cmd_prefix + '.show_c_scope_t c_scope_t')
     debugger.HandleCommand(cmd_prefix + '.show_c_sname_t c_sname_t')
 
