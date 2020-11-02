@@ -56,8 +56,8 @@ def show_c_sname_t(c_sname, internal_dict):
     colon2 = False
     rv = ""
 
-    slist_node_ptr = c_sname.GetChildMemberWithName('head')
-    while not null(slist_node_ptr):
+    head = c_sname.GetChildMemberWithName('head')
+    for slist_node_ptr in head.linked_list_iter('next'):
         void_data_ptr = slist_node_ptr.GetChildMemberWithName('data')
         if not null(void_data_ptr):
             c_scope_data_ptr = void_data_ptr.Cast(c_scope_data_ptr_t)
@@ -68,7 +68,6 @@ def show_c_sname_t(c_sname, internal_dict):
                 else:
                     colon2 = True
                 rv += name_ptr.GetSummary().strip('"')
-        slist_node_ptr = slist_node_ptr.GetChildMemberWithName('next')
 
     return '"' + rv + '"'
 
