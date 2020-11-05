@@ -380,7 +380,7 @@ static inline char const* printable_token( void ) {
  */
 C_WARN_UNUSED_RESULT
 static inline c_ast_t* type_ast_peek( void ) {
-  return SLIST_HEAD( c_ast_t*, &in_attr.type_ast_stack );
+  return SLIST_PEEK_HEAD( c_ast_t*, &in_attr.type_ast_stack );
 }
 
 /**
@@ -410,7 +410,7 @@ static inline void type_ast_push( c_ast_t *ast ) {
  */
 C_WARN_UNUSED_RESULT
 static inline c_type_id_t qualifier_tid_peek( void ) {
-  return SLIST_HEAD( c_qualifier_t*, &in_attr.qualifier_stack )->qual_tid;
+  return SLIST_PEEK_HEAD( c_qualifier_t*, &in_attr.qualifier_stack )->qual_tid;
 }
 
 /**
@@ -423,7 +423,7 @@ static inline c_type_id_t qualifier_tid_peek( void ) {
  * @return Returns said qualifier location.
  */
 #define qualifier_loc() \
-  (SLIST_HEAD( c_qualifier_t*, &in_attr.qualifier_stack )->loc)
+  (SLIST_PEEK_HEAD( c_qualifier_t*, &in_attr.qualifier_stack )->loc)
 
 /**
  * Pops a qualifier from the qualifier inherited attribute stack and frees it.

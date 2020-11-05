@@ -265,7 +265,7 @@ bool c_sname_is_ctor( c_sname_t const *sname );
 C_SNAME_INLINE C_WARN_UNUSED_RESULT
 char const* c_sname_local_name( c_sname_t const *sname ) {
   return c_sname_empty( sname ) ?
-    "" : SLIST_TAIL( c_scope_data_t*, sname )->name;
+    "" : SLIST_PEEK_TAIL( c_scope_data_t*, sname )->name;
 }
 
 /**

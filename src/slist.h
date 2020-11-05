@@ -189,36 +189,6 @@ void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
                  slist_node_data_free_fn_t node_data_free_fn );
 
 /**
- * Peeks at the data at the head of \a list.
- *
- * @param list A pointer to the <code>\ref slist</code>.
- * @return Returns the data from the node at the head of \a list or null if \a
- * list is empty.
- *
- * @sa SLIST_HEAD()
- * @sa slist_tail()
- */
-C_SLIST_INLINE C_WARN_UNUSED_RESULT
-void* slist_head( slist_t const *list ) {
-  return list->head != NULL ? list->head->data : NULL;
-}
-
-/**
- * Convenience macro that peeks at the data at the head of \a LIST and casts it
- * to the requested type.
- *
- * @param DATA_TYPE The type of the data.
- * @param LIST A pointer to the <code>\ref slist</code>.
- * @return Returns the data from the head of \a LIST cast to \a DATA_TYPE or
- * null (or equivalent) if the <code>\ref slist</code> is empty.
- *
- * @sa slist_head()
- * @sa SLIST_TAIL()
- */
-#define SLIST_HEAD(DATA_TYPE,LIST) \
-  REINTERPRET_CAST( DATA_TYPE, slist_head( LIST ) )
-
-/**
  * Initializes \a list.  This is not necessary for either global or `static`
  * lists.
  *
@@ -250,6 +220,8 @@ size_t slist_len( slist_t const *list ) {
  *
  * @sa SLIST_PEEK_AT()
  * @sa slist_peek_atr()
+ * @sa slist_peek_head()
+ * @sa slist_peek_tail()
  */
 C_WARN_UNUSED_RESULT
 void* slist_peek_at( slist_t const *list, size_t offset );
@@ -266,6 +238,8 @@ void* slist_peek_at( slist_t const *list, size_t offset );
  *
  * @sa slist_peek_at()
  * @sa SLIST_PEEK_ATR()
+ * @sa SLIST_PEEK_HEAD()
+ * @sa SLIST_PEEK_TAIL()
  */
 #define SLIST_PEEK_AT(DATA_TYPE,LIST,OFFSET) \
   REINTERPRET_CAST( DATA_TYPE, slist_peek_at( (LIST), (OFFSET) ) )
@@ -280,6 +254,7 @@ void* slist_peek_at( slist_t const *list, size_t offset );
  *
  * @sa slist_peek_at()
  * @sa SLIST_PEEK_ATR()
+ * @sa slist_peek_tail()
  */
 C_SLIST_INLINE C_WARN_UNUSED_RESULT
 void* slist_peek_atr( slist_t const *list, size_t roffset ) {
@@ -299,9 +274,74 @@ void* slist_peek_atr( slist_t const *list, size_t roffset ) {
  *
  * @sa SLIST_PEEK_AT()
  * @sa slist_peek_atr()
+ * @sa SLIST_PEEK_TAIL()
  */
 #define SLIST_PEEK_ATR(DATA_TYPE,LIST,ROFFSET) \
   REINTERPRET_CAST( DATA_TYPE, slist_peek_atr( (LIST), (ROFFSET) ) )
+
+/**
+ * Peeks at the data at the head of \a list.
+ *
+ * @param list A pointer to the <code>\ref slist</code>.
+ * @return Returns the data from the node at the head of \a list or null if \a
+ * list is empty.
+ *
+ * @sa slist_peek_at()
+ * @sa SLIST_PEEK_HEAD()
+ * @sa slist_peek_tail()
+ */
+C_SLIST_INLINE C_WARN_UNUSED_RESULT
+void* slist_peek_head( slist_t const *list ) {
+  return list->head != NULL ? list->head->data : NULL;
+}
+
+/**
+ * Convenience macro that peeks at the data at the head of \a LIST and casts it
+ * to the requested type.
+ *
+ * @param DATA_TYPE The type of the data.
+ * @param LIST A pointer to the <code>\ref slist</code>.
+ * @return Returns the data from the head of \a LIST cast to \a DATA_TYPE or
+ * null (or equivalent) if the <code>\ref slist</code> is empty.
+ *
+ * @sa SLIST_PEEK_AT()
+ * @sa slist_peek_head()
+ * @sa SLIST_PEEK_TAIL()
+ */
+#define SLIST_PEEK_HEAD(DATA_TYPE,LIST) \
+  REINTERPRET_CAST( DATA_TYPE, slist_peek_head( LIST ) )
+
+/**
+ * Peeks at the data at the tail of \a list.
+ *
+ * @param list A pointer to the <code>\ref slist</code>.
+ * @return Returns the data from the node at the tail of \a list or null if \a
+ * list is empty.
+ *
+ * @sa slist_peek_atr()
+ * @sa slist_peek_head()
+ * @sa SLIST_PEEK_TAIL()
+ */
+C_SLIST_INLINE C_WARN_UNUSED_RESULT
+void* slist_peek_tail( slist_t const *list ) {
+  return list->tail != NULL ? list->tail->data : NULL;
+}
+
+/**
+ * Convenience macro that peeks at the data at the tail of \a LIST and casts it
+ * to the requested type.
+ *
+ * @param DATA_TYPE The type of the data.
+ * @param LIST A pointer to the <code>\ref slist</code>.
+ * @return Returns the data from the tail of \a LIST cast to \a DATA_TYPE or
+ * null (or equivalent) if the <code>\ref slist</code> is empty.
+ *
+ * @sa SLIST_PEEK_ATR()
+ * @sa SLIST_PEEK_HEAD()
+ * @sa slist_peek_tail()
+ */
+#define SLIST_PEEK_TAIL(DATA_TYPE,LIST) \
+  REINTERPRET_CAST( DATA_TYPE, slist_peek_tail( LIST ) )
 
 /**
  * Pops data from the head of \a list.
@@ -373,36 +413,6 @@ void slist_push_list_tail( slist_t *dst, slist_t *src );
  * @sa slist_push_list_tail()
  */
 void slist_push_tail( slist_t *list, void *data );
-
-/**
- * Peeks at the data at the tail of \a list.
- *
- * @param list A pointer to the <code>\ref slist</code>.
- * @return Returns the data from the node at the tail of \a list or null if \a
- * list is empty.
- *
- * @sa slist_head()
- * @sa SLIST_TAIL()
- */
-C_SLIST_INLINE C_WARN_UNUSED_RESULT
-void* slist_tail( slist_t const *list ) {
-  return list->tail != NULL ? list->tail->data : NULL;
-}
-
-/**
- * Convenience macro that peeks at the data at the tail of \a LIST and casts it
- * to the requested type.
- *
- * @param DATA_TYPE The type of the data.
- * @param LIST A pointer to the <code>\ref slist</code>.
- * @return Returns the data from the tail of \a LIST cast to \a DATA_TYPE or
- * null (or equivalent) if the <code>\ref slist</code> is empty.
- *
- * @sa SLIST_HEAD()
- * @sa slist_tail()
- */
-#define SLIST_TAIL(DATA_TYPE,LIST) \
-  REINTERPRET_CAST( DATA_TYPE, slist_tail( LIST ) )
 
 ///////////////////////////////////////////////////////////////////////////////
 
