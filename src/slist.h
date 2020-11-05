@@ -52,7 +52,7 @@ _GL_INLINE_HEADER_BEGIN
  * Creates a single-node `slist` on the stack with \a NODE_DATA.
  *
  * @param VAR_NAME The name for the `slist` variable.
- * @param LIST_DATA A pointer to the list data.
+ * @param LIST_DATA A pointer to the list data, if any.
  * @param NODE_DATA A pointer to the node data.
  */
 #define SLIST_VAR_INIT(VAR_NAME,LIST_DATA,NODE_DATA)                          \
