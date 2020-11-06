@@ -505,7 +505,7 @@ static inline bool is_long_int( c_type_id_t tid ) {
  */
 C_WARN_UNUSED_RESULT
 static c_lang_id_t
-c_type_id_check_combo( c_type_id_t tid, c_type_info_t const type_infos[],
+c_type_id_check_combo( c_type_id_t tid, c_type_info_t const type_infos[const],
                        size_t type_infos_size,
                        c_lang_id_t const type_langs[][type_infos_size] ) {
   for ( size_t row = 0; row < type_infos_size; ++row ) {
@@ -533,7 +533,7 @@ c_type_id_check_combo( c_type_id_t tid, c_type_info_t const type_infos[],
  */
 C_WARN_UNUSED_RESULT
 static c_lang_id_t
-c_type_id_check_legal( c_type_id_t tid, c_type_info_t const type_infos[],
+c_type_id_check_legal( c_type_id_t tid, c_type_info_t const type_infos[const],
                        size_t type_infos_size ) {
   for ( size_t row = 0; row < type_infos_size; ++row ) {
     c_type_info_t const *const ti = &type_infos[ row ];

@@ -224,7 +224,7 @@ static void cdecl_cleanup( void ) {
  * @return Returns `true` only upon success.
  */
 C_WARN_UNUSED_RESULT
-static bool parse_argv( int argc, char const *argv[] ) {
+static bool parse_argv( int argc, char const *argv[const] ) {
   if ( argc == 0 )                      // cdecl
     return parse_stdin();
   if ( is_command( me, COMMAND_PROG_NAME ) )
@@ -310,7 +310,7 @@ static bool parse_file( FILE *file ) {
  * @return Returns `true` only upon success.
  */
 C_WARN_UNUSED_RESULT
-static bool parse_files( int num_files, char const *const files[] ) {
+static bool parse_files( int num_files, char const *const files[const] ) {
   bool ok = true;
 
   for ( int i = 0; i < num_files && ok; ++i ) {

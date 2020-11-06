@@ -814,7 +814,7 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
  * @param types An array of pointers to `typedef` strings.  The last element
  * must be null.
  */
-static void c_typedef_parse_builtins( char const *const types[] ) {
+static void c_typedef_parse_builtins( char const *const types[const] ) {
   extern bool parse_string( char const*, size_t );
   assert( types != NULL );
   for ( char const *const *ptype = types; *ptype != NULL; ++ptype ) {

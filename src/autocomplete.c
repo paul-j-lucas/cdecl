@@ -309,7 +309,7 @@ static char* command_generator( char const *text, int state ) {
  * @return Returns a copy of the keyword or null if not found.
  */
 C_WARN_UNUSED_RESULT
-static char* find_keyword( c_lang_lit_t const keywords[], char const *text,
+static char* find_keyword( c_lang_lit_t const keywords[const], char const *text,
                            size_t text_len, size_t *index ) {
   assert( text != NULL );
   assert( index != NULL );
