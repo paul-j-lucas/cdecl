@@ -24,6 +24,11 @@ When showing types in pseudo-English, the abbreviated form is used, e.g.:
     cdecl> show
     struct S;                           // instead of: typedef struct S S;
 
+** Type-qualified arrays of unspecified size
+C99 type-qualified array function arguments can now have a size omitted, e.g.:
+
+    void f( int a[const] );
+
 
 * Changes in Cdecl 8.1
 
@@ -824,7 +829,9 @@ atomic_uint_least32_t, and atomic_uint_least64_t.
 
 ** Fixed typedef and define commands with storage classes
 Typedef and define now prohibit storage classes, e.g.:
+
     typedef static int sint;
+
 is now correctly reported as an error.
 
 

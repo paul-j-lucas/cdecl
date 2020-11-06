@@ -4362,13 +4362,13 @@ array_size_c_ast
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $1;
     }
-  | '[' type_qualifier_list_c_tid static_tid_opt Y_NUMBER ']'
+  | '[' type_qualifier_list_c_tid ']'
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
-      $$->as.array.size = $4;
-      $$->as.array.store_tid = $2 | $3;
+      $$->as.array.size = C_ARRAY_SIZE_NONE;
+      $$->as.array.store_tid = $2;
     }
-  | '[' Y_STATIC type_qualifier_list_c_tid_opt Y_NUMBER ']'
+  | '[' type_qualifier_list_c_tid static_tid_opt Y_NUMBER ']'
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $4;
@@ -4379,6 +4379,12 @@ array_size_c_ast
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = C_ARRAY_SIZE_VARIABLE;
       $$->as.array.store_tid = $2;
+    }
+  | '[' Y_STATIC type_qualifier_list_c_tid_opt Y_NUMBER ']'
+    {
+      $$ = c_ast_new_gc( K_ARRAY, &@$ );
+      $$->as.array.size = $4;
+      $$->as.array.store_tid = $2 | $3;
     }
   ;
 
