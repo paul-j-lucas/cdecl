@@ -1,5 +1,23 @@
+2020-11-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, red_black.c, red_black.h: Red-black trees are now
+     stack-based.
+
+2020-11-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c, c_sname.h, parser.y, slist.h:
+     s/slist_head()/slist_peek_head()/; s/slist_tail()/slist_peek_tail()/
+
+2020-11-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl_lldb.py: Now using linked_list_iter().
+   * cdecl_lldb.py: Tweaked quotes.
+   * cdecl_lldb.py: Removed ';'.
+
 2020-11-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl_lldb.py: Removed "et al.".
+   * cdecl_lldb.py: Added LLDB pretty printer for c_scope_t.
    * extensions.m4, gnulib-common.m4, pid_t.m4, sys_types_h.m4: Updated Gnulib.
    * NEWS, configure.ac: Updated to 8.2.
    * cdecl.1, help.c, parser.y, help-c++.out, help-c.out, help_command-c++.out,
