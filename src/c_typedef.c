@@ -61,7 +61,7 @@ struct td_rb_visitor_data {
 typedef struct td_rb_visitor_data td_rb_visitor_data_t;
 
 // local variable definitions
-static rb_tree_t *typedefs;             ///< Global set of `typedef`s.
+static rb_tree_t  typedefs;             ///< Global set of `typedef`s.
 static bool       user_defined;         ///< Are new `typedef`s used-defined?
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -770,7 +770,7 @@ static char const *const TYPEDEFS_WIN32[] = {
 C_WARN_UNUSED_RESULT
 static inline c_typedef_t const*
 c_typedef_node_data_get( rb_node_t const *node ) {
-  return REINTERPRET_CAST( c_typedef_t const*, rb_node_data( node ) );
+  return REINTERPRET_CAST( c_typedef_t const*, node->data );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -853,7 +853,7 @@ c_typedef_add_rv_t c_typedef_add( c_ast_t const *ast ) {
   assert( !c_ast_empty_name( ast ) );
 
   c_typedef_t *const new_t = c_typedef_new( ast );
-  rb_node_t const *const old_rb = rb_tree_insert( typedefs, new_t );
+  rb_node_t const *const old_rb = rb_tree_insert( &typedefs, new_t );
   if ( old_rb == NULL )                 // type's name doesn't exist
     return TD_ADD_ADDED;
 
@@ -876,20 +876,18 @@ c_typedef_add_rv_t c_typedef_add( c_ast_t const *ast ) {
 }
 
 void c_typedef_cleanup( void ) {
-  rb_tree_free( typedefs, NULL );
-  typedefs = NULL;
+  rb_tree_free( &typedefs, NULL );
 }
 
 c_typedef_t const* c_typedef_find( c_sname_t const *sname ) {
   assert( sname != NULL );
   C_TYPEDEF_VAR_INIT( t, sname );
-  rb_node_t const *const rb_found = rb_tree_find( typedefs, &t );
+  rb_node_t const *const rb_found = rb_tree_find( &typedefs, &t );
   return rb_found != NULL ? c_typedef_node_data_get( rb_found ) : NULL;
 }
 
 void c_typedef_init( void ) {
-  assert( typedefs == NULL );
-  typedefs = rb_tree_new( &c_typedef_cmp );
+  rb_tree_init( &typedefs, &c_typedef_cmp );
 
   if ( opt_typedefs ) {
 #ifdef ENABLE_CDECL_DEBUG
@@ -952,7 +950,7 @@ void c_typedef_init( void ) {
 c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data ) {
   assert( visitor != NULL );
   td_rb_visitor_data_t vd = { visitor, data };
-  rb_node_t const *const rb = rb_tree_visit( typedefs, &rb_visitor, &vd );
+  rb_node_t const *const rb = rb_tree_visit( &typedefs, &rb_visitor, &vd );
   return rb != NULL ? c_typedef_node_data_get( rb ) : NULL;
 }
 

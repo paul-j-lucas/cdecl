@@ -90,40 +90,15 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Red-black tree colors.
- */
-enum rb_color {
-  RB_BLACK,
-  RB_RED
-};
-typedef enum rb_color rb_color_t;
-
-/**
- * A red-black tree node.
- */
-struct rb_node {
-  void       *data;                     ///< User data. Must be first.
-  rb_color_t  color;                    ///< Node color.
-  rb_node_t  *left;                     ///< Left child.
-  rb_node_t  *right;                    ///< Right child.
-  rb_node_t  *parent;                   ///< Parent.
-};
-
-/**
- * A red-black tree.
- */
-struct rb_tree {
-  rb_node_t     root;                   ///< Root node.
-  rb_data_cmp_t data_cmp_fn;            ///< Data comparison function.
-};
-
 // local functions
 static void rb_rotate_left( rb_tree_t*, rb_node_t* );
 static void rb_rotate_right( rb_tree_t*, rb_node_t* );
 
-// local variables
-static rb_node_t rb_nil = { NULL, RB_BLACK, RB_NIL, RB_NIL, RB_NIL };
+/**
+ * Sentinel for NIL node.  Ideally, it should be `const` but isn't since
+ * pointers-to-non-`const` point to it.
+ */
+static rb_node_t rb_nil = { NULL, RB_NIL, RB_NIL, RB_NIL, RB_BLACK };
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -191,8 +166,8 @@ static inline bool is_right( rb_node_t const *node ) {
 static void rb_node_init( rb_node_t *node ) {
   assert( node != NULL );
   node->data = NULL;
-  node->color = RB_BLACK;
   node->left = node->right = node->parent = RB_NIL;
+  node->color = RB_BLACK;
 }
 
 /**
@@ -448,10 +423,19 @@ rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data ) {
 }
 
 void rb_tree_free( rb_tree_t *tree, rb_data_free_t data_free_fn ) {
-  if ( tree != NULL ) {
+  if ( tree != NULL && RB_FIRST(tree) != NULL ) {
     rb_tree_free_impl( RB_FIRST(tree), data_free_fn );
-    FREE( tree );
+    rb_node_init( RB_ROOT(tree) );
+    tree->data_cmp_fn = NULL;
   }
+}
+
+void rb_tree_init( rb_tree_t *tree, rb_data_cmp_t data_cmp_fn ) {
+  assert( tree != NULL );
+  assert( data_cmp_fn != NULL );
+
+  rb_node_init( RB_ROOT(tree) );
+  tree->data_cmp_fn = data_cmp_fn;
 }
 
 rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {

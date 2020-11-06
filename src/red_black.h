@@ -64,19 +64,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Gets a pointer to a node's data.
- *
- * @param NODE_PTR A pointer to the node to get the data of.
- * @return Returns said pointer.
- */
-#define rb_node_data(NODE_PTR) \
-  (*REINTERPRET_CAST( void**, NODE_PTR ))
-
-///////////////////////////////////////////////////////////////////////////////
-
-typedef struct rb_node rb_node_t;
-typedef struct rb_tree rb_tree_t;
+typedef struct rb_node  rb_node_t;
+typedef struct rb_tree  rb_tree_t;
+typedef enum   rb_color rb_color_t;
 
 /**
  * The signature for a function passed to `rb_tree_new()` used to compare node
@@ -107,6 +97,35 @@ typedef void (*rb_data_free_t)( void *data );
  * to be returned to the caller of rb_tree_visit().
  */
 typedef bool (*rb_visitor_t)( void *node_data, void *aux_data );
+
+/**
+ * Red-black tree colors.
+ */
+enum rb_color {
+  RB_BLACK,
+  RB_RED
+};
+
+/**
+ * A red-black tree node.
+ */
+struct rb_node {
+  void       *data;                     ///< User data.
+  rb_node_t  *left;                     ///< Left child (internal use only).
+  rb_node_t  *right;                    ///< Right child (internal use only).
+  rb_node_t  *parent;                   ///< Parent (internal use only).
+  rb_color_t  color;                    ///< Node color (internal use only).
+};
+
+/**
+ * A red-black tree.
+ *
+ * @sa rb_tree_init()
+ */
+struct rb_tree {
+  rb_node_t     root;                   ///< Root node.
+  rb_data_cmp_t data_cmp_fn;            ///< Data comparison function.
+};
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -141,9 +160,20 @@ rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data );
  * @param data_free_fn A pointer to a function used to free data associated
  * with each node or null if unnecessary.
  *
- * @sa rb_tree_new()
+ * @sa rb_tree_init()
  */
 void rb_tree_free( rb_tree_t *tree, rb_data_free_t data_free_fn );
+
+/**
+ * Initializes a red-black tree.
+ *
+ * @param tree The red-black tree to initialize.
+ * @param data_cmp_fn A pointer to a function used to compare data between
+ * nodes.
+ *
+ * @sa rb_tree_free()
+ */
+void rb_tree_init( rb_tree_t *tree, rb_data_cmp_t data_cmp_fn );
 
 /**
  * Inserts \a data into \a tree.
@@ -157,18 +187,6 @@ void rb_tree_free( rb_tree_t *tree, rb_data_free_t data_free_fn );
  */
 C_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
-
-/**
- * Creates a new red-black tree.
- *
- * @param data_cmp_fn A pointer to a function used to compare data between
- * nodes.
- * @return Returns a pointer to a new red-black tree.
- *
- * @sa rb_tree_free()
- */
-C_WARN_UNUSED_RESULT
-rb_tree_t* rb_tree_new( rb_data_cmp_t data_cmp_fn );
 
 /**
  * Performs an in-order traversal of \a tree.
