@@ -1,1 +1,2 @@
-*.[ch] linguist-language=C
+lib/*.[ch] linguist-language=C
+src/*.[ch] linguist-language=C
