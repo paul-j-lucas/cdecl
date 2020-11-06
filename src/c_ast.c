@@ -153,7 +153,7 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
 
     case K_TYPEDEF: {
       c_ast_t const *const tdi_ast = i_ast->as.c_typedef.of_ast;
-      c_ast_t const *const tdj_ast = i_ast->as.c_typedef.of_ast;
+      c_ast_t const *const tdj_ast = j_ast->as.c_typedef.of_ast;
       if ( !c_ast_equiv( tdi_ast, tdj_ast ) )
         return false;
       break;
