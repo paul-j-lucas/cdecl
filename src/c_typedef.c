@@ -778,16 +778,16 @@ c_typedef_node_data_get( rb_node_t const *node ) {
 /**
  * Comparison function for `c_typedef` data used by the red-black tree.
  *
- * @param data_i A pointer to data.
- * @param data_j A pointer to data.
+ * @param i_data A pointer to data.
+ * @param j_data A pointer to data.
  * @return Returns an integer less than, equal to, or greater than 0, according
- * to whether the `typedef` name pointed to by \a data_i is less than, equal
- * to, or greater than the `typedef` name pointed to by \a data_j.
+ * to whether the `typedef` name pointed to by \a i_data is less than, equal
+ * to, or greater than the `typedef` name pointed to by \a j_data.
  */
 C_WARN_UNUSED_RESULT
-static int c_typedef_cmp( void const *data_i, void const *data_j ) {
-  c_typedef_t const *const ti = REINTERPRET_CAST( c_typedef_t const*, data_i );
-  c_typedef_t const *const tj = REINTERPRET_CAST( c_typedef_t const*, data_j );
+static int c_typedef_cmp( void const *i_data, void const *j_data ) {
+  c_typedef_t const *const ti = REINTERPRET_CAST( c_typedef_t const*, i_data );
+  c_typedef_t const *const tj = REINTERPRET_CAST( c_typedef_t const*, j_data );
   assert( ti != NULL );
   assert( tj != NULL );
   return c_sname_cmp( &ti->ast->sname, &tj->ast->sname );

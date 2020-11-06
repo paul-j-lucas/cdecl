@@ -85,13 +85,13 @@ typedef void (*slist_data_free_fn_t)( void *data );
  * The signature for a function passed to `slist_cmp()` used to compare data
  * associated with each node (if necessary).
  *
- * @param data_i A pointer to the first data to compare.
- * @param data_j A pointer to the second data to compare.
- * @return Returns a number less than 0, 0, or greater than 0 if \a data_i is
- * less than, equal to, or greater than \a data_j, respectively.
+ * @param i_data A pointer to the first data to compare.
+ * @param j_data A pointer to the second data to compare.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a i_data is
+ * less than, equal to, or greater than \a j_data, respectively.
  */
-typedef int (*slist_node_data_cmp_fn_t)( void const *data_i,
-                                         void const *data_j );
+typedef int (*slist_node_data_cmp_fn_t)( void const *i_data,
+                                         void const *j_data );
 
 /**
  * The signature for a function passed to `slist_dup()` used to duplicate data

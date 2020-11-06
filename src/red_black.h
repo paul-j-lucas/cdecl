@@ -72,13 +72,13 @@ typedef enum   rb_color rb_color_t;
  * The signature for a function passed to `rb_tree_new()` used to compare node
  * data.
  *
- * @param data_i A pointer to data.
- * @param data_j A pointer to data.
+ * @param i_data A pointer to data.
+ * @param j_data A pointer to data.
  * @return Returns an integer less than, equal to, or greater than 0, according
- * to whether the data pointed to by \a data_i is less than, equal to, or
- * greater than the data pointed to by \a data_j.
+ * to whether the data pointed to by \a i_data is less than, equal to, or
+ * greater than the data pointed to by \a j_data.
  */
-typedef int (*rb_data_cmp_t)( void const *data_i, void const *data_j );
+typedef int (*rb_data_cmp_t)( void const *i_data, void const *j_data );
 
 /**
  * The signature for a function passed to `rb_tree_free()` used to free data
