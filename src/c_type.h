@@ -158,6 +158,18 @@ enum c_type_part_id {
   TPID_ATTR                             ///< Attributes.
 };
 
+//
+// The difference between TB_TYPEDEF and TS_TYPEDEF is that:
+//
+//  * TS_TYPEDEF is the "storage class" for a declaration as a whole while it's
+//    being declared during parsing.
+//
+//  * TB_TYPEDEF is the "type" for a particular typedef'd type, e.g., size_t,
+//    after parsing a declaration and the new type has been defined.  Hence,
+//    TB_TYPEDEF is the somewhat redundant type for K_TYPEDEF, but it has to
+//    have some type.
+//
+
 // base types & modifiers
 #define TB_NONE               0x0000000000000001ull /**< No type.             */
 #define TB_ANY                0xFFFFFFFFFFFFFFF1ull /**< Any type.            */
