@@ -202,7 +202,7 @@ enum c_type_part_id {
 #define TS_REGISTER           0x0000000000000102ull /**< `register`           */
 #define TS_STATIC             0x0000000000000202ull /**< `static`             */
 #define TS_THREAD_LOCAL       0x0000000000000402ull /**< `thread_local`       */
-#define TS_TYPEDEF            0x0000000000000802ull /**< `typedef`            */
+#define TS_TYPEDEF            0x0000000000000802ull /**< `typedef` or `using` */
 
 // storage-class-like
 #define TS_CONSTEVAL          0x0000000000001002ull /**< `consteval`          */

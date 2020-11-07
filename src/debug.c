@@ -219,7 +219,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_TYPEDEF:
         PRINT_COMMA;
-        INDENT_PRINT_SNAME( "typedef_name", &ast->as.c_typedef.of_ast->sname );
+        INDENT_PRINT_SNAME( "typedef_name", &ast->as.c_typedef.for_ast->sname );
         break;
 
       case K_USER_DEF_CONVERSION:

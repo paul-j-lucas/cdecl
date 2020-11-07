@@ -654,7 +654,7 @@ static bool typename_ok( c_ast_t const *ast ) {
   assert( ast != NULL );
 
   c_sname_t const *const sname = ast->kind_id == K_TYPEDEF ?
-    &ast->as.c_typedef.of_ast->sname :
+    &ast->as.c_typedef.for_ast->sname :
     &ast->sname;
 
   if ( c_sname_count( sname ) < 2 ) {
@@ -2441,7 +2441,7 @@ typedef_declaration_c
         //
         ast = $4.ast;
         if ( c_ast_empty_name( ast ) )
-          ast->sname = c_ast_dup_name( $6.ast->as.c_typedef.of_ast );
+          ast->sname = c_ast_dup_name( $6.ast->as.c_typedef.for_ast );
       }
       else {
         //
@@ -2528,7 +2528,7 @@ using_declaration_c
       c_ast_t *const ast = c_ast_patch_placeholder( $5.ast, $7.ast );
 
       c_sname_t sname = $3.ast->kind_id == K_TYPEDEF ?
-        c_ast_dup_name( $3.ast->as.c_typedef.of_ast ) :
+        c_ast_dup_name( $3.ast->as.c_typedef.for_ast ) :
         c_ast_take_name( $3.ast );
       c_ast_set_sname( ast, &sname );
 
@@ -2576,7 +2576,7 @@ typedef_name_c_ast
 
       $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
       $$.target_ast = NULL;
-      $$.ast->as.c_typedef.of_ast = $1;
+      $$.ast->as.c_typedef.for_ast = $1;
       $$.ast->type.base_tid = TB_TYPEDEF;
 
       DUMP_AST( "typedef_name_c_ast", $$.ast );
@@ -4689,7 +4689,7 @@ typedef_type_c_ast
 
       $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
       $$.target_ast = NULL;
-      $$.ast->as.c_typedef.of_ast = $1;
+      $$.ast->as.c_typedef.for_ast = $1;
       $$.ast->type.base_tid = TB_TYPEDEF;
 
       DUMP_AST( "typedef_type_c_ast", $$.ast );
@@ -4918,7 +4918,7 @@ sname_english_ast
       c_typedef_t const *const t = c_typedef_find( &sname );
       if ( t != NULL ) {
         $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
-        $$.ast->as.c_typedef.of_ast = t->ast;
+        $$.ast->as.c_typedef.for_ast = t->ast;
         $$.ast->type.base_tid = TB_TYPEDEF;
         c_sname_free( &sname );
       } else {

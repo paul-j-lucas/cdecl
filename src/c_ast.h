@@ -259,9 +259,12 @@ struct c_ptr_ref_ast {
 
 /**
  * AST node for a C/C++ `typedef`.
+ *
+ * @note C++ `using` declarations are stored as their equivalent `typedef`
+ * declarations.
  */
 struct c_typedef_ast {
-  c_ast_t const  *of_ast;               ///< What it's a `typedef` of.
+  c_ast_t const  *for_ast;              ///< What it's a `typedef` for.
 };
 
 /**
