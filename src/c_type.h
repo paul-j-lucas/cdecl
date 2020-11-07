@@ -166,8 +166,8 @@ enum c_type_part_id {
 //
 //  * TB_TYPEDEF is the "type" for a particular typedef'd type, e.g., size_t,
 //    after parsing a declaration and the new type has been defined.  Hence,
-//    TB_TYPEDEF is the somewhat redundant type for K_TYPEDEF, but it has to
-//    have some type.
+//    TB_TYPEDEF is the somewhat unnecessary when the kind of an AST is
+//    K_TYPEDEF, but it has to have some type.
 //
 
 // base types & modifiers
