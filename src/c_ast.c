@@ -152,6 +152,11 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     }
 
     case K_TYPEDEF:
+      //
+      // K_TYPEDEF isn't a "parent" kind since it's not a parent "of" the
+      // underlying type, but instead a synonym "for" it.  However, for
+      // checking equivalence, it can be treated as-if it were a parent.
+      //
       goto equiv_of;
 
     case K_NONE:
