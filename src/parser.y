@@ -1300,7 +1300,6 @@ cast_english
       DUMP_END();
 
       bool const ok = c_ast_check_cast( $4.ast );
-
       if ( ok ) {
         FPUTC( '(', fout );
         c_ast_gibberish_cast( $4.ast, fout );
@@ -2576,8 +2575,8 @@ typedef_name_c_ast
 
       $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
       $$.target_ast = NULL;
-      $$.ast->as.c_typedef.for_ast = $1;
       $$.ast->type.base_tid = TB_TYPEDEF;
+      $$.ast->as.c_typedef.for_ast = $1;
 
       DUMP_AST( "typedef_name_c_ast", $$.ast );
       DUMP_END();
@@ -2663,8 +2662,8 @@ block_decl_english_ast                  /* Apple extension */
       $$.ast = c_ast_new_gc( K_APPLE_BLOCK, &@$ );
       $$.target_ast = NULL;
       $$.ast->type.store_tid = qualifier_tid_peek();
-      c_ast_set_parent( $3.ast, $$.ast );
       $$.ast->as.block.params = $2;
+      c_ast_set_parent( $3.ast, $$.ast );
 
       DUMP_AST( "block_decl_english_ast", $$.ast );
       DUMP_END();
@@ -3902,8 +3901,8 @@ type_c_ast
       C_TYPE_ADD( &type, &$1, @1 );
 
       $$.ast = c_ast_new_gc( K_BUILTIN, &@$ );
-      $$.ast->type = type;
       $$.target_ast = NULL;
+      $$.ast->type = type;
 
       DUMP_AST( "type_c_ast", $$.ast );
       DUMP_END();
@@ -4689,8 +4688,8 @@ typedef_type_c_ast
 
       $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
       $$.target_ast = NULL;
-      $$.ast->as.c_typedef.for_ast = $1;
       $$.ast->type.base_tid = TB_TYPEDEF;
+      $$.ast->as.c_typedef.for_ast = $1;
 
       DUMP_AST( "typedef_type_c_ast", $$.ast );
       DUMP_END();
@@ -4918,8 +4917,8 @@ sname_english_ast
       c_typedef_t const *const t = c_typedef_find( &sname );
       if ( t != NULL ) {
         $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
-        $$.ast->as.c_typedef.for_ast = t->ast;
         $$.ast->type.base_tid = TB_TYPEDEF;
+        $$.ast->as.c_typedef.for_ast = t->ast;
         c_sname_free( &sname );
       } else {
         $$.ast = c_ast_new_gc( K_NAME, &@$ );
