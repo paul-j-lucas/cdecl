@@ -1663,8 +1663,11 @@ explain_c
     /*
      * C-style cast.
      */
-  : explain '(' type_c_ast { type_ast_push( $3.ast ); } cast_c_ast_opt ')'
-    sname_c_opt
+  : explain '(' type_c_ast
+    {
+      type_ast_push( $3.ast );
+    }
+    cast_c_ast_opt rparen_exp sname_c_opt
     {
       type_ast_pop();
 
@@ -3183,7 +3186,8 @@ block_decl_c_ast                        /* Apple extension */
       //
       type_ast_push( c_ast_new_gc( K_APPLE_BLOCK, &@$ ) );
     }
-    type_qualifier_list_c_tid_opt decl_c_ast ')' '(' param_list_c_ast_opt ')'
+    type_qualifier_list_c_tid_opt decl_c_ast rparen_exp
+    lparen_exp param_list_c_ast_opt ')'
     {
       c_ast_t *const block_ast = type_ast_pop();
 
@@ -3450,7 +3454,7 @@ nested_decl_c_ast
       type_ast_push( $2.ast );
       ++ast_depth;
     }
-    decl_c_ast ')'
+    decl_c_ast rparen_exp
     {
       type_ast_pop();
       --ast_depth;
@@ -3468,7 +3472,7 @@ nested_decl_c_ast
   ;
 
 oper_decl_c_ast
-  : /* type_c_ast */ oper_c_ast '(' param_list_c_ast_opt ')'
+  : /* type_c_ast */ oper_c_ast lparen_exp param_list_c_ast_opt ')'
     func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
     noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_tid_opt
     {
@@ -3680,7 +3684,7 @@ user_defined_conversion_decl_c_ast
     {
       type_ast_push( $3.ast );
     }
-    udc_decl_c_ast_opt '(' rparen_exp func_qualifier_list_c_tid_opt
+    udc_decl_c_ast_opt lparen_exp rparen_exp func_qualifier_list_c_tid_opt
     noexcept_c_tid_opt func_equals_tid_opt
     {
       type_ast_pop();
@@ -3737,8 +3741,9 @@ typedef_type_decl_c_ast
   ;
 
 user_defined_literal_decl_c_ast
-  : /* type_c_ast */ user_defined_literal_c_ast '(' param_list_c_ast ')'
-    noexcept_c_tid_opt trailing_return_type_c_ast_opt
+  : /* type_c_ast */ user_defined_literal_c_ast
+    lparen_exp param_list_c_ast rparen_exp noexcept_c_tid_opt
+    trailing_return_type_c_ast_opt
     {
       DUMP_START( "user_defined_literal_decl_c_ast",
                   "user_defined_literal_c_ast '(' param_list_c_ast ')' "
@@ -4022,11 +4027,11 @@ unmodified_type_c_ast
   ;
 
 atomic_specifier_type_c_ast
-  : Y__ATOMIC_SPEC '(' type_c_ast
+  : Y__ATOMIC_SPEC lparen_exp type_c_ast
     {
       type_ast_push( $3.ast );
     }
-    cast_c_ast_opt ')'
+    cast_c_ast_opt rparen_exp
     {
       type_ast_pop();
 
@@ -4399,7 +4404,7 @@ block_cast_c_ast                        /* Apple extension */
       //
       type_ast_push( c_ast_new_gc( K_APPLE_BLOCK, &@$ ) );
     }
-    type_qualifier_list_c_tid_opt cast_c_ast_opt ')'
+    type_qualifier_list_c_tid_opt cast_c_ast_opt rparen_exp
     lparen_exp param_list_c_ast_opt ')'
     {
       c_ast_t *const block_ast = type_ast_pop();
@@ -4464,7 +4469,7 @@ nested_cast_c_ast
       type_ast_push( $2.ast );
       ++ast_depth;
     }
-    cast_c_ast_opt ')'
+    cast_c_ast_opt rparen_exp
     {
       type_ast_pop();
       --ast_depth;
