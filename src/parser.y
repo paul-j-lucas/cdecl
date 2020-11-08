@@ -844,7 +844,12 @@ static void yyerror( char const *msg ) {
 %token              Y_USER
 %token              Y_VARIABLE
 
-                    /* C & C++ operators (one-character) */
+                    /*
+                     * C & C++ operators (one-character).
+                     *
+                     * The Y_* token is used when tokens may be represented by
+                     * an alternative token, e.g., "not" for '!'.
+                     */
 %token  <oper_id>   Y_EXCLAM            /* '!' */
 %token  <oper_id>   '%'
 %token  <oper_id>   Y_AMPER             /* '&' */
