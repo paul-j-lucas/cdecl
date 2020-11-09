@@ -62,7 +62,7 @@
 
 /// @endcond
 
-#define DEBUG_INDENT              2     /**< Spaces per debug indent level. */
+static unsigned const DEBUG_INDENT = 2; ///< Spaces per debug indent level.
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -257,10 +257,10 @@ void c_sname_debug( c_sname_t const *sname, FILE *dout ) {
   FPRINTF( dout, "\"%s\"", c_sname_full_name( sname ) );
   if ( !c_sname_empty( sname ) ) {
     FPUTS( " (", dout );
-    bool comma = false;
+    bool colon2 = false;
     for ( c_scope_t const *scope = sname->head; scope != NULL;
           scope = scope->next ) {
-      if ( true_or_set( &comma ) )
+      if ( true_or_set( &colon2 ) )
         FPUTS( "::", dout );
       c_type_t const *const t = &c_scope_data( scope )->type;
       FPUTS( c_type_is_none( t ) ? "none" : c_type_name( t ), dout );
@@ -274,6 +274,7 @@ void c_type_id_debug( c_type_id_t tid, FILE *dout ) {
 }
 
 void c_type_debug( c_type_t const *type, FILE *dout ) {
+  assert( type != NULL );
   FPRINTF( dout,
     "\"%s\" "
     "(0x%" PRIX_C_TYPE_T
