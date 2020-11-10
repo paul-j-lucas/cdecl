@@ -239,12 +239,14 @@ void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout ) {
   assert( list != NULL );
   if ( !slist_empty( list ) ) {
     FPUTS( "[\n", dout );
+    ++indent;
     bool comma = false;
     for ( slist_node_t const *p = list->head; p != NULL; p = p->next ) {
       if ( true_or_set( &comma ) )
         FPUTS( ",\n", dout );
-      c_ast_debug( c_param_ast( p ), indent + 1, NULL, dout );
+      c_ast_debug( c_param_ast( p ), indent, NULL, dout );
     } // for
+    --indent;
     FPUTC( '\n', dout );
     INDENT_PRINT( "]" );
   } else {
