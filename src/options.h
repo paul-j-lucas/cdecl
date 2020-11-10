@@ -54,8 +54,6 @@ extern bool         opt_cdecl_debug;    ///< Generate JSON-like debug output?
 extern char const  *opt_conf_file;      ///< Configuration file path.
 extern bool         opt_east_const;     ///< Print in "east const" form?
 extern bool         opt_explain;        ///< Assume `explain` if no command?
-extern char const  *opt_fin;            ///< File in path.
-extern char const  *opt_fout;           ///< File out path.
 extern c_graph_t    opt_graph;          ///< Di/Trigraph mode.
 extern bool         opt_interactive;    ///< Interactive mode?
 extern c_lang_id_t  opt_lang;           ///< Current language.

@@ -59,8 +59,6 @@ bool                opt_cdecl_debug;
 char const         *opt_conf_file;
 bool                opt_east_const;
 bool                opt_explain;
-char const         *opt_fin;
-char const         *opt_fout;
 c_graph_t           opt_graph;
 bool                opt_interactive;
 c_lang_id_t         opt_lang;
@@ -360,6 +358,8 @@ static void parse_options( int argc, char const *argv[const] ) {
   optind = opterr = 1;
 
   color_when_t  color_when = COLOR_WHEN_DEFAULT;
+  char const   *fin_path = "-";
+  char const   *fout_path = "-";
   bool          print_version = false;
 
   for (;;) {
@@ -381,7 +381,7 @@ static void parse_options( int argc, char const *argv[const] ) {
 #endif /* ENABLE_CDECL_DEBUG */
       case 'e': opt_explain     = true;                           break;
       case 'E': opt_east_const  = true;                           break;
-      case 'f': opt_fin         = optarg;                         break;
+      case 'f': fin_path        = optarg;                         break;
 #ifdef ENABLE_FLEX_DEBUG
       case 'F': opt_flex_debug  = true;                           break;
 #endif /* ENABLE_FLEX_DEBUG */
@@ -389,7 +389,7 @@ static void parse_options( int argc, char const *argv[const] ) {
       case 'i': opt_interactive = true;                           break;
       case 'I': parse_opt_explicit_int( NULL, optarg );           break;
       case 'k': color_when      = parse_opt_color_when( optarg ); break;
-      case 'o': opt_fout        = optarg;                         break;
+      case 'o': fout_path       = optarg;                         break;
       case 'p': opt_prompt      = false;                          break;
       case 's': opt_semicolon   = false;                          break;
       case 't': opt_typedefs    = false;                          break;
@@ -407,10 +407,10 @@ static void parse_options( int argc, char const *argv[const] ) {
     exit( EX_OK );
   }
 
-  if ( opt_fin != NULL && (fin = fopen( opt_fin, "r" )) == NULL )
-    PMESSAGE_EXIT( EX_NOINPUT, "\"%s\": %s\n", opt_fin, STRERROR() );
-  if ( opt_fout != NULL && (fout = fopen( opt_fout, "w" )) == NULL )
-    PMESSAGE_EXIT( EX_CANTCREAT, "\"%s\": %s\n", opt_fout, STRERROR() );
+  if ( strcmp( fin_path, "-" ) != 0 && !(fin = fopen( fin_path, "r" )) )
+    PMESSAGE_EXIT( EX_NOINPUT, "\"%s\": %s\n", fin_path, STRERROR() );
+  if ( strcmp( fout_path, "-" ) != 0 && !(fout = fopen( fout_path, "w" )) )
+    PMESSAGE_EXIT( EX_CANTCREAT, "\"%s\": %s\n", fout_path, STRERROR() );
 
   if ( fin == NULL )
     fin = stdin;
