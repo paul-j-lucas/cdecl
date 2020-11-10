@@ -58,9 +58,9 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
                   FILE *dout );
 
 /**
- * Dumps \a list (for debugging).
+ * Dumps \a list of ASTs (for debugging).
  *
- * @param list The `slist` to dump.
+ * @param list The `slist` of ASTs to dump.
  * @param indent The initial indent.
  * @param dout The `FILE` to dump to.
  */
