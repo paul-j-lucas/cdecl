@@ -70,29 +70,43 @@
 # endif
 #endif
 
-/* _GL_ATTRIBUTE_FORMAT_PRINTF
+/* An __attribute__ __format__ specifier for a function that takes a format
+   string and arguments, where the format string directives are the ones
+   standardized by ISO C99 and POSIX.
+   _GL_ATTRIBUTE_SPEC_PRINTF_STANDARD  */
+/* __gnu_printf__ is supported in GCC >= 4.4.  */
+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)
+# define _GL_ATTRIBUTE_SPEC_PRINTF_STANDARD __gnu_printf__
+#else
+# define _GL_ATTRIBUTE_SPEC_PRINTF_STANDARD __printf__
+#endif
+
+/* An __attribute__ __format__ specifier for a function that takes a format
+   string and arguments, where the format string directives are the ones of the
+   system printf(), rather than the ones standardized by ISO C99 and POSIX.
+   _GL_ATTRIBUTE_SPEC_PRINTF_SYSTEM  */
+/* On mingw, Gnulib sets __USE_MINGW_ANSI_STDIO in order to get closer to
+   the standards.  The macro GNULIB_PRINTF_ATTRIBUTE_FLAVOR_GNU indicates
+   whether this change is effective.  On older mingw, it is not.  */
+#if GNULIB_PRINTF_ATTRIBUTE_FLAVOR_GNU
+# define _GL_ATTRIBUTE_SPEC_PRINTF_SYSTEM _GL_ATTRIBUTE_SPEC_PRINTF_STANDARD
+#else
+# define _GL_ATTRIBUTE_SPEC_PRINTF_SYSTEM __printf__
+#endif
+
+/* _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD
    indicates to GCC that the function takes a format string and arguments,
    where the format string directives are the ones standardized by ISO C99
    and POSIX.  */
-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)
-# define _GL_ATTRIBUTE_FORMAT_PRINTF(formatstring_parameter, first_argument) \
-   _GL_ATTRIBUTE_FORMAT ((__gnu_printf__, formatstring_parameter, first_argument))
-#else
-# define _GL_ATTRIBUTE_FORMAT_PRINTF(formatstring_parameter, first_argument) \
-   _GL_ATTRIBUTE_FORMAT ((__printf__, formatstring_parameter, first_argument))
-#endif
+#define _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD(formatstring_parameter, first_argument) \
+  _GL_ATTRIBUTE_FORMAT ((_GL_ATTRIBUTE_SPEC_PRINTF_STANDARD, formatstring_parameter, first_argument))
 
-/* _GL_ATTRIBUTE_FORMAT_PRINTF_SYSTEM is like _GL_ATTRIBUTE_FORMAT_PRINTF,
+/* _GL_ATTRIBUTE_FORMAT_PRINTF_SYSTEM is like _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD,
    except that it indicates to GCC that the supported format string directives
    are the ones of the system printf(), rather than the ones standardized by
    ISO C99 and POSIX.  */
-#if GNULIB_PRINTF_ATTRIBUTE_FLAVOR_GNU
-# define _GL_ATTRIBUTE_FORMAT_PRINTF_SYSTEM(formatstring_parameter, first_argument) \
-  _GL_ATTRIBUTE_FORMAT_PRINTF (formatstring_parameter, first_argument)
-#else
-# define _GL_ATTRIBUTE_FORMAT_PRINTF_SYSTEM(formatstring_parameter, first_argument) \
-  _GL_ATTRIBUTE_FORMAT ((__printf__, formatstring_parameter, first_argument))
-#endif
+#define _GL_ATTRIBUTE_FORMAT_PRINTF_SYSTEM(formatstring_parameter, first_argument) \
+  _GL_ATTRIBUTE_FORMAT ((_GL_ATTRIBUTE_SPEC_PRINTF_SYSTEM, formatstring_parameter, first_argument))
 
 /* _GL_ATTRIBUTE_FORMAT_SCANF
    indicates to GCC that the function takes a format string and arguments,
@@ -174,13 +188,13 @@
 #   define dprintf rpl_dprintf
 #  endif
 _GL_FUNCDECL_RPL (dprintf, int, (int fd, const char *restrict format, ...)
-                                _GL_ATTRIBUTE_FORMAT_PRINTF (2, 3)
+                                _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 3)
                                 _GL_ARG_NONNULL ((2)));
 _GL_CXXALIAS_RPL (dprintf, int, (int fd, const char *restrict format, ...));
 # else
 #  if !@HAVE_DPRINTF@
 _GL_FUNCDECL_SYS (dprintf, int, (int fd, const char *restrict format, ...)
-                                _GL_ATTRIBUTE_FORMAT_PRINTF (2, 3)
+                                _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 3)
                                 _GL_ARG_NONNULL ((2)));
 #  endif
 _GL_CXXALIAS_SYS (dprintf, int, (int fd, const char *restrict format, ...));
@@ -351,7 +365,7 @@ _GL_WARN_ON_USE (fopen, "fopen on native Windows platforms is not POSIX complian
 #  if @GNULIB_FPRINTF_POSIX@ || @GNULIB_VFPRINTF_POSIX@
 _GL_FUNCDECL_RPL (fprintf, int,
                   (FILE *restrict fp, const char *restrict format, ...)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 3)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 3)
                   _GL_ARG_NONNULL ((1, 2)));
 #  else
 _GL_FUNCDECL_RPL (fprintf, int,
@@ -861,7 +875,7 @@ struct obstack;
 #  endif
 _GL_FUNCDECL_RPL (obstack_printf, int,
                   (struct obstack *obs, const char *format, ...)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 3)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 3)
                   _GL_ARG_NONNULL ((1, 2)));
 _GL_CXXALIAS_RPL (obstack_printf, int,
                   (struct obstack *obs, const char *format, ...));
@@ -869,7 +883,7 @@ _GL_CXXALIAS_RPL (obstack_printf, int,
 #  if !@HAVE_DECL_OBSTACK_PRINTF@
 _GL_FUNCDECL_SYS (obstack_printf, int,
                   (struct obstack *obs, const char *format, ...)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 3)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 3)
                   _GL_ARG_NONNULL ((1, 2)));
 #  endif
 _GL_CXXALIAS_SYS (obstack_printf, int,
@@ -882,7 +896,7 @@ _GL_CXXALIASWARN (obstack_printf);
 #  endif
 _GL_FUNCDECL_RPL (obstack_vprintf, int,
                   (struct obstack *obs, const char *format, va_list args)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 0)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 0)
                   _GL_ARG_NONNULL ((1, 2)));
 _GL_CXXALIAS_RPL (obstack_vprintf, int,
                   (struct obstack *obs, const char *format, va_list args));
@@ -890,7 +904,7 @@ _GL_CXXALIAS_RPL (obstack_vprintf, int,
 #  if !@HAVE_DECL_OBSTACK_PRINTF@
 _GL_FUNCDECL_SYS (obstack_vprintf, int,
                   (struct obstack *obs, const char *format, va_list args)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 0)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 0)
                   _GL_ARG_NONNULL ((1, 2)));
 #  endif
 _GL_CXXALIAS_SYS (obstack_vprintf, int,
@@ -974,7 +988,7 @@ _GL_FUNCDECL_RPL_1 (__printf__, int,
                     (const char *restrict format, ...)
                     __asm__ (@ASM_SYMBOL_PREFIX@
                              _GL_STDIO_MACROEXPAND_AND_STRINGIZE(rpl_printf))
-                    _GL_ATTRIBUTE_FORMAT_PRINTF (1, 2)
+                    _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (1, 2)
                     _GL_ARG_NONNULL ((1)));
 #   else
 _GL_FUNCDECL_RPL_1 (__printf__, int,
@@ -991,7 +1005,7 @@ _GL_CXXALIAS_RPL_1 (printf, __printf__, int, (const char *format, ...));
 #   endif
 _GL_FUNCDECL_RPL (printf, int,
                   (const char *restrict format, ...)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (1, 2)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (1, 2)
                   _GL_ARG_NONNULL ((1)));
 _GL_CXXALIAS_RPL (printf, int, (const char *restrict format, ...));
 #  endif
@@ -1182,7 +1196,7 @@ _GL_CXXALIASWARN (scanf);
 _GL_FUNCDECL_RPL (snprintf, int,
                   (char *restrict str, size_t size,
                    const char *restrict format, ...)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (3, 4)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (3, 4)
                   _GL_ARG_NONNULL ((3)));
 _GL_CXXALIAS_RPL (snprintf, int,
                   (char *restrict str, size_t size,
@@ -1192,7 +1206,7 @@ _GL_CXXALIAS_RPL (snprintf, int,
 _GL_FUNCDECL_SYS (snprintf, int,
                   (char *restrict str, size_t size,
                    const char *restrict format, ...)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (3, 4)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (3, 4)
                   _GL_ARG_NONNULL ((3)));
 #  endif
 _GL_CXXALIAS_SYS (snprintf, int,
@@ -1226,7 +1240,7 @@ _GL_WARN_ON_USE (snprintf, "snprintf is unportable - "
 #  endif
 _GL_FUNCDECL_RPL (sprintf, int,
                   (char *restrict str, const char *restrict format, ...)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 3)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 3)
                   _GL_ARG_NONNULL ((1, 2)));
 _GL_CXXALIAS_RPL (sprintf, int,
                   (char *restrict str, const char *restrict format, ...));
@@ -1282,7 +1296,7 @@ _GL_WARN_ON_USE (tmpfile, "tmpfile is not usable on mingw - "
 #  endif
 _GL_FUNCDECL_RPL (asprintf, int,
                   (char **result, const char *format, ...)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 3)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 3)
                   _GL_ARG_NONNULL ((1, 2)));
 _GL_CXXALIAS_RPL (asprintf, int,
                   (char **result, const char *format, ...));
@@ -1290,7 +1304,7 @@ _GL_CXXALIAS_RPL (asprintf, int,
 #  if !@HAVE_VASPRINTF@
 _GL_FUNCDECL_SYS (asprintf, int,
                   (char **result, const char *format, ...)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 3)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 3)
                   _GL_ARG_NONNULL ((1, 2)));
 #  endif
 _GL_CXXALIAS_SYS (asprintf, int,
@@ -1303,7 +1317,7 @@ _GL_CXXALIASWARN (asprintf);
 #  endif
 _GL_FUNCDECL_RPL (vasprintf, int,
                   (char **result, const char *format, va_list args)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 0)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 0)
                   _GL_ARG_NONNULL ((1, 2)));
 _GL_CXXALIAS_RPL (vasprintf, int,
                   (char **result, const char *format, va_list args));
@@ -1311,7 +1325,7 @@ _GL_CXXALIAS_RPL (vasprintf, int,
 #  if !@HAVE_VASPRINTF@
 _GL_FUNCDECL_SYS (vasprintf, int,
                   (char **result, const char *format, va_list args)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 0)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 0)
                   _GL_ARG_NONNULL ((1, 2)));
 #  endif
 _GL_CXXALIAS_SYS (vasprintf, int,
@@ -1327,7 +1341,7 @@ _GL_CXXALIASWARN (vasprintf);
 #  endif
 _GL_FUNCDECL_RPL (vdprintf, int,
                   (int fd, const char *restrict format, va_list args)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 0)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 0)
                   _GL_ARG_NONNULL ((2)));
 _GL_CXXALIAS_RPL (vdprintf, int,
                   (int fd, const char *restrict format, va_list args));
@@ -1335,7 +1349,7 @@ _GL_CXXALIAS_RPL (vdprintf, int,
 #  if !@HAVE_VDPRINTF@
 _GL_FUNCDECL_SYS (vdprintf, int,
                   (int fd, const char *restrict format, va_list args)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 0)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 0)
                   _GL_ARG_NONNULL ((2)));
 #  endif
 /* Need to cast, because on Solaris, the third parameter will likely be
@@ -1365,7 +1379,7 @@ _GL_WARN_ON_USE (vdprintf, "vdprintf is unportable - "
 _GL_FUNCDECL_RPL (vfprintf, int,
                   (FILE *restrict fp,
                    const char *restrict format, va_list args)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 0)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 0)
                   _GL_ARG_NONNULL ((1, 2)));
 #  else
 _GL_FUNCDECL_RPL (vfprintf, int,
@@ -1432,7 +1446,7 @@ _GL_CXXALIASWARN (vfscanf);
 #  define GNULIB_overrides_vprintf 1
 #  if @GNULIB_VPRINTF_POSIX@ || @GNULIB_VFPRINTF_POSIX@
 _GL_FUNCDECL_RPL (vprintf, int, (const char *restrict format, va_list args)
-                                _GL_ATTRIBUTE_FORMAT_PRINTF (1, 0)
+                                _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (1, 0)
                                 _GL_ARG_NONNULL ((1)));
 #  else
 _GL_FUNCDECL_RPL (vprintf, int, (const char *restrict format, va_list args)
@@ -1487,7 +1501,7 @@ _GL_CXXALIASWARN (vscanf);
 _GL_FUNCDECL_RPL (vsnprintf, int,
                   (char *restrict str, size_t size,
                    const char *restrict format, va_list args)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (3, 0)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (3, 0)
                   _GL_ARG_NONNULL ((3)));
 _GL_CXXALIAS_RPL (vsnprintf, int,
                   (char *restrict str, size_t size,
@@ -1497,7 +1511,7 @@ _GL_CXXALIAS_RPL (vsnprintf, int,
 _GL_FUNCDECL_SYS (vsnprintf, int,
                   (char *restrict str, size_t size,
                    const char *restrict format, va_list args)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (3, 0)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (3, 0)
                   _GL_ARG_NONNULL ((3)));
 #  endif
 _GL_CXXALIAS_SYS (vsnprintf, int,
@@ -1523,7 +1537,7 @@ _GL_WARN_ON_USE (vsnprintf, "vsnprintf is unportable - "
 _GL_FUNCDECL_RPL (vsprintf, int,
                   (char *restrict str,
                    const char *restrict format, va_list args)
-                  _GL_ATTRIBUTE_FORMAT_PRINTF (2, 0)
+                  _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 0)
                   _GL_ARG_NONNULL ((1, 2)));
 _GL_CXXALIAS_RPL (vsprintf, int,
                   (char *restrict str,

@@ -1,4 +1,4 @@
-# unistd_h.m4 serial 81
+# unistd_h.m4 serial 82
 dnl Copyright (C) 2006-2020 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -41,7 +41,8 @@ AC_DEFUN([gl_UNISTD_H],
 #  include <io.h>
 # endif
 #endif
-    ]], [access chdir chown dup dup2 dup3 environ euidaccess faccessat fchdir
+    ]], [access chdir chown copy_file_range dup dup2 dup3 environ euidaccess
+    faccessat fchdir
     fchownat fdatasync fsync ftruncate getcwd getdomainname getdtablesize
     getentropy getgroups gethostname getlogin getlogin_r getpagesize getpass
     getusershell setusershell endusershell
