@@ -137,7 +137,7 @@
 struct cdecl_keyword {
   char const         *literal;          ///< C string literal of the keyword.
   bool                allow_explain;    ///< Allow when explaining C/C++?
-  int                 yy_token_id;      ///< Bison token number; or:
+  yytokentype         yy_token_id;      ///< Bison token number; or:
 
   /**
    * Array of language(s)/synonym-keyword pair(s).  The array is terminated by
@@ -387,7 +387,7 @@ static c_hyphen_t const C_HYPHEN_KEYWORDS[] = {
  */
 struct cdecl_hyphen {
   char const *literal;                  ///< Hyphenated English literal.
-  int         yy_token_id;              ///< Bison token number.
+  yytokentype yy_token_id;              ///< Bison token number.
 };
 typedef struct cdecl_hyphen cdecl_hyphen_t;
 
@@ -455,7 +455,7 @@ static char const* c_hyphen_find( char const *s ) {
  * @return Returns the corresponding Bison token, if found; Y_ERROR otherwise.
  */
 C_WARN_UNUSED_RESULT
-static int cdecl_hyphen_find( char const *s ) {
+static yytokentype cdecl_hyphen_find( char const *s ) {
   assert( s != NULL );
   // the list is small, so linear search is good enough
   for ( cdecl_hyphen_t const *h = CDECL_HYPHEN_KEYWORDS; h->literal; ++h ) {

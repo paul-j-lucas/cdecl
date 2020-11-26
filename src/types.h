@@ -90,6 +90,7 @@ typedef enum   c_type_part_id     c_type_part_id_t;
 typedef struct c_udef_conv_ast    c_udef_conv_ast_t;
 typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
 typedef enum   c_visit_dir        c_visit_dir_t;
+typedef enum   yytokentype        yytokentype;
 
 typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
 /// @cond DOXYGEN_IGNORE
