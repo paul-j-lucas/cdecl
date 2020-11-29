@@ -110,7 +110,7 @@ static rb_node_t rb_nil = { NULL, RB_NIL, RB_NIL, RB_NIL, RB_BLACK };
  *
  * @sa is_red()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static inline bool is_black( rb_node_t const *node ) {
   return node->color == RB_BLACK;
 }
@@ -124,7 +124,7 @@ static inline bool is_black( rb_node_t const *node ) {
  *
  * @sa is_right()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static inline bool is_left( rb_node_t const *node ) {
   return node == node->parent->left;
 }
@@ -137,7 +137,7 @@ static inline bool is_left( rb_node_t const *node ) {
  *
  * @sa is_black()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static inline bool is_red( rb_node_t const *node ) {
   return node->color == RB_RED;
 }
@@ -151,7 +151,7 @@ static inline bool is_red( rb_node_t const *node ) {
  *
  * @sa is_left()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static inline bool is_right( rb_node_t const *node ) {
   return node == node->parent->right;
 }
@@ -180,7 +180,7 @@ static void rb_node_init( rb_node_t *node ) {
  * @return Returns a pointer to the `rb_node` at which visiting stopped or null
  * if the entire sub-tree was visited.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
                                  rb_visitor_t visitor, void *aux_data ) {
   assert( tree != NULL );
@@ -346,7 +346,7 @@ static void rb_rotate_right( rb_tree_t *tree, rb_node_t *node ) {
  * @param node A pointer to the `rb_node` to get the successor of.
  * @return Returns said successor.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static rb_node_t* rb_successor( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
   assert( node != NULL );

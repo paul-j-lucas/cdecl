@@ -38,7 +38,7 @@
 /// @endcond
 
 // local functions
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t* );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t* );
  * @param array_ast The array AST to append.  Its "of" type must be null.
  * @return Returns the AST to be used as the grammar production's return value.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast ) {
   assert( array_ast != NULL );
   assert( array_ast->kind_id == K_ARRAY );
@@ -64,12 +64,12 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast ) {
 
     case K_POINTER:
       if ( ast->depth > array_ast->depth ) {
-        C_IGNORE_RV(
+        PJL_IGNORE_RV(
           c_ast_add_array_impl( ast->as.ptr_ref.to_ast, array_ast )
         );
         return ast;
       }
-      C_FALLTHROUGH;
+      PJL_FALLTHROUGH;
 
     default:
       //
@@ -130,7 +130,7 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast ) {
  * @return If \a ast is an array, returns \a ast; otherwise returns \a
  * array_ast.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast ) {
   assert( ast != NULL );
   assert( array_ast != NULL );
@@ -148,7 +148,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast ) {
       //
       if ( array_ast->depth >= ast->depth )
         break;
-      C_FALLTHROUGH;
+      PJL_FALLTHROUGH;
 
     case K_ARRAY: {
       //
@@ -184,7 +184,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast ) {
  * null.
  * @return Returns the AST to be used as the grammar production's return value.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
                                      c_ast_t *func_ast ) {
   assert( ast != NULL );
@@ -199,7 +199,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
       case K_POINTER_TO_MEMBER:
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
-        C_IGNORE_RV(
+        PJL_IGNORE_RV(
           c_ast_add_func_impl( ast->as.ptr_ref.to_ast, ret_ast, func_ast )
         );
         return ast;
@@ -208,7 +208,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
         if ( ret_ast == ast )
           break;
         c_ast_set_parent( func_ast, ast );
-        C_FALLTHROUGH;
+        PJL_FALLTHROUGH;
 
       case K_APPLE_BLOCK:
         c_ast_set_parent( ret_ast, func_ast );
@@ -244,7 +244,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
  * @param ast The AST to take from.
  * @return Returns said storage (and attributes) or <code>\ref T_NONE</code>.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static c_type_t c_ast_take_storage( c_ast_t *ast ) {
   assert( ast != NULL );
   c_type_t rv_type = T_NONE;
@@ -266,7 +266,7 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
  * @param data The bitwise-or of the kind(s) (cast to `void*`) \a ast can be.
  * @return Returns `true` only if the kind of \a ast is one of the kinds.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool c_ast_vistor_kind_any( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   c_kind_id_t const kind_id = c_kind_data_get( data );
@@ -280,7 +280,7 @@ static bool c_ast_vistor_kind_any( c_ast_t *ast, void *data ) {
  * @param data The least number of names that the scoped name must have.
  * @return Returns `true` only if \a ast has such a scoped name.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   uintptr_t const at_least = REINTERPRET_CAST( uintptr_t, data );
@@ -294,7 +294,7 @@ static bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
  * @param data The bitwise-or of the type(s) (cast to `void*`) \a ast can be.
  * @return Returns `true` only if the type of \a ast is one of the types.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool c_ast_vistor_type_any( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   c_type_t const *const type = c_type_data_get( data );

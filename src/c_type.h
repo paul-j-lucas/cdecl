@@ -383,7 +383,7 @@ extern c_type_t const T_ANY;            ///< All types.
  * @sa c_type_id_add(()
  * @sa c_type_or_eq()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool c_type_add( c_type_t *dst_type, c_type_t const *new_type,
                  c_loc_t const *new_loc );
 
@@ -397,7 +397,7 @@ bool c_type_add( c_type_t *dst_type, c_type_t const *new_type,
  *
  * @sa c_type_add()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool c_type_add_tid( c_type_t *dst_type, c_type_id_t new_tid,
                      c_loc_t const *new_loc );
 
@@ -407,7 +407,7 @@ bool c_type_add_tid( c_type_t *dst_type, c_type_id_t new_tid,
  * @param type The <code>\ref c_type</code> to check.
  * @return Returns the bitwise-or of the language(s) \a type is legal in.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_type_check( c_type_t const *type );
 
 /**
@@ -424,7 +424,7 @@ c_lang_id_t c_type_check( c_type_t const *type );
  *
  * @sa c_type_add(()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
                     c_loc_t const *new_loc );
 
@@ -438,7 +438,7 @@ bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
  * @sa c_type_and_eq_compl()
  * @sa c_type_or()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_type_t c_type_and( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
@@ -461,7 +461,7 @@ void c_type_and_eq_compl( c_type_t *dst_type, c_type_t const *rm_type );
  *
  * @sa c_type_is_none()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
@@ -477,7 +477,7 @@ bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type );
  *
  * @sa c_type_get_tid()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid );
 
 /**
@@ -492,7 +492,7 @@ c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid );
  * @sa c_type_id_name_error()
  * @sa c_type_name()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char const* c_type_id_name( c_type_id_t tid );
 
 /**
@@ -509,7 +509,7 @@ char const* c_type_id_name( c_type_id_t tid );
  * @sa c_type_id_name()
  * @sa c_type_name_error()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char const* c_type_id_name_error( c_type_id_t tid );
 
 /**
@@ -521,7 +521,7 @@ char const* c_type_id_name_error( c_type_id_t tid );
  * @param tid The type to normalize.
  * @return Returns the normalized type.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_type_id_t c_type_id_normalize( c_type_id_t tid );
 
 /**
@@ -532,7 +532,7 @@ c_type_id_t c_type_id_normalize( c_type_id_t tid );
  * @return Returns `true` only if any bits of \a i_type intersects with \a
  * j_type.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool c_type_intersects( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
@@ -543,7 +543,7 @@ bool c_type_intersects( c_type_t const *i_type, c_type_t const *j_type );
  *
  * @sa c_type_equal()
  */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_is_none( c_type_t const *type ) {
   return c_type_equal( type, &T_NONE );
 }
@@ -560,7 +560,7 @@ bool c_type_is_none( c_type_t const *type ) {
  * @sa c_type_id_name()
  * @sa c_type_name_error()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char const* c_type_name( c_type_t const *type );
 
 /**
@@ -577,7 +577,7 @@ char const* c_type_name( c_type_t const *type );
  * @sa c_type_id_name_error()
  * @sa c_type_name()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char const* c_type_name_error( c_type_t const *type );
 
 /**
@@ -591,7 +591,7 @@ char const* c_type_name_error( c_type_t const *type );
  * @sa c_type_and_eq_compl();
  * @sa c_type_or_eq()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_type_t c_type_or( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
@@ -623,7 +623,7 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type );
  *
  * @sa c_type_get_tid_ptr()
  */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 c_type_id_t c_type_get_tid( c_type_t const *type, c_type_id_t tid ) {
   return *c_type_get_tid_ptr( CONST_CAST( c_type_t*, type ), tid );
 }
@@ -636,7 +636,7 @@ c_type_id_t c_type_get_tid( c_type_t const *type, c_type_id_t tid ) {
  *
  * @sa c_type_id_compl()
  */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_compl( c_type_id_t tid ) {
   //
   // The low-order 4 bits specify the c_type_part_id.  Currently, part IDs are
@@ -656,7 +656,7 @@ bool c_type_id_is_compl( c_type_id_t tid ) {
  *
  * @sa c_type_id_is_compl()
  */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 c_type_id_t c_type_id_compl( c_type_id_t tid ) {
   assert( !c_type_id_is_compl( tid ) );
   return ~tid ^ T_MASK_PART_ID;
@@ -670,7 +670,7 @@ c_type_id_t c_type_id_compl( c_type_id_t tid ) {
  *
  * @sa c_type_id_part_id()
  */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 c_type_id_t c_type_id_no_part_id( c_type_id_t tid ) {
   return tid & ~T_MASK_PART_ID;
 }
@@ -683,7 +683,7 @@ c_type_id_t c_type_id_no_part_id( c_type_id_t tid ) {
  *
  * @sa c_type_id_no_part_id()
  */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 c_type_part_id_t c_type_id_part_id( c_type_id_t tid ) {
   //
   // If tid has been complemented, e.g., ~TS_REGISTER to denote "all but
@@ -703,7 +703,7 @@ c_type_part_id_t c_type_id_part_id( c_type_id_t tid ) {
  * @param j_tid The second <code>\ref c_type_id_t</code>.
  * @return Returns `true` only if \a i_tid intersects \a j_tid.
  */
-C_WARN_UNUSED_RESULT C_TYPE_INLINE
+PJL_WARN_UNUSED_RESULT C_TYPE_INLINE
 bool c_type_id_intersects( c_type_id_t i_tid, c_type_id_t j_tid ) {
   assert( c_type_id_part_id( i_tid ) == c_type_id_part_id( j_tid ) );
   return c_type_id_no_part_id( i_tid & j_tid ) != 0;
@@ -719,7 +719,7 @@ bool c_type_id_intersects( c_type_id_t i_tid, c_type_id_t j_tid ) {
  *
  * @sa c_type_is_none()
  */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_none( c_type_id_t tid ) {
   return c_type_id_no_part_id( tid ) == 0;
 }
@@ -733,7 +733,7 @@ bool c_type_id_is_none( c_type_id_t tid ) {
  * @param tid The <code>\ref c_type_id_t</code> to check.
  * @return Returns `true` only if \a tid is `size_t`.
  */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_size_t( c_type_id_t tid ) {
   assert( (tid & T_MASK_PART_ID) == TPID_BASE );
   return ((tid & c_type_id_compl( TB_INT )) & (TB_UNSIGNED | TB_LONG)) == (TB_UNSIGNED | TB_LONG);
@@ -745,7 +745,7 @@ bool c_type_id_is_size_t( c_type_id_t tid ) {
  * @param data The data to get the <code>\ref c_type</code> from.  May be NULL.
  * @return Returns said <code>\ref c_type</code> or NULL if \a data is NULL.
  */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 c_type_t const* c_type_data_get( void const *data ) {
   return data != NULL ? REINTERPRET_CAST( c_type_t const*, data ) : NULL;
 }
@@ -759,7 +759,7 @@ c_type_t const* c_type_data_get( void const *data ) {
  * @return Returns `true` only if the relevant <code>\ref c_type_id_t</code> of
  * \a type contains any of \a tids.
  */
-C_TYPE_INLINE C_WARN_UNUSED_RESULT
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids ) {
   c_type_id_t const tid = c_type_get_tid( type, tids );
   return c_type_id_intersects( tid, tids );

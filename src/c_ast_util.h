@@ -45,7 +45,7 @@
  * @param array_ast The array AST to append.  Its "of" type must be null.
  * @return Returns the AST to be used as the grammar production's return value.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast );
 
 /**
@@ -57,7 +57,7 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast );
  * null.
  * @return Returns the AST to be used as the grammar production's return value.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast );
 
 /**
@@ -69,7 +69,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast );
  *
  * @sa c_ast_check_declaration()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool c_ast_check_cast( c_ast_t const *ast );
 
 /**
@@ -80,7 +80,7 @@ bool c_ast_check_cast( c_ast_t const *ast );
  *
  * @sa c_ast_check_cast()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool c_ast_check_declaration( c_ast_t const *ast );
 
 /**
@@ -92,7 +92,7 @@ bool c_ast_check_declaration( c_ast_t const *ast );
  * @return Returns a pointer to an AST node having one of \a kind_ids or null
  * if none.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_kind_id_t kind_ids );
 
@@ -103,7 +103,7 @@ c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
  * @param dir The direction to search.
  * @return Returns said name or null if none.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
 
 /**
@@ -115,7 +115,7 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
  * @return Returns a pointer to an AST node having one of \a type_ids or null
  * if none.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_type_t const *types );
 
@@ -128,7 +128,7 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
  * attributes).
  * @return Returns `true` only if the type of \a ast is \a builtin_tid.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t builtin_tid );
 
 /**
@@ -140,7 +140,7 @@ bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t builtin_tid );
  * @return Returns `true` only if \a ast is one of \a kind_ids or a reference
  * or rvalue reference thereto.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids );
 
 /**
@@ -153,7 +153,7 @@ bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids );
  * @sa c_ast_is_ptr_to_type()
  * @sa c_ast_is_ref_to_tid_any()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
 
 /**
@@ -177,7 +177,7 @@ bool c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
  *
  * @sa c_ast_is_ptr_to_tid_any()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
                            c_type_t const *equal_type );
 
@@ -192,7 +192,7 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
  *
  * @sa c_ast_is_ptr_to_tid_any()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
 
 /**
@@ -206,7 +206,7 @@ bool c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
  * @param decl_ast The AST of a declaration.  May be null.
  * @return Returns the final AST.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
 
 /**
@@ -216,7 +216,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
  * @param ast The AST (or one of its child nodes) to take from.
  * @return Returns said name or en empty name.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_sname_t c_ast_take_name( c_ast_t *ast );
 
 /**
@@ -239,7 +239,7 @@ c_sname_t c_ast_take_name( c_ast_t *ast );
  * @param type The bitwise-or of type(s) to find.
  * @return Returns the taken type.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
 
 /**
@@ -256,7 +256,7 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
  * @sa c_ast_unreference()
  * @sa c_ast_untypedef()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
 
 /**
@@ -273,7 +273,7 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
  * @sa c_ast_unpointer()
  * @sa c_ast_untypedef()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 
 /**
@@ -287,7 +287,7 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
  * @sa c_ast_unpointer()
  * @sa c_ast_unreference()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
 
 ///////////////////////////////////////////////////////////////////////////////

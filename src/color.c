@@ -95,7 +95,7 @@ static color_cap_t const COLOR_CAPS[] = {
 };
 
 // local functions
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool parse_sgr( char const* );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ static bool parse_sgr( char const* );
  * @param sgr_color The SGR color to set; or null or empty to unset.
  * @return Returns `true` only if \a sgr_color is valid.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
   assert( cap != NULL );
   assert( cap->cap_var_to_set != NULL );
@@ -132,7 +132,7 @@ static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
  *
  * @sa http://en.wikipedia.org/wiki/ANSI_escape_code
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool parse_sgr( char const *sgr_color ) {
   if ( sgr_color == NULL )
     return false;

@@ -75,7 +75,7 @@ static char        *prompt_buf[2];      ///< Buffers for prompts.
  * @sa https://tiswww.case.edu/php/chet/readline/rltop.html
  * @sa http://stackoverflow.com/a/31333315/99089
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static inline bool have_genuine_gnu_readline( void ) {
 #if HAVE_DECL_RL_GNU_READLINE_P
   return rl_gnu_readline_p == 1;
@@ -94,7 +94,7 @@ static inline bool have_genuine_gnu_readline( void ) {
  * @return Returns a prompt string.  The caller is responsible for freeing the
  * memory.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char* prompt_create( char suffix ) {
   size_t prompt_len = strlen( CPPDECL ) + 1/*suffix*/ + 1/*space*/;
 

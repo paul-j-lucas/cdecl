@@ -425,7 +425,7 @@ static void       lexer_fatal( char const* );
 
 static void       lexer_update_loc( void );
 
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool parse_identifier( char const*, char const** );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -437,7 +437,7 @@ static bool parse_identifier( char const*, char const** );
  * @param s The string to find.
  * @return Returns the corresponding C/C++ language literal or null if none.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char const* c_hyphen_find( char const *s ) {
   assert( s != NULL );
   // the list is small, so linear search is good enough
@@ -454,7 +454,7 @@ static char const* c_hyphen_find( char const *s ) {
  * @param s The string to find.
  * @return Returns the corresponding Bison token, if found; Y_ERROR otherwise.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static yytokentype cdecl_hyphen_find( char const *s ) {
   assert( s != NULL );
   // the list is small, so linear search is good enough
@@ -471,7 +471,7 @@ static yytokentype cdecl_hyphen_find( char const *s ) {
  * @param s The string to find.
  * @return Returns a pointer to the corresponding keyword or null if not found.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   assert( s != NULL );
   // the list is small, so linear search is good enough
@@ -493,7 +493,7 @@ static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
  * @param sname The `c_sname` to parse into.
  * @return Returns `true` only if the scoped name was successfully parsed.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool c_sname_parse( char const *s, c_sname_t *sname ) {
   assert( s != NULL );
   assert( sname != NULL );
@@ -531,7 +531,7 @@ static bool c_sname_parse( char const *s, c_sname_t *sname ) {
  * @param sname The `c_sname` to parse into.
  * @return Returns `true` only if the scoped name was successfully parsed.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool c_sname_parse_dtor( char const *s, c_sname_t *sname ) {
   assert( s != NULL );
   assert( sname != NULL );
@@ -586,7 +586,7 @@ tilde:
  * @param buf_capacity The capacity of \a buf.
  * @return Returns the number of bytes read.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
   assert( buf != NULL );
   yy_size_t input_avail = input_len - input_sent;
@@ -628,7 +628,7 @@ static inline void newline( void ) {
  * end of the identifier.
  * @return Returns `true` only if an identifier was parsed.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool parse_identifier( char const *s, char const **end ) {
   assert( s != NULL );
   assert( end != NULL );
@@ -646,7 +646,7 @@ static bool parse_identifier( char const *s, char const **end ) {
  * @param base The integer base to use.
  * @return Returns the integer value.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static inline int parse_int( int base ) {
   //
   // We don't need to check for errors from strtol(3) here since the lexer
@@ -664,7 +664,7 @@ static inline int parse_int( int base ) {
  * @return Returns 1 if done or 0 to continue parsing (a new file set via
  * \c yyin).
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static int yywrap( void ) {
   return 1 /* done */;
 }
@@ -1070,7 +1070,7 @@ static void lexer_update_loc( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char const* lexer_input_line( size_t *plen ) {
   if ( plen != NULL )
     *plen = input_len;

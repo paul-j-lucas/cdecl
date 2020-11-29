@@ -162,7 +162,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
           "operator_name", c_oper_get( ast->as.oper.oper_id )->name
         );
         FPUTS( ",\n", dout );
-        C_FALLTHROUGH;
+        PJL_FALLTHROUGH;
 
       case K_FUNCTION:
         PRINT_COMMA;
@@ -185,7 +185,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
             break;
         } // switch
         FPRINTF( dout, " (0x%x),\n", ast->as.func.flags );
-        C_FALLTHROUGH;
+        PJL_FALLTHROUGH;
 
       case K_APPLE_BLOCK:
       case K_CONSTRUCTOR:
@@ -208,7 +208,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         PRINT_COMMA;
         INDENT_PRINT_SNAME( "class_sname", &ast->as.ptr_mbr.class_sname );
         FPUTS( ",\n", dout );
-        C_FALLTHROUGH;
+        PJL_FALLTHROUGH;
 
       case K_POINTER:
       case K_REFERENCE:

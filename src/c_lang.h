@@ -200,7 +200,7 @@ struct c_lang_lit {
  *
  * @sa c_lang_name()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_find( char const *name );
 
 /**
@@ -212,7 +212,7 @@ c_lang_id_t c_lang_find( char const *name );
  * @sa #C_LANG_IS_C()
  * @sa c_lang_is_cpp()
  */
-C_LANG_INLINE C_WARN_UNUSED_RESULT
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool c_lang_is_c( c_lang_id_t lang_id ) {
   return (lang_id & LANG_MASK_C) != LANG_NONE;
 }
@@ -226,7 +226,7 @@ bool c_lang_is_c( c_lang_id_t lang_id ) {
  * @sa #C_LANG_IS_CPP()
  * @sa c_lang_is_c()
  */
-C_LANG_INLINE C_WARN_UNUSED_RESULT
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool c_lang_is_cpp( c_lang_id_t lang_id ) {
   return (lang_id & LANG_MASK_CPP) != LANG_NONE;
 }
@@ -260,7 +260,7 @@ bool c_lang_is_cpp( c_lang_id_t lang_id ) {
  * @return Returns said literal or NULL if there is no appropriate literal for
  * the current language.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char const* c_lang_literal( c_lang_lit_t const lang_lit[] );
 
 /**
@@ -271,7 +271,7 @@ char const* c_lang_literal( c_lang_lit_t const lang_lit[] );
  *
  * @sa c_lang_find()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char const* c_lang_name( c_lang_id_t lang_id );
 
 /**
@@ -286,7 +286,7 @@ char const* c_lang_name( c_lang_id_t lang_id );
  *
  * @return Returns said string.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char const* c_lang_names( void );
 
 /**
@@ -295,7 +295,7 @@ char const* c_lang_names( void );
  * @param lang_ids The bitwise-or of language(s).
  * @return Returns said language.
  */
-C_LANG_INLINE C_WARN_UNUSED_RESULT
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
   return LSB_SET( lang_ids );
 }

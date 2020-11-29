@@ -160,7 +160,7 @@ void c_kind_data_free( void *data ) {
  *
  * @sa c_kind_data_new()
  */
-C_KIND_INLINE C_WARN_UNUSED_RESULT
+C_KIND_INLINE PJL_WARN_UNUSED_RESULT
 c_kind_id_t c_kind_data_get( void const *data ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
   return *REINTERPRET_CAST( c_kind_id_t const*, data );
@@ -177,7 +177,7 @@ c_kind_id_t c_kind_data_get( void const *data ) {
  *
  * @sa c_kind_data_free()
  */
-C_KIND_INLINE C_WARN_UNUSED_RESULT
+C_KIND_INLINE PJL_WARN_UNUSED_RESULT
 void* c_kind_data_new( c_kind_id_t kind_id ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
   c_kind_id_t *const data = MALLOC( c_kind_id_t, 1 );
@@ -196,7 +196,7 @@ void* c_kind_data_new( c_kind_id_t kind_id ) {
  * @param kind_id The <code>\ref c_kind_id</code> to get the name for.
  * @return Returns said name.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char const* c_kind_name( c_kind_id_t kind_id );
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -253,7 +253,7 @@ static c_keyword_t const C_KEYWORDS[] = {
  * @param lang_ids The bitwise-or of language(s) to look for the keyword in.
  * @return Returns a pointer to the corresponding `c_keyword` or null for none.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static c_keyword_t const* c_keyword_find_impl( char const *literal,
                                                c_keyword_t const keywords[],
                                                c_lang_id_t lang_ids ) {

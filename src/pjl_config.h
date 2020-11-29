@@ -92,10 +92,10 @@
 
 /**
  * Intentionally fall through to the next `switch` `case`.
- * @def C_FALLTHROUGH
+ * @def PJL_FALLTHROUGH
  */
 #if __has_attribute(fallthrough) || GCC_AT_LEAST_VERSION(7,0)
-#define C_FALLTHROUGH             __attribute__((fallthrough))
+#define PJL_FALLTHROUGH           __attribute__((fallthrough))
 #endif
 
 /**
@@ -105,14 +105,14 @@
  * @param N The position (starting at 1) of the argument that contains the
  * format string.
  */
-#define C_PRINTF_LIKE_FUNC(N)     __attribute__((format(printf, (N), (N)+1)))
+#define PJL_PRINTF_LIKE_FUNC(N)   __attribute__((format(printf, (N), (N)+1)))
 
 /**
  * Denote that a function's return value should never be ignored.
  *
- * @sa #C_NOWARN_UNUSED_RESULT
+ * @sa #PJL_NOWARN_UNUSED_RESULT
  */
-#define C_WARN_UNUSED_RESULT      __attribute__((warn_unused_result))
+#define PJL_WARN_UNUSED_RESULT    __attribute__((warn_unused_result))
 
 #endif /* HAVE___ATTRIBUTE__ */
 
@@ -121,36 +121,36 @@
  *
  * @note
  * There is no compiler attribute for this.  It's just a visual cue in code
- * that #C_WARN_UNUSED_RESULT wasn't forgotten.
+ * that #PJL_WARN_UNUSED_RESULT wasn't forgotten.
  */
-#define C_NOWARN_UNUSED_RESULT    /* nothing */
+#define PJL_NOWARN_UNUSED_RESULT  /* nothing */
 
 #ifdef HAVE___TYPEOF__
 /**
  * Ignore the return value of a function even if it was declared with
- * #C_WARN_UNUSED_RESULT.
+ * #PJL_WARN_UNUSED_RESULT.
  *
  * @param FN_CALL The function call.
  */
-#define C_IGNORE_RV(FN_CALL) \
+#define PJL_IGNORE_RV(FN_CALL) \
   do { __typeof__(FN_CALL) _rv __attribute__((unused)) = (FN_CALL); } while (0)
 #endif /* HAVE___TYPEOF__ */
 
-#ifndef C_FALLTHROUGH
-#define C_FALLTHROUGH             ((void)0)
-#endif /* C_FALLTHROUGH */
+#ifndef PJL_FALLTHROUGH
+#define PJL_FALLTHROUGH           ((void)0)
+#endif /* PJL_FALLTHROUGH */
 
-#ifndef C_IGNORE_RV
-#define C_IGNORE_RV(FN_CALL)      do { (void)(FN_CALL); } while (0)
+#ifndef PJL_IGNORE_RV
+#define PJL_IGNORE_RV(FN_CALL)    do { (void)(FN_CALL); } while (0)
 #endif /* HAVE___TYPEOF__ */
 
-#ifndef C_PRINTF_LIKE_FUNC
-#define C_PRINTF_LIKE_FUNC(N)     /* nothing */
-#endif /* C_PRINTF_LIKE_FUNC */
+#ifndef PJL_PRINTF_LIKE_FUNC
+#define PJL_PRINTF_LIKE_FUNC(N)   /* nothing */
+#endif /* PJL_PRINTF_LIKE_FUNC */
 
-#ifndef C_WARN_UNUSED_RESULT
-#define C_WARN_UNUSED_RESULT      /* nothing */
-#endif /* C_WARN_UNUSED_RESULT */
+#ifndef PJL_WARN_UNUSED_RESULT
+#define PJL_WARN_UNUSED_RESULT    /* nothing */
+#endif /* PJL_WARN_UNUSED_RESULT */
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -767,7 +767,7 @@ static char const *const TYPEDEFS_WIN32[] = {
  * @param node A pointer to the node to get the data of.
  * @return Returns said pointer.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static inline c_typedef_t const*
 c_typedef_node_data_get( rb_node_t const *node ) {
   return REINTERPRET_CAST( c_typedef_t const*, node->data );
@@ -784,7 +784,7 @@ c_typedef_node_data_get( rb_node_t const *node ) {
  * to whether the `typedef` name pointed to by \a i_data is less than, equal
  * to, or greater than the `typedef` name pointed to by \a j_data.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static int c_typedef_cmp( void const *i_data, void const *j_data ) {
   c_typedef_t const *const ti = REINTERPRET_CAST( c_typedef_t const*, i_data );
   c_typedef_t const *const tj = REINTERPRET_CAST( c_typedef_t const*, j_data );
@@ -799,7 +799,7 @@ static int c_typedef_cmp( void const *i_data, void const *j_data ) {
  * @param ast The AST of the type.
  * @return Returns said `c_typedef`.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
   assert( ast != NULL );
   c_typedef_t *const t = MALLOC( c_typedef_t, 1 );
@@ -833,7 +833,7 @@ static void c_typedef_parse_builtins( char const *const types[const] ) {
  * @return Returning `true` will cause traversal to stop and the current node
  * to be returned to the caller of `rb_tree_visit()`.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool rb_visitor( void *node_data, void *aux_data ) {
   c_typedef_t const *const t =
     REINTERPRET_CAST( c_typedef_t const*, node_data );

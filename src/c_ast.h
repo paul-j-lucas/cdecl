@@ -342,7 +342,7 @@ void c_ast_cleanup( void );
  * @param j_ast The second AST.
  * @return Returns `true` only if the two ASTs are equivalent.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast );
 
 /**
@@ -360,7 +360,7 @@ void c_ast_free( c_ast_t *ast );
  * @param ast The AST to check.  May be null.
  * @return Returns `true` only if it is.
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_parent( c_ast_t const *ast ) {
   return ast != NULL && (ast->kind_id & K_ANY_PARENT) != K_NONE;
 }
@@ -399,7 +399,7 @@ void c_ast_append_sname( c_ast_t *ast, c_sname_t *sname ) {
  * @param ast The AST to get the number of names of.
  * @return Returns said number of names.
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 size_t c_ast_count_name( c_ast_t const *ast ) {
   return c_sname_count( &ast->sname );
 }
@@ -410,7 +410,7 @@ size_t c_ast_count_name( c_ast_t const *ast ) {
  * @param ast The AST to duplicate the name of.
  * @return Returns the name of \a ast duplicated.
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_sname_t c_ast_dup_name( c_ast_t const *ast ) {
   return c_sname_dup( &ast->sname );
 }
@@ -421,7 +421,7 @@ c_sname_t c_ast_dup_name( c_ast_t const *ast ) {
  * @param ast The AST to check.
  * @return Returns `true` only if the name of \a ast is empty.
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_empty_name( c_ast_t const *ast ) {
   return c_sname_empty( &ast->sname );
 }
@@ -437,7 +437,7 @@ bool c_ast_empty_name( c_ast_t const *ast ) {
  * @sa c_ast_local_name()
  * @sa c_ast_scope_name()
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_ast_full_name( c_ast_t const *ast ) {
   return c_sname_full_name( &ast->sname );
 }
@@ -452,7 +452,7 @@ char const* c_ast_full_name( c_ast_t const *ast ) {
  * @return Returns `true` only if the last two names of the scoped name of \a
  * ast match.
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_ctor_name( c_ast_t const *ast ) {
   return c_sname_is_ctor( &ast->sname );
 }
@@ -465,7 +465,7 @@ bool c_ast_is_ctor_name( c_ast_t const *ast ) {
  * @sa c_ast_full_name()
  * @sa c_ast_scope_name()
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_ast_local_name( c_ast_t const *ast ) {
   return c_sname_local_name( &ast->sname );
 }
@@ -479,7 +479,7 @@ char const* c_ast_local_name( c_ast_t const *ast ) {
  *
  * @sa c_ast_set_local_name_type()
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_type_t const* c_ast_local_name_type( c_ast_t const *ast ) {
   return c_sname_local_type( &ast->sname );
 }
@@ -495,7 +495,7 @@ c_type_t const* c_ast_local_name_type( c_ast_t const *ast ) {
  * @sa c_ast_full_name()
  * @sa c_ast_local_name()
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_ast_name_atr( c_ast_t const *ast, size_t roffset ) {
   return c_sname_name_atr( &ast->sname, roffset );
 }
@@ -510,7 +510,7 @@ char const* c_ast_name_atr( c_ast_t const *ast, size_t roffset ) {
  *
  * @sa c_ast_free()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
                     c_loc_t const *loc );
 
@@ -522,7 +522,7 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
  *
  * @sa c_ast_params_count()
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
   return ast->as.func.params.head;
 }
@@ -544,7 +544,7 @@ c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
  *
  * @sa c_ast_params()
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 size_t c_ast_params_count( c_ast_t const *ast ) {
   return slist_len( &ast->as.func.params );
 }
@@ -568,7 +568,7 @@ void c_ast_prepend_sname( c_ast_t *ast, c_sname_t *sname ) {
  * @param ast The AST node to get the root of.
  * @return Returns said AST node.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_root( c_ast_t *ast );
 
 /**
@@ -577,7 +577,7 @@ c_ast_t* c_ast_root( c_ast_t *ast );
  * @param ast The AST to get the scope list of.
  * @return Returns a pointer to the first scope entry.
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_scope_t const* c_ast_scope( c_ast_t const *ast ) {
   return ast->sname.head;
 }
@@ -592,7 +592,7 @@ c_scope_t const* c_ast_scope( c_ast_t const *ast ) {
  * @sa c_ast_full_name()
  * @sa c_ast_local_name()
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_ast_scope_name( c_ast_t const *ast ) {
   return c_sname_scope_name( &ast->sname );
 }
@@ -651,7 +651,7 @@ void c_ast_set_sname( c_ast_t *ast, c_sname_t *sname );
  * @note Function-like parameters are _not_ traversed into.  They're considered
  * distinct ASTs.
  */
-C_NOWARN_UNUSED_RESULT
+PJL_NOWARN_UNUSED_RESULT
 c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
                       void *data );
 
@@ -668,7 +668,7 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
  * @note Function-like parameters are _not_ traversed into.  They're considered
  * distinct ASTs.
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_find( c_ast_t const *ast, c_visit_dir_t dir,
                  c_ast_visitor_t visitor, void *data ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
@@ -682,7 +682,7 @@ bool c_ast_find( c_ast_t const *ast, c_visit_dir_t dir,
  * @param param A pointer to a `c_ast_param_t`.
  * @return Returns a pointer to the AST.
  */
-C_AST_INLINE C_WARN_UNUSED_RESULT
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_param_ast( c_ast_param_t const *param ) {
   return REINTERPRET_CAST( c_ast_t const*, param->data );
 }

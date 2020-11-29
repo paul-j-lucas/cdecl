@@ -54,7 +54,7 @@ static unsigned   c_ast_count;          ///< ASTs allocated but not yet freed.
  * @param ast The AST node to begin at.
  * @return Returns `true` only if there is a cycle.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool c_ast_has_cycle( c_ast_t const *ast ) {
   assert( ast != NULL );
   for ( c_ast_t const *const start_ast = ast; ast->parent_ast != NULL; ) {
@@ -110,11 +110,11 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_OPERATOR:
       if ( i_ast->as.oper.oper_id != j_ast->as.oper.oper_id )
         return false;
-      C_FALLTHROUGH;
+      PJL_FALLTHROUGH;
     case K_FUNCTION:
       if ( i_ast->as.func.flags != j_ast->as.func.flags )
         return false;
-      C_FALLTHROUGH;
+      PJL_FALLTHROUGH;
     case K_APPLE_BLOCK:
       // ret_ast is checked by the parent code below
     case K_CONSTRUCTOR:

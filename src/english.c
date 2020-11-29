@@ -41,7 +41,7 @@
 /// @endcond
 
 // local functions
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_english( c_ast_t*, void* );
 
 static void non_type_name( c_type_t const*, FILE* );
@@ -109,7 +109,7 @@ static void c_ast_english_func_params( c_ast_param_t const *param,
  * @param data A pointer to a `FILE` to emit to.
  * @return Always returns `false`.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   assert( data != NULL );

@@ -201,7 +201,7 @@ static void print_caret( size_t error_column ) {
  * @param s The null-terminated string to use.
  * @return Returns the length of the token.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static size_t token_len( char const *s ) {
   assert( s != NULL );
 

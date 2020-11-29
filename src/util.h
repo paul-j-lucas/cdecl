@@ -450,7 +450,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa exactly_one_bit_set()
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool at_most_one_bit_set( uint64_t n ) {
   return (n & (n - 1)) == 0;
 }
@@ -467,7 +467,7 @@ bool at_most_one_bit_set( uint64_t n ) {
  * If \a path_name consists entirely of `/` characters, a pointer to the string
  * `/` is returned.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char const* base_name( char const *path_name );
 
 /**
@@ -478,7 +478,7 @@ char const* base_name( char const *path_name );
  * @param size The number of bytes to allocate.
  * @return Returns a pointer to the allocated memory.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 void* check_realloc( void *p, size_t size );
 
 /**
@@ -488,7 +488,7 @@ void* check_realloc( void *p, size_t size );
  * @param s The null-terminated string to duplicate or null.
  * @return Returns a copy of \a s or null if \a s is null.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char* check_strdup( char const *s );
 
 /**
@@ -499,7 +499,7 @@ char* check_strdup( char const *s );
  * @param c The character to check for.
  * @return Returns `true` only if \a ends with \a c.
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool ends_with_chr( char const *s, size_t s_len, char c ) {
   return s_len > 0 && s[ s_len - 1 ] == c;
 }
@@ -512,7 +512,7 @@ bool ends_with_chr( char const *s, size_t s_len, char c ) {
  *
  * @sa at_most_one_bit_set()
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool exactly_one_bit_set( uint64_t n ) {
   return n != 0 && at_most_one_bit_set( n );
 }
@@ -526,7 +526,7 @@ bool exactly_one_bit_set( uint64_t n ) {
  *
  * @sa true_or_set()
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool false_set( bool *flag ) {
   return !*flag && (*flag = true);
 }
@@ -542,7 +542,7 @@ bool false_set( bool *flag ) {
  * @param mode The open mode.  It _must_ contain `r`.
  * @return Returns a `FILE` containing the contents of \a buf.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 FILE* fmemopen( void *buf, size_t size, char const *mode );
 #endif /* HAVE_FMEMOPEN */
 
@@ -552,7 +552,7 @@ FILE* fmemopen( void *buf, size_t size, char const *mode );
  * @param p The pointer to add.
  * @return Returns \a p.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 void* free_later( void *p );
 
 /**
@@ -577,7 +577,7 @@ void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines );
  *
  * @return Returns said directory or null if it is not obtainable.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char const* home_dir( void );
 
 /**
@@ -587,7 +587,7 @@ char const* home_dir( void );
  * @param s The null-terminated string to check.
  * @return Returns `true` only if \a s is a blank line.
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool is_blank_line( char const *s ) {
   SKIP_WS( s );
   return *s == '\0';
@@ -599,7 +599,7 @@ bool is_blank_line( char const *s ) {
  * @param fd The file descriptor to check.
  * @return Returns `true` only if \a fd refers to a regular file.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool is_file( int fd );
 
 /**
@@ -609,7 +609,7 @@ bool is_file( int fd );
  * @return Returns `true` only if \a c is either an alphanumeric or `_`
  * character.
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool is_ident( char c ) {
   return isalnum( c ) || c == '_';
 }
@@ -623,7 +623,7 @@ bool is_ident( char c ) {
  * @return Returns `true` only if the bits set in \a bits are among the bits
  * set in \a set.
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool only_bits_in( uint64_t bits, uint64_t set ) {
   return bits != 0 && (bits & set) == bits;
 }
@@ -659,7 +659,7 @@ noreturn void perror_exit( int status );
  * ones ending with `\`).
  * @return Returns the line read or null for EOF.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char* read_input_line( char const *ps1, char const *ps2 );
 
 /**
@@ -671,7 +671,7 @@ char* read_input_line( char const *ps1, char const *ps2 );
  *
  * @sa strcpy_end()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char* chrcpy_end( char *dst, char c );
 
 /**
@@ -684,7 +684,7 @@ char* chrcpy_end( char *dst, char c );
  *
  * @sa chrcpy_end()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char* strcpy_end( char *dst, char const *src );
 
 /**
@@ -696,7 +696,7 @@ char* strcpy_end( char *dst, char const *src );
  *
  * @sa false_set()
  */
-C_UTIL_INLINE C_WARN_UNUSED_RESULT
+C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool true_or_set( bool *flag ) {
   return *flag || !(*flag = true);
 }

@@ -75,7 +75,7 @@ static void         g_impl( g_state_t*, c_ast_t const* );
 static void         g_init( g_state_t*, c_ast_t const*, unsigned, FILE* );
 static void         g_postfix( g_state_t*, c_ast_t const* );
 static void         g_qual_name( g_state_t*, c_ast_t const* );
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char const*  g_sname_full_or_local( g_state_t*, c_ast_t const* );
 static void         g_space_name( g_state_t*, c_ast_t const* );
 
@@ -225,7 +225,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       // before the name, so lie and set the "space" flag.
       //
       g->printed_space = true;
-      C_FALLTHROUGH;
+      PJL_FALLTHROUGH;
 
     case K_FUNCTION:
     case K_OPERATOR:
@@ -271,7 +271,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
           is_throw = false;
         }
       }
-      C_FALLTHROUGH;
+      PJL_FALLTHROUGH;
 
     case K_ARRAY:
     case K_APPLE_BLOCK:
@@ -620,7 +620,7 @@ static void g_qual_name( g_state_t *g, c_ast_t const *ast ) {
  * @param ast The AST to get the name of.
  * @return Returns said name.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char const* g_sname_full_or_local( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );

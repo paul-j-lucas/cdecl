@@ -337,7 +337,7 @@ extern void           set_option( char const*, c_loc_t const*,
                                   char const*, c_loc_t const* );
 
 // local functions
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool typename_ok( c_ast_t const* );
 
 // local variables
@@ -356,7 +356,7 @@ static in_attr_t      in_attr;          ///< Inherited attributes.
  * @param loc A pointer to the token location data.
  * @return Returns a pointer to a new AST.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t *loc ) {
   c_ast_t *const ast = c_ast_new( kind_id, ast_depth, loc );
   slist_push_tail( &ast_gc_list, ast );
@@ -368,7 +368,7 @@ static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t *loc ) {
  *
  * @return Returns said string.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static inline char const* printable_token( void ) {
   return lexer_token[0] == '\n' ? "\\n" : lexer_token;
 }
@@ -378,7 +378,7 @@ static inline char const* printable_token( void ) {
  *
  * @return Returns said AST.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static inline c_ast_t* type_ast_peek( void ) {
   return SLIST_PEEK_HEAD( c_ast_t*, &in_attr.type_ast_stack );
 }
@@ -388,7 +388,7 @@ static inline c_ast_t* type_ast_peek( void ) {
  *
  * @return Returns said AST.
  */
-C_NOWARN_UNUSED_RESULT
+PJL_NOWARN_UNUSED_RESULT
 static inline c_ast_t* type_ast_pop( void ) {
   return SLIST_POP_HEAD( c_ast_t*, &in_attr.type_ast_stack );
 }
@@ -408,7 +408,7 @@ static inline void type_ast_push( c_ast_t *ast ) {
  *
  * @return Returns said qualifier.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static inline c_type_id_t qualifier_tid_peek( void ) {
   return SLIST_PEEK_HEAD( c_qualifier_t*, &in_attr.qualifier_stack )->qual_tid;
 }
@@ -439,7 +439,7 @@ static inline void qualifier_pop( void ) {
  * @return Returns `true` only if cdecl has been initialized and `opt_lang` is
  * _not_ among \a lang_ids.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static inline bool unsupported( c_lang_id_t lang_ids ) {
   return c_initialized && (opt_lang & lang_ids) == LANG_NONE;
 }
@@ -465,7 +465,7 @@ void parser_cleanup( void ) {
  * the existing type; `false` if a different type already exists having the
  * same name.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
                       c_loc_t const *type_decl_loc ) {
   assert( decl_keyword != NULL );
@@ -546,7 +546,7 @@ static void c_ast_explain( c_ast_t const *ast ) {
  * @param decl_loc The source location of \a decl_ast.
  * @return Returns The final AST on success or NULL on error.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static c_ast_t const* join_type_decl_ast( bool has_typename,
                                           c_alignas_t const *align,
                                           c_ast_t *type_ast,
@@ -627,7 +627,7 @@ static c_ast_t const* join_type_decl_ast( bool has_typename,
  * @param format A `printf()` style format string.
  * @param ... Arguments to print.
  */
-C_PRINTF_LIKE_FUNC(1)
+PJL_PRINTF_LIKE_FUNC(1)
 static void elaborate_error( char const *format, ... ) {
   assert( format != NULL );
   if ( !error_newlined ) {
@@ -649,7 +649,7 @@ static void elaborate_error( char const *format, ... ) {
  * @param ast The AST to check.
  * @return Returns `true` only upon success.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool typename_ok( c_ast_t const *ast ) {
   assert( ast != NULL );
 
@@ -731,7 +731,7 @@ static void quit( void ) {
  * of which `typedef`s to print.
  * @return Always returns `false`.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool show_type_visitor( c_typedef_t const *type, void *data ) {
   assert( type != NULL );
 
@@ -1627,7 +1627,7 @@ define_english
 
       if ( ok ) {
         // Once the semantic checks pass, remove the TS_TYPEDEF.
-        C_IGNORE_RV(
+        PJL_IGNORE_RV(
           c_ast_take_type_any( $5.ast, &C_TYPE_LIT_S( TS_TYPEDEF ) )
         );
 
@@ -1998,7 +1998,7 @@ explain_c
       else {
         if ( (ok = c_ast_check_declaration( ast )) ) {
           // Once the semantic checks pass, remove the TS_TYPEDEF.
-          C_IGNORE_RV(
+          PJL_IGNORE_RV(
             c_ast_take_type_any( ast, &C_TYPE_LIT_S( TS_TYPEDEF ) )
           );
           FPRINTF( fout, "%s %s %s %s ", L_DECLARE, $3, L_AS, L_TYPE );
@@ -2465,7 +2465,7 @@ typedef_declaration_c
       C_AST_CHECK_DECL( ast );
       // see the comment in define_english about TS_TYPEDEF
       static c_type_t const typedef_type = { TB_NONE, TS_TYPEDEF, TA_ANY };
-      C_IGNORE_RV( c_ast_take_type_any( ast, &typedef_type ) );
+      PJL_IGNORE_RV( c_ast_take_type_any( ast, &typedef_type ) );
 
       if ( c_ast_count_name( ast ) > 1 ) {
         print_error( &@6,
@@ -2557,7 +2557,7 @@ using_declaration_c
       C_AST_CHECK_DECL( ast );
       // see the comment in "define_english" about TS_TYPEDEF
       static c_type_t const typedef_type = { TB_NONE, TS_TYPEDEF, TA_ANY };
-      C_IGNORE_RV( c_ast_take_type_any( ast, &typedef_type ) );
+      PJL_IGNORE_RV( c_ast_take_type_any( ast, &typedef_type ) );
 
       if ( !add_type( L_USING, ast, &@5 ) )
         PARSE_ABORT();
@@ -3313,7 +3313,7 @@ func_decl_c_ast
         }
         else if ( $1.target_ast != NULL ) {
           $$.ast = $1.ast;
-          C_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast, func_ast ) );
+          PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast, func_ast ) );
         }
         else {
           $$.ast = c_ast_add_func( $1.ast, type_ast, func_ast );
@@ -3506,7 +3506,7 @@ oper_decl_c_ast
       }
       else if ( $1.target_ast != NULL ) {
         $$.ast = $1.ast;
-        C_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast_peek(), oper ) );
+        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast_peek(), oper ) );
       }
       else {
         $$.ast = c_ast_add_func( $1.ast, type_ast_peek(), oper );
@@ -3553,7 +3553,7 @@ pointer_decl_c_ast
       DUMP_AST( "pointer_type_c_ast", $1.ast );
       DUMP_AST( "decl_c_ast", $3.ast );
 
-      C_IGNORE_RV( c_ast_patch_placeholder( $1.ast, $3.ast ) );
+      PJL_IGNORE_RV( c_ast_patch_placeholder( $1.ast, $3.ast ) );
       $$ = $3;
 
       DUMP_AST( "pointer_decl_c_ast", $$.ast );
@@ -3767,7 +3767,7 @@ user_defined_literal_decl_c_ast
       }
       else if ( $1.target_ast != NULL ) {
         $$.ast = $1.ast;
-        C_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast_peek(), lit ) );
+        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast_peek(), lit ) );
       }
       else {
         $$.ast = c_ast_add_func( $1.ast, type_ast_peek(), lit );
@@ -4456,7 +4456,7 @@ func_cast_c_ast
       }
       else if ( $1.target_ast != NULL ) {
         $$.ast = $1.ast;
-        C_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast_peek(), func ) );
+        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast_peek(), func ) );
       }
       else {
         $$.ast = c_ast_add_func( $1.ast, type_ast_peek(), func );

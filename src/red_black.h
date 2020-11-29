@@ -139,7 +139,7 @@ struct rb_tree {
  *
  * @sa rb_tree_insert()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 void* rb_node_delete( rb_tree_t *tree, rb_node_t *node );
 
 /**
@@ -150,7 +150,7 @@ void* rb_node_delete( rb_tree_t *tree, rb_node_t *node );
  * @return Returns a pointer to the node containing \a data or null if not
  * found.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data );
 
 /**
@@ -185,7 +185,7 @@ void rb_tree_init( rb_tree_t *tree, rb_data_cmp_t data_cmp_fn );
  *
  * @sa rb_node_delete()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
 
 /**
@@ -197,7 +197,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
  * @return Returns a pointer to the node at which visiting stopped or null if
  * the entire tree was visited.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visitor_t visitor,
                           void *aux_data );
 

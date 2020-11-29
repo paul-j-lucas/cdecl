@@ -311,7 +311,7 @@ extern char const L_APPLE_BLOCK[];          // Engligh for '^'
  *
  * @return Returns either `_Alignas` (for C) or `alignas` (for C++).
  */
-C_LITERALS_INLINE C_WARN_UNUSED_RESULT
+C_LITERALS_INLINE PJL_WARN_UNUSED_RESULT
 char const* alignas_lang( void ) {
   return C_LANG_IS_CPP() ? L_ALIGNAS : L__ALIGNAS;
 }

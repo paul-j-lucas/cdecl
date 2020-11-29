@@ -86,13 +86,13 @@ struct c_type_info {
 typedef struct c_type_info c_type_info_t;
 
 // local functions
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char const*  c_type_literal( c_type_info_t const*, bool );
 
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char const*  c_type_name_impl( c_type_t const*, bool );
 
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char*        strcpy_sep( char*, char const*, char, bool* );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -485,7 +485,7 @@ static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
  * @param tid The <code>\ref c_type_id_t</code> to check.
  * @return Returns `true` only if \a tid is some form of `long int`.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static inline bool is_long_int( c_type_id_t tid ) {
   return  c_type_id_part_id( tid ) == TPID_BASE &&
           (tid & (TB_LONG | TB_FLOAT | TB_DOUBLE)) == TB_LONG;
@@ -503,7 +503,7 @@ static inline bool is_long_int( c_type_id_t tid ) {
  * @param type_langs The type/languages array to check against.
  * @return Returns the bitwise-or of the language(s) \a tid is legal in.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static c_lang_id_t
 c_type_id_check_combo( c_type_id_t tid, c_type_info_t const type_infos[const],
                        size_t type_infos_size,
@@ -531,7 +531,7 @@ c_type_id_check_combo( c_type_id_t tid, c_type_info_t const type_infos[const],
  * @param type_infos_size The size of \a type_infos.
  * @return Returns the bitwise-or of the language(s) \a type_id is legal in.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static c_lang_id_t
 c_type_id_check_legal( c_type_id_t tid, c_type_info_t const type_infos[const],
                        size_t type_infos_size ) {
@@ -554,7 +554,7 @@ c_type_id_check_legal( c_type_id_t tid, c_type_info_t const type_infos[const],
  * @param is_error `true` if getting the literal for part of an error message.
  * @return Returns said literal.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char const* c_type_literal( c_type_info_t const *ti, bool is_error ) {
   bool const is_english = c_mode == C_ENGLISH_TO_GIBBERISH;
   if ( is_english == is_error && ti->english_lit != NULL )
@@ -570,7 +570,7 @@ static char const* c_type_literal( c_type_info_t const *ti, bool is_error ) {
  * @param is_error `true` if getting the name for part of an error message.
  * @return Returns said name.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char const* c_type_id_name_1( c_type_id_t tid, bool is_error ) {
   assert( exactly_one_bit_set( c_type_id_no_part_id( tid ) ) );
 
@@ -641,7 +641,7 @@ static void c_type_id_name_cat( char **pname, c_type_id_t tid,
  * c_type</code> from.
  * @return Returns said <code>\ref c_type</code>.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static c_type_t c_type_from_tid( c_type_id_t tid ) {
   switch ( c_type_id_part_id( tid ) ) {
     case TPID_BASE:
@@ -665,7 +665,7 @@ static c_type_t c_type_from_tid( c_type_id_t tid ) {
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
 # define NUM_BUFS 2
 
@@ -864,7 +864,7 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
  * been concatenated.
  * @return Returns a pointer to the new end of \a dst.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char* strcpy_sep( char *dst, char const *src, char sep, bool *sep_cat ) {
   assert( dst != NULL );
   assert( src != NULL );

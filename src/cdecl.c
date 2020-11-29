@@ -73,12 +73,12 @@ bool                is_input_a_tty;     // is our input from a tty?
 char const         *me;                 // program name
 
 // extern functions
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 extern bool         parse_string( char const*, size_t );
 
 extern void         parser_cleanup( void );
 
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 extern int          yyparse( void );
 
 extern void         yyrestart( FILE* );
@@ -86,21 +86,21 @@ extern void         yyrestart( FILE* );
 // local functions
 static void         cdecl_cleanup( void );
 
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool         parse_argv( int, char const*[] );
 
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool         parse_command_line( char const*, int, char const*[] );
 
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool         parse_files( int, char const*const[] );
 
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool         parse_stdin( void );
 
 static void         read_conf_file( void );
 
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool         starts_with_keyword( char const*, char const*, size_t );
 
 ////////// main ///////////////////////////////////////////////////////////////
@@ -137,7 +137,7 @@ int main( int argc, char const *argv[] ) {
  * @param command_type The type of commands to check against.
  * @return Returns `true` only if \a s is a command.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool is_command( char const *s, c_command_t command_type ) {
   struct argv_command {
     char const   *keyword;              // The keyword literal.
@@ -223,7 +223,7 @@ static void cdecl_cleanup( void ) {
  * @param argv The command-line argument values.
  * @return Returns `true` only upon success.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool parse_argv( int argc, char const *argv[const] ) {
   if ( argc == 0 )                      // cdecl
     return parse_stdin();
@@ -252,7 +252,7 @@ static bool parse_argv( int argc, char const *argv[const] ) {
  * @param argv The command-line argument values.
  * @return Returns `true` only upon success.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool parse_command_line( char const *command, int argc,
                                 char const *argv[] ) {
   bool space;                           // need to output a space?
@@ -289,7 +289,7 @@ static bool parse_command_line( char const *command, int argc,
  * @param file The FILE to read from.
  * @return Returns `true` only upon success.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool parse_file( FILE *file ) {
   bool ok = true;
 
@@ -309,7 +309,7 @@ static bool parse_file( FILE *file ) {
  * @param files An array of file names.
  * @return Returns `true` only upon success.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool parse_files( int num_files, char const *const files[const] ) {
   bool ok = true;
 
@@ -323,7 +323,7 @@ static bool parse_files( int num_files, char const *const files[const] ) {
         PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", files[i], STRERROR() );
       if ( !parse_file( file ) )
         ok = false;
-      C_IGNORE_RV( fclose( file ) );
+      PJL_IGNORE_RV( fclose( file ) );
     }
   } // for
   return ok;
@@ -334,7 +334,7 @@ static bool parse_files( int num_files, char const *const files[const] ) {
  *
  * @return Returns `true` only upon success.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool parse_stdin( void ) {
   bool ok = true;
   is_input_a_tty = isatty( fileno( fin ) );
@@ -364,7 +364,7 @@ static bool parse_stdin( void ) {
  * @param s_len The length of \a s.  If 0, it will be calculated.
  * @return Returns `true` only upon success.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool parse_string( char const *s, size_t s_len ) {
   if ( s_len == 0 )
     s_len = strlen( s );
@@ -391,14 +391,14 @@ bool parse_string( char const *s, size_t s_len ) {
     explain_buf = MALLOC( char, s_len + 1/*NULL*/ );
     char *p = strcpy_end( explain_buf, L_EXPLAIN );
     p = chrcpy_end( p, ' ' );
-    C_IGNORE_RV( strcpy_end( p, s ) );
+    PJL_IGNORE_RV( strcpy_end( p, s ) );
     s = explain_buf;
   }
 
   FILE *const temp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
   yyrestart( temp );
   bool const ok = yyparse() == 0;
-  C_IGNORE_RV( fclose( temp ) );
+  PJL_IGNORE_RV( fclose( temp ) );
 
   free( explain_buf );
   inserted_len = 0;
@@ -440,10 +440,10 @@ static void read_conf_file( void ) {
   //
   c_lang_id_t const orig_lang = opt_lang;
   opt_lang = LANG_CPP_NEW;
-  C_IGNORE_RV( parse_file( fconf ) );
+  PJL_IGNORE_RV( parse_file( fconf ) );
   opt_lang = orig_lang;
 
-  C_IGNORE_RV( fclose( fconf ) );
+  PJL_IGNORE_RV( fclose( fconf ) );
 }
 
 /**
@@ -454,7 +454,7 @@ static void read_conf_file( void ) {
  * @param keyword_len The length of \a keyword.
  * @return Returns `true` only if \a s starts with \a keyword.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool starts_with_keyword( char const *s, char const *keyword,
                                  size_t keyword_len ) {
   return  strncmp( s, keyword, keyword_len ) == 0 &&

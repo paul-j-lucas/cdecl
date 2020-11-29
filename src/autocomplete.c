@@ -248,10 +248,10 @@ static char const *const SET_OPTIONS[] = {
 };
 
 // local functions
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char*  command_generator( char const*, int );
 
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char* find_keyword( c_lang_lit_t const[], char const*, size_t, size_t* );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -264,7 +264,7 @@ static char* find_keyword( c_lang_lit_t const[], char const*, size_t, size_t* );
  * @param end The ending character position of \a text.
  * @return Returns an array of C strings of possible matches.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char** attempt_completion( char const *text, int start, int end ) {
   assert( text != NULL );
   (void)end;
@@ -283,7 +283,7 @@ static char** attempt_completion( char const *text, int start, int end ) {
  * continue to next match, if any.
  * @return Returns a copy of the command or null if not found.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char* command_generator( char const *text, int state ) {
   assert( text != NULL );
 
@@ -308,7 +308,7 @@ static char* command_generator( char const *text, int state ) {
  * @param index A pointer to the current index into \a keywords to update.
  * @return Returns a copy of the keyword or null if not found.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char* find_keyword( c_lang_lit_t const keywords[const], char const *text,
                            size_t text_len, size_t *index ) {
   assert( text != NULL );
@@ -330,7 +330,7 @@ static char* find_keyword( c_lang_lit_t const keywords[const], char const *text,
  * @param command The command to check for.
  * @return Returns `true` only if it is.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static bool is_command( char const *command ) {
   assert( command != NULL );
   size_t const command_len = strlen( command );
@@ -347,7 +347,7 @@ static bool is_command( char const *command ) {
  * continue to next match, if any.
  * @return Returns a copy of the keyword or null if none.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char* keyword_completion( char const *text, int state ) {
   assert( text != NULL );
 

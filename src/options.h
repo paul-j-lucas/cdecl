@@ -83,7 +83,7 @@ extern int          yydebug;            ///< Bison variable for debugging.
  *
  * @sa is_explicit_int()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool any_explicit_int( void );
 
 /**
@@ -95,7 +95,7 @@ bool any_explicit_int( void );
  *
  * @sa any_explicit_int()
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 bool is_explicit_int( c_type_id_t tid );
 
 /**

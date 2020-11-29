@@ -45,7 +45,7 @@
  * @param scope A pointer to a scope.
  * @return Returns the scope type.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static c_type_t const* c_sname_local_type_impl( c_scope_t const *scope ) {
   assert( scope != NULL );
   c_scope_t const *const next = scope->next;
@@ -64,7 +64,7 @@ static c_type_t const* c_sname_local_type_impl( c_scope_t const *scope ) {
  * @param end_scope The scope to stop before or null for all scopes.
  * @return Returns \a name_buf.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 static char const* scope_name_impl( char *name_buf, char const *name_end,
                                     c_sname_t const *sname,
                                     c_scope_t const *end_scope ) {

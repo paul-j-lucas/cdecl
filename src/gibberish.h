@@ -86,7 +86,7 @@ void c_ast_gibberish_type( c_ast_t const *ast, FILE *gout );
  * characters that have a graph equivalent, returns \a token with said
  * characters replaced by their graphs; otherwise returns \a token as-is.
  */
-C_WARN_UNUSED_RESULT
+PJL_WARN_UNUSED_RESULT
 char const* graph_token_c( char const *token );
 
 ///////////////////////////////////////////////////////////////////////////////
