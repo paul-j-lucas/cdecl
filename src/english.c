@@ -24,12 +24,12 @@
  */
 
 // local
-#include "cdecl.h"                      /* must go first */
-#include "english.h"
+#include "pjl_config.h"                 /* must go first */
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_operator.h"
 #include "c_typedef.h"
+#include "english.h"
 #include "literals.h"
 #include "util.h"
 

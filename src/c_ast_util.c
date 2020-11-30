@@ -25,15 +25,14 @@
  */
 
 // local
-#include "cdecl.h"                      /* must go first */
-#include "c_ast_util.h"
+#include "pjl_config.h"                 /* must go first */
 #include "c_ast.h"
+#include "c_ast_util.h"
 
 /// @cond DOXYGEN_IGNORE
 
 // standard
 #include <assert.h>
-#include <stdbool.h>
 
 /// @endcond
 

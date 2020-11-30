@@ -24,12 +24,13 @@
  */
 
 // local
-#include "cdecl.h"                      /* must go first */
+#include "pjl_config.h"                 /* must go first */
 /// @cond DOXYGEN_IGNORE
 #define C_KIND_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_kind.h"
 #include "c_lang.h"
+#include "cdecl.h"
 #include "options.h"
 #include "util.h"
 

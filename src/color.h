@@ -29,7 +29,7 @@
  */
 
 // local
-#include "cdecl.h"                      /* must go first */
+#include "pjl_config.h"                 /* must go first */
 
 /// @cond DOXYGEN_IGNORE
 

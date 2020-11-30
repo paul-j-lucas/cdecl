@@ -28,6 +28,7 @@
  */
 
 // local
+#include "pjl_config.h"                 /* must go first */
 #include "types.h"
 
 /**

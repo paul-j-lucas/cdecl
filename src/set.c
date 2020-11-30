@@ -24,7 +24,7 @@
  */
 
 // local
-#include "cdecl.h"                      /* must go first */
+#include "pjl_config.h"                 /* must go first */
 #include "c_lang.h"
 #include "options.h"
 #include "print.h"
