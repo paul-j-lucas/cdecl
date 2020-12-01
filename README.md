@@ -69,6 +69,10 @@ most notably:
   and
   variable length array
   function arguments.
+* Support for C99 extensions
+  [Embedded C](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1021.pdf)
+  and
+  [Unified Parallel C](https://upc.lbl.gov/).
 * Support for the standard C11 atomic types
   `atomic_bool`,
   `atomic_char`,
@@ -106,6 +110,10 @@ most notably:
   the function trailing return-type syntax,
   and
   ref-qualified member function declarations.
+* Support for C++20
+  `consteval`
+  and
+  `constinit`.
 * Support for C++
   `[[carries_dependency]]`,
   `[[deprecated]]`,
