@@ -37,7 +37,7 @@ most notably:
   C95,
   C99,
   C11,
-  C18,
+  C17,
   C2X,
   C++98,
   C++03,

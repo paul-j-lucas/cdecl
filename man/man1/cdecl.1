@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "November 1, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "December 1, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -531,6 +531,9 @@ Adds support for
 \f(CWvolatile\fP,
 and function prototypes.
 .TP
+.B C90
+Synonym for C89.
+.TP
 .B C95
 Use the C95 version of the C language.
 Adds support for
@@ -560,11 +563,14 @@ Adds support for
 and
 \f(CW_Thread_local\fP,
 .TP
-.B C18
-Use the C18 version of the C language.
+.B C17
+Use the C17 version of the C language.
 (Minor revision:
 no new features.
 Equivalent to C11.)
+.TP
+.B C18
+Synonym for C17.
 .TP
 .B C2X
 Use the C2X version of the C language.

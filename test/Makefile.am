@@ -128,7 +128,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fid_v.test \
 	tests/declare_fipfi_v_pfi_v.test \
 	tests/declare_fixiy_v.test \
-	tests/declare_fkr_pi-c18.test \
+	tests/declare_fkr_pi-c17.test \
 	tests/declare_fpc_pi.test \
 	tests/declare_fpci_pi.test \
 	tests/declare_fpfc_i_d.test \
@@ -158,7 +158,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_pbv_pi.test \
 	tests/declare_pci-ec.test \
 	tests/declare_pcpi.test \
-	tests/declare_pfkr_i-c18.test \
+	tests/declare_pfkr_i-c17.test \
 	tests/declare_pfv_pi.test \
 	tests/declare_pi.test \
 	tests/declare_ppi.test \
@@ -356,7 +356,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fid_v.test \
 	tests/explain_fipfi_v_pfi_v.test \
 	tests/explain_fixiy_v.test \
-	tests/explain_fkr_pi-c18.test \
+	tests/explain_fkr_pi-c17.test \
 	tests/explain_fpa5d_v.test \
 	tests/explain_fpc_pi.test \
 	tests/explain_fpci_pi.test \
@@ -637,7 +637,7 @@ TESTS+=	tests/cast_bii_d.test \
 	tests/cast_pf_i-02.test \
 	tests/cast_pfii_i.test \
 	tests/cast_pfv_pi.test \
-	tests/cast_pfx_i-c18.test \
+	tests/cast_pfx_i-c17.test \
 	tests/cast_pi.test \
 	tests/cast_ppi.test \
 	tests/cast_sc.test \
@@ -1604,8 +1604,10 @@ TESTS+=	tests/help-c++.test \
 	tests/set_c++98.test \
 	tests/set_c.test \
 	tests/set_c11.test \
+	tests/set_c17.test \
 	tests/set_c18.test \
 	tests/set_c89.test \
+	tests/set_c90.test \
 	tests/set_c95.test \
 	tests/set_c99.test \
 	tests/set_cknr.test \

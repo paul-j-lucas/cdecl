@@ -10,6 +10,16 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 8.3
+
+** C17
+The official informal name for ISO/IEC 9899:2018 is now C17 instead of C18.
+However, C18 is still accepted as an alias for C17.
+
+** C90
+C90 is now accepted as an alias for C89.
+
+
 * Changes in Cdecl 8.2
 
 ** Added `align`
@@ -639,8 +649,8 @@ Specifically, consteval functions, operator<=>(), and predefined typedefs were
 added: partial_ordering, strong_equality, strong_ordering, weak_equality, and
 weak_ordering.
 
-** Added C18 support
-Since C18 is only a bugfix version, "C18" is merely recognized as a valid
+** Added C17 support
+Since C17 is only a bugfix version, "C17" is merely recognized as a valid
 version of C.
 
 

@@ -69,10 +69,12 @@ static c_lang_t const C_LANG[] = {
   { "KNRC",    LANG_C_KNR   },          // synonym for "knr"
   { "C",       LANG_C_NEW   },
   { "C89",     LANG_C_89,   },
+  { "C90",     LANG_C_89,   },          // synonym for "C89"
   { "C95",     LANG_C_95    },
   { "C99",     LANG_C_99    },
   { "C11",     LANG_C_11    },
-  { "C18",     LANG_C_18    },
+  { "C17",     LANG_C_17    },
+  { "C18",     LANG_C_17    },          // synonym for "C17"
   { "C2X",     LANG_C_2X    },
   { "C++",     LANG_CPP_NEW },
   { "C++98",   LANG_CPP_98  },
@@ -116,7 +118,7 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
     case LANG_C_99_EMC: return "C99 (with Embedded C extensions)";
     case LANG_C_99_UPC: return "C99 (with Unified Parallel C extensions)";
     case LANG_C_11    : return "C11";
-    case LANG_C_18    : return "C18";
+    case LANG_C_17    : return "C17";
     case LANG_C_2X    : return "C2X";
     case LANG_CPP_98  : return "C++98";
     case LANG_CPP_03  : return "C++03";
