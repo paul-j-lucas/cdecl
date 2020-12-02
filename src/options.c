@@ -41,6 +41,7 @@
 #include <errno.h>
 #include <getopt.h>
 #include <stdlib.h>
+#include <stdnoreturn.h>
 #include <string.h>
 #include <sysexits.h>
 
@@ -155,6 +156,7 @@ static char*        format_opt( char, char[], size_t );
 PJL_WARN_UNUSED_RESULT
 static char const*  get_long_opt( char );
 
+noreturn
 static void         usage( void );
 
 ////////// inline functions ///////////////////////////////////////////////////
@@ -428,8 +430,9 @@ static void parse_options( int argc, char const *argv[const] ) {
 }
 
 /**
- * Prints the usage message to standard error.
+ * Prints the usage message to standard error and exits.
  */
+noreturn
 static void usage( void ) {
   PUTS_OUT(
 "usage: " PACKAGE " [options] [command...]\n"

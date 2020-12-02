@@ -267,6 +267,7 @@ void path_append( char *path, char const *component ) {
   strcpy( end, component );
 }
 
+noreturn
 void perror_exit( int status ) {
   perror( me );
   exit( status );
