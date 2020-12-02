@@ -1,5 +1,81 @@
+2020-12-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * color.c: Comment fix.
+   * options.c, util.c: Added "noreturn".
+   * pjl_config.h: Removed do { ... } while (0)
+
+2020-12-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, NEWS, cdecl.1, c_lang.c, c_lang.h, help.c, test/Makefile.am,
+     help-c++.out, help-c.out, help_command-c++.out, help_command-c.out,
+     help_commands-c++.out, help_commands-c.out, set_c17.out, set_c90.out,
+     cast_pfx_i-c17.test, declare_pfkr_i-c17.test, set_c17.test, set_c18.test,
+     set_c90.test: Nos using C17 instead of C18 (but still allowing C18); also
+     allowing C90 as an alias for C89.
+
+2020-11-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c,
+     c_keyword.h, c_kind.c, c_kind.h, c_lang.c, c_lang.h, c_operator.c,
+     c_operator.h, c_sname.c, c_sname.h, c_type.c, c_type.h, c_typedef.c,
+     c_typedef.h, cdecl.c, color.h, debug.c, debug.h, english.c, english.h,
+     errors.c, gibberish.c, gibberish.h, help.c, lexer.h, lexer.l, literals.c,
+     literals.h, options.c, options.h, parser.y, print.c, print.h, prompt.c,
+     prompt.h, red_black.c, red_black.h, set.c, slist.c, slist.h, util.c,
+     util.h: pjl_config.h is now the primary file to #include.
+
+2020-11-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c,
+     c_keyword.h, c_kind.h, c_lang.h, c_operator.c, c_operator.h, c_sname.c,
+     c_sname.h, c_type.c, c_type.h, c_typedef.c, c_typedef.h, cdecl.c, color.c,
+     color.h, debug.c, english.c, errors.c, gibberish.c, gibberish.h, help.c,
+     lexer.h, lexer.l, literals.h, options.c, options.h, parser.y,
+     pjl_config.h, print.c, print.h, prompt.c, red_black.c, red_black.h,
+     slist.h, util.c, util.h: s/C_/PJL_/ for pjl_config.h macros.
+
+2020-11-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l, types.h: Now using Bison-defined yytokentype.
+
+2020-11-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * stdio.in.h, unistd.in.h, unistd_h.m4: Updated Gnulib.
+
+2020-11-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.c, options.h: opt_fin & opt_fout have been made local to options.c
+     and renamed fin_path and fout_path.
+   * debug.c: Now pre-incrementing and post-decrementing.
+   * debug.h: Tweaked comment.
+
+2020-11-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * debug.c: Clean-up.
+   * parser.y: Comment.
+   * parser.y: Replaced '(' with lparen_exp and ')' with rparen_exp in some
+     cases.
+   * parser.y: s/_expected/_exp/
+   * parser.y: Reordered some lines.
+
+2020-11-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.h: Tweaked comment.
+   * c_ast.c: Comment.
+   * c_type.h: Added comment.
+   * c_ast.c, c_ast.h, c_ast_util.c, c_type.h, debug.c, english.c, gibberish.c,
+     parser.y: Tweaking of c_typedef_ast.
+
 2020-11-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c: s/i_ast/j_ast/
+   * lib/Makefile.am, stdlib.in.h, stdlib_h.m4: Updated Gnulib.
+   * c_typedef.c, red_black.h, slist.h: Renaming.
+   * NEWS, parser.y, test/Makefile.am, explain_fac_v-1.out,
+     explain_fac_v-1.test: Added support for C99 type-qualified arrays of
+     unspecified size.
+   * autocomplete.c, c_lang.c, c_type.c, c_typedef.c, cdecl.c, options.c: Added
+     "const" to array sizes.
    * c_typedef.c, red_black.c, red_black.h: Red-black trees are now
      stack-based.
 
