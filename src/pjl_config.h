@@ -141,7 +141,7 @@
 #endif /* PJL_FALLTHROUGH */
 
 #ifndef PJL_IGNORE_RV
-#define PJL_IGNORE_RV(FN_CALL)    do { (void)(FN_CALL); } while (0)
+#define PJL_IGNORE_RV(FN_CALL)    ((void)(FN_CALL))
 #endif /* HAVE___TYPEOF__ */
 
 #ifndef PJL_PRINTF_LIKE_FUNC
