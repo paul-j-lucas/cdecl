@@ -1046,7 +1046,8 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
  *
  * @param msg The error message to print.
  */
-static noreturn void lexer_fatal( char const *msg ) {
+noreturn
+static void lexer_fatal( char const *msg ) {
   //
   // This is defined down here to avoid having to declare yy_fatal_error
   // ourselves and having to get it right being subject to possible changes in
