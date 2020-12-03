@@ -69,7 +69,7 @@ typedef struct rb_tree  rb_tree_t;
 typedef enum   rb_color rb_color_t;
 
 /**
- * The signature for a function passed to `rb_tree_new()` used to compare node
+ * The signature for a function passed to `rb_tree_init()` used to compare node
  * data.
  *
  * @param i_data A pointer to data.

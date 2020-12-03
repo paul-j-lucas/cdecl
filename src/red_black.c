@@ -525,16 +525,6 @@ do_red: node->parent->color = RB_BLACK;
   return NULL;
 }
 
-rb_tree_t* rb_tree_new( rb_data_cmp_t data_cmp_fn ) {
-  assert( data_cmp_fn != NULL );
-
-  rb_tree_t *const tree = MALLOC( rb_tree_t, 1 );
-  rb_node_init( RB_ROOT(tree) );
-  tree->data_cmp_fn = data_cmp_fn;
-
-  return tree;
-}
-
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visitor_t visitor,
                           void *aux_data ) {
   assert( tree != NULL );
