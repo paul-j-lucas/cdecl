@@ -645,6 +645,16 @@ static void elaborate_error( char const *format, ... ) {
 }
 
 /**
+ * Frees all resources used by inherited attributes.
+ */
+static void in_attr_free( void ) {
+  c_sname_free( &in_attr.current_scope );
+  slist_free( &in_attr.qualifier_stack, NULL, &free );
+  slist_free( &in_attr.type_ast_stack, NULL, NULL );
+  MEM_ZERO( &in_attr );
+}
+
+/**
  * Checks whether `typename` is OK since the type's name is a qualified name.
  *
  * @param ast The AST to check.
@@ -679,10 +689,7 @@ static bool typename_ok( c_ast_t const *ast ) {
 static void parse_cleanup( bool hard_reset ) {
   lexer_reset( hard_reset );
   slist_free( &ast_gc_list, NULL, (slist_node_data_free_fn_t)&c_ast_free );
-  c_sname_free( &in_attr.current_scope );
-  slist_free( &in_attr.qualifier_stack, NULL, &free );
-  slist_free( &in_attr.type_ast_stack, NULL, NULL );
-  MEM_ZERO( &in_attr );
+  in_attr_free();
 }
 
 /**
