@@ -300,9 +300,11 @@
  * Inherited attributes.
  */
 struct in_attr {
-  c_sname_t current_scope;              ///< C++ only: current scope, if any.
-  slist_t   qualifier_stack;            ///< `c_qualifier_t` stack.
-  slist_t   type_ast_stack;             ///< Type AST stack.
+  c_alignas_t align;                    ///< Alignment, if any.
+  c_sname_t   current_scope;            ///< C++ only: current scope, if any.
+  slist_t     qualifier_stack;          ///< `c_qualifier_t` stack.
+  slist_t     type_ast_stack;           ///< Type AST stack.
+  bool        typename;                 ///< Was `typename` specified?
 };
 typedef struct in_attr in_attr_t;
 
@@ -595,7 +597,7 @@ static c_ast_t const* join_type_decl_ast( bool has_typename,
   c_type_or_eq( &type, &type2 );
   c_type_or_eq( &ast->type, &type );
 
-  if ( align != NULL ) {
+  if ( align != NULL && align->kind != C_ALIGNAS_NONE ) {
     ast->align = *align;
     if ( c_type_is_tid_any( &type, TS_TYPEDEF ) ) {
       //
@@ -1759,83 +1761,33 @@ explain_c
     /*
      * Common declaration, e.g.: T x.
      */
-  | explain type_c_ast { type_ast_push( $2.ast ); } decl_c_ast
+  | explain type_c_ast { type_ast_push( $2.ast ); } decl_c_list
     {
       type_ast_pop();
-
-      DUMP_START( "explain_c", "EXPLAIN type_c_ast decl_c_ast" );
-      DUMP_AST( "type_c_ast", $2.ast );
-      DUMP_AST( "decl_c_ast", $4.ast );
-
-      c_ast_t const *const ast =
-        join_type_decl_ast( false, NULL, $2.ast, $4.ast, &@4 );
-
-      DUMP_AST( "explain_c", ast );
-      DUMP_END();
-
-      if ( ast == NULL )
-        PARSE_ABORT();
-      c_ast_explain( ast );
     }
 
     /*
-     * Declaration with alignas, e.g.: alignas(8) T x.
+     * Common declaration with alignas, e.g.: alignas(8) T x.
      */
-  | explain alignas_specifier_c typename_opt
-    type_c_ast { type_ast_push( $4.ast ); } decl_c_ast
+  | explain alignas_specifier_c { in_attr.align = $2; }
+    typename_opt { in_attr.typename = $4; }
+    type_c_ast { type_ast_push( $6.ast ); } decl_c_list
     {
       type_ast_pop();
-
-      DUMP_START( "explain_c",
-                  "EXPLAIN ALIGNAS(...) [TYPENAME] type_c_ast decl_c_ast" );
-      switch ( $2.kind ) {
-        case C_ALIGNAS_NONE:
-          break;
-        case C_ALIGNAS_EXPR:
-          DUMP_NUM( "alignas_specifier_c.as.expr", $2.as.expr );
-          break;
-        case C_ALIGNAS_TYPE:
-          DUMP_AST( "alignas_specifier_c.as.type_ast", $2.as.type_ast );
-          break;
-      } // switch
-      DUMP_BOOL( "typename_opt", $3 );
-      DUMP_AST( "type_c_ast", $4.ast );
-      DUMP_AST( "decl_c_ast", $6.ast );
-
-      c_ast_t const *const ast =
-        join_type_decl_ast( $3, &$2, $4.ast, $6.ast, &@6 );
-
-      DUMP_AST( "explain_c", ast );
-      DUMP_END();
-
-      if ( ast == NULL )
-        PARSE_ABORT();
-      c_ast_explain( ast );
     }
 
     /*
-     * C++ declaration using typename (without alignas), e.g.: typename T::U x.
+     * Common C++ declaration with typename (without alignas), e.g.:
+     *
+     *      explain typename T::U x
+     *
      * (We can't use typename_opt because it would introduce more shift/reduce
      * conflicts.)
      */
-  | explain Y_TYPENAME type_c_ast { type_ast_push( $3.ast ); } decl_c_ast
+  | explain Y_TYPENAME { in_attr.typename = true; }
+    type_c_ast { type_ast_push( $4.ast ); } decl_c_list
     {
       type_ast_pop();
-
-      DUMP_START( "explain_c", "EXPLAIN TYPENAME type_c_ast decl_c_ast" );
-      DUMP_BOOL( "TYPENAME", $2 );
-      DUMP_AST( "type_c_ast", $3.ast );
-      DUMP_AST( "decl_c_ast", $5.ast );
-
-      c_ast_t const *const ast =
-        join_type_decl_ast( true, NULL, $3.ast, $5.ast, &@5 );
-
-      DUMP_AST( "explain_c", ast );
-      DUMP_END();
-
-      if ( ast == NULL )
-        PARSE_ABORT();
-      c_ast_explain( ast );
     }
 
     /*
@@ -2065,6 +2017,63 @@ alignas_specifier_c
 alignas
   : Y__ALIGNAS
   | Y_ALIGNAS
+  ;
+
+decl_c_list
+  : decl_c_list ',' decl_c
+  | decl_c
+  ;
+
+decl_c
+  : /* alignas_specifier_c typename_opt type_c_ast */ decl_c_ast
+    {
+      c_ast_t *const type_ast = type_ast_peek();
+
+      DUMP_START( "decl_c", "decl_c_ast" );
+      switch ( in_attr.align.kind ) {
+        case C_ALIGNAS_NONE:
+          break;
+        case C_ALIGNAS_EXPR:
+          DUMP_NUM( "(alignas_specifier_c.as.expr)", in_attr.align.as.expr );
+          break;
+        case C_ALIGNAS_TYPE:
+          DUMP_AST(
+            "(alignas_specifier_c.as.type_ast)", in_attr.align.as.type_ast
+          );
+          break;
+      } // switch
+      DUMP_BOOL( "(typename_opt)", in_attr.typename );
+      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "decl_c_ast", $1.ast );
+
+      c_ast_t const *const ast = join_type_decl_ast(
+        in_attr.typename, &in_attr.align, type_ast, $1.ast, &@1
+      );
+
+      DUMP_AST( "decl_c", ast );
+      DUMP_END();
+
+      if ( ast == NULL )
+        PARSE_ABORT();
+      c_ast_explain( ast );
+
+      //
+      // The type's AST takes on the name of the thing being declared, e.g.:
+      //
+      //      int x
+      //
+      // makes the type_ast (kind = "built-in type", type = "int") take on the
+      // name of "x" so it'll be explained as:
+      //
+      //      declare x as int
+      //
+      // Once explained, the name must be cleared for the subsequent
+      // declaration (if any) in the same declaration statement, e.g.:
+      //
+      //      int x, y
+      //
+      c_sname_free( &type_ast->sname );
+    }
   ;
 
 explain

@@ -370,6 +370,9 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_ga.test \
 	tests/explain_gi.test \
 	tests/explain_gif_v.test \
+	tests/explain_i_i.test \
+	tests/explain_i_pfd_i.test \
+	tests/explain_i_pi.test \
 	tests/explain_ic.test \
 	tests/explain_if_v.test \
 	tests/explain_ig.test \

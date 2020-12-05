@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 8.3
 
+** Multiple, comma-separated declarations
+Multiple, comma-separated declarations are finally supported.
+
 ** C17
 The official informal name for ISO/IEC 9899:2018 is now C17 instead of C18.
 However, C18 is still accepted as an alias for C17.

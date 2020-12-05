@@ -1,0 +1,2 @@
+declare x as int
+declare f as pointer to function (double) returning int

@@ -588,8 +588,9 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
   }
 }
 
-explain_c ::= EXPLAIN type_c_ast decl_c_ast = {
-  type_c_ast = {
+decl_c ::= decl_c_ast = {
+  (typename_opt) = false,
+  (type_c_ast) = {
     sname = "",
     unique_id = 633,
     kind = "built-in type",
@@ -646,7 +647,7 @@ explain_c ::= EXPLAIN type_c_ast decl_c_ast = {
       }
     }
   },
-  explain_c = {
+  decl_c = {
     sname = "f" (none),
     unique_id = 637,
     kind = "function",
