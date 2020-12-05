@@ -199,6 +199,31 @@ PJL_WARN_UNUSED_RESULT
 bool c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
 
 /**
+ * Checks whether `typename` is OK since the type's name is a qualified name.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only upon success.
+ */
+PJL_WARN_UNUSED_RESULT
+bool c_ast_is_typename_ok( c_ast_t const *ast );
+
+/**
+ * Joins \a type_ast and \a decl_ast into a single AST.
+ *
+ * @param has_typename `true` only if the declaration includes `typename`.
+ * @param align The `alignas` specifier, if any.
+ * @param type_ast The type AST.
+ * @param decl_ast The declaration AST.
+ * @param decl_loc The source location of \a decl_ast.
+ * @return Returns The final AST on success or NULL on error.
+ */
+PJL_WARN_UNUSED_RESULT
+c_ast_t const* c_ast_join_type_decl( bool has_typename,
+                                     c_alignas_t const *align,
+                                     c_ast_t *type_ast, c_ast_t *decl_ast,
+                                     c_loc_t const *decl_loc );
+
+/**
  * "Patches" \a type_ast into \a decl_ast only if:
  *  + \a type_ast has no parent.
  *  + The depth of \a type_ast is less than that of \a decl_ast.

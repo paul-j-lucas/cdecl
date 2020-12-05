@@ -28,6 +28,8 @@
 #include "pjl_config.h"                 /* must go first */
 #include "c_ast.h"
 #include "c_ast_util.h"
+#include "literals.h"
+#include "print.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -391,6 +393,94 @@ bool c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
   ast = c_ast_unreference( ast );
   c_type_id_t const base_tid = c_type_id_normalize( ast->type.base_tid );
   return (base_tid & tids) != TB_NONE;
+}
+
+bool c_ast_is_typename_ok( c_ast_t const *ast ) {
+  assert( ast != NULL );
+
+  c_sname_t const *const sname = ast->kind_id == K_TYPEDEF ?
+    &ast->as.c_typedef.for_ast->sname :
+    &ast->sname;
+
+  if ( c_sname_count( sname ) < 2 ) {
+    print_error( &ast->loc,
+      "qualified name expected after \"%s\"", L_TYPENAME
+    );
+    return false;
+  }
+  return true;
+}
+
+c_ast_t const* c_ast_join_type_decl( bool has_typename,
+                                     c_alignas_t const *align,
+                                     c_ast_t *type_ast, c_ast_t *decl_ast,
+                                     c_loc_t const *decl_loc ) {
+  assert( type_ast != NULL );
+  assert( decl_ast != NULL );
+  assert( decl_loc != NULL );
+
+  if ( has_typename && !c_ast_is_typename_ok( type_ast ) )
+    return NULL;
+
+  static c_type_t const typedef_type = { TB_NONE, TS_TYPEDEF, TA_ANY };
+  c_type_t type = c_ast_take_type_any( type_ast, &typedef_type );
+
+  if ( c_type_is_tid_any( &type, TS_TYPEDEF ) &&
+       decl_ast->kind_id == K_TYPEDEF ) {
+    //
+    // This is for a case like:
+    //
+    //      explain typedef int int32_t;
+    //
+    // that is: explaining an existing typedef.  In order to do that, we have
+    // to un-typedef it so we explain the type that it's typedef'd as.
+    //
+    decl_ast = CONST_CAST( c_ast_t*, c_ast_untypedef( decl_ast ) );
+
+    //
+    // However, we also have to check whether the typedef being explained is
+    // not equivalent to the existing typedef.  This is for a case like:
+    //
+    //      explain typedef char int32_t;
+    //
+    if ( !c_ast_equiv( type_ast, decl_ast ) ) {
+      print_error( decl_loc,
+        "\"%s\": \"%s\" redefinition with different type",
+        c_ast_full_name( decl_ast ), L_TYPEDEF
+      );
+      return NULL;
+    }
+  }
+
+  c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
+  c_type_t const type2 = c_ast_take_type_any( ast, &typedef_type );
+  c_type_or_eq( &type, &type2 );
+  c_type_or_eq( &ast->type, &type );
+
+  if ( align != NULL && align->kind != C_ALIGNAS_NONE ) {
+    ast->align = *align;
+    if ( c_type_is_tid_any( &type, TS_TYPEDEF ) ) {
+      //
+      // We check for illegal aligned typedef here rather than in error.c
+      // because the "typedef-ness" needed to be removed previously before the
+      // call to c_ast_check_declaration() below.
+      //
+      print_error( &align->loc, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
+      return NULL;
+    }
+  }
+
+  if ( ast->kind_id == K_USER_DEF_CONVERSION &&
+       c_ast_local_name_type( ast )->base_tid == TB_SCOPE ) {
+    //
+    // User-defined conversions don't have names, but they can still have a
+    // scope.  Since only classes can have them, if the scope is still
+    // TB_SCOPE, change it to TB_CLASS.
+    //
+    c_ast_set_local_name_type( ast, &C_TYPE_LIT_B( TB_CLASS ) );
+  }
+
+  return c_ast_check_declaration( ast ) ? ast : NULL;
 }
 
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {

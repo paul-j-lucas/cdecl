@@ -339,10 +339,6 @@ extern void           print_help( char const* );
 extern void           set_option( char const*, c_loc_t const*,
                                   char const*, c_loc_t const* );
 
-// local functions
-PJL_WARN_UNUSED_RESULT
-static bool typename_ok( c_ast_t const* );
-
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
 static slist_t        ast_gc_list;      ///< `c_ast` nodes freed after parse.
@@ -540,90 +536,6 @@ static void c_ast_explain( c_ast_t const *ast ) {
 }
 
 /**
- * Joins \a type_ast and \a decl_ast into a single AST.
- *
- * @param has_typename `true` only if the declaration includes `typename`.
- * @param align The `alignas` specifier, if any.
- * @param type_ast The type AST.
- * @param decl_ast The declaration AST.
- * @param decl_loc The source location of \a decl_ast.
- * @return Returns The final AST on success or NULL on error.
- */
-PJL_WARN_UNUSED_RESULT
-static c_ast_t const* join_type_decl_ast( bool has_typename,
-                                          c_alignas_t const *align,
-                                          c_ast_t *type_ast,
-                                          c_ast_t *decl_ast,
-                                          c_loc_t const *decl_loc ) {
-  assert( type_ast != NULL );
-  assert( decl_ast != NULL );
-  assert( decl_loc != NULL );
-
-  if ( has_typename && !typename_ok( type_ast ) )
-    return NULL;
-
-  static c_type_t const typedef_type = { TB_NONE, TS_TYPEDEF, TA_ANY };
-  c_type_t type = c_ast_take_type_any( type_ast, &typedef_type );
-
-  if ( c_type_is_tid_any( &type, TS_TYPEDEF ) &&
-       decl_ast->kind_id == K_TYPEDEF ) {
-    //
-    // This is for a case like:
-    //
-    //      explain typedef int int32_t;
-    //
-    // that is: explaining an existing typedef.  In order to do that, we
-    // have to un-typedef it so we explain the type that it's typedef'd as.
-    //
-    decl_ast = CONST_CAST( c_ast_t*, c_ast_untypedef( decl_ast ) );
-
-    //
-    // However, we also have to check whether the typedef being explained
-    // is not equivalent to the existing typedef.  This is for a case like:
-    //
-    //      explain typedef char int32_t;
-    //
-    if ( !c_ast_equiv( type_ast, decl_ast ) ) {
-      print_error( decl_loc,
-        "\"%s\": \"%s\" redefinition with different type",
-        c_ast_full_name( decl_ast ), L_TYPEDEF
-      );
-      return NULL;
-    }
-  }
-
-  c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
-  c_type_t const type2 = c_ast_take_type_any( ast, &typedef_type );
-  c_type_or_eq( &type, &type2 );
-  c_type_or_eq( &ast->type, &type );
-
-  if ( align != NULL && align->kind != C_ALIGNAS_NONE ) {
-    ast->align = *align;
-    if ( c_type_is_tid_any( &type, TS_TYPEDEF ) ) {
-      //
-      // We check for illegal aligned typedef here rather than in error.c
-      // because the "typedef-ness" needed to be removed previously before the
-      // call to c_ast_check_declaration() below.
-      //
-      print_error( &align->loc, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
-      return NULL;
-    }
-  }
-
-  if ( ast->kind_id == K_USER_DEF_CONVERSION &&
-       c_ast_local_name_type( ast )->base_tid == TB_SCOPE ) {
-    //
-    // User-defined conversions don't have names, but they can still have a
-    // scope.  Since only classes can have them, if the scope is still
-    // TB_SCOPE, change it to TB_CLASS.
-    //
-    c_ast_set_local_name_type( ast, &C_TYPE_LIT_B( TB_CLASS ) );
-  }
-
-  return c_ast_check_declaration( ast ) ? ast : NULL;
-}
-
-/**
  * Prints an additional parsing error message to standard error that continues
  * from where `yyerror()` left off.
  *
@@ -654,29 +566,6 @@ static void in_attr_free( void ) {
   slist_free( &in_attr.qualifier_stack, NULL, &free );
   slist_free( &in_attr.type_ast_stack, NULL, NULL );
   MEM_ZERO( &in_attr );
-}
-
-/**
- * Checks whether `typename` is OK since the type's name is a qualified name.
- *
- * @param ast The AST to check.
- * @return Returns `true` only upon success.
- */
-PJL_WARN_UNUSED_RESULT
-static bool typename_ok( c_ast_t const *ast ) {
-  assert( ast != NULL );
-
-  c_sname_t const *const sname = ast->kind_id == K_TYPEDEF ?
-    &ast->as.c_typedef.for_ast->sname :
-    &ast->sname;
-
-  if ( c_sname_count( sname ) < 2 ) {
-    print_error( &ast->loc,
-      "qualified name expected after \"%s\"", L_TYPENAME
-    );
-    return false;
-  }
-  return true;
 }
 
 /**
@@ -2046,7 +1935,7 @@ decl_c
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl_c_ast", $1.ast );
 
-      c_ast_t const *const ast = join_type_decl_ast(
+      c_ast_t const *const ast = c_ast_join_type_decl(
         in_attr.typename, &in_attr.align, type_ast, $1.ast, &@1
       );
 
@@ -2449,7 +2338,7 @@ typedef_declaration_c
       c_ast_t *ast;
       c_sname_t temp_sname;
 
-      if ( $2 && !typename_ok( $4.ast ) )
+      if ( $2 && !c_ast_is_typename_ok( $4.ast ) )
         PARSE_ABORT();
 
       if ( $6.ast->kind_id == K_TYPEDEF ) {
