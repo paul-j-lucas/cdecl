@@ -411,10 +411,9 @@ bool c_ast_is_typename_ok( c_ast_t const *ast ) {
   return true;
 }
 
-c_ast_t const* c_ast_join_type_decl( bool has_typename,
-                                     c_alignas_t const *align,
-                                     c_ast_t *type_ast, c_ast_t *decl_ast,
-                                     c_loc_t const *decl_loc ) {
+c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
+                               c_ast_t *type_ast, c_ast_t *decl_ast,
+                               c_loc_t const *decl_loc ) {
   assert( type_ast != NULL );
   assert( decl_ast != NULL );
   assert( decl_loc != NULL );
