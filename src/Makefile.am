@@ -42,7 +42,6 @@ cdecl_SOURCES =	parser.y \
 		c_typedef.c c_typedef.h \
 		cdecl.c cdecl.h \
 		color.c color.h \
-		debug.h \
 		english.c english.h \
 		errors.c \
 		gibberish.c gibberish.h \
@@ -59,7 +58,7 @@ cdecl_SOURCES =	parser.y \
 		util.c util.h
 
 if ENABLE_CDECL_DEBUG
-cdecl_SOURCES += debug.c
+cdecl_SOURCES += debug.c debug.h
 endif
 
 if WITH_READLINE
