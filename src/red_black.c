@@ -20,7 +20,7 @@
 
 /*
  * Adapted from the following code:
- * https://opensource.apple.com/source/sudo/sudo-46/src/redblack.c
+ * <https://opensource.apple.com/source/sudo/sudo-46/src/redblack.c>
  */
 
 /*
@@ -41,7 +41,7 @@
 
 /*
  * Adapted from the following code written by Emin Martinian:
- * http://web.mit.edu/~emin/www/source_code/red_black_tree/index.html
+ * <http://web.mit.edu/~emin/www/source_code/red_black_tree/index.html>
  *
  * Copyright (c) 2001 Emin Martinian
  *
