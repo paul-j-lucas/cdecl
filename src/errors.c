@@ -72,23 +72,12 @@ static bool c_ast_visitor_error( c_ast_t*, void* );
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_type( c_ast_t*, void* );
 
-PJL_NOWARN_UNUSED_RESULT
-static bool error_kind_not_cast_into( c_ast_t const*, char const* );
-
-PJL_NOWARN_UNUSED_RESULT
-static bool error_kind_not_supported( c_ast_t const* );
-
-PJL_NOWARN_UNUSED_RESULT
-static bool error_kind_not_type( c_ast_t const*, c_type_id_t );
-
-PJL_NOWARN_UNUSED_RESULT
-static bool error_kind_to_kind( c_ast_t const*, c_kind_id_t );
-
-PJL_NOWARN_UNUSED_RESULT
-static bool error_kind_to_type( c_ast_t const*, c_type_id_t );
-
-PJL_NOWARN_UNUSED_RESULT
-static bool error_unknown_type( c_ast_t const* );
+static void error_kind_not_cast_into( c_ast_t const*, char const* );
+static void error_kind_not_supported( c_ast_t const* );
+static void error_kind_not_type( c_ast_t const*, c_type_id_t, bool );
+static void error_kind_to_kind( c_ast_t const*, c_kind_id_t );
+static void error_kind_to_type( c_ast_t const*, c_type_id_t, bool );
+static void error_unknown_type( c_ast_t const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -228,12 +217,12 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
   switch ( of_ast->kind_id ) {
     case K_BUILTIN:
       if ( c_type_is_tid_any( &of_ast->type, TB_VOID ) ) {
-        print_error( &ast->loc, "%s of %s\n", L_ARRAY, L_VOID );
+        print_error( &ast->loc, "%s of %s", L_ARRAY, L_VOID );
         print_hint( "%s of %s to %s", L_ARRAY, L_POINTER, L_VOID );
         return false;
       }
       if ( c_ast_is_register( of_ast ) ) {
-        error_kind_not_type( ast, TS_REGISTER );
+        error_kind_not_type( ast, TS_REGISTER, /*newline=*/true );
         return false;
       }
       break;
@@ -244,7 +233,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
     case K_USER_DEF_CONVERSION:
     case K_USER_DEF_LITERAL:
       print_error( &ast->loc,
-        "%s of %s\n", L_ARRAY, c_kind_name( of_ast->kind_id )
+        "%s of %s", L_ARRAY, c_kind_name( of_ast->kind_id )
       );
       print_hint( "%s of %s to %s", L_ARRAY, L_POINTER, L_FUNCTION );
       return false;
@@ -279,7 +268,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
   }
 
   if ( c_type_is_tid_any( &ast->type, TB_VOID ) && ast->parent_ast == NULL ) {
-    print_error( &ast->loc, "variable of %s\n", L_VOID );
+    print_error( &ast->loc, "variable of %s", L_VOID );
     print_hint( "%s to %s", L_POINTER, L_VOID );
     return false;
   }
@@ -350,7 +339,7 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
 
   if ( c_type_is_tid_any( &ast->type, TB_ANY_CLASS ) &&
        c_ast_is_register( ast ) ) {
-    error_kind_not_type( ast, TS_REGISTER );
+    error_kind_not_type( ast, TS_REGISTER, /*newline=*/true );
     return false;
   }
 
@@ -591,7 +580,7 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   assert( C_LANG_IS_CPP() );
 
   if ( c_type_is_tid_any( &ast->type, TS_CONSTINIT ) ) {
-    error_kind_not_type( ast, TS_CONSTINIT );
+    error_kind_not_type( ast, TS_CONSTINIT, /*newline=*/true );
     return false;
   }
 
@@ -700,7 +689,7 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   }
 
   if ( c_type_is_tid_any( &ast->type, TA_NO_UNIQUE_ADDRESS ) ) {
-    error_kind_not_type( ast, TA_NO_UNIQUE_ADDRESS );
+    error_kind_not_type( ast, TA_NO_UNIQUE_ADDRESS, /*newline=*/true );
     return false;
   }
 
@@ -1241,7 +1230,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
   } // switch
 
   if ( c_ast_is_register( to_ast ) ) {
-    error_kind_to_type( ast, TS_REGISTER );
+    error_kind_to_type( ast, TS_REGISTER, /*newline=*/true );
     return false;
   }
 
@@ -1261,7 +1250,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
 
   if ( c_type_is_tid_any( &ast->type, TS_CONST | TS_VOLATILE ) ) {
     c_type_id_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
-    error_kind_not_type( ast, qual_tid );
+    error_kind_not_type( ast, qual_tid, /*newline=*/false );
     print_hint( "%s to %s", L_REFERENCE, c_type_id_name_error( qual_tid ) );
     return false;
   }
@@ -1269,7 +1258,8 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
   switch ( to_ast->kind_id ) {
     case K_NAME:
-      return error_unknown_type( to_ast );
+      error_unknown_type( to_ast );
+      return VISITOR_ERROR_FOUND;
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       error_kind_to_kind( ast, to_ast->kind_id );
@@ -1279,12 +1269,12 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   } // switch
 
   if ( c_ast_is_register( to_ast ) ) {
-    error_kind_to_type( ast, TS_REGISTER );
+    error_kind_to_type( ast, TS_REGISTER, /*newline=*/true );
     return false;
   }
 
   if ( c_type_is_tid_any( &to_ast->type, TB_VOID ) ) {
-    error_kind_to_type( ast, TB_VOID );
+    error_kind_to_type( ast, TB_VOID, /*newline=*/false );
     print_hint( "%s to %s", L_POINTER, L_VOID );
     return false;
   }
@@ -1308,7 +1298,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
 
   switch ( ret_ast->kind_id ) {
     case K_ARRAY:
-      print_error( &ret_ast->loc, "%s returning %s\n", kind_name, L_ARRAY );
+      print_error( &ret_ast->loc, "%s returning %s", kind_name, L_ARRAY );
       print_hint( "%s returning %s", kind_name, L_POINTER );
       return false;
     case K_BUILTIN:
@@ -1326,7 +1316,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
       print_error( &ret_ast->loc,
-        "%s returning %s\n",
+        "%s returning %s",
         kind_name, c_kind_name( ret_ast->kind_id )
       );
       print_hint( "%s returning %s to %s", kind_name, L_POINTER, L_FUNCTION );
@@ -1336,7 +1326,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   } // switch
 
   if ( c_type_is_tid_any( &ast->type, TS_EXPLICIT ) ) {
-    error_kind_not_type( ast, TS_EXPLICIT );
+    error_kind_not_type( ast, TS_EXPLICIT, /*newline=*/true );
     return false;
   }
 
@@ -1480,8 +1470,10 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       if ( ast->kind_id == K_CONSTRUCTOR ) {
         c_type_id_t const tid =
           ast->type.store_tid & c_type_id_compl( TS_CONSTRUCTOR );
-        if ( tid != TS_NONE )
-          return error_kind_not_type( ast, tid );
+        if ( tid != TS_NONE ) {
+          error_kind_not_type( ast, tid, /*newline=*/true );
+          return VISITOR_ERROR_FOUND;
+        }
       }
       {
         bool const params_ok =
@@ -1503,8 +1495,10 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 
       c_type_id_t const func_like_tid =
         ast->type.store_tid & c_type_id_compl( TS_FUNC_LIKE );
-      if ( func_like_tid != TS_NONE )
-        return error_kind_not_type( ast, func_like_tid );
+      if ( func_like_tid != TS_NONE ) {
+        error_kind_not_type( ast, func_like_tid, /*newline=*/true );
+        return VISITOR_ERROR_FOUND;
+      }
       break;
     }
 
@@ -1522,8 +1516,10 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       break;
 
     case K_POINTER_TO_MEMBER:
-      if ( C_LANG_IS_C() )
-        return error_kind_not_supported( ast );
+      if ( C_LANG_IS_C() ) {
+        error_kind_not_supported( ast );
+        return VISITOR_ERROR_FOUND;
+      }
       PJL_FALLTHROUGH;
     case K_POINTER:
       if ( !c_ast_check_pointer( ast ) )
@@ -1531,12 +1527,16 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       break;
 
     case K_RVALUE_REFERENCE:
-      if ( opt_lang < LANG_CPP_11 )
-        return error_kind_not_supported( ast );
+      if ( opt_lang < LANG_CPP_11 ) {
+        error_kind_not_supported( ast );
+        return VISITOR_ERROR_FOUND;
+      }
       PJL_FALLTHROUGH;
     case K_REFERENCE:
-      if ( C_LANG_IS_C() )
-        return error_kind_not_supported( ast );
+      if ( C_LANG_IS_C() ) {
+        error_kind_not_supported( ast );
+        return VISITOR_ERROR_FOUND;
+      }
       if ( !c_ast_check_reference( ast ) )
         return VISITOR_ERROR_FOUND;
       break;
@@ -1600,7 +1600,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
         c_ast_untypedef( ast->as.udef_conv.conv_ast );
       if ( conv_ast->kind_id == K_ARRAY ) {
         print_error( &conv_ast->loc,
-          "%s %s %s can not convert to an %s\n",
+          "%s %s %s can not convert to an %s",
           L_USER_DEFINED, L_CONVERSION, L_OPERATOR, L_ARRAY
         );
         print_hint( "%s to %s", L_POINTER, L_ARRAY );
@@ -1658,7 +1658,8 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
       case K_POINTER:
         break;
       default:
-        return error_kind_not_type( ast, TS_RESTRICT );
+        error_kind_not_type( ast, TS_RESTRICT, /*newline=*/true );
+        return VISITOR_ERROR_FOUND;
     } // switch
   }
 
@@ -1767,17 +1768,16 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
  *
  * @param ast The AST .
  * @param hint The hint, if any.
- * @return Always returns `false`.
  */
-PJL_NOWARN_UNUSED_RESULT
-static bool error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
+static void error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
   assert( ast != NULL );
   print_error( &ast->loc,
-    "can not %s %s %s\n", L_CAST, L_INTO, c_kind_name( ast->kind_id )
+    "can not %s %s %s", L_CAST, L_INTO, c_kind_name( ast->kind_id )
   );
   if ( hint != NULL )
     print_hint( "%s %s %s", L_CAST, L_INTO, hint );
-  return false;
+  else
+    PUTC_ERR( '\n' );
 }
 
 /**
@@ -1785,31 +1785,28 @@ static bool error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
  *
  * @param ast The AST .
  * @param tid The bad type.
- * @return Always returns `VISITOR_ERROR_FOUND`.
+ * @param newline If `true`, prints a newline.
  */
-PJL_NOWARN_UNUSED_RESULT
-static bool error_kind_not_type( c_ast_t const *ast, c_type_id_t tid ) {
+static void error_kind_not_type( c_ast_t const *ast, c_type_id_t tid,
+                                 bool newline ) {
   assert( ast != NULL );
   print_error( &ast->loc,
-    "%s can not be %s\n",
-    c_kind_name( ast->kind_id ), c_type_id_name_error( tid )
+    "%s can not be %s%s",
+    c_kind_name( ast->kind_id ), c_type_id_name_error( tid ),
+    newline ? "\n" : ""
   );
-  return VISITOR_ERROR_FOUND;
 }
 
 /**
  * Prints an error: `<kind> not supported in <lang>`.
  *
  * @param ast The AST having the bad kind.
- * @return Always returns `VISITOR_ERROR_FOUND`.
  */
-PJL_NOWARN_UNUSED_RESULT
-static bool error_kind_not_supported( c_ast_t const *ast ) {
+static void error_kind_not_supported( c_ast_t const *ast ) {
   assert( ast != NULL );
   print_error( &ast->loc,
     "%s not supported in %s\n", c_kind_name( ast->kind_id ), C_LANG_NAME()
   );
-  return VISITOR_ERROR_FOUND;
 }
 
 /**
@@ -1817,15 +1814,12 @@ static bool error_kind_not_supported( c_ast_t const *ast ) {
  *
  * @param ast The AST having the bad kind.
  * @param kind_id The other kind.
- * @return Always returns `VISITOR_ERROR_FOUND`.
  */
-PJL_NOWARN_UNUSED_RESULT
-static bool error_kind_to_kind( c_ast_t const *ast, c_kind_id_t kind_id ) {
+static void error_kind_to_kind( c_ast_t const *ast, c_kind_id_t kind_id ) {
   assert( ast != NULL );
   print_error( &ast->loc,
     "%s to %s\n", c_kind_name( ast->kind_id ), c_kind_name( kind_id )
   );
-  return VISITOR_ERROR_FOUND;
 }
 
 /**
@@ -1833,28 +1827,25 @@ static bool error_kind_to_kind( c_ast_t const *ast, c_kind_id_t kind_id ) {
  *
  * @param ast The AST having the bad kind.
  * @param tid The bad type.
- * @return Always returns `VISITOR_ERROR_FOUND`.
+ * @param newline If `true`, prints a newline.
  */
-PJL_NOWARN_UNUSED_RESULT
-static bool error_kind_to_type( c_ast_t const *ast, c_type_id_t tid ) {
+static void error_kind_to_type( c_ast_t const *ast, c_type_id_t tid,
+                                bool newline ) {
   assert( ast != NULL );
   print_error( &ast->loc,
-    "%s to %s\n", c_kind_name( ast->kind_id ), c_type_id_name_error( tid )
+    "%s to %s%s", c_kind_name( ast->kind_id ), c_type_id_name_error( tid ),
+    newline ? "\n" : ""
   );
-  return VISITOR_ERROR_FOUND;
 }
 
 /**
  * Prints an error: `"<identifier>": unknown type`.
  *
  * @param ast The AST of the unknown type.
- * @return Always returns `VISITOR_ERROR_FOUND`.
  */
-PJL_NOWARN_UNUSED_RESULT
-static bool error_unknown_type( c_ast_t const *ast ) {
+static void error_unknown_type( c_ast_t const *ast ) {
   assert( ast != NULL );
   print_error( &ast->loc, "\"%s\": unknown type\n", c_ast_full_name( ast ) );
-  return VISITOR_ERROR_FOUND;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -1877,14 +1868,16 @@ bool c_ast_check_cast( c_ast_t const *ast ) {
 
   switch ( ast->kind_id ) {
     case K_ARRAY:
-      return error_kind_not_cast_into( ast, "pointer" );
+      error_kind_not_cast_into( ast, "pointer" );
+      return false;
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_CONVERSION:
     case K_USER_DEF_LITERAL:
-      return error_kind_not_cast_into( ast, "pointer to function" );
+      error_kind_not_cast_into( ast, "pointer to function" );
+      return false;
     default:
       /* suppress warning */;
   } // switch

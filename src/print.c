@@ -247,12 +247,12 @@ void print_error_impl( char const *file, int line, c_loc_t const *loc,
 }
 
 void print_hint( char const *format, ... ) {
-  PUTS_ERR( "\t(did you mean " );
+  PUTS_ERR( "; did you mean " );
   va_list args;
   va_start( args, format );
   vfprintf( stderr, format, args );
   va_end( args );
-  PUTS_ERR( "?)\n" );
+  PUTS_ERR( "?\n" );
 }
 
 void print_loc( c_loc_t const *loc ) {
