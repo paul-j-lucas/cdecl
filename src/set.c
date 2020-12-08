@@ -277,7 +277,7 @@ static void set_lang( bool enabled, c_loc_t const *opt_name_loc,
     if ( opt_graph == C_GRAPH_TRI )
       set_trigraphs( /*enabled=*/true, NULL, NULL, NULL );
   } else {
-    print_error( opt_value_loc, "\"%s\": unknown language", opt_value );
+    print_error( opt_value_loc, "\"%s\": unknown language\n", opt_value );
   }
 }
 
@@ -329,10 +329,11 @@ static void set_trigraphs( bool enabled, c_loc_t const *opt_name_loc,
   (void)opt_value;
   (void)opt_value_loc;
   opt_graph = enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
-  if ( opt_graph && opt_lang >= LANG_CPP_17 )
+  if ( opt_graph && opt_lang >= LANG_CPP_17 ) {
     print_warning( opt_name_loc,
-      "trigraphs are no longer supported in %s", C_LANG_NAME()
+      "trigraphs are no longer supported in %s\n", C_LANG_NAME()
     );
+  }
 }
 
 /**
@@ -424,7 +425,7 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
     if ( strn_nohyphen_eq( opt->name, opt_name, opt_name_len ) ) {
       if ( found_opt != NULL ) {
         print_error( opt_name_loc,
-          "\"%s\": ambiguous set option; could be \"%s%s\" or \"%s%s\"",
+          "\"%s\": ambiguous set option; could be \"%s%s\" or \"%s%s\"\n",
           orig_name,
           is_no ? "no" : "", found_opt->name,
           is_no ? "no" : "", opt->name
@@ -436,7 +437,7 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   } // for
 
   if ( found_opt == NULL ) {
-    print_error( opt_name_loc, "\"%s\": unknown set option", orig_name );
+    print_error( opt_name_loc, "\"%s\": unknown set option\n", orig_name );
     return;
   }
 
@@ -446,7 +447,7 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
     case SET_AFF_ONLY:
       if ( is_no ) {
         print_error( opt_name_loc,
-          "\"no\" not valid for \"%s\"", found_opt->name
+          "\"no\" not valid for \"%s\"\n", found_opt->name
         );
         return;
       }
@@ -454,7 +455,7 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
     case SET_NEG_ONLY:
       if ( !is_no ) {
         print_error( opt_name_loc,
-          "\"no\" required for \"%s\"", found_opt->name
+          "\"no\" required for \"%s\"\n", found_opt->name
         );
         return;
       }
@@ -464,19 +465,19 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   if ( opt_value == NULL ) {
     if ( !is_no && found_opt->takes_value ) {
       print_error( opt_name_loc,
-        "\"%s\" set option requires =<value>",
+        "\"%s\" set option requires =<value>\n",
         orig_name
       );
       return;
     }
   } else {
     if ( is_no ) {
-      print_error( opt_value_loc, "\"no\" set options take no value" );
+      print_error( opt_value_loc, "\"no\" set options take no value\n" );
       return;
     }
     if ( !found_opt->takes_value ) {
       print_error( opt_value_loc,
-        "\"%s\": set option \"%s\" takes no value",
+        "\"%s\": set option \"%s\" takes no value\n",
         opt_value, orig_name
       );
       return;

@@ -235,6 +235,8 @@ void print_error_impl( char const *file, int line, c_loc_t const *loc,
     SGR_START_COLOR( stderr, error );
     PUTS_ERR( "error" );
     SGR_END_COLOR( stderr );
+    if ( opt_cdecl_debug )
+      PRINTF_ERR( " (%s:%d)", file, line );
     PUTS_ERR( ": " );
   }
 
@@ -242,11 +244,6 @@ void print_error_impl( char const *file, int line, c_loc_t const *loc,
   va_start( args, format );
   vfprintf( stderr, format, args );
   va_end( args );
-
-  if ( opt_cdecl_debug )
-    PRINTF_ERR( " (%s:%d)", file, line );
-
-  PUTC_ERR( '\n' );
 }
 
 void print_hint( char const *format, ... ) {
@@ -279,17 +276,14 @@ void print_warning_impl( char const *file, int line, c_loc_t const *loc,
   SGR_START_COLOR( stderr, warning );
   PUTS_ERR( "warning" );
   SGR_END_COLOR( stderr );
+  if ( opt_cdecl_debug )
+    PRINTF_ERR( " (%s:%d)", file, line );
   PUTS_ERR( ": " );
 
   va_list args;
   va_start( args, format );
   vfprintf( stderr, format, args );
   va_end( args );
-
-  if ( opt_cdecl_debug )
-    PRINTF_ERR( " (%s:%d)", file, line );
-
-  PUTC_ERR( '\n' );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

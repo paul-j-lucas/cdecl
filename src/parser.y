@@ -482,7 +482,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
       break;
     case TD_ADD_DIFF:
       print_error( type_decl_loc,
-        "\"%s\": \"%s\" redefinition with different type",
+        "\"%s\": \"%s\" redefinition with different type\n",
         c_ast_full_name( type_ast ), decl_keyword
       );
       return false;
@@ -1232,7 +1232,7 @@ cast_english
       bool ok = false;
 
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
-        print_error( &@1, "%s not supported in %s", $1, C_LANG_NAME() );
+        print_error( &@1, "%s not supported in %s\n", $1, C_LANG_NAME() );
       }
       else if ( (ok = c_ast_check_cast( $5.ast )) ) {
         FPRINTF( fout, "%s<", $1 );
@@ -1279,7 +1279,7 @@ declare_english
         // lose information.
         //
         assert( !c_ast_empty_name( $5.ast ) );
-        print_error( &@5, "\"%s\": unknown type", c_ast_full_name( $5.ast ) );
+        print_error( &@5, "\"%s\": unknown type\n", c_ast_full_name( $5.ast ) );
         c_sname_free( &$2 );
         PARSE_ABORT();
       }
@@ -1312,7 +1312,7 @@ declare_english
         $5.ast->align = $6;
         if ( c_type_is_tid_any( &$5.ast->type, TS_TYPEDEF ) ) {
           // See comment in c_ast_finish_explain().
-          print_error( &@6, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
+          print_error( &@6, "%s can not be %s\n", L_TYPEDEF, L_ALIGNED );
           PARSE_ABORT();
         }
       }
@@ -1505,7 +1505,7 @@ define_english
 
       if ( $5.ast->kind_id == K_NAME ) {// see the comment in "declare_english"
         assert( !c_ast_empty_name( $5.ast ) );
-        print_error( &@5, "\"%s\": unknown type", c_ast_full_name( $5.ast ) );
+        print_error( &@5, "\"%s\": unknown type\n", c_ast_full_name( $5.ast ) );
         c_sname_free( &$2 );
         PARSE_ABORT();
       }
@@ -1630,7 +1630,7 @@ explain_c
       bool ok = false;
 
       if ( unsupported( LANG_CPP_ALL ) ) {
-        print_error( &@2, "%s_cast not supported in %s", $2, C_LANG_NAME() );
+        print_error( &@2, "%s_cast not supported in %s\n", $2, C_LANG_NAME() );
       }
       else {
         if ( (ok = c_ast_check_cast( ast )) ) {
@@ -1841,7 +1841,7 @@ explain_c
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@2,
-          "\"%s\" not supported in %s", L_USING, C_LANG_NAME()
+          "\"%s\" not supported in %s\n", L_USING, C_LANG_NAME()
         );
       }
       else {
@@ -2033,7 +2033,7 @@ class_struct_union_declaration_c
     {
       if ( C_LANG_IS_C() && !c_sname_empty( &in_attr.current_scope ) ) {
         print_error( &@1,
-          "nested types are not supported in %s", C_LANG_NAME()
+          "nested types are not supported in %s\n", C_LANG_NAME()
         );
         PARSE_ABORT();
       }
@@ -2046,7 +2046,7 @@ class_struct_union_declaration_c
         char const *const mbr_name = c_sname_local_name( &$3 );
         if ( strcmp( mbr_name, cur_name ) == 0 ) {
           print_error( &@3,
-            "\"%s\": %s has the same name as its enclosing %s",
+            "\"%s\": %s has the same name as its enclosing %s\n",
             mbr_name, L_MEMBER, c_type_name( cur_type )
           );
           PARSE_ABORT();
@@ -2157,7 +2157,7 @@ namespace_declaration_c
       //
       if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_CPP_MIN(17) ) ) {
         print_error( &@3,
-          "nested %s declarations not supported until %s",
+          "nested %s declarations not supported until %s\n",
           L_NAMESPACE, c_lang_name( LANG_CPP_17 )
         );
       }
@@ -2169,7 +2169,7 @@ namespace_declaration_c
           c_sname_local_type( &in_attr.current_scope );
         if ( !(ok = !c_type_is_tid_any( outer_type, TB_ANY_CLASS ) ) ) {
           print_error( &@1,
-            "\"%s\" may only be nested within a %s", L_NAMESPACE, L_NAMESPACE
+            "\"%s\" may only be nested within a %s\n", L_NAMESPACE, L_NAMESPACE
           );
         }
       }
@@ -2280,12 +2280,12 @@ show_command
     {
       if ( opt_lang < LANG_CPP_11 ) {
         print_error( &@2,
-          "\"%s\": not defined as type via %s or %s",
+          "\"%s\": not defined as type via %s or %s\n",
           $2, L_DEFINE, L_TYPEDEF
         );
       } else {
         print_error( &@2,
-          "\"%s\": not defined as type via %s, %s, or %s",
+          "\"%s\": not defined as type via %s, %s, or %s\n",
           $2, L_DEFINE, L_TYPEDEF, L_USING
         );
       }
@@ -2375,7 +2375,7 @@ typedef_declaration_c
 
       if ( c_ast_count_name( ast ) > 1 ) {
         print_error( &@6,
-          "%s names can not be scoped; use: %s %s { %s ... }",
+          "%s names can not be scoped; use: %s %s { %s ... }\n",
           L_TYPEDEF, L_NAMESPACE, c_ast_scope_name( ast ), L_TYPEDEF
         );
         PARSE_ABORT();
@@ -2426,7 +2426,7 @@ using_declaration_c
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "\"%s\" not supported in %s", L_USING, C_LANG_NAME()
+          "\"%s\" not supported in %s\n", L_USING, C_LANG_NAME()
         );
         PARSE_ABORT();
       }
@@ -2445,7 +2445,7 @@ using_declaration_c
 
       if ( c_ast_count_name( ast ) > 1 ) {
         print_error( &@5,
-          "%s names can not be scoped; use: %s %s { %s ... }",
+          "%s names can not be scoped; use: %s %s { %s ... }\n",
           L_USING, L_NAMESPACE, c_ast_scope_name( ast ), L_USING
         );
         PARSE_ABORT();
@@ -2788,7 +2788,7 @@ pointer_decl_english_ast
 
       if ( $3.ast->kind_id == K_NAME ) {// see the comment in "declare_english"
         assert( !c_ast_empty_name( $3.ast ) );
-        print_error( &@3, "\"%s\": unknown type", c_ast_full_name( $3.ast ) );
+        print_error( &@3, "\"%s\": unknown type\n", c_ast_full_name( $3.ast ) );
         PARSE_ABORT();
       }
 
@@ -2880,7 +2880,8 @@ user_defined_literal_decl_english_ast
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "%s %s not supported in %s", L_USER_DEFINED, L_LITERAL, C_LANG_NAME()
+          "%s %s not supported in %s\n",
+          L_USER_DEFINED, L_LITERAL, C_LANG_NAME()
         );
         PARSE_ABORT();
       }
@@ -2913,7 +2914,7 @@ var_decl_english_ast
 
       if ( $3.ast->kind_id == K_NAME ) {// see the comment in "declare_english"
         assert( !c_ast_empty_name( $3.ast ) );
-        print_error( &@3, "\"%s\": unknown type", c_ast_full_name( $3.ast ) );
+        print_error( &@3, "\"%s\": unknown type\n", c_ast_full_name( $3.ast ) );
         PARSE_ABORT();
       }
 
@@ -3314,7 +3315,7 @@ trailing_return_type_c_ast_opt
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "trailing return type not supported in %s", C_LANG_NAME()
+          "trailing return type not supported in %s\n", C_LANG_NAME()
         );
         PARSE_ABORT();
       }
@@ -3334,7 +3335,8 @@ trailing_return_type_c_ast_opt
       //
       if ( type_ast_peek()->type.base_tid != TB_AUTO ) {
         print_error( &type_ast_peek()->loc,
-          "function with trailing return type must only specify \"%s\"", L_AUTO
+          "function with trailing return type must only specify \"%s\"\n",
+          L_AUTO
         );
         PARSE_ABORT();
       }
@@ -3348,7 +3350,7 @@ func_equals_tid_opt
   | '=' Y_NUMBER
     {
       if ( $2 != 0 ) {
-        print_error( &@2, "'0' expected" );
+        print_error( &@2, "'0' expected\n" );
         PARSE_ABORT();
       }
       $$ = TS_PURE_VIRTUAL;
@@ -4011,7 +4013,7 @@ enum_class_struct_union_ast
   | enum_class_struct_union_tid any_sname_c_opt '{'
     {
       print_error( &@3,
-        "explaining %s definitions is not supported",
+        "explaining %s definitions is not supported\n",
         c_type_id_name( $1 )
       );
       PARSE_ABORT();
@@ -4102,7 +4104,7 @@ restrict_qualifier_tid
       //
       if ( C_LANG_IS_CPP() ) {
         print_error( &@1,
-          "\"%s\" not supported in %s; use \"%s\" instead",
+          "\"%s\" not supported in %s; use \"%s\" instead\n",
           L_RESTRICT, C_LANG_NAME(), L_GNU___RESTRICT
         );
         PARSE_ABORT();
@@ -4155,7 +4157,7 @@ attribute_specifier_list_c_tid
     {
       if ( unsupported( LANG_C_CPP_MIN(2X,11)) ) {
         print_error( &@1,
-          "\"[[\" attribute syntax not supported in %s", C_LANG_NAME()
+          "\"[[\" attribute syntax not supported in %s\n", C_LANG_NAME()
         );
         PARSE_ABORT();
       }
@@ -4206,10 +4208,10 @@ attribute_name_c_tid
 
       c_keyword_t const *const a = c_attribute_find( $1 );
       if ( a == NULL ) {
-        print_warning( &@1, "\"%s\": unknown attribute", $1 );
+        print_warning( &@1, "\"%s\": unknown attribute\n", $1 );
       }
       else if ( unsupported( a->lang_ids ) ) {
-        print_warning( &@1, "\"%s\" not supported in %s", $1, C_LANG_NAME() );
+        print_warning( &@1, "\"%s\" not supported in %s\n", $1, C_LANG_NAME() );
       }
       else {
         $$ = a->type_id;
@@ -4626,7 +4628,7 @@ typedef_type_c_ast
       DUMP_SNAME( "sname_c", &$3 );
 
       if ( type_ast_peek() == NULL ) {
-        print_error( &@3, "\"%s\": unknown type", c_sname_full_name( &$3 ) );
+        print_error( &@3, "\"%s\": unknown type\n", c_sname_full_name( &$3 ) );
         PARSE_ABORT();
       }
 
@@ -4658,7 +4660,7 @@ typedef_type_c_ast
       DUMP_SNAME( "typedef_sname_c", &$3 );
 
       if ( type_ast_peek() == NULL ) {
-        print_error( &@3, "\"%s\": unknown type", c_sname_full_name( &$3 ) );
+        print_error( &@3, "\"%s\": unknown type\n", c_sname_full_name( &$3 ) );
         PARSE_ABORT();
       }
 
@@ -4708,7 +4710,7 @@ sname_c
     {
       // see the comment in "of_scope_english"
       if ( unsupported( LANG_CPP_ALL ) ) {
-        print_error( &@2, "scoped names not supported in %s", C_LANG_NAME() );
+        print_error( &@2, "scoped names not supported in %s\n", C_LANG_NAME() );
         PARSE_ABORT();
       }
 
@@ -5098,7 +5100,7 @@ of_scope_english
       // better error location.
       //
       if ( unsupported( LANG_CPP_ALL ) ) {
-        print_error( &@2, "scoped names not supported in %s", C_LANG_NAME() );
+        print_error( &@2, "scoped names not supported in %s\n", C_LANG_NAME() );
         PARSE_ABORT();
       }
       $$ = $3;
@@ -5118,7 +5120,7 @@ of_scope_list_english
       if ( c_type_is_tid_any( inner_type, TB_NAMESPACE | TB_SCOPE ) &&
            c_type_is_tid_any( outer_type, TB_ANY_CLASS ) ) {
         print_error( &@2,
-          "\"%s\" may only be nested within a %s or %s",
+          "\"%s\" may only be nested within a %s or %s\n",
           c_type_name( inner_type ), L_NAMESPACE, L_SCOPE
         );
         PARSE_ABORT();

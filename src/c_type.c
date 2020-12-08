@@ -1018,7 +1018,7 @@ bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
 
   if ( !c_type_id_is_none( *dst_tid & new_tid ) ) {
     print_error( new_loc,
-      "\"%s\" can not be combined with \"%s\"",
+      "\"%s\" can not be combined with \"%s\"\n",
        c_type_id_name_error( new_tid ), c_type_id_name_error( *dst_tid )
     );
     return false;

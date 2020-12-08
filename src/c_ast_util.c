@@ -404,7 +404,7 @@ bool c_ast_is_typename_ok( c_ast_t const *ast ) {
 
   if ( c_sname_count( sname ) < 2 ) {
     print_error( &ast->loc,
-      "qualified name expected after \"%s\"", L_TYPENAME
+      "qualified name expected after \"%s\"\n", L_TYPENAME
     );
     return false;
   }
@@ -444,7 +444,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
     //
     if ( !c_ast_equiv( type_ast, decl_ast ) ) {
       print_error( decl_loc,
-        "\"%s\": \"%s\" redefinition with different type",
+        "\"%s\": \"%s\" redefinition with different type\n",
         c_ast_full_name( decl_ast ), L_TYPEDEF
       );
       return NULL;
@@ -464,7 +464,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
       // because the "typedef-ness" needed to be removed previously before the
       // call to c_ast_check_declaration() below.
       //
-      print_error( &align->loc, "%s can not be %s", L_TYPEDEF, L_ALIGNED );
+      print_error( &align->loc, "%s can not be %s\n", L_TYPEDEF, L_ALIGNED );
       return NULL;
     }
   }
