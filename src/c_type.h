@@ -170,9 +170,11 @@ enum c_type_part_id {
 //    K_TYPEDEF, but it has to have some type.
 //
 
+#define TX_NONE               0x0000000000000000ull /**< No type at all.      */
+
 // base types & modifiers
-#define TB_NONE               0x0000000000000001ull /**< No type.             */
-#define TB_ANY                0xFFFFFFFFFFFFFFF1ull /**< Any type.            */
+#define TB_NONE               0x0000000000000001ull /**< No base type.        */
+#define TB_ANY                0xFFFFFFFFFFFFFFF1ull /**< Any base type.       */
 #define TB_VOID               0x0000000000000011ull /**< `void`               */
 #define TB_AUTO               0x0000000000000021ull /**< C++11's `auto`.      */
 #define TB_BOOL               0x0000000000000041ull /**< `_Bool` or `bool`    */
@@ -205,8 +207,8 @@ enum c_type_part_id {
 #define TB_EMC_SAT            0x0000000080000001ull /**< `_Sat`               */
 
 // storage classes
-#define TS_NONE               0x0000000000000002ull /**< No storage.          */
-#define TS_ANY                0xFFFFFFFFFFFFFFF2ull /**< Any storage.         */
+#define TS_NONE               0x0000000000000002ull /**< No storage type.     */
+#define TS_ANY                0xFFFFFFFFFFFFFFF2ull /**< Any storage type.    */
 #define TS_AUTO               0x0000000000000012ull /**< C's `auto`.          */
 #define TS_APPLE_BLOCK        0x0000000000000022ull /**< Block.               */
 #define TS_EXTERN             0x0000000000000042ull /**< `extern`             */
