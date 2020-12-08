@@ -39,7 +39,7 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Prints an error message to standard error, including a newline.
+ * Prints an error message to standard error _not_ including a newline.
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
@@ -61,7 +61,7 @@ void print_error_impl( char const *file, int line, c_loc_t const *loc,
                        char const *format, ... );
 
 /**
- * Prints an error message to standard error, including a newline.
+ * Prints an error message to standard error _not_ including a newline.
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
@@ -99,7 +99,7 @@ void print_hint( char const *format, ... );
 void print_loc( c_loc_t const *loc );
 
 /**
- * Prints a warning message to standard error, including a newline.
+ * Prints a warning message to standard error _not_ including a newline.
  *
  * @note
  * This function shouldn't be called directly; use the #print_warning() macro
@@ -119,7 +119,7 @@ void print_warning_impl( char const *file, int line, c_loc_t const *loc,
                          char const *format, ... );
 
 /**
- * Prints an warning message to standard error, including a newline.
+ * Prints an warning message to standard error _not_ including a newline.
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
