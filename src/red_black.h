@@ -19,7 +19,7 @@
 */
 
 /*
- * Adapted from the following code:
+ * Adapted from the code:
  * <https://opensource.apple.com/source/sudo/sudo-46/src/redblack.h>
  */
 
