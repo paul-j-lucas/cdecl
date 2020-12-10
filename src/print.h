@@ -75,7 +75,7 @@ void print_error_impl( char const *file, int line, c_loc_t const *loc,
 /**
  * Prints a hint message to standard error in the form:
  * @code
- *      \t(did you mean _____?)\n
+ * ; did you mean _____?\n
  * @endcode
  * where `_____` is the hint.
  *
