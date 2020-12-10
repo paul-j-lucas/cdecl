@@ -150,7 +150,7 @@
  * @note
  * This must be used _only_ after an `error` token, e.g.:
  * @code
- *  | YDEFINE error
+ *  | Y_DEFINE error
  *    {
  *      ELABORATE_ERROR( "name expected" );
  *    }
