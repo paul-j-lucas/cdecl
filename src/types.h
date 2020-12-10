@@ -26,7 +26,7 @@
 
 /**
  * @file
- * Declares many `typedef` definitions in one file.
+ * Declares some types and many `typedef` definitions in one file.
  *
  * Some headers are bidirectionally dependent, so `typedef`s were used
  * originally rather than `include`.  However, some old C compilers don't like
@@ -62,6 +62,8 @@ typedef unsigned                  c_ast_id_t;     ///< Unique AST node id.
 typedef struct c_ast_pair         c_ast_pair_t;
 typedef struct slist              c_ast_params_t; ///< Function-like parameters.
 typedef struct slist_node         c_ast_param_t;  ///< Function-like parameter.
+typedef struct c_command          c_command_t;
+typedef enum   c_command_kind     c_command_kind_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
 typedef struct c_ecsu_ast         c_ecsu_ast_t;
 typedef struct c_function_ast     c_function_ast_t;
@@ -114,6 +116,25 @@ struct c_ast_pair {
    * subsequent additions to the AST.
    */
   c_ast_t *target_ast;
+};
+
+/**
+ * The kind of cdecl command in least-to-most restrictive order.
+ */
+enum c_command_kind {
+  C_COMMAND_ANY,                        ///< Command is OK anywhere.
+  C_COMMAND_FIRST_ARG,                  ///< `$ cdecl` _command_ _args_
+  C_COMMAND_PROG_NAME,                  ///< `$` _command_ _args_
+  C_COMMAND_LANG_ONLY                   ///< `cdecl> _command_ _args_`
+};
+
+/**
+ * A cdecl command.
+ */
+struct c_command {
+  char const       *literal;            ///< The command literal.
+  c_command_kind_t  kind;               ///< The kind of command.
+  c_lang_id_t       lang_ids;           ///< Language(s) command is in.
 };
 
 /**

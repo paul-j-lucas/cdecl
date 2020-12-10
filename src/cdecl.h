@@ -49,6 +49,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
+extern c_command_t const
+                    CDECL_COMMANDS[];   ///< cdecl commands.
 extern bool         c_initialized;      ///< Initialized (read conf. file)?
 extern c_mode_t     c_mode;             ///< Parsing English or gibberish?
 extern char const  *command_line;       ///< Command from command line, if any.

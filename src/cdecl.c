@@ -54,15 +54,32 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * The type of cdecl command in least-to-most restrictive order.
- */
-enum c_command {
-  C_COMMAND_ANY,                        ///< Any command.
-  C_COMMAND_FIRST_ARG,                  ///< `cdecl` _command_ _args_ ...
-  C_COMMAND_PROG_NAME                   ///< _command_ _args_ ...
+c_command_t const CDECL_COMMANDS[] = {
+  //
+  // If this array is modified, also check CDECL_COMMANDS[] in
+  // autocomplete.c.
+  //
+  { L_CAST,         C_COMMAND_PROG_NAME,  LANG_ALL     },
+  { L_CLASS,        C_COMMAND_FIRST_ARG,  LANG_CPP_ALL },
+  { L_CONST,        C_COMMAND_FIRST_ARG,  LANG_CPP_ALL }, // const cast
+  { L_DECLARE,      C_COMMAND_PROG_NAME,  LANG_ALL     },
+  { L_DEFINE,       C_COMMAND_FIRST_ARG,  LANG_ALL     },
+  { L_DYNAMIC,      C_COMMAND_FIRST_ARG,  LANG_CPP_ALL }, // dynamic cast
+  { L_EXIT,         C_COMMAND_LANG_ONLY,  LANG_ALL     },
+  { L_EXPLAIN,      C_COMMAND_PROG_NAME,  LANG_ALL     },
+  { L_HELP,         C_COMMAND_FIRST_ARG,  LANG_ALL     },
+  { L_NAMESPACE,    C_COMMAND_FIRST_ARG,  LANG_CPP_ALL },
+  { L_QUIT,         C_COMMAND_LANG_ONLY,  LANG_ALL     },
+  { L_REINTERPRET,  C_COMMAND_FIRST_ARG,  LANG_CPP_ALL }, // reinterpret cast
+  { L_SET_COMMAND,  C_COMMAND_FIRST_ARG,  LANG_ALL     },
+  { L_SHOW,         C_COMMAND_FIRST_ARG,  LANG_ALL     },
+  { L_STATIC,       C_COMMAND_FIRST_ARG,  LANG_CPP_ALL }, // static cast
+  { L_STRUCT,       C_COMMAND_FIRST_ARG,  LANG_ALL     },
+  { L_TYPEDEF,      C_COMMAND_FIRST_ARG,  LANG_ALL     },
+  { L_UNION,        C_COMMAND_FIRST_ARG,  LANG_ALL     },
+  { L_USING,        C_COMMAND_FIRST_ARG,  LANG_CPP_MIN(11) },
+  { NULL,           C_COMMAND_ANY,        LANG_NONE    },
 };
-typedef enum c_command c_command_t;
 
 // extern variable definitions
 bool                c_initialized;
@@ -102,7 +119,7 @@ static bool         parse_stdin( void );
 static void         read_conf_file( void );
 
 PJL_WARN_UNUSED_RESULT
-static bool         starts_with_keyword( char const*, char const*, size_t );
+static bool         starts_with( char const*, char const*, size_t );
 
 ////////// main ///////////////////////////////////////////////////////////////
 
@@ -135,53 +152,19 @@ int main( int argc, char const *argv[] ) {
  * Checks whether \a s is a cdecl command.
  *
  * @param s The null-terminated string to check.
- * @param command_type The type of commands to check against.
+ * @param command_kind The type of commands to check against.
  * @return Returns `true` only if \a s is a command.
  */
 PJL_WARN_UNUSED_RESULT
-static bool is_command( char const *s, c_command_t command_type ) {
-  struct argv_command {
-    char const   *keyword;              // The keyword literal.
-    c_command_t   command_type;         // The type of command.
-  };
-  typedef struct argv_command argv_command_t;
-
-  //
-  // Subset of cdecl commands (see CDECL_COMMANDS in autocomplete.c) that can
-  // either be the program name or the first command-line argument.
-  //
-  static argv_command_t const ARGV_COMMANDS[] = {
-    //
-    // If this array is modified, also check CDECL_COMMANDS[] in
-    // autocomplete.c.
-    //
-    { L_CAST,         C_COMMAND_PROG_NAME },
-    { L_CLASS,        C_COMMAND_FIRST_ARG },
-    { L_CONST,        C_COMMAND_FIRST_ARG },  // const cast
-    { L_DECLARE,      C_COMMAND_PROG_NAME },
-    { L_DEFINE,       C_COMMAND_FIRST_ARG },
-    { L_DYNAMIC,      C_COMMAND_FIRST_ARG },  // dynamic cast
-    { L_EXPLAIN,      C_COMMAND_PROG_NAME },
-    { L_HELP,         C_COMMAND_FIRST_ARG },
-    { L_NAMESPACE,    C_COMMAND_FIRST_ARG },
-    { L_REINTERPRET,  C_COMMAND_FIRST_ARG },  // reinterpret cast
-    { L_SET_COMMAND,  C_COMMAND_FIRST_ARG },
-    { L_SHOW,         C_COMMAND_FIRST_ARG },
-    { L_STATIC,       C_COMMAND_FIRST_ARG },  // static cast
-    { L_STRUCT,       C_COMMAND_FIRST_ARG },
-    { L_TYPEDEF,      C_COMMAND_FIRST_ARG },
-    { L_UNION,        C_COMMAND_FIRST_ARG },
-    { L_USING,        C_COMMAND_FIRST_ARG },
-    { NULL,           C_COMMAND_ANY       },
-  };
-
+static bool is_command( char const *s, c_command_kind_t command_kind ) {
+  assert( s != NULL );
   SKIP_WS( s );
 
-  for ( argv_command_t const *c = ARGV_COMMANDS; c->keyword != NULL; ++c ) {
-    if ( c->command_type >= command_type ) {
-      size_t const keyword_len = strlen( c->keyword );
-      if ( starts_with_keyword( s, c->keyword, keyword_len ) ) {
-        if ( c->keyword == L_CONST || c->keyword == L_STATIC ) {
+  for ( c_command_t const *c = CDECL_COMMANDS; c->literal != NULL; ++c ) {
+    if ( c->kind >= command_kind ) {
+      size_t const literal_len = strlen( c->literal );
+      if ( starts_with( s, c->literal, literal_len ) ) {
+        if ( c->literal == L_CONST || c->literal == L_STATIC ) {
           //
           // When in explain-by-default mode, a special case has to be made for
           // const and static since explain is implied only when NOT followed
@@ -190,10 +173,10 @@ static bool is_command( char const *s, c_command_t command_type ) {
           //      const int *p                      // Implies explain.
           //      const cast p into pointer to int  // Does NOT imply explain.
           //
-          char const *p = s + keyword_len;
+          char const *p = s + literal_len;
           if ( isspace( *p ) ) {
             SKIP_WS( p );
-            if ( !starts_with_keyword( p, L_CAST, 4 ) )
+            if ( !starts_with( p, L_CAST, 4 ) )
               break;
           }
         }
@@ -445,18 +428,18 @@ static void read_conf_file( void ) {
 }
 
 /**
- * Checks whether \a s start with a keyword.
+ * Checks whether \a s start with a partial string.
  *
  * @param s The null-terminated string to check.
- * @param keyword The keyword to check against.
- * @param keyword_len The length of \a keyword.
- * @return Returns `true` only if \a s starts with \a keyword.
+ * @param partial The partial string to check against.
+ * @param partial_len The length of \a partial.
+ * @return Returns `true` only if \a s starts with \a partial.
  */
 PJL_WARN_UNUSED_RESULT
-static bool starts_with_keyword( char const *s, char const *keyword,
-                                 size_t keyword_len ) {
-  return  strncmp( s, keyword, keyword_len ) == 0 &&
-          !is_ident( keyword[ keyword_len ] );
+static bool starts_with( char const *s, char const *partial,
+                         size_t partial_len ) {
+  return  strncmp( s, partial, partial_len ) == 0 &&
+          !is_ident( partial[ partial_len ] );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

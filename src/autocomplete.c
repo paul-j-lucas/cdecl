@@ -25,6 +25,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "cdecl.h"
 #include "c_lang.h"
 #include "literals.h"
 #include "options.h"
@@ -58,35 +59,6 @@ typedef CPPFunction rl_completion_func_t;
 /// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
-
-/**
- * Subset of cdecl keywords that are commands.
- */
-static c_lang_lit_t const CDECL_COMMANDS[] = {
-  //
-  // If this array is modified, also check ARGV_COMMANDS[] in is_command().
-  //
-  { LANG_ALL,         L_CAST        },
-  { LANG_CPP_ALL,     L_CLASS       },
-  { LANG_CPP_ALL,     L_CONST       },  // const cast ...
-  { LANG_ALL,         L_DECLARE     },
-  { LANG_ALL,         L_DEFINE      },
-  { LANG_CPP_ALL,     L_DYNAMIC     },  // dynamic cast ...
-  { LANG_ALL,         L_EXIT        },
-  { LANG_ALL,         L_EXPLAIN     },
-  { LANG_ALL,         L_HELP        },
-  { LANG_CPP_ALL,     L_NAMESPACE   },
-  { LANG_ALL,         L_QUIT        },
-  { LANG_CPP_ALL,     L_REINTERPRET },  // reinterpret cast ...
-  { LANG_ALL,         L_SET_COMMAND },
-  { LANG_ALL,         L_SHOW        },
-  { LANG_CPP_ALL,     L_STATIC      },  // static cast ...
-  { LANG_ALL,         L_STRUCT      },
-  { LANG_ALL,         L_TYPEDEF     },
-  { LANG_ALL,         L_UNION       },
-  { LANG_CPP_MIN(11), L_USING       },
-  { LANG_NONE,        NULL          }
-};
 
 /**
  * Subset of cdecl and C/C++ keywords that are completable.
@@ -251,9 +223,6 @@ static char const *const SET_OPTIONS[] = {
 PJL_WARN_UNUSED_RESULT
 static char*  command_generator( char const*, int );
 
-PJL_WARN_UNUSED_RESULT
-static char* find_keyword( c_lang_lit_t const[], char const*, size_t, size_t* );
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -295,32 +264,14 @@ static char* command_generator( char const *text, int state ) {
     text_len = strlen( text );
   }
 
-  return find_keyword( CDECL_COMMANDS, text, text_len, &index );
-}
-
-/**
- * Attempts to find the keyword (partially) matching \a text.
- *
- * @param keywords The c_lang_lit_t array to search through.  The last element
- * _must_ have a `literal` of NULL.
- * @param text The text to search for.
- * @param text_len The length of text to (partially) match.
- * @param index A pointer to the current index into \a keywords to update.
- * @return Returns a copy of the keyword or null if not found.
- */
-PJL_WARN_UNUSED_RESULT
-static char* find_keyword( c_lang_lit_t const keywords[const], char const *text,
-                           size_t text_len, size_t *index ) {
-  assert( text != NULL );
-  assert( index != NULL );
-
-  for ( c_lang_lit_t const *ll; (ll = keywords + *index)->literal != NULL; ) {
-    ++*index;
-    if ( (ll->lang_ids & opt_lang) == LANG_NONE )
+  for ( c_command_t const *c; (c = CDECL_COMMANDS + index)->literal != NULL; ) {
+    ++index;
+    if ( (c->lang_ids & opt_lang) == LANG_NONE )
       continue;
-    if ( strncmp( text, ll->literal, text_len ) == 0 )
-      return check_strdup( ll->literal );
+    if ( strncmp( text, c->literal, text_len ) == 0 )
+      return check_strdup( c->literal );
   } // for
+
   return NULL;
 }
 
@@ -377,11 +328,10 @@ static char* keyword_completion( char const *text, int state ) {
     // If it's not the "cast" command, see if it's any other command.
     //
     if ( command == NULL ) {
-      for ( c_lang_lit_t const *ll = CDECL_COMMANDS; ll->literal != NULL;
-            ++ll ) {
-        if ( (ll->lang_ids & opt_lang) != LANG_NONE &&
-             is_command( ll->literal ) ) {
-          command = ll->literal;
+      for ( c_command_t const *c = CDECL_COMMANDS; c->literal != NULL; ++c ) {
+        if ( (c->lang_ids & opt_lang) != LANG_NONE &&
+             is_command( c->literal ) ) {
+          command = c->literal;
           break;
         }
       } // for
@@ -422,7 +372,16 @@ static char* keyword_completion( char const *text, int state ) {
   //
   // Otherwise, just attempt to match any keyword.
   //
-  return find_keyword( CDECL_KEYWORDS, text, text_len, &index );
+  for ( c_lang_lit_t const *ll;
+        (ll = CDECL_KEYWORDS + index)->literal != NULL; ) {
+    ++index;
+    if ( (ll->lang_ids & opt_lang) == LANG_NONE )
+      continue;
+    if ( strncmp( text, ll->literal, text_len ) == 0 )
+      return check_strdup( ll->literal );
+  } // for
+
+  return NULL;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
