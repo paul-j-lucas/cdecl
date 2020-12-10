@@ -58,9 +58,9 @@
  * The type of cdecl command in least-to-most restrictive order.
  */
 enum c_command {
-  COMMAND_ANY,                          ///< Any command.
-  COMMAND_FIRST_ARG,                    ///< `cdecl` _command_ _args_ ...
-  COMMAND_PROG_NAME                     ///< _command_ _args_ ...
+  C_COMMAND_ANY,                        ///< Any command.
+  C_COMMAND_FIRST_ARG,                  ///< `cdecl` _command_ _args_ ...
+  C_COMMAND_PROG_NAME                   ///< _command_ _args_ ...
 };
 typedef enum c_command c_command_t;
 
@@ -155,27 +155,24 @@ static bool is_command( char const *s, c_command_t command_type ) {
     // If this array is modified, also check CDECL_COMMANDS[] in
     // autocomplete.c.
     //
-    { L_CAST,         COMMAND_PROG_NAME },
-    { L_CLASS,        COMMAND_FIRST_ARG },
-    { L_CONST,        COMMAND_FIRST_ARG },  // const cast
-    { L_DECLARE,      COMMAND_PROG_NAME },
-    { L_DEFINE,       COMMAND_FIRST_ARG },
-    { L_DYNAMIC,      COMMAND_FIRST_ARG },  // dynamic cast
-    { L_EXIT,         COMMAND_ANY       },
-    { L_EXPLAIN,      COMMAND_PROG_NAME },
-    { L_HELP,         COMMAND_FIRST_ARG },
-    { L_NAMESPACE,    COMMAND_FIRST_ARG },
-    { L_Q,            COMMAND_ANY       },
-    { L_QUIT,         COMMAND_ANY       },
-    { L_REINTERPRET,  COMMAND_FIRST_ARG },  // reinterpret cast
-    { L_SET_COMMAND,  COMMAND_FIRST_ARG },
-    { L_SHOW,         COMMAND_FIRST_ARG },
-    { L_STATIC,       COMMAND_FIRST_ARG },  // static cast
-    { L_STRUCT,       COMMAND_FIRST_ARG },
-    { L_TYPEDEF,      COMMAND_FIRST_ARG },
-    { L_UNION,        COMMAND_FIRST_ARG },
-    { L_USING,        COMMAND_FIRST_ARG },
-    { NULL,           COMMAND_ANY       },
+    { L_CAST,         C_COMMAND_PROG_NAME },
+    { L_CLASS,        C_COMMAND_FIRST_ARG },
+    { L_CONST,        C_COMMAND_FIRST_ARG },  // const cast
+    { L_DECLARE,      C_COMMAND_PROG_NAME },
+    { L_DEFINE,       C_COMMAND_FIRST_ARG },
+    { L_DYNAMIC,      C_COMMAND_FIRST_ARG },  // dynamic cast
+    { L_EXPLAIN,      C_COMMAND_PROG_NAME },
+    { L_HELP,         C_COMMAND_FIRST_ARG },
+    { L_NAMESPACE,    C_COMMAND_FIRST_ARG },
+    { L_REINTERPRET,  C_COMMAND_FIRST_ARG },  // reinterpret cast
+    { L_SET_COMMAND,  C_COMMAND_FIRST_ARG },
+    { L_SHOW,         C_COMMAND_FIRST_ARG },
+    { L_STATIC,       C_COMMAND_FIRST_ARG },  // static cast
+    { L_STRUCT,       C_COMMAND_FIRST_ARG },
+    { L_TYPEDEF,      C_COMMAND_FIRST_ARG },
+    { L_UNION,        C_COMMAND_FIRST_ARG },
+    { L_USING,        C_COMMAND_FIRST_ARG },
+    { NULL,           C_COMMAND_ANY       },
   };
 
   SKIP_WS( s );
@@ -228,14 +225,14 @@ PJL_WARN_UNUSED_RESULT
 static bool parse_argv( int argc, char const *argv[const] ) {
   if ( argc == 0 )                      // cdecl
     return parse_stdin();
-  if ( is_command( me, COMMAND_PROG_NAME ) )
+  if ( is_command( me, C_COMMAND_PROG_NAME ) )
     return parse_command_line( me, argc, argv );
 
   //
   // Note that options_init() adjusts argv such that argv[0] becomes the first
   // argument (and no longer the program name).
   //
-  if ( is_command( argv[0], COMMAND_FIRST_ARG ) )
+  if ( is_command( argv[0], C_COMMAND_FIRST_ARG ) )
     return parse_command_line( NULL, argc, argv );
 
   if ( opt_explain )
@@ -381,7 +378,7 @@ bool parse_string( char const *s, size_t s_len ) {
   }
 
   char *explain_buf = NULL;
-  if ( opt_explain && !is_command( s, COMMAND_ANY ) ) {
+  if ( opt_explain && !is_command( s, C_COMMAND_ANY ) ) {
     //
     // The string doesn't start with a command: insert "explain " and set
     // inserted_len so the print_*() functions subtract it from the error
