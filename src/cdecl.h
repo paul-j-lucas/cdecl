@@ -46,6 +46,8 @@
 /** Program name when composing or deciphering C++. */
 #define CPPDECL                   "c++decl"
 
+///////////////////////////////////////////////////////////////////////////////
+
 // extern variables
 extern bool         c_initialized;      ///< Initialized (read conf. file)?
 extern c_mode_t     c_mode;             ///< Parsing English or gibberish?
