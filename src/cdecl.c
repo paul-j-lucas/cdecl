@@ -26,10 +26,10 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "cdecl.h"
 #include "c_ast.h"
 #include "c_lang.h"
 #include "c_typedef.h"
-#include "cdecl.h"
 #include "color.h"
 #include "lexer.h"
 #include "literals.h"

@@ -26,8 +26,8 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "c_ast.h"
 #include "c_ast_util.h"
+#include "c_ast.h"
 #include "literals.h"
 #include "print.h"
 

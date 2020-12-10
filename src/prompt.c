@@ -25,11 +25,11 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "prompt.h"
 #include "c_lang.h"
 #include "cdecl.h"
 #include "color.h"
 #include "options.h"
-#include "prompt.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

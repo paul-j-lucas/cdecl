@@ -25,12 +25,12 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "print.h"
 #include "c_lang.h"
 #include "cdecl.h"
 #include "color.h"
 #include "lexer.h"
 #include "options.h"
-#include "print.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

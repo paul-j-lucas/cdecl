@@ -25,11 +25,11 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "c_lang.h"
 /// @cond DOXYGEN_IGNORE
 #define C_TYPE_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_type.h"
+#include "c_lang.h"
 #include "cdecl.h"
 #include "gibberish.h"
 #include "literals.h"

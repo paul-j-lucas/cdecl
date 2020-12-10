@@ -34,13 +34,13 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "lexer.h"
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_keyword.h"
 #include "c_lang.h"
 #include "c_typedef.h"
 #include "cdecl.h"
-#include "lexer.h"
 #include "literals.h"
 #include "options.h"
 #include "util.h"

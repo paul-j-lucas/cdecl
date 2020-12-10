@@ -24,6 +24,7 @@
  */
 
 // local
+#include "pjl_config.h"                 /* must go first */
 #include "color.h"
 #include "options.h"
 #include "util.h"

@@ -28,8 +28,8 @@
 /// @cond DOXYGEN_IGNORE
 #define C_UTIL_INLINE _GL_EXTERN_INLINE
 /// @endcond
-#include "cdecl.h"
 #include "util.h"
+#include "cdecl.h"
 #include "slist.h"
 
 /// @cond DOXYGEN_IGNORE
