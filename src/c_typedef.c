@@ -570,7 +570,7 @@ static char const *const TYPEDEFS_GNUC[] = {
 /**
  * Windows types.
  *
- * @sa https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types
+ * @sa [Windows Data Types](https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types)
  */
 static char const *const TYPEDEFS_WIN32[] = {
   //

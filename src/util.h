@@ -397,7 +397,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param EXPR An expression that can be cast to `bool`.
  *
  * @sa unlikely
- * @sa http://lwn.net/Articles/255364/
+ * @sa [Memory part 5: What programmers can do](http://lwn.net/Articles/255364/)
  */
 #define likely(EXPR)              __builtin_expect( !!(EXPR), 1 )
 
@@ -409,7 +409,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param EXPR An expression that can be cast to `bool`.
  *
  * @sa likely
- * @sa http://lwn.net/Articles/255364/
+ * @sa [Memory part 5: What programmers can do](http://lwn.net/Articles/255364/)
  */
 #define unlikely(EXPR)            __builtin_expect( !!(EXPR), 0 )
 

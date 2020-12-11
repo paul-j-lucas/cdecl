@@ -38,15 +38,15 @@ typedef size_t dam_lev_t;               ///< Damerau-Levenshtein edit distance.
 
 /**
  * Implements the Damerau-Levenshtein algorithm to calculate an _edit distance_
- * between strings, i.e., how many letters need to be swapped within,
+ * between strings, i.e., how many letters need to be transposed within,
  * substituted within, deleted from, or added to \a source to get \a target.
  *
  * @param source The source string.
  * @param target The target string.
  * @return Returns said distance.
  *
- * @sa https://en.wikipedia.org/wiki/Damerau–Levenshtein_distance
- * @sa https://www.lemoda.net/text-fuzzy/damerau-levenshtein/
+ * @sa [Damerau–Levenshtein distance](https://en.wikipedia.org/wiki/Damerau–Levenshtein_distance)
+ * @sa [Damerau–Levenshtein Edit Distance Explained](https://www.lemoda.net/text-fuzzy/damerau-levenshtein/)
  */
 dam_lev_t dam_lev_dist( char const *source, char const *target );
 

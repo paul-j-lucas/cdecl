@@ -68,7 +68,7 @@
  * @file
  * Defined functions for manipulating a Red-Black Tree.
  *
- * @sa https://en.wikipedia.org/wiki/Red-black_tree
+ * @sa [Red-black tree](https://en.wikipedia.org/wiki/Red-black_tree)
  */
 
 // local

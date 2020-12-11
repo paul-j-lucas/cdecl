@@ -194,8 +194,8 @@ struct c_array_ast {
  * @note Members are laid out in the same order as `c_function_ast`: this is
  * taken advantage of.
  *
- * @sa https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks/Articles/00_Introduction.html
- * @sa http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf
+ * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
+ * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
  */
 struct c_apple_block_ast {
   c_ast_t        *ret_ast;              ///< Return type.

@@ -49,7 +49,7 @@
  * Declares types to represent a Red-Black Tree as well as functions for
  * manipulating said trees.
  *
- * @sa https://en.wikipedia.org/wiki/Red-black_tree
+ * @sa [Red-black tree](https://en.wikipedia.org/wiki/Red-black_tree)
  */
 
 // local
