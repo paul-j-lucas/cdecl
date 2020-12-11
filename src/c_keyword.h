@@ -74,6 +74,16 @@ c_keyword_t const* c_attribute_find( char const *literal );
 PJL_WARN_UNUSED_RESULT
 c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids );
 
+/**
+ * Iterates to the next C/C++ keyword.
+ *
+ * @param k A pointer to the previous keyword. For the first iteration, NULL
+ * should be passed.
+ * @return Returns the next C/C++ keyword or null for none.
+ */
+PJL_WARN_UNUSED_RESULT
+c_keyword_t const* c_keyword_next( c_keyword_t const *k );
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */

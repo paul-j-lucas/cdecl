@@ -12,6 +12,10 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 8.3
 
+** "Did you mean ...?" added
+If you make a typographical error for either commands or type names, you'll now
+receive "did you mean?" suggestions as part of the error message.
+
 ** Multiple, comma-separated declarations
 Multiple, comma-separated declarations are finally supported.
 

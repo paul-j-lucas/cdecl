@@ -228,6 +228,20 @@ static size_t token_len( char const *s ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
+void print_did_you_mean( dym_kind_t kinds, char const *unknown_token ) {
+  did_you_mean_t const *const dym_array = dym_new( kinds, unknown_token );
+  if ( dym_array != NULL ) {
+    PUTS_ERR( "; did you mean " );
+    for ( did_you_mean_t const *dym = dym_array; dym->token != NULL; ++dym ) {
+      if ( dym > dym_array )
+        PUTS_ERR( ", " );
+      PRINTF_ERR( "\"%s\"", dym->token );
+    } // for
+    PUTC_ERR( '?' );
+    dym_free( dym_array );
+  }
+}
+
 void print_error_impl( char const *file, int line, c_loc_t const *loc,
                        char const *format, ... ) {
   if ( loc != NULL ) {

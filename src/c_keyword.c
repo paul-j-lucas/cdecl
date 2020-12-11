@@ -278,5 +278,13 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_id ) {
   return c_keyword_find_impl( literal, C_KEYWORDS, lang_id );
 }
 
+c_keyword_t const* c_keyword_next( c_keyword_t const *k ) {
+  if ( k == NULL )
+    k = C_KEYWORDS;
+  else if ( (++k)->literal == NULL )
+    k = NULL;
+  return k;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

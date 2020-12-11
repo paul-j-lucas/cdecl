@@ -28,15 +28,25 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "did_you_mean.h"
 #include "types.h"                      /* for c_loc_t */
 
 /**
- * @defgroup printing-errors-warnings-group Printing Errors & Warnings
- * Functions for printing error and warning messages.
+ * @defgroup printing-errors-warnings-group Printing Hints, Errors, & Warnings
+ * Functions for printing hints, errors and warning messages.
  * @{
  */
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Prints "Did you mean ...?" including a list of things that might have been
+ * meant instead of \a unknown_token.  A newline is _not_ printed.
+ *
+ * @param kinds The bitwise-or of the kind(s) of things possibly meant.
+ * @param unknown_token The unknown token.
+ */
+void print_did_you_mean( dym_kind_t kinds, char const *unknown_token );
 
 /**
  * Prints an error message to standard error _not_ including a newline.

@@ -45,6 +45,7 @@
 #ifdef ENABLE_CDECL_DEBUG
 #include "debug.h"
 #endif /* ENABLE_CDECL_DEBUG */
+#include "did_you_mean.h"
 #include "english.h"
 #include "gibberish.h"
 #include "lexer.h"
@@ -143,7 +144,7 @@
   if ( !c_type_id_add( (DST_TID), (NEW_TID), &(NEW_LOC) ) ) PARSE_ABORT(); )
 
 /**
- * Calls elaborate_error() followed by PARSE_ABORT().
+ * Calls #ELABORATE_ERROR_DYM with a DYM_KINDS of DYM_NONE.
  *
  * @param ... Arguments passed to elaborate_error().
  *
@@ -157,7 +158,25 @@
  * @endcode
  */
 #define ELABORATE_ERROR(...) \
-  BLOCK( elaborate_error( __VA_ARGS__ ); PARSE_ABORT(); )
+  ELABORATE_ERROR_DYM( DYM_NONE, __VA_ARGS__ )
+
+/**
+ * Calls elaborate_error() followed by PARSE_ABORT().
+ *
+ * @param DYM_KINDS The bitwise-or of the kind(s) of things possibly meant.
+ * @param ... Arguments passed to elaborate_error().
+ *
+ * @note
+ * This must be used _only_ after an `error` token, e.g.:
+ * @code
+ *  | error
+ *    {
+ *      ELABORATE_ERROR_DYM( DYM_COMMANDS, "unexpected token" );
+ *    }
+ * @endcode
+ */
+#define ELABORATE_ERROR_DYM(DYM_KINDS,...) \
+  BLOCK( elaborate_error( (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
 
 /**
  * Aborts the current parse (presumably after an error message has been
@@ -539,11 +558,12 @@ static void c_ast_explain( c_ast_t const *ast ) {
  * Prints an additional parsing error message to standard error that continues
  * from where `yyerror()` left off.
  *
+ * @param dym_kinds The bitwise-or of the kind(s) of things possibly meant.
  * @param format A `printf()` style format string.
  * @param ... Arguments to print.
  */
-PJL_PRINTF_LIKE_FUNC(1)
-static void elaborate_error( char const *format, ... ) {
+PJL_PRINTF_LIKE_FUNC(2)
+static void elaborate_error( dym_kind_t dym_kinds, char const *format, ... ) {
   assert( format != NULL );
   if ( !error_newlined ) {
     PUTS_ERR( ": " );
@@ -553,6 +573,10 @@ static void elaborate_error( char const *format, ... ) {
     va_start( args, format );
     vfprintf( stderr, format, args );
     va_end( args );
+
+    if ( lexer_token[0] != '\0' )
+      print_did_you_mean( dym_kinds, printable_token() );
+
     PUTC_ERR( '\n' );
     error_newlined = true;
   }
@@ -593,6 +617,22 @@ static void parse_init( void ) {
     FPUTC( '\n', fout );
     error_newlined = true;
   }
+}
+
+/**
+ * Prints an "unknown type" error message.
+ *
+ * @param loc The location of the unknown \a sname.
+ * @param sname The unknown name.
+ */
+static void print_error_unknown_type( c_loc_t const *loc,
+                                      c_sname_t const *sname ) {
+  // Must dup this since c_sname_full_name() returns a temporary buffer.
+  char const *const unknown_name = check_strdup( c_sname_full_name( sname ) );
+  print_error( loc, "\"%s\": unknown type", unknown_name );
+  print_did_you_mean( DYM_C_TYPES, unknown_name );
+  PUTC_ERR( '\n' );
+  FREE( unknown_name );
 }
 
 /**
@@ -1181,7 +1221,7 @@ command
   | error
     {
       if ( lexer_token[0] != '\0' )
-        ELABORATE_ERROR( "unexpected token" );
+        ELABORATE_ERROR_DYM( DYM_COMMANDS, "unexpected token" );
       else
         ELABORATE_ERROR( "unexpected end of command" );
     }
@@ -1279,7 +1319,7 @@ declare_english
         // lose information.
         //
         assert( !c_ast_empty_name( $5.ast ) );
-        print_error( &@5, "\"%s\": unknown type\n", c_ast_full_name( $5.ast ) );
+        print_error_unknown_type( &@5, &$5.ast->sname );
         c_sname_free( &$2 );
         PARSE_ABORT();
       }
@@ -1505,7 +1545,7 @@ define_english
 
       if ( $5.ast->kind_id == K_NAME ) {// see the comment in "declare_english"
         assert( !c_ast_empty_name( $5.ast ) );
-        print_error( &@5, "\"%s\": unknown type\n", c_ast_full_name( $5.ast ) );
+        print_error_unknown_type( &@5, &$5.ast->sname );
         c_sname_free( &$2 );
         PARSE_ABORT();
       }
@@ -2788,7 +2828,7 @@ pointer_decl_english_ast
 
       if ( $3.ast->kind_id == K_NAME ) {// see the comment in "declare_english"
         assert( !c_ast_empty_name( $3.ast ) );
-        print_error( &@3, "\"%s\": unknown type\n", c_ast_full_name( $3.ast ) );
+        print_error_unknown_type( &@3, &$3.ast->sname );
         PARSE_ABORT();
       }
 
@@ -2914,7 +2954,7 @@ var_decl_english_ast
 
       if ( $3.ast->kind_id == K_NAME ) {// see the comment in "declare_english"
         assert( !c_ast_empty_name( $3.ast ) );
-        print_error( &@3, "\"%s\": unknown type\n", c_ast_full_name( $3.ast ) );
+        print_error_unknown_type( &@3, &$3.ast->sname );
         PARSE_ABORT();
       }
 
@@ -4628,7 +4668,7 @@ typedef_type_c_ast
       DUMP_SNAME( "sname_c", &$3 );
 
       if ( type_ast_peek() == NULL ) {
-        print_error( &@3, "\"%s\": unknown type\n", c_sname_full_name( &$3 ) );
+        print_error_unknown_type( &@3, &$3 );
         PARSE_ABORT();
       }
 
@@ -4660,7 +4700,7 @@ typedef_type_c_ast
       DUMP_SNAME( "typedef_sname_c", &$3 );
 
       if ( type_ast_peek() == NULL ) {
-        print_error( &@3, "\"%s\": unknown type\n", c_sname_full_name( &$3 ) );
+        print_error_unknown_type( &@3, &$3 );
         PARSE_ABORT();
       }
 

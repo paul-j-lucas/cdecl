@@ -42,6 +42,8 @@ cdecl_SOURCES =	parser.y \
 		c_typedef.c c_typedef.h \
 		cdecl.c cdecl.h \
 		color.c color.h \
+		dam_lev.c dam_lev.h \
+		did_you_mean.c did_you_mean.h \
 		english.c english.h \
 		errors.c \
 		gibberish.c gibberish.h \

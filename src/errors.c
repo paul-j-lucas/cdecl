@@ -32,6 +32,7 @@
 #include "c_type.h"
 #include "c_typedef.h"
 #include "cdecl.h"
+#include "did_you_mean.h"
 #include "literals.h"
 #include "options.h"
 #include "print.h"
@@ -1845,7 +1846,12 @@ static void error_kind_to_type( c_ast_t const *ast, c_type_id_t tid,
  */
 static void error_unknown_type( c_ast_t const *ast ) {
   assert( ast != NULL );
-  print_error( &ast->loc, "\"%s\": unknown type\n", c_ast_full_name( ast ) );
+  // Must dup this since c_ast_full_name() returns a temporary buffer.
+  char const *const unknown_name = check_strdup( c_ast_full_name( ast ) );
+  print_error( &ast->loc, "\"%s\": unknown type", unknown_name );
+  print_did_you_mean( DYM_C_TYPES, unknown_name );
+  PUTC_ERR( '\n' );
+  FREE( unknown_name );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
