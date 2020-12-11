@@ -1,5 +1,54 @@
+2020-12-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: Silenced warning.
+   * NEWS, src/Makefile.am, c_keyword.c, c_keyword.h, dam_lev.c, dam_lev.h,
+     did_you_mean.c, did_you_mean.h, errors.c, parser.y, print.c, print.h,
+     types.h: Added "did you mean ...?" suggestions for typograpical errors for
+     commands and types.
+   * print.h: Comment fix.
+   * autocomplete.c, cdecl.c, cdecl.h, types.h: Unified CDECL_COMMANDS in
+     cdecl.c and autocomplete.c.
+   * cdecl.h: Comment.
+   * cdecl.c: Removed "q", "quit", and "exit" from first arg or program name;
+     s/COMMAND/C_COMMAND/
+
+2020-12-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, c_operator.c, c_sname.c, c_type.c, c_typedef.c, cdecl.c,
+     color.c, debug.c, english.c, gibberish.c, lexer.l, options.c, print.c,
+     prompt.c, util.c: x.c now always includes x.h immediately after
+     pjl_config.h.
+   * red_black.c, red_black.h: Removed "following".
+
+2020-12-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * errors.c, print.c: Hints are now printed on the same line as errors.
+   * print.h: Fixed newline comments.
+   * c_keyword.c, c_type.h: Added TX_NONE.
+
+2020-12-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, c_type.c, errors.c, parser.y, print.c, set.c: print_error()
+     and print_warning() no longer print \n.
+   * red_black.c, red_black.h: Added <> around URLs in comments.
+   * src/Makefile.am: Moved debug.h to be inside ENABLE_CDECL_DEBUG.
+
+2020-12-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, c_ast_util.h: Made c_ast_join_type_decl() return non-const*.
+
+2020-12-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, c_ast_util.h, parser.y: Moved some code to c_ast_util.c.
+   * NEWS, configure.ac, cdecl.1, parser.y, test/Makefile.am, cdecl--debug.out,
+     cdecl-d.out, explain_i_i.out, explain_i_pfd_i.out, explain_i_pi.out,
+     explain_i_i.test, explain_i_pfd_i.test, explain_i_pi.test: Can now explain
+     multiple, comma-separated declarations.
+   * parser.y: Added in_attr_free().
+
 2020-12-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * red_black.c, red_black.h: Removed rb_tree_new() -- no longer used.
    * color.c: Comment fix.
    * options.c, util.c: Added "noreturn".
    * pjl_config.h: Removed do { ... } while (0)
