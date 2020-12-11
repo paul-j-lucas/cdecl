@@ -21,6 +21,11 @@
 #ifndef cdecl_dam_lev_H
 #define cdecl_dam_lev_H
 
+/**
+ * @file
+ * Declares a function for calculating an _edit distance_ between two strings.
+ */
+
 // local
 #include "pjl_config.h"                 /* must go first */
 

@@ -18,6 +18,12 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file
+ * Declares types, constants, and functions for implementing "Did you mean
+ * ...?" suggestions.
+ */
+
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "did_you_mean.h"

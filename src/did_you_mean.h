@@ -21,6 +21,12 @@
 #ifndef cdecl_dym_H
 #define cdecl_dym_H
 
+/**
+ * @file
+ * Declares types, constants, and functions for implementing "Did you mean
+ * ...?" suggestions.
+ */
+
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "dam_lev.h"

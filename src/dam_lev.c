@@ -18,6 +18,10 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @file
+ * Defines a function for calculating an _edit distance_ between two strings.
+ */
 
 // local
 #include "pjl_config.h"                 /* must go first */
