@@ -61,7 +61,7 @@
 PJL_WARN_UNUSED_RESULT
 static inline bool is_similar_enough( dam_lev_t dam_lev_dist,
                                       size_t target_len ) {
-  return dam_lev_dist <= (dam_lev_t)(target_len * 0.33 + 0.5);
+  return dam_lev_dist <= (dam_lev_t)((double)target_len * 0.33 + 0.5);
 }
 
 ////////// local functions ////////////////////////////////////////////////////
