@@ -384,11 +384,16 @@ static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t *loc ) {
 /**
  * Gets a printable string of the lexer's current token.
  *
- * @return Returns said string.
+ * @return Returns said string or null if the lexer's current token is the
+ * empty string.
  */
 PJL_WARN_UNUSED_RESULT
 static inline char const* printable_token( void ) {
-  return lexer_token[0] == '\n' ? "\\n" : lexer_token;
+  switch ( lexer_token[0] ) {
+    case '\0': return NULL;
+    case '\n': return "\\n";
+    default  : return lexer_token;
+  } // switch
 }
 
 /**
@@ -567,15 +572,23 @@ static void elaborate_error( dym_kind_t dym_kinds, char const *format, ... ) {
   assert( format != NULL );
   if ( !error_newlined ) {
     PUTS_ERR( ": " );
-    if ( lexer_token[0] != '\0' )
-      PRINTF_ERR( "\"%s\": ", printable_token() );
+    char const *const error_token = printable_token();
+
+    if ( error_token != NULL ) {
+      PRINTF_ERR( "\"%s\"", error_token );
+      c_keyword_t const *const k = c_keyword_find( error_token, opt_lang );
+      if ( k != NULL && (k->lang_ids & opt_lang) != LANG_NONE )
+        PRINTF_ERR( " is a keyword in %s", C_LANG_NAME() );
+      PUTS_ERR( ": " );
+    }
+
     va_list args;
     va_start( args, format );
     vfprintf( stderr, format, args );
     va_end( args );
 
-    if ( lexer_token[0] != '\0' )
-      print_did_you_mean( dym_kinds, printable_token() );
+    if ( error_token != NULL )
+      print_did_you_mean( dym_kinds, error_token );
 
     PUTC_ERR( '\n' );
     error_newlined = true;
