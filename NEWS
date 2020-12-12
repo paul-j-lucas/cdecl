@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 8.4
+
+** co_await, co_return, co_yield added
+These C++20 keywords were added to prevent use as identifiers in C++20 and warn
+in older languages.
+
+
 * Changes in Cdecl 8.3
 
 ** "Did you mean ...?" added

@@ -195,6 +195,9 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_CONCEPT,          Y_CONCEPT,          TX_NONE,        LANG_CPP_MIN(20)  },
   { L_CONSTEVAL,        Y_CONSTEVAL,        TS_CONSTEVAL,   LANG_CPP_MIN(20)  },
   { L_CONSTINIT,        Y_CONSTINIT,        TS_CONSTINIT,   LANG_CPP_MIN(20)  },
+  { L_CO_AWAIT,         Y_CO_AWAIT,         TX_NONE,        LANG_CPP_MIN(20)  },
+  { L_CO_RETURN,        Y_CO_RETURN,        TX_NONE,        LANG_CPP_MIN(20)  },
+  { L_CO_YIELD,         Y_CO_YIELD,         TX_NONE,        LANG_CPP_MIN(20)  },
   { L_EXPORT,           Y_EXPORT,           TS_EXPORT,      LANG_CPP_MIN(20)  },
   { L_REQUIRES,         Y_REQUIRES,         TX_NONE,        LANG_CPP_MIN(20)  },
 

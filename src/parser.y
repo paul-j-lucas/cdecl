@@ -982,6 +982,9 @@ static void yyerror( char const *msg ) {
 %token              Y_CONCEPT
 %token  <type_id>   Y_CONSTEVAL
 %token  <type_id>   Y_CONSTINIT
+%token              Y_CO_AWAIT
+%token              Y_CO_RETURN
+%token              Y_CO_YIELD
 %token  <type_id>   Y_EXPORT
 %token  <oper_id>   Y_LESS_EQ_GREATER "<=>"
 %token  <type_id>   Y_NO_UNIQUE_ADDRESS

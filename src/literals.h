@@ -253,6 +253,9 @@ extern char const L_CHAR8_T[];
 extern char const L_CONCEPT[];
 extern char const L_CONSTEVAL[];
 extern char const L_CONSTINIT[];
+extern char const L_CO_AWAIT[];
+extern char const L_CO_RETURN[];
+extern char const L_CO_YIELD[];
 extern char const L_EXPORT[];
 extern char const L_EXPORTED[];             // English for "export"
 extern char const L_NO_UNIQUE_ADDRESS[];
