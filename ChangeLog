@@ -1,3 +1,12 @@
+2020-12-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, c_keyword.c, literals.c, literals.h, parser.y: Added
+     C++20 keywords co_await, co_return, and co_yield.
+   * c_ast.h, c_typedef.c, color.c, dam_lev.h, prompt.c, red_black.c,
+     red_black.h, util.h: Made Doxygen @sa with URLs use Markdown syntax.
+   * dam_lev.c, dam_lev.h, did_you_mean.c, did_you_mean.h: Added missing @file
+     comments.
+
 2020-12-10  Paul J. Lucas <paul@lucasmail.org>
 
    * did_you_mean.c: Silenced warning.
