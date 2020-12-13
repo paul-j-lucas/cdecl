@@ -380,7 +380,7 @@ static in_attr_t      in_attr;          ///< Inherited attributes.
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Creates a new AST and adds it to the garbage-collection list.
+ * Creates a new AST and adds it to <code>\ref ast_gc_list</code>.
  *
  * @param kind_id The kind of AST to create.
  * @param loc A pointer to the token location data.
