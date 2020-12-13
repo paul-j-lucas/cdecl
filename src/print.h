@@ -110,6 +110,8 @@ void print_loc( c_loc_t const *loc );
 
 /**
  * Prints a warning message to standard error _not_ including a newline.
+ * In debug mode, also prints the file & line where the function was called
+ * from.
  *
  * @note
  * This function shouldn't be called directly; use the #print_warning() macro
