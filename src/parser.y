@@ -184,6 +184,18 @@
  */
 #define PARSE_ABORT()             BLOCK( parse_cleanup( true ); YYABORT; )
 
+/**
+ * Prints an "unknown type" error message possibly followed by "did you mean
+ * ...?" for types possibly meant.
+ * In debug mode, also prints the file & line where the function was called
+ * from.
+ *
+ * @param loc The location of the unknown \a sname.
+ * @param sname The unknown name.
+ */
+#define print_error_unknown_type(LOC,SNAME) \
+  print_error_unknown_type_impl( __FILE__, __LINE__, (LOC), (SNAME) )
+
 #define SHOW_ALL_TYPES            (~0u) ///< Show all types.
 #define SHOW_PREDEFINED_TYPES     0x01u ///< Show only predefined types.
 #define SHOW_USER_TYPES           0x02u ///< Show only user-defined types.
@@ -565,6 +577,10 @@ static void c_ast_explain( c_ast_t const *ast ) {
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
+ * @note
+ * This function shouldn't be called directly; use the #ELABORATE_ERROR() macro
+ * instead.
+ *
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
  * from.
@@ -642,16 +658,27 @@ static void parse_init( void ) {
 }
 
 /**
- * Prints an "unknown type" error message.
+ * Prints an "unknown type" error message possibly followed by "did you mean
+ * ...?" for types possibly meant.
+ * In debug mode, also prints the file & line where the function was called
+ * from.
  *
+ * @note
+ * This function shouldn't be called directly; use the
+ * #print_error_unknown_type() macro instead.
+ *
+ * @param file The name of the file where this function was called from.
+ * @param line The line number within \a file where this function was called
+ * from.
  * @param loc The location of the unknown \a sname.
  * @param sname The unknown name.
  */
-static void print_error_unknown_type( c_loc_t const *loc,
-                                      c_sname_t const *sname ) {
+static void print_error_unknown_type_impl( char const *file, int line,
+                                           c_loc_t const *loc,
+                                           c_sname_t const *sname ) {
   // Must dup this since c_sname_full_name() returns a temporary buffer.
   char const *const unknown_name = check_strdup( c_sname_full_name( sname ) );
-  print_error( loc, "\"%s\": unknown type", unknown_name );
+  print_error_impl( file, line, loc, "\"%s\": unknown type", unknown_name );
   print_did_you_mean( DYM_C_TYPES, unknown_name );
   PUTC_ERR( '\n' );
   FREE( unknown_name );
