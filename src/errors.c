@@ -798,7 +798,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
 
     default:
       print_error( &ast->loc,
-        "main() must have either zero or two parameters\n"
+        "main() must have either 0, 1, or 2 parameters\n"
       );
       return false;
   } // switch
