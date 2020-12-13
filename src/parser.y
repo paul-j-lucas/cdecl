@@ -647,7 +647,17 @@ static void fl_print_error_unknown_type( char const *file, int line,
                                          c_sname_t const *sname ) {
   // Must dup this since c_sname_full_name() returns a temporary buffer.
   char const *const unknown_name = check_strdup( c_sname_full_name( sname ) );
-  fl_print_error( file, line, loc, "\"%s\": unknown type", unknown_name );
+  fl_print_error( file, line, loc, "\"%s\"", unknown_name );
+
+  c_keyword_t const *const k = c_keyword_find( unknown_name, LANG_ALL );
+  if ( k != NULL && k->type_id != TX_NONE ) {
+    PRINTF_ERR(
+      " isn't a keyword until %s", c_lang_name( c_lang_oldest( k->lang_ids ) )
+    );
+  } else {
+    PUTS_ERR( ": unknown type" );
+  }
+
   print_did_you_mean( DYM_C_TYPES, unknown_name );
   PUTC_ERR( '\n' );
   FREE( unknown_name );
