@@ -242,7 +242,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   // Apple extensions
   { L_APPLE___BLOCK,    Y_APPLE___BLOCK,    TS_APPLE_BLOCK, LANG_ALL          },
 
-  { NULL,               0,                  TX_NONE,       LANG_NONE          }
+  { NULL,               0,                  TX_NONE,        LANG_NONE         }
 };
 
 ////////// local functions ////////////////////////////////////////////////////
