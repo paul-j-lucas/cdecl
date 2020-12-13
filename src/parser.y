@@ -175,8 +175,8 @@
  *    }
  * @endcode
  */
-#define ELABORATE_ERROR_DYM(DYM_KINDS,...) \
-  BLOCK( elaborate_error( (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
+#define ELABORATE_ERROR_DYM(DYM_KINDS,...) BLOCK( \
+  elaborate_error( __FILE__, __LINE__, (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
 
 /**
  * Aborts the current parse (presumably after an error message has been
@@ -562,13 +562,19 @@ static void c_ast_explain( c_ast_t const *ast ) {
 /**
  * Prints an additional parsing error message to standard error that continues
  * from where `yyerror()` left off.
+ * In debug mode, also prints the file & line where the function was called
+ * from.
  *
+ * @param file The name of the file where this function was called from.
+ * @param line The line number within \a file where this function was called
+ * from.
  * @param dym_kinds The bitwise-or of the kind(s) of things possibly meant.
  * @param format A `printf()` style format string.
  * @param ... Arguments to print.
  */
-PJL_PRINTF_LIKE_FUNC(2)
-static void elaborate_error( dym_kind_t dym_kinds, char const *format, ... ) {
+PJL_PRINTF_LIKE_FUNC(4)
+static void elaborate_error( char const *file, int line, dym_kind_t dym_kinds,
+                             char const *format, ... ) {
   assert( format != NULL );
   if ( !error_newlined ) {
     PUTS_ERR( ": " );
@@ -589,6 +595,9 @@ static void elaborate_error( dym_kind_t dym_kinds, char const *format, ... ) {
 
     if ( error_token != NULL )
       print_did_you_mean( dym_kinds, error_token );
+
+    if ( opt_cdecl_debug )
+      PRINTF_ERR( " (%s:%d)", file, line );
 
     PUTC_ERR( '\n' );
     error_newlined = true;
