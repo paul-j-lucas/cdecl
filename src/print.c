@@ -228,22 +228,8 @@ static size_t token_len( char const *s ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void print_did_you_mean( dym_kind_t kinds, char const *unknown_token ) {
-  did_you_mean_t const *const dym_array = dym_new( kinds, unknown_token );
-  if ( dym_array != NULL ) {
-    PUTS_ERR( "; did you mean " );
-    for ( did_you_mean_t const *dym = dym_array; dym->token != NULL; ++dym ) {
-      if ( dym > dym_array )
-        PUTS_ERR( ", " );
-      PRINTF_ERR( "\"%s\"", dym->token );
-    } // for
-    PUTC_ERR( '?' );
-    dym_free( dym_array );
-  }
-}
-
-void print_error_impl( char const *file, int line, c_loc_t const *loc,
-                       char const *format, ... ) {
+void fl_print_error( char const *file, int line, c_loc_t const *loc,
+                     char const *format, ... ) {
   if ( loc != NULL ) {
     print_loc( loc );
     SGR_START_COLOR( stderr, error );
@@ -259,6 +245,38 @@ void print_error_impl( char const *file, int line, c_loc_t const *loc,
 
   if ( opt_cdecl_debug )
     PRINTF_ERR( " (%s:%d)", file, line );
+}
+
+void fl_print_warning( char const *file, int line, c_loc_t const *loc,
+                       char const *format, ... ) {
+  if ( loc != NULL )
+    print_loc( loc );
+  SGR_START_COLOR( stderr, warning );
+  PUTS_ERR( "warning" );
+  SGR_END_COLOR( stderr );
+  PUTS_ERR( ": " );
+
+  va_list args;
+  va_start( args, format );
+  vfprintf( stderr, format, args );
+  va_end( args );
+
+  if ( opt_cdecl_debug )
+    PRINTF_ERR( " (%s:%d)", file, line );
+}
+
+void print_did_you_mean( dym_kind_t kinds, char const *unknown_token ) {
+  did_you_mean_t const *const dym_array = dym_new( kinds, unknown_token );
+  if ( dym_array != NULL ) {
+    PUTS_ERR( "; did you mean " );
+    for ( did_you_mean_t const *dym = dym_array; dym->token != NULL; ++dym ) {
+      if ( dym > dym_array )
+        PUTS_ERR( ", " );
+      PRINTF_ERR( "\"%s\"", dym->token );
+    } // for
+    PUTC_ERR( '?' );
+    dym_free( dym_array );
+  }
 }
 
 void print_hint( char const *format, ... ) {
@@ -282,24 +300,6 @@ void print_loc( c_loc_t const *loc ) {
   PRINTF_ERR( "%zu", column + 1 );
   SGR_END_COLOR( stderr );
   PUTS_ERR( ": " );
-}
-
-void print_warning_impl( char const *file, int line, c_loc_t const *loc,
-                         char const *format, ... ) {
-  if ( loc != NULL )
-    print_loc( loc );
-  SGR_START_COLOR( stderr, warning );
-  PUTS_ERR( "warning" );
-  SGR_END_COLOR( stderr );
-  PUTS_ERR( ": " );
-
-  va_list args;
-  va_start( args, format );
-  vfprintf( stderr, format, args );
-  va_end( args );
-
-  if ( opt_cdecl_debug )
-    PRINTF_ERR( " (%s:%d)", file, line );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

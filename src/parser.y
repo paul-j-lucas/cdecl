@@ -146,7 +146,7 @@
 /**
  * Calls #ELABORATE_ERROR_DYM with a DYM_KINDS of DYM_NONE.
  *
- * @param ... Arguments passed to elaborate_error().
+ * @param ... Arguments passed to fl_elaborate_error().
  *
  * @note
  * This must be used _only_ after an `error` token, e.g.:
@@ -161,10 +161,10 @@
   ELABORATE_ERROR_DYM( DYM_NONE, __VA_ARGS__ )
 
 /**
- * Calls elaborate_error() followed by PARSE_ABORT().
+ * Calls fl_elaborate_error() followed by PARSE_ABORT().
  *
  * @param DYM_KINDS The bitwise-or of the kind(s) of things possibly meant.
- * @param ... Arguments passed to elaborate_error().
+ * @param ... Arguments passed to fl_elaborate_error().
  *
  * @note
  * This must be used _only_ after an `error` token, e.g.:
@@ -176,7 +176,7 @@
  * @endcode
  */
 #define ELABORATE_ERROR_DYM(DYM_KINDS,...) BLOCK( \
-  elaborate_error( __FILE__, __LINE__, (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
+  fl_elaborate_error( __FILE__, __LINE__, (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
 
 /**
  * Aborts the current parse (presumably after an error message has been
@@ -194,7 +194,7 @@
  * @param sname The unknown name.
  */
 #define print_error_unknown_type(LOC,SNAME) \
-  print_error_unknown_type_impl( __FILE__, __LINE__, (LOC), (SNAME) )
+  fl_print_error_unknown_type( __FILE__, __LINE__, (LOC), (SNAME) )
 
 #define SHOW_ALL_TYPES            (~0u) ///< Show all types.
 #define SHOW_PREDEFINED_TYPES     0x01u ///< Show only predefined types.
@@ -578,8 +578,8 @@ static void c_ast_explain( c_ast_t const *ast ) {
  * from.
  *
  * @note
- * This function shouldn't be called directly; use the #ELABORATE_ERROR() macro
- * instead.
+ * This function isn't normally called directly; use the #ELABORATE_ERROR()
+ * macro instead.
  *
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
@@ -589,8 +589,9 @@ static void c_ast_explain( c_ast_t const *ast ) {
  * @param ... Arguments to print.
  */
 PJL_PRINTF_LIKE_FUNC(4)
-static void elaborate_error( char const *file, int line, dym_kind_t dym_kinds,
-                             char const *format, ... ) {
+static void fl_elaborate_error( char const *file, int line,
+                                dym_kind_t dym_kinds, char const *format,
+                                ... ) {
   assert( format != NULL );
   if ( !error_newlined ) {
     PUTS_ERR( ": " );
@@ -618,6 +619,33 @@ static void elaborate_error( char const *file, int line, dym_kind_t dym_kinds,
     PUTC_ERR( '\n' );
     error_newlined = true;
   }
+}
+
+/**
+ * Prints an "unknown type" error message possibly followed by "did you mean
+ * ...?" for types possibly meant.
+ * In debug mode, also prints the file & line where the function was called
+ * from.
+ *
+ * @note
+ * This function isn't normally called directly; use the
+ * #print_error_unknown_type() macro instead.
+ *
+ * @param file The name of the file where this function was called from.
+ * @param line The line number within \a file where this function was called
+ * from.
+ * @param loc The location of the unknown \a sname.
+ * @param sname The unknown name.
+ */
+static void fl_print_error_unknown_type( char const *file, int line,
+                                         c_loc_t const *loc,
+                                         c_sname_t const *sname ) {
+  // Must dup this since c_sname_full_name() returns a temporary buffer.
+  char const *const unknown_name = check_strdup( c_sname_full_name( sname ) );
+  fl_print_error( file, line, loc, "\"%s\": unknown type", unknown_name );
+  print_did_you_mean( DYM_C_TYPES, unknown_name );
+  PUTC_ERR( '\n' );
+  FREE( unknown_name );
 }
 
 /**
@@ -655,33 +683,6 @@ static void parse_init( void ) {
     FPUTC( '\n', fout );
     error_newlined = true;
   }
-}
-
-/**
- * Prints an "unknown type" error message possibly followed by "did you mean
- * ...?" for types possibly meant.
- * In debug mode, also prints the file & line where the function was called
- * from.
- *
- * @note
- * This function shouldn't be called directly; use the
- * #print_error_unknown_type() macro instead.
- *
- * @param file The name of the file where this function was called from.
- * @param line The line number within \a file where this function was called
- * from.
- * @param loc The location of the unknown \a sname.
- * @param sname The unknown name.
- */
-static void print_error_unknown_type_impl( char const *file, int line,
-                                           c_loc_t const *loc,
-                                           c_sname_t const *sname ) {
-  // Must dup this since c_sname_full_name() returns a temporary buffer.
-  char const *const unknown_name = check_strdup( c_sname_full_name( sname ) );
-  print_error_impl( file, line, loc, "\"%s\": unknown type", unknown_name );
-  print_did_you_mean( DYM_C_TYPES, unknown_name );
-  PUTC_ERR( '\n' );
-  FREE( unknown_name );
 }
 
 /**
@@ -742,13 +743,13 @@ static bool show_type_visitor( c_typedef_t const *type, void *data ) {
  * directly by Bison to print just `syntax error` (usually).
  *
  * @note A newline is _not_ printed since the error message will be appended to
- * by `elaborate_error()`.  For example, the parts of an error message are
+ * by `fl_elaborate_error()`.  For example, the parts of an error message are
  * printed by the functions shown:
  *
  *      42: syntax error: "int": "into" expected
  *      |--||----------||----------------------|
  *      |   |           |
- *      |   yyerror()   elaborate_error()
+ *      |   yyerror()   fl_elaborate_error()
  *      |
  *      print_loc()
  *

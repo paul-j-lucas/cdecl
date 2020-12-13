@@ -37,16 +37,33 @@
  * @{
  */
 
-////////// extern functions ///////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Prints "Did you mean ...?" including a list of things that might have been
- * meant instead of \a unknown_token.  A newline is _not_ printed.
+ * Prints an error message to standard error _not_ including a newline.
+ * In debug mode, also prints the file & line where the function was called
+ * from.
  *
- * @param kinds The bitwise-or of the kind(s) of things possibly meant.
- * @param unknown_token The unknown token.
+ * @param ... The arguments for fl_print_error().
+ *
+ * @sa fl_print_error()
  */
-void print_did_you_mean( dym_kind_t kinds, char const *unknown_token );
+#define print_error(...) \
+  fl_print_error( __FILE__, __LINE__, __VA_ARGS__ )
+
+/**
+ * Prints an warning message to standard error _not_ including a newline.
+ * In debug mode, also prints the file & line where the function was called
+ * from.
+ *
+ * @param ... The arguments for fl_print_warning().
+ *
+ * @sa fl_print_warning()
+ */
+#define print_warning(...) \
+  fl_print_warning( __FILE__, __LINE__, __VA_ARGS__ )
+
+////////// extern functions ///////////////////////////////////////////////////
 
 /**
  * Prints an error message to standard error _not_ including a newline.
@@ -54,7 +71,7 @@ void print_did_you_mean( dym_kind_t kinds, char const *unknown_token );
  * from.
  *
  * @note
- * This function shouldn't be called directly; use the #print_error() macro
+ * This function isn't normally called directly; use the #print_error() macro
  * instead.
  *
  * @param file The name of the file where this function was called from.
@@ -67,20 +84,39 @@ void print_did_you_mean( dym_kind_t kinds, char const *unknown_token );
  * @sa #print_error()
  */
 PJL_PRINTF_LIKE_FUNC(4)
-void print_error_impl( char const *file, int line, c_loc_t const *loc,
-                       char const *format, ... );
+void fl_print_error( char const *file, int line, c_loc_t const *loc,
+                     char const *format, ... );
 
 /**
- * Prints an error message to standard error _not_ including a newline.
+ * Prints a warning message to standard error _not_ including a newline.
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
- * @param ... The arguments for print_error_impl().
+ * @note
+ * This function isn't normally called directly; use the #print_warning() macro
+ * instead.
  *
- * @sa print_error_impl()
+ * @param file The name of the file where this function was called from.
+ * @param line The line number within \a file where this function was called
+ * from.
+ * @param loc The location of the warning; may be null.
+ * @param format The `printf()` style format string.
+ * @param ... The `printf()` arguments.
+ *
+ * @sa #print_warning()
  */
-#define print_error(...) \
-  print_error_impl( __FILE__, __LINE__, __VA_ARGS__ )
+PJL_PRINTF_LIKE_FUNC(4)
+void fl_print_warning( char const *file, int line, c_loc_t const *loc,
+                         char const *format, ... );
+
+/**
+ * Prints "Did you mean ...?" including a list of things that might have been
+ * meant instead of \a unknown_token.  A newline is _not_ printed.
+ *
+ * @param kinds The bitwise-or of the kind(s) of things possibly meant.
+ * @param unknown_token The unknown token.
+ */
+void print_did_you_mean( dym_kind_t kinds, char const *unknown_token );
 
 /**
  * Prints a hint message to standard error in the form:
@@ -107,40 +143,6 @@ void print_hint( char const *format, ... );
  * @param loc The location to print.
  */
 void print_loc( c_loc_t const *loc );
-
-/**
- * Prints a warning message to standard error _not_ including a newline.
- * In debug mode, also prints the file & line where the function was called
- * from.
- *
- * @note
- * This function shouldn't be called directly; use the #print_warning() macro
- * instead.
- *
- * @param file The name of the file where this function was called from.
- * @param line The line number within \a file where this function was called
- * from.
- * @param loc The location of the warning; may be null.
- * @param format The `printf()` style format string.
- * @param ... The `printf()` arguments.
- *
- * @sa #print_warning()
- */
-PJL_PRINTF_LIKE_FUNC(4)
-void print_warning_impl( char const *file, int line, c_loc_t const *loc,
-                         char const *format, ... );
-
-/**
- * Prints an warning message to standard error _not_ including a newline.
- * In debug mode, also prints the file & line where the function was called
- * from.
- *
- * @param ... The arguments for print_warning_impl().
- *
- * @sa print_warning_impl()
- */
-#define print_warning(...) \
-  print_warning_impl( __FILE__, __LINE__, __VA_ARGS__ )
 
 ///////////////////////////////////////////////////////////////////////////////
 
