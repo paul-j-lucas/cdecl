@@ -144,7 +144,7 @@
   if ( !c_type_id_add( (DST_TID), (NEW_TID), &(NEW_LOC) ) ) PARSE_ABORT(); )
 
 /**
- * Calls #ELABORATE_ERROR_DYM with a DYM_KINDS of DYM_NONE.
+ * Calls #ELABORATE_ERROR_DYM with a <code>\ref dym_kind_t</code> of #DYM_NONE.
  *
  * @param ... Arguments passed to fl_elaborate_error().
  *
