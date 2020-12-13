@@ -144,7 +144,7 @@
   if ( !c_type_id_add( (DST_TID), (NEW_TID), &(NEW_LOC) ) ) PARSE_ABORT(); )
 
 /**
- * Calls #ELABORATE_ERROR_DYM with a <code>\ref dym_kind_t</code> of #DYM_NONE.
+ * Calls #elaborate_error_dym with a <code>\ref dym_kind_t</code> of #DYM_NONE.
  *
  * @param ... Arguments passed to fl_elaborate_error().
  *
@@ -153,12 +153,12 @@
  * @code
  *  | Y_DEFINE error
  *    {
- *      ELABORATE_ERROR( "name expected" );
+ *      elaborate_error( "name expected" );
  *    }
  * @endcode
  */
-#define ELABORATE_ERROR(...) \
-  ELABORATE_ERROR_DYM( DYM_NONE, __VA_ARGS__ )
+#define elaborate_error(...) \
+  elaborate_error_dym( DYM_NONE, __VA_ARGS__ )
 
 /**
  * Calls fl_elaborate_error() followed by PARSE_ABORT().
@@ -171,11 +171,11 @@
  * @code
  *  | error
  *    {
- *      ELABORATE_ERROR_DYM( DYM_COMMANDS, "unexpected token" );
+ *      elaborate_error_dym( DYM_COMMANDS, "unexpected token" );
  *    }
  * @endcode
  */
-#define ELABORATE_ERROR_DYM(DYM_KINDS,...) BLOCK( \
+#define elaborate_error_dym(DYM_KINDS,...) BLOCK( \
   fl_elaborate_error( __FILE__, __LINE__, (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
 
 /**
@@ -572,14 +572,19 @@ static void c_ast_explain( c_ast_t const *ast ) {
 }
 
 /**
- * Prints an additional parsing error message to standard error that continues
- * from where `yyerror()` left off.
- * In debug mode, also prints the file & line where the function was called
- * from.
+ * Prints an additional parsing error message including a newline to standard
+ * error that continues from where `yyerror()` left off.  Additionally:
  *
- * @note
- * This function isn't normally called directly; use the #ELABORATE_ERROR()
- * macro instead.
+ * + If the printable_token() isn't null:
+ *     + Checks to see if it's a keyword: if it is, mentions that it's a
+ *       keyword in the error message.
+ *     + May print "did you mean ...?" \a dym_kinds suggestions.
+ *
+ * + In debug mode, also prints the file & line where the function was called
+ *   from.
+ *
+ * @note This function isn't normally called directly; use the
+ * #elaborate_error() macro instead.
  *
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
@@ -1274,9 +1279,9 @@ command
   | error
     {
       if ( lexer_token[0] != '\0' )
-        ELABORATE_ERROR_DYM( DYM_COMMANDS, "unexpected token" );
+        elaborate_error_dym( DYM_COMMANDS, "unexpected token" );
       else
-        ELABORATE_ERROR( "unexpected end of command" );
+        elaborate_error( "unexpected end of command" );
     }
   ;
 
@@ -1483,9 +1488,9 @@ declare_english
   | Y_DECLARE error
     {
       if ( C_LANG_IS_CPP() )
-        ELABORATE_ERROR( "name or %s expected", L_OPERATOR );
+        elaborate_error( "name or %s expected", L_OPERATOR );
       else
-        ELABORATE_ERROR( "name expected" );
+        elaborate_error( "name expected" );
     }
   ;
 
@@ -1560,7 +1565,7 @@ alignas_specifier_english
     {
       MEM_ZERO( &$$ );
       $$.loc = @1;
-      ELABORATE_ERROR( "number or type expected" );
+      elaborate_error( "number or type expected" );
     }
   ;
 
@@ -1648,7 +1653,7 @@ define_english
 
   | Y_DEFINE error
     {
-      ELABORATE_ERROR( "name expected" );
+      elaborate_error( "name expected" );
     }
   ;
 
@@ -1956,7 +1961,7 @@ explain_c
 
   | explain error
     {
-      ELABORATE_ERROR( "cast or declaration expected" );
+      elaborate_error( "cast or declaration expected" );
     }
   ;
 
@@ -1990,7 +1995,7 @@ alignas_specifier_c
     }
   | alignas lparen_exp error rparen_exp
     {
-      ELABORATE_ERROR( "number or type expected" );
+      elaborate_error( "number or type expected" );
       $$.kind = C_ALIGNAS_NONE;
       $$.loc = @1;
     }
@@ -2322,7 +2327,7 @@ set_option_value_opt
   | '=' error
     {
       $$ = NULL;
-      ELABORATE_ERROR( "option value expected" );
+      elaborate_error( "option value expected" );
     }
   ;
 
@@ -2388,7 +2393,7 @@ show_command
 
   | Y_SHOW error
     {
-      ELABORATE_ERROR(
+      elaborate_error(
         "type name or \"%s\", \"%s\", or \"%s\" expected",
         L_ALL, L_PREDEFINED, L_USER
       );
@@ -2568,7 +2573,7 @@ using_name_c_ast_exp
   | typedef_name_c_ast
   | error
     {
-      ELABORATE_ERROR( "type name expected" );
+      elaborate_error( "type name expected" );
     }
   ;
 
@@ -2839,7 +2844,7 @@ returning_english_ast_opt
 
   | Y_RETURNING error
     {
-      ELABORATE_ERROR( "English expected after \"%s\"", L_RETURNING );
+      elaborate_error( "English expected after \"%s\"", L_RETURNING );
     }
   ;
 
@@ -2922,9 +2927,9 @@ pointer_decl_english_ast
   | Y_POINTER to_exp error
     {
       if ( C_LANG_IS_CPP() )
-        ELABORATE_ERROR( "type name or \"%s\" expected", L_MEMBER );
+        elaborate_error( "type name or \"%s\" expected", L_MEMBER );
       else
-        ELABORATE_ERROR( "type name expected" );
+        elaborate_error( "type name expected" );
     }
   ;
 
@@ -3178,7 +3183,7 @@ array_size_c_num
   | '[' Y_NUMBER ']'              { $$ = $2; }
   | '[' error ']'
     {
-      ELABORATE_ERROR( "integer expected for array size" );
+      elaborate_error( "integer expected for array size" );
     }
   ;
 
@@ -3379,7 +3384,7 @@ no_except_bool_tid
   | Y_TRUE
   | error
     {
-      ELABORATE_ERROR( "\"%s\" or \"%s\" expected", L_TRUE, L_FALSE );
+      elaborate_error( "\"%s\" or \"%s\" expected", L_TRUE, L_FALSE );
     }
   ;
 
@@ -3450,7 +3455,7 @@ func_equals_tid_opt
     }
   | '=' error
     {
-      ELABORATE_ERROR( "'0', \"%s\", or \"%s\" expected", L_DEFAULT, L_DELETE );
+      elaborate_error( "'0', \"%s\", or \"%s\" expected", L_DEFAULT, L_DELETE );
     }
   ;
 
@@ -4213,7 +4218,7 @@ upc_layout_qualifier_opt
   | '[' '*' ']'
   | '[' error ']'
     {
-      ELABORATE_ERROR( "one of nothing, number, or '*' expected" );
+      elaborate_error( "one of nothing, number, or '*' expected" );
     }
   ;
 
@@ -4637,7 +4642,7 @@ any_name_exp
   | error
     {
       $$ = NULL;
-      ELABORATE_ERROR( "name expected" );
+      elaborate_error( "name expected" );
     }
   ;
 
@@ -4651,7 +4656,7 @@ any_sname_c_exp
   | error
     {
       c_sname_init( &$$ );
-      ELABORATE_ERROR( "name expected" );
+      elaborate_error( "name expected" );
     }
   ;
 
@@ -4685,7 +4690,7 @@ name_exp
   | error
     {
       $$ = NULL;
-      ELABORATE_ERROR( "name expected" );
+      elaborate_error( "name expected" );
     }
   ;
 
@@ -4881,7 +4886,7 @@ sname_c_exp
   | error
     {
       c_sname_init( &$$ );
-      ELABORATE_ERROR( "name expected" );
+      elaborate_error( "name expected" );
     }
   ;
 
@@ -4945,7 +4950,7 @@ sname_english_exp
   | error
     {
       c_sname_init( &$$ );
-      ELABORATE_ERROR( "name expected" );
+      elaborate_error( "name expected" );
     }
   ;
 
@@ -5004,7 +5009,7 @@ array_exp
   : Y_ARRAY
   | error
     {
-      ELABORATE_ERROR( "\"%s\" expected", L_ARRAY );
+      elaborate_error( "\"%s\" expected", L_ARRAY );
     }
   ;
 
@@ -5012,7 +5017,7 @@ as_exp
   : Y_AS
   | error
     {
-      ELABORATE_ERROR( "\"%s\" expected", L_AS );
+      elaborate_error( "\"%s\" expected", L_AS );
     }
   ;
 
@@ -5022,7 +5027,7 @@ as_into_to_exp
   | Y_TO
   | error
     {
-      ELABORATE_ERROR(
+      elaborate_error(
         "\"%s\", \"%s\", or \"%s\" expected",
         L_AS, L_INTO, L_TO
       );
@@ -5033,7 +5038,7 @@ cast_exp
   : Y_CAST
   | error
     {
-      ELABORATE_ERROR( "\"%s\" expected", L_CAST );
+      elaborate_error( "\"%s\" expected", L_CAST );
     }
   ;
 
@@ -5042,9 +5047,9 @@ class_struct_tid_exp
   | error
     {
       if ( C_LANG_IS_CPP() )
-        ELABORATE_ERROR( "\"%s\" or \"%s\" expected", L_CLASS, L_STRUCT );
+        elaborate_error( "\"%s\" or \"%s\" expected", L_CLASS, L_STRUCT );
       else
-        ELABORATE_ERROR( "\"%s\" expected", L_STRUCT );
+        elaborate_error( "\"%s\" expected", L_STRUCT );
     }
   ;
 
@@ -5052,7 +5057,7 @@ comma_exp
   : ','
   | error
     {
-      ELABORATE_ERROR( "',' expected" );
+      elaborate_error( "',' expected" );
     }
   ;
 
@@ -5060,7 +5065,7 @@ conversion_exp
   : Y_CONVERSION
   | error
     {
-      ELABORATE_ERROR( "\"%s\" expected", L_CONVERSION );
+      elaborate_error( "\"%s\" expected", L_CONVERSION );
     }
   ;
 
@@ -5118,7 +5123,7 @@ equals_exp
   : '='
   | error
     {
-      ELABORATE_ERROR( "'=' expected" );
+      elaborate_error( "'=' expected" );
     }
   ;
 
@@ -5126,7 +5131,7 @@ gt_exp
   : '>'
   | error
     {
-      ELABORATE_ERROR( "'>' expected" );
+      elaborate_error( "'>' expected" );
     }
   ;
 
@@ -5134,7 +5139,7 @@ literal_exp
   : Y_LITERAL
   | error
     {
-      ELABORATE_ERROR( "\"%s\" expected", L_LITERAL );
+      elaborate_error( "\"%s\" expected", L_LITERAL );
     }
   ;
 
@@ -5142,7 +5147,7 @@ lparen_exp
   : '('
   | error
     {
-      ELABORATE_ERROR( "'(' expected" );
+      elaborate_error( "'(' expected" );
     }
   ;
 
@@ -5150,7 +5155,7 @@ lt_exp
   : '<'
   | error
     {
-      ELABORATE_ERROR( "'<' expected" );
+      elaborate_error( "'<' expected" );
     }
   ;
 
@@ -5164,7 +5169,7 @@ namespace_exp
   : Y_NAMESPACE
   | error
     {
-      ELABORATE_ERROR( "\"%s\" expected", L_NAMESPACE );
+      elaborate_error( "\"%s\" expected", L_NAMESPACE );
     }
   ;
 
@@ -5177,7 +5182,7 @@ of_exp
   : Y_OF
   | error
     {
-      ELABORATE_ERROR( "\"%s\" expected", L_OF );
+      elaborate_error( "\"%s\" expected", L_OF );
     }
   ;
 
@@ -5240,7 +5245,7 @@ quote2_exp
   : Y_QUOTE2
   | error
     {
-      ELABORATE_ERROR( "\"\" expected" );
+      elaborate_error( "\"\" expected" );
     }
   ;
 
@@ -5248,7 +5253,7 @@ rbrace_exp
   : '}'
   | error
     {
-      ELABORATE_ERROR( "'}' expected" );
+      elaborate_error( "'}' expected" );
     }
   ;
 
@@ -5256,7 +5261,7 @@ rbracket_exp
   : ']'
   | error
     {
-      ELABORATE_ERROR( "']' expected" );
+      elaborate_error( "']' expected" );
     }
   ;
 
@@ -5264,7 +5269,7 @@ reference_exp
   : Y_REFERENCE
   | error
     {
-      ELABORATE_ERROR( "\"%s\" expected", L_REFERENCE );
+      elaborate_error( "\"%s\" expected", L_REFERENCE );
     }
   ;
 
@@ -5272,7 +5277,7 @@ returning_exp
   : Y_RETURNING
   | error
     {
-      ELABORATE_ERROR( "\"%s\" expected", L_RETURNING );
+      elaborate_error( "\"%s\" expected", L_RETURNING );
     }
   ;
 
@@ -5280,7 +5285,7 @@ rparen_exp
   : ')'
   | error
     {
-      ELABORATE_ERROR( "')' expected" );
+      elaborate_error( "')' expected" );
     }
   ;
 
@@ -5294,7 +5299,7 @@ scope_english_type_exp
   : scope_english_type
   | error
     {
-      ELABORATE_ERROR(
+      elaborate_error(
         "\"%s\", \"%s\", \"%s\", \"%s\", or \"%s\" expected",
         L_CLASS, L_NAMESPACE, L_SCOPE, L_STRUCT, L_UNION
       );
@@ -5305,7 +5310,7 @@ semi_exp
   : ';'
   | error
     {
-      ELABORATE_ERROR( "';' expected" );
+      elaborate_error( "';' expected" );
     }
   ;
 
@@ -5323,7 +5328,7 @@ to_exp
   : Y_TO
   | error
     {
-      ELABORATE_ERROR( "\"%s\" expected", L_TO );
+      elaborate_error( "\"%s\" expected", L_TO );
     }
   ;
 
@@ -5331,7 +5336,7 @@ typedef_exp
   : Y_TYPEDEF
   | error
     {
-      ELABORATE_ERROR( "\"%s\" expected", L_TYPEDEF );
+      elaborate_error( "\"%s\" expected", L_TYPEDEF );
     }
   ;
 
@@ -5349,7 +5354,7 @@ virtual_exp
   : Y_VIRTUAL
   | error
     {
-      ELABORATE_ERROR( "\"%s\" expected", L_VIRTUAL );
+      elaborate_error( "\"%s\" expected", L_VIRTUAL );
     }
   ;
 
