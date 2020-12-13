@@ -190,8 +190,8 @@
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
- * @param loc The location of the unknown \a sname.
- * @param sname The unknown name.
+ * @param LOC The location of the unknown \a sname.
+ * @param SNAME The unknown name.
  */
 #define print_error_unknown_type(LOC,SNAME) \
   fl_print_error_unknown_type( __FILE__, __LINE__, (LOC), (SNAME) )
