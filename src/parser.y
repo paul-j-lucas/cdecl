@@ -1294,7 +1294,7 @@ command
   | semi_or_end                         /* allows for blank lines */
   | error
     {
-      if ( lexer_token[0] != '\0' )
+      if ( printable_token() != NULL )
         elaborate_error_dym( DYM_COMMANDS, "unexpected token" );
       else
         elaborate_error( "unexpected end of command" );
@@ -2028,7 +2028,7 @@ decl_c_list
   ;
 
 decl_c
-  : /* alignas_specifier_c typename_opt type_c_ast */ decl_c_ast
+  : /* in_attr: alignas_specifier_c typename_opt type_c_ast */ decl_c_ast
     {
       c_ast_t *const type_ast = type_ast_peek();
 
@@ -3169,7 +3169,7 @@ decl2_c_ast
   ;
 
 array_decl_c_ast
-  : /* type_c_ast */ decl2_c_ast array_size_c_num
+  : /* in_attr: type_c_ast */ decl2_c_ast array_size_c_num
     {
       DUMP_START( "array_decl_c_ast", "decl2_c_ast array_size_c_num" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
@@ -3204,7 +3204,7 @@ array_size_c_num
   ;
 
 block_decl_c_ast                        /* Apple extension */
-  : /* type */ '(' Y_CIRC
+  : /* in_attr: type_c_ast */ '(' Y_CIRC
     {
       //
       // A block AST has to be the type inherited attribute for decl_c_ast so
@@ -3243,7 +3243,7 @@ func_decl_c_ast
      * cause grammar conflicts if they were separate rules in an LALR(1)
      * parser).
      */
-  : /* type_c_ast */ decl2_c_ast '(' param_list_c_ast_opt ')'
+  : /* in_attr: type_c_ast */ decl2_c_ast '(' param_list_c_ast_opt ')'
     func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
     noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_tid_opt
     {
@@ -3471,7 +3471,12 @@ func_equals_tid_opt
     }
   | '=' error
     {
-      elaborate_error( "'0', \"%s\", or \"%s\" expected", L_DEFAULT, L_DELETE );
+      if ( opt_lang < LANG_CPP_11 )
+        elaborate_error( "'0' expected" );
+      else
+        elaborate_error(
+          "'0', \"%s\", or \"%s\" expected", L_DEFAULT, L_DELETE
+        );
     }
   ;
 
@@ -3499,7 +3504,7 @@ nested_decl_c_ast
   ;
 
 oper_decl_c_ast
-  : /* type_c_ast */ oper_c_ast lparen_exp param_list_c_ast_opt ')'
+  : /* in_attr: type_c_ast */ oper_c_ast lparen_exp param_list_c_ast_opt ')'
     func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
     noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_tid_opt
     {
@@ -3541,7 +3546,7 @@ oper_decl_c_ast
   ;
 
 oper_c_ast
-  : /* type_c_ast */ scope_sname_c_opt Y_OPERATOR c_operator
+  : /* in_attr: type_c_ast */ scope_sname_c_opt Y_OPERATOR c_operator
     {
       DUMP_START( "oper_c_ast", "OPERATOR c_operator" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
@@ -3584,7 +3589,7 @@ pointer_decl_c_ast
   ;
 
 pointer_type_c_ast
-  : /* type_c_ast */ '*' type_qualifier_list_c_tid_opt
+  : /* in_attr: type_c_ast */ '*' type_qualifier_list_c_tid_opt
     {
       DUMP_START( "pointer_type_c_ast", "* type_qualifier_list_c_tid_opt" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
@@ -3618,7 +3623,7 @@ pointer_to_member_decl_c_ast
   ;
 
 pointer_to_member_type_c_ast
-  : /* type_c_ast */ any_sname_c Y_COLON2_STAR
+  : /* in_attr: type_c_ast */ any_sname_c Y_COLON2_STAR
     cv_qualifier_list_c_tid_opt
     {
       DUMP_START( "pointer_to_member_type_c_ast",
@@ -3670,7 +3675,7 @@ reference_decl_c_ast
   ;
 
 reference_type_c_ast
-  : /* type_c_ast */ Y_AMPER reference_qualifier_c_tid_opt
+  : /* in_attr: type_c_ast */ Y_AMPER reference_qualifier_c_tid_opt
     {
       DUMP_START( "reference_type_c_ast", "&" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
@@ -3685,7 +3690,7 @@ reference_type_c_ast
       DUMP_END();
     }
 
-  | /* type_c_ast */ Y_AMPER2 reference_qualifier_c_tid_opt
+  | /* in_attr: type_c_ast */ Y_AMPER2 reference_qualifier_c_tid_opt
     {
       DUMP_START( "reference_type_c_ast", "&&" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
@@ -3707,7 +3712,7 @@ reference_qualifier_c_tid_opt
   ;
 
 user_defined_conversion_decl_c_ast
-  : /* type_c_ast */ scope_sname_c_opt Y_OPERATOR type_c_ast
+  : /* in_attr: type_c_ast */ scope_sname_c_opt Y_OPERATOR type_c_ast
     {
       type_ast_push( $3.ast );
     }
@@ -3768,7 +3773,7 @@ typedef_type_decl_c_ast
   ;
 
 user_defined_literal_decl_c_ast
-  : /* type_c_ast */ user_defined_literal_c_ast
+  : /* in_attr: type_c_ast */ user_defined_literal_c_ast
     lparen_exp param_list_c_ast rparen_exp noexcept_c_tid_opt
     trailing_return_type_c_ast_opt
     {
@@ -3802,7 +3807,7 @@ user_defined_literal_decl_c_ast
   ;
 
 user_defined_literal_c_ast
-  : /* type_c_ast */ scope_sname_c_opt Y_OPERATOR quote2_exp name_exp
+  : /* in_attr: type_c_ast */ scope_sname_c_opt Y_OPERATOR quote2_exp name_exp
     {
       DUMP_START( "user_defined_literal_c_ast", "OPERATOR \"\" NAME" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
@@ -4361,7 +4366,7 @@ cast2_c_ast
   ;
 
 array_cast_c_ast
-  : /* type_c_ast */ cast_c_ast_opt array_size_c_ast
+  : /* in_attr: type_c_ast */ cast_c_ast_opt array_size_c_ast
     {
       DUMP_START( "array_cast_c_ast", "cast_c_ast_opt array_size_c_num" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
@@ -4423,7 +4428,7 @@ static_tid_opt
   ;
 
 block_cast_c_ast                        /* Apple extension */
-  : /* type_c_ast */ '(' Y_CIRC
+  : /* in_attr: type_c_ast */ '(' Y_CIRC
     {
       //
       // A block AST has to be the type inherited attribute for cast_c_ast_opt
@@ -4455,7 +4460,7 @@ block_cast_c_ast                        /* Apple extension */
   ;
 
 func_cast_c_ast
-  : /* type_c_ast */ cast2_c_ast '(' param_list_c_ast_opt ')'
+  : /* in_attr: type_c_ast */ cast2_c_ast '(' param_list_c_ast_opt ')'
     func_qualifier_list_c_tid_opt trailing_return_type_c_ast_opt
     {
       DUMP_START( "func_cast_c_ast",
@@ -4725,7 +4730,7 @@ typedef_type_c_ast
       DUMP_END();
     }
 
-  | /* type_c_ast */ any_typedef_ast "::" sname_c
+  | /* in_attr: type_c_ast */ any_typedef_ast "::" sname_c
     {
       //
       // This is for a case like:
@@ -4756,7 +4761,7 @@ typedef_type_c_ast
       DUMP_END();
     }
 
-  | /* type_c_ast */ any_typedef_ast "::" typedef_sname_c
+  | /* in_attr: type_c_ast */ any_typedef_ast "::" typedef_sname_c
     {
       //
       // This is for a case like:
@@ -4882,7 +4887,7 @@ sname_c
   ;
 
 sname_c_ast
-  : /* type_c_ast */ sname_c
+  : /* in_attr: type_c_ast */ sname_c
     {
       DUMP_START( "sname_c_ast", "sname_c" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
