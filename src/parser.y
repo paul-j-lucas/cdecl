@@ -335,7 +335,7 @@ struct in_attr {
   c_sname_t   current_scope;            ///< C++ only: current scope, if any.
   slist_t     qualifier_stack;          ///< `c_qualifier_t` stack.
   slist_t     type_ast_stack;           ///< Type AST stack.
-  bool        typename;                 ///< Was `typename` specified?
+  bool        typename;                 ///< C++ only: `typename` specified?
 };
 typedef struct in_attr in_attr_t;
 
@@ -394,9 +394,9 @@ static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t *loc ) {
 }
 
 /**
- * Gets a printable string of the lexer's current token.
+ * Gets a printable string of <code>\ref lexer_token</code>.
  *
- * @return Returns said string or null if the lexer's current token is the
+ * @return Returns said string or null if <code>\ref lexer_token</code> is the
  * empty string.
  */
 PJL_WARN_UNUSED_RESULT
@@ -409,7 +409,8 @@ static inline char const* printable_token( void ) {
 }
 
 /**
- * Peeks at the type AST at the top of the type AST inherited attribute stack.
+ * Peeks at the type AST at the top of the
+ * \ref in_attr.type_ast_stack "type AST inherited attribute stack".
  *
  * @return Returns said AST.
  */
@@ -419,7 +420,8 @@ static inline c_ast_t* type_ast_peek( void ) {
 }
 
 /**
- * Pops a type AST from the type AST inherited attribute stack.
+ * Pops a type AST from the
+ * \ref in_attr.type_ast_stack "type AST inherited attribute stack".
  *
  * @return Returns said AST.
  */
@@ -429,7 +431,8 @@ static inline c_ast_t* type_ast_pop( void ) {
 }
 
 /**
- * Pushes a type AST onto the type AST inherited attribute stack.
+ * Pushes a type AST onto the
+ * \ref in_attr.type_ast_stack "type AST inherited attribute  stack".
  *
  * @param ast The AST to push.
  */
@@ -438,8 +441,8 @@ static inline void type_ast_push( c_ast_t *ast ) {
 }
 
 /**
- * Peeks at the qualifier at the top of the qualifier inherited attribute
- * stack.
+ * Peeks at the qualifier at the top of the
+ * \ref in_attr.qualifier_stack "qualifier inherited attribute stack".
  *
  * @return Returns said qualifier.
  */
@@ -449,8 +452,8 @@ static inline c_type_id_t qualifier_tid_peek( void ) {
 }
 
 /**
- * Peeks at the location of the qualifier at the top of the qualifier inherited
- * attribute stack.
+ * Peeks at the location of the qualifier at the top of the
+ * \ref in_attr.qualifier_stack "qualifier inherited attribute stack".
  *
  * @note This is a macro instead of an inline function because it should return
  * a reference (not a pointer), but C doesn't have references.
@@ -461,7 +464,9 @@ static inline c_type_id_t qualifier_tid_peek( void ) {
   (SLIST_PEEK_HEAD( c_qualifier_t*, &in_attr.qualifier_stack )->loc)
 
 /**
- * Pops a qualifier from the qualifier inherited attribute stack and frees it.
+ * Pops a qualifier from the
+ * \ref in_attr.qualifier_stack "qualifer inherited attribute stack" and frees
+ * it.
  */
 static inline void qualifier_pop( void ) {
   FREE( slist_pop_head( &in_attr.qualifier_stack ) );
@@ -664,7 +669,7 @@ static void fl_print_error_unknown_type( char const *file, int line,
 }
 
 /**
- * Frees all resources used by inherited attributes.
+ * Frees all resources used by \ref in_attr "inherited attributes".
  */
 static void in_attr_free( void ) {
   c_sname_free( &in_attr.current_scope );
@@ -701,7 +706,8 @@ static void parse_init( void ) {
 }
 
 /**
- * Pushes a qualifier onto the qualifier inherited attribute stack.
+ * Pushes a qualifier onto the
+ * \ref in_attr.qualifier_stack "qualifier inherited attribute stack."
  *
  * @param qual_tid The qualifier to push.
  * @param loc A pointer to the source location of the qualifier.

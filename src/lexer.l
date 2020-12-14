@@ -409,7 +409,6 @@ static char const lexer_token_init_buf; ///< So lexer_token is never null.
 
 // extern variables
 bool              lexer_find_typedef = true;
-/** Guaranteed pointer of `yytext`. */
 char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
