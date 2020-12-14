@@ -830,12 +830,12 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
 }
 
 /**
- * Parses an array of built-in `typedef` declarations.
+ * Parses an array of predefined `typedef` declarations.
  *
  * @param types An array of pointers to `typedef` strings.  The last element
  * must be null.
  */
-static void c_typedef_parse_builtins( char const *const types[const] ) {
+static void c_typedef_parse_predefined( char const *const types[const] ) {
   extern bool parse_string( char const*, size_t );
   assert( types != NULL );
   for ( char const *const *ptype = types; *ptype != NULL; ++ptype ) {
@@ -939,22 +939,22 @@ void c_typedef_init( void ) {
     opt_bison_debug = false;
 #endif /* YYDEBUG */
 
-    c_typedef_parse_builtins( TYPEDEFS_STD_C );
-    c_typedef_parse_builtins( TYPEDEFS_STD_ATOMIC_H );
-    c_typedef_parse_builtins( TYPEDEFS_FLOATING_POINT_EXTENSIONS );
-    c_typedef_parse_builtins( TYPEDEFS_PTHREAD_H );
-    c_typedef_parse_builtins( TYPEDEFS_THREADS_H );
-    c_typedef_parse_builtins( TYPEDEFS_STD_CPP );
-    c_typedef_parse_builtins( TYPEDEFS_STD_CPP_11 );
-    c_typedef_parse_builtins( TYPEDEFS_STD_CPP_17 );
-    c_typedef_parse_builtins( TYPEDEFS_STD_CPP_20 );
-    c_typedef_parse_builtins( TYPEDEFS_MISC );
-    c_typedef_parse_builtins( TYPEDEFS_GNUC );
-    c_typedef_parse_builtins( TYPEDEFS_WIN32 );
+    c_typedef_parse_predefined( TYPEDEFS_STD_C );
+    c_typedef_parse_predefined( TYPEDEFS_STD_ATOMIC_H );
+    c_typedef_parse_predefined( TYPEDEFS_FLOATING_POINT_EXTENSIONS );
+    c_typedef_parse_predefined( TYPEDEFS_PTHREAD_H );
+    c_typedef_parse_predefined( TYPEDEFS_THREADS_H );
+    c_typedef_parse_predefined( TYPEDEFS_STD_CPP );
+    c_typedef_parse_predefined( TYPEDEFS_STD_CPP_11 );
+    c_typedef_parse_predefined( TYPEDEFS_STD_CPP_17 );
+    c_typedef_parse_predefined( TYPEDEFS_STD_CPP_20 );
+    c_typedef_parse_predefined( TYPEDEFS_MISC );
+    c_typedef_parse_predefined( TYPEDEFS_GNUC );
+    c_typedef_parse_predefined( TYPEDEFS_WIN32 );
 
     // Embedded C extensions are available only in C99.
     opt_lang = LANG_C_99;
-    c_typedef_parse_builtins( TYPEDEFS_EMBEDDED_C );
+    c_typedef_parse_predefined( TYPEDEFS_EMBEDDED_C );
 
 #ifdef ENABLE_CDECL_DEBUG
     opt_cdecl_debug = prev_cdecl_debug;
