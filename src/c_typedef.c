@@ -317,7 +317,14 @@ static char const *const TYPEDEFS_STD_CPP[] = {
   "namespace std { class                wosyncstream;                   }",
   "namespace std { class                  time_base;                    }",
   "namespace std { class                  underflow_error;              }",
-  // C++11
+
+  NULL
+};
+
+/**
+ * Types from C++11.
+ */
+static char const *const TYPEDEFS_STD_CPP_11[] = {
   "namespace std { struct                 adopt_lock_t;                 }",
   "namespace std { struct                 atomic_bool;                  }",
   "namespace std { struct                 atomic_char8_t;               }",
@@ -403,7 +410,14 @@ static char const *const TYPEDEFS_STD_CPP[] = {
   "namespace std { class                  thread;                       }",
   "namespace std { class                  timed_mutex;                  }",
   "namespace std { struct                 try_to_lock_t;                }",
-  // C++17
+
+  NULL
+};
+
+/**
+ * Types from C++17.
+ */
+static char const *const TYPEDEFS_STD_CPP_17[] = {
   "namespace std { enum class             align_val_t;                  }",
   "namespace std { class                  bad_any_cast;                 }",
   "namespace std { class                  bad_optional_access;          }",
@@ -425,7 +439,14 @@ static char const *const TYPEDEFS_STD_CPP[] = {
   "namespace std { class               u16string_view;                  }",
   "namespace std { class               u32string_view;                  }",
   "namespace std { class                 wstring_view;                  }",
-  // C++20
+
+  NULL
+};
+
+/**
+ * Types from C++20.
+ */
+static char const *const TYPEDEFS_STD_CPP_20[] = {
   "namespace std { class                  ambiguous_local_time;         }",
   "namespace std::chrono { enum class     choose;                       }",
   "namespace std::chrono { class          day;                          }",
@@ -924,6 +945,9 @@ void c_typedef_init( void ) {
     c_typedef_parse_builtins( TYPEDEFS_PTHREAD_H );
     c_typedef_parse_builtins( TYPEDEFS_THREADS_H );
     c_typedef_parse_builtins( TYPEDEFS_STD_CPP );
+    c_typedef_parse_builtins( TYPEDEFS_STD_CPP_11 );
+    c_typedef_parse_builtins( TYPEDEFS_STD_CPP_17 );
+    c_typedef_parse_builtins( TYPEDEFS_STD_CPP_20 );
     c_typedef_parse_builtins( TYPEDEFS_MISC );
     c_typedef_parse_builtins( TYPEDEFS_GNUC );
     c_typedef_parse_builtins( TYPEDEFS_WIN32 );
