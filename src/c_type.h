@@ -749,7 +749,7 @@ bool c_type_id_is_size_t( c_type_id_t tid ) {
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 c_type_t const* c_type_data_get( void const *data ) {
-  return data != NULL ? REINTERPRET_CAST( c_type_t const*, data ) : NULL;
+  return data != NULL ? data : NULL;
 }
 
 /**

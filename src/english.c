@@ -114,7 +114,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   assert( data != NULL );
 
-  FILE *const eout = REINTERPRET_CAST( FILE*, data );
+  FILE *const eout = data;
 
   switch ( ast->kind_id ) {
     case K_ARRAY:

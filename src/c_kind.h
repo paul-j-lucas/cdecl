@@ -163,7 +163,8 @@ void c_kind_data_free( void *data ) {
 C_KIND_INLINE PJL_WARN_UNUSED_RESULT
 c_kind_id_t c_kind_data_get( void const *data ) {
 #if SIZEOF_C_KIND_T > SIZEOF_VOIDP
-  return *REINTERPRET_CAST( c_kind_id_t const*, data );
+  c_kind_id_t const *const pk = data;
+  return *pk;
 #else
   return REINTERPRET_CAST( c_kind_id_t, data );
 #endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */

@@ -799,7 +799,7 @@ static char const *const TYPEDEFS_WIN32[] = {
 PJL_WARN_UNUSED_RESULT
 static inline c_typedef_t const*
 c_typedef_node_data_get( rb_node_t const *node ) {
-  return REINTERPRET_CAST( c_typedef_t const*, node->data );
+  return node->data;
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -815,10 +815,10 @@ c_typedef_node_data_get( rb_node_t const *node ) {
  */
 PJL_WARN_UNUSED_RESULT
 static int c_typedef_cmp( void const *i_data, void const *j_data ) {
-  c_typedef_t const *const ti = REINTERPRET_CAST( c_typedef_t const*, i_data );
-  c_typedef_t const *const tj = REINTERPRET_CAST( c_typedef_t const*, j_data );
-  assert( ti != NULL );
-  assert( tj != NULL );
+  assert( i_data != NULL );
+  assert( j_data != NULL );
+  c_typedef_t const *const ti = i_data;
+  c_typedef_t const *const tj = j_data;
   return c_sname_cmp( &ti->ast->sname, &tj->ast->sname );
 }
 
@@ -865,13 +865,11 @@ static void c_typedef_parse_predefined( char const *const types[const] ) {
  */
 PJL_WARN_UNUSED_RESULT
 static bool rb_visitor( void *node_data, void *aux_data ) {
-  c_typedef_t const *const t =
-    REINTERPRET_CAST( c_typedef_t const*, node_data );
-  assert( t != NULL );
+  assert( node_data != NULL );
+  assert( aux_data != NULL );
 
-  td_rb_visitor_data_t const *const vd =
-    REINTERPRET_CAST( td_rb_visitor_data_t*, aux_data );
-  assert( vd != NULL );
+  c_typedef_t const *const t = node_data;
+  td_rb_visitor_data_t const *const vd = aux_data;
 
   return (*vd->visitor)( t, vd->data );
 }

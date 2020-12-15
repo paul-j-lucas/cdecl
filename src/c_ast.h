@@ -684,7 +684,7 @@ bool c_ast_find( c_ast_t const *ast, c_visit_dir_t dir,
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_param_ast( c_ast_param_t const *param ) {
-  return REINTERPRET_CAST( c_ast_t const*, param->data );
+  return param->data;
 }
 
 /** @} */
