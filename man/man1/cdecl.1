@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "December 3, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "December 15, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -720,24 +720,58 @@ sets the current language to
 If no argument is given,
 it's equivalent to the second form.
 .TP
-.BR show " [ " \f2s-name\fP " | " all " | " predefined " | " user " ] [[" as "] " typedef ]
-Shows the definition for a previously defined type
+.BR show " [ " \f2s-name\fP " | " all " [{ " predefined " | " user " }] [[" as "] " typedef ]
+.RS 4
+.IP \(bu 3
+For
+.IR s-name ,
+shows the definition for a previously defined type
 (via
 .BR define ,
 .BR typedef ,
 or
 .BR using )
-having
-.IR s-name ;
-or shows
-all, predefined-only, or user-defined-only
-types.
+having that name.
+.IP \(bu
+For
+.B all
+only,
+shows all predefined and user-defined types.
+.IP \(bu
+For
+.BR predefined ,
+shows only predefined types
+that are valid in the current language.
+.IP \(bu
+For
+.BR user ,
+shows only user-defined types
+that were defined in the current language or earlier.
+.IP \(bu
+For either
+.B "all predefined"
+or
+.BR "all user" ,
+shows their respective set of types
+regardless of the current language.
+.IP \(bu
+For none of
+.IR s-name ,
+.BR all ,
+.BR predefined ,
+or
+.BR user ,
+equivalent to
+.BR "show user" .
+.RE
+.TP
+.B ""
 By default,
-user definitions are shown in pseudo-English.
+definitions are shown in pseudo-English.
 If
 .B typedef
 is given,
-the definitions are shown as \f(CWtypedef\fP declarations.
+definitions are shown as \f(CWtypedef\fP declarations.
 .TP
 .BI typedef " gibberish"
 Defines a type via a C (or C++) \f(CWtypedef\fP declaration.

@@ -196,9 +196,22 @@
 #define print_error_unknown_type(LOC,SNAME) \
   fl_print_error_unknown_type( __FILE__, __LINE__, (LOC), (SNAME) )
 
-#define SHOW_ALL_TYPES            (~0u) ///< Show all types.
-#define SHOW_PREDEFINED_TYPES     0x01u ///< Show only predefined types.
-#define SHOW_USER_TYPES           0x02u ///< Show only user-defined types.
+/**
+ * Show all (as opposed to only those that are supported in the current
+ * language) predefined, user, or both types.
+ */
+#define SHOW_ALL_TYPES            0x10u
+
+/**
+* Show only predefined types that are valid in the current language.
+*/
+#define SHOW_PREDEFINED_TYPES     (1u << 0)
+
+/**
+ * Show only user-defined types that were defined in the current language or
+ * earlier.
+ */
+#define SHOW_USER_TYPES           (1u << 1)
 
 /** @} */
 
@@ -744,15 +757,19 @@ static void quit( void ) {
 PJL_WARN_UNUSED_RESULT
 static bool show_type_visitor( c_typedef_t const *type, void *data ) {
   assert( type != NULL );
+  assert( data != NULL );
 
-  show_type_info_t const *const sti =
-    REINTERPRET_CAST( show_type_info_t const*, data );
+  show_type_info_t const *const sti = data;
 
-  bool const show_it = type->user_defined ?
+  bool const show_type = type->user_defined ?
     (sti->show_which & SHOW_USER_TYPES) != 0 :
     (sti->show_which & SHOW_PREDEFINED_TYPES) != 0;
 
-  if ( show_it ) {
+  bool const show_in_lang =
+    (sti->show_which & SHOW_ALL_TYPES) != 0 ||
+    (type->lang_ids & opt_lang) != LANG_NONE;
+
+  if ( show_type && show_in_lang ) {
     (*sti->show_fn)( type->ast, fout );
     FPUTC( '\n', fout );
   }
@@ -1222,6 +1239,7 @@ static void yyerror( char const *msg ) {
 %type   <literal>   new_style_cast_c new_style_cast_english
 %type   <sname>     of_scope_english
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
+%type   <bitmask>   predefined_or_user_opt
 %type   <type>      scope_english_type scope_english_type_exp
 %type   <sname>     scope_sname_c_opt
 %type   <sname>     sname_c sname_c_exp sname_c_opt
@@ -2418,7 +2436,17 @@ show_command
 
 show_which_types_opt
   : /* empty */                   { $$ = SHOW_USER_TYPES; }
-  | Y_ALL                         { $$ = SHOW_ALL_TYPES; }
+  | Y_ALL predefined_or_user_opt
+    {
+      $$ = SHOW_ALL_TYPES |
+           ($2 != 0 ? $2 : SHOW_PREDEFINED_TYPES | SHOW_USER_TYPES);
+    }
+  | Y_PREDEFINED                  { $$ = SHOW_PREDEFINED_TYPES; }
+  | Y_USER                        { $$ = SHOW_USER_TYPES; }
+  ;
+
+predefined_or_user_opt
+  : /* empty */                   { $$ = 0; }
   | Y_PREDEFINED                  { $$ = SHOW_PREDEFINED_TYPES; }
   | Y_USER                        { $$ = SHOW_USER_TYPES; }
   ;

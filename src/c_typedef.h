@@ -47,10 +47,11 @@
  */
 
 /**
- * C/C++ language typedef information.
+ * C/C++ `typedef` information.
  */
 struct c_typedef {
   c_ast_t const  *ast;                  ///< AST representing the type.
+  c_lang_id_t     lang_ids;             ///< Language(s) available in.
   bool            user_defined;         ///< Is the type user-defined?
 };
 

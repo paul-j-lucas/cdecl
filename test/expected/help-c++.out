@@ -6,7 +6,7 @@ command:
   explain <gibberish>
   { help | ? } [command[s] | english]
   set [<option> [= <value>] | options | <lang>]*
-  show [<name> | all | predefined | user] [[as] typedef]
+  show [<name> | [all] {predefined | user}] [[as] typedef]
   typedef <gibberish>
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   using <name> = <gibberish>

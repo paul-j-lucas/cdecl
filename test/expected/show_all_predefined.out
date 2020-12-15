@@ -54,7 +54,6 @@ define INT32 as int
 define INT64 as long
 define INT8 as signed char
 define INT_PTR as __int64
-define Int as int
 define LANGID as WORD
 define LARGE_INTEGER as union _LARGE_INTEGER
 define LCID as DWORD

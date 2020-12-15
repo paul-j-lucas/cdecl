@@ -73,70 +73,80 @@ static bool       user_defined;         ///< Are new `typedef`s used-defined?
  * necessarily match the underlying type on any particular platform.
  */
 static char const *const TYPEDEFS_STD_C[] = {
-  "typedef   signed char        int8_t",
-  "typedef          short       int16_t",
-  "typedef          int         int32_t",
-  "typedef          long        int64_t",
-  "typedef unsigned char       uint8_t",
-  "typedef unsigned short      uint16_t",
-  "typedef unsigned int        uint32_t",
-  "typedef unsigned long       uint64_t",
-
-  "struct                       atomic_flag",
-  "typedef          long        clock_t",
-  "typedef          int         errno_t",
-  "struct                       FILE",
-  "struct                       fpos_t",
-  "typedef          int         jmp_buf[37]",
-  "typedef long     double      max_align_t", // C11
-  "struct                       mbstate_t",
-  "typedef enum memory_order    memory_order",
-  "typedef          long        ptrdiff_t",
-  "typedef          int         sig_atomic_t",
-  "typedef unsigned long       rsize_t",      // C11
-  "typedef          long       ssize_t",
-  "typedef unsigned long        size_t",
-  "typedef          int64_t     time_t",
-  "typedef          void       *va_list",
-  "typedef          int         wctrans_t",
-  "typedef unsigned long        wctype_t",
-  "typedef          int         wint_t",
-
-  "typedef          long        intmax_t",
-  "typedef          long        intptr_t",
-  "typedef unsigned long       uintmax_t",
-  "typedef unsigned long       uintptr_t",
-
-  "struct                       div_t",
-  "struct                   imaxdiv_t",
-  "struct                      ldiv_t",
-  "struct                     lldiv_t",
-
-  "typedef   signed char        int_fast8_t",
-  "typedef          short       int_fast16_t",
-  "typedef          int         int_fast32_t",
-  "typedef          long        int_fast64_t",
-  "typedef unsigned char       uint_fast8_t",
-  "typedef unsigned short      uint_fast16_t",
-  "typedef unsigned int        uint_fast32_t",
-  "typedef unsigned long       uint_fast64_t",
-
-  "typedef   signed char        int_least8_t",
-  "typedef          short       int_least16_t",
-  "typedef          int         int_least32_t",
-  "typedef          long        int_least64_t",
-  "typedef unsigned char       uint_least8_t",
-  "typedef unsigned short      uint_least16_t",
-  "typedef unsigned int        uint_least32_t",
-  "typedef unsigned long       uint_least64_t",
+  "typedef          long  clock_t",
+  "struct                 div_t",
+  "struct             imaxdiv_t",
+  "struct                ldiv_t",
+  "struct               lldiv_t",
+  "typedef          int   errno_t",
+  "struct                 FILE",
+  "struct                 fpos_t",
+  "typedef          int   jmp_buf[37]",
+  "struct                 mbstate_t",
+  "typedef          long  ptrdiff_t",
+  "typedef          int   sig_atomic_t",
+  "typedef          long ssize_t",
+  "typedef unsigned long  size_t",
+  "typedef          long time_t",
+  "typedef          void *va_list",
 
   NULL
 };
 
 /**
- * Types from `stdatomic.h`.
+ * Types from C95.
  */
-static char const *const TYPEDEFS_STD_ATOMIC_H[] = {
+static char const *const TYPEDEFS_STD_C_95[] = {
+  "typedef          int   wctrans_t",
+  "typedef unsigned long  wctype_t",
+  "typedef          int   wint_t",
+
+  NULL
+};
+
+/**
+ * Types from C99.
+ */
+static char const *const TYPEDEFS_STD_C_99[] = {
+  "typedef   signed char   int8_t",
+  "typedef          short  int16_t",
+  "typedef          int    int32_t",
+  "typedef          long   int64_t",
+  "typedef unsigned char  uint8_t",
+  "typedef unsigned short uint16_t",
+  "typedef unsigned int   uint32_t",
+  "typedef unsigned long  uint64_t",
+
+  "typedef          long   intmax_t",
+  "typedef          long   intptr_t",
+  "typedef unsigned long  uintmax_t",
+  "typedef unsigned long  uintptr_t",
+
+  "typedef   signed char   int_fast8_t",
+  "typedef          short  int_fast16_t",
+  "typedef          int    int_fast32_t",
+  "typedef          long   int_fast64_t",
+  "typedef unsigned char  uint_fast8_t",
+  "typedef unsigned short uint_fast16_t",
+  "typedef unsigned int   uint_fast32_t",
+  "typedef unsigned long  uint_fast64_t",
+
+  "typedef   signed char   int_least8_t",
+  "typedef          short  int_least16_t",
+  "typedef          int    int_least32_t",
+  "typedef          long   int_least64_t",
+  "typedef unsigned char  uint_least8_t",
+  "typedef unsigned short uint_least16_t",
+  "typedef unsigned int   uint_least32_t",
+  "typedef unsigned long  uint_least64_t",
+
+  NULL
+};
+
+/**
+ * Types from C11.
+ */
+static char const *const TYPEDEFS_STD_C_11[] = {
   "typedef _Atomic          _Bool     atomic_bool",
   "typedef _Atomic          char      atomic_char",
   "typedef _Atomic   signed char      atomic_schar",
@@ -154,6 +164,7 @@ static char const *const TYPEDEFS_STD_ATOMIC_H[] = {
   "typedef _Atomic unsigned long      atomic_ulong",
   "typedef _Atomic unsigned long long atomic_ullong",
 
+  "struct                             atomic_flag",
   "typedef _Atomic  ptrdiff_t         atomic_ptrdiff_t",
   "typedef _Atomic  size_t            atomic_size_t",
 
@@ -179,6 +190,17 @@ static char const *const TYPEDEFS_STD_ATOMIC_H[] = {
   "typedef _Atomic uint_least16_t     atomic_uint_least16_t",
   "typedef _Atomic uint_least32_t     atomic_uint_least32_t",
   "typedef _Atomic uint_least64_t     atomic_uint_least64_t",
+
+  "typedef pthread_cond_t             cnd_t",
+  "typedef long     double            max_align_t",
+  "typedef enum memory_order          memory_order",
+  "typedef pthread_mutex_t            mtx_t",
+  "typedef unsigned long              rsize_t",
+  "typedef pthread_t                  thrd_t",
+  "typedef int                        once_flag",
+  "typedef int                      (*thrd_start_t)(void*)",
+  "typedef void                     (*tss_dtor_t)(void*)",
+  "typedef void                      *tss_t",
 
   NULL
 };
@@ -239,84 +261,69 @@ static char const *const TYPEDEFS_PTHREAD_H[] = {
 };
 
 /**
- * Types from `threads.h` (C11).
- */
-static char const *const TYPEDEFS_THREADS_H[] = {
-  "typedef pthread_t        thrd_t",
-  "typedef pthread_cond_t   cnd_t",
-  "typedef pthread_mutex_t  mtx_t",
-  "typedef int              once_flag",
-  "typedef int            (*thrd_start_t)(void*)",
-  "typedef void           (*tss_dtor_t)(void*)",
-  "typedef void            *tss_t",
-
-  NULL
-};
-
-/**
  * Types from C++.
  */
 static char const *const TYPEDEFS_STD_CPP[] = {
-  "namespace std { class                  bad_alloc;                    }",
-  "namespace std { class                  bad_cast;                     }",
-  "namespace std { class                  bad_exception;                }",
-  "namespace std { class                  bad_type_id;                  }",
-  "namespace std { class                  codecvt_base;                 }",
-  "namespace std { class                  ctype_base;                   }",
-  "namespace std { struct                 div_t;                        }",
-  "namespace std { struct                ldiv_t;                        }",
-  "namespace std { class                  domain_error;                 }",
-  "namespace std { class                  exception;                    }",
-  "namespace std { class                  filebuf;                      }",
-  "namespace std { class                 wfilebuf;                      }",
-  "namespace std { class                  invalid_argument;             }",
-  "namespace std { class                  ios;                          }",
-  "namespace std { class                 wios;                          }",
-  "namespace std { class                  length_error;                 }",
-  "namespace std { class                  locale;                       }",
-  "namespace std { class                  logic_error;                  }",
-  "namespace std { class                  messages_base;                }",
-  "namespace std { class                  money_base;                   }",
-  "namespace std { struct                 nothrow_t;                    }",
-  "namespace std { class                  out_of_range;                 }",
-  "namespace std { class                  overflow_error;               }",
-  "namespace std { typedef long           ptrdiff_t;                    }",
-  "namespace std { class                  range_error;                  }",
-  "namespace std { class                  runtime_error;                }",
-  "namespace std { typedef int            sig_atomic_t;                 }",
-  "namespace std { typedef unsigned long  size_t;                       }",
-  "namespace std { class                 fstream;                       }",
-  "namespace std { class                ifstream;                       }",
-  "namespace std { class                wfstream;                       }",
-  "namespace std { class               wifstream;                       }",
-  "namespace std { class                ofstream;                       }",
-  "namespace std { class               wofstream;                       }",
-  "namespace std { class                 istream;                       }",
-  "namespace std { class                wistream;                       }",
-  "namespace std { class                iostream;                       }",
-  "namespace std { class               wiostream;                       }",
-  "namespace std { class                 ostream;                       }",
-  "namespace std { class                wostream;                       }",
-  "namespace std { class                  streambuf;                    }",
-  "namespace std { class                 wstreambuf;                    }",
-  "namespace std { typedef long long      streamoff;                    }",
-  "namespace std { typedef long           streamsize;                   }",
-  "namespace std { class                  string;                       }",
-  "namespace std { class                 wstring;                       }",
-  "namespace std { class                  stringbuf;                    }",
-  "namespace std { class                 wstringbuf;                    }",
-  "namespace std { class                  stringstream;                 }",
-  "namespace std { class                 istringstream;                 }",
-  "namespace std { class                 wstringstream;                 }",
-  "namespace std { class                wistringstream;                 }",
-  "namespace std { class                 ostringstream;                 }",
-  "namespace std { class                wostringstream;                 }",
-  "namespace std { class                  syncbuf;                      }",
-  "namespace std { class                 wsyncbuf;                      }",
-  "namespace std { class                 osyncstream;                   }",
-  "namespace std { class                wosyncstream;                   }",
-  "namespace std { class                  time_base;                    }",
-  "namespace std { class                  underflow_error;              }",
+  "namespace std { class                  bad_alloc;        }",
+  "namespace std { class                  bad_cast;         }",
+  "namespace std { class                  bad_exception;    }",
+  "namespace std { class                  bad_type_id;      }",
+  "namespace std { class                  codecvt_base;     }",
+  "namespace std { class                  ctype_base;       }",
+  "namespace std { struct                 div_t;            }",
+  "namespace std { struct                ldiv_t;            }",
+  "namespace std { class                  domain_error;     }",
+  "namespace std { class                  exception;        }",
+  "namespace std { class                  filebuf;          }",
+  "namespace std { class                 wfilebuf;          }",
+  "namespace std { class                  invalid_argument; }",
+  "namespace std { class                  ios;              }",
+  "namespace std { class                 wios;              }",
+  "namespace std { class                  length_error;     }",
+  "namespace std { class                  locale;           }",
+  "namespace std { class                  logic_error;      }",
+  "namespace std { class                  messages_base;    }",
+  "namespace std { class                  money_base;       }",
+  "namespace std { struct                 nothrow_t;        }",
+  "namespace std { class                  out_of_range;     }",
+  "namespace std { class                  overflow_error;   }",
+  "namespace std { typedef long           ptrdiff_t;        }",
+  "namespace std { class                  range_error;      }",
+  "namespace std { class                  runtime_error;    }",
+  "namespace std { typedef int            sig_atomic_t;     }",
+  "namespace std { typedef unsigned long  size_t;           }",
+  "namespace std { class                 fstream;           }",
+  "namespace std { class                ifstream;           }",
+  "namespace std { class                wfstream;           }",
+  "namespace std { class               wifstream;           }",
+  "namespace std { class                ofstream;           }",
+  "namespace std { class               wofstream;           }",
+  "namespace std { class                 istream;           }",
+  "namespace std { class                wistream;           }",
+  "namespace std { class                iostream;           }",
+  "namespace std { class               wiostream;           }",
+  "namespace std { class                 ostream;           }",
+  "namespace std { class                wostream;           }",
+  "namespace std { class                  streambuf;        }",
+  "namespace std { class                 wstreambuf;        }",
+  "namespace std { typedef long long      streamoff;        }",
+  "namespace std { typedef long           streamsize;       }",
+  "namespace std { class                  string;           }",
+  "namespace std { class                 wstring;           }",
+  "namespace std { class                  stringbuf;        }",
+  "namespace std { class                 wstringbuf;        }",
+  "namespace std { class                  stringstream;     }",
+  "namespace std { class                 istringstream;     }",
+  "namespace std { class                 wstringstream;     }",
+  "namespace std { class                wistringstream;     }",
+  "namespace std { class                 ostringstream;     }",
+  "namespace std { class                wostringstream;     }",
+  "namespace std { class                  syncbuf;          }",
+  "namespace std { class                 wsyncbuf;          }",
+  "namespace std { class                 osyncstream;       }",
+  "namespace std { class                wosyncstream;       }",
+  "namespace std { class                  time_base;        }",
+  "namespace std { class                  underflow_error;  }",
 
   NULL
 };
@@ -325,91 +332,92 @@ static char const *const TYPEDEFS_STD_CPP[] = {
  * Types from C++11.
  */
 static char const *const TYPEDEFS_STD_CPP_11[] = {
-  "namespace std { struct                 adopt_lock_t;                 }",
-  "namespace std { struct                 atomic_bool;                  }",
-  "namespace std { struct                 atomic_char8_t;               }",
-  "namespace std { struct                 atomic_char16_t;              }",
-  "namespace std { struct                 atomic_char32_t;              }",
-  "namespace std { struct                 atomic_char;                  }",
-  "namespace std { struct                 atomic_flag;                  }",
-  "namespace std { struct                 atomic_int8_t;                }",
-  "namespace std { struct                 atomic_int16_t;               }",
-  "namespace std { struct                 atomic_int32_t;               }",
-  "namespace std { struct                 atomic_int64_t;               }",
-  "namespace std { struct                 atomic_int;                   }",
-  "namespace std { struct                 atomic_int_fast8_t;           }",
-  "namespace std { struct                 atomic_int_fast16_t;          }",
-  "namespace std { struct                 atomic_int_fast32_t;          }",
-  "namespace std { struct                 atomic_int_fast64_t;          }",
-  "namespace std { struct                 atomic_int_least8_t;          }",
-  "namespace std { struct                 atomic_int_least16_t;         }",
-  "namespace std { struct                 atomic_int_least32_t;         }",
-  "namespace std { struct                 atomic_int_least64_t;         }",
-  "namespace std { struct                 atomic_intmax_t;              }",
-  "namespace std { struct                 atomic_intptr_t;              }",
-  "namespace std { struct                 atomic_llong;                 }",
-  "namespace std { struct                 atomic_long;                  }",
-  "namespace std { struct                 atomic_ptrdiff_t;             }",
-  "namespace std { struct                 atomic_schar;                 }",
-  "namespace std { struct                 atomic_short;                 }",
-  "namespace std { struct                 atomic_signed_lock_free;      }",
-  "namespace std { struct                 atomic_size_t;                }",
-  "namespace std { struct                 atomic_uchar;                 }",
-  "namespace std { struct                 atomic_uint16_t;              }",
-  "namespace std { struct                 atomic_uint32_t;              }",
-  "namespace std { struct                 atomic_uint64_t;              }",
-  "namespace std { struct                 atomic_uint8_t;               }",
-  "namespace std { struct                 atomic_uint;                  }",
-  "namespace std { struct                 atomic_uint_fast8_t;          }",
-  "namespace std { struct                 atomic_uint_fast16_t;         }",
-  "namespace std { struct                 atomic_uint_fast32_t;         }",
-  "namespace std { struct                 atomic_uint_fast64_t;         }",
-  "namespace std { struct                 atomic_uint_least8_t;         }",
-  "namespace std { struct                 atomic_uint_least16_t;        }",
-  "namespace std { struct                 atomic_uint_least32_t;        }",
-  "namespace std { struct                 atomic_uint_least64_t;        }",
-  "namespace std { struct                 atomic_uintmax_t;             }",
-  "namespace std { struct                 atomic_uintptr_t;             }",
-  "namespace std { struct                 atomic_ullong;                }",
-  "namespace std { struct                 atomic_ulong;                 }",
-  "namespace std { struct                 atomic_unsigned_lock_free;    }",
-  "namespace std { struct                 atomic_ushort;                }",
-  "namespace std { struct                 atomic_wchar_t;               }",
-  "namespace std { class                  bad_array_new_length;         }",
-  "namespace std { class                  bad_function_call;            }",
-  "namespace std { class                  bad_weak_ptr;                 }",
-  "namespace std { class                  condition_variable;           }",
-  "namespace std { class                  condition_variable_any;       }",
-  "namespace std { enum class             cv_status;                    }",
-  "namespace std { struct                 defer_lock_t;                 }",
-  "namespace std { struct             imaxdiv_t;                        }",
-  "namespace std { struct               lldiv_t;                        }",
-  "namespace std { class                  error_category;               }",
-  "namespace std { class                  error_code;                   }",
-  "namespace std { class                  error_condition;              }",
-  "namespace std { class ios_base { class failure;                   }; }",
-  "namespace std { enum class             future_errc;                  }",
-  "namespace std { class                  future_error;                 }",
-  "namespace std { enum class             future_status;                }",
-  "namespace std::chrono { class          high_resolution_clock;        }",
-  "namespace std { typedef long double    max_align_t;                  }",
-  "namespace std { class                  mutex;                        }",
-  "namespace std { typedef void          *nullptr_t;                    }",
-  "namespace std { class                  recursive_mutex;              }",
-  "namespace std { class                  recursive_timed_mutex;        }",
-  "namespace std { class                  regex;                        }",
-  "namespace std { class                 wregex;                        }",
-  "namespace std { struct                 regex_error;                  }",
-  "namespace std { class                  shared_mutex;                 }",
-  "namespace std { class                  shared_timed_mutex;           }",
-  "namespace std { class               u16string;                       }",
-  "namespace std { class               u32string;                       }",
-  "namespace std::chrono { class          steady_clock;                 }",
-  "namespace std::chrono { class          system_clock;                 }",
-  "namespace std { struct                 system_error;                 }",
-  "namespace std { class                  thread;                       }",
-  "namespace std { class                  timed_mutex;                  }",
-  "namespace std { struct                 try_to_lock_t;                }",
+  "namespace std { struct                 adopt_lock_t;               }",
+  "namespace std { struct                 atomic_bool;                }",
+  "namespace std { struct                 atomic_char8_t;             }",
+  "namespace std { struct                 atomic_char16_t;            }",
+  "namespace std { struct                 atomic_char32_t;            }",
+  "namespace std { struct                 atomic_char;                }",
+  "namespace std { struct                 atomic_flag;                }",
+  "namespace std { struct                 atomic_int8_t;              }",
+  "namespace std { struct                 atomic_int16_t;             }",
+  "namespace std { struct                 atomic_int32_t;             }",
+  "namespace std { struct                 atomic_int64_t;             }",
+  "namespace std { struct                 atomic_int;                 }",
+  "namespace std { struct                 atomic_int_fast8_t;         }",
+  "namespace std { struct                 atomic_int_fast16_t;        }",
+  "namespace std { struct                 atomic_int_fast32_t;        }",
+  "namespace std { struct                 atomic_int_fast64_t;        }",
+  "namespace std { struct                 atomic_int_least8_t;        }",
+  "namespace std { struct                 atomic_int_least16_t;       }",
+  "namespace std { struct                 atomic_int_least32_t;       }",
+  "namespace std { struct                 atomic_int_least64_t;       }",
+  "namespace std { struct                 atomic_intmax_t;            }",
+  "namespace std { struct                 atomic_intptr_t;            }",
+  "namespace std { struct                 atomic_llong;               }",
+  "namespace std { struct                 atomic_long;                }",
+  "namespace std { struct                 atomic_ptrdiff_t;           }",
+  "namespace std { struct                 atomic_schar;               }",
+  "namespace std { struct                 atomic_short;               }",
+  "namespace std { struct                 atomic_signed_lock_free;    }",
+  "namespace std { struct                 atomic_size_t;              }",
+  "namespace std { struct                 atomic_uchar;               }",
+  "namespace std { struct                 atomic_uint16_t;            }",
+  "namespace std { struct                 atomic_uint32_t;            }",
+  "namespace std { struct                 atomic_uint64_t;            }",
+  "namespace std { struct                 atomic_uint8_t;             }",
+  "namespace std { struct                 atomic_uint;                }",
+  "namespace std { struct                 atomic_uint_fast8_t;        }",
+  "namespace std { struct                 atomic_uint_fast16_t;       }",
+  "namespace std { struct                 atomic_uint_fast32_t;       }",
+  "namespace std { struct                 atomic_uint_fast64_t;       }",
+  "namespace std { struct                 atomic_uint_least8_t;       }",
+  "namespace std { struct                 atomic_uint_least16_t;      }",
+  "namespace std { struct                 atomic_uint_least32_t;      }",
+  "namespace std { struct                 atomic_uint_least64_t;      }",
+  "namespace std { struct                 atomic_uintmax_t;           }",
+  "namespace std { struct                 atomic_uintptr_t;           }",
+  "namespace std { struct                 atomic_ullong;              }",
+  "namespace std { struct                 atomic_ulong;               }",
+  "namespace std { struct                 atomic_unsigned_lock_free;  }",
+  "namespace std { struct                 atomic_ushort;              }",
+  "namespace std { struct                 atomic_wchar_t;             }",
+
+  "namespace std { class                  bad_array_new_length;       }",
+  "namespace std { class                  bad_function_call;          }",
+  "namespace std { class                  bad_weak_ptr;               }",
+  "namespace std { class                  condition_variable;         }",
+  "namespace std { class                  condition_variable_any;     }",
+  "namespace std { enum class             cv_status;                  }",
+  "namespace std { struct                 defer_lock_t;               }",
+  "namespace std { struct             imaxdiv_t;                      }",
+  "namespace std { struct               lldiv_t;                      }",
+  "namespace std { class                  error_category;             }",
+  "namespace std { class                  error_code;                 }",
+  "namespace std { class                  error_condition;            }",
+  "namespace std { class ios_base { class failure;                 }; }",
+  "namespace std { enum class             future_errc;                }",
+  "namespace std { class                  future_error;               }",
+  "namespace std { enum class             future_status;              }",
+  "namespace std::chrono { class          high_resolution_clock;      }",
+  "namespace std { typedef long double    max_align_t;                }",
+  "namespace std { class                  mutex;                      }",
+  "namespace std { typedef void          *nullptr_t;                  }",
+  "namespace std { class                  recursive_mutex;            }",
+  "namespace std { class                  recursive_timed_mutex;      }",
+  "namespace std { class                  regex;                      }",
+  "namespace std { class                 wregex;                      }",
+  "namespace std { struct                 regex_error;                }",
+  "namespace std { class                  shared_mutex;               }",
+  "namespace std { class                  shared_timed_mutex;         }",
+  "namespace std { class               u16string;                     }",
+  "namespace std { class               u32string;                     }",
+  "namespace std::chrono { class          steady_clock;               }",
+  "namespace std::chrono { class          system_clock;               }",
+  "namespace std { struct                 system_error;               }",
+  "namespace std { class                  thread;                     }",
+  "namespace std { class                  timed_mutex;                }",
+  "namespace std { struct                 try_to_lock_t;              }",
 
   NULL
 };
@@ -447,82 +455,50 @@ static char const *const TYPEDEFS_STD_CPP_17[] = {
  * Types from C++20.
  */
 static char const *const TYPEDEFS_STD_CPP_20[] = {
-  "namespace std { class                  ambiguous_local_time;         }",
-  "namespace std::chrono { enum class     choose;                       }",
-  "namespace std::chrono { class          day;                          }",
-  "namespace std { struct                 destroying_delete_t;          }",
-  "namespace std::chrono { struct         file_clock;                   }",
-  "namespace std { class                  format_error;                 }",
-  "namespace std::chrono { struct         gps_clock;                    }",
-  "namespace std::chrono { struct         is_clock;                     }",
-  "namespace std { class                  jthread;                      }",
-  "namespace std::chrono { struct         last_spec;                    }",
-  "namespace std::chrono { class          leap_second;                  }",
-  "namespace std::chrono { struct         local_info;                   }",
-  "namespace std::chrono { struct         local_t;                      }",
-  "namespace std::chrono { class          month;                        }",
-  "namespace std::chrono { class          month_day;                    }",
-  "namespace std::chrono { class          month_day_last;               }",
-  "namespace std::chrono { class          month_weekday;                }",
-  "namespace std::chrono { class          month_weekday_last;           }",
-  "namespace std::chrono { class          nonexistent_local_time;       }",
-  "namespace std { struct                 nonstopstate_t;               }",
-  "namespace std { struct                 partial_ordering;             }",
-  "namespace std { class                u8string_view;                  }",
-  "namespace std { class                  stop_source;                  }",
-  "namespace std { class                  stop_token;                   }",
-  "namespace std { struct                 strong_equality;              }",
-  "namespace std { struct                 strong_ordering;              }",
-  "namespace std::chrono { struct         sys_info;                     }",
-  "namespace std::chrono { struct         time_zone;                    }",
-  "namespace std::chrono { class          time_zone_link;               }",
-  "namespace std::chrono { struct         tzdb;                         }",
-  "namespace std::chrono { struct         tzdb_list;                    }",
-  "namespace std::chrono { struct         tai_clock;                    }",
-  "namespace std::chrono { struct         utc_clock;                    }",
-  "namespace std::chrono { class          weekday;                      }",
-  "namespace std::chrono { class          weekday_indexed;              }",
-  "namespace std::chrono { class          weekday_last;                 }",
-  "namespace std { struct                 weak_equality;                }",
-  "namespace std { struct                 weak_ordering;                }",
-  "namespace std::chrono { class          year;                         }",
-  "namespace std::chrono { class          year_month;                   }",
-  "namespace std::chrono { class          year_month_day;               }",
-  "namespace std::chrono { class          year_month_day_last;          }",
-  "namespace std::chrono { class          year_month_weekday;           }",
-  "namespace std::chrono { class          year_month_weekday_last;      }",
-
-  NULL
-};
-
-/**
- * Miscellaneous standard-ish types.
- */
-static char const *const TYPEDEFS_MISC[] = {
-  "typedef  int32_t       blkcnt_t",
-  "typedef  int32_t       blksize_t",
-  "typedef  int32_t       dev_t",
-  "struct                 fd_set",
-  "typedef  int32_t       ino_t",
-  "typedef  int32_t       mode_t",
-  "typedef unsigned long  nfds_t",
-  "typedef uint32_t       nlink_t",
-  "typedef  int64_t       off_t",
-  "typedef uint32_t       rlim_t",
-  "typedef unsigned long  sigset_t",
-
-  "typedef  long          clockid_t",
-  "typedef  int64_t       suseconds_t",
-  "typedef uint32_t       useconds_t",
-
-  "typedef uint32_t       gid_t",
-  "typedef  int32_t       pid_t",
-  "typedef uint32_t       uid_t",
-
-  "typedef uint32_t       in_addr_t",
-  "typedef uint16_t       in_port_t",
-  "typedef uint32_t       sa_family_t",
-  "typedef uint32_t       socklen_t",
+  "namespace std { class              ambiguous_local_time;     }",
+  "namespace std::chrono { enum class choose;                   }",
+  "namespace std::chrono { class      day;                      }",
+  "namespace std { struct             destroying_delete_t;      }",
+  "namespace std::chrono { struct     file_clock;               }",
+  "namespace std { class              format_error;             }",
+  "namespace std::chrono { struct     gps_clock;                }",
+  "namespace std::chrono { struct     is_clock;                 }",
+  "namespace std { class              jthread;                  }",
+  "namespace std::chrono { struct     last_spec;                }",
+  "namespace std::chrono { class      leap_second;              }",
+  "namespace std::chrono { struct     local_info;               }",
+  "namespace std::chrono { struct     local_t;                  }",
+  "namespace std::chrono { class      month;                    }",
+  "namespace std::chrono { class      month_day;                }",
+  "namespace std::chrono { class      month_day_last;           }",
+  "namespace std::chrono { class      month_weekday;            }",
+  "namespace std::chrono { class      month_weekday_last;       }",
+  "namespace std::chrono { class      nonexistent_local_time;   }",
+  "namespace std { struct             nonstopstate_t;           }",
+  "namespace std { struct             partial_ordering;         }",
+  "namespace std { class            u8string_view;              }",
+  "namespace std { class              stop_source;              }",
+  "namespace std { class              stop_token;               }",
+  "namespace std { struct             strong_equality;          }",
+  "namespace std { struct             strong_ordering;          }",
+  "namespace std::chrono { struct     sys_info;                 }",
+  "namespace std::chrono { struct     time_zone;                }",
+  "namespace std::chrono { class      time_zone_link;           }",
+  "namespace std::chrono { struct     tzdb;                     }",
+  "namespace std::chrono { struct     tzdb_list;                }",
+  "namespace std::chrono { struct     tai_clock;                }",
+  "namespace std::chrono { struct     utc_clock;                }",
+  "namespace std::chrono { class      weekday;                  }",
+  "namespace std::chrono { class      weekday_indexed;          }",
+  "namespace std::chrono { class      weekday_last;             }",
+  "namespace std { struct             weak_equality;            }",
+  "namespace std { struct             weak_ordering;            }",
+  "namespace std::chrono { class      year;                     }",
+  "namespace std::chrono { class      year_month;               }",
+  "namespace std::chrono { class      year_month_day;           }",
+  "namespace std::chrono { class      year_month_day_last;      }",
+  "namespace std::chrono { class      year_month_weekday;       }",
+  "namespace std::chrono { class      year_month_weekday_last;  }",
 
   NULL
 };
@@ -584,6 +560,38 @@ static char const *const TYPEDEFS_GNUC[] = {
   // with not being able to apply type modifiers.
   //
   "typedef long long   __int128",
+
+  NULL
+};
+
+/**
+ * Miscellaneous standard-ish types.
+ */
+static char const *const TYPEDEFS_MISC[] = {
+  "typedef  int32_t       blkcnt_t",
+  "typedef  int32_t       blksize_t",
+  "typedef  int32_t       dev_t",
+  "struct                 fd_set",
+  "typedef  int32_t       ino_t",
+  "typedef  int32_t       mode_t",
+  "typedef unsigned long  nfds_t",
+  "typedef uint32_t       nlink_t",
+  "typedef  int64_t       off_t",
+  "typedef uint32_t       rlim_t",
+  "typedef unsigned long  sigset_t",
+
+  "typedef  long          clockid_t",
+  "typedef  int64_t       suseconds_t",
+  "typedef uint32_t       useconds_t",
+
+  "typedef uint32_t       gid_t",
+  "typedef  int32_t       pid_t",
+  "typedef uint32_t       uid_t",
+
+  "typedef uint32_t       in_addr_t",
+  "typedef uint16_t       in_port_t",
+  "typedef uint32_t       sa_family_t",
+  "typedef uint32_t       socklen_t",
 
   NULL
 };
@@ -825,6 +833,7 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
   assert( ast != NULL );
   c_typedef_t *const t = MALLOC( c_typedef_t, 1 );
   t->ast = ast;
+  t->lang_ids = user_defined ? c_lang_and_later( opt_lang ) : opt_lang;
   t->user_defined = user_defined;
   return t;
 }
@@ -839,9 +848,9 @@ static void c_typedef_parse_predefined( char const *const types[const] ) {
   extern bool parse_string( char const*, size_t );
   assert( types != NULL );
   for ( char const *const *ptype = types; *ptype != NULL; ++ptype ) {
-    bool const ok = parse_string( *ptype, 0 );
-    assert( ok );
-    (void)ok;
+    bool const parsed_predefined_type_ok = parse_string( *ptype, 0 );
+    assert( parsed_predefined_type_ok );
+    (void)parsed_predefined_type_ok;
   } // for
 }
 
@@ -915,56 +924,72 @@ void c_typedef_init( void ) {
     //
     // Temporarily turn off debug output for built-in typedefs.
     //
-    bool const prev_cdecl_debug = opt_cdecl_debug;
+    bool const orig_cdecl_debug = opt_cdecl_debug;
     opt_cdecl_debug = false;
 #endif /* ENABLE_CDECL_DEBUG */
-    //
-    // Temporarily set the language to the latest C++ version to allow all
-    // built-in typedefs.
-    //
-    c_lang_id_t const prev_lang = opt_lang;
-    opt_lang = LANG_CPP_NEW;
 #ifdef ENABLE_FLEX_DEBUG
     //
     // Temporarily turn off Flex debug output for built-in typedefs.
     //
-    int const prev_flex_debug = opt_flex_debug;
+    int const orig_flex_debug = opt_flex_debug;
     opt_flex_debug = false;
 #endif /* ENABLE_FLEX_DEBUG */
 #ifdef YYDEBUG
     //
     // Temporarily turn off Bison debug output for built-in typedefs.
     //
-    int const prev_bison_debug = opt_bison_debug;
+    int const orig_bison_debug = opt_bison_debug;
     opt_bison_debug = false;
 #endif /* YYDEBUG */
 
+    c_lang_id_t const orig_lang = opt_lang;
+
+    opt_lang = LANG_MIN(C_OLD);
     c_typedef_parse_predefined( TYPEDEFS_STD_C );
-    c_typedef_parse_predefined( TYPEDEFS_STD_ATOMIC_H );
     c_typedef_parse_predefined( TYPEDEFS_FLOATING_POINT_EXTENSIONS );
-    c_typedef_parse_predefined( TYPEDEFS_PTHREAD_H );
-    c_typedef_parse_predefined( TYPEDEFS_THREADS_H );
-    c_typedef_parse_predefined( TYPEDEFS_STD_CPP );
-    c_typedef_parse_predefined( TYPEDEFS_STD_CPP_11 );
-    c_typedef_parse_predefined( TYPEDEFS_STD_CPP_17 );
-    c_typedef_parse_predefined( TYPEDEFS_STD_CPP_20 );
-    c_typedef_parse_predefined( TYPEDEFS_MISC );
     c_typedef_parse_predefined( TYPEDEFS_GNUC );
+    c_typedef_parse_predefined( TYPEDEFS_PTHREAD_H );
     c_typedef_parse_predefined( TYPEDEFS_WIN32 );
+
+    opt_lang = LANG_MIN(C_95);
+    c_typedef_parse_predefined( TYPEDEFS_STD_C_95 );
+
+    opt_lang = LANG_MIN(C_99);
+    c_typedef_parse_predefined( TYPEDEFS_STD_C_99 );
 
     // Embedded C extensions are available only in C99.
     opt_lang = LANG_C_99;
     c_typedef_parse_predefined( TYPEDEFS_EMBEDDED_C );
 
+    // Must be defined after C99.
+    opt_lang = LANG_MIN(C_OLD);
+    c_typedef_parse_predefined( TYPEDEFS_MISC );
+
+    opt_lang = LANG_MIN(C_11);
+    c_typedef_parse_predefined( TYPEDEFS_STD_C_11 );
+
+    opt_lang = LANG_MIN(CPP_OLD);
+    c_typedef_parse_predefined( TYPEDEFS_STD_CPP );
+
+    opt_lang = LANG_MIN(CPP_11);
+    c_typedef_parse_predefined( TYPEDEFS_STD_CPP_11 );
+
+    opt_lang = LANG_MIN(CPP_17);
+    c_typedef_parse_predefined( TYPEDEFS_STD_CPP_17 );
+
+    opt_lang = LANG_MIN(CPP_20);
+    c_typedef_parse_predefined( TYPEDEFS_STD_CPP_20 );
+
+    opt_lang = orig_lang;
+
 #ifdef ENABLE_CDECL_DEBUG
-    opt_cdecl_debug = prev_cdecl_debug;
+    opt_cdecl_debug = orig_cdecl_debug;
 #endif /* ENABLE_CDECL_DEBUG */
-    opt_lang = prev_lang;
 #ifdef ENABLE_FLEX_DEBUG
-    opt_flex_debug = prev_flex_debug;
+    opt_flex_debug = orig_flex_debug;
 #endif /* ENABLE_FLEX_DEBUG */
 #ifdef YYDEBUG
-    opt_bison_debug = prev_bison_debug;
+    opt_bison_debug = orig_bison_debug;
 #endif /* YYDEBUG */
   }
 

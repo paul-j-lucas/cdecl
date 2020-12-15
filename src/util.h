@@ -202,12 +202,21 @@ _GL_INLINE_HEADER_BEGIN
   PMESSAGE_EXIT( EX_SOFTWARE, "internal error: " FORMAT, __VA_ARGS__ )
 
 /**
+ * Gets a value where all bits that are greater than or equal to the one bit
+ * set in \a N are also set, e.g., `BITS_GE(00010000)` = `11110000`.
+ *
+ * @param N The integer.  Exactly one bit _must_ be set.
+ * @return Returns said value.
+ */
+#define BITS_GE(N)                (~((N) - 1u))
+
+/**
  * Gets only the least significant bit of \a N that is set.
  *
  * @param N The integer to get the least significant bit of.
  * @return Returns the value of said bit.
  */
-#define LSB_SET(N)                ((N) & ~((N) - 1u))
+#define LSB_SET(N)                ((N) & BITS_GE(N))
 
 /**
  * Calls **malloc**(3) and casts the result to \a TYPE.

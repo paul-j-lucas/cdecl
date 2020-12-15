@@ -34,6 +34,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <assert.h>
 #include <stdbool.h>
 
 _GL_INLINE_HEADER_BEGIN
@@ -298,6 +299,18 @@ char const* c_lang_names( void );
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
   return LSB_SET( lang_ids );
+}
+
+/**
+ * Gets all the language(s) \a lang_id and later.
+ *
+ * @param lang_id The language.  Exactly one language must be set.
+ * @return Returns the bitwise-or of all language(s) \a lang_id and later.
+ */
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
+c_lang_id_t c_lang_and_later( c_lang_id_t lang_id ) {
+  assert( exactly_one_bit_set( lang_id ) );
+  return BITS_GE( lang_id );
 }
 
 /**
