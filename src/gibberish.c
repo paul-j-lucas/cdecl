@@ -413,9 +413,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
         c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) );
       if ( !opt_east_const && !is_typedef )
         FPRINTF( g->gout, "%s ", c_type_name( &ast->type ) );
-      FPRINTF( g->gout,
-        "%s", g_sname_full_or_local( g, ast->as.c_typedef.for_ast )
-      );
+      FPUTS( g_sname_full_or_local( g, ast->as.c_typedef.for_ast ), g->gout );
       if ( opt_east_const && !is_typedef )
         FPRINTF( g->gout, " %s", c_type_name( &ast->type ) );
       g_space_name( g, ast );
