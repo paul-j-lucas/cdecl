@@ -207,29 +207,29 @@ c_lang_id_t c_lang_find( char const *name );
 /**
  * Gets whether \a lang_id is any version of C.
  *
- * @param lang_id The language to check.
+ * @param lang_id The bitwise-or of language(s) to check.
  * @return Returns `true` only if \a lang_id is a version of C.
  *
  * @sa #C_LANG_IS_C()
  * @sa c_lang_is_cpp()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
-bool c_lang_is_c( c_lang_id_t lang_id ) {
-  return (lang_id & LANG_MASK_C) != LANG_NONE;
+bool c_lang_is_c( c_lang_id_t lang_ids ) {
+  return (lang_ids & LANG_MASK_C) != LANG_NONE;
 }
 
 /**
  * Gets whether \a lang_id is any version of C++.
  *
- * @param lang_id The language to check.
+ * @param lang_ids The bitwise-of of language(s) to check.
  * @return Returns `true` only if \a lang_id is a version of C++.
  *
  * @sa #C_LANG_IS_CPP()
  * @sa c_lang_is_c()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
-bool c_lang_is_cpp( c_lang_id_t lang_id ) {
-  return (lang_id & LANG_MASK_CPP) != LANG_NONE;
+bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
+  return (lang_ids & LANG_MASK_CPP) != LANG_NONE;
 }
 
 /**

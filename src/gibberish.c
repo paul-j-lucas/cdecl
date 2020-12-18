@@ -67,12 +67,14 @@ struct g_state {
   c_ast_t const  *root_ast;             ///< Root of AST.
   bool            postfix;              ///< Doing postfix gibberish?
   bool            printed_space;        ///< Printed a space yet?
+  bool            printing_typedef;     ///< Printing a `typedef`?
 };
 typedef struct g_state g_state_t;
 
 // local functions
 static void         g_impl( g_state_t*, c_ast_t const* );
-static void         g_init( g_state_t*, c_ast_t const*, unsigned, FILE* );
+static void         g_init( g_state_t*, c_ast_t const*, c_gib_kind_t, bool,
+                            FILE* );
 static void         g_postfix( g_state_t*, c_ast_t const* );
 static void         g_qual_name( g_state_t*, c_ast_t const* );
 PJL_WARN_UNUSED_RESULT
@@ -110,9 +112,11 @@ static inline void g_set_leaf( g_state_t *g, c_ast_t const *ast ) {
  *
  * @param ast The AST to print.
  * @param kind The kind of gibberish.
+ * @param printing_typedef Printing a `typedef`?
  * @param gout The `FILE` to print to.
  */
-static void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t kind, FILE *gout ) {
+static void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t kind,
+                             bool printing_typedef, FILE *gout ) {
   assert( ast != NULL );
   assert( gout != NULL );
 
@@ -130,7 +134,7 @@ static void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t kind, FILE *gout )
   } // switch
 
   g_state_t g;
-  g_init( &g, ast, kind, gout );
+  g_init( &g, ast, kind, printing_typedef, gout );
   g_impl( &g, ast );
 }
 
@@ -182,7 +186,9 @@ static void g_func_params( g_state_t const *g, c_ast_t const *ast ) {
       FPUTS( ", ", g->gout );
     c_ast_t const *const param_ast = c_param_ast( param );
     g_state_t params_g;
-    g_init( &params_g, param_ast, g->kind, g->gout );
+    g_init(
+      &params_g, param_ast, g->kind, /*printing_typedef=*/false, g->gout
+    );
     g_impl( &params_g, param_ast );
   } // for
   FPUTC( ')', g->gout );
@@ -340,7 +346,21 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       }
 
       FPUTS( c_type_name( &type ), g->gout );
-      if ( g->kind != C_GIB_TYPEDEF ) {
+
+      if ( g->kind != C_GIB_TYPEDEF || g->printing_typedef ) {
+        //
+        // For enum, class, struct, or union (ECSU) types, we need to print the
+        // ECSU name when the AST is not a typedef, e.g.:
+        //
+        //      cdecl> declare x as struct S
+        //      struct S x;             // ast->sname = "x"; escu_name = "S"
+        //
+        // (See the printing_typedef comment in c_typedef_gibberish() first.)
+        // We also need to print the ESCU name if we're printing an enum,
+        // class, struct or union type in C only:
+        //
+        //      typedef struct S T;     // ast->sname ="S"; escu_name = "T"
+        //
         FPRINTF( g->gout,
           " %s", c_sname_full_name( &ast->as.ecsu.ecsu_sname )
         );
@@ -435,10 +455,12 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
  * @param g The `g_state` to initialize.
  * @param kind The kind of gibberish.
  * @param root_ast The AST root.
+ * @param kind The kind of gibberish to print.
+ * @param printing_typedef Printing a `typedef`?
  * @param gout The `FILE` to print it to.
  */
 static void g_init( g_state_t *g, c_ast_t const *root_ast, c_gib_kind_t kind,
-                    FILE *gout ) {
+                    bool printing_typedef, FILE *gout ) {
   assert( g != NULL );
   assert( root_ast != NULL );
   assert( gout != NULL );
@@ -446,6 +468,7 @@ static void g_init( g_state_t *g, c_ast_t const *root_ast, c_gib_kind_t kind,
   MEM_ZERO( g );
   g->kind = kind;
   g->gout = gout;
+  g->printing_typedef = printing_typedef;
   g->root_ast = root_ast;
 }
 
@@ -699,21 +722,21 @@ static void g_space_name( g_state_t *g, c_ast_t const *ast ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout ) {
-  c_ast_gibberish( ast, C_GIB_CAST, gout );
+  c_ast_gibberish( ast, C_GIB_CAST, /*printing_typedef=*/false, gout );
 }
 
 void c_ast_gibberish_declare( c_ast_t const *ast, FILE *gout ) {
-  c_ast_gibberish( ast, C_GIB_DECL, gout );
+  c_ast_gibberish( ast, C_GIB_DECL, /*printing_typedef=*/false, gout );
 }
 
-void c_ast_gibberish_type( c_ast_t const *ast, FILE *gout ) {
-  assert( ast != NULL );
+void c_typedef_gibberish( c_typedef_t const *type, FILE *gout ) {
+  assert( type != NULL );
   assert( gout != NULL );
 
   size_t scope_close_braces_to_print = 0;
   c_type_t scope_type = T_NONE;
 
-  c_sname_t const *const sname = c_ast_find_name( ast, C_VISIT_DOWN );
+  c_sname_t const *const sname = c_ast_find_name( type->ast, C_VISIT_DOWN );
   if ( sname != NULL && c_sname_count( sname ) > 1 ) {
     scope_type = c_scope_data( sname->head )->type;
     //
@@ -766,10 +789,30 @@ void c_ast_gibberish_type( c_ast_t const *ast, FILE *gout ) {
     }
   }
 
-  if ( ast->kind_id != K_ENUM_CLASS_STRUCT_UNION )
+  //
+  // When printing a type, all types except enum, class, struct, or union types
+  // must be preceded by "typedef", e.g.:
+  //
+  //      typedef int int32_t;
+  //
+  // However, enum, class, struct, and union types are preceded by "typedef"
+  // only when the type was declared in C since those types in C without a
+  // typedef are merely in the tags namespace and not first-class types:
+  //
+  //      struct S;                     // In C, tag only -- not a type.
+  //      typedef struct S S;           // Now it's a type.
+  //
+  // In C++, such typedefs are unnecessary since such types are first-class
+  // types and not just tags, so we don't print "typedef".
+  //
+  bool const printing_typedef =
+    type->ast->kind_id != K_ENUM_CLASS_STRUCT_UNION ||
+    c_lang_is_c( type->lang_ids ) ||
+    (C_LANG_IS_C() && !c_lang_is_cpp( type->lang_ids ));
+  if ( printing_typedef )
     FPRINTF( gout, "%s ", L_TYPEDEF );
 
-  c_ast_gibberish( ast, C_GIB_TYPEDEF, gout );
+  c_ast_gibberish( type->ast, C_GIB_TYPEDEF, printing_typedef, gout );
 
   if ( scope_close_braces_to_print > 0 ) {
     FPUTC( ';', gout );

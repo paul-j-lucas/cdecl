@@ -733,13 +733,14 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 #
 TESTS+=	tests/show_all.test \
 	tests/show_all-c++.test \
-	tests/show_all_predefined.test \
 	tests/show_all_predefined-c++.test \
+	tests/show_all_predefined.test \
+	tests/show_all_predefined_typedef-c++.test \
 	tests/show_all_typedef.test \
 	tests/show_int8_t.test \
 	tests/show_int8_t_typedef.test \
-	tests/show_predefined.test \
 	tests/show_predefined-c++.test \
+	tests/show_predefined.test \
 	tests/show_predefined_typedef.test \
 	tests/show_user.test \
 	tests/show_user_typedef.test
@@ -1678,13 +1679,14 @@ UPDATE_TESTS = \
 	tests/help_english-c.test \
 	tests/set.test \
 	tests/set_options.test \
-	tests/show_all.test \
 	tests/show_all-c++.test \
-	tests/show_all_predefined.test \
+	tests/show_all.test \
 	tests/show_all_predefined-c++.test \
+	tests/show_all_predefined.test \
+	tests/show_all_predefined_typedef-c++.test \
 	tests/show_all_typedef.test \
-	tests/show_predefined.test \
 	tests/show_predefined-c++.test \
+	tests/show_predefined.test \
 	tests/show_predefined_typedef.test
 
 UPDATE_TEST = $(srcdir)/update_test.sh

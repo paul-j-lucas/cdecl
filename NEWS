@@ -16,6 +16,18 @@ with their complete changes, see the AUTHORS file.
 For `predefined` or `user`, the `show` command now shows only types that are
 valid in the current language.  (See the man page for details.)
 
+** Language-sensitive type printing
+When printing `enum`, `struct`, `class`, or `union` types, they are shown
+differently depending on what language the type was defined in and whether the
+current language is C or C++:
+
+    c++decl> define S as struct S
+    c++decl> show user typedef
+    struct S;
+    c++decl> set c
+    cdecl> show all user typedef
+    typedef struct S S;
+
 ** co_await, co_return, co_yield added
 These C++20 keywords were added to prevent use as identifiers in C++20 and warn
 in older languages.

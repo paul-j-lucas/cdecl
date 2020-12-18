@@ -252,7 +252,7 @@ static char const *const TYPEDEFS_PTHREAD_H[] = {
   "struct                 pthread_condattr_t",
   "struct                 pthread_mutex_t",
   "struct                 pthread_mutexattr_t",
-  "typedef int            pthread_once_t",
+  "typedef          int   pthread_once_t",
   "struct                 pthread_rwlock_t",
   "struct                 pthread_rwlockattr_t",
   "typedef volatile int   pthread_spinlock_t",
