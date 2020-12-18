@@ -453,7 +453,6 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
  * Initializes a `g_state`.
  *
  * @param g The `g_state` to initialize.
- * @param kind The kind of gibberish.
  * @param root_ast The AST root.
  * @param kind The kind of gibberish to print.
  * @param printing_typedef Printing a `typedef`?

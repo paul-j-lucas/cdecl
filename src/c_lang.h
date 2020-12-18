@@ -205,9 +205,9 @@ PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_find( char const *name );
 
 /**
- * Gets whether \a lang_id is any version of C.
+ * Gets whether \a lang_ids is any version of C.
  *
- * @param lang_id The bitwise-or of language(s) to check.
+ * @param lang_ids The bitwise-or of language(s) to check.
  * @return Returns `true` only if \a lang_id is a version of C.
  *
  * @sa #C_LANG_IS_C()
@@ -219,7 +219,7 @@ bool c_lang_is_c( c_lang_id_t lang_ids ) {
 }
 
 /**
- * Gets whether \a lang_id is any version of C++.
+ * Gets whether \a lang_ids is any version of C++.
  *
  * @param lang_ids The bitwise-of of language(s) to check.
  * @return Returns `true` only if \a lang_id is a version of C++.
