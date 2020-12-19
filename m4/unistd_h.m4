@@ -1,4 +1,4 @@
-# unistd_h.m4 serial 82
+# unistd_h.m4 serial 83
 dnl Copyright (C) 2006-2020 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -51,6 +51,11 @@ AC_DEFUN([gl_UNISTD_H],
     truncate ttyname_r unlink unlinkat usleep])
 
   AC_REQUIRE([AC_C_RESTRICT])
+
+  AC_CHECK_DECLS_ONCE([execvpe])
+  if test $ac_cv_have_decl_execvpe = no; then
+    HAVE_DECL_EXECVPE=0
+  fi
 ])
 
 AC_DEFUN([gl_UNISTD_MODULE_INDICATOR],
@@ -153,6 +158,7 @@ AC_DEFUN([gl_UNISTD_H_DEFAULTS],
   HAVE_UNLINKAT=1;        AC_SUBST([HAVE_UNLINKAT])
   HAVE_USLEEP=1;          AC_SUBST([HAVE_USLEEP])
   HAVE_DECL_ENVIRON=1;    AC_SUBST([HAVE_DECL_ENVIRON])
+  HAVE_DECL_EXECVPE=1;    AC_SUBST([HAVE_DECL_EXECVPE])
   HAVE_DECL_FCHDIR=1;     AC_SUBST([HAVE_DECL_FCHDIR])
   HAVE_DECL_FDATASYNC=1;  AC_SUBST([HAVE_DECL_FDATASYNC])
   HAVE_DECL_GETDOMAINNAME=1; AC_SUBST([HAVE_DECL_GETDOMAINNAME])

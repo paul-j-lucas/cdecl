@@ -1,4 +1,4 @@
-# stdint.m4 serial 56
+# stdint.m4 serial 57
 dnl Copyright (C) 2001-2020 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -34,7 +34,7 @@ AC_DEFUN_ONCE([gl_STDINT_H],
   AC_SUBST([HAVE_WCHAR_H])
 
   dnl Check for <inttypes.h>.
-  dnl AC_INCLUDES_DEFAULT defines $ac_cv_header_inttypes_h.
+  AC_CHECK_HEADERS_ONCE([inttypes.h])
   if test $ac_cv_header_inttypes_h = yes; then
     HAVE_INTTYPES_H=1
   else
@@ -43,7 +43,7 @@ AC_DEFUN_ONCE([gl_STDINT_H],
   AC_SUBST([HAVE_INTTYPES_H])
 
   dnl Check for <sys/types.h>.
-  dnl AC_INCLUDES_DEFAULT defines $ac_cv_header_sys_types_h.
+  AC_CHECK_HEADERS_ONCE([sys/types.h])
   if test $ac_cv_header_sys_types_h = yes; then
     HAVE_SYS_TYPES_H=1
   else
