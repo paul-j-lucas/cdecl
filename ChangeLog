@@ -1,5 +1,9 @@
 2020-12-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * types.h: Moved declaration.
+   * gibberish.c, gibberish.h: Now longer using bits for c_gib_kind.
+   * gibberish.c: Added assert().
+   * gibberish.h: Doxygen.
    * lib/Makefile.am, c++defs.h, stdio.in.h, stdlib.in.h, string.in.h,
      unistd.in.h, extensions.m4, gnulib-common.m4, pid_t.m4, stdint.m4,
      stdio_h.m4, stdlib_h.m4, sys_types_h.m4, unistd_h.m4: Updated Gnulib.
