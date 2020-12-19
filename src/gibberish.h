@@ -65,7 +65,7 @@ enum c_gib_kind {
  *
  * @param ast The AST to print.
  * @param kind The kind of gibberish to print as; must only be either
- * C_GIB_CAST or C_GIB_DECL.
+ * #C_GIB_CAST or #C_GIB_DECL.
  * @param gout The `FILE` to print to.
  *
  * @sa c_typedef_gibberish()
@@ -77,7 +77,7 @@ void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t kind, FILE *gout );
  *
  * @param type The type to print.
  * @param kind The kind of gibberish to print as; must only be either
- * C_GIB_TYPEDEF or C_GIB_USING.
+ * #C_GIB_TYPEDEF or #C_GIB_USING.
  * @param gout The `FILE` to print to.
  *
  * @sa c_ast_gibberish()
