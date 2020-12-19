@@ -29,7 +29,6 @@
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_operator.h"
-#include "c_typedef.h"
 #include "literals.h"
 #include "util.h"
 
