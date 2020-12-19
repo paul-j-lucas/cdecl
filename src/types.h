@@ -22,7 +22,7 @@
 #define cdecl_types_H
 
 // standard
-#include <stdint.h>                     /* for uint64_t */
+#include <stdint.h>                     /* for uint*_t */
 
 /**
  * @file
