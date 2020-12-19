@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 8.4
+* Changes in Cdecl 9.0
 
 ** Showing as `using` declarations
 The `show` command can now alternatively show types as `using` declarations.
