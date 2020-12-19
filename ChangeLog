@@ -1,5 +1,67 @@
+2020-12-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, c++defs.h, stdio.in.h, stdlib.in.h, string.in.h,
+     unistd.in.h, extensions.m4, gnulib-common.m4, pid_t.m4, stdint.m4,
+     stdio_h.m4, stdlib_h.m4, sys_types_h.m4, unistd_h.m4: Updated Gnulib.
+   * NEWS, cdecl.1, c_keyword.c, gibberish.c, gibberish.h, help.c, lexer.l,
+     parser.y, types.h, test/Makefile.am, help-c++.out, help_command-c++.out,
+     help_commands-c++.out, show_predefined_using.out,
+     show_predefined_using.test: Added support for showing types as "using"
+     declarations.
+   * c_lang.h, gibberish.c: Doxygen fixes.
+   * NEWS, c_keyword.c, c_lang.h, c_typedef.c, gibberish.c, gibberish.h,
+     lexer.l, parser.y, test/Makefile.am, show_all_predefined_typedef-c++.out,
+     show_all_typedef.out, show_predefined_typedef.out,
+     show_all_predefined_typedef-c++.test: The "show" command now prints types
+     differently depending on the current language.
+
+2020-12-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: s/g_type/c_gib_kind_t/
+   * gibberish.c: s/FPRINTF/FPUTS/
+
+2020-12-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, c_kind.h, c_type.h, c_typedef.c, english.c: Removed unnecessary
+     REINTERPRET_CAST().
+   * NEWS, cdecl.1, c_lang.h, c_typedef.c, c_typedef.h, help.c, parser.y,
+     util.h, test/Makefile.am, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out,
+     show_all-c++.out, show_all.out, show_all_predefined-c++.out,
+     show_all_predefined.out, show_all_typedef.out, show_predefined-c++.out,
+     show_predefined.out, show_predefined_typedef.out, show_all-c++.test,
+     show_all_predefined-c++.test, show_all_predefined.test,
+     show_predefined-c++.test: The `show` command now shows only types that are
+     valid in the current language.
+
+2020-12-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c: s/c_typedef_parse_builtins/c_typedef_parse_predefined/
+   * c_typedef.c: Split TYPEDEFS_STD_CPP[] into separate arrays for C++, C++11,
+     c++17, C++20.
+   * parser.y: Better annotation of inherited attributes; C++03/11 specific
+     error message for "= error".
+   * lexer.l, parser.y: Doxygen.
+   * errors.c: Fixed error message for main()'s signature.
+   * parser.y: Printing an unknown type error now alternatively prints "X isn't
+     a keyword until..." if X is a keyword in a later language version.
+   * c_keyword.c: Whitespace fix.
+   * parser.y: s/ELABORATE_ERROR/elaborate_error/ to match print_*() functions.
+   * parser.y: Doxygen.
+   * parser.y: Tweaked Doxygen.
+   * parser.y: Fixed @param.
+   * parser.y, print.c, print.h: Renamed *_impl() functions to fl_*().
+   * parser.y: print_error_unknown_type() now also prints the parser.y file
+     location in debug mode.
+   * parser.y, print.c: elaborate_error() now also prints file:line in debug
+     mode; moved file:line back to end of other messages to match
+     elaborate_error().
+   * print.h: Comment.
+
 2020-12-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Now checking if the error token is a keyword: if so, mention it
+     in the error message.
    * NEWS, configure.ac, c_keyword.c, literals.c, literals.h, parser.y: Added
      C++20 keywords co_await, co_return, and co_yield.
    * c_ast.h, c_typedef.c, color.c, dam_lev.h, prompt.c, red_black.c,
