@@ -142,7 +142,7 @@ static bool parse_sgr( char const *sgr_color ) {
       return false;
     char *end;
     errno = 0;
-    uint64_t const n = strtoull( sgr_color, &end, 10 );
+    unsigned long long const n = strtoull( sgr_color, &end, 10 );
     if ( unlikely( errno || n > 255 ) )
       return false;
     switch ( *end ) {
