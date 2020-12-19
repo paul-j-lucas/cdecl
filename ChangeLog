@@ -1,5 +1,6 @@
 2020-12-18  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, configure.ac: Changed version to 9.0.
    * types.h: Moved declaration.
    * gibberish.c, gibberish.h: Now longer using bits for c_gib_kind.
    * gibberish.c: Added assert().
