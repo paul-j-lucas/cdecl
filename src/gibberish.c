@@ -743,14 +743,14 @@ static void g_print_space_name( g_state_t *g, c_ast_t const *ast ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t kind, FILE *gout ) {
-  assert( (kind & (C_GIB_CAST | C_GIB_DECL)) != C_GIB_NONE );
+  assert( kind == C_GIB_CAST || kind == C_GIB_DECL );
   c_ast_gibberish_impl( ast, kind, /*printing_typedef=*/false, gout );
 }
 
 void c_typedef_gibberish( c_typedef_t const *type, c_gib_kind_t kind,
                           FILE *gout ) {
   assert( type != NULL );
-  assert( (kind & (C_GIB_TYPEDEF | C_GIB_USING)) != C_GIB_NONE );
+  assert( kind == C_GIB_TYPEDEF || kind == C_GIB_USING );
   assert( gout != NULL );
 
   size_t scope_close_braces_to_print = 0;
