@@ -108,7 +108,7 @@ static inline void g_set_leaf( g_state_t *g, c_ast_t const *ast ) {
  *
  * @param ast The AST to print.
  * @param kind The kind of gibberish to print as; must only be either
- * C_GIB_CAST or C_GIB_DECL.
+ * #C_GIB_CAST or #C_GIB_DECL.
  * @param printing_typedef Printing a `typedef`?
  * @param gout The `FILE` to print to.
  */
@@ -743,6 +743,7 @@ static void g_print_space_name( g_state_t *g, c_ast_t const *ast ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t kind, FILE *gout ) {
+  assert( (kind & (C_GIB_CAST | C_GIB_DECL)) != C_GIB_NONE );
   c_ast_gibberish_impl( ast, kind, /*printing_typedef=*/false, gout );
 }
 
@@ -840,8 +841,9 @@ void c_typedef_gibberish( c_typedef_t const *type, c_gib_kind_t kind,
   if ( kind == C_GIB_TYPEDEF ) {
     c_ast_gibberish_impl( type->ast, C_GIB_TYPEDEF, printing_typedef, gout );
   } else {
-    c_ast_gibberish(
-      type->ast, printing_using ? C_GIB_USING : C_GIB_TYPEDEF, gout
+    c_ast_gibberish_impl(
+      type->ast, printing_using ? C_GIB_USING : C_GIB_TYPEDEF,
+      /*printing_typedef=*/false, gout
     );
   }
 
