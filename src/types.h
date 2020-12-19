@@ -67,6 +67,7 @@ typedef enum   c_command_kind     c_command_kind_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
 typedef struct c_ecsu_ast         c_ecsu_ast_t;
 typedef struct c_function_ast     c_function_ast_t;
+typedef enum   c_gib_kind         c_gib_kind_t;
 typedef enum   c_graph            c_graph_t;
 typedef struct c_keyword          c_keyword_t;
 typedef enum   c_kind_id          c_kind_id_t;

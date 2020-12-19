@@ -46,37 +46,44 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Prints \a ast as a C/C++ cast.
- *
- * @param ast The AST to print.
- * @param gout The `FILE` to print to.
- *
- * @sa c_ast_gibberish_declare()
- * @sa c_typedef_gibberish()
+ * Kind of gibberish to print.  The gibberish printed varies slightly depending
+ * on the kind.
  */
-void c_ast_gibberish_cast( c_ast_t const *ast, FILE *gout );
+enum c_gib_kind {
+  C_GIB_NONE    = 0u,                   ///< Not gibberish (hence, English).
+  C_GIB_DECL    = (1u << 1),            ///< Gibberish is a declaration.
+  C_GIB_CAST    = (1u << 2),            ///< Gibberish is a cast.
+  C_GIB_TYPEDEF = (1u << 3),            ///< Gibberish is a `typedef`.
+  C_GIB_USING   = (1u << 4)             ///< Gibberish is a `using`.
+};
+
+///////////////////////////////////////////////////////////////////////////////
+
 
 /**
- * Prints \a ast as a C/C++ declaration.
+ * Prints \a ast as a C/C++ declaration or cast.
  *
  * @param ast The AST to print.
+ * @param kind The kind of gibberish to print as; must only be either
+ * C_GIB_CAST or C_GIB_DECL.
  * @param gout The `FILE` to print to.
  *
- * @sa c_ast_gibberish_cast()
  * @sa c_typedef_gibberish()
  */
-void c_ast_gibberish_declare( c_ast_t const *ast, FILE *gout );
+void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t kind, FILE *gout );
 
 /**
  * Prints \a type as a C/C++ type declaration.
  *
  * @param type The type to print.
+ * @param kind The kind of gibberish to print as; must only be either
+ * C_GIB_TYPEDEF or C_GIB_USING.
  * @param gout The `FILE` to print to.
  *
- * @sa c_ast_gibberish_cast()
- * @sa c_ast_gibberish_declare()
+ * @sa c_ast_gibberish()
  */
-void c_typedef_gibberish( c_typedef_t const *type, FILE *gout );
+void c_typedef_gibberish( c_typedef_t const *type, c_gib_kind_t kind,
+                          FILE *gout );
 
 /**
  * Gets the digraph or trigraph (collectively, "graph") equivalent of \a token.

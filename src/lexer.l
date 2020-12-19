@@ -41,6 +41,7 @@
 #include "c_lang.h"
 #include "c_typedef.h"
 #include "cdecl.h"
+#include "gibberish.h"
 #include "literals.h"
 #include "options.h"
 #include "util.h"

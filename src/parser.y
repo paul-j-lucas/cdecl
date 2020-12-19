@@ -365,8 +365,8 @@ typedef struct c_qualifier c_qualifier_t;
  * Information for show_type_visitor().
  */
 struct show_type_info {
-  bool            show_as_english;      ///< Show as English?
   unsigned        show_which;           ///< Predefined, user, or both?
+  c_gib_kind_t    kind;                 ///< Kind of gibberish to print.
 };
 typedef struct show_type_info show_type_info_t;
 
@@ -762,10 +762,10 @@ static bool show_type_visitor( c_typedef_t const *type, void *data ) {
     (type->lang_ids & opt_lang) != LANG_NONE;
 
   if ( show_type && show_in_lang ) {
-    if ( sti->show_as_english )
+    if ( sti->kind == C_GIB_NONE )
       c_ast_english_type( type->ast, fout );
     else
-      c_typedef_gibberish( type, fout );
+      c_typedef_gibberish( type, sti->kind, fout );
     FPUTC( '\n', fout );
   }
   return false;
@@ -820,6 +820,7 @@ static void yyerror( char const *msg ) {
   unsigned            bitmask;    /* multipurpose bitmask (used by show) */
   c_typedef_t const  *c_typedef;  /* typedef */
   bool                flag;       /* simple flag */
+  c_gib_kind_t        gkind;      /* kind of gibberish */
   char const         *literal;    /* token literal (for new-style casts) */
   char               *name;       /* name being declared or explained */
   int                 number;     /* for array sizes */
@@ -1243,7 +1244,8 @@ static void yyerror( char const *msg ) {
 %type   <name>      set_option_value_opt
 %type   <bitmask>   show_which_types_opt
 %type   <type_id>   static_tid_opt
-%type   <flag>      typedef_opt typename_opt
+%type   <gkind>     typedef_or_using_exp typedef_or_using_opt
+%type   <flag>      typename_opt
 %type   <sname>     typedef_sname_c
 %type   <type_id>   virtual_tid_opt
 
@@ -1334,7 +1336,7 @@ cast_english
       bool const ok = c_ast_check_cast( $4.ast );
       if ( ok ) {
         FPUTC( '(', fout );
-        c_ast_gibberish_cast( $4.ast, fout );
+        c_ast_gibberish( $4.ast, C_GIB_CAST, fout );
         FPRINTF( fout, ")%s\n", c_sname_full_name( &$2 ) );
       }
 
@@ -1364,7 +1366,7 @@ cast_english
       }
       else if ( (ok = c_ast_check_cast( $5.ast )) ) {
         FPRINTF( fout, "%s<", $1 );
-        c_ast_gibberish_cast( $5.ast, fout );
+        c_ast_gibberish( $5.ast, C_GIB_CAST, fout );
         FPRINTF( fout, ">(%s)\n", c_sname_full_name( &$3 ) );
       }
 
@@ -1446,7 +1448,7 @@ declare_english
       }
 
       C_AST_CHECK_DECL( $5.ast );
-      c_ast_gibberish_declare( $5.ast, fout );
+      c_ast_gibberish( $5.ast, C_GIB_DECL, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
@@ -1476,7 +1478,7 @@ declare_english
       DUMP_END();
 
       C_AST_CHECK_DECL( $6.ast );
-      c_ast_gibberish_declare( $6.ast, fout );
+      c_ast_gibberish( $6.ast, C_GIB_DECL, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
@@ -1509,7 +1511,7 @@ declare_english
       DUMP_END();
 
       C_AST_CHECK_DECL( ast );
-      c_ast_gibberish_declare( ast, fout );
+      c_ast_gibberish( ast, C_GIB_DECL, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
@@ -2366,39 +2368,40 @@ set_option_value_opt
 /*****************************************************************************/
 
 show_command
-  : Y_SHOW any_typedef typedef_opt
+  : Y_SHOW any_typedef typedef_or_using_opt
     {
-      DUMP_START( "show_command", "SHOW any_typedef [typedef]" );
+      DUMP_START( "show_command", "SHOW any_typedef_ast [TYPEDEF | USING]" );
       DUMP_AST( "any_typedef.ast", $2->ast );
-      DUMP_BOOL( "typedef_opt", $3 );
+      DUMP_NUM( "typedef_or_using_opt", $3 );
       DUMP_END();
 
-      if ( $3 )
-        c_typedef_gibberish( $2, fout );
-      else
+      if ( $3 == C_GIB_NONE )
         c_ast_english_type( $2->ast, fout );
+      else
+        c_typedef_gibberish( $2, $3, fout );
       FPUTC( '\n', fout );
     }
 
-  | Y_SHOW any_typedef Y_AS typedef_exp
+  | Y_SHOW any_typedef Y_AS typedef_or_using_exp
     {
-      DUMP_START( "show_command", "SHOW any_typedef AS typedef" );
+      DUMP_START( "show_command", "SHOW any_typedef_ast AS {TYPEDEF | USING}" );
       DUMP_AST( "any_typedef.ast", $2->ast );
+      DUMP_NUM( "typedef_or_using_exp", $4 );
       DUMP_END();
 
-      c_typedef_gibberish( $2, fout );
+      c_typedef_gibberish( $2, $4, fout );
       FPUTC( '\n', fout );
     }
 
-  | Y_SHOW show_which_types_opt typedef_opt
+  | Y_SHOW show_which_types_opt typedef_or_using_opt
     {
-      show_type_info_t sti = { !$3, $2 };
+      show_type_info_t sti = { $2, $3 };
       c_typedef_visit( &show_type_visitor, &sti );
     }
 
-  | Y_SHOW show_which_types_opt Y_AS typedef_exp
+  | Y_SHOW show_which_types_opt Y_AS typedef_or_using_exp
     {
-      show_type_info_t sti = { false, $2 };
+      show_type_info_t sti = { $2, $4 };
       c_typedef_visit( &show_type_visitor, &sti );
     }
 
@@ -5375,17 +5378,22 @@ to_exp
     }
   ;
 
-typedef_exp
-  : Y_TYPEDEF
+typedef_or_using_exp
+  : Y_TYPEDEF                     { $$ = C_GIB_TYPEDEF; }
+  | Y_USING                       { $$ = C_GIB_USING; }
   | error
     {
-      elaborate_error( "\"%s\" expected", L_TYPEDEF );
+      if ( opt_lang < LANG_CPP_11 )
+        elaborate_error( "\"%s\" expected", L_TYPEDEF );
+      else
+        elaborate_error( "\"%s\" or \"%s\" expected", L_TYPEDEF, L_USING );
     }
   ;
 
-typedef_opt
-  : /* empty */                   { $$ = false; }
-  | Y_TYPEDEF                     { $$ = true; }
+typedef_or_using_opt
+  : /* empty */                   { $$ = C_GIB_NONE; }
+  | Y_TYPEDEF                     { $$ = C_GIB_TYPEDEF; }
+  | Y_USING                       { $$ = C_GIB_USING; }
   ;
 
 typename_opt

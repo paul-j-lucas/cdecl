@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 8.4
 
+** Showing as `using` declarations
+The `show` command can now alternatively show types as `using` declarations.
+
 ** Language-sensitive `show` command
 For `predefined` or `user`, the `show` command now shows only types that are
 valid in the current language.  (See the man page for details.)

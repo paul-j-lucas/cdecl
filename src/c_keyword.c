@@ -31,6 +31,7 @@
 #include "c_lang.h"
 #include "c_type.h"
 #include "c_typedef.h"
+#include "gibberish.h"
 #include "literals.h"
 #include "parser.h"                     /* must go last */
 

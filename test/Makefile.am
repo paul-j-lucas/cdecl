@@ -742,6 +742,7 @@ TESTS+=	tests/show_all.test \
 	tests/show_predefined-c++.test \
 	tests/show_predefined.test \
 	tests/show_predefined_typedef.test \
+	tests/show_predefined_using.test \
 	tests/show_user.test \
 	tests/show_user_typedef.test
 
@@ -1687,7 +1688,9 @@ UPDATE_TESTS = \
 	tests/show_all_typedef.test \
 	tests/show_predefined-c++.test \
 	tests/show_predefined.test \
-	tests/show_predefined_typedef.test
+	tests/show_predefined_typedef.test \
+	tests/show_predefined_using.test
+
 
 UPDATE_TEST = $(srcdir)/update_test.sh
 update:
