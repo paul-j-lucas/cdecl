@@ -57,7 +57,8 @@ typedef unsigned dym_kind_t;
 /**
  * Frees all memory used by \a dym_array.
  *
- * @param dym_array The <code>\ref did_you_mean</code> array to free.
+ * @param dym_array The <code>\ref did_you_mean</code> array to free.  May be
+ * null.
  */
 void dym_free( did_you_mean_t const *dym_array );
 

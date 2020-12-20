@@ -124,7 +124,7 @@ c_scope_data_t* c_scope_data_dup( c_scope_data_t const *data );
 /**
  * Frees all memory associated with \a data.
  *
- * @param data The scope data to free.  If null, does nothing.
+ * @param data The scope data to free.  May be null.
  */
 void c_scope_data_free( c_scope_data_t *data );
 

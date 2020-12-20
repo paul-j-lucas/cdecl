@@ -225,9 +225,10 @@ static int qsort_did_you_mean_cmp( void const *i_data, void const *j_data ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void dym_free( did_you_mean_t const *dym_array ) {
-  assert( dym_array != NULL );
-  dym_free_tokens( dym_array );
-  FREE( dym_array );
+  if ( dym_array != NULL ) {
+    dym_free_tokens( dym_array );
+    FREE( dym_array );
+  }
 }
 
 did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {

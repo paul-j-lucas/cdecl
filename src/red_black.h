@@ -156,7 +156,7 @@ rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data );
 /**
  * Frees all memory associated with \a tree.
  *
- * @param tree The red-black tree to free.
+ * @param tree The red-black tree to free.  May be null.
  * @param data_free_fn A pointer to a function used to free data associated
  * with each node or null if unnecessary.
  *
