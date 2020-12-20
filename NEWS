@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 9.1
+
+** `show english`
+The `show` command now allows `english` explicitly as an option.  (Since it's
+the default, it's ignored.)
+
+
 * Changes in Cdecl 9.0
 
 ** Showing as `using` declarations

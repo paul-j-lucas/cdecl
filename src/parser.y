@@ -1242,9 +1242,9 @@ static void yyerror( char const *msg ) {
 %type   <sname>     sname_c sname_c_exp sname_c_opt
 %type   <sname>     sname_english sname_english_exp
 %type   <name>      set_option_value_opt
+%type   <gkind>     show_format show_format_exp show_format_opt
 %type   <bitmask>   show_which_types_opt
 %type   <type_id>   static_tid_opt
-%type   <gkind>     typedef_or_using_exp typedef_or_using_opt
 %type   <flag>      typename_opt
 %type   <sname>     typedef_sname_c
 %type   <type_id>   virtual_tid_opt
@@ -2368,11 +2368,11 @@ set_option_value_opt
 /*****************************************************************************/
 
 show_command
-  : Y_SHOW any_typedef typedef_or_using_opt
+  : Y_SHOW any_typedef show_format_opt
     {
       DUMP_START( "show_command", "SHOW any_typedef_ast [TYPEDEF | USING]" );
       DUMP_AST( "any_typedef.ast", $2->ast );
-      DUMP_NUM( "typedef_or_using_opt", $3 );
+      DUMP_NUM( "show_format_opt", $3 );
       DUMP_END();
 
       if ( $3 == C_GIB_NONE )
@@ -2382,24 +2382,24 @@ show_command
       FPUTC( '\n', fout );
     }
 
-  | Y_SHOW any_typedef Y_AS typedef_or_using_exp
+  | Y_SHOW any_typedef Y_AS show_format_exp
     {
       DUMP_START( "show_command", "SHOW any_typedef_ast AS {TYPEDEF | USING}" );
       DUMP_AST( "any_typedef.ast", $2->ast );
-      DUMP_NUM( "typedef_or_using_exp", $4 );
+      DUMP_NUM( "show_format_exp", $4 );
       DUMP_END();
 
       c_typedef_gibberish( $2, $4, fout );
       FPUTC( '\n', fout );
     }
 
-  | Y_SHOW show_which_types_opt typedef_or_using_opt
+  | Y_SHOW show_which_types_opt show_format_opt
     {
       show_type_info_t sti = { $2, $3 };
       c_typedef_visit( &show_type_visitor, &sti );
     }
 
-  | Y_SHOW show_which_types_opt Y_AS typedef_or_using_exp
+  | Y_SHOW show_which_types_opt Y_AS show_format_exp
     {
       show_type_info_t sti = { $2, $4 };
       c_typedef_visit( &show_type_visitor, &sti );
@@ -2429,6 +2429,30 @@ show_command
         L_ALL, L_PREDEFINED, L_USER
       );
     }
+  ;
+
+show_format
+  : Y_ENGLISH                     { $$ = C_GIB_NONE; }
+  | Y_TYPEDEF                     { $$ = C_GIB_TYPEDEF; }
+  | Y_USING                       { $$ = C_GIB_USING; }
+  ;
+
+show_format_exp
+  : show_format
+  | error
+    {
+      if ( opt_lang < LANG_CPP_11 )
+        elaborate_error( "\"%s\" or \"%s\" expected", L_ENGLISH, L_TYPEDEF );
+      else
+        elaborate_error(
+          "\"%s\", \"%s\", or \"%s\" expected", L_ENGLISH, L_TYPEDEF, L_USING
+        );
+    }
+  ;
+
+show_format_opt
+  : /* empty */                   { $$ = C_GIB_NONE; }
+  | show_format
   ;
 
 show_which_types_opt
@@ -5376,24 +5400,6 @@ to_exp
     {
       elaborate_error( "\"%s\" expected", L_TO );
     }
-  ;
-
-typedef_or_using_exp
-  : Y_TYPEDEF                     { $$ = C_GIB_TYPEDEF; }
-  | Y_USING                       { $$ = C_GIB_USING; }
-  | error
-    {
-      if ( opt_lang < LANG_CPP_11 )
-        elaborate_error( "\"%s\" expected", L_TYPEDEF );
-      else
-        elaborate_error( "\"%s\" or \"%s\" expected", L_TYPEDEF, L_USING );
-    }
-  ;
-
-typedef_or_using_opt
-  : /* empty */                   { $$ = C_GIB_NONE; }
-  | Y_TYPEDEF                     { $$ = C_GIB_TYPEDEF; }
-  | Y_USING                       { $$ = C_GIB_USING; }
   ;
 
 typename_opt
