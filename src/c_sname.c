@@ -30,7 +30,6 @@
 #define C_SNAME_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_sname.h"
-#include "c_ast.h"
 #include "util.h"
 
 // standard

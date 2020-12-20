@@ -30,7 +30,6 @@
 /// @endcond
 #include "c_ast.h"
 #include "cdecl.h"
-#include "literals.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

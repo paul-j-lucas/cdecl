@@ -46,21 +46,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Kind of gibberish to print.  The gibberish printed varies slightly depending
- * on the kind.
- */
-enum c_gib_kind {
-  C_GIB_NONE,                           ///< Not gibberish (hence, English).
-  C_GIB_DECL,                           ///< Gibberish is a declaration.
-  C_GIB_CAST,                           ///< Gibberish is a cast.
-  C_GIB_TYPEDEF,                        ///< Gibberish is a `typedef`.
-  C_GIB_USING                           ///< Gibberish is a `using`.
-};
-
-///////////////////////////////////////////////////////////////////////////////
-
-
-/**
  * Prints \a ast as a C/C++ declaration or cast.
  *
  * @param ast The AST to print.

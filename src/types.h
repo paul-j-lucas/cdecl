@@ -140,6 +140,18 @@ struct c_command {
 };
 
 /**
+ * Kind of gibberish to print.  The gibberish printed varies slightly depending
+ * on the kind.
+ */
+enum c_gib_kind {
+  C_GIB_NONE,                           ///< Not gibberish (hence, English).
+  C_GIB_DECL,                           ///< Gibberish is a declaration.
+  C_GIB_CAST,                           ///< Gibberish is a cast.
+  C_GIB_TYPEDEF,                        ///< Gibberish is a `typedef`.
+  C_GIB_USING                           ///< Gibberish is a `using`.
+};
+
+/**
  * Di/Trigraph mode.
  */
 enum c_graph {
@@ -172,6 +184,14 @@ struct c_loc {
 enum c_mode {
   C_ENGLISH_TO_GIBBERISH,               ///< Convert English into gibberish.
   C_GIBBERISH_TO_ENGLISH                ///< Decipher gibberish into English.
+};
+
+/**
+ * The direction to traverse an AST using `c_ast_visit()`.
+ */
+enum c_visit_dir {
+  C_VISIT_DOWN,                         ///< Root to leaves.
+  C_VISIT_UP                            ///< Leaf to root.
 };
 
 ///////////////////////////////////////////////////////////////////////////////
