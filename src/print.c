@@ -266,16 +266,18 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
 }
 
 void print_did_you_mean( dym_kind_t kinds, char const *unknown_token ) {
-  did_you_mean_t const *const dym_array = dym_new( kinds, unknown_token );
-  if ( dym_array != NULL ) {
+  did_you_mean_t const *const dym = dym_new( kinds, unknown_token );
+  if ( dym != NULL ) {
     PUTS_ERR( "; did you mean " );
-    for ( did_you_mean_t const *dym = dym_array; dym->token != NULL; ++dym ) {
-      if ( dym > dym_array )
-        PUTS_ERR( ", " );
-      PRINTF_ERR( "\"%s\"", dym->token );
+    for ( size_t i = 0; dym[i].token != NULL; ++i ) {
+      PRINTF_ERR( "%s\"%s\"",
+        i == 0 ?
+          "" : (dym[i+1].token != NULL ? ", " : (i > 1 ?  ", or " : " or ")),
+        dym[i].token
+      );
     } // for
     PUTC_ERR( '?' );
-    dym_free( dym_array );
+    dym_free( dym );
   }
 }
 
