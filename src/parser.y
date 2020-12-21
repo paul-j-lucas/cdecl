@@ -1992,6 +1992,17 @@ explain_c
         PARSE_ABORT();
     }
 
+    /*
+     * If we match an sname, it means it wasn't an sname for a type (otherwise
+     * we would have matched the "Common declaration" case above).
+     */
+  | explain sname_c
+    {
+      print_error_unknown_type( &@2, &$2 );
+      c_sname_free( &$2 );
+      PARSE_ABORT();
+    }
+
   | explain error
     {
       elaborate_error( "cast or declaration expected" );
@@ -2410,15 +2421,17 @@ show_command
     {
       if ( opt_lang < LANG_CPP_11 ) {
         print_error( &@2,
-          "\"%s\": not defined as type via %s or %s\n",
+          "\"%s\": not defined as type via %s or %s",
           $2, L_DEFINE, L_TYPEDEF
         );
       } else {
         print_error( &@2,
-          "\"%s\": not defined as type via %s, %s, or %s\n",
+          "\"%s\": not defined as type via %s, %s, or %s",
           $2, L_DEFINE, L_TYPEDEF, L_USING
         );
       }
+      print_did_you_mean( DYM_C_TYPES, $2 );
+      PUTC_ERR( '\n' );
       FREE( $2 );
       PARSE_ABORT();
     }
