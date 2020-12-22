@@ -1248,7 +1248,7 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   static_tid_opt
 %type   <flag>      typename_opt
 %type   <sname>     typedef_sname_c
-%type   <type_id>   virtual_tid_opt
+%type   <type_id>   virtual_tid_exp virtual_tid_opt
 
 /*
  * Bison %destructors.  We don't use the <identifier> syntax because older
@@ -1570,10 +1570,7 @@ storage_class_english_type
   | Y_THROW                       { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_TYPEDEF                     { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_VIRTUAL                     { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_PURE virtual_exp
-    {
-      $$ = C_TYPE_LIT_S( TS_PURE_VIRTUAL | TS_VIRTUAL );
-    }
+  | Y_PURE virtual_tid_exp        { $$ = C_TYPE_LIT_S( TS_PURE_VIRTUAL | $2 ); }
   ;
 
 alignas_specifier_english_opt
@@ -5421,7 +5418,7 @@ typename_opt
   | Y_TYPENAME                    { $$ = true; }
   ;
 
-virtual_exp
+virtual_tid_exp
   : Y_VIRTUAL
   | error
     {
