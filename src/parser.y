@@ -2737,7 +2737,8 @@ length_opt
   ;
 
 block_decl_english_ast                  /* Apple extension */
-  : Y_APPLE_BLOCK paren_decl_list_english_opt returning_english_ast_opt
+  : /* in_attr: qualifier */
+    Y_APPLE_BLOCK paren_decl_list_english_opt returning_english_ast_opt
     {
       DUMP_START( "block_decl_english_ast",
                   "BLOCK paren_decl_list_english_opt "
@@ -2788,7 +2789,8 @@ destructor_decl_english_ast
   ;
 
 func_decl_english_ast
-  : ref_qualifier_english_tid_opt member_or_non_member_opt
+  : /* in_attr: qualifier */
+    ref_qualifier_english_tid_opt member_or_non_member_opt
     Y_FUNCTION paren_decl_list_english_opt returning_english_ast_opt
     {
       DUMP_START( "func_decl_english_ast",
@@ -2955,7 +2957,8 @@ pointer_decl_english_ast
     /*
      * Ordinary pointer declaration.
      */
-  : Y_POINTER to_exp decl_english_ast
+  : /* in_attr: qualifier */
+    Y_POINTER to_exp decl_english_ast
     {
       DUMP_START( "pointer_decl_english_ast", "POINTER TO decl_english_ast" );
       DUMP_TID( "(qualifier)", qualifier_tid_peek() );
@@ -2979,7 +2982,8 @@ pointer_decl_english_ast
     /*
      * C++ pointer-to-member declaration.
      */
-  | Y_POINTER to_exp Y_MEMBER of_exp class_struct_tid_exp sname_english_exp
+  | /* in_attr: qualifier */
+    Y_POINTER to_exp Y_MEMBER of_exp class_struct_tid_exp sname_english_exp
     decl_english_ast
     {
       DUMP_START( "pointer_to_member_decl_english",
@@ -3011,7 +3015,8 @@ pointer_decl_english_ast
   ;
 
 reference_decl_english_ast
-  : reference_english_ast to_exp decl_english_ast
+  : /* in_attr: qualifier */
+    reference_english_ast to_exp decl_english_ast
     {
       DUMP_START( "reference_decl_english_ast",
                   "reference_english_ast TO decl_english_ast" );
@@ -3125,7 +3130,8 @@ var_decl_english_ast
 /*****************************************************************************/
 
 type_english_ast
-  : type_modifier_list_english_type_opt unmodified_type_english_ast
+  : /* in_attr: qualifier */
+    type_modifier_list_english_type_opt unmodified_type_english_ast
     {
       DUMP_START( "type_english_ast",
                   "type_modifier_list_english_type_opt "
@@ -3142,7 +3148,8 @@ type_english_ast
       DUMP_END();
     }
 
-  | type_modifier_list_english_type     /* allows implicit int in K&R C */
+  | /* in_attr: qualifier */
+    type_modifier_list_english_type     /* allows implicit int in K&R C */
     {
       DUMP_START( "type_english_ast", "type_modifier_list_english_type" );
       DUMP_TYPE( "type_modifier_list_english_type", &$1 );
