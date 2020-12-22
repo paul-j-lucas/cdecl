@@ -3771,6 +3771,32 @@ reference_qualifier_c_tid_opt
   | restrict_qualifier_tid
   ;
 
+typedef_type_decl_c_ast
+  : typedef_type_c_ast
+    {
+      DUMP_START( "typedef_type_decl_c_ast", "typedef_type_c_ast" );
+      DUMP_AST( "(type_c_ast)", type_ast_peek() );
+      DUMP_AST( "typedef_type_c_ast", $1.ast );
+
+      if ( c_type_is_tid_any( &type_ast_peek()->type, TS_TYPEDEF ) ) {
+        //
+        // If we're defining a type, return the type as-is.
+        //
+        $$.ast = $1.ast;
+      }
+      else {
+        //
+        // Otherwise, return the type that it's typedef'd as.
+        //
+        $$.ast = CONST_CAST( c_ast_t*, c_ast_untypedef( $1.ast ) );
+      }
+      $$.target_ast = NULL;
+
+      DUMP_AST( "typedef_type_c_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
 user_defined_conversion_decl_c_ast
   : /* in_attr: type_c_ast */ scope_sname_c_opt Y_OPERATOR type_c_ast
     {
@@ -3803,31 +3829,6 @@ user_defined_conversion_decl_c_ast
       $$.target_ast = $$.ast->as.udef_conv.conv_ast;
 
       DUMP_AST( "user_defined_conversion_decl_c_ast", $$.ast );
-      DUMP_END();
-    }
-
-typedef_type_decl_c_ast
-  : typedef_type_c_ast
-    {
-      DUMP_START( "typedef_type_decl_c_ast", "typedef_type_c_ast" );
-      DUMP_AST( "(type_c_ast)", type_ast_peek() );
-      DUMP_AST( "typedef_type_c_ast", $1.ast );
-
-      if ( c_type_is_tid_any( &type_ast_peek()->type, TS_TYPEDEF ) ) {
-        //
-        // If we're defining a type, return the type as-is.
-        //
-        $$.ast = $1.ast;
-      }
-      else {
-        //
-        // Otherwise, return the type that it's typedef'd as.
-        //
-        $$.ast = CONST_CAST( c_ast_t*, c_ast_untypedef( $1.ast ) );
-      }
-      $$.target_ast = NULL;
-
-      DUMP_AST( "typedef_type_c_ast", $$.ast );
       DUMP_END();
     }
   ;
