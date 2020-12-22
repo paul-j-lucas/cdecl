@@ -110,18 +110,20 @@ static void copy_keywords( did_you_mean_t **const pdym, bool copy_types ) {
 }
 
 /**
- * A <code>\ref c_typedef</code> visitor function to copy `typedef` names to
- * the candidate list.
+ * A <code>\ref c_typedef</code> visitor function to copy names of types that
+ * are only valid in the current language to the candidate list.
  *
  * @param type The `c_typedef` to visit.
- * @param data A pointer to the current <code>\ref did_you_mean</code>
- * pointer.  On return, it's incremented.
+ * @param data A pointer to the current <code>\ref did_you_mean</code> pointer.
+ * On return, it's incremented only if \a type was copied.
  * @return Always returns `false`.
  */
 static bool copy_typedef_visitor( c_typedef_t const *type, void *data ) {
-  char const *const name = c_sname_full_name( &type->ast->sname );
-  did_you_mean_t **const pdym = data;
-  (*pdym)++->token = check_strdup( name );
+  if ( (type->lang_ids & opt_lang) != LANG_NONE ) {
+    did_you_mean_t **const pdym = data;
+    char const *const name = c_sname_full_name( &type->ast->sname );
+    (*pdym)++->token = check_strdup( name );
+  }
   return false;
 }
 
@@ -132,12 +134,12 @@ static bool copy_typedef_visitor( c_typedef_t const *type, void *data ) {
  */
 PJL_WARN_UNUSED_RESULT
 static size_t count_commands( void ) {
-  size_t n = 0;
+  size_t count = 0;
   for ( c_command_t const *c = CDECL_COMMANDS; c->literal != NULL; ++c ) {
     if ( (c->lang_ids & opt_lang) != LANG_NONE )
-      ++n;
+      ++count;
   } // for
-  return n;
+  return count;
 }
 
 /**
@@ -149,42 +151,43 @@ static size_t count_commands( void ) {
  */
 PJL_WARN_UNUSED_RESULT
 static size_t count_keywords( bool count_types ) {
-  size_t n = 0;
+  size_t count = 0;
   for ( c_keyword_t const *k = NULL; (k = c_keyword_next( k )) != NULL; ) {
     if ( (k->lang_ids & opt_lang) == LANG_NONE )
       continue;
     bool const is_base_type = c_type_id_part_id( k->type_id ) == TPID_BASE;
     if ( (count_types && is_base_type) || (!count_types && !is_base_type) )
-      ++n;
+      ++count;
   } // for
-  return n;
+  return count;
 }
 
 /**
- * A <code>\ref c_typedef</code> visitor function to count the number of
- * `typedef`s.
+ * A <code>\ref c_typedef</code> visitor function to count the number of types
+ * that are only valid in the current language.
  *
  * @param type The <code>\ref c_typedef</code> to visit.
  * @param data A pointer to the current count.
  * @return Always returns `false`.
  */
 static bool count_typedef_visitor( c_typedef_t const *type, void *data ) {
-  (void)type;
-  size_t *const n = data;
-  ++*n;
+  if ( (type->lang_ids & opt_lang) != LANG_NONE ) {
+    size_t *const pcount = data;
+    ++*pcount;
+  }
   return false;
 }
 
 /**
- * Counts the number of `typedef`s.
+ * Counts the number of `typedef`s that are only valid in the current language.
  *
  * @return Returns said number of `typedef`s.
  */
 PJL_WARN_UNUSED_RESULT
 static size_t count_typedefs( void ) {
-  size_t n = 0;
-  c_typedef_visit( &count_typedef_visitor, &n );
-  return n;
+  size_t count = 0;
+  c_typedef_visit( &count_typedef_visitor, &count );
+  return count;
 }
 
 /**
