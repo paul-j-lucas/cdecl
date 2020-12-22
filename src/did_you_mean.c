@@ -121,7 +121,7 @@ static void copy_keywords( did_you_mean_t **const pdym, bool copy_types ) {
 static bool copy_typedef_visitor( c_typedef_t const *type, void *data ) {
   if ( (type->lang_ids & opt_lang) != LANG_NONE ) {
     did_you_mean_t **const pdym = data;
-    char const *const name = c_sname_full_name( &type->ast->sname );
+    char const *const name = c_ast_full_name( type->ast );
     (*pdym)++->token = check_strdup( name );
   }
   return false;
