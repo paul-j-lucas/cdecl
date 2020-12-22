@@ -1205,7 +1205,7 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   enum_tid enum_class_struct_union_tid
 %type   <type_id>   func_qualified_c_tid
 %type   <type_id>   func_qualifier_list_c_tid_opt
-%type   <type_id>   namespace_exp
+%type   <type_id>   namespace_tid_exp
 %type   <type>      namespace_type
 %type   <type_id>   no_except_bool_tid
 %type   <type_id>   reference_qualifier_c_tid_opt
@@ -5246,7 +5246,7 @@ member_or_non_member_opt
   | Y_NON_MEMBER                  { $$ = C_FUNC_NON_MEMBER ; }
   ;
 
-namespace_exp
+namespace_tid_exp
   : Y_NAMESPACE
   | error
     {
@@ -5256,7 +5256,7 @@ namespace_exp
 
 namespace_type
   : Y_NAMESPACE                   { $$ = C_TYPE_LIT_B( $1 ); }
-  | Y_INLINE namespace_exp        { $$ = C_TYPE_LIT( $2, $1, TA_NONE ); }
+  | Y_INLINE namespace_tid_exp    { $$ = C_TYPE_LIT( $2, $1, TA_NONE ); }
   ;
 
 of_exp
