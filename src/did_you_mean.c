@@ -93,8 +93,7 @@ static void copy_commands( did_you_mean_t **const pdym ) {
  * @param copy_types If `true`, copy only keywords that are types; if `false`,
  * copy only keywords that are not types.
  */
-static void copy_keywords( did_you_mean_t **const pdym,
-                           bool copy_types ) {
+static void copy_keywords( did_you_mean_t **const pdym, bool copy_types ) {
   for ( c_keyword_t const *k = NULL; (k = c_keyword_next( k )) != NULL; ) {
     if ( (k->lang_ids & opt_lang) == LANG_NONE )
       continue;
