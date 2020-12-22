@@ -123,7 +123,9 @@ most notably:
   `[[noreturn]]`
   attribute specifiers.
 * Better warning and error messages
-  complete with location information and color.
+  complete with location information,
+  color,
+  and "Did you mean ...?" suggestions.
 
 ## Installation
 

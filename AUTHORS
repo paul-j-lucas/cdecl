@@ -99,6 +99,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added binary, octal, and hexadecimal array sizes
 	added digraph & trigraph support
 	added better warning and error messages
+	added "Did you mean ...?" suggestions
 	now ignoring C /*...*/ and C++ // comments in lexer
 	now treating cdecl keywords in declarations as ordinary names
 	revamped the manual page
