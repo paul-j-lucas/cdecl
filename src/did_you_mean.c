@@ -154,14 +154,8 @@ static size_t count_keywords( bool count_types ) {
     if ( (k->lang_ids & opt_lang) == LANG_NONE )
       continue;
     bool const is_base_type = c_type_id_part_id( k->type_id ) == TPID_BASE;
-    if ( count_types ) {
-      if ( !is_base_type )
-        continue;
-    } else {
-      if ( is_base_type )
-        continue;
-    }
-    ++n;
+    if ( (count_types && is_base_type) || (!count_types && !is_base_type) )
+      ++n;
   } // for
   return n;
 }
