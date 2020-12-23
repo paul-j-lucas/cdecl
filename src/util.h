@@ -320,7 +320,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa MALLOC
  */
 #define REALLOC(PTR,TYPE,N) \
-  ((PTR) = STATIC_CAST(TYPE*, check_realloc( (PTR), sizeof(TYPE) * (N) )))
+  ((PTR) = check_realloc( (PTR), sizeof(TYPE) * (N) ))
 
 /**
  * Explicit C version of C++'s `reinterpret_cast`.
