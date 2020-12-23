@@ -182,40 +182,41 @@ static inline char const* plural_s( uint64_t n ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_alignas( c_ast_t *ast ) {
   assert( ast != NULL );
-  assert( ast->align.kind != C_ALIGNAS_NONE );
 
-  if ( c_ast_is_register( ast ) ) {
-    print_error( &ast->loc,
-      "\"%s\" can not be combined with \"%s\"\n", alignas_lang(), L_REGISTER
-    );
-    return false;
-  }
-
-  if ( (ast->kind_id & K_ANY_OBJECT) == K_NONE ) {
-    print_error( &ast->loc,
-      "%s can not be %s\n", c_kind_name( ast->kind_id ), L_ALIGNED
-    );
-    return false;
-  }
-
-  switch ( ast->align.kind ) {
-    case C_ALIGNAS_NONE:
-      break;
-    case C_ALIGNAS_EXPR: {
-      unsigned const alignment = ast->align.as.expr;
-      if ( !at_most_one_bit_set( alignment ) ) {
-        print_error( &ast->loc,
-          "\"%u\": alignment is not a power of 2\n", alignment
-        );
-        return false;
-      }
-      break;
+  if ( ast->align.kind != C_ALIGNAS_NONE ) {
+    if ( c_ast_is_register( ast ) ) {
+      print_error( &ast->loc,
+        "\"%s\" can not be combined with \"%s\"\n", alignas_lang(), L_REGISTER
+      );
+      return false;
     }
-    case C_ALIGNAS_TYPE:
-      if ( !c_ast_check_declaration( ast->align.as.type_ast ) )
-        return false;
-      break;
-  } // switch
+
+    if ( (ast->kind_id & K_ANY_OBJECT) == K_NONE ) {
+      print_error( &ast->loc,
+        "%s can not be %s\n", c_kind_name( ast->kind_id ), L_ALIGNED
+      );
+      return false;
+    }
+
+    switch ( ast->align.kind ) {
+      case C_ALIGNAS_NONE:
+        break;
+      case C_ALIGNAS_EXPR: {
+        unsigned const alignment = ast->align.as.expr;
+        if ( !at_most_one_bit_set( alignment ) ) {
+          print_error( &ast->loc,
+            "\"%u\": alignment is not a power of 2\n", alignment
+          );
+          return false;
+        }
+        break;
+      }
+      case C_ALIGNAS_TYPE:
+        if ( !c_ast_check_declaration( ast->align.as.type_ast ) )
+          return false;
+        break;
+    } // switch
+  }
 
   return true;
 }
@@ -1486,7 +1487,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   bool const is_func_param = REINTERPRET_CAST( bool, data );
 
-  if ( ast->align.kind != C_ALIGNAS_NONE && !c_ast_check_alignas( ast ) )
+  if ( !c_ast_check_alignas( ast ) )
     return VISITOR_ERROR_FOUND;
 
   switch ( ast->kind_id ) {
