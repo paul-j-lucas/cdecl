@@ -26,7 +26,9 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "print.h"
+#include "c_keyword.h"
 #include "c_lang.h"
+#include "c_sname.h"
 #include "cdecl.h"
 #include "color.h"
 #include "lexer.h"
@@ -245,6 +247,21 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
 
   if ( opt_cdecl_debug )
     PRINTF_ERR( " (%s:%d)", file, line );
+}
+
+void fl_print_error_unknown_type( char const *file, int line,
+                                  c_loc_t const *loc, c_sname_t const *sname ) {
+  // Must dup this since c_sname_full_name() returns a temporary buffer.
+  char const *const unknown_name = check_strdup( c_sname_full_name( sname ) );
+  fl_print_error( file, line, loc, "\"%s\": unknown type", unknown_name );
+
+  c_keyword_t const *const k = c_keyword_find( unknown_name, LANG_ALL );
+  if ( k != NULL && k->type_id != TX_NONE )
+    PRINTF_ERR( " until %s", c_lang_name( c_lang_oldest( k->lang_ids ) ) );
+
+  print_suggestions( DYM_C_TYPES, unknown_name );
+  PUTC_ERR( '\n' );
+  FREE( unknown_name );
 }
 
 void fl_print_warning( char const *file, int line, c_loc_t const *loc,

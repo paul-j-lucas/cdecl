@@ -186,18 +186,6 @@
 #define PARSE_ABORT()             BLOCK( parse_cleanup( true ); YYABORT; )
 
 /**
- * Prints an "unknown type" error message possibly followed by "did you mean
- * ...?" for types possibly meant.
- * In debug mode, also prints the file & line where the function was called
- * from.
- *
- * @param LOC The location of the unknown \a sname.
- * @param SNAME The unknown name.
- */
-#define print_error_unknown_type(LOC,SNAME) \
-  fl_print_error_unknown_type( __FILE__, __LINE__, (LOC), (SNAME) )
-
-/**
  * Show all (as opposed to only those that are supported in the current
  * language) predefined, user, or both types.
  */
@@ -635,38 +623,6 @@ static void fl_elaborate_error( char const *file, int line,
     PUTC_ERR( '\n' );
     error_newlined = true;
   }
-}
-
-/**
- * Prints an "unknown type" error message possibly followed by "did you mean
- * ...?" for types possibly meant.
- * In debug mode, also prints the file & line where the function was called
- * from.
- *
- * @note
- * This function isn't normally called directly; use the
- * #print_error_unknown_type() macro instead.
- *
- * @param file The name of the file where this function was called from.
- * @param line The line number within \a file where this function was called
- * from.
- * @param loc The location of the unknown \a sname.
- * @param sname The unknown name.
- */
-static void fl_print_error_unknown_type( char const *file, int line,
-                                         c_loc_t const *loc,
-                                         c_sname_t const *sname ) {
-  // Must dup this since c_sname_full_name() returns a temporary buffer.
-  char const *const unknown_name = check_strdup( c_sname_full_name( sname ) );
-  fl_print_error( file, line, loc, "\"%s\": unknown type", unknown_name );
-
-  c_keyword_t const *const k = c_keyword_find( unknown_name, LANG_ALL );
-  if ( k != NULL && k->type_id != TX_NONE )
-    PRINTF_ERR( " until %s", c_lang_name( c_lang_oldest( k->lang_ids ) ) );
-
-  print_suggestions( DYM_C_TYPES, unknown_name );
-  PUTC_ERR( '\n' );
-  FREE( unknown_name );
 }
 
 /**
