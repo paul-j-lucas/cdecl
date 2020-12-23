@@ -627,7 +627,7 @@ static void fl_elaborate_error( char const *file, int line,
     va_end( args );
 
     if ( error_token != NULL )
-      print_did_you_mean( dym_kinds, error_token );
+      print_suggestions( dym_kinds, error_token );
 
     if ( opt_cdecl_debug )
       PRINTF_ERR( " (%s:%d)", file, line );
@@ -669,7 +669,7 @@ static void fl_print_error_unknown_type( char const *file, int line,
     PUTS_ERR( ": unknown type" );
   }
 
-  print_did_you_mean( DYM_C_TYPES, unknown_name );
+  print_suggestions( DYM_C_TYPES, unknown_name );
   PUTC_ERR( '\n' );
   FREE( unknown_name );
 }
@@ -2428,7 +2428,7 @@ show_command
           $2, L_DEFINE, L_TYPEDEF, L_USING
         );
       }
-      print_did_you_mean( DYM_C_TYPES, $2 );
+      print_suggestions( DYM_C_TYPES, $2 );
       PUTC_ERR( '\n' );
       FREE( $2 );
       PARSE_ABORT();

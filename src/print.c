@@ -265,22 +265,6 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
     PRINTF_ERR( " (%s:%d)", file, line );
 }
 
-void print_did_you_mean( dym_kind_t kinds, char const *unknown_token ) {
-  did_you_mean_t const *const dym = dym_new( kinds, unknown_token );
-  if ( dym != NULL ) {
-    PUTS_ERR( "; did you mean " );
-    for ( size_t i = 0; dym[i].token != NULL; ++i ) {
-      PRINTF_ERR( "%s\"%s\"",
-        i == 0 ?
-          "" : (dym[i+1].token != NULL ? ", " : (i > 1 ?  ", or " : " or ")),
-        dym[i].token
-      );
-    } // for
-    PUTC_ERR( '?' );
-    dym_free( dym );
-  }
-}
-
 void print_hint( char const *format, ... ) {
   PUTS_ERR( "; did you mean " );
   va_list args;
@@ -302,6 +286,22 @@ void print_loc( c_loc_t const *loc ) {
   PRINTF_ERR( "%zu", column + 1 );
   SGR_END_COLOR( stderr );
   PUTS_ERR( ": " );
+}
+
+void print_suggestions( dym_kind_t kinds, char const *unknown_token ) {
+  did_you_mean_t const *const dym = dym_new( kinds, unknown_token );
+  if ( dym != NULL ) {
+    PUTS_ERR( "; did you mean " );
+    for ( size_t i = 0; dym[i].token != NULL; ++i ) {
+      PRINTF_ERR( "%s\"%s\"",
+        i == 0 ?
+          "" : (dym[i+1].token != NULL ? ", " : (i > 1 ?  ", or " : " or ")),
+        dym[i].token
+      );
+    } // for
+    PUTC_ERR( '?' );
+    dym_free( dym );
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

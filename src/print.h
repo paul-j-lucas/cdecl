@@ -110,23 +110,16 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
                        char const *format, ... );
 
 /**
- * Prints "Did you mean ...?" including a list of things that might have been
- * meant instead of \a unknown_token.  A newline is _not_ printed.
- *
- * @param kinds The bitwise-or of the kind(s) of things possibly meant.
- * @param unknown_token The unknown token.
- */
-void print_did_you_mean( dym_kind_t kinds, char const *unknown_token );
-
-/**
  * Prints a hint message to standard error in the form:
  * @code
- * ; did you mean _____?\n
+ * ; did you mean ...?\n
  * @endcode
- * where `_____` is the hint.
+ * where `...` is the hint.
  *
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
+ *
+ * @sa print_suggestions()
  */
 PJL_PRINTF_LIKE_FUNC(1)
 void print_hint( char const *format, ... );
@@ -143,6 +136,27 @@ void print_hint( char const *format, ... );
  * @param loc The location to print.
  */
 void print_loc( c_loc_t const *loc );
+
+/**
+ * If there is at least one "similar enough" suggestion for what \a
+ * unknown_token might have meant, prints a message to standard error in the
+ * form:
+ * @code
+ * ; did you mean ...?
+ * @endcode
+ * where `...` is a a comma-separated list of one or more suggestions.  If
+ * there are no suggestions that are "similar enough," prints nothing.
+ *
+ * @note
+ * A newline is _not_ printed.
+ *
+ * @param kinds The bitwise-or of the kind(s) of things possibly meant by \a
+ * unknown_token.
+ * @param unknown_token The unknown token.
+ *
+ * @sa print_hint()
+ */
+void print_suggestions( dym_kind_t kinds, char const *unknown_token );
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -1848,7 +1848,7 @@ static void error_unknown_type( c_ast_t const *ast ) {
   // Must dup this since c_ast_full_name() returns a temporary buffer.
   char const *const unknown_name = check_strdup( c_ast_full_name( ast ) );
   print_error( &ast->loc, "\"%s\": unknown type", unknown_name );
-  print_did_you_mean( DYM_C_TYPES, unknown_name );
+  print_suggestions( DYM_C_TYPES, unknown_name );
   PUTC_ERR( '\n' );
   FREE( unknown_name );
 }
