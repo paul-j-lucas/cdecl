@@ -107,7 +107,7 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
  */
 PJL_PRINTF_LIKE_FUNC(4)
 void fl_print_warning( char const *file, int line, c_loc_t const *loc,
-                         char const *format, ... );
+                       char const *format, ... );
 
 /**
  * Prints "Did you mean ...?" including a list of things that might have been
