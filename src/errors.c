@@ -41,6 +41,67 @@
 // standard
 #include <assert.h>
 
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Prints an error: `<kind> not supported in <lang>`.
+ *
+ * @param AST The AST having the unsupported kind.
+ */
+#define error_kind_not_supported(AST)             \
+  fl_print_error( __FILE__, __LINE__,             \
+    &(AST)->loc, "%s not supported in %s\n",      \
+    c_kind_name( (AST)->kind_id ), C_LANG_NAME()  \
+  )
+
+/**
+ * Prints an error: `<kind> can not be <type>`.
+ *
+ * @param AST The AST .
+ * @param TID The bad type.
+ * @param NEWLINE If `true`, prints a newline.
+ */
+#define error_kind_not_type(AST,TID,NEWLINE) \
+  fl_print_error( __FILE__, __LINE__,                           \
+    &(AST)->loc, "%s can not be %s%s",                          \
+    c_kind_name( (AST)->kind_id ), c_type_id_name_error( TID ), \
+    (NEWLINE) ? "\n" : ""                                       \
+  )
+
+/**
+ * Prints an error: `<kind> to <kind>`.
+ *
+ * @param AST The AST having the bad kind.
+ * @param KIND_ID The other kind.
+ */
+#define error_kind_to_kind(AST,KIND_ID)                   \
+  fl_print_error( __FILE__, __LINE__,                     \
+    &(AST)->loc, "%s to %s\n",                            \
+    c_kind_name( (AST)->kind_id ), c_kind_name( KIND_ID ) \
+  )
+
+/**
+ * Prints an error: `<kind> to <type>`.
+ *
+ * @param AST The AST having the bad kind.
+ * @param TID The bad type.
+ * @param NEWLINE If `true`, prints a newline.
+ */
+#define error_kind_to_type(AST,TID,NEWLINE)                     \
+  fl_print_error( __FILE__, __LINE__,                           \
+    &(AST)->loc, "%s to %s%s",                                  \
+    c_kind_name( (AST)->kind_id ), c_type_id_name_error( TID ), \
+    (NEWLINE) ? "\n" : ""                                       \
+  )
+
+/**
+ * Prints an error: `"<identifier>": unknown type`.
+ *
+ * @param AST The AST of the unknown type.
+ */
+#define error_unknown_type(AST) \
+  fl_print_error_unknown_type( __FILE__, __LINE__, &(AST)->loc, &(AST)->sname )
+
 // local constants
 static bool const VISITOR_ERROR_FOUND     = true;
 static bool const VISITOR_ERROR_NOT_FOUND = false;
@@ -71,13 +132,6 @@ static bool c_ast_visitor_error( c_ast_t*, void* );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_type( c_ast_t*, void* );
-
-static void error_kind_not_cast_into( c_ast_t const*, char const* );
-static void error_kind_not_supported( c_ast_t const* );
-static void error_kind_not_type( c_ast_t const*, c_type_id_t, bool );
-static void error_kind_to_kind( c_ast_t const*, c_kind_id_t );
-static void error_kind_to_type( c_ast_t const*, c_type_id_t, bool );
-static void error_unknown_type( c_ast_t const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -1764,93 +1818,17 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
 }
 
 /**
- * Print an error: `can not cast into <kind>`.
+ * Prints an error: `can not cast into <kind>`.
  *
- * @param ast The AST .
- * @param hint The hint, if any.
+ * @param ast The AST having \e kind.
+ * @param hint The hint.
  */
 static void error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
   assert( ast != NULL );
   print_error( &ast->loc,
     "can not %s %s %s", L_CAST, L_INTO, c_kind_name( ast->kind_id )
   );
-  if ( hint != NULL )
-    print_hint( "%s %s %s", L_CAST, L_INTO, hint );
-  else
-    PUTC_ERR( '\n' );
-}
-
-/**
- * Prints an error: `<kind> can not be <type>`.
- *
- * @param ast The AST .
- * @param tid The bad type.
- * @param newline If `true`, prints a newline.
- */
-static void error_kind_not_type( c_ast_t const *ast, c_type_id_t tid,
-                                 bool newline ) {
-  assert( ast != NULL );
-  print_error( &ast->loc,
-    "%s can not be %s%s",
-    c_kind_name( ast->kind_id ), c_type_id_name_error( tid ),
-    newline ? "\n" : ""
-  );
-}
-
-/**
- * Prints an error: `<kind> not supported in <lang>`.
- *
- * @param ast The AST having the bad kind.
- */
-static void error_kind_not_supported( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  print_error( &ast->loc,
-    "%s not supported in %s\n", c_kind_name( ast->kind_id ), C_LANG_NAME()
-  );
-}
-
-/**
- * Prints an error: `<kind> to <kind>`.
- *
- * @param ast The AST having the bad kind.
- * @param kind_id The other kind.
- */
-static void error_kind_to_kind( c_ast_t const *ast, c_kind_id_t kind_id ) {
-  assert( ast != NULL );
-  print_error( &ast->loc,
-    "%s to %s\n", c_kind_name( ast->kind_id ), c_kind_name( kind_id )
-  );
-}
-
-/**
- * Prints an error: `<kind> to <type>`.
- *
- * @param ast The AST having the bad kind.
- * @param tid The bad type.
- * @param newline If `true`, prints a newline.
- */
-static void error_kind_to_type( c_ast_t const *ast, c_type_id_t tid,
-                                bool newline ) {
-  assert( ast != NULL );
-  print_error( &ast->loc,
-    "%s to %s%s", c_kind_name( ast->kind_id ), c_type_id_name_error( tid ),
-    newline ? "\n" : ""
-  );
-}
-
-/**
- * Prints an error: `"<identifier>": unknown type`.
- *
- * @param ast The AST of the unknown type.
- */
-static void error_unknown_type( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  // Must dup this since c_ast_full_name() returns a temporary buffer.
-  char const *const unknown_name = check_strdup( c_ast_full_name( ast ) );
-  print_error( &ast->loc, "\"%s\": unknown type", unknown_name );
-  print_suggestions( DYM_C_TYPES, unknown_name );
-  PUTC_ERR( '\n' );
-  FREE( unknown_name );
+  print_hint( "%s %s %s", L_CAST, L_INTO, hint );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
