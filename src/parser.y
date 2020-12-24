@@ -1158,7 +1158,7 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   func_qualifier_list_c_tid_opt
 %type   <type_id>   namespace_tid_exp
 %type   <type>      namespace_type
-%type   <type_id>   no_except_bool_tid
+%type   <type_id>   no_except_bool_tid_exp
 %type   <type_id>   reference_qualifier_c_tid_opt
 %type   <type_id>   restrict_qualifier_tid
 %type   <type>      storage_class_c_type
@@ -3410,14 +3410,14 @@ func_ref_qualifier_c_tid_opt
 noexcept_c_tid_opt
   : /* empty */                   { $$ = TS_NONE; }
   | Y_NOEXCEPT
-  | Y_NOEXCEPT '(' no_except_bool_tid rparen_exp
+  | Y_NOEXCEPT '(' no_except_bool_tid_exp rparen_exp
     {
       $$ = $3;
     }
   | Y_THROW lparen_exp rparen_exp
   ;
 
-no_except_bool_tid
+no_except_bool_tid_exp
   : Y_FALSE
   | Y_TRUE
   | error
