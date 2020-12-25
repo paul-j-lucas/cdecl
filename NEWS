@@ -12,6 +12,9 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 9.1
 
+** Language-version-specific help
+Help is now specific to particular language versions, not just C or C++.
+
 ** `show english`
 The `show` command now allows `english` explicitly as an option.  (Since it's
 the default, it's ignored.)

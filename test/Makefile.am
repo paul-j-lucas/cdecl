@@ -1597,11 +1597,14 @@ TESTS+=	tests/xupc_explain_ri.test
 TESTS+=	tests/help-c++.test \
 	tests/help-c.test \
 	tests/help_command-c++.test \
+	tests/help_command-c++03.test \
 	tests/help_command-c.test \
 	tests/help_commands-c++.test \
 	tests/help_commands-c.test \
 	tests/help_english-c++.test \
 	tests/help_english-c.test \
+	tests/help_english-c89.test \
+	tests/help_english-knr.test \
 	tests/set.test \
 	tests/set_-e-a--st-.test \
 	tests/set_c++.test \
@@ -1673,11 +1676,14 @@ UPDATE_TESTS = \
 	tests/help-c++.test \
 	tests/help-c.test \
 	tests/help_command-c++.test \
+	tests/help_command-c++03.test \
 	tests/help_command-c.test \
 	tests/help_commands-c++.test \
 	tests/help_commands-c.test \
 	tests/help_english-c++.test \
 	tests/help_english-c.test \
+	tests/help_english-c89.test \
+	tests/help_english-knr.test \
 	tests/set.test \
 	tests/set_options.test \
 	tests/show_all-c++.test \

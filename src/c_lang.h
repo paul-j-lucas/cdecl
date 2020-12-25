@@ -171,6 +171,42 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_C_CPP_MIN(CL,CPPL)   (LANG_C_MIN(CL) | LANG_CPP_MIN(CPPL))
 
 /**
+ * Shorthand for the common case of getting whether the current language is
+ * among the languages specified by \a LANG_MACRO.
+ *
+ * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
+ * @return Returne `true` only if the current language is among the languages
+ * specified by \a LANG_MACRO.
+ *
+ * @sa #C_LANG_IS_C()
+ * @sa #C_LANG_IS_CPP()
+ */
+#define C_LANG_IS(LANG_MACRO) \
+  ((opt_lang & LANG_ ## LANG_MACRO) != LANG_NONE)
+
+/**
+ * Shorthand for the common case of getting whether the current language is any
+ * version of C.
+ *
+ * @return Returns `true` only if the current language is C.
+ *
+ * @sa #C_LANG_IS()
+ * @sa #C_LANG_IS_CPP()
+ */
+#define C_LANG_IS_C()             C_LANG_IS(C_ALL)
+
+/**
+ * Shorthand for the common case of getting whether the current language is any
+ * version of C++.
+ *
+ * @return Returns `true` only if the current language is C++.
+ *
+ * @sa #C_LANG_IS()
+ * @sa #C_LANG_IS_C()
+ */
+#define C_LANG_IS_CPP()           C_LANG_IS(CPP_ALL)
+
+/**
  * C/C++ language(s)/literal pairs: for the given language(s) only, use the
  * given literal.  This allows different languages to use different literals,
  * e.g., "_Noreturn" for C and "noreturn" for C++.
@@ -187,6 +223,13 @@ struct c_lang_lit {
  * @param ... The array of <code>\ref c_lang_lit</code> elements.
  */
 #define C_LANG_LIT(...)           (c_lang_lit_t const[]){ __VA_ARGS__ }
+
+/**
+ * Shorthand for the common case of getting the name of the current language.
+ *
+ * @return Returns said name.
+ */
+#define C_LANG_NAME()             c_lang_name( opt_lang )
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -224,33 +267,13 @@ bool c_lang_is_c( c_lang_id_t lang_ids ) {
  * @param lang_ids The bitwise-of of language(s) to check.
  * @return Returns `true` only if \a lang_id is a version of C++.
  *
- * @sa #C_LANG_IS_CPP()
  * @sa c_lang_is_c()
+ * @sa #C_LANG_IS_CPP()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
   return (lang_ids & LANG_MASK_CPP) != LANG_NONE;
 }
-
-/**
- * Shorthand for the common case of getting whether the current language is any
- * version of C.
- *
- * @return Returns `true` only if the current language is C.
- *
- * @sa #C_LANG_IS_CPP()
- */
-#define C_LANG_IS_C()             c_lang_is_c( opt_lang )
-
-/**
- * Shorthand for the common case of getting whether the current language is any
- * version of C++.
- *
- * @return Returns `true` only if the current language is C++.
- *
- * @sa #C_LANG_IS_C()
- */
-#define C_LANG_IS_CPP()           c_lang_is_cpp( opt_lang )
 
 /**
  * Gets the literal appropriate for the current language.
@@ -274,13 +297,6 @@ char const* c_lang_literal( c_lang_lit_t const lang_lit[] );
  */
 PJL_WARN_UNUSED_RESULT
 char const* c_lang_name( c_lang_id_t lang_id );
-
-/**
- * Shorthand for the common case of getting the name of the current language.
- *
- * @return Returns said name.
- */
-#define C_LANG_NAME()             c_lang_name( opt_lang )
 
 /**
  * Gets a comma-separated string of all supported language names.
