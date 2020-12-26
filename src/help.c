@@ -89,45 +89,37 @@ static void print_h( char const *line ) {
     SGR_START_COLOR( stdout, help_title );
 
   for ( char const *s = line; *s != '\0'; ++s ) {
-    switch ( *s ) {
-      case '\\':                        // escapes next char
-        if ( !is_escaped ) {
+    if ( !is_escaped ) {
+      switch ( *s ) {
+        case '\\':                      // escapes next char
           is_escaped = true;
           continue;
-        }
-        break;
-      case ':':                         // ends a title
-        if ( in_title ) {
-          SGR_END_COLOR( stdout );
-          in_title = false;
-        }
-        break;
-      case '<':                         // begins non-terminal
-        if ( !is_escaped )
+        case ':':                       // ends a title
+          if ( in_title ) {
+            SGR_END_COLOR( stdout );
+            in_title = false;
+          }
+          break;
+        case '<':                       // begins non-terminal
           SGR_START_COLOR( stdout, help_nonterm );
-        break;
-      case '>':                         // ends non-terminal
-        if ( !is_escaped ) {
+          break;
+        case '>':                       // ends non-terminal
           PUTC_OUT( *s );
           SGR_END_COLOR( stdout );
           continue;
-        }
-        break;
-      case '*':                         // other EBNF chars
-      case '+':
-      case '[':
-      case ']':
-      case '{':
-      case '|':
-      case '}':
-        if ( !is_escaped ) {
+        case '*':                       // other EBNF chars
+        case '+':
+        case '[':
+        case ']':
+        case '{':
+        case '|':
+        case '}':
           SGR_START_COLOR( stdout, help_punct );
           PUTC_OUT( *s );
           SGR_END_COLOR( stdout );
           continue;
-        }
-        break;
-    } // switch
+      } // switch
+    }
 
     PUTC_OUT( *s );
     is_escaped = false;
