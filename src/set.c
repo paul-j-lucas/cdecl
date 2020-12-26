@@ -364,7 +364,7 @@ static bool strn_nohyphen_eq( char const *s1, char const *s2, size_t n ) {
  *
  * @param opt_name The name of the option to set. If null, displays the current
  * values of all options.
- * @param opt_name_loc The location of the option token.
+ * @param opt_name_loc The location of \a opt_name.
  * @param opt_value The option value, if any.
  * @param opt_value_loc The location of \a opt_value.
  */

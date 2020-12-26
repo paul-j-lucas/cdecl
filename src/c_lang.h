@@ -239,8 +239,8 @@ struct c_lang_lit {
  *
  * @param name The language name to get the corresponding <code>\ref
  * c_lang_id_t</code> for.
- * @return Returns said language or <code>\ref LANG_NONE</code> if \a name
- * doesn't correspond to any supported language.
+ * @return Returns said language or #LANG_NONE if \a name doesn't correspond to
+ * any supported language.
  *
  * @sa c_lang_name()
  */
@@ -290,10 +290,12 @@ char const* c_lang_literal( c_lang_lit_t const lang_lit[] );
 /**
  * Gets the printable name of \a lang_id.
  *
- * @param lang_id The language to get the name of.
+ * @param lang_id The language to get the name of.  Exactly one language must
+ * be set.
  * @return Returns said name.
  *
  * @sa c_lang_find()
+ * @sa c_lang_names()
  */
 PJL_WARN_UNUSED_RESULT
 char const* c_lang_name( c_lang_id_t lang_id );
@@ -302,6 +304,8 @@ char const* c_lang_name( c_lang_id_t lang_id );
  * Gets a comma-separated string of all supported language names.
  *
  * @return Returns said string.
+ *
+ * @sa c_lang_name()
  */
 PJL_WARN_UNUSED_RESULT
 char const* c_lang_names( void );
@@ -311,6 +315,8 @@ char const* c_lang_names( void );
  *
  * @param lang_ids The bitwise-or of language(s).
  * @return Returns said language.
+ *
+ * @sa c_lang_and_later()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
@@ -322,6 +328,8 @@ c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
  *
  * @param lang_id The language.  Exactly one language must be set.
  * @return Returns the bitwise-or of all language(s) \a lang_id and later.
+ *
+ * @sa c_lang_oldest()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_and_later( c_lang_id_t lang_id ) {
