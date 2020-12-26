@@ -26,6 +26,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "c_typedef.h"
+#include "cdecl.h"
 #include "c_ast.h"
 #include "c_lang.h"
 #include "options.h"
@@ -864,9 +865,8 @@ static void c_typedef_parse_predefined( char const *const types[const] ) {
   extern bool parse_string( char const*, size_t );
   assert( types != NULL );
   for ( char const *const *ptype = types; *ptype != NULL; ++ptype ) {
-    bool const parsed_predefined_type_ok = parse_string( *ptype, 0 );
-    assert( parsed_predefined_type_ok );
-    (void)parsed_predefined_type_ok;
+    if ( unlikely( !parse_string( *ptype, 0 ) ) )
+      INTERNAL_ERR( "failed to parse predefined type: %s\n", *ptype );
   } // for
 }
 

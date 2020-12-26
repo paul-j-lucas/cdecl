@@ -199,7 +199,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa UNEXPECTED_STR_VALUE
  */
 #define INTERNAL_ERR(FORMAT,...) \
-  PMESSAGE_EXIT( EX_SOFTWARE, "internal error: " FORMAT, __VA_ARGS__ )
+  PMESSAGE_EXIT( EX_SOFTWARE, "%s:%d: internal error: " FORMAT, __FILE__, __LINE__, __VA_ARGS__ )
 
 /**
  * Gets a value where all bits that are greater than or equal to the one bit
