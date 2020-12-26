@@ -708,7 +708,7 @@ c_type_part_id_t c_type_id_part_id( c_type_id_t tid ) {
 PJL_WARN_UNUSED_RESULT C_TYPE_INLINE
 bool c_type_id_intersects( c_type_id_t i_tid, c_type_id_t j_tid ) {
   assert( c_type_id_part_id( i_tid ) == c_type_id_part_id( j_tid ) );
-  return c_type_id_no_part_id( i_tid & j_tid ) != 0;
+  return c_type_id_no_part_id( i_tid & j_tid ) != TX_NONE;
 }
 
 /**
@@ -723,7 +723,7 @@ bool c_type_id_intersects( c_type_id_t i_tid, c_type_id_t j_tid ) {
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_none( c_type_id_t tid ) {
-  return c_type_id_no_part_id( tid ) == 0;
+  return c_type_id_no_part_id( tid ) == TX_NONE;
 }
 
 /**
