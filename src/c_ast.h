@@ -650,27 +650,6 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
                       void *data );
 
 /**
- * Does a depth-first, post-order traversal of an AST looking for a AST
- * node that satisfies the visitor.
- *
- * @param ast The AST to begin at.
- * @param dir The direction to visit.
- * @param visitor The visitor to use.
- * @param data Optional data passed to \a visitor.
- * @return Returns `true` only if \a visitor ever returned non-null.
- *
- * @note Function-like parameters are _not_ traversed into.  They're considered
- * distinct ASTs.
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-bool c_ast_find( c_ast_t const *ast, c_visit_dir_t dir,
-                 c_ast_visitor_t visitor, void *data ) {
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_t *const found_ast = c_ast_visit( nonconst_ast, dir, visitor, data );
-  return found_ast != NULL;
-}
-
-/**
  * Convenience function to get the AST given a `c_ast_param_t`.
  *
  * @param param A pointer to a `c_ast_param_t`.
