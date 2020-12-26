@@ -2770,7 +2770,7 @@ func_decl_english_ast
 oper_decl_english_ast
   : type_qualifier_list_c_tid_opt { qualifier_tid_push( $1, &@1 ); }
     ref_qualifier_english_tid_opt member_or_non_member_opt
-    Y_OPERATOR paren_decl_list_english_opt returning_english_ast_opt
+    operator_exp paren_decl_list_english_opt returning_english_ast_opt
     {
       qualifier_pop();
       DUMP_START( "oper_decl_english_ast",
@@ -3571,7 +3571,7 @@ oper_decl_c_ast
 
 oper_c_ast
   : /* in_attr: type_c_ast */
-    scope_sname_c_opt Y_OPERATOR c_operator
+    scope_sname_c_opt operator_exp c_operator
     {
       DUMP_START( "oper_c_ast", "OPERATOR c_operator" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
@@ -3839,7 +3839,7 @@ user_defined_literal_decl_c_ast
 
 user_defined_literal_c_ast
   : /* in_attr: type_c_ast */
-    scope_sname_c_opt Y_OPERATOR quote2_exp name_exp
+    scope_sname_c_opt operator_exp quote2_exp name_exp
     {
       DUMP_START( "user_defined_literal_c_ast", "OPERATOR \"\" NAME" );
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
@@ -5293,6 +5293,14 @@ of_scope_list_english
 of_scope_list_english_opt
   : /* empty */                   { c_sname_init( &$$ ); }
   | of_scope_list_english
+  ;
+
+operator_exp
+  : Y_OPERATOR
+  | error
+    {
+      elaborate_error( "\"%s\" expected", L_OPERATOR );
+    }
   ;
 
 operator_opt
