@@ -340,7 +340,7 @@ c_lang_id_t c_lang_and_later( c_lang_id_t lang_id ) {
 /**
  * Sets the current language and the corresponding prompt.
  *
- * @param lang_id The language to set.
+ * @param lang_id The language to set.  Exactly one language must be set.
  */
 void c_lang_set( c_lang_id_t lang_id );
 
