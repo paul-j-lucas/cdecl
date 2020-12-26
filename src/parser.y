@@ -3215,8 +3215,8 @@ array_decl_c_ast
   ;
 
 array_size_c_num
-  : '[' ']'                       { $$ = C_ARRAY_SIZE_NONE; }
-  | '[' Y_NUMBER ']'              { $$ = $2; }
+  : '[' rbracket_exp              { $$ = C_ARRAY_SIZE_NONE; }
+  | '[' Y_NUMBER rbracket_exp     { $$ = $2; }
   | '[' error ']'
     {
       elaborate_error( "integer expected for array size" );
@@ -4267,8 +4267,8 @@ restrict_qualifier_tid
 upc_layout_qualifier_opt
   : /* empty */
   | '[' ']'
-  | '[' Y_NUMBER ']'
-  | '[' '*' ']'
+  | '[' Y_NUMBER rbracket_exp
+  | '[' '*' rbracket_exp
   | '[' error ']'
     {
       elaborate_error( "one of nothing, number, or '*' expected" );
@@ -4429,25 +4429,25 @@ array_size_c_ast
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $1;
     }
-  | '[' type_qualifier_list_c_tid ']'
+  | '[' type_qualifier_list_c_tid rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = C_ARRAY_SIZE_NONE;
       $$->as.array.store_tid = $2;
     }
-  | '[' type_qualifier_list_c_tid static_tid_opt Y_NUMBER ']'
+  | '[' type_qualifier_list_c_tid static_tid_opt Y_NUMBER rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $4;
       $$->as.array.store_tid = $2 | $3;
     }
-  | '[' type_qualifier_list_c_tid_opt '*' ']'
+  | '[' type_qualifier_list_c_tid_opt '*' rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = C_ARRAY_SIZE_VARIABLE;
       $$->as.array.store_tid = $2;
     }
-  | '[' Y_STATIC type_qualifier_list_c_tid_opt Y_NUMBER ']'
+  | '[' Y_STATIC type_qualifier_list_c_tid_opt Y_NUMBER rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $4;
