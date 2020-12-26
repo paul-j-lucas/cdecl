@@ -1,3 +1,84 @@
+2020-12-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.h: Doxygen.
+   * c_type.h: Using TX_NONE more.
+   * c_lang.h: Comments.
+   * c_lang.c: Now using LANGX_MASK in c_set_lang().
+   * c_lang.h, set.c: Comments.
+   * c_keyword.h, c_lang.h: Comments.
+   * c_ast.h, errors.c: Removed c_ast_find() -- not really needed.
+   * c_ast.h, c_sname.h, c_typedef.c, c_typedef.h, color.h: Doxygen.
+   * c_ast.c: Added default case to c_ast_new().
+   * c_typedef.c, util.h: INTERNAL_ERR() now prints the file and line.
+   * c_typedef.c: Removed c_typedef_node_data_get().
+   * c_typedef.c: Comments.
+
+2020-12-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c: Reformatting.
+   * parser.y: Using rbracket_exp in more places.
+   * parser.y: Added operator_exp grammar rule.
+   * errors.c: Fixed error message.
+   * help.c, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c++03.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out, help_english-c++.out, help_english-c.out,
+     help_english-c89.out, help_english-knr.out: Reformatted help a bit.
+   * help.c: Simplification.
+   * configure.ac: Updated version to 9.1.
+   * NEWS, c_lang.h, errors.c, help.c, test/Makefile.am, help-c++.out,
+     help-c.out, help_command-c++.out, help_command-c++03.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out,
+     help_english-c++.out, help_english-c.out, help_english-c89.out,
+     help_english-knr.out, help_command-c++03.test, help_english-c89.test,
+     help_english-knr.test: Help is now specific to particular language
+     versions, not just C or C++.
+
+2020-12-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: s/no_except_bool_tid/no_except_bool_tid_exp/
+   * errors.c: c_ast_check_alignas() simplification.
+   * errors.c: Converte error_*() functions to macros so __FILE__ and __LINE__
+     of call-point is correct.
+   * parser.y, print.c, print.h: Moved fl_print_error_unknown_type().
+   * parser.y: Reworked "unknown type" error message.
+   * errors.c, parser.y, print.c, print.h:
+     s/print_did_you_mean/print_suggestions/
+   * print.h: Whitespace.
+   * util.h: Removed unnecessary cast.
+
+2020-12-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS: Added mention of "Did you mean ...?" suggestions.
+   * parser.y: /* in_attr: qualifier */ comments.
+   * parser.y: Inherited attribute comment reformatting.
+   * parser.y: Reordering.
+   * parser.y: s/namespace_exp/namespace_tid_exp/
+   * parser.y: s/virtual_exp/virtual_tid_exp/
+   * did_you_mean.c: s/c_sname_full_name/c_ast_full_name/
+   * did_you_mean.c: Types for "did you mean ...?" are now those only valid in
+     the current language.
+   * did_you_mean.c: Simplification.
+
+2020-12-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Better error message for "explain <name>" where <name> is not a
+     type; added "did you mean ...?" to "show <name>" where <name> is not a
+     type.
+   * print.c: Now printing "or" before last did-you-mean suggestion.
+   * parser.y: Doxygen.
+
+2020-12-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, help.c, parser.y, help-c++.out, help-c.out,
+     help_command-c++.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out: Now allowing "show ... [as] english".
+   * c_kind.h, c_sname.h, did_you_mean.c, did_you_mean.h, red_black.h: Added
+     "May be null."
+   * c_ast.c, c_ast.h, c_keyword.c, c_sname.c, gibberish.h, types.h: Moded some
+     types; removed some #include.
+   * color.c: s/uint64_t/unsigned long long/
+   * c_keyword.c, english.c, errors.c: Removed unnecessary #include.
+
 2020-12-18  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac: Changed version to 9.0.
