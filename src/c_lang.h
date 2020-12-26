@@ -278,9 +278,10 @@ bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
 /**
  * Gets the literal appropriate for the current language.
  *
- * @param lang_lit A c_lang_lit_t array.  The last element _must_ always have a
- * `lang_ids` value of #LANG_ALL.  If the corresponding `literal` value is
- * NULL, it means there is no appropriate literal for the current language.
+ * @param lang_lit A <code>\ref c_lang_lit</code> array.  The last element
+ * _must_ always have a `lang_ids` value of #LANG_ALL.  If the corresponding
+ * `literal` value is NULL, it means there is no appropriate literal for the
+ * current language.
  * @return Returns said literal or NULL if there is no appropriate literal for
  * the current language.
  */
