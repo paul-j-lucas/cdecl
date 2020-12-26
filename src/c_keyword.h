@@ -45,7 +45,7 @@
 struct c_keyword {
   char const   *literal;                ///< C string literal of the keyword.
   int           yy_token_id;            ///< Bison token number.
-  c_type_id_t   type_id;                ///< Type the keyword maps to.
+  c_type_id_t   type_id;                ///< Type the keyword maps to, if any.
   c_lang_id_t   lang_ids;               ///< Language(s) OK in.
 };
 

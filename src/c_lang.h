@@ -175,7 +175,7 @@ _GL_INLINE_HEADER_BEGIN
  * among the languages specified by \a LANG_MACRO.
  *
  * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
- * @return Returne `true` only if the current language is among the languages
+ * @return Returns `true` only if the current language is among the languages
  * specified by \a LANG_MACRO.
  *
  * @sa #C_LANG_IS_C()
