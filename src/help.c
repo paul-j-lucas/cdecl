@@ -174,9 +174,10 @@ static void print_help_commands( void ) {
     print_h( "\\+\\+" );
   print_h( " declaration, like \"int x\"; or cast, like \"(int)x\"\n" );
 
-  print_h( "option: [no]alt-tokens [no]debug {di|tri|no}graphs [no]east-const\n" );
-  print_h( "        [no]explain-by-default [no]explicit-int[=<types>] lang=<lang>\n" );
-  print_h( "        [no]prompt [no]semicolon\n" );
+  print_h( "option:\n" );
+  print_h( "  [no]alt-tokens [no]debug {di|tri|no}graphs [no]east-const\n" );
+  print_h( "  [no]explain-by-default [no]explicit-int[=<types>] lang=<lang>\n" );
+  print_h( "  [no]prompt [no]semicolon\n" );
 
   print_h( "lang: C K&R C89 C95 C99 C11 C17 C2X C\\+\\+ C\\+\\+98 C\\+\\+03 C\\+\\+11 C\\+\\+14 C\\+\\+17 C\\+\\+20\n" );
 
@@ -236,7 +237,7 @@ static void print_help_english( void ) {
     print_h( "args: a comma separated list of " );
     if ( C_LANG_IS(C_KNR) )
       print_h( "<name>\n" );
-    else if ( C_LANG_IS(C_MAX(17)) )
+    else if ( C_LANG_IS(MAX(CPP_17)) )
       print_h( "<name>, <english>, or <name> as <english>\n" );
     else
       print_h( "<english> or <name> as <english>\n" );
@@ -343,8 +344,7 @@ static void print_help_english( void ) {
 }
 
 static void print_help_where( void ) {
-  print_h( "where:\n" );
-  print_h( "  [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate\n" );
+  print_h( "where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate\n" );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

@@ -11,5 +11,4 @@ cv-qual: const volatile
 modifier: short signed long unsigned const volatile
 name: a C identifier
 store: auto extern register static
-where:
-  [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

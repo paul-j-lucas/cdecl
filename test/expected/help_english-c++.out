@@ -19,5 +19,4 @@ name: a C++ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*
 scope-e: scope class struct union [inline] namespace
 store: const[eval|expr|init] extern friend mutable static thread_local
        [pure] virtual
-where:
-  [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
+where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
