@@ -40,7 +40,7 @@
 /// @endcond
 
 /**
- * Creates a `c_typedef_t` variable on the stack having \a SNAME.
+ * Creates a <code>\ref c_typedef</code> variable on the stack having \a SNAME.
  *
  * @param VAR_NAME The name for the `c_typedef`` variable.
  * @param SNAME The sname.
@@ -95,6 +95,9 @@ static char const *const TYPEDEFS_STD_C[] = {
 
 /**
  * Types from C95.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  */
 static char const *const TYPEDEFS_STD_C_95[] = {
   "typedef          int   wctrans_t",
@@ -106,6 +109,9 @@ static char const *const TYPEDEFS_STD_C_95[] = {
 
 /**
  * Types from C99.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  */
 static char const *const TYPEDEFS_STD_C_99[] = {
   "typedef   signed char   int8_t",
@@ -145,6 +151,9 @@ static char const *const TYPEDEFS_STD_C_99[] = {
 
 /**
  * Types from C11.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  */
 static char const *const TYPEDEFS_STD_C_11[] = {
   "typedef _Atomic          _Bool     atomic_bool",
@@ -207,6 +216,9 @@ static char const *const TYPEDEFS_STD_C_11[] = {
 
 /**
  * Types from Floating-point extensions for C.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  */
 static char const *const TYPEDEFS_FLOATING_POINT_EXTENSIONS[] = {
   "typedef          float       _Float16",
@@ -243,6 +255,9 @@ static char const *const TYPEDEFS_FLOATING_POINT_EXTENSIONS[] = {
 
 /**
  * Types from `pthread.h`.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  */
 static char const *const TYPEDEFS_PTHREAD_H[] = {
   "typedef unsigned long  pthread_t",
@@ -262,6 +277,9 @@ static char const *const TYPEDEFS_PTHREAD_H[] = {
 
 /**
  * Types from C++.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  */
 static char const *const TYPEDEFS_STD_CPP[] = {
   "namespace std { class                  bad_alloc;        }",
@@ -330,6 +348,9 @@ static char const *const TYPEDEFS_STD_CPP[] = {
 
 /**
  * Types from C++11.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  */
 static char const *const TYPEDEFS_STD_CPP_11[] = {
   "namespace std { struct                 adopt_lock_t;               }",
@@ -424,6 +445,9 @@ static char const *const TYPEDEFS_STD_CPP_11[] = {
 
 /**
  * Types from C++17.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  */
 static char const *const TYPEDEFS_STD_CPP_17[] = {
   "namespace std { enum class             align_val_t;                  }",
@@ -453,6 +477,9 @@ static char const *const TYPEDEFS_STD_CPP_17[] = {
 
 /**
  * Types from C++20.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  */
 static char const *const TYPEDEFS_STD_CPP_20[] = {
   "namespace std { class              ambiguous_local_time;     }",
@@ -566,6 +593,9 @@ static char const *const TYPEDEFS_GNUC[] = {
 
 /**
  * Miscellaneous standard-ish types.
+ *
+ * @note The underlying types used here are merely typical and do not
+ * necessarily match the underlying type on any particular platform.
  */
 static char const *const TYPEDEFS_MISC[] = {
   "typedef  int32_t       blkcnt_t",
@@ -580,7 +610,7 @@ static char const *const TYPEDEFS_MISC[] = {
   "typedef uint32_t       rlim_t",
   "typedef unsigned long  sigset_t",
 
-  "typedef  long          clockid_t",
+  "typedef          long  clockid_t",
   "typedef  int64_t       suseconds_t",
   "typedef uint32_t       useconds_t",
 
