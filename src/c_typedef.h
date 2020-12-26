@@ -67,7 +67,7 @@ enum c_typedef_add_rv {
 /**
  * The signature for a function passed to `c_typedef_visit()`.
  *
- * @param type The `c_typedef` to visit.
+ * @param type The <code>\ref c_typedef</code> to visit.
  * @param data Optional data passed to the visitor.
  * @return Returning `true` will cause traversal to stop and \a type to be
  * returned to the caller of `c_typedef_visit()`.
@@ -77,7 +77,7 @@ typedef bool (*c_typedef_visitor_t)( c_typedef_t const *type, void *data );
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Adds a new `c_typedef` to the global set.
+ * Adds a new <code>\ref c_typedef</code> to the global set.
  *
  * @param type_ast The AST of the type.  Ownership is taken only if the
  * function returns #TD_ADD_ADDED.
@@ -92,34 +92,36 @@ PJL_WARN_UNUSED_RESULT
 c_typedef_add_rv_t c_typedef_add( c_ast_t const *type_ast );
 
 /**
- * Cleans up `c_typedef` data.
+ * Cleans up <code>\ref c_typedef</code> data.
  *
  * @sa c_typedef_init()
  */
 void c_typedef_cleanup( void );
 
 /**
- * Gets the `c_typedef` for \a sname.
+ * Gets the <code>\ref c_typedef</code> for \a sname.
  *
  * @param sname The scoped name to find.
- * @return Returns a pointer to the corresponding `c_typedef` or null for none.
+ * @return Returns a pointer to the corresponding <code>\ref c_typedef</code>
+ * or null for none.
  */
 PJL_WARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_find( c_sname_t const *sname );
 
 /**
- * Initializes `c_typedef` data.
+ * Initializes all <code>\ref c_typedef</code> data.
  *
  * @sa c_typedef_cleanup()
  */
 void c_typedef_init( void );
 
 /**
- * Does an in-order traversal of all `c_typedef`s.
+ * Does an in-order traversal of all <code>\ref c_typedef</code>s.
  *
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.
- * @return Returns a pointer to the `c_typedef` the visitor stopped on or null.
+ * @return Returns a pointer to the <code>\ref c_typedef</code> the visitor
+ * stopped on or null.
  */
 PJL_NOWARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data );

@@ -43,7 +43,7 @@
 /**
  * Creates a <code>\ref c_typedef</code> variable on the stack having \a SNAME.
  *
- * @param VAR_NAME The name for the `c_typedef`` variable.
+ * @param VAR_NAME The name for the <code>\ref c_typedef</code>` variable.
  * @param SNAME The sname.
  */
 #define C_TYPEDEF_VAR_INIT(VAR_NAME,SNAME)          \
@@ -822,7 +822,8 @@ static char const *const TYPEDEFS_WIN32[] = {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Comparison function for `c_typedef` data used by the red-black tree.
+ * Comparison function for <code>\ref c_typedef</code> data used by the red-
+ * black tree.
  *
  * @param i_data A pointer to data.
  * @param j_data A pointer to data.
@@ -840,10 +841,10 @@ static int c_typedef_cmp( void const *i_data, void const *j_data ) {
 }
 
 /**
- * Creates a new `c_typedef`.
+ * Creates a new <code>\ref c_typedef</code>.
  *
  * @param ast The AST of the type.
- * @return Returns said `c_typedef`.
+ * @return Returns said <code>\ref c_typedef</code>.
  */
 PJL_WARN_UNUSED_RESULT
 static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {

@@ -104,10 +104,10 @@ _GL_INLINE_HEADER_BEGIN
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * The argument type for the alignas specifier.
+ * The argument type for the `alignas` specifier.
  */
 enum c_alignas_arg {
-  C_ALIGNAS_NONE,                       ///< No alignas specifier.
+  C_ALIGNAS_NONE,                       ///< No `alignas` specifier.
   C_ALIGNAS_EXPR,                       ///< `alignas(` _expr_ `)`
   C_ALIGNAS_TYPE                        ///< `alignas(` _type_ `)`
 };
@@ -450,9 +450,11 @@ bool c_ast_is_ctor_name( c_ast_t const *ast ) {
 }
 
 /**
- * Gets the local name of \a ast.
+ * Gets the local (last) name of \a ast, e.g., the local name of `S::T::x` is
+ * `x`.
  *
  * @param ast The AST to get the local name of.
+ * @return Returns said name or the empty string if the name is empty.
  *
  * @sa c_ast_full_name()
  * @sa c_ast_scope_name()
@@ -479,10 +481,10 @@ c_type_t const* c_ast_local_name_type( c_ast_t const *ast ) {
 /**
  * Gets the name at \a roffset of \a ast.
  *
- * @param ast The AST to get the name at \a offset of.
+ * @param ast The AST to get the name at \a roffset of.
  * @param roffset The reverse offset (starting at 0) of the name to get.
- * @return Returns the name at \a offset or the empty string if \a offset &gt;=
- * c_ast_count_name().
+ * @return Returns the name at \a roffset or the empty string if \a roffset
+ * &gt;= c_ast_count_name().
  *
  * @sa c_ast_full_name()
  * @sa c_ast_local_name()

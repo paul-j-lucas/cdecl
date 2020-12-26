@@ -111,7 +111,7 @@
  * @param STRING The string to write to.
  * @param COLOR The predefined color.
  *
- * @sa SGR_END_COLOR
+ * @sa SGR_SEND_COLOR
  * @sa SGR_START_COLOR
  */
 #define SGR_SSTART_COLOR(STRING,COLOR) BLOCK( \
@@ -124,7 +124,6 @@
  * @param STREAM The `FILE` to use.
  *
  * @sa SGR_START_COLOR
- * @sa SGR_SSTART_COLOR
  */
 #define SGR_END_COLOR(STREAM) \
   BLOCK( if ( colorize ) FPUTS( SGR_END SGR_EL, (STREAM) ); )
@@ -134,6 +133,8 @@
  * printing in color.
  *
  * @param STRING The string to write to.
+ *
+ * @sa SGR_SSTART_COLOR
  */
 #define SGR_SEND_COLOR(STRING) \
   BLOCK( if ( colorize ) strcpy( (STRING), SGR_END SGR_EL ); )

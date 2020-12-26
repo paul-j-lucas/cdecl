@@ -253,7 +253,8 @@ PJL_WARN_UNUSED_RESULT
 bool c_sname_is_ctor( c_sname_t const *sname );
 
 /**
- * Gets the local (last) name of \a sname.
+ * Gets the local (last) name of \a sname, e.g., the local name of `S::T::x` is
+ * `x`.
  *
  * @param sname The scoped name to get the local name of.
  * @return Returns said name or the empty string if \a sname is empty.
