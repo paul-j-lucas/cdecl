@@ -1111,8 +1111,8 @@ same: print_error( &ast->loc,
     } // for
     if ( !has_ecsu_param ) {
       print_error( &ast->loc,
-        "at least 1 parameter of a %s %s must be an %s\n"
-        "; or a %s or %s %s thereto",
+        "at least 1 parameter of a %s %s must be an %s"
+        "; or a %s or %s %s thereto\n",
         L_NON_MEMBER, L_OPERATOR, c_kind_name( K_ENUM_CLASS_STRUCT_UNION ),
         L_REFERENCE, L_RVALUE, L_REFERENCE
       );
