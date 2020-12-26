@@ -157,8 +157,8 @@ char const* c_lang_names( void ) {
 }
 
 void c_lang_set( c_lang_id_t lang_id ) {
-  assert( exactly_one_bit_set( lang_id ) );
-  opt_lang = lang_id;
+  assert( exactly_one_bit_set( lang_id & ~LANGX_MASK ) );
+  opt_lang = lang_id & ~LANGX_MASK;
 
   bool const prompt_enabled =
     opt_prompt && (
