@@ -818,20 +818,6 @@ static char const *const TYPEDEFS_WIN32[] = {
   NULL
 };
 
-////////// inline functions ///////////////////////////////////////////////////
-
-/**
- * Gets a pointer to a red-black tree node's data cast to `c_typedef_t const*`.
- *
- * @param node A pointer to the node to get the data of.
- * @return Returns said pointer.
- */
-PJL_WARN_UNUSED_RESULT
-static inline c_typedef_t const*
-c_typedef_node_data_get( rb_node_t const *node ) {
-  return node->data;
-}
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -929,7 +915,7 @@ c_typedef_add_rv_t c_typedef_add( c_ast_t const *ast ) {
   //      typedef int T;              // OK
   //      typedef double T;           // error: types aren't equivalent
   //
-  c_typedef_t const *const old_t = c_typedef_node_data_get( old_rb );
+  c_typedef_t const *const old_t = old_rb->data;
   return c_ast_equiv( ast, old_t->ast ) ? TD_ADD_EQUIV : TD_ADD_DIFF;
 }
 
@@ -940,8 +926,8 @@ void c_typedef_cleanup( void ) {
 c_typedef_t const* c_typedef_find( c_sname_t const *sname ) {
   assert( sname != NULL );
   C_TYPEDEF_VAR_INIT( t, sname );
-  rb_node_t const *const rb_found = rb_tree_find( &typedefs, &t );
-  return rb_found != NULL ? c_typedef_node_data_get( rb_found ) : NULL;
+  rb_node_t const *const found_rb = rb_tree_find( &typedefs, &t );
+  return found_rb != NULL ? found_rb->data : NULL;
 }
 
 void c_typedef_init( void ) {
@@ -1028,7 +1014,7 @@ c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data ) {
   assert( visitor != NULL );
   td_rb_visitor_data_t vd = { visitor, data };
   rb_node_t const *const rb = rb_tree_visit( &typedefs, &rb_visitor, &vd );
-  return rb != NULL ? c_typedef_node_data_get( rb ) : NULL;
+  return rb != NULL ? rb->data : NULL;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
