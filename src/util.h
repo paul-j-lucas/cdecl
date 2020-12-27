@@ -231,12 +231,20 @@ _GL_INLINE_HEADER_BEGIN
   STATIC_CAST( TYPE*, check_realloc( NULL, sizeof(TYPE) * (N) ) )
 
 /**
- * Zeros the memory pointed to by \a PTR.
+ * Zeros the memory pointed to by \a PTR.  The number of bytes to zero is given
+ * by `sizeof *(PTR)`.
  *
- * @param PTR The pointer to the memory to zero.  The number of bytes to zero
- * is given by `sizeof *(PTR)`.
+ * @param PTR The pointer to the start of memory to zero.  \a PTR must be a
+ * pointer.  If it's an array, it'll generate a compile-time error.
  */
+#ifdef HAVE___TYPEOF__
+#define MEM_ZERO(PTR) BLOCK(                                            \
+  /* "error: array initializer must be an initializer list" if array */ \
+  __typeof__(PTR) _tmp __attribute__((unused)) = 0;                     \
+  memset( (PTR), 0, sizeof *(PTR) ); )
+#else
 #define MEM_ZERO(PTR)             memset( (PTR), 0, sizeof *(PTR) )
+#endif /* HAVE___TYPEOF__ */
 
 /**
  * No-operation statement.  (Useful for a `goto` target.)
