@@ -742,17 +742,6 @@ bool c_type_id_is_size_t( c_type_id_t tid ) {
 }
 
 /**
- * Gets the <code>\ref c_type</code> referred to by \a data.
- *
- * @param data The data to get the <code>\ref c_type</code> from.  May be NULL.
- * @return Returns said <code>\ref c_type</code> or NULL if \a data is NULL.
- */
-C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-c_type_t const* c_type_data_get( void const *data ) {
-  return data != NULL ? data : NULL;
-}
-
-/**
  * Checks whether the relevant <code>\ref c_type_id_t</code> of \a type is any
  * of \a tids.
  *

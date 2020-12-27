@@ -298,7 +298,7 @@ static bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_vistor_type_any( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  c_type_t const *const type = c_type_data_get( data );
+  c_type_t const *const type = data;
   return c_type_intersects( &ast->type, type );
 }
 
