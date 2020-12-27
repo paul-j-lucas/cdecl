@@ -82,8 +82,7 @@ dam_lev_t dam_lev_dist( char const *source, char const *target ) {
   } // for
 
   // Map from a character to the row where it last appeared in source.
-  size_t last_row[256];
-  memset( last_row, 0, sizeof( last_row ) );
+  size_t last_row[256] = { 0 };
 
   for ( size_t row = 1; row <= slen; ++row ) {
     char const sc = source[ row - 1 ];
