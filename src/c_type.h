@@ -597,8 +597,8 @@ PJL_WARN_UNUSED_RESULT
 c_type_t c_type_or( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
- * Performs the bitwise-or or all the parts of \a dst_type with \a add_type and
- * stores the result in \a dst_type.
+ * Performs the bitwise-or of \a dst_type with \a add_type and stores the
+ * result in \a dst_type.
  * @note Unlike c_type_add(), no checks are made.
  *
  * @param dst_type The type to modify.
@@ -642,7 +642,7 @@ C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_compl( c_type_id_t tid ) {
   //
   // The low-order 4 bits specify the c_type_part_id.  Currently, part IDs are
-  // 0 (0b0001), 1 (0b0010), and 2 (0b0011).  If tid is 0b1xxx, it means that
+  // 1 (0b0001), 2 (0b0010), and 3 (0b0011).  If tid is 0b1xxx, it means that
   // it was complemented.
   //
   return (tid & 0x8) != 0;
@@ -650,8 +650,8 @@ bool c_type_id_is_compl( c_type_id_t tid ) {
 
 /**
  * Bitwise-complements \a tid.  The `~` operator can't be used alone because
- * the part ID of \a tid would be complemented also.  This function
- * complements \a tid while preserving the original part ID.
+ * the part ID of \a tid would be complemented also.  This function complements
+ * \a tid while preserving the original part ID.
  *
  * @param tid The <code>\ref c_type_id_t</code> to complement.
  * @return Returns \a tid complemented.
