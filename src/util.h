@@ -676,6 +676,8 @@ noreturn void perror_exit( int status );
  * @param ps2 The secondary prompt to use for a continuation line (a line after
  * ones ending with `\`).
  * @return Returns the line read or null for EOF.
+ * @warning The pointer returned is to a static buffer and every calls resets
+ * it.
  */
 PJL_WARN_UNUSED_RESULT
 char* read_input_line( char const *ps1, char const *ps2 );
