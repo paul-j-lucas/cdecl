@@ -262,8 +262,6 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
     case K_VARIADIC:
       // nothing to do
       break;
-    default:
-      UNEXPECTED_INT_VALUE( kind_id );
   } // switch
 
   ++c_ast_count;
