@@ -19,6 +19,10 @@ Help is now specific to particular language versions, not just C or C++.
 The `show` command now allows `english` explicitly as an option.  (Since it's
 the default, it's ignored.)
 
+** "Did you mean ...?" improvements
+"Did you mean ...?" suggestions have been added for `explain` and type
+suggestions are only those valid in the current language.
+
 
 * Changes in Cdecl 9.0
 
