@@ -632,17 +632,18 @@ bool is_ident( char c ) {
 }
 
 /**
- * Checks whether the only bits set in \a bits are among the bits set in \a
- * set.
+ * Checks whether the bits set in \a bits are only among the bits set in \a
+ * allowed_bits, i.e., there is no bit set in \a bits that is not also set in
+ * \a allowed_bits.
  *
  * @param bits The bits to check.
- * @param set The set of bits to check against.
- * @return Returns `true` only if the bits set in \a bits are among the bits
- * set in \a set.
+ * @param allowed_bits The bits to check against.
+ * @return Returns `true` only if \a bits is not zero and the bits set are only
+ * among the bits set in \a allowed_bits.
  */
 C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
-bool only_bits_in( uint64_t bits, uint64_t set ) {
-  return bits != 0 && (bits & set) == bits;
+bool only_bits_set( uint64_t bits, uint64_t allowed_bits ) {
+  return bits != 0 && (bits & allowed_bits) == bits;
 }
 
 /**
