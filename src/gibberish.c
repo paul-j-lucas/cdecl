@@ -320,10 +320,10 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       g_set_leaf( g, ast );
       break;
 
-    case K_NONE:
+    case K_NONE:                        // should not occur in completed AST
       assert( ast->kind_id != K_NONE );
       break;
-    case K_PLACEHOLDER:
+    case K_PLACEHOLDER:                 // should not occur in completed AST
       assert( ast->kind_id != K_PLACEHOLDER );
       break;
 
@@ -662,7 +662,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
       }
       break;
     default:
-      assert( (ast->kind_id & (K_ANY_POINTER | K_ANY_REFERENCE)) != K_NONE );
+      /* suppress warning */;
   } // switch
 
   c_type_id_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;

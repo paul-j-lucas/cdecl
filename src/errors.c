@@ -585,7 +585,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
     switch ( param_ast->kind_id ) {
       case K_NAME:
         break;
-      case K_PLACEHOLDER:
+      case K_PLACEHOLDER:               // should not occur in completed AST
         assert( param_ast->kind_id != K_PLACEHOLDER );
         break;
       default:
@@ -1564,10 +1564,10 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       // nothing to check
       break;
 
-    case K_NONE:
+    case K_NONE:                        // should not occur in completed AST
       assert( ast->kind_id != K_NONE );
       break;
-    case K_PLACEHOLDER:
+    case K_PLACEHOLDER:                 // should not occur in completed AST
       assert( ast->kind_id != K_PLACEHOLDER );
       break;
 
@@ -1796,10 +1796,10 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
         print_warning( &ast->loc, "missing type specifier\n" );
       break;
 
-    case K_NONE:
+    case K_NONE:                        // should not occur in completed AST
       assert( ast->kind_id != K_NONE );
       break;
-    case K_PLACEHOLDER:
+    case K_PLACEHOLDER:                 // should not occur in completed AST
       assert( ast->kind_id != K_PLACEHOLDER );
       break;
   } // switch

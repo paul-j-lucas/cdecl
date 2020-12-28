@@ -177,10 +177,10 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       c_sname_english( &ast->sname, eout );
       break;
 
-    case K_NONE:
+    case K_NONE:                        // should not occur in completed AST
       assert( ast->kind_id != K_NONE );
       break;
-    case K_PLACEHOLDER:
+    case K_PLACEHOLDER:                 // should not occur in completed AST
       assert( ast->kind_id != K_PLACEHOLDER );
       break;
 
