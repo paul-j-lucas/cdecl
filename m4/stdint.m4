@@ -1,4 +1,4 @@
-# stdint.m4 serial 57
+# stdint.m4 serial 58
 dnl Copyright (C) 2001-2020 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -493,13 +493,9 @@ AC_DEFUN([gl_INTEGER_TYPE_SUFFIX],
 dnl gl_STDINT_INCLUDES
 AC_DEFUN([gl_STDINT_INCLUDES],
 [[
-  /* BSD/OS 4.0.1 has a bug: <stddef.h>, <stdio.h> and <time.h> must be
-     included before <wchar.h>.  */
   #include <stddef.h>
   #include <signal.h>
   #if HAVE_WCHAR_H
-  # include <stdio.h>
-  # include <time.h>
   # include <wchar.h>
   #endif
 ]])

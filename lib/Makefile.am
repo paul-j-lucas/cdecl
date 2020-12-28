@@ -449,6 +449,12 @@ stdio.h: stdio.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H) 
 	      -e 's/@''GNULIB_VPRINTF_POSIX''@/$(GNULIB_VPRINTF_POSIX)/g' \
 	      -e 's/@''GNULIB_VSNPRINTF''@/$(GNULIB_VSNPRINTF)/g' \
 	      -e 's/@''GNULIB_VSPRINTF_POSIX''@/$(GNULIB_VSPRINTF_POSIX)/g' \
+	      -e 's/@''GNULIB_MDA_FCLOSEALL''@/$(GNULIB_MDA_FCLOSEALL)/g' \
+	      -e 's/@''GNULIB_MDA_FDOPEN''@/$(GNULIB_MDA_FDOPEN)/g' \
+	      -e 's/@''GNULIB_MDA_FILENO''@/$(GNULIB_MDA_FILENO)/g' \
+	      -e 's/@''GNULIB_MDA_GETW''@/$(GNULIB_MDA_GETW)/g' \
+	      -e 's/@''GNULIB_MDA_PUTW''@/$(GNULIB_MDA_PUTW)/g' \
+	      -e 's/@''GNULIB_MDA_TEMPNAM''@/$(GNULIB_MDA_TEMPNAM)/g' \
 	      < $(srcdir)/stdio.in.h | \
 	  sed -e 's|@''HAVE_DECL_FCLOSEALL''@|$(HAVE_DECL_FCLOSEALL)|g' \
 	      -e 's|@''HAVE_DECL_FPURGE''@|$(HAVE_DECL_FPURGE)|g' \
@@ -564,6 +570,11 @@ stdlib.h: stdlib.in.h $(top_builddir)/config.status $(CXXDEFS_H) \
 	      -e 's/@''GNULIB_UNLOCKPT''@/$(GNULIB_UNLOCKPT)/g' \
 	      -e 's/@''GNULIB_UNSETENV''@/$(GNULIB_UNSETENV)/g' \
 	      -e 's/@''GNULIB_WCTOMB''@/$(GNULIB_WCTOMB)/g' \
+	      -e 's/@''GNULIB_MDA_ECVT''@/$(GNULIB_MDA_ECVT)/g' \
+	      -e 's/@''GNULIB_MDA_FCVT''@/$(GNULIB_MDA_FCVT)/g' \
+	      -e 's/@''GNULIB_MDA_GCVT''@/$(GNULIB_MDA_GCVT)/g' \
+	      -e 's/@''GNULIB_MDA_MKTEMP''@/$(GNULIB_MDA_MKTEMP)/g' \
+	      -e 's/@''GNULIB_MDA_PUTENV''@/$(GNULIB_MDA_PUTENV)/g' \
 	      < $(srcdir)/stdlib.in.h | \
 	  sed -e 's|@''HAVE__EXIT''@|$(HAVE__EXIT)|g' \
 	      -e 's|@''HAVE_ALIGNED_ALLOC''@|$(HAVE_ALIGNED_ALLOC)|g' \
@@ -720,6 +731,8 @@ string.h: string.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's/@''GNULIB_SIGDESCR_NP''@/$(GNULIB_SIGDESCR_NP)/g' \
 	      -e 's/@''GNULIB_STRSIGNAL''@/$(GNULIB_STRSIGNAL)/g' \
 	      -e 's/@''GNULIB_STRVERSCMP''@/$(GNULIB_STRVERSCMP)/g' \
+	      -e 's/@''GNULIB_MDA_MEMCCPY''@/$(GNULIB_MDA_MEMCCPY)/g' \
+	      -e 's/@''GNULIB_MDA_STRDUP''@/$(GNULIB_MDA_STRDUP)/g' \
 	      < $(srcdir)/string.in.h | \
 	  sed -e 's|@''HAVE_EXPLICIT_BZERO''@|$(HAVE_EXPLICIT_BZERO)|g' \
 	      -e 's|@''HAVE_FFSL''@|$(HAVE_FFSL)|g' \
@@ -882,6 +895,13 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's/@''GNULIB_DUP3''@/$(GNULIB_DUP3)/g' \
 	      -e 's/@''GNULIB_ENVIRON''@/$(GNULIB_ENVIRON)/g' \
 	      -e 's/@''GNULIB_EUIDACCESS''@/$(GNULIB_EUIDACCESS)/g' \
+	      -e 's/@''GNULIB_EXECL''@/$(GNULIB_EXECL)/g' \
+	      -e 's/@''GNULIB_EXECLE''@/$(GNULIB_EXECLE)/g' \
+	      -e 's/@''GNULIB_EXECLP''@/$(GNULIB_EXECLP)/g' \
+	      -e 's/@''GNULIB_EXECV''@/$(GNULIB_EXECV)/g' \
+	      -e 's/@''GNULIB_EXECVE''@/$(GNULIB_EXECVE)/g' \
+	      -e 's/@''GNULIB_EXECVP''@/$(GNULIB_EXECVP)/g' \
+	      -e 's/@''GNULIB_EXECVPE''@/$(GNULIB_EXECVPE)/g' \
 	      -e 's/@''GNULIB_FACCESSAT''@/$(GNULIB_FACCESSAT)/g' \
 	      -e 's/@''GNULIB_FCHDIR''@/$(GNULIB_FCHDIR)/g' \
 	      -e 's/@''GNULIB_FCHOWNAT''@/$(GNULIB_FCHOWNAT)/g' \
@@ -927,11 +947,33 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's/@''GNULIB_UNLINKAT''@/$(GNULIB_UNLINKAT)/g' \
 	      -e 's/@''GNULIB_USLEEP''@/$(GNULIB_USLEEP)/g' \
 	      -e 's/@''GNULIB_WRITE''@/$(GNULIB_WRITE)/g' \
+	      -e 's/@''GNULIB_MDA_ACCESS''@/$(GNULIB_MDA_ACCESS)/g' \
+	      -e 's/@''GNULIB_MDA_CHDIR''@/$(GNULIB_MDA_CHDIR)/g' \
+	      -e 's/@''GNULIB_MDA_CLOSE''@/$(GNULIB_MDA_CLOSE)/g' \
+	      -e 's/@''GNULIB_MDA_DUP''@/$(GNULIB_MDA_DUP)/g' \
+	      -e 's/@''GNULIB_MDA_DUP2''@/$(GNULIB_MDA_DUP2)/g' \
+	      -e 's/@''GNULIB_MDA_EXECL''@/$(GNULIB_MDA_EXECL)/g' \
+	      -e 's/@''GNULIB_MDA_EXECLE''@/$(GNULIB_MDA_EXECLE)/g' \
+	      -e 's/@''GNULIB_MDA_EXECLP''@/$(GNULIB_MDA_EXECLP)/g' \
+	      -e 's/@''GNULIB_MDA_EXECV''@/$(GNULIB_MDA_EXECV)/g' \
+	      -e 's/@''GNULIB_MDA_EXECVE''@/$(GNULIB_MDA_EXECVE)/g' \
+	      -e 's/@''GNULIB_MDA_EXECVP''@/$(GNULIB_MDA_EXECVP)/g' \
+	      -e 's/@''GNULIB_MDA_EXECVPE''@/$(GNULIB_MDA_EXECVPE)/g' \
+	      -e 's/@''GNULIB_MDA_GETCWD''@/$(GNULIB_MDA_GETCWD)/g' \
+	      -e 's/@''GNULIB_MDA_GETPID''@/$(GNULIB_MDA_GETPID)/g' \
+	      -e 's/@''GNULIB_MDA_ISATTY''@/$(GNULIB_MDA_ISATTY)/g' \
+	      -e 's/@''GNULIB_MDA_LSEEK''@/$(GNULIB_MDA_LSEEK)/g' \
+	      -e 's/@''GNULIB_MDA_READ''@/$(GNULIB_MDA_READ)/g' \
+	      -e 's/@''GNULIB_MDA_RMDIR''@/$(GNULIB_MDA_RMDIR)/g' \
+	      -e 's/@''GNULIB_MDA_SWAB''@/$(GNULIB_MDA_SWAB)/g' \
+	      -e 's/@''GNULIB_MDA_UNLINK''@/$(GNULIB_MDA_UNLINK)/g' \
+	      -e 's/@''GNULIB_MDA_WRITE''@/$(GNULIB_MDA_WRITE)/g' \
 	      < $(srcdir)/unistd.in.h | \
 	  sed -e 's|@''HAVE_CHOWN''@|$(HAVE_CHOWN)|g' \
 	      -e 's|@''HAVE_COPY_FILE_RANGE''@|$(HAVE_COPY_FILE_RANGE)|g' \
 	      -e 's|@''HAVE_DUP3''@|$(HAVE_DUP3)|g' \
 	      -e 's|@''HAVE_EUIDACCESS''@|$(HAVE_EUIDACCESS)|g' \
+	      -e 's|@''HAVE_EXECVPE''@|$(HAVE_EXECVPE)|g' \
 	      -e 's|@''HAVE_FACCESSAT''@|$(HAVE_FACCESSAT)|g' \
 	      -e 's|@''HAVE_FCHDIR''@|$(HAVE_FCHDIR)|g' \
 	      -e 's|@''HAVE_FCHOWNAT''@|$(HAVE_FCHOWNAT)|g' \
@@ -980,6 +1022,13 @@ unistd.h: unistd.in.h $(top_builddir)/config.status $(CXXDEFS_H) $(ARG_NONNULL_H
 	      -e 's|@''REPLACE_CLOSE''@|$(REPLACE_CLOSE)|g' \
 	      -e 's|@''REPLACE_DUP''@|$(REPLACE_DUP)|g' \
 	      -e 's|@''REPLACE_DUP2''@|$(REPLACE_DUP2)|g' \
+	      -e 's|@''REPLACE_EXECL''@|$(REPLACE_EXECL)|g' \
+	      -e 's|@''REPLACE_EXECLE''@|$(REPLACE_EXECLE)|g' \
+	      -e 's|@''REPLACE_EXECLP''@|$(REPLACE_EXECLP)|g' \
+	      -e 's|@''REPLACE_EXECV''@|$(REPLACE_EXECV)|g' \
+	      -e 's|@''REPLACE_EXECVE''@|$(REPLACE_EXECVE)|g' \
+	      -e 's|@''REPLACE_EXECVP''@|$(REPLACE_EXECVP)|g' \
+	      -e 's|@''REPLACE_EXECVPE''@|$(REPLACE_EXECVPE)|g' \
 	      -e 's|@''REPLACE_FACCESSAT''@|$(REPLACE_FACCESSAT)|g' \
 	      -e 's|@''REPLACE_FCHOWNAT''@|$(REPLACE_FCHOWNAT)|g' \
 	      -e 's|@''REPLACE_FTRUNCATE''@|$(REPLACE_FTRUNCATE)|g' \
