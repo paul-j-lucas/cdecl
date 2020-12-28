@@ -12,6 +12,10 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 9.1
 
+** K&R C typedefs
+K&R C now has a set of predefined `typedef` declarations distinct from C89 that
+include only those shown in the first edition of _The C Programming Language_.
+
 ** Language-version-specific help
 Help is now specific to particular language versions, not just C or C++.
 

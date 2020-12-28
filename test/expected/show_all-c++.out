@@ -10,7 +10,7 @@ define DWORD32 as unsigned
 define DWORD64 as unsigned long
 define DWORDLONG as unsigned long
 define DWORD_PTR as ULONG_PTR
-define FILE as struct FILE
+define FILE as struct _iobuf
 define FLOAT as float
 define HALF_PTR as int
 define HANDLE as PVOID
@@ -238,7 +238,7 @@ define blksize_t as int32_t
 define clock_t as long
 define clockid_t as long
 define cnd_t as pthread_cond_t
-define dev_t as int32_t
+define dev_t as int
 define div_t as struct div_t
 define double_t as double
 define errno_t as int
@@ -252,7 +252,7 @@ define gid_t as uint32_t
 define imaxdiv_t as struct imaxdiv_t
 define in_addr_t as uint32_t
 define in_port_t as uint16_t
-define ino_t as int32_t
+define ino_t as unsigned
 define int16_t as short
 define int32_t as int
 define int64_t as long
@@ -284,7 +284,7 @@ define mode_t as int32_t
 define mtx_t as pthread_mutex_t
 define nfds_t as unsigned long
 define nlink_t as uint32_t
-define off_t as int64_t
+define off_t as long
 define once_flag as int
 define pid_t as int32_t
 define pthread_barrier_t as struct pthread_barrier_t
