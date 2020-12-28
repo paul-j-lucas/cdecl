@@ -103,7 +103,6 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
     if ( ast->align.kind != C_ALIGNAS_NONE ) {
       switch ( ast->align.kind ) {
         case C_ALIGNAS_NONE:
-          assert( ast->align.kind != C_ALIGNAS_NONE );
           break;
         case C_ALIGNAS_EXPR:
           INDENT_PRINT( "alignas_expr = %u,\n", ast->align.as.expr );
