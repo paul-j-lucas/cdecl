@@ -617,8 +617,13 @@ static void fl_elaborate_error( char const *file, int line,
     if ( error_token != NULL )
       print_suggestions( dym_kinds, error_token );
 
+#ifdef ENABLE_CDECL_DEBUG
     if ( opt_cdecl_debug )
       PRINTF_ERR( " (%s:%d)", file, line );
+#else
+    (void)file;
+    (void)line;
+#endif /* ENABLE_CDECL_DEBUG */
 
     PUTC_ERR( '\n' );
     error_newlined = true;

@@ -245,8 +245,13 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
   vfprintf( stderr, format, args );
   va_end( args );
 
+#ifdef ENABLE_CDECL_DEBUG
   if ( opt_cdecl_debug )
     PRINTF_ERR( " (%s:%d)", file, line );
+#else
+  (void)file;
+  (void)line;
+#endif /* ENABLE_CDECL_DEBUG */
 }
 
 void fl_print_error_unknown_type( char const *file, int line,
@@ -278,8 +283,13 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
   vfprintf( stderr, format, args );
   va_end( args );
 
+#ifdef ENABLE_CDECL_DEBUG
   if ( opt_cdecl_debug )
     PRINTF_ERR( " (%s:%d)", file, line );
+#else
+  (void)file;
+  (void)line;
+#endif /* ENABLE_CDECL_DEBUG */
 }
 
 void print_hint( char const *format, ... ) {
