@@ -122,10 +122,16 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_main( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_func_main_char_ptr_arg( c_ast_t const* );
+
+PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_new_params( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_delete_params( c_ast_t const* );
+
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_name_eq( c_ast_t const*, char const* );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_error( c_ast_t*, void* );
@@ -439,12 +445,9 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func( c_ast_t const *ast ) {
   assert( ast != NULL );
 
-  if ( ast->kind_id == K_FUNCTION ) {
-    SNAME_VAR_INIT( main_sname, "main" );
-    if ( c_sname_cmp( &ast->sname, &main_sname ) == 0 &&
-        !c_ast_check_func_main( ast ) ) {
-      return false;
-    }
+  if ( ast->kind_id == K_FUNCTION && c_ast_name_eq( ast, "main" ) &&
+       !c_ast_check_func_main( ast ) ) {
+    return false;
   }
 
   return C_LANG_IS_C() ?
@@ -655,13 +658,21 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
     return false;
   }
 
+  size_t const n_params = c_ast_params_count( ast );
   c_ast_t const *param_ast;
 
-  switch ( c_ast_params_count( ast ) ) {
+  switch ( n_params ) {
     case 0:                             // main()
       break;
 
-    case 1:                             // main(void) ?
+    case 1:                             // main(void)
+      if ( opt_lang == LANG_C_KNR ) {
+        print_error( &ast->loc,
+          "main() must have 0, 2, or 3 parameters in %s\n", C_LANG_NAME()
+        );
+        return false;
+      }
+
       param_ast = c_param_ast( c_ast_params( ast ) );
       if ( !c_ast_is_builtin( param_ast, TB_VOID ) ) {
         print_error( &param_ast->loc,
@@ -671,47 +682,70 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
       }
       break;
 
-    case 2: {                           // main( int, char *argv[] ) ?
-      c_ast_param_t const *param = c_ast_params( ast );
-      param_ast = c_param_ast( param );
-      if ( !c_ast_is_builtin( param_ast, TB_INT ) ) {
-        print_error( &param_ast->loc,
-          "main()'s first parameter must be %s\n", L_INT
-        );
-        return false;
-      }
-      param = param->next;
-      param_ast = c_ast_untypedef( c_param_ast( param ) );
-      switch ( param_ast->kind_id ) {
-        case K_ARRAY:                   // main( int, char *argv[] )
-        case K_POINTER:                 // main( int, char **argv )
-          if ( !c_ast_is_ptr_to_type( param_ast->as.parent.of_ast,
-                  &C_TYPE_LIT( TB_ANY, c_type_id_compl( TS_CONST ), TA_ANY ),
-                  &C_TYPE_LIT_B( TB_CHAR ) ) ) {
-            print_error( &param_ast->loc,
-              "main()'s second parameter must be %s %s %s to [%s] %s\n",
-              c_kind_name( param_ast->kind_id ),
-              param_ast->kind_id == K_ARRAY ? "of" : "to",
-              L_POINTER, L_CONST, L_CHAR
-            );
-            return false;
-          }
-          break;
+    case 2:                             // main(int, char *argv[])
+    case 3:                             // main(int, char *argv[], char *envp[])
+      if ( opt_lang > LANG_C_KNR ) {
 
-        default:                        // main( int, ??? )
-          print_error( &param_ast->loc, "illegal signature for main()\n" );
+        c_ast_param_t const *param = c_ast_params( ast );
+        param_ast = c_param_ast( param );
+        if ( !c_ast_is_builtin( param_ast, TB_INT ) ) {
+          print_error( &param_ast->loc,
+            "main()'s first parameter must be %s\n", L_INT
+          );
           return false;
-      } // switch
+        }
+
+        param = param->next;
+        param_ast = c_param_ast( param );
+        if ( !c_ast_check_func_main_char_ptr_arg( param_ast ) )
+          return false;
+
+        if ( n_params == 3 ) {          // char *envp[]
+          param = param->next;
+          param_ast = c_param_ast( param );
+          if ( !c_ast_check_func_main_char_ptr_arg( param_ast ) )
+            return false;
+        }
+      }
       break;
-    }
 
     default:
-      print_error( &ast->loc,
-        "main() must have either 0, 1, or 2 parameters\n"
-      );
+      print_error( &ast->loc, "main() must have 0-3 parameters\n" );
       return false;
   } // switch
 
+  return true;
+}
+
+/**
+ * Checks that an AST of a `main()` argument is either `char*[]` or `char**`
+ * optionally including `const`.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if \a ast is of either type.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_func_main_char_ptr_arg( c_ast_t const *ast ) {
+  ast = c_ast_untypedef( ast );
+  switch ( ast->kind_id ) {
+    case K_ARRAY:                       // char *argv[]
+    case K_POINTER:                     // char **argv
+      if ( !c_ast_is_ptr_to_type( ast->as.parent.of_ast,
+              &C_TYPE_LIT( TB_ANY, c_type_id_compl( TS_CONST ), TA_ANY ),
+              &C_TYPE_LIT_B( TB_CHAR ) ) ) {
+        print_error( &ast->loc,
+          "this parameter of main() must be %s %s %s to [%s] %s\n",
+          c_kind_name( ast->kind_id ),
+          ast->kind_id == K_ARRAY ? "of" : "to",
+          L_POINTER, L_CONST, L_CHAR
+        );
+        return false;
+      }
+      break;
+    default:                            // ???
+      print_error( &ast->loc, "illegal signature for main()\n" );
+      return false;
+  } // switch
   return true;
 }
 
@@ -1473,6 +1507,19 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
   } // switch
 
   return true;
+}
+
+/**
+ * Compares the name of \a ast to \a name for equality.
+ *
+ * @param ast The AST to check.
+ * @param name The name to check for.
+ * @return Returns `true` only if the name of \a ast is equal to \a name.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_name_eq( c_ast_t const *ast, char const *name ) {
+  SNAME_VAR_INIT( sname, name );
+  return c_sname_cmp( &ast->sname, &sname ) == 0;
 }
 
 /**

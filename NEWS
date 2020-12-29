@@ -16,6 +16,17 @@ with their complete changes, see the AUTHORS file.
 K&R C now has a set of predefined `typedef` declarations distinct from C89 that
 include only those shown in the first edition of _The C Programming Language_.
 
+** K&R C `main()` arguments
+The arguments of main() are no longer checked for type in K&R C.
+
+** `main()` third argument
+A third argument of either:
+
+    char *envp[]
+    char **envp
+
+(or `const` versions) for `main()` is now supported.
+
 ** K&R C functions
 Implicit `int` functions in K&R C are now supported:
 
