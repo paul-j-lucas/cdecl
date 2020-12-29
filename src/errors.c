@@ -453,152 +453,6 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
 }
 
 /**
- * Checks all function-like parameters for semantic errors.
- *
- * @param ast The function-like AST to check.
- * @return Returns `true` only if all checks passed.
- */
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_func_params( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
-  assert( opt_lang != LANG_C_KNR );
-
-  c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
-  unsigned n_params = 0;
-
-  FOREACH_PARAM( param, ast ) {
-    if ( ++n_params > 1 && void_ast != NULL )
-      goto only_void;
-
-    c_ast_t const *const param_ast = c_param_ast( param );
-
-    if ( c_ast_count_name( param_ast ) > 1 ) {
-      print_error( &param_ast->loc, "parameter names can not be scoped\n" );
-      return false;
-    }
-
-    c_type_id_t const param_store_tid =
-      TS_MASK_STORAGE &
-      param_ast->type.store_tid & c_type_id_compl( TS_REGISTER );
-    if ( param_store_tid != TS_NONE ) {
-      print_error( &param_ast->loc,
-        "%s parameters can not be %s\n",
-        c_kind_name( ast->kind_id ),
-        c_type_id_name_error( param_store_tid )
-      );
-      return false;
-    }
-
-    switch ( param_ast->kind_id ) {
-      case K_BUILTIN:
-        if ( c_type_is_tid_any( &param_ast->type, TB_AUTO ) ) {
-          print_error( &param_ast->loc, "parameters can not be %s\n", L_AUTO );
-          return false;
-        }
-        if ( c_type_is_tid_any( &param_ast->type, TB_VOID ) ) {
-          //
-          // Ordinarily, void parameters are invalid; but a single void
-          // function "parameter" is valid (as long as it doesn't have a name).
-          //
-          if ( !c_ast_empty_name( param_ast ) ) {
-            print_error( &param_ast->loc,
-              "parameters can not be %s\n", L_VOID
-            );
-            return false;
-          }
-          void_ast = param_ast;
-          if ( n_params > 1 )
-            goto only_void;
-          continue;
-        }
-        break;
-
-      case K_NAME:
-        if ( opt_lang >= LANG_C_2X ) {
-          print_error( &param_ast->loc,
-            "%s requires type specifier\n", C_LANG_NAME()
-          );
-          return false;
-        }
-        break;
-
-      case K_VARIADIC:
-        if ( ast->kind_id == K_OPERATOR &&
-             ast->as.oper.oper_id != C_OP_PARENS ) {
-          print_error( &param_ast->loc,
-            "%s %s can not have a %s parameter\n",
-            L_OPERATOR, c_oper_get( ast->as.oper.oper_id )->name, L_VARIADIC
-          );
-          return false;
-        }
-        if ( param->next != NULL ) {
-          print_error( &param_ast->loc,
-            "%s specifier must be last\n", L_VARIADIC
-          );
-          return false;
-        }
-        variadic_ast = param_ast;
-        continue;
-
-      default:
-        /* suppress warning */;
-    } // switch
-
-    if ( !c_ast_check_errors( param_ast, true ) )
-      return false;
-  } // for
-
-  if ( ast->kind_id == K_OPERATOR && !c_ast_check_oper_params( ast ) )
-    return false;
-
-  if ( variadic_ast != NULL && n_params == 1 ) {
-    print_error( &variadic_ast->loc,
-      "%s specifier can not be only parameter\n", L_VARIADIC
-    );
-    return false;
-  }
-
-  return true;
-
-only_void:
-  print_error( &void_ast->loc,
-    "\"%s\" must be only parameter if specified\n", L_VOID
-  );
-  return false;
-}
-
-/**
- * Checks all function parameters for semantic errors in K&R C.
- *
- * @param ast The function-like AST to check.
- * @return Returns `true` only if all checks passed.
- */
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  assert( (ast->kind_id & (K_APPLE_BLOCK | K_FUNCTION)) != K_NONE );
-  assert( opt_lang == LANG_C_KNR );
-
-  FOREACH_PARAM( param, ast ) {
-    c_ast_t const *const param_ast = c_param_ast( param );
-    switch ( param_ast->kind_id ) {
-      case K_NAME:
-        break;
-      case K_PLACEHOLDER:               // should not occur in completed AST
-        assert( param_ast->kind_id != K_PLACEHOLDER );
-        break;
-      default:
-        print_error( &param_ast->loc,
-          "%s prototypes not supported in %s\n", L_FUNCTION, C_LANG_NAME()
-        );
-        return false;
-    } // switch
-  } // for
-  return true;
-}
-
-/**
  * Checks a C function (or block) AST for errors.
  *
  * @param ast The function (or block) AST to check.
@@ -858,6 +712,152 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
       return false;
   } // switch
 
+  return true;
+}
+
+/**
+ * Checks all function-like parameters for semantic errors.
+ *
+ * @param ast The function-like AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_func_params( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
+  assert( opt_lang != LANG_C_KNR );
+
+  c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
+  unsigned n_params = 0;
+
+  FOREACH_PARAM( param, ast ) {
+    if ( ++n_params > 1 && void_ast != NULL )
+      goto only_void;
+
+    c_ast_t const *const param_ast = c_param_ast( param );
+
+    if ( c_ast_count_name( param_ast ) > 1 ) {
+      print_error( &param_ast->loc, "parameter names can not be scoped\n" );
+      return false;
+    }
+
+    c_type_id_t const param_store_tid =
+      TS_MASK_STORAGE &
+      param_ast->type.store_tid & c_type_id_compl( TS_REGISTER );
+    if ( param_store_tid != TS_NONE ) {
+      print_error( &param_ast->loc,
+        "%s parameters can not be %s\n",
+        c_kind_name( ast->kind_id ),
+        c_type_id_name_error( param_store_tid )
+      );
+      return false;
+    }
+
+    switch ( param_ast->kind_id ) {
+      case K_BUILTIN:
+        if ( c_type_is_tid_any( &param_ast->type, TB_AUTO ) ) {
+          print_error( &param_ast->loc, "parameters can not be %s\n", L_AUTO );
+          return false;
+        }
+        if ( c_type_is_tid_any( &param_ast->type, TB_VOID ) ) {
+          //
+          // Ordinarily, void parameters are invalid; but a single void
+          // function "parameter" is valid (as long as it doesn't have a name).
+          //
+          if ( !c_ast_empty_name( param_ast ) ) {
+            print_error( &param_ast->loc,
+              "parameters can not be %s\n", L_VOID
+            );
+            return false;
+          }
+          void_ast = param_ast;
+          if ( n_params > 1 )
+            goto only_void;
+          continue;
+        }
+        break;
+
+      case K_NAME:
+        if ( opt_lang >= LANG_C_2X ) {
+          print_error( &param_ast->loc,
+            "%s requires type specifier\n", C_LANG_NAME()
+          );
+          return false;
+        }
+        break;
+
+      case K_VARIADIC:
+        if ( ast->kind_id == K_OPERATOR &&
+             ast->as.oper.oper_id != C_OP_PARENS ) {
+          print_error( &param_ast->loc,
+            "%s %s can not have a %s parameter\n",
+            L_OPERATOR, c_oper_get( ast->as.oper.oper_id )->name, L_VARIADIC
+          );
+          return false;
+        }
+        if ( param->next != NULL ) {
+          print_error( &param_ast->loc,
+            "%s specifier must be last\n", L_VARIADIC
+          );
+          return false;
+        }
+        variadic_ast = param_ast;
+        continue;
+
+      default:
+        /* suppress warning */;
+    } // switch
+
+    if ( !c_ast_check_errors( param_ast, true ) )
+      return false;
+  } // for
+
+  if ( ast->kind_id == K_OPERATOR && !c_ast_check_oper_params( ast ) )
+    return false;
+
+  if ( variadic_ast != NULL && n_params == 1 ) {
+    print_error( &variadic_ast->loc,
+      "%s specifier can not be only parameter\n", L_VARIADIC
+    );
+    return false;
+  }
+
+  return true;
+
+only_void:
+  print_error( &void_ast->loc,
+    "\"%s\" must be only parameter if specified\n", L_VOID
+  );
+  return false;
+}
+
+/**
+ * Checks all function parameters for semantic errors in K&R C.
+ *
+ * @param ast The function-like AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( (ast->kind_id & (K_APPLE_BLOCK | K_FUNCTION)) != K_NONE );
+  assert( opt_lang == LANG_C_KNR );
+
+  FOREACH_PARAM( param, ast ) {
+    c_ast_t const *const param_ast = c_param_ast( param );
+    switch ( param_ast->kind_id ) {
+      case K_NAME:
+        break;
+      case K_PLACEHOLDER:               // should not occur in completed AST
+        assert( param_ast->kind_id != K_PLACEHOLDER );
+        break;
+      default:
+        print_error( &param_ast->loc,
+          "%s prototypes not supported in %s\n", L_FUNCTION, C_LANG_NAME()
+        );
+        return false;
+    } // switch
+  } // for
   return true;
 }
 
