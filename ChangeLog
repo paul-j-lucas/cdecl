@@ -1,3 +1,11 @@
+2020-12-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am: Test renaming.
+   * c_lang.c, color.c, util.h: Removed FREE_STR_LATER and FREE_STRDUP_LATER --
+     not really used.
+   * help.c, options.c, parser.y, print.c, set.c, util.c, util.h: Macro
+     renaming.
+
 2020-12-28  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, errors.c, test/Makefile.am, explain_main_fi2apc_i.out,
