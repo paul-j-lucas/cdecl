@@ -1120,7 +1120,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  array_decl_c_ast
 %type   <number>    array_size_c_num
 %type   <ast_pair>  block_decl_c_ast
-%type   <ast_pair>  func_decl_c_ast
+%type   <ast_pair>  func_decl_c_ast func_decl_knr_c_ast
 %type   <type_id>   func_ref_qualifier_c_tid_opt
 %type   <ast_pair>  nested_decl_c_ast
 %type   <type_id>   noexcept_c_tid_opt
@@ -1943,6 +1943,19 @@ explain_c
       FREE( $3 );
       if ( !ok )
         PARSE_ABORT();
+    }
+
+    /*
+     * K&R C implicit int function declaration.
+     */
+  | explain func_decl_knr_c_ast
+    {
+      DUMP_START( "explain_c",
+                  "EXPLAIN func_decl_knr_c_ast" );
+      DUMP_AST( "func_decl_knr_c_ast", $2.ast );
+      DUMP_END();
+
+      c_ast_explain( $2.ast );
     }
 
     /*
@@ -3372,6 +3385,49 @@ func_decl_c_ast
 
       DUMP_AST( "func_decl_c_ast", $$.ast );
       DUMP_END();
+    }
+  ;
+
+func_decl_knr_c_ast
+    /*
+     * K&R C implicit int function declaration.
+     */
+  : Y_NAME '(' param_list_c_ast_opt ')'
+    {
+      DUMP_START( "func_decl_knr_c_ast",
+                  "NAME '(' param_list_c_ast_opt ')'" );
+      DUMP_STR( "NAME", $1 );
+      DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
+
+      //
+      // Prior to C99, encountering a name followed by '(' declares a function
+      // that implicitly returns int:
+      //
+      //      power(x, n)               /* raise x to n-th power; n > 0 */
+      //
+      c_ast_t *const ret_ast = c_ast_new_gc( K_BUILTIN, &@1 );
+      ret_ast->type = C_TYPE_LIT_B( TB_INT );
+
+      $$.ast = c_ast_new_gc( K_FUNCTION, &@$ );
+      c_ast_set_name( $$.ast, $1 );
+      $$.ast->as.func.ret_ast = ret_ast;
+      $$.ast->as.func.params = $3;
+      $$.target_ast = ret_ast;
+
+      DUMP_AST( "func_decl_knr_c_ast", $$.ast );
+      DUMP_END();
+
+      if ( opt_lang >= LANG_C_99 ) {
+        //
+        // In C99 and later, however, implicit int is an error.  This check has
+        // to be done now in the parser rather than later in the AST since the
+        // AST had no "memory" that the return type was implicitly int.
+        //
+        print_error( &@1,
+          "implicit \"%s\" functions are illegal in %s\n", L_INT, C_LANG_NAME()
+        );
+        PARSE_ABORT();
+      }
     }
   ;
 

@@ -356,6 +356,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fid_v.test \
 	tests/explain_fipfi_v_pfi_v.test \
 	tests/explain_fixiy_v.test \
+	tests/explain_fkr_i.test \
 	tests/explain_fkr_pi-c17.test \
 	tests/explain_fpa5d_v.test \
 	tests/explain_fpc_pi.test \
