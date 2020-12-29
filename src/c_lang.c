@@ -142,7 +142,7 @@ char const* c_lang_names( void ) {
       names_len += strlen( lang->name );
     } // for
 
-    names = FREE_STR_LATER( MALLOC( char, names_len ) );
+    names = free_later( MALLOC( char, names_len ) );
     names[0] = '\0';
 
     char *s = names;

@@ -187,28 +187,8 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @remarks
  * This macro exists since free'ing a pointer-to `const` generates a warning.
- *
- * @sa FREE_STR_LATER
  */
 #define FREE(PTR)                 free( CONST_CAST( void*, (PTR) ) )
-
-/**
- * Calls free_later() and casts the result to `char*`.
- *
- * @param PTR The pointer to the C string to free later.
- *
- * @sa FREE_STRDUP_LATER
- */
-#define FREE_STR_LATER(PTR)       REINTERPRET_CAST( char*, free_later( PTR ) )
-
-/**
- * Frees the duplicated C string later.
- *
- * @param PTR The pointer to the C string to duplicate and free later.
- *
- * @sa FREE_STR_LATER
- */
-#define FREE_STRDUP_LATER(PTR)    FREE_STR_LATER( check_strdup( PTR ) )
 
 /**
  * Calls **fstat**(3), checks for an error, and exits if there was one.
@@ -253,14 +233,13 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Calls **malloc**(3) and casts the result to \a TYPE.
  *
- * @param TYPE The type to cast the pointer returned by **malloc**(3) to.
+ * @param TYPE The type to allocate.
  * @param N The number of objects of \a TYPE to allocate.
  * @return Returns a pointer to \a N uninitialized objects of \a TYPE.
  *
  * @sa REALLOC
  */
-#define MALLOC(TYPE,N) \
-  STATIC_CAST( TYPE*, check_realloc( NULL, sizeof(TYPE) * (N) ) )
+#define MALLOC(TYPE,N)            check_realloc( NULL, sizeof(TYPE) * (N) )
 
 /**
  * Zeros the memory pointed to by \a PTR.  The number of bytes to zero is given
