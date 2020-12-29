@@ -2336,7 +2336,7 @@ set_option_value_opt
 show_command
   : Y_SHOW any_typedef show_format_opt
     {
-      DUMP_START( "show_command", "SHOW any_typedef_ast [TYPEDEF | USING]" );
+      DUMP_START( "show_command", "SHOW any_typedef_ast show_format_opt" );
       DUMP_AST( "any_typedef.ast", $2->ast );
       DUMP_NUM( "show_format_opt", $3 );
       DUMP_END();
@@ -2350,7 +2350,7 @@ show_command
 
   | Y_SHOW any_typedef Y_AS show_format_exp
     {
-      DUMP_START( "show_command", "SHOW any_typedef_ast AS {TYPEDEF | USING}" );
+      DUMP_START( "show_command", "SHOW any_typedef_ast AS show_format_exp" );
       DUMP_AST( "any_typedef.ast", $2->ast );
       DUMP_NUM( "show_format_exp", $4 );
       DUMP_END();
