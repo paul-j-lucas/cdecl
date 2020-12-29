@@ -56,10 +56,11 @@ The characters are:
 + `grt` = GNU C `__restrict__`
 + `h` = `short`
 + `i` = `inline` or `int`
++ `im` = `_Imaginary` or `imaginary`
 + `k` = `struct`
 + `kr` = untyped K&R C function argument
 + `l` = `long`
-+ `m` = `_Imaginary`, member of class, or `mutable`
++ `m` = member of class or `mutable`
 + `n` = name, nested, or `union`
 + `nd` = `nodiscard`
 + `nr` = `noreturn`

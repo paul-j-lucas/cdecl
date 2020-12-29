@@ -140,13 +140,13 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_ga.test \
 	tests/declare_gi.test \
 	tests/declare_if_v.test \
+	tests/declare_imd.test \
+	tests/declare_imf.test \
 	tests/declare_jf_i.test \
 	tests/declare_k.test \
 	tests/declare_ld.test \
 	tests/declare_lf.test \
 	tests/declare_ll.test \
-	tests/declare_md.test \
-	tests/declare_mf.test \
 	tests/declare_n.test \
 	tests/declare_nrfi_v-01.test \
 	tests/declare_nrfi_v-02.test \
@@ -377,6 +377,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_ic.test \
 	tests/explain_if_v.test \
 	tests/explain_ig.test \
+	tests/explain_imd.test \
+	tests/explain_imf.test \
 	tests/explain_is.test \
 	tests/explain_it.test \
 	tests/explain_kc.test \
@@ -393,8 +395,6 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_main_fippc_i.test \
 	tests/explain_main_fippcc_i.test \
 	tests/explain_main_fv_i.test \
-	tests/explain_md.test \
-	tests/explain_mf.test \
 	tests/explain_n.test \
 	tests/explain_nfi_c.test \
 	tests/explain_ni.test \
