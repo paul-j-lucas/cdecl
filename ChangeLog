@@ -1,5 +1,41 @@
+2020-12-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, errors.c, test/Makefile.am, explain_main_fi2apc_i.out,
+     explain_main_fi2ppc_i.out, explain_main_fi2apc_i.test,
+     explain_main_fi2ppc_i.test: main() now supports a third argument of either
+     char*[] or char** (or const versions).
+   * errors.c: Function sorting.
+   * NEWS, parser.y, test/Makefile.am, explain_fkr_i.out, explain_fkr_i.test:
+     Implicit `int` functions in K&R C are now supported.
+   * parser.y: Tweaked DUMP_START for "show" command.
+   * english.c, errors.c, gibberish.c: Comments.
+   * debug.c: Removed pointless assert().
+   * NEWS, c_typedef.c, show_all-c++.out, show_all.out,
+     show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined.out, show_predefined_typedef.out,
+     show_predefined_using.out: K&R C now has a set of predefined typedef
+     declarations distinct from C89 that include only those shown in the first
+     edition of _The C Programming Language_.
+   * lib/Makefile.am, stdint.in.h, stdio.in.h, stdlib.in.h, string.in.h,
+     unistd.in.h, stdint.m4, stdio_h.m4, stdlib_h.m4, string_h.m4, unistd_h.m4,
+     wint_t.m4: Updated Gnulib.
+   * parser.y, print.c: Fixed compiling with --disable-cdecl-debug.
+
+2020-12-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Added @warning.
+   * parser.y, util.h: s/only_bits_in()/only_bits_set()/ and clarified docs.
+   * util.h: MEM_ZERO() now insists that PTR is a pointer and not an array.
+   * dam_lev.c: Now using initializer list for last_row[].
+
 2020-12-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast_util.c: Comment fix.
+   * c_ast_util.c, c_type.h: Removed c_type_data_get() -- not needed.
+   * c_type.h: Comment fixes.
+   * c_ast.c: Reverted adding default to c_ast_new().
+   * NEWS: Updated.
    * c_lang.h: Doxygen.
    * c_type.h: Using TX_NONE more.
    * c_lang.h: Comments.
