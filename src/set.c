@@ -99,11 +99,11 @@ static void print_options( void ) {
   printf( "  %sexplain-by-default\n", maybe_no( opt_explain ) );
 
   if ( any_explicit_int() ) {
-    PUTS_OUT( "    explicit-int=" );
+    PUTS( "    explicit-int=" );
     print_opt_explicit_int();
-    PUTC_OUT( '\n' );
+    PUTC( '\n' );
   } else {
-    PUTS_OUT( "  noexplicit-int\n" );
+    PUTS( "  noexplicit-int\n" );
   }
 
 #ifdef ENABLE_FLEX_DEBUG

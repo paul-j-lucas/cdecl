@@ -73,7 +73,7 @@
 
 // Developer aid for tracing when Bison %destructors are called.
 #if 0
-#define DTRACE                    PRINTF_ERR( "%d: destructor\n", __LINE__ )
+#define DTRACE                    EPRINTF( "%d: destructor\n", __LINE__ )
 #else
 #define DTRACE                    NO_OP
 #endif
@@ -219,7 +219,7 @@
  * called.  It's used to separate items being dumped.
  */
 #define DUMP_COMMA \
-  BLOCK( if ( true_or_set( &debug_comma ) ) PUTS_OUT( ",\n" ); )
+  BLOCK( if ( true_or_set( &debug_comma ) ) PUTS( ",\n" ); )
 
 /**
  * Dumps an AST.
@@ -237,7 +237,7 @@
  * @param AST_LIST The `s_list` of AST to dump.
  */
 #define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
-  DUMP_COMMA; PUTS_OUT( "  " KEY " = " );     \
+  DUMP_COMMA; PUTS( "  " KEY " = " );         \
   c_ast_list_debug( &(AST_LIST), 1, stdout ); )
 
 /**
@@ -265,8 +265,8 @@
  * @param KEY The key name to print.
  * @param SNAME The scoped name to dump.
  */
-#define DUMP_SNAME(KEY,SNAME) IF_DEBUG(   \
-  DUMP_COMMA; PUTS_OUT( "  " KEY " = " ); \
+#define DUMP_SNAME(KEY,SNAME) IF_DEBUG( \
+  DUMP_COMMA; PUTS( "  " KEY " = " );   \
   c_sname_debug( (SNAME), stdout ); )
 
 /**
@@ -276,7 +276,7 @@
  * @param STR The C string to dump.
  */
 #define DUMP_STR(KEY,STR) IF_DEBUG(   \
-  DUMP_COMMA; PUTS_OUT( "  " );       \
+  DUMP_COMMA; PUTS( "  " );           \
   kv_debug( (KEY), (STR), stdout ); )
 
 #ifdef ENABLE_CDECL_DEBUG
@@ -288,9 +288,9 @@
  *
  * @sa DUMP_END
  */
-#define DUMP_START(NAME,PROD)                               \
-  bool debug_comma = false;                                 \
-  IF_DEBUG( PUTS_OUT( "\n" NAME " ::= " PROD " = {\n" ); )
+#define DUMP_START(NAME,PROD)                           \
+  bool debug_comma = false;                             \
+  IF_DEBUG( PUTS( "\n" NAME " ::= " PROD " = {\n" ); )
 #else
 #define DUMP_START(NAME,PROD)     /* nothing */
 #endif
@@ -300,7 +300,7 @@
  *
  * @sa DUMP_START
  */
-#define DUMP_END()                IF_DEBUG( PUTS_OUT( "\n}\n" ); )
+#define DUMP_END()                IF_DEBUG( PUTS( "\n}\n" ); )
 
 /**
  * Dumps a <code>\ref c_type_id_t</code>.
@@ -309,7 +309,7 @@
  * @param TID The <code>\ref c_type_id_t</code> to dump.
  */
 #define DUMP_TID(KEY,TID) IF_DEBUG( \
-  DUMP_COMMA; PUTS_OUT( "  " KEY " = " ); c_type_id_debug( (TID), stdout ); )
+  DUMP_COMMA; PUTS( "  " KEY " = " ); c_type_id_debug( (TID), stdout ); )
 
 /**
  * Dumps a <code>\ref c_type</code>.
@@ -318,7 +318,7 @@
  * @param TYPE The <code>\ref c_type</code> to dump.
  */
 #define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
-  DUMP_COMMA; PUTS_OUT( "  " KEY " = " ); c_type_debug( (TYPE), stdout ); )
+  DUMP_COMMA; PUTS( "  " KEY " = " ); c_type_debug( (TYPE), stdout ); )
 
 /** @} */
 
@@ -598,15 +598,15 @@ static void fl_elaborate_error( char const *file, int line,
                                 ... ) {
   assert( format != NULL );
   if ( !error_newlined ) {
-    PUTS_ERR( ": " );
+    EPUTS( ": " );
     char const *const error_token = printable_token();
 
     if ( error_token != NULL ) {
-      PRINTF_ERR( "\"%s\"", error_token );
+      EPRINTF( "\"%s\"", error_token );
       c_keyword_t const *const k = c_keyword_find( error_token, opt_lang );
       if ( k != NULL && (k->lang_ids & opt_lang) != LANG_NONE )
-        PRINTF_ERR( " is a keyword in %s", C_LANG_NAME() );
-      PUTS_ERR( ": " );
+        EPRINTF( " is a keyword in %s", C_LANG_NAME() );
+      EPUTS( ": " );
     }
 
     va_list args;
@@ -619,13 +619,13 @@ static void fl_elaborate_error( char const *file, int line,
 
 #ifdef ENABLE_CDECL_DEBUG
     if ( opt_cdecl_debug )
-      PRINTF_ERR( " (%s:%d)", file, line );
+      EPRINTF( " (%s:%d)", file, line );
 #else
     (void)file;
     (void)line;
 #endif /* ENABLE_CDECL_DEBUG */
 
-    PUTC_ERR( '\n' );
+    EPUTC( '\n' );
     error_newlined = true;
   }
 }
@@ -754,7 +754,7 @@ static void yyerror( char const *msg ) {
   print_loc( &loc );
 
   SGR_START_COLOR( stderr, error );
-  PUTS_ERR( msg );                      // no newline
+  EPUTS( msg );                         // no newline
   SGR_END_COLOR( stderr );
   error_newlined = false;
 
@@ -2398,7 +2398,7 @@ show_command
         );
       }
       print_suggestions( DYM_C_TYPES, $2 );
-      PUTC_ERR( '\n' );
+      EPUTC( '\n' );
       FREE( $2 );
       PARSE_ABORT();
     }

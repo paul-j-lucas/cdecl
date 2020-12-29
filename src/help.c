@@ -104,7 +104,7 @@ static void print_h( char const *line ) {
           SGR_START_COLOR( stdout, help_nonterm );
           break;
         case '>':                       // ends non-terminal
-          PUTC_OUT( *s );
+          PUTC( *s );
           SGR_END_COLOR( stdout );
           continue;
         case '*':                       // other EBNF chars
@@ -115,13 +115,13 @@ static void print_h( char const *line ) {
         case '|':
         case '}':
           SGR_START_COLOR( stdout, help_punct );
-          PUTC_OUT( *s );
+          PUTC( *s );
           SGR_END_COLOR( stdout );
           continue;
       } // switch
     }
 
-    PUTC_OUT( *s );
+    PUTC( *s );
     is_escaped = false;
   } // for
 }

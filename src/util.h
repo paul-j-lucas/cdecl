@@ -65,6 +65,15 @@ _GL_INLINE_HEADER_BEGIN
 #define ARRAY_SIZE(A)             (sizeof(A) / sizeof(A[0]))
 
 /**
+ * Gets a value where all bits that are greater than or equal to the one bit
+ * set in \a N are also set, e.g., `BITS_GE(00010000)` = `11110000`.
+ *
+ * @param N The integer.  Exactly one bit _must_ be set.
+ * @return Returns said value.
+ */
+#define BITS_GE(N)                (~((N) - 1u))
+
+/**
  * Embeds the given statements into a compound statement block.
  *
  * @param ... The statement(s) to embed.
@@ -89,6 +98,38 @@ _GL_INLINE_HEADER_BEGIN
  * @sa STATIC_CAST
  */
 #define CONST_CAST(T,EXPR)        ((T)(uintptr_t)(EXPR))
+
+/**
+ * Shorthand for printing to standard error.
+ *
+ * @param ... The `printf()` arguments.
+ *
+ * @sa EPUTC
+ * @sa EPUTS
+ */
+#define EPRINTF(...)              fprintf( stderr, __VA_ARGS__ )
+
+/**
+ * Shorthand for printing a character to standard error.
+ *
+ * @param C The character to print.
+ *
+ * @sa EPRINTF
+ * @sa PUTC
+ * @sa EPUTS
+ */
+#define EPUTC(C)                  FPUTC( (C), stderr )
+
+/**
+ * Shorthand for printing a C string to standard error.
+ *
+ * @param S The C string to print.
+ *
+ * @sa EPRINTF
+ * @sa EPUTC
+ * @sa PUTS
+ */
+#define EPUTS(S)                  FPUTS( (S), stderr )
 
 /**
  * Calls **ferror**(3) and exits if there was an error on \a STREAM.
@@ -145,7 +186,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param PTR The pointer to the memory to free.
  *
  * @remarks
- * This macro exists since free'ing a pointer-to const generates a warning.
+ * This macro exists since free'ing a pointer-to `const` generates a warning.
  *
  * @sa FREE_STR_LATER
  */
@@ -202,15 +243,6 @@ _GL_INLINE_HEADER_BEGIN
   PMESSAGE_EXIT( EX_SOFTWARE, "%s:%d: internal error: " FORMAT, __FILE__, __LINE__, __VA_ARGS__ )
 
 /**
- * Gets a value where all bits that are greater than or equal to the one bit
- * set in \a N are also set, e.g., `BITS_GE(00010000)` = `11110000`.
- *
- * @param N The integer.  Exactly one bit _must_ be set.
- * @return Returns said value.
- */
-#define BITS_GE(N)                (~((N) - 1u))
-
-/**
  * Gets only the least significant bit of \a N that is set.
  *
  * @param N The integer to get the least significant bit of.
@@ -263,59 +295,27 @@ _GL_INLINE_HEADER_BEGIN
  * @sa UNEXPECTED_STR_VALUE
  */
 #define PMESSAGE_EXIT(STATUS,FORMAT,...) \
-  BLOCK( PRINTF_ERR( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
-
-/**
- * Shorthand for printing to standard error.
- *
- * @param ... The `printf()` arguments.
- *
- * @sa PUTC_ERR
- * @sa PUTS_ERR
- */
-#define PRINTF_ERR(...)           fprintf( stderr, __VA_ARGS__ )
-
-/**
- * Shorthand for printing a character to standard error.
- *
- * @param C The character to print.
- *
- * @sa PRINTF_ERR
- * @sa PUTC_OUT
- * @sa PUTS_ERR
- */
-#define PUTC_ERR(C)               FPUTC( (C), stderr )
+  BLOCK( EPRINTF( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
 
 /**
  * Shorthand for printing a character to standard output.
  *
  * @param C The character to print.
  *
- * @sa PUTC_ERR
- * @sa PUTS_OUT
+ * @sa EPUTC
+ * @sa PUTS
  */
-#define PUTC_OUT(C)               FPUTC( (C), stdout )
-
-/**
- * Shorthand for printing a C string to standard error.
- *
- * @param S The C string to print.
- *
- * @sa PRINTF_ERR
- * @sa PUTC_ERR
- * @sa PUTS_OUT
- */
-#define PUTS_ERR(S)               FPUTS( (S), stderr )
+#define PUTC(C)                   FPUTC( (C), stdout )
 
 /**
  * Shorthand for printing a C string to standard output.
  *
  * @param S The C string to print.
  *
- * @sa PUTC_OUT
- * @sa PUTS_ERR
+ * @sa PUTC
+ * @sa EPUTS
  */
-#define PUTS_OUT(S)               FPUTS( (S), stdout )
+#define PUTS(S)                   FPUTS( (S), stdout )
 
 /**
  * Calls **realloc**(3) and resets \a PTR.

@@ -175,18 +175,18 @@ static void print_caret( size_t error_column ) {
       print_offset = 0;
     }
 
-    PRINTF_ERR( "%s%.*s%s\n",
+    EPRINTF( "%s%.*s%s\n",
       (more[0] ? MORE[0] : ""),
       (int)print_columns, input_line + print_offset,
       (more[1] ? MORE[1] : "")
     );
   }
 
-  PRINTF_ERR( "%*s", (int)error_column_term, "" );
+  EPRINTF( "%*s", (int)error_column_term, "" );
   SGR_START_COLOR( stderr, caret );
-  PUTC_ERR( '^' );
+  EPUTC( '^' );
   SGR_END_COLOR( stderr );
-  PUTC_ERR( '\n' );
+  EPUTC( '\n' );
 }
 
 /**
@@ -235,9 +235,9 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
   if ( loc != NULL ) {
     print_loc( loc );
     SGR_START_COLOR( stderr, error );
-    PUTS_ERR( "error" );
+    EPUTS( "error" );
     SGR_END_COLOR( stderr );
-    PUTS_ERR( ": " );
+    EPUTS( ": " );
   }
 
   va_list args;
@@ -247,7 +247,7 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
 
 #ifdef ENABLE_CDECL_DEBUG
   if ( opt_cdecl_debug )
-    PRINTF_ERR( " (%s:%d)", file, line );
+    EPRINTF( " (%s:%d)", file, line );
 #else
   (void)file;
   (void)line;
@@ -262,10 +262,10 @@ void fl_print_error_unknown_type( char const *file, int line,
 
   c_keyword_t const *const k = c_keyword_find( unknown_name, LANG_ALL );
   if ( k != NULL && k->type_id != TX_NONE )
-    PRINTF_ERR( " until %s", c_lang_name( c_lang_oldest( k->lang_ids ) ) );
+    EPRINTF( " until %s", c_lang_name( c_lang_oldest( k->lang_ids ) ) );
 
   print_suggestions( DYM_C_TYPES, unknown_name );
-  PUTC_ERR( '\n' );
+  EPUTC( '\n' );
   FREE( unknown_name );
 }
 
@@ -274,9 +274,9 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
   if ( loc != NULL )
     print_loc( loc );
   SGR_START_COLOR( stderr, warning );
-  PUTS_ERR( "warning" );
+  EPUTS( "warning" );
   SGR_END_COLOR( stderr );
-  PUTS_ERR( ": " );
+  EPUTS( ": " );
 
   va_list args;
   va_start( args, format );
@@ -285,7 +285,7 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
 
 #ifdef ENABLE_CDECL_DEBUG
   if ( opt_cdecl_debug )
-    PRINTF_ERR( " (%s:%d)", file, line );
+    EPRINTF( " (%s:%d)", file, line );
 #else
   (void)file;
   (void)line;
@@ -293,12 +293,12 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
 }
 
 void print_hint( char const *format, ... ) {
-  PUTS_ERR( "; did you mean " );
+  EPUTS( "; did you mean " );
   va_list args;
   va_start( args, format );
   vfprintf( stderr, format, args );
   va_end( args );
-  PUTS_ERR( "?\n" );
+  EPUTS( "?\n" );
 }
 
 void print_loc( c_loc_t const *loc ) {
@@ -306,27 +306,27 @@ void print_loc( c_loc_t const *loc ) {
   print_caret( (size_t)loc->first_column );
   SGR_START_COLOR( stderr, locus );
   if ( opt_conf_file != NULL )
-    PRINTF_ERR( "%s:%d,", opt_conf_file, loc->first_line + 1 );
+    EPRINTF( "%s:%d,", opt_conf_file, loc->first_line + 1 );
   size_t column = (size_t)loc->first_column;
   if ( column >= inserted_len )
     column -= inserted_len;
-  PRINTF_ERR( "%zu", column + 1 );
+  EPRINTF( "%zu", column + 1 );
   SGR_END_COLOR( stderr );
-  PUTS_ERR( ": " );
+  EPUTS( ": " );
 }
 
 void print_suggestions( dym_kind_t kinds, char const *unknown_token ) {
   did_you_mean_t const *const dym = dym_new( kinds, unknown_token );
   if ( dym != NULL ) {
-    PUTS_ERR( "; did you mean " );
+    EPUTS( "; did you mean " );
     for ( size_t i = 0; dym[i].token != NULL; ++i ) {
-      PRINTF_ERR( "%s\"%s\"",
+      EPRINTF( "%s\"%s\"",
         i == 0 ?
           "" : (dym[i+1].token != NULL ? ", " : (i > 1 ?  ", or " : " or ")),
         dym[i].token
       );
     } // for
-    PUTC_ERR( '?' );
+    EPUTC( '?' );
     dym_free( dym );
   }
 }

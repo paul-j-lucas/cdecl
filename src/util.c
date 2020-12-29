@@ -299,7 +299,7 @@ char* read_input_line( char const *ps1, char const *ps2 ) {
       goto check_for_error;
 #else
     static size_t line_cap;
-    PUTS_OUT( buf != NULL ? ps2 : ps1 );
+    PUTS( buf != NULL ? ps2 : ps1 );
     FFLUSH( stdout );
     if ( getline( &line, &line_cap, stdin ) == -1 )
       goto check_for_error;

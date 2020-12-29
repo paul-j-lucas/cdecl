@@ -434,7 +434,7 @@ static void parse_options( int argc, char const *argv[const] ) {
  */
 noreturn
 static void usage( void ) {
-  PUTS_OUT(
+  PUTS(
 "usage: " PACKAGE " [options] [command...]\n"
 "       " PACKAGE " [options] files...\n"
 "options:\n"
@@ -573,23 +573,23 @@ void print_opt_explicit_int( void ) {
   bool const is_explicit_ull = is_explicit_int( TB_UNSIGNED | TB_LONG_LONG );
 
   if ( is_explicit_s & is_explicit_i && is_explicit_l && is_explicit_ll ) {
-    PUTC_OUT( 'i' );
+    PUTC( 'i' );
   }
   else {
-    if ( is_explicit_s   ) PUTC_OUT(  's'  );
-    if ( is_explicit_i   ) PUTC_OUT(  'i'  );
-    if ( is_explicit_l   ) PUTC_OUT(  'l'  );
-    if ( is_explicit_ll  ) PUTS_OUT(  "ll" );
+    if ( is_explicit_s   ) PUTC(  's'  );
+    if ( is_explicit_i   ) PUTC(  'i'  );
+    if ( is_explicit_l   ) PUTC(  'l'  );
+    if ( is_explicit_ll  ) PUTS(  "ll" );
   }
 
   if ( is_explicit_us & is_explicit_ui && is_explicit_ul && is_explicit_ull ) {
-    PUTC_OUT( 'u' );
+    PUTC( 'u' );
   }
   else {
-    if ( is_explicit_us  ) PUTS_OUT( "us"  );
-    if ( is_explicit_ui  ) PUTS_OUT( "ui"  );
-    if ( is_explicit_ul  ) PUTS_OUT( "ul"  );
-    if ( is_explicit_ull ) PUTS_OUT( "ull" );
+    if ( is_explicit_us  ) PUTS( "us"  );
+    if ( is_explicit_ui  ) PUTS( "ui"  );
+    if ( is_explicit_ul  ) PUTS( "ul"  );
+    if ( is_explicit_ull ) PUTS( "ull" );
   }
 }
 
