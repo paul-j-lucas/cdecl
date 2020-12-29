@@ -34,9 +34,10 @@ The characters are:
 + `+` = scope (`S::x`; `2+` = `S::T::x`, etc.)
 + `=` = scope (`=` = `of scope S`; `2=` = `of scope S of scope T`, etc.)
 + `0` = pure virtual
-+ `a` = array (following digits specify array size), `_Atomic`, or `auto`
++ `a` = array (following digits specify array size) or `auto`
 + `a_nua_` = `no_unique_address`
 + `al` = `_Alignas` or `alignas`
++ `at` = `_Atomic` or `atomic`
 + `b` = block (Apple extension) or `bool`
 + `c` = `char`, `class`, or `const`
 + `cd` = `carries_dependency`
