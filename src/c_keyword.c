@@ -53,15 +53,15 @@ static c_keyword_t const C_ATTRIBUTES[] = {
   { L_CARRIES_DEPENDENCY,
                     Y_CARRIES_DEPENDENCY,
                                     TA_CARRIES_DEPENDENCY,
-                                                      LANG_CPP_MIN(11)      },
-  { L_NORETURN,     Y_NORETURN,     TA_NORETURN,      LANG_CPP_MIN(11)      },
+                                                      LANG_CPP_MIN(11)        },
+  { L_NORETURN,     Y_NORETURN,     TA_NORETURN,      LANG_CPP_MIN(11)        },
 
   // C2X & C++14
-  { L_DEPRECATED,   Y_DEPRECATED,   TA_DEPRECATED,    LANG_C_CPP_MIN(2X,14) },
+  { L_DEPRECATED,   Y_DEPRECATED,   TA_DEPRECATED,    LANG_C_CPP_MIN(2X,14)   },
 
   // C2X & C++17
-  { L_MAYBE_UNUSED, Y_MAYBE_UNUSED, TA_MAYBE_UNUSED,  LANG_C_CPP_MIN(2X,17) },
-  { L_NODISCARD,    Y_NODISCARD,    TA_NODISCARD,     LANG_C_CPP_MIN(2X,17) },
+  { L_MAYBE_UNUSED, Y_MAYBE_UNUSED, TA_MAYBE_UNUSED,  LANG_C_CPP_MIN(2X,17)   },
+  { L_NODISCARD,    Y_NODISCARD,    TA_NODISCARD,     LANG_C_CPP_MIN(2X,17)   },
 
   // C++20                // Not implemented because:
 #if 0
@@ -75,9 +75,9 @@ static c_keyword_t const C_ATTRIBUTES[] = {
   { L_NO_UNIQUE_ADDRESS,
                     Y_NO_UNIQUE_ADDRESS,
                                     TA_NO_UNIQUE_ADDRESS,
-                                                    LANG_CPP_MIN(20)      },
+                                                      LANG_CPP_MIN(20)        },
 
-  { NULL,           0,              TX_NONE,       LANG_NONE             }
+  { NULL,           0,              TX_NONE,          LANG_NONE               }
 };
 
 /**
@@ -202,17 +202,17 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_REQUIRES,         Y_REQUIRES,         TX_NONE,        LANG_CPP_MIN(20)  },
 
   // Alternative tokens
-  { L_AND,              Y_AMPER2,           TX_NONE,       LANG_MIN(C_89)     },
-  { L_AND_EQ,           Y_AMPER_EQ,         TX_NONE,       LANG_MIN(C_89)     },
-  { L_BITAND,           Y_AMPER,            TX_NONE,       LANG_MIN(C_89)     },
-  { L_BITOR,            Y_PIPE,             TX_NONE,       LANG_MIN(C_89)     },
-  { L_COMPL,            Y_TILDE,            TX_NONE,       LANG_MIN(C_89)     },
-  { L_NOT,              Y_EXCLAM,           TX_NONE,       LANG_MIN(C_89)     },
-  { L_NOT_EQ,           Y_EXCLAM_EQ,        TX_NONE,       LANG_MIN(C_89)     },
-  { L_OR,               Y_PIPE2,            TX_NONE,       LANG_MIN(C_89)     },
-  { L_OR_EQ,            Y_PIPE_EQ,          TX_NONE,       LANG_MIN(C_89)     },
-  { L_XOR,              Y_CIRC,             TX_NONE,       LANG_MIN(C_89)     },
-  { L_XOR_EQ,           Y_CIRC_EQ,          TX_NONE,       LANG_MIN(C_89)     },
+  { L_AND,              Y_AMPER2,           TX_NONE,        LANG_MIN(C_89)    },
+  { L_AND_EQ,           Y_AMPER_EQ,         TX_NONE,        LANG_MIN(C_89)    },
+  { L_BITAND,           Y_AMPER,            TX_NONE,        LANG_MIN(C_89)    },
+  { L_BITOR,            Y_PIPE,             TX_NONE,        LANG_MIN(C_89)    },
+  { L_COMPL,            Y_TILDE,            TX_NONE,        LANG_MIN(C_89)    },
+  { L_NOT,              Y_EXCLAM,           TX_NONE,        LANG_MIN(C_89)    },
+  { L_NOT_EQ,           Y_EXCLAM_EQ,        TX_NONE,        LANG_MIN(C_89)    },
+  { L_OR,               Y_PIPE2,            TX_NONE,        LANG_MIN(C_89)    },
+  { L_OR_EQ,            Y_PIPE_EQ,          TX_NONE,        LANG_MIN(C_89)    },
+  { L_XOR,              Y_CIRC,             TX_NONE,        LANG_MIN(C_89)    },
+  { L_XOR_EQ,           Y_CIRC_EQ,          TX_NONE,        LANG_MIN(C_89)    },
 
   // Embedded C extensions
   { L_EMC__ACCUM,       Y_EMC__ACCUM,       TB_EMC_ACCUM,   LANG_C_99_EMC     },
