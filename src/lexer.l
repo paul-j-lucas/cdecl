@@ -723,10 +723,10 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                 //
         find_cdecl_keyword:
                 NO_OP;
-                cdecl_keyword_t const *cdk = cdecl_keyword_find( lexer_token );
-                if ( cdk != NULL ) {
-                  if ( cdk->lang_syn == NULL ) {
-                    if ( cdk->literal == L_SET_COMMAND ) {
+                cdecl_keyword_t const *ck = cdecl_keyword_find( lexer_token );
+                if ( ck != NULL ) {
+                  if ( ck->lang_syn == NULL ) {
+                    if ( ck->literal == L_SET_COMMAND ) {
                       //
                       // For the "set" command, we want to allow (almost) any
                       // character sequence for the command's options, so we
@@ -734,9 +734,9 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                       //
                       BEGIN( SET_COMMAND );
                     }
-                    return cdk->yy_token_id;
+                    return ck->yy_token_id;
                   }
-                  char const *const literal = c_lang_literal( cdk->lang_syn );
+                  char const *const literal = c_lang_literal( ck->lang_syn );
                   if ( literal != NULL ) {
                     SET_TOKEN_TO( literal );
                     goto find_c_keyword;
@@ -760,15 +760,15 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                 //
         find_c_keyword:
                 NO_OP;
-                c_keyword_t const *ck = c_keyword_find( lexer_token, opt_lang );
-                if ( ck == NULL && c_mode == C_ENGLISH_TO_GIBBERISH ) {
+                c_keyword_t const *k = c_keyword_find( lexer_token, opt_lang );
+                if ( k == NULL && c_mode == C_ENGLISH_TO_GIBBERISH ) {
                   //
                   // We have to look-up attribute names when parsing English
                   // because there can't be any special syntax for them, e.g.:
                   //
                   //      declare x as deprecated int
                   //
-                  ck = c_attribute_find( lexer_token );
+                  k = c_attribute_find( lexer_token );
                 }
                 else {
                   //
@@ -780,9 +780,9 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                   // is legal.
                   //
                 }
-                if ( ck != NULL ) {
-                  yylval.type_id = ck->type_id;
-                  return ck->yy_token_id;
+                if ( k != NULL ) {
+                  yylval.type_id = k->type_id;
+                  return k->yy_token_id;
                 }
 
                 //
