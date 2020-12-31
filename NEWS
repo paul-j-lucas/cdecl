@@ -45,6 +45,10 @@ the default, it's ignored.)
 "Did you mean ...?" suggestions have been added for `explain` and type
 suggestions are only those valid in the current language.
 
+** Additional `no-` English synonyms
+The English synonyms of `no-return`, `no-except`, `no-discard`, and `no-unique-
+address` have been added.
+
 
 * Changes in Cdecl 9.0
 

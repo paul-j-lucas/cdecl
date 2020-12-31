@@ -172,6 +172,7 @@ extern char const L__ATOMIC[];
 extern char const L_ATOMIC[];               // synonym for "_Atomic"
 extern char const L__GENERIC[];
 extern char const L__NORETURN[];
+extern char const L_NO_RETURN[];            // synonym for "_Noreturn"
 extern char const L_NON_RETURNING[];        // English for "_Noreturn"
 extern char const L__STATIC_ASSERT[];
 extern char const L__THREAD_LOCAL[];
@@ -226,6 +227,7 @@ extern char const L_FINAL[];
 extern char const L_NOEXCEPT[];
 extern char const L_NORETURN[];
 extern char const L_LITERAL[];
+extern char const L_NO_EXCEPT[];
 extern char const L_NO_EXCEPTION[];         // English for "noexcept"
 extern char const L_NULLPTR[];
 extern char const L_OVERRIDE[];
@@ -246,6 +248,7 @@ extern char const L_DEPRECATED[];
 extern char const L_MAYBE_UNUSED[];
 extern char const L_MAYBE_UNUSED_H[];       // English for "maybe_unused"
 extern char const L_NODISCARD[];
+extern char const L_NO_DISCARD[];
 extern char const L_NON_DISCARDABLE[];      // English for "nodiscard"
 
 // C++20
@@ -259,6 +262,7 @@ extern char const L_CO_YIELD[];
 extern char const L_EXPORT[];
 extern char const L_EXPORTED[];             // English for "export"
 extern char const L_NO_UNIQUE_ADDRESS[];
+extern char const L_NO_UNIQUE_ADDRESS_H[];
 extern char const L_NON_UNIQUE_ADDRESS[];
 extern char const L_REQUIRES[];
 

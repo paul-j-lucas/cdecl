@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "December 19, 2020" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "December 31, 2020" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1052,10 +1052,14 @@ carries-dependency  carries_dependency
                len  length
       maybe-unused  maybe_unused
                mbr  member
-      no-exception  noexcept
+        no-discard  nodiscard
    non-discardable  nodiscard
+         no-except  noexcept
+      no-exception  noexcept
+ no-unique-address  no_unique_address
 non-unique-address  no_unique_address
            non-mbr  non-member
+         no-return  _Noreturn
      non-returning  _Noreturn
       non-throwing  throw()
           noreturn  _Noreturn

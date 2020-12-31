@@ -145,6 +145,7 @@ char const L__ATOMIC[]              = "_Atomic";
 char const L_ATOMIC[]               = "atomic";
 char const L__GENERIC[]             = "_Generic";
 char const L__NORETURN[]            = "_Noreturn";
+char const L_NO_RETURN[]            = "no-return";
 char const L_NON_RETURNING[]        = "non-returning";
 char const L__STATIC_ASSERT[]       = "_Static_assert";
 char const L__THREAD_LOCAL[]        = "_Thread_local";
@@ -199,6 +200,7 @@ char const L_FINAL[]                = "final";
 char const L_LITERAL[]              = "literal";
 char const L_NOEXCEPT[]             = "noexcept";
 char const L_NORETURN[]             = "noreturn";
+char const L_NO_EXCEPT[]            = "no-except";
 char const L_NO_EXCEPTION[]         = "no-exception";
 char const L_NULLPTR[]              = "nullptr";
 char const L_OVERRIDE[]             = "override";
@@ -219,6 +221,7 @@ char const L_DEPRECATED[]           = "deprecated";
 char const L_MAYBE_UNUSED[]         = "maybe_unused";
 char const L_MAYBE_UNUSED_H[]       = "maybe-unused";
 char const L_NODISCARD[]            = "nodiscard";
+char const L_NO_DISCARD[]           = "no-discard";
 char const L_NON_DISCARDABLE[]      = "non-discardable";
 
 // C++20
@@ -232,6 +235,7 @@ char const L_CO_YIELD[]             = "co_yield";
 char const L_EXPORT[]               = "export";
 char const L_EXPORTED[]             = "exported";
 char const L_NO_UNIQUE_ADDRESS[]    = "no_unique_address";
+char const L_NO_UNIQUE_ADDRESS_H[]  = "no-unique-address";
 char const L_NON_UNIQUE_ADDRESS[]   = "non-unique-address";
 char const L_REQUIRES[]             = "requires";
 
