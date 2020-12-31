@@ -2,6 +2,7 @@ command:
   [const | dynamic | reinterpret | static] cast <name> {as|into|to} <english>
   declare <name> as <english>
   declare <operator> as <english>
+  declare [<english>] user-defined <user-defined-english>
   define <name> as <english>
   explain <gibberish>
   { help | ? } [command[s] | english]

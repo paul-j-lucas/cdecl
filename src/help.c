@@ -142,8 +142,10 @@ static void print_help_commands( void ) {
     print_h( " [aligned [as|to] {<number> [bytes] | <english>}]" );
   print_h( "\n" );
 
-  if ( C_LANG_IS_CPP() )
+  if ( C_LANG_IS_CPP() ) {
     print_h( "  declare <operator> as <english>\n" );
+    print_h( "  declare [<english>] user-defined <user-defined-english>\n" );
+  }
 
   print_h( "  define <name> as <english>\n" );
   print_h( "  explain <gibberish>\n" );
@@ -292,12 +294,14 @@ static void print_help_english( void ) {
       print_h( "[rvalue] " );
     print_h( "reference to <english>\n" );
 
-    print_h( "  user-defined conversion [operator] [of <scope-e> <name>]* returning <english>\n" );
+    print_h( "  <store>* <modifier>* [<C\\+\\+-type>]\n" );
+
+    print_h( "user-defined-english:\n" );
+    print_h( "  conversion [operator] [of <scope-e> <name>]* returning <english>\n" );
 
     if ( C_LANG_IS(MIN(CPP_11)) )
-      print_h( "  user-defined literal [([<args>])] [returning <english>]\n" );
+      print_h( "  literal [([<args>])] [returning <english>]\n" );
 
-    print_h( "  <store>* <modifier>* [<C\\+\\+-type>]\n" );
     print_h( "args: a comma separated list of <english> or <name> as <english>\n" );
 
     print_h( "C\\+\\+-type: bool char" );

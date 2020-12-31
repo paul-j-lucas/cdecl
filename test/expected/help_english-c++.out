@@ -7,9 +7,10 @@ english:
   <cv-qual>* pointer to [member of { class | struct } <name>] <english>
   { enum [class|struct] | class | struct | union } <name>
   [rvalue] reference to <english>
-  user-defined conversion [operator] [of <scope-e> <name>]* returning <english>
-  user-defined literal [([<args>])] [returning <english>]
   <store>* <modifier>* [<C++-type>]
+user-defined-english:
+  conversion [operator] [of <scope-e> <name>]* returning <english>
+  literal [([<args>])] [returning <english>]
 args: a comma separated list of <english> or <name> as <english>
 C++-type: bool char char8_t char16_t char32_t wchar_t int float double void
 cv-qual: const volatile
