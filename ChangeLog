@@ -1,5 +1,10 @@
 2020-12-31  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, cdecl.1, parser.y: If `returning` <english> is omitted, it's
+     equivalent to `returning int` in C95 and earlier.
+   * help.c, help-c++.out, help_command-c++.out, help_command-c++03.out,
+     help_commands-c++.out, help_english-c++.out: Tweaked help for user-defined
+     conversion operators and literals.
    * NEWS, cdecl.1, lexer.l, literals.c, literals.h: Added no-return,
      no-except, no-discard, and no-unique-address synonyms.
 
