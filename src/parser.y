@@ -2873,7 +2873,8 @@ returning_english_ast_opt
 
       $$.ast = c_ast_new_gc( K_BUILTIN, &@$ );
       $$.target_ast = NULL;
-      $$.ast->type.base_tid = TB_VOID;
+      // see the comment in "type_c_ast"
+      $$.ast->type.base_tid = opt_lang < LANG_C_99 ? TB_INT : TB_VOID;
 
       DUMP_AST( "returning_english_ast_opt", $$.ast );
       DUMP_END();

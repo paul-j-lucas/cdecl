@@ -34,6 +34,9 @@ Implicit `int` functions in K&R C are now supported:
     cdecl> explain f(x)
     declare f as function (x) returning int
 
+Additionally, if `returning` _english_ is omitted, it's equivalent to
+`returning int` in C95 and earlier.
+
 ** Language-version-specific help
 Help is now specific to particular language versions, not just C or C++.
 
