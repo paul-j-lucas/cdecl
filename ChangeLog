@@ -1,5 +1,19 @@
+2020-12-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, lexer.l, literals.c, literals.h: Added no-return,
+     no-except, no-discard, and no-unique-address synonyms.
+
+2020-12-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Renaming.
+   * c_keyword.c: Whitespace fixes.
+   * lexer.l: Eliminated C_HYPHEN_KEYWORDS, CDECL_HYPHEN_KEYWORDS,
+     c_hyphen_find(), and cdecl_hyphen_find() special-case code for matching
+     hyphenated tokens.
+
 2020-12-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: DUMP fix.
    * test/Makefile.am: Test renaming.
    * c_lang.c, color.c, util.h: Removed FREE_STR_LATER and FREE_STRDUP_LATER --
      not really used.
