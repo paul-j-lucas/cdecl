@@ -1,5 +1,5 @@
 /* Getopt for GNU.
-   Copyright (C) 1987-2020 Free Software Foundation, Inc.
+   Copyright (C) 1987-2021 Free Software Foundation, Inc.
    This file is part of the GNU C Library and is also part of gnulib.
    Patches to this file should be submitted to both projects.
 
@@ -201,11 +201,11 @@ process_long_option (int argc, char **argv, const char *optstring,
   const struct option *p;
   const struct option *pfound = NULL;
   int n_options;
-  int option_index = 0;
+  int option_index;
 
   for (nameend = d->__nextchar; *nameend && *nameend != '='; nameend++)
     /* Do nothing.  */ ;
-  namelen = (size_t)(nameend - d->__nextchar);
+  namelen = nameend - d->__nextchar;
 
   /* First look for an exact match, counting the options as a side
      effect.  */
@@ -252,7 +252,7 @@ process_long_option (int argc, char **argv, const char *optstring,
 		      {
 			if (__libc_use_alloca (n_options))
 			  ambig_set = alloca (n_options);
-			else if ((ambig_set = malloc ((size_t)n_options)) == NULL)
+			else if ((ambig_set = malloc (n_options)) == NULL)
 			  /* Fall back to simpler error message.  */
 			  ambig_fallback = 1;
 			else

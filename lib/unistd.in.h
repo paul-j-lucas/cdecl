@@ -1,5 +1,5 @@
 /* Substitute for and wrapper around <unistd.h>.
-   Copyright (C) 2003-2020 Free Software Foundation, Inc.
+   Copyright (C) 2003-2021 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU Lesser General Public License as published by
@@ -978,7 +978,7 @@ _GL_CXXALIASWARN (fchownat);
 # undef fchownat
 # if HAVE_RAW_DECL_FCHOWNAT
 _GL_WARN_ON_USE (fchownat, "fchownat is not portable - "
-                 "use gnulib module openat for portability");
+                 "use gnulib module fchownat for portability");
 # endif
 #endif
 
@@ -2219,7 +2219,7 @@ _GL_CXXALIASWARN (unlinkat);
 # undef unlinkat
 # if HAVE_RAW_DECL_UNLINKAT
 _GL_WARN_ON_USE (unlinkat, "unlinkat is not portable - "
-                 "use gnulib module openat for portability");
+                 "use gnulib module unlinkat for portability");
 # endif
 #endif
 
