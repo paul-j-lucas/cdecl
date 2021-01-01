@@ -98,14 +98,8 @@ static void copy_keywords( did_you_mean_t **const pdym, bool copy_types ) {
     if ( (k->lang_ids & opt_lang) == LANG_NONE )
       continue;
     bool const is_base_type = c_type_id_part_id( k->type_id ) == TPID_BASE;
-    if ( copy_types ) {
-      if ( !is_base_type )
-        continue;
-    } else {
-      if ( is_base_type )
-        continue;
-    }
-    (*pdym)++->token = check_strdup( k->literal );
+    if ( (copy_types && is_base_type) || (!copy_types && !is_base_type) )
+      (*pdym)++->token = check_strdup( k->literal );
   } // for
 }
 
