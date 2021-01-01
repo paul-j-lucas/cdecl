@@ -207,9 +207,8 @@ static void dym_free_tokens( did_you_mean_t const *dym ) {
 static int qsort_did_you_mean_cmp( void const *i_data, void const *j_data ) {
   did_you_mean_t const *const i_dym = i_data;
   did_you_mean_t const *const j_dym = j_data;
-  return i_dym->dam_lev_dist != j_dym->dam_lev_dist ?
-    (int)i_dym->dam_lev_dist - (int)j_dym->dam_lev_dist :
-    strcmp( i_dym->token, j_dym->token );
+  int const cmp = (int)i_dym->dam_lev_dist - (int)j_dym->dam_lev_dist;
+  return cmp != 0 ? cmp : strcmp( i_dym->token, j_dym->token );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
