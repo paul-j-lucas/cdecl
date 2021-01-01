@@ -1,3 +1,34 @@
+2021-01-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, _Noreturn.h, arg-nonnull.h, c++defs.h, errno.in.h,
+     getdelim.c, getline.c, getopt-cdefs.in.h, getopt-core.h, getopt-ext.h,
+     getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c,
+     getopt_int.h, gettext.h, limits.in.h, stdarg.in.h, stdbool.in.h,
+     stddef.in.h, stdint.in.h, stdio.in.h, stdlib.in.h, stdnoreturn.in.h,
+     string.in.h, strndup.c, strnlen.c, strsep.c, sys_types.in.h,
+     sysexits.in.h, unistd.in.h, warn-on-use.h, 00gnulib.m4,
+     absolute-header.m4, errno_h.m4, extensions.m4, extern-inline.m4,
+     getdelim.m4, getline.m4, getopt.m4, gnulib-cache.m4, gnulib-common.m4,
+     gnulib-comp.m4, gnulib-tool.m4, include_next.m4, limits-h.m4,
+     multiarch.m4, nocrash.m4, off_t.m4, pid_t.m4, ssize_t.m4, stdarg.m4,
+     stdbool.m4, stddef_h.m4, stdint.m4, stdio_h.m4, stdlib_h.m4,
+     stdnoreturn.m4, string_h.m4, strndup.m4, strnlen.m4, strsep.m4,
+     sys_types_h.m4, sysexits.m4, unistd_h.m4, warn-on-use.m4, wchar_t.m4,
+     wint_t.m4, zzgnulib.m4: Updated Gnulib.
+   * Doxyfile, Makefile.am, NEWS, configure.ac, pjl_compile.m4,
+     man/Makefile.am, man/man1/Makefile.am, cdecl.1, src/Makefile.am,
+     autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.c,
+     c_keyword.h, c_kind.c, c_kind.h, c_lang.c, c_lang.h, c_operator.c,
+     c_operator.h, c_sname.c, c_sname.h, c_type.c, c_type.h, c_typedef.c,
+     c_typedef.h, cdecl.c, cdecl.h, cdecl_lldb.py, color.c, color.h, dam_lev.c,
+     dam_lev.h, debug.c, debug.h, did_you_mean.c, did_you_mean.h, english.c,
+     english.h, errors.c, gibberish.c, gibberish.h, help.c, lexer.h, lexer.l,
+     literals.c, literals.h, options.c, options.h, parser.y, pjl_config.h,
+     print.c, print.h, prompt.c, prompt.h, red_black.c, red_black.h, set.c,
+     slist.c, slist.h, types.h, util.c, util.h, test/Makefile.am,
+     not_in_Makefile.sh, run_test.sh, update_test.sh: Updated copyright year to
+     2021.
+
 2020-12-31  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, cdecl.1, parser.y: If `returning` <english> is omitted, it's
