@@ -1146,7 +1146,7 @@ static void yyerror( char const *msg ) {
 
 %type   <ast_pair>  atomic_specifier_type_c_ast
 %type   <ast_pair>  builtin_type_c_ast
-%type   <ast_pair>  enum_class_struct_union_ast
+%type   <ast_pair>  enum_class_struct_union_c_ast
 %type   <ast_pair>  placeholder_c_ast
 %type   <ast_pair>  type_c_ast
 %type   <ast_pair>  typedef_type_c_ast
@@ -3179,7 +3179,7 @@ type_attribute_english_tid
 
 unmodified_type_english_ast
   : builtin_type_c_ast
-  | enum_class_struct_union_ast
+  | enum_class_struct_union_c_ast
   | typedef_type_c_ast
   ;
 
@@ -4206,10 +4206,10 @@ builtin_tid
   | Y_EMC__FRACT
   ;
 
-enum_class_struct_union_ast
+enum_class_struct_union_c_ast
   : enum_class_struct_union_tid any_sname_c_exp
     {
-      DUMP_START( "enum_class_struct_union_ast",
+      DUMP_START( "enum_class_struct_union_c_ast",
                   "enum_class_struct_union_tid sname" );
       DUMP_TID( "enum_class_struct_union_tid", $1 );
       DUMP_SNAME( "sname", &$2 );
@@ -4219,7 +4219,7 @@ enum_class_struct_union_ast
       $$.ast->type.base_tid = $1;
       $$.ast->as.ecsu.ecsu_sname = $2;
 
-      DUMP_AST( "enum_class_struct_union_ast", $$.ast );
+      DUMP_AST( "enum_class_struct_union_c_ast", $$.ast );
       DUMP_END();
     }
 
