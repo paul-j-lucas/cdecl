@@ -1164,7 +1164,9 @@ TESTS+=	tests/declare_+udl_c_i.test \
 # C++ explain tests
 # =================
 #
-TESTS+=	tests/explain_+dtor.test \
+TESTS+=	tests/explain_+ctor.test \
+	tests/explain_+ctor_i.test \
+	tests/explain_+dtor.test \
 	tests/explain_2+dtor.test \
 	tests/explain_a.test \
 	tests/explain_a_nua_k-1.test \
@@ -1179,8 +1181,6 @@ TESTS+=	tests/explain_+dtor.test \
 	tests/explain_cpmci.test \
 	tests/explain_cpmi.test \
 	tests/explain_crf_v.test \
-	tests/explain_ctor.test \
-	tests/explain_ctor_i.test \
 	tests/explain_cvf_v.test \
 	tests/explain_df_v.test \
 	tests/explain_di.test \
