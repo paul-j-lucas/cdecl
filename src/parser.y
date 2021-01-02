@@ -831,49 +831,49 @@ static void yyerror( char const *msg ) {
                      * The Y_* token is used when tokens may be represented by
                      * an alternative token, e.g., "not" for '!'.
                      */
-%token  <oper_id>   Y_EXCLAM            /* '!' */
-%token  <oper_id>   '%'
-%token  <oper_id>   Y_AMPER             /* '&' */
-%token  <oper_id>   '(' ')'
-%token  <oper_id>   '*'
-%token  <oper_id>   '+'
-%token  <oper_id>   ','
-%token  <oper_id>   '-'
-%token  <oper_id>   '.'
-%token  <oper_id>   '/'
+%token              Y_EXCLAM            /* '!' */
+%token              '%'
+%token              Y_AMPER             /* '&' */
+%token              '(' ')'
+%token              '*'
+%token              '+'
+%token              ','
+%token              '-'
+%token              '.'
+%token              '/'
 %token              ';'
-%token  <oper_id>   '<' '>'
-%token  <oper_id>   '='
-%token  <oper_id>   Y_QMARK_COLON "?:"
-%token  <oper_id>   '[' ']'
-%token  <oper_id>   Y_CIRC              /* '^' */
+%token              '<' '>'
+%token              '='
+%token              Y_QMARK_COLON "?:"
+%token              '[' ']'
+%token              Y_CIRC              /* '^' */
 %token              '{'
-%token  <oper_id>   Y_PIPE              /* '|' */
+%token              Y_PIPE              /* '|' */
 %token              '}'
-%token  <oper_id>   Y_TILDE             /* '~' */
+%token              Y_TILDE             /* '~' */
 
                     /* C & C++ operators (two-character) */
-%token  <oper_id>   Y_EXCLAM_EQ   "!="
-%token  <oper_id>   Y_PERCENT_EQ  "%="
-%token  <oper_id>   Y_AMPER2      "&&"
-%token  <oper_id>   Y_AMPER_EQ    "&="
-%token  <oper_id>   Y_STAR_EQ     "*="
-%token  <oper_id>   Y_PLUS2       "++"
-%token  <oper_id>   Y_PLUS_EQ     "+="
-%token  <oper_id>   Y_MINUS2      "--"
-%token  <oper_id>   Y_MINUS_EQ    "-="
-%token  <oper_id>   Y_ARROW       "->"
-%token  <oper_id>   Y_SLASH_EQ    "/="
-%token  <oper_id>   Y_LESS2       "<<"
-%token  <oper_id>   Y_LESS2_EQ    "<<="
-%token  <oper_id>   Y_LESS_EQ     "<="
-%token  <oper_id>   Y_EQ2         "=="
-%token  <oper_id>   Y_GREATER_EQ  ">="
-%token  <oper_id>   Y_GREATER2    ">>"
-%token  <oper_id>   Y_GREATER2_EQ ">>="
-%token  <oper_id>   Y_CIRC_EQ     "^="
-%token  <oper_id>   Y_PIPE_EQ     "|="
-%token  <oper_id>   Y_PIPE2       "||"
+%token              Y_EXCLAM_EQ   "!="
+%token              Y_PERCENT_EQ  "%="
+%token              Y_AMPER2      "&&"
+%token              Y_AMPER_EQ    "&="
+%token              Y_STAR_EQ     "*="
+%token              Y_PLUS2       "++"
+%token              Y_PLUS_EQ     "+="
+%token              Y_MINUS2      "--"
+%token              Y_MINUS_EQ    "-="
+%token              Y_ARROW       "->"
+%token              Y_SLASH_EQ    "/="
+%token              Y_LESS2       "<<"
+%token              Y_LESS2_EQ    "<<="
+%token              Y_LESS_EQ     "<="
+%token              Y_EQ2         "=="
+%token              Y_GREATER_EQ  ">="
+%token              Y_GREATER2    ">>"
+%token              Y_GREATER2_EQ ">>="
+%token              Y_CIRC_EQ     "^="
+%token              Y_PIPE_EQ     "|="
+%token              Y_PIPE2       "||"
 
                     /* K&R C */
 %token  <type_id>   Y_AUTO_STORAGE      /* C version of "auto" */
@@ -935,10 +935,10 @@ static void yyerror( char const *msg ) {
 
                     /* C++ */
 %token  <type_id>   Y_BOOL
-%token  <oper_id>   Y_ARROW_STAR  "->*"
+%token              Y_ARROW_STAR  "->*"
 %token              Y_CATCH
 %token  <type_id>   Y_CLASS
-%token  <oper_id>   Y_COLON2      "::"
+%token              Y_COLON2      "::"
 %token              Y_COLON2_STAR "::*"
 %token  <literal>   Y_CONST_CAST
 %token              Y_CONSTRUCTOR
@@ -946,14 +946,14 @@ static void yyerror( char const *msg ) {
 %token              Y_CONVERSION
 %token              Y_DESTRUCTOR
 %token  <sname>     Y_DESTRUCTOR_SNAME
-%token  <oper_id>   Y_DOT_STAR    ".*"
+%token              Y_DOT_STAR    ".*"
 %token  <literal>   Y_DYNAMIC_CAST
 %token  <type_id>   Y_EXPLICIT
 %token  <type_id>   Y_FALSE             /* for noexcept(false) */
 %token  <type_id>   Y_FRIEND
 %token  <type_id>   Y_MUTABLE
 %token  <type_id>   Y_NAMESPACE
-%token  <oper_id>   Y_NEW
+%token              Y_NEW
 %token              Y_OPERATOR
 %token              Y_PRIVATE
 %token              Y_PROTECTED
@@ -1028,7 +1028,7 @@ static void yyerror( char const *msg ) {
 %token              Y_CO_RETURN
 %token              Y_CO_YIELD
 %token  <type_id>   Y_EXPORT
-%token  <oper_id>   Y_LESS_EQ_GREATER "<=>"
+%token              Y_LESS_EQ_GREATER "<=>"
 %token  <type_id>   Y_NO_UNIQUE_ADDRESS
 %token              Y_REQUIRES
 
