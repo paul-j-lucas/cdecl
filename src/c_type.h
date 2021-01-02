@@ -318,22 +318,22 @@ extern c_type_t const T_ANY;            ///< All types.
  * @sa #TS_NEW_DELETE_OPER
  * @sa #TS_USER_DEF_CONV
  */
-#define TS_FUNC_LIKE          ( TS_EXTERN | TS_STATIC | TS_TYPEDEF \
-                              | TS_CONSTEVAL | TS_CONSTEXPR | TS_DEFAULT \
-                              | TS_DELETE | TS_EXPLICIT | TS_EXPORT \
-                              | TS_FINAL | TS_FRIEND | TS_INLINE \
-                              | TS_NOEXCEPT | TS_OVERRIDE | TS_PURE_VIRTUAL \
-                              | TS_THROW | TS_VIRTUAL | TS_CONST \
-                              | TS_RESTRICT | TS_VOLATILE | TS_ANY_REFERENCE )
+#define TS_FUNC_LIKE          ( TS_CONST | TS_CONSTEVAL | TS_CONSTEXPR \
+                              | TS_DEFAULT | TS_DELETE | TS_EXPLICIT \
+                              | TS_EXPORT | TS_EXTERN | TS_FINAL | TS_FRIEND \
+                              | TS_INLINE | TS_NOEXCEPT | TS_OVERRIDE \
+                              | TS_PURE_VIRTUAL | TS_ANY_REFERENCE \
+                              | TS_RESTRICT | TS_STATIC | TS_THROW \
+                              | TS_TYPEDEF | TS_VIRTUAL | TS_VOLATILE )
 
 /**
  * The types that can apply only to member functions or operators.
  *
  * @sa #TS_NONMEMBER_FUNC_ONLY
  */
-#define TS_MEMBER_FUNC_ONLY   ( TS_CONST | TS_VOLATILE | TS_DEFAULT \
-                              | TS_DELETE | TS_OVERRIDE | TS_FINAL \
-                              | TS_VIRTUAL | TS_ANY_REFERENCE | TS_RESTRICT )
+#define TS_MEMBER_FUNC_ONLY   ( TS_CONST | TS_DEFAULT | TS_DELETE | TS_FINAL \
+                              | TS_OVERRIDE | TS_ANY_REFERENCE | TS_RESTRICT \
+                              | TS_VIRTUAL | TS_VOLATILE )
 
 /**
  * The only types that can apply to operators new, new[], delete, & delete[].
@@ -357,8 +357,8 @@ extern c_type_t const T_ANY;            ///< All types.
  */
 #define TS_USER_DEF_CONV      ( TS_CONST | TS_CONSTEXPR | TS_EXPLICIT \
                               | TS_FINAL | TS_FRIEND | TS_INLINE \
-                              | TS_NOEXCEPT | TS_OVERRIDE | TS_THROW \
-                              | TS_PURE_VIRTUAL | TS_VIRTUAL)
+                              | TS_NOEXCEPT | TS_OVERRIDE | TS_PURE_VIRTUAL \
+                              | TS_THROW | TS_VIRTUAL )
 
 /**
  * Hexadecimal print conversion specifier for <code>\ref c_type_id_t</code>.
