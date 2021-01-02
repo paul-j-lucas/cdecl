@@ -348,7 +348,7 @@ extern c_type_t const T_ANY;            ///< All types.
 /**
  * The types that can apply only to non-member functions or operators.
  *
- * @sa TS_MEMBER_FUNC_ONLY
+ * @sa #TS_MEMBER_FUNC_ONLY
  */
 #define TS_NONMEMBER_FUNC_ONLY TS_FRIEND
 
