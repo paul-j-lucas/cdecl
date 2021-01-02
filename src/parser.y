@@ -1827,21 +1827,14 @@ explain_c
       DUMP_TID( "noexcept_c_tid_opt", $7 );
 
       c_ast_t *const ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
+      c_ast_append_name( ast, $4 );
       ast->type.store_tid = $2 | $7;
 
       DUMP_AST( "explain_c", ast );
       DUMP_END();
 
-      bool const ok = c_ast_check_declaration( ast );
-      if ( ok ) {
-        FPRINTF( fout, "%s %s %s ", L_DECLARE, $4, L_AS );
-        c_ast_english( ast, fout );
-        FPUTC( '\n', fout );
-      }
-
-      FREE( $4 );
-      if ( !ok )
-        PARSE_ABORT();
+      C_AST_CHECK_DECL( ast );
+      c_ast_explain_declaration( ast );
     }
 
     /*
@@ -1854,27 +1847,17 @@ explain_c
       DUMP_SNAME( "DESTRUCTOR_SNAME", &$2 );
       DUMP_TID( "noexcept_c_tid_opt", $5 );
 
+      c_sname_set_scope_type( &$2, &C_TYPE_LIT_B( TB_CLASS ) );
+
       c_ast_t *const ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
+      ast->sname = $2;
       ast->type.store_tid = $5;
 
       DUMP_AST( "explain_c", ast );
       DUMP_END();
 
-      bool const ok = c_ast_check_declaration( ast );
-      if ( ok ) {
-        char const *const local_name = c_sname_local_name( &$2 );
-        char const *const scope_name = c_sname_scope_name( &$2 );
-        FPRINTF( fout,
-          "%s %s %s %s %s %s ",
-          L_DECLARE, local_name, L_OF, L_CLASS, scope_name, L_AS
-        );
-        c_ast_english( ast, fout );
-        FPUTC( '\n', fout );
-      }
-
-      c_sname_free( &$2 );
-      if ( !ok )
-        PARSE_ABORT();
+      C_AST_CHECK_DECL( ast );
+      c_ast_explain_declaration( ast );
     }
 
     /*
