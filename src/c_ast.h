@@ -191,7 +191,7 @@ struct c_array_ast {
  */
 struct c_apple_block_ast {
   c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_params_t  params;               ///< Block parameters(s), if any.
+  c_ast_list_t    params;               ///< Block parameters(s), if any.
 };
 
 /**
@@ -202,7 +202,7 @@ struct c_apple_block_ast {
  */
 struct c_constructor_ast {
   void           *not_used;             ///< So `params` is at same offset.
-  c_ast_params_t  params;               ///< Constructor parameters(s), if any.
+  c_ast_list_t    params;               ///< Constructor parameters(s), if any.
 };
 
 /**
@@ -217,7 +217,7 @@ struct c_ecsu_ast {
  */
 struct c_function_ast {
   c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_params_t  params;               ///< Function parameter(s), if any.
+  c_ast_list_t    params;               ///< Function parameter(s), if any.
   unsigned        flags;                ///< Member or non-member.
 };
 
@@ -229,7 +229,7 @@ struct c_function_ast {
  */
 struct c_operator_ast {
   c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_params_t  params;               ///< Operator parameter(s), if any.
+  c_ast_list_t    params;               ///< Operator parameter(s), if any.
   unsigned        flags;                ///< Member or non-member.
   c_oper_id_t     oper_id;              ///< Which operator it is.
 };
@@ -274,7 +274,7 @@ struct c_udef_conv_ast {
  */
 struct c_udef_lit_ast {
   c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_params_t  params;               ///< Literal parameter(s).
+  c_ast_list_t    params;               ///< Literal parameter(s).
 };
 
 /**

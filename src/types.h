@@ -59,8 +59,8 @@ typedef int                       c_array_size_t;
 typedef struct c_ast              c_ast_t;
 typedef unsigned                  c_ast_depth_t;  ///< How many `()` deep.
 typedef unsigned                  c_ast_id_t;     ///< Unique AST node id.
+typedef struct slist              c_ast_list_t;   ///< AST list.
 typedef struct c_ast_pair         c_ast_pair_t;
-typedef struct slist              c_ast_params_t; ///< Function-like parameters.
 typedef struct slist_node         c_ast_param_t;  ///< Function-like parameter.
 typedef struct c_command          c_command_t;
 typedef enum   c_command_kind     c_command_kind_t;

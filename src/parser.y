@@ -772,7 +772,7 @@ static void yyerror( char const *msg ) {
 %union {
   c_alignas_t         align;
   c_ast_t            *ast;
-  c_ast_params_t      ast_list;   /* for declarations and function parameters */
+  c_ast_list_t        ast_list;   /* for declarations and function parameters */
   c_ast_pair_t        ast_pair;   /* for the AST being built */
   unsigned            bitmask;    /* multipurpose bitmask (used by show) */
   c_typedef_t const  *c_typedef;  /* typedef */
