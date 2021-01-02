@@ -1120,6 +1120,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  array_decl_c_ast
 %type   <number>    array_size_c_num
 %type   <ast_pair>  block_decl_c_ast
+%type   <ast>       file_scope_constructor_decl_c_ast
 %type   <ast_pair>  func_decl_c_ast
 %type   <type_id>   func_ref_qualifier_c_tid_opt
 %type   <ast_pair>  knr_func_or_constructor_c_decl_ast
@@ -1790,28 +1791,15 @@ explain_c
     /*
      * C++ file-scope constructor definition, e.g.: S::S([params]).
      */
-  | explain Y_CONSTRUCTOR_SNAME lparen_exp param_list_c_ast_opt ')'
-    noexcept_c_tid_opt
+  | explain file_scope_constructor_decl_c_ast
     {
       DUMP_START( "explain_c",
-                  "EXPLAIN CONSTRUCTOR_SNAME '(' param_list_c_ast_opt ')' "
-                  "noexcept_c_tid_opt" );
-      DUMP_SNAME( "CONSTRUCTOR_SNAME", &$2 );
-      DUMP_AST_LIST( "param_list_c_ast_opt", $4 );
-      DUMP_TID( "noexcept_c_tid_opt", $6 );
-
-      c_sname_set_scope_type( &$2, &C_TYPE_LIT_B( TB_CLASS ) );
-
-      c_ast_t *const ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-      ast->sname = $2;
-      ast->type.store_tid = $6;
-      ast->as.constructor.params = $4;
-
-      DUMP_AST( "explain_c", ast );
+                  "EXPLAIN file_scope_constructor_decl_c_ast" );
+      DUMP_AST( "file_scope_constructor_decl_c_ast", $2 );
       DUMP_END();
 
-      C_AST_CHECK_DECL( ast );
-      c_ast_explain_declaration( ast );
+      C_AST_CHECK_DECL( $2 );
+      c_ast_explain_declaration( $2 );
     }
 
     /*
@@ -3242,6 +3230,28 @@ block_decl_c_ast                        /* Apple extension */
       $$.target_ast = block_ast->as.block.ret_ast;
 
       DUMP_AST( "block_decl_c_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+file_scope_constructor_decl_c_ast
+  : Y_CONSTRUCTOR_SNAME lparen_exp param_list_c_ast_opt ')' noexcept_c_tid_opt
+    {
+      DUMP_START( "file_scope_constructor_decl_c_ast",
+                  "CONSTRUCTOR_SNAME '(' param_list_c_ast_opt ')' "
+                  "noexcept_c_tid_opt" );
+      DUMP_SNAME( "CONSTRUCTOR_SNAME", &$1 );
+      DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
+      DUMP_TID( "noexcept_c_tid_opt", $5 );
+
+      c_sname_set_scope_type( &$1, &C_TYPE_LIT_B( TB_CLASS ) );
+
+      $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
+      $$->sname = $1;
+      $$->type.store_tid = $5;
+      $$->as.constructor.params = $3;
+
+      DUMP_AST( "file_scope_constructor_decl_c_ast", $$ );
       DUMP_END();
     }
   ;
