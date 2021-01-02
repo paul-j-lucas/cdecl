@@ -353,7 +353,9 @@ char const* c_sname_scope_name( c_sname_t const *sname );
  * @param sname The scoped name to get the scope type of the scope of.
  * @return Returns said type or #T_NONE if \a sname is empty or not within a
  * scope.
+ *
  * @sa c_sname_local_type()
+ * @sa c_sname_set_scope_type()
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
@@ -369,10 +371,28 @@ c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
  * @param type The type.
  *
  * @sa c_sname_local_type()
+ * @sa c_sname_set_scope_type()
  */
 C_SNAME_INLINE
 void c_sname_set_local_type( c_sname_t *sname, c_type_t const *type ) {
   c_scope_data( sname->tail )->type = *type;
+}
+
+/**
+ * Sets the scope type \a sname (which is the type of the next-most innermost
+ * scope) or does nothing if \a sname has no scope.
+ *
+ * @param sname The scoped name to set the scope type of.
+ * @param type The type.
+ *
+ * @sa c_sname_local_type()
+ * @sa c_sname_set_scope_type()
+ */
+C_SNAME_INLINE
+void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
+  c_scope_data_t *const data = SLIST_PEEK_ATR( c_scope_data_t*, sname, 1 );
+  if ( data != NULL )
+    data->type = *type;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
