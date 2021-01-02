@@ -1121,6 +1121,7 @@ static void yyerror( char const *msg ) {
 %type   <number>    array_size_c_num
 %type   <ast_pair>  block_decl_c_ast
 %type   <ast>       file_scope_constructor_decl_c_ast
+%type   <ast>       file_scope_destructor_decl_c_ast
 %type   <ast_pair>  func_decl_c_ast
 %type   <type_id>   func_ref_qualifier_c_tid_opt
 %type   <ast_pair>  knr_func_or_constructor_c_decl_ast
@@ -1828,24 +1829,15 @@ explain_c
     /*
      * C++ file scope destructor definition, e.g.: S::~S().
      */
-  | explain Y_DESTRUCTOR_SNAME lparen_exp rparen_exp noexcept_c_tid_opt
+  | explain file_scope_destructor_decl_c_ast
     {
       DUMP_START( "explain_c",
-                  "EXPLAIN DESTRUCTOR_SNAME '(' ')' noexcept_c_tid_opt" );
-      DUMP_SNAME( "DESTRUCTOR_SNAME", &$2 );
-      DUMP_TID( "noexcept_c_tid_opt", $5 );
-
-      c_sname_set_scope_type( &$2, &C_TYPE_LIT_B( TB_CLASS ) );
-
-      c_ast_t *const ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
-      ast->sname = $2;
-      ast->type.store_tid = $5;
-
-      DUMP_AST( "explain_c", ast );
+                  "EXPLAIN file_scope_destructor_decl_c_ast" );
+      DUMP_AST( "file_scope_destructor_decl_c_ast", $2 );
       DUMP_END();
 
-      C_AST_CHECK_DECL( ast );
-      c_ast_explain_declaration( ast );
+      C_AST_CHECK_DECL( $2 );
+      c_ast_explain_declaration( $2 );
     }
 
     /*
@@ -3252,6 +3244,25 @@ file_scope_constructor_decl_c_ast
       $$->as.constructor.params = $3;
 
       DUMP_AST( "file_scope_constructor_decl_c_ast", $$ );
+      DUMP_END();
+    }
+  ;
+
+file_scope_destructor_decl_c_ast
+  : Y_DESTRUCTOR_SNAME lparen_exp rparen_exp noexcept_c_tid_opt
+    {
+      DUMP_START( "file_scope_destructor_decl_c_ast",
+                  "DESTRUCTOR_SNAME '(' ')' noexcept_c_tid_opt" );
+      DUMP_SNAME( "DESTRUCTOR_SNAME", &$1 );
+      DUMP_TID( "noexcept_c_tid_opt", $4 );
+
+      c_sname_set_scope_type( &$1, &C_TYPE_LIT_B( TB_CLASS ) );
+
+      $$ = c_ast_new_gc( K_DESTRUCTOR, &@$ );
+      $$->sname = $1;
+      $$->type.store_tid = $4;
+
+      DUMP_AST( "file_scope_destructor_decl_c_ast", $$ );
       DUMP_END();
     }
   ;
