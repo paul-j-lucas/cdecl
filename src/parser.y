@@ -3292,7 +3292,7 @@ func_decl_c_ast
       c_type_id_t const func_qualifier_tid = $5;
       c_type_id_t const func_ref_qualifier_tid = $6;
       c_type_id_t const noexcept_tid = $7;
-      c_type_id_t const pure_virtual_tid = $9;
+      c_type_id_t const func_equals_tid = $9;
       c_ast_t    *const trailing_ret_ast = $8.ast;
       c_ast_t    *const type_ast = type_ast_peek();
 
@@ -3309,7 +3309,7 @@ func_decl_c_ast
       DUMP_TID( "func_ref_qualifier_c_tid_opt", func_ref_qualifier_tid );
       DUMP_TID( "noexcept_c_tid_opt", noexcept_tid );
       DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
-      DUMP_TID( "func_equals_tid_opt", pure_virtual_tid );
+      DUMP_TID( "func_equals_tid_opt", func_equals_tid );
       DUMP_AST( "target_ast", $1.target_ast );
 
       //
@@ -3359,7 +3359,7 @@ func_decl_c_ast
         c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );
       func_ast->type.store_tid =
         func_qualifier_tid | func_ref_qualifier_tid | noexcept_tid |
-        pure_virtual_tid;
+        func_equals_tid;
       func_ast->as.func.params = $3;
 
       if ( assume_constructor ) {
