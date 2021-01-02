@@ -237,10 +237,26 @@ char const* c_sname_full_name( c_sname_t const *sname );
  * @param sname The scoped name to initialize.
  *
  * @sa c_sname_free()
+ * @sa c_sname_init_name()
  */
 C_SNAME_INLINE
 void c_sname_init( c_sname_t *sname ) {
   slist_init( sname );
+}
+
+/**
+ * Initializes \a sname with \a name.
+ *
+ * @param sname The scoped name to initialize.
+ * @param name The name to set to.  Ownership is taken.
+ *
+ * @sa c_sname_free()
+ * @sa c_sname_init()
+ */
+C_SNAME_INLINE
+void c_sname_init_name( c_sname_t *sname, char *name ) {
+  slist_init( sname );
+  c_sname_append_name( sname, name );
 }
 
 /**

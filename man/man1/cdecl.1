@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 1, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 2, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2167,26 +2167,6 @@ complete declarations are not:
 struct S s;                     // supported
 struct S { typedef int Int; };  // supported
 struct S { int i; char c; } s;  // not supported
-.cE 0
-.IP \n+[step].
-While file-scope constructor declarations are supported,
-in-class constructor declarations
-without at least one storage-class-like type
-are not:
-.cS
-C::C()                          // supported
-C::C(int)                       // supported
-explicit C(int)                 // supported
-C()                             // not supported
-.cE 0
-.IP ""
-This is because in-class constructor declarations
-without a storage-class-like type
-and ordinary function declarations are ambiguous
-in an LALR(1) parser:
-.cS
-C(T)                      // constructor C with T argument
-C(x)                      // variable x of type C with unneeded ()
 .cE 0
 .IP \n+[step].
 C++

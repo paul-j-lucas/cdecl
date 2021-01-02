@@ -1181,6 +1181,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_cpmci.test \
 	tests/explain_cpmi.test \
 	tests/explain_crf_v.test \
+	tests/explain_ctor_i.test \
 	tests/explain_cvf_v.test \
 	tests/explain_df_v.test \
 	tests/explain_di.test \

@@ -1120,8 +1120,9 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  array_decl_c_ast
 %type   <number>    array_size_c_num
 %type   <ast_pair>  block_decl_c_ast
-%type   <ast_pair>  func_decl_c_ast func_decl_knr_c_ast
+%type   <ast_pair>  func_decl_c_ast
 %type   <type_id>   func_ref_qualifier_c_tid_opt
+%type   <ast_pair>  knr_func_or_constructor_c_decl_ast
 %type   <ast_pair>  nested_decl_c_ast
 %type   <type_id>   noexcept_c_tid_opt
 %type   <ast_pair>  oper_c_ast
@@ -1946,13 +1947,13 @@ explain_c
     }
 
     /*
-     * K&R C implicit int function declaration.
+     * K&R C implicit int function and C++ in-class constructor declaration.
      */
-  | explain func_decl_knr_c_ast
+  | explain knr_func_or_constructor_c_decl_ast
     {
       DUMP_START( "explain_c",
-                  "EXPLAIN func_decl_knr_c_ast" );
-      DUMP_AST( "func_decl_knr_c_ast", $2.ast );
+                  "EXPLAIN knr_func_or_constructor_c_decl_ast" );
+      DUMP_AST( "knr_func_or_constructor_c_decl_ast", $2.ast );
       DUMP_END();
 
       c_ast_explain( $2.ast );
@@ -3389,36 +3390,59 @@ func_decl_c_ast
     }
   ;
 
-func_decl_knr_c_ast
+knr_func_or_constructor_c_decl_ast
     /*
-     * K&R C implicit int function declaration.
+     * K&R C implicit int function and C++ in-class constructor declaration.
+     *
+     * This grammar rule handles both since they're so similar (and so would
+     * cause grammar conflicts if they were separate rules in an LALR(1)
+     * parser).
      */
   : Y_NAME '(' param_list_c_ast_opt ')'
     {
-      DUMP_START( "func_decl_knr_c_ast",
+      DUMP_START( "knr_func_or_constructor_c_decl_ast",
                   "NAME '(' param_list_c_ast_opt ')'" );
       DUMP_STR( "NAME", $1 );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
 
-      //
-      // Prior to C99, encountering a name followed by '(' declares a function
-      // that implicitly returns int:
-      //
-      //      power(x, n)               /* raise x to n-th power; n > 0 */
-      //
-      c_ast_t *const ret_ast = c_ast_new_gc( K_BUILTIN, &@1 );
-      ret_ast->type = C_TYPE_LIT_B( TB_INT );
+      c_sname_t sname;
+      c_sname_init_name( &sname, $1 );
 
-      $$.ast = c_ast_new_gc( K_FUNCTION, &@$ );
-      c_ast_set_name( $$.ast, $1 );
-      $$.ast->as.func.ret_ast = ret_ast;
+      c_ast_t *ret_ast = NULL;
+
+      if ( C_LANG_IS_C() ) {
+        //
+        // In C prior to C99, encountering a name followed by '(' declares a
+        // function that implicitly returns int:
+        //
+        //      power(x, n)             /* raise x to n-th power; n > 0 */
+        //
+        ret_ast = c_ast_new_gc( K_BUILTIN, &@1 );
+        ret_ast->type = C_TYPE_LIT_B( TB_INT );
+
+        $$.ast = c_ast_new_gc( K_FUNCTION, &@$ );
+        $$.ast->as.func.ret_ast = ret_ast;
+      } else {
+        //
+        // In C++, encountering a name followed by '(' declares an in-class
+        // constructor.
+        //
+        $$.ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
+        //
+        // Double the name, e.g., "C" to "C::C".
+        //
+        c_sname_set_local_type( &sname, &C_TYPE_LIT_B( TB_CLASS ) );
+        c_sname_append_name( &sname, check_strdup( $1 ) );
+      }
+
+      c_ast_set_sname( $$.ast, &sname );
       $$.ast->as.func.params = $3;
       $$.target_ast = ret_ast;
 
-      DUMP_AST( "func_decl_knr_c_ast", $$.ast );
+      DUMP_AST( "knr_func_or_constructor_c_decl_ast", $$.ast );
       DUMP_END();
 
-      if ( opt_lang >= LANG_C_99 ) {
+      if ( (opt_lang & LANG_C_MIN(99)) != LANG_NONE ) {
         //
         // In C99 and later, however, implicit int is an error.  This check has
         // to be done now in the parser rather than later in the AST since the
@@ -4977,8 +5001,7 @@ sname_c
                   "NAME" );
       DUMP_STR( "NAME", $1 );
 
-      c_sname_init( &$$ );
-      c_sname_append_name( &$$, $1 );
+      c_sname_init_name( &$$, $1 );
 
       DUMP_SNAME( "sname_c", &$$ );
       DUMP_END();
