@@ -295,13 +295,14 @@ extern c_type_t const T_ANY;            ///< All types.
 #define TS_ANY_REFERENCE      ( TS_REFERENCE | TS_RVALUE_REFERENCE )
 
 /**
- * The only types that can be applied to constructors.
+ * The only types that can apply to constructors.
  *
  * @sa #TS_CONSTRUCTOR_ONLY
  * @sa #TS_FUNC_LIKE
  */
-#define TS_CONSTRUCTOR        ( TS_CONSTEXPR | TS_EXPLICIT | TS_FRIEND \
-                              | TS_INLINE | TS_NOEXCEPT | TS_THROW )
+#define TS_CONSTRUCTOR        ( TS_CONSTEXPR | TS_DEFAULT | TS_DELETE \
+                              | TS_EXPLICIT | TS_FRIEND | TS_INLINE \
+                              | TS_NOEXCEPT | TS_THROW )
 
 /**
  * The types that can apply only to constructors.
@@ -311,8 +312,8 @@ extern c_type_t const T_ANY;            ///< All types.
 #define TS_CONSTRUCTOR_ONLY   TS_EXPLICIT
 
 /**
- * The only types that can be applied to function-like things (functions,
- * blocks, and operators).
+ * The only types that can apply to function-like things (functions, blocks,
+ * constructors, operators, and user-defined conversion operators).
  *
  * @sa #TS_CONSTRUCTOR
  * @sa #TS_NEW_DELETE_OPER
@@ -329,6 +330,7 @@ extern c_type_t const T_ANY;            ///< All types.
 /**
  * The types that can apply only to member functions or operators.
  *
+ * @sa #TS_FUNC_LIKE
  * @sa #TS_NONMEMBER_FUNC_ONLY
  */
 #define TS_MEMBER_FUNC_ONLY   ( TS_CONST | TS_DEFAULT | TS_DELETE | TS_FINAL \
