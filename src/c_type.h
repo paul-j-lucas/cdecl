@@ -324,8 +324,7 @@ extern c_type_t const T_ANY;            ///< All types.
                               | TS_FINAL | TS_FRIEND | TS_INLINE \
                               | TS_NOEXCEPT | TS_OVERRIDE | TS_PURE_VIRTUAL \
                               | TS_THROW | TS_VIRTUAL | TS_CONST \
-                              | TS_RESTRICT | TS_VOLATILE | TS_REFERENCE \
-                              | TS_RVALUE_REFERENCE )
+                              | TS_RESTRICT | TS_VOLATILE | TS_ANY_REFERENCE )
 
 /**
  * The types that can apply only to member functions or operators.
@@ -334,8 +333,7 @@ extern c_type_t const T_ANY;            ///< All types.
  */
 #define TS_MEMBER_FUNC_ONLY   ( TS_CONST | TS_VOLATILE | TS_DEFAULT \
                               | TS_DELETE | TS_OVERRIDE | TS_FINAL \
-                              | TS_VIRTUAL | TS_REFERENCE | TS_RESTRICT \
-                              | TS_RVALUE_REFERENCE )
+                              | TS_VIRTUAL | TS_ANY_REFERENCE | TS_RESTRICT )
 
 /**
  * The only types that can apply to operators new, new[], delete, & delete[].
