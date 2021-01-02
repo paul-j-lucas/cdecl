@@ -353,6 +353,17 @@ extern c_type_t const T_ANY;            ///< All types.
 #define TS_NONMEMBER_FUNC_ONLY TS_FRIEND
 
 /**
+ * The types that can apply only to function-like things except constructors.
+ *
+ * @sa #TS_CONSTRUCTOR
+ * @sa #TS_CONSTRUCTOR_ONLY
+ * @sa #TS_FUNC_LIKE
+ */
+#define TS_NOT_CONSTRUCTOR    ( TS_CONST | TS_EXTERN | TS_FINAL | TS_OVERRIDE \
+                              | TS_ANY_REFERENCE | TS_RESTRICT | TS_STATIC \
+                              | TS_VIRTUAL | TS_VOLATILE )
+
+/**
  * The types that can apply to user-defined conversion operators.
  *
  * @sa #TS_FUNC_LIKE

@@ -3313,6 +3313,10 @@ func_decl_c_ast
       DUMP_TID( "func_equals_tid_opt", func_equals_tid );
       DUMP_AST( "target_ast", $1.target_ast );
 
+      c_type_id_t const func_store_tid =
+        func_qualifier_tid | func_ref_qualifier_tid | noexcept_tid |
+        func_equals_tid;
+
       //
       // Cdecl can't know for certain whether a "function" name is really a
       // constructor name because it:
@@ -3336,31 +3340,39 @@ func_decl_c_ast
       //      + A variable named U of type T (with unnecessary parentheses).
       //
       // Hence, we have to infer which of a function or a constructor was
-      // likely the one meant.  If the declaration has:
-      //
-      //  + No base type; AND EITHER:
-      //
-      //  + Any constructor-only storage-class-like type (e.g., explicit); OR:
-      //
-      //  + Only any number of storage-class-like types that may be applied to
-      //    constructors (e.g., constexpr, inline):
-      //
-      // then assume it's a constructor.
+      // likely the one meant.  Assume the declaration is for a constructor
+      // only if:
       //
       bool const assume_constructor =
-        type_ast->type.base_tid == TB_NONE && (
+
+        // + The current language is C++.
+        C_LANG_IS_CPP() &&
+
+        // + The existing base type is none.
+        type_ast->type.base_tid == TB_NONE &&
+
+        // + The existing type does _not_ have any non-constructor storage
+        //   classes.
+        !c_type_is_tid_any( &type_ast->type, TS_NOT_CONSTRUCTOR ) &&
+
+        ( // + The existing type has any constructor-only storage-class-like
+          //   types (e.g., explicit).
           c_type_is_tid_any( &type_ast->type, TS_CONSTRUCTOR_ONLY ) ||
+
+          // + Or the existing type only has storage-class-like types that may
+          //   be applied to constructors.
           only_bits_set(
             c_type_id_no_part_id( type_ast->type.store_tid ),
             c_type_id_no_part_id( TS_CONSTRUCTOR )
           )
-        );
+        ) &&
+
+        // + The new type does _not_ have any non-constructor storage classes.
+        (func_store_tid & TS_NOT_CONSTRUCTOR) == TS_NONE;
 
       c_ast_t *const func_ast =
         c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );
-      func_ast->type.store_tid =
-        func_qualifier_tid | func_ref_qualifier_tid | noexcept_tid |
-        func_equals_tid;
+      func_ast->type.store_tid = func_store_tid;
       func_ast->as.func.params = $3;
 
       if ( assume_constructor ) {
