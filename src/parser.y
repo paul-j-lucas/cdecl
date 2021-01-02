@@ -529,11 +529,11 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
 }
 
 /**
- * Prints the pseudo English explanation for an AST.
+ * Prints the pseudo English explanation for a declaration AST.
  *
  * @param ast The AST to explain.
  */
-static void c_ast_explain( c_ast_t const *ast ) {
+static void c_ast_explain_declaration( c_ast_t const *ast ) {
   assert( ast != NULL );
 
   FPRINTF( fout, "%s ", L_DECLARE );
@@ -1784,7 +1784,7 @@ explain_c
       DUMP_END();
 
       C_AST_CHECK_DECL( $2.ast );
-      c_ast_explain( $2.ast );
+      c_ast_explain_declaration( $2.ast );
     }
 
     /*
@@ -1811,7 +1811,7 @@ explain_c
       DUMP_END();
 
       C_AST_CHECK_DECL( ast );
-      c_ast_explain( ast );
+      c_ast_explain_declaration( ast );
     }
 
     /*
@@ -1943,7 +1943,7 @@ explain_c
       DUMP_AST( "knr_func_or_constructor_c_decl_ast", $2.ast );
       DUMP_END();
 
-      c_ast_explain( $2.ast );
+      c_ast_explain_declaration( $2.ast );
     }
 
     /*
@@ -2041,7 +2041,7 @@ decl_c
 
       if ( ast == NULL )
         PARSE_ABORT();
-      c_ast_explain( ast );
+      c_ast_explain_declaration( ast );
 
       //
       // The type's AST takes on the name of the thing being declared, e.g.:
