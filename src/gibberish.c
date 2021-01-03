@@ -693,15 +693,6 @@ static void g_print_space_name( g_state_t *g, c_ast_t const *ast ) {
   switch ( ast->kind_id ) {
     case K_CONSTRUCTOR:
       FPUTS( c_ast_full_name( ast ), g->gout );
-
-      if ( !c_type_is_tid_any( &ast->type, TS_EXPLICIT ) &&
-           c_ast_count_name( ast ) == 1 ) {
-        //
-        // For non-explicit constructors, we have to repeat the local name
-        // since that's the name of the constructor at file-scope.
-        //
-        FPRINTF( g->gout, "::%s", c_ast_local_name( ast ) );
-      }
       break;
     case K_DESTRUCTOR:
       if ( c_ast_count_name( ast ) > 1 )

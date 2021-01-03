@@ -1,1 +1,1 @@
-declare C of class C as constructor (int)
+declare C as constructor (int)

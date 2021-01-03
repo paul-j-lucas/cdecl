@@ -3430,11 +3430,6 @@ knr_func_or_constructor_c_decl_ast
         // constructor.
         //
         $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-        //
-        // Double the name, e.g., "C" to "C::C".
-        //
-        c_sname_set_local_type( &sname, &C_TYPE_LIT_B( TB_CLASS ) );
-        c_sname_append_name( &sname, check_strdup( $1 ) );
       }
 
       c_ast_set_sname( $$, &sname );
