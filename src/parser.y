@@ -1124,7 +1124,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>       file_scope_destructor_decl_c_ast
 %type   <ast_pair>  func_decl_c_ast
 %type   <type_id>   func_ref_qualifier_c_tid_opt
-%type   <ast_pair>  knr_func_or_constructor_c_decl_ast
+%type   <ast>       knr_func_or_constructor_c_decl_ast
 %type   <ast_pair>  nested_decl_c_ast
 %type   <type_id>   noexcept_c_tid_opt
 %type   <ast_pair>  oper_c_ast
@@ -1903,11 +1903,11 @@ explain_c
     {
       DUMP_START( "explain_c",
                   "EXPLAIN knr_func_or_constructor_c_decl_ast" );
-      DUMP_AST( "knr_func_or_constructor_c_decl_ast", $2.ast );
+      DUMP_AST( "knr_func_or_constructor_c_decl_ast", $2 );
       DUMP_END();
 
-      C_AST_CHECK_DECL( $2.ast );
-      c_ast_explain_declaration( $2.ast );
+      C_AST_CHECK_DECL( $2 );
+      c_ast_explain_declaration( $2 );
     }
 
     /*
@@ -3412,8 +3412,6 @@ knr_func_or_constructor_c_decl_ast
       c_sname_t sname;
       c_sname_init_name( &sname, $1 );
 
-      c_ast_t *ret_ast = NULL;
-
       if ( C_LANG_IS_C() ) {
         //
         // In C prior to C99, encountering a name followed by '(' declares a
@@ -3421,17 +3419,17 @@ knr_func_or_constructor_c_decl_ast
         //
         //      power(x, n)             /* raise x to n-th power; n > 0 */
         //
-        ret_ast = c_ast_new_gc( K_BUILTIN, &@1 );
-        ret_ast->type = C_TYPE_LIT_B( TB_INT );
+        c_ast_t *const ret_ast = c_ast_new_gc( K_BUILTIN, &@1 );
+        ret_ast->type.base_tid = TB_INT;
 
-        $$.ast = c_ast_new_gc( K_FUNCTION, &@$ );
-        $$.ast->as.func.ret_ast = ret_ast;
+        $$ = c_ast_new_gc( K_FUNCTION, &@$ );
+        $$->as.func.ret_ast = ret_ast;
       } else {
         //
         // In C++, encountering a name followed by '(' declares an in-class
         // constructor.
         //
-        $$.ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
+        $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
         //
         // Double the name, e.g., "C" to "C::C".
         //
@@ -3439,11 +3437,10 @@ knr_func_or_constructor_c_decl_ast
         c_sname_append_name( &sname, check_strdup( $1 ) );
       }
 
-      c_ast_set_sname( $$.ast, &sname );
-      $$.ast->as.func.params = $3;
-      $$.target_ast = ret_ast;
+      c_ast_set_sname( $$, &sname );
+      $$->as.func.params = $3;
 
-      DUMP_AST( "knr_func_or_constructor_c_decl_ast", $$.ast );
+      DUMP_AST( "knr_func_or_constructor_c_decl_ast", $$ );
       DUMP_END();
 
       if ( (opt_lang & LANG_C_MIN(99)) != LANG_NONE ) {
