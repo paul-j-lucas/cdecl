@@ -714,31 +714,31 @@ static void quit( void ) {
 /**
  * Prints the definition of a `typedef`.
  *
- * @param type The `c_typedef` to print.
+ * @param tdef The <code>\ref c_typedef</code> to print.
  * @param data Optional data passed to the visitor: in this case, the bitmask
  * of which `typedef`s to print.
  * @return Always returns `false`.
  */
 PJL_WARN_UNUSED_RESULT
-static bool show_type_visitor( c_typedef_t const *type, void *data ) {
-  assert( type != NULL );
+static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
+  assert( tdef != NULL );
   assert( data != NULL );
 
   show_type_info_t const *const sti = data;
 
-  bool const show_type = type->user_defined ?
+  bool const show_type = tdef->user_defined ?
     (sti->show_which & SHOW_USER_TYPES) != 0 :
     (sti->show_which & SHOW_PREDEFINED_TYPES) != 0;
 
   bool const show_in_lang =
     (sti->show_which & SHOW_ALL_TYPES) != 0 ||
-    (type->lang_ids & opt_lang) != LANG_NONE;
+    (tdef->lang_ids & opt_lang) != LANG_NONE;
 
   if ( show_type && show_in_lang ) {
     if ( sti->kind == C_GIB_NONE )
-      c_ast_english_type( type->ast, fout );
+      c_ast_english_type( tdef->ast, fout );
     else
-      c_typedef_gibberish( type, sti->kind, fout );
+      c_typedef_gibberish( tdef, sti->kind, fout );
     FPUTC( '\n', fout );
   }
   return false;
@@ -791,7 +791,6 @@ static void yyerror( char const *msg ) {
   c_ast_list_t        ast_list;   /* for declarations and function parameters */
   c_ast_pair_t        ast_pair;   /* for the AST being built */
   unsigned            bitmask;    /* multipurpose bitmask (used by show) */
-  c_typedef_t const  *c_typedef;  /* typedef */
   bool                flag;       /* simple flag */
   c_gib_kind_t        gkind;      /* kind of gibberish */
   char const         *literal;    /* token literal (for new-style casts) */
@@ -799,6 +798,7 @@ static void yyerror( char const *msg ) {
   int                 number;     /* for array sizes */
   c_oper_id_t         oper_id;    /* overloaded operator ID */
   c_sname_t           sname;      /* name being declared or explained */
+  c_typedef_t const  *tdef;       /* typedef */
   c_type_t            type;       /* complete type */
   c_type_id_t         type_id;    /* built-ins, storage classes, & qualifiers */
 }
@@ -1072,8 +1072,8 @@ static void yyerror( char const *msg ) {
 %token  <name>      Y_NAME
 %token  <number>    Y_NUMBER
 %token  <name>      Y_SET_OPTION
-%token  <c_typedef> Y_TYPEDEF_NAME      /* e.g., size_t */
-%token  <c_typedef> Y_TYPEDEF_SNAME     /* e.g., std::string */
+%token  <tdef>      Y_TYPEDEF_NAME      /* e.g., size_t */
+%token  <tdef>      Y_TYPEDEF_SNAME     /* e.g., std::string */
 
                     /*
                      * Grammar rules are named according to the following
@@ -1084,7 +1084,6 @@ static void yyerror( char const *msg ) {
                      *     to English, "_english" is appended.
                      *  3. Is of type:
                      *      + <ast> or <ast_pair>: "_ast" is appended.
-                     *      + <c_typedef>: "_typedef" is appended.
                      *      + <name>: "_name" is appended.
                      *      + <number>: "_num" is appended.
                      *      + <sname>: "_sname" is appended.
@@ -1205,7 +1204,7 @@ static void yyerror( char const *msg ) {
 %type   <align>     alignas_specifier_c
 %type   <name>      any_name any_name_exp
 %type   <sname>     any_sname_c any_sname_c_exp any_sname_c_opt
-%type   <c_typedef> any_typedef
+%type   <tdef>      any_typedef
 %type   <oper_id>   c_operator
 %type   <literal>   help_what_opt
 %type   <bitmask>   member_or_non_member_opt
@@ -2465,7 +2464,7 @@ typedef_declaration_c
         //
         ast = $4.ast;
         if ( c_ast_empty_name( ast ) )
-          ast->sname = c_ast_dup_name( $6.ast->as.c_typedef.for_ast );
+          ast->sname = c_ast_dup_name( $6.ast->as.tdef.for_ast );
       }
       else {
         //
@@ -2552,7 +2551,7 @@ using_declaration_c
       c_ast_t *const using_ast = c_ast_patch_placeholder( $5.ast, $7.ast );
 
       c_sname_t sname = $3.ast->kind_id == K_TYPEDEF ?
-        c_ast_dup_name( $3.ast->as.c_typedef.for_ast ) :
+        c_ast_dup_name( $3.ast->as.tdef.for_ast ) :
         c_ast_take_name( $3.ast );
       c_ast_set_sname( using_ast, &sname );
 
@@ -2600,7 +2599,7 @@ typedef_name_c_ast
 
       $$ = c_ast_pair_new_gc( K_TYPEDEF, &@$ );
       $$.ast->type.base_tid = TB_TYPEDEF;
-      $$.ast->as.c_typedef.for_ast = $1->ast;
+      $$.ast->as.tdef.for_ast = $1->ast;
 
       DUMP_AST( "typedef_name_c_ast", $$.ast );
       DUMP_END();
@@ -4839,7 +4838,7 @@ typedef_type_c_ast
       $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
       $$.target_ast = NULL;
       $$.ast->type.base_tid = TB_TYPEDEF;
-      $$.ast->as.c_typedef.for_ast = $1->ast;
+      $$.ast->as.tdef.for_ast = $1->ast;
 
       DUMP_AST( "typedef_type_c_ast", $$.ast );
       DUMP_END();
@@ -5066,11 +5065,11 @@ sname_english_ast
       //
       // See if the full name is the name of a typedef'd type.
       //
-      c_typedef_t const *const t = c_typedef_find( &sname );
-      if ( t != NULL ) {
+      c_typedef_t const *const tdef = c_typedef_find( &sname );
+      if ( tdef != NULL ) {
         $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
         $$.ast->type.base_tid = TB_TYPEDEF;
-        $$.ast->as.c_typedef.for_ast = t->ast;
+        $$.ast->as.tdef.for_ast = tdef->ast;
         c_sname_free( &sname );
       } else {
         $$.ast = c_ast_new_gc( K_NAME, &@$ );

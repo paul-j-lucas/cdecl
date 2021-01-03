@@ -58,16 +58,16 @@
 void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t kind, FILE *gout );
 
 /**
- * Prints \a type as a C/C++ type declaration.
+ * Prints \a tdef as a C/C++ type declaration.
  *
- * @param type The type to print.
+ * @param tdef The type to print.
  * @param kind The kind of gibberish to print as; must only be either
  * #C_GIB_TYPEDEF or #C_GIB_USING.
  * @param gout The `FILE` to print to.
  *
  * @sa c_ast_gibberish()
  */
-void c_typedef_gibberish( c_typedef_t const *type, c_gib_kind_t kind,
+void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t kind,
                           FILE *gout );
 
 /**

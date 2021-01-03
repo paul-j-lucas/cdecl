@@ -679,9 +679,9 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                     //
                     // 1. See if it's a typedef'd type.
                     //
-                    c_typedef_t const *const t = c_typedef_find( &sname );
-                    if ( t != NULL ) {
-                      yylval.c_typedef = t;
+                    c_typedef_t const *const tdef = c_typedef_find( &sname );
+                    if ( tdef != NULL ) {
+                      yylval.tdef = tdef;
                       c_sname_free( &sname );
                       return Y_TYPEDEF_SNAME;
                     }
@@ -754,10 +754,10 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                   //
                   // 2. See if it's a typedef'd type.
                   //
-                  SNAME_VAR_INIT( typedef_name, lexer_token );
-                  c_typedef_t const *const t = c_typedef_find( &typedef_name );
-                  if ( t != NULL ) {
-                    yylval.c_typedef = t;
+                  SNAME_VAR_INIT( sname, lexer_token );
+                  c_typedef_t const *const tdef = c_typedef_find( &sname );
+                  if ( tdef != NULL ) {
+                    yylval.tdef = tdef;
                     return Y_TYPEDEF_NAME;
                   }
                 }

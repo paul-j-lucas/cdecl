@@ -378,7 +378,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
 
       bool const orig_skip_name_for_using = g->skip_name_for_using;
       g->skip_name_for_using = false;
-      g_print_full_or_local_name( g, ast->as.c_typedef.for_ast );
+      g_print_full_or_local_name( g, ast->as.tdef.for_ast );
       g->skip_name_for_using = orig_skip_name_for_using;
 
       if ( opt_east_const && !is_typedef )
@@ -738,16 +738,16 @@ void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t kind, FILE *gout ) {
   c_ast_gibberish_impl( ast, kind, /*printing_typedef=*/false, gout );
 }
 
-void c_typedef_gibberish( c_typedef_t const *type, c_gib_kind_t kind,
+void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t kind,
                           FILE *gout ) {
-  assert( type != NULL );
+  assert( tdef != NULL );
   assert( kind == C_GIB_TYPEDEF || kind == C_GIB_USING );
   assert( gout != NULL );
 
   size_t scope_close_braces_to_print = 0;
   c_type_t scope_type = T_NONE;
 
-  c_sname_t const *const sname = c_ast_find_name( type->ast, C_VISIT_DOWN );
+  c_sname_t const *const sname = c_ast_find_name( tdef->ast, C_VISIT_DOWN );
   if ( sname != NULL && c_sname_count( sname ) > 1 ) {
     scope_type = c_scope_data( sname->head )->type;
     //
@@ -817,12 +817,12 @@ void c_typedef_gibberish( c_typedef_t const *type, c_gib_kind_t kind,
   // types and not just tags, so we don't print "typedef".
   //
   bool const printing_typedef = kind == C_GIB_TYPEDEF &&
-    (type->ast->kind_id != K_ENUM_CLASS_STRUCT_UNION ||
-    c_lang_is_c( type->lang_ids ) ||
-    (C_LANG_IS_C() && !c_lang_is_cpp( type->lang_ids )));
+    (tdef->ast->kind_id != K_ENUM_CLASS_STRUCT_UNION ||
+    c_lang_is_c( tdef->lang_ids ) ||
+    (C_LANG_IS_C() && !c_lang_is_cpp( tdef->lang_ids )));
 
   bool const printing_using = kind == C_GIB_USING &&
-    (type->ast->kind_id != K_ENUM_CLASS_STRUCT_UNION);
+    (tdef->ast->kind_id != K_ENUM_CLASS_STRUCT_UNION);
 
   if ( printing_typedef )
     FPRINTF( gout, "%s ", L_TYPEDEF );
@@ -830,10 +830,10 @@ void c_typedef_gibberish( c_typedef_t const *type, c_gib_kind_t kind,
     FPRINTF( gout, "%s %s = ", L_USING, c_sname_local_name( sname ) );
 
   if ( kind == C_GIB_TYPEDEF ) {
-    c_ast_gibberish_impl( type->ast, C_GIB_TYPEDEF, printing_typedef, gout );
+    c_ast_gibberish_impl( tdef->ast, C_GIB_TYPEDEF, printing_typedef, gout );
   } else {
     c_ast_gibberish_impl(
-      type->ast, printing_using ? C_GIB_USING : C_GIB_TYPEDEF,
+      tdef->ast, printing_using ? C_GIB_USING : C_GIB_TYPEDEF,
       /*printing_typedef=*/false, gout
     );
   }

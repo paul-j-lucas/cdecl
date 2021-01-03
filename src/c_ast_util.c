@@ -399,7 +399,7 @@ bool c_ast_is_typename_ok( c_ast_t const *ast ) {
   assert( ast != NULL );
 
   c_sname_t const *const sname = ast->kind_id == K_TYPEDEF ?
-    &ast->as.c_typedef.for_ast->sname :
+    &ast->as.tdef.for_ast->sname :
     &ast->sname;
 
   if ( c_sname_count( sname ) < 2 ) {
@@ -570,7 +570,7 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast ) {
     assert( ast != NULL );
     if ( ast->kind_id != K_TYPEDEF )
       return ast;
-    ast = ast->as.c_typedef.for_ast;
+    ast = ast->as.tdef.for_ast;
   } // for
 }
 

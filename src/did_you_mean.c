@@ -107,15 +107,15 @@ static void copy_keywords( did_you_mean_t **const pdym, bool copy_types ) {
  * A <code>\ref c_typedef</code> visitor function to copy names of types that
  * are only valid in the current language to the candidate list.
  *
- * @param type The `c_typedef` to visit.
+ * @param tdef The `c_typedef` to visit.
  * @param data A pointer to the current <code>\ref did_you_mean</code> pointer.
- * On return, it's incremented only if \a type was copied.
+ * On return, it's incremented only if \a tdef was copied.
  * @return Always returns `false`.
  */
-static bool copy_typedef_visitor( c_typedef_t const *type, void *data ) {
-  if ( (type->lang_ids & opt_lang) != LANG_NONE ) {
+static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
+  if ( (tdef->lang_ids & opt_lang) != LANG_NONE ) {
     did_you_mean_t **const pdym = data;
-    char const *const name = c_ast_full_name( type->ast );
+    char const *const name = c_ast_full_name( tdef->ast );
     (*pdym)++->token = check_strdup( name );
   }
   return false;
@@ -160,12 +160,12 @@ static size_t count_keywords( bool count_types ) {
  * A <code>\ref c_typedef</code> visitor function to count the number of types
  * that are only valid in the current language.
  *
- * @param type The <code>\ref c_typedef</code> to visit.
+ * @param tdef The <code>\ref c_typedef</code> to visit.
  * @param data A pointer to the current count.
  * @return Always returns `false`.
  */
-static bool count_typedef_visitor( c_typedef_t const *type, void *data ) {
-  if ( (type->lang_ids & opt_lang) != LANG_NONE ) {
+static bool count_typedef_visitor( c_typedef_t const *tdef, void *data ) {
+  if ( (tdef->lang_ids & opt_lang) != LANG_NONE ) {
     size_t *const pcount = data;
     ++*pcount;
   }

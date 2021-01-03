@@ -303,7 +303,7 @@ struct c_ast {
     c_operator_ast_t    oper;           ///< Operator member(s).
     c_ptr_mbr_ast_t     ptr_mbr;        ///< Pointer-to-member member(s).
     c_ptr_ref_ast_t     ptr_ref;        ///< Pointer or reference member(s).
-    c_typedef_ast_t     c_typedef;      ///< `typedef` member(s).
+    c_typedef_ast_t     tdef;           ///< `typedef` member(s).
     c_udef_conv_ast_t   udef_conv;      ///< User-defined conversion member(s).
     c_udef_lit_ast_t    udef_lit;       ///< User-defined literal member(s).
     // nothing needed for K_VARIADIC

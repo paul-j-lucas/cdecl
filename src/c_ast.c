@@ -85,10 +85,10 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
   //
   if ( i_ast->kind_id == K_TYPEDEF ) {
     if ( j_ast->kind_id != K_TYPEDEF )
-      return c_ast_equiv( i_ast->as.c_typedef.for_ast, j_ast );
+      return c_ast_equiv( i_ast->as.tdef.for_ast, j_ast );
   } else {
     if ( j_ast->kind_id == K_TYPEDEF )
-      return c_ast_equiv( i_ast, j_ast->as.c_typedef.for_ast );
+      return c_ast_equiv( i_ast, j_ast->as.tdef.for_ast );
   }
 
   if ( i_ast->kind_id != j_ast->kind_id )

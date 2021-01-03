@@ -846,9 +846,9 @@ PJL_WARN_UNUSED_RESULT
 static int c_typedef_cmp( void const *i_data, void const *j_data ) {
   assert( i_data != NULL );
   assert( j_data != NULL );
-  c_typedef_t const *const ti = i_data;
-  c_typedef_t const *const tj = j_data;
-  return c_sname_cmp( &ti->ast->sname, &tj->ast->sname );
+  c_typedef_t const *const i_tdef = i_data;
+  c_typedef_t const *const j_tdef = j_data;
+  return c_sname_cmp( &i_tdef->ast->sname, &j_tdef->ast->sname );
 }
 
 /**
@@ -860,11 +860,11 @@ static int c_typedef_cmp( void const *i_data, void const *j_data ) {
 PJL_WARN_UNUSED_RESULT
 static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
   assert( ast != NULL );
-  c_typedef_t *const t = MALLOC( c_typedef_t, 1 );
-  t->ast = ast;
-  t->lang_ids = user_defined ? c_lang_and_later( opt_lang ) : opt_lang;
-  t->user_defined = user_defined;
-  return t;
+  c_typedef_t *const tdef = MALLOC( c_typedef_t, 1 );
+  tdef->ast = ast;
+  tdef->lang_ids = user_defined ? c_lang_and_later( opt_lang ) : opt_lang;
+  tdef->user_defined = user_defined;
+  return tdef;
 }
 
 /**
@@ -896,10 +896,10 @@ static bool rb_visitor( void *node_data, void *aux_data ) {
   assert( node_data != NULL );
   assert( aux_data != NULL );
 
-  c_typedef_t const *const t = node_data;
+  c_typedef_t const *const tdef = node_data;
   td_rb_visitor_data_t const *const vd = aux_data;
 
-  return (*vd->visitor)( t, vd->data );
+  return (*vd->visitor)( tdef, vd->data );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -908,8 +908,8 @@ c_typedef_add_rv_t c_typedef_add( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( !c_ast_empty_name( ast ) );
 
-  c_typedef_t *const new_t = c_typedef_new( ast );
-  rb_node_t const *const old_rb = rb_tree_insert( &typedefs, new_t );
+  c_typedef_t *const new_tdef = c_typedef_new( ast );
+  rb_node_t const *const old_rb = rb_tree_insert( &typedefs, new_tdef );
   if ( old_rb == NULL )                 // type's name doesn't exist
     return TD_ADD_ADDED;
 
@@ -917,7 +917,7 @@ c_typedef_add_rv_t c_typedef_add( c_ast_t const *ast ) {
   // A typedef having the same name already exists, so we don't need the new
   // c_typedef.
   //
-  FREE( new_t );
+  FREE( new_tdef );
 
   //
   // In C, multiple typedef declarations having the same name are allowed only
@@ -927,8 +927,8 @@ c_typedef_add_rv_t c_typedef_add( c_ast_t const *ast ) {
   //      typedef int T;              // OK
   //      typedef double T;           // error: types aren't equivalent
   //
-  c_typedef_t const *const old_t = old_rb->data;
-  return c_ast_equiv( ast, old_t->ast ) ? TD_ADD_EQUIV : TD_ADD_DIFF;
+  c_typedef_t const *const old_tdef = old_rb->data;
+  return c_ast_equiv( ast, old_tdef->ast ) ? TD_ADD_EQUIV : TD_ADD_DIFF;
 }
 
 void c_typedef_cleanup( void ) {
@@ -937,8 +937,8 @@ void c_typedef_cleanup( void ) {
 
 c_typedef_t const* c_typedef_find( c_sname_t const *sname ) {
   assert( sname != NULL );
-  C_TYPEDEF_VAR_INIT( t, sname );
-  rb_node_t const *const found_rb = rb_tree_find( &typedefs, &t );
+  C_TYPEDEF_VAR_INIT( tdef, sname );
+  rb_node_t const *const found_rb = rb_tree_find( &typedefs, &tdef );
   return found_rb != NULL ? found_rb->data : NULL;
 }
 
