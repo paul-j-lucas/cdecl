@@ -1,5 +1,45 @@
+2021-01-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, c_ast_util.c, c_typedef.c, c_typedef.h, debug.c,
+     did_you_mean.c, english.c, gibberish.c, gibberish.h, lexer.l, parser.y:
+     s/c_typedef/tdef/; s/type/tdef/; s/t/tdef/
+   * parser.y: c_ast_t* variable renaming.
+   * parser.y: Added c_ast_pair_new_gc().
+   * parser.y: Comments.
+
+2021-01-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, gibberish.c, parser.y, declare_ctor.out, declare_ctor_i.out,
+     explain_ctor_i.out: Unscoped constructor declarations as input are left
+     unscoped in output.
+   * parser.y: knr_func_or_constructor_c_decl_ast is now of type ast rather
+     than ast_pair.
+   * parser.y: In-class constructor declaration fix.
+   * parser.y: Split out file_scope_destructor_decl_c_ast.
+   * parser.y: Split out file_scope_constructor_decl_c_ast.
+   * parser.y: More rules now use c_ast_explain_declaration().
+   * parser.y: s/c_ast_explain/c_ast_explain_declaration/
+   * c_sname.h, parser.y: C++ file-scope constructor definition rule now uses
+     c_ast_explain().
+   * c_type.h, parser.y: Added TS_NOT_CONSTRUCTOR.
+   * NEWS, configure.ac, cdecl.1, c_sname.h, parser.y, test/Makefile.am,
+     explain_ctor_i.out, explain_ctor_i.test: In-class constructor declarations
+     without any storage-class-like type are now supported.
+   * test/Makefile.am: Test renaming.
+   * c_type.h: Added TS_DEFAULT and TS_DELETE to TS_CONSTRUCTOR.
+   * c_type.h: Sorting.
+   * parser.y: s/pure_virtual_tid/func_equals_tid/
+   * c_type.h: Now using TS_ANY_REFERENCE.
+   * c_type.h: Doxygen fix.
+
 2021-01-01  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.h, parser.y, types.h: s/c_ast_params_t/c_ast_list_t/
+   * parser.y: Comment.
+   * parser.y: Removed <oper_id> where not needed.
+   * parser.y: s/enum_class_struct_union_ast/enum_class_struct_union_c_ast/
+   * did_you_mean.c: No longer doing unnecessary != comparison.
+   * did_you_mean.c: Simplification in copy_keywords().
    * lib/Makefile.am, _Noreturn.h, arg-nonnull.h, c++defs.h, errno.in.h,
      getdelim.c, getline.c, getopt-cdefs.in.h, getopt-core.h, getopt-ext.h,
      getopt-pfx-core.h, getopt-pfx-ext.h, getopt.c, getopt.in.h, getopt1.c,
