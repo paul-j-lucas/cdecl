@@ -828,8 +828,9 @@ static void yyerror( char const *msg ) {
                     /*
                      * C & C++ operators (one-character).
                      *
-                     * The Y_* token is used when tokens may be represented by
-                     * an alternative token, e.g., "not" for '!'.
+                     * The Y_* token is used when an operator may be
+                     * represented by an alternative token, e.g., "not" for
+                     * '!'.
                      */
 %token              Y_EXCLAM            /* '!' */
 %token              '%'
@@ -5214,6 +5215,10 @@ c_operator
   | Y_NEW '[' rbracket_exp          { $$ = C_OP_NEW_ARRAY       ; }
   | Y_DELETE                        { $$ = C_OP_DELETE          ; }
   | Y_DELETE '[' rbracket_exp       { $$ = C_OP_DELETE_ARRAY    ; }
+  /*
+   * The Y_* token is used when an operator may be represented by an
+   * alternative token, e.g., "not" for '!'.
+   */
   | Y_EXCLAM                        { $$ = C_OP_EXCLAM          ; }
   | Y_EXCLAM_EQ                     { $$ = C_OP_EXCLAM_EQ       ; }
   | '%'                             { $$ = C_OP_PERCENT         ; }
