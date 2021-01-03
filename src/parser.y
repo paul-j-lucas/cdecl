@@ -1906,6 +1906,7 @@ explain_c
       DUMP_AST( "knr_func_or_constructor_c_decl_ast", $2.ast );
       DUMP_END();
 
+      C_AST_CHECK_DECL( $2.ast );
       c_ast_explain_declaration( $2.ast );
     }
 
