@@ -388,6 +388,20 @@ static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t *loc ) {
 }
 
 /**
+ * Creates a new <code>\ref c_ast_pair</code> with a new AST and adds it to
+ * <code>\ref ast_gc_list</code>.
+ *
+ * @param kind_id The kind of AST to create.
+ * @param loc A pointer to the token location data.
+ * @return Returns a new <code>\ref c_ast_pair</code>.
+ */
+PJL_WARN_UNUSED_RESULT
+static inline c_ast_pair_t c_ast_pair_new_gc( c_kind_id_t kind_id,
+                                              c_loc_t *loc ) {
+  return (c_ast_pair_t){ c_ast_new_gc( kind_id, loc ), NULL };
+}
+
+/**
  * Gets a printable string of <code>\ref lexer_token</code>.
  *
  * @return Returns said string or null if <code>\ref lexer_token</code> is the
@@ -2582,8 +2596,7 @@ typedef_name_c_ast
       DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_NAME" );
       DUMP_AST( "Y_TYPEDEF_NAME", $1->ast );
 
-      $$.ast = c_ast_new_gc( K_TYPEDEF, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_TYPEDEF, &@$ );
       $$.ast->type.base_tid = TB_TYPEDEF;
       $$.ast->as.c_typedef.for_ast = $1->ast;
 
@@ -2617,8 +2630,7 @@ array_decl_english_ast
       DUMP_NUM( "array_size_num_opt", $4 );
       DUMP_AST( "decl_english_ast", $6.ast );
 
-      $$.ast = c_ast_new_gc( K_ARRAY, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_ARRAY, &@$ );
       $$.ast->as.array.size = $4;
       $$.ast->as.array.store_tid = $2 | $3;
       c_ast_set_parent( $6.ast, $$.ast );
@@ -2636,8 +2648,7 @@ array_decl_english_ast
       DUMP_TID( "type_qualifier_list_c_tid_opt", $4 );
       DUMP_AST( "decl_english_ast", $6.ast );
 
-      $$.ast = c_ast_new_gc( K_ARRAY, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_ARRAY, &@$ );
       $$.ast->as.array.size = C_ARRAY_SIZE_VARIABLE;
       $$.ast->as.array.store_tid = $4;
       c_ast_set_parent( $6.ast, $$.ast );
@@ -2669,8 +2680,7 @@ block_decl_english_ast                  /* Apple extension */
       DUMP_AST_LIST( "paren_decl_list_english_opt", $2 );
       DUMP_AST( "returning_english_ast_opt", $3.ast );
 
-      $$.ast = c_ast_new_gc( K_APPLE_BLOCK, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_APPLE_BLOCK, &@$ );
       $$.ast->type.store_tid = qualifier_tid_peek();
       $$.ast->as.block.params = $2;
       c_ast_set_parent( $3.ast, $$.ast );
@@ -2687,8 +2697,7 @@ constructor_decl_english_ast
                   "CONSTRUCTOR paren_decl_list_english_opt" );
       DUMP_AST_LIST( "paren_decl_list_english_opt", $2 );
 
-      $$.ast = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_CONSTRUCTOR, &@$ );
       $$.ast->as.func.params = $2;
 
       DUMP_AST( "constructor_decl_english_ast", $$.ast );
@@ -2702,8 +2711,7 @@ destructor_decl_english_ast
       DUMP_START( "destructor_decl_english_ast",
                   "DESTRUCTOR" );
 
-      $$.ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_DESTRUCTOR, &@$ );
 
       DUMP_AST( "destructor_decl_english_ast", $$.ast );
       DUMP_END();
@@ -2726,8 +2734,7 @@ func_decl_english_ast
       DUMP_AST_LIST( "paren_decl_list_english_opt", $4 );
       DUMP_AST( "returning_english_ast_opt", $5.ast );
 
-      $$.ast = c_ast_new_gc( K_FUNCTION, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_FUNCTION, &@$ );
       $$.ast->type.store_tid = qualifier_tid_peek() | $1;
       $$.ast->as.func.params = $4;
       $$.ast->as.func.flags = $2;
@@ -2753,8 +2760,7 @@ oper_decl_english_ast
       DUMP_AST_LIST( "paren_decl_list_english_opt", $6 );
       DUMP_AST( "returning_english_ast_opt", $7.ast );
 
-      $$.ast = c_ast_new_gc( K_OPERATOR, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_OPERATOR, &@$ );
       $$.ast->type.store_tid = $1 | $3;
       $$.ast->as.oper.params = $6;
       $$.ast->as.oper.flags = $4;
@@ -2824,8 +2830,7 @@ returning_english_ast_opt
     {
       DUMP_START( "returning_english_ast_opt", "<empty>" );
 
-      $$.ast = c_ast_new_gc( K_BUILTIN, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_BUILTIN, &@$ );
       // see the comment in "type_c_ast"
       $$.ast->type.base_tid = opt_lang < LANG_C_99 ? TB_INT : TB_VOID;
 
@@ -2893,8 +2898,7 @@ pointer_decl_english_ast
         PARSE_ABORT();
       }
 
-      $$.ast = c_ast_new_gc( K_POINTER, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_POINTER, &@$ );
       $$.ast->type.store_tid = qualifier_tid_peek();
       c_ast_set_parent( $3.ast, $$.ast );
 
@@ -2917,8 +2921,7 @@ pointer_decl_english_ast
       DUMP_SNAME( "sname_english_exp", &$6 );
       DUMP_AST( "decl_english_ast", $7.ast );
 
-      $$.ast = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_POINTER_TO_MEMBER, &@$ );
       $$.ast->type.store_tid = qualifier_tid_peek();
       $$.ast->as.ptr_mbr.class_sname = $6;
       c_ast_set_parent( $7.ast, $$.ast );
@@ -2958,14 +2961,12 @@ reference_decl_english_ast
 reference_english_ast
   : Y_REFERENCE
     {
-      $$.ast = c_ast_new_gc( K_REFERENCE, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_REFERENCE, &@$ );
     }
 
   | Y_RVALUE reference_exp
     {
-      $$.ast = c_ast_new_gc( K_RVALUE_REFERENCE, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_RVALUE_REFERENCE, &@$ );
     }
   ;
 
@@ -2995,8 +2996,7 @@ user_defined_literal_decl_english_ast
       DUMP_AST_LIST( "paren_decl_list_english_opt", $3 );
       DUMP_AST( "returning_english_ast_opt", $4.ast );
 
-      $$.ast = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_USER_DEF_LITERAL, &@$ );
       $$.ast->as.udef_lit.params = $3;
       c_ast_set_parent( $4.ast, $$.ast );
 
@@ -3040,8 +3040,7 @@ var_decl_english_ast
     {
       DUMP_START( "var_decl_english_ast", "..." );
 
-      $$.ast = c_ast_new_gc( K_VARIADIC, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_VARIADIC, &@$ );
 
       DUMP_AST( "var_decl_english_ast", $$.ast );
       DUMP_END();
@@ -3084,9 +3083,8 @@ type_english_ast
       C_TYPE_ADD_TID( &type, qualifier_tid_peek(), qualifier_loc() );
       C_TYPE_ADD( &type, &$1, @1 );
 
-      $$.ast = c_ast_new_gc( K_BUILTIN, &@$ );
+      $$ = c_ast_pair_new_gc( K_BUILTIN, &@$ );
       $$.ast->type = type;
-      $$.target_ast = NULL;
 
       DUMP_AST( "type_english_ast", $$.ast );
       DUMP_END();
@@ -3674,8 +3672,7 @@ oper_c_ast
 placeholder_c_ast
   : /* empty */
     {
-      $$.ast = c_ast_new_gc( K_PLACEHOLDER, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_PLACEHOLDER, &@$ );
     }
   ;
 
@@ -3704,8 +3701,7 @@ pointer_type_c_ast
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
       DUMP_TID( "type_qualifier_list_c_tid_opt", $2 );
 
-      $$.ast = c_ast_new_gc( K_POINTER, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_POINTER, &@$ );
       $$.ast->type.store_tid = $2;
       c_ast_set_parent( type_ast_peek(), $$.ast );
 
@@ -3741,8 +3737,7 @@ pointer_to_member_type_c_ast
       DUMP_SNAME( "sname", &$1 );
       DUMP_TID( "cv_qualifier_list_c_tid_opt", $3 );
 
-      $$.ast = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_POINTER_TO_MEMBER, &@$ );
 
       c_type_t scope_type = *c_sname_local_type( &$1 );
       if ( (scope_type.base_tid & TB_ANY_SCOPE) == TB_NONE ) {
@@ -3791,8 +3786,7 @@ reference_type_c_ast
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
       DUMP_TID( "reference_qualifier_c_tid_opt", $2 );
 
-      $$.ast = c_ast_new_gc( K_REFERENCE, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_REFERENCE, &@$ );
       $$.ast->type.store_tid = $2;
       c_ast_set_parent( type_ast_peek(), $$.ast );
 
@@ -3807,8 +3801,7 @@ reference_type_c_ast
       DUMP_AST( "(type_c_ast)", type_ast_peek() );
       DUMP_TID( "reference_qualifier_c_tid_opt", $2 );
 
-      $$.ast = c_ast_new_gc( K_RVALUE_REFERENCE, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_RVALUE_REFERENCE, &@$ );
       $$.ast->type.store_tid = $2;
       c_ast_set_parent( type_ast_peek(), $$.ast );
 
@@ -4009,8 +4002,7 @@ param_c_ast
     {
       DUMP_START( "param_c_ast", "..." );
 
-      $$.ast = c_ast_new_gc( K_VARIADIC, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_VARIADIC, &@$ );
 
       DUMP_AST( "param_c_ast", $$.ast );
       DUMP_END();
@@ -4050,8 +4042,7 @@ type_c_ast
 
       C_TYPE_ADD( &type, &$1, @1 );
 
-      $$.ast = c_ast_new_gc( K_BUILTIN, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_BUILTIN, &@$ );
       $$.ast->type = type;
 
       DUMP_AST( "type_c_ast", $$.ast );
@@ -4201,8 +4192,7 @@ builtin_type_c_ast
       DUMP_START( "builtin_type_c_ast", "builtin_tid" );
       DUMP_TID( "builtin_tid", $1 );
 
-      $$.ast = c_ast_new_gc( K_BUILTIN, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_BUILTIN, &@$ );
       $$.ast->type.base_tid = $1;
 
       DUMP_AST( "builtin_type_c_ast", $$.ast );
@@ -4235,8 +4225,7 @@ enum_class_struct_union_c_ast
       DUMP_TID( "enum_class_struct_union_tid", $1 );
       DUMP_SNAME( "sname", &$2 );
 
-      $$.ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
-      $$.target_ast = NULL;
+      $$ = c_ast_pair_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
       $$.ast->type.base_tid = $1;
       $$.ast->as.ecsu.ecsu_sname = $2;
 
