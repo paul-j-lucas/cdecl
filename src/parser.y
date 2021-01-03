@@ -787,7 +787,7 @@ static void yyerror( char const *msg ) {
 
 %union {
   c_alignas_t         align;
-  c_ast_t            *ast;
+  c_ast_t            *ast;        /* for the AST being built */
   c_ast_list_t        ast_list;   /* for declarations and function parameters */
   c_ast_pair_t        ast_pair;   /* for the AST being built */
   unsigned            bitmask;    /* multipurpose bitmask (used by show) */
@@ -1232,6 +1232,13 @@ static void yyerror( char const *msg ) {
  * Clean-up of AST nodes is done via garbage collection using ast_gc_list.
  */
 
+/* c_ast_list_t */
+%destructor { DTRACE; c_ast_list_free( &$$ ); } decl_list_english
+%destructor { DTRACE; c_ast_list_free( &$$ ); } decl_list_english_opt
+%destructor { DTRACE; c_ast_list_free( &$$ ); } paren_decl_list_english_opt
+%destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast
+%destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast_opt
+
 /* name */
 %destructor { DTRACE; FREE( $$ ); } any_name
 %destructor { DTRACE; FREE( $$ ); } any_name_exp
@@ -1243,6 +1250,7 @@ static void yyerror( char const *msg ) {
 /* sname */
 %destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c
 %destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c_exp
+%destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c_opt
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_english
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_list_english
 %destructor { DTRACE; c_sname_free( &$$ ); } of_scope_list_english_opt

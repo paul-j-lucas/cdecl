@@ -450,6 +450,18 @@ bool c_ast_is_ctor_name( c_ast_t const *ast ) {
 }
 
 /**
+ * Frees the list nodes only of \a list.
+ *
+ * @param list The AST list to free.
+ */
+C_AST_INLINE
+void c_ast_list_free( c_ast_list_t *list ) {
+  // Do not pass &c_ast_free as the second argument since all ASTs are free'd
+  // independently. Just free the list nodes.
+  slist_free( list, NULL, NULL );
+}
+
+/**
  * Gets the local (last) name of \a ast, e.g., the local name of `S::T::x` is
  * `x`.
  *

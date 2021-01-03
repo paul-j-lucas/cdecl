@@ -194,9 +194,7 @@ void c_ast_free( c_ast_t *ast ) {
       case K_FUNCTION:
       case K_OPERATOR:
       case K_USER_DEF_LITERAL:
-        // Do not pass &c_ast_free as the second argument since all ASTs are
-        // free'd independently. Just free the list nodes.
-        slist_free( &ast->as.func.params, NULL, NULL );
+        c_ast_list_free( &ast->as.func.params );
         break;
       case K_ENUM_CLASS_STRUCT_UNION:
         c_sname_free( &ast->as.ecsu.ecsu_sname );
