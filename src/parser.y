@@ -2455,7 +2455,7 @@ typedef_declaration_c
       DUMP_AST( "type_c_ast", $4.ast );
       DUMP_AST( "decl_c_ast", $6.ast );
 
-      c_ast_t *ast;
+      c_ast_t *typedef_ast;
       c_sname_t temp_sname;
 
       if ( $2 && !c_ast_is_typename_ok( $4.ast ) )
@@ -2470,9 +2470,9 @@ typedef_declaration_c
         //
         // that is: any type name followed by an existing typedef name.
         //
-        ast = $4.ast;
-        if ( c_ast_empty_name( ast ) )
-          ast->sname = c_ast_dup_name( $6.ast->as.tdef.for_ast );
+        typedef_ast = $4.ast;
+        if ( c_ast_empty_name( typedef_ast ) )
+          typedef_ast->sname = c_ast_dup_name( $6.ast->as.tdef.for_ast );
       }
       else {
         //
@@ -2483,34 +2483,34 @@ typedef_declaration_c
         //
         // that is: any type name followed by a new name.
         //
-        ast = c_ast_patch_placeholder( $4.ast, $6.ast );
+        typedef_ast = c_ast_patch_placeholder( $4.ast, $6.ast );
         temp_sname = c_ast_take_name( $6.ast );
-        c_ast_set_sname( ast, &temp_sname );
+        c_ast_set_sname( typedef_ast, &temp_sname );
       }
 
-      C_AST_CHECK_DECL( ast );
+      C_AST_CHECK_DECL( typedef_ast );
       // see the comment in define_english about TS_TYPEDEF
       static c_type_t const typedef_type = { TB_NONE, TS_TYPEDEF, TA_ANY };
-      PJL_IGNORE_RV( c_ast_take_type_any( ast, &typedef_type ) );
+      PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &typedef_type ) );
 
-      if ( c_ast_count_name( ast ) > 1 ) {
+      if ( c_ast_count_name( typedef_ast ) > 1 ) {
         print_error( &@6,
           "%s names can not be scoped; use: %s %s { %s ... }\n",
-          L_TYPEDEF, L_NAMESPACE, c_ast_scope_name( ast ), L_TYPEDEF
+          L_TYPEDEF, L_NAMESPACE, c_ast_scope_name( typedef_ast ), L_TYPEDEF
         );
         PARSE_ABORT();
       }
 
       temp_sname = c_sname_dup( &in_attr.current_scope );
       c_ast_set_local_name_type(
-        ast, c_sname_local_type( &in_attr.current_scope )
+        typedef_ast, c_sname_local_type( &in_attr.current_scope )
       );
-      c_ast_prepend_sname( ast, &temp_sname );
+      c_ast_prepend_sname( typedef_ast, &temp_sname );
 
-      DUMP_AST( "typedef_declaration_c", ast );
+      DUMP_AST( "typedef_declaration_c", typedef_ast );
       DUMP_END();
 
-      if ( !add_type( L_TYPEDEF, ast, &@6 ) )
+      if ( !add_type( L_TYPEDEF, typedef_ast, &@6 ) )
         PARSE_ABORT();
     }
   ;
