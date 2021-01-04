@@ -61,7 +61,7 @@ _GL_INLINE_HEADER_BEGIN
  */
 
 /**
- * Creates an sname variable on the stack having \a NAME.
+ * Creates an sname variable \a VAR_NAME on the stack having a local \a NAME.
  *
  * @param VAR_NAME The name for the sname variable.
  * @param NAME The name.
@@ -218,23 +218,24 @@ void c_sname_free( c_sname_t *sname ) {
 /**
  * Gets the fully scoped name of \a sname.
  *
- * @param sname The `c_sname_t` to get the full name of.
+ * @param sname The scoped name to get the full name of.
  * @return Returns said name or the empty string if \a sname is empty.
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  *
- * @sa c_sname_local_name
+ * @sa c_sname_local_name()
  * @sa c_sname_name_atr()
- * @sa c_sname_scope_name
+ * @sa c_sname_scope_name()
  */
 PJL_WARN_UNUSED_RESULT
 char const* c_sname_full_name( c_sname_t const *sname );
 
 /**
- * Initializes \a sname.  This is not necessary for either global or `static`
- * scoped names.
+ * Initializes \a sname.
  *
  * @param sname The scoped name to initialize.
+ *
+ * @note This need not be called for either global or `static` scoped names.
  *
  * @sa c_sname_free()
  * @sa c_sname_init_name()
@@ -275,9 +276,9 @@ bool c_sname_is_ctor( c_sname_t const *sname );
  * @param sname The scoped name to get the local name of.
  * @return Returns said name or the empty string if \a sname is empty.
  *
- * @sa c_sname_full_name
+ * @sa c_sname_full_name()
  * @sa c_sname_name_atr()
- * @sa c_sname_scope_name
+ * @sa c_sname_scope_name()
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_sname_local_name( c_sname_t const *sname ) {
@@ -286,10 +287,12 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
 }
 
 /**
- * Gets the scope type of \a sname (which is the type of the innermost scope).
+ * Gets the local scope type of \a sname (which is the type of the innermost
+ * scope).
  *
  * @param sname The scoped name to get the scope type of.
- * @return Returns the scope type.
+ * @return Returns the local scope type.
+ * @return Returns the local scoped type or #T_NONE if \a sname is empty.
  *
  * @sa c_sname_scope_type()
  * @sa c_sname_set_local_type()
@@ -299,13 +302,13 @@ c_type_t const* c_sname_local_type( c_sname_t const *sname );
 /**
  * Gets the name at \a roffset of \a sname.
  *
- * @param sname The `c_sname_t` to get the name at \a roffset of.
+ * @param sname The scoped name to get the name at \a roffset of.
  * @param roffset The reverse offset (starting at 0) of the name to get.
  * @return Returns the name at \a roffset or the empty string if \a roffset
  * &gt;= c_sname_count().
  *
- * @sa c_sname_full_name
- * @sa c_sname_scope_name
+ * @sa c_sname_full_name()
+ * @sa c_sname_scope_name()
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
@@ -334,14 +337,14 @@ void c_sname_prepend_sname( c_sname_t *dst, c_sname_t *src ) {
  *  + For `a::b::c`, returns `a::b`.
  *  + For `c`, returns the empty string.
  *
- * @param sname The `c_sname_t` to get the scope name of.
+ * @param sname The scoped name to get the scope name of.
  * @return Returns said name or the empty string if \a sname is empty or not
  * within a scope.
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  *
- * @sa c_sname_full_name
- * @sa c_sname_local_name
+ * @sa c_sname_full_name()
+ * @sa c_sname_local_name()
  * @sa c_sname_name_atr()
  */
 PJL_WARN_UNUSED_RESULT
@@ -351,8 +354,8 @@ char const* c_sname_scope_name( c_sname_t const *sname );
  * Gets the scope type of the scope of \a sname.
  *
  * @param sname The scoped name to get the scope type of the scope of.
- * @return Returns said type or #T_NONE if \a sname is empty or not within a
- * scope.
+ * @return Returns the scope type or #T_NONE if \a sname is empty or not within
+ * a scope.
  *
  * @sa c_sname_local_type()
  * @sa c_sname_set_scope_type()
