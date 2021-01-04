@@ -61,7 +61,7 @@ _GL_INLINE_HEADER_BEGIN
  */
 
 /**
- * Creates an sname variable on the stack having \a NAME.
+ * Creates an sname variable \a VAR_NAME on the stack having a local \a NAME.
  *
  * @param VAR_NAME The name for the sname variable.
  * @param NAME The name.
