@@ -4252,6 +4252,7 @@ enum_class_struct_union_c_ast
         "explaining %s definitions is not supported\n",
         c_type_id_name( $1 )
       );
+      c_sname_free( &$2 );
       PARSE_ABORT();
     }
   ;
