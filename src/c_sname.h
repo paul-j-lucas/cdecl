@@ -72,6 +72,7 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Gets the data associated with \a SCOPE.
+ *
  * @param SCOPE The `c_scope_t` to get the data of.
  *
  * @note This is a macro instead of an inline function so it'll work with
