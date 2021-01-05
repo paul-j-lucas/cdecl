@@ -174,11 +174,14 @@ static bool is_command( char const *s, c_command_kind_t command_kind ) {
           //      const cast p into pointer to int  // Does NOT imply explain.
           //
           char const *p = s + literal_len;
-          if ( isspace( *p ) ) {
-            SKIP_WS( p );
-            if ( !starts_with( p, L_CAST, 4 ) )
-              break;
-          }
+          if ( !isspace( *p ) )
+            break;
+          SKIP_WS( p );
+          if ( !starts_with( p, L_CAST, 4 ) )
+            break;
+          p += 4;
+          if ( !isspace( *p ) )
+            break;
         }
         return true;
       }
