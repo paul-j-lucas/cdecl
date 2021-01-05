@@ -478,7 +478,7 @@ static inline c_type_id_t qualifier_tid_peek( void ) {
  * \ref in_attr.qualifier_stack "qualifer inherited attribute stack" and frees
  * it.
  */
-static inline void qualifier_pop( void ) {
+static inline void qualifier_tid_pop( void ) {
   FREE( slist_pop_head( &in_attr.qualifier_stack ) );
 }
 
@@ -2759,7 +2759,7 @@ oper_decl_english_ast
     ref_qualifier_english_tid_opt member_or_non_member_opt
     operator_exp paren_decl_list_english_opt returning_english_ast_opt
     {
-      qualifier_pop();
+      qualifier_tid_pop();
       DUMP_START( "oper_decl_english_ast",
                   "member_or_non_member_opt "
                   "OPERATOR paren_decl_list_english_opt "
@@ -2868,7 +2868,7 @@ qualified_decl_english_ast
   : type_qualifier_list_c_tid_opt { qualifier_tid_push( $1, &@1 ); }
     qualifiable_decl_english_ast
     {
-      qualifier_pop();
+      qualifier_tid_pop();
       DUMP_START( "qualified_decl_english_ast",
                   "type_qualifier_list_c_tid_opt "
                   "qualifiable_decl_english_ast" );
