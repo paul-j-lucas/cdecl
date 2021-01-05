@@ -368,7 +368,7 @@ static rb_node_t* rb_successor( rb_tree_t *tree, rb_node_t *node ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void* rb_node_delete( rb_tree_t *tree, rb_node_t *delete_node ) {
+void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete_node ) {
   assert( tree != NULL );
   assert( delete_node != NULL );
 

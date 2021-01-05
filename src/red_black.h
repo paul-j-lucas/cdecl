@@ -140,7 +140,7 @@ struct rb_tree {
  * @sa rb_tree_insert()
  */
 PJL_WARN_UNUSED_RESULT
-void* rb_node_delete( rb_tree_t *tree, rb_node_t *node );
+void* rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
 
 /**
  * Attempts to find \a data in \a tree.
@@ -183,7 +183,7 @@ void rb_tree_init( rb_tree_t *tree, rb_data_cmp_t data_cmp_fn );
  * @return Returns null if \a data is inserted or a pointer to a node if \a
  * data already exists.
  *
- * @sa rb_node_delete()
+ * @sa rb_tree_delete()
  */
 PJL_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
