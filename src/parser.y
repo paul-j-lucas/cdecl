@@ -411,7 +411,7 @@ static inline c_ast_pair_t c_ast_pair_new_gc( c_kind_id_t kind_id,
  */
 PJL_WARN_UNUSED_RESULT
 static inline c_ast_t* ia_type_ast_peek( void ) {
-  return SLIST_PEEK_HEAD( c_ast_t*, &in_attr.ast_type_stack );
+  return slist_peek_head( &in_attr.ast_type_stack );
 }
 
 /**
@@ -422,7 +422,7 @@ static inline c_ast_t* ia_type_ast_peek( void ) {
  */
 PJL_NOWARN_UNUSED_RESULT
 static inline c_ast_t* ia_type_ast_pop( void ) {
-  return SLIST_POP_HEAD( c_ast_t*, &in_attr.ast_type_stack );
+  return slist_pop_head( &in_attr.ast_type_stack );
 }
 
 /**
@@ -447,7 +447,7 @@ static inline void ia_type_ast_push( c_ast_t *ast ) {
  * @sa ia_qual_peek_tid()
  */
 #define ia_qual_peek_loc() \
-  (SLIST_PEEK_HEAD( c_qualifier_t*, &in_attr.qualifier_stack )->loc)
+  (((c_qualifier_t*)slist_peek_head( &in_attr.qualifier_stack ))->loc)
 
 /**
  * Peeks at the qualifier at the top of the
@@ -461,7 +461,7 @@ static inline void ia_type_ast_push( c_ast_t *ast ) {
  */
 PJL_WARN_UNUSED_RESULT
 static inline c_type_id_t ia_qual_peek_tid( void ) {
-  return SLIST_PEEK_HEAD( c_qualifier_t*, &in_attr.qualifier_stack )->qual_tid;
+  return ((c_qualifier_t*)slist_peek_head( &in_attr.qualifier_stack ))->qual_tid;
 }
 
 /**

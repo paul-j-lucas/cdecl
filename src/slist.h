@@ -218,31 +218,12 @@ size_t slist_len( slist_t const *list ) {
  * @return Returns the data from the node at \a offset or null if \a offset
  * &gt;= slist_len().
  *
- * @sa SLIST_PEEK_AT()
  * @sa slist_peek_atr()
  * @sa slist_peek_head()
  * @sa slist_peek_tail()
  */
 PJL_WARN_UNUSED_RESULT
 void* slist_peek_at( slist_t const *list, size_t offset );
-
-/**
- * Convenience macro that peeks at the data at \a OFFSET of \a LIST and casts
- * it to the requested type.
- *
- * @param DATA_TYPE The type of the data.
- * @param LIST A pointer to the <code>\ref slist</code>.
- * @param OFFSET The offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a OFFSET cast to \a DATA_TYPE or
- * null (or equivalent) if \a OFFSET &gt;= slist_len().
- *
- * @sa slist_peek_at()
- * @sa SLIST_PEEK_ATR()
- * @sa SLIST_PEEK_HEAD()
- * @sa SLIST_PEEK_TAIL()
- */
-#define SLIST_PEEK_AT(DATA_TYPE,LIST,OFFSET) \
-  REINTERPRET_CAST( DATA_TYPE, slist_peek_at( (LIST), (OFFSET) ) )
 
 /**
  * Peeks at the data at \a roffset from the tail of \a list.
@@ -253,7 +234,6 @@ void* slist_peek_at( slist_t const *list, size_t offset );
  * &gt;= slist_len().
  *
  * @sa slist_peek_at()
- * @sa SLIST_PEEK_ATR()
  * @sa slist_peek_tail()
  */
 C_SLIST_INLINE PJL_WARN_UNUSED_RESULT
@@ -263,23 +243,6 @@ void* slist_peek_atr( slist_t const *list, size_t roffset ) {
 }
 
 /**
- * Convenience macro that peeks at the data at \a ROFFSET of \a LIST and casts
- * it to the requested type.
- *
- * @param DATA_TYPE The type of the data.
- * @param LIST A pointer to the <code>\ref slist</code>.
- * @param ROFFSET The reverse offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a ROFFSET cast to \a DATA_TYPE or
- * null (or equivalent) if \a ROFFSET &gt;= slist_len().
- *
- * @sa SLIST_PEEK_AT()
- * @sa slist_peek_atr()
- * @sa SLIST_PEEK_TAIL()
- */
-#define SLIST_PEEK_ATR(DATA_TYPE,LIST,ROFFSET) \
-  REINTERPRET_CAST( DATA_TYPE, slist_peek_atr( (LIST), (ROFFSET) ) )
-
-/**
  * Peeks at the data at the head of \a list.
  *
  * @param list A pointer to the <code>\ref slist</code>.
@@ -287,29 +250,12 @@ void* slist_peek_atr( slist_t const *list, size_t roffset ) {
  * list is empty.
  *
  * @sa slist_peek_at()
- * @sa SLIST_PEEK_HEAD()
  * @sa slist_peek_tail()
  */
 C_SLIST_INLINE PJL_WARN_UNUSED_RESULT
 void* slist_peek_head( slist_t const *list ) {
   return list->head != NULL ? list->head->data : NULL;
 }
-
-/**
- * Convenience macro that peeks at the data at the head of \a LIST and casts it
- * to the requested type.
- *
- * @param DATA_TYPE The type of the data.
- * @param LIST A pointer to the <code>\ref slist</code>.
- * @return Returns the data from the head of \a LIST cast to \a DATA_TYPE or
- * null (or equivalent) if the <code>\ref slist</code> is empty.
- *
- * @sa SLIST_PEEK_AT()
- * @sa slist_peek_head()
- * @sa SLIST_PEEK_TAIL()
- */
-#define SLIST_PEEK_HEAD(DATA_TYPE,LIST) \
-  REINTERPRET_CAST( DATA_TYPE, slist_peek_head( LIST ) )
 
 /**
  * Peeks at the data at the tail of \a list.
@@ -320,7 +266,6 @@ void* slist_peek_head( slist_t const *list ) {
  *
  * @sa slist_peek_atr()
  * @sa slist_peek_head()
- * @sa SLIST_PEEK_TAIL()
  */
 C_SLIST_INLINE PJL_WARN_UNUSED_RESULT
 void* slist_peek_tail( slist_t const *list ) {
@@ -328,47 +273,14 @@ void* slist_peek_tail( slist_t const *list ) {
 }
 
 /**
- * Convenience macro that peeks at the data at the tail of \a LIST and casts it
- * to the requested type.
- *
- * @param DATA_TYPE The type of the data.
- * @param LIST A pointer to the <code>\ref slist</code>.
- * @return Returns the data from the tail of \a LIST cast to \a DATA_TYPE or
- * null (or equivalent) if the <code>\ref slist</code> is empty.
- *
- * @sa SLIST_PEEK_ATR()
- * @sa SLIST_PEEK_HEAD()
- * @sa slist_peek_tail()
- */
-#define SLIST_PEEK_TAIL(DATA_TYPE,LIST) \
-  REINTERPRET_CAST( DATA_TYPE, slist_peek_tail( LIST ) )
-
-/**
  * Pops data from the head of \a list.
  *
  * @param list The pointer to the <code>\ref slist</code>.
  * @return Returns the data from the head of \a list.  The caller is
  * responsible for deleting it (if necessary).
- *
- * @sa SLIST_POP_HEAD()
  */
 PJL_WARN_UNUSED_RESULT
 void* slist_pop_head( slist_t *list );
-
-/**
- * Convenience macro that pops data from the head of \a LIST and casts it to
- * the requested type.
- *
- * @param DATA_TYPE The type of the data to cast to.
- * @param LIST A pointer to the <code>\ref slist</code>.
- * @return Returns the data from the head of \a LIST cast to \a DATA_TYPE or
- * null (or equivalent) if the <code>\ref slist</code> is empty.  The caller is
- * responsible for deleting it (if necessary).
- *
- * @sa slist_pop_head()
- */
-#define SLIST_POP_HEAD(DATA_TYPE,LIST) \
-  REINTERPRET_CAST( DATA_TYPE, slist_pop_head( LIST ) )
 
 /**
  * Pushes a node onto the head of \a list.

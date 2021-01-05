@@ -283,7 +283,7 @@ bool c_sname_is_ctor( c_sname_t const *sname );
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_sname_local_name( c_sname_t const *sname ) {
   return c_sname_empty( sname ) ?
-    "" : SLIST_PEEK_TAIL( c_scope_data_t*, sname )->name;
+    "" : ((c_scope_data_t*)slist_peek_tail( sname ))->name;
 }
 
 /**
@@ -312,8 +312,7 @@ c_type_t const* c_sname_local_type( c_sname_t const *sname );
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
-  c_scope_data_t const *const data =
-    SLIST_PEEK_ATR( c_scope_data_t*, sname, roffset );
+  c_scope_data_t const *const data = slist_peek_atr( sname, roffset );
   return data != NULL ? data->name : "";
 }
 
@@ -362,8 +361,7 @@ char const* c_sname_scope_name( c_sname_t const *sname );
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
-  c_scope_data_t const *const data =
-    SLIST_PEEK_ATR( c_scope_data_t*, sname, 1 );
+  c_scope_data_t const *const data = slist_peek_atr( sname, 1 );
   return data != NULL ? &data->type : &T_NONE;
 }
 
@@ -393,7 +391,7 @@ void c_sname_set_local_type( c_sname_t *sname, c_type_t const *type ) {
  */
 C_SNAME_INLINE
 void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
-  c_scope_data_t *const data = SLIST_PEEK_ATR( c_scope_data_t*, sname, 1 );
+  c_scope_data_t *const data = slist_peek_atr( sname, 1 );
   if ( data != NULL )
     data->type = *type;
 }
