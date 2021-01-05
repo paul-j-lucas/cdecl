@@ -42,12 +42,13 @@
 
 /**
  * @defgroup c-typedef-group C/C++ Typedef Declarations
- * Types and functions for adding and looking up C/C++ `typedef` declarations.
+ * Types and functions for adding and looking up C/C++ `typedef` or `using`
+ * declarations.
  * @{
  */
 
 /**
- * C/C++ `typedef` information.
+ * C/C++ `typedef` or `using` information.
  */
 struct c_typedef {
   c_ast_t const  *ast;                  ///< AST representing the type.
@@ -77,7 +78,7 @@ typedef bool (*c_typedef_visitor_t)( c_typedef_t const *tdef, void *data );
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Adds a new <code>\ref c_typedef</code> to the global set.
+ * Adds a new `typedef` or `using` to the global set.
  *
  * @param type_ast The AST of the type.  Ownership is taken only if the
  * function returns #TD_ADD_ADDED.
