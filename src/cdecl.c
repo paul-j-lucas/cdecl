@@ -163,28 +163,28 @@ static bool is_command( char const *s, c_command_kind_t command_kind ) {
   for ( c_command_t const *c = CDECL_COMMANDS; c->literal != NULL; ++c ) {
     if ( c->kind >= command_kind ) {
       size_t const literal_len = strlen( c->literal );
-      if ( starts_with( s, c->literal, literal_len ) ) {
-        if ( c->literal == L_CONST || c->literal == L_STATIC ) {
-          //
-          // When in explain-by-default mode, a special case has to be made for
-          // const and static since explain is implied only when NOT followed
-          // by "cast":
-          //
-          //      const int *p                      // Implies explain.
-          //      const cast p into pointer to int  // Does NOT imply explain.
-          //
-          char const *p = s + literal_len;
-          if ( !isspace( *p ) )
-            break;
-          SKIP_WS( p );
-          if ( !starts_with( p, L_CAST, 4 ) )
-            break;
-          p += 4;
-          if ( !isspace( *p ) )
-            break;
-        }
-        return true;
+      if ( !starts_with( s, c->literal, literal_len ) )
+        continue;
+      if ( c->literal == L_CONST || c->literal == L_STATIC ) {
+        //
+        // When in explain-by-default mode, a special case has to be made for
+        // const and static since explain is implied only when NOT followed by
+        // "cast":
+        //
+        //      const int *p                      // Implies explain.
+        //      const cast p into pointer to int  // Does NOT imply explain.
+        //
+        char const *p = s + literal_len;
+        if ( !isspace( *p ) )
+          break;
+        SKIP_WS( p );
+        if ( !starts_with( p, L_CAST, 4 ) )
+          break;
+        p += 4;
+        if ( !isspace( *p ) )
+          break;
       }
+      return true;
     }
   } // for
   return false;
