@@ -111,23 +111,23 @@ void options_init( int *pargc, char const **pargv[] );
 /**
  * Parses the explicit `int` option.
  *
- * @param loc The location of \a s.  If not null and \a s is invalid, calls
- * print_error(); if null and a s is invalid, calls PMESSAGE_EXIT().
- * @param s The null-terminated string to parse.  Valid formats are:
- * @par
- *  Format            | Meaning
- *  ------------------|----------------------------
- *     `i`            | All signed integer types.
- *  `u`               | All unsigned integer types.
- *  [`u`]{`isl`[`l`]} | Possibly `unsigned` `int`, `short`, `long`, or `long long`.
- * @par
+ * @param loc The location of \a ei_format.  If not null and \a ei_format is
+ * invalid, calls print_error(); if null and \a ei_format is invalid, calls
+ * PMESSAGE_EXIT().
+ * @param ei_format The null-terminated explicit `int` format string to parse.
+ * Valid formats are:
+ *      Format            | Meaning
+ *      ------------------|----------------------------
+ *         `i`            | All signed integer types.
+ *      `u`               | All unsigned integer types.
+ *      [`u`]{`isl`[`l`]} | Possibly `unsigned` `int`, `short`, `long`, or `long long`.
  * Multiple formats may be given, one immediately after the other, e.g., `usl`
  * means `unsigned short` and `long`.  Parsing is greedy so commas may be used
  * to separate formats.  For example, `ulll` is parsed as `unsigned long long`
  * and `long` whereas `ul,ll` is parsed as `unsigned long` and `long long`.
- * @par If invalid, an error message is printed to standard error.
+ * If invalid, an error message is printed to standard error.
  */
-void parse_opt_explicit_int( c_loc_t const *loc, char const *s );
+void parse_opt_explicit_int( c_loc_t const *loc, char const *ei_format );
 
 /**
  * Prints the string representation of the explicit integer option.

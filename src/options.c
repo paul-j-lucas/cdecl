@@ -499,13 +499,13 @@ bool is_explicit_int( c_type_id_t tid ) {
   return (tid & opt_explicit_int[ is_unsigned ]) != TB_NONE;
 }
 
-void parse_opt_explicit_int( c_loc_t const *loc, char const *s ) {
-  assert( s != NULL );
+void parse_opt_explicit_int( c_loc_t const *loc, char const *ei_format ) {
+  assert( ei_format != NULL );
 
   char opt_buf[ OPT_BUF_SIZE ];
   c_type_id_t tid = TB_NONE;
 
-  for ( ; *s != '\0'; ++s ) {
+  for ( char const *s = ei_format; *s != '\0'; ++s ) {
     switch ( *s ) {
       case 'i':
       case 'I':
