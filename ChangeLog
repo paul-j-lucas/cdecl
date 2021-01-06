@@ -1,5 +1,32 @@
+2021-01-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, stddef.in.h, string.in.h, extensions.m4, stddef_h.m4,
+     string_h.m4: Updated GnuLib.
+
+2021-01-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.h: Added blank line.
+   * cdecl.c: Loop clarification.
+   * cdecl.c: Now requiring space after "cast" in is_command().
+   * red_black.c, red_black.h: s/rb_node_delete/rb_tree_delete/
+   * c_sname.c, c_sname.h, parser.y, slist.h: Removed SLIST macros -- not
+     really needed.
+   * parser.y: Renaming.
+
+2021-01-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, c_typedef.h: Comments.
+   * parser.y: Renaming.
+   * parser.y: s/qualifier_pop/qualifier_tid_pop/
+   * parser.y: Added missing c_sname_free().
+   * parser.y: Renaming.
+   * c_sname.h: Comments.
+   * c_sname.h: Comment.
+
 2021-01-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c, c_ast.h, parser.y: Added c_ast_list_free() and Bison %destructor
+     directives to call it.
    * c_ast.c, c_ast.h, c_ast_util.c, c_typedef.c, c_typedef.h, debug.c,
      did_you_mean.c, english.c, gibberish.c, gibberish.h, lexer.l, parser.y:
      s/c_typedef/tdef/; s/type/tdef/; s/t/tdef/
