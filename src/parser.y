@@ -1972,6 +1972,7 @@ alignas_specifier_c
       $$.loc = @1;
       $$.as.expr = (unsigned)$3;
     }
+
   | alignas lparen_exp type_c_ast { ia_type_ast_push( $3.ast ); }
     cast_c_ast_opt rparen_exp
     {
@@ -1989,6 +1990,7 @@ alignas_specifier_c
       $$.loc = @1;
       $$.as.type_ast = type_ast;
     }
+
   | alignas lparen_exp error rparen_exp
     {
       elaborate_error( "number or type expected" );
