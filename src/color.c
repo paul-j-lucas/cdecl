@@ -97,7 +97,7 @@ static color_cap_t const COLOR_CAPS[] = {
 
 // local functions
 PJL_WARN_UNUSED_RESULT
-static bool parse_sgr( char const* );
+static bool sgr_is_valid( char const* );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -116,7 +116,7 @@ static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
   if ( sgr_color != NULL ) {
     if ( *sgr_color == '\0' )           // empty string -> NULL = unset
       sgr_color = NULL;
-    else if ( !parse_sgr( sgr_color ) )
+    else if ( !sgr_is_valid( sgr_color ) )
       return false;
   }
   *cap->cap_var_to_set = sgr_color;
@@ -134,7 +134,7 @@ static bool cap_set( color_cap_t const *cap, char const *sgr_color ) {
  * @sa [ANSI escape code](http://en.wikipedia.org/wiki/ANSI_escape_code)
  */
 PJL_WARN_UNUSED_RESULT
-static bool parse_sgr( char const *sgr_color ) {
+static bool sgr_is_valid( char const *sgr_color ) {
   if ( sgr_color == NULL )
     return false;
   for (;;) {
