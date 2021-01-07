@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 27
+%expect 25
 
 %{
 /** @endcond */
@@ -851,56 +851,66 @@ static void yyerror( char const *msg ) {
 %token              Y_USER
 %token              Y_VARIABLE
 
-                    /*
-                     * C & C++ operators (one-character).
-                     *
-                     * The Y_* token is used when an operator may be
-                     * represented by an alternative token, e.g., "not" for
-                     * '!'.
-                     */
-%token              Y_EXCLAM            /* '!' */
-%token              '%'
-%token              Y_AMPER             /* '&' */
-%token              '(' ')'
-%token              '*'
+                    /* C/C++ operators: precedence 17 */
+%left               Y_COLON2            "::"
+%left               Y_COLON2_STAR       "::*"
+                    /* C/C++ operators: precedence 16 */
+%token              Y_PLUS2             "++"
+%token              Y_MINUS2            "--"
+%left               '(' ')'
+%left               '[' ']'
+%left               '.'
+%left               Y_ARROW             "->"
+                    /* C/C++ operators: precedence 15 */
 %token              '+'
-%token              ','
 %token              '-'
-%token              '.'
-%token              '/'
-%token              ';'
-%token              '<' '>'
-%token              '='
-%token              Y_QMARK_COLON "?:"
-%token              '[' ']'
-%token              Y_CIRC              /* '^' */
-%token              '{'
-%token              Y_PIPE              /* '|' */
-%token              '}'
-%token              Y_TILDE             /* '~' */
-
-                    /* C & C++ operators (two-character) */
-%token              Y_EXCLAM_EQ   "!="
-%token              Y_PERCENT_EQ  "%="
-%token              Y_AMPER2      "&&"
-%token              Y_AMPER_EQ    "&="
-%token              Y_STAR_EQ     "*="
-%token              Y_PLUS2       "++"
-%token              Y_PLUS_EQ     "+="
-%token              Y_MINUS2      "--"
-%token              Y_MINUS_EQ    "-="
-%token              Y_ARROW       "->"
-%token              Y_SLASH_EQ    "/="
-%token              Y_LESS2       "<<"
-%token              Y_LESS2_EQ    "<<="
-%token              Y_LESS_EQ     "<="
-%token              Y_EQ2         "=="
-%token              Y_GREATER_EQ  ">="
-%token              Y_GREATER2    ">>"
-%token              Y_GREATER2_EQ ">>="
-%token              Y_CIRC_EQ     "^="
-%token              Y_PIPE_EQ     "|="
-%token              Y_PIPE2       "||"
+%right              '*'
+%right              Y_AMPER             /* '&' */
+%right              Y_EXCLAM            /* '!' */
+%right              Y_TILDE             /* '~' */
+                    /* C/C++ operators: precedence 14 */
+%left               Y_DOT_STAR          ".*"
+%left               Y_ARROW_STAR        "->*"
+                    /* C/C++ operators: precedence 13 */
+%left               '/'
+%left               '%'
+                    /* C/C++ operators: precedence 12 (covered above) */
+                    /* C/C++ operators: precedence 11 */
+%left               Y_LESS2             "<<"
+%left               Y_GREATER2          ">>"
+                    /* C/C++ operators: precedence 10 */
+%left               Y_LESS_EQ_GREATER   "<=>"
+                    /* C/C++ operators: precedence 9 */
+%left               '<' '>'
+%left               Y_LESS_EQ           "<="
+%left               Y_GREATER_EQ        ">="
+                    /* C/C++ operators: precedence 8 */
+%left               Y_EQ2               "=="
+%left               Y_EXCLAM_EQ         "!="
+                    /* C/C++ operators: precedence 7 (covered above) */
+                    /* C/C++ operators: precedence 6 */
+%left               Y_CIRC              /* '^' */
+                    /* C/C++ operators: precedence 5 */
+%left               Y_PIPE              /* '|' */
+                    /* C/C++ operators: precedence 4 */
+%left               Y_AMPER2            "&&"
+                    /* C/C++ operators: precedence 3 */
+%left               Y_PIPE2             "||"
+                    /* C/C++ operators: precedence 2 */
+%right              Y_QMARK_COLON       "?:"
+%right              '='
+%right              Y_PERCENT_EQ        "%="
+%right              Y_AMPER_EQ          "&="
+%right              Y_STAR_EQ           "*="
+%right              Y_PLUS_EQ           "+="
+%right              Y_MINUS_EQ          "-="
+%right              Y_SLASH_EQ          "/="
+%right              Y_LESS2_EQ          "<<="
+%right              Y_GREATER2_EQ       ">>="
+%right              Y_CIRC_EQ           "^="
+%right              Y_PIPE_EQ           "|="
+                    /* C/C++ operators: precedence 1 */
+%left               ','
 
                     /* K&R C */
 %token  <type_id>   Y_AUTO_STORAGE      /* C version of "auto" */
@@ -962,18 +972,14 @@ static void yyerror( char const *msg ) {
 
                     /* C++ */
 %token  <type_id>   Y_BOOL
-%token              Y_ARROW_STAR  "->*"
 %token              Y_CATCH
 %token  <type_id>   Y_CLASS
-%token              Y_COLON2      "::"
-%token              Y_COLON2_STAR "::*"
 %token  <literal>   Y_CONST_CAST
 %token              Y_CONSTRUCTOR
 %token  <sname>     Y_CONSTRUCTOR_SNAME
 %token              Y_CONVERSION
 %token              Y_DESTRUCTOR
 %token  <sname>     Y_DESTRUCTOR_SNAME
-%token              Y_DOT_STAR    ".*"
 %token  <literal>   Y_DYNAMIC_CAST
 %token  <type_id>   Y_EXPLICIT
 %token  <type_id>   Y_FALSE             /* for noexcept(false) */
@@ -1055,7 +1061,6 @@ static void yyerror( char const *msg ) {
 %token              Y_CO_RETURN
 %token              Y_CO_YIELD
 %token  <type_id>   Y_EXPORT
-%token              Y_LESS_EQ_GREATER "<=>"
 %token  <type_id>   Y_NO_UNIQUE_ADDRESS
 %token              Y_REQUIRES
 
@@ -1077,6 +1082,9 @@ static void yyerror( char const *msg ) {
 %token              Y_APPLE_BLOCK       /* English for '^' */
 
                     /* miscellaneous */
+%token              ';'
+%token              '{'
+%token              '}'
 %token              Y_END
 %token              Y_ERROR
 %token  <name>      Y_NAME
@@ -3531,7 +3539,7 @@ no_except_bool_tid_exp
 trailing_return_type_c_ast_opt
   : /* empty */                   { $$.ast = $$.target_ast = NULL; }
   | /* in_attr: type_c_ast */
-    "->" type_c_ast { ia_type_ast_push( $2.ast ); } cast_c_ast_opt
+    Y_ARROW type_c_ast { ia_type_ast_push( $2.ast ); } cast_c_ast_opt
     {
       ia_type_ast_pop();
 
@@ -4867,7 +4875,7 @@ typedef_type_c_ast
     }
 
   | /* in_attr: type_c_ast */
-    any_typedef "::" sname_c
+    any_typedef Y_COLON2 sname_c
     {
       //
       // This is for a case like:
@@ -4899,7 +4907,7 @@ typedef_type_c_ast
     }
 
   | /* in_attr: type_c_ast */
-    any_typedef "::" typedef_sname_c
+    any_typedef Y_COLON2 typedef_sname_c
     {
       //
       // This is for a case like:
@@ -4935,7 +4943,7 @@ typedef_type_c_ast
 scope_sname_c_opt
   : /* empty */                   { c_sname_init( &$$ ); }
 
-  | sname_c "::"
+  | sname_c Y_COLON2
     {
       $$ = $1;
       if ( c_type_is_none( c_sname_local_type( &$1 ) ) ) {
@@ -4948,7 +4956,7 @@ scope_sname_c_opt
       }
     }
 
-  | any_typedef "::"
+  | any_typedef Y_COLON2
     {
       //
       // This is for a case like:
@@ -4963,7 +4971,7 @@ scope_sname_c_opt
   ;
 
 sname_c
-  : sname_c "::" Y_NAME
+  : sname_c Y_COLON2 Y_NAME
     {
       // see the comment in "of_scope_english"
       if ( unsupported( LANG_CPP_ALL ) ) {
@@ -4985,7 +4993,7 @@ sname_c
       DUMP_END();
     }
 
-  | sname_c "::" any_typedef
+  | sname_c Y_COLON2 any_typedef
     {
       DUMP_START( "sname_c",
                   "sname_c :: any_typedef" );
@@ -5114,7 +5122,7 @@ sname_english_exp
   ;
 
 typedef_sname_c
-  : typedef_sname_c "::" sname_c
+  : typedef_sname_c Y_COLON2 sname_c
     {
       DUMP_START( "typedef_sname_c",
                   "typedef_sname_c :: sname_c" );
@@ -5134,7 +5142,7 @@ typedef_sname_c
       DUMP_END();
     }
 
-  | typedef_sname_c "::" any_typedef
+  | typedef_sname_c Y_COLON2 any_typedef
     {
       DUMP_START( "typedef_sname_c",
                   "typedef_sname_c :: any_typedef" );
@@ -5233,46 +5241,42 @@ c_operator
   | Y_NEW '[' rbracket_exp          { $$ = C_OP_NEW_ARRAY       ; }
   | Y_DELETE                        { $$ = C_OP_DELETE          ; }
   | Y_DELETE '[' rbracket_exp       { $$ = C_OP_DELETE_ARRAY    ; }
-  /*
-   * The Y_* token is used when an operator may be represented by an
-   * alternative token, e.g., "not" for '!'.
-   */
   | Y_EXCLAM                        { $$ = C_OP_EXCLAM          ; }
   | Y_EXCLAM_EQ                     { $$ = C_OP_EXCLAM_EQ       ; }
   | '%'                             { $$ = C_OP_PERCENT         ; }
-  | "%="                            { $$ = C_OP_PERCENT_EQ      ; }
+  | Y_PERCENT_EQ                    { $$ = C_OP_PERCENT_EQ      ; }
   | Y_AMPER                         { $$ = C_OP_AMPER           ; }
   | Y_AMPER2                        { $$ = C_OP_AMPER2          ; }
   | Y_AMPER_EQ                      { $$ = C_OP_AMPER_EQ        ; }
   | '(' rparen_exp                  { $$ = C_OP_PARENS          ; }
   | '*'                             { $$ = C_OP_STAR            ; }
-  | "*="                            { $$ = C_OP_STAR_EQ         ; }
+  | Y_STAR_EQ                       { $$ = C_OP_STAR_EQ         ; }
   | '+'                             { $$ = C_OP_PLUS            ; }
-  | "++"                            { $$ = C_OP_PLUS2           ; }
-  | "+="                            { $$ = C_OP_PLUS_EQ         ; }
+  | Y_PLUS2                         { $$ = C_OP_PLUS2           ; }
+  | Y_PLUS_EQ                       { $$ = C_OP_PLUS_EQ         ; }
   | ','                             { $$ = C_OP_COMMA           ; }
   | '-'                             { $$ = C_OP_MINUS           ; }
-  | "--"                            { $$ = C_OP_MINUS2          ; }
-  | "-="                            { $$ = C_OP_MINUS_EQ        ; }
-  | "->"                            { $$ = C_OP_ARROW           ; }
-  | "->*"                           { $$ = C_OP_ARROW_STAR      ; }
+  | Y_MINUS2                        { $$ = C_OP_MINUS2          ; }
+  | Y_MINUS_EQ                      { $$ = C_OP_MINUS_EQ        ; }
+  | Y_ARROW                         { $$ = C_OP_ARROW           ; }
+  | Y_ARROW_STAR                    { $$ = C_OP_ARROW_STAR      ; }
   | '.'                             { $$ = C_OP_DOT             ; }
-  | ".*"                            { $$ = C_OP_DOT_STAR        ; }
+  | Y_DOT_STAR                      { $$ = C_OP_DOT_STAR        ; }
   | '/'                             { $$ = C_OP_SLASH           ; }
-  | "/="                            { $$ = C_OP_SLASH_EQ        ; }
-  | "::"                            { $$ = C_OP_COLON2          ; }
+  | Y_SLASH_EQ                      { $$ = C_OP_SLASH_EQ        ; }
+  | Y_COLON2                        { $$ = C_OP_COLON2          ; }
   | '<'                             { $$ = C_OP_LESS            ; }
-  | "<<"                            { $$ = C_OP_LESS2           ; }
-  | "<<="                           { $$ = C_OP_LESS2_EQ        ; }
-  | "<="                            { $$ = C_OP_LESS_EQ         ; }
-  | "<=>"                           { $$ = C_OP_LESS_EQ_GREATER ; }
+  | Y_LESS2                         { $$ = C_OP_LESS2           ; }
+  | Y_LESS2_EQ                      { $$ = C_OP_LESS2_EQ        ; }
+  | Y_LESS_EQ                       { $$ = C_OP_LESS_EQ         ; }
+  | Y_LESS_EQ_GREATER               { $$ = C_OP_LESS_EQ_GREATER ; }
   | '='                             { $$ = C_OP_EQ              ; }
-  | "=="                            { $$ = C_OP_EQ2             ; }
+  | Y_EQ2                           { $$ = C_OP_EQ2             ; }
   | '>'                             { $$ = C_OP_GREATER         ; }
-  | ">>"                            { $$ = C_OP_GREATER2        ; }
-  | ">>="                           { $$ = C_OP_GREATER2_EQ     ; }
-  | ">="                            { $$ = C_OP_GREATER_EQ      ; }
-  | "?:"                            { $$ = C_OP_QMARK_COLON     ; }
+  | Y_GREATER2                      { $$ = C_OP_GREATER2        ; }
+  | Y_GREATER2_EQ                   { $$ = C_OP_GREATER2_EQ     ; }
+  | Y_GREATER_EQ                    { $$ = C_OP_GREATER_EQ      ; }
+  | Y_QMARK_COLON                   { $$ = C_OP_QMARK_COLON     ; }
   | '[' rbracket_exp                { $$ = C_OP_BRACKETS        ; }
   | Y_CIRC                          { $$ = C_OP_CIRC            ; }
   | Y_CIRC_EQ                       { $$ = C_OP_CIRC_EQ         ; }
