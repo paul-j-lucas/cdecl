@@ -800,23 +800,23 @@ static void yyerror( char const *msg ) {
 
 %union {
   c_alignas_t         align;
-  c_ast_t            *ast;        /* for the AST being built */
-  c_ast_list_t        ast_list;   /* for declarations and function parameters */
-  c_ast_pair_t        ast_pair;   /* for the AST being built */
-  unsigned            bitmask;    /* multipurpose bitmask (used by show) */
-  bool                flag;       /* simple flag */
-  c_gib_kind_t        gkind;      /* kind of gibberish */
-  char const         *literal;    /* token literal (for new-style casts) */
-  char               *name;       /* name being declared or explained */
-  int                 number;     /* for array sizes */
-  c_oper_id_t         oper_id;    /* overloaded operator ID */
-  c_sname_t           sname;      /* name being declared or explained */
-  c_typedef_t const  *tdef;       /* typedef */
-  c_type_t            type;       /* complete type */
-  c_type_id_t         type_id;    /* built-ins, storage classes, & qualifiers */
+  c_ast_t            *ast;        // for the AST being built
+  c_ast_list_t        ast_list;   // for declarations and function parameters
+  c_ast_pair_t        ast_pair;   // for the AST being built
+  unsigned            bitmask;    // multipurpose bitmask (used by show)
+  bool                flag;       // simple flag
+  c_gib_kind_t        gkind;      // kind of gibberish
+  char const         *literal;    // token literal (for new-style casts)
+  char               *name;       // name being declared or explained
+  int                 number;     // for array sizes
+  c_oper_id_t         oper_id;    // overloaded operator ID
+  c_sname_t           sname;      // name being declared or explained
+  c_typedef_t const  *tdef;       // typedef
+  c_type_t            type;       // complete type
+  c_type_id_t         type_id;    // built-ins, storage classes, & qualifiers
 }
 
-                    /* cdecl commands */
+                    // cdecl commands
 %token              Y_CAST
 %token              Y_DECLARE
 %token              Y_DEFINE
@@ -826,7 +826,7 @@ static void yyerror( char const *msg ) {
 %token              Y_SHOW
 %token              Y_QUIT
 
-                    /* english */
+                    // english
 %token              Y_ALIGNED
 %token              Y_ALL
 %token              Y_ARRAY
@@ -854,54 +854,54 @@ static void yyerror( char const *msg ) {
 %token              Y_USER
 %token              Y_VARIABLE
 
-                    /* C/C++ operators: precedence 17 */
+                    // C/C++ operators: precedence 17
 %left               Y_COLON2            "::"
 %left               Y_COLON2_STAR       "::*"
-                    /* C/C++ operators: precedence 16 */
+                    // C/C++ operators: precedence 16
 %token              Y_PLUS2             "++"
 %token              Y_MINUS2            "--"
 %left               '(' ')' '[' ']' '.'
                     Y_ARROW             "->"
-                    /* C/C++ operators: precedence 15 */
-%right              Y_AMPER          /* '&' */
+                    // C/C++ operators: precedence 15
+%right              Y_AMPER          // '&'
                     Y_DEREF             '*'
-                    Y_EXCLAM         /* '!' */
-                 /* Y_UMINUS            '-' */
-                 /* Y_UPLUS             '+' */
+                    Y_EXCLAM         // '!'
+                 // Y_UMINUS            '-'
+                 // Y_UPLUS             '+'
                     Y_SIZEOF
-                    Y_TILDE          /* '~' */
-                    /* C/C++ operators: precedence 14 */
+                    Y_TILDE          // '~'
+                    // C/C++ operators: precedence 14
 %left               Y_DOT_STAR          ".*"
                     Y_ARROW_STAR        "->*"
-                    /* C/C++ operators: precedence 13 */
-%left               Y_MUL            /* '*' -- covered by Y_DEREF */
+                    // C/C++ operators: precedence 13
+%left               Y_MUL            // '*' -- covered by Y_DEREF
                     '/' '%'
-                    /* C/C++ operators: precedence 12 */
+                    // C/C++ operators: precedence 12
 %left               Y_MINUS             '+'
                     Y_PLUS              '-'
-                    /* C/C++ operators: precedence 11 */
+                    // C/C++ operators: precedence 11
 %left               Y_LESS2             "<<"
                     Y_GREATER2          ">>"
-                    /* C/C++ operators: precedence 10 */
+                    // C/C++ operators: precedence 10
 %left               Y_LESS_EQ_GREATER   "<=>"
-                    /* C/C++ operators: precedence 9 */
+                    // C/C++ operators: precedence 9
 %left               '<' '>'
                     Y_LESS_EQ           "<="
                     Y_GREATER_EQ        ">="
-                    /* C/C++ operators: precedence 8 */
+                    // C/C++ operators: precedence 8
 %left               Y_EQ2               "=="
                     Y_EXCLAM_EQ         "!="
-                    /* C/C++ operators: precedence 7 (covered above) */
-%left               Y_BIT_AND        /* '&' -- covered by Y_AMPER */
-                    /* C/C++ operators: precedence 6 */
-%left               Y_CIRC              /* '^' */
-                    /* C/C++ operators: precedence 5 */
-%left               Y_PIPE              /* '|' */
-                    /* C/C++ operators: precedence 4 */
+                    // C/C++ operators: precedence 7 (covered above)
+%left               Y_BIT_AND        // '&' -- covered by Y_AMPER
+                    // C/C++ operators: precedence 6
+%left               Y_CIRC              // '^'
+                    // C/C++ operators: precedence 5
+%left               Y_PIPE              // '|'
+                    // C/C++ operators: precedence 4
 %left               Y_AMPER2            "&&"
-                    /* C/C++ operators: precedence 3 */
+                    // C/C++ operators: precedence 3
 %left               Y_PIPE2             "||"
-                    /* C/C++ operators: precedence 2 */
+                    // C/C++ operators: precedence 2
 %right              Y_QMARK_COLON       "?:"
                     '='
                     Y_PERCENT_EQ        "%="
@@ -914,11 +914,11 @@ static void yyerror( char const *msg ) {
                     Y_GREATER2_EQ       ">>="
                     Y_CIRC_EQ           "^="
                     Y_PIPE_EQ           "|="
-                    /* C/C++ operators: precedence 1 */
+                    // C/C++ operators: precedence 1
 %left               ','
 
-                    /* K&R C */
-%token  <type_id>   Y_AUTO_STORAGE      /* C version of "auto" */
+                    // K&R C
+%token  <type_id>   Y_AUTO_STORAGE      // C version of "auto"
 %token              Y_BREAK
 %token              Y_CASE
 %token  <type_id>   Y_CHAR
@@ -945,36 +945,36 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_UNSIGNED
 %token              Y_WHILE
 
-                    /* C89 */
+                    // C89
 %token              Y_ASM
 %token  <type_id>   Y_CONST
-%token              Y_ELLIPSIS    "..." /* for varargs */
+%token              Y_ELLIPSIS    "..." // for varargs
 %token  <type_id>   Y_ENUM
 %token  <type_id>   Y_SIGNED
 %token  <type_id>   Y_VOID
 %token  <type_id>   Y_VOLATILE
 
-                    /* C95 */
+                    // C95
 %token  <type_id>   Y_WCHAR_T
 
-                    /* C99 */
+                    // C99
 %token  <type_id>   Y__BOOL
 %token  <type_id>   Y__COMPLEX
 %token  <type_id>   Y__IMAGINARY
 %token  <type_id>   Y_INLINE
 %token  <type_id>   Y_RESTRICT
 
-                    /* C11 */
+                    // C11
 %token              Y__ALIGNAS
 %token              Y__ALIGNOF
-%token  <type_id>   Y__ATOMIC_QUAL      /* qualifier: _Atomic type */
-%token  <type_id>   Y__ATOMIC_SPEC      /* specifier: _Atomic (type) */
+%token  <type_id>   Y__ATOMIC_QUAL      // qualifier: _Atomic type
+%token  <type_id>   Y__ATOMIC_SPEC      // specifier: _Atomic (type)
 %token              Y__GENERIC
 %token  <type_id>   Y__NORETURN
 %token              Y__STATIC_ASSERT
 %token  <type_id>   Y__THREAD_LOCAL
 
-                    /* C++ */
+                    // C++
 %token  <type_id>   Y_BOOL
 %token              Y_CATCH
 %token  <type_id>   Y_CLASS
@@ -986,7 +986,7 @@ static void yyerror( char const *msg ) {
 %token  <sname>     Y_DESTRUCTOR_SNAME
 %token  <literal>   Y_DYNAMIC_CAST
 %token  <type_id>   Y_EXPLICIT
-%token  <type_id>   Y_FALSE             /* for noexcept(false) */
+%token  <type_id>   Y_FALSE             // for noexcept(false)
 %token  <type_id>   Y_FRIEND
 %token  <type_id>   Y_MUTABLE
 %token  <type_id>   Y_NAMESPACE
@@ -1000,37 +1000,37 @@ static void yyerror( char const *msg ) {
 %token              Y_TEMPLATE
 %token              Y_THIS
 %token  <type_id>   Y_THROW
-%token  <type_id>   Y_TRUE              /* for noexcept(true) */
+%token  <type_id>   Y_TRUE              // for noexcept(true)
 %token              Y_TRY
 %token              Y_TYPEID
 %token  <flag>      Y_TYPENAME
 %token  <type_id>   Y_USING
 %token  <type_id>   Y_VIRTUAL
-                    /*
-                     * The "delete" token is used in two different contexts:
-                     *
-                     *  1. For deleted functions ("= delete").
-                     *  2. For operator delete().
-                     *
-                     * Rather than having two distinct "delete" tokens (that
-                     * would require more communication from the parser to the
-                     * lexer), just have one and use the larger type of
-                     * c_type_id_t and c_oper_id_t which is c_type_id_t.
-                     */
+                    //
+                    // The "delete" token is used in two different contexts:
+                    //
+                    //  1. For deleted functions ("= delete").
+                    //  2. For operator delete().
+                    //
+                    // Rather than having two distinct "delete" tokens (that
+                    // would require more communication from the parser to the
+                    // lexer), just have one and use the larger type of
+                    // c_type_id_t and c_oper_id_t which is c_type_id_t.
+                    //
 %token  <type_id>   Y_DELETE
 
-                    /* C11 & C++11 */
+                    // C11 & C++11
 %token  <type_id>   Y_CHAR16_T
 %token  <type_id>   Y_CHAR32_T
 
-                    /* C2X & C++11 */
-%token              Y_LBRACKET2   "[["  /* for attribute specifiers */
-%token              Y_RBRACKET2   "]]"  /* for attribute specifiers */
+                    // C2X & C++11
+%token              Y_LBRACKET2   "[["  // for attribute specifiers
+%token              Y_RBRACKET2   "]]"  // for attribute specifiers
 
-                    /* C++11 */
+                    // C++11
 %token              Y_ALIGNAS
 %token              Y_ALIGNOF
-%token  <type_id>   Y_AUTO_TYPE         /* C++11 version of "auto" */
+%token  <type_id>   Y_AUTO_TYPE         // C++11 version of "auto"
 %token  <type_id>   Y_CARRIES_DEPENDENCY
 %token  <type_id>   Y_CONSTEXPR
 %token              Y_DECLTYPE
@@ -1039,25 +1039,25 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_NOEXCEPT
 %token              Y_NULLPTR
 %token  <type_id>   Y_OVERRIDE
-%token              Y_QUOTE2            /* for user-defined literals */
+%token              Y_QUOTE2            // for user-defined literals
 %token              Y_STATIC_ASSERT
 %token  <type_id>   Y_THREAD_LOCAL
 %token              Y_USER_DEFINED
 
-                    /* C2X & C++14 */
+                    // C2X & C++14
 %token  <type_id>   Y_DEPRECATED
 
-                    /* C2X & C++17 */
+                    // C2X & C++17
 %token  <type_id>   Y_MAYBE_UNUSED
 %token  <type_id>   Y_NODISCARD
 
-                    /* C++17 */
+                    // C++17
 %token  <type_id>   Y_NORETURN
 
-                    /* C2X & C++20 */
+                    // C2X & C++20
 %token  <type_id>   Y_CHAR8_T
 
-                    /* C++20 */
+                    // C++20
 %token              Y_CONCEPT
 %token  <type_id>   Y_CONSTEVAL
 %token  <type_id>   Y_CONSTINIT
@@ -1068,24 +1068,24 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_NO_UNIQUE_ADDRESS
 %token              Y_REQUIRES
 
-                    /* Embedded C extensions */
+                    // Embedded C extensions
 %token  <type_id>   Y_EMC__ACCUM
 %token  <type_id>   Y_EMC__FRACT
 %token  <type_id>   Y_EMC__SAT
 
-                    /* Unified Parallel C extensions */
+                    // Unified Parallel C extensions
 %token  <type_id>   Y_UPC_RELAXED
 %token  <type_id>   Y_UPC_SHARED
 %token  <type_id>   Y_UPC_STRICT
 
-                    /* GNU extensions */
+                    // GNU extensions
 %token  <type_id>   Y_GNU___RESTRICT
 
-                    /* Apple extensions */
-%token  <type_id>   Y_APPLE___BLOCK     /* __block storage class */
-%token              Y_APPLE_BLOCK       /* English for '^' */
+                    // Apple extensions
+%token  <type_id>   Y_APPLE___BLOCK     // __block storage class
+%token              Y_APPLE_BLOCK       // English for '^'
 
-                    /* miscellaneous */
+                    // miscellaneous
 %token              ';'
 %token              '{'
 %token              '}'
@@ -1094,26 +1094,26 @@ static void yyerror( char const *msg ) {
 %token  <name>      Y_NAME
 %token  <number>    Y_NUMBER
 %token  <name>      Y_SET_OPTION
-%token  <tdef>      Y_TYPEDEF_NAME      /* e.g., size_t */
-%token  <tdef>      Y_TYPEDEF_SNAME     /* e.g., std::string */
+%token  <tdef>      Y_TYPEDEF_NAME      // e.g., size_t
+%token  <tdef>      Y_TYPEDEF_SNAME     // e.g., std::string
 
-                    /*
-                     * Grammar rules are named according to the following
-                     * conventions.  In order, if a rule:
-                     *
-                     *  1. Is a list, "_list" is appended.
-                     *  2. Is specific to C/C++, "_c" is appended; is specific
-                     *     to English, "_english" is appended.
-                     *  3. Is of type:
-                     *      + <ast> or <ast_pair>: "_ast" is appended.
-                     *      + <name>: "_name" is appended.
-                     *      + <number>: "_num" is appended.
-                     *      + <sname>: "_sname" is appended.
-                     *      + <type_id>: "_tid" is appended.
-                     *      + <type>: "_type" is appended.
-                     *  4. Is expected, "_exp" is appended; is optional, "_opt"
-                     *     is appended.
-                     */
+                    //
+                    // Grammar rules are named according to the following
+                    // conventions.  In order, if a rule:
+                    //
+                    //  1. Is a list, "_list" is appended.
+                    //  2. Is specific to C/C++, "_c" is appended; is specific
+                    //     to English, "_english" is appended.
+                    //  3. Is of type:
+                    //      + <ast> or <ast_pair>: "_ast" is appended.
+                    //      + <name>: "_name" is appended.
+                    //      + <number>: "_num" is appended.
+                    //      + <sname>: "_sname" is appended.
+                    //      + <type_id>: "_tid" is appended.
+                    //      + <type>: "_type" is appended.
+                    //  4. Is expected, "_exp" is appended; is optional, "_opt"
+                    //     is appended.
+                    //
 %type   <align>     alignas_specifier_english alignas_specifier_english_opt
 %type   <ast_pair>  decl_english_ast
 %type   <ast_list>  decl_list_english decl_list_english_opt
@@ -1247,21 +1247,21 @@ static void yyerror( char const *msg ) {
 %type   <sname>     typedef_sname_c
 %type   <type_id>   virtual_tid_exp virtual_tid_opt
 
-/*
- * Bison %destructors.  We don't use the <identifier> syntax because older
- * versions of Bison don't support it.
- *
- * Clean-up of AST nodes is done via garbage collection using ast_gc_list.
- */
+//
+// Bison %destructors.  We don't use the <identifier> syntax because older
+// versions of Bison don't support it.
+//
+// Clean-up of AST nodes is done via garbage collection using ast_gc_list.
+//
 
-/* c_ast_list_t */
+// c_ast_list_t
 %destructor { DTRACE; c_ast_list_free( &$$ ); } decl_list_english
 %destructor { DTRACE; c_ast_list_free( &$$ ); } decl_list_english_opt
 %destructor { DTRACE; c_ast_list_free( &$$ ); } paren_decl_list_english_opt
 %destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast
 %destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast_opt
 
-/* name */
+// name
 %destructor { DTRACE; FREE( $$ ); } any_name
 %destructor { DTRACE; FREE( $$ ); } any_name_exp
 %destructor { DTRACE; FREE( $$ ); } name_exp
@@ -1269,7 +1269,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; FREE( $$ ); } Y_NAME
 %destructor { DTRACE; FREE( $$ ); } Y_SET_OPTION
 
-/* sname */
+// sname
 %destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c
 %destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c_exp
 %destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c_opt
@@ -1292,8 +1292,7 @@ static void yyerror( char const *msg ) {
 command_list
   : /* empty */
   | command_list { parse_init(); } command
-    {
-      //
+    { //
       // We get here only after a successful parse, so a hard reset is not
       // needed.
       //
@@ -1313,7 +1312,7 @@ command
   | show_command semi_or_end
   | typedef_declaration_c semi_or_end
   | using_declaration_c semi_or_end
-  | semi_or_end                         /* allows for blank lines */
+  | semi_or_end                         // allows for blank lines
   | error
     {
       if ( printable_token() != NULL )
@@ -1323,9 +1322,9 @@ command
     }
   ;
 
-/*****************************************************************************/
-/*  cast                                                                     */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  cast
+///////////////////////////////////////////////////////////////////////////////
 
 cast_english
     /*
@@ -1389,9 +1388,9 @@ new_style_cast_english
   | Y_STATIC                      { $$ = L_STATIC_CAST;       }
   ;
 
-/*****************************************************************************/
-/*  declare                                                                  */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  declare
+///////////////////////////////////////////////////////////////////////////////
 
 declare_english
     /*
@@ -1568,7 +1567,7 @@ storage_class_english_type
   | Y_MUTABLE                     { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_NOEXCEPT                    { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_OVERRIDE                    { $$ = C_TYPE_LIT_S( $1 ); }
-/*| Y_REGISTER */                       /* in type_modifier_list_english_type */
+//| Y_REGISTER                          // in type_modifier_list_english_type
   | Y_STATIC                      { $$ = C_TYPE_LIT_S( $1 ); }
   | Y__THREAD_LOCAL               { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_THREAD_LOCAL                { $$ = C_TYPE_LIT_S( $1 ); }
@@ -1621,9 +1620,9 @@ attribute_english_tid
   | Y_NORETURN
   ;
 
-/*****************************************************************************/
-/*  define
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  define
+///////////////////////////////////////////////////////////////////////////////
 
 define_english
   : Y_DEFINE sname_english as_exp storage_class_list_english_type_opt
@@ -1692,9 +1691,9 @@ define_english
     }
   ;
 
-/*****************************************************************************/
-/*  explain                                                                  */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  explain
+///////////////////////////////////////////////////////////////////////////////
 
 explain_c
     /*
@@ -2022,7 +2021,7 @@ decl_c_list
   ;
 
 decl_c
-  : /* in_attr: alignas_specifier_c typename_opt type_c_ast */
+  : // in_attr: alignas_specifier_c typename_opt type_c_ast
     decl_c_ast
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
@@ -2076,8 +2075,7 @@ decl_c
 
 explain
   : Y_EXPLAIN
-    {
-      //
+    { //
       // Tell the lexer that we're explaining gibberish so cdecl keywords
       // (e.g., "func") are returned as ordinary names, otherwise gibberish
       // like:
@@ -2097,9 +2095,9 @@ new_style_cast_c
   | Y_STATIC_CAST                 { $$ = L_STATIC;      }
   ;
 
-/*****************************************************************************/
-/*  help                                                                     */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  help
+///////////////////////////////////////////////////////////////////////////////
 
 help_command
   : Y_HELP help_what_opt          { print_help( $2 ); }
@@ -2111,17 +2109,17 @@ help_what_opt
   | Y_ENGLISH                     { $$ = L_ENGLISH;   }
   ;
 
-/*****************************************************************************/
-/*  quit                                                                     */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  quit
+///////////////////////////////////////////////////////////////////////////////
 
 quit_command
   : Y_QUIT                        { quit(); }
   ;
 
-/*****************************************************************************/
-/*  scoped declarations                                                      */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  scoped declarations
+///////////////////////////////////////////////////////////////////////////////
 
 scope_declaration_c
   : class_struct_union_declaration_c
@@ -2235,8 +2233,7 @@ namespace_declaration_c
       c_mode = C_GIBBERISH_TO_ENGLISH;
     }
     sname_c
-    {
-      //
+    { //
       // Make every scope's type be $1 for nested namespaces.
       //
       for ( c_scope_t *scope = $3.head; scope != NULL; scope = scope->next ) {
@@ -2309,9 +2306,9 @@ in_scope_declaration_c
   | using_declaration_c semi_exp
   ;
 
-/*****************************************************************************/
-/*  set                                                                      */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  set
+///////////////////////////////////////////////////////////////////////////////
 
 set_command
   : Y_SET                         { set_option( NULL, NULL, NULL, NULL ); }
@@ -2342,9 +2339,9 @@ set_option_value_opt
     }
   ;
 
-/*****************************************************************************/
-/*  show                                                                     */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  show
+///////////////////////////////////////////////////////////////////////////////
 
 show_command
   : Y_SHOW any_typedef show_format_opt
@@ -2453,9 +2450,9 @@ predefined_or_user_opt
   | Y_USER                        { $$ = SHOW_USER_TYPES; }
   ;
 
-/*****************************************************************************/
-/*  typedef                                                                  */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  typedef
+///////////////////////////////////////////////////////////////////////////////
 
 typedef_declaration_c
   : Y_TYPEDEF typename_opt
@@ -2539,9 +2536,9 @@ typedef_declaration_c
     }
   ;
 
-/*****************************************************************************/
-/*  using                                                                    */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  using
+///////////////////////////////////////////////////////////////////////////////
 
 using_declaration_c
   : Y_USING
@@ -2638,9 +2635,9 @@ typedef_name_c_ast
     }
   ;
 
-/*****************************************************************************/
-/*  declaration english productions                                          */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  declaration english productions
+///////////////////////////////////////////////////////////////////////////////
 
 decl_english_ast
   : array_decl_english_ast
@@ -2702,8 +2699,8 @@ length_opt
   | Y_LENGTH
   ;
 
-block_decl_english_ast                  /* Apple extension */
-  : /* in_attr: qualifier */
+block_decl_english_ast                  // Apple extension
+  : // in_attr: qualifier
     Y_APPLE_BLOCK paren_decl_list_english_opt returning_english_ast_opt
     {
       DUMP_START( "block_decl_english_ast",
@@ -2752,7 +2749,7 @@ destructor_decl_english_ast
   ;
 
 func_decl_english_ast
-  : /* in_attr: qualifier */
+  : // in_attr: qualifier
     ref_qualifier_english_tid_opt member_or_non_member_opt
     Y_FUNCTION paren_decl_list_english_opt returning_english_ast_opt
     {
@@ -2918,7 +2915,7 @@ pointer_decl_english_ast
     /*
      * Ordinary pointer declaration.
      */
-  : /* in_attr: qualifier */
+  : // in_attr: qualifier
     Y_POINTER to_exp decl_english_ast
     {
       DUMP_START( "pointer_decl_english_ast", "POINTER TO decl_english_ast" );
@@ -2942,7 +2939,7 @@ pointer_decl_english_ast
     /*
      * C++ pointer-to-member declaration.
      */
-  | /* in_attr: qualifier */
+  | // in_attr: qualifier
     Y_POINTER to_exp Y_MEMBER of_exp class_struct_tid_exp sname_english_exp
     decl_english_ast
     {
@@ -2974,7 +2971,7 @@ pointer_decl_english_ast
   ;
 
 reference_decl_english_ast
-  : /* in_attr: qualifier */
+  : // in_attr: qualifier
     reference_english_ast to_exp decl_english_ast
     {
       DUMP_START( "reference_decl_english_ast",
@@ -3006,8 +3003,7 @@ reference_english_ast
 user_defined_literal_decl_english_ast
   : Y_USER_DEFINED literal_exp paren_decl_list_english_opt
     returning_english_ast_opt
-    {
-      //
+    { //
       // User-defined literals are supported only in C++11 and later.
       // (However, we always allow them in configuration files.)
       //
@@ -3080,12 +3076,12 @@ var_decl_english_ast
     }
   ;
 
-/*****************************************************************************/
-/*  type english productions                                                 */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  type english productions
+///////////////////////////////////////////////////////////////////////////////
 
 type_english_ast
-  : /* in_attr: qualifier */
+  : // in_attr: qualifier
     type_modifier_list_english_type_opt unmodified_type_english_ast
     {
       DUMP_START( "type_english_ast",
@@ -3103,8 +3099,8 @@ type_english_ast
       DUMP_END();
     }
 
-  | /* in_attr: qualifier */
-    type_modifier_list_english_type     /* allows implicit int in K&R C */
+  | // in_attr: qualifier
+    type_modifier_list_english_type     // allows implicit int in K&R C
     {
       DUMP_START( "type_english_ast", "type_modifier_list_english_type" );
       DUMP_TYPE( "type_modifier_list_english_type", &$1 );
@@ -3167,9 +3163,9 @@ unmodified_type_english_ast
   | typedef_type_c_ast
   ;
 
-/*****************************************************************************/
-/*  declaration gibberish productions                                        */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  declaration gibberish productions
+///////////////////////////////////////////////////////////////////////////////
 
 decl_c_ast
   : decl2_c_ast
@@ -3191,7 +3187,7 @@ decl2_c_ast
   ;
 
 array_decl_c_ast
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     decl2_c_ast array_size_c_num
     {
       DUMP_START( "array_decl_c_ast", "decl2_c_ast array_size_c_num" );
@@ -3226,11 +3222,10 @@ array_size_c_num
     }
   ;
 
-block_decl_c_ast                        /* Apple extension */
-  : /* in_attr: type_c_ast */
+block_decl_c_ast                        // Apple extension
+  : // in_attr: type_c_ast
     '(' Y_CIRC
-    {
-      //
+    { //
       // A block AST has to be the type inherited attribute for decl_c_ast so
       // we have to create it here.
       //
@@ -3308,7 +3303,7 @@ func_decl_c_ast
      * cause grammar conflicts if they were separate rules in an LALR(1)
      * parser).
      */
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     decl2_c_ast '(' param_list_c_ast_opt ')'
     func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
     noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_tid_opt
@@ -3505,14 +3500,14 @@ func_qualified_c_tid
   : cv_qualifier_tid
   | Y_FINAL
   | Y_OVERRIDE
-  /*
-   * GNU C++ allows restricted-this-pointer member functions:
-   *
-   *      void S::f() __restrict;
-   *
-   * <https://gcc.gnu.org/onlinedocs/gcc/Restricted-Pointers.html>
-   */
-  | Y_GNU___RESTRICT                    /* GNU C++ extension */
+    /*
+     * GNU C++ allows restricted-this-pointer member functions:
+     *
+     *      void S::f() __restrict;
+     *
+     * <https://gcc.gnu.org/onlinedocs/gcc/Restricted-Pointers.html>
+     */
+  | Y_GNU___RESTRICT                    // GNU C++ extension
   ;
 
 func_ref_qualifier_c_tid_opt
@@ -3542,7 +3537,7 @@ no_except_bool_tid_exp
 
 trailing_return_type_c_ast_opt
   : /* empty */                   { $$.ast = $$.target_ast = NULL; }
-  | /* in_attr: type_c_ast */
+  | // in_attr: type_c_ast
     Y_ARROW type_c_ast { ia_type_ast_push( $2.ast ); } cast_c_ast_opt
     {
       ia_type_ast_pop();
@@ -3641,7 +3636,7 @@ nested_decl_c_ast
   ;
 
 oper_decl_c_ast
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     oper_c_ast lparen_exp param_list_c_ast_opt ')'
     func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
     noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_tid_opt
@@ -3686,7 +3681,7 @@ oper_decl_c_ast
   ;
 
 oper_c_ast
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     scope_sname_c_opt operator_exp c_operator
     {
       DUMP_START( "oper_c_ast", "OPERATOR c_operator" );
@@ -3729,7 +3724,7 @@ pointer_decl_c_ast
   ;
 
 pointer_type_c_ast
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     '*' type_qualifier_list_c_tid_opt
     {
       DUMP_START( "pointer_type_c_ast", "* type_qualifier_list_c_tid_opt" );
@@ -3763,7 +3758,7 @@ pointer_to_member_decl_c_ast
   ;
 
 pointer_to_member_type_c_ast
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     any_sname_c Y_COLON2_STAR cv_qualifier_list_c_tid_opt
     {
       DUMP_START( "pointer_to_member_type_c_ast",
@@ -3814,7 +3809,7 @@ reference_decl_c_ast
   ;
 
 reference_type_c_ast
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     Y_AMPER reference_qualifier_c_tid_opt
     {
       DUMP_START( "reference_type_c_ast", "&" );
@@ -3829,7 +3824,7 @@ reference_type_c_ast
       DUMP_END();
     }
 
-  | /* in_attr: type_c_ast */
+  | // in_attr: type_c_ast
     Y_AMPER2 reference_qualifier_c_tid_opt
     {
       DUMP_START( "reference_type_c_ast", "&&" );
@@ -3851,7 +3846,7 @@ reference_qualifier_c_tid_opt
   ;
 
 typedef_type_decl_c_ast
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     typedef_type_c_ast
     {
       DUMP_START( "typedef_type_decl_c_ast", "typedef_type_c_ast" );
@@ -3878,7 +3873,7 @@ typedef_type_decl_c_ast
   ;
 
 user_defined_conversion_decl_c_ast
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     scope_sname_c_opt Y_OPERATOR type_c_ast
     {
       ia_type_ast_push( $3.ast );
@@ -3915,7 +3910,7 @@ user_defined_conversion_decl_c_ast
   ;
 
 user_defined_literal_decl_c_ast
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     user_defined_literal_c_ast lparen_exp param_list_c_ast rparen_exp
     noexcept_c_tid_opt trailing_return_type_c_ast_opt
     {
@@ -3951,7 +3946,7 @@ user_defined_literal_decl_c_ast
   ;
 
 user_defined_literal_c_ast
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     scope_sname_c_opt operator_exp quote2_exp name_exp
     {
       DUMP_START( "user_defined_literal_c_ast", "OPERATOR \"\" NAME" );
@@ -3969,9 +3964,9 @@ user_defined_literal_c_ast
     }
   ;
 
-/*****************************************************************************/
-/*  function parameter gibberish productions                                 */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  function parameter gibberish productions
+///////////////////////////////////////////////////////////////////////////////
 
 param_list_c_ast_opt
   : /* empty */                   { slist_init( &$$ ); }
@@ -4046,9 +4041,9 @@ param_c_ast
     }
   ;
 
-/*****************************************************************************/
-/*  type gibberish productions                                               */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  type gibberish productions
+///////////////////////////////////////////////////////////////////////////////
 
 type_c_ast
     /*
@@ -4056,7 +4051,7 @@ type_c_ast
      *
      *      unsigned i;
      */
-  : type_modifier_list_c_type           /* allows implicit int in K&R C */
+  : type_modifier_list_c_type           // allows implicit int in K&R C
     {
       DUMP_START( "type_c_ast", "type_modifier_list_c_type" );
       DUMP_TYPE( "type_modifier_list_c_type", &$1 );
@@ -4188,11 +4183,11 @@ type_modifier_base_type
   | Y_SIGNED                      { $$ = C_TYPE_LIT_B( $1 ); }
   | Y_UNSIGNED                    { $$ = C_TYPE_LIT_B( $1 ); }
   | Y_EMC__SAT                    { $$ = C_TYPE_LIT_B( $1 ); }
-  /*
-   * Register is here (rather than in storage_class_c_type) because it's the
-   * only storage class that can be specified for function parameters.
-   * Therefore, it's simpler to treat it as any other type modifier.
-   */
+    /*
+     * Register is here (rather than in storage_class_c_type) because it's the
+     * only storage class that can be specified for function parameters.
+     * Therefore, it's simpler to treat it as any other type modifier.
+     */
   | Y_REGISTER                    { $$ = C_TYPE_LIT_S( $1 ); }
   ;
 
@@ -4356,9 +4351,8 @@ cv_qualifier_list_c_tid_opt
   ;
 
 restrict_qualifier_tid
-  : Y_RESTRICT                          /* C only */
-    {
-      //
+  : Y_RESTRICT                          // C only
+    { //
       // This check has to be done now in the parser rather than later in the
       // AST since both "restrict" and "__restrict" map to TS_RESTRICT and the
       // AST has no "memory" of which it was.
@@ -4371,7 +4365,7 @@ restrict_qualifier_tid
         PARSE_ABORT();
       }
     }
-  | Y_GNU___RESTRICT                    /* GNU C/C++ extension */
+  | Y_GNU___RESTRICT                    // GNU C/C++ extension
   ;
 
 upc_layout_qualifier_opt
@@ -4405,7 +4399,7 @@ storage_class_c_type
   | Y__NORETURN                   { $$ = C_TYPE_LIT_A( $1 ); }
   | Y_NORETURN                    { $$ = C_TYPE_LIT_A( $1 ); }
   | Y_OVERRIDE                    { $$ = C_TYPE_LIT_S( $1 ); }
-/*| Y_REGISTER */                       /* in type_modifier_base_type */
+//| Y_REGISTER                          // in type_modifier_base_type
   | Y_STATIC                      { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_TYPEDEF                     { $$ = C_TYPE_LIT_S( $1 ); }
   | Y__THREAD_LOCAL               { $$ = C_TYPE_LIT_S( $1 ); }
@@ -4482,9 +4476,9 @@ attribute_name_c_tid
     }
   ;
 
-/*****************************************************************************/
-/*  cast gibberish productions                                               */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  cast gibberish productions
+///////////////////////////////////////////////////////////////////////////////
 
 cast_c_ast_opt
   : /* empty */                   { $$.ast = $$.target_ast = NULL; }
@@ -4504,11 +4498,11 @@ cast2_c_ast
   | func_cast_c_ast
   | nested_cast_c_ast
   | sname_c_ast
-/*| typedef_type_decl_c_ast */          /* you can't cast a type */
+//| typedef_type_decl_c_ast             // you can't cast a type
   ;
 
 array_cast_c_ast
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     cast_c_ast_opt array_size_c_ast
     {
       DUMP_START( "array_cast_c_ast", "cast_c_ast_opt array_size_c_num" );
@@ -4570,11 +4564,10 @@ static_tid_opt
   | Y_STATIC
   ;
 
-block_cast_c_ast                        /* Apple extension */
-  : /* in_attr: type_c_ast */
+block_cast_c_ast                        // Apple extension
+  : // in_attr: type_c_ast
     '(' Y_CIRC
-    {
-      //
+    { //
       // A block AST has to be the type inherited attribute for cast_c_ast_opt
       // so we have to create it here.
       //
@@ -4604,7 +4597,7 @@ block_cast_c_ast                        /* Apple extension */
   ;
 
 func_cast_c_ast
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     cast2_c_ast '(' param_list_c_ast_opt ')'
     func_qualifier_list_c_tid_opt trailing_return_type_c_ast_opt
     {
@@ -4718,13 +4711,13 @@ reference_cast_c_ast
     }
   ;
 
-/*****************************************************************************/
-/*  user-defined conversion gibberish productions                            */
-/*                                                                           */
-/*  These are a subset of cast gibberish productions, specifically without   */
-/*  arrays, blocks, functions, or nested declarations, all of which are      */
-/*  either illegal or ambiguous.                                             */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  user-defined conversion gibberish productions
+//
+//  These are a subset of cast gibberish productions, specifically without
+//  arrays, blocks, functions, or nested declarations, all of which are either
+//  illegal or ambiguous.
+///////////////////////////////////////////////////////////////////////////////
 
 udc_decl_c_ast_opt
   : /* empty */                   { $$.ast = $$.target_ast = NULL; }
@@ -4793,9 +4786,9 @@ reference_udc_decl_c_ast
     }
   ;
 
-/*****************************************************************************/
-/*  name productions                                                         */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  name productions
+///////////////////////////////////////////////////////////////////////////////
 
 any_name
   : Y_NAME
@@ -4878,10 +4871,9 @@ typedef_type_c_ast
       DUMP_END();
     }
 
-  | /* in_attr: type_c_ast */
+  | // in_attr: type_c_ast
     any_typedef Y_COLON2 sname_c
-    {
-      //
+    { //
       // This is for a case like:
       //
       //      define S as struct S
@@ -4910,10 +4902,9 @@ typedef_type_c_ast
       DUMP_END();
     }
 
-  | /* in_attr: type_c_ast */
+  | // in_attr: type_c_ast
     any_typedef Y_COLON2 typedef_sname_c
-    {
-      //
+    { //
       // This is for a case like:
       //
       //      define S as struct S
@@ -4961,8 +4952,7 @@ scope_sname_c_opt
     }
 
   | any_typedef Y_COLON2
-    {
-      //
+    { //
       // This is for a case like:
       //
       //      define S as struct S
@@ -5036,7 +5026,7 @@ sname_c
   ;
 
 sname_c_ast
-  : /* in_attr: type_c_ast */
+  : // in_attr: type_c_ast
     sname_c
     {
       DUMP_START( "sname_c_ast", "sname_c" );
@@ -5172,9 +5162,9 @@ typedef_sname_c
   | any_typedef                   { $$ = c_ast_dup_name( $1->ast ); }
   ;
 
-/*****************************************************************************/
-/*  miscellaneous productions                                                */
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
+//  miscellaneous productions
+///////////////////////////////////////////////////////////////////////////////
 
 array_exp
   : Y_ARRAY
@@ -5359,8 +5349,7 @@ of_exp
 
 of_scope_english
   : Y_OF scope_english_type_exp any_sname_c_exp
-    {
-      //
+    { //
       // Scoped names are supported only in C++.  (However, we always allow
       // them in configuration files.)
       //
