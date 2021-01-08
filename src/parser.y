@@ -857,37 +857,39 @@ static void yyerror( char const *msg ) {
                     /* C/C++ operators: precedence 16 */
 %token              Y_PLUS2             "++"
 %token              Y_MINUS2            "--"
-%left               '(' ')'
-%left               '[' ']'
-%left               '.'
-%left               Y_ARROW             "->"
+%left               '(' ')' '[' ']' '.'
+                    Y_ARROW             "->"
                     /* C/C++ operators: precedence 15 */
-%token              '+'
-%token              '-'
-%right              '*'
-%right              Y_AMPER             /* '&' */
-%right              Y_EXCLAM            /* '!' */
-%right              Y_TILDE             /* '~' */
+%right              Y_AMPER          /* '&' */
+                    Y_DEREF             '*'
+                    Y_EXCLAM         /* '!' */
+                 /* Y_UMINUS            '-' */
+                 /* Y_UPLUS             '+' */
+                    Y_SIZEOF
+                    Y_TILDE          /* '~' */
                     /* C/C++ operators: precedence 14 */
 %left               Y_DOT_STAR          ".*"
-%left               Y_ARROW_STAR        "->*"
+                    Y_ARROW_STAR        "->*"
                     /* C/C++ operators: precedence 13 */
-%left               '/'
-%left               '%'
-                    /* C/C++ operators: precedence 12 (covered above) */
+%left               Y_MUL            /* '*' -- covered by Y_DEREF */
+                    '/' '%'
+                    /* C/C++ operators: precedence 12 */
+%left               Y_MINUS             '+'
+                    Y_PLUS              '-'
                     /* C/C++ operators: precedence 11 */
 %left               Y_LESS2             "<<"
-%left               Y_GREATER2          ">>"
+                    Y_GREATER2          ">>"
                     /* C/C++ operators: precedence 10 */
 %left               Y_LESS_EQ_GREATER   "<=>"
                     /* C/C++ operators: precedence 9 */
 %left               '<' '>'
-%left               Y_LESS_EQ           "<="
-%left               Y_GREATER_EQ        ">="
+                    Y_LESS_EQ           "<="
+                    Y_GREATER_EQ        ">="
                     /* C/C++ operators: precedence 8 */
 %left               Y_EQ2               "=="
-%left               Y_EXCLAM_EQ         "!="
+                    Y_EXCLAM_EQ         "!="
                     /* C/C++ operators: precedence 7 (covered above) */
+%left               Y_BIT_AND        /* '&' -- covered by Y_AMPER */
                     /* C/C++ operators: precedence 6 */
 %left               Y_CIRC              /* '^' */
                     /* C/C++ operators: precedence 5 */
@@ -898,17 +900,17 @@ static void yyerror( char const *msg ) {
 %left               Y_PIPE2             "||"
                     /* C/C++ operators: precedence 2 */
 %right              Y_QMARK_COLON       "?:"
-%right              '='
-%right              Y_PERCENT_EQ        "%="
-%right              Y_AMPER_EQ          "&="
-%right              Y_STAR_EQ           "*="
-%right              Y_PLUS_EQ           "+="
-%right              Y_MINUS_EQ          "-="
-%right              Y_SLASH_EQ          "/="
-%right              Y_LESS2_EQ          "<<="
-%right              Y_GREATER2_EQ       ">>="
-%right              Y_CIRC_EQ           "^="
-%right              Y_PIPE_EQ           "|="
+                    '='
+                    Y_PERCENT_EQ        "%="
+                    Y_AMPER_EQ          "&="
+                    Y_STAR_EQ           "*="
+                    Y_PLUS_EQ           "+="
+                    Y_MINUS_EQ          "-="
+                    Y_SLASH_EQ          "/="
+                    Y_LESS2_EQ          "<<="
+                    Y_GREATER2_EQ       ">>="
+                    Y_CIRC_EQ           "^="
+                    Y_PIPE_EQ           "|="
                     /* C/C++ operators: precedence 1 */
 %left               ','
 
@@ -932,7 +934,6 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_REGISTER
 %token              Y_RETURN
 %token  <type_id>   Y_SHORT
-%token  <type_id>   Y_SIZEOF
 %token  <type_id>   Y_STATIC
 %token  <type_id>   Y_STRUCT
 %token              Y_SWITCH
