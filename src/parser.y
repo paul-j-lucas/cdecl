@@ -660,6 +660,8 @@ static void fl_elaborate_error( char const *file, int line,
 static void in_attr_free( void ) {
   c_sname_free( &in_attr.current_scope );
   slist_free( &in_attr.qualifier_stack, NULL, &free );
+  // Do _not_ pass &c_ast_free for the 3rd argument! All AST nodes were already
+  // free'd from the ast_gc_list in parse_cleanup(). Just free the slist nodes.
   slist_free( &in_attr.ast_type_stack, NULL, NULL );
   MEM_ZERO( &in_attr );
 }
