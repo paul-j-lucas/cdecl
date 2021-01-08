@@ -687,6 +687,7 @@ static void parse_cleanup( bool hard_reset ) {
  * @sa parse_cleanup()
  */
 static void parse_init( void ) {
+  ast_depth = 0;
   if ( !error_newlined ) {
     FPUTC( '\n', fout );
     error_newlined = true;
