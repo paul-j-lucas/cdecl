@@ -260,7 +260,8 @@ void fl_print_error_unknown_type( char const *file, int line,
   char const *const unknown_name = check_strdup( c_sname_full_name( sname ) );
   fl_print_error( file, line, loc, "\"%s\": unknown type", unknown_name );
 
-  c_keyword_t const *const k = c_keyword_find( unknown_name, LANG_ALL );
+  c_keyword_t const *const k =
+    c_keyword_find( unknown_name, LANG_ALL, C_KW_CTX_ALL );
   if ( k != NULL && k->type_id != TX_NONE )
     EPRINTF( " until %s", c_lang_name( c_lang_oldest( k->lang_ids ) ) );
 

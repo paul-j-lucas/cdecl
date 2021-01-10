@@ -943,7 +943,8 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_voyf.test \
 	tests/declare_xici.test \
 	tests/declare_xxi.test \
-	tests/declare_yf.test
+	tests/declare_yf.test \
+	tests/declare_yi.test
 
 #
 # C++ declare error tests
@@ -1241,7 +1242,8 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_voyf.test \
 	tests/explain_xxctor.test \
 	tests/explain_xxi.test \
-	tests/explain_yf.test
+	tests/explain_yf.test \
+	tests/explain_yi.test
 
 #
 # C++ explain error tests

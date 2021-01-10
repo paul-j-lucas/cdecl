@@ -19,6 +19,15 @@ supported:
     c++decl> explain C(int)
     declare C as constructor (int)
 
+** Context-senstive `final` & `override`
+Both `final` and `override` are now recognized as keywords only in a member
+function declaration context:
+
+    c++decl> explain int final
+    declare final as int
+    c++decl> explain void f() final
+    declare f as final virtual member function returning void
+
 
 * Changes in Cdecl 9.1
 

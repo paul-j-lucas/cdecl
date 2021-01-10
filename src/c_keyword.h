@@ -40,13 +40,24 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * C++ keywords contexts.  A context specifies where particular literals are
+ * recognized as keywords.  For example, `final` and `override` are recognized
+ * as keywords only within member function declarations.
+ */
+enum c_keyword_ctx {
+  C_KW_CTX_ALL,                         ///< All contexts.
+  C_KW_MBR_FUNC                         ///< Member function declaration.
+};
+
+/**
  * C/C++ language keyword or C++11 (or later) attribute information.
  */
 struct c_keyword {
-  char const   *literal;                ///< C string literal of the keyword.
-  int           yy_token_id;            ///< Bison token number.
-  c_lang_id_t   lang_ids;               ///< Language(s) OK in.
-  c_type_id_t   type_id;                ///< Type the keyword maps to, if any.
+  char const     *literal;              ///< C string literal of the keyword.
+  int             yy_token_id;          ///< Bison token number.
+  c_lang_id_t     lang_ids;             ///< Language(s) OK in.
+  c_keyword_ctx_t context;              ///< Keyword context.
+  c_type_id_t     type_id;              ///< Type the keyword maps to, if any.
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -69,10 +80,12 @@ c_keyword_t const* c_attribute_find( char const *literal );
  *
  * @param literal The literal to find.
  * @param lang_ids The bitwise-or of language(s) to look for the keyword in.
+ * @param kw_ctx The keyword context to limit to.
  * @return Returns a pointer to the corresponding `c_keyword` or null for none.
  */
 PJL_WARN_UNUSED_RESULT
-c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids );
+c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
+                                   c_keyword_ctx_t kw_ctx );
 
 /**
  * Iterates to the next C/C++ keyword.

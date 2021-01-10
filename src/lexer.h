@@ -29,6 +29,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "types.h"
 
 /// @cond DOXYGEN_IGNORE
 
@@ -48,8 +49,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
-extern bool         lexer_find_typedef; ///< Look-up `typedef` names?
-extern char const  *lexer_token;        ///< Text of current token.
+extern bool             lexer_find_typedef; ///< Look-up `typedef` names?
+extern c_keyword_ctx_t  lexer_keyword_ctx;  ///< Keyword context.
+extern char const      *lexer_token;        ///< Text of current token.
 
 /**
  * Gets the current input line.

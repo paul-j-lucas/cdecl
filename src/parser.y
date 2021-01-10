@@ -627,7 +627,8 @@ static void fl_elaborate_error( char const *file, int line,
 
     if ( error_token != NULL ) {
       EPRINTF( "\"%s\"", error_token );
-      c_keyword_t const *const k = c_keyword_find( error_token, opt_lang );
+      c_keyword_t const *const k =
+        c_keyword_find( error_token, opt_lang, C_KW_CTX_ALL );
       if ( k != NULL && (k->lang_ids & opt_lang) != LANG_NONE )
         EPRINTF( " is a keyword in %s", C_LANG_NAME() );
       EPUTS( ": " );
@@ -1202,6 +1203,7 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   enum_tid enum_class_struct_union_tid
 %type   <type_id>   func_qualified_c_tid
 %type   <type_id>   func_qualifier_list_c_tid_opt
+%type   <type_id>   rparen_func_qualifier_list_c_tid_opt
 %type   <type_id>   namespace_tid_exp
 %type   <type>      namespace_type
 %type   <type_id>   no_except_bool_tid_exp
@@ -3304,16 +3306,16 @@ func_decl_c_ast
      * parser).
      */
   : // in_attr: type_c_ast
-    decl2_c_ast '(' param_list_c_ast_opt ')'
-    func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
+    decl2_c_ast '(' param_list_c_ast_opt
+    rparen_func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
     noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_tid_opt
     {
       c_ast_t    *const decl2_ast = $1.ast;
-      c_type_id_t const func_qualifier_tid = $5;
-      c_type_id_t const func_ref_qualifier_tid = $6;
-      c_type_id_t const noexcept_tid = $7;
-      c_type_id_t const func_equals_tid = $9;
-      c_ast_t    *const trailing_ret_ast = $8.ast;
+      c_type_id_t const func_qualifier_tid = $4;
+      c_type_id_t const func_ref_qualifier_tid = $5;
+      c_type_id_t const noexcept_tid = $6;
+      c_type_id_t const func_equals_tid = $8;
+      c_ast_t    *const trailing_ret_ast = $7.ast;
       c_ast_t    *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "func_decl_c_ast",
@@ -3479,6 +3481,22 @@ knr_func_or_constructor_c_decl_ast
     }
   ;
 
+rparen_func_qualifier_list_c_tid_opt
+  : ')'
+    { //
+      // Both "final" and "override" are matched only within member function
+      // declarations.  Now that ')' has been parsed, we're within one, so set
+      // the keyword context to C_KW_MBR_FUNC.
+      //
+      lexer_keyword_ctx = C_KW_MBR_FUNC;
+    }
+    func_qualifier_list_c_tid_opt
+    {
+      lexer_keyword_ctx = C_KW_CTX_ALL;
+      $$ = $3;
+    }
+  ;
+
 func_qualifier_list_c_tid_opt
   : /* empty */                   { $$ = TS_NONE; }
   | func_qualifier_list_c_tid_opt func_qualified_c_tid
@@ -3637,8 +3655,8 @@ nested_decl_c_ast
 
 oper_decl_c_ast
   : // in_attr: type_c_ast
-    oper_c_ast lparen_exp param_list_c_ast_opt ')'
-    func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
+    oper_c_ast lparen_exp param_list_c_ast_opt
+    rparen_func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
     noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_tid_opt
     {
       DUMP_START( "oper_decl_c_ast",
@@ -3650,19 +3668,19 @@ oper_decl_c_ast
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_AST( "oper_c_ast", $1.ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
-      DUMP_TID( "func_qualifier_list_c_tid_opt", $5 );
-      DUMP_TID( "func_ref_qualifier_c_tid_opt", $6 );
-      DUMP_TID( "noexcept_c_tid_opt", $7 );
-      DUMP_AST( "trailing_return_type_c_ast_opt", $8.ast );
-      DUMP_TID( "func_equals_tid_opt", $9 );
+      DUMP_TID( "func_qualifier_list_c_tid_opt", $4 );
+      DUMP_TID( "func_ref_qualifier_c_tid_opt", $5 );
+      DUMP_TID( "noexcept_c_tid_opt", $6 );
+      DUMP_AST( "trailing_return_type_c_ast_opt", $7.ast );
+      DUMP_TID( "func_equals_tid_opt", $8 );
 
       c_ast_t *const oper_ast = c_ast_new_gc( K_OPERATOR, &@$ );
-      oper_ast->type.store_tid = $5 | $6 | $7 | $9;
+      oper_ast->type.store_tid = $4 | $5 | $6 | $8;
       oper_ast->as.oper.params = $3;
       oper_ast->as.oper.oper_id = $1.ast->as.oper.oper_id;
 
-      if ( $8.ast != NULL ) {
-        $$.ast = c_ast_add_func( $1.ast, $8.ast, oper_ast );
+      if ( $7.ast != NULL ) {
+        $$.ast = c_ast_add_func( $1.ast, $7.ast, oper_ast );
       }
       else if ( $1.target_ast != NULL ) {
         $$.ast = $1.ast;
@@ -3878,7 +3896,7 @@ user_defined_conversion_decl_c_ast
     {
       ia_type_ast_push( $3.ast );
     }
-    udc_decl_c_ast_opt lparen_exp rparen_exp func_qualifier_list_c_tid_opt
+    udc_decl_c_ast_opt lparen_exp rparen_func_qualifier_list_c_tid_opt
     noexcept_c_tid_opt func_equals_tid_opt
     {
       ia_type_ast_pop();
@@ -3892,13 +3910,13 @@ user_defined_conversion_decl_c_ast
       DUMP_SNAME( "scope_sname_c_opt", &$1 );
       DUMP_AST( "type_c_ast", $3.ast );
       DUMP_AST( "udc_decl_c_ast_opt", $5.ast );
-      DUMP_TID( "func_qualifier_list_c_tid_opt", $8 );
-      DUMP_TID( "noexcept_c_tid_opt", $9 );
-      DUMP_TID( "func_equals_tid_opt", $10 );
+      DUMP_TID( "func_qualifier_list_c_tid_opt", $7 );
+      DUMP_TID( "noexcept_c_tid_opt", $8 );
+      DUMP_TID( "func_equals_tid_opt", $9 );
 
       $$.ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
       $$.ast->sname = $1;
-      $$.ast->type.store_tid = $8 | $9 | $10;
+      $$.ast->type.store_tid = $7 | $8 | $9;
       if ( ia_type_ast_peek() != NULL )
         c_type_or_eq( &$$.ast->type, &ia_type_ast_peek()->type );
       $$.ast->as.udef_conv.conv_ast = $5.ast != NULL ? $5.ast : $3.ast;
@@ -4598,8 +4616,8 @@ block_cast_c_ast                        // Apple extension
 
 func_cast_c_ast
   : // in_attr: type_c_ast
-    cast2_c_ast '(' param_list_c_ast_opt ')'
-    func_qualifier_list_c_tid_opt trailing_return_type_c_ast_opt
+    cast2_c_ast '(' param_list_c_ast_opt rparen_func_qualifier_list_c_tid_opt
+    trailing_return_type_c_ast_opt
     {
       DUMP_START( "func_cast_c_ast",
                   "cast2_c_ast '(' param_list_c_ast_opt ')' "
@@ -4608,16 +4626,16 @@ func_cast_c_ast
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_AST( "cast2_c_ast", $1.ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
-      DUMP_TID( "func_qualifier_list_c_tid_opt", $5 );
-      DUMP_AST( "trailing_return_type_c_ast_opt", $6.ast );
+      DUMP_TID( "func_qualifier_list_c_tid_opt", $4 );
+      DUMP_AST( "trailing_return_type_c_ast_opt", $5.ast );
       DUMP_AST( "target_ast", $1.target_ast );
 
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
-      func_ast->type.store_tid = $5;
+      func_ast->type.store_tid = $4;
       func_ast->as.func.params = $3;
 
-      if ( $6.ast != NULL ) {
-        $$.ast = c_ast_add_func( $1.ast, $6.ast, func_ast );
+      if ( $5.ast != NULL ) {
+        $$.ast = c_ast_add_func( $1.ast, $5.ast, func_ast );
       }
       else if ( $1.target_ast != NULL ) {
         $$.ast = $1.ast;
@@ -5176,6 +5194,22 @@ array_exp
 
 as_exp
   : Y_AS
+    { //
+      // For either "declare" or "define", neither "override" nor "final" must
+      // be matched initially to allow for cases like:
+      //
+      //      c++decl> declare final as int
+      //      int final;
+      //
+      // (which is legal).  However, after parsing "as", the keyword context
+      // has to be set to C_KW_MBR_FUNC to be able to match "override" and
+      // "final", e.g.:
+      //
+      //      c++decl> declare f as final function
+      //      void f() final;
+      //
+      lexer_keyword_ctx = C_KW_MBR_FUNC;
+    }
   | error
     {
       elaborate_error( "\"%s\" expected", L_AS );

@@ -367,6 +367,7 @@ static char const lexer_token_init_buf; ///< So lexer_token is never null.
 
 // extern variables
 bool              lexer_find_typedef = true;
+c_keyword_ctx_t   lexer_keyword_ctx;
 char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
@@ -428,7 +429,7 @@ static bool c_sname_parse( char const *s, c_sname_t *sname ) {
     char *const name = strndup( s, (size_t)(end - s) );
 
     // Ensure that the name is NOT a keyword.
-    c_keyword_t const *const k = c_keyword_find( name, opt_lang );
+    c_keyword_t const *const k = c_keyword_find( name, opt_lang, C_KW_CTX_ALL );
     if ( k != NULL ) {
       FREE( name );
       c_sname_free( &rv );
@@ -467,7 +468,7 @@ static bool c_sname_parse_dtor( char const *s, c_sname_t *sname ) {
     char *const name = strndup( s, (size_t)(end - s) );
 
     // Ensure that the name is NOT a keyword.
-    c_keyword_t const *const k = c_keyword_find( name, opt_lang );
+    c_keyword_t const *const k = c_keyword_find( name, opt_lang, C_KW_CTX_ALL );
     if ( k != NULL ) {
       FREE( name );
       if ( k->literal == L_COMPL ) {    // k->literal is set to L_* so == is OK
@@ -626,11 +627,38 @@ hex_int       0[xX]{H}+{int_suffix}?
 
 %%
               /*
-               * Special case: if the _Atomic keyword is immediately followed
-               * by a '(', it is interpreted as a type specifier, not as a type
+               * Special case: if "_Atomic" is immediately followed by a '(',
+               * it is interpreted as a type specifier, not as a type
                * qualifier.
                */
 _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
+
+              /*
+               * Special case: if "declare" is eventually followed by "user-
+               * defined", e.g.:
+               *
+               *      c++decl> declare overriden user-defined \
+               *        conversion operator returning int
+               *      operator int() override;
+               *
+               * the keyword context has to be set to C_KW_MBR_FUNC to be able
+               * to match "override" and "final" (that ordinarily are not
+               * matched unless within a member function declaration).
+               *
+               * The context can't always be set to C_KW_MBR_FUNC after
+               * "declare" otherwise "override" and "final" would match when
+               * they shouldn't, e.g.:
+               *
+               *      c++decl> declare final as int
+               *      int final;
+               *
+               * (which is legal).
+               */
+declare/{S}({S}|{letter})*user-def(ined)? {
+                SET_TOKEN;
+                lexer_keyword_ctx = C_KW_MBR_FUNC;
+                return Y_DECLARE;
+              }
 
               /*
                * Special case: similar to {sname} below, handle scoped
@@ -774,7 +802,8 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                 //
         find_c_keyword:
                 NO_OP;
-                c_keyword_t const *k = c_keyword_find( lexer_token, opt_lang );
+                c_keyword_t const *k =
+                  c_keyword_find( lexer_token, opt_lang, lexer_keyword_ctx );
                 if ( k == NULL && c_mode == C_ENGLISH_TO_GIBBERISH ) {
                   //
                   // We have to look-up attribute names when parsing English
@@ -1026,6 +1055,7 @@ void lexer_reset( bool hard_reset ) {
   c_mode = C_ENGLISH_TO_GIBBERISH;
   input_len = input_sent = 0;
   lexer_find_typedef = true;
+  lexer_keyword_ctx = C_KW_CTX_ALL;
   newline();
 }
 

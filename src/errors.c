@@ -1854,11 +1854,11 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
   for ( c_scope_t const *scope = c_ast_scope( ast ); scope != NULL;
         scope = scope->next ) {
     char const *const name = c_scope_data( scope )->name;
-    c_keyword_t const *const keyword = c_keyword_find( name, LANG_ALL );
-    if ( keyword != NULL ) {
+    c_keyword_t const *const k = c_keyword_find( name, LANG_ALL, C_KW_CTX_ALL );
+    if ( k != NULL ) {
       print_warning( &ast->loc,
         "\"%s\" is a keyword in %s\n",
-        name, c_lang_name( c_lang_oldest( keyword->lang_ids ) )
+        name, c_lang_name( c_lang_oldest( k->lang_ids ) )
       );
     }
   } // for
