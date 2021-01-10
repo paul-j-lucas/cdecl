@@ -1,5 +1,6 @@
 2021-01-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * _Noreturn.h, gnulib-common.m4: Updated Gnulib.
    * NEWS, c_keyword.c, c_keyword.h, errors.c, lexer.h, lexer.l, parser.y,
      print.c, types.h, test/Makefile.am, declare_yi.out, explain_yi.out,
      declare_yi.test, explain_yi.test: `final` and `override` are now
