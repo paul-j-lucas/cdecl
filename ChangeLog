@@ -1,5 +1,33 @@
+2021-01-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_keyword.c, c_keyword.h, errors.c, lexer.h, lexer.l, parser.y,
+     print.c, types.h, test/Makefile.am, declare_yi.out, explain_yi.out,
+     declare_yi.test, explain_yi.test: `final` and `override` are now
+     regognized only in a function declaration context.
+
+2021-01-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.c: Whitespace adjustment.
+   * c_keyword.c, c_keyword.h: Swapped order ot lang_ids and type_id in
+     preparation for keyword context.
+   * lexer.l: Doxygen.
+
+2021-01-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Now using // comments more.
+   * parser.y: Added ast_depth = 0;.
+   * parser.y: Comment.
+
+2021-01-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * color.c: s/parse_sgr/sgr_is_valid/
+
 2021-01-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Eliminated 2 shift-reduce conflicts by reworking operators.
+   * parser.y: Blank lines.
+   * options.c, options.h: Clean-up + Doxygen fixes.
+   * c_lang.h: Added const.
    * lib/Makefile.am, stddef.in.h, string.in.h, extensions.m4, stddef_h.m4,
      string_h.m4: Updated GnuLib.
 
