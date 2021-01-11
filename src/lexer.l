@@ -608,7 +608,7 @@ S             [ \f\r\t\v]
 
 identifier    {letter}({letter}|{D})*
 
-dtor_sname    ({identifier}{S}*::{S}*)+(~{S}*|compl{S}+){identifier}
+dtor_sname    ({identifier}{S}*::{S}*)+(~|compl{S}){S}*{identifier}
 hyphenated    [a-z]+-([a-z]+-)*[a-z]+
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
 set_option    [^=; \f\n\r\t\v]+
@@ -641,11 +641,11 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                *        conversion operator returning int
                *      operator int() override;
                *
-               * the keyword context has to be set to C_KW_MBR_FUNC to be able
-               * to match "override" and "final" (that ordinarily are not
+               * the keyword context has to be set to C_KW_CTX_MBR_FUNC to be
+               * able to match "override" and "final" (that ordinarily are not
                * matched unless within a member function declaration).
                *
-               * The context can't always be set to C_KW_MBR_FUNC after
+               * The context can't always be set to C_KW_CTX_MBR_FUNC after
                * "declare" otherwise "override" and "final" would match when
                * they shouldn't, e.g.:
                *
@@ -656,7 +656,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                */
 declare/{S}({S}|{letter})*user-def(ined)? {
                 SET_TOKEN;
-                lexer_keyword_ctx = C_KW_MBR_FUNC;
+                lexer_keyword_ctx = C_KW_CTX_MBR_FUNC;
                 return Y_DECLARE;
               }
 
