@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 2, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 10, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1150,139 +1150,192 @@ GNU C's
 \f(CW__volatile\fP,
 and
 \f(CW__volatile__\fP.
-.SS Predefined Types
+.SS Set Options
+The
+.B set
+command takes several options
+(which ignore hyphens).
+Unambiguous option abbreviations may be used.
+.RS 4
+.TP 6
+.RB [ no ] alt-tokens
+Turns [off] on alternative token output.
+.TP
+.RB [ no ] bison-debug
+Turns [off] on
+.BR bison (1)
+debugging output
+(if compiled in)
+\(em default is off.
+.TP
+.RB [ no ] debug
+Turns [off] on debugging output
+(if compiled in)
+\(em default is off.
+.TP
+.B nographs
+Turns off either digraph or trigraph output,
+i.e.,
+reverts to emitting all characters as-is.
+.TP
+.B digraphs
+Turns on digraph output
+for
+\f(CW[\fP
+and
+\f(CW]\fP.
+.TP
+.RB [ no ] east-const
+Turns [off] ``east const'' output
+where \f(CWconst\fP (and \f(CWvolatile\fP)
+are printed to the right
+(``east'')
+of the type.
+.TP
+.RB [ no ] explain-by-default
+Turns [off] on \f(CWexplain\fP being assumed
+when an input line doesn't start with any command
+\(em default is off.
+.TP
+.BI explicit-int \f1=\fPs
+Turns on explicit \f(CWint\fP for the integer types
+.IR s
+\(em default is none.
+(See the
+.B \-\-explicit-int
+or
+.B \-I
+option for details.)
+.TP
+.B noexplicit-int
+Turns off explicit \f(CWint\fP for all integer types.
+.TP
+.RB [ no ] flex-debug
+Turns [off] on
+.BR flex (1)
+debugging output
+(if compiled in)
+\(em default is off.
+.TP
+.BI lang \f1=\fPs
+Use
+.I s
+(which is case-insensitive)
+as the current language.
+(See
+.B C AND C++ LANGUAGE VERSIONS
+for valid languages.)
+.TP
+.I lang
+Shorthand for
+.BI lang= lang \f1.\fP
+.TP
+.B options
+Prints the current value of all options.
+.TP
+.RB [ no ] prompt
+Turns [off] on the prompt
+\(em default is on.
+.TP
+.RB [ no ] semicolon
+Turns [off] on printing a semicolon at the end of a C (or C++) declaration
+\(em default is on.
+.TP
+.B trigraphs
+Turns on trigraph output
+for
+\f(CW[\fP,
+\f(CW]\fP,
+\f(CW^\fP,
+\f(CW|\fP,
+and
+\f(CW~\fP.
+.RE
+.SH PREDEFINED TYPES
 The following types are predefined
 (unless either the
 .B \-\-no-typedefs
 or
 .B \-t
-option is given):
-.P
+option is given)
+in the specified language and later.
+.SS K&R C
 .na
 .nh
-.RS 4
-\f(CWatomic_flag\fP,
-\f(CWclock_t\fP,
-\f(CWcnd_t\fP,
-\f(CWdiv_t\fP,
-\f(CWerrno_t\fP,
+\f(CWdev_t\fP,
+\f(CWino_t\fP,
 \f(CWFILE\fP,
+\f(CWoff_t\fP,
+\f(CWtime_t\fP
+.hy
+.ad
+.SS C89
+.na
+.nh
+\f(CWblkcnt_t\fP,
+\f(CWblksize_t\fP,
+\f(CWclock_t\fP,
+\f(CWclockid_t\fP,
+\f(CWdiv_t\fP,
+\f(CWdouble_t\fP,
+\f(CWerrno_t\fP,
+\f(CWfd_set\fP,
+\f(CWfemode_t\fP,
+\f(CWfenv_t\fP,
+\f(CWfexcept_t\fP,
+\f(CWfloat_t\fP,
+\f(CWfpos_t\fP,
+\f(CWgid_t\fP,
 \f(CWimaxdiv_t\fP,
+\f(CWin_addr_t\fP,
+\f(CWin_port_t\fP,
 \f(CWjmp_buf\fP,
 \f(CWldiv_t\fP,
 \f(CWlldiv_t\fP,
-\f(CWmax_align_t\fP,
+\f(CWlong_double_t\fP,
 \f(CWmbstate_t\fP,
-\f(CWmemory_order\fP,
-\f(CWonce_flag\fP,
-\f(CWptrdiff_t\fP,
-\f(CWrsize_t\fP,
-\f(CWsig_atomic_t\fP,
-\f(CWsize_t\fP,
-\f(CWssize_t\fP,
-\f(CWthrd_start_t\fP,
-\f(CWthrd_t\fP,
-\f(CWtime_t\fP,
-\f(CWtss_dtor_t\fP,
-\f(CWtss_t\fP,
-\f(CWva_list\fP,
-\f(CWwctrans_t\fP,
-\f(CWwctype_t\fP,
-\f(CWwint_t\fP,
-.P
-\f(CWint8_t\fP,
-\f(CWint16_t\fP,
-\f(CWint32_t\fP,
-\f(CWint64_t\fP,
-\f(CWintmax_t\fP,
-\f(CWintptr_t\fP,
-\f(CWuint8_t\fP,
-\f(CWuint16_t\fP,
-\f(CWuint32_t\fP,
-\f(CWuint64_t\fP,
-\f(CWuintmax_t\fP,
-\f(CWuintptr_t\fP,
-.P
-\f(CWint_fast8_t\fP,
-\f(CWint_fast16_t\fP,
-\f(CWint_fast32_t\fP,
-\f(CWint_fast64_t\fP,
-\f(CWint_least8_t\fP,
-\f(CWint_least16_t\fP,
-\f(CWint_least32_t\fP,
-\f(CWint_least64_t\fP,
-\f(CWuint_fast8_t\fP,
-\f(CWuint_fast16_t\fP,
-\f(CWuint_fast32_t\fP,
-\f(CWuint_fast64_t\fP,
-\f(CWuint_least8_t\fP,
-\f(CWuint_least16_t\fP,
-\f(CWuint_least32_t\fP,
-\f(CWuint_least64_t\fP
-.P
-\f(CWatomic_bool\fP,
-\f(CWatomic_char16_t\fP,
-\f(CWatomic_char32_t\fP,
-\f(CWatomic_char\fP,
-\f(CWatomic_int\fP,
-\f(CWatomic_intmax_t\fP,
-\f(CWatomic_intptr_t\fP,
-\f(CWatomic_llong\fP,
-\f(CWatomic_long\fP,
-\f(CWatomic_ptrdiff_t\fP,
-\f(CWatomic_schar\fP,
-\f(CWatomic_short\fP,
-\f(CWatomic_size_t\fP,
-\f(CWatomic_uchar\fP,
-\f(CWatomic_uint\fP,
-\f(CWatomic_uintmax_t\fP,
-\f(CWatomic_uintptr_t\fP,
-\f(CWatomic_ullong\fP,
-\f(CWatomic_ulong\fP,
-\f(CWatomic_ushort\fP,
-\f(CWatomic_wchar_t\fP,
-.P
-\f(CWatomic_int_fast8_t\fP,
-\f(CWatomic_int_fast16_t\fP,
-\f(CWatomic_int_fast32_t\fP,
-\f(CWatomic_int_fast64_t\fP,
-\f(CWatomic_int_least8_t\fP,
-\f(CWatomic_int_least16_t\fP,
-\f(CWatomic_int_least32_t\fP,
-\f(CWatomic_int_least64_t\fP,
-\f(CWatomic_uint_fast8_t\fP,
-\f(CWatomic_uint_fast16_t\fP,
-\f(CWatomic_uint_fast32_t\fP,
-\f(CWatomic_uint_fast64_t\fP,
-\f(CWatomic_uint_least8_t\fP,
-\f(CWatomic_uint_least16_t\fP,
-\f(CWatomic_uint_least32_t\fP,
-\f(CWatomic_uint_least64_t\fP,
-.P
-\f(CWblkcnt_t\fP,
-\f(CWblksize_t\fP,
-\f(CWclockid_t\fP,
-\f(CWdev_t\fP,
-\f(CWfd_set\fP,
-\f(CWfpos_t\fP,
-\f(CWgid_t\fP,
-\f(CWin_addr_t\fP,
-\f(CWino_t\fP,
-\f(CWin_port_t\fP,
 \f(CWmode_t\fP,
-\f(CWmtx_t\fP,
 \f(CWnfds_t\fP,
 \f(CWnlink_t\fP,
-\f(CWoff_t\fP,
 \f(CWpid_t\fP,
+\f(CWptrdiff_t\fP,
 \f(CWrlim_t\fP,
 \f(CWsa_family_t\fP,
+\f(CWsig_atomic_t\fP,
 \f(CWsigset_t\fP,
+\f(CWsize_t\fP,
 \f(CWsocklen_t\fP,
+\f(CWssize_t\fP,
 \f(CWsuseconds_t\fP,
 \f(CWuid_t\fP,
 \f(CWuseconds_t\fP,
+\f(CWva_list\fP,
 .P
+\f(CW_Decimal32\fP,
+\f(CW_Decimal32_t\fP,
+\f(CW_Decimal64\fP,
+\f(CW_Decimal64_t\fP,
+\f(CW_Decimal64x\fP,
+\f(CW_Decimal128\fP,
+\f(CW_Decimal128_t\fP,
+\f(CW_Decimal128x\fP,
+.P
+\f(CW_Float16\fP,
+\f(CW_Float16_t\fP,
+\f(CW_Float32\fP,
+\f(CW_Float32_t\fP,
+\f(CW_Float32x\fP,
+\f(CW_Float64\fP,
+\f(CW_Float64_t\fP,
+\f(CW_Float64x\fP,
+\f(CW_Float128\fP,
+\f(CW_Float128_t\fP,
+\f(CW_Float128x\fP
+.hy
+.ad
+.SS C95
+.na
+.nh
 \f(CWpthread_t\fP,
 \f(CWpthread_barrier_t\fP,
 \f(CWpthread_barrierattr_t\fP,
@@ -1294,256 +1347,10 @@ option is given):
 \f(CWpthread_rwlock_t\fP,
 \f(CWpthread_rwlockattr_t\fP,
 \f(CWpthread_spinlock_t\fP,
+\f(CWwctrans_t\fP,
+\f(CWwctype_t\fP,
+\f(CWwint_t\fP
 .P
-\f(CWint_hk_t\fP,
-\f(CWint_hr_t\fP,
-\f(CWint_k_t\fP,
-\f(CWint_lk_t\fP,
-\f(CWint_lr_t\fP,
-\f(CWint_r_t\fP,
-\f(CWuint_uhk_t\fP,
-\f(CWuint_uhr_t\fP,
-\f(CWuint_uk_t\fP,
-\f(CWuint_ulk_t\fP,
-\f(CWuint_ulr_t\fP,
-\f(CWuint_ur_t\fP,
-.P
-\f(CWstd::adopt_lock_t\fP,
-\f(CWstd::align_val_t\fP,
-\f(CWstd::ambiguous_local_time\fP,
-\f(CWstd::atomic_bool\fP,
-\f(CWstd::atomic_char16_t\fP,
-\f(CWstd::atomic_char32_t\fP,
-\f(CWstd::atomic_char8_t\fP,
-\f(CWstd::atomic_char\fP,
-\f(CWstd::atomic_flag\fP,
-\f(CWstd::atomic_int16_t\fP,
-\f(CWstd::atomic_int32_t\fP,
-\f(CWstd::atomic_int64_t\fP,
-\f(CWstd::atomic_int8_t\fP,
-\f(CWstd::atomic_int_fast16_t\fP,
-\f(CWstd::atomic_int_fast32_t\fP,
-\f(CWstd::atomic_int_fast64_t\fP,
-\f(CWstd::atomic_int_fast8_t\fP,
-\f(CWstd::atomic_int\fP,
-\f(CWstd::atomic_int_least16_t\fP,
-\f(CWstd::atomic_int_least32_t\fP,
-\f(CWstd::atomic_int_least64_t\fP,
-\f(CWstd::atomic_int_least8_t\fP,
-\f(CWstd::atomic_intmax_t\fP,
-\f(CWstd::atomic_intptr_t\fP,
-\f(CWstd::atomic_llong\fP,
-\f(CWstd::atomic_long\fP,
-\f(CWstd::atomic_ptrdiff_t\fP,
-\f(CWstd::atomic_schar\fP,
-\f(CWstd::atomic_short\fP,
-\f(CWstd::atomic_signed_lock_free\fP,
-\f(CWstd::atomic_size_t\fP,
-\f(CWstd::atomic_uchar\fP,
-\f(CWstd::atomic_uint16_t\fP,
-\f(CWstd::atomic_uint32_t\fP,
-\f(CWstd::atomic_uint64_t\fP,
-\f(CWstd::atomic_uint8_t\fP,
-\f(CWstd::atomic_uint_fast16_t\fP,
-\f(CWstd::atomic_uint_fast32_t\fP,
-\f(CWstd::atomic_uint_fast64_t\fP,
-\f(CWstd::atomic_uint_fast8_t\fP,
-\f(CWstd::atomic_uint\fP,
-\f(CWstd::atomic_uint_least16_t\fP,
-\f(CWstd::atomic_uint_least32_t\fP,
-\f(CWstd::atomic_uint_least64_t\fP,
-\f(CWstd::atomic_uint_least8_t\fP,
-\f(CWstd::atomic_uintmax_t\fP,
-\f(CWstd::atomic_uintptr_t\fP,
-\f(CWstd::atomic_ullong\fP,
-\f(CWstd::atomic_ulong\fP,
-\f(CWstd::atomic_unsigned_lock_free\fP,
-\f(CWstd::atomic_ushort\fP,
-\f(CWstd::atomic_wchar_t\fP,
-\f(CWstd::bad_alloc\fP,
-\f(CWstd::bad_any_cast\fP,
-\f(CWstd::bad_array_new_length\fP,
-\f(CWstd::bad_cast\fP,
-\f(CWstd::bad_exception\fP,
-\f(CWstd::bad_function_call\fP,
-\f(CWstd::bad_optional_access\fP,
-\f(CWstd::bad_type_id\fP,
-\f(CWstd::bad_variant_access\fP,
-\f(CWstd::bad_weak_ptr\fP,
-\f(CWstd::byte\fP,
-\f(CWstd::chrono::choose\fP,
-\f(CWstd::chrono::day\fP,
-\f(CWstd::chrono::file_clock\fP,
-\f(CWstd::chrono::gps_clock\fP,
-\f(CWstd::chrono::high_resolution_clock\fP,
-\f(CWstd::chrono::is_clock\fP,
-\f(CWstd::chrono::last_spec\fP,
-\f(CWstd::chrono::leap_second\fP,
-\f(CWstd::chrono::local_info\fP,
-\f(CWstd::chrono::local_t\fP,
-\f(CWstd::chrono::month_day\fP,
-\f(CWstd::chrono::month_day_last\fP,
-\f(CWstd::chrono::month\fP,
-\f(CWstd::chrono::month_weekday\fP,
-\f(CWstd::chrono::month_weekday_last\fP,
-\f(CWstd::chrono::nonexistent_local_time\fP,
-\f(CWstd::chrono::steady_clock\fP,
-\f(CWstd::chrono::sys_info\fP,
-\f(CWstd::chrono::system_clock\fP,
-\f(CWstd::chrono::tai_clock\fP,
-\f(CWstd::chrono::time_zone\fP,
-\f(CWstd::chrono::time_zone_link\fP,
-\f(CWstd::chrono::tzdb\fP,
-\f(CWstd::chrono::tzdb_list\fP,
-\f(CWstd::chrono::utc_clock\fP,
-\f(CWstd::chrono::weekday\fP,
-\f(CWstd::chrono::weekday_indexed\fP,
-\f(CWstd::chrono::weekday_last\fP,
-\f(CWstd::chrono::year\fP,
-\f(CWstd::chrono::year_month_day\fP,
-\f(CWstd::chrono::year_month_day_last\fP,
-\f(CWstd::chrono::year_month\fP,
-\f(CWstd::chrono::year_month_weekday\fP,
-\f(CWstd::chrono::year_month_weekday_last\fP,
-\f(CWstd::codecvt_base\fP,
-\f(CWstd::condition_variable_any\fP,
-\f(CWstd::condition_variable\fP,
-\f(CWstd::ctype_base\fP,
-\f(CWstd::cv_status\fP,
-\f(CWstd::defer_lock_t\fP,
-\f(CWstd::destroying_delete_t\fP,
-\f(CWstd::div_t\fP,
-\f(CWstd::domain_error\fP,
-\f(CWstd::error_category\fP,
-\f(CWstd::error_code\fP,
-\f(CWstd::error_condition\fP,
-\f(CWstd::exception\fP,
-\f(CWstd::filebuf\fP,
-\f(CWstd::filesystem::copy_options\fP,
-\f(CWstd::filesystem::directory_entry\fP,
-\f(CWstd::filesystem::directory_iterator\fP,
-\f(CWstd::filesystem::directory_options\fP,
-\f(CWstd::filesystem::file_status\fP,
-\f(CWstd::filesystem::filesystem_error\fP,
-\f(CWstd::filesystem::file_type\fP,
-\f(CWstd::filesystem::path\fP,
-\f(CWstd::filesystem::perm_options\fP,
-\f(CWstd::filesystem::perms\fP,
-\f(CWstd::filesystem::recursive_directory_iterator\fP,
-\f(CWstd::filesystem::space_info\fP,
-\f(CWstd::format_error\fP,
-\f(CWstd::fstream\fP,
-\f(CWstd::future_errc\fP,
-\f(CWstd::future_error\fP,
-\f(CWstd::future_status\fP,
-\f(CWstd::ifstream\fP,
-\f(CWstd::imaxdiv_t\fP,
-\f(CWstd::invalid_argument\fP,
-\f(CWstd::ios_base::failure\fP,
-\f(CWstd::ios\fP,
-\f(CWstd::iostream\fP,
-\f(CWstd::istream\fP,
-\f(CWstd::istringstream\fP,
-\f(CWstd::jthread\fP,
-\f(CWstd::ldiv_t\fP,
-\f(CWstd::length_error\fP,
-\f(CWstd::lldiv_t\fP,
-\f(CWstd::locale\fP,
-\f(CWstd::logic_error\fP,
-\f(CWstd::max_align_t\fP,
-\f(CWstd::messages_base\fP,
-\f(CWstd::money_base\fP,
-\f(CWstd::mutex\fP,
-\f(CWstd::nonstopstate_t\fP,
-\f(CWstd::nothrow_t\fP,
-\f(CWstd::nullptr_t\fP,
-\f(CWstd::ofstream\fP,
-\f(CWstd::ostream\fP,
-\f(CWstd::ostringstream\fP,
-\f(CWstd::osyncstream\fP,
-\f(CWstd::out_of_range\fP,
-\f(CWstd::overflow_error\fP,
-\f(CWstd::partial_ordering\fP,
-\f(CWstd::ptrdiff_t\fP,
-\f(CWstd::range_error\fP,
-\f(CWstd::recursive_mutex\fP,
-\f(CWstd::recursive_timed_mutex\fP,
-\f(CWstd::regex_error\fP,
-\f(CWstd::regex\fP,
-\f(CWstd::runtime_error\fP,
-\f(CWstd::shared_mutex\fP,
-\f(CWstd::shared_timed_mutex\fP,
-\f(CWstd::sig_atomic_t\fP,
-\f(CWstd::size_t\fP,
-\f(CWstd::stop_source\fP,
-\f(CWstd::stop_token\fP,
-\f(CWstd::streambuf\fP,
-\f(CWstd::streamoff\fP,
-\f(CWstd::streamsize\fP,
-\f(CWstd::stringbuf\fP,
-\f(CWstd::string\fP,
-\f(CWstd::stringstream\fP,
-\f(CWstd::string_view\fP,
-\f(CWstd::strong_equality\fP,
-\f(CWstd::strong_ordering\fP,
-\f(CWstd::syncbuf\fP,
-\f(CWstd::system_error\fP,
-\f(CWstd::thread\fP,
-\f(CWstd::time_base\fP,
-\f(CWstd::timed_mutex\fP,
-\f(CWstd::try_to_lock_t\fP,
-\f(CWstd::u16string\fP,
-\f(CWstd::u16string_view\fP,
-\f(CWstd::u32string\fP,
-\f(CWstd::u32string_view\fP,
-\f(CWstd::u8string_view\fP,
-\f(CWstd::underflow_error\fP,
-\f(CWstd::weak_equality\fP,
-\f(CWstd::weak_ordering\fP,
-\f(CWstd::wfilebuf\fP,
-\f(CWstd::wfstream\fP,
-\f(CWstd::wifstream\fP,
-\f(CWstd::wios\fP,
-\f(CWstd::wiostream\fP,
-\f(CWstd::wistream\fP,
-\f(CWstd::wistringstream\fP,
-\f(CWstd::wofstream\fP,
-\f(CWstd::wostream\fP,
-\f(CWstd::wostringstream\fP,
-\f(CWstd::wosyncstream\fP,
-\f(CWstd::wregex\fP,
-\f(CWstd::wstreambuf\fP,
-\f(CWstd::wstringbuf\fP,
-\f(CWstd::wstring\fP,
-\f(CWstd::wstringstream\fP,
-\f(CWstd::wstring_view\fP,
-\f(CWstd::wsyncbuf\fP,
-.P
-\f(CW_Decimal32\fP,
-\f(CW_Decimal32_t\fP,
-\f(CW_Decimal64\fP,
-\f(CW_Decimal64_t\fP,
-\f(CW_Decimal64x\fP,
-\f(CW_Decimal128\fP,
-\f(CW_Decimal128_t\fP,
-\f(CW_Decimal128x\fP,
-\f(CW_Float16\fP,
-\f(CW_Float16_t\fP,
-\f(CW_Float32\fP,
-\f(CW_Float32_t\fP,
-\f(CW_Float32x\fP,
-\f(CW_Float64\fP,
-\f(CW_Float64_t\fP,
-\f(CW_Float64x\fP,
-\f(CW_Float128\fP,
-\f(CW_Float128_t\fP,
-\f(CW_Float128x\fP,
-\f(CWfemode_t\fP,
-\f(CWfenv_t\fP,
-\f(CWfexcept_t\fP,
-\f(CWfloat_t\fP,
-\f(CWdouble_t\fP,
-\f(CWlong_double_t\fP,
 \f(CW__float80\fP,
 \f(CW__float128\fP,
 \f(CW__fp16\fP,
@@ -1716,110 +1523,343 @@ option is given):
 \f(CW__wchar_t\fP,
 \f(CWWORD\fP,
 \f(CWWPARAM\fP
-.RE
 .hy
 .ad
-.SS Set Options
-The
-.B set
-command takes several options
-(which ignore hyphens).
-Unambiguous option abbreviations may be used.
-.RS 4
-.TP 6
-.RB [ no ] alt-tokens
-Turns [off] on alternative token output.
-.TP
-.RB [ no ] bison-debug
-Turns [off] on
-.BR bison (1)
-debugging output
-(if compiled in)
-\(em default is off.
-.TP
-.RB [ no ] debug
-Turns [off] on debugging output
-(if compiled in)
-\(em default is off.
-.TP
-.B nographs
-Turns off either digraph or trigraph output,
-i.e.,
-reverts to emitting all characters as-is.
-.TP
-.B digraphs
-Turns on digraph output
-for
-\f(CW[\fP
-and
-\f(CW]\fP.
-.TP
-.RB [ no ] east-const
-Turns [off] ``east const'' output
-where \f(CWconst\fP (and \f(CWvolatile\fP)
-are printed to the right
-(``east'')
-of the type.
-.TP
-.RB [ no ] explain-by-default
-Turns [off] on \f(CWexplain\fP being assumed
-when an input line doesn't start with any command
-\(em default is off.
-.TP
-.BI explicit-int \f1=\fPs
-Turns on explicit \f(CWint\fP for the integer types
-.IR s
-\(em default is none.
-(See the
-.B \-\-explicit-int
-or
-.B \-I
-option for details.)
-.TP
-.B noexplicit-int
-Turns off explicit \f(CWint\fP for all integer types.
-.TP
-.RB [ no ] flex-debug
-Turns [off] on
-.BR flex (1)
-debugging output
-(if compiled in)
-\(em default is off.
-.TP
-.BI lang \f1=\fPs
-Use
-.I s
-(which is case-insensitive)
-as the current language.
-(See
-.B C AND C++ LANGUAGE VERSIONS
-for valid languages.)
-.TP
-.I lang
-Shorthand for
-.BI lang= lang \f1.\fP
-.TP
-.B options
-Prints the current value of all options.
-.TP
-.RB [ no ] prompt
-Turns [off] on the prompt
-\(em default is on.
-.TP
-.RB [ no ] semicolon
-Turns [off] on printing a semicolon at the end of a C (or C++) declaration
-\(em default is on.
-.TP
-.B trigraphs
-Turns on trigraph output
-for
-\f(CW[\fP,
-\f(CW]\fP,
-\f(CW^\fP,
-\f(CW|\fP,
-and
-\f(CW~\fP.
-.RE
+.SS C99
+.na
+.nh
+\f(CWint8_t\fP,
+\f(CWint16_t\fP,
+\f(CWint32_t\fP,
+\f(CWint64_t\fP,
+\f(CWintmax_t\fP,
+\f(CWintptr_t\fP,
+\f(CWuint8_t\fP,
+\f(CWuint16_t\fP,
+\f(CWuint32_t\fP,
+\f(CWuint64_t\fP,
+\f(CWuintmax_t\fP,
+\f(CWuintptr_t\fP,
+.P
+\f(CWint_fast8_t\fP,
+\f(CWint_fast16_t\fP,
+\f(CWint_fast32_t\fP,
+\f(CWint_fast64_t\fP,
+\f(CWint_least8_t\fP,
+\f(CWint_least16_t\fP,
+\f(CWint_least32_t\fP,
+\f(CWint_least64_t\fP,
+\f(CWuint_fast8_t\fP,
+\f(CWuint_fast16_t\fP,
+\f(CWuint_fast32_t\fP,
+\f(CWuint_fast64_t\fP,
+\f(CWuint_least8_t\fP,
+\f(CWuint_least16_t\fP,
+\f(CWuint_least32_t\fP,
+\f(CWuint_least64_t\fP,
+.P
+\f(CWint_hk_t\fP,
+\f(CWint_hr_t\fP,
+\f(CWint_k_t\fP,
+\f(CWint_lk_t\fP,
+\f(CWint_lr_t\fP,
+\f(CWint_r_t\fP,
+\f(CWuint_uhk_t\fP,
+\f(CWuint_uhr_t\fP,
+\f(CWuint_uk_t\fP,
+\f(CWuint_ulk_t\fP,
+\f(CWuint_ulr_t\fP,
+\f(CWuint_ur_t\fP
+.hy
+.ad
+.SS C11
+.na
+.nh
+\f(CWatomic_bool\fP,
+\f(CWatomic_char16_t\fP,
+\f(CWatomic_char32_t\fP,
+\f(CWatomic_char\fP,
+\f(CWatomic_flag\fP,
+\f(CWatomic_int\fP,
+\f(CWatomic_intmax_t\fP,
+\f(CWatomic_intptr_t\fP,
+\f(CWatomic_llong\fP,
+\f(CWatomic_long\fP,
+\f(CWatomic_ptrdiff_t\fP,
+\f(CWatomic_schar\fP,
+\f(CWatomic_short\fP,
+\f(CWatomic_size_t\fP,
+\f(CWatomic_uchar\fP,
+\f(CWatomic_uint\fP,
+\f(CWatomic_uintmax_t\fP,
+\f(CWatomic_uintptr_t\fP,
+\f(CWatomic_ullong\fP,
+\f(CWatomic_ulong\fP,
+\f(CWatomic_ushort\fP,
+\f(CWatomic_wchar_t\fP,
+.P
+\f(CWatomic_int_fast8_t\fP,
+\f(CWatomic_int_fast16_t\fP,
+\f(CWatomic_int_fast32_t\fP,
+\f(CWatomic_int_fast64_t\fP,
+\f(CWatomic_int_least8_t\fP,
+\f(CWatomic_int_least16_t\fP,
+\f(CWatomic_int_least32_t\fP,
+\f(CWatomic_int_least64_t\fP,
+\f(CWatomic_uint_fast8_t\fP,
+\f(CWatomic_uint_fast16_t\fP,
+\f(CWatomic_uint_fast32_t\fP,
+\f(CWatomic_uint_fast64_t\fP,
+\f(CWatomic_uint_least8_t\fP,
+\f(CWatomic_uint_least16_t\fP,
+\f(CWatomic_uint_least32_t\fP,
+\f(CWatomic_uint_least64_t\fP,
+.P
+\f(CWcnd_t\fP,
+\f(CWmax_align_t\fP,
+\f(CWmemory_order\fP,
+\f(CWmtx_t\fP,
+\f(CWonce_flag\fP,
+\f(CWrsize_t\fP,
+\f(CWthrd_start_t\fP,
+\f(CWthrd_t\fP,
+\f(CWtss_dtor_t\fP,
+\f(CWtss_t\fP
+.hy
+.ad
+.SS C++
+.na
+.nh
+\f(CWstd::bad_alloc\fP,
+\f(CWstd::bad_cast\fP,
+\f(CWstd::bad_exception\fP,
+\f(CWstd::bad_type_id\fP,
+\f(CWstd::codecvt_base\fP,
+\f(CWstd::ctype_base\fP,
+\f(CWstd::div_t\fP,
+\f(CWstd::domain_error\fP,
+\f(CWstd::exception\fP,
+\f(CWstd::filebuf\fP,
+\f(CWstd::fstream\fP,
+\f(CWstd::ifstream\fP,
+\f(CWstd::invalid_argument\fP,
+\f(CWstd::ios\fP,
+\f(CWstd::iostream\fP,
+\f(CWstd::istream\fP,
+\f(CWstd::istringstream\fP,
+\f(CWstd::ldiv_t\fP,
+\f(CWstd::length_error\fP,
+\f(CWstd::locale\fP,
+\f(CWstd::logic_error\fP,
+\f(CWstd::messages_base\fP,
+\f(CWstd::money_base\fP,
+\f(CWstd::nothrow_t\fP,
+\f(CWstd::ofstream\fP,
+\f(CWstd::ostream\fP,
+\f(CWstd::runtime_error\fP,
+\f(CWstd::sig_atomic_t\fP,
+\f(CWstd::osyncstream\fP,
+\f(CWstd::ostringstream\fP,
+\f(CWstd::out_of_range\fP,
+\f(CWstd::overflow_error\fP,
+\f(CWstd::ptrdiff_t\fP,
+\f(CWstd::range_error\fP,
+\f(CWstd::size_t\fP,
+\f(CWstd::streambuf\fP,
+\f(CWstd::streamoff\fP,
+\f(CWstd::streamsize\fP,
+\f(CWstd::string\fP,
+\f(CWstd::stringbuf\fP,
+\f(CWstd::stringstream\fP,
+\f(CWstd::syncbuf\fP,
+\f(CWstd::time_base\fP,
+\f(CWstd::underflow_error\fP,
+\f(CWstd::wfilebuf\fP,
+\f(CWstd::wfstream\fP,
+\f(CWstd::wifstream\fP,
+\f(CWstd::wios\fP,
+\f(CWstd::wiostream\fP,
+\f(CWstd::wistream\fP,
+\f(CWstd::wistringstream\fP,
+\f(CWstd::wofstream\fP,
+\f(CWstd::wostream\fP,
+\f(CWstd::wostringstream\fP,
+\f(CWstd::wosyncstream\fP,
+\f(CWstd::wstreambuf\fP,
+\f(CWstd::wstring\fP,
+\f(CWstd::wstringbuf\fP,
+\f(CWstd::wstringstream\fP,
+\f(CWstd::wsyncbuf\fP
+.hy
+.ad
+.SS C++11
+.na
+.nh
+\f(CWstd::atomic_bool\fP,
+\f(CWstd::atomic_char16_t\fP,
+\f(CWstd::atomic_char32_t\fP,
+\f(CWstd::atomic_char8_t\fP,
+\f(CWstd::atomic_char\fP,
+\f(CWstd::atomic_flag\fP,
+\f(CWstd::atomic_int16_t\fP,
+\f(CWstd::atomic_int32_t\fP,
+\f(CWstd::atomic_int64_t\fP,
+\f(CWstd::atomic_int8_t\fP,
+\f(CWstd::atomic_int_fast16_t\fP,
+\f(CWstd::atomic_int_fast32_t\fP,
+\f(CWstd::atomic_int_fast64_t\fP,
+\f(CWstd::atomic_int_fast8_t\fP,
+\f(CWstd::atomic_int\fP,
+\f(CWstd::atomic_int_least16_t\fP,
+\f(CWstd::atomic_int_least32_t\fP,
+\f(CWstd::atomic_int_least64_t\fP,
+\f(CWstd::atomic_int_least8_t\fP,
+\f(CWstd::atomic_intmax_t\fP,
+\f(CWstd::atomic_intptr_t\fP,
+\f(CWstd::atomic_llong\fP,
+\f(CWstd::atomic_long\fP,
+\f(CWstd::atomic_ptrdiff_t\fP,
+\f(CWstd::atomic_schar\fP,
+\f(CWstd::atomic_short\fP,
+\f(CWstd::atomic_signed_lock_free\fP,
+\f(CWstd::atomic_size_t\fP,
+\f(CWstd::atomic_uchar\fP,
+\f(CWstd::atomic_uint16_t\fP,
+\f(CWstd::atomic_uint32_t\fP,
+\f(CWstd::atomic_uint64_t\fP,
+\f(CWstd::atomic_uint8_t\fP,
+\f(CWstd::atomic_uint_fast16_t\fP,
+\f(CWstd::atomic_uint_fast32_t\fP,
+\f(CWstd::atomic_uint_fast64_t\fP,
+\f(CWstd::atomic_uint_fast8_t\fP,
+\f(CWstd::atomic_uint\fP,
+\f(CWstd::atomic_uint_least16_t\fP,
+\f(CWstd::atomic_uint_least32_t\fP,
+\f(CWstd::atomic_uint_least64_t\fP,
+\f(CWstd::atomic_uint_least8_t\fP,
+\f(CWstd::atomic_uintmax_t\fP,
+\f(CWstd::atomic_uintptr_t\fP,
+\f(CWstd::atomic_ullong\fP,
+\f(CWstd::atomic_ulong\fP,
+\f(CWstd::atomic_unsigned_lock_free\fP,
+\f(CWstd::atomic_ushort\fP,
+\f(CWstd::atomic_wchar_t\fP,
+.P
+\f(CWstd::adopt_lock_t\fP,
+\f(CWstd::bad_array_new_length\fP,
+\f(CWstd::bad_function_call\fP,
+\f(CWstd::bad_weak_ptr\fP,
+\f(CWstd::chrono::high_resolution_clock\fP,
+\f(CWstd::chrono::steady_clock\fP,
+\f(CWstd::condition_variable\fP,
+\f(CWstd::condition_variable_any\fP,
+\f(CWstd::cv_status\fP,
+\f(CWstd::defer_lock_t\fP,
+\f(CWstd::error_category\fP,
+\f(CWstd::error_code\fP,
+\f(CWstd::error_condition\fP,
+\f(CWstd::future_errc\fP,
+\f(CWstd::future_error\fP,
+\f(CWstd::future_status\fP,
+\f(CWstd::imaxdiv_t\fP,
+\f(CWstd::ios_base::failure\fP,
+\f(CWstd::lldiv_t\fP,
+\f(CWstd::max_align_t\fP,
+\f(CWstd::mutex\fP,
+\f(CWstd::nullptr_t\fP,
+\f(CWstd::recursive_mutex\fP,
+\f(CWstd::recursive_timed_mutex\fP,
+\f(CWstd::regex\fP,
+\f(CWstd::regex_error\fP,
+\f(CWstd::shared_mutex\fP,
+\f(CWstd::shared_timed_mutex\fP,
+\f(CWstd::system_error\fP,
+\f(CWstd::thread\fP,
+\f(CWstd::timed_mutex\fP,
+\f(CWstd::try_to_lock_t\fP,
+\f(CWstd::u32string\fP,
+\f(CWstd::u32string_view\fP,
+\f(CWstd::wregex\fP
+.hy
+.ad
+.SS C++17
+.na
+.nh
+\f(CWstd::align_val_t\fP,
+\f(CWstd::bad_any_cast\fP,
+\f(CWstd::bad_optional_access\fP,
+\f(CWstd::bad_variant_access\fP,
+\f(CWstd::byte\fP,
+\f(CWstd::string_view\fP,
+\f(CWstd::u16string\fP,
+\f(CWstd::u16string_view\fP,
+\f(CWstd::wstring_view\fP,
+.P
+\f(CWstd::filesystem::copy_options\fP,
+\f(CWstd::filesystem::directory_entry\fP,
+\f(CWstd::filesystem::directory_iterator\fP,
+\f(CWstd::filesystem::directory_options\fP,
+\f(CWstd::filesystem::file_status\fP,
+\f(CWstd::filesystem::file_type\fP,
+\f(CWstd::filesystem::filesystem_error\fP,
+\f(CWstd::filesystem::path\fP,
+\f(CWstd::filesystem::perm_options\fP,
+\f(CWstd::filesystem::perms\fP,
+\f(CWstd::filesystem::recursive_directory_iterator\fP,
+\f(CWstd::filesystem::space_info\fP
+.hy
+.ad
+.SS C++20
+.na
+.nh
+\f(CWstd::ambiguous_local_time\fP,
+\f(CWstd::strong_equality\fP,
+\f(CWstd::strong_ordering\fP,
+\f(CWstd::nonstopstate_t\fP,
+\f(CWstd::weak_equality\fP,
+\f(CWstd::stop_source\fP,
+\f(CWstd::stop_token\fP,
+\f(CWstd::destroying_delete_t\fP,
+\f(CWstd::format_error\fP,
+\f(CWstd::jthread\fP,
+\f(CWstd::partial_ordering\fP,
+\f(CWstd::u8string_view\fP,
+\f(CWstd::weak_ordering\fP,
+.P
+\f(CWstd::chrono::choose\fP,
+\f(CWstd::chrono::day\fP,
+\f(CWstd::chrono::file_clock\fP,
+\f(CWstd::chrono::gps_clock\fP,
+\f(CWstd::chrono::is_clock\fP,
+\f(CWstd::chrono::last_spec\fP,
+\f(CWstd::chrono::leap_second\fP,
+\f(CWstd::chrono::local_info\fP,
+\f(CWstd::chrono::local_t\fP,
+\f(CWstd::chrono::month\fP,
+\f(CWstd::chrono::month_day\fP,
+\f(CWstd::chrono::month_day_last\fP,
+\f(CWstd::chrono::month_weekday\fP,
+\f(CWstd::chrono::month_weekday_last\fP,
+\f(CWstd::chrono::nonexistent_local_time\fP,
+\f(CWstd::chrono::sys_info\fP,
+\f(CWstd::chrono::system_clock\fP,
+\f(CWstd::chrono::tai_clock\fP,
+\f(CWstd::chrono::time_zone\fP,
+\f(CWstd::chrono::time_zone_link\fP,
+\f(CWstd::chrono::tzdb\fP,
+\f(CWstd::chrono::tzdb_list\fP,
+\f(CWstd::chrono::utc_clock\fP,
+\f(CWstd::chrono::weekday\fP,
+\f(CWstd::chrono::weekday_indexed\fP,
+\f(CWstd::chrono::weekday_last\fP,
+\f(CWstd::chrono::year\fP,
+\f(CWstd::chrono::year_month\fP,
+\f(CWstd::chrono::year_month_day\fP,
+\f(CWstd::chrono::year_month_day_last\fP,
+\f(CWstd::chrono::year_month_weekday\fP,
+\f(CWstd::chrono::year_month_weekday_last\fP
+.hy
+.ad
 .SH CONFIGURATION FILE
 The
 .B cdeclrc
