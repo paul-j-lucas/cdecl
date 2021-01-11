@@ -3486,9 +3486,9 @@ rparen_func_qualifier_list_c_tid_opt
     { //
       // Both "final" and "override" are matched only within member function
       // declarations.  Now that ')' has been parsed, we're within one, so set
-      // the keyword context to C_KW_MBR_FUNC.
+      // the keyword context to C_KW_CTX_MBR_FUNC.
       //
-      lexer_keyword_ctx = C_KW_MBR_FUNC;
+      lexer_keyword_ctx = C_KW_CTX_MBR_FUNC;
     }
     func_qualifier_list_c_tid_opt
     {
@@ -5202,13 +5202,13 @@ as_exp
       //      int final;
       //
       // (which is legal).  However, after parsing "as", the keyword context
-      // has to be set to C_KW_MBR_FUNC to be able to match "override" and
+      // has to be set to C_KW_CTX_MBR_FUNC to be able to match "override" and
       // "final", e.g.:
       //
       //      c++decl> declare f as final function
       //      void f() final;
       //
-      lexer_keyword_ctx = C_KW_MBR_FUNC;
+      lexer_keyword_ctx = C_KW_CTX_MBR_FUNC;
     }
   | error
     {

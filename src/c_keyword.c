@@ -42,7 +42,7 @@
 
 // shorthands
 #define KC_A                      C_KW_CTX_ALL
-#define KC_F                      C_KW_MBR_FUNC
+#define KC_F                      C_KW_CTX_MBR_FUNC
 
 /// @endcond
 

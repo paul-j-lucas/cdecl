@@ -46,7 +46,7 @@
  */
 enum c_keyword_ctx {
   C_KW_CTX_ALL,                         ///< All contexts.
-  C_KW_MBR_FUNC                         ///< Member function declaration.
+  C_KW_CTX_MBR_FUNC                     ///< Member function declaration.
 };
 
 /**
