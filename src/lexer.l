@@ -708,6 +708,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                */
 {sname}       {
                 SET_TOKEN;
+
                 c_sname_t sname;
                 if ( c_sname_parse( lexer_token, &sname ) ) {
                   if ( lexer_find_typedef ) {
