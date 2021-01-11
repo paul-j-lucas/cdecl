@@ -599,14 +599,14 @@ static int yywrap( void ) {
 
 %}
 
-letter        [A-Za-z_]
+L             [A-Za-z_]
 B             [01]
 O             [0-7]
 D             [0-9]
 H             [0-9A-Fa-f]
 S             [ \f\r\t\v]
 
-identifier    {letter}({letter}|{D})*
+identifier    {L}({L}|{D})*
 
 dtor_sname    ({identifier}{S}*::{S}*)+(~|compl{S}){S}*{identifier}
 hyphenated    [a-z]+-([a-z]+-)*[a-z]+
@@ -654,7 +654,7 @@ _Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
                *
                * (which is legal).
                */
-declare/{S}({S}|{letter})*user-def(ined)? {
+declare/{S}({S}|{L})*user-def(ined)? {
                 SET_TOKEN;
                 lexer_keyword_ctx = C_KW_CTX_MBR_FUNC;
                 return Y_DECLARE;
