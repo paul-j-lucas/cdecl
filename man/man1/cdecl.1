@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 10, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 11, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1159,7 +1159,8 @@ Unambiguous option abbreviations may be used.
 .RS 4
 .TP 6
 .RB [ no ] alt-tokens
-Turns [off] on alternative token output.
+Turns [off] on alternative token output
+\(em default is off.
 .TP
 .RB [ no ] bison-debug
 Turns [off] on
@@ -1169,7 +1170,9 @@ debugging output
 \(em default is off.
 .TP
 .RB [ no ] debug
-Turns [off] on debugging output
+Turns [off] on
+.B cdecl
+debugging output
 (if compiled in)
 \(em default is off.
 .TP
@@ -1183,14 +1186,16 @@ Turns on digraph output
 for
 \f(CW[\fP
 and
-\f(CW]\fP.
+\f(CW]\fP
+\(em default is off.
 .TP
 .RB [ no ] east-const
 Turns [off] ``east const'' output
 where \f(CWconst\fP (and \f(CWvolatile\fP)
 are printed to the right
 (``east'')
-of the type.
+of the type
+\(em default is off.
 .TP
 .RB [ no ] explain-by-default
 Turns [off] on \f(CWexplain\fP being assumed
@@ -1249,7 +1254,8 @@ for
 \f(CW^\fP,
 \f(CW|\fP,
 and
-\f(CW~\fP.
+\f(CW~\fP
+\(em default is off.
 .RE
 .SH PREDEFINED TYPES
 The following types are predefined
