@@ -1,5 +1,14 @@
+2021-01-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added "-- default is off" in more places.
+   * lexer.l: Whitespace.
+   * lexer.l: s/{letter}/{L}/
+   * lexer.l: Simplified dtor_sname.
+   * c_keyword.c, c_keyword.h, parser.y: s/C_KW_MBR_FUNC/C_KW_CTX_MBR_FUNC/
+
 2021-01-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Arranged predefined types by language introducted in.
    * _Noreturn.h, gnulib-common.m4: Updated Gnulib.
    * NEWS, c_keyword.c, c_keyword.h, errors.c, lexer.h, lexer.l, parser.y,
      print.c, types.h, test/Makefile.am, declare_yi.out, explain_yi.out,
