@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 11, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 12, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -124,7 +124,12 @@ care must be taken either to escape or quote shell metacharacters:
 .cS
 $ explain 'int *const (*p)[4]'
 declare p as pointer to array 4 of const pointer to int
-.cE 0
+.cE
+The default language can be specified via the
+.B cdeclrc
+file
+(see
+.BR "CONFIGURATION FILE" ).
 .SS First Argument
 .B cdecl
 will also behave as above
@@ -1885,6 +1890,7 @@ The commands useful within a configuration file are:
 .IP \(bu 3
 .BR class ,
 .BR define ,
+.BR enum ,
 .BR namespace ,
 .BR struct ,
 .BR typedef ,
@@ -2209,11 +2215,13 @@ and
 \f(CWunion\fP
 names and scoped type declarations are supported;
 complete declarations are not:
+.RS
 .cS
 struct S s;                     // supported
 struct S { typedef int Int; };  // supported
 struct S { int i; char c; } s;  // not supported
 .cE 0
+.RE
 .IP \n+[step].
 C++
 \f(CWdecltype\fP,
@@ -2235,9 +2243,11 @@ or types for \f(CWthrow\fP
 are not supported.
 .IP \n+[step].
 Namespace alias declarations are not supported:
+.RS
 .cS
 namespace ALN = A_Long_Name;    // not supported
 .cE 0
+.RE
 .IP \n+[step].
 Multiple \f(CW_Alignas\fP
 or \f(CWalignas\fP
@@ -2265,7 +2275,7 @@ and
 are not supported.
 .SS Other Minor Caveats
 .nr step 1 1
-.IP \n[step]. 3
+.IP \n[step]. 4
 When converting from pseudo-English to a C++ declaration,
 \f(CWenum\fP,
 \f(CWclass\fP,
@@ -2274,10 +2284,12 @@ and
 \f(CWunion\fP
 types include the corresponding keyword explicitly in the result
 even though it isn't needed in C++:
+.RS
 .cS
 c++decl> declare p as const pointer to struct S
 struct S *const p;
 .cE 0
+.RE
 .IP ""
 This is because,
 when going the other way from a C++ declaration to pseudo-English,
@@ -2298,16 +2310,51 @@ when used as input to
 .BR explain .
 .IP ""
 However,
+.BR class ,
 .BR define ,
+.BR enum ,
+.BR struct ,
 .BR typedef ,
+.BR union ,
 or
 .B using
 can be used to define the type:
+.RS
 .cS
-c++decl> define S as struct S
+c++decl> struct S
 c++decl> declare p as const pointer to S
 S *const p;
 .cE 0
+.RE
+.IP \n+[step].
+While
+.BR class ,
+.BR enum ,
+.BR explain ,
+.BR namespace ,
+.BR struct ,
+.BR typedef ,
+and
+.BR union
+can accept names that are
+.B cdecl
+keywords,
+.BR cast ,
+.BR declare ,
+and
+.B define
+can not;
+hence,
+not all explanations are ``round-trippable'':
+.RS
+.cS
+cdecl> explain int explain
+declare explain as int
+cdecl> declare explain as int
+               ^
+9: syntax error: "explain": name expected
+.cE 0
+.RE
 .IP \n+[step].
 When converting from one of the C++ overloaded operators
 \f(CW&\fP,
@@ -2319,9 +2366,11 @@ or
 \f(CW--\fP,
 to pseudo-English
 when declared as:
+.RS
 .cS
 T operator OP(U);
 .cE 0
+.RE
 .IP ""
 i.e., taking one argument,
 it's ambiguous
@@ -2333,13 +2382,15 @@ since
 doesn't have the context in which the operator is declared.
 If it were declared in-class,
 e.g.:
+.RS
 .cS
 class T {
 public:
-  // ...
-  T operator OP(U);
+    // ...
+    T operator OP(U);
 };
 .cE 0
+.RE
 .IP ""
 then clearly it's a member operator;
 if it were declared at file scope,
@@ -2365,12 +2416,14 @@ reference,
 or an rvalue reference
 variable that is not a function argument,
 the output doesn't include an initializer:
+.RS
 .cS
 c++decl> declare x as auto
 auto x;
 c++decl> declare r as reference to int
 int &r;
 .cE 0
+.RE
 .IP ""
 These are illegal C++ declarations
 since such declarations
@@ -2421,10 +2474,12 @@ and
 \f(CW__wchar_t\fP
 are keyword synonyms.
 These types can take modifiers:
+.RS
 .cS
 unsigned __int128 x128;         // legal in GNU C
 unsigned __int32  x32;          // legal in Microsoft C
 .cE 0
+.RE
 .IP ""
 In
 .BR cdecl ,
