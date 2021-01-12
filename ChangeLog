@@ -1,3 +1,9 @@
+2021-01-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added note about default language being able to be changed in
+     cdeclrc file; improved code-fragment indentation; added caveat about not
+     all explanations being round-trippable.
+
 2021-01-11  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1: Added "-- default is off" in more places.
