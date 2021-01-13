@@ -316,7 +316,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_REINTERPRET,    TOKEN( Y_REINTERPRET                ) },
   { L_RESTRICTED,     C_SYN( false,
                         { { LANG_C_MAX(95) | LANG_CPP_ALL, L_GNU___RESTRICT },
-                          { LANG_ALL, L_RESTRICT } } ) },
+                          { LANG_ALL,                      L_RESTRICT } } ) },
   { L_RET,            TOKEN( Y_RETURNING                  ) },
   { L_RETURNING,      TOKEN( Y_RETURNING                  ) },
   { L_RVALUE,         TOKEN( Y_RVALUE                     ) },
@@ -349,16 +349,16 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   // Embedded C extensions
   { L_EMC_ACCUM,      C_SYN( true,
                         { { LANG_C_99, L_EMC__ACCUM },
-                          { LANG_ALL,  NULL          } } ) },
+                          { LANG_ALL,  NULL         } } ) },
   { L_EMC_FRACT,      C_SYN( true,
                         { { LANG_C_99, L_EMC__FRACT },
-                          { LANG_ALL,  NULL          } } ) },
+                          { LANG_ALL,  NULL         } } ) },
   { L_EMC_SAT,        C_SYN( false,
-                        { { LANG_C_99, L_EMC__SAT },
-                          { LANG_ALL,  NULL        } } ) },
+                        { { LANG_C_99, L_EMC__SAT   },
+                          { LANG_ALL,  NULL         } } ) },
   { L_EMC_SATURATED,  C_SYN( true,
-                        { { LANG_C_99, L_EMC__SAT },
-                          { LANG_ALL,  NULL        } } ) },
+                        { { LANG_C_99, L_EMC__SAT   },
+                          { LANG_ALL,  NULL         } } ) },
 
   { NULL,             TOKEN( 0                            ) }
 };
