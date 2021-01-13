@@ -348,15 +348,15 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
   );
 }
 
-bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t builtin_tid ) {
+bool c_ast_is_builtin_any( c_ast_t const *ast, c_type_id_t tids ) {
   assert( ast != NULL );
-  assert( c_type_id_part_id( builtin_tid ) == TPID_BASE );
+  assert( c_type_id_part_id( tids ) == TPID_BASE );
 
   ast = c_ast_untypedef( ast );
   if ( ast->kind_id != K_BUILTIN )
     return false;
   c_type_id_t const base_tid = c_type_id_normalize( ast->type.base_tid );
-  return base_tid == builtin_tid;
+  return (base_tid & tids) != TB_NONE;
 }
 
 bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids ) {

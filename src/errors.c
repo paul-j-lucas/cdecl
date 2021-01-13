@@ -653,7 +653,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
   }
 
   c_ast_t const *const ret_ast = ast->as.func.ret_ast;
-  if ( !c_ast_is_builtin( ret_ast, TB_INT ) ) {
+  if ( !c_ast_is_builtin_any( ret_ast, TB_INT ) ) {
     print_error( &ret_ast->loc, "main() must return %s\n", L_INT );
     return false;
   }
@@ -674,7 +674,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
       }
 
       param_ast = c_param_ast( c_ast_params( ast ) );
-      if ( !c_ast_is_builtin( param_ast, TB_VOID ) ) {
+      if ( !c_ast_is_builtin_any( param_ast, TB_VOID ) ) {
         print_error( &param_ast->loc,
           "a single parameter for main() must be %s\n", L_VOID
         );
@@ -688,7 +688,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
 
         c_ast_param_t const *param = c_ast_params( ast );
         param_ast = c_param_ast( param );
-        if ( !c_ast_is_builtin( param_ast, TB_INT ) ) {
+        if ( !c_ast_is_builtin_any( param_ast, TB_INT ) ) {
           print_error( &param_ast->loc,
             "main()'s first parameter must be %s\n", L_INT
           );
@@ -1188,7 +1188,7 @@ same: print_error( &ast->loc,
       // At this point, it's either member or non-member postfix:
       // operator++(int) or operator++(S&,int).
       c_ast_t const *const param_ast = c_param_ast( param );
-      if ( !c_ast_is_builtin( param_ast, TB_INT ) ) {
+      if ( !c_ast_is_builtin_any( param_ast, TB_INT ) ) {
         print_error( &param_ast->loc,
           "parameter of postfix %s%s%s %s must be %s\n",
           SP_AFTER( op_type ), L_OPERATOR, op->name,

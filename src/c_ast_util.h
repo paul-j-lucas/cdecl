@@ -123,16 +123,16 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_type_t const *types );
 
 /**
- * Checks whether \a ast is an AST for a builtin type.
+ * Checks whether \a ast is an AST is one of \a tids built-in type(s) or a
+ * `typedef` thereof.
  *
  * @param ast The AST to check.
- * @param builtin_tid The specific built-in <code>\ref c_type_id_t</code> \a
- * ast can be.  It must be only a base type (no storage classes, qualfiers, or
- * attributes).
- * @return Returns `true` only if the type of \a ast is \a builtin_tid.
+ * @param tids The built-in type(s) \a ast can be.  They must be only base
+ * types (no storage classes, qualfiers, or attributes).
+ * @return Returns `true` only if the type of \a ast is one of \a tids.
  */
 PJL_WARN_UNUSED_RESULT
-bool c_ast_is_builtin( c_ast_t const *ast, c_type_id_t builtin_tid );
+bool c_ast_is_builtin_any( c_ast_t const *ast, c_type_id_t tids );
 
 /**
  * Checks whether \a ast is an AST of one of \a kind_ids or a reference or
