@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 9.3
+
+** Digraph warning
+A warning is given if the digraph option is set and the current language is C89
+or earlier.
+
+
 * Changes in Cdecl 9.2
 
 ** In-class constructor declarations

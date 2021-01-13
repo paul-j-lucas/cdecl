@@ -185,6 +185,11 @@ static void set_digraphs( bool enabled, c_loc_t const *opt_name_loc,
   (void)opt_value;
   (void)opt_value_loc;
   opt_graph = enabled ? C_GRAPH_DI : C_GRAPH_NONE;
+  if ( opt_graph && opt_lang < LANG_C_95 ) {
+    print_warning( opt_name_loc,
+      "digraphs are not supported until %s\n", c_lang_name( LANG_C_95 )
+    );
+  }
 }
 
 /**
