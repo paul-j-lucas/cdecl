@@ -77,7 +77,7 @@ The characters are:
 + `t` = `throw`, `typedef`, `typename`, or unknown type
 + `u` = `maybe_unused` or `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
-+ `w` = `wchar_t`
++ `wt` = `wchar_t`
 + `xi` = `constinit`
 + `xx` = `constexpr`
 + `y` = `final`

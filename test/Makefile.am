@@ -178,7 +178,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_vcpi.test \
 	tests/declare_vi-knr.test \
 	tests/declare_vpi.test \
-	tests/declare_w.test \
+	tests/declare_wt.test \
 	tests/declare_z.test \
 	tests/declare_zd.test \
 	tests/declare_zf.test \
@@ -232,7 +232,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_hl.test \
 	tests/declare_hll.test \
 	tests/declare_hv.test \
-	tests/declare_hw.test \
+	tests/declare_hwt.test \
 	tests/declare_ii.test \
 	tests/declare_ji.test \
 	tests/declare_lb.test \
@@ -246,7 +246,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_ll-knr.test \
 	tests/declare_lll.test \
 	tests/declare_lv.test \
-	tests/declare_lw.test \
+	tests/declare_lwt.test \
 	tests/declare_nri.test \
 	tests/declare_pfkr_i.test \
 	tests/declare_pk.test \
@@ -260,7 +260,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_si-knr.test \
 	tests/declare_sl-knr.test \
 	tests/declare_sv.test \
-	tests/declare_sw.test \
+	tests/declare_swt.test \
 	tests/declare_t.test \
 	tests/declare_ti_al8.test \
 	tests/declare_ub.test \
@@ -270,12 +270,12 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_ud.test \
 	tests/declare_uf.test \
 	tests/declare_uv.test \
-	tests/declare_uw.test \
+	tests/declare_uwt.test \
 	tests/declare_uz.test \
 	tests/declare_v.test \
 	tests/declare_vf_v-c.test \
 	tests/declare_vri.test \
-	tests/declare_w-c89.test \
+	tests/declare_wt-c89.test \
 	tests/declare_xxi-c.test
 
 ###############################################################################
@@ -441,7 +441,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_vo_plus2_i_rk.test \
 	tests/explain_vo_plus_rk_rk.test \
 	tests/explain_vpi.test \
-	tests/explain_w.test \
+	tests/explain_wt.test \
 	tests/explain_yo_minus2_i_rk.test \
 	tests/explain_yo_minus_rk_rk.test \
 	tests/explain_yo_plus2_i_rk.test \
@@ -513,7 +513,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_hl.test \
 	tests/explain_hll.test \
 	tests/explain_hv.test \
-	tests/explain_hw.test \
+	tests/explain_hwt.test \
 	tests/explain_ii.test \
 	tests/explain_k.test \
 	tests/explain_lb.test \
@@ -527,7 +527,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_ll-knr.test \
 	tests/explain_lll.test \
 	tests/explain_lv.test \
-	tests/explain_lw.test \
+	tests/explain_lwt.test \
 	tests/explain_main_f2c_i.test \
 	tests/explain_main_f_v.test \
 	tests/explain_main_fi_i.test \
@@ -547,7 +547,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_si-knr.test \
 	tests/explain_sl-knr.test \
 	tests/explain_sv.test \
-	tests/explain_sw.test \
+	tests/explain_swt.test \
 	tests/explain_tci32.test \
 	tests/explain_type_i.test \
 	tests/explain_ub.test \
@@ -558,12 +558,12 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_uf.test \
 	tests/explain_using_pfi_v-c.test \
 	tests/explain_uv.test \
-	tests/explain_uw.test \
+	tests/explain_uwt.test \
 	tests/explain_v.test \
 	tests/explain_vf_v-c.test \
 	tests/explain_vi-knr.test \
 	tests/explain_voyf-c.test \
-	tests/explain_w-c89.test \
+	tests/explain_wt-c89.test \
 	tests/explain_xxi-c.test
 
 #
@@ -1489,10 +1489,10 @@ TESTS+=	tests/explain_+udl_c_i.test \
 	tests/explain_udl_pcc_i.test \
 	tests/explain_udl_pccul_i.test \
 	tests/explain_udl_pccz_i.test \
-	tests/explain_udl_pcwul_i.test \
-	tests/explain_udl_pcwz_i.test \
+	tests/explain_udl_pcwtul_i.test \
+	tests/explain_udl_pcwtz_i.test \
 	tests/explain_udl_ull_i.test \
-	tests/explain_udl_w_i.test
+	tests/explain_udl_wt_i.test
 
 #
 # C++ explain user-defined conversion error tests
