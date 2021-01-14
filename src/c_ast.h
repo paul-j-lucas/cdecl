@@ -294,7 +294,7 @@ struct c_udef_lit_ast {
  * AST node for a parsed C/C++ declaration.
  */
 struct c_ast {
-  c_alignas_t           align;          ///< Alignment (if any).
+  c_alignas_t           align;          ///< Alignment, if any.
   c_ast_depth_t         depth;          ///< How many `()` deep.
   c_ast_id_t            unique_id;      ///< Unique id (starts at 1).
   c_kind_id_t           kind_id;        ///< Kind.
