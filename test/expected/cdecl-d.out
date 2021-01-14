@@ -8,7 +8,8 @@ builtin_type_c_ast ::= builtin_tid = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-10,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   }
 }
 
@@ -20,7 +21,8 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-10,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   },
   type_modifier_list_c_type_opt = "" (0x1,0x2,0x3),
   type_c_ast = {
@@ -30,7 +32,8 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-10,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   }
 }
 
@@ -42,7 +45,8 @@ pointer_type_c_ast ::= * type_qualifier_list_c_tid_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-10,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   },
   type_qualifier_list_c_tid_opt = "" (0x2),
   pointer_type_c_ast = {
@@ -60,7 +64,8 @@ pointer_type_c_ast ::= * type_qualifier_list_c_tid_opt = {
       depth = 0,
       parent->unique_id = 634,
       loc = 8-10,
-      type = "int" (0x2001,0x2,0x3)
+      type = "int" (0x2001,0x2,0x3),
+      bit_width = 0
     }
   }
 }
@@ -86,10 +91,12 @@ sname_c_ast ::= sname_c = {
       depth = 0,
       parent->unique_id = 634,
       loc = 8-10,
-      type = "int" (0x2001,0x2,0x3)
+      type = "int" (0x2001,0x2,0x3),
+      bit_width = 0
     }
   },
   sname = "f" (none),
+  bit_field_c_num_opt = 0,
   sname_c_ast = {
     sname = "f" (none),
     unique_id = 634,
@@ -105,7 +112,8 @@ sname_c_ast ::= sname_c = {
       depth = 0,
       parent->unique_id = 634,
       loc = 8-10,
-      type = "int" (0x2001,0x2,0x3)
+      type = "int" (0x2001,0x2,0x3),
+      bit_width = 0
     }
   }
 }
@@ -119,7 +127,8 @@ builtin_type_c_ast ::= builtin_tid = {
     depth = 0,
     parent->unique_id = -1,
     loc = 15-17,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   }
 }
 
@@ -131,7 +140,8 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 15-17,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   },
   type_modifier_list_c_type_opt = "" (0x1,0x2,0x3),
   type_c_ast = {
@@ -141,7 +151,8 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 15-17,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   }
 }
 
@@ -158,9 +169,11 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 15-17,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   },
   sname = "x" (none),
+  bit_field_c_num_opt = 0,
   sname_c_ast = {
     sname = "x" (none),
     unique_id = 635,
@@ -168,7 +181,8 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 15-17,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   }
 }
 
@@ -180,7 +194,8 @@ param_c_ast ::= type_c_ast cast_c_ast_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 15-17,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   },
   cast_c_ast_opt = {
     sname = "x" (none),
@@ -189,7 +204,8 @@ param_c_ast ::= type_c_ast cast_c_ast_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 15-17,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   },
   param_c_ast = {
     sname = "x" (none),
@@ -198,7 +214,8 @@ param_c_ast ::= type_c_ast cast_c_ast_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 15-17,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   }
 }
 
@@ -210,7 +227,8 @@ param_list_c_ast ::= param_c_ast = {
     depth = 0,
     parent->unique_id = -1,
     loc = 15-17,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   },
   param_list_c_ast = [
     {
@@ -220,7 +238,8 @@ param_list_c_ast ::= param_c_ast = {
       depth = 0,
       parent->unique_id = -1,
       loc = 15-17,
-      type = "int" (0x2001,0x2,0x3)
+      type = "int" (0x2001,0x2,0x3),
+      bit_width = 0
     }
   ]
 }
@@ -234,7 +253,8 @@ builtin_type_c_ast ::= builtin_tid = {
     depth = 0,
     parent->unique_id = -1,
     loc = 22-24,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   }
 }
 
@@ -246,7 +266,8 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 22-24,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   },
   type_modifier_list_c_type_opt = "" (0x1,0x2,0x3),
   type_c_ast = {
@@ -256,7 +277,8 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 22-24,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   }
 }
 
@@ -273,9 +295,11 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 22-24,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   },
   sname = "y" (none),
+  bit_field_c_num_opt = 0,
   sname_c_ast = {
     sname = "y" (none),
     unique_id = 636,
@@ -283,7 +307,8 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 22-24,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   }
 }
 
@@ -295,7 +320,8 @@ param_c_ast ::= type_c_ast cast_c_ast_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 22-24,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   },
   cast_c_ast_opt = {
     sname = "y" (none),
@@ -304,7 +330,8 @@ param_c_ast ::= type_c_ast cast_c_ast_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 22-24,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   },
   param_c_ast = {
     sname = "y" (none),
@@ -313,7 +340,8 @@ param_c_ast ::= type_c_ast cast_c_ast_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 22-24,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   }
 }
 
@@ -326,7 +354,8 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       depth = 0,
       parent->unique_id = -1,
       loc = 15-17,
-      type = "int" (0x2001,0x2,0x3)
+      type = "int" (0x2001,0x2,0x3),
+      bit_width = 0
     }
   ],
   param_c_ast = {
@@ -336,7 +365,8 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
     depth = 0,
     parent->unique_id = -1,
     loc = 22-24,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   },
   param_list_c_ast = [
     {
@@ -346,7 +376,8 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       depth = 0,
       parent->unique_id = -1,
       loc = 15-17,
-      type = "int" (0x2001,0x2,0x3)
+      type = "int" (0x2001,0x2,0x3),
+      bit_width = 0
     },
     {
       sname = "y" (none),
@@ -355,7 +386,8 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
       depth = 0,
       parent->unique_id = -1,
       loc = 22-24,
-      type = "int" (0x2001,0x2,0x3)
+      type = "int" (0x2001,0x2,0x3),
+      bit_width = 0
     }
   ]
 }
@@ -376,7 +408,8 @@ func_decl_c_ast ::= decl2_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list
       depth = 0,
       parent->unique_id = 634,
       loc = 8-10,
-      type = "int" (0x2001,0x2,0x3)
+      type = "int" (0x2001,0x2,0x3),
+      bit_width = 0
     }
   },
   decl2_c_ast = {
@@ -394,7 +427,8 @@ func_decl_c_ast ::= decl2_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list
       depth = 0,
       parent->unique_id = 634,
       loc = 8-10,
-      type = "int" (0x2001,0x2,0x3)
+      type = "int" (0x2001,0x2,0x3),
+      bit_width = 0
     }
   },
   param_list_c_ast_opt = [
@@ -405,7 +439,8 @@ func_decl_c_ast ::= decl2_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list
       depth = 0,
       parent->unique_id = -1,
       loc = 15-17,
-      type = "int" (0x2001,0x2,0x3)
+      type = "int" (0x2001,0x2,0x3),
+      bit_width = 0
     },
     {
       sname = "y" (none),
@@ -414,7 +449,8 @@ func_decl_c_ast ::= decl2_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list
       depth = 0,
       parent->unique_id = -1,
       loc = 22-24,
-      type = "int" (0x2001,0x2,0x3)
+      type = "int" (0x2001,0x2,0x3),
+      bit_width = 0
     }
   ],
   func_qualifier_list_c_tid_opt = "" (0x2),
@@ -438,7 +474,8 @@ func_decl_c_ast ::= decl2_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list
         depth = 0,
         parent->unique_id = -1,
         loc = 15-17,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       },
       {
         sname = "y" (none),
@@ -447,7 +484,8 @@ func_decl_c_ast ::= decl2_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list
         depth = 0,
         parent->unique_id = -1,
         loc = 22-24,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       }
     ],
     ret_ast = {
@@ -465,7 +503,8 @@ func_decl_c_ast ::= decl2_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list
         depth = 0,
         parent->unique_id = 634,
         loc = 8-10,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       }
     }
   }
@@ -487,7 +526,8 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
       depth = 0,
       parent->unique_id = 634,
       loc = 8-10,
-      type = "int" (0x2001,0x2,0x3)
+      type = "int" (0x2001,0x2,0x3),
+      bit_width = 0
     }
   },
   decl_c_ast = {
@@ -507,7 +547,8 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
         depth = 0,
         parent->unique_id = -1,
         loc = 15-17,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       },
       {
         sname = "y" (none),
@@ -516,7 +557,8 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
         depth = 0,
         parent->unique_id = -1,
         loc = 22-24,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       }
     ],
     ret_ast = {
@@ -534,7 +576,8 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
         depth = 0,
         parent->unique_id = 634,
         loc = 8-10,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       }
     }
   },
@@ -555,7 +598,8 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
         depth = 0,
         parent->unique_id = -1,
         loc = 15-17,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       },
       {
         sname = "y" (none),
@@ -564,7 +608,8 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
         depth = 0,
         parent->unique_id = -1,
         loc = 22-24,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       }
     ],
     ret_ast = {
@@ -582,7 +627,8 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
         depth = 0,
         parent->unique_id = 634,
         loc = 8-10,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       }
     }
   }
@@ -597,7 +643,8 @@ decl_c ::= decl_c_ast = {
     depth = 0,
     parent->unique_id = 634,
     loc = 8-10,
-    type = "int" (0x2001,0x2,0x3)
+    type = "int" (0x2001,0x2,0x3),
+    bit_width = 0
   },
   decl_c_ast = {
     sname = "f" (none),
@@ -616,7 +663,8 @@ decl_c ::= decl_c_ast = {
         depth = 0,
         parent->unique_id = -1,
         loc = 15-17,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       },
       {
         sname = "y" (none),
@@ -625,7 +673,8 @@ decl_c ::= decl_c_ast = {
         depth = 0,
         parent->unique_id = -1,
         loc = 22-24,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       }
     ],
     ret_ast = {
@@ -643,7 +692,8 @@ decl_c ::= decl_c_ast = {
         depth = 0,
         parent->unique_id = 634,
         loc = 8-10,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       }
     }
   },
@@ -664,7 +714,8 @@ decl_c ::= decl_c_ast = {
         depth = 0,
         parent->unique_id = -1,
         loc = 15-17,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       },
       {
         sname = "y" (none),
@@ -673,7 +724,8 @@ decl_c ::= decl_c_ast = {
         depth = 0,
         parent->unique_id = -1,
         loc = 22-24,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       }
     ],
     ret_ast = {
@@ -691,7 +743,8 @@ decl_c ::= decl_c_ast = {
         depth = 0,
         parent->unique_id = 634,
         loc = 8-10,
-        type = "int" (0x2001,0x2,0x3)
+        type = "int" (0x2001,0x2,0x3),
+        bit_width = 0
       }
     }
   }

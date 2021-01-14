@@ -195,6 +195,18 @@ struct c_apple_block_ast {
 };
 
 /**
+ * AST node for a built-in type.
+ *
+ * @note Members are laid out in the same order as `c_typedef_ast`: this is
+ * taken advantage of.
+ */
+struct c_builtin_ast {
+  /// So `bit_width` is at same offset as in `c_typedef_ast`.
+  void           *not_used;
+  c_bit_width_t   bit_width;            ///< Bit-field width when &gt; 0.
+};
+
+/**
  * AST node for a C++ constructor.
  *
  * @note Members are laid out in the same order as `c_function_ast`: this is
@@ -257,6 +269,7 @@ struct c_ptr_ref_ast {
  */
 struct c_typedef_ast {
   c_ast_t const  *for_ast;              ///< What it's a `typedef` for.
+  c_bit_width_t   bit_width;            ///< Bit-field width when &gt; 0.
 };
 
 /**
@@ -294,7 +307,7 @@ struct c_ast {
     c_parent_ast_t      parent;         ///< "Parent" member(s).
     c_array_ast_t       array;          ///< Array member(s).
     c_apple_block_ast_t block;          ///< Block member(s).
-    // nothing needed for K_BUILTIN
+    c_builtin_ast_t     builtin;        ///< Built-in member(s).
     c_constructor_ast_t constructor;    ///< Constructor member(s).
     // nothing needed for K_DESTRUCTOR
     c_ecsu_ast_t        ecsu;           ///< `enum`, `class`, `struct`, `union`

@@ -123,7 +123,6 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
     bool comma = false;
 
     switch ( ast->kind_id ) {
-      case K_BUILTIN:
       case K_DESTRUCTOR:
       case K_NAME:
       case K_NONE:
@@ -219,6 +218,12 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_TYPEDEF:
         PRINT_COMMA;
         INDENT_PRINT_SNAME( "typedef_name", &ast->as.tdef.for_ast->sname );
+        FPUTS( ",\n", dout );
+        PJL_FALLTHROUGH;
+
+      case K_BUILTIN:
+        PRINT_COMMA;
+        INDENT_PRINT( "bit_width = %u", ast->as.builtin.bit_width );
         break;
 
       case K_USER_DEF_CONVERSION:

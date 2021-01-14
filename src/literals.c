@@ -38,6 +38,7 @@ char const L_ALIGNED[]              = "aligned";
 char const L_ALL[]                  = "all";
 char const L_ARRAY[]                = "array";
 char const L_AS[]                   = "as";
+char const L_BITS[]                 = "bits";
 char const L_BYTES[]                = "bytes";
 char const L_CAST[]                 = "cast";
 char const L_COMMAND[]              = "command";
@@ -74,6 +75,7 @@ char const L_SHOW[]                 = "show";
 char const L_TO[]                   = "to";
 char const L_USER[]                 = "user";
 char const L_VECTOR[]               = "vector";
+char const L_WIDTH[]                = "width";
 
 // K&R
 char const L_AUTO[]                 = "auto";

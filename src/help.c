@@ -137,10 +137,9 @@ static void print_help_commands( void ) {
     print_h( "[const | dynamic | reinterpret | static] " );
   print_h( "cast <name> {as|into|to} <english>\n" );
 
-  print_h( "  declare <name> as <english>" );
+  print_h( "  declare <name> as <english> [width <number> [bits]]\n" );
   if ( C_LANG_IS(C_CPP_MIN(11,11)) )
-    print_h( " [aligned [as|to] {<number> [bytes] | <english>}]" );
-  print_h( "\n" );
+    print_h( "  declare <name> as <english> aligned [as|to] {<number> [bytes] | <english>}\n" );
 
   if ( C_LANG_IS_CPP() ) {
     print_h( "  declare <operator> as <english>\n" );

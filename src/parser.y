@@ -832,6 +832,7 @@ static void yyerror( char const *msg ) {
 %token              Y_ALL
 %token              Y_ARRAY
 %token              Y_AS
+%token              Y_BITS
 %token              Y_BYTES
 %token              Y_COMMANDS
 %token              Y_DYNAMIC
@@ -854,6 +855,7 @@ static void yyerror( char const *msg ) {
 %token              Y_TYPES
 %token              Y_USER
 %token              Y_VARIABLE
+%token              Y_WIDTH
 
                     // C/C++ operators: precedence 17
 %left               Y_COLON2            "::"
@@ -1087,6 +1089,7 @@ static void yyerror( char const *msg ) {
 %token              Y_APPLE_BLOCK       // English for '^'
 
                     // miscellaneous
+%token              ':'
 %token              ';'
 %token              '{'
 %token              '}'
@@ -1115,7 +1118,8 @@ static void yyerror( char const *msg ) {
                     //  4. Is expected, "_exp" is appended; is optional, "_opt"
                     //     is appended.
                     //
-%type   <align>     alignas_specifier_english alignas_specifier_english_opt
+%type   <ast_pair>  alignas_or_width_decl_english_ast
+%type   <align>     alignas_specifier_english
 %type   <ast_pair>  decl_english_ast
 %type   <ast_list>  decl_list_english decl_list_english_opt
 %type   <ast_pair>  array_decl_english_ast
@@ -1144,6 +1148,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  unmodified_type_english_ast
 %type   <ast_pair>  user_defined_literal_decl_english_ast
 %type   <ast_pair>  var_decl_english_ast
+%type   <number>    width_specifier_english
 
 %type   <ast_pair>  cast_c_ast cast_c_ast_opt cast2_c_ast
 %type   <ast_pair>  array_cast_c_ast
@@ -1229,11 +1234,13 @@ static void yyerror( char const *msg ) {
 %type   <name>      any_name any_name_exp
 %type   <sname>     any_sname_c any_sname_c_exp any_sname_c_opt
 %type   <tdef>      any_typedef
+%type   <number>    bit_field_c_num_opt
 %type   <oper_id>   c_operator
 %type   <literal>   help_what_opt
 %type   <bitmask>   member_or_non_member_opt
 %type   <name>      name_exp
 %type   <literal>   new_style_cast_c new_style_cast_english
+%type   <number>    number_exp
 %type   <sname>     of_scope_english
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
 %type   <bitmask>   predefined_or_user_opt
@@ -1399,7 +1406,7 @@ declare_english
      * Common declaration, e.g.: declare x as int.
      */
   : Y_DECLARE sname_english as_exp storage_class_list_english_type_opt
-    decl_english_ast alignas_specifier_english_opt
+    alignas_or_width_decl_english_ast
     {
       if ( $5.ast->kind_id == K_NAME ) {
         //
@@ -1421,38 +1428,19 @@ declare_english
         PARSE_ABORT();
       }
 
-      c_ast_set_sname( $5.ast, &$2 );
-
       DUMP_START( "declare_english",
                   "DECLARE sname AS storage_class_list_english_type_opt "
-                  "decl_english_ast alignas_specifier_english_opt" );
+                  "alignas_or_width_decl_english_ast" );
       DUMP_SNAME( "sname", &$2 );
       DUMP_TYPE( "storage_class_list_english_type_opt", &$4 );
-      switch ( $6.kind ) {
-        case C_ALIGNAS_NONE:
-          break;
-        case C_ALIGNAS_EXPR:
-          DUMP_NUM( "alignas_specifier_english.as.expr", $6.as.expr );
-          break;
-        case C_ALIGNAS_TYPE:
-          DUMP_AST( "alignas_specifier_english.as.type_ast", $6.as.type_ast );
-          break;
-      } // switch
+      DUMP_AST( "alignas_or_width_decl_english_ast", $5.ast );
 
+      c_ast_set_sname( $5.ast, &$2 );
       $5.ast->loc = @2;
       C_TYPE_ADD( &$5.ast->type, &$4, @4 );
 
       DUMP_AST( "decl_english", $5.ast );
       DUMP_END();
-
-      if ( $6.kind != C_ALIGNAS_NONE ) {
-        $5.ast->align = $6;
-        if ( c_type_is_tid_any( &$5.ast->type, TS_TYPEDEF ) ) {
-          // See comment in c_ast_finish_explain().
-          print_error( &@6, "%s can not be %s\n", L_TYPEDEF, L_ALIGNED );
-          PARSE_ABORT();
-        }
-      }
 
       C_AST_CHECK_DECL( $5.ast );
       c_ast_gibberish( $5.ast, C_GIB_DECL, fout );
@@ -1476,7 +1464,7 @@ declare_english
       DUMP_TYPE( "storage_class_list_english_type_opt", &$5 );
       DUMP_AST( "oper_decl_english_ast", $6.ast );
 
-      $6.ast->sname = $3;
+      c_ast_set_sname( $6.ast, &$3 );
       $6.ast->loc = @2;
       $6.ast->as.oper.oper_id = $2;
       C_TYPE_ADD( &$6.ast->type, &$5, @5 );
@@ -1510,7 +1498,7 @@ declare_english
       DUMP_AST( "decl_english_ast", $9.ast );
 
       c_ast_t *const conv_ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
-      conv_ast->sname = $7;
+      c_ast_set_sname( conv_ast, &$7 );
       conv_ast->type = c_type_or( &$2, &C_TYPE_LIT_S( $3 ) );
       c_ast_set_parent( $9.ast, conv_ast );
 
@@ -1579,9 +1567,25 @@ storage_class_english_type
   | Y_PURE virtual_tid_exp        { $$ = C_TYPE_LIT_S( TS_PURE_VIRTUAL | $2 ); }
   ;
 
-alignas_specifier_english_opt
-  : /* empty */                   { MEM_ZERO( &$$ ); }
-  | alignas_specifier_english
+alignas_or_width_decl_english_ast
+  : decl_english_ast
+
+  | decl_english_ast alignas_specifier_english
+    {
+      $$ = $1;
+      $$.ast->align = $2;
+    }
+
+  | decl_english_ast width_specifier_english
+    {
+      if ( !c_ast_is_builtin_any( $1.ast, TB_ANY_INTEGRAL ) ) {
+        print_error( &@2, "bit-fields can be only of integral types\n" );
+        PARSE_ABORT();
+      }
+
+      $$ = $1;
+      $$.ast->as.builtin.bit_width = $2;
+    }
   ;
 
 alignas_specifier_english
@@ -1614,6 +1618,22 @@ as_or_to_opt
 bytes_opt
   : /* empty */
   | Y_BYTES
+  ;
+
+width_specifier_english
+  : Y_WIDTH number_exp bits_opt
+    {
+      if ( $2 == 0 ) {
+        print_error( &@2, "bit-field width must be > 0\n" );
+        PARSE_ABORT();
+      }
+      $$ = $2;
+    }
+  ;
+
+bits_opt
+  : /* empty */
+  | Y_BITS
   ;
 
 attribute_english_tid
@@ -5045,18 +5065,42 @@ sname_c
 
 sname_c_ast
   : // in_attr: type_c_ast
-    sname_c
+    sname_c bit_field_c_num_opt
     {
       DUMP_START( "sname_c_ast", "sname_c" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_SNAME( "sname", &$1 );
+      DUMP_NUM( "bit_field_c_num_opt", $2 );
 
       $$.ast = ia_type_ast_peek();
       $$.target_ast = NULL;
       c_ast_set_sname( $$.ast, &$1 );
 
+      bool ok = true;
+      if ( $2 != 0 ) {
+        if ( (ok = c_ast_is_builtin_any( $$.ast, TB_ANY_INTEGRAL )) )
+          $$.ast->as.builtin.bit_width = $2;
+        else
+          print_error( &@2, "bit-fields can be only of integral types\n" );
+      }
+
       DUMP_AST( "sname_c_ast", $$.ast );
       DUMP_END();
+
+      if ( !ok )
+        PARSE_ABORT();
+    }
+  ;
+
+bit_field_c_num_opt
+  : /* empty */                   { $$ = 0; }
+  | ':' number_exp
+    {
+      if ( $2 == 0 ) {
+        print_error( &@2, "bit-field width must be > 0\n" );
+        PARSE_ABORT();
+      }
+      $$ = $2;
     }
   ;
 
@@ -5371,6 +5415,14 @@ namespace_tid_exp
 namespace_type
   : Y_NAMESPACE                   { $$ = C_TYPE_LIT_B( $1 ); }
   | Y_INLINE namespace_tid_exp    { $$ = C_TYPE_LIT( $2, $1, TA_NONE ); }
+  ;
+
+number_exp
+  : Y_NUMBER
+  | error
+    {
+      elaborate_error( "number expected" );
+    }
   ;
 
 of_exp

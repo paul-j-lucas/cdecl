@@ -48,6 +48,22 @@ static void non_type_name( c_type_t const*, FILE* );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Helper function for `c_ast_visitor_english()` that prints a bit-field width,
+ * if any.
+ *
+ * @param ast The AST to print the bit-field width of.
+ * @param eout The `FILE` to emit to.
+ */
+static void c_ast_english_bit_width( c_ast_t const *ast, FILE *eout ) {
+  assert( ast != NULL );
+  assert( (ast->kind_id & (K_BUILTIN | K_TYPEDEF)) != K_NONE );
+  assert( eout != NULL );
+
+  if ( ast->as.builtin.bit_width > 0 )
+    FPRINTF( eout, " %s %u %s", L_WIDTH, ast->as.builtin.bit_width, L_BITS );
+}
+
+/**
  * Helper function for `c_ast_visitor_english()` that prints a function-like
  * AST's parameters, if any.
  *
@@ -166,6 +182,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
     case K_BUILTIN:
       FPUTS( c_type_name( &ast->type ), eout );
+      c_ast_english_bit_width( ast, eout );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
@@ -205,6 +222,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       if ( !c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) ) )
         FPRINTF( eout, "%s ", c_type_name( &ast->type ) );
       c_sname_english( &ast->as.tdef.for_ast->sname, eout );
+      c_ast_english_bit_width( ast, eout );
       break;
 
     case K_USER_DEF_CONVERSION: {

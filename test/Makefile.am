@@ -175,6 +175,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_uc.test \
 	tests/declare_ui.test \
 	tests/declare_ull.test \
+	tests/declare_uw3.test \
 	tests/declare_vcpi.test \
 	tests/declare_vi-knr.test \
 	tests/declare_vpi.test \
@@ -182,6 +183,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_z.test \
 	tests/declare_zd.test \
 	tests/declare_zf.test \
+	tests/declare_zw3.test \
 	tests/declare_zz.test
 
 #
@@ -220,6 +222,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_fmf_v.test \
 	tests/declare_fn.test \
 	tests/declare_fsi_v.test \
+	tests/declare_fuw3_v.test \
 	tests/declare_fvx_v.test \
 	tests/declare_gf_v.test \
 	tests/declare_hb.test \
@@ -250,6 +253,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_nri.test \
 	tests/declare_pfkr_i.test \
 	tests/declare_pk.test \
+	tests/declare_puw3.test \
 	tests/declare_pv-knr.test \
 	tests/declare_rtf_v-c.test \
 	tests/declare_sb.test \
@@ -434,6 +438,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_tulz.test \
 	tests/explain_uc.test \
 	tests/explain_ull.test \
+	tests/explain_uw3.test \
 	tests/explain_vcpi.test \
 	tests/explain_vf_v.test \
 	tests/explain_vo_minus2_i_rk.test \
@@ -449,6 +454,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_z.test \
 	tests/explain_zd.test \
 	tests/explain_zf.test \
+	tests/explain_zw3.test \
 	tests/explain_zz.test
 
 #
@@ -497,6 +503,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_fkr_pi.test
 	tests/explain_fn.test \
 	tests/explain_fsi_v.test \
+	tests/explain_fuw3.test \
 	tests/explain_fvel_v.test \
 	tests/explain_fvi_v.test \
 	tests/explain_fvv_v.test \
@@ -536,6 +543,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_main_fipc_i.test \
 	tests/explain_main_fippi_i.test \
 	tests/explain_pmi-c.test \
+	tests/explain_puw3.test \
 	tests/explain_pv-knr.test \
 	tests/explain_ri-c.test \
 	tests/explain_rtf_v-error.test \

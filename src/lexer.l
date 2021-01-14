@@ -234,6 +234,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_ATOMIC,         C_SY1( false, L__ATOMIC             ) },
   { L_AUTOMATIC,      C_SY1( false, L_AUTO                ) },
   { L_APPLE_BLOCK,    TOKEN( Y_APPLE_BLOCK                ) },
+  { L_BITS,           TOKEN( Y_BITS                       ) },
   { L_BOOL,           C_SYN( true,
                         { { LANG_C_MIN(99), L__BOOL },
                           { LANG_ALL,       L_BOOL  } } ) },
@@ -345,6 +346,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_VOLATILE,       C_SYN( false,
                         { { LANG_C_KNR, L_GNU___VOLATILE },
                           { LANG_ALL,   L_VOLATILE       } } ) },
+  { L_WIDTH,          TOKEN( Y_WIDTH                      ) },
 
   // Embedded C extensions
   { L_EMC_ACCUM,      C_SYN( true,
@@ -920,6 +922,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 "-"           |
 "."           |
 "/"           |
+":"           | /* Not an operator: used for bitfields. */
 ";"           |
 "<"           |
 <*>"="        | /* allow in "set" command also, e.g.: set lang=c++ */

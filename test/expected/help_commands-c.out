@@ -1,6 +1,7 @@
 command:
   cast <name> {as|into|to} <english>
-  declare <name> as <english> [aligned [as|to] {<number> [bytes] | <english>}]
+  declare <name> as <english> [width <number> [bits]]
+  declare <name> as <english> aligned [as|to] {<number> [bytes] | <english>}
   define <name> as <english>
   explain <gibberish>
   { help | ? } [command[s] | english]

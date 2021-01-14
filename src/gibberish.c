@@ -266,6 +266,8 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
     case K_BUILTIN:
       FPUTS( c_type_name( &ast->type ), g->gout );
       g_print_space_name( g, ast );
+      if ( ast->as.builtin.bit_width > 0 )
+        FPRINTF( g->gout, " : %u", ast->as.builtin.bit_width );
       g_set_leaf( g, ast );
       break;
 
@@ -384,6 +386,8 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       if ( opt_east_const && !is_typedef )
         FPRINTF( g->gout, " %s", c_type_name( &ast->type ) );
       g_print_space_name( g, ast );
+      if ( ast->as.tdef.bit_width > 0 )
+        FPRINTF( g->gout, " : %u", ast->as.tdef.bit_width );
       g_set_leaf( g, ast );
       break;
     }

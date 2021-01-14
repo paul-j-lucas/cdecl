@@ -191,6 +191,11 @@ static bool c_ast_check_alignas( c_ast_t *ast ) {
   assert( ast != NULL );
 
   if ( ast->align.kind != C_ALIGNAS_NONE ) {
+    if ( c_type_is_tid_any( &ast->type, TS_TYPEDEF ) ) {
+      print_error( &ast->loc, "types can not be %s\n", L_ALIGNED );
+      return false;
+    }
+
     if ( c_ast_is_register( ast ) ) {
       print_error( &ast->loc,
         "\"%s\" can not be combined with \"%s\"\n", alignas_lang(), L_REGISTER
@@ -808,6 +813,15 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           if ( n_params > 1 )
             goto only_void;
           continue;
+        }
+        PJL_FALLTHROUGH;
+
+      case K_TYPEDEF:
+        if ( param_ast->as.tdef.bit_width > 0 ) {
+          print_error( &param_ast->loc,
+            "parameters can not have bit-field widths\n"
+          );
+          return false;
         }
         break;
 

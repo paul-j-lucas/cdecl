@@ -12,6 +12,12 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 9.3
 
+** Bit-fields
+Declarations with bit-field widths are now supported:
+
+    cdecl> explain unsigned x : 3
+    declare x as unsigned int width 3 bits
+
 ** Digraph warning
 A warning is given if the digraph option is set and the current language is C89
 or earlier.

@@ -73,6 +73,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	now using a proper abstract syntax tree data structure
 	added _Atomic, bool, char8_t, char16_t, char32_t, _Complex, _Imaginary,
 		noreturn, restrict, thread_local, wchar_t
+	added bit-fields
 	added inline functions and variables
 	added register and variadic function arguments
 	added typedef, using, define, and show commands

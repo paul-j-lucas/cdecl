@@ -65,6 +65,7 @@ extern char const L_ALIGNED[];
 extern char const L_ALL[];
 extern char const L_ARRAY[];
 extern char const L_AS[];
+extern char const L_BITS[];
 extern char const L_BYTES[];
 extern char const L_CAST[];
 extern char const L_COMMAND[];              // synonym for "commands"
@@ -101,6 +102,7 @@ extern char const L_SHOW[];
 extern char const L_TO[];
 extern char const L_USER[];
 extern char const L_VECTOR[];               // synonym for "array"
+extern char const L_WIDTH[];
 
 // K&R
 extern char const L_AUTO[];
