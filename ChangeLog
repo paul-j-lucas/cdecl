@@ -1,5 +1,23 @@
+2021-01-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, NEWS, cdecl.1, c_ast.h, c_type.h, debug.c, english.c, errors.c,
+     gibberish.c, help.c, lexer.l, literals.c, literals.h, parser.y, types.h,
+     test/Makefile.am, cdecl--debug.out, cdecl-d.out, declare_uw3.out,
+     declare_zw3.out, explain_uw3.out, explain_zw3.out, help-c++.out,
+     help-c.out, help_command-c++.out, help_command-c++03.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out,
+     declare_fuw3_v.test, declare_puw3.test, declare_uw3.test,
+     declare_zw3.test, explain_fuw3_v.test, explain_puw3.test,
+     explain_uw3.test, explain_zw3.test: Added support for bit-fields.
+   * test/Makefile.am: Test renaming.
+   * c_ast_util.c, c_ast_util.h, errors.c:
+     s/c_ast_is_builtin/c_ast_is_builtin_any/
+   * lexer.l: Whitespace fixes.
+
 2021-01-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, configure.ac, set.c: A warning is given if the digraph option is set
+     and the current language is C89 or earlier.
    * cdecl.1: Added note about default language being able to be changed in
      cdeclrc file; improved code-fragment indentation; added caveat about not
      all explanations being round-trippable.
