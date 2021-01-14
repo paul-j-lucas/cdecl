@@ -1584,7 +1584,7 @@ alignas_or_width_decl_english_ast
       }
 
       $$ = $1;
-      $$.ast->as.builtin.bit_width = $2;
+      $$.ast->as.builtin.bit_width = (unsigned)$2;
     }
   ;
 
@@ -5079,7 +5079,7 @@ sname_c_ast
       bool ok = true;
       if ( $2 != 0 ) {
         if ( (ok = c_ast_is_builtin_any( $$.ast, TB_ANY_INTEGRAL )) )
-          $$.ast->as.builtin.bit_width = $2;
+          $$.ast->as.builtin.bit_width = (unsigned)$2;
         else
           print_error( &@2, "bit-fields can be only of integral types\n" );
       }
