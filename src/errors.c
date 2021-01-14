@@ -142,11 +142,11 @@ static bool c_ast_visitor_type( c_ast_t*, void* );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Simple wrapper around `c_ast_visit()`.
+ * Simple wrapper around c_ast_visit().
  *
  * @param ast The AST to check.
  * @param visitor The visitor to use.
- * @param data Optional data passed to `c_ast_visit()`.
+ * @param data Optional data passed to c_ast_visit().
  * @return Returns `true` only if all checks passed.
  */
 PJL_WARN_UNUSED_RESULT
@@ -639,7 +639,7 @@ only_special:
 }
 
 /**
- * Checks the return type and parameters for `main()`.
+ * Checks the return type and parameters for main().
  *
  * @param ast The main function AST to check.
  * @return Returns `true` only if all checks passed.
@@ -723,7 +723,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
 }
 
 /**
- * Checks that an AST of a `main()` argument is either `char*[]` or `char**`
+ * Checks that an AST of a main() argument is either `char*[]` or `char**`
  * optionally including `const`.
  *
  * @param ast The AST to check.

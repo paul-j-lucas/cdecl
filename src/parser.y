@@ -596,7 +596,7 @@ static void c_ast_explain_declaration( c_ast_t const *ast ) {
 
 /**
  * Prints an additional parsing error message including a newline to standard
- * error that continues from where `yyerror()` left off.  Additionally:
+ * error that continues from where yyerror() left off.  Additionally:
  *
  * + If the printable_token() isn't null:
  *     + Checks to see if it's a keyword: if it is, mentions that it's a
@@ -763,7 +763,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
  * directly by Bison to print just `syntax error` (usually).
  *
  * @note A newline is _not_ printed since the error message will be appended to
- * by `fl_elaborate_error()`.  For example, the parts of an error message are
+ * by fl_elaborate_error().  For example, the parts of an error message are
  * printed by the functions shown:
  *
  *      42: syntax error: "int": "into" expected

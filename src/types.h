@@ -190,7 +190,7 @@ enum c_mode {
 };
 
 /**
- * The direction to traverse an AST using `c_ast_visit()`.
+ * The direction to traverse an AST using c_ast_visit().
  */
 enum c_visit_dir {
   C_VISIT_DOWN,                         ///< Root to leaves.

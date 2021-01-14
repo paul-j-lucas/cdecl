@@ -127,12 +127,12 @@ struct c_alignas {
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * The signature for functions passed to `c_ast_visit()`.
+ * The signature for functions passed to c_ast_visit().
  *
  * @param ast The AST to visit.
- * @param data Optional data passed to `c_ast_visit()`.
+ * @param data Optional data passed to c_ast_visit().
  * @return Returning `true` will cause traversal to stop and \a ast to be
- * returned to the caller of `c_ast_visit()`.
+ * returned to the caller of c_ast_visit().
  */
 typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
 
@@ -351,9 +351,9 @@ PJL_WARN_UNUSED_RESULT
 bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast );
 
 /**
- * Frees all the memory used by \a ast.
+ * Frees all the memory used by \a ast including \a ast itself.
  *
- * @param ast The AST to free.  May be null.
+ * @param ast The AST to free.  If null, does nothing.
  *
  * @sa c_ast_new()
  */
@@ -362,7 +362,7 @@ void c_ast_free( c_ast_t *ast );
 /**
  * Checks whether \a ast is a parent node.
  *
- * @param ast The AST to check.  May be null.
+ * @param ast The AST to check.  If null, does nothing.
  * @return Returns `true` only if it is.
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
@@ -377,6 +377,7 @@ bool c_ast_is_parent( c_ast_t const *ast ) {
  * @param name The name to append.  Ownership is taken.
  *
  * @sa c_ast_append_sname()
+ * @sa c_ast_prepend_sname();
  * @sa c_ast_set_name()
  */
 C_AST_INLINE
@@ -392,6 +393,8 @@ void c_ast_append_name( c_ast_t *ast, char *name ) {
  *
  * @sa c_ast_append_name()
  * @sa c_ast_prepend_sname()
+ * @sa c_ast_set_name()
+ * @sa c_ast_set_sname()
  */
 C_AST_INLINE
 void c_ast_append_sname( c_ast_t *ast, c_sname_t *sname ) {
@@ -410,7 +413,8 @@ size_t c_ast_count_name( c_ast_t const *ast ) {
 }
 
 /**
- * Duplicates the name of \a ast.
+ * Duplicates the name of \a ast.  The caller is responsible for calling
+ * c_sname_free() on the duplicate.
  *
  * @param ast The AST to duplicate the name of.
  * @return Returns the name of \a ast duplicated.
@@ -439,6 +443,7 @@ bool c_ast_empty_name( c_ast_t const *ast ) {
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  *
+ * @sa c_ast_name_atr()
  * @sa c_ast_local_name()
  * @sa c_ast_scope_name()
  */
@@ -463,9 +468,9 @@ bool c_ast_is_ctor_name( c_ast_t const *ast ) {
 }
 
 /**
- * Frees the list nodes only of \a list.
+ * Frees only the list nodes of \a list but _not_ \a list itself.
  *
- * @param list The AST list to free.
+ * @param list The AST list to free the nodes of.
  */
 C_AST_INLINE
 void c_ast_list_free( c_ast_list_t *list ) {
@@ -482,6 +487,7 @@ void c_ast_list_free( c_ast_list_t *list ) {
  * @return Returns said name or the empty string if the name is empty.
  *
  * @sa c_ast_full_name()
+ * @sa c_ast_name_atr()
  * @sa c_ast_scope_name()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
@@ -513,6 +519,7 @@ c_type_t const* c_ast_local_name_type( c_ast_t const *ast ) {
  *
  * @sa c_ast_full_name()
  * @sa c_ast_local_name()
+ * @sa c_ast_scope_name()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_ast_name_atr( c_ast_t const *ast, size_t roffset ) {
@@ -540,6 +547,7 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
  * @return Returns a pointer to the first parameter or null if none.
  *
  * @sa c_ast_params_count()
+ * @sa c_param_ast()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
@@ -562,6 +570,7 @@ c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
  * @return Returns said number of parameters.
  *
  * @sa c_ast_params()
+ * @sa c_ast_params_count()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 size_t c_ast_params_count( c_ast_t const *ast ) {
@@ -574,7 +583,10 @@ size_t c_ast_params_count( c_ast_t const *ast ) {
  * @param ast The AST to prepend to the name of.
  * @param sname The scoped name to prepend.  It is cleared.
  *
+ * @sa c_ast_append_name()
  * @sa c_ast_append_sname()
+ * @sa c_ast_set_name()
+ * @sa c_ast_set_sname()
  */
 C_AST_INLINE
 void c_ast_prepend_sname( c_ast_t *ast, c_sname_t *sname ) {
@@ -636,6 +648,9 @@ void c_ast_set_local_name_type( c_ast_t *ast, c_type_t const *type ) {
  * @param ast The AST node to set the name of.
  * @param name The name to set.  Ownership is taken.
  *
+ * @sa c_ast_append_name()
+ * @sa c_ast_append_sname()
+ * @sa c_ast_prepend_sname()
  * @sa c_ast_set_sname()
  */
 void c_ast_set_name( c_ast_t *ast, char *name );
@@ -652,8 +667,11 @@ void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast );
  * Sets the name of \a ast.
  *
  * @param ast The AST node to set the name of.
- * @param sname The scoped name to set.  It is not duplicated.
+ * @param sname The scoped name to set.  It is cleared.
  *
+ * @sa c_ast_append_name()
+ * @sa c_ast_append_sname()
+ * @sa c_ast_prepend_sname()
  * @sa c_ast_set_name()
  */
 void c_ast_set_sname( c_ast_t *ast, c_sname_t *sname );
@@ -661,7 +679,7 @@ void c_ast_set_sname( c_ast_t *ast, c_sname_t *sname );
 /**
  * Does a depth-first, post-order traversal of an AST.
  *
- * @param ast The AST to begin at.  May be null.
+ * @param ast The AST to begin at.  If null, does nothing.
  * @param dir The direction to visit.
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.
@@ -679,6 +697,9 @@ c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
  *
  * @param param A pointer to a `c_ast_param_t`.
  * @return Returns a pointer to the AST.
+ *
+ * @sa c_ast_params()
+ * @sa c_ast_params_count()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_param_ast( c_ast_param_t const *param ) {

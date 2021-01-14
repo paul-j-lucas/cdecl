@@ -38,7 +38,7 @@
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Helper function for `c_sname_local_type()` that returns the scope type of the
+ * Helper function for c_sname_local_type() that returns the scope type of the
  * innermost scope (that has a type).
  *
  * @param scope A pointer to a scope.
@@ -53,9 +53,8 @@ static c_type_t const* c_sname_local_type_impl( c_scope_t const *scope ) {
 }
 
 /**
- * Helper function for `c_sname_full_name()` and `c_sname_scope_name()` that
- * writes the scope names from outermost to innermost separated by `::` into a
- * buffer.
+ * Helper function for c_sname_full_name() and c_sname_scope_name() that writes
+ * the scope names from outermost to innermost separated by `::` into a buffer.
  *
  * @param name_buf The buffer to write into.
  * @param name_end One past the end of \a name_buf.

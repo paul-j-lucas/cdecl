@@ -354,8 +354,8 @@ static c_lang_id_t parse_opt_lang( char const *s ) {
 /**
  * Parses command-line options.
  *
- * @param argc The argument count from `main()`.
- * @param argv The argument values from `main()`.
+ * @param argc The argument count from main().
+ * @param argv The argument values from main().
  */
 static void parse_options( int argc, char const *argv[const] ) {
   optind = opterr = 1;

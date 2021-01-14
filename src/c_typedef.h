@@ -66,12 +66,12 @@ enum c_typedef_add_rv {
 };
 
 /**
- * The signature for a function passed to `c_typedef_visit()`.
+ * The signature for a function passed to c_typedef_visit().
  *
  * @param tdef The <code>\ref c_typedef</code> to visit.
  * @param data Optional data passed to the visitor.
  * @return Returning `true` will cause traversal to stop and \a type to be
- * returned to the caller of `c_typedef_visit()`.
+ * returned to the caller of c_typedef_visit().
  */
 typedef bool (*c_typedef_visitor_t)( c_typedef_t const *tdef, void *data );
 

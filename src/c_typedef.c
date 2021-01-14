@@ -890,7 +890,7 @@ static void c_typedef_parse_predefined( char const *const types[const] ) {
  * @param node_data A pointer to the node's data.
  * @param aux_data Optional data passed to to the visitor.
  * @return Returning `true` will cause traversal to stop and the current node
- * to be returned to the caller of `rb_tree_visit()`.
+ * to be returned to the caller of rb_tree_visit().
  */
 PJL_WARN_UNUSED_RESULT
 static bool rb_visitor( void *node_data, void *aux_data ) {

@@ -123,9 +123,9 @@ PJL_WARN_UNUSED_RESULT
 c_scope_data_t* c_scope_data_dup( c_scope_data_t const *data );
 
 /**
- * Frees all memory associated with \a data.
+ * Frees all memory associated with \a data _including_ \a data itself.
  *
- * @param data The scope data to free.  May be null.
+ * @param data The scope data to free.  If null, does nothing.
  */
 void c_scope_data_free( c_scope_data_t *data );
 
@@ -206,7 +206,7 @@ bool c_sname_empty( c_sname_t const *sname ) {
 }
 
 /**
- * Frees all memory associated with \a sname.
+ * Frees all memory associated with \a sname but _not_ \a sname itself.
  *
  * @param sname The scoped name to free.  If null, does nothing; otherwise,
  * reinitializes it upon completion.

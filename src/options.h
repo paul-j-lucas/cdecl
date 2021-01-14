@@ -103,8 +103,8 @@ bool is_explicit_int( c_type_id_t tid );
  * On return, `*pargc` and `*pargv` are updated to reflect the remaining
  * command-line with the options removed.
  *
- * @param pargc A pointer to the argument count from `main()`.
- * @param pargv A pointer to the argument values from `main()`.
+ * @param pargc A pointer to the argument count from main().
+ * @param pargv A pointer to the argument values from main().
  */
 void options_init( int *pargc, char const **pargv[] );
 

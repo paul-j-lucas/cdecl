@@ -226,7 +226,7 @@ static char*  command_generator( char const*, int );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Attempts command completion for `readline()`.
+ * Attempts command completion for readline().
  *
  * @param text The text read (so far) to match against.
  * @param start The starting character position of \a text.

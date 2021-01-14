@@ -141,7 +141,7 @@ enum c_kind_id {
  * @note
  * For platforms with 64-bit pointers, this is a no-op.
  *
- * @param data The data to free.  May be null.
+ * @param data The data to free.  If null, does nothing.
  */
 C_KIND_INLINE
 void c_kind_data_free( void *data ) {

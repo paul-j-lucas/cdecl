@@ -69,7 +69,7 @@ typedef struct rb_tree  rb_tree_t;
 typedef enum   rb_color rb_color_t;
 
 /**
- * The signature for a function passed to `rb_tree_init()` used to compare node
+ * The signature for a function passed to rb_tree_init() used to compare node
  * data.
  *
  * @param i_data A pointer to data.
@@ -81,7 +81,7 @@ typedef enum   rb_color rb_color_t;
 typedef int (*rb_data_cmp_t)( void const *i_data, void const *j_data );
 
 /**
- * The signature for a function passed to `rb_tree_free()` used to free data
+ * The signature for a function passed to rb_tree_free() used to free data
  * associated with each node (if necessary).
  *
  * @param data A pointer to the data to free.
@@ -89,7 +89,7 @@ typedef int (*rb_data_cmp_t)( void const *i_data, void const *j_data );
 typedef void (*rb_data_free_t)( void *data );
 
 /**
- * The signature for the function passed to `rb_tree_visit()`.
+ * The signature for the function passed to rb_tree_visit().
  *
  * @param node_data A pointer to the node's data.
  * @param aux_data Optional data passed to to the visitor.
@@ -154,9 +154,10 @@ PJL_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data );
 
 /**
- * Frees all memory associated with \a tree.
+ * Frees all memory associated with \a tree but _not_ \a tree itself.
  *
- * @param tree The red-black tree to free.  May be null.
+ * @param tree The red-black tree to free.  If null, does nothing; otherwise,
+ * reinitializes \a tree upon completion.
  * @param data_free_fn A pointer to a function used to free data associated
  * with each node or null if unnecessary.
  *

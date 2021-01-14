@@ -65,7 +65,7 @@ typedef struct slist      slist_t;
 typedef struct slist_node slist_node_t;
 
 /**
- * The signature for a function passed to `slist_dup()` used to duplicate data
+ * The signature for a function passed to slist_dup() used to duplicate data
  * associated with the list, if any.
  *
  * @param data A pointer to the data to duplicate.
@@ -74,7 +74,7 @@ typedef struct slist_node slist_node_t;
 typedef void* (*slist_data_dup_fn_t)( void const *data );
 
 /**
- * The signature for a function passed to `slist_free()` used to free data
+ * The signature for a function passed to slist_free() used to free data
  * associated with the list, if any.
  *
  * @param data A pointer to the data to free.
@@ -82,7 +82,7 @@ typedef void* (*slist_data_dup_fn_t)( void const *data );
 typedef void (*slist_data_free_fn_t)( void *data );
 
 /**
- * The signature for a function passed to `slist_cmp()` used to compare data
+ * The signature for a function passed to slist_cmp() used to compare data
  * associated with each node (if necessary).
  *
  * @param i_data A pointer to the first data to compare.
@@ -94,7 +94,7 @@ typedef int (*slist_node_data_cmp_fn_t)( void const *i_data,
                                          void const *j_data );
 
 /**
- * The signature for a function passed to `slist_dup()` used to duplicate data
+ * The signature for a function passed to slist_dup() used to duplicate data
  * associated with each node (if necessary).
  *
  * @param data A pointer to the data to duplicate.
@@ -103,7 +103,7 @@ typedef int (*slist_node_data_cmp_fn_t)( void const *i_data,
 typedef void* (*slist_node_data_dup_fn_t)( void const *data );
 
 /**
- * The signature for a function passed to `slist_free()` used to free data
+ * The signature for a function passed to slist_free() used to free data
  * associated with each node (if necessary).
  *
  * @param data A pointer to the data to free.
@@ -151,7 +151,7 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
  * Duplicates \a src and all of its nodes.
  *
  * @param src The <code>\ref slist</code> to duplicate.  It may ne null.
- * @param n The number of nodes to duplicate; -1 is equivalent to `slist_len()`.
+ * @param n The number of nodes to duplicate; -1 is equivalent to slist_len().
  * @param data_dup_fn A pointer to a function to use to duplicate the data of
  * \a src or null if none is required (hence a shallow copy will be done).
  * @param node_data_dup_fn A pointer to a function to use to duplicate the data
@@ -176,10 +176,10 @@ bool slist_empty( slist_t const *list ) {
 }
 
 /**
- * Frees all memory associated with \a list.
+ * Frees all memory associated with \a list but _not_ \a list itself.
  *
- * @param list A pointer to the <code>\ref slist</code>.  If null, does
- * nothing; otherwise, reinitializes it upon completion.
+ * @param list A pointer to the list to free.  If null, does nothing;
+ * otherwise, reinitializes \a list upon completion.
  * @param data_free_fn A pointer to a function to use to free the data
  * associated with \a list or null if none is required.
  * @param node_data_free_fn A pointer to a function to use to free the data at

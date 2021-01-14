@@ -20,7 +20,7 @@
 
 /**
  * @file
- * Defines `main()` as well as functions for initialization, clean-up, and
+ * Defines main() as well as functions for initialization, clean-up, and
  * parsing user input.
  */
 
@@ -230,7 +230,7 @@ static bool parse_argv( int argc, char const *argv[const] ) {
 /**
  * Parses a cdecl command from the command-line.
  *
- * @param command The value `main()`'s `argv[0]` if it is a cdecl command; null
+ * @param command The value main()'s `argv[0]` if it is a cdecl command; null
  * otherwise and `argv[1]` is a cdecl command.
  * @param argc The command-line argument count.
  * @param argv The command-line argument values.

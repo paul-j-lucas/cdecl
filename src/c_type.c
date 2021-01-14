@@ -656,8 +656,8 @@ static c_type_t c_type_from_tid( c_type_id_t tid ) {
 }
 
 /**
- * Helper function for `c_type_name()` and `c_type_name_error()` that gets the
- * name of \a type.
+ * Helper function for c_type_name() and c_type_name_error() that gets the name
+ * of \a type.
  *
  * @param type The type to get the name for.
  * @param is_error `true` if getting the name for part of an error message.

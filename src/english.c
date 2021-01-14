@@ -48,7 +48,7 @@ static void non_type_name( c_type_t const*, FILE* );
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Helper function for `c_ast_visitor_english()` that prints a bit-field width,
+ * Helper function for c_ast_visitor_english() that prints a bit-field width,
  * if any.
  *
  * @param ast The AST to print the bit-field width of.
@@ -64,7 +64,7 @@ static void c_ast_english_bit_width( c_ast_t const *ast, FILE *eout ) {
 }
 
 /**
- * Helper function for `c_ast_visitor_english()` that prints a function-like
+ * Helper function for c_ast_visitor_english() that prints a function-like
  * AST's parameters, if any.
  *
  * @param param The `c_ast_param` that is the first parameter to print.
@@ -247,7 +247,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 }
 
 /**
- * Helper function for `c_sname_english()` that prints the scopes' types and
+ * Helper function for c_sname_english() that prints the scopes' types and
  * names in inner-to-outer order except for the inner-most scope.  For example,
  * `S::T::x` is printed as "of scope T of scope S."
  *
