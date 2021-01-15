@@ -52,17 +52,6 @@ most notably:
   and
   `volatile`
   declarations.
-* Support for the standard C95 type
-  `wchar_t`.
-* Support for the standard C99 types
-  `_Bool`,
-  `_Complex`,
-  `_Imaginary`,
-  `int8_t`,
-  `int16_t`,
-  `ptrdiff_t`,
-  `size_t`,
-  etc.
 * Support for C99
   `static`,
   type-qualified,
@@ -73,17 +62,28 @@ most notably:
   [Embedded C](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1021.pdf)
   and
   [Unified Parallel C](https://upc.lbl.gov/).
-* Support for the standard C11 atomic types
-  `atomic_bool`,
-  `atomic_char`,
-  etc.
-* Support for the standard C11 and C++11 types
-  `char16_t`,
-  `char32_t`,
-  and
-  `thread_local`.
 * Support for `inline` function and variable declarations.
 * Support for `typedef` declarations.
+* Pre-defined `typedef` declarations
+  for all standard C & C++ language types
+  (`_Bool`,
+   `_Complex`, `_Imaginary`,
+   `char8_t`,
+   `wchar_t`,
+   etc.),
+  many POSIX and standard library types
+  (`FILE`,
+   `in_addr_t`,
+   `int8_t`,
+   `pid_t`,
+   `pthread_t`,
+   `ptrdiff_t`,
+   `size_t`,
+   `std::ostream`,
+   `std::string`,
+   etc.),
+  and all
+  [Microsoft Windows types](https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types).
 * Support for variadic function arguments.
 * Support for C and C++ alternative tokens
   (`and`, `and_eq`, etc.).
@@ -95,7 +95,8 @@ most notably:
   overloaded operators,
   and
   `friend`,
-  `virtual` and pure `virtual` member function declarations,
+  `virtual` and pure `virtual`
+  member function declarations,
   and
   user-defined conversion operators.
 * Support for C++11
