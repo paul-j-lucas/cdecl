@@ -160,7 +160,7 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  *
  * @sa CDECL_KEYWORDS for examples.
  */
-#define C_SYN(ALLOW,...)          ALLOW, 0, (c_lang_lit_t const[])__VA_ARGS__
+#define C_SYN(ALLOW,...)          (ALLOW), 0, (c_lang_lit_t const[])__VA_ARGS__
 
 /**
  * Special-case of #C_SYN when there is only one language(s)/literal pair.
@@ -170,7 +170,7 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  *
  * @sa CDECL_KEYWORDS for examples.
  */
-#define C_SY1(ALLOW,C_KEYWORD)    C_SYN( ALLOW, { { LANG_ALL, C_KEYWORD } } )
+#define C_SY1(ALLOW,C_KEYWORD)    C_SYN( (ALLOW), { { LANG_ALL, C_KEYWORD } } )
 
 /**
  * Specify that the previosuly given literal maps to Bison tokan \a Y_ID.
@@ -179,7 +179,7 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  *
  * @sa CDECL_KEYWORDS for examples.
  */
-#define TOKEN(Y_ID)               false, Y_ID, NULL
+#define TOKEN(Y_ID)               false, (Y_ID), NULL
 
 /**
  * All cdecl keywords that are (mostly) _not_ C/C++ keywords.
