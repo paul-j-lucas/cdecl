@@ -47,9 +47,9 @@
  */
 
 // extern option variables
-extern bool         opt_alt_tokens;     ///< Print alternative tokens.
+extern bool         opt_alt_tokens;     ///< Print alternative tokens?
 #ifdef ENABLE_CDECL_DEBUG
-extern bool         opt_cdecl_debug;    ///< Generate JSON-like debug output?
+extern bool         opt_cdecl_debug;    ///< Print JSON-like debug output?
 #endif /* ENABLE_CDECL_DEBUG */
 extern char const  *opt_conf_file;      ///< Configuration file path.
 extern bool         opt_east_const;     ///< Print in "east const" form?
@@ -67,11 +67,11 @@ extern FILE        *fin;                ///< File in.
 extern FILE        *fout;               ///< File out.
 #ifdef ENABLE_FLEX_DEBUG
 extern int          yy_flex_debug;      ///< Flex variable for debugging.
-#define opt_flex_debug  yy_flex_debug   ///< Flex debugging.
+#define opt_flex_debug  yy_flex_debug   ///< Print Flex debug output?
 #endif /* ENABLE_FLEX_DEBUG */
 #ifdef YYDEBUG
 extern int          yydebug;            ///< Bison variable for debugging.
-#define opt_bison_debug yydebug         ///< Bison debugging.
+#define opt_bison_debug yydebug         ///< Print Bison debug output?
 #endif /* YYDEBUG */
 
 ////////// extern functions ///////////////////////////////////////////////////
