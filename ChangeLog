@@ -1,3 +1,11 @@
+2021-01-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.c: Removed "true".
+   * c_lang.h: Reworded Doxygen.
+   * options.c: Made is_cppdecl() take an argument.
+   * options.h: Comment changes.
+   * parser.y: Fixed warnings.
+
 2021-01-13  Paul J. Lucas <paul@lucasmail.org>
 
    * AUTHORS, NEWS, cdecl.1, c_ast.h, c_type.h, debug.c, english.c, errors.c,
