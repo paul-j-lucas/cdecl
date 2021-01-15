@@ -214,7 +214,7 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  *
  * To have a literal that is English be a synonym for more than one
  * corresponding C/C++ keyword depending on the current language, use #C_SYN
- * with the last row always containing LANG_ALL:
+ * with the last row always containing #LANG_ALL:
  *
  *      // The "noreturn" literal is a synonym for the "_Noreturn" literal only
  *      // in C11 and later.
