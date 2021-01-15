@@ -72,11 +72,12 @@ print_result() {
 usage() {
   [ "$1" ] && { echo "$ME: $*" >&2; usage; }
   cat >&2 <<END
-usage: $ME --test-name=NAME --log-file=PATH --trs-file=PATH [options] TEST-COMMAND
+usage: $ME --log-file=PATH --trs-file=PATH [options] TEST-FILE
 options:
   --color-tests={yes|no}
   --enable-hard-errors={yes|no}
   --expect-failure={yes|no}
+  --test-name=NAME
 END
   exit 1
 }
@@ -148,11 +149,13 @@ do
   shift
 done
 
-[ "$TEST_NAME" ] || usage "required --test-name not given"
+TEST=$1
+[ "$TEST_NAME" ] || TEST_NAME=$TEST
 [ "$LOG_FILE"  ] || usage "required --log-file not given"
 [ "$TRS_FILE"  ] || usage "required --trs-file not given"
-[ $# -ge 1     ] || usage "required test-command not given"
-TEST=$1
+[ $# -ge 1     ] || usage "required test-file not given"
+
+TEST_NAME=`local_basename "$TEST_NAME"`
 
 ########## Initialize #########################################################
 
@@ -186,7 +189,6 @@ esac
 
 DATA_DIR=$srcdir/data
 EXPECTED_DIR=$srcdir/expected
-TEST_NAME=`local_basename "$TEST_NAME"`
 ACTUAL_OUTPUT=/tmp/cdecl_test_output_$$_
 
 ########## Run test ###########################################################
@@ -209,7 +211,7 @@ run_cdecl_test() {
     then
       EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
       assert_exists $EXPECTED_OUTPUT
-      if diff $EXPECTED_OUTPUT $ACTUAL_OUTPUT > $LOG_FILE
+      if diff $EXPECTED_OUTPUT $ACTUAL_OUTPUT >> $LOG_FILE
       then pass; mv $ACTUAL_OUTPUT $LOG_FILE
       else fail
       fi
