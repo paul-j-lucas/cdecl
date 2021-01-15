@@ -503,7 +503,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_fkr_pi.test
 	tests/explain_fn.test \
 	tests/explain_fsi_v.test \
-	tests/explain_fuw3.test \
+	tests/explain_fuw3_v.test \
 	tests/explain_fvel_v.test \
 	tests/explain_fvi_v.test \
 	tests/explain_fvv_v.test \
