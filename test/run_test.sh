@@ -24,6 +24,16 @@
 
 ########## Functions ##########################################################
 
+error() {
+  exit_status=$1; shift
+  echo $ME: $*
+  exit $exit_status
+}
+
+assert_exists() {
+  [ -e "$1" ] || error 66 $1: file not found
+}
+
 local_basename() {
   ##
   # Autoconf, 11.15:
@@ -190,7 +200,6 @@ run_cdecl_test() {
   CONFIG=`echo $CONFIG`                 # trims whitespace
   [ "$CONFIG" ] && CONFIG="-c $DATA_DIR/$CONFIG"
   EXPECTED_EXIT=`echo $EXPECTED_EXIT`   # trims whitespace
-  EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
 
   #echo "$INPUT" \| $COMMAND $CONFIG "$OPTIONS" \> $ACTUAL_OUTPUT
   if echo "$INPUT" | sed 's/^ //' |
@@ -198,6 +207,8 @@ run_cdecl_test() {
   then
     if [ 0 -eq $EXPECTED_EXIT ]
     then
+      EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
+      assert_exists $EXPECTED_OUTPUT
       if diff $EXPECTED_OUTPUT $ACTUAL_OUTPUT > $LOG_FILE
       then pass; mv $ACTUAL_OUTPUT $LOG_FILE
       else fail
@@ -221,6 +232,7 @@ PATH=$BUILD_SRC:$PATH
 
 trap "x=$?; rm -f /tmp/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 
+assert_exists $TEST
 case $TEST in
 *.test) run_cdecl_test ;;
 esac
