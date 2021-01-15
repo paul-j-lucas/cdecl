@@ -76,7 +76,6 @@ c_keyword_t const* c_attribute_find( char const *literal );
 
 /**
  * Given a literal, gets the `c_keyword` for the corresponding C/C++ keyword.
- * @note The search is _insensitive_ to the current language.
  *
  * @param literal The literal to find.
  * @param lang_ids The bitwise-or of language(s) to look for the keyword in.
