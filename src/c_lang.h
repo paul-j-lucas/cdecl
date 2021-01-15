@@ -113,49 +113,50 @@ _GL_INLINE_HEADER_BEGIN
 #define LANGX_MASK    0x0180u           /**< Language extensions bitmask. */
 
 /**
- * Maximum allowed language, C & C++.
+ * All languages up to and including \a L.
  *
  * @param L The language _without_ the `LANG_` prefix.
  */
 #define LANG_MAX(L)               (LANG_ ## L | (LANG_ ## L - 1u))
 
 /**
- * Minimum allowed language, C & C++.
+ * All languages \a L and later.
  *
  * @param L The language _without_ the `LANG_` prefix.
  */
-#define LANG_MIN(L)               ((c_lang_id_t)~(LANG_ ## L - 1u))
+#define LANG_MIN(L)               (~(LANG_ ## L - 1u))
 
 /**
- * Maximum allowed language, C only.
+ * C-only languages up to and including \a L.
  *
  * @param L The language _without_ the `LANG_` prefix.
  */
 #define LANG_C_MAX(L)             LANG_MAX( C_ ## L )
 
 /**
- * Minimum allowed language, C only.
+ * C-only languages \a L and later.
  *
  * @param L The language _without_ the `LANG_` prefix.
  */
 #define LANG_C_MIN(L)             (LANG_MIN( C_ ## L ) & LANG_MASK_C)
 
 /**
- * Maximum allowed language, C++ only.
+ * C++-only languages up to and including \a L.
  *
  * @param L The language _without_ the `LANG_` prefix.
  */
 #define LANG_CPP_MAX(L)           (LANG_MAX( CPP_ ## L ) & LANG_MASK_CPP)
 
 /**
- * Minimum allowed language, C++ only.
+ * C++-only languages \a L and later.
  *
  * @param L The language _without_ the `LANG_` prefix.
  */
 #define LANG_CPP_MIN(L)           LANG_MIN( CPP_ ## L )
 
 /**
- * Maximum allowed language, C & C++ seperately.
+ * C-only languages up to and including \a CL; and C++-only languages up to and
+ * including \a CPPL.
  *
  * @param CL The C language _without_ the `LANG_` prefix.
  * @param CPPL The C++ language _without_ the `LANG_` prefix.
@@ -163,7 +164,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_C_CPP_MAX(CL,CPPL)   (LANG_C_MAX(CL) | LANG_CPP_MAX(CPPL))
 
 /**
- * Minimum allowed language, C & C++ seperately.
+ * C-only languages \a CL and later; and C++-only languages \a CPPL and later.
  *
  * @param CL The C language _without_ the `LANG_` prefix.
  * @param CPPL The C++ language _without_ the `LANG_` prefix.
