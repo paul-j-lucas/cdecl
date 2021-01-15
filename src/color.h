@@ -165,7 +165,7 @@ extern char const  *sgr_locus;          ///< Color of error location.
 extern char const  *sgr_prompt;         ///< Color of the cdecl prompt.
 extern char const  *sgr_warning;        ///< Color of `warning`.
 
-///////////////////////////////////////////////////////////////////////////////
+////////// extern functions ///////////////////////////////////////////////////
 
 /**
  * Parses and sets the sequence of gcc color capabilities.

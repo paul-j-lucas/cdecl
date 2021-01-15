@@ -53,6 +53,8 @@ extern bool             lexer_find_typedef; ///< Look-up `typedef` names?
 extern c_keyword_ctx_t  lexer_keyword_ctx;  ///< Keyword context.
 extern char const      *lexer_token;        ///< Text of current token.
 
+////////// extern functions ///////////////////////////////////////////////////
+
 /**
  * Gets the current input line.
  *

@@ -134,7 +134,7 @@ enum c_kind_id {
  */
 #define K_ANY_REFERENCE       (K_REFERENCE | K_RVALUE_REFERENCE)
 
-////////// inline functions ///////////////////////////////////////////////////
+////////// extern functions ///////////////////////////////////////////////////
 
 /**
  * Frees the data for a `c_kind_id_t`.
@@ -188,8 +188,6 @@ void* c_kind_data_new( c_kind_id_t kind_id ) {
   return REINTERPRET_CAST( void*, kind_id );
 #endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
 }
-
-////////// extern functions ///////////////////////////////////////////////////
 
 /**
  * Gets the name of \a kind_id.

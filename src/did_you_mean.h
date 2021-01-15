@@ -52,7 +52,7 @@ typedef unsigned dym_kind_t;
 #define DYM_C_KEYWORDS  (1u << 1)       /**< Did you mean C/C++ _keyword_? */
 #define DYM_C_TYPES     (1u << 2)       /**< Did you mean C/C++ _type_? */
 
-///////////////////////////////////////////////////////////////////////////////
+////////// extern functions ///////////////////////////////////////////////////
 
 /**
  * Frees all memory used by \a dym_array _including_ \a dym_array itself.
