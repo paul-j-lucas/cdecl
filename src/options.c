@@ -261,10 +261,11 @@ static char const* get_long_opt( char short_opt ) {
 /**
  * Checks whether we're c++decl.
  *
+ * @param prog_name The name of the program.
  * @returns Returns `true` only if we are.
  */
 PJL_WARN_UNUSED_RESULT
-static bool is_cppdecl( void ) {
+static bool is_cppdecl( char const *prog_name ) {
   static char const *const NAMES[] = {
     CPPDECL,
     "cppdecl",
@@ -273,7 +274,7 @@ static bool is_cppdecl( void ) {
   };
 
   for ( char const *const *pname = NAMES; *pname != NULL; ++pname )
-    if ( strcasecmp( *pname, me ) == 0 )
+    if ( strcasecmp( *pname, prog_name ) == 0 )
       return true;
   return false;
 }
@@ -598,7 +599,7 @@ void options_init( int *pargc, char const **pargv[const] ) {
   assert( pargv != NULL );
 
   me = base_name( (*pargv)[0] );
-  opt_lang = is_cppdecl() ? LANG_CPP_NEW : LANG_C_NEW;
+  opt_lang = is_cppdecl( me ) ? LANG_CPP_NEW : LANG_C_NEW;
 #ifdef ENABLE_FLEX_DEBUG
   //
   // When -d is specified, Flex enables debugging by default -- undo that.
