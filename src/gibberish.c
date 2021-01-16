@@ -50,7 +50,7 @@
  * arguments otherwise).
  */
 struct g_state {
-  c_gib_kind_t    kind;                 ///< Kind of gibberish to print.
+  c_gib_kind_t    gib_kind;             ///< Kind of gibberish to print.
   FILE           *gout;                 ///< Where to write the gibberish.
   c_ast_t const  *leaf_ast;             ///< Leaf of AST.
   c_ast_t const  *root_ast;             ///< Root of AST.
@@ -95,6 +95,7 @@ static inline void g_print_space( g_state_t *g ) {
  * @param ast The AST to set the leaf to.
  */
 static inline void g_set_leaf( g_state_t *g, c_ast_t const *ast ) {
+  assert( g != NULL );
   assert( g->leaf_ast == NULL );
   assert( ast != NULL );
   g->leaf_ast = ast;
@@ -107,12 +108,12 @@ static inline void g_set_leaf( g_state_t *g, c_ast_t const *ast ) {
  * declaration or cast.
  *
  * @param ast The AST to print.
- * @param kind The kind of gibberish to print as; must only be either
+ * @param gib_kind The kind of gibberish to print as; must only be either
  * #C_GIB_CAST or #C_GIB_DECL.
  * @param printing_typedef Printing a `typedef`?
  * @param gout The `FILE` to print to.
  */
-static void c_ast_gibberish_impl( c_ast_t const *ast, c_gib_kind_t kind,
+static void c_ast_gibberish_impl( c_ast_t const *ast, c_gib_kind_t gib_kind,
                                   bool printing_typedef, FILE *gout ) {
   assert( ast != NULL );
   assert( gout != NULL );
@@ -131,7 +132,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_gib_kind_t kind,
   } // switch
 
   g_state_t g;
-  g_init( &g, ast, kind, printing_typedef, gout );
+  g_init( &g, ast, gib_kind, printing_typedef, gout );
   g_impl( &g, ast );
 }
 
@@ -232,7 +233,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       if ( ast->as.parent.of_ast != NULL )
         g_impl( g, ast->as.parent.of_ast );
       if ( false_set( &g->postfix ) ) {
-        if ( g->kind != C_GIB_CAST )
+        if ( g->gib_kind != C_GIB_CAST )
           g_print_space( g );
         if ( ast == g->root_ast && g->leaf_ast != NULL )
           g_print_postfix( g, g->leaf_ast->parent_ast );
@@ -290,7 +291,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
 
       FPUTS( c_type_name( &type ), g->gout );
 
-      if ( g->kind != C_GIB_TYPEDEF || g->printing_typedef ) {
+      if ( g->gib_kind != C_GIB_TYPEDEF || g->printing_typedef ) {
         //
         // For enum, class, struct, or union (ECSU) types, we need to print the
         // ECSU name when the AST is not a typedef, e.g.:
@@ -317,7 +318,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_NAME:
-      if ( !c_ast_empty_name( ast ) && g->kind != C_GIB_CAST )
+      if ( !c_ast_empty_name( ast ) && g->gib_kind != C_GIB_CAST )
         g_print_full_or_local_name( g, ast );
       g_set_leaf( g, ast );
       break;
@@ -336,7 +337,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       if ( store_tid != TS_NONE )
         FPRINTF( g->gout, "%s ", c_type_id_name( store_tid ) );
       g_impl( g, ast->as.ptr_ref.to_ast );
-      if ( g->kind != C_GIB_CAST &&
+      if ( g->gib_kind != C_GIB_CAST &&
            c_ast_find_name( ast, C_VISIT_UP ) != NULL &&
            !c_ast_find_kind_any( ast->parent_ast, C_VISIT_UP,
                                  K_ANY_FUNCTION_LIKE ) ) {
@@ -404,22 +405,23 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
  *
  * @param g The `g_state` to initialize.
  * @param root_ast The AST root.
- * @param kind The kind of gibberish to print.
+ * @param gib_kind The kind of gibberish to print.
  * @param printing_typedef Printing a `typedef`?
  * @param gout The `FILE` to print it to.
  */
-static void g_init( g_state_t *g, c_ast_t const *root_ast, c_gib_kind_t kind,
-                    bool printing_typedef, FILE *gout ) {
+static void g_init( g_state_t *g, c_ast_t const *root_ast,
+                    c_gib_kind_t gib_kind, bool printing_typedef,
+                    FILE *gout ) {
   assert( g != NULL );
   assert( root_ast != NULL );
   assert( gout != NULL );
 
   MEM_ZERO( g );
-  g->kind = kind;
+  g->gib_kind = gib_kind;
   g->gout = gout;
   g->printing_typedef = printing_typedef;
   g->root_ast = root_ast;
-  if ( kind == C_GIB_USING )
+  if ( gib_kind == C_GIB_USING )
     g->skip_name_for_using = true;
 }
 
@@ -482,7 +484,7 @@ static void g_print_full_or_local_name( g_state_t *g, c_ast_t const *ast ) {
     return;
   }
 
-  if ( g->kind == C_GIB_TYPEDEF )
+  if ( g->gib_kind == C_GIB_TYPEDEF )
     FPUTS( c_ast_local_name( ast ), g->gout );
   else
     FPUTS( c_ast_full_name( ast ), g->gout );
@@ -509,7 +511,7 @@ static void g_print_func_params( g_state_t const *g, c_ast_t const *ast ) {
     c_ast_t const *const param_ast = c_param_ast( param );
     g_state_t params_g;
     g_init(
-      &params_g, param_ast, g->kind, /*printing_typedef=*/false, g->gout
+      &params_g, param_ast, g->gib_kind, /*printing_typedef=*/false, g->gout
     );
     g_impl( &params_g, param_ast );
   } // for
@@ -671,10 +673,10 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
   c_type_id_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
   if ( qual_tid != TS_NONE ) {
     FPUTS( c_type_id_name( qual_tid ), g->gout );
-    if ( g->kind != C_GIB_CAST )
+    if ( g->gib_kind != C_GIB_CAST )
       FPUTC( ' ', g->gout );
   }
-  if ( !c_ast_empty_name( ast ) && g->kind != C_GIB_CAST )
+  if ( !c_ast_empty_name( ast ) && g->gib_kind != C_GIB_CAST )
     g_print_full_or_local_name( g, ast );
 }
 
@@ -690,7 +692,7 @@ static void g_print_space_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
-  if ( g->kind == C_GIB_CAST )
+  if ( g->gib_kind == C_GIB_CAST )
     return;                             // for casts, print nothing
 
   switch ( ast->kind_id ) {
@@ -736,15 +738,15 @@ static void g_print_space_name( g_state_t *g, c_ast_t const *ast ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t kind, FILE *gout ) {
-  assert( kind == C_GIB_CAST || kind == C_GIB_DECL );
-  c_ast_gibberish_impl( ast, kind, /*printing_typedef=*/false, gout );
+void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t gib_kind, FILE *gout ) {
+  assert( gib_kind == C_GIB_CAST || gib_kind == C_GIB_DECL );
+  c_ast_gibberish_impl( ast, gib_kind, /*printing_typedef=*/false, gout );
 }
 
-void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t kind,
+void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
                           FILE *gout ) {
   assert( tdef != NULL );
-  assert( kind == C_GIB_TYPEDEF || kind == C_GIB_USING );
+  assert( gib_kind == C_GIB_TYPEDEF || gib_kind == C_GIB_USING );
   assert( gout != NULL );
 
   size_t scope_close_braces_to_print = 0;
@@ -819,12 +821,12 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t kind,
   // In C++, such typedefs are unnecessary since such types are first-class
   // types and not just tags, so we don't print "typedef".
   //
-  bool const printing_typedef = kind == C_GIB_TYPEDEF &&
+  bool const printing_typedef = gib_kind == C_GIB_TYPEDEF &&
     (tdef->ast->kind_id != K_ENUM_CLASS_STRUCT_UNION ||
     c_lang_is_c( tdef->lang_ids ) ||
     (C_LANG_IS_C() && !c_lang_is_cpp( tdef->lang_ids )));
 
-  bool const printing_using = kind == C_GIB_USING &&
+  bool const printing_using = gib_kind == C_GIB_USING &&
     (tdef->ast->kind_id != K_ENUM_CLASS_STRUCT_UNION);
 
   if ( printing_typedef )
@@ -832,7 +834,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t kind,
   else if ( printing_using )
     FPRINTF( gout, "%s %s = ", L_USING, c_sname_local_name( sname ) );
 
-  if ( kind == C_GIB_TYPEDEF ) {
+  if ( gib_kind == C_GIB_TYPEDEF ) {
     c_ast_gibberish_impl( tdef->ast, C_GIB_TYPEDEF, printing_typedef, gout );
   } else {
     c_ast_gibberish_impl(

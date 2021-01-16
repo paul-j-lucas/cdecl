@@ -355,7 +355,7 @@ typedef struct c_qualifier c_qualifier_t;
  */
 struct show_type_info {
   unsigned        show_which;           ///< Predefined, user, or both?
-  c_gib_kind_t    kind;                 ///< Kind of gibberish to print.
+  c_gib_kind_t    gib_kind;             ///< Kind of gibberish to print.
 };
 typedef struct show_type_info show_type_info_t;
 
@@ -396,6 +396,8 @@ static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t *loc ) {
  * @param kind_id The kind of AST to create.
  * @param loc A pointer to the token location data.
  * @return Returns a new <code>\ref c_ast_pair</code>.
+ *
+ * @sa c_ast_new_gc()
  */
 PJL_WARN_UNUSED_RESULT
 static inline c_ast_pair_t c_ast_pair_new_gc( c_kind_id_t kind_id,
@@ -408,6 +410,9 @@ static inline c_ast_pair_t c_ast_pair_new_gc( c_kind_id_t kind_id,
  * \ref in_attr.ast_type_stack "type AST inherited attribute stack".
  *
  * @return Returns said AST.
+ *
+ * @sa ia_type_ast_pop()
+ * @sa ia_type_ast_push()
  */
 PJL_WARN_UNUSED_RESULT
 static inline c_ast_t* ia_type_ast_peek( void ) {
@@ -419,6 +424,9 @@ static inline c_ast_t* ia_type_ast_peek( void ) {
  * \ref in_attr.ast_type_stack "type AST inherited attribute stack".
  *
  * @return Returns said AST.
+ *
+ * @sa ia_type_ast_peek()
+ * @sa ia_type_ast_push()
  */
 PJL_NOWARN_UNUSED_RESULT
 static inline c_ast_t* ia_type_ast_pop( void ) {
@@ -430,6 +438,9 @@ static inline c_ast_t* ia_type_ast_pop( void ) {
  * \ref in_attr.ast_type_stack "type AST inherited attribute  stack".
  *
  * @param ast The AST to push.
+ *
+ * @sa ia_type_ast_peek()
+ * @sa ia_type_ast_pop()
  */
 static inline void ia_type_ast_push( c_ast_t *ast ) {
   slist_push_head( &in_attr.ast_type_stack, ast );
@@ -457,7 +468,7 @@ static inline void ia_type_ast_push( c_ast_t *ast ) {
  *
  * @sa ia_qual_peek_loc()
  * @sa ia_qual_pop()
- * @sa ia_qual_tid_push()
+ * @sa ia_qual_push_tid()
  */
 PJL_WARN_UNUSED_RESULT
 static inline c_type_id_t ia_qual_peek_tid( void ) {
@@ -469,7 +480,7 @@ static inline c_type_id_t ia_qual_peek_tid( void ) {
  * \ref in_attr.qualifier_stack "qualifer inherited attribute stack" and frees
  * it.
  *
- * @sa ia_qual_tid_push()
+ * @sa ia_qual_push_tid()
  */
 static inline void ia_qual_pop( void ) {
   FREE( slist_pop_head( &in_attr.qualifier_stack ) );
@@ -553,7 +564,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
 }
 
 /**
- * Prints the pseudo English explanation for a declaration AST.
+ * Prints the pseudo-English explanation for a declaration AST.
  *
  * @param ast The AST to explain.
  */
@@ -658,13 +669,32 @@ static void fl_elaborate_error( char const *file, int line,
 /**
  * Frees all resources used by \ref in_attr "inherited attributes".
  */
-static void in_attr_free( void ) {
+static void ia_free( void ) {
   c_sname_free( &in_attr.current_scope );
   slist_free( &in_attr.qualifier_stack, NULL, &free );
   // Do _not_ pass &c_ast_free for the 3rd argument! All AST nodes were already
   // free'd from the ast_gc_list in parse_cleanup(). Just free the slist nodes.
   slist_free( &in_attr.ast_type_stack, NULL, NULL );
   MEM_ZERO( &in_attr );
+}
+
+/**
+ * Pushes a qualifier onto the
+ * \ref in_attr.qualifier_stack "qualifier inherited attribute stack."
+ *
+ * @param qual_tid The qualifier to push.
+ * @param loc A pointer to the source location of the qualifier.
+ *
+ * @sa ia_qual_peek_tid()
+ */
+static void ia_qual_push_tid( c_type_id_t qual_tid, c_loc_t const *loc ) {
+  assert( (qual_tid & c_type_id_compl( TS_MASK_QUALIFIER )) == TS_NONE );
+  assert( loc != NULL );
+
+  c_qualifier_t *const qual = MALLOC( c_qualifier_t, 1 );
+  qual->qual_tid = qual_tid;
+  qual->loc = *loc;
+  slist_push_head( &in_attr.qualifier_stack, qual );
 }
 
 /**
@@ -679,7 +709,7 @@ static void in_attr_free( void ) {
 static void parse_cleanup( bool hard_reset ) {
   lexer_reset( hard_reset );
   slist_free( &ast_gc_list, NULL, (slist_node_data_free_fn_t)&c_ast_free );
-  in_attr_free();
+  ia_free();
 }
 
 /**
@@ -693,25 +723,6 @@ static void parse_init( void ) {
     FPUTC( '\n', fout );
     error_newlined = true;
   }
-}
-
-/**
- * Pushes a qualifier onto the
- * \ref in_attr.qualifier_stack "qualifier inherited attribute stack."
- *
- * @param qual_tid The qualifier to push.
- * @param loc A pointer to the source location of the qualifier.
- *
- * @sa ia_qual_peek_tid()
- */
-static void ia_qual_tid_push( c_type_id_t qual_tid, c_loc_t const *loc ) {
-  assert( (qual_tid & c_type_id_compl( TS_MASK_QUALIFIER )) == TS_NONE );
-  assert( loc != NULL );
-
-  c_qualifier_t *const qual = MALLOC( c_qualifier_t, 1 );
-  qual->qual_tid = qual_tid;
-  qual->loc = *loc;
-  slist_push_head( &in_attr.qualifier_stack, qual );
 }
 
 /**
@@ -749,10 +760,10 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
     (tdef->lang_ids & opt_lang) != LANG_NONE;
 
   if ( show_type && show_in_lang ) {
-    if ( sti->kind == C_GIB_NONE )
+    if ( sti->gib_kind == C_GIB_NONE )
       c_ast_english_type( tdef->ast, fout );
     else
-      c_typedef_gibberish( tdef, sti->kind, fout );
+      c_typedef_gibberish( tdef, sti->gib_kind, fout );
     FPUTC( '\n', fout );
   }
   return false;
@@ -806,7 +817,7 @@ static void yyerror( char const *msg ) {
   c_ast_pair_t        ast_pair;   // for the AST being built
   unsigned            bitmask;    // multipurpose bitmask (used by show)
   bool                flag;       // simple flag
-  c_gib_kind_t        gkind;      // kind of gibberish
+  c_gib_kind_t        gib_kind;   // kind of gibberish
   char const         *literal;    // token literal (for new-style casts)
   char               *name;       // name being declared or explained
   int                 number;     // for array sizes
@@ -1249,7 +1260,7 @@ static void yyerror( char const *msg ) {
 %type   <sname>     sname_c sname_c_exp sname_c_opt
 %type   <sname>     sname_english sname_english_exp
 %type   <name>      set_option_value_opt
-%type   <gkind>     show_format show_format_exp show_format_opt
+%type   <gib_kind>  show_format show_format_exp show_format_opt
 %type   <bitmask>   show_which_types_opt
 %type   <type_id>   static_tid_opt
 %type   <flag>      typename_opt
@@ -2798,7 +2809,7 @@ func_decl_english_ast
   ;
 
 oper_decl_english_ast
-  : type_qualifier_list_c_tid_opt { ia_qual_tid_push( $1, &@1 ); }
+  : type_qualifier_list_c_tid_opt { ia_qual_push_tid( $1, &@1 ); }
     ref_qualifier_english_tid_opt member_or_non_member_opt
     operator_exp paren_decl_list_english_opt returning_english_ast_opt
     {
@@ -2908,7 +2919,7 @@ returning_english_ast_opt
   ;
 
 qualified_decl_english_ast
-  : type_qualifier_list_c_tid_opt { ia_qual_tid_push( $1, &@1 ); }
+  : type_qualifier_list_c_tid_opt { ia_qual_push_tid( $1, &@1 ); }
     qualifiable_decl_english_ast
     {
       ia_qual_pop();
