@@ -25,7 +25,8 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
 # Checks for programs.
-AC_PROG_CC_C99
+AC_LANG(C)
+AC_PROG_CC
 gl_EARLY
 AX_PROG_FLEX(
   [AC_DEFINE([LEX], [flex], ["flex" found])],
@@ -172,7 +173,6 @@ AM_CONDITIONAL([ENABLE_BISON_DEBUG],  [test x$enable_bison_debug = xyes])
 AM_CONDITIONAL([ENABLE_FLEX_DEBUG],   [test x$enable_flex_debug  = xyes])
 
 # Miscellaneous.
-AC_LANG(C)
 AX_C___ATTRIBUTE__
 
 # Compiler warnings.
