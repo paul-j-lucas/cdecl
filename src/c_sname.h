@@ -73,7 +73,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Gets the data associated with \a SCOPE.
  *
- * @param SCOPE The `c_scope_t` to get the data of.
+ * @param SCOPE The <code>\ref c_scope_data</code> to get the data of.
  *
  * @note This is a macro instead of an inline function so it'll work with
  * either `const` or non-`const` \a SCOPE.
@@ -102,10 +102,10 @@ struct c_scope_data {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Compares two scope datas.
+ * Compares two <code>\ref c_scope_data</code>s.
  *
- * @param i_data The first scope data to compare.
- * @param j_data The second scope data to compare.
+ * @param i_data The first <code>\ref c_scope_data</code> to compare.
+ * @param j_data The second <code>\ref c_scope_data</code> to compare.
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_data is
  * less than, equal to, or greater than \a j_data, respectively.
  */
@@ -116,7 +116,7 @@ int c_scope_data_cmp( c_scope_data_t *i_data, c_scope_data_t *j_data );
  * Duplicates \a data.  The caller is responsible for calling
  * c_scope_data_free() on the duplicate.
  *
- * @param data The scope data to duplicate.
+ * @param data The <code>\ref c_scope_data</code> to duplicate.
  * @return Returns a duplicate of \a data.
  */
 PJL_WARN_UNUSED_RESULT
@@ -125,7 +125,8 @@ c_scope_data_t* c_scope_data_dup( c_scope_data_t const *data );
 /**
  * Frees all memory associated with \a data _including_ \a data itself.
  *
- * @param data The scope data to free.  If null, does nothing.
+ * @param data The <code>\ref c_scope_data</code> to free.  If null, does
+ * nothing.
  */
 void c_scope_data_free( c_scope_data_t *data );
 

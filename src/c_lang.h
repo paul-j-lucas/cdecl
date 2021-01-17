@@ -252,7 +252,7 @@ c_lang_id_t c_lang_find( char const *name );
  * Gets whether \a lang_ids is any version of C.
  *
  * @param lang_ids The bitwise-or of language(s) to check.
- * @return Returns `true` only if \a lang_id is a version of C.
+ * @return Returns `true` only if any one of \a lang_ids is a version of C.
  *
  * @sa #C_LANG_IS_C()
  * @sa c_lang_is_cpp()
@@ -266,7 +266,7 @@ bool c_lang_is_c( c_lang_id_t lang_ids ) {
  * Gets whether \a lang_ids is any version of C++.
  *
  * @param lang_ids The bitwise-of of language(s) to check.
- * @return Returns `true` only if \a lang_id is a version of C++.
+ * @return Returns `true` only if any one of \a lang_ids is a version of C++.
  *
  * @sa c_lang_is_c()
  * @sa #C_LANG_IS_CPP()
@@ -335,7 +335,7 @@ c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_and_later( c_lang_id_t lang_id ) {
-  assert( exactly_one_bit_set( lang_id ) );
+  assert( exactly_one_bit_set( lang_id & ~LANGX_MASK ) );
   return BITS_GE( lang_id );
 }
 

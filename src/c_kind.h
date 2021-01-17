@@ -137,7 +137,7 @@ enum c_kind_id {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Frees the data for a `c_kind_id_t`.
+ * Frees the data for a <code>\ref c_kind_id</code>.
  * @note
  * For platforms with 64-bit pointers, this is a no-op.
  *
@@ -153,10 +153,10 @@ void c_kind_data_free( void *data ) {
 }
 
 /**
- * Gets the `c_kind_id_t` value from a `void*` data value.
+ * Gets the <code>\ref c_kind_id</code> value from a `void*` data value.
  *
- * @param data The data to get the `c_kind_id_t` from.
- * @return Returns the `c_kind_id_t`.
+ * @param data The data to get the <code>\ref c_kind_id</code> from.
+ * @return Returns the <code>\ref c_kind_id</code>.
  *
  * @sa c_kind_data_new()
  */
@@ -171,9 +171,9 @@ c_kind_id_t c_kind_data_get( void const *data ) {
 }
 
 /**
- * Creates an opaque data handle for a `c_kind_id_t`.
+ * Creates an opaque data handle for a <code>\ref c_kind_id</code>.
  *
- * @param kind_id The `c_kind_id_t` to use.
+ * @param kind_id The <code>\ref c_kind_id</code> to use.
  * @return Returns said handle.
  *
  * @sa c_kind_data_free()

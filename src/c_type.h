@@ -153,7 +153,7 @@ enum c_type_part_id {
   // Type part IDs start at 1 so we know a c_type_id_t value has been
   // initialized properly as opposed to it being 0 by default.
   //
-  TPID_BASE = 1,                        ///< Base type, e.g., `int`.
+  TPID_BASE = 1,                        ///< Base types, e.g., `int`.
   TPID_STORE,                           ///< Storage types, e.g., `static`.
   TPID_ATTR                             ///< Attributes.
 };
@@ -261,7 +261,7 @@ enum c_type_part_id {
 #define TA_NO_UNIQUE_ADDRESS  0x0000000000000203ull /**< `no_unique_address`  */
 
 // bit masks
-#define T_MASK_PART_ID        0x000000000000000Full /**< Type part ID bitmask.*/
+#define TX_MASK_PART_ID       0x000000000000000Full /**< Type part ID bitmask.*/
 #define TS_MASK_STORAGE       0x0000000007FFFFF2ull /**< Storage bitmask.     */
 #define TS_MASK_QUALIFIER     0x00000003F8000002ull /**< Qualifier bitmask.   */
 #define TS_MASK_REF_QUALIFIER 0x0000000C00000002ull /**< Ref-qual bitmask.    */
@@ -271,30 +271,30 @@ extern c_type_t const T_ANY;            ///< All types.
 
 // shorthands
 
-/** Shorthand for any character type. */
+/// Shorthand for any character type.
 #define TB_ANY_CHAR           ( TB_CHAR | TB_WCHAR_T \
                               | TB_CHAR8_T | TB_CHAR16_T | TB_CHAR32_T )
 
-/** Shorthand for `class`, `struct`, or `union`. */
+/// Shorthand for `class`, `struct`, or `union`.
 #define TB_ANY_CLASS          ( TB_CLASS | TB_STRUCT | TB_UNION )
 
-/** Shorthand for any Embedded C type. */
+/// Shorthand for any Embedded C type.
 #define TB_ANY_EMC            ( TB_EMC_ACCUM | TB_EMC_FRACT )
 
-/** Shorthand for any floating-point type. */
+/// Shorthand for any floating-point type.
 #define TB_ANY_FLOAT          ( TB_FLOAT | TB_DOUBLE )
 
-/** Shorthand for any integral type. */
+/// Shorthand for any integral type.
 #define TB_ANY_INTEGRAL       ( TB_ANY_MODIFIER | TB_ANY_CHAR | TB_INT )
 
-/** Shorthand for an any modifier. */
+/// Shorthand for an any modifier.
 #define TB_ANY_MODIFIER       ( TB_SHORT | TB_LONG | TB_LONG_LONG | TB_SIGNED \
                               | TB_UNSIGNED )
 
-/** Shorthand for `class`, `struct`, `union`, or `namespace`. */
+/// Shorthand for `class`, `struct`, `union`, or `namespace`.
 #define TB_ANY_SCOPE          ( TB_ANY_CLASS | TB_NAMESPACE )
 
-/** Shorthand for any reference qualifier. */
+/// Shorthand for any reference qualifier.
 #define TS_ANY_REFERENCE      ( TS_REFERENCE | TS_RVALUE_REFERENCE )
 
 /**
@@ -316,7 +316,8 @@ extern c_type_t const T_ANY;            ///< All types.
 
 /**
  * The only types that can apply to function-like things (functions, blocks,
- * constructors, operators, and user-defined conversion operators).
+ * constructors, destructors, operators, and user-defined conversion
+ * operators and literals).
  *
  * @sa #TS_CONSTRUCTOR
  * @sa #TS_NEW_DELETE_OPER
@@ -331,7 +332,8 @@ extern c_type_t const T_ANY;            ///< All types.
                               | TS_TYPEDEF | TS_VIRTUAL | TS_VOLATILE )
 
 /**
- * The types that can apply only to member functions or operators.
+ * The types that can apply only to member functions, operators, or user-
+ * defined conversions operators.
  *
  * @sa #TS_FUNC_LIKE
  * @sa #TS_NONMEMBER_FUNC_ONLY
@@ -341,7 +343,8 @@ extern c_type_t const T_ANY;            ///< All types.
                               | TS_VIRTUAL | TS_VOLATILE )
 
 /**
- * The only types that can apply to operators new, new[], delete, & delete[].
+ * The only types that can apply to operators `new`, `new[]`, `delete`, or
+ * `delete[]`.
  *
  * @sa #TS_FUNC_LIKE
  */
@@ -367,7 +370,7 @@ extern c_type_t const T_ANY;            ///< All types.
                               | TS_VIRTUAL | TS_VOLATILE )
 
 /**
- * The types that can apply to user-defined conversion operators.
+ * The only types that can apply to user-defined conversion operators.
  *
  * @sa #TS_FUNC_LIKE
  */
@@ -675,7 +678,7 @@ bool c_type_id_is_compl( c_type_id_t tid ) {
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 c_type_id_t c_type_id_compl( c_type_id_t tid ) {
   assert( !c_type_id_is_compl( tid ) );
-  return ~tid ^ T_MASK_PART_ID;
+  return ~tid ^ TX_MASK_PART_ID;
 }
 
 /**
@@ -688,7 +691,7 @@ c_type_id_t c_type_id_compl( c_type_id_t tid ) {
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 c_type_id_t c_type_id_no_part_id( c_type_id_t tid ) {
-  return tid & ~T_MASK_PART_ID;
+  return tid & ~TX_MASK_PART_ID;
 }
 
 /**
@@ -707,7 +710,7 @@ c_type_part_id_t c_type_id_part_id( c_type_id_t tid ) {
   //
   if ( c_type_id_is_compl( tid ) )
     tid = ~tid;
-  tid &= T_MASK_PART_ID;
+  tid &= TX_MASK_PART_ID;
   assert( tid <= TPID_ATTR );
   return STATIC_CAST( c_type_part_id_t, tid );
 }
@@ -751,7 +754,7 @@ bool c_type_id_is_none( c_type_id_t tid ) {
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_size_t( c_type_id_t tid ) {
-  assert( (tid & T_MASK_PART_ID) == TPID_BASE );
+  assert( (tid & TX_MASK_PART_ID) == TPID_BASE );
   return ((tid & c_type_id_compl( TB_INT )) & (TB_UNSIGNED | TB_LONG)) == (TB_UNSIGNED | TB_LONG);
 }
 
