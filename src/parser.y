@@ -1217,7 +1217,7 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   class_struct_union_tid
 %type   <type_id>   cv_qualifier_tid cv_qualifier_list_c_tid_opt
 %type   <type_id>   enum_tid enum_class_struct_union_tid
-%type   <type_id>   func_qualified_c_tid
+%type   <type_id>   func_qualifier_c_tid
 %type   <type_id>   func_qualifier_list_c_tid_opt
 %type   <type_id>   rparen_func_qualifier_list_c_tid_opt
 %type   <type_id>   namespace_tid_exp
@@ -3530,12 +3530,12 @@ rparen_func_qualifier_list_c_tid_opt
 
 func_qualifier_list_c_tid_opt
   : /* empty */                   { $$ = TS_NONE; }
-  | func_qualifier_list_c_tid_opt func_qualified_c_tid
+  | func_qualifier_list_c_tid_opt func_qualifier_c_tid
     {
       DUMP_START( "func_qualifier_list_c_tid_opt",
-                  "func_qualifier_list_c_tid_opt func_qualified_c_tid" );
+                  "func_qualifier_list_c_tid_opt func_qualifier_c_tid" );
       DUMP_TID( "func_qualifier_list_c_tid_opt", $1 );
-      DUMP_TID( "func_qualified_c_tid", $2 );
+      DUMP_TID( "func_qualifier_c_tid", $2 );
 
       $$ = $1;
       C_TYPE_ID_ADD( &$$, $2, @2 );
@@ -3545,7 +3545,7 @@ func_qualifier_list_c_tid_opt
     }
   ;
 
-func_qualified_c_tid
+func_qualifier_c_tid
   : cv_qualifier_tid
   | Y_FINAL
   | Y_OVERRIDE
