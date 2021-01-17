@@ -380,7 +380,7 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & (K_CONSTRUCTOR | K_DESTRUCTOR)) != K_NONE );
 
-  if ( c_ast_count_name( ast ) > 1 && !c_ast_is_ctor_name( ast ) ) {
+  if ( c_ast_count_name( ast ) > 1 && !c_sname_is_ctor( &ast->sname ) ) {
     print_error( &ast->loc,
       "\"%s\", \"%s\": %s and %s names don't match\n",
       c_ast_name_atr( ast, 1 ), c_ast_local_name( ast ),

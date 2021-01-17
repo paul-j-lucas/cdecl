@@ -453,21 +453,6 @@ char const* c_ast_full_name( c_ast_t const *ast ) {
 }
 
 /**
- * Gets whether the scoped name of \a ast is a constructor name, e.g.,
- * `S::T::T`.
- *
- * @note This also checks for destructor names since the `~` is elided.
- *
- * @param ast The AST to check.
- * @return Returns `true` only if the last two names of the scoped name of \a
- * ast match.
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-bool c_ast_is_ctor_name( c_ast_t const *ast ) {
-  return c_sname_is_ctor( &ast->sname );
-}
-
-/**
  * Frees only the list nodes of \a list but _not_ \a list itself.
  *
  * @param list The AST list to free the nodes of.
