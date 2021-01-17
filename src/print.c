@@ -232,6 +232,9 @@ static size_t token_len( char const *s ) {
 
 void fl_print_error( char const *file, int line, c_loc_t const *loc,
                      char const *format, ... ) {
+  assert( file != NULL );
+  assert( format != NULL );
+
   if ( loc != NULL ) {
     print_loc( loc );
     SGR_START_COLOR( stderr, error );
@@ -272,6 +275,9 @@ void fl_print_error_unknown_type( char const *file, int line,
 
 void fl_print_warning( char const *file, int line, c_loc_t const *loc,
                        char const *format, ... ) {
+  assert( file != NULL );
+  assert( format != NULL );
+
   if ( loc != NULL )
     print_loc( loc );
   SGR_START_COLOR( stderr, warning );
@@ -294,6 +300,7 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
 }
 
 void print_hint( char const *format, ... ) {
+  assert( format != NULL );
   EPUTS( "; did you mean " );
   va_list args;
   va_start( args, format );
