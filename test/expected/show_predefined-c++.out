@@ -267,6 +267,7 @@ define int_least8_t as signed char
 define intmax_t as long
 define intptr_t as long
 define jmp_buf as array 37 of int
+define lconv as struct lconv
 define ldiv_t as struct ldiv_t
 define lldiv_t as struct lldiv_t
 define long_double_t as long double

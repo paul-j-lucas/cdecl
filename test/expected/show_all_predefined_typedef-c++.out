@@ -273,6 +273,7 @@ typedef _Fract int_r_t;
 typedef long intmax_t;
 typedef long intptr_t;
 typedef int jmp_buf[37];
+typedef struct lconv lconv;
 typedef struct ldiv_t ldiv_t;
 typedef struct lldiv_t lldiv_t;
 typedef long double long_double_t;

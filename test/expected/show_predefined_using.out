@@ -267,6 +267,7 @@ using int_least8_t = signed char;
 using intmax_t = long;
 using intptr_t = long;
 using jmp_buf = int[37];
+struct lconv;
 struct ldiv_t;
 struct lldiv_t;
 using long_double_t = long double;
