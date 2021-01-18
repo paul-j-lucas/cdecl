@@ -16,6 +16,9 @@ with their complete changes, see the AUTHORS file.
 Inline file-scope and defaulted & deleted in-class constructors & destructors
 are now supported; `final` & `override` are now supported for destructors.
 
+** More predefined types
+Added `lconv`.
+
 
 * Changes in Cdecl 9.3
 
