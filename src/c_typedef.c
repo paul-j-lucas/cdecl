@@ -102,6 +102,7 @@ static char const *const TYPEDEFS_STD_C89[] = {
   "typedef          int   errno_t",
   "struct                 fpos_t",
   "typedef          int   jmp_buf[37]",
+  "struct                 lconv",
   "struct                 mbstate_t",
   "typedef          long  ptrdiff_t",
   "typedef          int   sig_atomic_t",
