@@ -1872,7 +1872,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     if ( k != NULL ) {
       print_warning( &ast->loc,
         "\"%s\" is a keyword in %s\n",
-        name, c_lang_name( c_lang_oldest( k->lang_ids ) )
+        name, c_lang_oldest_name( k->lang_ids )
       );
     }
   } // for

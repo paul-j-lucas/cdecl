@@ -636,22 +636,24 @@ static void fl_elaborate_error( char const *file, int line,
     EPUTS( ": " );
     char const *const error_token = printable_token();
 
-    if ( error_token != NULL ) {
-      EPRINTF( "\"%s\"", error_token );
-      c_keyword_t const *const k =
-        c_keyword_find( error_token, opt_lang, C_KW_CTX_ALL );
-      if ( k != NULL && (k->lang_ids & opt_lang) != LANG_NONE )
-        EPRINTF( " is a keyword in %s", C_LANG_NAME() );
-      EPUTS( ": " );
-    }
+    if ( error_token != NULL )
+      EPRINTF( "\"%s\": ", error_token );
 
     va_list args;
     va_start( args, format );
     vfprintf( stderr, format, args );
     va_end( args );
 
-    if ( error_token != NULL )
+    if ( error_token != NULL ) {
+      c_keyword_t const *const k =
+        c_keyword_find( error_token, LANG_ALL, C_KW_CTX_ALL );
+      if ( k != NULL ) {
+        EPRINTF(
+          "; not a keyword until %s", c_lang_oldest_name( k->lang_ids )
+        );
+      }
       print_suggestions( dym_kinds, error_token );
+    }
 
 #ifdef ENABLE_CDECL_DEBUG
     if ( opt_cdecl_debug )

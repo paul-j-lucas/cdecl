@@ -266,7 +266,7 @@ void fl_print_error_unknown_type( char const *file, int line,
   c_keyword_t const *const k =
     c_keyword_find( unknown_name, LANG_ALL, C_KW_CTX_ALL );
   if ( k != NULL && k->type_id != TX_NONE )
-    EPRINTF( " until %s", c_lang_name( c_lang_oldest( k->lang_ids ) ) );
+    EPRINTF( " until %s", c_lang_oldest_name( k->lang_ids ) );
 
   print_suggestions( DYM_C_TYPES, unknown_name );
   EPUTC( '\n' );

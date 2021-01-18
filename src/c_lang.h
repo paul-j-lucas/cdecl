@@ -298,6 +298,7 @@ char const* c_lang_literal( c_lang_lit_t const lang_lit[const] );
  *
  * @sa c_lang_find()
  * @sa c_lang_names()
+ * @sa c_lang_oldest_name();
  */
 PJL_WARN_UNUSED_RESULT
 char const* c_lang_name( c_lang_id_t lang_id );
@@ -313,16 +314,31 @@ PJL_WARN_UNUSED_RESULT
 char const* c_lang_names( void );
 
 /**
- * Gets the oldest language of the given set.
+ * Gets the oldest language among \a lang_ids.
  *
  * @param lang_ids The bitwise-or of language(s).
  * @return Returns said language.
  *
  * @sa c_lang_and_later()
+ * @sa c_lang_oldest_name()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
   return LSB_SET( lang_ids );
+}
+
+/**
+ * Gets the printable name of the oldest language among \a lang_ids.
+ *
+ * @param lang_ids The bitwise-or of language(s).
+ * @return Returns said name.
+ *
+ * @sa c_lang_name()
+ * @sa c_lang_oldest()
+ */
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
+char const* c_lang_oldest_name( c_lang_id_t lang_ids ) {
+  return c_lang_name( c_lang_oldest( lang_ids ) );
 }
 
 /**
