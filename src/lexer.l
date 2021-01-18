@@ -27,6 +27,7 @@
 /** @cond DOXYGEN_IGNORE */
 
 %option nounput
+%option warn
 %option yylineno
 
 %{
