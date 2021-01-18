@@ -304,12 +304,12 @@ static char* keyword_completion( char const *text, int state ) {
 
   static char const  *command;          // current command
   static size_t       index;
-  static bool         no_more_matches;
+  static bool         more_matches;
   static size_t       text_len;
 
   if ( state == 0 ) {                   // new word? reset
-    no_more_matches = false;
     index = 0;
+    more_matches = true;
     text_len = strlen( text );
 
     //
@@ -338,7 +338,7 @@ static char* keyword_completion( char const *text, int state ) {
     }
   }
 
-  if ( command == NULL || no_more_matches ) {
+  if ( command == NULL || !more_matches ) {
     //
     // We haven't at least matched a command yet, so don't match any other
     // keywords.
@@ -353,7 +353,7 @@ static char* keyword_completion( char const *text, int state ) {
   if ( strcmp( command, L_CAST ) == 0 &&
        strncmp( text, L_INTO, text_len ) == 0 &&
        strstr( rl_line_buffer, L_INTO ) == NULL ) {
-    no_more_matches = true;             // unambiguously match "into"
+    more_matches = false;               // unambiguously match "into"
     return check_strdup( L_INTO );
   }
 
