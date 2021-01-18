@@ -189,8 +189,8 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_CONSTRUCTOR:
       case K_USER_DEF_LITERAL:
         PRINT_COMMA;
-        INDENT_PRINT( "params = " );
-        c_ast_list_debug( &ast->as.func.params, indent, dout );
+        INDENT_PRINT( "param_ast_list = " );
+        c_ast_list_debug( &ast->as.func.param_ast_list, indent, dout );
         if ( ast->as.func.ret_ast != NULL ) {
           FPUTS( ",\n", dout );
           c_ast_debug( ast->as.func.ret_ast, indent, "ret_ast", dout );

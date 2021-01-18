@@ -2753,7 +2753,7 @@ block_decl_english_ast                  // Apple extension
 
       $$ = c_ast_pair_new_gc( K_APPLE_BLOCK, &@$ );
       $$.ast->type.store_tid = ia_qual_peek_tid();
-      $$.ast->as.block.params = $2;
+      $$.ast->as.block.param_ast_list = $2;
       c_ast_set_parent( $3.ast, $$.ast );
 
       DUMP_AST( "block_decl_english_ast", $$.ast );
@@ -2769,7 +2769,7 @@ constructor_decl_english_ast
       DUMP_AST_LIST( "paren_decl_list_english_opt", $2 );
 
       $$ = c_ast_pair_new_gc( K_CONSTRUCTOR, &@$ );
-      $$.ast->as.func.params = $2;
+      $$.ast->as.func.param_ast_list = $2;
 
       DUMP_AST( "constructor_decl_english_ast", $$.ast );
       DUMP_END();
@@ -2807,7 +2807,7 @@ func_decl_english_ast
 
       $$ = c_ast_pair_new_gc( K_FUNCTION, &@$ );
       $$.ast->type.store_tid = ia_qual_peek_tid() | $1;
-      $$.ast->as.func.params = $4;
+      $$.ast->as.func.param_ast_list = $4;
       $$.ast->as.func.flags = $2;
       c_ast_set_parent( $5.ast, $$.ast );
 
@@ -2833,7 +2833,7 @@ oper_decl_english_ast
 
       $$ = c_ast_pair_new_gc( K_OPERATOR, &@$ );
       $$.ast->type.store_tid = $1 | $3;
-      $$.ast->as.oper.params = $6;
+      $$.ast->as.oper.param_ast_list = $6;
       $$.ast->as.oper.flags = $4;
       c_ast_set_parent( $7.ast, $$.ast );
 
@@ -3067,7 +3067,7 @@ user_defined_literal_decl_english_ast
       DUMP_AST( "returning_english_ast_opt", $4.ast );
 
       $$ = c_ast_pair_new_gc( K_USER_DEF_LITERAL, &@$ );
-      $$.ast->as.udef_lit.params = $3;
+      $$.ast->as.udef_lit.param_ast_list = $3;
       c_ast_set_parent( $4.ast, $$.ast );
 
       DUMP_AST( "user_defined_literal_decl_english_ast", $$.ast );
@@ -3286,7 +3286,7 @@ block_decl_c_ast                        // Apple extension
       DUMP_AST_LIST( "param_list_c_ast_opt", $8 );
 
       C_TYPE_ADD_TID( &block_ast->type, $4, @4 );
-      block_ast->as.block.params = $8;
+      block_ast->as.block.param_ast_list = $8;
       $$.ast = c_ast_add_func( $5.ast, ia_type_ast_peek(), block_ast );
       $$.target_ast = block_ast->as.block.ret_ast;
 
@@ -3314,7 +3314,7 @@ file_scope_constructor_decl_c_ast
       $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
       $$->sname = $2;
       $$->type.store_tid = $1 | $5 | $6;
-      $$->as.constructor.params = $4;
+      $$->as.constructor.param_ast_list = $4;
 
       DUMP_AST( "file_scope_constructor_decl_c_ast", $$ );
       DUMP_END();
@@ -3441,7 +3441,7 @@ func_decl_c_ast
       c_ast_t *const func_ast =
         c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );
       func_ast->type.store_tid = func_store_tid;
-      func_ast->as.func.params = $3;
+      func_ast->as.func.param_ast_list = $3;
 
       if ( assume_constructor ) {
         assert( trailing_ret_ast == NULL );
@@ -3511,7 +3511,7 @@ knr_func_or_constructor_c_decl_ast
       }
 
       c_ast_set_sname( $$, &sname );
-      $$->as.func.params = $3;
+      $$->as.func.param_ast_list = $3;
 
       DUMP_AST( "knr_func_or_constructor_c_decl_ast", $$ );
       DUMP_END();
@@ -3728,7 +3728,7 @@ oper_decl_c_ast
 
       c_ast_t *const oper_ast = c_ast_new_gc( K_OPERATOR, &@$ );
       oper_ast->type.store_tid = $4 | $5 | $6 | $8;
-      oper_ast->as.oper.params = $3;
+      oper_ast->as.oper.param_ast_list = $3;
       oper_ast->as.oper.oper_id = $1.ast->as.oper.oper_id;
 
       if ( $7.ast != NULL ) {
@@ -3994,7 +3994,7 @@ user_defined_literal_decl_c_ast
       DUMP_AST( "trailing_return_type_c_ast_opt", $6.ast );
 
       c_ast_t *const lit_ast = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
-      lit_ast->as.udef_lit.params = $3;
+      lit_ast->as.udef_lit.param_ast_list = $3;
 
       if ( $6.ast != NULL ) {
         $$.ast = c_ast_add_func( $1.ast, $6.ast, lit_ast );
@@ -4657,7 +4657,7 @@ block_cast_c_ast                        // Apple extension
       DUMP_AST_LIST( "param_list_c_ast_opt", $8 );
 
       C_TYPE_ADD_TID( &block_ast->type, $4, @4 );
-      block_ast->as.block.params = $8;
+      block_ast->as.block.param_ast_list = $8;
       $$.ast = c_ast_add_func( $5.ast, ia_type_ast_peek(), block_ast );
       $$.target_ast = block_ast->as.block.ret_ast;
 
@@ -4684,7 +4684,7 @@ func_cast_c_ast
 
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
       func_ast->type.store_tid = $4;
-      func_ast->as.func.params = $3;
+      func_ast->as.func.param_ast_list = $3;
 
       if ( $5.ast != NULL ) {
         $$.ast = c_ast_add_func( $1.ast, $5.ast, func_ast );

@@ -466,7 +466,7 @@ func_decl_c_ast ::= decl2_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
     flags = unspecified (0x0),
-    params = [
+    param_ast_list = [
       {
         sname = "x" (none),
         unique_id = 635,
@@ -539,7 +539,7 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
     flags = unspecified (0x0),
-    params = [
+    param_ast_list = [
       {
         sname = "x" (none),
         unique_id = 635,
@@ -590,7 +590,7 @@ pointer_decl_c_ast ::= pointer_type_c_ast decl_c_ast = {
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
     flags = unspecified (0x0),
-    params = [
+    param_ast_list = [
       {
         sname = "x" (none),
         unique_id = 635,
@@ -655,7 +655,7 @@ decl_c ::= decl_c_ast = {
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
     flags = unspecified (0x0),
-    params = [
+    param_ast_list = [
       {
         sname = "x" (none),
         unique_id = 635,
@@ -706,7 +706,7 @@ decl_c ::= decl_c_ast = {
     loc = 13-27,
     type = "" (0x1,0x2,0x3),
     flags = unspecified (0x0),
-    params = [
+    param_ast_list = [
       {
         sname = "x" (none),
         unique_id = 635,

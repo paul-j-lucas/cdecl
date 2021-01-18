@@ -191,7 +191,7 @@ struct c_array_ast {
  */
 struct c_apple_block_ast {
   c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_list_t    params;               ///< Block parameters(s), if any.
+  c_ast_list_t    param_ast_list;       ///< Block parameters(s), if any.
 };
 
 /**
@@ -203,6 +203,7 @@ struct c_apple_block_ast {
 struct c_builtin_ast {
   /// So `bit_width` is at same offset as in `c_typedef_ast`.
   void           *not_used;
+
   c_bit_width_t   bit_width;            ///< Bit-field width when &gt; 0.
 };
 
@@ -213,8 +214,10 @@ struct c_builtin_ast {
  * taken advantage of.
  */
 struct c_constructor_ast {
-  void           *not_used;             ///< So `params` is at same offset.
-  c_ast_list_t    params;               ///< Constructor parameters(s), if any.
+  /// So `param_ast_list` is at same offset as in `c_function_ast`.
+  void           *not_used;
+
+  c_ast_list_t    param_ast_list;       ///< Constructor parameters(s), if any.
 };
 
 /**
@@ -229,7 +232,7 @@ struct c_ecsu_ast {
  */
 struct c_function_ast {
   c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_list_t    params;               ///< Function parameter(s), if any.
+  c_ast_list_t    param_ast_list;       ///< Function parameter(s), if any.
   unsigned        flags;                ///< Member or non-member.
 };
 
@@ -241,7 +244,7 @@ struct c_function_ast {
  */
 struct c_operator_ast {
   c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_list_t    params;               ///< Operator parameter(s), if any.
+  c_ast_list_t    param_ast_list;       ///< Operator parameter(s), if any.
   unsigned        flags;                ///< Member or non-member.
   c_oper_id_t     oper_id;              ///< Which operator it is.
 };
@@ -287,7 +290,7 @@ struct c_udef_conv_ast {
  */
 struct c_udef_lit_ast {
   c_ast_t        *ret_ast;              ///< Return type.
-  c_ast_list_t    params;               ///< Literal parameter(s).
+  c_ast_list_t    param_ast_list;       ///< Literal parameter(s).
 };
 
 /**
@@ -536,7 +539,7 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
-  return ast->as.func.params.head;
+  return ast->as.func.param_ast_list.head;
 }
 
 /**
@@ -559,7 +562,7 @@ c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 size_t c_ast_params_count( c_ast_t const *ast ) {
-  return slist_len( &ast->as.func.params );
+  return slist_len( &ast->as.func.param_ast_list );
 }
 
 /**
