@@ -1176,6 +1176,7 @@ TESTS+=	tests/declare_+udl_c_i.test \
 TESTS+=	tests/explain_+ctor.test \
 	tests/explain_+ctor_i.test \
 	tests/explain_+dtor.test \
+	tests/explain_0dtor.test \
 	tests/explain_2+dtor.test \
 	tests/explain_a.test \
 	tests/explain_a_nua_k-1.test \
@@ -1220,6 +1221,8 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_i2+.test \
 	tests/explain_ictor_i.test \
 	tests/explain_ii-c++.test \
+	tests/explain_inx+ctor.test \
+	tests/explain_inx+dtor.test \
 	tests/explain_ki+.test \
 	tests/explain_mi.test \
 	tests/explain_nrfi_v-c++.test \
@@ -1250,6 +1253,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_voyf.test \
 	tests/explain_xxctor.test \
 	tests/explain_xxi.test \
+	tests/explain_ydtor.test \
 	tests/explain_yf.test \
 	tests/explain_yi.test
 
@@ -1305,9 +1309,9 @@ TESTS+=	tests/explain_+ctor-error.test \
 TESTS+=	tests/explain_+o_eq2_rcki_b.test \
 	tests/explain_+o_eq_rck_rk.test \
 	tests/explain_+o_eq_rck_rk=default-01.test \
-	tests/explain_+o_eq_rck_rk=delete-01.test \
 	tests/explain_+o_delete_a_pv_v.test \
 	tests/explain_+o_delete_pv_v.test \
+	tests/explain_+o_eq_rck_rk=delete-01.test \
 	tests/explain_+o_new_a_z_pv.test \
 	tests/explain_+o_new_z_pv.test \
 	tests/explain_0o_amper_rk_pk.test \
@@ -1315,6 +1319,7 @@ TESTS+=	tests/explain_+o_eq2_rcki_b.test \
 	tests/explain_co_amper_rk_pk.test \
 	tests/explain_co_star_rk_rk.test \
 	tests/explain_co_tilde_k.test \
+	tests/explain_dtor=delete.test \
 	tests/explain_o_amper2_2rck_b.test \
 	tests/explain_o_amper2_rck_b.test \
 	tests/explain_o_amper_2rck_k.test \

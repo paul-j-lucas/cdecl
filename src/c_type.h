@@ -298,28 +298,58 @@ extern c_type_t const T_ANY;            ///< All types.
 #define TS_ANY_REFERENCE      ( TS_REFERENCE | TS_RVALUE_REFERENCE )
 
 /**
- * The only types that can apply to constructors.
+ * The only types that can apply to in-class constructor declarations.
  *
+ * @sa #TS_CONSTRUCTOR_DEF
  * @sa #TS_CONSTRUCTOR_ONLY
  * @sa #TS_FUNC_LIKE
  */
-#define TS_CONSTRUCTOR        ( TS_CONSTEXPR | TS_DEFAULT | TS_DELETE \
+#define TS_CONSTRUCTOR_DECL   ( TS_CONSTEXPR | TS_DEFAULT | TS_DELETE \
                               | TS_EXPLICIT | TS_FRIEND | TS_INLINE \
                               | TS_NOEXCEPT | TS_THROW )
 
 /**
+ * A subset of #TS_CONSTRUCTOR_DECL that can apply to file-scope constructor
+ * definitions.
+ *
+ * @sa #TS_CONSTRUCTOR_DECL
+ */
+#define TS_CONSTRUCTOR_DEF    ( TS_CONSTEXPR | TS_INLINE | TS_NOEXCEPT \
+                              | TS_THROW )
+
+/**
  * The types that can apply only to constructors.
  *
- * @sa #TS_CONSTRUCTOR
+ * @sa #TS_CONSTRUCTOR_DECL
+ * @sa #TS_CONSTRUCTOR_DEF
  */
 #define TS_CONSTRUCTOR_ONLY   TS_EXPLICIT
+
+/**
+ * The only types that can apply to in-class destructor declarations.
+ *
+ * @sa #TS_CONSTRUCTOR_DECL
+ * @sa #TS_DESTRUCTOR_DEF
+ */
+#define TS_DESTRUCTOR_DECL    ( TS_DEFAULT | TS_DELETE | TS_FINAL | TS_FRIEND \
+                              | TS_INLINE | TS_NOEXCEPT | TS_OVERRIDE \
+                              | TS_PURE_VIRTUAL | TS_THROW | TS_VIRTUAL )
+
+/**
+ * A subset of #TS_DESTRUCTOR_DECL that can apply to file-scope destructor
+ * definitions.
+ *
+ * @sa #TS_DESTRUCTOR_DECL
+ */
+#define TS_DESTRUCTOR_DEF     ( TS_INLINE | TS_NOEXCEPT | TS_THROW )
 
 /**
  * The only types that can apply to function-like things (functions, blocks,
  * constructors, destructors, operators, and user-defined conversion
  * operators and literals).
  *
- * @sa #TS_CONSTRUCTOR
+ * @sa #TS_CONSTRUCTOR_DECL
+ * @sa #TS_CONSTRUCTOR_DEF
  * @sa #TS_NEW_DELETE_OPER
  * @sa #TS_USER_DEF_CONV
  */
@@ -361,7 +391,8 @@ extern c_type_t const T_ANY;            ///< All types.
 /**
  * The types that can apply only to function-like things except constructors.
  *
- * @sa #TS_CONSTRUCTOR
+ * @sa #TS_CONSTRUCTOR_DECL
+ * @sa #TS_CONSTRUCTOR_DEF
  * @sa #TS_CONSTRUCTOR_ONLY
  * @sa #TS_FUNC_LIKE
  */

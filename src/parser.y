@@ -1250,6 +1250,7 @@ static void yyerror( char const *msg ) {
 %type   <number>    bit_field_c_num_opt
 %type   <oper_id>   c_operator
 %type   <literal>   help_what_opt
+%type   <type_id>   inline_tid_opt
 %type   <bitmask>   member_or_non_member_opt
 %type   <name>      name_exp
 %type   <literal>   new_style_cast_c new_style_cast_english
@@ -1886,18 +1887,23 @@ explain_c
     /*
      * C++ in-class destructor declaration, e.g.: ~S().
      */
-  | explain virtual_tid_opt Y_TILDE any_name_exp lparen_exp rparen_exp
-    noexcept_c_tid_opt
+  | explain virtual_tid_opt Y_TILDE any_name_exp
+    lparen_exp rparen_func_qualifier_list_c_tid_opt noexcept_c_tid_opt
+    func_equals_tid_opt
     {
       DUMP_START( "explain_c",
-                  "EXPLAIN ~ any_name_exp '(' ')'" );
+                  "EXPLAIN [VIRTUAL] '~' NAME '(' ')' "
+                  "func_qualifier_list_c_tid_opt noexcept_c_tid_opt "
+                  "func_equals_tid_opt" );
       DUMP_TID( "virtual_tid_opt", $2 );
       DUMP_STR( "any_name_exp", $4 );
+      DUMP_TID( "func_qualifier_list_c_tid_opt", $6 );
       DUMP_TID( "noexcept_c_tid_opt", $7 );
+      DUMP_TID( "func_equals_tid_opt", $8 );
 
       c_ast_t *const dtor_ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
       c_ast_append_name( dtor_ast, $4 );
-      dtor_ast->type.store_tid = $2 | $7;
+      dtor_ast->type.store_tid = $2 | $6 | $7 | $8;
 
       DUMP_AST( "explain_c", dtor_ast );
       DUMP_END();
@@ -3290,21 +3296,25 @@ block_decl_c_ast                        // Apple extension
   ;
 
 file_scope_constructor_decl_c_ast
-  : Y_CONSTRUCTOR_SNAME lparen_exp param_list_c_ast_opt ')' noexcept_c_tid_opt
+  : inline_tid_opt Y_CONSTRUCTOR_SNAME
+    lparen_exp param_list_c_ast_opt rparen_func_qualifier_list_c_tid_opt
+    noexcept_c_tid_opt
     {
       DUMP_START( "file_scope_constructor_decl_c_ast",
-                  "CONSTRUCTOR_SNAME '(' param_list_c_ast_opt ')' "
-                  "noexcept_c_tid_opt" );
-      DUMP_SNAME( "CONSTRUCTOR_SNAME", &$1 );
-      DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
-      DUMP_TID( "noexcept_c_tid_opt", $5 );
+                  "[INLINE] CONSTRUCTOR_SNAME '(' param_list_c_ast_opt ')' "
+                  "func_qualifier_list_c_tid_opt noexcept_c_tid_opt" );
+      DUMP_TID( "inline_tid_opt", $1 );
+      DUMP_SNAME( "CONSTRUCTOR_SNAME", &$2 );
+      DUMP_AST_LIST( "param_list_c_ast_opt", $4 );
+      DUMP_TID( "func_qualifier_list_c_tid_opt", $5 );
+      DUMP_TID( "noexcept_c_tid_opt", $6 );
 
-      c_sname_set_scope_type( &$1, &C_TYPE_LIT_B( TB_CLASS ) );
+      c_sname_set_scope_type( &$2, &C_TYPE_LIT_B( TB_CLASS ) );
 
       $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-      $$->sname = $1;
-      $$->type.store_tid = $5;
-      $$->as.constructor.params = $3;
+      $$->sname = $2;
+      $$->type.store_tid = $1 | $5 | $6;
+      $$->as.constructor.params = $4;
 
       DUMP_AST( "file_scope_constructor_decl_c_ast", $$ );
       DUMP_END();
@@ -3312,18 +3322,22 @@ file_scope_constructor_decl_c_ast
   ;
 
 file_scope_destructor_decl_c_ast
-  : Y_DESTRUCTOR_SNAME lparen_exp rparen_exp noexcept_c_tid_opt
+  : inline_tid_opt Y_DESTRUCTOR_SNAME
+    lparen_exp rparen_func_qualifier_list_c_tid_opt noexcept_c_tid_opt
     {
       DUMP_START( "file_scope_destructor_decl_c_ast",
-                  "DESTRUCTOR_SNAME '(' ')' noexcept_c_tid_opt" );
-      DUMP_SNAME( "DESTRUCTOR_SNAME", &$1 );
-      DUMP_TID( "noexcept_c_tid_opt", $4 );
+                  "[INLINE] DESTRUCTOR_SNAME '(' ')' "
+                  "func_qualifier_list_c_tid_opt noexcept_c_tid_opt" );
+      DUMP_TID( "inline_tid_opt", $1 );
+      DUMP_SNAME( "DESTRUCTOR_SNAME", &$2 );
+      DUMP_TID( "func_qualifier_list_c_tid_opt", $4 );
+      DUMP_TID( "noexcept_c_tid_opt", $5 );
 
-      c_sname_set_scope_type( &$1, &C_TYPE_LIT_B( TB_CLASS ) );
+      c_sname_set_scope_type( &$2, &C_TYPE_LIT_B( TB_CLASS ) );
 
       $$ = c_ast_new_gc( K_DESTRUCTOR, &@$ );
-      $$->sname = $1;
-      $$->type.store_tid = $4;
+      $$->sname = $2;
+      $$->type.store_tid = $1 | $4 | $5;
 
       DUMP_AST( "file_scope_destructor_decl_c_ast", $$ );
       DUMP_END();
@@ -3417,7 +3431,7 @@ func_decl_c_ast
           //   be applied to constructors.
           only_bits_set(
             c_type_id_no_part_id( type_ast->type.store_tid ),
-            c_type_id_no_part_id( TS_CONSTRUCTOR )
+            c_type_id_no_part_id( TS_CONSTRUCTOR_DECL )
           )
         ) &&
 
@@ -3464,12 +3478,13 @@ knr_func_or_constructor_c_decl_ast
      * cause grammar conflicts if they were separate rules in an LALR(1)
      * parser).
      */
-  : Y_NAME '(' param_list_c_ast_opt ')'
+  : Y_NAME '(' param_list_c_ast_opt rparen_func_qualifier_list_c_tid_opt
     {
       DUMP_START( "knr_func_or_constructor_c_decl_ast",
                   "NAME '(' param_list_c_ast_opt ')'" );
       DUMP_STR( "NAME", $1 );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
+      DUMP_TID( "func_qualifier_list_c_tid_opt", $4 );
 
       c_sname_t sname;
       c_sname_init_name( &sname, $1 );
@@ -3492,6 +3507,7 @@ knr_func_or_constructor_c_decl_ast
         // constructor.
         //
         $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
+        $$->type.store_tid = $4;
       }
 
       c_ast_set_sname( $$, &sname );
@@ -3516,12 +3532,15 @@ knr_func_or_constructor_c_decl_ast
 
 rparen_func_qualifier_list_c_tid_opt
   : ')'
-    { //
-      // Both "final" and "override" are matched only within member function
-      // declarations.  Now that ')' has been parsed, we're within one, so set
-      // the keyword context to C_KW_CTX_MBR_FUNC.
-      //
-      lexer_keyword_ctx = C_KW_CTX_MBR_FUNC;
+    {
+      if ( C_LANG_IS_CPP() ) {
+        //
+        // Both "final" and "override" are matched only within member function
+        // declarations.  Now that ')' has been parsed, we're within one, so
+        // set the keyword context to C_KW_CTX_MBR_FUNC.
+        //
+        lexer_keyword_ctx = C_KW_CTX_MBR_FUNC;
+      }
     }
     func_qualifier_list_c_tid_opt
     {
@@ -3650,7 +3669,7 @@ func_equals_tid_opt
         print_error( &@2, "'0' expected\n" );
         PARSE_ABORT();
       }
-      $$ = TS_PURE_VIRTUAL;
+      $$ = TS_PURE_VIRTUAL | TS_VIRTUAL;
     }
   | '=' error
     {
@@ -5385,6 +5404,11 @@ gt_exp
     {
       elaborate_error( "'>' expected" );
     }
+  ;
+
+inline_tid_opt
+  : /* empty */                   { $$ = TS_NONE; }
+  | Y_INLINE
   ;
 
 literal_exp
