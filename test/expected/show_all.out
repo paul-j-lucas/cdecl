@@ -238,6 +238,7 @@ define blksize_t as int32_t
 define clock_t as long
 define clockid_t as long
 define cnd_t as pthread_cond_t
+define constraint_handler_t as pointer to function (restrict pointer to const char, restrict pointer to void, errno_t) returning void
 define dev_t as int
 define div_t as struct div_t
 define double_t as double

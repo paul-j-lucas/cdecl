@@ -63,8 +63,9 @@ struct td_rb_visitor_data {
 typedef struct td_rb_visitor_data td_rb_visitor_data_t;
 
 // local variable definitions
-static rb_tree_t  typedefs;             ///< Global set of `typedef`s.
-static bool       user_defined;         ///< Are new `typedef`s used-defined?
+static rb_tree_t    typedefs;           ///< Global set of `typedef`s.
+static c_lang_id_t  predefined_lang_ids;///< Languages when predefining types.
+static bool         user_defined;       ///< Are new `typedef`s used-defined?
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -221,6 +222,7 @@ static char const *const TYPEDEFS_STD_C_11[] = {
   "typedef _Atomic uint_least64_t     atomic_uint_least64_t",
 
   "typedef pthread_cond_t             cnd_t",
+  "typedef void                     (*constraint_handler_t)(const char *restrict, void *restrict, errno_t)",
   "typedef long     double            max_align_t",
   "typedef enum memory_order          memory_order",
   "typedef pthread_mutex_t            mtx_t",
@@ -864,7 +866,13 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
   assert( ast != NULL );
   c_typedef_t *const tdef = MALLOC( c_typedef_t, 1 );
   tdef->ast = ast;
-  tdef->lang_ids = user_defined ? c_lang_and_later( opt_lang ) : opt_lang;
+  //
+  // User-defined types are available in the current language and later;
+  // predefined types are available only in the language(s) explicitly
+  // specified by predefined_lang_ids.
+  //
+  tdef->lang_ids = user_defined ?
+    c_lang_and_later( opt_lang ) : predefined_lang_ids;
   tdef->user_defined = user_defined;
   return tdef;
 }
@@ -970,45 +978,58 @@ void c_typedef_init( void ) {
     opt_bison_debug = false;
 #endif /* YYDEBUG */
 
+    //
+    // Temporarily switch to the latest supported version of C so all keywords
+    // will be available.
+    //
     c_lang_id_t const orig_lang = opt_lang;
+    opt_lang = LANG_C_NEW;
 
-    opt_lang = LANG_MIN(C_KNR);
+    predefined_lang_ids = LANG_MIN(C_KNR);
     c_typedef_parse_predefined( TYPEDEFS_KNR_C );
 
-    opt_lang = LANG_MIN(C_89);
+    predefined_lang_ids = LANG_MIN(C_89);
     c_typedef_parse_predefined( TYPEDEFS_STD_C89 );
     c_typedef_parse_predefined( TYPEDEFS_FLOATING_POINT_EXTENSIONS );
     c_typedef_parse_predefined( TYPEDEFS_GNUC );
 
-    opt_lang = LANG_MIN(C_95);
+    predefined_lang_ids = LANG_MIN(C_95);
     c_typedef_parse_predefined( TYPEDEFS_STD_C_95 );
     c_typedef_parse_predefined( TYPEDEFS_PTHREAD_H );
     c_typedef_parse_predefined( TYPEDEFS_WIN32 );
 
-    opt_lang = LANG_MIN(C_99);
+    predefined_lang_ids = LANG_MIN(C_99);
     c_typedef_parse_predefined( TYPEDEFS_STD_C_99 );
 
-    // Embedded C extensions are available only in C99.
+    // However, Embedded C extensions are available only in C99.
     opt_lang = LANG_C_99;
+    predefined_lang_ids = LANG_C_99;
     c_typedef_parse_predefined( TYPEDEFS_EMBEDDED_C );
+    opt_lang = LANG_C_NEW;
 
     // Must be defined after C99.
-    opt_lang = LANG_MIN(C_89);
+    predefined_lang_ids = LANG_MIN(C_89);
     c_typedef_parse_predefined( TYPEDEFS_MISC );
 
-    opt_lang = LANG_MIN(C_11);
+    predefined_lang_ids = LANG_MIN(C_11);
     c_typedef_parse_predefined( TYPEDEFS_STD_C_11 );
 
-    opt_lang = LANG_MIN(CPP_OLD);
+    //
+    // Temporarily switch to the latest supported version of C++ so all
+    // keywords will be available.
+    //
+    opt_lang = LANG_CPP_NEW;
+
+    predefined_lang_ids = LANG_MIN(CPP_OLD);
     c_typedef_parse_predefined( TYPEDEFS_STD_CPP );
 
-    opt_lang = LANG_MIN(CPP_11);
+    predefined_lang_ids = LANG_MIN(CPP_11);
     c_typedef_parse_predefined( TYPEDEFS_STD_CPP_11 );
 
-    opt_lang = LANG_MIN(CPP_17);
+    predefined_lang_ids = LANG_MIN(CPP_17);
     c_typedef_parse_predefined( TYPEDEFS_STD_CPP_17 );
 
-    opt_lang = LANG_MIN(CPP_20);
+    predefined_lang_ids = LANG_MIN(CPP_20);
     c_typedef_parse_predefined( TYPEDEFS_STD_CPP_20 );
 
     opt_lang = orig_lang;

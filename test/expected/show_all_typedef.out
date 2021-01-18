@@ -238,6 +238,7 @@ typedef int32_t blksize_t;
 typedef long clock_t;
 typedef long clockid_t;
 typedef pthread_cond_t cnd_t;
+typedef void (*constraint_handler_t)(const char*restrict , void*restrict , errno_t);
 typedef int dev_t;
 typedef struct div_t div_t;
 typedef double double_t;
