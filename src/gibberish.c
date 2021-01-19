@@ -373,9 +373,13 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_TYPEDEF: {
-      bool const is_typedef =
-        c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) );
-      if ( !opt_east_const && !is_typedef )
+      //
+      // Of course a K_TYPEDEF AST also has a type comprising TB_TYPEDEF, but
+      // we need to see whether there's any more to the type, e.g., "const".
+      //
+      bool const is_more_than_plain_typedef =
+        !c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) );
+      if ( is_more_than_plain_typedef && !opt_east_const )
         FPRINTF( g->gout, "%s ", c_type_name( &ast->type ) );
 
       bool const orig_skip_name_for_using = g->skip_name_for_using;
@@ -383,7 +387,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       g_print_full_or_local_name( g, ast->as.tdef.for_ast );
       g->skip_name_for_using = orig_skip_name_for_using;
 
-      if ( opt_east_const && !is_typedef )
+      if ( is_more_than_plain_typedef && opt_east_const )
         FPRINTF( g->gout, " %s", c_type_name( &ast->type ) );
       g_print_space_name( g, ast );
       if ( ast->as.tdef.bit_width > 0 )
