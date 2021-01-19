@@ -70,7 +70,7 @@ static bool         user_defined;       ///< Are new `typedef`s used-defined?
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Types from K&R C.
+ * Predefined types for K&R C.
  *
  * @note The types here include only those shown in the first edition of _The C
  * Programming Language_.  There likely should be more, but it's hard to find
@@ -78,7 +78,7 @@ static bool         user_defined;       ///< Are new `typedef`s used-defined?
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const TYPEDEFS_KNR_C[] = {
+static char const *const PREDEFINED_KNR_C[] = {
   "typedef          int   dev_t",
   "typedef unsigned int   ino_t",
   "typedef struct _iobuf  FILE",
@@ -89,12 +89,12 @@ static char const *const TYPEDEFS_KNR_C[] = {
 };
 
 /**
- * Types from C89.
+ * Predefined types for C89.
  *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const TYPEDEFS_STD_C89[] = {
+static char const *const PREDEFINED_STD_C89[] = {
   "typedef          long  clock_t",
   "struct                 div_t",
   "struct             imaxdiv_t",
@@ -115,12 +115,12 @@ static char const *const TYPEDEFS_STD_C89[] = {
 };
 
 /**
- * Types from C95.
+ * Predefined types for C95.
  *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const TYPEDEFS_STD_C_95[] = {
+static char const *const PREDEFINED_STD_C_95[] = {
   "typedef          int   wctrans_t",
   "typedef unsigned long  wctype_t",
   "typedef          int   wint_t",
@@ -129,12 +129,12 @@ static char const *const TYPEDEFS_STD_C_95[] = {
 };
 
 /**
- * Types from C99.
+ * Predefined types for C99.
  *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const TYPEDEFS_STD_C_99[] = {
+static char const *const PREDEFINED_STD_C_99[] = {
   "typedef   signed char   int8_t",
   "typedef          short  int16_t",
   "typedef          int    int32_t",
@@ -171,12 +171,12 @@ static char const *const TYPEDEFS_STD_C_99[] = {
 };
 
 /**
- * Types from C11.
+ * Predefined types for C11.
  *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const TYPEDEFS_STD_C_11[] = {
+static char const *const PREDEFINED_STD_C_11[] = {
   "typedef _Atomic          _Bool     atomic_bool",
   "typedef _Atomic          char      atomic_char",
   "typedef _Atomic   signed char      atomic_schar",
@@ -237,12 +237,12 @@ static char const *const TYPEDEFS_STD_C_11[] = {
 };
 
 /**
- * Types from Floating-point extensions for C.
+ * Predefined types for Floating-point extensions for C.
  *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const TYPEDEFS_FLOATING_POINT_EXTENSIONS[] = {
+static char const *const PREDEFINED_FLOATING_POINT_EXTENSIONS[] = {
   "typedef          float       _Float16",
   "typedef          _Float16    _Float16_t",
   "typedef          float       _Float32",
@@ -276,12 +276,12 @@ static char const *const TYPEDEFS_FLOATING_POINT_EXTENSIONS[] = {
 };
 
 /**
- * Types from `pthread.h`.
+ * Predefined types for `pthread.h`.
  *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const TYPEDEFS_PTHREAD_H[] = {
+static char const *const PREDEFINED_PTHREAD_H[] = {
   "typedef unsigned long  pthread_t",
   "struct                 pthread_barrier_t",
   "struct                 pthread_barrierattr_t",
@@ -298,12 +298,12 @@ static char const *const TYPEDEFS_PTHREAD_H[] = {
 };
 
 /**
- * Types from C++.
+ * Predefined types for C++.
  *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const TYPEDEFS_STD_CPP[] = {
+static char const *const PREDEFINED_STD_CPP[] = {
   "namespace std { class                  bad_alloc;        }",
   "namespace std { class                  bad_cast;         }",
   "namespace std { class                  bad_exception;    }",
@@ -369,12 +369,12 @@ static char const *const TYPEDEFS_STD_CPP[] = {
 };
 
 /**
- * Types from C++11.
+ * Predefined types for C++11.
  *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const TYPEDEFS_STD_CPP_11[] = {
+static char const *const PREDEFINED_STD_CPP_11[] = {
   "namespace std { struct                 adopt_lock_t;               }",
   "namespace std { struct                 atomic_bool;                }",
   "namespace std { struct                 atomic_char8_t;             }",
@@ -466,9 +466,9 @@ static char const *const TYPEDEFS_STD_CPP_11[] = {
 };
 
 /**
- * Types from C++17.
+ * Predefined types for C++17.
  */
-static char const *const TYPEDEFS_STD_CPP_17[] = {
+static char const *const PREDEFINED_STD_CPP_17[] = {
   "namespace std { enum class             align_val_t;                  }",
   "namespace std { class                  bad_any_cast;                 }",
   "namespace std { class                  bad_optional_access;          }",
@@ -495,9 +495,9 @@ static char const *const TYPEDEFS_STD_CPP_17[] = {
 };
 
 /**
- * Types from C++20.
+ * Predefined types for C++20.
  */
-static char const *const TYPEDEFS_STD_CPP_20[] = {
+static char const *const PREDEFINED_STD_CPP_20[] = {
   "namespace std { class              ambiguous_local_time;     }",
   "namespace std::chrono { enum class choose;                   }",
   "namespace std::chrono { class      day;                      }",
@@ -549,7 +549,7 @@ static char const *const TYPEDEFS_STD_CPP_20[] = {
 /**
  * Embedded C types.
  */
-static char const *const TYPEDEFS_EMBEDDED_C[] = {
+static char const *const PREDEFINED_EMBEDDED_C[] = {
   "typedef          short _Accum int_hk_t",
   "typedef          short _Fract int_hr_t",
   "typedef                _Accum int_k_t",
@@ -567,12 +567,12 @@ static char const *const TYPEDEFS_EMBEDDED_C[] = {
 };
 
 /**
- * GNU C types.
+ * Predefined GNU C types.
  *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const TYPEDEFS_GNUC[] = {
+static char const *const PREDEFINED_GNU_C[] = {
   "typedef _Float128   __float128",
   "typedef _Float16    __fp16",
   "typedef long double __ibm128",
@@ -611,12 +611,12 @@ static char const *const TYPEDEFS_GNUC[] = {
 };
 
 /**
- * Miscellaneous standard-ish types.
+ * Predefined miscellaneous standard-ish types.
  *
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const TYPEDEFS_MISC[] = {
+static char const *const PREDEFINED_MISC[] = {
   "typedef  int32_t       blkcnt_t",
   "typedef  int32_t       blksize_t",
   "struct                 fd_set",
@@ -643,11 +643,11 @@ static char const *const TYPEDEFS_MISC[] = {
 };
 
 /**
- * Windows types.
+ * Predefined types for Windows.
  *
  * @sa [Windows Data Types](https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types)
  */
-static char const *const TYPEDEFS_WIN32[] = {
+static char const *const PREDEFINED_WIN32[] = {
   //
   // The comment about GNU C's __int128 type applies to these also.
   //
@@ -986,33 +986,33 @@ void c_typedef_init( void ) {
     opt_lang = LANG_C_NEW;
 
     predefined_lang_ids = LANG_MIN(C_KNR);
-    c_typedef_parse_predefined( TYPEDEFS_KNR_C );
+    c_typedef_parse_predefined( PREDEFINED_KNR_C );
 
     predefined_lang_ids = LANG_MIN(C_89);
-    c_typedef_parse_predefined( TYPEDEFS_STD_C89 );
-    c_typedef_parse_predefined( TYPEDEFS_FLOATING_POINT_EXTENSIONS );
-    c_typedef_parse_predefined( TYPEDEFS_GNUC );
+    c_typedef_parse_predefined( PREDEFINED_STD_C89 );
+    c_typedef_parse_predefined( PREDEFINED_FLOATING_POINT_EXTENSIONS );
+    c_typedef_parse_predefined( PREDEFINED_GNU_C );
 
     predefined_lang_ids = LANG_MIN(C_95);
-    c_typedef_parse_predefined( TYPEDEFS_STD_C_95 );
-    c_typedef_parse_predefined( TYPEDEFS_PTHREAD_H );
-    c_typedef_parse_predefined( TYPEDEFS_WIN32 );
+    c_typedef_parse_predefined( PREDEFINED_STD_C_95 );
+    c_typedef_parse_predefined( PREDEFINED_PTHREAD_H );
+    c_typedef_parse_predefined( PREDEFINED_WIN32 );
 
     predefined_lang_ids = LANG_MIN(C_99);
-    c_typedef_parse_predefined( TYPEDEFS_STD_C_99 );
+    c_typedef_parse_predefined( PREDEFINED_STD_C_99 );
 
     // However, Embedded C extensions are available only in C99.
     opt_lang = LANG_C_99;
     predefined_lang_ids = LANG_C_99;
-    c_typedef_parse_predefined( TYPEDEFS_EMBEDDED_C );
+    c_typedef_parse_predefined( PREDEFINED_EMBEDDED_C );
     opt_lang = LANG_C_NEW;
 
     // Must be defined after C99.
     predefined_lang_ids = LANG_MIN(C_89);
-    c_typedef_parse_predefined( TYPEDEFS_MISC );
+    c_typedef_parse_predefined( PREDEFINED_MISC );
 
     predefined_lang_ids = LANG_MIN(C_11);
-    c_typedef_parse_predefined( TYPEDEFS_STD_C_11 );
+    c_typedef_parse_predefined( PREDEFINED_STD_C_11 );
 
     //
     // Temporarily switch to the latest supported version of C++ so all
@@ -1021,16 +1021,16 @@ void c_typedef_init( void ) {
     opt_lang = LANG_CPP_NEW;
 
     predefined_lang_ids = LANG_MIN(CPP_OLD);
-    c_typedef_parse_predefined( TYPEDEFS_STD_CPP );
+    c_typedef_parse_predefined( PREDEFINED_STD_CPP );
 
     predefined_lang_ids = LANG_MIN(CPP_11);
-    c_typedef_parse_predefined( TYPEDEFS_STD_CPP_11 );
+    c_typedef_parse_predefined( PREDEFINED_STD_CPP_11 );
 
     predefined_lang_ids = LANG_MIN(CPP_17);
-    c_typedef_parse_predefined( TYPEDEFS_STD_CPP_17 );
+    c_typedef_parse_predefined( PREDEFINED_STD_CPP_17 );
 
     predefined_lang_ids = LANG_MIN(CPP_20);
-    c_typedef_parse_predefined( TYPEDEFS_STD_CPP_20 );
+    c_typedef_parse_predefined( PREDEFINED_STD_CPP_20 );
 
     opt_lang = orig_lang;
 
