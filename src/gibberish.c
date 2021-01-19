@@ -762,14 +762,14 @@ static void g_print_space_name( g_state_t *g, c_ast_t const *ast ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t gib_kind, FILE *gout ) {
-  assert( gib_kind == C_GIB_CAST || gib_kind == C_GIB_DECL );
+  assert( (gib_kind & (C_GIB_CAST | C_GIB_DECL)) != C_GRAPH_NONE );
   c_ast_gibberish_impl( ast, gib_kind, /*printing_typedef=*/false, gout );
 }
 
 void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
                           FILE *gout ) {
   assert( tdef != NULL );
-  assert( gib_kind == C_GIB_TYPEDEF || gib_kind == C_GIB_USING );
+  assert( (gib_kind & (C_GIB_TYPEDEF | C_GIB_USING)) != C_GIB_NONE );
   assert( gout != NULL );
 
   size_t scope_close_braces_to_print = 0;

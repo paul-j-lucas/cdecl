@@ -110,20 +110,20 @@ extern char const L_AUTOMATIC[];            // synonym for "auto", "__auto_type"
 extern char const L_BREAK[];
 extern char const L_CASE[];
 extern char const L_CHAR[];
-extern char const L_CHARACTER[];            // synonym for "char"
+extern char const L_CHARACTER[];            // English for "char"
 extern char const L_CONTINUE[];
 extern char const L_DEFAULT[];
 extern char const L_DO[];
 extern char const L_DOUBLE[];
 extern char const L_ELSE[];
 extern char const L_EXTERN[];
-extern char const L_EXTERNAL[];             // synonym for "extern"
+extern char const L_EXTERNAL[];             // English for "extern"
 extern char const L_FLOAT[];
 extern char const L_FOR[];
 extern char const L_GOTO[];
 extern char const L_IF[];
 extern char const L_INT[];
-extern char const L_INTEGER[];              // synonym for "int"
+extern char const L_INTEGER[];              // English for "int"
 extern char const L_LONG[];
 extern char const L_REGISTER[];
 extern char const L_RETURN[];
@@ -131,9 +131,9 @@ extern char const L_SHORT[];
 extern char const L_SIZEOF[];
 extern char const L_STATIC[];
 extern char const L_STRUCT[];
-extern char const L_STRUCTURE[];            // synonym for "struct"
+extern char const L_STRUCTURE[];            // English for "struct"
 extern char const L_SWITCH[];
-extern char const L_TYPE[];                 // synonym for "typedef"
+extern char const L_TYPE[];                 // English for "typedef"
 extern char const L_TYPEDEF[];
 extern char const L_UNION[];
 extern char const L_UNSIGNED[];
@@ -142,10 +142,10 @@ extern char const L_WHILE[];
 // C89
 extern char const L_ASM[];
 extern char const L_CONST[];
-extern char const L_CONSTANT[];             // synonym for "const"
+extern char const L_CONSTANT[];             // English for "const"
 extern char const L_ELLIPSIS[];             // ...
 extern char const L_ENUM[];
-extern char const L_ENUMERATION[];          // synonym for "enum"
+extern char const L_ENUMERATION[];          // English for "enum"
 extern char const L_SIGNED[];
 extern char const L_VARARGS[];              // synonym for "..."
 extern char const L_VARIADIC[];             // synonym for "..."
