@@ -583,7 +583,7 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
       if ( member_func_tids != TS_NONE ) {
         print_error( &ast->loc,
           "%s %ss can not be %s\n",
-          L_NON_MEMBER, c_kind_name( ast->kind_id ),
+          H_NON_MEMBER, c_kind_name( ast->kind_id ),
           c_type_id_name_error( member_func_tids )
         );
         return false;
@@ -1049,11 +1049,11 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
 
   char const *const op_type =
     op_overload_flags == C_OP_MEMBER     ? L_MEMBER     :
-    op_overload_flags == C_OP_NON_MEMBER ? L_NON_MEMBER :
+    op_overload_flags == C_OP_NON_MEMBER ? H_NON_MEMBER :
     "";
   char const *const user_type =
     user_overload_flags == C_OP_MEMBER     ? L_MEMBER     :
-    user_overload_flags == C_OP_NON_MEMBER ? L_NON_MEMBER :
+    user_overload_flags == C_OP_NON_MEMBER ? H_NON_MEMBER :
     op_type;
 
   if ( user_overload_flags == C_OP_UNSPECIFIED ) {
@@ -1159,7 +1159,7 @@ same: print_error( &ast->loc,
     if ( member_only_tids != TS_NONE ) {
       print_error( &ast->loc,
         "%s %ss can not be %s\n",
-        L_NON_MEMBER, L_OPERATOR,
+        H_NON_MEMBER, L_OPERATOR,
         c_type_id_name_error( member_only_tids )
       );
       return false;
@@ -1181,7 +1181,7 @@ same: print_error( &ast->loc,
       print_error( &ast->loc,
         "at least 1 parameter of a %s %s must be an %s"
         "; or a %s or %s %s thereto\n",
-        L_NON_MEMBER, L_OPERATOR, c_kind_name( K_ENUM_CLASS_STRUCT_UNION ),
+        H_NON_MEMBER, L_OPERATOR, c_kind_name( K_ENUM_CLASS_STRUCT_UNION ),
         L_REFERENCE, L_RVALUE, L_REFERENCE
       );
       return false;
@@ -1470,7 +1470,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
   size_t const n_params = c_ast_params_count( ast );
   if ( n_params == 0 ) {
     print_error( &ast->loc,
-      "%s %s must have an parameter\n", L_USER_DEFINED, L_LITERAL
+      "%s %s must have an parameter\n", H_USER_DEFINED, L_LITERAL
     );
     return false;
   }
@@ -1498,7 +1498,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
               "invalid parameter type for %s %s; must be one of: "
               "unsigned long long, long double, "
               "char, const char*, char8_t, char16_t, char32_t, wchar_t\n",
-              L_USER_DEFINED, L_LITERAL
+              H_USER_DEFINED, L_LITERAL
             );
             return false;
           }
@@ -1513,7 +1513,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
         print_error( &param_ast->loc,
           "invalid parameter type for %s %s; must be one of: "
           "const (char|wchar_t|char8_t|char16_t|char32_t)*\n",
-          L_USER_DEFINED, L_LITERAL
+          H_USER_DEFINED, L_LITERAL
         );
         return false;
       }
@@ -1524,7 +1524,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
         print_error( &param_ast->loc,
           "invalid parameter type for %s %s; "
           "must be std::size_t (or equivalent)\n",
-          L_USER_DEFINED, L_LITERAL
+          H_USER_DEFINED, L_LITERAL
         );
         return false;
       }
@@ -1534,7 +1534,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
       param = param->next->next;
       param_ast = c_param_ast( param );
       print_error( &param_ast->loc,
-        "%s %s may have at most 2 parameters\n", L_USER_DEFINED, L_LITERAL
+        "%s %s may have at most 2 parameters\n", H_USER_DEFINED, L_LITERAL
       );
       return false;
   } // switch
@@ -1711,7 +1711,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
       if ( c_type_is_tid_any( &ast->type, ~TS_USER_DEF_CONV) ) {
         print_error( &ast->loc,
           "%s %s %ss can only be: %s\n",
-          L_USER_DEFINED, L_CONVERSION, L_OPERATOR,
+          H_USER_DEFINED, L_CONVERSION, L_OPERATOR,
           c_type_id_name_error( TS_USER_DEF_CONV )
         );
         return VISITOR_ERROR_FOUND;
@@ -1720,7 +1720,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
            c_ast_empty_name( ast ) ) {
         print_error( &ast->loc,
           "%s %s %s %s must use qualified name\n",
-          L_FRIEND, L_USER_DEFINED, L_CONVERSION, L_OPERATOR
+          L_FRIEND, H_USER_DEFINED, L_CONVERSION, L_OPERATOR
         );
         return VISITOR_ERROR_FOUND;
       }
@@ -1729,7 +1729,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
       if ( conv_ast->kind_id == K_ARRAY ) {
         print_error( &conv_ast->loc,
           "%s %s %s can not convert to an %s",
-          L_USER_DEFINED, L_CONVERSION, L_OPERATOR, L_ARRAY
+          H_USER_DEFINED, L_CONVERSION, L_OPERATOR, L_ARRAY
         );
         print_hint( "%s to %s", L_POINTER, L_ARRAY );
         return VISITOR_ERROR_FOUND;
@@ -1824,7 +1824,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
       if ( c_ast_local_name( ast )[0] != '_' )
         print_warning( &ast->loc,
           "%s %s not starting with '_' are reserved\n",
-          L_USER_DEFINED, L_LITERAL
+          H_USER_DEFINED, L_LITERAL
         );
       PJL_FALLTHROUGH;
     case K_APPLE_BLOCK:

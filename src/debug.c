@@ -173,7 +173,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
             FPUTS( L_MEMBER, dout );
             break;
           case C_FUNC_NON_MEMBER:
-            FPUTS( L_NON_MEMBER, dout );
+            FPUTS( H_NON_MEMBER, dout );
             break;
           case C_OP_OVERLOADABLE:
             FPUTS( "overloadable", dout );

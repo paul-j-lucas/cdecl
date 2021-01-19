@@ -117,7 +117,7 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   //                        L_NAMESPACE   // handled in CDECL_COMMANDS
   { LANG_C_CPP_MIN(2X,17),  L_NODISCARD         },
   { LANG_CPP_MIN(11),       L_NOEXCEPT          },
-  { LANG_CPP_ALL,           L_NON_MEMBER        },
+  { LANG_CPP_ALL,           H_NON_MEMBER        },
   { LANG_MIN(C_11),         L_NORETURN          },
   { LANG_CPP_MIN(20),       L_NO_UNIQUE_ADDRESS },
   //                        L_OF          // too short
@@ -146,7 +146,7 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   //                        L_TYPEDEF     // handled in CDECL_COMMANDS
   { LANG_ALL,               L_UNION             },
   { LANG_ALL,               L_UNSIGNED          },
-  { LANG_CPP_ALL,           L_USER_DEFINED      },
+  { LANG_CPP_ALL,           H_USER_DEFINED      },
   //                        L_USING       // handled in CDECL_COMMANDS
   { LANG_C_MIN(99),         L_VARIABLE          },
   { LANG_CPP_ALL,           L_VIRTUAL           },

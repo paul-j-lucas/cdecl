@@ -3055,7 +3055,7 @@ user_defined_literal_decl_english_ast
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
           "%s %s not supported in %s\n",
-          L_USER_DEFINED, L_LITERAL, C_LANG_NAME()
+          H_USER_DEFINED, L_LITERAL, C_LANG_NAME()
         );
         PARSE_ABORT();
       }
