@@ -5151,6 +5151,10 @@ sname_c_ast
 
       bool ok = true;
       if ( $2 != 0 ) {
+        //
+        // This check has to be done now in the parser rather than later in the
+        // AST since we need to use the builtin union member now.
+        //
         if ( (ok = c_ast_is_builtin_any( $$.ast, TB_ANY_INTEGRAL )) )
           $$.ast->as.builtin.bit_width = (unsigned)$2;
         else
