@@ -300,7 +300,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
         //
         // (See the printing_typedef comment in c_typedef_gibberish() first.)
         // We also need to print the ESCU name if we're printing an enum,
-        // class, struct or union type in C only:
+        // class, struct, or union type in C only:
         //
         //      typedef struct S T;     // ast->sname ="S"; escu_name = "T"
         //
