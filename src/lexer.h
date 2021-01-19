@@ -68,10 +68,9 @@ char const* lexer_input_line( size_t *plen );
 /**
  * Gets the lexer's current location.
  *
- * @param pline A pointer to a variable to receive the lexer's line.
- * @param pcolumn A pointer to a variable to receive the lexer's column.
+ * @return Returns said location.
  */
-void lexer_loc( int *pline, int *pcolumn );
+c_loc_t lexer_loc( void );
 
 /**
  * Resets the lexer to its initial state.

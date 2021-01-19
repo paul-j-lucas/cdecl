@@ -791,9 +791,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
 static void yyerror( char const *msg ) {
   assert( msg != NULL );
 
-  c_loc_t loc;
-  MEM_ZERO( &loc );
-  lexer_loc( &loc.first_line, &loc.first_column );
+  c_loc_t const loc = lexer_loc();
   print_loc( &loc );
 
   SGR_START_COLOR( stderr, error );
