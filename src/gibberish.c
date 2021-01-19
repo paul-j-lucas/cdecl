@@ -382,6 +382,15 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       if ( is_more_than_plain_typedef && !opt_east_const )
         FPRINTF( g->gout, "%s ", c_type_name( &ast->type ) );
 
+      //
+      // Temporarily set skip_name_for_using to false to force printing of the
+      // type's name.  This is necessary for when printing the name of a
+      // typedef of a typedef as a "using" declaration:
+      //
+      //      c++decl> typedef int32_t foo_t
+      //      c++decl> show foo_t as using
+      //      using foo_t = int32_t;
+      //
       bool const orig_skip_name_for_using = g->skip_name_for_using;
       g->skip_name_for_using = false;
       g_print_ast_name( g, ast->as.tdef.for_ast );
