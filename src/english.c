@@ -137,9 +137,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE )
         FPRINTF( eout, "%s %s ", L_VARIABLE, L_LENGTH );
       FPRINTF( eout, "%s ", L_ARRAY );
-      if ( ast->as.array.store_tid != TS_NONE ) {
+      if ( ast->as.array.store_tid != TS_NONE )
         FPRINTF( eout, "%s ", c_type_id_name( ast->as.array.store_tid ) );
-      }
       if ( ast->as.array.size >= 0 )
         FPRINTF( eout, "%d ", ast->as.array.size );
       FPRINTF( eout, "%s ", L_OF );
