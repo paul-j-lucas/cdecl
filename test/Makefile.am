@@ -748,6 +748,9 @@ TESTS+=	tests/show_all.test \
 	tests/show_all_predefined.test \
 	tests/show_all_predefined_typedef-c++.test \
 	tests/show_all_typedef.test \
+	tests/show_cpf_cpcc_v_using.test \
+	tests/show_cpi_using.test \
+	tests/show_cpmki_using.test \
 	tests/show_int8_t.test \
 	tests/show_int8_t_typedef.test \
 	tests/show_predefined-c++.test \

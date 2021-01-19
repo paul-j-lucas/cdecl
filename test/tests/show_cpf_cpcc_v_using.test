@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ typedef void (*const CPF)(const char *const s); show using @ 0

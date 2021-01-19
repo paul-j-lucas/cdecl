@@ -641,8 +641,32 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
+  c_type_id_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
+
   switch ( ast->kind_id ) {
     case K_POINTER:
+      if ( g->gib_kind == C_GIB_USING && qual_tid != TS_NONE &&
+           ast->as.ptr_ref.to_ast->kind_id != K_FUNCTION ) {
+        //
+        // If we're printing a type as a "using" declaration and there's a
+        // qualifier for the pointer, print a space before it.  For example:
+        //
+        //      typedef int *const PI;
+        //
+        // when printed as a "using":
+        //
+        //      using PI = int *const;
+        //
+        // However, if it's a pointer-to-function, don't.  For example:
+        //
+        //      typedef int (*const PF)(char c);
+        //
+        // when printed as a "using":
+        //
+        //      using PF = int(*const)(char c);
+        //
+        FPUTC( ' ', g->gout );
+      }
       FPUTC( '*', g->gout );
       break;
     case K_POINTER_TO_MEMBER:
@@ -670,10 +694,9 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
       /* suppress warning */;
   } // switch
 
-  c_type_id_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
   if ( qual_tid != TS_NONE ) {
     FPUTS( c_type_id_name( qual_tid ), g->gout );
-    if ( g->gib_kind != C_GIB_CAST )
+    if ( (g->gib_kind & (C_GIB_DECL | C_GIB_TYPEDEF)) != C_GIB_NONE )
       FPUTC( ' ', g->gout );
   }
   if ( !c_ast_empty_name( ast ) && g->gib_kind != C_GIB_CAST )

@@ -16,6 +16,9 @@ with their complete changes, see the AUTHORS file.
 Inline file-scope and defaulted & deleted in-class constructors & destructors
 are now supported; `final` & `override` are now supported for destructors.
 
+** Fixed showing as `using`
+Fixed showing of types having qualified pointers as `using` declarations.
+
 ** More predefined types
 Added `constraint_handler_t` and `lconv`.
 

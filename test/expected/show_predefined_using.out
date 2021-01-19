@@ -237,7 +237,7 @@ using blksize_t = int32_t;
 using clock_t = long;
 using clockid_t = long;
 using cnd_t = pthread_cond_t;
-using constraint_handler_t = void(*)(const char*__restrict , void*__restrict , errno_t);
+using constraint_handler_t = void(*)(const char *__restrict, void *__restrict, errno_t);
 using dev_t = int;
 struct div_t;
 using double_t = double;
