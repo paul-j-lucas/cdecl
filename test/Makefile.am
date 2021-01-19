@@ -385,6 +385,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_imf.test \
 	tests/explain_is.test \
 	tests/explain_it.test \
+	tests/explain_k-itself.test \
+	tests/explain_k.test \
 	tests/explain_kc.test \
 	tests/explain_keywords.test \
 	tests/explain_ld.test \
@@ -521,8 +523,8 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_hll.test \
 	tests/explain_hv.test \
 	tests/explain_hwt.test \
+	tests/explain_i-itself.test \
 	tests/explain_ii.test \
-	tests/explain_k.test \
 	tests/explain_lb.test \
 	tests/explain_lc.test \
 	tests/explain_lc16.test \

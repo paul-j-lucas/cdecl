@@ -1816,7 +1816,7 @@ explain_c
     /*
      * Common declaration, e.g.: T x.
      */
-  | explain type_c_ast { ia_type_ast_push( $2.ast ); } decl_c_list
+  | explain type_c_ast { ia_type_ast_push( $2.ast ); } decl_c_list_opt
     {
       ia_type_ast_pop();
     }
@@ -2052,6 +2052,49 @@ alignas_specifier_c
 alignas
   : Y__ALIGNAS
   | Y_ALIGNAS
+  ;
+
+decl_c_list_opt
+    /*
+     * An enum, class, struct, or union declaration by itself, e.g.:
+     *
+     *      explain struct S
+     *
+     * without any object of that type.
+     */
+  : // in_attr: type_c_ast
+    /* empty */
+    {
+      c_ast_t const *const type_ast = ia_type_ast_peek();
+
+      DUMP_START( "decl_c_list_opt", "<empty>" );
+      DUMP_AST( "(type_c_ast)", type_ast );
+
+      DUMP_AST( "decl_c_list_opt", type_ast );
+      DUMP_END();
+
+      if ( type_ast->kind_id != K_ENUM_CLASS_STRUCT_UNION ) {
+        c_loc_t const loc = lexer_loc();
+        print_error( &loc, "declaration expected\n" );
+        PARSE_ABORT();
+      }
+
+      c_sname_t const *const sname = &type_ast->as.ecsu.ecsu_sname;
+      assert( !c_sname_empty( sname ) );
+
+      if ( c_sname_count( sname ) > 1 ) {
+        print_error( &type_ast->loc,
+          "forward declaration can not have a scoped name\n"
+        );
+        PARSE_ABORT();
+      }
+
+      FPRINTF( fout, "%s %s %s ", L_DEFINE, c_sname_local_name( sname ), L_AS );
+      c_ast_english( type_ast, fout );
+      FPUTC( '\n', fout );
+    }
+
+  | decl_c_list
   ;
 
 decl_c_list
