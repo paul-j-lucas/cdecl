@@ -108,8 +108,7 @@ static inline void g_set_leaf( g_state_t *g, c_ast_t const *ast ) {
  * declaration or cast.
  *
  * @param ast The AST to print.
- * @param gib_kind The kind of gibberish to print as; must only be either
- * #C_GIB_CAST or #C_GIB_DECL.
+ * @param gib_kind The kind of gibberish to print as.
  * @param printing_typedef Printing a `typedef`?
  * @param gout The `FILE` to print to.
  */
