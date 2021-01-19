@@ -64,10 +64,10 @@ typedef struct g_state g_state_t;
 // local functions
 static void g_impl( g_state_t*, c_ast_t const* );
 static void g_init( g_state_t*, c_ast_t const*, c_gib_kind_t, bool, FILE* );
-static void g_print_full_or_local_name( g_state_t*, c_ast_t const* );
+static void g_print_ast_name( g_state_t*, c_ast_t const* );
 static void g_print_postfix( g_state_t*, c_ast_t const* );
 static void g_print_qual_name( g_state_t*, c_ast_t const* );
-static void g_print_space_name( g_state_t*, c_ast_t const* );
+static void g_print_space_ast_name( g_state_t*, c_ast_t const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -265,7 +265,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
 
     case K_BUILTIN:
       FPUTS( c_type_name( &ast->type ), g->gout );
-      g_print_space_name( g, ast );
+      g_print_space_ast_name( g, ast );
       if ( ast->as.builtin.bit_width > 0 )
         FPRINTF( g->gout, " : %u", ast->as.builtin.bit_width );
       g_set_leaf( g, ast );
@@ -312,13 +312,13 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       if ( cv_qual_tid != TS_NONE )
         FPRINTF( g->gout, " %s", c_type_id_name( cv_qual_tid ) );
 
-      g_print_space_name( g, ast );
+      g_print_space_ast_name( g, ast );
       g_set_leaf( g, ast );
       break;
 
     case K_NAME:
       if ( !c_ast_empty_name( ast ) && g->gib_kind != C_GIB_CAST )
-        g_print_full_or_local_name( g, ast );
+        g_print_ast_name( g, ast );
       g_set_leaf( g, ast );
       break;
 
@@ -384,12 +384,12 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
 
       bool const orig_skip_name_for_using = g->skip_name_for_using;
       g->skip_name_for_using = false;
-      g_print_full_or_local_name( g, ast->as.tdef.for_ast );
+      g_print_ast_name( g, ast->as.tdef.for_ast );
       g->skip_name_for_using = orig_skip_name_for_using;
 
       if ( is_more_than_plain_typedef && opt_east_const )
         FPRINTF( g->gout, " %s", c_type_name( &ast->type ) );
-      g_print_space_name( g, ast );
+      g_print_space_ast_name( g, ast );
       if ( ast->as.tdef.bit_width > 0 )
         FPRINTF( g->gout, " : %u", ast->as.tdef.bit_width );
       g_set_leaf( g, ast );
@@ -462,7 +462,7 @@ static void g_print_array_size( g_state_t const *g, c_ast_t const *ast ) {
  * @param g The `g_state` to use.
  * @param ast The AST to get the name of.
  */
-static void g_print_full_or_local_name( g_state_t *g, c_ast_t const *ast ) {
+static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
@@ -601,7 +601,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
     //
     if ( ast->kind_id == K_APPLE_BLOCK )
       FPUTS( "(^", g->gout );
-    g_print_space_name( g, ast );
+    g_print_space_ast_name( g, ast );
     if ( ast->kind_id == K_APPLE_BLOCK )
       FPUTC( ')', g->gout );
   }
@@ -703,7 +703,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
       FPUTC( ' ', g->gout );
   }
   if ( !c_ast_empty_name( ast ) && g->gib_kind != C_GIB_CAST )
-    g_print_full_or_local_name( g, ast );
+    g_print_ast_name( g, ast );
 }
 
 /**
@@ -714,7 +714,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
  * @param g The `g_state` to use.
  * @param ast The AST to print the name (if any) of.
  */
-static void g_print_space_name( g_state_t *g, c_ast_t const *ast ) {
+static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
@@ -756,7 +756,7 @@ static void g_print_space_name( g_state_t *g, c_ast_t const *ast ) {
     default:
       if ( !c_ast_empty_name( ast ) ) {
         g_print_space( g );
-        g_print_full_or_local_name( g, ast );
+        g_print_ast_name( g, ast );
       }
       break;
   } // switch
