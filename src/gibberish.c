@@ -828,6 +828,8 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
     }
   }
 
+  bool const is_ecsu = tdef->ast->kind_id == K_ENUM_CLASS_STRUCT_UNION;
+
   //
   // When printing a type, all types except enum, class, struct, or union types
   // must be preceded by "typedef", e.g.:
@@ -845,12 +847,10 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
   // types and not just tags, so we don't print "typedef".
   //
   bool const printing_typedef = gib_kind == C_GIB_TYPEDEF &&
-    (tdef->ast->kind_id != K_ENUM_CLASS_STRUCT_UNION ||
-    c_lang_is_c( tdef->lang_ids ) ||
+    (!is_ecsu || c_lang_is_c( tdef->lang_ids ) ||
     (C_LANG_IS_C() && !c_lang_is_cpp( tdef->lang_ids )));
 
-  bool const printing_using = gib_kind == C_GIB_USING &&
-    (tdef->ast->kind_id != K_ENUM_CLASS_STRUCT_UNION);
+  bool const printing_using = gib_kind == C_GIB_USING && !is_ecsu;
 
   if ( printing_typedef )
     FPRINTF( gout, "%s ", L_TYPEDEF );
