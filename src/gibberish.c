@@ -182,12 +182,12 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       // them out of the type here, but print them after the parameters.
       //
       cv_qual_tid     = (type.store_tid & TS_MASK_QUALIFIER);
+      is_default      = (type.store_tid & TS_DEFAULT) != TS_NONE;
+      is_delete       = (type.store_tid & TS_DELETE) != TS_NONE;
       is_final        = (type.store_tid & TS_FINAL) != TS_NONE;
       is_noexcept     = (type.store_tid & TS_NOEXCEPT) != TS_NONE;
       is_override     = (type.store_tid & TS_OVERRIDE) != TS_NONE;
       is_pure_virtual = (type.store_tid & TS_PURE_VIRTUAL) != TS_NONE;
-      is_default      = (type.store_tid & TS_DEFAULT) != TS_NONE;
-      is_delete       = (type.store_tid & TS_DELETE) != TS_NONE;
       is_throw        = (type.store_tid & TS_THROW) != TS_NONE;
       ref_qual_tid    = (type.store_tid & TS_MASK_REF_QUALIFIER);
 
