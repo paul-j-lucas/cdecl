@@ -243,18 +243,12 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
     EPUTS( ": " );
   }
 
+  print_debug_file_line( file, line );
+
   va_list args;
   va_start( args, format );
   vfprintf( stderr, format, args );
   va_end( args );
-
-#ifdef ENABLE_CDECL_DEBUG
-  if ( opt_cdecl_debug )
-    EPRINTF( " (%s:%d)", file, line );
-#else
-  (void)file;
-  (void)line;
-#endif /* ENABLE_CDECL_DEBUG */
 }
 
 void fl_print_error_unknown_type( char const *file, int line,
@@ -285,14 +279,18 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
   SGR_END_COLOR( stderr );
   EPUTS( ": " );
 
+  print_debug_file_line( file, line );
+
   va_list args;
   va_start( args, format );
   vfprintf( stderr, format, args );
   va_end( args );
+}
 
+void print_debug_file_line( char const *file, int line ) {
 #ifdef ENABLE_CDECL_DEBUG
   if ( opt_cdecl_debug )
-    EPRINTF( " (%s:%d)", file, line );
+    EPRINTF( "[%s:%d] ", file, line );
 #else
   (void)file;
   (void)line;

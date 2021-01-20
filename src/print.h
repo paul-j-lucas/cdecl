@@ -149,6 +149,18 @@ void fl_print_warning( char const *file, int line, c_loc_t const *loc,
                        char const *format, ... );
 
 /**
+ * If <code>\ref opt_cdecl_debug</code> is compiled in and enabled, prints \a
+ * file and \a line to standard error in the form `"[<file>:<line>] "`;
+ * otherwise prints nothing.
+ *
+ * @note A newline is _not_ printed.
+ *
+ * @param file The name of the file to print.
+ * @param line The line number within \a file to print.
+ */
+void print_debug_file_line( char const *file, int line );
+
+/**
  * Prints a hint message to standard error in the form:
  * @code
  * ; did you mean ...?\n
@@ -170,6 +182,7 @@ void print_hint( char const *format, ... );
  *  + A `^` (in color, if possible and requested) under the offending token.
  *  + The error column.
  *
+ * @note
  * A newline is _not_ printed.
  *
  * @param loc The location to print.

@@ -636,6 +636,8 @@ static void fl_elaborate_error( char const *file, int line,
     EPUTS( ": " );
     char const *const error_token = printable_token();
 
+    print_debug_file_line( file, line );
+
     if ( error_token != NULL )
       EPRINTF( "\"%s\": ", error_token );
 
@@ -654,14 +656,6 @@ static void fl_elaborate_error( char const *file, int line,
       }
       print_suggestions( dym_kinds, error_token );
     }
-
-#ifdef ENABLE_CDECL_DEBUG
-    if ( opt_cdecl_debug )
-      EPRINTF( " (%s:%d)", file, line );
-#else
-    (void)file;
-    (void)line;
-#endif /* ENABLE_CDECL_DEBUG */
 
     EPUTC( '\n' );
     error_newlined = true;
