@@ -1521,8 +1521,9 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
             print_error( &param_ast->loc,
               "invalid parameter type for %s %s; must be one of: "
               "unsigned long long, long double, "
-              "char, const char*, char8_t, char16_t, char32_t, wchar_t\n",
-              H_USER_DEFINED, L_LITERAL
+              "char, const char*, %schar16_t, char32_t, or wchar_t\n",
+              H_USER_DEFINED, L_LITERAL,
+              opt_lang >= LANG_CPP_20 ? "char8_t, " : ""
             );
             return false;
           }
