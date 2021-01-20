@@ -44,6 +44,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Prints an error: `can not cast into <kind>`.
+ *
+ * @param AST The AST.
+ * @param HINT The hint.
+ */
+#define error_kind_not_cast_into(AST,HINT) BLOCK(                     \
+  fl_print_error( __FILE__, __LINE__, &(AST)->loc,                    \
+    "can not %s %s %s", L_CAST, L_INTO, c_kind_name( (AST)->kind_id ) \
+  );                                                                  \
+  print_hint( "%s %s %s", L_CAST, L_INTO, (HINT) ); )
+
+/**
  * Prints an error: `<kind> not supported in <lang>`.
  *
  * @param AST The AST having the unsupported kind.
@@ -1889,20 +1901,6 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
   } // for
 
   return false;
-}
-
-/**
- * Prints an error: `can not cast into <kind>`.
- *
- * @param ast The AST having \e kind.
- * @param hint The hint.
- */
-static void error_kind_not_cast_into( c_ast_t const *ast, char const *hint ) {
-  assert( ast != NULL );
-  print_error( &ast->loc,
-    "can not %s %s %s", L_CAST, L_INTO, c_kind_name( ast->kind_id )
-  );
-  print_hint( "%s %s %s", L_CAST, L_INTO, hint );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
