@@ -125,6 +125,9 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_params( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_emc( c_ast_t const* );
+
+PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_c( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
@@ -141,6 +144,9 @@ static bool c_ast_check_oper_new_params( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_delete_params( c_ast_t const* );
+
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_upc( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_name_eq( c_ast_t const*, char const* );
@@ -359,26 +365,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( c_type_is_tid_any( &ast->type, TB_EMC_SAT ) &&
-      !c_type_is_tid_any( &ast->type, TB_ANY_EMC ) ) {
-    print_error( &ast->loc,
-      "\"%s\" requires either \"%s\" or \"%s\"\n",
-      L_EMC__SAT, L_EMC__ACCUM, L_EMC__FRACT
-    );
-    return false;
-  }
-
-  if ( c_type_is_tid_any( &ast->type, TS_UPC_RELAXED | TS_UPC_STRICT ) &&
-      !c_type_is_tid_any( &ast->type, TS_UPC_SHARED ) ) {
-    print_error( &ast->loc,
-      "\"%s\" requires \"%s\"\n",
-      c_type_name_error( &ast->type ),
-      L_UPC_SHARED
-    );
-    return false;
-  }
-
-  return true;
+  return c_ast_check_emc( ast ) && c_ast_check_upc( ast );
 }
 
 /**
@@ -448,6 +435,29 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
     print_error( &ast->loc,
       "\"%s\": %s classes must just use \"%s\"\n",
       c_type_name_error( &ast->type ), L_ENUM, L_ENUM
+    );
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Checks a built-in Embedded C type AST for errors.
+ *
+ * @param ast The built-in AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_emc( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind_id == K_BUILTIN );
+
+  if ( c_type_is_tid_any( &ast->type, TB_EMC_SAT ) &&
+      !c_type_is_tid_any( &ast->type, TB_ANY_EMC ) ) {
+    print_error( &ast->loc,
+      "\"%s\" requires either \"%s\" or \"%s\"\n",
+      L_EMC__SAT, L_EMC__ACCUM, L_EMC__FRACT
     );
     return false;
   }
@@ -1550,6 +1560,30 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
       );
       return false;
   } // switch
+
+  return true;
+}
+
+/**
+ * Checks a built-in Unified Parallel C type AST for errors.
+ *
+ * @param ast The built-in AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_upc( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind_id == K_BUILTIN );
+
+  if ( c_type_is_tid_any( &ast->type, TS_UPC_RELAXED | TS_UPC_STRICT ) &&
+      !c_type_is_tid_any( &ast->type, TS_UPC_SHARED ) ) {
+    print_error( &ast->loc,
+      "\"%s\" requires \"%s\"\n",
+      c_type_name_error( &ast->type ),
+      L_UPC_SHARED
+    );
+    return false;
+  }
 
   return true;
 }
