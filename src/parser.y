@@ -646,11 +646,11 @@ static void fl_elaborate_error( char const *file, int line,
 
     if ( error_token != NULL ) {
       c_keyword_t const *const k =
-        c_keyword_find( error_token, LANG_ALL, C_KW_CTX_ALL );
+        c_keyword_find( error_token, c_lang_newer( opt_lang ), C_KW_CTX_ALL );
       if ( k != NULL ) {
-        EPRINTF(
-          "; not a keyword until %s", c_lang_oldest_name( k->lang_ids )
-        );
+        c_lang_id_t const oldest_lang = c_lang_oldest( k->lang_ids );
+        if ( oldest_lang > opt_lang )
+          EPRINTF( "; not a keyword until %s", c_lang_name( oldest_lang ) );
       }
       print_suggestions( dym_kinds, error_token );
     }

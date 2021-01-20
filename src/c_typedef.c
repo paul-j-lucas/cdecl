@@ -872,7 +872,7 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
   // specified by predefined_lang_ids.
   //
   tdef->lang_ids = user_defined ?
-    c_lang_and_later( opt_lang ) : predefined_lang_ids;
+    c_lang_and_newer( opt_lang ) : predefined_lang_ids;
   tdef->user_defined = user_defined;
   return tdef;
 }

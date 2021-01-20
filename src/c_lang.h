@@ -235,6 +235,21 @@ struct c_lang_lit {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Gets all the language(s) \a lang_id and newer.
+ *
+ * @param lang_id The language.  Exactly one language must be set.
+ * @return Returns the bitwise-or of all language(s) \a lang_id and later.
+ *
+ * @sa c_lang_oldest()
+ * @sa c_lang_newer()
+ */
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
+c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
+  assert( exactly_one_bit_set( lang_id & ~LANGX_MASK ) );
+  return BITS_GE( lang_id );
+}
+
+/**
  * Gets the <code>\ref c_lang_id_t</code> corresponding to the given string
  * (case insensitive).
  *
@@ -314,12 +329,28 @@ PJL_WARN_UNUSED_RESULT
 char const* c_lang_names( void );
 
 /**
+ * Gets the bitwise-or of language(s) that are newer than \a lang_id.
+ *
+ * @param lang_id The language.  Exactly one language must be set.
+ * @return Returns said languages or #LANG_NONE if no language(s) are newer.
+ *
+ * @sa c_lang_and_newer()
+ * @sa c_lang_oldest()
+ */
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
+c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
+  assert( exactly_one_bit_set( lang_id & ~LANGX_MASK ) );
+  return BITS_GT( lang_id );
+}
+
+/**
  * Gets the oldest language among \a lang_ids.
  *
  * @param lang_ids The bitwise-or of language(s).
  * @return Returns said language.
  *
- * @sa c_lang_and_later()
+ * @sa c_lang_and_newer()
+ * @sa c_lang_newer()
  * @sa c_lang_oldest_name()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
@@ -339,20 +370,6 @@ c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_lang_oldest_name( c_lang_id_t lang_ids ) {
   return c_lang_name( c_lang_oldest( lang_ids ) );
-}
-
-/**
- * Gets all the language(s) \a lang_id and later.
- *
- * @param lang_id The language.  Exactly one language must be set.
- * @return Returns the bitwise-or of all language(s) \a lang_id and later.
- *
- * @sa c_lang_oldest()
- */
-C_LANG_INLINE PJL_WARN_UNUSED_RESULT
-c_lang_id_t c_lang_and_later( c_lang_id_t lang_id ) {
-  assert( exactly_one_bit_set( lang_id & ~LANGX_MASK ) );
-  return BITS_GE( lang_id );
 }
 
 /**

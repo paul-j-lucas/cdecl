@@ -70,8 +70,21 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param N The integer.  Exactly one bit _must_ be set.
  * @return Returns said value.
+ *
+ * @sa #BITS_GT()
  */
 #define BITS_GE(N)                (~((N) - 1u))
+
+/**
+ * Gets a value where all bits that are greater than the one bit set in \a N
+ * are also set, e.g., `BITS_GE(00010000)` = `11100000`.
+ *
+ * @param N The integer.  Exactly one bit _must_ be set.
+ * @return Returns said value.
+ *
+ * @sa #BITS_GE()
+ */
+#define BITS_GT(N)                (~((N) | BITS_GE(N)))
 
 /**
  * Embeds the given statements into a compound statement block.
