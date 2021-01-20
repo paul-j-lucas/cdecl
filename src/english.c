@@ -67,18 +67,18 @@ static void c_ast_english_bit_width( c_ast_t const *ast, FILE *eout ) {
  * Helper function for c_ast_visitor_english() that prints a function-like
  * AST's parameters, if any.
  *
- * @param param The `c_ast_param` that is the first parameter to print.
+ * @param ast The AST to pring the parameters of.
  * @param eout The `FILE` to emit to.
  */
-static void c_ast_english_func_params( c_ast_param_t const *param,
-                                       FILE *eout ) {
-  assert( param != NULL );
+static void c_ast_english_func_params( c_ast_t const *ast, FILE *eout ) {
+  assert( ast != NULL );
+  assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
   assert( eout != NULL );
 
   FPUTC( '(', eout );
 
   bool comma = false;
-  for ( ; param != NULL; param = param->next ) {
+  FOREACH_PARAM( param, ast ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", eout );
 
@@ -170,10 +170,9 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       } // switch
 
       FPUTS( c_kind_name( ast->kind_id ), eout );
-      c_ast_param_t const *const param = c_ast_params( ast );
-      if ( param != NULL ) {
+      if ( c_ast_params_count( ast ) > 0 ) {
         FPUTC( ' ', eout );
-        c_ast_english_func_params( param, eout );
+        c_ast_english_func_params( ast, eout );
       }
       if ( ast->as.func.ret_ast != NULL )
         FPRINTF( eout, " %s ", L_RETURNING );
