@@ -81,6 +81,16 @@ _GL_INLINE_HEADER_BEGIN
 #define c_scope_data(SCOPE) \
   REINTERPRET_CAST( c_scope_data_t*, (SCOPE)->data )
 
+/**
+ * Convenience macro for iterating over all scopes.
+ *
+ * @param SCOPE The `c_scope_t` loop variable.
+ * @param BEGIN The scope to begin at.
+ * @param END The scope to end before.
+ */
+#define FOREACH_SCOPE(SCOPE,BEGIN,END) \
+  for ( c_scope_t const *SCOPE = (BEGIN); SCOPE != (END); SCOPE = SCOPE->next )
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**

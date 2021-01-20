@@ -74,8 +74,7 @@ static char const* scope_name_impl( char *name_buf, char const *name_end,
   name[0] = '\0';
   bool colon2 = false;
 
-  for ( c_scope_t const *scope = sname->head; scope != end_scope;
-        scope = scope->next ) {
+  FOREACH_SCOPE( scope, sname->head, end_scope ) {
     if ( true_or_set( &colon2 ) )
       STRCAT( name, "::" );
     STRCAT( name, c_scope_data( scope )->name );

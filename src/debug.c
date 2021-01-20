@@ -264,8 +264,7 @@ void c_sname_debug( c_sname_t const *sname, FILE *dout ) {
   if ( !c_sname_empty( sname ) ) {
     FPUTS( " (", dout );
     bool colon2 = false;
-    for ( c_scope_t const *scope = sname->head; scope != NULL;
-          scope = scope->next ) {
+    FOREACH_SCOPE( scope, sname->head, NULL ) {
       if ( true_or_set( &colon2 ) )
         FPUTS( "::", dout );
       c_type_t const *const t = &c_scope_data( scope )->type;

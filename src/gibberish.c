@@ -826,8 +826,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
       //
       //      namespace S { namespace T { typedef int I; } }
       //
-      for ( c_scope_t const *scope = sname->head; scope != sname->tail;
-            scope = scope->next ) {
+      FOREACH_SCOPE( scope, sname->head, sname->tail ) {
         scope_type = c_scope_data( scope )->type;
         if ( scope_type.base_tid == TB_SCOPE )
           scope_type.base_tid = TB_NAMESPACE;
