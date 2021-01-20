@@ -632,34 +632,34 @@ static void fl_elaborate_error( char const *file, int line,
                                 dym_kind_t dym_kinds, char const *format,
                                 ... ) {
   assert( format != NULL );
-  if ( !error_newlined ) {
-    EPUTS( ": " );
-    char const *const error_token = printable_token();
+  if ( error_newlined )
+    return;
 
-    print_debug_file_line( file, line );
+  EPUTS( ": " );
+  print_debug_file_line( file, line );
 
-    if ( error_token != NULL )
-      EPRINTF( "\"%s\": ", error_token );
+  char const *const error_token = printable_token();
+  if ( error_token != NULL )
+    EPRINTF( "\"%s\": ", error_token );
 
-    va_list args;
-    va_start( args, format );
-    vfprintf( stderr, format, args );
-    va_end( args );
+  va_list args;
+  va_start( args, format );
+  vfprintf( stderr, format, args );
+  va_end( args );
 
-    if ( error_token != NULL ) {
-      c_keyword_t const *const k =
-        c_keyword_find( error_token, c_lang_newer( opt_lang ), C_KW_CTX_ALL );
-      if ( k != NULL ) {
-        c_lang_id_t const oldest_lang = c_lang_oldest( k->lang_ids );
-        if ( oldest_lang > opt_lang )
-          EPRINTF( "; not a keyword until %s", c_lang_name( oldest_lang ) );
-      }
-      print_suggestions( dym_kinds, error_token );
+  if ( error_token != NULL ) {
+    c_keyword_t const *const k =
+      c_keyword_find( error_token, c_lang_newer( opt_lang ), C_KW_CTX_ALL );
+    if ( k != NULL ) {
+      c_lang_id_t const oldest_lang = c_lang_oldest( k->lang_ids );
+      if ( oldest_lang > opt_lang )
+        EPRINTF( "; not a keyword until %s", c_lang_name( oldest_lang ) );
     }
-
-    EPUTC( '\n' );
-    error_newlined = true;
+    print_suggestions( dym_kinds, error_token );
   }
+
+  EPUTC( '\n' );
+  error_newlined = true;
 }
 
 /**
