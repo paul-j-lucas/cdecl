@@ -1494,7 +1494,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
   size_t const n_params = c_ast_params_count( ast );
   if ( n_params == 0 ) {
     print_error( &ast->loc,
-      "%s %s must have an parameter\n", H_USER_DEFINED, L_LITERAL
+      "%s %s must have a parameter\n", H_USER_DEFINED, L_LITERAL
     );
     return false;
   }
