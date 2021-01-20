@@ -524,6 +524,7 @@ static bool c_ast_check_func_c( c_ast_t const *ast ) {
     );
     return false;
   }
+
   return true;
 }
 
