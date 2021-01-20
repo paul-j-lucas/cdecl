@@ -311,6 +311,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
         return false;
       }
       break;
+    case K_APPLE_BLOCK:
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_FUNCTION:
@@ -1873,6 +1874,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
           H_USER_DEFINED, L_LITERAL
         );
       PJL_FALLTHROUGH;
+
     case K_APPLE_BLOCK:
     case K_FUNCTION:
     case K_OPERATOR: {
