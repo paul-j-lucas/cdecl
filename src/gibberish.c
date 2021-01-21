@@ -74,7 +74,7 @@ static void g_print_space_ast_name( g_state_t*, c_ast_t const* );
  *
  * @param g The `g_state` to use.
  */
-static inline void g_print_space( g_state_t *g ) {
+static inline void g_print_space_once( g_state_t *g ) {
   if ( g->skip_name_for_using ) {
     //
     // If we haven't skipped printing the type name for `using` yet, don't
@@ -218,7 +218,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
         g_impl( g, ast->as.parent.of_ast );
       if ( false_set( &g->postfix ) ) {
         if ( g->gib_kind != C_GIB_CAST )
-          g_print_space( g );
+          g_print_space_once( g );
         g_print_postfix( g, ast );
       }
       if ( cv_qual_tid != TS_NONE )
@@ -336,7 +336,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
         //
         // i.e., the '*', '&', or "&&" adjacent to the type.
         //
-        g_print_space( g );
+        g_print_space_once( g );
       }
       if ( !g->postfix )
         g_print_qual_name( g, ast );
@@ -659,7 +659,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
       break;
     case K_REFERENCE:
       if ( opt_alt_tokens ) {
-        g_print_space( g );
+        g_print_space_once( g );
         FPRINTF( g->gout, "%s ", L_BITAND );
       } else {
         FPUTC( '&', g->gout );
@@ -667,7 +667,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
       break;
     case K_RVALUE_REFERENCE:
       if ( opt_alt_tokens ) {
-        g_print_space( g );
+        g_print_space_once( g );
         FPRINTF( g->gout, "%s ", L_AND );
       } else {
         FPUTS( "&&", g->gout );
@@ -681,7 +681,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
     FPUTS( c_type_id_name( qual_tid ), g->gout );
     if ( (g->gib_kind & (C_GIB_DECL | C_GIB_TYPEDEF)) != C_GIB_NONE ) {
       //
-      // If there was a qualifier, we need to print a space after it for
+      // If there was a qualifier, we always need to print a space after it for
       // declarations and typedefs, e.g.:
       //
       //      char *const p;
@@ -723,7 +723,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       FPUTS( c_ast_local_name( ast ), g->gout );
       break;
     case K_OPERATOR: {
-      g_print_space( g );
+      g_print_space_once( g );
       if ( !c_ast_empty_name( ast ) )
         FPRINTF( g->gout, "%s::", c_ast_full_name( ast ) );
       char const *const token = c_oper_token_c( ast->as.oper.oper_id );
@@ -736,14 +736,14 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       // Do nothing since these don't have names.
       break;
     case K_USER_DEF_LITERAL:
-      g_print_space( g );
+      g_print_space_once( g );
       if ( c_ast_count_name( ast ) > 1 )
         FPRINTF( g->gout, "%s::", c_ast_scope_name( ast ) );
       FPRINTF( g->gout, "%s\"\" %s", L_OPERATOR, c_ast_local_name( ast ) );
       break;
     default:
       if ( !c_ast_empty_name( ast ) ) {
-        g_print_space( g );
+        g_print_space_once( g );
         g_print_ast_name( g, ast );
       }
       break;
