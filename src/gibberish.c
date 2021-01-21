@@ -52,7 +52,6 @@
 struct g_state {
   c_gib_kind_t    gib_kind;             ///< Kind of gibberish to print.
   FILE           *gout;                 ///< Where to write the gibberish.
-  c_ast_t const  *leaf_ast;             ///< Leaf of AST.
   c_ast_t const  *root_ast;             ///< Root of AST.
   bool            postfix;              ///< Doing postfix gibberish?
   bool            printed_space;        ///< Printed a space yet?
@@ -86,19 +85,6 @@ static inline void g_print_space( g_state_t *g ) {
   }
   if ( false_set( &g->printed_space ) )
     FPUTC( ' ', g->gout );
-}
-
-/**
- * Sets the leaf AST.
- *
- * @param g The `g_state` to use.
- * @param ast The AST to set the leaf to.
- */
-static inline void g_set_leaf( g_state_t *g, c_ast_t const *ast ) {
-  assert( g != NULL );
-  assert( g->leaf_ast == NULL );
-  assert( ast != NULL );
-  g->leaf_ast = ast;
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -234,10 +220,7 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       if ( false_set( &g->postfix ) ) {
         if ( g->gib_kind != C_GIB_CAST )
           g_print_space( g );
-        if ( ast == g->root_ast && g->leaf_ast != NULL )
-          g_print_postfix( g, g->leaf_ast->parent_ast );
-        else
-          g_print_postfix( g, ast );
+        g_print_postfix( g, ast );
       }
       if ( cv_qual_tid != TS_NONE )
         FPRINTF( g->gout, " %s", c_type_id_name( cv_qual_tid ) );
@@ -268,7 +251,6 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       g_print_space_ast_name( g, ast );
       if ( ast->as.builtin.bit_width > 0 )
         FPRINTF( g->gout, " : %u", ast->as.builtin.bit_width );
-      g_set_leaf( g, ast );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
@@ -313,13 +295,11 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
         FPRINTF( g->gout, " %s", c_type_id_name( cv_qual_tid ) );
 
       g_print_space_ast_name( g, ast );
-      g_set_leaf( g, ast );
       break;
 
     case K_NAME:
       if ( !c_ast_empty_name( ast ) && g->gib_kind != C_GIB_CAST )
         g_print_ast_name( g, ast );
-      g_set_leaf( g, ast );
       break;
 
     case K_NONE:                        // should not occur in completed AST
@@ -401,13 +381,11 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
       g_print_space_ast_name( g, ast );
       if ( ast->as.tdef.bit_width > 0 )
         FPRINTF( g->gout, " : %u", ast->as.tdef.bit_width );
-      g_set_leaf( g, ast );
       break;
     }
 
     case K_VARIADIC:
       FPUTS( L_ELLIPSIS, g->gout );
-      g_set_leaf( g, ast );
       break;
   } // switch
 }
