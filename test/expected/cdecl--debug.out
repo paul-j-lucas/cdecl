@@ -392,7 +392,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
   ]
 }
 
-func_decl_c_ast ::= decl2_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_tid_opt = {
+func_decl_c_ast ::= decl2_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_c_tid_opt = {
   (type_c_ast) = {
     sname = "f" (none),
     unique_id = 644,
@@ -456,7 +456,7 @@ func_decl_c_ast ::= decl2_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list
   func_qualifier_list_c_tid_opt = "" (0x2),
   func_ref_qualifier_c_tid_opt = "" (0x2),
   noexcept_c_tid_opt = "" (0x2),
-  func_equals_tid_opt = "" (0x2),
+  func_equals_c_tid_opt = "" (0x2),
   func_decl_c_ast = {
     sname = "f" (none),
     unique_id = 647,
