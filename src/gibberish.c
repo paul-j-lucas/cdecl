@@ -102,19 +102,6 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_gib_kind_t gib_kind,
   assert( ast != NULL );
   assert( gout != NULL );
 
-  switch ( ast->align.kind ) {
-    case C_ALIGNAS_NONE:
-      break;
-    case C_ALIGNAS_EXPR:
-      FPRINTF( gout, "%s(%u) ", alignas_lang(), ast->align.as.expr );
-      break;
-    case C_ALIGNAS_TYPE:
-      FPRINTF( gout, "%s(", alignas_lang() );
-      c_ast_gibberish( ast->align.as.type_ast, C_GIB_DECL, gout );
-      FPUTS( ") ", gout );
-      break;
-  } // switch
-
   g_state_t g;
   g_init( &g, gib_kind, printing_typedef, gout );
   g_impl( &g, ast );
@@ -754,6 +741,20 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
 
 void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t gib_kind, FILE *gout ) {
   assert( (gib_kind & (C_GIB_CAST | C_GIB_DECL)) != C_GRAPH_NONE );
+
+  switch ( ast->align.kind ) {
+    case C_ALIGNAS_NONE:
+      break;
+    case C_ALIGNAS_EXPR:
+      FPRINTF( gout, "%s(%u) ", alignas_lang(), ast->align.as.expr );
+      break;
+    case C_ALIGNAS_TYPE:
+      FPRINTF( gout, "%s(", alignas_lang() );
+      c_ast_gibberish( ast->align.as.type_ast, C_GIB_DECL, gout );
+      FPUTS( ") ", gout );
+      break;
+  } // switch
+
   c_ast_gibberish_impl( ast, gib_kind, /*printing_typedef=*/false, gout );
 }
 
