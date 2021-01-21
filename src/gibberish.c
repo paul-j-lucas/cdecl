@@ -441,10 +441,9 @@ static void g_print_ast_func_params( g_state_t const *g, c_ast_t const *ast ) {
   FOREACH_PARAM( param, ast ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", g->gout );
-    c_ast_t const *const param_ast = c_param_ast( param );
     g_state_t params_g;
     g_init( &params_g, g->gib_kind, /*printing_typedef=*/false, g->gout );
-    g_print_ast( &params_g, param_ast );
+    g_print_ast( &params_g, c_param_ast( param ) );
   } // for
   FPUTC( ')', g->gout );
 }
