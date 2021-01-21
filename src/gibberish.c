@@ -425,6 +425,32 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
 }
 
 /**
+ * Helper function for g_print_ast() that prints a function-like AST's
+ * parameters, if any.
+ *
+ * @param g The `g_state` to use.
+ * @param ast The AST that is <code>\ref K_ANY_FUNCTION_LIKE</code> whose
+ * parameters to print.
+ */
+static void g_print_ast_func_params( g_state_t const *g, c_ast_t const *ast ) {
+  assert( g != NULL );
+  assert( ast != NULL );
+  assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
+
+  bool comma = false;
+  FPUTC( '(', g->gout );
+  FOREACH_PARAM( param, ast ) {
+    if ( true_or_set( &comma ) )
+      FPUTS( ", ", g->gout );
+    c_ast_t const *const param_ast = c_param_ast( param );
+    g_state_t params_g;
+    g_init( &params_g, g->gib_kind, /*printing_typedef=*/false, g->gout );
+    g_print_ast( &params_g, param_ast );
+  } // for
+  FPUTC( ')', g->gout );
+}
+
+/**
  * Prints either the full or local name of \a ast based on whether we're
  * emitting the gibberish for a `typedef` since it can't have a scoped name.
  *
@@ -460,32 +486,6 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
     FPUTS( c_ast_local_name( ast ), g->gout );
   else
     FPUTS( c_ast_full_name( ast ), g->gout );
-}
-
-/**
- * Helper function for g_print_ast() that prints a function-like AST's
- * parameters, if any.
- *
- * @param g The `g_state` to use.
- * @param ast The AST that is <code>\ref K_ANY_FUNCTION_LIKE</code> whose
- * parameters to print.
- */
-static void g_print_func_params( g_state_t const *g, c_ast_t const *ast ) {
-  assert( g != NULL );
-  assert( ast != NULL );
-  assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
-
-  bool comma = false;
-  FPUTC( '(', g->gout );
-  FOREACH_PARAM( param, ast ) {
-    if ( true_or_set( &comma ) )
-      FPUTS( ", ", g->gout );
-    c_ast_t const *const param_ast = c_param_ast( param );
-    g_state_t params_g;
-    g_init( &params_g, g->gib_kind, /*printing_typedef=*/false, g->gout );
-    g_print_ast( &params_g, param_ast );
-  } // for
-  FPUTC( ')', g->gout );
 }
 
 /**
@@ -588,7 +588,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
-      g_print_func_params( g, ast );
+      g_print_ast_func_params( g, ast );
       break;
     case K_USER_DEF_CONVERSION:
       FPUTS( "()", g->gout );
