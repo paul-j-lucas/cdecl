@@ -679,9 +679,17 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
 
   if ( qual_tid != TS_NONE ) {
     FPUTS( c_type_id_name( qual_tid ), g->gout );
-    if ( (g->gib_kind & (C_GIB_DECL | C_GIB_TYPEDEF)) != C_GIB_NONE )
+    if ( (g->gib_kind & (C_GIB_DECL | C_GIB_TYPEDEF)) != C_GIB_NONE ) {
+      //
+      // If there was a qualifier, we need to print a space after it for
+      // declarations and typedefs, e.g.:
+      //
+      //      char *const p;
+      //                 ^
       FPUTC( ' ', g->gout );
+    }
   }
+
   if ( !c_ast_empty_name( ast ) && g->gib_kind != C_GIB_CAST )
     g_print_ast_name( g, ast );
 }
