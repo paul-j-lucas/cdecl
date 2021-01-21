@@ -839,14 +839,10 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
   else if ( printing_using )
     FPRINTF( gout, "%s %s = ", L_USING, c_sname_local_name( sname ) );
 
-  if ( gib_kind == C_GIB_TYPEDEF ) {
-    c_ast_gibberish_impl( tdef->ast, C_GIB_TYPEDEF, printing_typedef, gout );
-  } else {
-    c_ast_gibberish_impl(
-      tdef->ast, printing_using ? C_GIB_USING : C_GIB_TYPEDEF,
-      /*printing_typedef=*/false, gout
-    );
-  }
+  c_ast_gibberish_impl(
+    tdef->ast, printing_using ? C_GIB_USING : C_GIB_TYPEDEF,
+    printing_typedef, gout
+  );
 
   if ( scope_close_braces_to_print > 0 ) {
     FPUTC( ';', gout );
