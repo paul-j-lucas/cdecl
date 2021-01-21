@@ -52,7 +52,6 @@
 struct g_state {
   c_gib_kind_t    gib_kind;             ///< Kind of gibberish to print.
   FILE           *gout;                 ///< Where to write the gibberish.
-  c_ast_t const  *root_ast;             ///< Root of AST.
   bool            postfix;              ///< Doing postfix gibberish?
   bool            printed_space;        ///< Printed a space yet?
   bool            printing_typedef;     ///< Printing a `typedef`?
@@ -62,7 +61,7 @@ typedef struct g_state g_state_t;
 
 // local functions
 static void g_impl( g_state_t*, c_ast_t const* );
-static void g_init( g_state_t*, c_ast_t const*, c_gib_kind_t, bool, FILE* );
+static void g_init( g_state_t*, c_gib_kind_t, bool, FILE* );
 static void g_print_ast_name( g_state_t*, c_ast_t const* );
 static void g_print_postfix( g_state_t*, c_ast_t const* );
 static void g_print_qual_name( g_state_t*, c_ast_t const* );
@@ -117,7 +116,7 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_gib_kind_t gib_kind,
   } // switch
 
   g_state_t g;
-  g_init( &g, ast, gib_kind, printing_typedef, gout );
+  g_init( &g, gib_kind, printing_typedef, gout );
   g_impl( &g, ast );
 }
 
@@ -394,23 +393,19 @@ static void g_impl( g_state_t *g, c_ast_t const *ast ) {
  * Initializes a `g_state`.
  *
  * @param g The `g_state` to initialize.
- * @param root_ast The AST root.
  * @param gib_kind The kind of gibberish to print.
  * @param printing_typedef Printing a `typedef`?
  * @param gout The `FILE` to print it to.
  */
-static void g_init( g_state_t *g, c_ast_t const *root_ast,
-                    c_gib_kind_t gib_kind, bool printing_typedef,
+static void g_init( g_state_t *g, c_gib_kind_t gib_kind, bool printing_typedef,
                     FILE *gout ) {
   assert( g != NULL );
-  assert( root_ast != NULL );
   assert( gout != NULL );
 
   MEM_ZERO( g );
   g->gib_kind = gib_kind;
   g->gout = gout;
   g->printing_typedef = printing_typedef;
-  g->root_ast = root_ast;
   if ( gib_kind == C_GIB_USING )
     g->skip_name_for_using = true;
 }
@@ -500,9 +495,7 @@ static void g_print_func_params( g_state_t const *g, c_ast_t const *ast ) {
       FPUTS( ", ", g->gout );
     c_ast_t const *const param_ast = c_param_ast( param );
     g_state_t params_g;
-    g_init(
-      &params_g, param_ast, g->gib_kind, /*printing_typedef=*/false, g->gout
-    );
+    g_init( &params_g, g->gib_kind, /*printing_typedef=*/false, g->gout );
     g_impl( &params_g, param_ast );
   } // for
   FPUTC( ')', g->gout );
