@@ -50,12 +50,12 @@
  * arguments otherwise).
  */
 struct g_state {
-  c_gib_kind_t    gib_kind;             ///< Kind of gibberish to print.
-  FILE           *gout;                 ///< Where to write the gibberish.
-  bool            postfix;              ///< Doing postfix gibberish?
-  bool            printed_space;        ///< Printed a space yet?
-  bool            printing_typedef;     ///< Printing a `typedef`?
-  bool            skip_name_for_using;  ///< Skip type name for `using`?
+  c_gib_kind_t  gib_kind;               ///< Kind of gibberish to print.
+  FILE         *gout;                   ///< Where to write the gibberish.
+  bool          postfix;                ///< Doing postfix gibberish?
+  bool          printed_space;          ///< Printed a space yet?
+  bool          printing_typedef;       ///< Printing a `typedef`?
+  bool          skip_name_for_using;    ///< Skip type name for `using`?
 };
 typedef struct g_state g_state_t;
 
