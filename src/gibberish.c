@@ -398,8 +398,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 }
 
 /**
- * Helper function for g_print_ast() that prints an array's size as well as the
- * size for all child arrays, if any.
+ * Helper function for g_print_ast() that prints an array's size.
  *
  * @param g The `g_state` to use.
  * @param ast The AST that is a <code>\ref K_ARRAY</code> whose size to print.
