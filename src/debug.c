@@ -241,7 +241,9 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
 void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout ) {
   assert( list != NULL );
-  if ( !slist_empty( list ) ) {
+  if ( slist_empty( list ) ) {
+    FPUTS( "[]", dout );
+  } else {
     FPUTS( "[\n", dout );
     ++indent;
     bool comma = false;
@@ -253,8 +255,6 @@ void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout ) {
     --indent;
     FPUTC( '\n', dout );
     INDENT_PRINT( "]" );
-  } else {
-    FPUTS( "[]", dout );
   }
 }
 
