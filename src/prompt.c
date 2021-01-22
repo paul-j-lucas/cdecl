@@ -95,7 +95,7 @@ static inline bool have_genuine_gnu_readline( void ) {
  */
 PJL_WARN_UNUSED_RESULT
 static char* prompt_create( char suffix ) {
-  size_t prompt_len = strlen( CPPDECL ) + 1/*suffix*/ + 1/*space*/;
+  size_t prompt_len = strlen( CPPDECL "> " );
 
 #ifdef WITH_READLINE
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
