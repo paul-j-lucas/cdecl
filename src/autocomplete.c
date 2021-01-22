@@ -178,10 +178,13 @@ static char const *const SET_OPTIONS[] = {
    "alt-tokens",
  "noalt-tokens",
    "c89",
+   "c90",
    "c95",
    "c99",
    "c11",
+   "c17",
    "c18",
+   "c2x",
 // "c++",                               // too short
    "c++98",
    "c++03",
@@ -210,7 +213,8 @@ static char const *const SET_OPTIONS[] = {
  "nographs",
  "digraphs",
 "trigraphs",
-   "knr"
+   "knr",
+   "lang",
    "options",
    "prompt",
  "noprompt",
