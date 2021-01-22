@@ -822,7 +822,8 @@ TESTS+=	tests/2c_typedef_i.test \
 # C++ typedef & using error tests
 # ===============================
 #
-TESTS+=	tests/typedef_i+.test
+TESTS+=	tests/typedef_i+.test \
+	tests/typedef_iw3.test
 
 ###############################################################################
 

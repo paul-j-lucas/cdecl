@@ -22,6 +22,9 @@ Forward `enum`, `class`, `struct`, and `union` declarations are now supported:
     cdecl> explain struct S
     define S as struct S
 
+** Catching types having bit-field widths
+Types having bit-field widths are now correctly reported as errors.
+
 ** Fixed showing as `using`
 Fixed showing of types having qualified pointers as `using` declarations.
 

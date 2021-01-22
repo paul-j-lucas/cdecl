@@ -353,16 +353,22 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( c_type_is_tid_any( &ast->type, TB_VOID ) && ast->parent_ast == NULL ) {
-    print_error( &ast->loc, "variable of %s", L_VOID );
-    print_hint( "%s to %s", L_POINTER, L_VOID );
-    return false;
-  }
-
   if ( c_type_is_tid_any( &ast->type, TS_INLINE ) && opt_lang < LANG_CPP_17 ) {
     print_error( &ast->loc,
       "%s variables not supported in %s\n", L_INLINE, C_LANG_NAME()
     );
+    return false;
+  }
+
+  if ( c_type_is_tid_any( &ast->type, TS_TYPEDEF ) &&
+       ast->as.builtin.bit_width > 0 ) {
+    print_error( &ast->loc, "types can not have bit-field widths\n" );
+    return false;
+  }
+
+  if ( c_type_is_tid_any( &ast->type, TB_VOID ) && ast->parent_ast == NULL ) {
+    print_error( &ast->loc, "variable of %s", L_VOID );
+    print_hint( "%s to %s", L_POINTER, L_VOID );
     return false;
   }
 
