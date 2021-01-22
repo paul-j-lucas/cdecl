@@ -76,6 +76,7 @@ struct set_option {
 typedef struct set_option set_option_t;
 
 // local functions
+static bool set_lang_impl( char const* );
 static void set_trigraphs( bool, c_loc_t const*, char const*, c_loc_t const* );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -276,14 +277,32 @@ static void set_lang( bool enabled, c_loc_t const *opt_name_loc,
   assert( enabled );
   (void)opt_name_loc;
 
-  c_lang_id_t const new_lang_id = c_lang_find( opt_value );
+  if ( !set_lang_impl( opt_value ) )
+    print_error( opt_value_loc, "\"%s\": unknown language\n", opt_value );
+}
+
+/**
+ * Sets the current language.
+ *
+ * @param name The language name.
+ * @return Returns `true` only if \a name corresponds to a supported language
+ * and the language was set.
+ */
+static bool set_lang_impl( char const *name ) {
+  c_lang_id_t const new_lang_id = c_lang_find( name );
   if ( new_lang_id != LANG_NONE ) {
     c_lang_set( new_lang_id );
-    if ( opt_graph == C_GRAPH_TRI )
+    if ( opt_graph == C_GRAPH_TRI ) {
+      //
+      // Every time the language changes, re-set trigraph mode so the user is
+      // warned that trigraphs are not supported if the language is C++17 or
+      // later.
+      //
       set_trigraphs( /*enabled=*/true, NULL, NULL, NULL );
-  } else {
-    print_error( opt_value_loc, "\"%s\": unknown language\n", opt_value );
+    }
+    return true;
   }
+  return false;
 }
 
 /**
@@ -334,7 +353,7 @@ static void set_trigraphs( bool enabled, c_loc_t const *opt_name_loc,
   (void)opt_value;
   (void)opt_value_loc;
   opt_graph = enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
-  if ( opt_graph && opt_lang >= LANG_CPP_17 ) {
+  if ( enabled && opt_lang >= LANG_CPP_17 ) {
     print_warning( opt_name_loc,
       "trigraphs are no longer supported in %s\n", C_LANG_NAME()
     );
@@ -367,8 +386,8 @@ static bool strn_nohyphen_eq( char const *s1, char const *s2, size_t n ) {
 /**
  * Implements the cdecl `set` command.
  *
- * @param opt_name The name of the option to set. If null, displays the current
- * values of all options.
+ * @param opt_name The name of the option to set. If null or `"options"`,
+ * displays the current values of all options.
  * @param opt_name_loc The location of \a opt_name.
  * @param opt_value The option value, if any.
  * @param opt_value_loc The location of \a opt_value.
@@ -380,18 +399,11 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
     return;
   }
 
+  if ( set_lang_impl( opt_name ) )
+    return;
+
   assert( opt_name_loc != NULL );
   assert( opt_value == NULL || opt_value_loc != NULL );
-
-  c_lang_id_t const new_lang_id = c_lang_find( opt_name );
-  if ( new_lang_id != LANG_NONE ) {
-    c_lang_set( new_lang_id );
-    if ( opt_graph == C_GRAPH_TRI ) {
-      opt_name_loc = NULL;
-      set_trigraphs( /*enabled=*/true, opt_name_loc, NULL, NULL );
-    }
-    return;
-  }
 
   char const *const orig_name = opt_name;
   bool const is_no = strncmp( opt_name, "no", 2 ) == 0;
