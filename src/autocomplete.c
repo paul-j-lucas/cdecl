@@ -248,19 +248,19 @@ static char const *const * init_set_options( void ) {
   FOREACH_OPTION( opt ) {
     switch ( opt->type ) {
       case SET_AFF_ONLY:
-        *(p++) = opt->name;
+        *(p++) = CONST_CAST( char*, opt->name );
         break;
 
       case SET_TOGGLE:
-        *(p++) = opt->name;
+        *(p++) = CONST_CAST( char*, opt->name );
         PJL_FALLTHROUGH;
 
       case SET_NEG_ONLY:
         *p = free_later(
           MALLOC( char*, 2/*no*/ + strlen( opt->name ) + 1/*NULL*/ )
         );
-        strcpy( (*p) + 0, "no" );
-        strcpy( (*p) + 2, opt->name );
+        strcpy( *p + 0, "no" );
+        strcpy( *p + 2, opt->name );
         ++p;
         break;
     } // switch
