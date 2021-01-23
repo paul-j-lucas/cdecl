@@ -232,6 +232,17 @@ struct c_lang_lit {
  */
 #define C_LANG_NAME()             c_lang_name( opt_lang )
 
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * A mapping between a language name and its corresponding `c_lang_id_t`.
+ */
+struct c_lang {
+  char const   *name;                   ///< Language name.
+  bool          is_alias;               ///< Alias for another language name?
+  c_lang_id_t   lang_id;                ///< Language bit.
+};
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -312,21 +323,10 @@ char const* c_lang_literal( c_lang_lit_t const lang_lit[const] );
  * @return Returns said name.
  *
  * @sa c_lang_find()
- * @sa c_lang_names()
  * @sa c_lang_oldest_name();
  */
 PJL_WARN_UNUSED_RESULT
 char const* c_lang_name( c_lang_id_t lang_id );
-
-/**
- * Gets a comma-separated string of all supported language names.
- *
- * @return Returns said string.
- *
- * @sa c_lang_name()
- */
-PJL_WARN_UNUSED_RESULT
-char const* c_lang_names( void );
 
 /**
  * Gets the bitwise-or of language(s) that are newer than \a lang_id.
@@ -342,6 +342,28 @@ c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
   assert( exactly_one_bit_set( lang_id & ~LANGX_MASK ) );
   return BITS_GT( lang_id );
 }
+
+/**
+ * Iterates to the next C/C++ language.
+ *
+ * @param lang A pointer to the previous language. For the first iteration,
+ * NULL should be passed.
+ * @return Returns the next C/C++ language or null for none.
+ *
+ * @sa #FOREACH_LANG
+ */
+PJL_WARN_UNUSED_RESULT
+c_lang_t const* c_lang_next( c_lang_t const *lang );
+
+/**
+ * Convenience macro for iterating over all languages.
+ *
+ * @param LANG The `c_lang` loop variable.
+ *
+ * @sa c_lang_next()
+ */
+#define FOREACH_LANG(LANG) \
+  for ( c_lang_t const *LANG = NULL; (LANG = c_lang_next( LANG )) != NULL; )
 
 /**
  * Gets the oldest language among \a lang_ids.

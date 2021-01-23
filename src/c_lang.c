@@ -45,15 +45,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A mapping between a language name and its corresponding `c_lang_id_t`.
- */
-struct c_lang {
-  char const   *name;                   ///< Language name.
-  c_lang_id_t   lang_id;                ///< Language bit.
-};
-typedef struct c_lang c_lang_t;
-
-/**
  * Array of `c_lang` for all supported languages. The last entry is
  * `{ NULL, LANG_NONE }`.
  */
@@ -61,29 +52,29 @@ static c_lang_t const C_LANG[] = {
   //
   // If this array is modified, also check SET_OPTIONS[] in autocomplete.c.
   //
-  { "CK&R",    LANG_C_KNR   },          // synonym for "knr"
-  { "CKNR",    LANG_C_KNR   },          // synonym for "knr"
-  { "K&R",     LANG_C_KNR   },          // synonym for "knr"
-  { "K&RC",    LANG_C_KNR   },          // synonym for "knr"
-  { "KNR",     LANG_C_KNR   },
-  { "KNRC",    LANG_C_KNR   },          // synonym for "knr"
-  { "C",       LANG_C_NEW   },
-  { "C89",     LANG_C_89,   },
-  { "C90",     LANG_C_89,   },          // synonym for "C89"
-  { "C95",     LANG_C_95    },
-  { "C99",     LANG_C_99    },
-  { "C11",     LANG_C_11    },
-  { "C17",     LANG_C_17    },
-  { "C18",     LANG_C_17    },          // synonym for "C17"
-  { "C2X",     LANG_C_2X    },
-  { "C++",     LANG_CPP_NEW },
-  { "C++98",   LANG_CPP_98  },
-  { "C++03",   LANG_CPP_03  },
-  { "C++11",   LANG_CPP_11  },
-  { "C++14",   LANG_CPP_14  },
-  { "C++17",   LANG_CPP_17  },
-  { "C++20",   LANG_CPP_20  },
-  { NULL,      LANG_NONE    },
+  { "CK&R",   true,   LANG_C_KNR   },
+  { "CKNR",   true,   LANG_C_KNR   },
+  { "K&R",    true,   LANG_C_KNR   },
+  { "K&RC",   false,  LANG_C_KNR   },
+  { "KNR",    true,   LANG_C_KNR   },
+  { "KNRC",   true,   LANG_C_KNR   },
+  { "C",      false,  LANG_C_NEW   },
+  { "C89",    false,  LANG_C_89,   },
+  { "C90",    true,   LANG_C_89,   },
+  { "C95",    false,  LANG_C_95    },
+  { "C99",    false,  LANG_C_99    },
+  { "C11",    false,  LANG_C_11    },
+  { "C17",    false,  LANG_C_17    },
+  { "C18",    true,   LANG_C_17    },
+  { "C2X",    false,  LANG_C_2X    },
+  { "C++",    false,  LANG_CPP_NEW },
+  { "C++98",  false,  LANG_CPP_98  },
+  { "C++03",  false,  LANG_CPP_03  },
+  { "C++11",  false,  LANG_CPP_11  },
+  { "C++14",  false,  LANG_CPP_14  },
+  { "C++17",  false,  LANG_CPP_17  },
+  { "C++20",  false,  LANG_CPP_20  },
+  { NULL,     false,  LANG_NONE    },
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -131,29 +122,13 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
   } // switch
 }
 
-char const* c_lang_names( void ) {
-  static char *names;
-
-  if ( names == NULL ) {
-    size_t names_len = 1;               // for trailing NULL
-    for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
-      if ( lang > C_LANG )
-        names_len += 2;                 // ", "
-      names_len += strlen( lang->name );
-    } // for
-
-    names = free_later( MALLOC( char, names_len ) );
-    names[0] = '\0';
-
-    char *s = names;
-    for ( c_lang_t const *lang = C_LANG; lang->name != NULL; ++lang ) {
-      if ( s > names )
-        s = strcpy_end( s, ", " );
-      s = strcpy_end( s, lang->name );
-    } // for
-  }
-
-  return names;
+PJL_WARN_UNUSED_RESULT
+c_lang_t const* c_lang_next( c_lang_t const *lang ) {
+  if ( lang == NULL )
+    lang = C_LANG;
+  else if ( (++lang)->name == NULL )
+    lang = NULL;
+  return lang;
 }
 
 void c_lang_set( c_lang_id_t lang_id ) {

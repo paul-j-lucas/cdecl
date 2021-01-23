@@ -334,21 +334,46 @@ static color_when_t parse_opt_color_when( char const *when ) {
 /**
  * Parses a language name.
  *
- * @param s The null-terminated string to parse.
- * @return Returns the <code>\ref c_lang_id_t</code> corresponding to \a s.
+ * @param lang_name The null-terminated name to parse.
+ * @return Returns the <code>\ref c_lang_id_t</code> corresponding to \a
+ * lang_name.
  */
 PJL_WARN_UNUSED_RESULT
-static c_lang_id_t parse_opt_lang( char const *s ) {
-  assert( s != NULL );
+static c_lang_id_t parse_opt_lang( char const *lang_name ) {
+  assert( lang_name != NULL );
 
-  c_lang_id_t const lang_id = c_lang_find( s );
+  c_lang_id_t const lang_id = c_lang_find( lang_name );
   if ( lang_id != LANG_NONE )
     return lang_id;
 
+  size_t names_len = 1;                 // for trailing NULL
+
+  bool comma = false;                   // pre-flight to calculate buffer size
+  FOREACH_LANG( lang ) {
+    if ( lang->is_alias )
+      continue;
+    if ( true_or_set( &comma ) )
+      names_len += 2;                   // ", "
+    names_len += strlen( lang->name );
+  } // for
+
+  char *const names = free_later( MALLOC( char, names_len ) );
+  names[0] = '\0';
+
+  comma = false;
+  char *s = names;
+  FOREACH_LANG( lang ) {
+    if ( lang->is_alias )
+      continue;
+    if ( true_or_set( &comma ) )
+      s = strcpy_end( s, ", " );
+    s = strcpy_end( s, lang->name );
+  } // for
+
   char opt_buf[ OPT_BUF_SIZE ];
   PMESSAGE_EXIT( EX_USAGE,
-    "\"%s\": invalid value for %s; must be one of:\n\t%s\n",
-    s, format_opt( 'x', opt_buf, sizeof opt_buf ), c_lang_names()
+    "\"%s\": invalid value for %s; must be one of: %s\n",
+    lang_name, format_opt( 'x', opt_buf, sizeof opt_buf ), names
   );
 }
 
