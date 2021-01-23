@@ -231,7 +231,7 @@ static char* command_generator( char const *text, int state ) {
  * @return Returns a pointer to an array of all `set` option strings.
  */
 PJL_WARN_UNUSED_RESULT
-static char const *const * init_set_options( void ) {
+static char const* const* init_set_options( void ) {
   size_t set_options_size = 1;          // for terminating pointer to NULL
 
   // pre-flight to calculate array size
