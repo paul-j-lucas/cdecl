@@ -235,8 +235,10 @@ static char const *const * init_set_options( void ) {
   size_t set_options_size = 1;          // for terminating pointer to NULL
 
   // pre-flight to calculate array size
-  FOREACH_OPTION( opt )
-    set_options_size += 1 + (opt->type == SET_TOGGLE /* for "no" version */);
+  FOREACH_OPTION( opt ) {
+    set_options_size += 1
+      + (unsigned)(opt->type == SET_TOGGLE /* for "no" version */);
+  } // for
   FOREACH_LANG( lang ) {
     if ( !lang->is_alias )
       ++set_options_size;
