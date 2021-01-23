@@ -257,7 +257,7 @@ static char const *const * init_set_options( void ) {
 
       case SET_NEG_ONLY:
         *p = free_later(
-          MALLOC( char*, 2/*no*/ + strlen( opt->name ) + 1/*NULL*/ )
+          MALLOC( char, 2/*no*/ + strlen( opt->name ) + 1/*NULL*/ )
         );
         strcpy( *p + 0, "no" );
         strcpy( *p + 2, opt->name );
