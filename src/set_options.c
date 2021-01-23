@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/set.c
+**      src/set_options.c
 **
 **      Copyright (C) 2017-2021  Paul J. Lucas, et al.
 **

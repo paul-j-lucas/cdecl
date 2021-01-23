@@ -54,7 +54,7 @@ cdecl_SOURCES =	parser.y \
 		print.c print.h \
 		prompt.c prompt.h \
 		red_black.c red_black.h \
-		set.c \
+		set_options.c \
 		slist.c slist.h \
 		types.h \
 		util.c util.h
