@@ -248,11 +248,11 @@ static char const *const * init_set_options( void ) {
   FOREACH_OPTION( opt ) {
     switch ( opt->type ) {
       case SET_AFF_ONLY:
-        *(p++) = free_later( check_strdup( opt->name ) );
+        *(p++) = opt->name;
         break;
 
       case SET_TOGGLE:
-        *(p++) = free_later( check_strdup( opt->name ) );
+        *(p++) = opt->name;
         PJL_FALLTHROUGH;
 
       case SET_NEG_ONLY:
