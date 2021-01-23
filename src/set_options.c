@@ -20,11 +20,12 @@
 
 /**
  * @file
- * Defines the function that implements the cdecl `set` command.
+ * Defines types and functions that implement the cdecl `set` command.
  */
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "set_options.h"
 #include "c_lang.h"
 #include "options.h"
 #include "print.h"
@@ -42,42 +43,54 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * The signature for a `set` option function.
- *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option token.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
- */
-typedef void (*set_option_fn_t)( bool enabled, c_loc_t const *opt_name_loc,
-                                 char const *opt_value,
-                                 c_loc_t const *opt_value_loc );
-
-/**
- * cdecl `set` option type.
- */
-enum set_option_type {
-  SET_TOGGLE,                           ///< Toggle: `foo` & `nofoo`.
-  SET_AFF_ONLY,                         ///< Affirmative only, e.g., `foo`.
-  SET_NEG_ONLY                          ///< Negative only, e.g., `nofoo`.
-};
-typedef enum set_option_type set_option_type_t;
-
-/**
- * cdecl `set` option.
- */
-struct set_option {
-  char const       *name;               ///< Option name.
-  set_option_type_t type;               ///< Option type.
-  bool              takes_value;        ///< Takes a value?
-  set_option_fn_t   set_fn;             ///< Set function.
-};
-typedef struct set_option set_option_t;
-
 // local functions
+static void set_alt_tokens( bool, c_loc_t const*, char const*, c_loc_t const* );
+#ifdef YYDEBUG
+static void set_bison_debug( bool, c_loc_t const*, char const*, c_loc_t const* );
+#endif /* YYDEBUG */
+#ifdef ENABLE_CDECL_DEBUG
+static void set_debug( bool, c_loc_t const*, char const*, c_loc_t const* );
+#endif /* ENABLE_CDECL_DEBUG */
+static void set_digraphs( bool, c_loc_t const*, char const*, c_loc_t const* );
+static void set_east_const( bool, c_loc_t const*, char const*, c_loc_t const* );
+static void set_explain_by_default( bool, c_loc_t const*, char const*, c_loc_t const* );
+static void set_explicit_int( bool, c_loc_t const*, char const*, c_loc_t const* );
+#ifdef ENABLE_FLEX_DEBUG
+static void set_flex_debug( bool, c_loc_t const*, char const*, c_loc_t const* );
+#endif /* ENABLE_FLEX_DEBUG */
+static void set_lang( bool, c_loc_t const*, char const*, c_loc_t const* );
 static bool set_lang_impl( char const* );
+static void set_prompt( bool, c_loc_t const*, char const*, c_loc_t const* );
+static void set_semicolon( bool, c_loc_t const*, char const*, c_loc_t const* );
 static void set_trigraphs( bool, c_loc_t const*, char const*, c_loc_t const* );
+
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * cdecl `set` options.
+ */
+static set_option_t const SET_OPTIONS[] = {
+  { "alt-tokens",         SET_TOGGLE,   false,  &set_alt_tokens         },
+#ifdef YYDEBUG
+  { "bison-debug",        SET_TOGGLE,   false,  &set_bison_debug        },
+#endif /* YYDEBUG */
+#ifdef ENABLE_CDECL_DEBUG
+  { "debug",              SET_TOGGLE,   false,  &set_debug              },
+#endif /* ENABLE_CDECL_DEBUG */
+  { "digraphs",           SET_AFF_ONLY, false,  &set_digraphs           },
+  { "graphs",             SET_NEG_ONLY, false,  &set_digraphs           },
+  { "east-const",         SET_TOGGLE,   false,  &set_east_const         },
+  { "explain-by-default", SET_TOGGLE,   false,  &set_explain_by_default },
+  { "explicit-int",       SET_TOGGLE,   true,   &set_explicit_int       },
+#ifdef ENABLE_FLEX_DEBUG
+  { "flex-debug",         SET_TOGGLE,   false,  &set_flex_debug         },
+#endif /* ENABLE_FLEX_DEBUG */
+  { "lang",               SET_AFF_ONLY, true,   &set_lang               },
+  { "prompt",             SET_TOGGLE,   false,  &set_prompt             },
+  { "semicolon",          SET_TOGGLE,   false,  &set_semicolon          },
+  { "trigraphs",          SET_AFF_ONLY, false,  &set_trigraphs          },
+  { NULL,                 SET_TOGGLE,   false,  NULL                    }
+};
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -383,15 +396,15 @@ static bool strn_nohyphen_eq( char const *s1, char const *s2, size_t n ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-/**
- * Implements the cdecl `set` command.
- *
- * @param opt_name The name of the option to set. If null or `"options"`,
- * displays the current values of all options.
- * @param opt_name_loc The location of \a opt_name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
- */
+PJL_WARN_UNUSED_RESULT
+set_option_t const* option_next( set_option_t const *opt ) {
+  if ( opt == NULL )
+    opt = SET_OPTIONS;
+  else if ( (++opt)->name == NULL )
+    opt = NULL;
+  return opt;
+}
+
 void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc ) {
   if ( opt_name == NULL || strcmp( opt_name, "options" ) == 0 ) {
@@ -410,32 +423,6 @@ void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
   if ( is_no )
     opt_name += 2/*no*/;
   size_t const opt_name_len = strlen( opt_name );
-
-  static set_option_t const SET_OPTIONS[] = {
-    //
-    // If this array is modified, also check SET_OPTIONS[] in autocomplete.c.
-    //
-    { "alt-tokens",         SET_TOGGLE,   false,  &set_alt_tokens         },
-#ifdef YYDEBUG
-    { "bison-debug",        SET_TOGGLE,   false,  &set_bison_debug        },
-#endif /* YYDEBUG */
-#ifdef ENABLE_CDECL_DEBUG
-    { "debug",              SET_TOGGLE,   false,  &set_debug              },
-#endif /* ENABLE_CDECL_DEBUG */
-    { "digraphs",           SET_AFF_ONLY, false,  &set_digraphs           },
-    { "graphs",             SET_NEG_ONLY, false,  &set_digraphs           },
-    { "east-const",         SET_TOGGLE,   false,  &set_east_const         },
-    { "explain-by-default", SET_TOGGLE,   false,  &set_explain_by_default },
-    { "explicit-int",       SET_TOGGLE,   true,   &set_explicit_int       },
-#ifdef ENABLE_FLEX_DEBUG
-    { "flex-debug",         SET_TOGGLE,   false,  &set_flex_debug         },
-#endif /* ENABLE_FLEX_DEBUG */
-    { "lang",               SET_AFF_ONLY, true,   &set_lang               },
-    { "prompt",             SET_TOGGLE,   false,  &set_prompt             },
-    { "semicolon",          SET_TOGGLE,   false,  &set_semicolon          },
-    { "trigraphs",          SET_AFF_ONLY, false,  &set_trigraphs          },
-    { NULL,                 SET_TOGGLE,   false,  NULL                    }
-  };
 
   set_option_t const *found_opt = NULL;
   for ( set_option_t const *opt = SET_OPTIONS; opt->name != NULL; ++opt ) {

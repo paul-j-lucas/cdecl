@@ -52,6 +52,7 @@
 #include "literals.h"
 #include "options.h"
 #include "print.h"
+#include "set_options.h"
 #include "slist.h"
 #include "types.h"
 #include "util.h"
@@ -361,8 +362,6 @@ typedef struct show_type_info show_type_info_t;
 
 // extern functions
 extern void           print_help( char const* );
-extern void           set_option( char const*, c_loc_t const*,
-                                  char const*, c_loc_t const* );
 
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.

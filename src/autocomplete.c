@@ -29,6 +29,7 @@
 #include "c_lang.h"
 #include "literals.h"
 #include "options.h"
+#include "set_options.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -167,62 +168,6 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_NONE,              NULL                }
 };
 
-/**
- * cdecl options.
- */
-static char const *const SET_OPTIONS[] = {
-  //
-  // If this array is modified, also check C_LANG[] in c_lanc.c and
-  // SET_OPTIONS[] in set.c.
-  //
-   "alt-tokens",
- "noalt-tokens",
-   "c89",
-   "c90",
-   "c95",
-   "c99",
-   "c11",
-   "c17",
-   "c18",
-   "c2x",
-// "c++",                               // too short
-   "c++98",
-   "c++03",
-   "c++11",
-   "c++14",
-   "c++17",
-   "c++20",
-#ifdef YYDEBUG
-   "bison-debug",
- "nobison-debug",
-#endif /* YYDEBUG */
-#ifdef ENABLE_CDECL_DEBUG
-   "debug",
- "nodebug",
-#endif /* ENABLE_CDECL_DEBUG */
-   "east-const",
- "noeast-const",
-   "explain-by-default",
- "noexplain-by-default",
-   "explicit-int",
- "noexplicit-int",
-#ifdef ENABLE_FLEX_DEBUG
-   "flex-debug",
- "noflex-debug",
-#endif /* ENABLE_FLEX_DEBUG */
- "nographs",
- "digraphs",
-"trigraphs",
-   "knr",
-   "lang",
-   "options",
-   "prompt",
- "noprompt",
-   "semicolon",
- "nosemicolon",
-   NULL
-};
-
 // local functions
 PJL_WARN_UNUSED_RESULT
 static char*  command_generator( char const*, int );
@@ -277,6 +222,57 @@ static char* command_generator( char const *text, int state ) {
   } // for
 
   return NULL;
+}
+
+/**
+ * Creates and initializes an array of all `set` option strings to be used for
+ * autocompletion for the `set` command.
+ *
+ * @return Returns a pointer to an array of all `set` option strings.
+ */
+PJL_WARN_UNUSED_RESULT
+static char const *const * init_set_options( void ) {
+  size_t set_options_size = 1;          // for terminating pointer to NULL
+
+  // pre-flight to calculate array size
+  FOREACH_OPTION( opt )
+    set_options_size += 1 + (opt->type == SET_TOGGLE /* for "no" version */);
+  FOREACH_LANG( lang ) {
+    if ( !lang->is_alias )
+      ++set_options_size;
+  } // for
+
+  char **const set_options = free_later( MALLOC( char*, set_options_size ) );
+
+  char **p = set_options;
+  FOREACH_OPTION( opt ) {
+    switch ( opt->type ) {
+      case SET_AFF_ONLY:
+        *(p++) = free_later( check_strdup( opt->name ) );
+        break;
+
+      case SET_TOGGLE:
+        *(p++) = free_later( check_strdup( opt->name ) );
+        PJL_FALLTHROUGH;
+
+      case SET_NEG_ONLY:
+        *p = free_later(
+          MALLOC( char*, 2/*no*/ + strlen( opt->name ) + 1/*NULL*/ )
+        );
+        strcpy( (*p) + 0, "no" );
+        strcpy( (*p) + 2, opt->name );
+        ++p;
+        break;
+    } // switch
+  } // for
+  FOREACH_LANG( lang ) {
+    if ( !lang->is_alias )
+      *(p++) = check_strdup_tolower( lang->name );
+  } // for
+
+  *p = NULL;
+
+  return (char const*const*)set_options;
 }
 
 /**
@@ -365,7 +361,10 @@ static char* keyword_completion( char const *text, int state ) {
   // Special case: if it's the "set" command, complete options, not keywords.
   //
   if ( strcmp( command, L_SET_COMMAND ) == 0 ) {
-    for ( char const *option; (option = SET_OPTIONS[ index ]) != NULL; ) {
+    static char const *const *set_options;
+    if ( set_options == NULL )
+      set_options = init_set_options();
+    for ( char const *option; (option = set_options[ index ]) != NULL; ) {
       ++index;
       if ( strncmp( text, option, text_len ) == 0 )
         return check_strdup( option );

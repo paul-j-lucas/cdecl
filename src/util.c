@@ -129,6 +129,15 @@ char* check_strdup( char const *s ) {
   return s_dup;
 }
 
+char* check_strdup_tolower( char const *s ) {
+  if ( s == NULL )
+    return NULL;
+  char *const s_dup = MALLOC( char, strlen( s ) + 1/*NULL*/ );
+  for ( char *p = s_dup; (*p++ = (char)tolower( *s++ )); )
+    ;
+  return s_dup;
+}
+
 char* chrcpy_end( char *dst, char c ) {
   assert( dst != NULL );
   *dst = c;
