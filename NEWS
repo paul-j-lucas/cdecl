@@ -31,6 +31,9 @@ Fixed showing of types having qualified pointers as `using` declarations.
 ** More predefined types
 Added `constraint_handler_t` and `lconv`.
 
+** Fixed `char** f()` crash
+Explaining this declaration now works.
+
 
 * Changes in Cdecl 9.3
 

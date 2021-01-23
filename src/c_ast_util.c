@@ -200,10 +200,13 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
       case K_POINTER_TO_MEMBER:
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
-        PJL_IGNORE_RV(
-          c_ast_add_func_impl( ast->as.ptr_ref.to_ast, ret_ast, func_ast )
-        );
-        return ast;
+        if ( ast->depth > func_ast->depth ) {
+          PJL_IGNORE_RV(
+            c_ast_add_func_impl( ast->as.ptr_ref.to_ast, ret_ast, func_ast )
+          );
+          return ast;
+        }
+        break;
 
       case K_PLACEHOLDER:
         if ( ret_ast == ast )
@@ -318,10 +321,10 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast ) {
   assert( ast != NULL );
   c_ast_t *const rv_ast = c_ast_add_func_impl( ast, ret_ast, func_ast );
   assert( rv_ast != NULL );
-  if ( c_ast_empty_name( func_ast ) )
-    func_ast->sname = c_ast_take_name( ast );
+  if ( c_ast_empty_name( rv_ast ) )
+    rv_ast->sname = c_ast_take_name( ast );
   c_type_t const taken_type = c_ast_take_storage( func_ast->as.func.ret_ast );
-  c_type_or_eq( &func_ast->type, &taken_type );
+  c_type_or_eq( &rv_ast->type, &taken_type );
   return rv_ast;
 }
 

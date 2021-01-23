@@ -346,6 +346,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_en.test \
 	tests/explain_eta2i.test \
 	tests/explain_f_pi.test \
+	tests/explain_f_ppc.test \
 	tests/explain_fac_v-1.test \
 	tests/explain_fac_v.test \
 	tests/explain_facs3_v.test \
