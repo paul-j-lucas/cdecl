@@ -130,7 +130,7 @@ static size_t copy_commands( did_you_mean_t **const pdym ) {
 PJL_NOWARN_UNUSED_RESULT
 static size_t copy_keywords( did_you_mean_t **const pdym, bool copy_types ) {
   size_t count = 0;
-  for ( c_keyword_t const *k = NULL; (k = c_keyword_next( k )) != NULL; ) {
+  FOREACH_KEYWORD( k ) {
     if ( (k->lang_ids & opt_lang) != LANG_NONE ) {
       bool const is_base_type = c_type_id_part_id( k->type_id ) == TPID_BASE;
       if ( (copy_types && is_base_type) || (!copy_types && !is_base_type) ) {
