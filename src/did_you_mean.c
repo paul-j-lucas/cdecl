@@ -224,7 +224,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
     dym_size += copy_keywords( /*pdym=*/NULL, /*count_types=*/false );
   if ( (kinds & DYM_C_TYPES) != DYM_NONE )
     dym_size += copy_keywords( /*pdym=*/NULL, /*count_types=*/true )
-      + copy_typedefs( /*pdym=*/NULL );
+              + copy_typedefs( /*pdym=*/NULL );
 
   did_you_mean_t *const dym_array = MALLOC( did_you_mean_t, dym_size + 1 );
   did_you_mean_t *dym = dym_array;
