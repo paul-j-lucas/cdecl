@@ -41,6 +41,28 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**
+ * Used by copy_typedefs() and copy_typedef_visitor() to pass and return data.
+ */
+struct copy_typedef_visitor_data {
+  /// Pointer to a pointer to a candidate list or null to just get the count.
+  did_you_mean_t  **pdym;
+
+  size_t            count;              ///< The count.
+};
+typedef struct copy_typedef_visitor_data copy_typedef_visitor_data_t;
+
+/**
+ * The signature for a function passed to qsort().
+ *
+ * @param i_data A pointer to data.
+ * @param j_data A pointer to data.
+ * @return Returns an integer less than, equal to, or greater than 0, according
+ * to whether the data pointed to by \a i_data is less than, equal to, or
+ * greater than the data pointed to by \a j_data.
+ */
+typedef int (*qsort_cmp_fn_t)( void const *i_data, void const *j_data );
+
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
@@ -73,101 +95,70 @@ static inline bool is_similar_enough( dam_lev_t dam_lev_dist,
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Copies cdecl commands to the candidate list.
+ * Copies cdecl commands in the current language to the candidate list pointed
+ * to by \a pdym.  If \a pdym is null, only counts the number of commands.
  *
- * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer.
- * On return, it's incremented.
+ * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
+ * or null to just count commands, not copy.  If not null, on return, the
+ * pointed-to pointer is incremented.
+ * @return Returns said number of commands.
  */
-static void copy_commands( did_you_mean_t **const pdym ) {
+PJL_NOWARN_UNUSED_RESULT
+static size_t copy_commands( did_you_mean_t **const pdym ) {
+  size_t count = 0;
   for ( c_command_t const *c = CDECL_COMMANDS; c->literal != NULL; ++c ) {
-    if ( (c->lang_ids & opt_lang) != LANG_NONE )
-      (*pdym)++->token = check_strdup( c->literal );
+    if ( (c->lang_ids & opt_lang) != LANG_NONE ) {
+      if ( pdym != NULL )
+        (*pdym)++->token = check_strdup( c->literal );
+      ++count;
+    }
   } // for
+  return count;
 }
 
 /**
- * Copies C/C++ keywords to the candidate list.
+ * Copies C/C++ keywords in the current language to the candidate list pointed
+ * to by \a pdym.  If \a pdym is null, only counts the number of keywords.
  *
- * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer.
- * On return, it's incremented.
- * @param copy_types If `true`, copy only keywords that are types; if `false`,
- * copy only keywords that are not types.
+ * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
+ * or null to just count keywords, not copy.  If not null, on return, the
+ * pointed-to pointer is incremented.
+ * @param copy_types If `true`, copy (or count) only keywords that are types;
+ * if `false`, copy (or count) only keywords that are not types.
+ * @return Returns said number of keywords.
  */
-static void copy_keywords( did_you_mean_t **const pdym, bool copy_types ) {
+PJL_NOWARN_UNUSED_RESULT
+static size_t copy_keywords( did_you_mean_t **const pdym, bool copy_types ) {
+  size_t count = 0;
   for ( c_keyword_t const *k = NULL; (k = c_keyword_next( k )) != NULL; ) {
-    if ( (k->lang_ids & opt_lang) == LANG_NONE )
-      continue;
-    bool const is_base_type = c_type_id_part_id( k->type_id ) == TPID_BASE;
-    if ( (copy_types && is_base_type) || (!copy_types && !is_base_type) )
-      (*pdym)++->token = check_strdup( k->literal );
+    if ( (k->lang_ids & opt_lang) != LANG_NONE ) {
+      bool const is_base_type = c_type_id_part_id( k->type_id ) == TPID_BASE;
+      if ( (copy_types && is_base_type) || (!copy_types && !is_base_type) ) {
+        if ( pdym != NULL )
+          (*pdym)++->token = check_strdup( k->literal );
+        ++count;
+      }
+    }
   } // for
+  return count;
 }
 
 /**
  * A <code>\ref c_typedef</code> visitor function to copy names of types that
- * are only valid in the current language to the candidate list.
+ * are only valid in the current language to the candidate list pointed to 
  *
  * @param tdef The `c_typedef` to visit.
- * @param data A pointer to the current <code>\ref did_you_mean</code> pointer.
- * On return, it's incremented only if \a tdef was copied.
+ * @param data A pointer to a <code>\ref copy_typedef_visitor_data</code>.
  * @return Always returns `false`.
  */
 static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
   if ( (tdef->lang_ids & opt_lang) != LANG_NONE ) {
-    did_you_mean_t **const pdym = data;
-    char const *const name = c_ast_full_name( tdef->ast );
-    (*pdym)++->token = check_strdup( name );
-  }
-  return false;
-}
-
-/**
- * Counts the number of cdecl commands in the current language.
- *
- * @return Returns said number of commands.
- */
-PJL_WARN_UNUSED_RESULT
-static size_t count_commands( void ) {
-  size_t count = 0;
-  for ( c_command_t const *c = CDECL_COMMANDS; c->literal != NULL; ++c ) {
-    if ( (c->lang_ids & opt_lang) != LANG_NONE )
-      ++count;
-  } // for
-  return count;
-}
-
-/**
- * Counts the number of C/C++ keywords in the current language.
- *
- * @param count_types If `true`, count only keywords that are types; if
- * `false`, count only keywords that are not types.
- * @return Returns said number of keywords.
- */
-PJL_WARN_UNUSED_RESULT
-static size_t count_keywords( bool count_types ) {
-  size_t count = 0;
-  for ( c_keyword_t const *k = NULL; (k = c_keyword_next( k )) != NULL; ) {
-    if ( (k->lang_ids & opt_lang) == LANG_NONE )
-      continue;
-    bool const is_base_type = c_type_id_part_id( k->type_id ) == TPID_BASE;
-    if ( (count_types && is_base_type) || (!count_types && !is_base_type) )
-      ++count;
-  } // for
-  return count;
-}
-
-/**
- * A <code>\ref c_typedef</code> visitor function to count the number of types
- * that are only valid in the current language.
- *
- * @param tdef The <code>\ref c_typedef</code> to visit.
- * @param data A pointer to the current count.
- * @return Always returns `false`.
- */
-static bool count_typedef_visitor( c_typedef_t const *tdef, void *data ) {
-  if ( (tdef->lang_ids & opt_lang) != LANG_NONE ) {
-    size_t *const pcount = data;
-    ++*pcount;
+    copy_typedef_visitor_data_t *const ctvd = data;
+    if ( ctvd->pdym != NULL ) {
+      char const *const name = c_ast_full_name( tdef->ast );
+      (*ctvd->pdym)++->token = check_strdup( name );
+    }
+    ++ctvd->count;
   }
   return false;
 }
@@ -175,13 +166,30 @@ static bool count_typedef_visitor( c_typedef_t const *tdef, void *data ) {
 /**
  * Counts the number of `typedef`s that are only valid in the current language.
  *
+ * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
+ * or null to just count typedefs, not copy.  If not null, on return, the
+ * pointed-to pointer is incremented.
  * @return Returns said number of `typedef`s.
  */
+PJL_NOWARN_UNUSED_RESULT
+static size_t copy_typedefs( did_you_mean_t **const pdym ) {
+  copy_typedef_visitor_data_t ctvd = { pdym, 0 };
+  c_typedef_visit( &copy_typedef_visitor, &ctvd );
+  return ctvd.count;
+}
+
+/**
+ * Comparison function for two <code>\ref did_you_mean</code> objects.
+ *
+ * @param i_dym A pointer to the first <code>\ref did_you_mean</code>.
+ * @param j_dym A pointer to the second <code>\ref did_you_mean</code>.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a i_data is
+ * less than, equal to, or greater than \a j_data, respectively.
+ */
 PJL_WARN_UNUSED_RESULT
-static size_t count_typedefs( void ) {
-  size_t count = 0;
-  c_typedef_visit( &count_typedef_visitor, &count );
-  return count;
+static int dym_cmp( did_you_mean_t const *i_dym, did_you_mean_t const *j_dym ) {
+  int const cmp = (int)i_dym->dam_lev_dist - (int)j_dym->dam_lev_dist;
+  return cmp != 0 ? cmp : strcmp( i_dym->token, j_dym->token );
 }
 
 /**
@@ -193,22 +201,6 @@ static size_t count_typedefs( void ) {
 static void dym_free_tokens( did_you_mean_t const *dym ) {
   while ( dym->token != NULL )
     FREE( dym++->token );
-}
-
-/**
- * Comparison function for **qsort**(3) that compares two <code>\ref
- * did_you_mean</code> objects.
- *
- * @param i_data A pointer to the first <code>\ref did_you_mean</code>.
- * @param j_data A pointer to the second <code>\ref did_you_mean</code>.
- * @return Returns a number less than 0, 0, or greater than 0 if \a i_data is
- * less than, equal to, or greater than \a j_data, respectively.
- */
-static int qsort_did_you_mean_cmp( void const *i_data, void const *j_data ) {
-  did_you_mean_t const *const i_dym = i_data;
-  did_you_mean_t const *const j_dym = j_data;
-  int const cmp = (int)i_dym->dam_lev_dist - (int)j_dym->dam_lev_dist;
-  return cmp != 0 ? cmp : strcmp( i_dym->token, j_dym->token );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -225,15 +217,16 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
     return NULL;
   assert( unknown_token != NULL );
 
-  size_t size = 0;
+  size_t dym_size = 0;
   if ( (kinds & DYM_COMMANDS) != DYM_NONE )
-    size += count_commands();
+    dym_size += copy_commands( /*pdym=*/NULL );
   if ( (kinds & DYM_C_KEYWORDS) != DYM_NONE )
-    size += count_keywords( /*count_types=*/false );
+    dym_size += copy_keywords( /*pdym=*/NULL, /*count_types=*/false );
   if ( (kinds & DYM_C_TYPES) != DYM_NONE )
-    size += count_keywords( /*count_types=*/true ) + count_typedefs();
+    dym_size += copy_keywords( /*pdym=*/NULL, /*count_types=*/true )
+      + copy_typedefs( /*pdym=*/NULL );
 
-  did_you_mean_t *const dym_array = MALLOC( did_you_mean_t, size + 1 );
+  did_you_mean_t *const dym_array = MALLOC( did_you_mean_t, dym_size + 1 );
   did_you_mean_t *dym = dym_array;
 
   if ( (kinds & DYM_COMMANDS) != DYM_NONE ) {
@@ -244,7 +237,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
   }
   if ( (kinds & DYM_C_TYPES) != DYM_NONE ) {
     copy_keywords( &dym, /*copy_types=*/true );
-    c_typedef_visit( &copy_typedef_visitor, &dym );
+    copy_typedefs( &dym );
   }
   MEM_ZERO( dym );                      // one past last is zero'd
 
@@ -258,7 +251,10 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
     dym->dam_lev_dist = dam_lev_dist( unknown_token, dym->token );
 
   // sort by Damerau-Levenshtein distance
-  qsort( dym_array, size, sizeof( did_you_mean_t ), &qsort_did_you_mean_cmp );
+  qsort(
+    dym_array, dym_size, sizeof( did_you_mean_t ),
+    (qsort_cmp_fn_t)&dym_cmp
+  );
 
   dam_lev_t const best_dist = dym_array->dam_lev_dist;
   size_t const best_len = strlen( dym_array->token );
@@ -267,7 +263,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
   if ( is_similar_enough( best_dist, best_len ) ) {
     // include all candidates that have the same distance
     for ( dym = dym_array;
-          ++best_count < size && (++dym)->dam_lev_dist == best_dist; )
+          ++best_count < dym_size && (++dym)->dam_lev_dist == best_dist; )
       ;
     //
     // Free tokens past the best ones and set the one past the last to null to
