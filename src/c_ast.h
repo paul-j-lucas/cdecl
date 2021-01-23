@@ -536,6 +536,7 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
  *
  * @sa c_ast_params_count()
  * @sa c_param_ast()
+ * @sa #FOREACH_PARAM
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
@@ -547,6 +548,8 @@ c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
  *
  * @param PARAM The `c_ast_param_t` loop variable.
  * @param AST The AST to iterate the parameters of.
+ *
+ * @sa c_ast_params()
  */
 #define FOREACH_PARAM(PARAM,AST) \
   for ( c_ast_param_t const *PARAM = c_ast_params( AST ); PARAM != NULL; PARAM = PARAM->next )
