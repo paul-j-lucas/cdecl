@@ -248,11 +248,11 @@ static char const *const * init_set_options( void ) {
   FOREACH_OPTION( opt ) {
     switch ( opt->type ) {
       case SET_AFF_ONLY:
-        *(p++) = CONST_CAST( char*, opt->name );
+        *p++ = CONST_CAST( char*, opt->name );
         break;
 
       case SET_TOGGLE:
-        *(p++) = CONST_CAST( char*, opt->name );
+        *p++ = CONST_CAST( char*, opt->name );
         PJL_FALLTHROUGH;
 
       case SET_NEG_ONLY:
@@ -267,7 +267,7 @@ static char const *const * init_set_options( void ) {
   } // for
   FOREACH_LANG( lang ) {
     if ( !lang->is_alias )
-      *(p++) = check_strdup_tolower( lang->name );
+      *p++ = check_strdup_tolower( lang->name );
   } // for
 
   *p = NULL;
