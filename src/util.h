@@ -107,8 +107,8 @@ _GL_INLINE_HEADER_BEGIN
  * @param T The type to cast to.
  * @param EXPR The expression to cast.
  *
- * @sa REINTERPRET_CAST
- * @sa STATIC_CAST
+ * @sa #REINTERPRET_CAST
+ * @sa #STATIC_CAST
  */
 #define CONST_CAST(T,EXPR)        ((T)(uintptr_t)(EXPR))
 
@@ -117,8 +117,8 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param ... The `printf()` arguments.
  *
- * @sa EPUTC
- * @sa EPUTS
+ * @sa #EPUTC
+ * @sa #EPUTS
  */
 #define EPRINTF(...)              fprintf( stderr, __VA_ARGS__ )
 
@@ -127,9 +127,9 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param C The character to print.
  *
- * @sa EPRINTF
- * @sa PUTC
- * @sa EPUTS
+ * @sa #EPRINTF
+ * @sa #PUTC
+ * @sa #EPUTS
  */
 #define EPUTC(C)                  FPUTC( (C), stderr )
 
@@ -138,9 +138,9 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param S The C string to print.
  *
- * @sa EPRINTF
- * @sa EPUTC
- * @sa PUTS
+ * @sa #EPRINTF
+ * @sa #EPUTC
+ * @sa #PUTS
  */
 #define EPUTS(S)                  FPUTS( (S), stderr )
 
@@ -175,8 +175,8 @@ _GL_INLINE_HEADER_BEGIN
  * @param C The character to print.
  * @param STREAM The `FILE` stream to print to.
  *
- * @sa FPRINTF
- * @sa FPUTS
+ * @sa #FPRINTF
+ * @sa #FPUTS
  */
 #define FPUTC(C,STREAM) \
   IF_EXIT( putc( (C), (STREAM) ) == EOF, EX_IOERR )
@@ -187,8 +187,8 @@ _GL_INLINE_HEADER_BEGIN
  * @param S The C string to print.
  * @param STREAM The `FILE` stream to print to.
  *
- * @sa FPRINTF
- * @sa FPUTC
+ * @sa #FPRINTF
+ * @sa #FPUTC
  */
 #define FPUTS(S,STREAM) \
   IF_EXIT( fputs( (S), (STREAM) ) == EOF, EX_IOERR )
@@ -228,9 +228,9 @@ _GL_INLINE_HEADER_BEGIN
  * @param FORMAT The `printf()` format to use.
  * @param ... The `printf()` arguments.
  *
- * @sa PMESSAGE_EXIT
- * @sa UNEXPECTED_INT_VALUE
- * @sa UNEXPECTED_STR_VALUE
+ * @sa #PMESSAGE_EXIT
+ * @sa #UNEXPECTED_INT_VALUE
+ * @sa #UNEXPECTED_STR_VALUE
  */
 #define INTERNAL_ERR(FORMAT,...) \
   PMESSAGE_EXIT( EX_SOFTWARE, "%s:%d: internal error: " FORMAT, __FILE__, __LINE__, __VA_ARGS__ )
@@ -244,13 +244,14 @@ _GL_INLINE_HEADER_BEGIN
 #define LSB_SET(N)                ((N) & BITS_GE(N))
 
 /**
- * Calls **malloc**(3) and casts the result to \a TYPE.
+ * Convenience macro for calling check_realloc().
  *
  * @param TYPE The type to allocate.
  * @param N The number of objects of \a TYPE to allocate.
  * @return Returns a pointer to \a N uninitialized objects of \a TYPE.
  *
- * @sa REALLOC
+ * @sa check_realloc()
+ * @sa #REALLOC
  */
 #define MALLOC(TYPE,N)            check_realloc( NULL, sizeof(TYPE) * (N) )
 
@@ -282,9 +283,9 @@ _GL_INLINE_HEADER_BEGIN
  * @param FORMAT The `printf()` format to use.
  * @param ... The `printf()` arguments.
  *
- * @sa INTERNAL_ERR
- * @sa UNEXPECTED_INT_VALUE
- * @sa UNEXPECTED_STR_VALUE
+ * @sa #INTERNAL_ERR
+ * @sa #UNEXPECTED_INT_VALUE
+ * @sa #UNEXPECTED_STR_VALUE
  */
 #define PMESSAGE_EXIT(STATUS,FORMAT,...) \
   BLOCK( EPRINTF( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
@@ -294,8 +295,8 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param C The character to print.
  *
- * @sa EPUTC
- * @sa PUTS
+ * @sa #EPUTC
+ * @sa #PUTS
  */
 #define PUTC(C)                   FPUTC( (C), stdout )
 
@@ -304,20 +305,21 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param S The C string to print.
  *
- * @sa PUTC
- * @sa EPUTS
+ * @sa #PUTC
+ * @sa #EPUTS
  */
 #define PUTS(S)                   FPUTS( (S), stdout )
 
 /**
- * Calls **realloc**(3) and resets \a PTR.
+ * Convenience macro for calling check_realloc().
  *
  * @param PTR The pointer to memory to reallocate.  It is set to the newly
  * reallocated memory.
  * @param TYPE The type to cast the pointer returned by **realloc**(3) to.
  * @param N The number of objects of \a TYPE to reallocate.
  *
- * @sa MALLOC
+ * @sa check_realloc()
+ * @sa #MALLOC
  */
 #define REALLOC(PTR,TYPE,N) \
   ((PTR) = check_realloc( (PTR), sizeof(TYPE) * (N) ))
@@ -328,8 +330,8 @@ _GL_INLINE_HEADER_BEGIN
  * @param T The type to cast to.
  * @param EXPR The expression to cast.
  *
- * @sa CONST_CAST
- * @sa STATIC_CAST
+ * @sa #CONST_CAST
+ * @sa #STATIC_CAST
  */
 #define REINTERPRET_CAST(T,EXPR)  ((T)(uintptr_t)(EXPR))
 
@@ -356,7 +358,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param S The C string to check.
  * @return If \a S is non-empty, returns `" "`; otherwise returns `""`.
  *
- * @sa SP_AFTER
+ * @sa #SP_AFTER
  */
 #define SP_IF(S)                  (S[0] != '\0' ? " " : "")
 
@@ -367,7 +369,7 @@ _GL_INLINE_HEADER_BEGIN
  * @return If \a S is non-empty, returns \a S followed by `" "`; otherwise
  * returns `""` followed by `""`.
  *
- * @sa SP_IF
+ * @sa #SP_IF
  */
 #define SP_AFTER(S)               S, SP_IF(S)
 
@@ -377,8 +379,8 @@ _GL_INLINE_HEADER_BEGIN
  * @param T The type to cast to.
  * @param EXPR The expression to cast.
  *
- * @sa CONST_CAST
- * @sa REINTERPRET_CAST
+ * @sa #CONST_CAST
+ * @sa #REINTERPRET_CAST
  */
 #define STATIC_CAST(T,EXPR)       ((T)(EXPR))
 
@@ -405,7 +407,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param EXPR An expression that can be cast to `bool`.
  *
- * @sa unlikely
+ * @sa #unlikely
  * @sa [Memory part 5: What programmers can do](http://lwn.net/Articles/255364/)
  */
 #define likely(EXPR)              __builtin_expect( !!(EXPR), 1 )
@@ -417,7 +419,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param EXPR An expression that can be cast to `bool`.
  *
- * @sa likely
+ * @sa #likely
  * @sa [Memory part 5: What programmers can do](http://lwn.net/Articles/255364/)
  */
 #define unlikely(EXPR)            __builtin_expect( !!(EXPR), 0 )
@@ -432,9 +434,9 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param EXPR The expression having the unexpected value.
  *
- * @sa INTERNAL_ERR
- * @sa PMESSAGE_EXIT
- * @sa UNEXPECTED_STR_VALUE
+ * @sa #INTERNAL_ERR
+ * @sa #PMESSAGE_EXIT
+ * @sa #UNEXPECTED_STR_VALUE
  */
 #define UNEXPECTED_INT_VALUE(EXPR) \
   INTERNAL_ERR( "%lld (0x%llX): unexpected value for " #EXPR "\n", (long long)(EXPR), (long long)(EXPR) )
@@ -442,9 +444,9 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Prints that a string value was unexpected to standard error and exits.
  *
- * @sa INTERNAL_ERR
- * @sa PMESSAGE_EXIT
- * @sa UNEXPECTED_INT_VALUE
+ * @sa #INTERNAL_ERR
+ * @sa #PMESSAGE_EXIT
+ * @sa #UNEXPECTED_INT_VALUE
  */
 #define UNEXPECTED_STR_VALUE(EXPR) \
   INTERNAL_ERR( "\"%s\": unexpected value for " #EXPR "\n", (char const*)(EXPR) )
@@ -486,6 +488,9 @@ char const* base_name( char const *path_name );
  * @param p The pointer to reallocate.  If null, new memory is allocated.
  * @param size The number of bytes to allocate.
  * @return Returns a pointer to the allocated memory.
+ *
+ * @sa #MALLOC
+ * @sa #REALLOC
  */
 PJL_WARN_UNUSED_RESULT
 void* check_realloc( void *p, size_t size );
