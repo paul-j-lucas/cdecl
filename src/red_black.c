@@ -159,6 +159,25 @@ static inline bool is_right( rb_node_t const *node ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Frees all memory associated with \a node.
+ *
+ * @param node A pointer to the `rb_node` to free.
+ * @param data_free_fn A pointer to a function used to free data associated
+ * with \a node or null if unnecessary.
+ */
+static void rb_node_free( rb_node_t *node, rb_data_free_t data_free_fn ) {
+  assert( node != NULL );
+
+  if ( node != RB_NIL ) {
+    rb_node_free( node->left, data_free_fn );
+    rb_node_free( node->right, data_free_fn );
+    if ( data_free_fn != NULL )
+      (*data_free_fn)( node->data );
+    FREE( node );
+  }
+}
+
+/**
  * Initializes an `rb_node`.
  *
  * @param node A pointer to the `rb_node` to initialize.
@@ -198,25 +217,6 @@ static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
     return node;
 
   return rb_node_visit( tree, node->right, visitor, aux_data );
-}
-
-/**
- * Frees all memory associated with \a tree.
- *
- * @param node A pointer to the `rb_node` to free.
- * @param data_free_fn A pointer to a function used to free data associated
- * with each node or null if unnecessary.
- */
-static void rb_tree_free_impl( rb_node_t *node, rb_data_free_t data_free_fn ) {
-  assert( node != NULL );
-
-  if ( node != RB_NIL ) {
-    rb_tree_free_impl( node->left, data_free_fn );
-    rb_tree_free_impl( node->right, data_free_fn );
-    if ( data_free_fn != NULL )
-      (*data_free_fn)( node->data );
-    FREE( node );
-  }
 }
 
 /**
@@ -424,7 +424,7 @@ rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data ) {
 
 void rb_tree_free( rb_tree_t *tree, rb_data_free_t data_free_fn ) {
   if ( tree != NULL && RB_FIRST(tree) != NULL ) {
-    rb_tree_free_impl( RB_FIRST(tree), data_free_fn );
+    rb_node_free( RB_FIRST(tree), data_free_fn );
     rb_node_init( RB_ROOT(tree) );
     tree->data_cmp_fn = NULL;
   }
