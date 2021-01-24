@@ -55,10 +55,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 c_command_t const CDECL_COMMANDS[] = {
-  //
-  // If this array is modified, also check CDECL_COMMANDS[] in
-  // autocomplete.c.
-  //
   { L_CAST,         C_COMMAND_PROG_NAME,  LANG_ALL     },
   { L_CLASS,        C_COMMAND_FIRST_ARG,  LANG_CPP_ALL },
   { L_CONST,        C_COMMAND_FIRST_ARG,  LANG_CPP_ALL }, // const cast
