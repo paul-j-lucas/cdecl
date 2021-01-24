@@ -33,7 +33,7 @@
 
 /**
  * @defgroup c-keywords-group C/C++ Keywords
- * Types and functions for C/C++ keywords or C++11 (or later) attributes.
+ * Types and functions for C/C++ keywords or C2X/C++11 (or later) attributes.
  * @{
  */
 
@@ -50,7 +50,7 @@ enum c_keyword_ctx {
 };
 
 /**
- * C/C++ language keyword or C++11 (or later) attribute information.
+ * C/C++ language keyword or C2X/C++11 (or later) attribute information.
  */
 struct c_keyword {
   char const     *literal;              ///< C string literal of the keyword.
@@ -63,8 +63,8 @@ struct c_keyword {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Given a literal, gets the `c_keyword` for the corresponding C++11 (or later)
- * attribute, e.g., `[[deprecated]]`.
+ * Given a literal, gets the `c_keyword` for the corresponding C2X/C++11 (or
+ * later) attribute, e.g., `[[deprecated]]`.
  * @note The search is _sensitive_ to the current language.
  *
  * @param literal The literal to find.
