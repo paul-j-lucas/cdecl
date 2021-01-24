@@ -103,8 +103,10 @@ typedef long max_align_t;
    we are currently compiling with gcc.
    On MSVC, max_align_t is defined only in C++ mode, after <cstddef> was
    included.  Its definition is good since it has an alignment of 8 (on x86
-   and x86_64).  */
-#if defined _MSC_VER && defined __cplusplus
+   and x86_64).
+   Similarly on OS/2 kLIBC.  */
+#if (defined _MSC_VER || (defined __KLIBC__ && !defined __LIBCN__)) \
+    && defined __cplusplus
 # include <cstddef>
 #else
 # if ! (@HAVE_MAX_ALIGN_T@ || defined _GCC_MAX_ALIGN_T)
