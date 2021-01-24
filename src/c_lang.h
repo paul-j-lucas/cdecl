@@ -28,6 +28,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "options.h"                    /* for opt_lang */
 #include "types.h"
 #include "util.h"
 

@@ -45,7 +45,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
-#include <string.h>                     /* for str*(3) */
+#include <stddef.h>                     /* for size_t */
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef C_SNAME_INLINE

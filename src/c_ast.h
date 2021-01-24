@@ -41,7 +41,7 @@
 
 // standard
 #include <stdbool.h>
-#include <stdio.h>                      /* for FILE */
+#include <stddef.h>                     /* for size_t */
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef C_AST_INLINE
