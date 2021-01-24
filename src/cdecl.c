@@ -55,67 +55,67 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 c_command_t const CDECL_COMMANDS[] = {
-  { L_CAST,         C_COMMAND_PROG_NAME,  LANG_ALL     },
-  { L_CLASS,        C_COMMAND_FIRST_ARG,  LANG_CPP_ALL },
-  { L_CONST,        C_COMMAND_FIRST_ARG,  LANG_CPP_ALL }, // const cast
-  { L_DECLARE,      C_COMMAND_PROG_NAME,  LANG_ALL     },
-  { L_DEFINE,       C_COMMAND_FIRST_ARG,  LANG_ALL     },
-  { L_DYNAMIC,      C_COMMAND_FIRST_ARG,  LANG_CPP_ALL }, // dynamic cast
-  { L_EXIT,         C_COMMAND_LANG_ONLY,  LANG_ALL     },
-  { L_EXPLAIN,      C_COMMAND_PROG_NAME,  LANG_ALL     },
-  { L_HELP,         C_COMMAND_FIRST_ARG,  LANG_ALL     },
-  { L_NAMESPACE,    C_COMMAND_FIRST_ARG,  LANG_CPP_ALL },
-  { L_QUIT,         C_COMMAND_LANG_ONLY,  LANG_ALL     },
-  { L_REINTERPRET,  C_COMMAND_FIRST_ARG,  LANG_CPP_ALL }, // reinterpret cast
-  { L_SET_COMMAND,  C_COMMAND_FIRST_ARG,  LANG_ALL     },
-  { L_SHOW,         C_COMMAND_FIRST_ARG,  LANG_ALL     },
-  { L_STATIC,       C_COMMAND_FIRST_ARG,  LANG_CPP_ALL }, // static cast
-  { L_STRUCT,       C_COMMAND_FIRST_ARG,  LANG_ALL     },
-  { L_TYPEDEF,      C_COMMAND_FIRST_ARG,  LANG_ALL     },
-  { L_UNION,        C_COMMAND_FIRST_ARG,  LANG_ALL     },
-  { L_USING,        C_COMMAND_FIRST_ARG,  LANG_CPP_MIN(11) },
-  { NULL,           C_COMMAND_ANY,        LANG_NONE    },
+  { L_CAST,                   C_COMMAND_PROG_NAME,  LANG_ALL          },
+  { L_CLASS,                  C_COMMAND_FIRST_ARG,  LANG_CPP_ALL      },
+  { L_CONST /* cast */,       C_COMMAND_FIRST_ARG,  LANG_CPP_ALL      },
+  { L_DECLARE,                C_COMMAND_PROG_NAME,  LANG_ALL          },
+  { L_DEFINE,                 C_COMMAND_FIRST_ARG,  LANG_ALL          },
+  { L_DYNAMIC /* cast */,     C_COMMAND_FIRST_ARG,  LANG_CPP_ALL      },
+  { L_EXIT,                   C_COMMAND_LANG_ONLY,  LANG_ALL          },
+  { L_EXPLAIN,                C_COMMAND_PROG_NAME,  LANG_ALL          },
+  { L_HELP,                   C_COMMAND_FIRST_ARG,  LANG_ALL          },
+  { L_NAMESPACE,              C_COMMAND_FIRST_ARG,  LANG_CPP_ALL      },
+  { L_QUIT,                   C_COMMAND_LANG_ONLY,  LANG_ALL          },
+  { L_REINTERPRET /* cast */, C_COMMAND_FIRST_ARG,  LANG_CPP_ALL      },
+  { L_SET_COMMAND,            C_COMMAND_FIRST_ARG,  LANG_ALL          },
+  { L_SHOW,                   C_COMMAND_FIRST_ARG,  LANG_ALL          },
+  { L_STATIC /* cast */,      C_COMMAND_FIRST_ARG,  LANG_CPP_ALL      },
+  { L_STRUCT,                 C_COMMAND_FIRST_ARG,  LANG_ALL          },
+  { L_TYPEDEF,                C_COMMAND_FIRST_ARG,  LANG_ALL          },
+  { L_UNION,                  C_COMMAND_FIRST_ARG,  LANG_ALL          },
+  { L_USING,                  C_COMMAND_FIRST_ARG,  LANG_CPP_MIN(11)  },
+  { NULL,                     C_COMMAND_ANY,        LANG_NONE         },
 };
 
 // extern variable definitions
-bool                c_initialized;
-c_mode_t            c_mode;             // parsing english or gibberish?
-char const         *command_line;       // command from command line, if any
-size_t              command_line_len;   // length of command_line
-size_t              inserted_len;       // length of inserted string
-bool                is_input_a_tty;     // is our input from a tty?
-char const         *me;                 // program name
+bool        c_initialized;
+c_mode_t    c_mode;
+char const *command_line;
+size_t      command_line_len;
+size_t      inserted_len;
+bool        is_input_a_tty;
+char const *me;
 
 // extern functions
 PJL_WARN_UNUSED_RESULT
-extern bool         parse_string( char const*, size_t );
+extern bool parse_string( char const*, size_t );
 
-extern void         parser_cleanup( void );
+extern void parser_cleanup( void );
 
 PJL_WARN_UNUSED_RESULT
-extern int          yyparse( void );
+extern int  yyparse( void );
 
-extern void         yyrestart( FILE* );
+extern void yyrestart( FILE* );
 
 // local functions
-static void         cdecl_cleanup( void );
+static void cdecl_cleanup( void );
 
 PJL_WARN_UNUSED_RESULT
-static bool         parse_argv( int, char const*[] );
+static bool parse_argv( int, char const*[] );
 
 PJL_WARN_UNUSED_RESULT
-static bool         parse_command_line( char const*, int, char const*[] );
+static bool parse_command_line( char const*, int, char const*[] );
 
 PJL_WARN_UNUSED_RESULT
-static bool         parse_files( int, char const*const[] );
+static bool parse_files( int, char const*const[] );
 
 PJL_WARN_UNUSED_RESULT
-static bool         parse_stdin( void );
+static bool parse_stdin( void );
 
-static void         read_conf_file( void );
+static void read_conf_file( void );
 
 PJL_WARN_UNUSED_RESULT
-static bool         starts_with( char const*, char const*, size_t );
+static bool starts_with( char const*, char const*, size_t );
 
 ////////// main ///////////////////////////////////////////////////////////////
 
@@ -148,7 +148,7 @@ int main( int argc, char const *argv[] ) {
  * Checks whether \a s is a cdecl command.
  *
  * @param s The null-terminated string to check.
- * @param command_kind The type of commands to check against.
+ * @param command_kind The kind of commands to check against.
  * @return Returns `true` only if \a s is a command.
  */
 PJL_WARN_UNUSED_RESULT
