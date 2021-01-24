@@ -18,8 +18,8 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_dym_H
-#define cdecl_dym_H
+#ifndef cdecl_did_you_mean_H
+#define cdecl_did_you_mean_H
 
 /**
  * @file
@@ -77,5 +77,5 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token );
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif /* cdecl_dym_H */
+#endif /* cdecl_did_you_mean_H */
 /* vim:set et sw=2 ts=2: */
