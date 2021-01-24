@@ -275,16 +275,19 @@ void c_sname_debug( c_sname_t const *sname, FILE *dout ) {
 }
 
 void c_type_id_debug( c_type_id_t tid, FILE *dout ) {
-  FPRINTF( dout, "\"%s\" (0x%" PRIX_C_TYPE_T ")", c_type_id_name( tid ), tid );
+  FPRINTF( dout,
+    "\"%s\" (0x%" PRIX_C_TYPE_ID_T ")",
+    c_type_id_name( tid ), tid
+  );
 }
 
 void c_type_debug( c_type_t const *type, FILE *dout ) {
   assert( type != NULL );
   FPRINTF( dout,
     "\"%s\" "
-    "(0x%" PRIX_C_TYPE_T
-    ",0x%" PRIX_C_TYPE_T
-    ",0x%" PRIX_C_TYPE_T ")",
+    "(0x%" PRIX_C_TYPE_ID_T
+    ",0x%" PRIX_C_TYPE_ID_T
+    ",0x%" PRIX_C_TYPE_ID_T ")",
     c_type_name( type ), type->base_tid, type->store_tid, type->attr_tid
   );
 }

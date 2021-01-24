@@ -413,7 +413,7 @@ extern c_type_t const T_ANY;            ///< All types.
 /**
  * Hexadecimal print conversion specifier for <code>\ref c_type_id_t</code>.
  */
-#define PRIX_C_TYPE_T         PRIX64
+#define PRIX_C_TYPE_ID_T      PRIX64
 
 ////////// extern functions ///////////////////////////////////////////////////
 
