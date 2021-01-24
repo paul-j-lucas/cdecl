@@ -1,3 +1,155 @@
+2021-01-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * stddef.in.h, gnulib-common.m4: Updated GNUlib.
+   * parser.y, set_options.c, set_options.h: s/set_option/option_set/
+   * set_options.c: Now printing set options to fout.
+   * cdecl.c: Clean-up.
+   * cdecl.c: Remove old comment.
+   * c_lang.c: Remove old comment.
+   * c_ast_util.c: Tweaked assert()s.
+   * NEWS, c_ast_util.c, test/Makefile.am, explain_f_ppc.out,
+     explain_f_ppc.test: Fixed crash with: explain char** f().
+   * autocomplete.c: Fixed warning.
+   * autocomplete.c: Fixed MALLOC() call.
+   * autocomplete.c: Removed unnecessary ().
+   * autocomplete.c: Got rid of warnings.
+   * autocomplete.c: Fewer check_strdup()s.
+   * autocomplete.c, parser.y, set_options.c, set_options.h, util.c, util.h:
+     Eliminated duplicate SET_OPTIONS in autocomplete.c.
+   * c_keyword.h, did_you_mean.c: Added FOREACH_KEYWORD().
+   * c_lang.c, c_lang.h, options.c, types.h: Replaced c_lang_names() with
+     c_lang_next().
+   * c_ast.h: Doxygen.
+   * src/Makefile.am: Renamed set.c to set_options.c.
+
+2021-01-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: Whitespace change.
+   * did_you_mean.c: Combined copy & count functions.
+   * autocomplete.c: Added c90, c17, c2x, lang, to autocomplete; fixed knr for
+     autocomplete.
+   * NEWS, check.c, test/Makefile.am, typedef_iw3.test: Types having bit-field
+     widths are now correctly reported as errors.
+   * c_typedef.c: Sorted typedefs.
+   * set.c: Added set_lang_impl() to factor out common code.
+   * prompt.c: Simplified prompt_len calculation.
+
+2021-01-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, cdecl--debug.out, cdecl-d.out: Grammar rule reorganization.
+   * debug.c: Reworked "if".
+   * gibberish.c: Comment.
+   * gibberish.c: Eliminated param_ast.
+   * gibberish.c: Fixed comment.
+   * gibberish.c: s/g_print_func_params/g_print_ast_func_params/
+   * gibberish.c: s/g_impl/g_print_ast/;
+     s/g_print_array_size/g_print_ast_array_size/
+   * gibberish.c: Moved alignas code.
+   * gibberish.c: s/g_print_space/g_print_space_once/
+   * gibberish.c: Comment.
+   * gibberish.c: Simplification.
+
+2021-01-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: Whitespace change.
+   * gibberish.c: Removed root_ast -- turns out it's not needed.
+   * gibberish.c: Removed leaf_ast -- turns out it's not needed.
+   * english.c: Now taking AST for c_ast_english_func_params().
+   * check.c: Now printing char8_t for user-defined literals only when lang >=
+     C++20.
+   * check.c: Typo.
+   * check.c: Added K_APPLE_BLOCK.
+   * check.c: Split out c_ast_check_emc() and c_ast_check_upc().
+
+2021-01-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c, c_sname.h, check.c, debug.c, gibberish.c, parser.y: Added
+     FOREACH_SCOPE() macro.
+   * check.c: Converted error_kind_not_cast_into() into a macro.
+   * parser.y: CLean-up.
+   * parser.y, print.c, print.h: Now printing [file:line] first.
+   * c_lang.h, c_typedef.c, parser.y, util.h: For an error token, now printing
+     "not a keyword until <lang>" only if the oldest language the token is in
+     is later than the current language.
+   * parser.y: Comment.
+   * NEWS, parser.y, test/Makefile.am, explain_k-itself.out,
+     explain_i-itself.test, explain_k-itself.test: Forward `enum`, `class`,
+     `struct`, and `union` declarations are now supported.
+   * lexer.h, lexer.l, parser.y: lexer_loc() now returns a c_loc_t.
+   * gibberish.c: Comment.
+   * c_typedef.c: Renaming.
+   * gibberish.c: Function renaming.
+   * gibberish.c: s/is_typedef/is_more_than_plain_typedef/ and added clarifying
+     comment.
+   * gibberish.c: Sorted declarations.
+   * gibberish.c: Fixed incorrect comment.
+   * autocomplete.c, c_type.c, check.c, debug.c, english.c, lexer.l,
+     literals.c, literals.h, parser.y: s/L_..._H/H_.../ for hyphenated
+     literals.
+   * gibberish.c, literals.h: Comments.
+   * gibberish.c: Made != LANG_NONE explicit.
+   * gibberish.c: Simplification.
+   * NEWS, gibberish.c, types.h, test/Makefile.am, show_cpf_cpcc_v_using.out,
+     show_cpi_using.out, show_cpmki_using.out, show_predefined_using.out,
+     show_cpf_cpcc_v_using.test, show_cpi_using.test, show_cpmki_using.test:
+     Fixed showing of types having qualified pointers as `using` declarations.
+
+2021-01-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
+     show_all-c++.out, show_all.out, show_all_predefined-c++.out,
+     show_all_predefined.out, show_all_predefined_typedef-c++.out,
+     show_all_typedef.out, show_predefined-c++.out, show_predefined.out,
+     show_predefined_typedef.out, show_predefined_using.out: Reworked languages
+     when predefining types so opt_lang only ever has 1 bit set; also now
+     setting opt_lang to latest C/C++ seperately so `restrict` that is not
+     valid in C++ is available in C; added constraint_handler_t.
+   * c_keyword.c: s/LANG_MIN(C_11)/LANG_C_MIN(11)/ for _Atomic.
+   * NEWS: Added lconv predefined type.
+   * cdecl--debug.out, cdecl-d.out, show_all-c++.out, show_all.out,
+     show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined.out, show_predefined_typedef.out,
+     show_predefined_using.out: Updated expected tests for lconv.
+   * cdecl.1, c_typedef.c: Added lconv typedef.
+   * lexer.l: Added %warn.
+
+2021-01-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: s/errors.c/check.c/
+   * c_ast.c, c_ast.h, debug.c, parser.y, cdecl--debug.out, cdecl-d.out:
+     s/params/param_ast_list/
+   * autocomplete.c: s/no_more_matches/more_matches/
+   * configure.ac: Updated version.
+   * NEWS, c_type.h, errors.c, parser.y, test/Makefile.am, explain_0dtor.out,
+     explain_dtor=delete.out, explain_inx+ctor.out, explain_inx+dtor.out,
+     explain_ydtor.out, explain_0dtor.test, explain_dtor=delete.test,
+     explain_inx+ctor.test, explain_inx+dtor.test, explain_ydtor.test: Now
+     supporting inline destructor definitions and final/override for
+     destuctors.
+   * c_lang.h, errors.c, parser.y, print.c: Added c_lang_oldest_name();
+     reworked fl_elaborate_error() formatting.
+   * c_ast.h, c_sname.h, errors.c: Removed c_ast_is_ctor_name().
+
+2021-01-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Now doing special cases in c_type_name_impl() only when not an
+     error.
+   * print.c: Added assert()s.
+   * parser.y: s/func_qualified_c_tid/func_qualifier_c_tid/
+   * c_kind.h, c_lang.h, c_operator.h, c_sname.h, c_type.h: Clean-up.
+   * gibberish.c, parser.y: Clean-up.
+
+2021-01-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: s/AC_PROG_CC_C99/AC_PROG_CC/; moved AC_LANG(C) earlier.
+   * run_test.sh: Made --test-name optional.
+   * run_test.sh: Now ensuring test and expected output files exist.
+   * test/Makefile.am: Fixed test name.
+   * c_keyword.h: Removed @note.
+   * lexer.l: Added #.
+   * lexer.l: Added ().
+
 2021-01-14  Paul J. Lucas <paul@lucasmail.org>
 
    * c_lang.c: Removed "true".
