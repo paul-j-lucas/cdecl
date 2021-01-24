@@ -49,9 +49,6 @@
  * `{ NULL, LANG_NONE }`.
  */
 static c_lang_t const C_LANG[] = {
-  //
-  // If this array is modified, also check SET_OPTIONS[] in autocomplete.c.
-  //
   { "CK&R",   true,   LANG_C_KNR   },
   { "CKNR",   true,   LANG_C_KNR   },
   { "K&R",    true,   LANG_C_KNR   },
