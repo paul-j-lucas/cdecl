@@ -135,6 +135,9 @@ PJL_WARN_UNUSED_RESULT
 static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast ) {
   assert( ast != NULL );
   assert( array_ast != NULL );
+  assert( array_ast->kind_id == K_ARRAY );
+  assert( array_ast->as.array.of_ast != NULL );
+  assert( array_ast->as.array.of_ast->kind_id == K_PLACEHOLDER );
 
   switch ( ast->kind_id ) {
     case K_POINTER:
@@ -165,8 +168,6 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast ) {
       /* suppress warning */;
   } // switch
 
-  assert( array_ast->kind_id == K_ARRAY );
-  assert( array_ast->as.array.of_ast->kind_id == K_PLACEHOLDER );
   //
   // We've reached the end of the array chain: make the new array be an array
   // of this AST node and return the array so the parent will now point to it
