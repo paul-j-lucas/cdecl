@@ -102,31 +102,31 @@ static inline char const* maybe_no( bool enabled ) {
  * Prints the current option settings.
  */
 static void print_options( void ) {
-  printf( "  %salt-tokens\n", maybe_no( opt_alt_tokens ) );
+  FPRINTF( fout, "  %salt-tokens\n", maybe_no( opt_alt_tokens ) );
 #ifdef YYDEBUG
-  printf( "  %sbison-debug\n", maybe_no( opt_bison_debug ) );
+  FPRINTF( fout, "  %sbison-debug\n", maybe_no( opt_bison_debug ) );
 #endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
-  printf( "  %sdebug\n", maybe_no( opt_cdecl_debug ) );
+  FPRINTF( fout, "  %sdebug\n", maybe_no( opt_cdecl_debug ) );
 #endif /* ENABLE_CDECL_DEBUG */
-  printf( "  %seast-const\n", maybe_no( opt_east_const ) );
-  printf( "  %sexplain-by-default\n", maybe_no( opt_explain ) );
+  FPRINTF( fout, "  %seast-const\n", maybe_no( opt_east_const ) );
+  FPRINTF( fout, "  %sexplain-by-default\n", maybe_no( opt_explain ) );
 
   if ( any_explicit_int() ) {
-    PUTS( "    explicit-int=" );
+    FPUTS( "    explicit-int=", fout );
     print_opt_explicit_int();
     PUTC( '\n' );
   } else {
-    PUTS( "  noexplicit-int\n" );
+    FPUTS( "  noexplicit-int\n", fout );
   }
 
 #ifdef ENABLE_FLEX_DEBUG
-  printf( "  %sflex-debug\n", maybe_no( opt_flex_debug ) );
+  FPRINTF( fout, "  %sflex-debug\n", maybe_no( opt_flex_debug ) );
 #endif /* ENABLE_FLEX_DEBUG */
-  printf( " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
-  printf( "    lang=%s\n", C_LANG_NAME() );
-  printf( "  %sprompt\n", maybe_no( cdecl_prompt[0][0] != '\0' ) );
-  printf( "  %ssemicolon\n", maybe_no( opt_semicolon ) );
+  FPRINTF( fout, " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
+  FPRINTF( fout, "    lang=%s\n", C_LANG_NAME() );
+  FPRINTF( fout, "  %sprompt\n", maybe_no( cdecl_prompt[0][0] != '\0' ) );
+  FPRINTF( fout, "  %ssemicolon\n", maybe_no( opt_semicolon ) );
 }
 
 /**
