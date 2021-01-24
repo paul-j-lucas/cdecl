@@ -70,6 +70,7 @@ char const* lexer_input_line( size_t *plen );
  *
  * @return Returns said location.
  */
+PJL_WARN_UNUSED_RESULT
 c_loc_t lexer_loc( void );
 
 /**
@@ -81,7 +82,9 @@ c_loc_t lexer_loc( void );
 void lexer_reset( bool hard_reset );
 
 /**
- * The main Bison entrypoint for the lexical analyzer.
+ * Gets the next token ID.
+ *
+ * @note The definition is provided by Flex.
  *
  * @return Returns the token ID.
  */
