@@ -33,7 +33,8 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
-#include <stddef.h>                     /* for NULL */
+#include <stdbool.h>
+#include <stddef.h>                     /* for size_t */
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef C_SLIST_INLINE
@@ -169,6 +170,10 @@ slist_t slist_dup( slist_t const *src, ssize_t n,
  *
  * @param list A pointer to the <code>\ref slist</code> to check.
  * @return Returns `true` only if \a list is empty.
+ *
+ * @note This is an O(1) operation.
+ *
+ * @sa slist_len()
  */
 C_SLIST_INLINE PJL_WARN_UNUSED_RESULT
 bool slist_empty( slist_t const *list ) {
@@ -204,6 +209,10 @@ void slist_init( slist_t *list ) {
  *
  * @param list A pointer to the <code>\ref slist</code> to get the length of.
  * @return Returns said length.
+ *
+ * @note This is an O(1) operation.
+ *
+ * @sa slist_empty()
  */
 C_SLIST_INLINE PJL_WARN_UNUSED_RESULT
 size_t slist_len( slist_t const *list ) {
@@ -217,6 +226,8 @@ size_t slist_len( slist_t const *list ) {
  * @param offset The offset (starting at 0) of the data to get.
  * @return Returns the data from the node at \a offset or null if \a offset
  * &gt;= slist_len().
+ *
+ * @note This is an O(n) operation.
  *
  * @sa slist_peek_atr()
  * @sa slist_peek_head()
@@ -232,6 +243,8 @@ void* slist_peek_at( slist_t const *list, size_t offset );
  * @param roffset The reverse offset (starting at 0) of the data to get.
  * @return Returns the data from the node at \a roffset or null if \a roffset
  * &gt;= slist_len().
+ *
+ * @note This is an O(n) operation.
  *
  * @sa slist_peek_at()
  * @sa slist_peek_tail()
@@ -249,6 +262,8 @@ void* slist_peek_atr( slist_t const *list, size_t roffset ) {
  * @return Returns the data from the node at the head of \a list or null if \a
  * list is empty.
  *
+ * @note This is an O(1) operation.
+ *
  * @sa slist_peek_at()
  * @sa slist_peek_tail()
  */
@@ -264,6 +279,8 @@ void* slist_peek_head( slist_t const *list ) {
  * @return Returns the data from the node at the tail of \a list or null if \a
  * list is empty.
  *
+ * @note This is an O(1) operation.
+ *
  * @sa slist_peek_atr()
  * @sa slist_peek_head()
  */
@@ -278,6 +295,8 @@ void* slist_peek_tail( slist_t const *list ) {
  * @param list The pointer to the <code>\ref slist</code>.
  * @return Returns the data from the head of \a list.  The caller is
  * responsible for deleting it (if necessary).
+ *
+ * @note This is an O(1) operation.
  */
 PJL_WARN_UNUSED_RESULT
 void* slist_pop_head( slist_t *list );
@@ -287,6 +306,8 @@ void* slist_pop_head( slist_t *list );
  *
  * @param list A pointer to the <code>\ref slist</code>.
  * @param data The pointer to the data to add.
+ *
+ * @note This is an O(1) operation.
  *
  * @sa slist_push_list_head()
  * @sa slist_push_tail()
@@ -299,6 +320,8 @@ void slist_push_head( slist_t *list, void *data );
  * @param dst The <code>\ref slist</code> to push onto.
  * @param src The <code>\ref slist</code> to push.  It is made empty.
  *
+ * @note This is an O(1) operation.
+ *
  * @sa slist_push_head()
  * @sa slist_push_list_tail()
  */
@@ -310,6 +333,8 @@ void slist_push_list_head( slist_t *dst, slist_t *src );
  * @param dst The <code>\ref slist</code> to push onto.
  * @param src The <code>\ref slist</code> to push.  It is made empty.
  *
+ * @note This is an O(1) operation.
+ *
  * @sa slist_push_list_head()
  * @sa slist_push_tail()
  */
@@ -320,6 +345,8 @@ void slist_push_list_tail( slist_t *dst, slist_t *src );
  *
  * @param list The <code>\ref slist</code> to push onto.
  * @param data The data to pushed.
+ *
+ * @note This is an O(1) operation.
  *
  * @sa slist_push_head()
  * @sa slist_push_list_tail()
