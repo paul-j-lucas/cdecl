@@ -77,7 +77,7 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * Gets a value where all bits that are greater than the one bit set in \a N
- * are also set, e.g., `BITS_GE(00010000)` = `11100000`.
+ * are set, e.g., `BITS_GE(00010000)` = `11100000`.
  *
  * @param N The integer.  Exactly one bit _must_ be set.
  * @return Returns said value.
