@@ -2394,7 +2394,7 @@ in_scope_declaration_c
 ///////////////////////////////////////////////////////////////////////////////
 
 set_command
-  : Y_SET                         { set_option( NULL, NULL, NULL, NULL ); }
+  : Y_SET                         { option_set( NULL, NULL, NULL, NULL ); }
   | Y_SET set_option_list
   ;
 
@@ -2406,7 +2406,7 @@ set_option_list
 set_option
   : Y_SET_OPTION set_option_value_opt
     {
-      set_option( $1, &@1, $2, &@2 );
+      option_set( $1, &@1, $2, &@2 );
       FREE( $1 );
       FREE( $2 );
     }

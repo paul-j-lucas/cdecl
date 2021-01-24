@@ -105,7 +105,7 @@ set_option_t const* option_next( set_option_t const *opt );
  * @param opt_value The option value, if any.
  * @param opt_value_loc The location of \a opt_value.
  */
-void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
+void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc );
 
 ///////////////////////////////////////////////////////////////////////////////

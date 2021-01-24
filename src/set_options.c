@@ -405,7 +405,7 @@ set_option_t const* option_next( set_option_t const *opt ) {
   return opt;
 }
 
-void set_option( char const *opt_name, c_loc_t const *opt_name_loc,
+void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc ) {
   if ( opt_name == NULL || strcmp( opt_name, "options" ) == 0 ) {
     print_options();
