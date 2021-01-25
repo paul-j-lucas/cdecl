@@ -43,26 +43,32 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Convenience macro for declaring a `set` option function.
+ */
+#define DECLARE_SET_OPTION_FN(NAME) \
+  static void set_##NAME( bool, c_loc_t const*, char const*, c_loc_t const* )
+
 // local functions
-static void set_alt_tokens( bool, c_loc_t const*, char const*, c_loc_t const* );
+DECLARE_SET_OPTION_FN( alt_tokens );
 #ifdef YYDEBUG
-static void set_bison_debug( bool, c_loc_t const*, char const*, c_loc_t const* );
+DECLARE_SET_OPTION_FN( bison_debug );
 #endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
-static void set_debug( bool, c_loc_t const*, char const*, c_loc_t const* );
+DECLARE_SET_OPTION_FN( debug );
 #endif /* ENABLE_CDECL_DEBUG */
-static void set_digraphs( bool, c_loc_t const*, char const*, c_loc_t const* );
-static void set_east_const( bool, c_loc_t const*, char const*, c_loc_t const* );
-static void set_explain_by_default( bool, c_loc_t const*, char const*, c_loc_t const* );
-static void set_explicit_int( bool, c_loc_t const*, char const*, c_loc_t const* );
+DECLARE_SET_OPTION_FN( digraphs );
+DECLARE_SET_OPTION_FN( east_const );
+DECLARE_SET_OPTION_FN( explain_by_default );
+DECLARE_SET_OPTION_FN( explicit_int );
 #ifdef ENABLE_FLEX_DEBUG
-static void set_flex_debug( bool, c_loc_t const*, char const*, c_loc_t const* );
+DECLARE_SET_OPTION_FN( flex_debug );
 #endif /* ENABLE_FLEX_DEBUG */
-static void set_lang( bool, c_loc_t const*, char const*, c_loc_t const* );
+DECLARE_SET_OPTION_FN( lang );
+DECLARE_SET_OPTION_FN( prompt );
+DECLARE_SET_OPTION_FN( semicolon );
+DECLARE_SET_OPTION_FN( trigraphs );
 static bool set_lang_impl( char const* );
-static void set_prompt( bool, c_loc_t const*, char const*, c_loc_t const* );
-static void set_semicolon( bool, c_loc_t const*, char const*, c_loc_t const* );
-static void set_trigraphs( bool, c_loc_t const*, char const*, c_loc_t const* );
 
 ///////////////////////////////////////////////////////////////////////////////
 
