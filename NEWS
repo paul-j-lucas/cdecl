@@ -10,6 +10,23 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 9.5
+
+** Added `enum`, `class`, `struct`, and `union` attribute specifier support
+Attributes can now also be specified for `enum`, `class`, `struct`, and `union`
+declarations:
+
+    cdecl> explain [[maybe_unused]] struct S x // previously supported
+    cdecl> explain struct [[maybe_unused]] S x // now also supported
+
+Unfortunately, the resulting English is the same for both:
+
+    declare x as maybe-unused structure S
+
+because there's no other (obvious) way to word the English so it's different
+between cases.
+
+
 * Changes in Cdecl 9.4
 
 ** Improved constructor & destructor declaration support

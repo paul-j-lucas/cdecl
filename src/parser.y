@@ -1187,6 +1187,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  atomic_specifier_type_c_ast
 %type   <type_id>   attribue_name_list_c_tid attribute_name_list_c_tid_opt
 %type   <type_id>   attribute_specifier_list_c_tid
+%type   <type_id>   attribute_specifier_list_c_tid_opt
 %type   <number>    bit_field_c_num_opt
 %type   <ast_pair>  block_decl_c_ast
 %type   <ast_pair>  builtin_type_c_ast
@@ -4362,28 +4363,31 @@ builtin_tid
   ;
 
 enum_class_struct_union_c_ast
-  : enum_class_struct_union_tid any_sname_c_exp
+  : enum_class_struct_union_tid attribute_specifier_list_c_tid_opt
+    any_sname_c_exp
     {
       DUMP_START( "enum_class_struct_union_c_ast",
                   "enum_class_struct_union_tid sname" );
       DUMP_TID( "enum_class_struct_union_tid", $1 );
-      DUMP_SNAME( "sname", &$2 );
+      DUMP_SNAME( "sname", &$3 );
 
       $$ = c_ast_pair_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
       $$.ast->type.base_tid = $1;
-      $$.ast->as.ecsu.ecsu_sname = $2;
+      $$.ast->type.attr_tid = $2;
+      $$.ast->as.ecsu.ecsu_sname = $3;
 
       DUMP_AST( "enum_class_struct_union_c_ast", $$.ast );
       DUMP_END();
     }
 
-  | enum_class_struct_union_tid any_sname_c_opt '{'
+  | enum_class_struct_union_tid attribute_specifier_list_c_tid_opt
+    any_sname_c_opt '{'
     {
       print_error( &@3,
         "explaining %s definitions is not supported\n",
         c_type_id_name( $1 )
       );
-      c_sname_free( &$2 );
+      c_sname_free( &$3 );
       PARSE_ABORT();
     }
   ;
@@ -4517,6 +4521,11 @@ storage_class_c_type
   | Y__THREAD_LOCAL               { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_THREAD_LOCAL                { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_VIRTUAL                     { $$ = C_TYPE_LIT_S( $1 ); }
+  ;
+
+attribute_specifier_list_c_tid_opt
+  : /* empty */                   { $$ = TA_NONE; }
+  | attribute_specifier_list_c_tid
   ;
 
 attribute_specifier_list_c_tid

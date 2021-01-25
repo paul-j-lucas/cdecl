@@ -440,6 +440,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_tpfc_i.test \
 	tests/explain_tulz.test \
 	tests/explain_uc.test \
+	tests/explain_uk-01.test \
+	tests/explain_uk-02.test \
 	tests/explain_ull.test \
 	tests/explain_uw3.test \
 	tests/explain_vcpi.test \

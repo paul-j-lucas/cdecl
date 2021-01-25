@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ explain [[maybe_unused]] struct S s @ 0
