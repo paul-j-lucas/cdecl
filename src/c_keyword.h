@@ -40,12 +40,15 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * C++ keywords contexts.  A context specifies where particular literals are
- * recognized as keywords.  For example, `final` and `override` are recognized
- * as keywords only within member function declarations.
+ * C++ keyword contexts.  A context specifies where particular literals are
+ * recognized as keywords in gibberish.  For example, `final` and `override`
+ * are recognized as keywords only within C++ member function declarations.
+ *
+ * @note These matter only when converting gibberish to English.
  */
 enum c_keyword_ctx {
   C_KW_CTX_ALL,                         ///< All contexts.
+  C_KW_CTX_ATTRIBUTE,                   ///< Attribute declaration.
   C_KW_CTX_MBR_FUNC                     ///< Member function declaration.
 };
 
@@ -61,18 +64,6 @@ struct c_keyword {
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
-
-/**
- * Given a literal, gets the `c_keyword` for the corresponding C2X/C++11 (or
- * later) attribute, e.g., `[[deprecated]]`.
- * @note The search is _sensitive_ to the current language.
- *
- * @param literal The literal to find.
- * @return Returns a pointer to the corresponding attribute (`c_keyword`) or
- * null for none.
- */
-PJL_WARN_UNUSED_RESULT
-c_keyword_t const* c_attribute_find( char const *literal );
 
 /**
  * Given a literal, gets the `c_keyword` for the corresponding C/C++ keyword.

@@ -41,48 +41,13 @@
 #include <string.h>
 
 // shorthands
-#define KC_A                      C_KW_CTX_ALL
+#define KC__                      C_KW_CTX_ALL
+#define KC_A                      C_KW_CTX_ATTRIBUTE
 #define KC_F                      C_KW_CTX_MBR_FUNC
 
 /// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
-
-/**
- * Array of all C++ attributes.
- */
-static c_keyword_t const C_ATTRIBUTES[] = {
-  // C++11
-  { L_CARRIES_DEPENDENCY,
-    Y_CARRIES_DEPENDENCY, LANG_CPP_MIN(11),       KC_A, TA_CARRIES_DEPENDENCY },
-  { L_NORETURN,
-    Y_NORETURN,           LANG_CPP_MIN(11),       KC_A, TA_NORETURN           },
-
-  // C2X & C++14
-  { L_DEPRECATED,
-    Y_DEPRECATED,         LANG_C_CPP_MIN(2X,14),  KC_A, TA_DEPRECATED         },
-
-  // C2X & C++17
-  { L_MAYBE_UNUSED,
-    Y_MAYBE_UNUSED,       LANG_C_CPP_MIN(2X,17),  KC_A, TA_MAYBE_UNUSED       },
-  { L_NODISCARD,
-    Y_NODISCARD,          LANG_C_CPP_MIN(2X,17),  KC_A, TA_NODISCARD          },
-
-  // C++20                // Not implemented because:
-#if 0
-  { L_ASSERT,             // + These use arbitrary expressions that require
-  { L_ENSURES,            //   being able to parse them -- which is a lot of
-  { L_EXPECTS,            //   work for little benefit.
-
-  { L_LIKELY,             // + These are only for statements, not declarations.
-  { L_UNLIKELY,           //
-#endif
-  { L_NO_UNIQUE_ADDRESS,
-    Y_NO_UNIQUE_ADDRESS,  LANG_CPP_MIN(20),       KC_A, TA_NO_UNIQUE_ADDRESS  },
-
-  { NULL,
-    0,                    LANG_NONE,              KC_A, TX_NONE               }
-};
 
 /**
  * Array of all C/C++ keywords.
@@ -94,327 +59,353 @@ static c_keyword_t const C_ATTRIBUTES[] = {
 static c_keyword_t const C_KEYWORDS[] = {
   // K&R C
   { L_AUTO,
-    Y_AUTO_STORAGE,       LANG_MAX(CPP_03),       KC_A, TS_AUTO               },
+    Y_AUTO_STORAGE,       LANG_MAX(CPP_03),       KC__, TS_AUTO               },
   { L_BREAK,
-    Y_BREAK,              LANG_ALL,               KC_A, TX_NONE               },
+    Y_BREAK,              LANG_ALL,               KC__, TX_NONE               },
   { L_CASE,
-    Y_CASE,               LANG_ALL,               KC_A, TX_NONE               },
+    Y_CASE,               LANG_ALL,               KC__, TX_NONE               },
   { L_CHAR,
-    Y_CHAR,               LANG_ALL,               KC_A, TB_CHAR               },
+    Y_CHAR,               LANG_ALL,               KC__, TB_CHAR               },
   { L_CONTINUE,
-    Y_CONTINUE,           LANG_ALL,               KC_A, TX_NONE               },
+    Y_CONTINUE,           LANG_ALL,               KC__, TX_NONE               },
   { L_DEFAULT,
-    Y_DEFAULT,            LANG_ALL,               KC_A, TS_DEFAULT            },
+    Y_DEFAULT,            LANG_ALL,               KC__, TS_DEFAULT            },
   { L_DO,
-    Y_DO,                 LANG_ALL,               KC_A, TX_NONE               },
+    Y_DO,                 LANG_ALL,               KC__, TX_NONE               },
   { L_DOUBLE,
-    Y_DOUBLE,             LANG_ALL,               KC_A, TB_DOUBLE             },
+    Y_DOUBLE,             LANG_ALL,               KC__, TB_DOUBLE             },
   { L_ELSE,
-    Y_ELSE,               LANG_ALL,               KC_A, TX_NONE               },
+    Y_ELSE,               LANG_ALL,               KC__, TX_NONE               },
   { L_EXTERN,
-    Y_EXTERN,             LANG_ALL,               KC_A, TS_EXTERN             },
+    Y_EXTERN,             LANG_ALL,               KC__, TS_EXTERN             },
   { L_FLOAT,
-    Y_FLOAT,              LANG_ALL,               KC_A, TB_FLOAT              },
+    Y_FLOAT,              LANG_ALL,               KC__, TB_FLOAT              },
   { L_FOR,
-    Y_FOR,                LANG_ALL,               KC_A, TX_NONE               },
+    Y_FOR,                LANG_ALL,               KC__, TX_NONE               },
   { L_GOTO,
-    Y_GOTO,               LANG_ALL,               KC_A, TX_NONE               },
+    Y_GOTO,               LANG_ALL,               KC__, TX_NONE               },
   { L_IF,
-    Y_IF,                 LANG_ALL,               KC_A, TX_NONE               },
+    Y_IF,                 LANG_ALL,               KC__, TX_NONE               },
   { L_INT,
-    Y_INT,                LANG_ALL,               KC_A, TB_INT                },
+    Y_INT,                LANG_ALL,               KC__, TB_INT                },
   { L_LONG,
-    Y_LONG,               LANG_ALL,               KC_A, TB_LONG               },
+    Y_LONG,               LANG_ALL,               KC__, TB_LONG               },
   { L_REGISTER,
-    Y_REGISTER,           LANG_ALL,               KC_A, TS_REGISTER           },
+    Y_REGISTER,           LANG_ALL,               KC__, TS_REGISTER           },
   { L_RETURN,
-    Y_RETURN,             LANG_ALL,               KC_A, TX_NONE               },
+    Y_RETURN,             LANG_ALL,               KC__, TX_NONE               },
   { L_SHORT,
-    Y_SHORT,              LANG_ALL,               KC_A, TB_SHORT              },
+    Y_SHORT,              LANG_ALL,               KC__, TB_SHORT              },
   { L_SIZEOF,
-    Y_SIZEOF,             LANG_ALL,               KC_A, TX_NONE               },
+    Y_SIZEOF,             LANG_ALL,               KC__, TX_NONE               },
   { L_STATIC,
-    Y_STATIC,             LANG_ALL,               KC_A, TS_STATIC             },
+    Y_STATIC,             LANG_ALL,               KC__, TS_STATIC             },
   { L_STRUCT,
-    Y_STRUCT,             LANG_ALL,               KC_A, TB_STRUCT             },
+    Y_STRUCT,             LANG_ALL,               KC__, TB_STRUCT             },
   { L_SWITCH,
-    Y_SWITCH,             LANG_ALL,               KC_A, TX_NONE               },
+    Y_SWITCH,             LANG_ALL,               KC__, TX_NONE               },
   { L_TYPEDEF,
-    Y_TYPEDEF,            LANG_ALL,               KC_A, TS_TYPEDEF            },
+    Y_TYPEDEF,            LANG_ALL,               KC__, TS_TYPEDEF            },
   { L_UNION,
-    Y_UNION,              LANG_ALL,               KC_A, TB_UNION              },
+    Y_UNION,              LANG_ALL,               KC__, TB_UNION              },
   { L_UNSIGNED,
-    Y_UNSIGNED,           LANG_ALL,               KC_A, TB_UNSIGNED           },
+    Y_UNSIGNED,           LANG_ALL,               KC__, TB_UNSIGNED           },
   { L_WHILE,
-    Y_WHILE,              LANG_ALL,               KC_A, TX_NONE               },
+    Y_WHILE,              LANG_ALL,               KC__, TX_NONE               },
 
   // C89
   { L_ASM,
-    Y_ASM,                LANG_MIN(C_89),         KC_A, TX_NONE               },
+    Y_ASM,                LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_CONST,
-    Y_CONST,              LANG_MIN(C_89),         KC_A, TS_CONST              },
+    Y_CONST,              LANG_MIN(C_89),         KC__, TS_CONST              },
   { L_ENUM,
-    Y_ENUM,               LANG_MIN(C_89),         KC_A, TB_ENUM               },
+    Y_ENUM,               LANG_MIN(C_89),         KC__, TB_ENUM               },
   { L_SIGNED,
-    Y_SIGNED,             LANG_MIN(C_89),         KC_A, TB_SIGNED             },
+    Y_SIGNED,             LANG_MIN(C_89),         KC__, TB_SIGNED             },
   { L_VOID,
-    Y_VOID,               LANG_MIN(C_89),         KC_A, TB_VOID               },
+    Y_VOID,               LANG_MIN(C_89),         KC__, TB_VOID               },
   { L_VOLATILE,
-    Y_VOLATILE,           LANG_MIN(C_89),         KC_A, TS_VOLATILE           },
+    Y_VOLATILE,           LANG_MIN(C_89),         KC__, TS_VOLATILE           },
 
   // C99
   { L__BOOL,
-    Y__BOOL,              LANG_MIN(C_99),         KC_A, TB_BOOL               },
+    Y__BOOL,              LANG_MIN(C_99),         KC__, TB_BOOL               },
   { L__COMPLEX,
-    Y__COMPLEX,           LANG_C_MIN(99),         KC_A, TB_COMPLEX            },
+    Y__COMPLEX,           LANG_C_MIN(99),         KC__, TB_COMPLEX            },
   { L__IMAGINARY,
-    Y__IMAGINARY,         LANG_C_MIN(99),         KC_A, TB_IMAGINARY          },
+    Y__IMAGINARY,         LANG_C_MIN(99),         KC__, TB_IMAGINARY          },
   { L_INLINE,
-    Y_INLINE,             LANG_MIN(C_99),         KC_A, TS_INLINE             },
+    Y_INLINE,             LANG_MIN(C_99),         KC__, TS_INLINE             },
   { L_RESTRICT,
-    Y_RESTRICT,           LANG_C_MIN(99),         KC_A, TS_RESTRICT           },
+    Y_RESTRICT,           LANG_C_MIN(99),         KC__, TS_RESTRICT           },
   { L_WCHAR_T,
-    Y_WCHAR_T,            LANG_MIN(C_95),         KC_A, TB_WCHAR_T            },
+    Y_WCHAR_T,            LANG_MIN(C_95),         KC__, TB_WCHAR_T            },
 
   // C11
   { L__ALIGNAS,
-    Y__ALIGNAS,           LANG_C_MIN(11),         KC_A, TX_NONE               },
+    Y__ALIGNAS,           LANG_C_MIN(11),         KC__, TX_NONE               },
   { L__ALIGNOF,
-    Y__ALIGNOF,           LANG_C_MIN(11),         KC_A, TX_NONE               },
+    Y__ALIGNOF,           LANG_C_MIN(11),         KC__, TX_NONE               },
   { L__ATOMIC,
-    Y__ATOMIC_QUAL,       LANG_C_MIN(11),         KC_A, TS_ATOMIC             },
+    Y__ATOMIC_QUAL,       LANG_C_MIN(11),         KC__, TS_ATOMIC             },
   { L__GENERIC,
-    Y__GENERIC,           LANG_C_MIN(11),         KC_A, TX_NONE               },
+    Y__GENERIC,           LANG_C_MIN(11),         KC__, TX_NONE               },
   { L__NORETURN,
-    Y__NORETURN,          LANG_C_MIN(11),         KC_A, TA_NORETURN           },
+    Y__NORETURN,          LANG_C_MIN(11),         KC__, TA_NORETURN           },
   { L__STATIC_ASSERT,
-    Y__STATIC_ASSERT,     LANG_C_MIN(11),         KC_A, TX_NONE               },
+    Y__STATIC_ASSERT,     LANG_C_MIN(11),         KC__, TX_NONE               },
   { L__THREAD_LOCAL,
-    Y__THREAD_LOCAL,      LANG_C_MIN(11),         KC_A, TS_THREAD_LOCAL       },
+    Y__THREAD_LOCAL,      LANG_C_MIN(11),         KC__, TS_THREAD_LOCAL       },
 
   // C++
   { L_BOOL,
-    Y_BOOL,               LANG_CPP_ALL,           KC_A, TB_BOOL               },
+    Y_BOOL,               LANG_CPP_ALL,           KC__, TB_BOOL               },
   { L_CATCH,
-    Y_CATCH,              LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_CATCH,              LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_CLASS,
-    Y_CLASS,              LANG_CPP_ALL,           KC_A, TB_CLASS              },
+    Y_CLASS,              LANG_CPP_ALL,           KC__, TB_CLASS              },
   { L_CONST_CAST,
-    Y_CONST_CAST,         LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_CONST_CAST,         LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_DELETE,
-    Y_DELETE,             LANG_CPP_ALL,           KC_A, TS_DELETE             },
+    Y_DELETE,             LANG_CPP_ALL,           KC__, TS_DELETE             },
   { L_DYNAMIC_CAST,
-    Y_DYNAMIC_CAST,       LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_DYNAMIC_CAST,       LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_EXPLICIT,
-    Y_EXPLICIT,           LANG_CPP_ALL,           KC_A, TS_EXPLICIT           },
+    Y_EXPLICIT,           LANG_CPP_ALL,           KC__, TS_EXPLICIT           },
   { L_FALSE,
-    Y_FALSE,              LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_FALSE,              LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_FRIEND,
-    Y_FRIEND,             LANG_CPP_ALL,           KC_A, TS_FRIEND             },
+    Y_FRIEND,             LANG_CPP_ALL,           KC__, TS_FRIEND             },
   { L_MUTABLE,
-    Y_MUTABLE,            LANG_CPP_ALL,           KC_A, TS_MUTABLE            },
+    Y_MUTABLE,            LANG_CPP_ALL,           KC__, TS_MUTABLE            },
   { L_NAMESPACE,
-    Y_NAMESPACE,          LANG_CPP_ALL,           KC_A, TB_NAMESPACE          },
+    Y_NAMESPACE,          LANG_CPP_ALL,           KC__, TB_NAMESPACE          },
   { L_NEW,
-    Y_NEW,                LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_NEW,                LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_OPERATOR,
-    Y_OPERATOR,           LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_OPERATOR,           LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_PRIVATE,
-    Y_PRIVATE,            LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_PRIVATE,            LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_PROTECTED,
-    Y_PROTECTED,          LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_PROTECTED,          LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_PUBLIC,
-    Y_PUBLIC,             LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_PUBLIC,             LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_REINTERPRET_CAST,
-    Y_REINTERPRET_CAST,   LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_REINTERPRET_CAST,   LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_STATIC_CAST,
-    Y_STATIC_CAST,        LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_STATIC_CAST,        LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_TEMPLATE,
-    Y_TEMPLATE,           LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_TEMPLATE,           LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_THIS,
-    Y_THIS,               LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_THIS,               LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_THROW,
-    Y_THROW,              LANG_CPP_ALL,           KC_A, TS_THROW              },
+    Y_THROW,              LANG_CPP_ALL,           KC__, TS_THROW              },
   { L_TRUE,
-    Y_TRUE,               LANG_CPP_ALL,           KC_A, TS_NOEXCEPT           },
+    Y_TRUE,               LANG_CPP_ALL,           KC__, TS_NOEXCEPT           },
   { L_TRY,
-    Y_TRY,                LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_TRY,                LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_TYPEID,
-    Y_TYPEID,             LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_TYPEID,             LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_TYPENAME,
-    Y_TYPENAME,           LANG_CPP_ALL,           KC_A, TX_NONE               },
+    Y_TYPENAME,           LANG_CPP_ALL,           KC__, TX_NONE               },
   { L_USING,
-    Y_USING,              LANG_CPP_ALL,           KC_A, TS_TYPEDEF            },
+    Y_USING,              LANG_CPP_ALL,           KC__, TS_TYPEDEF            },
   { L_VIRTUAL,
-    Y_VIRTUAL,            LANG_CPP_ALL,           KC_A, TS_VIRTUAL            },
+    Y_VIRTUAL,            LANG_CPP_ALL,           KC__, TS_VIRTUAL            },
 
   // C++11
   { L_ALIGNAS,
-    Y_ALIGNAS,            LANG_CPP_MIN(11),       KC_A, TX_NONE               },
+    Y_ALIGNAS,            LANG_CPP_MIN(11),       KC__, TX_NONE               },
   { L_ALIGNOF,
-    Y_ALIGNOF,            LANG_CPP_MIN(11),       KC_A, TX_NONE               },
+    Y_ALIGNOF,            LANG_CPP_MIN(11),       KC__, TX_NONE               },
   { L_AUTO,
-    Y_AUTO_TYPE,          LANG_CPP_MIN(11),       KC_A, TB_AUTO               },
+    Y_AUTO_TYPE,          LANG_CPP_MIN(11),       KC__, TB_AUTO               },
   { L_CONSTEXPR,
-    Y_CONSTEXPR,          LANG_CPP_MIN(11),       KC_A, TS_CONSTEXPR          },
+    Y_CONSTEXPR,          LANG_CPP_MIN(11),       KC__, TS_CONSTEXPR          },
   { L_DECLTYPE,
-    Y_DECLTYPE,           LANG_CPP_MIN(11),       KC_A, TX_NONE               },
+    Y_DECLTYPE,           LANG_CPP_MIN(11),       KC__, TX_NONE               },
   { L_FINAL,
     Y_FINAL,              LANG_CPP_MIN(11),       KC_F, TS_FINAL              },
   { L_NOEXCEPT,
-    Y_NOEXCEPT,           LANG_CPP_MIN(11),       KC_A, TS_NOEXCEPT           },
+    Y_NOEXCEPT,           LANG_CPP_MIN(11),       KC__, TS_NOEXCEPT           },
   { L_NULLPTR,
-    Y_NULLPTR,            LANG_CPP_MIN(11),       KC_A, TX_NONE               },
+    Y_NULLPTR,            LANG_CPP_MIN(11),       KC__, TX_NONE               },
   { L_OVERRIDE,
     Y_OVERRIDE,           LANG_CPP_MIN(11),       KC_F, TS_OVERRIDE           },
   { L_STATIC_ASSERT,
-    Y_STATIC_ASSERT,      LANG_CPP_MIN(11),       KC_A, TX_NONE               },
+    Y_STATIC_ASSERT,      LANG_CPP_MIN(11),       KC__, TX_NONE               },
   { L_THREAD_LOCAL,
-    Y_THREAD_LOCAL,       LANG_CPP_MIN(11),       KC_A, TS_THREAD_LOCAL       },
+    Y_THREAD_LOCAL,       LANG_CPP_MIN(11),       KC__, TS_THREAD_LOCAL       },
 
   // C11 & C++11
   { L_CHAR16_T,
-    Y_CHAR16_T,           LANG_C_CPP_MIN(11,11),  KC_A, TB_CHAR16_T           },
+    Y_CHAR16_T,           LANG_C_CPP_MIN(11,11),  KC__, TB_CHAR16_T           },
   { L_CHAR32_T,
-    Y_CHAR32_T,           LANG_C_CPP_MIN(11,11),  KC_A, TB_CHAR32_T           },
+    Y_CHAR32_T,           LANG_C_CPP_MIN(11,11),  KC__, TB_CHAR32_T           },
 
   // C2X & C++20
   { L_CHAR8_T,
-    Y_CHAR8_T,            LANG_C_CPP_MIN(2X,20),  KC_A, TB_CHAR8_T            },
+    Y_CHAR8_T,            LANG_C_CPP_MIN(2X,20),  KC__, TB_CHAR8_T            },
 
   // C++20
   { L_CONCEPT,
-    Y_CONCEPT,            LANG_CPP_MIN(20),       KC_A, TX_NONE               },
+    Y_CONCEPT,            LANG_CPP_MIN(20),       KC__, TX_NONE               },
   { L_CONSTEVAL,
-    Y_CONSTEVAL,          LANG_CPP_MIN(20),       KC_A, TS_CONSTEVAL          },
+    Y_CONSTEVAL,          LANG_CPP_MIN(20),       KC__, TS_CONSTEVAL          },
   { L_CONSTINIT,
-    Y_CONSTINIT,          LANG_CPP_MIN(20),       KC_A, TS_CONSTINIT          },
+    Y_CONSTINIT,          LANG_CPP_MIN(20),       KC__, TS_CONSTINIT          },
   { L_CO_AWAIT,
-    Y_CO_AWAIT,           LANG_CPP_MIN(20),       KC_A, TX_NONE               },
+    Y_CO_AWAIT,           LANG_CPP_MIN(20),       KC__, TX_NONE               },
   { L_CO_RETURN,
-    Y_CO_RETURN,          LANG_CPP_MIN(20),       KC_A, TX_NONE               },
+    Y_CO_RETURN,          LANG_CPP_MIN(20),       KC__, TX_NONE               },
   { L_CO_YIELD,
-    Y_CO_YIELD,           LANG_CPP_MIN(20),       KC_A, TX_NONE               },
+    Y_CO_YIELD,           LANG_CPP_MIN(20),       KC__, TX_NONE               },
   { L_EXPORT,
-    Y_EXPORT,             LANG_CPP_MIN(20),       KC_A, TS_EXPORT             },
+    Y_EXPORT,             LANG_CPP_MIN(20),       KC__, TS_EXPORT             },
   { L_REQUIRES,
-    Y_REQUIRES,           LANG_CPP_MIN(20),       KC_A, TX_NONE               },
+    Y_REQUIRES,           LANG_CPP_MIN(20),       KC__, TX_NONE               },
 
   // Alternative tokens
   { L_AND,
-    Y_AMPER2,             LANG_MIN(C_89),         KC_A, TX_NONE               },
+    Y_AMPER2,             LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_AND_EQ,
-    Y_AMPER_EQ,           LANG_MIN(C_89),         KC_A, TX_NONE               },
+    Y_AMPER_EQ,           LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_BITAND,
-    Y_AMPER,              LANG_MIN(C_89),         KC_A, TX_NONE               },
+    Y_AMPER,              LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_BITOR,
-    Y_PIPE,               LANG_MIN(C_89),         KC_A, TX_NONE               },
+    Y_PIPE,               LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_COMPL,
-    Y_TILDE,              LANG_MIN(C_89),         KC_A, TX_NONE               },
+    Y_TILDE,              LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_NOT,
-    Y_EXCLAM,             LANG_MIN(C_89),         KC_A, TX_NONE               },
+    Y_EXCLAM,             LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_NOT_EQ,
-    Y_EXCLAM_EQ,          LANG_MIN(C_89),         KC_A, TX_NONE               },
+    Y_EXCLAM_EQ,          LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_OR,
-    Y_PIPE2,              LANG_MIN(C_89),         KC_A, TX_NONE               },
+    Y_PIPE2,              LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_OR_EQ,
-    Y_PIPE_EQ,            LANG_MIN(C_89),         KC_A, TX_NONE               },
+    Y_PIPE_EQ,            LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_XOR,
-    Y_CIRC,               LANG_MIN(C_89),         KC_A, TX_NONE               },
+    Y_CIRC,               LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_XOR_EQ,
-    Y_CIRC_EQ,            LANG_MIN(C_89),         KC_A, TX_NONE               },
+    Y_CIRC_EQ,            LANG_MIN(C_89),         KC__, TX_NONE               },
+
+  // C++11 attributes
+  { L_CARRIES_DEPENDENCY,
+    Y_CARRIES_DEPENDENCY, LANG_CPP_MIN(11),       KC_A, TA_CARRIES_DEPENDENCY },
+  { L_NORETURN,
+    Y_NORETURN,           LANG_CPP_MIN(11),       KC_A, TA_NORETURN           },
+
+  // C2X & C++14 attributes
+  { L_DEPRECATED,
+    Y_DEPRECATED,         LANG_C_CPP_MIN(2X,14),  KC_A, TA_DEPRECATED         },
+
+  // C2X & C++17 attributes
+  { L_MAYBE_UNUSED,
+    Y_MAYBE_UNUSED,       LANG_C_CPP_MIN(2X,17),  KC_A, TA_MAYBE_UNUSED       },
+  { L_NODISCARD,
+    Y_NODISCARD,          LANG_C_CPP_MIN(2X,17),  KC_A, TA_NODISCARD          },
+
+  // C++20 attributes
+#if 0                     // Not implemented because:
+  { L_ASSERT,             // + These use arbitrary expressions that require
+  { L_ENSURES,            //   being able to parse them -- which is a lot of
+  { L_EXPECTS,            //   work for little benefit.
+
+  { L_LIKELY,             // + These are only for statements, not declarations.
+  { L_UNLIKELY,           //
+#endif
+  { L_NO_UNIQUE_ADDRESS,
+    Y_NO_UNIQUE_ADDRESS,  LANG_CPP_MIN(20),       KC_A, TA_NO_UNIQUE_ADDRESS  },
 
   // Embedded C extensions
   { L_EMC__ACCUM,
-    Y_EMC__ACCUM,         LANG_C_99_EMC,          KC_A, TB_EMC_ACCUM          },
+    Y_EMC__ACCUM,         LANG_C_99_EMC,          KC__, TB_EMC_ACCUM          },
   { L_EMC__FRACT,
-    Y_EMC__FRACT,         LANG_C_99_EMC,          KC_A, TB_EMC_FRACT          },
+    Y_EMC__FRACT,         LANG_C_99_EMC,          KC__, TB_EMC_FRACT          },
   { L_EMC__SAT,
-    Y_EMC__SAT,           LANG_C_99_EMC,          KC_A, TB_EMC_SAT            },
+    Y_EMC__SAT,           LANG_C_99_EMC,          KC__, TB_EMC_SAT            },
 
   // Unified Parallel C extensions
   { L_UPC_RELAXED,
-    Y_UPC_RELAXED,        LANG_C_99_UPC,          KC_A, TS_UPC_RELAXED        },
+    Y_UPC_RELAXED,        LANG_C_99_UPC,          KC__, TS_UPC_RELAXED        },
   { L_UPC_SHARED,
-    Y_UPC_SHARED,         LANG_C_99_UPC,          KC_A, TS_UPC_SHARED         },
+    Y_UPC_SHARED,         LANG_C_99_UPC,          KC__, TS_UPC_SHARED         },
   { L_UPC_STRICT,
-    Y_UPC_STRICT,         LANG_C_99_UPC,          KC_A, TS_UPC_STRICT         },
+    Y_UPC_STRICT,         LANG_C_99_UPC,          KC__, TS_UPC_STRICT         },
 
   // GNU extensions
   { L_GNU___AUTO_TYPE,
-    Y_AUTO_TYPE,          LANG_ALL,               KC_A, TB_AUTO               },
+    Y_AUTO_TYPE,          LANG_ALL,               KC__, TB_AUTO               },
   { L_GNU___COMPLEX,
-    Y__COMPLEX,           LANG_ALL,               KC_A, TB_COMPLEX            },
+    Y__COMPLEX,           LANG_ALL,               KC__, TB_COMPLEX            },
   { L_GNU___COMPLEX__,
-    Y__COMPLEX,           LANG_ALL,               KC_A, TB_COMPLEX            },
+    Y__COMPLEX,           LANG_ALL,               KC__, TB_COMPLEX            },
   { L_GNU___CONST,
-    Y_CONST,              LANG_ALL,               KC_A, TS_CONST              },
+    Y_CONST,              LANG_ALL,               KC__, TS_CONST              },
   { L_GNU___INLINE,
-    Y_INLINE,             LANG_ALL,               KC_A, TS_INLINE             },
+    Y_INLINE,             LANG_ALL,               KC__, TS_INLINE             },
   { L_GNU___INLINE__,
-    Y_INLINE,             LANG_ALL,               KC_A, TS_INLINE             },
+    Y_INLINE,             LANG_ALL,               KC__, TS_INLINE             },
   { L_GNU___RESTRICT,
-    Y_GNU___RESTRICT,     LANG_ALL,               KC_A, TS_RESTRICT           },
+    Y_GNU___RESTRICT,     LANG_ALL,               KC__, TS_RESTRICT           },
   { L_GNU___RESTRICT__,
-    Y_GNU___RESTRICT,     LANG_ALL,               KC_A, TS_RESTRICT           },
+    Y_GNU___RESTRICT,     LANG_ALL,               KC__, TS_RESTRICT           },
   { L_GNU___SIGNED,
-    Y_SIGNED,             LANG_ALL,               KC_A, TB_SIGNED             },
+    Y_SIGNED,             LANG_ALL,               KC__, TB_SIGNED             },
   { L_GNU___SIGNED__,
-    Y_SIGNED,             LANG_ALL,               KC_A, TB_SIGNED             },
+    Y_SIGNED,             LANG_ALL,               KC__, TB_SIGNED             },
   { L_GNU___THREAD,
-    Y_THREAD_LOCAL,       LANG_ALL,               KC_A, TS_THREAD_LOCAL       },
+    Y_THREAD_LOCAL,       LANG_ALL,               KC__, TS_THREAD_LOCAL       },
   { L_GNU___VOLATILE,
-    Y_VOLATILE,           LANG_ALL,               KC_A, TS_VOLATILE           },
+    Y_VOLATILE,           LANG_ALL,               KC__, TS_VOLATILE           },
   { L_GNU___VOLATILE__,
-    Y_VOLATILE,           LANG_ALL,               KC_A, TS_VOLATILE           },
+    Y_VOLATILE,           LANG_ALL,               KC__, TS_VOLATILE           },
 
   // Apple extensions
   { L_APPLE___BLOCK,
-    Y_APPLE___BLOCK,      LANG_ALL,               KC_A, TS_APPLE_BLOCK        },
+    Y_APPLE___BLOCK,      LANG_ALL,               KC__, TS_APPLE_BLOCK        },
 
   { NULL,
-    0,                    LANG_NONE,              KC_A, TX_NONE               }
+    0,                    LANG_NONE,              KC__, TX_NONE               }
 };
-
-////////// local functions ////////////////////////////////////////////////////
-
-/**
- * Given a literal, gets the `c_keyword` for the corresponding C/C++ keyword in
- * \a lang_ids.
- *
- * @param literal The literal to find.
- * @param keywords The array of `c_keyword` to look in.
- * @param lang_ids The bitwise-or of language(s) to look for the keyword in.
- * @param kw_ctx The keyword context to limit to.
- * @return Returns a pointer to the corresponding `c_keyword` or null for none.
- */
-PJL_WARN_UNUSED_RESULT
-static c_keyword_t const* c_keyword_find_impl( char const *literal,
-                                               c_keyword_t const keywords[],
-                                               c_lang_id_t lang_ids,
-                                               c_keyword_ctx_t kw_ctx ) {
-  assert( literal != NULL );
-
-  for ( c_keyword_t const *k = keywords; k->literal != NULL; ++k ) {
-    if ( (k->lang_ids & lang_ids) == LANG_NONE )
-      continue;
-    if ( k->context != C_KW_CTX_ALL && kw_ctx != k->context )
-      continue;
-    if ( strcmp( literal, k->literal ) == 0 )
-      return k;
-  } // for
-  return NULL;
-}
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_keyword_t const* c_attribute_find( char const *literal ) {
-  return c_keyword_find_impl( literal, C_ATTRIBUTES, LANG_ALL, C_KW_CTX_ALL );
-}
-
-c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_id,
+c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
                                    c_keyword_ctx_t kw_ctx ) {
-  return c_keyword_find_impl( literal, C_KEYWORDS, lang_id, kw_ctx );
+  assert( literal != NULL );
+
+  for ( c_keyword_t const *k = C_KEYWORDS; k->literal != NULL; ++k ) {
+    if ( (k->lang_ids & lang_ids) == LANG_NONE )
+      continue;
+
+    if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
+         k->context != C_KW_CTX_ALL && kw_ctx != k->context ) {
+      //
+      // Keyword contexts matter only when converting gibberish to English.
+      // For example, we do NOT match attribute names when parsing C++ because
+      // they are not reserved words.  For example:
+      //
+      //      [[noreturn]] void noreturn();
+      //
+      // is legal.
+      //
+      continue;
+    }
+    else {
+      //
+      // When converting English to gibberish, we MUST match attribute names
+      // because there isn't be any special syntax for them, e.g.:
+      //
+      //      declare x as deprecated int
+      //
+    }
+
+    if ( strcmp( literal, k->literal ) == 0 )
+      return k;
+  } // for
+
+  return NULL;
 }
 
 c_keyword_t const* c_keyword_next( c_keyword_t const *k ) {

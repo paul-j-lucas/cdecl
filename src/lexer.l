@@ -806,27 +806,8 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 //
         find_c_keyword:
                 NO_OP;
-                c_keyword_t const *k =
+                c_keyword_t const *const k =
                   c_keyword_find( lexer_token, opt_lang, lexer_keyword_ctx );
-                if ( k == NULL && c_mode == C_ENGLISH_TO_GIBBERISH ) {
-                  //
-                  // We have to look-up attribute names when parsing English
-                  // because there can't be any special syntax for them, e.g.:
-                  //
-                  //      declare x as deprecated int
-                  //
-                  k = c_attribute_find( lexer_token );
-                }
-                else {
-                  //
-                  // We do NOT look-up attribute names when parsing C++ because
-                  // they are not reserved words.  For example:
-                  //
-                  //      [[noreturn]] void noreturn();
-                  //
-                  // is legal.
-                  //
-                }
                 if ( k != NULL ) {
                   yylval.type_id = k->type_id;
                   return k->yy_token_id;

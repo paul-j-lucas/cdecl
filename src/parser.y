@@ -4537,9 +4537,12 @@ attribute_specifier_list_c_tid
         );
         PARSE_ABORT();
       }
+      lexer_keyword_ctx = C_KW_CTX_ATTRIBUTE;
     }
     attribute_name_list_c_tid_opt "]]"
     {
+      lexer_keyword_ctx = C_KW_CTX_ALL;
+
       DUMP_START( "attribute_specifier_list_c_tid",
                   "[[ attribute_name_list_c_tid_opt ]]" );
       DUMP_TID( "attribute_name_list_c_tid_opt", $3 );
@@ -4574,26 +4577,26 @@ attribue_name_list_c_tid
   ;
 
 attribute_name_tid
-  : name_exp
+  : Y_CARRIES_DEPENDENCY
+  | Y_DEPRECATED
+  | Y_MAYBE_UNUSED
+  | Y_NODISCARD
+  | Y_NORETURN
+  | Y_NO_UNIQUE_ADDRESS
+  | Y_NAME
     {
       DUMP_START( "attribute_name_tid", "Y_NAME" );
       DUMP_STR( "NAME", $1 );
       DUMP_END();
 
+      print_warning( &@1, "\"%s\": unknown attribute\n", $1 );
+
       $$ = TA_NONE;
-
-      c_keyword_t const *const a = c_attribute_find( $1 );
-      if ( a == NULL ) {
-        print_warning( &@1, "\"%s\": unknown attribute\n", $1 );
-      }
-      else if ( unsupported( a->lang_ids ) ) {
-        print_warning( &@1, "\"%s\" not supported in %s\n", $1, C_LANG_NAME() );
-      }
-      else {
-        $$ = a->type_id;
-      }
-
       FREE( $1 );
+    }
+  | error
+    {
+      elaborate_error( "attribute name expected" );
     }
   ;
 
