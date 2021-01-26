@@ -123,21 +123,19 @@ static size_t copy_commands( did_you_mean_t **const pdym ) {
  * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
  * or null to just count keywords, not copy.  If not null, on return, the
  * pointed-to pointer is incremented.
- * @param copy_types If `true`, copy (or count) only keywords that are types;
- * if `false`, copy (or count) only keywords that are not types.
+ * @param tpid The type part ID that a keyword must have in order to be copied
+ * (or counted).
  * @return Returns said number of keywords.
  */
 PJL_NOWARN_UNUSED_RESULT
-static size_t copy_keywords( did_you_mean_t **const pdym, bool copy_types ) {
+static size_t copy_keywords( did_you_mean_t **const pdym, c_type_id_t tpid ) {
   size_t count = 0;
   FOREACH_KEYWORD( k ) {
-    if ( (k->lang_ids & opt_lang) != LANG_NONE ) {
-      bool const is_base_type = c_type_id_part_id( k->type_id ) == TPID_BASE;
-      if ( (copy_types && is_base_type) || (!copy_types && !is_base_type) ) {
-        if ( pdym != NULL )
-          (*pdym)++->token = check_strdup( k->literal );
-        ++count;
-      }
+    if ( (k->lang_ids & opt_lang) != LANG_NONE &&
+         c_type_id_part_id( k->type_id ) == tpid ) {
+      if ( pdym != NULL )
+        (*pdym)++->token = check_strdup( k->literal );
+      ++count;
     }
   } // for
   return count;
@@ -221,9 +219,11 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
   if ( (kinds & DYM_COMMANDS) != DYM_NONE )
     dym_size += copy_commands( /*pdym=*/NULL );
   if ( (kinds & DYM_C_KEYWORDS) != DYM_NONE )
-    dym_size += copy_keywords( /*pdym=*/NULL, /*count_types=*/false );
+    dym_size += copy_keywords( /*pdym=*/NULL, TX_NONE );
+  if ( (kinds & DYM_C_ATTRIBUTES) != DYM_NONE )
+    dym_size += copy_keywords( /*pdym=*/NULL, TA_NONE );
   if ( (kinds & DYM_C_TYPES) != DYM_NONE )
-    dym_size += copy_keywords( /*pdym=*/NULL, /*count_types=*/true )
+    dym_size += copy_keywords( /*pdym=*/NULL, TB_NONE )
               + copy_typedefs( /*pdym=*/NULL );
 
   did_you_mean_t *const dym_array = MALLOC( did_you_mean_t, dym_size + 1 );
@@ -233,10 +233,13 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
     copy_commands( &dym );
   }
   if ( (kinds & DYM_C_KEYWORDS) != DYM_NONE ) {
-    copy_keywords( &dym, /*copy_types=*/false );
+    copy_keywords( &dym, TX_NONE );
+  }
+  if ( (kinds & DYM_C_ATTRIBUTES) != DYM_NONE ) {
+    copy_keywords( &dym, TA_NONE );
   }
   if ( (kinds & DYM_C_TYPES) != DYM_NONE ) {
-    copy_keywords( &dym, /*copy_types=*/true );
+    copy_keywords( &dym, TB_NONE );
     copy_typedefs( &dym );
   }
   MEM_ZERO( dym );                      // one past last is zero'd

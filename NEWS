@@ -26,6 +26,9 @@ Unfortunately, the resulting English is the same for both:
 because there's no other (obvious) way to word the English so it's different
 between cases.
 
+** "Did you mean ...?" for attributes
+"Did you mean ...?" suggestions have been added for misspelled attributes.
+
 ** Added C2X `__attr__` aliases
 In C2X, the attribute aliases of `__deprecated__`, `__maybe_unused__`, and
 `__nodiscard__` are now supported.

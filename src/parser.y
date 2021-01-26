@@ -4589,14 +4589,16 @@ attribute_name_tid
       DUMP_STR( "NAME", $1 );
       DUMP_END();
 
-      print_warning( &@1, "\"%s\": unknown attribute\n", $1 );
+      print_warning( &@1, "\"%s\": unknown attribute", $1 );
+      print_suggestions( DYM_C_ATTRIBUTES, $1 );
+      EPUTC( '\n' );
 
       $$ = TA_NONE;
       FREE( $1 );
     }
   | error
     {
-      elaborate_error( "attribute name expected" );
+      elaborate_error_dym( DYM_C_ATTRIBUTES, "attribute name expected" );
     }
   ;
 
