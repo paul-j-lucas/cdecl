@@ -298,12 +298,18 @@ static c_keyword_t const C_KEYWORDS[] = {
   // C2X & C++14 attributes
   { L_DEPRECATED,
     Y_DEPRECATED,         LANG_C_CPP_MIN(2X,14),  KC_A, TA_DEPRECATED         },
+  { L___DEPRECATED__,
+    Y_DEPRECATED,         LANG_C_MIN(2X),         KC_A, TA_DEPRECATED         },
 
   // C2X & C++17 attributes
   { L_MAYBE_UNUSED,
     Y_MAYBE_UNUSED,       LANG_C_CPP_MIN(2X,17),  KC_A, TA_MAYBE_UNUSED       },
+  { L___MAYBE_UNUSED__,
+    Y_MAYBE_UNUSED,       LANG_C_MIN(2X),         KC_A, TA_MAYBE_UNUSED       },
   { L_NODISCARD,
     Y_NODISCARD,          LANG_C_CPP_MIN(2X,17),  KC_A, TA_NODISCARD          },
+  { L___NODISCARD__,
+    Y_NODISCARD,          LANG_C_MIN(2X),         KC_A, TA_NODISCARD          },
 
   // C++20 attributes
 #if 0                     // Not implemented because:

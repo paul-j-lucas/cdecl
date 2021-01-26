@@ -216,14 +216,17 @@ char const H_USER_DEFINED[]       = "user-defined";
 char const L_CHAR16_T[]           = "char16_t";
 char const L_CHAR32_T[]           = "char32_t";
 
-// C++14
+// C2X & C++14
 char const L_DEPRECATED[]         = "deprecated";
+char const L___DEPRECATED__[]     = "__deprecated__";
 
 // C++17
 char const L_MAYBE_UNUSED[]       = "maybe_unused";
 char const H_MAYBE_UNUSED[]       = "maybe-unused";
+char const L___MAYBE_UNUSED__[]   = "__maybe_unused__";
 char const L_NODISCARD[]          = "nodiscard";
 char const H_NO_DISCARD[]         = "no-discard";
+char const L___NODISCARD__[]      = "__nodiscard__";
 char const H_NON_DISCARDABLE[]    = "non-discardable";
 
 // C++20

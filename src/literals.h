@@ -243,14 +243,17 @@ extern char const H_USER_DEFINED[];
 extern char const L_CHAR16_T[];
 extern char const L_CHAR32_T[];
 
-// C++14
+// C2X & C++14
 extern char const L_DEPRECATED[];
+extern char const L___DEPRECATED__[];
 
 // C++17
 extern char const L_MAYBE_UNUSED[];
 extern char const H_MAYBE_UNUSED[];       // English for "maybe_unused"
+extern char const L___MAYBE_UNUSED__[];
 extern char const L_NODISCARD[];
 extern char const H_NO_DISCARD[];
+extern char const L___NODISCARD__[];
 extern char const H_NON_DISCARDABLE[];    // English for "nodiscard"
 
 // C++20
