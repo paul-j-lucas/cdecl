@@ -717,8 +717,11 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
     char const sep = print_brackets ? ',' : ' ';
     bool *const sep_cat = print_brackets ? &comma : &space;
 
-    if ( print_brackets )
+    if ( print_brackets ) {
+      if ( space )
+        CHRCAT( name, ' ' );
       STRCAT( name, graph_token_c( "[[" ) );
+    }
     C_TYPE_ID_NAME_CAT(
       &name, attr_tid, C_ATTRIBUTE, is_error, sep, sep_cat
     );
