@@ -681,32 +681,48 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
 
   c_type_id_t base_tid = c_type_id_normalize( type->base_tid );
   c_type_id_t store_tid = type->store_tid;
+  c_type_id_t attr_tid = type->attr_tid;
 
-  if ( type->attr_tid != TA_NONE ) {
+  if ( C_LANG_IS_C() && (attr_tid & TA_NORETURN) != TA_NONE ) {
+    //
+    // Special case: we store _Noreturn as an attribute, but in C, it's a
+    // distinct keyword and printed as such instead being printed between
+    // brackets [[like this]].
+    //
+    static c_type_id_t const C_NORETURN[] = { TA_NORETURN };
+    C_TYPE_ID_NAME_CAT( &name, TA_NORETURN, C_NORETURN, is_error, ' ', &space );
+    //
+    // Now that we've handled _Noreturn for C, remove its bit and fall through
+    // to the regular attribute-printing code.
+    //
+    attr_tid &= c_type_id_compl( TA_NORETURN );
+  }
+
+  if ( attr_tid != TA_NONE ) {
     static c_type_id_t const C_ATTRIBUTE[] = {
       TA_CARRIES_DEPENDENCY,
       TA_DEPRECATED,
       TA_MAYBE_UNUSED,
       TA_NODISCARD,
-      TA_NORETURN,
+      TA_NORETURN,                      // still here for C++'s [[noreturn]]
       TA_NO_UNIQUE_ADDRESS,
     };
 
-    bool const brackets =
-      C_LANG_IS_CPP() &&
+    bool const print_brackets =
+      opt_lang >= LANG_C_2X &&
       c_mode == C_ENGLISH_TO_GIBBERISH &&
       !is_error;
 
     bool comma = false;
-    char const sep = brackets ? ',' : ' ';
-    bool *const sep_cat = brackets ? &comma : &space;
+    char const sep = print_brackets ? ',' : ' ';
+    bool *const sep_cat = print_brackets ? &comma : &space;
 
-    if ( brackets )
+    if ( print_brackets )
       STRCAT( name, graph_token_c( "[[" ) );
     C_TYPE_ID_NAME_CAT(
-      &name, type->attr_tid, C_ATTRIBUTE, is_error, sep, sep_cat
+      &name, attr_tid, C_ATTRIBUTE, is_error, sep, sep_cat
     );
-    if ( brackets )
+    if ( print_brackets )
       STRCAT( name, graph_token_c( "]]" ) );
     space = true;
   }
