@@ -1818,7 +1818,7 @@ explain_c
     /*
      * Common declaration, e.g.: T x.
      */
-  | explain type_c_ast { ia_type_ast_push( $2.ast ); } decl_c_list_opt
+  | explain type_c_ast { ia_type_ast_push( $2.ast ); } decl_list_c_opt
     {
       ia_type_ast_pop();
     }
@@ -1828,7 +1828,7 @@ explain_c
      */
   | explain alignas_specifier_c { in_attr.align = $2; }
     typename_opt { in_attr.typename = $4; }
-    type_c_ast { ia_type_ast_push( $6.ast ); } decl_c_list
+    type_c_ast { ia_type_ast_push( $6.ast ); } decl_list_c
     {
       ia_type_ast_pop();
     }
@@ -1842,7 +1842,7 @@ explain_c
      * conflicts.)
      */
   | explain Y_TYPENAME { in_attr.typename = true; }
-    type_c_ast { ia_type_ast_push( $4.ast ); } decl_c_list
+    type_c_ast { ia_type_ast_push( $4.ast ); } decl_list_c
     {
       ia_type_ast_pop();
     }
@@ -2056,7 +2056,7 @@ alignas
   | Y_ALIGNAS
   ;
 
-decl_c_list_opt
+decl_list_c_opt
     /*
      * An enum, class, struct, or union declaration by itself, e.g.:
      *
@@ -2069,10 +2069,10 @@ decl_c_list_opt
     {
       c_ast_t const *const type_ast = ia_type_ast_peek();
 
-      DUMP_START( "decl_c_list_opt", "<empty>" );
+      DUMP_START( "decl_list_c_opt", "<empty>" );
       DUMP_AST( "(type_c_ast)", type_ast );
 
-      DUMP_AST( "decl_c_list_opt", type_ast );
+      DUMP_AST( "decl_list_c_opt", type_ast );
       DUMP_END();
 
       if ( type_ast->kind_id != K_ENUM_CLASS_STRUCT_UNION ) {
@@ -2096,11 +2096,11 @@ decl_c_list_opt
       FPUTC( '\n', fout );
     }
 
-  | decl_c_list
+  | decl_list_c
   ;
 
-decl_c_list
-  : decl_c_list ',' decl_c
+decl_list_c
+  : decl_list_c ',' decl_c
   | decl_c
   ;
 
