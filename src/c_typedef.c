@@ -871,8 +871,7 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
   // predefined types are available only in the language(s) explicitly
   // specified by predefined_lang_ids.
   //
-  tdef->lang_ids = user_defined ?
-    c_lang_and_newer( opt_lang ) : predefined_lang_ids;
+  tdef->lang_ids = user_defined ? C_LANG_AND_NEWER() : predefined_lang_ids;
   tdef->user_defined = user_defined;
   return tdef;
 }

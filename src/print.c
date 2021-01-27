@@ -251,20 +251,44 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
   va_end( args );
 }
 
-void fl_print_error_unknown_type( char const *file, int line,
+void fl_print_error_unknown_name( char const *file, int line,
                                   c_loc_t const *loc, c_sname_t const *sname ) {
   // Must dup this since c_sname_full_name() returns a temporary buffer.
-  char const *const unknown_name = check_strdup( c_sname_full_name( sname ) );
-  fl_print_error( file, line, loc, "\"%s\": unknown type", unknown_name );
+  char const *const name = check_strdup( c_sname_full_name( sname ) );
 
-  c_keyword_t const *const k =
-    c_keyword_find( unknown_name, LANG_ALL, C_KW_CTX_ALL );
-  if ( k != NULL && k->type_id != TX_NONE )
+  char const *adj = "unknown";
+  dym_kind_t  dym_kind = DYM_NONE;
+  c_type_id_t tid = TX_NONE;
+  char const *what = "name";
+
+  c_keyword_t const *const k = c_keyword_find( name, LANG_ALL, C_KW_CTX_ALL );
+
+  if ( k != NULL ) {
+    adj = "unsupported";
+    tid = k->type_id;
+    switch ( c_type_id_part_id( tid ) ) {
+      case TPID_BASE:
+        dym_kind = DYM_C_TYPES;
+        what = "type";
+        break;
+      case TPID_STORE:
+        dym_kind = DYM_C_KEYWORDS;
+        what = "keyword";
+        break;
+      case TPID_ATTR:
+        dym_kind = DYM_C_ATTRIBUTES;
+        what = "attribute";
+        break;
+    } // switch
+  }
+
+  fl_print_error( file, line, loc, "\"%s\": %s %s", name, adj, what );
+  if ( tid != TX_NONE )
     EPRINTF( " until %s", c_lang_oldest_name( k->lang_ids ) );
 
-  print_suggestions( DYM_C_TYPES, unknown_name );
+  print_suggestions( dym_kind, name );
   EPUTC( '\n' );
-  FREE( unknown_name );
+  FREE( name );
 }
 
 void fl_print_warning( char const *file, int line, c_loc_t const *loc,

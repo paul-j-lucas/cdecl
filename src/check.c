@@ -107,12 +107,12 @@
   )
 
 /**
- * Prints an error: `"<identifier>": unknown type`.
+ * Prints an error: `"<name>": unknown <thing>`.
  *
- * @param AST The AST of the unknown type.
+ * @param AST The AST having the unknown name.
  */
-#define error_unknown_type(AST) \
-  fl_print_error_unknown_type( __FILE__, __LINE__, &(AST)->loc, &(AST)->sname )
+#define error_unknown_name(AST) \
+  fl_print_error_unknown_name( __FILE__, __LINE__, &(AST)->loc, &(AST)->sname )
 
 // local constants
 static bool const VISITOR_ERROR_FOUND     = true;
@@ -324,7 +324,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
       print_hint( "%s of %s to %s", L_ARRAY, L_POINTER, L_FUNCTION );
       return false;
     case K_NAME:
-      error_unknown_type( of_ast );
+      error_unknown_name( of_ast );
       return false;
     default:
       /* suppress warning */;
@@ -1369,7 +1369,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
   c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
   switch ( to_ast->kind_id ) {
     case K_NAME:
-      error_unknown_type( to_ast );
+      error_unknown_name( to_ast );
       return false;
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
@@ -1411,7 +1411,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
   switch ( to_ast->kind_id ) {
     case K_NAME:
-      error_unknown_type( to_ast );
+      error_unknown_name( to_ast );
       return VISITOR_ERROR_FOUND;
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:

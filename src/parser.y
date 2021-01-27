@@ -650,7 +650,7 @@ static void fl_elaborate_error( char const *file, int line,
 
   if ( error_token != NULL ) {
     c_keyword_t const *const k =
-      c_keyword_find( error_token, c_lang_newer( opt_lang ), C_KW_CTX_ALL );
+      c_keyword_find( error_token, C_LANG_NEWER(), C_KW_CTX_ALL );
     if ( k != NULL ) {
       c_lang_id_t const oldest_lang = c_lang_oldest( k->lang_ids );
       if ( oldest_lang > opt_lang )
@@ -1437,7 +1437,7 @@ declare_english
         // lose information.
         //
         assert( !c_ast_empty_name( $5.ast ) );
-        print_error_unknown_type( &@5, &$5.ast->sname );
+        print_error_unknown_name( &@5, &$5.ast->sname );
         c_sname_free( &$2 );
         PARSE_ABORT();
       }
@@ -1667,7 +1667,7 @@ define_english
 
       if ( $5.ast->kind_id == K_NAME ) {// see the comment in "declare_english"
         assert( !c_ast_empty_name( $5.ast ) );
-        print_error_unknown_type( &@5, &$5.ast->sname );
+        print_error_unknown_name( &@5, &$5.ast->sname );
         c_sname_free( &$2 );
         PARSE_ABORT();
       }
@@ -1996,7 +1996,7 @@ explain_c
      */
   | explain sname_c
     {
-      print_error_unknown_type( &@2, &$2 );
+      print_error_unknown_name( &@2, &$2 );
       c_sname_free( &$2 );
       PARSE_ABORT();
     }
@@ -3002,7 +3002,7 @@ pointer_decl_english_ast
 
       if ( $3.ast->kind_id == K_NAME ) {// see the comment in "declare_english"
         assert( !c_ast_empty_name( $3.ast ) );
-        print_error_unknown_type( &@3, &$3.ast->sname );
+        print_error_unknown_name( &@3, &$3.ast->sname );
         PARSE_ABORT();
       }
 
@@ -3124,7 +3124,7 @@ var_decl_english_ast
 
       if ( $3.ast->kind_id == K_NAME ) {// see the comment in "declare_english"
         assert( !c_ast_empty_name( $3.ast ) );
-        print_error_unknown_type( &@3, &$3.ast->sname );
+        print_error_unknown_name( &@3, &$3.ast->sname );
         PARSE_ABORT();
       }
 
@@ -4581,7 +4581,18 @@ attribute_c_tid
   | Y_NO_UNIQUE_ADDRESS
   | Y_NAME
     {
-      print_warning( &@1, "\"%s\": unknown attribute", $1 );
+      char const *adj = "unknown";
+      c_type_id_t tid = TX_NONE;
+
+      c_keyword_t const *const k =
+        c_keyword_find( $1, C_LANG_NEWER(), C_KW_CTX_ATTRIBUTE );
+      if ( k != NULL && c_type_id_part_id( k->type_id ) == TPID_ATTR ) {
+        adj = "unsupported";
+        tid = k->type_id;
+      }
+      print_warning( &@1, "\"%s\": %s attribute", $1, adj );
+      if ( tid != TX_NONE )
+        EPRINTF( " until %s", c_lang_oldest_name( k->lang_ids ) );
       print_suggestions( DYM_C_ATTRIBUTES, $1 );
       EPUTC( '\n' );
 
@@ -5006,7 +5017,7 @@ typedef_type_c_ast
       DUMP_SNAME( "sname_c", &$3 );
 
       if ( ia_type_ast_peek() == NULL ) {
-        print_error_unknown_type( &@3, &$3 );
+        print_error_unknown_name( &@3, &$3 );
         PARSE_ABORT();
       }
 
@@ -5038,7 +5049,7 @@ typedef_type_c_ast
       DUMP_SNAME( "typedef_sname_c", &$3 );
 
       if ( ia_type_ast_peek() == NULL ) {
-        print_error_unknown_type( &@3, &$3 );
+        print_error_unknown_name( &@3, &$3 );
         PARSE_ABORT();
       }
 

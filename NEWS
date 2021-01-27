@@ -29,6 +29,11 @@ between cases.
 ** "Did you mean ...?" for attributes
 "Did you mean ...?" suggestions have been added for misspelled attributes.
 
+** Improved "unknown" error messages
+When a name is unknown in the current language but exists in a later language,
+the type of name is now used in the error message.
+
+
 ** Added C2X `__attr__` aliases
 In C2X, the attribute aliases of `__deprecated__`, `__maybe_unused__`, and
 `__nodiscard__` are now supported.

@@ -173,6 +173,17 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_C_CPP_MIN(CL,CPPL)   (LANG_C_MIN(CL) | LANG_CPP_MIN(CPPL))
 
 /**
+ * Shorthand for the common case of getting the bitwise-or of language(s) that
+ * are the current language and newer.
+ *
+ * @return Returns said language(s).
+ *
+ * @sa c_lang_and_newer()
+ * @sa C_LANG_NEWER()
+ */
+#define C_LANG_AND_NEWER()        c_lang_and_newer( opt_lang )
+
+/**
  * Shorthand for the common case of getting whether the current language is
  * among the languages specified by \a LANG_MACRO.
  *
@@ -209,6 +220,17 @@ _GL_INLINE_HEADER_BEGIN
 #define C_LANG_IS_CPP()           C_LANG_IS(CPP_ALL)
 
 /**
+ * Shorthand for the common case of getting the bitwise-or of language(s) that
+ * are newer than the current language.
+ *
+ * @return Returns said languages or #LANG_NONE if no language(s) are newer.
+ *
+ * @sa #C_LANG_AND_NEWER()
+ * @sa c_lang_newer()
+ */
+#define C_LANG_NEWER()            c_lang_newer( opt_lang )
+
+/**
  * C/C++ language(s)/literal pairs: for the given language(s) only, use the
  * given literal.  This allows different languages to use different literals,
  * e.g., "_Noreturn" for C and "noreturn" for C++.
@@ -230,6 +252,8 @@ struct c_lang_lit {
  * Shorthand for the common case of getting the name of the current language.
  *
  * @return Returns said name.
+ *
+ * @sa c_lang_name()
  */
 #define C_LANG_NAME()             c_lang_name( opt_lang )
 
@@ -252,6 +276,7 @@ struct c_lang {
  * @param lang_id The language.  Exactly one language must be set.
  * @return Returns the bitwise-or of all language(s) \a lang_id and later.
  *
+ * @sa #C_LANG_AND_NEWER()
  * @sa c_lang_oldest()
  * @sa c_lang_newer()
  */
@@ -324,7 +349,8 @@ char const* c_lang_literal( c_lang_lit_t const lang_lit[const] );
  * @return Returns said name.
  *
  * @sa c_lang_find()
- * @sa c_lang_oldest_name();
+ * @sa #C_LANG_NAME()
+ * @sa c_lang_oldest_name()
  */
 PJL_WARN_UNUSED_RESULT
 char const* c_lang_name( c_lang_id_t lang_id );
@@ -336,6 +362,7 @@ char const* c_lang_name( c_lang_id_t lang_id );
  * @return Returns said languages or #LANG_NONE if no language(s) are newer.
  *
  * @sa c_lang_and_newer()
+ * @sa #C_LANG_NEWER()
  * @sa c_lang_oldest()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
@@ -351,7 +378,7 @@ c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
  * NULL should be passed.
  * @return Returns the next C/C++ language or null for none.
  *
- * @sa #FOREACH_LANG
+ * @sa #FOREACH_LANG()
  */
 PJL_WARN_UNUSED_RESULT
 c_lang_t const* c_lang_next( c_lang_t const *lang );

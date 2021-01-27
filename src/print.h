@@ -47,25 +47,25 @@
  * @param ... The arguments for fl_print_error().
  *
  * @sa fl_print_error()
- * @sa print_error_unknown_type()
+ * @sa print_error_unknown_name()
  */
 #define print_error(...) \
   fl_print_error( __FILE__, __LINE__, __VA_ARGS__ )
 
 /**
- * Prints an "unknown type" error message possibly followed by "did you mean
+ * Prints an "unknown <thing>" error message possibly followed by "did you mean
  * ...?" for types possibly meant.
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
- * @param LOC The location of the unknown \a SNAME.
+ * @param LOC The location of \a SNAME.
  * @param SNAME The unknown name.
  *
- * @sa fl_print_error_unknown_type()
+ * @sa fl_print_error_unknown_name()
  * @sa print_error()
  */
-#define print_error_unknown_type(LOC,SNAME) \
-  fl_print_error_unknown_type( __FILE__, __LINE__, (LOC), (SNAME) )
+#define print_error_unknown_name(LOC,SNAME) \
+  fl_print_error_unknown_name( __FILE__, __LINE__, (LOC), (SNAME) )
 
 /**
  * Prints an warning message to standard error _not_ including a newline.
@@ -104,26 +104,26 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
                      char const *format, ... );
 
 /**
- * Prints an "unknown type" error message possibly followed by "did you mean
- * ...?" suggestions for types possibly meant.
+ * Prints an "unknown <thing>" error message possibly followed by "did you mean
+ * ...?" suggestions for things possibly meant.
  * In debug mode, also prints the file & line where the function was called
  * from.
  *
  * @note
  * This function isn't normally called directly; use the
- * #print_error_unknown_type() macro instead.
+ * #print_error_unknown_name() macro instead.
  *
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
  * from.
- * @param loc The location of the unknown \a sname.
+ * @param loc The location of \a sname.
  * @param sname The unknown name.
  *
  * @sa fl_print_error()
- * @sa print_error_unknown_type()
+ * @sa print_error_unknown_name()
  * @sa print_suggestions()
  */
-void fl_print_error_unknown_type( char const *file, int line,
+void fl_print_error_unknown_name( char const *file, int line,
                                   c_loc_t const *loc, c_sname_t const *sname );
 
 /**
