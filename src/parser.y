@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 25
+%expect 29
 
 %{
 /** @endcond */
@@ -1158,7 +1158,6 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  sname_english_ast
 %type   <type>      storage_class_english_type
 %type   <type>      storage_class_list_english_type_opt
-%type   <type_id>   type_attribute_english_tid
 %type   <ast_pair>  type_english_ast
 %type   <type>      type_modifier_english_type
 %type   <type>      type_modifier_list_english_type
@@ -1649,12 +1648,6 @@ width_specifier_english
 bits_opt
   : /* empty */
   | Y_BITS
-  ;
-
-attribute_english_tid
-  : type_attribute_english_tid
-  | Y__NORETURN
-  | Y_NORETURN
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3230,15 +3223,17 @@ type_modifier_list_english_type
   ;
 
 type_modifier_english_type
-  : type_attribute_english_tid    { $$ = C_TYPE_LIT_A( $1 ); }
+  : attribute_english_tid         { $$ = C_TYPE_LIT_A( $1 ); }
   | type_modifier_base_type
   ;
 
-type_attribute_english_tid
+attribute_english_tid
   : Y_CARRIES_DEPENDENCY
   | Y_DEPRECATED
   | Y_MAYBE_UNUSED
   | Y_NODISCARD
+  | Y__NORETURN
+  | Y_NORETURN
   | Y_NO_UNIQUE_ADDRESS
   ;
 
