@@ -1126,6 +1126,7 @@ static void yyerror( char const *msg ) {
 //      + <type>: "_type" is appended.
 //  4. Is expected, "_exp" is appended; is optional, "_opt" is appended.
 //
+// Sort using: sort -bdk3
 
                     // English
 %type   <ast_pair>  alignas_or_width_decl_english_ast
@@ -1148,9 +1149,9 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  pointer_decl_english_ast
 %type   <ast_pair>  qualifiable_decl_english_ast
 %type   <ast_pair>  qualified_decl_english_ast
-%type   <type_id>   ref_qualifier_english_tid_opt
 %type   <ast_pair>  reference_decl_english_ast
 %type   <ast_pair>  reference_english_ast
+%type   <type_id>   ref_qualifier_english_tid_opt
 %type   <ast_pair>  returning_english_ast_opt
 %type   <type>      scope_english_type scope_english_type_exp
 %type   <sname>     sname_english sname_english_exp
@@ -1185,12 +1186,12 @@ static void yyerror( char const *msg ) {
 %type   <ast>       array_size_c_ast
 %type   <number>    array_size_c_num
 %type   <ast_pair>  atomic_specifier_type_c_ast
-%type   <type_id>   attribue_name_list_c_tid attribute_name_list_c_tid_opt
+%type   <type_id>   attribute_c_tid
+%type   <type_id>   attribute_list_c_tid attribute_list_c_tid_opt
 %type   <type_id>   attribute_specifier_list_c_tid
 %type   <type_id>   attribute_specifier_list_c_tid_opt
 %type   <number>    bit_field_c_num_opt
 %type   <ast_pair>  block_decl_c_ast
-%type   <ast_pair>  builtin_type_c_ast
 %type   <ast_pair>  decl_c_ast decl2_c_ast
 %type   <ast_pair>  enum_class_struct_union_c_ast
 %type   <ast>       file_scope_constructor_decl_c_ast
@@ -1223,14 +1224,14 @@ static void yyerror( char const *msg ) {
 %type   <type>      storage_class_c_type
 %type   <ast_pair>  trailing_return_type_c_ast_opt
 %type   <ast_pair>  type_c_ast
-%type   <type>      type_modifier_c_type
-%type   <type>      type_modifier_list_c_type type_modifier_list_c_type_opt
-%type   <type_id>   type_qualifier_c_tid
-%type   <type_id>   type_qualifier_list_c_tid type_qualifier_list_c_tid_opt
 %type   <ast_pair>  typedef_name_c_ast
 %type   <sname>     typedef_sname_c
 %type   <ast_pair>  typedef_type_c_ast
 %type   <ast_pair>  typedef_type_decl_c_ast
+%type   <type>      type_modifier_c_type
+%type   <type>      type_modifier_list_c_type type_modifier_list_c_type_opt
+%type   <type_id>   type_qualifier_c_tid
+%type   <type_id>   type_qualifier_list_c_tid type_qualifier_list_c_tid_opt
 %type   <ast_pair>  unmodified_type_c_ast
 %type   <ast_pair>  user_defined_conversion_decl_c_ast
 %type   <ast_pair>  user_defined_literal_c_ast
@@ -1246,11 +1247,11 @@ static void yyerror( char const *msg ) {
                     // Miscellaneous
 %type   <name>      any_name any_name_exp
 %type   <tdef>      any_typedef
-%type   <type_id>   attribute_name_tid
 %type   <type_id>   builtin_tid
-%type   <oper_id>   c_operator
+%type   <ast_pair>  builtin_type_ast
 %type   <type_id>   class_struct_tid class_struct_tid_exp
 %type   <type_id>   class_struct_union_tid
+%type   <oper_id>   c_operator
 %type   <type_id>   cv_qualifier_tid cv_qualifier_list_tid_opt
 %type   <type_id>   enum_tid enum_class_struct_union_tid
 %type   <literal>   help_what_opt
@@ -3242,7 +3243,7 @@ type_attribute_english_tid
   ;
 
 unmodified_type_english_ast
-  : builtin_type_c_ast
+  : builtin_type_ast
   | enum_class_struct_union_c_ast
   | typedef_type_c_ast
   ;
@@ -4331,16 +4332,16 @@ atomic_specifier_type_c_ast
     }
   ;
 
-builtin_type_c_ast
+builtin_type_ast
   : builtin_tid
     {
-      DUMP_START( "builtin_type_c_ast", "builtin_tid" );
+      DUMP_START( "builtin_type_ast", "builtin_tid" );
       DUMP_TID( "builtin_tid", $1 );
 
       $$ = c_ast_pair_new_gc( K_BUILTIN, &@$ );
       $$.ast->type.base_tid = $1;
 
-      DUMP_AST( "builtin_type_c_ast", $$.ast );
+      DUMP_AST( "builtin_type_ast", $$.ast );
       DUMP_END();
     }
   ;
@@ -4539,13 +4540,13 @@ attribute_specifier_list_c_tid
       }
       lexer_keyword_ctx = C_KW_CTX_ATTRIBUTE;
     }
-    attribute_name_list_c_tid_opt "]]"
+    attribute_list_c_tid_opt "]]"
     {
       lexer_keyword_ctx = C_KW_CTX_ALL;
 
       DUMP_START( "attribute_specifier_list_c_tid",
-                  "[[ attribute_name_list_c_tid_opt ]]" );
-      DUMP_TID( "attribute_name_list_c_tid_opt", $3 );
+                  "[[ attribute_list_c_tid_opt ]]" );
+      DUMP_TID( "attribute_list_c_tid_opt", $3 );
 
       $$ = $3;
 
@@ -4553,30 +4554,30 @@ attribute_specifier_list_c_tid
     }
   ;
 
-attribute_name_list_c_tid_opt
+attribute_list_c_tid_opt
   : /* empty */                   { $$ = TA_NONE; }
-  | attribue_name_list_c_tid
+  | attribute_list_c_tid
   ;
 
-attribue_name_list_c_tid
-  : attribue_name_list_c_tid comma_exp attribute_name_tid
+attribute_list_c_tid
+  : attribute_list_c_tid comma_exp attribute_c_tid
     {
-      DUMP_START( "attribue_name_list_c_tid",
-                  "attribue_name_list_c_tid , attribute_name_tid" );
-      DUMP_TID( "attribue_name_list_c_tid", $1 );
-      DUMP_TID( "attribute_name_tid", $3 );
+      DUMP_START( "attribute_list_c_tid",
+                  "attribute_list_c_tid , attribute_c_tid" );
+      DUMP_TID( "attribute_list_c_tid", $1 );
+      DUMP_TID( "attribute_c_tid", $3 );
 
       $$ = $1;
       C_TYPE_ID_ADD( &$$, $3, @3 );
 
-      DUMP_TID( "attribue_name_list_c_tid", $$ );
+      DUMP_TID( "attribute_list_c_tid", $$ );
       DUMP_END();
     }
 
-  | attribute_name_tid
+  | attribute_c_tid
   ;
 
-attribute_name_tid
+attribute_c_tid
   : Y_CARRIES_DEPENDENCY
   | Y_DEPRECATED
   | Y_MAYBE_UNUSED
@@ -4585,10 +4586,6 @@ attribute_name_tid
   | Y_NO_UNIQUE_ADDRESS
   | Y_NAME
     {
-      DUMP_START( "attribute_name_tid", "Y_NAME" );
-      DUMP_STR( "NAME", $1 );
-      DUMP_END();
-
       print_warning( &@1, "\"%s\": unknown attribute", $1 );
       print_suggestions( DYM_C_ATTRIBUTES, $1 );
       EPUTC( '\n' );

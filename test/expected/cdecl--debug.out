@@ -1,7 +1,7 @@
 
-builtin_type_c_ast ::= builtin_tid = {
+builtin_type_ast ::= builtin_tid = {
   builtin_tid = "int" (0x2001),
-  builtin_type_c_ast = {
+  builtin_type_ast = {
     sname = "",
     unique_id = 643,
     kind = "built-in type",
@@ -118,9 +118,9 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-builtin_type_c_ast ::= builtin_tid = {
+builtin_type_ast ::= builtin_tid = {
   builtin_tid = "int" (0x2001),
-  builtin_type_c_ast = {
+  builtin_type_ast = {
     sname = "",
     unique_id = 645,
     kind = "built-in type",
@@ -244,9 +244,9 @@ param_list_c_ast ::= param_c_ast = {
   ]
 }
 
-builtin_type_c_ast ::= builtin_tid = {
+builtin_type_ast ::= builtin_tid = {
   builtin_tid = "int" (0x2001),
-  builtin_type_c_ast = {
+  builtin_type_ast = {
     sname = "",
     unique_id = 646,
     kind = "built-in type",
