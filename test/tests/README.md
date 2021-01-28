@@ -51,7 +51,6 @@ The characters are:
 + `et` = `extern`
 + `ex` = `export`
 + `f` = `friend` or function
-+ `g` = `register`
 + `ga` = GNU C `__auto_type`
 + `gi` = GNU C `__inline__`
 + `grt` = GNU C `__restrict__`
@@ -71,6 +70,7 @@ The characters are:
 + `o` = `operator`, `override`, or `thread_local`
 + `p` = pointer
 + `r` = reference
++ `rg` = `register`
 + `rr` = rvalue reference
 + `rt` = `restrict`
 + `s` = `signed` or `static`

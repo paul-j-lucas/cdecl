@@ -1,1 +1,1 @@
-cdecl @ @ @ declare x as reference to register int @ 65
+cdecl @ @ @ declare x as register int @ 0

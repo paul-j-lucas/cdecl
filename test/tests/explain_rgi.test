@@ -1,1 +1,1 @@
-cdecl @ @ @ explain register int &x @ 65
+cdecl @ @ @ explain register int x @ 0

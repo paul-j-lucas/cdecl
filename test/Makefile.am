@@ -123,8 +123,6 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fccel_v-02.test \
 	tests/declare_fccel_v-03.test \
 	tests/declare_ff_v.test \
-	tests/declare_fg_v-c89.test \
-	tests/declare_fgi_v.test \
 	tests/declare_fid_v.test \
 	tests/declare_fipfi_v_pfi_v.test \
 	tests/declare_fixiy_v.test \
@@ -132,13 +130,14 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fpc_pi.test \
 	tests/declare_fpci_pi.test \
 	tests/declare_fpfc_i_d.test \
+	tests/declare_frg_v-c89.test \
+	tests/declare_frgi_v.test \
 	tests/declare_fv_pa3a5i.test \
 	tests/declare_fv_pa3a5pi.test \
 	tests/declare_fv_pa3i.test \
 	tests/declare_fv_pa3pi.test \
 	tests/declare_fv_v.test \
 	tests/declare_ga.test \
-	tests/declare_gi.test \
 	tests/declare_if_v.test \
 	tests/declare_imd.test \
 	tests/declare_imf.test \
@@ -162,6 +161,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_pfv_pi.test \
 	tests/declare_pi.test \
 	tests/declare_ppi.test \
+	tests/declare_rgi.test \
 	tests/declare_sa2i.test \
 	tests/declare_sc.test \
 	tests/declare_sf_v.test \
@@ -215,16 +215,15 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_f_ai.test \
 	tests/declare_f_f_i.test \
 	tests/declare_ff_v-c.test \
-	tests/declare_fg_v.test \
 	tests/declare_fiiv_v.test \
 	tests/declare_fiv_v.test \
 	tests/declare_fkr_pi.test \
 	tests/declare_fmf_v.test \
 	tests/declare_fn.test \
+	tests/declare_frg_v.test \
 	tests/declare_fsi_v.test \
 	tests/declare_fuw3_v.test \
 	tests/declare_fvx_v.test \
-	tests/declare_gf_v.test \
 	tests/declare_hb.test \
 	tests/declare_hc.test \
 	tests/declare_hc16.test \
@@ -255,6 +254,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_pk.test \
 	tests/declare_puw3.test \
 	tests/declare_pv-knr.test \
+	tests/declare_rgf_v.test \
 	tests/declare_rtf_v-c.test \
 	tests/declare_sb.test \
 	tests/declare_sc-knr.test \
@@ -356,8 +356,6 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fav_v.test \
 	tests/explain_fccel_v.test \
 	tests/explain_ff_v.test \
-	tests/explain_fg_v-c89.test \
-	tests/explain_fgi_v.test \
 	tests/explain_fid_v.test \
 	tests/explain_fipfi_v_pfi_v.test \
 	tests/explain_fixiy_v.test \
@@ -367,6 +365,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fpc_pi.test \
 	tests/explain_fpci_pi.test \
 	tests/explain_fpfc_i_d.test \
+	tests/explain_frg_v-c89.test \
+	tests/explain_frgi_v.test \
 	tests/explain_fv_pa3a5i.test \
 	tests/explain_fv_pa3a5pi.test \
 	tests/explain_fv_pa3i.test \
@@ -374,16 +374,15 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fv_pi.test \
 	tests/explain_fv_v.test \
 	tests/explain_ga.test \
-	tests/explain_gi.test \
 	tests/explain_gif_v.test \
 	tests/explain_i_i.test \
 	tests/explain_i_pfd_i.test \
 	tests/explain_i_pi.test \
 	tests/explain_ic.test \
 	tests/explain_if_v.test \
-	tests/explain_ig.test \
 	tests/explain_imd.test \
 	tests/explain_imf.test \
+	tests/explain_irg.test \
 	tests/explain_is.test \
 	tests/explain_it.test \
 	tests/explain_k-itself.test \
@@ -422,6 +421,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_pfv_pi.test \
 	tests/explain_pi.test \
 	tests/explain_ppi.test \
+	tests/explain_rgi.test \
 	tests/explain_ro_minus2_i_rk.test \
 	tests/explain_ro_minus_rk_rk.test \
 	tests/explain_ro_plus2_i_rk.test \
@@ -502,19 +502,17 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_felel_v.test \
 	tests/explain_felv_v.test \
 	tests/explain_ff_v-c.test \
-	tests/explain_fg_v.test \
 	tests/explain_fiiv_v.test \
 	tests/explain_fiv_v.test \
 	tests/explain_fkr_pi.test
 	tests/explain_fn.test \
+	tests/explain_frg_v.test \
 	tests/explain_fsi_v.test \
 	tests/explain_fuw3_v.test \
 	tests/explain_fvel_v.test \
 	tests/explain_fvi_v.test \
 	tests/explain_fvv_v.test \
 	tests/explain_fvx_v.test \
-	tests/explain_gf_v.test \
-	tests/explain_gk.test \
 	tests/explain_hb.test \
 	tests/explain_hc.test \
 	tests/explain_hc16.test \
@@ -550,6 +548,8 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_pmi-c.test \
 	tests/explain_puw3.test \
 	tests/explain_pv-knr.test \
+	tests/explain_rgf_v.test \
+	tests/explain_rgk.test \
 	tests/explain_ri-c.test \
 	tests/explain_rtf_v-error.test \
 	tests/explain_sb.test \
@@ -675,7 +675,7 @@ TESTS+=	tests/cast_bii_d.test \
 #
 TESTS+=	tests/cast_a3i.test \
 	tests/cast_f_i.test \
-	tests/cast_gi.test \
+	tests/cast_rgi.test \
 	tests/cast_pfx_i.test \
 	tests/cast_ti.test \
 	tests/cast_type.test \
@@ -732,7 +732,7 @@ TESTS+=	tests/explain_cast_a3a5a7i.test \
 	tests/explain_cast_a3i.test \
 	tests/explain_cast_ai.test \
 	tests/explain_cast_eti.test \
-	tests/explain_cast_gi.test \
+	tests/explain_cast_rgi.test \
 	tests/explain_cast_lll.test \
 	tests/explain_cast_si.test \
 	tests/explain_cast_ti.test \
@@ -811,13 +811,13 @@ TESTS+=	tests/2c_typedef_i.test \
 	tests/typedef_ai.test \
 	tests/typedef_c_int_least32_t.test \
 	tests/typedef_eti.test \
-	tests/typedef_gi.test \
+	tests/typedef_rgi.test \
 	tests/typedef_si.test \
 	tests/typedef_ti.test \
 	tests/using_ai.test \
 	tests/using_c_int_least32_t.test \
 	tests/using_eti.test \
-	tests/using_gi.test \
+	tests/using_rgi.test \
 	tests/using_i-c.test \
 	tests/using_si.test
 
@@ -848,7 +848,7 @@ TESTS+=	tests/2define_k_define_2k_show.test \
 TESTS+=	tests/define_ai.test \
 	tests/define_c_int_least32_t.test \
 	tests/define_eti.test \
-	tests/define_gi.test \
+	tests/define_rgi.test \
 	tests/define_si.test
 
 #
@@ -979,7 +979,7 @@ TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_nrfi_v-01.test \
 	tests/declare_pmri.test \
 	tests/declare_pri.test \
-	tests/declare_rgi.test \
+	tests/declare_rrgi.test \
 	tests/declare_rv.test \
 	tests/declare_smi.test \
 	tests/declare_v+f_v.test
@@ -1245,7 +1245,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_pmf_i.test \
 	tests/explain_pmf_pc.test \
 	tests/explain_pmfii_pk.test \
-	tests/explain_pmgi.test \
+	tests/explain_pmrgi.test \
 	tests/explain_pmi.test \
 	tests/explain_ra3i.test \
 	tests/explain_rf_v.test \
@@ -1294,7 +1294,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_pri.test \
 	tests/explain_prri.test \
 	tests/explain_rf_v-c++03.test \
-	tests/explain_rgi.test \
+	tests/explain_rrgi.test \
 	tests/explain_rr.test \
 	tests/explain_rrf_v-c++03.test \
 	tests/explain_rrr-1.test \
