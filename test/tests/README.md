@@ -37,6 +37,7 @@ The characters are:
 + `0` = pure virtual
 + `a` = array (following digits specify array size) or `auto`
 + `a_cd_` = `carries_dependency`
++ `a_dep_` = `deprecated`
 + `a_mu_` = `maybe_unused`
 + `a_nua_` = `no_unique_address`
 + `al` = `_Alignas` or `alignas`
@@ -46,7 +47,7 @@ The characters are:
 + `c8` = `char8_t`
 + `c16` = `char16_t`
 + `c32` = `char32_t`
-+ `d` = `deprecated` or `double`
++ `d` = `double`
 + `el` = `...` (ellipsis)
 + `en` = `enum`
 + `ep` = `explicit`

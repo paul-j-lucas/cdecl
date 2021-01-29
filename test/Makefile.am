@@ -894,6 +894,8 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_a3a5pfv_ppa7a9pc.test \
 	tests/declare_a_cd_fa_cd_i_i.test \
 	tests/declare_a_cd_fi_i.test \
+	tests/declare_a_dep_a_mu_i.test \
+	tests/declare_a_dep_f_v.test \
 	tests/declare_a_mu_f_v-01.test \
 	tests/declare_a_mu_f_v-02.test \
 	tests/declare_a_mu_i-01.test \
@@ -908,8 +910,6 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_crrf_v.test \
 	tests/declare_ctor.test \
 	tests/declare_ctor_i.test \
-	tests/declare_da_mu_i.test \
-	tests/declare_df_v.test \
 	tests/declare_dtor.test \
 	tests/declare_enc.test \
 	tests/declare_enk.test \
@@ -919,9 +919,9 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_f+k_v.test \
 	tests/declare_f_pmi.test \
 	tests/declare_fa_cd_i_i.test \
+	tests/declare_fa_dep_i_v.test \
 	tests/declare_fa_mu_i_v-01.test \
 	tests/declare_fa_mu_i_v-02.test \
-	tests/declare_fdi_v.test \
 	tests/declare_fndi_v-01.test \
 	tests/declare_fndi_v-02.test \
 	tests/declare_frri_v.test \
@@ -1190,6 +1190,10 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_a.test \
 	tests/explain_a_cd_fa_cd_i_i.test \
 	tests/explain_a_cd_fi_i.test \
+	tests/explain_a_dep_a_mu_i-01.test \
+	tests/explain_a_dep_a_mu_i-02.test \
+	tests/explain_a_dep_f_v.test \
+	tests/explain_a_dep_i.test \
 	tests/explain_a_mu_f_v.test \
 	tests/explain_a_mu_i.test \
 	tests/explain_a_nua_k-1.test \
@@ -1204,10 +1208,6 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_crf_v.test \
 	tests/explain_ctor_i.test \
 	tests/explain_cvf_v.test \
-	tests/explain_da_mu_i-01.test \
-	tests/explain_da_mu_i-02.test \
-	tests/explain_df_v.test \
-	tests/explain_di.test \
 	tests/explain_dtor.test \
 	tests/explain_epctor_i.test \
 	tests/explain_epictor_i.test \
@@ -1220,9 +1220,9 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_f_cpmi.test \
 	tests/explain_f_pmi.test \
 	tests/explain_fa_cd_i_i.test \
+	tests/explain_fa_dep_i_v.test \
 	tests/explain_fa_mu_i_v.test \
 	tests/explain_fctor_i.test \
-	tests/explain_fdi_v.test \
 	tests/explain_fndi_v.test \
 	tests/explain_frri_v.test \
 	tests/explain_grtpi.test \
