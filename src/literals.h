@@ -299,6 +299,7 @@ extern char const L_UPC_SHARED[];
 extern char const L_UPC_STRICT[];
 
 // GNU extensions
+extern char const L_GNU___ATTRIBUTE__[];
 extern char const L_GNU___AUTO_TYPE[];
 extern char const L_GNU___COMPLEX[];
 extern char const L_GNU___COMPLEX__[];

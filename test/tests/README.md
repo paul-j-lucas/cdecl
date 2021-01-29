@@ -51,6 +51,7 @@ The characters are:
 + `et` = `extern`
 + `ex` = `export`
 + `f` = `friend` or function
++ `gat` = GNU C `__attribute__`
 + `gau` = GNU C `__auto_type`
 + `gi` = GNU C `__inline__`
 + `grt` = GNU C `__restrict__`

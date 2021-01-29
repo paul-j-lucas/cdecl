@@ -272,19 +272,20 @@ char const L_UPC_SHARED[]         = "shared";
 char const L_UPC_STRICT[]         = "strict";
 
 // GNU extensions
-char const L_GNU___AUTO_TYPE[]    = "__auto_type";
-char const L_GNU___COMPLEX[]      = "__complex";
-char const L_GNU___COMPLEX__[]    = "__complex__";
-char const L_GNU___CONST[]        = "__const";
-char const L_GNU___INLINE[]       = "__inline";
-char const L_GNU___INLINE__[]     = "__inline__";
-char const L_GNU___RESTRICT[]     = "__restrict";
-char const L_GNU___RESTRICT__[]   = "__restrict__";
-char const L_GNU___SIGNED[]       = "__signed";
-char const L_GNU___SIGNED__[]     = "__signed__";
-char const L_GNU___THREAD[]       = "__thread";
-char const L_GNU___VOLATILE[]     = "__volatile";
-char const L_GNU___VOLATILE__[]   = "__volatile__";
+char const L_GNU___ATTRIBUTE__[]      = "__attribute__";
+char const L_GNU___AUTO_TYPE[]        = "__auto_type";
+char const L_GNU___COMPLEX[]          = "__complex";
+char const L_GNU___COMPLEX__[]        = "__complex__";
+char const L_GNU___CONST[]            = "__const";
+char const L_GNU___INLINE[]           = "__inline";
+char const L_GNU___INLINE__[]         = "__inline__";
+char const L_GNU___RESTRICT[]         = "__restrict";
+char const L_GNU___RESTRICT__[]       = "__restrict__";
+char const L_GNU___SIGNED[]           = "__signed";
+char const L_GNU___SIGNED__[]         = "__signed__";
+char const L_GNU___THREAD[]           = "__thread";
+char const L_GNU___VOLATILE[]         = "__volatile";
+char const L_GNU___VOLATILE__[]       = "__volatile__";
 
 // Apple extensions
 char const L_APPLE___BLOCK[]      = "__block";

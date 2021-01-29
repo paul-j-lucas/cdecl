@@ -1,0 +1,1 @@
+cdecl @ @ @ explain int *const __attribute__(( foo )) p @ 0

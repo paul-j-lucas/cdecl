@@ -48,8 +48,17 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/** For \ref lexer_find, look-up everything (the default). */
+#define LEXER_FIND_ALL            (~0u)
+
+/** For \ref lexer_find, also look-up C/C++ keywords. */
+#define LEXER_FIND_C_KEYWORDS     (1u << 0)
+
+/** For \ref lexer_find, also look-up `typedef`s. */
+#define LEXER_FIND_TYPEDEFS       (1u << 1)
+
 // extern variables
-extern bool             lexer_find_typedef; ///< Look-up `typedef` names?
+extern unsigned         lexer_find;         ///< What to look up.
 extern c_keyword_ctx_t  lexer_keyword_ctx;  ///< Keyword context.
 extern char const      *lexer_token;        ///< Text of current token.
 

@@ -369,7 +369,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
 static char const lexer_token_init_buf; ///< So lexer_token is never null.
 
 // extern variables
-bool              lexer_find_typedef = true;
+unsigned          lexer_find = LEXER_FIND_ALL;
 c_keyword_ctx_t   lexer_keyword_ctx;
 char const       *lexer_token = &lexer_token_init_buf;
 
@@ -617,6 +617,8 @@ int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
 set_option    [^=; \f\n\r\t\v]+
 sname         {identifier}({S}*::{S}*{identifier})+
 
+chr_str_pfx   (L|u8?|U)?['"]
+
 bin_int       0[bB]{B}+{int_suffix}?
 oct_int       0{O}*{int_suffix}?
 dec_int       [1-9]{D}*{int_suffix}?
@@ -714,7 +716,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 
                 c_sname_t sname;
                 if ( c_sname_parse( lexer_token, &sname ) ) {
-                  if ( lexer_find_typedef ) {
+                  if ( (lexer_find & LEXER_FIND_TYPEDEFS) != 0 ) {
                     //
                     // 1. See if it's a typedef'd type.
                     //
@@ -789,7 +791,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                   }
                 }
 
-                if ( lexer_find_typedef ) {
+                if ( (lexer_find & LEXER_FIND_TYPEDEFS) != 0 ) {
                   //
                   // 2. See if it's a typedef'd type.
                   //
@@ -801,16 +803,17 @@ declare/{S}({S}|{L})*user-def(ined)? {
                   }
                 }
 
-                //
-                // 3. See if it's a C/C++ keyword.
-                //
         find_c_keyword:
-                NO_OP;
-                c_keyword_t const *const k =
-                  c_keyword_find( lexer_token, opt_lang, lexer_keyword_ctx );
-                if ( k != NULL ) {
-                  yylval.type_id = k->type_id;
-                  return k->yy_token_id;
+                if ( (lexer_find & LEXER_FIND_C_KEYWORDS) != 0 ) {
+                  //
+                  // 3. See if it's a C/C++ keyword.
+                  //
+                  c_keyword_t const *const k =
+                    c_keyword_find( lexer_token, opt_lang, lexer_keyword_ctx );
+                  if ( k != NULL ) {
+                    yylval.type_id = k->type_id;
+                    return k->yy_token_id;
+                  }
                 }
 
                 //
@@ -914,13 +917,33 @@ declare/{S}({S}|{L})*user-def(ined)? {
 "{"           |
 "}"           { SET_TOKEN; return lexer_token[0]    ; }
 
-<*>"/*"       {                         /* ignore C-style comments */
-                for ( int c = input(), prev_c = '\0'; ;
-                      prev_c = c, c = input() ) {
-                  if ( c == '\0' || c == EOF )
+{chr_str_pfx} {                         /* C char or string literal */
+                char const end = yytext[ yyleng - 1 ];
+                for ( int c = input(), prev = '\0'; ; prev = c, c = input() ) {
+                  if ( c == '\0' || c == EOF || (c == '\n' && prev != '\\') ) {
+                    EPRINTF(
+                      "(unterminated %s literal)",
+                      end == '\'' ? "character" : "string"
+                    );
                     return Y_ERROR;
+                  }
                   ++column;
-                  if ( c == '/' && prev_c == '*' )
+                  if ( c == end && prev != '\\' )
+                    break;
+                  if ( c == '\n' )
+                    newline();
+                } // for
+                return end == '\'' ? Y_CHAR_LIT : Y_STR_LIT;
+              }
+
+<*>"/*"       {                         /* ignore C-style comments */
+                for ( int c = input(), prev = '\0'; ; prev = c, c = input() ) {
+                  if ( c == '\0' || c == EOF ) {
+                    EPRINTF( "(unterminated comment)" );
+                    return Y_ERROR;
+                  }
+                  ++column;
+                  if ( c == '/' && prev == '*' )
                     break;
                   if ( c == '\n' )
                     newline();
@@ -1042,7 +1065,7 @@ void lexer_reset( bool hard_reset ) {
   BEGIN( INITIAL );
   c_mode = C_ENGLISH_TO_GIBBERISH;
   input_len = input_sent = 0;
-  lexer_find_typedef = true;
+  lexer_find = LEXER_FIND_ALL;
   lexer_keyword_ctx = C_KW_CTX_ALL;
   newline();
 }

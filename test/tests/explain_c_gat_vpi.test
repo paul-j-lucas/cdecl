@@ -1,0 +1,1 @@
+cdecl @ @ @ explain int *volatile __attribute__(( foo )) const p @ 0

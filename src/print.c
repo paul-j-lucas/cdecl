@@ -111,9 +111,9 @@ static void print_caret( size_t error_column ) {
     assert( error_column <= input_line_len );
 
     //
-    // Chop off a newline (if any) so we can always print one ourselves.
+    // Chop off whitespace (if any) so we can always print a newline ourselves.
     //
-    if ( ends_with_chr( input_line, input_line_len, '\n' ) )
+    while ( ends_with_any_chr( input_line, input_line_len, " \f\r\t\n\v" ) )
       --input_line_len;
 
     //

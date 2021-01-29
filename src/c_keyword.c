@@ -340,6 +340,8 @@ static c_keyword_t const C_KEYWORDS[] = {
     Y_UPC_STRICT,         LANG_C_99_UPC,          KC__, TS_UPC_STRICT         },
 
   // GNU extensions
+  { L_GNU___ATTRIBUTE__,
+    Y_GNU___ATTRIBUTE__,  LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_GNU___AUTO_TYPE,
     Y_AUTO_TYPE,          LANG_ALL,               KC__, TB_AUTO               },
   { L_GNU___COMPLEX,

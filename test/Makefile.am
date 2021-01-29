@@ -1564,6 +1564,27 @@ TESTS+=	tests/file-cast_x.test \
 ###############################################################################
 
 #
+# GNU __attribute__ tests
+# =======================
+#
+TESTS+=	tests/explain_2gat_cpi.test \
+	tests/explain_c_gat_pi.test \
+	tests/explain_c_gat_vpi.test \
+	tests/explain_gat_c_gat_vpi.test \
+	tests/explain_gat_cpi.test \
+	tests/explain_gat_i-01.test \
+	tests/explain_gat_i-02.test \
+	tests/explain_gat_i-03.test \
+	tests/explain_gat_i-04.test \
+	tests/explain_gat_i-05.test \
+	tests/explain_gat_i-06.test \
+	tests/explain_gat_i-07.test \
+	tests/explain_gat_i-08.test \
+	tests/explain_gat_i-09.test
+
+###############################################################################
+
+#
 # Embedded C tests
 # ================
 #

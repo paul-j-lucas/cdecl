@@ -544,12 +544,29 @@ PJL_WARN_UNUSED_RESULT
 char* check_strdup_tolower( char const *s );
 
 /**
+ * Checks whether \a s ends with any character in \a set.
+ *
+ * @param s The string to check.
+ * @param s_len The length of \a s.
+ * @param set The set of characters to check for.
+ * @return Returns `true` only if \a ends with \a c.
+ *
+ * @sa ends_with_chr()
+ */
+C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+bool ends_with_any_chr( char const *s, size_t s_len, char const *set ) {
+  return s_len > 0 && strchr( set, s[ s_len - 1 ] ) != NULL;
+}
+
+/**
  * Checks whether \a s ends with \a c.
  *
  * @param s The string to check.
  * @param s_len The length of \a s.
  * @param c The character to check for.
  * @return Returns `true` only if \a s ends with \a c.
+ *
+ * @sa ends_with_any_chr()
  */
 C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool ends_with_chr( char const *s, size_t s_len, char c ) {

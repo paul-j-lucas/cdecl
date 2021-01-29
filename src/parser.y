@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 29
+%expect 30
 
 %{
 /** @endcond */
@@ -1091,22 +1091,25 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_UPC_STRICT
 
                     // GNU extensions
+%token              Y_GNU___ATTRIBUTE__
 %token  <type_id>   Y_GNU___RESTRICT
 
                     // Apple extensions
 %token  <type_id>   Y_APPLE___BLOCK     // __block storage class
 %token              Y_APPLE_BLOCK       // English for '^'
 
-                    // miscellaneous
+                    // Miscellaneous
 %token              ':'
 %token              ';'
 %token              '{'
 %token              '}'
+%token              Y_CHAR_LIT
 %token              Y_END
 %token              Y_ERROR
 %token  <name>      Y_NAME
 %token  <int_val>   Y_INT_LIT
 %token  <name>      Y_SET_OPTION
+%token              Y_STR_LIT
 %token  <tdef>      Y_TYPEDEF_NAME      // e.g., size_t
 %token  <tdef>      Y_TYPEDEF_SNAME     // e.g., std::string
 
@@ -1162,6 +1165,8 @@ static void yyerror( char const *msg ) {
 %type   <type>      type_modifier_english_type
 %type   <type>      type_modifier_list_english_type
 %type   <type>      type_modifier_list_english_type_opt
+%type   <type_id>   type_qualifier_list_english_tid
+%type   <type_id>   type_qualifier_list_english_tid_opt
 %type   <ast_pair>  unmodified_type_english_ast
 %type   <ast_pair>  user_defined_literal_decl_english_ast
 %type   <ast_pair>  var_decl_english_ast
@@ -1883,7 +1888,7 @@ explain_c
      */
   | explain virtual_tid_opt Y_TILDE any_name_exp
     lparen_exp rparen_func_qualifier_list_c_tid_opt noexcept_c_tid_opt
-    func_equals_c_tid_opt
+    gnu_attribute_specifier_list_c_opt func_equals_c_tid_opt
     {
       DUMP_START( "explain_c",
                   "EXPLAIN [VIRTUAL] '~' NAME '(' ')' "
@@ -1893,11 +1898,11 @@ explain_c
       DUMP_STR( "any_name_exp", $4 );
       DUMP_TID( "func_qualifier_list_c_tid_opt", $6 );
       DUMP_TID( "noexcept_c_tid_opt", $7 );
-      DUMP_TID( "func_equals_c_tid_opt", $8 );
+      DUMP_TID( "func_equals_c_tid_opt", $9 );
 
       c_ast_t *const dtor_ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
       c_ast_append_name( dtor_ast, $4 );
-      dtor_ast->type.store_tid = $2 | $6 | $7 | $8;
+      dtor_ast->type.store_tid = $2 | $6 | $7 | $9;
 
       DUMP_AST( "explain_c", dtor_ast );
       DUMP_END();
@@ -2727,14 +2732,14 @@ decl_english_ast
   ;
 
 array_decl_english_ast
-  : Y_ARRAY static_tid_opt type_qualifier_list_c_tid_opt
+  : Y_ARRAY static_tid_opt type_qualifier_list_english_tid_opt
     array_size_int_opt of_exp decl_english_ast
     {
       DUMP_START( "array_decl_english_ast",
-                  "ARRAY static_tid_opt type_qualifier_list_c_tid_opt "
-                  "array_size_int_opt OF decl_english_ast" );
+                  "ARRAY static_tid_opt type_qualifier_list_english_tid_opt "
+                  "array_size_num_opt OF decl_english_ast" );
       DUMP_TID( "static_tid_opt", $2 );
-      DUMP_TID( "type_qualifier_list_c_tid_opt", $3 );
+      DUMP_TID( "type_qualifier_list_english_tid_opt", $3 );
       DUMP_NUM( "array_size_int_opt", $4 );
       DUMP_AST( "decl_english_ast", $6.ast );
 
@@ -2747,13 +2752,13 @@ array_decl_english_ast
       DUMP_END();
     }
 
-  | Y_VARIABLE length_opt array_exp type_qualifier_list_c_tid_opt
+  | Y_VARIABLE length_opt array_exp type_qualifier_list_english_tid_opt
     of_exp decl_english_ast
     {
       DUMP_START( "array_decl_english_ast",
-                  "VARIABLE LENGTH ARRAY type_qualifier_list_c_tid_opt "
+                  "VARIABLE LENGTH ARRAY type_qualifier_list_english_tid_opt "
                   "OF decl_english_ast" );
-      DUMP_TID( "type_qualifier_list_c_tid_opt", $4 );
+      DUMP_TID( "type_qualifier_list_english_tid_opt", $4 );
       DUMP_AST( "decl_english_ast", $6.ast );
 
       $$ = c_ast_pair_new_gc( K_ARRAY, &@$ );
@@ -2854,7 +2859,7 @@ func_decl_english_ast
   ;
 
 oper_decl_english_ast
-  : type_qualifier_list_c_tid_opt { ia_qual_push_tid( $1, &@1 ); }
+  : type_qualifier_list_english_tid_opt { ia_qual_push_tid( $1, &@1 ); }
     ref_qualifier_english_tid_opt member_or_non_member_opt
     operator_exp paren_decl_list_english_opt returning_english_ast_opt
     {
@@ -2964,14 +2969,14 @@ returning_english_ast_opt
   ;
 
 qualified_decl_english_ast
-  : type_qualifier_list_c_tid_opt { ia_qual_push_tid( $1, &@1 ); }
+  : type_qualifier_list_english_tid_opt { ia_qual_push_tid( $1, &@1 ); }
     qualifiable_decl_english_ast
     {
       ia_qual_pop();
       DUMP_START( "qualified_decl_english_ast",
-                  "type_qualifier_list_c_tid_opt "
+                  "type_qualifier_list_english_tid_opt "
                   "qualifiable_decl_english_ast" );
-      DUMP_TID( "type_qualifier_list_c_tid_opt", $1 );
+      DUMP_TID( "type_qualifier_list_english_tid_opt", $1 );
       DUMP_AST( "qualifiable_decl_english_ast", $3.ast );
 
       $$ = $3;
@@ -2979,6 +2984,29 @@ qualified_decl_english_ast
       DUMP_AST( "qualified_decl_english_ast", $$.ast );
       DUMP_END();
     }
+  ;
+
+type_qualifier_list_english_tid_opt
+  : /* empty */                   { $$ = TS_NONE; }
+  | type_qualifier_list_english_tid
+  ;
+
+type_qualifier_list_english_tid
+  : type_qualifier_list_english_tid type_qualifier_c_tid
+    {
+      DUMP_START( "type_qualifier_list_english_tid",
+                  "type_qualifier_list_english_tid type_qualifier_c_tid" );
+      DUMP_TID( "type_qualifier_list_english_tid", $1 );
+      DUMP_TID( "type_qualifier_c_tid", $2 );
+
+      $$ = $1;
+      C_TYPE_ID_ADD( &$$, $2, @2 );
+
+      DUMP_TID( "type_qualifier_list_english_tid", $$ );
+      DUMP_END();
+    }
+
+  | type_qualifier_c_tid
   ;
 
 qualifiable_decl_english_ast
@@ -3260,7 +3288,7 @@ decl2_c_ast
   | func_decl_c_ast
   | nested_decl_c_ast
   | oper_decl_c_ast
-  | sname_c_ast
+  | sname_c_ast gnu_attribute_specifier_list_c_opt
   | typedef_type_decl_c_ast
   | user_defined_conversion_decl_c_ast
   | user_defined_literal_decl_c_ast
@@ -3268,7 +3296,7 @@ decl2_c_ast
 
 array_decl_c_ast
   : // in_attr: type_c_ast
-    decl2_c_ast array_size_c_int
+    decl2_c_ast array_size_c_int gnu_attribute_specifier_list_c_opt
     {
       DUMP_START( "array_decl_c_ast", "decl2_c_ast array_size_c_int" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
@@ -3312,7 +3340,7 @@ block_decl_c_ast                        // Apple extension
       ia_type_ast_push( c_ast_new_gc( K_APPLE_BLOCK, &@$ ) );
     }
     type_qualifier_list_c_tid_opt decl_c_ast rparen_exp
-    lparen_exp param_list_c_ast_opt ')'
+    lparen_exp param_list_c_ast_opt ')' gnu_attribute_specifier_list_c_opt
     {
       c_ast_t *const block_ast = ia_type_ast_pop();
 
@@ -3337,7 +3365,7 @@ block_decl_c_ast                        // Apple extension
 file_scope_constructor_decl_c_ast
   : inline_tid_opt Y_CONSTRUCTOR_SNAME
     lparen_exp param_list_c_ast_opt rparen_func_qualifier_list_c_tid_opt
-    noexcept_c_tid_opt
+    noexcept_c_tid_opt gnu_attribute_specifier_list_c_opt
     {
       DUMP_START( "file_scope_constructor_decl_c_ast",
                   "[INLINE] CONSTRUCTOR_SNAME '(' param_list_c_ast_opt ')' "
@@ -3363,6 +3391,7 @@ file_scope_constructor_decl_c_ast
 file_scope_destructor_decl_c_ast
   : inline_tid_opt Y_DESTRUCTOR_SNAME
     lparen_exp rparen_func_qualifier_list_c_tid_opt noexcept_c_tid_opt
+    gnu_attribute_specifier_list_c_opt
     {
       DUMP_START( "file_scope_destructor_decl_c_ast",
                   "[INLINE] DESTRUCTOR_SNAME '(' ')' "
@@ -3696,6 +3725,8 @@ trailing_return_type_c_ast_opt
         PARSE_ABORT();
       }
     }
+
+  | gnu_attribute_specifier_list_c { $$.ast = $$.target_ast = NULL; }
   ;
 
 func_equals_c_tid_opt
@@ -4020,7 +4051,7 @@ user_defined_conversion_decl_c_ast
 
 user_defined_literal_decl_c_ast
   : // in_attr: type_c_ast
-    user_defined_literal_c_ast lparen_exp param_list_c_ast rparen_exp
+    user_defined_literal_c_ast lparen_exp param_list_c_ast ')'
     noexcept_c_tid_opt trailing_return_type_c_ast_opt
     {
       DUMP_START( "user_defined_literal_decl_c_ast",
@@ -4278,7 +4309,10 @@ type_modifier_c_type
       // modifier (except "register" since it's is really a storage class --
       // see the comment in type_modifier_base_type about "register").
       //
-      lexer_find_typedef = $$.store_tid == TS_REGISTER;
+      if ( $$.store_tid == TS_REGISTER )
+        lexer_find |= LEXER_FIND_TYPEDEFS;
+      else
+        lexer_find &= ~LEXER_FIND_TYPEDEFS;
     }
   | type_qualifier_c_tid          { $$ = C_TYPE_LIT_S( $1 ); }
   | storage_class_c_type
@@ -4415,6 +4449,7 @@ type_qualifier_list_c_tid_opt
 
 type_qualifier_list_c_tid
   : type_qualifier_list_c_tid type_qualifier_c_tid
+    gnu_attribute_specifier_list_c_opt
     {
       DUMP_START( "type_qualifier_list_c_tid",
                   "type_qualifier_list_c_tid type_qualifier_c_tid" );
@@ -4428,7 +4463,15 @@ type_qualifier_list_c_tid
       DUMP_END();
     }
 
-  | type_qualifier_c_tid
+  | gnu_attribute_specifier_list_c type_qualifier_c_tid
+    {
+      $$ = $2;
+    }
+
+  | type_qualifier_c_tid gnu_attribute_specifier_list_c_opt
+    {
+      $$ = $1;
+    }
   ;
 
 type_qualifier_c_tid
@@ -4547,6 +4590,11 @@ attribute_specifier_list_c_tid
 
       DUMP_END();
     }
+
+  | gnu_attribute_specifier_list_c
+    {
+      $$ = TA_NONE;
+    }
   ;
 
 attribute_list_c_tid_opt
@@ -4603,6 +4651,76 @@ attribute_c_tid
     {
       elaborate_error_dym( DYM_C_ATTRIBUTES, "attribute name expected" );
     }
+  ;
+
+gnu_attribute_specifier_list_c_opt
+  : /* empty */
+  | gnu_attribute_specifier_list_c
+  ;
+
+gnu_attribute_specifier_list_c
+  : gnu_attribute_specifier_list_c gnu_attribute_specifier_c
+  | gnu_attribute_specifier_c
+  ;
+
+gnu_attribute_specifier_c
+  : Y_GNU___ATTRIBUTE__
+    {
+      print_warning( &@1, "%s not supported (ignoring)", L_GNU___ATTRIBUTE__ );
+      if ( (opt_lang & LANG_C_CPP_MIN(2X,11)) != LANG_NONE )
+        print_hint( "[[...]]" );
+      else
+        EPUTC( '\n' );
+      lexer_find &= ~LEXER_FIND_C_KEYWORDS;
+    }
+    lparen_exp lparen_exp gnu_attribute_list_c_opt ')' rparen_exp
+    {
+      lexer_find |= LEXER_FIND_C_KEYWORDS;
+    }
+  ;
+
+gnu_attribute_list_c_opt
+  : /* empty */
+  | gnu_attribuet_list_c
+  ;
+
+gnu_attribuet_list_c
+  : gnu_attribuet_list_c comma_exp gnu_attribute_c
+  | gnu_attribute_c
+  ;
+
+gnu_attribute_c
+  : Y_NAME gnu_attribute_decl_arg_list_c_opt
+    {
+      FREE( $1 );
+    }
+  | error
+    {
+      elaborate_error( "attribute name expected" );
+    }
+  ;
+
+gnu_attribute_decl_arg_list_c_opt
+  : /* empty */
+  | '(' gnu_attribute_arg_list_c_opt ')'
+  ;
+
+gnu_attribute_arg_list_c_opt
+  : /* empty */
+  | gnu_attribute_arg_list_c
+  ;
+
+gnu_attribute_arg_list_c
+  : gnu_attribute_arg_list_c comma_exp gnu_attribute_arg_c
+  | gnu_attribute_arg_c
+  ;
+
+gnu_attribute_arg_c
+  : Y_NAME                        { FREE( $1 ); }
+  | Y_INT_LIT
+  | Y_CHAR_LIT
+  | Y_STR_LIT
+  | '(' gnu_attribute_arg_list_c rparen_exp
   ;
 
 ///////////////////////////////////////////////////////////////////////////////

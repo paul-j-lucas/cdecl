@@ -1,0 +1,4 @@
+explain int *const __attribute__(( foo )) p
+                   ^
+20: warning: __attribute__ not supported (ignoring); did you mean [[...]]?
+declare p as constant pointer to int

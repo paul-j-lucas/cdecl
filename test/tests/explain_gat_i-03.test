@@ -1,0 +1,1 @@
+cdecl @ @ @ explain __attribute__(( foo() )) int i @ 0

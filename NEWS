@@ -33,10 +33,13 @@ between cases.
 When a name is unknown in the current language but exists in a later language,
 the type of name is now used in the error message.
 
-
 ** Added C2X `__attr__` aliases
 In C2X, the attribute aliases of `__deprecated__`, `__maybe_unused__`, and
 `__nodiscard__` are now supported.
+
+** Added support for parsing GNU `__attribute__`
+GNU C's `__attribute__` syntax is now parsed, but otherwise ignored.  (A
+warning is printed that it's ignored.)
 
 
 * Changes in Cdecl 9.4

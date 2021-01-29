@@ -189,7 +189,7 @@ esac
 
 DATA_DIR=$srcdir/data
 EXPECTED_DIR=$srcdir/expected
-ACTUAL_OUTPUT=/tmp/cdecl_test_output_$$_
+DIFF_FILE=/tmp/cdecl_diff_$$_
 
 ########## Run test ###########################################################
 
@@ -203,17 +203,17 @@ run_cdecl_test() {
   [ "$CONFIG" ] && CONFIG="-c $DATA_DIR/$CONFIG"
   EXPECTED_EXIT=`echo $EXPECTED_EXIT`   # trims whitespace
 
-  #echo "$INPUT" \| $COMMAND $CONFIG "$OPTIONS" \> $ACTUAL_OUTPUT
+  #echo "$INPUT" \| $COMMAND $CONFIG "$OPTIONS" \> $LOG_FILE
   if echo "$INPUT" | sed 's/^ //' |
-     $COMMAND $CONFIG $OPTIONS > $ACTUAL_OUTPUT 2> $LOG_FILE
+     $COMMAND $CONFIG $OPTIONS > $LOG_FILE 2>&1
   then
     if [ 0 -eq $EXPECTED_EXIT ]
     then
       EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
       assert_exists $EXPECTED_OUTPUT
-      if diff $EXPECTED_OUTPUT $ACTUAL_OUTPUT >> $LOG_FILE
-      then pass; mv $ACTUAL_OUTPUT $LOG_FILE
-      else fail
+      if diff $EXPECTED_OUTPUT $LOG_FILE > $DIFF_FILE
+      then pass
+      else fail; mv $DIFF_FILE $LOG_FILE
       fi
     else
       fail

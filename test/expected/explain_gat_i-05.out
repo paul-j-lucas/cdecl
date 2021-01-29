@@ -1,0 +1,4 @@
+explain __attribute__(( foo(1) )) int i
+        ^
+9: warning: __attribute__ not supported (ignoring); did you mean [[...]]?
+declare i as int
