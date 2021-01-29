@@ -892,12 +892,12 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_=i.test \
 	tests/declare_a.test \
 	tests/declare_a3a5pfv_ppa7a9pc.test \
+	tests/declare_a_cd_fa_cd_i_i.test \
+	tests/declare_a_cd_fi_i.test \
 	tests/declare_af-c++.test \
 	tests/declare_b-c++.test \
 	tests/declare_c_al0-c++.test \
 	tests/declare_c_al8-c++.test \
-	tests/declare_cdfcdi_i.test \
-	tests/declare_cdfi_i.test \
 	tests/declare_cf_v.test \
 	tests/declare_cpmi.test \
 	tests/declare_crf_v.test \
@@ -914,7 +914,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_exi.test \
 	tests/declare_f+k_v.test \
 	tests/declare_f_pmi.test \
-	tests/declare_fcdi_i.test \
+	tests/declare_fa_cd_i_i.test \
 	tests/declare_fdi_v.test \
 	tests/declare_fndi_v-01.test \
 	tests/declare_fndi_v-02.test \
@@ -968,9 +968,9 @@ TESTS+=	tests/declare_+dtor.test \
 # =======================
 #
 TESTS+=	tests/declare_+ctor-error.test \
+	tests/declare_a_cd_i.test \
 	tests/declare_a_nua_f.test \
 	tests/declare_ai-c++11.test \
-	tests/declare_cdi.test \
 	tests/declare_epf.test \
 	tests/declare_exsi.test \
 	tests/declare_fcf.test \
@@ -1188,13 +1188,13 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_0dtor.test \
 	tests/explain_2+dtor.test \
 	tests/explain_a.test \
+	tests/explain_a_cd_fa_cd_i_i.test \
+	tests/explain_a_cd_fi_i.test \
 	tests/explain_a_nua_k-1.test \
 	tests/explain_a_nua_k-2.test \
 	tests/explain_al0_c-c++.test \
 	tests/explain_al8_c-c++.test \
 	tests/explain_bitand_i.test \
-	tests/explain_cdfcdi_i.test \
-	tests/explain_cdfi_i.test \
 	tests/explain_cf_v.test \
 	tests/explain_compl_dtor.test \
 	tests/explain_cpmci.test \
@@ -1217,7 +1217,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_f__v.test \
 	tests/explain_f_cpmi.test \
 	tests/explain_f_pmi.test \
-	tests/explain_fcdi_i.test \
+	tests/explain_fa_cd_i_i.test \
 	tests/explain_fctor_i.test \
 	tests/explain_fdi_v.test \
 	tests/explain_fndi_v.test \
@@ -1245,8 +1245,8 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_pmf_i.test \
 	tests/explain_pmf_pc.test \
 	tests/explain_pmfii_pk.test \
-	tests/explain_pmrgi.test \
 	tests/explain_pmi.test \
+	tests/explain_pmrgi.test \
 	tests/explain_ra3i.test \
 	tests/explain_rf_v.test \
 	tests/explain_ri.test \
@@ -1272,9 +1272,9 @@ TESTS+=	tests/explain_+ctor.test \
 #
 TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_+dtor-error.test \
+	tests/explain_a_cd_i.test \
 	tests/explain_a_nua_f.test \
 	tests/explain_ai-c++11.test \
-	tests/explain_cdi.test \
 	tests/explain_cepctor_i.test \
 	tests/explain_enc.test \
 	tests/explain_enk.test \
@@ -1294,9 +1294,9 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_pri.test \
 	tests/explain_prri.test \
 	tests/explain_rf_v-c++03.test \
-	tests/explain_rrgi.test \
 	tests/explain_rr.test \
 	tests/explain_rrf_v-c++03.test \
+	tests/explain_rrgi.test \
 	tests/explain_rrr-1.test \
 	tests/explain_rrr-2.test \
 	tests/explain_rrrr.test \

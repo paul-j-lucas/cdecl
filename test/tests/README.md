@@ -36,12 +36,12 @@ The characters are:
 + `=` = scope (`=` = `of scope S`; `2=` = `of scope S of scope T`, etc.)
 + `0` = pure virtual
 + `a` = array (following digits specify array size) or `auto`
++ `a_cd_` = `carries_dependency`
 + `a_nua_` = `no_unique_address`
 + `al` = `_Alignas` or `alignas`
 + `at` = `_Atomic` or `atomic`
 + `b` = block (Apple extension) or `bool`
 + `c` = `char`, `class`, or `const`
-+ `cd` = `carries_dependency`
 + `c8` = `char8_t`
 + `c16` = `char16_t`
 + `c32` = `char32_t`
