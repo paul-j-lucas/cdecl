@@ -900,6 +900,8 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_a_mu_f_v-02.test \
 	tests/declare_a_mu_i-01.test \
 	tests/declare_a_mu_i-02.test \
+	tests/declare_a_nd_f_i-01.test \
+	tests/declare_a_nd_f_i-02.test \
 	tests/declare_af-c++.test \
 	tests/declare_b-c++.test \
 	tests/declare_c_al0-c++.test \
@@ -922,15 +924,13 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_fa_dep_i_v.test \
 	tests/declare_fa_mu_i_v-01.test \
 	tests/declare_fa_mu_i_v-02.test \
-	tests/declare_fndi_v-01.test \
-	tests/declare_fndi_v-02.test \
+	tests/declare_fa_nd_i_v-01.test \
+	tests/declare_fa_nd_i_v-02.test \
 	tests/declare_frri_v.test \
 	tests/declare_grtpi.test \
 	tests/declare_i=+.test \
 	tests/declare_ii-c++.test \
 	tests/declare_mi.test \
-	tests/declare_ndf_i-01.test \
-	tests/declare_ndf_i-02.test \
 	tests/declare_nrfi_v-02-c++.test \
 	tests/declare_nrfi_v-03-c++.test \
 	tests/declare_ntf.test \
@@ -1222,8 +1222,8 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_fa_cd_i_i.test \
 	tests/explain_fa_dep_i_v.test \
 	tests/explain_fa_mu_i_v.test \
+	tests/explain_fa_nd_i_v.test \
 	tests/explain_fctor_i.test \
-	tests/explain_fndi_v.test \
 	tests/explain_frri_v.test \
 	tests/explain_grtpi.test \
 	tests/explain_grtri.test \

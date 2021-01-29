@@ -39,6 +39,7 @@ The characters are:
 + `a_cd_` = `carries_dependency`
 + `a_dep_` = `deprecated`
 + `a_mu_` = `maybe_unused`
++ `a_nd_` = `nodiscard`
 + `a_nua_` = `no_unique_address`
 + `al` = `_Alignas` or `alignas`
 + `at` = `_Atomic` or `atomic`
@@ -66,7 +67,6 @@ The characters are:
 + `l` = `long`
 + `m` = member of class or `mutable`
 + `n` = name, nested, or `union`
-+ `nd` = `nodiscard`
 + `nr` = `noreturn`
 + `ns` = `namespace`
 + `nt` = non-throwing
