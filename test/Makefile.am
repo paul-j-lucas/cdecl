@@ -137,7 +137,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fv_pa3i.test \
 	tests/declare_fv_pa3pi.test \
 	tests/declare_fv_v.test \
-	tests/declare_ga.test \
+	tests/declare_gat.test \
 	tests/declare_if_v.test \
 	tests/declare_imd.test \
 	tests/declare_imf.test \
@@ -373,7 +373,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fv_pa3pi.test \
 	tests/explain_fv_pi.test \
 	tests/explain_fv_v.test \
-	tests/explain_ga.test \
+	tests/explain_gat.test \
 	tests/explain_gif_v.test \
 	tests/explain_i_i.test \
 	tests/explain_i_pfd_i.test \
