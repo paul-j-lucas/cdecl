@@ -4627,25 +4627,34 @@ attribute_c_tid
   | Y_NODISCARD
   | Y_NORETURN
   | Y_NO_UNIQUE_ADDRESS
-  | Y_NAME
+  | sname_c
     {
-      char const *adj = "unknown";
-      c_type_id_t tid = TX_NONE;
-
-      c_keyword_t const *const k =
-        c_keyword_find( $1, C_LANG_NEWER(), C_KW_CTX_ATTRIBUTE );
-      if ( k != NULL && c_type_id_part_id( k->type_id ) == TPID_ATTR ) {
-        adj = "unsupported";
-        tid = k->type_id;
+      if ( c_sname_count( &$1 ) > 1 ) {
+        print_warning( &@1,
+          "\"%s\": namespaced attributes not supported\n",
+          c_sname_full_name( &$1 )
+        );
       }
-      print_warning( &@1, "\"%s\": %s attribute", $1, adj );
-      if ( tid != TX_NONE )
-        EPRINTF( " until %s", c_lang_oldest_name( k->lang_ids ) );
-      print_suggestions( DYM_C_ATTRIBUTES, $1 );
-      EPUTC( '\n' );
+      else {
+        char const *adj = "unknown";
+        c_lang_id_t lang_ids = LANG_NONE;
+
+        char const *const name = c_sname_local_name( &$1 );
+        c_keyword_t const *const k =
+          c_keyword_find( name, C_LANG_NEWER(), C_KW_CTX_ATTRIBUTE );
+        if ( k != NULL && c_type_id_part_id( k->type_id ) == TPID_ATTR ) {
+          adj = "unsupported";
+          lang_ids = k->lang_ids;
+        }
+        print_warning( &@1, "\"%s\": %s attribute", name, adj );
+        if ( lang_ids != LANG_NONE )
+          EPRINTF( " until %s", c_lang_oldest_name( lang_ids ) );
+        print_suggestions( DYM_C_ATTRIBUTES, name );
+        EPUTC( '\n' );
+      }
 
       $$ = TA_NONE;
-      FREE( $1 );
+      c_sname_free( &$1 );
     }
   | error
     {
