@@ -312,6 +312,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_a9cpi.test \
 	tests/explain_a9i.test \
 	tests/explain_a9pi.test \
+	tests/explain_a_mu_k-01.test \
+	tests/explain_a_mu_k-02.test \
 	tests/explain_ai.test \
 	tests/explain_al0_c.test \
 	tests/explain_al8_c.test \
@@ -440,8 +442,6 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_tpfc_i.test \
 	tests/explain_tulz.test \
 	tests/explain_uc.test \
-	tests/explain_uk-01.test \
-	tests/explain_uk-02.test \
 	tests/explain_ull.test \
 	tests/explain_uw3.test \
 	tests/explain_vcpi.test \
@@ -894,6 +894,10 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_a3a5pfv_ppa7a9pc.test \
 	tests/declare_a_cd_fa_cd_i_i.test \
 	tests/declare_a_cd_fi_i.test \
+	tests/declare_a_mu_f_v-01.test \
+	tests/declare_a_mu_f_v-02.test \
+	tests/declare_a_mu_i-01.test \
+	tests/declare_a_mu_i-02.test \
 	tests/declare_af-c++.test \
 	tests/declare_b-c++.test \
 	tests/declare_c_al0-c++.test \
@@ -904,9 +908,9 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_crrf_v.test \
 	tests/declare_ctor.test \
 	tests/declare_ctor_i.test \
+	tests/declare_da_mu_i.test \
 	tests/declare_df_v.test \
 	tests/declare_dtor.test \
-	tests/declare_dui.test \
 	tests/declare_enc.test \
 	tests/declare_enk.test \
 	tests/declare_epctor_i.test \
@@ -915,12 +919,12 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_f+k_v.test \
 	tests/declare_f_pmi.test \
 	tests/declare_fa_cd_i_i.test \
+	tests/declare_fa_mu_i_v-01.test \
+	tests/declare_fa_mu_i_v-02.test \
 	tests/declare_fdi_v.test \
 	tests/declare_fndi_v-01.test \
 	tests/declare_fndi_v-02.test \
 	tests/declare_frri_v.test \
-	tests/declare_fui_v-01.test \
-	tests/declare_fui_v-02.test \
 	tests/declare_grtpi.test \
 	tests/declare_i=+.test \
 	tests/declare_ii-c++.test \
@@ -951,10 +955,6 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_rrf_v.test \
 	tests/declare_rtf_v.test \
 	tests/declare_sxxi.test \
-	tests/declare_uf_v-01.test \
-	tests/declare_uf_v-02.test \
-	tests/declare_ui-01.test \
-	tests/declare_ui-02.test \
 	tests/declare_vdtor.test \
 	tests/declare_vf_v.test \
 	tests/declare_voyf.test \
@@ -1190,6 +1190,8 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_a.test \
 	tests/explain_a_cd_fa_cd_i_i.test \
 	tests/explain_a_cd_fi_i.test \
+	tests/explain_a_mu_f_v.test \
+	tests/explain_a_mu_i.test \
 	tests/explain_a_nua_k-1.test \
 	tests/explain_a_nua_k-2.test \
 	tests/explain_al0_c-c++.test \
@@ -1202,11 +1204,11 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_crf_v.test \
 	tests/explain_ctor_i.test \
 	tests/explain_cvf_v.test \
+	tests/explain_da_mu_i-01.test \
+	tests/explain_da_mu_i-02.test \
 	tests/explain_df_v.test \
 	tests/explain_di.test \
 	tests/explain_dtor.test \
-	tests/explain_dui-01.test \
-	tests/explain_dui-02.test \
 	tests/explain_epctor_i.test \
 	tests/explain_epictor_i.test \
 	tests/explain_epnxctor_i.test \
@@ -1218,11 +1220,11 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_f_cpmi.test \
 	tests/explain_f_pmi.test \
 	tests/explain_fa_cd_i_i.test \
+	tests/explain_fa_mu_i_v.test \
 	tests/explain_fctor_i.test \
 	tests/explain_fdi_v.test \
 	tests/explain_fndi_v.test \
 	tests/explain_frri_v.test \
-	tests/explain_fui_v.test \
 	tests/explain_grtpi.test \
 	tests/explain_grtri.test \
 	tests/explain_grtrri.test \
@@ -1253,8 +1255,6 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_rrf_v.test \
 	tests/explain_sxxi.test \
 	tests/explain_tf_v-c++17.test \
-	tests/explain_uf_v.test \
-	tests/explain_ui.test \
 	tests/explain_using_a3i.test \
 	tests/explain_using_pfi_v.test \
 	tests/explain_vcompl_dtor.test \
