@@ -820,10 +820,10 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 return Y_NAME;
               }
 
-{bin_int}     { SET_TOKEN; yylval.number = parse_int(  2 ); return Y_NUMBER; }
-{oct_int}     { SET_TOKEN; yylval.number = parse_int(  8 ); return Y_NUMBER; }
-{dec_int}     { SET_TOKEN; yylval.number = parse_int( 10 ); return Y_NUMBER; }
-{hex_int}     { SET_TOKEN; yylval.number = parse_int( 16 ); return Y_NUMBER; }
+{bin_int}     { SET_TOKEN; yylval.int_val = parse_int(  2 ); return Y_INT_LIT; }
+{oct_int}     { SET_TOKEN; yylval.int_val = parse_int(  8 ); return Y_INT_LIT; }
+{dec_int}     { SET_TOKEN; yylval.int_val = parse_int( 10 ); return Y_INT_LIT; }
+{hex_int}     { SET_TOKEN; yylval.int_val = parse_int( 16 ); return Y_INT_LIT; }
 
 "<:<:"        { SET_TOKEN_TO( "[[" ); return Y_LBRACKET2; }
 ":>:>"        { SET_TOKEN_TO( "]]" ); return Y_RBRACKET2; }

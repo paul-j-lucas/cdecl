@@ -96,7 +96,7 @@ sname_c_ast ::= sname_c = {
     }
   },
   sname = "f" (none),
-  bit_field_c_num_opt = 0,
+  bit_field_c_int_opt = 0,
   sname_c_ast = {
     sname = "f" (none),
     unique_id = 644,
@@ -173,7 +173,7 @@ sname_c_ast ::= sname_c = {
     bit_width = 0
   },
   sname = "x" (none),
-  bit_field_c_num_opt = 0,
+  bit_field_c_int_opt = 0,
   sname_c_ast = {
     sname = "x" (none),
     unique_id = 645,
@@ -299,7 +299,7 @@ sname_c_ast ::= sname_c = {
     bit_width = 0
   },
   sname = "y" (none),
-  bit_field_c_num_opt = 0,
+  bit_field_c_int_opt = 0,
   sname_c_ast = {
     sname = "y" (none),
     unique_id = 646,

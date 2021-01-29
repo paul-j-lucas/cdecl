@@ -815,10 +815,10 @@ static void yyerror( char const *msg ) {
   c_ast_pair_t        ast_pair;   // for the AST being built
   unsigned            bitmask;    // multipurpose bitmask (used by show)
   bool                flag;       // simple flag
+  int                 int_val;    // for array sizes
   c_gib_kind_t        gib_kind;   // kind of gibberish
   char const         *literal;    // token literal (for new-style casts)
   char               *name;       // name being declared or explained
-  int                 number;     // for array sizes
   c_oper_id_t         oper_id;    // overloaded operator ID
   c_sname_t           sname;      // name being declared or explained
   c_typedef_t const  *tdef;       // typedef
@@ -1105,7 +1105,7 @@ static void yyerror( char const *msg ) {
 %token              Y_END
 %token              Y_ERROR
 %token  <name>      Y_NAME
-%token  <number>    Y_NUMBER
+%token  <int_val>   Y_INT_LIT
 %token  <name>      Y_SET_OPTION
 %token  <tdef>      Y_TYPEDEF_NAME      // e.g., size_t
 %token  <tdef>      Y_TYPEDEF_SNAME     // e.g., std::string
@@ -1120,7 +1120,7 @@ static void yyerror( char const *msg ) {
 //  3. Is of type:
 //      + <ast> or <ast_pair>: "_ast" is appended.
 //      + <name>: "_name" is appended.
-//      + <number>: "_num" is appended.
+//      + <int_val>: "_int" is appended.
 //      + <sname>: "_sname" is appended.
 //      + <type_id>: "_tid" is appended.
 //      + <type>: "_type" is appended.
@@ -1132,7 +1132,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  alignas_or_width_decl_english_ast
 %type   <align>     alignas_specifier_english
 %type   <ast_pair>  array_decl_english_ast
-%type   <number>    array_size_num_opt
+%type   <int_val>   array_size_int_opt
 %type   <type_id>   attribute_english_tid
 %type   <ast_pair>  block_decl_english_ast
 %type   <ast_pair>  constructor_decl_english_ast
@@ -1165,7 +1165,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  unmodified_type_english_ast
 %type   <ast_pair>  user_defined_literal_decl_english_ast
 %type   <ast_pair>  var_decl_english_ast
-%type   <number>    width_specifier_english
+%type   <int_val>   width_specifier_english
 
                     // C/C++ casts
 %type   <ast_pair>  array_cast_c_ast
@@ -1183,13 +1183,13 @@ static void yyerror( char const *msg ) {
 %type   <sname>     any_sname_c any_sname_c_exp any_sname_c_opt
 %type   <ast_pair>  array_decl_c_ast
 %type   <ast>       array_size_c_ast
-%type   <number>    array_size_c_num
+%type   <int_val>   array_size_c_int
 %type   <ast_pair>  atomic_specifier_type_c_ast
 %type   <type_id>   attribute_c_tid
 %type   <type_id>   attribute_list_c_tid attribute_list_c_tid_opt
 %type   <type_id>   attribute_specifier_list_c_tid
 %type   <type_id>   attribute_specifier_list_c_tid_opt
-%type   <number>    bit_field_c_num_opt
+%type   <int_val>   bit_field_c_int_opt
 %type   <ast_pair>  block_decl_c_ast
 %type   <ast_pair>  decl_c_ast decl2_c_ast
 %type   <ast_pair>  enum_class_struct_union_c_ast
@@ -1255,12 +1255,12 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   enum_tid enum_class_struct_union_tid
 %type   <literal>   help_what_opt
 %type   <type_id>   inline_tid_opt
+%type   <int_val>   int_exp
 %type   <ast_pair>  name_ast
 %type   <name>      name_exp
 %type   <type_id>   namespace_tid_exp
 %type   <type>      namespace_type
 %type   <type_id>   no_except_bool_tid_exp
-%type   <number>    number_exp
 %type   <bitmask>   predefined_or_user_opt
 %type   <name>      set_option_value_opt
 %type   <gib_kind>  show_format show_format_exp show_format_opt
@@ -1603,7 +1603,7 @@ alignas_or_width_decl_english_ast
   ;
 
 alignas_specifier_english
-  : Y_ALIGNED as_or_to_opt Y_NUMBER bytes_opt
+  : Y_ALIGNED as_or_to_opt Y_INT_LIT bytes_opt
     {
       $$.kind = C_ALIGNAS_EXPR;
       $$.loc = @1;
@@ -1635,7 +1635,7 @@ bytes_opt
   ;
 
 width_specifier_english
-  : Y_WIDTH number_exp bits_opt
+  : Y_WIDTH int_exp bits_opt
     {
       if ( $2 == 0 ) {
         print_error( &@2, "bit-field width must be > 0\n" );
@@ -2008,7 +2008,7 @@ explain_c
   ;
 
 alignas_specifier_c
-  : alignas lparen_exp Y_NUMBER rparen_exp
+  : alignas lparen_exp Y_INT_LIT rparen_exp
     {
       DUMP_START( "alignas_specifier_c", "ALIGNAS ( NUMBER )" );
       DUMP_NUM( "NUMBER", $3 );
@@ -2728,14 +2728,14 @@ decl_english_ast
 
 array_decl_english_ast
   : Y_ARRAY static_tid_opt type_qualifier_list_c_tid_opt
-    array_size_num_opt of_exp decl_english_ast
+    array_size_int_opt of_exp decl_english_ast
     {
       DUMP_START( "array_decl_english_ast",
                   "ARRAY static_tid_opt type_qualifier_list_c_tid_opt "
-                  "array_size_num_opt OF decl_english_ast" );
+                  "array_size_int_opt OF decl_english_ast" );
       DUMP_TID( "static_tid_opt", $2 );
       DUMP_TID( "type_qualifier_list_c_tid_opt", $3 );
-      DUMP_NUM( "array_size_num_opt", $4 );
+      DUMP_NUM( "array_size_int_opt", $4 );
       DUMP_AST( "decl_english_ast", $6.ast );
 
       $$ = c_ast_pair_new_gc( K_ARRAY, &@$ );
@@ -2766,9 +2766,9 @@ array_decl_english_ast
     }
   ;
 
-array_size_num_opt
+array_size_int_opt
   : /* empty */                   { $$ = C_ARRAY_SIZE_NONE; }
-  | Y_NUMBER
+  | Y_INT_LIT
   | '*'                           { $$ = C_ARRAY_SIZE_VARIABLE; }
   ;
 
@@ -3268,13 +3268,13 @@ decl2_c_ast
 
 array_decl_c_ast
   : // in_attr: type_c_ast
-    decl2_c_ast array_size_c_num
+    decl2_c_ast array_size_c_int
     {
-      DUMP_START( "array_decl_c_ast", "decl2_c_ast array_size_c_num" );
+      DUMP_START( "array_decl_c_ast", "decl2_c_ast array_size_c_int" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_AST( "decl2_c_ast", $1.ast );
       DUMP_AST( "target_ast", $1.target_ast );
-      DUMP_NUM( "array_size_c_num", $2 );
+      DUMP_NUM( "array_size_c_int", $2 );
 
       c_ast_t *const array_ast = c_ast_new_gc( K_ARRAY, &@$ );
       array_ast->as.array.size = $2;
@@ -3293,9 +3293,9 @@ array_decl_c_ast
     }
   ;
 
-array_size_c_num
+array_size_c_int
   : '[' rbracket_exp              { $$ = C_ARRAY_SIZE_NONE; }
-  | '[' Y_NUMBER rbracket_exp     { $$ = $2; }
+  | '[' Y_INT_LIT rbracket_exp    { $$ = $2; }
   | '[' error ']'
     {
       elaborate_error( "integer expected for array size" );
@@ -3702,7 +3702,7 @@ func_equals_c_tid_opt
   : /* empty */                   { $$ = TS_NONE; }
   | '=' Y_DEFAULT                 { $$ = $2; }
   | '=' Y_DELETE                  { $$ = $2; }
-  | '=' Y_NUMBER
+  | '=' Y_INT_LIT
     {
       if ( $2 != 0 ) {
         print_error( &@2, "'0' expected\n" );
@@ -4483,7 +4483,7 @@ restrict_qualifier_c_tid
 upc_layout_qualifier_opt
   : /* empty */
   | '[' ']'
-  | '[' Y_NUMBER rbracket_exp
+  | '[' Y_INT_LIT rbracket_exp
   | '[' '*' rbracket_exp
   | '[' error ']'
     {
@@ -4634,7 +4634,7 @@ array_cast_c_ast
   : // in_attr: type_c_ast
     cast_c_ast_opt array_size_c_ast
     {
-      DUMP_START( "array_cast_c_ast", "cast_c_ast_opt array_size_c_num" );
+      DUMP_START( "array_cast_c_ast", "cast_c_ast_opt array_size_c_int" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_AST( "cast_c_ast_opt", $1.ast );
       DUMP_AST( "target_ast", $1.target_ast );
@@ -4657,7 +4657,7 @@ array_cast_c_ast
   ;
 
 array_size_c_ast
-  : array_size_c_num
+  : array_size_c_int
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $1;
@@ -4668,7 +4668,7 @@ array_size_c_ast
       $$->as.array.size = C_ARRAY_SIZE_NONE;
       $$->as.array.store_tid = $2;
     }
-  | '[' type_qualifier_list_c_tid static_tid_opt Y_NUMBER rbracket_exp
+  | '[' type_qualifier_list_c_tid static_tid_opt Y_INT_LIT rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $4;
@@ -4680,7 +4680,7 @@ array_size_c_ast
       $$->as.array.size = C_ARRAY_SIZE_VARIABLE;
       $$->as.array.store_tid = $2;
     }
-  | '[' Y_STATIC type_qualifier_list_c_tid_opt Y_NUMBER rbracket_exp
+  | '[' Y_STATIC type_qualifier_list_c_tid_opt Y_INT_LIT rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $4;
@@ -5156,12 +5156,12 @@ sname_c
 
 sname_c_ast
   : // in_attr: type_c_ast
-    sname_c bit_field_c_num_opt
+    sname_c bit_field_c_int_opt
     {
       DUMP_START( "sname_c_ast", "sname_c" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_SNAME( "sname", &$1 );
-      DUMP_NUM( "bit_field_c_num_opt", $2 );
+      DUMP_NUM( "bit_field_c_int_opt", $2 );
 
       $$.ast = ia_type_ast_peek();
       $$.target_ast = NULL;
@@ -5187,9 +5187,9 @@ sname_c_ast
     }
   ;
 
-bit_field_c_num_opt
+bit_field_c_int_opt
   : /* empty */                   { $$ = 0; }
-  | ':' number_exp
+  | ':' int_exp
     {
       if ( $2 == 0 ) {
         print_error( &@2, "bit-field width must be > 0\n" );
@@ -5474,6 +5474,14 @@ inline_tid_opt
   | Y_INLINE
   ;
 
+int_exp
+  : Y_INT_LIT
+  | error
+    {
+      elaborate_error( "number expected" );
+    }
+  ;
+
 literal_exp
   : Y_LITERAL
   | error
@@ -5515,14 +5523,6 @@ namespace_tid_exp
 namespace_type
   : Y_NAMESPACE                   { $$ = C_TYPE_LIT_B( $1 ); }
   | Y_INLINE namespace_tid_exp    { $$ = C_TYPE_LIT( $2, $1, TA_NONE ); }
-  ;
-
-number_exp
-  : Y_NUMBER
-  | error
-    {
-      elaborate_error( "number expected" );
-    }
   ;
 
 of_exp
