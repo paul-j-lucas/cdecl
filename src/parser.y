@@ -4397,8 +4397,10 @@ enum_class_struct_union_c_ast
     any_sname_c_exp
     {
       DUMP_START( "enum_class_struct_union_c_ast",
-                  "enum_class_struct_union_tid sname" );
+                  "enum_class_struct_union_tid "
+                  "[attribute_specifier_list_c_tid] sname" );
       DUMP_TID( "enum_class_struct_union_tid", $1 );
+      DUMP_TID( "attribute_specifier_list_c_tid_opt", $2 );
       DUMP_SNAME( "sname", &$3 );
 
       $$ = c_ast_pair_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
