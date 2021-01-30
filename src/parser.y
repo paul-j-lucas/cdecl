@@ -1206,7 +1206,7 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   func_qualifier_c_tid
 %type   <type_id>   func_qualifier_list_c_tid_opt
 %type   <type_id>   func_ref_qualifier_c_tid_opt
-%type   <ast>       knr_func_or_constructor_c_decl_ast
+%type   <ast>       knr_func_or_constructor_decl_c_ast
 %type   <ast_pair>  nested_decl_c_ast
 %type   <type_id>   noexcept_c_tid_opt
 %type   <ast_pair>  oper_c_ast
@@ -1986,11 +1986,11 @@ explain_c
     /*
      * K&R C implicit int function and C++ in-class constructor declaration.
      */
-  | explain knr_func_or_constructor_c_decl_ast
+  | explain knr_func_or_constructor_decl_c_ast
     {
       DUMP_START( "explain_c",
-                  "EXPLAIN knr_func_or_constructor_c_decl_ast" );
-      DUMP_AST( "knr_func_or_constructor_c_decl_ast", $2 );
+                  "EXPLAIN knr_func_or_constructor_decl_c_ast" );
+      DUMP_AST( "knr_func_or_constructor_decl_c_ast", $2 );
       DUMP_END();
 
       C_AST_CHECK_DECL( $2 );
@@ -3542,7 +3542,7 @@ func_decl_c_ast
     }
   ;
 
-knr_func_or_constructor_c_decl_ast
+knr_func_or_constructor_decl_c_ast
     /*
      * K&R C implicit int function and C++ in-class constructor declaration.
      *
@@ -3552,7 +3552,7 @@ knr_func_or_constructor_c_decl_ast
      */
   : Y_NAME '(' param_list_c_ast_opt rparen_func_qualifier_list_c_tid_opt
     {
-      DUMP_START( "knr_func_or_constructor_c_decl_ast",
+      DUMP_START( "knr_func_or_constructor_decl_c_ast",
                   "NAME '(' param_list_c_ast_opt ')'" );
       DUMP_STR( "NAME", $1 );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
@@ -3585,7 +3585,7 @@ knr_func_or_constructor_c_decl_ast
       c_ast_set_sname( $$, &sname );
       $$->as.func.param_ast_list = $3;
 
-      DUMP_AST( "knr_func_or_constructor_c_decl_ast", $$ );
+      DUMP_AST( "knr_func_or_constructor_decl_c_ast", $$ );
       DUMP_END();
 
       if ( (opt_lang & LANG_C_MIN(99)) != LANG_NONE ) {
