@@ -4639,9 +4639,9 @@ attribute_list_c_tid
 
 attribute_c_tid
   : Y_CARRIES_DEPENDENCY
-  | Y_DEPRECATED
+  | Y_DEPRECATED attribute_str_arg_c_opt
   | Y_MAYBE_UNUSED
-  | Y_NODISCARD
+  | Y_NODISCARD attribute_str_arg_c_opt
   | Y_NORETURN
   | Y_NO_UNIQUE_ADDRESS
   | sname_c
@@ -4676,6 +4676,18 @@ attribute_c_tid
   | error
     {
       elaborate_error_dym( DYM_C_ATTRIBUTES, "attribute name expected" );
+    }
+  ;
+
+attribute_str_arg_c_opt
+  : /* empty */
+  | '(' Y_STR_LIT rparen_exp
+    {
+      print_warning( &@1, "attribute arguments not supported (ignoring)\n" );
+    }
+  | '(' error ')'
+    {
+      elaborate_error( "string literal expected" );
     }
   ;
 

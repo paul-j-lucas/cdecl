@@ -37,6 +37,10 @@ the type of name is now used in the error message.
 In C2X, the attribute aliases of `__deprecated__`, `__maybe_unused__`, and
 `__nodiscard__` are now supported.
 
+** Added support for parsing C++ attribute arguments
+Arguments for attributes are now parsed, but otherwise ignored (A warning is
+printed that it's ignored.)
+
 ** Added support for parsing C++17 `using` in attributes
 The optional `using` in attributes is now parsed, but otherwise ignored (A
 warning is printed that it's ignored.)
