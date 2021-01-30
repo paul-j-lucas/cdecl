@@ -1230,7 +1230,6 @@ static void yyerror( char const *msg ) {
 %type   <type>      storage_class_c_type
 %type   <ast_pair>  trailing_return_type_c_ast_opt
 %type   <ast_pair>  type_c_ast
-%type   <ast_pair>  typedef_name_c_ast
 %type   <sname>     typedef_sname_c
 %type   <ast_pair>  typedef_type_c_ast
 %type   <ast_pair>  typedef_type_decl_c_ast
@@ -1242,7 +1241,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  user_defined_conversion_decl_c_ast
 %type   <ast_pair>  user_defined_literal_c_ast
 %type   <ast_pair>  user_defined_literal_decl_c_ast
-%type   <ast_pair>  using_name_c_ast_exp
+%type   <ast>       using_decl_c_ast
 
                     // C++ user-defined conversions
 %type   <ast_pair>  pointer_to_member_udc_decl_c_ast
@@ -1930,52 +1929,14 @@ explain_c
     /*
      * C++ using declaration.
      */
-  | explain Y_USING name_exp equals_exp type_c_ast
+  | explain using_decl_c_ast
     {
-      // see the comment in "define_english" about TS_TYPEDEF
-      C_TYPE_ID_ADD( &$5.ast->type.store_tid, TS_TYPEDEF, @5 );
-      ia_type_ast_push( $5.ast );
-    }
-    cast_c_ast_opt
-    {
-      ia_type_ast_pop();
-
       DUMP_START( "explain_c",
-                  "EXPLAIN USING NAME = type_c_ast cast_c_ast_opt" );
-      DUMP_STR( "NAME", $3 );
-      DUMP_AST( "type_c_ast", $5.ast );
-      DUMP_AST( "cast_c_ast_opt", $7.ast );
-
-      c_ast_t *const using_ast = c_ast_patch_placeholder( $5.ast, $7.ast );
-      c_ast_set_name( using_ast, $3 );
-
-      DUMP_AST( "explain_c", using_ast );
+                  "EXPLAIN using_decl_c_ast" );
+      DUMP_AST( "using_decl_c_ast", $2 );
       DUMP_END();
 
-      //
-      // Using declarations are supported only in C++11 and later.
-      //
-      // This check has to be done now in the parser rather than later in the
-      // AST because using declarations are treated like typedef declarations
-      // and the AST has no "memory" that such a declaration was a using
-      // declaration.
-      //
-      if ( unsupported( LANG_CPP_MIN(11) ) ) {
-        print_error( &@2,
-          "\"%s\" not supported in %s\n", L_USING, C_LANG_NAME()
-        );
-        PARSE_ABORT();
-      }
-
-      C_AST_CHECK_DECL( using_ast );
-
-      // Once the semantic checks pass, remove the TS_TYPEDEF.
-      PJL_IGNORE_RV(
-        c_ast_take_type_any( using_ast, &C_TYPE_LIT_S( TS_TYPEDEF ) )
-      );
-      FPRINTF( fout, "%s %s %s %s ", L_DECLARE, $3, L_AS, L_TYPE );
-      c_ast_english( using_ast, fout );
-      FPUTC( '\n', fout );
+      c_ast_explain_declaration( $2 );
     }
 
     /*
@@ -2607,90 +2568,14 @@ typedef_declaration_c
 ///////////////////////////////////////////////////////////////////////////////
 
 using_declaration_c
-  : Y_USING
+  : using_decl_c_ast
     {
-      // see the comment in "explain"
-      c_mode = C_GIBBERISH_TO_ENGLISH;
-    }
-    using_name_c_ast_exp equals_exp type_c_ast
-    {
-      // see the comment in "define_english" about TS_TYPEDEF
-      C_TYPE_ADD_TID( &$5.ast->type, TS_TYPEDEF, @5 );
-      ia_type_ast_push( $5.ast );
-    }
-    cast_c_ast_opt
-    {
-      ia_type_ast_pop();
-
-      DUMP_START( "using_declaration_c",
-                  "USING NAME = type_c_ast cast_c_ast_opt" );
-      DUMP_AST( "using_name_c_ast_exp", $3.ast );
-      DUMP_AST( "type_c_ast", $5.ast );
-      DUMP_AST( "cast_c_ast_opt", $7.ast );
-
-      c_ast_t *const using_ast = c_ast_patch_placeholder( $5.ast, $7.ast );
-
-      c_sname_t sname = $3.ast->kind_id == K_TYPEDEF ?
-        c_ast_dup_name( $3.ast->as.tdef.for_ast ) :
-        c_ast_take_name( $3.ast );
-      c_ast_set_sname( using_ast, &sname );
-
-      c_sname_t temp_sname = c_sname_dup( &in_attr.current_scope );
-      c_ast_set_local_name_type(
-        using_ast, c_sname_local_type( &in_attr.current_scope )
-      );
-      c_ast_prepend_sname( using_ast, &temp_sname );
-
-      DUMP_AST( "using_declaration_c", using_ast );
-      DUMP_END();
-
-      //
-      // Using declarations are supported only in C++11 and later.  (However,
-      // we always allow them in configuration files.)
-      //
-      // This check has to be done now in the parser rather than later in the
-      // AST because using declarations are treated like typedef declarations
-      // and the AST has no "memory" that such a declaration was a using
-      // declaration.
-      //
-      if ( unsupported( LANG_CPP_MIN(11) ) ) {
-        print_error( &@1,
-          "\"%s\" not supported in %s\n", L_USING, C_LANG_NAME()
-        );
-        PARSE_ABORT();
-      }
-
-      C_AST_CHECK_DECL( using_ast );
       // see the comment in "define_english" about TS_TYPEDEF
       static c_type_t const typedef_type = { TB_NONE, TS_TYPEDEF, TA_ANY };
-      PJL_IGNORE_RV( c_ast_take_type_any( using_ast, &typedef_type ) );
+      PJL_IGNORE_RV( c_ast_take_type_any( $1, &typedef_type ) );
 
-      if ( !add_type( L_USING, using_ast, &@5 ) )
+      if ( !add_type( L_USING, $1, &@1 ) )
         PARSE_ABORT();
-    }
-  ;
-
-using_name_c_ast_exp
-  : name_ast
-  | typedef_name_c_ast
-  | error
-    {
-      elaborate_error( "type name expected" );
-    }
-  ;
-
-typedef_name_c_ast
-  : Y_TYPEDEF_NAME
-    {
-      DUMP_START( "typedef_name_c_ast", "Y_TYPEDEF_NAME" );
-      DUMP_AST( "Y_TYPEDEF_NAME", $1->ast );
-
-      $$ = c_ast_pair_new_gc( K_TYPEDEF, &@$ );
-      $$.ast->type.base_tid = TB_TYPEDEF;
-      $$.ast->as.tdef.for_ast = $1->ast;
-
-      DUMP_AST( "typedef_name_c_ast", $$.ast );
-      DUMP_END();
     }
   ;
 
@@ -4107,6 +3992,60 @@ user_defined_literal_c_ast
 
       DUMP_AST( "user_defined_literal_c_ast", $$.ast );
       DUMP_END();
+    }
+  ;
+
+using_decl_c_ast
+  : Y_USING
+    {
+      // see the comment in "explain"
+      c_mode = C_GIBBERISH_TO_ENGLISH;
+    }
+    any_name_exp equals_exp type_c_ast
+    {
+      // see the comment in "define_english" about TS_TYPEDEF
+      C_TYPE_ADD_TID( &$5.ast->type, TS_TYPEDEF, @5 );
+      ia_type_ast_push( $5.ast );
+    }
+    cast_c_ast_opt
+    {
+      ia_type_ast_pop();
+
+      DUMP_START( "using_decl_c_ast",
+                  "USING any_name_exp '=' type_c_ast cast_c_ast_opt" );
+      DUMP_STR( "any_name_exp", $3 );
+      DUMP_AST( "type_c_ast", $5.ast );
+      DUMP_AST( "cast_c_ast_opt", $7.ast );
+
+      $$ = c_ast_patch_placeholder( $5.ast, $7.ast );
+      c_ast_set_name( $$, $3 );
+
+      c_sname_t temp_sname = c_sname_dup( &in_attr.current_scope );
+      c_ast_set_local_name_type(
+        $$, c_sname_local_type( &in_attr.current_scope )
+      );
+      c_ast_prepend_sname( $$, &temp_sname );
+
+      DUMP_AST( "using_decl_c_ast", $$ );
+      DUMP_END();
+
+      //
+      // Using declarations are supported only in C++11 and later.  (However,
+      // we always allow them in configuration files.)
+      //
+      // This check has to be done now in the parser rather than later in the
+      // AST because using declarations are treated like typedef declarations
+      // and the AST has no "memory" that such a declaration was a using
+      // declaration.
+      //
+      if ( unsupported( LANG_CPP_MIN(11) ) ) {
+        print_error( &@1,
+          "\"%s\" not supported in %s\n", L_USING, C_LANG_NAME()
+        );
+        PARSE_ABORT();
+      }
+
+      C_AST_CHECK_DECL( $$ );
     }
   ;
 
