@@ -2627,6 +2627,28 @@ using_declaration_c
     {
       ia_type_ast_pop();
 
+      DUMP_START( "using_declaration_c",
+                  "USING NAME = type_c_ast cast_c_ast_opt" );
+      DUMP_AST( "using_name_c_ast_exp", $3.ast );
+      DUMP_AST( "type_c_ast", $5.ast );
+      DUMP_AST( "cast_c_ast_opt", $7.ast );
+
+      c_ast_t *const using_ast = c_ast_patch_placeholder( $5.ast, $7.ast );
+
+      c_sname_t sname = $3.ast->kind_id == K_TYPEDEF ?
+        c_ast_dup_name( $3.ast->as.tdef.for_ast ) :
+        c_ast_take_name( $3.ast );
+      c_ast_set_sname( using_ast, &sname );
+
+      c_sname_t temp_sname = c_sname_dup( &in_attr.current_scope );
+      c_ast_set_local_name_type(
+        using_ast, c_sname_local_type( &in_attr.current_scope )
+      );
+      c_ast_prepend_sname( using_ast, &temp_sname );
+
+      DUMP_AST( "using_declaration_c", using_ast );
+      DUMP_END();
+
       //
       // Using declarations are supported only in C++11 and later.  (However,
       // we always allow them in configuration files.)
@@ -2642,35 +2664,6 @@ using_declaration_c
         );
         PARSE_ABORT();
       }
-
-      DUMP_START( "using_declaration_c", "USING NAME = decl_c_ast" );
-      DUMP_AST( "using_name_c_ast_exp", $3.ast );
-      DUMP_AST( "type_c_ast", $5.ast );
-      DUMP_AST( "cast_c_ast_opt", $7.ast );
-
-      c_ast_t *const using_ast = c_ast_patch_placeholder( $5.ast, $7.ast );
-
-      c_sname_t sname = $3.ast->kind_id == K_TYPEDEF ?
-        c_ast_dup_name( $3.ast->as.tdef.for_ast ) :
-        c_ast_take_name( $3.ast );
-      c_ast_set_sname( using_ast, &sname );
-
-      if ( c_ast_count_name( using_ast ) > 1 ) {
-        print_error( &@5,
-          "%s names can not be scoped; use: %s %s { %s ... }\n",
-          L_USING, L_NAMESPACE, c_ast_scope_name( using_ast ), L_USING
-        );
-        PARSE_ABORT();
-      }
-
-      c_sname_t temp_sname = c_sname_dup( &in_attr.current_scope );
-      c_ast_set_local_name_type(
-        using_ast, c_sname_local_type( &in_attr.current_scope )
-      );
-      c_ast_prepend_sname( using_ast, &temp_sname );
-
-      DUMP_AST( "using_declaration_c", using_ast );
-      DUMP_END();
 
       C_AST_CHECK_DECL( using_ast );
       // see the comment in "define_english" about TS_TYPEDEF
