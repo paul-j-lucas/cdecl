@@ -685,6 +685,7 @@ static void ia_free( void ) {
  * @sa ia_qual_peek_tid()
  */
 static void ia_qual_push_tid( c_type_id_t qual_tid, c_loc_t const *loc ) {
+  c_type_id_check( qual_tid, TPID_STORE );
   assert( (qual_tid & c_type_id_compl( TS_MASK_QUALIFIER )) == TS_NONE );
   assert( loc != NULL );
 
@@ -3037,8 +3038,7 @@ pointer_decl_english_ast
       }
 
       $$ = c_ast_pair_new_gc( K_POINTER, &@$ );
-      $$.ast->type.store_tid =
-        c_type_id_check( ia_qual_peek_tid(), TPID_STORE );
+      $$.ast->type.store_tid = ia_qual_peek_tid();
       c_ast_set_parent( $3.ast, $$.ast );
 
       DUMP_AST( "pointer_decl_english_ast", $$.ast );
@@ -3061,8 +3061,7 @@ pointer_decl_english_ast
       DUMP_AST( "decl_english_ast", $7.ast );
 
       $$ = c_ast_pair_new_gc( K_POINTER_TO_MEMBER, &@$ );
-      $$.ast->type.store_tid =
-        c_type_id_check( ia_qual_peek_tid(), TPID_STORE );
+      $$.ast->type.store_tid = ia_qual_peek_tid();
       $$.ast->as.ptr_mbr.class_sname = $6;
       c_ast_set_parent( $7.ast, $$.ast );
       C_TYPE_ADD_TID( &$$.ast->type, $5, @5 );
