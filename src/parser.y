@@ -1947,11 +1947,10 @@ explain_c
       DUMP_AST( "cast_c_ast_opt", $7.ast );
 
       c_ast_t *const using_ast = c_ast_patch_placeholder( $5.ast, $7.ast );
+      c_ast_set_name( using_ast, $3 );
 
       DUMP_AST( "explain_c", using_ast );
       DUMP_END();
-
-      bool ok = false;
 
       //
       // Using declarations are supported only in C++11 and later.
@@ -1965,22 +1964,18 @@ explain_c
         print_error( &@2,
           "\"%s\" not supported in %s\n", L_USING, C_LANG_NAME()
         );
-      }
-      else {
-        if ( (ok = c_ast_check_declaration( using_ast )) ) {
-          // Once the semantic checks pass, remove the TS_TYPEDEF.
-          PJL_IGNORE_RV(
-            c_ast_take_type_any( using_ast, &C_TYPE_LIT_S( TS_TYPEDEF ) )
-          );
-          FPRINTF( fout, "%s %s %s %s ", L_DECLARE, $3, L_AS, L_TYPE );
-          c_ast_english( using_ast, fout );
-          FPUTC( '\n', fout );
-        }
+        PARSE_ABORT();
       }
 
-      FREE( $3 );
-      if ( !ok )
-        PARSE_ABORT();
+      C_AST_CHECK_DECL( using_ast );
+
+      // Once the semantic checks pass, remove the TS_TYPEDEF.
+      PJL_IGNORE_RV(
+        c_ast_take_type_any( using_ast, &C_TYPE_LIT_S( TS_TYPEDEF ) )
+      );
+      FPRINTF( fout, "%s %s %s %s ", L_DECLARE, $3, L_AS, L_TYPE );
+      c_ast_english( using_ast, fout );
+      FPUTC( '\n', fout );
     }
 
     /*
