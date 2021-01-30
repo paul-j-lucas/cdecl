@@ -1,3 +1,83 @@
+2021-01-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, parser.y: Added parsing support for attribute arguments.
+   * NEWS, parser.y, test/Makefile.am, explain_a_using_a_mu_i.out,
+     explain_a_using_a_mu_i.test: Added suppport for [[using : ... ]].
+   * c_type.h, parser.y: Added c_type_id_check() into ia_qual_push_tid().
+   * c_type.h, parser.y: Added c_type_id_check().
+   * c_type.h, cdecl--debug.out, cdecl-d.out: Type pard IDs are now distinct
+     bits.
+   * parser.y: Added missing dump of attribute_specifier_list_c_tid_opt.
+   * test/Makefile.am: Test renaming.
+   * parser.y: Attribues can now parse (but warn about) snames.
+   * NEWS, cdecl.1, c_keyword.c, lexer.h, lexer.l, literals.c, literals.h,
+     parser.y, print.c, util.h, test/Makefile.am, cast_pfx_i-c17.out,
+     declare_fkr_pi-c17.out, declare_pfkr_i-c17.out, declare_yi.out,
+     explain_2gat_cpi.out, explain_c_gat_pi.out, explain_c_gat_vpi.out,
+     explain_fkr_pi-c17.out, explain_gat_c_gat_vpi.out, explain_gat_cpi.out,
+     explain_gat_i-01.out, explain_gat_i-02.out, explain_gat_i-03.out,
+     explain_gat_i-04.out, explain_gat_i-05.out, explain_gat_i-06.out,
+     explain_gat_i-07.out, explain_gat_i-08.out, explain_gat_i-09.out,
+     explain_tf_v-c++17.out, explain_unknown_attribute.out, run_test.sh,
+     explain_2gat_cpi.test, explain_c_gat_pi.test, explain_c_gat_vpi.test,
+     explain_gat_c_gat_vpi.test, explain_gat_cpi.test, explain_gat_i-01.test,
+     explain_gat_i-02.test, explain_gat_i-03.test, explain_gat_i-04.test,
+     explain_gat_i-05.test, explain_gat_i-06.test, explain_gat_i-07.test,
+     explain_gat_i-08.test, explain_gat_i-09.test: Added support for parsing
+     GNU's __attribute__((...)) syntax.
+
+2021-01-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l, parser.y, cdecl--debug.out, cdecl-d.out: Changed "number" to
+     "int_val".
+   * util.h: Doxygen fix.
+   * test/Makefile.am: Test renaming.
+   * test/Makefile.am, declare_rgi.test, declare_rrgi.test, explain_rgi.test,
+     explain_rrgi.test: Test renaming.
+
+2021-01-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_lang.h, c_typedef.c, check.c, did_you_mean.c, parser.y, print.c,
+     print.h: When a name is unknown in the current language but exists in a
+     later language, the type of name is now used in the error message.
+
+2021-01-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Simplified attribute_english_tid.
+   * parser.y, cdecl--debug.out, cdecl-d.out: Tweaked rule names.
+   * NEWS, did_you_mean.c, did_you_mean.h, parser.y: Added "Did you mean ...?"
+     for attributes.
+   * NEWS, c_keyword.c, literals.c, literals.h: Added C2X `__attr__` aliases.
+
+2021-01-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Tweaked spacing.
+   * c_type.c: Special-cased _Noreturn for C.
+   * c_keyword.c, c_keyword.h, lexer.l, parser.y: Added C_KW_CTX_ATTRIBUTE to
+     handle attributes in a non-special-case way.
+   * parser.y: s/decl_c_list/decl_list_c/ -- following my own naming
+     convension.
+
+2021-01-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * set_options.c: Added DECLARE_SET_OPTION_FN().
+   * NEWS, parser.y, test/Makefile.am, explain_uk-01.out, explain_uk-02.out,
+     explain_uk-01.test, explain_uk-02.test: Added `enum`, `class`, `struct`,
+     and `union` attribute specifier support.
+   * configure.ac: Updated version.
+   * red_black.c: s/rb_tree_free_impl/rb_node_free/g
+   * util.h: Doxygen.
+   * c_ast.h, c_lang.h, c_sname.h, literals.h, options.h: #include clean-up.
+   * util.h: Doxygen.
+   * util.h: Comment fix.
+   * slist.h: Added notes about big-O running time.
+   * did_you_mean.h: Include-guard renaming.
+   * lexer.h: Added PJL_WARN_UNUSED_RESULT for lexer_loc().
+   * c_type.h, debug.c: s/PRIX_C_TYPE_T/PRIX_C_TYPE_ID_T/
+   * c_keyword.h: Updated Doxygen to reflect that attributes are supported in
+     C2X.
+   * src/Makefile.am: Added missing set_options.h.
+
 2021-01-23  Paul J. Lucas <paul@lucasmail.org>
 
    * stddef.in.h, gnulib-common.m4: Updated GNUlib.
