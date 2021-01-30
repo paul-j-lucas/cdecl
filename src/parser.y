@@ -4584,15 +4584,15 @@ attribute_specifier_list_c_tid
       }
       lexer_keyword_ctx = C_KW_CTX_ATTRIBUTE;
     }
-    attribute_list_c_tid_opt "]]"
+    using_opt attribute_list_c_tid_opt "]]"
     {
       lexer_keyword_ctx = C_KW_CTX_ALL;
 
       DUMP_START( "attribute_specifier_list_c_tid",
                   "[[ attribute_list_c_tid_opt ]]" );
-      DUMP_TID( "attribute_list_c_tid_opt", $3 );
+      DUMP_TID( "attribute_list_c_tid_opt", $4 );
 
-      $$ = $3;
+      $$ = $4;
 
       DUMP_END();
     }
@@ -4600,6 +4600,17 @@ attribute_specifier_list_c_tid
   | gnu_attribute_specifier_list_c
     {
       $$ = TA_NONE;
+    }
+  ;
+
+using_opt
+  : /* empty */
+  | Y_USING name_exp colon_exp
+    {
+      print_warning( &@1,
+        "\"%s\" in attributes not supported (ignoring)\n", L_USING
+      );
+      FREE( $2 );
     }
   ;
 
@@ -5517,6 +5528,14 @@ class_struct_tid_exp
         elaborate_error( "\"%s\" or \"%s\" expected", L_CLASS, L_STRUCT );
       else
         elaborate_error( "\"%s\" expected", L_STRUCT );
+    }
+  ;
+
+colon_exp
+  : ':'
+  | error
+    {
+      elaborate_error( "':' expected" );
     }
   ;
 

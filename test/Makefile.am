@@ -314,6 +314,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_a9pi.test \
 	tests/explain_a_mu_k-01.test \
 	tests/explain_a_mu_k-02.test \
+	tests/explain_a_using_a_mu_i.test \
 	tests/explain_ai.test \
 	tests/explain_al0_c.test \
 	tests/explain_al8_c.test \
