@@ -153,9 +153,9 @@ enum c_type_part_id {
   // Type part IDs start at 1 so we know a c_type_id_t value has been
   // initialized properly as opposed to it being 0 by default.
   //
-  TPID_BASE = 1,                        ///< Base types, e.g., `int`.
-  TPID_STORE,                           ///< Storage types, e.g., `static`.
-  TPID_ATTR                             ///< Attributes.
+  TPID_BASE   = (1u << 0),              ///< Base types, e.g., `int`.
+  TPID_STORE  = (1u << 1),              ///< Storage types, e.g., `static`.
+  TPID_ATTR   = (1u << 2)               ///< Attributes.
 };
 
 //
@@ -251,14 +251,14 @@ enum c_type_part_id {
 #define TS_RVALUE_REFERENCE   0x0000000800000002ull /**< `void f() &&`        */
 
 // attributes
-#define TA_NONE               0x0000000000000003ull /**< No attribute.        */
-#define TA_ANY                0xFFFFFFFFFFFFFFF3ull /**< Any attribute.       */
-#define TA_CARRIES_DEPENDENCY 0x0000000000000013ull /**< `carries_dependency` */
-#define TA_DEPRECATED         0x0000000000000023ull /**< `deprecated`         */
-#define TA_MAYBE_UNUSED       0x0000000000000043ull /**< `maybe_unused`       */
-#define TA_NODISCARD          0x0000000000000083ull /**< `nodiscard`          */
-#define TA_NORETURN           0x0000000000000103ull /**< `noreturn`           */
-#define TA_NO_UNIQUE_ADDRESS  0x0000000000000203ull /**< `no_unique_address`  */
+#define TA_NONE               0x0000000000000004ull /**< No attribute.        */
+#define TA_ANY                0xFFFFFFFFFFFFFFF4ull /**< Any attribute.       */
+#define TA_CARRIES_DEPENDENCY 0x0000000000000014ull /**< `carries_dependency` */
+#define TA_DEPRECATED         0x0000000000000024ull /**< `deprecated`         */
+#define TA_MAYBE_UNUSED       0x0000000000000044ull /**< `maybe_unused`       */
+#define TA_NODISCARD          0x0000000000000084ull /**< `nodiscard`          */
+#define TA_NORETURN           0x0000000000000104ull /**< `noreturn`           */
+#define TA_NO_UNIQUE_ADDRESS  0x0000000000000204ull /**< `no_unique_address`  */
 
 // bit masks
 #define TX_MASK_PART_ID       0x000000000000000Full /**< Type part ID bitmask.*/
