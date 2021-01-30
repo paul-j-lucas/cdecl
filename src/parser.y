@@ -685,7 +685,7 @@ static void ia_free( void ) {
  * @sa ia_qual_peek_tid()
  */
 static void ia_qual_push_tid( c_type_id_t qual_tid, c_loc_t const *loc ) {
-  c_type_id_check( qual_tid, TPID_STORE );
+  c_type_id_check( qual_tid, C_TPID_STORE );
   assert( (qual_tid & c_type_id_compl( TS_MASK_QUALIFIER )) == TS_NONE );
   assert( loc != NULL );
 
@@ -1904,7 +1904,7 @@ explain_c
       c_ast_t *const dtor_ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
       c_ast_append_name( dtor_ast, $4 );
       dtor_ast->type.store_tid =
-        c_type_id_check( $2 | $6 | $7 | $9, TPID_STORE );
+        c_type_id_check( $2 | $6 | $7 | $9, C_TPID_STORE );
 
       DUMP_AST( "explain_c", dtor_ast );
       DUMP_END();
@@ -2257,7 +2257,7 @@ class_struct_union_declaration_c
 
       c_ast_t *const csu_ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
       csu_ast->sname = c_sname_dup( &in_attr.current_scope );
-      csu_ast->type.base_tid = c_type_id_check( $1, TPID_BASE );
+      csu_ast->type.base_tid = c_type_id_check( $1, C_TPID_BASE );
       c_sname_append_name(
         &csu_ast->as.ecsu.ecsu_sname,
         check_strdup( c_sname_local_name( &in_attr.current_scope ) )
@@ -2294,7 +2294,7 @@ enum_declaration_c
 
       c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
       enum_ast->sname = c_sname_dup( &in_attr.current_scope );
-      enum_ast->type.base_tid = c_type_id_check( $1, TPID_BASE );
+      enum_ast->type.base_tid = c_type_id_check( $1, C_TPID_BASE );
       c_sname_append_name(
         &enum_ast->as.ecsu.ecsu_sname,
         check_strdup( c_sname_local_name( &in_attr.current_scope ) )
@@ -2747,7 +2747,7 @@ array_decl_english_ast
 
       $$ = c_ast_pair_new_gc( K_ARRAY, &@$ );
       $$.ast->as.array.size = $4;
-      $$.ast->as.array.store_tid = c_type_id_check( $2 | $3, TPID_STORE );
+      $$.ast->as.array.store_tid = c_type_id_check( $2 | $3, C_TPID_STORE );
       c_ast_set_parent( $6.ast, $$.ast );
 
       DUMP_AST( "array_decl_english_ast", $$.ast );
@@ -2765,7 +2765,7 @@ array_decl_english_ast
 
       $$ = c_ast_pair_new_gc( K_ARRAY, &@$ );
       $$.ast->as.array.size = C_ARRAY_SIZE_VARIABLE;
-      $$.ast->as.array.store_tid = c_type_id_check( $4, TPID_STORE );
+      $$.ast->as.array.store_tid = c_type_id_check( $4, C_TPID_STORE );
       c_ast_set_parent( $6.ast, $$.ast );
 
       DUMP_AST( "array_decl_english_ast", $$.ast );
@@ -2851,7 +2851,7 @@ func_decl_english_ast
 
       $$ = c_ast_pair_new_gc( K_FUNCTION, &@$ );
       $$.ast->type.store_tid =
-        c_type_id_check( ia_qual_peek_tid() | $1, TPID_STORE );
+        c_type_id_check( ia_qual_peek_tid() | $1, C_TPID_STORE );
       $$.ast->as.func.param_ast_list = $4;
       $$.ast->as.func.flags = $2;
       c_ast_set_parent( $5.ast, $$.ast );
@@ -2877,7 +2877,7 @@ oper_decl_english_ast
       DUMP_AST( "returning_english_ast_opt", $7.ast );
 
       $$ = c_ast_pair_new_gc( K_OPERATOR, &@$ );
-      $$.ast->type.store_tid = c_type_id_check( $1 | $3, TPID_STORE );
+      $$.ast->type.store_tid = c_type_id_check( $1 | $3, C_TPID_STORE );
       $$.ast->as.oper.param_ast_list = $6;
       $$.ast->as.oper.flags = $4;
       c_ast_set_parent( $7.ast, $$.ast );
@@ -3383,7 +3383,7 @@ file_scope_constructor_decl_c_ast
 
       $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
       $$->sname = $2;
-      $$->type.store_tid = c_type_id_check( $1 | $5 | $6, TPID_STORE );
+      $$->type.store_tid = c_type_id_check( $1 | $5 | $6, C_TPID_STORE );
       $$->as.constructor.param_ast_list = $4;
 
       DUMP_AST( "file_scope_constructor_decl_c_ast", $$ );
@@ -3408,7 +3408,7 @@ file_scope_destructor_decl_c_ast
 
       $$ = c_ast_new_gc( K_DESTRUCTOR, &@$ );
       $$->sname = $2;
-      $$->type.store_tid = c_type_id_check( $1 | $4 | $5, TPID_STORE );
+      $$->type.store_tid = c_type_id_check( $1 | $4 | $5, C_TPID_STORE );
 
       DUMP_AST( "file_scope_destructor_decl_c_ast", $$ );
       DUMP_END();
@@ -3501,8 +3501,8 @@ func_decl_c_ast
           // + Or the existing type only has storage-class-like types that may
           //   be applied to constructors.
           only_bits_set(
-            c_type_id_no_part_id( type_ast->type.store_tid ),
-            c_type_id_no_part_id( TS_CONSTRUCTOR_DECL )
+            c_type_id_no_tpid( type_ast->type.store_tid ),
+            c_type_id_no_tpid( TS_CONSTRUCTOR_DECL )
           )
         ) &&
 
@@ -3511,7 +3511,8 @@ func_decl_c_ast
 
       c_ast_t *const func_ast =
         c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );
-      func_ast->type.store_tid = c_type_id_check( func_store_tid, TPID_STORE );
+      func_ast->type.store_tid =
+        c_type_id_check( func_store_tid, C_TPID_STORE );
       func_ast->as.func.param_ast_list = $3;
 
       if ( assume_constructor ) {
@@ -3578,7 +3579,7 @@ knr_func_or_constructor_c_decl_ast
         // constructor.
         //
         $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-        $$->type.store_tid = c_type_id_check( $4, TPID_STORE );
+        $$->type.store_tid = c_type_id_check( $4, C_TPID_STORE );
       }
 
       c_ast_set_sname( $$, &sname );
@@ -3801,7 +3802,7 @@ oper_decl_c_ast
 
       c_ast_t *const oper_ast = c_ast_new_gc( K_OPERATOR, &@$ );
       oper_ast->type.store_tid =
-        c_type_id_check( $4 | $5 | $6 | $8, TPID_STORE );
+        c_type_id_check( $4 | $5 | $6 | $8, C_TPID_STORE );
       oper_ast->as.oper.param_ast_list = $3;
       oper_ast->as.oper.oper_id = $1.ast->as.oper.oper_id;
 
@@ -3876,7 +3877,7 @@ pointer_type_c_ast
       DUMP_TID( "type_qualifier_list_c_tid_opt", $2 );
 
       $$ = c_ast_pair_new_gc( K_POINTER, &@$ );
-      $$.ast->type.store_tid = c_type_id_check( $2, TPID_STORE );
+      $$.ast->type.store_tid = c_type_id_check( $2, C_TPID_STORE );
       c_ast_set_parent( ia_type_ast_peek(), $$.ast );
 
       DUMP_AST( "pointer_type_c_ast", $$.ast );
@@ -3961,7 +3962,7 @@ reference_type_c_ast
       DUMP_TID( "restrict_qualifier_c_tid_opt", $2 );
 
       $$ = c_ast_pair_new_gc( K_REFERENCE, &@$ );
-      $$.ast->type.store_tid = c_type_id_check( $2, TPID_STORE );
+      $$.ast->type.store_tid = c_type_id_check( $2, C_TPID_STORE );
       c_ast_set_parent( ia_type_ast_peek(), $$.ast );
 
       DUMP_AST( "reference_type_c_ast", $$.ast );
@@ -3976,7 +3977,7 @@ reference_type_c_ast
       DUMP_TID( "restrict_qualifier_c_tid_opt", $2 );
 
       $$ = c_ast_pair_new_gc( K_RVALUE_REFERENCE, &@$ );
-      $$.ast->type.store_tid = c_type_id_check( $2, TPID_STORE );
+      $$.ast->type.store_tid = c_type_id_check( $2, C_TPID_STORE );
       c_ast_set_parent( ia_type_ast_peek(), $$.ast );
 
       DUMP_AST( "reference_type_c_ast", $$.ast );
@@ -4042,7 +4043,7 @@ user_defined_conversion_decl_c_ast
 
       $$.ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
       $$.ast->sname = $1;
-      $$.ast->type.store_tid = c_type_id_check( $7 | $8 | $9, TPID_STORE );
+      $$.ast->type.store_tid = c_type_id_check( $7 | $8 | $9, C_TPID_STORE );
       if ( ia_type_ast_peek() != NULL )
         c_type_or_eq( &$$.ast->type, &ia_type_ast_peek()->type );
       $$.ast->as.udef_conv.conv_ast = $5.ast != NULL ? $5.ast : $3.ast;
@@ -4372,7 +4373,7 @@ builtin_type_ast
       DUMP_TID( "builtin_tid", $1 );
 
       $$ = c_ast_pair_new_gc( K_BUILTIN, &@$ );
-      $$.ast->type.base_tid = c_type_id_check( $1, TPID_BASE );
+      $$.ast->type.base_tid = c_type_id_check( $1, C_TPID_BASE );
 
       DUMP_AST( "builtin_type_ast", $$.ast );
       DUMP_END();
@@ -4408,8 +4409,8 @@ enum_class_struct_union_c_ast
       DUMP_SNAME( "sname", &$3 );
 
       $$ = c_ast_pair_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
-      $$.ast->type.base_tid = c_type_id_check( $1, TPID_BASE );
-      $$.ast->type.attr_tid = c_type_id_check( $2, TPID_ATTR );
+      $$.ast->type.base_tid = c_type_id_check( $1, C_TPID_BASE );
+      $$.ast->type.attr_tid = c_type_id_check( $2, C_TPID_ATTR );
       $$.ast->as.ecsu.ecsu_sname = $3;
 
       DUMP_AST( "enum_class_struct_union_c_ast", $$.ast );
@@ -4659,7 +4660,7 @@ attribute_c_tid
         char const *const name = c_sname_local_name( &$1 );
         c_keyword_t const *const k =
           c_keyword_find( name, C_LANG_NEWER(), C_KW_CTX_ATTRIBUTE );
-        if ( k != NULL && c_type_id_part_id( k->type_id ) == TPID_ATTR ) {
+        if ( k != NULL && c_type_id_tpid( k->type_id ) == C_TPID_ATTR ) {
           adj = "unsupported";
           lang_ids = k->lang_ids;
         }
@@ -4822,25 +4823,25 @@ array_size_c_ast
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = C_ARRAY_SIZE_NONE;
-      $$->as.array.store_tid = c_type_id_check( $2, TPID_STORE );
+      $$->as.array.store_tid = c_type_id_check( $2, C_TPID_STORE );
     }
   | '[' type_qualifier_list_c_tid static_tid_opt Y_INT_LIT rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $4;
-      $$->as.array.store_tid = c_type_id_check( $2 | $3, TPID_STORE );
+      $$->as.array.store_tid = c_type_id_check( $2 | $3, C_TPID_STORE );
     }
   | '[' type_qualifier_list_c_tid_opt '*' rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = C_ARRAY_SIZE_VARIABLE;
-      $$->as.array.store_tid = c_type_id_check( $2, TPID_STORE );
+      $$->as.array.store_tid = c_type_id_check( $2, C_TPID_STORE );
     }
   | '[' Y_STATIC type_qualifier_list_c_tid_opt Y_INT_LIT rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $4;
-      $$->as.array.store_tid = c_type_id_check( $2 | $3, TPID_STORE );
+      $$->as.array.store_tid = c_type_id_check( $2 | $3, C_TPID_STORE );
     }
   ;
 
@@ -4898,7 +4899,7 @@ func_cast_c_ast
       DUMP_AST( "target_ast", $1.target_ast );
 
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
-      func_ast->type.store_tid = c_type_id_check( $4, TPID_STORE );
+      func_ast->type.store_tid = c_type_id_check( $4, C_TPID_STORE );
       func_ast->as.func.param_ast_list = $3;
 
       if ( $5.ast != NULL ) {

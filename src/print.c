@@ -266,16 +266,16 @@ void fl_print_error_unknown_name( char const *file, int line,
   if ( k != NULL ) {
     adj = "unsupported";
     tid = k->type_id;
-    switch ( c_type_id_part_id( tid ) ) {
-      case TPID_BASE:
+    switch ( c_type_id_tpid( tid ) ) {
+      case C_TPID_BASE:
         dym_kind = DYM_C_TYPES;
         what = "type";
         break;
-      case TPID_STORE:
+      case C_TPID_STORE:
         dym_kind = DYM_C_KEYWORDS;
         what = "keyword";
         break;
-      case TPID_ATTR:
+      case C_TPID_ATTR:
         dym_kind = DYM_C_ATTRIBUTES;
         what = "attribute";
         break;

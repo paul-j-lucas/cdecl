@@ -354,7 +354,7 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
 
 bool c_ast_is_builtin_any( c_ast_t const *ast, c_type_id_t tids ) {
   assert( ast != NULL );
-  assert( c_type_id_part_id( tids ) == TPID_BASE );
+  assert( c_type_id_tpid( tids ) == C_TPID_BASE );
 
   ast = c_ast_untypedef( ast );
   if ( ast->kind_id != K_BUILTIN )
@@ -384,7 +384,7 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
 }
 
 bool c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
-  assert( c_type_id_part_id( tids ) == TPID_BASE );
+  assert( c_type_id_tpid( tids ) == C_TPID_BASE );
   ast = c_ast_unpointer( ast );
   if ( ast == NULL )
     return false;
@@ -393,7 +393,7 @@ bool c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
 }
 
 bool c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
-  assert( c_type_id_part_id( tids ) == TPID_BASE );
+  assert( c_type_id_tpid( tids ) == C_TPID_BASE );
   ast = c_ast_unreference( ast );
   c_type_id_t const base_tid = c_type_id_normalize( ast->type.base_tid );
   return (base_tid & tids) != TB_NONE;

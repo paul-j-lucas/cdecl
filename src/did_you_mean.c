@@ -132,7 +132,7 @@ static size_t copy_keywords( did_you_mean_t **const pdym, c_type_id_t tpid ) {
   size_t count = 0;
   FOREACH_KEYWORD( k ) {
     if ( (k->lang_ids & opt_lang) != LANG_NONE &&
-         c_type_id_part_id( k->type_id ) == tpid ) {
+         c_type_id_tpid( k->type_id ) == tpid ) {
       if ( pdym != NULL )
         (*pdym)++->token = check_strdup( k->literal );
       ++count;

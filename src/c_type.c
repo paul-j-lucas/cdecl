@@ -488,7 +488,7 @@ static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
  */
 PJL_WARN_UNUSED_RESULT
 static inline bool is_long_int( c_type_id_t tid ) {
-  return  c_type_id_part_id( tid ) == TPID_BASE &&
+  return  c_type_id_tpid( tid ) == C_TPID_BASE &&
           (tid & (TB_LONG | TB_FLOAT | TB_DOUBLE)) == TB_LONG;
 }
 
@@ -573,10 +573,10 @@ static char const* c_type_literal( c_type_info_t const *ti, bool is_error ) {
  */
 PJL_WARN_UNUSED_RESULT
 static char const* c_type_id_name_1( c_type_id_t tid, bool is_error ) {
-  assert( exactly_one_bit_set( c_type_id_no_part_id( tid ) ) );
+  assert( exactly_one_bit_set( c_type_id_no_tpid( tid ) ) );
 
-  switch ( c_type_id_part_id( tid ) ) {
-    case TPID_BASE:
+  switch ( c_type_id_tpid( tid ) ) {
+    case C_TPID_BASE:
       for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i ) {
         c_type_info_t const *const ti = &C_TYPE_INFO[i];
         if ( tid == ti->type_id )
@@ -584,7 +584,7 @@ static char const* c_type_id_name_1( c_type_id_t tid, bool is_error ) {
       } // for
       break;
 
-    case TPID_STORE:
+    case C_TPID_STORE:
       for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i ) {
         c_type_info_t const *const ti = &C_QUALIFIER_INFO[i];
         if ( tid == ti->type_id )
@@ -598,7 +598,7 @@ static char const* c_type_id_name_1( c_type_id_t tid, bool is_error ) {
       } // for
       break;
 
-    case TPID_ATTR:
+    case C_TPID_ATTR:
       for ( size_t i = 0; i < ARRAY_SIZE( C_ATTRIBUTE_INFO ); ++i ) {
         c_type_info_t const *const ti = &C_ATTRIBUTE_INFO[i];
         if ( tid == ti->type_id )
@@ -644,12 +644,12 @@ static void c_type_id_name_cat( char **pname, c_type_id_t tid,
  */
 PJL_WARN_UNUSED_RESULT
 static c_type_t c_type_from_tid( c_type_id_t tid ) {
-  switch ( c_type_id_part_id( tid ) ) {
-    case TPID_BASE:
+  switch ( c_type_id_tpid( tid ) ) {
+    case C_TPID_BASE:
       return C_TYPE_LIT_B( tid );
-    case TPID_STORE:
+    case C_TPID_STORE:
       return C_TYPE_LIT_S( tid );
-    case TPID_ATTR:
+    case C_TPID_ATTR:
       return C_TYPE_LIT_A( tid );
   } // switch
   UNEXPECTED_INT_VALUE( tid );
@@ -1011,12 +1011,12 @@ void c_type_and_eq_compl( c_type_t *dst_type, c_type_t const *rm_type ) {
 c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid ) {
   assert( type != NULL );
 
-  switch ( c_type_id_part_id( tid ) ) {
-    case TPID_BASE:
+  switch ( c_type_id_tpid( tid ) ) {
+    case C_TPID_BASE:
       return &type->base_tid;
-    case TPID_STORE:
+    case C_TPID_STORE:
       return &type->store_tid;
-    case TPID_ATTR:
+    case C_TPID_ATTR:
       return &type->attr_tid;
   } // switch
 
@@ -1027,7 +1027,7 @@ bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
                     c_loc_t const *new_loc ) {
   assert( dst_tid != NULL );
   assert( new_loc != NULL );
-  assert( c_type_id_part_id( *dst_tid ) == c_type_id_part_id( new_tid ) );
+  assert( c_type_id_tpid( *dst_tid ) == c_type_id_tpid( new_tid ) );
 
   if ( is_long_int( *dst_tid ) && is_long_int( new_tid ) ) {
     //
@@ -1060,8 +1060,8 @@ char const* c_type_id_name_error( c_type_id_t tid ) {
 }
 
 c_type_id_t c_type_id_normalize( c_type_id_t tid ) {
-  switch ( c_type_id_part_id( tid ) ) {
-    case TPID_BASE:
+  switch ( c_type_id_tpid( tid ) ) {
+    case C_TPID_BASE:
       if ( (tid & TB_SIGNED) != TB_NONE && (tid & TB_CHAR) == TB_NONE ) {
         tid &= c_type_id_compl( TB_SIGNED );
         if ( tid == TB_NONE )

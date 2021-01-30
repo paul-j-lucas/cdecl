@@ -153,9 +153,9 @@ enum c_type_part_id {
   // Type part IDs start at 1 so we know a c_type_id_t value has been
   // initialized properly as opposed to it being 0 by default.
   //
-  TPID_BASE   = (1u << 0),              ///< Base types, e.g., `int`.
-  TPID_STORE  = (1u << 1),              ///< Storage types, e.g., `static`.
-  TPID_ATTR   = (1u << 2)               ///< Attributes.
+  C_TPID_BASE   = (1u << 0),            ///< Base types, e.g., `int`.
+  C_TPID_STORE  = (1u << 1),            ///< Storage types, e.g., `static`.
+  C_TPID_ATTR   = (1u << 2)             ///< Attributes.
 };
 
 //
@@ -730,10 +730,10 @@ c_type_id_t c_type_id_compl( c_type_id_t tid ) {
  * @param tid The <code>\ref c_type_id_t</code> to get the value of.
  * @return Returns the type ID value without the part ID.
  *
- * @sa c_type_id_part_id()
+ * @sa c_type_id_tpid()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-c_type_id_t c_type_id_no_part_id( c_type_id_t tid ) {
+c_type_id_t c_type_id_no_tpid( c_type_id_t tid ) {
   return tid & ~TX_MASK_PART_ID;
 }
 
@@ -743,10 +743,10 @@ c_type_id_t c_type_id_no_part_id( c_type_id_t tid ) {
  * @param tid The type ID.
  * @return Returns said `c_type_part_id_t`.
  *
- * @sa c_type_id_no_part_id()
+ * @sa c_type_id_no_tpid()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-c_type_part_id_t c_type_id_part_id( c_type_id_t tid ) {
+c_type_part_id_t c_type_id_tpid( c_type_id_t tid ) {
   //
   // If tid has been complemented, e.g., ~TS_REGISTER to denote "all but
   // register," then we have to complement tid back first.
@@ -754,7 +754,7 @@ c_type_part_id_t c_type_id_part_id( c_type_id_t tid ) {
   if ( c_type_id_is_compl( tid ) )
     tid = ~tid;
   tid &= TX_MASK_PART_ID;
-  assert( tid <= TPID_ATTR );
+  assert( tid <= C_TPID_ATTR );
   return STATIC_CAST( c_type_part_id_t, tid );
 }
 
@@ -767,8 +767,8 @@ c_type_part_id_t c_type_id_part_id( c_type_id_t tid ) {
  */
 PJL_WARN_UNUSED_RESULT C_TYPE_INLINE
 bool c_type_id_intersects( c_type_id_t i_tid, c_type_id_t j_tid ) {
-  assert( c_type_id_part_id( i_tid ) == c_type_id_part_id( j_tid ) );
-  return c_type_id_no_part_id( i_tid & j_tid ) != TX_NONE;
+  assert( c_type_id_tpid( i_tid ) == c_type_id_tpid( j_tid ) );
+  return c_type_id_no_tpid( i_tid & j_tid ) != TX_NONE;
 }
 
 /**
@@ -783,7 +783,7 @@ bool c_type_id_intersects( c_type_id_t i_tid, c_type_id_t j_tid ) {
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_none( c_type_id_t tid ) {
-  return c_type_id_no_part_id( tid ) == TX_NONE;
+  return c_type_id_no_tpid( tid ) == TX_NONE;
 }
 
 /**
@@ -797,7 +797,7 @@ bool c_type_id_is_none( c_type_id_t tid ) {
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_size_t( c_type_id_t tid ) {
-  assert( (tid & TX_MASK_PART_ID) == TPID_BASE );
+  assert( (tid & TX_MASK_PART_ID) == C_TPID_BASE );
   return ((tid & c_type_id_compl( TB_INT )) & (TB_UNSIGNED | TB_LONG)) == (TB_UNSIGNED | TB_LONG);
 }
 

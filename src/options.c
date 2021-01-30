@@ -173,7 +173,7 @@ static void         usage( void );
  * @sa is_explicit_int()
  */
 static inline void set_opt_explicit_int( c_type_id_t tid ) {
-  assert( c_type_id_part_id( tid ) == TPID_BASE );
+  assert( c_type_id_tpid( tid ) == C_TPID_BASE );
   bool const is_unsigned = (tid & TB_UNSIGNED) != TB_NONE;
   opt_explicit_int[ is_unsigned ] |= tid & c_type_id_compl( TB_UNSIGNED );
 }
@@ -504,7 +504,7 @@ bool any_explicit_int( void ) {
 }
 
 bool is_explicit_int( c_type_id_t tid ) {
-  assert( c_type_id_part_id( tid ) == TPID_BASE );
+  assert( c_type_id_tpid( tid ) == C_TPID_BASE );
 
   if ( tid == TB_UNSIGNED ) {
     //
