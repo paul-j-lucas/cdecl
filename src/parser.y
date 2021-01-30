@@ -1198,6 +1198,7 @@ static void yyerror( char const *msg ) {
 %type   <int_val>   bit_field_c_int_opt
 %type   <ast_pair>  block_decl_c_ast
 %type   <ast_pair>  decl_c_ast decl2_c_ast
+%type   <ast>       destructor_decl_c_ast
 %type   <ast_pair>  enum_class_struct_union_c_ast
 %type   <ast>       file_scope_constructor_decl_c_ast
 %type   <ast>       file_scope_destructor_decl_c_ast
@@ -1848,26 +1849,17 @@ explain_c
     }
 
     /*
-     * User-defined conversion operator declaration without a storage-class-
-     * like part.  This is for a case like:
-     *
-     *      explain operator int()
-     *
-     * User-defined conversion operator declarations with a storage-class-like
-     * part, e.g.:
-     *
-     *      explain explicit operator int()
-     *
-     * are handled by the rule above.
+     * K&R C implicit int function and C++ in-class constructor declaration.
      */
-  | explain user_defined_conversion_decl_c_ast
+  | explain knr_func_or_constructor_decl_c_ast
     {
-      DUMP_START( "explain_c", "EXPLAIN user_defined_conversion_decl_c_ast" );
-      DUMP_AST( "user_defined_conversion_decl_c_ast", $2.ast );
+      DUMP_START( "explain_c",
+                  "EXPLAIN knr_func_or_constructor_decl_c_ast" );
+      DUMP_AST( "knr_func_or_constructor_decl_c_ast", $2 );
       DUMP_END();
 
-      C_AST_CHECK_DECL( $2.ast );
-      c_ast_explain_declaration( $2.ast );
+      C_AST_CHECK_DECL( $2 );
+      c_ast_explain_declaration( $2 );
     }
 
     /*
@@ -1887,30 +1879,15 @@ explain_c
     /*
      * C++ in-class destructor declaration, e.g.: ~S().
      */
-  | explain virtual_tid_opt Y_TILDE any_name_exp
-    lparen_exp rparen_func_qualifier_list_c_tid_opt noexcept_c_tid_opt
-    gnu_attribute_specifier_list_c_opt func_equals_c_tid_opt
+  | explain destructor_decl_c_ast
     {
       DUMP_START( "explain_c",
-                  "EXPLAIN [VIRTUAL] '~' NAME '(' ')' "
-                  "func_qualifier_list_c_tid_opt noexcept_c_tid_opt "
-                  "func_equals_c_tid_opt" );
-      DUMP_TID( "virtual_tid_opt", $2 );
-      DUMP_STR( "any_name_exp", $4 );
-      DUMP_TID( "func_qualifier_list_c_tid_opt", $6 );
-      DUMP_TID( "noexcept_c_tid_opt", $7 );
-      DUMP_TID( "func_equals_c_tid_opt", $9 );
-
-      c_ast_t *const dtor_ast = c_ast_new_gc( K_DESTRUCTOR, &@$ );
-      c_ast_append_name( dtor_ast, $4 );
-      dtor_ast->type.store_tid =
-        c_type_id_check( $2 | $6 | $7 | $9, C_TPID_STORE );
-
-      DUMP_AST( "explain_c", dtor_ast );
+                  "EXPLAIN destructor_decl_c_ast" );
+      DUMP_AST( "destructor_decl_c_ast", $2 );
       DUMP_END();
 
-      C_AST_CHECK_DECL( dtor_ast );
-      c_ast_explain_declaration( dtor_ast );
+      C_AST_CHECK_DECL( $2 );
+      c_ast_explain_declaration( $2 );
     }
 
     /*
@@ -1925,6 +1902,29 @@ explain_c
 
       C_AST_CHECK_DECL( $2 );
       c_ast_explain_declaration( $2 );
+    }
+
+    /*
+     * User-defined conversion operator declaration without a storage-class-
+     * like part.  This is for a case like:
+     *
+     *      explain operator int()
+     *
+     * User-defined conversion operator declarations with a storage-class-like
+     * part, e.g.:
+     *
+     *      explain explicit operator int()
+     *
+     * are handled by the common declaration rule.
+     */
+  | explain user_defined_conversion_decl_c_ast
+    {
+      DUMP_START( "explain_c", "EXPLAIN user_defined_conversion_decl_c_ast" );
+      DUMP_AST( "user_defined_conversion_decl_c_ast", $2.ast );
+      DUMP_END();
+
+      C_AST_CHECK_DECL( $2.ast );
+      c_ast_explain_declaration( $2.ast );
     }
 
     /*
@@ -1981,20 +1981,6 @@ explain_c
       FREE( $3 );
       if ( !ok )
         PARSE_ABORT();
-    }
-
-    /*
-     * K&R C implicit int function and C++ in-class constructor declaration.
-     */
-  | explain knr_func_or_constructor_decl_c_ast
-    {
-      DUMP_START( "explain_c",
-                  "EXPLAIN knr_func_or_constructor_decl_c_ast" );
-      DUMP_AST( "knr_func_or_constructor_decl_c_ast", $2 );
-      DUMP_END();
-
-      C_AST_CHECK_DECL( $2 );
-      c_ast_explain_declaration( $2 );
     }
 
     /*
@@ -3361,6 +3347,33 @@ block_decl_c_ast                        // Apple extension
       $$.target_ast = block_ast->as.block.ret_ast;
 
       DUMP_AST( "block_decl_c_ast", $$.ast );
+      DUMP_END();
+    }
+  ;
+
+destructor_decl_c_ast
+    /*
+     * C++ in-class destructor declaration, e.g.: ~S().
+     */
+  : virtual_tid_opt Y_TILDE any_name_exp
+    lparen_exp rparen_func_qualifier_list_c_tid_opt noexcept_c_tid_opt
+    gnu_attribute_specifier_list_c_opt func_equals_c_tid_opt
+    {
+      DUMP_START( "destructor_decl_c_ast",
+                  "[VIRTUAL] '~' NAME '(' ')' func_qualifier_list_c_tid_opt "
+                  "noexcept_c_tid_opt gnu_attribute_specifier_list_c_opt "
+                  "func_equals_c_tid_opt" );
+      DUMP_TID( "virtual_tid_opt", $1 );
+      DUMP_STR( "any_name_exp", $3 );
+      DUMP_TID( "func_qualifier_list_c_tid_opt", $5 );
+      DUMP_TID( "noexcept_c_tid_opt", $6 );
+      DUMP_TID( "func_equals_c_tid_opt", $8 );
+
+      $$ = c_ast_new_gc( K_DESTRUCTOR, &@$ );
+      c_ast_append_name( $$, $3 );
+      $$->type.store_tid = c_type_id_check( $1 | $5 | $6 | $8, C_TPID_STORE );
+
+      DUMP_AST( "destructor_decl_c_ast", $$ );
       DUMP_END();
     }
   ;
