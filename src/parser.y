@@ -1956,6 +1956,28 @@ explain_c
     }
   ;
 
+explain
+  : Y_EXPLAIN
+    { //
+      // Tell the lexer that we're explaining gibberish so cdecl keywords
+      // (e.g., "func") are returned as ordinary names, otherwise gibberish
+      // like:
+      //
+      //      int func(void);
+      //
+      // would result in a parser error.
+      //
+      c_mode = C_GIBBERISH_TO_ENGLISH;
+    }
+  ;
+
+new_style_cast_c
+  : Y_CONST_CAST                  { $$ = L_CONST;       }
+  | Y_DYNAMIC_CAST                { $$ = L_DYNAMIC;     }
+  | Y_REINTERPRET_CAST            { $$ = L_REINTERPRET; }
+  | Y_STATIC_CAST                 { $$ = L_STATIC;      }
+  ;
+
 alignas_specifier_c
   : alignas lparen_exp Y_INT_LIT rparen_exp
     {
@@ -2098,28 +2120,6 @@ decl_c
       //
       c_sname_free( &type_ast->sname );
     }
-  ;
-
-explain
-  : Y_EXPLAIN
-    { //
-      // Tell the lexer that we're explaining gibberish so cdecl keywords
-      // (e.g., "func") are returned as ordinary names, otherwise gibberish
-      // like:
-      //
-      //      int func(void);
-      //
-      // would result in a parser error.
-      //
-      c_mode = C_GIBBERISH_TO_ENGLISH;
-    }
-  ;
-
-new_style_cast_c
-  : Y_CONST_CAST                  { $$ = L_CONST;       }
-  | Y_DYNAMIC_CAST                { $$ = L_DYNAMIC;     }
-  | Y_REINTERPRET_CAST            { $$ = L_REINTERPRET; }
-  | Y_STATIC_CAST                 { $$ = L_STATIC;      }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -2361,7 +2361,6 @@ set_option_value_opt
   | '=' Y_SET_OPTION              { $$ = $2; @$ = @2; }
   | '=' error
     {
-      $$ = NULL;
       elaborate_error( "option value expected" );
     }
   ;
