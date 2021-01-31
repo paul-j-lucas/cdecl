@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "January 27, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "January 31, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -248,18 +248,18 @@ means
 .BR \-\-alt-tokens " | " \-a
 Turns on alternative token output.
 The alternative tokens are:
-\f(CWand\fP,
-\f(CWand_eq\fP,
-\f(CWbitand\fP,
-\f(CWbitor\fP,
-\f(CWcompl\fP,
-\f(CWnot\fP,
-\f(CWnot_eq\fP,
-\f(CWor\fP,
-\f(CWor_eq\fP,
-\f(CWxor\fP,
+\f(CWand\fP (\f(CW&&\fP),
+\f(CWand_eq\fP (\f(CW&=\fP),
+\f(CWbitand\fP (\f(CW&\fP),
+\f(CWbitor\fP (\f(CW|\fP),
+\f(CWcompl\fP (\f(CW~\fP),
+\f(CWnot\fP (\f(CW!\fP),
+\f(CWnot_eq\fP (\f(CW!=\fP),
+\f(CWor\fP (\f(CW||\fP),
+\f(CWor_eq\fP (\f(CW|=\fP),
+\f(CWxor\fP (\f(CW^\fP),
 and
-\f(CWxor_eq\fP.
+\f(CWxor_eq\fP (\f(CW^=\fP).
 .TP
 .BR \-\-bison-debug " | " \-B
 Turns on
@@ -346,7 +346,9 @@ to read
 .BR "CONFIGURATION FILE" ).
 .TP
 .BR \-\-debug " | " \-d
-Turns on debugging output (if compiled in).
+Turns on
+.B cdecl
+debugging output (if compiled in).
 The additional JSON-like output is of an abstract syntax tree
 as it is being constructed
 from user input
@@ -356,11 +358,11 @@ while the parser is reducing grammar productions.
 itself.)
 .TP
 .BR \-\-digraphs " | " \-2
-Turns on digraph output
-for
-\f(CW[\fP
+Turns on digraph token output.
+The digraph tokens are:
+\f(CW<:\fP (\f(CW[\fP)
 and
-\f(CW]\fP.
+\f(CW:>\fP (\f(CW]\fP).
 .TP
 .BR \-\-east-const " | " \-E
 Turns on ``east const'' output
@@ -492,14 +494,17 @@ Sends all non-error output to file
 .IR f .
 .TP
 .BR \-\-trigraphs " | " \-3
-Turns on trigraph output
-for
-\f(CW[\fP,
-\f(CW]\fP,
-\f(CW^\fP,
-\f(CW|\fP,
+Turns on trigraph token output.
+The trigraph tokens are:
+\f(CW??(\fP (\f(CW[\fP),
+\f(CW??)\fP (\f(CW]\fP),
+\f(CW??'\fP (\f(CW^\fP),
+\f(CW??'=\fP (\f(CW^=\fP),
+\f(CW??!\fP (\f(CW|\fP),
+\f(CW??!=\fP (\f(CW|=\fP),
+\f(CW??!??!\fP (\f(CW||\fP),
 and
-\f(CW~\fP.
+\f(CW??-\fP (\f(CW~\fP).
 .TP
 .BR \-\-version " | " \-v
 Prints the version number to standard error
@@ -2202,8 +2207,8 @@ Individual
 .BR readline (3)
 initialization file.
 .SH BUGS
-On macOS (up through to at least version 10.14, aka
-.IR Mojave ),
+On
+.BR macOS ,
 the
 .BR readline (3)
 API is provided,
@@ -2279,7 +2284,9 @@ arbitrary expressions are not.
 .IP \n+[step].
 Only simple C++ attribute specifiers like \f(CW[[this]]\fP
 are supported;
-attribute specifiers with namespaces or arguments are not.
+attribute specifiers with namespaces are not.
+Additionally,
+optional arguments for \f(CWdeprecated\fP and \f(CWnodiscard\fP are ignored.
 .IP \n+[step].
 C++20 contracts
 (\f(CW[[assert]]\fP,
