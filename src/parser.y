@@ -1362,7 +1362,7 @@ cast_english
   : Y_CAST sname_english_exp as_into_to_exp decl_english_ast
     {
       DUMP_START( "cast_english",
-                  "CAST sname_english_exp INTO decl_english_ast" );
+                  "CAST sname_english_exp as_into_to_exp decl_english_ast" );
       DUMP_SNAME( "sname_english_exp", &$2 );
       DUMP_AST( "decl_english_ast", $4.ast );
       DUMP_END();
@@ -1386,8 +1386,8 @@ cast_english
     decl_english_ast
     {
       DUMP_START( "cast_english",
-                  "new_style_cast_english CAST sname_english_exp INTO "
-                  "decl_english_ast" );
+                  "new_style_cast_english CAST sname_english_exp "
+                  "as_into_to_exp decl_english_ast" );
       DUMP_STR( "new_style_cast_english", $1 );
       DUMP_SNAME( "sname_english_exp", &$3 );
       DUMP_AST( "decl_english_ast", $5.ast );
@@ -1597,7 +1597,10 @@ alignas_or_width_decl_english_ast
     }
 
   | decl_english_ast width_specifier_english
-    {
+    { //
+      // This check has to be done now in the parser rather than later in the
+      // AST since we need to use the builtin union member now.
+      //
       if ( !c_ast_is_builtin_any( $1.ast, TB_ANY_INTEGRAL ) ) {
         print_error( &@2, "bit-fields can be only of integral types\n" );
         PARSE_ABORT();
@@ -1625,7 +1628,7 @@ alignas_specifier_english
     {
       MEM_ZERO( &$$ );
       $$.loc = @1;
-      elaborate_error( "number or type expected" );
+      elaborate_error( "integer or type expected" );
     }
   ;
 
@@ -1661,7 +1664,7 @@ bits_opt
 ///////////////////////////////////////////////////////////////////////////////
 
 define_english
-  : Y_DEFINE sname_english as_exp storage_class_list_english_type_opt
+  : Y_DEFINE sname_english_exp as_exp storage_class_list_english_type_opt
     decl_english_ast
     {
       DUMP_START( "define_english",
@@ -1719,11 +1722,6 @@ define_english
         c_sname_free( &$2 );
         PARSE_ABORT();
       }
-    }
-
-  | Y_DEFINE error
-    {
-      elaborate_error( "name expected" );
     }
   ;
 
@@ -1852,8 +1850,7 @@ explain_c
      */
   | explain knr_func_or_constructor_decl_c_ast
     {
-      DUMP_START( "explain_c",
-                  "EXPLAIN knr_func_or_constructor_decl_c_ast" );
+      DUMP_START( "explain_c", "EXPLAIN knr_func_or_constructor_decl_c_ast" );
       DUMP_AST( "knr_func_or_constructor_decl_c_ast", $2 );
       DUMP_END();
 
@@ -1866,8 +1863,7 @@ explain_c
      */
   | explain file_scope_constructor_decl_c_ast
     {
-      DUMP_START( "explain_c",
-                  "EXPLAIN file_scope_constructor_decl_c_ast" );
+      DUMP_START( "explain_c", "EXPLAIN file_scope_constructor_decl_c_ast" );
       DUMP_AST( "file_scope_constructor_decl_c_ast", $2 );
       DUMP_END();
 
@@ -1880,8 +1876,7 @@ explain_c
      */
   | explain destructor_decl_c_ast
     {
-      DUMP_START( "explain_c",
-                  "EXPLAIN destructor_decl_c_ast" );
+      DUMP_START( "explain_c", "EXPLAIN destructor_decl_c_ast" );
       DUMP_AST( "destructor_decl_c_ast", $2 );
       DUMP_END();
 
@@ -1894,8 +1889,7 @@ explain_c
      */
   | explain file_scope_destructor_decl_c_ast
     {
-      DUMP_START( "explain_c",
-                  "EXPLAIN file_scope_destructor_decl_c_ast" );
+      DUMP_START( "explain_c", "EXPLAIN file_scope_destructor_decl_c_ast" );
       DUMP_AST( "file_scope_destructor_decl_c_ast", $2 );
       DUMP_END();
 
@@ -1931,8 +1925,7 @@ explain_c
      */
   | explain using_decl_c_ast
     {
-      DUMP_START( "explain_c",
-                  "EXPLAIN using_decl_c_ast" );
+      DUMP_START( "explain_c", "EXPLAIN using_decl_c_ast" );
       DUMP_AST( "using_decl_c_ast", $2 );
       DUMP_END();
 
@@ -1981,8 +1974,8 @@ new_style_cast_c
 alignas_specifier_c
   : alignas lparen_exp Y_INT_LIT rparen_exp
     {
-      DUMP_START( "alignas_specifier_c", "ALIGNAS ( NUMBER )" );
-      DUMP_NUM( "NUMBER", $3 );
+      DUMP_START( "alignas_specifier_c", "ALIGNAS '(' Y_INT_LIT ')'" );
+      DUMP_NUM( "INT_LIT", $3 );
       DUMP_END();
 
       $$.kind = C_ALIGNAS_EXPR;
@@ -1996,7 +1989,7 @@ alignas_specifier_c
       ia_type_ast_pop();
 
       DUMP_START( "alignas_specifier_c",
-                  "ALIGNAS ( type_c_ast cast_c_ast_opt )" );
+                  "ALIGNAS '(' type_c_ast cast_c_ast_opt ')'" );
       DUMP_AST( "type_c_ast", $3.ast );
       DUMP_AST( "cast_c_ast_opt", $5.ast );
       DUMP_END();
@@ -2010,7 +2003,7 @@ alignas_specifier_c
 
   | alignas lparen_exp error rparen_exp
     {
-      elaborate_error( "number or type expected" );
+      elaborate_error( "integer or type expected" );
       $$.kind = C_ALIGNAS_NONE;
       $$.loc = @1;
     }
@@ -2036,7 +2029,6 @@ decl_list_c_opt
 
       DUMP_START( "decl_list_c_opt", "<empty>" );
       DUMP_AST( "(type_c_ast)", type_ast );
-
       DUMP_AST( "decl_list_c_opt", type_ast );
       DUMP_END();
 
@@ -2189,9 +2181,9 @@ class_struct_union_declaration_c
       c_sname_set_local_type( &$3, &C_TYPE_LIT_B( $1 ) );
 
       DUMP_START( "class_struct_union_declaration_c",
-                  "class_struct_union_tid sname { "
+                  "class_struct_union_tid sname '{' "
                   "in_scope_declaration_c_opt "
-                  "} ;" );
+                  "'}' ';'" );
       DUMP_TID( "class_struct_union_tid", $1 );
       DUMP_SNAME( "any_sname_c", &$3 );
 
@@ -2227,8 +2219,7 @@ enum_declaration_c
     {
       c_sname_set_local_type( &$3, &C_TYPE_LIT_B( $1 ) );
 
-      DUMP_START( "enum_declaration_c",
-                  "enum_tid sname ;" );
+      DUMP_START( "enum_declaration_c", "enum_tid sname ;" );
       DUMP_TID( "enum_tid", $1 );
       DUMP_SNAME( "any_sname_c", &$3 );
 
@@ -2271,9 +2262,9 @@ namespace_declaration_c
       } // for
 
       DUMP_START( "namespace_declaration_c",
-                  "[INLINE] NAMESPACE sname { "
+                  "namespace_type sname '{' "
                   "in_scope_declaration_c_opt "
-                  "} [;]" );
+                  "'}' [';']" );
       DUMP_TYPE( "namespace_type", &$1 );
       DUMP_SNAME( "any_sname_c", &$3 );
       DUMP_END();
@@ -2498,7 +2489,7 @@ typedef_declaration_c
       ia_type_ast_pop();
 
       DUMP_START( "typedef_declaration_c",
-                  "TYPEDEF [TYPENAME] type_c_ast decl_c_ast" );
+                  "TYPEDEF typename_opt type_c_ast decl_c_ast" );
       DUMP_BOOL( "typename_opt", $3 );
       DUMP_AST( "type_c_ast", $4.ast );
       DUMP_AST( "decl_c_ast", $6.ast );
@@ -2682,8 +2673,7 @@ constructor_decl_english_ast
 destructor_decl_english_ast
   : Y_DESTRUCTOR
     {
-      DUMP_START( "destructor_decl_english_ast",
-                  "DESTRUCTOR" );
+      DUMP_START( "destructor_decl_english_ast", "DESTRUCTOR" );
 
       $$ = c_ast_pair_new_gc( K_DESTRUCTOR, &@$ );
 
@@ -3233,7 +3223,7 @@ destructor_decl_c_ast
     gnu_attribute_specifier_list_c_opt func_equals_c_tid_opt
     {
       DUMP_START( "destructor_decl_c_ast",
-                  "[VIRTUAL] '~' NAME '(' ')' func_qualifier_list_c_tid_opt "
+                  "virtual_opt '~' NAME '(' ')' func_qualifier_list_c_tid_opt "
                   "noexcept_c_tid_opt gnu_attribute_specifier_list_c_opt "
                   "func_equals_c_tid_opt" );
       DUMP_TID( "virtual_tid_opt", $1 );
@@ -3257,7 +3247,7 @@ file_scope_constructor_decl_c_ast
     noexcept_c_tid_opt gnu_attribute_specifier_list_c_opt
     {
       DUMP_START( "file_scope_constructor_decl_c_ast",
-                  "[INLINE] CONSTRUCTOR_SNAME '(' param_list_c_ast_opt ')' "
+                  "inline_opt CONSTRUCTOR_SNAME '(' param_list_c_ast_opt ')' "
                   "func_qualifier_list_c_tid_opt noexcept_c_tid_opt" );
       DUMP_TID( "inline_tid_opt", $1 );
       DUMP_SNAME( "CONSTRUCTOR_SNAME", &$2 );
@@ -3283,7 +3273,7 @@ file_scope_destructor_decl_c_ast
     gnu_attribute_specifier_list_c_opt
     {
       DUMP_START( "file_scope_destructor_decl_c_ast",
-                  "[INLINE] DESTRUCTOR_SNAME '(' ')' "
+                  "inline_opt DESTRUCTOR_SNAME '(' ')' "
                   "func_qualifier_list_c_tid_opt noexcept_c_tid_opt" );
       DUMP_TID( "inline_tid_opt", $1 );
       DUMP_SNAME( "DESTRUCTOR_SNAME", &$2 );
@@ -3653,8 +3643,7 @@ nested_decl_c_ast
       ia_type_ast_pop();
       --ast_depth;
 
-      DUMP_START( "nested_decl_c_ast",
-                  "'(' placeholder_c_ast decl_c_ast ')'" );
+      DUMP_START( "nested_decl_c_ast", "'(' placeholder_c_ast decl_c_ast ')'" );
       DUMP_AST( "placeholder_c_ast", $2.ast );
       DUMP_AST( "decl_c_ast", $4.ast );
 
@@ -3793,7 +3782,7 @@ pointer_to_member_type_c_ast
     any_sname_c Y_COLON2_STAR cv_qualifier_list_tid_opt
     {
       DUMP_START( "pointer_to_member_type_c_ast",
-                  "sname ::* cv_qualifier_list_tid_opt" );
+                  "sname '::*' cv_qualifier_list_tid_opt" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_SNAME( "sname", &$1 );
       DUMP_TID( "cv_qualifier_list_tid_opt", $3 );
@@ -4343,7 +4332,7 @@ enum_class_struct_union_c_ast
     {
       DUMP_START( "enum_class_struct_union_c_ast",
                   "enum_class_struct_union_tid "
-                  "[attribute_specifier_list_c_tid] sname" );
+                  "attribute_specifier_list_c_tid_opt sname" );
       DUMP_TID( "enum_class_struct_union_tid", $1 );
       DUMP_TID( "attribute_specifier_list_c_tid_opt", $2 );
       DUMP_SNAME( "sname", &$3 );
@@ -4477,7 +4466,7 @@ upc_layout_qualifier_opt
   | '[' '*' rbracket_exp
   | '[' error ']'
     {
-      elaborate_error( "one of nothing, number, or '*' expected" );
+      elaborate_error( "one of nothing, integer, or '*' expected" );
     }
   ;
 
@@ -4530,7 +4519,7 @@ attribute_specifier_list_c_tid
       lexer_keyword_ctx = C_KW_CTX_ALL;
 
       DUMP_START( "attribute_specifier_list_c_tid",
-                  "[[ attribute_list_c_tid_opt ]]" );
+                  "'[[' using_opt attribute_list_c_tid_opt ']]'" );
       DUMP_TID( "attribute_list_c_tid_opt", $4 );
 
       $$ = $4;
@@ -4650,6 +4639,10 @@ gnu_attribute_specifier_c
         print_hint( "[[...]]" );
       else
         EPUTC( '\n' );
+      //
+      // Temporariy disabling finding keywords allows GNU attributes that are C
+      // keywords (e.g., const) to be found as ordinary string literals.
+      //
       lexer_find &= ~LEXER_FIND_C_KEYWORDS;
     }
     lparen_exp lparen_exp gnu_attribute_list_c_opt ')' rparen_exp
@@ -5107,8 +5100,7 @@ typedef_type_c_ast
       //
       // that is: a typedef'd type used for a scope.
       //
-      DUMP_START( "typedef_type_c_ast",
-                  "any_typedef :: sname_c" );
+      DUMP_START( "typedef_type_c_ast", "any_typedef '::' sname_c" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_AST( "any_typedef.ast", $1->ast );
       DUMP_SNAME( "sname_c", &$3 );
@@ -5139,8 +5131,7 @@ typedef_type_c_ast
       //
       // that is: a typedef'd type used for an intermediate scope.
       //
-      DUMP_START( "typedef_type_c_ast",
-                  "any_typedef :: typedef_sname_c" );
+      DUMP_START( "typedef_type_c_ast", "any_typedef '::' typedef_sname_c" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_AST( "any_typedef", $1->ast );
       DUMP_SNAME( "typedef_sname_c", &$3 );
@@ -5199,8 +5190,7 @@ sname_c
         PARSE_ABORT();
       }
 
-      DUMP_START( "sname_c",
-                  "sname_c :: NAME" );
+      DUMP_START( "sname_c", "sname_c '::' NAME" );
       DUMP_SNAME( "sname_c", &$1 );
       DUMP_STR( "name", $3 );
 
@@ -5215,8 +5205,7 @@ sname_c
 
   | sname_c Y_COLON2 any_typedef
     {
-      DUMP_START( "sname_c",
-                  "sname_c :: any_typedef" );
+      DUMP_START( "sname_c", "sname_c '::' any_typedef" );
       DUMP_SNAME( "sname_c", &$1 );
       DUMP_AST( "any_typedef.ast", $3->ast );
 
@@ -5240,8 +5229,7 @@ sname_c
 
   | Y_NAME
     {
-      DUMP_START( "sname_c",
-                  "NAME" );
+      DUMP_START( "sname_c", "NAME" );
       DUMP_STR( "NAME", $1 );
 
       c_sname_init_name( &$$, $1 );
@@ -5313,8 +5301,7 @@ sname_c_opt
 sname_english
   : any_sname_c of_scope_list_english_opt
     {
-      DUMP_START( "sname_english",
-                  "any_sname_c of_scope_list_english_opt" );
+      DUMP_START( "sname_english", "any_sname_c of_scope_list_english_opt" );
       DUMP_SNAME( "any_sname_c", &$1 );
       DUMP_SNAME( "of_scope_list_english_opt", &$2 );
 
@@ -5372,8 +5359,7 @@ sname_english_exp
 typedef_sname_c
   : typedef_sname_c Y_COLON2 sname_c
     {
-      DUMP_START( "typedef_sname_c",
-                  "typedef_sname_c :: sname_c" );
+      DUMP_START( "typedef_sname_c", "typedef_sname_c '::' sname_c" );
       DUMP_SNAME( "typedef_sname_c", &$1 );
       DUMP_SNAME( "sname_c", &$3 );
 
@@ -5392,8 +5378,7 @@ typedef_sname_c
 
   | typedef_sname_c Y_COLON2 any_typedef
     {
-      DUMP_START( "typedef_sname_c",
-                  "typedef_sname_c :: any_typedef" );
+      DUMP_START( "typedef_sname_c", "typedef_sname_c '::' any_typedef" );
       DUMP_SNAME( "typedef_sname_c", &$1 );
       DUMP_AST( "any_typedef", $3->ast );
 
@@ -5583,7 +5568,7 @@ int_exp
   : Y_INT_LIT
   | error
     {
-      elaborate_error( "number expected" );
+      elaborate_error( "integer expected" );
     }
   ;
 
