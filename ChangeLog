@@ -1,5 +1,19 @@
+2021-01-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Clean-up.
+   * c_type.h, parser.y: Doxygen.
+   * parser.y: Tweaked typedef_declaration_c to set c_mode earlier.
+   * parser.y: Reorganization of some grammar rules.
+   * parser.y: Unified "using" declarations.
+   * parser.y: More "using" clean-up.
+   * parser.y: "using" clean-up.
+
 2021-01-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Clean-up.
+   * parser.y: Renamed grammar rule.
+   * c_ast_util.c, c_type.c, c_type.h, did_you_mean.c, options.c, parser.y,
+     print.c: Renaming TPID.
    * NEWS, parser.y: Added parsing support for attribute arguments.
    * NEWS, parser.y, test/Makefile.am, explain_a_using_a_mu_i.out,
      explain_a_using_a_mu_i.test: Added suppport for [[using : ... ]].
