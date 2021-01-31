@@ -610,14 +610,13 @@ H             [0-9A-Fa-f]
 S             [ \f\r\t\v]
 
 identifier    {L}({L}|{D})*
-
+sname         {identifier}({S}*::{S}*{identifier})+
 dtor_sname    ({identifier}{S}*::{S}*)+(~|compl{S}){S}*{identifier}
 hyphenated    [a-z]+-([a-z]+-)*[a-z]+
-int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
-set_option    [^=; \f\n\r\t\v]+
-sname         {identifier}({S}*::{S}*{identifier})+
 
 chr_str_pfx   (L|u8?|U)?['"]
+int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
+set_option    [^=; \f\n\r\t\v]+
 
 bin_int       0[bB]{B}+{int_suffix}?
 oct_int       0{O}*{int_suffix}?
@@ -771,7 +770,8 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 //
         find_cdecl_keyword:
                 NO_OP;
-                cdecl_keyword_t const *ck = cdecl_keyword_find( lexer_token );
+                cdecl_keyword_t const *const ck =
+                  cdecl_keyword_find( lexer_token );
                 if ( ck != NULL ) {
                   if ( ck->lang_syn == NULL ) {
                     if ( ck->literal == L_SET_COMMAND ) {
@@ -823,28 +823,29 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 return Y_NAME;
               }
 
+              /* Integer literals. */
 {bin_int}     { SET_TOKEN; yylval.int_val = parse_int(  2 ); return Y_INT_LIT; }
 {oct_int}     { SET_TOKEN; yylval.int_val = parse_int(  8 ); return Y_INT_LIT; }
 {dec_int}     { SET_TOKEN; yylval.int_val = parse_int( 10 ); return Y_INT_LIT; }
 {hex_int}     { SET_TOKEN; yylval.int_val = parse_int( 16 ); return Y_INT_LIT; }
 
+              /* Digraphs. */
 "<:<:"        { SET_TOKEN_TO( "[[" ); return Y_LBRACKET2; }
 ":>:>"        { SET_TOKEN_TO( "]]" ); return Y_RBRACKET2; }
-
 "<:"          { SET_TOKEN_TO_AND_RETURN( "[" ); }
 ":>"          { SET_TOKEN_TO_AND_RETURN( "]" ); }
 
+              /* Trigraphs. */
 "??(??("      { SET_TOKEN_TO( "[[" ); return Y_LBRACKET2; }
 "??)??)"      { SET_TOKEN_TO( "]]" ); return Y_RBRACKET2; }
 "??'="        { SET_TOKEN_TO( "^=" ); return Y_CIRC_EQ  ; }
 "??!="        { SET_TOKEN_TO( "|=" ); return Y_PIPE_EQ  ; }
 "??!??!"      { SET_TOKEN_TO( "||" ); return Y_PIPE2    ; }
-
-"??!"         { SET_TOKEN_TO( "|" ); return Y_PIPE      ; }
-"??'"         { SET_TOKEN_TO( "^" ); return Y_CIRC      ; }
+"??!"         { SET_TOKEN_TO( "|" );  return Y_PIPE     ; }
+"??'"         { SET_TOKEN_TO( "^" );  return Y_CIRC     ; }
 "??("         { SET_TOKEN_TO_AND_RETURN( "[" ); }
 "??)"         { SET_TOKEN_TO_AND_RETURN( "]" ); }
-"??-"         { SET_TOKEN_TO( "~" ); return Y_TILDE     ; }
+"??-"         { SET_TOKEN_TO( "~" );  return Y_TILDE    ; }
 
               /*
                * Special case: if "::" is immediately followed by a '*', return
@@ -918,22 +919,22 @@ declare/{S}({S}|{L})*user-def(ined)? {
 "}"           { SET_TOKEN; return lexer_token[0]    ; }
 
 {chr_str_pfx} {                         /* C char or string literal */
-                char const end = yytext[ yyleng - 1 ];
+                char const begin = yytext[ yyleng - 1 ];
                 for ( int c = input(), prev = '\0'; ; prev = c, c = input() ) {
                   if ( c == '\0' || c == EOF || (c == '\n' && prev != '\\') ) {
                     EPRINTF(
                       "(unterminated %s literal)",
-                      end == '\'' ? "character" : "string"
+                      begin == '\'' ? "character" : "string"
                     );
                     return Y_ERROR;
                   }
                   ++column;
-                  if ( c == end && prev != '\\' )
+                  if ( c == begin && prev != '\\' )
                     break;
                   if ( c == '\n' )
                     newline();
                 } // for
-                return end == '\'' ? Y_CHAR_LIT : Y_STR_LIT;
+                return begin == '\'' ? Y_CHAR_LIT : Y_STR_LIT;
               }
 
 <*>"/*"       {                         /* ignore C-style comments */
