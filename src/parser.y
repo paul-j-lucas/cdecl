@@ -2361,6 +2361,7 @@ set_option_value_opt
   | '=' Y_SET_OPTION              { $$ = $2; @$ = @2; }
   | '=' error
     {
+      $$ = NULL;
       elaborate_error( "option value expected" );
     }
   ;
@@ -2481,12 +2482,12 @@ predefined_or_user_opt
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef_declaration_c
-  : Y_TYPEDEF typename_opt
+  : Y_TYPEDEF
     {
       // see the comment in "explain"
       c_mode = C_GIBBERISH_TO_ENGLISH;
     }
-    type_c_ast
+    typename_opt type_c_ast
     {
       // see the comment in define_english about TS_TYPEDEF
       C_TYPE_ADD_TID( &$4.ast->type, TS_TYPEDEF, @4 );
@@ -2498,14 +2499,14 @@ typedef_declaration_c
 
       DUMP_START( "typedef_declaration_c",
                   "TYPEDEF [TYPENAME] type_c_ast decl_c_ast" );
-      DUMP_BOOL( "typename_opt", $2 );
+      DUMP_BOOL( "typename_opt", $3 );
       DUMP_AST( "type_c_ast", $4.ast );
       DUMP_AST( "decl_c_ast", $6.ast );
 
       c_ast_t *typedef_ast;
       c_sname_t temp_sname;
 
-      if ( $2 && !c_ast_is_typename_ok( $4.ast ) )
+      if ( $3 && !c_ast_is_typename_ok( $4.ast ) )
         PARSE_ABORT();
 
       if ( $6.ast->kind_id == K_TYPEDEF ) {
