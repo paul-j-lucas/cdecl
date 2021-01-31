@@ -679,14 +679,15 @@ c_type_id_t c_type_get_tid( c_type_t const *type, c_type_id_t tid ) {
 }
 
 /**
- * Checks that the type part ID of \a tid is \a pid.
+ * Checks that the type part ID of \a tid is \a tpid.
  *
  * @param tid The <code>\ref c_type_id_t</code> to check.
+ * @param tpid The <code>\ref c_type_part_id_t</code> to check against.
  * @return Returns \a tid.
  */
 C_TYPE_INLINE PJL_NOWARN_UNUSED_RESULT
-c_type_id_t c_type_id_check( c_type_id_t tid, c_type_part_id_t pid ) {
-  assert( (tid & TX_MASK_PART_ID) == pid );
+c_type_id_t c_type_id_check( c_type_id_t tid, c_type_part_id_t tpid ) {
+  assert( (tid & TX_MASK_PART_ID) == tpid );
   return tid;
 }
 

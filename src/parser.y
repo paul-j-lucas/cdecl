@@ -337,7 +337,7 @@ struct in_attr {
   c_alignas_t align;                    ///< Alignment, if any.
   slist_t     ast_type_stack;           ///< Type AST stack.
   c_sname_t   current_scope;            ///< C++ only: current scope, if any.
-  slist_t     qualifier_stack;          ///< `c_qualifier_t` stack.
+  slist_t     qualifier_stack;          ///< `c_qualifier` stack.
   bool        typename;                 ///< C++ only: `typename` specified?
 };
 typedef struct in_attr in_attr_t;
@@ -346,7 +346,7 @@ typedef struct in_attr in_attr_t;
  * Qualifier and its source location.
  */
 struct c_qualifier {
-  c_type_id_t qual_tid;                 ///< E.g., `TS_CONST` or `TS_VOLATILE`.
+  c_type_id_t qual_tid;                 ///< E.g., #TS_CONST or #TS_VOLATILE.
   c_loc_t     loc;                      ///< Qualifier source location.
 };
 typedef struct c_qualifier c_qualifier_t;
