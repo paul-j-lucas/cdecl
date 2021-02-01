@@ -836,13 +836,24 @@ static void yyerror( char const *msg ) {
 
                     // cdecl commands
 %token              Y_CAST
+//                  Y_CLASS             // covered in C++11
+//                  Y_CONST             // covered in C89
 %token              Y_DECLARE
 %token              Y_DEFINE
+%token              Y_DYNAMIC
+//                    EXIT              // mapped by lexer to Y_QUIT
 %token              Y_EXPLAIN
 %token              Y_HELP
+//                  Y_NAMESPACE         // covered in C++11
+%token              Y_QUIT
+%token              Y_REINTERPRET
 %token              Y_SET
 %token              Y_SHOW
-%token              Y_QUIT
+//                  Y_STATIC            // covered in K&R C
+//                  Y_STRUCT            // covered in K&R C
+//                  Y_TYPEDEF           // covered in K&R C
+//                  Y_UNION             // covered in K&R C
+//                  Y_USING             // covered in C++11
 
                     // English
 %token              Y_ALIGNED
@@ -852,7 +863,6 @@ static void yyerror( char const *msg ) {
 %token              Y_BITS
 %token              Y_BYTES
 %token              Y_COMMANDS
-%token              Y_DYNAMIC
 %token              Y_ENGLISH
 %token              Y_FUNCTION
 %token              Y_INTO
@@ -864,7 +874,6 @@ static void yyerror( char const *msg ) {
 %token              Y_PREDEFINED
 %token              Y_PURE
 %token              Y_REFERENCE
-%token              Y_REINTERPRET
 %token              Y_RETURNING
 %token              Y_RVALUE
 %token              Y_SCOPE
