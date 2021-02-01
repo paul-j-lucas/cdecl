@@ -473,7 +473,8 @@ static inline void ia_type_ast_push( c_ast_t *ast ) {
  */
 PJL_WARN_UNUSED_RESULT
 static inline c_type_id_t ia_qual_peek_tid( void ) {
-  return ((c_qualifier_t*)slist_peek_head( &in_attr.qualifier_stack ))->qual_tid;
+  c_qualifier_t const *const qual = slist_peek_head( &in_attr.qualifier_stack );
+  return qual->qual_tid;
 }
 
 /**
@@ -545,7 +546,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
   assert( type_decl_loc != NULL );
 
   switch ( c_typedef_add( type_ast ) ) {
-    case TD_ADD_ADDED:
+    case TDEF_ADD_ADDED:
       //
       // We have to move the AST from the ast_gc_list so it won't be garbage
       // collected at the end of the parse to a separate ast_typedef_list
@@ -553,13 +554,13 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
       //
       slist_push_list_tail( &ast_typedef_list, &ast_gc_list );
       break;
-    case TD_ADD_DIFF:
+    case TDEF_ADD_DIFF:
       print_error( type_decl_loc,
         "\"%s\": \"%s\" redefinition with different type\n",
         c_ast_full_name( type_ast ), decl_keyword
       );
       return false;
-    case TD_ADD_EQUIV:
+    case TDEF_ADD_EQUIV:
       // Do nothing.
       break;
   } // switch
