@@ -3944,31 +3944,37 @@ user_defined_literal_decl_c_ast
     user_defined_literal_c_ast lparen_exp param_list_c_ast ')'
     noexcept_c_tid_opt trailing_return_type_c_ast_opt
     {
+      c_ast_t    *const udl_c_ast = $1.ast;
+      c_type_id_t const noexcept_tid = $5;
+      c_ast_t    *const trailing_ret_ast = $6.ast;
+      c_ast_t    *const type_ast = ia_type_ast_peek();
+
       DUMP_START( "user_defined_literal_decl_c_ast",
                   "user_defined_literal_c_ast '(' param_list_c_ast ')' "
                   "noexcept_c_tid_opt trailing_return_type_c_ast_opt" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
-      DUMP_AST( "oper_c_ast", $1.ast );
+      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "user_defined_literal_c_ast", udl_c_ast );
       DUMP_AST_LIST( "param_list_c_ast", $3 );
-      DUMP_TID( "noexcept_c_tid_opt", $5 );
-      DUMP_AST( "trailing_return_type_c_ast_opt", $6.ast );
+      DUMP_TID( "noexcept_c_tid_opt", noexcept_tid );
+      DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
 
-      c_ast_t *const lit_ast = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
-      lit_ast->as.udef_lit.param_ast_list = $3;
+      c_ast_t *const udl_ast = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
+      udl_ast->type.store_tid = c_type_id_check( noexcept_tid, C_TPID_STORE );
+      udl_ast->as.udef_lit.param_ast_list = $3;
 
-      if ( $6.ast != NULL ) {
-        $$.ast = c_ast_add_func( $1.ast, $6.ast, lit_ast );
-      }
-      else if ( $1.target_ast != NULL ) {
+      if ( $1.target_ast != NULL ) {
         $$.ast = $1.ast;
-        PJL_IGNORE_RV(
-          c_ast_add_func( $1.target_ast, ia_type_ast_peek(), lit_ast )
-        );
+        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast, udl_c_ast ) );
       }
       else {
-        $$.ast = c_ast_add_func( $1.ast, ia_type_ast_peek(), lit_ast );
+        $$.ast = c_ast_add_func(
+          udl_c_ast,
+          trailing_ret_ast != NULL ? trailing_ret_ast : type_ast,
+          udl_ast
+        );
       }
-      $$.target_ast = lit_ast->as.udef_lit.ret_ast;
+
+      $$.target_ast = udl_ast->as.udef_lit.ret_ast;
 
       DUMP_AST( "user_defined_literal_decl_c_ast", $$.ast );
       DUMP_END();
@@ -4827,33 +4833,41 @@ func_cast_c_ast
     cast2_c_ast '(' param_list_c_ast_opt rparen_func_qualifier_list_c_tid_opt
     trailing_return_type_c_ast_opt
     {
+      c_ast_t    *const cast2_c_ast = $1.ast;
+      c_type_id_t const func_ref_qualifier_tid = $4;
+      c_ast_t    *const trailing_ret_ast = $5.ast;
+      c_ast_t    *const type_ast = ia_type_ast_peek();
+
       DUMP_START( "func_cast_c_ast",
                   "cast2_c_ast '(' param_list_c_ast_opt ')' "
                   "func_qualifier_list_c_tid_opt "
                   "trailing_return_type_c_ast_opt" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
-      DUMP_AST( "cast2_c_ast", $1.ast );
+      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "cast2_c_ast", cast2_c_ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
-      DUMP_TID( "func_qualifier_list_c_tid_opt", $4 );
-      DUMP_AST( "trailing_return_type_c_ast_opt", $5.ast );
+      DUMP_TID( "func_qualifier_list_c_tid_opt", func_ref_qualifier_tid );
+      DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
       DUMP_AST( "target_ast", $1.target_ast );
 
+      c_type_id_t const func_store_tid = func_ref_qualifier_tid;
+
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
-      func_ast->type.store_tid = c_type_id_check( $4, C_TPID_STORE );
+      func_ast->type.store_tid =
+        c_type_id_check( func_store_tid, C_TPID_STORE );
       func_ast->as.func.param_ast_list = $3;
 
-      if ( $5.ast != NULL ) {
-        $$.ast = c_ast_add_func( $1.ast, $5.ast, func_ast );
-      }
-      else if ( $1.target_ast != NULL ) {
+      if ( $1.target_ast != NULL ) {
         $$.ast = $1.ast;
-        PJL_IGNORE_RV(
-          c_ast_add_func( $1.target_ast, ia_type_ast_peek(), func_ast )
-        );
+        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast, func_ast ) );
       }
       else {
-        $$.ast = c_ast_add_func( $1.ast, ia_type_ast_peek(), func_ast );
+        $$.ast = c_ast_add_func(
+          cast2_c_ast,
+          trailing_ret_ast != NULL ? trailing_ret_ast : type_ast,
+          func_ast
+        );
       }
+
       $$.target_ast = func_ast->as.func.ret_ast;
 
       DUMP_AST( "func_cast_c_ast", $$.ast );
