@@ -455,6 +455,8 @@ static inline void ia_type_ast_push( c_ast_t *ast ) {
  * @return Returns said qualifier location.
  *
  * @sa ia_qual_peek_tid()
+ * @sa ia_qual_pop()
+ * @sa ia_qual_push_tid()
  */
 #define ia_qual_peek_loc() \
   (((c_qualifier_t*)slist_peek_head( &in_attr.qualifier_stack ))->loc)
@@ -465,7 +467,7 @@ static inline void ia_type_ast_push( c_ast_t *ast ) {
  *
  * @return Returns said qualifier.
  *
- * @sa ia_qual_peek_loc()
+ * @sa #ia_qual_peek_loc()
  * @sa ia_qual_pop()
  * @sa ia_qual_push_tid()
  */
@@ -479,6 +481,8 @@ static inline c_type_id_t ia_qual_peek_tid( void ) {
  * \ref in_attr.qualifier_stack "qualifer inherited attribute stack" and frees
  * it.
  *
+ * @sa #ia_qual_peek_loc()
+ * @sa ia_qual_peek_tid()
  * @sa ia_qual_push_tid()
  */
 static inline void ia_qual_pop( void ) {
@@ -682,7 +686,9 @@ static void ia_free( void ) {
  * @param qual_tid The qualifier to push.
  * @param loc A pointer to the source location of the qualifier.
  *
+ * @sa #ia_qual_peek_loc()
  * @sa ia_qual_peek_tid()
+ * @sa ia_qual_pop()
  */
 static void ia_qual_push_tid( c_type_id_t qual_tid, c_loc_t const *loc ) {
   c_type_id_check( qual_tid, C_TPID_STORE );

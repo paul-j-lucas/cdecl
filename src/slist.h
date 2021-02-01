@@ -247,6 +247,7 @@ void* slist_peek_at( slist_t const *list, size_t offset );
  * @note This is an O(n) operation.
  *
  * @sa slist_peek_at()
+ * @sa slist_peek_head()
  * @sa slist_peek_tail()
  */
 C_SLIST_INLINE PJL_WARN_UNUSED_RESULT
@@ -265,6 +266,7 @@ void* slist_peek_atr( slist_t const *list, size_t roffset ) {
  * @note This is an O(1) operation.
  *
  * @sa slist_peek_at()
+ * @sa slist_peek_atr()
  * @sa slist_peek_tail()
  */
 C_SLIST_INLINE PJL_WARN_UNUSED_RESULT
@@ -281,6 +283,7 @@ void* slist_peek_head( slist_t const *list ) {
  *
  * @note This is an O(1) operation.
  *
+ * @sa slist_peek_at()
  * @sa slist_peek_atr()
  * @sa slist_peek_head()
  */
