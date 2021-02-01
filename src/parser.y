@@ -3397,17 +3397,16 @@ func_decl_c_ast
         c_type_or_eq( &func_ast->type, &type_ast->type );
         $$.ast = func_ast;
       }
+      else if ( $1.target_ast != NULL ) {
+        $$.ast = decl2_ast;
+        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast, func_ast ) );
+      }
       else {
-        if ( trailing_ret_ast != NULL ) {
-          $$.ast = c_ast_add_func( $1.ast, trailing_ret_ast, func_ast );
-        }
-        else if ( $1.target_ast != NULL ) {
-          $$.ast = $1.ast;
-          PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast, func_ast ) );
-        }
-        else {
-          $$.ast = c_ast_add_func( $1.ast, type_ast, func_ast );
-        }
+        $$.ast = c_ast_add_func(
+          decl2_ast,
+          trailing_ret_ast != NULL ? trailing_ret_ast : type_ast,
+          func_ast
+        );
       }
 
       $$.target_ast = func_ast->as.func.ret_ast;
@@ -3659,39 +3658,51 @@ oper_decl_c_ast
     rparen_func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
     noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_c_tid_opt
     {
+      c_ast_t    *const oper_c_ast = $1.ast;
+      c_type_id_t const func_qualifier_tid = $4;
+      c_type_id_t const func_ref_qualifier_tid = $5;
+      c_type_id_t const func_equals_tid = $8;
+      c_type_id_t const noexcept_tid = $6;
+      c_ast_t    *const trailing_ret_ast = $7.ast;
+      c_ast_t    *const type_ast = ia_type_ast_peek();
+
       DUMP_START( "oper_decl_c_ast",
                   "oper_c_ast '(' param_list_c_ast_opt ')' "
                   "func_qualifier_list_c_tid_opt "
                   "func_ref_qualifier_c_tid_opt noexcept_c_tid_opt "
                   "trailing_return_type_c_ast_opt "
                   "func_equals_c_tid_opt" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
-      DUMP_AST( "oper_c_ast", $1.ast );
+      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "oper_c_ast", oper_c_ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
-      DUMP_TID( "func_qualifier_list_c_tid_opt", $4 );
-      DUMP_TID( "func_ref_qualifier_c_tid_opt", $5 );
-      DUMP_TID( "noexcept_c_tid_opt", $6 );
-      DUMP_AST( "trailing_return_type_c_ast_opt", $7.ast );
-      DUMP_TID( "func_equals_c_tid_opt", $8 );
+      DUMP_TID( "func_qualifier_list_c_tid_opt", func_qualifier_tid );
+      DUMP_TID( "func_ref_qualifier_c_tid_opt", func_ref_qualifier_tid );
+      DUMP_TID( "noexcept_c_tid_opt", noexcept_tid );
+      DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
+      DUMP_TID( "func_equals_c_tid_opt", func_equals_tid );
+
+      c_type_id_t const oper_store_tid =
+        func_qualifier_tid | func_ref_qualifier_tid | noexcept_tid |
+        func_equals_tid;
 
       c_ast_t *const oper_ast = c_ast_new_gc( K_OPERATOR, &@$ );
       oper_ast->type.store_tid =
-        c_type_id_check( $4 | $5 | $6 | $8, C_TPID_STORE );
+        c_type_id_check( oper_store_tid, C_TPID_STORE );
       oper_ast->as.oper.param_ast_list = $3;
-      oper_ast->as.oper.oper_id = $1.ast->as.oper.oper_id;
+      oper_ast->as.oper.oper_id = oper_c_ast->as.oper.oper_id;
 
-      if ( $7.ast != NULL ) {
-        $$.ast = c_ast_add_func( $1.ast, $7.ast, oper_ast );
-      }
-      else if ( $1.target_ast != NULL ) {
-        $$.ast = $1.ast;
-        PJL_IGNORE_RV(
-          c_ast_add_func( $1.target_ast, ia_type_ast_peek(), oper_ast )
-        );
+      if ( $1.target_ast != NULL ) {
+        $$.ast = oper_c_ast;
+        PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast, oper_ast ) );
       }
       else {
-        $$.ast = c_ast_add_func( $1.ast, ia_type_ast_peek(), oper_ast );
+        $$.ast = c_ast_add_func(
+          oper_c_ast,
+          trailing_ret_ast != NULL ? trailing_ret_ast : type_ast,
+          oper_ast
+        );
       }
+
       $$.target_ast = oper_ast->as.oper.ret_ast;
 
       DUMP_AST( "oper_decl_c_ast", $$.ast );
