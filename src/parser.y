@@ -3395,8 +3395,6 @@ func_decl_c_ast
       if ( assume_constructor ) {
         assert( trailing_ret_ast == NULL );
         c_type_or_eq( &func_ast->type, &type_ast->type );
-        if ( c_ast_empty_name( func_ast ) )
-          func_ast->sname = c_ast_take_name( decl2_ast );
         $$.ast = func_ast;
       }
       else {
