@@ -49,6 +49,14 @@ warning is printed that it's ignored.)
 GNU C's `__attribute__` syntax is now parsed, but otherwise ignored.  (A
 warning is printed that it's ignored.)
 
+** Fixed `auto` with storage class
+The storage class in a declaration like:
+
+    c++decl> explain static auto f() -> int
+    declare f as static function returning int
+
+is now correctly included.
+
 
 * Changes in Cdecl 9.4
 

@@ -522,10 +522,16 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
 
   //
   // The decl_ast is the final AST -- type_ast may be discarded (if it wasn't
-  // patched in), so take its name if we don't have one already.
+  // patched in), so take its storage, attributes, and name (if it doesn't have
+  // one already).
   //
+  c_type_t const taken_type = c_ast_take_storage( type_ast );
+  decl_ast->type.store_tid |= taken_type.store_tid;
+  decl_ast->type.attr_tid |= taken_type.attr_tid;
+
   if ( c_ast_empty_name( decl_ast ) )
     decl_ast->sname = c_ast_take_name( type_ast );
+
   return decl_ast;
 }
 

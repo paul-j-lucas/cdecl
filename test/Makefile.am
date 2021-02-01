@@ -1254,6 +1254,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_rf_v.test \
 	tests/explain_ri.test \
 	tests/explain_rrf_v.test \
+	tests/explain_sf__i.test \
 	tests/explain_sxxi.test \
 	tests/explain_tf_v-c++17.test \
 	tests/explain_using_a3i.test \
