@@ -3363,7 +3363,8 @@ func_decl_c_ast
         // + The current language is C++.
         C_LANG_IS_CPP() &&
 
-        // + The existing base type is none.
+        // + The existing base type is none (because constructors don't have
+        //   return types).
         type_ast->type.base_tid == TB_NONE &&
 
         // + The existing type does _not_ have any non-constructor storage
@@ -3711,7 +3712,7 @@ oper_c_ast
 
       $$.ast = ia_type_ast_peek();
       $$.target_ast = NULL;
-      $$.ast->sname = $1;
+      c_ast_set_sname( $$.ast, &$1 );
       $$.ast->as.oper.oper_id = $3;
 
       DUMP_AST( "oper_c_ast", $$.ast );
@@ -3976,7 +3977,7 @@ user_defined_literal_c_ast
 
       $$.ast = ia_type_ast_peek();
       $$.target_ast = NULL;
-      $$.ast->sname = $1;
+      c_ast_set_sname( $$.ast, &$1 );
       c_ast_append_name( $$.ast, $4 );
 
       DUMP_AST( "user_defined_literal_c_ast", $$.ast );
@@ -4088,9 +4089,6 @@ param_c_ast
 
       $$.ast = c_ast_patch_placeholder( $1.ast, $3.ast );
       $$.target_ast = NULL;
-
-      if ( c_ast_empty_name( $$.ast ) )
-        $$.ast->sname = c_sname_dup( c_ast_find_name( $$.ast, C_VISIT_DOWN ) );
 
       DUMP_AST( "param_c_ast", $$.ast );
       DUMP_END();
