@@ -841,7 +841,7 @@ static void yyerror( char const *msg ) {
 %token              Y_DECLARE
 %token              Y_DEFINE
 %token              Y_DYNAMIC
-//                    EXIT              // mapped by lexer to Y_QUIT
+//                  Y_EXIT              // mapped by lexer to Y_QUIT
 %token              Y_EXPLAIN
 %token              Y_HELP
 //                  Y_NAMESPACE         // covered in C++11
@@ -863,11 +863,15 @@ static void yyerror( char const *msg ) {
 %token              Y_BITS
 %token              Y_BYTES
 %token              Y_COMMANDS
+%token              Y_CONSTRUCTOR
+%token              Y_CONVERSION
+%token              Y_DESTRUCTOR
 %token              Y_ENGLISH
 %token              Y_FUNCTION
 %token              Y_INTO
 %token              Y_LENGTH
 %token              Y_LINKAGE
+%token              Y_LITERAL
 %token              Y_MEMBER
 %token              Y_NON_MEMBER
 %token              Y_OF
@@ -881,6 +885,7 @@ static void yyerror( char const *msg ) {
 %token              Y_TO
 %token              Y_TYPES
 %token              Y_USER
+%token              Y_USER_DEFINED
 %token              Y_VARIABLE
 %token              Y_WIDTH
 
@@ -1020,11 +1025,9 @@ static void yyerror( char const *msg ) {
 %token              Y_CATCH
 %token  <type_id>   Y_CLASS
 %token  <literal>   Y_CONST_CAST
-%token              Y_CONSTRUCTOR
-%token  <sname>     Y_CONSTRUCTOR_SNAME
-%token              Y_CONVERSION
-%token              Y_DESTRUCTOR
-%token  <sname>     Y_DESTRUCTOR_SNAME
+%token  <sname>     Y_CONSTRUCTOR_SNAME // e.g., S::T::T
+%token  <type_id>   Y_DELETE
+%token  <sname>     Y_DESTRUCTOR_SNAME  // e.g., S::T::~T
 %token  <literal>   Y_DYNAMIC_CAST
 %token  <type_id>   Y_EXPLICIT
 %token  <type_id>   Y_FALSE             // for noexcept(false)
@@ -1047,18 +1050,6 @@ static void yyerror( char const *msg ) {
 %token  <flag>      Y_TYPENAME
 %token  <type_id>   Y_USING
 %token  <type_id>   Y_VIRTUAL
-                    //
-                    // The "delete" token is used in two different contexts:
-                    //
-                    //  1. For deleted functions ("= delete").
-                    //  2. For operator delete().
-                    //
-                    // Rather than having two distinct "delete" tokens (that
-                    // would require more communication from the parser to the
-                    // lexer), just have one and use the larger type of
-                    // c_type_id_t and c_oper_id_t which is c_type_id_t.
-                    //
-%token  <type_id>   Y_DELETE
 
                     // C11 & C++11
 %token  <type_id>   Y_CHAR16_T
@@ -1076,14 +1067,12 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_CONSTEXPR
 %token              Y_DECLTYPE
 %token  <type_id>   Y_FINAL
-%token              Y_LITERAL
 %token  <type_id>   Y_NOEXCEPT
 %token              Y_NULLPTR
 %token  <type_id>   Y_OVERRIDE
 %token              Y_QUOTE2            // for user-defined literals
 %token              Y_STATIC_ASSERT
 %token  <type_id>   Y_THREAD_LOCAL
-%token              Y_USER_DEFINED
 
                     // C2X & C++14
 %token  <type_id>   Y_DEPRECATED
@@ -1130,13 +1119,12 @@ static void yyerror( char const *msg ) {
                     // Miscellaneous
 %token              ':'
 %token              ';'
-%token              '{'
-%token              '}'
+%token              '{' '}'
 %token  <name>      Y_CHAR_LIT
 %token              Y_END
 %token              Y_ERROR
-%token  <name>      Y_NAME
 %token  <int_val>   Y_INT_LIT
+%token  <name>      Y_NAME
 %token  <name>      Y_SET_OPTION
 %token  <name>      Y_STR_LIT
 %token  <tdef>      Y_TYPEDEF_NAME      // e.g., size_t
