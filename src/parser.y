@@ -2104,8 +2104,6 @@ alignas_specifier_c
     {
       yyerrok;
       elaborate_error( "integer or type expected" );
-      $$.kind = C_ALIGNAS_NONE;
-      $$.loc = @1;
     }
   ;
 
