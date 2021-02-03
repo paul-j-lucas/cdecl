@@ -1,3 +1,29 @@
+2021-02-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: s/EPRINTF/print_error/
+   * AUTHORS, NEWS, cdecl.1, c_type.c, c_type.h, help.c, lexer.l, literals.c,
+     literals.h, parser.y, util.c, util.h, test/Makefile.am, declare_ecf_v.out,
+     explain_ecf_v.out, help_english-c++.out, declare_ecf_v.test,
+     explain_ecf_v.test: Added support for extern "C" declarations.
+
+2021-02-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Comments.
+   * c_typedef.c, c_typedef.h, parser.y: s/TD_/TDEF_/
+   * parser.y, slist.h: Doxygen.
+   * NEWS, c_ast_util.c, test/Makefile.am, explain_sf__i.out,
+     explain_sf__i.test: Fixed `auto` with storage class.
+
+2021-01-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Clean-up.
+   * parser.y: oper_decl_c_ast clean-up.
+   * parser.y: Removed unncessary c_ast_take_name().
+   * parser.y: Clean-up.
+   * parser.y: Bit-field width clean-up.
+   * cdecl.1: Minor improvements.
+   * lexer.l: Tweaks.
+
 2021-01-30  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Clean-up.
