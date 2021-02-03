@@ -2102,7 +2102,6 @@ alignas_specifier_c
 
   | alignas lparen_exp error ')'
     {
-      yyerrok;
       elaborate_error( "integer or type expected" );
     }
   ;
@@ -3276,7 +3275,6 @@ array_size_c_int
   | '[' Y_INT_LIT rbracket_exp    { $$ = $2; }
   | '[' error ']'
     {
-      yyerrok;
       elaborate_error( "integer expected for array size" );
     }
   ;
@@ -4578,7 +4576,6 @@ upc_layout_qualifier_opt
   | '[' '*' rbracket_exp
   | '[' error ']'
     {
-      yyerrok;
       elaborate_error( "one of nothing, integer, or '*' expected" );
     }
   ;
@@ -4637,7 +4634,6 @@ attribute_specifier_list_c_tid
     }
     using_opt attribute_list_c_tid_opt "]]"
     {
-      yyerrok;
       lexer_keyword_ctx = C_KW_CTX_ALL;
 
       DUMP_START( "attribute_specifier_list_c_tid",
@@ -4740,7 +4736,6 @@ attribute_str_arg_c_opt
     }
   | '(' error ')'
     {
-      yyerrok;
       elaborate_error( "string literal expected" );
     }
   ;
@@ -4771,7 +4766,6 @@ gnu_attribute_specifier_c
     }
     lparen_exp lparen_exp gnu_attribute_list_c_opt ')' rparen_exp
     {
-      yyerrok;
       lexer_find |= LEXER_FIND_C_KEYWORDS;
     }
   ;
