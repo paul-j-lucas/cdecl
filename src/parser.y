@@ -893,18 +893,18 @@ static void yyerror( char const *msg ) {
 %left               '(' ')' '[' ']' '.'
                     Y_ARROW             "->"
                     // C/C++ operators: precedence 15
-%right              Y_AMPER          // '&'
-                    Y_DEREF             '*'
-                    Y_EXCLAM         // '!'
-                 // Y_UMINUS            '-'
-                 // Y_UPLUS             '+'
+%right              Y_AMPER          // '&' -- also has alt. token "bitand"
+                    Y_STAR              '*'
+                    Y_EXCLAM         // '!' -- also has alt. token "not"
+                    Y_UMINUS         // '-' -- covered by Y_MINUS
+                    Y_UPLUS          // '+' -- covered by Y_PLUS
                     Y_SIZEOF
-                    Y_TILDE          // '~'
+                    Y_TILDE          // '~' -- also has alt.token "compl"
                     // C/C++ operators: precedence 14
 %left               Y_DOT_STAR          ".*"
                     Y_ARROW_STAR        "->*"
                     // C/C++ operators: precedence 13
-%left               Y_MUL            // '*' -- covered by Y_DEREF
+%left               Y_MUL            // '*' -- covered by Y_STAR
                     '/' '%'
                     // C/C++ operators: precedence 12
 %left               Y_MINUS             '-'
@@ -920,30 +920,30 @@ static void yyerror( char const *msg ) {
                     Y_GREATER_EQ        ">="
                     // C/C++ operators: precedence 8
 %left               Y_EQ2               "=="
-                    Y_EXCLAM_EQ         "!="
+                    Y_EXCLAM_EQ      // "!=" -- also has alt. token "not_eq"
                     // C/C++ operators: precedence 7 (covered above)
 %left               Y_BIT_AND        // '&' -- covered by Y_AMPER
                     // C/C++ operators: precedence 6
-%left               Y_CIRC              // '^'
+%left               Y_CIRC           // '^' -- also has alt. token "xor"
                     // C/C++ operators: precedence 5
-%left               Y_PIPE              // '|'
+%left               Y_PIPE           // '|' -- also has alt. token "bitor"
                     // C/C++ operators: precedence 4
-%left               Y_AMPER2            "&&"
+%left               Y_AMPER2         // "&&" -- also has alt. token "and"
                     // C/C++ operators: precedence 3
-%left               Y_PIPE2             "||"
+%left               Y_PIPE2          // "||" -- also has alt. token "or"
                     // C/C++ operators: precedence 2
 %right              Y_QMARK_COLON       "?:"
                     '='
                     Y_PERCENT_EQ        "%="
-                    Y_AMPER_EQ          "&="
+                    Y_AMPER_EQ       // "&=" -- also has alt. token "and_eq"
                     Y_STAR_EQ           "*="
                     Y_PLUS_EQ           "+="
                     Y_MINUS_EQ          "-="
                     Y_SLASH_EQ          "/="
                     Y_LESS2_EQ          "<<="
                     Y_GREATER2_EQ       ">>="
-                    Y_CIRC_EQ           "^="
-                    Y_PIPE_EQ           "|="
+                    Y_CIRC_EQ        // "^=" -- also has alt. token "xor_eq"
+                    Y_PIPE_EQ        // "|=" -- also has alt. token "or_eq"
                     // C/C++ operators: precedence 1
 %left               ','
 
