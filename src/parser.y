@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 30
+%expect 29
 
 %{
 /** @endcond */
@@ -1185,6 +1185,8 @@ static void yyerror( char const *msg ) {
 %type   <type>      type_modifier_list_english_type_opt
 %type   <type_id>   type_qualifier_list_english_tid
 %type   <type_id>   type_qualifier_list_english_tid_opt
+%type   <type>      udc_storage_class_english_type
+%type   <type>      udc_storage_class_list_english_type_opt
 %type   <ast_pair>  unmodified_type_english_ast
 %type   <ast_pair>  user_defined_literal_decl_english_ast
 %type   <ast_pair>  var_decl_english_ast
@@ -1522,7 +1524,7 @@ declare_english
     /*
      * C++ user-defined conversion operator declaration.
      */
-  | Y_DECLARE storage_class_list_english_type_opt cv_qualifier_list_tid_opt
+  | Y_DECLARE udc_storage_class_list_english_type_opt cv_qualifier_list_tid_opt
     Y_USER_DEFINED conversion_exp operator_opt of_scope_list_english_opt
     returning_exp decl_english_ast
     {
@@ -1635,6 +1637,54 @@ linkage_tid
 linkage_opt
   : /* empty */
   | Y_LINKAGE
+  ;
+
+udc_storage_class_list_english_type_opt
+  : /* empty */                   { $$ = T_NONE; }
+  | udc_storage_class_list_english_type_opt udc_storage_class_english_type
+    {
+      DUMP_START( "udc_storage_class_list_english_type_opt",
+                  "udc_storage_class_list_english_type_opt "
+                  "udc_storage_class_english_type" );
+      DUMP_TYPE( "udc_storage_class_list_english_type_opt", &$1 );
+      DUMP_TYPE( "udc_storage_class_english_type", &$2 );
+
+      $$ = $1;
+      C_TYPE_ADD( &$$, &$2, @2 );
+
+      DUMP_TYPE( "udc_storage_class_list_english_type_opt", &$$ );
+      DUMP_END();
+    }
+  ;
+
+udc_storage_class_english_type
+    /*
+     * We need a seperate storage class set for user-defined conversion
+     * operators without "delete" to eliminiate a shift/reduce conflict; shift:
+     *
+     *      declare delete as ...
+     *
+     * where "delete" is the operator; and reduce:
+     *
+     *      declare delete[d] user-defined conversion operator ...
+     *
+     * where "delete" is storage-class-like.  The "delete" can safely be
+     * removed since only special members can be deleted anyway.
+     */
+  : attribute_english_tid         { $$ = C_TYPE_LIT_A( $1 ); }
+  | Y_CONSTEVAL                   { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_CONSTEXPR                   { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_CONSTINIT                   { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_EXPLICIT                    { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_EXPORT                      { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_FINAL                       { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_FRIEND                      { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_INLINE                      { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_NOEXCEPT                    { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_OVERRIDE                    { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_THROW                       { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_VIRTUAL                     { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_PURE virtual_tid_exp        { $$ = C_TYPE_LIT_S( TS_PURE_VIRTUAL | $2 ); }
   ;
 
 alignas_or_width_decl_english_ast
