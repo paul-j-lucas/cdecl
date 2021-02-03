@@ -907,8 +907,8 @@ static void yyerror( char const *msg ) {
 %left               Y_MUL            // '*' -- covered by Y_DEREF
                     '/' '%'
                     // C/C++ operators: precedence 12
-%left               Y_MINUS             '+'
-                    Y_PLUS              '-'
+%left               Y_MINUS             '-'
+                    Y_PLUS              '+'
                     // C/C++ operators: precedence 11
 %left               Y_LESS2             "<<"
                     Y_GREATER2          ">>"
