@@ -979,7 +979,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 <*>"/*"       {                         /* ignore C-style comments */
                 for ( int c = input(), prev = '\0'; ; prev = c, c = input() ) {
                   if ( c == '\0' || c == EOF ) {
-                    EPRINTF( "unterminated comment" );
+                    print_error( &yylloc, "unterminated comment\n" );
                     return Y_ERROR;
                   }
                   ++column;
