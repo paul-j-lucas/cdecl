@@ -334,11 +334,11 @@
  * Inherited attributes.
  */
 struct in_attr {
-  c_alignas_t align;                    ///< Alignment, if any.
-  slist_t     ast_type_stack;           ///< Type AST stack.
-  c_sname_t   current_scope;            ///< C++ only: current scope, if any.
-  slist_t     qualifier_stack;          ///< `c_qualifier` stack.
-  bool        typename;                 ///< C++ only: `typename` specified?
+  c_alignas_t   align;                  ///< Alignment, if any.
+  c_ast_list_t  ast_type_stack;         ///< Type AST stack.
+  c_sname_t     current_scope;          ///< C++ only: current scope, if any.
+  slist_t       qualifier_stack;        ///< `c_qualifier` stack.
+  bool          typename;               ///< C++ only: `typename` specified?
 };
 typedef struct in_attr in_attr_t;
 
@@ -365,8 +365,8 @@ extern void           print_help( char const* );
 
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
-static slist_t        ast_gc_list;      ///< `c_ast` nodes freed after parse.
-static slist_t        ast_typedef_list; ///< `c_ast` nodes for `typedef`s.
+static c_ast_list_t   ast_gc_list;      ///< `c_ast` nodes freed after parse.
+static c_ast_list_t   ast_typedef_list; ///< `c_ast` nodes for `typedef`s.
 static bool           error_newlined = true;
 static in_attr_t      in_attr;          ///< Inherited attributes.
 

@@ -239,7 +239,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
   INDENT_PRINT( "}" );
 }
 
-void c_ast_list_debug( slist_t const *list, unsigned indent, FILE *dout ) {
+void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
   assert( list != NULL );
   if ( slist_empty( list ) ) {
     FPUTS( "[]", dout );
