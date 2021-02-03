@@ -884,38 +884,49 @@ static void yyerror( char const *msg ) {
 %token              Y_VARIABLE
 %token              Y_WIDTH
 
+                    //
+                    // C and C++ operators that are single-character and have
+                    // no alternative token are represented by themselves
+                    // directly.  All multi-character operators or those that
+                    // have an alternative token are given Y_ names.
+                    //
+
                     // C/C++ operators: precedence 17
 %left               Y_COLON2            "::"
 %left               Y_COLON2_STAR       "::*"
                     // C/C++ operators: precedence 16
 %token              Y_PLUS2             "++"
 %token              Y_MINUS2            "--"
-%left               '(' ')' '[' ']' '.'
+%left                                   '(' ')'
+                                        '[' ']'
+                                        '.'
                     Y_ARROW             "->"
                     // C/C++ operators: precedence 15
 %right              Y_AMPER          // '&' -- also has alt. token "bitand"
-                    Y_STAR              '*'
+                                        '*'
                     Y_EXCLAM         // '!' -- also has alt. token "not"
-                    Y_UMINUS         // '-' -- covered by Y_MINUS
-                    Y_UPLUS          // '+' -- covered by Y_PLUS
+                 // Y_UMINUS         // '-' -- covered by '-' below
+                 // Y_UPLUS          // '+' -- covered by '+' below
                     Y_SIZEOF
                     Y_TILDE          // '~' -- also has alt.token "compl"
                     // C/C++ operators: precedence 14
 %left               Y_DOT_STAR          ".*"
                     Y_ARROW_STAR        "->*"
                     // C/C++ operators: precedence 13
-%left               Y_MUL            // '*' -- covered by Y_STAR
-                    '/' '%'
+%left                                // '*' -- covered by '*' above
+                                        '/'
+                                        '%'
                     // C/C++ operators: precedence 12
-%left               Y_MINUS             '-'
-                    Y_PLUS              '+'
+%left                                   '-'
+                                        '+'
                     // C/C++ operators: precedence 11
 %left               Y_LESS2             "<<"
                     Y_GREATER2          ">>"
                     // C/C++ operators: precedence 10
 %left               Y_LESS_EQ_GREATER   "<=>"
                     // C/C++ operators: precedence 9
-%left               '<' '>'
+%left                                   '<'
+                                        '>'
                     Y_LESS_EQ           "<="
                     Y_GREATER_EQ        ">="
                     // C/C++ operators: precedence 8
@@ -933,7 +944,7 @@ static void yyerror( char const *msg ) {
 %left               Y_PIPE2          // "||" -- also has alt. token "or"
                     // C/C++ operators: precedence 2
 %right              Y_QMARK_COLON       "?:"
-                    '='
+                                        '='
                     Y_PERCENT_EQ        "%="
                     Y_AMPER_EQ       // "&=" -- also has alt. token "and_eq"
                     Y_STAR_EQ           "*="
@@ -945,7 +956,7 @@ static void yyerror( char const *msg ) {
                     Y_CIRC_EQ        // "^=" -- also has alt. token "xor_eq"
                     Y_PIPE_EQ        // "|=" -- also has alt. token "or_eq"
                     // C/C++ operators: precedence 1
-%left               ','
+%left                                   ','
 
                     // K&R C
 %token  <type_id>   Y_AUTO_STORAGE      // C version of "auto"
