@@ -867,6 +867,7 @@ static void yyerror( char const *msg ) {
 %token              Y_FUNCTION
 %token              Y_INTO
 %token              Y_LENGTH
+%token              Y_LINKAGE
 %token              Y_MEMBER
 %token              Y_NON_MEMBER
 %token              Y_OF
@@ -1120,13 +1121,13 @@ static void yyerror( char const *msg ) {
 %token              ';'
 %token              '{'
 %token              '}'
-%token              Y_CHAR_LIT
+%token  <name>      Y_CHAR_LIT
 %token              Y_END
 %token              Y_ERROR
 %token  <name>      Y_NAME
 %token  <int_val>   Y_INT_LIT
 %token  <name>      Y_SET_OPTION
-%token              Y_STR_LIT
+%token  <name>      Y_STR_LIT
 %token  <tdef>      Y_TYPEDEF_NAME      // e.g., size_t
 %token  <tdef>      Y_TYPEDEF_SNAME     // e.g., std::string
 
@@ -1224,6 +1225,7 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   func_qualifier_list_c_tid_opt
 %type   <type_id>   func_ref_qualifier_c_tid_opt
 %type   <ast>       knr_func_or_constructor_decl_c_ast
+%type   <type_id>   linkage_tid
 %type   <ast_pair>  nested_decl_c_ast
 %type   <type_id>   noexcept_c_tid_opt
 %type   <ast_pair>  oper_c_ast
@@ -1309,10 +1311,12 @@ static void yyerror( char const *msg ) {
 // name
 %destructor { DTRACE; FREE( $$ ); } any_name
 %destructor { DTRACE; FREE( $$ ); } any_name_exp
+%destructor { DTRACE; FREE( $$ ); } Y_CHAR_LIT
 %destructor { DTRACE; FREE( $$ ); } name_exp
 %destructor { DTRACE; FREE( $$ ); } set_option_value_opt
 %destructor { DTRACE; FREE( $$ ); } Y_NAME
 %destructor { DTRACE; FREE( $$ ); } Y_SET_OPTION
+%destructor { DTRACE; FREE( $$ ); } Y_STR_LIT
 
 // sname
 %destructor { DTRACE; c_sname_free( &$$ ); } any_sname_c
@@ -1587,6 +1591,10 @@ storage_class_english_type
   | Y_EXPLICIT                    { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_EXPORT                      { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_EXTERN                      { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_EXTERN linkage_tid linkage_opt
+    {
+      $$ = C_TYPE_LIT_S( $2 );
+    }
   | Y_FINAL                       { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_FRIEND                      { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_INLINE                      { $$ = C_TYPE_LIT_S( $1 ); }
@@ -1601,6 +1609,32 @@ storage_class_english_type
   | Y_TYPEDEF                     { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_VIRTUAL                     { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_PURE virtual_tid_exp        { $$ = C_TYPE_LIT_S( TS_PURE_VIRTUAL | $2 ); }
+  ;
+
+linkage_tid
+  : Y_STR_LIT
+    {
+      bool ok = true;
+
+      if ( strcmp( $1, "C" ) == 0 )
+        $$ = TS_EXTERN_C;
+      else if ( strcmp( $1, "C++" ) == 0 )
+        $$ = TS_NONE;
+      else {
+        print_error( &@1, "\"%s\": unknown linkage language", $1 );
+        print_hint( "\"C\" or \"C++\"" );
+        ok = false;
+      }
+
+      FREE( $1 );
+      if ( !ok )
+        PARSE_ABORT();
+    }
+  ;
+
+linkage_opt
+  : /* empty */
+  | Y_LINKAGE
   ;
 
 alignas_or_width_decl_english_ast
@@ -4378,8 +4412,8 @@ enum_class_struct_union_c_ast
   | enum_class_struct_union_tid attribute_specifier_list_c_tid_opt
     any_sname_c_opt '{'
     {
-      print_error( &@3,
-        "explaining %s definitions is not supported\n",
+      print_error( &@4,
+        "explaining %s declarations is not supported\n",
         c_type_id_name( $1 )
       );
       c_sname_free( &$3 );
@@ -4512,6 +4546,14 @@ storage_class_c_type
   | Y_EXPLICIT                    { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_EXPORT                      { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_EXTERN                      { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_EXTERN linkage_tid          { $$ = C_TYPE_LIT_S( $2 ); }
+  | Y_EXTERN linkage_tid '{'
+    {
+      print_error( &@3,
+        "explaining scoped linkage declarations is not supported\n"
+      );
+      PARSE_ABORT();
+    }
   | Y_FINAL                       { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_FRIEND                      { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_INLINE                      { $$ = C_TYPE_LIT_S( $1 ); }
@@ -4643,6 +4685,7 @@ attribute_str_arg_c_opt
   | '(' Y_STR_LIT rparen_exp
     {
       print_warning( &@1, "attribute arguments not supported (ignoring)\n" );
+      FREE( $2 );
     }
   | '(' error ')'
     {
@@ -4719,8 +4762,8 @@ gnu_attribute_arg_list_c
 gnu_attribute_arg_c
   : Y_NAME                        { FREE( $1 ); }
   | Y_INT_LIT
-  | Y_CHAR_LIT
-  | Y_STR_LIT
+  | Y_CHAR_LIT                    { FREE( $1 ); }
+  | Y_STR_LIT                     { FREE( $1 ); }
   | '(' gnu_attribute_arg_list_c rparen_exp
   ;
 

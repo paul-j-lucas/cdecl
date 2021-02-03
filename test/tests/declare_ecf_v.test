@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ declare f as external "C" linkage function returning void @ 0

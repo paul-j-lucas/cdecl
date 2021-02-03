@@ -474,6 +474,19 @@ _GL_INLINE_HEADER_BEGIN
 #define UNEXPECTED_STR_VALUE(EXPR) \
   INTERNAL_ERR( "\"%s\": unexpected value for " #EXPR "\n", (char const*)(EXPR) )
 
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * %strbuf maintains a C-style string that additionally knows its length and
+ * capacity.
+ */
+struct strbuf {
+  char   *str;                          ///< String.
+  size_t  str_len;                      ///< Length of \a str.
+  size_t  buf_cap;                      ///< Capacity of \a str.
+};
+typedef struct strbuf strbuf_t;
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
@@ -749,6 +762,57 @@ char* read_input_line( char const *ps1, char const *ps2 );
  */
 PJL_WARN_UNUSED_RESULT
 char* chrcpy_end( char *dst, char c );
+
+/**
+ * Concatenates \a s_len bytes of \a s onto the end of \a sbuf growing the
+ * buffer if necessary.
+ *
+ * @param sbuf A pointer to the strbuf to concatenate onto.
+ * @param s The string to concatenate.
+ * @param s_len The number of bytes of \a s to concatenate.
+ */
+void strbuf_cat( strbuf_t *sbuf, char const *s, size_t s_len );
+
+/**
+ * Initializes a strbuf.
+ *
+ * @param sbuf A pointer to the strbuf to initialize.
+ *
+ * @sa strbuf_free()
+ */
+C_UTIL_INLINE
+void strbuf_init( strbuf_t *sbuf ) {
+  MEM_ZERO( sbuf );
+}
+
+/**
+ * Frees a strbuf.
+ *
+ * @param sbuf A pointer to the strbuf to free.
+ *
+ * @sa strbuf_init()
+ * @sa strbuf_take();
+ */
+C_UTIL_INLINE
+void strbuf_free( strbuf_t *sbuf ) {
+  free( sbuf->str );
+  strbuf_init( sbuf );
+}
+
+/**
+ * Reinitializes \a sbuf, but returns its string.
+ *
+ * @param sbuf A pointer to the strbuf to take from.
+ * @return Returns said string.  The caller is responsible for deleting it.
+ *
+ * @sa strbuf_init()
+ */
+C_UTIL_INLINE
+char* strbuf_take( strbuf_t *sbuf ) {
+  char *const str = sbuf->str;
+  strbuf_init( sbuf );
+  return str;
+}
 
 /**
  * A variant of **strcpy**(3) that returns the pointer to the new end of \a

@@ -45,6 +45,7 @@
 #include "gibberish.h"
 #include "literals.h"
 #include "options.h"
+#include "print.h"
 #include "util.h"
 #include "parser.h"                     /* must go last */
 
@@ -278,6 +279,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_INTO,           TOKEN( Y_INTO                       ) },
   { L_LEN,            TOKEN( Y_LENGTH                     ) },
   { L_LENGTH,         TOKEN( Y_LENGTH                     ) },
+  { L_LINKAGE,        TOKEN( Y_LINKAGE                    ) },
   { L_LITERAL,        TOKEN( Y_LITERAL                    ) },
   { H_MAYBE_UNUSED,   C_SY1( false, L_MAYBE_UNUSED        ) },
   { L_MBR,            TOKEN( Y_MEMBER                     ) },
@@ -380,6 +382,8 @@ static char      *input_buf;            ///< Entire current input line.
 static size_t     input_len;            ///< Length of line in `input_buf`.
 static size_t     input_sent;           ///< How many bytes returned to Flex.
 static bool       is_eof;               ///< Encountered EOF?
+static strbuf_t   str_lit_buf;          ///< String (or character) literal.
+static c_loc_t    str_lit_loc;          ///< String literal starting location.
 
 // local functions
 noreturn
@@ -628,6 +632,11 @@ hex_int       0[xX]{H}+{int_suffix}?
  * the command's options, so we use an exclusive start state.
  */
 %x SET_COMMAND
+
+/*
+ * For C string and character literals, we use exclusive start states.
+ */
+%x CHAR_LIT STR_LIT
 
 %%
               /*
@@ -918,29 +927,59 @@ declare/{S}({S}|{L})*user-def(ined)? {
 "{"           |
 "}"           { SET_TOKEN; return lexer_token[0]    ; }
 
-{chr_str_pfx} {                         /* C char or string literal */
-                char const begin = yytext[ yyleng - 1 ];
-                for ( int c = input(), prev = '\0'; ; prev = c, c = input() ) {
-                  if ( c == '\0' || c == EOF || (c == '\n' && prev != '\\') ) {
-                    EPRINTF(
-                      "(unterminated %s literal)",
-                      begin == '\'' ? "character" : "string"
-                    );
-                    return Y_ERROR;
-                  }
-                  ++column;
-                  if ( c == begin && prev != '\\' )
-                    break;
-                  if ( c == '\n' )
-                    newline();
-                } // for
-                return begin == '\'' ? Y_CHAR_LIT : Y_STR_LIT;
+{chr_str_pfx} { //
+                // We strbuf_free() before strbuf_init() to free any previous
+                // buffer left over in case there was an unterminated literal
+                // error.
+                //
+                strbuf_free( &str_lit_buf );
+                strbuf_init( &str_lit_buf );
+
+                //
+                // Save the start location because we want to use it as the
+                // location for the literal, not its end location.
+                //
+                str_lit_loc = yylloc;
+
+                BEGIN( yytext[ yyleng - 1 ] == '"' ? STR_LIT : CHAR_LIT );
               }
+
+<STR_LIT,CHAR_LIT>{
+  \\(.|\n)    { strbuf_cat( &str_lit_buf, yytext, yyleng ); }
+  \n          {
+                lexer_token = str_lit_buf.str;
+                print_error( &str_lit_loc,
+                  "unterminated %s literal\n",
+                  YY_START == STR_LIT ? "string" : "character"
+                );
+                return Y_ERROR;
+              }
+}
+
+<STR_LIT>{
+  [^"\\\n]+   { strbuf_cat( &str_lit_buf, yytext, yyleng ); }
+  \"          {
+                yylloc.first_column = str_lit_loc.first_column;
+                yylval.name = strbuf_take( &str_lit_buf );
+                BEGIN( INITIAL );
+                return Y_STR_LIT;
+              }
+}
+
+<CHAR_LIT>{
+  [^'\\\n]+   { strbuf_cat( &str_lit_buf, yytext, yyleng ); }
+  \'          {
+                yylloc.first_column = str_lit_loc.first_column;
+                yylval.name = strbuf_take( &str_lit_buf );
+                BEGIN( INITIAL );
+                return Y_CHAR_LIT;
+              }
+}
 
 <*>"/*"       {                         /* ignore C-style comments */
                 for ( int c = input(), prev = '\0'; ; prev = c, c = input() ) {
                   if ( c == '\0' || c == EOF ) {
-                    EPRINTF( "(unterminated comment)" );
+                    EPRINTF( "unterminated comment" );
                     return Y_ERROR;
                   }
                   ++column;

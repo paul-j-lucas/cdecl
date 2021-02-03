@@ -336,11 +336,11 @@ static void print_help_english( void ) {
       print_h( "|init" );
     if ( C_LANG_IS(MIN(CPP_11)) )
       print_h( "]" );
-    print_h( " extern friend mutable static" );
+    print_h( " extern [\"C\" [linkage]] friend mutable static\n" );
+    print_h( "      " );
     if ( C_LANG_IS(MIN(CPP_11)) )
       print_h( " thread_local" );
-    print_h( "\n" );
-    print_h( "       [pure] virtual\n" );
+    print_h( " [pure] virtual\n" );
   }
 
   print_help_where();

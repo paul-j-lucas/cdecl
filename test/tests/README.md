@@ -50,6 +50,7 @@ The characters are:
 + `c16` = `char16_t`
 + `c32` = `char32_t`
 + `d` = `double`
++ `ec` = `extern "C"`
 + `el` = `...` (ellipsis)
 + `en` = `enum`
 + `ep` = `explicit`

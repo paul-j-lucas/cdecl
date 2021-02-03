@@ -205,6 +205,9 @@ static c_type_info_t const C_STORAGE_INFO[] = {
   { TS_EXTERN, LANG_ALL, L_EXTERNAL,
     C_LANG_LIT( { LANG_ALL, L_EXTERN } ) },
 
+  { TS_EXTERN_C, LANG_CPP_ALL, "external \"C\" linkage",
+    C_LANG_LIT( { LANG_ALL, "extern \"C\"" } ) },
+
   { TS_REGISTER, LANG_MAX(CPP_14), NULL,
     C_LANG_LIT( { LANG_ALL, L_REGISTER } ) },
 
@@ -413,31 +416,32 @@ static c_lang_id_t const OK_QUALIFIER_LANGS[][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] 
  */
 static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
 // Only the lower triangle is used.
-//  a  b  e  r  s  th td   cv cx ci df de ex ep fi fr in mu ne o  t  v  pv
-  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// auto
-  { __,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// block
-  { XX,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// extern
-  { XX,__,XX,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// register
-  { XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// static
-  { XX,__,__,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// thread
-  { XX,__,XX,XX,XX,XX,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// typedef
+//  a  b  e  ec,r  s  th td   cv cx ci df de ex ep fi fr in mu ne o  t  v  pv
+  { __,__,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// auto
+  { __,__,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// block
+  { XX,__,__,__,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// extern
+  { XX,__,__,PP,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// extern C
+  { XX,__,XX,XX,__,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// register
+  { XX,XX,XX,XX,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// static
+  { XX,__,__,P1,XX,__,__,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// thread
+  { XX,__,XX,PP,XX,XX,XX,__,  __,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// typedef
 
-  { P1,P1,P1,XX,P1,XX,XX,  P2,P1,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c'eval
-  { P1,P1,P1,XX,P1,XX,XX,  XX,P1,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c'expr
-  { XX,XX,P2,XX,P2,P2,XX,  XX,XX,P2,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c'init
-  { XX,XX,XX,XX,XX,XX,XX,  P1,P1,XX,P1,__,__,__,__,__,__,__,__,__,__,__,__ },// default
-  { XX,XX,XX,XX,XX,XX,XX,  P1,P1,XX,XX,P1,__,__,__,__,__,__,__,__,__,__,__ },// delete
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,P1,P1,PP,__,__,__,__,__,__,__,__,__,__ },// explicit
-  { XX,XX,P2,XX,XX,XX,XX,  XX,P2,P2,XX,XX,XX,P2,__,__,__,__,__,__,__,__,__ },// export
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,XX,XX,P1,__,__,__,__,__,__,__,__ },// final
-  { XX,XX,XX,XX,XX,XX,XX,  P2,P1,XX,XX,XX,XX,XX,XX,PP,__,__,__,__,__,__,__ },// friend
-  { XX,XX,__,XX,__,XX,XX,  P2,P1,P2,P1,P1,PP,P2,P1,PP,C9,__,__,__,__,__,__ },// inline
-  { XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P3,__,__,__,__,__ },// mutable
-  { XX,XX,P1,XX,P1,XX,P1,  P2,P1,XX,P1,P1,PP,P2,P1,P1,P1,XX,P1,__,__,__,__ },// noexcept
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,XX,XX,P1,XX,C1,XX,C1,P1,__,__,__ },// override
-  { XX,XX,PP,XX,PP,XX,PP,  P2,P1,XX,P1,P1,PP,XX,PP,XX,PP,XX,XX,PP,PP,__,__ },// throw
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P2,XX,XX,XX,XX,XX,P1,XX,PP,XX,C1,P1,PP,PP,__ },// virtual
-  { XX,XX,XX,XX,XX,XX,XX,  XX,P2,XX,XX,XX,XX,XX,XX,XX,PP,XX,C1,P1,PP,PP,PP },// pure
+  { P1,P1,P1,P2,XX,P1,XX,XX,  P2,P1,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c'eval
+  { P1,P1,P1,P1,XX,P1,XX,XX,  XX,P1,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c'expr
+  { XX,XX,P2,P2,XX,P2,P2,XX,  XX,XX,P2,__,__,__,__,__,__,__,__,__,__,__,__,__ },// c'init
+  { XX,XX,XX,XX,XX,XX,XX,XX,  P1,P1,XX,P1,__,__,__,__,__,__,__,__,__,__,__,__ },// default
+  { XX,XX,XX,XX,XX,XX,XX,XX,  P1,P1,XX,XX,P1,__,__,__,__,__,__,__,__,__,__,__ },// delete
+  { XX,XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,P1,P1,PP,__,__,__,__,__,__,__,__,__,__ },// explicit
+  { XX,XX,P2,XX,XX,XX,XX,XX,  XX,P2,P2,XX,XX,XX,P2,__,__,__,__,__,__,__,__,__ },// export
+  { XX,XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,XX,XX,P1,__,__,__,__,__,__,__,__ },// final
+  { XX,XX,XX,XX,XX,XX,XX,XX,  P2,P1,XX,XX,XX,XX,XX,XX,PP,__,__,__,__,__,__,__ },// friend
+  { XX,XX,__,PP,XX,__,XX,XX,  P2,P1,P2,P1,P1,PP,P2,P1,PP,C9,__,__,__,__,__,__ },// inline
+  { XX,XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P3,__,__,__,__,__ },// mutable
+  { XX,XX,P1,PP,XX,P1,XX,P1,  P2,P1,XX,P1,P1,PP,P2,P1,P1,P1,XX,P1,__,__,__,__ },// noexcept
+  { XX,XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,XX,XX,P1,XX,C1,XX,C1,P1,__,__,__ },// override
+  { XX,XX,PP,PP,XX,PP,XX,PP,  P2,P1,XX,P1,P1,PP,XX,PP,XX,PP,XX,XX,PP,PP,__,__ },// throw
+  { XX,XX,XX,XX,XX,XX,XX,XX,  XX,P2,XX,XX,XX,XX,XX,P1,XX,PP,XX,C1,P1,PP,PP,__ },// virtual
+  { XX,XX,XX,XX,XX,XX,XX,XX,  XX,P2,XX,XX,XX,XX,XX,XX,XX,PP,XX,C1,P1,PP,PP,PP },// pure
 };
 
 /**
@@ -764,6 +768,7 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
     // These are first so we get names like "deleted constructor".
     TS_DEFAULT,
     TS_DELETE,
+    TS_EXTERN_C,
 
     // These are second so we get names like "static int".
     TS_AUTO,

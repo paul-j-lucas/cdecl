@@ -54,6 +54,7 @@ char const L_FUNC[]               = "func";
 char const L_FUNCTION[]           = "function";
 char const L_HELP[]               = "help";
 char const L_INTO[]               = "into";
+char const L_LINKAGE[]            = "linkage";
 char const L_MBR[]                = "mbr";
 char const L_MEMBER[]             = "member";
 char const H_NON_MBR[]            = "non-mbr";

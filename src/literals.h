@@ -81,6 +81,7 @@ extern char const L_FUNC[];               // synonym for "function"
 extern char const L_FUNCTION[];
 extern char const L_HELP[];
 extern char const L_INTO[];
+extern char const L_LINKAGE[];
 extern char const L_MBR[];                // synonym for "member"
 extern char const L_MEMBER[];
 extern char const H_NON_MBR[];            // synonym for "non-member"

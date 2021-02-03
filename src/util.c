@@ -96,6 +96,20 @@ static unsigned check_tigetnum( char const *capname ) {
 }
 #endif /* ENABLE_TERM_SIZE */
 
+/**
+ * Calculates the next power of 2 &gt; \a n.
+ *
+ * @param n The initial value.
+ * @return Returns said power of 2.
+ */
+static size_t next_pow_2( size_t n ) {
+  if ( n == 0 )
+    return 1;
+  while ( (n & (n - 1)) != 0 )
+    n &= n - 1;
+  return n << 1;
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 char const* base_name( char const *path_name ) {
@@ -354,6 +368,21 @@ char* read_input_line( char const *ps1, char const *ps2 ) {
 check_for_error:
   FERROR( stdin );
   return NULL;
+}
+
+void strbuf_cat( strbuf_t *sbuf, char const *s, size_t s_len ) {
+  assert( sbuf != NULL );
+  assert( s != NULL );
+
+  size_t const buf_rem = sbuf->buf_cap - sbuf->str_len;
+  if ( s_len >= buf_rem ) {
+    size_t const new_len = sbuf->str_len + s_len;
+    sbuf->buf_cap = next_pow_2( new_len );
+    REALLOC( sbuf->str, char, sbuf->buf_cap );
+  }
+  strncpy( sbuf->str + sbuf->str_len, s, s_len );
+  sbuf->str_len += s_len;
+  sbuf->str[ sbuf->str_len ] = '\0';
 }
 
 char* strcpy_end( char *dst, char const *src ) {

@@ -212,43 +212,44 @@ enum c_type_part_id {
 #define TS_AUTO               0x0000000000000012ull /**< C's `auto`.          */
 #define TS_APPLE_BLOCK        0x0000000000000022ull /**< Block.               */
 #define TS_EXTERN             0x0000000000000042ull /**< `extern`             */
-#define TS_MUTABLE            0x0000000000000082ull /**< `mutable`            */
-#define TS_REGISTER           0x0000000000000102ull /**< `register`           */
-#define TS_STATIC             0x0000000000000202ull /**< `static`             */
-#define TS_THREAD_LOCAL       0x0000000000000402ull /**< `thread_local`       */
-#define TS_TYPEDEF            0x0000000000000802ull /**< `typedef` or `using` */
+#define TS_EXTERN_C           0x0000000000000082ull /**< `extern "C"`         */
+#define TS_MUTABLE            0x0000000000000102ull /**< `mutable`            */
+#define TS_REGISTER           0x0000000000000202ull /**< `register`           */
+#define TS_STATIC             0x0000000000000402ull /**< `static`             */
+#define TS_THREAD_LOCAL       0x0000000000000802ull /**< `thread_local`       */
+#define TS_TYPEDEF            0x0000000000001002ull /**< `typedef` or `using` */
 
 // storage-class-like
-#define TS_CONSTEVAL          0x0000000000001002ull /**< `consteval`          */
-#define TS_CONSTEXPR          0x0000000000002002ull /**< `constexpr`          */
-#define TS_CONSTINIT          0x0000000000004002ull /**< `constinit`          */
-#define TS_DEFAULT            0x0000000000008002ull /**< `= default`          */
-#define TS_DELETE             0x0000000000010002ull /**< `= delete`           */
-#define TS_EXPLICIT           0x0000000000020002ull /**< `explicit`           */
-#define TS_EXPORT             0x0000000000040002ull /**< `export`             */
-#define TS_FINAL              0x0000000000080002ull /**< `final`              */
-#define TS_FRIEND             0x0000000000100002ull /**< `friend`             */
-#define TS_INLINE             0x0000000000200002ull /**< `inline`             */
-#define TS_NOEXCEPT           0x0000000000400002ull /**< `noexcept`           */
-#define TS_OVERRIDE           0x0000000000800002ull /**< `override`           */
-#define TS_PURE_VIRTUAL       0x0000000001000002ull /**< `= 0`                */
-#define TS_THROW              0x0000000002000002ull /**< `throw()`            */
-#define TS_VIRTUAL            0x0000000004000002ull /**< `virtual`            */
+#define TS_CONSTEVAL          0x0000000000002002ull /**< `consteval`          */
+#define TS_CONSTEXPR          0x0000000000004002ull /**< `constexpr`          */
+#define TS_CONSTINIT          0x0000000000008002ull /**< `constinit`          */
+#define TS_DEFAULT            0x0000000000010002ull /**< `= default`          */
+#define TS_DELETE             0x0000000000020002ull /**< `= delete`           */
+#define TS_EXPLICIT           0x0000000000040002ull /**< `explicit`           */
+#define TS_EXPORT             0x0000000000080002ull /**< `export`             */
+#define TS_FINAL              0x0000000000100002ull /**< `final`              */
+#define TS_FRIEND             0x0000000000200002ull /**< `friend`             */
+#define TS_INLINE             0x0000000000400002ull /**< `inline`             */
+#define TS_NOEXCEPT           0x0000000000800002ull /**< `noexcept`           */
+#define TS_OVERRIDE           0x0000000001000002ull /**< `override`           */
+#define TS_PURE_VIRTUAL       0x0000000002000002ull /**< `= 0`                */
+#define TS_THROW              0x0000000004000002ull /**< `throw()`            */
+#define TS_VIRTUAL            0x0000000008000002ull /**< `virtual`            */
 
 // qualifiers
-#define TS_ATOMIC             0x0000000008000002ull /**< `_Atomic`            */
-#define TS_CONST              0x0000000010000002ull /**< `const`              */
-#define TS_RESTRICT           0x0000000020000002ull /**< `restrict`           */
-#define TS_VOLATILE           0x0000000040000002ull /**< `volatile`           */
+#define TS_ATOMIC             0x0000000010000002ull /**< `_Atomic`            */
+#define TS_CONST              0x0000000020000002ull /**< `const`              */
+#define TS_RESTRICT           0x0000000040000002ull /**< `restrict`           */
+#define TS_VOLATILE           0x0000000080000002ull /**< `volatile`           */
 
 // Unified Parallel C qualifiers
-#define TS_UPC_RELAXED        0x0000000080000002ull /**< `relaxed`            */
-#define TS_UPC_SHARED         0x0000000100000002ull /**< `shared`             */
-#define TS_UPC_STRICT         0x0000000200000002ull /**< `strict`             */
+#define TS_UPC_RELAXED        0x0000000100000002ull /**< `relaxed`            */
+#define TS_UPC_SHARED         0x0000000200000002ull /**< `shared`             */
+#define TS_UPC_STRICT         0x0000000400000002ull /**< `strict`             */
 
 // ref-qualifiers
-#define TS_REFERENCE          0x0000000400000002ull /**< `void f() &`         */
-#define TS_RVALUE_REFERENCE   0x0000000800000002ull /**< `void f() &&`        */
+#define TS_REFERENCE          0x0000000800000002ull /**< `void f() &`         */
+#define TS_RVALUE_REFERENCE   0x0000001000000002ull /**< `void f() &&`        */
 
 // attributes
 #define TA_NONE               0x0000000000000004ull /**< No attribute.        */
@@ -262,9 +263,9 @@ enum c_type_part_id {
 
 // bit masks
 #define TX_MASK_PART_ID       0x000000000000000Full /**< Type part ID bitmask.*/
-#define TS_MASK_STORAGE       0x0000000007FFFFF2ull /**< Storage bitmask.     */
-#define TS_MASK_QUALIFIER     0x00000003F8000002ull /**< Qualifier bitmask.   */
-#define TS_MASK_REF_QUALIFIER 0x0000000C00000002ull /**< Ref-qual bitmask.    */
+#define TS_MASK_STORAGE       0x000000000FFFFFF2ull /**< Storage bitmask.     */
+#define TS_MASK_QUALIFIER     0x00000007F0000002ull /**< Qualifier bitmask.   */
+#define TS_MASK_REF_QUALIFIER 0x0000001800000002ull /**< Ref-qual bitmask.    */
 
 extern c_type_t const T_NONE;           ///< No type.
 extern c_type_t const T_ANY;            ///< All types.
@@ -355,11 +356,12 @@ extern c_type_t const T_ANY;            ///< All types.
  */
 #define TS_FUNC_LIKE          ( TS_CONST | TS_CONSTEVAL | TS_CONSTEXPR \
                               | TS_DEFAULT | TS_DELETE | TS_EXPLICIT \
-                              | TS_EXPORT | TS_EXTERN | TS_FINAL | TS_FRIEND \
-                              | TS_INLINE | TS_NOEXCEPT | TS_OVERRIDE \
-                              | TS_PURE_VIRTUAL | TS_ANY_REFERENCE \
-                              | TS_RESTRICT | TS_STATIC | TS_THROW \
-                              | TS_TYPEDEF | TS_VIRTUAL | TS_VOLATILE )
+                              | TS_EXPORT | TS_EXTERN | TS_EXTERN_C \
+                              | TS_FINAL | TS_FRIEND | TS_INLINE \
+                              | TS_NOEXCEPT | TS_OVERRIDE | TS_PURE_VIRTUAL \
+                              | TS_ANY_REFERENCE | TS_RESTRICT | TS_STATIC \
+                              | TS_THROW | TS_TYPEDEF | TS_VIRTUAL \
+                              | TS_VOLATILE )
 
 /**
  * The types that can apply only to member functions, operators, or user-
@@ -396,9 +398,9 @@ extern c_type_t const T_ANY;            ///< All types.
  * @sa #TS_CONSTRUCTOR_ONLY
  * @sa #TS_FUNC_LIKE
  */
-#define TS_NOT_CONSTRUCTOR    ( TS_CONST | TS_EXTERN | TS_FINAL | TS_OVERRIDE \
-                              | TS_ANY_REFERENCE | TS_RESTRICT | TS_STATIC \
-                              | TS_VIRTUAL | TS_VOLATILE )
+#define TS_NOT_CONSTRUCTOR    ( TS_CONST | TS_EXTERN | TS_EXTERN_C | TS_FINAL \
+                              | TS_OVERRIDE | TS_ANY_REFERENCE | TS_RESTRICT \
+                              | TS_STATIC | TS_VIRTUAL | TS_VOLATILE )
 
 /**
  * The only types that can apply to user-defined conversion operators.

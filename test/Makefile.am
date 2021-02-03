@@ -914,6 +914,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_ctor.test \
 	tests/declare_ctor_i.test \
 	tests/declare_dtor.test \
+	tests/declare_ecf_v.test \
 	tests/declare_enc.test \
 	tests/declare_enk.test \
 	tests/declare_epctor_i.test \
@@ -1210,6 +1211,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_ctor_i.test \
 	tests/explain_cvf_v.test \
 	tests/explain_dtor.test \
+	tests/explain_ecf_v.test \
 	tests/explain_epctor_i.test \
 	tests/explain_epictor_i.test \
 	tests/explain_epnxctor_i.test \
