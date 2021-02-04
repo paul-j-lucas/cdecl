@@ -1277,7 +1277,7 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   class_struct_union_tid
 %type   <oper_id>   c_operator
 %type   <type_id>   cv_qualifier_tid cv_qualifier_list_tid_opt
-%type   <type_id>   enum_tid enum_class_struct_union_tid
+%type   <type_id>   enum_tid enum_class_struct_union_c_tid
 %type   <literal>   help_what_opt
 %type   <type_id>   inline_tid_opt
 %type   <int_val>   int_exp
@@ -4437,13 +4437,13 @@ builtin_tid
   ;
 
 enum_class_struct_union_c_ast
-  : enum_class_struct_union_tid attribute_specifier_list_c_tid_opt
+  : enum_class_struct_union_c_tid attribute_specifier_list_c_tid_opt
     any_sname_c_exp
     {
       DUMP_START( "enum_class_struct_union_c_ast",
-                  "enum_class_struct_union_tid "
+                  "enum_class_struct_union_c_tid "
                   "attribute_specifier_list_c_tid_opt sname" );
-      DUMP_TID( "enum_class_struct_union_tid", $1 );
+      DUMP_TID( "enum_class_struct_union_c_tid", $1 );
       DUMP_TID( "attribute_specifier_list_c_tid_opt", $2 );
       DUMP_SNAME( "sname", &$3 );
 
@@ -4456,7 +4456,7 @@ enum_class_struct_union_c_ast
       DUMP_END();
     }
 
-  | enum_class_struct_union_tid attribute_specifier_list_c_tid_opt
+  | enum_class_struct_union_c_tid attribute_specifier_list_c_tid_opt
     any_sname_c_opt '{'
     {
       print_error( &@4,
@@ -4468,7 +4468,7 @@ enum_class_struct_union_c_ast
     }
   ;
 
-enum_class_struct_union_tid
+enum_class_struct_union_c_tid
   : enum_tid
   | class_struct_union_tid
   ;
