@@ -4474,10 +4474,7 @@ enum_class_struct_union_c_tid
   ;
 
 enum_tid
-  : Y_ENUM class_struct_tid_opt
-    {
-      $$ = $1 | $2;
-    }
+  : Y_ENUM class_struct_tid_opt   { $$ = $1 | $2; }
   ;
 
 class_struct_tid_opt
