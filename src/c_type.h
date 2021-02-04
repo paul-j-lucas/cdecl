@@ -704,9 +704,9 @@ c_type_id_t c_type_id_check( c_type_id_t tid, c_type_part_id_t tpid ) {
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_compl( c_type_id_t tid ) {
   //
-  // The low-order 4 bits specify the c_type_part_id.  Currently, part IDs are
-  // 1 (0b0001), 2 (0b0010), and 3 (0b0011).  If tid is 0b1xxx, it means that
-  // it was complemented.
+  // The low-order 4 bits specify the c_type_part_id.  Currently, type part IDs
+  // are 1 (0b0001), 2 (0b0010), and 4 (0b0100).  If tid is 0b1xxx, it means
+  // that it was complemented.
   //
   return (tid & 0x8) != 0;
 }
