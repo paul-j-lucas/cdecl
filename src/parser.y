@@ -2039,6 +2039,7 @@ explain_c
       DUMP_AST( "using_decl_c_ast", $2 );
       DUMP_END();
 
+      C_AST_CHECK_DECL( $2 );
       c_ast_explain_declaration( $2 );
     }
 
@@ -2156,6 +2157,7 @@ decl_list_c_opt
         PARSE_ABORT();
       }
 
+      C_AST_CHECK_DECL( type_ast );
       FPRINTF( fout, "%s %s %s ", L_DEFINE, c_sname_local_name( sname ), L_AS );
       c_ast_english( type_ast, fout );
       FPUTC( '\n', fout );
@@ -2201,6 +2203,7 @@ decl_c
 
       if ( decl_ast == NULL )
         PARSE_ABORT();
+      C_AST_CHECK_DECL( decl_ast );
       c_ast_explain_declaration( decl_ast );
 
       //
