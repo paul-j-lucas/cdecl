@@ -1159,6 +1159,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  decl_english_ast
 %type   <ast_list>  decl_list_english decl_list_english_opt
 %type   <ast_pair>  destructor_decl_english_ast
+%type   <ast_pair>  enum_class_struct_union_english_ast
 %type   <ast_pair>  func_decl_english_ast
 %type   <bitmask>   member_or_non_member_opt
 %type   <literal>   new_style_cast_english
@@ -3216,8 +3217,25 @@ type_modifier_english_type
 
 unmodified_type_english_ast
   : builtin_type_ast
-  | enum_class_struct_union_c_ast
+  | enum_class_struct_union_english_ast
   | typedef_type_c_ast
+  ;
+
+enum_class_struct_union_english_ast
+  : enum_class_struct_union_c_tid any_sname_c_exp
+    {
+      DUMP_START( "enum_class_struct_union_english_ast",
+                  "enum_class_struct_union_c_tid sname" );
+      DUMP_TID( "enum_class_struct_union_c_tid", $1 );
+      DUMP_SNAME( "sname", &$2 );
+
+      $$ = c_ast_pair_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
+      $$.ast->type.base_tid = c_type_id_check( $1, C_TPID_BASE );
+      $$.ast->as.ecsu.ecsu_sname = $2;
+
+      DUMP_AST( "enum_class_struct_union_english_ast", $$.ast );
+      DUMP_END();
+    }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4380,7 +4398,9 @@ type_modifier_base_type
 
 unmodified_type_c_ast
   : atomic_specifier_type_c_ast
-  | unmodified_type_english_ast
+  | builtin_type_ast
+  | enum_class_struct_union_c_ast
+  | typedef_type_c_ast
   ;
 
 atomic_specifier_type_c_ast
