@@ -1612,6 +1612,16 @@ storage_class_english_type
   | Y_PURE virtual_tid_exp        { $$ = C_TYPE_LIT_S( TS_PURE_VIRTUAL | $2 ); }
   ;
 
+attribute_english_tid
+  : Y_CARRIES_DEPENDENCY
+  | Y_DEPRECATED
+  | Y_MAYBE_UNUSED
+  | Y_NODISCARD
+  | Y__NORETURN
+  | Y_NORETURN
+  | Y_NO_UNIQUE_ADDRESS
+  ;
+
 linkage_tid
   : Y_STR_LIT
     {
@@ -3202,16 +3212,6 @@ type_modifier_list_english_type
 type_modifier_english_type
   : attribute_english_tid         { $$ = C_TYPE_LIT_A( $1 ); }
   | type_modifier_base_type
-  ;
-
-attribute_english_tid
-  : Y_CARRIES_DEPENDENCY
-  | Y_DEPRECATED
-  | Y_MAYBE_UNUSED
-  | Y_NODISCARD
-  | Y__NORETURN
-  | Y_NORETURN
-  | Y_NO_UNIQUE_ADDRESS
   ;
 
 unmodified_type_english_ast
