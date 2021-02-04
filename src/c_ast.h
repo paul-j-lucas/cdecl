@@ -224,6 +224,7 @@ struct c_constructor_ast {
  * AST node for a C/C++ `enum`, `class`, `struct`, or `union` type.
  */
 struct c_ecsu_ast {
+  c_ast_t        *underlying_ast;       ///< For `enum`, the underlying type.
   c_sname_t       ecsu_sname;           ///< enum/class/struct/union name
 };
 

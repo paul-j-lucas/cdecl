@@ -1273,7 +1273,7 @@ static void yyerror( char const *msg ) {
 %type   <tdef>      any_typedef
 %type   <type_id>   builtin_tid
 %type   <ast_pair>  builtin_type_ast
-%type   <type_id>   class_struct_tid class_struct_tid_exp
+%type   <type_id>   class_struct_tid class_struct_tid_exp class_struct_tid_opt
 %type   <type_id>   class_struct_union_tid
 %type   <oper_id>   c_operator
 %type   <type_id>   cv_qualifier_tid cv_qualifier_list_tid_opt
@@ -4474,8 +4474,15 @@ enum_class_struct_union_c_tid
   ;
 
 enum_tid
-  : Y_ENUM
-  | Y_ENUM class_struct_tid       { $$ = $1 | $2; }
+  : Y_ENUM class_struct_tid_opt
+    {
+      $$ = $1 | $2;
+    }
+  ;
+
+class_struct_tid_opt
+  : /* empty */                   { $$ = TB_NONE; }
+  | class_struct_tid
   ;
 
 class_struct_tid
