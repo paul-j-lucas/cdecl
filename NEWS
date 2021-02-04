@@ -60,6 +60,9 @@ The storage class in a declaration like:
 
 is now correctly included.
 
+** Fixed `register enum`
+Enumerations were wrongly forbidden from being `register`.
+
 
 * Changes in Cdecl 9.4
 

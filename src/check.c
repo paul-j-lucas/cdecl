@@ -429,12 +429,6 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_ENUM_CLASS_STRUCT_UNION );
 
-  if ( c_type_is_tid_any( &ast->type, TB_ANY_CLASS ) &&
-       c_ast_is_register( ast ) ) {
-    error_kind_not_tid( ast, TS_REGISTER, /*newline=*/true );
-    return false;
-  }
-
   if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
        c_type_is_tid_any( &ast->type, TB_ENUM ) &&
        c_type_is_tid_any( &ast->type, TB_STRUCT | TB_CLASS ) &&
