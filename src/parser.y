@@ -1712,7 +1712,7 @@ alignas_or_width_decl_english_ast
       // AST since we need to use the builtin union member now.
       //
       if ( !c_ast_is_builtin_any( $1.ast, TB_ANY_INTEGRAL ) ) {
-        print_error( &@2, "bit-fields can be only of integral types\n" );
+        print_error( &@2, "bit-field type must be integral\n" );
         PARSE_ABORT();
       }
 
