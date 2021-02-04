@@ -4465,7 +4465,7 @@ enum_class_struct_union_c_ast
                   "attribute_specifier_list_c_tid_opt sname" );
       DUMP_TID( "enum_class_struct_union_c_tid", $1 );
       DUMP_TID( "attribute_specifier_list_c_tid_opt", $2 );
-      DUMP_SNAME( "sname", &$3 );
+      DUMP_SNAME( "any_sname_c", &$3 );
 
       $$ = c_ast_pair_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
       $$.ast->type.base_tid = c_type_id_check( $1, C_TPID_BASE );
