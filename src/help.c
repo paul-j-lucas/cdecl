@@ -224,7 +224,7 @@ static void print_help_english( void ) {
   if ( C_LANG_IS(MIN(C_89)) ) {
     print_h( "enum " );
     if ( C_LANG_IS(MIN(CPP_11)) )
-      print_h( "[class|struct] " );
+      print_h( "[class|struct] [of [type] <english>] " );
     print_h( "| " );
     if ( C_LANG_IS_CPP() )
       print_h( "class | " );

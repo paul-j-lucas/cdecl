@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "February 3, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "February 4, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -625,6 +625,7 @@ Adds support for
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
 \f(CWenum class\fP,
+fixed-type enumerations,
 \f(CWnoexcept\fP,
 \f(CW[[noreturn]]\fP,
 rvalue references,
@@ -935,7 +936,7 @@ is one of:
 .br
 .IR store "* " modifier "* [" C-type ]
 .br
-.RB "{ " enum " [" class "|" struct "] | " class " | " namespace " | " struct " | " union " } \f2s-name\fP"
+.RB "{ " enum " [" class "|" struct "] [" of " [" type "] " \f2english\fP "] | " class " | " namespace " | " struct " | " union " } \f2s-name\fP"
 .P
 where:
 .RS 4

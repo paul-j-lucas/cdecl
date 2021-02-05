@@ -200,6 +200,10 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_ENUM_CLASS_STRUCT_UNION:
         PRINT_COMMA;
         INDENT_PRINT_SNAME( "ecsu_sname", &ast->as.ecsu.ecsu_sname );
+        if ( ast->as.ecsu.of_ast != NULL ) {
+          FPUTS( ",\n", dout );
+          c_ast_debug( ast->as.ecsu.of_ast, indent, "of_ast", dout );
+        }
         break;
 
       case K_POINTER_TO_MEMBER:

@@ -429,15 +429,45 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_ENUM_CLASS_STRUCT_UNION );
 
-  if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
-       c_type_is_tid_any( &ast->type, TB_ENUM ) &&
-       c_type_is_tid_any( &ast->type, TB_STRUCT | TB_CLASS ) &&
-      !c_type_is_tid_any( &ast->type, TS_TYPEDEF ) ) {
-    print_error( &ast->loc,
-      "\"%s\": %s classes must just use \"%s\"\n",
-      c_type_name_error( &ast->type ), L_ENUM, L_ENUM
-    );
-    return false;
+  c_ast_t const *const of_ast = ast->as.ecsu.of_ast;
+
+  if ( c_type_is_tid_any( &ast->type, TB_ENUM ) ) {
+    if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
+         c_type_is_tid_any( &ast->type, TB_STRUCT | TB_CLASS ) &&
+        !c_type_is_tid_any( &ast->type, TS_TYPEDEF ) ) {
+      print_error( &ast->loc,
+        "\"%s\": %s classes must just use \"%s\"\n",
+        c_type_name_error( &ast->type ), L_ENUM, L_ENUM
+      );
+      return false;
+    }
+
+    if ( of_ast != NULL ) {
+      if ( opt_lang < LANG_CPP_11 ) {
+        print_error( &of_ast->loc,
+          "%s with underlying type not supported in %s\n",
+          L_ENUM, C_LANG_NAME()
+        );
+        return false;
+      }
+
+      if ( !c_ast_is_builtin_any( of_ast, TB_ANY_INTEGRAL ) ) {
+        print_error( &of_ast->loc,
+          "%s underlying type must be integral\n",
+          L_ENUM
+        );
+        return false;
+      }
+    }
+  }
+  else {                                // class, struct, or union
+    if ( of_ast != NULL ) {
+      print_error( &of_ast->loc,
+        "%s can not specify an underlying type\n",
+        c_type_name_error( &ast->type )
+      );
+      return false;
+    }
   }
 
   return true;

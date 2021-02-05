@@ -33,6 +33,12 @@ between cases.
 When a name is unknown in the current language but exists in a later language,
 the type of name is now used in the error message.
 
+** Added fixed-type `enum` support
+Fixed-type enumerations are now supported:
+
+    c++decl> explain enum E : char8_t
+    define E as enumeration E of type char8_t
+
 ** Added `extern "C"` support
 `extern "C"` declarations are now supported.
 

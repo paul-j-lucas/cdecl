@@ -51,6 +51,7 @@ The characters are:
 + `c32` = `char32_t`
 + `d` = `double`
 + `ec` = `extern "C"`
++ `ef` = `enum` with fixed type (that follows)
 + `el` = `...` (ellipsis)
 + `en` = `enum`
 + `ep` = `explicit`

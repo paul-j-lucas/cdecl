@@ -5,7 +5,7 @@ english:
   <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]
   <store>* <fn-qual>* [[non-]member] operator [([<args>])] [returning <english>]
   <cv-qual>* pointer to [member of { class | struct } <name>] <english>
-  { enum [class|struct] | class | struct | union } <name>
+  { enum [class|struct] [of [type] <english>] | class | struct | union } <name>
   [rvalue] reference to <english>
   <store>* <modifier>* [<C++-type>]
 user-defined-english:

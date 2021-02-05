@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 29
+%expect 47
 
 %{
 /** @endcond */
@@ -1160,11 +1160,16 @@ static void yyerror( char const *msg ) {
 %type   <ast_list>  decl_list_english decl_list_english_opt
 %type   <ast>       destructor_decl_english_ast
 %type   <ast>       enum_class_struct_union_english_ast
+%type   <ast>       enum_fixed_type_english_ast
+%type   <type_id>   enum_fixed_type_modifier_list_english_tid
+%type   <type_id>   enum_fixed_type_modifier_list_english_tid_opt
+%type   <ast>       enum_unmodified_fixed_type_english_ast
 %type   <ast_pair>  func_decl_english_ast
 %type   <bitmask>   member_or_non_member_opt
 %type   <literal>   new_style_cast_english
 %type   <sname>     of_scope_english
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
+%type   <ast>       of_type_enum_fixed_type_english_ast_opt
 %type   <ast_pair>  oper_decl_english_ast
 %type   <ast_list>  paren_decl_list_english_opt
 %type   <ast>       pointer_decl_english_ast
@@ -1219,6 +1224,11 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  decl_c_ast decl2_c_ast
 %type   <ast>       destructor_decl_c_ast
 %type   <ast>       enum_class_struct_union_c_ast
+%type   <ast>       enum_fixed_type_c_ast enum_fixed_type_c_ast_opt
+%type   <type_id>   enum_fixed_type_modifier_list_tid
+%type   <type_id>   enum_fixed_type_modifier_list_tid_opt
+%type   <type_id>   enum_fixed_type_modifier_tid
+%type   <ast>       enum_unmodified_fixed_type_c_ast
 %type   <ast>       file_scope_constructor_decl_c_ast
 %type   <ast>       file_scope_destructor_decl_c_ast
 %type   <ast_pair>  func_decl_c_ast
@@ -2326,19 +2336,21 @@ enum_declaration_c
       // see the comment in "explain"
       c_mode = C_GIBBERISH_TO_ENGLISH;
     }
-    any_sname_c
+    any_sname_c_exp enum_fixed_type_c_ast_opt
     {
       c_sname_set_local_type( &$3, &C_TYPE_LIT_B( $1 ) );
 
       DUMP_START( "enum_declaration_c", "enum_tid sname ;" );
       DUMP_TID( "enum_tid", $1 );
       DUMP_SNAME( "any_sname_c", &$3 );
+      DUMP_AST( "enum_fixed_type_c_ast_opt", $4 );
 
       c_sname_append_sname( &in_attr.current_scope, &$3 );
 
       c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
       enum_ast->sname = c_sname_dup( &in_attr.current_scope );
       enum_ast->type.base_tid = c_type_id_check( $1, C_TPID_BASE );
+      enum_ast->as.ecsu.of_ast = $4;
       c_sname_append_name(
         &enum_ast->as.ecsu.ecsu_sname,
         check_strdup( c_sname_local_name( &in_attr.current_scope ) )
@@ -3227,19 +3239,89 @@ unmodified_type_english_ast
 
 enum_class_struct_union_english_ast
   : enum_class_struct_union_c_tid any_sname_c_exp
+    of_type_enum_fixed_type_english_ast_opt
     {
       DUMP_START( "enum_class_struct_union_english_ast",
                   "enum_class_struct_union_c_tid sname" );
       DUMP_TID( "enum_class_struct_union_c_tid", $1 );
       DUMP_SNAME( "sname", &$2 );
+      DUMP_AST( "enum_fixed_type_english_ast", $3 );
 
       $$ = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
       $$->type.base_tid = c_type_id_check( $1, C_TPID_BASE );
+      $$->as.ecsu.of_ast = $3;
       $$->as.ecsu.ecsu_sname = $2;
 
       DUMP_AST( "enum_class_struct_union_english_ast", $$ );
       DUMP_END();
     }
+  ;
+
+of_type_enum_fixed_type_english_ast_opt
+  : /* empty */                         { $$ = NULL; }
+  | Y_OF type_opt enum_fixed_type_english_ast
+    {
+      $$ = $3;
+    }
+  ;
+
+enum_fixed_type_english_ast
+  : enum_fixed_type_modifier_list_english_tid_opt
+    enum_unmodified_fixed_type_english_ast
+    {
+      DUMP_START( "enum_fixed_type_english_ast",
+                  "enum_fixed_type_modifier_list_tid" );
+      DUMP_TID( "enum_fixed_type_modifier_list_tid", $1 );
+      DUMP_AST( "enum_unmodified_fixed_type_english_ast", $2 );
+
+      $$ = $2;
+      C_TYPE_ADD_TID( &$$->type, $1, @1 );
+
+      DUMP_AST( "enum_fixed_type_english_ast", $$ );
+      DUMP_END();
+    }
+
+  | enum_fixed_type_modifier_list_english_tid
+    {
+      DUMP_START( "enum_fixed_type_english_ast",
+                  "enum_fixed_type_modifier_list_english_tid" );
+      DUMP_TID( "enum_fixed_type_modifier_list_english_tid", $1 );
+
+      $$ = c_ast_new_gc( K_BUILTIN, &@$ );
+      $$->type.base_tid = c_type_id_check( $1, C_TPID_BASE );
+
+      DUMP_AST( "enum_fixed_type_english_ast", $$ );
+      DUMP_END();
+    }
+  ;
+
+enum_fixed_type_modifier_list_english_tid_opt
+  : /* empty */                   { $$ = TB_NONE; }
+  | enum_fixed_type_modifier_list_english_tid
+  ;
+
+enum_fixed_type_modifier_list_english_tid
+  : enum_fixed_type_modifier_list_english_tid enum_fixed_type_modifier_tid
+    {
+      DUMP_START( "enum_fixed_type_modifier_list_english_tid",
+                  "enum_fixed_type_modifier_list_english_tid "
+                  "enum_fixed_type_modifier_tid" );
+      DUMP_TID( "enum_fixed_type_modifier_list_english_tid", $1 );
+      DUMP_TID( "enum_fixed_type_modifier_tid", $2 );
+
+      $$ = $1;
+      C_TYPE_ID_ADD( &$$, $2, @2 );
+
+      DUMP_TID( "enum_fixed_type_modifier_list_english_tid", $$ );
+      DUMP_END();
+    }
+
+  | enum_fixed_type_modifier_tid
+  ;
+
+enum_unmodified_fixed_type_english_ast
+  : builtin_type_ast
+  | sname_english_ast
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -4467,7 +4549,7 @@ builtin_tid
 
 enum_class_struct_union_c_ast
   : enum_class_struct_union_c_tid attribute_specifier_list_c_tid_opt
-    any_sname_c_exp
+    any_sname_c_exp enum_fixed_type_c_ast_opt
     {
       DUMP_START( "enum_class_struct_union_c_ast",
                   "enum_class_struct_union_c_tid "
@@ -4475,10 +4557,12 @@ enum_class_struct_union_c_ast
       DUMP_TID( "enum_class_struct_union_c_tid", $1 );
       DUMP_TID( "attribute_specifier_list_c_tid_opt", $2 );
       DUMP_SNAME( "any_sname_c", &$3 );
+      DUMP_AST( "enum_fixed_type_c_ast_opt", $4 );
 
       $$ = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
       $$->type.base_tid = c_type_id_check( $1, C_TPID_BASE );
       $$->type.attr_tid = c_type_id_check( $2, C_TPID_ATTR );
+      $$->as.ecsu.of_ast = $4;
       $$->as.ecsu.ecsu_sname = $3;
 
       DUMP_AST( "enum_class_struct_union_c_ast", $$ );
@@ -4504,6 +4588,114 @@ enum_class_struct_union_c_tid
 
 enum_tid
   : Y_ENUM class_struct_tid_opt   { $$ = $1 | $2; }
+  ;
+
+enum_fixed_type_c_ast_opt
+  : /* empty */                   { $$ = NULL; }
+  | ':' enum_fixed_type_c_ast     { $$ = $2; }
+  ;
+
+    /*
+     * These rules are a subset of type_c_ast for an enum's fixed type to
+     * decrease the number of shift/reduce conflicts.
+     */
+enum_fixed_type_c_ast
+    /*
+     * Type-modifier-only (implicit int):
+     *
+     *      enum E : unsigned
+     */
+  : enum_fixed_type_modifier_list_tid
+    {
+      DUMP_START( "enum_fixed_type_c_ast", "enum_fixed_type_modifier_list_tid" );
+      DUMP_TID( "enum_fixed_type_modifier_list_tid", $1 );
+
+      $$ = c_ast_new_gc( K_BUILTIN, &@1 );
+      $$->type.base_tid = c_type_id_check( $1, C_TPID_BASE );
+
+      DUMP_AST( "enum_fixed_type_c_ast", $$ );
+      DUMP_END();
+    }
+
+    /*
+     * Type-modifier(s) type with optional training type-modifier(s):
+     *
+     *      enum E : short int unsigned // uncommon, but legal
+     */
+  | enum_fixed_type_modifier_list_tid enum_unmodified_fixed_type_c_ast
+    enum_fixed_type_modifier_list_tid_opt
+    {
+      DUMP_START( "enum_fixed_type_c_ast",
+                  "enum_fixed_type_modifier_list_tid "
+                  "enum_unmodified_fixed_type_c_ast "
+                  "enum_fixed_type_modifier_list_tid_opt" );
+      DUMP_TID( "enum_fixed_type_modifier_list_tid", $1 );
+      DUMP_AST( "enum_unmodified_fixed_type_c_ast", $2 );
+      DUMP_TID( "enum_fixed_type_modifier_list_tid_opt", $3 );
+
+      $$ = $2;
+      C_TYPE_ADD_TID( &$$->type, $1, @1 );
+      C_TYPE_ADD_TID( &$$->type, $3, @3 );
+
+      DUMP_AST( "enum_fixed_type_c_ast", $$ );
+      DUMP_END();
+    }
+
+    /*
+     * Type with trailing type-modifier(s):
+     *
+     *      enum E : int unsigned       // uncommon, but legal
+     */
+  | enum_unmodified_fixed_type_c_ast enum_fixed_type_modifier_list_tid_opt
+    {
+      DUMP_START( "enum_fixed_type_c_ast",
+                  "enum_unmodified_fixed_type_c_ast "
+                  "enum_fixed_type_modifier_list_tid_opt" );
+      DUMP_AST( "enum_unmodified_fixed_type_c_ast", $1 );
+      DUMP_TID( "enum_fixed_type_modifier_list_tid_opt", $2 );
+
+      $$ = $1;
+      C_TYPE_ADD_TID( &$$->type, $2, @2 );
+
+      DUMP_AST( "enum_fixed_type_c_ast", $$ );
+      DUMP_END();
+    }
+  ;
+
+enum_fixed_type_modifier_list_tid_opt
+  : /* empty */                   { $$ = TB_NONE; }
+  | enum_fixed_type_modifier_list_tid
+  ;
+
+enum_fixed_type_modifier_list_tid
+  : enum_fixed_type_modifier_list_tid enum_fixed_type_modifier_tid
+    {
+      DUMP_START( "enum_fixed_type_modifier_list_tid",
+                  "enum_fixed_type_modifier_list_tid "
+                  "enum_fixed_type_modifier_tid" );
+      DUMP_TID( "enum_fixed_type_modifier_list_tid", $1 );
+      DUMP_TID( "enum_fixed_type_modifier_tid", $2 );
+
+      $$ = $1;
+      C_TYPE_ID_ADD( &$$, $2, @2 );
+
+      DUMP_TID( "enum_fixed_type_modifier_list_tid", $$ );
+      DUMP_END();
+    }
+
+  | enum_fixed_type_modifier_tid
+  ;
+
+enum_fixed_type_modifier_tid
+  : Y_LONG
+  | Y_SHORT
+  | Y_SIGNED
+  | Y_UNSIGNED
+  ;
+
+enum_unmodified_fixed_type_c_ast
+  : builtin_type_ast
+  | typedef_type_c_ast
   ;
 
 class_struct_tid_opt
@@ -5925,6 +6117,11 @@ to_exp
     {
       elaborate_error( "\"%s\" expected", L_TO );
     }
+  ;
+
+type_opt
+  : /* empty */
+  | Y_TYPEDEF
   ;
 
 typename_opt

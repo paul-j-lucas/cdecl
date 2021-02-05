@@ -298,6 +298,11 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         );
       }
 
+      if ( ast->as.ecsu.of_ast != NULL ) {
+        FPUTS( " : ", g->gout );
+        g_print_ast( g, ast->as.ecsu.of_ast );
+      }
+
       if ( cv_qual_tid != TS_NONE )
         FPRINTF( g->gout, " %s", c_type_id_name( cv_qual_tid ) );
 

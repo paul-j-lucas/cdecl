@@ -83,12 +83,12 @@ enum c_kind_id {
   K_NONE                    = 0,       ///< No kind.
   K_PLACEHOLDER             = 0x00001, ///< Temporary node in AST.
   K_BUILTIN                 = 0x00002, ///< `void,` `char,` `int,` etc.
-  K_ENUM_CLASS_STRUCT_UNION = 0x00004, ///< `enum,` `class,` `struct,` `union`
-  K_NAME                    = 0x00008, ///< Typeless function parameter in K&R C
-  K_TYPEDEF                 = 0x00010, ///< `typedef` type, e.g., `size_t`.
-  K_VARIADIC                = 0x00020, ///< Variadic (`...`) function parameter.
+  K_NAME                    = 0x00004, ///< Typeless function parameter in K&R C
+  K_TYPEDEF                 = 0x00008, ///< `typedef` type, e.g., `size_t`.
+  K_VARIADIC                = 0x00010, ///< Variadic (`...`) function parameter.
   // "parent" kinds
-  K_ARRAY                   = 0x00100, ///< Array.
+  K_ARRAY                   = 0x00080, ///< Array.
+  K_ENUM_CLASS_STRUCT_UNION = 0x00100, ///< `enum,` `class,` `struct,` `union`
   K_POINTER                 = 0x00200, ///< Pointer.
   K_POINTER_TO_MEMBER       = 0x00400, ///< Pointer-to-member (C++ only).
   K_REFERENCE               = 0x00800, ///< Reference (C++ only).
@@ -117,12 +117,12 @@ enum c_kind_id {
  * #K_BUILTIN, #K_ENUM_CLASS_STRUCT_UNION, #K_POINTER, #K_POINTER_TO_MEMBER,
  * #K_REFERENCE, or #K_RVALUE_REFERENCE.
  */
-#define K_ANY_OBJECT          0x01F06
+#define K_ANY_OBJECT          0x01F82
 
 /**
  * Shorthand for any kind of parent.
  */
-#define K_ANY_PARENT          0xFFF00
+#define K_ANY_PARENT          0xFFF80
 
 /**
  * Shorthand for any kind of pointer: #K_POINTER or #K_POINTER_TO_MEMBER.

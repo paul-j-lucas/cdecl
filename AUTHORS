@@ -87,9 +87,10 @@ Paul J. Lucas <paul@lucasmail.org>
 	added C++ constructors & destructors, extern "C", namespaces & scoped
 		names, overloaded operators, and typename, and user-defined
 		conversion operators
-	added C++11 auto, constexpr, enum class, function trailing return-type
-		syntax, mutable, new-style casts, noexcept, ref-qualifiers,
-		rvalue references, and user-defined literals, throw()
+	added C++11 auto, constexpr, enum class, fixed-type enums, function
+		trailing return-type syntax, mutable, new-style casts,
+		noexcept, ref-qualifiers, rvalue references, and user-defined
+		literals, throw()
 	added C2X and C++11 later attribute specifiers
 	added C++20 consteval
 	added Embedded C types _Accum, _Fract, _Sat, and typedefs.
