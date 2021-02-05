@@ -102,6 +102,7 @@ most notably:
 * Support for C++11
   `constexpr`,
   `enum class`,
+  fixed-type enumerations,
   `final`,
   `noexcept`,
   `override`,
