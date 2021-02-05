@@ -1,5 +1,39 @@
+2021-02-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, NEWS, cdecl.1, c_ast.h, c_kind.h, check.c, debug.c, english.c,
+     gibberish.c, help.c, parser.y, test/Makefile.am, explain_efi-itself.out,
+     explain_efi.out, explain_efui.out, explain_efz.out, help_english-c++.out,
+     explain_efd.test, explain_efi-c.test, explain_efi-itself.test,
+     explain_efi.test, explain_efui.test, explain_efz.test: Added support for
+     enums having an underlying type.
+   * c_type.h: Fixed comment.
+   * c_ast_util.c, parser.y: Added missing calls to C_AST_CHECK_DECL().
+   * parser.y: Tweaked bit-field type error message.
+   * NEWS, check.c: Fixed register enum.
+
+2021-02-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Converted many rules to <ast> from <ast_pair>.
+   * parser.y: s/sname/any_sname_c/
+   * parser.y: Added enum_class_struct_union_english_ast rule.
+   * parser.y: Reformatting.
+   * c_ast.h, parser.y: CLeaned up enum_tid.
+   * parser.y: s/enum_class_struct_union_tid/enum_class_struct_union_c_tid/
+   * parser.y: Moved a rule.
+   * cdecl.1: Added mention that structured binding declarations are not
+     supported.
+   * parser.y: Undid yyerrok.
+   * parser.y: Removed pointless assignments.
+   * parser.y: Added yyerrok in places.
+   * parser.y: Token clean-up.
+   * parser.y: More operator clean-up.
+   * parser.y: Fixed operators.
+
 2021-02-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: Removed shift/reduce conflict for "delete".
+   * help.c: s/stdout/fout/
+   * debug.c, debug.h, parser.y: s/slist_t/c_ast_list_t/
    * lexer.l: s/EPRINTF/print_error/
    * AUTHORS, NEWS, cdecl.1, c_type.c, c_type.h, help.c, lexer.l, literals.c,
      literals.h, parser.y, util.c, util.h, test/Makefile.am, declare_ecf_v.out,
