@@ -227,6 +227,8 @@
  *
  * @param KEY The key name to print.
  * @param AST The AST to dump.
+ *
+ * @sa #DUMP_AST_LIST()
  */
 #define DUMP_AST(KEY,AST) IF_DEBUG( \
   if ( (AST) != NULL ) { DUMP_COMMA; c_ast_debug( (AST), 1, (KEY), stdout ); } )
@@ -236,6 +238,8 @@
  *
  * @param KEY The key name to print.
  * @param AST_LIST The `s_list` of AST to dump.
+ *
+ * @sa #DUMP_AST()
  */
 #define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
   DUMP_COMMA; PUTS( "  " KEY " = " );         \
@@ -256,8 +260,10 @@
  *
  * @param KEY The key name to print.
  * @param NUM The integer to dump.
+ *
+ * @sa #DUMP_STR()
  */
-#define DUMP_NUM(KEY,NUM) \
+#define DUMP_INT(KEY,NUM) \
   IF_DEBUG( DUMP_COMMA; FPRINTF( stdout, "  " KEY " = %d", (int)(NUM) ); )
 
 /**
@@ -265,6 +271,8 @@
  *
  * @param KEY The key name to print.
  * @param SNAME The scoped name to dump.
+ *
+ * @sa #DUMP_STR()
  */
 #define DUMP_SNAME(KEY,SNAME) IF_DEBUG( \
   DUMP_COMMA; PUTS( "  " KEY " = " );   \
@@ -275,6 +283,9 @@
  *
  * @param KEY The key name to print.
  * @param STR The C string to dump.
+ *
+ * @sa #DUMP_INT()
+ * @sa #DUMP_SNAME()
  */
 #define DUMP_STR(KEY,STR) IF_DEBUG(   \
   DUMP_COMMA; PUTS( "  " );           \
@@ -282,12 +293,60 @@
 
 #ifdef ENABLE_CDECL_DEBUG
 /**
- * Starts a dump block.
+ * @def DUMP_START
+ *
+ * Starts a dump block.  The dump block _must_ end with #DUMP_END().  If a rule
+ * has a result, it should be dumped as the final thing before the #DUMP_END()
+ * repeating the name of the rule, e.g.:
+ * @code
+ *  DUMP_START( "rule",                 // <-- This rule name ...
+ *              "subrule_1 name subrule_2" );
+ *  DUMP_AST( "subrule_1", $1 );
+ *  DUMP_STR( "name", $2 );
+ *  DUMP_AST( "subrule_2", $3 );
+ *  // ...
+ *  DUMP_AST( "rule", $$ );             // <-- ... is repeated here.
+ *  DUMP_END();
+ * @endcode
+ *
+ * Whenever possible, an entire dump block should be completed before any
+ * actions are taken as a result of a failed semantic check or other error
+ * (typically, calling `print_error()` and #PARSE_ABORT()) so that the entire
+ * block is dumped for debugging purposes first. If necessary, set a flag
+ * within the dump block, then check it after, e.g.:
+ * @code
+ *  DUMP_START( "rule", "subrule_1 name subrule_2" );
+ *  DUMP_AST( "subrule_1", $1 );
+ *  DUMP_STR( "name", $2 );
+ *  DUMP_AST( "subrule_2", $3 );
+ *
+ *  bool ok = true;
+ *  if ( semantic_check_failed ) {
+ *    // ...
+ *    ok = false;
+ *  }
+ *
+ *  DUMP_AST( "rule", $$ );
+ *  DUMP_END();
+ *
+ *  if ( !ok ) {
+ *    print_error( &@1, "...\n" );
+ *    PARSE_ABORT();
+ *  }
+ * @endcode
  *
  * @param NAME The grammar production name.
  * @param PROD The grammar production rule.
  *
+ * @sa DUMP_AST
+ * @sa DUMP_AST_LIST
+ * @sa DUMP_BOOL
  * @sa DUMP_END
+ * @sa DUMP_INT
+ * @sa DUMP_SNAME
+ * @sa DUMP_STR
+ * @sa DUMP_TID
+ * @sa DUMP_TYPE
  */
 #define DUMP_START(NAME,PROD)                           \
   bool debug_comma = false;                             \
@@ -299,7 +358,7 @@
 /**
  * Ends a dump block.
  *
- * @sa DUMP_START
+ * @sa #DUMP_START()
  */
 #define DUMP_END()                IF_DEBUG( PUTS( "\n}\n" ); )
 
@@ -308,6 +367,8 @@
  *
  * @param KEY The key name to print.
  * @param TID The <code>\ref c_type_id_t</code> to dump.
+ *
+ * @sa #DUMP_TYPE()
  */
 #define DUMP_TID(KEY,TID) IF_DEBUG( \
   DUMP_COMMA; PUTS( "  " KEY " = " ); c_type_id_debug( (TID), stdout ); )
@@ -317,6 +378,8 @@
  *
  * @param KEY The key name to print.
  * @param TYPE The <code>\ref c_type</code> to dump.
+ *
+ * @sa #DUMP_TID()
  */
 #define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
   DUMP_COMMA; PUTS( "  " KEY " = " ); c_type_debug( (TYPE), stdout ); )
@@ -1344,7 +1407,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_sname_free( &$$ ); } Y_CONSTRUCTOR_SNAME
 %destructor { DTRACE; c_sname_free( &$$ ); } Y_DESTRUCTOR_SNAME
 
-/*****************************************************************************/
+///////////////////////////////////////////////////////////////////////////////
 %%
 
 command_list
@@ -2091,7 +2154,7 @@ alignas_specifier_c
   : alignas lparen_exp Y_INT_LIT rparen_exp
     {
       DUMP_START( "alignas_specifier_c", "ALIGNAS '(' Y_INT_LIT ')'" );
-      DUMP_NUM( "INT_LIT", $3 );
+      DUMP_INT( "INT_LIT", $3 );
       DUMP_END();
 
       $$.kind = C_ALIGNAS_EXPR;
@@ -2187,7 +2250,7 @@ decl_c
         case C_ALIGNAS_NONE:
           break;
         case C_ALIGNAS_EXPR:
-          DUMP_NUM( "(alignas_specifier_c.as.expr)", in_attr.align.as.expr );
+          DUMP_INT( "(alignas_specifier_c.as.expr)", in_attr.align.as.expr );
           break;
         case C_ALIGNAS_TYPE:
           DUMP_AST(
@@ -2484,7 +2547,7 @@ show_command
     {
       DUMP_START( "show_command", "SHOW any_typedef show_format_opt" );
       DUMP_AST( "any_typedef.ast", $2->ast );
-      DUMP_NUM( "show_format_opt", $3 );
+      DUMP_INT( "show_format_opt", $3 );
       DUMP_END();
 
       if ( $3 == C_GIB_NONE )
@@ -2498,7 +2561,7 @@ show_command
     {
       DUMP_START( "show_command", "SHOW any_typedef AS show_format_exp" );
       DUMP_AST( "any_typedef.ast", $2->ast );
-      DUMP_NUM( "show_format_exp", $4 );
+      DUMP_INT( "show_format_exp", $4 );
       DUMP_END();
 
       c_typedef_gibberish( $2, $4, fout );
@@ -2710,7 +2773,7 @@ array_decl_english_ast
                   "array_size_num_opt OF decl_english_ast" );
       DUMP_TID( "static_tid_opt", $2 );
       DUMP_TID( "type_qualifier_list_english_tid_opt", $3 );
-      DUMP_NUM( "array_size_int_opt", $4 );
+      DUMP_INT( "array_size_int_opt", $4 );
       DUMP_AST( "decl_english_ast", $6 );
 
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
@@ -2812,7 +2875,7 @@ func_decl_english_ast
                   "returning_english_ast_opt" );
       DUMP_TID( "(qualifier)", ia_qual_peek_tid() );
       DUMP_TID( "ref_qualifier_english_tid_opt", $1 );
-      DUMP_NUM( "member_or_non_member_mask_opt", $2 );
+      DUMP_INT( "member_or_non_member_mask_opt", $2 );
       DUMP_AST_LIST( "paren_decl_list_english_opt", $4 );
       DUMP_AST( "returning_english_ast_opt", $5 );
 
@@ -2839,7 +2902,7 @@ oper_decl_english_ast
                   "OPERATOR paren_decl_list_english_opt "
                   "returning_english_ast_opt" );
       DUMP_TID( "ref_qualifier_english_tid_opt", $3 );
-      DUMP_NUM( "member_or_non_member_mask_opt", $4 );
+      DUMP_INT( "member_or_non_member_mask_opt", $4 );
       DUMP_AST_LIST( "paren_decl_list_english_opt", $6 );
       DUMP_AST( "returning_english_ast_opt", $7 );
 
@@ -3353,7 +3416,7 @@ array_decl_c_astp
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_AST( "decl2_c_astp", $1.ast );
       DUMP_AST( "target_ast", $1.target_ast );
-      DUMP_NUM( "array_size_c_int", $2 );
+      DUMP_INT( "array_size_c_int", $2 );
 
       c_ast_t *const array_ast = c_ast_new_gc( K_ARRAY, &@$ );
       array_ast->as.array.size = $2;
@@ -5565,7 +5628,7 @@ sname_c_ast
       DUMP_START( "sname_c_ast", "sname_c" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_SNAME( "sname", &$1 );
-      DUMP_NUM( "bit_field_c_int_opt", $2 );
+      DUMP_INT( "bit_field_c_int_opt", $2 );
 
       $$ = ia_type_ast_peek();
       c_ast_set_sname( $$, &$1 );
