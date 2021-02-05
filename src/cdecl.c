@@ -61,6 +61,7 @@ c_command_t const CDECL_COMMANDS[] = {
   { L_DECLARE,                C_COMMAND_PROG_NAME,  LANG_ALL          },
   { L_DEFINE,                 C_COMMAND_FIRST_ARG,  LANG_ALL          },
   { L_DYNAMIC /* cast */,     C_COMMAND_FIRST_ARG,  LANG_CPP_ALL      },
+  { L_ENUM,                   C_COMMAND_FIRST_ARG,  LANG_ALL          },
   { L_EXIT,                   C_COMMAND_LANG_ONLY,  LANG_ALL          },
   { L_EXPLAIN,                C_COMMAND_PROG_NAME,  LANG_ALL          },
   { L_HELP,                   C_COMMAND_FIRST_ARG,  LANG_ALL          },
