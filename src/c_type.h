@@ -98,8 +98,12 @@ struct c_type {
  * @sa C_TYPE_LIT_B()
  * @sa C_TYPE_LIT_S()
  */
-#define C_TYPE_LIT(BASE_TID,STORE_TID,ATTR_TID) \
-  (c_type_t const){ (BASE_TID), (STORE_TID), (ATTR_TID) }
+#define C_TYPE_LIT(BASE_TID,STORE_TID,ATTR_TID)   \
+  (c_type_t const){                               \
+    c_type_id_check( (BASE_TID),  C_TPID_BASE  ), \
+    c_type_id_check( (STORE_TID), C_TPID_STORE ), \
+    c_type_id_check( (ATTR_TID),  C_TPID_ATTR  )  \
+  }
 
 /**
  * Convenience macro for specifying a <code>\ref c_type</code> literal from
