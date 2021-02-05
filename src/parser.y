@@ -802,6 +802,12 @@ static void yyerror( char const *msg ) {
 
 %}
 
+//
+// The difference between "literal" and "name" is that "literal" points to a
+// string that a rule is NOT responsible for free'ing (a predefined `L_`
+// literal) whereas "name" points to a string that a rule IS responsible for
+// free'ing.
+//
 %union {
   c_alignas_t         align;
   c_ast_t            *ast;        // for the AST being built
@@ -811,7 +817,7 @@ static void yyerror( char const *msg ) {
   bool                flag;       // simple flag
   int                 int_val;    // for array sizes
   c_gib_kind_t        gib_kind;   // kind of gibberish
-  char const         *literal;    // token literal (for new-style casts)
+  char const         *literal;    // token L_* literal (for new-style casts)
   char               *name;       // name being declared or explained
   c_oper_id_t         oper_id;    // overloaded operator ID
   c_sname_t           sname;      // name being declared or explained
@@ -1124,9 +1130,14 @@ static void yyerror( char const *msg ) {
 //  2. Is specific to C/C++, "_c" is appended; is specific to English,
 //     "_english" is appended.
 //  3. Is of type:
-//      + <ast> or <ast_pair>: "_ast" is appended.
+//      + <ast>: "_ast" is appended.
+//      + <ast_list>: (See #1.)
+//      + <ast_pair>: "_astp" is appended.
+//      + <bitmask>: "_mask" is appended.
+//      + <flag>: "_flag" is appended.
 //      + <name>: "_name" is appended.
 //      + <int_val>: "_int" is appended.
+//      + <literal>: "_literal" is appended.
 //      + <sname>: "_sname" is appended.
 //      + <type_id>: "_tid" is appended.
 //      + <type>: "_type" is appended.
@@ -1151,8 +1162,8 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   enum_fixed_type_modifier_list_english_tid_opt
 %type   <ast>       enum_unmodified_fixed_type_english_ast
 %type   <ast>       func_decl_english_ast
-%type   <bitmask>   member_or_non_member_opt
-%type   <literal>   new_style_cast_english
+%type   <bitmask>   member_or_non_member_mask_opt
+%type   <literal>   new_style_cast_english_literal
 %type   <sname>     of_scope_english
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
 %type   <ast>       of_type_enum_fixed_type_english_ast_opt
@@ -1184,12 +1195,12 @@ static void yyerror( char const *msg ) {
 %type   <int_val>   width_specifier_english
 
                     // C/C++ casts
-%type   <ast_pair>  array_cast_c_ast
-%type   <ast_pair>  block_cast_c_ast
-%type   <ast_pair>  cast_c_ast cast_c_ast_opt cast2_c_ast
-%type   <ast_pair>  func_cast_c_ast
-%type   <ast_pair>  nested_cast_c_ast
-%type   <literal>   new_style_cast_c
+%type   <ast_pair>  array_cast_c_astp
+%type   <ast_pair>  block_cast_c_astp
+%type   <ast_pair>  cast_c_astp cast_c_astp_opt cast2_c_astp
+%type   <ast_pair>  func_cast_c_astp
+%type   <ast_pair>  nested_cast_c_astp
+%type   <literal>   new_style_cast_c_literal
 %type   <ast>       pointer_cast_c_ast
 %type   <ast>       pointer_to_member_cast_c_ast
 %type   <ast>       reference_cast_c_ast
@@ -1197,7 +1208,7 @@ static void yyerror( char const *msg ) {
                     // C/C++ declarations
 %type   <align>     alignas_specifier_c
 %type   <sname>     any_sname_c any_sname_c_exp any_sname_c_opt
-%type   <ast_pair>  array_decl_c_ast
+%type   <ast_pair>  array_decl_c_astp
 %type   <ast>       array_size_c_ast
 %type   <int_val>   array_size_c_int
 %type   <ast>       atomic_specifier_type_c_ast
@@ -1206,8 +1217,8 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   attribute_specifier_list_c_tid
 %type   <type_id>   attribute_specifier_list_c_tid_opt
 %type   <int_val>   bit_field_c_int_opt
-%type   <ast_pair>  block_decl_c_ast
-%type   <ast_pair>  decl_c_ast decl2_c_ast
+%type   <ast_pair>  block_decl_c_astp
+%type   <ast_pair>  decl_c_astp decl2_c_astp
 %type   <ast>       destructor_decl_c_ast
 %type   <ast>       enum_class_struct_union_c_ast
 %type   <ast>       enum_fixed_type_c_ast enum_fixed_type_c_ast_opt
@@ -1217,25 +1228,25 @@ static void yyerror( char const *msg ) {
 %type   <ast>       enum_unmodified_fixed_type_c_ast
 %type   <ast>       file_scope_constructor_decl_c_ast
 %type   <ast>       file_scope_destructor_decl_c_ast
-%type   <ast_pair>  func_decl_c_ast
+%type   <ast_pair>  func_decl_c_astp
 %type   <type_id>   func_equals_c_tid_opt
 %type   <type_id>   func_qualifier_c_tid
 %type   <type_id>   func_qualifier_list_c_tid_opt
 %type   <type_id>   func_ref_qualifier_c_tid_opt
 %type   <ast>       knr_func_or_constructor_decl_c_ast
 %type   <type_id>   linkage_tid
-%type   <ast_pair>  nested_decl_c_ast
+%type   <ast_pair>  nested_decl_c_astp
 %type   <type_id>   noexcept_c_tid_opt
 %type   <ast>       oper_c_ast
-%type   <ast_pair>  oper_decl_c_ast
+%type   <ast_pair>  oper_decl_c_astp
 %type   <ast>       param_c_ast
 %type   <ast_list>  param_list_c_ast param_list_c_ast_opt
 %type   <ast>       placeholder_c_ast
-%type   <ast_pair>  pointer_decl_c_ast
-%type   <ast_pair>  pointer_to_member_decl_c_ast
+%type   <ast_pair>  pointer_decl_c_astp
+%type   <ast_pair>  pointer_to_member_decl_c_astp
 %type   <ast>       pointer_to_member_type_c_ast
 %type   <ast>       pointer_type_c_ast
-%type   <ast_pair>  reference_decl_c_ast
+%type   <ast_pair>  reference_decl_c_astp
 %type   <ast>       reference_type_c_ast
 %type   <type_id>   restrict_qualifier_c_tid
 %type   <type_id>   restrict_qualifier_c_tid_opt
@@ -1254,9 +1265,9 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   type_qualifier_c_tid
 %type   <type_id>   type_qualifier_list_c_tid type_qualifier_list_c_tid_opt
 %type   <ast>       unmodified_type_c_ast
-%type   <ast_pair>  user_defined_conversion_decl_c_ast
+%type   <ast_pair>  user_defined_conversion_decl_c_astp
 %type   <ast>       user_defined_literal_c_ast
-%type   <ast_pair>  user_defined_literal_decl_c_ast
+%type   <ast_pair>  user_defined_literal_decl_c_astp
 %type   <ast>       using_decl_c_ast
 
                     // C++ user-defined conversions
@@ -1275,7 +1286,7 @@ static void yyerror( char const *msg ) {
 %type   <oper_id>   c_operator
 %type   <type_id>   cv_qualifier_tid cv_qualifier_list_tid_opt
 %type   <type_id>   enum_tid enum_class_struct_union_c_tid
-%type   <literal>   help_what_opt
+%type   <literal>   help_what_literal_opt
 %type   <type_id>   inline_tid_opt
 %type   <int_val>   int_exp
 %type   <ast>       name_ast
@@ -1283,13 +1294,13 @@ static void yyerror( char const *msg ) {
 %type   <type_id>   namespace_tid_exp
 %type   <type>      namespace_type
 %type   <type_id>   no_except_bool_tid_exp
-%type   <bitmask>   predefined_or_user_opt
+%type   <bitmask>   predefined_or_user_mask_opt
 %type   <name>      set_option_value_opt
 %type   <gib_kind>  show_format show_format_exp show_format_opt
-%type   <bitmask>   show_which_types_opt
+%type   <bitmask>   show_which_types_mask_opt
 %type   <type_id>   static_tid_opt
 %type   <type>      type_modifier_base_type
-%type   <flag>      typename_opt
+%type   <flag>      typename_flag_opt
 %type   <type_id>   virtual_tid_exp virtual_tid_opt
 
 //
@@ -1400,13 +1411,13 @@ cast_english
     /*
      * New C++-style cast.
      */
-  | new_style_cast_english cast_exp sname_english_exp as_into_to_exp
+  | new_style_cast_english_literal cast_exp sname_english_exp as_into_to_exp
     decl_english_ast
     {
       DUMP_START( "cast_english",
-                  "new_style_cast_english CAST sname_english_exp "
+                  "new_style_cast_english_literal CAST sname_english_exp "
                   "as_into_to_exp decl_english_ast" );
-      DUMP_STR( "new_style_cast_english", $1 );
+      DUMP_STR( "new_style_cast_english_literal", $1 );
       DUMP_SNAME( "sname_english_exp", &$3 );
       DUMP_AST( "decl_english_ast", $5 );
       DUMP_END();
@@ -1428,7 +1439,7 @@ cast_english
     }
   ;
 
-new_style_cast_english
+new_style_cast_english_literal
   : Y_CONST                       { $$ = L_CONST_CAST;        }
   | Y_DYNAMIC                     { $$ = L_DYNAMIC_CAST;      }
   | Y_REINTERPRET                 { $$ = L_REINTERPRET_CAST;  }
@@ -1841,14 +1852,14 @@ explain_c
     {
       ia_type_ast_push( $3 );
     }
-    cast_c_ast_opt rparen_exp sname_c_opt
+    cast_c_astp_opt rparen_exp sname_c_opt
     {
       ia_type_ast_pop();
 
       DUMP_START( "explain_c",
-                  "EXPLAIN '(' type_c_ast cast_c_ast_opt ')' sname_c_opt" );
+                  "EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt" );
       DUMP_AST( "type_c_ast", $3 );
-      DUMP_AST( "cast_c_ast_opt", $5.ast );
+      DUMP_AST( "cast_c_astp_opt", $5.ast );
       DUMP_SNAME( "sname_c_opt", &$7 );
 
       c_ast_t *const cast_ast = c_ast_patch_placeholder( $3, $5.ast );
@@ -1876,20 +1887,20 @@ explain_c
     /*
      * New C++-style cast.
      */
-  | explain new_style_cast_c lt_exp type_c_ast
+  | explain new_style_cast_c_literal lt_exp type_c_ast
     {
       ia_type_ast_push( $4 );
     }
-    cast_c_ast_opt gt_exp lparen_exp sname_c_exp rparen_exp
+    cast_c_astp_opt gt_exp lparen_exp sname_c_exp rparen_exp
     {
       ia_type_ast_pop();
 
       DUMP_START( "explain_c",
-                  "EXPLAIN new_style_cast_c '<' type_c_ast cast_c_ast_opt '>' "
-                  "'(' sname ')'" );
-      DUMP_STR( "new_style_cast_c", $2 );
+                  "EXPLAIN new_style_cast_c_literal "
+                  "'<' type_c_ast cast_c_astp_opt '>' '(' sname ')'" );
+      DUMP_STR( "new_style_cast_c_literal", $2 );
       DUMP_AST( "type_c_ast", $4 );
-      DUMP_AST( "cast_c_ast_opt", $6.ast );
+      DUMP_AST( "cast_c_astp_opt", $6.ast );
       DUMP_SNAME( "sname", &$9 );
 
       c_ast_t const *const cast_ast = c_ast_patch_placeholder( $4, $6.ast );
@@ -1929,7 +1940,7 @@ explain_c
      * Common declaration with alignas, e.g.: alignas(8) T x.
      */
   | explain alignas_specifier_c { in_attr.align = $2; }
-    typename_opt { in_attr.typename = $4; }
+    typename_flag_opt { in_attr.typename = $4; }
     type_c_ast { ia_type_ast_push( $6 ); } decl_list_c
     {
       ia_type_ast_pop();
@@ -1940,8 +1951,8 @@ explain_c
      *
      *      explain typename T::U x
      *
-     * (We can't use typename_opt because it would introduce more shift/reduce
-     * conflicts.)
+     * (We can't use typename_flag_opt because it would introduce more
+     * shift/reduce conflicts.)
      */
   | explain Y_TYPENAME { in_attr.typename = true; }
     type_c_ast { ia_type_ast_push( $4 ); } decl_list_c
@@ -2014,10 +2025,10 @@ explain_c
      *
      * are handled by the common declaration rule.
      */
-  | explain user_defined_conversion_decl_c_ast
+  | explain user_defined_conversion_decl_c_astp
     {
-      DUMP_START( "explain_c", "EXPLAIN user_defined_conversion_decl_c_ast" );
-      DUMP_AST( "user_defined_conversion_decl_c_ast", $2.ast );
+      DUMP_START( "explain_c", "EXPLAIN user_defined_conversion_decl_c_astp" );
+      DUMP_AST( "user_defined_conversion_decl_c_astp", $2.ast );
       DUMP_END();
 
       C_AST_CHECK_DECL( $2.ast );
@@ -2069,7 +2080,7 @@ explain
     }
   ;
 
-new_style_cast_c
+new_style_cast_c_literal
   : Y_CONST_CAST                  { $$ = L_CONST;       }
   | Y_DYNAMIC_CAST                { $$ = L_DYNAMIC;     }
   | Y_REINTERPRET_CAST            { $$ = L_REINTERPRET; }
@@ -2089,14 +2100,14 @@ alignas_specifier_c
     }
 
   | alignas lparen_exp type_c_ast { ia_type_ast_push( $3 ); }
-    cast_c_ast_opt rparen_exp
+    cast_c_astp_opt rparen_exp
     {
       ia_type_ast_pop();
 
       DUMP_START( "alignas_specifier_c",
-                  "ALIGNAS '(' type_c_ast cast_c_ast_opt ')'" );
+                  "ALIGNAS '(' type_c_ast cast_c_astp_opt ')'" );
       DUMP_AST( "type_c_ast", $3 );
-      DUMP_AST( "cast_c_ast_opt", $5.ast );
+      DUMP_AST( "cast_c_astp_opt", $5.ast );
       DUMP_END();
 
       c_ast_t *const type_ast = c_ast_patch_placeholder( $3, $5.ast );
@@ -2166,12 +2177,12 @@ decl_list_c
   ;
 
 decl_c
-  : // in_attr: alignas_specifier_c typename_opt type_c_ast
-    decl_c_ast
+  : // in_attr: alignas_specifier_c typename_flag_opt type_c_ast
+    decl_c_astp
     {
       c_ast_t *const type_ast = ia_type_ast_peek();
 
-      DUMP_START( "decl_c", "decl_c_ast" );
+      DUMP_START( "decl_c", "decl_c_astp" );
       switch ( in_attr.align.kind ) {
         case C_ALIGNAS_NONE:
           break;
@@ -2184,9 +2195,9 @@ decl_c
           );
           break;
       } // switch
-      DUMP_BOOL( "(typename_opt)", in_attr.typename );
+      DUMP_BOOL( "(typename_flag_opt)", in_attr.typename );
       DUMP_AST( "(type_c_ast)", type_ast );
-      DUMP_AST( "decl_c_ast", $1.ast );
+      DUMP_AST( "decl_c_astp", $1.ast );
 
       c_ast_t const *const decl_ast = c_ast_join_type_decl(
         in_attr.typename, &in_attr.align, type_ast, $1.ast, &@1
@@ -2224,10 +2235,10 @@ decl_c
 ///////////////////////////////////////////////////////////////////////////////
 
 help_command
-  : Y_HELP help_what_opt          { print_help( $2 ); }
+  : Y_HELP help_what_literal_opt  { print_help( $2 ); }
   ;
 
-help_what_opt
+help_what_literal_opt
   : /* empty */                   { $$ = L_DEFAULT;   }
   | Y_COMMANDS                    { $$ = L_COMMANDS;  }
   | Y_ENGLISH                     { $$ = L_ENGLISH;   }
@@ -2494,13 +2505,13 @@ show_command
       FPUTC( '\n', fout );
     }
 
-  | Y_SHOW show_which_types_opt show_format_opt
+  | Y_SHOW show_which_types_mask_opt show_format_opt
     {
       show_type_info_t sti = { $2, $3 };
       c_typedef_visit( &show_type_visitor, &sti );
     }
 
-  | Y_SHOW show_which_types_opt Y_AS show_format_exp
+  | Y_SHOW show_which_types_mask_opt Y_AS show_format_exp
     {
       show_type_info_t sti = { $2, $4 };
       c_typedef_visit( &show_type_visitor, &sti );
@@ -2558,9 +2569,9 @@ show_format_opt
   | show_format
   ;
 
-show_which_types_opt
+show_which_types_mask_opt
   : /* empty */                   { $$ = SHOW_USER_TYPES; }
-  | Y_ALL predefined_or_user_opt
+  | Y_ALL predefined_or_user_mask_opt
     {
       $$ = SHOW_ALL_TYPES |
            ($2 != 0 ? $2 : SHOW_PREDEFINED_TYPES | SHOW_USER_TYPES);
@@ -2569,7 +2580,7 @@ show_which_types_opt
   | Y_USER                        { $$ = SHOW_USER_TYPES; }
   ;
 
-predefined_or_user_opt
+predefined_or_user_mask_opt
   : /* empty */                   { $$ = 0; }
   | Y_PREDEFINED                  { $$ = SHOW_PREDEFINED_TYPES; }
   | Y_USER                        { $$ = SHOW_USER_TYPES; }
@@ -2585,21 +2596,21 @@ typedef_declaration_c
       // see the comment in "explain"
       c_mode = C_GIBBERISH_TO_ENGLISH;
     }
-    typename_opt type_c_ast
+    typename_flag_opt type_c_ast
     {
       // see the comment in define_english about TS_TYPEDEF
       C_TYPE_ADD_TID( &$4->type, TS_TYPEDEF, @4 );
       ia_type_ast_push( $4 );
     }
-    decl_c_ast
+    decl_c_astp
     {
       ia_type_ast_pop();
 
       DUMP_START( "typedef_declaration_c",
-                  "TYPEDEF typename_opt type_c_ast decl_c_ast" );
-      DUMP_BOOL( "typename_opt", $3 );
+                  "TYPEDEF typename_flag_opt type_c_ast decl_c_astp" );
+      DUMP_BOOL( "typename_flag_opt", $3 );
       DUMP_AST( "type_c_ast", $4 );
-      DUMP_AST( "decl_c_ast", $6.ast );
+      DUMP_AST( "decl_c_astp", $6.ast );
 
       c_ast_t *typedef_ast;
       c_sname_t temp_sname;
@@ -2791,17 +2802,17 @@ destructor_decl_english_ast
 
 func_decl_english_ast
   : // in_attr: qualifier
-    ref_qualifier_english_tid_opt member_or_non_member_opt
+    ref_qualifier_english_tid_opt member_or_non_member_mask_opt
     Y_FUNCTION paren_decl_list_english_opt returning_english_ast_opt
     {
       DUMP_START( "func_decl_english_ast",
                   "ref_qualifier_english_tid_opt "
-                  "member_or_non_member_opt "
+                  "member_or_non_member_mask_opt "
                   "FUNCTION paren_decl_list_english_opt "
                   "returning_english_ast_opt" );
       DUMP_TID( "(qualifier)", ia_qual_peek_tid() );
       DUMP_TID( "ref_qualifier_english_tid_opt", $1 );
-      DUMP_NUM( "member_or_non_member_opt", $2 );
+      DUMP_NUM( "member_or_non_member_mask_opt", $2 );
       DUMP_AST_LIST( "paren_decl_list_english_opt", $4 );
       DUMP_AST( "returning_english_ast_opt", $5 );
 
@@ -2819,16 +2830,16 @@ func_decl_english_ast
 
 oper_decl_english_ast
   : type_qualifier_list_english_tid_opt { ia_qual_push_tid( $1, &@1 ); }
-    ref_qualifier_english_tid_opt member_or_non_member_opt
+    ref_qualifier_english_tid_opt member_or_non_member_mask_opt
     operator_exp paren_decl_list_english_opt returning_english_ast_opt
     {
       ia_qual_pop();
       DUMP_START( "oper_decl_english_ast",
-                  "member_or_non_member_opt "
+                  "member_or_non_member_mask_opt "
                   "OPERATOR paren_decl_list_english_opt "
                   "returning_english_ast_opt" );
       DUMP_TID( "ref_qualifier_english_tid_opt", $3 );
-      DUMP_NUM( "member_or_non_member_opt", $4 );
+      DUMP_NUM( "member_or_non_member_mask_opt", $4 );
       DUMP_AST_LIST( "paren_decl_list_english_opt", $6 );
       DUMP_AST( "returning_english_ast_opt", $7 );
 
@@ -3312,35 +3323,35 @@ enum_unmodified_fixed_type_english_ast
 //  declaration gibberish productions
 ///////////////////////////////////////////////////////////////////////////////
 
-decl_c_ast
-  : decl2_c_ast
-  | pointer_decl_c_ast
-  | pointer_to_member_decl_c_ast
-  | reference_decl_c_ast
+decl_c_astp
+  : decl2_c_astp
+  | pointer_decl_c_astp
+  | pointer_to_member_decl_c_astp
+  | reference_decl_c_astp
   ;
 
-decl2_c_ast
-  : array_decl_c_ast
-  | block_decl_c_ast
-  | func_decl_c_ast
-  | nested_decl_c_ast
-  | oper_decl_c_ast
+decl2_c_astp
+  : array_decl_c_astp
+  | block_decl_c_astp
+  | func_decl_c_astp
+  | nested_decl_c_astp
+  | oper_decl_c_astp
   | sname_c_ast gnu_attribute_specifier_list_c_opt
     {
       $$ = (c_ast_pair_t){ $1, NULL };
     }
   | typedef_type_decl_c_ast       { $$ = (c_ast_pair_t){ $1, NULL }; }
-  | user_defined_conversion_decl_c_ast
-  | user_defined_literal_decl_c_ast
+  | user_defined_conversion_decl_c_astp
+  | user_defined_literal_decl_c_astp
   ;
 
-array_decl_c_ast
+array_decl_c_astp
   : // in_attr: type_c_ast
-    decl2_c_ast array_size_c_int gnu_attribute_specifier_list_c_opt
+    decl2_c_astp array_size_c_int gnu_attribute_specifier_list_c_opt
     {
-      DUMP_START( "array_decl_c_ast", "decl2_c_ast array_size_c_int" );
+      DUMP_START( "array_decl_c_astp", "decl2_c_astp array_size_c_int" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
-      DUMP_AST( "decl2_c_ast", $1.ast );
+      DUMP_AST( "decl2_c_astp", $1.ast );
       DUMP_AST( "target_ast", $1.target_ast );
       DUMP_NUM( "array_size_c_int", $2 );
 
@@ -3356,7 +3367,7 @@ array_decl_c_ast
         $$.target_ast = NULL;
       }
 
-      DUMP_AST( "array_decl_c_ast", $$.ast );
+      DUMP_AST( "array_decl_c_astp", $$.ast );
       DUMP_END();
     }
   ;
@@ -3370,26 +3381,26 @@ array_size_c_int
     }
   ;
 
-block_decl_c_ast                        // Apple extension
+block_decl_c_astp                       // Apple extension
   : // in_attr: type_c_ast
     '(' Y_CIRC
     { //
-      // A block AST has to be the type inherited attribute for decl_c_ast so
+      // A block AST has to be the type inherited attribute for decl_c_astp so
       // we have to create it here.
       //
       ia_type_ast_push( c_ast_new_gc( K_APPLE_BLOCK, &@$ ) );
     }
-    type_qualifier_list_c_tid_opt decl_c_ast rparen_exp
+    type_qualifier_list_c_tid_opt decl_c_astp rparen_exp
     lparen_exp param_list_c_ast_opt ')' gnu_attribute_specifier_list_c_opt
     {
       c_ast_t *const block_ast = ia_type_ast_pop();
 
-      DUMP_START( "block_decl_c_ast",
-                  "'(' '^' type_qualifier_list_c_tid_opt decl_c_ast ')' "
+      DUMP_START( "block_decl_c_astp",
+                  "'(' '^' type_qualifier_list_c_tid_opt decl_c_astp ')' "
                   "'(' param_list_c_ast_opt ')'" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_TID( "type_qualifier_list_c_tid_opt", $4 );
-      DUMP_AST( "decl_c_ast", $5.ast );
+      DUMP_AST( "decl_c_astp", $5.ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $8 );
 
       C_TYPE_ADD_TID( &block_ast->type, $4, @4 );
@@ -3397,7 +3408,7 @@ block_decl_c_ast                        // Apple extension
       $$.ast = c_ast_add_func( $5.ast, ia_type_ast_peek(), block_ast );
       $$.target_ast = block_ast->as.block.ret_ast;
 
-      DUMP_AST( "block_decl_c_ast", $$.ast );
+      DUMP_AST( "block_decl_c_astp", $$.ast );
       DUMP_END();
     }
   ;
@@ -3479,7 +3490,7 @@ file_scope_destructor_decl_c_ast
     }
   ;
 
-func_decl_c_ast
+func_decl_c_astp
     /*
      * Function and C++ constructor declaration.
      *
@@ -3488,7 +3499,7 @@ func_decl_c_ast
      * parser).
      */
   : // in_attr: type_c_ast
-    decl2_c_ast '(' param_list_c_ast_opt
+    decl2_c_astp '(' param_list_c_ast_opt
     rparen_func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
     noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_c_tid_opt
     {
@@ -3500,14 +3511,14 @@ func_decl_c_ast
       c_ast_t    *const trailing_ret_ast = $7;
       c_ast_t    *const type_ast = ia_type_ast_peek();
 
-      DUMP_START( "func_decl_c_ast",
-                  "decl2_c_ast '(' param_list_c_ast_opt ')' "
+      DUMP_START( "func_decl_c_astp",
+                  "decl2_c_astp '(' param_list_c_ast_opt ')' "
                   "func_qualifier_list_c_tid_opt "
                   "func_ref_qualifier_c_tid_opt noexcept_c_tid_opt "
                   "trailing_return_type_c_ast_opt "
                   "func_equals_c_tid_opt" );
       DUMP_AST( "(type_c_ast)", type_ast );
-      DUMP_AST( "decl2_c_ast", decl2_ast );
+      DUMP_AST( "decl2_c_astp", decl2_ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
       DUMP_TID( "func_qualifier_list_c_tid_opt", func_qualifier_tid );
       DUMP_TID( "func_ref_qualifier_c_tid_opt", func_ref_qualifier_tid );
@@ -3599,7 +3610,7 @@ func_decl_c_ast
 
       $$.target_ast = func_ast->as.func.ret_ast;
 
-      DUMP_AST( "func_decl_c_ast", $$.ast );
+      DUMP_AST( "func_decl_c_astp", $$.ast );
       DUMP_END();
     }
   ;
@@ -3742,15 +3753,15 @@ no_except_bool_tid_exp
 trailing_return_type_c_ast_opt
   : /* empty */                   { $$ = NULL; }
   | // in_attr: type_c_ast
-    Y_ARROW type_c_ast { ia_type_ast_push( $2 ); } cast_c_ast_opt
+    Y_ARROW type_c_ast { ia_type_ast_push( $2 ); } cast_c_astp_opt
     {
       ia_type_ast_pop();
 
       DUMP_START( "trailing_return_type_c_ast_opt",
-                  "type_c_ast cast_c_ast_opt" );
+                  "type_c_ast cast_c_astp_opt" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_AST( "type_c_ast", $2 );
-      DUMP_AST( "cast_c_ast_opt", $4.ast );
+      DUMP_AST( "cast_c_astp_opt", $4.ast );
 
       $$ = $4.ast != NULL ? $4.ast : $2;
 
@@ -3821,29 +3832,30 @@ func_equals_c_tid_opt
     }
   ;
 
-nested_decl_c_ast
+nested_decl_c_astp
   : '(' placeholder_c_ast
     {
       ia_type_ast_push( $2 );
       ++ast_depth;
     }
-    decl_c_ast rparen_exp
+    decl_c_astp rparen_exp
     {
       ia_type_ast_pop();
       --ast_depth;
 
-      DUMP_START( "nested_decl_c_ast", "'(' placeholder_c_ast decl_c_ast ')'" );
+      DUMP_START( "nested_decl_c_astp",
+                  "'(' placeholder_c_ast decl_c_astp ')'" );
       DUMP_AST( "placeholder_c_ast", $2 );
-      DUMP_AST( "decl_c_ast", $4.ast );
+      DUMP_AST( "decl_c_astp", $4.ast );
 
       $$ = $4;
 
-      DUMP_AST( "nested_decl_c_ast", $$.ast );
+      DUMP_AST( "nested_decl_c_astp", $$.ast );
       DUMP_END();
     }
   ;
 
-oper_decl_c_ast
+oper_decl_c_astp
   : // in_attr: type_c_ast
     oper_c_ast lparen_exp param_list_c_ast_opt
     rparen_func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt
@@ -3857,7 +3869,7 @@ oper_decl_c_ast
       c_ast_t    *const trailing_ret_ast = $7;
       c_ast_t    *const type_ast = ia_type_ast_peek();
 
-      DUMP_START( "oper_decl_c_ast",
+      DUMP_START( "oper_decl_c_astp",
                   "oper_c_ast '(' param_list_c_ast_opt ')' "
                   "func_qualifier_list_c_tid_opt "
                   "func_ref_qualifier_c_tid_opt noexcept_c_tid_opt "
@@ -3890,7 +3902,7 @@ oper_decl_c_ast
 
       $$.target_ast = oper_ast->as.oper.ret_ast;
 
-      DUMP_AST( "oper_decl_c_ast", $$.ast );
+      DUMP_AST( "oper_decl_c_astp", $$.ast );
       DUMP_END();
     }
   ;
@@ -3917,19 +3929,19 @@ placeholder_c_ast
   : /* empty */                   { $$ = c_ast_new_gc( K_PLACEHOLDER, &@$ ); }
   ;
 
-pointer_decl_c_ast
-  : pointer_type_c_ast { ia_type_ast_push( $1 ); } decl_c_ast
+pointer_decl_c_astp
+  : pointer_type_c_ast { ia_type_ast_push( $1 ); } decl_c_astp
     {
       ia_type_ast_pop();
 
-      DUMP_START( "pointer_decl_c_ast", "pointer_type_c_ast decl_c_ast" );
+      DUMP_START( "pointer_decl_c_astp", "pointer_type_c_ast decl_c_astp" );
       DUMP_AST( "pointer_type_c_ast", $1 );
-      DUMP_AST( "decl_c_ast", $3.ast );
+      DUMP_AST( "decl_c_astp", $3.ast );
 
       PJL_IGNORE_RV( c_ast_patch_placeholder( $1, $3.ast ) );
       $$ = $3;
 
-      DUMP_AST( "pointer_decl_c_ast", $$.ast );
+      DUMP_AST( "pointer_decl_c_astp", $$.ast );
       DUMP_END();
     }
   ;
@@ -3951,19 +3963,19 @@ pointer_type_c_ast
     }
   ;
 
-pointer_to_member_decl_c_ast
-  : pointer_to_member_type_c_ast { ia_type_ast_push( $1 ); } decl_c_ast
+pointer_to_member_decl_c_astp
+  : pointer_to_member_type_c_ast { ia_type_ast_push( $1 ); } decl_c_astp
     {
       ia_type_ast_pop();
 
-      DUMP_START( "pointer_to_member_decl_c_ast",
-                  "pointer_to_member_type_c_ast decl_c_ast" );
+      DUMP_START( "pointer_to_member_decl_c_astp",
+                  "pointer_to_member_type_c_ast decl_c_astp" );
       DUMP_AST( "pointer_to_member_type_c_ast", $1 );
-      DUMP_AST( "decl_c_ast", $3.ast );
+      DUMP_AST( "decl_c_astp", $3.ast );
 
       $$ = $3;
 
-      DUMP_AST( "pointer_to_member_decl_c_ast", $$.ast );
+      DUMP_AST( "pointer_to_member_decl_c_astp", $$.ast );
       DUMP_END();
     }
   ;
@@ -4003,18 +4015,18 @@ pointer_to_member_type_c_ast
     }
   ;
 
-reference_decl_c_ast
-  : reference_type_c_ast { ia_type_ast_push( $1 ); } decl_c_ast
+reference_decl_c_astp
+  : reference_type_c_ast { ia_type_ast_push( $1 ); } decl_c_astp
     {
       ia_type_ast_pop();
 
-      DUMP_START( "reference_decl_c_ast", "reference_type_c_ast decl_c_ast" );
+      DUMP_START( "reference_decl_c_astp", "reference_type_c_ast decl_c_astp" );
       DUMP_AST( "reference_type_c_ast", $1 );
-      DUMP_AST( "decl_c_ast", $3.ast );
+      DUMP_AST( "decl_c_astp", $3.ast );
 
       $$ = $3;
 
-      DUMP_AST( "reference_decl_c_ast", $$.ast );
+      DUMP_AST( "reference_decl_c_astp", $$.ast );
       DUMP_END();
     }
   ;
@@ -4082,7 +4094,7 @@ typedef_type_decl_c_ast
     }
   ;
 
-user_defined_conversion_decl_c_ast
+user_defined_conversion_decl_c_astp
   : // in_attr: type_c_ast
     scope_sname_c_opt Y_OPERATOR type_c_ast
     {
@@ -4093,7 +4105,7 @@ user_defined_conversion_decl_c_ast
     {
       ia_type_ast_pop();
 
-      DUMP_START( "user_defined_conversion_decl_c_ast",
+      DUMP_START( "user_defined_conversion_decl_c_astp",
                   "scope_sname_c_opt OPERATOR "
                   "type_c_ast udc_decl_c_ast_opt '(' ')' "
                   "func_qualifier_list_c_tid_opt noexcept_c_tid_opt "
@@ -4114,12 +4126,12 @@ user_defined_conversion_decl_c_ast
       $$.ast->as.udef_conv.conv_ast = $5 != NULL ? $5 : $3;
       $$.target_ast = $$.ast->as.udef_conv.conv_ast;
 
-      DUMP_AST( "user_defined_conversion_decl_c_ast", $$.ast );
+      DUMP_AST( "user_defined_conversion_decl_c_astp", $$.ast );
       DUMP_END();
     }
   ;
 
-user_defined_literal_decl_c_ast
+user_defined_literal_decl_c_astp
   : // in_attr: type_c_ast
     user_defined_literal_c_ast lparen_exp param_list_c_ast ')'
     noexcept_c_tid_opt trailing_return_type_c_ast_opt
@@ -4129,7 +4141,7 @@ user_defined_literal_decl_c_ast
       c_ast_t    *const trailing_ret_ast = $6;
       c_ast_t    *const type_ast = ia_type_ast_peek();
 
-      DUMP_START( "user_defined_literal_decl_c_ast",
+      DUMP_START( "user_defined_literal_decl_c_astp",
                   "user_defined_literal_c_ast '(' param_list_c_ast ')' "
                   "noexcept_c_tid_opt trailing_return_type_c_ast_opt" );
       DUMP_AST( "(type_c_ast)", type_ast );
@@ -4150,7 +4162,7 @@ user_defined_literal_decl_c_ast
 
       $$.target_ast = udl_ast->as.udef_lit.ret_ast;
 
-      DUMP_AST( "user_defined_literal_decl_c_ast", $$.ast );
+      DUMP_AST( "user_defined_literal_decl_c_astp", $$.ast );
       DUMP_END();
     }
   ;
@@ -4185,15 +4197,15 @@ using_decl_c_ast
       C_TYPE_ADD_TID( &$5->type, TS_TYPEDEF, @5 );
       ia_type_ast_push( $5 );
     }
-    cast_c_ast_opt
+    cast_c_astp_opt
     {
       ia_type_ast_pop();
 
       DUMP_START( "using_decl_c_ast",
-                  "USING any_name_exp '=' type_c_ast cast_c_ast_opt" );
+                  "USING any_name_exp '=' type_c_ast cast_c_astp_opt" );
       DUMP_STR( "any_name_exp", $3 );
       DUMP_AST( "type_c_ast", $5 );
-      DUMP_AST( "cast_c_ast_opt", $7.ast );
+      DUMP_AST( "cast_c_astp_opt", $7.ast );
 
       $$ = c_ast_patch_placeholder( $5, $7.ast );
       c_ast_set_name( $$, $3 );
@@ -4267,13 +4279,13 @@ param_c_ast
     /*
      * Ordinary function parameter declaration.
      */
-  : type_c_ast { ia_type_ast_push( $1 ); } cast_c_ast_opt
+  : type_c_ast { ia_type_ast_push( $1 ); } cast_c_astp_opt
     {
       ia_type_ast_pop();
 
-      DUMP_START( "param_c_ast", "type_c_ast cast_c_ast_opt" );
+      DUMP_START( "param_c_ast", "type_c_ast cast_c_astp_opt" );
       DUMP_AST( "type_c_ast", $1 );
-      DUMP_AST( "cast_c_ast_opt", $3.ast );
+      DUMP_AST( "cast_c_astp_opt", $3.ast );
 
       $$ = c_ast_patch_placeholder( $1, $3.ast );
 
@@ -4419,7 +4431,7 @@ type_modifier_c_type
       // that contains only one or more type_modifier_base_type.  The problem
       // is that, without an unmodified_type_c_ast (like int), the parser would
       // ordinarily take the typedef'd type (here, the size_t) as part of the
-      // type_c_ast and then be out of tokens for the decl_c_ast -- at which
+      // type_c_ast and then be out of tokens for the decl_c_astp -- at which
       // time it'll complain.
       //
       // Since type modifiers can't apply to a typedef'd type (e.g., "long
@@ -4465,14 +4477,14 @@ atomic_specifier_type_c_ast
     {
       ia_type_ast_push( $3 );
     }
-    cast_c_ast_opt rparen_exp
+    cast_c_astp_opt rparen_exp
     {
       ia_type_ast_pop();
 
       DUMP_START( "atomic_specifier_type_c_ast",
-                  "ATOMIC '(' type_c_ast cast_c_ast_opt ')'" );
+                  "ATOMIC '(' type_c_ast cast_c_astp_opt ')'" );
       DUMP_AST( "type_c_ast", $3 );
-      DUMP_AST( "cast_c_ast_opt", $5.ast );
+      DUMP_AST( "cast_c_astp_opt", $5.ast );
 
       $$ = $5.ast != NULL ? $5.ast : $3;
       C_TYPE_ADD_TID( &$$->type, TS_ATOMIC, @1 );
@@ -5009,34 +5021,34 @@ gnu_attribute_arg_c
 //  cast gibberish productions
 ///////////////////////////////////////////////////////////////////////////////
 
-cast_c_ast_opt
+cast_c_astp_opt
   : /* empty */                   { $$ = (c_ast_pair_t){ NULL, NULL }; }
-  | cast_c_ast
+  | cast_c_astp
   ;
 
-cast_c_ast
-  : cast2_c_ast
+cast_c_astp
+  : cast2_c_astp
   | pointer_cast_c_ast            { $$ = (c_ast_pair_t){ $1, NULL }; }
   | pointer_to_member_cast_c_ast  { $$ = (c_ast_pair_t){ $1, NULL }; }
   | reference_cast_c_ast          { $$ = (c_ast_pair_t){ $1, NULL }; }
   ;
 
-cast2_c_ast
-  : array_cast_c_ast
-  | block_cast_c_ast
-  | func_cast_c_ast
-  | nested_cast_c_ast
+cast2_c_astp
+  : array_cast_c_astp
+  | block_cast_c_astp
+  | func_cast_c_astp
+  | nested_cast_c_astp
   | sname_c_ast                   { $$ = (c_ast_pair_t){ $1, NULL }; }
 //| typedef_type_decl_c_ast             // you can't cast a type
   ;
 
-array_cast_c_ast
+array_cast_c_astp
   : // in_attr: type_c_ast
-    cast_c_ast_opt array_size_c_ast
+    cast_c_astp_opt array_size_c_ast
     {
-      DUMP_START( "array_cast_c_ast", "cast_c_ast_opt array_size_c_int" );
+      DUMP_START( "array_cast_c_astp", "cast_c_astp_opt array_size_c_int" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
-      DUMP_AST( "cast_c_ast_opt", $1.ast );
+      DUMP_AST( "cast_c_astp_opt", $1.ast );
       DUMP_AST( "target_ast", $1.target_ast );
       DUMP_AST( "array_size_c_ast", $2 );
 
@@ -5051,7 +5063,7 @@ array_cast_c_ast
         $$.target_ast = NULL;
       }
 
-      DUMP_AST( "array_cast_c_ast", $$.ast );
+      DUMP_AST( "array_cast_c_astp", $$.ast );
       DUMP_END();
     }
   ;
@@ -5093,26 +5105,26 @@ static_tid_opt
   | Y_STATIC
   ;
 
-block_cast_c_ast                        // Apple extension
+block_cast_c_astp                       // Apple extension
   : // in_attr: type_c_ast
     '(' Y_CIRC
     { //
-      // A block AST has to be the type inherited attribute for cast_c_ast_opt
+      // A block AST has to be the type inherited attribute for cast_c_astp_opt
       // so we have to create it here.
       //
       ia_type_ast_push( c_ast_new_gc( K_APPLE_BLOCK, &@$ ) );
     }
-    type_qualifier_list_c_tid_opt cast_c_ast_opt rparen_exp
+    type_qualifier_list_c_tid_opt cast_c_astp_opt rparen_exp
     lparen_exp param_list_c_ast_opt ')'
     {
       c_ast_t *const block_ast = ia_type_ast_pop();
 
-      DUMP_START( "block_cast_c_ast",
-                  "'(' '^' type_qualifier_list_c_tid_opt cast_c_ast_opt ')' "
+      DUMP_START( "block_cast_c_astp",
+                  "'(' '^' type_qualifier_list_c_tid_opt cast_c_astp_opt ')' "
                   "'(' param_list_c_ast_opt ')'" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_TID( "type_qualifier_list_c_tid_opt", $4 );
-      DUMP_AST( "cast_c_ast_opt", $5.ast );
+      DUMP_AST( "cast_c_astp_opt", $5.ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $8 );
 
       C_TYPE_ADD_TID( &block_ast->type, $4, @4 );
@@ -5120,14 +5132,14 @@ block_cast_c_ast                        // Apple extension
       $$.ast = c_ast_add_func( $5.ast, ia_type_ast_peek(), block_ast );
       $$.target_ast = block_ast->as.block.ret_ast;
 
-      DUMP_AST( "block_cast_c_ast", $$.ast );
+      DUMP_AST( "block_cast_c_astp", $$.ast );
       DUMP_END();
     }
   ;
 
-func_cast_c_ast
+func_cast_c_astp
   : // in_attr: type_c_ast
-    cast2_c_ast '(' param_list_c_ast_opt rparen_func_qualifier_list_c_tid_opt
+    cast2_c_astp '(' param_list_c_ast_opt rparen_func_qualifier_list_c_tid_opt
     trailing_return_type_c_ast_opt
     {
       c_ast_t    *const cast2_c_ast = $1.ast;
@@ -5135,8 +5147,8 @@ func_cast_c_ast
       c_ast_t    *const trailing_ret_ast = $5;
       c_ast_t    *const type_ast = ia_type_ast_peek();
 
-      DUMP_START( "func_cast_c_ast",
-                  "cast2_c_ast '(' param_list_c_ast_opt ')' "
+      DUMP_START( "func_cast_c_astp",
+                  "cast2_c_astp '(' param_list_c_ast_opt ')' "
                   "func_qualifier_list_c_tid_opt "
                   "trailing_return_type_c_ast_opt" );
       DUMP_AST( "(type_c_ast)", type_ast );
@@ -5167,42 +5179,42 @@ func_cast_c_ast
 
       $$.target_ast = func_ast->as.func.ret_ast;
 
-      DUMP_AST( "func_cast_c_ast", $$.ast );
+      DUMP_AST( "func_cast_c_astp", $$.ast );
       DUMP_END();
     }
   ;
 
-nested_cast_c_ast
+nested_cast_c_astp
   : '(' placeholder_c_ast
     {
       ia_type_ast_push( $2 );
       ++ast_depth;
     }
-    cast_c_ast_opt rparen_exp
+    cast_c_astp_opt rparen_exp
     {
       ia_type_ast_pop();
       --ast_depth;
 
-      DUMP_START( "nested_cast_c_ast",
-                  "'(' placeholder_c_ast cast_c_ast_opt ')'" );
+      DUMP_START( "nested_cast_c_astp",
+                  "'(' placeholder_c_ast cast_c_astp_opt ')'" );
       DUMP_AST( "placeholder_c_ast", $2 );
-      DUMP_AST( "cast_c_ast_opt", $4.ast );
+      DUMP_AST( "cast_c_astp_opt", $4.ast );
 
       $$ = $4;
 
-      DUMP_AST( "nested_cast_c_ast", $$.ast );
+      DUMP_AST( "nested_cast_c_astp", $$.ast );
       DUMP_END();
     }
   ;
 
 pointer_cast_c_ast
-  : pointer_type_c_ast { ia_type_ast_push( $1 ); } cast_c_ast_opt
+  : pointer_type_c_ast { ia_type_ast_push( $1 ); } cast_c_astp_opt
     {
       ia_type_ast_pop();
 
-      DUMP_START( "pointer_cast_c_ast", "pointer_type_c_ast cast_c_ast_opt" );
+      DUMP_START( "pointer_cast_c_ast", "pointer_type_c_ast cast_c_astp_opt" );
       DUMP_AST( "pointer_type_c_ast", $1 );
-      DUMP_AST( "cast_c_ast_opt", $3.ast );
+      DUMP_AST( "cast_c_astp_opt", $3.ast );
 
       $$ = c_ast_patch_placeholder( $1, $3.ast );
 
@@ -5212,14 +5224,14 @@ pointer_cast_c_ast
   ;
 
 pointer_to_member_cast_c_ast
-  : pointer_to_member_type_c_ast { ia_type_ast_push( $1 ); } cast_c_ast_opt
+  : pointer_to_member_type_c_ast { ia_type_ast_push( $1 ); } cast_c_astp_opt
     {
       ia_type_ast_pop();
 
       DUMP_START( "pointer_to_member_cast_c_ast",
-                  "pointer_to_member_type_c_ast cast_c_ast_opt" );
+                  "pointer_to_member_type_c_ast cast_c_astp_opt" );
       DUMP_AST( "pointer_to_member_type_c_ast", $1 );
-      DUMP_AST( "cast_c_ast_opt", $3.ast );
+      DUMP_AST( "cast_c_astp_opt", $3.ast );
 
       $$ = c_ast_patch_placeholder( $1, $3.ast );
 
@@ -5229,14 +5241,14 @@ pointer_to_member_cast_c_ast
   ;
 
 reference_cast_c_ast
-  : reference_type_c_ast { ia_type_ast_push( $1 ); } cast_c_ast_opt
+  : reference_type_c_ast { ia_type_ast_push( $1 ); } cast_c_astp_opt
     {
       ia_type_ast_pop();
 
       DUMP_START( "reference_cast_c_ast",
-                  "reference_type_c_ast cast_c_ast_opt" );
+                  "reference_type_c_ast cast_c_astp_opt" );
       DUMP_AST( "reference_type_c_ast", $1 );
-      DUMP_AST( "cast_c_ast_opt", $3.ast );
+      DUMP_AST( "cast_c_astp_opt", $3.ast );
 
       $$ = c_ast_patch_placeholder( $1, $3.ast );
 
@@ -5899,7 +5911,7 @@ lt_exp
     }
   ;
 
-member_or_non_member_opt
+member_or_non_member_mask_opt
   : /* empty */                   { $$ = C_FUNC_UNSPECIFIED; }
   | Y_MEMBER                      { $$ = C_FUNC_MEMBER     ; }
   | Y_NON_MEMBER                  { $$ = C_FUNC_NON_MEMBER ; }
@@ -6084,7 +6096,7 @@ type_opt
   | Y_TYPEDEF
   ;
 
-typename_opt
+typename_flag_opt
   : /* empty */                   { $$ = false; }
   | Y_TYPENAME                    { $$ = true; }
   ;
