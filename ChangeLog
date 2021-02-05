@@ -1,5 +1,16 @@
+2021-02-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.h: C_TYPE_LIT() now calls c_type_id_check() for arguments.
+   * parser.y: Doxygen.
+   * parser.y, cdecl--debug.out, cdecl-d.out: Renamed rules: _ast -> _astp (for
+     ast_pair), and others; added comments.
+
 2021-02-04  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y: ast_pair clean-up.
+   * autocomplete.c: Added some completable keywords.
+   * parser.y: If an error token is a keyword in the current language, says so.
+   * cdecl.c: Added missing "enum" as cdecl command.
    * AUTHORS, NEWS, cdecl.1, c_ast.h, c_kind.h, check.c, debug.c, english.c,
      gibberish.c, help.c, parser.y, test/Makefile.am, explain_efi-itself.out,
      explain_efi.out, explain_efui.out, explain_efz.out, help_english-c++.out,
