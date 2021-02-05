@@ -65,12 +65,16 @@ typedef CPPFunction rl_completion_func_t;
  * Subset of cdecl and C/C++ keywords that are completable.
  */
 static c_lang_lit_t const CDECL_KEYWORDS[] = {
+  { LANG_C_MIN(11),         L__ALIGNAS            },
+  { LANG_C_CPP_MIN(11,11),  L_ALIGN               },
   { LANG_ALL,               L_ARRAY               },
   //                        L_AS          // too short
+  { LANG_MIN(C_11),         L__ATOMIC             },
   { LANG_MIN(C_11),         L_ATOMIC              },
   { LANG_ALL,               L_AUTO                },
   { LANG_ALL,               L_APPLE_BLOCK         },
   { LANG_ALL,               L_APPLE___BLOCK       },
+  { LANG_MIN(C_99),         L__BOOL               },
   { LANG_MIN(C_99),         L_BOOL                },
   { LANG_CPP_MIN(11),       L_CARRIES_DEPENDENCY  },
   { LANG_ALL,               L_CAST                },
@@ -80,8 +84,9 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_CPP_MIN(11),       L_CHAR32_T            },
   { LANG_CPP_ALL,           L_CLASS               },
   { LANG_ALL,               L_COMMANDS            },
+  { LANG_MIN(C_99),         L__COMPLEX            },
   { LANG_MIN(C_99),         L_COMPLEX             },
-  { LANG_MIN(C_89),         L_CONST               },
+  //                        L_CONST     // handled in CDECL_COMMANDS
   { LANG_CPP_ALL,           L_CONST_CAST          },
   { LANG_CPP_MIN(20),       L_CONSTEVAL           },
   { LANG_CPP_MIN(11),       L_CONSTEXPR           },
@@ -96,7 +101,7 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   //                        L_DYNAMIC     // handled in CDECL_COMMANDS
   { LANG_CPP_MIN(11),       L_DYNAMIC_CAST      },
   { LANG_ALL,               L_ENGLISH           },
-  { LANG_MIN(C_89),         L_ENUM              },
+  //                        L_ENUM        // handled in CDECL_COMMANDS
   { LANG_CPP_ALL,           L_EXPLICIT          },
   { LANG_CPP_MIN(20),       L_EXPORT            },
   { LANG_ALL,               L_EXTERN            },
@@ -105,6 +110,7 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_ALL,               L_FLOAT             },
   { LANG_CPP_ALL,           L_FRIEND            },
   { LANG_ALL,               L_FUNCTION          },
+  { LANG_MIN(C_99),         L__IMAGINARY        },
   { LANG_MIN(C_99),         L_IMAGINARY         },
   { LANG_MIN(C_99),         L_INLINE            },
   { LANG_ALL,               L_INT               },
@@ -116,9 +122,11 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_CPP_ALL,           L_MEMBER            },
   { LANG_CPP_ALL,           L_MUTABLE           },
   //                        L_NAMESPACE   // handled in CDECL_COMMANDS
+  { LANG_CPP_ALL,           L_NEW               },
   { LANG_C_CPP_MIN(2X,17),  L_NODISCARD         },
   { LANG_CPP_MIN(11),       L_NOEXCEPT          },
   { LANG_CPP_ALL,           H_NON_MEMBER        },
+  { LANG_MIN(C_11),         L__NORETURN         },
   { LANG_MIN(C_11),         L_NORETURN          },
   { LANG_CPP_MIN(20),       L_NO_UNIQUE_ADDRESS },
   //                        L_OF          // too short
@@ -141,10 +149,12 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_CPP_ALL,           L_STATIC_CAST       },
   { LANG_ALL,               L_STRUCT            },
   //                        L_TO          // too short
+  { LANG_C_MIN(11),         L__THREAD_LOCAL     },
   { LANG_C_CPP_MIN(11,11),  L_THREAD_LOCAL      },
   { LANG_CPP_MAX(17),       L_THROW             },
   { LANG_CPP_ALL,           L_TRUE              },
   //                        L_TYPEDEF     // handled in CDECL_COMMANDS
+  { LANG_CPP_ALL,           L_TYPENAME          },
   { LANG_ALL,               L_UNION             },
   { LANG_ALL,               L_UNSIGNED          },
   { LANG_CPP_ALL,           H_USER_DEFINED      },
