@@ -1,3 +1,9 @@
+2021-02-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated version to 9.5.1.
+   * configure.ac: Now using AX_CHECK_COMPILE_FLAG instead of
+     AX_CFLAGS_GCC_OPTION.
+
 2021-02-05  Paul J. Lucas <paul@lucasmail.org>
 
    * c_type.h: C_TYPE_LIT() now calls c_type_id_check() for arguments.
