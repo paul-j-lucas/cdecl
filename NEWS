@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 9.5.1
+
+** `AX_CHECK_COMPILE_FLAG`
+Replaced used of `AX_CFLAGS_GCC_OPTION` with `AX_CHECK_COMPILE_FLAG`.
+
+
 * Changes in Cdecl 9.5
 
 ** Added `enum`, `class`, `struct`, and `union` attribute specifier support
