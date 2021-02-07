@@ -168,12 +168,12 @@ If no file names are given,
 or a file name of ``\f(CW-\fP'' is encountered,
 standard input will be read
 until end-of-file is encountered
-or either the
+or one of the
 .BR exit ,
 .BR q ,
 or
 .B quit
-command is read.
+commands is read.
 .PP
 You can use
 .B cdecl
@@ -668,6 +668,13 @@ and
 \f(CWoperator<=>\fP.
 .SH CDECL LANGUAGE
 .SS Commands
+In what follows,
+[] means zero or one,
+* means zero or more,
+{} means one of,
+and
+| means alternate.
+.P
 .B cdecl
 has the following commands:
 .RS 4
@@ -2539,6 +2546,7 @@ In reverse chronological order:
 .SH SEE ALSO
 .BR bison (1),
 .BR clang (1),
+.BR flex (1),
 .BR gcc (1),
 .BR vi (1),
 .BR yacc (1),
