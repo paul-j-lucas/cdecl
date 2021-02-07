@@ -838,23 +838,31 @@ declare/{S}({S}|{L})*user-def(ined)? {
 {dec_int}     { SET_TOKEN; yylval.int_val = parse_int( 10 ); return Y_INT_LIT; }
 {hex_int}     { SET_TOKEN; yylval.int_val = parse_int( 16 ); return Y_INT_LIT; }
 
+              /*
+               * Special case: if '[' is immediately followed by another '[',
+               * return a distinct token to decrease the number of shift/reduce
+               * conflicts.
+               *
+               * (This doesn't use | to have the actions fall through to
+               * eliminate a Flex warning with trailing context.)
+               */
+"<:"/{S}*"<:"   { SET_TOKEN; return Y_ATTR_BEGIN; }
+"??("/{S}*"??(" { SET_TOKEN; return Y_ATTR_BEGIN; }
+"["/{S}*"["     { SET_TOKEN; return Y_ATTR_BEGIN; }
+
               /* Digraphs. */
-"<:<:"        { SET_TOKEN_TO( "[[" ); return Y_LBRACKET2; }
-":>:>"        { SET_TOKEN_TO( "]]" ); return Y_RBRACKET2; }
 "<:"          { SET_TOKEN_TO_AND_RETURN( "[" ); }
 ":>"          { SET_TOKEN_TO_AND_RETURN( "]" ); }
 
               /* Trigraphs. */
-"??(??("      { SET_TOKEN_TO( "[[" ); return Y_LBRACKET2; }
-"??)??)"      { SET_TOKEN_TO( "]]" ); return Y_RBRACKET2; }
-"??'="        { SET_TOKEN_TO( "^=" ); return Y_CIRC_EQ  ; }
-"??!="        { SET_TOKEN_TO( "|=" ); return Y_PIPE_EQ  ; }
-"??!??!"      { SET_TOKEN_TO( "||" ); return Y_PIPE2    ; }
-"??!"         { SET_TOKEN_TO( "|" );  return Y_PIPE     ; }
-"??'"         { SET_TOKEN_TO( "^" );  return Y_CIRC     ; }
+"??'="        { SET_TOKEN_TO( "^=" ); return Y_CIRC_EQ    ; }
+"??!="        { SET_TOKEN_TO( "|=" ); return Y_PIPE_EQ    ; }
+"??!??!"      { SET_TOKEN_TO( "||" ); return Y_PIPE2      ; }
+"??!"         { SET_TOKEN_TO( "|" );  return Y_PIPE       ; }
+"??'"         { SET_TOKEN_TO( "^" );  return Y_CIRC       ; }
 "??("         { SET_TOKEN_TO_AND_RETURN( "[" ); }
 "??)"         { SET_TOKEN_TO_AND_RETURN( "]" ); }
-"??-"         { SET_TOKEN_TO( "~" );  return Y_TILDE    ; }
+"??-"         { SET_TOKEN_TO( "~" );  return Y_TILDE      ; }
 
               /*
                * Special case: if "::" is immediately followed by a '*', return
@@ -894,8 +902,6 @@ declare/{S}({S}|{L})*user-def(ined)? {
 ">>="         { SET_TOKEN; return Y_GREATER2_EQ     ; }
 "?"           { SET_TOKEN; return Y_HELP            ; }
 "?:"          { SET_TOKEN; return Y_QMARK_COLON     ; }
-"[["          { SET_TOKEN; return Y_LBRACKET2       ; }
-"]]"          { SET_TOKEN; return Y_RBRACKET2       ; }
 "^="          { SET_TOKEN; return Y_CIRC_EQ         ; }
 "|="          { SET_TOKEN; return Y_PIPE_EQ         ; }
 "||"          { SET_TOKEN; return Y_PIPE2           ; }

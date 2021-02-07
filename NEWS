@@ -12,6 +12,10 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 9.5.1
 
+** `[[` and `]]` "tokens" allow whitespace
+The `[[` and `]]` "tokens" now allow whitespace between them (since they're not
+distinct tokens).
+
 ** `AX_CHECK_COMPILE_FLAG`
 Replaced used of `AX_CFLAGS_GCC_OPTION` with `AX_CHECK_COMPILE_FLAG`.
 

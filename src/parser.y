@@ -1111,8 +1111,7 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_CHAR32_T
 
                     // C2X & C++11
-%token              Y_LBRACKET2   "[["  // for attribute specifiers
-%token              Y_RBRACKET2   "]]"  // for attribute specifiers
+%token              Y_ATTR_BEGIN        // First '[' of "[[" for an attribute.
 
                     // C++11
 %token              Y_ALIGNAS
@@ -4888,7 +4887,7 @@ attribute_specifier_list_c_tid_opt
   ;
 
 attribute_specifier_list_c_tid
-  : "[["
+  : Y_ATTR_BEGIN '['
     {
       if ( unsupported( LANG_C_CPP_MIN(2X,11)) ) {
         print_error( &@1,
@@ -4898,15 +4897,15 @@ attribute_specifier_list_c_tid
       }
       lexer_keyword_ctx = C_KW_CTX_ATTRIBUTE;
     }
-    using_opt attribute_list_c_tid_opt "]]"
+    using_opt attribute_list_c_tid_opt ']' rbracket_exp
     {
       lexer_keyword_ctx = C_KW_CTX_ALL;
 
       DUMP_START( "attribute_specifier_list_c_tid",
                   "'[[' using_opt attribute_list_c_tid_opt ']]'" );
-      DUMP_TID( "attribute_list_c_tid_opt", $4 );
+      DUMP_TID( "attribute_list_c_tid_opt", $5 );
 
-      $$ = $4;
+      $$ = $5;
 
       DUMP_END();
     }
