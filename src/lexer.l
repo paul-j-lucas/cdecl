@@ -940,7 +940,12 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 BEGIN( quote == '"' ? STR_LIT : CHAR_LIT );
               }
 
+              /*
+               * Common code between STR_LIT and CHAR_LIT.  Multicharacter
+               * literals are legal, but implementation-defined.
+               */
 <STR_LIT,CHAR_LIT>{
+              /* Escaped characters are copied verbatim, not interpreted. */
   \\(.|\n)    { strbuf_cat( &str_lit_buf, yytext, yyleng ); }
   \n          {
                 lexer_token = strbuf_take( &str_lit_buf );
@@ -962,7 +967,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
               }
 }
 
-<CHAR_LIT>{
+<CHAR_LIT>{   /* CHAR_LIT is the same as STR_LIT except ' replaces ". */
   [^'\\\n]+   { strbuf_cat( &str_lit_buf, yytext, yyleng ); }
   \'          {
                 yylloc = str_lit_loc;
