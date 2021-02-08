@@ -479,6 +479,11 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * %strbuf maintains a C-style string that additionally knows its length and
  * capacity.
+ *
+ * @sa strbuf_cat()
+ * @sa strbuf_free()
+ * @sa strbuf_init()
+ * @sa strbuf_take()
  */
 struct strbuf {
   char   *str;                          ///< String.
@@ -779,6 +784,7 @@ void strbuf_cat( strbuf_t *sbuf, char const *s, size_t s_len );
  * @param sbuf A pointer to the strbuf to initialize.
  *
  * @sa strbuf_free()
+ * @sa strbuf_take()
  */
 C_UTIL_INLINE
 void strbuf_init( strbuf_t *sbuf ) {
@@ -791,7 +797,7 @@ void strbuf_init( strbuf_t *sbuf ) {
  * @param sbuf A pointer to the strbuf to free.
  *
  * @sa strbuf_init()
- * @sa strbuf_take();
+ * @sa strbuf_take()
  */
 C_UTIL_INLINE
 void strbuf_free( strbuf_t *sbuf ) {
@@ -805,6 +811,7 @@ void strbuf_free( strbuf_t *sbuf ) {
  * @param sbuf A pointer to the strbuf to take from.
  * @return Returns said string.  The caller is responsible for deleting it.
  *
+ * @sa strbuf_free()
  * @sa strbuf_init()
  */
 C_UTIL_INLINE
