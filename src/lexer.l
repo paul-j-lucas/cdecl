@@ -907,7 +907,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 "|"           { SET_TOKEN; return Y_PIPE            ; }
 "~"           { SET_TOKEN; return Y_TILDE           ; }
 
-              /* Single-character operators. */
+              /* Single-character operators and miscellaneous punctuation. */
 "%"           |
 "("           |
 ")"           |
