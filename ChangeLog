@@ -1,5 +1,18 @@
+2021-02-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.c, c_type.c, cdecl.c, cdecl.h, check.c, lexer.h, lexer.l,
+     parser.y, types.h: Folded c_mode into lexer_find.
+
+2021-02-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: s/SET_TOKEN/SET_TOKEN_TO/ for "[".
+   * NEWS, lexer.l, parser.y: `[[` and `]]` "tokens" allow whitespace.
+
 2021-02-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Minor additions.
+   * cdecl.1: Added missing "enum" and "show" to set of first-argument
+     commands.
    * NEWS, configure.ac: Updated version to 9.5.1.
    * configure.ac: Now using AX_CHECK_COMPILE_FLAG instead of
      AX_CFLAGS_GCC_OPTION.
