@@ -26,11 +26,11 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "c_keyword.h"
-#include "cdecl.h"
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_lang.h"
 #include "c_type.h"
+#include "lexer.h"
 #include "literals.h"
 #include "parser.h"                     /* must go last */
 
@@ -387,7 +387,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
     if ( (k->lang_ids & lang_ids) == LANG_NONE )
       continue;
 
-    if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
+    if ( !lexer_is_english() &&
          k->context != C_KW_CTX_ALL && kw_ctx != k->context ) {
       //
       // Keyword contexts matter only when converting gibberish to English.

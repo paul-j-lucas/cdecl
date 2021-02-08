@@ -80,7 +80,6 @@ c_command_t const CDECL_COMMANDS[] = {
 
 // extern variable definitions
 bool        c_initialized;
-c_mode_t    c_mode;
 char const *command_line;
 size_t      command_line_len;
 size_t      inserted_len;

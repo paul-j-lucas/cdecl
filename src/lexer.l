@@ -35,6 +35,9 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+/// @cond DOXYGEN_IGNORE
+#define C_LEXER_INLINE _GL_EXTERN_INLINE
+/// @endcond
 #include "lexer.h"
 #include "c_ast.h"
 #include "c_ast_util.h"
@@ -73,15 +76,6 @@
 #endif /* __clang__ */
 
 /// @endcond
-
-/**
- * Asserts that we're in \a MODE of operation.
- * If not, returns the error token.
- *
- * @param MODE The `c_mode` we're asserting.
- */
-#define ASSERT_MODE(MODE) \
-  BLOCK( if ( c_mode != C_ ## MODE ) return Y_ERROR; )
 
 /**
  * Sets <code>\ref lexer_token</code> to the current Flex token.
@@ -409,8 +403,7 @@ static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   for ( cdecl_keyword_t const *k = CDECL_KEYWORDS; k->literal != NULL; ++k ) {
     if ( strcmp( s, k->literal ) != 0 )
       continue;
-    if ( c_mode == C_ENGLISH_TO_GIBBERISH ||
-         (k->lang_syn != NULL && k->allow_explain) )
+    if ( lexer_is_english() || (k->lang_syn != NULL && k->allow_explain) )
       return k;
     break;
   } // for
@@ -762,7 +755,8 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 //
                 // Hyphenated tokens are legal only in English.
                 //
-                ASSERT_MODE( ENGLISH_TO_GIBBERISH );
+                if ( !lexer_is_english() )
+                  return Y_ERROR;
 
                 //
                 // Now that we've matched a hyphenated token, use the same
@@ -1109,7 +1103,6 @@ void lexer_reset( bool hard_reset ) {
     yylineno = 0;
   }
   BEGIN( INITIAL );
-  c_mode = C_ENGLISH_TO_GIBBERISH;
   input_len = input_sent = 0;
   lexer_find = LEXER_FIND_ALL;
   lexer_keyword_ctx = C_KW_CTX_ALL;

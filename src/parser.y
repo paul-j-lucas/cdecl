@@ -2138,7 +2138,7 @@ explain
       //
       // would result in a parser error.
       //
-      c_mode = C_GIBBERISH_TO_ENGLISH;
+      lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
     }
   ;
 
@@ -2331,7 +2331,7 @@ class_struct_union_declaration_c
   : class_struct_union_tid
     {
       // see the comment in "explain"
-      c_mode = C_GIBBERISH_TO_ENGLISH;
+      lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
     }
     any_sname_c
     {
@@ -2391,7 +2391,7 @@ enum_declaration_c
   : enum_tid
     {
       // see the comment in "explain"
-      c_mode = C_GIBBERISH_TO_ENGLISH;
+      lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
     }
     any_sname_c_exp enum_fixed_type_c_ast_opt
     {
@@ -2428,7 +2428,7 @@ namespace_declaration_c
   : namespace_type
     {
       // see the comment in "explain"
-      c_mode = C_GIBBERISH_TO_ENGLISH;
+      lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
     }
     sname_c
     { //
@@ -2656,7 +2656,7 @@ typedef_declaration_c
   : Y_TYPEDEF
     {
       // see the comment in "explain"
-      c_mode = C_GIBBERISH_TO_ENGLISH;
+      lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
     }
     typename_flag_opt type_c_ast
     {
@@ -4251,7 +4251,7 @@ using_decl_c_ast
   : Y_USING
     {
       // see the comment in "explain"
-      c_mode = C_GIBBERISH_TO_ENGLISH;
+      lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
     }
     any_name_exp equals_exp type_c_ast
     {

@@ -31,6 +31,11 @@
 #include "pjl_config.h"                 /* must go first */
 #include "types.h"
 
+_GL_INLINE_HEADER_BEGIN
+#ifndef C_LEXER_INLINE
+# define C_LEXER_INLINE _GL_INLINE
+#endif /* C_LEXER_INLINE */
+
 /// @cond DOXYGEN_IGNORE
 
 // standard
@@ -54,8 +59,11 @@
 /** For \ref lexer_find, also look-up C/C++ keywords. */
 #define LEXER_FIND_C_KEYWORDS     (1u << 0)
 
+/** For \ref lexer_find, also look-up cdecl keywords. */
+#define LEXER_FIND_CDECL_KEYWORDS (1u << 1)
+
 /** For \ref lexer_find, also look-up `typedef`s. */
-#define LEXER_FIND_TYPEDEFS       (1u << 1)
+#define LEXER_FIND_TYPEDEFS       (1u << 2)
 
 // extern variables
 extern unsigned         lexer_find;         ///< What to look up.
@@ -73,6 +81,17 @@ extern char const      *lexer_token;        ///< Text of current token.
  */
 PJL_WARN_UNUSED_RESULT
 char const* lexer_input_line( size_t *plen );
+
+/**
+ * Convenience function for getting whether we're currently parsing pseudo-
+ * English rather than gibberish.
+ *
+ * @return Returns `true` only if we're parsing pseudo-English.
+ */
+C_LEXER_INLINE PJL_WARN_UNUSED_RESULT
+bool lexer_is_english() {
+  return (lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0;
+}
 
 /**
  * Gets the lexer's current location.
@@ -103,6 +122,8 @@ int yylex( void );
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+_GL_INLINE_HEADER_END
 
 #endif /* cdecl_lexer_H */
 /* vim:set et sw=2 ts=2: */

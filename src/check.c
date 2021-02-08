@@ -32,6 +32,7 @@
 #include "c_type.h"
 #include "cdecl.h"
 #include "did_you_mean.h"
+#include "lexer.h"
 #include "literals.h"
 #include "options.h"
 #include "print.h"
@@ -432,7 +433,7 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
   c_ast_t const *const of_ast = ast->as.ecsu.of_ast;
 
   if ( c_type_is_tid_any( &ast->type, TB_ENUM ) ) {
-    if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
+    if ( !lexer_is_english() &&
          c_type_is_tid_any( &ast->type, TB_STRUCT | TB_CLASS ) &&
         !c_type_is_tid_any( &ast->type, TS_TYPEDEF ) ) {
       print_error( &ast->loc,
