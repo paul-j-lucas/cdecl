@@ -814,7 +814,7 @@ void strbuf_free( strbuf_t *sbuf ) {
  * @sa strbuf_free()
  * @sa strbuf_init()
  */
-C_UTIL_INLINE
+C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 char* strbuf_take( strbuf_t *sbuf ) {
   char *const str = sbuf->str;
   strbuf_init( sbuf );
