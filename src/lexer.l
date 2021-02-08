@@ -960,7 +960,8 @@ declare/{S}({S}|{L})*user-def(ined)? {
 <STR_LIT>{
   [^"\\\n]+   { strbuf_cat( &str_lit_buf, yytext, yyleng ); }
   \"          {
-                yylloc = str_lit_loc;
+                yylloc.first_line   = str_lit_loc.first_line;
+                yylloc.first_column = str_lit_loc.first_column;
                 yylval.name = strbuf_take( &str_lit_buf );
                 BEGIN( INITIAL );
                 return Y_STR_LIT;
@@ -970,7 +971,8 @@ declare/{S}({S}|{L})*user-def(ined)? {
 <CHAR_LIT>{   /* CHAR_LIT is the same as STR_LIT except ' replaces ". */
   [^'\\\n]+   { strbuf_cat( &str_lit_buf, yytext, yyleng ); }
   \'          {
-                yylloc = str_lit_loc;
+                yylloc.first_line   = str_lit_loc.first_line;
+                yylloc.first_column = str_lit_loc.first_column;
                 yylval.name = strbuf_take( &str_lit_buf );
                 BEGIN( INITIAL );
                 return Y_CHAR_LIT;
