@@ -927,12 +927,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 "{"           |
 "}"           { SET_TOKEN; return lexer_token[0]    ; }
 
-{chr_str_pfx} { //
-                // We strbuf_free() before strbuf_init() to free any previous
-                // buffer left over in case there was an unterminated literal
-                // error.
-                //
-                strbuf_free( &str_lit_buf );
+{chr_str_pfx} {
                 strbuf_init( &str_lit_buf );
 
                 //
@@ -941,13 +936,14 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 //
                 str_lit_loc = yylloc;
 
-                BEGIN( yytext[ yyleng - 1 ] == '"' ? STR_LIT : CHAR_LIT );
+                char const quote = yytext[ yyleng - 1 ];
+                BEGIN( quote == '"' ? STR_LIT : CHAR_LIT );
               }
 
 <STR_LIT,CHAR_LIT>{
   \\(.|\n)    { strbuf_cat( &str_lit_buf, yytext, yyleng ); }
   \n          {
-                lexer_token = str_lit_buf.str;
+                lexer_token = strbuf_take( &str_lit_buf );
                 print_error( &str_lit_loc,
                   "unterminated %s literal\n",
                   YY_START == STR_LIT ? "string" : "character"
@@ -959,7 +955,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 <STR_LIT>{
   [^"\\\n]+   { strbuf_cat( &str_lit_buf, yytext, yyleng ); }
   \"          {
-                yylloc.first_column = str_lit_loc.first_column;
+                yylloc = str_lit_loc;
                 yylval.name = strbuf_take( &str_lit_buf );
                 BEGIN( INITIAL );
                 return Y_STR_LIT;
@@ -969,7 +965,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 <CHAR_LIT>{
   [^'\\\n]+   { strbuf_cat( &str_lit_buf, yytext, yyleng ); }
   \'          {
-                yylloc.first_column = str_lit_loc.first_column;
+                yylloc = str_lit_loc;
                 yylval.name = strbuf_take( &str_lit_buf );
                 BEGIN( INITIAL );
                 return Y_CHAR_LIT;
@@ -1107,6 +1103,7 @@ void lexer_reset( bool hard_reset ) {
   lexer_find = LEXER_FIND_ALL;
   lexer_keyword_ctx = C_KW_CTX_ALL;
   newline();
+  strbuf_free( &str_lit_buf );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
