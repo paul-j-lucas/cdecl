@@ -846,9 +846,9 @@ declare/{S}({S}|{L})*user-def(ined)? {
                * (This doesn't use | to have the actions fall through to
                * eliminate a Flex warning with trailing context.)
                */
-"<:"/{S}*"<:"   { SET_TOKEN; return Y_ATTR_BEGIN; }
-"??("/{S}*"??(" { SET_TOKEN; return Y_ATTR_BEGIN; }
-"["/{S}*"["     { SET_TOKEN; return Y_ATTR_BEGIN; }
+"<:"/{S}*"<:"   { SET_TOKEN_TO( "[" ); return Y_ATTR_BEGIN; }
+"??("/{S}*"??(" { SET_TOKEN_TO( "[" ); return Y_ATTR_BEGIN; }
+"["/{S}*"["     { SET_TOKEN;           return Y_ATTR_BEGIN; }
 
               /* Digraphs. */
 "<:"          { SET_TOKEN_TO_AND_RETURN( "[" ); }
