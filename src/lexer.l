@@ -64,6 +64,7 @@
 
 #ifdef __GNUC__
 // Silence these warnings for Flex-generated code.
+#pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
 #pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #pragma GCC diagnostic ignored "-Wredundant-decls"
