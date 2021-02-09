@@ -1774,15 +1774,13 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
 
   c_lang_id_t const lang_ids = c_type_check( &ast->type );
   if ( lang_ids != LANG_ALL ) {
-    if ( lang_ids == LANG_NONE )
-      print_error( &ast->loc,
-        "\"%s\" is illegal\n", c_type_name_error( &ast->type )
-      );
-    else
-      print_error( &ast->loc,
-        "\"%s\" is illegal in %s\n",
-        c_type_name_error( &ast->type ), C_LANG_NAME()
-      );
+    print_error( &ast->loc,
+      "\"%s\" is illegal", c_type_name_error( &ast->type )
+    );
+    EPRINTF( " for %s", c_kind_name( ast->kind_id ) );
+    if ( lang_ids != LANG_NONE )
+      EPRINTF( " in %s", C_LANG_NAME() );
+    EPUTC( '\n' );
     return VISITOR_ERROR_FOUND;
   }
 
