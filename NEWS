@@ -12,6 +12,10 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 9.5.1
 
+** Functions as parameters
+A function as a parameter is now automatically converted to a pointer to
+function per 6.3.2.1(4) of the C standard.
+
 ** `[[` and `]]` "tokens" allow whitespace
 The `[[` and `]]` "tokens" now allow whitespace between them (since they're not
 distinct tokens).

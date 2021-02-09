@@ -122,6 +122,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_fccel_v-01.test \
 	tests/declare_fccel_v-02.test \
 	tests/declare_fccel_v-03.test \
+	tests/declare_ff_i_v.test \
 	tests/declare_ff_v.test \
 	tests/declare_fid_v.test \
 	tests/declare_fipfi_v_pfi_v.test \
@@ -358,6 +359,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fasc3_v.test \
 	tests/explain_fav_v.test \
 	tests/explain_fccel_v.test \
+	tests/explain_ff_i_v.test \
 	tests/explain_ff_v.test \
 	tests/explain_fid_v.test \
 	tests/explain_fipfi_v_pfi_v.test \
