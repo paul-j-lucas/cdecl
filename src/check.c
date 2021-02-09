@@ -1785,6 +1785,10 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   }
 
   switch ( ast->kind_id ) {
+    case K_APPLE_BLOCK:
+    case K_FUNCTION:
+      break;
+
     case K_USER_DEF_CONVERSION: {
       if ( c_type_is_tid_any( &ast->type, ~TS_USER_DEF_CONV) ) {
         print_error( &ast->loc,
@@ -1812,35 +1816,19 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
         print_hint( "%s to %s", L_POINTER, L_ARRAY );
         return VISITOR_ERROR_FOUND;
       }
-      break;
+      PJL_FALLTHROUGH;
     }
 
-    case K_APPLE_BLOCK:
-    case K_CONSTRUCTOR:
-    case K_DESTRUCTOR:
-    case K_FUNCTION:
-    case K_OPERATOR:
-    case K_USER_DEF_LITERAL:
-      data = REINTERPRET_CAST( void*, true );
-      FOREACH_PARAM( param, ast ) {
-        if ( !c_ast_check_visitor( c_param_ast( param ), c_ast_visitor_type,
-                                   data ) ) {
-          return VISITOR_ERROR_FOUND;
-        }
-      } // for
-      if ( (ast->kind_id & (K_FUNCTION | K_OPERATOR)) != K_NONE )
-        break;
-      PJL_FALLTHROUGH;
-
     default:
-      if ( !is_func_param &&
-           c_type_is_tid_any( &ast->type, TA_CARRIES_DEPENDENCY ) ) {
+      if ( c_type_is_tid_any( &ast->type, TA_CARRIES_DEPENDENCY ) &&
+           !is_func_param ) {
         print_error( &ast->loc,
           "\"%s\" can only appear on functions or function parameters\n",
           c_type_id_name_error( TA_CARRIES_DEPENDENCY )
         );
         return VISITOR_ERROR_FOUND;
       }
+
       if ( c_type_is_tid_any( &ast->type, TA_NORETURN ) ) {
         print_error( &ast->loc,
           "\"%s\" can only appear on functions\n",
@@ -1867,6 +1855,15 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
         error_kind_not_tid( ast, TS_RESTRICT, /*newline=*/true );
         return VISITOR_ERROR_FOUND;
     } // switch
+  }
+
+  if ( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE ) {
+    data = REINTERPRET_CAST( void*, true );
+    FOREACH_PARAM( param, ast ) {
+      c_ast_t const *const param_ast = c_param_ast( param );
+      if ( !c_ast_check_visitor( param_ast, c_ast_visitor_type, data ) )
+        return VISITOR_ERROR_FOUND;
+    } // for
   }
 
   return VISITOR_ERROR_NOT_FOUND;
