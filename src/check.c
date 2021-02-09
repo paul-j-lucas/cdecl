@@ -141,6 +141,9 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_main_char_ptr_arg( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_func_params_knr( c_ast_t const* );
+
+PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_new_params( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
@@ -836,6 +839,9 @@ static bool c_ast_check_func_main_char_ptr_arg( c_ast_t const *ast ) {
  */
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_params( c_ast_t const *ast ) {
+  if ( opt_lang == LANG_C_KNR )
+    return c_ast_check_func_params_knr( ast );
+
   assert( ast != NULL );
   assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
   assert( opt_lang != LANG_C_KNR );
@@ -845,7 +851,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
   FOREACH_PARAM( param, ast ) {
     if ( ++n_params > 1 && void_ast != NULL )
-      goto only_void;
+      goto only_void;                   // R f(void, T)
 
     c_ast_t const *const param_ast = c_param_ast( param );
 
@@ -879,13 +885,14 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           //
           if ( !c_ast_empty_name( param_ast ) ) {
             print_error( &param_ast->loc,
-              "parameters can not be %s\n", L_VOID
+              "named parameters can not be %s\n", L_VOID
             );
             return false;
           }
+          assert( void_ast == NULL );
           void_ast = param_ast;
           if ( n_params > 1 )
-            goto only_void;
+            goto only_void;             // R f(T, void)
           continue;
         }
         PJL_FALLTHROUGH;
@@ -908,6 +915,10 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         }
         break;
 
+      case K_PLACEHOLDER:               // should not occur in completed AST
+        assert( param_ast->kind_id != K_PLACEHOLDER );
+        break;
+
       case K_VARIADIC:
         if ( ast->kind_id == K_OPERATOR &&
              ast->as.oper.oper_id != C_OP_PARENS ) {
@@ -923,6 +934,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           );
           return false;
         }
+        assert( variadic_ast == NULL );
         variadic_ast = param_ast;
         continue;
 
@@ -980,6 +992,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
         return false;
     } // switch
   } // for
+
   return true;
 }
 
@@ -1512,6 +1525,47 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
 }
 
 /**
+ * Checks a user-defined conversion operator AST for errors.
+ *
+ * @param ast The user-defined conversion operator AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind_id == K_USER_DEF_CONVERSION );
+
+  if ( c_type_is_tid_any( &ast->type, ~TS_USER_DEF_CONV) ) {
+    print_error( &ast->loc,
+      "%s %s %ss can only be: %s\n",
+      H_USER_DEFINED, L_CONVERSION, L_OPERATOR,
+      c_type_id_name_error( TS_USER_DEF_CONV )
+    );
+    return false;
+  }
+  if ( c_type_is_tid_any( &ast->type, TS_FRIEND ) && c_ast_empty_name( ast ) ) {
+    print_error( &ast->loc,
+      "%s %s %s %s must use qualified name\n",
+      L_FRIEND, H_USER_DEFINED, L_CONVERSION, L_OPERATOR
+    );
+    return false;
+  }
+  c_ast_t const *const conv_ast = c_ast_untypedef( ast->as.udef_conv.conv_ast );
+  if ( conv_ast->kind_id == K_ARRAY ) {
+    print_error( &conv_ast->loc,
+      "%s %s %s can not convert to an %s",
+      H_USER_DEFINED, L_CONVERSION, L_OPERATOR, L_ARRAY
+    );
+    print_hint( "%s to %s", L_POINTER, L_ARRAY );
+    return false;
+  }
+
+  return  c_ast_check_ret_type( ast ) &&
+          c_ast_check_func_cpp( ast ) &&
+          c_ast_check_func_params( ast );
+}
+
+/**
  * Checks all user-defined literal parameters for semantic errors.
  *
  * @param ast The user-defined literal AST to check.
@@ -1674,25 +1728,13 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 
     case K_APPLE_BLOCK:
     case K_FUNCTION:
-    case K_USER_DEF_CONVERSION:
-    case K_USER_DEF_LITERAL:
       if ( !c_ast_check_ret_type( ast ) )
         return VISITOR_ERROR_FOUND;
       PJL_FALLTHROUGH;
 
     case K_CONSTRUCTOR:
-      if ( !c_ast_check_func( ast ) )
+      if ( !(c_ast_check_func( ast ) && c_ast_check_func_params( ast )) )
         return VISITOR_ERROR_FOUND;
-      {
-        bool const params_ok =
-          ast->kind_id == K_USER_DEF_LITERAL ?
-            c_ast_check_udef_lit_params( ast ) :
-            opt_lang == LANG_C_KNR ?
-              c_ast_check_func_params_knr( ast ) :
-              c_ast_check_func_params( ast );
-        if ( !params_ok )
-          return VISITOR_ERROR_FOUND;
-      }
       PJL_FALLTHROUGH;
 
     case K_DESTRUCTOR: {
@@ -1748,6 +1790,19 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       if ( !c_ast_check_reference( ast ) )
         return VISITOR_ERROR_FOUND;
       break;
+
+    case K_USER_DEF_CONVERSION:
+      if ( !c_ast_check_udef_conv( ast ) )
+        return VISITOR_ERROR_FOUND;
+      break;
+
+    case K_USER_DEF_LITERAL:
+      if ( !(c_ast_check_ret_type( ast ) &&
+             c_ast_check_func_cpp( ast )  &&
+             c_ast_check_udef_lit_params( ast )) ) {
+        return VISITOR_ERROR_FOUND;
+      }
+      break;
   } // switch
 
   if ( ast->kind_id != K_FUNCTION &&
@@ -1784,59 +1839,24 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
     return VISITOR_ERROR_FOUND;
   }
 
-  switch ( ast->kind_id ) {
-    case K_APPLE_BLOCK:
-    case K_FUNCTION:
-      break;
-
-    case K_USER_DEF_CONVERSION: {
-      if ( c_type_is_tid_any( &ast->type, ~TS_USER_DEF_CONV) ) {
-        print_error( &ast->loc,
-          "%s %s %ss can only be: %s\n",
-          H_USER_DEFINED, L_CONVERSION, L_OPERATOR,
-          c_type_id_name_error( TS_USER_DEF_CONV )
-        );
-        return VISITOR_ERROR_FOUND;
-      }
-      if ( c_type_is_tid_any( &ast->type, TS_FRIEND ) &&
-           c_ast_empty_name( ast ) ) {
-        print_error( &ast->loc,
-          "%s %s %s %s must use qualified name\n",
-          L_FRIEND, H_USER_DEFINED, L_CONVERSION, L_OPERATOR
-        );
-        return VISITOR_ERROR_FOUND;
-      }
-      c_ast_t const *const conv_ast =
-        c_ast_untypedef( ast->as.udef_conv.conv_ast );
-      if ( conv_ast->kind_id == K_ARRAY ) {
-        print_error( &conv_ast->loc,
-          "%s %s %s can not convert to an %s",
-          H_USER_DEFINED, L_CONVERSION, L_OPERATOR, L_ARRAY
-        );
-        print_hint( "%s to %s", L_POINTER, L_ARRAY );
-        return VISITOR_ERROR_FOUND;
-      }
-      PJL_FALLTHROUGH;
+  if ( (ast->kind_id & (K_APPLE_BLOCK | K_FUNCTION)) == K_NONE ) {
+    if ( c_type_is_tid_any( &ast->type, TA_CARRIES_DEPENDENCY ) &&
+         !is_func_param ) {
+      print_error( &ast->loc,
+        "\"%s\" can only appear on functions or function parameters\n",
+        c_type_id_name_error( TA_CARRIES_DEPENDENCY )
+      );
+      return VISITOR_ERROR_FOUND;
     }
 
-    default:
-      if ( c_type_is_tid_any( &ast->type, TA_CARRIES_DEPENDENCY ) &&
-           !is_func_param ) {
-        print_error( &ast->loc,
-          "\"%s\" can only appear on functions or function parameters\n",
-          c_type_id_name_error( TA_CARRIES_DEPENDENCY )
-        );
-        return VISITOR_ERROR_FOUND;
-      }
-
-      if ( c_type_is_tid_any( &ast->type, TA_NORETURN ) ) {
-        print_error( &ast->loc,
-          "\"%s\" can only appear on functions\n",
-          c_type_id_name_error( TA_NORETURN )
-        );
-        return VISITOR_ERROR_FOUND;
-      }
-  } // switch
+    if ( c_type_is_tid_any( &ast->type, TA_NORETURN ) ) {
+      print_error( &ast->loc,
+        "\"%s\" can only appear on functions\n",
+        c_type_id_name_error( TA_NORETURN )
+      );
+      return VISITOR_ERROR_FOUND;
+    }
+  }
 
   if ( c_type_is_tid_any( &ast->type, TS_RESTRICT ) ) {
     switch ( ast->kind_id ) {
