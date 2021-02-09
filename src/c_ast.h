@@ -214,7 +214,8 @@ struct c_builtin_ast {
  * taken advantage of.
  */
 struct c_constructor_ast {
-  /// So `param_ast_list` is at same offset as in `c_function_ast`.
+  /// Constructors don't have a return type, but we need an unused pointer so
+  /// `param_ast_list` is at same offset as in `c_function_ast`.
   void           *not_used;
 
   c_ast_list_t    param_ast_list;       ///< Constructor parameters(s), if any.
@@ -224,7 +225,7 @@ struct c_constructor_ast {
  * AST node for a C/C++ `enum`, `class`, `struct`, or `union` type.
  */
 struct c_ecsu_ast {
-  c_ast_t        *of_ast;               ///< For `enum`, the fixed type.
+  c_ast_t        *of_ast;               ///< For `enum`, the fixed type, if any.
   c_sname_t       ecsu_sname;           ///< enum/class/struct/union name
 };
 
