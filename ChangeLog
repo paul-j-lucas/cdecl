@@ -1,5 +1,27 @@
+2021-02-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * stddef.in.h: Updated Gnulib.
+   * NEWS, parser.y, test/Makefile.am, declare_ff_i_v.out, explain_ff_i_v.out,
+     declare_ff_i_v.test, explain_ff_i_v.test: A function as a parameter is now
+     automatically converted to a pointer to function per 6.3.2.1(4) of the C
+     standard.
+   * check.c: Added c_ast_check_udef_conv(); folded code into
+     c_ast_check_udef_conv(); added assert()s; other clean-up.
+   * check.c: c_ast_visitor_type() clean-up.
+   * check.c: Simplified print_error() call.
+
 2021-02-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * check.c: Added kind to type error messages.
+   * c_ast.h: Comments.
+   * lexer.l: Added -Wconversion warning.
+   * lexer.l: Now setting only first_line & first_column of yylloc for str/char
+     literals.
+   * lexer.l: Comments.
+   * lexer.l: Comment.
+   * lexer.l: str_lit_buf clean-up.
+   * util.h: Added missing PJL_WARN_UNUSED_RESULT.
+   * util.h: Doxygen.
    * c_keyword.c, c_type.c, cdecl.c, cdecl.h, check.c, lexer.h, lexer.l,
      parser.y, types.h: Folded c_mode into lexer_find.
 
