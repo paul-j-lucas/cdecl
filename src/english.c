@@ -300,12 +300,50 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   } // switch
 }
 
-void c_ast_english_type( c_ast_t const *ast, FILE *eout ) {
+void c_ast_explain_declaration( c_ast_t const *ast, FILE *eout ) {
+  assert( ast != NULL );
+
+  FPRINTF( eout, "%s ", L_DECLARE );
+  if ( ast->kind_id != K_USER_DEF_CONVERSION ) {
+    //
+    // Every kind but a user-defined conversion has a name.
+    //
+    c_sname_t const *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
+    char const *local_name, *scope_name;
+
+    if ( ast->kind_id == K_OPERATOR ) {
+      local_name = c_oper_token_c( ast->as.oper.oper_id );
+      scope_name = found_sname != NULL ? c_sname_full_name( found_sname ) : "";
+    } else {
+      assert( found_sname != NULL );
+      assert( !c_sname_empty( found_sname ) );
+      local_name = c_sname_local_name( found_sname );
+      scope_name = c_sname_scope_name( found_sname );
+    }
+
+    assert( local_name != NULL );
+    FPRINTF( eout, "%s ", local_name );
+    if ( scope_name[0] != '\0' ) {
+      c_type_t const *const scope_type = c_sname_local_type( found_sname );
+      assert( !c_type_is_none( scope_type ) );
+      FPRINTF( eout,
+        "%s %s %s ", L_OF, c_type_name( scope_type ), scope_name
+      );
+    }
+    FPRINTF( eout, "%s ", L_AS );
+  }
+
+  c_ast_english( ast, eout );
+  FPUTC( '\n', eout );
+}
+
+void c_ast_explain_type( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
   FPRINTF( eout, "%s ", L_DEFINE );
   c_sname_english( &ast->sname, eout );
   FPRINTF( eout, " %s ", L_AS );
   c_ast_english( ast, eout );
+  FPUTC( '\n', eout );
 }
 
 void c_sname_english( c_sname_t const *sname, FILE *eout ) {

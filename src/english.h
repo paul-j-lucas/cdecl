@@ -48,25 +48,46 @@
 /**
  * Prints \a ast as a declaration in pseudo-English.
  *
+ * @note A newline is _not_ printed.
+ *
  * @param ast The AST to print.
  * @param eout The `FILE` to print to.
  *
- * @sa c_ast_english_type()
+ * @sa c_ast_explain_declaration()
+ * @sa c_ast_explain_type()
  */
 void c_ast_english( c_ast_t const *ast, FILE *eout );
 
 /**
- * Prints \a ast as a type in pseudo-English.
+ * Explains \a ast as a declaration in pseudo-English.
  *
- * @param ast The AST to print.
+ * @note A newline _is_ printed.
+ *
+ * @param ast The AST to explain.
  * @param eout The `FILE` to print to.
  *
  * @sa c_ast_english()
+ * @sa c_ast_explain_type()
  */
-void c_ast_english_type( c_ast_t const *ast, FILE *eout );
+void c_ast_explain_declaration( c_ast_t const *ast, FILE *eout );
+
+/**
+ * Explains \a ast as a type in pseudo-English.
+ *
+ * @note A newline _is_ printed.
+ *
+ * @param ast The AST to explain.
+ * @param eout The `FILE` to print to.
+ *
+ * @sa c_ast_english()
+ * @sa c_ast_explain_declaration()
+ */
+void c_ast_explain_type( c_ast_t const *ast, FILE *eout );
 
 /**
  * Prints \a sname in pseudo-English.
+ *
+ * @note A newline is _not_ printed.
  *
  * @param sname The name to print.
  * @param eout The `FILE` to print to.

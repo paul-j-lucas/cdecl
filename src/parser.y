@@ -615,48 +615,6 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
 }
 
 /**
- * Prints the pseudo-English explanation for a declaration AST.
- *
- * @param ast The AST to explain.
- */
-static void c_ast_explain_declaration( c_ast_t const *ast ) {
-  assert( ast != NULL );
-
-  FPRINTF( fout, "%s ", L_DECLARE );
-  if ( ast->kind_id != K_USER_DEF_CONVERSION ) {
-    //
-    // Every kind but a user-defined conversion has a name.
-    //
-    c_sname_t const *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
-    char const *local_name, *scope_name;
-
-    if ( ast->kind_id == K_OPERATOR ) {
-      local_name = c_oper_token_c( ast->as.oper.oper_id );
-      scope_name = found_sname != NULL ? c_sname_full_name( found_sname ) : "";
-    } else {
-      assert( found_sname != NULL );
-      assert( !c_sname_empty( found_sname ) );
-      local_name = c_sname_local_name( found_sname );
-      scope_name = c_sname_scope_name( found_sname );
-    }
-
-    assert( local_name != NULL );
-    FPRINTF( fout, "%s ", local_name );
-    if ( scope_name[0] != '\0' ) {
-      c_type_t const *const scope_type = c_sname_local_type( found_sname );
-      assert( !c_type_is_none( scope_type ) );
-      FPRINTF( fout,
-        "%s %s %s ", L_OF, c_type_name( scope_type ), scope_name
-      );
-    }
-    FPRINTF( fout, "%s ", L_AS );
-  }
-
-  c_ast_english( ast, fout );
-  FPUTC( '\n', fout );
-}
-
-/**
  * Creates a pointer AST to \a ast.
  *
  * @param ast The AST to create a pointer to.
@@ -828,10 +786,9 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
 
   if ( show_type && show_in_lang ) {
     if ( sti->gib_kind == C_GIB_NONE )
-      c_ast_english_type( tdef->ast, fout );
+      c_ast_explain_type( tdef->ast, fout );
     else
       c_typedef_gibberish( tdef, sti->gib_kind, fout );
-    FPUTC( '\n', fout );
   }
   return false;
 }
@@ -2045,7 +2002,7 @@ explain_c
       DUMP_END();
 
       C_AST_CHECK_DECL( $2 );
-      c_ast_explain_declaration( $2 );
+      c_ast_explain_declaration( $2, fout );
     }
 
     /*
@@ -2058,7 +2015,7 @@ explain_c
       DUMP_END();
 
       C_AST_CHECK_DECL( $2 );
-      c_ast_explain_declaration( $2 );
+      c_ast_explain_declaration( $2, fout );
     }
 
     /*
@@ -2071,7 +2028,7 @@ explain_c
       DUMP_END();
 
       C_AST_CHECK_DECL( $2 );
-      c_ast_explain_declaration( $2 );
+      c_ast_explain_declaration( $2, fout );
     }
 
     /*
@@ -2084,7 +2041,7 @@ explain_c
       DUMP_END();
 
       C_AST_CHECK_DECL( $2 );
-      c_ast_explain_declaration( $2 );
+      c_ast_explain_declaration( $2, fout );
     }
 
     /*
@@ -2107,7 +2064,7 @@ explain_c
       DUMP_END();
 
       C_AST_CHECK_DECL( $2.ast );
-      c_ast_explain_declaration( $2.ast );
+      c_ast_explain_declaration( $2.ast, fout );
     }
 
     /*
@@ -2120,7 +2077,7 @@ explain_c
       DUMP_END();
 
       C_AST_CHECK_DECL( $2 );
-      c_ast_explain_declaration( $2 );
+      c_ast_explain_declaration( $2, fout );
     }
 
     /*
@@ -2205,7 +2162,7 @@ alignas
 
 decl_list_c_opt
     /*
-     * An enum, class, struct, or union declaration by itself, e.g.:
+     * An enum, class, struct, or union (ECSU) declaration by itself, e.g.:
      *
      *      explain struct S
      *
@@ -2214,7 +2171,7 @@ decl_list_c_opt
   : // in_attr: type_c_ast
     /* empty */
     {
-      c_ast_t const *const type_ast = ia_type_ast_peek();
+      c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "decl_list_c_opt", "<empty>" );
       DUMP_AST( "(type_c_ast)", type_ast );
@@ -2222,25 +2179,31 @@ decl_list_c_opt
       DUMP_END();
 
       if ( type_ast->kind_id != K_ENUM_CLASS_STRUCT_UNION ) {
+        //
+        // The declaration is a non-ECSU type, e.g.:
+        //
+        //      int
+        //
         c_loc_t const loc = lexer_loc();
         print_error( &loc, "declaration expected\n" );
         PARSE_ABORT();
       }
 
-      c_sname_t const *const sname = &type_ast->as.ecsu.ecsu_sname;
-      assert( !c_sname_empty( sname ) );
+      c_sname_t const *const ecsu_sname = &type_ast->as.ecsu.ecsu_sname;
+      assert( !c_sname_empty( ecsu_sname ) );
 
-      if ( c_sname_count( sname ) > 1 ) {
+      if ( c_sname_count( ecsu_sname ) > 1 ) {
         print_error( &type_ast->loc,
           "forward declaration can not have a scoped name\n"
         );
         PARSE_ABORT();
       }
 
+      c_sname_t temp_sname = c_sname_dup( ecsu_sname );
+      c_ast_set_sname( type_ast, &temp_sname );
+
       C_AST_CHECK_DECL( type_ast );
-      FPRINTF( fout, "%s %s %s ", L_DEFINE, c_sname_local_name( sname ), L_AS );
-      c_ast_english( type_ast, fout );
-      FPUTC( '\n', fout );
+      c_ast_explain_type( type_ast, fout );
     }
 
   | decl_list_c
@@ -2284,7 +2247,7 @@ decl_c
       if ( decl_ast == NULL )
         PARSE_ABORT();
       C_AST_CHECK_DECL( decl_ast );
-      c_ast_explain_declaration( decl_ast );
+      c_ast_explain_declaration( decl_ast, fout );
 
       //
       // The type's AST takes on the name of the thing being declared, e.g.:
@@ -2563,10 +2526,9 @@ show_command
       DUMP_END();
 
       if ( $3 == C_GIB_NONE )
-        c_ast_english_type( $2->ast, fout );
+        c_ast_explain_type( $2->ast, fout );
       else
         c_typedef_gibberish( $2, $3, fout );
-      FPUTC( '\n', fout );
     }
 
   | Y_SHOW any_typedef Y_AS show_format_exp
@@ -2577,7 +2539,6 @@ show_command
       DUMP_END();
 
       c_typedef_gibberish( $2, $4, fout );
-      FPUTC( '\n', fout );
     }
 
   | Y_SHOW show_which_types_mask_opt show_format_opt

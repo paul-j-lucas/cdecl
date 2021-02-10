@@ -871,6 +871,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
 
   if ( opt_semicolon && scope_type.base_tid != TB_NAMESPACE )
     FPUTC( ';', gout );
+  FPUTC( '\n', gout );
 }
 
 char const* graph_token_c( char const *token ) {
