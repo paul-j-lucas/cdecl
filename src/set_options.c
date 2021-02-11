@@ -390,7 +390,7 @@ static void set_trigraphs( bool enabled, c_loc_t const *opt_name_loc,
  * @return Returns `true` only if \a s1 equals \a s2 (ignoring hyphens)
  * for \a n characters.
  */
-static bool strn_nohyphen_eq( char const *s1, char const *s2, size_t n ) {
+static bool strn_nohyphen_equal( char const *s1, char const *s2, size_t n ) {
   while ( n-- > 0 ) {
     if ( *s1 == '-' )
       ++s1;
@@ -434,7 +434,7 @@ void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
 
   set_option_t const *found_opt = NULL;
   for ( set_option_t const *opt = SET_OPTIONS; opt->name != NULL; ++opt ) {
-    if ( strn_nohyphen_eq( opt->name, opt_name, opt_name_len ) ) {
+    if ( strn_nohyphen_equal( opt->name, opt_name, opt_name_len ) ) {
       if ( found_opt != NULL ) {
         print_error( opt_name_loc,
           "\"%s\": ambiguous set option; could be \"%s%s\" or \"%s%s\"\n",
