@@ -45,6 +45,8 @@
 
 /**
  * Convenience macro for declaring a `set` option function.
+ *
+ * @param NAME The option name with `-` replaced by `_`.
  */
 #define DECLARE_SET_OPTION_FN(NAME) \
   static void set_##NAME( bool, c_loc_t const*, char const*, c_loc_t const* )
