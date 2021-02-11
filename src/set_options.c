@@ -120,7 +120,7 @@ static void print_options( void ) {
 
   if ( any_explicit_int() ) {
     FPUTS( "    explicit-int=", fout );
-    print_opt_explicit_int();
+    print_explicit_int();
     PUTC( '\n' );
   } else {
     FPUTS( "  noexplicit-int\n", fout );
@@ -259,9 +259,9 @@ static void set_explicit_int( bool enabled, c_loc_t const *opt_name_loc,
                               c_loc_t const *opt_value_loc ) {
   (void)opt_name_loc;
   if ( enabled )
-    parse_opt_explicit_int( opt_value_loc, opt_value );
+    parse_explicit_int( opt_value_loc, opt_value );
   else
-    parse_opt_explicit_int( NULL, "" );
+    parse_explicit_int( NULL, "" );
 }
 
 #ifdef ENABLE_FLEX_DEBUG

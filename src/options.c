@@ -87,7 +87,7 @@ FILE               *fout;
  *
  * @sa any_explicit_int()
  * @sa is_explicit_int()
- * @sa parse_opt_explicit_int()
+ * @sa parse_explicit_int()
  * @sa set_opt_explicit_int()
  */
 static c_type_id_t  opt_explicit_int[] = { TB_NONE, TB_NONE };
@@ -287,7 +287,7 @@ static bool is_cppdecl( char const *prog_name ) {
  * error message and exits if \a when is invalid.
  */
 PJL_WARN_UNUSED_RESULT
-static color_when_t parse_opt_color_when( char const *when ) {
+static color_when_t parse_color_when( char const *when ) {
   struct colorize_map {
     char const   *map_when;
     color_when_t  map_colorization;
@@ -339,7 +339,7 @@ static color_when_t parse_opt_color_when( char const *when ) {
  * lang_name.
  */
 PJL_WARN_UNUSED_RESULT
-static c_lang_id_t parse_opt_lang( char const *lang_name ) {
+static c_lang_id_t parse_lang( char const *lang_name ) {
   assert( lang_name != NULL );
 
   c_lang_id_t const lang_id = c_lang_find( lang_name );
@@ -397,33 +397,33 @@ static void parse_options( int argc, char const *argv[const] ) {
       break;
     SET_OPTION( opt );
     switch ( opt ) {
-      case '2': opt_graph       = C_GRAPH_DI;                     break;
-      case '3': opt_graph       = C_GRAPH_TRI;                    break;
-      case 'a': opt_alt_tokens  = true;                           break;
+      case '2': opt_graph       = C_GRAPH_DI;                 break;
+      case '3': opt_graph       = C_GRAPH_TRI;                break;
+      case 'a': opt_alt_tokens  = true;                       break;
 #ifdef YYDEBUG
-      case 'B': opt_bison_debug = true;                           break;
+      case 'B': opt_bison_debug = true;                       break;
 #endif /* YYDEBUG */
-      case 'c': opt_conf_file   = optarg;                         break;
-      case 'C': opt_no_conf     = true;                           break;
+      case 'c': opt_conf_file   = optarg;                     break;
+      case 'C': opt_no_conf     = true;                       break;
 #ifdef ENABLE_CDECL_DEBUG
-      case 'd': opt_cdecl_debug = true;                           break;
+      case 'd': opt_cdecl_debug = true;                       break;
 #endif /* ENABLE_CDECL_DEBUG */
-      case 'e': opt_explain     = true;                           break;
-      case 'E': opt_east_const  = true;                           break;
-      case 'f': fin_path        = optarg;                         break;
+      case 'e': opt_explain     = true;                       break;
+      case 'E': opt_east_const  = true;                       break;
+      case 'f': fin_path        = optarg;                     break;
 #ifdef ENABLE_FLEX_DEBUG
-      case 'F': opt_flex_debug  = true;                           break;
+      case 'F': opt_flex_debug  = true;                       break;
 #endif /* ENABLE_FLEX_DEBUG */
    // case 'h': usage();        // default case handles this
-      case 'i': opt_interactive = true;                           break;
-      case 'I': parse_opt_explicit_int( NULL, optarg );           break;
-      case 'k': color_when      = parse_opt_color_when( optarg ); break;
-      case 'o': fout_path       = optarg;                         break;
-      case 'p': opt_prompt      = false;                          break;
-      case 's': opt_semicolon   = false;                          break;
-      case 't': opt_typedefs    = false;                          break;
-      case 'v': print_version   = true;                           break;
-      case 'x': opt_lang        = parse_opt_lang( optarg );       break;
+      case 'i': opt_interactive = true;                       break;
+      case 'I': parse_explicit_int( NULL, optarg );           break;
+      case 'k': color_when      = parse_color_when( optarg ); break;
+      case 'o': fout_path       = optarg;                     break;
+      case 'p': opt_prompt      = false;                      break;
+      case 's': opt_semicolon   = false;                      break;
+      case 't': opt_typedefs    = false;                      break;
+      case 'v': print_version   = true;                       break;
+      case 'x': opt_lang        = parse_lang( optarg );       break;
       default : usage();
     } // switch
   } // for
@@ -525,7 +525,7 @@ bool is_explicit_int( c_type_id_t tid ) {
   return (tid & opt_explicit_int[ is_unsigned ]) != TB_NONE;
 }
 
-void parse_opt_explicit_int( c_loc_t const *loc, char const *ei_format ) {
+void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
   assert( ei_format != NULL );
 
   char opt_buf[ OPT_BUF_SIZE ];
@@ -587,7 +587,7 @@ void parse_opt_explicit_int( c_loc_t const *loc, char const *ei_format ) {
   } // for
 }
 
-void print_opt_explicit_int( void ) {
+void print_explicit_int( void ) {
   bool const is_explicit_s   = is_explicit_int( TB_SHORT );
   bool const is_explicit_i   = is_explicit_int( TB_INT );
   bool const is_explicit_l   = is_explicit_int( TB_LONG );

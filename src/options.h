@@ -127,12 +127,12 @@ void options_init( int *pargc, char const **pargv[] );
  * and `long` whereas `ul,ll` is parsed as `unsigned long` and `long long`.
  * If invalid, an error message is printed to standard error.
  */
-void parse_opt_explicit_int( c_loc_t const *loc, char const *ei_format );
+void parse_explicit_int( c_loc_t const *loc, char const *ei_format );
 
 /**
  * Prints the string representation of the explicit integer option.
  */
-void print_opt_explicit_int( void );
+void print_explicit_int( void );
 
 ///////////////////////////////////////////////////////////////////////////////
 
