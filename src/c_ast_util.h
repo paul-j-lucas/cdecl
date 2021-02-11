@@ -110,17 +110,18 @@ PJL_WARN_UNUSED_RESULT
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
 
 /**
- * Traverses \a ast attempting to find an AST node having one of \a types.
+ * Traverses \a ast attempting to find an AST node having one of \a type.
  *
  * @param ast The AST to begin at.
  * @param dir The direction to visit.
- * @param types The bitwise-or of type(s) to find.
+ * @param type A type where each type part is the bitwise-or of type IDs to
+ * find.
  * @return Returns a pointer to an AST node having one of \a type_ids or null
  * if none.
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
-                              c_type_t const *types );
+                              c_type_t const *type );
 
 /**
  * Checks whether \a ast is an AST is one of \a tids built-in type(s) or a
@@ -263,7 +264,8 @@ c_sname_t c_ast_take_name( c_ast_t *ast );
  * @endcode
  *
  * @param ast The AST to check.
- * @param type The bitwise-or of type(s) to find.
+ * @param type A type where each type part is the bitwise-or of type IDs to
+ * find.
  * @return Returns the taken type.
  */
 PJL_WARN_UNUSED_RESULT
