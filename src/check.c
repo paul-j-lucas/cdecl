@@ -147,7 +147,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_upc( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_name_eq( c_ast_t const*, char const* );
+static bool c_ast_name_equal( c_ast_t const*, char const* );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_error( c_ast_t*, void* );
@@ -520,7 +520,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func( c_ast_t const *ast ) {
   assert( ast != NULL );
 
-  if ( ast->kind_id == K_FUNCTION && c_ast_name_eq( ast, "main" ) &&
+  if ( ast->kind_id == K_FUNCTION && c_ast_name_equal( ast, "main" ) &&
        !c_ast_check_func_main( ast ) ) {
     return false;
   }
@@ -1682,7 +1682,7 @@ static bool c_ast_check_upc( c_ast_t const *ast ) {
  * @return Returns `true` only if the name of \a ast is equal to \a name.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_name_eq( c_ast_t const *ast, char const *name ) {
+static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
   SNAME_VAR_INIT( sname, name );
   return c_sname_cmp( &ast->sname, &sname ) == 0;
 }
