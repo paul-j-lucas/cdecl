@@ -296,7 +296,8 @@ static bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
  * A visitor function to find an AST node having a particular type(s).
  *
  * @param ast The AST to check.
- * @param data The bitwise-or of the type(s) (cast to `void*`) \a ast can be.
+ * @param data A type where each type part is the bitwise-or of type IDs to
+ * find.
  * @return Returns `true` only if the type of \a ast is one of the types.
  */
 PJL_WARN_UNUSED_RESULT
@@ -346,9 +347,9 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir ) {
 }
 
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
-                              c_type_t const *types ) {
+                              c_type_t const *type ) {
   return c_ast_visit(
-    ast, dir, c_ast_vistor_type_any, CONST_CAST( void*, types )
+    ast, dir, c_ast_vistor_type_any, CONST_CAST( void*, type )
   );
 }
 
