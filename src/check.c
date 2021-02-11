@@ -123,9 +123,6 @@ static bool const VISITOR_ERROR_NOT_FOUND = false;
 
 // local functions
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_params( c_ast_t const* );
-
-PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_emc( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
@@ -144,10 +141,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_params_knr( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_new_params( c_ast_t const* );
-
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_delete_params( c_ast_t const* );
+static bool c_ast_check_oper_params( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_upc( c_ast_t const* );
@@ -1100,6 +1094,84 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
 }
 
 /**
+ * Checks overloaded operator `delete` and `delete[]` parameters for semantic
+ * errors.
+ *
+ * @param ast The user-defined operator AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind_id == K_OPERATOR );
+  assert( ast->as.oper.oper_id == C_OP_DELETE ||
+          ast->as.oper.oper_id == C_OP_DELETE_ARRAY );
+
+  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
+
+  size_t const n_params = c_ast_params_count( ast );
+  if ( n_params == 0 ) {
+    print_error( &ast->loc,
+      "%s %s must have at least one parameter\n",
+      L_OPERATOR, op->name
+    );
+    return false;
+  }
+
+  c_ast_param_t const *const param = c_ast_params( ast );
+  c_ast_t const *const param_ast = c_param_ast( param );
+
+  if ( !c_ast_is_ptr_to_tid_any( param_ast, TB_VOID | TB_ANY_CLASS ) ) {
+    print_error( &param_ast->loc,
+      "invalid parameter type for %s %s; must be a %s to %s, %s, %s, or %s\n",
+      L_OPERATOR, op->name,
+      L_POINTER, L_VOID, L_CLASS, L_STRUCT, L_UNION
+    );
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Checks overloaded operator `new` and `new[]` parameters for semantic errors.
+ *
+ * @param ast The user-defined operator `new` AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind_id == K_OPERATOR );
+  assert( ast->as.oper.oper_id == C_OP_NEW ||
+          ast->as.oper.oper_id == C_OP_NEW_ARRAY );
+
+  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
+
+  size_t const n_params = c_ast_params_count( ast );
+  if ( n_params == 0 ) {
+    print_error( &ast->loc,
+      "%s %s must have at least one parameter\n",
+      L_OPERATOR, op->name
+    );
+    return false;
+  }
+
+  c_ast_param_t const *const param = c_ast_params( ast );
+  c_ast_t const *const param_ast = c_ast_untypedef( c_param_ast( param ) );
+
+  if ( !c_type_id_is_size_t( param_ast->type.base_tid ) ) {
+    print_error( &param_ast->loc,
+      "invalid parameter type for %s %s; must be std::size_t (or equivalent)\n",
+      L_OPERATOR, op->name
+    );
+    return false;
+  }
+
+  return true;
+}
+
+/**
  * Checks all overloaded operator parameters for semantic errors.
  *
  * @param ast The overloaded operator AST to check.
@@ -1311,84 +1383,6 @@ same: print_error( &ast->loc,
     default:
       /* suppress warning */;
   } // switch
-
-  return true;
-}
-
-/**
- * Checks overloaded operator `delete` and `delete[]` parameters for semantic
- * errors.
- *
- * @param ast The user-defined operator `delete` AST to check.
- * @return Returns `true` only if all checks passed.
- */
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  assert( ast->kind_id == K_OPERATOR );
-  assert( ast->as.oper.oper_id == C_OP_DELETE ||
-          ast->as.oper.oper_id == C_OP_DELETE_ARRAY );
-
-  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
-
-  size_t const n_params = c_ast_params_count( ast );
-  if ( n_params == 0 ) {
-    print_error( &ast->loc,
-      "%s %s must have at least one parameter\n",
-      L_OPERATOR, op->name
-    );
-    return false;
-  }
-
-  c_ast_param_t const *const param = c_ast_params( ast );
-  c_ast_t const *const param_ast = c_param_ast( param );
-
-  if ( !c_ast_is_ptr_to_tid_any( param_ast, TB_VOID | TB_ANY_CLASS ) ) {
-    print_error( &param_ast->loc,
-      "invalid parameter type for %s %s; must be a %s to %s, %s, %s, or %s\n",
-      L_OPERATOR, op->name,
-      L_POINTER, L_VOID, L_CLASS, L_STRUCT, L_UNION
-    );
-    return false;
-  }
-
-  return true;
-}
-
-/**
- * Checks overloaded operator `new` and `new[]` parameters for semantic errors.
- *
- * @param ast The user-defined operator `new` AST to check.
- * @return Returns `true` only if all checks passed.
- */
-PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  assert( ast->kind_id == K_OPERATOR );
-  assert( ast->as.oper.oper_id == C_OP_NEW ||
-          ast->as.oper.oper_id == C_OP_NEW_ARRAY );
-
-  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
-
-  size_t const n_params = c_ast_params_count( ast );
-  if ( n_params == 0 ) {
-    print_error( &ast->loc,
-      "%s %s must have at least one parameter\n",
-      L_OPERATOR, op->name
-    );
-    return false;
-  }
-
-  c_ast_param_t const *const param = c_ast_params( ast );
-  c_ast_t const *const param_ast = c_ast_untypedef( c_param_ast( param ) );
-
-  if ( !c_type_id_is_size_t( param_ast->type.base_tid ) ) {
-    print_error( &param_ast->loc,
-      "invalid parameter type for %s %s; must be std::size_t (or equivalent)\n",
-      L_OPERATOR, op->name
-    );
-    return false;
-  }
 
   return true;
 }
