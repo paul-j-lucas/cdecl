@@ -72,13 +72,13 @@
  *
  * @param AST The AST .
  * @param TID The bad type.
- * @param NEWLINE If `true`, prints a newline.
+ * @param END_STR_LIT A string literal appended to the end of the error message
+ * (either `"\n"` or `""`).
  */
-#define error_kind_not_tid(AST,TID,NEWLINE)                     \
+#define error_kind_not_tid(AST,TID,END_STR_LIT)                 \
   fl_print_error( __FILE__, __LINE__,                           \
-    &(AST)->loc, "%s can not be %s%s",                          \
-    c_kind_name( (AST)->kind_id ), c_type_id_name_error( TID ), \
-    (NEWLINE) ? "\n" : ""                                       \
+    &(AST)->loc, "%s can not be %s" END_STR_LIT,                \
+    c_kind_name( (AST)->kind_id ), c_type_id_name_error( TID )  \
   )
 
 /**
@@ -94,17 +94,17 @@
   )
 
 /**
- * Prints an error: `<kind> to <type>`.
+ * Prints an error: `<kind> to <type> is illegal`.
  *
  * @param AST The AST having the bad kind.
  * @param TID The bad type.
- * @param NEWLINE If `true`, prints a newline.
+ * @param END_STR_LIT A string literal appended to the end of the error message
+ * (either `"\n"` or `""`).
  */
-#define error_kind_to_type(AST,TID,NEWLINE)                     \
+#define error_kind_to_type(AST,TID,END_STR_LIT)                 \
   fl_print_error( __FILE__, __LINE__,                           \
-    &(AST)->loc, "%s to %s is illegal%s",                       \
-    c_kind_name( (AST)->kind_id ), c_type_id_name_error( TID ), \
-    (NEWLINE) ? "\n" : ""                                       \
+    &(AST)->loc, "%s to %s is illegal" END_STR_LIT,             \
+    c_kind_name( (AST)->kind_id ), c_type_id_name_error( TID )  \
   )
 
 /**
@@ -305,7 +305,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
         return false;
       }
       if ( c_ast_is_register( of_ast ) ) {
-        error_kind_not_tid( ast, TS_REGISTER, /*newline=*/true );
+        error_kind_not_tid( ast, TS_REGISTER, "\n" );
         return false;
       }
       break;
@@ -569,7 +569,7 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   assert( C_LANG_IS_CPP() );
 
   if ( c_type_is_tid_any( &ast->type, TS_CONSTINIT ) ) {
-    error_kind_not_tid( ast, TS_CONSTINIT, /*newline=*/true );
+    error_kind_not_tid( ast, TS_CONSTINIT, "\n" );
     return false;
   }
 
@@ -678,7 +678,7 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   }
 
   if ( c_type_is_tid_any( &ast->type, TA_NO_UNIQUE_ADDRESS ) ) {
-    error_kind_not_tid( ast, TA_NO_UNIQUE_ADDRESS, /*newline=*/true );
+    error_kind_not_tid( ast, TA_NO_UNIQUE_ADDRESS, "\n" );
     return false;
   }
 
@@ -1419,7 +1419,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
   } // switch
 
   if ( c_ast_is_register( to_ast ) ) {
-    error_kind_to_type( ast, TS_REGISTER, /*newline=*/true );
+    error_kind_to_type( ast, TS_REGISTER, "\n" );
     return false;
   }
 
@@ -1439,7 +1439,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
 
   if ( c_type_is_tid_any( &ast->type, TS_CONST | TS_VOLATILE ) ) {
     c_type_id_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
-    error_kind_not_tid( ast, qual_tid, /*newline=*/false );
+    error_kind_not_tid( ast, qual_tid, "" );
     print_hint( "%s to %s", L_REFERENCE, c_type_id_name_error( qual_tid ) );
     return false;
   }
@@ -1458,12 +1458,12 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   } // switch
 
   if ( c_ast_is_register( to_ast ) ) {
-    error_kind_to_type( ast, TS_REGISTER, /*newline=*/true );
+    error_kind_to_type( ast, TS_REGISTER, "\n" );
     return false;
   }
 
   if ( c_type_is_tid_any( &to_ast->type, TB_VOID ) ) {
-    error_kind_to_type( ast, TB_VOID, /*newline=*/false );
+    error_kind_to_type( ast, TB_VOID, "" );
     print_hint( "%s to %s", L_POINTER, L_VOID );
     return false;
   }
@@ -1515,7 +1515,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   } // switch
 
   if ( c_type_is_tid_any( &ast->type, TS_EXPLICIT ) ) {
-    error_kind_not_tid( ast, TS_EXPLICIT, /*newline=*/true );
+    error_kind_not_tid( ast, TS_EXPLICIT, "\n" );
     return false;
   }
 
@@ -1744,7 +1744,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       c_type_id_t const func_like_tid =
         ast->type.store_tid & c_type_id_compl( TS_FUNC_LIKE );
       if ( func_like_tid != TS_NONE ) {
-        error_kind_not_tid( ast, func_like_tid, /*newline=*/true );
+        error_kind_not_tid( ast, func_like_tid, "\n" );
         return VISITOR_ERROR_FOUND;
       }
       break;
@@ -1870,7 +1870,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
       case K_POINTER:
         break;
       default:
-        error_kind_not_tid( ast, TS_RESTRICT, /*newline=*/true );
+        error_kind_not_tid( ast, TS_RESTRICT, "\n" );
         return VISITOR_ERROR_FOUND;
     } // switch
   }
