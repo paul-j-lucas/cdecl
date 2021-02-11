@@ -138,6 +138,11 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       break;
     }
 
+    case K_BUILTIN:
+      if ( i_ast->as.builtin.bit_width != j_ast->as.builtin.bit_width )
+        return false;
+      break;
+
     case K_OPERATOR:
       if ( i_ast->as.oper.oper_id != j_ast->as.oper.oper_id )
         return false;
@@ -183,6 +188,8 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     }
 
     case K_TYPEDEF:
+      if ( i_ast->as.tdef.bit_width != j_ast->as.tdef.bit_width )
+        return false;
       //
       // K_TYPEDEF isn't a "parent" kind since it's not a parent "of" the
       // underlying type, but instead a synonym "for" it.  However, for
@@ -191,7 +198,6 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       goto equiv_of;
 
     case K_NONE:
-    case K_BUILTIN:
     case K_DESTRUCTOR:
     case K_PLACEHOLDER:
     case K_POINTER:                     // checked by parent code below
