@@ -346,7 +346,7 @@ struct c_ast {
 void c_ast_cleanup( void );
 
 /**
- * Checks whether the two ASTs are equivalent, i.e., represent the same type.
+ * Checks whether two ASTs are equivalent, i.e., represent the same type.
  *
  * @param i_ast The first AST.
  * @param j_ast The second AST.

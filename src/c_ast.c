@@ -47,6 +47,35 @@ static unsigned   c_ast_count;          ///< ASTs allocated but not yet freed.
 
 ////////// local functions ////////////////////////////////////////////////////
 
+/**
+ * Checks whether two alignments are equivalent, i.e., represent the same
+ * alignment.
+ *
+ * @param i_align The first alignment.
+ * @param j_align The second alignment.
+ * @return Returns `true` only if the two alignments are equivalent.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_alignas_equiv( c_alignas_t const *i_align,
+                             c_alignas_t const *j_align ) {
+  assert( i_align != NULL );
+  assert( j_align != NULL );
+
+  if ( i_align == j_align )
+    return true;
+  if ( i_align->kind != j_align->kind )
+    return false;
+
+  switch ( i_align->kind ) {
+    case C_ALIGNAS_NONE:
+      return true;
+    case C_ALIGNAS_EXPR:
+      return i_align->as.expr == j_align->as.expr;
+    case C_ALIGNAS_TYPE:
+      return c_ast_equiv( i_align->as.type_ast, j_align->as.type_ast );
+  } // switch
+}
+
 #ifndef NDEBUG
 /**
  * Checks \a ast for a cycle.
@@ -92,6 +121,8 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
   }
 
   if ( i_ast->kind_id != j_ast->kind_id )
+    return false;
+  if ( !c_alignas_equiv( &i_ast->align, &j_ast->align ) )
     return false;
   if ( !c_type_equal( &i_ast->type, &j_ast->type ) )
     return false;
