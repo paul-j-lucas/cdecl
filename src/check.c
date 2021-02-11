@@ -89,7 +89,7 @@
  */
 #define error_kind_to_kind(AST,KIND_ID)                   \
   fl_print_error( __FILE__, __LINE__,                     \
-    &(AST)->loc, "%s to %s\n",                            \
+    &(AST)->loc, "%s to %s is illegal\n",                 \
     c_kind_name( (AST)->kind_id ), c_kind_name( KIND_ID ) \
   )
 
@@ -102,7 +102,7 @@
  */
 #define error_kind_to_type(AST,TID,NEWLINE)                     \
   fl_print_error( __FILE__, __LINE__,                           \
-    &(AST)->loc, "%s to %s%s",                                  \
+    &(AST)->loc, "%s to %s is illegal%s",                       \
     c_kind_name( (AST)->kind_id ), c_type_id_name_error( TID ), \
     (NEWLINE) ? "\n" : ""                                       \
   )
@@ -1406,9 +1406,13 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       print_error( &ast->loc,
-        "%s to %s\n",
+        "%s to %s is illegal",
         c_kind_name( ast->kind_id ), c_kind_name( to_ast->kind_id )
       );
+      if ( lexer_is_english() )
+        print_hint( "%s to %s", L_REFERENCE, L_POINTER );
+      else
+        print_hint( "\"*&\"" );
       return false;
     default:
       /* suppress warning */;
