@@ -304,7 +304,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_vistor_type_any( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
   c_type_t const *const type = data;
-  return c_type_intersects( &ast->type, type );
+  return c_type_is_any( &ast->type, type );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

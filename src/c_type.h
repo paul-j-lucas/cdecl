@@ -589,15 +589,16 @@ PJL_WARN_UNUSED_RESULT
 c_type_id_t c_type_id_normalize( c_type_id_t tid );
 
 /**
- * Checks whether any bits of \a i_type intersects those of \a j_type.
+ * Gets whether \a i_type contains any of \a j_type.
  *
  * @param i_type The first <code>\ref c_type</code>.
  * @param j_type The second <code>\ref c_type</code>.
- * @return Returns `true` only if any bits of \a i_type intersects with \a
- * j_type.
+ * @return Returns `true` only if \a i_type contains any \a j_type.
+ *
+ * @sa c_type_id_is_any()
  */
 PJL_WARN_UNUSED_RESULT
-bool c_type_intersects( c_type_t const *i_type, c_type_t const *j_type );
+bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
  * Gets the name of \a type.
@@ -745,6 +746,8 @@ c_type_id_t c_type_id_no_tpid( c_type_id_t tid ) {
  * @param i_tid The first <code>\ref c_type_id_t</code>.
  * @param j_tid The second <code>\ref c_type_id_t</code>.
  * @return Returns `true` only if \a i_tid contains any \a j_tid.
+ *
+ * @sa c_type_is_any()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_any( c_type_id_t i_tid, c_type_id_t j_tid ) {

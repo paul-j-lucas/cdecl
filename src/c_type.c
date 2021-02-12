@@ -968,7 +968,7 @@ bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type ) {
           i_type->attr_tid  == j_type->attr_tid;
 }
 
-bool c_type_intersects( c_type_t const *i_type, c_type_t const *j_type ) {
+bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type ) {
   assert( i_type != NULL );
   assert( j_type != NULL );
 
