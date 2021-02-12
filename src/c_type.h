@@ -600,19 +600,6 @@ PJL_WARN_UNUSED_RESULT
 bool c_type_intersects( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
- * Checks whether \a type is TG_NONE.
- *
- * @param type The <code>\ref c_type</code> to check.
- * @return Returns `true` only if \a type is none.
- *
- * @sa c_type_equal()
- */
-C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-bool c_type_is_none( c_type_t const *type ) {
-  return c_type_equal( type, &T_NONE );
-}
-
-/**
  * Gets the name of \a type.
  *
  * @param type The <code>\ref c_type</code> to get the name of.
@@ -759,7 +746,7 @@ c_type_id_t c_type_id_no_tpid( c_type_id_t tid ) {
  * @param j_tid The second <code>\ref c_type_id_t</code>.
  * @return Returns `true` only if \a i_tid contains any \a j_tid.
  */
-PJL_WARN_UNUSED_RESULT C_TYPE_INLINE
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_any( c_type_id_t i_tid, c_type_id_t j_tid ) {
   assert( c_type_id_tpid( i_tid ) == c_type_id_tpid( j_tid ) );
   return c_type_id_no_tpid( i_tid & j_tid ) != TX_NONE;
@@ -793,6 +780,19 @@ C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_size_t( c_type_id_t tid ) {
   assert( (tid & TX_MASK_PART_ID) == C_TPID_BASE );
   return ((tid & c_type_id_compl( TB_INT )) & (TB_UNSIGNED | TB_LONG)) == (TB_UNSIGNED | TB_LONG);
+}
+
+/**
+ * Checks whether \a type is T_NONE.
+ *
+ * @param type The <code>\ref c_type</code> to check.
+ * @return Returns `true` only if \a type is none.
+ *
+ * @sa c_type_equal()
+ */
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
+bool c_type_is_none( c_type_t const *type ) {
+  return c_type_equal( type, &T_NONE );
 }
 
 /**
