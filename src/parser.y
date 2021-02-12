@@ -426,6 +426,9 @@ typedef struct show_type_info show_type_info_t;
 // extern functions
 extern void           print_help( char const* );
 
+// local constants
+static c_type_t const TYPEDEF_TYPE = C_TYPE_LIT_S( TS_TYPEDEF );
+
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
 static c_ast_list_t   ast_gc_list;      ///< `c_ast` nodes freed after parse.
@@ -1840,13 +1843,13 @@ define_english
       //
       //  i.e., a defined type with a storage class.
       //
-      bool ok = c_type_add( &$5->type, &C_TYPE_LIT_S( TS_TYPEDEF ), &@4 ) &&
+      bool ok = c_type_add( &$5->type, &TYPEDEF_TYPE, &@4 ) &&
                 c_type_add( &$5->type, &$4, &@4 ) &&
                 c_ast_check_declaration( $5 );
 
       if ( ok ) {
         // Once the semantic checks pass, remove the TS_TYPEDEF.
-        PJL_IGNORE_RV( c_ast_take_type_any( $5, &C_TYPE_LIT_S( TS_TYPEDEF ) ) );
+        PJL_IGNORE_RV( c_ast_take_type_any( $5, &TYPEDEF_TYPE ) );
 
         if ( c_sname_count( &$2 ) > 1 ) {
           c_type_t scope_type = *c_sname_local_type( &$2 );
@@ -2683,8 +2686,7 @@ typedef_declaration_c
 
       C_AST_CHECK_DECL( typedef_ast );
       // see the comment in define_english about TS_TYPEDEF
-      static c_type_t const typedef_type = { TB_NONE, TS_TYPEDEF, TA_ANY };
-      PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &typedef_type ) );
+      PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &TYPEDEF_TYPE ) );
 
       if ( c_ast_count_name( typedef_ast ) > 1 ) {
         print_error( &@6,
@@ -2715,9 +2717,8 @@ typedef_declaration_c
 using_declaration_c
   : using_decl_c_ast
     {
-      // see the comment in "define_english" about TS_TYPEDEF
-      static c_type_t const typedef_type = { TB_NONE, TS_TYPEDEF, TA_ANY };
-      PJL_IGNORE_RV( c_ast_take_type_any( $1, &typedef_type ) );
+      // see the comment in define_english about TS_TYPEDEF
+      PJL_IGNORE_RV( c_ast_take_type_any( $1, &TYPEDEF_TYPE ) );
 
       if ( !add_type( L_USING, $1, &@1 ) )
         PARSE_ABORT();
