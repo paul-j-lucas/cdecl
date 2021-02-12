@@ -426,8 +426,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
   if ( has_typename && !c_ast_is_typename_ok( type_ast ) )
     return NULL;
 
-  static c_type_t const typedef_type = { TB_NONE, TS_TYPEDEF, TA_ANY };
-  c_type_t type = c_ast_take_type_any( type_ast, &typedef_type );
+  c_type_t type = c_ast_take_type_any( type_ast, &T_TYPEDEF );
 
   if ( c_type_is_tid_any( &type, TS_TYPEDEF ) &&
        decl_ast->kind_id == K_TYPEDEF ) {
@@ -457,7 +456,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
   }
 
   c_ast_t *const ast = c_ast_patch_placeholder( type_ast, decl_ast );
-  c_type_t const type2 = c_ast_take_type_any( ast, &typedef_type );
+  c_type_t const type2 = c_ast_take_type_any( ast, &T_TYPEDEF );
   c_type_or_eq( &type, &type2 );
   c_type_or_eq( &ast->type, &type );
 

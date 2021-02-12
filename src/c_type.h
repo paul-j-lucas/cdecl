@@ -269,6 +269,7 @@ enum c_type_part_id {
 
 extern c_type_t const T_NONE;           ///< No type.
 extern c_type_t const T_ANY;            ///< All types.
+extern c_type_t const T_TYPEDEF;        ///< Type containing only #TS_TYPEDEF.
 
 // shorthands
 
