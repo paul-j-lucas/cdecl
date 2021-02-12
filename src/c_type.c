@@ -972,9 +972,9 @@ bool c_type_intersects( c_type_t const *i_type, c_type_t const *j_type ) {
   assert( i_type != NULL );
   assert( j_type != NULL );
 
-  return  c_type_id_intersects( i_type->base_tid,   j_type->base_tid  ) ||
-          c_type_id_intersects( i_type->store_tid,  j_type->store_tid ) ||
-          c_type_id_intersects( i_type->attr_tid,   j_type->attr_tid  );
+  return  c_type_id_is_any( i_type->base_tid,   j_type->base_tid  ) ||
+          c_type_id_is_any( i_type->store_tid,  j_type->store_tid ) ||
+          c_type_id_is_any( i_type->attr_tid,   j_type->attr_tid  );
 }
 
 char const* c_type_name( c_type_t const *type ) {
@@ -1053,6 +1053,19 @@ bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
 
   *dst_tid |= new_tid;
   return true;
+}
+
+PJL_WARN_UNUSED_RESULT
+c_type_part_id_t c_type_id_tpid( c_type_id_t tid ) {
+  //
+  // If tid has been complemented, e.g., ~TS_REGISTER to denote "all but
+  // register," then we have to complement tid back first.
+  //
+  if ( c_type_id_is_compl( tid ) )
+    tid = ~tid;
+  tid &= TX_MASK_PART_ID;
+  assert( tid <= C_TPID_ATTR );
+  return STATIC_CAST( c_type_part_id_t, tid );
 }
 
 char const* c_type_id_name( c_type_id_t tid ) {

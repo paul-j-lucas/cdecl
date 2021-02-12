@@ -534,6 +534,17 @@ PJL_WARN_UNUSED_RESULT
 c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid );
 
 /**
+ * Gets the `c_type_part_id_t` from \a tid.
+ *
+ * @param tid The type ID.
+ * @return Returns said `c_type_part_id_t`.
+ *
+ * @sa c_type_id_no_tpid()
+ */
+PJL_WARN_UNUSED_RESULT
+c_type_part_id_t c_type_id_tpid( c_type_id_t tid );
+
+/**
  * Gets the name of \a tid.
  *
  * @param tid The <code>\ref c_type_id_t</code> to get the name of.
@@ -742,35 +753,14 @@ c_type_id_t c_type_id_no_tpid( c_type_id_t tid ) {
 }
 
 /**
- * Gets the `c_type_part_id_t` from \a tid.
- *
- * @param tid The type ID.
- * @return Returns said `c_type_part_id_t`.
- *
- * @sa c_type_id_no_tpid()
- */
-C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-c_type_part_id_t c_type_id_tpid( c_type_id_t tid ) {
-  //
-  // If tid has been complemented, e.g., ~TS_REGISTER to denote "all but
-  // register," then we have to complement tid back first.
-  //
-  if ( c_type_id_is_compl( tid ) )
-    tid = ~tid;
-  tid &= TX_MASK_PART_ID;
-  assert( tid <= C_TPID_ATTR );
-  return STATIC_CAST( c_type_part_id_t, tid );
-}
-
-/**
- * Gets whether the two <code>\ref c_type_id_t</code>s intersect.
+ * Gets whether \a i_tid contains any of \a j_tid.
  *
  * @param i_tid The first <code>\ref c_type_id_t</code>.
  * @param j_tid The second <code>\ref c_type_id_t</code>.
- * @return Returns `true` only if \a i_tid intersects \a j_tid.
+ * @return Returns `true` only if \a i_tid contains any \a j_tid.
  */
 PJL_WARN_UNUSED_RESULT C_TYPE_INLINE
-bool c_type_id_intersects( c_type_id_t i_tid, c_type_id_t j_tid ) {
+bool c_type_id_is_any( c_type_id_t i_tid, c_type_id_t j_tid ) {
   assert( c_type_id_tpid( i_tid ) == c_type_id_tpid( j_tid ) );
   return c_type_id_no_tpid( i_tid & j_tid ) != TX_NONE;
 }
@@ -817,7 +807,7 @@ bool c_type_id_is_size_t( c_type_id_t tid ) {
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids ) {
   c_type_id_t const tid = c_type_get_tid( type, tids );
-  return c_type_id_intersects( tid, tids );
+  return c_type_id_is_any( tid, tids );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
