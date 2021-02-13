@@ -1,4 +1,4 @@
 explain void f() throw()
              ^
-14: warning: "throw" is deprecated in C++17
+14: warning: "throw" is deprecated in C++11
 declare f as non-throwing function returning void
