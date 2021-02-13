@@ -368,7 +368,7 @@ bool parse_string( char const *s, size_t s_len ) {
     //
     inserted_len = strlen( L_EXPLAIN ) + 1/*space*/;
     s_len += inserted_len;
-    explain_buf = MALLOC( char, s_len + 1/*NULL*/ );
+    explain_buf = MALLOC( char, s_len + 1/*\0*/ );
     char *p = strcpy_end( explain_buf, L_EXPLAIN );
     p = chrcpy_end( p, ' ' );
     PJL_IGNORE_RV( strcpy_end( p, s ) );

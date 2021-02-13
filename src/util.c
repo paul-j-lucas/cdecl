@@ -146,7 +146,7 @@ char* check_strdup( char const *s ) {
 char* check_strdup_tolower( char const *s ) {
   if ( s == NULL )
     return NULL;
-  char *const s_dup = MALLOC( char, strlen( s ) + 1/*NULL*/ );
+  char *const s_dup = MALLOC( char, strlen( s ) + 1/*\0*/ );
   for ( char *p = s_dup; (*p++ = (char)tolower( *s++ )); )
     ;
   return s_dup;
