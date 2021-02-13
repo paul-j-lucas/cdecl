@@ -1935,10 +1935,9 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
 
     case K_CONSTRUCTOR:
       FOREACH_PARAM( param, ast ) {
+        c_ast_t const *const param_ast = c_param_ast( param );
         PJL_IGNORE_RV(
-          c_ast_check_visitor(
-            c_param_ast( param ), c_ast_visitor_warning, data
-          )
+          c_ast_check_visitor( param_ast, c_ast_visitor_warning, data )
         );
       } // for
       PJL_FALLTHROUGH;
