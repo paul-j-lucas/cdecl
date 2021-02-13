@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 9.6
+
+** More constructor & destructor warning checks
+Constructors and destructors are now checked for `throw`.  Constructor
+parameters are now checked for warnings.
+
+
 * Changes in Cdecl 9.5.1
 
 ** Functions as parameters

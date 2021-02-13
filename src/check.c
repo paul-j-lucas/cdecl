@@ -1900,8 +1900,6 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
 
   switch ( ast->kind_id ) {
     case K_ARRAY:
-    case K_CONSTRUCTOR:
-    case K_DESTRUCTOR:
     case K_ENUM_CLASS_STRUCT_UNION:
     case K_POINTER:
     case K_POINTER_TO_MEMBER:
@@ -1932,13 +1930,10 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
           L_NODISCARD, c_kind_name( ast->kind_id ), L_VOID
         );
       }
-      if ( c_type_is_tid_any( &ast->type, TS_THROW ) &&
-           opt_lang >= LANG_CPP_11 ) {
-        print_warning( &ast->loc,
-          "\"%s\" is deprecated in %s\n", L_THROW, C_LANG_NAME()
-        );
-      }
+      PJL_FALLTHROUGH;
+    }
 
+    case K_CONSTRUCTOR:
       FOREACH_PARAM( param, ast ) {
         PJL_IGNORE_RV(
           c_ast_check_visitor(
@@ -1946,8 +1941,14 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
           )
         );
       } // for
+      PJL_FALLTHROUGH;
+
+    case K_DESTRUCTOR:
+      if ( c_type_is_tid_any( &ast->type, TS_THROW ) &&
+           opt_lang >= LANG_CPP_11 ) {
+        print_warning( &ast->loc, "\"%s\" is deprecated in C++11\n", L_THROW );
+      }
       break;
-    }
 
     case K_BUILTIN:
       if ( c_ast_is_register( ast ) && opt_lang >= LANG_CPP_11 ) {
