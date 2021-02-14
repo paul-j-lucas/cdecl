@@ -84,7 +84,7 @@ The characters are:
 + `t` = `throw`, `typedef`, `typename`, or unknown type
 + `u` = `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
-+ `w` = Bit-field width (following digits specify width)
++ `w` = bit-field width (following digits specify width)
 + `wt` = `wchar_t`
 + `xi` = `constinit`
 + `xx` = `constexpr`
