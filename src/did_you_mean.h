@@ -30,7 +30,6 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "dam_lev.h"
-#include "types.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -41,6 +40,7 @@ struct did_you_mean {
   char const *token;                    ///< Candidate token.
   dam_lev_t   dam_lev_dist;             ///< Damerau-Levenshtein edit distance.
 };
+typedef struct did_you_mean did_you_mean_t;
 
 /**
  * The bitwise-or of kinds of things one might have meant.
