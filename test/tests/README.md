@@ -81,7 +81,8 @@ The characters are:
 + `rr` = rvalue reference
 + `rt` = `restrict`
 + `s` = `signed` or `static`
-+ `t` = `throw` or unknown type
++ `t` = unknown type
++ `th` = `throw`
 + `tn` = `typename`
 + `u` = `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
