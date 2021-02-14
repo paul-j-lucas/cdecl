@@ -102,11 +102,11 @@ static char*        strcpy_sep( char*, char const*, char, bool* );
 
 /**
  * As part of the special case for `long long`, its literal is only `long`
- * because its type, <code>\ref TB_LONG_LONG</code>, is always combined with
- * <code>\ref TB_LONG</code>, i.e., two bits are set.  Therefore, when printed,
- * it prints one `long` for <code>\ref TB_LONG</code> and another `long` for
- * <code>\ref TB_LONG_LONG</code> (this literal).  That explains why this
- * literal is only one `long`.
+ * because its type, #TB_LONG_LONG, is always combined with
+ * <code>#TB_LONG</code>, i.e., two bits are set.  Therefore, when printed, it
+ * prints one `long` for <code>#TB_LONG</code> and another `long` for
+ * <code>#TB_LONG_LONG</code> (this literal).  That explains why this literal
+ * is only one `long`.
  */
 static char const L_LONG_LONG[] = "long";
 
@@ -117,13 +117,12 @@ static char const L_LONG_LONG[] = "long";
 static char const L_RVALUE_REFERENCE[] = "rvalue reference";
 
 /**
- * <code>\ref TB_TYPEDEF</code> exists only so there can be a row/column for it
- * in the <code>\ref OK_TYPE_LANGS</code> table to make things like `signed
+ * <code>#TB_TYPEDEF</code> exists only so there can be a row/column for it in
+ * the <code>\ref OK_TYPE_LANGS</code> table to make things like `signed
  * size_t` illegal.
  *
- * <code>\ref TB_TYPEDEF</code> doesn't have any printable representation (only
- * the name of the type is printed); therefore, its literal is the empty
- * string.
+ * <code>#TB_TYPEDEF</code> doesn't have any printable representation (only the
+ * name of the type is printed); therefore, its literal is the empty string.
  */
 static char const L_TYPEDEF_TYPE[] = "";
 

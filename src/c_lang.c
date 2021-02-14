@@ -119,6 +119,8 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
   } // switch
 }
 
+#define LANG_NAME_SIZE_MAX  40          /**< Length of #LANG_C_99_UPC. */
+
 PJL_WARN_UNUSED_RESULT
 c_lang_t const* c_lang_next( c_lang_t const *lang ) {
   if ( lang == NULL )
@@ -139,6 +141,23 @@ void c_lang_set( c_lang_id_t lang_id ) {
 
   cdecl_prompt_init();         // change prompt based on new language
   cdecl_prompt_enable( prompt_enabled );
+}
+
+char const* c_lang_until( c_lang_id_t lang_ids ) {
+  if ( lang_ids == LANG_NONE )
+    return "";
+
+  c_lang_id_t const lang_mask = C_LANG_IS_C() ? LANG_MASK_C : LANG_MASK_CPP;
+
+  if ( (lang_ids & lang_mask) == LANG_NONE )
+    return C_LANG_IS_C() ? " in C" : " in C++";
+
+  lang_ids &= lang_mask;
+  assert( lang_ids != LANG_NONE );
+
+  static char until_buf[ LANG_NAME_SIZE_MAX + 1/*\0*/ ];
+  sprintf( until_buf, " until %s", c_lang_oldest_name( lang_ids ) );
+  return until_buf;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

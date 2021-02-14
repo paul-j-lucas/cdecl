@@ -132,7 +132,7 @@ static void print_options( void ) {
   FPRINTF( fout, "  %sflex-debug\n", maybe_no( opt_flex_debug ) );
 #endif /* ENABLE_FLEX_DEBUG */
   FPRINTF( fout, " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
-  FPRINTF( fout, "    lang=%s\n", C_LANG_NAME() );
+  FPRINTF( fout, "    lang=%s\n", c_lang_name( opt_lang ) );
   FPRINTF( fout, "  %sprompt\n", maybe_no( cdecl_prompt[0][0] != '\0' ) );
   FPRINTF( fout, "  %ssemicolon\n", maybe_no( opt_semicolon ) );
 }
@@ -376,7 +376,7 @@ static void set_trigraphs( bool enabled, c_loc_t const *opt_name_loc,
   opt_graph = enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
   if ( enabled && opt_lang >= LANG_CPP_17 ) {
     print_warning( opt_name_loc,
-      "trigraphs are no longer supported in %s\n", C_LANG_NAME()
+      "trigraphs are no longer supported in C++17\n"
     );
   }
 }

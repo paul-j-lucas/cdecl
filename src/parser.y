@@ -1457,7 +1457,9 @@ cast_english
       bool ok = false;
 
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
-        print_error( &@1, "%s not supported in %s\n", $1, C_LANG_NAME() );
+        print_error( &@1,
+          "%s not supported%s\n", $1, c_lang_until( LANG_CPP_11 )
+        );
       }
       else if ( (ok = c_ast_check_cast( $5 )) ) {
         FPRINTF( fout, "%s<", $1 );
@@ -1943,7 +1945,7 @@ explain_c
       bool ok = false;
 
       if ( unsupported( LANG_CPP_ALL ) ) {
-        print_error( &@2, "%s_cast not supported in %s\n", $2, C_LANG_NAME() );
+        print_error( &@2, "%s_cast not supported in C\n", $2 );
       }
       else {
         if ( (ok = c_ast_check_cast( cast_ast )) ) {
@@ -2312,9 +2314,7 @@ class_struct_union_declaration_c
     any_sname_c
     {
       if ( C_LANG_IS_C() && !c_sname_empty( &in_attr.current_scope ) ) {
-        print_error( &@1,
-          "nested types are not supported in %s\n", C_LANG_NAME()
-        );
+        print_error( &@1, "nested types are not supported in C\n" );
         PARSE_ABORT();
       }
 
@@ -3135,8 +3135,8 @@ user_defined_literal_decl_english_ast
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "%s %s not supported in %s\n",
-          H_USER_DEFINED, L_LITERAL, C_LANG_NAME()
+          "%s %s not supported%s\n",
+          H_USER_DEFINED, L_LITERAL, c_lang_until( LANG_CPP_11 )
         );
         PARSE_ABORT();
       }
@@ -3713,7 +3713,8 @@ knr_func_or_constructor_decl_c_ast
         // AST had no "memory" that the return type was implicitly int.
         //
         print_error( &@1,
-          "implicit \"%s\" functions are illegal in %s\n", L_INT, C_LANG_NAME()
+          "implicit \"%s\" functions are illegal in %s and later\n",
+          L_INT, c_lang_name( LANG_C_99 )
         );
         PARSE_ABORT();
       }
@@ -3821,7 +3822,8 @@ trailing_return_type_c_ast_opt
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "trailing return type not supported in %s\n", C_LANG_NAME()
+          "trailing return type not supported%s\n",
+          c_lang_until( LANG_CPP_11 )
         );
         PARSE_ABORT();
       }
@@ -4275,7 +4277,8 @@ using_decl_c_ast
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "\"%s\" not supported in %s\n", L_USING, C_LANG_NAME()
+          "\"%s\" not supported%s\n",
+          L_USING, c_lang_until( LANG_CPP_11 )
         );
         PARSE_ABORT();
       }
@@ -4811,8 +4814,8 @@ restrict_qualifier_c_tid
       //
       if ( C_LANG_IS_CPP() ) {
         print_error( &@1,
-          "\"%s\" not supported in %s; use \"%s\" instead\n",
-          L_RESTRICT, C_LANG_NAME(), L_GNU___RESTRICT
+          "\"%s\" not supported in C++; use \"%s\" instead\n",
+          L_RESTRICT, L_GNU___RESTRICT
         );
         PARSE_ABORT();
       }
@@ -4875,9 +4878,10 @@ attribute_specifier_list_c_tid_opt
 attribute_specifier_list_c_tid
   : Y_ATTR_BEGIN '['
     {
-      if ( unsupported( LANG_C_CPP_MIN(2X,11)) ) {
+      if ( unsupported( LANG_C_CPP_MIN(2X,11) ) ) {
         print_error( &@1,
-          "\"[[\" attribute syntax not supported in %s\n", C_LANG_NAME()
+          "\"[[\" attribute syntax not supported%s\n",
+          c_lang_until( LANG_C_CPP_MIN(2X,11) )
         );
         PARSE_ABORT();
       }
@@ -5553,7 +5557,7 @@ sname_c
     {
       // see the comment in "of_scope_english"
       if ( unsupported( LANG_CPP_ALL ) ) {
-        print_error( &@2, "scoped names not supported in %s\n", C_LANG_NAME() );
+        print_error( &@2, "scoped names not supported in C\n" );
         PARSE_ABORT();
       }
 
@@ -5997,7 +6001,7 @@ of_scope_english
       // better error location.
       //
       if ( unsupported( LANG_CPP_ALL ) ) {
-        print_error( &@2, "scoped names not supported in %s\n", C_LANG_NAME() );
+        print_error( &@2, "scoped names not supported in C\n" );
         PARSE_ABORT();
       }
       $$ = $3;

@@ -57,14 +57,15 @@
   print_hint( "%s %s %s", L_CAST, L_INTO, (HINT) ); )
 
 /**
- * Prints an error: `<kind> not supported in <lang>`.
+ * Prints an error: `<kind> not supported[ {in|until} <lang>]`.
  *
  * @param AST The AST having the unsupported kind.
+ * @param LANG_IDS The bitwise-or of legal language(s).
  */
-#define error_kind_not_supported(AST)             \
-  fl_print_error( __FILE__, __LINE__,             \
-    &(AST)->loc, "%s not supported in %s\n",      \
-    c_kind_name( (AST)->kind_id ), C_LANG_NAME()  \
+#define error_kind_not_supported(AST,LANG_IDS)              \
+  fl_print_error( __FILE__, __LINE__,                       \
+    &(AST)->loc, "%s not supported%s\n",                    \
+    c_kind_name( (AST)->kind_id ), c_lang_until( LANG_IDS ) \
   )
 
 /**
@@ -265,8 +266,8 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
   if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE ) {
     if ( !C_LANG_IS(C_MIN(99)) ) {
       print_error( &ast->loc,
-        "variable length arrays not supported in %s\n",
-        C_LANG_NAME()
+        "variable length arrays not supported%s\n",
+        c_lang_until( LANG_C_99 )
       );
       return false;
     }
@@ -281,9 +282,9 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
   if ( ast->as.array.store_tid != TS_NONE ) {
     if ( !C_LANG_IS(C_MIN(99)) ) {
       print_error( &ast->loc,
-        "\"%s\" arrays not supported in %s\n",
+        "\"%s\" arrays not supported%s\n",
         c_type_id_name_error( ast->as.array.store_tid ),
-        C_LANG_NAME()
+        c_lang_until( LANG_C_99 )
       );
       return false;
     }
@@ -346,14 +347,15 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
         ast->parent_ast->kind_id != K_USER_DEF_CONVERSION) &&
         ast->type.base_tid == TB_NONE ) {
     print_error( &ast->loc,
-      "implicit \"%s\" is illegal in %s\n", L_INT, C_LANG_NAME()
+      "implicit \"%s\" is illegal in C99 and later\n", L_INT
     );
     return false;
   }
 
   if ( c_type_is_tid_any( &ast->type, TS_INLINE ) && opt_lang < LANG_CPP_17 ) {
     print_error( &ast->loc,
-      "%s variables not supported in %s\n", L_INLINE, C_LANG_NAME()
+      "%s variables not supported%s\n",
+      L_INLINE, c_lang_until( LANG_CPP_17 )
     );
     return false;
   }
@@ -443,8 +445,8 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
     if ( of_ast != NULL ) {
       if ( opt_lang < LANG_CPP_11 ) {
         print_error( &of_ast->loc,
-          "%s with underlying type not supported in %s\n",
-          L_ENUM, C_LANG_NAME()
+          "%s with underlying type not supported%s\n",
+          L_ENUM, c_lang_until( LANG_CPP_11 )
         );
         return false;
       }
@@ -545,10 +547,9 @@ static bool c_ast_check_func_c( c_ast_t const *ast ) {
   c_type_id_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
   if ( qual_tid != TS_NONE ) {
     print_error( &ast->loc,
-      "\"%s\" %ss not supported in %s\n",
+      "\"%s\" %ss not supported in C\n",
       c_type_id_name_error( qual_tid ),
-      c_kind_name( ast->kind_id ),
-      C_LANG_NAME()
+      c_kind_name( ast->kind_id )
     );
     return false;
   }
@@ -576,8 +577,8 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   if ( c_type_is_tid_any( &ast->type, TS_ANY_REFERENCE ) ) {
     if ( opt_lang < LANG_CPP_11 ) {
       print_error( &ast->loc,
-        "%s qualified %ss not supported in %s\n",
-        L_REFERENCE, c_kind_name( ast->kind_id ), C_LANG_NAME()
+        "%s qualified %ss not supported%s\n",
+        L_REFERENCE, c_kind_name( ast->kind_id ), c_lang_until( LANG_CPP_11 )
       );
       return false;
     }
@@ -744,7 +745,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
     case 1:                             // main(void)
       if ( opt_lang == LANG_C_KNR ) {
         print_error( &ast->loc,
-          "main() must have 0, 2, or 3 parameters in %s\n", C_LANG_NAME()
+          "main() must have 0, 2, or 3 parameters in C89 and later\n"
         );
         return false;
       }
@@ -902,8 +903,16 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
       case K_NAME:
         if ( opt_lang >= LANG_C_2X ) {
+          //
+          // C2X finally forbids old-style K&R function declarations:
+          //
+          //      strlen(s)
+          //        char *s             // illegal in C2X
+          //      {
+          //
           print_error( &param_ast->loc,
-            "%s requires type specifier\n", C_LANG_NAME()
+            "type specifier required by %s\n",
+            C_LANG_IS_C() ? c_lang_name( LANG_C_2X ) : "C++"
           );
           return false;
         }
@@ -981,7 +990,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
         break;
       default:
         print_error( &param_ast->loc,
-          "%s prototypes not supported in %s\n", L_FUNCTION, C_LANG_NAME()
+          "%s prototypes not supported until C89\n", L_FUNCTION
         );
         return false;
     } // switch
@@ -1005,8 +1014,8 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
 
   if ( (opt_lang & op->lang_ids) == LANG_NONE ) {
     print_error( &ast->loc,
-      "overloading %s \"%s\" not supported in %s\n",
-      L_OPERATOR, op->name, C_LANG_NAME()
+      "overloading %s \"%s\" not supported%s\n",
+      L_OPERATOR, op->name, c_lang_until( op->lang_ids )
     );
     return false;
   }
@@ -1494,8 +1503,8 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       if ( opt_lang < LANG_CPP_14 ) {
         if ( c_type_is_tid_any( &ret_ast->type, TB_AUTO ) ) {
           print_error( &ret_ast->loc,
-            "\"%s\" return type not supported in %s\n",
-            L_AUTO, C_LANG_NAME()
+            "\"%s\" return type not supported%s\n",
+            L_AUTO, c_lang_until( LANG_CPP_14 )
           );
           return false;
         }
@@ -1747,6 +1756,15 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         error_kind_not_tid( ast, func_like_tid, "\n" );
         return VISITOR_ERROR_FOUND;
       }
+
+      if ( c_type_is_tid_any( &ast->type, TS_THROW ) &&
+           opt_lang >= LANG_CPP_20 ) {
+        print_error( &ast->loc,
+          "\"%s\" is no longer supported in C++20", L_THROW
+        );
+        print_hint( "\"%s\"", L_NOEXCEPT );
+        return VISITOR_ERROR_FOUND;
+      }
       break;
     }
 
@@ -1765,7 +1783,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 
     case K_POINTER_TO_MEMBER:
       if ( C_LANG_IS_C() ) {
-        error_kind_not_supported( ast );
+        error_kind_not_supported( ast, LANG_CPP_ALL );
         return VISITOR_ERROR_FOUND;
       }
       PJL_FALLTHROUGH;
@@ -1776,13 +1794,13 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 
     case K_RVALUE_REFERENCE:
       if ( opt_lang < LANG_CPP_11 ) {
-        error_kind_not_supported( ast );
+        error_kind_not_supported( ast, LANG_CPP_MIN(11) );
         return VISITOR_ERROR_FOUND;
       }
       PJL_FALLTHROUGH;
     case K_REFERENCE:
       if ( C_LANG_IS_C() ) {
-        error_kind_not_supported( ast );
+        error_kind_not_supported( ast, LANG_CPP_ALL );
         return VISITOR_ERROR_FOUND;
       }
       if ( !c_ast_check_reference( ast ) )
@@ -1828,16 +1846,27 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   c_lang_id_t const lang_ids = c_type_check( &ast->type );
   if ( lang_ids != LANG_ALL ) {
     print_error( &ast->loc,
-      "\"%s\" is illegal for %s",
-      c_type_name_error( &ast->type ), c_kind_name( ast->kind_id )
+      "\"%s\" is illegal for %s%s\n",
+      c_type_name_error( &ast->type ), c_kind_name( ast->kind_id ),
+      c_lang_until( lang_ids )
     );
-    if ( lang_ids != LANG_NONE )
-      EPRINTF( " in %s", C_LANG_NAME() );
-    EPUTC( '\n' );
     return VISITOR_ERROR_FOUND;
   }
 
-  if ( (ast->kind_id & (K_APPLE_BLOCK | K_FUNCTION)) == K_NONE ) {
+  if ( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE ) {
+    if ( opt_lang < LANG_CPP_14 &&
+         c_type_id_is_any( ast->type.store_tid, TS_CONSTEXPR ) &&
+         c_type_id_is_any( ast->as.func.ret_ast->type.base_tid, TB_VOID ) ) {
+      print_error( &ast->loc,
+        "%s %s is illegal until %s\n",
+        c_type_id_name_error( ast->type.store_tid ),
+        c_type_id_name_error( ast->as.func.ret_ast->type.base_tid ),
+        c_lang_name( LANG_CPP_14 )
+      );
+      return VISITOR_ERROR_FOUND;
+    }
+  }
+  else {
     if ( c_type_is_tid_any( &ast->type, TA_CARRIES_DEPENDENCY ) &&
          !is_func_param ) {
       print_error( &ast->loc,
@@ -1945,14 +1974,16 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     case K_DESTRUCTOR:
       if ( c_type_is_tid_any( &ast->type, TS_THROW ) &&
            opt_lang >= LANG_CPP_11 ) {
-        print_warning( &ast->loc, "\"%s\" is deprecated in C++11\n", L_THROW );
+        print_warning( &ast->loc, "\"%s\" is deprecated in C++11", L_THROW );
+        print_hint( "\"%s\"", L_NOEXCEPT );
       }
       break;
 
     case K_BUILTIN:
       if ( c_ast_is_register( ast ) && opt_lang >= LANG_CPP_11 ) {
         print_warning( &ast->loc,
-          "\"%s\" is deprecated in %s\n", L_REGISTER, C_LANG_NAME()
+          "\"%s\" is deprecated in %s\n",
+          L_REGISTER, c_lang_name( LANG_CPP_11 )
         );
       }
       break;

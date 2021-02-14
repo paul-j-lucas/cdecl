@@ -248,15 +248,6 @@ struct c_lang_lit {
  */
 #define C_LANG_LIT(...)           (c_lang_lit_t const[]){ __VA_ARGS__ }
 
-/**
- * Shorthand for the common case of getting the name of the current language.
- *
- * @return Returns said name.
- *
- * @sa c_lang_name()
- */
-#define C_LANG_NAME()             c_lang_name( opt_lang )
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -294,8 +285,6 @@ c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
  * c_lang_id_t</code> for.
  * @return Returns said language or #LANG_NONE if \a name doesn't correspond to
  * any supported language.
- *
- * @sa c_lang_name()
  */
 PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_find( char const *name );
@@ -348,8 +337,6 @@ char const* c_lang_literal( c_lang_lit_t const lang_lit[const] );
  * be set.
  * @return Returns said name.
  *
- * @sa c_lang_find()
- * @sa #C_LANG_NAME()
  * @sa c_lang_oldest_name()
  */
 PJL_WARN_UNUSED_RESULT
@@ -428,6 +415,27 @@ char const* c_lang_oldest_name( c_lang_id_t lang_ids ) {
  * @param lang_id The language to set.  Exactly one language must be set.
  */
 void c_lang_set( c_lang_id_t lang_id );
+
+/**
+ * Gets a string specifying when a particular language feature will be legal,
+ * if ever.  It is presumed to follow `"... not supported"` (with no trailing
+ * space).
+ *
+ * @param lang_ids The bitwise-or of legal language(s).
+ * @return If:
+ *  + \a lang_ids is #LANG_NONE, returns `""` (the empty string).
+ *  + The current language is C and \a lang_ids does not contain any version of
+ *    C, returns `" in C"`.
+ *  + The current language is C++ and \a lang_ids does not contain any version
+ *    of C++, returns `" in C++"`.
+ *  + Otherwise returns `" until "` followed by the name of the oldest C
+ *    version (if the current language is C) or the name of the oldest C++
+ *    version (if the current language is C++).
+ *
+ * @warning The pointer returned is to a static buffer, so you can't do
+ * something like call this twice in the same `printf()` statement.
+ */
+char const* c_lang_until( c_lang_id_t lang_ids );
 
 ///////////////////////////////////////////////////////////////////////////////
 
