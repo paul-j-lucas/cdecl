@@ -67,6 +67,15 @@ if WITH_READLINE
 cdecl_SOURCES += autocomplete.c
 endif
 
+all-local: c++decl
+
+c++decl: cdecl
+	rm -f c++decl
+	$(LN_S) cdecl c++decl
+
+clean-local:
+	rm -f c++decl
+
 parser.output: parser.y
 	bison -v --report=all $<
 	@rm -f parser.tab.c
