@@ -41,6 +41,8 @@
 
 // standard
 #include <assert.h>
+#include <ctype.h>
+#include <string.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -155,6 +157,12 @@ static bool c_ast_visitor_error( c_ast_t*, void* );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_type( c_ast_t*, void* );
+
+static void c_ast_warn_name( c_ast_t const* );
+static void c_sname_warn( c_sname_t const*, c_loc_t const* );
+
+PJL_WARN_UNUSED_RESULT
+static c_lang_id_t is_reserved_name( char const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -2001,18 +2009,90 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
       break;
   } // switch
 
-  FOREACH_SCOPE( scope, c_ast_scope( ast ), NULL ) {
+  if ( c_initialized )                  // don't warn for predefined types
+    c_ast_warn_name( ast );
+
+  return false;
+}
+
+/**
+ * Checks an AST's name(s) for warnings.
+ *
+ * @param ast The AST to check.
+ */
+static void c_ast_warn_name( c_ast_t const *ast ) {
+  assert( ast != NULL );
+
+  c_sname_warn( &ast->sname, &ast->loc );
+  switch ( ast->kind_id ) {
+    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_POINTER_TO_MEMBER:
+      c_sname_warn( &ast->as.ecsu.ecsu_sname, &ast->loc );
+      break;
+    default:
+      /* suppress warning */;
+  } // switch
+}
+
+/**
+ * Checks a scoped name for warnings.
+ *
+ * @param sname The scoped name to check.
+ * @param loc The location of \a sname.
+ */
+static void c_sname_warn( c_sname_t const *sname, c_loc_t const *loc ) {
+  assert( sname != NULL );
+
+  FOREACH_SCOPE( scope, sname->head, NULL ) {
     char const *const name = c_scope_data( scope )->name;
+
+    // First, check to see if the name is a keyword in some other language.
     c_keyword_t const *const k = c_keyword_find( name, LANG_ALL, C_KW_CTX_ALL );
     if ( k != NULL ) {
-      print_warning( &ast->loc,
+      print_warning( loc,
         "\"%s\" is a keyword in %s\n",
         name, c_lang_oldest_name( k->lang_ids )
       );
+      continue;
+    }
+
+    // Next, check to see if the name is a reserved name in some language.
+    c_lang_id_t const reserved_lang_ids = is_reserved_name( name );
+    if ( reserved_lang_ids != LANG_NONE ) {
+      print_warning( loc, "\"%s\" is a reserved identifier", name );
+      char const *const coarse_name = c_lang_coarse_name( reserved_lang_ids );
+      if ( coarse_name != NULL )
+        EPRINTF( " in %s", coarse_name );
+      EPUTC( '\n' );
     }
   } // for
+}
 
-  return false;
+/**
+ * Checks whether \a name is reserved in the current language.  An identifier
+ * is reserved if it matches any of these patterns:
+ *
+ *      _*          // C: external only; C++: global namespace only.
+ *      _[A-Z_]*
+ *      *__*        // C++ only.
+ *
+ * However, we don't check for the first one since cdecl doesn't have either
+ * the linkage or the scope of an identifier.
+ *
+ * @param name The name to check.
+ * @return Returns the bitwise-or of language(s) that \a name is reserved in.
+ */
+PJL_WARN_UNUSED_RESULT
+static c_lang_id_t is_reserved_name( char const *name ) {
+  assert( name != NULL );
+
+  if ( name[0] == '_' && (isupper( name[1] ) || name[1] == '_') )
+    return LANG_ALL;
+
+  if ( strstr( name, "__" ) != NULL )
+    return LANG_CPP_ALL;
+
+  return LANG_NONE;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

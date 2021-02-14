@@ -20,6 +20,9 @@ Rather than just say "<feature> is not supported in <current-lang>", now says
 Constructors and destructors are now checked for `throw`.  Constructor
 parameters are now checked for warnings.
 
+** Reserved identifier warnings
+Warnings are now given for names that are reserved identifiers.
+
 ** Fixed `thread_local`
 `thread_local` is now correctly allowed only in C11 or C++11 or later.
 
