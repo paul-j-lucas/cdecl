@@ -20,7 +20,10 @@ Rather than just say "<feature> is not supported in <current-lang>", now says
 Constructors and destructors are now checked for `throw`.  Constructor
 parameters are now checked for warnings.
 
-* `throw()` in C++20
+** Fixed `thread_local`
+`thread_local` is now correctly allowed only in C11 or C++11 or later.
+
+** `throw()` in C++20
 `throw()` is no longer supported in C++20.
 
 

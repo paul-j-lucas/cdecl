@@ -74,7 +74,7 @@ The characters are:
 + `ns` = `namespace`
 + `nt` = non-throwing
 + `nx` = `noexcept`
-+ `o` = `operator`, `override`, or `thread_local`
++ `o` = `operator` or `override`
 + `p` = pointer
 + `r` = reference
 + `rg` = `register`
@@ -83,6 +83,7 @@ The characters are:
 + `s` = `signed` or `static`
 + `t` = unknown type
 + `th` = `throw`
++ `tl` = `thread_local`
 + `tn` = `typename`
 + `u` = `unsigned`
 + `v` = `virtual`, `void`, or `volatile`

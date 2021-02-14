@@ -1,0 +1,1 @@
+cdecl @ @ -xc99 @ explain thread_local int x @ 65

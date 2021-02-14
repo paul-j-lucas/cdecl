@@ -440,6 +440,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_sc.test \
 	tests/explain_sf_v.test \
 	tests/explain_si.test \
+	tests/explain_tli.test \
 	tests/explain_typedef_i.test \
 	tests/explain_typedef_ii32.test \
 	tests/explain_typedef_pfc_i.test \
@@ -565,8 +566,9 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_sl-knr.test \
 	tests/explain_sv.test \
 	tests/explain_swt.test \
-	tests/explain_typedef_ci32.test \
+	tests/explain_tli-c99.test \
 	tests/explain_type_i.test \
+	tests/explain_typedef_ci32.test \
 	tests/explain_ub.test \
 	tests/explain_uc16.test \
 	tests/explain_uc32.test \
