@@ -783,6 +783,7 @@ TESTS+=	tests/show_foo.test
 #
 TESTS+=	tests/2c_typedef_i.test \
 	tests/k_typedef_i_explain_i.test \
+	tests/k_typedef_i_typedef_tn_i.test \
 	tests/namespace_+typedef_i.test \
 	tests/namespace_c_typedef_i.test \
 	tests/namespace_k_typedef_i.test \
@@ -797,7 +798,6 @@ TESTS+=	tests/2c_typedef_i.test \
 	tests/typedef_i_declare_i.test \
 	tests/typedef_i_explain_i.test \
 	tests/typedef_i_int_least32_t.test \
-	tests/typedef_tki.test \
 	tests/using_fi_v_show_f.test \
 	tests/using_i.test \
 	tests/using_i_declare_i.test \
@@ -817,7 +817,7 @@ TESTS+=	tests/2c_typedef_i.test \
 	tests/typedef_eti.test \
 	tests/typedef_rgi.test \
 	tests/typedef_si.test \
-	tests/typedef_ti.test \
+	tests/typedef_tni.test \
 	tests/using_ai.test \
 	tests/using_c_int_least32_t.test \
 	tests/using_eti.test \
