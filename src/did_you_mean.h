@@ -43,7 +43,12 @@ struct did_you_mean {
 };
 
 /**
- * The kinds of things one might have meant.
+ * The bitwise-or of kinds of things one might have meant.
+ *
+ * @sa DYM_COMMANDS
+ * @sa DYM_C_ATTRIBUTES
+ * @sa DYM_C_KEYWORDS
+ * @sa DYM_C_TYPES
  */
 typedef unsigned dym_kind_t;
 
