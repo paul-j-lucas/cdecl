@@ -1,5 +1,8 @@
 2021-02-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, c_lang.h, check.c: Warnings are now given for names that are
+     reserved identifiers.
+   * c_ast.h: More Doxygen.
    * NEWS, lexer.l, test/Makefile.am, explain_tli.out, explain_tli-c99.test,
      explain_tli.test: thread_local is now correctly allowed only in C11 or
      C++11 or later.
