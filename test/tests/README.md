@@ -21,7 +21,7 @@ Test files are as follows:
 + `reinterpret_cast_*` = A `reinterpret_cast` test.
 + `set_*`              = A `set` test.
 + `static_cast_*`      = A `static_cast` test.
-+ `typedef_*`          = A `typedef` test.
++ `*typedef*`          = A `typedef` test.
 + `*_udc_*`            = A user-defined conversion test.
 + `*_udl_*`            = A user-defined literal test.
 + `using_*`            = A `using` test.
@@ -81,7 +81,7 @@ The characters are:
 + `rr` = rvalue reference
 + `rt` = `restrict`
 + `s` = `signed` or `static`
-+ `t` = `throw`, `typedef`, `typename`, or unknown type
++ `t` = `throw`, `typename`, or unknown type
 + `u` = `unsigned`
 + `v` = `virtual`, `void`, or `volatile`
 + `w` = bit-field width (following digits specify width)
