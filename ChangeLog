@@ -1,3 +1,58 @@
+2021-02-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, lexer.l, test/Makefile.am, explain_tli.out, explain_tli-c99.test,
+     explain_tli.test: thread_local is now correctly allowed only in C11 or
+     C++11 or later.
+   * test/Makefile.am: Test renaming.
+   * test/Makefile.am, k_ns_typedef_i.test: Test renaming.
+
+2021-02-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.h: Fixed Doxygen.
+   * did_you_mean.h, types.h: Moved did_you_mean_t.
+   * did_you_mean.h: Doxygen.
+   * src/Makefile.am: Added all-local and clean-local targets to make and
+     remove c++decl.
+   * NEWS, c_lang.c, c_lang.h, c_type.c, check.c, parser.y, set_options.c,
+     explain_tf_v-c++17.out: Improved error messages specifying when a feature
+     becomes legal, if ever.
+   * check.c: Clean-up.
+   * explain_tf_v-c++17.out: Fixed expected test result.
+   * NEWS, check.c: Constructors and destructors are now checked for `throw`. 
+     Constructor parameters are now checked for warnings.
+   * c_lang.c: Fixed comment.
+
+2021-02-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_kind.h: Doxygen.
+   * c_ast_util.c, c_type.c, c_type.h: s/c_type_intersects()/c_type_is_any()/
+   * c_type.h: Function reorder.
+   * c_type.c, c_type.h: Made c_type_id_tpid() out-of-line;
+     s/c_type_id_intersects/
+   * c_ast_util.c, c_type.c, c_type.h, parser.y: Made T_TYPEDEF global.
+   * parser.y: Added TYPEDEF_TYPE.
+   * c_type.h: Made C_TYPE_LIT a true literal again.
+
+2021-02-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c: Now checking bit-field width equivalence.
+   * c_ast.c, c_ast.h: Now also checking for alignment equivalence.
+   * set_options.c: s/strn_nohyphen_eq/strn_nohyphen_equal/
+   * check.c: s/c_ast_name_eq/c_ast_name_equal/
+   * check.c: Now using END_STR_LIT for newline printing.
+   * check.c: Added hint to c_ast_check_pointer().
+   * check.c: Function sorting.
+   * c_ast_util.c: Pamameter & Doxygen fixes.
+   * c_ast_util.h: Doxygen fixes.
+
+2021-02-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * set_options.c: Comment.
+   * options.c, options.h, set_options.c: Renaming.
+   * gibberish.c: s/C_GRAPH_NONE/C_GIB_NONE/
+   * english.c, english.h, gibberish.c, parser.y: c_ast_english_type()
+     clean-up.
+
 2021-02-09  Paul J. Lucas <paul@lucasmail.org>
 
    * stddef.in.h: Updated Gnulib.
