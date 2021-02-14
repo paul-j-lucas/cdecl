@@ -223,6 +223,9 @@ struct c_constructor_ast {
 
 /**
  * AST node for a C/C++ `enum`, `class`, `struct`, or `union` type.
+ *
+ * @note Members are laid out in the same order as `c_ptr_mbr_ast`: this is
+ * taken advantage of.
  */
 struct c_ecsu_ast {
   c_ast_t        *of_ast;               ///< For `enum`, the fixed type, if any.
@@ -253,6 +256,9 @@ struct c_operator_ast {
 
 /**
  * AST node for a C++ pointer-to-member of a class.
+ *
+ * @note Members are laid out in the same order as `c_ecsu_ast`: this is taken
+ * advantage of.
  */
 struct c_ptr_mbr_ast {
   c_ast_t        *of_ast;               ///< Member type.
