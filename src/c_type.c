@@ -1022,8 +1022,8 @@ bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
 
   if ( is_long_int( *dst_tid ) && is_long_int( new_tid ) ) {
     //
-    // If the existing type is "long" and the new type is "long", turn the new
-    // type into "long long".
+    // Special case: if the existing type is "long" and the new type is "long",
+    // turn the new type into "long long".
     //
     new_tid = TB_LONG_LONG;
   }
