@@ -370,11 +370,13 @@ check_for_error:
   return NULL;
 }
 
-void strbuf_cat( strbuf_t *sbuf, char const *s, size_t s_len ) {
+void strbuf_cat( strbuf_t *sbuf, char const *s, ssize_t s_len_in ) {
   assert( sbuf != NULL );
   assert( s != NULL );
 
+  size_t const s_len = s_len_in == -1 ? strlen( s ) : (size_t)s_len_in;
   size_t const buf_rem = sbuf->buf_cap - sbuf->str_len;
+
   if ( s_len >= buf_rem ) {
     size_t const new_len = sbuf->str_len + s_len;
     sbuf->buf_cap = next_pow_2( new_len );

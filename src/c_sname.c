@@ -75,7 +75,7 @@ static char const* scope_name_impl( strbuf_t *name_buf, c_sname_t const *sname,
     if ( true_or_set( &colon2 ) )
       strbuf_cat( name_buf, "::", 2 );
     char const *const name = c_scope_data( scope )->name;
-    strbuf_cat( name_buf, name, strlen( name ) );
+    strbuf_cat( name_buf, name, -1 );
   } // for
 
   return name_buf->str != NULL ? name_buf->str : "";

@@ -766,9 +766,10 @@ char* chrcpy_end( char *dst, char c );
  *
  * @param sbuf A pointer to the strbuf to concatenate onto.
  * @param s The string to concatenate.
- * @param s_len The number of bytes of \a s to concatenate.
+ * @param s_len The number of bytes of \a s to concatenate; if -1, the length
+ * of \a s is used.
  */
-void strbuf_cat( strbuf_t *sbuf, char const *s, size_t s_len );
+void strbuf_cat( strbuf_t *sbuf, char const *s, ssize_t s_len );
 
 /**
  * Initializes a strbuf.
