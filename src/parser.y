@@ -673,7 +673,7 @@ static void fl_elaborate_error( char const *file, int line,
 
   if ( error_token != NULL ) {
     c_keyword_t const *const k =
-      c_keyword_find( error_token, LANG_ALL, C_KW_CTX_ALL );
+      c_keyword_find( error_token, LANG_ANY, C_KW_CTX_ALL );
     if ( k != NULL ) {
       c_lang_id_t const oldest_lang = c_lang_oldest( k->lang_ids );
       if ( oldest_lang > opt_lang )
@@ -1944,7 +1944,7 @@ explain_c
 
       bool ok = false;
 
-      if ( unsupported( LANG_CPP_ALL ) ) {
+      if ( unsupported( LANG_CPP_ANY ) ) {
         print_error( &@2, "%s_cast not supported in C\n", $2 );
       }
       else {
@@ -5556,7 +5556,7 @@ sname_c
   : sname_c Y_COLON2 Y_NAME
     {
       // see the comment in "of_scope_english"
-      if ( unsupported( LANG_CPP_ALL ) ) {
+      if ( unsupported( LANG_CPP_ANY ) ) {
         print_error( &@2, "scoped names not supported in C\n" );
         PARSE_ABORT();
       }
@@ -6000,7 +6000,7 @@ of_scope_english
       // AST because it has to be done in fewer places in the code plus gives a
       // better error location.
       //
-      if ( unsupported( LANG_CPP_ALL ) ) {
+      if ( unsupported( LANG_CPP_ANY ) ) {
         print_error( &@2, "scoped names not supported in C\n" );
         PARSE_ABORT();
       }

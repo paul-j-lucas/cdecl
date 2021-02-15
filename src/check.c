@@ -1791,7 +1791,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
 
     case K_POINTER_TO_MEMBER:
       if ( opt_lang_is_c() ) {
-        error_kind_not_supported( ast, LANG_CPP_ALL );
+        error_kind_not_supported( ast, LANG_CPP_ANY );
         return VISITOR_ERROR_FOUND;
       }
       PJL_FALLTHROUGH;
@@ -1808,7 +1808,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       PJL_FALLTHROUGH;
     case K_REFERENCE:
       if ( opt_lang_is_c() ) {
-        error_kind_not_supported( ast, LANG_CPP_ALL );
+        error_kind_not_supported( ast, LANG_CPP_ANY );
         return VISITOR_ERROR_FOUND;
       }
       if ( !c_ast_check_reference( ast ) )
@@ -1852,7 +1852,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   bool const is_func_param = REINTERPRET_CAST( bool, data );
 
   c_lang_id_t const lang_ids = c_type_check( &ast->type );
-  if ( lang_ids != LANG_ALL ) {
+  if ( lang_ids != LANG_ANY ) {
     print_error( &ast->loc,
       "\"%s\" is illegal for %s%s\n",
       c_type_name_error( &ast->type ), c_kind_name( ast->kind_id ),
@@ -2047,7 +2047,7 @@ static void c_sname_warn( c_sname_t const *sname, c_loc_t const *loc ) {
     char const *const name = c_scope_data( scope )->name;
 
     // First, check to see if the name is a keyword in some other language.
-    c_keyword_t const *const k = c_keyword_find( name, LANG_ALL, C_KW_CTX_ALL );
+    c_keyword_t const *const k = c_keyword_find( name, LANG_ANY, C_KW_CTX_ALL );
     if ( k != NULL ) {
       print_warning( loc,
         "\"%s\" is a keyword in %s\n",
@@ -2087,10 +2087,10 @@ static c_lang_id_t is_reserved_name( char const *name ) {
   assert( name != NULL );
 
   if ( name[0] == '_' && (isupper( name[1] ) || name[1] == '_') )
-    return LANG_ALL;
+    return LANG_ANY;
 
   if ( strstr( name, "__" ) != NULL )
-    return LANG_CPP_ALL;
+    return LANG_CPP_ANY;
 
   return LANG_NONE;
 }

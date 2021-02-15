@@ -55,7 +55,7 @@ _GL_INLINE_HEADER_BEGIN
 
 // languages supported
 #define LANG_NONE     ((c_lang_id_t)0)  /**< No languages. */
-#define LANG_ALL      ((c_lang_id_t)~0) /**< All supported languages. */
+#define LANG_ANY      ((c_lang_id_t)~0) /**< Any supported language. */
 
 #define LANG_C_OLD    LANG_C_KNR        /**< Oldest supported C language. */
 #define LANG_C_KNR    (1u << 0)         /**< K&R (pre-ANSI) C. */
@@ -66,7 +66,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_C_17     (1u << 5)         /**< C 17. */
 #define LANG_C_2X     (1u << 6)         /**< C 2X. */
 #define LANG_C_NEW    LANG_C_2X         /**< Newest supported C language. */
-#define LANG_C_ALL    LANG_MAX(C_NEW)   /**< All C languages. */
+#define LANG_C_ANY    LANG_MAX(C_NEW)   /**< Any C language. */
 
 #define LANG_CPP_OLD  LANG_CPP_98       /**< Oldest supported C++ language. */
 #define LANG_CPP_98   (1u << 9)         /**< C++ 98. */
@@ -76,7 +76,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_CPP_17   (1u << 13)        /**< C++ 17. */
 #define LANG_CPP_20   (1u << 14)        /**< C++ 20. */
 #define LANG_CPP_NEW  LANG_CPP_20       /**< Newest supported C++ language. */
-#define LANG_CPP_ALL  LANG_MASK_CPP     /**< All C++ languages. */
+#define LANG_CPP_ANY  LANG_MASK_CPP     /**< Any C++ languages. */
 
 /**< Language eXtensions for Embedded C. */
 #define LANGX_EMC     (1u << 7)
@@ -297,7 +297,7 @@ char const* c_lang_coarse_name( c_lang_id_t lang_ids ) {
  * Gets the literal appropriate for the current language.
  *
  * @param lang_lit A <code>\ref c_lang_lit</code> array.  The last element
- * _must_ always have a `lang_ids` value of #LANG_ALL.  If the corresponding
+ * _must_ always have a `lang_ids` value of #LANG_ANY.  If the corresponding
  * `literal` value is NULL, it means there is no appropriate literal for the
  * current language.
  * @return Returns said literal or NULL if there is no appropriate literal for
@@ -440,7 +440,7 @@ c_lang_id_t opt_lang_and_newer( void ) {
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool opt_lang_is_c( void ) {
-  return OPT_LANG_IS(C_ALL);
+  return OPT_LANG_IS(C_ANY);
 }
 
 /**
@@ -454,7 +454,7 @@ bool opt_lang_is_c( void ) {
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool opt_lang_is_cpp( void ) {
-  return OPT_LANG_IS(CPP_ALL);
+  return OPT_LANG_IS(CPP_ANY);
 }
 
 /**

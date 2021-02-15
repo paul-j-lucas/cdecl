@@ -261,7 +261,7 @@ void fl_print_error_unknown_name( char const *file, int line,
   c_type_id_t tid = TX_NONE;
   char const *what = "name";
 
-  c_keyword_t const *const k = c_keyword_find( name, LANG_ALL, C_KW_CTX_ALL );
+  c_keyword_t const *const k = c_keyword_find( name, LANG_ANY, C_KW_CTX_ALL );
 
   if ( k != NULL ) {
     adj = "unsupported";

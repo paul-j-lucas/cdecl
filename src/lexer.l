@@ -140,7 +140,7 @@ struct cdecl_keyword {
 
   /**
    * Array of language(s)/synonym-keyword pair(s).  The array is terminated by
-   * an element that has #LANG_ALL for lang_ids; hence subset(s) of language(s)
+   * an element that has #LANG_ANY for lang_ids; hence subset(s) of language(s)
    * cases come first and, failing to match opt_lang against any of those,
    * matches the last (default) element.
    */
@@ -167,7 +167,7 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  *
  * @sa CDECL_KEYWORDS for examples.
  */
-#define C_SY1(ALLOW,C_KEYWORD)    C_SYN( (ALLOW), { { LANG_ALL, C_KEYWORD } } )
+#define C_SY1(ALLOW,C_KEYWORD)    C_SYN( (ALLOW), { { LANG_ANY, C_KEYWORD } } )
 
 /**
  * Specify that the previosuly given literal maps to Bison tokan \a Y_ID.
@@ -211,13 +211,13 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  *
  * To have a literal that is English be a synonym for more than one
  * corresponding C/C++ keyword depending on the current language, use #C_SYN
- * with the last row always containing #LANG_ALL:
+ * with the last row always containing #LANG_ANY:
  *
  *      // The "noreturn" literal is a synonym for the "_Noreturn" literal only
  *      // in C11 and later.
  *      { L_NORETURN,       C_SYN( true,
  *                            { { LANG_C_MIN(11), L__NORETURN },
- *                              { LANG_ALL,       L_NORETURN  } } ) },
+ *                              { LANG_ANY,       L_NORETURN  } } ) },
  *
  * Exceptions are `bool`, `complex`, `const`, and `volatile` that are included
  * here as cdecl keywords so each maps to its language-specific literal.
@@ -234,7 +234,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_BITS,           TOKEN( Y_BITS                       ) },
   { L_BOOL,           C_SYN( true,
                         { { LANG_C_MIN(99), L__BOOL },
-                          { LANG_ALL,       L_BOOL  } } ) },
+                          { LANG_ANY,       L_BOOL  } } ) },
   { L_BYTES,          TOKEN( Y_BYTES                      ) },
   { H_CARRIES_DEPENDENCY,
                       C_SY1( false, L_CARRIES_DEPENDENCY  ) },
@@ -243,15 +243,15 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_COMPLEX,        C_SYN( true,
                         { { LANG_C_MAX(95), L_GNU___COMPLEX },
                           { LANG_C_MIN(99), L__COMPLEX      },
-                          { LANG_ALL,       L_COMPLEX       } } ) },
+                          { LANG_ANY,       L_COMPLEX       } } ) },
   { L_COMMAND,        TOKEN( Y_COMMANDS                   ) },
   { L_COMMANDS,       TOKEN( Y_COMMANDS                   ) },
   { L_CONST,          C_SYN( false,
                         { { LANG_C_KNR, L_GNU___CONST },
-                          { LANG_ALL,   L_CONST       } } ) },
+                          { LANG_ANY,   L_CONST       } } ) },
   { L_CONSTANT,       C_SYN( false,
                         { { LANG_C_KNR, L_GNU___CONST },
-                          { LANG_ALL,   L_CONST       } } ) },
+                          { LANG_ANY,   L_CONST       } } ) },
   { L_CONSTRUCTOR,    TOKEN( Y_CONSTRUCTOR                ) },
   { L_CONVERSION,     TOKEN( Y_CONVERSION                 ) },
   { L_DECLARE,        TOKEN( Y_DECLARE                    ) },
@@ -284,14 +284,14 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { H_NO_EXCEPTION,   C_SY1( false, L_NOEXCEPT            ) },
   { H_NO_RETURN,      C_SYN( false,
                         { { LANG_C_MIN(11), L__NORETURN },
-                          { LANG_ALL,       L_NORETURN  } } ) },
+                          { LANG_ANY,       L_NORETURN  } } ) },
   { H_NON_DISCARDABLE,
                       C_SY1( false, L_NODISCARD           ) },
   { H_NON_MBR,        TOKEN( Y_NON_MEMBER                 ) },
   { H_NON_MEMBER,     TOKEN( Y_NON_MEMBER                 ) },
   { H_NON_RETURNING,  C_SYN( false,
                         { { LANG_C_MIN(11), L__NORETURN },
-                          { LANG_ALL,       L_NORETURN  } } ) },
+                          { LANG_ANY,       L_NORETURN  } } ) },
   { H_NON_THROWING,   C_SY1( false, L_THROW               ) },
   { H_NO_UNIQUE_ADDRESS,
                       C_SY1( false, L_NO_UNIQUE_ADDRESS   ) },
@@ -299,7 +299,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
                       C_SY1( false, L_NO_UNIQUE_ADDRESS   ) },
   { L_NORETURN,       C_SYN( true,
                         { { LANG_C_MIN(11), L__NORETURN },
-                          { LANG_ALL,       L_NORETURN  } } ) },
+                          { LANG_ANY,       L_NORETURN  } } ) },
   { L_OF,             TOKEN( Y_OF                         ) },
   { L_OPER,           TOKEN( Y_OPERATOR                   ) },
   { L_OVERRIDDEN,     C_SY1( false, L_OVERRIDE            ) },
@@ -314,8 +314,8 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_REFERENCE,      TOKEN( Y_REFERENCE                  ) },
   { L_REINTERPRET,    TOKEN( Y_REINTERPRET                ) },
   { L_RESTRICTED,     C_SYN( false,
-                        { { LANG_C_MAX(95) | LANG_CPP_ALL, L_GNU___RESTRICT },
-                          { LANG_ALL,                      L_RESTRICT } } ) },
+                        { { LANG_C_MAX(95) | LANG_CPP_ANY, L_GNU___RESTRICT },
+                          { LANG_ANY,                      L_RESTRICT } } ) },
   { L_RET,            TOKEN( Y_RETURNING                  ) },
   { L_RETURNING,      TOKEN( Y_RETURNING                  ) },
   { L_RVALUE,         TOKEN( Y_RVALUE                     ) },
@@ -325,11 +325,11 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_STRUCTURE,      C_SY1( false, L_STRUCT              ) },
   { L_THREAD_LOCAL,   C_SYN( true,
                         { { LANG_C_MIN(11), L__THREAD_LOCAL },
-                          { LANG_ALL,       L_THREAD_LOCAL  } } ) },
+                          { LANG_ANY,       L_THREAD_LOCAL  } } ) },
   { H_THREAD_LOCAL,   C_SYN( true,
                         { { LANG_C_CPP_MAX(99,03), L_GNU___THREAD  },
                           { LANG_C_MIN(11),        L__THREAD_LOCAL },
-                          { LANG_ALL,              L_THREAD_LOCAL  } } ) },
+                          { LANG_ANY,              L_THREAD_LOCAL  } } ) },
   { L_TO,             TOKEN( Y_TO                         ) },
   { L_TYPE,           C_SY1( false, L_TYPEDEF             ) },
   { L_USER,           TOKEN( Y_USER                       ) },
@@ -342,22 +342,22 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_VECTOR,         TOKEN( Y_ARRAY                      ) },
   { L_VOLATILE,       C_SYN( false,
                         { { LANG_C_KNR, L_GNU___VOLATILE },
-                          { LANG_ALL,   L_VOLATILE       } } ) },
+                          { LANG_ANY,   L_VOLATILE       } } ) },
   { L_WIDTH,          TOKEN( Y_WIDTH                      ) },
 
   // Embedded C extensions
   { L_EMC_ACCUM,      C_SYN( true,
                         { { LANG_C_99, L_EMC__ACCUM },
-                          { LANG_ALL,  NULL         } } ) },
+                          { LANG_ANY,  NULL         } } ) },
   { L_EMC_FRACT,      C_SYN( true,
                         { { LANG_C_99, L_EMC__FRACT },
-                          { LANG_ALL,  NULL         } } ) },
+                          { LANG_ANY,  NULL         } } ) },
   { L_EMC_SAT,        C_SYN( false,
                         { { LANG_C_99, L_EMC__SAT   },
-                          { LANG_ALL,  NULL         } } ) },
+                          { LANG_ANY,  NULL         } } ) },
   { L_EMC_SATURATED,  C_SYN( true,
                         { { LANG_C_99, L_EMC__SAT   },
-                          { LANG_ALL,  NULL         } } ) },
+                          { LANG_ANY,  NULL         } } ) },
 
   { NULL,             TOKEN( 0                            ) }
 };
