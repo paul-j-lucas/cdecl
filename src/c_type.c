@@ -56,11 +56,9 @@
 #define C_TYPE_ID_CHECK_LEGAL(TYPE,TYPES) \
   C_TYPE_CHECK( c_type_id_check_legal( (TYPE), (TYPES), ARRAY_SIZE( TYPES ) ) )
 
-#define C_TYPE_ID_NAME_CAT(PNAME,TYPE,TYPES,IS_ERROR,SEP,PSEP)        \
-  c_type_id_name_cat( (PNAME), (TYPE), (TYPES), ARRAY_SIZE( TYPES ),  \
+#define C_TYPE_ID_NAME_CAT(SBUF,TYPE,TYPES,IS_ERROR,SEP,PSEP)       \
+  c_type_id_name_cat( (SBUF), (TYPE), (TYPES), ARRAY_SIZE( TYPES ), \
                       (IS_ERROR), (SEP), (PSEP) )
-
-#define CHRCAT(DST,SRC)           ((DST) = chrcpy_end( (DST), (SRC) ))
 
 /// @endcond
 
@@ -95,8 +93,7 @@ static char const*  c_type_literal( c_type_info_t const*, bool );
 PJL_WARN_UNUSED_RESULT
 static char const*  c_type_name_impl( c_type_t const*, bool );
 
-PJL_WARN_UNUSED_RESULT
-static char*        strcpy_sep( char*, char const*, char, bool* );
+static void         strbuf_cat_sep( strbuf_t*, char const*, char, bool* );
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -617,7 +614,7 @@ static char const* c_type_id_name_1( c_type_id_t tid, bool is_error ) {
 /**
  * Concatenates the partial type name onto the full type name being made.
  *
- * @param pname A pointer to the pointer to the name to concatenate to.
+ * @param sbuf A pointer to the buffer to concatenate the name to.
  * @param tid The <code>\ref c_type_id_t</code> to concatenate the name of.
  * @param tids The array of types to use.
  * @param tids_size The size of \a tids.
@@ -627,15 +624,16 @@ static char const* c_type_id_name_1( c_type_id_t tid, bool is_error ) {
  * @param sep_cat A pointer to a variable to keep track of whether \a sep has
  * been concatenated.
  */
-static void c_type_id_name_cat( char **pname, c_type_id_t tid,
+static void c_type_id_name_cat( strbuf_t *sbuf, c_type_id_t tid,
                                 c_type_id_t const tids[], size_t tids_size,
                                 bool is_error, char sep, bool *sep_cat ) {
-  assert( pname != NULL );
+  assert( sbuf != NULL );
   for ( size_t i = 0; i < tids_size; ++i ) {
-    if ( !c_type_id_is_none( tid & tids[i] ) )
-      *pname = strcpy_sep(
-        *pname, c_type_id_name_1( tids[i], is_error ), sep, sep_cat
+    if ( !c_type_id_is_none( tid & tids[i] ) ) {
+      strbuf_cat_sep(
+        sbuf, c_type_id_name_1( tids[i], is_error ), sep, sep_cat
       );
+    }
   } // for
 }
 
@@ -674,13 +672,11 @@ PJL_WARN_UNUSED_RESULT
 static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
 # define NUM_BUFS 2
 
-  static char name_buf[ NUM_BUFS ][ 256 ];
+  static strbuf_t name_bufs[ NUM_BUFS ];
   static unsigned buf_index;
 
-  if ( ++buf_index >= NUM_BUFS )
-    buf_index = 0;
-  char *name = name_buf[ buf_index ];
-  name[0] = '\0';
+  strbuf_t *const sbuf = &name_bufs[ buf_index++ % NUM_BUFS ];
+  strbuf_free( sbuf );
   bool space = false;
 
   c_type_id_t base_tid = c_type_id_normalize( type->base_tid );
@@ -694,7 +690,7 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
     // brackets [[like this]].
     //
     static c_type_id_t const C_NORETURN[] = { TA_NORETURN };
-    C_TYPE_ID_NAME_CAT( &name, TA_NORETURN, C_NORETURN, is_error, ' ', &space );
+    C_TYPE_ID_NAME_CAT( sbuf, TA_NORETURN, C_NORETURN, is_error, ' ', &space );
     //
     // Now that we've handled _Noreturn for C, remove its bit and fall through
     // to the regular attribute-printing code.
@@ -723,14 +719,12 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
 
     if ( print_brackets ) {
       if ( space )
-        CHRCAT( name, ' ' );
-      STRCAT( name, graph_token_c( "[[" ) );
+        strbuf_cat( sbuf, " ", 1 );
+      strbuf_cat( sbuf, graph_token_c( "[[" ), -1 );
     }
-    C_TYPE_ID_NAME_CAT(
-      &name, attr_tid, C_ATTRIBUTE, is_error, sep, sep_cat
-    );
+    C_TYPE_ID_NAME_CAT( sbuf, attr_tid, C_ATTRIBUTE, is_error, sep, sep_cat );
     if ( print_brackets )
-      STRCAT( name, graph_token_c( "]]" ) );
+      strbuf_cat( sbuf, graph_token_c( "]]" ), -1 );
     space = true;
   }
 
@@ -801,9 +795,7 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
     TS_CONSTEXPR,
     TS_CONSTINIT,
   };
-  C_TYPE_ID_NAME_CAT(
-    &name, store_tid, C_STORAGE_CLASS, is_error, ' ', &space
-  );
+  C_TYPE_ID_NAME_CAT( sbuf, store_tid, C_STORAGE_CLASS, is_error, ' ', &space );
 
   c_type_id_t east_tid = TS_NONE;
   if ( opt_east_const && lexer_is_english() ) {
@@ -829,7 +821,7 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
     // This is last so we get names like "const _Atomic".
     TS_ATOMIC,
   };
-  C_TYPE_ID_NAME_CAT( &name, store_tid, C_QUALIFIER, is_error, ' ', &space );
+  C_TYPE_ID_NAME_CAT( sbuf, store_tid, C_QUALIFIER, is_error, ' ', &space );
 
   static c_type_id_t const C_TYPE[] = {
     // These are first so we get names like "unsigned int".
@@ -865,18 +857,18 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
     TB_EMC_ACCUM,
     TB_EMC_FRACT,
   };
-  C_TYPE_ID_NAME_CAT( &name, base_tid, C_TYPE, is_error, ' ', &space );
+  C_TYPE_ID_NAME_CAT( sbuf, base_tid, C_TYPE, is_error, ' ', &space );
 
   if ( east_tid != TS_NONE )
-    C_TYPE_ID_NAME_CAT( &name, east_tid, C_QUALIFIER, is_error, ' ', &space );
+    C_TYPE_ID_NAME_CAT( sbuf, east_tid, C_QUALIFIER, is_error, ' ', &space );
 
   // Really special cases.
   if ( (base_tid & TB_NAMESPACE) != TB_NONE )
-    name = strcpy_sep( name, L_NAMESPACE, ' ', &space );
+    strbuf_cat_sep( sbuf, L_NAMESPACE, ' ', &space );
   else if ( (base_tid & TB_SCOPE) != TB_NONE )
-    name = strcpy_sep( name, L_SCOPE, ' ', &space );
+    strbuf_cat_sep( sbuf, L_SCOPE, ' ', &space );
 
-  return name_buf[ buf_index ];
+  return sbuf->str != NULL ? sbuf->str : "";
 
 # undef NUM_BUFS
 }
@@ -884,23 +876,21 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
 /**
  * Possibly copies \a sep followed by \a src to \a dst.
  *
- * @param dst A pointer to receive the copy of \a src.
+ * @param sbuf A pointer to the buffer to concatenate a copy of \a s to.
  * @param src The null-terminated string to copy.
  * @param sep The separator character.
  * @param sep_cat A pointer to a variable to keep track of whether \a sep has
  * been concatenated.
- * @return Returns a pointer to the new end of \a dst.
  */
-PJL_WARN_UNUSED_RESULT
-static char* strcpy_sep( char *dst, char const *src, char sep, bool *sep_cat ) {
-  assert( dst != NULL );
-  assert( src != NULL );
+static void strbuf_cat_sep( strbuf_t *sbuf, char const *s, char sep,
+                            bool *sep_cat ) {
+  assert( sbuf != NULL );
+  assert( s != NULL );
   assert( sep_cat != NULL );
 
   if ( true_or_set( sep_cat ) )
-    CHRCAT( dst, sep );
-  STRCAT( dst, src );
-  return dst;
+    strbuf_cat( sbuf, &sep, 1 );
+  strbuf_cat( sbuf, s, -1 );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
