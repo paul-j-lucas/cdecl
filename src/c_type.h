@@ -782,7 +782,8 @@ bool c_type_id_is_none( c_type_id_t tid ) {
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_size_t( c_type_id_t tid ) {
   assert( (tid & TX_MASK_PART_ID) == C_TPID_BASE );
-  return ((tid & c_type_id_compl( TB_INT )) & (TB_UNSIGNED | TB_LONG)) == (TB_UNSIGNED | TB_LONG);
+  tid &= c_type_id_compl( TB_INT );
+  return (tid & (TB_UNSIGNED | TB_LONG)) == (TB_UNSIGNED | TB_LONG);
 }
 
 /**
