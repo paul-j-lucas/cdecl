@@ -440,7 +440,7 @@ c_lang_id_t opt_lang_and_newer( void ) {
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool opt_lang_is_c( void ) {
-  return (opt_lang & LANG_C_ALL) != LANG_NONE;
+  return OPT_LANG_IS(C_ALL);
 }
 
 /**
@@ -454,7 +454,7 @@ bool opt_lang_is_c( void ) {
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool opt_lang_is_cpp( void ) {
-  return (opt_lang & LANG_CPP_ALL) != LANG_NONE;
+  return OPT_LANG_IS(CPP_ALL);
 }
 
 /**
