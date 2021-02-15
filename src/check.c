@@ -272,7 +272,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
   assert( ast->kind_id == K_ARRAY );
 
   if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE ) {
-    if ( !C_LANG_IS(C_MIN(99)) ) {
+    if ( !OPT_LANG_IS(C_MIN(99)) ) {
       print_error( &ast->loc,
         "variable length arrays not supported%s\n",
         c_lang_until( LANG_C_99 )
@@ -288,7 +288,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
   }
 
   if ( ast->as.array.store_tid != TS_NONE ) {
-    if ( !C_LANG_IS(C_MIN(99)) ) {
+    if ( !OPT_LANG_IS(C_MIN(99)) ) {
       print_error( &ast->loc,
         "\"%s\" arrays not supported%s\n",
         c_type_id_name_error( ast->as.array.store_tid ),
@@ -535,7 +535,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     return false;
   }
 
-  return C_LANG_IS_C() ?
+  return opt_lang_is_c() ?
     c_ast_check_func_c( ast ) :
     c_ast_check_func_cpp( ast );
 }
@@ -550,7 +550,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_c( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & (K_APPLE_BLOCK | K_FUNCTION)) != K_NONE );
-  assert( C_LANG_IS_C() );
+  assert( opt_lang_is_c() );
 
   c_type_id_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
   if ( qual_tid != TS_NONE ) {
@@ -575,7 +575,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
-  assert( C_LANG_IS_CPP() );
+  assert( opt_lang_is_cpp() );
 
   if ( c_type_is_tid_any( &ast->type, TS_CONSTINIT ) ) {
     error_kind_not_tid( ast, TS_CONSTINIT, "\n" );
@@ -920,7 +920,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           //
           print_error( &param_ast->loc,
             "type specifier required by %s\n",
-            C_LANG_IS_C() ? c_lang_name( LANG_C_2X ) : "C++"
+            opt_lang_is_c() ? c_lang_name( LANG_C_2X ) : "C++"
           );
           return false;
         }
@@ -1790,7 +1790,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       break;
 
     case K_POINTER_TO_MEMBER:
-      if ( C_LANG_IS_C() ) {
+      if ( opt_lang_is_c() ) {
         error_kind_not_supported( ast, LANG_CPP_ALL );
         return VISITOR_ERROR_FOUND;
       }
@@ -1807,7 +1807,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       }
       PJL_FALLTHROUGH;
     case K_REFERENCE:
-      if ( C_LANG_IS_C() ) {
+      if ( opt_lang_is_c() ) {
         error_kind_not_supported( ast, LANG_CPP_ALL );
         return VISITOR_ERROR_FOUND;
       }

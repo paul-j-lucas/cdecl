@@ -1597,7 +1597,7 @@ declare_english
 
   | Y_DECLARE error
     {
-      if ( C_LANG_IS_CPP() )
+      if ( opt_lang_is_cpp() )
         elaborate_error( "name or %s expected", L_OPERATOR );
       else
         elaborate_error( "name expected" );
@@ -2313,7 +2313,7 @@ class_struct_union_declaration_c
     }
     any_sname_c
     {
-      if ( C_LANG_IS_C() && !c_sname_empty( &in_attr.current_scope ) ) {
+      if ( opt_lang_is_c() && !c_sname_empty( &in_attr.current_scope ) ) {
         print_error( &@1, "nested types are not supported in C\n" );
         PARSE_ABORT();
       }
@@ -3084,7 +3084,7 @@ pointer_decl_english_ast
 
   | Y_POINTER to_exp error
     {
-      if ( C_LANG_IS_CPP() )
+      if ( opt_lang_is_cpp() )
         elaborate_error( "type name or \"%s\" expected", L_MEMBER );
       else
         elaborate_error( "type name expected" );
@@ -3605,7 +3605,7 @@ func_decl_c_astp
       bool const assume_constructor =
 
         // + The current language is C++.
-        C_LANG_IS_CPP() &&
+        opt_lang_is_cpp() &&
 
         // + The existing base type is none (because constructors don't have
         //   return types).
@@ -3679,7 +3679,7 @@ knr_func_or_constructor_decl_c_ast
       c_sname_t sname;
       c_sname_init_name( &sname, $1 );
 
-      if ( C_LANG_IS_C() ) {
+      if ( opt_lang_is_c() ) {
         //
         // In C prior to C99, encountering a name followed by '(' declares a
         // function that implicitly returns int:
@@ -3724,7 +3724,7 @@ knr_func_or_constructor_decl_c_ast
 rparen_func_qualifier_list_c_tid_opt
   : ')'
     {
-      if ( C_LANG_IS_CPP() ) {
+      if ( opt_lang_is_cpp() ) {
         //
         // Both "final" and "override" are matched only within member function
         // declarations.  Now that ')' has been parsed, we're within one, so
@@ -4812,7 +4812,7 @@ restrict_qualifier_c_tid
       // AST since both "restrict" and "__restrict" map to TS_RESTRICT and the
       // AST has no "memory" of which it was.
       //
-      if ( C_LANG_IS_CPP() ) {
+      if ( opt_lang_is_cpp() ) {
         print_error( &@1,
           "\"%s\" not supported in C++; use \"%s\" instead\n",
           L_RESTRICT, L_GNU___RESTRICT
@@ -4961,7 +4961,7 @@ attribute_c_tid
 
         char const *const name = c_sname_local_name( &$1 );
         c_keyword_t const *const k =
-          c_keyword_find( name, C_LANG_NEWER(), C_KW_CTX_ATTRIBUTE );
+          c_keyword_find( name, opt_lang_newer(), C_KW_CTX_ATTRIBUTE );
         if ( k != NULL && c_type_id_tpid( k->type_id ) == C_TPID_ATTR ) {
           adj = "unsupported";
           lang_ids = k->lang_ids;
@@ -5829,7 +5829,7 @@ class_struct_tid_exp
   : class_struct_tid
   | error
     {
-      if ( C_LANG_IS_CPP() )
+      if ( opt_lang_is_cpp() )
         elaborate_error( "\"%s\" or \"%s\" expected", L_CLASS, L_STRUCT );
       else
         elaborate_error( "\"%s\" expected", L_STRUCT );

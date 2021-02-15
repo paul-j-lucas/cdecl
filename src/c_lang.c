@@ -147,10 +147,10 @@ char const* c_lang_until( c_lang_id_t lang_ids ) {
   if ( lang_ids == LANG_NONE )
     return "";
 
-  c_lang_id_t const lang_mask = C_LANG_IS_C() ? LANG_MASK_C : LANG_MASK_CPP;
+  c_lang_id_t const lang_mask = opt_lang_is_c() ? LANG_MASK_C : LANG_MASK_CPP;
 
   if ( (lang_ids & lang_mask) == LANG_NONE )
-    return C_LANG_IS_C() ? " in C" : " in C++";
+    return opt_lang_is_c() ? " in C" : " in C++";
 
   lang_ids &= lang_mask;
   assert( lang_ids != LANG_NONE );

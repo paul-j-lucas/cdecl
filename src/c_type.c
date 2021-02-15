@@ -687,7 +687,7 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
   c_type_id_t store_tid = type->store_tid;
   c_type_id_t attr_tid = type->attr_tid;
 
-  if ( C_LANG_IS_C() && (attr_tid & TA_NORETURN) != TA_NONE ) {
+  if ( opt_lang_is_c() && (attr_tid & TA_NORETURN) != TA_NONE ) {
     //
     // Special case: we store _Noreturn as an attribute, but in C, it's a
     // distinct keyword and printed as such instead being printed between

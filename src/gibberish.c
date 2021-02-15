@@ -849,7 +849,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
   //
   bool const printing_typedef = gib_kind == C_GIB_TYPEDEF &&
     (!is_ecsu || c_lang_is_c( tdef->lang_ids ) ||
-    (C_LANG_IS_C() && !c_lang_is_cpp( tdef->lang_ids )));
+    (opt_lang_is_c() && !c_lang_is_cpp( tdef->lang_ids )));
 
   bool const printing_using = gib_kind == C_GIB_USING && !is_ecsu;
 

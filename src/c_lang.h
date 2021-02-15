@@ -173,64 +173,6 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_C_CPP_MIN(CL,CPPL)   (LANG_C_MIN(CL) | LANG_CPP_MIN(CPPL))
 
 /**
- * Shorthand for the common case of getting the bitwise-or of language(s) that
- * are the current language and newer.
- *
- * @return Returns said language(s).
- *
- * @sa c_lang_and_newer()
- * @sa C_LANG_NEWER()
- */
-#define C_LANG_AND_NEWER()        c_lang_and_newer( opt_lang )
-
-/**
- * Shorthand for the common case of getting whether the current language is
- * among the languages specified by \a LANG_MACRO.
- *
- * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
- * @return Returns `true` only if the current language is among the languages
- * specified by \a LANG_MACRO.
- *
- * @sa #C_LANG_IS_C()
- * @sa #C_LANG_IS_CPP()
- */
-#define C_LANG_IS(LANG_MACRO) \
-  ((opt_lang & LANG_ ## LANG_MACRO) != LANG_NONE)
-
-/**
- * Shorthand for the common case of getting whether the current language is any
- * version of C.
- *
- * @return Returns `true` only if the current language is C.
- *
- * @sa #C_LANG_IS()
- * @sa #C_LANG_IS_CPP()
- */
-#define C_LANG_IS_C()             C_LANG_IS(C_ALL)
-
-/**
- * Shorthand for the common case of getting whether the current language is any
- * version of C++.
- *
- * @return Returns `true` only if the current language is C++.
- *
- * @sa #C_LANG_IS()
- * @sa #C_LANG_IS_C()
- */
-#define C_LANG_IS_CPP()           C_LANG_IS(CPP_ALL)
-
-/**
- * Shorthand for the common case of getting the bitwise-or of language(s) that
- * are newer than the current language.
- *
- * @return Returns said languages or #LANG_NONE if no language(s) are newer.
- *
- * @sa #C_LANG_AND_NEWER()
- * @sa c_lang_newer()
- */
-#define C_LANG_NEWER()            c_lang_newer( opt_lang )
-
-/**
  * C/C++ language(s)/literal pairs: for the given language(s) only, use the
  * given literal.  This allows different languages to use different literals,
  * e.g., "_Noreturn" for C and "noreturn" for C++.
@@ -247,6 +189,20 @@ struct c_lang_lit {
  * @param ... The array of <code>\ref c_lang_lit</code> elements.
  */
 #define C_LANG_LIT(...)           (c_lang_lit_t const[]){ __VA_ARGS__ }
+
+/**
+ * Shorthand for the common case of getting whether the current language is
+ * among the languages specified by \a LANG_MACRO.
+ *
+ * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
+ * @return Returns `true` only if the current language is among the languages
+ * specified by \a LANG_MACRO.
+ *
+ * @sa opt_lang_is_c()
+ * @sa opt_lang_is_cpp()
+ */
+#define OPT_LANG_IS(LANG_MACRO) \
+  ((opt_lang & LANG_ ## LANG_MACRO) != LANG_NONE)
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -265,11 +221,11 @@ struct c_lang {
  * Gets all the language(s) \a lang_id and newer.
  *
  * @param lang_id The language.  Exactly one language must be set.
- * @return Returns the bitwise-or of all language(s) \a lang_id and later.
+ * @return Returns the bitwise-or of all language(s) \a lang_id and newer.
  *
- * @sa #C_LANG_AND_NEWER()
  * @sa c_lang_oldest()
  * @sa c_lang_newer()
+ * @sa opt_lang_and_newer()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
@@ -295,8 +251,8 @@ c_lang_id_t c_lang_find( char const *name );
  * @param lang_ids The bitwise-or of language(s) to check.
  * @return Returns `true` only if any one of \a lang_ids is a version of C.
  *
- * @sa #C_LANG_IS_C()
  * @sa c_lang_is_cpp()
+ * @sa opt_lang_is_c()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool c_lang_is_c( c_lang_id_t lang_ids ) {
@@ -310,11 +266,31 @@ bool c_lang_is_c( c_lang_id_t lang_ids ) {
  * @return Returns `true` only if any one of \a lang_ids is a version of C++.
  *
  * @sa c_lang_is_c()
- * @sa #C_LANG_IS_CPP()
+ * @sa opt_lang_is_cpp()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
   return (lang_ids & LANG_MASK_CPP) != LANG_NONE;
+}
+
+/**
+ * Gets the "coarse" name of \a lang_ids.
+ *
+ * @param lang_ids The bitwise-or of language(s).
+ * @return If:
+ *  + \a lang_ids contains any version of both C and C++, returns NULL;
+ *    otherwise:
+ *  + \a lang_ids contains any version of C, returns `"C"`.
+ *  + \a lang_ids contains any version of C++, returns `"C++"`.
+ *
+ * @sa c_lang_name()
+ * @sa c_lang_oldest_name()
+ */
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
+char const* c_lang_coarse_name( c_lang_id_t lang_ids ) {
+  return c_lang_is_c( lang_ids ) ?
+    (c_lang_is_cpp( lang_ids ) ? NULL : "C") :
+    "C++";
 }
 
 /**
@@ -337,6 +313,7 @@ char const* c_lang_literal( c_lang_lit_t const lang_lit[const] );
  * be set.
  * @return Returns said name.
  *
+ * @sa c_lang_coarse_name()
  * @sa c_lang_oldest_name()
  */
 PJL_WARN_UNUSED_RESULT
@@ -346,11 +323,12 @@ char const* c_lang_name( c_lang_id_t lang_id );
  * Gets the bitwise-or of language(s) that are newer than \a lang_id.
  *
  * @param lang_id The language.  Exactly one language must be set.
- * @return Returns said languages or #LANG_NONE if no language(s) are newer.
+ * @return Returns the bitwise-or of languages \a lang_id or newer; or
+ * #LANG_NONE if no language(s) are newer.
  *
  * @sa c_lang_and_newer()
- * @sa #C_LANG_NEWER()
  * @sa c_lang_oldest()
+ * @sa opt_lang_newer()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
@@ -396,28 +374,12 @@ c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
 }
 
 /**
- * Gets the "coarse" name of \a lang_ids.
- *
- * @param lang_ids The bitwise-or of language(s).
- * @return If:
- *  + \a lang_ids contains any version of both C and C++, returns NULL;
- *    otherwise:
- *  + \a lang_ids contains any version of C, returns `"C"`.
- *  + \a lang_ids contains any version of C++, returns `"C++"`.
- */
-C_LANG_INLINE PJL_WARN_UNUSED_RESULT
-char const* c_lang_coarse_name( c_lang_id_t lang_ids ) {
-  return c_lang_is_c( lang_ids ) ?
-    (c_lang_is_cpp( lang_ids ) ? NULL : "C") :
-    "C++";
-}
-
-/**
  * Gets the printable name of the oldest language among \a lang_ids.
  *
  * @param lang_ids The bitwise-or of language(s).
  * @return Returns said name.
  *
+ * @sa c_lang_coarse_name()
  * @sa c_lang_name()
  * @sa c_lang_oldest()
  */
@@ -453,6 +415,61 @@ void c_lang_set( c_lang_id_t lang_id );
  * something like call this twice in the same `printf()` statement.
  */
 char const* c_lang_until( c_lang_id_t lang_ids );
+
+/**
+ * Convenience function for calling c_lang_and_newer() with opt_lang.
+ *
+ * @return Returns the bitwise-or all language(s) opt_lang and newer.
+ *
+ * @sa c_lang_and_newer()
+ * @sa opt_lang_newer()
+ */
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
+c_lang_id_t opt_lang_and_newer( void ) {
+  return c_lang_and_newer( opt_lang );
+}
+
+/**
+ * Convenience function for the common case of getting whether the current
+ * language is any version of C.
+ *
+ * @return Returns `true` only if the current language is C.
+ *
+ * @sa #OPT_LANG_IS()
+ * @sa opt_lang_is_cpp()
+ */
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
+bool opt_lang_is_c( void ) {
+  return (opt_lang & LANG_C_ALL) != LANG_NONE;
+}
+
+/**
+ * Convenience function for the common case of getting whether the current
+ * language is any version of C++.
+ *
+ * @return Returns `true` only if the current language is C++.
+ *
+ * @sa #OPT_LANG_IS()
+ * @sa opt_lang_is_c()
+ */
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
+bool opt_lang_is_cpp( void ) {
+  return (opt_lang & LANG_CPP_ALL) != LANG_NONE;
+}
+
+/**
+ * Convenience function for calling c_lang_newer() with opt_lang.
+ *
+ * @return Returns the bitwise-or of languages \a lang_id or newer; or
+ * #LANG_NONE if no language(s) are newer.
+ *
+ * @sa c_lang_newer()
+ * @sa opt_lang_and_newer()
+ */
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
+c_lang_id_t opt_lang_newer( void ) {
+  return c_lang_newer( opt_lang );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 

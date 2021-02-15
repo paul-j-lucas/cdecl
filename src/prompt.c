@@ -122,7 +122,7 @@ static char* prompt_create( char suffix ) {
   }
 #endif /* WITH_READLINE */
 
-  p = strcpy_end( p, C_LANG_IS_CPP() ? CPPDECL : PACKAGE );
+  p = strcpy_end( p, opt_lang_is_cpp() ? CPPDECL : PACKAGE );
   *p++ = suffix;
 
 #ifdef WITH_READLINE
