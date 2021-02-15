@@ -89,7 +89,7 @@ char const* lexer_input_line( size_t *plen );
  * @return Returns `true` only if we're parsing pseudo-English.
  */
 C_LEXER_INLINE PJL_WARN_UNUSED_RESULT
-bool lexer_is_english() {
+bool lexer_is_english( void ) {
   return (lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0;
 }
 
