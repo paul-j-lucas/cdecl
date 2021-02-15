@@ -328,7 +328,7 @@ extern char const L_APPLE_BLOCK[];        // Engligh for '^'
  */
 C_LITERALS_INLINE PJL_WARN_UNUSED_RESULT
 char const* alignas_lang( void ) {
-  return opt_lang_is_cpp() ? L_ALIGNAS : L__ALIGNAS;
+  return OPT_LANG_IS(C_ANY) ? L__ALIGNAS : L_ALIGNAS;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

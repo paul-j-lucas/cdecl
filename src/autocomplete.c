@@ -330,7 +330,7 @@ static char* keyword_completion( char const *text, int state ) {
     // "const cast ...", etc.
     //
     command = is_command( L_CAST ) ||
-      ( opt_lang_is_cpp() && (
+      ( OPT_LANG_IS(CPP_ANY) && (
         is_command( L_CONST       ) ||
         is_command( L_DYNAMIC     ) ||
         is_command( L_STATIC      ) ||

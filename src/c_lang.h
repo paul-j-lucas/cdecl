@@ -197,9 +197,6 @@ struct c_lang_lit {
  * @param LANG_MACRO A `LANG_*` macro without the `LANG_` prefix.
  * @return Returns `true` only if the current language is among the languages
  * specified by \a LANG_MACRO.
- *
- * @sa opt_lang_is_c()
- * @sa opt_lang_is_cpp()
  */
 #define OPT_LANG_IS(LANG_MACRO) \
   ((opt_lang & LANG_ ## LANG_MACRO) != LANG_NONE)
@@ -252,7 +249,6 @@ c_lang_id_t c_lang_find( char const *name );
  * @return Returns `true` only if any one of \a lang_ids is a version of C.
  *
  * @sa c_lang_is_cpp()
- * @sa opt_lang_is_c()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool c_lang_is_c( c_lang_id_t lang_ids ) {
@@ -266,7 +262,6 @@ bool c_lang_is_c( c_lang_id_t lang_ids ) {
  * @return Returns `true` only if any one of \a lang_ids is a version of C++.
  *
  * @sa c_lang_is_c()
- * @sa opt_lang_is_cpp()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
@@ -427,34 +422,6 @@ char const* c_lang_until( c_lang_id_t lang_ids );
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t opt_lang_and_newer( void ) {
   return c_lang_and_newer( opt_lang );
-}
-
-/**
- * Convenience function for the common case of getting whether the current
- * language is any version of C.
- *
- * @return Returns `true` only if the current language is C.
- *
- * @sa #OPT_LANG_IS()
- * @sa opt_lang_is_cpp()
- */
-C_LANG_INLINE PJL_WARN_UNUSED_RESULT
-bool opt_lang_is_c( void ) {
-  return OPT_LANG_IS(C_ANY);
-}
-
-/**
- * Convenience function for the common case of getting whether the current
- * language is any version of C++.
- *
- * @return Returns `true` only if the current language is C++.
- *
- * @sa #OPT_LANG_IS()
- * @sa opt_lang_is_c()
- */
-C_LANG_INLINE PJL_WARN_UNUSED_RESULT
-bool opt_lang_is_cpp( void ) {
-  return OPT_LANG_IS(CPP_ANY);
 }
 
 /**

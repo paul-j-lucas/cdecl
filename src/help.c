@@ -133,7 +133,7 @@ static void print_help_commands( void ) {
   print_h( "command:\n" );
 
   print_h( "  " );
-  if ( opt_lang_is_cpp() )
+  if ( OPT_LANG_IS(CPP_ANY) )
     print_h( "[const | dynamic | reinterpret | static] " );
   print_h( "cast <name> {as|into|to} <english>\n" );
 
@@ -141,7 +141,7 @@ static void print_help_commands( void ) {
   if ( OPT_LANG_IS(C_CPP_MIN(11,11)) )
     print_h( "  declare <name> as <english> aligned [as|to] {<number> [bytes] | <english>}\n" );
 
-  if ( opt_lang_is_cpp() ) {
+  if ( OPT_LANG_IS(CPP_ANY) ) {
     print_h( "  declare <operator> as <english>\n" );
     print_h( "  declare [<english>] user-defined <user-defined-english>\n" );
   }
@@ -158,7 +158,7 @@ static void print_help_commands( void ) {
 
   print_h( "  typedef <gibberish>\n" );
 
-  if ( opt_lang_is_cpp() ) {
+  if ( OPT_LANG_IS(CPP_ANY) ) {
     print_h( "  <scope-c> <name> [\\{ [{ <scope-c> | <typedef>" );
     if ( OPT_LANG_IS(MIN(CPP_11)) )
       print_h( " | <using>" );
@@ -171,7 +171,7 @@ static void print_help_commands( void ) {
   print_h( "  exit | quit | q\n" );
 
   print_h( "gibberish: a C" );
-  if ( opt_lang_is_cpp() )
+  if ( OPT_LANG_IS(CPP_ANY) )
     print_h( "\\+\\+" );
   print_h( " declaration, like \"int x\"; or cast, like \"(int)x\"\n" );
 
@@ -182,7 +182,7 @@ static void print_help_commands( void ) {
 
   print_h( "lang: C K&R C89 C95 C99 C11 C17 C2X C\\+\\+ C\\+\\+98 C\\+\\+03 C\\+\\+11 C\\+\\+14 C\\+\\+17 C\\+\\+20\n" );
 
-  if ( opt_lang_is_cpp() ) {
+  if ( OPT_LANG_IS(CPP_ANY) ) {
     print_h( "scope-c: class struct union" );
     if ( OPT_LANG_IS(MIN(CPP_11)) )
       print_h( " [inline]" );
@@ -198,7 +198,7 @@ static void print_help_commands( void ) {
 static void print_help_english( void ) {
   print_h( "english:\n" );
 
-  if ( opt_lang_is_c() ) {
+  if ( OPT_LANG_IS(C_ANY) ) {
     if ( OPT_LANG_IS(MAX(C_89)) ) {
       print_h( "  <store>* array [<number>] of <english>\n" );
     } else {
@@ -226,12 +226,12 @@ static void print_help_english( void ) {
     if ( OPT_LANG_IS(MIN(CPP_11)) )
       print_h( "[class|struct] [of [type] <english>] " );
     print_h( "| " );
-    if ( opt_lang_is_cpp() )
+    if ( OPT_LANG_IS(CPP_ANY) )
       print_h( "class | " );
   }
   print_h( "struct | union } <name>\n" );
 
-  if ( opt_lang_is_c() ) {
+  if ( OPT_LANG_IS(C_ANY) ) {
     print_h( "  block [([<args>])] [returning <english>]\n" );
     print_h( "  <store>* <modifier>* [<C-type>]\n" );
 

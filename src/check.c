@@ -535,7 +535,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     return false;
   }
 
-  return opt_lang_is_c() ?
+  return OPT_LANG_IS(C_ANY) ?
     c_ast_check_func_c( ast ) :
     c_ast_check_func_cpp( ast );
 }
@@ -550,7 +550,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_c( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & (K_APPLE_BLOCK | K_FUNCTION)) != K_NONE );
-  assert( opt_lang_is_c() );
+  assert( OPT_LANG_IS(C_ANY) );
 
   c_type_id_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
   if ( qual_tid != TS_NONE ) {
@@ -575,7 +575,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
-  assert( opt_lang_is_cpp() );
+  assert( OPT_LANG_IS(CPP_ANY) );
 
   if ( c_type_is_tid_any( &ast->type, TS_CONSTINIT ) ) {
     error_kind_not_tid( ast, TS_CONSTINIT, "\n" );
@@ -920,7 +920,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           //
           print_error( &param_ast->loc,
             "type specifier required by %s\n",
-            opt_lang_is_c() ? c_lang_name( LANG_C_2X ) : "C++"
+            OPT_LANG_IS(C_ANY) ? c_lang_name( LANG_C_2X ) : "C++"
           );
           return false;
         }
@@ -1790,7 +1790,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       break;
 
     case K_POINTER_TO_MEMBER:
-      if ( opt_lang_is_c() ) {
+      if ( OPT_LANG_IS(C_ANY) ) {
         error_kind_not_supported( ast, LANG_CPP_ANY );
         return VISITOR_ERROR_FOUND;
       }
@@ -1807,7 +1807,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
       }
       PJL_FALLTHROUGH;
     case K_REFERENCE:
-      if ( opt_lang_is_c() ) {
+      if ( OPT_LANG_IS(C_ANY) ) {
         error_kind_not_supported( ast, LANG_CPP_ANY );
         return VISITOR_ERROR_FOUND;
       }
