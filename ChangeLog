@@ -1,5 +1,31 @@
+2021-02-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Comment.
+   * c_type.c: Got rid of NUM_BUFS.
+   * c_type.c: No longer using fixed-sized buffers.
+   * c_sname.c, util.c, util.h: strbuf_cat() now accepts -1 for 3rd argument to
+     call strlen().
+   * c_sname.c, util.h: Switched to using strbuf_t.
+   * c_sname.c, c_sname.h: c_sname_t clean-up.
+   * c_lang.c: Fixed size of until_buf.
+   * c_ast_util.c, c_ast_util.h: Minor clean-up.
+   * cdecl.c: "enum" is a command only in C89 and later.
+   * autocomplete.c: Fixed some autocompletions.
+
 2021-02-14  Paul J. Lucas <paul@lucasmail.org>
 
+   * autocomplete.c, c_lang.c, c_lang.h, c_type.c, check.c, gibberish.c,
+     help.c, literals.h, parser.y, print.c, prompt.c: Got rid of
+     opt_lang_is_c() and opt_lang_is_cpp().
+   * autocomplete.c, c_keyword.c, c_lang.h, c_operator.c, c_type.c, cdecl.c,
+     check.c, gibberish.c, lexer.l, parser.y, print.c: s/LANG_*ALL/LANG_*ANY/
+   * c_lang.h: Simplified opt_lang_is_c() and opt_lang_is_cpp().
+   * c_type.h: Clean-up.
+   * c_ast.h, c_type.h: Doxygen.
+   * lexer.h: s/()/( void )/
+   * autocomplete.c, c_lang.c, c_lang.h, c_type.c, c_typedef.c, check.c,
+     gibberish.c, help.c, literals.h, parser.y, print.c, prompt.c:
+     s/C_LANG_/OPT_LANG/ and made some former macros into inline functions.
    * NEWS, c_lang.h, check.c: Warnings are now given for names that are
      reserved identifiers.
    * c_ast.h: More Doxygen.
