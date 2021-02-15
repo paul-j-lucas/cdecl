@@ -679,9 +679,9 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
   strbuf_free( sbuf );
   bool space = false;
 
-  c_type_id_t base_tid = c_type_id_normalize( type->base_tid );
+  c_type_id_t base_tid  = c_type_id_normalize( type->base_tid );
   c_type_id_t store_tid = type->store_tid;
-  c_type_id_t attr_tid = type->attr_tid;
+  c_type_id_t attr_tid  = type->attr_tid;
 
   if ( OPT_LANG_IS(C_ANY) && (attr_tid & TA_NORETURN) != TA_NONE ) {
     //
