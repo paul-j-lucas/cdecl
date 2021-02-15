@@ -670,12 +670,10 @@ static c_type_t c_type_from_tid( c_type_id_t tid ) {
  */
 PJL_WARN_UNUSED_RESULT
 static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
-# define NUM_BUFS 2
-
-  static strbuf_t name_bufs[ NUM_BUFS ];
+  static strbuf_t sbufs[ 2 ];
   static unsigned buf_index;
 
-  strbuf_t *const sbuf = &name_bufs[ buf_index++ % NUM_BUFS ];
+  strbuf_t *const sbuf = &sbufs[ buf_index++ % ARRAY_SIZE( sbufs ) ];
   strbuf_free( sbuf );
   bool space = false;
 
@@ -869,8 +867,6 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
     strbuf_cat_sep( sbuf, L_SCOPE, ' ', &space );
 
   return sbuf->str != NULL ? sbuf->str : "";
-
-# undef NUM_BUFS
 }
 
 /**
