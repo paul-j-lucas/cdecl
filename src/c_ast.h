@@ -388,7 +388,7 @@ bool c_ast_is_parent( c_ast_t const *ast ) {
  * @param name The name to append.  Ownership is taken.
  *
  * @sa c_ast_append_sname()
- * @sa c_ast_prepend_sname();
+ * @sa c_ast_prepend_sname()
  * @sa c_ast_set_name()
  */
 C_AST_INLINE

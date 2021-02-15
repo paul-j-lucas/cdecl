@@ -640,7 +640,7 @@ char const* c_type_name_error( c_type_t const *type );
  * @return Returns the bitwise-or of \a i_type and \a j_type.
  *
  * @sa c_type_and()
- * @sa c_type_and_eq_compl();
+ * @sa c_type_and_eq_compl()
  * @sa c_type_or_eq()
  */
 PJL_WARN_UNUSED_RESULT
