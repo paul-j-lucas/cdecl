@@ -89,7 +89,7 @@ bool c_ast_check_declaration( c_ast_t const *ast );
 /**
  * Traverses \a ast attempting to find an AST node having \a kind_ids.
  *
- * @param ast The AST to begin at.
+ * @param ast The AST to begin at; may be null.
  * @param dir The direction to visit.
  * @param kind_ids The bitwise-or of kind(s) to find.
  * @return Returns a pointer to an AST node having one of \a kind_ids or null
@@ -231,7 +231,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
  *    <code>\ref K_PLACEHOLDER</code>.
  *
  * @param type_ast The AST of the initial type.
- * @param decl_ast The AST of a declaration.  May be null.
+ * @param decl_ast The AST of a declaration; may be null.
  * @return Returns the final AST.
  */
 PJL_WARN_UNUSED_RESULT

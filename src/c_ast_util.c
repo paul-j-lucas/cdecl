@@ -47,7 +47,7 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t* );
 /**
  * Adds an array to the AST being built.
  *
- * @param ast The AST to append to.
+ * @param ast The AST to append to; may be null.
  * @param array_ast The array AST to append.  Its "of" type must be null.
  * @return Returns the AST to be used as the grammar production's return value.
  */
@@ -192,6 +192,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
   assert( ast != NULL );
   assert( func_ast != NULL );
   assert( (func_ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
+  assert( ret_ast != NULL );
 
   if ( (ast->kind_id &
         (K_ARRAY | K_ANY_POINTER | K_ANY_REFERENCE)) != K_NONE ) {
@@ -315,12 +316,11 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast ) {
   assert( rv_ast != NULL );
   c_type_t const taken_type = c_ast_take_storage( array_ast->as.array.of_ast );
   array_ast->type.store_tid |= taken_type.store_tid;
-  array_ast->type.attr_tid |= taken_type.attr_tid;
+  array_ast->type.attr_tid  |= taken_type.attr_tid;
   return rv_ast;
 }
 
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast ) {
-  assert( ast != NULL );
   c_ast_t *const rv_ast = c_ast_add_func_impl( ast, ret_ast, func_ast );
   assert( rv_ast != NULL );
   if ( c_ast_empty_name( rv_ast ) )
@@ -378,8 +378,8 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
     return false;
   c_type_t const masked_type = {
     c_type_id_normalize( ast->type.base_tid ) & mask_type->base_tid,
-    ast->type.store_tid & mask_type->store_tid,
-    ast->type.attr_tid & mask_type->attr_tid
+    ast->type.store_tid                       & mask_type->store_tid,
+    ast->type.attr_tid                        & mask_type->attr_tid
   };
   return c_type_equal( &masked_type, equal_type );
 }
@@ -537,15 +537,15 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
 
 c_sname_t c_ast_take_name( c_ast_t *ast ) {
   assert( ast != NULL );
-  c_sname_t *const found = c_ast_find_name( ast, C_VISIT_DOWN );
-  c_sname_t rv;
-  if ( found == NULL ) {
-    c_sname_init( &rv );
+  c_sname_t *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );
+  c_sname_t rv_sname;
+  if ( found_sname == NULL ) {
+    c_sname_init( &rv_sname );
   } else {
-    rv = *found;
-    c_sname_init( found );
+    rv_sname = *found_sname;
+    c_sname_init( found_sname );
   }
-  return rv;
+  return rv_sname;
 }
 
 c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type ) {
