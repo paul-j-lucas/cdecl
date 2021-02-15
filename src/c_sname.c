@@ -127,8 +127,7 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
   if ( c_sname_count( sname ) < 2 )
     return false;
   char const *const class_name = c_sname_name_atr( sname, 1 );
-  char const *const local_name =
-    ((c_scope_data_t*)slist_peek_tail( sname ))->name;
+  char const *const local_name = c_sname_local_name( sname );
   return strcmp( local_name, class_name ) == 0;
 }
 

@@ -299,8 +299,8 @@ bool c_sname_is_ctor( c_sname_t const *sname );
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_sname_local_name( c_sname_t const *sname ) {
-  return c_sname_empty( sname ) ?
-    "" : ((c_scope_data_t*)slist_peek_tail( sname ))->name;
+  c_scope_data_t const *const local_data = slist_peek_tail( sname );
+  return local_data == NULL ? "" : local_data->name;
 }
 
 /**
