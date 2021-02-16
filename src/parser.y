@@ -1200,14 +1200,14 @@ static void yyerror( char const *msg ) {
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
 %type   <ast>       of_type_enum_fixed_type_english_ast_opt
 %type   <ast>       oper_decl_english_ast
-%type   <ast_list>  paren_decl_list_english_opt
+%type   <ast_list>  paren_decl_list_english paren_decl_list_english_opt
 %type   <ast>       pointer_decl_english_ast
 %type   <ast>       qualifiable_decl_english_ast
 %type   <ast>       qualified_decl_english_ast
 %type   <ast>       reference_decl_english_ast
 %type   <ast>       reference_english_ast
 %type   <type_id>   ref_qualifier_english_tid_opt
-%type   <ast>       returning_english_ast_opt
+%type   <ast>       returning_english_ast returning_english_ast_opt
 %type   <type>      scope_english_type scope_english_type_exp
 %type   <sname>     sname_english sname_english_exp
 %type   <ast>       sname_english_ast
@@ -1345,6 +1345,7 @@ static void yyerror( char const *msg ) {
 // c_ast_list_t
 %destructor { DTRACE; c_ast_list_free( &$$ ); } decl_list_english
 %destructor { DTRACE; c_ast_list_free( &$$ ); } decl_list_english_opt
+%destructor { DTRACE; c_ast_list_free( &$$ ); } paren_decl_list_english
 %destructor { DTRACE; c_ast_list_free( &$$ ); } paren_decl_list_english_opt
 %destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast
 %destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast_opt
@@ -2890,15 +2891,19 @@ oper_decl_english_ast
 
 paren_decl_list_english_opt
   : /* empty */                   { slist_init( &$$ ); }
-  | '(' decl_list_english_opt ')'
+  | paren_decl_list_english
+  ;
+
+paren_decl_list_english
+  : '(' decl_list_english_opt ')'
     {
-      DUMP_START( "paren_decl_list_english_opt",
+      DUMP_START( "paren_decl_list_english",
                   "'(' decl_list_english_opt ')'" );
       DUMP_AST_LIST( "decl_list_english_opt", $2 );
 
       $$ = $2;
 
-      DUMP_AST_LIST( "paren_decl_list_english_opt", $$ );
+      DUMP_AST_LIST( "paren_decl_list_english", $$ );
       DUMP_END();
     }
   ;
@@ -2966,14 +2971,18 @@ returning_english_ast_opt
       DUMP_END();
     }
 
-  | Y_RETURNING decl_english_ast
+  | returning_english_ast
+  ;
+
+returning_english_ast
+  : Y_RETURNING decl_english_ast
     {
-      DUMP_START( "returning_english_ast_opt", "RETURNING decl_english_ast" );
+      DUMP_START( "returning_english_ast", "RETURNING decl_english_ast" );
       DUMP_AST( "decl_english_ast", $2 );
 
       $$ = $2;
 
-      DUMP_AST( "returning_english_ast_opt", $$ );
+      DUMP_AST( "returning_english_ast", $$ );
       DUMP_END();
     }
 
