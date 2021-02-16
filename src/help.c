@@ -238,7 +238,7 @@ static void print_help_english( void ) {
     print_h( "args: a comma separated list of " );
     if ( OPT_LANG_IS(C_KNR) )
       print_h( "<name>\n" );
-    else if ( OPT_LANG_IS(MAX(CPP_17)) )
+    else if ( OPT_LANG_IS(MAX(C_17)) )
       print_h( "<name>, <english>, or <name> as <english>\n" );
     else
       print_h( "<english> or <name> as <english>\n" );
