@@ -230,7 +230,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       FPRINTF( eout, "%s%s%s", SP_AFTER( name ), c_kind_name( ast->kind_id ) );
       if ( !c_ast_empty_name( ast ) ) {
         FPRINTF( eout,
-          " %s %s ", L_OF, c_type_name( c_ast_local_name_type( ast ) )
+          " %s %s ", L_OF, c_type_name( c_ast_local_type( ast ) )
         );
         c_sname_english( &ast->sname, eout );
       }

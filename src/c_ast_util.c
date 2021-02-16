@@ -474,13 +474,13 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
   }
 
   if ( ast->kind_id == K_USER_DEF_CONVERSION &&
-       c_ast_local_name_type( ast )->base_tid == TB_SCOPE ) {
+       c_ast_local_type( ast )->base_tid == TB_SCOPE ) {
     //
     // User-defined conversions don't have names, but they can still have a
     // scope.  Since only classes can have them, if the scope is still
     // TB_SCOPE, change it to TB_CLASS.
     //
-    c_ast_set_local_name_type( ast, &C_TYPE_LIT_B( TB_CLASS ) );
+    c_ast_set_local_type( ast, &C_TYPE_LIT_B( TB_CLASS ) );
   }
 
   return ast;

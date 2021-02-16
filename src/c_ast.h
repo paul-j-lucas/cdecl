@@ -520,10 +520,10 @@ char const* c_ast_local_name( c_ast_t const *ast ) {
  * @param ast The AST node to get the scope type of the name of.
  * @return Returns the scope type.
  *
- * @sa c_ast_set_local_name_type()
+ * @sa c_ast_set_local_type()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
-c_type_t const* c_ast_local_name_type( c_ast_t const *ast ) {
+c_type_t const* c_ast_local_type( c_ast_t const *ast ) {
   return c_sname_local_type( &ast->sname );
 }
 
@@ -656,10 +656,10 @@ char const* c_ast_scope_name( c_ast_t const *ast ) {
  * @param ast The AST to set the type of the name of.
  * @param type The scope type.
  *
- * @sa c_ast_local_name_type()
+ * @sa c_ast_local_type()
  */
 C_AST_INLINE
-void c_ast_set_local_name_type( c_ast_t *ast, c_type_t const *type ) {
+void c_ast_set_local_type( c_ast_t *ast, c_type_t const *type ) {
   c_sname_set_local_type( &ast->sname, type );
 }
 

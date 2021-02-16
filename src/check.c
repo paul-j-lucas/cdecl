@@ -400,7 +400,7 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
     print_error( &ast->loc,
       "\"%s\", \"%s\": %s and %s names don't match\n",
       c_ast_name_atr( ast, 1 ), c_ast_local_name( ast ),
-      c_type_name_error( c_ast_local_name_type( ast ) ),
+      c_type_name_error( c_ast_local_type( ast ) ),
       c_kind_name( ast->kind_id )
     );
     return false;

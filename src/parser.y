@@ -2694,7 +2694,7 @@ typedef_declaration_c
       }
 
       temp_sname = c_sname_dup( &in_attr.current_scope );
-      c_ast_set_local_name_type(
+      c_ast_set_local_type(
         typedef_ast, c_sname_local_type( &in_attr.current_scope )
       );
       c_ast_prepend_sname( typedef_ast, &temp_sname );
@@ -4258,9 +4258,7 @@ using_decl_c_ast
       c_ast_set_name( $$, $3 );
 
       c_sname_t temp_sname = c_sname_dup( &in_attr.current_scope );
-      c_ast_set_local_name_type(
-        $$, c_sname_local_type( &in_attr.current_scope )
-      );
+      c_ast_set_local_type( $$, c_sname_local_type( &in_attr.current_scope ) );
       c_ast_prepend_sname( $$, &temp_sname );
 
       DUMP_AST( "using_decl_c_ast", $$ );
@@ -5757,7 +5755,7 @@ typedef_sname_c
       //      define S::T as struct S_T
       //
       $$ = $1;
-      c_sname_set_local_type( &$$, c_ast_local_name_type( $3->ast ) );
+      c_sname_set_local_type( &$$, c_ast_local_type( $3->ast ) );
       c_sname_t temp = c_ast_dup_name( $3->ast );
       c_sname_append_sname( &$$, &temp );
 
