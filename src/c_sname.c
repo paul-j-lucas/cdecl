@@ -59,8 +59,8 @@ static c_type_t const* c_sname_local_type_impl( c_scope_t const *scope ) {
  * @param name_buf The buffer to write into.
  * @param sname The scoped name to write.
  * @param end_scope The scope to stop before or null for all scopes.
- * @return If not null, returns \a name_buf->str; otherwise returns `""` (the
- * empty string).
+ * @return If not null, returns \a name_buf->str; otherwise returns the empty
+ * string.
  */
 PJL_WARN_UNUSED_RESULT
 static char const* scope_name_impl( strbuf_t *name_buf, c_sname_t const *sname,

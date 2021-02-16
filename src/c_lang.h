@@ -397,7 +397,7 @@ void c_lang_set( c_lang_id_t lang_id );
  *
  * @param lang_ids The bitwise-or of legal language(s).
  * @return If:
- *  + \a lang_ids is #LANG_NONE, returns `""` (the empty string).
+ *  + \a lang_ids is #LANG_NONE, returns the empty string.
  *  + The current language is C and \a lang_ids does not contain any version of
  *    C, returns `" in C"`.
  *  + The current language is C++ and \a lang_ids does not contain any version
