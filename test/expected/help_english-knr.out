@@ -1,7 +1,7 @@
 english:
   <store>* array [<number>] of <english>
   <store>* function [([<args>])] [returning <english>]
-  pointer to <english>
+  <store>* pointer to <english>
   { struct | union } <name>
   block [([<args>])] [returning <english>]
   <store>* <modifier>* [<C-type>]
