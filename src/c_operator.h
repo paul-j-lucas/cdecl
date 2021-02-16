@@ -53,10 +53,10 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * For `c_operator.flags`, denotes that the operator is not overloadable.
  *
- * @sa C_OP_MEMBER
- * @sa C_OP_NON_MEMBER
- * @sa C_OP_OVERLOADABLE
- * @sa C_OP_UNSPECIFIED
+ * @sa #C_OP_MEMBER
+ * @sa #C_OP_NON_MEMBER
+ * @sa #C_OP_OVERLOADABLE
+ * @sa #C_OP_UNSPECIFIED
  */
 #define C_OP_NOT_OVERLOADABLE   0u
 
@@ -70,10 +70,10 @@ _GL_INLINE_HEADER_BEGIN
  * For `c_operator.flags`, denotes that the operator overloadability (member or
  * non-member) is unspecified.
  *
- * @sa C_OP_MEMBER
- * @sa C_OP_NON_MEMBER
- * @sa C_OP_NOT_OVERLOADABLE
- * @sa C_OP_OVERLOADABLE
+ * @sa #C_OP_MEMBER
+ * @sa #C_OP_NON_MEMBER
+ * @sa #C_OP_NOT_OVERLOADABLE
+ * @sa #C_OP_OVERLOADABLE
  */
 #define C_OP_UNSPECIFIED        C_FUNC_UNSPECIFIED
 
@@ -81,10 +81,10 @@ _GL_INLINE_HEADER_BEGIN
  * For `c_operator.flags`, denotes that the operator is overload{able|ed} as a
  * member only.
  *
- * @sa C_OP_NON_MEMBER
- * @sa C_OP_NOT_OVERLOADABLE
- * @sa C_OP_OVERLOADABLE
- * @sa C_OP_UNSPECIFIED
+ * @sa #C_OP_NON_MEMBER
+ * @sa #C_OP_NOT_OVERLOADABLE
+ * @sa #C_OP_OVERLOADABLE
+ * @sa #C_OP_UNSPECIFIED
  */
 #define C_OP_MEMBER             C_FUNC_MEMBER
 
@@ -92,10 +92,10 @@ _GL_INLINE_HEADER_BEGIN
  * For `c_operator.flags`, denotes that the operator is overload{able|ed} as a
  * non-member only.
  *
- * @sa C_OP_MEMBER
- * @sa C_OP_NOT_OVERLOADABLE
- * @sa C_OP_OVERLOADABLE
- * @sa C_OP_UNSPECIFIED
+ * @sa #C_OP_MEMBER
+ * @sa #C_OP_NOT_OVERLOADABLE
+ * @sa #C_OP_OVERLOADABLE
+ * @sa #C_OP_UNSPECIFIED
  */
 #define C_OP_NON_MEMBER         C_FUNC_NON_MEMBER
 
@@ -103,10 +103,10 @@ _GL_INLINE_HEADER_BEGIN
  * For `c_operator.flags`, denotes that the operator is overloadable as either
  * a member or non-member.
  *
- * @sa C_OP_MEMBER
- * @sa C_OP_NON_MEMBER
- * @sa C_OP_NOT_OVERLOADABLE
- * @sa C_OP_UNSPECIFIED
+ * @sa #C_OP_MEMBER
+ * @sa #C_OP_NON_MEMBER
+ * @sa #C_OP_NOT_OVERLOADABLE
+ * @sa #C_OP_UNSPECIFIED
  */
 #define C_OP_OVERLOADABLE       (C_OP_MEMBER | C_OP_NON_MEMBER)
 
@@ -187,7 +187,19 @@ enum c_oper_id {
  */
 struct c_operator {
   char const *name;                     ///< Name.
-  unsigned    flags;                    ///< Bitwise-or of flags.
+
+  /**
+   * Bitwise-or of flags specifying whether the operator is a member, non-
+   * member, both, or not overloadable.
+   *
+   * @sa #C_OP_MEMBER
+   * @sa #C_OP_NON_MEMBER
+   * @sa #C_OP_OVERLOADABLE
+   * @sa #C_OP_NOT_OVERLOADABLE
+   * @sa #C_OP_MASK_OVERLOAD
+   */
+  unsigned    flags;
+
   unsigned    params_min;               ///< Minimum number of parameters.
   unsigned    params_max;               ///< Maximum number of parameters.
   c_lang_id_t lang_ids;                 ///< Language(s) OK in.

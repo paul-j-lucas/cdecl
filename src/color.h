@@ -95,10 +95,10 @@
  * Starts printing in the predefined \a COLOR.
  *
  * @param STREAM The `FILE` to use.
- * @param COLOR The predefined color.
+ * @param COLOR The predefined color without the `sgr_` prefix.
  *
- * @sa SGR_END_COLOR
- * @sa SGR_SSTART_COLOR
+ * @sa #SGR_END_COLOR
+ * @sa #SGR_SSTART_COLOR
  */
 #define SGR_START_COLOR(STREAM,COLOR) BLOCK(  \
   if ( colorize && (sgr_ ## COLOR) != NULL )  \
@@ -109,10 +109,10 @@
  * printing in \a COLOR.
  *
  * @param STRING The string to write to.
- * @param COLOR The predefined color.
+ * @param COLOR The predefined color without the `sgr_` prefix.
  *
- * @sa SGR_SEND_COLOR
- * @sa SGR_START_COLOR
+ * @sa #SGR_SEND_COLOR
+ * @sa #SGR_START_COLOR
  */
 #define SGR_SSTART_COLOR(STRING,COLOR) BLOCK( \
   if ( colorize && (sgr_ ## COLOR) != NULL )  \
@@ -123,7 +123,7 @@
  *
  * @param STREAM The `FILE` to use.
  *
- * @sa SGR_START_COLOR
+ * @sa #SGR_START_COLOR
  */
 #define SGR_END_COLOR(STREAM) \
   BLOCK( if ( colorize ) FPUTS( SGR_END SGR_EL, (STREAM) ); )
@@ -134,7 +134,7 @@
  *
  * @param STRING The string to write to.
  *
- * @sa SGR_SSTART_COLOR
+ * @sa #SGR_SSTART_COLOR
  */
 #define SGR_SEND_COLOR(STRING) \
   BLOCK( if ( colorize ) strcpy( (STRING), SGR_END SGR_EL ); )

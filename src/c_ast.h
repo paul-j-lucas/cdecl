@@ -53,14 +53,14 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * For `c_array_ast.size`, denotes `array[]`.
  *
- * @sa C_ARRAY_SIZE_VARIABLE
+ * @sa #C_ARRAY_SIZE_VARIABLE
  */
 #define C_ARRAY_SIZE_NONE     (-1)
 
 /**
  * For `c_array_ast.size`, denotes `array[*]`.
  *
- * @sa C_ARRAY_SIZE_NONE
+ * @sa #C_ARRAY_SIZE_NONE
  */
 #define C_ARRAY_SIZE_VARIABLE (-2)
 
@@ -68,36 +68,36 @@ _GL_INLINE_HEADER_BEGIN
  * For `c_function_ast.flags`, denotes that the function is unspecified
  * (unknown whether it's a member or non-member).
  *
- * @sa C_FUNC_MASK_MEMBER
- * @sa C_FUNC_MEMBER
- * @sa C_FUNC_NON_MEMBER
+ * @sa #C_FUNC_MASK_MEMBER
+ * @sa #C_FUNC_MEMBER
+ * @sa #C_FUNC_NON_MEMBER
  */
 #define C_FUNC_UNSPECIFIED    0u
 
 /**
  * For `c_function_ast.flags`, denotes that the function is a member.
  *
- * @sa C_FUNC_MASK_MEMBER
- * @sa C_FUNC_NON_MEMBER
- * @sa C_FUNC_UNSPECIFIED
+ * @sa #C_FUNC_MASK_MEMBER
+ * @sa #C_FUNC_NON_MEMBER
+ * @sa #C_FUNC_UNSPECIFIED
  */
 #define C_FUNC_MEMBER         (1u << 0)
 
 /**
  * For `c_function_ast.flags`, denotes that the function is a non-member.
  *
- * @sa C_FUNC_MASK_MEMBER
- * @sa C_FUNC_MEMBER
- * @sa C_FUNC_UNSPECIFIED
+ * @sa #C_FUNC_MASK_MEMBER
+ * @sa #C_FUNC_MEMBER
+ * @sa #C_FUNC_UNSPECIFIED
  */
 #define C_FUNC_NON_MEMBER     (1u << 1)
 
 /**
  * For `c_function_ast.flags`, member bitmask.
  *
- * @sa C_FUNC_MEMBER
- * @sa C_FUNC_NON_MEMBER
- * @sa C_FUNC_UNSPECIFIED
+ * @sa #C_FUNC_MEMBER
+ * @sa #C_FUNC_NON_MEMBER
+ * @sa #C_FUNC_UNSPECIFIED
  */
 #define C_FUNC_MASK_MEMBER    0x3u
 
@@ -238,7 +238,17 @@ struct c_ecsu_ast {
 struct c_function_ast {
   c_ast_t        *ret_ast;              ///< Return type.
   c_ast_list_t    param_ast_list;       ///< Function parameter(s), if any.
-  unsigned        flags;                ///< Member or non-member.
+
+  /**
+   * Bitwise-or of flags currently specifying whether the function is a member,
+   * non-member, or unspecified function.
+   *
+   * @sa #C_FUNC_UNSPECIFIED
+   * @sa #C_FUNC_MEMBER
+   * @sa #C_FUNC_NON_MEMBER
+   * @sa #C_FUNC_MASK_MEMBER
+   */
+  unsigned        flags;
 };
 
 /**
@@ -250,7 +260,19 @@ struct c_function_ast {
 struct c_operator_ast {
   c_ast_t        *ret_ast;              ///< Return type.
   c_ast_list_t    param_ast_list;       ///< Operator parameter(s), if any.
-  unsigned        flags;                ///< Member or non-member.
+
+  /**
+   * Bitwise-or of flags specifying whether the user specified an operator as a
+   * member, non-member, or neither.  This is a mostly a subset of <code>\ref
+   * c_operator.flags</code> except this can be #C_OP_UNSPECIFIED.
+   *
+   * @sa #C_OP_UNSPECIFIED
+   * @sa #C_OP_MEMBER
+   * @sa #C_OP_NON_MEMBER
+   * @sa #C_OP_MASK_OVERLOAD
+   */
+  unsigned        flags;
+
   c_oper_id_t     oper_id;              ///< Which operator it is.
 };
 
@@ -309,8 +331,8 @@ struct c_ast {
   c_ast_depth_t         depth;          ///< How many `()` deep.
   c_ast_id_t            unique_id;      ///< Unique id (starts at 1).
   c_kind_id_t           kind_id;        ///< Kind.
-  c_sname_t             sname;          ///< Scoped name.
-  c_type_t              type;           ///< Type.
+  c_sname_t             sname;          ///< Scoped name, if any.
+  c_type_t              type;           ///< Type, if any.
   c_ast_t              *parent_ast;     ///< Parent AST node, if any.
   c_loc_t               loc;            ///< Source location.
 
@@ -318,7 +340,7 @@ struct c_ast {
     c_parent_ast_t      parent;         ///< "Parent" member(s).
     c_array_ast_t       array;          ///< Array member(s).
     c_apple_block_ast_t block;          ///< Block member(s).
-    c_builtin_ast_t     builtin;        ///< Built-in member(s).
+    c_builtin_ast_t     builtin;        ///< Built-in type member(s).
     c_constructor_ast_t constructor;    ///< Constructor member(s).
     // nothing needed for K_DESTRUCTOR
     c_ecsu_ast_t        ecsu;           ///< `enum`, `class`, `struct`, `union`

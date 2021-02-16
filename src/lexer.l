@@ -368,11 +368,9 @@ static char const lexer_token_init_buf; ///< So lexer_token is never null.
 unsigned          lexer_find = LEXER_FIND_ALL;
 c_keyword_ctx_t   lexer_keyword_ctx;
 
-/**
- * A separate pointer for the current token allows it:
- *  + To be `const`.
- *  + To be assigned to either other `const` strings or string literals.
- */
+// A separate pointer for the current token allows it:
+//  + To be `const`.
+//  + To be assigned to either other `const` strings or string literals.
 char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables

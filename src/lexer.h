@@ -66,7 +66,17 @@ _GL_INLINE_HEADER_BEGIN
 #define LEXER_FIND_TYPEDEFS       (1u << 2)
 
 // extern variables
-extern unsigned         lexer_find;         ///< What to look up.
+
+/**
+ * The bitwise-or of what to look up.
+ *
+ * @sa #LEXER_FIND_ALL
+ * @sa #LEXER_FIND_C_KEYWORDS
+ * @sa #LEXER_FIND_CDECL_KEYWORDS
+ * @sa #LEXER_FIND_TYPEDEFS
+ */
+extern unsigned         lexer_find;
+
 extern c_keyword_ctx_t  lexer_keyword_ctx;  ///< Keyword context.
 extern char const      *lexer_token;        ///< Text of current token.
 
