@@ -76,7 +76,7 @@ _GL_INLINE_HEADER_BEGIN
 #define LANG_CPP_17   (1u << 13)        /**< C++ 17. */
 #define LANG_CPP_20   (1u << 14)        /**< C++ 20. */
 #define LANG_CPP_NEW  LANG_CPP_20       /**< Newest supported C++ language. */
-#define LANG_CPP_ANY  LANG_MASK_CPP     /**< Any C++ languages. */
+#define LANG_CPP_ANY  LANG_MASK_CPP     /**< Any C++ language. */
 
 /**< Language eXtensions for Embedded C. */
 #define LANGX_EMC     (1u << 7)
