@@ -29,6 +29,10 @@ Warnings are now given for names that are reserved identifiers.
 ** `throw()` in C++20
 `throw()` is no longer supported in C++20.
 
+** Fixed `args` help
+The help for `args` no longer prints `<name>` for when the current language is
+either C2X or C++.
+
 
 * Changes in Cdecl 9.5.1
 
