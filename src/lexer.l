@@ -367,6 +367,8 @@ static char const lexer_token_init_buf; ///< So lexer_token is never null.
 // extern variables
 unsigned          lexer_find = LEXER_FIND_ALL;
 c_keyword_ctx_t   lexer_keyword_ctx;
+
+/** Guaranteed pointer of `yytext`. */
 char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
