@@ -1,5 +1,24 @@
+2021-02-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * help.c, help_english-c++.out, help_english-c.out: Simplified help a bit.
+   * help.c: Simplification.
+   * help.c: Clean-up.
+   * help.c, help_english-c.out: Added char8_t to C2X help.
+   * parser.y: Split out paren_decl_list_english and returning_english_ast.
+   * help.c, help_english-c++.out, help_english-c.out, help_english-c89.out,
+     help_english-knr.out: Added missing <cv-qual>* in places.
+   * c_lang.h: Comment fix.
+   * NEWS, help.c, help_english-c.out: The help for `args` no longer prints
+     `<name>` for when the current language is either C2X or C++.
+   * NEWS: The help for `args` no longer prints `<name>` for when the current
+     language is either C2X or C++.
+   * c_lang.h, c_sname.c: Doxygen.
+   * c_ast.h, c_ast_util.c, check.c, english.c, parser.y: Function renaming.
+
 2021-02-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: Better comment.
+   * lexer.l: Added comment.
    * c_type.c: Comment.
    * c_type.c: Got rid of NUM_BUFS.
    * c_type.c: No longer using fixed-sized buffers.
