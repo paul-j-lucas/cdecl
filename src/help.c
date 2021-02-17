@@ -199,20 +199,20 @@ static void print_help_english( void ) {
   print_h( "english:\n" );
 
   if ( OPT_LANG_IS(C_ANY) ) {
-    print_h( "  <store>* " );
+    print_h( "  <store>*" );
     if ( OPT_LANG_IS(MIN(C_89)) )
-      print_h( "<cv-qual>* " );
+      print_h( " <cv-qual>*" );
     if ( OPT_LANG_IS(MAX(C_89)) ) {
-      print_h( "array [<number>] of <english>\n" );
+      print_h( " array [<number>] of <english>\n" );
     } else {
-      print_h( "array [[static] <cv-qual>* {<number>|\\*}] of <english>\n" );
+      print_h( " array [[static] <cv-qual>* {<number>|\\*}] of <english>\n" );
       print_h( "  <store>* <cv-qual>* variable [length] array <cv-qual>* of <english>\n" );
     }
     print_h( "  <store>* function [([<args>])] [returning <english>]\n" );
-    print_h( "  <store>* " );
+    print_h( "  <store>*" );
     if ( OPT_LANG_IS(MIN(C_89)) )
-      print_h( "<cv-qual>* " );
-    print_h( "pointer to <english>\n" );
+      print_h( " <cv-qual>*" );
+    print_h( " pointer to <english>\n" );
   }
   else {
     print_h( "  <store>* <cv-qual>* array [<number>] of <english>\n" );
@@ -223,16 +223,16 @@ static void print_help_english( void ) {
     print_h( "  <store>* <cv-qual>* pointer to [member of { class | struct } <name>] <english>\n" );
   }
 
-  print_h( "  { " );
+  print_h( "  {" );
   if ( OPT_LANG_IS(MIN(C_89)) ) {
-    print_h( "enum " );
+    print_h( " enum" );
     if ( OPT_LANG_IS(MIN(CPP_11)) )
-      print_h( "[class|struct] [of [type] <english>] " );
-    print_h( "| " );
+      print_h( " [class|struct] [of [type] <english>]" );
+    print_h( " |" );
     if ( OPT_LANG_IS(CPP_ANY) )
-      print_h( "class | " );
+      print_h( " class |" );
   }
-  print_h( "struct | union } <name>\n" );
+  print_h( " struct | union } <name>\n" );
 
   if ( OPT_LANG_IS(C_ANY) ) {
     print_h( "  block [([<args>])] [returning <english>]\n" );
