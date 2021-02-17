@@ -250,6 +250,8 @@ static void print_help_english( void ) {
     if ( OPT_LANG_IS(MIN(C_99)) )
       print_h( " bool" );
     print_h( " char" );
+    if ( OPT_LANG_IS(MIN(C_2X)) )
+      print_h( " char8_t" );
     if ( OPT_LANG_IS(MIN(C_11)) )
       print_h( " char16_t char32_t" );
     if ( OPT_LANG_IS(MIN(C_95)) )
