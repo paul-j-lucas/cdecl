@@ -11,7 +11,7 @@ english:
 user-defined-english:
   conversion [operator] [of <scope-e> <name>]* returning <english>
   literal [([<args>])] [returning <english>]
-args: a comma separated list of <english> or <name> as <english>
+args: a comma separated list of [<name> as] <english>
 C++-type: bool char char8_t char16_t char32_t wchar_t int float double void
 cv-qual: const volatile
 fn-qual: const volatile [rvalue] reference

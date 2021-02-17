@@ -242,7 +242,7 @@ static void print_help_english( void ) {
     else if ( OPT_LANG_IS(MAX(C_17)) )
       print_h( "<name>, <english>, or <name> as <english>\n" );
     else
-      print_h( "<english> or <name> as <english>\n" );
+      print_h( "[<name> as] <english>\n" );
 
     print_h( "C-type:" );
     if ( OPT_LANG_IS(C_MIN(99)) )
@@ -304,7 +304,7 @@ static void print_help_english( void ) {
     if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( "  literal [([<args>])] [returning <english>]\n" );
 
-    print_h( "args: a comma separated list of <english> or <name> as <english>\n" );
+    print_h( "args: a comma separated list of [<name> as] <english>\n" );
 
     print_h( "C\\+\\+-type: bool char" );
     if ( OPT_LANG_IS(CPP_MIN(20)) )
