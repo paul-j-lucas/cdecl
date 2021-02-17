@@ -152,7 +152,7 @@ static void print_help_commands( void ) {
   print_h( "  set [<option> [= <value>] | options | <lang>]*\n" );
 
   print_h( "  show [<name> | [all] {predefined | user}] [[as] {english | typedef" );
-  if ( OPT_LANG_IS(MIN(CPP_11)) )
+  if ( OPT_LANG_IS(CPP_MIN(11)) )
     print_h( " | using" );
   print_h( "}]\n" );
 
@@ -160,12 +160,12 @@ static void print_help_commands( void ) {
 
   if ( OPT_LANG_IS(CPP_ANY) ) {
     print_h( "  <scope-c> <name> [\\{ [{ <scope-c> | <typedef>" );
-    if ( OPT_LANG_IS(MIN(CPP_11)) )
+    if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( " | <using>" );
     print_h( " } ;]* \\}]\n" );
   }
 
-  if ( OPT_LANG_IS(MIN(CPP_11)) )
+  if ( OPT_LANG_IS(CPP_MIN(11)) )
     print_h( "  using <name> = <gibberish>\n" );
 
   print_h( "  exit | quit | q\n" );
@@ -184,7 +184,7 @@ static void print_help_commands( void ) {
 
   if ( OPT_LANG_IS(CPP_ANY) ) {
     print_h( "scope-c: class struct union" );
-    if ( OPT_LANG_IS(MIN(CPP_11)) )
+    if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( " [inline]" );
     print_h( " namespace\n" );
   }
@@ -200,7 +200,7 @@ static void print_help_english( void ) {
 
   if ( OPT_LANG_IS(C_ANY) ) {
     print_h( "  <store>*" );
-    if ( OPT_LANG_IS(MIN(C_89)) )
+    if ( OPT_LANG_IS(C_MIN(89)) )
       print_h( " <cv-qual>*" );
     if ( OPT_LANG_IS(MAX(C_89)) ) {
       print_h( " array [<number>] of <english>\n" );
@@ -210,7 +210,7 @@ static void print_help_english( void ) {
     }
     print_h( "  <store>* function [([<args>])] [returning <english>]\n" );
     print_h( "  <store>*" );
-    if ( OPT_LANG_IS(MIN(C_89)) )
+    if ( OPT_LANG_IS(C_MIN(89)) )
       print_h( " <cv-qual>*" );
     print_h( " pointer to <english>\n" );
   }
@@ -226,7 +226,7 @@ static void print_help_english( void ) {
   print_h( "  {" );
   if ( OPT_LANG_IS(MIN(C_89)) ) {
     print_h( " enum" );
-    if ( OPT_LANG_IS(MIN(CPP_11)) )
+    if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( " [class|struct] [of [type] <english>]" );
     print_h( " |" );
     if ( OPT_LANG_IS(CPP_ANY) )
@@ -247,54 +247,54 @@ static void print_help_english( void ) {
       print_h( "<english> or <name> as <english>\n" );
 
     print_h( "C-type:" );
-    if ( OPT_LANG_IS(MIN(C_99)) )
+    if ( OPT_LANG_IS(C_MIN(99)) )
       print_h( " bool" );
     print_h( " char" );
-    if ( OPT_LANG_IS(MIN(C_2X)) )
+    if ( OPT_LANG_IS(C_MIN(2X)) )
       print_h( " char8_t" );
-    if ( OPT_LANG_IS(MIN(C_11)) )
+    if ( OPT_LANG_IS(C_MIN(11)) )
       print_h( " char16_t char32_t" );
-    if ( OPT_LANG_IS(MIN(C_95)) )
+    if ( OPT_LANG_IS(C_MIN(95)) )
       print_h( " wchar_t" );
     print_h( " int float double" );
-    if ( OPT_LANG_IS(MIN(C_89)) )
+    if ( OPT_LANG_IS(C_MIN(89)) )
       print_h( " void" );
     print_h( "\n" );
 
-    if ( OPT_LANG_IS(MIN(C_89)) ) {
+    if ( OPT_LANG_IS(C_MIN(89)) ) {
       print_h( "cv-qual:" );
-      if ( OPT_LANG_IS(MIN(C_11)) )
+      if ( OPT_LANG_IS(C_MIN(11)) )
         print_h( " _Atomic" );
       print_h( " const" );
-      if ( OPT_LANG_IS(MIN(C_99)) )
+      if ( OPT_LANG_IS(C_MIN(99)) )
         print_h( " restrict" );
       print_h( " volatile\n" );
     }
 
     print_h( "modifier:" );
-    if ( OPT_LANG_IS(MIN(C_11)) )
+    if ( OPT_LANG_IS(C_MIN(11)) )
       print_h( " _Atomic" );
     print_h( " short" );
-    if ( OPT_LANG_IS(MIN(C_89)) )
+    if ( OPT_LANG_IS(C_MIN(89)) )
       print_h( " signed" );
     print_h( " long unsigned" );
-    if ( OPT_LANG_IS(MIN(C_89)) )
+    if ( OPT_LANG_IS(C_MIN(89)) )
       print_h( " const" );
-    if ( OPT_LANG_IS(MIN(C_99)) )
+    if ( OPT_LANG_IS(C_MIN(99)) )
       print_h( " restrict" );
-    if ( OPT_LANG_IS(MIN(C_89)) )
+    if ( OPT_LANG_IS(C_MIN(89)) )
       print_h( " volatile" );
     print_h( "\n" );
 
     print_h( "name: a C identifier\n" );
     print_h( "store: auto extern register static" );
-    if ( OPT_LANG_IS(MIN(C_11)) )
+    if ( OPT_LANG_IS(C_MIN(11)) )
       print_h( " thread_local" );
     print_h( "\n" );
   }
   else {
     print_h( "  " );
-    if ( OPT_LANG_IS(MIN(CPP_11)) )
+    if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( "[rvalue] " );
     print_h( "reference to <english>\n" );
 
@@ -303,22 +303,22 @@ static void print_help_english( void ) {
     print_h( "user-defined-english:\n" );
     print_h( "  conversion [operator] [of <scope-e> <name>]* returning <english>\n" );
 
-    if ( OPT_LANG_IS(MIN(CPP_11)) )
+    if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( "  literal [([<args>])] [returning <english>]\n" );
 
     print_h( "args: a comma separated list of <english> or <name> as <english>\n" );
 
     print_h( "C\\+\\+-type: bool char" );
-    if ( OPT_LANG_IS(MIN(CPP_20)) )
+    if ( OPT_LANG_IS(CPP_MIN(20)) )
       print_h( " char8_t" );
-    if ( OPT_LANG_IS(MIN(CPP_11)) )
+    if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( " char16_t char32_t" );
     print_h( " wchar_t int float double void\n" );
 
     print_h( "cv-qual: const volatile\n" );
 
     print_h( "fn-qual: const volatile" );
-    if ( OPT_LANG_IS(MIN(CPP_11)) )
+    if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( " [rvalue] reference" );
     print_h( "\n" );
 
@@ -326,24 +326,24 @@ static void print_help_english( void ) {
     print_h( "name: a C\\+\\+ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*\n" );
 
     print_h( "scope-e: scope class struct union" );
-    if ( OPT_LANG_IS(MIN(CPP_11)) )
+    if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( " [inline]" );
     print_h( " namespace\n" );
 
     print_h( "store: const" );
-    if ( OPT_LANG_IS(MIN(CPP_11)) )
+    if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( "[" );
-    if ( OPT_LANG_IS(MIN(CPP_20)) )
+    if ( OPT_LANG_IS(CPP_MIN(20)) )
       print_h( "eval|" );
-    if ( OPT_LANG_IS(MIN(CPP_11)) )
+    if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( "expr" );
-    if ( OPT_LANG_IS(MIN(CPP_20)) )
+    if ( OPT_LANG_IS(CPP_MIN(20)) )
       print_h( "|init" );
-    if ( OPT_LANG_IS(MIN(CPP_11)) )
+    if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( "]" );
     print_h( " extern [\"C\" [linkage]] friend mutable static\n" );
     print_h( "      " );
-    if ( OPT_LANG_IS(MIN(CPP_11)) )
+    if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( " thread_local" );
     print_h( " [pure] virtual\n" );
   }
