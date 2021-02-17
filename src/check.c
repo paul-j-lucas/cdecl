@@ -59,14 +59,14 @@
   print_hint( "%s %s %s", L_CAST, L_INTO, (HINT) ); )
 
 /**
- * Prints an error: `<kind> not supported[ {in|until} <lang>]`.
+ * Prints an error: `<kind> is not supported[ {in|until} <lang>]`.
  *
  * @param AST The AST having the unsupported kind.
  * @param LANG_IDS The bitwise-or of legal language(s).
  */
 #define error_kind_not_supported(AST,LANG_IDS)              \
   fl_print_error( __FILE__, __LINE__,                       \
-    &(AST)->loc, "%s not supported%s\n",                    \
+    &(AST)->loc, "%s is not supported%s\n",                 \
     c_kind_name( (AST)->kind_id ), c_lang_until( LANG_IDS ) \
   )
 
@@ -274,7 +274,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
   if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE ) {
     if ( !OPT_LANG_IS(C_MIN(99)) ) {
       print_error( &ast->loc,
-        "variable length arrays not supported%s\n",
+        "variable length arrays are not supported%s\n",
         c_lang_until( LANG_C_99 )
       );
       return false;
@@ -290,7 +290,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
   if ( ast->as.array.store_tid != TS_NONE ) {
     if ( !OPT_LANG_IS(C_MIN(99)) ) {
       print_error( &ast->loc,
-        "\"%s\" arrays not supported%s\n",
+        "\"%s\" arrays are not supported%s\n",
         c_type_id_name_error( ast->as.array.store_tid ),
         c_lang_until( LANG_C_99 )
       );
@@ -362,7 +362,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
 
   if ( c_type_is_tid_any( &ast->type, TS_INLINE ) && opt_lang < LANG_CPP_17 ) {
     print_error( &ast->loc,
-      "%s variables not supported%s\n",
+      "%s variables are not supported%s\n",
       L_INLINE, c_lang_until( LANG_CPP_17 )
     );
     return false;
@@ -453,7 +453,7 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
     if ( of_ast != NULL ) {
       if ( opt_lang < LANG_CPP_11 ) {
         print_error( &of_ast->loc,
-          "%s with underlying type not supported%s\n",
+          "%s with underlying type is not supported%s\n",
           L_ENUM, c_lang_until( LANG_CPP_11 )
         );
         return false;
@@ -555,7 +555,7 @@ static bool c_ast_check_func_c( c_ast_t const *ast ) {
   c_type_id_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
   if ( qual_tid != TS_NONE ) {
     print_error( &ast->loc,
-      "\"%s\" %ss not supported in C\n",
+      "\"%s\" %ss is not supported in C\n",
       c_type_id_name_error( qual_tid ),
       c_kind_name( ast->kind_id )
     );
@@ -585,7 +585,7 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   if ( c_type_is_tid_any( &ast->type, TS_ANY_REFERENCE ) ) {
     if ( opt_lang < LANG_CPP_11 ) {
       print_error( &ast->loc,
-        "%s qualified %ss not supported%s\n",
+        "%s qualified %ss is not supported%s\n",
         L_REFERENCE, c_kind_name( ast->kind_id ), c_lang_until( LANG_CPP_11 )
       );
       return false;
@@ -998,7 +998,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
         break;
       default:
         print_error( &param_ast->loc,
-          "%s prototypes not supported until C89\n", L_FUNCTION
+          "%s prototypes are not supported until C89\n", L_FUNCTION
         );
         return false;
     } // switch
@@ -1022,7 +1022,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
 
   if ( (opt_lang & op->lang_ids) == LANG_NONE ) {
     print_error( &ast->loc,
-      "overloading %s \"%s\" not supported%s\n",
+      "overloading %s \"%s\" is not supported%s\n",
       L_OPERATOR, op->name, c_lang_until( op->lang_ids )
     );
     return false;
@@ -1511,7 +1511,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       if ( opt_lang < LANG_CPP_14 ) {
         if ( c_type_is_tid_any( &ret_ast->type, TB_AUTO ) ) {
           print_error( &ret_ast->loc,
-            "\"%s\" return type not supported%s\n",
+            "\"%s\" return type is not supported%s\n",
             L_AUTO, c_lang_until( LANG_CPP_14 )
           );
           return false;
