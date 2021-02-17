@@ -21,7 +21,8 @@ Constructors and destructors are now checked for `throw`.  Constructor
 parameters are now checked for warnings.
 
 ** Reserved identifier warnings
-Warnings are now given for names that are reserved identifiers.
+Warnings are now given for names that are reserved identifiers, specifically
+names that match the patterns `_[A-Z_]*` (C and C++) or `*__*` (C++ only).
 
 ** Fixed `thread_local`
 `thread_local` is now correctly allowed only in C11 or C++11 or later.
