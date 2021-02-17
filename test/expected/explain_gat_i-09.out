@@ -1,4 +1,4 @@
 explain __attribute__(( foo(1), bar )) int i
         ^
-9: warning: __attribute__ not supported (ignoring); did you mean [[...]]?
+9: warning: "__attribute__" is not supported by cdecl (ignoring); did you mean [[...]]?
 declare i as int

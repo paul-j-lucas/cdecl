@@ -1459,7 +1459,7 @@ cast_english
 
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "%s not supported%s\n", $1, c_lang_until( LANG_CPP_11 )
+          "%s is not supported%s\n", $1, c_lang_until( LANG_CPP_11 )
         );
       }
       else if ( (ok = c_ast_check_cast( $5 )) ) {
@@ -1946,7 +1946,7 @@ explain_c
       bool ok = false;
 
       if ( unsupported( LANG_CPP_ANY ) ) {
-        print_error( &@2, "%s_cast not supported in C\n", $2 );
+        print_error( &@2, "%s_cast is not supported in C\n", $2 );
       }
       else {
         if ( (ok = c_ast_check_cast( cast_ast )) ) {
@@ -2438,8 +2438,8 @@ namespace_declaration_c
       //
       if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_CPP_MIN(17) ) ) {
         print_error( &@3,
-          "nested %s declarations not supported until %s\n",
-          L_NAMESPACE, c_lang_name( LANG_CPP_17 )
+          "nested %s declarations are not supported%s\n",
+          L_NAMESPACE, c_lang_until( LANG_CPP_17 )
         );
       }
       else {
@@ -2450,7 +2450,8 @@ namespace_declaration_c
           c_sname_local_type( &in_attr.current_scope );
         if ( !(ok = !c_type_is_tid_any( outer_type, TB_ANY_CLASS ) ) ) {
           print_error( &@1,
-            "\"%s\" may only be nested within a %s\n", L_NAMESPACE, L_NAMESPACE
+            "\"%s\" may only be nested within a %s\n",
+            L_NAMESPACE, L_NAMESPACE
           );
         }
       }
@@ -3144,7 +3145,7 @@ user_defined_literal_decl_english_ast
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "%s %s not supported%s\n",
+          "%s %s is not supported%s\n",
           H_USER_DEFINED, L_LITERAL, c_lang_until( LANG_CPP_11 )
         );
         PARSE_ABORT();
@@ -3831,7 +3832,7 @@ trailing_return_type_c_ast_opt
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "trailing return type not supported%s\n",
+          "trailing return type is not supported%s\n",
           c_lang_until( LANG_CPP_11 )
         );
         PARSE_ABORT();
@@ -4284,7 +4285,7 @@ using_decl_c_ast
       //
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "\"%s\" not supported%s\n",
+          "\"%s\" is not supported%s\n",
           L_USING, c_lang_until( LANG_CPP_11 )
         );
         PARSE_ABORT();
@@ -4609,8 +4610,8 @@ enum_class_struct_union_c_ast
     any_sname_c_opt '{'
     {
       print_error( &@4,
-        "explaining %s declarations is not supported\n",
-        c_type_id_name( $1 )
+        "explaining %s declarations is not supported by %s\n",
+        c_type_id_name( $1 ), PACKAGE
       );
       c_sname_free( &$3 );
       PARSE_ABORT();
@@ -4821,7 +4822,7 @@ restrict_qualifier_c_tid
       //
       if ( OPT_LANG_IS(CPP_ANY) ) {
         print_error( &@1,
-          "\"%s\" not supported in C++; use \"%s\" instead\n",
+          "\"%s\" is not supported in C++; use \"%s\" instead\n",
           L_RESTRICT, L_GNU___RESTRICT
         );
         PARSE_ABORT();
@@ -4858,7 +4859,8 @@ storage_class_c_type
   | Y_EXTERN linkage_tid '{'
     {
       print_error( &@3,
-        "explaining scoped linkage declarations is not supported\n"
+        "explaining scoped linkage declarations is not supported by %s\n",
+        PACKAGE
       );
       PARSE_ABORT();
     }
@@ -4887,7 +4889,7 @@ attribute_specifier_list_c_tid
     {
       if ( unsupported( LANG_C_CPP_MIN(2X,11) ) ) {
         print_error( &@1,
-          "\"[[\" attribute syntax not supported%s\n",
+          "\"[[\" attribute syntax is not supported%s\n",
           c_lang_until( LANG_C_CPP_MIN(2X,11) )
         );
         PARSE_ABORT();
@@ -4918,7 +4920,8 @@ using_opt
   | Y_USING name_exp colon_exp
     {
       print_warning( &@1,
-        "\"%s\" in attributes not supported (ignoring)\n", L_USING
+        "\"%s\" in attributes is not supported by %s (ignoring)\n",
+        L_USING, PACKAGE
       );
       FREE( $2 );
     }
@@ -4958,8 +4961,8 @@ attribute_c_tid
     {
       if ( c_sname_count( &$1 ) > 1 ) {
         print_warning( &@1,
-          "\"%s\": namespaced attributes not supported\n",
-          c_sname_full_name( &$1 )
+          "\"%s\": namespaced attributes are not supported by %s\n",
+          c_sname_full_name( &$1 ), PACKAGE
         );
       }
       else {
@@ -4993,7 +4996,9 @@ attribute_str_arg_c_opt
   : /* empty */
   | '(' Y_STR_LIT rparen_exp
     {
-      print_warning( &@1, "attribute arguments not supported (ignoring)\n" );
+      print_warning( &@1,
+        "attribute arguments are not supported by %s (ignoring)\n", PACKAGE
+      );
       FREE( $2 );
     }
   | '(' error ')'
@@ -5015,7 +5020,10 @@ gnu_attribute_specifier_list_c
 gnu_attribute_specifier_c
   : Y_GNU___ATTRIBUTE__
     {
-      print_warning( &@1, "%s not supported (ignoring)", L_GNU___ATTRIBUTE__ );
+      print_warning( &@1,
+        "\"%s\" is not supported by %s (ignoring)",
+        L_GNU___ATTRIBUTE__, PACKAGE
+      );
       if ( (opt_lang & LANG_C_CPP_MIN(2X,11)) != LANG_NONE )
         print_hint( "[[...]]" );
       else
@@ -5564,7 +5572,7 @@ sname_c
     {
       // see the comment in "of_scope_english"
       if ( unsupported( LANG_CPP_ANY ) ) {
-        print_error( &@2, "scoped names not supported in C\n" );
+        print_error( &@2, "scoped names are not supported in C\n" );
         PARSE_ABORT();
       }
 
@@ -6008,7 +6016,7 @@ of_scope_english
       // better error location.
       //
       if ( unsupported( LANG_CPP_ANY ) ) {
-        print_error( &@2, "scoped names not supported in C\n" );
+        print_error( &@2, "scoped names are not supported in C\n" );
         PARSE_ABORT();
       }
       $$ = $3;

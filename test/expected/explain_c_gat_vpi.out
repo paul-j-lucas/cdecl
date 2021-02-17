@@ -1,4 +1,4 @@
 explain int *volatile __attribute__(( foo )) const p
                       ^
-23: warning: __attribute__ not supported (ignoring); did you mean [[...]]?
+23: warning: "__attribute__" is not supported by cdecl (ignoring); did you mean [[...]]?
 declare p as constant volatile pointer to int
