@@ -103,10 +103,6 @@ static void print_h( char const *line ) {
         case '<':                       // begins non-terminal
           SGR_START_COLOR( fout, help_nonterm );
           break;
-        case '>':                       // ends non-terminal
-          PUTC( *s );
-          SGR_END_COLOR( fout );
-          continue;
         case '*':                       // other EBNF chars
         case '+':
         case '[':
@@ -115,6 +111,8 @@ static void print_h( char const *line ) {
         case '|':
         case '}':
           SGR_START_COLOR( fout, help_punct );
+          PJL_FALLTHROUGH;
+        case '>':                       // ends non-terminal
           PUTC( *s );
           SGR_END_COLOR( fout );
           continue;
