@@ -136,8 +136,10 @@ static c_keyword_t const C_KEYWORDS[] = {
     Y__IMAGINARY,         LANG_C_MIN(99),         KC__, TB_IMAGINARY          },
   { L_INLINE,
     Y_INLINE,             LANG_MIN(C_99),         KC__, TS_INLINE             },
+  // Allow "restrict" to be recognized in C++ so the parser can give a better
+  // error messsage -- see "restrict_qualifier_c_tid" in parser.y.
   { L_RESTRICT,
-    Y_RESTRICT,           LANG_C_MIN(99),         KC__, TS_RESTRICT           },
+    Y_RESTRICT,           LANG_MIN(C_99),         KC__, TS_RESTRICT           },
   { L_WCHAR_T,
     Y_WCHAR_T,            LANG_MIN(C_95),         KC__, TB_WCHAR_T            },
 
