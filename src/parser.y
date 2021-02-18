@@ -4662,7 +4662,8 @@ enum_fixed_type_c_ast
      */
   : enum_fixed_type_modifier_list_tid
     {
-      DUMP_START( "enum_fixed_type_c_ast", "enum_fixed_type_modifier_list_tid" );
+      DUMP_START( "enum_fixed_type_c_ast",
+                  "enum_fixed_type_modifier_list_tid" );
       DUMP_TID( "enum_fixed_type_modifier_list_tid", $1 );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@1 );
