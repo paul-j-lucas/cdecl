@@ -592,25 +592,23 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
   assert( type_ast != NULL );
   assert( type_decl_loc != NULL );
 
-  switch ( c_typedef_add( type_ast ) ) {
-    case TDEF_ADD_ADDED:
-      //
-      // We have to move the AST from the ast_gc_list so it won't be garbage
-      // collected at the end of the parse to a separate ast_typedef_list
-      // that's freed only at program termination.
-      //
-      slist_push_list_tail( &ast_typedef_list, &ast_gc_list );
-      break;
-    case TDEF_ADD_DIFF:
-      print_error( type_decl_loc,
-        "\"%s\": \"%s\" redefinition with different type\n",
-        c_ast_full_name( type_ast ), decl_keyword
-      );
-      return false;
-    case TDEF_ADD_EQUIV:
-      // Do nothing.
-      break;
-  } // switch
+  c_typedef_t const *const old_tdef = c_typedef_add( type_ast );
+  if ( old_tdef == NULL ) {             // type was added
+    //
+    // We have to move the AST from the ast_gc_list so it won't be garbage
+    // collected at the end of the parse to a separate ast_typedef_list that's
+    // freed only at program termination.
+    //
+    slist_push_list_tail( &ast_typedef_list, &ast_gc_list );
+  }
+  else if ( old_tdef->ast != NULL ) {   // type exists and isn't equivalent
+    print_error( type_decl_loc,
+      "\"%s\": \"%s\" redefinition with different type\n",
+      c_ast_full_name( type_ast ), decl_keyword
+    );
+    return false;
+  }
+
   return true;
 }
 

@@ -913,14 +913,14 @@ static bool rb_visitor( void *node_data, void *aux_data ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_typedef_add_rv_t c_typedef_add( c_ast_t const *ast ) {
+c_typedef_t const* c_typedef_add( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( !c_ast_empty_name( ast ) );
 
   c_typedef_t *const new_tdef = c_typedef_new( ast );
   rb_node_t const *const old_rb = rb_tree_insert( &typedefs, new_tdef );
   if ( old_rb == NULL )                 // type's name doesn't exist
-    return TDEF_ADD_ADDED;
+    return NULL;
 
   //
   // A typedef having the same name already exists, so we don't need the new
@@ -937,7 +937,8 @@ c_typedef_add_rv_t c_typedef_add( c_ast_t const *ast ) {
   //      typedef double T;           // error: types aren't equivalent
   //
   c_typedef_t const *const old_tdef = old_rb->data;
-  return c_ast_equiv( ast, old_tdef->ast ) ? TDEF_ADD_EQUIV : TDEF_ADD_DIFF;
+  static c_typedef_t const EMPTY_TYPEDEF;
+  return c_ast_equiv( ast, old_tdef->ast ) ? &EMPTY_TYPEDEF : old_tdef;
 }
 
 void c_typedef_cleanup( void ) {

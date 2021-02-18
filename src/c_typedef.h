@@ -57,15 +57,6 @@ struct c_typedef {
 };
 
 /**
- * Return value for c_typedef_add().
- */
-enum c_typedef_add_rv {
-  TDEF_ADD_ADDED,                       ///< Type was added.
-  TDEF_ADD_EQUIV,                       ///< Type exists and is equivalent.
-  TDEF_ADD_DIFF                         ///< Type exists and is different.
-};
-
-/**
  * The signature for a function passed to c_typedef_visit().
  *
  * @param tdef The <code>\ref c_typedef</code> to visit.
@@ -81,16 +72,16 @@ typedef bool (*c_typedef_visitor_t)( c_typedef_t const *tdef, void *data );
  * Adds a new `typedef` or `using` to the global set.
  *
  * @param type_ast The AST of the type.  Ownership is taken only if the
- * function returns #TDEF_ADD_ADDED.
- * @return
- * + #TDEF_ADD_ADDED only if the type was added;
- * + #TDEF_ADD_EQUIV only if \a type_ast->name already exists and the types are
- *   equivalent;
- * + #TDEF_ADD_DIFF only if \a type_ast->name already exists and the types are
- *   not equivalent.
+ * function returns NULL.
+ * @return If:
+ * + \a type_ast was added, returns NULL; or:
+ * + \a type_ast->name already exists and the types are equivalent, returns a
+ *   <code>\ref c_typedef_t</code> where \a ast is NULL; or:
+ * + \a type_ast->name already exists and the types are _not_ equivalent,
+ *   returns the a <code>\ref c_typedef_t</code> of the existing type.
  */
 PJL_WARN_UNUSED_RESULT
-c_typedef_add_rv_t c_typedef_add( c_ast_t const *type_ast );
+c_typedef_t const* c_typedef_add( c_ast_t const *type_ast );
 
 /**
  * Cleans up <code>\ref c_typedef</code> data.
