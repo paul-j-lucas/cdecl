@@ -545,7 +545,7 @@ PJL_WARN_UNUSED_RESULT
 c_type_part_id_t c_type_id_tpid( c_type_id_t tid );
 
 /**
- * Gets the name of \a tid.
+ * Gets the C/C++ name of \a tid.
  *
  * @param tid The <code>\ref c_type_id_t</code> to get the name of.
  * @return Returns said name.
@@ -553,11 +553,28 @@ c_type_part_id_t c_type_id_tpid( c_type_id_t tid );
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
+ * @sa c_type_id_name_eng()
  * @sa c_type_id_name_error()
- * @sa c_type_name()
+ * @sa c_type_name_c()
  */
 PJL_WARN_UNUSED_RESULT
-char const* c_type_id_name( c_type_id_t tid );
+char const* c_type_id_name_c( c_type_id_t tid );
+
+/**
+ * Gets the pseudo-English name of \a tid, if available; the C/C++ name if not.
+ *
+ * @param tid The <code>\ref c_type_id_t</code> to get the name of.
+ * @return Returns said name.
+ * @warning The pointer returned is to a small number of static buffers, so you
+ * can't do something like call this more than twice in the same `printf()`
+ * statement.
+ *
+ * @sa c_type_id_name_c()
+ * @sa c_type_id_name_error()
+ * @sa c_type_name_eng()
+ */
+PJL_WARN_UNUSED_RESULT
+char const* c_type_id_name_eng( c_type_id_t tid );
 
 /**
  * Gets the name of \a tid for part of an error message.  If translating from
@@ -570,7 +587,8 @@ char const* c_type_id_name( c_type_id_t tid );
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
- * @sa c_type_id_name()
+ * @sa c_type_id_name_c()
+ * @sa c_type_id_name_eng()
  * @sa c_type_name_error()
  */
 PJL_WARN_UNUSED_RESULT
@@ -601,7 +619,7 @@ PJL_WARN_UNUSED_RESULT
 bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
- * Gets the name of \a type.
+ * Gets the C/C++ name of \a type.
  *
  * @param type The <code>\ref c_type</code> to get the name of.
  * @return Returns said name.
@@ -609,11 +627,29 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type );
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
- * @sa c_type_id_name()
+ * @sa c_type_id_name_c()
+ * @sa c_type_name_eng()
  * @sa c_type_name_error()
  */
 PJL_WARN_UNUSED_RESULT
-char const* c_type_name( c_type_t const *type );
+char const* c_type_name_c( c_type_t const *type );
+
+/**
+ * Gets the pseudo-English name of \a type, if available; the C/C++ name if
+ * not.
+ *
+ * @param type The <code>\ref c_type</code> to get the name of.
+ * @return Returns said name.
+ * @warning The pointer returned is to a small number of static buffers, so you
+ * can't do something like call this more than twice in the same `printf()`
+ * statement.
+ *
+ * @sa c_type_id_name_eng()
+ * @sa c_type_name_c()
+ * @sa c_type_name_error()
+ */
+PJL_WARN_UNUSED_RESULT
+char const* c_type_name_eng( c_type_t const *type );
 
 /**
  * Gets the name of \a type for part of an error message.  If translating
@@ -627,7 +663,8 @@ char const* c_type_name( c_type_t const *type );
  * statement.
  *
  * @sa c_type_id_name_error()
- * @sa c_type_name()
+ * @sa c_type_name_c()
+ * @sa c_type_name_eng()
  */
 PJL_WARN_UNUSED_RESULT
 char const* c_type_name_error( c_type_t const *type );

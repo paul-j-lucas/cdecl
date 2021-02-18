@@ -87,12 +87,6 @@ struct c_type_info {
 typedef struct c_type_info c_type_info_t;
 
 // local functions
-PJL_WARN_UNUSED_RESULT
-static char const*  c_type_literal( c_type_info_t const*, bool );
-
-PJL_WARN_UNUSED_RESULT
-static char const*  c_type_name_impl( c_type_t const*, bool );
-
 static void         strbuf_cat_sep( strbuf_t*, char const*, char, bool* );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -552,16 +546,15 @@ c_type_id_check_legal( c_type_id_t tid, c_type_info_t const type_infos[const],
  * Gets the literal of a given <code>\ref c_type_info</code>, either gibberish
  * or, if appropriate and available, English.
  *
- * @param ti A pointer to the <code>\ref c_type_info</code> to get the literal
- * of.
- * @param is_error `true` if getting the literal for part of an error message.
+ * @param ti The <code>\ref c_type_info</code> to get the literal of.
+ * @param in_english If `true`, return the pseudo-English literal if one
+ * exists.
  * @return Returns said literal.
  */
 PJL_WARN_UNUSED_RESULT
-static char const* c_type_literal( c_type_info_t const *ti, bool is_error ) {
-  if ( lexer_is_english() == is_error && ti->english_lit != NULL )
-    return ti->english_lit;
-  return c_lang_literal( ti->lang_lit );
+static char const* c_type_literal( c_type_info_t const *ti, bool in_english ) {
+  return in_english && ti->english_lit != NULL ?
+    ti->english_lit : c_lang_literal( ti->lang_lit );
 }
 
 /**
@@ -569,11 +562,12 @@ static char const* c_type_literal( c_type_info_t const *ti, bool is_error ) {
  *
  * @param tid The <code>\ref c_type_id_t</code> to get the name for; \a tid
  * _must_ have _exactly one_ bit set.
- * @param is_error `true` if getting the name for part of an error message.
+ * @param in_english If `true`, return the pseudo-English literal if one
+ * exists.
  * @return Returns said name.
  */
 PJL_WARN_UNUSED_RESULT
-static char const* c_type_id_name_1( c_type_id_t tid, bool is_error ) {
+static char const* c_type_id_name_1( c_type_id_t tid, bool in_english ) {
   assert( exactly_one_bit_set( c_type_id_no_tpid( tid ) ) );
 
   switch ( c_type_id_tpid( tid ) ) {
@@ -581,7 +575,7 @@ static char const* c_type_id_name_1( c_type_id_t tid, bool is_error ) {
       for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i ) {
         c_type_info_t const *const ti = &C_TYPE_INFO[i];
         if ( tid == ti->type_id )
-          return c_type_literal( ti, is_error );
+          return c_type_literal( ti, in_english );
       } // for
       break;
 
@@ -589,13 +583,13 @@ static char const* c_type_id_name_1( c_type_id_t tid, bool is_error ) {
       for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i ) {
         c_type_info_t const *const ti = &C_QUALIFIER_INFO[i];
         if ( tid == ti->type_id )
-          return c_type_literal( ti, is_error );
+          return c_type_literal( ti, in_english );
       } // for
 
       for ( size_t i = 0; i < ARRAY_SIZE( C_STORAGE_INFO ); ++i ) {
         c_type_info_t const *const ti = &C_STORAGE_INFO[i];
         if ( tid == ti->type_id )
-          return c_type_literal( ti, is_error );
+          return c_type_literal( ti, in_english );
       } // for
       break;
 
@@ -603,7 +597,7 @@ static char const* c_type_id_name_1( c_type_id_t tid, bool is_error ) {
       for ( size_t i = 0; i < ARRAY_SIZE( C_ATTRIBUTE_INFO ); ++i ) {
         c_type_info_t const *const ti = &C_ATTRIBUTE_INFO[i];
         if ( tid == ti->type_id )
-          return c_type_literal( ti, is_error );
+          return c_type_literal( ti, in_english );
       } // for
       break;
   } // switch
@@ -618,20 +612,20 @@ static char const* c_type_id_name_1( c_type_id_t tid, bool is_error ) {
  * @param tid The <code>\ref c_type_id_t</code> to concatenate the name of.
  * @param tids The array of types to use.
  * @param tids_size The size of \a tids.
- * @param is_error `true` if concatenating the name for part of an error
- * message.
+ * @param in_english If `true`, return the pseudo-English literal if one
+ * exists.
  * @param sep The separator character.
  * @param sep_cat A pointer to a variable to keep track of whether \a sep has
  * been concatenated.
  */
 static void c_type_id_name_cat( strbuf_t *sbuf, c_type_id_t tid,
                                 c_type_id_t const tids[], size_t tids_size,
-                                bool is_error, char sep, bool *sep_cat ) {
+                                bool in_english, char sep, bool *sep_cat ) {
   assert( sbuf != NULL );
   for ( size_t i = 0; i < tids_size; ++i ) {
     if ( !c_type_id_is_none( tid & tids[i] ) ) {
       strbuf_cat_sep(
-        sbuf, c_type_id_name_1( tids[i], is_error ), sep, sep_cat
+        sbuf, c_type_id_name_1( tids[i], in_english ), sep, sep_cat
       );
     }
   } // for
@@ -658,18 +652,19 @@ static c_type_t c_type_from_tid( c_type_id_t tid ) {
 }
 
 /**
- * Helper function for c_type_name() and c_type_name_error() that gets the name
- * of \a type.
+ * Helper function for c_type_name_c(), c_type_name_eng(), and
+ * c_type_name_error() that gets the name of \a type.
  *
  * @param type The type to get the name for.
- * @param is_error `true` if getting the name for part of an error message.
+ * @param in_english If `true`, return the pseudo-English literal if one
+ * exists.
  * @return Returns said name.
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  */
 PJL_WARN_UNUSED_RESULT
-static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
+static char const* c_type_name_impl( c_type_t const *type, bool in_english ) {
   static strbuf_t sbufs[ 2 ];
   static unsigned buf_index;
 
@@ -688,7 +683,9 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
     // brackets [[like this]].
     //
     static c_type_id_t const C_NORETURN[] = { TA_NORETURN };
-    C_TYPE_ID_NAME_CAT( sbuf, TA_NORETURN, C_NORETURN, is_error, ' ', &space );
+    C_TYPE_ID_NAME_CAT(
+      sbuf, TA_NORETURN, C_NORETURN, in_english, ' ', &space
+    );
     //
     // Now that we've handled _Noreturn for C, remove its bit and fall through
     // to the regular attribute-printing code.
@@ -709,7 +706,7 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
     bool const print_brackets =
       opt_lang >= LANG_C_2X &&
       lexer_is_english() &&
-      !is_error;
+      !in_english;
 
     bool comma = false;
     char const sep = print_brackets ? ',' : ' ';
@@ -720,13 +717,13 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
         strbuf_cat( sbuf, " ", 1 );
       strbuf_cat( sbuf, graph_token_c( "[[" ), -1 );
     }
-    C_TYPE_ID_NAME_CAT( sbuf, attr_tid, C_ATTRIBUTE, is_error, sep, sep_cat );
+    C_TYPE_ID_NAME_CAT( sbuf, attr_tid, C_ATTRIBUTE, in_english, sep, sep_cat );
     if ( print_brackets )
       strbuf_cat( sbuf, graph_token_c( "]]" ), -1 );
     space = true;
   }
 
-  if ( !is_error ) {
+  if ( true ) {
     // Special cases.
     if ( lexer_is_english() ) {
       if ( is_explicit_int( base_tid ) ) {
@@ -793,7 +790,9 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
     TS_CONSTEXPR,
     TS_CONSTINIT,
   };
-  C_TYPE_ID_NAME_CAT( sbuf, store_tid, C_STORAGE_CLASS, is_error, ' ', &space );
+  C_TYPE_ID_NAME_CAT(
+    sbuf, store_tid, C_STORAGE_CLASS, in_english, ' ', &space
+  );
 
   c_type_id_t east_tid = TS_NONE;
   if ( opt_east_const && lexer_is_english() ) {
@@ -819,7 +818,7 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
     // This is last so we get names like "const _Atomic".
     TS_ATOMIC,
   };
-  C_TYPE_ID_NAME_CAT( sbuf, store_tid, C_QUALIFIER, is_error, ' ', &space );
+  C_TYPE_ID_NAME_CAT( sbuf, store_tid, C_QUALIFIER, in_english, ' ', &space );
 
   static c_type_id_t const C_TYPE[] = {
     // These are first so we get names like "unsigned int".
@@ -855,10 +854,10 @@ static char const* c_type_name_impl( c_type_t const *type, bool is_error ) {
     TB_EMC_ACCUM,
     TB_EMC_FRACT,
   };
-  C_TYPE_ID_NAME_CAT( sbuf, base_tid, C_TYPE, is_error, ' ', &space );
+  C_TYPE_ID_NAME_CAT( sbuf, base_tid, C_TYPE, in_english, ' ', &space );
 
   if ( east_tid != TS_NONE )
-    C_TYPE_ID_NAME_CAT( sbuf, east_tid, C_QUALIFIER, is_error, ' ', &space );
+    C_TYPE_ID_NAME_CAT( sbuf, east_tid, C_QUALIFIER, in_english, ' ', &space );
 
   // Really special cases.
   if ( (base_tid & TB_NAMESPACE) != TB_NONE )
@@ -962,12 +961,16 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type ) {
           c_type_id_is_any( i_type->attr_tid,   j_type->attr_tid  );
 }
 
-char const* c_type_name( c_type_t const *type ) {
-  return c_type_name_impl( type, /*is_error=*/false );
+char const* c_type_name_c( c_type_t const *type ) {
+  return c_type_name_impl( type, /*in_english=*/false );
+}
+
+char const* c_type_name_eng( c_type_t const *type ) {
+  return c_type_name_impl( type, /*in_english=*/true );
 }
 
 char const* c_type_name_error( c_type_t const *type ) {
-  return c_type_name_impl( type, /*is_error=*/true );
+  return c_type_name_impl( type, /*in_english=*/lexer_is_english() );
 }
 
 c_type_t c_type_or( c_type_t const *i_type, c_type_t const *j_type ) {
@@ -1053,14 +1056,19 @@ c_type_part_id_t c_type_id_tpid( c_type_id_t tid ) {
   return STATIC_CAST( c_type_part_id_t, tid );
 }
 
-char const* c_type_id_name( c_type_id_t tid ) {
+char const* c_type_id_name_c( c_type_id_t tid ) {
   c_type_t const type = c_type_from_tid( tid );
-  return c_type_name_impl( &type, /*is_error=*/false );
+  return c_type_name_impl( &type, /*in_english=*/false );
+}
+
+char const* c_type_id_name_eng( c_type_id_t tid ) {
+  c_type_t const type = c_type_from_tid( tid );
+  return c_type_name_impl( &type, /*in_english=*/true );
 }
 
 char const* c_type_id_name_error( c_type_id_t tid ) {
   c_type_t const type = c_type_from_tid( tid );
-  return c_type_name_impl( &type, /*is_error=*/true );
+  return c_type_name_impl( &type, /*in_english=*/lexer_is_english() );
 }
 
 c_type_id_t c_type_id_normalize( c_type_id_t tid ) {

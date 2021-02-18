@@ -138,7 +138,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
         FPRINTF( eout, "%s %s ", L_VARIABLE, L_LENGTH );
       FPRINTF( eout, "%s ", L_ARRAY );
       if ( ast->as.array.store_tid != TS_NONE )
-        FPRINTF( eout, "%s ", c_type_id_name( ast->as.array.store_tid ) );
+        FPRINTF( eout, "%s ", c_type_id_name_eng( ast->as.array.store_tid ) );
       if ( ast->as.array.size >= 0 )
         FPRINTF( eout, "%d ", ast->as.array.size );
       FPRINTF( eout, "%s ", L_OF );
@@ -179,12 +179,12 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name( &ast->type ), eout );
+      FPUTS( c_type_name_eng( &ast->type ), eout );
       c_ast_english_bit_width( ast, eout );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
-      FPRINTF( eout, "%s ", c_type_name( &ast->type ) );
+      FPRINTF( eout, "%s ", c_type_name_eng( &ast->type ) );
       c_sname_english( &ast->as.ecsu.ecsu_sname, eout );
       if ( ast->as.ecsu.of_ast != NULL )
         FPRINTF( eout, " %s %s ", L_OF, L_TYPE );
@@ -211,7 +211,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
     case K_POINTER_TO_MEMBER: {
       non_type_name( &ast->type, eout );
       FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
-      char const *const name = c_type_id_name( ast->type.base_tid );
+      char const *const name = c_type_id_name_eng( ast->type.base_tid );
       FPRINTF( eout, "%s%s", SP_AFTER( name ) );
       c_sname_english( &ast->as.ptr_mbr.class_sname, eout );
       FPUTC( ' ', eout );
@@ -220,17 +220,17 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
 
     case K_TYPEDEF:
       if ( !c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) ) )
-        FPRINTF( eout, "%s ", c_type_name( &ast->type ) );
+        FPRINTF( eout, "%s ", c_type_name_eng( &ast->type ) );
       c_sname_english( &ast->as.tdef.for_ast->sname, eout );
       c_ast_english_bit_width( ast, eout );
       break;
 
     case K_USER_DEF_CONVERSION: {
-      char const *const name = c_type_name( &ast->type );
+      char const *const name = c_type_name_eng( &ast->type );
       FPRINTF( eout, "%s%s%s", SP_AFTER( name ), c_kind_name( ast->kind_id ) );
       if ( !c_ast_empty_name( ast ) ) {
         FPRINTF( eout,
-          " %s %s ", L_OF, c_type_name( c_ast_local_type( ast ) )
+          " %s %s ", L_OF, c_type_name_eng( c_ast_local_type( ast ) )
         );
         c_sname_english( &ast->sname, eout );
       }
@@ -258,7 +258,9 @@ static void c_sname_english_impl( c_scope_t const *scope, FILE *eout ) {
   if ( scope->next != NULL ) {
     c_sname_english_impl( scope->next, eout );
     c_scope_data_t const *const data = c_scope_data( scope );
-    FPRINTF( eout, " %s %s %s", L_OF, c_type_name( &data->type ), data->name );
+    FPRINTF( eout,
+      " %s %s %s", L_OF, c_type_name_eng( &data->type ), data->name
+    );
   }
 }
 
@@ -273,7 +275,7 @@ static void non_type_name( c_type_t const *type, FILE *eout ) {
   assert( type != NULL );
   c_type_t const temp_type = { TB_NONE, type->store_tid, type->attr_tid };
   if ( !c_type_is_none( &temp_type ) )
-    FPRINTF( eout, "%s ", c_type_name( &temp_type ) );
+    FPRINTF( eout, "%s ", c_type_name_eng( &temp_type ) );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -327,7 +329,7 @@ void c_ast_explain_declaration( c_ast_t const *ast, FILE *eout ) {
       c_type_t const *const scope_type = c_sname_local_type( found_sname );
       assert( !c_type_is_none( scope_type ) );
       FPRINTF( eout,
-        "%s %s %s ", L_OF, c_type_name( scope_type ), scope_name
+        "%s %s %s ", L_OF, c_type_name_eng( scope_type ), scope_name
       );
     }
     FPRINTF( eout, "%s ", L_AS );

@@ -10,7 +10,7 @@ define DWORD32 as unsigned
 define DWORD64 as unsigned long
 define DWORDLONG as unsigned long
 define DWORD_PTR as ULONG_PTR
-define FILE as struct _iobuf
+define FILE as structure _iobuf
 define FLOAT as float
 define HALF_PTR as int
 define HANDLE as PVOID
@@ -68,10 +68,10 @@ define LPBOOL as pointer to BOOL
 define LPBYTE as pointer to BYTE
 define LPCHAR as pointer to CHAR
 define LPCOLORREF as pointer to COLORREF
-define LPCSTR as pointer to const CHAR
+define LPCSTR as pointer to constant CHAR
 define LPCTSTR as LPCWSTR
-define LPCVOID as pointer to const void
-define LPCWSTR as pointer to const WCHAR
+define LPCVOID as pointer to constant void
+define LPCWSTR as pointer to constant WCHAR
 define LPDWORD as pointer to DWORD
 define LPHANDLE as pointer to HANDLE
 define LPINT as pointer to int
@@ -86,9 +86,9 @@ define PBOOL as pointer to BOOL
 define PBOOLEAN as pointer to BOOLEAN
 define PBYTE as pointer to BYTE
 define PCHAR as pointer to CHAR
-define PCSTR as pointer to const CHAR
+define PCSTR as pointer to constant CHAR
 define PCTSTR as LPCWSTR
-define PCWSTR as pointer to const WCHAR
+define PCWSTR as pointer to constant WCHAR
 define PDWORD as pointer to DWORD
 define PDWORD32 as pointer to DWORD32
 define PDWORD64 as pointer to DWORD64
@@ -158,7 +158,7 @@ define ULONG32 as unsigned
 define ULONG64 as unsigned long
 define ULONGLONG as unsigned long long
 define ULONG_PTR as unsigned long
-define UNICODE_STRING as struct UNICODE_STRING
+define UNICODE_STRING as structure UNICODE_STRING
 define USHORT as unsigned short
 define USN as LONGLONG
 define WCHAR as wchar_t
@@ -193,63 +193,63 @@ define __int32 as int
 define __int64 as long long
 define __int8 as signed char
 define __wchar_t as wchar_t
-define atomic_bool as _Atomic _Bool
-define atomic_char as _Atomic char
-define atomic_char16_t as _Atomic char16_t
-define atomic_char32_t as _Atomic char32_t
-define atomic_char8_t as _Atomic char8_t
-define atomic_flag as struct atomic_flag
-define atomic_int as _Atomic int
-define atomic_int_fast16_t as _Atomic int_fast16_t
-define atomic_int_fast32_t as _Atomic int_fast32_t
-define atomic_int_fast64_t as _Atomic int_fast64_t
-define atomic_int_fast8_t as _Atomic int_fast8_t
-define atomic_int_least16_t as _Atomic int_least16_t
-define atomic_int_least32_t as _Atomic int_least32_t
-define atomic_int_least64_t as _Atomic int_least64_t
-define atomic_int_least8_t as _Atomic int_least8_t
-define atomic_intmax_t as _Atomic intmax_t
-define atomic_intptr_t as _Atomic intptr_t
-define atomic_llong as _Atomic long long
-define atomic_long as _Atomic long
-define atomic_ptrdiff_t as _Atomic ptrdiff_t
-define atomic_schar as _Atomic signed char
-define atomic_short as _Atomic short
-define atomic_size_t as _Atomic size_t
-define atomic_uchar as _Atomic unsigned char
-define atomic_uint as _Atomic unsigned
-define atomic_uint_fast16_t as _Atomic uint_fast16_t
-define atomic_uint_fast32_t as _Atomic uint_fast32_t
-define atomic_uint_fast64_t as _Atomic uint_fast64_t
-define atomic_uint_fast8_t as _Atomic uint_fast8_t
-define atomic_uint_least16_t as _Atomic uint_least16_t
-define atomic_uint_least32_t as _Atomic uint_least32_t
-define atomic_uint_least64_t as _Atomic uint_least64_t
-define atomic_uint_least8_t as _Atomic uint_least8_t
-define atomic_uintmax_t as _Atomic uintmax_t
-define atomic_uintptr_t as _Atomic uintptr_t
-define atomic_ullong as _Atomic unsigned long long
-define atomic_ulong as _Atomic unsigned long
-define atomic_ushort as _Atomic unsigned short
-define atomic_wchar_t as _Atomic wchar_t
+define atomic_bool as atomic _Bool
+define atomic_char as atomic char
+define atomic_char16_t as atomic char16_t
+define atomic_char32_t as atomic char32_t
+define atomic_char8_t as atomic char8_t
+define atomic_flag as structure atomic_flag
+define atomic_int as atomic int
+define atomic_int_fast16_t as atomic int_fast16_t
+define atomic_int_fast32_t as atomic int_fast32_t
+define atomic_int_fast64_t as atomic int_fast64_t
+define atomic_int_fast8_t as atomic int_fast8_t
+define atomic_int_least16_t as atomic int_least16_t
+define atomic_int_least32_t as atomic int_least32_t
+define atomic_int_least64_t as atomic int_least64_t
+define atomic_int_least8_t as atomic int_least8_t
+define atomic_intmax_t as atomic intmax_t
+define atomic_intptr_t as atomic intptr_t
+define atomic_llong as atomic long long
+define atomic_long as atomic long
+define atomic_ptrdiff_t as atomic ptrdiff_t
+define atomic_schar as atomic signed char
+define atomic_short as atomic short
+define atomic_size_t as atomic size_t
+define atomic_uchar as atomic unsigned char
+define atomic_uint as atomic unsigned
+define atomic_uint_fast16_t as atomic uint_fast16_t
+define atomic_uint_fast32_t as atomic uint_fast32_t
+define atomic_uint_fast64_t as atomic uint_fast64_t
+define atomic_uint_fast8_t as atomic uint_fast8_t
+define atomic_uint_least16_t as atomic uint_least16_t
+define atomic_uint_least32_t as atomic uint_least32_t
+define atomic_uint_least64_t as atomic uint_least64_t
+define atomic_uint_least8_t as atomic uint_least8_t
+define atomic_uintmax_t as atomic uintmax_t
+define atomic_uintptr_t as atomic uintptr_t
+define atomic_ullong as atomic unsigned long long
+define atomic_ulong as atomic unsigned long
+define atomic_ushort as atomic unsigned short
+define atomic_wchar_t as atomic wchar_t
 define blkcnt_t as int32_t
 define blksize_t as int32_t
 define clock_t as long
 define clockid_t as long
 define cnd_t as pthread_cond_t
-define constraint_handler_t as pointer to function (restrict pointer to const char, restrict pointer to void, errno_t) returning void
+define constraint_handler_t as pointer to function (restricted pointer to constant char, restricted pointer to void, errno_t) returning void
 define dev_t as int
-define div_t as struct div_t
+define div_t as structure div_t
 define double_t as double
 define errno_t as int
-define fd_set as struct fd_set
-define femode_t as struct femode_t
-define fenv_t as struct fenv_t
+define fd_set as structure fd_set
+define femode_t as structure femode_t
+define fenv_t as structure fenv_t
 define fexcept_t as unsigned short
 define float_t as float
-define fpos_t as struct fpos_t
+define fpos_t as structure fpos_t
 define gid_t as uint32_t
-define imaxdiv_t as struct imaxdiv_t
+define imaxdiv_t as structure imaxdiv_t
 define in_addr_t as uint32_t
 define in_port_t as uint16_t
 define ino_t as unsigned
@@ -268,13 +268,13 @@ define int_least8_t as signed char
 define intmax_t as long
 define intptr_t as long
 define jmp_buf as array 37 of int
-define lconv as struct lconv
-define ldiv_t as struct ldiv_t
-define lldiv_t as struct lldiv_t
+define lconv as structure lconv
+define ldiv_t as structure ldiv_t
+define lldiv_t as structure lldiv_t
 define long_double_t as long double
 define max_align_t as long double
-define mbstate_t as struct mbstate_t
-define memory_order as enum memory_order
+define mbstate_t as structure mbstate_t
+define memory_order as enumeration memory_order
 define mode_t as int32_t
 define mtx_t as pthread_mutex_t
 define nfds_t as unsigned long
@@ -282,15 +282,15 @@ define nlink_t as uint32_t
 define off_t as long
 define once_flag as int
 define pid_t as int32_t
-define pthread_barrier_t as struct pthread_barrier_t
-define pthread_barrierattr_t as struct pthread_barrierattr_t
-define pthread_cond_t as struct pthread_cond_t
-define pthread_condattr_t as struct pthread_condattr_t
-define pthread_mutex_t as struct pthread_mutex_t
-define pthread_mutexattr_t as struct pthread_mutexattr_t
+define pthread_barrier_t as structure pthread_barrier_t
+define pthread_barrierattr_t as structure pthread_barrierattr_t
+define pthread_cond_t as structure pthread_cond_t
+define pthread_condattr_t as structure pthread_condattr_t
+define pthread_mutex_t as structure pthread_mutex_t
+define pthread_mutexattr_t as structure pthread_mutexattr_t
 define pthread_once_t as int
-define pthread_rwlock_t as struct pthread_rwlock_t
-define pthread_rwlockattr_t as struct pthread_rwlockattr_t
+define pthread_rwlock_t as structure pthread_rwlock_t
+define pthread_rwlockattr_t as structure pthread_rwlockattr_t
 define pthread_spinlock_t as volatile int
 define pthread_t as unsigned long
 define ptrdiff_t as long

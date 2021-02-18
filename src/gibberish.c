@@ -216,7 +216,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_ARRAY:
     case K_APPLE_BLOCK:
       if ( !c_type_is_none( &type ) )
-        FPRINTF( g->gout, "%s ", c_type_name( &type ) );
+        FPRINTF( g->gout, "%s ", c_type_name_c( &type ) );
       if ( ast->kind_id == K_USER_DEF_CONVERSION ) {
         if ( !c_ast_empty_name( ast ) )
           FPRINTF( g->gout, "%s::", c_ast_full_name( ast ) );
@@ -230,7 +230,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         g_print_postfix( g, ast );
       }
       if ( cv_qual_tid != TS_NONE )
-        FPRINTF( g->gout, " %s", c_type_id_name( cv_qual_tid ) );
+        FPRINTF( g->gout, " %s", c_type_id_name_c( cv_qual_tid ) );
       if ( ref_qual_tid != TS_NONE ) {
         FPUTS(
           (ref_qual_tid & TS_REFERENCE) != TS_NONE ?  " &" : " &&",
@@ -254,7 +254,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name( &ast->type ), g->gout );
+      FPUTS( c_type_name_c( &ast->type ), g->gout );
       g_print_space_ast_name( g, ast );
       if ( ast->as.builtin.bit_width > 0 )
         FPRINTF( g->gout, " : %u", ast->as.builtin.bit_width );
@@ -277,7 +277,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         type.store_tid &= c_type_id_compl( TS_CONST | TS_VOLATILE );
       }
 
-      FPUTS( c_type_name( &type ), g->gout );
+      FPUTS( c_type_name_c( &type ), g->gout );
 
       if ( g->gib_kind != C_GIB_TYPEDEF || g->printing_typedef ) {
         //
@@ -304,7 +304,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       }
 
       if ( cv_qual_tid != TS_NONE )
-        FPRINTF( g->gout, " %s", c_type_id_name( cv_qual_tid ) );
+        FPRINTF( g->gout, " %s", c_type_id_name_c( cv_qual_tid ) );
 
       g_print_space_ast_name( g, ast );
       break;
@@ -326,7 +326,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_RVALUE_REFERENCE: {
       c_type_id_t store_tid = type.store_tid & TS_MASK_STORAGE;
       if ( store_tid != TS_NONE )
-        FPRINTF( g->gout, "%s ", c_type_id_name( store_tid ) );
+        FPRINTF( g->gout, "%s ", c_type_id_name_c( store_tid ) );
       g_print_ast( g, ast->as.ptr_ref.to_ast );
       if ( g->gib_kind != C_GIB_CAST &&
            c_ast_find_name( ast, C_VISIT_UP ) != NULL &&
@@ -372,7 +372,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       bool const is_more_than_plain_typedef =
         !c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) );
       if ( is_more_than_plain_typedef && !opt_east_const )
-        FPRINTF( g->gout, "%s ", c_type_name( &ast->type ) );
+        FPRINTF( g->gout, "%s ", c_type_name_c( &ast->type ) );
 
       //
       // Temporarily set skip_name_for_using to false to force printing of the
@@ -389,7 +389,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       g->skip_name_for_using = orig_skip_name_for_using;
 
       if ( is_more_than_plain_typedef && opt_east_const )
-        FPRINTF( g->gout, " %s", c_type_name( &ast->type ) );
+        FPRINTF( g->gout, " %s", c_type_name_c( &ast->type ) );
       g_print_space_ast_name( g, ast );
       if ( ast->as.tdef.bit_width > 0 )
         FPRINTF( g->gout, " : %u", ast->as.tdef.bit_width );
@@ -415,7 +415,7 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
 
   FPUTS( graph_token_c( "[" ), g->gout );
   if ( ast->as.array.store_tid != TS_NONE )
-    FPRINTF( g->gout, "%s ", c_type_id_name( ast->as.array.store_tid ) );
+    FPRINTF( g->gout, "%s ", c_type_id_name_c( ast->as.array.store_tid ) );
   switch ( ast->as.array.size ) {
     case C_ARRAY_SIZE_NONE:
       break;
@@ -675,7 +675,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
   } // switch
 
   if ( qual_tid != TS_NONE ) {
-    FPUTS( c_type_id_name( qual_tid ), g->gout );
+    FPUTS( c_type_id_name_c( qual_tid ), g->gout );
     if ( (g->gib_kind & (C_GIB_DECL | C_GIB_TYPEDEF)) != C_GIB_NONE ) {
       //
       // If there was a qualifier, we always need to print a space after it for
@@ -806,7 +806,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
       if ( scope_type.base_tid == TB_SCOPE )
         scope_type.base_tid = TB_NAMESPACE;
       FPRINTF( gout,
-        "%s %s { ", c_type_name( &scope_type ), c_sname_scope_name( sname )
+        "%s %s { ", c_type_name_c( &scope_type ), c_sname_scope_name( sname )
       );
       scope_close_braces_to_print = 1;
     }
@@ -822,7 +822,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
           scope_type.base_tid = TB_NAMESPACE;
         FPRINTF( gout,
           "%s %s { ",
-          c_type_name( &scope_type ), c_scope_data( scope )->name
+          c_type_name_c( &scope_type ), c_scope_data( scope )->name
         );
       } // for
       scope_close_braces_to_print = c_sname_count( sname ) - 1;

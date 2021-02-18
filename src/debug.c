@@ -272,7 +272,7 @@ void c_sname_debug( c_sname_t const *sname, FILE *dout ) {
       if ( true_or_set( &colon2 ) )
         FPUTS( "::", dout );
       c_type_t const *const t = &c_scope_data( scope )->type;
-      FPUTS( c_type_is_none( t ) ? "none" : c_type_name( t ), dout );
+      FPUTS( c_type_is_none( t ) ? "none" : c_type_name_c( t ), dout );
     } // for
     FPUTC( ')', dout );
   }
@@ -281,7 +281,7 @@ void c_sname_debug( c_sname_t const *sname, FILE *dout ) {
 void c_type_id_debug( c_type_id_t tid, FILE *dout ) {
   FPRINTF( dout,
     "\"%s\" (0x%" PRIX_C_TYPE_ID_T ")",
-    c_type_id_name( tid ), tid
+    c_type_id_name_c( tid ), tid
   );
 }
 
@@ -292,7 +292,7 @@ void c_type_debug( c_type_t const *type, FILE *dout ) {
     "(0x%" PRIX_C_TYPE_ID_T
     ",0x%" PRIX_C_TYPE_ID_T
     ",0x%" PRIX_C_TYPE_ID_T ")",
-    c_type_name( type ), type->base_tid, type->store_tid, type->attr_tid
+    c_type_name_c( type ), type->base_tid, type->store_tid, type->attr_tid
   );
 }
 

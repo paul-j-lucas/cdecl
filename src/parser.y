@@ -2328,7 +2328,7 @@ class_struct_union_declaration_c
         if ( strcmp( mbr_name, cur_name ) == 0 ) {
           print_error( &@3,
             "\"%s\": %s has the same name as its enclosing %s\n",
-            mbr_name, L_MEMBER, c_type_name( cur_type )
+            mbr_name, L_MEMBER, c_type_name_c( cur_type )
           );
           PARSE_ABORT();
         }
@@ -2355,7 +2355,7 @@ class_struct_union_declaration_c
       DUMP_AST( "class_struct_union_declaration_c", csu_ast );
       DUMP_END();
 
-      if ( !add_type( c_type_id_name( $1 ), csu_ast, &@1 ) )
+      if ( !add_type( c_type_id_name_c( $1 ), csu_ast, &@1 ) )
         PARSE_ABORT();
     }
     brace_in_scope_declaration_c_opt
@@ -2393,7 +2393,7 @@ enum_declaration_c
       DUMP_AST( "enum_declaration_c", enum_ast );
       DUMP_END();
 
-      if ( !add_type( c_type_id_name( $1 ), enum_ast, &@1 ) )
+      if ( !add_type( c_type_id_name_c( $1 ), enum_ast, &@1 ) )
         PARSE_ABORT();
     }
   ;
@@ -4611,7 +4611,7 @@ enum_class_struct_union_c_ast
     {
       print_error( &@4,
         "explaining %s declarations is not supported by %s\n",
-        c_type_id_name( $1 ), PACKAGE
+        c_type_id_name_c( $1 ), PACKAGE
       );
       c_sname_free( &$3 );
       PARSE_ABORT();
@@ -6037,7 +6037,7 @@ of_scope_list_english
            c_type_is_tid_any( outer_type, TB_ANY_CLASS ) ) {
         print_error( &@2,
           "\"%s\" may only be nested within a %s or %s\n",
-          c_type_name( inner_type ), L_NAMESPACE, L_SCOPE
+          c_type_name_eng( inner_type ), L_NAMESPACE, L_SCOPE
         );
         PARSE_ABORT();
       }

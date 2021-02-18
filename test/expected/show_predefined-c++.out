@@ -10,7 +10,7 @@ define DWORD32 as unsigned
 define DWORD64 as unsigned long
 define DWORDLONG as unsigned long
 define DWORD_PTR as ULONG_PTR
-define FILE as struct _iobuf
+define FILE as structure _iobuf
 define FLOAT as float
 define HALF_PTR as int
 define HANDLE as PVOID
@@ -68,10 +68,10 @@ define LPBOOL as pointer to BOOL
 define LPBYTE as pointer to BYTE
 define LPCHAR as pointer to CHAR
 define LPCOLORREF as pointer to COLORREF
-define LPCSTR as pointer to const CHAR
+define LPCSTR as pointer to constant CHAR
 define LPCTSTR as LPCWSTR
-define LPCVOID as pointer to const void
-define LPCWSTR as pointer to const WCHAR
+define LPCVOID as pointer to constant void
+define LPCWSTR as pointer to constant WCHAR
 define LPDWORD as pointer to DWORD
 define LPHANDLE as pointer to HANDLE
 define LPINT as pointer to int
@@ -86,9 +86,9 @@ define PBOOL as pointer to BOOL
 define PBOOLEAN as pointer to BOOLEAN
 define PBYTE as pointer to BYTE
 define PCHAR as pointer to CHAR
-define PCSTR as pointer to const CHAR
+define PCSTR as pointer to constant CHAR
 define PCTSTR as LPCWSTR
-define PCWSTR as pointer to const WCHAR
+define PCWSTR as pointer to constant WCHAR
 define PDWORD as pointer to DWORD
 define PDWORD32 as pointer to DWORD32
 define PDWORD64 as pointer to DWORD64
@@ -158,7 +158,7 @@ define ULONG32 as unsigned
 define ULONG64 as unsigned long
 define ULONGLONG as unsigned long long
 define ULONG_PTR as unsigned long
-define UNICODE_STRING as struct UNICODE_STRING
+define UNICODE_STRING as structure UNICODE_STRING
 define USHORT as unsigned short
 define USN as LONGLONG
 define WCHAR as wchar_t
@@ -193,63 +193,63 @@ define __int32 as int
 define __int64 as long long
 define __int8 as signed char
 define __wchar_t as wchar_t
-define atomic_bool as _Atomic bool
-define atomic_char as _Atomic char
-define atomic_char16_t as _Atomic char16_t
-define atomic_char32_t as _Atomic char32_t
-define atomic_char8_t as _Atomic char8_t
-define atomic_flag as struct atomic_flag
-define atomic_int as _Atomic int
-define atomic_int_fast16_t as _Atomic int_fast16_t
-define atomic_int_fast32_t as _Atomic int_fast32_t
-define atomic_int_fast64_t as _Atomic int_fast64_t
-define atomic_int_fast8_t as _Atomic int_fast8_t
-define atomic_int_least16_t as _Atomic int_least16_t
-define atomic_int_least32_t as _Atomic int_least32_t
-define atomic_int_least64_t as _Atomic int_least64_t
-define atomic_int_least8_t as _Atomic int_least8_t
-define atomic_intmax_t as _Atomic intmax_t
-define atomic_intptr_t as _Atomic intptr_t
-define atomic_llong as _Atomic long long
-define atomic_long as _Atomic long
-define atomic_ptrdiff_t as _Atomic ptrdiff_t
-define atomic_schar as _Atomic signed char
-define atomic_short as _Atomic short
-define atomic_size_t as _Atomic size_t
-define atomic_uchar as _Atomic unsigned char
-define atomic_uint as _Atomic unsigned
-define atomic_uint_fast16_t as _Atomic uint_fast16_t
-define atomic_uint_fast32_t as _Atomic uint_fast32_t
-define atomic_uint_fast64_t as _Atomic uint_fast64_t
-define atomic_uint_fast8_t as _Atomic uint_fast8_t
-define atomic_uint_least16_t as _Atomic uint_least16_t
-define atomic_uint_least32_t as _Atomic uint_least32_t
-define atomic_uint_least64_t as _Atomic uint_least64_t
-define atomic_uint_least8_t as _Atomic uint_least8_t
-define atomic_uintmax_t as _Atomic uintmax_t
-define atomic_uintptr_t as _Atomic uintptr_t
-define atomic_ullong as _Atomic unsigned long long
-define atomic_ulong as _Atomic unsigned long
-define atomic_ushort as _Atomic unsigned short
-define atomic_wchar_t as _Atomic wchar_t
+define atomic_bool as atomic bool
+define atomic_char as atomic char
+define atomic_char16_t as atomic char16_t
+define atomic_char32_t as atomic char32_t
+define atomic_char8_t as atomic char8_t
+define atomic_flag as structure atomic_flag
+define atomic_int as atomic int
+define atomic_int_fast16_t as atomic int_fast16_t
+define atomic_int_fast32_t as atomic int_fast32_t
+define atomic_int_fast64_t as atomic int_fast64_t
+define atomic_int_fast8_t as atomic int_fast8_t
+define atomic_int_least16_t as atomic int_least16_t
+define atomic_int_least32_t as atomic int_least32_t
+define atomic_int_least64_t as atomic int_least64_t
+define atomic_int_least8_t as atomic int_least8_t
+define atomic_intmax_t as atomic intmax_t
+define atomic_intptr_t as atomic intptr_t
+define atomic_llong as atomic long long
+define atomic_long as atomic long
+define atomic_ptrdiff_t as atomic ptrdiff_t
+define atomic_schar as atomic signed char
+define atomic_short as atomic short
+define atomic_size_t as atomic size_t
+define atomic_uchar as atomic unsigned char
+define atomic_uint as atomic unsigned
+define atomic_uint_fast16_t as atomic uint_fast16_t
+define atomic_uint_fast32_t as atomic uint_fast32_t
+define atomic_uint_fast64_t as atomic uint_fast64_t
+define atomic_uint_fast8_t as atomic uint_fast8_t
+define atomic_uint_least16_t as atomic uint_least16_t
+define atomic_uint_least32_t as atomic uint_least32_t
+define atomic_uint_least64_t as atomic uint_least64_t
+define atomic_uint_least8_t as atomic uint_least8_t
+define atomic_uintmax_t as atomic uintmax_t
+define atomic_uintptr_t as atomic uintptr_t
+define atomic_ullong as atomic unsigned long long
+define atomic_ulong as atomic unsigned long
+define atomic_ushort as atomic unsigned short
+define atomic_wchar_t as atomic wchar_t
 define blkcnt_t as int32_t
 define blksize_t as int32_t
 define clock_t as long
 define clockid_t as long
 define cnd_t as pthread_cond_t
-define constraint_handler_t as pointer to function (__restrict pointer to const char, __restrict pointer to void, errno_t) returning void
+define constraint_handler_t as pointer to function (restricted pointer to constant char, restricted pointer to void, errno_t) returning void
 define dev_t as int
-define div_t as struct div_t
+define div_t as structure div_t
 define double_t as double
 define errno_t as int
-define fd_set as struct fd_set
-define femode_t as struct femode_t
-define fenv_t as struct fenv_t
+define fd_set as structure fd_set
+define femode_t as structure femode_t
+define fenv_t as structure fenv_t
 define fexcept_t as unsigned short
 define float_t as float
-define fpos_t as struct fpos_t
+define fpos_t as structure fpos_t
 define gid_t as uint32_t
-define imaxdiv_t as struct imaxdiv_t
+define imaxdiv_t as structure imaxdiv_t
 define in_addr_t as uint32_t
 define in_port_t as uint16_t
 define ino_t as unsigned
@@ -268,13 +268,13 @@ define int_least8_t as signed char
 define intmax_t as long
 define intptr_t as long
 define jmp_buf as array 37 of int
-define lconv as struct lconv
-define ldiv_t as struct ldiv_t
-define lldiv_t as struct lldiv_t
+define lconv as structure lconv
+define ldiv_t as structure ldiv_t
+define lldiv_t as structure lldiv_t
 define long_double_t as long double
 define max_align_t as long double
-define mbstate_t as struct mbstate_t
-define memory_order as enum memory_order
+define mbstate_t as structure mbstate_t
+define memory_order as enumeration memory_order
 define mode_t as int32_t
 define mtx_t as pthread_mutex_t
 define nfds_t as unsigned long
@@ -282,15 +282,15 @@ define nlink_t as uint32_t
 define off_t as long
 define once_flag as int
 define pid_t as int32_t
-define pthread_barrier_t as struct pthread_barrier_t
-define pthread_barrierattr_t as struct pthread_barrierattr_t
-define pthread_cond_t as struct pthread_cond_t
-define pthread_condattr_t as struct pthread_condattr_t
-define pthread_mutex_t as struct pthread_mutex_t
-define pthread_mutexattr_t as struct pthread_mutexattr_t
+define pthread_barrier_t as structure pthread_barrier_t
+define pthread_barrierattr_t as structure pthread_barrierattr_t
+define pthread_cond_t as structure pthread_cond_t
+define pthread_condattr_t as structure pthread_condattr_t
+define pthread_mutex_t as structure pthread_mutex_t
+define pthread_mutexattr_t as structure pthread_mutexattr_t
 define pthread_once_t as int
-define pthread_rwlock_t as struct pthread_rwlock_t
-define pthread_rwlockattr_t as struct pthread_rwlockattr_t
+define pthread_rwlock_t as structure pthread_rwlock_t
+define pthread_rwlockattr_t as structure pthread_rwlockattr_t
 define pthread_spinlock_t as volatile int
 define pthread_t as unsigned long
 define ptrdiff_t as long
@@ -302,58 +302,58 @@ define sigset_t as unsigned long
 define size_t as unsigned long
 define socklen_t as uint32_t
 define ssize_t as long
-define adopt_lock_t of namespace std as struct adopt_lock_t
-define align_val_t of namespace std as enum class align_val_t
+define adopt_lock_t of namespace std as structure adopt_lock_t
+define align_val_t of namespace std as enumeration class align_val_t
 define ambiguous_local_time of namespace std as class ambiguous_local_time
-define atomic_bool of namespace std as struct atomic_bool
-define atomic_char of namespace std as struct atomic_char
-define atomic_char16_t of namespace std as struct atomic_char16_t
-define atomic_char32_t of namespace std as struct atomic_char32_t
-define atomic_char8_t of namespace std as struct atomic_char8_t
-define atomic_flag of namespace std as struct atomic_flag
-define atomic_int of namespace std as struct atomic_int
-define atomic_int16_t of namespace std as struct atomic_int16_t
-define atomic_int32_t of namespace std as struct atomic_int32_t
-define atomic_int64_t of namespace std as struct atomic_int64_t
-define atomic_int8_t of namespace std as struct atomic_int8_t
-define atomic_int_fast16_t of namespace std as struct atomic_int_fast16_t
-define atomic_int_fast32_t of namespace std as struct atomic_int_fast32_t
-define atomic_int_fast64_t of namespace std as struct atomic_int_fast64_t
-define atomic_int_fast8_t of namespace std as struct atomic_int_fast8_t
-define atomic_int_least16_t of namespace std as struct atomic_int_least16_t
-define atomic_int_least32_t of namespace std as struct atomic_int_least32_t
-define atomic_int_least64_t of namespace std as struct atomic_int_least64_t
-define atomic_int_least8_t of namespace std as struct atomic_int_least8_t
-define atomic_intmax_t of namespace std as struct atomic_intmax_t
-define atomic_intptr_t of namespace std as struct atomic_intptr_t
-define atomic_llong of namespace std as struct atomic_llong
-define atomic_long of namespace std as struct atomic_long
-define atomic_ptrdiff_t of namespace std as struct atomic_ptrdiff_t
-define atomic_schar of namespace std as struct atomic_schar
-define atomic_short of namespace std as struct atomic_short
-define atomic_signed_lock_free of namespace std as struct atomic_signed_lock_free
-define atomic_size_t of namespace std as struct atomic_size_t
-define atomic_uchar of namespace std as struct atomic_uchar
-define atomic_uint of namespace std as struct atomic_uint
-define atomic_uint16_t of namespace std as struct atomic_uint16_t
-define atomic_uint32_t of namespace std as struct atomic_uint32_t
-define atomic_uint64_t of namespace std as struct atomic_uint64_t
-define atomic_uint8_t of namespace std as struct atomic_uint8_t
-define atomic_uint_fast16_t of namespace std as struct atomic_uint_fast16_t
-define atomic_uint_fast32_t of namespace std as struct atomic_uint_fast32_t
-define atomic_uint_fast64_t of namespace std as struct atomic_uint_fast64_t
-define atomic_uint_fast8_t of namespace std as struct atomic_uint_fast8_t
-define atomic_uint_least16_t of namespace std as struct atomic_uint_least16_t
-define atomic_uint_least32_t of namespace std as struct atomic_uint_least32_t
-define atomic_uint_least64_t of namespace std as struct atomic_uint_least64_t
-define atomic_uint_least8_t of namespace std as struct atomic_uint_least8_t
-define atomic_uintmax_t of namespace std as struct atomic_uintmax_t
-define atomic_uintptr_t of namespace std as struct atomic_uintptr_t
-define atomic_ullong of namespace std as struct atomic_ullong
-define atomic_ulong of namespace std as struct atomic_ulong
-define atomic_unsigned_lock_free of namespace std as struct atomic_unsigned_lock_free
-define atomic_ushort of namespace std as struct atomic_ushort
-define atomic_wchar_t of namespace std as struct atomic_wchar_t
+define atomic_bool of namespace std as structure atomic_bool
+define atomic_char of namespace std as structure atomic_char
+define atomic_char16_t of namespace std as structure atomic_char16_t
+define atomic_char32_t of namespace std as structure atomic_char32_t
+define atomic_char8_t of namespace std as structure atomic_char8_t
+define atomic_flag of namespace std as structure atomic_flag
+define atomic_int of namespace std as structure atomic_int
+define atomic_int16_t of namespace std as structure atomic_int16_t
+define atomic_int32_t of namespace std as structure atomic_int32_t
+define atomic_int64_t of namespace std as structure atomic_int64_t
+define atomic_int8_t of namespace std as structure atomic_int8_t
+define atomic_int_fast16_t of namespace std as structure atomic_int_fast16_t
+define atomic_int_fast32_t of namespace std as structure atomic_int_fast32_t
+define atomic_int_fast64_t of namespace std as structure atomic_int_fast64_t
+define atomic_int_fast8_t of namespace std as structure atomic_int_fast8_t
+define atomic_int_least16_t of namespace std as structure atomic_int_least16_t
+define atomic_int_least32_t of namespace std as structure atomic_int_least32_t
+define atomic_int_least64_t of namespace std as structure atomic_int_least64_t
+define atomic_int_least8_t of namespace std as structure atomic_int_least8_t
+define atomic_intmax_t of namespace std as structure atomic_intmax_t
+define atomic_intptr_t of namespace std as structure atomic_intptr_t
+define atomic_llong of namespace std as structure atomic_llong
+define atomic_long of namespace std as structure atomic_long
+define atomic_ptrdiff_t of namespace std as structure atomic_ptrdiff_t
+define atomic_schar of namespace std as structure atomic_schar
+define atomic_short of namespace std as structure atomic_short
+define atomic_signed_lock_free of namespace std as structure atomic_signed_lock_free
+define atomic_size_t of namespace std as structure atomic_size_t
+define atomic_uchar of namespace std as structure atomic_uchar
+define atomic_uint of namespace std as structure atomic_uint
+define atomic_uint16_t of namespace std as structure atomic_uint16_t
+define atomic_uint32_t of namespace std as structure atomic_uint32_t
+define atomic_uint64_t of namespace std as structure atomic_uint64_t
+define atomic_uint8_t of namespace std as structure atomic_uint8_t
+define atomic_uint_fast16_t of namespace std as structure atomic_uint_fast16_t
+define atomic_uint_fast32_t of namespace std as structure atomic_uint_fast32_t
+define atomic_uint_fast64_t of namespace std as structure atomic_uint_fast64_t
+define atomic_uint_fast8_t of namespace std as structure atomic_uint_fast8_t
+define atomic_uint_least16_t of namespace std as structure atomic_uint_least16_t
+define atomic_uint_least32_t of namespace std as structure atomic_uint_least32_t
+define atomic_uint_least64_t of namespace std as structure atomic_uint_least64_t
+define atomic_uint_least8_t of namespace std as structure atomic_uint_least8_t
+define atomic_uintmax_t of namespace std as structure atomic_uintmax_t
+define atomic_uintptr_t of namespace std as structure atomic_uintptr_t
+define atomic_ullong of namespace std as structure atomic_ullong
+define atomic_ulong of namespace std as structure atomic_ulong
+define atomic_unsigned_lock_free of namespace std as structure atomic_unsigned_lock_free
+define atomic_ushort of namespace std as structure atomic_ushort
+define atomic_wchar_t of namespace std as structure atomic_wchar_t
 define bad_alloc of namespace std as class bad_alloc
 define bad_any_cast of namespace std as class bad_any_cast
 define bad_array_new_length of namespace std as class bad_array_new_length
@@ -364,17 +364,17 @@ define bad_optional_access of namespace std as class bad_optional_access
 define bad_type_id of namespace std as class bad_type_id
 define bad_variant_access of namespace std as class bad_variant_access
 define bad_weak_ptr of namespace std as class bad_weak_ptr
-define byte of namespace std as enum byte
-define choose of namespace chrono of namespace std as enum class choose
+define byte of namespace std as enumeration byte
+define choose of namespace chrono of namespace std as enumeration class choose
 define day of namespace chrono of namespace std as class day
-define file_clock of namespace chrono of namespace std as struct file_clock
-define gps_clock of namespace chrono of namespace std as struct gps_clock
+define file_clock of namespace chrono of namespace std as structure file_clock
+define gps_clock of namespace chrono of namespace std as structure gps_clock
 define high_resolution_clock of namespace chrono of namespace std as class high_resolution_clock
-define is_clock of namespace chrono of namespace std as struct is_clock
-define last_spec of namespace chrono of namespace std as struct last_spec
+define is_clock of namespace chrono of namespace std as structure is_clock
+define last_spec of namespace chrono of namespace std as structure last_spec
 define leap_second of namespace chrono of namespace std as class leap_second
-define local_info of namespace chrono of namespace std as struct local_info
-define local_t of namespace chrono of namespace std as struct local_t
+define local_info of namespace chrono of namespace std as structure local_info
+define local_t of namespace chrono of namespace std as structure local_t
 define month of namespace chrono of namespace std as class month
 define month_day of namespace chrono of namespace std as class month_day
 define month_day_last of namespace chrono of namespace std as class month_day_last
@@ -382,14 +382,14 @@ define month_weekday of namespace chrono of namespace std as class month_weekday
 define month_weekday_last of namespace chrono of namespace std as class month_weekday_last
 define nonexistent_local_time of namespace chrono of namespace std as class nonexistent_local_time
 define steady_clock of namespace chrono of namespace std as class steady_clock
-define sys_info of namespace chrono of namespace std as struct sys_info
+define sys_info of namespace chrono of namespace std as structure sys_info
 define system_clock of namespace chrono of namespace std as class system_clock
-define tai_clock of namespace chrono of namespace std as struct tai_clock
-define time_zone of namespace chrono of namespace std as struct time_zone
+define tai_clock of namespace chrono of namespace std as structure tai_clock
+define time_zone of namespace chrono of namespace std as structure time_zone
 define time_zone_link of namespace chrono of namespace std as class time_zone_link
-define tzdb of namespace chrono of namespace std as struct tzdb
-define tzdb_list of namespace chrono of namespace std as struct tzdb_list
-define utc_clock of namespace chrono of namespace std as struct utc_clock
+define tzdb of namespace chrono of namespace std as structure tzdb
+define tzdb_list of namespace chrono of namespace std as structure tzdb_list
+define utc_clock of namespace chrono of namespace std as structure utc_clock
 define weekday of namespace chrono of namespace std as class weekday
 define weekday_indexed of namespace chrono of namespace std as class weekday_indexed
 define weekday_last of namespace chrono of namespace std as class weekday_last
@@ -403,35 +403,35 @@ define codecvt_base of namespace std as class codecvt_base
 define condition_variable of namespace std as class condition_variable
 define condition_variable_any of namespace std as class condition_variable_any
 define ctype_base of namespace std as class ctype_base
-define cv_status of namespace std as enum class cv_status
-define defer_lock_t of namespace std as struct defer_lock_t
-define destroying_delete_t of namespace std as struct destroying_delete_t
-define div_t of namespace std as struct div_t
+define cv_status of namespace std as enumeration class cv_status
+define defer_lock_t of namespace std as structure defer_lock_t
+define destroying_delete_t of namespace std as structure destroying_delete_t
+define div_t of namespace std as structure div_t
 define domain_error of namespace std as class domain_error
 define error_category of namespace std as class error_category
 define error_code of namespace std as class error_code
 define error_condition of namespace std as class error_condition
 define exception of namespace std as class exception
 define filebuf of namespace std as class filebuf
-define copy_options of namespace filesystem of namespace std as enum class copy_options
+define copy_options of namespace filesystem of namespace std as enumeration class copy_options
 define directory_entry of namespace filesystem of namespace std as class directory_entry
 define directory_iterator of namespace filesystem of namespace std as class directory_iterator
-define directory_options of namespace filesystem of namespace std as enum class directory_options
+define directory_options of namespace filesystem of namespace std as enumeration class directory_options
 define file_status of namespace filesystem of namespace std as class file_status
-define file_type of namespace filesystem of namespace std as enum class file_type
+define file_type of namespace filesystem of namespace std as enumeration class file_type
 define filesystem_error of namespace filesystem of namespace std as class filesystem_error
 define path of namespace filesystem of namespace std as class path
-define perm_options of namespace filesystem of namespace std as enum class perm_options
-define perms of namespace filesystem of namespace std as enum class perms
+define perm_options of namespace filesystem of namespace std as enumeration class perm_options
+define perms of namespace filesystem of namespace std as enumeration class perms
 define recursive_directory_iterator of namespace filesystem of namespace std as class recursive_directory_iterator
-define space_info of namespace filesystem of namespace std as struct space_info
+define space_info of namespace filesystem of namespace std as structure space_info
 define format_error of namespace std as class format_error
 define fstream of namespace std as class fstream
-define future_errc of namespace std as enum class future_errc
+define future_errc of namespace std as enumeration class future_errc
 define future_error of namespace std as class future_error
-define future_status of namespace std as enum class future_status
+define future_status of namespace std as enumeration class future_status
 define ifstream of namespace std as class ifstream
-define imaxdiv_t of namespace std as struct imaxdiv_t
+define imaxdiv_t of namespace std as structure imaxdiv_t
 define invalid_argument of namespace std as class invalid_argument
 define ios of namespace std as class ios
 define ios_base of namespace std as class ios_base
@@ -440,17 +440,17 @@ define iostream of namespace std as class iostream
 define istream of namespace std as class istream
 define istringstream of namespace std as class istringstream
 define jthread of namespace std as class jthread
-define ldiv_t of namespace std as struct ldiv_t
+define ldiv_t of namespace std as structure ldiv_t
 define length_error of namespace std as class length_error
-define lldiv_t of namespace std as struct lldiv_t
+define lldiv_t of namespace std as structure lldiv_t
 define locale of namespace std as class locale
 define logic_error of namespace std as class logic_error
 define max_align_t of namespace std as long double
 define messages_base of namespace std as class messages_base
 define money_base of namespace std as class money_base
 define mutex of namespace std as class mutex
-define nonstopstate_t of namespace std as struct nonstopstate_t
-define nothrow_t of namespace std as struct nothrow_t
+define nonstopstate_t of namespace std as structure nonstopstate_t
+define nothrow_t of namespace std as structure nothrow_t
 define nullptr_t of namespace std as pointer to void
 define ofstream of namespace std as class ofstream
 define ostream of namespace std as class ostream
@@ -458,13 +458,13 @@ define ostringstream of namespace std as class ostringstream
 define osyncstream of namespace std as class osyncstream
 define out_of_range of namespace std as class out_of_range
 define overflow_error of namespace std as class overflow_error
-define partial_ordering of namespace std as struct partial_ordering
+define partial_ordering of namespace std as structure partial_ordering
 define ptrdiff_t of namespace std as long
 define range_error of namespace std as class range_error
 define recursive_mutex of namespace std as class recursive_mutex
 define recursive_timed_mutex of namespace std as class recursive_timed_mutex
 define regex of namespace std as class regex
-define regex_error of namespace std as struct regex_error
+define regex_error of namespace std as structure regex_error
 define runtime_error of namespace std as class runtime_error
 define shared_mutex of namespace std as class shared_mutex
 define shared_timed_mutex of namespace std as class shared_timed_mutex
@@ -479,22 +479,22 @@ define string of namespace std as class string
 define string_view of namespace std as class string_view
 define stringbuf of namespace std as class stringbuf
 define stringstream of namespace std as class stringstream
-define strong_equality of namespace std as struct strong_equality
-define strong_ordering of namespace std as struct strong_ordering
+define strong_equality of namespace std as structure strong_equality
+define strong_ordering of namespace std as structure strong_ordering
 define syncbuf of namespace std as class syncbuf
-define system_error of namespace std as struct system_error
+define system_error of namespace std as structure system_error
 define thread of namespace std as class thread
 define time_base of namespace std as class time_base
 define timed_mutex of namespace std as class timed_mutex
-define try_to_lock_t of namespace std as struct try_to_lock_t
+define try_to_lock_t of namespace std as structure try_to_lock_t
 define u16string of namespace std as class u16string
 define u16string_view of namespace std as class u16string_view
 define u32string of namespace std as class u32string
 define u32string_view of namespace std as class u32string_view
 define u8string_view of namespace std as class u8string_view
 define underflow_error of namespace std as class underflow_error
-define weak_equality of namespace std as struct weak_equality
-define weak_ordering of namespace std as struct weak_ordering
+define weak_equality of namespace std as structure weak_equality
+define weak_ordering of namespace std as structure weak_ordering
 define wfilebuf of namespace std as class wfilebuf
 define wfstream of namespace std as class wfstream
 define wifstream of namespace std as class wifstream
