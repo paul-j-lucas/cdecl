@@ -135,7 +135,7 @@ c_scope_data_t* c_scope_data_dup( c_scope_data_t const *data );
 /**
  * Frees all memory associated with \a data _including_ \a data itself.
  *
- * @param data The <code>\ref c_scope_data</code> to free.  If null, does
+ * @param data The <code>\ref c_scope_data</code> to free.  If NULL, does
  * nothing.
  */
 void c_scope_data_free( c_scope_data_t *data );
@@ -219,7 +219,7 @@ bool c_sname_empty( c_sname_t const *sname ) {
 /**
  * Frees all memory associated with \a sname but _not_ \a sname itself.
  *
- * @param sname The scoped name to free.  If null, does nothing; otherwise,
+ * @param sname The scoped name to free.  If NULL, does nothing; otherwise,
  * reinitializes it upon completion.
  */
 C_SNAME_INLINE

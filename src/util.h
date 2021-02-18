@@ -518,7 +518,7 @@ char const* base_name( char const *path_name );
  * Calls **realloc**(3) and checks for failure.
  * If reallocation fails, prints an error message and exits.
  *
- * @param p The pointer to reallocate.  If null, new memory is allocated.
+ * @param p The pointer to reallocate.  If NULL, new memory is allocated.
  * @param size The number of bytes to allocate.
  * @return Returns a pointer to the allocated memory.
  *
@@ -532,8 +532,8 @@ void* check_realloc( void *p, size_t size );
  * Calls **strdup**(3) and checks for failure.
  * If memory allocation fails, prints an error message and exits.
  *
- * @param s The null-terminated string to duplicate or null.
- * @return Returns a copy of \a s or null if \a s is null.
+ * @param s The null-terminated string to duplicate or NULL.
+ * @return Returns a copy of \a s or NULL if \a s is NULL.
  *
  * @sa check_strdup_tolower()
  */
@@ -544,9 +544,9 @@ char* check_strdup( char const *s );
  * Duplicates \a s and checks for failure, but converts all characters to
  * lower-case.  If memory allocation fails, prints an error message and exits.
  *
- * @param s The null-terminated string to duplicate or null.
+ * @param s The null-terminated string to duplicate or NULL.
  * @return Returns a copy of \a s with all characters converted to lower-case
- * or null if \a s is null.
+ * or NULL if \a s is NULL.
  *
  * @sa check_strdup()
  */
@@ -654,7 +654,7 @@ void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines );
 /**
  * Gets the full path of the user's home directory.
  *
- * @return Returns said directory or null if it is not obtainable.
+ * @return Returns said directory or NULL if it is not obtainable.
  */
 PJL_WARN_UNUSED_RESULT
 char const* home_dir( void );
@@ -741,7 +741,7 @@ noreturn void perror_exit( int status );
  * @param ps1 The primary prompt to use.
  * @param ps2 The secondary prompt to use for a continuation line (a line after
  * ones ending with `\`).
- * @return Returns the line read or null for EOF.
+ * @return Returns the line read or NULL for EOF.
  * @warning The pointer returned is to a static buffer and every calls resets
  * it.
  */
@@ -749,7 +749,7 @@ PJL_WARN_UNUSED_RESULT
 char* read_input_line( char const *ps1, char const *ps2 );
 
 /**
- * Copies a character to \a dst and appends a null.
+ * Copies a character to \a dst and appends a `'\0'`.
  *
  * @param dst A pointer to receive \a c.
  * @param c The character to copy.

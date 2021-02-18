@@ -209,7 +209,7 @@ static char** attempt_completion( char const *text, int start, int end ) {
  * @param text The text read (so far) to match against.
  * @param state If 0, restart matching from the beginning; if non-zero,
  * continue to next match, if any.
- * @return Returns a copy of the command or null if not found.
+ * @return Returns a copy of the command or NULL if not found.
  */
 PJL_WARN_UNUSED_RESULT
 static char* command_generator( char const *text, int state ) {
@@ -308,7 +308,7 @@ static bool is_command( char const *command ) {
  * @param text The text read (so far) to match against.
  * @param state If 0, restart matching from the beginning; if non-zero,
  * continue to next match, if any.
- * @return Returns a copy of the keyword or null if none.
+ * @return Returns a copy of the keyword or NULL if none.
  */
 PJL_WARN_UNUSED_RESULT
 static char* keyword_completion( char const *text, int state ) {

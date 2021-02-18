@@ -63,7 +63,7 @@ typedef unsigned dym_kind_t;
 /**
  * Frees all memory used by \a dym_array _including_ \a dym_array itself.
  *
- * @param dym_array The <code>\ref did_you_mean</code> array to free.  If null,
+ * @param dym_array The <code>\ref did_you_mean</code> array to free.  If NULL,
  * does nothing.
  */
 void dym_free( did_you_mean_t const *dym_array );
@@ -75,7 +75,7 @@ void dym_free( did_you_mean_t const *dym_array );
  * @param kinds The bitwise-or of the kind(s) of things possibly meant.
  * @param unknown_token The unknown token.
  * @return Returns a pointer to an array of elements terminated by one having a
- * null `token` pointer if there are suggestions or null if not.
+ * NULL `token` pointer if there are suggestions or NULL if not.
  *
  * @sa dym_free()
  */

@@ -49,8 +49,8 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t* );
 /**
  * Adds an array to the AST being built.
  *
- * @param ast The AST to append to; may be null.
- * @param array_ast The array AST to append.  Its "of" type must be null.
+ * @param ast The AST to append to; may be NULL.
+ * @param array_ast The array AST to append.  Its "of" type must be NULL.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 PJL_WARN_UNUSED_RESULT
@@ -129,7 +129,7 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast ) {
  *  + <code>array 3 of array 5 of array 7 of int</code>
  *
  * @param ast The AST to append to.
- * @param array_ast The array AST to append.  Its "of" type must be null.
+ * @param array_ast The array AST to append.  Its "of" type must be NULL.
  * @return If \a ast is an array, returns \a ast; otherwise returns \a
  * array_ast.
  */
@@ -185,7 +185,7 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast ) {
  * @param ast The AST to append to.
  * @param ret_ast The AST of the return-type of the function-like AST.
  * @param func_ast The function-like AST to append.  Its "of" type must be
- * null.
+ * NULL.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 PJL_WARN_UNUSED_RESULT

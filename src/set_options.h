@@ -79,7 +79,7 @@ typedef struct set_option set_option_t;
  *
  * @param opt A pointer to the previous option. For the first iteration, NULL
  * should be passed.
- * @return Returns the next `set` option or null for none.
+ * @return Returns the next `set` option or NULL for none.
  *
  * @sa #FOREACH_OPTION
  */
@@ -99,7 +99,7 @@ set_option_t const* option_next( set_option_t const *opt );
 /**
  * Implements the cdecl `set` command.
  *
- * @param opt_name The name of the option to set. If null or `"options"`,
+ * @param opt_name The name of the option to set. If NULL or `"options"`,
  * displays the current values of all options.
  * @param opt_name_loc The location of \a opt_name.
  * @param opt_value The option value, if any.

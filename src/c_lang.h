@@ -336,7 +336,7 @@ c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
  *
  * @param lang A pointer to the previous language. For the first iteration,
  * NULL should be passed.
- * @return Returns the next C/C++ language or null for none.
+ * @return Returns the next C/C++ language or NULL for none.
  *
  * @sa #FOREACH_LANG()
  */

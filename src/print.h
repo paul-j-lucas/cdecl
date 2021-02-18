@@ -93,7 +93,7 @@
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
  * from.
- * @param loc The location of the error; may be null.
+ * @param loc The location of the error; may be NULL.
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
  *
@@ -138,7 +138,7 @@ void fl_print_error_unknown_name( char const *file, int line,
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
  * from.
- * @param loc The location of the warning; may be null.
+ * @param loc The location of the warning; may be NULL.
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments.
  *

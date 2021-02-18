@@ -226,7 +226,7 @@ static bool parse_argv( int argc, char const *argv[const] ) {
 /**
  * Parses a cdecl command from the command-line.
  *
- * @param command The value main()'s `argv[0]` if it is a cdecl command; null
+ * @param command The value main()'s `argv[0]` if it is a cdecl command; NULL
  * otherwise and `argv[1]` is a cdecl command.
  * @param argc The command-line argument count.
  * @param argv The command-line argument values.
@@ -244,7 +244,7 @@ static bool parse_command_line( char const *command, int argc,
   for ( int i = 0; i < argc; ++i )
     command_line_len += true_or_set( &space ) + strlen( argv[i] );
 
-  command_line = MALLOC( char, command_line_len + 1/*null*/ );
+  command_line = MALLOC( char, command_line_len + 1/*'\0'*/ );
   char *s = CONST_CAST(char*, command_line);
 
   // build cdecl command

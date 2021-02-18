@@ -105,7 +105,7 @@ static bool sgr_is_valid( char const* );
  * Sets the SGR color for the given capability.
  *
  * @param cap The color capability to set the color for.
- * @param sgr_color The SGR color to set; or null or empty to unset.
+ * @param sgr_color The SGR color to set; or NULL or empty to unset.
  * @return Returns `true` only if \a sgr_color is valid.
  */
 PJL_WARN_UNUSED_RESULT

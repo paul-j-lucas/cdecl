@@ -76,9 +76,9 @@ typedef bool (*c_typedef_visitor_t)( c_typedef_t const *tdef, void *data );
  * @return If:
  * + \a type_ast was added, returns NULL; or:
  * + \a type_ast->name already exists and the types are equivalent, returns a
- *   <code>\ref c_typedef_t</code> where \a ast is NULL; or:
+ *   <code>\ref c_typedef</code> where \a ast is NULL; or:
  * + \a type_ast->name already exists and the types are _not_ equivalent,
- *   returns the a <code>\ref c_typedef_t</code> of the existing type.
+ *   returns the a <code>\ref c_typedef</code> of the existing type.
  */
 PJL_WARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_add( c_ast_t const *type_ast );
@@ -95,7 +95,7 @@ void c_typedef_cleanup( void );
  *
  * @param sname The scoped name to find.
  * @return Returns a pointer to the corresponding <code>\ref c_typedef</code>
- * or null for none.
+ * or NULL for none.
  */
 PJL_WARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_find( c_sname_t const *sname );
@@ -113,7 +113,7 @@ void c_typedef_init( void );
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.
  * @return Returns a pointer to the <code>\ref c_typedef</code> the visitor
- * stopped on or null.
+ * stopped on or NULL.
  */
 PJL_NOWARN_UNUSED_RESULT
 c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data );

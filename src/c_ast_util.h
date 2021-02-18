@@ -45,7 +45,7 @@
  * Adds an array to the AST being built.
  *
  * @param ast The AST to append to.
- * @param array_ast The array AST to append.  Its "of" type must be null.
+ * @param array_ast The array AST to append.  Its "of" type must be NULL.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 PJL_WARN_UNUSED_RESULT
@@ -57,7 +57,7 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast );
  * @param ast The AST to append to.
  * @param ret_ast The AST of the return-type of the function-like AST.
  * @param func_ast The function-like AST to append.  Its "of" type must be
- * null.
+ * NULL.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 PJL_WARN_UNUSED_RESULT
@@ -89,10 +89,10 @@ bool c_ast_check_declaration( c_ast_t const *ast );
 /**
  * Traverses \a ast attempting to find an AST node having \a kind_ids.
  *
- * @param ast The AST to begin at; may be null.
+ * @param ast The AST to begin at; may be NULL.
  * @param dir The direction to visit.
  * @param kind_ids The bitwise-or of kind(s) to find.
- * @return Returns a pointer to an AST node having one of \a kind_ids or null
+ * @return Returns a pointer to an AST node having one of \a kind_ids or NULL
  * if none.
  */
 PJL_WARN_UNUSED_RESULT
@@ -104,7 +104,7 @@ c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
  *
  * @param ast The AST to begin the search at.
  * @param dir The direction to search.
- * @return Returns said name or null if none.
+ * @return Returns said name or NULL if none.
  */
 PJL_WARN_UNUSED_RESULT
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
@@ -116,7 +116,7 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
  * @param dir The direction to visit.
  * @param type A type where each type part is the bitwise-or of type IDs to
  * find.
- * @return Returns a pointer to an AST node having one of \a type_ids or null
+ * @return Returns a pointer to an AST node having one of \a type_ids or NULL
  * if none.
  */
 PJL_WARN_UNUSED_RESULT
@@ -231,7 +231,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
  *    <code>\ref K_PLACEHOLDER</code>.
  *
  * @param type_ast The AST of the initial type.
- * @param decl_ast The AST of a declaration; may be null.
+ * @param decl_ast The AST of a declaration; may be NULL.
  * @return Returns the final AST.
  */
 PJL_WARN_UNUSED_RESULT
@@ -280,7 +280,7 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
  * `c_ast_dereference` to eliminate confusion with C++ references.
  *
  * @param ast The AST to un-pointer.
- * @return Returns the pointed-to AST or null if \a ast is not a pointer.
+ * @return Returns the pointed-to AST or NULL if \a ast is not a pointer.
  *
  * @sa c_ast_unreference()
  * @sa c_ast_untypedef()

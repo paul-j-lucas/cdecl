@@ -362,7 +362,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { NULL,             TOKEN( 0                            ) }
 };
 
-static char const lexer_token_init_buf; ///< So lexer_token is never null.
+static char const lexer_token_init_buf; ///< So lexer_token is never NULL.
 
 // extern variables
 unsigned          lexer_find = LEXER_FIND_ALL;

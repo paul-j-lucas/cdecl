@@ -386,7 +386,7 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast );
 /**
  * Frees all the memory used by \a ast including \a ast itself.
  *
- * @param ast The AST to free.  If null, does nothing.
+ * @param ast The AST to free.  If NULL, does nothing.
  *
  * @sa c_ast_new()
  */
@@ -395,7 +395,7 @@ void c_ast_free( c_ast_t *ast );
 /**
  * Checks whether \a ast is a parent node.
  *
- * @param ast The AST to check.  If null, does nothing.
+ * @param ast The AST to check.  If NULL, does nothing.
  * @return Returns `true` only if it is.
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
@@ -562,7 +562,7 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
  * Convenience function for getting function-like parameters.
  *
  * @param ast The AST to get the parameters of.
- * @return Returns a pointer to the first parameter or null if none.
+ * @return Returns a pointer to the first parameter or NULL if none.
  *
  * @sa c_ast_params_count()
  * @sa c_param_ast()
@@ -700,11 +700,11 @@ void c_ast_set_sname( c_ast_t *ast, c_sname_t *sname );
 /**
  * Does a depth-first, post-order traversal of an AST.
  *
- * @param ast The AST to begin at.  If null, does nothing.
+ * @param ast The AST to begin at.  If NULL, does nothing.
  * @param dir The direction to visit.
  * @param visitor The visitor to use.
  * @param data Optional data passed to \a visitor.
- * @return Returns a pointer to the AST the visitor stopped on or null.
+ * @return Returns a pointer to the AST the visitor stopped on or NULL.
  *
  * @note Function-like parameters are _not_ traversed into.  They're considered
  * distinct ASTs.

@@ -101,14 +101,14 @@ static char* prompt_create( char suffix ) {
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
     prompt_len +=
       1 /* RL_PROMPT_START_IGNORE */ +
-      (sizeof( SGR_START SGR_EL ) - 1/*null*/) +
+      (sizeof( SGR_START SGR_EL ) - 1/*'\0'*/) +
       (strlen( sgr_prompt )) +
       2 /* RL_PROMPT_END_IGNORE */ +
-      (sizeof( SGR_END SGR_EL ) - 1/*null*/);
+      (sizeof( SGR_END SGR_EL ) - 1/*'\0'*/);
   }
 #endif /* WITH_READLINE */
 
-  char *const buf = MALLOC( char, prompt_len + 1/*null*/ );
+  char *const buf = MALLOC( char, prompt_len + 1/*'\0'*/ );
   char *p = buf;
 
 #ifdef WITH_READLINE

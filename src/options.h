@@ -111,8 +111,8 @@ void options_init( int *pargc, char const **pargv[] );
 /**
  * Parses the explicit `int` option.
  *
- * @param loc The location of \a ei_format.  If not null and \a ei_format is
- * invalid, calls print_error(); if null and \a ei_format is invalid, calls
+ * @param loc The location of \a ei_format.  If not NULL and \a ei_format is
+ * invalid, calls print_error(); if NULL and \a ei_format is invalid, calls
  * PMESSAGE_EXIT().
  * @param ei_format The null-terminated explicit `int` format string to parse.
  * Valid formats are:

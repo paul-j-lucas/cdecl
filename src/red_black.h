@@ -147,7 +147,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
  *
  * @param tree A pointer to the red-black tree to search through.
  * @param data A pointer to the data to search for.
- * @return Returns a pointer to the node containing \a data or null if not
+ * @return Returns a pointer to the node containing \a data or NULL if not
  * found.
  */
 PJL_WARN_UNUSED_RESULT
@@ -156,10 +156,10 @@ rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data );
 /**
  * Frees all memory associated with \a tree but _not_ \a tree itself.
  *
- * @param tree The red-black tree to free.  If null, does nothing; otherwise,
+ * @param tree The red-black tree to free.  If NULL, does nothing; otherwise,
  * reinitializes \a tree upon completion.
  * @param data_free_fn A pointer to a function used to free data associated
- * with each node or null if unnecessary.
+ * with each node or NULL if unnecessary.
  *
  * @sa rb_tree_init()
  */
@@ -181,7 +181,7 @@ void rb_tree_init( rb_tree_t *tree, rb_data_cmp_t data_cmp_fn );
  *
  * @param tree A pointer to the red-black tree to insert into.
  * @param data A pointer to the data to insert.
- * @return Returns null if \a data is inserted or a pointer to a node if \a
+ * @return Returns NULL if \a data is inserted or a pointer to a node if \a
  * data already exists.
  *
  * @sa rb_tree_delete()
@@ -195,7 +195,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
  * @param tree A pointer to the red-black tree to visit.
  * @param visitor The visitor to use.
  * @param aux_data Optional data passed to \a visitor.
- * @return Returns a pointer to the node at which visiting stopped or null if
+ * @return Returns a pointer to the node at which visiting stopped or NULL if
  * the entire tree was visited.
  */
 PJL_WARN_UNUSED_RESULT

@@ -540,7 +540,7 @@ static inline void ia_qual_pop( void ) {
 /**
  * Gets a printable string of <code>\ref lexer_token</code>.
  *
- * @return Returns said string or null if <code>\ref lexer_token</code> is the
+ * @return Returns said string or NULL if <code>\ref lexer_token</code> is the
  * empty string.
  */
 PJL_WARN_UNUSED_RESULT
@@ -649,7 +649,7 @@ c_ast_t* c_ast_pointer( c_ast_t *ast ) {
  * Prints an additional parsing error message including a newline to standard
  * error that continues from where yyerror() left off.  Additionally:
  *
- * + If the printable_token() isn't null:
+ * + If the printable_token() isn't NULL:
  *     + Checks to see if it's a keyword: if it is, mentions that it's a
  *       keyword in the error message.
  *     + May print "did you mean ...?" \a dym_kinds suggestions.

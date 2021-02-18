@@ -127,7 +127,7 @@ struct slist {
  * Singly-linked-list node.
  */
 struct slist_node {
-  slist_node_t *next;                   ///< Pointer to next node or null.
+  slist_node_t *next;                   ///< Pointer to next node or NULL.
   void         *data;                   ///< Pointer to user data.
 };
 
@@ -139,7 +139,7 @@ struct slist_node {
  * @param i_list The first list.
  * @param j_list The second list.
  * @param data_cmp_fn A pointer to a function to use to compare data at each
- * node of \a i_list and \a j_list or null if none is required (hence the data
+ * node of \a i_list and \a j_list or NULL if none is required (hence the data
  * will be compared directly).
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_list is
  * less than, equal to, or greater than \a j_list, respectively.
@@ -151,12 +151,12 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
 /**
  * Duplicates \a src and all of its nodes.
  *
- * @param src The <code>\ref slist</code> to duplicate.  It may ne null.
+ * @param src The <code>\ref slist</code> to duplicate; may ne NULL.
  * @param n The number of nodes to duplicate; -1 is equivalent to slist_len().
  * @param data_dup_fn A pointer to a function to use to duplicate the data of
- * \a src or null if none is required (hence a shallow copy will be done).
+ * \a src or NULL if none is required (hence a shallow copy will be done).
  * @param node_data_dup_fn A pointer to a function to use to duplicate the data
- * at each node of \a src or null if none is required (hence a shallow copy
+ * at each node of \a src or NULL if none is required (hence a shallow copy
  * will be done).
  * @return Returns a duplicate of \a src.
  */
@@ -183,12 +183,12 @@ bool slist_empty( slist_t const *list ) {
 /**
  * Frees all memory associated with \a list but _not_ \a list itself.
  *
- * @param list A pointer to the list to free.  If null, does nothing;
+ * @param list A pointer to the list to free.  If NULL, does nothing;
  * otherwise, reinitializes \a list upon completion.
  * @param data_free_fn A pointer to a function to use to free the data
- * associated with \a list or null if none is required.
+ * associated with \a list or NULL if none is required.
  * @param node_data_free_fn A pointer to a function to use to free the data at
- * each node of \a list or null if none is required.
+ * each node of \a list or NULL if none is required.
  */
 void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
                  slist_node_data_free_fn_t node_data_free_fn );
@@ -224,7 +224,7 @@ size_t slist_len( slist_t const *list ) {
  *
  * @param list A pointer to the <code>\ref slist</code>.
  * @param offset The offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a offset or null if \a offset
+ * @return Returns the data from the node at \a offset or NULL if \a offset
  * &gt;= slist_len().
  *
  * @note This is an O(n) operation.
@@ -241,7 +241,7 @@ void* slist_peek_at( slist_t const *list, size_t offset );
  *
  * @param list A pointer to the <code>\ref slist</code>.
  * @param roffset The reverse offset (starting at 0) of the data to get.
- * @return Returns the data from the node at \a roffset or null if \a roffset
+ * @return Returns the data from the node at \a roffset or NULL if \a roffset
  * &gt;= slist_len().
  *
  * @note This is an O(n) operation.
@@ -260,7 +260,7 @@ void* slist_peek_atr( slist_t const *list, size_t roffset ) {
  * Peeks at the data at the head of \a list.
  *
  * @param list A pointer to the <code>\ref slist</code>.
- * @return Returns the data from the node at the head of \a list or null if \a
+ * @return Returns the data from the node at the head of \a list or NULL if \a
  * list is empty.
  *
  * @note This is an O(1) operation.
@@ -278,7 +278,7 @@ void* slist_peek_head( slist_t const *list ) {
  * Peeks at the data at the tail of \a list.
  *
  * @param list A pointer to the <code>\ref slist</code>.
- * @return Returns the data from the node at the tail of \a list or null if \a
+ * @return Returns the data from the node at the tail of \a list or NULL if \a
  * list is empty.
  *
  * @note This is an O(1) operation.

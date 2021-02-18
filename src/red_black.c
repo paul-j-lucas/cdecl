@@ -163,7 +163,7 @@ static inline bool is_right( rb_node_t const *node ) {
  *
  * @param node A pointer to the `rb_node` to free.
  * @param data_free_fn A pointer to a function used to free data associated
- * with \a node or null if unnecessary.
+ * with \a node or NULL if unnecessary.
  */
 static void rb_node_free( rb_node_t *node, rb_data_free_t data_free_fn ) {
   assert( node != NULL );
@@ -196,7 +196,7 @@ static void rb_node_init( rb_node_t *node ) {
  * @param node A pointer to the `rb_node` to start visiting at.
  * @param visitor The visitor to use.
  * @param aux_data Optional data passed to \a visitor.
- * @return Returns a pointer to the `rb_node` at which visiting stopped or null
+ * @return Returns a pointer to the `rb_node` at which visiting stopped or NULL
  * if the entire sub-tree was visited.
  */
 PJL_WARN_UNUSED_RESULT

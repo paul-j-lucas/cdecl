@@ -349,7 +349,7 @@ char* read_input_line( char const *ps1, char const *ps2 ) {
       buf_len = line_len;
     } else {
       size_t const new_len = buf_len + line_len;
-      REALLOC( buf, char, new_len + 1/*null*/ );
+      REALLOC( buf, char, new_len + 1/*'\0'*/ );
       strcpy( buf + buf_len, line );
       buf_len = new_len;
     }

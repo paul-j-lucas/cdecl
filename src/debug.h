@@ -51,7 +51,7 @@
  *
  * @param ast The AST to dump.
  * @param indent The initial indent.
- * @param key0 The initial key or null for none.
+ * @param key0 The initial key or NULL for none.
  * @param dout The `FILE` to dump to.
  */
 void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
@@ -94,7 +94,7 @@ void c_type_debug( c_type_t const *type, FILE *dout );
  * Prints a key/value pair (for debugging).
  *
  * @param key The key to print.
- * @param value The value to print, if any.  If either null or the empty
+ * @param value The value to print, if any.  If either NULL or the empty
  * string, `null` is printed instead of the value.
  * @param dout The `FILE` to dump to.
  */

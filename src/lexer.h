@@ -85,7 +85,7 @@ extern char const      *lexer_token;        ///< Text of current token.
 /**
  * Gets the current input line.
  *
- * @param plen If not null, sets the value pointed at to be the length of said
+ * @param plen If not NULL, sets the value pointed at to be the length of said
  * line.
  * @return Returns said line.
  */

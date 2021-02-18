@@ -45,7 +45,7 @@
  * Used by copy_typedefs() and copy_typedef_visitor() to pass and return data.
  */
 struct copy_typedef_visitor_data {
-  /// Pointer to a pointer to a candidate list or null to just get the count.
+  /// Pointer to a pointer to a candidate list or NULL to just get the count.
   did_you_mean_t  **pdym;
 
   size_t            count;              ///< The count.
@@ -96,10 +96,10 @@ static inline bool is_similar_enough( dam_lev_t dam_lev_dist,
 
 /**
  * Copies cdecl commands in the current language to the candidate list pointed
- * to by \a pdym.  If \a pdym is null, only counts the number of commands.
+ * to by \a pdym.  If \a pdym is NULL, only counts the number of commands.
  *
  * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
- * or null to just count commands, not copy.  If not null, on return, the
+ * or NULL to just count commands, not copy.  If not NULL, on return, the
  * pointed-to pointer is incremented.
  * @return Returns said number of commands.
  */
@@ -118,10 +118,10 @@ static size_t copy_commands( did_you_mean_t **const pdym ) {
 
 /**
  * Copies C/C++ keywords in the current language to the candidate list pointed
- * to by \a pdym.  If \a pdym is null, only counts the number of keywords.
+ * to by \a pdym.  If \a pdym is NULL, only counts the number of keywords.
  *
  * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
- * or null to just count keywords, not copy.  If not null, on return, the
+ * or NULL to just count keywords, not copy.  If not NULL, on return, the
  * pointed-to pointer is incremented.
  * @param tpid The type part ID that a keyword must have in order to be copied
  * (or counted).
@@ -165,7 +165,7 @@ static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
  * Counts the number of `typedef`s that are only valid in the current language.
  *
  * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
- * or null to just count typedefs, not copy.  If not null, on return, the
+ * or NULL to just count typedefs, not copy.  If not NULL, on return, the
  * pointed-to pointer is incremented.
  * @return Returns said number of `typedef`s.
  */
@@ -194,7 +194,7 @@ static int dym_cmp( did_you_mean_t const *i_dym, did_you_mean_t const *j_dym ) {
  * Frees memory used by \a dym.
  *
  * @param dym A pointer to the first <code>\ref did_you_mean</code> to free and
- * continuing until `token` is null.
+ * continuing until `token` is NULL.
  */
 static void dym_free_tokens( did_you_mean_t const *dym ) {
   while ( dym->token != NULL )
@@ -272,7 +272,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
           ++best_count < dym_size && (++dym)->dam_lev_dist == best_dist; )
       ;
     //
-    // Free tokens past the best ones and set the one past the last to null to
+    // Free tokens past the best ones and set the one past the last to NULL to
     // mark the end.
     //
     dym_free_tokens( dym_array + best_count );
