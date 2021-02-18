@@ -74,6 +74,8 @@ static bool c_alignas_equiv( c_alignas_t const *i_align,
     case C_ALIGNAS_TYPE:
       return c_ast_equiv( i_align->as.type_ast, j_align->as.type_ast );
   } // switch
+
+  UNEXPECTED_INT_VALUE( i_align->kind );
 }
 
 #ifndef NDEBUG
