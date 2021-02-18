@@ -50,15 +50,15 @@
   if ( lang_ids != LANG_ANY )               \
     return lang_ids; )
 
-#define C_TYPE_ID_CHECK_COMBO(TYPE,TYPES,OK_TYPE_LANGS) \
-  C_TYPE_CHECK( c_type_id_check_combo( (TYPE), (TYPES), ARRAY_SIZE( TYPES ), OK_TYPE_LANGS ) )
+#define C_TYPE_ID_CHECK_COMBO(TID,TINFO,OK_TYPE_LANGS) C_TYPE_CHECK( \
+  c_type_id_check_combo( (TID), (TINFO), ARRAY_SIZE(TINFO), (OK_TYPE_LANGS) ) )
 
-#define C_TYPE_ID_CHECK_LEGAL(TYPE,TYPES) \
-  C_TYPE_CHECK( c_type_id_check_legal( (TYPE), (TYPES), ARRAY_SIZE( TYPES ) ) )
+#define C_TYPE_ID_CHECK_LEGAL(TID,TINFO) C_TYPE_CHECK( \
+  c_type_id_check_legal( (TID), (TINFO), ARRAY_SIZE(TINFO) ) )
 
-#define C_TYPE_ID_NAME_CAT(SBUF,TYPE,TYPES,IS_ERROR,SEP,PSEP)       \
-  c_type_id_name_cat( (SBUF), (TYPE), (TYPES), ARRAY_SIZE( TYPES ), \
-                      (IS_ERROR), (SEP), (PSEP) )
+#define C_TYPE_ID_NAME_CAT(SBUF,TID,TINFO,IN_ENGLISH,SEP,PSEP)    \
+  c_type_id_name_cat( (SBUF), (TID), (TINFO), ARRAY_SIZE(TINFO),  \
+                      (IN_ENGLISH), (SEP), (PSEP) )
 
 /// @endcond
 
