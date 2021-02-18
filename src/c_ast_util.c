@@ -28,6 +28,8 @@
 #include "pjl_config.h"                 /* must go first */
 #include "c_ast_util.h"
 #include "c_ast.h"
+#include "c_typedef.h"
+#include "gibberish.h"
 #include "literals.h"
 #include "print.h"
 
@@ -448,9 +450,20 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
     //
     if ( !c_ast_equiv( type_ast, decl_ast ) ) {
       print_error( decl_loc,
-        "\"%s\": \"%s\" redefinition with different type\n",
+        "\"%s\": \"%s\" redefinition with different type; original is: ",
         c_ast_full_name( decl_ast ), L_TYPEDEF
       );
+      //
+      // When printing the existing type in C/C++ as part of an error message,
+      // we always want to omit the trailing semicolon.
+      //
+      bool const orig_semicolon = opt_semicolon;
+      opt_semicolon = false;
+
+      c_typedef_t const temp_tdef = { decl_ast, LANG_ANY, false };
+      c_typedef_gibberish( &temp_tdef, C_GIB_TYPEDEF, stderr );
+
+      opt_semicolon = orig_semicolon;
       return NULL;
     }
   }
