@@ -62,9 +62,9 @@
 
 /// @endcond
 
-c_type_t const T_NONE     = { TB_NONE,  TS_NONE,    TA_NONE };
-c_type_t const T_ANY      = { TB_ANY,   TS_ANY,     TA_ANY  };
-c_type_t const T_TYPEDEF  = { TB_NONE,  TS_TYPEDEF, TA_NONE };
+c_type_t const T_NONE       = { TB_NONE,  TS_NONE,    TA_NONE };
+c_type_t const T_ANY        = { TB_ANY,   TS_ANY,     TA_ANY  };
+c_type_t const T_TS_TYPEDEF = { TB_NONE,  TS_TYPEDEF, TA_NONE };
 
 ///////////////////////////////////////////////////////////////////////////////
 

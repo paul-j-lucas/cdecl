@@ -1861,13 +1861,13 @@ define_english
       //
       //  i.e., a defined type with a storage class.
       //
-      bool ok = c_type_add( &$5->type, &T_TYPEDEF, &@4 ) &&
+      bool ok = c_type_add( &$5->type, &T_TS_TYPEDEF, &@4 ) &&
                 c_type_add( &$5->type, &$4, &@4 ) &&
                 c_ast_check_declaration( $5 );
 
       if ( ok ) {
         // Once the semantic checks pass, remove the TS_TYPEDEF.
-        PJL_IGNORE_RV( c_ast_take_type_any( $5, &T_TYPEDEF ) );
+        PJL_IGNORE_RV( c_ast_take_type_any( $5, &T_TS_TYPEDEF ) );
 
         if ( c_sname_count( &$2 ) > 1 ) {
           c_type_t scope_type = *c_sname_local_type( &$2 );
@@ -2703,7 +2703,7 @@ typedef_declaration_c
 
       C_AST_CHECK_DECL( typedef_ast );
       // see the comment in define_english about TS_TYPEDEF
-      PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &T_TYPEDEF ) );
+      PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &T_TS_TYPEDEF ) );
 
       if ( c_ast_count_name( typedef_ast ) > 1 ) {
         print_error( &@6,
@@ -2735,7 +2735,7 @@ using_declaration_c
   : using_decl_c_ast
     {
       // see the comment in define_english about TS_TYPEDEF
-      PJL_IGNORE_RV( c_ast_take_type_any( $1, &T_TYPEDEF ) );
+      PJL_IGNORE_RV( c_ast_take_type_any( $1, &T_TS_TYPEDEF ) );
 
       if ( !add_type( L_USING, $1, &@1 ) )
         PARSE_ABORT();
