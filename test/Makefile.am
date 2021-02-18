@@ -1219,8 +1219,8 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_ecf_v.test \
 	tests/explain_efi-itself.test \
 	tests/explain_efi.test \
-	tests/explain_efz.test \
 	tests/explain_efui.test \
+	tests/explain_efz.test \
 	tests/explain_epctor_i.test \
 	tests/explain_epictor_i.test \
 	tests/explain_epnxctor_i.test \
@@ -1235,6 +1235,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_fa_dep_i_v.test \
 	tests/explain_fa_mu_i_v.test \
 	tests/explain_fa_nd_i_v.test \
+	tests/explain_fa_v.test \
 	tests/explain_fctor_i.test \
 	tests/explain_frri_v.test \
 	tests/explain_grtpi.test \
@@ -1296,7 +1297,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_f+_v.test \
 	tests/explain_f__v-c++03.test \
 	tests/explain_f_v__v.test \
-	tests/explain_fa_v.test \
+	tests/explain_fa_v-c++17.test \
 	tests/explain_fac3_v-c++.test \
 	tests/explain_fas3_v-c++.test \
 	tests/explain_fav_v-c++.test \

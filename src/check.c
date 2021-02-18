@@ -877,9 +877,14 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
     switch ( param_ast->kind_id ) {
       case K_BUILTIN:
-        if ( c_type_is_tid_any( &param_ast->type, TB_AUTO ) ) {
-          print_error( &param_ast->loc, "parameters can not be %s\n", L_AUTO );
-          return false;
+        if ( opt_lang < LANG_CPP_20 ) {
+          if ( c_type_is_tid_any( &param_ast->type, TB_AUTO ) ) {
+            print_error( &param_ast->loc,
+              "parameters can not be \"%s\"%s\n", L_AUTO,
+              c_lang_until( LANG_CPP_20 )
+            );
+            return false;
+          }
         }
         if ( c_type_is_tid_any( &param_ast->type, TB_VOID ) ) {
           //

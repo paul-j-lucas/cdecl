@@ -31,6 +31,9 @@ message now includes the existing type.
 ** Fixed `thread_local`
 `thread_local` is now correctly allowed only in C11 or C++11 or later.
 
+** Function `auto` parameters in C++20
+Functions in C++20 now allow `auto` parameters.
+
 ** `throw()` in C++20
 `throw()` is no longer supported in C++20.
 
