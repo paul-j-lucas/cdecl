@@ -770,7 +770,6 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
     case 2:                             // main(int, char *argv[])
     case 3:                             // main(int, char *argv[], char *envp[])
       if ( opt_lang > LANG_C_KNR ) {
-
         c_ast_param_t const *param = c_ast_params( ast );
         param_ast = c_param_ast( param );
         if ( !c_ast_is_builtin_any( param_ast, TB_INT ) ) {
@@ -877,8 +876,8 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
     switch ( param_ast->kind_id ) {
       case K_BUILTIN:
-        if ( opt_lang < LANG_CPP_20 &&
-             c_type_is_tid_any( &param_ast->type, TB_AUTO ) ) {
+        if ( c_type_is_tid_any( &param_ast->type, TB_AUTO ) &&
+             opt_lang < LANG_CPP_20 ) {
           print_error( &param_ast->loc,
             "parameters can not be \"%s\"%s\n", L_AUTO,
             c_lang_until( LANG_CPP_20 )
@@ -1512,14 +1511,13 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       print_hint( "%s returning %s", kind_name, L_POINTER );
       return false;
     case K_BUILTIN:
-      if ( opt_lang < LANG_CPP_14 ) {
-        if ( c_type_is_tid_any( &ret_ast->type, TB_AUTO ) ) {
-          print_error( &ret_ast->loc,
-            "\"%s\" return type is not supported%s\n",
-            L_AUTO, c_lang_until( LANG_CPP_14 )
-          );
-          return false;
-        }
+      if ( c_type_is_tid_any( &ret_ast->type, TB_AUTO ) &&
+           opt_lang < LANG_CPP_14 ) {
+        print_error( &ret_ast->loc,
+          "\"%s\" return type is not supported%s\n",
+          L_AUTO, c_lang_until( LANG_CPP_14 )
+        );
+        return false;
       }
       break;
     case K_FUNCTION:
@@ -1870,10 +1868,10 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
          c_type_id_is_any( ast->type.store_tid, TS_CONSTEXPR ) &&
          c_type_id_is_any( ast->as.func.ret_ast->type.base_tid, TB_VOID ) ) {
       print_error( &ast->loc,
-        "%s %s is illegal until %s\n",
+        "%s %s is illegal%s\n",
         c_type_id_name_error( ast->type.store_tid ),
         c_type_id_name_error( ast->as.func.ret_ast->type.base_tid ),
-        c_lang_name( LANG_CPP_14 )
+        c_lang_until( LANG_CPP_14 )
       );
       return VISITOR_ERROR_FOUND;
     }
