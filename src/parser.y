@@ -603,9 +603,29 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
   }
   else if ( old_tdef->ast != NULL ) {   // type exists and isn't equivalent
     print_error( type_decl_loc,
-      "\"%s\": \"%s\" redefinition with different type\n",
+      "\"%s\": \"%s\" redefinition with different type; original is: ",
       c_ast_full_name( type_ast ), decl_keyword
     );
+
+    // The == works because this function is called with L_DEFINE.
+    if ( decl_keyword == L_DEFINE ) {
+      c_ast_explain_type( old_tdef->ast, stderr );
+    } else {
+      //
+      // When printing the existing type in C/C++ as part of an error message,
+      // we always want to omit the trailing semicolon.
+      //
+      bool const orig_semicolon = opt_semicolon;
+      opt_semicolon = false;
+
+      c_typedef_gibberish(
+        // The == works because this function is called with L_USING.
+        old_tdef, decl_keyword == L_USING ? C_GIB_USING : C_GIB_TYPEDEF, stderr
+      );
+
+      opt_semicolon = orig_semicolon;
+    }
+
     return false;
   }
 

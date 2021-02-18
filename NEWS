@@ -24,6 +24,10 @@ parameters are now checked for warnings.
 Warnings are now given for names that are reserved identifiers, specifically
 names that match the patterns `_[A-Z_]*` (C and C++) or `*__*` (C++ only).
 
+** Type redefinition error now includes existing type
+If you attempt to redefine an existing type with a different type, the error
+message now includes the existing type.
+
 ** Fixed `thread_local`
 `thread_local` is now correctly allowed only in C11 or C++11 or later.
 
