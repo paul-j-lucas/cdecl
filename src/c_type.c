@@ -32,7 +32,6 @@
 #include "c_lang.h"
 #include "cdecl.h"
 #include "gibberish.h"
-#include "lexer.h"
 #include "literals.h"
 #include "options.h"
 #include "print.h"
@@ -494,26 +493,6 @@ static inline bool is_long_int( c_type_id_t tid ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Creates a <code>\ref c_type</code> based on the group ID of \a tid.
- *
- * @param tid The <code>\ref c_type_id_t</code> to create the <code>\ref
- * c_type</code> from.
- * @return Returns said <code>\ref c_type</code>.
- */
-PJL_WARN_UNUSED_RESULT
-static c_type_t c_type_from_tid( c_type_id_t tid ) {
-  switch ( c_type_id_tpid( tid ) ) {
-    case C_TPID_BASE:
-      return C_TYPE_LIT_B( tid );
-    case C_TPID_STORE:
-      return C_TYPE_LIT_S( tid );
-    case C_TPID_ATTR:
-      return C_TYPE_LIT_A( tid );
-  } // switch
-  UNEXPECTED_INT_VALUE( tid );
-}
-
-/**
  * Gets a pointer to the <code>\ref c_type_id_t</code> of \a type that
  * corresponds to the type part ID of \a tid.
  *
@@ -682,19 +661,180 @@ static char const* c_type_literal( c_type_info_t const *ti, bool in_english ) {
 }
 
 /**
- * Helper function for c_type_name_c(), c_type_name_eng(), and
- * c_type_name_error() that gets the name of \a type.
+ * Possibly copies \a sep followed by \a src to \a dst.
  *
- * @param type The type to get the name for.
- * @param in_english If `true`, return the pseudo-English literal if one
- * exists.
- * @return Returns said name.
- * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
+ * @param sbuf A pointer to the buffer to concatenate a copy of \a s to.
+ * @param src The null-terminated string to copy.
+ * @param sep The separator character.
+ * @param sep_cat A pointer to a variable to keep track of whether \a sep has
+ * been concatenated.
  */
+static void strbuf_cat_sep( strbuf_t *sbuf, char const *s, char sep,
+                            bool *sep_cat ) {
+  assert( sbuf != NULL );
+  assert( s != NULL );
+  assert( sep_cat != NULL );
+
+  if ( true_or_set( sep_cat ) )
+    strbuf_cat( sbuf, &sep, 1 );
+  strbuf_cat( sbuf, s, -1 );
+}
+
+////////// extern functions ///////////////////////////////////////////////////
+
+bool c_type_add( c_type_t *dst_type, c_type_t const *new_type,
+                 c_loc_t const *new_loc ) {
+  assert( dst_type != NULL );
+  assert( new_type != NULL );
+  assert( new_loc != NULL );
+
+  return  c_type_id_add( &dst_type->base_tid, new_type->base_tid, new_loc ) &&
+          c_type_id_add( &dst_type->store_tid, new_type->store_tid, new_loc ) &&
+          c_type_id_add( &dst_type->attr_tid, new_type->attr_tid, new_loc );
+}
+
+bool c_type_add_tid( c_type_t *dst_type, c_type_id_t new_tid,
+                     c_loc_t const *new_loc ) {
+  c_type_id_t *const dst_tid = c_type_get_tid_ptr( dst_type, new_tid );
+  return c_type_id_add( dst_tid, new_tid, new_loc );
+}
+
+c_type_t c_type_and( c_type_t const *i_type, c_type_t const *j_type ) {
+  assert( i_type != NULL );
+  assert( j_type != NULL );
+
+  return C_TYPE_LIT(
+    i_type->base_tid  & j_type->base_tid,
+    i_type->store_tid & j_type->store_tid,
+    i_type->attr_tid  & j_type->attr_tid
+  );
+}
+
+void c_type_and_eq_compl( c_type_t *dst_type, c_type_t const *rm_type ) {
+  assert( dst_type != NULL );
+  assert( rm_type != NULL );
+
+  dst_type->base_tid  &= c_type_id_compl( rm_type->base_tid );
+  dst_type->store_tid &= c_type_id_compl( rm_type->store_tid );
+  dst_type->attr_tid  &= c_type_id_compl( rm_type->attr_tid );
+}
+
+c_lang_id_t c_type_check( c_type_t const *type ) {
+  // Check that the attribute(s) are legal in the current language.
+  C_TYPE_ID_CHECK_LEGAL( type->attr_tid, C_ATTRIBUTE_INFO );
+
+  // Check that the storage class is legal in the current language.
+  C_TYPE_ID_CHECK_LEGAL( type->store_tid, C_STORAGE_INFO );
+
+  // Check that the type is legal in the current language.
+  C_TYPE_ID_CHECK_LEGAL( type->base_tid, C_TYPE_INFO );
+
+  // Check that the qualifier(s) are legal in the current language.
+  C_TYPE_ID_CHECK_LEGAL( type->store_tid, C_QUALIFIER_INFO );
+
+  // Check that the storage class combination is legal in the current language.
+  C_TYPE_ID_CHECK_COMBO( type->store_tid, C_STORAGE_INFO, OK_STORAGE_LANGS );
+
+  // Check that the type combination is legal in the current language.
+  C_TYPE_ID_CHECK_COMBO( type->base_tid, C_TYPE_INFO, OK_TYPE_LANGS );
+
+  // Check that the qualifier combination is legal in the current language.
+  C_TYPE_ID_CHECK_COMBO( type->store_tid, C_QUALIFIER_INFO, OK_QUALIFIER_LANGS );
+
+  return LANG_ANY;
+}
+
+bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type ) {
+  assert( i_type != NULL );
+  assert( j_type != NULL );
+
+  return  i_type->base_tid  == j_type->base_tid   &&
+          i_type->store_tid == j_type->store_tid  &&
+          i_type->attr_tid  == j_type->attr_tid;
+}
+
+c_type_t c_type_from_tid( c_type_id_t tid ) {
+  switch ( c_type_id_tpid( tid ) ) {
+    case C_TPID_BASE:
+      return C_TYPE_LIT_B( tid );
+    case C_TPID_STORE:
+      return C_TYPE_LIT_S( tid );
+    case C_TPID_ATTR:
+      return C_TYPE_LIT_A( tid );
+  } // switch
+  UNEXPECTED_INT_VALUE( tid );
+}
+
+bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
+                    c_loc_t const *new_loc ) {
+  assert( dst_tid != NULL );
+  assert( new_loc != NULL );
+  assert( c_type_id_tpid( *dst_tid ) == c_type_id_tpid( new_tid ) );
+
+  if ( is_long_int( *dst_tid ) && is_long_int( new_tid ) ) {
+    //
+    // Special case: if the existing type is "long" and the new type is "long",
+    // turn the new type into "long long".
+    //
+    new_tid = TB_LONG_LONG;
+  }
+
+  if ( !c_type_id_is_none( *dst_tid & new_tid ) ) {
+    print_error( new_loc,
+      "\"%s\" can not be combined with \"%s\"\n",
+       c_type_id_name_error( new_tid ), c_type_id_name_error( *dst_tid )
+    );
+    return false;
+  }
+
+  *dst_tid |= new_tid;
+  return true;
+}
+
 PJL_WARN_UNUSED_RESULT
-static char const* c_type_name_impl( c_type_t const *type, bool in_english ) {
+c_type_part_id_t c_type_id_tpid( c_type_id_t tid ) {
+  //
+  // If tid has been complemented, e.g., ~TS_REGISTER to denote "all but
+  // register," then we have to complement tid back first.
+  //
+  if ( c_type_id_is_compl( tid ) )
+    tid = ~tid;
+  tid &= TX_MASK_PART_ID;
+  assert( tid <= C_TPID_ATTR );
+  return STATIC_CAST( c_type_part_id_t, tid );
+}
+
+c_type_id_t c_type_id_normalize( c_type_id_t tid ) {
+  switch ( c_type_id_tpid( tid ) ) {
+    case C_TPID_BASE:
+      if ( (tid & TB_SIGNED) != TB_NONE && (tid & TB_CHAR) == TB_NONE ) {
+        tid &= c_type_id_compl( TB_SIGNED );
+        if ( tid == TB_NONE )
+          tid = TB_INT;
+      }
+      break;
+    default:
+      /* suppress warning */;
+  } // switch
+  return tid;
+}
+
+bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type ) {
+  assert( i_type != NULL );
+  assert( j_type != NULL );
+
+  return  c_type_id_is_any( i_type->base_tid,   j_type->base_tid  ) ||
+          c_type_id_is_any( i_type->store_tid,  j_type->store_tid ) ||
+          c_type_id_is_any( i_type->attr_tid,   j_type->attr_tid  );
+}
+
+bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids ) {
+  c_type_t *const non_const_type = CONST_CAST( c_type_t*, type );
+  c_type_id_t const tid = *c_type_get_tid_ptr( non_const_type, tids );
+  return c_type_id_is_any( tid, tids );
+}
+
+char const* c_type_name( c_type_t const *type, bool in_english ) {
   static strbuf_t sbufs[ 2 ];
   static unsigned buf_index;
 
@@ -894,198 +1034,6 @@ static char const* c_type_name_impl( c_type_t const *type, bool in_english ) {
     strbuf_cat_sep( sbuf, L_SCOPE, ' ', &space );
 
   return sbuf->str != NULL ? sbuf->str : "";
-}
-
-/**
- * Possibly copies \a sep followed by \a src to \a dst.
- *
- * @param sbuf A pointer to the buffer to concatenate a copy of \a s to.
- * @param src The null-terminated string to copy.
- * @param sep The separator character.
- * @param sep_cat A pointer to a variable to keep track of whether \a sep has
- * been concatenated.
- */
-static void strbuf_cat_sep( strbuf_t *sbuf, char const *s, char sep,
-                            bool *sep_cat ) {
-  assert( sbuf != NULL );
-  assert( s != NULL );
-  assert( sep_cat != NULL );
-
-  if ( true_or_set( sep_cat ) )
-    strbuf_cat( sbuf, &sep, 1 );
-  strbuf_cat( sbuf, s, -1 );
-}
-
-////////// extern functions ///////////////////////////////////////////////////
-
-bool c_type_add( c_type_t *dst_type, c_type_t const *new_type,
-                 c_loc_t const *new_loc ) {
-  assert( dst_type != NULL );
-  assert( new_type != NULL );
-  assert( new_loc != NULL );
-
-  return  c_type_id_add( &dst_type->base_tid, new_type->base_tid, new_loc ) &&
-          c_type_id_add( &dst_type->store_tid, new_type->store_tid, new_loc ) &&
-          c_type_id_add( &dst_type->attr_tid, new_type->attr_tid, new_loc );
-}
-
-bool c_type_add_tid( c_type_t *dst_type, c_type_id_t new_tid,
-                     c_loc_t const *new_loc ) {
-  c_type_id_t *const dst_tid = c_type_get_tid_ptr( dst_type, new_tid );
-  return c_type_id_add( dst_tid, new_tid, new_loc );
-}
-
-c_type_t c_type_and( c_type_t const *i_type, c_type_t const *j_type ) {
-  assert( i_type != NULL );
-  assert( j_type != NULL );
-
-  return C_TYPE_LIT(
-    i_type->base_tid  & j_type->base_tid,
-    i_type->store_tid & j_type->store_tid,
-    i_type->attr_tid  & j_type->attr_tid
-  );
-}
-
-void c_type_and_eq_compl( c_type_t *dst_type, c_type_t const *rm_type ) {
-  assert( dst_type != NULL );
-  assert( rm_type != NULL );
-
-  dst_type->base_tid  &= c_type_id_compl( rm_type->base_tid );
-  dst_type->store_tid &= c_type_id_compl( rm_type->store_tid );
-  dst_type->attr_tid  &= c_type_id_compl( rm_type->attr_tid );
-}
-
-c_lang_id_t c_type_check( c_type_t const *type ) {
-  // Check that the attribute(s) are legal in the current language.
-  C_TYPE_ID_CHECK_LEGAL( type->attr_tid, C_ATTRIBUTE_INFO );
-
-  // Check that the storage class is legal in the current language.
-  C_TYPE_ID_CHECK_LEGAL( type->store_tid, C_STORAGE_INFO );
-
-  // Check that the type is legal in the current language.
-  C_TYPE_ID_CHECK_LEGAL( type->base_tid, C_TYPE_INFO );
-
-  // Check that the qualifier(s) are legal in the current language.
-  C_TYPE_ID_CHECK_LEGAL( type->store_tid, C_QUALIFIER_INFO );
-
-  // Check that the storage class combination is legal in the current language.
-  C_TYPE_ID_CHECK_COMBO( type->store_tid, C_STORAGE_INFO, OK_STORAGE_LANGS );
-
-  // Check that the type combination is legal in the current language.
-  C_TYPE_ID_CHECK_COMBO( type->base_tid, C_TYPE_INFO, OK_TYPE_LANGS );
-
-  // Check that the qualifier combination is legal in the current language.
-  C_TYPE_ID_CHECK_COMBO( type->store_tid, C_QUALIFIER_INFO, OK_QUALIFIER_LANGS );
-
-  return LANG_ANY;
-}
-
-bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type ) {
-  assert( i_type != NULL );
-  assert( j_type != NULL );
-
-  return  i_type->base_tid  == j_type->base_tid   &&
-          i_type->store_tid == j_type->store_tid  &&
-          i_type->attr_tid  == j_type->attr_tid;
-}
-
-bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
-                    c_loc_t const *new_loc ) {
-  assert( dst_tid != NULL );
-  assert( new_loc != NULL );
-  assert( c_type_id_tpid( *dst_tid ) == c_type_id_tpid( new_tid ) );
-
-  if ( is_long_int( *dst_tid ) && is_long_int( new_tid ) ) {
-    //
-    // Special case: if the existing type is "long" and the new type is "long",
-    // turn the new type into "long long".
-    //
-    new_tid = TB_LONG_LONG;
-  }
-
-  if ( !c_type_id_is_none( *dst_tid & new_tid ) ) {
-    print_error( new_loc,
-      "\"%s\" can not be combined with \"%s\"\n",
-       c_type_id_name_error( new_tid ), c_type_id_name_error( *dst_tid )
-    );
-    return false;
-  }
-
-  *dst_tid |= new_tid;
-  return true;
-}
-
-PJL_WARN_UNUSED_RESULT
-c_type_part_id_t c_type_id_tpid( c_type_id_t tid ) {
-  //
-  // If tid has been complemented, e.g., ~TS_REGISTER to denote "all but
-  // register," then we have to complement tid back first.
-  //
-  if ( c_type_id_is_compl( tid ) )
-    tid = ~tid;
-  tid &= TX_MASK_PART_ID;
-  assert( tid <= C_TPID_ATTR );
-  return STATIC_CAST( c_type_part_id_t, tid );
-}
-
-char const* c_type_id_name_c( c_type_id_t tid ) {
-  c_type_t const type = c_type_from_tid( tid );
-  return c_type_name_impl( &type, /*in_english=*/false );
-}
-
-char const* c_type_id_name_eng( c_type_id_t tid ) {
-  c_type_t const type = c_type_from_tid( tid );
-  return c_type_name_impl( &type, /*in_english=*/true );
-}
-
-char const* c_type_id_name_error( c_type_id_t tid ) {
-  c_type_t const type = c_type_from_tid( tid );
-  // When giving an error message, return the type name in pseudo-English if
-  // we're parsing pseudo-English or in C/C++ if we're parsing C/C++.
-  return c_type_name_impl( &type, /*in_english=*/lexer_is_english() );
-}
-
-c_type_id_t c_type_id_normalize( c_type_id_t tid ) {
-  switch ( c_type_id_tpid( tid ) ) {
-    case C_TPID_BASE:
-      if ( (tid & TB_SIGNED) != TB_NONE && (tid & TB_CHAR) == TB_NONE ) {
-        tid &= c_type_id_compl( TB_SIGNED );
-        if ( tid == TB_NONE )
-          tid = TB_INT;
-      }
-      break;
-    default:
-      /* suppress warning */;
-  } // switch
-  return tid;
-}
-
-bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type ) {
-  assert( i_type != NULL );
-  assert( j_type != NULL );
-
-  return  c_type_id_is_any( i_type->base_tid,   j_type->base_tid  ) ||
-          c_type_id_is_any( i_type->store_tid,  j_type->store_tid ) ||
-          c_type_id_is_any( i_type->attr_tid,   j_type->attr_tid  );
-}
-
-bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids ) {
-  c_type_t *const non_const_type = CONST_CAST( c_type_t*, type );
-  c_type_id_t const tid = *c_type_get_tid_ptr( non_const_type, tids );
-  return c_type_id_is_any( tid, tids );
-}
-
-char const* c_type_name_c( c_type_t const *type ) {
-  return c_type_name_impl( type, /*in_english=*/false );
-}
-
-char const* c_type_name_eng( c_type_t const *type ) {
-  return c_type_name_impl( type, /*in_english=*/true );
-}
-
-char const* c_type_name_error( c_type_t const *type ) {
-  // See comment in c_type_id_name_error().
-  return c_type_name_impl( type, /*in_english=*/lexer_is_english() );
 }
 
 c_type_t c_type_or( c_type_t const *i_type, c_type_t const *j_type ) {

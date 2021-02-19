@@ -28,6 +28,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "lexer.h"
 #include "types.h"
 #include "util.h"
 
@@ -500,6 +501,16 @@ PJL_WARN_UNUSED_RESULT
 bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
+ * Creates a <code>\ref c_type</code> based on the type part ID of \a tid.
+ *
+ * @param tid The <code>\ref c_type_id_t</code> to create the <code>\ref
+ * c_type</code> from.
+ * @return Returns said <code>\ref c_type</code>.
+ */
+PJL_WARN_UNUSED_RESULT
+c_type_t c_type_from_tid( c_type_id_t tid );
+
+/**
  * Adds a type to an existing type, e.g., `short` to `int`, ensuring that a
  * particular type is never added more than once, e.g., `short` to `short int`.
  *
@@ -516,56 +527,6 @@ bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type );
 PJL_WARN_UNUSED_RESULT
 bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
                     c_loc_t const *new_loc );
-
-/**
- * Gets the C/C++ name of \a tid.
- *
- * @param tid The <code>\ref c_type_id_t</code> to get the name of.
- * @return Returns said name.
- * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
- *
- * @sa c_type_id_name_eng()
- * @sa c_type_id_name_error()
- * @sa c_type_name_c()
- */
-PJL_WARN_UNUSED_RESULT
-char const* c_type_id_name_c( c_type_id_t tid );
-
-/**
- * Gets the pseudo-English name of \a tid, if available; the C/C++ name if not.
- *
- * @param tid The <code>\ref c_type_id_t</code> to get the name of.
- * @return Returns said name.
- * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
- *
- * @sa c_type_id_name_c()
- * @sa c_type_id_name_error()
- * @sa c_type_name_eng()
- */
-PJL_WARN_UNUSED_RESULT
-char const* c_type_id_name_eng( c_type_id_t tid );
-
-/**
- * Gets the name of \a tid for part of an error message.  If translating from
- * English to gibberish and the type has an English alias, return the alias,
- * e.g., `non-returning` rather than `noreturn`.
- *
- * @param tid The <code>\ref c_type_id_t</code> to get the name of.
- * @return Returns said name.
- * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
- *
- * @sa c_type_id_name_c()
- * @sa c_type_id_name_eng()
- * @sa c_type_name_error()
- */
-PJL_WARN_UNUSED_RESULT
-char const* c_type_id_name_error( c_type_id_t tid );
 
 /**
  * "Normalize" \a tid:
@@ -603,55 +564,25 @@ PJL_WARN_UNUSED_RESULT
 bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
- * Gets the C/C++ name of \a type.
+ * Gets the name of \a type.
  *
- * @param type The <code>\ref c_type</code> to get the name of.
+ * @note
+ * This function isn't normally called directly; use one of c_type_name_c(),
+ * c_type_name_eng(), or c_type_name_error().
+ *
+ * @param type The type to get the name for.
+ * @param in_english If `true`, return the pseudo-English name if possible.
  * @return Returns said name.
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
- * @sa c_type_id_name_c()
+ * @sa c_type_name_c()
  * @sa c_type_name_eng()
  * @sa c_type_name_error()
  */
 PJL_WARN_UNUSED_RESULT
-char const* c_type_name_c( c_type_t const *type );
-
-/**
- * Gets the pseudo-English name of \a type, if available; the C/C++ name if
- * not.
- *
- * @param type The <code>\ref c_type</code> to get the name of.
- * @return Returns said name.
- * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
- *
- * @sa c_type_id_name_eng()
- * @sa c_type_name_c()
- * @sa c_type_name_error()
- */
-PJL_WARN_UNUSED_RESULT
-char const* c_type_name_eng( c_type_t const *type );
-
-/**
- * Gets the name of \a type for part of an error message.  If translating
- * from English to gibberish and the type has an English alias, return the
- * alias, e.g., `non-returning` rather than `noreturn`.
- *
- * @param type The <code>\ref c_type</code> to get the name of.
- * @return Returns said name.
- * @warning The pointer returned is to a small number of static buffers, so you
- * can't do something like call this more than twice in the same `printf()`
- * statement.
- *
- * @sa c_type_id_name_error()
- * @sa c_type_name_c()
- * @sa c_type_name_eng()
- */
-PJL_WARN_UNUSED_RESULT
-char const* c_type_name_error( c_type_t const *type );
+char const* c_type_name( c_type_t const *type, bool in_english );
 
 /**
  * Performs the bitwise-or of \a i_type and \a j_type.
@@ -728,6 +659,67 @@ C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 c_type_id_t c_type_id_compl( c_type_id_t tid ) {
   assert( !c_type_id_is_compl( tid ) );
   return ~tid ^ TX_MASK_PART_ID;
+}
+
+/**
+ * Gets the C/C++ name of \a tid.
+ *
+ * @param tid The <code>\ref c_type_id_t</code> to get the name of.
+ * @return Returns said name.
+ * @warning The pointer returned is to a small number of static buffers, so you
+ * can't do something like call this more than twice in the same `printf()`
+ * statement.
+ *
+ * @sa c_type_id_name_eng()
+ * @sa c_type_id_name_error()
+ * @sa c_type_name_c()
+ */
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
+char const* c_type_id_name_c( c_type_id_t tid ) {
+  c_type_t const type = c_type_from_tid( tid );
+  return c_type_name( &type, /*in_english=*/false );
+}
+
+/**
+ * Gets the pseudo-English name of \a tid, if available; the C/C++ name if not.
+ *
+ * @param tid The <code>\ref c_type_id_t</code> to get the name of.
+ * @return Returns said name.
+ * @warning The pointer returned is to a small number of static buffers, so you
+ * can't do something like call this more than twice in the same `printf()`
+ * statement.
+ *
+ * @sa c_type_id_name_c()
+ * @sa c_type_id_name_error()
+ * @sa c_type_name_eng()
+ */
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
+char const* c_type_id_name_eng( c_type_id_t tid ) {
+  c_type_t const type = c_type_from_tid( tid );
+  return c_type_name( &type, /*in_english=*/true );
+}
+
+/**
+ * Gets the name of \a tid for part of an error message.  If translating from
+ * English to gibberish and the type has an English alias, return the alias,
+ * e.g., `non-returning` rather than `noreturn`.
+ *
+ * @param tid The <code>\ref c_type_id_t</code> to get the name of.
+ * @return Returns said name.
+ * @warning The pointer returned is to a small number of static buffers, so you
+ * can't do something like call this more than twice in the same `printf()`
+ * statement.
+ *
+ * @sa c_type_id_name_c()
+ * @sa c_type_id_name_eng()
+ * @sa c_type_name_error()
+ */
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
+char const* c_type_id_name_error( c_type_id_t tid ) {
+  c_type_t const type = c_type_from_tid( tid );
+  // When giving an error message, return the type name in pseudo-English if
+  // we're parsing pseudo-English or in C/C++ if we're parsing C/C++.
+  return c_type_name( &type, /*in_english=*/lexer_is_english() );
 }
 
 /**
@@ -813,6 +805,61 @@ bool c_type_is_none( c_type_t const *type ) {
  */
 PJL_WARN_UNUSED_RESULT
 bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids );
+
+/**
+ * Gets the C/C++ name of \a type.
+ *
+ * @param type The type to get the name for.
+ * @warning The pointer returned is to a small number of static buffers, so you
+ * can't do something like call this more than twice in the same `printf()`
+ * statement.
+ *
+ * @sa c_type_name_eng()
+ * @sa c_type_name_error()
+ * @sa c_type_name_name()
+ */
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
+char const* c_type_name_c( c_type_t const *type ) {
+  return c_type_name( type, /*in_english=*/false );
+}
+
+/**
+ * Gets the pseudo-English name of \a type, if available; the C/C++ name if
+ * not.
+ *
+ * @param type The type to get the name for.
+ * @warning The pointer returned is to a small number of static buffers, so you
+ * can't do something like call this more than twice in the same `printf()`
+ * statement.
+ *
+ * @sa c_type_name_c()
+ * @sa c_type_name_error()
+ * @sa c_type_name_name()
+ */
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
+char const* c_type_name_eng( c_type_t const *type ) {
+  return c_type_name( type, /*in_english=*/true );
+}
+
+/**
+ * Gets the name of \a type for part of an error message.  If translating
+ * from pseudo-English to gibberish and the type has a pseudo-English alias,
+ * return the alias, e.g., `non-returning` rather than `noreturn`.
+ *
+ * @param type The type to get the name for.
+ * @warning The pointer returned is to a small number of static buffers, so you
+ * can't do something like call this more than twice in the same `printf()`
+ * statement.
+ *
+ * @sa c_type_name_c()
+ * @sa c_type_name_eng()
+ * @sa c_type_name_name()
+ */
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
+char const* c_type_name_error( c_type_t const *type ) {
+  // See comment in c_type_id_name_error().
+  return c_type_name( type, /*in_english=*/lexer_is_english() );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
