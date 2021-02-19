@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/debug.h
+**      src/dump.h
 **
 **      Copyright (C) 2017-2021  Paul J. Lucas, et al.
 **
@@ -18,12 +18,12 @@
 **      along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef cdecl_debug_H
-#define cdecl_debug_H
+#ifndef cdecl_dump_H
+#define cdecl_dump_H
 
 /**
  * @file
- * Declares functions for printing abstract syntax trees for debugging.
+ * Declares functions for dumping types for debugging.
  */
 
 // local
@@ -39,8 +39,8 @@
 /// @endcond
 
 /**
- * @defgroup printing-debug-group Printing Debug Output
- * Functions for printing an AST for debugging.
+ * @defgroup printing-dump-group Dumping Debug Output
+ * Functions for dumping types for debugging.
  * @{
  */
 
@@ -54,8 +54,8 @@
  * @param key0 The initial key or NULL for none.
  * @param dout The `FILE` to dump to.
  */
-void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
-                  FILE *dout );
+void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
+                 FILE *dout );
 
 /**
  * Dumps \a list of ASTs (for debugging).
@@ -64,7 +64,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
  * @param indent The initial indent.
  * @param dout The `FILE` to dump to.
  */
-void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout );
+void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout );
 
 /**
  * Dumps \a sname (for debugging).
@@ -72,7 +72,7 @@ void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout );
  * @param sname The scoped name to dump.
  * @param dout The `FILE` to dump to.
  */
-void c_sname_debug( c_sname_t const *sname, FILE *dout );
+void c_sname_dump( c_sname_t const *sname, FILE *dout );
 
 /**
  * Dumps \a tid (for debugging).
@@ -80,7 +80,7 @@ void c_sname_debug( c_sname_t const *sname, FILE *dout );
  * @param tid The <code>\ref c_type_id_t</code> to print.
  * @param dout The `FILE` to dump to.
  */
-void c_type_id_debug( c_type_id_t tid, FILE *dout );
+void c_type_id_dump( c_type_id_t tid, FILE *dout );
 
 /**
  * Dumps \a type (for debugging).
@@ -88,7 +88,7 @@ void c_type_id_debug( c_type_id_t tid, FILE *dout );
  * @param type The <code>\ref c_type</code> to print.
  * @param dout The `FILE` to dump to.
  */
-void c_type_debug( c_type_t const *type, FILE *dout );
+void c_type_dump( c_type_t const *type, FILE *dout );
 
 /**
  * Prints a key/value pair (for debugging).
@@ -98,11 +98,11 @@ void c_type_debug( c_type_t const *type, FILE *dout );
  * string, `null` is printed instead of the value.
  * @param dout The `FILE` to dump to.
  */
-void kv_debug( char const *key, char const *value, FILE *dout );
+void kv_dump( char const *key, char const *value, FILE *dout );
 
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
 
-#endif /* cdecl_debug_H */
+#endif /* cdecl_dump_H */
 /* vim:set et sw=2 ts=2: */

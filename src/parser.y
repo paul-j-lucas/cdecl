@@ -43,7 +43,7 @@
 #include "cdecl.h"
 #include "color.h"
 #ifdef ENABLE_CDECL_DEBUG
-#include "debug.h"
+#include "dump.h"
 #endif /* ENABLE_CDECL_DEBUG */
 #include "did_you_mean.h"
 #include "english.h"
@@ -220,7 +220,7 @@
  * called.  It's used to separate items being dumped.
  */
 #define DUMP_COMMA \
-  BLOCK( if ( true_or_set( &debug_comma ) ) PUTS( ",\n" ); )
+  BLOCK( if ( true_or_set( &dump_comma ) ) PUTS( ",\n" ); )
 
 /**
  * Dumps an AST.
@@ -231,7 +231,7 @@
  * @sa #DUMP_AST_LIST()
  */
 #define DUMP_AST(KEY,AST) IF_DEBUG( \
-  if ( (AST) != NULL ) { DUMP_COMMA; c_ast_debug( (AST), 1, (KEY), stdout ); } )
+  if ( (AST) != NULL ) { DUMP_COMMA; c_ast_dump( (AST), 1, (KEY), stdout ); } )
 
 /**
  * Dumps an `s_list` of AST.
@@ -243,7 +243,7 @@
  */
 #define DUMP_AST_LIST(KEY,AST_LIST) IF_DEBUG( \
   DUMP_COMMA; PUTS( "  " KEY " = " );         \
-  c_ast_list_debug( &(AST_LIST), 1, stdout ); )
+  c_ast_list_dump( &(AST_LIST), 1, stdout ); )
 
 /**
  * Dumps a `bool`.
@@ -276,7 +276,7 @@
  */
 #define DUMP_SNAME(KEY,SNAME) IF_DEBUG( \
   DUMP_COMMA; PUTS( "  " KEY " = " );   \
-  c_sname_debug( &(SNAME), stdout ); )
+  c_sname_dump( &(SNAME), stdout ); )
 
 /**
  * Dumps a C string.
@@ -289,7 +289,7 @@
  */
 #define DUMP_STR(KEY,STR) IF_DEBUG(   \
   DUMP_COMMA; PUTS( "  " );           \
-  kv_debug( (KEY), (STR), stdout ); )
+  kv_dump( (KEY), (STR), stdout ); )
 
 #ifdef ENABLE_CDECL_DEBUG
 /**
@@ -349,7 +349,7 @@
  * @sa #DUMP_TYPE
  */
 #define DUMP_START(NAME,PROD)                           \
-  bool debug_comma = false;                             \
+  bool dump_comma = false;                              \
   IF_DEBUG( PUTS( "\n" NAME " ::= " PROD " = {\n" ); )
 #else
 #define DUMP_START(NAME,PROD)     /* nothing */
@@ -371,7 +371,7 @@
  * @sa #DUMP_TYPE()
  */
 #define DUMP_TID(KEY,TID) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " ); c_type_id_debug( (TID), stdout ); )
+  DUMP_COMMA; PUTS( "  " KEY " = " ); c_type_id_dump( (TID), stdout ); )
 
 /**
  * Dumps a <code>\ref c_type</code>.
@@ -382,7 +382,7 @@
  * @sa #DUMP_TID()
  */
 #define DUMP_TYPE(KEY,TYPE) IF_DEBUG( \
-  DUMP_COMMA; PUTS( "  " KEY " = " ); c_type_debug( (TYPE), stdout ); )
+  DUMP_COMMA; PUTS( "  " KEY " = " ); c_type_dump( (TYPE), stdout ); )
 
 /** @} */
 

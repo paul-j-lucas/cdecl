@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/debug.c
+**      src/dump.c
 **
 **      Copyright (C) 2017-2021  Paul J. Lucas, et al.
 **
@@ -20,12 +20,12 @@
 
 /**
  * @file
- * Defines functions for printing abstract syntax trees for debugging.
+ * Defines functions for dumping types for debugging.
  */
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "debug.h"
+#include "dump.h"
 #include "cdecl.h"
 #include "c_ast.h"
 #include "c_type.h"
@@ -51,19 +51,19 @@
 #define DUMP_SNAME(KEY,SNAME) BLOCK(  \
   print_indent( indent, dout );       \
   FPUTS( KEY " = ", dout );           \
-  c_sname_debug( (SNAME), dout ); )
+  c_sname_dump( (SNAME), dout ); )
 
 #define DUMP_STR(KEY,VALUE) \
-  BLOCK( print_indent( indent, dout ); kv_debug( (KEY), (VALUE), dout ); )
+  BLOCK( print_indent( indent, dout ); kv_dump( (KEY), (VALUE), dout ); )
 
 #define DUMP_TYPE(TYPE) BLOCK(  \
   print_indent( indent, dout ); \
   FPUTS( "type = ", dout );     \
-  c_type_debug( (TYPE), dout ); )
+  c_type_dump( (TYPE), dout ); )
 
 /// @endcond
 
-static unsigned const DEBUG_INDENT = 2; ///< Spaces per debug indent level.
+static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -92,13 +92,13 @@ static char const* c_type_part_id_name( c_type_part_id_t tpid ) {
  * @param out The `FILE` to print to.
  */
 static void print_indent( unsigned indent, FILE *out ) {
-  FPRINTF( out, "%*s", (int)(indent * DEBUG_INDENT), "" );
+  FPRINTF( out, "%*s", (int)(indent * DUMP_INDENT), "" );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
-                  FILE *dout ) {
+void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
+                 FILE *dout ) {
   if ( key0 != NULL && *key0 != '\0' )
     DUMP_FORMAT( "%s = {\n", key0 );
   else
@@ -127,7 +127,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
           DUMP_FORMAT( "alignas_expr = %u,\n", ast->align.as.expr );
           break;
         case C_ALIGNAS_TYPE:
-          c_ast_debug(
+          c_ast_dump(
             ast->align.as.type_ast, indent, "alignas_type_ast", dout
           );
           FPUTS( ",\n", dout );
@@ -169,7 +169,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
           DUMP_TYPE( &type );
           FPUTS( ",\n", dout );
         }
-        c_ast_debug( ast->as.array.of_ast, indent, "of_ast", dout );
+        c_ast_dump( ast->as.array.of_ast, indent, "of_ast", dout );
         break;
 
       case K_OPERATOR:
@@ -209,10 +209,10 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_USER_DEF_LITERAL:
         DUMP_COMMA;
         DUMP_FORMAT( "param_ast_list = " );
-        c_ast_list_debug( &ast->as.func.param_ast_list, indent, dout );
+        c_ast_list_dump( &ast->as.func.param_ast_list, indent, dout );
         if ( ast->as.func.ret_ast != NULL ) {
           FPUTS( ",\n", dout );
-          c_ast_debug( ast->as.func.ret_ast, indent, "ret_ast", dout );
+          c_ast_dump( ast->as.func.ret_ast, indent, "ret_ast", dout );
         }
         break;
 
@@ -221,7 +221,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         DUMP_SNAME( "ecsu_sname", &ast->as.ecsu.ecsu_sname );
         if ( ast->as.ecsu.of_ast != NULL ) {
           FPUTS( ",\n", dout );
-          c_ast_debug( ast->as.ecsu.of_ast, indent, "of_ast", dout );
+          c_ast_dump( ast->as.ecsu.of_ast, indent, "of_ast", dout );
         }
         break;
 
@@ -235,7 +235,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
         DUMP_COMMA;
-        c_ast_debug( ast->as.ptr_ref.to_ast, indent, "to_ast", dout );
+        c_ast_dump( ast->as.ptr_ref.to_ast, indent, "to_ast", dout );
         break;
 
       case K_TYPEDEF:
@@ -251,7 +251,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_USER_DEF_CONVERSION:
         DUMP_COMMA;
-        c_ast_debug( ast->as.udef_conv.conv_ast, indent, "conv_ast", dout );
+        c_ast_dump( ast->as.udef_conv.conv_ast, indent, "conv_ast", dout );
         break;
     } // switch
 
@@ -262,7 +262,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
   DUMP_FORMAT( "}" );
 }
 
-void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
+void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
   assert( list != NULL );
   if ( slist_empty( list ) ) {
     FPUTS( "[]", dout );
@@ -273,7 +273,7 @@ void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
     for ( slist_node_t const *p = list->head; p != NULL; p = p->next ) {
       if ( true_or_set( &comma ) )
         FPUTS( ",\n", dout );
-      c_ast_debug( c_param_ast( p ), indent, NULL, dout );
+      c_ast_dump( c_param_ast( p ), indent, NULL, dout );
     } // for
     --indent;
     FPUTC( '\n', dout );
@@ -281,7 +281,7 @@ void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
   }
 }
 
-void c_sname_debug( c_sname_t const *sname, FILE *dout ) {
+void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
   assert( sname != NULL );
   FPRINTF( dout, "\"%s\"", c_sname_full_name( sname ) );
   if ( !c_sname_empty( sname ) ) {
@@ -297,14 +297,14 @@ void c_sname_debug( c_sname_t const *sname, FILE *dout ) {
   }
 }
 
-void c_type_id_debug( c_type_id_t tid, FILE *dout ) {
+void c_type_id_dump( c_type_id_t tid, FILE *dout ) {
   FPRINTF( dout,
     "\"%s\" (%s = 0x%" PRIX_C_TYPE_ID_T ")",
     c_type_id_name_c( tid ), c_type_part_id_name( c_type_id_tpid( tid ) ), tid
   );
 }
 
-void c_type_debug( c_type_t const *type, FILE *dout ) {
+void c_type_dump( c_type_t const *type, FILE *dout ) {
   assert( type != NULL );
   FPRINTF( dout,
     "\"%s\" "
@@ -315,7 +315,7 @@ void c_type_debug( c_type_t const *type, FILE *dout ) {
   );
 }
 
-void kv_debug( char const *key, char const *value, FILE *dout ) {
+void kv_dump( char const *key, char const *value, FILE *dout ) {
   assert( key != NULL );
   assert( key[0] != '\0' );
   if ( value != NULL && *value != '\0' )

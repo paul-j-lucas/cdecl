@@ -60,7 +60,7 @@ cdecl_SOURCES =	parser.y \
 		util.c util.h
 
 if ENABLE_CDECL_DEBUG
-cdecl_SOURCES += debug.c debug.h
+cdecl_SOURCES += dump.c dump.h
 endif
 
 if WITH_READLINE
