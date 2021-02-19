@@ -1040,6 +1040,8 @@ char const* c_type_id_name_eng( c_type_id_t tid ) {
 
 char const* c_type_id_name_error( c_type_id_t tid ) {
   c_type_t const type = c_type_from_tid( tid );
+  // When giving an error message, return the type name in pseudo-English if
+  // we're parsing pseudo-English or in C/C++ if we're parsing C/C++.
   return c_type_name_impl( &type, /*in_english=*/lexer_is_english() );
 }
 
@@ -1082,6 +1084,7 @@ char const* c_type_name_eng( c_type_t const *type ) {
 }
 
 char const* c_type_name_error( c_type_t const *type ) {
+  // See comment in c_type_id_name_error().
   return c_type_name_impl( type, /*in_english=*/lexer_is_english() );
 }
 
