@@ -39,26 +39,26 @@
 #include <stdlib.h>
 #include <sysexits.h>
 
-#define PRINT_COMMA \
-  BLOCK( if ( !comma ) { FPUTS( ",\n", dout ); comma = true; } )
+#define DUMP_COMMA \
+  BLOCK( if ( false_set( &comma ) ) FPUTS( ",\n", dout ); )
 
-#define INDENT_PRINT(...) \
+#define DUMP_FORMAT(...) \
   BLOCK( print_indent( indent, dout ); FPRINTF( dout, __VA_ARGS__ ); )
 
-#define INDENT_PRINT_KV(KEY,VALUE) \
-  BLOCK( print_indent( indent, dout ); kv_debug( (KEY), (VALUE), dout ); )
+#define DUMP_LOC(KEY,LOC) \
+  DUMP_FORMAT( KEY " = %d-%d,\n", (LOC)->first_column, (LOC)->last_column )
 
-#define INDENT_PRINT_LOC(KEY,LOC) \
-  INDENT_PRINT( KEY " = %d-%d,\n", (LOC)->first_column, (LOC)->last_column )
-
-#define INDENT_PRINT_SNAME(KEY,SNAME) BLOCK(  \
-  print_indent( indent, dout );               \
-  FPUTS( KEY " = ", dout );                   \
+#define DUMP_SNAME(KEY,SNAME) BLOCK(  \
+  print_indent( indent, dout );       \
+  FPUTS( KEY " = ", dout );           \
   c_sname_debug( (SNAME), dout ); )
 
-#define INDENT_PRINT_TYPE(TYPE) BLOCK(  \
-  print_indent( indent, dout );         \
-  FPUTS( "type = ", dout );             \
+#define DUMP_STR(KEY,VALUE) \
+  BLOCK( print_indent( indent, dout ); kv_debug( (KEY), (VALUE), dout ); )
+
+#define DUMP_TYPE(TYPE) BLOCK(  \
+  print_indent( indent, dout ); \
+  FPUTS( "type = ", dout );     \
   c_type_debug( (TYPE), dout ); )
 
 /// @endcond
@@ -100,21 +100,21 @@ static void print_indent( unsigned indent, FILE *out ) {
 void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
                   FILE *dout ) {
   if ( key0 != NULL && *key0 != '\0' )
-    INDENT_PRINT( "%s = {\n", key0 );
+    DUMP_FORMAT( "%s = {\n", key0 );
   else
-    INDENT_PRINT( "{\n" );
+    DUMP_FORMAT( "{\n" );
 
   if ( ast != NULL ) {
     ++indent;
 
-    INDENT_PRINT_SNAME( "sname", &ast->sname );
+    DUMP_SNAME( "sname", &ast->sname );
     FPUTS( ",\n", dout );
-    INDENT_PRINT( "unique_id = %u,\n", ast->unique_id );
-    INDENT_PRINT_KV( "kind", c_kind_name( ast->kind_id ) );
+    DUMP_FORMAT( "unique_id = %u,\n", ast->unique_id );
+    DUMP_STR( "kind", c_kind_name( ast->kind_id ) );
     FPUTS( ",\n", dout );
-    INDENT_PRINT( "depth = %u,\n", ast->depth );
+    DUMP_FORMAT( "depth = %u,\n", ast->depth );
 
-    INDENT_PRINT(
+    DUMP_FORMAT(
       "parent->unique_id = %d,\n",
       ast->parent_ast != NULL ? (int)ast->parent_ast->unique_id : -1
     );
@@ -124,7 +124,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         case C_ALIGNAS_NONE:
           break;
         case C_ALIGNAS_EXPR:
-          INDENT_PRINT( "alignas_expr = %u,\n", ast->align.as.expr );
+          DUMP_FORMAT( "alignas_expr = %u,\n", ast->align.as.expr );
           break;
         case C_ALIGNAS_TYPE:
           c_ast_debug(
@@ -133,11 +133,11 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
           FPUTS( ",\n", dout );
           break;
       } // switch
-      INDENT_PRINT_LOC( "alignas_loc", &ast->align.loc );
+      DUMP_LOC( "alignas_loc", &ast->align.loc );
     }
 
-    INDENT_PRINT_LOC( "loc", &ast->loc );
-    INDENT_PRINT_TYPE( &ast->type );
+    DUMP_LOC( "loc", &ast->loc );
+    DUMP_TYPE( &ast->type );
 
     bool comma = false;
 
@@ -151,8 +151,8 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         break;
 
       case K_ARRAY:
-        PRINT_COMMA;
-        INDENT_PRINT( "size = " );
+        DUMP_COMMA;
+        DUMP_FORMAT( "size = " );
         switch ( ast->as.array.size ) {
           case C_ARRAY_SIZE_NONE:
             FPUTS( "unspecified", dout );
@@ -166,24 +166,24 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         FPUTS( ",\n", dout );
         if ( ast->as.array.store_tid != TS_NONE ) {
           c_type_t const type = C_TYPE_LIT_S( ast->as.array.store_tid );
-          INDENT_PRINT_TYPE( &type );
+          DUMP_TYPE( &type );
           FPUTS( ",\n", dout );
         }
         c_ast_debug( ast->as.array.of_ast, indent, "of_ast", dout );
         break;
 
       case K_OPERATOR:
-        PRINT_COMMA;
-        INDENT_PRINT( "oper_id = %u,\n", ast->as.oper.oper_id );
-        INDENT_PRINT_KV(
+        DUMP_COMMA;
+        DUMP_FORMAT( "oper_id = %u,\n", ast->as.oper.oper_id );
+        DUMP_STR(
           "operator_name", c_oper_get( ast->as.oper.oper_id )->name
         );
         FPUTS( ",\n", dout );
         PJL_FALLTHROUGH;
 
       case K_FUNCTION:
-        PRINT_COMMA;
-        INDENT_PRINT( "flags = " );
+        DUMP_COMMA;
+        DUMP_FORMAT( "flags = " );
         switch ( ast->as.func.flags & C_FUNC_MASK_MEMBER ) {
           case C_FUNC_UNSPECIFIED:
             FPUTS( "unspecified", dout );
@@ -207,8 +207,8 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_APPLE_BLOCK:
       case K_CONSTRUCTOR:
       case K_USER_DEF_LITERAL:
-        PRINT_COMMA;
-        INDENT_PRINT( "param_ast_list = " );
+        DUMP_COMMA;
+        DUMP_FORMAT( "param_ast_list = " );
         c_ast_list_debug( &ast->as.func.param_ast_list, indent, dout );
         if ( ast->as.func.ret_ast != NULL ) {
           FPUTS( ",\n", dout );
@@ -217,8 +217,8 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         break;
 
       case K_ENUM_CLASS_STRUCT_UNION:
-        PRINT_COMMA;
-        INDENT_PRINT_SNAME( "ecsu_sname", &ast->as.ecsu.ecsu_sname );
+        DUMP_COMMA;
+        DUMP_SNAME( "ecsu_sname", &ast->as.ecsu.ecsu_sname );
         if ( ast->as.ecsu.of_ast != NULL ) {
           FPUTS( ",\n", dout );
           c_ast_debug( ast->as.ecsu.of_ast, indent, "of_ast", dout );
@@ -226,31 +226,31 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
         break;
 
       case K_POINTER_TO_MEMBER:
-        PRINT_COMMA;
-        INDENT_PRINT_SNAME( "class_sname", &ast->as.ptr_mbr.class_sname );
+        DUMP_COMMA;
+        DUMP_SNAME( "class_sname", &ast->as.ptr_mbr.class_sname );
         FPUTS( ",\n", dout );
         PJL_FALLTHROUGH;
 
       case K_POINTER:
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
-        PRINT_COMMA;
+        DUMP_COMMA;
         c_ast_debug( ast->as.ptr_ref.to_ast, indent, "to_ast", dout );
         break;
 
       case K_TYPEDEF:
-        PRINT_COMMA;
-        INDENT_PRINT_SNAME( "typedef_name", &ast->as.tdef.for_ast->sname );
+        DUMP_COMMA;
+        DUMP_SNAME( "typedef_name", &ast->as.tdef.for_ast->sname );
         FPUTS( ",\n", dout );
         PJL_FALLTHROUGH;
 
       case K_BUILTIN:
-        PRINT_COMMA;
-        INDENT_PRINT( "bit_width = %u", ast->as.builtin.bit_width );
+        DUMP_COMMA;
+        DUMP_FORMAT( "bit_width = %u", ast->as.builtin.bit_width );
         break;
 
       case K_USER_DEF_CONVERSION:
-        PRINT_COMMA;
+        DUMP_COMMA;
         c_ast_debug( ast->as.udef_conv.conv_ast, indent, "conv_ast", dout );
         break;
     } // switch
@@ -259,7 +259,7 @@ void c_ast_debug( c_ast_t const *ast, unsigned indent, char const *key0,
     --indent;
   }
 
-  INDENT_PRINT( "}" );
+  DUMP_FORMAT( "}" );
 }
 
 void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
@@ -277,7 +277,7 @@ void c_ast_list_debug( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
     } // for
     --indent;
     FPUTC( '\n', dout );
-    INDENT_PRINT( "]" );
+    DUMP_FORMAT( "]" );
   }
 }
 
@@ -317,6 +317,7 @@ void c_type_debug( c_type_t const *type, FILE *dout ) {
 
 void kv_debug( char const *key, char const *value, FILE *dout ) {
   assert( key != NULL );
+  assert( key[0] != '\0' );
   if ( value != NULL && *value != '\0' )
     FPRINTF( dout, "%s = \"%s\"", key, value );
   else
