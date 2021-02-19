@@ -34,6 +34,9 @@ message now includes the existing type.
 ** Function `auto` parameters in C++20
 Functions in C++20 now allow `auto` parameters.
 
+** `imaginary`
+`imaginary` is now mapped only to `_Imaginary` in C99 and later and not in C++.
+
 ** `throw()` in C++20
 `throw()` is no longer supported in C++20.
 
