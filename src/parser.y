@@ -276,7 +276,7 @@
  */
 #define DUMP_SNAME(KEY,SNAME) IF_DEBUG( \
   DUMP_COMMA; PUTS( "  " KEY " = " );   \
-  c_sname_debug( (SNAME), stdout ); )
+  c_sname_debug( &(SNAME), stdout ); )
 
 /**
  * Dumps a C string.
@@ -1443,7 +1443,7 @@ cast_english
     {
       DUMP_START( "cast_english",
                   "CAST sname_english_exp as_into_to_exp decl_english_ast" );
-      DUMP_SNAME( "sname_english_exp", &$2 );
+      DUMP_SNAME( "sname_english_exp", $2 );
       DUMP_AST( "decl_english_ast", $4 );
       DUMP_END();
 
@@ -1469,7 +1469,7 @@ cast_english
                   "new_style_cast_english_literal CAST sname_english_exp "
                   "as_into_to_exp decl_english_ast" );
       DUMP_STR( "new_style_cast_english_literal", $1 );
-      DUMP_SNAME( "sname_english_exp", &$3 );
+      DUMP_SNAME( "sname_english_exp", $3 );
       DUMP_AST( "decl_english_ast", $5 );
       DUMP_END();
 
@@ -1533,7 +1533,7 @@ declare_english
       DUMP_START( "declare_english",
                   "DECLARE sname AS storage_class_list_english_type_opt "
                   "alignas_or_width_decl_english_ast" );
-      DUMP_SNAME( "sname", &$2 );
+      DUMP_SNAME( "sname", $2 );
       DUMP_TYPE( "storage_class_list_english_type_opt", &$4 );
       DUMP_AST( "alignas_or_width_decl_english_ast", $5 );
 
@@ -1562,7 +1562,7 @@ declare_english
                   "storage_class_list_english_type_opt "
                   "oper_decl_english_ast" );
       DUMP_STR( "c_operator", c_oper_get( $2 )->name );
-      DUMP_SNAME( "of_scope_list_english_opt", &$3 );
+      DUMP_SNAME( "of_scope_list_english_opt", $3 );
       DUMP_TYPE( "storage_class_list_english_type_opt", &$5 );
       DUMP_AST( "oper_decl_english_ast", $6 );
 
@@ -1596,7 +1596,7 @@ declare_english
                   "RETURNING decl_english_ast" );
       DUMP_TYPE( "storage_class_list_english_type_opt", &$2 );
       DUMP_TID( "cv_qualifier_list_tid_opt", $3 );
-      DUMP_SNAME( "of_scope_list_english_opt", &$7 );
+      DUMP_SNAME( "of_scope_list_english_opt", $7 );
       DUMP_AST( "decl_english_ast", $9 );
 
       c_ast_t *const conv_ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
@@ -1840,7 +1840,7 @@ define_english
       DUMP_START( "define_english",
                   "DEFINE sname_english AS "
                   "storage_class_list_english_type_opt decl_english_ast" );
-      DUMP_SNAME( "sname", &$2 );
+      DUMP_SNAME( "sname", $2 );
       DUMP_TYPE( "storage_class_list_english_type_opt", &$4 );
       DUMP_AST( "decl_english_ast", $5 );
 
@@ -1913,7 +1913,7 @@ explain_c
                   "EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt" );
       DUMP_AST( "type_c_ast", $3 );
       DUMP_AST( "cast_c_astp_opt", $5.ast );
-      DUMP_SNAME( "sname_c_opt", &$7 );
+      DUMP_SNAME( "sname_c_opt", $7 );
 
       c_ast_t *const cast_ast = c_ast_patch_placeholder( $3, $5.ast );
 
@@ -1954,7 +1954,7 @@ explain_c
       DUMP_STR( "new_style_cast_c_literal", $2 );
       DUMP_AST( "type_c_ast", $4 );
       DUMP_AST( "cast_c_astp_opt", $6.ast );
-      DUMP_SNAME( "sname", &$9 );
+      DUMP_SNAME( "sname", $9 );
 
       c_ast_t const *const cast_ast = c_ast_patch_placeholder( $4, $6.ast );
 
@@ -2358,7 +2358,7 @@ class_struct_union_declaration_c
                   "in_scope_declaration_c_opt "
                   "'}' ';'" );
       DUMP_TID( "class_struct_union_tid", $1 );
-      DUMP_SNAME( "any_sname_c", &$3 );
+      DUMP_SNAME( "any_sname_c", $3 );
 
       c_sname_append_sname( &in_attr.current_scope, &$3 );
 
@@ -2394,7 +2394,7 @@ enum_declaration_c
 
       DUMP_START( "enum_declaration_c", "enum_tid sname ;" );
       DUMP_TID( "enum_tid", $1 );
-      DUMP_SNAME( "any_sname_c", &$3 );
+      DUMP_SNAME( "any_sname_c", $3 );
       DUMP_AST( "enum_fixed_type_c_ast_opt", $4 );
 
       c_sname_append_sname( &in_attr.current_scope, &$3 );
@@ -2441,7 +2441,7 @@ namespace_declaration_c
                   "in_scope_declaration_c_opt "
                   "'}' [';']" );
       DUMP_TYPE( "namespace_type", &$1 );
-      DUMP_SNAME( "any_sname_c", &$3 );
+      DUMP_SNAME( "any_sname_c", $3 );
       DUMP_END();
 
       bool ok = false;
@@ -3097,7 +3097,7 @@ pointer_decl_english_ast
                   "class_struct_tid sname_english decl_english_ast" );
       DUMP_TID( "(qualifier)", ia_qual_peek_tid() );
       DUMP_TID( "class_struct_tid", $5 );
-      DUMP_SNAME( "sname_english_exp", &$6 );
+      DUMP_SNAME( "sname_english_exp", $6 );
       DUMP_AST( "decl_english_ast", $7 );
 
       $$ = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
@@ -3191,7 +3191,7 @@ var_decl_english_ast
   : sname_c Y_AS decl_english_ast
     {
       DUMP_START( "var_decl_english_ast", "NAME AS decl_english_ast" );
-      DUMP_SNAME( "sname", &$1 );
+      DUMP_SNAME( "sname", $1 );
       DUMP_AST( "decl_english_ast", $3 );
 
       if ( $3->kind_id == K_NAME ) {  // see the comment in "declare_english"
@@ -3312,7 +3312,7 @@ enum_class_struct_union_english_ast
       DUMP_START( "enum_class_struct_union_english_ast",
                   "enum_class_struct_union_c_tid sname" );
       DUMP_TID( "enum_class_struct_union_c_tid", $1 );
-      DUMP_SNAME( "sname", &$2 );
+      DUMP_SNAME( "sname", $2 );
       DUMP_AST( "enum_fixed_type_english_ast", $3 );
 
       $$ = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
@@ -3522,7 +3522,7 @@ file_scope_constructor_decl_c_ast
                   "inline_opt CONSTRUCTOR_SNAME '(' param_list_c_ast_opt ')' "
                   "func_qualifier_list_c_tid_opt noexcept_c_tid_opt" );
       DUMP_TID( "inline_tid_opt", $1 );
-      DUMP_SNAME( "CONSTRUCTOR_SNAME", &$2 );
+      DUMP_SNAME( "CONSTRUCTOR_SNAME", $2 );
       DUMP_AST_LIST( "param_list_c_ast_opt", $4 );
       DUMP_TID( "func_qualifier_list_c_tid_opt", $5 );
       DUMP_TID( "noexcept_c_tid_opt", $6 );
@@ -3548,7 +3548,7 @@ file_scope_destructor_decl_c_ast
                   "inline_opt DESTRUCTOR_SNAME '(' ')' "
                   "func_qualifier_list_c_tid_opt noexcept_c_tid_opt" );
       DUMP_TID( "inline_tid_opt", $1 );
-      DUMP_SNAME( "DESTRUCTOR_SNAME", &$2 );
+      DUMP_SNAME( "DESTRUCTOR_SNAME", $2 );
       DUMP_TID( "func_qualifier_list_c_tid_opt", $4 );
       DUMP_TID( "noexcept_c_tid_opt", $5 );
 
@@ -3988,7 +3988,7 @@ oper_c_ast
     {
       DUMP_START( "oper_c_ast", "OPERATOR c_operator" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
-      DUMP_SNAME( "scope_sname_c_opt", &$1 );
+      DUMP_SNAME( "scope_sname_c_opt", $1 );
       DUMP_STR( "c_operator", c_oper_get( $3 )->name );
 
       $$ = ia_type_ast_peek();
@@ -4062,7 +4062,7 @@ pointer_to_member_type_c_ast
       DUMP_START( "pointer_to_member_type_c_ast",
                   "sname '::*' cv_qualifier_list_tid_opt" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
-      DUMP_SNAME( "sname", &$1 );
+      DUMP_SNAME( "sname", $1 );
       DUMP_TID( "cv_qualifier_list_tid_opt", $3 );
 
       $$ = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
@@ -4186,7 +4186,7 @@ user_defined_conversion_decl_c_astp
                   "func_qualifier_list_c_tid_opt noexcept_c_tid_opt "
                   "func_equals_c_tid_opt" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
-      DUMP_SNAME( "scope_sname_c_opt", &$1 );
+      DUMP_SNAME( "scope_sname_c_opt", $1 );
       DUMP_AST( "type_c_ast", $3 );
       DUMP_AST( "udc_decl_c_ast_opt", $5 );
       DUMP_TID( "func_qualifier_list_c_tid_opt", $7 );
@@ -4248,7 +4248,7 @@ user_defined_literal_c_ast
     {
       DUMP_START( "user_defined_literal_c_ast", "OPERATOR \"\" NAME" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
-      DUMP_SNAME( "scope_sname_c_opt", &$1 );
+      DUMP_SNAME( "scope_sname_c_opt", $1 );
       DUMP_STR( "name", $4 );
 
       $$ = ia_type_ast_peek();
@@ -4611,7 +4611,7 @@ enum_class_struct_union_c_ast
                   "attribute_specifier_list_c_tid_opt sname" );
       DUMP_TID( "enum_class_struct_union_c_tid", $1 );
       DUMP_TID( "attribute_specifier_list_c_tid_opt", $2 );
-      DUMP_SNAME( "any_sname_c", &$3 );
+      DUMP_SNAME( "any_sname_c", $3 );
       DUMP_AST( "enum_fixed_type_c_ast_opt", $4 );
 
       $$ = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
@@ -5510,7 +5510,7 @@ typedef_type_c_ast
       DUMP_START( "typedef_type_c_ast", "any_typedef '::' sname_c" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_AST( "any_typedef.ast", $1->ast );
-      DUMP_SNAME( "sname_c", &$3 );
+      DUMP_SNAME( "sname_c", $3 );
 
       if ( ia_type_ast_peek() == NULL ) {
         print_error_unknown_name( &@3, &$3 );
@@ -5540,7 +5540,7 @@ typedef_type_c_ast
       DUMP_START( "typedef_type_c_ast", "any_typedef '::' typedef_sname_c" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_AST( "any_typedef", $1->ast );
-      DUMP_SNAME( "typedef_sname_c", &$3 );
+      DUMP_SNAME( "typedef_sname_c", $3 );
 
       if ( ia_type_ast_peek() == NULL ) {
         print_error_unknown_name( &@3, &$3 );
@@ -5596,7 +5596,7 @@ sname_c
       }
 
       DUMP_START( "sname_c", "sname_c '::' NAME" );
-      DUMP_SNAME( "sname_c", &$1 );
+      DUMP_SNAME( "sname_c", $1 );
       DUMP_STR( "name", $3 );
 
       if ( c_type_is_none( c_sname_local_type( &$1 ) ) )
@@ -5604,14 +5604,14 @@ sname_c
       $$ = $1;
       c_sname_append_name( &$$, $3 );
 
-      DUMP_SNAME( "sname_c", &$$ );
+      DUMP_SNAME( "sname_c", $$ );
       DUMP_END();
     }
 
   | sname_c Y_COLON2 any_typedef
     {
       DUMP_START( "sname_c", "sname_c '::' any_typedef" );
-      DUMP_SNAME( "sname_c", &$1 );
+      DUMP_SNAME( "sname_c", $1 );
       DUMP_AST( "any_typedef.ast", $3->ast );
 
       //
@@ -5628,7 +5628,7 @@ sname_c
       c_sname_t temp = c_ast_dup_name( $3->ast );
       c_sname_append_sname( &$$, &temp );
 
-      DUMP_SNAME( "sname_c", &$$ );
+      DUMP_SNAME( "sname_c", $$ );
       DUMP_END();
     }
 
@@ -5639,7 +5639,7 @@ sname_c
 
       c_sname_init_name( &$$, $1 );
 
-      DUMP_SNAME( "sname_c", &$$ );
+      DUMP_SNAME( "sname_c", $$ );
       DUMP_END();
     }
   ;
@@ -5650,7 +5650,7 @@ sname_c_ast
     {
       DUMP_START( "sname_c_ast", "sname_c" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
-      DUMP_SNAME( "sname", &$1 );
+      DUMP_SNAME( "sname", $1 );
       DUMP_INT( "bit_field_c_int_opt", $2 );
 
       $$ = ia_type_ast_peek();
@@ -5704,8 +5704,8 @@ sname_english
   : any_sname_c of_scope_list_english_opt
     {
       DUMP_START( "sname_english", "any_sname_c of_scope_list_english_opt" );
-      DUMP_SNAME( "any_sname_c", &$1 );
-      DUMP_SNAME( "of_scope_list_english_opt", &$2 );
+      DUMP_SNAME( "any_sname_c", $1 );
+      DUMP_SNAME( "of_scope_list_english_opt", $2 );
 
       c_type_t const *local_type = c_sname_local_type( &$2 );
       if ( c_type_is_none( local_type ) )
@@ -5714,7 +5714,7 @@ sname_english
       c_sname_append_sname( &$$, &$1 );
       c_sname_set_local_type( &$$, local_type );
 
-      DUMP_SNAME( "sname_english", &$$ );
+      DUMP_SNAME( "sname_english", $$ );
       DUMP_END();
     }
   ;
@@ -5724,7 +5724,7 @@ sname_english_ast
     {
       DUMP_START( "Y_NAME of_scope_list_english_opt", "NAME" );
       DUMP_STR( "NAME", $1 );
-      DUMP_SNAME( "of_scope_list_english_opt", &$2 );
+      DUMP_SNAME( "of_scope_list_english_opt", $2 );
 
       c_sname_t sname = $2;
       c_sname_append_name( &sname, $1 );
@@ -5761,8 +5761,8 @@ typedef_sname_c
   : typedef_sname_c Y_COLON2 sname_c
     {
       DUMP_START( "typedef_sname_c", "typedef_sname_c '::' sname_c" );
-      DUMP_SNAME( "typedef_sname_c", &$1 );
-      DUMP_SNAME( "sname_c", &$3 );
+      DUMP_SNAME( "typedef_sname_c", $1 );
+      DUMP_SNAME( "sname_c", $3 );
 
       //
       // This is for a case like:
@@ -5773,14 +5773,14 @@ typedef_sname_c
       $$ = $1;
       c_sname_append_sname( &$$, &$3 );
 
-      DUMP_SNAME( "typedef_sname_c", &$$ );
+      DUMP_SNAME( "typedef_sname_c", $$ );
       DUMP_END();
     }
 
   | typedef_sname_c Y_COLON2 any_typedef
     {
       DUMP_START( "typedef_sname_c", "typedef_sname_c '::' any_typedef" );
-      DUMP_SNAME( "typedef_sname_c", &$1 );
+      DUMP_SNAME( "typedef_sname_c", $1 );
       DUMP_AST( "any_typedef", $3->ast );
 
       //
@@ -5795,7 +5795,7 @@ typedef_sname_c
       c_sname_t temp = c_ast_dup_name( $3->ast );
       c_sname_append_sname( &$$, &temp );
 
-      DUMP_SNAME( "typedef_sname_c", &$$ );
+      DUMP_SNAME( "typedef_sname_c", $$ );
       DUMP_END();
     }
 
