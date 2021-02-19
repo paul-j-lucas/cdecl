@@ -390,7 +390,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
       continue;
 
     if ( !lexer_is_english() &&
-         k->context != C_KW_CTX_ALL && kw_ctx != k->context ) {
+         k->kw_ctx != C_KW_CTX_ALL && kw_ctx != k->kw_ctx ) {
       //
       // Keyword contexts matter only when converting gibberish to English.
       // For example, we do NOT match attribute names when parsing C++ because
