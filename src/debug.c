@@ -26,6 +26,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "debug.h"
+#include "cdecl.h"
 #include "c_ast.h"
 #include "c_type.h"
 #include "literals.h"
@@ -65,6 +66,24 @@
 static unsigned const DEBUG_INDENT = 2; ///< Spaces per debug indent level.
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Gets a string representation of \a tpid for printing.
+ *
+ * @param tpid The type part id to get the string representation of.
+ * @return Returns a string representation of \a tpid.
+ */
+static char const* c_type_part_id_name( c_type_part_id_t tpid ) {
+  switch ( tpid ) {
+    case C_TPID_BASE:
+      return "base";
+    case C_TPID_STORE:
+      return "store";
+    case C_TPID_ATTR:
+      return "attr";
+  } // switch
+  UNEXPECTED_INT_VALUE( tpid );
+}
 
 /**
  * Prints a multiple of \a indent spaces.
@@ -280,8 +299,8 @@ void c_sname_debug( c_sname_t const *sname, FILE *dout ) {
 
 void c_type_id_debug( c_type_id_t tid, FILE *dout ) {
   FPRINTF( dout,
-    "\"%s\" (0x%" PRIX_C_TYPE_ID_T ")",
-    c_type_id_name_c( tid ), tid
+    "\"%s\" (%s = 0x%" PRIX_C_TYPE_ID_T ")",
+    c_type_id_name_c( tid ), c_type_part_id_name( c_type_id_tpid( tid ) ), tid
   );
 }
 
@@ -289,9 +308,9 @@ void c_type_debug( c_type_t const *type, FILE *dout ) {
   assert( type != NULL );
   FPRINTF( dout,
     "\"%s\" "
-    "(0x%" PRIX_C_TYPE_ID_T
-    ",0x%" PRIX_C_TYPE_ID_T
-    ",0x%" PRIX_C_TYPE_ID_T ")",
+    "(base = 0x%" PRIX_C_TYPE_ID_T
+    ", store = 0x%" PRIX_C_TYPE_ID_T
+    ", attr = 0x%" PRIX_C_TYPE_ID_T ")",
     c_type_name_c( type ), type->base_tid, type->store_tid, type->attr_tid
   );
 }
