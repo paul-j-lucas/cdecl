@@ -500,22 +500,6 @@ PJL_WARN_UNUSED_RESULT
 bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
- * Gets a pointer to the <code>\ref c_type_id_t</code> of \a type that
- * corresponds to the type part ID of \a tid.
- *
- * @param type The <code>\ref c_type</code> to get a pointer to the <code>\ref
- * c_type_id_t</code> of.
- * @param tid The <code>\ref c_type_id_t</code> that specifies the part of \a
- * type to get the pointer to.
- * @return Returns a pointer to the corresponding <code>\ref c_type_id_t</code>
- * of \a type for the part of \a tid.
- *
- * @sa c_type_get_tid()
- */
-PJL_WARN_UNUSED_RESULT
-c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid );
-
-/**
  * Adds a type to an existing type, e.g., `short` to `int`, ensuring that a
  * particular type is never added more than once, e.g., `short` to `short int`.
  *
@@ -700,24 +684,6 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type );
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Gets the <code>\ref c_type_id_t</code> of \a type that corresponds to the
- * type part ID of \a tid.
- *
- * @param type The <code>\ref c_type</code> to get the <code>\ref
- * c_type_id_t</code> of.
- * @param tid The <code>\ref c_type_id_t</code> whose part ID specifies which
- * <code>\ref c_type_id_t</code> of \a type to get.
- * @return Returns the corresponding <code>\ref c_type_id_t</code> of \a type
- * for the part of \a tid.
- *
- * @sa c_type_get_tid_ptr()
- */
-C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-c_type_id_t c_type_get_tid( c_type_t const *type, c_type_id_t tid ) {
-  return *c_type_get_tid_ptr( CONST_CAST( c_type_t*, type ), tid );
-}
-
-/**
  * Checks that the type part ID of \a tid is \a tpid.
  *
  * @param tid The <code>\ref c_type_id_t</code> to check.
@@ -845,11 +811,8 @@ bool c_type_is_none( c_type_t const *type ) {
  * @return Returns `true` only if the relevant <code>\ref c_type_id_t</code> of
  * \a type contains any of \a tids.
  */
-C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids ) {
-  c_type_id_t const tid = c_type_get_tid( type, tids );
-  return c_type_id_is_any( tid, tids );
-}
+PJL_WARN_UNUSED_RESULT
+bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids );
 
 ///////////////////////////////////////////////////////////////////////////////
 

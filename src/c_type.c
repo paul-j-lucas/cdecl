@@ -491,6 +491,33 @@ static inline bool is_long_int( c_type_id_t tid ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
+ * Gets a pointer to the <code>\ref c_type_id_t</code> of \a type that
+ * corresponds to the type part ID of \a tid.
+ *
+ * @param type The <code>\ref c_type</code> to get a pointer to the <code>\ref
+ * c_type_id_t</code> of.
+ * @param tid The <code>\ref c_type_id_t</code> that specifies the part of \a
+ * type to get the pointer to.
+ * @return Returns a pointer to the corresponding <code>\ref c_type_id_t</code>
+ * of \a type for the part of \a tid.
+ */
+PJL_WARN_UNUSED_RESULT
+static c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid ) {
+  assert( type != NULL );
+
+  switch ( c_type_id_tpid( tid ) ) {
+    case C_TPID_BASE:
+      return &type->base_tid;
+    case C_TPID_STORE:
+      return &type->store_tid;
+    case C_TPID_ATTR:
+      return &type->attr_tid;
+  } // switch
+
+  UNEXPECTED_INT_VALUE( tid );
+}
+
+/**
  * Checks that the type combination is legal in the current language.
  *
  * @param tid The <code>\ref c_type_id_t</code> to check.
@@ -1002,21 +1029,6 @@ void c_type_and_eq_compl( c_type_t *dst_type, c_type_t const *rm_type ) {
   dst_type->attr_tid  &= c_type_id_compl( rm_type->attr_tid );
 }
 
-c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid ) {
-  assert( type != NULL );
-
-  switch ( c_type_id_tpid( tid ) ) {
-    case C_TPID_BASE:
-      return &type->base_tid;
-    case C_TPID_STORE:
-      return &type->store_tid;
-    case C_TPID_ATTR:
-      return &type->attr_tid;
-  } // switch
-
-  UNEXPECTED_INT_VALUE( tid );
-}
-
 bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
                     c_loc_t const *new_loc ) {
   assert( dst_tid != NULL );
@@ -1084,6 +1096,12 @@ c_type_id_t c_type_id_normalize( c_type_id_t tid ) {
       /* suppress warning */;
   } // switch
   return tid;
+}
+
+bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids ) {
+  c_type_t *const non_const_type = CONST_CAST( c_type_t*, type );
+  c_type_id_t const tid = *c_type_get_tid_ptr( non_const_type, tids );
+  return c_type_id_is_any( tid, tids );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
