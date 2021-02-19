@@ -98,7 +98,7 @@
  */
 
 /**
- * Calls c_ast_check_declaration(): if the check fails, calls PARSE_ABORT().
+ * Calls c_ast_check_declaration(): if the check fails, calls #PARSE_ABORT().
  *
  * @param AST The AST to check.
  */
@@ -106,40 +106,40 @@
   BLOCK( if ( !c_ast_check_declaration( AST ) ) PARSE_ABORT(); )
 
 /**
- * Calls c_type_add(): if adding the type fails, calls PARSE_ABORT().
+ * Calls c_type_add(): if adding the type fails, calls #PARSE_ABORT().
  *
  * @param DST_TYPE The <code>\ref c_type</code> to add to.
  * @param NEW_TYPE The <code>\ref c_type</code> to add.
  * @param NEW_LOC The source location of \a NEW_TYPE.
  *
- * @sa C_TYPE_ADD_TID()
- * @sa C_TYPE_ID_ADD()
+ * @sa #C_TYPE_ADD_TID()
+ * @sa #C_TYPE_ID_ADD()
  */
 #define C_TYPE_ADD(DST_TYPE,NEW_TYPE,NEW_LOC) BLOCK( \
   if ( !c_type_add( (DST_TYPE), (NEW_TYPE), &(NEW_LOC) ) ) PARSE_ABORT(); )
 
 /**
- * Calls c_type_add_tid(): if adding the type fails, calls PARSE_ABORT().
+ * Calls c_type_add_tid(): if adding the type fails, calls #PARSE_ABORT().
  *
  * @param DST_TYPE The <code>\ref c_type</code> to add to.
  * @param NEW_TID The <code>\ref c_type_id_t</code> to add.
  * @param NEW_LOC The source location of \a NEW_TID.
  *
- * @sa C_TYPE_ADD()
- * @sa C_TYPE_ID_ADD()
+ * @sa #C_TYPE_ADD()
+ * @sa #C_TYPE_ID_ADD()
  */
 #define C_TYPE_ADD_TID(DST_TYPE,NEW_TID,NEW_LOC) BLOCK( \
   if ( !c_type_add_tid( (DST_TYPE), (NEW_TID), &(NEW_LOC) ) ) PARSE_ABORT(); )
 
 /**
- * Calls c_type_id_add(): if adding the type fails, calls PARSE_ABORT().
+ * Calls c_type_id_add(): if adding the type fails, calls #PARSE_ABORT().
  *
  * @param DST_TID The <code>\ref c_type_id_t</code> to add to.
  * @param NEW_TID The <code>\ref c_type_id_t</code> to add.
  * @param NEW_LOC The source location of \a NEW_TID.
  *
- * @sa C_TYPE_ADD()
- * @sa C_TYPE_ADD_TID()
+ * @sa #C_TYPE_ADD()
+ * @sa #C_TYPE_ADD_TID()
  */
 #define C_TYPE_ID_ADD(DST_TID,NEW_TID,NEW_LOC) BLOCK( \
   if ( !c_type_id_add( (DST_TID), (NEW_TID), &(NEW_LOC) ) ) PARSE_ABORT(); )
@@ -163,7 +163,7 @@
   elaborate_error_dym( DYM_NONE, __VA_ARGS__ )
 
 /**
- * Calls fl_elaborate_error() followed by PARSE_ABORT().
+ * Calls fl_elaborate_error() followed by #PARSE_ABORT().
  *
  * @param DYM_KINDS The bitwise-or of the kind(s) of things possibly meant.
  * @param ... Arguments passed to fl_elaborate_error().
@@ -338,15 +338,15 @@
  * @param NAME The grammar production name.
  * @param PROD The grammar production rule.
  *
- * @sa DUMP_AST
- * @sa DUMP_AST_LIST
- * @sa DUMP_BOOL
- * @sa DUMP_END
- * @sa DUMP_INT
- * @sa DUMP_SNAME
- * @sa DUMP_STR
- * @sa DUMP_TID
- * @sa DUMP_TYPE
+ * @sa #DUMP_AST
+ * @sa #DUMP_AST_LIST
+ * @sa #DUMP_BOOL
+ * @sa #DUMP_END
+ * @sa #DUMP_INT
+ * @sa #DUMP_SNAME
+ * @sa #DUMP_STR
+ * @sa #DUMP_TID
+ * @sa #DUMP_TYPE
  */
 #define DUMP_START(NAME,PROD)                           \
   bool debug_comma = false;                             \

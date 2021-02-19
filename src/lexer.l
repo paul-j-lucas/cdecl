@@ -155,7 +155,7 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  * @param ALLOW If `true`, allow this synonym when explaining C/C++.
  * @param ... Array of `c_lang_lit`.
  *
- * @sa CDECL_KEYWORDS for examples.
+ * @sa #CDECL_KEYWORDS for examples.
  */
 #define C_SYN(ALLOW,...)          (ALLOW), 0, (c_lang_lit_t const[])__VA_ARGS__
 
@@ -165,7 +165,7 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  * @param ALLOW If `true`, allow this synonym when explaining C/C++.
  * @param C_KEYWORD The C/C++ keyword literal (`L_xxx`) that is the synonym.
  *
- * @sa CDECL_KEYWORDS for examples.
+ * @sa #CDECL_KEYWORDS for examples.
  */
 #define C_SY1(ALLOW,C_KEYWORD)    C_SYN( (ALLOW), { { LANG_ANY, C_KEYWORD } } )
 
@@ -174,7 +174,7 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  *
  * @param Y_ID The Bison token ID (`Y_xxx`).
  *
- * @sa CDECL_KEYWORDS for examples.
+ * @sa #CDECL_KEYWORDS for examples.
  */
 #define TOKEN(Y_ID)               false, (Y_ID), NULL
 
