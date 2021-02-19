@@ -455,33 +455,6 @@ bool c_type_add_tid( c_type_t *dst_type, c_type_id_t new_tid,
                      c_loc_t const *new_loc );
 
 /**
- * Checks that \a type is valid.
- *
- * @param type The <code>\ref c_type</code> to check.
- * @return Returns the bitwise-or of the language(s) \a type is legal in.
- */
-PJL_WARN_UNUSED_RESULT
-c_lang_id_t c_type_check( c_type_t const *type );
-
-/**
- * Adds a type to an existing type, e.g., `short` to `int`, ensuring that a
- * particular type is never added more than once, e.g., `short` to `short int`.
- *
- * A special case has to be made for `long` to allow for `long long` yet not
- * allow for `long long long`.
- *
- * @param dst_tid The <code>\ref c_type_id_t</code> to add to.
- * @param new_tid The <code>\ref c_type_id_t</code> to add.
- * @param new_loc The source location of \a new_id.
- * @return Returns `true` only if the type added successfully.
- *
- * @sa c_type_add(()
- */
-PJL_WARN_UNUSED_RESULT
-bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
-                    c_loc_t const *new_loc );
-
-/**
  * Performs the bitwise-and of all the parts of \a i_type and \a j_type.
  *
  * @param i_type The first <code>\ref c_type</code>.
@@ -506,6 +479,15 @@ c_type_t c_type_and( c_type_t const *i_type, c_type_t const *j_type );
 void c_type_and_eq_compl( c_type_t *dst_type, c_type_t const *rm_type );
 
 /**
+ * Checks that \a type is valid.
+ *
+ * @param type The <code>\ref c_type</code> to check.
+ * @return Returns the bitwise-or of the language(s) \a type is legal in.
+ */
+PJL_WARN_UNUSED_RESULT
+c_lang_id_t c_type_check( c_type_t const *type );
+
+/**
  * Checks whether \a i_type and \a j_type are equal.
  *
  * @param i_type The first <code>\ref c_type</code>.
@@ -519,7 +501,7 @@ bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type );
 
 /**
  * Gets a pointer to the <code>\ref c_type_id_t</code> of \a type that
- * corresponds to the part of \a tid.
+ * corresponds to the type part ID of \a tid.
  *
  * @param type The <code>\ref c_type</code> to get a pointer to the <code>\ref
  * c_type_id_t</code> of.
@@ -534,15 +516,22 @@ PJL_WARN_UNUSED_RESULT
 c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid );
 
 /**
- * Gets the `c_type_part_id_t` from \a tid.
+ * Adds a type to an existing type, e.g., `short` to `int`, ensuring that a
+ * particular type is never added more than once, e.g., `short` to `short int`.
  *
- * @param tid The type ID.
- * @return Returns said `c_type_part_id_t`.
+ * A special case has to be made for `long` to allow for `long long` yet not
+ * allow for `long long long`.
  *
- * @sa c_type_id_no_tpid()
+ * @param dst_tid The <code>\ref c_type_id_t</code> to add to.
+ * @param new_tid The <code>\ref c_type_id_t</code> to add.
+ * @param new_loc The source location of \a new_id.
+ * @return Returns `true` only if the type added successfully.
+ *
+ * @sa c_type_add(()
  */
 PJL_WARN_UNUSED_RESULT
-c_type_part_id_t c_type_id_tpid( c_type_id_t tid );
+bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
+                    c_loc_t const *new_loc );
 
 /**
  * Gets the C/C++ name of \a tid.
@@ -605,6 +594,17 @@ char const* c_type_id_name_error( c_type_id_t tid );
  */
 PJL_WARN_UNUSED_RESULT
 c_type_id_t c_type_id_normalize( c_type_id_t tid );
+
+/**
+ * Gets the `c_type_part_id_t` from \a tid.
+ *
+ * @param tid The type ID.
+ * @return Returns said `c_type_part_id_t`.
+ *
+ * @sa c_type_id_no_tpid()
+ */
+PJL_WARN_UNUSED_RESULT
+c_type_part_id_t c_type_id_tpid( c_type_id_t tid );
 
 /**
  * Gets whether \a i_type contains any of \a j_type.
@@ -701,7 +701,7 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type );
 
 /**
  * Gets the <code>\ref c_type_id_t</code> of \a type that corresponds to the
- * part of \a tid.
+ * type part ID of \a tid.
  *
  * @param type The <code>\ref c_type</code> to get the <code>\ref
  * c_type_id_t</code> of.

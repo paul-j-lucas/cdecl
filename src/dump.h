@@ -28,7 +28,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "slist.h"
 #include "types.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -53,6 +52,8 @@
  * @param indent The initial indent.
  * @param key0 The initial key or NULL for none.
  * @param dout The `FILE` to dump to.
+ *
+ * @sa c_ast_list_dump()
  */
 void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
                  FILE *dout );
@@ -71,24 +72,30 @@ void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout );
  *
  * @param sname The scoped name to dump.
  * @param dout The `FILE` to dump to.
+ *
+ * @sa c_ast_dump()
  */
 void c_sname_dump( c_sname_t const *sname, FILE *dout );
-
-/**
- * Dumps \a tid (for debugging).
- *
- * @param tid The <code>\ref c_type_id_t</code> to print.
- * @param dout The `FILE` to dump to.
- */
-void c_type_id_dump( c_type_id_t tid, FILE *dout );
 
 /**
  * Dumps \a type (for debugging).
  *
  * @param type The <code>\ref c_type</code> to print.
  * @param dout The `FILE` to dump to.
+ *
+ * @sa c_type_id_dump()
  */
 void c_type_dump( c_type_t const *type, FILE *dout );
+
+/**
+ * Dumps \a tid (for debugging).
+ *
+ * @param tid The <code>\ref c_type_id_t</code> to print.
+ * @param dout The `FILE` to dump to.
+ *
+ * @sa c_type_dump()
+ */
+void c_type_id_dump( c_type_id_t tid, FILE *dout );
 
 /**
  * Prints a key/value pair (for debugging).

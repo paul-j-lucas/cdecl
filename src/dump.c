@@ -297,13 +297,6 @@ void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
   }
 }
 
-void c_type_id_dump( c_type_id_t tid, FILE *dout ) {
-  FPRINTF( dout,
-    "\"%s\" (%s = 0x%" PRIX_C_TYPE_ID_T ")",
-    c_type_id_name_c( tid ), c_type_part_id_name( c_type_id_tpid( tid ) ), tid
-  );
-}
-
 void c_type_dump( c_type_t const *type, FILE *dout ) {
   assert( type != NULL );
   FPRINTF( dout,
@@ -312,6 +305,13 @@ void c_type_dump( c_type_t const *type, FILE *dout ) {
     ", store = 0x%" PRIX_C_TYPE_ID_T
     ", attr = 0x%" PRIX_C_TYPE_ID_T ")",
     c_type_name_c( type ), type->base_tid, type->store_tid, type->attr_tid
+  );
+}
+
+void c_type_id_dump( c_type_id_t tid, FILE *dout ) {
+  FPRINTF( dout,
+    "\"%s\" (%s = 0x%" PRIX_C_TYPE_ID_T ")",
+    c_type_id_name_c( tid ), c_type_part_id_name( c_type_id_tpid( tid ) ), tid
   );
 }
 
