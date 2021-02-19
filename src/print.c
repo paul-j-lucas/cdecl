@@ -256,17 +256,12 @@ void fl_print_error_unknown_name( char const *file, int line,
   // Must dup this since c_sname_full_name() returns a temporary buffer.
   char const *const name = check_strdup( c_sname_full_name( sname ) );
 
-  char const *adj = "unknown";
-  dym_kind_t  dym_kind = DYM_NONE;
-  c_type_id_t tid = TX_NONE;
-  char const *what = "name";
-
   c_keyword_t const *const k = c_keyword_find( name, LANG_ANY, C_KW_CTX_ALL );
-
   if ( k != NULL ) {
-    adj = "unsupported";
-    tid = k->type_id;
-    switch ( c_type_id_tpid( tid ) ) {
+    dym_kind_t  dym_kind;
+    char const *what;
+
+    switch ( c_type_id_tpid( k->type_id ) ) {
       case C_TPID_BASE:
         dym_kind = DYM_C_TYPES;
         what = "type";
@@ -280,13 +275,16 @@ void fl_print_error_unknown_name( char const *file, int line,
         what = "attribute";
         break;
     } // switch
+
+    fl_print_error( file, line, loc,
+      "\"%s\": unsupported %s%s", name, what, c_lang_until( k->lang_ids )
+    );
+    print_suggestions( dym_kind, name );
+  }
+  else {
+    fl_print_error( file, line, loc, "\"%s\": unknown name", name );
   }
 
-  fl_print_error( file, line, loc, "\"%s\": %s %s", name, adj, what );
-  if ( tid != TX_NONE )
-    EPRINTF( " until %s", c_lang_oldest_name( k->lang_ids ) );
-
-  print_suggestions( dym_kind, name );
   EPUTC( '\n' );
   FREE( name );
 }
