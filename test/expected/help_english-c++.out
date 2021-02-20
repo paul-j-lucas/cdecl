@@ -6,18 +6,18 @@ english:
   <store>* <fn-qual>* [[non-]member] operator [([<args>])] [returning <english>]
   <store>* <cv-qual>* pointer to [member of { class | struct } <name>] <english>
   { enum [class|struct] [of [type] <english>] | class | struct | union } <name>
-  [rvalue] reference to <english>
+  <store>* [rvalue] reference to <english>
   <store>* <modifier>* [<C++-type>]
 user-defined-english:
   conversion [operator] [of <scope-e> <name>]* returning <english>
   literal [([<args>])] [returning <english>]
 args: a comma separated list of [<name> as] <english>
-C++-type: bool char char8_t char16_t char32_t wchar_t int float double void
-cv-qual: const volatile
-fn-qual: const volatile [rvalue] reference
-modifier: short long signed unsigned const volatile
+C++-type: bool | char | char{8|16|32}_t | wchar_t | int | float | double | void
+cv-qual: const | volatile
+fn-qual: <cv-qual> | [rvalue] reference
+modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*
-scope-e: scope class struct union [inline] namespace
-store: const[eval|expr|init] extern ["C" [linkage]] friend mutable static
-       thread_local [pure] virtual
+scope-e: scope | class | struct | union | [inline] namespace
+store: const[eval|expr|init] | extern ["C" [linkage]] | friend | mutable |
+       static | thread_local | [pure] virtual
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

@@ -178,10 +178,10 @@ static void print_help_commands( void ) {
   print_h( "  [no]explain-by-default [no]explicit-int[=<types>] lang=<lang>\n" );
   print_h( "  [no]prompt [no]semicolon\n" );
 
-  print_h( "lang: C K&R C89 C95 C99 C11 C17 C2X C\\+\\+ C\\+\\+98 C\\+\\+03 C\\+\\+11 C\\+\\+14 C\\+\\+17 C\\+\\+20\n" );
+  print_h( "lang: K&R[C] C[KNR|89|95|99|11|17|2X] C\\+\\+[98|03|11|14|17|20]\n" );
 
   if ( OPT_LANG_IS(CPP_ANY) ) {
-    print_h( "scope-c: class struct union" );
+    print_h( "scope-c: class | struct | union |" );
     if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( " [inline]" );
     print_h( " namespace\n" );
@@ -246,55 +246,51 @@ static void print_help_english( void ) {
 
     print_h( "C-type:" );
     if ( OPT_LANG_IS(C_MIN(99)) )
-      print_h( " bool" );
+      print_h( " _Bool |" );
     print_h( " char" );
-    if ( OPT_LANG_IS(C_MIN(2X)) )
-      print_h( " char8_t" );
-    if ( OPT_LANG_IS(C_MIN(11)) )
-      print_h( " char16_t char32_t" );
+    if ( OPT_LANG_IS(C_MIN(11)) ) {
+      print_h( " | char{" );
+      if ( OPT_LANG_IS(C_MIN(2X)) )
+        print_h( "8|" );
+      print_h( "16|32}_t" );
+    }
     if ( OPT_LANG_IS(C_MIN(95)) )
-      print_h( " wchar_t" );
-    print_h( " int float double" );
+      print_h( " | wchar_t" );
+    print_h( " | int | float | double" );
     if ( OPT_LANG_IS(C_MIN(89)) )
-      print_h( " void" );
+      print_h( " | void" );
     print_h( "\n" );
 
     if ( OPT_LANG_IS(C_MIN(89)) ) {
       print_h( "cv-qual:" );
       if ( OPT_LANG_IS(C_MIN(11)) )
-        print_h( " _Atomic" );
-      print_h( " const" );
+        print_h( " _Atomic |" );
+      print_h( " const |" );
       if ( OPT_LANG_IS(C_MIN(99)) )
-        print_h( " restrict" );
+        print_h( " restrict |" );
       print_h( " volatile\n" );
     }
 
     print_h( "modifier:" );
-    if ( OPT_LANG_IS(C_MIN(11)) )
-      print_h( " _Atomic" );
     print_h( " short" );
     if ( OPT_LANG_IS(C_MIN(89)) )
-      print_h( " signed" );
-    print_h( " long unsigned" );
+      print_h( " | signed" );
+    print_h( " | long | unsigned" );
     if ( OPT_LANG_IS(C_MIN(89)) )
-      print_h( " const" );
-    if ( OPT_LANG_IS(C_MIN(99)) )
-      print_h( " restrict" );
-    if ( OPT_LANG_IS(C_MIN(89)) )
-      print_h( " volatile" );
+      print_h( " | <cv-qual>" );
     print_h( "\n" );
 
     print_h( "name: a C identifier\n" );
-    print_h( "store: auto extern register static" );
+    print_h( "store: auto | extern | register | static" );
     if ( OPT_LANG_IS(C_MIN(11)) )
-      print_h( " thread_local" );
+      print_h( " | thread_local" );
     print_h( "\n" );
   }
   else {
-    print_h( "  " );
+    print_h( "  <store>*" );
     if ( OPT_LANG_IS(CPP_MIN(11)) )
-      print_h( "[rvalue] " );
-    print_h( "reference to <english>\n" );
+      print_h( " [rvalue]" );
+    print_h( " reference to <english>\n" );
 
     print_h( "  <store>* <modifier>* [<C\\+\\+-type>]\n" );
 
@@ -306,24 +302,26 @@ static void print_help_english( void ) {
 
     print_h( "args: a comma separated list of [<name> as] <english>\n" );
 
-    print_h( "C\\+\\+-type: bool char" );
-    if ( OPT_LANG_IS(CPP_MIN(20)) )
-      print_h( " char8_t" );
-    if ( OPT_LANG_IS(CPP_MIN(11)) )
-      print_h( " char16_t char32_t" );
-    print_h( " wchar_t int float double void\n" );
+    print_h( "C\\+\\+-type: bool | char" );
+    if ( OPT_LANG_IS(CPP_MIN(11)) ) {
+      print_h( " | char{" );
+      if ( OPT_LANG_IS(CPP_MIN(20)) )
+        print_h( "8|" );
+      print_h( "16|32}_t" );
+    }
+    print_h( " | wchar_t | int | float | double | void\n" );
 
-    print_h( "cv-qual: const volatile\n" );
+    print_h( "cv-qual: const | volatile\n" );
 
-    print_h( "fn-qual: const volatile" );
+    print_h( "fn-qual: <cv-qual>" );
     if ( OPT_LANG_IS(CPP_MIN(11)) )
-      print_h( " [rvalue] reference" );
+      print_h( " | [rvalue] reference" );
     print_h( "\n" );
 
-    print_h( "modifier: short long signed unsigned const volatile\n" );
+    print_h( "modifier: short | long | signed | unsigned | <cv-qual>\n" );
     print_h( "name: a C\\+\\+ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*\n" );
 
-    print_h( "scope-e: scope class struct union" );
+    print_h( "scope-e: scope | class | struct | union |" );
     if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( " [inline]" );
     print_h( " namespace\n" );
@@ -339,11 +337,11 @@ static void print_help_english( void ) {
       print_h( "|init" );
     if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( "]" );
-    print_h( " extern [\"C\" [linkage]] friend mutable static\n" );
-    print_h( "      " );
+    print_h( " | extern [\"C\" [linkage]] | friend | mutable |\n" );
+    print_h( "       static" );
     if ( OPT_LANG_IS(CPP_MIN(11)) )
-      print_h( " thread_local" );
-    print_h( " [pure] virtual\n" );
+      print_h( " | thread_local" );
+    print_h( " | [pure] virtual\n" );
   }
 
   print_help_where();

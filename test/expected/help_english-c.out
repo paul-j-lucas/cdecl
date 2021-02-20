@@ -7,9 +7,9 @@ english:
   block [([<args>])] [returning <english>]
   <store>* <modifier>* [<C-type>]
 args: a comma separated list of [<name> as] <english>
-C-type: bool char char8_t char16_t char32_t wchar_t int float double void
-cv-qual: _Atomic const restrict volatile
-modifier: _Atomic short signed long unsigned const restrict volatile
+C-type: _Bool | char | char{8|16|32}_t | wchar_t | int | float | double | void
+cv-qual: _Atomic | const | restrict | volatile
+modifier: short | signed | long | unsigned | <cv-qual>
 name: a C identifier
-store: auto extern register static thread_local
+store: auto | extern | register | static | thread_local
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

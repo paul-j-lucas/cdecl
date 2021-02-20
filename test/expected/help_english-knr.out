@@ -6,8 +6,8 @@ english:
   block [([<args>])] [returning <english>]
   <store>* <modifier>* [<C-type>]
 args: a comma separated list of <name>
-C-type: char int float double
-modifier: short long unsigned
+C-type: char | int | float | double
+modifier: short | long | unsigned
 name: a C identifier
-store: auto extern register static
+store: auto | extern | register | static
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

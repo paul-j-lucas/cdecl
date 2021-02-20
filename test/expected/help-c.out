@@ -14,5 +14,5 @@ option:
   [no]alt-tokens [no]debug {di|tri|no}graphs [no]east-const
   [no]explain-by-default [no]explicit-int[=<types>] lang=<lang>
   [no]prompt [no]semicolon
-lang: C K&R C89 C95 C99 C11 C17 C2X C++ C++98 C++03 C++11 C++14 C++17 C++20
+lang: K&R[C] C[KNR|89|95|99|11|17|2X] C++[98|03|11|14|17|20]
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
