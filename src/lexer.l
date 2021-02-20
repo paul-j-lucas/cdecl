@@ -194,22 +194,22 @@ typedef struct cdecl_keyword cdecl_keyword_t;
  *      // The "align" literal synonym also maps to the Y_ALIGNED token:
  *      { L_ALIGN,          TOKEN( Y_ALIGNED            ) },
  *
- * To have a literal that is English be a synonym for exactly one corresponding
- * C/C++ keyword literal, but only when converting English to gibberish, use
- * #C_SY1 with `false`:
+ * To have a literal that is pseudo-English be a synonym for exactly one
+ * corresponding C/C++ keyword literal, but only when converting pseudo-English
+ * to gibberish, use #C_SY1 with `false`:
  *
  *      // The "atomic" literal is a synonym for the "_Atomic" literal, but
- *      // only when converting from English to gibberish:
+ *      // only when converting from pseudo-English to gibberish:
  *      { L_ATOMIC,         C_SY1( false, L__ATOMIC     ) },
  *
  * To do the same, but allow the literal at any time (i.e., also when
- * converting gibberish to English), use #C_SY1 with `true`:
+ * converting gibberish to pseudo-English), use #C_SY1 with `true`:
  *
  *      // The "imaginary" literal is always a synonym for the "_Imaginary"
  *      // literal.
  *      { L_IMAGINARY,      C_SY1( true,  L__IMAGINARY  ) },
  *
- * To have a literal that is English be a synonym for more than one
+ * To have a literal that is pseudo-English be a synonym for more than one
  * corresponding C/C++ keyword depending on the current language, use #C_SYN
  * with the last row always containing #LANG_ANY:
  *
@@ -759,7 +759,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 {hyphenated}  {
                 SET_TOKEN;
                 //
-                // Hyphenated tokens are legal only in English.
+                // Hyphenated tokens are legal only in pseudo-English.
                 //
                 if ( !lexer_is_english() )
                   return Y_ERROR;

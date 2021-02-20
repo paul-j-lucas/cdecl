@@ -392,9 +392,9 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
     if ( !lexer_is_english() &&
          k->kw_ctx != C_KW_CTX_ALL && kw_ctx != k->kw_ctx ) {
       //
-      // Keyword contexts matter only when converting gibberish to English.
-      // For example, we do NOT match attribute names when parsing C++ because
-      // they are not reserved words.  For example:
+      // Keyword contexts matter only when converting gibberish to pseudo-
+      // English.  For example, we do NOT match attribute names when parsing
+      // C++ because they are not reserved words.  For example:
       //
       //      [[noreturn]] void noreturn();
       //
@@ -404,8 +404,8 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
     }
     else {
       //
-      // When converting English to gibberish, we MUST match attribute names
-      // because there isn't be any special syntax for them, e.g.:
+      // When converting pseudo-English to gibberish, we MUST match attribute
+      // names because there isn't be any special syntax for them, e.g.:
       //
       //      declare x as deprecated int
       //

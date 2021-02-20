@@ -191,7 +191,7 @@ static void print_help_commands( void ) {
 }
 
 /**
- * Prints the help for pseudo English.
+ * Prints the help for pseudo-English.
  */
 static void print_help_english( void ) {
   print_h( "english:\n" );

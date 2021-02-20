@@ -44,7 +44,7 @@
  * recognized as keywords in gibberish.  For example, `final` and `override`
  * are recognized as keywords only within C++ member function declarations.
  *
- * @note These matter only when converting gibberish to English.
+ * @note These matter only when converting gibberish to pseudo-English.
  */
 enum c_keyword_ctx {
   C_KW_CTX_ALL,                         ///< All contexts.

@@ -47,8 +47,8 @@ _GL_INLINE_HEADER_BEGIN
 
 ////////// literals ///////////////////////////////////////////////////////////
 
-// A literal starting with "H_" is English for the same literal starting with
-// "L_" and are spelled the same except that '-' replaces '_' ("H_" for
+// A literal starting with "H_" is pseudo-English for the same literal starting
+// with "L_" and are spelled the same except that '-' replaces '_' ("H_" for
 // "hyphen").
 
 // If you add a new literal and it is:

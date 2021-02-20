@@ -647,7 +647,7 @@ static void c_type_id_name_cat( strbuf_t *sbuf, c_type_id_t tid,
 
 /**
  * Gets the literal of a given <code>\ref c_type_info</code>, either gibberish
- * or, if appropriate and available, English.
+ * or, if appropriate and available, pseudo-English.
  *
  * @param ti The <code>\ref c_type_info</code> to get the literal of.
  * @param in_english If `true`, return the pseudo-English literal if one

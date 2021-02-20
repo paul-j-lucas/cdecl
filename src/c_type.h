@@ -701,8 +701,8 @@ char const* c_type_id_name_eng( c_type_id_t tid ) {
 
 /**
  * Gets the name of \a tid for part of an error message.  If translating from
- * English to gibberish and the type has an English alias, return the alias,
- * e.g., `non-returning` rather than `noreturn`.
+ * pseudo-English to gibberish and the type has an pseudo-English alias, return
+ * the alias, e.g., `non-returning` rather than `noreturn`.
  *
  * @param tid The <code>\ref c_type_id_t</code> to get the name of.
  * @return Returns said name.

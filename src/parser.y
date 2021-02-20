@@ -898,7 +898,7 @@ static void yyerror( char const *msg ) {
 //                  Y_UNION             // covered in K&R C
 //                  Y_USING             // covered in C++11
 
-                    // English
+                    // Pseudo-English
 %token              Y_ALIGNED
 %token              Y_ALL
 %token              Y_ARRAY
@@ -1177,7 +1177,7 @@ static void yyerror( char const *msg ) {
 // if a rule:
 //
 //  1. Is a list, "_list" is appended.
-//  2. Is specific to C/C++, "_c" is appended; is specific to English,
+//  2. Is specific to C/C++, "_c" is appended; is specific to pseudo-English,
 //     "_english" is appended.
 //  3. Is of type:
 //      + <ast>: "_ast" is appended.
@@ -1195,7 +1195,7 @@ static void yyerror( char const *msg ) {
 //
 // Sort using: sort -bdk3
 
-                    // English
+                    // Pseudo-English
 %type   <ast>       alignas_or_width_decl_english_ast
 %type   <align>     alignas_specifier_english
 %type   <ast>       array_decl_english_ast
