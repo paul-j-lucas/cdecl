@@ -207,7 +207,7 @@ static bool is_similar_enough( dam_lev_t dam_lev_dist, unsigned percent,
                                size_t target_len ) {
   assert( percent < 100 );
   double const percent_fract = percent / 100.0;
-  return dam_lev_dist <= (dam_lev_t)(target_len * percent_fract + 0.5);
+  return dam_lev_dist <= (dam_lev_t)((double)target_len * percent_fract + 0.5);
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
