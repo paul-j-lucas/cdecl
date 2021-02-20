@@ -258,8 +258,8 @@ void fl_print_error_unknown_name( char const *file, int line,
 
   c_keyword_t const *const k = c_keyword_find( name, LANG_ANY, C_KW_CTX_ALL );
   if ( k != NULL ) {
-    dym_kind_t  dym_kind;
-    char const *what;
+    dym_kind_t  dym_kind = DYM_NONE;
+    char const *what = NULL;
 
     switch ( c_type_id_tpid( k->type_id ) ) {
       case C_TPID_BASE:
