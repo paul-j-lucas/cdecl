@@ -129,7 +129,7 @@ static c_keyword_t const C_KEYWORDS[] = {
 
   // C99
   { L__BOOL,
-    Y__BOOL,              LANG_MIN(C_99),         KC__, TB_BOOL               },
+    Y__BOOL,              LANG_C_MIN(99),         KC__, TB_BOOL               },
   { L__COMPLEX,
     Y__COMPLEX,           LANG_C_MIN(99),         KC__, TB_COMPLEX            },
   { L__IMAGINARY,
