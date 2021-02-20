@@ -1,5 +1,7 @@
 2021-02-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * did_you_mean.c: Got rid of "may change value" warning.
+   * print.c: Silence warnings.
    * did_you_mean.c: Extracted SIMILAR_ENOUGH_PERCENT.
    * NEWS, c_keyword.c: `_Bool` is now recognized only in C99 and later and not
      in C++.
