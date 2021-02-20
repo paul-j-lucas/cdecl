@@ -1,5 +1,6 @@
 2021-02-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Updated version to 9.6.
    * did_you_mean.c: Got rid of "may change value" warning.
    * print.c: Silence warnings.
    * did_you_mean.c: Extracted SIMILAR_ENOUGH_PERCENT.
