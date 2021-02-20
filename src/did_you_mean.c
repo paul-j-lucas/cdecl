@@ -63,34 +63,12 @@ typedef struct copy_typedef_visitor_data copy_typedef_visitor_data_t;
  */
 typedef int (*qsort_cmp_fn_t)( void const *i_data, void const *j_data );
 
-////////// inline functions ///////////////////////////////////////////////////
-
 /**
- * Gets whether \a dam_lev_dist is "similar enough" to be a candidate.
- *
- * Using a Damerau-Levenshtein edit distance alone to implement "Did you mean
- * ...?" can yield poor results if you just always use the results with the
- * least distance.  For example, given a source string of "fixed" and the best
- * target string of "float", it's probably safe to assume that because "fixed"
- * is so different from "float" that there's no way "float" was meant.  It
- * would be better to offer _no_ suggestions than not-even-close suggestions.
- *
- * Hence, you need a heuristic to know whether a least edit distance is
- * "similar enough" to the target string even to bother offering suggestions.
- * This can be done by checking whether the distance is less than or equal to
- * some percentage, say, 33%, of the target string's length.  This means that
- * the source string must be at least a 66% match of the target string in order
- * to be considered "similar enough" to be a reasonable suggestion.
- *
- * @param dam_lev_dist A Damerau-Levenshtein edit distance.
- * @param target_len The length of the target string.
- * @return Returns `true` only if \a dam_lev_dist is "similar enough."
+ * The edit distance must be less than or equal to this percent of a target
+ * string's length in order to be considered "similar enough" to be a
+ * reasonable suggestion.
  */
-PJL_WARN_UNUSED_RESULT
-static inline bool is_similar_enough( dam_lev_t dam_lev_dist,
-                                      size_t target_len ) {
-  return dam_lev_dist <= (dam_lev_t)((double)target_len * 0.33 + 0.5);
-}
+static unsigned const SIMILAR_ENOUGH_PERCENT = 40;
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -201,6 +179,37 @@ static void dym_free_tokens( did_you_mean_t const *dym ) {
     FREE( dym++->token );
 }
 
+/**
+ * Gets whether \a dam_lev_dist is "similar enough" to be a candidate.
+ *
+ * Using a Damerau-Levenshtein edit distance alone to implement "Did you mean
+ * ...?" can yield poor results if you just always use the results with the
+ * least distance.  For example, given a source string of "fixed" and the best
+ * target string of "float", it's probably safe to assume that because "fixed"
+ * is so different from "float" that there's no way "float" was meant.  It
+ * would be better to offer _no_ suggestions than not-even-close suggestions.
+ *
+ * Hence, you need a heuristic to know whether a least edit distance is
+ * "similar enough" to the target string even to bother offering suggestions.
+ * This can be done by checking whether the distance is less than or equal to
+ * some percentage, say, 40%, of the target string's length in order to be
+ * considered "similar enough" to be a reasonable suggestion.
+ *
+ * @param dam_lev_dist A Damerau-Levenshtein edit distance.
+ * @param percent The edit distance must be less than or equal to this percent
+ * of \a target_len in order to be considered "similar enough" to be a
+ * reasonable suggestion.
+ * @param target_len The length of the target string.
+ * @return Returns `true` only if \a dam_lev_dist is "similar enough."
+ */
+PJL_WARN_UNUSED_RESULT
+static bool is_similar_enough( dam_lev_t dam_lev_dist, unsigned percent,
+                               size_t target_len ) {
+  assert( percent < 100 );
+  double const percent_fract = percent / 100.0;
+  return dam_lev_dist <= (dam_lev_t)(target_len * percent_fract + 0.5);
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 void dym_free( did_you_mean_t const *dym_array ) {
@@ -266,7 +275,7 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
   size_t const best_len = strlen( dym_array->token );
   size_t best_count = 0;
 
-  if ( is_similar_enough( best_dist, best_len ) ) {
+  if ( is_similar_enough( best_dist, SIMILAR_ENOUGH_PERCENT, best_len ) ) {
     // include all candidates that have the same distance
     for ( dym = dym_array;
           ++best_count < dym_size && (++dym)->dam_lev_dist == best_dist; )
