@@ -1,5 +1,73 @@
+2021-02-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: Extracted SIMILAR_ENOUGH_PERCENT.
+   * NEWS, c_keyword.c: `_Bool` is now recognized only in C99 and later and not
+     in C++.
+   * NEWS, lexer.l: `imaginary` is now mapped only to `_Imaginary` in C99 and
+     later and not in C++.
+   * print.c: Simplified; now using c_lang_until().
+   * c_keyword.c, c_keyword.h: s/context/kw_ctx/
+   * c_type.c, c_type.h: Moved more code around.
+   * c_type.c: Comment.
+   * c_type.c: Remove left-over pointless `if`.
+   * c_type.c: Code reorganization.
+   * c_type.c, c_type.h: Eliminated c_type_get_tid(); moved
+     c_type_get_tid_ptr() into .c.
+   * c_type.h, dump.c, dump.h: Code sorting; Doxygen.
+   * c_typedef.c: Comment.
+
+2021-02-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, parser.y: Renamed debug.[ch] -> dump.[ch].
+   * debug.c: Clean-up.
+   * debug.c, cdecl--debug.out, cdecl-d.out: Types are now dumped more
+     verbosely.
+   * parser.y: DUMP_SNAME() now implicitly does &.
+   * c_type.h, lexer.l, parser.y: Doxygen.
+   * c_keyword.c: Allow "restrict" to be recognized in C++ so the parser can
+     give a better error messsage.
+   * parser.y: Clean-up.
+   * c_ast_util.c, c_type.c, c_type.h, parser.y: s/T_TYPEDEF/T_TS_TYPEDEF/ for
+     clarity.
+   * c_type.c: Macro clean-up.
+   * stddef.in.h: Updated Gnulib.
+   * autocomplete.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.h,
+     c_kind.h, c_lang.h, c_sname.c, c_sname.h, c_typedef.c, c_typedef.h,
+     cdecl.c, color.c, debug.h, did_you_mean.c, did_you_mean.h, lexer.h,
+     lexer.l, options.h, parser.y, print.h, prompt.c, red_black.c, red_black.h,
+     set_options.h, slist.h, util.c, util.h: Comment clean-up.
+
+2021-02-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * check.c: Clean-up.
+   * NEWS, check.c, test/Makefile.am, explain_fa_v.out,
+     explain_fa_v-c++17.test, explain_fa_v.test: Function parameters in C++20
+     now allow auto.
+   * c_ast_util.c: The type redefinition error message now includes the
+     existing type, part 2.
+   * c_ast.c: Fixed warning.
+   * NEWS, parser.y: The type redefinition error message now includes the
+     existing type.
+   * c_typedef.c, c_typedef.h, parser.y: c_typedef_add() now returns
+     c_typedef_t*.
+   * c_type.c, c_type.h, debug.c, english.c, gibberish.c, parser.y,
+     k_typedef_i_typedef_tn_i.out, show_all-c++.out, show_all.out,
+     show_all_predefined-c++.out, show_all_predefined.out,
+     show_predefined-c++.out, show_predefined.out: Split out c_type_*name_c()
+     and c_type_*name_eng().
+
 2021-02-16  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS: Elaborated what a reserved identifier is.
+   * check.c: s/not supported/{is
+   * parser.y, explain_2gat_cpi.out, explain_a_using_a_mu_i.out,
+     explain_c_gat_pi.out, explain_c_gat_vpi.out, explain_gat_c_gat_vpi.out,
+     explain_gat_cpi.out, explain_gat_i-01.out, explain_gat_i-02.out,
+     explain_gat_i-03.out, explain_gat_i-04.out, explain_gat_i-05.out,
+     explain_gat_i-06.out, explain_gat_i-07.out, explain_gat_i-08.out,
+     explain_gat_i-09.out: s/not supported/is not supported/.  If something is
+     not supported by cdecl, it now says so explicitly (as opposed to it not
+     being supported in the current language.
    * help.c, help_english-c++.out, help_english-c.out: Simplified help a bit.
    * help.c: Simplification.
    * help.c: Clean-up.
