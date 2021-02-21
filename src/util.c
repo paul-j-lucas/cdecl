@@ -289,7 +289,7 @@ void perror_exit( int status ) {
   exit( status );
 }
 
-char* read_input_line( char const *ps1, char const *ps2 ) {
+char const* read_input_line( char const *ps1, char const *ps2 ) {
   assert( ps1 != NULL );
   assert( ps2 != NULL );
 

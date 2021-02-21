@@ -747,7 +747,7 @@ noreturn void perror_exit( int status );
  * it.
  */
 PJL_WARN_UNUSED_RESULT
-char* read_input_line( char const *ps1, char const *ps2 );
+char const* read_input_line( char const *ps1, char const *ps2 );
 
 /**
  * Concatenates \a s_len bytes of \a s onto the end of \a sbuf growing the
