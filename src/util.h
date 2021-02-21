@@ -756,7 +756,7 @@ char* read_input_line( char const *ps1, char const *ps2 );
  * @param sbuf A pointer to the strbuf to concatenate onto.
  * @param s The string to concatenate.
  * @param s_len The number of bytes of \a s to concatenate; if -1, the length
- * of \a s is used.
+ * of \a s is calculated and used.
  *
  * @sa strbuf_catc()
  */
