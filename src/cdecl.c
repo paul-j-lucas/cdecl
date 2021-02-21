@@ -253,7 +253,7 @@ static bool parse_command_line( char const *command, int argc,
 }
 
 /**
- * Parses a file.
+ * Parses cdecl commands from a file.
  *
  * @param file The FILE to read from.
  * @return Returns `true` only upon success.
@@ -261,6 +261,9 @@ static bool parse_command_line( char const *command, int argc,
 PJL_WARN_UNUSED_RESULT
 static bool parse_file( FILE *file ) {
   bool ok = true;
+
+  // We don't just call yyrestart( file ) and yyparse() directly because
+  // parse_string() also inserts "explain " for opt_explain.
 
   for ( char buf[ 1024 ]; fgets( buf, sizeof buf, file ) != NULL; ) {
     if ( !parse_string( buf, -1 ) )
@@ -272,7 +275,7 @@ static bool parse_file( FILE *file ) {
 }
 
 /**
- * Parses one or more files.
+ * Parses cdecl commands from one or more files.
  *
  * @param num_files The length of \a files.
  * @param files An array of file names.
@@ -300,7 +303,7 @@ static bool parse_files( int num_files, char const *const files[const] ) {
 }
 
 /**
- * Parses standard input.
+ * Parses cdecl commands from standard input.
  *
  * @return Returns `true` only upon success.
  */
@@ -328,7 +331,10 @@ static bool parse_stdin( void ) {
 }
 
 /**
- * Parses a string.
+ * Parses a cdecl command from a string.
+ *
+ * @note This is the main parsing function (the only one that calls Bison).
+ * All other `parse_*()` functions ultimately call this function.
  *
  * @param s The null-terminated string to parse.
  * @param s_len_in The length of \a s; if -1, it will be calculated.
@@ -406,7 +412,7 @@ static void read_conf_file( void ) {
 }
 
 /**
- * Checks whether \a s start with a partial string.
+ * Checks whether \a s starts with a partial string.
  *
  * @param s The null-terminated string to check.
  * @param partial The partial string to check against.
