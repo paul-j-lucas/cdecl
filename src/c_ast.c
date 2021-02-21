@@ -169,7 +169,8 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       break;
     }
 
-    case K_ENUM_CLASS_STRUCT_UNION: {
+    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_POINTER_TO_MEMBER: {
       c_ecsu_ast_t const *const ei_ast = &i_ast->as.ecsu;
       c_ecsu_ast_t const *const ej_ast = &j_ast->as.ecsu;
       if ( c_sname_cmp( &ei_ast->ecsu_sname, &ej_ast->ecsu_sname ) != 0 )
@@ -180,14 +181,6 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_NAME:
       // names don't matter
       break;
-
-    case K_POINTER_TO_MEMBER: {
-      c_ptr_mbr_ast_t const *const pmi_ast = &i_ast->as.ptr_mbr;
-      c_ptr_mbr_ast_t const *const pmj_ast = &j_ast->as.ptr_mbr;
-      if ( c_sname_cmp( &pmi_ast->class_sname, &pmj_ast->class_sname ) != 0 )
-        return false;
-      break;
-    }
 
     case K_TYPEDEF:
       if ( i_ast->as.tdef.bit_width != j_ast->as.tdef.bit_width )
