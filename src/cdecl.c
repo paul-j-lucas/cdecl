@@ -321,7 +321,7 @@ static bool parse_stdin( void ) {
         read_input_line( cdecl_prompt[0], cdecl_prompt[1] );
       if ( line == NULL )
         break;
-      ok = parse_string( line, 0 );
+      ok = parse_string( line, -1 );
     } // for
   } else {
     ok = parse_file( fin );
