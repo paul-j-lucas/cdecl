@@ -357,12 +357,11 @@ bool parse_string( char const *s, ssize_t s_len_in ) {
     // inserted_len so the print_*() functions subtract it from the error
     // column to get the correct column within the original string.
     //
-    inserted_len = strlen( L_EXPLAIN ) + 1/*space*/;
+    static char const EXPLAIN_SP[] = "explain ";
+    inserted_len = ARRAY_SIZE( EXPLAIN_SP ) - 1/*\0*/;
     s_len += inserted_len;
     explain_buf = MALLOC( char, s_len + 1/*\0*/ );
-    char *p = strcpy_end( explain_buf, L_EXPLAIN );
-    *p++ = ' ';
-    PJL_IGNORE_RV( strcpy_end( p, s ) );
+    strcpy( strcpy_end( explain_buf, EXPLAIN_SP ), s );
     s = explain_buf;
   }
 
