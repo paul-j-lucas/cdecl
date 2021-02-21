@@ -676,8 +676,8 @@ static void strbuf_cat_sep( strbuf_t *sbuf, char const *s, char sep,
   assert( sep_cat != NULL );
 
   if ( true_or_set( sep_cat ) )
-    strbuf_cat( sbuf, &sep, 1 );
-  strbuf_cat( sbuf, s, -1 );
+    strbuf_catc( sbuf, sep );
+  strbuf_cats( sbuf, s, -1 );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -884,12 +884,12 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
 
     if ( print_brackets ) {
       if ( space )
-        strbuf_cat( sbuf, " ", 1 );
-      strbuf_cat( sbuf, graph_token_c( "[[" ), -1 );
+        strbuf_catc( sbuf, ' ' );
+      strbuf_cats( sbuf, graph_token_c( "[[" ), -1 );
     }
     C_TYPE_ID_NAME_CAT( sbuf, attr_tid, C_ATTRIBUTE, in_english, sep, sep_cat );
     if ( print_brackets )
-      strbuf_cat( sbuf, graph_token_c( "]]" ), -1 );
+      strbuf_cats( sbuf, graph_token_c( "]]" ), -1 );
     space = true;
   }
 

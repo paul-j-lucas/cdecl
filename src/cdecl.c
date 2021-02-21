@@ -235,26 +235,21 @@ static bool parse_argv( int argc, char const *argv[const] ) {
 PJL_WARN_UNUSED_RESULT
 static bool parse_command_line( char const *command, int argc,
                                 char const *argv[] ) {
+  strbuf_t sbuf;
   bool space;                           // need to output a space?
 
-  // pre-flight to calc command_line_len
-  command_line_len = 0;
-  if ( (space = command != NULL) )
-    command_line_len += strlen( command );
-  for ( int i = 0; i < argc; ++i )
-    command_line_len += true_or_set( &space ) + strlen( argv[i] );
-
-  command_line = MALLOC( char, command_line_len + 1/*'\0'*/ );
-  char *s = CONST_CAST(char*, command_line);
-
   // build cdecl command
+  strbuf_init( &sbuf );
   if ( (space = command != NULL) )
-    s = strcpy_end( s, command );
+    strbuf_cats( &sbuf, command, -1 );
   for ( int i = 0; i < argc; ++i ) {
     if ( true_or_set( &space ) )
-      *s++ = ' ';
-    s = strcpy_end( s, argv[i] );
+      strbuf_catc( &sbuf, ' ' );
+    strbuf_cats( &sbuf, argv[i], -1 );
   } // for
+
+  command_line_len = sbuf.str_len;
+  command_line = strbuf_take( &sbuf );
 
   bool const ok = parse_string( command_line, command_line_len );
   FREE( command_line );
@@ -370,7 +365,7 @@ bool parse_string( char const *s, size_t s_len ) {
     s_len += inserted_len;
     explain_buf = MALLOC( char, s_len + 1/*\0*/ );
     char *p = strcpy_end( explain_buf, L_EXPLAIN );
-    p = chrcpy_end( p, ' ' );
+    *p++ = ' ';
     PJL_IGNORE_RV( strcpy_end( p, s ) );
     s = explain_buf;
   }

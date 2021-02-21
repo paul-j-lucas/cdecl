@@ -472,7 +472,8 @@ _GL_INLINE_HEADER_BEGIN
  * %strbuf maintains a C-style string that additionally knows its length and
  * capacity.
  *
- * @sa strbuf_cat()
+ * @sa strbuf_catc()
+ * @sa strbuf_cats()
  * @sa strbuf_free()
  * @sa strbuf_init()
  * @sa strbuf_take()
@@ -749,18 +750,6 @@ PJL_WARN_UNUSED_RESULT
 char* read_input_line( char const *ps1, char const *ps2 );
 
 /**
- * Copies a character to \a dst and appends a `'\0'`.
- *
- * @param dst A pointer to receive \a c.
- * @param c The character to copy.
- * @return Returns a pointer to the new end of \a dst.
- *
- * @sa strcpy_end()
- */
-PJL_WARN_UNUSED_RESULT
-char* chrcpy_end( char *dst, char c );
-
-/**
  * Concatenates \a s_len bytes of \a s onto the end of \a sbuf growing the
  * buffer if necessary.
  *
@@ -768,8 +757,23 @@ char* chrcpy_end( char *dst, char c );
  * @param s The string to concatenate.
  * @param s_len The number of bytes of \a s to concatenate; if -1, the length
  * of \a s is used.
+ *
+ * @sa strbuf_catc()
  */
-void strbuf_cat( strbuf_t *sbuf, char const *s, ssize_t s_len );
+void strbuf_cats( strbuf_t *sbuf, char const *s, ssize_t s_len );
+
+/**
+ * Concatenates \a c onto the end of \a sbuf growing the buffer if necessary.
+ *
+ * @param sbuf A pointer to the strbuf to concatenate onto.
+ * @param c The character to concatenate.
+ *
+ * @sa strbuf_cats()
+ */
+C_UTIL_INLINE
+void strbuf_catc( strbuf_t *sbuf, char c ) {
+  strbuf_cats( sbuf, &c, 1 );
+}
 
 /**
  * Initializes a strbuf.
@@ -822,7 +826,6 @@ char* strbuf_take( strbuf_t *sbuf ) {
  * @param src The null-terminated string to copy.
  * @return Returns a pointer to the new end of \a dst.
  *
- * @sa chrcpy_end()
  * @sa #STRCAT()
  */
 PJL_WARN_UNUSED_RESULT

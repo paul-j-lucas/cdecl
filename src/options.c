@@ -306,28 +306,26 @@ static color_when_t parse_color_when( char const *when ) {
   };
 
   assert( when != NULL );
-  size_t names_buf_size = 1;            // for trailing NULL
 
   for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when != NULL; ++m ) {
     if ( strcasecmp( when, m->map_when ) == 0 )
       return m->map_colorization;
-    // sum sizes of names in case we need to construct an error message
-    names_buf_size += strlen( m->map_when ) + 2 /* ", " */;
   } // for
 
   // name not found: construct valid name list for an error message
-  char names_buf[ names_buf_size ];
-  char *pnames = names_buf;
+  strbuf_t sbuf;
+  strbuf_init( &sbuf );
+  bool comma = false;
   for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when != NULL; ++m ) {
-    if ( pnames > names_buf )
-      pnames = strcpy_end( pnames, ", " );
-    pnames = strcpy_end( pnames, m->map_when );
+    if ( true_or_set( &comma ) )
+      strbuf_cats( &sbuf, ", ", 2 );
+    strbuf_cats( &sbuf, m->map_when, -1 );
   } // for
 
   char opt_buf[ OPT_BUF_SIZE ];
   PMESSAGE_EXIT( EX_USAGE,
-    "\"%s\": invalid value for %s; must be one of:\n\t%s\n",
-    when, format_opt( 'k', opt_buf, sizeof opt_buf ), names_buf
+    "\"%s\": invalid value for %s; must be one of: %s\n",
+    when, format_opt( 'k', opt_buf, sizeof opt_buf ), sbuf.str
   );
 }
 
@@ -346,34 +344,21 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
   if ( lang_id != LANG_NONE )
     return lang_id;
 
-  size_t names_len = 1;                 // for trailing NULL
-
-  bool comma = false;                   // pre-flight to calculate buffer size
+  strbuf_t sbuf;
+  strbuf_init( &sbuf );
+  bool comma = false;
   FOREACH_LANG( lang ) {
     if ( lang->is_alias )
       continue;
     if ( true_or_set( &comma ) )
-      names_len += 2;                   // ", "
-    names_len += strlen( lang->name );
-  } // for
-
-  char *const names = free_later( MALLOC( char, names_len ) );
-  names[0] = '\0';
-
-  comma = false;
-  char *s = names;
-  FOREACH_LANG( lang ) {
-    if ( lang->is_alias )
-      continue;
-    if ( true_or_set( &comma ) )
-      s = strcpy_end( s, ", " );
-    s = strcpy_end( s, lang->name );
+      strbuf_cats( &sbuf, ", ", 2 );
+    strbuf_cats( &sbuf, lang->name, -1 );
   } // for
 
   char opt_buf[ OPT_BUF_SIZE ];
   PMESSAGE_EXIT( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of: %s\n",
-    lang_name, format_opt( 'x', opt_buf, sizeof opt_buf ), names
+    lang_name, format_opt( 'x', opt_buf, sizeof opt_buf ), sbuf.str
   );
 }
 

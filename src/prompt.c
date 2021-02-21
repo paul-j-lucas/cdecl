@@ -95,49 +95,34 @@ static inline bool have_genuine_gnu_readline( void ) {
  */
 PJL_WARN_UNUSED_RESULT
 static char* prompt_create( char suffix ) {
-  size_t prompt_len = strlen( CPPDECL "> " );
-
-#ifdef WITH_READLINE
-  if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
-    prompt_len +=
-      1 /* RL_PROMPT_START_IGNORE */ +
-      (sizeof( SGR_START SGR_EL ) - 1/*'\0'*/) +
-      (strlen( sgr_prompt )) +
-      2 /* RL_PROMPT_END_IGNORE */ +
-      (sizeof( SGR_END SGR_EL ) - 1/*'\0'*/);
-  }
-#endif /* WITH_READLINE */
-
-  char *const buf = MALLOC( char, prompt_len + 1/*'\0'*/ );
-  char *p = buf;
+  strbuf_t sbuf;
+  strbuf_init( &sbuf );
 
 #ifdef WITH_READLINE
   char color_buf[20];
 
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
-    *p++ = RL_PROMPT_START_IGNORE;
+    strbuf_catc( &sbuf, RL_PROMPT_START_IGNORE );
     SGR_SSTART_COLOR( color_buf, prompt );
-    p = strcpy_end( p, color_buf );
-    *p++ = RL_PROMPT_END_IGNORE;
+    strbuf_cats( &sbuf, color_buf, -1 );
+    strbuf_catc( &sbuf, RL_PROMPT_END_IGNORE );
   }
 #endif /* WITH_READLINE */
 
-  p = strcpy_end( p, OPT_LANG_IS(CPP_ANY) ? CPPDECL : PACKAGE );
-  *p++ = suffix;
+  strbuf_cats( &sbuf, OPT_LANG_IS(CPP_ANY) ? CPPDECL : PACKAGE, -1 );
+  strbuf_catc( &sbuf, suffix );
 
 #ifdef WITH_READLINE
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
-    *p++ = RL_PROMPT_START_IGNORE;
+    strbuf_catc( &sbuf, RL_PROMPT_START_IGNORE );
     SGR_SEND_COLOR( color_buf );
-    p = strcpy_end( p, color_buf );
-    *p++ = RL_PROMPT_END_IGNORE;
+    strbuf_cats( &sbuf, color_buf, -1 );
+    strbuf_catc( &sbuf, RL_PROMPT_END_IGNORE );
   }
 #endif /* WITH_READLINE */
 
-  *p++ = ' ';
-  *p = '\0';
-
-  return buf;
+  strbuf_catc( &sbuf, ' ' );
+  return strbuf_take( &sbuf );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////

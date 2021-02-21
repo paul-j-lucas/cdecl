@@ -152,13 +152,6 @@ char* check_strdup_tolower( char const *s ) {
   return s_dup;
 }
 
-char* chrcpy_end( char *dst, char c ) {
-  assert( dst != NULL );
-  *dst = c;
-  *++dst = '\0';
-  return dst;
-}
-
 #ifndef HAVE_FMEMOPEN
 FILE* fmemopen( void *buf, size_t size, char const *mode ) {
   assert( buf != NULL );
@@ -370,7 +363,7 @@ check_for_error:
   return NULL;
 }
 
-void strbuf_cat( strbuf_t *sbuf, char const *s, ssize_t s_len_in ) {
+void strbuf_cats( strbuf_t *sbuf, char const *s, ssize_t s_len_in ) {
   assert( sbuf != NULL );
   assert( s != NULL );
 
