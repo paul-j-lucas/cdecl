@@ -289,18 +289,16 @@ void perror_exit( int status ) {
   exit( status );
 }
 
-char const* read_input_line( char const *ps1, char const *ps2 ) {
+void read_input_line( strbuf_t *sbuf, char const *ps1, char const *ps2 ) {
+  assert( sbuf != NULL );
   assert( ps1 != NULL );
   assert( ps2 != NULL );
 
-  static char *buf;
-  size_t buf_len = 0;
-
-  free( buf );
-  buf = NULL;
+  strbuf_init( sbuf );
 
   for (;;) {
     static char *line;
+    bool is_continuation = sbuf->str != NULL;
 #ifdef WITH_READLINE
     extern void readline_init( void );
     static bool called_readline_init;
@@ -311,18 +309,18 @@ char const* read_input_line( char const *ps1, char const *ps2 ) {
     }
 
     free( line );
-    if ( (line = readline( buf ? ps2 : ps1 )) == NULL )
+    if ( (line = readline( is_continuation ? ps2 : ps1 )) == NULL )
       goto check_for_error;
 #else
     static size_t line_cap;
-    PUTS( buf != NULL ? ps2 : ps1 );
+    PUTS( is_continuation ? ps2 : ps1 );
     FFLUSH( stdout );
     if ( getline( &line, &line_cap, stdin ) == -1 )
       goto check_for_error;
 #endif /* WITH_READLINE */
 
     if ( is_blank_line( line ) ) {
-      if ( buf != NULL ) {
+      if ( is_continuation ) {
         //
         // If we've been accumulating continuation lines, a blank line ends it.
         //
@@ -332,35 +330,26 @@ char const* read_input_line( char const *ps1, char const *ps2 ) {
     }
 
     size_t line_len = strlen( line );
-    bool const is_continuation = ends_with_chr( line, line_len, '\\' );
+    is_continuation = ends_with_chr( line, line_len, '\\' );
 
     if ( is_continuation )
       line[ --line_len ] = '\0';        // get rid of '\'
 
-    if ( buf == NULL ) {
-      buf = check_strdup( line );
-      buf_len = line_len;
-    } else {
-      size_t const new_len = buf_len + line_len;
-      REALLOC( buf, char, new_len + 1/*'\0'*/ );
-      strcpy( buf + buf_len, line );
-      buf_len = new_len;
-    }
+    strbuf_cats( sbuf, line, (ssize_t)line_len );
 
     if ( !is_continuation )
       break;
   } // for
 
-  assert( buf != NULL );
-  assert( *buf != '\0' );
+  assert( sbuf->str != NULL );
+  assert( sbuf->str[0] != '\0' );
 #ifdef WITH_READLINE
-  add_history( buf );
+  add_history( sbuf->str );
 #endif /* WITH_READLINE */
-  return buf;
+  return;
 
 check_for_error:
   FERROR( stdin );
-  return NULL;
 }
 
 void strbuf_cats( strbuf_t *sbuf, char const *s, ssize_t s_len_in ) {

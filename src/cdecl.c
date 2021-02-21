@@ -317,11 +317,12 @@ static bool parse_stdin( void ) {
       FPRINTF( fout, "Type \"%s\" or \"?\" for help\n", L_HELP );
     ok = true;
     for (;;) {
-      char const *const line =
-        read_input_line( cdecl_prompt[0], cdecl_prompt[1] );
-      if ( line == NULL )
+      strbuf_t sbuf;
+      read_input_line( &sbuf, cdecl_prompt[0], cdecl_prompt[1] );
+      if ( sbuf.str == NULL )
         break;
-      ok = parse_string( line, -1 );
+      ok = parse_string( sbuf.str, (ssize_t)sbuf.str_len );
+      strbuf_free( &sbuf );
     } // for
   } else {
     ok = parse_file( fin );

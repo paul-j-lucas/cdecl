@@ -739,15 +739,13 @@ noreturn void perror_exit( int status );
  *
  *  + Adds non-whitespace-only lines to the history.
  *
+ * @param sbuf The strbuf to use.  On return, if sbuf->str is NULL, EOF has
+ * been reached.
  * @param ps1 The primary prompt to use.
  * @param ps2 The secondary prompt to use for a continuation line (a line after
  * ones ending with `\`).
- * @return Returns the line read or NULL for EOF.
- * @warning The pointer returned is to a static buffer and every calls resets
- * it.
  */
-PJL_WARN_UNUSED_RESULT
-char const* read_input_line( char const *ps1, char const *ps2 );
+void read_input_line( strbuf_t *sbuf, char const *ps1, char const *ps2 );
 
 /**
  * Concatenates \a s_len bytes of \a s onto the end of \a sbuf growing the
