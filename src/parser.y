@@ -445,7 +445,7 @@ static in_attr_t      in_attr;          ///< Inherited attributes.
  * @sa c_ast_pair_new_gc()
  */
 PJL_WARN_UNUSED_RESULT
-static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t *loc ) {
+static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t const *loc ) {
   c_ast_t *const ast = c_ast_new( kind_id, ast_depth, loc );
   slist_push_tail( &ast_gc_list, ast );
   return ast;
