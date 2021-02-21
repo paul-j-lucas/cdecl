@@ -883,10 +883,10 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
  * must be NULL.
  */
 static void c_typedef_parse_predefined( char const *const types[const] ) {
-  extern bool parse_string( char const*, size_t );
+  extern bool parse_string( char const*, ssize_t );
   assert( types != NULL );
   for ( char const *const *ptype = types; *ptype != NULL; ++ptype ) {
-    if ( unlikely( !parse_string( *ptype, 0 ) ) )
+    if ( unlikely( !parse_string( *ptype, -1 ) ) )
       INTERNAL_ERR( "failed to parse predefined type \"%s\"\n", *ptype );
   } // for
 }

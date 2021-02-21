@@ -88,7 +88,7 @@ char const *me;
 
 // extern functions
 PJL_WARN_UNUSED_RESULT
-extern bool parse_string( char const*, size_t );
+extern bool parse_string( char const*, ssize_t );
 
 extern void parser_cleanup( void );
 
@@ -226,7 +226,7 @@ static bool parse_argv( int argc, char const *argv[const] ) {
 /**
  * Parses a cdecl command from the command-line.
  *
- * @param command The value main()'s `argv[0]` if it is a cdecl command; NULL
+ * @param command The value of main()'s `argv[0]` if it's a cdecl command; NULL
  * otherwise and `argv[1]` is a cdecl command.
  * @param argc The command-line argument count.
  * @param argv The command-line argument values.
@@ -236,9 +236,8 @@ PJL_WARN_UNUSED_RESULT
 static bool parse_command_line( char const *command, int argc,
                                 char const *argv[] ) {
   strbuf_t sbuf;
-  bool space;                           // need to output a space?
+  bool space;
 
-  // build cdecl command
   strbuf_init( &sbuf );
   if ( (space = command != NULL) )
     strbuf_cats( &sbuf, command, -1 );
@@ -248,13 +247,8 @@ static bool parse_command_line( char const *command, int argc,
     strbuf_cats( &sbuf, argv[i], -1 );
   } // for
 
-  command_line_len = sbuf.str_len;
-  command_line = strbuf_take( &sbuf );
-
-  bool const ok = parse_string( command_line, command_line_len );
-  FREE( command_line );
-  command_line = NULL;
-  command_line_len = 0;
+  bool const ok = parse_string( sbuf.str, (ssize_t)sbuf.str_len );
+  strbuf_free( &sbuf );
   return ok;
 }
 
@@ -269,7 +263,7 @@ static bool parse_file( FILE *file ) {
   bool ok = true;
 
   for ( char buf[ 1024 ]; fgets( buf, sizeof buf, file ) != NULL; ) {
-    if ( !parse_string( buf, 0 ) )
+    if ( !parse_string( buf, -1 ) )
       ok = false;
   } // for
   FERROR( file );
@@ -301,6 +295,7 @@ static bool parse_files( int num_files, char const *const files[const] ) {
       PJL_IGNORE_RV( fclose( file ) );
     }
   } // for
+
   return ok;
 }
 
@@ -336,23 +331,16 @@ static bool parse_stdin( void ) {
  * Parses a string.
  *
  * @param s The null-terminated string to parse.
- * @param s_len The length of \a s.  If 0, it will be calculated.
+ * @param s_len_in The length of \a s; if -1, it will be calculated.
  * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
-bool parse_string( char const *s, size_t s_len ) {
-  if ( s_len == 0 )
-    s_len = strlen( s );
+bool parse_string( char const *s, ssize_t s_len_in ) {
+  size_t s_len = s_len_in == -1 ? strlen( s ) : (size_t)s_len_in;
 
-  bool reset_command_line = false;
-  if ( command_line == NULL ) {
-    //
-    // The print code relies on command_line being set, so set it.
-    //
-    command_line = s;
-    command_line_len = s_len;
-    reset_command_line = true;
-  }
+  // The code in print.c relies on command_line being set, so set it.
+  command_line = s;
+  command_line_len = s_len;
 
   char *explain_buf = NULL;
   if ( opt_explain && !is_command( s, C_COMMAND_ANY ) ) {
@@ -378,10 +366,6 @@ bool parse_string( char const *s, size_t s_len ) {
   free( explain_buf );
   inserted_len = 0;
 
-  if ( reset_command_line ) {
-    command_line = NULL;
-    command_line_len = 0;
-  }
   return ok;
 }
 
