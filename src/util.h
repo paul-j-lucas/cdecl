@@ -398,17 +398,6 @@ _GL_INLINE_HEADER_BEGIN
 #define STATIC_CAST(T,EXPR)       ((T)(EXPR))
 
 /**
- * Convenience macro for calling strcpy_end() and updating \a DST.
- *
- * @param DST A pointer to receive the copy of \a SRC.  It is updated to the
- * new end of \a DST.
- * @param SRC The null-terminated string to copy.
- *
- * @sa strcpy_end()
- */
-#define STRCAT(DST,SRC)           ((DST) = strcpy_end( (DST), (SRC) ))
-
-/**
  * Shorthand for calling **strerror**(3).
  */
 #define STRERROR()                strerror( errno )
@@ -815,19 +804,6 @@ char* strbuf_take( strbuf_t *sbuf ) {
   strbuf_init( sbuf );
   return str;
 }
-
-/**
- * A variant of **strcpy**(3) that returns the pointer to the new end of \a
- * dst.
- *
- * @param dst A pointer to receive the copy of \a src.
- * @param src The null-terminated string to copy.
- * @return Returns a pointer to the new end of \a dst.
- *
- * @sa #STRCAT()
- */
-PJL_WARN_UNUSED_RESULT
-char* strcpy_end( char *dst, char const *src );
 
 /**
  * Checks \a flag: if `false`, sets it to `true`.

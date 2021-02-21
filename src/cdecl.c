@@ -361,7 +361,8 @@ bool parse_string( char const *s, ssize_t s_len_in ) {
     inserted_len = ARRAY_SIZE( EXPLAIN_SP ) - 1/*\0*/;
     s_len += inserted_len;
     explain_buf = MALLOC( char, s_len + 1/*\0*/ );
-    strcpy( strcpy_end( explain_buf, EXPLAIN_SP ), s );
+    strcpy( explain_buf, EXPLAIN_SP );
+    strcpy( explain_buf + inserted_len, s );
     s = explain_buf;
   }
 

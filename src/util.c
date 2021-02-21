@@ -369,13 +369,5 @@ void strbuf_cats( strbuf_t *sbuf, char const *s, ssize_t s_len_in ) {
   sbuf->str[ sbuf->str_len ] = '\0';
 }
 
-char* strcpy_end( char *dst, char const *src ) {
-  assert( dst != NULL );
-  assert( src != NULL );
-  while ( (*dst++ = *src++) != '\0' )
-    /* empty */;
-  return dst - 1;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */
