@@ -728,13 +728,13 @@ noreturn void perror_exit( int status );
  *
  *  + Adds non-whitespace-only lines to the history.
  *
- * @param sbuf The strbuf to use.  On return, if sbuf->str is NULL, EOF has
- * been reached.
+ * @param sbuf The strbuf to use.
  * @param ps1 The primary prompt to use.
  * @param ps2 The secondary prompt to use for a continuation line (a line after
  * ones ending with `\`).
+ * @return Returns `false` only if encountered EOF.
  */
-void read_input_line( strbuf_t *sbuf, char const *ps1, char const *ps2 );
+bool read_input_line( strbuf_t *sbuf, char const *ps1, char const *ps2 );
 
 /**
  * Concatenates \a s_len bytes of \a s onto the end of \a sbuf growing the

@@ -289,7 +289,7 @@ void perror_exit( int status ) {
   exit( status );
 }
 
-void read_input_line( strbuf_t *sbuf, char const *ps1, char const *ps2 ) {
+bool read_input_line( strbuf_t *sbuf, char const *ps1, char const *ps2 ) {
   assert( sbuf != NULL );
   assert( ps1 != NULL );
   assert( ps2 != NULL );
@@ -331,10 +331,8 @@ void read_input_line( strbuf_t *sbuf, char const *ps1, char const *ps2 ) {
 
     size_t line_len = strlen( line );
     is_continuation = ends_with_chr( line, line_len, '\\' );
-
     if ( is_continuation )
       line[ --line_len ] = '\0';        // get rid of '\'
-
     strbuf_cats( sbuf, line, (ssize_t)line_len );
 
     if ( !is_continuation )
@@ -346,10 +344,11 @@ void read_input_line( strbuf_t *sbuf, char const *ps1, char const *ps2 ) {
 #ifdef WITH_READLINE
   add_history( sbuf->str );
 #endif /* WITH_READLINE */
-  return;
+  return true;
 
 check_for_error:
   FERROR( stdin );
+  return false;
 }
 
 void strbuf_cats( strbuf_t *sbuf, char const *s, ssize_t s_len_in ) {
