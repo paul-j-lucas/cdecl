@@ -428,15 +428,15 @@ extern void           print_help( char const* );
 
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
-static c_ast_list_t   ast_gc_list;      ///< `c_ast` nodes freed after parse.
-static c_ast_list_t   ast_typedef_list; ///< `c_ast` nodes for `typedef`s.
 static bool           error_newlined = true;
+static c_ast_list_t   gc_ast_list;      ///< `c_ast` nodes freed after parse.
 static in_attr_t      in_attr;          ///< Inherited attributes.
+static c_ast_list_t   typedef_ast_list; ///< `c_ast` nodes for `typedef`s.
 
 ////////// inline functions ///////////////////////////////////////////////////
 
 /**
- * Creates a new AST and adds it to <code>\ref ast_gc_list</code>.
+ * Creates a new AST and adds it to <code>\ref gc_ast_list</code>.
  *
  * @param kind_id The kind of AST to create.
  * @param loc A pointer to the token location data.
@@ -447,7 +447,7 @@ static in_attr_t      in_attr;          ///< Inherited attributes.
 PJL_WARN_UNUSED_RESULT
 static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t const *loc ) {
   c_ast_t *const ast = c_ast_new( kind_id, ast_depth, loc );
-  slist_push_tail( &ast_gc_list, ast );
+  slist_push_tail( &gc_ast_list, ast );
   return ast;
 }
 
@@ -570,7 +570,7 @@ static inline bool unsupported( c_lang_id_t lang_ids ) {
  * Cleans up parser data at program termination.
  */
 void parser_cleanup( void ) {
-  slist_free( &ast_typedef_list, NULL, (slist_node_data_free_fn_t)&c_ast_free );
+  slist_free( &typedef_ast_list, NULL, (slist_node_data_free_fn_t)&c_ast_free );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -595,11 +595,11 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
   c_typedef_t const *const old_tdef = c_typedef_add( type_ast );
   if ( old_tdef == NULL ) {             // type was added
     //
-    // We have to move the AST from the ast_gc_list so it won't be garbage
-    // collected at the end of the parse to a separate ast_typedef_list that's
+    // We have to move the AST from the gc_ast_list so it won't be garbage
+    // collected at the end of the parse to a separate typedef_ast_list that's
     // freed only at program termination.
     //
-    slist_push_list_tail( &ast_typedef_list, &ast_gc_list );
+    slist_push_list_tail( &typedef_ast_list, &gc_ast_list );
   }
   else if ( old_tdef->ast != NULL ) {   // type exists and isn't equivalent
     print_error( type_decl_loc,
@@ -713,7 +713,7 @@ static void ia_free( void ) {
   c_sname_free( &in_attr.current_scope );
   slist_free( &in_attr.qualifier_stack, NULL, &free );
   // Do _not_ pass &c_ast_free for the 3rd argument! All AST nodes were already
-  // free'd from the ast_gc_list in parse_cleanup(). Just free the slist nodes.
+  // free'd from the gc_ast_list in parse_cleanup(). Just free the slist nodes.
   slist_free( &in_attr.ast_type_stack, NULL, NULL );
   MEM_ZERO( &in_attr );
 }
@@ -751,7 +751,7 @@ static void ia_qual_push_tid( c_type_id_t qual_tid, c_loc_t const *loc ) {
  */
 static void parse_cleanup( bool hard_reset ) {
   lexer_reset( hard_reset );
-  slist_free( &ast_gc_list, NULL, (slist_node_data_free_fn_t)&c_ast_free );
+  slist_free( &gc_ast_list, NULL, (slist_node_data_free_fn_t)&c_ast_free );
   ia_free();
 }
 
@@ -1357,7 +1357,7 @@ static void yyerror( char const *msg ) {
 // Bison %destructors.  We don't use the <identifier> syntax because older
 // versions of Bison don't support it.
 //
-// Clean-up of AST nodes is done via garbage collection using ast_gc_list.
+// Clean-up of AST nodes is done via garbage collection using gc_ast_list.
 //
 
 // c_ast_list_t
