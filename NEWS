@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 9.6.1
+
+** Qualified pointer spacing
+Fixed spacing for qualified pointers.
+
+
 * Changes in Cdecl 9.6
 
 ** Specific languages in error messages

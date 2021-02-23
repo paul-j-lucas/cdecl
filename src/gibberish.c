@@ -75,13 +75,6 @@ static void g_print_space_ast_name( g_state_t*, c_ast_t const* );
  * @param g The `g_state` to use.
  */
 static inline void g_print_space_once( g_state_t *g ) {
-  if ( g->skip_name_for_using ) {
-    //
-    // If we haven't skipped printing the type name for `using` yet, don't
-    // print a separating space yet either.
-    //
-    return;
-  }
   if ( false_set( &g->printed_space ) )
     FPUTC( ' ', g->gout );
 }
@@ -225,7 +218,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       if ( ast->as.parent.of_ast != NULL )
         g_print_ast( g, ast->as.parent.of_ast );
       if ( false_set( &g->postfix ) ) {
-        if ( g->gib_kind != C_GIB_CAST )
+        if ( !g->skip_name_for_using && g->gib_kind != C_GIB_CAST )
           g_print_space_once( g );
         g_print_postfix( g, ast );
       }
@@ -328,7 +321,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       if ( store_tid != TS_NONE )
         FPRINTF( g->gout, "%s ", c_type_id_name_c( store_tid ) );
       g_print_ast( g, ast->as.ptr_ref.to_ast );
-      if ( g->gib_kind != C_GIB_CAST &&
+      if ( !g->skip_name_for_using && g->gib_kind != C_GIB_CAST &&
            c_ast_find_name( ast, C_VISIT_UP ) != NULL &&
            !c_ast_find_kind_any( ast->parent_ast, C_VISIT_UP,
                                  K_ANY_FUNCTION_LIKE ) ) {
@@ -625,7 +618,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
 
   switch ( ast->kind_id ) {
     case K_POINTER:
-      if ( g->gib_kind == C_GIB_USING && qual_tid != TS_NONE &&
+      if ( qual_tid != TS_NONE && g->gib_kind != C_GIB_CAST &&
            ast->as.ptr_ref.to_ast->kind_id != K_FUNCTION ) {
         //
         // If we're printing a type as a "using" declaration and there's a
@@ -645,7 +638,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
         //
         //      using PF = int(*const)(char c);
         //
-        FPUTC( ' ', g->gout );
+        g_print_space_once( g );
       }
       FPUTC( '*', g->gout );
       break;
@@ -676,10 +669,13 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
 
   if ( qual_tid != TS_NONE ) {
     FPUTS( c_type_id_name_c( qual_tid ), g->gout );
-    if ( (g->gib_kind & (C_GIB_DECL | C_GIB_TYPEDEF)) != C_GIB_NONE ) {
+
+    if ( (g->gib_kind & (C_GIB_DECL | C_GIB_TYPEDEF)) != C_GIB_NONE &&
+         c_ast_find_name( ast, C_VISIT_UP ) != NULL ) {
       //
-      // If there was a qualifier, we always need to print a space after it for
-      // declarations and typedefs, e.g.:
+      // For declarations and typedefs, if there is a qualifier and if a name
+      // has yet to be printed, we always need to print a space after the
+      // qualifier, e.g.:
       //
       //      char *const p;
       //                 ^
@@ -687,8 +683,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
     }
   }
 
-  if ( !c_ast_empty_name( ast ) && g->gib_kind != C_GIB_CAST )
-    g_print_ast_name( g, ast );
+  g_print_ast_name( g, ast );
 }
 
 /**
@@ -740,7 +735,8 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       break;
     default:
       if ( !c_ast_empty_name( ast ) ) {
-        g_print_space_once( g );
+        if ( !g->skip_name_for_using )
+          g_print_space_once( g );
         g_print_ast_name( g, ast );
       }
       break;
