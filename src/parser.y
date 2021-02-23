@@ -398,9 +398,9 @@
  */
 struct in_attr {
   c_alignas_t   align;                  ///< Alignment, if any.
-  c_ast_list_t  ast_type_stack;         ///< Type AST stack.
   c_sname_t     current_scope;          ///< C++ only: current scope, if any.
   slist_t       qualifier_stack;        ///< `c_qualifier` stack.
+  c_ast_list_t  type_ast_stack;         ///< Type AST stack.
   bool          typename;               ///< C++ only: `typename` specified?
 };
 typedef struct in_attr in_attr_t;
@@ -453,7 +453,7 @@ static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t const *loc ) {
 
 /**
  * Peeks at the type AST at the top of the
- * \ref in_attr.ast_type_stack "type AST inherited attribute stack".
+ * \ref in_attr.type_ast_stack "type AST inherited attribute stack".
  *
  * @return Returns said AST.
  *
@@ -462,12 +462,12 @@ static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t const *loc ) {
  */
 PJL_WARN_UNUSED_RESULT
 static inline c_ast_t* ia_type_ast_peek( void ) {
-  return slist_peek_head( &in_attr.ast_type_stack );
+  return slist_peek_head( &in_attr.type_ast_stack );
 }
 
 /**
  * Pops a type AST from the
- * \ref in_attr.ast_type_stack "type AST inherited attribute stack".
+ * \ref in_attr.type_ast_stack "type AST inherited attribute stack".
  *
  * @return Returns said AST.
  *
@@ -476,12 +476,12 @@ static inline c_ast_t* ia_type_ast_peek( void ) {
  */
 PJL_NOWARN_UNUSED_RESULT
 static inline c_ast_t* ia_type_ast_pop( void ) {
-  return slist_pop_head( &in_attr.ast_type_stack );
+  return slist_pop_head( &in_attr.type_ast_stack );
 }
 
 /**
  * Pushes a type AST onto the
- * \ref in_attr.ast_type_stack "type AST inherited attribute  stack".
+ * \ref in_attr.type_ast_stack "type AST inherited attribute  stack".
  *
  * @param ast The AST to push.
  *
@@ -489,7 +489,7 @@ static inline c_ast_t* ia_type_ast_pop( void ) {
  * @sa ia_type_ast_pop()
  */
 static inline void ia_type_ast_push( c_ast_t *ast ) {
-  slist_push_head( &in_attr.ast_type_stack, ast );
+  slist_push_head( &in_attr.type_ast_stack, ast );
 }
 
 /**
@@ -714,7 +714,7 @@ static void ia_free( void ) {
   slist_free( &in_attr.qualifier_stack, NULL, &free );
   // Do _not_ pass &c_ast_free for the 3rd argument! All AST nodes were already
   // free'd from the gc_ast_list in parse_cleanup(). Just free the slist nodes.
-  slist_free( &in_attr.ast_type_stack, NULL, NULL );
+  slist_free( &in_attr.type_ast_stack, NULL, NULL );
   MEM_ZERO( &in_attr );
 }
 
