@@ -56,29 +56,28 @@ static c_type_t const* c_sname_local_type_impl( c_scope_t const *scope ) {
  * Helper function for c_sname_full_name() and c_sname_scope_name() that writes
  * the scope names from outermost to innermost separated by `::` into a buffer.
  *
- * @param name_buf The buffer to write into.
+ * @param sbuf The buffer to write into.
  * @param sname The scoped name to write.
  * @param end_scope The scope to stop before or NULL for all scopes.
- * @return If not NULL, returns \a name_buf->str; otherwise returns the empty
+ * @return If not NULL, returns \a sbuf->str; otherwise returns the empty
  * string.
  */
 PJL_WARN_UNUSED_RESULT
-static char const* scope_name_impl( strbuf_t *name_buf, c_sname_t const *sname,
+static char const* scope_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
                                     c_scope_t const *end_scope ) {
-  assert( name_buf != NULL );
+  assert( sbuf != NULL );
   assert( sname != NULL );
 
-  strbuf_free( name_buf );
+  strbuf_free( sbuf );
   bool colon2 = false;
 
   FOREACH_SCOPE( scope, sname->head, end_scope ) {
     if ( true_or_set( &colon2 ) )
-      strbuf_cats( name_buf, "::", 2 );
-    char const *const name = c_scope_data( scope )->name;
-    strbuf_cats( name_buf, name, -1 );
+      strbuf_cats( sbuf, "::", 2 );
+    strbuf_cats( sbuf, c_scope_data( scope )->name, -1 );
   } // for
 
-  return name_buf->str != NULL ? name_buf->str : "";
+  return sbuf->str != NULL ? sbuf->str : "";
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -114,9 +113,9 @@ void c_sname_append_name( c_sname_t *sname, char *name ) {
 }
 
 char const* c_sname_full_name( c_sname_t const *sname ) {
-  static strbuf_t name_buf;
+  static strbuf_t sbuf;
   assert( sname != NULL );
-  return scope_name_impl( &name_buf, sname, NULL );
+  return scope_name_impl( &sbuf, sname, NULL );
 }
 
 bool c_sname_is_ctor( c_sname_t const *sname ) {
@@ -129,9 +128,9 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
 }
 
 char const* c_sname_scope_name( c_sname_t const *sname ) {
-  static strbuf_t name_buf;
+  static strbuf_t sbuf;
   assert( sname != NULL );
-  return scope_name_impl( &name_buf, sname, sname->tail );
+  return scope_name_impl( &sbuf, sname, sname->tail );
 }
 
 c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
