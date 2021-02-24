@@ -368,5 +368,12 @@ void strbuf_cats( strbuf_t *sbuf, char const *s, ssize_t s_len_in ) {
   sbuf->str[ sbuf->str_len ] = '\0';
 }
 
+void strbuf_catseps( strbuf_t *sbuf, char const *sep, ssize_t sep_len,
+                     bool *sep_flag, char const *s, ssize_t s_len ) {
+  if ( true_or_set( sep_flag ) )
+    strbuf_cats( sbuf, sep, sep_len );
+  strbuf_cats( sbuf, s, s_len );
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

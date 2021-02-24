@@ -750,6 +750,24 @@ bool read_input_line( strbuf_t *sbuf, char const *ps1, char const *ps2 );
 void strbuf_cats( strbuf_t *sbuf, char const *s, ssize_t s_len );
 
 /**
+ * Possibly concatenates \a sep_len bytes of \a sep followed by \a s_len bytes
+ * of \a s onto the enf of \a sbuf growing the buffer if necessary.
+ *
+ * @param sbuf A pointer to the strbuf to concatenate onto.
+ * @param sep The separator string to concatenate.
+ * @param sep_len The number of bytes of \a sep to concatenate; if -1, the
+ * length of \a sep is calculated and used.
+ * @param sep_flag A pointer to a flag to determine whether \a sep should be
+ * concatenated prior to \a s: if `false`, \a sep is _not_ concatenated and it
+ * is set to `true`; if `true`, \a sep is concatenated.
+ * @param s The string to concatenate.
+ * @param s_len The number of bytes of \a s to concatenate; if -1, the length
+ * of \a s is calculated and used.
+ */
+void strbuf_catseps( strbuf_t *sbuf, char const *sep, ssize_t sep_len,
+                     bool *sep_flag, char const *s, ssize_t s_len );
+
+/**
  * Concatenates \a c onto the end of \a sbuf growing the buffer if necessary.
  *
  * @param sbuf A pointer to the strbuf to concatenate onto.

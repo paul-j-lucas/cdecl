@@ -89,8 +89,6 @@ typedef struct c_type_info c_type_info_t;
 PJL_WARN_UNUSED_RESULT
 static char const*  c_type_literal( c_type_info_t const*, bool );
 
-static void         strbuf_cat_sep( strbuf_t*, char const*, char, bool* );
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -629,17 +627,17 @@ static char const* c_type_id_name_1( c_type_id_t tid, bool in_english ) {
  * @param in_english If `true`, return the pseudo-English literal if one
  * exists.
  * @param sep The separator character.
- * @param sep_cat A pointer to a variable to keep track of whether \a sep has
+ * @param sep_flag A pointer to a variable to keep track of whether \a sep has
  * been concatenated.
  */
 static void c_type_id_name_cat( strbuf_t *sbuf, c_type_id_t tid,
                                 c_type_id_t const tids[], size_t tids_size,
-                                bool in_english, char sep, bool *sep_cat ) {
+                                bool in_english, char sep, bool *sep_flag ) {
   assert( sbuf != NULL );
   for ( size_t i = 0; i < tids_size; ++i ) {
     if ( !c_type_id_is_none( tid & tids[i] ) ) {
-      strbuf_cat_sep(
-        sbuf, c_type_id_name_1( tids[i], in_english ), sep, sep_cat
+      strbuf_catseps(
+        sbuf, &sep, 1, sep_flag, c_type_id_name_1( tids[i], in_english ), -1
       );
     }
   } // for
@@ -658,26 +656,6 @@ PJL_WARN_UNUSED_RESULT
 static char const* c_type_literal( c_type_info_t const *ti, bool in_english ) {
   return in_english && ti->english_lit != NULL ?
     ti->english_lit : c_lang_literal( ti->lang_lit );
-}
-
-/**
- * Possibly copies \a sep followed by \a src to \a dst.
- *
- * @param sbuf A pointer to the buffer to concatenate a copy of \a s to.
- * @param src The null-terminated string to copy.
- * @param sep The separator character.
- * @param sep_cat A pointer to a variable to keep track of whether \a sep has
- * been concatenated.
- */
-static void strbuf_cat_sep( strbuf_t *sbuf, char const *s, char sep,
-                            bool *sep_cat ) {
-  assert( sbuf != NULL );
-  assert( s != NULL );
-  assert( sep_cat != NULL );
-
-  if ( true_or_set( sep_cat ) )
-    strbuf_catc( sbuf, sep );
-  strbuf_cats( sbuf, s, -1 );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -1029,9 +1007,9 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
 
   // Really special cases.
   if ( (base_tid & TB_NAMESPACE) != TB_NONE )
-    strbuf_cat_sep( sbuf, L_NAMESPACE, ' ', &space );
+    strbuf_catseps( sbuf, " ", 1, &space, L_NAMESPACE, -1 );
   else if ( (base_tid & TB_SCOPE) != TB_NONE )
-    strbuf_cat_sep( sbuf, L_SCOPE, ' ', &space );
+    strbuf_catseps( sbuf, " ", 1, &space, L_SCOPE, -1 );
 
   return sbuf->str != NULL ? sbuf->str : "";
 }

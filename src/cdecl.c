@@ -241,11 +241,8 @@ static bool parse_command_line( char const *command, int argc,
   strbuf_init( &sbuf );
   if ( (space = command != NULL) )
     strbuf_cats( &sbuf, command, -1 );
-  for ( int i = 0; i < argc; ++i ) {
-    if ( true_or_set( &space ) )
-      strbuf_catc( &sbuf, ' ' );
-    strbuf_cats( &sbuf, argv[i], -1 );
-  } // for
+  for ( int i = 0; i < argc; ++i )
+    strbuf_catseps( &sbuf, " ", 1, &space, argv[i], -1 );
 
   bool const ok = parse_string( sbuf.str, (ssize_t)sbuf.str_len );
   strbuf_free( &sbuf );
