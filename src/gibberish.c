@@ -194,15 +194,11 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       // vice versa.
       //
       if ( opt_lang < LANG_CPP_11 ) {
-        if ( is_noexcept ) {
-          is_noexcept = false;
+        if ( true_clear( &is_noexcept ) )
           is_throw = true;
-        }
       } else {
-        if ( is_throw ) {
+        if ( true_clear( &is_throw ) )
           is_noexcept = true;
-          is_throw = false;
-        }
       }
       PJL_FALLTHROUGH;
 

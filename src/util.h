@@ -591,8 +591,9 @@ bool exactly_one_bit_set( uint64_t n ) {
  *
  * @param flag A pointer to the Boolean flag to be tested and, if `false`,
  * sets it to `true`.
- * @return Returns `true` only if `*flag` is `false` initially.
+ * @return Returns `true` only if \a flag was `false` initially.
  *
+ * @sa true_clear()
  * @sa true_or_set()
  */
 C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
@@ -828,13 +829,26 @@ char* strbuf_take( strbuf_t *sbuf ) {
  *
  * @param flag A pointer to the Boolean flag to be tested and, if `false`, sets
  * it to `true`.
- * @return Returns `true` only if `*flag` is `true` initially.
+ * @return Returns `true` only if \a flag was `true` initially.
  *
  * @sa false_set()
+ * @sa true_clear()
  */
 C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool true_or_set( bool *flag ) {
   return *flag || !(*flag = true);
+}
+
+/**
+ * Checks \a flag: if `true`, sets it to `false`.
+ *
+ * @param flag A pointer to the Boolean flag to be tested and, if `true`, sets
+ * it to `false`.
+ * @return Returns `true` only if \a flag was `true` initially.
+ */
+C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+bool true_clear( bool *flag ) {
+  return *flag && !(*flag = false);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

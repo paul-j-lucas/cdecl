@@ -95,10 +95,8 @@ static void print_h( char const *line ) {
           is_escaped = true;
           continue;
         case ':':                       // ends a title
-          if ( in_title ) {
+          if ( true_clear( &in_title ) )
             SGR_END_COLOR( fout );
-            in_title = false;
-          }
           break;
         case '<':                       // begins non-terminal
           SGR_START_COLOR( fout, help_nonterm );
