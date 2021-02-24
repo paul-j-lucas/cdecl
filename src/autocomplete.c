@@ -116,6 +116,7 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_ANY,               L_INT                 },
   //                        L_INTO        // special case (see below)
   { LANG_C_MIN(99),         L_LENGTH              },
+  { LANG_CPP_ANY,           L_LINKAGE             },
   { LANG_CPP_MIN(11),       L_LITERAL             },
   { LANG_ANY,               L_LONG                },
   { LANG_C_CPP_MIN(2X,17),  L_MAYBE_UNUSED        },
