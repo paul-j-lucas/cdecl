@@ -1,5 +1,7 @@
 2021-02-23  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c, c_ast.h, parser.y: Moved c_ast_dup().
+   * NEWS: Typo.
    * NEWS, configure.ac: Updated version.
    * c_sname.c, c_type.c, cdecl.c, options.c, util.c, util.h: Added
      strbuf_catseps().
