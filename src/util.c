@@ -303,10 +303,8 @@ bool read_input_line( strbuf_t *sbuf, char const *ps1, char const *ps2 ) {
     extern void readline_init( void );
     static bool called_readline_init;
 
-    if ( !called_readline_init ) {
+    if ( false_set( &called_readline_init ) )
       readline_init();
-      called_readline_init = true;
-    }
 
     free( line );
     if ( (line = readline( is_continuation ? ps2 : ps1 )) == NULL )
