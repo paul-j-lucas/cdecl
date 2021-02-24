@@ -374,6 +374,18 @@ struct c_ast {
 void c_ast_cleanup( void );
 
 /**
+ * Duplicates the entire AST starting at \a ast.
+ *
+ * @param ast The AST to duplicate.
+ * @param ast_list If not NULL, the duplicated AST is appended to the list.
+ * @return Returns the duplicated AST.
+ *
+ * @sa c_ast_free()
+ * @sa c_ast_new()
+ */
+c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list );
+
+/**
  * Checks whether two ASTs are equivalent, i.e., represent the same type.
  *
  * @param i_ast The first AST.
@@ -388,6 +400,7 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast );
  *
  * @param ast The AST to free.  If NULL, does nothing.
  *
+ * @sa c_ast_dup()
  * @sa c_ast_new()
  */
 void c_ast_free( c_ast_t *ast );
@@ -550,13 +563,15 @@ char const* c_ast_name_atr( c_ast_t const *ast, size_t roffset ) {
  * @param kind_id The kind of AST to create.
  * @param depth How deep within `()` it is.
  * @param loc A pointer to the token location data.
+ * @param ast_list If not NULL, the new AST is appended to the list.
  * @return Returns a pointer to a new AST.
  *
+ * @sa c_ast_dup()
  * @sa c_ast_free()
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
-                    c_loc_t const *loc );
+                    c_loc_t const *loc, c_ast_list_t *ast_list );
 
 /**
  * Convenience function for getting function-like parameters.

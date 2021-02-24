@@ -457,9 +457,7 @@ static inline void c_ast_list_gc( c_ast_list_t *ast_list ) {
  */
 PJL_WARN_UNUSED_RESULT
 static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t const *loc ) {
-  c_ast_t *const ast = c_ast_new( kind_id, ast_depth, loc );
-  slist_push_tail( &gc_ast_list, ast );
-  return ast;
+  return c_ast_new( kind_id, ast_depth, loc, &gc_ast_list );
 }
 
 /**
@@ -641,76 +639,6 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
   }
 
   return true;
-}
-
-/**
- * Duplicates the entire AST starting at \a ast.
- *
- * @param ast The AST to duplicate.
- * @return Returns the duplicated AST.
- */
-static c_ast_t* c_ast_dup( c_ast_t const *ast ) {
-  if ( ast == NULL )
-    return NULL;
-  c_ast_t *const dup_ast = c_ast_new_gc( ast->kind_id, &ast->loc );
-
-  dup_ast->align = ast->align;
-  dup_ast->depth = ast->depth;
-  dup_ast->sname = c_ast_dup_name( ast );
-  dup_ast->type = ast->type;
-
-  switch ( ast->kind_id ) {
-    case K_ARRAY:
-      dup_ast->as.array.size = ast->as.array.size;
-      dup_ast->as.array.store_tid = ast->as.array.store_tid;
-      break;
-
-    case K_BUILTIN:
-    case K_TYPEDEF:
-      dup_ast->as.builtin.bit_width = ast->as.builtin.bit_width;
-      break;
-
-    case K_ENUM_CLASS_STRUCT_UNION:
-    case K_POINTER_TO_MEMBER:
-      dup_ast->as.ecsu.ecsu_sname = c_sname_dup( &ast->as.ecsu.ecsu_sname );
-      break;
-
-    case K_OPERATOR:
-      dup_ast->as.oper.oper_id = ast->as.oper.oper_id;
-      PJL_FALLTHROUGH;
-    case K_FUNCTION:
-      dup_ast->as.func.flags = ast->as.func.flags;
-      PJL_FALLTHROUGH;
-    case K_APPLE_BLOCK:
-    case K_CONSTRUCTOR:
-    case K_USER_DEF_LITERAL:
-      FOREACH_PARAM( param, ast ) {
-        c_ast_t const *const param_ast = c_param_ast( param );
-        c_ast_t *const dup_param_ast = c_ast_dup( param_ast );
-        slist_push_tail( &dup_ast->as.func.param_ast_list, dup_param_ast );
-      } // for
-      break;
-
-    case K_DESTRUCTOR:
-    case K_NAME:
-    case K_NONE:
-    case K_PLACEHOLDER:
-    case K_POINTER:
-    case K_REFERENCE:
-    case K_RVALUE_REFERENCE:
-    case K_USER_DEF_CONVERSION:
-    case K_VARIADIC:
-      // nothing to do
-      break;
-  } // switch
-
-  if ( c_ast_is_parent( ast ) || ast->kind_id == K_TYPEDEF ) {
-    c_ast_t *const child_ast = ast->as.parent.of_ast;
-    if ( child_ast != NULL )
-      c_ast_set_parent( c_ast_dup( child_ast ), dup_ast );
-  }
-
-  return dup_ast;
 }
 
 /**
@@ -2757,7 +2685,7 @@ typedef_declaration_c
       assert( slist_empty( &in_attr.typedef_ast_list ) );
       slist_push_list_tail( &in_attr.typedef_ast_list, &gc_ast_list );
       in_attr.typedef_type_ast = $4;
-      ia_type_ast_push( c_ast_dup( in_attr.typedef_type_ast ) );
+      ia_type_ast_push( c_ast_dup( in_attr.typedef_type_ast, &gc_ast_list ) );
     }
     typedef_decl_list_c
     {
@@ -2773,7 +2701,7 @@ typedef_decl_list_c
       // pristine one we kept earlier.
       //
       ia_type_ast_pop();
-      ia_type_ast_push( c_ast_dup( in_attr.typedef_type_ast ) );
+      ia_type_ast_push( c_ast_dup( in_attr.typedef_type_ast, &gc_ast_list ) );
     }
     typedef_decl_c
 
