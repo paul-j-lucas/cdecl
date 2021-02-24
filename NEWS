@@ -17,6 +17,13 @@ Multiple types can now be declared in a single `typedef`:
 
     typedef int Int, *Pint;
 
+** New abbreviations
+There are new abbreviations:
+
+    conv  conversion
+    ctor  constructor
+    dtor  destructor
+
 ** Qualified pointer spacing
 Fixed spacing for qualified pointers.
 

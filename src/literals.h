@@ -187,9 +187,12 @@ extern char const L_CATCH[];
 extern char const L_CLASS[];
 extern char const L_CONSTRUCTOR[];
 extern char const L_CONST_CAST[];
+extern char const L_CONV[];               // synonym for "conversion"
 extern char const L_CONVERSION[];
+extern char const L_CTOR[];               // synonym for "constructor"
 extern char const L_DELETE[];
 extern char const L_DESTRUCTOR[];
+extern char const L_DTOR[];               // synonym for "destructor"
 extern char const L_DYNAMIC[];
 extern char const L_DYNAMIC_CAST[];
 extern char const L_EXPLICIT[];
