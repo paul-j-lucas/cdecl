@@ -315,7 +315,7 @@ void c_ast_set_name( c_ast_t *ast, char *name ) {
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
   assert( child_ast != NULL );
   assert( parent_ast != NULL );
-  assert( c_ast_is_parent( parent_ast ) );
+  assert( c_ast_is_parent( parent_ast ) || parent_ast->kind_id == K_TYPEDEF );
 
   child_ast->parent_ast = parent_ast;
   parent_ast->as.parent.of_ast = child_ast;

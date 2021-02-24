@@ -800,6 +800,7 @@ TESTS+=	tests/2c_typedef_i.test \
 	tests/typedef_i_declare_i.test \
 	tests/typedef_i_explain_i.test \
 	tests/typedef_i_int_least32_t.test \
+	tests/typedef_i_pi.test \
 	tests/using_fi_v_show_f.test \
 	tests/using_i.test \
 	tests/using_i_declare_i.test \

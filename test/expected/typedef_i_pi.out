@@ -1,0 +1,2 @@
+define I as int
+define PI as pointer to int

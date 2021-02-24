@@ -9,7 +9,7 @@ command:
   { help | ? } [command[s] | english]
   set [<option> [= <value>] | options | <lang>]*
   show [<name> | [all] {predefined | user}] [[as] {english | typedef | using}]
-  typedef <gibberish>
+  typedef <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   using <name> = <gibberish>
   exit | quit | q

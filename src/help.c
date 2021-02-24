@@ -154,7 +154,7 @@ static void print_help_commands( void ) {
     print_h( " | using" );
   print_h( "}]\n" );
 
-  print_h( "  typedef <gibberish>\n" );
+  print_h( "  typedef <gibberish> [, <gibberish>]*\n" );
 
   if ( OPT_LANG_IS(CPP_ANY) ) {
     print_h( "  <scope-c> <name> [\\{ [{ <scope-c> | <typedef>" );

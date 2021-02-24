@@ -397,11 +397,13 @@
  * Inherited attributes.
  */
 struct in_attr {
-  c_alignas_t   align;                  ///< Alignment, if any.
-  c_sname_t     current_scope;          ///< C++ only: current scope, if any.
-  slist_t       qualifier_stack;        ///< `c_qualifier` stack.
-  c_ast_list_t  type_ast_stack;         ///< Type AST stack.
-  bool          typename;               ///< C++ only: `typename` specified?
+  c_alignas_t   align;            ///< Alignment, if any.
+  c_sname_t     current_scope;    ///< C++ only: current scope, if any.
+  slist_t       qualifier_stack;  ///< `c_qualifier` stack.
+  c_ast_list_t  type_ast_stack;   ///< Type AST stack.
+  c_ast_list_t  typedef_ast_list; ///< AST nodes of `typedef` being declared.
+  c_ast_t      *typedef_type_ast; ///< AST of `typedef` being declared.
+  bool          typename;         ///< C++ only: `typename` specified?
 };
 typedef struct in_attr in_attr_t;
 
@@ -434,6 +436,15 @@ static in_attr_t      in_attr;          ///< Inherited attributes.
 static c_ast_list_t   typedef_ast_list; ///< `c_ast` nodes for `typedef`s.
 
 ////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Garbage-collect the AST nodes on \a ast_list.
+ *
+ * @param ast_list The AST list to free.
+ */
+static inline void c_ast_list_gc( c_ast_list_t *ast_list ) {
+  slist_free( ast_list, NULL, (slist_node_data_free_fn_t)&c_ast_free );
+}
 
 /**
  * Creates a new AST and adds it to <code>\ref gc_ast_list</code>.
@@ -570,7 +581,7 @@ static inline bool unsupported( c_lang_id_t lang_ids ) {
  * Cleans up parser data at program termination.
  */
 void parser_cleanup( void ) {
-  slist_free( &typedef_ast_list, NULL, (slist_node_data_free_fn_t)&c_ast_free );
+  c_ast_list_gc( &typedef_ast_list );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -630,6 +641,76 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
   }
 
   return true;
+}
+
+/**
+ * Duplicates the entire AST starting at \a ast.
+ *
+ * @param ast The AST to duplicate.
+ * @return Returns the duplicated AST.
+ */
+static c_ast_t* c_ast_dup( c_ast_t const *ast ) {
+  if ( ast == NULL )
+    return NULL;
+  c_ast_t *const dup_ast = c_ast_new_gc( ast->kind_id, &ast->loc );
+
+  dup_ast->align = ast->align;
+  dup_ast->depth = ast->depth;
+  dup_ast->sname = c_ast_dup_name( ast );
+  dup_ast->type = ast->type;
+
+  switch ( ast->kind_id ) {
+    case K_ARRAY:
+      dup_ast->as.array.size = ast->as.array.size;
+      dup_ast->as.array.store_tid = ast->as.array.store_tid;
+      break;
+
+    case K_BUILTIN:
+    case K_TYPEDEF:
+      dup_ast->as.builtin.bit_width = ast->as.builtin.bit_width;
+      break;
+
+    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_POINTER_TO_MEMBER:
+      dup_ast->as.ecsu.ecsu_sname = c_sname_dup( &ast->as.ecsu.ecsu_sname );
+      break;
+
+    case K_OPERATOR:
+      dup_ast->as.oper.oper_id = ast->as.oper.oper_id;
+      PJL_FALLTHROUGH;
+    case K_FUNCTION:
+      dup_ast->as.func.flags = ast->as.func.flags;
+      PJL_FALLTHROUGH;
+    case K_APPLE_BLOCK:
+    case K_CONSTRUCTOR:
+    case K_USER_DEF_LITERAL:
+      FOREACH_PARAM( param, ast ) {
+        c_ast_t const *const param_ast = c_param_ast( param );
+        c_ast_t *const dup_param_ast = c_ast_dup( param_ast );
+        slist_push_tail( &dup_ast->as.func.param_ast_list, dup_param_ast );
+      } // for
+      break;
+
+    case K_DESTRUCTOR:
+    case K_NAME:
+    case K_NONE:
+    case K_PLACEHOLDER:
+    case K_POINTER:
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+    case K_USER_DEF_CONVERSION:
+    case K_VARIADIC:
+      // nothing to do
+      break;
+  } // switch
+
+  if ( c_ast_is_parent( ast ) || ast->kind_id == K_TYPEDEF ) {
+    c_ast_t *const child_ast = ast->as.parent.of_ast;
+    if ( child_ast != NULL )
+      c_ast_set_parent( c_ast_dup( child_ast ), dup_ast );
+  }
+
+  return dup_ast;
 }
 
 /**
@@ -715,6 +796,7 @@ static void ia_free( void ) {
   // Do _not_ pass &c_ast_free for the 3rd argument! All AST nodes were already
   // free'd from the gc_ast_list in parse_cleanup(). Just free the slist nodes.
   slist_free( &in_attr.type_ast_stack, NULL, NULL );
+  c_ast_list_gc( &in_attr.typedef_ast_list );
   MEM_ZERO( &in_attr );
 }
 
@@ -751,7 +833,7 @@ static void ia_qual_push_tid( c_type_id_t qual_tid, c_loc_t const *loc ) {
  */
 static void parse_cleanup( bool hard_reset ) {
   lexer_reset( hard_reset );
-  slist_free( &gc_ast_list, NULL, (slist_node_data_free_fn_t)&c_ast_free );
+  c_ast_list_gc( &gc_ast_list );
   ia_free();
 }
 
@@ -2647,34 +2729,71 @@ predefined_or_user_mask_opt
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef_declaration_c
-  : Y_TYPEDEF
+  : Y_TYPEDEF typename_flag_opt
     {
+      in_attr.typename = $2;
       // see the comment in "explain"
       lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
     }
-    typename_flag_opt type_c_ast
+    type_c_ast
     {
+      if ( $2 && !c_ast_is_typename_ok( $4 ) )
+        PARSE_ABORT();
+
       // see the comment in define_english about TS_TYPEDEF
       C_TYPE_ADD_TID( &$4->type, TS_TYPEDEF, @4 );
-      ia_type_ast_push( $4 );
+
+      //
+      // We have to keep a pristine copy of the AST for the base type of the
+      // typedef being declared in case multiple types are defined in the same
+      // typedef.  For example, given:
+      //
+      //      typedef int I, *PI;
+      //              ^
+      // the "int" is the base type that needs to get patched twice to form two
+      // types: I and PI.  Hence, we keep a pristine copy and then duplicate it
+      // so every type gets a pristine copy.
+      //
+      assert( slist_empty( &in_attr.typedef_ast_list ) );
+      slist_push_list_tail( &in_attr.typedef_ast_list, &gc_ast_list );
+      in_attr.typedef_type_ast = $4;
+      ia_type_ast_push( c_ast_dup( in_attr.typedef_type_ast ) );
     }
-    decl_c_astp
+    typedef_decl_list_c
     {
       ia_type_ast_pop();
+    }
+  ;
 
-      DUMP_START( "typedef_declaration_c",
-                  "TYPEDEF typename_flag_opt type_c_ast decl_c_astp" );
-      DUMP_BOOL( "typename_flag_opt", $3 );
-      DUMP_AST( "type_c_ast", $4 );
-      DUMP_AST( "decl_c_astp", $6.ast );
+typedef_decl_list_c
+  : typedef_decl_list_c ','
+    { //
+      // We're defining another type in the same typedef so we need to replace
+      // the current type AST inherited attribute with a new duplicate of the
+      // pristine one we kept earlier.
+      //
+      ia_type_ast_pop();
+      ia_type_ast_push( c_ast_dup( in_attr.typedef_type_ast ) );
+    }
+    typedef_decl_c
+
+  | typedef_decl_c
+  ;
+
+typedef_decl_c
+  : // in_attr: type_c_ast
+    decl_c_astp
+    {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
+      DUMP_START( "typedef_decl_c", "decl_c_astp" );
+      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "decl_c_astp", $1.ast );
 
       c_ast_t *typedef_ast;
       c_sname_t temp_sname;
 
-      if ( $3 && !c_ast_is_typename_ok( $4 ) )
-        PARSE_ABORT();
-
-      if ( $6.ast->kind_id == K_TYPEDEF ) {
+      if ( $1.ast->kind_id == K_TYPEDEF ) {
         //
         // This is for either of the following cases:
         //
@@ -2683,9 +2802,9 @@ typedef_declaration_c
         //
         // that is: any type name followed by an existing typedef name.
         //
-        typedef_ast = $4;
+        typedef_ast = type_ast;
         if ( c_ast_empty_name( typedef_ast ) )
-          typedef_ast->sname = c_ast_dup_name( $6.ast->as.tdef.for_ast );
+          typedef_ast->sname = c_ast_dup_name( $1.ast->as.tdef.for_ast );
       }
       else {
         //
@@ -2696,8 +2815,8 @@ typedef_declaration_c
         //
         // that is: any type name followed by a new name.
         //
-        typedef_ast = c_ast_patch_placeholder( $4, $6.ast );
-        temp_sname = c_ast_take_name( $6.ast );
+        typedef_ast = c_ast_patch_placeholder( type_ast, $1.ast );
+        temp_sname = c_ast_take_name( $1.ast );
         c_ast_set_sname( typedef_ast, &temp_sname );
       }
 
@@ -2706,7 +2825,7 @@ typedef_declaration_c
       PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &T_TS_TYPEDEF ) );
 
       if ( c_ast_count_name( typedef_ast ) > 1 ) {
-        print_error( &@6,
+        print_error( &@1,
           "%s names can not be scoped; use: %s %s { %s ... }\n",
           L_TYPEDEF, L_NAMESPACE, c_ast_scope_name( typedef_ast ), L_TYPEDEF
         );
@@ -2719,10 +2838,10 @@ typedef_declaration_c
       );
       c_ast_prepend_sname( typedef_ast, &temp_sname );
 
-      DUMP_AST( "typedef_declaration_c", typedef_ast );
+      DUMP_AST( "typedef_decl_c", typedef_ast );
       DUMP_END();
 
-      if ( !add_type( L_TYPEDEF, typedef_ast, &@6 ) )
+      if ( !add_type( L_TYPEDEF, typedef_ast, &@1 ) )
         PARSE_ABORT();
     }
   ;
