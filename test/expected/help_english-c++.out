@@ -16,7 +16,7 @@ C++-type: bool | char | char{8|16|32}_t | wchar_t | int | float | double | void
 cv-qual: const | volatile
 fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>
-name: a C++ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*
+name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 scope-e: scope | class | struct | union | [inline] namespace
 store: const[eval|expr|init] | extern ["C" [linkage]] | friend | mutable |
        static | thread_local | [pure] virtual

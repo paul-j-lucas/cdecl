@@ -51,10 +51,13 @@
 static c_lang_t const C_LANG[] = {
   { "CK&R",   true,   LANG_C_KNR   },
   { "CKNR",   true,   LANG_C_KNR   },
+  { "CKR",    true,   LANG_C_KNR   },
   { "K&R",    true,   LANG_C_KNR   },
   { "K&RC",   false,  LANG_C_KNR   },
   { "KNR",    true,   LANG_C_KNR   },
   { "KNRC",   true,   LANG_C_KNR   },
+  { "KR",     true,   LANG_C_KNR   },
+  { "KRC",    true,   LANG_C_KNR   },
   { "C",      false,  LANG_C_NEW   },
   { "C89",    false,  LANG_C_89,   },
   { "C90",    true,   LANG_C_89,   },

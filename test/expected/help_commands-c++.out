@@ -1,23 +1,23 @@
 command:
   [const | dynamic | reinterpret | static] cast <name> {as|into|to} <english>
   declare <name> as <english> [width <number> [bits]]
-  declare <name> as <english> aligned [as|to] {<number> [bytes] | <english>}
+  declare <name> as <english> align[ed] [as|to] {<number> [bytes] | <english>}
   declare <operator> as <english>
-  declare [<english>] user-defined <user-defined-english>
+  declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
   explain <gibberish>
   { help | ? } [command[s] | english]
   set [<option> [= <value>] | options | <lang>]*
-  show [<name> | [all] {predefined | user}] [[as] {english | typedef | using}]
+  show [<name> | [all] {predef[ined] | user}] [[as] {english | typedef | using}]
   typedef <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   using <name> = <gibberish>
-  exit | quit | q
+  exit | q[uit]
 gibberish: a C++ declaration, like "int x"; or cast, like "(int)x"
 option:
   [no]alt-tokens [no]debug {di|tri|no}graphs [no]east-const
   [no]explain-by-default [no]explicit-int[=<types>] lang=<lang>
   [no]prompt [no]semicolon
-lang: K&R[C] C[KNR|89|95|99|11|17|2X] C++[98|03|11|14|17|20]
+lang: K[&|N]R[C] | C[K[&|N]R|89|95|99|11|17|2X] | C++[98|03|11|14|17|20]
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

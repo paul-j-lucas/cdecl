@@ -137,11 +137,11 @@ static void print_help_commands( void ) {
 
   print_h( "  declare <name> as <english> [width <number> [bits]]\n" );
   if ( OPT_LANG_IS(C_CPP_MIN(11,11)) )
-    print_h( "  declare <name> as <english> aligned [as|to] {<number> [bytes] | <english>}\n" );
+    print_h( "  declare <name> as <english> align[ed] [as|to] {<number> [bytes] | <english>}\n" );
 
   if ( OPT_LANG_IS(CPP_ANY) ) {
     print_h( "  declare <operator> as <english>\n" );
-    print_h( "  declare [<english>] user-defined <user-defined-english>\n" );
+    print_h( "  declare [<english>] user-def[ined] <user-defined-english>\n" );
   }
 
   print_h( "  define <name> as <english>\n" );
@@ -149,7 +149,7 @@ static void print_help_commands( void ) {
   print_h( "  { help | ? } [command[s] | english]\n" );
   print_h( "  set [<option> [= <value>] | options | <lang>]*\n" );
 
-  print_h( "  show [<name> | [all] {predefined | user}] [[as] {english | typedef" );
+  print_h( "  show [<name> | [all] {predef[ined] | user}] [[as] {english | typedef" );
   if ( OPT_LANG_IS(CPP_MIN(11)) )
     print_h( " | using" );
   print_h( "}]\n" );
@@ -166,7 +166,7 @@ static void print_help_commands( void ) {
   if ( OPT_LANG_IS(CPP_MIN(11)) )
     print_h( "  using <name> = <gibberish>\n" );
 
-  print_h( "  exit | quit | q\n" );
+  print_h( "  exit | q[uit]\n" );
 
   print_h( "gibberish: a C" );
   if ( OPT_LANG_IS(CPP_ANY) )
@@ -178,7 +178,7 @@ static void print_help_commands( void ) {
   print_h( "  [no]explain-by-default [no]explicit-int[=<types>] lang=<lang>\n" );
   print_h( "  [no]prompt [no]semicolon\n" );
 
-  print_h( "lang: K&R[C] C[KNR|89|95|99|11|17|2X] C\\+\\+[98|03|11|14|17|20]\n" );
+  print_h( "lang: K[&|N]R[C] | C[K[&|N]R|89|95|99|11|17|2X] | C\\+\\+[98|03|11|14|17|20]\n" );
 
   if ( OPT_LANG_IS(CPP_ANY) ) {
     print_h( "scope-c: class | struct | union |" );
@@ -319,7 +319,7 @@ static void print_help_english( void ) {
     print_h( "\n" );
 
     print_h( "modifier: short | long | signed | unsigned | <cv-qual>\n" );
-    print_h( "name: a C\\+\\+ identifier; or <name>[::<name>]* or <name> [of <scope-e> <name>]*\n" );
+    print_h( "name: a C\\+\\+ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*\n" );
 
     print_h( "scope-e: scope | class | struct | union |" );
     if ( OPT_LANG_IS(CPP_MIN(11)) )
