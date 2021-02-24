@@ -13,7 +13,7 @@ with their complete changes, see the AUTHORS file.
 * Changes in Cdecl 9.7
 
 ** Multi-type `typedef`
-Multuple types can now be declared in a single `typedef`:
+Multiple types can now be declared in a single `typedef`:
 
     typedef int Int, *Pint;
 
