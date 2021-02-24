@@ -1,3 +1,45 @@
+2021-02-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated version.
+   * c_sname.c, c_type.c, cdecl.c, options.c, util.c, util.h: Added
+     strbuf_catseps().
+   * c_sname.c: Clean-up.
+   * NEWS, c_ast.c, help.c, parser.y, test/Makefile.am, cdecl--debug.out,
+     cdecl-d.out, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c++03.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out, typedef_i_pi.out, typedef_i_pi.test: Can now define
+     multiple types in a single typedef.
+   * parser.y: s/ast_type_stack/type_ast_stack/
+   * NEWS, configure.ac, gibberish.c, show_all_predefined_typedef-c++.out,
+     show_all_typedef.out, show_predefined_typedef.out: Fixed spacing for
+     qualified pointers.
+
+2021-02-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: s/ast_gc_list/gc_ast_list/; s/ast_typedef_list/typedef_ast_list/
+   * parser.y: Made c_ast_new_gc()'s loc argument be const.
+   * c_ast.c: Combined ecsu and ptr_mbr cases in c_ast_equiv().
+   * cdecl.c, util.c, util.h: read_input_line() now returns bool.
+   * cdecl.c, util.c, util.h: Removed strcpy_end() and STRCAT.
+
+2021-02-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c: Simplified parse_string().
+   * cdecl.c, util.c, util.h: read_input_line() now uses strbuf_t.
+   * cdecl.c: Fixed call of parse_string().
+   * cdecl.c, util.c, util.h: read_input_line() now returns char const*.
+   * cdecl.c: Comments.
+   * c_typedef.c, cdecl.c: parse_string() now takes -1 to mean calculate string
+     length.
+   * util.h: Doxygen change.
+   * c_sname.c, c_type.c, cdecl.c, lexer.l, options.c, prompt.c, util.c,
+     util.h: More uses of strbuf_t; removed chrcpy_end().
+   * help.c, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c++03.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out, help_english-c++.out, help_english-c.out,
+     help_english-c89.out, help_english-knr.out: Added 
+   * types.h: Doxygen fix.
+
 2021-02-19  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Updated version to 9.6.
