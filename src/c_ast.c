@@ -294,10 +294,8 @@ void c_ast_free( c_ast_t *ast ) {
         c_ast_list_free( &ast->as.func.param_ast_list );
         break;
       case K_ENUM_CLASS_STRUCT_UNION:
-        c_sname_free( &ast->as.ecsu.ecsu_sname );
-        break;
       case K_POINTER_TO_MEMBER:
-        c_sname_free( &ast->as.ptr_mbr.class_sname );
+        c_sname_free( &ast->as.ecsu.ecsu_sname );
         break;
       case K_ARRAY:
       case K_BUILTIN:
