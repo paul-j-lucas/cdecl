@@ -48,17 +48,10 @@
 #include <sysexits.h>
 #include <unistd.h>                     /* for geteuid() */
 
-#ifdef HAVE_READLINE_READLINE_H
-# include <readline/readline.h>
-#endif /* HAVE_READLINE_READLINE_H */
-#ifdef HAVE_READLINE_HISTORY_H
-# include <readline/history.h>
-#endif /* HAVE_READLINE_HISTORY_H */
-
 #ifdef ENABLE_TERM_SIZE
 # include <fcntl.h>                     /* for open(2) */
 # if defined(HAVE_CURSES_H)
-#   define _BOOL                        /* prevents clash of bool on Solaris */
+#   define _BOOL /* nothing */          /* prevents clash of bool on Solaris */
 #   include <curses.h>
 #   undef _BOOL
 # elif defined(HAVE_NCURSES_H)
@@ -96,20 +89,6 @@ static unsigned check_tigetnum( char const *capname ) {
 }
 #endif /* ENABLE_TERM_SIZE */
 
-/**
- * Calculates the next power of 2 &gt; \a n.
- *
- * @param n The initial value.
- * @return Returns said power of 2.
- */
-static size_t next_pow_2( size_t n ) {
-  if ( n == 0 )
-    return 1;
-  while ( (n & (n - 1)) != 0 )
-    n &= n - 1;
-  return n << 1;
-}
-
 ////////// extern functions ///////////////////////////////////////////////////
 
 char const* base_name( char const *path_name ) {
@@ -138,18 +117,18 @@ void* check_realloc( void *p, size_t size ) {
 char* check_strdup( char const *s ) {
   if ( s == NULL )
     return NULL;
-  char *const s_dup = strdup( s );
-  IF_EXIT( s_dup == NULL, EX_OSERR );
-  return s_dup;
+  char *const dup_s = strdup( s );
+  IF_EXIT( dup_s == NULL, EX_OSERR );
+  return dup_s;
 }
 
 char* check_strdup_tolower( char const *s ) {
   if ( s == NULL )
     return NULL;
-  char *const s_dup = MALLOC( char, strlen( s ) + 1/*\0*/ );
-  for ( char *p = s_dup; (*p++ = (char)tolower( *s++ )); )
+  char *const dup_s = MALLOC( char, strlen( s ) + 1/*\0*/ );
+  for ( char *p = dup_s; (*p++ = (char)tolower( *s++ )); )
     ;
-  return s_dup;
+  return dup_s;
 }
 
 #ifndef HAVE_FMEMOPEN
@@ -287,90 +266,6 @@ noreturn
 void perror_exit( int status ) {
   perror( me );
   exit( status );
-}
-
-bool read_input_line( strbuf_t *sbuf, char const *ps1, char const *ps2 ) {
-  assert( sbuf != NULL );
-  assert( ps1 != NULL );
-  assert( ps2 != NULL );
-
-  strbuf_init( sbuf );
-
-  for (;;) {
-    static char *line;
-    bool is_continuation = sbuf->str != NULL;
-#ifdef WITH_READLINE
-    extern void readline_init( void );
-    static bool called_readline_init;
-
-    if ( false_set( &called_readline_init ) )
-      readline_init();
-
-    free( line );
-    if ( (line = readline( is_continuation ? ps2 : ps1 )) == NULL )
-      goto check_for_error;
-#else
-    static size_t line_cap;
-    PUTS( is_continuation ? ps2 : ps1 );
-    FFLUSH( stdout );
-    if ( getline( &line, &line_cap, stdin ) == -1 )
-      goto check_for_error;
-#endif /* WITH_READLINE */
-
-    if ( is_blank_line( line ) ) {
-      if ( is_continuation ) {
-        //
-        // If we've been accumulating continuation lines, a blank line ends it.
-        //
-        break;
-      }
-      continue;
-    }
-
-    size_t line_len = strlen( line );
-    is_continuation = ends_with_chr( line, line_len, '\\' );
-    if ( is_continuation )
-      line[ --line_len ] = '\0';        // get rid of '\'
-    strbuf_cats( sbuf, line, (ssize_t)line_len );
-
-    if ( !is_continuation )
-      break;
-  } // for
-
-  assert( sbuf->str != NULL );
-  assert( sbuf->str[0] != '\0' );
-#ifdef WITH_READLINE
-  add_history( sbuf->str );
-#endif /* WITH_READLINE */
-  return true;
-
-check_for_error:
-  FERROR( stdin );
-  return false;
-}
-
-void strbuf_cats( strbuf_t *sbuf, char const *s, ssize_t s_len_in ) {
-  assert( sbuf != NULL );
-  assert( s != NULL );
-
-  size_t const s_len = s_len_in == -1 ? strlen( s ) : (size_t)s_len_in;
-  size_t const buf_rem = sbuf->buf_cap - sbuf->str_len;
-
-  if ( s_len >= buf_rem ) {
-    size_t const new_len = sbuf->str_len + s_len;
-    sbuf->buf_cap = next_pow_2( new_len );
-    REALLOC( sbuf->str, char, sbuf->buf_cap );
-  }
-  strncpy( sbuf->str + sbuf->str_len, s, s_len );
-  sbuf->str_len += s_len;
-  sbuf->str[ sbuf->str_len ] = '\0';
-}
-
-void strbuf_catseps( strbuf_t *sbuf, char const *sep, ssize_t sep_len,
-                     bool *sep_flag, char const *s, ssize_t s_len ) {
-  if ( true_or_set( sep_flag ) )
-    strbuf_cats( sbuf, sep, sep_len );
-  strbuf_cats( sbuf, s, s_len );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

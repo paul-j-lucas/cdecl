@@ -35,6 +35,7 @@
 #include "literals.h"
 #include "options.h"
 #include "prompt.h"
+#include "strbuf.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -49,6 +50,13 @@
 #include <string.h>
 #include <sysexits.h>
 #include <unistd.h>                     /* for isatty(3) */
+
+#ifdef HAVE_READLINE_READLINE_H
+# include <readline/readline.h>
+#endif /* HAVE_READLINE_READLINE_H */
+#ifdef HAVE_READLINE_HISTORY_H
+# include <readline/history.h>
+#endif /* HAVE_READLINE_HISTORY_H */
 
 /// @endcond
 
@@ -143,6 +151,83 @@ int main( int argc, char const *argv[] ) {
 }
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Reads an input line interactively.
+ *
+ *  + Returns only non-whitespace-only lines.
+ *  + Stitches multiple lines ending with `\` together.
+ *
+ * If GNU **readline**(3) is compiled in, also:
+ *
+ *  + Adds non-whitespace-only lines to the history.
+ *
+ * @param sbuf The strbuf to use.
+ * @param ps1 The primary prompt to use.
+ * @param ps2 The secondary prompt to use for a continuation line (a line after
+ * ones ending with `\`).
+ * @return Returns `false` only if encountered EOF.
+ */
+static bool cdecl_read_line( strbuf_t *sbuf, char const *ps1,
+                             char const *ps2 ) {
+  assert( sbuf != NULL );
+  assert( ps1 != NULL );
+  assert( ps2 != NULL );
+
+  strbuf_init( sbuf );
+
+  for (;;) {
+    static char *line;
+    bool is_continuation = sbuf->str != NULL;
+#ifdef WITH_READLINE
+    extern void readline_init( void );
+    static bool called_readline_init;
+
+    if ( false_set( &called_readline_init ) )
+      readline_init();
+
+    free( line );
+    if ( (line = readline( is_continuation ? ps2 : ps1 )) == NULL )
+      goto check_for_error;
+#else
+    static size_t line_cap;
+    PUTS( is_continuation ? ps2 : ps1 );
+    FFLUSH( stdout );
+    if ( getline( &line, &line_cap, stdin ) == -1 )
+      goto check_for_error;
+#endif /* WITH_READLINE */
+
+    if ( is_blank_line( line ) ) {
+      if ( is_continuation ) {
+        //
+        // If we've been accumulating continuation lines, a blank line ends it.
+        //
+        break;
+      }
+      continue;
+    }
+
+    size_t line_len = strlen( line );
+    is_continuation = ends_with_chr( line, line_len, '\\' );
+    if ( is_continuation )
+      line[ --line_len ] = '\0';        // get rid of '\'
+    strbuf_cats( sbuf, line, (ssize_t)line_len );
+
+    if ( !is_continuation )
+      break;
+  } // for
+
+  assert( sbuf->str != NULL );
+  assert( sbuf->str[0] != '\0' );
+#ifdef WITH_READLINE
+  add_history( sbuf->str );
+#endif /* WITH_READLINE */
+  return true;
+
+check_for_error:
+  FERROR( stdin );
+  return false;
+}
 
 /**
  * Checks whether \a s is a cdecl command.
@@ -315,7 +400,7 @@ static bool parse_stdin( void ) {
     ok = true;
     for (;;) {
       strbuf_t sbuf;
-      if ( !read_input_line( &sbuf, cdecl_prompt[0], cdecl_prompt[1] ) )
+      if ( !cdecl_read_line( &sbuf, cdecl_prompt[0], cdecl_prompt[1] ) )
         break;
       ok = parse_string( sbuf.str, (ssize_t)sbuf.str_len );
       strbuf_free( &sbuf );

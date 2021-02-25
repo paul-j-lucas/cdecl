@@ -49,6 +49,7 @@
 #include "literals.h"
 #include "options.h"
 #include "print.h"
+#include "strbuf.h"
 #include "util.h"
 #include "parser.h"                     /* must go last */
 

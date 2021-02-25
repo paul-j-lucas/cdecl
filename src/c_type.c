@@ -35,6 +35,7 @@
 #include "literals.h"
 #include "options.h"
 #include "print.h"
+#include "strbuf.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE

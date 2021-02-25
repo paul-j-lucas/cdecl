@@ -31,6 +31,7 @@
 #include "cdecl.h"
 #include "color.h"
 #include "print.h"
+#include "strbuf.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
