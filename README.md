@@ -88,6 +88,8 @@ most notably:
 * Support for C and C++ alternative tokens
   (`and`, `and_eq`, etc.).
 * Support for C++
+  constructors,
+  destructors,
   `mutable` data members,
   namespaces and scoped names,
   new-style casts,
