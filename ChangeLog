@@ -1,5 +1,10 @@
 2021-02-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * src/Makefile.am, c_sname.c, c_type.c, cdecl.c, lexer.l, options.c,
+     prompt.c, strbuf.c, strbuf.h, util.c, util.h: Split out strbuf.[ch].
+   * gibberish.c, help.c, util.h: Added true_clear().
+   * parser.y, util.c: More uses of false_set().
+   * red_black.c: Fixed comment.
    * NEWS, cdecl.1, lexer.l, literals.c, literals.h: Added new synonyms: conv,
      ctor, & dtor.
    * autocomplete.c: "linkage" is now auto-completable.
