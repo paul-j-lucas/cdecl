@@ -1,7 +1,3 @@
-2021-02-26  Paul J. Lucas <paul@lucasmail.org>
-
-   * strbuf.h: Comment.
-
 2021-02-25  Paul J. Lucas <paul@lucasmail.org>
 
    * c_keyword.c, c_type.c, c_type.h, cdecl.c, cdecl.h, check.c, lexer.h,
@@ -29,7 +25,6 @@
 2021-02-23  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c, c_ast.h, parser.y: Moved c_ast_dup().
-   * NEWS: Typo.
    * NEWS, configure.ac: Updated version.
    * c_sname.c, c_type.c, cdecl.c, options.c, util.c, util.h: Added
      strbuf_catseps().
@@ -58,17 +53,14 @@
    * cdecl.c, util.c, util.h: read_input_line() now uses strbuf_t.
    * cdecl.c: Fixed call of parse_string().
    * cdecl.c, util.c, util.h: read_input_line() now returns char const*.
-   * cdecl.c: Comments.
    * c_typedef.c, cdecl.c: parse_string() now takes -1 to mean calculate string
      length.
-   * util.h: Doxygen change.
    * c_sname.c, c_type.c, cdecl.c, lexer.l, options.c, prompt.c, util.c,
      util.h: More uses of strbuf_t; removed chrcpy_end().
    * help.c, help-c++.out, help-c.out, help_command-c++.out,
      help_command-c++03.out, help_command-c.out, help_commands-c++.out,
      help_commands-c.out, help_english-c++.out, help_english-c.out,
      help_english-c89.out, help_english-knr.out: Added 
-   * types.h: Doxygen fix.
 
 2021-02-19  Paul J. Lucas <paul@lucasmail.org>
 
@@ -83,13 +75,10 @@
    * print.c: Simplified; now using c_lang_until().
    * c_keyword.c, c_keyword.h: s/context/kw_ctx/
    * c_type.c, c_type.h: Moved more code around.
-   * c_type.c: Comment.
    * c_type.c: Remove left-over pointless `if`.
    * c_type.c: Code reorganization.
    * c_type.c, c_type.h: Eliminated c_type_get_tid(); moved
      c_type_get_tid_ptr() into .c.
-   * c_type.h, dump.c, dump.h: Code sorting; Doxygen.
-   * c_typedef.c: Comment.
 
 2021-02-18  Paul J. Lucas <paul@lucasmail.org>
 
@@ -98,7 +87,6 @@
    * debug.c, cdecl--debug.out, cdecl-d.out: Types are now dumped more
      verbosely.
    * parser.y: DUMP_SNAME() now implicitly does &.
-   * c_type.h, lexer.l, parser.y: Doxygen.
    * c_keyword.c: Allow "restrict" to be recognized in C++ so the parser can
      give a better error messsage.
    * parser.y: Clean-up.
@@ -106,11 +94,6 @@
      clarity.
    * c_type.c: Macro clean-up.
    * stddef.in.h: Updated Gnulib.
-   * autocomplete.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.h,
-     c_kind.h, c_lang.h, c_sname.c, c_sname.h, c_typedef.c, c_typedef.h,
-     cdecl.c, color.c, debug.h, did_you_mean.c, did_you_mean.h, lexer.h,
-     lexer.l, options.h, parser.y, print.h, prompt.c, red_black.c, red_black.h,
-     set_options.h, slist.h, util.c, util.h: Comment clean-up.
 
 2021-02-17  Paul J. Lucas <paul@lucasmail.org>
 
@@ -150,19 +133,16 @@
    * parser.y: Split out paren_decl_list_english and returning_english_ast.
    * help.c, help_english-c++.out, help_english-c.out, help_english-c89.out,
      help_english-knr.out: Added missing <cv-qual>* in places.
-   * c_lang.h: Comment fix.
    * NEWS, help.c, help_english-c.out: The help for `args` no longer prints
      `<name>` for when the current language is either C2X or C++.
    * NEWS: The help for `args` no longer prints `<name>` for when the current
      language is either C2X or C++.
-   * c_lang.h, c_sname.c: Doxygen.
    * c_ast.h, c_ast_util.c, check.c, english.c, parser.y: Function renaming.
 
 2021-02-15  Paul J. Lucas <paul@lucasmail.org>
 
    * lexer.l: Better comment.
    * lexer.l: Added comment.
-   * c_type.c: Comment.
    * c_type.c: Got rid of NUM_BUFS.
    * c_type.c: No longer using fixed-sized buffers.
    * c_sname.c, util.c, util.h: strbuf_cat() now accepts -1 for 3rd argument to
@@ -183,14 +163,12 @@
      check.c, gibberish.c, lexer.l, parser.y, print.c: s/LANG_*ALL/LANG_*ANY/
    * c_lang.h: Simplified opt_lang_is_c() and opt_lang_is_cpp().
    * c_type.h: Clean-up.
-   * c_ast.h, c_type.h: Doxygen.
    * lexer.h: s/()/( void )/
    * autocomplete.c, c_lang.c, c_lang.h, c_type.c, c_typedef.c, check.c,
      gibberish.c, help.c, literals.h, parser.y, print.c, prompt.c:
      s/C_LANG_/OPT_LANG/ and made some former macros into inline functions.
    * NEWS, c_lang.h, check.c: Warnings are now given for names that are
      reserved identifiers.
-   * c_ast.h: More Doxygen.
    * NEWS, lexer.l, test/Makefile.am, explain_tli.out, explain_tli-c99.test,
      explain_tli.test: thread_local is now correctly allowed only in C11 or
      C++11 or later.
@@ -199,9 +177,7 @@
 
 2021-02-13  Paul J. Lucas <paul@lucasmail.org>
 
-   * did_you_mean.h: Fixed Doxygen.
    * did_you_mean.h, types.h: Moved did_you_mean_t.
-   * did_you_mean.h: Doxygen.
    * src/Makefile.am: Added all-local and clean-local targets to make and
      remove c++decl.
    * NEWS, c_lang.c, c_lang.h, c_type.c, check.c, parser.y, set_options.c,
@@ -215,7 +191,6 @@
 
 2021-02-12  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_kind.h: Doxygen.
    * c_ast_util.c, c_type.c, c_type.h: s/c_type_intersects()/c_type_is_any()/
    * c_type.h: Function reorder.
    * c_type.c, c_type.h: Made c_type_id_tpid() out-of-line;
@@ -233,12 +208,9 @@
    * check.c: Now using END_STR_LIT for newline printing.
    * check.c: Added hint to c_ast_check_pointer().
    * check.c: Function sorting.
-   * c_ast_util.c: Pamameter & Doxygen fixes.
-   * c_ast_util.h: Doxygen fixes.
 
 2021-02-10  Paul J. Lucas <paul@lucasmail.org>
 
-   * set_options.c: Comment.
    * options.c, options.h, set_options.c: Renaming.
    * gibberish.c: s/C_GRAPH_NONE/C_GIB_NONE/
    * english.c, english.h, gibberish.c, parser.y: c_ast_english_type()
@@ -259,15 +231,11 @@
 2021-02-08  Paul J. Lucas <paul@lucasmail.org>
 
    * check.c: Added kind to type error messages.
-   * c_ast.h: Comments.
    * lexer.l: Added -Wconversion warning.
    * lexer.l: Now setting only first_line & first_column of yylloc for str/char
      literals.
-   * lexer.l: Comments.
-   * lexer.l: Comment.
    * lexer.l: str_lit_buf clean-up.
    * util.h: Added missing PJL_WARN_UNUSED_RESULT.
-   * util.h: Doxygen.
    * c_keyword.c, c_type.c, cdecl.c, cdecl.h, check.c, lexer.h, lexer.l,
      parser.y, types.h: Folded c_mode into lexer_find.
 
@@ -288,7 +256,6 @@
 2021-02-05  Paul J. Lucas <paul@lucasmail.org>
 
    * c_type.h: C_TYPE_LIT() now calls c_type_id_check() for arguments.
-   * parser.y: Doxygen.
    * parser.y, cdecl--debug.out, cdecl-d.out: Renamed rules: _ast -> _astp (for
      ast_pair), and others; added comments.
 
@@ -340,9 +307,7 @@
 
 2021-02-01  Paul J. Lucas <paul@lucasmail.org>
 
-   * parser.y: Comments.
    * c_typedef.c, c_typedef.h, parser.y: s/TD_/TDEF_/
-   * parser.y, slist.h: Doxygen.
    * NEWS, c_ast_util.c, test/Makefile.am, explain_sf__i.out,
      explain_sf__i.test: Fixed `auto` with storage class.
 
@@ -359,7 +324,6 @@
 2021-01-30  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Clean-up.
-   * c_type.h, parser.y: Doxygen.
    * parser.y: Tweaked typedef_declaration_c to set c_mode earlier.
    * parser.y: Reorganization of some grammar rules.
    * parser.y: Unified "using" declarations.
@@ -402,7 +366,6 @@
 
    * lexer.l, parser.y, cdecl--debug.out, cdecl-d.out: Changed "number" to
      "int_val".
-   * util.h: Doxygen fix.
    * test/Makefile.am: Test renaming.
    * test/Makefile.am, declare_rgi.test, declare_rrgi.test, explain_rgi.test,
      explain_rrgi.test: Test renaming.
@@ -438,16 +401,11 @@
      and `union` attribute specifier support.
    * configure.ac: Updated version.
    * red_black.c: s/rb_tree_free_impl/rb_node_free/g
-   * util.h: Doxygen.
    * c_ast.h, c_lang.h, c_sname.h, literals.h, options.h: #include clean-up.
-   * util.h: Doxygen.
-   * util.h: Comment fix.
    * slist.h: Added notes about big-O running time.
    * did_you_mean.h: Include-guard renaming.
    * lexer.h: Added PJL_WARN_UNUSED_RESULT for lexer_loc().
    * c_type.h, debug.c: s/PRIX_C_TYPE_T/PRIX_C_TYPE_ID_T/
-   * c_keyword.h: Updated Doxygen to reflect that attributes are supported in
-     C2X.
    * src/Makefile.am: Added missing set_options.h.
 
 2021-01-23  Paul J. Lucas <paul@lucasmail.org>
@@ -471,7 +429,6 @@
    * c_keyword.h, did_you_mean.c: Added FOREACH_KEYWORD().
    * c_lang.c, c_lang.h, options.c, types.h: Replaced c_lang_names() with
      c_lang_next().
-   * c_ast.h: Doxygen.
    * src/Makefile.am: Renamed set.c to set_options.c.
 
 2021-01-22  Paul J. Lucas <paul@lucasmail.org>
@@ -490,7 +447,6 @@
 
    * parser.y, cdecl--debug.out, cdecl-d.out: Grammar rule reorganization.
    * debug.c: Reworked "if".
-   * gibberish.c: Comment.
    * gibberish.c: Eliminated param_ast.
    * gibberish.c: Fixed comment.
    * gibberish.c: s/g_print_func_params/g_print_ast_func_params/
@@ -498,7 +454,6 @@
      s/g_print_array_size/g_print_ast_array_size/
    * gibberish.c: Moved alignas code.
    * gibberish.c: s/g_print_space/g_print_space_once/
-   * gibberish.c: Comment.
    * gibberish.c: Simplification.
 
 2021-01-20  Paul J. Lucas <paul@lucasmail.org>
@@ -509,7 +464,6 @@
    * english.c: Now taking AST for c_ast_english_func_params().
    * check.c: Now printing char8_t for user-defined literals only when lang >=
      C++20.
-   * check.c: Typo.
    * check.c: Added K_APPLE_BLOCK.
    * check.c: Split out c_ast_check_emc() and c_ast_check_upc().
 
@@ -523,12 +477,10 @@
    * c_lang.h, c_typedef.c, parser.y, util.h: For an error token, now printing
      "not a keyword until <lang>" only if the oldest language the token is in
      is later than the current language.
-   * parser.y: Comment.
    * NEWS, parser.y, test/Makefile.am, explain_k-itself.out,
      explain_i-itself.test, explain_k-itself.test: Forward `enum`, `class`,
      `struct`, and `union` declarations are now supported.
    * lexer.h, lexer.l, parser.y: lexer_loc() now returns a c_loc_t.
-   * gibberish.c: Comment.
    * c_typedef.c: Renaming.
    * gibberish.c: Function renaming.
    * gibberish.c: s/is_typedef/is_more_than_plain_typedef/ and added clarifying
@@ -538,7 +490,6 @@
    * autocomplete.c, c_type.c, check.c, debug.c, english.c, lexer.l,
      literals.c, literals.h, parser.y: s/L_..._H/H_.../ for hyphenated
      literals.
-   * gibberish.c, literals.h: Comments.
    * gibberish.c: Made != LANG_NONE explicit.
    * gibberish.c: Simplification.
    * NEWS, gibberish.c, types.h, test/Makefile.am, show_cpf_cpcc_v_using.out,
@@ -605,9 +556,7 @@
 2021-01-14  Paul J. Lucas <paul@lucasmail.org>
 
    * c_lang.c: Removed "true".
-   * c_lang.h: Reworded Doxygen.
    * options.c: Made is_cppdecl() take an argument.
-   * options.h: Comment changes.
    * parser.y: Fixed warnings.
 
 2021-01-13  Paul J. Lucas <paul@lucasmail.org>
@@ -656,13 +605,11 @@
    * c_keyword.c: Whitespace adjustment.
    * c_keyword.c, c_keyword.h: Swapped order ot lang_ids and type_id in
      preparation for keyword context.
-   * lexer.l: Doxygen.
 
 2021-01-08  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Now using // comments more.
    * parser.y: Added ast_depth = 0;.
-   * parser.y: Comment.
 
 2021-01-07  Paul J. Lucas <paul@lucasmail.org>
 
@@ -672,7 +619,6 @@
 
    * parser.y: Eliminated 2 shift-reduce conflicts by reworking operators.
    * parser.y: Blank lines.
-   * options.c, options.h: Clean-up + Doxygen fixes.
    * c_lang.h: Added const.
    * lib/Makefile.am, stddef.in.h, string.in.h, extensions.m4, stddef_h.m4,
      string_h.m4: Updated GnuLib.
@@ -689,13 +635,10 @@
 
 2021-01-04  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_typedef.c, c_typedef.h: Comments.
    * parser.y: Renaming.
    * parser.y: s/qualifier_pop/qualifier_tid_pop/
    * parser.y: Added missing c_sname_free().
    * parser.y: Renaming.
-   * c_sname.h: Comments.
-   * c_sname.h: Comment.
 
 2021-01-03  Paul J. Lucas <paul@lucasmail.org>
 
@@ -706,7 +649,6 @@
      s/c_typedef/tdef/; s/type/tdef/; s/t/tdef/
    * parser.y: c_ast_t* variable renaming.
    * parser.y: Added c_ast_pair_new_gc().
-   * parser.y: Comments.
 
 2021-01-02  Paul J. Lucas <paul@lucasmail.org>
 
@@ -731,12 +673,10 @@
    * c_type.h: Sorting.
    * parser.y: s/pure_virtual_tid/func_equals_tid/
    * c_type.h: Now using TS_ANY_REFERENCE.
-   * c_type.h: Doxygen fix.
 
 2021-01-01  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.h, parser.y, types.h: s/c_ast_params_t/c_ast_list_t/
-   * parser.y: Comment.
    * parser.y: Removed <oper_id> where not needed.
    * parser.y: s/enum_class_struct_union_ast/enum_class_struct_union_c_ast/
    * did_you_mean.c: No longer doing unnecessary != comparison.
@@ -807,7 +747,6 @@
    * NEWS, parser.y, test/Makefile.am, explain_fkr_i.out, explain_fkr_i.test:
      Implicit `int` functions in K&R C are now supported.
    * parser.y: Tweaked DUMP_START for "show" command.
-   * english.c, errors.c, gibberish.c: Comments.
    * debug.c: Removed pointless assert().
    * NEWS, c_typedef.c, show_all-c++.out, show_all.out,
      show_all_predefined-c++.out, show_all_predefined.out,
@@ -830,23 +769,15 @@
 
 2020-12-26  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_ast_util.c: Comment fix.
    * c_ast_util.c, c_type.h: Removed c_type_data_get() -- not needed.
-   * c_type.h: Comment fixes.
    * c_ast.c: Reverted adding default to c_ast_new().
    * NEWS: Updated.
-   * c_lang.h: Doxygen.
    * c_type.h: Using TX_NONE more.
-   * c_lang.h: Comments.
    * c_lang.c: Now using LANGX_MASK in c_set_lang().
-   * c_lang.h, set.c: Comments.
-   * c_keyword.h, c_lang.h: Comments.
    * c_ast.h, errors.c: Removed c_ast_find() -- not really needed.
-   * c_ast.h, c_sname.h, c_typedef.c, c_typedef.h, color.h: Doxygen.
    * c_ast.c: Added default case to c_ast_new().
    * c_typedef.c, util.h: INTERNAL_ERR() now prints the file and line.
    * c_typedef.c: Removed c_typedef_node_data_get().
-   * c_typedef.c: Comments.
 
 2020-12-25  Paul J. Lucas <paul@lucasmail.org>
 
@@ -900,7 +831,6 @@
      type; added "did you mean ...?" to "show <name>" where <name> is not a
      type.
    * print.c: Now printing "or" before last did-you-mean suggestion.
-   * parser.y: Doxygen.
 
 2020-12-19  Paul J. Lucas <paul@lucasmail.org>
 
@@ -920,7 +850,6 @@
    * types.h: Moved declaration.
    * gibberish.c, gibberish.h: Now longer using bits for c_gib_kind.
    * gibberish.c: Added assert().
-   * gibberish.h: Doxygen.
    * lib/Makefile.am, c++defs.h, stdio.in.h, stdlib.in.h, string.in.h,
      unistd.in.h, extensions.m4, gnulib-common.m4, pid_t.m4, stdint.m4,
      stdio_h.m4, stdlib_h.m4, sys_types_h.m4, unistd_h.m4: Updated Gnulib.
@@ -929,7 +858,6 @@
      help_commands-c++.out, show_predefined_using.out,
      show_predefined_using.test: Added support for showing types as "using"
      declarations.
-   * c_lang.h, gibberish.c: Doxygen fixes.
    * NEWS, c_keyword.c, c_lang.h, c_typedef.c, gibberish.c, gibberish.h,
      lexer.l, parser.y, test/Makefile.am, show_all_predefined_typedef-c++.out,
      show_all_typedef.out, show_predefined_typedef.out,
@@ -962,14 +890,11 @@
      c++17, C++20.
    * parser.y: Better annotation of inherited attributes; C++03/11 specific
      error message for "= error".
-   * lexer.l, parser.y: Doxygen.
    * errors.c: Fixed error message for main()'s signature.
    * parser.y: Printing an unknown type error now alternatively prints "X isn't
      a keyword until..." if X is a keyword in a later language version.
    * c_keyword.c: Whitespace fix.
    * parser.y: s/ELABORATE_ERROR/elaborate_error/ to match print_*() functions.
-   * parser.y: Doxygen.
-   * parser.y: Tweaked Doxygen.
    * parser.y: Fixed @param.
    * parser.y, print.c, print.h: Renamed *_impl() functions to fl_*().
    * parser.y: print_error_unknown_type() now also prints the parser.y file
@@ -977,7 +902,6 @@
    * parser.y, print.c: elaborate_error() now also prints file:line in debug
      mode; moved file:line back to end of other messages to match
      elaborate_error().
-   * print.h: Comment.
 
 2020-12-11  Paul J. Lucas <paul@lucasmail.org>
 
@@ -985,8 +909,6 @@
      in the error message.
    * NEWS, configure.ac, c_keyword.c, literals.c, literals.h, parser.y: Added
      C++20 keywords co_await, co_return, and co_yield.
-   * c_ast.h, c_typedef.c, color.c, dam_lev.h, prompt.c, red_black.c,
-     red_black.h, util.h: Made Doxygen @sa with URLs use Markdown syntax.
    * dam_lev.c, dam_lev.h, did_you_mean.c, did_you_mean.h: Added missing @file
      comments.
 
@@ -997,10 +919,8 @@
      did_you_mean.c, did_you_mean.h, errors.c, parser.y, print.c, print.h,
      types.h: Added "did you mean ...?" suggestions for typograpical errors for
      commands and types.
-   * print.h: Comment fix.
    * autocomplete.c, cdecl.c, cdecl.h, types.h: Unified CDECL_COMMANDS in
      cdecl.c and autocomplete.c.
-   * cdecl.h: Comment.
    * cdecl.c: Removed "q", "quit", and "exit" from first arg or program name;
      s/COMMAND/C_COMMAND/
 
@@ -1041,7 +961,6 @@
 2020-12-02  Paul J. Lucas <paul@lucasmail.org>
 
    * red_black.c, red_black.h: Removed rb_tree_new() -- no longer used.
-   * color.c: Comment fix.
    * options.c, util.c: Added "noreturn".
    * pjl_config.h: Removed do { ... } while (0)
 
@@ -1093,7 +1012,6 @@
 2020-11-08  Paul J. Lucas <paul@lucasmail.org>
 
    * debug.c: Clean-up.
-   * parser.y: Comment.
    * parser.y: Replaced '(' with lparen_exp and ')' with rparen_exp in some
      cases.
    * parser.y: s/_expected/_exp/
@@ -1102,7 +1020,6 @@
 2020-11-07  Paul J. Lucas <paul@lucasmail.org>
 
    * c_type.h: Tweaked comment.
-   * c_ast.c: Comment.
    * c_type.h: Added comment.
    * c_ast.c, c_ast.h, c_ast_util.c, c_type.h, debug.c, english.c, gibberish.c,
      parser.y: Tweaking of c_typedef_ast.
@@ -1197,8 +1114,6 @@
 
 2020-10-05  Paul J. Lucas <paul@lucasmail.org>
 
-   * lexer.l: Doxygen.
-   * c_sname.h: Doxygen fix.
    * help.c, lexer.l, literals.c, literals.h, help-c++.out, help-c.out,
      help_command-c++.out, help_command-c.out, help_commands-c++.out,
      help_commands-c.out: Now allowing "align" in English.
@@ -1256,32 +1171,20 @@
    * options.h: Renaming.
    * slist.c, slist.h: Renaming.
 
-2020-09-21  Paul J. Lucas <paul@lucasmail.org>
-
-   * parser.y: Doxygen.
-   * util.h: Doxygen.
-   * c_operator.h: Doxygen.
-
 2020-09-20  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_operator.h: Doxygen.
    * types.h: Whitespace change.
-   * c_type.c, c_type.h, parser.y: Doxygen;
-     s/c_type_id_no_part()/c_type_id_no_part_id()/
    * errors.c, gibberish.c, literals.c, literals.h: Unified alignas_lang().
    * gibberish.c: Change gibberish type eo an enum.
-   * c_ast.h: Doxygen.
 
 2020-09-19  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_type.h: Comment fix.
    * c_ast.c: Now free'ing function parameter list nodes.
    * c_ast.c: Sorted functions.
    * c_ast.h: Sorted functions.
    * c_ast.h, c_sname.h: Removed unused functions.
    * c_ast.c, c_ast.h, c_ast_util.c, c_operator.c, c_typedef.c, english.c,
      errors.c, gibberish.c, parser.y: Renaming.
-   * c_ast.h: More Doxygen.
    * parser.y: s/c_sname_append_name/c_ast_sname_append_name/
    * errors.c: s/c_sname_local_name/c_ast_sname_local_name/
    * c_ast.c, c_ast.h, debug.c, english.c, errors.c, gibberish.c:
@@ -1313,7 +1216,6 @@
 
 2020-09-12  Paul J. Lucas <paul@lucasmail.org>
 
-   * parser.y: Comment fix.
    * parser.y: COmment fix.
    * parser.y: Parser macro clean-up.
    * NEWS, parser.y, test/Makefile.am, explain_grtri.out, explain_grtrri.out,
@@ -1488,8 +1390,6 @@
      is now optional after class/struct/union.
    * c_ast.c, c_ast.h, c_sname.c, c_sname.h, english.c, errors.c, parser.y:
      Changed *_type to *_local_type to be clearer.
-   * c_sname.h: Comment fixes.
-   * c_sname.h: Typo.
    * c_sname.h, gibberish.c: Fixed printing scoped types in gibberish for
      recent sname scoping changes.
 
@@ -1506,7 +1406,6 @@
      namespace declaration.
    * c_ast.c, c_sname.c, c_typedef.c: Added assert()s.
    * c_sname.c: Simplified c_sname_type_impl().
-   * c_ast.h: Comment additions.
    * parser.y: Moved check for nested types in C only if a nested type is
      actually attempted.
    * cdecl.1, help.c, help-c++.out, help_command-c++.out,
@@ -1545,7 +1444,6 @@
    * color.c: s/fd_out/fout_fd/
    * help.c: Hoisted is_title() check out of the loop.
    * help.c: s/c/s/
-   * help.c: Comments.
 
 2020-07-14  Paul J. Lucas <paul@lucasmail.org>
 
@@ -2070,7 +1968,6 @@
    * cdecl.h: Sorted.
    * c_typedef.h: Reordered.
    * c_type.h: Sorted functions.
-   * c_lang.h: Doxygen fix.
    * c_ast_util.h, errors.c, parser.y, types.h: Eliminated c_check.
    * parser.y: s/C_AST_CHECK()/C_AST_CHECK_DECL()/
 
@@ -2101,9 +1998,6 @@
 2020-07-03  Paul J. Lucas <paul@lucasmail.org>
 
    * gibberish.c, gibberish.h, parser.y: Simplified internal gibberish API.
-   * c_operator.h, gibberish.h: Doxygen.
-   * c_ast.h, c_operator.h: Doxygen
-   * c_lang.h: Doxygen
    * lexer.l: s/e_literal/literal/
    * c_keyword.h, lexer.l: /y_token/yy_token_id/
 
@@ -2125,7 +2019,6 @@
 
 2020-07-01  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_type.h: Comment fix.
    * c_ast.c, c_type.h, errors.c, parser.y: s/T_CLASS_STRUCT_UNION/T_ANY_CLASS/
    * NEWS, configure.ac: Updated version to 7.4.1; updated NEWS.
    * c_ast_util.c, c_ast_util.h, c_type.c, c_type.h, test/Makefile.am,
@@ -2156,7 +2049,6 @@
 
    * lib/Makefile.am, getopt.c, unistd.in.h, unistd_h.m4: Updated Gnulib.
    * lexer.l: Cleaned-up SET_TOKEN* macros.
-   * c_ast_util.h, c_kind.h: Tweaked Doxygen.
    * c_type.h, errors.c: Added T_FUNC_LIKE; more documentation.
    * c_ast_util.h: Fixed @param.
 
@@ -2181,7 +2073,6 @@
      explain_main_fv_i.test: Now checking main()'s signature.
    * parser.y: Added comment for Y_DELETE.
    * parser.y: Y_NEW is oper_id.
-   * parser.y: Comment fix.
    * NEWS, configure.ac: Changed version to 7.3.
 
 2020-06-26  Paul J. Lucas <paul@lucasmail.org>
@@ -2213,16 +2104,12 @@
 
 2020-06-15  Paul J. Lucas <paul@lucasmail.org>
 
-   * pjl_config.h: Work around Doxygen quirk.
    * c_ast_util.h: Fixed @addtogroup ast-functions-group.
    * pjl_config.h: Added defensive #error about config.h.
-   * pjl_config.h: Hide __has_attribute from Doxygen.
    * pjl_config.h: Added comment.
 
 2020-06-14  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.h, c_kind.h, c_type.c,
-     parser.y, print.h, util.h: Doxygen clean-up.
    * parser.y: Renamed show type functions and struct.
    * english.c, english.h, gibberish.c, gibberish.h, parser.y: Moved c_typdef
      English- and gibberish-printing code to english.c and gibberish.c,
@@ -2348,7 +2235,6 @@
 2020-05-27  Paul J. Lucas <paul@lucasmail.org>
 
    * Doxyfile: Disabled LaTeX generation.
-   * lexer.l: Fixed Doxygen.
 
 2020-05-26  Paul J. Lucas <paul@lucasmail.org>
 
@@ -2384,13 +2270,11 @@
 
    * NEWS, configure.ac: Updated version to 7.0.
    * AUTHORS: Added mention of "east const" and typename.
-   * parser.y: Comments.
 
 2020-05-12  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac, c_ast.c, c_ast_util.c, debug.c, english.c, errors.c,
      gibberish.c, help.c, lexer.l, pjl_config.h: Fixed fallthrough warning.
-   * util.h: Comments.
    * limits.in.h, stdio.in.h, stdlib.in.h, string.in.h, warn-on-use.h,
      gnulib-common.m4, wint_t.m4: Updated Gnulib.
    * parser.y, print.c, util.h: s/PRINT_ERR/PRINTF_ERR/
@@ -2398,7 +2282,6 @@
    * c_operator.c, c_type.h, english.c, errors.c:
      s/T_MEMBER_ONLY/T_MEMBER_FUNC_ONLY/;
      s/T_NON_MEMBER_ONLY/T_NONMEMBER_FUNC_ONLY/
-   * parser.y: Comment additions.
    * set.c: s/*lang/*lang_id/
    * c_ast.c, c_ast.h, debug.c, cdecl--debug.out, cdecl-d.out: s/id/unique_id/
    * c_ast.c, c_ast.h, c_ast_util.c, debug.c, errors.c, gibberish.c:
@@ -2433,7 +2316,6 @@
 
 2020-05-03  Paul J. Lucas <paul@lucasmail.org>
 
-   * autocomplete.c, c_lang.c: Comments.
    * lexer.l, parser.y: Got rid of Y_HYPHEN_NAME.
    * lexer.l, parser.y: Clean-up.
    * lexer.l, literals.c, literals.h: Added L_USER_DEF.
@@ -2454,7 +2336,6 @@
 
    * literals.c, literals.h: Not needed.
    * autocomplete.c: Moved alt-tokens to where it belongs.
-   * parser.y: Updated Doxygen.
 
 2020-04-30  Paul J. Lucas <paul@lucasmail.org>
 
@@ -2479,7 +2360,6 @@
      declare_ck2-ec.test, declare_ck2.test, declare_cz-ec.test,
      declare_pci-ec.test: Added support for east-const.
    * set.c: s/set_opt_fn_t/set_option_fn_t/
-   * set.c: Comment fix.
    * set.c: Improved set option matching.
    * autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c, c_keyword.c, c_kind.c,
      c_kind.h, c_type.c, c_type.h, debug.c, english.c, errors.c, gibberish.c,
@@ -2504,7 +2384,6 @@
      explain_oc_udc_i.test: Can now declare const/volatile user-defined
      conversion operators.
    * parser.y: Change from "switch" to "if".
-   * parser.y: Comments.
    * parser.y: Moved type_pop() out of explain_type_decl().
    * parser.y: Made type_pop() be C_NOWARN_UNUSED_RESULT.
 
@@ -2563,10 +2442,6 @@
    * parser.y, test/Makefile.am, retypedef-01.out, retypedef-01.test: Fixed a
      bug where redefining one typedef'd type as another would crash.
 
-2020-04-16  Paul J. Lucas <paul@lucasmail.org>
-
-   * options.h: Comment rewording.
-
 2020-04-15  Paul J. Lucas <paul@lucasmail.org>
 
    * options.c, options.h, set.c: Made opt_explicit_int local to options.c.
@@ -2621,7 +2496,6 @@
 
 2020-04-02  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_ast_util.c: Comment fix.
    * c_typedef.c, red_black.c, red_black.h: Changed red-black tree to include
      data_free_fn.
 
@@ -2649,7 +2523,6 @@
      options.c, options.h, parser.y, pjl_config.h, print.c, print.h, prompt.c,
      red_black.c, red_black.h, slist.c, slist.h, util.c, util.h: Now using some
      gcc attributes.
-   * c_ast.h, typedefs.h: Better Doxygen.
    * Doxyfile: Changed STRIP_CODE_COMMENTS to NO.
    * autocomplete.c: Removed [no]create from autocompletion -- not sure why it
      was ever added.
@@ -2666,7 +2539,6 @@
 
 2020-02-19  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_ast.c: Comments.
    * c_ast.c: Slightly more efficient check.
    * autocomplete.c: Added missing explain-by-default.
 
@@ -2770,7 +2642,6 @@
      explain_udl_pcc8ul_i.out, explain_udl_pccul_i.out,
      explain_udl_pcwul_i.out, explain_udl_ull_i.out, explain_ull.out: Now
      explicit about "int" in English.
-   * c_type.c: Comment reformatting.
 
 2019-12-26  Paul J. Lucas <paul@lucasmail.org>
 
@@ -2850,7 +2721,6 @@
    * c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all.out,
      show_all_typedef.out, show_predefined.out, show_predefined_typedef.out:
      Added atomic_char8_t typedef for C++20.
-   * pjl_config.h: Fixed Doxygen complain about #include.
    * Doxyfile: Changed ALPHABETICAL_INDEX = YES.
 
 2019-11-22  Paul J. Lucas <paul@lucasmail.org>
@@ -2870,37 +2740,21 @@
    * errors.c: Fixed "‘ret_ast’ may be used uninitialized in this function"
      warning.
 
-2019-11-14  Paul J. Lucas <paul@lucasmail.org>
-
-   * red_black.c, red_black.h, slist.h: More Doxygen @sa.
-   * typedefs.h: Tweaked Doxygen.
-   * c_keyword.h, c_lang.h: More Doxygen groups.
-
 2019-11-11  Paul J. Lucas <paul@lucasmail.org>
 
    * autocomplete.c, c_keyword.c, c_operator.c, c_type.c, c_type.h,
      c_typedef.c, color.c, lexer.l, options.c, parser.y, red_black.h, slist.h,
      util.h: Removed @hideinitializer -- not needed.
-   * color.h: Doxygen SGR sub-group.
-   * parser.y: Added Doxygen for DUMP_* macros.
    * parser.y: Can now explicitly give an "structure definitions are not
      supported" error.
 
 2019-11-09  Paul J. Lucas <paul@lucasmail.org>
 
-   * parser.y: Added Doxygen parser group.
-   * c_ast.h, c_kind.h, c_operator.h, c_type.h, c_typedef.h, color.h, debug.h,
-     english.h, gibberish.h, print.h: Tweaked Doxygen groups.
    * Doxyfile: Added SORT_GROUP_NAMES = YES.
    * color.h, options.h: Renamed groups.
 
 2019-11-08  Paul J. Lucas <paul@lucasmail.org>
 
-   * c_ast.h, c_kind.h, c_operator.h, c_sname.h, c_type.h, c_typedef.h,
-     debug.h, english.h, gibberish.h, lexer.h, literals.h, print.h, prompt.h,
-     typedefs.h: More Doxygen groups.
-   * c_ast.h, c_ast_util.h: More Doxygen groups.
-   * cdecl.c, options.c, util.c, util.h: More Doxygen.
    * color.c, prompt.c, red_black.c, red_black.h, util.h: s/@see/@sa/ for
      consistency.
 
@@ -2908,16 +2762,7 @@
 
    * NEWS, configure.ac: Updated to 6.6.1.
    * set.c: Whitespace fix.
-   * c_ast.h, options.h: Comment clean-up.
-   * c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.h, errors.c, gibberish.c,
-     parser.y: Comment clean-up.
    * c_ast.c: Removed odd DOXYGEN_IGNORE.
-   * c_typedef.c, cdecl.c, errors.c: Fixed Doxygen errors.
-   * c_ast.c, color.c: Comment fixes.
-
-2019-10-30  Paul J. Lucas <paul@lucasmail.org>
-
-   * c_ast_util.h, c_keyword.h, c_type.h, c_typedef.h: Comment fixes.
 
 2019-10-29  Paul J. Lucas <paul@lucasmail.org>
 
@@ -3042,7 +2887,6 @@
 2019-07-22  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast_util.c: Now taking type_ast's name if decl_ast doesn't have one.
-   * c_type.h: Comments.
 
 2019-07-16  Paul J. Lucas <paul@lucasmail.org>
 
@@ -3149,7 +2993,6 @@
      options.c, print.c: More assert()s.
    * c_keyword.c, c_sname.c: More assert()s.
    * c_ast_util.c: Added more assert()s.
-   * c_type.h: Comment additions.
 
 2019-06-25  Paul J. Lucas <paul@lucasmail.org>
 
@@ -3274,7 +3117,6 @@
 
    * parser.y: Don't need to be explicit about T_STATIC.
    * errors.c: s/c_type_name/c_type_name_error/
-   * lexer.l: Comment fix.
 
 2019-05-31  Paul J. Lucas <paul@lucasmail.org>
 
@@ -3473,7 +3315,6 @@
    * c_keyword.c, lexer.l, parser.y: s/Y_NOT_EQ/Y_EXCLAM_EQ/
    * cdecl--debug.out, cdecl-d.out, show_all.out, show_all_typedef.out,
      show_predefined.out, show_predefined_typedef.out: Added std::nullptr_t.
-   * typedefs.h: Comment change.
    * typedefs.h: Sorted typedefs.
    * c_typedef.c, show_all.out, show_all_typedef.out, show_predefined.out,
      show_predefined_typedef.out: Put partial_ordering, et al, into std
@@ -3710,7 +3551,6 @@
 2018-11-30  Paul J. Lucas <paul@lucasmail.org>
 
    * slist.c: Added asserts.
-   * c_type.c: Comment fix.
    * c_type.c: Simplification of is_long_int().
    * lib/Makefile.am, _Noreturn.h, limits.in.h, stdlib.in.h, unistd.in.h,
      errno_h.m4, gnulib-common.m4, gnulib-comp.m4, limits-h.m4, longlong.m4,
@@ -4396,10 +4236,6 @@
 
    * cdecl.1: Made referencing commands consistently bold.
 
-2017-11-18  Paul J. Lucas <paul@lucasmail.org>
-
-   * color.h, options.c, options.h: More Doxygen groups.
-
 2017-11-11  Paul J. Lucas <paul@lucasmail.org>
 
    * ax_append_flag.m4, ax_check_compile_flag.m4: Updated ax M$ macros.
@@ -4410,13 +4246,6 @@
 
 2017-11-07  Paul J. Lucas <paul@lucasmail.org>
 
-   * Doxyfile, Makefile.am, autocomplete.c, c_ast.c, c_ast.h, c_ast_util.c,
-     c_ast_util.h, c_keyword.c, c_keyword.h, c_kind.c, c_kind.h, c_lang.c,
-     c_lang.h, c_type.c, c_type.h, c_typedef.c, c_typedef.h, cdecl.c, color.c,
-     color.h, debug.c, debug.h, diagnostics.c, diagnostics.h, english.c,
-     errors.c, gibberish.c, help.c, lexer.h, lexer.l, misc.h, options.c,
-     options.h, parser.y, prompt.c, prompt.h, red_black.c, red_black.h, set.c,
-     slist.c, slist.h, typedefs.h, util.c, util.h: Added Doxygen documentation.
    * parser.y: Now properly freeing qualifier_stack.
    * util.c: Now using slist for free_later().
 
@@ -4556,7 +4385,6 @@
 
 2017-10-10  Paul J. Lucas <paul@lucasmail.org>
 
-   * parser.y: Comment removal.
    * parser.y: Explicit comparison.
    * options.c, util.c: Clean-up.
    * gibberish.c: More explicit comparison.
@@ -4645,7 +4473,6 @@
      lexer.l, options.c, options.h, parser.y, prompt.c, set.c, typedefs.h,
      util.c, util.h: Fixed build on old gcc that doesn't allow multiple
      typedefs of the same type.
-   * cdecl.c, common.h: Comment fix.
    * NEWS, configure.ac: Changed version to 4.0.
    * AUTHORS, NEWS, cdecl.1, errors.c, lang.c, lang.h, test/Makefile.am,
      declare_ii-c++.out, explain_ii-c++.out, declare_ii-c++.test,
@@ -4915,10 +4742,7 @@
 2017-07-14  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, cdecl.1, cdecl.c: Added "help" as a command-line argument.
-   * ast_util.c: Comment fix.
    * ast_util.c: Added missing "static".
-   * ast.c: Comment fix.
-   * diagnostics.h: Comment grammar fix.
 
 2017-07-12  Paul J. Lucas <paul@lucasmail.org>
 
@@ -5139,7 +4963,6 @@
    * cdecl.1: s/--lang/--language/ to match reality.
    * autocomplete.c: Added setting of rl_instream and rl_outstream.
    * autocomplete.c: Added missing "c++14".
-   * autocomplete.c: Comments.
    * configure.ac: Some readline.h on require #include <stdio.h> first.
    * types.c: Added cast to unsigned long long.
    * configure.ac, src/Makefile.am, options.c, options.h, parser.y, prompt.c,
@@ -5278,7 +5101,6 @@
    * ast.h: Updated comment to mention post-order traversal.
    * english.c: Now using visitor function to generate English.
    * errors.c: Fixed typos in comments.
-   * english.c: Comment fix.
    * configure.ac: Fixed copy/paste error.
    * lib/Makefile.am, gnulib-cache.m4: Added stddef and stdint to Gnulib.
    * configure.ac: Now requiring either bison or byacc.
@@ -5340,7 +5162,6 @@
 
 2017-04-09  Paul J. Lucas <paul@lucasmail.org>
 
-   * ast.h: Comment additions.
    * types.c, test/Makefile.am, declare_ci-knr.test, declare_pv-knr.test,
      declare_vi-knr.test, explain_ci-knr.test, explain_pv-knr.test,
      explain_vi-knr.test: Now checking current language against storage classes
@@ -5889,7 +5710,6 @@
      declare_pbv_rpi.test: Blocks now work.
    * cdlex.l: Added (missing) L_BLOCK.
    * cdgram.y: Now calling yyclearin to clear lookahead after error.
-   * cdecl.c: Comment fix.
    * configure.ac, cdecl.c, common.h, options.c: Now disabling color prompts on
      non-genuine GNU readline.
 
@@ -5960,7 +5780,6 @@
      declare_pa3cpa5i.out, declare_a9cpi.test, declare_cpa3cpa5i.test,
      declare_cpa3pa5i.test, declare_cpa9ci.test, declare_cpa9i.test,
      declare_pa3cpa5i.test: More tests.
-   * ast.c, ast.h: Comments.
    * ast.c, ast.h, cdgram.y: Fixed tests; needs clean-up.
 
 2017-03-12  Paul J. Lucas <paul@lucasmail.org>
@@ -6006,7 +5825,6 @@
    * src/Makefile.am, cdgram.y, cdlex.l: yylval is not a pointer again.
    * src/Makefile.am, ast.c, ast.h, cdgram.y, cdlex.l, common.c, common.h,
      types.c, types.h: Now using Bison token location.
-   * util.h: Comment fix.
 
 2017-03-09  Paul J. Lucas <paul@lucasmail.org>
 
@@ -6067,7 +5885,6 @@
 
    * ast.c, cdgram.y, color.h, keywords.h, lang.h, literals.h, options.h,
      types.h: Added @file comments; added C_TYPE_ADD.
-   * autocomplete.c, cdecl.c: Comment additions.
    * test/Makefile.am: Test renaming.
    * test/Makefile.am, explain_cpc.out, explain_cvpc.out, explain_ppc.out,
      explain_rpc.out, explain_vcpc.out, explain_vpc.out, explain_cpc.test,
@@ -6151,7 +5968,6 @@
 
 2017-02-26  Paul J. Lucas <paul@lucasmail.org>
 
-   * cdgram.y: Comments.
    * cdecl.c, util.c, util.h: Now only adding history for non-blank lines.
    * cdgram.y: Properly doing inherited attributes with pointers/references.
    * ast.c, ast.h: Added clone functions.
@@ -6188,7 +6004,6 @@
 2017-02-22  Paul J. Lucas <paul@lucasmail.org>
 
    * types.c, types.h: Moved c_add_type() here.
-   * cdgram.y: Comment fix.
    * cdgram.y: Reworking of DUMP macros.
    * cdlex.l: Minor change.
 
@@ -6208,7 +6023,6 @@
    * options.c: Setting yydebug to false.
    * options.c, options.h: Fixed yydebug.
    * types.c: Added missing T_UNION.
-   * types.h: Comment update.
    * types.c: Now using STRCAT().
    * types.c: Now using strcpy_len().
    * util.c, util.h: Replaced visible() with printable_char().
@@ -6251,11 +6065,9 @@
    * cdlex.l: Added keyword_find; copying yytext to local.
    * cdlex.l: Removed yywrap().
    * cdlex.l, keywords.c, keywords.h: s/keyword_find/c_keyword_find/
-   * cdlex.l: Comment fix.
    * util.h: Added FPRINTF and FPUTS.
    * keywords.c: Fixed types.
    * cdlex.l, literals.c, literals.h: Added "restricted".
-   * keywords.c: Comments.
 
 2017-02-17  Paul J. Lucas <paul@lucasmail.org>
 
