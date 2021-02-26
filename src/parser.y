@@ -461,6 +461,14 @@ static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t const *loc ) {
 }
 
 /**
+ * Set our mode to deciphering gibberish into English.
+ */
+static inline void gibberish_to_english( void ) {
+  c_mode = C_GIBBERISH_TO_ENGLISH;
+  lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
+}
+
+/**
  * Peeks at the type AST at the top of the
  * \ref in_attr.type_ast_stack "type AST inherited attribute stack".
  *
@@ -772,6 +780,7 @@ static void parse_cleanup( bool hard_reset ) {
  */
 static void parse_init( void ) {
   ast_depth = 0;
+  c_mode = C_ENGLISH_TO_GIBBERISH;
   if ( false_set( &error_newlined ) )
     FPUTC( '\n', fout );
 }
@@ -2129,15 +2138,15 @@ explain_c
 explain
   : Y_EXPLAIN
     { //
-      // Tell the lexer that we're explaining gibberish so cdecl keywords
-      // (e.g., "func") are returned as ordinary names, otherwise gibberish
-      // like:
+      // Set our mode to deciphering gibberish into English and specifically
+      // tell the lexer to return cdecl keywords (e.g., "func") are returned as
+      // ordinary names, otherwise gibberish like:
       //
       //      int func(void);
       //
       // would result in a parser error.
       //
-      lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
+      gibberish_to_english();
     }
   ;
 
@@ -2336,7 +2345,7 @@ class_struct_union_declaration_c
   : class_struct_union_tid
     {
       // see the comment in "explain"
-      lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
+      gibberish_to_english();
     }
     any_sname_c
     {
@@ -2394,7 +2403,7 @@ enum_declaration_c
   : enum_tid
     {
       // see the comment in "explain"
-      lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
+      gibberish_to_english();
     }
     any_sname_c_exp enum_fixed_type_c_ast_opt
     {
@@ -2431,7 +2440,7 @@ namespace_declaration_c
   : namespace_type
     {
       // see the comment in "explain"
-      lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
+      gibberish_to_english();
     }
     sname_c
     { //
@@ -2659,7 +2668,7 @@ typedef_declaration_c
     {
       in_attr.typename = $2;
       // see the comment in "explain"
-      lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
+      gibberish_to_english();
     }
     type_c_ast
     {
@@ -4309,7 +4318,7 @@ using_decl_c_ast
   : Y_USING
     {
       // see the comment in "explain"
-      lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
+      gibberish_to_english();
     }
     any_name_exp equals_exp type_c_ast
     {

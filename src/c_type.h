@@ -28,7 +28,7 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-#include "lexer.h"
+#include "cdecl.h"
 #include "types.h"
 #include "util.h"
 
@@ -719,7 +719,7 @@ char const* c_type_id_name_error( c_type_id_t tid ) {
   c_type_t const type = c_type_from_tid( tid );
   // When giving an error message, return the type name in pseudo-English if
   // we're parsing pseudo-English or in C/C++ if we're parsing C/C++.
-  return c_type_name( &type, /*in_english=*/lexer_is_english() );
+  return c_type_name( &type, /*in_english=*/c_mode == C_ENGLISH_TO_GIBBERISH );
 }
 
 /**
@@ -858,7 +858,7 @@ char const* c_type_name_eng( c_type_t const *type ) {
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_type_name_error( c_type_t const *type ) {
   // See comment in c_type_id_name_error().
-  return c_type_name( type, /*in_english=*/lexer_is_english() );
+  return c_type_name( type, /*in_english=*/c_mode == C_ENGLISH_TO_GIBBERISH );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -854,7 +854,7 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
 
     bool const print_brackets =
       opt_lang >= LANG_C_2X &&
-      lexer_is_english() &&
+      c_mode == C_ENGLISH_TO_GIBBERISH &&
       !in_english;
 
     bool comma = false;
@@ -873,7 +873,17 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
   }
 
   // Special cases.
-  if ( lexer_is_english() ) {
+  if ( in_english ) {
+    if ( (base_tid & TB_ANY_MODIFIER) != TB_NONE &&
+         (base_tid & (TB_CHAR | TB_ANY_FLOAT | TB_ANY_EMC)) == TB_NONE ) {
+      // In English, be explicit about "int".
+      base_tid |= TB_INT;
+    }
+    if ( (store_tid & (TS_FINAL | TS_OVERRIDE)) != TS_NONE ) {
+      // In English, either "final" or "overrride" implies "virtual".
+      store_tid |= TS_VIRTUAL;
+    }
+  } else /* !in_english */ {
     if ( is_explicit_int( base_tid ) ) {
       base_tid |= TB_INT;
     } else if ( (base_tid & TB_ANY_MODIFIER) != TB_NONE ) {
@@ -885,16 +895,6 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
       // In C/C++, explicit "virtual" shouldn't be present when either "final"
       // or "overrride" is.
       store_tid &= c_type_id_compl( TS_VIRTUAL );
-    }
-  } else /* !lexer_is_english() */ {
-    if ( (base_tid & TB_ANY_MODIFIER) != TB_NONE &&
-         (base_tid & (TB_CHAR | TB_ANY_FLOAT | TB_ANY_EMC)) == TB_NONE ) {
-      // In English, be explicit about "int".
-      base_tid |= TB_INT;
-    }
-    if ( (store_tid & (TS_FINAL | TS_OVERRIDE)) != TS_NONE ) {
-      // In English, either "final" or "overrride" implies "virtual".
-      store_tid |= TS_VIRTUAL;
     }
   }
 
@@ -942,7 +942,7 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
   );
 
   c_type_id_t east_tid = TS_NONE;
-  if ( opt_east_const && lexer_is_english() ) {
+  if ( opt_east_const && !in_english ) {
     east_tid = store_tid & (TS_CONST | TS_VOLATILE);
     store_tid &= c_type_id_compl( TS_CONST | TS_VOLATILE );
   }

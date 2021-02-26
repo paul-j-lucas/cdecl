@@ -413,8 +413,10 @@ static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
   for ( cdecl_keyword_t const *k = CDECL_KEYWORDS; k->literal != NULL; ++k ) {
     if ( strcmp( s, k->literal ) != 0 )
       continue;
-    if ( lexer_is_english() || (k->lang_syn != NULL && k->allow_explain) )
+    if ( (lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0 ||
+         (k->lang_syn != NULL && k->allow_explain) ) {
       return k;
+    }
     break;
   } // for
   return NULL;
@@ -765,7 +767,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 //
                 // Hyphenated tokens are legal only in pseudo-English.
                 //
-                if ( !lexer_is_english() )
+                if ( (lexer_find & LEXER_FIND_CDECL_KEYWORDS) == 0 )
                   return Y_ERROR;
 
                 //

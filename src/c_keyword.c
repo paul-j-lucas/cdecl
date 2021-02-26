@@ -30,7 +30,7 @@
 #include "c_ast_util.h"
 #include "c_lang.h"
 #include "c_type.h"
-#include "lexer.h"
+#include "cdecl.h"
 #include "literals.h"
 #include "parser.h"                     /* must go last */
 
@@ -389,7 +389,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
     if ( (k->lang_ids & lang_ids) == LANG_NONE )
       continue;
 
-    if ( !lexer_is_english() &&
+    if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
          k->kw_ctx != C_KW_CTX_ALL && kw_ctx != k->kw_ctx ) {
       //
       // Keyword contexts matter only when converting gibberish to pseudo-

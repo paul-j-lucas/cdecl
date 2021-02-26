@@ -32,7 +32,6 @@
 #include "c_type.h"
 #include "cdecl.h"
 #include "did_you_mean.h"
-#include "lexer.h"
 #include "literals.h"
 #include "options.h"
 #include "print.h"
@@ -440,7 +439,7 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
   c_ast_t const *const of_ast = ast->as.ecsu.of_ast;
 
   if ( c_type_is_tid_any( &ast->type, TB_ENUM ) ) {
-    if ( !lexer_is_english() &&
+    if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
          c_type_is_tid_any( &ast->type, TB_STRUCT | TB_CLASS ) &&
         !c_type_is_tid_any( &ast->type, TS_TYPEDEF ) ) {
       print_error( &ast->loc,
@@ -1429,7 +1428,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
         "%s to %s is illegal",
         c_kind_name( ast->kind_id ), c_kind_name( to_ast->kind_id )
       );
-      if ( lexer_is_english() )
+      if ( c_mode == C_ENGLISH_TO_GIBBERISH )
         print_hint( "%s to %s", L_REFERENCE, L_POINTER );
       else
         print_hint( "\"*&\"" );

@@ -78,6 +78,7 @@ typedef struct c_lang             c_lang_t;
 typedef uint32_t                  c_lang_id_t;    ///< Languages bitmask.
 typedef struct c_lang_lit         c_lang_lit_t;
 typedef struct c_loc              c_loc_t;
+typedef enum   c_mode             c_mode_t;
 typedef struct c_operator_ast     c_operator_ast_t;
 typedef enum   c_oper_id          c_oper_id_t;
 typedef struct c_operator         c_operator_t;
@@ -182,6 +183,14 @@ struct c_loc {
   //
   int last_line;                        ///< Last line of location range.
   int last_column;                      ///< Last column of location range.
+};
+
+/**
+ * Mode of operation.
+ */
+enum c_mode {
+  C_ENGLISH_TO_GIBBERISH,               ///< Convert English into gibberish.
+  C_GIBBERISH_TO_ENGLISH                ///< Decipher gibberish into English.
 };
 
 /**

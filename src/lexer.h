@@ -93,17 +93,6 @@ PJL_WARN_UNUSED_RESULT
 char const* lexer_input_line( size_t *plen );
 
 /**
- * Convenience function for getting whether we're currently parsing pseudo-
- * English rather than gibberish.
- *
- * @return Returns `true` only if we're parsing pseudo-English.
- */
-C_LEXER_INLINE PJL_WARN_UNUSED_RESULT
-bool lexer_is_english( void ) {
-  return (lexer_find & LEXER_FIND_CDECL_KEYWORDS) != 0;
-}
-
-/**
  * Gets the lexer's current location.
  *
  * @return Returns said location.
