@@ -396,7 +396,7 @@ static void       lexer_fatal( char const* );
 static void       lexer_update_loc( void );
 
 PJL_WARN_UNUSED_RESULT
-static bool parse_identifier( char const*, char const** );
+static bool       parse_identifier( char const*, char const** );
 
 ////////// local functions ////////////////////////////////////////////////////
 

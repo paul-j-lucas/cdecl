@@ -637,9 +637,8 @@ static void c_type_id_name_cat( strbuf_t *sbuf, c_type_id_t tid,
   assert( sbuf != NULL );
   for ( size_t i = 0; i < tids_size; ++i ) {
     if ( !c_type_id_is_none( tid & tids[i] ) ) {
-      strbuf_sepc_cats(
-        sbuf, sep, sep_flag, c_type_id_name_1( tids[i], in_english )
-      );
+      char const *const name = c_type_id_name_1( tids[i], in_english );
+      strbuf_sepc_cats( sbuf, sep, sep_flag, name );
     }
   } // for
 }
