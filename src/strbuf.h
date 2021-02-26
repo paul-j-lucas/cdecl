@@ -58,6 +58,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa strbuf_catc()
  * @sa strbuf_cats()
+ * @sa strbuf_catsepc()
  * @sa strbuf_catseps()
  * @sa strbuf_free()
  * @sa strbuf_init()
@@ -99,9 +100,32 @@ void strbuf_cats( strbuf_t *sbuf, char const *s, ssize_t s_len );
  * @param s The string to concatenate.
  * @param s_len The number of bytes of \a s to concatenate; if -1, the length
  * of \a s is calculated and used.
+ *
+ * @sa strbuf_catsepc()
  */
 void strbuf_catseps( strbuf_t *sbuf, char const *sep, ssize_t sep_len,
                      bool *sep_flag, char const *s, ssize_t s_len );
+
+/**
+ * Possibly concatenates \a sep followed by \a s_len bytes of \a s onto the enf
+ * of \a sbuf growing the buffer if necessary.
+ *
+ * @param sbuf A pointer to the strbuf to concatenate onto.
+ * @param sep The separator character to concatenate.
+ * @param sep_flag A pointer to a flag to determine whether \a sep should be
+ * concatenated prior to \a s: if `false`, \a sep is _not_ concatenated and it
+ * is set to `true`; if `true`, \a sep is concatenated.
+ * @param s The string to concatenate.
+ * @param s_len The number of bytes of \a s to concatenate; if -1, the length
+ * of \a s is calculated and used.
+ *
+ * @sa strbuf_catseps()
+ */
+C_STRBUF_INLINE
+void strbuf_catsepc( strbuf_t *sbuf, char sep, bool *sep_flag, char const *s,
+                     ssize_t s_len ) {
+  strbuf_catseps( sbuf, &sep, 1, sep_flag, s, s_len );
+}
 
 /**
  * Concatenates \a c onto the end of \a sbuf growing the buffer if necessary.

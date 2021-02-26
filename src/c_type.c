@@ -637,8 +637,8 @@ static void c_type_id_name_cat( strbuf_t *sbuf, c_type_id_t tid,
   assert( sbuf != NULL );
   for ( size_t i = 0; i < tids_size; ++i ) {
     if ( !c_type_id_is_none( tid & tids[i] ) ) {
-      strbuf_catseps(
-        sbuf, &sep, 1, sep_flag, c_type_id_name_1( tids[i], in_english ), -1
+      strbuf_catsepc(
+        sbuf, sep, sep_flag, c_type_id_name_1( tids[i], in_english ), -1
       );
     }
   } // for
@@ -1008,9 +1008,9 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
 
   // Really special cases.
   if ( (base_tid & TB_NAMESPACE) != TB_NONE )
-    strbuf_catseps( sbuf, " ", 1, &space, L_NAMESPACE, -1 );
+    strbuf_catsepc( sbuf, ' ', &space, L_NAMESPACE, -1 );
   else if ( (base_tid & TB_SCOPE) != TB_NONE )
-    strbuf_catseps( sbuf, " ", 1, &space, L_SCOPE, -1 );
+    strbuf_catsepc( sbuf, ' ', &space, L_SCOPE, -1 );
 
   return sbuf->str != NULL ? sbuf->str : "";
 }
