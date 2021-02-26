@@ -1,5 +1,22 @@
+2021-02-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * strbuf.h: Comment.
+
+2021-02-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.c, c_type.c, c_type.h, cdecl.c, cdecl.h, check.c, lexer.h,
+     lexer.l, parser.y, types.h, show_all-c++.out, show_all.out,
+     show_all_predefined-c++.out, show_all_predefined.out,
+     show_predefined-c++.out, show_predefined.out: Brought c_mode back since it
+     needs to maintain its state until after translation is complete unlike the
+     lexer's state.
+   * c_sname.c, c_type.c, cdecl.c, lexer.l, options.c, prompt.c, strbuf.c,
+     strbuf.h: Reworked strbuf cat functions.
+   * c_type.c, cdecl.c, strbuf.h: Added strbuf_catsepc().
+
 2021-02-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c: Simplified c_ast_free().
    * src/Makefile.am, c_sname.c, c_type.c, cdecl.c, lexer.l, options.c,
      prompt.c, strbuf.c, strbuf.h, util.c, util.h: Split out strbuf.[ch].
    * gibberish.c, help.c, util.h: Added true_clear().
