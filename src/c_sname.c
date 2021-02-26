@@ -73,7 +73,7 @@ static char const* scope_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
   bool colon2 = false;
 
   FOREACH_SCOPE( scope, sname->head, end_scope )
-    strbuf_catseps( sbuf, "::", 2, &colon2, c_scope_data( scope )->name, -1 );
+    strbuf_sepsn_cats( sbuf, "::", 2, &colon2, c_scope_data( scope )->name );
 
   return sbuf->str != NULL ? sbuf->str : "";
 }

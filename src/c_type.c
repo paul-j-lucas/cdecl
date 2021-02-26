@@ -637,8 +637,8 @@ static void c_type_id_name_cat( strbuf_t *sbuf, c_type_id_t tid,
   assert( sbuf != NULL );
   for ( size_t i = 0; i < tids_size; ++i ) {
     if ( !c_type_id_is_none( tid & tids[i] ) ) {
-      strbuf_catsepc(
-        sbuf, sep, sep_flag, c_type_id_name_1( tids[i], in_english ), -1
+      strbuf_sepc_cats(
+        sbuf, sep, sep_flag, c_type_id_name_1( tids[i], in_english )
       );
     }
   } // for
@@ -864,11 +864,11 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
     if ( print_brackets ) {
       if ( space )
         strbuf_catc( sbuf, ' ' );
-      strbuf_cats( sbuf, graph_token_c( "[[" ), -1 );
+      strbuf_cats( sbuf, graph_token_c( "[[" ) );
     }
     C_TYPE_ID_NAME_CAT( sbuf, attr_tid, C_ATTRIBUTE, in_english, sep, sep_cat );
     if ( print_brackets )
-      strbuf_cats( sbuf, graph_token_c( "]]" ), -1 );
+      strbuf_cats( sbuf, graph_token_c( "]]" ) );
     space = true;
   }
 
@@ -1008,9 +1008,9 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
 
   // Really special cases.
   if ( (base_tid & TB_NAMESPACE) != TB_NONE )
-    strbuf_catsepc( sbuf, ' ', &space, L_NAMESPACE, -1 );
+    strbuf_sepc_cats( sbuf, ' ', &space, L_NAMESPACE );
   else if ( (base_tid & TB_SCOPE) != TB_NONE )
-    strbuf_catsepc( sbuf, ' ', &space, L_SCOPE, -1 );
+    strbuf_sepc_cats( sbuf, ' ', &space, L_SCOPE );
 
   return sbuf->str != NULL ? sbuf->str : "";
 }

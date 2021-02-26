@@ -318,7 +318,7 @@ static color_when_t parse_color_when( char const *when ) {
   strbuf_init( &sbuf );
   bool comma = false;
   for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when != NULL; ++m )
-    strbuf_catseps( &sbuf, ", ", 2, &comma, m->map_when, -1 );
+    strbuf_sepsn_cats( &sbuf, ", ", 2, &comma, m->map_when );
 
   char opt_buf[ OPT_BUF_SIZE ];
   PMESSAGE_EXIT( EX_USAGE,
@@ -347,7 +347,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
   bool comma = false;
   FOREACH_LANG( lang ) {
     if ( !lang->is_alias )
-      strbuf_catseps( &sbuf, ", ", 2, &comma, lang->name, -1 );
+      strbuf_sepsn_cats( &sbuf, ", ", 2, &comma, lang->name );
   } // for
 
   char opt_buf[ OPT_BUF_SIZE ];

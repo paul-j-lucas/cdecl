@@ -34,7 +34,6 @@
 
 // standard
 #include <assert.h>
-#include <string.h>
 
 /// @endcond
 
@@ -56,11 +55,10 @@ static size_t next_pow_2( size_t n ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void strbuf_cats( strbuf_t *sbuf, char const *s, ssize_t s_len_in ) {
+void strbuf_catsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
   assert( sbuf != NULL );
   assert( s != NULL );
 
-  size_t const s_len = s_len_in == -1 ? strlen( s ) : (size_t)s_len_in;
   size_t const buf_rem = sbuf->buf_cap - sbuf->str_len;
 
   if ( s_len >= buf_rem ) {
@@ -73,11 +71,11 @@ void strbuf_cats( strbuf_t *sbuf, char const *s, ssize_t s_len_in ) {
   sbuf->str[ sbuf->str_len ] = '\0';
 }
 
-void strbuf_catseps( strbuf_t *sbuf, char const *sep, ssize_t sep_len,
-                     bool *sep_flag, char const *s, ssize_t s_len ) {
+void strbuf_sepsn_catsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
+                         bool *sep_flag, char const *s, size_t s_len ) {
   if ( true_or_set( sep_flag ) )
-    strbuf_cats( sbuf, sep, sep_len );
-  strbuf_cats( sbuf, s, s_len );
+    strbuf_catsn( sbuf, sep, sep_len );
+  strbuf_catsn( sbuf, s, s_len );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

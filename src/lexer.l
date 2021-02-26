@@ -956,7 +956,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                */
 <STR_LIT,CHAR_LIT>{
               /* Escaped characters are copied verbatim, not interpreted. */
-  \\(.|\n)    { strbuf_cats( &str_lit_buf, yytext, yyleng ); }
+  \\(.|\n)    { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
   \n          {
                 lexer_token = strbuf_take( &str_lit_buf );
                 print_error( &str_lit_loc,
@@ -968,7 +968,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 }
 
 <STR_LIT>{
-  [^"\\\n]+   { strbuf_cats( &str_lit_buf, yytext, yyleng ); }
+  [^"\\\n]+   { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
   \"          {
                 yylloc.first_line   = str_lit_loc.first_line;
                 yylloc.first_column = str_lit_loc.first_column;
@@ -979,7 +979,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 }
 
 <CHAR_LIT>{   /* CHAR_LIT is the same as STR_LIT except ' replaces ". */
-  [^'\\\n]+   { strbuf_cats( &str_lit_buf, yytext, yyleng ); }
+  [^'\\\n]+   { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
   \'          {
                 yylloc.first_line   = str_lit_loc.first_line;
                 yylloc.first_column = str_lit_loc.first_column;

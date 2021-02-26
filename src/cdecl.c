@@ -211,7 +211,7 @@ static bool cdecl_read_line( strbuf_t *sbuf, char const *ps1,
     is_continuation = ends_with_chr( line, line_len, '\\' );
     if ( is_continuation )
       line[ --line_len ] = '\0';        // get rid of '\'
-    strbuf_cats( sbuf, line, (ssize_t)line_len );
+    strbuf_catsn( sbuf, line, line_len );
 
     if ( !is_continuation )
       break;
@@ -325,9 +325,9 @@ static bool parse_command_line( char const *command, int argc,
 
   strbuf_init( &sbuf );
   if ( (space = command != NULL) )
-    strbuf_cats( &sbuf, command, -1 );
+    strbuf_cats( &sbuf, command );
   for ( int i = 0; i < argc; ++i )
-    strbuf_catsepc( &sbuf, ' ', &space, argv[i], -1 );
+    strbuf_sepc_cats( &sbuf, ' ', &space, argv[i] );
 
   bool const ok = parse_string( sbuf.str, (ssize_t)sbuf.str_len );
   strbuf_free( &sbuf );
