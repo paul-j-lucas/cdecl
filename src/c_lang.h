@@ -175,7 +175,7 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * C/C++ language(s)/literal pairs: for the given language(s) only, use the
  * given literal.  This allows different languages to use different literals,
- * e.g., "_Noreturn" for C and "noreturn" for C++.
+ * e.g., `_Noreturn` for C and `noreturn` for C++.
  */
 struct c_lang_lit {
   c_lang_id_t   lang_ids;               ///< Language(s) literal is in.
