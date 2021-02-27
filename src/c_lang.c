@@ -134,8 +134,9 @@ c_lang_t const* c_lang_next( c_lang_t const *lang ) {
 }
 
 void c_lang_set( c_lang_id_t lang_id ) {
-  assert( exactly_one_bit_set( lang_id & ~LANGX_MASK ) );
-  opt_lang = lang_id & ~LANGX_MASK;
+  lang_id &= ~LANGX_MASK;
+  assert( exactly_one_bit_set( lang_id ) );
+  opt_lang = lang_id;
 
   bool const prompt_enabled =
     opt_prompt && (
