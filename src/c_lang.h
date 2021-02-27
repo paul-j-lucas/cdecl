@@ -226,7 +226,8 @@ struct c_lang {
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_and_newer( c_lang_id_t lang_id ) {
-  assert( exactly_one_bit_set( lang_id & ~LANGX_MASK ) );
+  lang_id &= ~LANGX_MASK;
+  assert( exactly_one_bit_set( lang_id ) );
   return BITS_GE( lang_id );
 }
 
