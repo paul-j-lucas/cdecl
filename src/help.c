@@ -324,7 +324,10 @@ static void print_help_english( void ) {
       print_h( " [inline]" );
     print_h( " namespace\n" );
 
-    print_h( "store: const" );
+    print_h( "store:" );
+    if ( OPT_LANG_IS(CPP_MAX(03)) )
+      print_h( " auto |" );
+    print_h( " const" );
     if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( "[" );
     if ( OPT_LANG_IS(CPP_MIN(20)) )
