@@ -1321,6 +1321,7 @@ static void yyerror( char const *msg ) {
 %type   <sname>     scope_sname_c_opt
 %type   <sname>     sname_c sname_c_exp sname_c_opt
 %type   <ast>       sname_c_ast
+%type   <type_id>   extern_linkage_c_tid extern_linkage_c_tid_opt
 %type   <type>      storage_class_c_type
 %type   <ast>       trailing_return_type_c_ast_opt
 %type   <ast>       type_c_ast
@@ -2108,14 +2109,18 @@ explain_c
     /*
      * C++ using declaration.
      */
-  | explain using_decl_c_ast
+  | explain extern_linkage_c_tid_opt using_decl_c_ast
     {
-      DUMP_START( "explain_c", "EXPLAIN using_decl_c_ast" );
-      DUMP_AST( "using_decl_c_ast", $2 );
+      DUMP_START( "explain_c",
+                  "EXPLAIN extern_linkage_c_tid_opt using_decl_c_ast" );
+      DUMP_TID( "extern_linkage_c_tid_opt", $2 );
+      DUMP_AST( "using_decl_c_ast", $3 );
       DUMP_END();
 
-      C_AST_CHECK_DECL( $2 );
-      c_ast_explain_declaration( $2, fout );
+      C_TYPE_ADD_TID( &$3->type, $2, @2 );
+
+      C_AST_CHECK_DECL( $3 );
+      c_ast_explain_declaration( $3, fout );
     }
 
     /*
@@ -2303,6 +2308,23 @@ decl_c
       //      int x, y
       //
       c_sname_free( &type_ast->sname );
+    }
+  ;
+
+extern_linkage_c_tid_opt
+  : /* empty */                   { $$ = TS_NONE; }
+  | extern_linkage_c_tid
+  ;
+
+extern_linkage_c_tid
+  : Y_EXTERN linkage_tid          { $$ = $2; }
+  | Y_EXTERN linkage_tid '{'
+    {
+      print_error( &@3,
+        "explaining scoped linkage declarations is not supported by %s\n",
+        PACKAGE
+      );
+      PARSE_ABORT();
     }
   ;
 
@@ -4928,15 +4950,7 @@ storage_class_c_type
   | Y_EXPLICIT                    { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_EXPORT                      { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_EXTERN                      { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_EXTERN linkage_tid          { $$ = C_TYPE_LIT_S( $2 ); }
-  | Y_EXTERN linkage_tid '{'
-    {
-      print_error( &@3,
-        "explaining scoped linkage declarations is not supported by %s\n",
-        PACKAGE
-      );
-      PARSE_ABORT();
-    }
+  | extern_linkage_c_tid          { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_FINAL                       { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_FRIEND                      { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_INLINE                      { $$ = C_TYPE_LIT_S( $1 ); }
