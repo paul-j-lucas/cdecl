@@ -1,5 +1,5 @@
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|into|to} <english>
+  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> as <english> [width <number> [bits]]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>

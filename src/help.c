@@ -131,7 +131,7 @@ static void print_help_commands( void ) {
   print_h( "  " );
   if ( OPT_LANG_IS(CPP_ANY) )
     print_h( "[const | dynamic | reinterpret | static] " );
-  print_h( "cast <name> {as|into|to} <english>\n" );
+  print_h( "cast <name> {as|[in]to} <english>\n" );
 
   print_h( "  declare <name> as <english> [width <number> [bits]]\n" );
   if ( OPT_LANG_IS(C_CPP_MIN(11,11)) )

@@ -1,5 +1,5 @@
 command:
-  [const | dynamic | reinterpret | static] cast <name> {as|into|to} <english>
+  [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
   declare <name> as <english> [width <number> [bits]]
   declare <name> as <english> align[ed] [as|to] {<number> [bytes] | <english>}
   declare <operator> as <english>

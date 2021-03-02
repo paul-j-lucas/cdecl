@@ -1,5 +1,5 @@
 command:
-  cast <name> {as|into|to} <english>
+  cast <name> {as|[in]to} <english>
   declare <name> as <english> [width <number> [bits]]
   declare <name> as <english> align[ed] [as|to] {<number> [bytes] | <english>}
   define <name> as <english>
