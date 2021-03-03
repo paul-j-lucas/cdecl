@@ -32,6 +32,7 @@
 #include "cdecl.h"
 #include "options.h"
 #include "prompt.h"
+#include "strbuf.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -122,8 +123,6 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
   } // switch
 }
 
-#define LANG_NAME_SIZE_MAX  40          /**< Length of #LANG_C_99_UPC. */
-
 PJL_WARN_UNUSED_RESULT
 c_lang_t const* c_lang_next( c_lang_t const *lang ) {
   if ( lang == NULL )
@@ -152,25 +151,31 @@ char const* c_lang_which( c_lang_id_t lang_ids ) {
     return "";
 
   c_lang_id_t const mask = OPT_LANG_IS(C_ANY) ? LANG_MASK_C : LANG_MASK_CPP;
+  lang_ids &= mask;
 
-  if ( (lang_ids & mask) == LANG_NONE )
+  if ( lang_ids == LANG_NONE )
     return OPT_LANG_IS(C_ANY) ? " in C" : " in C++";
 
-  lang_ids &= mask;
-  assert( lang_ids != LANG_NONE );
+  static strbuf_t sbuf;
+  strbuf_free( &sbuf );
 
-  static char buf[ 7/* until|since */ + LANG_NAME_SIZE_MAX + 1/*\0*/ ];
+  c_lang_id_t which_lang_id = c_lang_oldest( lang_ids );
 
-  c_lang_id_t const oldest_lang_id = c_lang_oldest( lang_ids );
-  if ( opt_lang < oldest_lang_id ) {
-    sprintf( buf, " until %s", c_lang_name( oldest_lang_id ) );
+  if ( opt_lang < which_lang_id ) {
+    strbuf_catsn( &sbuf, " until ", 7 );
   } else {
-    c_lang_id_t const since_lang_id = c_lang_newest( lang_ids ) << 1;
-    assert( since_lang_id != LANG_NONE );
-    sprintf( buf, " since %s", c_lang_name( since_lang_id ) );
+    strbuf_catsn( &sbuf, " since ", 7 );
+    //
+    // The newest language of langs_ids is the last language in which the
+    // feature is legal, so we need the language after that to be the first
+    // language in which the feature is illegal.
+    //
+    which_lang_id = c_lang_newest( lang_ids ) << 1;
+    assert( which_lang_id != LANG_NONE );
   }
 
-  return buf;
+  strbuf_cats( &sbuf, c_lang_name( which_lang_id ) );
+  return sbuf.str;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
