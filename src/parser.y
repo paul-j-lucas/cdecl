@@ -5063,9 +5063,11 @@ attribute_c_tid
           adj = "unsupported";
           lang_ids = k->lang_ids;
         }
-        print_warning( &@1, "\"%s\": %s attribute", name, adj );
-        if ( lang_ids != LANG_NONE )
-          EPRINTF( " until %s", c_lang_oldest_name( lang_ids ) );
+        print_warning( &@1,
+          "\"%s\": %s attribute%s",
+          name, adj, c_lang_which( lang_ids )
+        );
+
         print_suggestions( DYM_C_ATTRIBUTES, name );
         EPUTC( '\n' );
       }
