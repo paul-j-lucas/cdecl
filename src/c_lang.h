@@ -348,7 +348,7 @@ c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_newest( c_lang_id_t lang_ids ) {
-  return msb_set32( lang_ids & ~LANGX_MASK );
+  return ms_bit1_32( lang_ids & ~LANGX_MASK );
 }
 
 /**
@@ -386,7 +386,7 @@ c_lang_t const* c_lang_next( c_lang_t const *lang );
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
-  return lsb_set32( lang_ids & ~LANGX_MASK );
+  return ls_bit1_32( lang_ids & ~LANGX_MASK );
 }
 
 /**

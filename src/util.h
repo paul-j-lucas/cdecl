@@ -655,26 +655,26 @@ bool is_ident( char c ) {
 }
 
 /**
- * Gets the value of the least significant bit that's set in \a n.
+ * Gets the value of the least significant bit that's a 1 in \a n.
  *
  * @param n The number to use.
  * @return Returns said value or 0 if \a n is 0.
  *
- * @sa msb_set32()
+ * @sa ms_bit1_32()
  */
 PJL_WARN_UNUSED_RESULT
-uint32_t lsb_set32( uint32_t n );
+uint32_t ls_bit1_32( uint32_t n );
 
 /**
- * Gets the value of the most significant bit that's set in \a n.
+ * Gets the value of the most significant bit that's a 1 in \a n.
  *
  * @param n The number to use.
  * @return Returns said value or 0 if \a n is 0.
  *
- * @sa lsb_set32()
+ * @sa ls_bit1_32()
  */
 PJL_WARN_UNUSED_RESULT
-uint32_t msb_set32( uint32_t n );
+uint32_t ms_bit1_32( uint32_t n );
 
 /**
  * Checks whether the bits set in \a bits are only among the bits set in \a

@@ -245,19 +245,23 @@ bool is_file( int fd ) {
   return S_ISREG( fd_stat.st_mode );
 }
 
-uint32_t lsb_set32( uint32_t n ) {
-  for ( uint32_t b = 1; b != 0; b <<= 1 ) {
-    if ( (n & b) != 0 )
-      return b;
-  } // for
+uint32_t ls_bit1_32( uint32_t n ) {
+  if ( n != 0 ) {
+    for ( uint32_t b = 1; b != 0; b <<= 1 ) {
+      if ( (n & b) != 0 )
+        return b;
+    } // for
+  }
   return 0;
 }
 
-uint32_t msb_set32( uint32_t n ) {
-  for ( uint32_t b = 0x80000000u; b != 0; b >>= 1 ) {
-    if ( (n & b) != 0 )
-      return b;
-  } // for
+uint32_t ms_bit1_32( uint32_t n ) {
+  if ( n != 0 ) {
+    for ( uint32_t b = 0x80000000u; b != 0; b >>= 1 ) {
+      if ( (n & b) != 0 )
+        return b;
+    } // for
+  }
   return 0;
 }
 
