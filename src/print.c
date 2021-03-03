@@ -277,7 +277,7 @@ void fl_print_error_unknown_name( char const *file, int line,
     } // switch
 
     fl_print_error( file, line, loc,
-      "\"%s\": unsupported %s%s", name, what, c_lang_until( k->lang_ids )
+      "\"%s\": unsupported %s%s", name, what, c_lang_which( k->lang_ids )
     );
     print_suggestions( dym_kind, name );
   }

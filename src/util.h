@@ -73,7 +73,6 @@ _GL_INLINE_HEADER_BEGIN
  * @return Returns said value.
  *
  * @sa #BITS_GT()
- * @sa #LSB_SET()
  */
 #define BITS_GE(N)                (~((N) - 1u))
 
@@ -244,16 +243,6 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define INTERNAL_ERR(FORMAT,...) \
   PMESSAGE_EXIT( EX_SOFTWARE, "%s:%d: internal error: " FORMAT, __FILE__, __LINE__, __VA_ARGS__ )
-
-/**
- * Gets only the least significant bit of \a N that is set.
- *
- * @param N The integer to get the least significant bit of.
- * @return Returns the value of said bit.
- *
- * @sa #BITS_GE()
- */
-#define LSB_SET(N)                ((N) & BITS_GE(N))
 
 /**
  * Convenience macro for calling check_realloc().
@@ -664,6 +653,28 @@ C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool is_ident( char c ) {
   return isalnum( c ) || c == '_';
 }
+
+/**
+ * Gets the value of the least significant bit that's set in \a n.
+ *
+ * @param n The number to use.
+ * @return Returns said value or 0 if \a n is 0.
+ *
+ * @sa msb_set32()
+ */
+PJL_WARN_UNUSED_RESULT
+uint32_t lsb_set32( uint32_t n );
+
+/**
+ * Gets the value of the most significant bit that's set in \a n.
+ *
+ * @param n The number to use.
+ * @return Returns said value or 0 if \a n is 0.
+ *
+ * @sa lsb_set32()
+ */
+PJL_WARN_UNUSED_RESULT
+uint32_t msb_set32( uint32_t n );
 
 /**
  * Checks whether the bits set in \a bits are only among the bits set in \a

@@ -362,11 +362,28 @@ c_lang_t const* c_lang_next( c_lang_t const *lang );
  *
  * @sa c_lang_and_newer()
  * @sa c_lang_newer()
+ * @sa c_lang_newest()
  * @sa c_lang_oldest_name()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
-  return LSB_SET( lang_ids );
+  return lsb_set32( lang_ids );
+}
+
+/**
+ * Gets the newest language among \a lang_ids.
+ *
+ * @param lang_ids The bitwise-or of language(s).
+ * @return Returns said language.
+ *
+ * @sa c_lang_and_newer()
+ * @sa c_lang_newer()
+ * @sa c_lang_oldest()
+ * @sa c_lang_oldest_name()
+ */
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
+c_lang_id_t c_lang_newest( c_lang_id_t lang_ids ) {
+  return msb_set32( lang_ids );
 }
 
 /**
@@ -392,9 +409,9 @@ char const* c_lang_oldest_name( c_lang_id_t lang_ids ) {
 void c_lang_set( c_lang_id_t lang_id );
 
 /**
- * Gets a string specifying when a particular language feature will be legal,
- * if ever.  It is presumed to follow `"... not supported"` (with no trailing
- * space).
+ * Gets a string specifying when a particular language feature won't be legal
+ * until or has been illegal since, if ever.  It is presumed to follow `"...
+ * not supported"` (with no trailing space).
  *
  * @param lang_ids The bitwise-or of legal language(s).
  * @return If:
@@ -403,14 +420,18 @@ void c_lang_set( c_lang_id_t lang_id );
  *    C, returns `" in C"`.
  *  + The current language is C++ and \a lang_ids does not contain any version
  *    of C++, returns `" in C++"`.
- *  + Otherwise returns `" until "` followed by the name of the oldest C
- *    version (if the current language is C) or the name of the oldest C++
+ *  + If the current language is older than oldest language in \a lang_ids,
+ *    returns `" until "` followed by the name of the oldest C version (if the
+ *    current language is C) or the name of the oldest C++ version (if the
+ *    current language is C++).
+ *  + Otherwise returns `" since "` followed by the name of the newest C
+ *    version (if the current language is C) or the name of the newest C++
  *    version (if the current language is C++).
  *
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  */
-char const* c_lang_until( c_lang_id_t lang_ids );
+char const* c_lang_which( c_lang_id_t lang_ids );
 
 /**
  * Convenience function for calling c_lang_and_newer() with opt_lang.
@@ -418,6 +439,7 @@ char const* c_lang_until( c_lang_id_t lang_ids );
  * @return Returns the bitwise-or all language(s) opt_lang and newer.
  *
  * @sa c_lang_and_newer()
+ * @sa c_lang_newest()
  * @sa opt_lang_newer()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
@@ -432,6 +454,7 @@ c_lang_id_t opt_lang_and_newer( void ) {
  * #LANG_NONE if no language(s) are newer.
  *
  * @sa c_lang_newer()
+ * @sa c_lang_newest()
  * @sa opt_lang_and_newer()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT

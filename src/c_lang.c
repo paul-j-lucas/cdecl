@@ -147,7 +147,7 @@ void c_lang_set( c_lang_id_t lang_id ) {
   cdecl_prompt_enable( prompt_enabled );
 }
 
-char const* c_lang_until( c_lang_id_t lang_ids ) {
+char const* c_lang_which( c_lang_id_t lang_ids ) {
   if ( lang_ids == LANG_NONE )
     return "";
 
@@ -159,9 +159,18 @@ char const* c_lang_until( c_lang_id_t lang_ids ) {
   lang_ids &= mask;
   assert( lang_ids != LANG_NONE );
 
-  static char until_buf[ 7/* until */ + LANG_NAME_SIZE_MAX + 1/*\0*/ ];
-  sprintf( until_buf, " until %s", c_lang_oldest_name( lang_ids ) );
-  return until_buf;
+  static char buf[ 7/* until|since */ + LANG_NAME_SIZE_MAX + 1/*\0*/ ];
+
+  c_lang_id_t const oldest_lang_id = c_lang_oldest( lang_ids );
+  if ( opt_lang < oldest_lang_id ) {
+    sprintf( buf, " until %s", c_lang_name( oldest_lang_id ) );
+  } else {
+    c_lang_id_t const since_lang_id = c_lang_newest( lang_ids ) << 1;
+    assert( since_lang_id != LANG_NONE );
+    sprintf( buf, " since %s", c_lang_name( since_lang_id ) );
+  }
+
+  return buf;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

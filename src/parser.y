@@ -1495,7 +1495,7 @@ cast_english
 
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
-          "%s is not supported%s\n", $1, c_lang_until( LANG_CPP_11 )
+          "%s is not supported%s\n", $1, c_lang_which( LANG_CPP_11 )
         );
       }
       else if ( (ok = c_ast_check_cast( $5 )) ) {
@@ -2496,7 +2496,7 @@ namespace_declaration_c
       if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_CPP_MIN(17) ) ) {
         print_error( &@3,
           "nested %s declarations are not supported%s\n",
-          L_NAMESPACE, c_lang_until( LANG_CPP_17 )
+          L_NAMESPACE, c_lang_which( LANG_CPP_17 )
         );
       }
       else {
@@ -3240,7 +3240,7 @@ user_defined_literal_decl_english_ast
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
           "%s %s is not supported%s\n",
-          H_USER_DEFINED, L_LITERAL, c_lang_until( LANG_CPP_11 )
+          H_USER_DEFINED, L_LITERAL, c_lang_which( LANG_CPP_11 )
         );
         PARSE_ABORT();
       }
@@ -3927,7 +3927,7 @@ trailing_return_type_c_ast_opt
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
           "trailing return type is not supported%s\n",
-          c_lang_until( LANG_CPP_11 )
+          c_lang_which( LANG_CPP_11 )
         );
         PARSE_ABORT();
       }
@@ -4380,7 +4380,7 @@ using_decl_c_ast
       if ( unsupported( LANG_CPP_MIN(11) ) ) {
         print_error( &@1,
           "\"%s\" is not supported%s\n",
-          L_USING, c_lang_until( LANG_CPP_11 )
+          L_USING, c_lang_which( LANG_CPP_11 )
         );
         PARSE_ABORT();
       }
@@ -4977,7 +4977,7 @@ attribute_specifier_list_c_tid
       if ( unsupported( LANG_C_CPP_MIN(2X,11) ) ) {
         print_error( &@1,
           "\"[[\" attribute syntax is not supported%s\n",
-          c_lang_until( LANG_C_CPP_MIN(2X,11) )
+          c_lang_which( LANG_C_CPP_MIN(2X,11) )
         );
         PARSE_ABORT();
       }
