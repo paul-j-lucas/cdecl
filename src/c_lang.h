@@ -222,6 +222,7 @@ struct c_lang {
  *
  * @sa c_lang_oldest()
  * @sa c_lang_newer()
+ * @sa c_lang_newest()
  * @sa opt_lang_and_newer()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
@@ -323,13 +324,31 @@ char const* c_lang_name( c_lang_id_t lang_id );
  * #LANG_NONE if no language(s) are newer.
  *
  * @sa c_lang_and_newer()
+ * @sa c_lang_newest()
  * @sa c_lang_oldest()
  * @sa opt_lang_newer()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
-  assert( exactly_one_bit_set( lang_id & ~LANGX_MASK ) );
+  lang_id &= ~LANGX_MASK;
+  assert( exactly_one_bit_set( lang_id ) );
   return BITS_GT( lang_id );
+}
+
+/**
+ * Gets the newest language among \a lang_ids.
+ *
+ * @param lang_ids The bitwise-or of language(s).
+ * @return Returns said language.
+ *
+ * @sa c_lang_and_newer()
+ * @sa c_lang_newer()
+ * @sa c_lang_oldest()
+ * @sa c_lang_oldest_name()
+ */
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
+c_lang_id_t c_lang_newest( c_lang_id_t lang_ids ) {
+  return msb_set32( lang_ids & ~LANGX_MASK );
 }
 
 /**
@@ -367,23 +386,7 @@ c_lang_t const* c_lang_next( c_lang_t const *lang );
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
-  return lsb_set32( lang_ids );
-}
-
-/**
- * Gets the newest language among \a lang_ids.
- *
- * @param lang_ids The bitwise-or of language(s).
- * @return Returns said language.
- *
- * @sa c_lang_and_newer()
- * @sa c_lang_newer()
- * @sa c_lang_oldest()
- * @sa c_lang_oldest_name()
- */
-C_LANG_INLINE PJL_WARN_UNUSED_RESULT
-c_lang_id_t c_lang_newest( c_lang_id_t lang_ids ) {
-  return msb_set32( lang_ids );
+  return lsb_set32( lang_ids & ~LANGX_MASK );
 }
 
 /**
@@ -439,6 +442,7 @@ char const* c_lang_which( c_lang_id_t lang_ids );
  * @return Returns the bitwise-or all language(s) opt_lang and newer.
  *
  * @sa c_lang_and_newer()
+ * @sa c_lang_newer()
  * @sa c_lang_newest()
  * @sa opt_lang_newer()
  */
@@ -453,6 +457,7 @@ c_lang_id_t opt_lang_and_newer( void ) {
  * @return Returns the bitwise-or of languages \a lang_id or newer; or
  * #LANG_NONE if no language(s) are newer.
  *
+ * @sa c_lang_and_newer()
  * @sa c_lang_newer()
  * @sa c_lang_newest()
  * @sa opt_lang_and_newer()
