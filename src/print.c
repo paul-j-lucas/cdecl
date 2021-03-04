@@ -77,14 +77,14 @@ static size_t             token_len( char const* );
 static void print_caret( size_t error_column ) {
   if ( error_column >= inserted_len )
     error_column -= inserted_len;
+  size_t error_column_term = error_column;
+
   unsigned term_columns = 0;
 #ifdef ENABLE_TERM_SIZE
   get_term_columns_lines( &term_columns, NULL );
   if ( term_columns == 0 )
     term_columns = TERM_COLUMNS_DEFAULT;
 #endif /* ENABLE_TERM_SIZE */
-
-  size_t error_column_term = error_column;
 
   if ( is_input_a_tty || opt_interactive ) {
     //
