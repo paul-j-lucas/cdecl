@@ -13,7 +13,7 @@ command:
   <scope-c> <name> [{ [{ <scope-c> | <typedef> | <using> } ;]* }]
   using <name> = <gibberish>
   exit | q[uit]
-gibberish: a C++ declaration, like "int x"; or cast, like "(int)x"
+gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 option:
   [no]alt-tokens [no]debug {di|tri|no}graphs [no]east-const
   [no]explain-by-default [no]explicit-int[=<types>] lang=<lang>

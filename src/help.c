@@ -169,7 +169,7 @@ static void print_help_commands( void ) {
   print_h( "gibberish: a C" );
   if ( OPT_LANG_IS(CPP_ANY) )
     print_h( "\\+\\+" );
-  print_h( " declaration, like \"int x\"; or cast, like \"(int)x\"\n" );
+  print_h( " declaration, like \"int x\"; or a cast, like \"(int)x\"\n" );
 
   print_h( "option:\n" );
   print_h( "  [no]alt-tokens [no]debug {di|tri|no}graphs [no]east-const\n" );
