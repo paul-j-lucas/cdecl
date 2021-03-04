@@ -19,6 +19,9 @@ with their complete changes, see the AUTHORS file.
 The help for pseudo-English now correctly includes `auto` as a storage class
 for C++98 and C++03.
 
+** Adding `--explicit-int` to `--help`
+Added (the missing) `--explicit-int` to the help message.
+
 
 * Changes in Cdecl 9.7
 
