@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 9.7.1
+* Changes in Cdecl 9.8
 
 ** Added `extern "C" using` support
 `extern "C" using` declarations are now supported.
