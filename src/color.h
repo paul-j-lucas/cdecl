@@ -98,25 +98,11 @@
  * @param COLOR The predefined color without the `sgr_` prefix.
  *
  * @sa #SGR_END_COLOR
- * @sa #SGR_SSTART_COLOR
+ * @sa #SGR_STRBUF_START_COLOR
  */
 #define SGR_START_COLOR(STREAM,COLOR) BLOCK(  \
   if ( colorize && (sgr_ ## COLOR) != NULL )  \
     FPRINTF( (STREAM), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
-
-/**
- * Writes the bytes to \a STRING that, when printed to a terminal, will start
- * printing in \a COLOR.
- *
- * @param STRING The string to write to.
- * @param COLOR The predefined color without the `sgr_` prefix.
- *
- * @sa #SGR_SEND_COLOR
- * @sa #SGR_START_COLOR
- */
-#define SGR_SSTART_COLOR(STRING,COLOR) BLOCK( \
-  if ( colorize && (sgr_ ## COLOR) != NULL )  \
-    sprintf( (STRING), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
 
 /**
  * Ends printing in color.
@@ -129,15 +115,29 @@
   BLOCK( if ( colorize ) FPUTS( SGR_END SGR_EL, (STREAM) ); )
 
 /**
- * Writes the bytes to \a STRING that, when printed to a terminal, will end
+ * Writes the bytes to \a SBUF that, when printed to a terminal, will start
+ * printing in \a COLOR.
+ *
+ * @param SBUF The string to write to.
+ * @param COLOR The predefined color without the `sgr_` prefix.
+ *
+ * @sa #SGR_STRBUF_END_COLOR
+ * @sa #SGR_START_COLOR
+ */
+#define SGR_STRBUF_START_COLOR(SBUF,COLOR) BLOCK( \
+  if ( colorize && (sgr_ ## COLOR) != NULL )  \
+    strbuf_catf( (SBUF), SGR_START SGR_EL, (sgr_ ## COLOR) ); )
+
+/**
+ * Writes the bytes to \a SBUF that, when printed to a terminal, will end
  * printing in color.
  *
- * @param STRING The string to write to.
+ * @param SBUF The string to write to.
  *
- * @sa #SGR_SSTART_COLOR
+ * @sa #SGR_STRBUF_START_COLOR
  */
-#define SGR_SEND_COLOR(STRING) \
-  BLOCK( if ( colorize ) strcpy( (STRING), SGR_END SGR_EL ); )
+#define SGR_STRBUF_END_COLOR(SBUF) \
+  BLOCK( if ( colorize ) strbuf_cats( (SBUF), SGR_END SGR_EL ); )
 
 /**
  * When to colorize output.

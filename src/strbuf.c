@@ -34,6 +34,7 @@
 
 // standard
 #include <assert.h>
+#include <stdarg.h>
 
 /// @endcond
 
@@ -55,24 +56,50 @@ static size_t next_pow_2( size_t n ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void strbuf_catsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
-  assert( sbuf != NULL );
-  assert( s != NULL );
+void strbuf_catf( strbuf_t *sbuf, char const *format, ... ) {
+  va_list args, args2;
+  va_start( args, format );
+  va_copy( args2, args );
 
-  size_t const buf_rem = sbuf->buf_cap - sbuf->str_len;
+  size_t buf_rem = sbuf->buf_cap - sbuf->str_len;
+  int rv = vsnprintf( sbuf->str + sbuf->str_len, buf_rem, format, args );
+  va_end( args );
+  IF_EXIT( rv < 0, EX_IOERR );
 
-  if ( s_len >= buf_rem ) {
-    size_t const new_len = sbuf->str_len + s_len;
-    sbuf->buf_cap = next_pow_2( new_len );
-    REALLOC( sbuf->str, char, sbuf->buf_cap );
+  if ( strbuf_reserve( sbuf, (size_t)rv ) ) {
+    va_start( args2, format );
+    buf_rem = sbuf->buf_cap - sbuf->str_len;
+    rv = vsnprintf( sbuf->str + sbuf->str_len, buf_rem, format, args2 );
+    va_end( args2 );
+    IF_EXIT( rv < 0, EX_IOERR );
   }
+
+  sbuf->str_len += (size_t)rv;
+}
+
+void strbuf_catsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
+  assert( s != NULL );
+  strbuf_reserve( sbuf, s_len );
   strncpy( sbuf->str + sbuf->str_len, s, s_len );
   sbuf->str_len += s_len;
   sbuf->str[ sbuf->str_len ] = '\0';
 }
 
+bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
+  assert( sbuf != NULL );
+  size_t const buf_rem = sbuf->buf_cap - sbuf->str_len;
+  if ( res_len >= buf_rem ) {
+    size_t const new_len = sbuf->str_len + res_len;
+    sbuf->buf_cap = next_pow_2( new_len );
+    REALLOC( sbuf->str, char, sbuf->buf_cap );
+    return true;
+  }
+  return false;
+}
+
 void strbuf_sepsn_catsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
                          bool *sep_flag, char const *s, size_t s_len ) {
+  assert( sep_flag != NULL );
   if ( true_or_set( sep_flag ) )
     strbuf_catsn( sbuf, sep, sep_len );
   strbuf_catsn( sbuf, s, s_len );

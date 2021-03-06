@@ -78,6 +78,16 @@ typedef struct strbuf strbuf_t;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
+ * Concatenates \a format and \a ... onto the end of \a sbuf growing the buffer
+ * if necessary.
+ *
+ * @param sbuf A pointer to the strbuf to concatenate onto.
+ * @param format The `printf()` style format string.
+ * @param ... The `printf()` arguments
+ */
+void strbuf_catf( strbuf_t *sbuf, char const *format, ... );
+
+/**
  * Concatenates \a s_len bytes of \a s onto the end of \a sbuf growing the
  * buffer if necessary.
  *
@@ -143,6 +153,17 @@ void strbuf_free( strbuf_t *sbuf ) {
   free( sbuf->str );
   strbuf_init( sbuf );
 }
+
+/**
+ * Ensures at least \a res_len additional bytes of capacity exist in \a sbuf.
+ *
+ * @param sbuf A pointer to the strbuf to reserve \a res_len additional bytes
+ * for.
+ * @param res_len The number of additional bytes to reserve.
+ * @return Returns `true` only if a memory reallocation was necessary.
+ */
+PJL_NOWARN_UNUSED_RESULT
+bool strbuf_reserve( strbuf_t *sbuf, size_t res_len );
 
 /**
  * Possibly concatenates \a sep_len bytes of \a sep followed by \a s_len bytes
