@@ -71,37 +71,40 @@ Paul J. Lucas <paul@lucasmail.org>
 	now distinguishing among K&R C, C89, C95, C99, C11, C17, C2X, C++98,
 		C++03, C++11, C++14, C++17, and C++20
 	now using a proper abstract syntax tree data structure
-	added _Atomic, bool, char8_t, char16_t, char32_t, _Complex, _Imaginary,
-		noreturn, restrict, thread_local, wchar_t
 	added bit-fields
-	added inline functions and variables
 	added register and variadic function arguments
+	added C95 wchar_t
+	added C99 _Bool, _Complex, _Imaginary, restrict
+	added C99 static, type-qualified, and variable length array function
+		arguments
+	added C99 standard types, e.g., int8_t
+	added C11 _Atomic, char16_t, char32_t, _Noreturn, thread_local
+	added C11 standard types, e.g., atomic_int
+	added C2X char8_t
+	added inline functions and variables
 	added typedef, using, define, and show commands
 	added alternative tokens
 	added "east const" option
 	added GNU __auto_type and GNU's alternate spellings of __const, etc.
 	added all Win32 types
-	added C99 static, type-qualified, and variable length array
-		function arguments
-	added C99 standard types, e.g., int8_t, atomic_int, etc.
-	added C++ constructors & destructors, extern "C", namespaces & scoped
-		names, overloaded operators, and typename, and user-defined
-		conversion operators
-	added C++11 auto, constexpr, enum class, fixed-type enums, function
-		trailing return-type syntax, mutable, new-style casts,
-		noexcept, ref-qualifiers, rvalue references, and user-defined
-		literals, throw()
+	added C++ constructors, destructors, extern "C", namespaces, friend,
+		member-functions, mutable, new-style casts, overloaded
+		operators, scoped names, throw(), typename, user-defined
+		conversion operators, virtual
+	added C++11 auto, constexpr, enum class, final, fixed-type enums,
+		function trailing return-type syntax, noexcept, override, ref-
+		qualifiers, rvalue references, and user-defined literals
 	added C2X and C++11 later attribute specifiers
-	added C++20 consteval
-	added Embedded C types _Accum, _Fract, _Sat, and typedefs.
+	added C++20 consteval, constinit, and operator<=>
+	added Embedded C types _Accum, _Fract, _Sat, and typedefs
+	added Unified Parallel C qualifiers relaxed, shared, and strict
 	independently added typedef declarations
-	added final, friend, const, override, volatile, virtual,
-		and pure virtual C++ member function declarations
-	made "returning" optional
+	added "using" declarations
+	made "returning" optional in all cases where it is actually optional
 	added binary, octal, and hexadecimal array sizes
 	added digraph & trigraph support
 	added better warning and error messages
-	added "Did you mean ...?" suggestions
+	added "did you mean ...?" suggestions
 	now ignoring C /*...*/ and C++ // comments in lexer
 	now treating cdecl keywords in declarations as ordinary names
 	revamped the manual page
