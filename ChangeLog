@@ -1,5 +1,8 @@
 2021-03-05  Paul J. Lucas <paul@lucasmail.org>
 
+   * color.h, prompt.c, strbuf.c, strbuf.h: Replaced last sprintf() with
+     strbuf.
+   * strbuf.h: Sorted functions.
    * stddef.in.h: Updated Gnulib.
    * NEWS, configure.ac: Updated version to 9.8.
 
