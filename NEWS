@@ -22,6 +22,9 @@ for C++98 and C++03.
 ** Adding `--explicit-int` to `--help`
 Added (the missing) `--explicit-int` to the help message.
 
+** Added `Doxyfile` to tarball
+Added (the missing) `Doxyfile` to the dist-generated tarball.
+
 
 * Changes in Cdecl 9.7
 

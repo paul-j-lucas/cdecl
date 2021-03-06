@@ -19,8 +19,13 @@
 ##
 
 ACLOCAL_AMFLAGS = -I m4
-EXTRA_DIST = m4/gnulib-cache.m4 README-2.5.txt README-blocks.txt README.md
 SUBDIRS = lib src man test
+
+EXTRA_DIST =	Doxyfile \
+		m4/gnulib-cache.m4 \
+		README-2.5.txt \
+		README-blocks.txt \
+		README.md
 
 .PHONY: doc docs
 
