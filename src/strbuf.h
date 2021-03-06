@@ -118,6 +118,33 @@ void strbuf_cats( strbuf_t *sbuf, char const *s ) {
 }
 
 /**
+ * Initializes a strbuf.
+ *
+ * @param sbuf A pointer to the strbuf to initialize.
+ *
+ * @sa strbuf_free()
+ * @sa strbuf_take()
+ */
+C_STRBUF_INLINE
+void strbuf_init( strbuf_t *sbuf ) {
+  MEM_ZERO( sbuf );
+}
+
+/**
+ * Frees a strbuf.
+ *
+ * @param sbuf A pointer to the strbuf to free.
+ *
+ * @sa strbuf_init()
+ * @sa strbuf_take()
+ */
+C_STRBUF_INLINE
+void strbuf_free( strbuf_t *sbuf ) {
+  free( sbuf->str );
+  strbuf_init( sbuf );
+}
+
+/**
  * Possibly concatenates \a sep_len bytes of \a sep followed by \a s_len bytes
  * of \a s onto the end of \a sbuf growing the buffer if necessary.
  *
@@ -200,33 +227,6 @@ C_STRBUF_INLINE
 void strbuf_sepc_cats( strbuf_t *sbuf, char sep, bool *sep_flag,
                        char const *s ) {
   strbuf_sepsn_catsn( sbuf, &sep, 1, sep_flag, s, strlen( s ) );
-}
-
-/**
- * Initializes a strbuf.
- *
- * @param sbuf A pointer to the strbuf to initialize.
- *
- * @sa strbuf_free()
- * @sa strbuf_take()
- */
-C_STRBUF_INLINE
-void strbuf_init( strbuf_t *sbuf ) {
-  MEM_ZERO( sbuf );
-}
-
-/**
- * Frees a strbuf.
- *
- * @param sbuf A pointer to the strbuf to free.
- *
- * @sa strbuf_init()
- * @sa strbuf_take()
- */
-C_STRBUF_INLINE
-void strbuf_free( strbuf_t *sbuf ) {
-  free( sbuf->str );
-  strbuf_init( sbuf );
 }
 
 /**
