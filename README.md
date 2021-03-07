@@ -102,6 +102,7 @@ most notably:
   and
   user-defined conversion operators.
 * Support for C++11
+  `auto` (as a deduced type),
   `constexpr`,
   `enum class`,
   fixed-type enumerations,

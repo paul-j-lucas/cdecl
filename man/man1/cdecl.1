@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "March 6, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "March 7, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -622,7 +622,7 @@ Equivalent to C++98.)
 Use the C++11 version of the C++ language.
 Adds support for
 \f(CWalignas\fP,
-\f(CWauto\fP,
+\f(CWauto\fP (as a deduced type),
 \f(CW[[carries_dependency]]\fP,
 \f(CWchar16_t\fP,
 \f(CWchar32_t\fP,
@@ -632,8 +632,8 @@ fixed-type enumerations,
 \f(CW[[noreturn]]\fP,
 rvalue references,
 \f(CWthread_local\fP,
-\f(CWusing\fP,
-the function trailing return-type syntax,
+\f(CWusing\fP (as a \f(CWtypedef\fP synonym),
+function trailing return-types,
 user-defined literals,
 and
 member function ref-qualfiers,
