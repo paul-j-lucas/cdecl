@@ -135,8 +135,8 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
     C_LANG_LIT( { LANG_ANY, L_NODISCARD } ) },
 
   { TA_NORETURN, LANG_C_CPP_MIN(11,11), H_NON_RETURNING,
-    C_LANG_LIT( { LANG_CPP_ANY, L_NORETURN  },
-                { LANG_ANY,     L__NORETURN } ) },
+    C_LANG_LIT( { LANG_C_ANY, L__NORETURN },
+                { LANG_ANY,   L_NORETURN  } ) },
 
   { TA_NO_UNIQUE_ADDRESS, LANG_CPP_MIN(20), H_NON_UNIQUE_ADDRESS,
     C_LANG_LIT( { LANG_ANY, L_NO_UNIQUE_ADDRESS } ) },
@@ -209,6 +209,7 @@ static c_type_info_t const C_STORAGE_INFO[] = {
 
   { TS_THREAD_LOCAL, LANG_ANY, H_THREAD_LOCAL,
     C_LANG_LIT( { LANG_C_MAX(99) | LANG_CPP_MAX(03),  L_GNU___THREAD  },
+                { LANG_C_MIN(11),                     L__THREAD_LOCAL },
                 { LANG_ANY,                           L_THREAD_LOCAL  } ) },
 
   { TS_TYPEDEF, LANG_ANY, L_TYPE,
