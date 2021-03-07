@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 9.9
+
+** C78
+C78 is now accepted as an alias for K&RC.
+
+
 * Changes in Cdecl 9.8
 
 ** Added `extern "C" using` support
