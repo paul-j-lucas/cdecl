@@ -47,7 +47,6 @@
 #include <sysexits.h>
 
 #define GAVE_OPTION(OPT)    (opts_given[ (unsigned char)(OPT) ])
-#define OPT_BUF_SIZE        32          /* used for format_opt() */
 #define SET_OPTION(OPT)     (opts_given[ (unsigned char)(OPT) ] = (char)(OPT))
 
 /// @endcond
@@ -152,7 +151,7 @@ static char         opts_given[ 128 ];  ///< Table of options that were given.
 
 // local functions
 PJL_WARN_UNUSED_RESULT
-static char*        format_opt( char, char[], size_t );
+static char const*  format_opt( char, strbuf_t* );
 
 PJL_WARN_UNUSED_RESULT
 static char const*  get_long_opt( char );
@@ -202,12 +201,11 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
       if ( GAVE_OPTION( *opt ) ) {
         if ( ++gave_count > 1 ) {
           char const gave_opt2 = *opt;
-          char opt1_buf[ OPT_BUF_SIZE ];
-          char opt2_buf[ OPT_BUF_SIZE ];
+          strbuf_t opt1_sbuf, opt2_sbuf;
           PMESSAGE_EXIT( EX_USAGE,
             "%s and %s are mutually exclusive\n",
-            format_opt( gave_opt1, opt1_buf, sizeof opt1_buf ),
-            format_opt( gave_opt2, opt2_buf, sizeof opt2_buf  )
+            format_opt( gave_opt1, &opt1_sbuf ),
+            format_opt( gave_opt2, &opt2_sbuf )
           );
         }
         gave_opt1 = *opt;
@@ -226,21 +224,22 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
  *
  * @param short_opt The short option (along with its corresponding long option,
  * if any) to format.
- * @param buf The buffer to use.
- * @param buf_size The size of \a buf.
- * @return Returns \a buf.
+ * @param sbuf A pointer to the strbuf to use.
+ * @return Returns \a sbuf->str.
  */
 PJL_WARN_UNUSED_RESULT
-static char* format_opt( char short_opt, char buf[], size_t buf_size ) {
+static char const* format_opt( char short_opt, strbuf_t *sbuf ) {
+  assert( sbuf != NULL );
+  strbuf_init( sbuf );
   char const *const long_opt = get_long_opt( short_opt );
-  snprintf(
-    buf, buf_size, "%s%s%s-%c",
-    *long_opt != '\0' ? "--" : "",
+  strbuf_catf(
+    sbuf, "%s%s%s-%c",
+    long_opt[0] != '\0' ? "--" : "",
     long_opt,
-    *long_opt != '\0' ? "/" : "",
+    long_opt[0] != '\0' ? "/" : "",
     short_opt
   );
-  return buf;
+  return sbuf->str;
 }
 
 /**
@@ -314,16 +313,16 @@ static color_when_t parse_color_when( char const *when ) {
   } // for
 
   // name not found: construct valid name list for an error message
-  strbuf_t sbuf;
-  strbuf_init( &sbuf );
+  strbuf_t when_sbuf;
+  strbuf_init( &when_sbuf );
   bool comma = false;
   for ( colorize_map_t const *m = COLORIZE_MAP; m->map_when != NULL; ++m )
-    strbuf_sepsn_cats( &sbuf, ", ", 2, &comma, m->map_when );
+    strbuf_sepsn_cats( &when_sbuf, ", ", 2, &comma, m->map_when );
 
-  char opt_buf[ OPT_BUF_SIZE ];
+  strbuf_t opt_sbuf;
   PMESSAGE_EXIT( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of: %s\n",
-    when, format_opt( 'k', opt_buf, sizeof opt_buf ), sbuf.str
+    when, format_opt( 'k', &opt_sbuf ), when_sbuf.str
   );
 }
 
@@ -342,18 +341,18 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
   if ( lang_id != LANG_NONE )
     return lang_id;
 
-  strbuf_t sbuf;
-  strbuf_init( &sbuf );
+  strbuf_t langs_sbuf;
+  strbuf_init( &langs_sbuf );
   bool comma = false;
   FOREACH_LANG( lang ) {
     if ( !lang->is_alias )
-      strbuf_sepsn_cats( &sbuf, ", ", 2, &comma, lang->name );
+      strbuf_sepsn_cats( &langs_sbuf, ", ", 2, &comma, lang->name );
   } // for
 
-  char opt_buf[ OPT_BUF_SIZE ];
+  strbuf_t opt_sbuf;
   PMESSAGE_EXIT( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of: %s\n",
-    lang_name, format_opt( 'x', opt_buf, sizeof opt_buf ), sbuf.str
+    lang_name, format_opt( 'x', &opt_sbuf ), langs_sbuf.str
   );
 }
 
@@ -509,7 +508,6 @@ bool is_explicit_int( c_type_id_t tid ) {
 void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
   assert( ei_format != NULL );
 
-  char opt_buf[ OPT_BUF_SIZE ];
   c_type_id_t tid = TB_NONE;
 
   for ( char const *s = ei_format; *s != '\0'; ++s ) {
@@ -550,12 +548,14 @@ void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
       case ',':
         break;
       default:
-        if ( loc == NULL )
+        if ( loc == NULL ) {
+          strbuf_t opt_sbuf;
           PMESSAGE_EXIT( EX_USAGE,
             "\"%s\": invalid explicit int for %s:"
             " '%c': must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
-            s, format_opt( 'I', opt_buf, sizeof opt_buf ), *s
+            s, format_opt( 'I', &opt_sbuf ), *s
           );
+        }
         print_error( loc,
           "\"%s\": invalid explicit-int:"
           " must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
