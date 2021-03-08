@@ -124,7 +124,6 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
   } // switch
 }
 
-PJL_WARN_UNUSED_RESULT
 c_lang_t const* c_lang_next( c_lang_t const *lang ) {
   if ( lang == NULL )
     lang = C_LANG;

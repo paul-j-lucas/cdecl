@@ -434,6 +434,7 @@ void c_lang_set( c_lang_id_t lang_id );
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  */
+PJL_WARN_UNUSED_RESULT
 char const* c_lang_which( c_lang_id_t lang_ids );
 
 /**

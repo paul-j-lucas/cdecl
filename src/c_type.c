@@ -770,7 +770,6 @@ bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
   return true;
 }
 
-PJL_WARN_UNUSED_RESULT
 c_type_part_id_t c_type_id_tpid( c_type_id_t tid ) {
   //
   // If tid has been complemented, e.g., ~TS_REGISTER to denote "all but

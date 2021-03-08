@@ -404,7 +404,6 @@ static bool strn_nohyphen_equal( char const *s1, char const *s2, size_t n ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-PJL_WARN_UNUSED_RESULT
 set_option_t const* option_next( set_option_t const *opt ) {
   if ( opt == NULL )
     opt = SET_OPTIONS;
