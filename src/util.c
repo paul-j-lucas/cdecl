@@ -197,7 +197,7 @@ void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines ) {
         );
         break;
       case 1:
-        reason = "terminal is harcopy";
+        reason = "terminal is hardcopy";
         break;
       default:
         snprintf(
