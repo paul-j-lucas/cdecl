@@ -301,7 +301,7 @@ char const* c_lang_coarse_name( c_lang_id_t lang_ids ) {
  * the current language.
  */
 PJL_WARN_UNUSED_RESULT
-char const* c_lang_literal( c_lang_lit_t const lang_lit[const] );
+char const* c_lang_literal( c_lang_lit_t const *lang_lit );
 
 /**
  * Gets the printable name of \a lang_id.

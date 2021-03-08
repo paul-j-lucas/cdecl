@@ -231,7 +231,7 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
  * @return Returns \a buf.
  */
 PJL_WARN_UNUSED_RESULT
-static char* format_opt( char short_opt, char buf[const], size_t buf_size ) {
+static char* format_opt( char short_opt, char buf[], size_t buf_size ) {
   char const *const long_opt = get_long_opt( short_opt );
   snprintf(
     buf, buf_size, "%s%s%s-%c",
@@ -363,7 +363,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
  * @param argc The argument count from main().
  * @param argv The argument values from main().
  */
-static void parse_options( int argc, char const *argv[const] ) {
+static void parse_options( int argc, char const *argv[] ) {
   optind = opterr = 1;
 
   color_when_t  color_when = COLOR_WHEN_DEFAULT;
@@ -600,7 +600,7 @@ void print_explicit_int( void ) {
   }
 }
 
-void options_init( int *pargc, char const **pargv[const] ) {
+void options_init( int *pargc, char const **pargv[] ) {
   assert( pargc != NULL );
   assert( pargv != NULL );
 

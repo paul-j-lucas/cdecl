@@ -531,7 +531,7 @@ static c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid ) {
  */
 PJL_WARN_UNUSED_RESULT
 static c_lang_id_t
-c_type_id_check_combo( c_type_id_t tid, c_type_info_t const type_infos[const],
+c_type_id_check_combo( c_type_id_t tid, c_type_info_t const type_infos[],
                        size_t type_infos_size,
                        c_lang_id_t const type_langs[][type_infos_size] ) {
   for ( size_t row = 0; row < type_infos_size; ++row ) {
@@ -559,7 +559,7 @@ c_type_id_check_combo( c_type_id_t tid, c_type_info_t const type_infos[const],
  */
 PJL_WARN_UNUSED_RESULT
 static c_lang_id_t
-c_type_id_check_legal( c_type_id_t tid, c_type_info_t const type_infos[const],
+c_type_id_check_legal( c_type_id_t tid, c_type_info_t const type_infos[],
                        size_t type_infos_size ) {
   for ( size_t row = 0; row < type_infos_size; ++row ) {
     c_type_info_t const *const ti = &type_infos[ row ];

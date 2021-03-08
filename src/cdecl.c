@@ -110,13 +110,13 @@ extern void yyrestart( FILE* );
 static void cdecl_cleanup( void );
 
 PJL_WARN_UNUSED_RESULT
-static bool parse_argv( int, char const*[] );
+static bool parse_argv( int, char const *const[] );
 
 PJL_WARN_UNUSED_RESULT
-static bool parse_command_line( char const*, int, char const*[] );
+static bool parse_command_line( char const*, int, char const *const[] );
 
 PJL_WARN_UNUSED_RESULT
-static bool parse_files( int, char const*const[] );
+static bool parse_files( int, char const *const[] );
 
 PJL_WARN_UNUSED_RESULT
 static bool parse_stdin( void );
@@ -290,7 +290,7 @@ static void cdecl_cleanup( void ) {
  * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
-static bool parse_argv( int argc, char const *argv[const] ) {
+static bool parse_argv( int argc, char const *const argv[] ) {
   if ( argc == 0 )                      // cdecl
     return parse_stdin();
   if ( is_command( me, C_COMMAND_PROG_NAME ) )
@@ -320,7 +320,7 @@ static bool parse_argv( int argc, char const *argv[const] ) {
  */
 PJL_WARN_UNUSED_RESULT
 static bool parse_command_line( char const *command, int argc,
-                                char const *argv[] ) {
+                                char const *const argv[] ) {
   strbuf_t sbuf;
   bool space;
 
@@ -365,7 +365,7 @@ static bool parse_file( FILE *file ) {
  * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
-static bool parse_files( int num_files, char const *const files[const] ) {
+static bool parse_files( int num_files, char const *const files[] ) {
   bool ok = true;
 
   for ( int i = 0; i < num_files && ok; ++i ) {
