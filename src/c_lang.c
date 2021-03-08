@@ -50,6 +50,7 @@
  * `{ NULL, false, LANG_NONE }`.
  */
 static c_lang_t const C_LANG[] = {
+  { "C",      false,  LANG_C_NEW   },
   { "CK&R",   true,   LANG_C_KNR   },
   { "CKNR",   true,   LANG_C_KNR   },
   { "CKR",    true,   LANG_C_KNR   },
@@ -59,7 +60,6 @@ static c_lang_t const C_LANG[] = {
   { "KNRC",   true,   LANG_C_KNR   },
   { "KR",     true,   LANG_C_KNR   },
   { "KRC",    true,   LANG_C_KNR   },
-  { "C",      false,  LANG_C_NEW   },
   { "C78",    true,   LANG_C_KNR   },
   { "C89",    false,  LANG_C_89,   },
   { "C90",    true,   LANG_C_89,   },
