@@ -46,8 +46,8 @@ _GL_INLINE_HEADER_BEGIN
 /// @endcond
 
 /**
- * @defgroup util-group Utility Macros & Functions
- * Declares utility constants, macros, and functions.
+ * @defgroup strbuf-group String Buffer
+ * A type and functions for manipulating a string buffer.
  * @{
  */
 
@@ -56,18 +56,6 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * %strbuf maintains a C-style string that additionally knows its length and
  * capacity and can grow automatically when appended to.
- *
- * @sa strbuf_catc()
- * @sa strbuf_cats()
- * @sa strbuf_catsn()
- * @sa strbuf_free()
- * @sa strbuf_init()
- * @sa strbuf_reserve()
- * @sa strbuf_sepc_cats()
- * @sa strbuf_sepc_catsn()
- * @sa strbuf_sepsn_cats()
- * @sa strbuf_sepsn_catsn()
- * @sa strbuf_take()
  */
 struct strbuf {
   char   *str;                          ///< String.
@@ -79,8 +67,8 @@ typedef struct strbuf strbuf_t;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Concatenates \a format and \a ... onto the end of \a sbuf growing the buffer
- * if necessary.
+ * Concatenates \a format and the `printf`-style arguments onto the end of \a
+ * sbuf growing the buffer if necessary.
  *
  * @param sbuf A pointer to the strbuf to concatenate onto.
  * @param format The `printf()` style format string.
