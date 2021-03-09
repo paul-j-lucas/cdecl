@@ -105,7 +105,7 @@
  * @param END_STR_LIT A string literal appended to the end of the error message
  * (either `"\n"` or `""`).
  */
-#define error_kind_to_type(AST,TID,END_STR_LIT)                 \
+#define error_kind_to_tid(AST,TID,END_STR_LIT)                  \
   fl_print_error( __FILE__, __LINE__,                           \
     &(AST)->loc, "%s to %s is illegal" END_STR_LIT,             \
     c_kind_name( (AST)->kind_id ), c_type_id_name_error( TID )  \
@@ -1448,7 +1448,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
   } // switch
 
   if ( c_ast_is_register( to_ast ) ) {
-    error_kind_to_type( ast, TS_REGISTER, "\n" );
+    error_kind_to_tid( ast, TS_REGISTER, "\n" );
     return false;
   }
 
@@ -1487,12 +1487,12 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   } // switch
 
   if ( c_ast_is_register( to_ast ) ) {
-    error_kind_to_type( ast, TS_REGISTER, "\n" );
+    error_kind_to_tid( ast, TS_REGISTER, "\n" );
     return false;
   }
 
   if ( c_type_is_tid_any( &to_ast->type, TB_VOID ) ) {
-    error_kind_to_type( ast, TB_VOID, "" );
+    error_kind_to_tid( ast, TB_VOID, "" );
     print_hint( "%s to %s", L_POINTER, L_VOID );
     return false;
   }
