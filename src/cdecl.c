@@ -330,7 +330,7 @@ static bool parse_command_line( char const *command, int argc,
   for ( int i = 0; i < argc; ++i )
     strbuf_sepc_cats( &sbuf, ' ', &space, argv[i] );
 
-  bool const ok = parse_string( sbuf.str, (ssize_t)sbuf.str_len );
+  bool const ok = parse_string( sbuf.str, (ssize_t)sbuf.len );
   strbuf_free( &sbuf );
   return ok;
 }
@@ -403,7 +403,7 @@ static bool parse_stdin( void ) {
       strbuf_t sbuf;
       if ( !cdecl_read_line( &sbuf, cdecl_prompt[0], cdecl_prompt[1] ) )
         break;
-      ok = parse_string( sbuf.str, (ssize_t)sbuf.str_len );
+      ok = parse_string( sbuf.str, (ssize_t)sbuf.len );
       strbuf_free( &sbuf );
     } // for
   } else {

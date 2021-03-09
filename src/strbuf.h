@@ -55,13 +55,14 @@ _GL_INLINE_HEADER_BEGIN
 
 /**
  * %strbuf maintains a C-style string that additionally knows its length and
- * capacity.
+ * capacity and can grow automatically when appended to.
  *
  * @sa strbuf_catc()
  * @sa strbuf_cats()
  * @sa strbuf_catsn()
  * @sa strbuf_free()
  * @sa strbuf_init()
+ * @sa strbuf_reserve()
  * @sa strbuf_sepc_cats()
  * @sa strbuf_sepc_catsn()
  * @sa strbuf_sepsn_cats()
@@ -70,8 +71,8 @@ _GL_INLINE_HEADER_BEGIN
  */
 struct strbuf {
   char   *str;                          ///< String.
-  size_t  str_len;                      ///< Length of \a str.
-  size_t  buf_cap;                      ///< Capacity of \a str.
+  size_t  len;                          ///< Length of \a str.
+  size_t  cap;                          ///< Capacity of \a str.
 };
 typedef struct strbuf strbuf_t;
 

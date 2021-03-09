@@ -61,37 +61,37 @@ void strbuf_catf( strbuf_t *sbuf, char const *format, ... ) {
   va_start( args, format );
   va_copy( args2, args );
 
-  size_t buf_rem = sbuf->buf_cap - sbuf->str_len;
-  int rv = vsnprintf( sbuf->str + sbuf->str_len, buf_rem, format, args );
+  size_t buf_rem = sbuf->cap - sbuf->len;
+  int rv = vsnprintf( sbuf->str + sbuf->len, buf_rem, format, args );
   va_end( args );
   IF_EXIT( rv < 0, EX_IOERR );
 
   if ( strbuf_reserve( sbuf, (size_t)rv ) ) {
     va_start( args2, format );
-    buf_rem = sbuf->buf_cap - sbuf->str_len;
-    rv = vsnprintf( sbuf->str + sbuf->str_len, buf_rem, format, args2 );
+    buf_rem = sbuf->cap - sbuf->len;
+    rv = vsnprintf( sbuf->str + sbuf->len, buf_rem, format, args2 );
     va_end( args2 );
     IF_EXIT( rv < 0, EX_IOERR );
   }
 
-  sbuf->str_len += (size_t)rv;
+  sbuf->len += (size_t)rv;
 }
 
 void strbuf_catsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
   assert( s != NULL );
   strbuf_reserve( sbuf, s_len );
-  strncpy( sbuf->str + sbuf->str_len, s, s_len );
-  sbuf->str_len += s_len;
-  sbuf->str[ sbuf->str_len ] = '\0';
+  strncpy( sbuf->str + sbuf->len, s, s_len );
+  sbuf->len += s_len;
+  sbuf->str[ sbuf->len ] = '\0';
 }
 
 bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
   assert( sbuf != NULL );
-  size_t const buf_rem = sbuf->buf_cap - sbuf->str_len;
+  size_t const buf_rem = sbuf->cap - sbuf->len;
   if ( res_len >= buf_rem ) {
-    size_t const new_len = sbuf->str_len + res_len;
-    sbuf->buf_cap = next_pow_2( new_len );
-    REALLOC( sbuf->str, char, sbuf->buf_cap );
+    size_t const new_len = sbuf->len + res_len;
+    sbuf->cap = next_pow_2( new_len );
+    REALLOC( sbuf->str, char, sbuf->cap );
     return true;
   }
   return false;
