@@ -70,6 +70,8 @@ DECLARE_SET_OPTION_FN( lang );
 DECLARE_SET_OPTION_FN( prompt );
 DECLARE_SET_OPTION_FN( semicolon );
 DECLARE_SET_OPTION_FN( trigraphs );
+
+PJL_WARN_UNUSED_RESULT
 static bool set_lang_impl( char const* );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -102,6 +104,14 @@ static set_option_t const SET_OPTIONS[] = {
 
 ////////// local functions ////////////////////////////////////////////////////
 
+/**
+ * Convenience function for getting `"no"` or not to print.
+ *
+ * @param enabled Whether a toggle option is enabled.
+ * @return If \a enabled is `true`, returns `" "` (two spaces); if `false`,
+ * returns `"no"`.
+ */
+PJL_WARN_UNUSED_RESULT
 static inline char const* maybe_no( bool enabled ) {
   return enabled ? "  " : "no";
 }
@@ -122,7 +132,7 @@ static void print_options( void ) {
 
   if ( any_explicit_int() ) {
     FPUTS( "    explicit-int=", fout );
-    print_explicit_int();
+    print_explicit_int( fout );
     PUTC( '\n' );
   } else {
     FPUTS( "  noexplicit-int\n", fout );
@@ -309,6 +319,7 @@ static void set_lang( bool enabled, c_loc_t const *opt_name_loc,
  * @return Returns `true` only if \a name corresponds to a supported language
  * and the language was set.
  */
+PJL_WARN_UNUSED_RESULT
 static bool set_lang_impl( char const *name ) {
   c_lang_id_t const new_lang_id = c_lang_find( name );
   if ( new_lang_id != LANG_NONE ) {
@@ -390,6 +401,7 @@ static void set_trigraphs( bool enabled, c_loc_t const *opt_name_loc,
  * @return Returns `true` only if \a s1 equals \a s2 (ignoring hyphens)
  * for \a n characters.
  */
+PJL_WARN_UNUSED_RESULT
 static bool strn_nohyphen_equal( char const *s1, char const *s2, size_t n ) {
   while ( n-- > 0 ) {
     if ( *s1 == '-' )

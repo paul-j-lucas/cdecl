@@ -131,8 +131,10 @@ void parse_explicit_int( c_loc_t const *loc, char const *ei_format );
 
 /**
  * Prints the string representation of the explicit integer option.
+ *
+ * @param out The `FILE` to print to.
  */
-void print_explicit_int( void );
+void print_explicit_int( FILE *out );
 
 ///////////////////////////////////////////////////////////////////////////////
 

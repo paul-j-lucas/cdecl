@@ -568,7 +568,7 @@ void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
   } // for
 }
 
-void print_explicit_int( void ) {
+void print_explicit_int( FILE *out ) {
   bool const is_explicit_s   = is_explicit_int( TB_SHORT );
   bool const is_explicit_i   = is_explicit_int( TB_INT );
   bool const is_explicit_l   = is_explicit_int( TB_LONG );
@@ -580,23 +580,23 @@ void print_explicit_int( void ) {
   bool const is_explicit_ull = is_explicit_int( TB_UNSIGNED | TB_LONG_LONG );
 
   if ( is_explicit_s & is_explicit_i && is_explicit_l && is_explicit_ll ) {
-    PUTC( 'i' );
+    FPUTC( 'i', out );
   }
   else {
-    if ( is_explicit_s   ) PUTC(  's'  );
-    if ( is_explicit_i   ) PUTC(  'i'  );
-    if ( is_explicit_l   ) PUTC(  'l'  );
-    if ( is_explicit_ll  ) PUTS(  "ll" );
+    if ( is_explicit_s   ) FPUTC(  's',  out );
+    if ( is_explicit_i   ) FPUTC(  'i',  out );
+    if ( is_explicit_l   ) FPUTC(  'l',  out );
+    if ( is_explicit_ll  ) FPUTS(  "ll", out );
   }
 
   if ( is_explicit_us & is_explicit_ui && is_explicit_ul && is_explicit_ull ) {
-    PUTC( 'u' );
+    FPUTC( 'u', out );
   }
   else {
-    if ( is_explicit_us  ) PUTS( "us"  );
-    if ( is_explicit_ui  ) PUTS( "ui"  );
-    if ( is_explicit_ul  ) PUTS( "ul"  );
-    if ( is_explicit_ull ) PUTS( "ull" );
+    if ( is_explicit_us  ) FPUTS( "us",  out );
+    if ( is_explicit_ui  ) FPUTS( "ui",  out );
+    if ( is_explicit_ul  ) FPUTS( "ul",  out );
+    if ( is_explicit_ull ) FPUTS( "ull", out );
   }
 }
 
