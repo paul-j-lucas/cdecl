@@ -620,19 +620,28 @@ static char const *const PREDEFINED_MISC[] = {
   "typedef  int32_t       blkcnt_t",
   "typedef  int32_t       blksize_t",
   "struct                 fd_set",
+  "typedef void          *iconv_t",
+  "struct                 locale_t",
   "typedef  int32_t       mode_t",
   "typedef unsigned long  nfds_t",
   "typedef uint32_t       nlink_t",
   "typedef uint32_t       rlim_t",
   "typedef unsigned long  sigset_t",
 
-  "typedef          long  clockid_t",
+  "enum                   clockid_t",
   "typedef  int64_t       suseconds_t",
   "typedef uint32_t       useconds_t",
 
   "typedef uint32_t       gid_t",
   "typedef  int32_t       pid_t",
   "typedef uint32_t       uid_t",
+
+  "typedef void           *posix_spawnattr_t",
+  "typedef void           *posix_spawn_file_actions_t",
+
+  "struct                 regex_t",
+  "struct                 regmatch_t",
+  "typedef size_t         regoff_t",
 
   "typedef uint32_t       in_addr_t",
   "typedef uint16_t       in_port_t",

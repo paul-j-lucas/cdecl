@@ -235,7 +235,7 @@ define atomic_wchar_t as atomic wchar_t
 define blkcnt_t as int32_t
 define blksize_t as int32_t
 define clock_t as long int
-define clockid_t as long int
+define clockid_t as enumeration clockid_t
 define cnd_t as pthread_cond_t
 define constraint_handler_t as pointer to function (restricted pointer to constant char, restricted pointer to void, errno_t) returning void
 define dev_t as int
@@ -249,6 +249,7 @@ define fexcept_t as unsigned short int
 define float_t as float
 define fpos_t as structure fpos_t
 define gid_t as uint32_t
+define iconv_t as pointer to void
 define imaxdiv_t as structure imaxdiv_t
 define in_addr_t as uint32_t
 define in_port_t as uint16_t
@@ -271,6 +272,7 @@ define jmp_buf as array 37 of int
 define lconv as structure lconv
 define ldiv_t as structure ldiv_t
 define lldiv_t as structure lldiv_t
+define locale_t as structure locale_t
 define long_double_t as long double
 define max_align_t as long double
 define mbstate_t as structure mbstate_t
@@ -282,6 +284,8 @@ define nlink_t as uint32_t
 define off_t as long int
 define once_flag as int
 define pid_t as int32_t
+define posix_spawn_file_actions_t as pointer to void
+define posix_spawnattr_t as pointer to void
 define pthread_barrier_t as structure pthread_barrier_t
 define pthread_barrierattr_t as structure pthread_barrierattr_t
 define pthread_cond_t as structure pthread_cond_t
@@ -294,6 +298,9 @@ define pthread_rwlockattr_t as structure pthread_rwlockattr_t
 define pthread_spinlock_t as volatile int
 define pthread_t as unsigned long int
 define ptrdiff_t as long int
+define regex_t as structure regex_t
+define regmatch_t as structure regmatch_t
+define regoff_t as size_t
 define rlim_t as uint32_t
 define rsize_t as unsigned long int
 define sa_family_t as uint32_t

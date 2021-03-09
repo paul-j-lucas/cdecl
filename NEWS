@@ -15,6 +15,10 @@ with their complete changes, see the AUTHORS file.
 ** C78
 C78 is now accepted as an alias for K&RC.
 
+** More predefined types
+Added `iconv_t`, `locale_t`, `posix_spawnattr_t`, `posix_spawn_file_actions_t`,
+`regex_t`, `regmatch_t`, and `regoff_t`.
+
 ** Pointer-to-function qualifiers
 A pointer to function with qualifiers, e.g.:
 
