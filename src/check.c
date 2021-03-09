@@ -84,15 +84,17 @@
   )
 
 /**
- * Prints an error: `<kind> to <kind>`.
+ * Prints an error: `<kind> to <kind> is illegal`.
  *
- * @param AST The AST having the bad kind.
- * @param KIND_ID The other kind.
+ * @param AST1 The AST having the bad kind.
+ * @param AST2 The AST having the other kind.
+ * @param END_STR_LIT A string literal appended to the end of the error message
+ * (either `"\n"` or `""`).
  */
-#define error_kind_to_kind(AST,KIND_ID)                   \
-  fl_print_error( __FILE__, __LINE__,                     \
-    &(AST)->loc, "%s to %s is illegal\n",                 \
-    c_kind_name( (AST)->kind_id ), c_kind_name( KIND_ID ) \
+#define error_kind_to_kind(AST1,AST2,END_STR_LIT)                   \
+  fl_print_error( __FILE__, __LINE__,                               \
+    &(AST1)->loc, "%s to %s is illegal" END_STR_LIT,                \
+    c_kind_name( (AST1)->kind_id ), c_kind_name( (AST2)->kind_id )  \
   )
 
 /**
@@ -1419,15 +1421,23 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
 
   c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
   switch ( to_ast->kind_id ) {
+    case K_FUNCTION:
+      if ( ast->kind_id == K_POINTER && !c_type_is_none( &to_ast->type ) ) {
+        print_error( &to_ast->loc,
+          "%s to %s %s is illegal\n",
+          c_kind_name( ast->kind_id ),
+          c_type_name_error( &to_ast->type ),
+          c_kind_name( to_ast->kind_id )
+        );
+        return false;
+      }
+      break;
     case K_NAME:
       error_unknown_name( to_ast );
       return false;
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      print_error( &ast->loc,
-        "%s to %s is illegal",
-        c_kind_name( ast->kind_id ), c_kind_name( to_ast->kind_id )
-      );
+      error_kind_to_kind( ast, to_ast, "" );
       if ( c_mode == C_ENGLISH_TO_GIBBERISH )
         print_hint( "%s to %s", L_REFERENCE, L_POINTER );
       else
@@ -1470,7 +1480,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
       return VISITOR_ERROR_FOUND;
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      error_kind_to_kind( ast, to_ast->kind_id );
+      error_kind_to_kind( ast, to_ast, "\n" );
       return false;
     default:
       /* suppress warning */;

@@ -1305,9 +1305,11 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_fas3_v-c++.test \
 	tests/explain_fav_v-c++.test \
 	tests/explain_fkr_v.test \
+	tests/explain_fpcf_i_v.test \
 	tests/explain_frri_v-c++03.test \
 	tests/explain_fsf_v.test \
 	tests/explain_nrfi_v-c++-error.test \
+	tests/explain_pcf_i.test \
 	tests/explain_pmri.test \
 	tests/explain_pri.test \
 	tests/explain_prri.test \

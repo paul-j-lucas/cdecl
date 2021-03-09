@@ -15,6 +15,13 @@ with their complete changes, see the AUTHORS file.
 ** C78
 C78 is now accepted as an alias for K&RC.
 
+** Pointer-to-function qualifiers
+A pointer to function with qualifiers, e.g.:
+
+    int (*f)() const                    // illegal
+
+is now correctly caught as an error.
+
 
 * Changes in Cdecl 9.8
 
