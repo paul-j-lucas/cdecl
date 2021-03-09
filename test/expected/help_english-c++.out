@@ -12,7 +12,7 @@ user-defined-english:
   conversion [operator] [of <scope-e> <name>]* returning <english>
   literal [([<args>])] [returning <english>]
 args: a comma separated list of [<name> as] <english>
-C++-type: bool | char | char{8|16|32}_t | wchar_t | int | float | double | void
+C++-type: bool | char[{8|16|32}_t] | wchar_t | int | float | double | void
 cv-qual: const | volatile
 fn-qual: <cv-qual> | [rvalue] reference
 modifier: short | long | signed | unsigned | <cv-qual>

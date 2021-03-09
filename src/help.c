@@ -247,10 +247,10 @@ static void print_help_english( void ) {
       print_h( " _Bool |" );
     print_h( " char" );
     if ( OPT_LANG_IS(C_MIN(11)) ) {
-      print_h( " | char{" );
+      print_h( "[{" );
       if ( OPT_LANG_IS(C_MIN(2X)) )
         print_h( "8|" );
-      print_h( "16|32}_t" );
+      print_h( "16|32}_t]" );
     }
     if ( OPT_LANG_IS(C_MIN(95)) )
       print_h( " | wchar_t" );
@@ -302,10 +302,10 @@ static void print_help_english( void ) {
 
     print_h( "C\\+\\+-type: bool | char" );
     if ( OPT_LANG_IS(CPP_MIN(11)) ) {
-      print_h( " | char{" );
+      print_h( "[{" );
       if ( OPT_LANG_IS(CPP_MIN(20)) )
         print_h( "8|" );
-      print_h( "16|32}_t" );
+      print_h( "16|32}_t]" );
     }
     print_h( " | wchar_t | int | float | double | void\n" );
 
