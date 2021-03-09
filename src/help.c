@@ -281,7 +281,7 @@ static void print_help_english( void ) {
     print_h( "name: a C identifier\n" );
     print_h( "store: auto | extern | register | static" );
     if ( OPT_LANG_IS(C_MIN(11)) )
-      print_h( " | thread_local" );
+      print_h( " | _Thread_local" );
     print_h( "\n" );
   }
   else {
