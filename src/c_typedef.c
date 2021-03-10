@@ -953,8 +953,9 @@ void c_typedef_cleanup( void ) {
   // There is no c_typedef_free() function because c_typedef_add() adds only
   // c_typedef_t nodes pointing to pre-existing AST nodes.  The AST nodes are
   // freed independently in parser_cleanup().  Hence, this function frees only
-  // the red-black tree itself and not the AST nodes it points to.
-  rb_tree_free( &typedefs, NULL );
+  // the red-black tree, its nodes, and the c_typedef_t data each node points
+  // to, but not the AST nodes the c_typedef_t data points to.
+  rb_tree_free( &typedefs, &free );
 }
 
 c_typedef_t const* c_typedef_find( c_sname_t const *sname ) {
