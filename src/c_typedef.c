@@ -42,14 +42,13 @@
 /// @endcond
 
 /**
- * Creates a <code>\ref c_typedef</code> variable on the stack having \a SNAME.
+ * Convenience macro for specifying a <code>\ref c_typedef</code> literal
+ * having \a SNAME.
  *
- * @param VAR_NAME The name for the <code>\ref c_typedef</code>` variable.
  * @param SNAME The sname.
  */
-#define C_TYPEDEF_VAR_INIT(VAR_NAME,SNAME)          \
-  c_ast_t VAR_NAME##_ast = { .sname = *(SNAME) };   \
-  c_typedef_t VAR_NAME = { .ast = &VAR_NAME##_ast }
+#define C_TYPEDEF_LIT(SNAME) \
+  (c_typedef_t){ .ast = &(c_ast_t){ .sname = (SNAME) } }
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -960,8 +959,8 @@ void c_typedef_cleanup( void ) {
 
 c_typedef_t const* c_typedef_find( c_sname_t const *sname ) {
   assert( sname != NULL );
-  C_TYPEDEF_VAR_INIT( tdef, sname );
-  rb_node_t const *const found_rb = rb_tree_find( &typedefs, &tdef );
+  rb_node_t const *const found_rb =
+    rb_tree_find( &typedefs, &C_TYPEDEF_LIT( *sname ) );
   return found_rb != NULL ? found_rb->data : NULL;
 }
 
