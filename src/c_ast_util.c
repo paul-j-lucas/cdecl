@@ -505,9 +505,9 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
     return type_ast;
 
   if ( type_ast->parent_ast == NULL ) {
-    c_ast_t *const placeholder =
+    c_ast_t *const placeholder_ast =
       c_ast_find_kind_any( decl_ast, C_VISIT_DOWN, K_PLACEHOLDER );
-    if ( placeholder != NULL ) {
+    if ( placeholder_ast != NULL ) {
       if ( type_ast->depth >= decl_ast->depth ) {
         //
         // The type_ast is the final AST -- decl_ast (containing a placeholder)
@@ -529,7 +529,7 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
       //      [type] --> ... --> [type-root] --> [placeholder-parent]
       //
       c_ast_t *const type_root_ast = c_ast_root( type_ast );
-      c_ast_set_parent( type_root_ast, placeholder->parent_ast );
+      c_ast_set_parent( type_root_ast, placeholder_ast->parent_ast );
     }
   }
 
