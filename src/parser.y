@@ -1308,7 +1308,6 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  oper_decl_c_astp
 %type   <ast>       param_c_ast
 %type   <ast_list>  param_list_c_ast param_list_c_ast_opt
-%type   <ast>       placeholder_c_ast
 %type   <ast_pair>  pointer_decl_c_astp
 %type   <ast_pair>  pointer_to_member_decl_c_astp
 %type   <ast>       pointer_to_member_type_c_ast
@@ -3984,9 +3983,9 @@ func_equals_c_tid_opt
   ;
 
 nested_decl_c_astp
-  : '(' placeholder_c_ast
+  : '('
     {
-      ia_type_ast_push( $2 );
+      ia_type_ast_push( c_ast_new_gc( K_PLACEHOLDER, &@$ ) );
       ++ast_depth;
     }
     decl_c_astp rparen_exp
@@ -3994,12 +3993,10 @@ nested_decl_c_astp
       ia_type_ast_pop();
       --ast_depth;
 
-      DUMP_START( "nested_decl_c_astp",
-                  "'(' placeholder_c_ast decl_c_astp ')'" );
-      DUMP_AST( "placeholder_c_ast", $2 );
-      DUMP_AST( "decl_c_astp", $4.ast );
+      DUMP_START( "nested_decl_c_astp", "'(' decl_c_astp ')'" );
+      DUMP_AST( "decl_c_astp", $3.ast );
 
-      $$ = $4;
+      $$ = $3;
 
       DUMP_AST( "nested_decl_c_astp", $$.ast );
       DUMP_END();
@@ -4074,10 +4071,6 @@ oper_c_ast
       DUMP_AST( "oper_c_ast", $$ );
       DUMP_END();
     }
-  ;
-
-placeholder_c_ast
-  : /* empty */                   { $$ = c_ast_new_gc( K_PLACEHOLDER, &@$ ); }
   ;
 
 pointer_decl_c_astp
@@ -5341,9 +5334,9 @@ func_cast_c_astp
   ;
 
 nested_cast_c_astp
-  : '(' placeholder_c_ast
+  : '('
     {
-      ia_type_ast_push( $2 );
+      ia_type_ast_push( c_ast_new_gc( K_PLACEHOLDER, &@$ ) );
       ++ast_depth;
     }
     cast_c_astp_opt rparen_exp
@@ -5351,12 +5344,10 @@ nested_cast_c_astp
       ia_type_ast_pop();
       --ast_depth;
 
-      DUMP_START( "nested_cast_c_astp",
-                  "'(' placeholder_c_ast cast_c_astp_opt ')'" );
-      DUMP_AST( "placeholder_c_ast", $2 );
-      DUMP_AST( "cast_c_astp_opt", $4.ast );
+      DUMP_START( "nested_cast_c_astp", "'(' cast_c_astp_opt ')'" );
+      DUMP_AST( "cast_c_astp_opt", $3.ast );
 
-      $$ = $4;
+      $$ = $3;
 
       DUMP_AST( "nested_cast_c_astp", $$.ast );
       DUMP_END();
