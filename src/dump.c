@@ -75,6 +75,8 @@ static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
  */
 static char const* c_type_part_id_name( c_type_part_id_t tpid ) {
   switch ( tpid ) {
+    case C_TPID_NONE:
+      break;
     case C_TPID_BASE:
       return "base";
     case C_TPID_STORE:

@@ -268,6 +268,8 @@ void fl_print_error_unknown_name( char const *file, int line,
     char const *what = NULL;
 
     switch ( c_type_id_tpid( k->type_id ) ) {
+      case C_TPID_NONE:
+        break;
       case C_TPID_BASE:
         dym_kind = DYM_C_TYPES;
         what = "type";

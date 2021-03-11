@@ -508,6 +508,8 @@ static c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid ) {
   assert( type != NULL );
 
   switch ( c_type_id_tpid( tid ) ) {
+    case C_TPID_NONE:
+      break;
     case C_TPID_BASE:
       return &type->base_tid;
     case C_TPID_STORE:
@@ -585,6 +587,9 @@ static char const* c_type_id_name_1( c_type_id_t tid, bool in_english ) {
   assert( exactly_one_bit_set( c_type_id_no_tpid( tid ) ) );
 
   switch ( c_type_id_tpid( tid ) ) {
+    case C_TPID_NONE:
+      break;
+
     case C_TPID_BASE:
       for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i ) {
         c_type_info_t const *const ti = &C_TYPE_INFO[i];
@@ -734,6 +739,8 @@ bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type ) {
 
 c_type_t c_type_from_tid( c_type_id_t tid ) {
   switch ( c_type_id_tpid( tid ) ) {
+    case C_TPID_NONE:
+      break;
     case C_TPID_BASE:
       return C_TYPE_LIT_B( tid );
     case C_TPID_STORE:
