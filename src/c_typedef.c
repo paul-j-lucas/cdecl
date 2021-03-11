@@ -48,7 +48,7 @@
  * @param SNAME The sname.
  */
 #define C_TYPEDEF_LIT(SNAME) \
-  (c_typedef_t){ .ast = &(c_ast_t){ .sname = (SNAME) } }
+  (c_typedef_t){ &(c_ast_t){ .sname = (SNAME) }, LANG_ANY, true }
 
 ///////////////////////////////////////////////////////////////////////////////
 
