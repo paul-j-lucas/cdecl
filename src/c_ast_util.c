@@ -548,6 +548,15 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   return decl_ast;
 }
 
+c_ast_t* c_ast_pointer( c_ast_t *ast, c_ast_list_t *ast_list ) {
+  assert( ast != NULL );
+  c_ast_t *const ptr_ast =
+    c_ast_new( K_POINTER, ast->depth, &ast->loc, ast_list );
+  ptr_ast->sname = c_ast_take_name( ast );
+  c_ast_set_parent( ast, ptr_ast );
+  return ptr_ast;
+}
+
 c_sname_t c_ast_take_name( c_ast_t *ast ) {
   assert( ast != NULL );
   c_sname_t *const found_sname = c_ast_find_name( ast, C_VISIT_DOWN );

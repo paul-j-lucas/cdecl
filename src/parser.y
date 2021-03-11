@@ -650,19 +650,6 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
 }
 
 /**
- * Creates a pointer AST to \a ast.
- *
- * @param ast The AST to create a pointer to.
- * @return Returns the new pointer AST.
- */
-c_ast_t* c_ast_pointer( c_ast_t *ast ) {
-  c_ast_t *const ptr_ast = c_ast_new_gc( K_POINTER, &ast->loc );
-  ptr_ast->sname = c_ast_take_name( ast );
-  c_ast_set_parent( ast, ptr_ast );
-  return ptr_ast;
-}
-
-/**
  * Prints an additional parsing error message including a newline to standard
  * error that continues from where yyerror() left off.  Additionally:
  *
@@ -3021,7 +3008,7 @@ decl_list_english
         //    converted to an expression that has type "pointer to function
         //    returning type."
         //
-        $1 = c_ast_pointer( $1 );
+        $1 = c_ast_pointer( $1, &gc_ast_list );
       }
 
       slist_init( &$$ );
@@ -4432,8 +4419,8 @@ param_c_ast
 
       $$ = c_ast_patch_placeholder( $1, $3.ast );
 
-      if ( $$->kind_id == K_FUNCTION )
-        $$ = c_ast_pointer( $$ );       // see the comment in decl_english_ast
+      if ( $$->kind_id == K_FUNCTION )  // see the comment in decl_english_ast
+        $$ = c_ast_pointer( $$, &gc_ast_list );
 
       DUMP_AST( "param_c_ast", $$ );
       DUMP_END();
