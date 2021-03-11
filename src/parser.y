@@ -425,9 +425,6 @@ struct show_type_info {
 };
 typedef struct show_type_info show_type_info_t;
 
-// extern functions
-extern void           print_help( char const* );
-
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
 static bool           error_newlined = true;
@@ -870,8 +867,9 @@ static void yyerror( char const *msg ) {
   c_ast_pair_t        ast_pair;   // for the AST being built
   unsigned            bitmask;    // multipurpose bitmask (used by show)
   bool                flag;       // simple flag
-  int                 int_val;    // for array sizes
   c_gib_kind_t        gib_kind;   // kind of gibberish
+  c_help_t            help;       // type of help to print
+  int                 int_val;    // for array sizes
   char const         *literal;    // token L_* literal (for new-style casts)
   char               *name;       // name being declared or explained
   c_oper_id_t         oper_id;    // overloaded operator ID
@@ -1340,7 +1338,7 @@ static void yyerror( char const *msg ) {
 %type   <oper_id>   c_operator
 %type   <type_id>   cv_qualifier_tid cv_qualifier_list_tid_opt
 %type   <type_id>   enum_tid enum_class_struct_union_c_tid
-%type   <literal>   help_what_literal_opt
+%type   <help>      help_what_opt
 %type   <type_id>   inline_tid_opt
 %type   <int_val>   int_exp
 %type   <ast>       name_ast
@@ -2319,13 +2317,13 @@ extern_linkage_c_tid
 ///////////////////////////////////////////////////////////////////////////////
 
 help_command
-  : Y_HELP help_what_literal_opt  { print_help( $2 ); }
+  : Y_HELP help_what_opt          { print_help( $2 ); }
   ;
 
-help_what_literal_opt
-  : /* empty */                   { $$ = L_DEFAULT;   }
-  | Y_COMMANDS                    { $$ = L_COMMANDS;  }
-  | Y_ENGLISH                     { $$ = L_ENGLISH;   }
+help_what_opt
+  : /* empty */                   { $$ = C_HELP_COMMANDS; }
+  | Y_COMMANDS                    { $$ = C_HELP_COMMANDS; }
+  | Y_ENGLISH                     { $$ = C_HELP_ENGLISH;  }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////

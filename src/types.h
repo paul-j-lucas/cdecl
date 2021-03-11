@@ -71,6 +71,7 @@ typedef struct c_ecsu_ast         c_ecsu_ast_t;
 typedef struct c_function_ast     c_function_ast_t;
 typedef enum   c_gib_kind         c_gib_kind_t;
 typedef enum   c_graph            c_graph_t;
+typedef enum   c_help             c_help_t;
 typedef struct c_keyword          c_keyword_t;
 typedef enum   c_keyword_ctx      c_keyword_ctx_t;
 typedef enum   c_kind_id          c_kind_id_t;
@@ -165,6 +166,14 @@ enum c_graph {
   C_GRAPH_NONE,                         ///< Ordinary characters.
   C_GRAPH_DI,                           ///< Digraphs.
   C_GRAPH_TRI                           ///< Trigraphs.
+};
+
+/**
+ * Types of help.
+ */
+enum c_help {
+  C_HELP_COMMANDS,                      ///< Help for cdecl commands.
+  C_HELP_ENGLISH                        ///< Help for cdecl pseudo-English.
 };
 
 /**

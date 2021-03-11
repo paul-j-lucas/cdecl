@@ -354,25 +354,16 @@ static void print_help_where( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-/**
- * Prints the help message to standard output.
- *
- * @param what What to print help for, one of: L_COMMANDS, L_DEFAULT, or
- * L_ENGLISH.
- */
-void print_help( char const *what ) {
-  assert( what != NULL );
-
-  // The == works because the parser gaurantees specific string literals.
-  if ( what == L_DEFAULT || what == L_COMMANDS ) {
-    print_help_commands();
-    return;
-  }
-  if ( what == L_ENGLISH ) {
-    print_help_english();
-    return;
-  }
-  UNEXPECTED_STR_VALUE( what );
+void print_help( c_help_t help ) {
+  switch ( help ) {
+    case C_HELP_COMMANDS:
+      print_help_commands();
+      return;
+    case C_HELP_ENGLISH:
+      print_help_english();
+      return;
+  } // switch
+  UNEXPECTED_INT_VALUE( help );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
