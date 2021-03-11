@@ -9,7 +9,7 @@ english:
 args: a comma separated list of [<name> as] <english>
 C-type: _Bool | char[{8|16|32}_t] | wchar_t | int | float | double | void
 cv-qual: _Atomic | const | restrict | volatile
-modifier: short | signed | long | unsigned | <cv-qual>
+modifier: short | long | signed | unsigned | <cv-qual>
 name: a C identifier
 store: auto | extern | register | static | _Thread_local
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

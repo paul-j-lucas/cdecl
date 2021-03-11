@@ -8,7 +8,7 @@ english:
 args: a comma separated list of <name>, <english>, or <name> as <english>
 C-type: char | int | float | double | void
 cv-qual: const | volatile
-modifier: short | signed | long | unsigned | <cv-qual>
+modifier: short | long | signed | unsigned | <cv-qual>
 name: a C identifier
 store: auto | extern | register | static
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

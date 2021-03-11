@@ -270,10 +270,10 @@ static void print_help_english( void ) {
     }
 
     print_h( "modifier:" );
-    print_h( " short" );
+    print_h( " short | long" );
     if ( OPT_LANG_IS(C_MIN(89)) )
       print_h( " | signed" );
-    print_h( " | long | unsigned" );
+    print_h( " | unsigned" );
     if ( OPT_LANG_IS(C_MIN(89)) )
       print_h( " | <cv-qual>" );
     print_h( "\n" );
