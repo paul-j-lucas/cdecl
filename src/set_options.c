@@ -27,6 +27,7 @@
 #include "pjl_config.h"                 /* must go first */
 #include "set_options.h"
 #include "c_lang.h"
+#include "did_you_mean.h"
 #include "options.h"
 #include "print.h"
 #include "prompt.h"
@@ -460,7 +461,9 @@ void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
   } // for
 
   if ( found_opt == NULL ) {
-    print_error( opt_name_loc, "\"%s\": unknown set option\n", orig_name );
+    print_error( opt_name_loc, "\"%s\": unknown set option", orig_name );
+    print_suggestions( DYM_SET_OPTIONS, orig_name );
+    EPUTC( '\n' );
     return;
   }
 

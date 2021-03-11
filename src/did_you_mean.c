@@ -34,6 +34,7 @@
 #include "c_typedef.h"
 #include "cdecl.h"
 #include "options.h"
+#include "set_options.h"
 #include "util.h"
 
 // standard
@@ -71,6 +72,23 @@ typedef int (*qsort_cmp_fn_t)( void const *i_data, void const *j_data );
 static unsigned const SIMILAR_ENOUGH_PERCENT = 40;
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Duplicates \a s prefixed by \a prefix.
+ *
+ * @param prefix The null-terminated prefix string to duplicate.
+ * @param s The null-terminated string to duplicate.
+ * @return Returns a copy of \a s prefixed by \a prefix.
+ */
+PJL_WARN_UNUSED_RESULT
+static char* check_prefix_strdup( char const *prefix, char const *s ) {
+  size_t const prefix_len = strlen( prefix );
+  char *const dup_s = MALLOC( char*, prefix_len + strlen( s ) + 1/*\0*/ );
+  IF_EXIT( dup_s == NULL, EX_OSERR );
+  strcpy( dup_s, prefix );
+  strcpy( dup_s + prefix_len, s );
+  return dup_s;
+}
 
 /**
  * Copies cdecl commands in the current language to the candidate list pointed
@@ -115,6 +133,40 @@ static size_t copy_keywords( did_you_mean_t **const pdym, c_type_id_t tpid ) {
         (*pdym)++->token = check_strdup( k->literal );
       ++count;
     }
+  } // for
+  return count;
+}
+
+/**
+ * Copies cdecl `set` options to the candidate list pointed to by \a pdym.  If
+ * \a pdym is NULL, only counts the number of options.
+ *
+ * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
+ * or NULL to just count options, not copy.  If not NULL, on return, the
+ * pointed-to pointer is incremented.
+ * @return Returns said number of options.
+ */
+static size_t copy_set_options( did_you_mean_t **const pdym ) {
+  size_t count = 0;
+  FOREACH_OPTION( opt ) {
+    switch ( opt->type ) {
+      case SET_TOGGLE:
+        if ( pdym != NULL ) {
+          (*pdym)++->token = check_strdup( opt->name );
+          (*pdym)++->token = check_prefix_strdup( "no",  opt->name );
+        }
+        ++count;
+        break;
+      case SET_AFF_ONLY:
+        if ( pdym != NULL )
+          (*pdym)++->token = check_strdup( opt->name );
+        break;
+      case SET_NEG_ONLY:
+        if ( pdym != NULL )
+          (*pdym)++->token = check_prefix_strdup( "no",  opt->name );
+        break;
+    } // switch
+    ++count;
   } // for
   return count;
 }
@@ -227,6 +279,8 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
   size_t dym_size = 0;
   if ( (kinds & DYM_COMMANDS) != DYM_NONE )
     dym_size += copy_commands( /*pdym=*/NULL );
+  if ( (kinds & DYM_SET_OPTIONS) != DYM_NONE )
+    dym_size += copy_set_options( /*pdym=*/NULL );
   if ( (kinds & DYM_C_KEYWORDS) != DYM_NONE )
     dym_size += copy_keywords( /*pdym=*/NULL, TX_NONE );
   if ( (kinds & DYM_C_ATTRIBUTES) != DYM_NONE )
@@ -243,6 +297,9 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
 
   if ( (kinds & DYM_COMMANDS) != DYM_NONE ) {
     copy_commands( &dym );
+  }
+  if ( (kinds & DYM_SET_OPTIONS) != DYM_NONE ) {
+    copy_set_options( &dym );
   }
   if ( (kinds & DYM_C_KEYWORDS) != DYM_NONE ) {
     copy_keywords( &dym, TX_NONE );
