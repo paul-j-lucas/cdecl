@@ -881,15 +881,15 @@ static void yyerror( char const *msg ) {
 
                     // cdecl commands
 %token              Y_CAST
-//                  Y_CLASS             // covered in C++11
+//                  Y_CLASS             // covered in C++
 //                  Y_CONST             // covered in C89
 %token              Y_DECLARE
 %token              Y_DEFINE
 %token              Y_DYNAMIC
-//                  Y_EXIT              // mapped by lexer to Y_QUIT
+//                  Y_EXIT              // mapped to Y_QUIT by lexer
 %token              Y_EXPLAIN
 %token              Y_HELP
-//                  Y_NAMESPACE         // covered in C++11
+//                  Y_NAMESPACE         // covered in C++
 %token              Y_QUIT
 %token              Y_REINTERPRET
 %token              Y_SET
@@ -898,7 +898,7 @@ static void yyerror( char const *msg ) {
 //                  Y_STRUCT            // covered in K&R C
 //                  Y_TYPEDEF           // covered in K&R C
 //                  Y_UNION             // covered in K&R C
-//                  Y_USING             // covered in C++11
+//                  Y_USING             // covered in C++
 
                     // Pseudo-English
 %token              Y_ALIGNED
