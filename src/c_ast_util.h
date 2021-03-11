@@ -238,6 +238,19 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
 
 /**
+ * Creates a pointer AST to \a ast.  The name of \a ast (or one of its child
+ * nodes), if any, is moved to the new pointer AST.
+ *
+ * @param ast The AST to create a pointer to.
+ * @param ast_list If not NULL, the new pointer AST is appended to the list.
+ * @return Returns the new pointer AST.
+ *
+ * @sa c_ast_unpointer()
+ */
+PJL_WARN_UNUSED_RESULT
+c_ast_t* c_ast_pointer( c_ast_t *ast, c_ast_list_t *ast_list );
+
+/**
  * Takes the name, if any, away from \a ast
  * (with the intent of giving it to another AST).
  *
@@ -282,6 +295,7 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
  * @param ast The AST to un-pointer.
  * @return Returns the pointed-to AST or NULL if \a ast is not a pointer.
  *
+ * @sa c_ast_pointer()
  * @sa c_ast_unreference()
  * @sa c_ast_untypedef()
  */
