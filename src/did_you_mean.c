@@ -212,8 +212,8 @@ static size_t copy_typedefs( did_you_mean_t **const pdym ) {
  *
  * @param i_dym A pointer to the first <code>\ref did_you_mean</code>.
  * @param j_dym A pointer to the second <code>\ref did_you_mean</code>.
- * @return Returns a number less than 0, 0, or greater than 0 if \a i_data is
- * less than, equal to, or greater than \a j_data, respectively.
+ * @return Returns a number less than 0, 0, or greater than 0 if \a i_dym is
+ * less than, equal to, or greater than \a j_dym, respectively.
  */
 PJL_WARN_UNUSED_RESULT
 static int dym_cmp( did_you_mean_t const *i_dym, did_you_mean_t const *j_dym ) {
