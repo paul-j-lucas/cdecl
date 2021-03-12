@@ -291,6 +291,7 @@ void fl_print_error_unknown_name( char const *file, int line,
   }
   else {
     fl_print_error( file, line, loc, "\"%s\": unknown name", name );
+    print_suggestions( DYM_C_KEYWORDS | DYM_C_TYPES, name );
   }
 
   EPUTC( '\n' );

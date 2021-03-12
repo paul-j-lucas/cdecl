@@ -124,7 +124,8 @@ static size_t copy_commands( did_you_mean_t **const pdym ) {
  * @return Returns said number of keywords.
  */
 PJL_NOWARN_UNUSED_RESULT
-static size_t copy_keywords( did_you_mean_t **const pdym, c_type_id_t tpid ) {
+static size_t copy_keywords( did_you_mean_t **const pdym,
+                             c_type_part_id_t tpid ) {
   size_t count = 0;
   FOREACH_KEYWORD( k ) {
     if ( (k->lang_ids & opt_lang) != LANG_NONE &&
@@ -227,6 +228,7 @@ static int dym_cmp( did_you_mean_t const *i_dym, did_you_mean_t const *j_dym ) {
  * continuing until `token` is NULL.
  */
 static void dym_free_tokens( did_you_mean_t const *dym ) {
+  assert( dym != NULL );
   while ( dym->token != NULL )
     FREE( dym++->token );
 }
@@ -282,11 +284,12 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
   if ( (kinds & DYM_SET_OPTIONS) != DYM_NONE )
     dym_size += copy_set_options( /*pdym=*/NULL );
   if ( (kinds & DYM_C_KEYWORDS) != DYM_NONE )
-    dym_size += copy_keywords( /*pdym=*/NULL, TX_NONE );
+    dym_size += copy_keywords( /*pdym=*/NULL, C_TPID_NONE )
+              + copy_keywords( /*pdym=*/NULL, C_TPID_STORE );
   if ( (kinds & DYM_C_ATTRIBUTES) != DYM_NONE )
-    dym_size += copy_keywords( /*pdym=*/NULL, TA_NONE );
+    dym_size += copy_keywords( /*pdym=*/NULL, C_TPID_ATTR );
   if ( (kinds & DYM_C_TYPES) != DYM_NONE )
-    dym_size += copy_keywords( /*pdym=*/NULL, TB_NONE )
+    dym_size += copy_keywords( /*pdym=*/NULL, C_TPID_BASE )
               + copy_typedefs( /*pdym=*/NULL );
 
   if ( dym_size == 0 )
@@ -302,13 +305,14 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
     copy_set_options( &dym );
   }
   if ( (kinds & DYM_C_KEYWORDS) != DYM_NONE ) {
-    copy_keywords( &dym, TX_NONE );
+    copy_keywords( &dym, C_TPID_NONE );
+    copy_keywords( &dym, C_TPID_STORE );
   }
   if ( (kinds & DYM_C_ATTRIBUTES) != DYM_NONE ) {
-    copy_keywords( &dym, TA_NONE );
+    copy_keywords( &dym, C_TPID_ATTR );
   }
   if ( (kinds & DYM_C_TYPES) != DYM_NONE ) {
-    copy_keywords( &dym, TB_NONE );
+    copy_keywords( &dym, C_TPID_BASE );
     copy_typedefs( &dym );
   }
   MEM_ZERO( dym );                      // one past last is zero'd
