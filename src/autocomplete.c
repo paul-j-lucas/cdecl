@@ -246,7 +246,7 @@ static char const* const* init_set_options( void ) {
   size_t set_options_size = 1;          // for terminating pointer to NULL
 
   // pre-flight to calculate array size
-  FOREACH_OPTION( opt ) {
+  FOREACH_SET_OPTION( opt ) {
     set_options_size += 1
       + (unsigned)(opt->type == SET_TOGGLE /* for "no" version */);
   } // for
@@ -258,7 +258,7 @@ static char const* const* init_set_options( void ) {
   char **const set_options = free_later( MALLOC( char*, set_options_size ) );
 
   char **p = set_options;
-  FOREACH_OPTION( opt ) {
+  FOREACH_SET_OPTION( opt ) {
     switch ( opt->type ) {
       case SET_AFF_ONLY:
         *p++ = CONST_CAST( char*, opt->name );

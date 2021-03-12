@@ -81,7 +81,7 @@ typedef struct set_option set_option_t;
  * should be passed.
  * @return Returns the next `set` option or NULL for none.
  *
- * @sa #FOREACH_OPTION
+ * @sa #FOREACH_SET_OPTION
  */
 PJL_WARN_UNUSED_RESULT
 set_option_t const* option_next( set_option_t const *opt );
@@ -93,7 +93,7 @@ set_option_t const* option_next( set_option_t const *opt );
  *
  * @sa option_next()
  */
-#define FOREACH_OPTION(OPT) \
+#define FOREACH_SET_OPTION(OPT) \
   for ( set_option_t const *OPT = NULL; (OPT = option_next( OPT )) != NULL; )
 
 /**

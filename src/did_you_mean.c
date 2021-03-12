@@ -149,7 +149,7 @@ static size_t copy_keywords( did_you_mean_t **const pdym,
  */
 static size_t copy_set_options( did_you_mean_t **const pdym ) {
   size_t count = 0;
-  FOREACH_OPTION( opt ) {
+  FOREACH_SET_OPTION( opt ) {
     switch ( opt->type ) {
       case SET_TOGGLE:
         if ( pdym != NULL ) {
