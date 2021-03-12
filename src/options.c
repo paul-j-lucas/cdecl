@@ -49,6 +49,35 @@
 #define GAVE_OPTION(OPT)    (opts_given[ (unsigned char)(OPT) ])
 #define SET_OPTION(OPT)     (opts_given[ (unsigned char)(OPT) ] = (char)(OPT))
 
+// in ascending option character ASCII order
+#define OPT_DIGRAPHS        '2'
+#define OPT_TRIGRAPHS       '3'
+#define OPT_ALT_TOKENS      'a'
+#ifdef YYDEBUG
+#define OPT_BISON_DEBUG     'B'
+#endif /* YYDEBUG */
+#define OPT_CONFIG          'c'
+#define OPT_NO_CONFIG       'C'
+#ifdef ENABLE_CDECL_DEBUG
+#define OPT_CDECL_DEBUG     'd'
+#endif /* ENABLE_CDECL_DEBUG */
+#define OPT_EXPLAIN         'e'
+#define OPT_EAST_CONST      'E'
+#define OPT_FILE            'f'
+#ifdef ENABLE_FLEX_DEBUG
+#define OPT_FLEX_DEBUG      'F'
+#endif /* ENABLE_FLEX_DEBUG */
+#define OPT_HELP            'h'
+#define OPT_INTERACTIVE     'i'
+#define OPT_EXPLICIT_INT    'I'
+#define OPT_COLOR           'k'
+#define OPT_OUTPUT          'o'
+#define OPT_NO_PROMPT       'p'
+#define OPT_NO_SEMICOLON    's'
+#define OPT_NO_TYPEDEFS     't'
+#define OPT_VERSION         'v'
+#define OPT_LANGUAGE        'x'
+
 /// @endcond
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -101,33 +130,33 @@ static struct option const LONG_OPTS[] = {
   // check_mutually_exclusive() in parse_options(), the message in usage(), and
   // the corresponding "set" option in SET_OPTIONS in set.c.
   //
-  { "digraphs",     no_argument,        NULL, '2' },
-  { "trigraphs",    no_argument,        NULL, '3' },
-  { "alt-tokens",   no_argument,        NULL, 'a' },
+  { "alt-tokens",   no_argument,        NULL, OPT_ALT_TOKENS    },
 #ifdef YYDEBUG
-  { "bison-debug",  no_argument,        NULL, 'B' },
+  { "bison-debug",  no_argument,        NULL, OPT_BISON_DEBUG   },
 #endif /* YYDEBUG */
-  { "config",       required_argument,  NULL, 'c' },
-  { "no-config",    no_argument,        NULL, 'C' },
+  { "color",        required_argument,  NULL, OPT_COLOR         },
+  { "config",       required_argument,  NULL, OPT_CONFIG        },
 #ifdef ENABLE_CDECL_DEBUG
-  { "debug",        no_argument,        NULL, 'd' },
+  { "debug",        no_argument,        NULL, OPT_CDECL_DEBUG   },
 #endif /* ENABLE_CDECL_DEBUG */
-  { "explain",      no_argument,        NULL, 'e' },
-  { "east-const",   no_argument,        NULL, 'E' },
-  { "file",         required_argument,  NULL, 'f' },
+  { "digraphs",     no_argument,        NULL, OPT_DIGRAPHS      },
+  { "east-const",   no_argument,        NULL, OPT_EAST_CONST    },
+  { "explain",      no_argument,        NULL, OPT_EXPLAIN       },
+  { "explicit-int", required_argument,  NULL, OPT_EXPLICIT_INT  },
+  { "file",         required_argument,  NULL, OPT_FILE          },
 #ifdef ENABLE_FLEX_DEBUG
-  { "flex-debug",   no_argument,        NULL, 'F' },
+  { "flex-debug",   no_argument,        NULL, OPT_FLEX_DEBUG    },
 #endif /* ENABLE_FLEX_DEBUG */
-  { "help",         no_argument,        NULL, 'h' },
-  { "interactive",  no_argument,        NULL, 'i' },
-  { "explicit-int", required_argument,  NULL, 'I' },
-  { "color",        required_argument,  NULL, 'k' },
-  { "output",       required_argument,  NULL, 'o' },
-  { "no-prompt",    no_argument,        NULL, 'p' },
-  { "no-semicolon", no_argument,        NULL, 's' },
-  { "no-typedefs",  no_argument,        NULL, 't' },
-  { "version",      no_argument,        NULL, 'v' },
-  { "language",     required_argument,  NULL, 'x' },
+  { "help",         no_argument,        NULL, OPT_HELP          },
+  { "interactive",  no_argument,        NULL, OPT_INTERACTIVE   },
+  { "language",     required_argument,  NULL, OPT_LANGUAGE      },
+  { "no-config",    no_argument,        NULL, OPT_NO_CONFIG     },
+  { "no-prompt",    no_argument,        NULL, OPT_NO_PROMPT     },
+  { "no-semicolon", no_argument,        NULL, OPT_NO_SEMICOLON  },
+  { "no-typedefs",  no_argument,        NULL, OPT_NO_TYPEDEFS   },
+  { "output",       required_argument,  NULL, OPT_OUTPUT        },
+  { "trigraphs",    no_argument,        NULL, OPT_TRIGRAPHS     },
+  { "version",      no_argument,        NULL, OPT_VERSION       },
   { NULL,           0,                  NULL, 0   }
 };
 
@@ -243,17 +272,16 @@ static char const* format_opt( char short_opt, strbuf_t *sbuf ) {
 }
 
 /**
- * Gets the corresponding name of the long option for the given short option.
+ * Gets the corresponding name of the long option for \a short_opt.
  *
  * @param short_opt The short option to get the corresponding long option for.
- * @return Returns the said option or the empty string if none.
+ * @return Returns said option or the empty string if none.
  */
 PJL_WARN_UNUSED_RESULT
 static char const* get_long_opt( char short_opt ) {
-  for ( struct option const *long_opt = LONG_OPTS; long_opt->name != NULL;
-        ++long_opt ) {
-    if ( long_opt->val == short_opt )
-      return long_opt->name;
+  for ( struct option const *opt = LONG_OPTS; opt->name != NULL; ++opt ) {
+    if ( opt->val == short_opt )
+      return opt->name;
   } // for
   return "";
 }
@@ -273,9 +301,10 @@ static bool is_cppdecl( char const *prog_name ) {
     NULL
   };
 
-  for ( char const *const *pname = NAMES; *pname != NULL; ++pname )
+  for ( char const *const *pname = NAMES; *pname != NULL; ++pname ) {
     if ( strcasecmp( *pname, prog_name ) == 0 )
       return true;
+  } // for
   return false;
 }
 
@@ -322,7 +351,7 @@ static color_when_t parse_color_when( char const *when ) {
   strbuf_t opt_sbuf;
   PMESSAGE_EXIT( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of: %s\n",
-    when, format_opt( 'k', &opt_sbuf ), when_sbuf.str
+    when, format_opt( OPT_COLOR, &opt_sbuf ), when_sbuf.str
   );
 }
 
@@ -352,7 +381,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
   strbuf_t opt_sbuf;
   PMESSAGE_EXIT( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of: %s\n",
-    lang_name, format_opt( 'x', &opt_sbuf ), langs_sbuf.str
+    lang_name, format_opt( OPT_LANGUAGE, &opt_sbuf ), langs_sbuf.str
   );
 }
 
@@ -376,34 +405,34 @@ static void parse_options( int argc, char const *argv[] ) {
       break;
     SET_OPTION( opt );
     switch ( opt ) {
-      case '2': opt_graph       = C_GRAPH_DI;                 break;
-      case '3': opt_graph       = C_GRAPH_TRI;                break;
-      case 'a': opt_alt_tokens  = true;                       break;
+      case OPT_ALT_TOKENS:  opt_alt_tokens  = true;                       break;
 #ifdef YYDEBUG
-      case 'B': opt_bison_debug = true;                       break;
+      case OPT_BISON_DEBUG: opt_bison_debug = true;                       break;
 #endif /* YYDEBUG */
-      case 'c': opt_conf_file   = optarg;                     break;
-      case 'C': opt_no_conf     = true;                       break;
 #ifdef ENABLE_CDECL_DEBUG
-      case 'd': opt_cdecl_debug = true;                       break;
+      case OPT_CDECL_DEBUG: opt_cdecl_debug = true;                       break;
 #endif /* ENABLE_CDECL_DEBUG */
-      case 'e': opt_explain     = true;                       break;
-      case 'E': opt_east_const  = true;                       break;
-      case 'f': fin_path        = optarg;                     break;
+      case OPT_COLOR:       color_when      = parse_color_when( optarg ); break;
+      case OPT_CONFIG:      opt_conf_file   = optarg;                     break;
+      case OPT_DIGRAPHS:    opt_graph       = C_GRAPH_DI;                 break;
+      case OPT_EAST_CONST:  opt_east_const  = true;                       break;
+      case OPT_EXPLAIN:     opt_explain     = true;                       break;
+      case OPT_EXPLICIT_INT:parse_explicit_int( NULL, optarg );           break;
+      case OPT_FILE:        fin_path        = optarg;                     break;
 #ifdef ENABLE_FLEX_DEBUG
-      case 'F': opt_flex_debug  = true;                       break;
+      case OPT_FLEX_DEBUG:  opt_flex_debug  = true;                       break;
 #endif /* ENABLE_FLEX_DEBUG */
-   // case 'h': usage();        // default case handles this
-      case 'i': opt_interactive = true;                       break;
-      case 'I': parse_explicit_int( NULL, optarg );           break;
-      case 'k': color_when      = parse_color_when( optarg ); break;
-      case 'o': fout_path       = optarg;                     break;
-      case 'p': opt_prompt      = false;                      break;
-      case 's': opt_semicolon   = false;                      break;
-      case 't': opt_typedefs    = false;                      break;
-      case 'v': print_version   = true;                       break;
-      case 'x': opt_lang        = parse_lang( optarg );       break;
-      default : usage();
+   // case OPT_HELP: usage();           // default case handles this
+      case OPT_INTERACTIVE: opt_interactive = true;                       break;
+      case OPT_LANGUAGE:    opt_lang        = parse_lang( optarg );       break;
+      case OPT_TRIGRAPHS:   opt_graph       = C_GRAPH_TRI;                break;
+      case OPT_NO_CONFIG:   opt_no_conf     = true;                       break;
+      case OPT_NO_PROMPT:   opt_prompt      = false;                      break;
+      case OPT_NO_SEMICOLON:opt_semicolon   = false;                      break;
+      case OPT_NO_TYPEDEFS: opt_typedefs    = false;                      break;
+      case OPT_OUTPUT:      fout_path       = optarg;                     break;
+      case OPT_VERSION:     print_version   = true;                       break;
+      default:              usage();
     } // switch
   } // for
 
@@ -439,40 +468,67 @@ static void parse_options( int argc, char const *argv[] ) {
  */
 noreturn
 static void usage( void ) {
-  PUTS(
+  EPRINTF(
 "usage: " PACKAGE " [options] [command...]\n"
 "       " PACKAGE " [options] files...\n"
 "options:\n"
-"  --alt-tokens        (-a)  Print alternative tokens.\n"
+"  --alt-tokens        (-%c)  Print alternative tokens.\n"
 #ifdef YYDEBUG
-"  --bison-debug       (-B)  Enable Bison debug output.\n"
+"  --bison-debug       (-%c)  Enable Bison debug output.\n"
 #endif /* YYDEBUG */
-"  --color=WHEN        (-k)  When to colorize output [default: not_file].\n"
-"  --config=FILE       (-c)  The configuration file [default: ~/" CONF_FILE_NAME_DEFAULT "].\n"
+"  --color=WHEN        (-%c)  When to colorize output [default: not_file].\n"
+"  --config=FILE       (-%c)  The configuration file [default: ~/" CONF_FILE_NAME_DEFAULT "].\n"
 #ifdef ENABLE_CDECL_DEBUG
-"  --debug             (-d)  Enable debug output.\n"
+"  --debug             (-%c)  Enable debug output.\n"
 #endif /* ENABLE_CDECL_DEBUG */
-"  --digraphs          (-2)  Print digraphs.\n"
-"  --east-const        (-E)  Print in \"east const\" form.\n"
-"  --explain           (-e)  Assume \"explain\" when no other command is given.\n"
-"  --explicit-int=WHEN (-I)  When to print \"int\" explicitly.\n"
-"  --file=FILE         (-f)  Read from this file [default: stdin].\n"
+"  --digraphs          (-%c)  Print digraphs.\n"
+"  --east-const        (-%c)  Print in \"east const\" form.\n"
+"  --explain           (-%c)  Assume \"explain\" when no other command is given.\n"
+"  --explicit-int=WHEN (-%c)  When to print \"int\" explicitly.\n"
+"  --file=FILE         (-%c)  Read from this file [default: stdin].\n"
 #ifdef ENABLE_FLEX_DEBUG
-"  --flex-debug        (-F)  Enable Flex debug output.\n"
+"  --flex-debug        (-%c)  Enable Flex debug output.\n"
 #endif /* ENABLE_FLEX_DEBUG */
-"  --help              (-h)  Print this help and exit.\n"
-"  --interactive       (-i)  Force interactive mode.\n"
-"  --language=LANG     (-x)  Use LANG.\n"
-"  --no-config         (-C)  Suppress reading configuration file.\n"
-"  --no-prompt         (-p)  Suppress prompt.\n"
-"  --no-semicolon      (-s)  Suppress printing final semicolon for declarations.\n"
-"  --no-typedefs       (-t)  Suppress predefining standard types.\n"
-"  --output=FILE       (-o)  Write to this file [default: stdout].\n"
-"  --trigraphs         (-3)  Print trigraphs.\n"
-"  --version           (-v)  Print version and exit.\n"
+"  --help              (-%c)  Print this help and exit.\n"
+"  --interactive       (-%c)  Force interactive mode.\n"
+"  --language=LANG     (-%c)  Use LANG.\n"
+"  --no-config         (-%c)  Suppress reading configuration file.\n"
+"  --no-prompt         (-%c)  Suppress prompt.\n"
+"  --no-semicolon      (-%c)  Suppress printing final semicolon for declarations.\n"
+"  --no-typedefs       (-%c)  Suppress predefining standard types.\n"
+"  --output=FILE       (-%c)  Write to this file [default: stdout].\n"
+"  --trigraphs         (-%c)  Print trigraphs.\n"
+"  --version           (-%c)  Print version and exit.\n"
 "\n"
 "Report bugs to: " PACKAGE_BUGREPORT "\n"
-PACKAGE_NAME " home page: " PACKAGE_URL "\n"
+PACKAGE_NAME " home page: " PACKAGE_URL "\n",
+    OPT_ALT_TOKENS,
+#ifdef YYDEBUG
+    OPT_BISON_DEBUG,
+#endif /* YYDEBUG */
+    OPT_COLOR,
+    OPT_CONFIG,
+#ifdef ENABLE_CDECL_DEBUG
+    OPT_CDECL_DEBUG,
+#endif /* ENABLE_CDECL_DEBUG */
+    OPT_DIGRAPHS,
+    OPT_EAST_CONST,
+    OPT_EXPLAIN,
+    OPT_EXPLICIT_INT,
+    OPT_FILE,
+#ifdef ENABLE_FLEX_DEBUG
+    OPT_FLEX_DEBUG
+#endif /* ENABLE_FLEX_DEBUG */
+    OPT_HELP,
+    OPT_INTERACTIVE,
+    OPT_LANGUAGE,
+    OPT_NO_CONFIG,
+    OPT_NO_PROMPT,
+    OPT_NO_SEMICOLON,
+    OPT_NO_TYPEDEFS,
+    OPT_OUTPUT,
+    OPT_TRIGRAPHS,
+    OPT_VERSION
   );
   exit( EX_USAGE );
 }
@@ -553,7 +609,7 @@ void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
           PMESSAGE_EXIT( EX_USAGE,
             "\"%s\": invalid explicit int for %s:"
             " '%c': must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
-            s, format_opt( 'I', &opt_sbuf ), *s
+            s, format_opt( OPT_EXPLICIT_INT, &opt_sbuf ), *s
           );
         }
         print_error( loc,
