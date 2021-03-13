@@ -47,7 +47,7 @@
 #include <sysexits.h>
 
 #define GAVE_OPTION(OPT)    (opts_given[ (unsigned char)(OPT) ])
-#define SET_OPTION(OPT)     (opts_given[ (unsigned char)(OPT) ] = (char)(OPT))
+#define SET_OPTION(OPT)     (GAVE_OPTION(OPT) = (char)(OPT))
 
 // in ascending option character ASCII order
 #define OPT_DIGRAPHS        '2'
