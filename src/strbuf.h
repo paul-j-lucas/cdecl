@@ -73,6 +73,10 @@ typedef struct strbuf strbuf_t;
  * @param sbuf A pointer to the strbuf to concatenate onto.
  * @param format The `printf()` style format string.
  * @param ... The `printf()` arguments
+ *
+ * @sa strbuf_catc()
+ * @sa strbuf_cats()
+ * @sa strbuf_catsn()
  */
 void strbuf_catf( strbuf_t *sbuf, char const *format, ... );
 
@@ -85,6 +89,7 @@ void strbuf_catf( strbuf_t *sbuf, char const *format, ... );
  * @param s_len The number of bytes of \a s to concatenate.
  *
  * @sa strbuf_catc()
+ * @sa strbuf_catf()
  * @sa strbuf_cats()
  */
 void strbuf_catsn( strbuf_t *sbuf, char const *s, size_t s_len );
@@ -95,7 +100,9 @@ void strbuf_catsn( strbuf_t *sbuf, char const *s, size_t s_len );
  * @param sbuf A pointer to the strbuf to concatenate onto.
  * @param c The character to concatenate.
  *
+ * @sa strbuf_catf()
  * @sa strbuf_cats()
+ * @sa strbuf_catsn()
  */
 C_STRBUF_INLINE
 void strbuf_catc( strbuf_t *sbuf, char c ) {
@@ -109,6 +116,7 @@ void strbuf_catc( strbuf_t *sbuf, char c ) {
  * @param s The string to concatenate.
  *
  * @sa strbuf_catc()
+ * @sa strbuf_catf()
  * @sa strbuf_catsn()
  */
 C_STRBUF_INLINE
