@@ -61,14 +61,14 @@ _GL_INLINE_HEADER_BEGIN
  */
 
 /**
- * Creates an sname variable \a VAR_NAME on the stack having a local \a NAME.
+ * Creates an sname variable \a VAR on the stack having a local \a NAME.
  *
- * @param VAR_NAME The name for the sname variable.
+ * @param VAR The name for the sname variable.
  * @param NAME The name.
  */
-#define SNAME_VAR_INIT(VAR_NAME,NAME)                   \
-  c_scope_data_t VAR_NAME##_data = { (NAME), T_NONE };  \
-  SLIST_VAR_INIT( VAR_NAME, NULL, &VAR_NAME##_data )
+#define SNAME_VAR_INIT(VAR,NAME)                  \
+  c_scope_data_t VAR##_data = { (NAME), T_NONE }; \
+  SLIST_VAR_INIT( VAR, NULL, &VAR##_data )
 
 /**
  * Gets the data associated with \a SCOPE.
