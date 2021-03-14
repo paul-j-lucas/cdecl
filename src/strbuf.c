@@ -57,20 +57,22 @@ static size_t next_pow_2( size_t n ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void strbuf_catf( strbuf_t *sbuf, char const *format, ... ) {
-  va_list args, args2;
-  va_start( args, format );
-  va_copy( args2, args );
+  assert( sbuf != NULL );
+  assert( format != NULL );
+
+  va_list args;
 
   size_t buf_rem = sbuf->cap - sbuf->len;
+  va_start( args, format );
   int rv = vsnprintf( sbuf->str + sbuf->len, buf_rem, format, args );
   va_end( args );
   IF_EXIT( rv < 0, EX_IOERR );
 
   if ( strbuf_reserve( sbuf, (size_t)rv ) ) {
-    va_start( args2, format );
     buf_rem = sbuf->cap - sbuf->len;
-    rv = vsnprintf( sbuf->str + sbuf->len, buf_rem, format, args2 );
-    va_end( args2 );
+    va_start( args, format );
+    rv = vsnprintf( sbuf->str + sbuf->len, buf_rem, format, args );
+    va_end( args );
     IF_EXIT( rv < 0, EX_IOERR );
   }
 
