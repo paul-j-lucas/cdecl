@@ -34,6 +34,7 @@
 
 // standard
 #include <assert.h>
+#include <stdint.h>
 
 /// @endcond
 
@@ -49,7 +50,7 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
         i_node = i_node->next, j_node = j_node->next ) {
     int const cmp = data_cmp_fn != NULL ?
       (*data_cmp_fn)( i_node->data, j_node->data ) :
-      (int)(i_node->data - j_node->data);
+      (int)((intptr_t)i_node->data - (intptr_t)j_node->data);
     if ( cmp != 0 )
       return cmp;
   } // for
