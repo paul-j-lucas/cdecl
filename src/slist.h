@@ -157,19 +157,19 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
                slist_node_data_cmp_fn_t data_cmp_fn );
 
 /**
- * Duplicates \a src and all of its nodes.
+ * Duplicates \a src_list and all of its nodes.
  *
- * @param src The <code>\ref slist</code> to duplicate; may ne NULL.
+ * @param src_list The <code>\ref slist</code> to duplicate; may ne NULL.
  * @param n The number of nodes to duplicate; -1 is equivalent to slist_len().
  * @param data_dup_fn A pointer to a function to use to duplicate the data of
- * \a src or NULL if none is required (hence a shallow copy will be done).
+ * \a src_list or NULL if none is required (hence a shallow copy will be done).
  * @param node_data_dup_fn A pointer to a function to use to duplicate the data
- * at each node of \a src or NULL if none is required (hence a shallow copy
- * will be done).
- * @return Returns a duplicate of \a src.
+ * at each node of \a src_list or NULL if none is required (hence a shallow
+ * copy will be done).
+ * @return Returns a duplicate of \a src_list.
  */
 PJL_WARN_UNUSED_RESULT
-slist_t slist_dup( slist_t const *src, ssize_t n,
+slist_t slist_dup( slist_t const *src_list, ssize_t n,
                    slist_data_dup_fn_t data_dup_fn,
                    slist_node_data_dup_fn_t node_data_dup_fn );
 
@@ -330,30 +330,30 @@ void* slist_pop_head( slist_t *list );
 void slist_push_head( slist_t *list, void *data );
 
 /**
- * Pushes \a src onto the head of \a dst.
+ * Pushes \a src_list onto the head of \a dst_list.
  *
- * @param dst The <code>\ref slist</code> to push onto.
- * @param src The <code>\ref slist</code> to push.  It is made empty.
+ * @param dst_list The <code>\ref slist</code> to push onto.
+ * @param src_list The <code>\ref slist</code> to push.  It is made empty.
  *
  * @note This is an O(1) operation.
  *
  * @sa slist_push_head()
  * @sa slist_push_list_tail()
  */
-void slist_push_list_head( slist_t *dst, slist_t *src );
+void slist_push_list_head( slist_t *dst_list, slist_t *src_list );
 
 /**
- * Pushes \a src onto the tail of \a dst.
+ * Pushes \a src_list onto the tail of \a dst_list.
  *
- * @param dst The <code>\ref slist</code> to push onto.
- * @param src The <code>\ref slist</code> to push.  It is made empty.
+ * @param dst_list The <code>\ref slist</code> to push onto.
+ * @param src_list The <code>\ref slist</code> to push.  It is made empty.
  *
  * @note This is an O(1) operation.
  *
  * @sa slist_push_list_head()
  * @sa slist_push_tail()
  */
-void slist_push_list_tail( slist_t *dst, slist_t *src );
+void slist_push_list_tail( slist_t *dst_list, slist_t *src_list );
 
 /**
  * Appends \a data onto the tail of \a list.

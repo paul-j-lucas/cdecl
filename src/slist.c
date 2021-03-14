@@ -57,24 +57,25 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
   return i_node == NULL ? (j_node == NULL ? 0 : -1) : 1;
 }
 
-slist_t slist_dup( slist_t const *src, ssize_t n,
+slist_t slist_dup( slist_t const *src_list, ssize_t n,
                    slist_data_dup_fn_t data_dup_fn,
                    slist_node_data_dup_fn_t node_data_dup_fn ) {
-  slist_t dst;
-  slist_init( &dst );
+  slist_t dst_list;
+  slist_init( &dst_list );
 
-  if ( src != NULL && n != 0 ) {
+  if ( src_list != NULL && n != 0 ) {
     size_t un = (size_t)n;
-    dst.data = data_dup_fn != NULL ? (*data_dup_fn)( src->data ) : src->data;
-    for ( slist_node_t *src_node = src->head; src_node != NULL && un-- > 0;
+    dst_list.data = data_dup_fn != NULL ?
+      (*data_dup_fn)( src_list->data ) : src_list->data;
+    for ( slist_node_t *src_node = src_list->head; src_node != NULL && un-- > 0;
           src_node = src_node->next ) {
       void *const dst_data = node_data_dup_fn != NULL ?
         (*node_data_dup_fn)( src_node->data ) : src_node->data;
-      slist_push_tail( &dst, dst_data );
+      slist_push_tail( &dst_list, dst_data );
     } // for
   }
 
-  return dst;
+  return dst_list;
 }
 
 void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
@@ -137,39 +138,39 @@ void slist_push_head( slist_t *list, void *data ) {
   ++list->len;
 }
 
-void slist_push_list_head( slist_t *dst, slist_t *src ) {
-  assert( dst != NULL );
-  assert( src != NULL );
-  if ( dst->head == NULL ) {
-    assert( dst->tail == NULL );
-    dst->head = src->head;
-    dst->tail = src->tail;
+void slist_push_list_head( slist_t *dst_list, slist_t *src_list ) {
+  assert( dst_list != NULL );
+  assert( src_list != NULL );
+  if ( dst_list->head == NULL ) {
+    assert( dst_list->tail == NULL );
+    dst_list->head = src_list->head;
+    dst_list->tail = src_list->tail;
   }
-  else if ( src->head != NULL ) {
-    assert( src->tail != NULL );
-    src->tail->next = dst->head;
-    dst->head = src->head;
+  else if ( src_list->head != NULL ) {
+    assert( src_list->tail != NULL );
+    src_list->tail->next = dst_list->head;
+    dst_list->head = src_list->head;
   }
-  dst->len += src->len;
-  slist_init( src );
+  dst_list->len += src_list->len;
+  slist_init( src_list );
 }
 
-void slist_push_list_tail( slist_t *dst, slist_t *src ) {
-  assert( dst != NULL );
-  assert( src != NULL );
-  if ( dst->head == NULL ) {
-    assert( dst->tail == NULL );
-    dst->head = src->head;
-    dst->tail = src->tail;
+void slist_push_list_tail( slist_t *dst_list, slist_t *src_list ) {
+  assert( dst_list != NULL );
+  assert( src_list != NULL );
+  if ( dst_list->head == NULL ) {
+    assert( dst_list->tail == NULL );
+    dst_list->head = src_list->head;
+    dst_list->tail = src_list->tail;
   }
-  else if ( src->head != NULL ) {
-    assert( src->tail != NULL );
-    assert( dst->tail->next == NULL );
-    dst->tail->next = src->head;
-    dst->tail = src->tail;
+  else if ( src_list->head != NULL ) {
+    assert( src_list->tail != NULL );
+    assert( dst_list->tail->next == NULL );
+    dst_list->tail->next = src_list->head;
+    dst_list->tail = src_list->tail;
   }
-  dst->len += src->len;
-  slist_init( src );
+  dst_list->len += src_list->len;
+  slist_init( src_list );
 }
 
 void slist_push_tail( slist_t *list, void *data ) {
