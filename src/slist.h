@@ -71,6 +71,8 @@ typedef struct slist_node slist_node_t;
  *
  * @param data A pointer to the data to duplicate.
  * @return Returns a duplicate of \a data.
+ *
+ * @sa slist_node_data_dup_fn_t
  */
 typedef void* (*slist_data_dup_fn_t)( void const *data );
 
@@ -79,6 +81,8 @@ typedef void* (*slist_data_dup_fn_t)( void const *data );
  * associated with the list, if any.
  *
  * @param data A pointer to the data to free.
+ *
+ * @sa slist_node_data_free_fn_t
  */
 typedef void (*slist_data_free_fn_t)( void *data );
 
@@ -100,6 +104,8 @@ typedef int (*slist_node_data_cmp_fn_t)( void const *i_data,
  *
  * @param data A pointer to the data to duplicate.
  * @return Returns a duplicate of \a data.
+ *
+ * @sa slist_data_dup_fn_t
  */
 typedef void* (*slist_node_data_dup_fn_t)( void const *data );
 
@@ -108,6 +114,8 @@ typedef void* (*slist_node_data_dup_fn_t)( void const *data );
  * associated with each node (if necessary).
  *
  * @param data A pointer to the data to free.
+ *
+ * @sa slist_data_free_fn_t
  */
 typedef void (*slist_node_data_free_fn_t)( void *data );
 
@@ -189,6 +197,8 @@ bool slist_empty( slist_t const *list ) {
  * associated with \a list or NULL if none is required.
  * @param node_data_free_fn A pointer to a function to use to free the data at
  * each node of \a list or NULL if none is required.
+ *
+ * @sa slist_init()
  */
 void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
                  slist_node_data_free_fn_t node_data_free_fn );
@@ -198,6 +208,8 @@ void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
  * lists.
  *
  * @param list A pointer to the <code>\ref slist</code> to initialize.
+ *
+ * @sa slist_free()
  */
 C_SLIST_INLINE
 void slist_init( slist_t *list ) {
