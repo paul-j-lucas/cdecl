@@ -151,10 +151,19 @@ Or you can download a
 [released version](https://github.com/paul-j-lucas/cdecl/releases)
 that contains `configure`
 and the generated lexer and parser.
-
 In either case,
 then follow the generic installation instructions given in
 [`INSTALL`](https://github.com/paul-j-lucas/cdecl/blob/master/INSTALL).
+
+If you would like to generate the developer documentation,
+you will also need
+[Doxygen](http://www.doxygen.org/);
+then do:
+
+    make doc                            # or: make docs
+
+and then open `docs/html/index.html`
+with a browser.
 
 ## Licensing
 
