@@ -139,7 +139,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_main( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_func_main_char_ptr_arg( c_ast_t const* );
+static bool c_ast_check_func_main_char_ptr_param( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_params_knr( c_ast_t const* );
@@ -790,13 +790,13 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
 
         param = param->next;
         param_ast = c_param_ast( param );
-        if ( !c_ast_check_func_main_char_ptr_arg( param_ast ) )
+        if ( !c_ast_check_func_main_char_ptr_param( param_ast ) )
           return false;
 
         if ( n_params == 3 ) {          // char *envp[]
           param = param->next;
           param_ast = c_param_ast( param );
-          if ( !c_ast_check_func_main_char_ptr_arg( param_ast ) )
+          if ( !c_ast_check_func_main_char_ptr_param( param_ast ) )
             return false;
         }
       }
@@ -811,14 +811,14 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
 }
 
 /**
- * Checks that an AST of a main() argument is either `char*[]` or `char**`
+ * Checks that an AST of a main() parameter is either `char*[]` or `char**`
  * optionally including `const`.
  *
  * @param ast The AST to check.
  * @return Returns `true` only if \a ast is of either type.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_func_main_char_ptr_arg( c_ast_t const *ast ) {
+static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *ast ) {
   ast = c_ast_untypedef( ast );
   switch ( ast->kind_id ) {
     case K_ARRAY:                       // char *argv[]

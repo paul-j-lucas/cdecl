@@ -72,7 +72,7 @@ typedef struct strbuf strbuf_t;
  *
  * @param sbuf A pointer to the strbuf to concatenate onto.
  * @param format The `printf()` style format string.
- * @param ... The `printf()` arguments
+ * @param ... The `printf()` arguments.
  *
  * @sa strbuf_catc()
  * @sa strbuf_cats()
