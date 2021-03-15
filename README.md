@@ -51,13 +51,13 @@ most notably:
   `restrict`,
   and
   `volatile`
-  declarations.
+  qualifiers.
 * Support for C99
   `static`,
   type-qualified,
   and
   variable length array
-  function arguments.
+  function parameters.
 * Support for C99 extensions
   [Embedded C](http://www.open-std.org/JTC1/SC22/WG14/www/docs/n1021.pdf)
   and
@@ -84,7 +84,7 @@ most notably:
    etc.),
   and all
   [Microsoft Windows types](https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types).
-* Support for variadic function arguments.
+* Support for variadic function parameters.
 * Support for C and C++ alternative tokens
   (`and`, `and_eq`, etc.).
 * Support for C++
