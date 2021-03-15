@@ -29,6 +29,13 @@ A pointer to function with qualifiers, e.g.:
 
 is now correctly caught as an error.
 
+** Scoped name bit-fields
+A scoped name having a bit-field width:
+
+    int S::x : 3                        // illegal
+
+is now correctly caught as an error.
+
 
 * Changes in Cdecl 9.8
 

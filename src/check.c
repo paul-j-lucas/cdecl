@@ -369,10 +369,15 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( c_type_is_tid_any( &ast->type, TS_TYPEDEF ) &&
-       ast->as.builtin.bit_width > 0 ) {
-    print_error( &ast->loc, "types can not have bit-field widths\n" );
-    return false;
+  if ( ast->as.builtin.bit_width > 0 ) {
+    if ( c_ast_count_name( ast ) > 1 ) {
+      print_error( &ast->loc, "scoped names can not have bit-field widths\n" );
+      return false;
+    }
+    if ( c_type_is_tid_any( &ast->type, TS_TYPEDEF ) ) {
+      print_error( &ast->loc, "types can not have bit-field widths\n" );
+      return false;
+    }
   }
 
   if ( c_type_is_tid_any( &ast->type, TB_VOID ) && ast->parent_ast == NULL ) {
