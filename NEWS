@@ -36,6 +36,13 @@ A scoped name having a bit-field width:
 
 is now correctly caught as an error.
 
+** Storage class bit-fields
+A declaration having a storage class and a bit-field width:
+
+    static int x : 3                    // illegal
+
+is now correctly caught as an error.
+
 
 * Changes in Cdecl 9.8
 
