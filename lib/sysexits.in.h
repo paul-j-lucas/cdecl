@@ -46,7 +46,7 @@
 #ifndef _@GUARD_PREFIX@_SYSEXITS_H
 #define _@GUARD_PREFIX@_SYSEXITS_H
 
-#if !@HAVE_SYSEXITS_H@
+#if !(@HAVE_SYSEXITS_H@ && defined EX_USAGE)
 
 # define EX_OK 0 /* same value as EXIT_SUCCESS */
 
