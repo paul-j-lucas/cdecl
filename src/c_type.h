@@ -569,7 +569,7 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type );
  *
  * @note
  * This function isn't normally called directly; use one of c_type_name_c(),
- * c_type_name_eng(), or c_type_name_error().
+ * c_type_name_english(), or c_type_name_error().
  *
  * @param type The type to get the name for.
  * @param in_english If `true`, return the pseudo-English name if possible.
@@ -579,7 +579,7 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type );
  * statement.
  *
  * @sa c_type_name_c()
- * @sa c_type_name_eng()
+ * @sa c_type_name_english()
  * @sa c_type_name_error()
  */
 PJL_WARN_UNUSED_RESULT
@@ -692,7 +692,7 @@ char const* c_type_id_name_c( c_type_id_t tid ) {
  *
  * @sa c_type_id_name_c()
  * @sa c_type_id_name_error()
- * @sa c_type_name_eng()
+ * @sa c_type_name_english()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_type_id_name_eng( c_type_id_t tid ) {
@@ -815,7 +815,7 @@ bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids );
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
- * @sa c_type_name_eng()
+ * @sa c_type_name_english()
  * @sa c_type_name_error()
  * @sa c_type_name_name()
  */
@@ -838,7 +838,7 @@ char const* c_type_name_c( c_type_t const *type ) {
  * @sa c_type_name_name()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-char const* c_type_name_eng( c_type_t const *type ) {
+char const* c_type_name_english( c_type_t const *type ) {
   return c_type_name( type, /*in_english=*/true );
 }
 
@@ -853,7 +853,7 @@ char const* c_type_name_eng( c_type_t const *type ) {
  * statement.
  *
  * @sa c_type_name_c()
- * @sa c_type_name_eng()
+ * @sa c_type_name_english()
  * @sa c_type_name_name()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT

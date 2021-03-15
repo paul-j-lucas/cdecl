@@ -6106,7 +6106,7 @@ of_scope_list_english
            c_type_is_tid_any( outer_type, TB_ANY_CLASS ) ) {
         print_error( &@2,
           "\"%s\" may only be nested within a %s or %s\n",
-          c_type_name_eng( inner_type ), L_NAMESPACE, L_SCOPE
+          c_type_name_english( inner_type ), L_NAMESPACE, L_SCOPE
         );
         PARSE_ABORT();
       }
