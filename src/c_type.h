@@ -815,9 +815,9 @@ bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids );
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
+ * @sa c_type_name()
  * @sa c_type_name_english()
  * @sa c_type_name_error()
- * @sa c_type_name_name()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_type_name_c( c_type_t const *type ) {
@@ -833,9 +833,9 @@ char const* c_type_name_c( c_type_t const *type ) {
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
+ * @sa c_type_name()
  * @sa c_type_name_c()
  * @sa c_type_name_error()
- * @sa c_type_name_name()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_type_name_english( c_type_t const *type ) {
@@ -852,9 +852,9 @@ char const* c_type_name_english( c_type_t const *type ) {
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
+ * @sa c_type_name()
  * @sa c_type_name_c()
  * @sa c_type_name_english()
- * @sa c_type_name_name()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_type_name_error( c_type_t const *type ) {
