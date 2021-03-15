@@ -1817,7 +1817,10 @@ bytes_opt
 
 width_specifier_english
   : Y_WIDTH int_exp bits_opt
-    {
+    { //
+      // This check has to be done now in the parser rather than later in the
+      // AST since we use 0 to mean "no bit-field."
+      //
       if ( $2 == 0 ) {
         print_error( &@2, "bit-field width must be > 0\n" );
         PARSE_ABORT();
@@ -1968,14 +1971,12 @@ explain_c
       if ( unsupported( LANG_CPP_ANY ) ) {
         print_error( &@2, "%s_cast is not supported in C\n", $2 );
       }
-      else {
-        if ( (ok = c_ast_check_cast( cast_ast )) ) {
-          FPRINTF( fout, "%s %s ", $2, L_CAST );
-          c_sname_english( &$9, fout );
-          FPRINTF( fout, " %s ", L_INTO );
-          c_ast_english( cast_ast, fout );
-          FPUTC( '\n', fout );
-        }
+      else if ( (ok = c_ast_check_cast( cast_ast )) ) {
+        FPRINTF( fout, "%s %s ", $2, L_CAST );
+        c_sname_english( &$9, fout );
+        FPRINTF( fout, " %s ", L_INTO );
+        c_ast_english( cast_ast, fout );
+        FPUTC( '\n', fout );
       }
 
       c_sname_free( &$9 );
@@ -5723,7 +5724,10 @@ sname_c_ast
 bit_field_c_int_opt
   : /* empty */                   { $$ = 0; }
   | ':' int_exp
-    {
+    { //
+      // This check has to be done now in the parser rather than later in the
+      // AST since we use 0 to mean "no bit-field."
+      //
       if ( $2 == 0 ) {
         print_error( &@2, "bit-field width must be > 0\n" );
         PARSE_ABORT();
