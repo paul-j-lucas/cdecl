@@ -49,6 +49,7 @@ typedef struct did_you_mean did_you_mean_t;
  * @sa #DYM_C_ATTRIBUTES
  * @sa #DYM_C_KEYWORDS
  * @sa #DYM_C_TYPES
+ * @sa #DYM_SET_OPTIONS
  */
 typedef unsigned dym_kind_t;
 
