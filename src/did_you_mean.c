@@ -334,10 +334,10 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
 
   dam_lev_t const best_dist = dym_array->dam_lev_dist;
   size_t const best_len = strlen( dym_array->token );
-  size_t best_count = 0;
 
   if ( is_similar_enough( best_dist, SIMILAR_ENOUGH_PERCENT, best_len ) ) {
     // include all candidates that have the same distance
+    size_t best_count = 0;
     for ( dym = dym_array;
           ++best_count < dym_size && (++dym)->dam_lev_dist == best_dist; )
       ;
