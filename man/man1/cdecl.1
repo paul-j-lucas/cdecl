@@ -2257,7 +2257,7 @@ complete declarations are not:
 .RS
 .cS
 struct S s;                     // supported
-struct S { typedef int Int; };  // supported
+struct S { typedef int Int; };  // supported (C++ only)
 struct S { int i; char c; } s;  // not supported
 .cE 0
 .RE
@@ -2265,7 +2265,7 @@ struct S { int i; char c; } s;  // not supported
 C++
 \f(CWdecltype\fP,
 function default arguments,
-structured binding,
+structured bindings,
 and
 template declarations
 are not supported.
