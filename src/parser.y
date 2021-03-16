@@ -2356,11 +2356,6 @@ class_struct_union_declaration_c
     }
     any_sname_c
     {
-      if ( OPT_LANG_IS(C_ANY) && !c_sname_empty( &in_attr.current_scope ) ) {
-        print_error( &@1, "nested types are not supported in C\n" );
-        PARSE_ABORT();
-      }
-
       c_type_t const *const cur_type =
         c_sname_local_type( &in_attr.current_scope );
       if ( c_type_is_tid_any( cur_type, TB_ANY_CLASS ) ) {
@@ -2516,6 +2511,12 @@ brace_in_scope_declaration_c_opt
 brace_in_scope_declaration_c
   : '{' '}'
   | '{' in_scope_declaration_c semi_opt rbrace_exp
+    {
+      if ( unsupported( LANG_CPP_ANY ) ) {
+        print_error( &@2, "nested types are not supported in C\n" );
+        PARSE_ABORT();
+      }
+    }
   ;
 
 in_scope_declaration_c

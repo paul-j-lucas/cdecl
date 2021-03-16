@@ -586,6 +586,12 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_xxi-c.test
 
 #
+# C misc. error tests
+# ===================
+#
+TESTS+=	tests/k_typedef_i-c.test
+
+#
 # C++ declare alt-tokens tests
 # ============================
 #
