@@ -181,6 +181,14 @@
   fl_elaborate_error( __FILE__, __LINE__, (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
 
 /**
+ * Calls is_nested_type_ok(): if it returns `false`, calls #PARSE_ABORT.
+ *
+ * @param TYPE_LOC The location of the type declaration.
+ */
+#define IS_NESTED_TYPE_OK(TYPE_LOC) \
+  BLOCK( if ( !is_nested_type_ok( TYPE_LOC ) ) PARSE_ABORT(); )
+
+/**
  * Aborts the current parse (presumably after an error message has been
  * printed).
  */
@@ -740,6 +748,32 @@ static void ia_qual_push_tid( c_type_id_t qual_tid, c_loc_t const *loc ) {
   qual->qual_tid = qual_tid;
   qual->loc = *loc;
   slist_push_head( &in_attr.qualifier_stack, qual );
+}
+
+/**
+ * Checks whether the type currently being declared (`enum`, `struct`,
+ * `typedef`, or `union`) is nested within some other type (`struct` or
+ * `union`) and whether the current language is C.
+ *
+ * @note
+ * It is unnecessary to check either when a `class` is being declared or when a
+ * type is being declared within a `namespace` since those are not legal in C
+ * anyway.
+ *
+ * @note This function isn't normally called directly; use the
+ * #IS_NESTED_TYPE_OK() macro instead.
+ *
+ * @param type_loc The location of the type declaration.
+ * @return Returns `true` only if the type currently being declared is either
+ * not nested or the current language is C++.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool is_nested_type_ok( c_loc_t const *type_loc ) {
+  if ( !c_sname_empty( &in_attr.current_scope ) && OPT_LANG_IS(C_ANY) ) {
+    print_error( type_loc, "nested types are not supported in C\n" );
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -2351,6 +2385,7 @@ class_struct_union_declaration_c
      */
   : class_struct_union_tid
     {
+      IS_NESTED_TYPE_OK( &@1 );
       gibberish_to_english();           // see the comment in "explain"
     }
     any_sname_c
@@ -2403,6 +2438,7 @@ enum_declaration_c
      */
   : enum_tid
     {
+      IS_NESTED_TYPE_OK( &@1 );
       gibberish_to_english();           // see the comment in "explain"
     }
     any_sname_c_exp enum_fixed_type_c_ast_opt
@@ -2508,12 +2544,6 @@ brace_in_scope_declaration_c_opt
 brace_in_scope_declaration_c
   : '{' '}'
   | '{' in_scope_declaration_c semi_opt rbrace_exp
-    {
-      if ( unsupported( LANG_CPP_ANY ) ) {
-        print_error( &@2, "nested types are not supported in C\n" );
-        PARSE_ABORT();
-      }
-    }
   ;
 
 in_scope_declaration_c
@@ -2671,6 +2701,7 @@ predefined_or_user_mask_opt
 typedef_declaration_c
   : Y_TYPEDEF typename_flag_opt
     {
+      IS_NESTED_TYPE_OK( &@1 );
       in_attr.typename = $2;
       gibberish_to_english();           // see the comment in "explain"
     }
