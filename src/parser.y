@@ -769,6 +769,7 @@ static void ia_qual_push_tid( c_type_id_t qual_tid, c_loc_t const *loc ) {
  */
 PJL_WARN_UNUSED_RESULT
 static bool is_nested_type_ok( c_loc_t const *type_loc ) {
+  assert( type_loc != NULL );
   if ( !c_sname_empty( &in_attr.current_scope ) && OPT_LANG_IS(C_ANY) ) {
     print_error( type_loc, "nested types are not supported in C\n" );
     return false;
