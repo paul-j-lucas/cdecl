@@ -2351,8 +2351,7 @@ class_struct_union_declaration_c
      */
   : class_struct_union_tid
     {
-      // see the comment in "explain"
-      gibberish_to_english();
+      gibberish_to_english();           // see the comment in "explain"
     }
     any_sname_c
     {
@@ -2404,8 +2403,7 @@ enum_declaration_c
      */
   : enum_tid
     {
-      // see the comment in "explain"
-      gibberish_to_english();
+      gibberish_to_english();           // see the comment in "explain"
     }
     any_sname_c_exp enum_fixed_type_c_ast_opt
     {
@@ -2441,8 +2439,7 @@ namespace_declaration_c
      */
   : namespace_type
     {
-      // see the comment in "explain"
-      gibberish_to_english();
+      gibberish_to_english();           // see the comment in "explain"
     }
     sname_c
     { //
@@ -2675,8 +2672,7 @@ typedef_declaration_c
   : Y_TYPEDEF typename_flag_opt
     {
       in_attr.typename = $2;
-      // see the comment in "explain"
-      gibberish_to_english();
+      gibberish_to_english();           // see the comment in "explain"
     }
     type_c_ast
     {
@@ -4319,8 +4315,7 @@ user_defined_literal_c_ast
 using_decl_c_ast
   : Y_USING
     {
-      // see the comment in "explain"
-      gibberish_to_english();
+      gibberish_to_english();           // see the comment in "explain"
     }
     any_name_exp equals_exp type_c_ast
     {
