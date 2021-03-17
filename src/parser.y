@@ -185,8 +185,8 @@
  *
  * @param TYPE_LOC The location of the type declaration.
  */
-#define IS_NESTED_TYPE_OK(TYPE_LOC) \
-  BLOCK( if ( !is_nested_type_ok( TYPE_LOC ) ) PARSE_ABORT(); )
+#define IS_NESTED_TYPE_OK(TYPE_LOC) BLOCK( \
+  if ( !fl_is_nested_type_ok( __FILE__, __LINE__, TYPE_LOC ) ) PARSE_ABORT(); )
 
 /**
  * Aborts the current parse (presumably after an error message has been
@@ -716,6 +716,35 @@ static void fl_elaborate_error( char const *file, int line,
 }
 
 /**
+ * Checks whether the type currently being declared (`enum`, `struct`,
+ * `typedef`, or `union`) is nested within some other type (`struct` or
+ * `union`) and whether the current language is C.
+ *
+ * @note It is unnecessary to check either when a `class` is being declared or
+ * when a type is being declared within a `namespace` since those are not legal
+ * in C anyway.
+ *
+ * @note This function isn't normally called directly; use the
+ * #IS_NESTED_TYPE_OK() macro instead.
+ *
+ * @param type_loc The location of the type declaration.
+ * @return Returns `true` only if the type currently being declared is either
+ * not nested or the current language is C++.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool fl_is_nested_type_ok( char const *file, int line,
+                                  c_loc_t const *type_loc ) {
+  assert( type_loc != NULL );
+  if ( !c_sname_empty( &in_attr.current_scope ) && OPT_LANG_IS(C_ANY) ) {
+    fl_print_error( file, line, type_loc,
+      "nested types are not supported in C\n"
+    );
+    return false;
+  }
+  return true;
+}
+
+/**
  * Frees all resources used by \ref in_attr "inherited attributes".
  */
 static void ia_free( void ) {
@@ -748,33 +777,6 @@ static void ia_qual_push_tid( c_type_id_t qual_tid, c_loc_t const *loc ) {
   qual->qual_tid = qual_tid;
   qual->loc = *loc;
   slist_push_head( &in_attr.qualifier_stack, qual );
-}
-
-/**
- * Checks whether the type currently being declared (`enum`, `struct`,
- * `typedef`, or `union`) is nested within some other type (`struct` or
- * `union`) and whether the current language is C.
- *
- * @note
- * It is unnecessary to check either when a `class` is being declared or when a
- * type is being declared within a `namespace` since those are not legal in C
- * anyway.
- *
- * @note This function isn't normally called directly; use the
- * #IS_NESTED_TYPE_OK() macro instead.
- *
- * @param type_loc The location of the type declaration.
- * @return Returns `true` only if the type currently being declared is either
- * not nested or the current language is C++.
- */
-PJL_WARN_UNUSED_RESULT
-static bool is_nested_type_ok( c_loc_t const *type_loc ) {
-  assert( type_loc != NULL );
-  if ( !c_sname_empty( &in_attr.current_scope ) && OPT_LANG_IS(C_ANY) ) {
-    print_error( type_loc, "nested types are not supported in C\n" );
-    return false;
-  }
-  return true;
 }
 
 /**
