@@ -3826,7 +3826,7 @@ knr_func_or_constructor_decl_c_ast
       DUMP_AST( "knr_func_or_constructor_decl_c_ast", $$ );
       DUMP_END();
 
-      if ( (opt_lang & LANG_C_MIN(99)) != LANG_NONE ) {
+      if ( OPT_LANG_IS(C_MIN(99)) ) {
         //
         // In C99 and later, however, implicit int is an error.  This check has
         // to be done now in the parser rather than later in the AST since the
@@ -5122,7 +5122,7 @@ gnu_attribute_specifier_c
         "\"%s\" is not supported by %s (ignoring)",
         L_GNU___ATTRIBUTE__, PACKAGE
       );
-      if ( (opt_lang & LANG_C_CPP_MIN(2X,11)) != LANG_NONE )
+      if ( OPT_LANG_IS(C_CPP_MIN(2X,11)) )
         print_hint( "[[...]]" );
       else
         EPUTC( '\n' );
