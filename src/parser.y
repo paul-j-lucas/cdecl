@@ -6125,8 +6125,7 @@ of_scope_english
 
 of_scope_list_english
   : of_scope_list_english of_scope_english
-    {
-      //
+    { //
       // Ensure that neither "namespace" nor "scope" are nested within a
       // class/struct/union.
       //
