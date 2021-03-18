@@ -181,7 +181,7 @@
   fl_elaborate_error( __FILE__, __LINE__, (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
 
 /**
- * Calls is_nested_type_ok(): if it returns `false`, calls #PARSE_ABORT.
+ * Calls fl_is_nested_type_ok(): if it returns `false`, calls #PARSE_ABORT().
  *
  * @param TYPE_LOC The location of the type declaration.
  */
@@ -727,6 +727,9 @@ static void fl_elaborate_error( char const *file, int line,
  * @note This function isn't normally called directly; use the
  * #IS_NESTED_TYPE_OK() macro instead.
  *
+ * @param file The name of the file where this function was called from.
+ * @param line The line number within \a file where this function was called
+ * from.
  * @param type_loc The location of the type declaration.
  * @return Returns `true` only if the type currently being declared is either
  * not nested or the current language is C++.
