@@ -5943,10 +5943,7 @@ class_struct_tid_exp
   : class_struct_tid
   | error
     {
-      if ( OPT_LANG_IS(CPP_ANY) )
-        elaborate_error( "\"%s\" or \"%s\" expected", L_CLASS, L_STRUCT );
-      else
-        elaborate_error( "\"%s\" expected", L_STRUCT );
+      elaborate_error( "\"%s\" or \"%s\" expected", L_CLASS, L_STRUCT );
     }
   ;
 
