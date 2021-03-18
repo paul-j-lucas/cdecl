@@ -68,24 +68,24 @@ if WITH_READLINE
 cdecl_SOURCES += autocomplete.c
 endif
 
-all-local: c++decl
+all-local: c++decl$(EXEEXT)
 
-c++decl: cdecl
-	rm -f c++decl
-	$(LN_S) cdecl c++decl
+c++decl$(EXEEXT): cdecl$(EXEEXT)
+	rm -f $@
+	$(LN_S) $< $@
 
 clean-local:
-	rm -f c++decl
+	rm -f c++decl$(EXEEXT)
 
 parser.output: parser.y
 	bison -v --report=all $<
 	@rm -f parser.tab.c
 
 install-exec-hook:
-	rm -f "$(DESTDIR)$(bindir)/c++decl"
-	$(LN_S) cdecl "$(DESTDIR)$(bindir)/c++decl"
+	rm -f "$(DESTDIR)$(bindir)/c++decl$(EXEEXT)"
+	$(LN_S) cdecl$(EXEEXT) "$(DESTDIR)$(bindir)/c++decl$(EXEEXT)"
 
 uninstall-hook:
-	rm -f "$(DESTDIR)$(bindir)/c++decl"
+	rm -f "$(DESTDIR)$(bindir)/c++decl$(EXEEXT)"
 
 # vim:set noet sw=8 ts=8:
