@@ -404,15 +404,18 @@ static char* keyword_completion( char const *text, int state ) {
 
 /**
  * Initializes readline.
+ *
+ * @param rin The `FILE` to read from.
+ * @param rout The `FILE` to write to.
  */
-void readline_init( void ) {
+void readline_init( FILE *rin, FILE *rout ) {
   // allow conditional ~/.inputrc parsing
   rl_readline_name = CONST_CAST( char*, PACKAGE );
 
   rl_attempted_completion_function = (rl_completion_func_t*)attempt_completion;
   rl_completion_entry_function = (void*)keyword_completion;
-  rl_instream = fin;
-  rl_outstream = fout;
+  rl_instream = rin;
+  rl_outstream = rout;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

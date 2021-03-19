@@ -181,11 +181,11 @@ static bool cdecl_read_line( strbuf_t *sbuf, char const *ps1,
     static char *line;
     bool is_continuation = sbuf->str != NULL;
 #ifdef WITH_READLINE
-    extern void readline_init( void );
+    extern void readline_init( FILE*, FILE* );
     static bool called_readline_init;
 
     if ( false_set( &called_readline_init ) )
-      readline_init();
+      readline_init( fin, fout );
 
     free( line );
     if ( (line = readline( is_continuation ? ps2 : ps1 )) == NULL )
