@@ -109,9 +109,9 @@ void* check_realloc( void *p, size_t size ) {
   //
   if ( unlikely( size == 0 ) )
     size = 1;
-  void *const r = p != NULL ? realloc( p, size ) : malloc( size );
-  IF_EXIT( r == NULL, EX_OSERR );
-  return r;
+  p = p != NULL ? realloc( p, size ) : malloc( size );
+  IF_EXIT( p == NULL, EX_OSERR );
+  return p;
 }
 
 char* check_strdup( char const *s ) {
