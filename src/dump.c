@@ -303,10 +303,13 @@ void c_type_dump( c_type_t const *type, FILE *dout ) {
   assert( type != NULL );
   FPRINTF( dout,
     "\"%s\" "
-    "(base = 0x%" PRIX_C_TYPE_ID_T
-    ", store = 0x%" PRIX_C_TYPE_ID_T
-    ", attr = 0x%" PRIX_C_TYPE_ID_T ")",
-    c_type_name_c( type ), type->base_tid, type->store_tid, type->attr_tid
+     "(%s = 0x%" PRIX_C_TYPE_ID_T
+    ", %s = 0x%" PRIX_C_TYPE_ID_T
+    ", %s = 0x%" PRIX_C_TYPE_ID_T ")",
+    c_type_name_c( type ),
+    c_type_part_id_name( C_TPID_BASE  ), type->base_tid,
+    c_type_part_id_name( C_TPID_STORE ), type->store_tid,
+    c_type_part_id_name( C_TPID_ATTR  ), type->attr_tid
   );
 }
 
