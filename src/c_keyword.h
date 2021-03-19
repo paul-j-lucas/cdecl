@@ -92,12 +92,12 @@ c_keyword_t const* c_keyword_next( c_keyword_t const *k );
 /**
  * Convenience macro for iterating over all C/C++ keywords.
  *
- * @param K The `c_keyword` loop variable.
+ * @param VAR The `c_keyword` loop variable.
  *
  * @sa c_keyword_next()
  */
-#define FOREACH_KEYWORD(K) \
-  for ( c_keyword_t const *K = NULL; (K = c_keyword_next( K )) != NULL; )
+#define FOREACH_KEYWORD(VAR) \
+  for ( c_keyword_t const *VAR = NULL; (VAR = c_keyword_next( VAR )) != NULL; )
 
 ///////////////////////////////////////////////////////////////////////////////
 

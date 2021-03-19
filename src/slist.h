@@ -50,6 +50,16 @@ _GL_INLINE_HEADER_BEGIN
  */
 
 /**
+ * Convenience macro for iterating over the nodes of an `slist`.
+ *
+ * @param VAR The `slist_node` loop variable.
+ * @param SLIST A pointer to the `slist` to iterate over.
+ * @param END A pointer to the node to end before; may be null.
+ */
+#define FOREACH_SLIST(VAR,SLIST,END) \
+  for ( slist_node_t const *VAR = (SLIST)->head; VAR != (END); VAR = VAR->next )
+
+/**
  * Creates a single-node `slist` on the stack with \a NODE_DATA.
  *
  * @param VAR The name for the `slist` variable.

@@ -591,13 +591,13 @@ c_ast_param_t const* c_ast_params( c_ast_t const *ast ) {
 /**
  * Convenience macro for iterating over all function-like parameters.
  *
- * @param PARAM The `c_ast_param_t` loop variable.
+ * @param VAR The `c_ast_param_t` loop variable.
  * @param AST The AST to iterate the parameters of.
  *
  * @sa c_ast_params()
  */
-#define FOREACH_PARAM(PARAM,AST) \
-  for ( c_ast_param_t const *PARAM = c_ast_params( AST ); PARAM != NULL; PARAM = PARAM->next )
+#define FOREACH_PARAM(VAR,AST) \
+  FOREACH_SLIST( VAR, &(AST)->as.func.param_ast_list, NULL )
 
 /**
  * Convenience function for getting the number of function-like parameters.

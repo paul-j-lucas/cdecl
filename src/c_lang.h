@@ -366,12 +366,12 @@ c_lang_t const* c_lang_next( c_lang_t const *lang );
 /**
  * Convenience macro for iterating over all languages.
  *
- * @param LANG The `c_lang` loop variable.
+ * @param VAR The `c_lang` loop variable.
  *
  * @sa c_lang_next()
  */
-#define FOREACH_LANG(LANG) \
-  for ( c_lang_t const *LANG = NULL; (LANG = c_lang_next( LANG )) != NULL; )
+#define FOREACH_LANG(VAR) \
+  for ( c_lang_t const *VAR = NULL; (VAR = c_lang_next( VAR )) != NULL; )
 
 /**
  * Gets the oldest language among \a lang_ids.

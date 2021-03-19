@@ -2062,7 +2062,7 @@ static void c_ast_warn_name( c_ast_t const *ast ) {
 static void c_sname_warn( c_sname_t const *sname, c_loc_t const *loc ) {
   assert( sname != NULL );
 
-  FOREACH_SCOPE( scope, sname->head, NULL ) {
+  FOREACH_SCOPE( scope, sname, NULL ) {
     char const *const name = c_scope_data( scope )->name;
 
     // First, check to see if the name is a keyword in some other language.

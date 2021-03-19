@@ -2487,7 +2487,7 @@ namespace_declaration_c
     { //
       // Make every scope's type be $1 for nested namespaces.
       //
-      FOREACH_SCOPE( scope, $3.head, NULL ) {
+      FOREACH_SCOPE( scope, &$3, NULL ) {
         c_type_t scope_type = c_scope_data( scope )->type;
         scope_type.base_tid =
           (scope_type.base_tid & c_type_id_compl( TB_SCOPE )) | $1.base_tid;

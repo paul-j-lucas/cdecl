@@ -67,8 +67,9 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n,
     size_t un = (size_t)n;
     dst_list.data = data_dup_fn != NULL ?
       (*data_dup_fn)( src_list->data ) : src_list->data;
-    for ( slist_node_t *src_node = src_list->head; src_node != NULL && un-- > 0;
-          src_node = src_node->next ) {
+    FOREACH_SLIST( src_node, src_list, NULL ) {
+      if ( un-- == 0 )
+        break;
       void *const dst_data = node_data_dup_fn != NULL ?
         (*node_data_dup_fn)( src_node->data ) : src_node->data;
       slist_push_tail( &dst_list, dst_data );

@@ -89,12 +89,12 @@ set_option_t const* option_next( set_option_t const *opt );
 /**
  * Convenience macro for iterating over all cdecl `set` options.
  *
- * @param OPT The `set_option_t` loop variable.
+ * @param VAR The `set_option_t` loop variable.
  *
  * @sa option_next()
  */
-#define FOREACH_SET_OPTION(OPT) \
-  for ( set_option_t const *OPT = NULL; (OPT = option_next( OPT )) != NULL; )
+#define FOREACH_SET_OPTION(VAR) \
+  for ( set_option_t const *VAR = NULL; (VAR = option_next( VAR )) != NULL; )
 
 /**
  * Implements the cdecl `set` command.
