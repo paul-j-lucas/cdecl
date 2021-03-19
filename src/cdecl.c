@@ -138,7 +138,6 @@ static bool starts_with( char const*, char const*, size_t );
 int main( int argc, char const *argv[] ) {
   atexit( cdecl_cleanup );
   options_init( &argc, &argv );
-
   c_typedef_init();
   lexer_reset( true );                  // resets line number
 
