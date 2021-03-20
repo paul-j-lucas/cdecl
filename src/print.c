@@ -259,6 +259,8 @@ void fl_print_error( char const *file, int line, c_loc_t const *loc,
 
 void fl_print_error_unknown_name( char const *file, int line,
                                   c_loc_t const *loc, c_sname_t const *sname ) {
+  assert( sname != NULL );
+
   // Must dup this since c_sname_full_name() returns a temporary buffer.
   char const *const name = check_strdup( c_sname_full_name( sname ) );
 
