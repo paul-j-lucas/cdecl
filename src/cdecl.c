@@ -342,6 +342,7 @@ static bool parse_command_line( char const *command, int argc,
  */
 PJL_WARN_UNUSED_RESULT
 static bool parse_file( FILE *file ) {
+  assert( file != NULL );
   bool ok = true;
 
   // We don't just call yyrestart( file ) and yyparse() directly because
@@ -425,6 +426,7 @@ static bool parse_stdin( void ) {
  */
 PJL_WARN_UNUSED_RESULT
 bool parse_string( char const *s, ssize_t s_len_in ) {
+  assert( s != NULL );
   size_t s_len = s_len_in == -1 ? strlen( s ) : (size_t)s_len_in;
 
   // The code in print.c relies on command_line being set, so set it.

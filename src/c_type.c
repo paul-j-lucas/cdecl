@@ -670,7 +670,6 @@ bool c_type_add( c_type_t *dst_type, c_type_t const *new_type,
                  c_loc_t const *new_loc ) {
   assert( dst_type != NULL );
   assert( new_type != NULL );
-  assert( new_loc != NULL );
 
   return  c_type_id_add( &dst_type->base_tid, new_type->base_tid, new_loc ) &&
           c_type_id_add( &dst_type->store_tid, new_type->store_tid, new_loc ) &&

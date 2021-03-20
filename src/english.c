@@ -255,6 +255,9 @@ static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
  * @param eout The `FILE` to emit to.
  */
 static void c_sname_english_impl( c_scope_t const *scope, FILE *eout ) {
+  assert( scope != NULL );
+  assert( eout != NULL );
+
   if ( scope->next != NULL ) {
     c_sname_english_impl( scope->next, eout );
     c_scope_data_t const *const data = c_scope_data( scope );
@@ -273,6 +276,8 @@ static void c_sname_english_impl( c_scope_t const *scope, FILE *eout ) {
  */
 static void non_type_name( c_type_t const *type, FILE *eout ) {
   assert( type != NULL );
+  assert( eout != NULL );
+
   c_type_t const temp_type = { TB_NONE, type->store_tid, type->attr_tid };
   if ( !c_type_is_none( &temp_type ) )
     FPRINTF( eout, "%s ", c_type_name_english( &temp_type ) );
@@ -282,6 +287,7 @@ static void non_type_name( c_type_t const *type, FILE *eout ) {
 
 void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
+  assert( eout != NULL );
 
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, eout );
@@ -304,6 +310,7 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
 
 void c_ast_explain_declaration( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
+  assert( eout != NULL );
 
   FPRINTF( eout, "%s ", L_DECLARE );
   if ( ast->kind_id != K_USER_DEF_CONVERSION ) {
@@ -341,6 +348,8 @@ void c_ast_explain_declaration( c_ast_t const *ast, FILE *eout ) {
 
 void c_ast_explain_type( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
+  assert( eout != NULL );
+
   FPRINTF( eout, "%s ", L_DEFINE );
   c_sname_english( &ast->sname, eout );
   FPRINTF( eout, " %s ", L_AS );
@@ -350,6 +359,8 @@ void c_ast_explain_type( c_ast_t const *ast, FILE *eout ) {
 
 void c_sname_english( c_sname_t const *sname, FILE *eout ) {
   assert( sname != NULL );
+  assert( eout != NULL );
+
   if ( !c_sname_empty( sname ) ) {
     FPUTS( c_sname_local_name( sname ), eout );
     c_sname_english_impl( sname->head, eout );

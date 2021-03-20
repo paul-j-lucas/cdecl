@@ -145,6 +145,7 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id ) {
 }
 
 unsigned c_oper_get_overload( c_ast_t const *ast ) {
+  assert( ast != NULL );
   assert( ast->kind_id == K_OPERATOR );
 
   //
