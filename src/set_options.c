@@ -119,33 +119,35 @@ static inline char const* maybe_no( bool enabled ) {
 
 /**
  * Prints the current option settings.
+ *
+ * @param out The `FILE` to print to.
  */
-static void print_options( void ) {
-  FPRINTF( fout, "  %salt-tokens\n", maybe_no( opt_alt_tokens ) );
+static void print_options( FILE *out ) {
+  FPRINTF( out, "  %salt-tokens\n", maybe_no( opt_alt_tokens ) );
 #ifdef YYDEBUG
-  FPRINTF( fout, "  %sbison-debug\n", maybe_no( opt_bison_debug ) );
+  FPRINTF( out, "  %sbison-debug\n", maybe_no( opt_bison_debug ) );
 #endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
-  FPRINTF( fout, "  %sdebug\n", maybe_no( opt_cdecl_debug ) );
+  FPRINTF( out, "  %sdebug\n", maybe_no( opt_cdecl_debug ) );
 #endif /* ENABLE_CDECL_DEBUG */
-  FPRINTF( fout, "  %seast-const\n", maybe_no( opt_east_const ) );
-  FPRINTF( fout, "  %sexplain-by-default\n", maybe_no( opt_explain ) );
+  FPRINTF( out, "  %seast-const\n", maybe_no( opt_east_const ) );
+  FPRINTF( out, "  %sexplain-by-default\n", maybe_no( opt_explain ) );
 
   if ( any_explicit_int() ) {
-    FPUTS( "    explicit-int=", fout );
-    print_explicit_int( fout );
-    PUTC( '\n' );
+    FPUTS( "    explicit-int=", out );
+    print_explicit_int( out );
+    FPUTC( '\n', out );
   } else {
-    FPUTS( "  noexplicit-int\n", fout );
+    FPUTS( "  noexplicit-int\n", out );
   }
 
 #ifdef ENABLE_FLEX_DEBUG
-  FPRINTF( fout, "  %sflex-debug\n", maybe_no( opt_flex_debug ) );
+  FPRINTF( out, "  %sflex-debug\n", maybe_no( opt_flex_debug ) );
 #endif /* ENABLE_FLEX_DEBUG */
-  FPRINTF( fout, " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
-  FPRINTF( fout, "    lang=%s\n", c_lang_name( opt_lang ) );
-  FPRINTF( fout, "  %sprompt\n", maybe_no( cdecl_prompt[0][0] != '\0' ) );
-  FPRINTF( fout, "  %ssemicolon\n", maybe_no( opt_semicolon ) );
+  FPRINTF( out, " %sgraphs\n", opt_graph == C_GRAPH_DI ? " di" : opt_graph == C_GRAPH_TRI ? "tri" : " no" );
+  FPRINTF( out, "    lang=%s\n", c_lang_name( opt_lang ) );
+  FPRINTF( out, "  %sprompt\n", maybe_no( cdecl_prompt[0][0] != '\0' ) );
+  FPRINTF( out, "  %ssemicolon\n", maybe_no( opt_semicolon ) );
 }
 
 /**
@@ -428,7 +430,7 @@ set_option_t const* option_next( set_option_t const *opt ) {
 void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc ) {
   if ( opt_name == NULL || strcmp( opt_name, "options" ) == 0 ) {
-    print_options();
+    print_options( fout );
     return;
   }
 
