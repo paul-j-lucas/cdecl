@@ -1,3 +1,132 @@
+2021-03-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * set_options.c: Fixed printing \n.
+   * c_lang.c, c_operator.c, c_type.c, cdecl.c, english.c, gibberish.c: More
+     assert()s.
+   * print.c: Added assert().
+   * print.c: Simplification.
+   * c_typedef.c: s/for/do...while/
+
+2021-03-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c: Whitespace.
+   * autocomplete.c, cdecl.c: readline_init() now takes FILEs.
+   * util.c: Got rid of local variable.
+   * dump.c: Now using c_type_part_id_name() more.
+   * c_ast.h, c_keyword.h, c_lang.h, c_sname.c, c_sname.h, check.c, dump.c,
+     gibberish.c, parser.y, set_options.h, slist.c, slist.h: Added
+     FOREACH_SLIST().
+
+2021-03-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am: Added $(EXEEXT).
+   * parser.y: Removed pointless language check.
+
+2021-03-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_kind.c, c_type.c, parser.y: Now using OPT_LANG_IS() more.
+   * parser.y: s/is_nested_type_ok/fl_is_nested_type_ok/
+
+2021-03-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added assert().
+   * parser.y: Nested types are now not defined when flagged as an error in C.
+   * NEWS, parser.y, test/Makefile.am, k_typedef_i-c.test: Nested types are now
+     correctly caught as an error in C.
+   * cdecl.1: Added "C++ only" for nested types.
+   * cdecl.1: Added mention of complete set of commands useful in .cdeclrc
+     file.
+
+2021-03-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: Moved declaration of best_count inside the `if`.
+   * sysexits.in.h: Updated Gnulib.
+   * check.c, pjl_config.h, strbuf.h: s/argument/parameter/ where appropriate.
+   * c_type.h, english.c, parser.y: s/c_type_name_eng/c_type_name_english/
+   * NEWS, check.c: A declaration having a storage class and a bit-field width
+     is now correctly caught as an error.
+
+2021-03-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, check.c: A scoped name having a bit-field width is now correctly
+     caught as an error.
+   * slist.c: Renaming.
+   * slist.c, slist.h: Renaming.
+   * slist.c: Added needed (intptr_t) cast.
+   * c_sname.h, slist.h: Added missing CONST_CAST() to SLIST_VAR_INIT().
+   * strbuf.c: Now using only a single va_list.
+
+2021-03-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.c: Simplified SET_OPTION().
+   * options.c: Now using macros to define command-line options exactly once.
+   * autocomplete.c, did_you_mean.c, set_options.h:
+     s/FOREACH_OPTION/FOREACH_SET_OPTION/
+
+2021-03-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c, print.c: Added "Did you mean...?" suggestions for unknown
+     name.
+   * c_type.c, c_type.h, dump.c, print.c: Added C_TPID_NONE.
+   * NEWS, did_you_mean.c, did_you_mean.h, set_options.c: Added "Did you mean
+     ...?" for `set` options.
+   * c_typedef.c: Fixed warning.
+   * help.c, help_english-c.out, help_english-c89.out: Changed order of long
+     and unsigned in C help to match C++ help.
+   * help.c, parser.y, print.h, types.h: print_help() now takes an enum; moved
+     declaration to print.h.
+   * c_ast_util.c, c_ast_util.h, parser.y: Moved c_ast_pointer() to
+     c_ast_util.[ch].
+
+2021-03-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c: Now correctly free'ing c_typedef_t data from red-black tree
+     nodes.
+   * c_typedef.c: s/C_TYPEDEF_VAR_INIT/C_TYPEDEF_LIT
+   * c_ast_util.c: Renaming.
+   * parser.y: Got rid of placeholder_c_ast.
+
+2021-03-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
+     show_all-c++.out, show_all.out, show_all_predefined-c++.out,
+     show_all_predefined.out, show_all_predefined_typedef-c++.out,
+     show_all_typedef.out, show_predefined-c++.out, show_predefined.out,
+     show_predefined_typedef.out, show_predefined_using.out: Added `iconv_t`,
+     `locale_t`, `posix_spawnattr_t`, `posix_spawn_file_actions_t`, `regex_t`,
+     `regmatch_t`, and `regoff_t`.
+   * cdecl.c, strbuf.c, strbuf.h: Renaming.
+   * options.c, options.h, set_options.c: Added PJL_WARN_UNUSED_RESULT; changed
+     print_explicit_int() to take FILE*.
+   * help.c, help_english-c.out: s/thread_local/_Thread_local/ in C help.
+   * help.c, help_english-c++.out, help_english-c.out: Joined char types in
+     help.
+   * check.c: s/error_kind_to_type/error_kind_to_tid/
+   * NEWS, check.c, test/Makefile.am, explain_fpcf_i_v.test,
+     explain_pcf_i.test: A pointer to function with qualifiers is now correctly
+     caught as an error.
+
+2021-03-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.c, c_lang.h, c_type.c, set_options.c: Removed
+     PJL_WARN_UNUSED_RESULT where not needed; added PJL_WARN_UNUSED_RESULT in
+     one missing place.
+   * c_lang.c: Moved "C" first so it prints first.
+   * util.c: s/harcopy/hardcopy/
+   * options.c: Removed more uses of fixed-size string buffers.
+
+2021-03-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Merged C90 into C89 and C18 into C17.
+   * cdecl.1: More specific about "auto" and "using" in docs.
+
+2021-03-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Added _Thread_local spelling for C types.
+   * NEWS, cdecl.1, c_lang.c: C78 is now accepted as an alias for K&RC.
+   * Makefile.am, NEWS: Added (the missing) `Doxyfile` to the dist-generated
+     tarball.
+
 2021-03-05  Paul J. Lucas <paul@lucasmail.org>
 
    * color.h, prompt.c, strbuf.c, strbuf.h: Replaced last sprintf() with
