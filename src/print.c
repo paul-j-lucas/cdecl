@@ -215,22 +215,22 @@ static size_t token_len( char const *s ) {
   assert( s != NULL );
 
   char const *const s0 = s;
-  bool const is_s0_space = isspace( *s0 );
   bool const is_s0_alnum = isalnum( *s0 );
-  for ( ++s; *s != '\0'; ++s ) {
-    if ( is_s0_space ) {
-      if ( !isspace( *s ) )
+  bool const is_s0_space = isspace( *s0 );
+  while ( *++s != '\0' ) {
+    if ( is_s0_alnum ) {
+      if ( !isalnum( *s ) )
         break;
     }
-    else if ( is_s0_alnum ) {
-      if ( !isalnum( *s ) )
+    else if ( is_s0_space ) {
+      if ( !isspace( *s ) )
         break;
     }
     else {
       if ( isalnum( *s ) || isspace( *s ) )
         break;
     }
-  } // for
+  } // while
   return (size_t)(s - s0);
 }
 
