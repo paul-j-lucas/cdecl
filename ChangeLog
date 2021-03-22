@@ -1,3 +1,8 @@
+2021-03-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: autoupdate.
+   * configure.ac: Updated version to 9.9.
+
 2021-03-20  Paul J. Lucas <paul@lucasmail.org>
 
    * set_options.c: Fixed printing \n.
