@@ -29,7 +29,6 @@ Nested types:
 
 are now correctly caught as an error in C.
 
-
 ** Pointer-to-function qualifiers
 A pointer to function with qualifiers, e.g.:
 
