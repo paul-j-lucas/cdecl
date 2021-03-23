@@ -171,7 +171,7 @@ static struct option const LONG_OPTS[] = {
 /**
  * Short options.
  */
-static char const   SHORT_OPTS[] = "23ac:CeEf:iI:k:o:pstvx:"
+static char const   SHORT_OPTS[] = "23ac:CeEf:hiI:k:o:pstvx:"
 #ifdef ENABLE_CDECL_DEBUG
   "d"
 #endif /* ENABLE_CDECL_DEBUG */
@@ -430,7 +430,7 @@ static void parse_options( int argc, char const *argv[] ) {
 #ifdef ENABLE_FLEX_DEBUG
       case OPT_FLEX_DEBUG:  opt_flex_debug  = true;                       break;
 #endif /* ENABLE_FLEX_DEBUG */
-   // case OPT_HELP: usage();           // default case handles this
+      case OPT_HELP:        usage();
       case OPT_INTERACTIVE: opt_interactive = true;                       break;
       case OPT_LANGUAGE:    opt_lang        = parse_lang( optarg );       break;
       case OPT_TRIGRAPHS:   opt_graph       = C_GRAPH_TRI;                break;
