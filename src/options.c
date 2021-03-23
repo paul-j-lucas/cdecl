@@ -161,6 +161,14 @@ static struct option const LONG_OPTS[] = {
 };
 
 /**
+ * Convenience macro for iterating over all cdecl command-line options.
+ *
+ * @param VAR The `struct option` loop variable.
+ */
+#define FOREACH_CLI_OPTION(VAR) \
+  for ( struct option const *VAR = LONG_OPTS; VAR->name != NULL; ++VAR )
+
+/**
  * Short options.
  */
 static char const   SHORT_OPTS[] = "23ac:CeEf:iI:k:o:pstvx:"
@@ -279,7 +287,7 @@ static char const* format_opt( char short_opt, strbuf_t *sbuf ) {
  */
 PJL_WARN_UNUSED_RESULT
 static char const* get_long_opt( char short_opt ) {
-  for ( struct option const *opt = LONG_OPTS; opt->name != NULL; ++opt ) {
+  FOREACH_CLI_OPTION( opt ) {
     if ( opt->val == short_opt )
       return opt->name;
   } // for
