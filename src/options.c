@@ -157,7 +157,7 @@ static struct option const LONG_OPTS[] = {
   { "output",       required_argument,  NULL, OPT_OUTPUT        },
   { "trigraphs",    no_argument,        NULL, OPT_TRIGRAPHS     },
   { "version",      no_argument,        NULL, OPT_VERSION       },
-  { NULL,           0,                  NULL, 0   }
+  { NULL,           0,                  NULL, 0                 }
 };
 
 /**
