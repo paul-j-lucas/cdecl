@@ -33,10 +33,21 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <getopt.h>
 #include <stdbool.h>
 #include <stdio.h>                      /* for FILE */
 
 /// @endcond
+
+/**
+ * Convenience macro for iterating over all cdecl command-line options.
+ *
+ * @param VAR The `struct option` loop variable.
+ *
+ * @sa cli_option_next()
+ */
+#define FOREACH_CLI_OPTION(VAR) \
+  for ( struct option const *VAR = NULL; (VAR = cli_option_next( VAR )) != NULL; )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -97,6 +108,18 @@ bool any_explicit_int( void );
  */
 PJL_WARN_UNUSED_RESULT
 bool is_explicit_int( c_type_id_t tid );
+
+/**
+ * Iterates to the next cdecl command-line option.
+ *
+ * @param opt A pointer to the previous option. For the first iteration, NULL
+ * should be passed.
+ * @return Returns the next command-line option or NULL for none.
+ *
+ * @sa #FOREACH_CLI_OPTION()
+ */
+PJL_WARN_UNUSED_RESULT
+struct option const* cli_option_next( struct option const *opt );
 
 /**
  * Initializes command-line option variables.

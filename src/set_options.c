@@ -419,14 +419,6 @@ static bool strn_nohyphen_equal( char const *s1, char const *s2, size_t n ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-set_option_t const* option_next( set_option_t const *opt ) {
-  if ( opt == NULL )
-    opt = SET_OPTIONS;
-  else if ( (++opt)->name == NULL )
-    opt = NULL;
-  return opt;
-}
-
 void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc ) {
   if ( opt_name == NULL || strcmp( opt_name, "options" ) == 0 ) {
@@ -513,6 +505,14 @@ void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
   }
 
   (*found_opt->set_fn)( !is_no, opt_name_loc, opt_value, opt_value_loc );
+}
+
+set_option_t const* set_option_next( set_option_t const *opt ) {
+  if ( opt == NULL )
+    opt = SET_OPTIONS;
+  else if ( (++opt)->name == NULL )
+    opt = NULL;
+  return opt;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

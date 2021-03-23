@@ -113,6 +113,26 @@ static size_t copy_commands( did_you_mean_t **const pdym ) {
 }
 
 /**
+ * Copies cdecl command-line options to the candidate list pointed to by \a
+ * pdym.  If \a pdym is NULL, only counts the number of options.
+ *
+ * @param pdym A pointer to the current <code>\ref did_you_mean</code> pointer
+ * or NULL to just count options, not copy.  If not NULL, on return, the
+ * pointed-to pointer is incremented.
+ * @return Returns said number of options.
+ */
+PJL_NOWARN_UNUSED_RESULT
+static size_t copy_cli_options( did_you_mean_t **pdym ) {
+  size_t count = 0;
+  FOREACH_CLI_OPTION( opt ) {
+    if ( pdym != NULL )
+      (*pdym)++->token = check_strdup( opt->name );
+    ++count;
+  } // for
+  return count;
+}
+
+/**
  * Copies C/C++ keywords in the current language to the candidate list pointed
  * to by \a pdym.  If \a pdym is NULL, only counts the number of keywords.
  *
@@ -281,6 +301,8 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
   size_t dym_size = 0;
   if ( (kinds & DYM_COMMANDS) != DYM_NONE )
     dym_size += copy_commands( /*pdym=*/NULL );
+  if ( (kinds & DYM_CLI_OPTIONS) != DYM_NONE )
+    dym_size += copy_cli_options( /*pdym=*/NULL );
   if ( (kinds & DYM_SET_OPTIONS) != DYM_NONE )
     dym_size += copy_set_options( /*pdym=*/NULL );
   if ( (kinds & DYM_C_KEYWORDS) != DYM_NONE )
@@ -300,6 +322,9 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
 
   if ( (kinds & DYM_COMMANDS) != DYM_NONE ) {
     copy_commands( &dym );
+  }
+  if ( (kinds & DYM_CLI_OPTIONS) != DYM_NONE ) {
+    copy_cli_options( &dym );
   }
   if ( (kinds & DYM_SET_OPTIONS) != DYM_NONE ) {
     copy_set_options( &dym );

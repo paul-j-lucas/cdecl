@@ -354,7 +354,7 @@ void print_loc( c_loc_t const *loc ) {
   EPUTS( ": " );
 }
 
-void print_suggestions( dym_kind_t kinds, char const *unknown_token ) {
+bool print_suggestions( dym_kind_t kinds, char const *unknown_token ) {
   did_you_mean_t const *const dym = dym_new( kinds, unknown_token );
   if ( dym != NULL ) {
     EPUTS( "; did you mean " );
@@ -367,7 +367,9 @@ void print_suggestions( dym_kind_t kinds, char const *unknown_token ) {
     } // for
     EPUTC( '?' );
     dym_free( dym );
+    return true;
   }
+  return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

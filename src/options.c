@@ -40,7 +40,6 @@
 #include <assert.h>
 #include <ctype.h>
 #include <errno.h>
-#include <getopt.h>
 #include <stdlib.h>
 #include <stdnoreturn.h>
 #include <string.h>
@@ -161,17 +160,13 @@ static struct option const LONG_OPTS[] = {
 };
 
 /**
- * Convenience macro for iterating over all cdecl command-line options.
- *
- * @param VAR The `struct option` loop variable.
- */
-#define FOREACH_CLI_OPTION(VAR) \
-  for ( struct option const *VAR = LONG_OPTS; VAR->name != NULL; ++VAR )
-
-/**
  * Short options.
+ *
+ * @note
+ * It _must_ start with `:` to make `getopt_long()` return `:` when a required
+ * argument for a known option is missing.
  */
-static char const   SHORT_OPTS[] = "23ac:CeEf:hiI:k:o:pstvx:"
+static char const   SHORT_OPTS[] = ":23ac:CeEf:hiI:k:o:pstvx:"
 #ifdef ENABLE_CDECL_DEBUG
   "d"
 #endif /* ENABLE_CDECL_DEBUG */
@@ -400,7 +395,8 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
  * @param argv The argument values from main().
  */
 static void parse_options( int argc, char const *argv[] ) {
-  optind = opterr = 1;
+  opterr = 0;                           // suppress default error message
+  optind = 1;
 
   color_when_t  color_when = COLOR_WHEN_DEFAULT;
   char const   *fin_path = "-";
@@ -440,7 +436,40 @@ static void parse_options( int argc, char const *argv[] ) {
       case OPT_NO_TYPEDEFS: opt_typedefs    = false;                      break;
       case OPT_OUTPUT:      fout_path       = optarg;                     break;
       case OPT_VERSION:     print_version   = true;                       break;
-      default:              usage();
+
+      case ':': {
+        strbuf_t sbuf;
+        PMESSAGE_EXIT( EX_USAGE,
+          "\"%s\" requires an argument\n", opt_format( (char)optopt, &sbuf )
+        );
+      }
+
+      case '?':
+        if ( --optind > 0 ) {           // defensive check
+          char const *invalid_opt = argv[ optind ];
+          //
+          // We can offer "did you mean ...?" suggestions only if the invalid
+          // option is a long option.
+          //
+          if ( invalid_opt != NULL && strncmp( invalid_opt, "--", 2 ) == 0 ) {
+            invalid_opt += 2;           // skip over "--"
+            EPRINTF( "%s: \"%s\": invalid option", me, invalid_opt );
+            if ( !print_suggestions( DYM_CLI_OPTIONS, invalid_opt ) )
+              goto use_help;
+            EPUTC( '\n' );
+            exit( EX_USAGE );
+          }
+        }
+        EPRINTF( "%s: \"%c\": invalid option", me, (char)optopt );
+
+use_help:
+        EPUTS( "; use --help or -h for help\n" );
+        exit( EX_USAGE );
+
+      default:
+        INTERNAL_ERR(
+          "'%c': unaccounted-for getopt_long() return value\n", (char)opt
+        );
     } // switch
   } // for
 
@@ -545,6 +574,14 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n",
 
 bool any_explicit_int( void ) {
   return opt_explicit_int[0] != TB_NONE || opt_explicit_int[1] != TB_NONE;
+}
+
+struct option const* cli_option_next( struct option const *opt ) {
+  if ( opt == NULL )
+    opt = LONG_OPTS;
+  else if ( (++opt)->name == NULL )
+    opt = NULL;
+  return opt;
 }
 
 bool is_explicit_int( c_type_id_t tid ) {

@@ -55,10 +55,11 @@ typedef unsigned dym_kind_t;
 
 #define DYM_NONE          0u            /**< Did you mean nothing. */
 #define DYM_COMMANDS      (1u << 0)     /**< Did you mean cdecl _command_? */
-#define DYM_SET_OPTIONS   (1u << 1)     /**< Did you mean _set option_? */
-#define DYM_C_ATTRIBUTES  (1u << 2)     /**< Did you mean C/C++ _attribute_? */
-#define DYM_C_KEYWORDS    (1u << 3)     /**< Did you mean C/C++ _keyword_? */
-#define DYM_C_TYPES       (1u << 4)     /**< Did you mean C/C++ _type_? */
+#define DYM_CLI_OPTIONS   (1u << 1)     /**< Did you mean _CLI option_? */
+#define DYM_SET_OPTIONS   (1u << 2)     /**< Did you mean _set option_? */
+#define DYM_C_ATTRIBUTES  (1u << 3)     /**< Did you mean C/C++ _attribute_? */
+#define DYM_C_KEYWORDS    (1u << 4)     /**< Did you mean C/C++ _keyword_? */
+#define DYM_C_TYPES       (1u << 5)     /**< Did you mean C/C++ _type_? */
 
 ////////// extern functions ///////////////////////////////////////////////////
 

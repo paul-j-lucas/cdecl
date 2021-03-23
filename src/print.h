@@ -31,6 +31,9 @@
 #include "did_you_mean.h"
 #include "types.h"                      /* for c_loc_t */
 
+// standard
+#include <stdbool.h>
+
 /**
  * @defgroup printing-errors-warnings-group Printing Hints, Errors, & Warnings
  * Functions for printing hints, errors, suggestions, and warning messages.
@@ -212,10 +215,12 @@ void print_loc( c_loc_t const *loc );
  * @param kinds The bitwise-or of the kind(s) of things possibly meant by \a
  * unknown_token.
  * @param unknown_token The unknown token.
+ * @return Returns `true` only if any suggestions were printed.
  *
  * @sa print_hint()
  */
-void print_suggestions( dym_kind_t kinds, char const *unknown_token );
+PJL_NOWARN_UNUSED_RESULT
+bool print_suggestions( dym_kind_t kinds, char const *unknown_token );
 
 ///////////////////////////////////////////////////////////////////////////////
 

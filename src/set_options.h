@@ -75,26 +75,14 @@ typedef struct set_option set_option_t;
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Iterates to the next cdecl `set` option.
- *
- * @param opt A pointer to the previous option. For the first iteration, NULL
- * should be passed.
- * @return Returns the next `set` option or NULL for none.
- *
- * @sa #FOREACH_SET_OPTION
- */
-PJL_WARN_UNUSED_RESULT
-set_option_t const* option_next( set_option_t const *opt );
-
-/**
  * Convenience macro for iterating over all cdecl `set` options.
  *
  * @param VAR The `set_option_t` loop variable.
  *
- * @sa option_next()
+ * @sa set_option_next()
  */
 #define FOREACH_SET_OPTION(VAR) \
-  for ( set_option_t const *VAR = NULL; (VAR = option_next( VAR )) != NULL; )
+  for ( set_option_t const *VAR = NULL; (VAR = set_option_next( VAR )) != NULL; )
 
 /**
  * Implements the cdecl `set` command.
@@ -107,6 +95,18 @@ set_option_t const* option_next( set_option_t const *opt );
  */
 void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc );
+
+/**
+ * Iterates to the next cdecl `set` option.
+ *
+ * @param opt A pointer to the previous option. For the first iteration, NULL
+ * should be passed.
+ * @return Returns the next `set` option or NULL for none.
+ *
+ * @sa #FOREACH_SET_OPTION
+ */
+PJL_WARN_UNUSED_RESULT
+set_option_t const* set_option_next( set_option_t const *opt );
 
 ///////////////////////////////////////////////////////////////////////////////
 

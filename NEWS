@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 9.10
+
+** "Did you mean ...?" for command-line options
+"Did you mean ...?" suggestions have been added for command-line long options.
+
+
 * Changes in Cdecl 9.9
 
 ** C78
