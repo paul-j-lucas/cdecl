@@ -188,10 +188,10 @@ static char         opts_given[ 128 ];  ///< Table of options that were given.
 
 // local functions
 PJL_WARN_UNUSED_RESULT
-static char const*  format_opt( char, strbuf_t* );
+static char const*  opt_format( char, strbuf_t* );
 
 PJL_WARN_UNUSED_RESULT
-static char const*  get_long_opt( char );
+static char const*  opt_get_long( char );
 
 noreturn
 static void         usage( void );
@@ -241,8 +241,8 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
           strbuf_t opt1_sbuf, opt2_sbuf;
           PMESSAGE_EXIT( EX_USAGE,
             "%s and %s are mutually exclusive\n",
-            format_opt( gave_opt1, &opt1_sbuf ),
-            format_opt( gave_opt2, &opt2_sbuf )
+            opt_format( gave_opt1, &opt1_sbuf ),
+            opt_format( gave_opt2, &opt2_sbuf )
           );
         }
         gave_opt1 = *opt;
@@ -253,45 +253,6 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
       break;
     opt = opts2;
   } // for
-}
-
-/**
- * Formats an option as `[--%%s/]-%%c` where `%%s` is the long option (if any)
- * and `%%c` is the short option.
- *
- * @param short_opt The short option (along with its corresponding long option,
- * if any) to format.
- * @param sbuf A pointer to the strbuf to use.
- * @return Returns \a sbuf->str.
- */
-PJL_WARN_UNUSED_RESULT
-static char const* format_opt( char short_opt, strbuf_t *sbuf ) {
-  assert( sbuf != NULL );
-  strbuf_init( sbuf );
-  char const *const long_opt = get_long_opt( short_opt );
-  strbuf_catf(
-    sbuf, "%s%s%s-%c",
-    long_opt[0] != '\0' ? "--" : "",
-    long_opt,
-    long_opt[0] != '\0' ? "/" : "",
-    short_opt
-  );
-  return sbuf->str;
-}
-
-/**
- * Gets the corresponding name of the long option for \a short_opt.
- *
- * @param short_opt The short option to get the corresponding long option for.
- * @return Returns said option or the empty string if none.
- */
-PJL_WARN_UNUSED_RESULT
-static char const* get_long_opt( char short_opt ) {
-  FOREACH_CLI_OPTION( opt ) {
-    if ( opt->val == short_opt )
-      return opt->name;
-  } // for
-  return "";
 }
 
 /**
@@ -314,6 +275,45 @@ static bool is_cppdecl( char const *prog_name ) {
       return true;
   } // for
   return false;
+}
+
+/**
+ * Formats an option as `[--%%s/]-%%c` where `%%s` is the long option (if any)
+ * and `%%c` is the short option.
+ *
+ * @param short_opt The short option (along with its corresponding long option,
+ * if any) to format.
+ * @param sbuf A pointer to the strbuf to use.
+ * @return Returns \a sbuf->str.
+ */
+PJL_WARN_UNUSED_RESULT
+static char const* opt_format( char short_opt, strbuf_t *sbuf ) {
+  assert( sbuf != NULL );
+  strbuf_init( sbuf );
+  char const *const long_opt = opt_get_long( short_opt );
+  strbuf_catf(
+    sbuf, "%s%s%s-%c",
+    long_opt[0] != '\0' ? "--" : "",
+    long_opt,
+    long_opt[0] != '\0' ? "/" : "",
+    short_opt
+  );
+  return sbuf->str;
+}
+
+/**
+ * Gets the corresponding name of the long option for \a short_opt.
+ *
+ * @param short_opt The short option to get the corresponding long option for.
+ * @return Returns said option or the empty string if none.
+ */
+PJL_WARN_UNUSED_RESULT
+static char const* opt_get_long( char short_opt ) {
+  FOREACH_CLI_OPTION( opt ) {
+    if ( opt->val == short_opt )
+      return opt->name;
+  } // for
+  return "";
 }
 
 /**
@@ -359,7 +359,7 @@ static color_when_t parse_color_when( char const *when ) {
   strbuf_t opt_sbuf;
   PMESSAGE_EXIT( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of: %s\n",
-    when, format_opt( OPT_COLOR, &opt_sbuf ), when_sbuf.str
+    when, opt_format( OPT_COLOR, &opt_sbuf ), when_sbuf.str
   );
 }
 
@@ -389,7 +389,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
   strbuf_t opt_sbuf;
   PMESSAGE_EXIT( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of: %s\n",
-    lang_name, format_opt( OPT_LANGUAGE, &opt_sbuf ), langs_sbuf.str
+    lang_name, opt_format( OPT_LANGUAGE, &opt_sbuf ), langs_sbuf.str
   );
 }
 
@@ -617,7 +617,7 @@ void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
           PMESSAGE_EXIT( EX_USAGE,
             "\"%s\": invalid explicit int for %s:"
             " '%c': must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
-            s, format_opt( OPT_EXPLICIT_INT, &opt_sbuf ), *s
+            s, opt_format( OPT_EXPLICIT_INT, &opt_sbuf ), *s
           );
         }
         print_error( loc,
