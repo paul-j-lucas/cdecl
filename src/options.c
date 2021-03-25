@@ -434,14 +434,14 @@ static void parse_options( int argc, char const *argv[] ) {
       case OPT_OUTPUT:      fout_path       = optarg;                     break;
       case OPT_VERSION:     print_version   = true;                       break;
 
-      case ':': {
+      case ':': {                       // option missing required argument
         strbuf_t sbuf;
         PMESSAGE_EXIT( EX_USAGE,
           "\"%s\" requires an argument\n", opt_format( (char)optopt, &sbuf )
         );
       }
 
-      case '?':
+      case '?':                         // invalid option
         if ( --optind > 0 ) {           // defensive check
           char const *invalid_opt = argv[ optind ];
           //
