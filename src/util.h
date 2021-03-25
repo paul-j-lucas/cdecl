@@ -95,6 +95,7 @@ _GL_INLINE_HEADER_BEGIN
 #define CHARIFY_X 'X'
 #define CHARIFY_Y 'Y'
 #define CHARIFY_Z 'Z'
+#define CHARIFY__ '_'
 #define CHARIFY_a 'a'
 #define CHARIFY_b 'b'
 #define CHARIFY_c 'c'
@@ -166,7 +167,8 @@ _GL_INLINE_HEADER_BEGIN
 /**
  * Macro that "char-ifies" its argument, e.g., `CHARIFY(x)` becomes `'x'`.
  *
- * @param X The unquoted character to charify.  It can be only alphanumeric.
+ * @param X The unquoted character to charify.  It can be only in the set
+ * `[0-9_A-Za-z]`.
  */
 #define CHARIFY(X)                CHARIFY_HELPER(X)
 
