@@ -46,33 +46,37 @@
 #include <sysexits.h>
 
 // in ascending option character ASCII order
-#define OPT_DIGRAPHS        '2'
-#define OPT_TRIGRAPHS       '3'
-#define OPT_ALT_TOKENS      'a'
+#define OPT_DIGRAPHS        2
+#define OPT_TRIGRAPHS       3
+#define OPT_ALT_TOKENS      a
 #ifdef YYDEBUG
-#define OPT_BISON_DEBUG     'B'
+#define OPT_BISON_DEBUG     B
 #endif /* YYDEBUG */
-#define OPT_CONFIG          'c'
-#define OPT_NO_CONFIG       'C'
+#define OPT_CONFIG          c
+#define OPT_NO_CONFIG       C
 #ifdef ENABLE_CDECL_DEBUG
-#define OPT_CDECL_DEBUG     'd'
+#define OPT_CDECL_DEBUG     d
 #endif /* ENABLE_CDECL_DEBUG */
-#define OPT_EXPLAIN         'e'
-#define OPT_EAST_CONST      'E'
-#define OPT_FILE            'f'
+#define OPT_EXPLAIN         e
+#define OPT_EAST_CONST      E
+#define OPT_FILE            f
 #ifdef ENABLE_FLEX_DEBUG
-#define OPT_FLEX_DEBUG      'F'
+#define OPT_FLEX_DEBUG      F
 #endif /* ENABLE_FLEX_DEBUG */
-#define OPT_HELP            'h'
-#define OPT_INTERACTIVE     'i'
-#define OPT_EXPLICIT_INT    'I'
-#define OPT_COLOR           'k'
-#define OPT_OUTPUT          'o'
-#define OPT_NO_PROMPT       'p'
-#define OPT_NO_SEMICOLON    's'
-#define OPT_NO_TYPEDEFS     't'
-#define OPT_VERSION         'v'
-#define OPT_LANGUAGE        'x'
+#define OPT_HELP            h
+#define OPT_INTERACTIVE     i
+#define OPT_EXPLICIT_INT    I
+#define OPT_COLOR           k
+#define OPT_OUTPUT          o
+#define OPT_NO_PROMPT       p
+#define OPT_NO_SEMICOLON    s
+#define OPT_NO_TYPEDEFS     t
+#define OPT_VERSION         v
+#define OPT_LANGUAGE        x
+
+#define COPT(X)                   CHARIFY(OPT_##X)
+#define SOPT_HELPER(X)            #X
+#define SOPT(X)                   SOPT_HELPER(OPT_##X)
 
 /// @endcond
 
@@ -127,34 +131,34 @@ static struct option const CLI_OPTIONS_LONG[] = {
   // check_mutually_exclusive() in parse_options(), the message in usage(), and
   // the corresponding "set" option in SET_OPTIONS in set.c.
   //
-  { "alt-tokens",   no_argument,        NULL, OPT_ALT_TOKENS    },
+  { "alt-tokens",   no_argument,        NULL, COPT(ALT_TOKENS)    },
 #ifdef YYDEBUG
-  { "bison-debug",  no_argument,        NULL, OPT_BISON_DEBUG   },
+  { "bison-debug",  no_argument,        NULL, COPT(BISON_DEBUG)   },
 #endif /* YYDEBUG */
-  { "color",        required_argument,  NULL, OPT_COLOR         },
-  { "config",       required_argument,  NULL, OPT_CONFIG        },
+  { "color",        required_argument,  NULL, COPT(COLOR)         },
+  { "config",       required_argument,  NULL, COPT(CONFIG)        },
 #ifdef ENABLE_CDECL_DEBUG
-  { "debug",        no_argument,        NULL, OPT_CDECL_DEBUG   },
+  { "debug",        no_argument,        NULL, COPT(CDECL_DEBUG)   },
 #endif /* ENABLE_CDECL_DEBUG */
-  { "digraphs",     no_argument,        NULL, OPT_DIGRAPHS      },
-  { "east-const",   no_argument,        NULL, OPT_EAST_CONST    },
-  { "explain",      no_argument,        NULL, OPT_EXPLAIN       },
-  { "explicit-int", required_argument,  NULL, OPT_EXPLICIT_INT  },
-  { "file",         required_argument,  NULL, OPT_FILE          },
+  { "digraphs",     no_argument,        NULL, COPT(DIGRAPHS)      },
+  { "east-const",   no_argument,        NULL, COPT(EAST_CONST)    },
+  { "explain",      no_argument,        NULL, COPT(EXPLAIN)       },
+  { "explicit-int", required_argument,  NULL, COPT(EXPLICIT_INT)  },
+  { "file",         required_argument,  NULL, COPT(FILE)          },
 #ifdef ENABLE_FLEX_DEBUG
-  { "flex-debug",   no_argument,        NULL, OPT_FLEX_DEBUG    },
+  { "flex-debug",   no_argument,        NULL, COPT(FLEX_DEBUG)    },
 #endif /* ENABLE_FLEX_DEBUG */
-  { "help",         no_argument,        NULL, OPT_HELP          },
-  { "interactive",  no_argument,        NULL, OPT_INTERACTIVE   },
-  { "language",     required_argument,  NULL, OPT_LANGUAGE      },
-  { "no-config",    no_argument,        NULL, OPT_NO_CONFIG     },
-  { "no-prompt",    no_argument,        NULL, OPT_NO_PROMPT     },
-  { "no-semicolon", no_argument,        NULL, OPT_NO_SEMICOLON  },
-  { "no-typedefs",  no_argument,        NULL, OPT_NO_TYPEDEFS   },
-  { "output",       required_argument,  NULL, OPT_OUTPUT        },
-  { "trigraphs",    no_argument,        NULL, OPT_TRIGRAPHS     },
-  { "version",      no_argument,        NULL, OPT_VERSION       },
-  { NULL,           0,                  NULL, 0                 }
+  { "help",         no_argument,        NULL, COPT(HELP)          },
+  { "interactive",  no_argument,        NULL, COPT(INTERACTIVE)   },
+  { "language",     required_argument,  NULL, COPT(LANGUAGE)      },
+  { "no-config",    no_argument,        NULL, COPT(NO_CONFIG)     },
+  { "no-prompt",    no_argument,        NULL, COPT(NO_PROMPT)     },
+  { "no-semicolon", no_argument,        NULL, COPT(NO_SEMICOLON)  },
+  { "no-typedefs",  no_argument,        NULL, COPT(NO_TYPEDEFS)   },
+  { "output",       required_argument,  NULL, COPT(OUTPUT)        },
+  { "trigraphs",    no_argument,        NULL, COPT(TRIGRAPHS)     },
+  { "version",      no_argument,        NULL, COPT(VERSION)       },
+  { NULL,           0,                  NULL, 0                   }
 };
 
 /**
@@ -166,16 +170,34 @@ static struct option const CLI_OPTIONS_LONG[] = {
  *
  * @sa CLI_OPTIONS_LONG
  */
-static char const   CLI_OPTIONS_SHORT[] = ":23ac:CeEf:hiI:k:o:pstvx:"
-#ifdef ENABLE_CDECL_DEBUG
-  "d"
-#endif /* ENABLE_CDECL_DEBUG */
-#ifdef ENABLE_FLEX_DEBUG
-  "F"
-#endif /* ENABLE_FLEX_DEBUG */
+static char const   CLI_OPTIONS_SHORT[] = ":"
+  SOPT(ALT_TOKENS)
 #ifdef YYDEBUG
-  "B"
+  SOPT(BISON_DEBUG)
 #endif /* YYDEBUG */
+#ifdef ENABLE_CDECL_DEBUG
+  SOPT(CDECL_DEBUG)
+#endif /* ENABLE_CDECL_DEBUG */
+  SOPT(COLOR) ":"
+  SOPT(CONFIG) ":"
+  SOPT(DIGRAPHS)
+  SOPT(EAST_CONST)
+  SOPT(EXPLAIN)
+  SOPT(EXPLICIT_INT) ":"
+  SOPT(FILE) ":"
+#ifdef ENABLE_FLEX_DEBUG
+  SOPT(FLEX_DEBUG)
+#endif /* ENABLE_FLEX_DEBUG */
+  SOPT(HELP)
+  SOPT(INTERACTIVE)
+  SOPT(LANGUAGE) ":"
+  SOPT(NO_CONFIG)
+  SOPT(NO_PROMPT)
+  SOPT(NO_SEMICOLON)
+  SOPT(NO_TYPEDEFS)
+  SOPT(OUTPUT) ":"
+  SOPT(TRIGRAPHS)
+  SOPT(VERSION)
 ;
 
 // local variables
@@ -335,7 +357,7 @@ static color_when_t parse_color_when( char const *when ) {
   strbuf_t opt_sbuf;
   PMESSAGE_EXIT( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of: %s\n",
-    when, opt_format( OPT_COLOR, &opt_sbuf ), when_sbuf.str
+    when, opt_format( COPT(COLOR), &opt_sbuf ), when_sbuf.str
   );
 }
 
@@ -365,7 +387,7 @@ static c_lang_id_t parse_lang( char const *lang_name ) {
   strbuf_t opt_sbuf;
   PMESSAGE_EXIT( EX_USAGE,
     "\"%s\": invalid value for %s; must be one of: %s\n",
-    lang_name, opt_format( OPT_LANGUAGE, &opt_sbuf ), langs_sbuf.str
+    lang_name, opt_format( COPT(LANGUAGE), &opt_sbuf ), langs_sbuf.str
   );
 }
 
@@ -382,6 +404,7 @@ static void parse_options( int argc, char const *argv[] ) {
   color_when_t  color_when = COLOR_WHEN_DEFAULT;
   char const   *fin_path = "-";
   char const   *fout_path = "-";
+  bool          print_usage = false;
   bool          print_version = false;
 
   for (;;) {
@@ -391,33 +414,75 @@ static void parse_options( int argc, char const *argv[] ) {
     if ( opt == -1 )
       break;
     switch ( opt ) {
-      case OPT_ALT_TOKENS:  opt_alt_tokens  = true;                       break;
+      case COPT(ALT_TOKENS):
+        opt_alt_tokens = true;
+        break;
 #ifdef YYDEBUG
-      case OPT_BISON_DEBUG: opt_bison_debug = true;                       break;
+      case COPT(BISON_DEBUG):
+        opt_bison_debug = true;
+        break;
 #endif /* YYDEBUG */
 #ifdef ENABLE_CDECL_DEBUG
-      case OPT_CDECL_DEBUG: opt_cdecl_debug = true;                       break;
+      case COPT(CDECL_DEBUG):
+        opt_cdecl_debug = true;
+        break;
 #endif /* ENABLE_CDECL_DEBUG */
-      case OPT_COLOR:       color_when      = parse_color_when( optarg ); break;
-      case OPT_CONFIG:      opt_conf_file   = optarg;                     break;
-      case OPT_DIGRAPHS:    opt_graph       = C_GRAPH_DI;                 break;
-      case OPT_EAST_CONST:  opt_east_const  = true;                       break;
-      case OPT_EXPLAIN:     opt_explain     = true;                       break;
-      case OPT_EXPLICIT_INT:parse_explicit_int( NULL, optarg );           break;
-      case OPT_FILE:        fin_path        = optarg;                     break;
+      case COPT(COLOR):
+        color_when = parse_color_when( optarg );
+        break;
+      case COPT(CONFIG):
+        opt_conf_file = optarg;
+        break;
+      case COPT(DIGRAPHS):
+        opt_graph = C_GRAPH_DI;
+        break;
+      case COPT(EAST_CONST):
+        opt_east_const = true;
+        break;
+      case COPT(EXPLAIN):
+        opt_explain = true;
+        break;
+      case COPT(EXPLICIT_INT):
+        parse_explicit_int( NULL, optarg );
+        break;
+      case COPT(FILE):
+        fin_path  = optarg;
+        break;
 #ifdef ENABLE_FLEX_DEBUG
-      case OPT_FLEX_DEBUG:  opt_flex_debug  = true;                       break;
+      case COPT(FLEX_DEBUG):
+        opt_flex_debug = true;
+        break;
 #endif /* ENABLE_FLEX_DEBUG */
-      case OPT_HELP:        usage();
-      case OPT_INTERACTIVE: opt_interactive = true;                       break;
-      case OPT_LANGUAGE:    opt_lang        = parse_lang( optarg );       break;
-      case OPT_TRIGRAPHS:   opt_graph       = C_GRAPH_TRI;                break;
-      case OPT_NO_CONFIG:   opt_no_conf     = true;                       break;
-      case OPT_NO_PROMPT:   opt_prompt      = false;                      break;
-      case OPT_NO_SEMICOLON:opt_semicolon   = false;                      break;
-      case OPT_NO_TYPEDEFS: opt_typedefs    = false;                      break;
-      case OPT_OUTPUT:      fout_path       = optarg;                     break;
-      case OPT_VERSION:     print_version   = true;                       break;
+      case COPT(HELP):
+        print_usage = true;
+        break;
+      case COPT(INTERACTIVE):
+        opt_interactive = true;
+        break;
+      case COPT(LANGUAGE):
+        opt_lang = parse_lang( optarg );
+        break;
+      case COPT(TRIGRAPHS):
+        opt_graph = C_GRAPH_TRI;
+        break;
+      case COPT(NO_CONFIG):
+        opt_no_conf = true;
+        break;
+      case COPT(NO_PROMPT):
+        opt_prompt = false;
+        break;
+      case COPT(NO_SEMICOLON):
+        opt_semicolon = false;
+        break;
+      case COPT(NO_TYPEDEFS):
+        opt_typedefs = false;
+        break;
+      case COPT(OUTPUT):
+        fout_path = optarg;
+        break;
+      case COPT(VERSION):
+        print_version = true;
+        break;
 
       case ':': {                       // option missing required argument
         strbuf_t sbuf;
@@ -460,8 +525,68 @@ use_help:
     opts_given[ opt ] = true;
   } // for
 
-  check_mutually_exclusive( "2", "3" );
-  check_mutually_exclusive( "v", "23aBcCdeEfFhiIkopstx" );
+  check_mutually_exclusive( SOPT(DIGRAPHS), SOPT(TRIGRAPHS) );
+
+  check_mutually_exclusive( SOPT(HELP),
+    SOPT(ALT_TOKENS)
+#ifdef YYDEBUG
+    SOPT(BISON_DEBUG)
+#endif /* YYDEBUG */
+#ifdef ENABLE_CDECL_DEBUG
+    SOPT(CDECL_DEBUG)
+#endif /* ENABLE_CDECL_DEBUG */
+    SOPT(COLOR)
+    SOPT(CONFIG)
+    SOPT(DIGRAPHS)
+    SOPT(EAST_CONST)
+    SOPT(EXPLAIN)
+    SOPT(EXPLICIT_INT)
+    SOPT(FILE)
+#ifdef ENABLE_FLEX_DEBUG
+    SOPT(FLEX_DEBUG)
+#endif /* ENABLE_FLEX_DEBUG */
+    SOPT(INTERACTIVE)
+    SOPT(LANGUAGE)
+    SOPT(NO_CONFIG)
+    SOPT(NO_PROMPT)
+    SOPT(NO_SEMICOLON)
+    SOPT(NO_TYPEDEFS)
+    SOPT(OUTPUT)
+    SOPT(TRIGRAPHS)
+    SOPT(VERSION)
+  );
+
+  check_mutually_exclusive( SOPT(VERSION),
+    SOPT(ALT_TOKENS)
+#ifdef YYDEBUG
+    SOPT(BISON_DEBUG)
+#endif /* YYDEBUG */
+#ifdef ENABLE_CDECL_DEBUG
+    SOPT(CDECL_DEBUG)
+#endif /* ENABLE_CDECL_DEBUG */
+    SOPT(COLOR)
+    SOPT(CONFIG)
+    SOPT(DIGRAPHS)
+    SOPT(EAST_CONST)
+    SOPT(EXPLAIN)
+    SOPT(EXPLICIT_INT)
+    SOPT(FILE)
+#ifdef ENABLE_FLEX_DEBUG
+    SOPT(FLEX_DEBUG)
+#endif /* ENABLE_FLEX_DEBUG */
+    SOPT(HELP)
+    SOPT(INTERACTIVE)
+    SOPT(LANGUAGE)
+    SOPT(NO_CONFIG)
+    SOPT(NO_PROMPT)
+    SOPT(NO_SEMICOLON)
+    SOPT(NO_TYPEDEFS)
+    SOPT(OUTPUT)
+    SOPT(TRIGRAPHS)
+  );
+
+  if ( print_usage )
+    usage();
 
   if ( print_version ) {
     printf( "%s\n", PACKAGE_STRING );
@@ -526,33 +651,33 @@ static void usage( void ) {
 "\n"
 "Report bugs to: " PACKAGE_BUGREPORT "\n"
 PACKAGE_NAME " home page: " PACKAGE_URL "\n",
-    OPT_ALT_TOKENS,
+    COPT(ALT_TOKENS),
 #ifdef YYDEBUG
-    OPT_BISON_DEBUG,
+    COPT(BISON_DEBUG),
 #endif /* YYDEBUG */
-    OPT_COLOR,
-    OPT_CONFIG,
+    COPT(COLOR),
+    COPT(CONFIG),
 #ifdef ENABLE_CDECL_DEBUG
-    OPT_CDECL_DEBUG,
+    COPT(CDECL_DEBUG),
 #endif /* ENABLE_CDECL_DEBUG */
-    OPT_DIGRAPHS,
-    OPT_EAST_CONST,
-    OPT_EXPLAIN,
-    OPT_EXPLICIT_INT,
-    OPT_FILE,
+    COPT(DIGRAPHS),
+    COPT(EAST_CONST),
+    COPT(EXPLAIN),
+    COPT(EXPLICIT_INT),
+    COPT(FILE),
 #ifdef ENABLE_FLEX_DEBUG
-    OPT_FLEX_DEBUG
+    COPT(FLEX_DEBUG)
 #endif /* ENABLE_FLEX_DEBUG */
-    OPT_HELP,
-    OPT_INTERACTIVE,
-    OPT_LANGUAGE,
-    OPT_NO_CONFIG,
-    OPT_NO_PROMPT,
-    OPT_NO_SEMICOLON,
-    OPT_NO_TYPEDEFS,
-    OPT_OUTPUT,
-    OPT_TRIGRAPHS,
-    OPT_VERSION
+    COPT(HELP),
+    COPT(INTERACTIVE),
+    COPT(LANGUAGE),
+    COPT(NO_CONFIG),
+    COPT(NO_PROMPT),
+    COPT(NO_SEMICOLON),
+    COPT(NO_TYPEDEFS),
+    COPT(OUTPUT),
+    COPT(TRIGRAPHS),
+    COPT(VERSION)
   );
   exit( EX_USAGE );
 }
@@ -641,7 +766,7 @@ void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
           PMESSAGE_EXIT( EX_USAGE,
             "\"%s\": invalid explicit int for %s:"
             " '%c': must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
-            s, opt_format( OPT_EXPLICIT_INT, &opt_sbuf ), *s
+            s, opt_format( COPT(EXPLICIT_INT), &opt_sbuf ), *s
           );
         }
         print_error( loc,               // invalid for `set` option
