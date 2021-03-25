@@ -45,9 +45,6 @@
 #include <string.h>
 #include <sysexits.h>
 
-#define GAVE_OPTION(OPT)    (opts_given[ (unsigned char)(OPT) ])
-#define SET_OPTION(OPT)     (GAVE_OPTION(OPT) = (char)(OPT))
-
 // in ascending option character ASCII order
 #define OPT_DIGRAPHS        '2'
 #define OPT_TRIGRAPHS       '3'
@@ -179,7 +176,7 @@ static char const   SHORT_OPTS[] = ":23ac:CeEf:hiI:k:o:pstvx:"
 ;
 
 // local variables
-static char         opts_given[ 128 ];  ///< Table of options that were given.
+static bool         opts_given[ 128 ];  ///< Table of options that were given.
 
 // local functions
 PJL_WARN_UNUSED_RESULT
@@ -230,7 +227,7 @@ static void check_mutually_exclusive( char const *opts1, char const *opts2 ) {
 
   for ( unsigned i = 0; i < 2; ++i ) {
     for ( ; *opt != '\0'; ++opt ) {
-      if ( GAVE_OPTION( *opt ) ) {
+      if ( opts_given[ (unsigned char)*opt ] ) {
         if ( ++gave_count > 1 ) {
           char const gave_opt2 = *opt;
           strbuf_t opt1_sbuf, opt2_sbuf;
@@ -404,10 +401,10 @@ static void parse_options( int argc, char const *argv[] ) {
   bool          print_version = false;
 
   for (;;) {
-    int opt = getopt_long( argc, (char**)argv, SHORT_OPTS, LONG_OPTS, NULL );
+    int const opt =
+      getopt_long( argc, (char**)argv, SHORT_OPTS, LONG_OPTS, NULL );
     if ( opt == -1 )
       break;
-    SET_OPTION( opt );
     switch ( opt ) {
       case OPT_ALT_TOKENS:  opt_alt_tokens  = true;                       break;
 #ifdef YYDEBUG
@@ -471,6 +468,7 @@ use_help:
           "'%c': unaccounted-for getopt_long() return value\n", (char)opt
         );
     } // switch
+    opts_given[ (unsigned char)opt ] = true;
   } // for
 
   check_mutually_exclusive( "2", "3" );
