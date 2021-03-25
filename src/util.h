@@ -169,6 +169,8 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param X The unquoted character to charify.  It can be only in the set
  * `[0-9_A-Za-z]`.
+ *
+ * @sa #STRINGIFY
  */
 #define CHARIFY(X)                CHARIFY_HELPER(X)
 
@@ -468,6 +470,19 @@ _GL_INLINE_HEADER_BEGIN
  * Shorthand for calling **strerror**(3).
  */
 #define STRERROR()                strerror( errno )
+
+/**
+ * Macro that "string-ifies" its argument, e.g., `STRINGIFY(x)` becomes `"x"`.
+ *
+ * @note
+ * This macro can is sometimes necessary in cases where it's mixed with uses of
+ * `##` by forcing re-scanning for token substitution.
+ *
+ * @param X The unquoted string to stringify.
+ *
+ * @sa #CHARIFY
+ */
+#define STRINGIFY(X)              #X
 
 #ifdef __GNUC__
 

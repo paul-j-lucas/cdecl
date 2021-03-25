@@ -75,7 +75,7 @@
 #define OPT_LANGUAGE        x
 
 #define COPT(X)                   CHARIFY(OPT_##X)
-#define SOPT_HELPER(X)            #X
+#define SOPT_HELPER(X)            STRINGIFY(X)
 #define SOPT(X)                   SOPT_HELPER(OPT_##X)
 
 /// @endcond
