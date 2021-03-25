@@ -636,7 +636,7 @@ void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
       case ',':
         break;
       default:
-        if ( loc == NULL ) {
+        if ( loc == NULL ) {            // invalid for CLI option
           strbuf_t opt_sbuf;
           PMESSAGE_EXIT( EX_USAGE,
             "\"%s\": invalid explicit int for %s:"
@@ -644,7 +644,7 @@ void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
             s, opt_format( OPT_EXPLICIT_INT, &opt_sbuf ), *s
           );
         }
-        print_error( loc,
+        print_error( loc,               // invalid for `set` option
           "\"%s\": invalid explicit-int:"
           " must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
           s
