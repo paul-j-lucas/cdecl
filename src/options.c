@@ -119,10 +119,12 @@ static c_type_id_t  opt_explicit_int[] = { TB_NONE, TB_NONE };
 
 /**
  * Long options.
+ *
+ * @sa CLI_OPTIONS_SHORT
  */
-static struct option const LONG_OPTS[] = {
+static struct option const CLI_OPTIONS_LONG[] = {
   //
-  // If this array is modified, also modify SHORT_OPTS, the call(s) to
+  // If this array is modified, also modify CLI_OPTIONS_SHORT, the call(s) to
   // check_mutually_exclusive() in parse_options(), the message in usage(), and
   // the corresponding "set" option in SET_OPTIONS in set.c.
   //
@@ -162,8 +164,10 @@ static struct option const LONG_OPTS[] = {
  * @note
  * It _must_ start with `:` to make `getopt_long()` return `:` when a required
  * argument for a known option is missing.
+ *
+ * @sa CLI_OPTIONS_LONG
  */
-static char const   SHORT_OPTS[] = ":23ac:CeEf:hiI:k:o:pstvx:"
+static char const   CLI_OPTIONS_SHORT[] = ":23ac:CeEf:hiI:k:o:pstvx:"
 #ifdef ENABLE_CDECL_DEBUG
   "d"
 #endif /* ENABLE_CDECL_DEBUG */
@@ -401,8 +405,9 @@ static void parse_options( int argc, char const *argv[] ) {
   bool          print_version = false;
 
   for (;;) {
-    int const opt =
-      getopt_long( argc, (char**)argv, SHORT_OPTS, LONG_OPTS, NULL );
+    int const opt = getopt_long(
+      argc, (char**)argv, CLI_OPTIONS_SHORT, CLI_OPTIONS_LONG, NULL
+    );
     if ( opt == -1 )
       break;
     switch ( opt ) {
@@ -457,18 +462,22 @@ static void parse_options( int argc, char const *argv[] ) {
             exit( EX_USAGE );
           }
         }
-        EPRINTF( "%s: \"%c\": invalid option", me, (char)optopt );
+        EPRINTF( "%s: '%c': invalid option", me, (char)optopt );
 
 use_help:
         EPUTS( "; use --help or -h for help\n" );
         exit( EX_USAGE );
 
       default:
+        if ( isprint( opt ) )
+          INTERNAL_ERR(
+            "'%c': unaccounted-for getopt_long() return value\n", opt
+          );
         INTERNAL_ERR(
-          "'%c': unaccounted-for getopt_long() return value\n", (char)opt
+          "%d: unaccounted-for getopt_long() return value\n", opt
         );
     } // switch
-    opts_given[ (unsigned char)opt ] = true;
+    opts_given[ opt ] = true;
   } // for
 
   check_mutually_exclusive( "2", "3" );
@@ -576,7 +585,7 @@ bool any_explicit_int( void ) {
 
 struct option const* cli_option_next( struct option const *opt ) {
   if ( opt == NULL )
-    opt = LONG_OPTS;
+    opt = CLI_OPTIONS_LONG;
   else if ( (++opt)->name == NULL )
     opt = NULL;
   return opt;
