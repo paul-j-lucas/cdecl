@@ -589,6 +589,8 @@ use_help:
     usage();
 
   if ( print_version ) {
+    if ( argc > 2 )                     // cdecl -v foo
+      usage();
     printf( "%s\n", PACKAGE_STRING );
     exit( EX_OK );
   }
