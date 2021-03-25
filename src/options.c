@@ -113,7 +113,6 @@ FILE               *fout;
  * @sa any_explicit_int()
  * @sa is_explicit_int()
  * @sa parse_explicit_int()
- * @sa set_opt_explicit_int()
  */
 static c_type_id_t  opt_explicit_int[] = { TB_NONE, TB_NONE };
 
@@ -191,25 +190,6 @@ static char const*  opt_get_long( char );
 
 noreturn
 static void         usage( void );
-
-////////// inline functions ///////////////////////////////////////////////////
-
-/**
- * Sets the given integer type(s) that `int` shall print explicitly for in
- * C/C++ declarations even when not needed because \a tid contains at least one
- * integer modifier, e.g., `unsigned`.
- *
- * @param tid The type(s) to print `int` explicitly for.  When multiple type
- * bits are set simultaneously, they are all considered either signed or
- * unsigned.
- *
- * @sa is_explicit_int()
- */
-static inline void set_opt_explicit_int( c_type_id_t tid ) {
-  assert( c_type_id_tpid( tid ) == C_TPID_BASE );
-  bool const is_unsigned = (tid & TB_UNSIGNED) != TB_NONE;
-  opt_explicit_int[ is_unsigned ] |= tid & c_type_id_compl( TB_UNSIGNED );
-}
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -671,7 +651,9 @@ void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
         );
         return;
     } // switch
-    set_opt_explicit_int( tid );
+
+    bool const is_unsigned = (tid & TB_UNSIGNED) != TB_NONE;
+    opt_explicit_int[ is_unsigned ] |= tid & c_type_id_compl( TB_UNSIGNED );
     tid = TB_NONE;
   } // for
 }
