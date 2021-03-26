@@ -122,7 +122,6 @@ _GL_INLINE_HEADER_BEGIN
 #define CHARIFY_x 'x'
 #define CHARIFY_y 'y'
 #define CHARIFY_z 'z'
-
 #define CHARIFY_HELPER(X)         CHARIFY_##X
 
 /// @endcond
@@ -170,7 +169,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param X The unquoted character to charify.  It can be only in the set
  * `[0-9_A-Za-z]`.
  *
- * @sa #STRINGIFY
+ * @sa #STRINGIFY()
  */
 #define CHARIFY(X)                CHARIFY_HELPER(X)
 
@@ -475,12 +474,12 @@ _GL_INLINE_HEADER_BEGIN
  * Macro that "string-ifies" its argument, e.g., `STRINGIFY(x)` becomes `"x"`.
  *
  * @note
- * This macro can is sometimes necessary in cases where it's mixed with uses of
+ * This macro is sometimes necessary in cases where it's mixed with uses of
  * `##` by forcing re-scanning for token substitution.
  *
  * @param X The unquoted string to stringify.
  *
- * @sa #CHARIFY
+ * @sa #CHARIFY()
  */
 #define STRINGIFY(X)              #X
 
