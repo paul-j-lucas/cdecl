@@ -831,6 +831,9 @@ bool true_or_set( bool *flag ) {
  * @param flag A pointer to the Boolean flag to be tested and, if `true`, sets
  * it to `false`.
  * @return Returns `true` only if \a flag was `true` initially.
+ *
+ * @sa false_set()
+ * @sa true_or_set()
  */
 C_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool true_clear( bool *flag ) {
