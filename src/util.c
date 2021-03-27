@@ -141,10 +141,11 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
 #endif /* NDEBUG */
 
   FILE *const ftmp = tmpfile();
-  IF_EXIT( ftmp == NULL, EX_OSERR );
-  if ( likely( size > 0 ) ) {
-    IF_EXIT( fwrite( buf, 1, size, ftmp ) != size, EX_IOERR );
-    IF_EXIT( fseek( ftmp, 0L, SEEK_SET ) != 0, EX_IOERR );
+  if ( likely( ftmp != NULL && size > 0 ) &&
+       unlikely( fwrite( buf, 1, size, ftmp ) != size ||
+                 fseek( ftmp, 0L, SEEK_SET ) != 0 ) ) {
+    fclose( ftmp );
+    ftmp = NULL;
   }
   return ftmp;
 }

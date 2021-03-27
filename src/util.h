@@ -672,7 +672,8 @@ bool false_set( bool *flag ) {
  * for as along as the `FILE` is open.
  * @param size The size of \a buf.
  * @param mode The open mode.  It _must_ contain `r`.
- * @return Returns a `FILE` containing the contents of \a buf.
+ * @return Returns a `FILE*` containing the contents of \a buf or NULL upon
+ * error.
  */
 PJL_WARN_UNUSED_RESULT
 FILE* fmemopen( void *buf, size_t size, char const *mode );

@@ -450,6 +450,7 @@ bool parse_string( char const *s, ssize_t s_len_in ) {
   }
 
   FILE *const ftmp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
+  IF_EXIT( ftmp == NULL, EX_IOERR );
   yyrestart( ftmp );
   bool const ok = yyparse() == 0;
   PJL_IGNORE_RV( fclose( ftmp ) );
