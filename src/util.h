@@ -422,6 +422,8 @@ _GL_INLINE_HEADER_BEGIN
  * @param S The string pointer to advance.
  * @param CHARS A string containing the characters to skip over.
  * @return Returns the updated \a S.
+ *
+ * @sa #SKIP_WS()
  */
 #define SKIP_CHARS(S,CHARS)       ((S) += strspn( (S), (CHARS) ))
 
@@ -430,8 +432,10 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param S The string pointer to advance.
  * @return Returns the updated \a S.
+ *
+ * @sa #SKIP_CHARS()
  */
-#define SKIP_WS(S)                SKIP_CHARS( (S), " \f\r\t\v" )
+#define SKIP_WS(S)                SKIP_CHARS( (S), " \f\n\r\t\v" )
 
 /**
  * Conditionally returns a space or an empty string.
