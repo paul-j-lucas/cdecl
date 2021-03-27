@@ -611,7 +611,7 @@ char* check_strdup_tolower( char const *s );
  * @param s The string to check.
  * @param s_len The length of \a s.
  * @param set The set of characters to check for.
- * @return Returns `true` only if \a ends with \a c.
+ * @return Returns `true` only if \a s ends with any character in \a set.
  *
  * @sa ends_with_chr()
  */
@@ -684,12 +684,16 @@ FILE* fmemopen( void *buf, size_t size, char const *mode );
  *
  * @param p The pointer to add.
  * @return Returns \a p.
+ *
+ * @sa free_now()
  */
 PJL_WARN_UNUSED_RESULT
 void* free_later( void *p );
 
 /**
  * Frees all the memory pointed to by all the nodes in the free-later-list.
+ *
+ * @sa free_later()
  */
 void free_now( void );
 
@@ -714,8 +718,8 @@ PJL_WARN_UNUSED_RESULT
 char const* home_dir( void );
 
 /**
- * Checks whether \a s is a blank line, that is a line consisting only of
- * whitespace.
+ * Checks whether \a s is a blank line, that is either an empty string or a
+ * line consisting only of whitespace.
  *
  * @param s The null-terminated string to check.
  * @return Returns `true` only if \a s is a blank line.
@@ -749,6 +753,7 @@ bool is_ident( char c ) {
 
 /**
  * Gets the value of the least significant bit that's a 1 in \a n.
+ * For example, for \a n of 12, returns 4.
  *
  * @param n The number to use.
  * @return Returns said value or 0 if \a n is 0.
@@ -760,6 +765,7 @@ uint32_t ls_bit1_32( uint32_t n );
 
 /**
  * Gets the value of the most significant bit that's a 1 in \a n.
+ * For example, for \a n of 12, returns 8.
  *
  * @param n The number to use.
  * @return Returns said value or 0 if \a n is 0.
