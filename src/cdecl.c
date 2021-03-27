@@ -449,10 +449,10 @@ bool parse_string( char const *s, ssize_t s_len_in ) {
     s = explain_buf;
   }
 
-  FILE *const temp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
-  yyrestart( temp );
+  FILE *const ftmp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
+  yyrestart( ftmp );
   bool const ok = yyparse() == 0;
-  PJL_IGNORE_RV( fclose( temp ) );
+  PJL_IGNORE_RV( fclose( ftmp ) );
 
   free( explain_buf );
   inserted_len = 0;

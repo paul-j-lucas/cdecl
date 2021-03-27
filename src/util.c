@@ -140,13 +140,13 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
   (void)mode;
 #endif /* NDEBUG */
 
-  FILE *const tmp = tmpfile();
-  IF_EXIT( tmp == NULL, EX_OSERR );
+  FILE *const ftmp = tmpfile();
+  IF_EXIT( ftmp == NULL, EX_OSERR );
   if ( likely( size > 0 ) ) {
-    IF_EXIT( fwrite( buf, 1, size, tmp ) != size, EX_IOERR );
-    IF_EXIT( fseek( tmp, 0L, SEEK_SET ) != 0, EX_IOERR );
+    IF_EXIT( fwrite( buf, 1, size, ftmp ) != size, EX_IOERR );
+    IF_EXIT( fseek( ftmp, 0L, SEEK_SET ) != 0, EX_IOERR );
   }
-  return tmp;
+  return ftmp;
 }
 #endif /* HAVE_FMEMOPEN */
 
