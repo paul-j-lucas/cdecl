@@ -174,46 +174,48 @@ static bool cdecl_read_line( strbuf_t *sbuf, char const *ps1,
   assert( ps1 != NULL );
   assert( ps2 != NULL );
 
+  bool is_cont_line = false;
+
   strbuf_init( sbuf );
 
   for (;;) {
     static char *line;
-    bool is_continuation = sbuf->str != NULL;
+    bool got_line;
+
 #ifdef WITH_READLINE
     extern void readline_init( FILE*, FILE* );
     static bool called_readline_init;
-
     if ( false_set( &called_readline_init ) )
       readline_init( fin, fout );
-
     free( line );
-    if ( (line = readline( is_continuation ? ps2 : ps1 )) == NULL )
-      goto check_for_error;
+    got_line = (line = readline( is_cont_line ? ps2 : ps1 )) != NULL;
 #else
     static size_t line_cap;
-    PUTS( is_continuation ? ps2 : ps1 );
-    FFLUSH( stdout );
-    if ( getline( &line, &line_cap, stdin ) == -1 )
-      goto check_for_error;
+    FPUTS( is_cont_line ? ps2 : ps1, fout );
+    FFLUSH( fout );
+    got_line = getline( &line, &line_cap, fin ) != -1;
 #endif /* WITH_READLINE */
 
+    if ( !got_line ) {
+      FERROR( fout );
+      return false;
+    }
+
     if ( is_blank_line( line ) ) {
-      if ( is_continuation ) {
+      if ( is_cont_line ) {
         //
         // If we've been accumulating continuation lines, a blank line ends it.
         //
         break;
       }
-      continue;
+      continue;                         // otherwise, ignore blank lines
     }
 
-    size_t line_len = strlen( line );
-    is_continuation = ends_with_chr( line, line_len, '\\' );
-    if ( is_continuation )
-      line[ --line_len ] = '\0';        // get rid of '\'
-    strbuf_catsn( sbuf, line, line_len );
+    size_t const line_len = strlen( line );
+    is_cont_line = ends_with_chr( line, line_len, '\\' );
+    strbuf_catsn( sbuf, line, line_len - is_cont_line /* don't copy '\' */ );
 
-    if ( !is_continuation )
+    if ( !is_cont_line )
       break;
   } // for
 
@@ -223,10 +225,6 @@ static bool cdecl_read_line( strbuf_t *sbuf, char const *ps1,
   add_history( sbuf->str );
 #endif /* WITH_READLINE */
   return true;
-
-check_for_error:
-  FERROR( stdin );
-  return false;
 }
 
 /**
