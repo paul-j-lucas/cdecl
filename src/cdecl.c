@@ -97,7 +97,7 @@ char const *me;
 
 // extern functions
 PJL_WARN_UNUSED_RESULT
-extern bool parse_string( char const*, ssize_t );
+extern bool parse_string( char const*, size_t );
 
 extern void parser_cleanup( void );
 
@@ -327,7 +327,7 @@ static bool parse_command_line( char const *command, int argc,
   for ( int i = 0; i < argc; ++i )
     strbuf_sepc_cats( &sbuf, ' ', &space, argv[i] );
 
-  bool const ok = parse_string( sbuf.str, (ssize_t)sbuf.len );
+  bool const ok = parse_string( sbuf.str, sbuf.len );
   strbuf_free( &sbuf );
   return ok;
 }
@@ -347,7 +347,7 @@ static bool parse_file( FILE *file ) {
   // parse_string() also inserts "explain " for opt_explain.
 
   for ( char buf[ 1024 ]; fgets( buf, sizeof buf, file ) != NULL; ) {
-    if ( !parse_string( buf, -1 ) )
+    if ( !parse_string( buf, strlen( buf ) ) )
       ok = false;
   } // for
   FERROR( file );
@@ -401,7 +401,7 @@ static bool parse_stdin( void ) {
       strbuf_t sbuf;
       if ( !cdecl_read_line( &sbuf, cdecl_prompt[0], cdecl_prompt[1] ) )
         break;
-      ok = parse_string( sbuf.str, (ssize_t)sbuf.len );
+      ok = parse_string( sbuf.str, sbuf.len );
       strbuf_free( &sbuf );
     } // for
   } else {
@@ -419,13 +419,12 @@ static bool parse_stdin( void ) {
  * All other `parse_*()` functions ultimately call this function.
  *
  * @param s The null-terminated string to parse.
- * @param s_len_in The length of \a s; if -1, it will be calculated.
+ * @param s_len The length of \a s.
  * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
-bool parse_string( char const *s, ssize_t s_len_in ) {
+bool parse_string( char const *s, size_t s_len ) {
   assert( s != NULL );
-  size_t s_len = s_len_in == -1 ? strlen( s ) : (size_t)s_len_in;
 
   // The code in print.c relies on command_line being set, so set it.
   command_line = s;
