@@ -124,7 +124,7 @@ static bool parse_stdin( void );
 static void read_conf_file( void );
 
 PJL_WARN_UNUSED_RESULT
-static bool starts_with( char const*, char const*, size_t );
+static bool starts_with_token( char const*, char const*, size_t );
 
 ////////// main ///////////////////////////////////////////////////////////////
 
@@ -242,7 +242,7 @@ static bool is_command( char const *s, c_command_kind_t command_kind ) {
   for ( c_command_t const *c = CDECL_COMMANDS; c->literal != NULL; ++c ) {
     if ( c->kind >= command_kind ) {
       size_t const literal_len = strlen( c->literal );
-      if ( !starts_with( s, c->literal, literal_len ) )
+      if ( !starts_with_token( s, c->literal, literal_len ) )
         continue;
       if ( c->literal == L_CONST || c->literal == L_STATIC ) {
         //
@@ -257,7 +257,7 @@ static bool is_command( char const *s, c_command_kind_t command_kind ) {
         if ( !isspace( *p ) )
           break;
         SKIP_WS( p );
-        if ( !starts_with( p, L_CAST, 4 ) )
+        if ( !starts_with_token( p, L_CAST, 4 ) )
           break;
         p += 4;
         if ( !isspace( *p ) )
@@ -495,18 +495,20 @@ static void read_conf_file( void ) {
 }
 
 /**
- * Checks whether \a s starts with a partial string.
+ * Checks whether \a s starts with a token.  If so, the character following the
+ * token in \a s also _must not_ be an identifier character, i.e., whitespace,
+ * punctuation, or the null byte.
  *
  * @param s The null-terminated string to check.
- * @param partial The partial string to check against.
- * @param partial_len The length of \a partial.
- * @return Returns `true` only if \a s starts with \a partial.
+ * @param token The token to check against.
+ * @param token_len The length of \a token.
+ * @return Returns `true` only if \a s starts with \a token.
  */
 PJL_WARN_UNUSED_RESULT
-static bool starts_with( char const *s, char const *partial,
-                         size_t partial_len ) {
-  return  strncmp( s, partial, partial_len ) == 0 &&
-          !is_ident( partial[ partial_len ] );
+static bool starts_with_token( char const *s, char const *token,
+                               size_t token_len ) {
+  return  strncmp( s, token, token_len ) == 0 &&
+          !is_ident( token[ token_len ] );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
