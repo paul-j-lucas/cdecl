@@ -470,7 +470,7 @@ _GL_INLINE_HEADER_BEGIN
 #define STATIC_CAST(T,EXPR)       ((T)(EXPR))
 
 /**
- * Shorthand for calling **strerror**(3).
+ * Shorthand for calling **strerror**(3) with `errno`.
  */
 #define STRERROR()                strerror( errno )
 
