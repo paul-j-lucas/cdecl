@@ -430,7 +430,7 @@ bool parse_string( char const *s, size_t s_len ) {
   command_line = s;
   command_line_len = s_len;
 
-  char *explain_buf = NULL;
+  strbuf_t explain_buf;
   if ( opt_explain && !is_command( s, C_COMMAND_ANY ) ) {
     //
     // The string doesn't start with a command: insert "explain " and set
@@ -439,11 +439,12 @@ bool parse_string( char const *s, size_t s_len ) {
     //
     static char const EXPLAIN_SP[] = "explain ";
     inserted_len = ARRAY_SIZE( EXPLAIN_SP ) - 1/*\0*/;
-    s_len += inserted_len;
-    explain_buf = MALLOC( char, s_len + 1/*\0*/ );
-    strcpy( explain_buf, EXPLAIN_SP );
-    strcpy( explain_buf + inserted_len, s );
-    s = explain_buf;
+    strbuf_init( &explain_buf );
+    strbuf_reserve( &explain_buf, inserted_len + s_len );
+    strbuf_catsn( &explain_buf, EXPLAIN_SP, inserted_len );
+    strbuf_catsn( &explain_buf, s, s_len );
+    s = explain_buf.str;
+    s_len = explain_buf.len;
   }
 
   FILE *const ftmp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
@@ -452,8 +453,10 @@ bool parse_string( char const *s, size_t s_len ) {
   bool const ok = yyparse() == 0;
   PJL_IGNORE_RV( fclose( ftmp ) );
 
-  free( explain_buf );
-  inserted_len = 0;
+  if ( inserted_len > 0 ) {
+    strbuf_free( &explain_buf );
+    inserted_len = 0;
+  }
 
   return ok;
 }
