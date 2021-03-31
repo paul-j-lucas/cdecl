@@ -102,8 +102,10 @@ bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
 void strbuf_sepsn_catsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
                          bool *sep_flag, char const *s, size_t s_len ) {
   assert( sep_flag != NULL );
-  if ( true_or_set( sep_flag ) )
+  if ( true_or_set( sep_flag ) ) {
+    strbuf_reserve( sbuf, sep_len + s_len );
     strbuf_catsn( sbuf, sep, sep_len );
+  }
   strbuf_catsn( sbuf, s, s_len );
 }
 
