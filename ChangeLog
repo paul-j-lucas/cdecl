@@ -1,3 +1,46 @@
+2021-03-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c: Replaced use of malloc() with strbuf_t.
+   * strbuf.c: Added call to strbuf_reserve().
+   * cdecl.c: s/starts_with/starts_with_token/
+
+2021-03-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, cdecl.c: parse_string() now takes size_t.
+   * cdecl.c: cdecl_read_line() clean-up.
+
+2021-03-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * util.h: Added \n to SKIP_WS.
+   * cdecl.c, util.c, util.h: Made fmemopen() now return NULL on error.
+   * cdecl.c, util.c: Renaming.
+
+2021-03-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, help.c, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c++03.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out: Added C78 to help text.
+
+2021-03-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * options.c: Added SOPT_NO_ARGUMENT and SOPT_REQUIRED_ARGUMENT.
+   * options.c: Now checking that no arguments are specified with -v.
+   * options.c, util.h: Added STRINGIFY().
+   * util.h: Added '_' to CHARIFY.
+   * options.c, util.h: Now only a single copy of short options; -h is now
+     checked for exlusivity.
+   * options.c: Got rid of set_opt_explicit_int().
+   * options.c: Reworked opts_given.
+
+2021-03-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, did_you_mean.c, did_you_mean.h, options.c, options.h,
+     print.c, print.h, set_options.c, set_options.h: Added "did you mean ...?"
+     suggestions for command-line options.
+   * options.c: Renaming.
+   * options.c: Added missing 'h' to SHORT_OPTS.
+   * options.c: Added FOREACH_CLI_OPTION().
+
 2021-03-22  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: autoupdate.
