@@ -46,10 +46,11 @@ typedef struct did_you_mean did_you_mean_t;
  * The bitwise-or of kinds of things one might have meant.
  *
  * @sa #DYM_COMMANDS
+ * @sa #DYM_CLI_OPTIONS
+ * @sa #DYM_SET_OPTIONS
  * @sa #DYM_C_ATTRIBUTES
  * @sa #DYM_C_KEYWORDS
  * @sa #DYM_C_TYPES
- * @sa #DYM_SET_OPTIONS
  */
 typedef unsigned dym_kind_t;
 
