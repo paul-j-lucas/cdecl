@@ -200,7 +200,7 @@ static void set_digraphs( set_option_fn_args_t const *args ) {
   opt_graph = args->opt_enabled ? C_GRAPH_DI : C_GRAPH_NONE;
   if ( opt_graph && opt_lang < LANG_C_95 ) {
     print_warning( args->opt_name_loc,
-      "digraphs are not supported until %s\n", c_lang_name( LANG_C_95 )
+      "digraphs are not supported until C95\n"
     );
   }
 }
