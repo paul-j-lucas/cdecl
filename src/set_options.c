@@ -216,7 +216,6 @@ static void set_debug( bool enabled, c_loc_t const *opt_name_loc,
 static void set_digraphs( bool enabled, c_loc_t const *opt_name_loc,
                           char const *opt_value,
                           c_loc_t const *opt_value_loc ) {
-  (void)opt_name_loc;
   (void)opt_value;
   (void)opt_value_loc;
   opt_graph = enabled ? C_GRAPH_DI : C_GRAPH_NONE;
