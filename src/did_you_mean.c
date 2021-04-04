@@ -298,21 +298,21 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
     return NULL;
   assert( unknown_token != NULL );
 
-  size_t dym_size = 0;
-  if ( (kinds & DYM_COMMANDS) != DYM_NONE )
-    dym_size += copy_commands( /*pdym=*/NULL );
-  if ( (kinds & DYM_CLI_OPTIONS) != DYM_NONE )
-    dym_size += copy_cli_options( /*pdym=*/NULL );
-  if ( (kinds & DYM_SET_OPTIONS) != DYM_NONE )
-    dym_size += copy_set_options( /*pdym=*/NULL );
-  if ( (kinds & DYM_C_KEYWORDS) != DYM_NONE )
-    dym_size += copy_keywords( /*pdym=*/NULL, C_TPID_NONE )
-              + copy_keywords( /*pdym=*/NULL, C_TPID_STORE );
-  if ( (kinds & DYM_C_ATTRIBUTES) != DYM_NONE )
-    dym_size += copy_keywords( /*pdym=*/NULL, C_TPID_ATTR );
-  if ( (kinds & DYM_C_TYPES) != DYM_NONE )
-    dym_size += copy_keywords( /*pdym=*/NULL, C_TPID_BASE )
-              + copy_typedefs( /*pdym=*/NULL );
+  size_t const dym_size =
+    ((kinds & DYM_COMMANDS) != DYM_NONE ?
+      copy_commands( /*pdym=*/NULL ) : 0) +
+    ((kinds & DYM_CLI_OPTIONS) != DYM_NONE ?
+      copy_cli_options( /*pdym=*/NULL ) : 0) +
+    ((kinds & DYM_SET_OPTIONS) != DYM_NONE ?
+      copy_set_options( /*pdym=*/NULL ) : 0) +
+    ((kinds & DYM_C_KEYWORDS) != DYM_NONE ?
+      copy_keywords( /*pdym=*/NULL, C_TPID_NONE ) +
+      copy_keywords( /*pdym=*/NULL, C_TPID_STORE ) : 0) +
+    ((kinds & DYM_C_ATTRIBUTES) != DYM_NONE ?
+      copy_keywords( /*pdym=*/NULL, C_TPID_ATTR ) : 0) +
+    ((kinds & DYM_C_TYPES) != DYM_NONE ?
+      copy_keywords( /*pdym=*/NULL, C_TPID_BASE ) +
+      copy_typedefs( /*pdym=*/NULL ) : 0);
 
   if ( dym_size == 0 )
     return NULL;
