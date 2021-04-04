@@ -37,9 +37,9 @@
 #include <stddef.h>                     /* for size_t */
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef C_SLIST_INLINE
-# define C_SLIST_INLINE _GL_INLINE
-#endif /* C_SLIST_INLINE */
+#ifndef SLIST_INLINE
+# define SLIST_INLINE _GL_INLINE
+#endif /* SLIST_INLINE */
 
 /// @endcond
 
@@ -193,7 +193,7 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n,
  *
  * @sa slist_len()
  */
-C_SLIST_INLINE PJL_WARN_UNUSED_RESULT
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
 bool slist_empty( slist_t const *list ) {
   return list->head == NULL;
 }
@@ -221,7 +221,7 @@ void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
  *
  * @sa slist_free()
  */
-C_SLIST_INLINE
+SLIST_INLINE
 void slist_init( slist_t *list ) {
   MEM_ZERO( list );
 }
@@ -236,7 +236,7 @@ void slist_init( slist_t *list ) {
  *
  * @sa slist_empty()
  */
-C_SLIST_INLINE PJL_WARN_UNUSED_RESULT
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
 size_t slist_len( slist_t const *list ) {
   return list->len;
 }
@@ -272,7 +272,7 @@ void* slist_peek_at( slist_t const *list, size_t offset );
  * @sa slist_peek_head()
  * @sa slist_peek_tail()
  */
-C_SLIST_INLINE PJL_WARN_UNUSED_RESULT
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
 void* slist_peek_atr( slist_t const *list, size_t roffset ) {
   return roffset < list->len ?
     slist_peek_at( list, list->len - (roffset + 1) ) : NULL;
@@ -291,7 +291,7 @@ void* slist_peek_atr( slist_t const *list, size_t roffset ) {
  * @sa slist_peek_atr()
  * @sa slist_peek_tail()
  */
-C_SLIST_INLINE PJL_WARN_UNUSED_RESULT
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
 void* slist_peek_head( slist_t const *list ) {
   return list->head != NULL ? list->head->data : NULL;
 }
@@ -309,7 +309,7 @@ void* slist_peek_head( slist_t const *list ) {
  * @sa slist_peek_atr()
  * @sa slist_peek_head()
  */
-C_SLIST_INLINE PJL_WARN_UNUSED_RESULT
+SLIST_INLINE PJL_WARN_UNUSED_RESULT
 void* slist_peek_tail( slist_t const *list ) {
   return list->tail != NULL ? list->tail->data : NULL;
 }

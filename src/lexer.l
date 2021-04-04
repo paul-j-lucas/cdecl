@@ -35,9 +35,6 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
-/// @cond DOXYGEN_IGNORE
-#define C_LEXER_INLINE _GL_EXTERN_INLINE
-/// @endcond
 #include "lexer.h"
 #include "c_ast.h"
 #include "c_ast_util.h"

@@ -26,7 +26,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 /// @cond DOXYGEN_IGNORE
-#define C_STRBUF_INLINE _GL_EXTERN_INLINE
+#define STRBUF_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "strbuf.h"
 

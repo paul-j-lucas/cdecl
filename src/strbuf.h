@@ -39,9 +39,9 @@
 #include <string.h>
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef C_STRBUF_INLINE
-# define C_STRBUF_INLINE _GL_INLINE
-#endif /* C_STRBUF_INLINE */
+#ifndef STRBUF_INLINE
+# define STRBUF_INLINE _GL_INLINE
+#endif /* STRBUF_INLINE */
 
 /// @endcond
 
@@ -104,7 +104,7 @@ void strbuf_catsn( strbuf_t *sbuf, char const *s, size_t s_len );
  * @sa strbuf_cats()
  * @sa strbuf_catsn()
  */
-C_STRBUF_INLINE
+STRBUF_INLINE
 void strbuf_catc( strbuf_t *sbuf, char c ) {
   strbuf_catsn( sbuf, &c, 1 );
 }
@@ -119,7 +119,7 @@ void strbuf_catc( strbuf_t *sbuf, char c ) {
  * @sa strbuf_catf()
  * @sa strbuf_catsn()
  */
-C_STRBUF_INLINE
+STRBUF_INLINE
 void strbuf_cats( strbuf_t *sbuf, char const *s ) {
   strbuf_catsn( sbuf, s, strlen( s ) );
 }
@@ -132,7 +132,7 @@ void strbuf_cats( strbuf_t *sbuf, char const *s ) {
  * @sa strbuf_free()
  * @sa strbuf_take()
  */
-C_STRBUF_INLINE
+STRBUF_INLINE
 void strbuf_init( strbuf_t *sbuf ) {
   MEM_ZERO( sbuf );
 }
@@ -145,7 +145,7 @@ void strbuf_init( strbuf_t *sbuf ) {
  * @sa strbuf_init()
  * @sa strbuf_take()
  */
-C_STRBUF_INLINE
+STRBUF_INLINE
 void strbuf_free( strbuf_t *sbuf ) {
   free( sbuf->str );
   strbuf_init( sbuf );
@@ -198,7 +198,7 @@ void strbuf_sepsn_catsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * @sa strbuf_sepc_catsn()
  * @sa strbuf_sepsn_catsn()
  */
-C_STRBUF_INLINE
+STRBUF_INLINE
 void strbuf_sepsn_cats( strbuf_t *sbuf, char const *sep, size_t sep_len,
                         bool *sep_flag, char const *s ) {
   strbuf_sepsn_catsn( sbuf, sep, sep_len, sep_flag, s, strlen( s ) );
@@ -220,7 +220,7 @@ void strbuf_sepsn_cats( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * @sa strbuf_sepsn_cats()
  * @sa strbuf_sepsn_catsn()
  */
-C_STRBUF_INLINE
+STRBUF_INLINE
 void strbuf_sepc_catsn( strbuf_t *sbuf, char sep, bool *sep_flag, char const *s,
                         size_t s_len ) {
   strbuf_sepsn_catsn( sbuf, &sep, 1, sep_flag, s, s_len );
@@ -241,7 +241,7 @@ void strbuf_sepc_catsn( strbuf_t *sbuf, char sep, bool *sep_flag, char const *s,
  * @sa strbuf_sepsn_cats()
  * @sa strbuf_sepsn_catsn()
  */
-C_STRBUF_INLINE
+STRBUF_INLINE
 void strbuf_sepc_cats( strbuf_t *sbuf, char sep, bool *sep_flag,
                        char const *s ) {
   strbuf_sepsn_catsn( sbuf, &sep, 1, sep_flag, s, strlen( s ) );
@@ -256,7 +256,7 @@ void strbuf_sepc_cats( strbuf_t *sbuf, char sep, bool *sep_flag,
  * @sa strbuf_free()
  * @sa strbuf_init()
  */
-C_STRBUF_INLINE PJL_WARN_UNUSED_RESULT
+STRBUF_INLINE PJL_WARN_UNUSED_RESULT
 char* strbuf_take( strbuf_t *sbuf ) {
   char *const str = sbuf->str;
   strbuf_init( sbuf );

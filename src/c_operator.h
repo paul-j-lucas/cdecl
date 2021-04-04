@@ -36,9 +36,9 @@
 #include <stdbool.h>
 
 _GL_INLINE_HEADER_BEGIN
-#ifndef C_OP_INLINE
-# define C_OP_INLINE _GL_INLINE
-#endif /* C_OP_INLINE */
+#ifndef C_OPERATOR_INLINE
+# define C_OPERATOR_INLINE _GL_INLINE
+#endif /* C_OPERATOR_INLINE */
 
 /// @endcond
 
@@ -242,7 +242,7 @@ c_operator_t const* c_oper_get( c_oper_id_t oper_id );
  * @param op The C++ operator to check.
  * @return Returns `true` only if the operator is ambiguous.
  */
-C_OP_INLINE PJL_WARN_UNUSED_RESULT
+C_OPERATOR_INLINE PJL_WARN_UNUSED_RESULT
 bool c_oper_is_ambiguous( c_operator_t const *op ) {
   return op->params_min == 0 && op->params_max == 2;
 }

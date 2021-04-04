@@ -31,11 +31,6 @@
 #include "pjl_config.h"                 /* must go first */
 #include "types.h"
 
-_GL_INLINE_HEADER_BEGIN
-#ifndef C_LEXER_INLINE
-# define C_LEXER_INLINE _GL_INLINE
-#endif /* C_LEXER_INLINE */
-
 /// @cond DOXYGEN_IGNORE
 
 // standard
@@ -121,8 +116,6 @@ int yylex( void );
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_lexer_H */
 /* vim:set et sw=2 ts=2: */
