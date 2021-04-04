@@ -45,12 +45,22 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
+ * Convenience `struct` for passing arguments to a `set_*()` function.
+ */
+struct set_option_fn_args {
+  bool           opt_enabled;           ///< True if the option is enabled.
+  c_loc_t const *opt_name_loc;          ///< The location of the option name.
+  char const    *opt_value;             ///< The option value, if any.
+  c_loc_t const *opt_value_loc;         ///< The location of \a opt_value.
+};
+
+/**
  * Convenience macro for declaring a `set` option function.
  *
  * @param NAME The option name with `-` replaced by `_`.
  */
 #define DECLARE_SET_OPTION_FN(NAME) \
-  static void set_##NAME( bool, c_loc_t const*, char const*, c_loc_t const* )
+  static void set_##NAME( set_option_fn_args_t const* )
 
 // local functions
 DECLARE_SET_OPTION_FN( alt_tokens );
@@ -153,36 +163,20 @@ static void print_options( FILE *out ) {
 /**
  * Sets the alt-tokens option.
  *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
+ * @param args The set option arguments.
  */
-static void set_alt_tokens( bool enabled, c_loc_t const *opt_name_loc,
-                            char const *opt_value,
-                            c_loc_t const *opt_value_loc ) {
-  (void)opt_name_loc;
-  (void)opt_value;
-  (void)opt_value_loc;
-  opt_alt_tokens = enabled;
+static void set_alt_tokens( set_option_fn_args_t const *args ) {
+  opt_alt_tokens = args->opt_enabled;
 }
 
 #ifdef YYDEBUG
 /**
  * Sets the Bison debugging option.
  *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
+ * @param args The set option arguments.
  */
-static void set_bison_debug( bool enabled, c_loc_t const *opt_name_loc,
-                             char const *opt_value,
-                             c_loc_t const *opt_value_loc ) {
-  (void)opt_name_loc;
-  (void)opt_value;
-  (void)opt_value_loc;
-  opt_bison_debug = enabled;
+static void set_bison_debug( set_option_fn_args_t const *args ) {
+  opt_bison_debug = args->opt_enabled;
 }
 #endif /* YYDEBUG */
 
@@ -190,37 +184,22 @@ static void set_bison_debug( bool enabled, c_loc_t const *opt_name_loc,
 /**
  * Sets the debug option.
  *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
+ * @param args The set option arguments.
  */
-static void set_debug( bool enabled, c_loc_t const *opt_name_loc,
-                       char const *opt_value,
-                       c_loc_t const *opt_value_loc ) {
-  (void)opt_name_loc;
-  (void)opt_value;
-  (void)opt_value_loc;
-  opt_cdecl_debug = enabled;
+static void set_debug( set_option_fn_args_t const *args ) {
+  opt_cdecl_debug = args->opt_enabled;
 }
 #endif /* ENABLE_CDECL_DEBUG */
 
 /**
  * Sets the digraphs-tokens option.
  *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
+ * @param args The set option arguments.
  */
-static void set_digraphs( bool enabled, c_loc_t const *opt_name_loc,
-                          char const *opt_value,
-                          c_loc_t const *opt_value_loc ) {
-  (void)opt_value;
-  (void)opt_value_loc;
-  opt_graph = enabled ? C_GRAPH_DI : C_GRAPH_NONE;
+static void set_digraphs( set_option_fn_args_t const *args ) {
+  opt_graph = args->opt_enabled ? C_GRAPH_DI : C_GRAPH_NONE;
   if ( opt_graph && opt_lang < LANG_C_95 ) {
-    print_warning( opt_name_loc,
+    print_warning( args->opt_name_loc,
       "digraphs are not supported until %s\n", c_lang_name( LANG_C_95 )
     );
   }
@@ -229,51 +208,29 @@ static void set_digraphs( bool enabled, c_loc_t const *opt_name_loc,
 /**
  * Sets the east-const option.
  *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
+ * @param args The set option arguments.
  */
-static void set_east_const( bool enabled, c_loc_t const *opt_name_loc,
-                            char const *opt_value,
-                            c_loc_t const *opt_value_loc ) {
-  (void)opt_name_loc;
-  (void)opt_value;
-  (void)opt_value_loc;
-  opt_east_const = enabled;
+static void set_east_const( set_option_fn_args_t const *args ) {
+  opt_east_const = args->opt_enabled;
 }
 
 /**
  * Sets the explain-by-default option.
  *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
+ * @param args The set option arguments.
  */
-static void set_explain_by_default( bool enabled, c_loc_t const *opt_name_loc,
-                                    char const *opt_value,
-                                    c_loc_t const *opt_value_loc ) {
-  (void)opt_name_loc;
-  (void)opt_value;
-  (void)opt_value_loc;
-  opt_explain = enabled;
+static void set_explain_by_default( set_option_fn_args_t const *args ) {
+  opt_explain = args->opt_enabled;
 }
 
 /**
  * Sets the explicit-int option.
  *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
+ * @param args The set option arguments.
  */
-static void set_explicit_int( bool enabled, c_loc_t const *opt_name_loc,
-                              char const *opt_value,
-                              c_loc_t const *opt_value_loc ) {
-  (void)opt_name_loc;
-  if ( enabled )
-    parse_explicit_int( opt_value_loc, opt_value );
+static void set_explicit_int( set_option_fn_args_t const *args ) {
+  if ( args->opt_enabled )
+    parse_explicit_int( args->opt_value_loc, args->opt_value );
   else
     parse_explicit_int( NULL, "" );
 }
@@ -282,36 +239,25 @@ static void set_explicit_int( bool enabled, c_loc_t const *opt_name_loc,
 /**
  * Sets the Flex debugging option.
  *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
+ * @param args The set option arguments.
  */
-static void set_flex_debug( bool enabled, c_loc_t const *opt_name_loc,
-                            char const *opt_value,
-                            c_loc_t const *opt_value_loc ) {
-  (void)opt_name_loc;
-  (void)opt_value;
-  (void)opt_value_loc;
-  opt_flex_debug = enabled;
+static void set_flex_debug( set_option_fn_args_t const *args ) {
+  opt_flex_debug = args->opt_enabled;
 }
 #endif /* ENABLE_FLEX_DEBUG */
 
 /**
  * Sets the current language.
  *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
+ * @param args The set option arguments.
  */
-static void set_lang( bool enabled, c_loc_t const *opt_name_loc,
-                      char const *opt_value, c_loc_t const *opt_value_loc ) {
-  assert( enabled );
-  (void)opt_name_loc;
-
-  if ( !set_lang_impl( opt_value ) )
-    print_error( opt_value_loc, "\"%s\": unknown language\n", opt_value );
+static void set_lang( set_option_fn_args_t const *args ) {
+  assert( args->opt_enabled );
+  if ( !set_lang_impl( args->opt_value ) ) {
+    print_error( args->opt_value_loc,
+      "\"%s\": unknown language\n", args->opt_value
+    );
+  }
 }
 
 /**
@@ -332,7 +278,7 @@ static bool set_lang_impl( char const *name ) {
       // warned that trigraphs are not supported if the language is C++17 or
       // later.
       //
-      set_trigraphs( /*enabled=*/true, NULL, NULL, NULL );
+      set_trigraphs( &(set_option_fn_args_t){ true, NULL, NULL, NULL } );
     }
     return true;
   }
@@ -342,53 +288,30 @@ static bool set_lang_impl( char const *name ) {
 /**
  * Sets the prompt option.
  *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
+ * @param args The set option arguments.
  */
-static void set_prompt( bool enabled, c_loc_t const *opt_name_loc,
-                        char const *opt_value,
-                        c_loc_t const *opt_value_loc ) {
-  (void)opt_name_loc;
-  (void)opt_value;
-  (void)opt_value_loc;
-  cdecl_prompt_enable( enabled );
+static void set_prompt( set_option_fn_args_t const *args ) {
+  cdecl_prompt_enable( args->opt_enabled );
 }
 
 /**
  * Sets the semicolon option.
  *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
+ * @param args The set option arguments.
  */
-static void set_semicolon( bool enabled, c_loc_t const *opt_name_loc,
-                           char const *opt_value,
-                           c_loc_t const *opt_value_loc ) {
-  (void)opt_name_loc;
-  (void)opt_value;
-  (void)opt_value_loc;
-  opt_semicolon = enabled;
+static void set_semicolon( set_option_fn_args_t const *args ) {
+  opt_semicolon = args->opt_enabled;
 }
 
 /**
  * Sets the trigraphs option.
  *
- * @param enabled True if enabled.
- * @param opt_name_loc The location of the option name.
- * @param opt_value The option value, if any.
- * @param opt_value_loc The location of \a opt_value.
+ * @param args The set option arguments.
  */
-static void set_trigraphs( bool enabled, c_loc_t const *opt_name_loc,
-                           char const *opt_value,
-                           c_loc_t const *opt_value_loc ) {
-  (void)opt_value;
-  (void)opt_value_loc;
-  opt_graph = enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
-  if ( enabled && opt_lang >= LANG_CPP_17 ) {
-    print_warning( opt_name_loc,
+static void set_trigraphs( set_option_fn_args_t const *args ) {
+  opt_graph = args->opt_enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
+  if ( args->opt_enabled && opt_lang >= LANG_CPP_17 ) {
+    print_warning( args->opt_name_loc,
       "trigraphs are no longer supported in C++17\n"
     );
   }
@@ -503,7 +426,10 @@ void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
     }
   }
 
-  (*found_opt->set_fn)( !is_no, opt_name_loc, opt_value, opt_value_loc );
+  set_option_fn_args_t const args = {
+    !is_no, opt_name_loc, opt_value, opt_value_loc
+  };
+  (*found_opt->set_fn)( &args );
 }
 
 set_option_t const* set_option_next( set_option_t const *opt ) {
