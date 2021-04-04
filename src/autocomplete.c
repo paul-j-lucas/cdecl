@@ -247,7 +247,7 @@ static char const* const* init_set_options( void ) {
 
   // pre-flight to calculate array size
   FOREACH_SET_OPTION( opt ) {
-    set_options_size += 1 + (size_t)(opt->type == SET_TOGGLE /* for "no" */);
+    set_options_size += 1 + (size_t)(opt->type == SET_OPT_TOGGLE /* "no" */);
   } // for
   FOREACH_LANG( lang ) {
     if ( !lang->is_alias )
@@ -259,15 +259,15 @@ static char const* const* init_set_options( void ) {
   char **p = set_options;
   FOREACH_SET_OPTION( opt ) {
     switch ( opt->type ) {
-      case SET_AFF_ONLY:
+      case SET_OPT_AFF_ONLY:
         *p++ = CONST_CAST( char*, opt->name );
         break;
 
-      case SET_TOGGLE:
+      case SET_OPT_TOGGLE:
         *p++ = CONST_CAST( char*, opt->name );
         PJL_FALLTHROUGH;
 
-      case SET_NEG_ONLY:
+      case SET_OPT_NEG_ONLY:
         *p = free_later(
           MALLOC( char, 2/*no*/ + strlen( opt->name ) + 1/*\0*/ )
         );
