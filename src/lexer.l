@@ -633,12 +633,12 @@ hex_int       0[xX]{H}+{int_suffix}?
  * For the "set" command, we want to allow (almost) any character sequence for
  * the command's options.
  */
-%x SET_COMMAND
+%x X_SET
 
 /*
  * For C character and string literals.
  */
-%x CHAR_LIT STR_LIT
+%x X_CHAR X_STR
 
 %%
               /*
@@ -792,7 +792,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                       // character sequence for the command's options, so we
                       // use an exclusive start state.
                       //
-                      BEGIN( SET_COMMAND );
+                      BEGIN( X_SET );
                     }
                     return ck->yy_token_id;
                   }
@@ -946,27 +946,27 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 str_lit_loc = yylloc;
 
                 char const quote = yytext[ yyleng - 1 ];
-                BEGIN( quote == '"' ? STR_LIT : CHAR_LIT );
+                BEGIN( quote == '"' ? X_STR : X_CHAR );
               }
 
               /*
-               * Common code between STR_LIT and CHAR_LIT.  Multicharacter
-               * literals are legal, but implementation-defined.
+               * Common code between X_STR and X_CHAR.  Multicharacter literals
+               * are legal, but implementation-defined.
                */
-<STR_LIT,CHAR_LIT>{
+<X_STR,X_CHAR>{
               /* Escaped characters are copied verbatim, not interpreted. */
   \\(.|\n)    { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
   \n          {
                 lexer_token = strbuf_take( &str_lit_buf );
                 print_error( &str_lit_loc,
                   "unterminated %s literal\n",
-                  YY_START == STR_LIT ? "string" : "character"
+                  YY_START == X_STR ? "string" : "character"
                 );
                 return Y_ERROR;
               }
 }
 
-<STR_LIT>{
+<X_STR>{
   [^"\\\n]+   { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
   \"          {
                 yylloc.first_line   = str_lit_loc.first_line;
@@ -977,7 +977,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
               }
 }
 
-<CHAR_LIT>{   /* CHAR_LIT is the same as STR_LIT except ' replaces ". */
+<X_CHAR>{     /* X_CHAR is the same as X_STR except ' replaces ". */
   [^'\\\n]+   { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
   \'          {
                 yylloc.first_line   = str_lit_loc.first_line;
@@ -1014,7 +1014,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 return Y_END;
               }
 
-<SET_COMMAND>{
+<X_SET>{
   ";"         {
                 SET_TOKEN;
                 BEGIN( INITIAL );
