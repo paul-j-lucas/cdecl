@@ -45,6 +45,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <stdbool.h>
 #include <stddef.h>                     /* for size_t */
 
 _GL_INLINE_HEADER_BEGIN
