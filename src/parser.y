@@ -1740,7 +1740,7 @@ linkage_tid
         ok = false;
       }
 
-      FREE( $1 );
+      free( $1 );
       if ( !ok )
         PARSE_ABORT();
     }
@@ -2576,8 +2576,8 @@ set_option
   : Y_SET_OPTION set_option_value_opt
     {
       option_set( $1, &@1, $2, &@2 );
-      FREE( $1 );
-      FREE( $2 );
+      free( $1 );
+      free( $2 );
     }
   ;
 
@@ -2646,7 +2646,7 @@ show_command
       }
       print_suggestions( DYM_C_TYPES, $2 );
       EPUTC( '\n' );
-      FREE( $2 );
+      free( $2 );
       PARSE_ABORT();
     }
 
@@ -5022,7 +5022,7 @@ using_opt
         "\"%s\" in attributes is not supported by %s (ignoring)\n",
         L_USING, PACKAGE
       );
-      FREE( $2 );
+      free( $2 );
     }
   ;
 
@@ -5100,7 +5100,7 @@ attribute_str_arg_c_opt
       print_warning( &@1,
         "attribute arguments are not supported by %s (ignoring)\n", PACKAGE
       );
-      FREE( $2 );
+      free( $2 );
     }
   | '(' error ')'
     {
@@ -5154,7 +5154,7 @@ gnu_attribuet_list_c
 gnu_attribute_c
   : Y_NAME gnu_attribute_decl_arg_list_c_opt
     {
-      FREE( $1 );
+      free( $1 );
     }
   | error
     {
@@ -5178,10 +5178,10 @@ gnu_attribute_arg_list_c
   ;
 
 gnu_attribute_arg_c
-  : Y_NAME                        { FREE( $1 ); }
+  : Y_NAME                        { free( $1 ); }
   | Y_INT_LIT
-  | Y_CHAR_LIT                    { FREE( $1 ); }
-  | Y_STR_LIT                     { FREE( $1 ); }
+  | Y_CHAR_LIT                    { free( $1 ); }
+  | Y_STR_LIT                     { free( $1 ); }
   | '(' gnu_attribute_arg_list_c rparen_exp
   ;
 
