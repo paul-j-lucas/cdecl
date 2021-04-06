@@ -631,12 +631,12 @@ hex_int       0[xX]{H}+{int_suffix}?
 
 /*
  * For the "set" command, we want to allow (almost) any character sequence for
- * the command's options, so we use an exclusive start state.
+ * the command's options.
  */
 %x SET_COMMAND
 
 /*
- * For C string and character literals, we use exclusive start states.
+ * For C character and string literals.
  */
 %x CHAR_LIT STR_LIT
 
