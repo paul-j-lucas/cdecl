@@ -65,6 +65,7 @@ AS_IF([test x$with_readline != xno],
 # Checks for header files.
 AC_HEADER_ASSERT
 AC_CHECK_HEADERS([curses.h ncurses.h])
+AC_CHECK_HEADERS([fnmatch.h])
 AC_CHECK_HEADERS([getopt.h])
 AC_HEADER_STDBOOL
 AC_CHECK_HEADERS([pwd.h])

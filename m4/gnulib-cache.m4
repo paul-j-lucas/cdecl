@@ -39,6 +39,7 @@
 #  --no-libtool \
 #  --macro-prefix=gl \
 #  extern-inline \
+#  fnmatch \
 #  getline \
 #  getopt-gnu \
 #  stdarg \
@@ -54,6 +55,7 @@
 gl_LOCAL_DIR([])
 gl_MODULES([
   extern-inline
+  fnmatch
   getline
   getopt-gnu
   stdarg

@@ -763,6 +763,9 @@ TESTS+=	tests/show_all.test \
 	tests/show_all-c++.test \
 	tests/show_all_predefined-c++.test \
 	tests/show_all_predefined.test \
+	tests/show_all_predefined_glob-01.test \
+	tests/show_all_predefined_glob-02.test \
+	tests/show_all_predefined_glob-03.test \
 	tests/show_all_predefined_typedef-c++.test \
 	tests/show_all_typedef.test \
 	tests/show_cpf_cpcc_v_using.test \
@@ -1765,6 +1768,9 @@ UPDATE_TESTS = \
 	tests/show_all.test \
 	tests/show_all_predefined-c++.test \
 	tests/show_all_predefined.test \
+	tests/show_all_predefined_glob-01.test \
+	tests/show_all_predefined_glob-02.test \
+	tests/show_all_predefined_glob-03.test \
 	tests/show_all_predefined_typedef-c++.test \
 	tests/show_all_typedef.test \
 	tests/show_predefined-c++.test \

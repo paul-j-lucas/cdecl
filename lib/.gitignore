@@ -1,7 +1,12 @@
+/alloca.h
+/ctype.h
 /errno.h
+/fnmatch.h
 /getopt-cdefs.h
 /getopt.h
+/inttypes.h
 /limits.h
+/locale.h
 /stdarg.h
 /stdbool.h
 /stddef.h
@@ -12,4 +17,7 @@
 /string.h
 /sys
 /sysexits.h
+/sys_types.h
 /unistd.h
+/wchar.h
+/wctype.h

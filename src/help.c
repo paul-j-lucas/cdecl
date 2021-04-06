@@ -147,9 +147,9 @@ static void print_help_commands( void ) {
   print_h( "  { help | ? } [command[s] | english]\n" );
   print_h( "  set [<option> [= <value>] | options | <lang>]*\n" );
 
-  print_h( "  show [<name> | [all] {predef[ined] | user}] [[as] {english | typedef" );
+  print_h( "  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef" );
   if ( OPT_LANG_IS(CPP_MIN(11)) )
-    print_h( " | using" );
+    print_h( "|using" );
   print_h( "}]\n" );
 
   print_h( "  typedef <gibberish> [, <gibberish>]*\n" );

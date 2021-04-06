@@ -35,6 +35,7 @@
 
 // standard
 #include <assert.h>
+#include <fnmatch.h>
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -123,6 +124,113 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
   char const *const class_name = c_sname_name_atr( sname, 1 );
   char const *const local_name = c_sname_local_name( sname );
   return strcmp( local_name, class_name ) == 0;
+}
+
+bool c_sname_match( c_sname_t const *sname, char const *glob ) {
+  assert( sname != NULL );
+  assert( glob != NULL );
+
+  size_t const scope_count = c_sname_count( sname );
+  if ( scope_count == 0 || glob[0] == '\0' )
+    return false;
+
+  //
+  // Scan through glob to count the number of scope globs which is the number
+  // of occurrences of `::` plus 1, e.g., `a::b::c` yields 3.
+  //
+  size_t glob_count = 1;
+  for ( char const *s = glob; *s != '\0'; ++s ) {
+    if ( *s == ':' ) {
+      ++s;
+      assert( *s == ':' );
+      ++glob_count;
+    }
+  } // for
+
+  //
+  // Special case: if glob starts with `**`, match in any scope.  Decrement
+  // glob_count and skip past `**::`.
+  //
+  bool const match_in_any_scope = glob[0] == '*' && glob[1] == '*';
+  if ( match_in_any_scope ) {
+    if ( --glob_count > scope_count ) {
+      //
+      // There are more scope globs to match than there are scopes in sname so
+      // it can't possibly match.
+      //
+      return false;
+    }
+    glob += 2 /* "**" */;
+    SKIP_WS( glob );
+    assert( glob[0] == ':' && glob[1] == ':' );
+    glob += 2 /* "::" */;
+  }
+  else if ( glob_count != scope_count ) {
+    //
+    // For non-any-scope matches, the number of scope globs must equal the
+    // number of scopes in sname and it doesn't so it can't possibly match.
+    //
+    return false;
+  }
+
+  char const *scope_glob[ glob_count ];
+  size_t glob_index = 0;
+
+  //
+  // Break up glob into scope globs.
+  //
+  for ( char const *s = glob, *glob_begin = SKIP_WS( s ); ; ) {
+    if ( *s == ':' || *s == '\0' ) {
+      assert( glob_index < glob_count );
+      size_t const glob_len = (size_t)(s - glob_begin);
+      scope_glob[ glob_index ] = check_strndup( glob_begin, glob_len );
+      if ( *s++ == '\0' )
+        break;
+      assert( *s == ':' );
+      ++s;
+      glob_begin = SKIP_WS( s );
+      ++glob_index;
+    }
+    else {
+      assert( is_ident( *s ) || *s == '*' );
+      ++s;
+    }
+  } // for
+
+  c_scope_t const *scope = sname->head;
+
+  if ( match_in_any_scope ) {
+    //
+    // For any-scope matches, skip past leading scopes in sname (if necessary)
+    // since its trailing scopes are the ones that have to match.
+    //
+    // For example, if sname is `a::b::c::d` (scope_count = 4) and glob is
+    // `**::c::d` (glob_count = 2 since the `**::` is stripped), then skip past
+    // 2 scopes (4 - 2) in sname to arrive at `c::d` that will match.
+    //
+    for ( size_t diff_count = scope_count - glob_count; diff_count > 0;
+          --diff_count, scope = scope->next ) {
+      assert( scope != NULL );
+    } // for
+    assert( scope != NULL );
+  }
+
+  //
+  // Finally, attempt to match each scope name against each scope glob.
+  //
+  bool is_match = true;
+  for ( glob_index = 0; is_match && scope != NULL;
+        ++glob_index, scope = scope->next ) {
+    assert( glob_index < glob_count );
+    char const *const name = c_scope_data( scope )->name;
+    if ( fnmatch( scope_glob[ glob_index ], name, 0 ) != 0 )
+      is_match = false;
+  } // for
+
+  for ( glob_index = 0; glob_index < glob_count; ++glob_index )
+    FREE( scope_glob[ glob_index ] );
+
+  return is_match;
 }
 
 char const* c_sname_scope_name( c_sname_t const *sname ) {

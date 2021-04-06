@@ -12,6 +12,14 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 9.10
 
+** Showing globs
+The `show` command now supports globs:
+
+    show foo*         // Show types starting with foo.
+    show s::*foo      // Show types starting with foo in top-level scope s.
+    show s*::foo      // Show foo types in top-level scopes starting with s.
+    show **::foo      // Show foo types in any scope.
+
 ** "Did you mean ...?" for command-line options
 "Did you mean ...?" suggestions have been added for command-line long options.
 

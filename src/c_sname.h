@@ -317,6 +317,30 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
 c_type_t const* c_sname_local_type( c_sname_t const *sname );
 
 /**
+ * Checks whether \a sname matches \a glob where \a glob is glob-like in that
+ * `*` matches zero or more characters.  However, `*` matches only within a
+ * single scope.  Examples:
+ *
+ *  + `foo*` matches all names starting with `foo` in the global scope.
+ *  + `s::*foo` matches all names ending with `foo` only within the top-level
+ *    scope `s`.
+ *  + `s*::foo` matches all names equal to `foo` in all top-level scopes
+ *    starting with `s`.
+ *  + `s::*::foo` matches all names equal to `foo` in any scope within the top-
+ *    level scope `s`.
+ *
+ * Additionally, a leading `**` is used to match within any scope.  Examples:
+ *
+ *  + `**::foo` matches all names equal to `foo` in any scope.
+ *
+ * @param sname The scoped name to match against.
+ * @param glob The glob-like pattern to match.  It _must_ be a valid glob.
+ * @return Returns `true` only if \a sname matches \a glob.
+ */
+PJL_WARN_UNUSED_RESULT
+bool c_sname_match( c_sname_t const *sname, char const *glob );
+
+/**
  * Gets the name at \a roffset of \a sname.
  *
  * @param sname The scoped name to get the name at \a roffset of.

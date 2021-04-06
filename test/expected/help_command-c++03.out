@@ -7,7 +7,7 @@ command:
   explain <gibberish>
   { help | ? } [command[s] | english]
   set [<option> [= <value>] | options | <lang>]*
-  show [<name> | [all] {predef[ined] | user}] [[as] {english | typedef}]
+  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
   typedef <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   exit | q[uit]

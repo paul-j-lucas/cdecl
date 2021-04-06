@@ -131,6 +131,14 @@ char* check_strdup_tolower( char const *s ) {
   return dup_s;
 }
 
+char* check_strndup( char const *s, size_t n ) {
+  if ( s == NULL )
+    return NULL;
+  char *const dup_s = strndup( s, n );
+  IF_EXIT( dup_s == NULL, EX_OSERR );
+  return dup_s;
+}
+
 #ifndef HAVE_FMEMOPEN
 FILE* fmemopen( void *buf, size_t size, char const *mode ) {
   assert( buf != NULL );

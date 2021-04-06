@@ -620,6 +620,9 @@ sname         {identifier}({S}*::{S}*{identifier})+
 dtor_sname    ({identifier}{S}*::{S}*)+(~|compl{S}){S}*{identifier}
 hyphenated    [a-z]+-([a-z]+-)*[a-z]+
 
+glob_scope    \*?({identifier}\*?)*
+glob          (\*\*|{glob_scope})({S}*::{S}*{glob_scope})*
+
 chr_str_pfx   (L|u8?|U)?['"]
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
 set_option    [^=; \f\n\r\t\v]+
@@ -634,6 +637,12 @@ hex_int       0[xX]{H}+{int_suffix}?
  * the command's options.
  */
 %x X_SET
+
+/*
+ * For the "show" command, we want to allow globs (scoped names containing
+ * `*`).
+ */
+%s S_SHOW
 
 /*
  * For C character and string literals.
@@ -793,6 +802,12 @@ declare/{S}({S}|{L})*user-def(ined)? {
                       // use an exclusive start state.
                       //
                       BEGIN( X_SET );
+                    }
+                    else if ( ck->literal == L_SHOW ) {
+                      //
+                      // For the "show" command, we need to allow globs.
+                      //
+                      BEGIN( S_SHOW );
                     }
                     return ck->yy_token_id;
                   }
@@ -1025,6 +1040,20 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 SET_TOKEN;
                 yylval.name = check_strdup( lexer_token );
                 return Y_SET_OPTION;
+              }
+}
+
+<S_SHOW>{
+  ";"         {
+                SET_TOKEN;
+                BEGIN( INITIAL );
+                return lexer_token[0];
+              }
+
+  {glob}      {
+                SET_TOKEN;
+                yylval.name = check_strdup( lexer_token );
+                return Y_GLOB;
               }
 }
 

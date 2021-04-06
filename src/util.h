@@ -592,6 +592,7 @@ void* check_realloc( void *p, size_t size );
  * @return Returns a copy of \a s or NULL if \a s is NULL.
  *
  * @sa check_strdup_tolower()
+ * @sa check_strndup()
  */
 PJL_WARN_UNUSED_RESULT
 char* check_strdup( char const *s );
@@ -605,9 +606,24 @@ char* check_strdup( char const *s );
  * or NULL if \a s is NULL.
  *
  * @sa check_strdup()
+ * @sa check_strndup()
  */
 PJL_WARN_UNUSED_RESULT
 char* check_strdup_tolower( char const *s );
+
+/**
+ * Calls **strndup**(3) and checks for failure.
+ * If memory allocation fails, prints an error message and exits.
+ *
+ * @param s The null-terminated string to duplicate or NULL.
+ * @param n The number of characters of \a s to duplicate.
+ * @return Returns a copy of \a n characters of \a s or NULL if \a s is NULL.
+ *
+ * @sa check_strdup_tolower()
+ * @sa check_strndup()
+ */
+PJL_WARN_UNUSED_RESULT
+char* check_strndup( char const *s, size_t n );
 
 /**
  * Checks whether \a s ends with any character in \a set.

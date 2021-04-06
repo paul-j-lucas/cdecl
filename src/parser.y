@@ -429,6 +429,7 @@ typedef struct c_qualifier c_qualifier_t;
  */
 struct show_type_info {
   unsigned        show_which;           ///< Predefined, user, or both?
+  char const     *glob;                 ///< Glob pattern, if any.
   c_gib_kind_t    gib_kind;             ///< Kind of gibberish to print.
 };
 typedef struct show_type_info show_type_info_t;
@@ -835,20 +836,25 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
 
   show_type_info_t const *const sti = data;
 
-  bool const show_type = tdef->user_defined ?
-    (sti->show_which & SHOW_USER_TYPES) != 0 :
-    (sti->show_which & SHOW_PREDEFINED_TYPES) != 0;
-
   bool const show_in_lang =
     (sti->show_which & SHOW_ALL_TYPES) != 0 ||
     (tdef->lang_ids & opt_lang) != LANG_NONE;
 
-  if ( show_type && show_in_lang ) {
-    if ( sti->gib_kind == C_GIB_NONE )
-      c_ast_explain_type( tdef->ast, fout );
-    else
-      c_typedef_gibberish( tdef, sti->gib_kind, fout );
+  if ( show_in_lang ) {
+    bool const show_type =
+      (sti->glob == NULL || c_sname_match( &tdef->ast->sname, sti->glob )) &&
+      (tdef->user_defined ?
+        (sti->show_which & SHOW_USER_TYPES) != 0 :
+        (sti->show_which & SHOW_PREDEFINED_TYPES) != 0);
+
+    if ( show_type ) {
+      if ( sti->gib_kind == C_GIB_NONE )
+        c_ast_explain_type( tdef->ast, fout );
+      else
+        c_typedef_gibberish( tdef, sti->gib_kind, fout );
+    }
   }
+
   return false;
 }
 
@@ -1207,6 +1213,7 @@ static void yyerror( char const *msg ) {
 %token  <name>      Y_CHAR_LIT
 %token              Y_END
 %token              Y_ERROR
+%token  <name>      Y_GLOB
 %token  <int_val>   Y_INT_LIT
 %token  <name>      Y_NAME
 %token  <name>      Y_SET_OPTION
@@ -1378,6 +1385,7 @@ static void yyerror( char const *msg ) {
 %type   <oper_id>   c_operator
 %type   <type_id>   cv_qualifier_tid cv_qualifier_list_tid_opt
 %type   <type_id>   enum_tid enum_class_struct_union_c_tid
+%type   <name>      glob glob_opt
 %type   <help>      help_what_opt
 %type   <type_id>   inline_tid_opt
 %type   <int_val>   int_exp
@@ -1413,9 +1421,11 @@ static void yyerror( char const *msg ) {
 // name
 %destructor { DTRACE; FREE( $$ ); } any_name
 %destructor { DTRACE; FREE( $$ ); } any_name_exp
-%destructor { DTRACE; FREE( $$ ); } Y_CHAR_LIT
+%destructor { DTRACE; FREE( $$ ); } glob_opt
 %destructor { DTRACE; FREE( $$ ); } name_exp
 %destructor { DTRACE; FREE( $$ ); } set_option_value_opt
+%destructor { DTRACE; FREE( $$ ); } Y_CHAR_LIT
+%destructor { DTRACE; FREE( $$ ); } Y_GLOB
 %destructor { DTRACE; FREE( $$ ); } Y_NAME
 %destructor { DTRACE; FREE( $$ ); } Y_SET_OPTION
 %destructor { DTRACE; FREE( $$ ); } Y_STR_LIT
@@ -2619,16 +2629,18 @@ show_command
       c_typedef_gibberish( $2, $4, fout );
     }
 
-  | Y_SHOW show_which_types_mask_opt show_format_opt
+  | Y_SHOW show_which_types_mask_opt glob_opt show_format_opt
     {
-      show_type_info_t sti = { $2, $3 };
+      show_type_info_t sti = { $2, $3, $4 };
       c_typedef_visit( &show_type_visitor, &sti );
+      free( $3 );
     }
 
-  | Y_SHOW show_which_types_mask_opt Y_AS show_format_exp
+  | Y_SHOW show_which_types_mask_opt glob_opt Y_AS show_format_exp
     {
-      show_type_info_t sti = { $2, $4 };
+      show_type_info_t sti = { $2, $3, $5 };
       c_typedef_visit( &show_type_visitor, &sti );
+      free( $3 );
     }
 
   | Y_SHOW Y_NAME
@@ -6030,6 +6042,23 @@ equals_exp
     {
       elaborate_error( "'=' expected" );
     }
+  ;
+
+glob
+  : Y_GLOB
+    {
+      if ( OPT_LANG_IS(C_ANY) && strchr( $1, ':' ) != NULL ) {
+        print_error( &@1, "scoped names are not supported in C\n" );
+        free( $1 );
+        PARSE_ABORT();
+      }
+      $$ = $1;
+    }
+  ;
+
+glob_opt
+  : /* empty */                   { $$ = NULL; }
+  | glob
   ;
 
 gt_exp
