@@ -323,16 +323,16 @@ c_type_t const* c_sname_local_type( c_sname_t const *sname );
  * single scope.  Examples:
  *
  *  + `foo*` matches all names starting with `foo` in the global scope.
- *  + `s::*foo` matches all names ending with `foo` only within the top-level
- *    scope `s`.
- *  + `s*::foo` matches all names equal to `foo` in all top-level scopes
- *    starting with `s`.
- *  + `s::*::foo` matches all names equal to `foo` in any scope within the top-
+ *  + `s::&zwj;*foo` matches all names ending with `foo` only within the top-
  *    level scope `s`.
+ *  + `s*::&zwj;foo` matches all names equal to `foo` in all top-level scopes
+ *    starting with `s`.
+ *  + `s::*::&zwj;foo` matches all names equal to `foo` in any scope within the
+ *    top-level scope `s`.
  *
  * Additionally, a leading `**` is used to match within any scope.  Examples:
  *
- *  + `**::foo` matches all names equal to `foo` in any scope.
+ *  + `**::&zwj;foo` matches all names equal to `foo` in any scope.
  *
  * @param sname The scoped name to match against.
  * @param glob The glob-like pattern to match.  It _must_ be a valid glob.
