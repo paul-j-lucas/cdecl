@@ -1,3 +1,56 @@
+2021-04-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.h: Added missing #include.
+   * AUTHORS, NEWS, configure.ac, lib/Makefile.am, alloca.in.h, attribute.h,
+     btowc.c, cdefs.h, ctype.in.h, flexmember.h, fnmatch.c, fnmatch.in.h,
+     fnmatch_loop.c, hard-locale.c, hard-locale.h, idx.h, intprops.h,
+     inttypes.in.h, isblank.c, lc-charset-dispatch.c, lc-charset-dispatch.h,
+     libc-config.h, localcharset.c, localcharset.h, locale.in.h,
+     mbrtowc-impl-utf8.h, mbrtowc-impl.h, mbrtowc.c, mbsinit.c,
+     mbsrtowcs-impl.h, mbsrtowcs-state.c, mbsrtowcs.c, mbtowc-impl.h,
+     mbtowc-lock.c, mbtowc-lock.h, mbtowc.c, memchr.c, memchr.valgrind,
+     mempcpy.c, setlocale-lock.c, setlocale_null.c, setlocale_null.h, streq.h,
+     strnlen1.c, strnlen1.h, verify.h, wchar.in.h, wctype-h.c, wctype.in.h,
+     windows-initguard.h, wmemchr-impl.h, wmemchr.c, wmempcpy.c, __inline.m4,
+     alloca.m4, btowc.m4, builtin-expect.m4, codeset.m4, ctype.m4,
+     flexmember.m4, fnmatch.m4, fnmatch_h.m4, gnulib-cache.m4, gnulib-comp.m4,
+     inttypes.m4, isblank.m4, localcharset.m4, locale-fr.m4, locale-ja.m4,
+     locale-zh.m4, locale_h.m4, mbrtowc.m4, mbsinit.m4, mbsrtowcs.m4,
+     mbstate_t.m4, mbtowc.m4, memchr.m4, mempcpy.m4, mmap-anon.m4,
+     setlocale_null.m4, std-gnu11.m4, threadlib.m4, visibility.m4, wchar_h.m4,
+     wctype_h.m4, wmemchr.m4, wmempcpy.m4, cdecl.1, c_sname.c, c_sname.h,
+     help.c, lexer.l, parser.y, util.c, util.h, test/Makefile.am, help-c++.out,
+     help-c.out, help_command-c++.out, help_command-c++03.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out,
+     show_all_predefined_glob-01.out, show_all_predefined_glob-02.out,
+     show_all_predefined_glob-03.out, show_all_predefined_glob-01.test,
+     show_all_predefined_glob-02.test, show_all_predefined_glob-03.test: The
+     "show" command now accepts globs.
+   * lexer.l: State renaming.
+   * parser.y: s/FREE/free/
+
+2021-04-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, stdlib.in.h, stdlib_h.m4: Updated Gnulib.
+
+2021-04-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: dym_size is now const.
+   * autocomplete.c, did_you_mean.c, set_options.c, set_options.h:
+     s/SET_/SET_OPT_/
+
+2021-04-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * set_options.c: Simplification.
+   * set_options.c, set_options.h: Now using set_option_fn_args_t.
+   * set_options.c: Removed unnecessary cast to (void).
+   * c_operator.c, c_operator.h, lexer.h, lexer.l, slist.c, slist.h, strbuf.c,
+     strbuf.h: *_INLINE clean-up.
+
+2021-04-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c: Added assert.
+
 2021-03-31  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.c: Replaced use of malloc() with strbuf_t.
