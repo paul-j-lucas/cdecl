@@ -101,8 +101,8 @@ void c_type_id_dump( c_type_id_t tid, FILE *dout );
  * Prints a key/value pair (for debugging).
  *
  * @param key The key to print.
- * @param value The value to print, if any.  If either NULL or the empty
- * string, `null` is printed instead of the value.
+ * @param value The value to print, if any.  If NULL, `null` is printed instead
+ * of the value.
  * @param dout The `FILE` to dump to.
  */
 void kv_dump( char const *key, char const *value, FILE *dout );

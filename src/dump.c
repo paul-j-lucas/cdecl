@@ -323,7 +323,7 @@ void c_type_id_dump( c_type_id_t tid, FILE *dout ) {
 void kv_dump( char const *key, char const *value, FILE *dout ) {
   assert( key != NULL );
   assert( key[0] != '\0' );
-  if ( value != NULL && *value != '\0' )
+  if ( value != NULL )
     FPRINTF( dout, "%s = \"%s\"", key, value );
   else
     FPRINTF( dout, "%s = null", key );
