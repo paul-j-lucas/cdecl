@@ -272,7 +272,7 @@ void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout ) {
     FPUTS( "[\n", dout );
     ++indent;
     bool comma = false;
-    FOREACH_SLIST( p, list, NULL ) {
+    FOREACH_AST_LIST( p, list ) {
       if ( true_or_set( &comma ) )
         FPUTS( ",\n", dout );
       c_ast_dump( c_param_ast( p ), indent, NULL, dout );

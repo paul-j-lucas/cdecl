@@ -101,6 +101,15 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define C_FUNC_MASK_MEMBER    0x3u
 
+/**
+ * Convenience macro for iterating over the AST nodes of an AST list.
+ *
+ * @param VAR The `slist_node` loop variable.
+ * @param AST_LIST A pointer to the AST list to iterate over.
+ */
+#define FOREACH_AST_LIST(VAR,AST_LIST) \
+  FOREACH_SLIST( VAR, AST_LIST, NULL )
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
