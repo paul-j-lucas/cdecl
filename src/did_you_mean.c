@@ -362,16 +362,15 @@ did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token ) {
 
   if ( is_similar_enough( best_dist, SIMILAR_ENOUGH_PERCENT, best_len ) ) {
     // include all candidates that have the same distance
-    size_t best_count = 0;
     for ( dym = dym_array;
-          ++best_count < dym_size && (++dym)->dam_lev_dist == best_dist; )
+          (++dym)->token != NULL && dym->dam_lev_dist == best_dist; )
       ;
     //
     // Free tokens past the best ones and set the one past the last to NULL to
     // mark the end.
     //
-    dym_free_tokens( dym_array + best_count );
-    dym_array[ best_count ].token = NULL;
+    dym_free_tokens( dym );
+    dym->token = NULL;
 
     return dym_array;
   }
