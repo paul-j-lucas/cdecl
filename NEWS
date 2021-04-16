@@ -23,8 +23,8 @@ The `show` command now supports globs:
 ** "Did you mean ...?" for command-line options
 "Did you mean ...?" suggestions have been added for command-line long options.
 
-* C78 in help
-Added C78 to help test.
+** C78 in help
+Added C78 to help text.
 
 
 * Changes in Cdecl 9.9
