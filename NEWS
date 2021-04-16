@@ -26,6 +26,9 @@ The `show` command now supports globs:
 ** C78 in help
 Added C78 to help text.
 
+** Fixed "null" for unknown name
+No longer sometime print "null" when an unknown name is encountered.
+
 
 * Changes in Cdecl 9.9
 

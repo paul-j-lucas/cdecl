@@ -270,18 +270,17 @@ void fl_print_error_unknown_name( char const *file, int line,
     char const *what = NULL;
 
     switch ( c_type_id_tpid( k->type_id ) ) {
-      case C_TPID_NONE:
-        break;
-      case C_TPID_BASE:
-        dym_kind = DYM_C_TYPES;
-        what = "type";
-        break;
-      case C_TPID_STORE:
+      case C_TPID_NONE:                 // e.g., "break"
+      case C_TPID_STORE:                // e.g., "extern"
         dym_kind = DYM_C_KEYWORDS;
         what = "keyword";
         break;
+      case C_TPID_BASE:                 // e.g., "char"
+        dym_kind = DYM_C_TYPES;
+        what = "type";
+        break;
       case C_TPID_ATTR:
-        dym_kind = DYM_C_ATTRIBUTES;
+        dym_kind = DYM_C_ATTRIBUTES;    // e.g., "noreturn"
         what = "attribute";
         break;
     } // switch
