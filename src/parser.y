@@ -1471,6 +1471,7 @@ command
   | scope_declaration_c
   | set_command semi_or_end
   | show_command semi_or_end
+  | template_declaration_c semi_or_end
   | typedef_declaration_c semi_or_end
   | using_declaration_c semi_or_end
   | semi_or_end                         // allows for blank lines
@@ -2041,6 +2042,11 @@ explain_c
     {
       ia_type_ast_pop();
     }
+
+    /*
+     * Template declaration -- not supported.
+     */
+  | explain template_declaration_c
 
     /*
      * Common declaration with alignas, e.g.: alignas(8) T x.
@@ -2710,6 +2716,21 @@ predefined_or_user_mask_opt
   : /* empty */                   { $$ = 0; }
   | Y_PREDEFINED                  { $$ = SHOW_PREDEFINED_TYPES; }
   | Y_USER                        { $$ = SHOW_USER_TYPES; }
+  ;
+
+///////////////////////////////////////////////////////////////////////////////
+//  template
+///////////////////////////////////////////////////////////////////////////////
+
+template_declaration_c
+  : Y_TEMPLATE
+    {
+      print_error( &@1,
+        "%s declarations are not supported by %s\n",
+        L_TEMPLATE, PACKAGE
+      );
+      PARSE_ABORT();
+    }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
