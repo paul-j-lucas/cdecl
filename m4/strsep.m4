@@ -1,4 +1,4 @@
-# strsep.m4 serial 10
+# strsep.m4 serial 11
 dnl Copyright (C) 2002-2004, 2007, 2009-2021 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -12,7 +12,7 @@ AC_DEFUN([gl_FUNC_STRSEP],
   dnl The strsep() declaration in lib/string.in.h uses 'restrict'.
   AC_REQUIRE([AC_C_RESTRICT])
 
-  AC_REQUIRE([gl_HEADER_STRING_H_DEFAULTS])
+  AC_REQUIRE([gl_STRING_H_DEFAULTS])
   AC_CHECK_FUNCS([strsep])
   if test $ac_cv_func_strsep = no; then
     HAVE_STRSEP=0
