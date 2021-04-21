@@ -1,3 +1,32 @@
+2021-04-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, stdint.in.h, wchar.in.h, wctype.in.h, fnmatch_h.m4,
+     gnulib-common.m4, gnulib-comp.m4, inttypes.m4, locale_h.m4, memchr.m4,
+     mempcpy.m4, stddef_h.m4, stdint.m4, stdio_h.m4, stdlib_h.m4, string_h.m4,
+     strndup.m4, strnlen.m4, strsep.m4, sys_types_h.m4, unistd_h.m4,
+     wchar_h.m4, wctype_h.m4, wint_t.m4: Updated Gnulib.
+   * util.h: Macro clean-up.
+
+2021-04-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Now recognizing "template" just to say it's not supported.
+
+2021-04-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, print.c: No longer sometime print "null" when an unknown name is
+     encountered.
+   * NEWS: Fixed formatting.
+
+2021-04-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: Eliminated best_count.
+
+2021-04-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h, dump.c: Added FOREACH_AST_LIST().
+   * dump.c, dump.h: kv_dump() now prints `null` only if the value is NULL (not
+     empty).
+
 2021-04-06  Paul J. Lucas <paul@lucasmail.org>
 
    * c_sname.h: Added missing #include.
