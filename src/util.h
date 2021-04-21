@@ -204,7 +204,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #PUTC()
  * @sa #EPUTS()
  */
-#define EPUTC(C)                  FPUTC( (C), stderr )
+#define EPUTC(C)                  fputc( (C), stderr )
 
 /**
  * Shorthand for printing a C string to standard error.
@@ -215,7 +215,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #EPUTC()
  * @sa #PUTS()
  */
-#define EPUTS(S)                  FPUTS( (S), stderr )
+#define EPUTS(S)                  fputs( (S), stderr )
 
 /**
  * Calls **ferror**(3) and exits if there was an error on \a STREAM.
@@ -445,18 +445,21 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #SP_AFTER()
  */
-#define SP_IF(S)                  (S[0] != '\0' ? " " : "")
+#define SP_IF(S)                  ((S)[0] != '\0' ? " " : "")
 
 /**
- * Conditionally returns \a S followed by a space.
+ * Expands into \a S followed by either a space (if \a S is non-empty) or the
+ * empty string (if \a S is empty).
+ *
+ * @note When used in a `printf()`, the format string must be `%s%s`.
  *
  * @param S The C string to check.
- * @return If \a S is non-empty, returns \a S followed by `" "`; otherwise
- * returns `""` followed by `""`.
+ * @return Returns \a S followed by either `" "` (if \a S is non-empty) or `""`
+ * (if \a S is empty).
  *
  * @sa #SP_IF()
  */
-#define SP_AFTER(S)               S, SP_IF(S)
+#define SP_AFTER(S)               (S), SP_IF(S)
 
 /**
  * Explicit C version of C++'s `static_cast`.
@@ -811,10 +814,11 @@ bool only_bits_set( uint64_t bits, uint64_t allowed_bits ) {
 }
 
 /**
- * Appends a component to a path ensuring that exactly one `/` separates them.
+ * Appends \a component to \a path ensuring that exactly one `/` separates
+ * them.
  *
- * @param path The path to append to.
- * The buffer pointed to must be big enough to hold the new path.
+ * @param path The path to append to.  The buffer pointed to must be big enough
+ * to hold the new path.
  * @param component The component to append.
  */
 void path_append( char *path, char const *component );
