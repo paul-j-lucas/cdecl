@@ -93,6 +93,7 @@ most notably:
   `mutable` data members,
   namespaces and scoped names,
   new-style casts,
+  pointers to members,
   `throw`,
   overloaded operators,
   and
@@ -116,9 +117,11 @@ most notably:
   and
   ref-qualified member function declarations.
 * Support for C++20
-  `consteval`
+  `consteval`,
+  `constinit`,
   and
-  `constinit`.
+  `export`
+  declarations.
 * Support for C++
   `[[carries_dependency]]`,
   `[[deprecated]]`,
