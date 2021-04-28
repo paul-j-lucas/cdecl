@@ -71,7 +71,7 @@
 # endif
 #endif
 
-#ifndef __attribute_maybe_unused__
+#ifndef __attribute_nonnull__
 /* <sys/cdefs.h> either does not exist, or is too old for Gnulib.
    Prepare to include <cdefs.h>, which is Gnulib's version of a
    more-recent glibc <sys/cdefs.h>.  */
@@ -80,13 +80,9 @@
 # ifndef _FEATURES_H
 #  define _FEATURES_H 1
 # endif
-/* Define __WORDSIZE so that <cdefs.h> does not attempt to include
-   nonexistent files.  Make it a syntax error, since Gnulib does not
-   use __WORDSIZE now, and if Gnulib uses it later the syntax error
-   will let us know that __WORDSIZE needs configuring.  */
-# ifndef __WORDSIZE
-#  define __WORDSIZE %%%
-# endif
+/* Define __GNULIB_CDEFS so that <cdefs.h> does not attempt to include
+   nonexistent files.  */
+# define __GNULIB_CDEFS
 /* Undef the macros unconditionally defined by our copy of glibc
    <sys/cdefs.h>, so that they do not clash with any system-defined
    versions.  */

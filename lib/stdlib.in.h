@@ -1032,12 +1032,23 @@ _GL_WARN_ON_USE (realloc, "realloc is not POSIX compliant everywhere - "
 
 
 #if @GNULIB_REALLOCARRAY@
-# if ! @HAVE_REALLOCARRAY@
+# if @REPLACE_REALLOCARRAY@
+#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#   undef reallocarray
+#   define reallocarray rpl_reallocarray
+#  endif
+_GL_FUNCDECL_RPL (reallocarray, void *,
+                  (void *ptr, size_t nmemb, size_t size));
+_GL_CXXALIAS_RPL (reallocarray, void *,
+                  (void *ptr, size_t nmemb, size_t size));
+# else
+#  if ! @HAVE_REALLOCARRAY@
 _GL_FUNCDECL_SYS (reallocarray, void *,
                   (void *ptr, size_t nmemb, size_t size));
-# endif
+#  endif
 _GL_CXXALIAS_SYS (reallocarray, void *,
                   (void *ptr, size_t nmemb, size_t size));
+# endif
 _GL_CXXALIASWARN (reallocarray);
 #elif defined GNULIB_POSIXCHECK
 # undef reallocarray
