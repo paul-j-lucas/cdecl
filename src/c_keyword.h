@@ -82,7 +82,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
  *
  * @param k A pointer to the previous keyword. For the first iteration, NULL
  * should be passed.
- * @return Returns the next C/C++ keyword or null for none.
+ * @return Returns the next C/C++ keyword or NULL for none.
  *
  * @sa #FOREACH_KEYWORD
  */

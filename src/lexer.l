@@ -401,7 +401,7 @@ static bool       parse_identifier( char const*, char const** );
  * Finds a cdecl keyword matching \a s, if any.
  *
  * @param s The string to find.
- * @return Returns a pointer to the corresponding keyword or null if not found.
+ * @return Returns a pointer to the corresponding keyword or NULL if not found.
  */
 PJL_WARN_UNUSED_RESULT
 static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
