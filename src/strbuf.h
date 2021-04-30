@@ -252,7 +252,7 @@ void strbuf_sepc_cats( strbuf_t *sbuf, char sep, bool *sep_flag,
  * Reinitializes \a sbuf, but returns its string.
  *
  * @param sbuf A pointer to the strbuf to take from.
- * @return Returns said string.  The caller is responsible for deleting it.
+ * @return Returns said string.  The caller is responsible for freeing it.
  *
  * @sa strbuf_free()
  * @sa strbuf_init()

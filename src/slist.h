@@ -319,7 +319,7 @@ void* slist_peek_tail( slist_t const *list ) {
  *
  * @param list The pointer to the <code>\ref slist</code>.
  * @return Returns the data from the head of \a list.  The caller is
- * responsible for deleting it (if necessary).
+ * responsible for freeing it (if necessary).
  *
  * @note This is an O(1) operation.
  */
