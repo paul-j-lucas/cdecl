@@ -78,6 +78,7 @@ typedef struct strbuf strbuf_t;
  * @sa strbuf_cats()
  * @sa strbuf_catsn()
  */
+PJL_PRINTF_LIKE_FUNC(2)
 void strbuf_catf( strbuf_t *sbuf, char const *format, ... );
 
 /**
