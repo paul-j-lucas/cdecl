@@ -477,16 +477,15 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
     return;
   }
 
-  if ( g->gib_kind == C_GIB_TYPEDEF ) {
+  FPUTS(
     //
     // For typedefs, the scope names (if any) were already printed in
     // c_typedef_gibberish() so now we just print the local name.
     //
-    FPUTS( c_ast_local_name( ast ), g->gout );
-  }
-  else {
-    FPUTS( c_ast_full_name( ast ), g->gout );
-  }
+    g->gib_kind == C_GIB_TYPEDEF ?
+      c_ast_local_name( ast ) : c_ast_full_name( ast ),
+    g->gout
+  );
 }
 
 /**
