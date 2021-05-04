@@ -1,3 +1,17 @@
+2021-04-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * slist.h, strbuf.h: s/deleting/freeing/
+   * strbuf.h: Added PJL_PRINTF_LIKE_FUNC to strbuf_catf().
+
+2021-04-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.h, c_sname.h, lexer.l, slist.h: s/null/NULL/
+
+2021-04-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, cdefs.h, libc-config.h, stdlib.in.h, stdlib_h.m4: Updated
+     Gnulib.
+
 2021-04-21  Paul J. Lucas <paul@lucasmail.org>
 
    * lib/Makefile.am, stdint.in.h, wchar.in.h, wctype.in.h, fnmatch_h.m4,
