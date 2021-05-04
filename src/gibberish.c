@@ -271,16 +271,19 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       if ( g->gib_kind != C_GIB_TYPEDEF || g->printing_typedef ) {
         //
         // For enum, class, struct, or union (ECSU) types, we need to print the
-        // ECSU name when the AST is not a typedef, e.g.:
+        // ECSU name when either:
         //
-        //      cdecl> declare x as struct S
-        //      struct S x;             // ast->sname = "x"; escu_name = "S"
+        //  + The AST is not a typedef, e.g.:
         //
-        // (See the printing_typedef comment in c_typedef_gibberish() first.)
-        // We also need to print the ESCU name if we're printing an enum,
-        // class, struct, or union type in C only:
+        //          cdecl> declare x as struct S
+        //          struct S x;         // ast->sname = "x"; escu_name = "S"
         //
-        //      typedef struct S T;     // ast->sname ="S"; escu_name = "T"
+        //    (See the printing_typedef comment in c_typedef_gibberish()
+        //    first.)  Or:
+        //
+        //  + We're printing an ECSU type in C only, e.g.:
+        //
+        //          typedef struct S T; // ast->sname ="T"; escu_name = "S"
         //
         FPRINTF( g->gout,
           " %s", c_sname_full_name( &ast->as.ecsu.ecsu_sname )
