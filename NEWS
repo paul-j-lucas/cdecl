@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 9.11
+
+** `asm` declarations
+Now recognizing `asm` just to say it's not supported.
+
+
 * Changes in Cdecl 9.10
 
 ** Showing globs
@@ -25,6 +31,9 @@ The `show` command now supports globs:
 
 ** C78 in help
 Added C78 to help text.
+
+** `template` declarations
+Now recognizing `template` just to say it's not supported.
 
 ** Fixed "null" for unknown name
 No longer sometime print "null" when an unknown name is encountered.

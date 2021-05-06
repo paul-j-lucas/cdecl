@@ -1399,6 +1399,7 @@ static void yyerror( char const *msg ) {
 %type   <gib_kind>  show_format show_format_exp show_format_opt
 %type   <bitmask>   show_which_types_mask_opt
 %type   <type_id>   static_tid_opt
+%type   <name>      str_lit_exp
 %type   <type>      type_modifier_base_type
 %type   <flag>      typename_flag_opt
 %type   <type_id>   virtual_tid_exp virtual_tid_opt
@@ -1424,6 +1425,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; FREE( $$ ); } glob_opt
 %destructor { DTRACE; FREE( $$ ); } name_exp
 %destructor { DTRACE; FREE( $$ ); } set_option_value_opt
+%destructor { DTRACE; FREE( $$ ); } str_lit_exp
 %destructor { DTRACE; FREE( $$ ); } Y_CHAR_LIT
 %destructor { DTRACE; FREE( $$ ); } Y_GLOB
 %destructor { DTRACE; FREE( $$ ); } Y_NAME
@@ -2044,6 +2046,11 @@ explain_c
     }
 
     /*
+     * asm declaration -- not supported.
+     */
+  | explain asm_declaration_c
+
+    /*
      * Template declaration -- not supported.
      */
   | explain template_declaration_c
@@ -2389,6 +2396,22 @@ help_what_opt
 
 quit_command
   : Y_QUIT                        { quit(); }
+  ;
+
+///////////////////////////////////////////////////////////////////////////////
+//  asm
+///////////////////////////////////////////////////////////////////////////////
+
+asm_declaration_c
+  : Y_ASM lparen_exp str_lit_exp rparen_exp
+    {
+      free( $3 );
+      print_error( &@1,
+        "%s declarations are not supported by %s\n",
+        L_ASM, PACKAGE
+      );
+      PARSE_ABORT();
+    }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -5128,16 +5151,12 @@ attribute_c_tid
 
 attribute_str_arg_c_opt
   : /* empty */
-  | '(' Y_STR_LIT rparen_exp
+  | '(' str_lit_exp rparen_exp
     {
       print_warning( &@1,
         "attribute arguments are not supported by %s (ignoring)\n", PACKAGE
       );
       free( $2 );
-    }
-  | '(' error ')'
-    {
-      elaborate_error( "string literal expected" );
     }
   ;
 
@@ -6296,6 +6315,15 @@ semi_opt
 semi_or_end
   : ';'
   | Y_END
+  ;
+
+str_lit_exp
+  : Y_STR_LIT
+  | error
+    {
+      $$ = NULL;
+      elaborate_error( "string literal expected" );
+    }
   ;
 
 to_exp
