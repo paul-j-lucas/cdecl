@@ -1229,6 +1229,8 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_ec_typedef_i.test \
 	tests/explain_ec_using_i.test \
 	tests/explain_ecf_v.test \
+	tests/explain_ecf_v-Rstr-01.test \
+	tests/explain_ecf_v-Rstr-02.test \
 	tests/explain_efi-itself.test \
 	tests/explain_efi.test \
 	tests/explain_efui.test \

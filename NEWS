@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** `asm` declarations
 Now recognizing `asm` just to say it's not supported.
 
+** C++ raw string literals
+C++'s raw string literals `R"delim(...)delim"` are now supported.
+
 
 * Changes in Cdecl 9.10
 

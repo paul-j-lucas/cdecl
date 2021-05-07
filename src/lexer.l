@@ -77,6 +77,11 @@
 /// @endcond
 
 /**
+ * C++ raw string delimiter maximum length.
+ */
+#define RSTR_DELIM_MAX_LEN        16u
+
+/**
  * Sets <code>\ref lexer_token</code> to the current Flex token.
  */
 #define SET_TOKEN                 SET_TOKEN_TO( yytext )
@@ -386,6 +391,9 @@ static bool       is_eof;               ///< Encountered EOF?
 static strbuf_t   str_lit_buf;          ///< String (or character) literal.
 static c_loc_t    str_lit_loc;          ///< String literal starting location.
 
+/// C++ raw string literal delimiter.
+static char       rstr_delim[ RSTR_DELIM_MAX_LEN + 1/*"*/ + 1/*\0*/ ];
+
 // local functions
 noreturn
 static void       lexer_fatal( char const* );
@@ -623,7 +631,8 @@ hyphenated    [a-z]+-([a-z]+-)*[a-z]+
 glob_scope    \*?({identifier}\*?)*
 glob          (\*\*|{glob_scope})({S}*::{S}*{glob_scope})*
 
-chr_str_pfx   (L|u8?|U)?['"]
+chr_str_pfx   (L|u8?|U)?
+rstr_pfx      {chr_str_pfx}R\"[^ \f\n\r\t\v()\\]*"("
 int_suffix    ([lL][lL]?[uU]?)|([uU][lL]?[lL]?)
 set_option    [^=; \f\n\r\t\v]+
 
@@ -647,7 +656,7 @@ hex_int       0[xX]{H}+{int_suffix}?
 /*
  * For C character and string literals.
  */
-%x X_CHAR X_STR
+%x X_CHAR X_STR X_RSTR
 
 %%
               /*
@@ -951,9 +960,83 @@ declare/{S}({S}|{L})*user-def(ined)? {
 "{"           |
 "}"           { SET_TOKEN; return lexer_token[0]    ; }
 
-{chr_str_pfx} {
-                strbuf_init( &str_lit_buf );
+{rstr_pfx}    {
+                char const *p = strchr( yytext, '"' );
+                assert( p != NULL );
+                char const *const lparen = strchr( ++p, '(' );
+                assert( lparen != NULL );
 
+                size_t const delim_len = (size_t)(lparen - p);
+                if ( delim_len > RSTR_DELIM_MAX_LEN ) {
+                  print_error( &yylloc,
+                    "raw string literal delimiter "
+                    "exceeds maximum length of %u\n",
+                    RSTR_DELIM_MAX_LEN
+                  );
+                  return Y_ERROR;
+                }
+
+                strncpy( rstr_delim, p, delim_len );
+                //
+                // To make the delimiter-match code simpler, include the
+                // closing '"' as part of the delimiter.  (Using strcpy() also
+                // has the benefit of ensuring rstr_delim is null-terminated.)
+                //
+                strcpy( rstr_delim + delim_len, "\"" );
+
+                strbuf_init( &str_lit_buf );
+                //
+                // Save the start location because we want to use it as the
+                // location for the literal, not its end location.
+                //
+                str_lit_loc = yylloc;
+
+                BEGIN( X_RSTR );
+              }
+
+<X_RSTR>{
+  [^)]+       { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
+  ")"         {
+                char const *d;
+                for ( d = rstr_delim; *d != '\0'; ++d ) {
+                  int const c = input();
+                  if ( c == '\0' || c == EOF ) {
+                    print_error( &yylloc, "unterminated string literal\n" );
+                    return Y_ERROR;
+                  }
+                  ++column;
+                  if ( c != *d ) {
+                    //
+                    // Found a mismatch with the delimiter, e.g.:
+                    //
+                    //      )abc        // delimiter
+                    //      )abx        // what was found
+                    //
+                    // Hence, it's not the actual delimiter, but part of the
+                    // string literal: append the part that matched plus the
+                    // character that didn't.
+                    //
+                    size_t const match_len = (size_t)(d - rstr_delim);
+                    strbuf_reserve( &str_lit_buf, match_len + 1/*)*/ + 1/*c*/ );
+                    strbuf_catc( &str_lit_buf, ')' );
+                    strbuf_catsn( &str_lit_buf, rstr_delim, match_len );
+                    strbuf_catc( &str_lit_buf, c );
+                    break;
+                  }
+                } // for
+
+                if ( *d == '\0' ) {     // found delimiter
+                  yylloc.first_line   = str_lit_loc.first_line;
+                  yylloc.first_column = str_lit_loc.first_column;
+                  yylval.name = strbuf_take( &str_lit_buf );
+                  BEGIN( INITIAL );
+                  return Y_STR_LIT;
+                }
+              }
+}
+
+{chr_str_pfx}['"] {
+                strbuf_init( &str_lit_buf );
                 //
                 // Save the start location because we want to use it as the
                 // location for the literal, not its end location.
