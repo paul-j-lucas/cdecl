@@ -968,7 +968,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                * Common code between X_STR and X_CHAR.  Multicharacter literals
                * are legal, but implementation-defined.
                */
-<X_STR,X_CHAR>{
+<X_CHAR,X_STR>{
               /* Escaped characters are copied verbatim, not interpreted. */
   \\(.|\n)    { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
   \n          {
@@ -981,18 +981,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
               }
 }
 
-<X_STR>{
-  [^"\\\n]+   { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
-  \"          {
-                yylloc.first_line   = str_lit_loc.first_line;
-                yylloc.first_column = str_lit_loc.first_column;
-                yylval.name = strbuf_take( &str_lit_buf );
-                BEGIN( INITIAL );
-                return Y_STR_LIT;
-              }
-}
-
-<X_CHAR>{     /* X_CHAR is the same as X_STR except ' replaces ". */
+<X_CHAR>{
   [^'\\\n]+   { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
   \'          {
                 yylloc.first_line   = str_lit_loc.first_line;
@@ -1000,6 +989,17 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 yylval.name = strbuf_take( &str_lit_buf );
                 BEGIN( INITIAL );
                 return Y_CHAR_LIT;
+              }
+}
+
+<X_STR>{      /* X_STR is the same as X_CHAR except " replaces '. */
+  [^"\\\n]+   { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
+  \"          {
+                yylloc.first_line   = str_lit_loc.first_line;
+                yylloc.first_column = str_lit_loc.first_column;
+                yylval.name = strbuf_take( &str_lit_buf );
+                BEGIN( INITIAL );
+                return Y_STR_LIT;
               }
 }
 
