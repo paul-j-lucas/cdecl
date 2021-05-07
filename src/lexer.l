@@ -973,7 +973,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                     "exceeds maximum length of %u\n",
                     RSTR_DELIM_MAX_LEN
                   );
-                  return Y_ERROR;
+                  return Y_LEXER_ERROR;
                 }
 
                 strncpy( rstr_delim, p, delim_len );
@@ -1002,7 +1002,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                   int const c = input();
                   if ( c == '\0' || c == EOF ) {
                     print_error( &yylloc, "unterminated string literal\n" );
-                    return Y_ERROR;
+                    return Y_LEXER_ERROR;
                   }
                   ++column;
                   if ( c != *d ) {
@@ -1060,7 +1060,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                   "unterminated %s literal\n",
                   YY_START == X_STR ? "string" : "character"
                 );
-                return Y_ERROR;
+                return Y_LEXER_ERROR;
               }
 }
 
@@ -1090,7 +1090,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 for ( int c = input(), prev = '\0'; ; prev = c, c = input() ) {
                   if ( c == '\0' || c == EOF ) {
                     print_error( &yylloc, "unterminated comment\n" );
-                    return Y_ERROR;
+                    return Y_LEXER_ERROR;
                   }
                   ++column;
                   if ( c == '/' && prev == '*' )

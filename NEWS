@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** `asm` declarations
 Now recognizing `asm` just to say it's not supported.
 
+** No lexer & parser error messages
+When the lexer prints an error message, the parser no longer does.
+
 ** C++ raw string literals
 C++'s raw string literals `R"delim(...)delim"` are now supported.
 

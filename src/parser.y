@@ -1221,6 +1221,14 @@ static void yyerror( char const *msg ) {
 %token  <tdef>      Y_TYPEDEF_NAME      // e.g., size_t
 %token  <tdef>      Y_TYPEDEF_SNAME     // e.g., std::string
 
+                    //
+                    // When the lexer returns Y_LEXER_ERROR, it means that
+                    // there was a lexical error and that it's already printed
+                    // an error message so the parser should NOT print an error
+                    // message and just call PARSE_ABORT().
+                    ///
+%token              Y_LEXER_ERROR
+
 //
 // Grammar rules are named according to the following conventions.  In order,
 // if a rule:
@@ -1399,7 +1407,7 @@ static void yyerror( char const *msg ) {
 %type   <gib_kind>  show_format show_format_exp show_format_opt
 %type   <bitmask>   show_which_types_mask_opt
 %type   <type_id>   static_tid_opt
-%type   <name>      str_lit_exp
+%type   <name>      str_lit str_lit_exp
 %type   <type>      type_modifier_base_type
 %type   <flag>      typename_flag_opt
 %type   <type_id>   virtual_tid_exp virtual_tid_opt
@@ -1425,6 +1433,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; FREE( $$ ); } glob_opt
 %destructor { DTRACE; FREE( $$ ); } name_exp
 %destructor { DTRACE; FREE( $$ ); } set_option_value_opt
+%destructor { DTRACE; FREE( $$ ); } str_lit
 %destructor { DTRACE; FREE( $$ ); } str_lit_exp
 %destructor { DTRACE; FREE( $$ ); } Y_CHAR_LIT
 %destructor { DTRACE; FREE( $$ ); } Y_GLOB
@@ -1739,7 +1748,7 @@ attribute_english_tid
   ;
 
 linkage_tid
-  : Y_STR_LIT
+  : str_lit
     {
       bool ok = true;
 
@@ -5235,6 +5244,10 @@ gnu_attribute_arg_c
   | Y_CHAR_LIT                    { free( $1 ); }
   | Y_STR_LIT                     { free( $1 ); }
   | '(' gnu_attribute_arg_list_c rparen_exp
+  | Y_LEXER_ERROR
+    {
+      PARSE_ABORT();
+    }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -6317,8 +6330,17 @@ semi_or_end
   | Y_END
   ;
 
-str_lit_exp
+str_lit
   : Y_STR_LIT
+  | Y_LEXER_ERROR
+    {
+      $$ = NULL;
+      PARSE_ABORT();
+    }
+  ;
+
+str_lit_exp
+  : str_lit
   | error
     {
       $$ = NULL;
