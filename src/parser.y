@@ -2669,15 +2669,13 @@ show_command
 
   | Y_SHOW show_which_types_mask_opt glob_opt show_format_opt
     {
-      show_type_info_t sti = { $2, $3, $4 };
-      c_typedef_visit( &show_type_visitor, &sti );
+      c_typedef_visit( &show_type_visitor, &(show_type_info_t){ $2, $3, $4 } );
       free( $3 );
     }
 
   | Y_SHOW show_which_types_mask_opt glob_opt Y_AS show_format_exp
     {
-      show_type_info_t sti = { $2, $3, $5 };
-      c_typedef_visit( &show_type_visitor, &sti );
+      c_typedef_visit( &show_type_visitor, &(show_type_info_t){ $2, $3, $5 } );
       free( $3 );
     }
 
