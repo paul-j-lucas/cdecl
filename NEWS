@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** `asm` declarations
 Now recognizing `asm` just to say it's not supported.
 
+** `bootstrap`
+Added a `bootstrap` script.
+
 ** No lexer & parser error messages
 When the lexer prints an error message, the parser no longer does.
 

@@ -143,7 +143,7 @@ Things like `configure` are _derived_ sources and
 If you have `autoconf`, `automake`, and `m4` installed,
 you can generate `configure` yourself by doing:
 
-    autoreconf -fiv
+    ./bootstrap
 
 You will also need
 [`flex`](https://github.com/westes/flex)
