@@ -1013,14 +1013,12 @@ declare/{S}({S}|{L})*user-def(ined)? {
                     //      )abx        // what was found
                     //
                     // Hence, it's not the actual delimiter, but part of the
-                    // string literal: append the part that matched plus the
-                    // character that didn't.
+                    // string literal: append the part that matched (")ab")
+                    // plus the character that didn't ('x').
                     //
-                    size_t const match_len = (size_t)(d - rstr_delim);
-                    strbuf_reserve( &str_lit_buf, match_len + 1/*)*/ + 1/*c*/ );
-                    strbuf_catc( &str_lit_buf, ')' );
-                    strbuf_catsn( &str_lit_buf, rstr_delim, match_len );
-                    strbuf_catc( &str_lit_buf, c );
+                    strbuf_catf( &str_lit_buf,
+                      ")%.*s%c", (int)(d - rstr_delim), rstr_delim, c
+                    );
                     break;
                   }
                 } // for
