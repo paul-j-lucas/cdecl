@@ -1009,8 +1009,8 @@ declare/{S}({S}|{L})*user-def(ined)? {
                     //
                     // Found a mismatch with the delimiter, e.g.:
                     //
-                    //      )abc        // delimiter
-                    //      )abx        // what was found
+                    //      )abc"       // delimiter
+                    //      )abx"       // what was found
                     //
                     // Hence, it's not the actual delimiter, but part of the
                     // string literal: append the part that matched (")ab")
