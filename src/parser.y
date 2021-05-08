@@ -3988,10 +3988,11 @@ trailing_return_type_c_ast_opt
     Y_ARROW type_c_ast { ia_type_ast_push( $2 ); } cast_c_astp_opt
     {
       ia_type_ast_pop();
+      c_ast_t const *const ret_ast = ia_type_ast_peek();
 
       DUMP_START( "trailing_return_type_c_ast_opt",
                   "type_c_ast cast_c_astp_opt" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", ret_ast );
       DUMP_AST( "type_c_ast", $2 );
       DUMP_AST( "cast_c_astp_opt", $4.ast );
 
@@ -4027,8 +4028,8 @@ trailing_return_type_c_ast_opt
       // C++11 and the AST node for the placeholder is discarded and never made
       // part of the AST.
       //
-      if ( ia_type_ast_peek()->type.base_tid != TB_AUTO ) {
-        print_error( &ia_type_ast_peek()->loc,
+      if ( ret_ast->type.base_tid != TB_AUTO ) {
+        print_error( &ret_ast->loc,
           "function with trailing return type must only specify \"%s\"\n",
           L_AUTO
         );
