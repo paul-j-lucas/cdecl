@@ -625,8 +625,8 @@ use_help:
 noreturn
 static void usage( void ) {
   EPRINTF(
-"usage: " PACKAGE " [options] [command...]\n"
-"       " PACKAGE " [options] files...\n"
+"usage: " CDECL " [options] [command...]\n"
+"       " CDECL " [options] files...\n"
 "options:\n"
 "  --alt-tokens        (-%c)  Print alternative tokens.\n"
 #ifdef YYDEBUG

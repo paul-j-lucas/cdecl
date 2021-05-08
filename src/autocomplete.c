@@ -409,7 +409,7 @@ static char* keyword_completion( char const *text, int state ) {
  */
 void readline_init( FILE *rin, FILE *rout ) {
   // allow conditional ~/.inputrc parsing
-  rl_readline_name = CONST_CAST( char*, PACKAGE );
+  rl_readline_name = CONST_CAST( char*, CDECL );
 
   rl_attempted_completion_function = (rl_completion_func_t*)attempt_completion;
   rl_completion_entry_function = (void*)keyword_completion;

@@ -2379,7 +2379,7 @@ extern_linkage_c_tid
     {
       print_error( &@3,
         "explaining scoped linkage declarations is not supported by %s\n",
-        PACKAGE
+        CDECL
       );
       PARSE_ABORT();
     }
@@ -2417,7 +2417,7 @@ asm_declaration_c
       free( $3 );
       print_error( &@1,
         "%s declarations are not supported by %s\n",
-        L_ASM, PACKAGE
+        L_ASM, CDECL
       );
       PARSE_ABORT();
     }
@@ -2759,7 +2759,7 @@ template_declaration_c
     {
       print_error( &@1,
         "%s declarations are not supported by %s\n",
-        L_TEMPLATE, PACKAGE
+        L_TEMPLATE, CDECL
       );
       PARSE_ABORT();
     }
@@ -4782,7 +4782,7 @@ enum_class_struct_union_c_ast
     {
       print_error( &@4,
         "explaining %s declarations is not supported by %s\n",
-        c_type_id_name_c( $1 ), PACKAGE
+        c_type_id_name_c( $1 ), CDECL
       );
       c_sname_free( &$3 );
       PARSE_ABORT();
@@ -5085,7 +5085,7 @@ using_opt
     {
       print_warning( &@1,
         "\"%s\" in attributes is not supported by %s (ignoring)\n",
-        L_USING, PACKAGE
+        L_USING, CDECL
       );
       free( $2 );
     }
@@ -5126,7 +5126,7 @@ attribute_c_tid
       if ( c_sname_count( &$1 ) > 1 ) {
         print_warning( &@1,
           "\"%s\": namespaced attributes are not supported by %s\n",
-          c_sname_full_name( &$1 ), PACKAGE
+          c_sname_full_name( &$1 ), CDECL
         );
       }
       else {
@@ -5163,7 +5163,7 @@ attribute_str_arg_c_opt
   | '(' str_lit_exp rparen_exp
     {
       print_warning( &@1,
-        "attribute arguments are not supported by %s (ignoring)\n", PACKAGE
+        "attribute arguments are not supported by %s (ignoring)\n", CDECL
       );
       free( $2 );
     }
@@ -5184,7 +5184,7 @@ gnu_attribute_specifier_c
     {
       print_warning( &@1,
         "\"%s\" is not supported by %s (ignoring)",
-        L_GNU___ATTRIBUTE__, PACKAGE
+        L_GNU___ATTRIBUTE__, CDECL
       );
       if ( OPT_LANG_IS(C_CPP_MIN(2X,11)) )
         print_hint( "[[...]]" );
