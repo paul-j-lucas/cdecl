@@ -1000,7 +1000,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 char const *d;
                 for ( d = rstr_delim; *d != '\0'; ++d ) {
                   int const c = input();
-                  if ( c == '\0' || c == EOF ) {
+                  if ( c == EOF ) {
                     print_error( &yylloc, "unterminated string literal\n" );
                     return Y_LEXER_ERROR;
                   }
@@ -1086,7 +1086,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 
 <*>"/*"       {                         /* ignore C-style comments */
                 for ( int c = input(), prev = '\0'; ; prev = c, c = input() ) {
-                  if ( c == '\0' || c == EOF ) {
+                  if ( c == EOF ) {
                     print_error( &yylloc, "unterminated comment\n" );
                     return Y_LEXER_ERROR;
                   }
