@@ -79,7 +79,7 @@
 /**
  * C++ raw string delimiter maximum length.
  */
-#define RSTR_DELIM_MAX_LEN        16u
+#define RSTR_DELIM_LEN_MAX        16u
 
 /**
  * Sets <code>\ref lexer_token</code> to the current Flex token.
@@ -392,7 +392,7 @@ static strbuf_t   str_lit_buf;          ///< String (or character) literal.
 static c_loc_t    str_lit_loc;          ///< String literal starting location.
 
 /// C++ raw string literal delimiter.
-static char       rstr_delim[ RSTR_DELIM_MAX_LEN + 1/*"*/ + 1/*\0*/ ];
+static char       rstr_delim[ RSTR_DELIM_LEN_MAX + 1/*"*/ + 1/*\0*/ ];
 
 // local functions
 noreturn
@@ -960,23 +960,24 @@ declare/{S}({S}|{L})*user-def(ined)? {
 "{"           |
 "}"           { SET_TOKEN; return lexer_token[0]    ; }
 
-{rstr_pfx}    {
-                char const *p = strchr( yytext, '"' );
+{rstr_pfx}    { // e.g.: u8R"abc(...)abc"
+                // find:    ^   ^
+                char const *q = strchr( yytext, '"' );
+                assert( q != NULL );
+                char const *const p = strchr( ++q, '(' );
                 assert( p != NULL );
-                char const *const lparen = strchr( ++p, '(' );
-                assert( lparen != NULL );
 
-                size_t const delim_len = (size_t)(lparen - p);
-                if ( delim_len > RSTR_DELIM_MAX_LEN ) {
+                size_t const delim_len = (size_t)(p - q);
+                if ( delim_len > RSTR_DELIM_LEN_MAX ) {
                   print_error( &yylloc,
                     "raw string literal delimiter "
                     "exceeds maximum length of %u\n",
-                    RSTR_DELIM_MAX_LEN
+                    RSTR_DELIM_LEN_MAX
                   );
                   return Y_LEXER_ERROR;
                 }
 
-                strncpy( rstr_delim, p, delim_len );
+                strncpy( rstr_delim, q, delim_len );
                 //
                 // To make the delimiter-match code simpler, include the
                 // closing '"' as part of the delimiter.  (Using strcpy() also
