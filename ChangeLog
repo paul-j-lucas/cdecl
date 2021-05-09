@@ -1,3 +1,31 @@
+2021-05-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Added ret_ast local variable.
+   * parser.y: Now using struct literals.
+   * lexer.l: Removed c == '\0' 
+   * NEWS, bootstrap: Added a bootstrap script.
+
+2021-05-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, cdecl.h, options.c, parser.y, print.c, prompt.c: Added
+     CDECL.
+   * lexer.l: Now using strbuf_catf().
+   * NEWS, lexer.l, parser.y: When the lexer prints an error message, the
+     parser no longer does.
+   * NEWS, lexer.l, test/Makefile.am, explain_ecf_v-Rstr-01.out,
+     explain_ecf_v-Rstr-02.out, explain_ecf_v-Rstr-01.test,
+     explain_ecf_v-Rstr-02.test: Now support C++ raw string literals.
+   * lexer.l: Reordering.
+
+2021-05-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, parser.y: Now recognizing "asm" just to say it's not
+     supported.
+
+2021-05-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: Replaced `if` by `?:`.
+
 2021-04-30  Paul J. Lucas <paul@lucasmail.org>
 
    * slist.h, strbuf.h: s/deleting/freeing/
