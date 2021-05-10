@@ -43,21 +43,21 @@
   BLOCK( if ( false_set( &comma ) ) FPUTS( ",\n", dout ); )
 
 #define DUMP_FORMAT(...) \
-  BLOCK( print_indent( indent, dout ); FPRINTF( dout, __VA_ARGS__ ); )
+  BLOCK( dump_indent( indent, dout ); FPRINTF( dout, __VA_ARGS__ ); )
 
 #define DUMP_LOC(KEY,LOC) \
   DUMP_FORMAT( KEY " = %d-%d,\n", (LOC)->first_column, (LOC)->last_column )
 
 #define DUMP_SNAME(KEY,SNAME) BLOCK(  \
-  print_indent( indent, dout );       \
+  dump_indent( indent, dout );        \
   FPUTS( KEY " = ", dout );           \
   c_sname_dump( (SNAME), dout ); )
 
 #define DUMP_STR(KEY,VALUE) \
-  BLOCK( print_indent( indent, dout ); kv_dump( (KEY), (VALUE), dout ); )
+  BLOCK( dump_indent( indent, dout ); kv_dump( (KEY), (VALUE), dout ); )
 
 #define DUMP_TYPE(TYPE) BLOCK(  \
-  print_indent( indent, dout ); \
+  dump_indent( indent, dout );  \
   FPUTS( "type = ", dout );     \
   c_type_dump( (TYPE), dout ); )
 
@@ -93,7 +93,7 @@ static char const* c_type_part_id_name( c_type_part_id_t tpid ) {
  * @param indent How much to indent.
  * @param out The `FILE` to print to.
  */
-static void print_indent( unsigned indent, FILE *out ) {
+static void dump_indent( unsigned indent, FILE *out ) {
   FPRINTF( out, "%*s", (int)(indent * DUMP_INDENT), "" );
 }
 
