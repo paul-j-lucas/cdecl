@@ -82,20 +82,21 @@ Paul J. Lucas <paul@lucasmail.org>
 	added C11 standard types, e.g., atomic_int
 	added C2X char8_t
 	added inline functions and variables
-	added typedef, using, define, and show commands
+	added enum, define, struct, show, typedef, union, and using commands
 	added alternative tokens
 	added "east const" option
 	added GNU __auto_type and GNU's alternate spellings of __const, etc.
-	added all Win32 types
+	added many standard & POSIX types and all Win32 types
 	added C++ constructors, destructors, extern "C", namespaces, friend,
 		member-functions, mutable, new-style casts, overloaded
 		operators, scoped names, throw(), typename, user-defined
 		conversion operators, virtual
 	added C++11 auto, constexpr, enum class, final, fixed-type enums,
 		function trailing return-type syntax, noexcept, override, ref-
-		qualifiers, rvalue references, and user-defined literals
+		qualifiers, rvalue references, thread_local, and user-defined
+		literals
 	added C2X and C++11 later attribute specifiers
-	added C++20 consteval, constinit, and operator<=>
+	added C++20 consteval, constinit, export, and operator<=>
 	added Embedded C types _Accum, _Fract, _Sat, and typedefs
 	added Unified Parallel C qualifiers relaxed, shared, and strict
 	independently added typedef declarations
@@ -103,9 +104,10 @@ Paul J. Lucas <paul@lucasmail.org>
 	made "returning" optional in all cases where it is actually optional
 	added binary, octal, and hexadecimal array sizes
 	added digraph & trigraph support
+	added C++ raw string support
 	added better warning and error messages
+	added checking for reserved identifiers
 	added "did you mean ...?" suggestions
-	added globs to "show" command
 	now ignoring C /*...*/ and C++ // comments in lexer
 	now treating cdecl keywords in declarations as ordinary names
 	revamped the manual page

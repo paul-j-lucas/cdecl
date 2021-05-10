@@ -212,7 +212,7 @@ In C2X, the attribute aliases of `__deprecated__`, `__maybe_unused__`, and
 `__nodiscard__` are now supported.
 
 ** Added support for parsing C++ attribute arguments
-Arguments for attributes are now parsed, but otherwise ignored (A warning is
+Arguments for attributes are now parsed, but otherwise ignored. (A warning is
 printed that it's ignored.)
 
 ** Added support for parsing C++17 `using` in attributes
@@ -708,7 +708,7 @@ The GNU C types _Decimal32, _Decimal64, _Decimal128, _Float128, __float128,
 _Float16, __fp16, __ibm128, _Float64x, __float80, and __int128 were added to
 the set of predefined types.
 
-** Added WIN32 types
+** Added Win32 types
 All of the Windows types, e.g., DWORD, HANDLE, INT, etc., given here
 <https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types>
 were added to the set of predefined types.
