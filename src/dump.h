@@ -98,7 +98,7 @@ void c_type_dump( c_type_t const *type, FILE *dout );
 void c_type_id_dump( c_type_id_t tid, FILE *dout );
 
 /**
- * Prints a key/value pair (for debugging).
+ * Dumps a key/value pair (for debugging).
  *
  * @param key The key to print.
  * @param value The value to print, if any.  If NULL, `null` is printed instead
