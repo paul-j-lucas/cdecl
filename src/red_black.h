@@ -111,8 +111,7 @@ enum rb_color {
  */
 struct rb_node {
   void       *data;                     ///< User data.
-  rb_node_t  *left;                     ///< Left child (internal use only).
-  rb_node_t  *right;                    ///< Right child (internal use only).
+  rb_node_t  *child[2];                 ///< Left/right (internal use only).
   rb_node_t  *parent;                   ///< Parent (internal use only).
   rb_color_t  color;                    ///< Node color (internal use only).
 };

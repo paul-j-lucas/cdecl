@@ -82,23 +82,31 @@
 #include <assert.h>
 #include <stdio.h>                      /* for NULL */
 
-#define RB_FIRST(TREE)  (RB_ROOT(TREE)->left)
+#define RB_FIRST(TREE)  (RB_ROOT(TREE)->child[RB_L])
 #define RB_NIL          (&rb_nil)
 #define RB_ROOT(TREE)   (&(TREE)->root)
 
 /// @endcond
 
+/**
+ * Red-black tree child direction.
+ */
+enum rb_dir {
+  RB_L,                                 ///< Left child direction.
+  RB_R                                  ///< Right child direction.
+};
+typedef enum rb_dir rb_dir_t;
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // local functions
-static void rb_rotate_left( rb_tree_t*, rb_node_t* );
-static void rb_rotate_right( rb_tree_t*, rb_node_t* );
+static void rb_rotate( rb_tree_t*, rb_node_t*, rb_dir_t );
 
 /**
  * Sentinel for NIL node.  Ideally, it should be `const` but isn't since
  * pointers-to-non-`const` point to it.
  */
-static rb_node_t rb_nil = { NULL, RB_NIL, RB_NIL, RB_NIL, RB_BLACK };
+static rb_node_t rb_nil = { NULL, { RB_NIL, RB_NIL }, RB_NIL, RB_BLACK };
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -116,17 +124,16 @@ static inline bool is_black( rb_node_t const *node ) {
 }
 
 /**
- * Convenience function for checking whether a node is the left child of its
- * parent.
+ * Convenience function for checking whether a node is the left or right child
+ * of its parent.
  *
  * @param node A pointer to the `rb_node` to check.
- * @return Returns `true` only if \a node is the left child of its parent.
- *
- * @sa is_right()
+ * @param dir The direction to check for.
+ * @return Returns `true` only if \a node is the \a dir child of its parent.
  */
 PJL_WARN_UNUSED_RESULT
-static inline bool is_left( rb_node_t const *node ) {
-  return node == node->parent->left;
+static inline bool is_dir( rb_node_t const *node, rb_dir_t dir ) {
+  return node == node->parent->child[dir];
 }
 
 /**
@@ -142,20 +149,6 @@ static inline bool is_red( rb_node_t const *node ) {
   return node->color == RB_RED;
 }
 
-/**
- * Convenience function for checking whether a node is the right child of its
- * parent.
- *
- * @param node A pointer to the `rb_node` to check.
- * @return Returns `true` only if \a node is the right child of its parent.
- *
- * @sa is_left()
- */
-PJL_WARN_UNUSED_RESULT
-static inline bool is_right( rb_node_t const *node ) {
-  return node == node->parent->right;
-}
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -169,8 +162,8 @@ static void rb_node_free( rb_node_t *node, rb_data_free_t data_free_fn ) {
   assert( node != NULL );
 
   if ( node != RB_NIL ) {
-    rb_node_free( node->left, data_free_fn );
-    rb_node_free( node->right, data_free_fn );
+    rb_node_free( node->child[RB_L], data_free_fn );
+    rb_node_free( node->child[RB_R], data_free_fn );
     if ( data_free_fn != NULL )
       (*data_free_fn)( node->data );
     FREE( node );
@@ -185,7 +178,7 @@ static void rb_node_free( rb_node_t *node, rb_data_free_t data_free_fn ) {
 static void rb_node_init( rb_node_t *node ) {
   assert( node != NULL );
   node->data = NULL;
-  node->left = node->right = node->parent = RB_NIL;
+  node->child[RB_L] = node->child[RB_R] = node->parent = RB_NIL;
   node->color = RB_BLACK;
 }
 
@@ -209,14 +202,14 @@ static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
     return NULL;
 
   rb_node_t *const stopped_node =
-    rb_node_visit( tree, node->left, visitor, aux_data );
+    rb_node_visit( tree, node->child[RB_L], visitor, aux_data );
   if ( stopped_node != NULL )
     return stopped_node;
 
   if ( visitor( node->data, aux_data ) )
     return node;
 
-  return rb_node_visit( tree, node->right, visitor, aux_data );
+  return rb_node_visit( tree, node->child[RB_R], visitor, aux_data );
 }
 
 /**
@@ -231,112 +224,52 @@ static void rb_tree_repair( rb_tree_t *tree, rb_node_t *node ) {
   assert( node != NULL );
 
   while ( is_black( node ) ) {
-    if ( is_left( node ) ) {
-      rb_node_t *sibling = node->parent->right;
-      if ( is_red( sibling ) ) {
-        sibling->color = RB_BLACK;
-        node->parent->color = RB_RED;
-        rb_rotate_left( tree, node->parent );
-        sibling = node->parent->right;
-      }
-      if ( is_black( sibling->right ) && is_black( sibling->left ) ) {
-        sibling->color = RB_RED;
-        node = node->parent;
-      } else {
-        if ( is_black( sibling ) ) {
-          sibling->left->color = RB_BLACK;
-          sibling->color = RB_RED;
-          rb_rotate_right( tree, sibling );
-          sibling = node->parent->right;
-        }
-        sibling->color = node->parent->color;
-        node->parent->color = RB_BLACK;
-        sibling->right->color = RB_BLACK;
-        rb_rotate_left( tree, node->parent );
-        break;
-      }
-    } else {                            // if ( is_right( node ) )
-      rb_node_t *sibling = node->parent->left;
-      if ( is_red( sibling ) ) {
-        sibling->color = RB_BLACK;
-        node->parent->color = RB_RED;
-        rb_rotate_right( tree, node->parent );
-        sibling = node->parent->left;
-      }
-      if ( is_black( sibling->right ) && is_black( sibling->left ) ) {
-        sibling->color = RB_RED;
-        node = node->parent;
-      } else {
-        if ( is_black( sibling->left ) ) {
-          sibling->right->color = RB_BLACK;
-          sibling->color = RB_RED;
-          rb_rotate_left( tree, sibling );
-          sibling = node->parent->left;
-        }
-        sibling->color = node->parent->color;
-        node->parent->color = RB_BLACK;
-        sibling->left->color = RB_BLACK;
-        rb_rotate_right( tree, node->parent );
-        break;
-      }
+    rb_dir_t const dir = is_dir( node->parent, RB_R );
+    rb_node_t *sibling = node->parent->child[dir];
+    if ( is_red( sibling ) ) {
+      sibling->color = RB_BLACK;
+      node->parent->color = RB_RED;
+      rb_rotate( tree, node->parent, !dir );
+      sibling = node->parent->child[dir];
     }
+    if ( is_red( sibling->child[RB_L] ) || is_red( sibling->child[RB_R] ) ) {
+      if ( is_black( sibling ) ) {
+        sibling->child[!dir]->color = RB_BLACK;
+        sibling->color = RB_RED;
+        rb_rotate( tree, sibling, dir );
+        sibling = node->parent->child[dir];
+      }
+      sibling->color = node->parent->color;
+      node->parent->color = RB_BLACK;
+      sibling->child[dir]->color = RB_BLACK;
+      rb_rotate( tree, node->parent, !dir );
+      break;
+    }
+    sibling->color = RB_RED;
+    node = node->parent;
   } // while
 }
 
 /**
- * Rotates a subtree of a red-black tree left.
+ * Rotates a subtree of a red-black tree.
  *
  * @param tree A pointer to the red-black tree to manipulate.
  * @param node A pointer to the `rb_node` to rotate.
- *
- * @sa rb_rotate_right
+ * @param dir The direction to rotate.
  */
-static void rb_rotate_left( rb_tree_t *tree, rb_node_t *node ) {
+static void rb_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
   assert( tree != NULL );
   assert( node != NULL );
 
-  rb_node_t *const child = node->right;
-  node->right = child->left;
+  rb_node_t *const temp = node->child[!dir];
+  node->child[!dir] = temp->child[dir];
 
-  if ( child->left != RB_NIL )
-    child->left->parent = node;
-  child->parent = node->parent;
-
-  if ( is_left( node ) )
-    node->parent->left = child;
-  else
-    node->parent->right = child;
-
-  child->left = node;
-  node->parent = child;
-}
-
-/**
- * Rotates a subtree of a red-black tree right.
- *
- * @param tree A pointer to the red-black tree to manipulate.
- * @param node A pointer to the `rb_node` to rotate.
- *
- * @sa rb_rotate_left
- */
-static void rb_rotate_right( rb_tree_t *tree, rb_node_t *node ) {
-  assert( tree != NULL );
-  assert( node != NULL );
-
-  rb_node_t *const child = node->left;
-  node->left = child->right;
-
-  if ( child->right != RB_NIL )
-    child->right->parent = node;
-  child->parent = node->parent;
-
-  if ( is_left( node ) )
-    node->parent->left = child;
-  else
-    node->parent->right = child;
-
-  child->right = node;
-  node->parent = child;
+  if ( temp->child[dir] != RB_NIL )
+    temp->child[dir]->parent = node;
+  temp->parent = node->parent;
+  node->parent->child[ is_dir( node, RB_R ) ] = temp;
+  temp->child[dir] = node;
+  node->parent = temp;
 }
 
 /**
@@ -351,14 +284,14 @@ static rb_node_t* rb_successor( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
   assert( node != NULL );
 
-  rb_node_t *succ = node->right;
+  rb_node_t *succ = node->child[RB_R];
 
   if ( succ != RB_NIL ) {
-    while ( succ->left != RB_NIL )
-      succ = succ->left;
+    while ( succ->child[RB_L] != RB_NIL )
+      succ = succ->child[RB_L];
   } else {
     // No right child, move up until we find it or hit the root.
-    for ( succ = node->parent; node == succ->right; succ = succ->parent )
+    for ( succ = node->parent; node == succ->child[RB_R]; succ = succ->parent )
       node = succ;
     if ( succ == RB_ROOT(tree) )
       succ = RB_NIL;
@@ -375,34 +308,27 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete_node ) {
   void *const data = delete_node->data;
 
   rb_node_t *const y =
-    delete_node->left == RB_NIL || delete_node->right == RB_NIL ?
+    delete_node->child[RB_L] == RB_NIL || delete_node->child[RB_R] == RB_NIL ?
       delete_node :
       rb_successor( tree, delete_node );
 
-  rb_node_t *const x = y->left == RB_NIL ? y->right : y->left;
+  rb_node_t *const x = y->child[ y->child[RB_L] == RB_NIL ];
 
-  if ( (x->parent = y->parent) == RB_ROOT(tree) ) {
+  if ( (x->parent = y->parent) == RB_ROOT(tree) )
     RB_FIRST(tree) = x;
-  } else {
-    if ( is_left( y ) )
-      y->parent->left = x;
-    else
-      y->parent->right = x;
-  }
+  else
+    y->parent->child[ is_dir( y, RB_R ) ] = x;
 
   if ( is_black( y ) )
     rb_tree_repair( tree, x );
 
   if ( y != delete_node ) {
     y->color = delete_node->color;
-    y->left = delete_node->left;
-    y->right = delete_node->right;
+    y->child[RB_L] = delete_node->child[RB_L];
+    y->child[RB_R] = delete_node->child[RB_R];
     y->parent = delete_node->parent;
-    delete_node->left->parent = delete_node->right->parent = y;
-    if ( is_left( delete_node ) )
-      delete_node->parent->left = y;
-    else
-      delete_node->parent->right = y;
+    delete_node->child[RB_L]->parent = delete_node->child[RB_R]->parent = y;
+    delete_node->parent->child[ is_dir( delete_node, RB_R ) ] = y;
   }
 
   FREE( delete_node );
@@ -417,7 +343,7 @@ rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data ) {
     int const cmp = (*tree->data_cmp_fn)( data, node->data );
     if ( cmp == 0 )
       return node;
-    node = cmp < 0 ? node->left : node->right;
+    node = node->child[ cmp > 0 ];
   } // for
   return NULL;
 }
@@ -451,20 +377,20 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
     int const cmp = (*tree->data_cmp_fn)( data, node->data );
     if ( cmp == 0 )
       return node;
-    node = cmp < 0 ? node->left : node->right;
+    node = node->child[ cmp > 0 ];
   } // while
 
   node = MALLOC( rb_node_t, 1 );
   node->data = data;
   node->color = RB_RED;
-  node->left = node->right = RB_NIL;
+  node->child[RB_L] = node->child[RB_R] = RB_NIL;
   node->parent = parent;
 
   if ( parent == RB_ROOT(tree) ||
        (*tree->data_cmp_fn)( data, parent->data ) < 0 ) {
-    parent->left = node;
+    parent->child[RB_L] = node;
   } else {
-    parent->right = node;
+    parent->child[RB_R] = node;
   }
 
   //
@@ -490,35 +416,22 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   // worry about replacing the root.
   //
   while ( is_red( node->parent ) ) {
-    rb_node_t *uncle;
-    if ( is_left( node->parent ) ) {
-      uncle = node->parent->parent->right;
-      if ( is_red( uncle ) ) {
-do_red: node->parent->color = RB_BLACK;
-        uncle->color = RB_BLACK;
-        node->parent->parent->color = RB_RED;
-        node = node->parent->parent;
-        continue;
-      }
-      if ( is_right( node ) ) {
-        node = node->parent;
-        rb_rotate_left( tree, node );
-      }
+    rb_dir_t const dir = is_dir( node->parent, RB_R );
+    rb_node_t *const uncle = node->parent->parent->child[dir];
+    if ( is_red( uncle ) ) {
       node->parent->color = RB_BLACK;
+      uncle->color = RB_BLACK;
       node->parent->parent->color = RB_RED;
-      rb_rotate_right( tree, node->parent->parent );
-    } else {                            // if ( is_right( node->parent ) )
-      uncle = node->parent->parent->left;
-      if ( is_red( uncle ) )
-        goto do_red;
-      if ( is_left( node ) ) {
-        node = node->parent;
-        rb_rotate_right( tree, node );
-      }
-      node->parent->color = RB_BLACK;
-      node->parent->parent->color = RB_RED;
-      rb_rotate_left( tree, node->parent->parent );
+      node = node->parent->parent;
+      continue;
     }
+    if ( is_dir( node, dir ) ) {
+      node = node->parent;
+      rb_rotate( tree, node, !dir );
+    }
+    node->parent->color = RB_BLACK;
+    node->parent->parent->color = RB_RED;
+    rb_rotate( tree, node->parent->parent, dir );
   } // while
 
   RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
