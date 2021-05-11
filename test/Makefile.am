@@ -496,7 +496,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_c_al3.test \
 	tests/explain_cf_v-c.test \
 	tests/explain_ci-knr.test \
-	tests/explain_efi.test \
+	tests/explain_efi-c.test \
 	tests/explain_en-knr.test \
 	tests/explain_etsf_v.test \
 	tests/explain_f_ai.test \
