@@ -1028,7 +1028,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                 if ( *d == '\0' ) {     // found delimiter
                   yylloc.first_line   = str_lit_loc.first_line;
                   yylloc.first_column = str_lit_loc.first_column;
-                  yylval.name = strbuf_take( &str_lit_buf );
+                  yylval.str_val = strbuf_take( &str_lit_buf );
                   BEGIN( INITIAL );
                   return Y_STR_LIT;
                 }
@@ -1069,7 +1069,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
   \'          {
                 yylloc.first_line   = str_lit_loc.first_line;
                 yylloc.first_column = str_lit_loc.first_column;
-                yylval.name = strbuf_take( &str_lit_buf );
+                yylval.str_val = strbuf_take( &str_lit_buf );
                 BEGIN( INITIAL );
                 return Y_CHAR_LIT;
               }
@@ -1080,7 +1080,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
   \"          {
                 yylloc.first_line   = str_lit_loc.first_line;
                 yylloc.first_column = str_lit_loc.first_column;
-                yylval.name = strbuf_take( &str_lit_buf );
+                yylval.str_val = strbuf_take( &str_lit_buf );
                 BEGIN( INITIAL );
                 return Y_STR_LIT;
               }

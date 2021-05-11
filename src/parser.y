@@ -901,10 +901,10 @@ static void yyerror( char const *msg ) {
 %}
 
 //
-// The difference between "literal" and "name" is that "literal" points to an
-// `L_` string literal constant that a rule is NOT responsible for free'ing
-// whereas "name" points to a string literal that a rule IS responsible for
-// free'ing.
+// The difference between "literal" and either "name" or "str_val" is that
+// "literal" points to a statically allocated `L_` string literal constant that
+// MUST NOT be free'd whereas both "name" and "str_val" point to a malloc'd
+// string that MUST be free'd.
 //
 %union {
   c_alignas_t         align;
@@ -915,11 +915,12 @@ static void yyerror( char const *msg ) {
   bool                flag;       // simple flag
   c_gib_kind_t        gib_kind;   // kind of gibberish
   c_help_t            help;       // type of help to print
-  int                 int_val;    // for array sizes
+  int                 int_val;    // integer value
   char const         *literal;    // token L_* literal (for new-style casts)
-  char               *name;       // name being declared or explained
+  char               *name;       // identifier name, cf. sname
   c_oper_id_t         oper_id;    // overloaded operator ID
-  c_sname_t           sname;      // name being declared or explained
+  c_sname_t           sname;      // scoped identifier name, cf. name
+  char               *str_val;    // quoted string value
   c_typedef_t const  *tdef;       // typedef
   c_type_t            type;       // complete type
   c_type_id_t         type_id;    // built-ins, storage classes, & qualifiers
@@ -1210,14 +1211,14 @@ static void yyerror( char const *msg ) {
 %token              ':'
 %token              ';'
 %token              '{' '}'
-%token  <name>      Y_CHAR_LIT
+%token  <str_val>   Y_CHAR_LIT
 %token              Y_END
 %token              Y_ERROR
 %token  <name>      Y_GLOB
 %token  <int_val>   Y_INT_LIT
 %token  <name>      Y_NAME
 %token  <name>      Y_SET_OPTION
-%token  <name>      Y_STR_LIT
+%token  <str_val>   Y_STR_LIT
 %token  <tdef>      Y_TYPEDEF_NAME      // e.g., size_t
 %token  <tdef>      Y_TYPEDEF_SNAME     // e.g., std::string
 
@@ -1407,7 +1408,7 @@ static void yyerror( char const *msg ) {
 %type   <gib_kind>  show_format show_format_exp show_format_opt
 %type   <bitmask>   show_which_types_mask_opt
 %type   <type_id>   static_tid_opt
-%type   <name>      str_lit str_lit_exp
+%type   <str_val>   str_lit str_lit_exp
 %type   <type>      type_modifier_base_type
 %type   <flag>      typename_flag_opt
 %type   <type_id>   virtual_tid_exp virtual_tid_opt
