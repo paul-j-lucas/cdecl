@@ -1,5 +1,6 @@
 2021-05-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * red_black.c, red_black.h: Red-Black tree simplification by using child[2].
    * test/Makefile.am, explain_efi-c.test: Added in forgotten test.
    * lexer.l, parser.y: Added str_val.
    * lexer.l: Now calling strbuf_free() for unterminated strings.
