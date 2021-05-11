@@ -1,5 +1,6 @@
 2021-05-11  Paul J. Lucas <paul@lucasmail.org>
 
+   * test/Makefile.am, explain_efi-c.test: Added in forgotten test.
    * lexer.l, parser.y: Added str_val.
    * lexer.l: Now calling strbuf_free() for unterminated strings.
    * parser.y: s/str_lit/literal/ (undid previous change).
