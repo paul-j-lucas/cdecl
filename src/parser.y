@@ -901,9 +901,9 @@ static void yyerror( char const *msg ) {
 %}
 
 //
-// The difference between "str_lit" and "name" is that "str_lit" points to a
-// string that a rule is NOT responsible for free'ing (a predefined `L_`
-// literal) whereas "name" points to a string that a rule IS responsible for
+// The difference between "str_lit" and "name" is that "str_lit" points to an
+// `L_` string literal constant that a rule is NOT responsible for free'ing
+// whereas "name" points to a string literal that a rule IS responsible for
 // free'ing.
 //
 %union {
