@@ -1,3 +1,15 @@
+2021-05-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l, parser.y: Added str_val.
+   * lexer.l: Now calling strbuf_free() for unterminated strings.
+   * parser.y: s/str_lit/literal/ (undid previous change).
+   * parser.y: s/literal/str_lit/
+
+2021-05-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c: s/print_indent/dump_indent/
+   * NEWS: Added another example of `show`.
+
 2021-05-08  Paul J. Lucas <paul@lucasmail.org>
 
    * parser.y: Added ret_ast local variable.
