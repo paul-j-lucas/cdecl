@@ -901,7 +901,7 @@ static void yyerror( char const *msg ) {
 %}
 
 //
-// The difference between "literal" and "name" is that "literal" points to a
+// The difference between "str_lit" and "name" is that "str_lit" points to a
 // string that a rule is NOT responsible for free'ing (a predefined `L_`
 // literal) whereas "name" points to a string that a rule IS responsible for
 // free'ing.
@@ -916,10 +916,10 @@ static void yyerror( char const *msg ) {
   c_gib_kind_t        gib_kind;   // kind of gibberish
   c_help_t            help;       // type of help to print
   int                 int_val;    // for array sizes
-  char const         *literal;    // token L_* literal (for new-style casts)
   char               *name;       // name being declared or explained
   c_oper_id_t         oper_id;    // overloaded operator ID
   c_sname_t           sname;      // name being declared or explained
+  char const         *str_lit;    // token L_* literal (for new-style casts)
   c_typedef_t const  *tdef;       // typedef
   c_type_t            type;       // complete type
   c_type_id_t         type_id;    // built-ins, storage classes, & qualifiers
@@ -1115,11 +1115,11 @@ static void yyerror( char const *msg ) {
 %token  <type_id>   Y_BOOL
 %token              Y_CATCH
 %token  <type_id>   Y_CLASS
-%token  <literal>   Y_CONST_CAST
+%token  <str_lit>   Y_CONST_CAST
 %token  <sname>     Y_CONSTRUCTOR_SNAME // e.g., S::T::T
 %token  <type_id>   Y_DELETE
 %token  <sname>     Y_DESTRUCTOR_SNAME  // e.g., S::T::~T
-%token  <literal>   Y_DYNAMIC_CAST
+%token  <str_lit>   Y_DYNAMIC_CAST
 %token  <type_id>   Y_EXPLICIT
 %token  <type_id>   Y_FALSE             // for noexcept(false)
 %token  <type_id>   Y_FRIEND
@@ -1130,8 +1130,8 @@ static void yyerror( char const *msg ) {
 %token              Y_PRIVATE
 %token              Y_PROTECTED
 %token              Y_PUBLIC
-%token  <literal>   Y_REINTERPRET_CAST
-%token  <literal>   Y_STATIC_CAST
+%token  <str_lit>   Y_REINTERPRET_CAST
+%token  <str_lit>   Y_STATIC_CAST
 %token              Y_TEMPLATE
 %token              Y_THIS
 %token  <type_id>   Y_THROW
@@ -1244,7 +1244,7 @@ static void yyerror( char const *msg ) {
 //      + <flag>: "_flag" is appended.
 //      + <name>: "_name" is appended.
 //      + <int_val>: "_int" is appended.
-//      + <literal>: "_literal" is appended.
+//      + <str_lit>: "_literal" is appended.
 //      + <sname>: "_sname" is appended.
 //      + <type_id>: "_tid" is appended.
 //      + <type>: "_type" is appended.
@@ -1270,7 +1270,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>       enum_unmodified_fixed_type_english_ast
 %type   <ast>       func_decl_english_ast
 %type   <bitmask>   member_or_non_member_mask_opt
-%type   <literal>   new_style_cast_english_literal
+%type   <str_lit>   new_style_cast_english_literal
 %type   <sname>     of_scope_english
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
 %type   <ast>       of_type_enum_fixed_type_english_ast_opt
@@ -1307,7 +1307,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  cast_c_astp cast_c_astp_opt cast2_c_astp
 %type   <ast_pair>  func_cast_c_astp
 %type   <ast_pair>  nested_cast_c_astp
-%type   <literal>   new_style_cast_c_literal
+%type   <str_lit>   new_style_cast_c_literal
 %type   <ast>       pointer_cast_c_ast
 %type   <ast>       pointer_to_member_cast_c_ast
 %type   <ast>       reference_cast_c_ast
