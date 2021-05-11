@@ -38,7 +38,7 @@
 /// @endcond
 
 /**
- * @defgroup printing-dump-group Dumping Debug Output
+ * @defgroup dump-group Debug Output
  * Functions for dumping types for debugging.
  * @{
  */
