@@ -1003,6 +1003,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                   int const c = input();
                   if ( c == EOF ) {
                     print_error( &yylloc, "unterminated string literal\n" );
+                    strbuf_free( &str_lit_buf );
                     return Y_LEXER_ERROR;
                   }
                   ++column;
@@ -1054,11 +1055,11 @@ declare/{S}({S}|{L})*user-def(ined)? {
               /* Escaped characters are copied verbatim, not interpreted. */
   \\(.|\n)    { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
   \n          {
-                lexer_token = strbuf_take( &str_lit_buf );
                 print_error( &str_lit_loc,
                   "unterminated %s literal\n",
                   YY_START == X_STR ? "string" : "character"
                 );
+                strbuf_free( &str_lit_buf );
                 return Y_LEXER_ERROR;
               }
 }
