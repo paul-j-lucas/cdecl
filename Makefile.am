@@ -30,7 +30,7 @@ EXTRA_DIST =	Doxyfile \
 .PHONY: doc docs
 
 doc docs:
-	doxygen
+	@./makedoc.sh
 
 clean-local:
 	rm -rf docs
