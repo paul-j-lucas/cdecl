@@ -306,6 +306,10 @@ struct c_ptr_ref_ast {
 /**
  * AST node for a C/C++ `typedef`.
  *
+ * @note Even though <code>%c_typedef_ast</code> has an AST pointer as its
+ * first `struct` member, it is _not_ a parent "of" the underlying type, but
+ * instead a synonym "for" it; hence, it's _not_ included in #K_ANY_PARENT.
+ *
  * @note C++ `using` declarations are stored as their equivalent `typedef`
  * declarations.
  */
