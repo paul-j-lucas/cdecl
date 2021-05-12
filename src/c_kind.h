@@ -120,7 +120,7 @@ enum c_kind_id {
  * Shorthand for any kind of "object" that can be the type of a variable or
  * constant, i.e., something to which `sizeof` can be applied: #K_ARRAY,
  * #K_BUILTIN, #K_ENUM_CLASS_STRUCT_UNION, #K_POINTER, #K_POINTER_TO_MEMBER,
- * #K_REFERENCE, or #K_RVALUE_REFERENCE.
+ * #K_REFERENCE, #K_RVALUE_REFERENCE, or #K_TYPEDEF.
  */
 #define K_ANY_OBJECT          ( K_ARRAY | K_BUILTIN \
                               | K_ENUM_CLASS_STRUCT_UNION | K_POINTER \
