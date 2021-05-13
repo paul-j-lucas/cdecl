@@ -100,7 +100,7 @@ typedef enum rb_dir rb_dir_t;
 ///////////////////////////////////////////////////////////////////////////////
 
 // local functions
-static void rb_rotate( rb_tree_t*, rb_node_t*, rb_dir_t );
+static void rb_tree_rotate_node( rb_tree_t*, rb_node_t*, rb_dir_t );
 
 /**
  * Sentinel for NIL node.  Ideally, it should be `const` but isn't since
@@ -166,7 +166,7 @@ static void rb_node_free( rb_node_t *node, rb_data_free_t data_free_fn ) {
     rb_node_free( node->child[RB_R], data_free_fn );
     if ( data_free_fn != NULL )
       (*data_free_fn)( node->data );
-    FREE( node );
+    free( node );
   }
 }
 
@@ -177,99 +177,9 @@ static void rb_node_free( rb_node_t *node, rb_data_free_t data_free_fn ) {
  */
 static void rb_node_init( rb_node_t *node ) {
   assert( node != NULL );
-  node->data = NULL;
-  node->child[RB_L] = node->child[RB_R] = node->parent = RB_NIL;
   node->color = RB_BLACK;
-}
-
-/**
- * Performs an in-order traversal of the red-black tree starting at \a node.
- *
- * @param tree A pointer to the red-black tree to visit.
- * @param node A pointer to the `rb_node` to start visiting at.
- * @param visitor The visitor to use.
- * @param aux_data Optional data passed to \a visitor.
- * @return Returns a pointer to the `rb_node` at which visiting stopped or NULL
- * if the entire sub-tree was visited.
- */
-PJL_WARN_UNUSED_RESULT
-static rb_node_t* rb_node_visit( rb_tree_t const *tree, rb_node_t *node,
-                                 rb_visitor_t visitor, void *aux_data ) {
-  assert( tree != NULL );
-  assert( node != NULL );
-
-  if ( node == RB_NIL )
-    return NULL;
-
-  rb_node_t *const stopped_node =
-    rb_node_visit( tree, node->child[RB_L], visitor, aux_data );
-  if ( stopped_node != NULL )
-    return stopped_node;
-
-  if ( visitor( node->data, aux_data ) )
-    return node;
-
-  return rb_node_visit( tree, node->child[RB_R], visitor, aux_data );
-}
-
-/**
- * Repairs the tree after a node has been deleted by rotating and repainting
- * colors to restore the 4 properties inherent in red-black trees.
- *
- * @param tree A pointer to the red-black tree to repair.
- * @param node A pointer to the `rb_node` to start the repair at.
- */
-static void rb_tree_repair( rb_tree_t *tree, rb_node_t *node ) {
-  assert( tree != NULL );
-  assert( node != NULL );
-
-  while ( is_black( node ) ) {
-    rb_dir_t const dir = is_dir( node->parent, RB_R );
-    rb_node_t *sibling = node->parent->child[dir];
-    if ( is_red( sibling ) ) {
-      sibling->color = RB_BLACK;
-      node->parent->color = RB_RED;
-      rb_rotate( tree, node->parent, !dir );
-      sibling = node->parent->child[dir];
-    }
-    if ( is_red( sibling->child[RB_L] ) || is_red( sibling->child[RB_R] ) ) {
-      if ( is_black( sibling ) ) {
-        sibling->child[!dir]->color = RB_BLACK;
-        sibling->color = RB_RED;
-        rb_rotate( tree, sibling, dir );
-        sibling = node->parent->child[dir];
-      }
-      sibling->color = node->parent->color;
-      node->parent->color = RB_BLACK;
-      sibling->child[dir]->color = RB_BLACK;
-      rb_rotate( tree, node->parent, !dir );
-      break;
-    }
-    sibling->color = RB_RED;
-    node = node->parent;
-  } // while
-}
-
-/**
- * Rotates a subtree of a red-black tree.
- *
- * @param tree A pointer to the red-black tree to manipulate.
- * @param node A pointer to the `rb_node` to rotate.
- * @param dir The direction to rotate.
- */
-static void rb_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
-  assert( tree != NULL );
-  assert( node != NULL );
-
-  rb_node_t *const temp = node->child[!dir];
-  node->child[!dir] = temp->child[dir];
-
-  if ( temp->child[dir] != RB_NIL )
-    temp->child[dir]->parent = node;
-  temp->parent = node->parent;
-  node->parent->child[ is_dir( node, RB_R ) ] = temp;
-  temp->child[dir] = node;
-  node->parent = temp;
+  node->child[RB_L] = node->child[RB_R] = node->parent = RB_NIL;
+  node->data = NULL;
 }
 
 /**
@@ -280,7 +190,7 @@ static void rb_rotate( rb_tree_t *tree, rb_node_t *node, rb_dir_t dir ) {
  * @return Returns said successor.
  */
 PJL_WARN_UNUSED_RESULT
-static rb_node_t* rb_successor( rb_tree_t *tree, rb_node_t *node ) {
+static rb_node_t* rb_tree_node_successor( rb_tree_t *tree, rb_node_t *node ) {
   assert( tree != NULL );
   assert( node != NULL );
 
@@ -299,6 +209,97 @@ static rb_node_t* rb_successor( rb_tree_t *tree, rb_node_t *node ) {
   return succ;
 }
 
+/**
+ * Repairs the tree after a node has been deleted by rotating and repainting
+ * colors to restore the 4 properties inherent in red-black trees.
+ *
+ * @param tree A pointer to the red-black tree to repair.
+ * @param node A pointer to the `rb_node` to start the repair at.
+ */
+static void rb_tree_repair_node( rb_tree_t *tree, rb_node_t *node ) {
+  assert( tree != NULL );
+  assert( node != NULL );
+
+  while ( is_black( node ) ) {
+    rb_dir_t const dir = is_dir( node->parent, RB_R );
+    rb_node_t *sibling = node->parent->child[dir];
+    if ( is_red( sibling ) ) {
+      sibling->color = RB_BLACK;
+      node->parent->color = RB_RED;
+      rb_tree_rotate_node( tree, node->parent, !dir );
+      sibling = node->parent->child[dir];
+    }
+    if ( is_red( sibling->child[RB_L] ) || is_red( sibling->child[RB_R] ) ) {
+      if ( is_black( sibling ) ) {
+        sibling->child[!dir]->color = RB_BLACK;
+        sibling->color = RB_RED;
+        rb_tree_rotate_node( tree, sibling, dir );
+        sibling = node->parent->child[dir];
+      }
+      sibling->color = node->parent->color;
+      node->parent->color = RB_BLACK;
+      sibling->child[dir]->color = RB_BLACK;
+      rb_tree_rotate_node( tree, node->parent, !dir );
+      break;
+    }
+    sibling->color = RB_RED;
+    node = node->parent;
+  } // while
+}
+
+/**
+ * Rotates a subtree of a red-black tree.
+ *
+ * @param tree A pointer to the red-black tree to manipulate.
+ * @param node A pointer to the `rb_node` to rotate.
+ * @param dir The direction to rotate.
+ */
+static void rb_tree_rotate_node( rb_tree_t *tree, rb_node_t *node,
+                                 rb_dir_t dir ) {
+  assert( tree != NULL );
+  assert( node != NULL );
+
+  rb_node_t *const temp = node->child[!dir];
+  node->child[!dir] = temp->child[dir];
+
+  if ( temp->child[dir] != RB_NIL )
+    temp->child[dir]->parent = node;
+  temp->parent = node->parent;
+  node->parent->child[ is_dir( node, RB_R ) ] = temp;
+  temp->child[dir] = node;
+  node->parent = temp;
+}
+
+/**
+ * Performs an in-order traversal of the red-black tree starting at \a node.
+ *
+ * @param tree A pointer to the red-black tree to visit.
+ * @param node A pointer to the `rb_node` to start visiting at.
+ * @param visitor The visitor to use.
+ * @param aux_data Optional data passed to \a visitor.
+ * @return Returns a pointer to the `rb_node` at which visiting stopped or NULL
+ * if the entire sub-tree was visited.
+ */
+PJL_WARN_UNUSED_RESULT
+static rb_node_t* rb_tree_visit_node( rb_tree_t const *tree, rb_node_t *node,
+                                      rb_visitor_t visitor, void *aux_data ) {
+  assert( tree != NULL );
+  assert( node != NULL );
+
+  if ( node == RB_NIL )
+    return NULL;
+
+  rb_node_t *const stopped_node =
+    rb_tree_visit_node( tree, node->child[RB_L], visitor, aux_data );
+  if ( stopped_node != NULL )
+    return stopped_node;
+
+  if ( visitor( node->data, aux_data ) )
+    return node;
+
+  return rb_tree_visit_node( tree, node->child[RB_R], visitor, aux_data );
+}
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete_node ) {
@@ -310,7 +311,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete_node ) {
   rb_node_t *const y =
     delete_node->child[RB_L] == RB_NIL || delete_node->child[RB_R] == RB_NIL ?
       delete_node :
-      rb_successor( tree, delete_node );
+      rb_tree_node_successor( tree, delete_node );
 
   rb_node_t *const x = y->child[ y->child[RB_L] == RB_NIL ];
 
@@ -320,7 +321,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete_node ) {
     y->parent->child[ is_dir( y, RB_R ) ] = x;
 
   if ( is_black( y ) )
-    rb_tree_repair( tree, x );
+    rb_tree_repair_node( tree, x );
 
   if ( y != delete_node ) {
     y->color = delete_node->color;
@@ -331,7 +332,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete_node ) {
     delete_node->parent->child[ is_dir( delete_node, RB_R ) ] = y;
   }
 
-  FREE( delete_node );
+  free( delete_node );
   return data;
 }
 
@@ -373,25 +374,23 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
 
   // Find correct insertion point.
   while ( node != RB_NIL ) {
-    parent = node;
     int const cmp = (*tree->data_cmp_fn)( data, node->data );
     if ( cmp == 0 )
       return node;
+    parent = node;
     node = node->child[ cmp > 0 ];
   } // while
 
   node = MALLOC( rb_node_t, 1 );
-  node->data = data;
   node->color = RB_RED;
   node->child[RB_L] = node->child[RB_R] = RB_NIL;
+  node->data = data;
   node->parent = parent;
 
-  if ( parent == RB_ROOT(tree) ||
-       (*tree->data_cmp_fn)( data, parent->data ) < 0 ) {
-    parent->child[RB_L] = node;
-  } else {
-    parent->child[RB_R] = node;
-  }
+  rb_dir_t dir = parent != RB_ROOT(tree) &&
+    (*tree->data_cmp_fn)( data, parent->data ) > 0;
+  assert( parent->child[dir] == RB_NIL );
+  parent->child[dir] = node;
 
   //
   // If the parent node is black, we're all set; if it's red, we have the
@@ -416,7 +415,7 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
   // worry about replacing the root.
   //
   while ( is_red( node->parent ) ) {
-    rb_dir_t const dir = is_dir( node->parent, RB_R );
+    dir = is_dir( node->parent, RB_R );
     rb_node_t *const uncle = node->parent->parent->child[dir];
     if ( is_red( uncle ) ) {
       node->parent->color = RB_BLACK;
@@ -427,11 +426,11 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
     }
     if ( is_dir( node, dir ) ) {
       node = node->parent;
-      rb_rotate( tree, node, !dir );
+      rb_tree_rotate_node( tree, node, !dir );
     }
     node->parent->color = RB_BLACK;
     node->parent->parent->color = RB_RED;
-    rb_rotate( tree, node->parent->parent, dir );
+    rb_tree_rotate_node( tree, node->parent->parent, dir );
   } // while
 
   RB_FIRST(tree)->color = RB_BLACK;     // first node is always black
@@ -440,13 +439,11 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data ) {
 
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visitor_t visitor,
                           void *aux_data ) {
-  assert( tree != NULL );
   assert( visitor != NULL );
 
-  return rb_node_visit(
-    CONST_CAST( rb_tree_t*, tree ),
-    CONST_CAST( rb_node_t*, RB_FIRST(tree) ),
-    visitor, aux_data
+  rb_tree_t *const nonconst_tree = CONST_CAST( rb_tree_t*, tree );
+  return rb_tree_visit_node(
+    nonconst_tree, RB_FIRST(nonconst_tree), visitor, aux_data
   );
 }
 
