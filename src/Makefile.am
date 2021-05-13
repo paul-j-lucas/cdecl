@@ -19,6 +19,7 @@
 ##
 
 bin_PROGRAMS = cdecl
+check_PROGRAMS = red_black_test
 
 AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib
 if ENABLE_FLEX_DEBUG
@@ -68,11 +69,20 @@ if WITH_READLINE
 cdecl_SOURCES += autocomplete.c
 endif
 
+red_black_test_SOURCES = \
+	pjl_config.h \
+	red_black.c red_black.h \
+	red_black_test.c \
+	slist.c \
+	util.c util.h
+
 all-local: c++decl$(EXEEXT)
 
 c++decl$(EXEEXT): cdecl$(EXEEXT)
 	rm -f $@
 	$(LN_S) $< $@
+
+TESTS = $(check_PROGRAMS)
 
 clean-local:
 	rm -f c++decl$(EXEEXT)

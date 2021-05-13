@@ -1,7 +1,9 @@
 *.a
 *.gz
 *.in
+*.log
 *.o
+*.trs
 *~
 .*.sw[op]
 .deps/
@@ -21,4 +23,5 @@ Makefile
 /docs/
 /install-sh
 /missing
+/test-driver
 /ylwrap

@@ -10,4 +10,5 @@
 /explain
 /lexer.c
 /parser.[ch]
+/red_black_test
 /stamp-h1
