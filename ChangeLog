@@ -1,3 +1,10 @@
+2021-05-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * Makefile.am, makedoc.sh: Added makedoc.sh.
+   * c_kind.h: Added K_TYPEDEF to K_ANY_OBJECT.
+   * c_kind.h: Expanded K_ANY_FUNCTION_LIKE, K_ANY_OBJECT, and K_ANY_PARENT
+     into bitwise-or of other K_* values; added K_TYPEDEF to K_ANY_OBJECT.
+
 2021-05-11  Paul J. Lucas <paul@lucasmail.org>
 
    * red_black.c, red_black.h: Red-Black tree simplification by using child[2].
