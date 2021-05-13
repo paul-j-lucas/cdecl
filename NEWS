@@ -24,6 +24,11 @@ When the lexer prints an error message, the parser no longer does.
 ** C++ raw string literals
 C++'s raw string literals `R"delim(...)delim"` are now supported.
 
+** `makedoc.sh`
+Added a small script to build the documentation rather than just call Doxygen.
+The script prints the location of the document root and the local file URL.  On
+macOS, also prints the `open` command to run.
+
 
 * Changes in Cdecl 9.10
 
