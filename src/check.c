@@ -356,7 +356,8 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
         ast->parent_ast->kind_id != K_USER_DEF_CONVERSION) &&
         ast->type.base_tid == TB_NONE ) {
     print_error( &ast->loc,
-      "implicit \"%s\" is illegal in C99 and later\n", L_INT
+      "implicit \"%s\" is illegal in %s and later\n",
+      L_INT, c_lang_name( LANG_C_99 )
     );
     return false;
   }
@@ -762,7 +763,8 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
     case 1:                             // main(void)
       if ( opt_lang == LANG_C_KNR ) {
         print_error( &ast->loc,
-          "main() must have 0, 2, or 3 parameters in C89 and later\n"
+          "main() must have 0, 2, or 3 parameters in %s and later\n",
+          c_lang_name( LANG_C_89 )
         );
         return false;
       }
@@ -1010,7 +1012,8 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
         break;
       default:
         print_error( &param_ast->loc,
-          "%s prototypes are not supported until C89\n", L_FUNCTION
+          "%s prototypes are not supported until %s\n",
+          L_FUNCTION, c_lang_name( LANG_C_89 )
         );
         return false;
     } // switch
