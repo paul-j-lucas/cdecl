@@ -23,4 +23,4 @@
 echo "Generating \"configure\"..."
 autoreconf -fi
 
-# vim:set syn=sh et sw=2 ts=2:
+# vim:set et sw=2 ts=2:
