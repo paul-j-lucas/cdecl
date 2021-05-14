@@ -20,6 +20,7 @@
 #       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
+echo "Generating \"configure\"..."
 autoreconf -fi
 
 # vim:set syn=sh et sw=2 ts=2:
