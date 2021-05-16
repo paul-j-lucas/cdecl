@@ -958,7 +958,18 @@ void c_typedef_cleanup( void ) {
   rb_tree_free( &typedefs, &free );
 }
 
-c_typedef_t const* c_typedef_find( c_sname_t const *sname ) {
+c_typedef_t const* c_typedef_find_name( char const *name ) {
+  assert( name != NULL );
+  c_sname_t sname;
+  if ( c_sname_parse( name, &sname ) ) {
+    c_typedef_t const *const tdef = c_typedef_find_sname( &sname );
+    c_sname_free( &sname );
+    return tdef;
+  }
+  return NULL;
+}
+
+c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
   assert( sname != NULL );
   rb_node_t const *const found_rb =
     rb_tree_find( &typedefs, &C_TYPEDEF_LIT( *sname ) );

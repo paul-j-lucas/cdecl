@@ -91,14 +91,28 @@ c_typedef_t const* c_typedef_add( c_ast_t const *type_ast );
 void c_typedef_cleanup( void );
 
 /**
+ * Gets the <code>\ref c_typedef</code> for \a name.
+ *
+ * @param name The name to find.  It may contain `::`.
+ * @return Returns a pointer to the corresponding <code>\ref c_typedef</code>
+ * or NULL for none.
+ *
+ * @sa c_typedef_find_sname()
+ */
+PJL_WARN_UNUSED_RESULT
+c_typedef_t const* c_typedef_find_name( char const *name );
+
+/**
  * Gets the <code>\ref c_typedef</code> for \a sname.
  *
  * @param sname The scoped name to find.
  * @return Returns a pointer to the corresponding <code>\ref c_typedef</code>
  * or NULL for none.
+ *
+ * @sa c_typedef_find_name()
  */
 PJL_WARN_UNUSED_RESULT
-c_typedef_t const* c_typedef_find( c_sname_t const *sname );
+c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname );
 
 /**
  * Initializes all <code>\ref c_typedef</code> data.

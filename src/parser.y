@@ -5880,7 +5880,7 @@ sname_english_ast
       //
       // See if the full name is the name of a typedef'd type.
       //
-      c_typedef_t const *const tdef = c_typedef_find( &sname );
+      c_typedef_t const *const tdef = c_typedef_find_sname( &sname );
       if ( tdef != NULL ) {
         $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
         $$->type.base_tid = TB_TYPEDEF;
