@@ -359,6 +359,16 @@ char const* c_sname_name_atr( c_sname_t const *sname, size_t roffset ) {
 }
 
 /**
+ * Parses a scoped name, e.g. `a::b::c`.
+ *
+ * @param s The string to parse.
+ * @param sname The `c_sname` to parse into.
+ * @return Returns `true` only if the scoped name was successfully parsed.
+ */
+PJL_WARN_UNUSED_RESULT
+bool c_sname_parse( char const *s, c_sname_t *sname );
+
+/**
  * Prepends \a src onto the beginning of \a dst.
  *
  * @param dst The scoped name to prepend to.

@@ -824,6 +824,17 @@ bool only_bits_set( uint64_t bits, uint64_t allowed_bits ) {
 void path_append( char *path, char const *component );
 
 /**
+ * Parses a C/C++ identifier.
+ *
+ * @param s The string to parse.
+ * @param end Upon successful return, set to point to one character past the
+ * end of the identifier.
+ * @return Returns `true` only if an identifier was parsed.
+ */
+PJL_WARN_UNUSED_RESULT
+bool parse_identifier( char const *s, char const **end );
+
+/**
  * Prints an error message for `errno` to standard error and exits.
  *
  * @param status The exit status code.

@@ -400,9 +400,6 @@ static void       lexer_fatal( char const* );
 
 static void       lexer_update_loc( void );
 
-PJL_WARN_UNUSED_RESULT
-static bool       parse_identifier( char const*, char const** );
-
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -425,44 +422,6 @@ static cdecl_keyword_t const* cdecl_keyword_find( char const *s ) {
     break;
   } // for
   return NULL;
-}
-
-/**
- * Parses a scoped name, e.g. `a::b::c`.
- *
- * @param s The string to parse.
- * @param sname The `c_sname` to parse into.
- * @return Returns `true` only if the scoped name was successfully parsed.
- */
-PJL_WARN_UNUSED_RESULT
-static bool c_sname_parse( char const *s, c_sname_t *sname ) {
-  assert( s != NULL );
-  assert( sname != NULL );
-
-  c_sname_t rv;
-  c_sname_init( &rv );
-
-  for ( char const *end; parse_identifier( s, &end ); ) {
-    char *const name = strndup( s, (size_t)(end - s) );
-
-    // Ensure that the name is NOT a keyword.
-    c_keyword_t const *const k = c_keyword_find( name, opt_lang, C_KW_CTX_ALL );
-    if ( k != NULL ) {
-      FREE( name );
-      c_sname_free( &rv );
-      return false;
-    }
-
-    c_sname_append_name( &rv, name );
-    SKIP_WS( end );
-    if ( strncmp( end, "::", 2 ) != 0 )
-      break;
-    s = end + 2;
-    SKIP_WS( s );
-  } // for
-
-  *sname = rv;
-  return true;
 }
 
 /**
@@ -559,26 +518,6 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
 static inline void newline( void ) {
   column_newline = column;
   column = 0;
-}
-
-/**
- * Parses a C/C++ identifier.
- *
- * @param s The string to parse.
- * @param end Upon successful return, set to point to one character past the
- * end of the identifier.
- * @return Returns `true` only if an identifier was parsed.
- */
-PJL_WARN_UNUSED_RESULT
-static bool parse_identifier( char const *s, char const **end ) {
-  assert( s != NULL );
-  assert( end != NULL );
-  if ( !(isalpha( s[0] ) || s[0] == '_') )
-    return false;
-  while ( *++s != '\0' && is_ident( *s ) )
-    ;
-  *end = s;
-  return true;
 }
 
 /**

@@ -30,6 +30,8 @@
 #define C_SNAME_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_sname.h"
+#include "c_keyword.h"
+#include "options.h"
 #include "strbuf.h"
 #include "util.h"
 
@@ -233,16 +235,46 @@ bool c_sname_match( c_sname_t const *sname, char const *glob ) {
   return is_match;
 }
 
-char const* c_sname_scope_name( c_sname_t const *sname ) {
-  static strbuf_t sbuf;
+bool c_sname_parse( char const *s, c_sname_t *sname ) {
+  assert( s != NULL );
   assert( sname != NULL );
-  return scope_name_impl( &sbuf, sname, sname->tail );
+
+  c_sname_t rv;
+  c_sname_init( &rv );
+
+  for ( char const *end; parse_identifier( s, &end ); ) {
+    char *const name = check_strndup( s, (size_t)(end - s) );
+
+    // Ensure that the name is NOT a keyword.
+    c_keyword_t const *const k = c_keyword_find( name, opt_lang, C_KW_CTX_ALL );
+    if ( k != NULL ) {
+      FREE( name );
+      c_sname_free( &rv );
+      return false;
+    }
+
+    c_sname_append_name( &rv, name );
+    SKIP_WS( end );
+    if ( strncmp( end, "::", 2 ) != 0 )
+      break;
+    s = end + 2;
+    SKIP_WS( s );
+  } // for
+
+  *sname = rv;
+  return true;
 }
 
 c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
   assert( sname != NULL );
   return c_sname_empty( sname ) ?
     &T_NONE : c_sname_local_type_impl( sname->head );
+}
+
+char const* c_sname_scope_name( c_sname_t const *sname ) {
+  static strbuf_t sbuf;
+  assert( sname != NULL );
+  return scope_name_impl( &sbuf, sname, sname->tail );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
