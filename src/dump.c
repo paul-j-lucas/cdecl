@@ -242,7 +242,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_TYPEDEF:
         DUMP_COMMA;
-        DUMP_SNAME( "typedef_name", &ast->as.tdef.for_ast->sname );
+        c_ast_dump( ast->as.tdef.for_ast, indent, "for_ast", dout );
         FPUTS( ",\n", dout );
         PJL_FALLTHROUGH;
 
