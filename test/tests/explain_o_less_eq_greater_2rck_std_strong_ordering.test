@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ struct S; explain std::strong_ordering operator<=>(const S&, const S&) @ 0

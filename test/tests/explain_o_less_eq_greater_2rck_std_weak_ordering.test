@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ struct S; explain std::weak_ordering operator<=>(const S&, const S&) @ 0

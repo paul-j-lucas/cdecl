@@ -1402,6 +1402,10 @@ TESTS+=	tests/explain_+o_eq2_rcki_b.test \
 	tests/explain_o_less2_i_rk.test \
 	tests/explain_o_less2_rcki_k.test \
 	tests/explain_o_less2_rki_rk.test \
+	tests/explain_o_less_eq_greater_2rck_a.test \
+	tests/explain_o_less_eq_greater_2rck_std_partial_ordering.test \
+	tests/explain_o_less_eq_greater_2rck_std_strong_ordering.test \
+	tests/explain_o_less_eq_greater_2rck_std_weak_ordering.test \
 	tests/explain_o_less_eq_rcki_b.test \
 	tests/explain_o_less_rcki_b.test \
 	tests/explain_o_minus2_rki_rk.test \
@@ -1469,6 +1473,7 @@ TESTS+=	tests/explain_+o_eq_rck_rk=default-02.test \
 	tests/explain_o_arrow_i.test \
 	tests/explain_o_brackets_2i_i.test \
 	tests/explain_o_exclam_2i.test \
+	tests/explain_o_less_eq_greater_2rck_i.test \
 	tests/explain_o_minus2_d_rk.test \
 	tests/explain_o_minus2_rkd_rk.test \
 	tests/explain_o_minus_iel_i.test \

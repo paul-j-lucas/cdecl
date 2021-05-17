@@ -30,6 +30,7 @@
 #include "c_keyword.h"
 #include "c_lang.h"
 #include "c_type.h"
+#include "c_typedef.h"
 #include "cdecl.h"
 #include "did_you_mean.h"
 #include "literals.h"
@@ -1072,7 +1073,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       /* suppress warning */;
   } // switch
 
-  c_ast_t const *const ret_ast = ast->as.oper.ret_ast;
+  c_ast_t const *const ret_ast = c_ast_untypedef( ast->as.oper.ret_ast );
 
   switch ( ast->as.oper.oper_id ) {
     case C_OP_ARROW:
@@ -1102,6 +1103,41 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
         return false;
       }
       break;
+
+    case C_OP_LESS_EQ_GREATER: {
+      //
+      // Special case for operator<=> that must return one of auto,
+      // std::partial_ordering, std::strong_ordering, or std::weak_ordering.
+      //
+      static c_ast_t const *std_partial_ordering_ast;
+      static c_ast_t const *std_strong_ordering_ast;
+      static c_ast_t const *std_weak_ordering_ast;
+      if ( std_partial_ordering_ast == NULL ) {
+        std_partial_ordering_ast
+          = c_typedef_find_name( "std::partial_ordering" )->ast;
+        assert( std_partial_ordering_ast != NULL );
+        std_strong_ordering_ast
+          = c_typedef_find_name( "std::strong_ordering" )->ast;
+        assert( std_strong_ordering_ast != NULL );
+        std_weak_ordering_ast
+          = c_typedef_find_name( "std::weak_ordering" )->ast;
+        assert( std_weak_ordering_ast != NULL );
+      }
+      if ( ret_ast->type.base_tid != TB_AUTO &&
+           ret_ast != std_partial_ordering_ast &&
+           ret_ast != std_strong_ordering_ast &&
+           ret_ast != std_weak_ordering_ast ) {
+        print_error( &ast->loc,
+          "%s%s must return one of %s, "
+          "std::partial_ordering, "
+          "std::strong_ordering, or "
+          "std::weak_ordering\n",
+          L_OPERATOR, op->name, L_AUTO
+        );
+        return false;
+      }
+      break;
+    }
 
     case C_OP_NEW:
     case C_OP_NEW_ARRAY:
@@ -1320,6 +1356,16 @@ same: print_error( &ast->loc,
     return false;
   }
 
+  //
+  // Count the number of enum, class, struct, or union parameters.
+  //
+  unsigned ecsu_param_count = 0;
+  FOREACH_PARAM( param, ast ) {
+    c_ast_t const *const param_ast = c_param_ast( param );
+    if ( c_ast_is_kind_any( param_ast, K_ENUM_CLASS_STRUCT_UNION ) )
+      ++ecsu_param_count;
+  } // for
+
   bool const is_user_non_member = user_overload_flags == C_OP_NON_MEMBER;
   if ( is_user_non_member ) {
     //
@@ -1338,18 +1384,11 @@ same: print_error( &ast->loc,
     }
 
     //
-    // Ensure non-member operators have at least one enum, class, struct, or
-    // union parameter.
+    // Ensure other non-member operators have at least one enum, class, struct,
+    // or union parameter.
     //
-    bool has_ecsu_param = false;
-    FOREACH_PARAM( param, ast ) {
-      c_ast_t const *const param_ast = c_param_ast( param );
-      if ( c_ast_is_kind_any( param_ast, K_ENUM_CLASS_STRUCT_UNION ) ) {
-        has_ecsu_param = true;
-        break;
-      }
-    } // for
-    if ( !has_ecsu_param ) {
+    if ( ast->as.oper.oper_id != C_OP_LESS_EQ_GREATER &&
+         ecsu_param_count == 0 ) {
       print_error( &ast->loc,
         "at least 1 parameter of a %s %s must be an %s"
         "; or a %s or %s %s thereto\n",
@@ -1376,6 +1415,22 @@ same: print_error( &ast->loc,
   }
 
   switch ( ast->as.oper.oper_id ) {
+    case C_OP_LESS_EQ_GREATER:
+      //
+      // Special case for operator <=> that requires all parameters to be a
+      // class, struct, or union, or a reference thereto.
+      //
+      if ( ecsu_param_count < n_params ) {
+        print_error( &ast->loc,
+          "all parameters of %s%s must be an %s"
+          "; or a %s thereto\n",
+          L_OPERATOR, op->name, c_kind_name( K_ENUM_CLASS_STRUCT_UNION ),
+          L_REFERENCE
+        );
+        return false;
+      }
+      break;
+
     case C_OP_MINUS2:
     case C_OP_PLUS2: {
       //
