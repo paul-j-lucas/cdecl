@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ define S as struct S; explain bool operator==(S, int) @ 0
+cdecl @ @ -xc++ @ struct S; explain bool operator==(S, int) @ 0

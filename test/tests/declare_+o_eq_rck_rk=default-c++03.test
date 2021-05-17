@@ -1,1 +1,1 @@
-cdecl @ @ -xc++03 @ define S as struct S; declare = of structure S as default member operator (reference to constant S) returning reference to S @ 65
+cdecl @ @ -xc++03 @ struct S; declare = of structure S as default member operator (reference to constant S) returning reference to S @ 65

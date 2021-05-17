@@ -1,1 +1,1 @@
-cdecl @ @ -a -xc++ @ define S as struct S; declare &= as non-member operator (r as reference to S, x as int) returning reference to S @ 0
+cdecl @ @ -a -xc++ @ struct S; declare &= as non-member operator (r as reference to S, x as int) returning reference to S @ 0

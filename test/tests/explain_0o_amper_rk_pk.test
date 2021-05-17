@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ define S as struct S; explain virtual S* operator&(S&) = 0 @ 0
+cdecl @ @ -xc++ @ struct S; explain virtual S* operator&(S&) = 0 @ 0

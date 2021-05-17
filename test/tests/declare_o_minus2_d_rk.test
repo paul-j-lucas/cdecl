@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ define S as struct S; declare -- as operator (double) returning reference to S @ 65
+cdecl @ @ -xc++ @ struct S; declare -- as operator (double) returning reference to S @ 65

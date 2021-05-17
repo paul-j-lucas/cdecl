@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ define S as struct S; explain void* S::operator new(std::size_t n) @ 0
+cdecl @ @ -xc++ @ struct S; explain void* S::operator new(std::size_t n) @ 0

@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ define S as struct S; explain S& S::operator!=(S const&) = delete @ 65
+cdecl @ @ -xc++ @ struct S; explain S& S::operator!=(S const&) = delete @ 65

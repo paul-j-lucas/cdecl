@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ define S as struct S; explain [[no_unique_address]] S x @ 0
+cdecl @ @ -xc++ @ struct S; explain [[no_unique_address]] S x @ 0

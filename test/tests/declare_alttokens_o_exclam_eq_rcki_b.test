@@ -1,1 +1,1 @@
-cdecl @ @ -a -xc++ @ define S as struct S; declare != as operator (r as reference to const S, int) returning bool @ 0
+cdecl @ @ -a -xc++ @ struct S; declare != as operator (r as reference to const S, int) returning bool @ 0

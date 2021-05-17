@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ define S as struct S; declare ! as reference operator (S) returning bool @ 65
+cdecl @ @ -xc++ @ struct S; declare ! as reference operator (S) returning bool @ 65

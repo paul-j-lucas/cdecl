@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ define S as struct S; explain S operator*(const S&, const S&) @ 0
+cdecl @ @ -xc++ @ struct S; explain S operator*(const S&, const S&) @ 0

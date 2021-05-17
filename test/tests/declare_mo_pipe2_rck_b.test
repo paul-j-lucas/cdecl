@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ define S as struct S; declare || as member operator (reference to const S) returning bool @ 0
+cdecl @ @ -xc++ @ struct S; declare || as member operator (reference to const S) returning bool @ 0

@@ -1,1 +1,1 @@
-cdecl @ @ -xc++17 @ define S as struct S; declare <=> as operator (reference to const S, reference to const S) returning auto @ 65
+cdecl @ @ -xc++17 @ struct S; declare <=> as operator (reference to const S, reference to const S) returning auto @ 65

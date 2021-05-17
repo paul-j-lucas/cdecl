@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ define T as struct T; explain bool S::operator==(T const&, int) @ 0
+cdecl @ @ -xc++ @ struct T; explain bool S::operator==(T const&, int) @ 0

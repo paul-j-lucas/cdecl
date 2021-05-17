@@ -1,1 +1,1 @@
-cdecl @ @ @ define S as struct S; declare * as friend member operator (reference to S) returning reference to S @ 65
+cdecl @ @ @ struct S; declare * as friend member operator (reference to S) returning reference to S @ 65

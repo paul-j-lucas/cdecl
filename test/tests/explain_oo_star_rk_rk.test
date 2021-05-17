@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ define S as struct S; explain S& operator*(S&) override @ 0
+cdecl @ @ -xc++ @ struct S; explain S& operator*(S&) override @ 0
