@@ -493,35 +493,6 @@ static inline bool is_long_int( c_type_id_t tid ) {
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Gets a pointer to the <code>\ref c_type_id_t</code> of \a type that
- * corresponds to the type part ID of \a tid.
- *
- * @param type The <code>\ref c_type</code> to get a pointer to the <code>\ref
- * c_type_id_t</code> of.
- * @param tid The <code>\ref c_type_id_t</code> that specifies the part of \a
- * type to get the pointer to.
- * @return Returns a pointer to the corresponding <code>\ref c_type_id_t</code>
- * of \a type for the part of \a tid.
- */
-PJL_WARN_UNUSED_RESULT
-static c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid ) {
-  assert( type != NULL );
-
-  switch ( c_type_id_tpid( tid ) ) {
-    case C_TPID_NONE:
-      break;
-    case C_TPID_BASE:
-      return &type->base_tid;
-    case C_TPID_STORE:
-      return &type->store_tid;
-    case C_TPID_ATTR:
-      return &type->attr_tid;
-  } // switch
-
-  UNEXPECTED_INT_VALUE( tid );
-}
-
-/**
  * Checks that the type combination is legal in the current language.
  *
  * @param tid The <code>\ref c_type_id_t</code> to check.
@@ -747,6 +718,23 @@ c_type_t c_type_from_tid( c_type_id_t tid ) {
     case C_TPID_ATTR:
       return C_TYPE_LIT_A( tid );
   } // switch
+  UNEXPECTED_INT_VALUE( tid );
+}
+
+c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid ) {
+  assert( type != NULL );
+
+  switch ( c_type_id_tpid( tid ) ) {
+    case C_TPID_NONE:
+      break;
+    case C_TPID_BASE:
+      return &type->base_tid;
+    case C_TPID_STORE:
+      return &type->store_tid;
+    case C_TPID_ATTR:
+      return &type->attr_tid;
+  } // switch
+
   UNEXPECTED_INT_VALUE( tid );
 }
 

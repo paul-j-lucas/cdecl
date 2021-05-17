@@ -387,19 +387,23 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
 }
 
 bool c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
-  assert( c_type_id_tpid( tids ) == C_TPID_BASE );
   ast = c_ast_unpointer( ast );
   if ( ast == NULL )
     return false;
-  c_type_id_t const base_tid = c_type_id_normalize( ast->type.base_tid );
-  return (base_tid & tids) != TB_NONE;
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+  c_type_id_t const *const tid_ptr =
+    c_type_get_tid_ptr( &nonconst_ast->type, tids );
+  c_type_id_t const tid = c_type_id_normalize( *tid_ptr );
+  return c_type_id_no_tpid( tid & tids ) != TX_NONE;
 }
 
 bool c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
-  assert( c_type_id_tpid( tids ) == C_TPID_BASE );
   ast = c_ast_unreference( ast );
-  c_type_id_t const base_tid = c_type_id_normalize( ast->type.base_tid );
-  return (base_tid & tids) != TB_NONE;
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+  c_type_id_t const *const tid_ptr =
+    c_type_get_tid_ptr( &nonconst_ast->type, tids );
+  c_type_id_t const tid = c_type_id_normalize( *tid_ptr );
+  return c_type_id_no_tpid( tid & tids ) != TX_NONE;
 }
 
 bool c_ast_is_typename_ok( c_ast_t const *ast ) {
