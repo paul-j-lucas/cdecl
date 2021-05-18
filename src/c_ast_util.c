@@ -232,6 +232,20 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
 }
 
 /**
+ * Only if \a ast is a <code>\ref K_REFERENCE</code>, un-references \a ast.
+ *
+ * @param ast The AST to un-reference.
+ * @return Returns the referenced AST or NULL if \a ast is not a reference.
+ *
+ * @sa c_ast_unreference()
+ */
+static c_ast_t const* c_ast_if_reference_unreference( c_ast_t const *ast ) {
+  ast = c_ast_untypedef( ast );
+  return ast->kind_id == K_REFERENCE ?
+    c_ast_unreference( ast->as.ptr_ref.to_ast ) : NULL;
+}
+
+/**
  * Takes the storage (and attributes), if any, away from \a ast
  * (with the intent of giving them to another AST).
  * This is used is cases like:
@@ -398,7 +412,9 @@ bool c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
 }
 
 bool c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
-  ast = c_ast_unreference( ast );
+  ast = c_ast_if_reference_unreference( ast );
+  if ( ast == NULL )
+    return false;
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   c_type_id_t const *const tid_ptr =
     c_type_get_tid_ptr( &nonconst_ast->type, tids );
