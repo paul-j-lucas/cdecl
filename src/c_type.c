@@ -795,7 +795,10 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type ) {
   assert( i_type != NULL );
   assert( j_type != NULL );
 
-  return  (i_type->base_tid  & j_type->base_tid  ) != TB_NONE ||
+  c_type_id_t const i_base_tid = c_type_id_normalize( i_type->base_tid );
+  c_type_id_t const j_base_tid = c_type_id_normalize( j_type->base_tid );
+
+  return  (i_base_tid        & j_base_tid        ) != TB_NONE ||
           (i_type->store_tid & j_type->store_tid ) != TS_NONE ||
           (i_type->attr_tid  & j_type->attr_tid  ) != TA_NONE ;
 }
