@@ -567,7 +567,8 @@ PJL_WARN_UNUSED_RESULT
 c_type_part_id_t c_type_id_tpid( c_type_id_t tid );
 
 /**
- * Gets whether \a i_type contains any of \a j_type.
+ * For all type part IDs of \a j_type that are not none, gets whether the
+ * corresponding type part ID of \a i_type is any of them.
  *
  * @param i_type The first <code>\ref c_type</code>.
  * @param j_type The second <code>\ref c_type</code>.
