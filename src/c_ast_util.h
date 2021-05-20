@@ -114,10 +114,9 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
  *
  * @param ast The AST to begin at.
  * @param dir The direction to visit.
- * @param type A type where each type part is the bitwise-or of type IDs to
- * find.
- * @return Returns a pointer to an AST node having one of \a type_ids or NULL
- * if none.
+ * @param type A type where each type is the bitwise-or of type IDs to find.
+ * @return Returns a pointer to an AST node having one of \a type or NULL if
+ * none.
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
@@ -136,8 +135,8 @@ PJL_WARN_UNUSED_RESULT
 bool c_ast_is_builtin_any( c_ast_t const *ast, c_type_id_t tids );
 
 /**
- * Checks whether \a ast is an AST of one of \a kind_ids or a reference or
- * rvalue reference thereto.
+ * Checks whether \a ast is an AST of one of \a kind_ids or a reference
+ * thereto.
  *
  * @param ast The AST to check.
  * @param kind_ids The bitwise-or of the kinds(s) \a ast can be.
@@ -148,7 +147,8 @@ PJL_WARN_UNUSED_RESULT
 bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids );
 
 /**
- * Checks whether \a ast is an AST for a pointer to one of \a tids.
+ * Checks whether \a ast is an AST for a pointer to another AST having a type
+ * that contains any one of \a tids.
  *
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
@@ -186,8 +186,8 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
                            c_type_t const *equal_type );
 
 /**
- * Checks whether \a ast is an AST for a reference or rvalue reference to one
- * of \a tids.
+ * Checks whether \a ast is an AST for a reference to another AST having a type
+ * that contains any one of \a tids.
  *
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
@@ -238,8 +238,8 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast );
 
 /**
- * Creates a pointer AST to \a ast.  The name of \a ast (or one of its child
- * nodes), if any, is moved to the new pointer AST.
+ * Creates a <code>\ref K_POINTER</code> AST to \a ast.  The name of \a ast (or
+ * one of its child nodes), if any, is moved to the new pointer AST.
  *
  * @param ast The AST to create a pointer to.
  * @param ast_list If not NULL, the new pointer AST is appended to the list.
@@ -277,8 +277,7 @@ c_sname_t c_ast_take_name( c_ast_t *ast );
  * @endcode
  *
  * @param ast The AST to check.
- * @param type A type where each type part is the bitwise-or of type IDs to
- * find.
+ * @param type A type where each type ID is the bitwise-or of type IDs to find.
  * @return Returns the taken type.
  */
 PJL_WARN_UNUSED_RESULT
@@ -288,12 +287,12 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
  * Un-pointers \a ast, i.e., if \a ast is a <code>\ref K_POINTER</code>,
  * returns the pointed-to AST.
  *
- * @note `typedef`s are stripped.
  * @note Even though pointers are "dereferenced," this function isn't called
  * `c_ast_dereference` to eliminate confusion with C++ references.
  *
  * @param ast The AST to un-pointer.
- * @return Returns the pointed-to AST or NULL if \a ast is not a pointer.
+ * @return If \a ast is a pointer, Returns the pointed-to AST after `typedef`s,
+ * if any, are stripped; otherwise returns NULL if \a ast is not a pointer.
  *
  * @sa c_ast_pointer()
  * @sa c_ast_unreference()
@@ -304,14 +303,15 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
 
 /**
  * Un-references \a ast, i.e., if \a ast is a <code>\ref K_REFERENCE</code>
- * returns the referenced AST.
+ * returns the referred-to AST.
  *
- * @note `typedef`s are stripped.
  * @note Only <code>\ref K_REFERENCE</code> is un-referenced, not
  * <code>\ref K_RVALUE_REFERENCE</code>.
  *
  * @param ast The AST to un-reference.
- * @return Returns the referenced AST or \a ast if \a ast is not a reference.
+ * @return If \a ast is a reference, Returns the referenced AST after
+ * `typedef`s, if any, are stripped; otherwise returns \a ast if \a ast is not
+ * a reference.
  *
  * @sa c_ast_unpointer()
  * @sa c_ast_untypedef()
@@ -320,11 +320,11 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 
 /**
- * Un-typedefs \a ast, i.e., if \a ast is a <code>\ref K_TYPEDEF</code>,
- * returns the underlying type AST.
+ * Un-`typedef`s \a ast, i.e., if \a ast is a <code>\ref K_TYPEDEF</code>,
+ * returns the AST the `typedef` is for.
  *
- * @param ast The AST to un-typedef.
- * @return Returns the underlying type AST or \a ast if \a ast is not a
+ * @param ast The AST to un-`typedef`.
+ * @return Returns the AST the `typedef` is for or \a ast if \a ast is not a
  * `typedef`.
  *
  * @sa c_ast_unpointer()
