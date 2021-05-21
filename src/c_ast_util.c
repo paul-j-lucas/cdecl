@@ -232,17 +232,139 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
 }
 
 /**
+ * Only if \a ast is a <code>\ref K_POINTER</code>, un-pointers \a ast.
+ *
+ * @param ast The AST to un-reference.
+ * @param cv_tids If \a ast is a reference, receives the `const` and `volatile`
+ * (cv) qualifiers (only) of the first referred-to type.  For a declaration
+ * like <code>const&nbsp;S&nbsp;&x</code> (where `S` is a `struct`), the
+ * `const` is associated with the `typedef` for the `struct` and _not_ the
+ * actual `struct` the `typedef` is a `typedef` for:
+ * ```
+ * decl_c = {
+ *   sname = "x" (none),
+ *   kind = "pointer",
+ *   ...
+ *   type = "" (base = 0x1, store = 0x2, attr = 0x4),
+ *   to_ast = {
+ *     sname = "",
+ *     kind = "typedef",
+ *     ...
+ *     type = "const" (base = 0x10000001, store = 0x20000002, attr = 0x4),
+ *     for_ast = {
+ *       sname = "S" (struct),
+ *       kind = "enum, class, struct, or union",
+ *       ...
+ *       type = "struct" (base = 0x800001, store = 0x2, attr = 0x4),
+ *       ecsu_sname = "S" (none)
+ *     },
+ *     ...
+ *   }
+ * }
+ * ```
+ * Therefore, we need to copy the cv qualifiers of the `typedef` before we
+ * un-`typedef` it.
+ * @return Returns the referenced AST or NULL if \a ast is not a reference.
+ *
+ * @sa c_ast_if_unreference()
+ * @sa c_ast_unpointer()
+ */
+static c_ast_t const* c_ast_if_unpointer( c_ast_t const *ast,
+                                          c_type_id_t *cv_tids ) {
+  ast = c_ast_untypedef( ast );
+  if ( ast->kind_id != K_POINTER )
+    return NULL;
+
+  ast = ast->as.ptr_ref.to_ast;
+  assert( ast != NULL );
+  assert( cv_tids != NULL );
+  *cv_tids = ast->type.store_tid & TS_CONST_VOLATILE;
+  //
+  // Now that we've gotten the cv qualifiers of the first referred-to type, we
+  // can just call the ordinary c_ast_untypedef() to peel off any remaining
+  // typedef layers.
+  //
+  return c_ast_untypedef( ast );
+}
+
+/**
  * Only if \a ast is a <code>\ref K_REFERENCE</code>, un-references \a ast.
  *
  * @param ast The AST to un-reference.
+ * @param cv_tids If \a ast is a reference, receives the `const` and `volatile`
+ * (cv) qualifiers (only) of the first referred-to type.  For a declaration
+ * like <code>const&nbsp;S&nbsp;&x</code> (where `S` is a `struct`), the
+ * `const` is associated with the `typedef` for the `struct` and _not_ the
+ * actual `struct` the `typedef` is a `typedef` for:
+ * ```
+ * decl_c = {
+ *   sname = "x" (none),
+ *   kind = "reference",
+ *   ...
+ *   type = "" (base = 0x1, store = 0x2, attr = 0x4),
+ *   to_ast = {
+ *     sname = "",
+ *     kind = "typedef",
+ *     ...
+ *     type = "const" (base = 0x10000001, store = 0x20000002, attr = 0x4),
+ *     for_ast = {
+ *       sname = "S" (struct),
+ *       kind = "enum, class, struct, or union",
+ *       ...
+ *       type = "struct" (base = 0x800001, store = 0x2, attr = 0x4),
+ *       ecsu_sname = "S" (none)
+ *     },
+ *     bit_width = 0
+ *   }
+ * }
+ * ```
+ * Therefore, we need to copy the cv qualifiers of the `typedef` before we
+ * un-`typedef` it.
  * @return Returns the referenced AST or NULL if \a ast is not a reference.
  *
+ * @sa c_ast_if_unpointer()
  * @sa c_ast_unreference()
  */
-static c_ast_t const* c_ast_if_reference_unreference( c_ast_t const *ast ) {
+static c_ast_t const* c_ast_if_unreference( c_ast_t const *ast,
+                                            c_type_id_t *cv_tids ) {
   ast = c_ast_untypedef( ast );
-  return ast->kind_id == K_REFERENCE ?
-    c_ast_unreference( ast->as.ptr_ref.to_ast ) : NULL;
+  if ( ast->kind_id != K_REFERENCE )
+    return NULL;
+
+  ast = ast->as.ptr_ref.to_ast;
+  assert( ast != NULL );
+  assert( cv_tids != NULL );
+  *cv_tids = ast->type.store_tid & TS_CONST_VOLATILE;
+  //
+  // Now that we've gotten the cv qualifiers of the first referred-to type, we
+  // can just call the ordinary c_ast_unreference() to peel off any remaining
+  // typedef/reference layers.
+  //
+  return c_ast_unreference( ast );
+}
+
+/**
+ * Helper function that checks whether the type of \a ast is one of \a tids.
+ *
+ * @param ast The AST to check; may be NULL.
+ * @param ast_cv_tids The `const`/`volatiile` qualifier(s) of the `typedef` for
+ * \a ast, if any.
+ * @param tids The bitwise-or of type(s) to check against.
+ * @return If \a ast is not null and the type of \a ast is one of \a tids,
+ * returns \a ast; otherwise returns NULL.
+ */
+static c_ast_t const* c_ast_is_tid_any_impl( c_ast_t const *ast,
+                                             c_type_id_t ast_cv_tids,
+                                             c_type_id_t tids ) {
+  if ( ast != NULL ) {
+    c_type_id_t ast_tids = c_type_get_tid( &ast->type, tids );
+    ast_tids = c_type_id_normalize( ast_tids );
+    if ( c_type_id_tpid( tids ) == C_TPID_STORE )
+      ast_tids |= ast_cv_tids;
+    if ( c_type_id_is_any( ast_tids, tids ) )
+      return ast;
+  }
+  return NULL;
 }
 
 /**
@@ -389,37 +511,44 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
                            c_type_t const *equal_type ) {
   assert( mask_type != NULL );
 
-  ast = c_ast_unpointer( ast );
+  c_type_id_t cv_tids;
+  ast = c_ast_if_unpointer( ast, &cv_tids );
   if ( ast == NULL )
     return false;
   c_type_t const masked_type = {
     c_type_id_normalize( ast->type.base_tid ) & mask_type->base_tid,
-    ast->type.store_tid                       & mask_type->store_tid,
+    (ast->type.store_tid | cv_tids)           & mask_type->store_tid,
     ast->type.attr_tid                        & mask_type->attr_tid
   };
   return c_type_equal( &masked_type, equal_type );
 }
 
-bool c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
-  ast = c_ast_unpointer( ast );
-  if ( ast == NULL )
-    return false;
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_type_id_t const *const tid_ptr =
-    c_type_get_tid_ptr( &nonconst_ast->type, tids );
-  c_type_id_t const tid = c_type_id_normalize( *tid_ptr );
-  return c_type_id_no_tpid( tid & tids ) != TX_NONE;
+c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
+  c_type_id_t cv_tids;
+  ast = c_ast_if_unpointer( ast, &cv_tids );
+  return c_ast_is_tid_any_impl( ast, cv_tids, tids );
 }
 
-bool c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
-  ast = c_ast_if_reference_unreference( ast );
+c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
+  c_type_id_t cv_tids;
+  ast = c_ast_if_unreference( ast, &cv_tids );
+  return c_ast_is_tid_any_impl( ast, cv_tids, tids );
+}
+
+c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
+                                         c_type_t const *type ) {
+  c_type_id_t cv_tids;
+  ast = c_ast_if_unreference( ast, &cv_tids );
   if ( ast == NULL )
-    return false;
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_type_id_t const *const tid_ptr =
-    c_type_get_tid_ptr( &nonconst_ast->type, tids );
-  c_type_id_t const tid = c_type_id_normalize( *tid_ptr );
-  return c_type_id_no_tpid( tid & tids ) != TX_NONE;
+    return NULL;
+
+  c_type_t const ast_cv_type = {
+    c_type_id_normalize( ast->type.base_tid ),
+    ast->type.store_tid | cv_tids,
+    ast->type.attr_tid
+  };
+
+  return c_type_is_any( &ast_cv_type, type ) ? ast : NULL;
 }
 
 bool c_ast_is_typename_ok( c_ast_t const *ast ) {

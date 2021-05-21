@@ -301,6 +301,9 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 /// Shorthand for any reference qualifier.
 #define TS_ANY_REFERENCE      ( TS_REFERENCE | TS_RVALUE_REFERENCE )
 
+/// Shorthand for `const` or `volatile`.
+#define TS_CONST_VOLATILE     ( TS_CONST | TS_VOLATILE )
+
 /**
  * The only types that can apply to in-class constructor declarations.
  *

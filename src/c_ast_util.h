@@ -152,13 +152,14 @@ bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids );
  *
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
- * @return Returns `true` only if \a ast is a pointer to one of \a tids.
+ * @return If \a ast is a pointer and the pointed-to AST has a type that is any
+ * one of \a tids, returns the pointed-to AST; otherwise returns NULL.
  *
  * @sa c_ast_is_ptr_to_type()
  * @sa c_ast_is_ref_to_tid_any()
  */
 PJL_WARN_UNUSED_RESULT
-bool c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
+c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
 
 /**
  * Checks whether \a ast is an AST for a pointer to a certain type.
@@ -191,13 +192,14 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
  *
  * @param ast The AST to check.
  * @param tids The bitwise-or of type(s) to check against.
- * @return Returns `true` only if \a ast is a reference or rvalue reference to
- * one of \a tids.
+ * @return If \a ast is a reference and the referred-to AST has a type that is
+ * any one of \a tids, returns the referred-to AST; otherwise returns NULL.
  *
  * @sa c_ast_is_ptr_to_tid_any()
+ * @sa c_ast_is_ref_to_type_any()
  */
 PJL_WARN_UNUSED_RESULT
-bool c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
+c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
 
 /**
  * Checks whether `typename` is OK since the type's name is a qualified name.
