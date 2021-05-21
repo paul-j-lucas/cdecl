@@ -113,6 +113,7 @@ AC_CHECK_FUNCS([geteuid getpwuid fmemopen strsep])
 AC_SEARCH_LIBS([endwin],[curses ncurses])
 AC_SEARCH_LIBS([readline],[readline])
 AC_SEARCH_LIBS([add_history],[readline history])
+AC_SEARCH_LIBS([tigetnum],[curses ncurses tinfo])
 
 # If readline wasn't disabled by the user, does it actually exist and is it a
 # proper readline?
