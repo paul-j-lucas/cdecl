@@ -512,15 +512,33 @@ PJL_WARN_UNUSED_RESULT
 c_type_t c_type_from_tid( c_type_id_t tid );
 
 /**
+ * Gets the <code>\ref c_type_id_t</code> of \a type that
+ * corresponds to the type part ID of \a tid.
+ *
+ * @param type The <code>\ref c_type</code> to get the relevant <code>\ref
+ * c_type_id_t</code> of.
+ * @param tid The <code>\ref c_type_id_t</code> that specifies the part of \a
+ * type to get the pointer to.
+ * @return Returns the corresponding <code>\ref c_type_id_t</code> of \a type
+ * for the part of \a tid.
+ *
+ * @sa c_type_get_tid_ptr()
+ */
+PJL_WARN_UNUSED_RESULT
+c_type_id_t c_type_get_tid( c_type_t const *type, c_type_id_t tid );
+
+/**
  * Gets a pointer to the <code>\ref c_type_id_t</code> of \a type that
  * corresponds to the type part ID of \a tid.
  *
- * @param type The <code>\ref c_type</code> to get a pointer to the <code>\ref
- * c_type_id_t</code> of.
+ * @param type The <code>\ref c_type</code> to get a pointer to the relevant
+ * <code>\ref c_type_id_t</code> of.
  * @param tid The <code>\ref c_type_id_t</code> that specifies the part of \a
  * type to get the pointer to.
  * @return Returns a pointer to the corresponding <code>\ref c_type_id_t</code>
  * of \a type for the part of \a tid.
+ *
+ * @sa c_type_get_tid()
  */
 PJL_WARN_UNUSED_RESULT
 c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid );
@@ -819,8 +837,10 @@ bool c_type_is_none( c_type_t const *type ) {
  * @return Returns `true` only if the relevant <code>\ref c_type_id_t</code> of
  * \a type contains any of \a tids.
  */
-PJL_WARN_UNUSED_RESULT
-bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids );
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
+bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids ) {
+  return c_type_id_is_any( c_type_get_tid( type, tids ), tids );
+}
 
 /**
  * Gets the C/C++ name of \a type.

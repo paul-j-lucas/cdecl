@@ -721,6 +721,23 @@ c_type_t c_type_from_tid( c_type_id_t tid ) {
   UNEXPECTED_INT_VALUE( tid );
 }
 
+c_type_id_t c_type_get_tid( c_type_t const *type, c_type_id_t tid ) {
+  assert( type != NULL );
+
+  switch ( c_type_id_tpid( tid ) ) {
+    case C_TPID_NONE:
+      break;
+    case C_TPID_BASE:
+      return type->base_tid;
+    case C_TPID_STORE:
+      return type->store_tid;
+    case C_TPID_ATTR:
+      return type->attr_tid;
+  } // switch
+
+  UNEXPECTED_INT_VALUE( tid );
+}
+
 c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid ) {
   assert( type != NULL );
 
@@ -803,12 +820,6 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type ) {
             (i_type->store_tid & j_type->store_tid) != TS_NONE) &&
           (j_type->attr_tid == TA_NONE ||
             (i_type->attr_tid & j_type->attr_tid) != TA_NONE);
-}
-
-bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids ) {
-  c_type_t *const non_const_type = CONST_CAST( c_type_t*, type );
-  c_type_id_t const tid = *c_type_get_tid_ptr( non_const_type, tids );
-  return c_type_id_is_any( tid, tids );
 }
 
 char const* c_type_name( c_type_t const *type, bool in_english ) {
