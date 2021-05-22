@@ -1300,6 +1300,7 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
     );
     return false;
   }
+  unsigned const overload_flags = user_overload_flags;
 
   //
   // Determine the minimum and maximum number of parameters the operator can
@@ -1307,7 +1308,7 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   //
   bool const is_ambiguous = c_oper_is_ambiguous( op );
   unsigned req_params_min = 0, req_params_max = 0;
-  switch ( user_overload_flags ) {
+  switch ( overload_flags ) {
     case C_OP_NON_MEMBER:
       // Non-member operators must always take at least one parameter (the
       // enum, class, struct, or union for which it's overloaded).
@@ -1366,8 +1367,8 @@ same: print_error( &ast->loc,
       ++ecsu_param_count;
   } // for
 
-  bool const is_user_non_member = user_overload_flags == C_OP_NON_MEMBER;
-  if ( is_user_non_member ) {
+  bool const is_non_member = overload_flags == C_OP_NON_MEMBER;
+  if ( is_non_member ) {
     //
     // Ensure non-member operators are not const, defaulted, deleted,
     // overridden, final, reference, rvalue reference, nor virtual.
@@ -1398,7 +1399,7 @@ same: print_error( &ast->loc,
       return false;
     }
   }
-  else if ( user_overload_flags == C_OP_MEMBER ) {
+  else if ( overload_flags == C_OP_MEMBER ) {
     //
     // Ensure member operators are not friend.
     //
@@ -1440,7 +1441,7 @@ same: print_error( &ast->loc,
       c_ast_param_t const *param = c_ast_params( ast );
       if ( param == NULL )              // member prefix
         break;
-      if ( is_user_non_member ) {
+      if ( is_non_member ) {
         param = param->next;
         if ( param == NULL )            // non-member prefix
           break;
