@@ -58,7 +58,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_OP_OVERLOADABLE
  * @sa #C_OP_UNSPECIFIED
  */
-#define C_OP_NOT_OVERLOADABLE   0u
+#define C_OP_NOT_OVERLOADABLE     (1u << 2)
 
 /**
  * For `c_operator.params_max` of `operator()()`, denotes an unlimited number
@@ -75,7 +75,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_OP_NOT_OVERLOADABLE
  * @sa #C_OP_OVERLOADABLE
  */
-#define C_OP_UNSPECIFIED        C_FUNC_UNSPECIFIED
+#define C_OP_UNSPECIFIED          C_FUNC_UNSPECIFIED
 
 /**
  * For `c_operator.flags`, denotes that the operator is overload{able|ed} as a
@@ -86,7 +86,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_OP_OVERLOADABLE
  * @sa #C_OP_UNSPECIFIED
  */
-#define C_OP_MEMBER             C_FUNC_MEMBER
+#define C_OP_MEMBER               C_FUNC_MEMBER
 
 /**
  * For `c_operator.flags`, denotes that the operator is overload{able|ed} as a
@@ -97,7 +97,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_OP_OVERLOADABLE
  * @sa #C_OP_UNSPECIFIED
  */
-#define C_OP_NON_MEMBER         C_FUNC_NON_MEMBER
+#define C_OP_NON_MEMBER           C_FUNC_NON_MEMBER
 
 /**
  * For `c_operator.flags`, denotes that the operator is overloadable as either
@@ -108,12 +108,12 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #C_OP_NOT_OVERLOADABLE
  * @sa #C_OP_UNSPECIFIED
  */
-#define C_OP_OVERLOADABLE       (C_OP_MEMBER | C_OP_NON_MEMBER)
+#define C_OP_OVERLOADABLE         (C_OP_MEMBER | C_OP_NON_MEMBER)
 
 /**
  * For `c_operator.flags`, overloadability bitmask.
  */
-#define C_OP_MASK_OVERLOAD      C_FUNC_MASK_MEMBER
+#define C_OP_MASK_OVERLOAD        0x7u
 
 ///////////////////////////////////////////////////////////////////////////////
 

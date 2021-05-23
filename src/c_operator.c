@@ -156,6 +156,7 @@ unsigned c_oper_get_overload( c_ast_t const *ast ) {
   switch ( op_overload_flags ) {
     case C_OP_MEMBER:
     case C_OP_NON_MEMBER:
+    case C_OP_NOT_OVERLOADABLE:
       return op_overload_flags;
   } // switch
 
