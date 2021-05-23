@@ -1263,21 +1263,12 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_OPERATOR );
 
-  unsigned user_overload_flags = ast->as.oper.flags & C_OP_MASK_OVERLOAD;
   c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
-  unsigned const op_overload_flags = op->flags & C_OP_MASK_OVERLOAD;
-  size_t const n_params = c_ast_params_count( ast );
-
-  char const *const op_type =
-    op_overload_flags == C_OP_MEMBER     ? L_MEMBER     :
-    op_overload_flags == C_OP_NON_MEMBER ? H_NON_MEMBER :
-    "";
-  char const *const user_type =
-    user_overload_flags == C_OP_MEMBER     ? L_MEMBER     :
-    user_overload_flags == C_OP_NON_MEMBER ? H_NON_MEMBER :
-    op_type;
-
   unsigned const overload_flags = c_ast_oper_overload( ast );
+  char const *const op_monm =           // member or non-member string
+    overload_flags == C_OP_MEMBER     ? L_MEMBER     :
+    overload_flags == C_OP_NON_MEMBER ? H_NON_MEMBER :
+    "";
 
   //
   // Determine the minimum and maximum number of parameters the operator can
@@ -1310,17 +1301,18 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   //
   // Ensure the operator has the required number of parameters.
   //
+  size_t const n_params = c_ast_params_count( ast );
   if ( n_params < req_params_min ) {
     if ( req_params_min == req_params_max )
 same: print_error( &ast->loc,
         "%s%s%s %s must have exactly %u parameter%s\n",
-        SP_AFTER( user_type ), L_OPERATOR, op->name,
+        SP_AFTER( op_monm ), L_OPERATOR, op->name,
         req_params_min, plural_s( req_params_min )
       );
     else
       print_error( &ast->loc,
         "%s%s%s %s must have at least %u parameter%s\n",
-        SP_AFTER( user_type ), L_OPERATOR, op->name,
+        SP_AFTER( op_monm ), L_OPERATOR, op->name,
         req_params_min, plural_s( req_params_min )
       );
     return false;
@@ -1330,7 +1322,7 @@ same: print_error( &ast->loc,
       goto same;
     print_error( &ast->loc,
       "%s%s%s %s can have at most %u parameter%s\n",
-      SP_AFTER( user_type ), L_OPERATOR, op->name,
+      SP_AFTER( op_monm ), L_OPERATOR, op->name,
       op->params_max, plural_s( op->params_max )
     );
     return false;
@@ -1443,7 +1435,7 @@ same: print_error( &ast->loc,
       if ( !c_ast_is_builtin_any( param_ast, TB_INT ) ) {
         print_error( &param_ast->loc,
           "parameter of postfix %s%s%s %s must be %s\n",
-          SP_AFTER( op_type ), L_OPERATOR, op->name,
+          SP_AFTER( op_monm ), L_OPERATOR, op->name,
           c_type_id_name_error( TB_INT )
         );
         return false;
