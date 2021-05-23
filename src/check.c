@@ -1041,10 +1041,26 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( (op->flags & C_OP_MASK_OVERLOAD) == C_OP_NOT_OVERLOADABLE ) {
+  unsigned const op_overload_flags = op->flags & C_OP_MASK_OVERLOAD;
+  if ( op_overload_flags == C_OP_NOT_OVERLOADABLE ) {
     print_error( &ast->loc,
       "%s %s can not be overloaded\n",
       L_OPERATOR, op->name
+    );
+    return false;
+  }
+
+  unsigned const user_overload_flags = ast->as.oper.flags & C_OP_MASK_OVERLOAD;
+  if ( user_overload_flags != C_OP_UNSPECIFIED &&
+      (user_overload_flags & op_overload_flags) == 0 ) {
+    //
+    // The user specified either member or non-member, but the operator can't
+    // be that.
+    //
+    print_error( &ast->loc,
+      "%s %s can only be a %s\n",
+      L_OPERATOR, op->name,
+      op_overload_flags == C_OP_MEMBER ? L_MEMBER : H_NON_MEMBER
     );
     return false;
   }
@@ -1261,43 +1277,7 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
     user_overload_flags == C_OP_NON_MEMBER ? H_NON_MEMBER :
     op_type;
 
-  if ( user_overload_flags == C_OP_UNSPECIFIED ) {
-    //
-    // If the user didn't specify either member or non-member explicitly...
-    //
-    switch ( op_overload_flags ) {
-      //
-      // ...and the operator can not be both, then assume the user meant the
-      // one the operator can only be.
-      //
-      case C_OP_MEMBER:
-      case C_OP_NON_MEMBER:
-        user_overload_flags = op_overload_flags;
-        break;
-      //
-      // ...and the operator can be either one, then infer which one based on
-      // the number of parameters given.
-      //
-      case C_OP_MEMBER | C_OP_NON_MEMBER:
-        if ( n_params == op->params_min )
-          user_overload_flags = C_OP_MEMBER;
-        else if ( n_params == op->params_max )
-          user_overload_flags = C_OP_NON_MEMBER;
-        break;
-    } // switch
-  }
-  else if ( (user_overload_flags & op_overload_flags) == 0 ) {
-    //
-    // The user specified either member or non-member, but the operator can't
-    // be that.
-    //
-    print_error( &ast->loc,
-      "%s %s can only be a %s\n",
-      L_OPERATOR, op->name, op_type
-    );
-    return false;
-  }
-  unsigned const overload_flags = user_overload_flags;
+  unsigned const overload_flags = c_ast_oper_overload( ast );
 
   //
   // Determine the minimum and maximum number of parameters the operator can
@@ -1305,15 +1285,17 @@ static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   //
   bool const is_ambiguous = c_oper_is_ambiguous( op );
   unsigned req_params_min = 0, req_params_max = 0;
+  bool const max_params_is_unlimited = op->params_max == C_OP_PARAMS_UNLIMITED;
   switch ( overload_flags ) {
     case C_OP_NON_MEMBER:
       // Non-member operators must always take at least one parameter (the
       // enum, class, struct, or union for which it's overloaded).
-      req_params_min = is_ambiguous ? 1 : op->params_max;
+      req_params_min = is_ambiguous || max_params_is_unlimited ?
+        1 : op->params_max;
       req_params_max = op->params_max;
       break;
     case C_OP_MEMBER:
-      if ( op->params_max != C_OP_PARAMS_UNLIMITED ) {
+      if ( !max_params_is_unlimited ) {
         req_params_min = op->params_min;
         req_params_max = is_ambiguous ? 1 : op->params_min;
         break;
@@ -1382,19 +1364,27 @@ same: print_error( &ast->loc,
       }
 
       //
-      // Ensure other non-member operators have at least one enum, class,
-      // struct, or union parameter.
+      // Ensure non-member operators (except new, new[], delete, and delete[])
+      // have at least one enum, class, struct, or union parameter.
       //
-      if ( ast->as.oper.oper_id != C_OP_LESS_EQ_GREATER &&
-          ecsu_param_count == 0 ) {
-        print_error( &ast->loc,
-          "at least 1 parameter of a %s %s must be an %s"
-          "; or a %s or %s %s thereto\n",
-          H_NON_MEMBER, L_OPERATOR, c_kind_name( K_ENUM_CLASS_STRUCT_UNION ),
-          L_REFERENCE, L_RVALUE, L_REFERENCE
-        );
-        return false;
-      }
+      switch ( ast->as.oper.oper_id ) {
+        case C_OP_NEW:
+        case C_OP_NEW_ARRAY:
+        case C_OP_DELETE:
+        case C_OP_DELETE_ARRAY:
+          break;
+        default:
+          if ( ecsu_param_count == 0 ) {
+            print_error( &ast->loc,
+              "at least 1 parameter of a %s %s must be an %s"
+              "; or a %s or %s %s thereto\n",
+              H_NON_MEMBER, L_OPERATOR,
+              c_kind_name( K_ENUM_CLASS_STRUCT_UNION ),
+              L_REFERENCE, L_RVALUE, L_REFERENCE
+            );
+            return false;
+          }
+      } // switch
       break;
     }
 
