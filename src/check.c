@@ -972,9 +972,6 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       return false;
   } // for
 
-  if ( ast->kind_id == K_OPERATOR && !c_ast_check_oper_params( ast ) )
-    return false;
-
   if ( variadic_ast != NULL && n_params == 1 ) {
     print_error( &variadic_ast->loc,
       "%s specifier can not be only parameter\n", L_VARIADIC
@@ -1158,7 +1155,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       /* suppress warning */;
   } // switch
 
-  return true;
+  return c_ast_check_oper_params( ast );
 }
 
 /**
