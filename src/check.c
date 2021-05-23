@@ -310,7 +310,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
   c_ast_t const *const of_ast = ast->as.array.of_ast;
   switch ( of_ast->kind_id ) {
     case K_BUILTIN:
-      if ( c_type_is_tid_any( &of_ast->type, TB_VOID ) ) {
+      if ( c_ast_is_builtin_any( of_ast, TB_VOID ) ) {
         print_error( &ast->loc, "%s of %s", L_ARRAY, L_VOID );
         print_hint( "%s of %s to %s", L_ARRAY, L_POINTER, L_VOID );
         return false;
@@ -385,7 +385,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
     }
   }
 
-  if ( c_type_is_tid_any( &ast->type, TB_VOID ) && ast->parent_ast == NULL ) {
+  if ( c_ast_is_builtin_any( ast, TB_VOID ) && ast->parent_ast == NULL ) {
     print_error( &ast->loc, "variable of %s", L_VOID );
     print_hint( "%s to %s", L_POINTER, L_VOID );
     return false;
@@ -896,7 +896,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           );
           return false;
         }
-        if ( c_type_is_tid_any( &param_ast->type, TB_VOID ) ) {
+        if ( c_ast_is_builtin_any( param_ast, TB_VOID ) ) {
           //
           // Ordinarily, void parameters are invalid; but a single void
           // function "parameter" is valid (as long as it doesn't have a name).
@@ -1108,7 +1108,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       //
       // Special case for operators delete and delete[] that must return void.
       //
-      if ( ret_ast->type.base_tid != TB_VOID ) {
+      if ( !c_ast_is_builtin_any( ret_ast, TB_VOID ) ) {
         print_error( &ret_ast->loc,
           "%s %s must return %s\n",
           L_OPERATOR, op->name, L_VOID
@@ -1541,7 +1541,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
     return false;
   }
 
-  if ( c_type_is_tid_any( &to_ast->type, TB_VOID ) ) {
+  if ( c_ast_is_builtin_any( to_ast, TB_VOID ) ) {
     error_kind_to_tid( ast, TB_VOID, "" );
     print_hint( "%s to %s", L_POINTER, L_VOID );
     return false;
@@ -1925,7 +1925,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   if ( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE ) {
     if ( opt_lang < LANG_CPP_14 &&
          c_type_id_is_any( ast->type.store_tid, TS_CONSTEXPR ) &&
-         c_type_id_is_any( ast->as.func.ret_ast->type.base_tid, TB_VOID ) ) {
+         c_ast_is_builtin_any( ast->as.func.ret_ast, TB_VOID ) ) {
       print_error( &ast->loc,
         "%s %s is illegal%s\n",
         c_type_id_name_error( ast->type.store_tid ),
@@ -2022,7 +2022,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
     case K_OPERATOR: {
       c_ast_t const *const ret_ast = ast->as.func.ret_ast;
       if ( c_type_is_tid_any( &ast->type, TA_NODISCARD ) &&
-           c_type_is_tid_any( &ret_ast->type, TB_VOID ) ) {
+           c_ast_is_builtin_any( ret_ast, TB_VOID ) ) {
         print_warning( &ast->loc,
           "[[%s]] %ss can not return %s\n",
           L_NODISCARD, c_kind_name( ast->kind_id ), L_VOID
