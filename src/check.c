@@ -1367,53 +1367,57 @@ same: print_error( &ast->loc,
       ++ecsu_param_count;
   } // for
 
-  bool const is_non_member = overload_flags == C_OP_NON_MEMBER;
-  if ( is_non_member ) {
-    //
-    // Ensure non-member operators are not const, defaulted, deleted,
-    // overridden, final, reference, rvalue reference, nor virtual.
-    //
-    c_type_id_t const member_only_tids =
-      ast->type.store_tid & TS_MEMBER_FUNC_ONLY;
-    if ( member_only_tids != TS_NONE ) {
-      print_error( &ast->loc,
-        "%s %ss can not be %s\n",
-        H_NON_MEMBER, L_OPERATOR,
-        c_type_id_name_error( member_only_tids )
-      );
-      return false;
+  switch ( overload_flags ) {
+    case C_OP_NON_MEMBER: {
+      //
+      // Ensure non-member operators are not const, defaulted, deleted,
+      // overridden, final, reference, rvalue reference, nor virtual.
+      //
+      c_type_id_t const member_only_tids =
+        ast->type.store_tid & TS_MEMBER_FUNC_ONLY;
+      if ( member_only_tids != TS_NONE ) {
+        print_error( &ast->loc,
+          "%s %ss can not be %s\n",
+          H_NON_MEMBER, L_OPERATOR,
+          c_type_id_name_error( member_only_tids )
+        );
+        return false;
+      }
+
+      //
+      // Ensure other non-member operators have at least one enum, class,
+      // struct, or union parameter.
+      //
+      if ( ast->as.oper.oper_id != C_OP_LESS_EQ_GREATER &&
+          ecsu_param_count == 0 ) {
+        print_error( &ast->loc,
+          "at least 1 parameter of a %s %s must be an %s"
+          "; or a %s or %s %s thereto\n",
+          H_NON_MEMBER, L_OPERATOR, c_kind_name( K_ENUM_CLASS_STRUCT_UNION ),
+          L_REFERENCE, L_RVALUE, L_REFERENCE
+        );
+        return false;
+      }
+      break;
     }
 
-    //
-    // Ensure other non-member operators have at least one enum, class, struct,
-    // or union parameter.
-    //
-    if ( ast->as.oper.oper_id != C_OP_LESS_EQ_GREATER &&
-         ecsu_param_count == 0 ) {
-      print_error( &ast->loc,
-        "at least 1 parameter of a %s %s must be an %s"
-        "; or a %s or %s %s thereto\n",
-        H_NON_MEMBER, L_OPERATOR, c_kind_name( K_ENUM_CLASS_STRUCT_UNION ),
-        L_REFERENCE, L_RVALUE, L_REFERENCE
-      );
-      return false;
+    case C_OP_MEMBER: {
+      //
+      // Ensure member operators are not friend.
+      //
+      c_type_id_t const non_member_only_tids =
+        ast->type.store_tid & TS_NONMEMBER_FUNC_ONLY;
+      if ( non_member_only_tids != TS_NONE ) {
+        print_error( &ast->loc,
+          "%s operators can not be %s\n",
+          L_MEMBER,
+          c_type_id_name_error( non_member_only_tids )
+        );
+        return false;
+      }
+      break;
     }
-  }
-  else if ( overload_flags == C_OP_MEMBER ) {
-    //
-    // Ensure member operators are not friend.
-    //
-    c_type_id_t const non_member_only_tids =
-      ast->type.store_tid & TS_NONMEMBER_FUNC_ONLY;
-    if ( non_member_only_tids != TS_NONE ) {
-      print_error( &ast->loc,
-        "%s operators can not be %s\n",
-        L_MEMBER,
-        c_type_id_name_error( non_member_only_tids )
-      );
-      return false;
-    }
-  }
+  } // switch
 
   switch ( ast->as.oper.oper_id ) {
     case C_OP_LESS_EQ_GREATER:
@@ -1441,7 +1445,7 @@ same: print_error( &ast->loc,
       c_ast_param_t const *param = c_ast_params( ast );
       if ( param == NULL )              // member prefix
         break;
-      if ( is_non_member ) {
+      if ( overload_flags == C_OP_NON_MEMBER ) {
         param = param->next;
         if ( param == NULL )            // non-member prefix
           break;
