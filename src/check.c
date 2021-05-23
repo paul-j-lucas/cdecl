@@ -244,16 +244,14 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
         unsigned const alignment = ast->align.as.expr;
         if ( !at_most_one_bit_set( alignment ) ) {
           print_error( &ast->loc,
-            "\"%u\": alignment is not a power of 2\n", alignment
+            "\"%u\": alignment must be a power of 2\n", alignment
           );
           return false;
         }
         break;
       }
       case C_ALIGNAS_TYPE:
-        if ( !c_ast_check_declaration( ast->align.as.type_ast ) )
-          return false;
-        break;
+        return c_ast_check_declaration( ast->align.as.type_ast );
     } // switch
   }
 
