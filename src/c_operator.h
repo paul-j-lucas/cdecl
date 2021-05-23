@@ -248,16 +248,6 @@ bool c_oper_is_ambiguous( c_operator_t const *op ) {
 }
 
 /**
- * Gets whether the operator is a member, non-member, or unspecified.
- *
- * @param ast The AST of the operator.
- * @return Returns one of <code>\ref C_OP_MEMBER</code>,
- * <code>\ref C_OP_NON_MEMBER</code>, or <code>\ref C_OP_UNSPECIFIED</code>.
- */
-PJL_WARN_UNUSED_RESULT
-unsigned c_oper_get_overload( c_ast_t const *ast );
-
-/**
  * Gets the C++ token for the operator having \a oper_id.
  *
  * @param oper_id The ID of the `c_operator` to get the token for.

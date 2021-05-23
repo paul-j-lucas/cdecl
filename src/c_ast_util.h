@@ -226,6 +226,16 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
                                c_loc_t const *decl_loc );
 
 /**
+ * Gets whether the operator is a member, non-member, or unspecified.
+ *
+ * @param ast The AST of the operator.
+ * @return Returns one of <code>\ref C_OP_MEMBER</code>,
+ * <code>\ref C_OP_NON_MEMBER</code>, or <code>\ref C_OP_UNSPECIFIED</code>.
+ */
+PJL_WARN_UNUSED_RESULT
+unsigned c_ast_oper_overload( c_ast_t const *ast );
+
+/**
  * "Patches" \a type_ast into \a decl_ast only if:
  *  + \a type_ast has no parent.
  *  + The depth of \a type_ast is less than that of \a decl_ast.
