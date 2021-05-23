@@ -214,7 +214,7 @@ static inline char const* plural_s( uint64_t n ) {
  * @return Returns `true` only if all checks passed.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_check_alignas( c_ast_t *ast ) {
+static bool c_ast_check_alignas( c_ast_t const *ast ) {
   assert( ast != NULL );
 
   if ( ast->align.kind != C_ALIGNAS_NONE ) {
