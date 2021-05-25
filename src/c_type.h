@@ -96,8 +96,11 @@ struct c_type {
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT_A()
+ * @sa #C_TYPE_LIT_A_ANY()
  * @sa #C_TYPE_LIT_B()
+ * @sa #C_TYPE_LIT_B_ANY()
  * @sa #C_TYPE_LIT_S()
+ * @sa #C_TYPE_LIT_S_ANY()
  */
 #define C_TYPE_LIT(BASE_TID,STORE_TID,ATTR_TID) \
   (c_type_t const){ (BASE_TID), (STORE_TID), (ATTR_TID) }
@@ -110,11 +113,31 @@ struct c_type {
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT()
+ * @sa #C_TYPE_LIT_A_ANY()
  * @sa #C_TYPE_LIT_B()
+ * @sa #C_TYPE_LIT_B_ANY()
  * @sa #C_TYPE_LIT_S()
+ * @sa #C_TYPE_LIT_S_ANY()
  */
 #define C_TYPE_LIT_A(ATTR_TID) \
   C_TYPE_LIT( TB_NONE, TS_NONE, (ATTR_TID) )
+
+/**
+ * Convenience macro for specifying a <code>\ref c_type</code> literal from
+ * #TB_ANY, #TS_ANY, and \a ATTR_TID.
+ *
+ * @param ATTR_TID The attribute(s) <code>\ref c_type_id_t</code>.
+ * @return Returns a reference to said literal.
+ *
+ * @sa #C_TYPE_LIT()
+ * @sa #C_TYPE_LIT_A()
+ * @sa #C_TYPE_LIT_B()
+ * @sa #C_TYPE_LIT_B_ANY()
+ * @sa #C_TYPE_LIT_S()
+ * @sa #C_TYPE_LIT_S_ANY()
+ */
+#define C_TYPE_LIT_A_ANY(ATTR_TID) \
+  C_TYPE_LIT( TB_ANY, TS_ANY, (ATTR_TID) )
 
 /**
  * Convenience macro for specifying a <code>\ref c_type</code> literal from
@@ -132,6 +155,23 @@ struct c_type {
 
 /**
  * Convenience macro for specifying a <code>\ref c_type</code> literal from
+ * \a BASE_TID, #TS_ANY, and #TA_ANY.
+ *
+ * @param BASE_TID The base <code>\ref c_type_id_t</code>.
+ * @return Returns a reference to said literal.
+ *
+ * @sa #C_TYPE_LIT()
+ * @sa #C_TYPE_LIT_A()
+ * @sa #C_TYPE_LIT_A_ANY()
+ * @sa #C_TYPE_LIT_B()
+ * @sa #C_TYPE_LIT_S()
+ * @sa #C_TYPE_LIT_S_ANY()
+ */
+#define C_TYPE_LIT_B_ANY(BASE_TID) \
+  C_TYPE_LIT( (BASE_TID), TS_ANY, TA_ANY )
+
+/**
+ * Convenience macro for specifying a <code>\ref c_type</code> literal from
  * \a STORE_TID.
  *
  * @param STORE_TID The storage <code>\ref c_type_id_t</code>.
@@ -139,10 +179,30 @@ struct c_type {
  *
  * @sa #C_TYPE_LIT()
  * @sa #C_TYPE_LIT_A()
+ * @sa #C_TYPE_LIT_A_ANY()
  * @sa #C_TYPE_LIT_B()
+ * @sa #C_TYPE_LIT_B_ANY()
+ * @sa #C_TYPE_LIT_S_ANY()
  */
 #define C_TYPE_LIT_S(STORE_TID) \
   C_TYPE_LIT( TB_NONE, (STORE_TID), TA_NONE )
+
+/**
+ * Convenience macro for specifying a <code>\ref c_type</code> literal from
+ * #TB_ANY, \a STORE_TID, and #TA_ANY.
+ *
+ * @param STORE_TID The storage <code>\ref c_type_id_t</code>.
+ * @return Returns a reference to said literal.
+ *
+ * @sa #C_TYPE_LIT()
+ * @sa #C_TYPE_LIT_A()
+ * @sa #C_TYPE_LIT_A_ANY()
+ * @sa #C_TYPE_LIT_B()
+ * @sa #C_TYPE_LIT_B_ANY()
+ * @sa #C_TYPE_LIT_S()
+ */
+#define C_TYPE_LIT_S_ANY(STORE_TID) \
+  C_TYPE_LIT( TB_ANY, (STORE_TID), TA_ANY )
 
 /**
  * For <code>\ref c_type_id_t</code> values, the low-order 4 bits specify the

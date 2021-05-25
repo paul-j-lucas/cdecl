@@ -825,7 +825,7 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *ast ) {
     case K_ARRAY:                       // char *argv[]
     case K_POINTER:                     // char **argv
       if ( !c_ast_is_ptr_to_type( ast->as.parent.of_ast,
-              &C_TYPE_LIT( TB_ANY, c_type_id_compl( TS_CONST ), TA_ANY ),
+              &C_TYPE_LIT_S_ANY( c_type_id_compl( TS_CONST ) ),
               &C_TYPE_LIT_B( TB_CHAR ) ) ) {
         print_error( &ast->loc,
           "this parameter of main() must be %s %s %s to [%s] %s\n",
