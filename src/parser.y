@@ -842,10 +842,10 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
 
   if ( show_in_lang ) {
     bool const show_type =
-      (sti->glob == NULL || c_sname_match( &tdef->ast->sname, sti->glob )) &&
-      (tdef->user_defined ?
+      ((tdef->user_defined ?
         (sti->show_which & SHOW_USER_TYPES) != 0 :
-        (sti->show_which & SHOW_PREDEFINED_TYPES) != 0);
+        (sti->show_which & SHOW_PREDEFINED_TYPES) != 0)) &&
+      (sti->glob == NULL || c_sname_match( &tdef->ast->sname, sti->glob ));
 
     if ( show_type ) {
       if ( sti->gib_kind == C_GIB_NONE )
