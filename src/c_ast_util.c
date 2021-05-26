@@ -536,22 +536,6 @@ c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
   return c_ast_is_tid_any_impl( ast, cv_tids, tids );
 }
 
-c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
-                                         c_type_t const *type ) {
-  c_type_id_t cv_tids;
-  ast = c_ast_if_unreference( ast, &cv_tids );
-  if ( ast == NULL )
-    return NULL;
-
-  c_type_t const ast_cv_type = {
-    c_type_id_normalize( ast->type.base_tid ),
-    ast->type.store_tid | cv_tids,
-    ast->type.attr_tid
-  };
-
-  return c_type_is_any( &ast_cv_type, type ) ? ast : NULL;
-}
-
 bool c_ast_is_typename_ok( c_ast_t const *ast ) {
   assert( ast != NULL );
 

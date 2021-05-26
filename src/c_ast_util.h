@@ -196,7 +196,6 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
  * any one of \a tids, returns the referred-to AST; otherwise returns NULL.
  *
  * @sa c_ast_is_ptr_to_tid_any()
- * @sa c_ast_is_ref_to_type_any()
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
