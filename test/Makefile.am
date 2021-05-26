@@ -509,7 +509,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_ff_v-c.test \
 	tests/explain_fiiv_v.test \
 	tests/explain_fiv_v.test \
-	tests/explain_fkr_pi.test
+	tests/explain_fkr_pi.test \
 	tests/explain_fn.test \
 	tests/explain_frg_v.test \
 	tests/explain_fsi_v.test \
