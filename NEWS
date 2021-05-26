@@ -32,8 +32,13 @@ Default relational operators in C++20 are now supported.
 ** C++ raw string literals
 C++'s raw string literals `R"delim(...)delim"` are now supported.
 
+** Relaxed `main()` checks
+If a function named "main" has any storage-like type that can't be used with
+the program's `main()`, assume it's just a member function named "main" and not
+the program's `main()`.
+
 ** `main()` return type
-The return type of `main()` is now correctly restricted to `int`.
+The return type of the program's `main()` is now correctly restricted to `int`.
 
 ** `makedoc.sh`
 Added a small script to build the documentation rather than just call Doxygen.

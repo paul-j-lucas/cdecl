@@ -420,6 +420,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  *
  * @sa #TS_CONSTRUCTOR_DECL
  * @sa #TS_CONSTRUCTOR_DEF
+ * @sa #TS_MAIN_FUNC
  * @sa #TS_NEW_DELETE_OPER
  * @sa #TS_USER_DEF_CONV
  */
@@ -431,6 +432,13 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_ANY_REFERENCE | TS_RESTRICT | TS_STATIC \
                               | TS_THROW | TS_TYPEDEF | TS_VIRTUAL \
                               | TS_VOLATILE )
+
+/**
+ * The only types that can apply to the program's `main()` function.
+ *
+ * @sa #TS_FUNC_LIKE
+ */
+#define TS_MAIN_FUNC          ( TS_EXTERN | TS_FRIEND | TS_NOEXCEPT | TS_THROW )
 
 /**
  * The types that can apply only to member functions, operators, or user-

@@ -1225,9 +1225,9 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_dtor.test \
 	tests/explain_ec_typedef_i.test \
 	tests/explain_ec_using_i.test \
-	tests/explain_ecf_v.test \
 	tests/explain_ecf_v-Rstr-01.test \
 	tests/explain_ecf_v-Rstr-02.test \
+	tests/explain_ecf_v.test \
 	tests/explain_efi-itself.test \
 	tests/explain_efi.test \
 	tests/explain_efui.test \
@@ -1259,6 +1259,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_inx+ctor.test \
 	tests/explain_inx+dtor.test \
 	tests/explain_ki+.test \
+	tests/explain_main_vf_h.test \
 	tests/explain_mi.test \
 	tests/explain_nrfi_v-c++.test \
 	tests/explain_nsc_typedef.test \

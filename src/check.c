@@ -546,6 +546,13 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   assert( ast != NULL );
 
   if ( ast->kind_id == K_FUNCTION && c_ast_name_equal( ast, "main" ) &&
+       //
+       // If this "main" function does not have any storage-like type that
+       // can't be used with the program's main(), assume it is the program's
+       // main and perform extra checks; otherwise assume it's just a member
+       // function named "main".
+       //
+       !c_type_is_tid_any( &ast->type, c_type_id_compl( TS_MAIN_FUNC ) ) &&
        !c_ast_check_func_main( ast ) ) {
     return false;
   }
@@ -773,14 +780,6 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_main( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_FUNCTION );
-
-  if ( !c_type_is_none( &ast->type ) ) {
-    print_error( &ast->loc,
-      "main() can not be %s\n",
-      c_type_name_error( &ast->type )
-    );
-    return false;
-  }
 
   c_ast_t const *const ret_ast = ast->as.func.ret_ast;
   if ( !c_ast_is_builtin_any( ret_ast, TB_INT ) ) {
