@@ -546,14 +546,18 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   assert( ast != NULL );
 
   if ( ast->kind_id == K_FUNCTION && c_ast_name_equal( ast, "main" ) &&
-       //
-       // If this "main" function does not have any storage-like type that
-       // can't be used with the program's main(), assume it is the program's
-       // main and perform extra checks; otherwise assume it's just a member
-       // function named "main".
-       //
-       !c_type_is_tid_any( &ast->type, c_type_id_compl( TS_MAIN_FUNC ) ) &&
-       !c_ast_check_func_main( ast ) ) {
+      ( OPT_LANG_IS(C_ANY) ||
+        //
+        // Perform extra checks on a function named "main" if either:
+        //
+        //  + The current language is C; or:
+        //
+        //  + The current lanuage is C++ and function does not have any
+        //    storage-like type that can't be used with the program's main().
+        //    (Otherwise assume it's just a member function named "main".)
+        //
+        !c_type_is_tid_any( &ast->type, c_type_id_compl( TS_MAIN_FUNC ) ) ) &&
+      !c_ast_check_func_main( ast ) ) {
     return false;
   }
 
