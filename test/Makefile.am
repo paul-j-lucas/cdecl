@@ -427,6 +427,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_pi.test \
 	tests/explain_ppi.test \
 	tests/explain_rgi.test \
+	tests/explain_rgk.test \
 	tests/explain_ro_minus2_i_rk.test \
 	tests/explain_ro_minus_rk_rk.test \
 	tests/explain_ro_plus2_i_rk.test \
@@ -553,7 +554,6 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_puw3.test \
 	tests/explain_pv-knr.test \
 	tests/explain_rgf_v.test \
-	tests/explain_rgk.test \
 	tests/explain_ri-c.test \
 	tests/explain_rtf_v-error.test \
 	tests/explain_sb.test \

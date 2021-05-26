@@ -29,10 +29,16 @@ class or reference thereto.
 ** C++ raw string literals
 C++'s raw string literals `R"delim(...)delim"` are now supported.
 
+** `main()` return type
+The return type of `main()` is now correctly restricted to `int`.
+
 ** `makedoc.sh`
 Added a small script to build the documentation rather than just call Doxygen.
 The script prints the location of the document root and the local file URL.  On
 macOS, also prints the `open` command to run.
+
+** `register struct`
+Declaring a `struct` as `register` is now legal.
 
 
 * Changes in Cdecl 9.10

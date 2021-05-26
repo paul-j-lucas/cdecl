@@ -500,7 +500,7 @@ bool c_ast_is_builtin_any( c_ast_t const *ast, c_type_id_t tids ) {
   if ( ast->kind_id != K_BUILTIN )
     return false;
   c_type_id_t const base_tid = c_type_id_normalize( ast->type.base_tid );
-  return (base_tid & tids) != TB_NONE;
+  return only_bits_set( base_tid, tids );
 }
 
 bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids ) {
