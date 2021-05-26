@@ -1,5 +1,285 @@
+2021-05-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: Formatting.
+   * NEWS, cdecl.1, c_ast_util.c, c_ast_util.h, c_type.c, c_type.h,
+     c_typedef.c, check.c, test/Makefile.am, cdecl--debug.out, cdecl-d.out,
+     explain_+co_eq2_rck_b=default.out,
+     explain_cmo_less_eq_greater_rck_a=default.out,
+     explain_co_eq2_crk_b=default.out, explain_fo_eq2_2crk_b=default.out,
+     explain_fo_eq2_2k_b=default.out, explain_mo_less_eq_greater_rck_a.out,
+     explain_o_less_eq_greater_2rck_i.out,
+     explain_+co_eq2_rck_b=default-cpp17.test,
+     explain_+co_eq2_rck_b=default.test,
+     explain_cmo_less_eq_greater_rck_a=default.test,
+     explain_cmo_less_eq_greater_rck_i=default.test,
+     explain_co_eq2_crk_b=default.test, explain_fo_eq2_2crk_b=default.test,
+     explain_fo_eq2_2k_b=default.test, explain_fo_eq2_crki_b=default.test,
+     explain_fo_eq2_crkk_b=default.test, explain_fo_eq2_crkrk_b=default.test,
+     explain_fo_eq2_icrk_b=default.test, explain_fo_eq2_ik_b=default.test,
+     explain_fo_eq2_kcrk_b=default.test, explain_fo_eq2_ki_b=default.test,
+     explain_fo_eq2_rkcrk_b=default.test,
+     explain_fo_less_eq_greater_2rck_i=default.test,
+     explain_fo_plus_2crk_b=default.test,
+     explain_mo_less_eq_greater_rck_a.test,
+     explain_o_less_eq_greater_2rck_i.test: Now support defaulting of
+     relational operators in C++20.
+   * c_ast_util.c, c_ast_util.h: Removed c_ast_is_ref_to_type_any() --
+     shouldn't be here yet.
+   * test/Makefile.am: Fixed test run.
+   * NEWS, c_ast_util.c, test/Makefile.am, explain_rgk.out, explain_rgk.test:
+     The return type of `main()` is now correctly restricted to `int`.
+     Declaring a `struct` as `register` is now legal.
+   * test/Makefile.am: Fixed some duplicate/incorrect tests.
+
+2021-05-25  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Made show_type_visitor() slightly more efficient.
+
+2021-05-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.h, c_type.h, check.c: Added C_TYPE_LIT_x_ANY() macros.
+
+2021-05-23  Paul J. Lucas <paul@lucasmail.org>
+
+   * check.c: Simplification.
+   * check.c: Added missing "const".
+   * check.c: s/c_type_is_tid_any( &ast->type, TB_VOID )/c_ast_is_builtin_any(
+     ast, TB_VOID )/
+   * check.c: Simplified member vs. non-member operator string.
+   * check.c: Fixed hidden bug with and cleaned-up operator member/non-member
+     determination.
+   * check.c: Moved call of c_ast_check_oper_params() to end of
+     c_ast_check_oper().
+   * c_ast_util.c, c_ast_util.h, c_operator.c, c_operator.h, english.c:
+     s/c_oper_get_overload()/c_ast_oper_overload()/
+   * c_operator.c, c_operator.h: Added C_OP_NOT_OVERLOADABLE into
+     c_oper_get_overload(); changed C_OP_NOT_OVERLOADABLE to (1u<<2); changed
+     C_OP_MASK_OVERLOAD to 0x7u.
+
+2021-05-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * check.c: Changed if/else/if to switch.
+   * check.c: Added overload_flags; s/is_user_non_member/is_non_member/
+
+2021-05-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, c_ast_util.h, c_type.h: Overhaul of
+     c_ast_is_ptr_to_tid_any() and c_ast_is_ref_to_tid_any() to better handle
+     const/volatile.
+   * c_type.c, c_type.h: Added c_type_get_tid().
+
+2021-05-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c, c_type.h: Changed semantics of c_type_is_any() to check only
+     non-NONE types.
+
+2021-05-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Added c_type_id_normalize().
+   * c_type.c: Simplified c_type_is_any().
+   * configure.ac: Search for the library containing: tigetnum (tinfo)
+
+2021-05-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c: c_ast_is_ref_to_tid_any() now insists on a reference.
+   * dump.c: For typedefs, now dumping entire for_ast.
+   * c_ast_util.c, c_type.c, c_type.h: Made c_ast_is_ptr_to_tid_any() and
+     c_ast_is_ref_to_tid_any() now accept any type part ID.
+   * declare_+o_delete_a_pv_v.test, declare_+o_delete_pv_v.test,
+     declare_+o_eq_rck_rk=default-c++03.test,
+     declare_+o_eq_rck_rk=default.test, declare_+o_eq_rck_rk=delete-c++03.test,
+     declare_+o_eq_rck_rk=delete.test, declare_+o_new_a_z_pv.test,
+     declare_+o_new_z_pv.test, declare_alttokens_o_amper2_rck_b.test,
+     declare_alttokens_o_amper_eq_rki_rk.test,
+     declare_alttokens_o_amper_rcki_k.test,
+     declare_alttokens_o_circ_eq_i_rk.test,
+     declare_alttokens_o_circ_rcki_k.test,
+     declare_alttokens_o_exclam_eq_rcki_b.test,
+     declare_alttokens_o_exclam_rck_b.test,
+     declare_alttokens_o_pipe_2rck_k.test,
+     declare_alttokens_o_pipe_eq_i_rk.test, declare_alttokens_o_pipe_i_rk.test,
+     declare_alttokens_o_tilde_k.test, declare_ck2-ec.test, declare_ck2.test,
+     declare_co_exclam_k_b.test, declare_fmo_star_rk_rk.test,
+     declare_mo_amper2_rck_b.test, declare_mo_amper_eq_i_rk.test,
+     declare_mo_amper_i_rk.test, declare_mo_amper_pk.test,
+     declare_mo_arrow_i.test, declare_mo_arrow_pk.test,
+     declare_mo_arrow_star_i_rk.test, declare_mo_circ_eq_i_rk.test,
+     declare_mo_comma_i_rk.test, declare_mo_greater2_eq_i_rk.test,
+     declare_mo_greater2_i_k.test, declare_mo_greater_eq_rcki_b.test,
+     declare_mo_less2_eq_i_rk.test, declare_mo_less2_i_k.test,
+     declare_mo_less_eq_rcki_b.test, declare_mo_minus_eq_i_rk.test,
+     declare_mo_minus_i_k.test, declare_mo_percent_eq_i_rk.test,
+     declare_mo_percent_i_k.test, declare_mo_pipe2_rck_b.test,
+     declare_mo_pipe_eq_i_rk.test, declare_mo_pipe_i_rk.test,
+     declare_mo_plus_eq_i_rk.test, declare_mo_plus_i_k.test,
+     declare_mo_slash_eq_i_rk.test, declare_mo_star_eq_i_rk.test,
+     declare_mo_star_i_rk.test, declare_mo_star_rk.test,
+     declare_mo_tilde_k.test, declare_nmo_amper2_2rck_b.test,
+     declare_nmo_amper_eq_rki_rk.test, declare_nmo_amper_rcki_k.test,
+     declare_nmo_amper_rk_pk.test, declare_nmo_arrow_rk_pk.test,
+     declare_nmo_arrow_star_rki_rk.test, declare_nmo_brackets_rcki_v.test,
+     declare_nmo_circ_rcki_k.test, declare_nmo_comma_rki_rk.test,
+     declare_nmo_eq_rki_rk.test, declare_nmo_exclam_eq_ki_b.test,
+     declare_nmo_exclam_rck_b.test, declare_nmo_greater2_rcki_k.test,
+     declare_nmo_greater_eq_rcki_b.test, declare_nmo_greater_rcki_b.test,
+     declare_nmo_less2_eq_rki_rk.test, declare_nmo_less2_rcki_k.test,
+     declare_nmo_less_eq_rcki_b.test, declare_nmo_less_rcki_b.test,
+     declare_nmo_minus2_rki_rk.test, declare_nmo_minus_eq_rki_rk.test,
+     declare_nmo_minus_rcki_k.test, declare_nmo_parens_rck_v.test,
+     declare_nmo_percent_eq_rki_rk.test, declare_nmo_percent_rcki_k.test,
+     declare_nmo_pipe2_2rck_b.test, declare_nmo_pipe_eq_rki_rk.test,
+     declare_nmo_plus2_rki_rk.test, declare_nmo_plus_eq_rki_rk.test,
+     declare_nmo_plus_rcki_k.test, declare_nmo_slash_eq_rki_rk.test,
+     declare_nmo_slash_rcki_k.test, declare_nmo_star_eq_rki_rk.test,
+     declare_nmo_star_rck_k.test, declare_nmo_star_rcki_k.test,
+     declare_nmo_tilde_rck_k.test, declare_o_amper2_2rck_b.test,
+     declare_o_amper2_rck_b.test, declare_o_amper_2rck_k.test,
+     declare_o_amper_eq_i_rk.test, declare_o_amper_eq_rki_rk.test,
+     declare_o_amper_i_rk.test, declare_o_amper_pk.test,
+     declare_o_amper_rcki_k.test, declare_o_arrow_i.test,
+     declare_o_arrow_rk_pk.test, declare_o_arrow_star_i_rk.test,
+     declare_o_arrow_star_rki_rk.test, declare_o_circ_eq_i_rk.test,
+     declare_o_colon2_rk_rk.test, declare_o_comma_rki_rk.test,
+     declare_o_dot_k.test, declare_o_dot_star_rk_rk.test,
+     declare_o_eq2_ki_b.test, declare_o_exclam_eq_ki_b.test,
+     declare_o_exclam_rck_b.test, declare_o_greater2_eq_i_rk.test,
+     declare_o_greater2_i_k.test, declare_o_greater2_rcki_k.test,
+     declare_o_greater_eq_rcki_b.test, declare_o_less2_eq_i_rk.test,
+     declare_o_less2_i_k.test, declare_o_less2_rcki_k.test,
+     declare_o_less_eq_greater_2rck_a-c++17.test,
+     declare_o_less_eq_greater_2rck_a.test, declare_o_less_eq_rcki_b.test,
+     declare_o_minus2_d_rk.test, declare_o_minus2_rkd_rk.test,
+     declare_o_minus_i_k.test, declare_o_oexclam_k_b.test,
+     declare_o_percent_eq_i_rk.test, declare_o_percent_eq_rki_rk.test,
+     declare_o_percent_i_k.test, declare_o_percent_rcki_k.test,
+     declare_o_pipe2_2rck_b.test, declare_o_pipe2_rck_b.test,
+     declare_o_pipe_eq_i_rk.test, declare_o_pipe_eq_rki_rk.test,
+     declare_o_pipe_i_rk.test, declare_o_plus2_d_rk.test,
+     declare_o_plus2_rkd_rk.test, declare_o_plus_i_k.test,
+     declare_o_qmark_colon_k2i_i.test, declare_o_slash_eq_i_rk.test,
+     declare_o_star_eq_i_rk.test, declare_o_star_eq_rki_rk.test,
+     declare_o_star_i_rk.test, declare_o_star_rck_k.test,
+     declare_o_star_rcki_k.test, declare_o_star_rk.test,
+     declare_o_tilde_k.test, declare_o_tilde_rck_k.test,
+     declare_ro_exclam_k_b.test, declare_rro_exclam_k_b.test,
+     declare_trigraphs_o_circ_eq_i_rk.test,
+     declare_trigraphs_o_circ_rcki_k.test,
+     declare_trigraphs_o_pipe2_2rck_b.test,
+     declare_trigraphs_o_pipe_2rck_k.test,
+     declare_trigraphs_o_pipe_eq_i_rk.test, declare_trigraphs_o_tilde_k.test,
+     declare_udc_rcc.test, declare_vo_exclam_k_b.test,
+     declare_yo_exclam_k_b.test, define_k_declare_k.test,
+     define_k_define_k_explain_k+k.test, define_k_explain_pmki.test,
+     explain_+o_delete_a_pv_v.test, explain_+o_delete_pv_v.test,
+     explain_+o_eq2_rcki_b.test, explain_+o_eq_rck_rk.test,
+     explain_+o_eq_rck_rk=default-01.test,
+     explain_+o_eq_rck_rk=default-02.test, explain_+o_eq_rck_rk=delete-01.test,
+     explain_+o_eq_rck_rk=delete-02.test,
+     explain_+o_exclam_eq_rck_rk=default.test,
+     explain_+o_exclam_eq_rck_rk=delete.test, explain_+o_new_a_z_pv.test,
+     explain_+o_new_z_pv.test, explain_+udc_i.test,
+     explain_0o_amper_rk_pk.test, explain_0o_minus2_i_rk.test,
+     explain_0o_minus_rk_rk.test, explain_0o_plus2_i_rk.test,
+     explain_0o_plus_rk_rk.test, explain_0o_star_rk_rk.test,
+     explain_a_nua_k-2.test, explain_co_amper_rk_pk.test,
+     explain_co_exclam_k_b.test, explain_co_minus2_i_rk.test,
+     explain_co_minus_rk_rk.test, explain_co_plus2_i_rk.test,
+     explain_co_plus_rk_rk.test, explain_co_star_rk_rk.test,
+     explain_co_tilde_k.test, explain_ki+.test, explain_o_amper2_2rck_b.test,
+     explain_o_amper2_rck_b.test, explain_o_amper_2rck_k.test,
+     explain_o_amper_eq_i_rk.test, explain_o_amper_eq_rki_rk.test,
+     explain_o_amper_i_rk.test, explain_o_amper_pk.test,
+     explain_o_amper_rcki_k.test, explain_o_amper_rk_pk.test,
+     explain_o_arrow_pk.test, explain_o_arrow_star_i_rk.test,
+     explain_o_arrow_star_rki_rk.test, explain_o_circ_eq_i_rk.test,
+     explain_o_circ_eq_rki_rk.test, explain_o_circ_rcki_k.test,
+     explain_o_comma_i_rk.test, explain_o_comma_rcki_k.test,
+     explain_o_comma_rki_rk.test, explain_o_eq2_ki_b.test,
+     explain_o_exclam_eq_ki_b.test, explain_o_exclam_rck_b.test,
+     explain_o_greater2_eq_i_rk.test, explain_o_greater2_eq_rki_rk.test,
+     explain_o_greater2_i_k.test, explain_o_greater2_i_rk.test,
+     explain_o_greater2_rcki_k.test, explain_o_greater2_rki_rk.test,
+     explain_o_greater_eq_rcki_b.test, explain_o_greater_rcki_b.test,
+     explain_o_less2_eq_i_rk.test, explain_o_less2_eq_rki_rk.test,
+     explain_o_less2_i_k.test, explain_o_less2_i_rk.test,
+     explain_o_less2_rcki_k.test, explain_o_less2_rki_rk.test,
+     explain_o_less_eq_rcki_b.test, explain_o_less_rcki_b.test,
+     explain_o_minus2_d_rk.test, explain_o_minus2_rkd_rk.test,
+     explain_o_minus2_rki_rk.test, explain_o_minus_2rck_k.test,
+     explain_o_minus_eq_i_rk.test, explain_o_minus_eq_rki_rk.test,
+     explain_o_minus_i_k.test, explain_o_minus_rcki_k.test,
+     explain_o_oexclam_k_b.test, explain_o_percent_2rck_k.test,
+     explain_o_percent_eq_i_rk.test, explain_o_percent_eq_rki_rk.test,
+     explain_o_percent_i_k.test, explain_o_percent_rcki_k.test,
+     explain_o_pipe2_2rck_b.test, explain_o_pipe2_rck_b.test,
+     explain_o_pipe_2rck_k.test, explain_o_pipe_eq_i_rk.test,
+     explain_o_pipe_eq_rki_rk.test, explain_o_pipe_i_rk.test,
+     explain_o_plus2_d_rk.test, explain_o_plus2_rkd_rk.test,
+     explain_o_plus2_rki_rk.test, explain_o_plus_2rck_k.test,
+     explain_o_plus_eq_i_rk.test, explain_o_plus_eq_rki_rk.test,
+     explain_o_plus_i_k.test, explain_o_plus_rcki_k.test,
+     explain_o_qmark_colon_k2i_i.test, explain_o_slash_2rck_k.test,
+     explain_o_slash_eq_i_rk.test, explain_o_slash_eq_rki_rk.test,
+     explain_o_slash_rcki_k.test, explain_o_star_2rck_k.test,
+     explain_o_star_eq_i_rk.test, explain_o_star_eq_rki_rk.test,
+     explain_o_star_i_rk.test, explain_o_star_rck_k.test,
+     explain_o_star_rcki_k.test, explain_o_star_rk.test,
+     explain_o_tilde_k.test, explain_o_tilde_rck_k.test,
+     explain_oo_amper_rk_pk.test, explain_oo_minus2_i_rk.test,
+     explain_oo_minus_rk_rk.test, explain_oo_plus2_i_rk.test,
+     explain_oo_plus_rk_rk.test, explain_oo_star_rk_rk.test,
+     explain_ro_amper_rk_pk.test, explain_ro_exclam_k_b.test,
+     explain_ro_minus2_i_rk.test, explain_ro_minus_rk_rk.test,
+     explain_ro_plus2_i_rk.test, explain_ro_plus_rk_rk.test,
+     explain_ro_star_rk_rk.test, explain_rro_amper_rk_pk.test,
+     explain_rro_exclam_k_b.test, explain_rro_minus2_i_rk.test,
+     explain_rro_minus_rk_rk.test, explain_rro_plus2_i_rk.test,
+     explain_rro_plus_rk_rk.test, explain_rro_star_rk_rk.test,
+     explain_trigraphs_o_circ_eq_i_rk.test,
+     explain_trigraphs_o_circ_rcki_k.test,
+     explain_trigraphs_o_pipe2_2rck_b.test,
+     explain_trigraphs_o_pipe_2rck_k.test,
+     explain_trigraphs_o_pipe_eq_i_rk.test, explain_trigraphs_o_tilde_k.test,
+     explain_udc_rcc.test, explain_vo_amper_rk_pk.test,
+     explain_vo_exclam_k_b.test, explain_vo_minus2_i_rk.test,
+     explain_vo_minus_rk_rk.test, explain_vo_plus2_i_rk.test,
+     explain_vo_plus_rk_rk.test, explain_vo_star_rk_rk.test,
+     explain_yo_amper_rk_pk.test, explain_yo_exclam_k_b.test,
+     explain_yo_minus2_i_rk.test, explain_yo_minus_rk_rk.test,
+     explain_yo_plus2_i_rk.test, explain_yo_plus_rk_rk.test,
+     explain_yo_star_rk_rk.test: s/define S as struct S/struct S/
+   * NEWS, check.c, test/Makefile.am, explain_o_less_eq_greater_2rck_a.out,
+     explain_o_less_eq_greater_2rck_std_partial_ordering.out,
+     explain_o_less_eq_greater_2rck_std_strong_ordering.out,
+     explain_o_less_eq_greater_2rck_std_weak_ordering.out,
+     explain_o_less_eq_greater_2rck_a.test,
+     explain_o_less_eq_greater_2rck_i.test,
+     explain_o_less_eq_greater_2rck_std_partial_ordering.test,
+     explain_o_less_eq_greater_2rck_std_strong_ordering.test,
+     explain_o_less_eq_greater_2rck_std_weak_ordering.test: Now ensuring return
+     type is one of auto, std::partial_ordering, std::strong_ordering, or
+     std::weak_ordering; and that all parameters are a class or reference
+     thereto.
+
+2021-05-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_typedef.c, c_typedef.h, lexer.l, parser.y: Added c_typedef_find_name();
+     s/c_typedef_find()/c_typedef_find_sname()/
+   * c_sname.c, c_sname.h, lexer.l, util.c, util.h: Moved parse_identifier() to
+     util.[hc]; moved c_sname_parse() to c_sname.[hc].
+
+2021-05-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * bootstrap: Added "echo".
+
+2021-05-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, red_black_test.c: Added unit tests for red-black tree.
+   * NEWS: Added mention of makedoc.sh.
+
 2021-05-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * check.c: Now using c_lang_name() more.
    * Makefile.am, makedoc.sh: Added makedoc.sh.
    * c_kind.h: Added K_TYPEDEF to K_ANY_OBJECT.
    * c_kind.h: Expanded K_ANY_FUNCTION_LIKE, K_ANY_OBJECT, and K_ANY_PARENT
