@@ -501,7 +501,6 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_etsf_v.test \
 	tests/explain_f_ai.test \
 	tests/explain_fasv_v.test \
-	tests/explain_fccel_v.test \
 	tests/explain_fel_v.test \
 	tests/explain_felcc_v.test \
 	tests/explain_felel_v.test \
@@ -820,8 +819,7 @@ TESTS+=	tests/2c_typedef_i.test \
 # C++ namespace, typedef & using error tests
 # ==========================================
 #
-TESTS+=	tests/2c_typedef_i.test \
-	tests/2k_typedef_i.test \
+TESTS+=	tests/2k_typedef_i.test \
 	tests/k_namespace_typedef_i.test \
 	tests/namespace_+typedef_i-c++14.test \
 	tests/typedef_ai.test \
@@ -993,7 +991,6 @@ TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_fcf.test \
 	tests/declare_fco_exclam_b.test \
 	tests/declare_nrfi_v-01-c++.test \
-	tests/declare_nrfi_v-01.test \
 	tests/declare_pmri.test \
 	tests/declare_pri.test \
 	tests/declare_rrgi.test \
