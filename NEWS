@@ -21,7 +21,7 @@ Added a `bootstrap` script.
 ** No lexer & parser error messages
 When the lexer prints an error message, the parser no longer does.
 
-** Improved operator<=>
+** Improved `operator<=>`
 Now ensuring return type is one of auto, std::partial_ordering,
 std::strong_ordering, or std::weak_ordering; and that all parameters are a
 class or reference thereto.
