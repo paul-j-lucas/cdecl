@@ -196,9 +196,43 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
  * any one of \a tids, returns the referred-to AST; otherwise returns NULL.
  *
  * @sa c_ast_is_ptr_to_tid_any()
+ * @sa c_ast_is_ref_to_type_any()
+ * @sa c_ast_is_tid_any()
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
+
+/**
+ * Checks whether \a ast is an AST for a reference to another AST having \a
+ * type.
+ *
+ * @param ast The AST to check.
+ * @param type The type to check against.  Only type IDs that are not NONE are
+ * compared.
+ * @return If \a ast is a reference, returns the AST \a ast is a reference to;
+ * otherwise returns NULL.
+ *
+ * @sa c_ast_is_ptr_to_type()
+ * @sa c_ast_is_ref_to_tid_any()
+ */
+PJL_WARN_UNUSED_RESULT
+c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
+                                         c_type_t const *type );
+
+/**
+ * Checks whether one of the type IDs of the type of \a ast is any one of \a
+ * tids.
+ *
+ * @param ast The AST to check.  May be NULL.
+ * @param tids The bitwise-or of type(s) to check against.
+ * @return Returns If the type of \a ast has one of \a tids, returns the AST
+ * after `typedef`s, if any, are stripped; otherwise returns NULL.
+ *
+ * @sa c_ast_is_ptr_to_tid_any()
+ * @sa c_ast_is_ref_to_tid_any()
+ */
+PJL_WARN_UNUSED_RESULT
+c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_type_id_t tids );
 
 /**
  * Checks whether `typename` is OK since the type's name is a qualified name.

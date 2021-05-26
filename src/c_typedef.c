@@ -545,6 +545,19 @@ static char const *const PREDEFINED_STD_CPP_20[] = {
   NULL
 };
 
+
+/**
+ * Predefined required types for C++20.
+ */
+static char const *const PREDEFINED_STD_CPP_20_REQUIRED[] = {
+  // required for operator <=>
+  "namespace std { struct partial_ordering; }",
+  "namespace std { struct strong_ordering;  }",
+  "namespace std { struct weak_ordering;    }",
+
+  NULL
+};
+
 /**
  * Embedded C types.
  */
@@ -979,34 +992,35 @@ c_typedef_t const* c_typedef_find_sname( c_sname_t const *sname ) {
 void c_typedef_init( void ) {
   rb_tree_init( &typedefs, &c_typedef_cmp );
 
-  if ( opt_typedefs ) {
 #ifdef ENABLE_CDECL_DEBUG
-    //
-    // Temporarily turn off debug output for built-in typedefs.
-    //
-    bool const orig_cdecl_debug = opt_cdecl_debug;
-    opt_cdecl_debug = false;
+  //
+  // Temporarily turn off debug output for built-in typedefs.
+  //
+  bool const orig_cdecl_debug = opt_cdecl_debug;
+  opt_cdecl_debug = false;
 #endif /* ENABLE_CDECL_DEBUG */
 #ifdef ENABLE_FLEX_DEBUG
-    //
-    // Temporarily turn off Flex debug output for built-in typedefs.
-    //
-    int const orig_flex_debug = opt_flex_debug;
-    opt_flex_debug = false;
+  //
+  // Temporarily turn off Flex debug output for built-in typedefs.
+  //
+  int const orig_flex_debug = opt_flex_debug;
+  opt_flex_debug = false;
 #endif /* ENABLE_FLEX_DEBUG */
 #ifdef YYDEBUG
-    //
-    // Temporarily turn off Bison debug output for built-in typedefs.
-    //
-    int const orig_bison_debug = opt_bison_debug;
-    opt_bison_debug = false;
+  //
+  // Temporarily turn off Bison debug output for built-in typedefs.
+  //
+  int const orig_bison_debug = opt_bison_debug;
+  opt_bison_debug = false;
 #endif /* YYDEBUG */
 
+  c_lang_id_t const orig_lang = opt_lang;
+
+  if ( opt_typedefs ) {
     //
     // Temporarily switch to the latest supported version of C so all keywords
     // will be available.
     //
-    c_lang_id_t const orig_lang = opt_lang;
     opt_lang = LANG_C_NEW;
 
     predefined_lang_ids = LANG_MIN(C_KNR);
@@ -1037,13 +1051,15 @@ void c_typedef_init( void ) {
 
     predefined_lang_ids = LANG_MIN(C_11);
     c_typedef_parse_predefined( PREDEFINED_STD_C_11 );
+  }
 
-    //
-    // Temporarily switch to the latest supported version of C++ so all
-    // keywords will be available.
-    //
-    opt_lang = LANG_CPP_NEW;
+  //
+  // Temporarily switch to the latest supported version of C++ so all keywords
+  // will be available.
+  //
+  opt_lang = LANG_CPP_NEW;
 
+  if ( opt_typedefs ) {
     predefined_lang_ids = LANG_MIN(CPP_OLD);
     c_typedef_parse_predefined( PREDEFINED_STD_CPP );
 
@@ -1055,19 +1071,22 @@ void c_typedef_init( void ) {
 
     predefined_lang_ids = LANG_MIN(CPP_20);
     c_typedef_parse_predefined( PREDEFINED_STD_CPP_20 );
+  }
 
-    opt_lang = orig_lang;
+  predefined_lang_ids = LANG_MIN(CPP_20);
+  c_typedef_parse_predefined( PREDEFINED_STD_CPP_20_REQUIRED );
+
+  opt_lang = orig_lang;
 
 #ifdef ENABLE_CDECL_DEBUG
-    opt_cdecl_debug = orig_cdecl_debug;
+  opt_cdecl_debug = orig_cdecl_debug;
 #endif /* ENABLE_CDECL_DEBUG */
 #ifdef ENABLE_FLEX_DEBUG
-    opt_flex_debug = orig_flex_debug;
+  opt_flex_debug = orig_flex_debug;
 #endif /* ENABLE_FLEX_DEBUG */
 #ifdef YYDEBUG
-    opt_bison_debug = orig_bison_debug;
+  opt_bison_debug = orig_bison_debug;
 #endif /* YYDEBUG */
-  }
 
   user_defined = true;
 }

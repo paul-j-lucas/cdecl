@@ -1,0 +1,1 @@
+cdecl @ @ -xc++17 @ struct S; explain bool S::operator==(S const&) const = default @ 65

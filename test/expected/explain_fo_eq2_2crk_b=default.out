@@ -1,0 +1,1 @@
+declare == as default friend non-member operator (reference to constant S, reference to constant S) returning bool

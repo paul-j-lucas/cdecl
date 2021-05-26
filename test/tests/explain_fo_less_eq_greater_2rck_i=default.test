@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ struct S; explain friend int operator<=>(const S&, const S&) = default @ 65

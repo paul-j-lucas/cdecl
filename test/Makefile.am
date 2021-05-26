@@ -1343,20 +1343,27 @@ TESTS+=	tests/explain_+ctor-error.test \
 # C++ explain operator tests
 # ==========================
 #
-TESTS+=	tests/explain_+o_eq2_rcki_b.test \
-	tests/explain_+o_eq_rck_rk.test \
-	tests/explain_+o_eq_rck_rk=default-01.test \
+TESTS+=	tests/explain_+co_eq2_rck_b=default.test \
 	tests/explain_+o_delete_a_pv_v.test \
 	tests/explain_+o_delete_pv_v.test \
+	tests/explain_+o_eq2_rcki_b.test \
+	tests/explain_+o_eq_rck_rk.test \
+	tests/explain_+o_eq_rck_rk=default-01.test \
 	tests/explain_+o_eq_rck_rk=delete-01.test \
+	tests/explain_+o_exclam_eq_rck_rk=delete.test \
 	tests/explain_+o_new_a_z_pv.test \
 	tests/explain_+o_new_z_pv.test \
 	tests/explain_0o_amper_rk_pk.test \
 	tests/explain_0o_star_rk_rk.test \
+	tests/explain_cmo_less_eq_greater_rck_a=default.test \
 	tests/explain_co_amper_rk_pk.test \
+	tests/explain_co_eq2_crk_b=default.test \
 	tests/explain_co_star_rk_rk.test \
 	tests/explain_co_tilde_k.test \
 	tests/explain_dtor=delete.test \
+	tests/explain_fo_eq2_2crk_b=default.test \
+	tests/explain_fo_eq2_2k_b=default.test \
+	tests/explain_mo_less_eq_greater_rck_a.test \
 	tests/explain_o_amper2_2rck_b.test \
 	tests/explain_o_amper2_rck_b.test \
 	tests/explain_o_amper_2rck_k.test \
@@ -1400,6 +1407,7 @@ TESTS+=	tests/explain_+o_eq2_rcki_b.test \
 	tests/explain_o_less2_rcki_k.test \
 	tests/explain_o_less2_rki_rk.test \
 	tests/explain_o_less_eq_greater_2rck_a.test \
+	tests/explain_o_less_eq_greater_2rck_i.test \
 	tests/explain_o_less_eq_greater_2rck_std_partial_ordering.test \
 	tests/explain_o_less_eq_greater_2rck_std_strong_ordering.test \
 	tests/explain_o_less_eq_greater_2rck_std_weak_ordering.test \
@@ -1462,15 +1470,25 @@ TESTS+=	tests/explain_+o_eq2_rcki_b.test \
 # C++ explain operator error tests
 # ================================
 #
-TESTS+=	tests/explain_+o_eq_rck_rk=default-02.test \
+TESTS+=	tests/explain_+co_eq2_rck_b=default-cpp17.test \
+	tests/explain_+o_eq_rck_rk=default-02.test \
 	tests/explain_+o_eq_rck_rk=delete-02.test \
-	tests/explain_+o_exclam_eq_rck_rk=default.test \
 	tests/explain_+o_exclam_eq_rck_rk=delete.test \
+	tests/explain_cmo_less_eq_greater_rck_i=default.test \
 	tests/explain_co_exclam_k_b.test \
+	tests/explain_fo_eq2_crki_b=default.test \
+	tests/explain_fo_eq2_crkk_b=default.test \
+	tests/explain_fo_eq2_crkrk_b=default.test \
+	tests/explain_fo_eq2_icrk_b=default.test \
+	tests/explain_fo_eq2_ik_b=default.test \
+	tests/explain_fo_eq2_kcrk_b=default.test \
+	tests/explain_fo_eq2_ki_b=default.test \
+	tests/explain_fo_eq2_rkcrk_b=default.test \
+	tests/explain_fo_less_eq_greater_2rck_i=default.test \
+	tests/explain_fo_plus_2crk_b=default.test \
 	tests/explain_o_arrow_i.test \
 	tests/explain_o_brackets_2i_i.test \
 	tests/explain_o_exclam_2i.test \
-	tests/explain_o_less_eq_greater_2rck_i.test \
 	tests/explain_o_minus2_d_rk.test \
 	tests/explain_o_minus2_rkd_rk.test \
 	tests/explain_o_minus_iel_i.test \

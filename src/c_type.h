@@ -29,6 +29,8 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "cdecl.h"
+#include "c_lang.h"
+#include "options.h"
 #include "types.h"
 #include "util.h"
 
@@ -331,6 +333,7 @@ enum c_type_part_id {
 
 extern c_type_t const T_NONE;           ///< No type.
 extern c_type_t const T_ANY;            ///< All types.
+extern c_type_t const T_ANY_CONST_CLASS;///< Any `const` `class`-like type.
 extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 
 // shorthands
@@ -436,9 +439,11 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_FUNC_LIKE
  * @sa #TS_NONMEMBER_FUNC_ONLY
  */
-#define TS_MEMBER_FUNC_ONLY   ( TS_CONST | TS_DEFAULT | TS_DELETE | TS_FINAL \
-                              | TS_OVERRIDE | TS_ANY_REFERENCE | TS_RESTRICT \
-                              | TS_VIRTUAL | TS_VOLATILE )
+#define TS_MEMBER_FUNC_ONLY   ( TS_CONST \
+                              | (opt_lang < LANG_CPP_20 ? TS_DEFAULT : TS_NONE)\
+                              | TS_DELETE | TS_FINAL | TS_OVERRIDE \
+                              | TS_ANY_REFERENCE | TS_RESTRICT | TS_VIRTUAL \
+                              | TS_VOLATILE )
 
 /**
  * The only types that can apply to operators `new`, `new[]`, `delete`, or

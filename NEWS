@@ -26,6 +26,9 @@ Now ensuring return type is one of auto, std::partial_ordering,
 std::strong_ordering, or std::weak_ordering; and that all parameters are a
 class or reference thereto.
 
+** Default relational operators
+Default relational operators in C++20 are now supported.
+
 ** C++ raw string literals
 C++'s raw string literals `R"delim(...)delim"` are now supported.
 

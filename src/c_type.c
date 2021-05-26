@@ -62,9 +62,10 @@
 
 /// @endcond
 
-c_type_t const T_NONE       = { TB_NONE,  TS_NONE,    TA_NONE };
-c_type_t const T_ANY        = { TB_ANY,   TS_ANY,     TA_ANY  };
-c_type_t const T_TS_TYPEDEF = { TB_NONE,  TS_TYPEDEF, TA_NONE };
+c_type_t const T_NONE             = { TB_NONE,      TS_NONE,    TA_NONE };
+c_type_t const T_ANY              = { TB_ANY,       TS_ANY,     TA_ANY  };
+c_type_t const T_ANY_CONST_CLASS  = { TB_ANY_CLASS, TS_CONST,   TA_NONE };
+c_type_t const T_TS_TYPEDEF       = { TB_NONE,      TS_TYPEDEF, TA_NONE };
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -428,7 +429,7 @@ static c_lang_id_t const OK_STORAGE_LANGS[][ ARRAY_SIZE( C_STORAGE_INFO ) ] = {
   { XX,XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,P1,P1,PP,__,__,__,__,__,__,__,__,__,__ },// explicit
   { XX,XX,P2,XX,XX,XX,XX,XX,  XX,P2,P2,XX,XX,XX,P2,__,__,__,__,__,__,__,__,__ },// export
   { XX,XX,XX,XX,XX,XX,XX,XX,  XX,P1,XX,XX,XX,XX,XX,P1,__,__,__,__,__,__,__,__ },// final
-  { XX,XX,XX,XX,XX,XX,XX,XX,  P2,P1,XX,XX,XX,XX,XX,XX,PP,__,__,__,__,__,__,__ },// friend
+  { XX,XX,XX,XX,XX,XX,XX,XX,  P2,P1,XX,P2,XX,XX,XX,XX,PP,__,__,__,__,__,__,__ },// friend
   { XX,XX,__,PP,XX,__,XX,XX,  P2,P1,P2,P1,P1,PP,P2,P1,PP,C9,__,__,__,__,__,__ },// inline
   { XX,XX,XX,XX,XX,XX,XX,XX,  XX,XX,XX,XX,XX,XX,XX,XX,XX,XX,P3,__,__,__,__,__ },// mutable
   { XX,XX,P1,PP,XX,P1,XX,P1,  P2,P1,XX,P1,P1,PP,P2,P1,P1,P1,XX,P1,__,__,__,__ },// noexcept

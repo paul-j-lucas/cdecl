@@ -1,0 +1,1 @@
+declare == of structure S as default constant member operator (reference to constant S) returning bool

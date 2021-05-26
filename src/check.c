@@ -146,7 +146,13 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_params_knr( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_oper_default( c_ast_t const* );
+
+PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_params( c_ast_t const* );
+
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_oper_relational_default( c_ast_t const* );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_upc( c_ast_t const* );
@@ -662,34 +668,62 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   } // switch
 
   if ( c_type_is_tid_any( &ast->type, TS_DEFAULT | TS_DELETE ) ) {
-    c_ast_t const *ret_ast = NULL;
+    c_ast_t const *param_ast;
     switch ( ast->kind_id ) {
-      case K_OPERATOR:                // C& operator=(C const&)
-        if ( ast->as.oper.oper_id != C_OP_EQ )
-          goto only_special;
-        ret_ast = ast->as.oper.ret_ast;
-        if ( !c_ast_is_ref_to_tid_any( ret_ast, TB_ANY_CLASS ) )
-          goto only_special;
-        PJL_FALLTHROUGH;
+
       case K_CONSTRUCTOR: {           // C(C const&)
-        if ( c_ast_params_count( ast ) != 1 )
+        if ( c_ast_params_count( ast ) != 1 ) {
+          //
+          // This isn't correct since copy constructors can have more than one
+          // parameter if the additional ones all have default arguments; but
+          // cdecl doesn't support default arguments.
+          //
           goto only_special;
-        c_ast_t const *param_ast = c_param_ast( c_ast_params( ast ) );
+        }
+        param_ast = c_param_ast( c_ast_params( ast ) );
         if ( !c_ast_is_ref_to_tid_any( param_ast, TB_ANY_CLASS ) )
           goto only_special;
-        if ( ast->kind_id == K_OPERATOR ) {
-          assert( ret_ast != NULL );
-          //
-          // For C& operator=(C const&), the parameter and the return type must
-          // both be a reference to the same class, struct, or union.
-          //
-          param_ast = c_ast_unreference( param_ast );
-          ret_ast = c_ast_unreference( ret_ast );
-          if ( param_ast != ret_ast )
-            goto only_special;
-        }
         break;
       }
+
+      case K_OPERATOR:
+        switch ( ast->as.oper.oper_id ) {
+          case C_OP_EQ: {               // C& operator=(C const&)
+            //
+            // For C& operator=(C const&), the parameter and the return type
+            // must both be a reference to the same class, struct, or union.
+            //
+            c_ast_t const *const ret_ast =
+              c_ast_is_ref_to_tid_any( ast->as.oper.ret_ast, TB_ANY_CLASS );
+            if ( ret_ast == NULL || c_ast_params_count( ast ) != 1 )
+              goto only_special;
+            param_ast = c_param_ast( c_ast_params( ast ) );
+            param_ast = c_ast_is_ref_to_tid_any( param_ast, TB_ANY_CLASS );
+            if ( param_ast != ret_ast )
+              goto only_special;
+            break;
+          }
+
+          case C_OP_EQ2:
+          case C_OP_EXCLAM_EQ:
+          case C_OP_GREATER:
+          case C_OP_GREATER_EQ:
+          case C_OP_LESS:
+          case C_OP_LESS_EQ:
+          case C_OP_LESS_EQ_GREATER:
+            if ( c_type_is_tid_any( &ast->type, TS_DELETE ) )
+              goto only_special;
+            //
+            // Detailed checks for defaulted overloaded relational operators
+            // are done in c_ast_check_oper_relational_default().
+            //
+            break;
+
+          default:
+            goto only_special;
+        } // switch
+        break;
+
       default:
         goto only_special;
     } // switch
@@ -721,8 +755,10 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
 
 only_special:
   print_error( &ast->loc,
-    "\"%s\" can be used only for special member functions\n",
-    c_type_name_error( &ast->type )
+    "\"%s\" can be used only for special member functions%s\n",
+    c_type_name_error( &ast->type ),
+    opt_lang >= LANG_CPP_20 && c_type_is_tid_any( &ast->type, TS_DEFAULT ) ?
+      " and relational operators" : ""
   );
   return false;
 }
@@ -1115,41 +1151,6 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       }
       break;
 
-    case C_OP_LESS_EQ_GREATER: {
-      //
-      // Special case for operator<=> that must return one of auto,
-      // std::partial_ordering, std::strong_ordering, or std::weak_ordering.
-      //
-      static c_ast_t const *std_partial_ordering_ast;
-      static c_ast_t const *std_strong_ordering_ast;
-      static c_ast_t const *std_weak_ordering_ast;
-      if ( std_partial_ordering_ast == NULL ) {
-        std_partial_ordering_ast
-          = c_typedef_find_name( "std::partial_ordering" )->ast;
-        assert( std_partial_ordering_ast != NULL );
-        std_strong_ordering_ast
-          = c_typedef_find_name( "std::strong_ordering" )->ast;
-        assert( std_strong_ordering_ast != NULL );
-        std_weak_ordering_ast
-          = c_typedef_find_name( "std::weak_ordering" )->ast;
-        assert( std_weak_ordering_ast != NULL );
-      }
-      if ( ret_ast->type.base_tid != TB_AUTO &&
-           ret_ast != std_partial_ordering_ast &&
-           ret_ast != std_strong_ordering_ast &&
-           ret_ast != std_weak_ordering_ast ) {
-        print_error( &ast->loc,
-          "%s%s must return one of %s, "
-          "std::partial_ordering, "
-          "std::strong_ordering, or "
-          "std::weak_ordering\n",
-          L_OPERATOR, op->name, L_AUTO
-        );
-        return false;
-      }
-      break;
-    }
-
     case C_OP_NEW:
     case C_OP_NEW_ARRAY:
       //
@@ -1169,7 +1170,53 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       /* suppress warning */;
   } // switch
 
+  if ( c_type_is_tid_any( &ast->type, TS_DEFAULT ) &&
+       !c_ast_check_oper_default( ast ) ) {
+    return false;
+  }
+
   return c_ast_check_oper_params( ast );
+}
+
+/**
+ * Checks overloaded operators that are marked `= default`.
+ *
+ * @param ast The defaulted operator AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_oper_default( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind_id == K_OPERATOR );
+  assert( c_type_is_tid_any( &ast->type, TS_DEFAULT ) );
+
+  switch ( ast->as.oper.oper_id ) {
+    case C_OP_EQ:
+      //
+      // Detailed checks for defaulted assignment operators are done in
+      // c_ast_check_func_cpp().
+      //
+      break;
+
+    case C_OP_EQ2:
+    case C_OP_EXCLAM_EQ:
+    case C_OP_GREATER:
+    case C_OP_GREATER_EQ:
+    case C_OP_LESS:
+    case C_OP_LESS_EQ:
+    case C_OP_LESS_EQ_GREATER:
+      return c_ast_check_oper_relational_default( ast );
+
+    default:
+      print_error( &ast->loc,
+        "only %s =%s %ss can be %s\n",
+        L_OPERATOR, opt_lang >= LANG_CPP_20 ? " and relational" : "",
+        L_OPERATOR, L_DEFAULT
+      );
+      return false;
+  } // switch
+
+  return true;
 }
 
 /**
@@ -1329,12 +1376,35 @@ same: print_error( &ast->loc,
   //
   // Count the number of enum, class, struct, or union parameters.
   //
-  unsigned ecsu_param_count = 0;
+  unsigned ecsu_obj_param_count = 0, ecsu_lref_param_count = 0,
+           ecsu_rref_param_count = 0;
   FOREACH_PARAM( param, ast ) {
-    c_ast_t const *const param_ast = c_param_ast( param );
-    if ( c_ast_is_kind_any( param_ast, K_ENUM_CLASS_STRUCT_UNION ) )
-      ++ecsu_param_count;
+    //
+    // Normally we can use c_ast_is_kind_any(), but we need to count objects
+    // and lvalue references to objects distinctly to check default relational
+    // operators in C++20.
+    //
+    c_ast_t const *param_ast = c_ast_untypedef( c_param_ast( param ) );
+    switch ( param_ast->kind_id ) {
+      case K_ENUM_CLASS_STRUCT_UNION:
+        ++ecsu_obj_param_count;
+        break;
+      case K_REFERENCE:
+        param_ast = c_ast_unreference( param_ast );
+        if ( param_ast->kind_id == K_ENUM_CLASS_STRUCT_UNION )
+          ++ecsu_lref_param_count;
+        break;
+      case K_RVALUE_REFERENCE:
+        param_ast = c_ast_unreference( param_ast );
+        if ( param_ast->kind_id == K_ENUM_CLASS_STRUCT_UNION )
+          ++ecsu_rref_param_count;
+        break;
+      default:
+        /* suppress warning */;
+    } // switch
   } // for
+  unsigned const ecsu_param_count =
+    ecsu_obj_param_count + ecsu_lref_param_count + ecsu_rref_param_count;
 
   switch ( overload_flags ) {
     case C_OP_NON_MEMBER: {
@@ -1342,15 +1412,36 @@ same: print_error( &ast->loc,
       // Ensure non-member operators are not const, defaulted, deleted,
       // overridden, final, reference, rvalue reference, nor virtual.
       //
+      // Special case: in C++20 and later, relational operators may be
+      // defaulted.
+      //
       c_type_id_t const member_only_tids =
         ast->type.store_tid & TS_MEMBER_FUNC_ONLY;
       if ( member_only_tids != TS_NONE ) {
-        print_error( &ast->loc,
-          "%s %ss can not be %s\n",
-          H_NON_MEMBER, L_OPERATOR,
-          c_type_id_name_error( member_only_tids )
-        );
-        return false;
+        switch ( ast->as.oper.oper_id ) {
+          case C_OP_EQ2:
+          case C_OP_EXCLAM_EQ:
+          case C_OP_GREATER:
+          case C_OP_GREATER_EQ:
+          case C_OP_LESS:
+          case C_OP_LESS_EQ:
+          case C_OP_LESS_EQ_GREATER:
+            if ( (member_only_tids & TS_DEFAULT) != TS_NONE ) {
+              //
+              // Detailed checks for defaulted overloaded relational operators
+              // are done in c_ast_check_oper_relational_default().
+              //
+              break;
+            }
+            PJL_FALLTHROUGH;
+          default:
+            print_error( &ast->loc,
+              "%s %ss can not be %s\n",
+              H_NON_MEMBER, L_OPERATOR,
+              c_type_id_name_error( member_only_tids )
+            );
+            return false;
+        } // switch
       }
 
       //
@@ -1386,8 +1477,8 @@ same: print_error( &ast->loc,
         ast->type.store_tid & TS_NONMEMBER_FUNC_ONLY;
       if ( non_member_only_tids != TS_NONE ) {
         print_error( &ast->loc,
-          "%s operators can not be %s\n",
-          L_MEMBER,
+          "%s %ss can not be %s\n",
+          L_MEMBER, L_OPERATOR,
           c_type_id_name_error( non_member_only_tids )
         );
         return false;
@@ -1397,22 +1488,6 @@ same: print_error( &ast->loc,
   } // switch
 
   switch ( ast->as.oper.oper_id ) {
-    case C_OP_LESS_EQ_GREATER:
-      //
-      // Special case for operator <=> that requires all parameters to be a
-      // class, struct, or union, or a reference thereto.
-      //
-      if ( ecsu_param_count < n_params ) {
-        print_error( &ast->loc,
-          "all parameters of %s%s must be an %s"
-          "; or a %s thereto\n",
-          L_OPERATOR, op->name, c_kind_name( K_ENUM_CLASS_STRUCT_UNION ),
-          L_REFERENCE
-        );
-        return false;
-      }
-      break;
-
     case C_OP_MINUS2:
     case C_OP_PLUS2: {
       //
@@ -1452,6 +1527,136 @@ same: print_error( &ast->loc,
     default:
       /* suppress warning */;
   } // switch
+
+  return true;
+}
+
+/**
+ * Checks overloaded relational operators that are marked `= default`.
+ *
+ * @param ast The defaulted relational operator AST to check.
+ * @return Returns `true` only if all checks passed.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->kind_id == K_OPERATOR );
+  assert( c_type_is_tid_any( &ast->type, TS_DEFAULT ) );
+
+  c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
+  if ( opt_lang < LANG_CPP_20 ) {
+    print_error( &ast->loc,
+      "%s %s %s is not supported%s\n",
+      L_DEFAULT, L_OPERATOR, op->name, c_lang_which( LANG_CPP_MIN(20) )
+    );
+    return false;
+  }
+
+  c_ast_param_t const *const param = c_ast_params( ast );
+  c_ast_t const *const param_ast = c_param_ast( param );
+
+  switch ( c_ast_oper_overload( ast ) ) {
+    case C_OP_NON_MEMBER: {
+      if ( !c_type_is_tid_any( &ast->type, TS_FRIEND ) ) {
+        print_error( &ast->loc,
+          "%s %s %s %s must also be %s\n",
+          L_DEFAULT, H_NON_MEMBER, L_OPERATOR, op->name, L_FRIEND
+        );
+        return false;
+      }
+
+      //
+      // Default non-member relational operators must take two of the same
+      // class by either value or reference-to-const.
+      //
+      bool param1_is_ref_to_class = false;
+      c_ast_t const *param1_ast = c_ast_is_tid_any( param_ast, TB_ANY_CLASS );
+      if ( param1_ast == NULL ) {
+        param1_ast = c_ast_is_ref_to_type_any( param_ast, &T_ANY_CONST_CLASS );
+        if ( param1_ast == NULL ) {
+rel_2par: print_error( &ast->loc,
+            "%s %s relational %ss must take two "
+            "value or reference-to-const parameters of the same %s\n",
+            L_DEFAULT, H_NON_MEMBER, L_OPERATOR, L_CLASS
+          );
+          return false;
+        }
+        param1_is_ref_to_class = true;
+      }
+
+      c_ast_t const *param2_ast = c_param_ast( param->next );
+      param2_ast = param1_is_ref_to_class ?
+        c_ast_is_ref_to_type_any( param2_ast, &T_ANY_CONST_CLASS ) :
+        c_ast_is_tid_any( param2_ast, TB_ANY_CLASS );
+      if ( param2_ast == NULL || param1_ast != param2_ast )
+        goto rel_2par;
+      break;
+    }
+
+    case C_OP_MEMBER: {
+      if ( !c_type_is_tid_any( &ast->type, TS_CONST ) ) {
+        print_error( &ast->loc,
+          "%s %s %s %s must also be %s\n",
+          L_DEFAULT, L_MEMBER, L_OPERATOR, op->name, L_CONST
+        );
+        return false;
+      }
+
+      //
+      // Default member relational operators must take one class by either
+      // value or reference-to-const.
+      //
+      c_ast_t const *param1_ast = c_ast_is_tid_any( param_ast, TB_ANY_CLASS );
+      if ( param1_ast == NULL ) {
+        param1_ast = c_ast_is_ref_to_type_any( param_ast, &T_ANY_CONST_CLASS );
+        if ( param1_ast == NULL ) {
+          print_error( &ast->loc,
+            "%s %s relational %ss must take one "
+            "value or reference-to-const parameter to a %s\n",
+            L_DEFAULT, L_MEMBER, L_OPERATOR, L_CLASS
+          );
+          return false;
+        }
+      }
+      break;
+    }
+  } // switch
+
+  c_ast_t const *const ret_ast = c_ast_untypedef( ast->as.oper.ret_ast );
+
+  if ( ast->as.oper.oper_id == C_OP_LESS_EQ_GREATER ) {
+    static c_ast_t const *std_partial_ordering_ast;
+    static c_ast_t const *std_strong_ordering_ast;
+    static c_ast_t const *std_weak_ordering_ast;
+    if ( std_partial_ordering_ast == NULL ) {
+      std_partial_ordering_ast =
+        c_typedef_find_name( "std::partial_ordering" )->ast;
+      std_strong_ordering_ast =
+        c_typedef_find_name( "std::strong_ordering" )->ast;
+      std_weak_ordering_ast =
+        c_typedef_find_name( "std::weak_ordering" )->ast;
+    }
+    if ( !c_ast_is_builtin_any( ret_ast, TB_AUTO ) &&
+         ret_ast != std_partial_ordering_ast &&
+         ret_ast != std_strong_ordering_ast &&
+         ret_ast != std_weak_ordering_ast ) {
+      print_error( &ret_ast->loc,
+        "%s %s must return one of %s, "
+        "std::partial_ordering, "
+        "std::strong_ordering, or "
+        "std::weak_ordering\n",
+        L_OPERATOR, op->name, L_AUTO
+      );
+      return false;
+    }
+  }
+  else if ( !c_ast_is_builtin_any( ret_ast, TB_BOOL ) ) {
+    print_error( &ret_ast->loc,
+      "%s %s must return %s\n",
+      L_OPERATOR, op->name, L_BOOL
+    );
+    return false;
+  }
 
   return true;
 }
