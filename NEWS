@@ -10,7 +10,7 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
-* Changes in Cdecl 9.11
+* Changes in Cdecl 10.0
 
 ** `asm` declarations
 Now recognizing `asm` just to say it's not supported.
