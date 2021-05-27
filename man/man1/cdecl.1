@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "May 25, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "May 26, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1136,15 +1136,23 @@ is any supported C
 or C++
 (for
 .BR c++decl )
+declaration of a
 variable,
 constant,
+array,
+pointer,
+reference,
+rvalue reference,
 function,
 constructor,
 destructor,
-overloaded operator,
-user-defined conversion,
-or user-defined literal
-declaration,
+or
+overloaded operator;
+or
+user-defined type,
+conversion,
+or
+literal;
 or type cast.
 (See
 .B EXAMPLES
