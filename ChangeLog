@@ -1,5 +1,6 @@
 2021-05-26  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, configure.ac: Updated version to 10.0.
    * check.c: Formatting.
    * cdecl.1: Added NOTES section about main().
    * cdecl.1: Rewording.
