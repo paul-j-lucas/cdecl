@@ -1939,6 +1939,31 @@ since they are required by \f(CWoperator<=>()\fP.
 \f(CWstd::chrono::year_month_weekday_last\fP
 .hy
 .ad
+.SH NOTES
+In C,
+a function named \f(CWmain\fP
+has its parameters
+and return type
+checked for those required by \f(CWmain\fP;
+in C++,
+this occurs only if it is
+.I not
+declared
+\f(CWconst\fP,
+\f(CWconsteval\fP,
+\f(CWconstexpr\fP,
+\f(CWdefault\fP,
+\f(CWdelete\fP,
+\f(CWfinal\fP,
+\f(CWinline\fP,
+\f(CWoverride\fP,
+\f(CW__restrict\fP,
+\f(CWstatic\fP,
+\f(CWvirtual\fP,
+nor
+\f(CWvolatile\fP.
+If it is so declared,
+it's assumed to be a member function.
 .SH CONFIGURATION FILE
 The
 .B cdeclrc
