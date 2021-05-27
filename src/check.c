@@ -552,7 +552,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
         //
         //  + The current language is C; or:
         //
-        //  + The current lanuage is C++ and the function does not have any
+        //  + The current language is C++ and the function does not have any
         //    storage-like type that can't be used with the program's main().
         //    (Otherwise assume it's just a member function named "main".)
         //
