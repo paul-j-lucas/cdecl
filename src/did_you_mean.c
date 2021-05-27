@@ -102,7 +102,7 @@ static char* check_prefix_strdup( char const *prefix, char const *s ) {
 PJL_NOWARN_UNUSED_RESULT
 static size_t copy_commands( did_you_mean_t **const pdym ) {
   size_t count = 0;
-  for ( c_command_t const *c = CDECL_COMMANDS; c->literal != NULL; ++c ) {
+  FOREACH_COMMAND( c ) {
     if ( (c->lang_ids & opt_lang) != LANG_NONE ) {
       if ( pdym != NULL )
         (*pdym)++->token = check_strdup( c->literal );

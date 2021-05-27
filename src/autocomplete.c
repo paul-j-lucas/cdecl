@@ -340,7 +340,7 @@ static char* keyword_completion( char const *text, int state ) {
     // If it's not the "cast" command, see if it's any other command.
     //
     if ( command == NULL ) {
-      for ( c_command_t const *c = CDECL_COMMANDS; c->literal != NULL; ++c ) {
+      FOREACH_COMMAND( c ) {
         if ( (c->lang_ids & opt_lang) != LANG_NONE &&
              is_command( c->literal ) ) {
           command = c->literal;

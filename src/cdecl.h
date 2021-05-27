@@ -48,6 +48,14 @@
 /** Program name when composing or deciphering C++. */
 #define CPPDECL                   "c++decl"
 
+/**
+ * Convenience  macro for iterating over all cdecl commands.
+ *
+ * @param VAR The `c_command` loop variable.
+ */
+#define FOREACH_COMMAND(VAR) \
+  for ( c_command_t const *VAR = CDECL_COMMANDS; VAR->literal != NULL; ++VAR )
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
