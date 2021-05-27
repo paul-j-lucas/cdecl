@@ -84,7 +84,6 @@ PJL_WARN_UNUSED_RESULT
 static char* check_prefix_strdup( char const *prefix, char const *s ) {
   size_t const prefix_len = strlen( prefix );
   char *const dup_s = MALLOC( char*, prefix_len + strlen( s ) + 1/*\0*/ );
-  IF_EXIT( dup_s == NULL, EX_OSERR );
   strcpy( dup_s, prefix );
   strcpy( dup_s + prefix_len, s );
   return dup_s;
