@@ -681,7 +681,6 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   if ( c_type_is_tid_any( &ast->type, TS_DEFAULT | TS_DELETE ) ) {
     c_ast_t const *param_ast;
     switch ( ast->kind_id ) {
-
       case K_CONSTRUCTOR: {           // C(C const&)
         if ( c_ast_params_count( ast ) != 1 ) {
           //
