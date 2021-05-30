@@ -10,6 +10,14 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 10.1
+
+** More C++ std types
+Added types `std::ios_base`, `std::ios_base::fmtflags`,
+`std::ios_base::iostate`, `std::ctype_base::mask`, `std::ios_base::openmode`,
+`std::launch`, and `std::chars_format`.
+
+
 * Changes in Cdecl 10.0.1
 
 ** Fixed flex-debug build

@@ -378,6 +378,7 @@ namespace std { class bad_type_id; }
 namespace std { class bad_variant_access; }
 namespace std { class bad_weak_ptr; }
 namespace std { enum byte; }
+namespace std { enum chars_format; }
 namespace std::chrono { enum choose; }
 namespace std::chrono { class day; }
 namespace std::chrono { struct file_clock; }
@@ -416,6 +417,7 @@ namespace std { class codecvt_base; }
 namespace std { class condition_variable; }
 namespace std { class condition_variable_any; }
 namespace std { class ctype_base; }
+class std::ctype_base { typedef unsigned mask; };
 namespace std { enum cv_status; }
 namespace std { struct defer_lock_t; }
 namespace std { struct destroying_delete_t; }
@@ -449,10 +451,14 @@ namespace std { class invalid_argument; }
 namespace std { class ios; }
 namespace std { class ios_base; }
 class std::ios_base { class failure; };
+class std::ios_base { typedef unsigned fmtflags; };
+class std::ios_base { typedef unsigned iostate; };
+class std::ios_base { typedef unsigned openmode; };
 namespace std { class iostream; }
 namespace std { class istream; }
 namespace std { class istringstream; }
 namespace std { class jthread; }
+namespace std { enum launch; }
 namespace std { struct ldiv_t; }
 namespace std { class length_error; }
 namespace std { struct lldiv_t; }
