@@ -603,7 +603,10 @@ hex_int       0[xX]{H}+{int_suffix}?
                * it is interpreted as a type specifier, not as a type
                * qualifier.
                */
-_Atomic/{S}*\(  { SET_TOKEN; return Y__ATOMIC_SPEC; }
+_Atomic/{S}*\( {
+                SET_TOKEN;
+                return Y__ATOMIC_SPEC;
+              }
 
               /*
                * Special case: if "declare" is eventually followed by "user-
