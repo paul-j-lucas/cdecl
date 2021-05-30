@@ -2443,7 +2443,7 @@ class_struct_union_declaration_c
       IS_NESTED_TYPE_OK( &@1 );
       gibberish_to_english();           // see the comment in "explain"
     }
-    any_sname_c
+    any_sname_c_exp
     {
       c_type_t const *const cur_type =
         c_sname_local_type( &in_attr.current_scope );
@@ -2532,7 +2532,7 @@ namespace_declaration_c
     {
       gibberish_to_english();           // see the comment in "explain"
     }
-    sname_c
+    any_sname_c_exp
     { //
       // Make every scope's type be $1 for nested namespaces.
       //
