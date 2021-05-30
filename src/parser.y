@@ -2533,18 +2533,7 @@ namespace_declaration_c
       gibberish_to_english();           // see the comment in "explain"
     }
     any_sname_c_exp
-    { //
-      // Make every scope's type be $1 for nested namespaces, but only if it
-      // doesn't already have a scoped type.
-      //
-      FOREACH_SCOPE( scope, &$3, NULL ) {
-        c_type_t *const scope_type = &c_scope_data( scope )->type;
-        if ( !c_type_is_tid_any( scope_type, TB_ANY_SCOPE ) ) {
-          scope_type->base_tid &= c_type_id_compl( TB_SCOPE );
-          scope_type->base_tid |= $1.base_tid;
-        }
-      } // for
-
+    {
       DUMP_START( "namespace_declaration_c",
                   "namespace_type sname '{' "
                   "in_scope_declaration_c_opt "
@@ -2552,6 +2541,25 @@ namespace_declaration_c
       DUMP_TYPE( "namespace_type", &$1 );
       DUMP_SNAME( "any_sname_c", $3 );
       DUMP_END();
+
+      //
+      // Make every scope's type be $1 for nested namespaces, but only if it
+      // doesn't already have a scoped type.
+      //
+      FOREACH_SCOPE( scope, &$3, NULL ) {
+        c_type_t *const scope_type = &c_scope_data( scope )->type;
+        if ( c_type_is_tid_any( scope_type, TB_ANY_CLASS ) ) {
+          print_error( &@3,
+            "\"%s\" was previously declared as a %s\n",
+            c_sname_full_name( &$3 ),
+            c_type_name_error( scope_type )
+          );
+          c_sname_free( &$3 );
+          PARSE_ABORT();
+        }
+        scope_type->base_tid &= c_type_id_compl( TB_SCOPE );
+        scope_type->base_tid |= $1.base_tid;
+      } // for
 
       bool ok = false;
 
