@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 10.0.1
+
+** Fixed flex-debug build
+A syntax error in the flex-debug build was fixed.
+
+
 * Changes in Cdecl 10.0
 
 ** `asm` declarations
