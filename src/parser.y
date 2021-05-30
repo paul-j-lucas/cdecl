@@ -2534,13 +2534,15 @@ namespace_declaration_c
     }
     any_sname_c_exp
     { //
-      // Make every scope's type be $1 for nested namespaces.
+      // Make every scope's type be $1 for nested namespaces, but only if it
+      // doesn't already have a scoped type.
       //
       FOREACH_SCOPE( scope, &$3, NULL ) {
-        c_type_t scope_type = c_scope_data( scope )->type;
-        scope_type.base_tid =
-          (scope_type.base_tid & c_type_id_compl( TB_SCOPE )) | $1.base_tid;
-        c_scope_data( scope )->type = scope_type;
+        c_type_t *const scope_type = &c_scope_data( scope )->type;
+        if ( !c_type_is_tid_any( scope_type, TB_ANY_SCOPE ) ) {
+          scope_type->base_tid &= c_type_id_compl( TB_SCOPE );
+          scope_type->base_tid |= $1.base_tid;
+        }
       } // for
 
       DUMP_START( "namespace_declaration_c",
