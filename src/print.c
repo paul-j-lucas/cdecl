@@ -119,7 +119,7 @@ static void print_caret( size_t error_column ) {
     //
     // Chop off whitespace (if any) so we can always print a newline ourselves.
     //
-    while ( ends_with_any_chr( input_line, input_line_len, " \f\n\r\t\v" ) )
+    while ( ends_with_any_chr( input_line, input_line_len, WS ) )
       --input_line_len;
 
     //

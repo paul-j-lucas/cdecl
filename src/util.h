@@ -435,7 +435,7 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #SKIP_CHARS()
  */
-#define SKIP_WS(S)                SKIP_CHARS( (S), " \f\n\r\t\v" )
+#define SKIP_WS(S)                SKIP_CHARS( (S), WS )
 
 /**
  * Conditionally returns a space or an empty string.
@@ -542,6 +542,11 @@ _GL_INLINE_HEADER_BEGIN
  */
 #define UNEXPECTED_STR_VALUE(EXPR) \
   INTERNAL_ERR( "\"%s\": unexpected value for " #EXPR "\n", (char const*)(EXPR) )
+
+/**
+ * Whitespace characters.
+ */
+#define WS                        " \f\n\r\t\v"
 
 ////////// extern functions ///////////////////////////////////////////////////
 
