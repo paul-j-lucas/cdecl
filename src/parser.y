@@ -1937,16 +1937,6 @@ define_english
         // Once the semantic checks pass, remove the TS_TYPEDEF.
         PJL_IGNORE_RV( c_ast_take_type_any( $5, &T_TS_TYPEDEF ) );
 
-        if ( c_sname_count( &$2 ) > 1 ) {
-          c_type_t scope_type = *c_sname_local_type( &$2 );
-          if ( scope_type.base_tid == TB_SCOPE ) {
-            //
-            // Replace the generic "scope" with "namespace".
-            //
-            scope_type.base_tid = TB_NAMESPACE;
-            c_sname_set_local_type( &$2, &scope_type );
-          }
-        }
         c_ast_set_sname( $5, &$2 );
         DUMP_AST( "defined.ast", $5 );
         ok = add_type( L_DEFINE, $5, &@5 );
@@ -5754,9 +5744,15 @@ sname_c
       DUMP_SNAME( "sname_c", $1 );
       DUMP_STR( "name", $3 );
 
-      if ( c_type_is_none( c_sname_local_type( &$1 ) ) )
-        c_sname_set_local_type( &$1, &C_TYPE_LIT_B( TB_SCOPE ) );
       $$ = $1;
+      if ( c_type_is_none( c_sname_local_type( &$1 ) ) ) {
+        //
+        // Since we know the name in this context (followed by "::") definitely
+        // refers to a scope, set the scoped name's type to TB_SCOPE (if it
+        // doesn't already have a scope type).
+        //
+        c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
+      }
       c_sname_append_name( &$$, $3 );
 
       DUMP_SNAME( "sname_c", $$ );
@@ -5764,12 +5760,7 @@ sname_c
     }
 
   | sname_c Y_COLON2 any_typedef
-    {
-      DUMP_START( "sname_c", "sname_c '::' any_typedef" );
-      DUMP_SNAME( "sname_c", $1 );
-      DUMP_AST( "any_typedef.ast", $3->ast );
-
-      //
+    { //
       // This is for a case like:
       //
       //      define S::int8_t as char
@@ -5777,9 +5768,19 @@ sname_c
       // that is: the type int8_t is an existing type in no scope being defined
       // as a distinct type in a new scope.
       //
-      if ( c_type_is_none( c_sname_local_type( &$1 ) ) )
-        c_sname_set_local_type( &$1, &C_TYPE_LIT_B( TB_SCOPE ) );
+      DUMP_START( "sname_c", "sname_c '::' any_typedef" );
+      DUMP_SNAME( "sname_c", $1 );
+      DUMP_AST( "any_typedef.ast", $3->ast );
+
       $$ = $1;
+      if ( c_type_is_none( c_sname_local_type( &$1 ) ) ) {
+        //
+        // Since we know the name in this context (followed by "::") definitely
+        // refers to a scope, set the scoped name's type to TB_SCOPE (if it
+        // doesn't already have a scope type).
+        //
+        c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
+      }
       c_sname_t temp = c_ast_dup_name( $3->ast );
       c_sname_append_sname( &$$, &temp );
 
