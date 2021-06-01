@@ -663,13 +663,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
               /*
                * Special case: handle scoped names in the lexer so:
                *
-               * 1. Previously declared scoped types are recognized as such,
-               *    e.g.:
-               *
-               *          define S::T as int
-               *          explain S::T x
-               *
-               * 2. Constructors are recognized as such, specifically, when the
+               * 1. Constructors are recognized as such, specifically, when the
                *    scoped name's last two scopes match, e.g.:
                *
                *          A::B::C       // not a constructor
@@ -680,15 +674,29 @@ declare/{S}({S}|{L})*user-def(ined)? {
                *
                *          A::B(x);      // declare x as A::B with unneeded ()
                *          S::S()        // define constructor for S
+               *
+               * 2. Previously declared scoped types are recognized as such,
+               *    e.g.:
+               *
+               *          define S::T as int
+               *          explain S::T x
                */
 {sname}       {
                 SET_TOKEN;
 
                 c_sname_t sname;
                 if ( c_sname_parse( lexer_token, &sname ) ) {
+                  //
+                  // 1. See if it's a constructor name.
+                  //
+                  if ( c_sname_is_ctor( &sname ) ) {
+                    yylval.sname = sname;
+                    return Y_CONSTRUCTOR_SNAME;
+                  }
+
                   if ( (lexer_find & LEXER_FIND_TYPEDEFS) != 0 ) {
                     //
-                    // 1. See if it's a typedef'd type.
+                    // 2. See if it's a typedef'd type.
                     //
                     c_typedef_t const *const tdef
                       = c_typedef_find_sname( &sname );
@@ -697,14 +705,6 @@ declare/{S}({S}|{L})*user-def(ined)? {
                       c_sname_free( &sname );
                       return Y_TYPEDEF_SNAME;
                     }
-                  }
-
-                  //
-                  // 2. See if it's a constructor name.
-                  //
-                  if ( c_sname_is_ctor( &sname ) ) {
-                    yylval.sname = sname;
-                    return Y_CONSTRUCTOR_SNAME;
                   }
 
                   //
