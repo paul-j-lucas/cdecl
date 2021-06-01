@@ -450,10 +450,14 @@ define imaxdiv_t of namespace std as structure imaxdiv_t
 define invalid_argument of namespace std as class invalid_argument
 define ios of namespace std as class ios
 define ios_base of namespace std as class ios_base
+define Init of class ios_base of namespace std as class Init
+define event of class ios_base of namespace std as enumeration event
+define event_callback of class ios_base of namespace std as pointer to function (event of class ios_base of namespace std, reference to ios_base of namespace std, int) returning void
 define failure of class ios_base of namespace std as class failure
 define fmtflags of class ios_base of namespace std as unsigned int
 define iostate of class ios_base of namespace std as unsigned int
 define openmode of class ios_base of namespace std as unsigned int
+define seekdir of class ios_base of namespace std as int
 define iostream of namespace std as class iostream
 define istream of namespace std as class istream
 define istringstream of namespace std as class istringstream
@@ -483,6 +487,8 @@ define range_error of namespace std as class range_error
 define recursive_mutex of namespace std as class recursive_mutex
 define recursive_timed_mutex of namespace std as class recursive_timed_mutex
 define regex of namespace std as class regex
+define match_flag_type of namespace regex_constants of namespace std as unsigned int
+define syntax_option_type of namespace regex_constants of namespace std as unsigned int
 define regex_error of namespace std as structure regex_error
 define runtime_error of namespace std as class runtime_error
 define shared_mutex of namespace std as class shared_mutex

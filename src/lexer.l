@@ -560,6 +560,7 @@ B             [01]
 O             [0-7]
 D             [0-9]
 H             [0-9A-Fa-f]
+NI            [^A-Za-z_0-9]
 S             [ \f\r\t\v]
 
 identifier    {L}({L}|{D})*
@@ -680,8 +681,34 @@ declare/{S}({S}|{L})*user-def(ined)? {
                *
                *          define S::T as int
                *          explain S::T x
+               *
+               * The trailing context of a Non-Indentifier (NI) character is
+               * necessary to prevent Flex from recognizing partial identifiers
+               * upon REJECT.  For example, given these declarations:
+               *
+               *      namespace X::YY { class T; }
+               *      namespace X     { class Y; }
+               *      namespace X::YY { class U; }
+               *
+               * Just as in the first declaration, when "X::YY" is encountered
+               * in the third declaration, we would ordinarily REJECT a match
+               * because "X::YY" is not a type.  (Hence, "X::YY" would be
+               * returned to the parser as three separate tokens "X", "::", and
+               * "YY" just as they were in the first declaration.)
+               *
+               * However, upon REJECT, Flex backs off one character at a time,
+               * so it will next try to match "X::Y" and succeed since it's a
+               * substring of "X::YY".  The "X::Y" is then looked-up and finds
+               * the class X::Y (from the second declaration).  This is of
+               * course wrong semantically, but Flex doesn't know anything
+               * about semantics, i.e., it doesn't know that the longest set of
+               * contiguous alphanumeric characters comprises an identifier and
+               * shouldn't be split.
+               *
+               * Using the trailing context prevents Flex from matching the
+               * partial token.
                */
-{sname}       {
+{sname}/{NI}  {
                 SET_TOKEN;
 
                 c_sname_t sname;
