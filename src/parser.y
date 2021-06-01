@@ -2449,6 +2449,20 @@ class_struct_union_declaration_c
           PARSE_ABORT();
         }
       }
+
+      //
+      // Make every scope's type be TB_NAMESPACE leading up to but not
+      // including the inner-most scope, but only if they don't already have a
+      // scoped type.
+      //
+      FOREACH_SCOPE( scope, &$3, $3.tail ) {
+        c_type_t *const scope_type = &c_scope_data( scope )->type;
+        if ( !c_type_is_tid_any( scope_type, TB_ANY_CLASS ) ) {
+          scope_type->base_tid &= c_type_id_compl( TB_SCOPE );
+          scope_type->base_tid |= TB_NAMESPACE;
+        }
+      } // for
+
       c_sname_set_local_type( &$3, &C_TYPE_LIT_B( $1 ) );
 
       DUMP_START( "class_struct_union_declaration_c",
@@ -2487,7 +2501,19 @@ enum_declaration_c
       gibberish_to_english();           // see the comment in "explain"
     }
     any_sname_c_exp enum_fixed_type_c_ast_opt
-    {
+    { //
+      // Make every scope's type be TB_NAMESPACE leading up to but not
+      // including the inner-most scope, but only if they don't already have a
+      // scoped type.
+      //
+      FOREACH_SCOPE( scope, &$3, $3.tail ) {
+        c_type_t *const scope_type = &c_scope_data( scope )->type;
+        if ( !c_type_is_tid_any( scope_type, TB_ANY_CLASS ) ) {
+          scope_type->base_tid &= c_type_id_compl( TB_SCOPE );
+          scope_type->base_tid |= TB_NAMESPACE;
+        }
+      } // for
+
       c_sname_set_local_type( &$3, &C_TYPE_LIT_B( $1 ) );
 
       DUMP_START( "enum_declaration_c", "enum_tid sname ;" );
