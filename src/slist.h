@@ -57,7 +57,7 @@ _GL_INLINE_HEADER_BEGIN
  * @param END A pointer to the node to end before; may be NULL.
  */
 #define FOREACH_SLIST(VAR,SLIST,END) \
-  for ( slist_node_t const *VAR = (SLIST)->head; VAR != (END); VAR = VAR->next )
+  for ( slist_node_t *VAR = CONST_CAST( slist_t*, SLIST )->head; VAR != (END); VAR = VAR->next )
 
 /**
  * Creates a single-node `slist` on the stack with \a NODE_DATA.
