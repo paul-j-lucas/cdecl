@@ -42,21 +42,6 @@
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
- * Helper function for c_sname_local_type() that returns the scope type of the
- * innermost scope (that has a type).
- *
- * @param scope A pointer to a scope.
- * @return Returns the scope type.
- */
-PJL_WARN_UNUSED_RESULT
-static c_type_t const* c_sname_local_type_impl( c_scope_t const *scope ) {
-  assert( scope != NULL );
-  c_scope_t const *const next = scope->next;
-  return next != NULL && !c_type_is_none( &c_scope_data( next )->type ) ?
-    c_sname_local_type_impl( next ) : &c_scope_data( scope )->type;
-}
-
-/**
  * Helper function for c_sname_full_name() and c_sname_scope_name() that writes
  * the scope names from outermost to innermost separated by `::` into a buffer.
  *
@@ -263,12 +248,6 @@ bool c_sname_parse( char const *s, c_sname_t *sname ) {
 
   *sname = rv;
   return true;
-}
-
-c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
-  assert( sname != NULL );
-  return c_sname_empty( sname ) ?
-    &T_NONE : c_sname_local_type_impl( sname->head );
 }
 
 char const* c_sname_scope_name( c_sname_t const *sname ) {

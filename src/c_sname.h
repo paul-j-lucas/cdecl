@@ -315,7 +315,10 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
  * @sa c_sname_scope_type()
  * @sa c_sname_set_local_type()
  */
-c_type_t const* c_sname_local_type( c_sname_t const *sname );
+C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
+c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
+  return c_sname_empty( sname ) ? &T_NONE : &c_scope_data( sname->tail )->type;
+}
 
 /**
  * Checks whether \a sname matches \a glob where \a glob is glob-like in that
