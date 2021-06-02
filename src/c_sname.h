@@ -418,9 +418,9 @@ c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
 }
 
 /**
- * Sets the scope type of \a sname (which is the type of the innermost scope).
+ * Sets the local type of \a sname (which is the type of the innermost scope).
  *
- * @param sname The scoped name to set the scope type of.
+ * @param sname The scoped name to set the local type of.
  * @param type The type.
  *
  * @sa c_sname_local_type()
