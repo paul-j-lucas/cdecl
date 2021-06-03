@@ -858,8 +858,8 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
  */
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *ast ) {
-  ast = c_ast_untypedef( ast );
-  switch ( ast->kind_id ) {
+  c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+  switch ( raw_ast->kind_id ) {
     case K_ARRAY:                       // char *argv[]
     case K_POINTER:                     // char **argv
       if ( !c_ast_is_ptr_to_type( ast->as.parent.of_ast,
@@ -1122,7 +1122,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
       /* suppress warning */;
   } // switch
 
-  c_ast_t const *const ret_ast = c_ast_untypedef( ast->as.oper.ret_ast );
+  c_ast_t const *const ret_ast = ast->as.oper.ret_ast;
 
   switch ( ast->as.oper.oper_id ) {
     case C_OP_ARROW:
@@ -1286,9 +1286,9 @@ static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
   }
 
   c_ast_param_t const *const param = c_ast_params( ast );
-  c_ast_t const *const param_ast = c_ast_untypedef( c_param_ast( param ) );
+  c_ast_t const *const param_ast = c_param_ast( param );
 
-  if ( !c_type_id_is_size_t( param_ast->type.base_tid ) ) {
+  if ( !c_ast_is_size_t( param_ast ) ) {
     print_error( &param_ast->loc,
       "invalid parameter type for %s %s; must be std::size_t (or equivalent)\n",
       L_OPERATOR, op->name
@@ -1624,7 +1624,8 @@ rel_2par: print_error( &ast->loc,
     }
   } // switch
 
-  c_ast_t const *const ret_ast = c_ast_untypedef( ast->as.oper.ret_ast );
+  c_ast_t const *const ret_ast = ast->as.oper.ret_ast;
+  c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
 
   if ( ast->as.oper.oper_id == C_OP_LESS_EQ_GREATER ) {
     static c_ast_t const *std_partial_ordering_ast;
@@ -1639,9 +1640,9 @@ rel_2par: print_error( &ast->loc,
         c_typedef_find_name( "std::weak_ordering" )->ast;
     }
     if ( !c_ast_is_builtin_any( ret_ast, TB_AUTO ) &&
-         ret_ast != std_partial_ordering_ast &&
-         ret_ast != std_strong_ordering_ast &&
-         ret_ast != std_weak_ordering_ast ) {
+         raw_ret_ast != std_partial_ordering_ast &&
+         raw_ret_ast != std_strong_ordering_ast &&
+         raw_ret_ast != std_weak_ordering_ast ) {
       print_error( &ret_ast->loc,
         "%s %s must return one of %s, "
         "std::partial_ordering, "
@@ -1831,8 +1832,9 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
     );
     return false;
   }
-  c_ast_t const *const conv_ast = c_ast_untypedef( ast->as.udef_conv.conv_ast );
-  if ( conv_ast->kind_id == K_ARRAY ) {
+  c_ast_t const *const conv_ast = ast->as.udef_conv.conv_ast;
+  c_ast_t const *const raw_conv_ast = c_ast_untypedef( conv_ast );
+  if ( raw_conv_ast->kind_id == K_ARRAY ) {
     print_error( &conv_ast->loc,
       "%s %s %s can not convert to an %s",
       H_USER_DEFINED, L_CONVERSION, L_OPERATOR, L_ARRAY
@@ -1866,12 +1868,13 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
   }
 
   c_ast_param_t const *param = c_ast_params( ast );
-  c_ast_t const *param_ast = c_ast_untypedef( c_param_ast( param ) );
+  c_ast_t const *param_ast = c_param_ast( param );
+  c_ast_t const *raw_param_ast = c_ast_untypedef( param_ast );
   c_ast_t const *tmp_ast = NULL;
 
   switch ( n_params ) {
     case 1:
-      switch ( param_ast->type.base_tid ) {
+      switch ( raw_param_ast->type.base_tid ) {
         case TB_CHAR:
         case TB_CHAR8_T:
         case TB_CHAR16_T:
@@ -1897,10 +1900,10 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
       break;
 
     case 2:
-      tmp_ast = c_ast_unpointer( param_ast );
+      tmp_ast = c_ast_unpointer( raw_param_ast );
       if ( tmp_ast == NULL ||
-          !(c_type_is_tid_any( &tmp_ast->type, TS_CONST ) &&
-            c_type_is_tid_any( &tmp_ast->type, TB_ANY_CHAR )) ) {
+          !(c_ast_is_tid_any( tmp_ast, TS_CONST ) &&
+            c_ast_is_tid_any( tmp_ast, TB_ANY_CHAR )) ) {
         print_error( &param_ast->loc,
           "invalid parameter type for %s %s; must be one of: "
           "const (char|wchar_t|char8_t|char16_t|char32_t)*\n",
@@ -1908,10 +1911,8 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
         );
         return false;
       }
-      param = param->next;
-      param_ast = c_ast_untypedef( c_param_ast( param ) );
-      if ( param_ast == NULL ||
-           !c_type_id_is_size_t( param_ast->type.base_tid ) ) {
+      param_ast = c_param_ast( param->next );
+      if ( param_ast == NULL || !c_ast_is_size_t( param_ast ) ) {
         print_error( &param_ast->loc,
           "invalid parameter type for %s %s; "
           "must be std::size_t (or equivalent)\n",
@@ -1922,8 +1923,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
       break;
 
     default:
-      param = param->next->next;
-      param_ast = c_param_ast( param );
+      param_ast = c_param_ast( param->next->next );
       print_error( &param_ast->loc,
         "%s %s may have at most 2 parameters\n", H_USER_DEFINED, L_LITERAL
       );

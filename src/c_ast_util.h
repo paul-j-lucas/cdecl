@@ -29,10 +29,21 @@
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "c_ast.h"
+#include "c_type.h"
 #include "types.h"
+
+/// @cond DOXYGEN_IGNORE
 
 // standard
 #include <stdbool.h>
+
+_GL_INLINE_HEADER_BEGIN
+#ifndef C_AST_UTIL_INLINE
+# define C_AST_UTIL_INLINE _GL_INLINE
+#endif /* C_AST_UTIL_INLINE */
+
+/// @endcond
 
 ////////// extern functions ///////////////////////////////////////////////////
 
@@ -378,9 +389,29 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
 PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
 
+////////// inline functions ///////////////////////////////////////////////////
+
+/**
+ * Checks if the type of \a ast is equivalent to `size_t`.
+ *
+ * @note
+ * In cdecl, `size_t` is `typedef`d to be `unsigned long` in `c_typedef.c`.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if \a ast is `size_t`.
+ *
+ * @sa c_type_id_is_size_t()
+ */
+C_AST_UTIL_INLINE PJL_WARN_UNUSED_RESULT
+bool c_ast_is_size_t( c_ast_t const *ast ) {
+  return c_type_id_is_size_t( c_ast_untypedef( ast )->type.base_tid );
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
+
+_GL_INLINE_HEADER_END
 
 #endif /* cdecl_c_ast_util_H */
 /* vim:set et sw=2 ts=2: */

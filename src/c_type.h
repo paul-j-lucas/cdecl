@@ -883,6 +883,8 @@ bool c_type_id_is_none( c_type_id_t tid ) {
  *
  * @param tid The <code>\ref c_type_id_t</code> to check.
  * @return Returns `true` only if \a tid is `size_t`.
+ *
+ * @sa c_ast_is_size_t()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_type_id_is_size_t( c_type_id_t tid ) {
