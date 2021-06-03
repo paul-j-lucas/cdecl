@@ -718,18 +718,6 @@ static bool current_scope_append_sname( c_sname_t *sname,
   c_sname_append_sname( &in_attr.current_scope, sname );
   sname = &in_attr.current_scope;
 
-  c_type_t const *const cur_type = c_sname_local_type( sname );
-  if ( c_type_is_tid_any( cur_type, TB_ANY_SCOPE ) ) {
-    if ( new_type->base_tid == cur_type->base_tid )
-      return true;
-    print_error( sname_loc,
-      "\"%s\" was previously declared as a %s\n",
-      c_sname_full_name( sname ),
-      c_type_name_error( cur_type )
-    );
-    return false;
-  }
-
   bool const is_namespace = c_type_is_tid_any( new_type, TB_NAMESPACE );
   c_type_id_t prev_tid = TB_NONE;
   unsigned prev_order = 0;
