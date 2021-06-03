@@ -656,6 +656,29 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
 }
 
 /**
+ * Gets the <code>\ref c_typedef</code> for \a sname up to and including \a
+ * scope, but not beyond.
+ *
+ * @param sname The scoped name to find.
+ * @param scope The scope to limit \a sname to for the search.  For example, if
+ * \a sname is `A::B::C` and \a scope points to `B`, only `A::B` will be
+ * searched for.
+ * @return Returns a pointer to the corresponding <code>\ref c_typedef</code>
+ * or NULL for none.
+ *
+ * @sa c_typedef_find_sname()
+ */
+PJL_WARN_UNUSED_RESULT
+static c_typedef_t const* c_typedef_find_scope( c_sname_t const *sname,
+                                                c_scope_t *scope ) {
+  c_scope_t *const orig_next = scope->next;
+  scope->next = NULL;
+  c_typedef_t const *const tdef = c_typedef_find_sname( sname );
+  scope->next = orig_next;
+  return tdef;
+}
+
+/**
  * Gets the "order" value of a <code>\ref c_type_id_t</code> so they can be
  * compared by their orders.  The order is:
  *
@@ -730,10 +753,7 @@ static bool current_scope_append_sname( c_sname_t *sname,
     // that the sname's scope's type matches the previously declared sname's
     // scope's type.
     //
-    c_scope_t *const next = scope->next;
-    scope->next = NULL;
-    c_typedef_t const *const tdef = c_typedef_find_sname( sname );
-    scope->next = next;
+    c_typedef_t const *const tdef = c_typedef_find_scope( sname, scope );
     if ( tdef != NULL && !c_ast_empty_name( tdef->ast ) ) {
       c_type_t const *const tdef_type = c_ast_local_type( tdef->ast );
       if ( c_type_is_tid_any( tdef_type, TB_ANY_SCOPE ) &&
