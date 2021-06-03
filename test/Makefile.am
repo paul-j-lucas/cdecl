@@ -795,6 +795,7 @@ TESTS+=	tests/2c_typedef_i.test \
 	tests/k_typedef_i_explain_i.test \
 	tests/k_typedef_i_typedef_tn_i.test \
 	tests/namespace_+typedef_i.test \
+	tests/namespace_c_namespace_+e.test \
 	tests/namespace_c_typedef_i.test \
 	tests/namespace_k_typedef_i.test \
 	tests/namespace_n_typedef_i.test \
@@ -820,8 +821,10 @@ TESTS+=	tests/2c_typedef_i.test \
 # ==========================================
 #
 TESTS+=	tests/2k_typedef_i.test \
+	tests/c_namespace_c.test \
 	tests/k_namespace_typedef_i.test \
 	tests/namespace_+typedef_i-c++14.test \
+	tests/namespace_c_namespace_c.test \
 	tests/typedef_ai.test \
 	tests/typedef_c_int_least32_t.test \
 	tests/typedef_eti.test \
@@ -831,8 +834,8 @@ TESTS+=	tests/2k_typedef_i.test \
 	tests/using_ai.test \
 	tests/using_c_int_least32_t.test \
 	tests/using_eti.test \
-	tests/using_rgi.test \
 	tests/using_i-c.test \
+	tests/using_rgi.test \
 	tests/using_si.test
 
 #

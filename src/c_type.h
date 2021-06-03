@@ -588,8 +588,8 @@ PJL_WARN_UNUSED_RESULT
 c_type_t c_type_from_tid( c_type_id_t tid );
 
 /**
- * Gets the <code>\ref c_type_id_t</code> of \a type that
- * corresponds to the type part ID of \a tid.
+ * Gets the <code>\ref c_type_id_t</code> of \a type that corresponds to the
+ * type part ID of \a tid.
  *
  * @param type The <code>\ref c_type</code> to get the relevant <code>\ref
  * c_type_id_t</code> of.

@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ class C { namespace N { class D; } } @ 65

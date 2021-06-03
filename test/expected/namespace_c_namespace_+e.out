@@ -1,0 +1,2 @@
+namespace N { class C; }
+class N::C { enum E; };

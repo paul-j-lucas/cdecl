@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ namespace N { class C; }; namespace N { enum C::E; }; show user typedef @ 0
