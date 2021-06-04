@@ -603,17 +603,17 @@ void parser_cleanup( void ) {
  *
  * @param decl_keyword The keyword used for the declaration.
  * @param type_ast The AST of the type to add.
- * @param type_decl_loc The location of the offending type declaration.
+ * @param type_loc The location of the offending type declaration.
  * @return Returns `true` either if the type was added or it's equivalent to
  * the existing type; `false` if a different type already exists having the
  * same name.
  */
 PJL_WARN_UNUSED_RESULT
 static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
-                      c_loc_t const *type_decl_loc ) {
+                      c_loc_t const *type_loc ) {
   assert( decl_keyword != NULL );
   assert( type_ast != NULL );
-  assert( type_decl_loc != NULL );
+  assert( type_loc != NULL );
 
   c_typedef_t const *const old_tdef = c_typedef_add( type_ast );
   if ( old_tdef == NULL ) {             // type was added
@@ -625,7 +625,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
     slist_push_list_tail( &typedef_ast_list, &gc_ast_list );
   }
   else if ( old_tdef->ast != NULL ) {   // type exists and isn't equivalent
-    print_error( type_decl_loc,
+    print_error( type_loc,
       "\"%s\": \"%s\" redefinition with different type; original is: ",
       c_ast_full_name( type_ast ), decl_keyword
     );
