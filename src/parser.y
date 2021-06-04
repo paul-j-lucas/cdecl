@@ -750,7 +750,7 @@ static bool current_scope_append_sname( c_sname_t *sname,
           print_error( sname_loc,
             "\"%s\" was previously declared as a %s\n",
             c_sname_full_name( sname ),
-            c_type_name_error( scope_type )
+            c_type_name_error( tdef_type )
           );
           scope->next = orig_next;
           return false;
