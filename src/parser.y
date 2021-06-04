@@ -656,34 +656,6 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
 }
 
 /**
- * Gets the <code>\ref c_typedef</code> for \a sname up to and including \a
- * scope, but not beyond.
- *
- * @param sname The scoped name to find.
- * @param scope The scope to limit \a sname to for the search.  For example, if
- * \a sname is `A::B::C` and \a scope points to `B`, only `A::B` will be
- * searched for.
- * @return Returns a pointer to the corresponding <code>\ref c_typedef</code>
- * or NULL for none.
- *
- * @sa c_typedef_find_sname()
- */
-PJL_WARN_UNUSED_RESULT
-static c_typedef_t const* c_typedef_find_scope( c_sname_t const *sname,
-                                                c_scope_t *scope ) {
-  //
-  // Temporarily set scope->next to NULL to chop off any scopes past the given
-  // scope.  For example, given "A::B::C" and a scope pointing to "B", this
-  // would chop off "C" and search only for "A::B".
-  //
-  c_scope_t *const orig_next = scope->next;
-  scope->next = NULL;
-  c_typedef_t const *const tdef = c_typedef_find_sname( sname );
-  scope->next = orig_next;
-  return tdef;
-}
-
-/**
  * Gets the "order" value of a <code>\ref c_type_id_t</code> so they can be
  * compared by their orders.  The order is:
  *
@@ -753,11 +725,14 @@ static bool current_scope_append_sname( c_sname_t *sname,
   FOREACH_SCOPE( scope, sname, NULL ) {
     c_type_t *const scope_type = &c_scope_data( scope )->type;
     //
-    // Look up the partial sname up to an including scope, e.g., given
-    // "A::B::C", see if "A::B" exists.  If it does, check that the sname's
-    // scope's type matches the previously declared sname's scope's type.
+    // Temporarily set scope->next to NULL to chop off any scopes past the
+    // given scope to look up a partial sname. For example, given "A::B::C",
+    // see if "A::B" exists.  If it does, check that the sname's scope's type
+    // matches the previously declared sname's scope's type.
     //
-    c_typedef_t const *const tdef = c_typedef_find_scope( sname, scope );
+    c_scope_t *const orig_next = scope->next;
+    scope->next = NULL;
+    c_typedef_t const *const tdef = c_typedef_find_sname( sname );
     if ( tdef != NULL && !c_ast_empty_name( tdef->ast ) ) {
       c_type_t const *const tdef_type = c_ast_local_type( tdef->ast );
       if ( c_type_is_tid_any( tdef_type, TB_ANY_SCOPE ) &&
@@ -777,6 +752,7 @@ static bool current_scope_append_sname( c_sname_t *sname,
             c_sname_full_name( sname ),
             c_type_name_error( scope_type )
           );
+          scope->next = orig_next;
           return false;
         }
 
@@ -787,6 +763,7 @@ static bool current_scope_append_sname( c_sname_t *sname,
         *scope_type = *tdef_type;
       }
     }
+    scope->next = orig_next;
 
     c_type_id_t const cur_tid = scope->next != NULL ?
       scope_type->base_tid : new_type->base_tid;
