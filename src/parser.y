@@ -753,10 +753,9 @@ static bool current_scope_append_sname( c_sname_t *sname,
   FOREACH_SCOPE( scope, sname, NULL ) {
     c_type_t *const scope_type = &c_scope_data( scope )->type;
     //
-    // Temporarily set the scope's next to NULL so we can look up the partial
-    // sname, e.g., given "A::B::C", see if "A::B" exists.  If it does, check
-    // that the sname's scope's type matches the previously declared sname's
-    // scope's type.
+    // Look up the partial sname up to an including scope, e.g., given
+    // "A::B::C", see if "A::B" exists.  If it does, check that the sname's
+    // scope's type matches the previously declared sname's scope's type.
     //
     c_typedef_t const *const tdef = c_typedef_find_scope( sname, scope );
     if ( tdef != NULL && !c_ast_empty_name( tdef->ast ) ) {
