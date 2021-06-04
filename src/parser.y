@@ -767,8 +767,8 @@ static bool current_scope_append_sname( c_sname_t *sname,
 
     c_type_id_t const cur_tid = scope->next != NULL ?
       scope_type->base_tid : new_type->base_tid;
-    unsigned const cur_order = c_type_id_scope_order( cur_tid );
-    if ( cur_order < prev_order ) {
+    unsigned const scope_order = c_type_id_scope_order( cur_tid );
+    if ( scope_order < prev_order ) {
       print_error( sname_loc,
         "%s can not nest inside %s\n",
         c_type_id_name_error( cur_tid ),
@@ -777,7 +777,7 @@ static bool current_scope_append_sname( c_sname_t *sname,
       return false;
     }
     prev_tid = scope_type->base_tid;
-    prev_order = cur_order;
+    prev_order = scope_order;
 
     if ( is_namespace ) {
       //
