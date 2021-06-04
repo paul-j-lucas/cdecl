@@ -671,6 +671,11 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
 PJL_WARN_UNUSED_RESULT
 static c_typedef_t const* c_typedef_find_scope( c_sname_t const *sname,
                                                 c_scope_t *scope ) {
+  //
+  // Temporarily set scope->next to NULL to chop off any scopes past the given
+  // scope.  For example, given "A::B::C" and a scope pointing to "B", this
+  // would chop off "C" and search only for "A::B".
+  //
   c_scope_t *const orig_next = scope->next;
   scope->next = NULL;
   c_typedef_t const *const tdef = c_typedef_find_sname( sname );
