@@ -108,6 +108,8 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_cppi.test \
 	tests/declare_cu.test \
 	tests/declare_cvpi.test \
+	tests/declare_cxd.test \
+	tests/declare_cxf.test \
 	tests/declare_cz-ec.test \
 	tests/declare_cz.test \
 	tests/declare_en.test \
@@ -182,8 +184,6 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_vpi.test \
 	tests/declare_wt.test \
 	tests/declare_z.test \
-	tests/declare_zd.test \
-	tests/declare_zf.test \
 	tests/declare_zw3.test \
 	tests/declare_zz.test
 
@@ -347,6 +347,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_cs.test \
 	tests/explain_cu.test \
 	tests/explain_cvpi.test \
+	tests/explain_cxd.test \
+	tests/explain_cxf.test \
 	tests/explain_en.test \
 	tests/explain_eta2i.test \
 	tests/explain_f_pi.test \
@@ -462,8 +464,6 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_yo_plus2_i_rk.test \
 	tests/explain_yo_plus_rk_rk.test \
 	tests/explain_z.test \
-	tests/explain_zd.test \
-	tests/explain_zf.test \
 	tests/explain_zw3.test \
 	tests/explain_zz.test
 

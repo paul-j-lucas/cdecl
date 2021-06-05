@@ -49,6 +49,7 @@ The characters are:
 + `c8` = `char8_t`
 + `c16` = `char16_t`
 + `c32` = `char32_t`
++ `cx` = `_Complex`
 + `d` = `double`
 + `ec` = `extern "C"`
 + `ef` = `enum` with fixed type (that follows)
@@ -92,7 +93,7 @@ The characters are:
 + `xi` = `constinit`
 + `xx` = `constexpr`
 + `y` = `final`
-+ `z` = `_Complex` or `size_t`
++ `z` = `size_t`
 + `zz` = `ssize_t`
 
 For an Embedded C test, some characters change meaning:
