@@ -54,6 +54,7 @@ struct c_typedef {
   c_ast_t const  *ast;                  ///< AST representing the type.
   c_lang_id_t     lang_ids;             ///< Language(s) available in.
   bool            user_defined;         ///< Is the type user-defined?
+  bool            defined_in_english;   ///< Originally defined in English?
 };
 
 /**

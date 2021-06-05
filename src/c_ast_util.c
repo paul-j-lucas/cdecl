@@ -616,7 +616,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
       bool const orig_semicolon = opt_semicolon;
       opt_semicolon = false;
 
-      c_typedef_t const temp_tdef = { decl_ast, LANG_ANY, false };
+      c_typedef_t const temp_tdef = { decl_ast, LANG_ANY, false, false };
       c_typedef_gibberish( &temp_tdef, C_GIB_TYPEDEF, stderr );
 
       opt_semicolon = orig_semicolon;

@@ -699,10 +699,18 @@ static bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
           //      11: error: "N::C" was previously declared as a class
           //
           print_error( sname_loc,
-            "\"%s\" was previously declared as a %s\n",
+            "\"%s\" was previously declared as a %s:\n",
             c_sname_full_name( sname ),
             c_type_name_error( tdef_type )
           );
+          SGR_START_COLOR( stderr, caret );
+          EPUTC( '>' );
+          SGR_END_COLOR( stderr );
+          EPUTC( ' ' );
+          if ( tdef->defined_in_english )
+            c_ast_explain_type( tdef->ast, stderr );
+          else
+            c_typedef_gibberish( tdef, C_GIB_TYPEDEF, stderr );
           scope->next = orig_next;
           return false;
         }
