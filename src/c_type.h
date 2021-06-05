@@ -355,6 +355,9 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TB_ANY_INTEGRAL       ( TB_BOOL | TB_ANY_CHAR | TB_INT \
                               | TB_ANY_MODIFIER )
 
+/// Shorthand for any type char can be modified by #TB_ANY_MODIFIER.
+#define TB_ANY_MODIFIEE       ( TB_CHAR | TB_ANY_FLOAT | TB_ANY_EMC )
+
 /// Shorthand for an any modifier.
 #define TB_ANY_MODIFIER       ( TB_SHORT | TB_LONG | TB_LONG_LONG | TB_SIGNED \
                               | TB_UNSIGNED )

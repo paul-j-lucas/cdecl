@@ -901,7 +901,7 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
   // Special cases.
   if ( in_english ) {
     if ( (base_tid & TB_ANY_MODIFIER) != TB_NONE &&
-         (base_tid & (TB_CHAR | TB_ANY_FLOAT | TB_ANY_EMC)) == TB_NONE ) {
+         (base_tid & TB_ANY_MODIFIEE) == TB_NONE ) {
       // In English, be explicit about "int".
       base_tid |= TB_INT;
     }
@@ -909,7 +909,8 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
       // In English, either "final" or "overrride" implies "virtual".
       store_tid |= TS_VIRTUAL;
     }
-  } else /* !in_english */ {
+  }
+  else /* !in_english */ {
     if ( is_explicit_int( base_tid ) ) {
       base_tid |= TB_INT;
     } else if ( (base_tid & TB_ANY_MODIFIER) != TB_NONE ) {
