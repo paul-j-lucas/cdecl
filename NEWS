@@ -12,6 +12,17 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 10.1
 
+** More robust scoped name type checking
+Scoped names' scope-types are now checked against previous declarations.  For
+example, the second declaration's attempted use of N::C as a namespace is now
+flagged as an error because it was previously declared as a class:
+
+    c++decl> namespace N { class C; }
+    c++decl> namespace N::C { class D; }
+                       ^
+    11: error: "N::C" was previously declared as a class:
+    > namespace N { class C; }
+
 ** More C++ std types
 Added types `std::chars_format`, `std::ctype_base::mask`, `std::ios_base`,
 `std::ios_base::event`, `std::ios_base::event_callback`,
