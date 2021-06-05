@@ -676,7 +676,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                *          A::B(x);      // declare x as A::B with unneeded ()
                *          S::S()        // define constructor for S
                *
-               * 2. Previously declared scoped types are recognized as such,
+               * 2. Previously declared scope-types are recognized as such,
                *    e.g.:
                *
                *          define S::T as int

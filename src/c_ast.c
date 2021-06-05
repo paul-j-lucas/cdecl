@@ -392,8 +392,8 @@ void c_ast_set_sname( c_ast_t *ast, c_sname_t *sname ) {
   assert( ast != NULL );
   assert( sname != NULL );
   //
-  // If the scoped name has no scope type but the AST is one of a class,
-  // namespace, struct, or union type, adopt that type for the scope type.
+  // If the scoped name has no scope-type but the AST is one of a class,
+  // namespace, struct, or union type, adopt that type for the scope-type.
   //
   if ( c_type_is_none( c_sname_local_type( sname ) ) &&
        c_type_is_tid_any( &ast->type, TB_ANY_SCOPE ) ) {

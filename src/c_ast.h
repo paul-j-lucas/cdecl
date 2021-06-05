@@ -540,11 +540,11 @@ char const* c_ast_local_name( c_ast_t const *ast ) {
 }
 
 /**
- * Gets the scope type of the name of \a ast (which is the type of the
+ * Gets the scope-type of the name of \a ast (which is the type of the
  * innermost scope).
  *
- * @param ast The AST node to get the scope type of the name of.
- * @return Returns the scope type.
+ * @param ast The AST node to get the scope-type of the name of.
+ * @return Returns the scope-type.
  *
  * @sa c_ast_set_local_type()
  */
@@ -678,11 +678,11 @@ char const* c_ast_scope_name( c_ast_t const *ast ) {
 }
 
 /**
- * Sets the scope type of the name of \a ast (which is the type of the
+ * Sets the scope-type of the name of \a ast (which is the type of the
  * innermost scope).
  *
  * @param ast The AST to set the type of the name of.
- * @param type The scope type.
+ * @param type The scope-type.
  *
  * @sa c_ast_local_type()
  */

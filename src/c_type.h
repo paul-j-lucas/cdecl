@@ -65,7 +65,7 @@ struct c_type {
    * The base types (`int`, `double`, etc.) including user-defined types
    * (`enum`, `struct`, etc.), modifiers (`short`, `unsigned`, etc.), and also
    * `namespace` and the generic `scope` since it makes sense to store those
-   * with other scoped types (like `struct`).
+   * with other scope-types (like `struct`).
    *
    * Constants for base types begin with `TB_`.
    */
@@ -673,7 +673,7 @@ c_type_id_t c_type_id_normalize( c_type_id_t tid );
  * ```
  * order(`D`) &gt; order(`M`) and so `D` can not appear to the left of `M`.
  *
- * @param tid The scope type ID to get the order of.
+ * @param tid The scope-type ID to get the order of.
  * @return Returns said order.
  */
 unsigned c_type_id_scope_order( c_type_id_t tid );

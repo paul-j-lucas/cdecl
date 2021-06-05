@@ -4196,7 +4196,7 @@ pointer_to_member_type_c_ast
       c_type_t scope_type = *c_sname_local_type( &$1 );
       if ( (scope_type.base_tid & TB_ANY_SCOPE) == TB_NONE ) {
         //
-        // The sname has no scope type, but we now know there's a pointer-to-
+        // The sname has no scope-type, but we now know there's a pointer-to-
         // member of it, so it must be a class.  (It could alternatively be a
         // struct, but we have no context to know, so just pick class because
         // it's more C++-like.)
@@ -4205,7 +4205,7 @@ pointer_to_member_type_c_ast
         c_sname_set_local_type( &$1, &scope_type );
       }
 
-      // adopt sname's scope type for the AST
+      // adopt sname's scope-type for the AST
       $$->type = c_type_or( &C_TYPE_LIT_S( $3 ), &scope_type );
 
       $$->as.ptr_mbr.class_sname = $1;
@@ -5683,7 +5683,7 @@ scope_sname_c_opt
         //
         // Since we know the name in this context (followed by "::") definitely
         // refers to a scope, set the scoped name's type to TB_SCOPE (if it
-        // doesn't already have a scope type).
+        // doesn't already have a scope-type).
         //
         c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
       }
@@ -5720,7 +5720,7 @@ sname_c
         //
         // Since we know the name in this context (followed by "::") definitely
         // refers to a scope, set the scoped name's type to TB_SCOPE (if it
-        // doesn't already have a scope type).
+        // doesn't already have a scope-type).
         //
         c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
       }
@@ -5748,7 +5748,7 @@ sname_c
         //
         // Since we know the name in this context (followed by "::") definitely
         // refers to a scope, set the scoped name's type to TB_SCOPE (if it
-        // doesn't already have a scope type).
+        // doesn't already have a scope-type).
         //
         c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
       }
