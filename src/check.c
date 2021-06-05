@@ -20,11 +20,12 @@
 
 /**
  * @file
- * Defines functions for performing semantic checks on an AST.
+ * Defines functions for performing semantic checks.
  */
 
 // local
 #include "pjl_config.h"                 /* must go first */
+#include "check.h"
 #include "c_ast.h"
 #include "c_ast_util.h"
 #include "c_keyword.h"
@@ -32,7 +33,10 @@
 #include "c_type.h"
 #include "c_typedef.h"
 #include "cdecl.h"
+#include "color.h"
 #include "did_you_mean.h"
+#include "english.h"
+#include "gibberish.h"
 #include "literals.h"
 #include "options.h"
 #include "print.h"
@@ -2403,6 +2407,81 @@ bool c_ast_check_declaration( c_ast_t const *ast ) {
   if ( !c_ast_check_errors( ast, false ) )
     return false;
   PJL_IGNORE_RV( c_ast_check_visitor( ast, c_ast_visitor_warning, NULL ) );
+  return true;
+}
+
+bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
+  assert( sname != NULL );
+  assert( !c_sname_empty( sname ) );
+  assert( sname_loc != NULL );
+
+  c_type_id_t prev_tid = TB_NONE;
+  unsigned prev_order = 0;
+
+  FOREACH_SCOPE( scope, sname, NULL ) {
+    c_type_t *const scope_type = &c_scope_data( scope )->type;
+    //
+    // Temporarily set scope->next to NULL to chop off any scopes past the
+    // given scope to look up a partial sname. For example, given "A::B::C",
+    // see if "A::B" exists.  If it does, check that the sname's scope's type
+    // matches the previously declared sname's scope's type.
+    //
+    c_scope_t *const orig_next = scope->next;
+    scope->next = NULL;
+    c_typedef_t const *const tdef = c_typedef_find_sname( sname );
+    if ( tdef != NULL ) {
+      c_type_t const *const tdef_type = c_ast_local_type( tdef->ast );
+      if ( c_type_is_tid_any( tdef_type, TB_ANY_SCOPE | TB_ENUM ) &&
+           !c_type_equal( scope_type, tdef_type ) ) {
+        if ( c_type_is_tid_any( scope_type, TB_ANY_SCOPE ) ) {
+          //
+          // The scope's type is a scope-type and doesn't match a previously
+          // declared scope-type, e.g.:
+          //
+          //      namespace N { class C; }
+          //      namespace N::C { class D; }
+          //                ^
+          //      11: error: "N::C" was previously declared as a class
+          //
+          print_error( sname_loc,
+            "\"%s\" was previously declared as a %s:\n",
+            c_sname_full_name( sname ),
+            c_type_name_error( tdef_type )
+          );
+          SGR_START_COLOR( stderr, caret );
+          EPUTC( '>' );
+          SGR_END_COLOR( stderr );
+          EPUTC( ' ' );
+          if ( tdef->defined_in_english )
+            c_ast_explain_type( tdef->ast, stderr );
+          else
+            c_typedef_gibberish( tdef, C_GIB_TYPEDEF, stderr );
+          scope->next = orig_next;
+          return false;
+        }
+
+        //
+        // Otherwise, copy the previously declared scope's type to the current
+        // scope's type.
+        //
+        *scope_type = *tdef_type;
+      }
+    }
+    scope->next = orig_next;
+
+    unsigned const scope_order = c_type_id_scope_order( scope_type->base_tid );
+    if ( scope_order < prev_order ) {
+      print_error( sname_loc,
+        "%s can not nest inside %s\n",
+        c_type_id_name_error( scope_type->base_tid ),
+        c_type_id_name_error( prev_tid )
+      );
+      return false;
+    }
+    prev_tid = scope_type->base_tid;
+    prev_order = scope_order;
+  } // for
+
   return true;
 }
 

@@ -75,29 +75,6 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast );
 
 /**
- * Performs additional checks on an entire AST for semantic errors when
- * casting.
- *
- * @param ast The AST to check.
- * @return Returns `true` only if all checks passed.
- *
- * @sa c_ast_check_declaration()
- */
-PJL_WARN_UNUSED_RESULT
-bool c_ast_check_cast( c_ast_t const *ast );
-
-/**
- * Checks an entire AST for semantic errors and warnings.
- *
- * @param ast The AST to check.
- * @return Returns `true` only if \a ast error-free.
- *
- * @sa c_ast_check_cast()
- */
-PJL_WARN_UNUSED_RESULT
-bool c_ast_check_declaration( c_ast_t const *ast );
-
-/**
  * Traverses \a ast attempting to find an AST node having \a kind_ids.
  *
  * @param ast The AST to begin at; may be NULL.

@@ -42,7 +42,7 @@ cdecl_SOURCES =	parser.y \
 		c_type.c c_type.h \
 		c_typedef.c c_typedef.h \
 		cdecl.c cdecl.h \
-		check.c \
+		check.c check.h \
 		color.c color.h \
 		dam_lev.c dam_lev.h \
 		did_you_mean.c did_you_mean.h \
