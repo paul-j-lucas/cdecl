@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ enum E; namespace E { class C; } @ 65

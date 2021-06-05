@@ -784,7 +784,10 @@ bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
 
 unsigned c_type_id_scope_order( c_type_id_t tid ) {
   assert( (tid & TX_MASK_PART_ID) == C_TPID_BASE );
-  switch ( tid & TB_ANY_SCOPE ) {
+  switch ( tid & (TB_ANY_SCOPE | TB_ENUM) ) {
+    case TB_ENUM:
+    case TB_ENUM | TB_CLASS:
+      return 3;
     case TB_STRUCT:
     case TB_UNION:
     case TB_CLASS:

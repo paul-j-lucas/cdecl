@@ -683,7 +683,7 @@ static bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     c_typedef_t const *const tdef = c_typedef_find_sname( sname );
     if ( tdef != NULL ) {
       c_type_t const *const tdef_type = c_ast_local_type( tdef->ast );
-      if ( c_type_is_tid_any( tdef_type, TB_ANY_SCOPE ) &&
+      if ( c_type_is_tid_any( tdef_type, TB_ANY_SCOPE | TB_ENUM ) &&
            !c_type_equal( scope_type, tdef_type ) ) {
         if ( c_type_is_tid_any( scope_type, TB_ANY_SCOPE ) ) {
           //
@@ -2582,6 +2582,7 @@ enum_declaration_c
 
       c_sname_t enum_sname = c_sname_dup( &in_attr.current_scope );
       c_sname_append_sname( &enum_sname, &$3 );
+      c_sname_set_local_type( &enum_sname, &C_TYPE_LIT_B( $1 ) );
       if ( !c_sname_check( &enum_sname, &@3 ) )
         PARSE_ABORT();
 

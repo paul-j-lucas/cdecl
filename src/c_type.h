@@ -658,7 +658,8 @@ c_type_id_t c_type_id_normalize( c_type_id_t tid );
  * compared by its order.  The order is:
  *
  * + #TB_SCOPE &lt; [`inline`] `namespace` &lt;
- *   { `struct` | `union` | `class` | _none_ }
+ *   { `struct` | `union` | `class` | _none_ } &lt;
+ *   `enum` [`class`]
  *
  * I.e., the order of T1 &le; T2 only if T1 can appear to the left (&lt;) of T2
  * in a declaration.  For example, given:
