@@ -651,6 +651,30 @@ PJL_WARN_UNUSED_RESULT
 c_type_id_t c_type_id_normalize( c_type_id_t tid );
 
 /**
+ * Gets the "order" value of a <code>\ref c_type_id_t</code> so it can be
+ * compared by its order.  The order is:
+ *
+ * + #TB_SCOPE &lt; [`inline`] `namespace` &lt;
+ *   { `struct` | `union` | `class` | _none_ }
+ *
+ * I.e., the order of T1 &le; T2 only if T1 can appear to the left (&lt;) of T2
+ * in a declaration.  For example, given:
+ * ```
+ *  namespace N { class C { // ...
+ * ```
+ * order(`N`) &le; order(`C`) because `N` can appear to the left of `C` in a
+ * declaration.  However, given:
+ * ```
+ *  class D { namespace M { // ...
+ * ```
+ * order(`D`) &gt; order(`M`) and so `D` can not appear to the left of `M`.
+ *
+ * @param tid The scope type ID to get the order of.
+ * @return Returns said order.
+ */
+unsigned c_type_id_scope_order( c_type_id_t tid );
+
+/**
  * Gets the `c_type_part_id_t` from \a tid.
  *
  * @param tid The type ID.

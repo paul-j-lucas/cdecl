@@ -218,6 +218,18 @@ bool c_sname_empty( c_sname_t const *sname ) {
 }
 
 /**
+ * If the local scope-type of \a sname is #TB_NAMESPACE, make all scope-types
+ * of all enclosing scopes that are either #TB_NONE or #TB_SCOPE also be
+ * #TB_NAMESPACE since a namespace can only nest within another namespace.
+ *
+ * @param sname The scoped name to fill in namespaces.
+ *
+ * @note If there are scope-types that are something other than either #TB_NONE
+ * or #TB_SCOPE, this is an error and will be caught by c_sname_check().
+ */
+void c_sname_fill_in_namespaces( c_sname_t *sname );
+
+/**
  * Frees all memory associated with \a sname but _not_ \a sname itself.
  *
  * @param sname The scoped name to free.  If NULL, does nothing; otherwise,

@@ -434,9 +434,6 @@ struct show_type_info {
 };
 typedef struct show_type_info show_type_info_t;
 
-// local functions
-static unsigned       c_type_id_scope_order( c_type_id_t );
-
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
 static bool           error_newlined = true;
@@ -738,69 +735,6 @@ static bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   } // for
 
   return true;
-}
-
-/**
- * If the local scope-type of \a sname is #TB_NAMESPACE, make all scope-types
- * of all enclosing scopes that are either #TB_NONE or #TB_SCOPE also be
- * #TB_NAMESPACE since a namespace can only nest within another namespace.
- *
- * @param sname The scoped name to fill in namespaces.
- *
- * @note If there are scope-types that are something other than either #TB_NONE
- * or #TB_SCOPE, this is an error and will be caught by c_sname_check().
- */
-static void c_sname_fill_in_namespaces( c_sname_t *sname ) {
-  assert( sname != NULL );
-  c_type_t const *const local_type = c_sname_local_type( sname );
-  if ( !c_type_is_tid_any( local_type, TB_NAMESPACE ) )
-    return;
-
-  FOREACH_SCOPE( scope, sname, sname->tail ) {
-    c_type_t *const type = &c_scope_data( scope )->type;
-    if ( c_type_is_none( type ) || c_type_is_tid_any( type, TB_SCOPE ) ) {
-      type->base_tid &= c_type_id_compl( TB_SCOPE );
-      type->base_tid |= TB_NAMESPACE;
-    }
-  } // for
-}
-
-/**
- * Gets the "order" value of a <code>\ref c_type_id_t</code> so they can be
- * compared by their orders.  The order is:
- *
- * + #TB_SCOPE &lt; [`inline`] `namespace` &lt;
- *   { `struct` | `union` | `class` | _none_ }
- *
- * I.e., the order of T1 &le; T2 only if T1 can appear to the left (&lt;) of T2
- * in a declaration.  For example, given:
- * ```
- *  namespace N { class C { // ...
- * ```
- * order(`N`) &le; order(`C`) because `N` can appear to the left of `C` in a
- * declaration.  However, given:
- * ```
- *  class D { namespace M { // ...
- * ```
- * order(`D`) &gt; order(`M`) and so `D` can not appear to the left of `M`.
- *
- * @param tid The scope type ID to get the order of.
- * @return Returns said order.
- */
-static unsigned c_type_id_scope_order( c_type_id_t tid ) {
-  assert( (tid & TX_MASK_PART_ID) == C_TPID_BASE );
-  switch ( tid & (TB_ANY_SCOPE | TB_ENUM) ) {
-    case TB_STRUCT:
-    case TB_UNION:
-    case TB_CLASS:
-    case TB_NONE:
-      return 2;
-    case TB_NAMESPACE:
-      return 1;
-    case TB_SCOPE:
-      return 0;
-  } // switch
-  UNEXPECTED_INT_VALUE( tid );
 }
 
 /**

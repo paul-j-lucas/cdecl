@@ -98,6 +98,21 @@ void c_sname_append_name( c_sname_t *sname, char *name ) {
   slist_push_tail( sname, data );
 }
 
+void c_sname_fill_in_namespaces( c_sname_t *sname ) {
+  assert( sname != NULL );
+  c_type_t const *const local_type = c_sname_local_type( sname );
+  if ( !c_type_is_tid_any( local_type, TB_NAMESPACE ) )
+    return;
+
+  FOREACH_SCOPE( scope, sname, sname->tail ) {
+    c_type_t *const type = &c_scope_data( scope )->type;
+    if ( c_type_is_none( type ) || c_type_is_tid_any( type, TB_SCOPE ) ) {
+      type->base_tid &= c_type_id_compl( TB_SCOPE );
+      type->base_tid |= TB_NAMESPACE;
+    }
+  } // for
+}
+
 char const* c_sname_full_name( c_sname_t const *sname ) {
   static strbuf_t sbuf;
   assert( sname != NULL );

@@ -782,6 +782,22 @@ bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
   return true;
 }
 
+unsigned c_type_id_scope_order( c_type_id_t tid ) {
+  assert( (tid & TX_MASK_PART_ID) == C_TPID_BASE );
+  switch ( tid & TB_ANY_SCOPE ) {
+    case TB_STRUCT:
+    case TB_UNION:
+    case TB_CLASS:
+    case TB_NONE:
+      return 2;
+    case TB_NAMESPACE:
+      return 1;
+    case TB_SCOPE:
+      return 0;
+  } // switch
+  UNEXPECTED_INT_VALUE( tid );
+}
+
 c_type_part_id_t c_type_id_tpid( c_type_id_t tid ) {
   //
   // If tid has been complemented, e.g., ~TS_REGISTER to denote "all but
