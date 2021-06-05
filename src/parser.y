@@ -742,36 +742,35 @@ static bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
 
 /**
  * If the local scope-type of \a sname is #TB_NAMESPACE, make all scope-types
- * of all enclosing scopes also be #TB_NAMESPACE since a namespace can only
- * nest within another namespace.
+ * of all enclosing scopes that are either #TB_NONE or #TB_SCOPE also be
+ * #TB_NAMESPACE since a namespace can only nest within another namespace.
  *
  * @param sname The scoped name to fill in namespaces.
  *
- * @note This function should be called only after \a sname has been checked
- * with c_sname_check().
+ * @note If there are scope-types that are something other than either #TB_NONE
+ * or #TB_SCOPE, this is an error and will be caught by c_sname_check().
  */
 static void c_sname_fill_in_namespaces( c_sname_t *sname ) {
+  assert( sname != NULL );
   c_type_t const *const local_type = c_sname_local_type( sname );
-  if ( c_type_is_tid_any( local_type, TB_NAMESPACE ) ) {
-    FOREACH_SCOPE( scope, sname, NULL ) {
-      c_type_t *const scope_type = &c_scope_data( scope )->type;
-      assert(
-        !c_type_is_tid_any(
-          scope_type, c_type_id_compl( TB_NAMESPACE | TB_SCOPE )
-        )
-      );
-      scope_type->base_tid &= c_type_id_compl( TB_SCOPE );
-      scope_type->base_tid |= TB_NAMESPACE;
-    } // for
-  }
+  if ( !c_type_is_tid_any( local_type, TB_NAMESPACE ) )
+    return;
+
+  FOREACH_SCOPE( scope, sname, sname->tail ) {
+    c_type_t *const type = &c_scope_data( scope )->type;
+    if ( c_type_is_none( type ) || c_type_is_tid_any( type, TB_SCOPE ) ) {
+      type->base_tid &= c_type_id_compl( TB_SCOPE );
+      type->base_tid |= TB_NAMESPACE;
+    }
+  } // for
 }
 
 /**
  * Gets the "order" value of a <code>\ref c_type_id_t</code> so they can be
  * compared by their orders.  The order is:
  *
- * + { #TB_NONE | #TB_SCOPE } &lt; [`inline`] `namespace` &lt;
- *   { `struct` | `union` | `class` } &lt; `enum` [`class`]
+ * + #TB_SCOPE &lt; [`inline`] `namespace` &lt;
+ *   { `struct` | `union` | `class` | _none_ }
  *
  * I.e., the order of T1 &le; T2 only if T1 can appear to the left (&lt;) of T2
  * in a declaration.  For example, given:
@@ -791,16 +790,13 @@ static void c_sname_fill_in_namespaces( c_sname_t *sname ) {
 static unsigned c_type_id_scope_order( c_type_id_t tid ) {
   assert( (tid & TX_MASK_PART_ID) == C_TPID_BASE );
   switch ( tid & (TB_ANY_SCOPE | TB_ENUM) ) {
-    case TB_ENUM:
-    case TB_ENUM | TB_CLASS:
-      return 3;
     case TB_STRUCT:
     case TB_UNION:
     case TB_CLASS:
+    case TB_NONE:
       return 2;
     case TB_NAMESPACE:
       return 1;
-    case TB_NONE:
     case TB_SCOPE:
       return 0;
   } // switch
@@ -2092,9 +2088,9 @@ define_english
 
       if ( c_type_is_tid_any( &$5->type, TB_ANY_SCOPE ) )
         c_ast_set_local_type( $5, &$5->type );
+      c_sname_fill_in_namespaces( &$5->sname );
       if ( !c_sname_check( &$5->sname, &@2 ) )
         PARSE_ABORT();
-      c_sname_fill_in_namespaces( &$5->sname );
 
       DUMP_AST( "defined.ast", $5 );
 
@@ -2650,19 +2646,18 @@ enum_declaration_c
       DUMP_SNAME( "any_sname_c", $3 );
       DUMP_AST( "enum_fixed_type_c_ast_opt", $4 );
 
-      c_sname_t temp_sname = c_sname_dup( &in_attr.current_scope );
-      c_sname_append_sname( &temp_sname, &$3 );
-      c_sname_set_local_type( &temp_sname, &C_TYPE_LIT_B( $1 ) );
-      if ( !c_sname_check( &temp_sname, &@3 ) )
+      c_sname_t enum_sname = c_sname_dup( &in_attr.current_scope );
+      c_sname_append_sname( &enum_sname, &$3 );
+      if ( !c_sname_check( &enum_sname, &@3 ) )
         PARSE_ABORT();
 
       c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
-      enum_ast->sname = temp_sname;
+      enum_ast->sname = enum_sname;
       enum_ast->type.base_tid = c_type_id_check( $1, C_TPID_BASE );
       enum_ast->as.ecsu.of_ast = $4;
       c_sname_append_name(
         &enum_ast->as.ecsu.ecsu_sname,
-        check_strdup( c_sname_local_name( &enum_ast->sname ) )
+        check_strdup( c_sname_local_name( &enum_sname ) )
       );
 
       DUMP_AST( "enum_declaration_c", enum_ast );
@@ -2710,9 +2705,9 @@ namespace_declaration_c
 
       c_sname_append_sname( &in_attr.current_scope, &$3 );
       c_sname_set_local_type( &in_attr.current_scope, &$1 );
+      c_sname_fill_in_namespaces( &in_attr.current_scope );
       if ( !c_sname_check( &in_attr.current_scope, &@3 ) )
         PARSE_ABORT();
-      c_sname_fill_in_namespaces( &in_attr.current_scope );
     }
     brace_in_scope_declaration_c
   ;
