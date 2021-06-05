@@ -75,7 +75,8 @@ The characters are:
 + `ns` = `namespace`
 + `nt` = non-throwing
 + `nx` = `noexcept`
-+ `o` = `operator` or `override`
++ `o` = `operator`
++ `ov` = `override`
 + `p` = pointer
 + `r` = reference
 + `rg` = `register`

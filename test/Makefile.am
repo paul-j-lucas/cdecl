@@ -413,10 +413,10 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_ni.test \
 	tests/explain_nrfi_v.test \
 	tests/explain_oi.test \
-	tests/explain_oo_minus2_i_rk.test \
-	tests/explain_oo_minus_rk_rk.test \
-	tests/explain_oo_plus2_i_rk.test \
-	tests/explain_oo_plus_rk_rk.test \
+	tests/explain_ovo_minus2_i_rk.test \
+	tests/explain_ovo_minus_rk_rk.test \
+	tests/explain_ovo_plus2_i_rk.test \
+	tests/explain_ovo_plus_rk_rk.test \
 	tests/explain_pa3a5i.test \
 	tests/explain_pa3cpa5i.test \
 	tests/explain_pa3pa5i.test \
@@ -580,7 +580,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_v.test \
 	tests/explain_vf_v-c.test \
 	tests/explain_vi-knr.test \
-	tests/explain_voyf-c.test \
+	tests/explain_vovyf-c.test \
 	tests/explain_wt-c89.test \
 	tests/explain_xxi-c.test
 
@@ -959,7 +959,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_o_delete_pv_v.test \
 	tests/declare_o_new_a_z_pv.test \
 	tests/declare_o_new_z_pv.test \
-	tests/declare_oyf.test \
+	tests/declare_ovyf.test \
 	tests/declare_pfv_ri.test \
 	tests/declare_pmci.test \
 	tests/declare_pmf_i.test \
@@ -977,7 +977,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_sxxi.test \
 	tests/declare_vdtor.test \
 	tests/declare_vf_v.test \
-	tests/declare_voyf.test \
+	tests/declare_vovyf.test \
 	tests/declare_xici.test \
 	tests/declare_xxi.test \
 	tests/declare_yf.test \
@@ -1273,7 +1273,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_nxtf_v.test \
 	tests/explain_o_new_a_z_pv.test \
 	tests/explain_o_new_z_pv.test \
-	tests/explain_oyf.test \
+	tests/explain_ovyf.test \
 	tests/explain_pmf_i.test \
 	tests/explain_pmf_pc.test \
 	tests/explain_pmfii_pk.test \
@@ -1290,7 +1290,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_using_pfi_v.test \
 	tests/explain_vcompl_dtor.test \
 	tests/explain_vdtor.test \
-	tests/explain_voyf.test \
+	tests/explain_vovyf.test \
 	tests/explain_xxctor.test \
 	tests/explain_xxi.test \
 	tests/explain_ydtor.test \
@@ -1459,8 +1459,8 @@ TESTS+=	tests/explain_+co_eq2_rck_b=default.test \
 	tests/explain_o_star_rk.test \
 	tests/explain_o_tilde_k.test \
 	tests/explain_o_tilde_rck_k.test \
-	tests/explain_oo_amper_rk_pk.test \
-	tests/explain_oo_star_rk_rk.test \
+	tests/explain_ovo_amper_rk_pk.test \
+	tests/explain_ovo_star_rk_rk.test \
 	tests/explain_ro_amper_rk_pk.test \
 	tests/explain_ro_star_rk_rk.test \
 	tests/explain_rro_amper_rk_pk.test \
@@ -1499,11 +1499,11 @@ TESTS+=	tests/explain_+co_eq2_rck_b=default-cpp17.test \
 	tests/explain_o_minus2_rkd_rk.test \
 	tests/explain_o_minus_iel_i.test \
 	tests/explain_o_new_z_z.test \
-	tests/explain_o_oexclam_k_b.test \
 	tests/explain_o_plus2_d_rk.test \
 	tests/explain_o_plus2_rkd_rk.test \
 	tests/explain_o_plus_iel_i.test \
 	tests/explain_o_qmark_colon_k2i_i.test \
+	tests/explain_ov_o_exclam_k_b.test \
 	tests/explain_ro_exclam_k_b.test \
 	tests/explain_rro_exclam_k_b.test \
 	tests/explain_vo_exclam_k_b.test \
@@ -1545,7 +1545,7 @@ TESTS+=	tests/explain_cast_pmi.test \
 #
 TESTS+=	tests/explain_+udc_i.test \
 	tests/explain_f+udc_i.test \
-	tests/explain_oc_udc_i.test \
+	tests/explain_ovc_udc_i.test \
 	tests/explain_udc_i.test \
 	tests/explain_udc_rcc.test
 
