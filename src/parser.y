@@ -434,6 +434,9 @@ struct show_type_info {
 };
 typedef struct show_type_info show_type_info_t;
 
+// local functions
+static unsigned       c_type_id_scope_order( c_type_id_t );
+
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
 static bool           error_newlined = true;
@@ -656,6 +659,106 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
 }
 
 /**
+ * Perform semantic checks on a scope name.
+ *
+ * @param sname The scoped name to check.
+ * @param sname_loc The location of \a sname.
+ * @return Returns `true` only if all checks passed.
+ */
+static bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
+  assert( sname != NULL );
+  assert( !c_sname_empty( sname ) );
+  assert( sname_loc != NULL );
+
+  c_type_id_t prev_tid = TB_NONE;
+  unsigned prev_order = 0;
+
+  FOREACH_SCOPE( scope, sname, NULL ) {
+    c_type_t *const scope_type = &c_scope_data( scope )->type;
+    //
+    // Temporarily set scope->next to NULL to chop off any scopes past the
+    // given scope to look up a partial sname. For example, given "A::B::C",
+    // see if "A::B" exists.  If it does, check that the sname's scope's type
+    // matches the previously declared sname's scope's type.
+    //
+    c_scope_t *const orig_next = scope->next;
+    scope->next = NULL;
+    c_typedef_t const *const tdef = c_typedef_find_sname( sname );
+    if ( tdef != NULL ) {
+      c_type_t const *const tdef_type = c_ast_local_type( tdef->ast );
+      if ( c_type_is_tid_any( tdef_type, TB_ANY_SCOPE ) &&
+           !c_type_equal( scope_type, tdef_type ) ) {
+        if ( c_type_is_tid_any( scope_type, TB_ANY_SCOPE ) ) {
+          //
+          // The scope's type is a scope-type and doesn't match a previously
+          // declared scope-type, e.g.:
+          //
+          //      namespace N { class C; }
+          //      namespace N::C { class D; }
+          //                ^
+          //      11: error: "N::C" was previously declared as a class
+          //
+          print_error( sname_loc,
+            "\"%s\" was previously declared as a %s\n",
+            c_sname_full_name( sname ),
+            c_type_name_error( tdef_type )
+          );
+          scope->next = orig_next;
+          return false;
+        }
+
+        //
+        // Otherwise, copy the previously declared scope's type to the current
+        // scope's type.
+        //
+        *scope_type = *tdef_type;
+      }
+    }
+    scope->next = orig_next;
+
+    unsigned const scope_order = c_type_id_scope_order( scope_type->base_tid );
+    if ( scope_order < prev_order ) {
+      print_error( sname_loc,
+        "%s can not nest inside %s\n",
+        c_type_id_name_error( scope_type->base_tid ),
+        c_type_id_name_error( prev_tid )
+      );
+      return false;
+    }
+    prev_tid = scope_type->base_tid;
+    prev_order = scope_order;
+  } // for
+
+  return true;
+}
+
+/**
+ * If the local scope-type of \a sname is #TB_NAMESPACE, make all scope-types
+ * of all enclosing scopes also be #TB_NAMESPACE since a namespace can only
+ * nest within another namespace.
+ *
+ * @param sname The scoped name to fill in namespaces.
+ *
+ * @note This function should be called only after \a sname has been checked
+ * with c_sname_check().
+ */
+static void c_sname_fill_in_namespaces( c_sname_t *sname ) {
+  c_type_t const *const local_type = c_sname_local_type( sname );
+  if ( c_type_is_tid_any( local_type, TB_NAMESPACE ) ) {
+    FOREACH_SCOPE( scope, sname, NULL ) {
+      c_type_t *const scope_type = &c_scope_data( scope )->type;
+      assert(
+        !c_type_is_tid_any(
+          scope_type, c_type_id_compl( TB_NAMESPACE | TB_SCOPE )
+        )
+      );
+      scope_type->base_tid &= c_type_id_compl( TB_SCOPE );
+      scope_type->base_tid |= TB_NAMESPACE;
+    } // for
+  }
+}
+
+/**
  * Gets the "order" value of a <code>\ref c_type_id_t</code> so they can be
  * compared by their orders.  The order is:
  *
@@ -694,110 +797,6 @@ static unsigned c_type_id_scope_order( c_type_id_t tid ) {
       return 0;
   } // switch
   UNEXPECTED_INT_VALUE( tid );
-}
-
-/**
- * Appends \a sname to the current scope's name and sets the new local scope's
- * type to \a new_type checking that it can be declared withing the current
- * scope.
- *
- * @param sname The scoped name to append to the current scope's name.
- * @param sname_loc The location of \a sname.
- * @param new_type The type.
- * @return Returns `true` only if \a sname can be appended to the current
- * scope's name.
- */
-static bool current_scope_append_sname( c_sname_t *sname,
-                                        c_loc_t const *sname_loc,
-                                        c_type_t const *new_type ) {
-  assert( sname != NULL );
-  assert( !c_sname_empty( sname ) );
-  assert( sname_loc != NULL );
-  assert( new_type != NULL );
-
-  c_sname_append_sname( &in_attr.current_scope, sname );
-  sname = &in_attr.current_scope;
-
-  bool const is_namespace = c_type_is_tid_any( new_type, TB_NAMESPACE );
-  c_type_id_t prev_tid = TB_NONE;
-  unsigned prev_order = 0;
-
-  FOREACH_SCOPE( scope, sname, NULL ) {
-    c_type_t *const scope_type = &c_scope_data( scope )->type;
-    //
-    // Temporarily set scope->next to NULL to chop off any scopes past the
-    // given scope to look up a partial sname. For example, given "A::B::C",
-    // see if "A::B" exists.  If it does, check that the sname's scope's type
-    // matches the previously declared sname's scope's type.
-    //
-    c_scope_t *const orig_next = scope->next;
-    scope->next = NULL;
-    c_typedef_t const *const tdef = c_typedef_find_sname( sname );
-    if ( tdef != NULL && !c_ast_empty_name( tdef->ast ) ) {
-      c_type_t const *const tdef_type = c_ast_local_type( tdef->ast );
-      if ( c_type_is_tid_any( tdef_type, TB_ANY_SCOPE ) &&
-           !c_type_equal( scope_type, tdef_type ) ) {
-        if ( c_type_is_tid_any( scope_type, TB_ANY_SCOPE ) ) {
-          //
-          // The scope's type is a scope-type and doesn't match a previously
-          // declared type, e.g.:
-          //
-          //      namespace N { class C; }
-          //      namespace N::C { class D; }
-          //                ^
-          //      11: error: "N::C" was previously declared as a class
-          //
-          print_error( sname_loc,
-            "\"%s\" was previously declared as a %s\n",
-            c_sname_full_name( sname ),
-            c_type_name_error( tdef_type )
-          );
-          scope->next = orig_next;
-          return false;
-        }
-
-        //
-        // Otherwise, copy the previously declared scope's type to the current
-        // scope's type.
-        //
-        *scope_type = *tdef_type;
-      }
-    }
-    scope->next = orig_next;
-
-    c_type_id_t const cur_tid = scope->next != NULL ?
-      scope_type->base_tid : new_type->base_tid;
-    unsigned const scope_order = c_type_id_scope_order( cur_tid );
-    if ( scope_order < prev_order ) {
-      print_error( sname_loc,
-        "%s can not nest inside %s\n",
-        c_type_id_name_error( cur_tid ),
-        c_type_id_name_error( prev_tid )
-      );
-      return false;
-    }
-    prev_tid = scope_type->base_tid;
-    prev_order = scope_order;
-
-    if ( is_namespace ) {
-      //
-      // When setting type of the new current scope to TB_NAMESPACE, set all
-      // intermediate scope's types to be TB_NAMESPACE also since everything to
-      // the left of a namespace in a declaration must also be a namespace.
-      // For example, given:
-      //
-      //      namespace A::B::C { // ...
-      //
-      // and new_type is TB_NAMESPACE, then the type of A and B must also be
-      // TB_NAMESPACE since namespaces can nest only within other namespaces.
-      //
-      scope_type->base_tid &= c_type_id_compl( TB_SCOPE );
-      scope_type->base_tid |= TB_NAMESPACE;
-    }
-  } // for
-
-  c_sname_set_local_type( sname, new_type );
-  return true;
 }
 
 /**
@@ -2057,10 +2056,11 @@ define_english
       DUMP_TYPE( "storage_class_list_english_type_opt", &$4 );
       DUMP_AST( "decl_english_ast", $5 );
 
+      c_ast_set_sname( $5, &$2 );
+
       if ( $5->kind_id == K_NAME ) {  // see the comment in "declare_english"
         assert( !c_ast_empty_name( $5 ) );
         print_error_unknown_name( &@5, &$5->sname );
-        c_sname_free( &$2 );
         PARSE_ABORT();
       }
 
@@ -2072,27 +2072,28 @@ define_english
       //      define sint as static int
       //      ...
       //
-      //  i.e., a defined type with a storage class.
+      //  i.e., a defined type with a storage class.  Once the semantic checks
+      // pass, remove the TS_TYPEDEF.
       //
-      bool ok = c_type_add( &$5->type, &T_TS_TYPEDEF, &@4 ) &&
-                c_type_add( &$5->type, &$4, &@4 ) &&
-                c_ast_check_declaration( $5 );
-
-      if ( ok ) {
-        // Once the semantic checks pass, remove the TS_TYPEDEF.
-        PJL_IGNORE_RV( c_ast_take_type_any( $5, &T_TS_TYPEDEF ) );
-
-        c_ast_set_sname( $5, &$2 );
-        DUMP_AST( "defined.ast", $5 );
-        ok = add_type( L_DEFINE, $5, &@5 );
-      }
-
-      DUMP_END();
-
-      if ( !ok ) {
-        c_sname_free( &$2 );
+      if ( !c_type_add( &$5->type, &T_TS_TYPEDEF, &@4 ) ||
+           !c_type_add( &$5->type, &$4, &@4 ) ||
+           !c_ast_check_declaration( $5 ) ) {
         PARSE_ABORT();
       }
+      PJL_IGNORE_RV( c_ast_take_type_any( $5, &T_TS_TYPEDEF ) );
+
+      if ( c_type_is_tid_any( &$5->type, TB_ANY_SCOPE ) )
+        c_ast_set_local_type( $5, &$5->type );
+      if ( !c_sname_check( &$5->sname, &@2 ) )
+        PARSE_ABORT();
+      c_sname_fill_in_namespaces( &$5->sname );
+
+      DUMP_AST( "defined.ast", $5 );
+
+      if ( !add_type( L_DEFINE, $5, &@5 ) )
+        PARSE_ABORT();
+
+      DUMP_END();
     }
   ;
 
@@ -2603,7 +2604,9 @@ class_struct_union_declaration_c
       DUMP_TID( "class_struct_union_tid", $1 );
       DUMP_SNAME( "any_sname_c", $3 );
 
-      if ( !current_scope_append_sname( &$3, &@3, &C_TYPE_LIT_B( $1 ) ) )
+      c_sname_append_sname( &in_attr.current_scope, &$3 );
+      c_sname_set_local_type( &in_attr.current_scope, &C_TYPE_LIT_B( $1 ) );
+      if ( !c_sname_check( &in_attr.current_scope, &@3 ) )
         PARSE_ABORT();
 
       c_ast_t *const csu_ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
@@ -2639,16 +2642,19 @@ enum_declaration_c
       DUMP_SNAME( "any_sname_c", $3 );
       DUMP_AST( "enum_fixed_type_c_ast_opt", $4 );
 
-      if ( !current_scope_append_sname( &$3, &@3, &C_TYPE_LIT_B( $1 ) ) )
+      c_sname_t temp_sname = c_sname_dup( &in_attr.current_scope );
+      c_sname_append_sname( &temp_sname, &$3 );
+      c_sname_set_local_type( &temp_sname, &C_TYPE_LIT_B( $1 ) );
+      if ( !c_sname_check( &temp_sname, &@3 ) )
         PARSE_ABORT();
 
       c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
-      enum_ast->sname = c_sname_dup( &in_attr.current_scope );
+      enum_ast->sname = temp_sname;
       enum_ast->type.base_tid = c_type_id_check( $1, C_TPID_BASE );
       enum_ast->as.ecsu.of_ast = $4;
       c_sname_append_name(
         &enum_ast->as.ecsu.ecsu_sname,
-        check_strdup( c_sname_local_name( &in_attr.current_scope ) )
+        check_strdup( c_sname_local_name( &enum_ast->sname ) )
       );
 
       DUMP_AST( "enum_declaration_c", enum_ast );
@@ -2694,8 +2700,11 @@ namespace_declaration_c
         PARSE_ABORT();
       }
 
-      if ( !current_scope_append_sname( &$3, &@3, &$1 ) )
+      c_sname_append_sname( &in_attr.current_scope, &$3 );
+      c_sname_set_local_type( &in_attr.current_scope, &$1 );
+      if ( !c_sname_check( &in_attr.current_scope, &@3 ) )
         PARSE_ABORT();
+      c_sname_fill_in_namespaces( &in_attr.current_scope );
     }
     brace_in_scope_declaration_c
   ;
@@ -4541,12 +4550,11 @@ using_decl_c_ast
       DUMP_AST( "type_c_ast", $5 );
       DUMP_AST( "cast_c_astp_opt", $7.ast );
 
-      $$ = c_ast_patch_placeholder( $5, $7.ast );
-      c_ast_set_name( $$, $3 );
-
       c_sname_t temp_sname = c_sname_dup( &in_attr.current_scope );
-      c_ast_set_local_type( $$, c_sname_local_type( &in_attr.current_scope ) );
-      c_ast_prepend_sname( $$, &temp_sname );
+      c_sname_append_name( &temp_sname, $3 );
+
+      $$ = c_ast_patch_placeholder( $5, $7.ast );
+      c_ast_set_sname( $$, &temp_sname );
 
       DUMP_AST( "using_decl_c_ast", $$ );
       DUMP_END();
