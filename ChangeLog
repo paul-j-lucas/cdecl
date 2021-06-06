@@ -1,5 +1,9 @@
 2021-06-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS: Whitespace.
+   * c_sname.h: Simplified SNAME_VAR_INIT().
+   * parser.y: Didn't need c_type_is_none() check before setting TB_SCOPE.
+   * parser.y: Now using c_sname_check() in of_scope_list_english.
    * alloca.in.h, attribute.h, btowc.c, ctype.in.h, errno.in.h, fnmatch.in.h,
      getdelim.c, getline.c, getopt-cdefs.in.h, getopt-pfx-core.h,
      getopt-pfx-ext.h, getopt.in.h, gettext.h, hard-locale.c, hard-locale.h,
