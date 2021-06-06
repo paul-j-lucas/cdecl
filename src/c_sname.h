@@ -67,9 +67,8 @@ _GL_INLINE_HEADER_BEGIN
  * @param VAR The name for the sname variable.
  * @param NAME The name.
  */
-#define SNAME_VAR_INIT(VAR,NAME)                  \
-  c_scope_data_t VAR##_data = { (NAME), T_NONE }; \
-  SLIST_VAR_INIT( VAR, NULL, &VAR##_data )
+#define SNAME_VAR_INIT(VAR,NAME) \
+  SLIST_VAR_INIT( VAR, NULL, (&(c_scope_data_t){ (NAME), T_NONE }) )
 
 /**
  * Gets the data associated with \a SCOPE.
