@@ -31,6 +31,7 @@ Added types `std::chars_format`, `std::ctype_base::mask`, `std::ios_base`,
 `std::regex_constants::match_flag_type`, and
 `std::regex_constants::syntax_option_type`.
 
+
 * Changes in Cdecl 10.0.1
 
 ** Fixed flex-debug build
