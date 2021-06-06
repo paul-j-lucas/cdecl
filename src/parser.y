@@ -5679,14 +5679,7 @@ scope_sname_c_opt
   | sname_c Y_COLON2
     {
       $$ = $1;
-      if ( c_type_is_none( c_sname_local_type( &$1 ) ) ) {
-        //
-        // Since we know the name in this context (followed by "::") definitely
-        // refers to a scope, set the scoped name's type to TB_SCOPE (if it
-        // doesn't already have a scope-type).
-        //
-        c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
-      }
+      c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
     }
 
   | any_typedef Y_COLON2
@@ -5716,14 +5709,7 @@ sname_c
       DUMP_STR( "name", $3 );
 
       $$ = $1;
-      if ( c_type_is_none( c_sname_local_type( &$1 ) ) ) {
-        //
-        // Since we know the name in this context (followed by "::") definitely
-        // refers to a scope, set the scoped name's type to TB_SCOPE (if it
-        // doesn't already have a scope-type).
-        //
-        c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
-      }
+      c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
       c_sname_append_name( &$$, $3 );
 
       DUMP_SNAME( "sname_c", $$ );
@@ -5744,16 +5730,9 @@ sname_c
       DUMP_AST( "any_typedef.ast", $3->ast );
 
       $$ = $1;
-      if ( c_type_is_none( c_sname_local_type( &$1 ) ) ) {
-        //
-        // Since we know the name in this context (followed by "::") definitely
-        // refers to a scope, set the scoped name's type to TB_SCOPE (if it
-        // doesn't already have a scope-type).
-        //
-        c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
-      }
-      c_sname_t temp = c_ast_dup_name( $3->ast );
-      c_sname_append_sname( &$$, &temp );
+      c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
+      c_sname_t temp_sname = c_ast_dup_name( $3->ast );
+      c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "sname_c", $$ );
       DUMP_END();
@@ -5922,8 +5901,8 @@ typedef_sname_c
       //
       $$ = $1;
       c_sname_set_local_type( &$$, c_ast_local_type( $3->ast ) );
-      c_sname_t temp = c_ast_dup_name( $3->ast );
-      c_sname_append_sname( &$$, &temp );
+      c_sname_t temp_sname = c_ast_dup_name( $3->ast );
+      c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "typedef_sname_c", $$ );
       DUMP_END();
