@@ -6189,24 +6189,12 @@ of_scope_english
 
 of_scope_list_english
   : of_scope_list_english of_scope_english
-    { //
-      // Ensure that neither "namespace" nor "scope" are nested within a
-      // class/struct/union.
-      //
-      c_type_t const *const inner_type = c_sname_local_type( &$1 );
-      c_type_t const *const outer_type = c_sname_local_type( &$2 );
-      if ( c_type_is_tid_any( inner_type, TB_NAMESPACE | TB_SCOPE ) &&
-           c_type_is_tid_any( outer_type, TB_ANY_CLASS ) ) {
-        print_error( &@2,
-          "\"%s\" may only be nested within a %s or %s\n",
-          c_type_name_english( inner_type ), L_NAMESPACE, L_SCOPE
-        );
-        PARSE_ABORT();
-      }
-
+    {
       $$ = $2;                          // "of scope X of scope Y" means Y::X
-      c_sname_set_local_type( &$$, inner_type );
       c_sname_append_sname( &$$, &$1 );
+      c_sname_fill_in_namespaces( &$$ );
+      if ( !c_sname_check( &$$, &@1 ) )
+        PARSE_ABORT();
     }
   | of_scope_english
   ;
