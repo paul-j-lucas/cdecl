@@ -1,4 +1,4 @@
-# visibility.m4 serial 7
+# visibility.m4 serial 8
 dnl Copyright (C) 2005, 2008, 2010-2021 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -59,6 +59,10 @@ AC_DEFUN([gl_VISIBILITY],
               extern __attribute__((__visibility__("hidden"))) int hiddenfunc (void);
               extern __attribute__((__visibility__("default"))) int exportedfunc (void);
               void dummyfunc (void);
+              int hiddenvar;
+              int exportedvar;
+              int hiddenfunc (void) { return 51; }
+              int exportedfunc (void) { return 1225736919; }
               void dummyfunc (void) {}
             ]],
             [[]])],
