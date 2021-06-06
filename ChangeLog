@@ -1,3 +1,111 @@
+2021-06-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * alloca.in.h, attribute.h, btowc.c, ctype.in.h, errno.in.h, fnmatch.in.h,
+     getdelim.c, getline.c, getopt-cdefs.in.h, getopt-pfx-core.h,
+     getopt-pfx-ext.h, getopt.in.h, gettext.h, hard-locale.c, hard-locale.h,
+     inttypes.in.h, isblank.c, lc-charset-dispatch.c, lc-charset-dispatch.h,
+     limits.in.h, localcharset.c, localcharset.h, locale.in.h,
+     mbrtowc-impl-utf8.h, mbrtowc-impl.h, mbrtowc.c, mbsinit.c,
+     mbsrtowcs-impl.h, mbsrtowcs-state.c, mbsrtowcs.c, mbtowc-impl.h,
+     mbtowc-lock.c, mbtowc-lock.h, mbtowc.c, memchr.c, memchr.valgrind,
+     mempcpy.c, setlocale-lock.c, setlocale_null.c, setlocale_null.h,
+     stdarg.in.h, stdbool.in.h, stddef.in.h, stdint.in.h, stdio.in.h,
+     stdlib.in.h, stdnoreturn.in.h, streq.h, string.in.h, strndup.c, strnlen.c,
+     strnlen1.c, strnlen1.h, strsep.c, sys_types.in.h, sysexits.in.h, unistd.c,
+     unistd.in.h, verify.h, wchar.in.h, wctype-h.c, wctype.in.h,
+     windows-initguard.h, wmemchr-impl.h, wmemchr.c, wmempcpy.c, visibility.m4:
+     Updated GnuLib.
+
+2021-06-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, c_sname.h, c_type.h, lexer.l, parser.y: s/scope
+     type/scope-type/
+   * src/Makefile.am, c_ast_util.h, check.c, check.h, parser.y: Added check.h;
+     moved c_sname_check() into it (and .c).
+   * test/Makefile.am: Test renaming.
+   * c_type.c, c_type.h, parser.y, test/Makefile.am, en_ns_c.test: Fixed
+     checking of enum scope types.
+   * c_type.c, c_type.h: Adde TB_ANY_MODIFIEE.
+   * c_sname.c, c_sname.h, c_type.c, c_type.h, parser.y: Moved functions
+     around.
+
+2021-06-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, c_typedef.c, c_typedef.h, parser.y: When attempting to use
+     an sname with a scope-type that doesn't match a previously declared type,
+     the previously declared type is printed.
+   * NEWS: Updated.
+   * c_type.h, parser.y, test/Makefile.am, define_namespace_c_namespace_c.test:
+     Now also checking the scope-types of English snames.
+   * parser.y: Fixed "previosuly declared as <type>".
+   * parser.y: Renaming.
+
+2021-06-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Fixed printing of previously declared type.
+   * parser.y: Renaming.
+   * parser.y: Added c_typedef_find_scope().
+   * parser.y: Removed redundant code.
+   * configure.ac, c_type.h, c_typedef.c, parser.y, test/Makefile.am,
+     cdecl--debug.out, cdecl-d.out, namespace_c_namespace_+e.out,
+     c_namespace_c.test, namespace_c_namespace_+e.test,
+     namespace_c_namespace_c.test: Fixed setting of snames' scope types and
+     checking for clashes with previous declarations.
+   * c_ast_util.c, c_ast_util.h, c_type.h, check.c: Fixed incorrect using of
+     loc of untypedef'd AST.
+
+2021-06-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c, c_sname.h, english.c: c_sname_local_type() now always returns
+     the type of the inner-most scope.
+   * slist.h: Made FOREACH_SLIST() cast away const so it can iterate over const
+     and non-const.
+
+2021-06-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.h: Fixed comment.
+   * c_typedef.c, cdecl--debug.out, cdecl-d.out: Now using abbreviated type
+     declaration syntax for more predefined types.
+   * parser.y: Now setting intermediate scopes to TB_NAMESPACE if they don't
+     already have a type.
+   * NEWS, cdecl.1, c_typedef.c, lexer.l, cdecl--debug.out, cdecl-d.out,
+     show_all-c++.out, show_all.out, show_all_predefined-c++.out,
+     show_all_predefined.out, show_all_predefined_typedef-c++.out,
+     show_all_typedef.out, show_predefined-c++.out, show_predefined_using.out:
+     Fixed lexer matching partial tokens; added regex_constants and other
+     types.
+
+2021-05-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * lexer.l: Now checking for constructor sname first.
+   * parser.y: No longer unnessarily changing TB_SCOPE to TB_NAMESPACE.
+
+2021-05-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * print.c, util.h: Added WS.
+   * print.c: Made whitespace order sorted.
+   * lexer.l: Reformatting.
+   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all-c++.out,
+     show_all.out, show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined_using.out: Added types
+     `std::ios_base`, `std::ios_base::fmtflags`, `std::ios_base::iostate`,
+     `std::ctype_base::mask`, `std::ios_base::openmode`, `std::launch`, and
+     `std::chars_format`.
+
+2021-05-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Now forbidding changing scope type of nested namespaces.
+   * parser.y: For nested namespaces, now setting scope type only if they don't
+     have one.
+   * parser.y: s/any_sname_c/any_sname_c_exp; s/sname_c/any_sname_c_exp/
+   * NEWS, configure.ac, options.c: Fixed flex-debug build.
+
+2021-05-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * did_you_mean.c: Removed unnecessary check.
+   * autocomplete.c, cdecl.c, cdecl.h, did_you_mean.c: Added FOREACH_COMMAND().
+
 2021-05-26  Paul J. Lucas <paul@lucasmail.org>
 
    * Makefile.am: Added bootstrap ane makedoc.sh to EXTRA_DIST.
