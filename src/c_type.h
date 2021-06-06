@@ -657,8 +657,8 @@ c_type_id_t c_type_id_normalize( c_type_id_t tid );
  * Gets the "order" value of a <code>\ref c_type_id_t</code> so it can be
  * compared by its order.  The order is:
  *
- * + #TB_SCOPE &lt; [`inline`] `namespace` &lt;
- *   { `struct` | `union` | `class` | _none_ } &lt;
+ * + { _none_ | `scope` }  &lt; [`inline`] `namespace` &lt;
+ *   { `struct` | `union` | `class` } &lt;
  *   `enum` [`class`]
  *
  * I.e., the order of T1 &le; T2 only if T1 can appear to the left (&lt;) of T2
