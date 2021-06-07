@@ -97,7 +97,7 @@ char const *me;
 
 // extern functions
 PJL_WARN_UNUSED_RESULT
-extern bool parse_string( char const*, size_t );
+extern bool parse_cdecl_string( char const*, size_t );
 
 extern void parser_cleanup( void );
 
@@ -110,16 +110,16 @@ extern void yyrestart( FILE* );
 static void cdecl_cleanup( void );
 
 PJL_WARN_UNUSED_RESULT
-static bool parse_argv( int, char const *const[] );
+static bool parse_cdecl_argv( int, char const *const[] );
 
 PJL_WARN_UNUSED_RESULT
-static bool parse_command_line( char const*, int, char const *const[] );
+static bool parse_cdecl_command_line( char const*, int, char const *const[] );
 
 PJL_WARN_UNUSED_RESULT
-static bool parse_files( int, char const *const[] );
+static bool parse_cdecl_files( int, char const *const[] );
 
 PJL_WARN_UNUSED_RESULT
-static bool parse_stdin( void );
+static bool parse_cdecl_stdin( void );
 
 static void read_conf_file( void );
 
@@ -146,7 +146,7 @@ int main( int argc, char const *argv[] ) {
   opt_conf_file = NULL;                 // don't print in errors any more
   c_initialized = true;
 
-  bool const ok = parse_argv( argc, argv );
+  bool const ok = parse_cdecl_argv( argc, argv );
   exit( ok ? EX_OK : EX_DATAERR );
 }
 
@@ -287,23 +287,24 @@ static void cdecl_cleanup( void ) {
  * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
-static bool parse_argv( int argc, char const *const argv[] ) {
+static bool parse_cdecl_argv( int argc, char const *const argv[] ) {
   if ( argc == 0 )                      // cdecl
-    return parse_stdin();
+    return parse_cdecl_stdin();
   if ( is_command( me, C_COMMAND_PROG_NAME ) )
-    return parse_command_line( me, argc, argv );
+    return parse_cdecl_command_line( me, argc, argv );
 
   //
   // Note that options_init() adjusts argv such that argv[0] becomes the first
   // argument (and no longer the program name).
   //
   if ( is_command( argv[0], C_COMMAND_FIRST_ARG ) )
-    return parse_command_line( NULL, argc, argv );
+    return parse_cdecl_command_line( NULL, argc, argv );
 
   if ( opt_explain )
-    return parse_command_line( L_EXPLAIN, argc, argv );
+    return parse_cdecl_command_line( L_EXPLAIN, argc, argv );
 
-  return parse_files( argc, argv );     // assume arguments are file names
+  // assume arguments are file names
+  return parse_cdecl_files( argc, argv );
 }
 
 /**
@@ -316,8 +317,8 @@ static bool parse_argv( int argc, char const *const argv[] ) {
  * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
-static bool parse_command_line( char const *command, int argc,
-                                char const *const argv[] ) {
+static bool parse_cdecl_command_line( char const *command, int argc,
+                                      char const *const argv[] ) {
   strbuf_t sbuf;
   bool space;
 
@@ -327,7 +328,7 @@ static bool parse_command_line( char const *command, int argc,
   for ( int i = 0; i < argc; ++i )
     strbuf_sepc_cats( &sbuf, ' ', &space, argv[i] );
 
-  bool const ok = parse_string( sbuf.str, sbuf.len );
+  bool const ok = parse_cdecl_string( sbuf.str, sbuf.len );
   strbuf_free( &sbuf );
   return ok;
 }
@@ -339,15 +340,15 @@ static bool parse_command_line( char const *command, int argc,
  * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
-static bool parse_file( FILE *file ) {
+static bool parse_cdecl_file( FILE *file ) {
   assert( file != NULL );
   bool ok = true;
 
   // We don't just call yyrestart( file ) and yyparse() directly because
-  // parse_string() also inserts "explain " for opt_explain.
+  // parse_cdecl_string() also inserts "explain " for opt_explain.
 
   for ( char buf[ 1024 ]; fgets( buf, sizeof buf, file ) != NULL; ) {
-    if ( !parse_string( buf, strlen( buf ) ) )
+    if ( !parse_cdecl_string( buf, strlen( buf ) ) )
       ok = false;
   } // for
   FERROR( file );
@@ -363,18 +364,18 @@ static bool parse_file( FILE *file ) {
  * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
-static bool parse_files( int num_files, char const *const files[] ) {
+static bool parse_cdecl_files( int num_files, char const *const files[] ) {
   bool ok = true;
 
   for ( int i = 0; i < num_files && ok; ++i ) {
     if ( strcmp( files[i], "-" ) == 0 ) {
-      ok = parse_stdin();
+      ok = parse_cdecl_stdin();
     }
     else {
       FILE *const file = fopen( files[i], "r" );
       if ( unlikely( file == NULL ) )
         PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", files[i], STRERROR() );
-      if ( !parse_file( file ) )
+      if ( !parse_cdecl_file( file ) )
         ok = false;
       PJL_IGNORE_RV( fclose( file ) );
     }
@@ -389,7 +390,7 @@ static bool parse_files( int num_files, char const *const files[] ) {
  * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
-static bool parse_stdin( void ) {
+static bool parse_cdecl_stdin( void ) {
   bool ok = true;
   is_input_a_tty = isatty( fileno( fin ) );
 
@@ -401,11 +402,11 @@ static bool parse_stdin( void ) {
       strbuf_t sbuf;
       if ( !cdecl_read_line( &sbuf, cdecl_prompt[0], cdecl_prompt[1] ) )
         break;
-      ok = parse_string( sbuf.str, sbuf.len );
+      ok = parse_cdecl_string( sbuf.str, sbuf.len );
       strbuf_free( &sbuf );
     } // for
   } else {
-    ok = parse_file( fin );
+    ok = parse_cdecl_file( fin );
   }
 
   is_input_a_tty = false;
@@ -416,14 +417,14 @@ static bool parse_stdin( void ) {
  * Parses a cdecl command from a string.
  *
  * @note This is the main parsing function (the only one that calls Bison).
- * All other `parse_*()` functions ultimately call this function.
+ * All other `parse_cdecl_*()` functions ultimately call this function.
  *
  * @param s The null-terminated string to parse.
  * @param s_len The length of \a s.
  * @return Returns `true` only upon success.
  */
 PJL_WARN_UNUSED_RESULT
-bool parse_string( char const *s, size_t s_len ) {
+bool parse_cdecl_string( char const *s, size_t s_len ) {
   assert( s != NULL );
 
   // The code in print.c relies on command_line being set, so set it.
@@ -491,7 +492,7 @@ static void read_conf_file( void ) {
   //
   c_lang_id_t const orig_lang = opt_lang;
   opt_lang = LANG_CPP_NEW;
-  PJL_IGNORE_RV( parse_file( fconf ) );
+  PJL_IGNORE_RV( parse_cdecl_file( fconf ) );
   opt_lang = orig_lang;
 
   PJL_IGNORE_RV( fclose( fconf ) );

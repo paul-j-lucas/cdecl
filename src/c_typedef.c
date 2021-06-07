@@ -919,10 +919,10 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
  * strings.  The last element must be NULL.
  */
 static void c_typedef_parse_predefined( char const *const *types ) {
-  extern bool parse_string( char const*, size_t );
+  extern bool parse_cdecl_string( char const*, size_t );
   assert( types != NULL );
   do {
-    if ( unlikely( !parse_string( *types, strlen( *types ) ) ) )
+    if ( unlikely( !parse_cdecl_string( *types, strlen( *types ) ) ) )
       INTERNAL_ERR( "failed to parse predefined type \"%s\"\n", *types );
   } while ( *++types != NULL );
 }
