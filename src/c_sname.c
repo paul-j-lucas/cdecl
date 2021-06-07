@@ -249,20 +249,23 @@ bool c_sname_parse( char const *s, c_sname_t *sname ) {
     c_keyword_t const *const k = c_keyword_find( name, opt_lang, C_KW_CTX_ALL );
     if ( k != NULL ) {
       FREE( name );
-      c_sname_free( &rv );
-      return false;
+      break;
     }
-
     c_sname_append_name( &rv, name );
+
     SKIP_WS( end );
+    if ( *end == '\0' ) {
+      *sname = rv;
+      return true;
+    }
     if ( strncmp( end, "::", 2 ) != 0 )
       break;
     s = end + 2;
     SKIP_WS( s );
   } // for
 
-  *sname = rv;
-  return true;
+  c_sname_free( &rv );
+  return false;
 }
 
 char const* c_sname_scope_name( c_sname_t const *sname ) {

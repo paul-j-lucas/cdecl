@@ -454,14 +454,15 @@ static bool c_sname_parse_dtor( char const *s, c_sname_t *sname ) {
           goto tilde;
         }
       }
-      c_sname_free( &rv );
-      return false;
-    }
-
-    c_sname_append_name( &rv, name );
-    if ( parsed_tilde )
       break;
+    }
+    c_sname_append_name( &rv, name );
+
     SKIP_WS( end );
+    if ( *end == '\0' && parsed_tilde ) {
+      *sname = rv;
+      return true;
+    }
     if ( strncmp( end, "::", 2 ) != 0 )
       break;
     s = end + 2;
@@ -474,8 +475,8 @@ tilde:
     }
   } // for
 
-  *sname = rv;
-  return true;
+  c_sname_free( &rv );
+  return false;
 }
 
 /**
