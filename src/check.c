@@ -82,10 +82,10 @@
  * @param END_STR_LIT A string literal appended to the end of the error message
  * (either `"\n"` or `""`).
  */
-#define error_kind_not_tid(AST,TID,END_STR_LIT)                 \
-  fl_print_error( __FILE__, __LINE__,                           \
-    &(AST)->loc, "%s can not be %s" END_STR_LIT,                \
-    c_kind_name( (AST)->kind_id ), c_type_id_name_error( TID )  \
+#define error_kind_not_tid(AST,TID,END_STR_LIT)             \
+  fl_print_error( __FILE__, __LINE__,                       \
+    &(AST)->loc, "%s can not be %s" END_STR_LIT,            \
+    c_kind_name( (AST)->kind_id ), c_tid_name_error( TID )  \
   )
 
 /**
@@ -110,10 +110,10 @@
  * @param END_STR_LIT A string literal appended to the end of the error message
  * (either `"\n"` or `""`).
  */
-#define error_kind_to_tid(AST,TID,END_STR_LIT)                  \
-  fl_print_error( __FILE__, __LINE__,                           \
-    &(AST)->loc, "%s to %s is illegal" END_STR_LIT,             \
-    c_kind_name( (AST)->kind_id ), c_type_id_name_error( TID )  \
+#define error_kind_to_tid(AST,TID,END_STR_LIT)              \
+  fl_print_error( __FILE__, __LINE__,                       \
+    &(AST)->loc, "%s to %s is illegal" END_STR_LIT,         \
+    c_kind_name( (AST)->kind_id ), c_tid_name_error( TID )  \
   )
 
 /**
@@ -301,7 +301,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
     if ( !OPT_LANG_IS(C_MIN(99)) ) {
       print_error( &ast->loc,
         "\"%s\" arrays are not supported%s\n",
-        c_type_id_name_error( ast->as.array.store_tid ),
+        c_tid_name_error( ast->as.array.store_tid ),
         c_lang_which( LANG_C_99 )
       );
       return false;
@@ -309,7 +309,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
     if ( !is_func_param ) {
       print_error( &ast->loc,
         "\"%s\" arrays are illegal outside of function parameters\n",
-        c_type_id_name_error( ast->as.array.store_tid )
+        c_tid_name_error( ast->as.array.store_tid )
       );
       return false;
     }
@@ -387,7 +387,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
     if ( c_type_is_tid_any( &ast->type, TS_ANY ) ) {
       print_error( &ast->loc,
         "%s can not have bit-field widths\n",
-        c_type_id_name_error( ast->type.store_tid )
+        c_tid_name_error( ast->type.store_tid )
       );
       return false;
     }
@@ -427,17 +427,17 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
 
   bool const is_constructor = ast->kind_id == K_CONSTRUCTOR;
 
-  c_type_id_t const ok_tid = is_constructor ?
+  c_tid_t const ok_tid = is_constructor ?
     (is_definition ? TS_CONSTRUCTOR_DEF : TS_CONSTRUCTOR_DECL) :
     (is_definition ? TS_DESTRUCTOR_DEF  : TS_DESTRUCTOR_DECL ) ;
 
-  c_type_id_t const tid = ast->type.store_tid & c_type_id_compl( ok_tid );
+  c_tid_t const tid = ast->type.store_tid & c_tid_compl( ok_tid );
   if ( tid != TS_NONE ) {
     print_error( &ast->loc,
       "%s%s can not be %s\n",
       c_kind_name( ast->kind_id ),
       is_definition ? " definitions" : "s",
-      c_type_id_name_error( tid )
+      c_tid_name_error( tid )
     );
     return false;
   }
@@ -560,7 +560,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
         //    storage-like type that can't be used with the program's main().
         //    (Otherwise assume it's just a member function named "main".)
         //
-        !c_type_is_tid_any( &ast->type, c_type_id_compl( TS_MAIN_FUNC ) ) ) &&
+        !c_type_is_tid_any( &ast->type, c_tid_compl( TS_MAIN_FUNC ) ) ) &&
       !c_ast_check_func_main( ast ) ) {
     return false;
   }
@@ -582,11 +582,11 @@ static bool c_ast_check_func_c( c_ast_t const *ast ) {
   assert( (ast->kind_id & (K_APPLE_BLOCK | K_FUNCTION)) != K_NONE );
   assert( OPT_LANG_IS(C_ANY) );
 
-  c_type_id_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
+  c_tid_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
   if ( qual_tid != TS_NONE ) {
     print_error( &ast->loc,
       "\"%s\" %ss is not supported in C\n",
-      c_type_id_name_error( qual_tid ),
+      c_tid_name_error( qual_tid ),
       c_kind_name( ast->kind_id )
     );
     return false;
@@ -624,26 +624,24 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
       print_error( &ast->loc,
         "%s qualified %ss can not be %s\n",
         L_REFERENCE, c_kind_name( ast->kind_id ),
-        c_type_id_name_error(
-          ast->type.store_tid & (TS_EXTERN | TS_STATIC)
-        )
+        c_tid_name_error( ast->type.store_tid & (TS_EXTERN | TS_STATIC) )
       );
       return false;
     }
   }
 
-  c_type_id_t const member_func_tids =
+  c_tid_t const member_func_tids =
     ast->type.store_tid & TS_MEMBER_FUNC_ONLY;
-  c_type_id_t const nonmember_func_tids =
+  c_tid_t const nonmember_func_tids =
     ast->type.store_tid & TS_NONMEMBER_FUNC_ONLY;
 
   if ( member_func_tids != TS_NONE &&
        c_type_is_tid_any( &ast->type, TS_EXTERN | TS_STATIC ) ) {
     print_error( &ast->loc,
       "%s %ss can not be %s\n",
-      c_type_id_name_error( ast->type.store_tid & (TS_EXTERN | TS_STATIC) ),
+      c_tid_name_error( ast->type.store_tid & (TS_EXTERN | TS_STATIC) ),
       c_kind_name( ast->kind_id ),
-      c_type_id_name_error( member_func_tids )
+      c_tid_name_error( member_func_tids )
     );
     return false;
   }
@@ -652,8 +650,8 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
     print_error( &ast->loc,
       "%ss can not be %s and %s\n",
       c_kind_name( ast->kind_id ),
-      c_type_id_name_error( member_func_tids ),
-      c_type_id_name_error( nonmember_func_tids )
+      c_tid_name_error( member_func_tids ),
+      c_tid_name_error( nonmember_func_tids )
     );
     return false;
   }
@@ -665,7 +663,7 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
         print_error( &ast->loc,
           "%s %ss can not be %s\n",
           L_MEMBER, c_kind_name( ast->kind_id ),
-          c_type_id_name_error( nonmember_func_tids )
+          c_tid_name_error( nonmember_func_tids )
         );
         return false;
       }
@@ -675,7 +673,7 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
         print_error( &ast->loc,
           "%s %ss can not be %s\n",
           H_NON_MEMBER, c_kind_name( ast->kind_id ),
-          c_type_id_name_error( member_func_tids )
+          c_tid_name_error( member_func_tids )
         );
         return false;
       }
@@ -867,7 +865,7 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *ast ) {
     case K_ARRAY:                       // char *argv[]
     case K_POINTER:                     // char **argv
       if ( !c_ast_is_ptr_to_type( ast->as.parent.of_ast,
-              &C_TYPE_LIT_S_ANY( c_type_id_compl( TS_CONST ) ),
+              &C_TYPE_LIT_S_ANY( c_tid_compl( TS_CONST ) ),
               &C_TYPE_LIT_B( TB_CHAR ) ) ) {
         print_error( &ast->loc,
           "this parameter of main() must be %s %s %s to [%s] %s\n",
@@ -914,14 +912,13 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       return false;
     }
 
-    c_type_id_t const param_store_tid =
-      TS_MASK_STORAGE &
-      param_ast->type.store_tid & c_type_id_compl( TS_REGISTER );
+    c_tid_t const param_store_tid =
+      TS_MASK_STORAGE & param_ast->type.store_tid & c_tid_compl( TS_REGISTER );
     if ( param_store_tid != TS_NONE ) {
       print_error( &param_ast->loc,
         "%s parameters can not be %s\n",
         c_kind_name( ast->kind_id ),
-        c_type_id_name_error( param_store_tid )
+        c_tid_name_error( param_store_tid )
       );
       return false;
     }
@@ -1421,7 +1418,7 @@ same: print_error( &ast->loc,
       // Special case: in C++20 and later, relational operators may be
       // defaulted.
       //
-      c_type_id_t const member_only_tids =
+      c_tid_t const member_only_tids =
         ast->type.store_tid & TS_MEMBER_FUNC_ONLY;
       if ( member_only_tids != TS_NONE ) {
         switch ( ast->as.oper.oper_id ) {
@@ -1444,7 +1441,7 @@ same: print_error( &ast->loc,
             print_error( &ast->loc,
               "%s %ss can not be %s\n",
               H_NON_MEMBER, L_OPERATOR,
-              c_type_id_name_error( member_only_tids )
+              c_tid_name_error( member_only_tids )
             );
             return false;
         } // switch
@@ -1479,13 +1476,13 @@ same: print_error( &ast->loc,
       //
       // Ensure member operators are not friend.
       //
-      c_type_id_t const non_member_only_tids =
+      c_tid_t const non_member_only_tids =
         ast->type.store_tid & TS_NONMEMBER_FUNC_ONLY;
       if ( non_member_only_tids != TS_NONE ) {
         print_error( &ast->loc,
           "%s %ss can not be %s\n",
           L_MEMBER, L_OPERATOR,
-          c_type_id_name_error( non_member_only_tids )
+          c_tid_name_error( non_member_only_tids )
         );
         return false;
       }
@@ -1515,7 +1512,7 @@ same: print_error( &ast->loc,
         print_error( &param_ast->loc,
           "parameter of postfix %s%s%s %s must be %s\n",
           SP_AFTER( op_monm ), L_OPERATOR, op->name,
-          c_type_id_name_error( TB_INT )
+          c_tid_name_error( TB_INT )
         );
         return false;
       }
@@ -1727,9 +1724,9 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   assert( (ast->kind_id & K_ANY_REFERENCE) != K_NONE );
 
   if ( c_type_is_tid_any( &ast->type, TS_CONST | TS_VOLATILE ) ) {
-    c_type_id_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
+    c_tid_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
     error_kind_not_tid( ast, qual_tid, "" );
-    print_hint( "%s to %s", L_REFERENCE, c_type_id_name_error( qual_tid ) );
+    print_hint( "%s to %s", L_REFERENCE, c_tid_name_error( qual_tid ) );
     return false;
   }
 
@@ -1825,7 +1822,7 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
     print_error( &ast->loc,
       "%s %s %ss can only be: %s\n",
       H_USER_DEFINED, L_CONVERSION, L_OPERATOR,
-      c_type_id_name_error( TS_USER_DEF_CONV )
+      c_tid_name_error( TS_USER_DEF_CONV )
     );
     return false;
   }
@@ -2028,8 +2025,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
         return VISITOR_ERROR_FOUND;
       }
 
-      c_type_id_t const func_like_tid =
-        ast->type.store_tid & c_type_id_compl( TS_FUNC_LIKE );
+      c_tid_t const func_like_tid =
+        ast->type.store_tid & c_tid_compl( TS_FUNC_LIKE );
       if ( func_like_tid != TS_NONE ) {
         error_kind_not_tid( ast, func_like_tid, "\n" );
         return VISITOR_ERROR_FOUND;
@@ -2133,12 +2130,12 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
 
   if ( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE ) {
     if ( opt_lang < LANG_CPP_14 &&
-         c_type_id_is_any( ast->type.store_tid, TS_CONSTEXPR ) &&
+         c_tid_is_any( ast->type.store_tid, TS_CONSTEXPR ) &&
          c_ast_is_builtin_any( ast->as.func.ret_ast, TB_VOID ) ) {
       print_error( &ast->loc,
         "%s %s is illegal%s\n",
-        c_type_id_name_error( ast->type.store_tid ),
-        c_type_id_name_error( ast->as.func.ret_ast->type.base_tid ),
+        c_tid_name_error( ast->type.store_tid ),
+        c_tid_name_error( ast->as.func.ret_ast->type.base_tid ),
         c_lang_which( LANG_CPP_14 )
       );
       return VISITOR_ERROR_FOUND;
@@ -2149,7 +2146,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
          !is_func_param ) {
       print_error( &ast->loc,
         "\"%s\" can only appear on functions or function parameters\n",
-        c_type_id_name_error( TA_CARRIES_DEPENDENCY )
+        c_tid_name_error( TA_CARRIES_DEPENDENCY )
       );
       return VISITOR_ERROR_FOUND;
     }
@@ -2157,7 +2154,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
     if ( c_type_is_tid_any( &ast->type, TA_NORETURN ) ) {
       print_error( &ast->loc,
         "\"%s\" can only appear on functions\n",
-        c_type_id_name_error( TA_NORETURN )
+        c_tid_name_error( TA_NORETURN )
       );
       return VISITOR_ERROR_FOUND;
     }
@@ -2378,7 +2375,7 @@ bool c_ast_check_cast( c_ast_t const *ast ) {
   if ( storage_ast != NULL ) {
     print_error( &ast->loc,
       "can not %s %s %s\n", L_CAST, L_INTO,
-      c_type_id_name_error( storage_ast->type.store_tid & TS_MASK_STORAGE )
+      c_tid_name_error( storage_ast->type.store_tid & TS_MASK_STORAGE )
     );
     return false;
   }
@@ -2415,7 +2412,7 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   assert( !c_sname_empty( sname ) );
   assert( sname_loc != NULL );
 
-  c_type_id_t prev_tid = TB_NONE;
+  c_tid_t prev_tid = TB_NONE;
   unsigned prev_order = 0;
 
   FOREACH_SCOPE( scope, sname, NULL ) {
@@ -2469,12 +2466,12 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
     }
     scope->next = orig_next;
 
-    unsigned const scope_order = c_type_id_scope_order( scope_type->base_tid );
+    unsigned const scope_order = c_tid_scope_order( scope_type->base_tid );
     if ( scope_order < prev_order ) {
       print_error( sname_loc,
         "%s can not nest inside %s\n",
-        c_type_id_name_error( scope_type->base_tid ),
-        c_type_id_name_error( prev_tid )
+        c_tid_name_error( scope_type->base_tid ),
+        c_tid_name_error( prev_tid )
       );
       return false;
     }

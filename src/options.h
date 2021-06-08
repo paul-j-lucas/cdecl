@@ -107,7 +107,7 @@ bool any_explicit_int( void );
  * @sa any_explicit_int()
  */
 PJL_WARN_UNUSED_RESULT
-bool is_explicit_int( c_type_id_t tid );
+bool is_explicit_int( c_tid_t tid );
 
 /**
  * Iterates to the next cdecl command-line option.

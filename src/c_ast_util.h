@@ -120,7 +120,7 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
  * @return Returns `true` only if the type of \a ast is one of \a tids.
  */
 PJL_WARN_UNUSED_RESULT
-bool c_ast_is_builtin_any( c_ast_t const *ast, c_type_id_t tids );
+bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t tids );
 
 /**
  * Checks whether \a ast is an AST of one of \a kind_ids or a reference
@@ -147,7 +147,7 @@ bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids );
  * @sa c_ast_is_ref_to_tid_any()
  */
 PJL_WARN_UNUSED_RESULT
-c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
+c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
 
 /**
  * Checks whether \a ast is an AST for a pointer to a certain type.
@@ -157,7 +157,7 @@ c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
  *  + `c_ast_is_ptr_to_type( ast, &T_ANY, &C_TYPE_LIT(TB_CHAR, TS_CONST, TA_NONE) )`
  *    returns `true` only if \a ast is a pointer to `const` `char` (`char
  *    const*`) _exactly_.
- *  + `c_ast_is_ptr_to_type( ast, &C_TYPE_LIT_ANY_S(c_type_id_compl( TS_CONST )), &C_TYPE_LIT_B(TB_CHAR) )`
+ *  + `c_ast_is_ptr_to_type( ast, &C_TYPE_LIT_ANY_S(c_tid_compl( TS_CONST )), &C_TYPE_LIT_B(TB_CHAR) )`
  *    returns `true` if \a ast is a pointer to `char` regardless of `const`
  *    (`char*` or `char const*`).
  *
@@ -188,7 +188,7 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
  * @sa c_ast_is_tid_any()
  */
 PJL_WARN_UNUSED_RESULT
-c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids );
+c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids );
 
 /**
  * Checks whether \a ast is an AST for a reference to another AST having \a
@@ -220,7 +220,7 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
  * @sa c_ast_is_ref_to_tid_any()
  */
 PJL_WARN_UNUSED_RESULT
-c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_type_id_t tids );
+c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids );
 
 /**
  * Checks whether `typename` is OK since the type's name is a qualified name.
@@ -377,11 +377,11 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
  * @param ast The AST to check.
  * @return Returns `true` only if \a ast is `size_t`.
  *
- * @sa c_type_id_is_size_t()
+ * @sa c_tid_is_size_t()
  */
 C_AST_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_size_t( c_ast_t const *ast ) {
-  return c_type_id_is_size_t( c_ast_untypedef( ast )->type.base_tid );
+  return c_tid_is_size_t( c_ast_untypedef( ast )->type.base_tid );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

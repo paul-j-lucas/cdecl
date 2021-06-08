@@ -78,24 +78,24 @@ void c_ast_list_dump( c_ast_list_t const *list, unsigned indent, FILE *dout );
 void c_sname_dump( c_sname_t const *sname, FILE *dout );
 
 /**
+ * Dumps \a tid (for debugging).
+ *
+ * @param tid The <code>\ref c_tid_t</code> to print.
+ * @param dout The `FILE` to dump to.
+ *
+ * @sa c_type_dump()
+ */
+void c_tid_dump( c_tid_t tid, FILE *dout );
+
+/**
  * Dumps \a type (for debugging).
  *
  * @param type The <code>\ref c_type</code> to print.
  * @param dout The `FILE` to dump to.
  *
- * @sa c_type_id_dump()
+ * @sa c_tid_dump()
  */
 void c_type_dump( c_type_t const *type, FILE *dout );
-
-/**
- * Dumps \a tid (for debugging).
- *
- * @param tid The <code>\ref c_type_id_t</code> to print.
- * @param dout The `FILE` to dump to.
- *
- * @sa c_type_dump()
- */
-void c_type_id_dump( c_type_id_t tid, FILE *dout );
 
 /**
  * Dumps a key/value pair (for debugging).

@@ -133,15 +133,15 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
   c_type_t type = ast->type;
 
-  c_type_id_t cv_qual_tid     = TS_NONE;
-  bool        is_default      = false;
-  bool        is_delete       = false;
-  bool        is_final        = false;
-  bool        is_noexcept     = false;
-  bool        is_override     = false;
-  bool        is_pure_virtual = false;
-  bool        is_throw        = false;
-  c_type_id_t ref_qual_tid    = TS_NONE;
+  c_tid_t cv_qual_tid     = TS_NONE;
+  bool    is_default      = false;
+  bool    is_delete       = false;
+  bool    is_final        = false;
+  bool    is_noexcept     = false;
+  bool    is_override     = false;
+  bool    is_pure_virtual = false;
+  bool    is_throw        = false;
+  c_tid_t ref_qual_tid    = TS_NONE;
 
   //
   // This isn't implemented using a visitor because c_ast_visit() visits in
@@ -177,7 +177,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       is_throw        = (type.store_tid & TS_THROW) != TS_NONE;
       ref_qual_tid    = (type.store_tid & TS_MASK_REF_QUALIFIER);
 
-      type.store_tid &= c_type_id_compl(
+      type.store_tid &= c_tid_compl(
                             TS_MASK_QUALIFIER
                           | TS_DEFAULT
                           | TS_DELETE
@@ -219,7 +219,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         g_print_postfix( g, ast );
       }
       if ( cv_qual_tid != TS_NONE )
-        FPRINTF( g->gout, " %s", c_type_id_name_c( cv_qual_tid ) );
+        FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_tid ) );
       if ( ref_qual_tid != TS_NONE ) {
         FPUTS(
           (ref_qual_tid & TS_REFERENCE) != TS_NONE ?  " &" : " &&",
@@ -258,12 +258,12 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         //      c++decl> declare e as enum class C
         //      enum C e;                   // not: enum class C e;
         //
-        type.base_tid &= c_type_id_compl( TB_STRUCT | TB_CLASS );
+        type.base_tid &= c_tid_compl( TB_STRUCT | TB_CLASS );
       }
 
       if ( opt_east_const ) {
         cv_qual_tid = type.store_tid & (TS_CONST | TS_VOLATILE);
-        type.store_tid &= c_type_id_compl( TS_CONST | TS_VOLATILE );
+        type.store_tid &= c_tid_compl( TS_CONST | TS_VOLATILE );
       }
 
       FPUTS( c_type_name_c( &type ), g->gout );
@@ -296,7 +296,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       }
 
       if ( cv_qual_tid != TS_NONE )
-        FPRINTF( g->gout, " %s", c_type_id_name_c( cv_qual_tid ) );
+        FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_tid ) );
 
       g_print_space_ast_name( g, ast );
       break;
@@ -316,9 +316,9 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE: {
-      c_type_id_t store_tid = type.store_tid & TS_MASK_STORAGE;
+      c_tid_t store_tid = type.store_tid & TS_MASK_STORAGE;
       if ( store_tid != TS_NONE )
-        FPRINTF( g->gout, "%s ", c_type_id_name_c( store_tid ) );
+        FPRINTF( g->gout, "%s ", c_tid_name_c( store_tid ) );
       g_print_ast( g, ast->as.ptr_ref.to_ast );
       if ( !g->skip_name_for_using && g->gib_kind != C_GIB_CAST &&
            c_ast_find_name( ast, C_VISIT_UP ) != NULL &&
@@ -407,7 +407,7 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
 
   FPUTS( graph_token_c( "[" ), g->gout );
   if ( ast->as.array.store_tid != TS_NONE )
-    FPRINTF( g->gout, "%s ", c_type_id_name_c( ast->as.array.store_tid ) );
+    FPRINTF( g->gout, "%s ", c_tid_name_c( ast->as.array.store_tid ) );
   switch ( ast->as.array.size ) {
     case C_ARRAY_SIZE_NONE:
       break;
@@ -612,7 +612,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
-  c_type_id_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
+  c_tid_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
 
   switch ( ast->kind_id ) {
     case K_POINTER:
@@ -666,7 +666,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
   } // switch
 
   if ( qual_tid != TS_NONE ) {
-    FPUTS( c_type_id_name_c( qual_tid ), g->gout );
+    FPUTS( c_tid_name_c( qual_tid ), g->gout );
 
     if ( (g->gib_kind & (C_GIB_DECL | C_GIB_TYPEDEF)) != C_GIB_NONE &&
          c_ast_find_name( ast, C_VISIT_UP ) != NULL ) {

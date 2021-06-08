@@ -272,7 +272,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
  * @sa c_ast_unpointer()
  */
 static c_ast_t const* c_ast_if_unpointer( c_ast_t const *ast,
-                                          c_type_id_t *cv_tids ) {
+                                          c_tid_t *cv_tids ) {
   ast = c_ast_untypedef( ast );
   if ( ast->kind_id != K_POINTER )
     return NULL;
@@ -328,7 +328,7 @@ static c_ast_t const* c_ast_if_unpointer( c_ast_t const *ast,
  * @sa c_ast_unreference()
  */
 static c_ast_t const* c_ast_if_unreference( c_ast_t const *ast,
-                                            c_type_id_t *cv_tids ) {
+                                            c_tid_t *cv_tids ) {
   ast = c_ast_untypedef( ast );
   if ( ast->kind_id != K_REFERENCE )
     return NULL;
@@ -356,14 +356,14 @@ static c_ast_t const* c_ast_if_unreference( c_ast_t const *ast,
  * returns \a ast; otherwise returns NULL.
  */
 static c_ast_t const* c_ast_is_tid_any_impl( c_ast_t const *ast,
-                                             c_type_id_t ast_cv_tids,
-                                             c_type_id_t tids ) {
+                                             c_tid_t ast_cv_tids,
+                                             c_tid_t tids ) {
   if ( ast != NULL ) {
-    c_type_id_t ast_tids = c_type_get_tid( &ast->type, tids );
-    ast_tids = c_type_id_normalize( ast_tids );
-    if ( c_type_id_tpid( tids ) == C_TPID_STORE )
+    c_tid_t ast_tids = c_type_get_tid( &ast->type, tids );
+    ast_tids = c_tid_normalize( ast_tids );
+    if ( c_tid_tpid( tids ) == C_TPID_STORE )
       ast_tids |= ast_cv_tids;
-    if ( c_type_id_is_any( ast_tids, tids ) )
+    if ( c_tid_is_any( ast_tids, tids ) )
       return ast;
   }
   return NULL;
@@ -399,7 +399,7 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
   if ( found_ast != NULL ) {
     rv_type.store_tid = found_ast->type.store_tid & TS_MASK_STORAGE;
     rv_type.attr_tid = found_ast->type.attr_tid;
-    found_ast->type.store_tid &= c_type_id_compl( TS_MASK_STORAGE );
+    found_ast->type.store_tid &= c_tid_compl( TS_MASK_STORAGE );
     found_ast->type.attr_tid = TA_NONE;
   }
   return rv_type;
@@ -493,14 +493,14 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
   );
 }
 
-bool c_ast_is_builtin_any( c_ast_t const *ast, c_type_id_t tids ) {
+bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t tids ) {
   assert( ast != NULL );
-  assert( c_type_id_tpid( tids ) == C_TPID_BASE );
+  assert( c_tid_tpid( tids ) == C_TPID_BASE );
 
   ast = c_ast_untypedef( ast );
   if ( ast->kind_id != K_BUILTIN )
     return false;
-  c_type_id_t const base_tid = c_type_id_normalize( ast->type.base_tid );
+  c_tid_t const base_tid = c_tid_normalize( ast->type.base_tid );
   return only_bits_set( base_tid, tids );
 }
 
@@ -513,39 +513,39 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
                            c_type_t const *equal_type ) {
   assert( mask_type != NULL );
 
-  c_type_id_t cv_tids;
+  c_tid_t cv_tids;
   ast = c_ast_if_unpointer( ast, &cv_tids );
   if ( ast == NULL )
     return false;
   c_type_t const masked_type = {
-    c_type_id_normalize( ast->type.base_tid ) & mask_type->base_tid,
-    (ast->type.store_tid | cv_tids)           & mask_type->store_tid,
-    ast->type.attr_tid                        & mask_type->attr_tid
+    c_tid_normalize( ast->type.base_tid ) & mask_type->base_tid,
+    (ast->type.store_tid | cv_tids)       & mask_type->store_tid,
+    ast->type.attr_tid                    & mask_type->attr_tid
   };
   return c_type_equal( &masked_type, equal_type );
 }
 
-c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
-  c_type_id_t cv_tids;
+c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
+  c_tid_t cv_tids;
   ast = c_ast_if_unpointer( ast, &cv_tids );
   return c_ast_is_tid_any_impl( ast, cv_tids, tids );
 }
 
-c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
-  c_type_id_t cv_tids;
+c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
+  c_tid_t cv_tids;
   ast = c_ast_if_unreference( ast, &cv_tids );
   return c_ast_is_tid_any_impl( ast, cv_tids, tids );
 }
 
 c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
                                          c_type_t const *type ) {
-  c_type_id_t cv_tids;
+  c_tid_t cv_tids;
   ast = c_ast_if_unreference( ast, &cv_tids );
   if ( ast == NULL )
     return NULL;
 
   c_type_t const ast_cv_type = {
-    c_type_id_normalize( ast->type.base_tid ),
+    c_tid_normalize( ast->type.base_tid ),
     ast->type.store_tid | cv_tids,
     ast->type.attr_tid
   };
@@ -553,7 +553,7 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
   return c_type_is_any( &ast_cv_type, type ) ? ast : NULL;
 }
 
-c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_type_id_t tids ) {
+c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
   ast = c_ast_untypedef( ast );
   return c_ast_is_tid_any_impl( ast, TS_NONE, tids );
 }

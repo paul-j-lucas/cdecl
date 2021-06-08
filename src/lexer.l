@@ -726,8 +726,8 @@ declare/{S}({S}|{L})*user-def(ined)? {
                     //
                     // 2. See if it's a typedef'd type.
                     //
-                    c_typedef_t const *const tdef
-                      = c_typedef_find_sname( &sname );
+                    c_typedef_t const *const tdef =
+                      c_typedef_find_sname( &sname );
                     if ( tdef != NULL ) {
                       yylval.tdef = tdef;
                       c_sname_free( &sname );
@@ -803,8 +803,8 @@ declare/{S}({S}|{L})*user-def(ined)? {
                   // 2. See if it's a typedef'd type.
                   //
                   SNAME_VAR_INIT( sname, lexer_token );
-                  c_typedef_t const *const tdef
-                    = c_typedef_find_sname( &sname );
+                  c_typedef_t const *const tdef =
+                    c_typedef_find_sname( &sname );
                   if ( tdef != NULL ) {
                     yylval.tdef = tdef;
                     return Y_TYPEDEF_NAME;
@@ -819,7 +819,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                   c_keyword_t const *const k =
                     c_keyword_find( lexer_token, opt_lang, lexer_keyword_ctx );
                   if ( k != NULL ) {
-                    yylval.type_id = k->type_id;
+                    yylval.tid = k->tid;
                     return k->yy_token_id;
                   }
                 }

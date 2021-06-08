@@ -164,7 +164,7 @@ typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
 /**
  * Generic "parent" AST node.
  *
- * @note All parent nodes have a AST pointer to what they're a parent of as
+ * @note All parent nodes have an AST pointer to what they're a parent of as
  * their first `struct` member: this is taken advantage of.
  */
 struct c_parent_ast {
@@ -186,7 +186,7 @@ struct c_array_ast {
    */
   c_array_size_t  size;
 
-  c_type_id_t     store_tid;            ///< E.g., `array[static const 10]`
+  c_tid_t         store_tid;            ///< E.g., `array[static const 10]`
 };
 
 /**

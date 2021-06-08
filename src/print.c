@@ -269,7 +269,7 @@ void fl_print_error_unknown_name( char const *file, int line,
     dym_kind_t  dym_kind = DYM_NONE;
     char const *what = NULL;
 
-    switch ( c_type_id_tpid( k->type_id ) ) {
+    switch ( c_tid_tpid( k->tid ) ) {
       case C_TPID_NONE:                 // e.g., "break"
       case C_TPID_STORE:                // e.g., "extern"
         dym_kind = DYM_C_KEYWORDS;

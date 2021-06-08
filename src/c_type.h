@@ -69,7 +69,7 @@ struct c_type {
    *
    * Constants for base types begin with `TB_`.
    */
-  c_type_id_t base_tid;
+  c_tid_t base_tid;
 
   /**
    * The storage classes (`extern`, `static`, etc., including `typedef`),
@@ -78,23 +78,23 @@ struct c_type {
    *
    * Constants for storage-class-like things begin with `TS_`.
    */
-  c_type_id_t store_tid;
+  c_tid_t store_tid;
 
   /**
    * Attributes.
    *
    * Constants for attributes begin with `TA_`.
    */
-  c_type_id_t attr_tid;
+  c_tid_t attr_tid;
 };
 
 /**
  * Convenience macro for specifying a complete <code>\ref c_type</code>
  * literal.
  *
- * @param BASE_TID The base <code>\ref c_type_id_t</code>.
- * @param STORE_TID The storage <code>\ref c_type_id_t</code>.
- * @param ATTR_TID The attribute(s) <code>\ref c_type_id_t</code>.
+ * @param BASE_TID The base <code>\ref c_tid_t</code>.
+ * @param STORE_TID The storage <code>\ref c_tid_t</code>.
+ * @param ATTR_TID The attribute(s) <code>\ref c_tid_t</code>.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT_A()
@@ -111,7 +111,7 @@ struct c_type {
  * Convenience macro for specifying a <code>\ref c_type</code> literal from
  * \a ATTR_TID.
  *
- * @param ATTR_TID The attribute(s) <code>\ref c_type_id_t</code>.
+ * @param ATTR_TID The attribute(s) <code>\ref c_tid_t</code>.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT()
@@ -128,7 +128,7 @@ struct c_type {
  * Convenience macro for specifying a <code>\ref c_type</code> literal from
  * #TB_ANY, #TS_ANY, and \a ATTR_TID.
  *
- * @param ATTR_TID The attribute(s) <code>\ref c_type_id_t</code>.
+ * @param ATTR_TID The attribute(s) <code>\ref c_tid_t</code>.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT()
@@ -145,7 +145,7 @@ struct c_type {
  * Convenience macro for specifying a <code>\ref c_type</code> literal from
  * \a BASE_TID.
  *
- * @param BASE_TID The base <code>\ref c_type_id_t</code>.
+ * @param BASE_TID The base <code>\ref c_tid_t</code>.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT()
@@ -159,7 +159,7 @@ struct c_type {
  * Convenience macro for specifying a <code>\ref c_type</code> literal from
  * \a BASE_TID, #TS_ANY, and #TA_ANY.
  *
- * @param BASE_TID The base <code>\ref c_type_id_t</code>.
+ * @param BASE_TID The base <code>\ref c_tid_t</code>.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT()
@@ -176,7 +176,7 @@ struct c_type {
  * Convenience macro for specifying a <code>\ref c_type</code> literal from
  * \a STORE_TID.
  *
- * @param STORE_TID The storage <code>\ref c_type_id_t</code>.
+ * @param STORE_TID The storage <code>\ref c_tid_t</code>.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT()
@@ -193,7 +193,7 @@ struct c_type {
  * Convenience macro for specifying a <code>\ref c_type</code> literal from
  * #TB_ANY, \a STORE_TID, and #TA_ANY.
  *
- * @param STORE_TID The storage <code>\ref c_type_id_t</code>.
+ * @param STORE_TID The storage <code>\ref c_tid_t</code>.
  * @return Returns a reference to said literal.
  *
  * @sa #C_TYPE_LIT()
@@ -207,14 +207,13 @@ struct c_type {
   C_TYPE_LIT( TB_ANY, (STORE_TID), TA_ANY )
 
 /**
- * For <code>\ref c_type_id_t</code> values, the low-order 4 bits specify the
- * <code>\ref c_type_part_id</code> and thus how the value should be
- * interpreted.
+ * For <code>\ref c_tid_t</code> values, the low-order 4 bits specify the
+ * <code>\ref c_tpid</code> and thus how the value should be interpreted.
  */
-enum c_type_part_id {
+enum c_tpid {
   //
-  // Type part IDs start at 1 so we know a c_type_id_t value has been
-  // initialized properly as opposed to it being 0 by default.
+  // Type part IDs start at 1 so we know a c_tid_t value has been initialized
+  // properly as opposed to it being 0 by default.
   //
   C_TPID_NONE   = 0,                    ///< No types.
   C_TPID_BASE   = (1u << 0),            ///< Base types, e.g., `int`.
@@ -496,11 +495,76 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
                               | TS_THROW | TS_VIRTUAL )
 
 /**
- * Hexadecimal print conversion specifier for <code>\ref c_type_id_t</code>.
+ * Hexadecimal print conversion specifier for <code>\ref c_tid_t</code>.
  */
-#define PRIX_C_TYPE_ID_T      PRIX64
+#define PRIX_C_TID_T          PRIX64
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Adds a type to an existing type, e.g., `short` to `int`, ensuring that a
+ * particular type is never added more than once, e.g., `short` to `short int`.
+ *
+ * A special case has to be made for `long` to allow for `long long` yet not
+ * allow for `long long long`.
+ *
+ * @param dst_tid The <code>\ref c_tid_t</code> to add to.
+ * @param new_tid The <code>\ref c_tid_t</code> to add.
+ * @param new_loc The source location of \a new_id.
+ * @return Returns `true` only if the type added successfully.
+ *
+ * @sa c_type_add(()
+ */
+PJL_WARN_UNUSED_RESULT
+bool c_tid_add( c_tid_t *dst_tid, c_tid_t new_tid, c_loc_t const *new_loc );
+
+/**
+ * "Normalize" \a tid:
+ *
+ *  1. If it's #TB_SIGNED and not #TB_CHAR, remove #TB_SIGNED.
+ *  2. If it becomes #TB_NONE, add #TB_INT.
+ *
+ * @param tid The type to normalize.
+ * @return Returns the normalized type.
+ */
+PJL_WARN_UNUSED_RESULT
+c_tid_t c_tid_normalize( c_tid_t tid );
+
+/**
+ * Gets the "order" value of a <code>\ref c_tid_t</code> so it can be compared
+ * by its order.  The order is:
+ *
+ * + { _none_ | `scope` }  &lt; [`inline`] `namespace` &lt;
+ *   { `struct` | `union` | `class` } &lt;
+ *   `enum` [`class`]
+ *
+ * I.e., the order of T1 &le; T2 only if T1 can appear to the left (&lt;) of T2
+ * in a declaration.  For example, given:
+ * ```
+ *  namespace N { class C { // ...
+ * ```
+ * order(`N`) &le; order(`C`) because `N` can appear to the left of `C` in a
+ * declaration.  However, given:
+ * ```
+ *  class D { namespace M { // ...
+ * ```
+ * order(`D`) &gt; order(`M`) and so `D` can not appear to the left of `M`.
+ *
+ * @param tid The scope-type ID to get the order of.
+ * @return Returns said order.
+ */
+unsigned c_tid_scope_order( c_tid_t tid );
+
+/**
+ * Gets the `c_tpid_t` from \a tid.
+ *
+ * @param tid The type ID.
+ * @return Returns said `c_tpid_t`.
+ *
+ * @sa c_tid_no_tpid()
+ */
+PJL_WARN_UNUSED_RESULT
+c_tpid_t c_tid_tpid( c_tid_t tid );
 
 /**
  * Adds a type to an existing type, e.g., `short` to `int`, ensuring that a
@@ -514,8 +578,8 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @param new_loc The source location of \a new_type.
  * @return Returns `true` only if \a new_type added successfully.
  *
+ * @sa c_tid_add(()
  * @sa c_type_add_tid()
- * @sa c_type_id_add(()
  * @sa c_type_or_eq()
  */
 PJL_WARN_UNUSED_RESULT
@@ -526,14 +590,14 @@ bool c_type_add( c_type_t *dst_type, c_type_t const *new_type,
  * Adds \a new_tid to \a dst_type.
  *
  * @param dst_type The <code>\ref c_type</code> to add to.
- * @param new_tid The <code>\ref c_type_id_t</code> to add.
+ * @param new_tid The <code>\ref c_tid_t</code> to add.
  * @param new_loc The source location of \a new_tid.
  * @return Returns `true` only if \a new_tid added successfully.
  *
  * @sa c_type_add()
  */
 PJL_WARN_UNUSED_RESULT
-bool c_type_add_tid( c_type_t *dst_type, c_type_id_t new_tid,
+bool c_type_add_tid( c_type_t *dst_type, c_tid_t new_tid,
                      c_loc_t const *new_loc );
 
 /**
@@ -584,110 +648,44 @@ bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type );
 /**
  * Creates a <code>\ref c_type</code> based on the type part ID of \a tid.
  *
- * @param tid The <code>\ref c_type_id_t</code> to create the <code>\ref
+ * @param tid The <code>\ref c_tid_t</code> to create the <code>\ref
  * c_type</code> from.
  * @return Returns said <code>\ref c_type</code>.
  */
 PJL_WARN_UNUSED_RESULT
-c_type_t c_type_from_tid( c_type_id_t tid );
+c_type_t c_type_from_tid( c_tid_t tid );
 
 /**
- * Gets the <code>\ref c_type_id_t</code> of \a type that corresponds to the
- * type part ID of \a tid.
+ * Gets the <code>\ref c_tid_t</code> of \a type that corresponds to the type
+ * part ID of \a tid.
  *
  * @param type The <code>\ref c_type</code> to get the relevant <code>\ref
- * c_type_id_t</code> of.
- * @param tid The <code>\ref c_type_id_t</code> that specifies the part of \a
- * type to get the pointer to.
- * @return Returns the corresponding <code>\ref c_type_id_t</code> of \a type
- * for the part of \a tid.
+ * c_tid_t</code> of.
+ * @param tid The <code>\ref c_tid_t</code> that specifies the part of \a type
+ * to get the pointer to.
+ * @return Returns the corresponding <code>\ref c_tid_t</code> of \a type for
+ * the part of \a tid.
  *
  * @sa c_type_get_tid_ptr()
  */
 PJL_WARN_UNUSED_RESULT
-c_type_id_t c_type_get_tid( c_type_t const *type, c_type_id_t tid );
+c_tid_t c_type_get_tid( c_type_t const *type, c_tid_t tid );
 
 /**
- * Gets a pointer to the <code>\ref c_type_id_t</code> of \a type that
- * corresponds to the type part ID of \a tid.
+ * Gets a pointer to the <code>\ref c_tid_t</code> of \a type that corresponds
+ * to the type part ID of \a tid.
  *
  * @param type The <code>\ref c_type</code> to get a pointer to the relevant
- * <code>\ref c_type_id_t</code> of.
- * @param tid The <code>\ref c_type_id_t</code> that specifies the part of \a
- * type to get the pointer to.
- * @return Returns a pointer to the corresponding <code>\ref c_type_id_t</code>
- * of \a type for the part of \a tid.
+ * <code>\ref c_tid_t</code> of.
+ * @param tid The <code>\ref c_tid_t</code> that specifies the part of \a type
+ * to get the pointer to.
+ * @return Returns a pointer to the corresponding <code>\ref c_tid_t</code> of
+ * \a type for the part of \a tid.
  *
  * @sa c_type_get_tid()
  */
 PJL_WARN_UNUSED_RESULT
-c_type_id_t* c_type_get_tid_ptr( c_type_t *type, c_type_id_t tid );
-
-/**
- * Adds a type to an existing type, e.g., `short` to `int`, ensuring that a
- * particular type is never added more than once, e.g., `short` to `short int`.
- *
- * A special case has to be made for `long` to allow for `long long` yet not
- * allow for `long long long`.
- *
- * @param dst_tid The <code>\ref c_type_id_t</code> to add to.
- * @param new_tid The <code>\ref c_type_id_t</code> to add.
- * @param new_loc The source location of \a new_id.
- * @return Returns `true` only if the type added successfully.
- *
- * @sa c_type_add(()
- */
-PJL_WARN_UNUSED_RESULT
-bool c_type_id_add( c_type_id_t *dst_tid, c_type_id_t new_tid,
-                    c_loc_t const *new_loc );
-
-/**
- * "Normalize" \a tid:
- *
- *  1. If it's #TB_SIGNED and not #TB_CHAR, remove #TB_SIGNED.
- *  2. If it becomes #TB_NONE, add #TB_INT.
- *
- * @param tid The type to normalize.
- * @return Returns the normalized type.
- */
-PJL_WARN_UNUSED_RESULT
-c_type_id_t c_type_id_normalize( c_type_id_t tid );
-
-/**
- * Gets the "order" value of a <code>\ref c_type_id_t</code> so it can be
- * compared by its order.  The order is:
- *
- * + { _none_ | `scope` }  &lt; [`inline`] `namespace` &lt;
- *   { `struct` | `union` | `class` } &lt;
- *   `enum` [`class`]
- *
- * I.e., the order of T1 &le; T2 only if T1 can appear to the left (&lt;) of T2
- * in a declaration.  For example, given:
- * ```
- *  namespace N { class C { // ...
- * ```
- * order(`N`) &le; order(`C`) because `N` can appear to the left of `C` in a
- * declaration.  However, given:
- * ```
- *  class D { namespace M { // ...
- * ```
- * order(`D`) &gt; order(`M`) and so `D` can not appear to the left of `M`.
- *
- * @param tid The scope-type ID to get the order of.
- * @return Returns said order.
- */
-unsigned c_type_id_scope_order( c_type_id_t tid );
-
-/**
- * Gets the `c_type_part_id_t` from \a tid.
- *
- * @param tid The type ID.
- * @return Returns said `c_type_part_id_t`.
- *
- * @sa c_type_id_no_tpid()
- */
-PJL_WARN_UNUSED_RESULT
-c_type_part_id_t c_type_id_tpid( c_type_id_t tid );
+c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tid );
 
 /**
  * For all type part IDs of \a j_type that are not none, gets whether the
@@ -697,7 +695,7 @@ c_type_part_id_t c_type_id_tpid( c_type_id_t tid );
  * @param j_type The second <code>\ref c_type</code>.
  * @return Returns `true` only if \a i_type contains any \a j_type.
  *
- * @sa c_type_id_is_any()
+ * @sa c_tid_is_any()
  */
 PJL_WARN_UNUSED_RESULT
 bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type );
@@ -756,12 +754,12 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type );
 /**
  * Checks that the type part ID of \a tid is \a tpid.
  *
- * @param tid The <code>\ref c_type_id_t</code> to check.
- * @param tpid The <code>\ref c_type_part_id_t</code> to check against.
+ * @param tid The <code>\ref c_tid_t</code> to check.
+ * @param tpid The <code>\ref c_tpid_t</code> to check against.
  * @return Returns \a tid.
  */
 C_TYPE_INLINE PJL_NOWARN_UNUSED_RESULT
-c_type_id_t c_type_id_check( c_type_id_t tid, c_type_part_id_t tpid ) {
+c_tid_t c_tid_check( c_tid_t tid, c_tpid_t tpid ) {
   assert( (tid & TX_MASK_PART_ID) == tpid );
   return tid;
 }
@@ -769,17 +767,17 @@ c_type_id_t c_type_id_check( c_type_id_t tid, c_type_part_id_t tpid ) {
 /**
  * Checks whether \a tid has been complemented via `~`.
  *
- * @param tid The <code>\ref c_type_id_t</code> to check.
+ * @param tid The <code>\ref c_tid_t</code> to check.
  * @return Returns `true` only if \a tid has been complemented.
  *
- * @sa c_type_id_compl()
+ * @sa c_tid_compl()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-bool c_type_id_is_compl( c_type_id_t tid ) {
+bool c_tid_is_compl( c_tid_t tid ) {
   //
-  // The low-order 4 bits specify the c_type_part_id.  Currently, type part IDs
-  // are 1 (0b0001), 2 (0b0010), and 4 (0b0100).  If tid is 0b1xxx, it means
-  // that it was complemented.
+  // The low-order 4 bits specify the c_tpid.  Currently, type part IDs are 1
+  // (0b0001), 2 (0b0010), and 4 (0b0100).  If tid is 0b1xxx, it means that it
+  // was complemented.
   //
   return (tid & 0x8) != 0;
 }
@@ -789,32 +787,32 @@ bool c_type_id_is_compl( c_type_id_t tid ) {
  * the part ID of \a tid would be complemented also.  This function complements
  * \a tid while preserving the original part ID.
  *
- * @param tid The <code>\ref c_type_id_t</code> to complement.
+ * @param tid The <code>\ref c_tid_t</code> to complement.
  * @return Returns \a tid complemented.
  *
- * @sa c_type_id_is_compl()
+ * @sa c_tid_is_compl()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-c_type_id_t c_type_id_compl( c_type_id_t tid ) {
-  assert( !c_type_id_is_compl( tid ) );
+c_tid_t c_tid_compl( c_tid_t tid ) {
+  assert( !c_tid_is_compl( tid ) );
   return ~tid ^ TX_MASK_PART_ID;
 }
 
 /**
  * Gets the C/C++ name of \a tid.
  *
- * @param tid The <code>\ref c_type_id_t</code> to get the name of.
+ * @param tid The <code>\ref c_tid_t</code> to get the name of.
  * @return Returns said name.
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
- * @sa c_type_id_name_eng()
- * @sa c_type_id_name_error()
+ * @sa c_tid_name_eng()
+ * @sa c_tid_name_error()
  * @sa c_type_name_c()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-char const* c_type_id_name_c( c_type_id_t tid ) {
+char const* c_tid_name_c( c_tid_t tid ) {
   c_type_t const type = c_type_from_tid( tid );
   return c_type_name( &type, /*in_english=*/false );
 }
@@ -822,18 +820,18 @@ char const* c_type_id_name_c( c_type_id_t tid ) {
 /**
  * Gets the pseudo-English name of \a tid, if available; the C/C++ name if not.
  *
- * @param tid The <code>\ref c_type_id_t</code> to get the name of.
+ * @param tid The <code>\ref c_tid_t</code> to get the name of.
  * @return Returns said name.
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
- * @sa c_type_id_name_c()
- * @sa c_type_id_name_error()
+ * @sa c_tid_name_c()
+ * @sa c_tid_name_error()
  * @sa c_type_name_english()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-char const* c_type_id_name_eng( c_type_id_t tid ) {
+char const* c_tid_name_eng( c_tid_t tid ) {
   c_type_t const type = c_type_from_tid( tid );
   return c_type_name( &type, /*in_english=*/true );
 }
@@ -843,18 +841,18 @@ char const* c_type_id_name_eng( c_type_id_t tid ) {
  * pseudo-English to gibberish and the type has an pseudo-English alias, return
  * the alias, e.g., `non-returning` rather than `noreturn`.
  *
- * @param tid The <code>\ref c_type_id_t</code> to get the name of.
+ * @param tid The <code>\ref c_tid_t</code> to get the name of.
  * @return Returns said name.
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
- * @sa c_type_id_name_c()
- * @sa c_type_id_name_eng()
+ * @sa c_tid_name_c()
+ * @sa c_tid_name_eng()
  * @sa c_type_name_error()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-char const* c_type_id_name_error( c_type_id_t tid ) {
+char const* c_tid_name_error( c_tid_t tid ) {
   c_type_t const type = c_type_from_tid( tid );
   // When giving an error message, return the type name in pseudo-English if
   // we're parsing pseudo-English or in C/C++ if we're parsing C/C++.
@@ -864,29 +862,29 @@ char const* c_type_id_name_error( c_type_id_t tid ) {
 /**
  * Gets the type ID value without the part ID.
  *
- * @param tid The <code>\ref c_type_id_t</code> to get the value of.
+ * @param tid The <code>\ref c_tid_t</code> to get the value of.
  * @return Returns the type ID value without the part ID.
  *
- * @sa c_type_id_tpid()
+ * @sa c_tid_tpid()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-c_type_id_t c_type_id_no_tpid( c_type_id_t tid ) {
+c_tid_t c_tid_no_tpid( c_tid_t tid ) {
   return tid & ~TX_MASK_PART_ID;
 }
 
 /**
  * Gets whether \a i_tid contains any of \a j_tid.
  *
- * @param i_tid The first <code>\ref c_type_id_t</code>.
- * @param j_tid The second <code>\ref c_type_id_t</code>.
+ * @param i_tid The first <code>\ref c_tid_t</code>.
+ * @param j_tid The second <code>\ref c_tid_t</code>.
  * @return Returns `true` only if \a i_tid contains any \a j_tid.
  *
  * @sa c_type_is_any()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-bool c_type_id_is_any( c_type_id_t i_tid, c_type_id_t j_tid ) {
-  assert( c_type_id_tpid( i_tid ) == c_type_id_tpid( j_tid ) );
-  return c_type_id_no_tpid( i_tid & j_tid ) != TX_NONE;
+bool c_tid_is_any( c_tid_t i_tid, c_tid_t j_tid ) {
+  assert( c_tid_tpid( i_tid ) == c_tid_tpid( j_tid ) );
+  return c_tid_no_tpid( i_tid & j_tid ) != TX_NONE;
 }
 
 /**
@@ -894,14 +892,14 @@ bool c_type_id_is_any( c_type_id_t i_tid, c_type_id_t j_tid ) {
  *
  * @note This function is useful only when the part ID of \a tid can be any
  * part ID.
- * @param tid The <code>\ref c_type_id_t</code> to check.
+ * @param tid The <code>\ref c_tid_t</code> to check.
  * @return Returns `true` only if \a tid is `Tx_NONE`.
  *
  * @sa c_type_is_none()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-bool c_type_id_is_none( c_type_id_t tid ) {
-  return c_type_id_no_tpid( tid ) == TX_NONE;
+bool c_tid_is_none( c_tid_t tid ) {
+  return c_tid_no_tpid( tid ) == TX_NONE;
 }
 
 /**
@@ -910,15 +908,15 @@ bool c_type_id_is_none( c_type_id_t tid ) {
  * @note
  * In cdecl, `size_t` is `typedef`d to be `unsigned long` in `c_typedef.c`.
  *
- * @param tid The <code>\ref c_type_id_t</code> to check.
+ * @param tid The <code>\ref c_tid_t</code> to check.
  * @return Returns `true` only if \a tid is `size_t`.
  *
  * @sa c_ast_is_size_t()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-bool c_type_id_is_size_t( c_type_id_t tid ) {
+bool c_tid_is_size_t( c_tid_t tid ) {
   assert( (tid & TX_MASK_PART_ID) == C_TPID_BASE );
-  tid &= c_type_id_compl( TB_INT );
+  tid &= c_tid_compl( TB_INT );
   return (tid & (TB_UNSIGNED | TB_LONG)) == (TB_UNSIGNED | TB_LONG);
 }
 
@@ -936,17 +934,17 @@ bool c_type_is_none( c_type_t const *type ) {
 }
 
 /**
- * Checks whether the relevant <code>\ref c_type_id_t</code> of \a type is any
+ * Checks whether the relevant <code>\ref c_tid_t</code> of \a type is any
  * of \a tids.
  *
  * @param type The <code>\ref c_type</code> to check.
- * @param tids The <code>\ref c_type_id_t</code> to check against.
- * @return Returns `true` only if the relevant <code>\ref c_type_id_t</code> of
+ * @param tids The <code>\ref c_tid_t</code> to check against.
+ * @return Returns `true` only if the relevant <code>\ref c_tid_t</code> of
  * \a type contains any of \a tids.
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-bool c_type_is_tid_any( c_type_t const *type, c_type_id_t tids ) {
-  return c_type_id_is_any( c_type_get_tid( type, tids ), tids );
+bool c_type_is_tid_any( c_type_t const *type, c_tid_t tids ) {
+  return c_tid_is_any( c_type_get_tid( type, tids ), tids );
 }
 
 /**
@@ -1000,7 +998,7 @@ char const* c_type_name_english( c_type_t const *type ) {
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_type_name_error( c_type_t const *type ) {
-  // See comment in c_type_id_name_error().
+  // See comment in c_tid_name_error().
   return c_type_name( type, /*in_english=*/c_mode == C_ENGLISH_TO_GIBBERISH );
 }
 

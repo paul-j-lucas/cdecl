@@ -143,12 +143,11 @@ static size_t copy_cli_options( did_you_mean_t **pdym ) {
  * @return Returns said number of keywords.
  */
 PJL_NOWARN_UNUSED_RESULT
-static size_t copy_keywords( did_you_mean_t **const pdym,
-                             c_type_part_id_t tpid ) {
+static size_t copy_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
   size_t count = 0;
   FOREACH_KEYWORD( k ) {
     if ( (k->lang_ids & opt_lang) != LANG_NONE &&
-         c_type_id_tpid( k->type_id ) == tpid ) {
+         c_tid_tpid( k->tid ) == tpid ) {
       if ( pdym != NULL )
         (*pdym)++->token = check_strdup( k->literal );
       ++count;

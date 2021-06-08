@@ -73,7 +73,7 @@ static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
  * @param tpid The type part id to get the string representation of.
  * @return Returns a string representation of \a tpid.
  */
-static char const* c_type_part_id_name( c_type_part_id_t tpid ) {
+static char const* c_tpid_name( c_tpid_t tpid ) {
   switch ( tpid ) {
     case C_TPID_NONE:
       break;
@@ -299,24 +299,24 @@ void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
   }
 }
 
+void c_tid_dump( c_tid_t tid, FILE *dout ) {
+  FPRINTF( dout,
+    "\"%s\" (%s = 0x%" PRIX_C_TID_T ")",
+    c_tid_name_c( tid ), c_tpid_name( c_tid_tpid( tid ) ), tid
+  );
+}
+
 void c_type_dump( c_type_t const *type, FILE *dout ) {
   assert( type != NULL );
   FPRINTF( dout,
     "\"%s\" "
-     "(%s = 0x%" PRIX_C_TYPE_ID_T
-    ", %s = 0x%" PRIX_C_TYPE_ID_T
-    ", %s = 0x%" PRIX_C_TYPE_ID_T ")",
+     "(%s = 0x%" PRIX_C_TID_T
+    ", %s = 0x%" PRIX_C_TID_T
+    ", %s = 0x%" PRIX_C_TID_T ")",
     c_type_name_c( type ),
-    c_type_part_id_name( C_TPID_BASE  ), type->base_tid,
-    c_type_part_id_name( C_TPID_STORE ), type->store_tid,
-    c_type_part_id_name( C_TPID_ATTR  ), type->attr_tid
-  );
-}
-
-void c_type_id_dump( c_type_id_t tid, FILE *dout ) {
-  FPRINTF( dout,
-    "\"%s\" (%s = 0x%" PRIX_C_TYPE_ID_T ")",
-    c_type_id_name_c( tid ), c_type_part_id_name( c_type_id_tpid( tid ) ), tid
+    c_tpid_name( C_TPID_BASE  ), type->base_tid,
+    c_tpid_name( C_TPID_STORE ), type->store_tid,
+    c_tpid_name( C_TPID_ATTR  ), type->attr_tid
   );
 }
 

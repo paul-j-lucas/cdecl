@@ -118,7 +118,7 @@ FILE               *fout;
  * @sa is_explicit_int()
  * @sa parse_explicit_int()
  */
-static c_type_id_t  opt_explicit_int[] = { TB_NONE, TB_NONE };
+static c_tid_t      opt_explicit_int[] = { TB_NONE, TB_NONE };
 
 /**
  * Long options.
@@ -703,8 +703,8 @@ struct option const* cli_option_next( struct option const *opt ) {
   return opt;
 }
 
-bool is_explicit_int( c_type_id_t tid ) {
-  assert( c_type_id_tpid( tid ) == C_TPID_BASE );
+bool is_explicit_int( c_tid_t tid ) {
+  assert( c_tid_tpid( tid ) == C_TPID_BASE );
 
   if ( tid == TB_UNSIGNED ) {
     //
@@ -718,17 +718,17 @@ bool is_explicit_int( c_type_id_t tid ) {
     // i.e., two bits are set.  Therefore, to check for explicit int for long
     // long, we first have to turn off the TB_LONG bit.
     //
-    tid &= c_type_id_compl( TB_LONG );
+    tid &= c_tid_compl( TB_LONG );
   }
   bool const is_unsigned = (tid & TB_UNSIGNED) != TB_NONE;
-  tid &= c_type_id_compl( TB_UNSIGNED );
+  tid &= c_tid_compl( TB_UNSIGNED );
   return (tid & opt_explicit_int[ is_unsigned ]) != TB_NONE;
 }
 
 void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
   assert( ei_format != NULL );
 
-  c_type_id_t tid = TB_NONE;
+  c_tid_t tid = TB_NONE;
 
   for ( char const *s = ei_format; *s != '\0'; ++s ) {
     switch ( *s ) {
@@ -785,7 +785,7 @@ void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
     } // switch
 
     bool const is_unsigned = (tid & TB_UNSIGNED) != TB_NONE;
-    opt_explicit_int[ is_unsigned ] |= tid & c_type_id_compl( TB_UNSIGNED );
+    opt_explicit_int[ is_unsigned ] |= tid & c_tid_compl( TB_UNSIGNED );
     tid = TB_NONE;
   } // for
 }

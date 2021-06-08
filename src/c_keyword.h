@@ -60,7 +60,7 @@ struct c_keyword {
   int             yy_token_id;          ///< Bison token number.
   c_lang_id_t     lang_ids;             ///< Language(s) OK in.
   c_keyword_ctx_t kw_ctx;               ///< Keyword context.
-  c_type_id_t     type_id;              ///< Type the keyword maps to, if any.
+  c_tid_t         tid;                  ///< Type the keyword maps to, if any.
 };
 
 ////////// extern functions ///////////////////////////////////////////////////
