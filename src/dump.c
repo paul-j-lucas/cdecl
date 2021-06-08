@@ -78,11 +78,11 @@ static char const* c_tpid_name( c_tpid_t tpid ) {
     case C_TPID_NONE:
       break;
     case C_TPID_BASE:
-      return "base";
+      return "btid";
     case C_TPID_STORE:
-      return "store";
+      return "stid";
     case C_TPID_ATTR:
-      return "attr";
+      return "atid";
   } // switch
   UNEXPECTED_INT_VALUE( tpid );
 }
