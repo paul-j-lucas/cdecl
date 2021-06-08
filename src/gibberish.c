@@ -133,7 +133,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
   c_type_t type = ast->type;
 
-  c_tid_t cv_qual_tid     = TS_NONE;
+  c_tid_t cv_qual_stid    = TS_NONE;
   bool    is_default      = false;
   bool    is_delete       = false;
   bool    is_final        = false;
@@ -141,7 +141,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
   bool    is_override     = false;
   bool    is_pure_virtual = false;
   bool    is_throw        = false;
-  c_tid_t ref_qual_tid    = TS_NONE;
+  c_tid_t ref_qual_stid   = TS_NONE;
 
   //
   // This isn't implemented using a visitor because c_ast_visit() visits in
@@ -167,27 +167,27 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       // These things aren't printed as part of the type beforehand, so strip
       // them out of the type here, but print them after the parameters.
       //
-      cv_qual_tid     = (type.store_tid & TS_MASK_QUALIFIER);
-      is_default      = (type.store_tid & TS_DEFAULT) != TS_NONE;
-      is_delete       = (type.store_tid & TS_DELETE) != TS_NONE;
-      is_final        = (type.store_tid & TS_FINAL) != TS_NONE;
-      is_noexcept     = (type.store_tid & TS_NOEXCEPT) != TS_NONE;
-      is_override     = (type.store_tid & TS_OVERRIDE) != TS_NONE;
-      is_pure_virtual = (type.store_tid & TS_PURE_VIRTUAL) != TS_NONE;
-      is_throw        = (type.store_tid & TS_THROW) != TS_NONE;
-      ref_qual_tid    = (type.store_tid & TS_MASK_REF_QUALIFIER);
+      cv_qual_stid    = (type.stid & TS_MASK_QUALIFIER);
+      is_default      = (type.stid & TS_DEFAULT) != TS_NONE;
+      is_delete       = (type.stid & TS_DELETE) != TS_NONE;
+      is_final        = (type.stid & TS_FINAL) != TS_NONE;
+      is_noexcept     = (type.stid & TS_NOEXCEPT) != TS_NONE;
+      is_override     = (type.stid & TS_OVERRIDE) != TS_NONE;
+      is_pure_virtual = (type.stid & TS_PURE_VIRTUAL) != TS_NONE;
+      is_throw        = (type.stid & TS_THROW) != TS_NONE;
+      ref_qual_stid   = (type.stid & TS_MASK_REF_QUALIFIER);
 
-      type.store_tid &= c_tid_compl(
-                            TS_MASK_QUALIFIER
-                          | TS_DEFAULT
-                          | TS_DELETE
-                          | TS_FINAL
-                          | TS_NOEXCEPT
-                          | TS_OVERRIDE
-                          | TS_PURE_VIRTUAL
-                          | TS_THROW
-                          | TS_MASK_REF_QUALIFIER
-                        );
+      type.stid &= c_tid_compl(
+                       TS_MASK_QUALIFIER
+                     | TS_DEFAULT
+                     | TS_DELETE
+                     | TS_FINAL
+                     | TS_NOEXCEPT
+                     | TS_OVERRIDE
+                     | TS_PURE_VIRTUAL
+                     | TS_THROW
+                     | TS_MASK_REF_QUALIFIER
+                   );
 
       //
       // Depending on the C++ language version, change noexcept to throw() or
@@ -218,11 +218,11 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
           g_print_space_once( g );
         g_print_postfix( g, ast );
       }
-      if ( cv_qual_tid != TS_NONE )
-        FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_tid ) );
-      if ( ref_qual_tid != TS_NONE ) {
+      if ( cv_qual_stid != TS_NONE )
+        FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_stid ) );
+      if ( ref_qual_stid != TS_NONE ) {
         FPUTS(
-          (ref_qual_tid & TS_REFERENCE) != TS_NONE ?  " &" : " &&",
+          (ref_qual_stid & TS_REFERENCE) != TS_NONE ?  " &" : " &&",
           g->gout
         );
       }
@@ -258,12 +258,12 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         //      c++decl> declare e as enum class C
         //      enum C e;                   // not: enum class C e;
         //
-        type.base_tid &= c_tid_compl( TB_STRUCT | TB_CLASS );
+        type.btid &= c_tid_compl( TB_STRUCT | TB_CLASS );
       }
 
       if ( opt_east_const ) {
-        cv_qual_tid = type.store_tid & (TS_CONST | TS_VOLATILE);
-        type.store_tid &= c_tid_compl( TS_CONST | TS_VOLATILE );
+        cv_qual_stid = type.stid & (TS_CONST | TS_VOLATILE);
+        type.stid &= c_tid_compl( TS_CONST | TS_VOLATILE );
       }
 
       FPUTS( c_type_name_c( &type ), g->gout );
@@ -295,8 +295,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         g_print_ast( g, ast->as.ecsu.of_ast );
       }
 
-      if ( cv_qual_tid != TS_NONE )
-        FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_tid ) );
+      if ( cv_qual_stid != TS_NONE )
+        FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_stid ) );
 
       g_print_space_ast_name( g, ast );
       break;
@@ -316,9 +316,9 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE: {
-      c_tid_t store_tid = type.store_tid & TS_MASK_STORAGE;
-      if ( store_tid != TS_NONE )
-        FPRINTF( g->gout, "%s ", c_tid_name_c( store_tid ) );
+      c_tid_t stid = type.stid & TS_MASK_STORAGE;
+      if ( stid != TS_NONE )
+        FPRINTF( g->gout, "%s ", c_tid_name_c( stid ) );
       g_print_ast( g, ast->as.ptr_ref.to_ast );
       if ( !g->skip_name_for_using && g->gib_kind != C_GIB_CAST &&
            c_ast_find_name( ast, C_VISIT_UP ) != NULL &&
@@ -406,8 +406,8 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
   assert( ast->kind_id == K_ARRAY );
 
   FPUTS( graph_token_c( "[" ), g->gout );
-  if ( ast->as.array.store_tid != TS_NONE )
-    FPRINTF( g->gout, "%s ", c_tid_name_c( ast->as.array.store_tid ) );
+  if ( ast->as.array.stid != TS_NONE )
+    FPRINTF( g->gout, "%s ", c_tid_name_c( ast->as.array.stid ) );
   switch ( ast->as.array.size ) {
     case C_ARRAY_SIZE_NONE:
       break;
@@ -612,11 +612,11 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
-  c_tid_t const qual_tid = ast->type.store_tid & TS_MASK_QUALIFIER;
+  c_tid_t const qual_stid = ast->type.stid & TS_MASK_QUALIFIER;
 
   switch ( ast->kind_id ) {
     case K_POINTER:
-      if ( qual_tid != TS_NONE && g->gib_kind != C_GIB_CAST &&
+      if ( qual_stid != TS_NONE && g->gib_kind != C_GIB_CAST &&
            ast->as.ptr_ref.to_ast->kind_id != K_FUNCTION ) {
         //
         // If we're printing a type as a "using" declaration and there's a
@@ -665,8 +665,8 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
       /* suppress warning */;
   } // switch
 
-  if ( qual_tid != TS_NONE ) {
-    FPUTS( c_tid_name_c( qual_tid ), g->gout );
+  if ( qual_stid != TS_NONE ) {
+    FPUTS( c_tid_name_c( qual_stid ), g->gout );
 
     if ( (g->gib_kind & (C_GIB_DECL | C_GIB_TYPEDEF)) != C_GIB_NONE &&
          c_ast_find_name( ast, C_VISIT_UP ) != NULL ) {
@@ -784,7 +784,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
     // so we have to wrap it in a scoped declaration, one of: class, namespace,
     // struct, or union.
     //
-    if ( scope_type.base_tid != TB_NAMESPACE ||
+    if ( scope_type.btid != TB_NAMESPACE ||
          (opt_lang & (LANG_CPP_MIN(17) | LANG_C_ANY)) != LANG_NONE ) {
       //
       // All C++ versions support nested class/struct/union declarations, e.g.:
@@ -799,8 +799,8 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
       // namespace form.
       //
       scope_type = *c_sname_scope_type( sname );
-      if ( scope_type.base_tid == TB_SCOPE )
-        scope_type.base_tid = TB_NAMESPACE;
+      if ( scope_type.btid == TB_SCOPE )
+        scope_type.btid = TB_NAMESPACE;
       FPRINTF( gout,
         "%s %s { ", c_type_name_c( &scope_type ), c_sname_scope_name( sname )
       );
@@ -814,8 +814,8 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
       //
       FOREACH_SCOPE( scope, sname, sname->tail ) {
         scope_type = c_scope_data( scope )->type;
-        if ( scope_type.base_tid == TB_SCOPE )
-          scope_type.base_tid = TB_NAMESPACE;
+        if ( scope_type.btid == TB_SCOPE )
+          scope_type.btid = TB_NAMESPACE;
         FPRINTF( gout,
           "%s %s { ",
           c_type_name_c( &scope_type ), c_scope_data( scope )->name
@@ -865,7 +865,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
       FPUTS( " }", gout );
   }
 
-  if ( opt_semicolon && scope_type.base_tid != TB_NAMESPACE )
+  if ( opt_semicolon && scope_type.btid != TB_NAMESPACE )
     FPUTC( ';', gout );
   FPUTC( '\n', gout );
 }

@@ -280,7 +280,7 @@ static c_ast_t const* c_ast_if_unpointer( c_ast_t const *ast,
   ast = ast->as.ptr_ref.to_ast;
   assert( ast != NULL );
   assert( cv_tids != NULL );
-  *cv_tids = ast->type.store_tid & TS_CONST_VOLATILE;
+  *cv_tids = ast->type.stid & TS_CONST_VOLATILE;
   //
   // Now that we've gotten the cv qualifiers of the first referred-to type, we
   // can just call the ordinary c_ast_untypedef() to peel off any remaining
@@ -336,7 +336,7 @@ static c_ast_t const* c_ast_if_unreference( c_ast_t const *ast,
   ast = ast->as.ptr_ref.to_ast;
   assert( ast != NULL );
   assert( cv_tids != NULL );
-  *cv_tids = ast->type.store_tid & TS_CONST_VOLATILE;
+  *cv_tids = ast->type.stid & TS_CONST_VOLATILE;
   //
   // Now that we've gotten the cv qualifiers of the first referred-to type, we
   // can just call the ordinary c_ast_unreference() to peel off any remaining
@@ -397,10 +397,10 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
   c_ast_t *const found_ast =
     c_ast_find_kind_any( ast, C_VISIT_DOWN, K_BUILTIN | K_TYPEDEF );
   if ( found_ast != NULL ) {
-    rv_type.store_tid = found_ast->type.store_tid & TS_MASK_STORAGE;
-    rv_type.attr_tid = found_ast->type.attr_tid;
-    found_ast->type.store_tid &= c_tid_compl( TS_MASK_STORAGE );
-    found_ast->type.attr_tid = TA_NONE;
+    rv_type.stid = found_ast->type.stid & TS_MASK_STORAGE;
+    rv_type.atid = found_ast->type.atid;
+    found_ast->type.stid &= c_tid_compl( TS_MASK_STORAGE );
+    found_ast->type.atid = TA_NONE;
   }
   return rv_type;
 }
@@ -455,8 +455,8 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast ) {
   c_ast_t *const rv_ast = c_ast_add_array_impl( ast, array_ast );
   assert( rv_ast != NULL );
   c_type_t const taken_type = c_ast_take_storage( array_ast->as.array.of_ast );
-  array_ast->type.store_tid |= taken_type.store_tid;
-  array_ast->type.attr_tid  |= taken_type.attr_tid;
+  array_ast->type.stid |= taken_type.stid;
+  array_ast->type.atid |= taken_type.atid;
   return rv_ast;
 }
 
@@ -500,8 +500,8 @@ bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t tids ) {
   ast = c_ast_untypedef( ast );
   if ( ast->kind_id != K_BUILTIN )
     return false;
-  c_tid_t const base_tid = c_tid_normalize( ast->type.base_tid );
-  return only_bits_set( base_tid, tids );
+  c_tid_t const btid = c_tid_normalize( ast->type.btid );
+  return only_bits_set( btid, tids );
 }
 
 bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids ) {
@@ -518,9 +518,9 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
   if ( ast == NULL )
     return false;
   c_type_t const masked_type = {
-    c_tid_normalize( ast->type.base_tid ) & mask_type->base_tid,
-    (ast->type.store_tid | cv_tids)       & mask_type->store_tid,
-    ast->type.attr_tid                    & mask_type->attr_tid
+    c_tid_normalize( ast->type.btid ) & mask_type->btid,
+    (ast->type.stid | cv_tids)        & mask_type->stid,
+    ast->type.atid                    & mask_type->atid
   };
   return c_type_equal( &masked_type, equal_type );
 }
@@ -545,9 +545,9 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
     return NULL;
 
   c_type_t const ast_cv_type = {
-    c_tid_normalize( ast->type.base_tid ),
-    ast->type.store_tid | cv_tids,
-    ast->type.attr_tid
+    c_tid_normalize( ast->type.btid ),
+    ast->type.stid | cv_tids,
+    ast->type.atid
   };
 
   return c_type_is_any( &ast_cv_type, type ) ? ast : NULL;
@@ -643,7 +643,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
   }
 
   if ( ast->kind_id == K_USER_DEF_CONVERSION &&
-       c_ast_local_type( ast )->base_tid == TB_SCOPE ) {
+       c_ast_local_type( ast )->btid == TB_SCOPE ) {
     //
     // User-defined conversions don't have names, but they can still have a
     // scope.  Since only classes can have them, if the scope is still
@@ -763,8 +763,8 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
   // one already).
   //
   c_type_t const taken_type = c_ast_take_storage( type_ast );
-  decl_ast->type.store_tid |= taken_type.store_tid;
-  decl_ast->type.attr_tid |= taken_type.attr_tid;
+  decl_ast->type.stid |= taken_type.stid;
+  decl_ast->type.atid |= taken_type.atid;
 
   if ( c_ast_empty_name( decl_ast ) )
     decl_ast->sname = c_ast_take_name( type_ast );

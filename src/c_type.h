@@ -69,7 +69,7 @@ struct c_type {
    *
    * Constants for base types begin with `TB_`.
    */
-  c_tid_t base_tid;
+  c_tid_t btid;
 
   /**
    * The storage classes (`extern`, `static`, etc., including `typedef`),
@@ -78,14 +78,14 @@ struct c_type {
    *
    * Constants for storage-class-like things begin with `TS_`.
    */
-  c_tid_t store_tid;
+  c_tid_t stid;
 
   /**
    * Attributes.
    *
    * Constants for attributes begin with `TA_`.
    */
-  c_tid_t attr_tid;
+  c_tid_t atid;
 };
 
 /**

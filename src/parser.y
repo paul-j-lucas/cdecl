@@ -420,7 +420,7 @@ typedef struct in_attr in_attr_t;
  * Qualifier and its source location.
  */
 struct c_qualifier {
-  c_tid_t qual_tid;               ///< E.g., #TS_CONST or #TS_VOLATILE.
+  c_tid_t qual_stid;              ///< E.g., #TS_CONST or #TS_VOLATILE.
   c_loc_t loc;                    ///< Qualifier source location.
 };
 typedef struct c_qualifier c_qualifier_t;
@@ -545,7 +545,7 @@ static inline void ia_type_ast_push( c_ast_t *ast ) {
 PJL_WARN_UNUSED_RESULT
 static inline c_tid_t ia_qual_peek_tid( void ) {
   c_qualifier_t const *const qual = slist_peek_head( &in_attr.qualifier_stack );
-  return qual->qual_tid;
+  return qual->qual_stid;
 }
 
 /**
@@ -766,20 +766,20 @@ static void ia_free( void ) {
  * Pushes a qualifier onto the
  * \ref in_attr.qualifier_stack "qualifier inherited attribute stack."
  *
- * @param qual_tid The qualifier to push.
+ * @param qual_stid The qualifier to push.
  * @param loc A pointer to the source location of the qualifier.
  *
  * @sa #ia_qual_peek_loc()
  * @sa ia_qual_peek_tid()
  * @sa ia_qual_pop()
  */
-static void ia_qual_push_tid( c_tid_t qual_tid, c_loc_t const *loc ) {
-  c_tid_check( qual_tid, C_TPID_STORE );
-  assert( (qual_tid & c_tid_compl( TS_MASK_QUALIFIER )) == TS_NONE );
+static void ia_qual_push_tid( c_tid_t qual_stid, c_loc_t const *loc ) {
+  c_tid_check( qual_stid, C_TPID_STORE );
+  assert( (qual_stid & c_tid_compl( TS_MASK_QUALIFIER )) == TS_NONE );
   assert( loc != NULL );
 
   c_qualifier_t *const qual = MALLOC( c_qualifier_t, 1 );
-  qual->qual_tid = qual_tid;
+  qual->qual_stid = qual_stid;
   qual->loc = *loc;
   slist_push_head( &in_attr.qualifier_stack, qual );
 }
@@ -2468,7 +2468,7 @@ class_struct_union_declaration_c
 
       c_ast_t *const csu_ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
       csu_ast->sname = c_sname_dup( &in_attr.current_scope );
-      csu_ast->type.base_tid = c_tid_check( $1, C_TPID_BASE );
+      csu_ast->type.btid = c_tid_check( $1, C_TPID_BASE );
       c_sname_append_name(
         &csu_ast->as.ecsu.ecsu_sname,
         check_strdup( c_sname_local_name( &in_attr.current_scope ) )
@@ -2507,7 +2507,7 @@ enum_declaration_c
 
       c_ast_t *const enum_ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
       enum_ast->sname = enum_sname;
-      enum_ast->type.base_tid = c_tid_check( $1, C_TPID_BASE );
+      enum_ast->type.btid = c_tid_check( $1, C_TPID_BASE );
       enum_ast->as.ecsu.of_ast = $4;
       c_sname_append_name(
         &enum_ast->as.ecsu.ecsu_sname,
@@ -2900,7 +2900,7 @@ array_decl_english_ast
 
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $4;
-      $$->as.array.store_tid = c_tid_check( $2 | $3, C_TPID_STORE );
+      $$->as.array.stid = c_tid_check( $2 | $3, C_TPID_STORE );
       c_ast_set_parent( $6, $$ );
 
       DUMP_AST( "array_decl_english_ast", $$ );
@@ -2918,7 +2918,7 @@ array_decl_english_ast
 
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = C_ARRAY_SIZE_VARIABLE;
-      $$->as.array.store_tid = c_tid_check( $4, C_TPID_STORE );
+      $$->as.array.stid = c_tid_check( $4, C_TPID_STORE );
       c_ast_set_parent( $6, $$ );
 
       DUMP_AST( "array_decl_english_ast", $$ );
@@ -2949,7 +2949,7 @@ block_decl_english_ast                  // Apple extension
       DUMP_AST( "returning_english_ast_opt", $3 );
 
       $$ = c_ast_new_gc( K_APPLE_BLOCK, &@$ );
-      $$->type.store_tid = ia_qual_peek_tid();
+      $$->type.stid = ia_qual_peek_tid();
       $$->as.block.param_ast_list = $2;
       c_ast_set_parent( $3, $$ );
 
@@ -3002,8 +3002,7 @@ func_decl_english_ast
       DUMP_AST( "returning_english_ast_opt", $5 );
 
       $$ = c_ast_new_gc( K_FUNCTION, &@$ );
-      $$->type.store_tid =
-        c_tid_check( ia_qual_peek_tid() | $1, C_TPID_STORE );
+      $$->type.stid = c_tid_check( ia_qual_peek_tid() | $1, C_TPID_STORE );
       $$->as.func.param_ast_list = $4;
       $$->as.func.flags = $2;
       c_ast_set_parent( $5, $$ );
@@ -3029,7 +3028,7 @@ oper_decl_english_ast
       DUMP_AST( "returning_english_ast_opt", $7 );
 
       $$ = c_ast_new_gc( K_OPERATOR, &@$ );
-      $$->type.store_tid = c_tid_check( $1 | $3, C_TPID_STORE );
+      $$->type.stid = c_tid_check( $1 | $3, C_TPID_STORE );
       $$->as.oper.param_ast_list = $6;
       $$->as.oper.flags = $4;
       c_ast_set_parent( $7, $$ );
@@ -3115,7 +3114,7 @@ returning_english_ast_opt
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
       // see the comment in "type_c_ast"
-      $$->type.base_tid = opt_lang < LANG_C_99 ? TB_INT : TB_VOID;
+      $$->type.btid = opt_lang < LANG_C_99 ? TB_INT : TB_VOID;
 
       DUMP_AST( "returning_english_ast_opt", $$ );
       DUMP_END();
@@ -3209,7 +3208,7 @@ pointer_decl_english_ast
       }
 
       $$ = c_ast_new_gc( K_POINTER, &@$ );
-      $$->type.store_tid = ia_qual_peek_tid();
+      $$->type.stid = ia_qual_peek_tid();
       c_ast_set_parent( $3, $$ );
 
       DUMP_AST( "pointer_decl_english_ast", $$ );
@@ -3232,7 +3231,7 @@ pointer_decl_english_ast
       DUMP_AST( "decl_english_ast", $7 );
 
       $$ = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
-      $$->type.store_tid = ia_qual_peek_tid();
+      $$->type.stid = ia_qual_peek_tid();
       $$->as.ptr_mbr.class_sname = $6;
       c_ast_set_parent( $7, $$ );
       C_TYPE_ADD_TID( &$$->type, $5, @5 );
@@ -3447,7 +3446,7 @@ enum_class_struct_union_english_ast
       DUMP_AST( "enum_fixed_type_english_ast", $3 );
 
       $$ = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
-      $$->type.base_tid = c_tid_check( $1, C_TPID_BASE );
+      $$->type.btid = c_tid_check( $1, C_TPID_BASE );
       $$->as.ecsu.of_ast = $3;
       $$->as.ecsu.ecsu_sname = $2;
 
@@ -3487,7 +3486,7 @@ enum_fixed_type_english_ast
       DUMP_TID( "enum_fixed_type_modifier_list_english_tid", $1 );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
-      $$->type.base_tid = c_tid_check( $1, C_TPID_BASE );
+      $$->type.btid = c_tid_check( $1, C_TPID_BASE );
 
       DUMP_AST( "enum_fixed_type_english_ast", $$ );
       DUMP_END();
@@ -3637,7 +3636,7 @@ destructor_decl_c_ast
 
       $$ = c_ast_new_gc( K_DESTRUCTOR, &@$ );
       c_ast_append_name( $$, $3 );
-      $$->type.store_tid = c_tid_check( $1 | $5 | $6 | $8, C_TPID_STORE );
+      $$->type.stid = c_tid_check( $1 | $5 | $6 | $8, C_TPID_STORE );
 
       DUMP_AST( "destructor_decl_c_ast", $$ );
       DUMP_END();
@@ -3662,7 +3661,7 @@ file_scope_constructor_decl_c_ast
 
       $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
       $$->sname = $2;
-      $$->type.store_tid = c_tid_check( $1 | $5 | $6, C_TPID_STORE );
+      $$->type.stid = c_tid_check( $1 | $5 | $6, C_TPID_STORE );
       $$->as.constructor.param_ast_list = $4;
 
       DUMP_AST( "file_scope_constructor_decl_c_ast", $$ );
@@ -3687,7 +3686,7 @@ file_scope_destructor_decl_c_ast
 
       $$ = c_ast_new_gc( K_DESTRUCTOR, &@$ );
       $$->sname = $2;
-      $$->type.store_tid = c_tid_check( $1 | $4 | $5, C_TPID_STORE );
+      $$->type.stid = c_tid_check( $1 | $4 | $5, C_TPID_STORE );
 
       DUMP_AST( "file_scope_destructor_decl_c_ast", $$ );
       DUMP_END();
@@ -3708,10 +3707,10 @@ func_decl_c_astp
     noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_c_tid_opt
     {
       c_ast_t *const decl2_ast = $1.ast;
-      c_tid_t  const func_qualifier_tid = $4;
-      c_tid_t  const func_ref_qualifier_tid = $5;
-      c_tid_t  const noexcept_tid = $6;
-      c_tid_t  const func_equals_tid = $8;
+      c_tid_t  const func_qualifier_stid = $4;
+      c_tid_t  const func_ref_qualifier_stid = $5;
+      c_tid_t  const noexcept_stid = $6;
+      c_tid_t  const func_equals_stid = $8;
       c_ast_t *const trailing_ret_ast = $7;
       c_ast_t *const type_ast = ia_type_ast_peek();
 
@@ -3724,16 +3723,16 @@ func_decl_c_astp
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl2_c_astp", decl2_ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
-      DUMP_TID( "func_qualifier_list_c_tid_opt", func_qualifier_tid );
-      DUMP_TID( "func_ref_qualifier_c_tid_opt", func_ref_qualifier_tid );
-      DUMP_TID( "noexcept_c_tid_opt", noexcept_tid );
+      DUMP_TID( "func_qualifier_list_c_tid_opt", func_qualifier_stid );
+      DUMP_TID( "func_ref_qualifier_c_tid_opt", func_ref_qualifier_stid );
+      DUMP_TID( "noexcept_c_tid_opt", noexcept_stid );
       DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
-      DUMP_TID( "func_equals_c_tid_opt", func_equals_tid );
+      DUMP_TID( "func_equals_c_tid_opt", func_equals_stid );
       DUMP_AST( "target_ast", $1.target_ast );
 
-      c_tid_t const func_store_tid =
-        func_qualifier_tid | func_ref_qualifier_tid | noexcept_tid |
-        func_equals_tid;
+      c_tid_t const func_stid =
+        func_qualifier_stid | func_ref_qualifier_stid | noexcept_stid |
+        func_equals_stid;
 
       //
       // Cdecl can't know for certain whether a "function" name is really a
@@ -3768,7 +3767,7 @@ func_decl_c_astp
 
         // + The existing base type is none (because constructors don't have
         //   return types).
-        type_ast->type.base_tid == TB_NONE &&
+        type_ast->type.btid == TB_NONE &&
 
         // + The existing type does _not_ have any non-constructor storage
         //   classes.
@@ -3781,17 +3780,17 @@ func_decl_c_astp
           // + Or the existing type only has storage-class-like types that may
           //   be applied to constructors.
           only_bits_set(
-            c_tid_no_tpid( type_ast->type.store_tid ),
+            c_tid_no_tpid( type_ast->type.stid ),
             c_tid_no_tpid( TS_CONSTRUCTOR_DECL )
           )
         ) &&
 
         // + The new type does _not_ have any non-constructor storage classes.
-        (func_store_tid & TS_NOT_CONSTRUCTOR) == TS_NONE;
+        (func_stid & TS_NOT_CONSTRUCTOR) == TS_NONE;
 
       c_ast_t *const func_ast =
         c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );
-      func_ast->type.store_tid = c_tid_check( func_store_tid, C_TPID_STORE );
+      func_ast->type.stid = c_tid_check( func_stid, C_TPID_STORE );
       func_ast->as.func.param_ast_list = $3;
 
       if ( assume_constructor ) {
@@ -3845,7 +3844,7 @@ knr_func_or_constructor_decl_c_ast
         //      power(x, n)             /* raise x to n-th power; n > 0 */
         //
         c_ast_t *const ret_ast = c_ast_new_gc( K_BUILTIN, &@1 );
-        ret_ast->type.base_tid = TB_INT;
+        ret_ast->type.btid = TB_INT;
 
         $$ = c_ast_new_gc( K_FUNCTION, &@$ );
         $$->as.func.ret_ast = ret_ast;
@@ -3855,7 +3854,7 @@ knr_func_or_constructor_decl_c_ast
         // constructor.
         //
         $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-        $$->type.store_tid = c_tid_check( $4, C_TPID_STORE );
+        $$->type.stid = c_tid_check( $4, C_TPID_STORE );
       }
 
       c_ast_set_sname( $$, &sname );
@@ -4000,7 +3999,7 @@ trailing_return_type_c_ast_opt
       // C++11 and the AST node for the placeholder is discarded and never made
       // part of the AST.
       //
-      if ( ret_ast->type.base_tid != TB_AUTO ) {
+      if ( ret_ast->type.btid != TB_AUTO ) {
         print_error( &ret_ast->loc,
           "function with trailing return type must only specify \"%s\"\n",
           L_AUTO
@@ -4066,10 +4065,10 @@ oper_decl_c_astp
     noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_c_tid_opt
     {
       c_ast_t *const oper_c_ast = $1;
-      c_tid_t  const func_qualifier_tid = $4;
-      c_tid_t  const func_ref_qualifier_tid = $5;
-      c_tid_t  const func_equals_tid = $8;
-      c_tid_t  const noexcept_tid = $6;
+      c_tid_t  const func_qualifier_stid = $4;
+      c_tid_t  const func_ref_qualifier_stid = $5;
+      c_tid_t  const func_equals_stid = $8;
+      c_tid_t  const noexcept_stid = $6;
       c_ast_t *const trailing_ret_ast = $7;
       c_ast_t *const type_ast = ia_type_ast_peek();
 
@@ -4082,18 +4081,18 @@ oper_decl_c_astp
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "oper_c_ast", oper_c_ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
-      DUMP_TID( "func_qualifier_list_c_tid_opt", func_qualifier_tid );
-      DUMP_TID( "func_ref_qualifier_c_tid_opt", func_ref_qualifier_tid );
-      DUMP_TID( "noexcept_c_tid_opt", noexcept_tid );
+      DUMP_TID( "func_qualifier_list_c_tid_opt", func_qualifier_stid );
+      DUMP_TID( "func_ref_qualifier_c_tid_opt", func_ref_qualifier_stid );
+      DUMP_TID( "noexcept_c_tid_opt", noexcept_stid );
       DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
-      DUMP_TID( "func_equals_c_tid_opt", func_equals_tid );
+      DUMP_TID( "func_equals_c_tid_opt", func_equals_stid );
 
-      c_tid_t const oper_store_tid =
-        func_qualifier_tid | func_ref_qualifier_tid | noexcept_tid |
-        func_equals_tid;
+      c_tid_t const oper_stid =
+        func_qualifier_stid | func_ref_qualifier_stid | noexcept_stid |
+        func_equals_stid;
 
       c_ast_t *const oper_ast = c_ast_new_gc( K_OPERATOR, &@$ );
-      oper_ast->type.store_tid = c_tid_check( oper_store_tid, C_TPID_STORE );
+      oper_ast->type.stid = c_tid_check( oper_stid, C_TPID_STORE );
       oper_ast->as.oper.param_ast_list = $3;
       oper_ast->as.oper.oper_id = oper_c_ast->as.oper.oper_id;
 
@@ -4154,7 +4153,7 @@ pointer_type_c_ast
       DUMP_TID( "type_qualifier_list_c_tid_opt", $2 );
 
       $$ = c_ast_new_gc( K_POINTER, &@$ );
-      $$->type.store_tid = c_tid_check( $2, C_TPID_STORE );
+      $$->type.stid = c_tid_check( $2, C_TPID_STORE );
       c_ast_set_parent( ia_type_ast_peek(), $$ );
 
       DUMP_AST( "pointer_type_c_ast", $$ );
@@ -4192,14 +4191,14 @@ pointer_to_member_type_c_ast
       $$ = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
 
       c_type_t scope_type = *c_sname_local_type( &$1 );
-      if ( (scope_type.base_tid & TB_ANY_SCOPE) == TB_NONE ) {
+      if ( (scope_type.btid & TB_ANY_SCOPE) == TB_NONE ) {
         //
         // The sname has no scope-type, but we now know there's a pointer-to-
         // member of it, so it must be a class.  (It could alternatively be a
         // struct, but we have no context to know, so just pick class because
         // it's more C++-like.)
         //
-        scope_type.base_tid = TB_CLASS;
+        scope_type.btid = TB_CLASS;
         c_sname_set_local_type( &$1, &scope_type );
       }
 
@@ -4239,7 +4238,7 @@ reference_type_c_ast
       DUMP_TID( "restrict_qualifier_c_tid_opt", $2 );
 
       $$ = c_ast_new_gc( K_REFERENCE, &@$ );
-      $$->type.store_tid = c_tid_check( $2, C_TPID_STORE );
+      $$->type.stid = c_tid_check( $2, C_TPID_STORE );
       c_ast_set_parent( ia_type_ast_peek(), $$ );
 
       DUMP_AST( "reference_type_c_ast", $$ );
@@ -4254,7 +4253,7 @@ reference_type_c_ast
       DUMP_TID( "restrict_qualifier_c_tid_opt", $2 );
 
       $$ = c_ast_new_gc( K_RVALUE_REFERENCE, &@$ );
-      $$->type.store_tid = c_tid_check( $2, C_TPID_STORE );
+      $$->type.stid = c_tid_check( $2, C_TPID_STORE );
       c_ast_set_parent( ia_type_ast_peek(), $$ );
 
       DUMP_AST( "reference_type_c_ast", $$ );
@@ -4319,7 +4318,7 @@ user_defined_conversion_decl_c_astp
 
       $$.ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
       $$.ast->sname = $1;
-      $$.ast->type.store_tid = c_tid_check( $7 | $8 | $9, C_TPID_STORE );
+      $$.ast->type.stid = c_tid_check( $7 | $8 | $9, C_TPID_STORE );
       if ( ia_type_ast_peek() != NULL )
         c_type_or_eq( &$$.ast->type, &ia_type_ast_peek()->type );
       $$.ast->as.udef_conv.conv_ast = $5 != NULL ? $5 : $3;
@@ -4336,7 +4335,7 @@ user_defined_literal_decl_c_astp
     noexcept_c_tid_opt trailing_return_type_c_ast_opt
     {
       c_ast_t *const udl_c_ast = $1;
-      c_tid_t  const noexcept_tid = $5;
+      c_tid_t  const noexcept_stid = $5;
       c_ast_t *const trailing_ret_ast = $6;
       c_ast_t *const type_ast = ia_type_ast_peek();
 
@@ -4346,11 +4345,11 @@ user_defined_literal_decl_c_astp
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "user_defined_literal_c_ast", udl_c_ast );
       DUMP_AST_LIST( "param_list_c_ast", $3 );
-      DUMP_TID( "noexcept_c_tid_opt", noexcept_tid );
+      DUMP_TID( "noexcept_c_tid_opt", noexcept_stid );
       DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
 
       c_ast_t *const udl_ast = c_ast_new_gc( K_USER_DEF_LITERAL, &@$ );
-      udl_ast->type.store_tid = c_tid_check( noexcept_tid, C_TPID_STORE );
+      udl_ast->type.stid = c_tid_check( noexcept_stid, C_TPID_STORE );
       udl_ast->as.udef_lit.param_ast_list = $3;
 
       $$.ast = c_ast_add_func(
@@ -4639,7 +4638,7 @@ type_modifier_c_type
       // modifier (except "register" since it's is really a storage class --
       // see the comment in type_modifier_base_type about "register").
       //
-      if ( $$.store_tid == TS_REGISTER )
+      if ( $$.stid == TS_REGISTER )
         lexer_find |= LEXER_FIND_TYPEDEFS;
       else
         lexer_find &= ~LEXER_FIND_TYPEDEFS;
@@ -4700,7 +4699,7 @@ builtin_type_ast
       DUMP_TID( "builtin_tid", $1 );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
-      $$->type.base_tid = c_tid_check( $1, C_TPID_BASE );
+      $$->type.btid = c_tid_check( $1, C_TPID_BASE );
 
       DUMP_AST( "builtin_type_ast", $$ );
       DUMP_END();
@@ -4737,8 +4736,8 @@ enum_class_struct_union_c_ast
       DUMP_AST( "enum_fixed_type_c_ast_opt", $4 );
 
       $$ = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@$ );
-      $$->type.base_tid = c_tid_check( $1, C_TPID_BASE );
-      $$->type.attr_tid = c_tid_check( $2, C_TPID_ATTR );
+      $$->type.btid = c_tid_check( $1, C_TPID_BASE );
+      $$->type.atid = c_tid_check( $2, C_TPID_ATTR );
       $$->as.ecsu.of_ast = $4;
       $$->as.ecsu.ecsu_sname = $3;
 
@@ -4789,7 +4788,7 @@ enum_fixed_type_c_ast
       DUMP_TID( "enum_fixed_type_modifier_list_tid", $1 );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@1 );
-      $$->type.base_tid = c_tid_check( $1, C_TPID_BASE );
+      $$->type.btid = c_tid_check( $1, C_TPID_BASE );
 
       DUMP_AST( "enum_fixed_type_c_ast", $$ );
       DUMP_END();
@@ -5280,25 +5279,25 @@ array_size_c_ast
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = C_ARRAY_SIZE_NONE;
-      $$->as.array.store_tid = c_tid_check( $2, C_TPID_STORE );
+      $$->as.array.stid = c_tid_check( $2, C_TPID_STORE );
     }
   | '[' type_qualifier_list_c_tid static_tid_opt Y_INT_LIT rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $4;
-      $$->as.array.store_tid = c_tid_check( $2 | $3, C_TPID_STORE );
+      $$->as.array.stid = c_tid_check( $2 | $3, C_TPID_STORE );
     }
   | '[' type_qualifier_list_c_tid_opt '*' rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = C_ARRAY_SIZE_VARIABLE;
-      $$->as.array.store_tid = c_tid_check( $2, C_TPID_STORE );
+      $$->as.array.stid = c_tid_check( $2, C_TPID_STORE );
     }
   | '[' Y_STATIC type_qualifier_list_c_tid_opt Y_INT_LIT rbracket_exp
     {
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
       $$->as.array.size = $4;
-      $$->as.array.store_tid = c_tid_check( $2 | $3, C_TPID_STORE );
+      $$->as.array.stid = c_tid_check( $2 | $3, C_TPID_STORE );
     }
   ;
 
@@ -5345,7 +5344,7 @@ func_cast_c_astp
     trailing_return_type_c_ast_opt
     {
       c_ast_t *const cast2_c_ast = $1.ast;
-      c_tid_t  const func_ref_qualifier_tid = $4;
+      c_tid_t  const func_ref_qualifier_stid = $4;
       c_ast_t *const trailing_ret_ast = $5;
       c_ast_t *const type_ast = ia_type_ast_peek();
 
@@ -5356,14 +5355,14 @@ func_cast_c_astp
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "cast2_c_ast", cast2_c_ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
-      DUMP_TID( "func_qualifier_list_c_tid_opt", func_ref_qualifier_tid );
+      DUMP_TID( "func_qualifier_list_c_tid_opt", func_ref_qualifier_stid );
       DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
       DUMP_AST( "target_ast", $1.target_ast );
 
-      c_tid_t const func_store_tid = func_ref_qualifier_tid;
+      c_tid_t const func_stid = func_ref_qualifier_stid;
 
       c_ast_t *const func_ast = c_ast_new_gc( K_FUNCTION, &@$ );
-      func_ast->type.store_tid = c_tid_check( func_store_tid, C_TPID_STORE );
+      func_ast->type.stid = c_tid_check( func_stid, C_TPID_STORE );
       func_ast->as.func.param_ast_list = $3;
 
       if ( $1.target_ast != NULL ) {
@@ -5603,7 +5602,7 @@ typedef_type_c_ast
       DUMP_AST( "any_typedef.ast", $1->ast );
 
       $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
-      $$->type.base_tid = TB_TYPEDEF;
+      $$->type.btid = TB_TYPEDEF;
       $$->as.tdef.for_ast = $1->ast;
 
       DUMP_AST( "typedef_type_c_ast", $$ );
@@ -5841,7 +5840,7 @@ sname_english_ast
       c_typedef_t const *const tdef = c_typedef_find_sname( &sname );
       if ( tdef != NULL ) {
         $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
-        $$->type.base_tid = TB_TYPEDEF;
+        $$->type.btid = TB_TYPEDEF;
         $$->as.tdef.for_ast = tdef->ast;
         c_sname_free( &sname );
       } else {

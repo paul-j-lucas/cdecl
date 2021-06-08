@@ -381,7 +381,7 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
  */
 C_AST_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_size_t( c_ast_t const *ast ) {
-  return c_tid_is_size_t( c_ast_untypedef( ast )->type.base_tid );
+  return c_tid_is_size_t( c_ast_untypedef( ast )->type.btid );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

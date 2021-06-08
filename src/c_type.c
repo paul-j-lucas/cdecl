@@ -643,9 +643,9 @@ bool c_type_add( c_type_t *dst_type, c_type_t const *new_type,
   assert( dst_type != NULL );
   assert( new_type != NULL );
 
-  return  c_tid_add( &dst_type->base_tid, new_type->base_tid, new_loc ) &&
-          c_tid_add( &dst_type->store_tid, new_type->store_tid, new_loc ) &&
-          c_tid_add( &dst_type->attr_tid, new_type->attr_tid, new_loc );
+  return  c_tid_add( &dst_type->btid, new_type->btid, new_loc ) &&
+          c_tid_add( &dst_type->stid, new_type->stid, new_loc ) &&
+          c_tid_add( &dst_type->atid, new_type->atid, new_loc );
 }
 
 bool c_type_add_tid( c_type_t *dst_type, c_tid_t new_tid,
@@ -659,9 +659,9 @@ c_type_t c_type_and( c_type_t const *i_type, c_type_t const *j_type ) {
   assert( j_type != NULL );
 
   return C_TYPE_LIT(
-    i_type->base_tid  & j_type->base_tid,
-    i_type->store_tid & j_type->store_tid,
-    i_type->attr_tid  & j_type->attr_tid
+    i_type->btid & j_type->btid,
+    i_type->stid & j_type->stid,
+    i_type->atid & j_type->atid
   );
 }
 
@@ -669,32 +669,32 @@ void c_type_and_eq_compl( c_type_t *dst_type, c_type_t const *rm_type ) {
   assert( dst_type != NULL );
   assert( rm_type != NULL );
 
-  dst_type->base_tid  &= c_tid_compl( rm_type->base_tid );
-  dst_type->store_tid &= c_tid_compl( rm_type->store_tid );
-  dst_type->attr_tid  &= c_tid_compl( rm_type->attr_tid );
+  dst_type->btid &= c_tid_compl( rm_type->btid );
+  dst_type->stid &= c_tid_compl( rm_type->stid );
+  dst_type->atid &= c_tid_compl( rm_type->atid );
 }
 
 c_lang_id_t c_type_check( c_type_t const *type ) {
   // Check that the attribute(s) are legal in the current language.
-  C_TID_CHECK_LEGAL( type->attr_tid, C_ATTRIBUTE_INFO );
+  C_TID_CHECK_LEGAL( type->atid, C_ATTRIBUTE_INFO );
 
   // Check that the storage class is legal in the current language.
-  C_TID_CHECK_LEGAL( type->store_tid, C_STORAGE_INFO );
+  C_TID_CHECK_LEGAL( type->stid, C_STORAGE_INFO );
 
   // Check that the type is legal in the current language.
-  C_TID_CHECK_LEGAL( type->base_tid, C_TYPE_INFO );
+  C_TID_CHECK_LEGAL( type->btid, C_TYPE_INFO );
 
   // Check that the qualifier(s) are legal in the current language.
-  C_TID_CHECK_LEGAL( type->store_tid, C_QUALIFIER_INFO );
+  C_TID_CHECK_LEGAL( type->stid, C_QUALIFIER_INFO );
 
   // Check that the storage class combination is legal in the current language.
-  C_TID_CHECK_COMBO( type->store_tid, C_STORAGE_INFO, OK_STORAGE_LANGS );
+  C_TID_CHECK_COMBO( type->stid, C_STORAGE_INFO, OK_STORAGE_LANGS );
 
   // Check that the type combination is legal in the current language.
-  C_TID_CHECK_COMBO( type->base_tid, C_TYPE_INFO, OK_TYPE_LANGS );
+  C_TID_CHECK_COMBO( type->btid, C_TYPE_INFO, OK_TYPE_LANGS );
 
   // Check that the qualifier combination is legal in the current language.
-  C_TID_CHECK_COMBO( type->store_tid, C_QUALIFIER_INFO, OK_QUALIFIER_LANGS );
+  C_TID_CHECK_COMBO( type->stid, C_QUALIFIER_INFO, OK_QUALIFIER_LANGS );
 
   return LANG_ANY;
 }
@@ -703,9 +703,9 @@ bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type ) {
   assert( i_type != NULL );
   assert( j_type != NULL );
 
-  return  i_type->base_tid  == j_type->base_tid   &&
-          i_type->store_tid == j_type->store_tid  &&
-          i_type->attr_tid  == j_type->attr_tid;
+  return  i_type->btid == j_type->btid &&
+          i_type->stid == j_type->stid &&
+          i_type->atid == j_type->atid;
 }
 
 c_type_t c_type_from_tid( c_tid_t tid ) {
@@ -729,11 +729,11 @@ c_tid_t c_type_get_tid( c_type_t const *type, c_tid_t tid ) {
     case C_TPID_NONE:
       break;
     case C_TPID_BASE:
-      return type->base_tid;
+      return type->btid;
     case C_TPID_STORE:
-      return type->store_tid;
+      return type->stid;
     case C_TPID_ATTR:
-      return type->attr_tid;
+      return type->atid;
   } // switch
 
   UNEXPECTED_INT_VALUE( tid );
@@ -746,11 +746,11 @@ c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tid ) {
     case C_TPID_NONE:
       break;
     case C_TPID_BASE:
-      return &type->base_tid;
+      return &type->btid;
     case C_TPID_STORE:
-      return &type->store_tid;
+      return &type->stid;
     case C_TPID_ATTR:
-      return &type->attr_tid;
+      return &type->atid;
   } // switch
 
   UNEXPECTED_INT_VALUE( tid );
@@ -831,14 +831,12 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type ) {
   assert( i_type != NULL );
   assert( j_type != NULL );
 
-  c_tid_t const i_base_tid = c_tid_normalize( i_type->base_tid );
-  c_tid_t const j_base_tid = c_tid_normalize( j_type->base_tid );
+  c_tid_t const i_btid = c_tid_normalize( i_type->btid );
+  c_tid_t const j_btid = c_tid_normalize( j_type->btid );
 
-  return  (j_base_tid == TB_NONE || (i_base_tid & j_base_tid) != TB_NONE) &&
-          (j_type->store_tid == TS_NONE ||
-            (i_type->store_tid & j_type->store_tid) != TS_NONE) &&
-          (j_type->attr_tid == TA_NONE ||
-            (i_type->attr_tid & j_type->attr_tid) != TA_NONE);
+  return  (j_btid       == TB_NONE || (i_btid & j_btid)             != TB_NONE)
+       && (j_type->stid == TS_NONE || (i_type->stid & j_type->stid) != TS_NONE)
+       && (j_type->atid == TA_NONE || (i_type->atid & j_type->atid) != TA_NONE);
 }
 
 char const* c_type_name( c_type_t const *type, bool in_english ) {
@@ -849,11 +847,11 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
   strbuf_free( sbuf );
   bool space = false;
 
-  c_tid_t base_tid  = c_tid_normalize( type->base_tid );
-  c_tid_t store_tid = type->store_tid;
-  c_tid_t attr_tid  = type->attr_tid;
+  c_tid_t btid = c_tid_normalize( type->btid );
+  c_tid_t stid = type->stid;
+  c_tid_t atid = type->atid;
 
-  if ( OPT_LANG_IS(C_ANY) && (attr_tid & TA_NORETURN) != TA_NONE ) {
+  if ( OPT_LANG_IS(C_ANY) && (atid & TA_NORETURN) != TA_NONE ) {
     //
     // Special case: we store _Noreturn as an attribute, but in C, it's a
     // distinct keyword and printed as such instead being printed between
@@ -865,10 +863,10 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
     // Now that we've handled _Noreturn for C, remove its bit and fall through
     // to the regular attribute-printing code.
     //
-    attr_tid &= c_tid_compl( TA_NORETURN );
+    atid &= c_tid_compl( TA_NORETURN );
   }
 
-  if ( attr_tid != TA_NONE ) {
+  if ( atid != TA_NONE ) {
     static c_tid_t const C_ATTRIBUTE[] = {
       TA_CARRIES_DEPENDENCY,
       TA_DEPRECATED,
@@ -892,7 +890,7 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
         strbuf_catc( sbuf, ' ' );
       strbuf_cats( sbuf, graph_token_c( "[[" ) );
     }
-    C_TID_NAME_CAT( sbuf, attr_tid, C_ATTRIBUTE, in_english, sep, sep_cat );
+    C_TID_NAME_CAT( sbuf, atid, C_ATTRIBUTE, in_english, sep, sep_cat );
     if ( print_brackets )
       strbuf_cats( sbuf, graph_token_c( "]]" ) );
     space = true;
@@ -900,28 +898,28 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
 
   // Special cases.
   if ( in_english ) {
-    if ( (base_tid & TB_ANY_MODIFIER) != TB_NONE &&
-         (base_tid & TB_ANY_MODIFIEE) == TB_NONE ) {
+    if ( (btid & TB_ANY_MODIFIER) != TB_NONE &&
+         (btid & TB_ANY_MODIFIEE) == TB_NONE ) {
       // In English, be explicit about "int".
-      base_tid |= TB_INT;
+      btid |= TB_INT;
     }
-    if ( (store_tid & (TS_FINAL | TS_OVERRIDE)) != TS_NONE ) {
+    if ( (stid & (TS_FINAL | TS_OVERRIDE)) != TS_NONE ) {
       // In English, either "final" or "overrride" implies "virtual".
-      store_tid |= TS_VIRTUAL;
+      stid |= TS_VIRTUAL;
     }
   }
   else /* !in_english */ {
-    if ( is_explicit_int( base_tid ) ) {
-      base_tid |= TB_INT;
-    } else if ( (base_tid & TB_ANY_MODIFIER) != TB_NONE ) {
+    if ( is_explicit_int( btid ) ) {
+      btid |= TB_INT;
+    } else if ( (btid & TB_ANY_MODIFIER) != TB_NONE ) {
       // In C/C++, explicit "int" isn't needed when at least one int modifier
       // is present.
-      base_tid &= c_tid_compl( TB_INT );
+      btid &= c_tid_compl( TB_INT );
     }
-    if ( (store_tid & (TS_FINAL | TS_OVERRIDE)) != TS_NONE ) {
+    if ( (stid & (TS_FINAL | TS_OVERRIDE)) != TS_NONE ) {
       // In C/C++, explicit "virtual" shouldn't be present when either "final"
       // or "overrride" is.
-      store_tid &= c_tid_compl( TS_VIRTUAL );
+      stid &= c_tid_compl( TS_VIRTUAL );
     }
   }
 
@@ -964,12 +962,12 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
     TS_CONSTEXPR,
     TS_CONSTINIT,
   };
-  C_TID_NAME_CAT( sbuf, store_tid, C_STORAGE_CLASS, in_english, ' ', &space );
+  C_TID_NAME_CAT( sbuf, stid, C_STORAGE_CLASS, in_english, ' ', &space );
 
-  c_tid_t east_tid = TS_NONE;
+  c_tid_t east_stid = TS_NONE;
   if ( opt_east_const && !in_english ) {
-    east_tid = store_tid & (TS_CONST | TS_VOLATILE);
-    store_tid &= c_tid_compl( TS_CONST | TS_VOLATILE );
+    east_stid = stid & (TS_CONST | TS_VOLATILE);
+    stid &= c_tid_compl( TS_CONST | TS_VOLATILE );
   }
 
   static c_tid_t const C_QUALIFIER[] = {
@@ -990,7 +988,7 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
     // This is last so we get names like "const _Atomic".
     TS_ATOMIC,
   };
-  C_TID_NAME_CAT( sbuf, store_tid, C_QUALIFIER, in_english, ' ', &space );
+  C_TID_NAME_CAT( sbuf, stid, C_QUALIFIER, in_english, ' ', &space );
 
   static c_tid_t const C_TYPE[] = {
     // These are first so we get names like "unsigned int".
@@ -1026,15 +1024,15 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
     TB_EMC_ACCUM,
     TB_EMC_FRACT,
   };
-  C_TID_NAME_CAT( sbuf, base_tid, C_TYPE, in_english, ' ', &space );
+  C_TID_NAME_CAT( sbuf, btid, C_TYPE, in_english, ' ', &space );
 
-  if ( east_tid != TS_NONE )
-    C_TID_NAME_CAT( sbuf, east_tid, C_QUALIFIER, in_english, ' ', &space );
+  if ( east_stid != TS_NONE )
+    C_TID_NAME_CAT( sbuf, east_stid, C_QUALIFIER, in_english, ' ', &space );
 
   // Really special cases.
-  if ( (base_tid & TB_NAMESPACE) != TB_NONE )
+  if ( (btid & TB_NAMESPACE) != TB_NONE )
     strbuf_sepc_cats( sbuf, ' ', &space, L_NAMESPACE );
-  else if ( (base_tid & TB_SCOPE) != TB_NONE )
+  else if ( (btid & TB_SCOPE) != TB_NONE )
     strbuf_sepc_cats( sbuf, ' ', &space, L_SCOPE );
 
   return sbuf->str != NULL ? sbuf->str : "";
@@ -1045,9 +1043,9 @@ c_type_t c_type_or( c_type_t const *i_type, c_type_t const *j_type ) {
   assert( j_type != NULL );
 
   return C_TYPE_LIT(
-    i_type->base_tid  | j_type->base_tid,
-    i_type->store_tid | j_type->store_tid,
-    i_type->attr_tid  | j_type->attr_tid
+    i_type->btid | j_type->btid,
+    i_type->stid | j_type->stid,
+    i_type->atid | j_type->atid
   );
 }
 
@@ -1055,9 +1053,9 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type ) {
   assert( dst_type != NULL );
   assert( add_type != NULL );
 
-  dst_type->base_tid  |= add_type->base_tid;
-  dst_type->store_tid |= add_type->store_tid;
-  dst_type->attr_tid  |= add_type->attr_tid;
+  dst_type->btid |= add_type->btid;
+  dst_type->stid |= add_type->stid;
+  dst_type->atid |= add_type->atid;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

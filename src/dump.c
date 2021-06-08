@@ -166,8 +166,8 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
             FPRINTF( dout, "%d", ast->as.array.size );
         } // switch
         FPUTS( ",\n", dout );
-        if ( ast->as.array.store_tid != TS_NONE ) {
-          c_type_t const type = C_TYPE_LIT_S( ast->as.array.store_tid );
+        if ( ast->as.array.stid != TS_NONE ) {
+          c_type_t const type = C_TYPE_LIT_S( ast->as.array.stid );
           DUMP_TYPE( &type );
           FPUTS( ",\n", dout );
         }
@@ -314,9 +314,9 @@ void c_type_dump( c_type_t const *type, FILE *dout ) {
     ", %s = 0x%" PRIX_C_TID_T
     ", %s = 0x%" PRIX_C_TID_T ")",
     c_type_name_c( type ),
-    c_tpid_name( C_TPID_BASE  ), type->base_tid,
-    c_tpid_name( C_TPID_STORE ), type->store_tid,
-    c_tpid_name( C_TPID_ATTR  ), type->attr_tid
+    c_tpid_name( C_TPID_BASE  ), type->btid,
+    c_tpid_name( C_TPID_STORE ), type->stid,
+    c_tpid_name( C_TPID_ATTR  ), type->atid
   );
 }
 
