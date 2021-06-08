@@ -1,3 +1,19 @@
+2021-06-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, cdecl--debug.out, cdecl-d.out: s/base/btid/; s/store/stid/;
+     s/attr/atid/
+   * parser.y, cdecl--debug.out, cdecl-d.out: Renamed grammar rules *_tid* to
+     *_[bsa]tid*.
+   * c_ast_util.c, c_type.c, c_type.h, check.c, parser.y: s/_tid/_tids/ (when
+     plural)/; s/_tid/_stid/ (when appropriate)
+   * c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_sname.c, c_type.c,
+     c_type.h, check.c, dump.c, english.c, gibberish.c, parser.y:
+     s/base_tid/btid/; s/store_tid/stid/; s/attr_tid/atid/
+   * c_ast.h, c_ast_util.c, c_ast_util.h, c_keyword.h, c_sname.c, c_type.c,
+     c_type.h, check.c, did_you_mean.c, dump.c, dump.h, english.c, gibberish.c,
+     lexer.l, options.c, options.h, parser.y, print.c, types.h:
+     s/c_type_id/c_tid/; s/c_type_part_id/c_tpid/
+
 2021-06-07  Paul J. Lucas <paul@lucasmail.org>
 
    * c_typedef.c, cdecl.c: /parse_/parse_cdecl_/
