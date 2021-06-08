@@ -1,6 +1,6 @@
 
-builtin_type_ast ::= builtin_tid = {
-  builtin_tid = "int" (base = 0x2001),
+builtin_type_ast ::= builtin_btid = {
+  builtin_btid = "int" (base = 0x2001),
   builtin_type_ast = {
     sname = "",
     unique_id = 1279,
@@ -37,7 +37,7 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
   }
 }
 
-pointer_type_c_ast ::= * type_qualifier_list_c_tid_opt = {
+pointer_type_c_ast ::= * type_qualifier_list_c_stid_opt = {
   (type_c_ast) = {
     sname = "",
     unique_id = 1279,
@@ -48,7 +48,7 @@ pointer_type_c_ast ::= * type_qualifier_list_c_tid_opt = {
     type = "int" (base = 0x2001, store = 0x2, attr = 0x4),
     bit_width = 0
   },
-  type_qualifier_list_c_tid_opt = "" (store = 0x2),
+  type_qualifier_list_c_stid_opt = "" (store = 0x2),
   pointer_type_c_ast = {
     sname = "",
     unique_id = 1280,
@@ -118,8 +118,8 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-builtin_type_ast ::= builtin_tid = {
-  builtin_tid = "int" (base = 0x2001),
+builtin_type_ast ::= builtin_btid = {
+  builtin_btid = "int" (base = 0x2001),
   builtin_type_ast = {
     sname = "",
     unique_id = 1281,
@@ -244,8 +244,8 @@ param_list_c_ast ::= param_c_ast = {
   ]
 }
 
-builtin_type_ast ::= builtin_tid = {
-  builtin_tid = "int" (base = 0x2001),
+builtin_type_ast ::= builtin_btid = {
+  builtin_btid = "int" (base = 0x2001),
   builtin_type_ast = {
     sname = "",
     unique_id = 1282,
@@ -392,7 +392,7 @@ param_list_c_ast ::= param_list_c_ast ',' param_c_ast = {
   ]
 }
 
-func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_list_c_tid_opt func_ref_qualifier_c_tid_opt noexcept_c_tid_opt trailing_return_type_c_ast_opt func_equals_c_tid_opt = {
+func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
   (type_c_ast) = {
     sname = "f" (none),
     unique_id = 1280,
@@ -453,10 +453,10 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
       bit_width = 0
     }
   ],
-  func_qualifier_list_c_tid_opt = "" (store = 0x2),
-  func_ref_qualifier_c_tid_opt = "" (store = 0x2),
-  noexcept_c_tid_opt = "" (store = 0x2),
-  func_equals_c_tid_opt = "" (store = 0x2),
+  func_qualifier_list_c_stid_opt = "" (store = 0x2),
+  func_ref_qualifier_c_stid_opt = "" (store = 0x2),
+  noexcept_c_stid_opt = "" (store = 0x2),
+  func_equals_c_stid_opt = "" (store = 0x2),
   func_decl_c_astp = {
     sname = "f" (none),
     unique_id = 1283,
