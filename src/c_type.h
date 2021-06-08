@@ -508,7 +508,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * A special case has to be made for `long` to allow for `long long` yet not
  * allow for `long long long`.
  *
- * @param dst_tid The <code>\ref c_tid_t</code> to add to.
+ * @param dst_tids The <code>\ref c_tid_t</code> to add to.
  * @param new_tid The <code>\ref c_tid_t</code> to add.
  * @param new_loc The source location of \a new_id.
  * @return Returns `true` only if the type added successfully.
@@ -516,7 +516,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa c_type_add(()
  */
 PJL_WARN_UNUSED_RESULT
-bool c_tid_add( c_tid_t *dst_tid, c_tid_t new_tid, c_loc_t const *new_loc );
+bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tid, c_loc_t const *new_loc );
 
 /**
  * "Normalize" \a tid:

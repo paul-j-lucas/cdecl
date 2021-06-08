@@ -630,26 +630,26 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
     }
   }
 
-  c_tid_t const member_func_tids = ast->type.stid & TS_MEMBER_FUNC_ONLY;
-  c_tid_t const nonmember_func_tids = ast->type.stid & TS_NONMEMBER_FUNC_ONLY;
+  c_tid_t const member_func_stids = ast->type.stid & TS_MEMBER_FUNC_ONLY;
+  c_tid_t const nonmember_func_stids = ast->type.stid & TS_NONMEMBER_FUNC_ONLY;
 
-  if ( member_func_tids != TS_NONE &&
+  if ( member_func_stids != TS_NONE &&
        c_type_is_tid_any( &ast->type, TS_EXTERN | TS_STATIC ) ) {
     print_error( &ast->loc,
       "%s %ss can not be %s\n",
       c_tid_name_error( ast->type.stid & (TS_EXTERN | TS_STATIC) ),
       c_kind_name( ast->kind_id ),
-      c_tid_name_error( member_func_tids )
+      c_tid_name_error( member_func_stids )
     );
     return false;
   }
 
-  if ( member_func_tids != TS_NONE && nonmember_func_tids != TS_NONE ) {
+  if ( member_func_stids != TS_NONE && nonmember_func_stids != TS_NONE ) {
     print_error( &ast->loc,
       "%ss can not be %s and %s\n",
       c_kind_name( ast->kind_id ),
-      c_tid_name_error( member_func_tids ),
-      c_tid_name_error( nonmember_func_tids )
+      c_tid_name_error( member_func_stids ),
+      c_tid_name_error( nonmember_func_stids )
     );
     return false;
   }
@@ -657,21 +657,21 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   unsigned const user_overload_flags = ast->as.func.flags & C_FUNC_MASK_MEMBER;
   switch ( user_overload_flags ) {
     case C_FUNC_MEMBER:
-      if ( nonmember_func_tids != TS_NONE ) {
+      if ( nonmember_func_stids != TS_NONE ) {
         print_error( &ast->loc,
           "%s %ss can not be %s\n",
           L_MEMBER, c_kind_name( ast->kind_id ),
-          c_tid_name_error( nonmember_func_tids )
+          c_tid_name_error( nonmember_func_stids )
         );
         return false;
       }
       break;
     case C_FUNC_NON_MEMBER:
-      if ( member_func_tids != TS_NONE ) {
+      if ( member_func_stids != TS_NONE ) {
         print_error( &ast->loc,
           "%s %ss can not be %s\n",
           H_NON_MEMBER, c_kind_name( ast->kind_id ),
-          c_tid_name_error( member_func_tids )
+          c_tid_name_error( member_func_stids )
         );
         return false;
       }
@@ -1416,8 +1416,8 @@ same: print_error( &ast->loc,
       // Special case: in C++20 and later, relational operators may be
       // defaulted.
       //
-      c_tid_t const member_only_tids = ast->type.stid & TS_MEMBER_FUNC_ONLY;
-      if ( member_only_tids != TS_NONE ) {
+      c_tid_t const member_only_stids = ast->type.stid & TS_MEMBER_FUNC_ONLY;
+      if ( member_only_stids != TS_NONE ) {
         switch ( ast->as.oper.oper_id ) {
           case C_OP_EQ2:
           case C_OP_EXCLAM_EQ:
@@ -1426,7 +1426,7 @@ same: print_error( &ast->loc,
           case C_OP_LESS:
           case C_OP_LESS_EQ:
           case C_OP_LESS_EQ_GREATER:
-            if ( (member_only_tids & TS_DEFAULT) != TS_NONE ) {
+            if ( (member_only_stids & TS_DEFAULT) != TS_NONE ) {
               //
               // Detailed checks for defaulted overloaded relational operators
               // are done in c_ast_check_oper_relational_default().
@@ -1438,7 +1438,7 @@ same: print_error( &ast->loc,
             print_error( &ast->loc,
               "%s %ss can not be %s\n",
               H_NON_MEMBER, L_OPERATOR,
-              c_tid_name_error( member_only_tids )
+              c_tid_name_error( member_only_stids )
             );
             return false;
         } // switch
@@ -1473,13 +1473,13 @@ same: print_error( &ast->loc,
       //
       // Ensure member operators are not friend.
       //
-      c_tid_t const non_member_only_tids =
+      c_tid_t const non_member_only_stids =
         ast->type.stid & TS_NONMEMBER_FUNC_ONLY;
-      if ( non_member_only_tids != TS_NONE ) {
+      if ( non_member_only_stids != TS_NONE ) {
         print_error( &ast->loc,
           "%s %ss can not be %s\n",
           L_MEMBER, L_OPERATOR,
-          c_tid_name_error( non_member_only_tids )
+          c_tid_name_error( non_member_only_stids )
         );
         return false;
       }

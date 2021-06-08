@@ -756,12 +756,12 @@ c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tid ) {
   UNEXPECTED_INT_VALUE( tid );
 }
 
-bool c_tid_add( c_tid_t *dst_tid, c_tid_t new_tid, c_loc_t const *new_loc ) {
-  assert( dst_tid != NULL );
+bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tid, c_loc_t const *new_loc ) {
+  assert( dst_tids != NULL );
   assert( new_loc != NULL );
-  assert( c_tid_tpid( *dst_tid ) == c_tid_tpid( new_tid ) );
+  assert( c_tid_tpid( *dst_tids ) == c_tid_tpid( new_tid ) );
 
-  if ( is_long_int( *dst_tid ) && is_long_int( new_tid ) ) {
+  if ( is_long_int( *dst_tids ) && is_long_int( new_tid ) ) {
     //
     // Special case: if the existing type is "long" and the new type is "long",
     // turn the new type into "long long".
@@ -769,15 +769,15 @@ bool c_tid_add( c_tid_t *dst_tid, c_tid_t new_tid, c_loc_t const *new_loc ) {
     new_tid = TB_LONG_LONG;
   }
 
-  if ( !c_tid_is_none( *dst_tid & new_tid ) ) {
+  if ( !c_tid_is_none( *dst_tids & new_tid ) ) {
     print_error( new_loc,
       "\"%s\" can not be combined with \"%s\"\n",
-       c_tid_name_error( new_tid ), c_tid_name_error( *dst_tid )
+       c_tid_name_error( new_tid ), c_tid_name_error( *dst_tids )
     );
     return false;
   }
 
-  *dst_tid |= new_tid;
+  *dst_tids |= new_tid;
   return true;
 }
 
