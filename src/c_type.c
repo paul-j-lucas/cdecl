@@ -815,7 +815,7 @@ c_tpid_t c_tid_tpid( c_tid_t tid ) {
 c_tid_t c_tid_normalize( c_tid_t tid ) {
   switch ( c_tid_tpid( tid ) ) {
     case C_TPID_BASE:
-      if ( (tid & TB_SIGNED) != TB_NONE && (tid & TB_CHAR) == TB_NONE ) {
+      if ( (tid & (TB_SIGNED | TB_CHAR)) == TB_SIGNED ) {
         tid &= c_tid_compl( TB_SIGNED );
         if ( tid == TB_NONE )
           tid = TB_INT;
