@@ -885,11 +885,8 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
     char const sep = print_brackets ? ',' : ' ';
     bool *const sep_cat = print_brackets ? &comma : &space;
 
-    if ( print_brackets ) {
-      if ( space )
-        strbuf_catc( sbuf, ' ' );
-      strbuf_cats( sbuf, graph_token_c( "[[" ) );
-    }
+    if ( print_brackets )
+      strbuf_sepc_cats( sbuf, ' ', &space, graph_token_c( "[[" ) );
     C_TID_NAME_CAT( sbuf, atid, C_ATTRIBUTE, in_english, sep, sep_cat );
     if ( print_brackets )
       strbuf_cats( sbuf, graph_token_c( "]]" ) );
