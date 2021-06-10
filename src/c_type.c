@@ -906,17 +906,24 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
     }
   }
   else /* !in_english */ {
+    //
+    // In C++, at most one of "virtual", "override", or "final" should be
+    // printed.  The type is massaged in g_print_ast() since "virtual" prints
+    // before the function signature and either "override" or "final" prints
+    // after.  Hence, by the time we get here, at most one bit should be set.
+    //
+    assert(
+      at_most_one_bit_set(
+        c_tid_no_tpid( stid & (TS_VIRTUAL | TS_OVERRIDE | TS_FINAL) )
+      )
+    );
+
     if ( is_explicit_int( btid ) ) {
       btid |= TB_INT;
     } else if ( (btid & TB_ANY_MODIFIER) != TB_NONE ) {
       // In C/C++, explicit "int" isn't needed when at least one int modifier
       // is present.
       btid &= c_tid_compl( TB_INT );
-    }
-    if ( (stid & (TS_FINAL | TS_OVERRIDE)) != TS_NONE ) {
-      // In C/C++, explicit "virtual" shouldn't be present when either "final"
-      // or "overrride" is.
-      stid &= c_tid_compl( TS_VIRTUAL );
     }
   }
 

@@ -1,1 +1,1 @@
-virtual operator int() const override;
+operator int() const override;

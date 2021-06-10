@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 10.2
+
+** At most one of `virtual`, `final`, or `override`.
+In C++, at most one of `virtual`, `final`, or `override` is now printed.
+
+
 * Changes in Cdecl 10.1
 
 ** More robust scoped name type checking
