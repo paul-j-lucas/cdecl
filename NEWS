@@ -15,6 +15,12 @@ with their complete changes, see the AUTHORS file.
 ** At most one of `virtual`, `final`, or `override`.
 In C++, at most one of `virtual`, `final`, or `override` is now printed.
 
+** `using` forbids type
+`using` declarations now correctly forbid names in the types on the right-hand
+side:
+
+    using U = void (*F)();              // illegal
+
 
 * Changes in Cdecl 10.1
 

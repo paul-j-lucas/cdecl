@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ using U = void (*F)(int) @ 65

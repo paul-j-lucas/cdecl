@@ -4405,6 +4405,22 @@ using_decl_c_ast
       DUMP_AST( "type_c_ast", $5 );
       DUMP_AST( "cast_c_astp_opt", $7.ast );
 
+      //
+      // Ensure the type on the right-hand side doesn't have a name, e.g.:
+      //
+      //      using U = void (*F)();
+      //
+      // This check has to be done now in the parser rather than later in the
+      // AST because the patched AST loses the name.
+      //
+      c_sname_t const *const sname = c_ast_find_name( $7.ast, C_VISIT_DOWN );
+      if ( sname != NULL ) {
+        print_error( &$7.ast->loc,
+          "\"%s\" type can not have a name\n", L_USING
+        );
+        PARSE_ABORT();
+      }
+
       c_sname_t temp_sname = c_sname_dup( &in_attr.current_scope );
       c_sname_append_name( &temp_sname, $3 );
 

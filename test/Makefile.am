@@ -836,6 +836,7 @@ TESTS+=	tests/2k_typedef_i.test \
 	tests/using_ai.test \
 	tests/using_c_int_least32_t.test \
 	tests/using_eti.test \
+	tests/using_f-name_v.test \
 	tests/using_i-c.test \
 	tests/using_rgi.test \
 	tests/using_si.test
