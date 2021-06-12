@@ -128,11 +128,11 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
         case C_ALIGNAS_NONE:
           break;
         case C_ALIGNAS_EXPR:
-          DUMP_FORMAT( "alignas_expr = %u,\n", ast->align.as.expr );
+          DUMP_FORMAT( "alignas.expr = %u,\n", ast->align.as.expr );
           break;
         case C_ALIGNAS_TYPE:
           c_ast_dump(
-            ast->align.as.type_ast, indent, "alignas_type_ast", dout
+            ast->align.as.type_ast, indent, "alignas.type_ast", dout
           );
           FPUTS( ",\n", dout );
           break;
