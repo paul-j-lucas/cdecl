@@ -265,6 +265,13 @@
   FPRINTF( stdout, "  " KEY " = %s", ((BOOL) ? "true" : "false") ); )
 
 /**
+ * Ends a dump block.
+ *
+ * @sa #DUMP_START()
+ */
+#define DUMP_END()                IF_DEBUG( PUTS( "\n}\n" ); )
+
+/**
  * Dumps an integer.
  *
  * @param KEY The key name to print.
@@ -286,19 +293,6 @@
 #define DUMP_SNAME(KEY,SNAME) IF_DEBUG( \
   DUMP_COMMA; PUTS( "  " KEY " = " );   \
   c_sname_dump( &(SNAME), stdout ); )
-
-/**
- * Dumps a C string.
- *
- * @param KEY The key name to print.
- * @param STR The C string to dump.
- *
- * @sa #DUMP_INT()
- * @sa #DUMP_SNAME()
- */
-#define DUMP_STR(KEY,STR) IF_DEBUG(   \
-  DUMP_COMMA; PUTS( "  " );           \
-  kv_dump( (KEY), (STR), stdout ); )
 
 #ifdef ENABLE_CDECL_DEBUG
 /**
@@ -365,11 +359,17 @@
 #endif
 
 /**
- * Ends a dump block.
+ * Dumps a C string.
  *
- * @sa #DUMP_START()
+ * @param KEY The key name to print.
+ * @param STR The C string to dump.
+ *
+ * @sa #DUMP_INT()
+ * @sa #DUMP_SNAME()
  */
-#define DUMP_END()                IF_DEBUG( PUTS( "\n}\n" ); )
+#define DUMP_STR(KEY,STR) IF_DEBUG(   \
+  DUMP_COMMA; PUTS( "  " );           \
+  kv_dump( (KEY), (STR), stdout ); )
 
 /**
  * Dumps a <code>\ref c_tid_t</code>.
