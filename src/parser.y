@@ -4408,7 +4408,7 @@ using_decl_c_ast
       //
       // Ensure the type on the right-hand side doesn't have a name, e.g.:
       //
-      //      using U = void (*F)();
+      //      using U = void (*F)();    // error
       //
       // This check has to be done now in the parser rather than later in the
       // AST because the patched AST loses the name.
