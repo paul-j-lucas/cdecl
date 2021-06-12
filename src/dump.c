@@ -53,8 +53,10 @@
   FPUTS( KEY " = ", dout );           \
   c_sname_dump( (SNAME), dout ); )
 
-#define DUMP_STR(KEY,VALUE) \
-  BLOCK( dump_indent( indent, dout ); kv_dump( (KEY), (VALUE), dout ); )
+#define DUMP_STR(KEY,VALUE) BLOCK(  \
+  dump_indent( indent, dout );      \
+  FPUTS( KEY " = ", dout );         \
+  str_dump( (VALUE), dout ); )
 
 #define DUMP_TYPE(TYPE) BLOCK(  \
   dump_indent( indent, dout );  \
@@ -320,13 +322,11 @@ void c_type_dump( c_type_t const *type, FILE *dout ) {
   );
 }
 
-void kv_dump( char const *key, char const *value, FILE *dout ) {
-  assert( key != NULL );
-  assert( key[0] != '\0' );
+void str_dump( char const *value, FILE *dout ) {
   if ( value != NULL )
-    FPRINTF( dout, "%s = \"%s\"", key, value );
+    FPRINTF( dout, "\"%s\"", value );
   else
-    FPRINTF( dout, "%s = null", key );
+    FPUTS( "null", dout );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

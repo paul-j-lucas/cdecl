@@ -98,14 +98,12 @@ void c_tid_dump( c_tid_t tid, FILE *dout );
 void c_type_dump( c_type_t const *type, FILE *dout );
 
 /**
- * Dumps a key/value pair (for debugging).
+ * Dumps a string value (for debugging).
  *
- * @param key The key to print.
- * @param value The value to print, if any.  If NULL, `null` is printed instead
- * of the value.
+ * @param s The string to print, if any.  If NULL, `null` is printed instead.
  * @param dout The `FILE` to dump to.
  */
-void kv_dump( char const *key, char const *value, FILE *dout );
+void str_dump( char const *s, FILE *dout );
 
 ///////////////////////////////////////////////////////////////////////////////
 

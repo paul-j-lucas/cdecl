@@ -367,9 +367,8 @@
  * @sa #DUMP_INT()
  * @sa #DUMP_SNAME()
  */
-#define DUMP_STR(KEY,STR) IF_DEBUG(   \
-  DUMP_COMMA; PUTS( "  " );           \
-  kv_dump( (KEY), (STR), stdout ); )
+#define DUMP_STR(KEY,STR) IF_DEBUG( \
+  DUMP_COMMA; PUTS( "  " KEY " = " ); str_dump( (STR), stdout ); )
 
 /**
  * Dumps a <code>\ref c_tid_t</code>.
