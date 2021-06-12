@@ -851,7 +851,7 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
   c_tid_t stid = type->stid;
   c_tid_t atid = type->atid;
 
-  if ( OPT_LANG_IS(C_ANY) && (atid & TA_NORETURN) != TA_NONE ) {
+  if ( OPT_LANG_IS(C_ANY) && c_tid_is_any( atid, TA_NORETURN ) ) {
     //
     // Special case: we store _Noreturn as an attribute, but in C, it's a
     // distinct keyword and printed as such instead being printed between
@@ -895,12 +895,12 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
 
   // Special cases.
   if ( in_english ) {
-    if ( (btid & TB_ANY_MODIFIER) != TB_NONE &&
-         (btid & TB_ANY_MODIFIEE) == TB_NONE ) {
+    if ( c_tid_is_any( btid, TB_ANY_MODIFIER ) &&
+        !c_tid_is_any( btid, TB_ANY_MODIFIEE ) ) {
       // In English, be explicit about "int".
       btid |= TB_INT;
     }
-    if ( (stid & (TS_FINAL | TS_OVERRIDE)) != TS_NONE ) {
+    if ( c_tid_is_any( stid, TS_FINAL | TS_OVERRIDE ) ) {
       // In English, either "final" or "overrride" implies "virtual".
       stid |= TS_VIRTUAL;
     }
@@ -920,7 +920,7 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
 
     if ( is_explicit_int( btid ) ) {
       btid |= TB_INT;
-    } else if ( (btid & TB_ANY_MODIFIER) != TB_NONE ) {
+    } else if ( c_tid_is_any( btid, TB_ANY_MODIFIER ) ) {
       // In C/C++, explicit "int" isn't needed when at least one int modifier
       // is present.
       btid &= c_tid_compl( TB_INT );
@@ -1034,9 +1034,9 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
     C_TID_NAME_CAT( sbuf, east_stid, C_QUALIFIER, in_english, ' ', &space );
 
   // Really special cases.
-  if ( (btid & TB_NAMESPACE) != TB_NONE )
+  if ( c_tid_is_any( btid, TB_NAMESPACE ) )
     strbuf_sepc_cats( sbuf, ' ', &space, L_NAMESPACE );
-  else if ( (btid & TB_SCOPE) != TB_NONE )
+  else if ( c_tid_is_any( btid, TB_SCOPE ) )
     strbuf_sepc_cats( sbuf, ' ', &space, L_SCOPE );
 
   return sbuf->str != NULL ? sbuf->str : "";

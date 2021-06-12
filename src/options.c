@@ -712,7 +712,7 @@ bool is_explicit_int( c_tid_t tid ) {
     //
     tid |= TB_INT;
   }
-  else if ( (tid & TB_LONG_LONG) != TB_NONE ) {
+  else if ( c_tid_is_any( tid, TB_LONG_LONG ) ) {
     //
     // Special case: for long long, its type is always combined with TB_LONG,
     // i.e., two bits are set.  Therefore, to check for explicit int for long
@@ -720,9 +720,9 @@ bool is_explicit_int( c_tid_t tid ) {
     //
     tid &= c_tid_compl( TB_LONG );
   }
-  bool const is_unsigned = (tid & TB_UNSIGNED) != TB_NONE;
+  bool const is_unsigned = c_tid_is_any( tid, TB_UNSIGNED );
   tid &= c_tid_compl( TB_UNSIGNED );
-  return (tid & opt_explicit_int[ is_unsigned ]) != TB_NONE;
+  return c_tid_is_any( tid, opt_explicit_int[ is_unsigned ] );
 }
 
 void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
@@ -784,7 +784,7 @@ void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
         return;
     } // switch
 
-    bool const is_unsigned = (tid & TB_UNSIGNED) != TB_NONE;
+    bool const is_unsigned = c_tid_is_any( tid, TB_UNSIGNED );
     opt_explicit_int[ is_unsigned ] |= tid & c_tid_compl( TB_UNSIGNED );
     tid = TB_NONE;
   } // for

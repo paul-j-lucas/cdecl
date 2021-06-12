@@ -227,7 +227,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         FPRINTF( g->gout, " %s", c_tid_name_c( cv_qual_stid ) );
       if ( ref_qual_stid != TS_NONE ) {
         FPUTS(
-          (ref_qual_stid & TS_REFERENCE) != TS_NONE ?  " &" : " &&",
+          c_tid_is_any( ref_qual_stid, TS_REFERENCE ) ?  " &" : " &&",
           g->gout
         );
       }
@@ -321,7 +321,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE: {
-      c_tid_t stid = type.stid & TS_MASK_STORAGE;
+      c_tid_t const stid = type.stid & TS_MASK_STORAGE;
       if ( stid != TS_NONE )
         FPRINTF( g->gout, "%s ", c_tid_name_c( stid ) );
       g_print_ast( g, ast->as.ptr_ref.to_ast );

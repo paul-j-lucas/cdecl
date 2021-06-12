@@ -431,13 +431,13 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
     (is_definition ? TS_CONSTRUCTOR_DEF : TS_CONSTRUCTOR_DECL) :
     (is_definition ? TS_DESTRUCTOR_DEF  : TS_DESTRUCTOR_DECL ) ;
 
-  c_tid_t const tid = ast->type.stid & c_tid_compl( ok_stid );
-  if ( tid != TS_NONE ) {
+  c_tid_t const stid = ast->type.stid & c_tid_compl( ok_stid );
+  if ( stid != TS_NONE ) {
     print_error( &ast->loc,
       "%s%s can not be %s\n",
       c_kind_name( ast->kind_id ),
       is_definition ? " definitions" : "s",
-      c_tid_name_error( tid )
+      c_tid_name_error( stid )
     );
     return false;
   }
@@ -1426,7 +1426,7 @@ same: print_error( &ast->loc,
           case C_OP_LESS:
           case C_OP_LESS_EQ:
           case C_OP_LESS_EQ_GREATER:
-            if ( (member_only_stids & TS_DEFAULT) != TS_NONE ) {
+            if ( c_tid_is_any( member_only_stids, TS_DEFAULT ) ) {
               //
               // Detailed checks for defaulted overloaded relational operators
               // are done in c_ast_check_oper_relational_default().
