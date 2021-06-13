@@ -916,8 +916,7 @@ bool c_tid_is_none( c_tid_t tid ) {
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_tid_is_size_t( c_tid_t tid ) {
   assert( (tid & TX_MASK_TPID) == C_TPID_BASE );
-  tid &= c_tid_compl( TB_INT );
-  return (tid & (TB_UNSIGNED | TB_LONG)) == (TB_UNSIGNED | TB_LONG);
+  return (tid & c_tid_compl( TB_INT )) == (TB_UNSIGNED | TB_LONG);
 }
 
 /**
