@@ -134,9 +134,6 @@ void options_init( int *pargc, char const **pargv[] );
 /**
  * Parses the explicit `int` option.
  *
- * @param loc The location of \a ei_format.  If not NULL and \a ei_format is
- * invalid, calls print_error(); if NULL and \a ei_format is invalid, calls
- * PMESSAGE_EXIT().
  * @param ei_format The null-terminated explicit `int` format string to parse.
  * Valid formats are:
  *      Format            | Meaning
@@ -149,8 +146,11 @@ void options_init( int *pargc, char const **pargv[] );
  * to separate formats.  For example, `ulll` is parsed as `unsigned long long`
  * and `long` whereas `ul,ll` is parsed as `unsigned long` and `long long`.
  * If invalid, an error message is printed to standard error.
+ * @param loc The location of \a ei_format.  If not NULL and \a ei_format is
+ * invalid, calls print_error(); if NULL and \a ei_format is invalid, calls
+ * PMESSAGE_EXIT().
  */
-void parse_explicit_int( c_loc_t const *loc, char const *ei_format );
+void parse_explicit_int( char const *ei_format, c_loc_t const *loc );
 
 /**
  * Prints the string representation of the explicit integer option.

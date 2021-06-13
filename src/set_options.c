@@ -230,9 +230,9 @@ static void set_explain_by_default( set_option_fn_args_t const *args ) {
  */
 static void set_explicit_int( set_option_fn_args_t const *args ) {
   if ( args->opt_enabled )
-    parse_explicit_int( args->opt_value_loc, args->opt_value );
+    parse_explicit_int( args->opt_value, args->opt_value_loc );
   else
-    parse_explicit_int( NULL, "" );
+    parse_explicit_int( "", /*loc=*/NULL );
 }
 
 #ifdef ENABLE_FLEX_DEBUG

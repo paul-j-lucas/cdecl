@@ -448,7 +448,7 @@ static void parse_options( int argc, char const *argv[] ) {
         opt_explain = true;
         break;
       case COPT(EXPLICIT_INT):
-        parse_explicit_int( NULL, optarg );
+        parse_explicit_int( optarg, /*loc=*/NULL );
         break;
       case COPT(FILE):
         fin_path  = optarg;
@@ -725,7 +725,7 @@ bool is_explicit_int( c_tid_t tid ) {
   return c_tid_is_any( tid, opt_explicit_int[ is_unsigned ] );
 }
 
-void parse_explicit_int( c_loc_t const *loc, char const *ei_format ) {
+void parse_explicit_int( char const *ei_format, c_loc_t const *loc ) {
   assert( ei_format != NULL );
 
   c_tid_t tid = TB_NONE;
