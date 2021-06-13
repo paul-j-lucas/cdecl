@@ -121,8 +121,9 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       dup_ast->as.array.stid = ast->as.array.stid;
       break;
 
-    case K_BUILTIN:
     case K_TYPEDEF:
+      // for_ast duplicated by parent code below
+    case K_BUILTIN:
       dup_ast->as.builtin.bit_width = ast->as.builtin.bit_width;
       break;
 
@@ -138,6 +139,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       dup_ast->as.func.flags = ast->as.func.flags;
       PJL_FALLTHROUGH;
     case K_APPLE_BLOCK:
+      // ret_ast duplicated by parent code below
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL:
       FOREACH_PARAM( param, ast ) {
@@ -147,14 +149,15 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       } // for
       break;
 
-    case K_DESTRUCTOR:
-    case K_NAME:
-    case K_NONE:
-    case K_PLACEHOLDER:
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
     case K_USER_DEF_CONVERSION:
+      // of_ast duplicated by parent code below
+    case K_DESTRUCTOR:
+    case K_NAME:
+    case K_NONE:
+    case K_PLACEHOLDER:
     case K_VARIADIC:
       // nothing to do
       break;
@@ -219,7 +222,7 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
         return false;
       PJL_FALLTHROUGH;
     case K_APPLE_BLOCK:
-      // ret_ast is checked by the parent code below
+      // ret_ast checked by parent code below
     case K_CONSTRUCTOR:
     case K_USER_DEF_LITERAL: {
       c_ast_param_t const *i_param = c_ast_params( i_ast );
@@ -243,10 +246,6 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       break;
     }
 
-    case K_NAME:
-      // names don't matter
-      break;
-
     case K_TYPEDEF:
       if ( i_ast->as.tdef.bit_width != j_ast->as.tdef.bit_width )
         return false;
@@ -257,13 +256,15 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       //
       goto equiv_of;
 
+    case K_POINTER:
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+    case K_USER_DEF_CONVERSION:
+      // checked by parent code below
     case K_NONE:
+    case K_NAME:                        // names don't matter
     case K_DESTRUCTOR:
     case K_PLACEHOLDER:
-    case K_POINTER:                     // checked by parent code below
-    case K_REFERENCE:                   // checked by parent code below
-    case K_RVALUE_REFERENCE:            // checked by parent code below
-    case K_USER_DEF_CONVERSION:         // checked by parent code below
     case K_VARIADIC:
       // nothing to do
       break;
