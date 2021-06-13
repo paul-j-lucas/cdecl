@@ -703,7 +703,10 @@ bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type ) {
   assert( i_type != NULL );
   assert( j_type != NULL );
 
-  return  i_type->btid == j_type->btid &&
+  c_tid_t const i_btid = c_tid_normalize( i_type->btid );
+  c_tid_t const j_btid = c_tid_normalize( j_type->btid );
+
+  return  i_btid       == j_btid       &&
           i_type->stid == j_type->stid &&
           i_type->atid == j_type->atid;
 }
