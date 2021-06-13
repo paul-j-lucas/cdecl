@@ -325,7 +325,7 @@ enum c_tpid {
 #define TA_NO_UNIQUE_ADDRESS  0x0000000000000204ull /**< `no_unique_address`  */
 
 // bit masks
-#define TX_MASK_PART_ID       0x000000000000000Full /**< Type part ID bitmask.*/
+#define TX_MASK_TPID          0x000000000000000Full /**< Type part ID bitmask.*/
 #define TS_MASK_STORAGE       0x000000000FFFFFF2ull /**< Storage bitmask.     */
 #define TS_MASK_QUALIFIER     0x00000007F0000002ull /**< Qualifier bitmask.   */
 #define TS_MASK_REF_QUALIFIER 0x0000001800000002ull /**< Ref-qual bitmask.    */
@@ -760,7 +760,7 @@ void c_type_or_eq( c_type_t *dst_type, c_type_t const *add_type );
  */
 C_TYPE_INLINE PJL_NOWARN_UNUSED_RESULT
 c_tid_t c_tid_check( c_tid_t tid, c_tpid_t tpid ) {
-  assert( (tid & TX_MASK_PART_ID) == tpid );
+  assert( (tid & TX_MASK_TPID) == tpid );
   return tid;
 }
 
@@ -795,7 +795,7 @@ bool c_tid_is_compl( c_tid_t tid ) {
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 c_tid_t c_tid_compl( c_tid_t tid ) {
   assert( !c_tid_is_compl( tid ) );
-  return ~tid ^ TX_MASK_PART_ID;
+  return ~tid ^ TX_MASK_TPID;
 }
 
 /**
@@ -869,7 +869,7 @@ char const* c_tid_name_error( c_tid_t tid ) {
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 c_tid_t c_tid_no_tpid( c_tid_t tid ) {
-  return tid & ~TX_MASK_PART_ID;
+  return tid & ~TX_MASK_TPID;
 }
 
 /**
@@ -915,7 +915,7 @@ bool c_tid_is_none( c_tid_t tid ) {
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_tid_is_size_t( c_tid_t tid ) {
-  assert( (tid & TX_MASK_PART_ID) == C_TPID_BASE );
+  assert( (tid & TX_MASK_TPID) == C_TPID_BASE );
   tid &= c_tid_compl( TB_INT );
   return (tid & (TB_UNSIGNED | TB_LONG)) == (TB_UNSIGNED | TB_LONG);
 }

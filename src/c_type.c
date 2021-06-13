@@ -782,7 +782,7 @@ bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tid, c_loc_t const *new_loc ) {
 }
 
 unsigned c_tid_scope_order( c_tid_t tid ) {
-  assert( (tid & TX_MASK_PART_ID) == C_TPID_BASE );
+  assert( (tid & TX_MASK_TPID) == C_TPID_BASE );
   switch ( tid & (TB_ANY_SCOPE | TB_ENUM) ) {
     case TB_NONE:
     case TB_SCOPE:
@@ -807,7 +807,7 @@ c_tpid_t c_tid_tpid( c_tid_t tid ) {
   //
   if ( c_tid_is_compl( tid ) )
     tid = ~tid;
-  tid &= TX_MASK_PART_ID;
+  tid &= TX_MASK_TPID;
   assert( tid <= C_TPID_ATTR );
   return STATIC_CAST( c_tpid_t, tid );
 }
