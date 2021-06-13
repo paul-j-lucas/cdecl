@@ -696,11 +696,7 @@ bool any_explicit_int( void ) {
 }
 
 struct option const* cli_option_next( struct option const *opt ) {
-  if ( opt == NULL )
-    opt = CLI_OPTIONS_LONG;
-  else if ( (++opt)->name == NULL )
-    opt = NULL;
-  return opt;
+  return opt == NULL ? CLI_OPTIONS_LONG : (++opt)->name == NULL ? NULL : opt;
 }
 
 bool is_explicit_int( c_tid_t tid ) {
