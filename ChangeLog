@@ -1,5 +1,10 @@
 2021-06-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac, c_ast.c, c_ast.h, c_ast_util.c, c_kind.h, check.c,
+     english.c: Changed visitor data type to uint64_t so it's always 64 bits
+     and so can always hold that or a pointer, even on 32-bit platforms.
+   * c_ast_util.c: No longer using "data" parameter of c_ast_visitor_name().
+   * c_ast_util.c: Now using c_type_or_eq().
    * c_type.c: Optimized calls to c_tid_normalize().
    * c_type.c: c_type_equal() now normalizes the base tids.
 
