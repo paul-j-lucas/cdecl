@@ -1,5 +1,7 @@
 2021-06-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.h: s/long long/unsigned long long/
+   * c_kind.c, c_kind.h: Removed INLINE stuff -- no longer needed.
    * configure.ac, c_ast.c, c_ast.h, c_ast_util.c, c_kind.h, check.c,
      english.c: Changed visitor data type to uint64_t so it's always 64 bits
      and so can always hold that or a pointer, even on 32-bit platforms.
