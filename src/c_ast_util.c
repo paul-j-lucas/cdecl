@@ -420,17 +420,17 @@ static bool c_ast_vistor_kind_any( c_ast_t *ast, void *data ) {
 }
 
 /**
- * A visitor function to find an AST node having a particular name.
+ * A visitor function to find an AST node having a non-empty name.
  *
  * @param ast The AST to check.
- * @param data The least number of names that the scoped name must have.
+ * @param data Not used.
  * @return Returns `true` only if \a ast has such a scoped name.
  */
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_name( c_ast_t *ast, void *data ) {
   assert( ast != NULL );
-  uintptr_t const at_least = REINTERPRET_CAST( uintptr_t, data );
-  return c_ast_count_name( ast ) >= at_least;
+  (void)data;
+  return !c_ast_empty_name( ast );
 }
 
 /**
@@ -478,10 +478,8 @@ c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
 }
 
 c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir ) {
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_t *const found_ast = c_ast_visit(
-    nonconst_ast, dir, c_ast_visitor_name, REINTERPRET_CAST( void*, 1 )
-  );
+  c_ast_t *const found_ast =
+    c_ast_visit( CONST_CAST( c_ast_t*, ast ), dir, c_ast_visitor_name, NULL );
   return found_ast != NULL ? &found_ast->sname : NULL;
 }
 
