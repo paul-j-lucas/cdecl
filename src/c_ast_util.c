@@ -101,12 +101,12 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast ) {
         //
         // Before:
         //
-        //      [ast] --> [parent]
+        //      [ast] --> [ast-parent]
         //      [array_ast]
         //
         // After:
         //
-        //      [ast] --> [array_ast] --> [parent]
+        //      [ast] --> [array_ast] --> [ast-parent]
         //
         if ( c_ast_is_parent( ast->parent_ast ) )
           c_ast_set_parent( array_ast, ast->parent_ast );
