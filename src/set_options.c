@@ -433,11 +433,7 @@ void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
 }
 
 set_option_t const* set_option_next( set_option_t const *opt ) {
-  if ( opt == NULL )
-    opt = SET_OPTIONS;
-  else if ( (++opt)->name == NULL )
-    opt = NULL;
-  return opt;
+  return opt == NULL ? SET_OPTIONS : (++opt)->name == NULL ? NULL : opt;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

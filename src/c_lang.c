@@ -126,11 +126,7 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
 }
 
 c_lang_t const* c_lang_next( c_lang_t const *lang ) {
-  if ( lang == NULL )
-    lang = C_LANG;
-  else if ( (++lang)->name == NULL )
-    lang = NULL;
-  return lang;
+  return lang == NULL ? C_LANG : (++lang)->name == NULL ? NULL : lang;
 }
 
 void c_lang_set( c_lang_id_t lang_id ) {

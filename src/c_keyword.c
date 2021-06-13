@@ -419,11 +419,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
 }
 
 c_keyword_t const* c_keyword_next( c_keyword_t const *k ) {
-  if ( k == NULL )
-    k = C_KEYWORDS;
-  else if ( (++k)->literal == NULL )
-    k = NULL;
-  return k;
+  return k == NULL ? C_KEYWORDS : (++k)->literal == NULL ? NULL : k;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
