@@ -1,3 +1,27 @@
+2021-06-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.c: Optimized calls to c_tid_normalize().
+   * c_type.c: c_type_equal() now normalizes the base tids.
+
+2021-06-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_type.h: Added TB_COMPLEX and TB_INT to TB_ANY_MODIFIEE.
+   * c_type.c, c_type.h, check.c, gibberish.c: More uses of TS_CONST_VOLATILE.
+   * c_type.h: Simplification of c_tid_is_size_t().
+   * c_type.c, c_type.h: s/TX_MASK_PART_ID/TX_MASK_TPID/
+   * c_type.h: Renaming.
+   * c_type.c, check.c, gibberish.c, options.c: Now using c_tid_is_any() more.
+   * dump.c: s/_/./
+   * dump.c, dump.h, parser.y: s/kv_dump/str_dump/
+   * parser.y: Sorted macros.
+
+2021-06-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, parser.y, test/Makefile.am, using_f-name_v.test: `using`
+     declarations now correctly forbid names in the types on the right-hand
+     side.
+   * cdecl.1: Added (missing) mention of `constexpr` to C++11.
+
 2021-06-10  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac, c_type.c, gibberish.c, declare_ovc_udc_i.out,
