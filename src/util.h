@@ -531,7 +531,7 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #UNEXPECTED_STR_VALUE()
  */
 #define UNEXPECTED_INT_VALUE(EXPR) \
-  INTERNAL_ERR( "%lld (0x%llX): unexpected value for " #EXPR "\n", (long long)(EXPR), (long long)(EXPR) )
+  INTERNAL_ERR( "%lld (0x%llX): unexpected value for " #EXPR "\n", (long long)(EXPR), (unsigned long long)(EXPR) )
 
 /**
  * Prints that a string value was unexpected to standard error and exits.
