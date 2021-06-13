@@ -41,7 +41,7 @@
 
 // local functions
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_english( c_ast_t*, void* );
+static bool c_ast_visitor_english( c_ast_t*, uint64_t );
 
 static void non_type_name( c_type_t const*, FILE* );
 
@@ -110,8 +110,10 @@ static void c_ast_english_func_params( c_ast_t const *ast, FILE *eout ) {
       }
     }
 
-    c_ast_t *const nonconst_param = CONST_CAST( c_ast_t*, param_ast );
-    c_ast_visit( nonconst_param, C_VISIT_DOWN, c_ast_visitor_english, eout );
+    c_ast_visit(
+      CONST_CAST( c_ast_t*, param_ast ), C_VISIT_DOWN,
+      c_ast_visitor_english, REINTERPRET_CAST( uint64_t, eout )
+    );
   } // for
 
   FPUTC( ')', eout );
@@ -125,11 +127,10 @@ static void c_ast_english_func_params( c_ast_t const *ast, FILE *eout ) {
  * @return Always returns `false`.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_english( c_ast_t *ast, void *data ) {
+static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
   assert( ast != NULL );
-  assert( data != NULL );
-
-  FILE *const eout = data;
+  FILE *const eout = REINTERPRET_CAST( FILE*, data );
+  assert( eout != NULL );
 
   switch ( ast->kind_id ) {
     case K_ARRAY:
@@ -289,8 +290,10 @@ void c_ast_english( c_ast_t const *ast, FILE *eout ) {
   assert( ast != NULL );
   assert( eout != NULL );
 
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-  c_ast_visit( nonconst_ast, C_VISIT_DOWN, c_ast_visitor_english, eout );
+  c_ast_visit(
+    CONST_CAST( c_ast_t*, ast ), C_VISIT_DOWN,
+    c_ast_visitor_english, REINTERPRET_CAST( uint64_t, eout )
+  );
 
   switch ( ast->align.kind ) {
     case C_ALIGNAS_NONE:

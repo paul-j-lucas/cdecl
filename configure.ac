@@ -86,10 +86,6 @@ AC_TYPE_SIZE_T
 AC_TYPE_SSIZE_T
 AC_TYPE_UINT32_T
 AC_CHECK_MEMBERS([struct passwd.pw_dir],[],[],[[#include <pwd.h>]])
-AX_COMPILE_CHECK_SIZEOF(void*)
-cdecl_headers='#define CDECL_CONFIGURE
-#include "src/c_kind.h"'
-AX_COMPILE_CHECK_SIZEOF(c_kind_id_t, $cdecl_headers)
 PJL_COMPILE([__typeof__],[],[__typeof__(1) x __attribute((unused)) = 1;])
 
 # Checks for library functions.

@@ -143,7 +143,7 @@ struct c_alignas {
  * @return Returning `true` will cause traversal to stop and \a ast to be
  * returned to the caller of c_ast_visit().
  */
-typedef bool (*c_ast_visitor_t)( c_ast_t *ast, void *data );
+typedef bool (*c_ast_visitor_t)( c_ast_t *ast, uint64_t data );
 
 /**
  * @defgroup ast-nodes-group AST Nodes
@@ -739,7 +739,7 @@ void c_ast_set_sname( c_ast_t *ast, c_sname_t *sname );
  */
 PJL_NOWARN_UNUSED_RESULT
 c_ast_t* c_ast_visit( c_ast_t *ast, c_visit_dir_t dir, c_ast_visitor_t visitor,
-                      void *data );
+                      uint64_t data );
 
 /**
  * Convenience function to get the AST given a `c_ast_param_t`.

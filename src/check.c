@@ -165,10 +165,10 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_name_equal( c_ast_t const*, char const* );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_error( c_ast_t*, void* );
+static bool c_ast_visitor_error( c_ast_t*, uint64_t );
 
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_type( c_ast_t*, void* );
+static bool c_ast_visitor_type( c_ast_t*, uint64_t );
 
 static void c_ast_warn_name( c_ast_t const* );
 static void c_sname_warn( c_sname_t const*, c_loc_t const* );
@@ -188,7 +188,8 @@ static c_lang_id_t is_reserved_name( char const* );
  */
 PJL_WARN_UNUSED_RESULT
 static inline bool c_ast_check_visitor( c_ast_t const *ast,
-                                        c_ast_visitor_t visitor, void *data ) {
+                                        c_ast_visitor_t visitor,
+                                        uint64_t data ) {
   c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
   return c_ast_visit( nonconst_ast, C_VISIT_DOWN, visitor, data ) == NULL;
 }
@@ -534,9 +535,8 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_errors( c_ast_t const *ast, bool is_func_param ) {
   assert( ast != NULL );
   // check in major-to-minor error order
-  void *const data = REINTERPRET_CAST( void*, is_func_param );
-  return  c_ast_check_visitor( ast, c_ast_visitor_error, data ) &&
-          c_ast_check_visitor( ast, c_ast_visitor_type, data );
+  return  c_ast_check_visitor( ast, c_ast_visitor_error, is_func_param ) &&
+          c_ast_check_visitor( ast, c_ast_visitor_type, is_func_param );
 }
 
 /**
@@ -1977,9 +1977,9 @@ static bool c_ast_name_equal( c_ast_t const *ast, char const *name ) {
  * `VISITOR_ERROR_NOT_FOUND` if not.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
+static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
   assert( ast != NULL );
-  bool const is_func_param = REINTERPRET_CAST( bool, data );
+  bool const is_func_param = STATIC_CAST( bool, data );
 
   if ( !c_ast_check_alignas( ast ) )
     return VISITOR_ERROR_FOUND;
@@ -2111,9 +2111,9 @@ static bool c_ast_visitor_error( c_ast_t *ast, void *data ) {
  * `VISITOR_ERROR_NOT_FOUND` if not.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
+static bool c_ast_visitor_type( c_ast_t *ast, uint64_t data ) {
   assert( ast != NULL );
-  bool const is_func_param = REINTERPRET_CAST( bool, data );
+  bool const is_func_param = STATIC_CAST( bool, data );
 
   c_lang_id_t const lang_ids = c_type_check( &ast->type );
   if ( lang_ids != LANG_ANY ) {
@@ -2177,10 +2177,9 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
   }
 
   if ( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE ) {
-    data = REINTERPRET_CAST( void*, true );
     FOREACH_PARAM( param, ast ) {
       c_ast_t const *const param_ast = c_param_ast( param );
-      if ( !c_ast_check_visitor( param_ast, c_ast_visitor_type, data ) )
+      if ( !c_ast_check_visitor( param_ast, c_ast_visitor_type, true ) )
         return VISITOR_ERROR_FOUND;
     } // for
   }
@@ -2196,7 +2195,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, void *data ) {
  * @return Always returns `false`.
  */
 PJL_WARN_UNUSED_RESULT
-static bool c_ast_visitor_warning( c_ast_t *ast, void *data ) {
+static bool c_ast_visitor_warning( c_ast_t *ast, uint64_t data ) {
   assert( ast != NULL );
 
   switch ( ast->kind_id ) {
@@ -2400,7 +2399,7 @@ bool c_ast_check_declaration( c_ast_t const *ast ) {
   assert( ast != NULL );
   if ( !c_ast_check_errors( ast, false ) )
     return false;
-  PJL_IGNORE_RV( c_ast_check_visitor( ast, c_ast_visitor_warning, NULL ) );
+  PJL_IGNORE_RV( c_ast_check_visitor( ast, c_ast_visitor_warning, 0 ) );
   return true;
 }
 

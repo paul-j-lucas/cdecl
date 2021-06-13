@@ -26,17 +26,6 @@
  * Declares types and functions for kinds of things in C/C++ declarations.
  */
 
-#ifndef CDECL_CONFIGURE                 /* defined only during ../configure */
-//
-// During configure time, we need to get sizeof(c_kind_id_t), so we #include
-// this header.  However, this header indirectly includes config.h that doesn't
-// get created until after configure finishes.
-//
-// Therefore, configure defines CDECL_CONFIGURE so that we can #include this
-// header that will NOT #include anything else (or define anything that depends
-// on #include'd definitions).
-//
-
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "types.h"
@@ -46,9 +35,6 @@
 
 // standard
 #include <stdbool.h>
-#if SIZEOF_C_KIND_T > SIZEOF_VOIDP
-#include <stdlib.h>                     /* for free(3) */
-#endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
 
 _GL_INLINE_HEADER_BEGIN
 #ifndef C_KIND_INLINE
@@ -56,13 +42,6 @@ _GL_INLINE_HEADER_BEGIN
 #endif /* C_KIND_INLINE */
 
 /// @endcond
-
-#else /* CDECL_CONFIGURE */
-
-// local
-#include "types.h"                      /* for c_kind_id_t */
-
-#endif /* CDECL_CONFIGURE */
 
 /**
  * @defgroup c-kinds-group C/C++ Kinds of Declarations
@@ -103,8 +82,6 @@ enum c_kind_id {
   K_USER_DEF_CONVERSION     = 0x40000, ///< User-defined conversion (C++ only).
   K_USER_DEF_LITERAL        = 0x80000, ///< User-defined literal (C++ only).
 };
-
-#ifndef CDECL_CONFIGURE
 
 /**
  * Shorthand for any kind of function-like parent: #K_APPLE_BLOCK,
@@ -153,59 +130,6 @@ enum c_kind_id {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Frees the data for a <code>\ref c_kind_id</code>.
- * @note
- * For platforms with 64-bit pointers, this is a no-op.
- *
- * @param data The data to free.  If NULL, does nothing.
- */
-C_KIND_INLINE
-void c_kind_data_free( void *data ) {
-#if SIZEOF_C_KIND_T > SIZEOF_VOIDP
-  free( data );
-#else
-  (void)data;
-#endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
-}
-
-/**
- * Gets the <code>\ref c_kind_id</code> value from a `void*` data value.
- *
- * @param data The data to get the <code>\ref c_kind_id</code> from.
- * @return Returns the <code>\ref c_kind_id</code>.
- *
- * @sa c_kind_data_new()
- */
-C_KIND_INLINE PJL_WARN_UNUSED_RESULT
-c_kind_id_t c_kind_data_get( void const *data ) {
-#if SIZEOF_C_KIND_T > SIZEOF_VOIDP
-  c_kind_id_t const *const pk = data;
-  return *pk;
-#else
-  return REINTERPRET_CAST( c_kind_id_t, data );
-#endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
-}
-
-/**
- * Creates an opaque data handle for a <code>\ref c_kind_id</code>.
- *
- * @param kind_id The <code>\ref c_kind_id</code> to use.
- * @return Returns said handle.
- *
- * @sa c_kind_data_free()
- */
-C_KIND_INLINE PJL_WARN_UNUSED_RESULT
-void* c_kind_data_new( c_kind_id_t kind_id ) {
-#if SIZEOF_C_KIND_T > SIZEOF_VOIDP
-  c_kind_id_t *const data = MALLOC( c_kind_id_t, 1 );
-  *data = kind_id;
-  return data;
-#else
-  return REINTERPRET_CAST( void*, kind_id );
-#endif /* SIZEOF_C_KIND_T > SIZEOF_VOIDP */
-}
-
-/**
  * Gets the name of \a kind_id.
  *
  * @param kind_id The <code>\ref c_kind_id</code> to get the name for.
@@ -220,6 +144,5 @@ char const* c_kind_name( c_kind_id_t kind_id );
 
 _GL_INLINE_HEADER_END
 
-#endif /* CDECL_CONFIGURE */
 #endif /* cdecl_c_kind_H */
 /* vim:set et sw=2 ts=2: */
