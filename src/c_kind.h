@@ -29,19 +29,6 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "types.h"
-#include "util.h"
-
-/// @cond DOXYGEN_IGNORE
-
-// standard
-#include <stdbool.h>
-
-_GL_INLINE_HEADER_BEGIN
-#ifndef C_KIND_INLINE
-# define C_KIND_INLINE _GL_INLINE
-#endif /* C_KIND_INLINE */
-
-/// @endcond
 
 /**
  * @defgroup c-kinds-group C/C++ Kinds of Declarations
@@ -141,8 +128,6 @@ char const* c_kind_name( c_kind_id_t kind_id );
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
-
-_GL_INLINE_HEADER_END
 
 #endif /* cdecl_c_kind_H */
 /* vim:set et sw=2 ts=2: */
