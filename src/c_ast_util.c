@@ -455,8 +455,7 @@ c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast ) {
   c_ast_t *const rv_ast = c_ast_add_array_impl( ast, array_ast );
   assert( rv_ast != NULL );
   c_type_t const taken_type = c_ast_take_storage( array_ast->as.array.of_ast );
-  array_ast->type.stid |= taken_type.stid;
-  array_ast->type.atid |= taken_type.atid;
+  c_type_or_eq( &array_ast->type, &taken_type );
   return rv_ast;
 }
 
