@@ -703,12 +703,11 @@ bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type ) {
   assert( i_type != NULL );
   assert( j_type != NULL );
 
+  if ( i_type->stid != j_type->stid || i_type->atid != j_type->atid )
+    return false;
   c_tid_t const i_btid = c_tid_normalize( i_type->btid );
   c_tid_t const j_btid = c_tid_normalize( j_type->btid );
-
-  return  i_btid       == j_btid       &&
-          i_type->stid == j_type->stid &&
-          i_type->atid == j_type->atid;
+  return i_btid == j_btid;
 }
 
 c_type_t c_type_from_tid( c_tid_t tid ) {
@@ -834,12 +833,16 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type ) {
   assert( i_type != NULL );
   assert( j_type != NULL );
 
+  if ( (j_type->stid != TS_NONE && (i_type->stid & j_type->stid) == TS_NONE) ||
+       (j_type->atid != TA_NONE && (i_type->atid & j_type->atid) == TA_NONE) ) {
+    return false;
+  }
+
+  if ( j_type->btid == TB_NONE )
+    return true;
   c_tid_t const i_btid = c_tid_normalize( i_type->btid );
   c_tid_t const j_btid = c_tid_normalize( j_type->btid );
-
-  return  (j_btid       == TB_NONE || (i_btid & j_btid)             != TB_NONE)
-       && (j_type->stid == TS_NONE || (i_type->stid & j_type->stid) != TS_NONE)
-       && (j_type->atid == TA_NONE || (i_type->atid & j_type->atid) != TA_NONE);
+  return (i_btid & j_btid) != TB_NONE;
 }
 
 char const* c_type_name( c_type_t const *type, bool in_english ) {
