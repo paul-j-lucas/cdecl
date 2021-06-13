@@ -1,5 +1,10 @@
 2021-06-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_keyword.c, c_lang.c, options.c, set_options.c: Simplified *_next()
+     functions.
+   * c_keyword.c, c_lang.c, set_options.c: Simplified *_next() functions.
+   * options.c, options.h, set_options.c: Swapped parameter order for
+     parse_explicit_int().
    * util.h: s/long long/unsigned long long/
    * c_kind.c, c_kind.h: Removed INLINE stuff -- no longer needed.
    * configure.ac, c_ast.c, c_ast.h, c_ast_util.c, c_kind.h, check.c,
