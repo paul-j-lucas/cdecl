@@ -427,14 +427,13 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_NEW_DELETE_OPER
  * @sa #TS_USER_DEF_CONV
  */
-#define TS_FUNC_LIKE          ( TS_CONST | TS_CONSTEVAL | TS_CONSTEXPR \
-                              | TS_DEFAULT | TS_DELETE | TS_EXPLICIT \
-                              | TS_EXPORT | TS_EXTERN | TS_EXTERN_C \
-                              | TS_FINAL | TS_FRIEND | TS_INLINE \
+#define TS_FUNC_LIKE          ( TS_CONST_VOLATILE | TS_CONSTEVAL \
+                              | TS_CONSTEXPR | TS_DEFAULT | TS_DELETE \
+                              | TS_EXPLICIT | TS_EXPORT | TS_EXTERN \
+                              | TS_EXTERN_C | TS_FINAL | TS_FRIEND | TS_INLINE \
                               | TS_NOEXCEPT | TS_OVERRIDE | TS_PURE_VIRTUAL \
                               | TS_ANY_REFERENCE | TS_RESTRICT | TS_STATIC \
-                              | TS_THROW | TS_TYPEDEF | TS_VIRTUAL \
-                              | TS_VOLATILE )
+                              | TS_THROW | TS_TYPEDEF | TS_VIRTUAL )
 
 /**
  * The only types that can apply to the program's `main()` function.
@@ -450,11 +449,10 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_FUNC_LIKE
  * @sa #TS_NONMEMBER_FUNC_ONLY
  */
-#define TS_MEMBER_FUNC_ONLY   ( TS_CONST \
+#define TS_MEMBER_FUNC_ONLY   ( TS_CONST_VOLATILE \
                               | (opt_lang < LANG_CPP_20 ? TS_DEFAULT : TS_NONE)\
                               | TS_DELETE | TS_FINAL | TS_OVERRIDE \
-                              | TS_ANY_REFERENCE | TS_RESTRICT | TS_VIRTUAL \
-                              | TS_VOLATILE )
+                              | TS_ANY_REFERENCE | TS_RESTRICT | TS_VIRTUAL )
 
 /**
  * The only types that can apply to operators `new`, `new[]`, `delete`, or
@@ -480,9 +478,9 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_CONSTRUCTOR_ONLY
  * @sa #TS_FUNC_LIKE
  */
-#define TS_NOT_CONSTRUCTOR    ( TS_CONST | TS_EXTERN | TS_EXTERN_C | TS_FINAL \
-                              | TS_OVERRIDE | TS_ANY_REFERENCE | TS_RESTRICT \
-                              | TS_STATIC | TS_VIRTUAL | TS_VOLATILE )
+#define TS_NOT_CONSTRUCTOR    ( TS_CONST_VOLATILE | TS_EXTERN | TS_EXTERN_C \
+                              | TS_FINAL | TS_OVERRIDE | TS_ANY_REFERENCE \
+                              | TS_RESTRICT | TS_STATIC | TS_VIRTUAL )
 
 /**
  * The only types that can apply to user-defined conversion operators.

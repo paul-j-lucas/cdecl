@@ -267,8 +267,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       }
 
       if ( opt_east_const ) {
-        cv_qual_stid = type.stid & (TS_CONST | TS_VOLATILE);
-        type.stid &= c_tid_compl( TS_CONST | TS_VOLATILE );
+        cv_qual_stid = type.stid & TS_CONST_VOLATILE;
+        type.stid &= c_tid_compl( TS_CONST_VOLATILE );
       }
 
       FPUTS( c_type_name_c( &type ), g->gout );

@@ -970,8 +970,8 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
 
   c_tid_t east_stid = TS_NONE;
   if ( opt_east_const && !in_english ) {
-    east_stid = stid & (TS_CONST | TS_VOLATILE);
-    stid &= c_tid_compl( TS_CONST | TS_VOLATILE );
+    east_stid = stid & TS_CONST_VOLATILE;
+    stid &= c_tid_compl( TS_CONST_VOLATILE );
   }
 
   static c_tid_t const C_QUALIFIER[] = {
