@@ -28,7 +28,10 @@
 
    When compiled as part of glibc this is a no-op; when compiled as
    part of Gnulib this includes Gnulib's <config.h> and defines macros
-   that glibc library code would normally assume.  */
+   that glibc library code would normally assume.
+
+   Note: This header file MUST NOT be included by public header files
+   of Gnulib.  */
 
 #include <config.h>
 

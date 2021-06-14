@@ -1,4 +1,4 @@
-# unistd_h.m4 serial 88
+# unistd_h.m4 serial 89
 dnl Copyright (C) 2006-2021 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -133,6 +133,7 @@ AC_DEFUN([gl_UNISTD_H_REQUIRE_DEFAULTS],
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_SYMLINKAT])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_TRUNCATE])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_TTYNAME_R])
+    gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_UNISTD_H_GETOPT])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_UNISTD_H_NONBLOCKING])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_UNISTD_H_SIGPIPE])
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_UNLINK])

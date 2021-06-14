@@ -446,7 +446,7 @@ _GL_WARN_ON_USE (strdup, "strdup is unportable - "
 #elif @GNULIB_MDA_STRDUP@
 /* On native Windows, map 'creat' to '_creat', so that -loldnames is not
    required.  In C++ with GNULIB_NAMESPACE, avoid differences between
-   platforms by defining GNULIB_NAMESPACE::creat always.  */
+   platforms by defining GNULIB_NAMESPACE::strdup always.  */
 # if defined _WIN32 && !defined __CYGWIN__
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   undef strdup
