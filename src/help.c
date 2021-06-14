@@ -282,6 +282,7 @@ static void print_help_english( void ) {
     print_h( "store: auto | extern | register | static" );
     if ( OPT_LANG_IS(C_MIN(11)) )
       print_h( " | _Thread_local" );
+    print_h( " | typedef" );
     print_h( "\n" );
   }
   else {
@@ -342,7 +343,7 @@ static void print_help_english( void ) {
     print_h( "       static" );
     if ( OPT_LANG_IS(CPP_MIN(11)) )
       print_h( " | thread_local" );
-    print_h( " | [pure] virtual\n" );
+    print_h( " | typedef | [pure] virtual\n" );
   }
 
   print_help_where();

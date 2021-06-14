@@ -19,5 +19,5 @@ modifier: short | long | signed | unsigned | <cv-qual>
 name: a C++ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*
 scope-e: scope | class | struct | union | [inline] namespace
 store: const[eval|expr|init] | extern ["C" [linkage]] | friend | mutable |
-       static | thread_local | [pure] virtual
+       static | thread_local | typedef | [pure] virtual
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

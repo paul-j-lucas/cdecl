@@ -10,5 +10,5 @@ C-type: char | int | float | double | void
 cv-qual: const | volatile
 modifier: short | long | signed | unsigned | <cv-qual>
 name: a C identifier
-store: auto | extern | register | static
+store: auto | extern | register | static | typedef
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate
