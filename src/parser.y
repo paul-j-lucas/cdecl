@@ -2468,11 +2468,11 @@ class_struct_union_declaration_c
 
       c_ast_t *const csu_ast = c_ast_new_gc( K_ENUM_CLASS_STRUCT_UNION, &@3 );
       csu_ast->sname = c_sname_dup( &in_attr.current_scope );
-      csu_ast->type.btid = c_tid_check( $1, C_TPID_BASE );
       c_sname_append_name(
         &csu_ast->as.ecsu.ecsu_sname,
         check_strdup( c_sname_local_name( &in_attr.current_scope ) )
       );
+      csu_ast->type.btid = c_tid_check( $1, C_TPID_BASE );
 
       DUMP_AST( "class_struct_union_declaration_c", csu_ast );
       DUMP_END();
