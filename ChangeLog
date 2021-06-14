@@ -1,5 +1,10 @@
 2021-06-13  Paul J. Lucas <paul@lucasmail.org>
 
+   * lib/Makefile.am, libc-config.h, string.in.h, unistd.in.h,
+     gnulib-common.m4, gnulib-comp.m4, unistd_h.m4: Updated Gnulib.
+   * NEWS, help.c, help_english-c++.out, help_english-c.out,
+     help_english-c89.out, help_english-knr.out: `typedef` has been added to
+     the "store" section of English help.
    * c_keyword.c, c_lang.c, options.c, set_options.c: Simplified *_next()
      functions.
    * c_keyword.c, c_lang.c, set_options.c: Simplified *_next() functions.
