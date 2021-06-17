@@ -46,12 +46,6 @@
 
 /// @endcond
 
-// extern variables
-extern char const        *command_line;
-extern size_t             command_line_len;
-extern size_t             inserted_len;
-extern bool               is_input_a_tty;
-
 /// @cond DOXYGEN_IGNORE
 
 // local constants
