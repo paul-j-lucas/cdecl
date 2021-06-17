@@ -43,7 +43,7 @@
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_english( c_ast_t*, uint64_t );
 
-static void non_type_name( c_type_t const*, FILE* );
+static void c_type_print_not_base( c_type_t const*, FILE* );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -134,7 +134,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
 
   switch ( ast->kind_id ) {
     case K_ARRAY:
-      non_type_name( &ast->type, eout );
+      c_type_print_not_base( &ast->type, eout );
       if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE )
         FPRINTF( eout, "%s %s ", L_VARIABLE, L_LENGTH );
       FPRINTF( eout, "%s ", L_ARRAY );
@@ -151,7 +151,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
-      non_type_name( &ast->type, eout );
+      c_type_print_not_base( &ast->type, eout );
       switch ( ast->kind_id ) {
         case K_FUNCTION:
           if ( c_type_is_tid_any( &ast->type, TS_MEMBER_FUNC_ONLY ) )
@@ -205,12 +205,12 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      non_type_name( &ast->type, eout );
+      c_type_print_not_base( &ast->type, eout );
       FPRINTF( eout, "%s %s ", c_kind_name( ast->kind_id ), L_TO );
       break;
 
     case K_POINTER_TO_MEMBER: {
-      non_type_name( &ast->type, eout );
+      c_type_print_not_base( &ast->type, eout );
       FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
       char const *const name = c_tid_name_eng( ast->type.btid );
       FPRINTF( eout, "%s%s", SP_AFTER( name ) );
@@ -269,13 +269,13 @@ static void c_sname_english_impl( c_scope_t const *scope, FILE *eout ) {
 }
 
 /**
- * Prints the non-type (attribute(s), storage class, qualifier(s), etc.) parts
+ * Prints the non-base (attribute(s), storage class, qualifier(s), etc.) parts
  * of \a type, if any.
  *
  * @param type The type to perhaps print.
  * @param eout The `FILE` to emit to.
  */
-static void non_type_name( c_type_t const *type, FILE *eout ) {
+static void c_type_print_not_base( c_type_t const *type, FILE *eout ) {
   assert( type != NULL );
   assert( eout != NULL );
 
