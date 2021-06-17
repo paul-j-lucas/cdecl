@@ -806,7 +806,7 @@ c_tid_t c_tid_compl( c_tid_t tid ) {
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
- * @sa c_tid_name_eng()
+ * @sa c_tid_name_english()
  * @sa c_tid_name_error()
  * @sa c_type_name_c()
  */
@@ -830,7 +830,7 @@ char const* c_tid_name_c( c_tid_t tid ) {
  * @sa c_type_name_english()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
-char const* c_tid_name_eng( c_tid_t tid ) {
+char const* c_tid_name_english( c_tid_t tid ) {
   c_type_t const type = c_type_from_tid( tid );
   return c_type_name( &type, /*in_english=*/true );
 }
@@ -847,7 +847,7 @@ char const* c_tid_name_eng( c_tid_t tid ) {
  * statement.
  *
  * @sa c_tid_name_c()
- * @sa c_tid_name_eng()
+ * @sa c_tid_name_english()
  * @sa c_type_name_error()
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT

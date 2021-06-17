@@ -139,7 +139,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
         FPRINTF( eout, "%s %s ", L_VARIABLE, L_LENGTH );
       FPRINTF( eout, "%s ", L_ARRAY );
       if ( ast->as.array.stid != TS_NONE )
-        FPRINTF( eout, "%s ", c_tid_name_eng( ast->as.array.stid ) );
+        FPRINTF( eout, "%s ", c_tid_name_english( ast->as.array.stid ) );
       if ( ast->as.array.size >= 0 )
         FPRINTF( eout, "%d ", ast->as.array.size );
       FPRINTF( eout, "%s ", L_OF );
@@ -212,7 +212,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
     case K_POINTER_TO_MEMBER: {
       c_type_print_not_base( &ast->type, eout );
       FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
-      char const *const name = c_tid_name_eng( ast->type.btid );
+      char const *const name = c_tid_name_english( ast->type.btid );
       FPRINTF( eout, "%s%s", SP_AFTER( name ) );
       c_sname_english( &ast->as.ptr_mbr.class_sname, eout );
       FPUTC( ' ', eout );
