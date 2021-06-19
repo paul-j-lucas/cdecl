@@ -1389,9 +1389,8 @@ static void yyerror( char const *msg ) {
 %type   <tdef>      any_typedef
 %type   <tid>       builtin_btid
 %type   <ast>       builtin_type_ast
-%type   <tid>       class_struct_btid
-%type   <tid>       class_struct_btid_exp class_struct_btid_opt
-%type   <tid>       class_struct_union_btid
+%type   <tid>       class_struct_btid class_struct_btid_opt
+%type   <tid>       class_struct_union_btid class_struct_union_btid_exp
 %type   <oper_id>   c_operator
 %type   <tid>       cv_qualifier_stid cv_qualifier_list_stid_opt
 %type   <tid>       enum_btid enum_class_struct_union_c_btid
@@ -3219,14 +3218,14 @@ pointer_decl_english_ast
      * C++ pointer-to-member declaration.
      */
   | // in_attr: qualifier
-    Y_POINTER to_exp Y_MEMBER of_exp class_struct_btid_exp sname_english_exp
-    decl_english_ast
+    Y_POINTER to_exp Y_MEMBER of_exp class_struct_union_btid_exp
+    sname_english_exp decl_english_ast
     {
       DUMP_START( "pointer_to_member_decl_english",
                   "POINTER TO MEMBER OF "
-                  "class_struct_btid sname_english decl_english_ast" );
+                  "class_struct_union_btid_exp sname_english decl_english_ast" );
       DUMP_TID( "(qualifier)", ia_qual_peek_stid() );
-      DUMP_TID( "class_struct_btid", $5 );
+      DUMP_TID( "class_struct_union_btid_exp", $5 );
       DUMP_SNAME( "sname_english_exp", $6 );
       DUMP_AST( "decl_english_ast", $7 );
 
@@ -5975,11 +5974,14 @@ cast_exp
     }
   ;
 
-class_struct_btid_exp
-  : class_struct_btid
+class_struct_union_btid_exp
+  : class_struct_union_btid
   | error
     {
-      elaborate_error( "\"%s\" or \"%s\" expected", L_CLASS, L_STRUCT );
+      elaborate_error(
+        "\"%s\", \"%s\" or \"%s\" expected",
+        L_CLASS, L_STRUCT, L_UNION
+      );
     }
   ;
 

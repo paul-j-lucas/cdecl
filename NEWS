@@ -18,6 +18,9 @@ In C++, at most one of `virtual`, `final`, or `override` is now printed.
 ** Added `typedef` to help
 `typedef` has been added to the "store" section of English help.
 
+** Pointers to `union` members
+Pointers to `union` members are now allowed.
+
 ** `using` forbids type
 `using` declarations now correctly forbid names in the types on the right-hand
 side:
