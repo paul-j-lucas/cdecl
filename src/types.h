@@ -202,14 +202,6 @@ enum c_mode {
   C_GIBBERISH_TO_ENGLISH                ///< Decipher gibberish into English.
 };
 
-/**
- * The direction to traverse an AST using c_ast_visit().
- */
-enum c_visit_dir {
-  C_VISIT_DOWN,                         ///< Root to leaves.
-  C_VISIT_UP                            ///< Leaf to root.
-};
-
 ///////////////////////////////////////////////////////////////////////////////
 
 /** @} */
