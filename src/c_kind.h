@@ -77,8 +77,7 @@ enum c_kind_id {
  */
 #define K_ANY_FUNCTION_LIKE   ( K_APPLE_BLOCK | K_CONSTRUCTOR | K_DESTRUCTOR \
                               | K_FUNCTION | K_OPERATOR \
-                              | K_USER_DEF_CONVERSION \
-                              | K_USER_DEF_LITERAL )
+                              | K_USER_DEF_CONVERSION | K_USER_DEF_LITERAL )
 
 /**
  * Shorthand for any kind of "object" that can be the type of a variable or
@@ -86,10 +85,9 @@ enum c_kind_id {
  * #K_BUILTIN, #K_ENUM_CLASS_STRUCT_UNION, #K_POINTER, #K_POINTER_TO_MEMBER,
  * #K_REFERENCE, #K_RVALUE_REFERENCE, or #K_TYPEDEF.
  */
-#define K_ANY_OBJECT          ( K_ARRAY | K_BUILTIN \
-                              | K_ENUM_CLASS_STRUCT_UNION | K_POINTER \
-                              | K_POINTER_TO_MEMBER | K_REFERENCE \
-                              | K_RVALUE_REFERENCE | K_TYPEDEF )
+#define K_ANY_OBJECT          ( K_ANY_POINTER | K_ANY_REFERENCE | K_ARRAY \
+                              | K_BUILTIN | K_ENUM_CLASS_STRUCT_UNION \
+                              | K_TYPEDEF )
 
 /**
  * Shorthand for any kind of parent: #K_APPLE_BLOCK, #K_ARRAY, #K_CONSTRUCTOR,
@@ -97,12 +95,9 @@ enum c_kind_id {
  * #K_POINTER, #K_POINTER_TO_MEMBER, #K_REFERENCE, #K_RVALUE_REFERENCE,
  * #K_USER_DEF_CONVERSION, or #K_USER_DEF_LITERAL.
  */
-#define K_ANY_PARENT          ( K_APPLE_BLOCK | K_ARRAY | K_CONSTRUCTOR \
-                              | K_DESTRUCTOR | K_ENUM_CLASS_STRUCT_UNION \
-                              | K_FUNCTION | K_OPERATOR | K_POINTER \
-                              | K_POINTER_TO_MEMBER | K_REFERENCE \
-                              | K_RVALUE_REFERENCE | K_USER_DEF_CONVERSION \
-                              | K_USER_DEF_LITERAL )
+#define K_ANY_PARENT          ( K_ANY_FUNCTION_LIKE | K_ANY_POINTER \
+                              | K_ANY_REFERENCE | K_ARRAY \
+                              | K_ENUM_CLASS_STRUCT_UNION )
 
 /**
  * Shorthand for any kind of pointer: #K_POINTER or #K_POINTER_TO_MEMBER.
