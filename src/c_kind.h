@@ -46,28 +46,74 @@
  * thing is any _one_ of those kinds.
  */
 enum c_kind_id {
-  K_NONE                    = 0,       ///< No kind.
-  K_PLACEHOLDER             = 0x00001, ///< Temporary node in AST.
-  K_BUILTIN                 = 0x00002, ///< `void,` `char,` `int,` etc.
-  K_NAME                    = 0x00004, ///< Typeless function parameter in K&R C
-  K_TYPEDEF                 = 0x00008, ///< `typedef` type, e.g., `size_t`.
-  K_VARIADIC                = 0x00010, ///< Variadic (`...`) function parameter.
-  // "parent" kinds
-  K_ARRAY                   = 0x00080, ///< Array.
-  K_ENUM_CLASS_STRUCT_UNION = 0x00100, ///< `enum,` `class,` `struct,` `union`
-  K_POINTER                 = 0x00200, ///< Pointer.
-  K_POINTER_TO_MEMBER       = 0x00400, ///< Pointer-to-member (C++ only).
-  K_REFERENCE               = 0x00800, ///< Reference (C++ only).
-  K_RVALUE_REFERENCE        = 0x01000, ///< Rvalue reference (C++ only).
-  // function-like "parent" kinds
-  K_CONSTRUCTOR             = 0x02000, ///< Constructor (C++ only).
-  K_DESTRUCTOR              = 0x04000, ///< Destructor (C++ only).
-  // function-like "parent" kinds that have return values
-  K_APPLE_BLOCK             = 0x08000, ///< Block.
-  K_FUNCTION                = 0x10000, ///< Function.
-  K_OPERATOR                = 0x20000, ///< Overloaded operator (C++ only).
-  K_USER_DEF_CONVERSION     = 0x40000, ///< User-defined conversion (C++ only).
-  K_USER_DEF_LITERAL        = 0x80000, ///< User-defined literal (C++ only).
+  /// No kind.
+  K_NONE                    = 0,
+
+  /// Temporary node in AST.
+  K_PLACEHOLDER             = (1u << 0),
+
+  /// `void,` `char,` `int,` etc.
+  K_BUILTIN                 = (1u << 1),
+
+  /// Typeless function parameter in K&R C, e.g., `double sin(x)`.
+  K_NAME                    = (1u << 2),
+
+  /// `typedef` type, e.g., `size_t`.
+  K_TYPEDEF                 = (1u << 3),
+
+  /// Variadic (`...`) function parameter.
+  K_VARIADIC                = (1u << 4),
+
+  ////////// "parent" kinds ///////////////////////////////////////////////////
+
+  /// Array.
+  K_ARRAY                   = (1u << 5),
+
+  /// `enum,` `class,` `struct,` or `union`.
+  ///
+  /// @note This is a "parent" kind because `enum` in C++11 and later can be
+  /// "of" a fixed type.
+  K_ENUM_CLASS_STRUCT_UNION = (1u << 6),
+
+  /// Pointer.
+  K_POINTER                 = (1u << 7),
+
+  /// C++ pointer-to-member.
+  K_POINTER_TO_MEMBER       = (1u << 8),
+
+  /// C++ reference.
+  K_REFERENCE               = (1u << 9),
+
+  /// C++ rvalue reference.
+  K_RVALUE_REFERENCE        = (1u << 10),
+
+  ////////// function-like "parent" kinds /////////////////////////////////////
+
+  /// C++ constructor.
+  K_CONSTRUCTOR             = (1u << 11),
+
+  /// C++ destructor.
+  K_DESTRUCTOR              = (1u << 12),
+
+  ////////// function-like "parent" kinds that have return values /////////////
+
+  /// Block (Apple extension).
+  ///
+  /// @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
+  /// @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
+  K_APPLE_BLOCK             = (1u << 13),
+
+  /// Function.
+  K_FUNCTION                = (1u << 14),
+
+  /// C++ overloaded operator.
+  K_OPERATOR                = (1u << 15),
+
+  /// C++ user-defined conversion operator.
+  K_USER_DEF_CONVERSION     = (1u << 16),
+
+  /// C++11 user-defined literal.
+  K_USER_DEF_LITERAL        = (1u << 17),
 };
 
 /**
