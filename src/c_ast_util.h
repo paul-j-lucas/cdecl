@@ -324,7 +324,7 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
  * `c_ast_dereference` to eliminate confusion with C++ references.
  *
  * @param ast The AST to un-pointer.
- * @return If \a ast is a pointer, Returns the pointed-to AST after `typedef`s,
+ * @return If \a ast is a pointer, returns the pointed-to AST after `typedef`s,
  * if any, are stripped; otherwise returns NULL if \a ast is not a pointer.
  *
  * @sa c_ast_pointer()
