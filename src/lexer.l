@@ -385,7 +385,7 @@ char const       *lexer_token = &lexer_token_init_buf;
 static int        column;               ///< Column position of current token.
 static int        column_newline;       ///< Column position of newline.
 static char      *input_buf;            ///< Entire current input line.
-static size_t     input_len;            ///< Length of line in `input_buf`.
+static size_t     input_len;            ///< Length of `input_buf`.
 static size_t     input_sent;           ///< How many bytes returned to Flex.
 static bool       is_eof;               ///< Encountered EOF?
 static strbuf_t   str_lit_buf;          ///< String (or character) literal.
