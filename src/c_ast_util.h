@@ -75,7 +75,7 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast );
 
 /**
- * Traverses \a ast attempting to find an AST node having \a kind_ids.
+ * Traverses \a ast attempting to find an AST node having one of \a kind_ids.
  *
  * @param ast The AST to begin at; may be NULL.
  * @param dir The direction to visit.
@@ -102,7 +102,7 @@ c_sname_t* c_ast_find_name( c_ast_t const *ast, c_visit_dir_t dir );
  *
  * @param ast The AST to begin at.
  * @param dir The direction to visit.
- * @param type A type where each type is the bitwise-or of type IDs to find.
+ * @param type A type where each type ID is the bitwise-or of type IDs to find.
  * @return Returns a pointer to an AST node having one of \a type or NULL if
  * none.
  */
