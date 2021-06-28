@@ -128,7 +128,7 @@ struct c_ast_pair {
  * The kind of cdecl command in least-to-most restrictive order.
  */
 enum c_command_kind {
-  C_COMMAND_ANY,                        ///< Command is OK anywhere.
+  C_COMMAND_ANYWHERE,                   ///< Command is OK anywhere.
   C_COMMAND_FIRST_ARG,                  ///< `$ cdecl` _command_ _args_
   C_COMMAND_PROG_NAME,                  ///< `$` _command_ _args_
   C_COMMAND_LANG_ONLY                   ///< `cdecl>` _command_ _args_

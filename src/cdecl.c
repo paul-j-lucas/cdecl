@@ -84,7 +84,7 @@ c_command_t const CDECL_COMMANDS[] = {
   { L_TYPEDEF,                C_COMMAND_FIRST_ARG,  LANG_ANY          },
   { L_UNION,                  C_COMMAND_FIRST_ARG,  LANG_ANY          },
   { L_USING,                  C_COMMAND_FIRST_ARG,  LANG_CPP_MIN(11)  },
-  { NULL,                     C_COMMAND_ANY,        LANG_NONE         },
+  { NULL,                     C_COMMAND_ANYWHERE,   LANG_NONE         },
 };
 
 // extern variable definitions
@@ -430,7 +430,8 @@ bool parse_cdecl_string( char const *s, size_t s_len ) {
   print_params.command_line_len = s_len;
 
   strbuf_t explain_buf;
-  bool const insert_explain = opt_explain && !is_command( s, C_COMMAND_ANY );
+  bool const insert_explain =
+    opt_explain && !is_command( s, C_COMMAND_ANYWHERE );
 
   if ( insert_explain ) {
     //
