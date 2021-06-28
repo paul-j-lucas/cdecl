@@ -60,6 +60,9 @@ static unsigned const     TERM_COLUMNS_DEFAULT = 80;
 // local functions
 static size_t             token_len( char const* );
 
+// extern variables
+print_params_t            print_params;
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -69,8 +72,8 @@ static size_t             token_len( char const* );
  * @param error_column The zero-based column of the offending token.
  */
 static void print_caret( size_t error_column ) {
-  if ( error_column >= inserted_len )
-    error_column -= inserted_len;
+  if ( error_column >= print_params.inserted_len )
+    error_column -= print_params.inserted_len;
   size_t error_column_term = error_column;
 
   unsigned term_columns = 0;
@@ -100,13 +103,13 @@ static void print_caret( size_t error_column ) {
     char const *input_line = lexer_input_line( &input_line_len );
     assert( input_line != NULL );
     if ( input_line_len == 0 ) {        // no input? try command line
-      input_line = command_line;
+      input_line = print_params.command_line;
       assert( input_line != NULL );
-      input_line_len = command_line_len;
+      input_line_len = print_params.command_line_len;
     }
-    if ( input_line_len >= inserted_len ) {
-      input_line += inserted_len;
-      input_line_len -= inserted_len;
+    if ( input_line_len >= print_params.inserted_len ) {
+      input_line += print_params.inserted_len;
+      input_line_len -= print_params.inserted_len;
     }
     assert( error_column <= input_line_len );
 
@@ -341,8 +344,8 @@ void print_loc( c_loc_t const *loc ) {
   if ( opt_conf_file != NULL )
     EPRINTF( "%s:%d,", opt_conf_file, loc->first_line + 1 );
   size_t column = (size_t)loc->first_column;
-  if ( column >= inserted_len )
-    column -= inserted_len;
+  if ( column >= print_params.inserted_len )
+    column -= print_params.inserted_len;
   EPRINTF( "%zu", column + 1 );
   SGR_END_COLOR( stderr );
   EPUTS( ": " );

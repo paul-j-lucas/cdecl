@@ -82,6 +82,19 @@
 #define print_warning(...) \
   fl_print_warning( __FILE__, __LINE__, __VA_ARGS__ )
 
+/**
+ * Parameters for the `print_*()` functions that would be too burdonsome to
+ * pass to every function call.
+ */
+struct print_params {
+  char const *command_line;             ///< Command from command line, if any.
+  size_t      command_line_len;         ///< Length of `command_line`.
+  size_t      inserted_len;             ///< Length of inserted string, if any.
+};
+typedef struct print_params print_params_t;
+
+extern print_params_t print_params;     ///< Print parameters.
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**

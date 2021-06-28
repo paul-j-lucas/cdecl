@@ -34,6 +34,7 @@
 #include "lexer.h"
 #include "literals.h"
 #include "options.h"
+#include "print.h"
 #include "prompt.h"
 #include "strbuf.h"
 #include "util.h"
@@ -89,9 +90,6 @@ c_command_t const CDECL_COMMANDS[] = {
 // extern variable definitions
 bool        c_initialized;
 c_mode_t    c_mode;
-char const *command_line;
-size_t      command_line_len;
-size_t      inserted_len;
 bool        is_input_a_tty;
 char const *me;
 
@@ -428,21 +426,23 @@ bool parse_cdecl_string( char const *s, size_t s_len ) {
   assert( s != NULL );
 
   // The code in print.c relies on command_line being set, so set it.
-  command_line = s;
-  command_line_len = s_len;
+  print_params.command_line = s;
+  print_params.command_line_len = s_len;
 
   strbuf_t explain_buf;
-  if ( opt_explain && !is_command( s, C_COMMAND_ANY ) ) {
+  bool const insert_explain = opt_explain && !is_command( s, C_COMMAND_ANY );
+
+  if ( insert_explain ) {
     //
     // The string doesn't start with a command: insert "explain " and set
     // inserted_len so the print_*() functions subtract it from the error
     // column to get the correct column within the original string.
     //
     static char const EXPLAIN_SP[] = "explain ";
-    inserted_len = ARRAY_SIZE( EXPLAIN_SP ) - 1/*\0*/;
+    print_params.inserted_len = ARRAY_SIZE( EXPLAIN_SP ) - 1/*\0*/;
     strbuf_init( &explain_buf );
-    strbuf_reserve( &explain_buf, inserted_len + s_len );
-    strbuf_catsn( &explain_buf, EXPLAIN_SP, inserted_len );
+    strbuf_reserve( &explain_buf, print_params.inserted_len + s_len );
+    strbuf_catsn( &explain_buf, EXPLAIN_SP, print_params.inserted_len );
     strbuf_catsn( &explain_buf, s, s_len );
     s = explain_buf.str;
     s_len = explain_buf.len;
@@ -454,9 +454,9 @@ bool parse_cdecl_string( char const *s, size_t s_len ) {
   bool const ok = yyparse() == 0;
   PJL_IGNORE_RV( fclose( ftmp ) );
 
-  if ( inserted_len > 0 ) {
+  if ( insert_explain ) {
     strbuf_free( &explain_buf );
-    inserted_len = 0;
+    print_params.inserted_len = 0;
   }
 
   return ok;
