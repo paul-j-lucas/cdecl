@@ -1257,6 +1257,7 @@ _GL_CXXALIASWARN (scanf);
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   define snprintf rpl_snprintf
 #  endif
+#  define GNULIB_overrides_snprintf 1
 _GL_FUNCDECL_RPL (snprintf, int,
                   (char *restrict str, size_t size,
                    const char *restrict format, ...)
@@ -1302,6 +1303,7 @@ _GL_WARN_ON_USE (snprintf, "snprintf is unportable - "
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   define sprintf rpl_sprintf
 #  endif
+#  define GNULIB_overrides_sprintf 1
 _GL_FUNCDECL_RPL (sprintf, int,
                   (char *restrict str, const char *restrict format, ...)
                   _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 3)
@@ -1369,6 +1371,7 @@ _GL_WARN_ON_USE (tmpfile, "tmpfile is not usable on mingw - "
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   define asprintf rpl_asprintf
 #  endif
+#  define GNULIB_overrides_asprintf
 _GL_FUNCDECL_RPL (asprintf, int,
                   (char **result, const char *format, ...)
                   _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 3)
@@ -1390,6 +1393,7 @@ _GL_CXXALIASWARN (asprintf);
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   define vasprintf rpl_vasprintf
 #  endif
+#  define GNULIB_overrides_vasprintf 1
 _GL_FUNCDECL_RPL (vasprintf, int,
                   (char **result, const char *format, va_list args)
                   _GL_ATTRIBUTE_FORMAT_PRINTF_STANDARD (2, 0)
@@ -1573,6 +1577,7 @@ _GL_CXXALIASWARN (vscanf);
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   define vsnprintf rpl_vsnprintf
 #  endif
+#  define GNULIB_overrides_vsnprintf 1
 _GL_FUNCDECL_RPL (vsnprintf, int,
                   (char *restrict str, size_t size,
                    const char *restrict format, va_list args)
@@ -1609,6 +1614,7 @@ _GL_WARN_ON_USE (vsnprintf, "vsnprintf is unportable - "
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   define vsprintf rpl_vsprintf
 #  endif
+#  define GNULIB_overrides_vsprintf 1
 _GL_FUNCDECL_RPL (vsprintf, int,
                   (char *restrict str,
                    const char *restrict format, va_list args)
