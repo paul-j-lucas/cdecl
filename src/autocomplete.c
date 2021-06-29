@@ -226,7 +226,7 @@ static char* command_generator( char const *text, int state ) {
 
   for ( c_command_t const *c; (c = CDECL_COMMANDS + index)->literal != NULL; ) {
     ++index;
-    if ( (c->lang_ids & opt_lang) == LANG_NONE )
+    if ( !opt_lang_is_any( c->lang_ids ) )
       continue;
     if ( strncmp( text, c->literal, text_len ) == 0 )
       return check_strdup( c->literal );
@@ -341,8 +341,7 @@ static char* keyword_completion( char const *text, int state ) {
     //
     if ( command == NULL ) {
       FOREACH_COMMAND( c ) {
-        if ( (c->lang_ids & opt_lang) != LANG_NONE &&
-             is_command( c->literal ) ) {
+        if ( opt_lang_is_any( c->lang_ids ) && is_command( c->literal ) ) {
           command = c->literal;
           break;
         }
@@ -390,7 +389,7 @@ static char* keyword_completion( char const *text, int state ) {
   for ( c_lang_lit_t const *ll;
         (ll = CDECL_KEYWORDS + index)->literal != NULL; ) {
     ++index;
-    if ( (ll->lang_ids & opt_lang) == LANG_NONE )
+    if ( !opt_lang_is_any( ll->lang_ids ) )
       continue;
     if ( strncmp( text, ll->literal, text_len ) == 0 )
       return check_strdup( ll->literal );

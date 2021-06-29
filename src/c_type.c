@@ -513,7 +513,7 @@ c_tid_check_combo( c_tid_t tid, c_type_info_t const type_infos[],
       for ( size_t col = 0; col <= row; ++col ) {
         c_lang_id_t const lang_ids = type_langs[ row ][ col ];
         if ( !c_tid_is_none( tid & type_infos[ col ].tid ) &&
-             (opt_lang & lang_ids) == LANG_NONE ) {
+             !opt_lang_is_any( lang_ids ) ) {
           return lang_ids;
         }
       } // for
@@ -537,10 +537,8 @@ c_tid_check_legal( c_tid_t tid, c_type_info_t const type_infos[],
                    size_t type_infos_size ) {
   for ( size_t row = 0; row < type_infos_size; ++row ) {
     c_type_info_t const *const ti = &type_infos[ row ];
-    if ( !c_tid_is_none( tid & ti->tid ) &&
-         (opt_lang & ti->lang_ids) == LANG_NONE ) {
+    if ( !c_tid_is_none( tid & ti->tid ) && !opt_lang_is_any( ti->lang_ids ) )
       return ti->lang_ids;
-    }
   } // for
   return LANG_ANY;
 }

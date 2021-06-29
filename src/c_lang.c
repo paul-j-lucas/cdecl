@@ -96,7 +96,7 @@ c_lang_id_t c_lang_find( char const *name ) {
 char const* c_lang_literal( c_lang_lit_t const *lang_lit ) {
   assert( lang_lit != NULL );
   for ( c_lang_lit_t const *ll = lang_lit; ; ++ll ) {
-    if ( (ll->lang_ids & opt_lang) != LANG_NONE )
+    if ( opt_lang_is_any( ll->lang_ids ) )
       return ll->literal;
   } // for
 }

@@ -584,7 +584,7 @@ static inline char const* printable_token( void ) {
  */
 PJL_WARN_UNUSED_RESULT
 static inline bool unsupported( c_lang_id_t lang_ids ) {
-  return c_initialized && (opt_lang & lang_ids) == LANG_NONE;
+  return c_initialized && !opt_lang_is_any( lang_ids );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -838,7 +838,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
 
   bool const show_in_lang =
     (sti->show_which & SHOW_ALL_TYPES) != 0 ||
-    (tdef->lang_ids & opt_lang) != LANG_NONE;
+    opt_lang_is_any( tdef->lang_ids );
 
   if ( show_in_lang ) {
     bool const show_type =

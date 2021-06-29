@@ -102,7 +102,7 @@ PJL_NOWARN_UNUSED_RESULT
 static size_t copy_commands( did_you_mean_t **const pdym ) {
   size_t count = 0;
   FOREACH_COMMAND( c ) {
-    if ( (c->lang_ids & opt_lang) != LANG_NONE ) {
+    if ( opt_lang_is_any( c->lang_ids ) ) {
       if ( pdym != NULL )
         (*pdym)++->token = check_strdup( c->literal );
       ++count;
@@ -146,8 +146,7 @@ PJL_NOWARN_UNUSED_RESULT
 static size_t copy_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
   size_t count = 0;
   FOREACH_KEYWORD( k ) {
-    if ( (k->lang_ids & opt_lang) != LANG_NONE &&
-         c_tid_tpid( k->tid ) == tpid ) {
+    if ( opt_lang_is_any( k->lang_ids ) && c_tid_tpid( k->tid ) == tpid ) {
       if ( pdym != NULL )
         (*pdym)++->token = check_strdup( k->literal );
       ++count;
@@ -199,7 +198,7 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
  * @return Always returns `false`.
  */
 static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
-  if ( (tdef->lang_ids & opt_lang) != LANG_NONE ) {
+  if ( opt_lang_is_any( tdef->lang_ids ) ) {
     copy_typedef_visitor_data_t *const ctvd = data;
     if ( ctvd->pdym != NULL ) {
       char const *const name = c_ast_full_name( tdef->ast );

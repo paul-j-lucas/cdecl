@@ -790,7 +790,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
     // struct, or union.
     //
     if ( scope_type.btid != TB_NAMESPACE ||
-         (opt_lang & (LANG_CPP_MIN(17) | LANG_C_ANY)) != LANG_NONE ) {
+         opt_lang_is_any( LANG_CPP_MIN(17) | LANG_C_ANY ) ) {
       //
       // All C++ versions support nested class/struct/union declarations, e.g.:
       //

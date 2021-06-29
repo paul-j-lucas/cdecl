@@ -198,8 +198,7 @@ struct c_lang_lit {
  * @return Returns `true` only if the current language is among the languages
  * specified by \a LANG_MACRO.
  */
-#define OPT_LANG_IS(LANG_MACRO) \
-  ((opt_lang & LANG_ ## LANG_MACRO) != LANG_NONE)
+#define OPT_LANG_IS(LANG_MACRO)   opt_lang_is_any( LANG_ ## LANG_MACRO )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -450,6 +449,17 @@ char const* c_lang_which( c_lang_id_t lang_ids );
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t opt_lang_and_newer( void ) {
   return c_lang_and_newer( opt_lang );
+}
+
+/**
+ * Convenience function for checking whether opt_lang is among \a lang_ids.
+ *
+ * @param lang_ids The bitwise-or of language(s) to check.
+ * @return Returns `true` only if
+ */
+C_LANG_INLINE PJL_WARN_UNUSED_RESULT
+bool opt_lang_is_any( c_lang_id_t lang_ids ) {
+  return (opt_lang & lang_ids) != LANG_NONE;
 }
 
 /**
