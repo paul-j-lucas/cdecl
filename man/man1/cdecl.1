@@ -1979,6 +1979,7 @@ nor
 If it is so declared,
 it's assumed to be a member function.
 .SH CONFIGURATION FILE
+.SS cdeclrc
 The
 .B cdeclrc
 file
@@ -2019,6 +2020,24 @@ C-style \f(CW/*\fP\ \f(CW*/\fP comments,
 C++-style \f(CW//\fP comments,
 and C preprocessor directives \f(CW#\fP,
 all of which are ignored.
+.SS editrc
+On
+.BR macOS ,
+the
+.BR readline (3)
+API is provided,
+but backed by
+.BR libedit ,
+hence
+.B ~/.editrc
+is read instead of
+.BR ~/.inputrc .
+To make tab-completion work,
+add the following (undocumented) command to
+.BR ~/.editrc :
+.cS
+bind ^I rl_complete
+.cE 0
 .SH EXAMPLES
 To declare an array of pointers to functions that are like
 .BR malloc (3):
