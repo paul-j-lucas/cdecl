@@ -43,6 +43,8 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 char const* c_kind_name( c_kind_id_t kind_id ) {
+  assert( exactly_one_bit_set( kind_id ) );
+
   switch ( kind_id ) {
     case K_ARRAY              : return "array";
     case K_APPLE_BLOCK        : return "block";
