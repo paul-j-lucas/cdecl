@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "June 14, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "June 30, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2295,6 +2295,12 @@ commands
 (see
 .BR "CONFIGURATION FILE" ).
 .TP
+.B ~/.editrc
+Individual
+.BR editline (3)
+initialization file
+(used on macOS).
+.TP
 .B ~/.inputrc
 Individual
 .BR readline (3)
@@ -2634,5 +2640,6 @@ In reverse chronological order:
 .BR yacc (1),
 .BR isatty (3),
 .BR readline (3),
-.BR sysexits (3)
+.BR sysexits (3),
+.BR editrc (5)
 .\" vim:set et sw=2 ts=2:
