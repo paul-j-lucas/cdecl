@@ -398,7 +398,8 @@ void c_ast_cleanup( void );
  * Duplicates the entire AST starting at \a ast.
  *
  * @param ast The AST to duplicate.
- * @param ast_list If not NULL, the duplicated AST is appended to the list.
+ * @param ast_list If not NULL, the duplicated AST nodes are appended to the
+ * list.
  * @return Returns the duplicated AST.
  *
  * @sa c_ast_free()
