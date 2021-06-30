@@ -1,3 +1,47 @@
+2021-06-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c: Added asserts.
+
+2021-06-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_kind.c: Added assert().
+   * c_ast_util.c: s/kind_id/kind_ids/
+
+2021-06-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * stdio.in.h, unistd.in.h: Updated GnuLib.
+   * autocomplete.c, c_lang.c, c_lang.h, c_type.c, did_you_mean.c, gibberish.c,
+     parser.y: Added opt_lang_is_any().
+   * cdecl.c, types.h: s/C_COMMAND_ANY/C_COMMAND_ANYWHERE/
+   * cdecl.c, cdecl.h, print.c, print.h: Moved command_line, command_line_len,
+     and inserted_len into new print_params struct.
+
+2021-06-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c: c_ast_set_name() is now also setting the local scope-type if
+     necessary.
+   * c_kind.h: Reworked c_kind to use (1u << n).
+   * c_kind.h: Simplified K_ANY_OBJECT and K_ANY_PARENT.
+
+2021-06-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.h: Fixed comment capitalization.
+
+2021-06-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, parser.y: Pointers to union members are now allowed.
+   * c_ast.h, types.h: Moved c_visit_dir to c_ast.h.
+
+2021-06-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.c, cdecl.h, print.c: Moved extern variables into cdecl.h.
+   * c_type.h, english.c: s/c_tid_name_eng/c_tid_name_english/
+   * english.c: s/non_type_name/c_type_print_not_base/
+
+2021-06-14  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added missing "on".
+
 2021-06-13  Paul J. Lucas <paul@lucasmail.org>
 
    * lib/Makefile.am, libc-config.h, string.in.h, unistd.in.h,
