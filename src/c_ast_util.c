@@ -415,8 +415,8 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_vistor_kind_any( c_ast_t *ast, uint64_t data ) {
   assert( ast != NULL );
-  c_kind_id_t const kind_id = STATIC_CAST( c_kind_id_t, data );
-  return (ast->kind_id & kind_id) != K_NONE;
+  c_kind_id_t const kind_ids = STATIC_CAST( c_kind_id_t, data );
+  return (ast->kind_id & kind_ids) != K_NONE;
 }
 
 /**
