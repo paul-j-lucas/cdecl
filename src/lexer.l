@@ -1170,7 +1170,6 @@ static void lexer_update_loc( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-PJL_WARN_UNUSED_RESULT
 char const* lexer_input_line( size_t *plen ) {
   if ( plen != NULL )
     *plen = input_len;

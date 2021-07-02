@@ -166,6 +166,7 @@ int main( int argc, char const *argv[] ) {
  * ones ending with `\`).
  * @return Returns `false` only if encountered EOF.
  */
+PJL_WARN_UNUSED_RESULT
 static bool cdecl_read_line( strbuf_t *sbuf, char const *ps1,
                              char const *ps2 ) {
   assert( sbuf != NULL );

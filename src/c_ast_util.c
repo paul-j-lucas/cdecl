@@ -271,6 +271,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
  * @sa c_ast_if_unreference()
  * @sa c_ast_unpointer()
  */
+PJL_WARN_UNUSED_RESULT
 static c_ast_t const* c_ast_if_unpointer( c_ast_t const *ast,
                                           c_tid_t *cv_stids ) {
   ast = c_ast_untypedef( ast );
@@ -327,6 +328,7 @@ static c_ast_t const* c_ast_if_unpointer( c_ast_t const *ast,
  * @sa c_ast_if_unpointer()
  * @sa c_ast_unreference()
  */
+PJL_WARN_UNUSED_RESULT
 static c_ast_t const* c_ast_if_unreference( c_ast_t const *ast,
                                             c_tid_t *cv_stids ) {
   ast = c_ast_untypedef( ast );
@@ -355,6 +357,7 @@ static c_ast_t const* c_ast_if_unreference( c_ast_t const *ast,
  * @return If \a ast is not null and the type of \a ast is one of \a tids,
  * returns \a ast; otherwise returns NULL.
  */
+PJL_WARN_UNUSED_RESULT
 static c_ast_t const* c_ast_is_tid_any_impl( c_ast_t const *ast,
                                              c_tid_t ast_cv_stids,
                                              c_tid_t tids ) {

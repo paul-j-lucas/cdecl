@@ -164,6 +164,7 @@ static size_t copy_keywords( did_you_mean_t **const pdym, c_tpid_t tpid ) {
  * pointed-to pointer is incremented.
  * @return Returns said number of options.
  */
+PJL_NOWARN_UNUSED_RESULT
 static size_t copy_set_options( did_you_mean_t **const pdym ) {
   size_t count = 0;
   FOREACH_SET_OPTION( opt ) {
@@ -197,6 +198,7 @@ static size_t copy_set_options( did_you_mean_t **const pdym ) {
  * @param data A pointer to a <code>\ref copy_typedef_visitor_data</code>.
  * @return Always returns `false`.
  */
+PJL_NOWARN_UNUSED_RESULT
 static bool copy_typedef_visitor( c_typedef_t const *tdef, void *data ) {
   if ( opt_lang_is_any( tdef->lang_ids ) ) {
     copy_typedef_visitor_data_t *const ctvd = data;
