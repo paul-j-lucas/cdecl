@@ -279,7 +279,7 @@ static char const* const* init_set_options( void ) {
   } // for
   FOREACH_LANG( lang ) {
     if ( !lang->is_alias )
-      *p++ = check_strdup_tolower( lang->name );
+      *p++ = free_later( check_strdup_tolower( lang->name ) );
   } // for
 
   *p = NULL;
