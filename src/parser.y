@@ -5931,21 +5931,24 @@ array_exp
 
 as_exp
   : Y_AS
-    { //
-      // For either "declare" or "define", neither "override" nor "final" must
-      // be matched initially to allow for cases like:
-      //
-      //      c++decl> declare final as int
-      //      int final;
-      //
-      // (which is legal).  However, after parsing "as", the keyword context
-      // has to be set to C_KW_CTX_MBR_FUNC to be able to match "override" and
-      // "final", e.g.:
-      //
-      //      c++decl> declare f as final function
-      //      void f() final;
-      //
-      lexer_keyword_ctx = C_KW_CTX_MBR_FUNC;
+    {
+      if ( OPT_LANG_IS(CPP_ANY) ) {
+        //
+        // For either "declare" or "define", neither "override" nor "final"
+        // must be matched initially to allow for cases like:
+        //
+        //      c++decl> declare final as int
+        //      int final;
+        //
+        // (which is legal).  However, in C++, after parsing "as", the keyword
+        // context has to be set to C_KW_CTX_MBR_FUNC to be able to match
+        // "override" and "final", e.g.:
+        //
+        //      c++decl> declare f as final function
+        //      void f() final;
+        //
+        lexer_keyword_ctx = C_KW_CTX_MBR_FUNC;
+      }
     }
   | error
     {
