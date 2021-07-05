@@ -103,7 +103,6 @@ static char const *const PREDEFINED_STD_C89[] = {
   "struct                 fpos_t",
   "typedef          int   jmp_buf[37]",
   "struct                 lconv",
-  "struct                 mbstate_t",
   "typedef          long  ptrdiff_t",
   "typedef          int   sig_atomic_t",
   "typedef unsigned long  size_t",
@@ -120,6 +119,7 @@ static char const *const PREDEFINED_STD_C89[] = {
  * necessarily match the underlying type on any particular platform.
  */
 static char const *const PREDEFINED_STD_C_95[] = {
+  "struct                 mbstate_t",
   "typedef          int   wctrans_t",
   "typedef unsigned long  wctype_t",
   "typedef          int   wint_t",
