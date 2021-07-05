@@ -889,21 +889,28 @@ char const* graph_token_c( char const *token ) {
       //
       case C_GRAPH_DI:
         switch ( token[0] ) {
-          case '[': return token[1] == '[' ? "<:<:" : "<:";
-          case ']': return token[1] == ']' ? ":>:>" : ":>";
+          case '#'  : return token[1] == '#' ? "%:%:" : "%:";
+          case '['  : return token[1] == '[' ? "<:<:" : "<:";
+          case ']'  : return token[1] == ']' ? ":>:>" : ":>";
+          case '{'  : return "<%";
+          case '}'  : return "%>";
         } // switch
         break;
       case C_GRAPH_TRI:
         switch ( token[0] ) {
-          case '[': return token[1] == '[' ? "?\?(?\?(" : "?\?(";
-          case ']': return token[1] == ']' ? "?\?)?\?)" : "?\?)";
-          case '^': return token[1] == '=' ? "?\?'=" : "?\?'";
-          case '|': switch ( token[1] ) {
-                      case '=': return "?\?!=";
-                      case '|': return "?\?!?\?!";
-                    } // switch
-                    return "?\?!";
-          case '~': return "?\?-";
+          case '#'  : return "?\?=";
+          case '['  : return token[1] == '[' ? "?\?(?\?(" : "?\?(";
+          case ']'  : return token[1] == ']' ? "?\?)?\?)" : "?\?)";
+          case '\\' : return "?\?/";
+          case '^'  : return token[1] == '=' ? "?\?'=" : "?\?'";
+          case '{'  : return "?\?<";
+          case '}'  : return "?\?>";
+          case '|'  : switch ( token[1] ) {
+                        case '=': return "?\?!=";
+                        case '|': return "?\?!?\?!";
+                      } // switch
+                      return "?\?!";
+          case '~'  : return "?\?-";
         } // switch
         break;
     } // switch
