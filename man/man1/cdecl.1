@@ -2029,15 +2029,17 @@ API is provided,
 but backed by
 .BR libedit ,
 hence
-.B ~/.editrc
+.BR ~/.editrc ,
+if present,
 is read instead of
 .BR ~/.inputrc .
-To make tab-completion work,
+If present,
 add the following (undocumented) command to
 .BR ~/.editrc :
 .cS
 bind ^I rl_complete
-.cE 0
+.cE
+to make tab-completion work.
 .SH EXAMPLES
 To declare an array of pointers to functions that are like
 .BR malloc (3):
