@@ -832,12 +832,12 @@ void path_append( char *path, char const *component );
  * Parses a C/C++ identifier.
  *
  * @param s The string to parse.
- * @param end Upon successful return, set to point to one character past the
- * end of the identifier.
- * @return Returns `true` only if an identifier was parsed.
+ * @return Returns a pointer to the first character that is not an identifier
+ * character only if an identifier was parsed or NULL if an identifier was not
+ * parsed.
  */
 PJL_WARN_UNUSED_RESULT
-bool parse_identifier( char const *s, char const **end );
+char const* parse_identifier( char const *s );
 
 /**
  * Prints an error message for `errno` to standard error and exits.

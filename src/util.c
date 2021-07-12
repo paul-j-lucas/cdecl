@@ -291,15 +291,13 @@ void path_append( char *path, char const *component ) {
   strcpy( end, component );
 }
 
-bool parse_identifier( char const *s, char const **end ) {
+char const* parse_identifier( char const *s ) {
   assert( s != NULL );
-  assert( end != NULL );
   if ( !(isalpha( s[0] ) || s[0] == '_') )
-    return false;
-  while ( *++s != '\0' && is_ident( *s ) )
+    return NULL;
+  while ( is_ident( *++s ) )
     ;
-  *end = s;
-  return true;
+  return s;
 }
 
 noreturn

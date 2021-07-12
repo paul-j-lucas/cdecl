@@ -440,7 +440,7 @@ static bool c_sname_parse_dtor( char const *s, c_sname_t *sname ) {
   c_sname_t rv;
   c_sname_init( &rv );
 
-  for ( char const *end; parse_identifier( s, &end ); ) {
+  for ( char const *end; (end = parse_identifier( s )) != NULL; ) {
     char *const name = strndup( s, (size_t)(end - s) );
 
     // Ensure that the name is NOT a keyword.
