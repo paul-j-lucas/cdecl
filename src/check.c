@@ -696,6 +696,12 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
         break;
       }
 
+      case K_FUNCTION:
+      case K_USER_DEF_CONVERSION:
+        if ( c_type_is_tid_any( &ast->type, TS_DEFAULT ) )
+          goto only_special;
+        break;
+
       case K_OPERATOR:
         switch ( ast->as.oper.oper_id ) {
           case C_OP_EQ: {               // C& operator=(C const&)
