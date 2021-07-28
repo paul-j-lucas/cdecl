@@ -144,31 +144,36 @@ void c_lang_set( c_lang_id_t lang_id ) {
 }
 
 char const* c_lang_which( c_lang_id_t lang_ids ) {
+  lang_ids &= ~LANGX_MASK;
   if ( lang_ids == LANG_NONE )
     return "";
 
-  c_lang_id_t const mask = OPT_LANG_IS(C_ANY) ? LANG_MASK_C : LANG_MASK_CPP;
-  lang_ids &= mask;
-
-  if ( lang_ids == LANG_NONE )
-    return OPT_LANG_IS(C_ANY) ? " in C" : " in C++";
-
   static strbuf_t sbuf;
   strbuf_free( &sbuf );
+  c_lang_id_t which_lang_id;
 
-  c_lang_id_t which_lang_id = c_lang_oldest( lang_ids );
+  if ( exactly_one_bit_set( lang_ids ) ) {
+    strbuf_catsn( &sbuf, " unless ", 8 );
+    which_lang_id = lang_ids;
+  }
+  else {
+    lang_ids &= OPT_LANG_IS(C_ANY) ? LANG_MASK_C : LANG_MASK_CPP;
+    if ( lang_ids == LANG_NONE )
+      return OPT_LANG_IS(C_ANY) ? " in C" : " in C++";
 
-  if ( opt_lang < which_lang_id ) {
-    strbuf_catsn( &sbuf, " until ", 7 );
-  } else {
-    strbuf_catsn( &sbuf, " since ", 7 );
-    //
-    // The newest language of langs_ids is the last language in which the
-    // feature is legal, so we need the language after that to be the first
-    // language in which the feature is illegal.
-    //
-    which_lang_id = c_lang_newest( lang_ids ) << 1;
-    assert( which_lang_id != LANG_NONE );
+    which_lang_id = c_lang_oldest( lang_ids );
+    if ( opt_lang < which_lang_id ) {
+      strbuf_catsn( &sbuf, " until ", 7 );
+    } else {
+      strbuf_catsn( &sbuf, " since ", 7 );
+      //
+      // The newest language of langs_ids is the last language in which the
+      // feature is legal, so we need the language after that to be the first
+      // language in which the feature is illegal.
+      //
+      which_lang_id = c_lang_newest( lang_ids ) << 1;
+      assert( which_lang_id != LANG_NONE );
+    }
   }
 
   strbuf_cats( &sbuf, c_lang_name( which_lang_id ) );
