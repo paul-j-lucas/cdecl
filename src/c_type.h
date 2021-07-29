@@ -215,7 +215,7 @@ enum c_tpid {
   // Type part IDs start at 1 so we know a c_tid_t value has been initialized
   // properly as opposed to it being 0 by default.
   //
-  C_TPID_NONE   = 0,                    ///< No types.
+  C_TPID_NONE   = 0u,                   ///< No types.
   C_TPID_BASE   = (1u << 0),            ///< Base types, e.g., `int`.
   C_TPID_STORE  = (1u << 1),            ///< Storage types, e.g., `static`.
   C_TPID_ATTR   = (1u << 2)             ///< Attributes.

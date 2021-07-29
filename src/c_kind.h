@@ -47,7 +47,7 @@
  */
 enum c_kind_id {
   /// No kind.
-  K_NONE                    = 0,
+  K_NONE                    = 0u,
 
   /// Temporary node in AST.
   K_PLACEHOLDER             = (1u << 0),

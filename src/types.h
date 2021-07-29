@@ -152,7 +152,7 @@ struct c_command {
  * gibberish is any _one_ of those kinds.
  */
 enum c_gib_kind {
-  C_GIB_NONE    = 0,                    ///< Not gibberish (hence, English).
+  C_GIB_NONE    = 0u,                   ///< Not gibberish (hence, English).
   C_GIB_DECL    = (1u << 0),            ///< Gibberish is a declaration.
   C_GIB_CAST    = (1u << 1),            ///< Gibberish is a cast.
   C_GIB_TYPEDEF = (1u << 2),            ///< Gibberish is a `typedef`.
