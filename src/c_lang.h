@@ -54,8 +54,8 @@ _GL_INLINE_HEADER_BEGIN
 ///////////////////////////////////////////////////////////////////////////////
 
 // languages supported
-#define LANG_NONE     ((c_lang_id_t)0)  /**< No languages. */
-#define LANG_ANY      ((c_lang_id_t)~0) /**< Any supported language. */
+#define LANG_NONE     ((c_lang_id_t)0u) /**< No languages. */
+#define LANG_ANY      (~LANGX_MASK)     /**< Any supported language. */
 
 #define LANG_C_OLD    LANG_C_KNR        /**< Oldest supported C language. */
 #define LANG_C_KNR    (1u << 0)         /**< K&R (pre-ANSI) C. */
@@ -118,42 +118,42 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @param L The language _without_ the `LANG_` prefix.
  */
-#define LANG_MAX(L)               (LANG_ ## L | (LANG_ ## L - 1u))
+#define LANG_MAX(L)               ((LANG_##L | (LANG_##L - 1u)) & ~LANGX_MASK)
 
 /**
  * All languages \a L and later.
  *
  * @param L The language _without_ the `LANG_` prefix.
  */
-#define LANG_MIN(L)               (~(LANG_ ## L - 1u))
+#define LANG_MIN(L)               (~(LANG_##L - 1u) & ~LANGX_MASK)
 
 /**
  * C-only languages up to and including \a L.
  *
  * @param L The language _without_ the `LANG_` prefix.
  */
-#define LANG_C_MAX(L)             LANG_MAX( C_ ## L )
+#define LANG_C_MAX(L)             LANG_MAX( C_##L )
 
 /**
  * C-only languages \a L and later.
  *
  * @param L The language _without_ the `LANG_` prefix.
  */
-#define LANG_C_MIN(L)             (LANG_MIN( C_ ## L ) & LANG_MASK_C)
+#define LANG_C_MIN(L)             (LANG_MIN( C_##L ) & LANG_MASK_C)
 
 /**
  * C++-only languages up to and including \a L.
  *
  * @param L The language _without_ the `LANG_` prefix.
  */
-#define LANG_CPP_MAX(L)           (LANG_MAX( CPP_ ## L ) & LANG_MASK_CPP)
+#define LANG_CPP_MAX(L)           (LANG_MAX( CPP_##L ) & LANG_MASK_CPP)
 
 /**
  * C++-only languages \a L and later.
  *
  * @param L The language _without_ the `LANG_` prefix.
  */
-#define LANG_CPP_MIN(L)           LANG_MIN( CPP_ ## L )
+#define LANG_CPP_MIN(L)           LANG_MIN( CPP_##L )
 
 /**
  * C-only languages up to and including \a CL; and C++-only languages up to and
@@ -198,7 +198,7 @@ struct c_lang_lit {
  * @return Returns `true` only if the current language is among the languages
  * specified by \a LANG_MACRO.
  */
-#define OPT_LANG_IS(LANG_MACRO)   opt_lang_is_any( LANG_ ## LANG_MACRO )
+#define OPT_LANG_IS(LANG_MACRO)   opt_lang_is_any( LANG_##LANG_MACRO )
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -347,7 +347,7 @@ c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_newest( c_lang_id_t lang_ids ) {
-  return ms_bit1_32( lang_ids & ~LANGX_MASK );
+  return ms_bit1_32( lang_ids & ~LANGX_MASK ) | (lang_ids & LANGX_MASK);
 }
 
 /**
@@ -385,7 +385,7 @@ c_lang_t const* c_lang_next( c_lang_t const *lang );
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
-  return ls_bit1_32( lang_ids & ~LANGX_MASK );
+  return ls_bit1_32( lang_ids & ~LANGX_MASK ) | (lang_ids & LANGX_MASK);
 }
 
 /**
