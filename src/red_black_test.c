@@ -31,11 +31,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// extern variable definitions
-char const       *me;                   ///< Program name.
-
-////////// local functions ////////////////////////////////////////////////////
-
 /**
  * Prints that \a EXPR failed and increments the test failure count.
  *
@@ -53,17 +48,23 @@ char const       *me;                   ///< Program name.
  */
 #define TEST(EXPR)                ( !!(EXPR) || FAILED( #EXPR ) )
 
-static unsigned test_failures;
+///////////////////////////////////////////////////////////////////////////////
+
+// extern variables
+char const       *me;                   ///< Program name.
+
+// local variables
+static unsigned   test_failures;
 
 ////////// local functions ////////////////////////////////////////////////////
 
-static int rb_test_data_cmp( void const *i_data, void const *j_data ) {
+static int test_rb_data_cmp( void const *i_data, void const *j_data ) {
   char const *const i_str = i_data;
   char const *const j_str = j_data;
   return strcmp( i_str, j_str );
 }
 
-static bool rb_test_visitor( void *node_data, void *aux_data ) {
+static bool test_rb_visitor( void *node_data, void *aux_data ) {
   char const *const str = node_data;
   unsigned *const letter_offset_ptr = aux_data;
   if ( TEST( str != NULL ) )
@@ -85,7 +86,7 @@ int main( int argc, char const *argv[] ) {
     usage();
 
   rb_tree_t tree;
-  rb_tree_init( &tree, &rb_test_data_cmp );
+  rb_tree_init( &tree, &test_rb_data_cmp );
   rb_node_t *node;
 
   // test insertion
@@ -101,7 +102,7 @@ int main( int argc, char const *argv[] ) {
 
   // test visitor
   unsigned letter_offset = 0;
-  TEST( rb_tree_visit( &tree, &rb_test_visitor, &letter_offset ) == NULL );
+  TEST( rb_tree_visit( &tree, &test_rb_visitor, &letter_offset ) == NULL );
 
   // test find
   node = rb_tree_find( &tree, "A" );
@@ -115,7 +116,7 @@ int main( int argc, char const *argv[] ) {
 
       // test visitor again
       letter_offset = 1; // skip "A"
-      TEST( rb_tree_visit( &tree, &rb_test_visitor, &letter_offset ) == NULL );
+      TEST( rb_tree_visit( &tree, &test_rb_visitor, &letter_offset ) == NULL );
     }
   }
 
