@@ -38,7 +38,7 @@
  * @return Always returns `false`.
  */
 #define FAILED(EXPR) \
-  ( EPRINTF( "%s:%d: %s\n", me, __LINE__, (EXPR) ), !++test_failures )
+  ( EPRINTF( "%s:%d: " EXPR "\n", me, __LINE__ ), !++test_failures )
 
 /**
  * Tests \a EXPR and prints that it failed only if it failed.
