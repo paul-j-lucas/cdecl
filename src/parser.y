@@ -1619,28 +1619,40 @@ declare_english
     /*
      * C++ overloaded operator declaration.
      */
-  | Y_DECLARE c_operator of_scope_list_english_opt as_exp
-    storage_class_list_english_type_opt oper_decl_english_ast
+  | Y_DECLARE c_operator
+    { //
+      // This check is done now in the parser rather than later in the AST
+      // since it yields a better error message since otherwise it would warn
+      // that "operator" is a keyword in C++98 which skims right past the
+      // bigger error that operator overloading isn't supported in C.
+      //
+      if ( unsupported( LANG_CPP_ANY ) ) {
+        print_error( &@2, "operator overloading is not supported in C\n" );
+        PARSE_ABORT();
+      }
+    }
+    of_scope_list_english_opt as_exp storage_class_list_english_type_opt
+    oper_decl_english_ast
     {
       DUMP_START( "declare_english",
                   "DECLARE c_operator of_scope_list_english_opt AS "
                   "storage_class_list_english_type_opt "
                   "oper_decl_english_ast" );
       DUMP_STR( "c_operator", c_oper_get( $2 )->name );
-      DUMP_SNAME( "of_scope_list_english_opt", $3 );
-      DUMP_TYPE( "storage_class_list_english_type_opt", &$5 );
-      DUMP_AST( "oper_decl_english_ast", $6 );
+      DUMP_SNAME( "of_scope_list_english_opt", $4 );
+      DUMP_TYPE( "storage_class_list_english_type_opt", &$6 );
+      DUMP_AST( "oper_decl_english_ast", $7 );
 
-      c_ast_set_sname( $6, &$3 );
-      $6->loc = @2;
-      $6->as.oper.oper_id = $2;
-      C_TYPE_ADD( &$6->type, &$5, @5 );
+      c_ast_set_sname( $7, &$4 );
+      $7->loc = @2;
+      $7->as.oper.oper_id = $2;
+      C_TYPE_ADD( &$7->type, &$6, @6 );
 
-      DUMP_AST( "declare_english", $6 );
+      DUMP_AST( "declare_english", $7 );
       DUMP_END();
 
-      C_AST_CHECK_DECL( $6 );
-      c_ast_gibberish( $6, C_GIB_DECL, fout );
+      C_AST_CHECK_DECL( $7 );
+      c_ast_gibberish( $7, C_GIB_DECL, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
