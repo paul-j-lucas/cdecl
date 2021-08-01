@@ -286,7 +286,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
     if ( !OPT_LANG_IS(C_MIN(99)) ) {
       print_error( &ast->loc,
         "variable length arrays are not supported%s\n",
-        c_lang_which( LANG_C_99 )
+        c_lang_which( LANG_C_MIN(99) )
       );
       return false;
     }
@@ -303,7 +303,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
       print_error( &ast->loc,
         "\"%s\" arrays are not supported%s\n",
         c_tid_name_error( ast->as.array.stid ),
-        c_lang_which( LANG_C_99 )
+        c_lang_which( LANG_C_MIN(99) )
       );
       return false;
     }
@@ -375,7 +375,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
   if ( c_type_is_tid_any( &ast->type, TS_INLINE ) && opt_lang < LANG_CPP_17 ) {
     print_error( &ast->loc,
       "%s variables are not supported%s\n",
-      L_INLINE, c_lang_which( LANG_CPP_17 )
+      L_INLINE, c_lang_which( LANG_CPP_MIN(17) )
     );
     return false;
   }
@@ -474,7 +474,7 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
       if ( opt_lang < LANG_CPP_11 ) {
         print_error( &of_ast->loc,
           "%s with underlying type is not supported%s\n",
-          L_ENUM, c_lang_which( LANG_CPP_11 )
+          L_ENUM, c_lang_which( LANG_CPP_MIN(11) )
         );
         return false;
       }
@@ -616,7 +616,8 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
     if ( opt_lang < LANG_CPP_11 ) {
       print_error( &ast->loc,
         "%s qualified %ss is not supported%s\n",
-        L_REFERENCE, c_kind_name( ast->kind_id ), c_lang_which( LANG_CPP_11 )
+        L_REFERENCE, c_kind_name( ast->kind_id ),
+        c_lang_which( LANG_CPP_MIN(11) )
       );
       return false;
     }
@@ -933,7 +934,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
              opt_lang < LANG_CPP_20 ) {
           print_error( &param_ast->loc,
             "parameters can not be \"%s\"%s\n", L_AUTO,
-            c_lang_which( LANG_CPP_20 )
+            c_lang_which( LANG_CPP_MIN(20) )
           );
           return false;
         }
@@ -1784,7 +1785,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
            opt_lang < LANG_CPP_14 ) {
         print_error( &ret_ast->loc,
           "\"%s\" return type is not supported%s\n",
-          L_AUTO, c_lang_which( LANG_CPP_14 )
+          L_AUTO, c_lang_which( LANG_CPP_MIN(14) )
         );
         return false;
       }
@@ -2139,7 +2140,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, uint64_t data ) {
         "%s %s is illegal%s\n",
         c_tid_name_error( ast->type.stid ),
         c_tid_name_error( ast->as.func.ret_ast->type.btid ),
-        c_lang_which( LANG_CPP_14 )
+        c_lang_which( LANG_CPP_MIN(14) )
       );
       return VISITOR_ERROR_FOUND;
     }
