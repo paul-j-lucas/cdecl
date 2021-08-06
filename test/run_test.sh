@@ -53,9 +53,11 @@ pass() {
 }
 
 fail() {
-  print_result FAIL $TEST_NAME
+  RESULT=$1
+  [ "$RESULT" ] || RESULT=FAIL
+  print_result $RESULT $TEST_NAME
   {
-    echo ":test-result: FAIL"
+    echo ":test-result: $RESULT"
     echo ":copy-in-global-log: yes"
   } > $TRS_FILE
 }
@@ -224,7 +226,10 @@ run_cdecl_test() {
     else fail; mv $DIFF_FILE $LOG_FILE
     fi
   else
-    fail
+    case $ACTUAL_EXIT in
+    0|65) fail ;;
+    *)    fail ERROR ;;
+    esac
   fi
 }
 
