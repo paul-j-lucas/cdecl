@@ -1,0 +1,3 @@
+using U = void (*F)(int)
+                ^
+17: error: "using" type can not have a name

@@ -1,0 +1,3 @@
+declare x as long long x
+                       ^
+24: syntax error: "x": "as" expected

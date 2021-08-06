@@ -1,0 +1,3 @@
+struct S; explain bool S::operator==(S const&) const = default
+              ^
+15: error: default operator == is not supported until C++20

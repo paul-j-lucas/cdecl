@@ -1,0 +1,3 @@
+explain void f(t x)
+                 ^
+18: syntax error: "x": ',' expected

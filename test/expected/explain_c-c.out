@@ -1,0 +1,3 @@
+explain class C x
+        ^
+9: error: "class": unsupported type in C

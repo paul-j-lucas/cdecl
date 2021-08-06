@@ -58,7 +58,8 @@ static unsigned const     TERM_COLUMNS_DEFAULT = 80;
 /// @endcond
 
 // local functions
-static size_t             token_len( char const* );
+PJL_WARN_UNUSED_RESULT
+static size_t             token_len( char const*, size_t, size_t );
 
 // extern variables
 print_params_t            print_params;
@@ -70,8 +71,10 @@ print_params_t            print_params;
  * and requested) under the offending token.
  *
  * @param error_column The zero-based column of the offending token.
+ * @return Returns \a error_column, adjusted (if necessary).
  */
-static void print_caret( size_t error_column ) {
+PJL_WARN_UNUSED_RESULT
+static size_t print_caret( size_t error_column ) {
   if ( error_column >= print_params.inserted_len )
     error_column -= print_params.inserted_len;
   size_t error_column_term = error_column;
@@ -119,14 +122,19 @@ static void print_caret( size_t error_column ) {
     while ( ends_with_any_chr( input_line, input_line_len, WS ) )
       --input_line_len;
 
-    //
-    // If the error is due to unexpected end of input, back up the error column
-    // so it refers to a non-null character.
-    //
-    if ( error_column > 0 && input_line[ error_column ] == '\0' )
-      --error_column;
+    if ( error_column > input_line_len ) {
+      error_column = input_line_len;
+    } else {
+      //
+      // If the error is due to unexpected end of input, back up the error
+      // column so it refers to a non-null character.
+      //
+      if ( error_column > 0 && input_line[ error_column ] == '\0' )
+        --error_column;
+    }
 
-    size_t const token_columns = token_len( input_line + error_column );
+    size_t const token_columns =
+      token_len( input_line, input_line_len, error_column );
     size_t const error_end_column = error_column + token_columns - 1;
 
     //
@@ -152,8 +160,8 @@ static void print_caret( size_t error_column ) {
     more[0] = error_end_column > print_columns;
 
     //
-    // However, if there is "more" on the right but end of the error token is
-    // at the end of the line, then we can print through the end of the line
+    // However, if there is "more" on the right but the end of the error token
+    // is at the end of the line, then we can print through the end of the line
     // without any "more."
     //
     if ( more[1] ) {
@@ -175,6 +183,7 @@ static void print_caret( size_t error_column ) {
       print_offset = MORE_LEN[0] + (error_column - error_column_term);
       print_columns -= MORE_LEN[0];
     } else {
+      error_column_term = error_column;
       print_offset = 0;
     }
 
@@ -190,6 +199,8 @@ static void print_caret( size_t error_column ) {
   EPUTC( '^' );
   SGR_END_COLOR( stderr );
   EPUTC( '\n' );
+
+  return error_column;
 }
 
 /**
@@ -204,17 +215,26 @@ static void print_caret( size_t error_column ) {
  * determined by `s[0]`.  The length of the token is the number of consecutive
  * characters of the same class starting at `s[0]`.
  *
- * @param s The null-terminated string to use.
+ * @param s The string to use.
+ * @param s_len The length of \a s.
+ * @param token_offset The offset of the start of the token.
  * @return Returns the length of the token.
  */
 PJL_WARN_UNUSED_RESULT
-static size_t token_len( char const *s ) {
+static size_t token_len( char const *s, size_t s_len, size_t token_offset ) {
   assert( s != NULL );
 
+  char const *const end = s + s_len;
+  s += token_offset;
+
+  if ( s >= end )
+    return 0;
+
+  bool const is_s0_alnum = isalnum( s[0] );
+  bool const is_s0_space = isspace( s[0] );
+
   char const *const s0 = s;
-  bool const is_s0_alnum = isalnum( *s0 );
-  bool const is_s0_space = isspace( *s0 );
-  while ( *++s != '\0' ) {
+  while ( ++s < end && *s != '\0' ) {
     if ( is_s0_alnum ) {
       if ( !isalnum( *s ) )
         break;
@@ -339,13 +359,10 @@ void print_hint( char const *format, ... ) {
 
 void print_loc( c_loc_t const *loc ) {
   assert( loc != NULL );
-  print_caret( (size_t)loc->first_column );
+  size_t const column = print_caret( (size_t)loc->first_column );
   SGR_START_COLOR( stderr, locus );
   if ( opt_conf_file != NULL )
     EPRINTF( "%s:%d,", opt_conf_file, loc->first_line + 1 );
-  size_t column = (size_t)loc->first_column;
-  if ( column >= print_params.inserted_len )
-    column -= print_params.inserted_len;
   EPRINTF( "%zu", column + 1 );
   SGR_END_COLOR( stderr );
   EPUTS( ": " );

@@ -190,6 +190,24 @@
   if ( !fl_is_nested_type_ok( __FILE__, __LINE__, TYPE_LOC ) ) PARSE_ABORT(); )
 
 /**
+ * Calls fl_keyword_expected() followed by #PARSE_ABORT().
+ *
+ * @param KEYWORD A keyword literal.
+ *
+ * @note
+ * This must be used _only_ after an `error` token, e.g.:
+ * @code
+ *  : Y_VIRTUAL
+ *  | error
+ *    {
+ *      keyword_expected( L_VIRTUAL );
+ *    }
+ * @endcode
+ */
+#define keyword_expected(KEYWORD) BLOCK ( \
+  fl_keyword_expected( __FILE__, __LINE__, (KEYWORD) ); PARSE_ABORT(); )
+
+/**
  * Aborts the current parse (presumably after an error message has been
  * printed).
  */
@@ -677,6 +695,7 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
  * @param format A `printf()` style format string.
  * @param ... Arguments to print.
  *
+ * @sa fl_keyword_expected()
  * @sa yyerror()
  */
 PJL_PRINTF_LIKE_FUNC(4)
@@ -746,6 +765,60 @@ static bool fl_is_nested_type_ok( char const *file, int line,
     return false;
   }
   return true;
+}
+
+/**
+ * A special case of fl_elaborate_error() when a C/C++ keyword is expected.  It
+ * prevents oddly worded error messages where a C/C++ keyword is expected, but
+ * that keyword isn't a keyword either until a later version of the language or
+ * in a different language, hence the lexer will return the keyword as the
+ * Y_NAME token instead of the keyword token.
+ *
+ * For example, if fl_elaborate_error() were used for the following \b cdecl
+ * command when the current language is C, you'd get the following:
+ * @code
+ * declare f as virtual function returning void
+ *              ^
+ * 14: syntax error: "virtual": "virtual" expected; not a keyword until C++98
+ * @endcode
+ * because it's really this:
+ * @code
+ * ... "virtual" [the name]": "virtual" [the token] expected ...
+ * @endcode
+ * and that looks odd.
+ *
+ * @note This function isn't normally called directly; use the
+ * #keyword_expected() macro instead.
+ *
+ * @param file The name of the file where this function was called from.
+ * @param line The line number within \a file where this function was called
+ * from.
+ * @param keyword A keyword literal.
+ *
+ * @sa fl_elaborate_error()
+ * @sa yyerror()
+ */
+static void fl_keyword_expected( char const *file, int line,
+                                 char const *keyword ) {
+  assert( keyword != NULL );
+  if ( error_newlined )
+    return;
+
+  char const *const error_token = printable_token();
+  if ( error_token != NULL && strcmp( error_token, keyword ) == 0 ) {
+    c_keyword_t const *const k =
+      c_keyword_find( keyword, LANG_ANY, C_KW_CTX_ALL );
+    if ( k != NULL ) {
+      char const *const which_lang = c_lang_which( k->lang_ids );
+      if ( which_lang[0] != '\0' ) {
+        EPRINTF( ": \"%s\" not supported%s\n", keyword, which_lang );
+        error_newlined = true;
+        return;
+      }
+    }
+  }
+
+  fl_elaborate_error( file, line, DYM_NONE, "\"%s\" expected", keyword );
 }
 
 /**
@@ -876,6 +949,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
  * @param msg The error message to print.
  *
  * @sa fl_elaborate_error()
+ * @sa fl_keyword_expected()
  * @sa print_loc()
  */
 static void yyerror( char const *msg ) {
@@ -5937,7 +6011,7 @@ array_exp
   : Y_ARRAY
   | error
     {
-      elaborate_error( "\"%s\" expected", L_ARRAY );
+      keyword_expected( L_ARRAY );
     }
   ;
 
@@ -5964,7 +6038,7 @@ as_exp
     }
   | error
     {
-      elaborate_error( "\"%s\" expected", L_AS );
+      keyword_expected( L_AS );
     }
   ;
 
@@ -5985,7 +6059,7 @@ cast_exp
   : Y_CAST
   | error
     {
-      elaborate_error( "\"%s\" expected", L_CAST );
+      keyword_expected( L_CAST );
     }
   ;
 
@@ -6020,7 +6094,7 @@ conversion_exp
   : Y_CONVERSION
   | error
     {
-      elaborate_error( "\"%s\" expected", L_CONVERSION );
+      keyword_expected( L_CONVERSION );
     }
   ;
 
@@ -6124,7 +6198,7 @@ literal_exp
   : Y_LITERAL
   | error
     {
-      elaborate_error( "\"%s\" expected", L_LITERAL );
+      keyword_expected( L_LITERAL );
     }
   ;
 
@@ -6154,7 +6228,7 @@ namespace_btid_exp
   : Y_NAMESPACE
   | error
     {
-      elaborate_error( "\"%s\" expected", L_NAMESPACE );
+      keyword_expected( L_NAMESPACE );
     }
   ;
 
@@ -6167,7 +6241,7 @@ of_exp
   : Y_OF
   | error
     {
-      elaborate_error( "\"%s\" expected", L_OF );
+      keyword_expected( L_OF );
     }
   ;
 
@@ -6211,7 +6285,7 @@ operator_exp
   : Y_OPERATOR
   | error
     {
-      elaborate_error( "\"%s\" expected", L_OPERATOR );
+      keyword_expected( L_OPERATOR );
     }
   ;
 
@@ -6248,7 +6322,7 @@ reference_exp
   : Y_REFERENCE
   | error
     {
-      elaborate_error( "\"%s\" expected", L_REFERENCE );
+      keyword_expected( L_REFERENCE );
     }
   ;
 
@@ -6256,7 +6330,7 @@ returning_exp
   : Y_RETURNING
   | error
     {
-      elaborate_error( "\"%s\" expected", L_RETURNING );
+      keyword_expected( L_RETURNING );
     }
   ;
 
@@ -6330,7 +6404,7 @@ to_exp
   : Y_TO
   | error
     {
-      elaborate_error( "\"%s\" expected", L_TO );
+      keyword_expected( L_TO );
     }
   ;
 
@@ -6348,7 +6422,7 @@ virtual_stid_exp
   : Y_VIRTUAL
   | error
     {
-      elaborate_error( "\"%s\" expected", L_VIRTUAL );
+      keyword_expected( L_VIRTUAL );
     }
   ;
 

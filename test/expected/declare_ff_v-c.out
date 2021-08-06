@@ -1,0 +1,3 @@
+declare f as friend function returning void
+             ^
+14: error: "friend": unsupported keyword in C

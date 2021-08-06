@@ -1,0 +1,4 @@
+namespace N { class C; }; namespace N::C { class D; }
+           ^
+12: error: "N::C" was previously declared as a class:
+> namespace N { class C; }

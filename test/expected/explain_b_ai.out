@@ -1,0 +1,3 @@
+explain int (^b)()[]
+            ^
+13: error: block returning array; did you mean block returning pointer?

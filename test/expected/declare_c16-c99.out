@@ -1,0 +1,3 @@
+declare x as char16_t
+             ^
+14: error: "char16_t": unsupported type until C11; did you mean "wchar_t"?

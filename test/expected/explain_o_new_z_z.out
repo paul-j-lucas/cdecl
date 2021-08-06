@@ -1,0 +1,3 @@
+explain std::size_t operator new( std::size_t )
+        ^
+9: error: operator new must return a pointer to void

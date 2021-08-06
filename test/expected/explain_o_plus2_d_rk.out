@@ -1,0 +1,3 @@
+struct S; explain S& operator++(double)
+                       ^
+24: error: parameter of postfix operator ++ must be int

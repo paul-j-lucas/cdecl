@@ -1,0 +1,3 @@
+explain enum E x
+        ^
+9: error: "enum": unsupported type until C89

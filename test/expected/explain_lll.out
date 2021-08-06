@@ -1,0 +1,3 @@
+explain long long long x
+                  ^
+19: error: "long" can not be combined with "long long"

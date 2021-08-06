@@ -1,0 +1,3 @@
+explain X::C()
+        ^
+9: error: "X::C": unknown name

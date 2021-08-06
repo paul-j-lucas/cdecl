@@ -1,0 +1,3 @@
+explain _Alignas(3) char c
+                    ^
+21: error: "3": alignment must be a power of 2

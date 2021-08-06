@@ -1,0 +1,3 @@
+explain (typedef int)x
+                 ^
+18: error: can not cast into typedef

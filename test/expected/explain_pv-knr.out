@@ -1,0 +1,3 @@
+explain void *p
+        ^
+9: error: "void": unsupported type until C89

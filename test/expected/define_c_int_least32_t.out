@@ -1,0 +1,3 @@
+define int_least32_t as char
+                      ^
+23: error: "int_least32_t": "define" redefinition with different type; original is: define int_least32_t as int

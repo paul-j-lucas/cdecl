@@ -1,0 +1,3 @@
+explain int&& &r
+              ^
+15: error: reference is not supported in C

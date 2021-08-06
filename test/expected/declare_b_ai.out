@@ -1,0 +1,3 @@
+declare b as block returning array of int
+                             ^
+30: error: block returning array; did you mean block returning pointer?

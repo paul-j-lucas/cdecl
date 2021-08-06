@@ -1,0 +1,3 @@
+explain _Sat x
+        ^
+9: error: "_Sat" requires either "_Accum" or "_Fract"

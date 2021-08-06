@@ -1,0 +1,3 @@
+explain short double x
+              ^
+15: error: "short double" is illegal for built-in type

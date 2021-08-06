@@ -1,0 +1,3 @@
+declare x as class C
+             ^
+14: error: "class": unsupported type in C

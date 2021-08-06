@@ -1,0 +1,3 @@
+explain int operator"" _x()
+                          ^
+27: syntax error: ")": '(' expected

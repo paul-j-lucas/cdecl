@@ -1,0 +1,3 @@
+explain unsigned *x : 3
+                    ^
+21: error: bit-fields can be only of integral types

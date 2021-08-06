@@ -1,0 +1,3 @@
+explain short char32_t x
+              ^
+15: error: "short char32_t" is illegal for built-in type

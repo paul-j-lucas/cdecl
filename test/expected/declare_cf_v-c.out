@@ -1,0 +1,3 @@
+declare f as const function returning void
+        ^
+9: error: "constant" functions are not supported in C

@@ -1,0 +1,4 @@
+declare x as auto int
+                  ^
+19: syntax error: "int": unexpected token ("int" is a keyword)
+auto x;

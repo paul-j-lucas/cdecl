@@ -1,0 +1,3 @@
+using SI = static int
+                  ^
+19: error: "typedef static int" is illegal for built-in type

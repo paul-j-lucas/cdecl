@@ -1,0 +1,3 @@
+explain signed char x
+        ^
+9: error: "signed": unsupported type until C89; did you mean "__signed" or "unsigned"?

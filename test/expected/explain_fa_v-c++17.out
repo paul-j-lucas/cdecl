@@ -1,0 +1,3 @@
+explain void f(auto)
+               ^
+16: error: parameters can not be "auto" until C++20

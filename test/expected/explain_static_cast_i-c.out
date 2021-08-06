@@ -1,0 +1,3 @@
+explain static_cast<int>(x)
+        ^
+9: error: "static_cast": unsupported keyword in C

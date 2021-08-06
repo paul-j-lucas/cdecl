@@ -1,0 +1,3 @@
+struct S; explain S& operator++(S&, double)
+                           ^
+28: error: parameter of postfix non-member operator ++ must be int

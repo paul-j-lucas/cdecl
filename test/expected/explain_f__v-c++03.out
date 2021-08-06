@@ -1,0 +1,3 @@
+explain auto f() -> void
+                 ^
+18: error: trailing return type is not supported until C++11

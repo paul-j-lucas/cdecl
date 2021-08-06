@@ -1,0 +1,3 @@
+declare x as non-returning int
+        ^
+9: error: "non-returning" can only appear on functions

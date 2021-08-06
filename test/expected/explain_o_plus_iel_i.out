@@ -1,0 +1,3 @@
+explain int operator+(int, ...)
+          ^
+11: error: at least 1 parameter of a non-member operator must be an enum, class, struct, or union; or a reference or rvalue reference thereto

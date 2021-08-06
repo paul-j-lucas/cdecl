@@ -1,0 +1,3 @@
+explain type int x
+        ^
+9: error: "type": unknown name

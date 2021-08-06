@@ -1,0 +1,3 @@
+declare ! as operator (int, int) returning bool
+        ^
+9: error: operator ! can have at most 1 parameter

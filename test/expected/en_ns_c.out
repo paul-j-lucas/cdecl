@@ -1,0 +1,4 @@
+enum E; namespace E { class C; }
+           ^
+12: error: "E" was previously declared as a enum:
+> enum E;

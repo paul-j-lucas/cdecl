@@ -1,0 +1,3 @@
+declare C of class X as constructor
+        ^
+9: error: "X", "C": class and constructor names don't match

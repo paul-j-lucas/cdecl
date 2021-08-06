@@ -1,0 +1,3 @@
+declare b as block returning function returning int
+                           ^
+28: error: block returning function; did you mean block returning pointer to function?

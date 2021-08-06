@@ -1,0 +1,3 @@
+declare f as virtual function returning void
+             ^
+14: error: "virtual": unsupported keyword in C

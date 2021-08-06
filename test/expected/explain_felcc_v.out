@@ -1,0 +1,3 @@
+explain void f( ..., char const *fmt )
+                ^
+17: error: variadic specifier must be last

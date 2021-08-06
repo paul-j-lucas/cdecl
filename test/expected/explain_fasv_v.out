@@ -1,0 +1,3 @@
+explain void f(int x[static *])
+                            ^
+29: syntax error: "*": ']' expected

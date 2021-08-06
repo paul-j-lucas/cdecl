@@ -1,0 +1,3 @@
+explain short int main( int, char *argv[] )
+              ^
+15: error: main() must return int

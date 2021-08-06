@@ -1,0 +1,3 @@
+struct S { struct S { typedef int Int; }; };
+                  ^
+19: error: "S": member has the same name as its enclosing struct

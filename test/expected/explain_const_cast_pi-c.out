@@ -1,0 +1,3 @@
+explain const_cast<int*>(x)
+        ^
+9: error: "const_cast": unsupported keyword in C

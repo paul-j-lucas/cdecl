@@ -1,0 +1,3 @@
+explain noreturn void f(int)
+        ^
+9: error: "noreturn": unknown name; did you mean "co_return" or "return"?

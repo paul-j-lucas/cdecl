@@ -1,0 +1,3 @@
+declare x as short char
+        ^
+9: error: "short char" is illegal for built-in type

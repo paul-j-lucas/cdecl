@@ -1,0 +1,3 @@
+define SI as register int
+                      ^
+23: error: "type register int" is illegal for built-in type

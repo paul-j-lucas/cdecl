@@ -816,6 +816,7 @@ c_tid_t c_tid_normalize( c_tid_t tid ) {
   switch ( c_tid_tpid( tid ) ) {
     case C_TPID_BASE:
       if ( (tid & (TB_SIGNED | TB_CHAR)) == TB_SIGNED ) {
+        // signed, but not signed char
         tid &= c_tid_compl( TB_SIGNED );
         if ( tid == TB_NONE )
           tid = TB_INT;
@@ -843,7 +844,8 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type ) {
   return (i_btid & j_btid) != TB_NONE;
 }
 
-char const* c_type_name( c_type_t const *type, bool in_english ) {
+char const* c_type_name( c_type_t const *type, bool in_english,
+                         bool is_error ) {
   static strbuf_t sbufs[ 2 ];
   static unsigned buf_index;
 
@@ -851,7 +853,7 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
   strbuf_free( sbuf );
   bool space = false;
 
-  c_tid_t btid = c_tid_normalize( type->btid );
+  c_tid_t btid = is_error ? type->btid : c_tid_normalize( type->btid );
   c_tid_t stid = type->stid;
   c_tid_t atid = type->atid;
 
@@ -900,7 +902,7 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
   // Special cases.
   if ( in_english ) {
     if ( c_tid_is_any( btid, TB_ANY_MODIFIER ) &&
-        !c_tid_is_any( btid, TB_ANY_MODIFIEE ) ) {
+        !c_tid_is_any( btid, c_tid_compl( TB_ANY_MODIFIER ) ) ) {
       // In English, be explicit about "int".
       btid |= TB_INT;
     }
@@ -939,7 +941,10 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
     TS_DELETE,
     TS_EXTERN_C,
 
-    // These are second so we get names like "static int".
+    // This is next so "typedef" comes before (almost) everything else.
+    TS_TYPEDEF,
+
+    // These are next so we get names like "static int".
     TS_AUTO,
     TS_APPLE_BLOCK,
     TS_EXPORT,
@@ -949,23 +954,22 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
     TS_MUTABLE,
     TS_STATIC,
     TS_THREAD_LOCAL,
-    TS_TYPEDEF,
 
-    // These are third so we get names like "static inline".
+    // These are next so we get names like "static inline".
     TS_EXPLICIT,
     TS_INLINE,
 
-    // These are fourth so we get names like "static inline final".
+    // These are next so we get names like "static inline final".
     TS_OVERRIDE,
     TS_FINAL,
 
-    // These are fifth so we get names like "overridden virtual".
+    // These are next so we get names like "overridden virtual".
     TS_PURE_VIRTUAL,
     TS_VIRTUAL,
     TS_NOEXCEPT,
     TS_THROW,
 
-    // These are sixth so we get names like "static inline constexpr".
+    // These are next so we get names like "static inline constexpr".
     TS_CONSTEVAL,
     TS_CONSTEXPR,
     TS_CONSTINIT,
@@ -1004,11 +1008,9 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
     TB_UNSIGNED,
 
     // These are next so we get names like "unsigned long int".
-    TB_LONG,
     TB_SHORT,
-
-    // This is next so we get names like "unsigned long _Sat _Fract".
-    TB_EMC_SAT,
+    TB_LONG,
+    TB_LONG_LONG,
 
     TB_VOID,
     TB_AUTO,
@@ -1018,7 +1020,6 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
     TB_CHAR16_T,
     TB_CHAR32_T,
     TB_WCHAR_T,
-    TB_LONG_LONG,
     TB_INT,
     TB_COMPLEX,
     TB_IMAGINARY,
@@ -1028,6 +1029,9 @@ char const* c_type_name( c_type_t const *type, bool in_english ) {
     TB_STRUCT,
     TB_UNION,
     TB_CLASS,
+
+    // This is next so we get names like "unsigned long _Sat _Fract".
+    TB_EMC_SAT,
 
     TB_EMC_ACCUM,
     TB_EMC_FRACT,

@@ -1,0 +1,3 @@
+typedef int S::Int
+            ^
+13: error: typedef names can not be scoped; use: namespace S { typedef ... }

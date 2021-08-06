@@ -1,0 +1,3 @@
+declare f as pure virtual function returning void
+                  ^
+19: syntax error: "virtual" not supported in C

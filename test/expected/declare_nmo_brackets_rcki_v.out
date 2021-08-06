@@ -1,0 +1,3 @@
+struct S; declare [] as non-member operator (reference to const S, int)
+         ^
+10: error: operator [] can only be a member

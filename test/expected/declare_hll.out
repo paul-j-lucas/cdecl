@@ -1,0 +1,3 @@
+declare x as short long long
+        ^
+9: error: "short long long int" is illegal for built-in type

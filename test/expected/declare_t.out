@@ -1,0 +1,3 @@
+declare x as y
+             ^
+14: error: "y": unknown name

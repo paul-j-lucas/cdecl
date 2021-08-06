@@ -1,0 +1,3 @@
+explain void f(void x)
+               ^
+16: error: named parameters can not be void

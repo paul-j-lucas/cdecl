@@ -1,0 +1,3 @@
+explain signed void x
+               ^
+16: error: variable of void; did you mean pointer to void?

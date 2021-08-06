@@ -1,0 +1,3 @@
+declare x as array static 3 of int
+        ^
+9: error: "static" arrays are illegal outside of function parameters

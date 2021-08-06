@@ -1,0 +1,3 @@
+explain void f(int S::x)
+               ^
+16: error: parameter names can not be scoped

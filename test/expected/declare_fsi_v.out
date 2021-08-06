@@ -1,0 +1,3 @@
+declare f as function (x as static int)
+                            ^
+29: syntax error: "static": "as" expected ("static" is a keyword)

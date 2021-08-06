@@ -1,0 +1,3 @@
+explain [[carries_dependency]] int x
+                               ^
+32: error: "carries_dependency" can only appear on functions or function parameters

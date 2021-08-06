@@ -354,10 +354,6 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TB_ANY_INTEGRAL       ( TB_BOOL | TB_ANY_CHAR | TB_INT \
                               | TB_ANY_MODIFIER )
 
-/// Shorthand for any type that can be modified by #TB_ANY_MODIFIER.
-#define TB_ANY_MODIFIEE       ( TB_CHAR | TB_COMPLEX | TB_INT | TB_ANY_FLOAT \
-                              | TB_ANY_EMC )
-
 /// Shorthand for an any modifier.
 #define TB_ANY_MODIFIER       ( TB_SHORT | TB_LONG | TB_LONG_LONG | TB_SIGNED \
                               | TB_UNSIGNED )
@@ -708,17 +704,20 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type );
  *
  * @param type The type to get the name for.
  * @param in_english If `true`, return the pseudo-English name if possible.
+ * @param is_error If `true`, the name is intended for use in an error message.
+ * Specifically, c_tid_normalize() is _not_ called.
  * @return Returns said name.
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
  *
+ * @sa c_tid_normalize()
  * @sa c_type_name_c()
  * @sa c_type_name_english()
  * @sa c_type_name_error()
  */
 PJL_WARN_UNUSED_RESULT
-char const* c_type_name( c_type_t const *type, bool in_english );
+char const* c_type_name( c_type_t const *type, bool in_english, bool is_error );
 
 /**
  * Performs the bitwise-or of \a i_type and \a j_type.
@@ -813,7 +812,7 @@ c_tid_t c_tid_compl( c_tid_t tid ) {
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_tid_name_c( c_tid_t tid ) {
   c_type_t const type = c_type_from_tid( tid );
-  return c_type_name( &type, /*in_english=*/false );
+  return c_type_name( &type, /*in_english=*/false, /*is_error=*/false );
 }
 
 /**
@@ -832,7 +831,7 @@ char const* c_tid_name_c( c_tid_t tid ) {
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_tid_name_english( c_tid_t tid ) {
   c_type_t const type = c_type_from_tid( tid );
-  return c_type_name( &type, /*in_english=*/true );
+  return c_type_name( &type, /*in_english=*/true, /*is_error=*/false );
 }
 
 /**
@@ -855,7 +854,9 @@ char const* c_tid_name_error( c_tid_t tid ) {
   c_type_t const type = c_type_from_tid( tid );
   // When giving an error message, return the type name in pseudo-English if
   // we're parsing pseudo-English or in C/C++ if we're parsing C/C++.
-  return c_type_name( &type, /*in_english=*/c_mode == C_ENGLISH_TO_GIBBERISH );
+  return c_type_name(
+    &type, /*in_english=*/c_mode == C_ENGLISH_TO_GIBBERISH, /*is_error=*/true
+  );
 }
 
 /**
@@ -959,7 +960,7 @@ bool c_type_is_tid_any( c_type_t const *type, c_tid_t tids ) {
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_type_name_c( c_type_t const *type ) {
-  return c_type_name( type, /*in_english=*/false );
+  return c_type_name( type, /*in_english=*/false, /*is_error=*/false );
 }
 
 /**
@@ -977,7 +978,7 @@ char const* c_type_name_c( c_type_t const *type ) {
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_type_name_english( c_type_t const *type ) {
-  return c_type_name( type, /*in_english=*/true );
+  return c_type_name( type, /*in_english=*/true, /*is_error=*/false );
 }
 
 /**
@@ -997,7 +998,9 @@ char const* c_type_name_english( c_type_t const *type ) {
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_type_name_error( c_type_t const *type ) {
   // See comment in c_tid_name_error().
-  return c_type_name( type, /*in_english=*/c_mode == C_ENGLISH_TO_GIBBERISH );
+  return c_type_name(
+    type, /*in_english=*/c_mode == C_ENGLISH_TO_GIBBERISH, /*is_error=*/true
+  );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

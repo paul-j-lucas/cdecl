@@ -1,0 +1,3 @@
+explain friend static void f()
+                           ^
+28: error: "friend static" is illegal for function

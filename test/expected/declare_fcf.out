@@ -1,0 +1,3 @@
+declare f as friend constant function
+             ^
+14: error: "friend": unsupported keyword in C

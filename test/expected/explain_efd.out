@@ -1,0 +1,3 @@
+explain enum E : double x
+                 ^
+18: error: enum underlying type must be integral

@@ -1,0 +1,3 @@
+declare f as function (x as y)
+                            ^
+29: error: "y": unknown name

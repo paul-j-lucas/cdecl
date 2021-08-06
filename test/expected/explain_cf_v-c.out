@@ -1,0 +1,3 @@
+explain void f() const
+             ^
+14: error: "const" functions are not supported in C

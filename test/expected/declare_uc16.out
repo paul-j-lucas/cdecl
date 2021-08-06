@@ -1,0 +1,3 @@
+declare x as unsigned char16_t
+        ^
+9: error: "unsigned char16_t" is illegal for built-in type

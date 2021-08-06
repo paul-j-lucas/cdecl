@@ -1,0 +1,3 @@
+struct S; explain bool operator!(S) const
+            ^
+13: error: member operator ! must have exactly 0 parameters

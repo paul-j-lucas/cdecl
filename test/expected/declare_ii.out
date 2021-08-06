@@ -1,0 +1,3 @@
+declare x as inline int
+        ^
+9: error: inline variables are not supported in C

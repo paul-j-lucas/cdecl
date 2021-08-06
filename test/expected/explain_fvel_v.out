@@ -1,0 +1,3 @@
+explain void f( void, ... )
+                ^
+17: error: "void" must be only parameter if specified

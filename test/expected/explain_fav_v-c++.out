@@ -1,0 +1,3 @@
+explain void f(int x[*])
+                    ^
+21: error: variable length arrays are not supported in C++

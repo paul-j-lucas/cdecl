@@ -1771,45 +1771,8 @@ EXTRA_DIST = run_test.sh tests data expected
 dist-hook:
 	cd $(distdir)/tests && rm -f *.log *.trs
 
-#
-# Adding predefined types, changing the help text, etc., causes the output of
-# cdecl to change so that the expected results for the following tests no
-# longer match and hence "fail."  This rule updates the expected results of
-# said tests to match the current cdecl output so the tests will pass again.
-#
-UPDATE_TESTS = \
-	tests/cdecl--debug.test \
-	tests/cdecl-d.test \
-	tests/help-c++.test \
-	tests/help-c.test \
-	tests/help_command-c++.test \
-	tests/help_command-c++03.test \
-	tests/help_command-c.test \
-	tests/help_commands-c++.test \
-	tests/help_commands-c.test \
-	tests/help_english-c++.test \
-	tests/help_english-c.test \
-	tests/help_english-c89.test \
-	tests/help_english-knr.test \
-	tests/set.test \
-	tests/set_options.test \
-	tests/show_all-c++.test \
-	tests/show_all.test \
-	tests/show_all_predefined-c++.test \
-	tests/show_all_predefined.test \
-	tests/show_all_predefined_glob-01.test \
-	tests/show_all_predefined_glob-02.test \
-	tests/show_all_predefined_glob-03.test \
-	tests/show_all_predefined_typedef-c++.test \
-	tests/show_all_typedef.test \
-	tests/show_predefined-c++.test \
-	tests/show_predefined.test \
-	tests/show_predefined_typedef.test \
-	tests/show_predefined_using.test
-
-
 UPDATE_TEST = $(srcdir)/update_test.sh
 update:
-	BUILD_SRC=$(BUILD_SRC) $(UPDATE_TEST) $(UPDATE_TESTS)
+	@ls $(TESTS) | xargs -n255 -r $(UPDATE_TEST) -s $(BUILD_SRC)
 
 # vim:set noet sw=8 ts=8:

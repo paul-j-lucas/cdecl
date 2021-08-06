@@ -1,0 +1,3 @@
+declare p as pointer to S
+                        ^
+25: error: "S": unknown name

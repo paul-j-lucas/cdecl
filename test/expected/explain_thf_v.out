@@ -1,0 +1,4 @@
+explain void f() throw()
+                 ^
+18: syntax error: "throw": unexpected token; not a keyword until C++98; did you mean "show"?
+declare f as function returning void

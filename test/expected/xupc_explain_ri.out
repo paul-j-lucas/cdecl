@@ -1,0 +1,3 @@
+explain relaxed int x
+                ^
+17: error: "relaxed int" requires "shared"

@@ -1,0 +1,3 @@
+cast x into array 3 of int
+            ^
+13: error: can not cast into array; did you mean cast into pointer?

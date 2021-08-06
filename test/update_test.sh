@@ -40,21 +40,21 @@ fail() {
 
 usage() {
   cat >&2 <<END
-usage: $ME test-path...
+usage: $ME -s srcdir test ...
 END
   exit 1
 }
 
-########## Begin ##############################################################
-
-ME=`local_basename "$0"`
-
-[ "$BUILD_SRC" ] || {
-  echo "$ME: \$BUILD_SRC not set" >&2
-  exit 2
-}
-
 ########## Process command-line ###############################################
+
+while getopts s: opt
+do
+  case $opt in
+  s) BUILD_SRC=$OPTARG ;;
+  ?) usage ;;
+  esac
+done
+shift `expr $OPTIND - 1`
 
 [ $# -ge 1 ] || usage
 
@@ -66,11 +66,18 @@ ME=`local_basename "$0"`
 ##
 [ "$srcdir" ] || srcdir="."
 
+##
+# Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
+##
+PATH=$BUILD_SRC:$PATH
+
 DATA_DIR=$srcdir/data
 EXPECTED_DIR=$srcdir/expected
 ACTUAL_OUTPUT=/tmp/cdecl_test_output_$$_
 
-########## Run test ###########################################################
+trap "x=$?; rm -f /tmp/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
+
+########## Update tests #######################################################
 
 update_cdecl_test() {
   TEST_PATH=$1
@@ -84,29 +91,20 @@ update_cdecl_test() {
   COMMAND=`echo $COMMAND`               # trims whitespace
   CONFIG=`echo $CONFIG`                 # trims whitespace
   [ "$CONFIG" ] && CONFIG="-c $DATA_DIR/$CONFIG"
+  # INPUT=`echo $INPUT`                 # don't expand shell metas
   EXPECTED_EXIT=`echo $EXPECTED_EXIT`   # trims whitespace
 
+  echo $TEST_NAME
+
   #echo "$INPUT" \| $COMMAND $CONFIG "$OPTIONS" \> $ACTUAL_OUTPUT
-  if echo "$INPUT" | sed 's/^ //' | $COMMAND $CONFIG $OPTIONS > $ACTUAL_OUTPUT
-  then
-    if [ 0 -eq $EXPECTED_EXIT ]
-    then mv $ACTUAL_OUTPUT $EXPECTED_OUTPUT
-    else fail
-    fi
-  else
-    ACTUAL_EXIT=$?
-    if [ $ACTUAL_EXIT -ne $EXPECTED_EXIT ]
-    then fail
-    fi
+  echo "$INPUT" | sed 's/^ //' | $COMMAND $CONFIG $OPTIONS > $ACTUAL_OUTPUT 2>&1
+  ACTUAL_EXIT=$?
+
+  if [ $ACTUAL_EXIT -eq $EXPECTED_EXIT ]
+  then mv $ACTUAL_OUTPUT $EXPECTED_OUTPUT
+  else fail
   fi
 }
-
-##
-# Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
-##
-PATH=$BUILD_SRC:$PATH
-
-trap "x=$?; rm -f /tmp/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 
 for TEST in $*
 do update_cdecl_test $TEST

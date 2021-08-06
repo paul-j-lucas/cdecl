@@ -1,0 +1,3 @@
+cast x into type int
+         ^
+10: syntax error: "typedef": "as", "into", or "to" expected ("typedef" is a keyword)

@@ -15,6 +15,9 @@ with their complete changes, see the AUTHORS file.
 ** Deleted functions and conversion operators
 Marking functions and conversion operators `= delete` is now supported.
 
+** Improved or fixed error messages
+Improved or fixed several error messages.
+
 
 * Changes in Cdecl 10.2
 

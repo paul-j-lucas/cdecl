@@ -1,0 +1,3 @@
+declare x as consteval int
+             ^
+14: error: "consteval": unsupported keyword in C

@@ -1,0 +1,3 @@
+explain void main()
+        ^
+9: error: main() must return int

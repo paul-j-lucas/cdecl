@@ -1,0 +1,3 @@
+explain char16_t x
+        ^
+9: error: "char16_t": unsupported type until C++11; did you mean "wchar_t"?

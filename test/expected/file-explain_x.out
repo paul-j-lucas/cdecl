@@ -1,0 +1,3 @@
+explain x
+        ^
+9: error: "x": unknown name

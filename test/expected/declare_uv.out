@@ -1,0 +1,3 @@
+declare x as unsigned void
+        ^
+9: error: "unsigned void" is illegal for built-in type

@@ -1,0 +1,3 @@
+struct S; explain virtual bool operator!(S)
+                    ^
+21: error: member operator ! must have exactly 0 parameters

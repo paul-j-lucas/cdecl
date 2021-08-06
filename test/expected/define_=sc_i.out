@@ -1,0 +1,3 @@
+define Int of scope X of class C as int
+           ^
+12: error: scope can not nest inside class

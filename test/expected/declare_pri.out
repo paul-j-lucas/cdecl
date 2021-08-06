@@ -1,0 +1,3 @@
+declare x as pointer to reference to int
+        ^
+9: error: pointer to reference is illegal; did you mean reference to pointer?

@@ -1,0 +1,3 @@
+explain reinterpret_cast<void*>(x)
+        ^
+9: error: "reinterpret_cast": unsupported keyword in C

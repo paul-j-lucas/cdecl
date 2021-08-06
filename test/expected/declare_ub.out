@@ -1,0 +1,3 @@
+declare x as unsigned bool
+        ^
+9: error: "unsigned _Bool" is illegal for built-in type

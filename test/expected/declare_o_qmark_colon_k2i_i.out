@@ -1,0 +1,3 @@
+struct S; declare ?: as operator (S, int, int) returning int
+         ^
+10: error: operator ?: can not be overloaded

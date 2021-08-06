@@ -585,7 +585,7 @@ static bool c_ast_check_func_c( c_ast_t const *ast ) {
   c_tid_t const qual_stid = ast->type.stid & TS_MASK_QUALIFIER;
   if ( qual_stid != TS_NONE ) {
     print_error( &ast->loc,
-      "\"%s\" %ss is not supported in C\n",
+      "\"%s\" %ss are not supported in C\n",
       c_tid_name_error( qual_stid ),
       c_kind_name( ast->kind_id )
     );
@@ -615,7 +615,7 @@ static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   if ( c_type_is_tid_any( &ast->type, TS_ANY_REFERENCE ) ) {
     if ( opt_lang < LANG_CPP_11 ) {
       print_error( &ast->loc,
-        "%s qualified %ss is not supported%s\n",
+        "%s qualified %ss are not supported%s\n",
         L_REFERENCE, c_kind_name( ast->kind_id ),
         c_lang_which( LANG_CPP_MIN(11) )
       );

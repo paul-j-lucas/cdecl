@@ -1,0 +1,3 @@
+declare f as function ( x as int, void ) returning void
+                                  ^
+35: error: "void" must be only parameter if specified

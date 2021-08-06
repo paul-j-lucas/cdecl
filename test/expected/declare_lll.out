@@ -1,0 +1,3 @@
+declare x as long long long
+                       ^
+24: error: "long int" can not be combined with "long long int"

@@ -1,0 +1,3 @@
+explain pure virtual void f()
+        ^
+9: error: "pure": unknown name

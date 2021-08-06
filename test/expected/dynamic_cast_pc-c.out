@@ -1,0 +1,3 @@
+dynamic cast x into pointer to class C
+                               ^
+32: error: "class": unsupported type in C

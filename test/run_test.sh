@@ -191,6 +191,13 @@ DATA_DIR=$srcdir/data
 EXPECTED_DIR=$srcdir/expected
 DIFF_FILE=/tmp/cdecl_diff_$$_
 
+##
+# Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
+##
+PATH=$BUILD_SRC:$PATH
+
+trap "x=$?; rm -f /tmp/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
+
 ########## Run test ###########################################################
 
 run_cdecl_test() {
@@ -201,38 +208,25 @@ run_cdecl_test() {
   COMMAND=`echo $COMMAND`               # trims whitespace
   CONFIG=`echo $CONFIG`                 # trims whitespace
   [ "$CONFIG" ] && CONFIG="-c $DATA_DIR/$CONFIG"
+  # INPUT=`echo $INPUT`                 # don't expand shell metas
   EXPECTED_EXIT=`echo $EXPECTED_EXIT`   # trims whitespace
 
+  EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
+  assert_exists $EXPECTED_OUTPUT
+
   #echo "$INPUT" \| $COMMAND $CONFIG "$OPTIONS" \> $LOG_FILE
-  if echo "$INPUT" | sed 's/^ //' |
-     $COMMAND $CONFIG $OPTIONS > $LOG_FILE 2>&1
+  echo "$INPUT" | sed 's/^ //' | $COMMAND $CONFIG $OPTIONS > $LOG_FILE 2>&1
+  ACTUAL_EXIT=$?
+  if [ $ACTUAL_EXIT -eq $EXPECTED_EXIT ]
   then
-    if [ 0 -eq $EXPECTED_EXIT ]
-    then
-      EXPECTED_OUTPUT="$EXPECTED_DIR/`echo $TEST_NAME | sed s/test$/out/`"
-      assert_exists $EXPECTED_OUTPUT
-      if diff $EXPECTED_OUTPUT $LOG_FILE > $DIFF_FILE
-      then pass
-      else fail; mv $DIFF_FILE $LOG_FILE
-      fi
-    else
-      fail
+    if diff $EXPECTED_OUTPUT $LOG_FILE > $DIFF_FILE
+    then pass
+    else fail; mv $DIFF_FILE $LOG_FILE
     fi
   else
-    ACTUAL_EXIT=$?
-    if [ $ACTUAL_EXIT -eq $EXPECTED_EXIT ]
-    then pass
-    else fail
-    fi
+    fail
   fi
 }
-
-##
-# Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
-##
-PATH=$BUILD_SRC:$PATH
-
-trap "x=$?; rm -f /tmp/*_$$_* 2>/dev/null; exit $x" EXIT HUP INT TERM
 
 assert_exists $TEST
 case $TEST in

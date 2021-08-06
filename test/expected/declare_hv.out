@@ -1,0 +1,3 @@
+declare x as short void
+        ^
+9: error: "short void" is illegal for built-in type

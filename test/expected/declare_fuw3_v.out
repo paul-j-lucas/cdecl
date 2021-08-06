@@ -1,0 +1,3 @@
+declare f as function ( x as unsigned width 3 )
+                                      ^
+39: syntax error: "width": ',' expected

@@ -1,0 +1,3 @@
+explain signed bool x
+               ^
+16: error: "signed _Bool" is illegal for built-in type

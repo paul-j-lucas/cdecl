@@ -1,0 +1,3 @@
+explain void f(int x[const 3])
+                    ^
+21: error: "const" arrays are not supported in C++
