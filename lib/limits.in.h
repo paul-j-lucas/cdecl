@@ -99,10 +99,11 @@
 # endif
 #endif
 
-/* Macros specified by ISO/IEC TS 18661-1:2014.  */
+/* Macros specified by C2x and by ISO/IEC TS 18661-1:2014.  */
 
 #if (! defined ULLONG_WIDTH                                             \
-     && (defined _GNU_SOURCE || defined __STDC_WANT_IEC_60559_BFP_EXT__))
+     && (defined _GNU_SOURCE || defined __STDC_WANT_IEC_60559_BFP_EXT__ \
+         || (defined __STDC_VERSION__ && 201710 < __STDC_VERSION__)))
 # define CHAR_WIDTH _GL_INTEGER_WIDTH (CHAR_MIN, CHAR_MAX)
 # define SCHAR_WIDTH _GL_INTEGER_WIDTH (SCHAR_MIN, SCHAR_MAX)
 # define UCHAR_WIDTH _GL_INTEGER_WIDTH (0, UCHAR_MAX)
@@ -114,7 +115,16 @@
 # define ULONG_WIDTH _GL_INTEGER_WIDTH (0, ULONG_MAX)
 # define LLONG_WIDTH _GL_INTEGER_WIDTH (LLONG_MIN, LLONG_MAX)
 # define ULLONG_WIDTH _GL_INTEGER_WIDTH (0, ULLONG_MAX)
-#endif /* !ULLONG_WIDTH && (_GNU_SOURCE || __STDC_WANT_IEC_60559_BFP_EXT__) */
+#endif
+
+/* Macros specified by C2x.  */
+
+#if (! defined BOOL_WIDTH \
+     && (defined _GNU_SOURCE \
+         || (defined __STDC_VERSION__ && 201710 < __STDC_VERSION__)))
+# define BOOL_MAX 1
+# define BOOL_WIDTH 1
+#endif
 
 #endif /* _@GUARD_PREFIX@_LIMITS_H */
 #endif /* _@GUARD_PREFIX@_LIMITS_H */

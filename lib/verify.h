@@ -25,7 +25,7 @@
    works as per C11.  This is supported by GCC 4.6.0+ and by clang 4+.
 
    Define _GL_HAVE__STATIC_ASSERT1 to 1 if _Static_assert (R) works as
-   per C2X.  This is supported by GCC 9.1+.
+   per C2x.  This is supported by GCC 9.1+.
 
    Support compilers claiming conformance to the relevant standard,
    and also support GCC when not pedantic.  If we were willing to slow
@@ -202,7 +202,7 @@ template <int w>
 
    This macro requires three or more arguments but uses at most the first
    two, so that the _Static_assert macro optionally defined below supports
-   both the C11 two-argument syntax and the C2X one-argument syntax.
+   both the C11 two-argument syntax and the C2x one-argument syntax.
 
    Unfortunately, unlike C11, this implementation must appear as an
    ordinary declaration, and cannot appear inside struct { ... }.  */

@@ -72,6 +72,10 @@
 # include <stddef.h>
 #endif
 
+#if @GNULIB_WCSDUP@
+# include <stdlib.h> /* for free() */
+#endif
+
 /* Include the original <wchar.h> if it exists.
    Some builds of uClibc lack it.  */
 /* The include_next requires a split double-inclusion guard.  */
@@ -942,7 +946,9 @@ _GL_WARN_ON_USE (wcsxfrm, "wcsxfrm is unportable - "
 _GL_CXXALIAS_MDA (wcsdup, wchar_t *, (const wchar_t *s));
 # else
 #  if !@HAVE_WCSDUP@
-_GL_FUNCDECL_SYS (wcsdup, wchar_t *, (const wchar_t *s));
+_GL_FUNCDECL_SYS (wcsdup, wchar_t *,
+                  (const wchar_t *s)
+                  _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
 #  endif
 _GL_CXXALIAS_SYS (wcsdup, wchar_t *, (const wchar_t *s));
 # endif

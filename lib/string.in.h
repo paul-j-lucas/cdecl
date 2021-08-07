@@ -47,6 +47,10 @@
 /* NetBSD 5.0 mis-defines NULL.  */
 #include <stddef.h>
 
+#if @GNULIB_STRDUP@
+# include <stdlib.h> /* for free() */
+#endif
+
 /* MirBSD defines mbslen as a macro.  */
 #if @GNULIB_MBSLEN@ && defined __MirBSD__
 # include <wchar.h>
@@ -418,7 +422,10 @@ _GL_WARN_ON_USE (strchrnul, "strchrnul is unportable - "
 #   undef strdup
 #   define strdup rpl_strdup
 #  endif
-_GL_FUNCDECL_RPL (strdup, char *, (char const *__s) _GL_ARG_NONNULL ((1)));
+_GL_FUNCDECL_RPL (strdup, char *,
+                  (char const *__s)
+                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
 _GL_CXXALIAS_RPL (strdup, char *, (char const *__s));
 # elif defined _WIN32 && !defined __CYGWIN__
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
@@ -432,7 +439,10 @@ _GL_CXXALIAS_MDA (strdup, char *, (char const *__s));
 #   undef strdup
 #  endif
 #  if !(@HAVE_DECL_STRDUP@ || defined strdup)
-_GL_FUNCDECL_SYS (strdup, char *, (char const *__s) _GL_ARG_NONNULL ((1)));
+_GL_FUNCDECL_SYS (strdup, char *,
+                  (char const *__s)
+                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
 #  endif
 _GL_CXXALIAS_SYS (strdup, char *, (char const *__s));
 # endif
