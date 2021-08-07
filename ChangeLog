@@ -1,5 +1,205 @@
+2021-08-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * attribute.h, limits.in.h, stdlib.in.h, string.in.h, verify.h, wchar.in.h,
+     gnulib-common.m4, limits-h.m4: Updated Gnulib.
+   * cdecl.1: Put when-to-colorize value synonyms on the same line.
+
+2021-08-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * run_test.sh: Test script can now count ERRORs.
+
+2021-08-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_type.c, c_type.h, check.c, parser.y, print.c, test/Makefile.am,
+     2k_typedef_i.out, c_namespace_c.out, cast_a3i.out, cast_f_i.out,
+     cast_pfx_i.out, cast_rgi.out, cast_type_i.out, cast_typedef_i.out,
+     cdecl-23.out, cdecl-Ix.out, cdecl-xx.out, const_cast_pi-c.out,
+     declare_+ctor-error.out, declare_+o_eq_rck_rk=default-c++03.out,
+     declare_+o_eq_rck_rk=delete-c++03.out, declare_0f_v-c.out,
+     declare_=i-c.out, declare_a_cd_i.out, declare_a_nua_f.out,
+     declare_ac3i.out, declare_af.out, declare_ai-c++11.out, declare_as3i.out,
+     declare_avi.out, declare_b-c89.out, declare_b_ai.out, declare_b_f_i.out,
+     declare_c-c.out, declare_c16-c++03.out, declare_c16-c99.out,
+     declare_c32-c++03.out, declare_c32-c99.out, declare_c8-c++17.out,
+     declare_cf_v-c.out, declare_cnmf_v.out, declare_co_exclam_k_b.out,
+     declare_cri.out, declare_en-knr.out, declare_enc-c.out, declare_epf.out,
+     declare_etsf_v.out, declare_exsi.out, declare_f_ai.out, declare_f_f_i.out,
+     declare_fcf.out, declare_fco_exclam_b.out, declare_ff_v-c.out,
+     declare_fiiv_v.out, declare_fiv_v.out, declare_fkr_pi.out,
+     declare_fmf_v.out, declare_fmo_star_rk_rk.out, declare_fn.out,
+     declare_frg_v.out, declare_fsi_v.out, declare_fuw3_v.out,
+     declare_fvx_v.out, declare_hb.out, declare_hc.out, declare_hc16.out,
+     declare_hc32.out, declare_hc8.out, declare_hd.out, declare_hf.out,
+     declare_hl.out, declare_hll.out, declare_hv.out, declare_hwt.out,
+     declare_ii.out, declare_ji.out, declare_lb.out, declare_lc.out,
+     declare_lc16.out, declare_lc32.out, declare_lc8.out, declare_ld-knr.out,
+     declare_lf-c.out, declare_ll-c89.out, declare_ll-knr.out, declare_lll.out,
+     declare_lv.out, declare_lwt.out, declare_mo_arrow_i.out,
+     declare_nmo_amper_i_i.out, declare_nmo_arrow_rk_pk.out,
+     declare_nmo_brackets_rcki_v.out, declare_nmo_eq_rki_rk.out,
+     declare_nmo_parens_rck_v.out, declare_nrfi_v-01-c++.out, declare_nri.out,
+     declare_o_arrow_i.out, declare_o_arrow_rk_pk.out,
+     declare_o_brackets_2i_i.out, declare_o_colon2_rk_rk.out,
+     declare_o_dot_k.out, declare_o_dot_star_rk_rk.out,
+     declare_o_exclam_2i.out, declare_o_less_eq_greater_2rck_a-c++17.out,
+     declare_o_minus2_d_rk.out, declare_o_minus2_rkd_rk.out,
+     declare_o_minus_iel_i.out, declare_o_oexclam_k_b.out,
+     declare_o_plus2_d_rk.out, declare_o_plus2_rkd_rk.out,
+     declare_o_plus_iel_i.out, declare_o_qmark_colon_k2i_i.out,
+     declare_pfkr_i.out, declare_pk.out, declare_pmri.out, declare_pri.out,
+     declare_puw3.out, declare_pv-knr.out, declare_rgf_v.out,
+     declare_ro_exclam_k_b.out, declare_rrgi.out, declare_rro_exclam_k_b.out,
+     declare_rtf_v-c.out, declare_rv.out, declare_sb.out, declare_sc-knr.out,
+     declare_sc16.out, declare_sc32.out, declare_sc8.out, declare_si-knr.out,
+     declare_sl-knr.out, declare_smi.out, declare_sv.out, declare_swt.out,
+     declare_t.out, declare_typedef_i_al8.out, declare_ub.out,
+     declare_uc16.out, declare_uc32.out, declare_uc8.out, declare_ud.out,
+     declare_udc_a4i.out, declare_uf.out, declare_uv.out, declare_uwt.out,
+     declare_uz.out, declare_v+f_v.out, declare_v.out, declare_vf_v-c.out,
+     declare_vo_exclam_k_b.out, declare_vri.out, declare_wt-c89.out,
+     declare_xxi-c.out, declare_yo_exclam_k_b.out, define_=sc_i.out,
+     define_ai.out, define_c_int_least32_t.out, define_eti.out,
+     define_namespace_=c_i.out, define_namespace_c_namespace_c.out,
+     define_rgi.out, define_si.out, dynamic_cast_pc-c.out, en_ns_c.out,
+     explain_+co_eq2_rck_b=default-cpp17.out, explain_+ctor-error.out,
+     explain_+dtor-error.out, explain_+i-c.out,
+     explain_+o_eq_rck_rk=default-02.out, explain_+o_eq_rck_rk=delete-02.out,
+     explain_+o_exclam_eq_rck_rk=delete.out, explain_0f_v-02.out,
+     explain_0f_v-c.out, explain_a_cd_i.out, explain_a_nua_f.out,
+     explain_ac9i.out, explain_af.out, explain_ai-c++11.out, explain_al3_c.out,
+     explain_as9i.out, explain_b-c89.out, explain_b_ai.out, explain_c-c.out,
+     explain_c16-c++03.out, explain_c16-c99.out, explain_c32-c++03.out,
+     explain_c32-c99.out, explain_c8-c++17.out, explain_c_al3.out,
+     explain_cast_a3a5a7i.out, explain_cast_a3a5i.out, explain_cast_a3i.out,
+     explain_cast_ai.out, explain_cast_eti.out, explain_cast_lll.out,
+     explain_cast_rgi.out, explain_cast_si.out, explain_cast_typedef_i.out,
+     explain_cepctor_i.out, explain_cf_v-c.out, explain_ci-knr.out,
+     explain_cmo_less_eq_greater_rck_i=default.out, explain_co_exclam_k_b.out,
+     explain_const_cast_pi-c.out, explain_dynamic_cast_pc-c.out,
+     explain_efd.out, explain_efi-c.out, explain_en-knr.out, explain_enc.out,
+     explain_enk.out, explain_etsf_v.out, explain_exsi.out, explain_f+_v.out,
+     explain_f__v-c++03.out, explain_f_ai.out, explain_f_v__v.out,
+     explain_fa_v-c++17.out, explain_fac3_v-c++.out, explain_fas3_v-c++.out,
+     explain_fasv_v.out, explain_fav_v-c++.out, explain_fel_v.out,
+     explain_felcc_v.out, explain_felel_v.out, explain_felv_v.out,
+     explain_ff_v-c.out, explain_fiiv_v.out, explain_fiv_v.out,
+     explain_fkr_pi.out, explain_fkr_v.out, explain_fn.out,
+     explain_fo_eq2_crki_b=default.out, explain_fo_eq2_crkk_b=default.out,
+     explain_fo_eq2_crkrk_b=default.out, explain_fo_eq2_icrk_b=default.out,
+     explain_fo_eq2_ik_b=default.out, explain_fo_eq2_kcrk_b=default.out,
+     explain_fo_eq2_ki_b=default.out, explain_fo_eq2_rkcrk_b=default.out,
+     explain_fo_less_eq_greater_2rck_i=default.out,
+     explain_fo_plus_2crk_b=default.out, explain_fpcf_i_v.out,
+     explain_frg_v.out, explain_frri_v-c++03.out, explain_fsf_v.out,
+     explain_fsi_v.out, explain_fuw3_v.out, explain_fvel_v.out,
+     explain_fvi_v.out, explain_fvv_v.out, explain_fvx_v.out, explain_hb.out,
+     explain_hc.out, explain_hc16.out, explain_hc32.out, explain_hc8.out,
+     explain_hd.out, explain_hf.out, explain_hl.out, explain_hll.out,
+     explain_hv.out, explain_hwt.out, explain_i-itself.out, explain_ii.out,
+     explain_lb.out, explain_lc.out, explain_lc16.out, explain_lc32.out,
+     explain_lc8.out, explain_ld-knr.out, explain_lf-c.out, explain_ll-c89.out,
+     explain_ll-knr.out, explain_lll.out, explain_lv.out, explain_lwt.out,
+     explain_main_f2c_i.out, explain_main_f_v.out, explain_main_fi_i.out,
+     explain_main_fiapc_hi.out, explain_main_fic_i.out,
+     explain_main_fipc_i.out, explain_main_fippi_i.out,
+     explain_nrfi_v-c++-error.out, explain_o_arrow_i.out,
+     explain_o_brackets_2i_i.out, explain_o_exclam_2i.out,
+     explain_o_minus2_d_rk.out, explain_o_minus2_rkd_rk.out,
+     explain_o_minus_iel_i.out, explain_o_new_z_z.out,
+     explain_o_plus2_d_rk.out, explain_o_plus2_rkd_rk.out,
+     explain_o_plus_iel_i.out, explain_o_qmark_colon_k2i_i.out,
+     explain_ov_o_exclam_k_b.out, explain_pcf_i.out, explain_pmi-c.out,
+     explain_pmrgi.out, explain_pmri.out, explain_pri.out, explain_prri.out,
+     explain_puw3.out, explain_pv-knr.out, explain_reinterpret_cast_pv-c.out,
+     explain_rf_v-c++03.out, explain_rgf_v.out, explain_ri-c.out,
+     explain_ro_exclam_k_b.out, explain_rr.out, explain_rrf_v-c++03.out,
+     explain_rrgi.out, explain_rro_exclam_k_b.out, explain_rrr-1.out,
+     explain_rrr-2.out, explain_rrrr.out, explain_rtf_v-error.out,
+     explain_rtpi-c++-error.out, explain_rv.out, explain_sb.out,
+     explain_sc-knr.out, explain_sc16.out, explain_sc32.out, explain_sc8.out,
+     explain_scf_v.out, explain_si-knr.out, explain_sl-knr.out,
+     explain_smi.out, explain_srf_v.out, explain_srrf_v.out,
+     explain_static_cast_i-c.out, explain_sv.out, explain_swt.out,
+     explain_thf_v.out, explain_tli-c99.out, explain_type_i.out,
+     explain_typedef_ci32.out, explain_ub.out, explain_uc16.out,
+     explain_uc32.out, explain_uc8.out, explain_ud.out, explain_udc_a4i.out,
+     explain_udl_2c_i.out, explain_udl_3c_i.out, explain_udl__i.out,
+     explain_udl_c_i-c.out, explain_udl_piul_i.out, explain_udl_ul_i.out,
+     explain_uf.out, explain_using_pfi_v-c.out, explain_uv.out,
+     explain_uwt.out, explain_v+f_v.out, explain_v.out, explain_vf_v-c.out,
+     explain_vi-knr.out, explain_vo_exclam_k_b.out, explain_vovyf-c.out,
+     explain_wt-c89.out, explain_xif_i.out, explain_xxi-c.out,
+     explain_yo_exclam_k_b.out, file-cast_x.out, file-declare_x.out,
+     file-explain_x.out, k_namespace_typedef_i.out, k_ns_typedef_i.out,
+     k_typedef_i-c.out, namespace_+typedef_i-c++14.out,
+     namespace_c_namespace_c.out, reinterpret_cast_pv-c.out, show_foo.out,
+     static_cast_i-c.out, typedef_ai.out, typedef_c_int_least32_t.out,
+     typedef_eti.out, typedef_i+.out, typedef_iw3.out, typedef_rgi.out,
+     typedef_si.out, typedef_tni.out, using_ai.out, using_c_int_least32_t.out,
+     using_eti.out, using_f-name_v.out, using_i-c.out, using_rgi.out,
+     using_si.out, xec_explain_lla.out, xec_explain_llr.out, xec_explain_t.out,
+     xec_explain_ti.out, xupc_explain_ri.out, run_test.sh,
+     explain_fo_plus_2crk_b=default.test, update_test.sh: Now diff'ing error
+     test output during "make check"; improved several error messages.
+
+2021-08-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Better error message when attempting to overload operators in C.
+   * check.c, parser.y: s/c_lang_which( LANG_CPP_11 )/c_lang_which(
+     LANG_CPP_MIN(11) )/ and similar so error messages print " until C++XX"
+     rather than " unless C++XX".
+
+2021-07-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * threadlib.m4: Updated Gnulib.
+   * c_lang.h: Fixed printing of "(with XXXXX extensions)".
+   * c_kind.h, c_type.h, types.h: s/0/0u/
+
+2021-07-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.c: Now in error messages, if there is only a single language that's
+     relevant, prints "unless <lang>".
+
+2021-07-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, check.c: Marking functions and conversion operators `=
+     delete` is now supported.
+
+2021-07-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sname.c, lexer.l, util.c, util.h: Simplified parse_identifier().
+
+2021-07-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Clarification that ~/.editrc doesn't _need_ to be present.
+   * cdecl.1: Added "or even the platform on which cdecl is running.
+   * cdecl.1: Added less(1).
+
+2021-07-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Now setting lexer_keyword_ctx = C_KW_CTX_MBR_FUNC only in C++.
+   * gibberish.c: Completed set of digraphs and trigraphs even though they're
+     not used in cdecl.
+   * c_typedef.c: Moved mbstate_t to C95.
+
+2021-07-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c: Added free_later().
+
+2021-07-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * check.c: s/identifier/name/
+
+2021-07-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast_util.c, cdecl.c, did_you_mean.c, lexer.l: Fixed
+     PJL_WARN_UNUSED_RESULT and PJL_NOWARN_UNUSED_RESULT in various locations.
+
 2021-06-30  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: s/CONFIGURATION FILE/CONFIGURATION FILES/
+   * cdecl.1: Added section on ~/.editrc.
+   * cdecl.1: Added .editrc entry.
    * c_ast_util.c: Added asserts.
 
 2021-06-29  Paul J. Lucas <paul@lucasmail.org>
