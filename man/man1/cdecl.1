@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "July 8, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "August 7, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -285,15 +285,11 @@ The choices for
 .I s
 are:
 .RS
-.TP 11
+.TP 8
 .B always
 Always colorize.
 .TP
-.B auto
-Synonym for
-.BR isatty .
-.TP
-.B isatty
+.BR auto " | " isatty " | " tty
 Colorize only when standard output is connected to a TTY
 (terminal)
 and the TERM environment variable
@@ -303,7 +299,7 @@ is not empty and not equal to
 .B never
 Never colorize.
 .TP
-.B not_file
+.BR not_file " | " not_isreg
 Colorize only when
 .I not
 writing to a regular file
@@ -327,14 +323,6 @@ understands
 (``Select Graphic Rendition'')
 ASCII terminal escape sequences
 that produce color.
-.TP
-.B not_isreg
-Synonym for
-.BR not_file .
-.TP
-.B tty
-Synonym for
-.BR isatty .
 .RE
 .IP ""
 The default is
