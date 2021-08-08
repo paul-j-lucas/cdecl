@@ -286,18 +286,17 @@ static rb_node_t* rb_tree_visit_node( rb_tree_t const *tree, rb_node_t *node,
   assert( tree != NULL );
   assert( node != NULL );
 
-  if ( node == RB_NIL )
-    return NULL;
+  while ( node != RB_NIL ) {
+    rb_node_t *const stopped_node =
+      rb_tree_visit_node( tree, node->child[RB_L], visitor, aux_data );
+    if ( stopped_node != NULL )
+      return stopped_node;
+    if ( visitor( node->data, aux_data ) )
+      return node;
+    node = node->child[RB_R];
+  } // while
 
-  rb_node_t *const stopped_node =
-    rb_tree_visit_node( tree, node->child[RB_L], visitor, aux_data );
-  if ( stopped_node != NULL )
-    return stopped_node;
-
-  if ( visitor( node->data, aux_data ) )
-    return node;
-
-  return rb_tree_visit_node( tree, node->child[RB_R], visitor, aux_data );
+  return NULL;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
