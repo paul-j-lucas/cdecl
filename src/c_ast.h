@@ -388,7 +388,7 @@ struct c_ast {
  */
 
 /**
- * Cleans-up all AST data.
+ * Cleans up all AST data.
  * (Currently, this checks that the number of AST nodes freed match the number
  * allocated.)
  */

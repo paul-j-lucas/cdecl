@@ -608,7 +608,7 @@ static inline bool unsupported( c_lang_id_t lang_ids ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Cleans up parser data at program termination.
+ * Cleans up global parser data at program termination.
  */
 void parser_cleanup( void ) {
   c_ast_list_gc( &typedef_ast_list );
@@ -857,7 +857,7 @@ static void ia_qual_push_stid( c_tid_t qual_stid, c_loc_t const *loc ) {
 }
 
 /**
- * Cleans-up parser data after each parse.
+ * Cleans up individial parse data after each parse.
  *
  * @param hard_reset If `true`, does a "hard" reset that currently resets the
  * EOF flag of the lexer.  This should be `true` if an error occurs and
