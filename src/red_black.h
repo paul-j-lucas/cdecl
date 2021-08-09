@@ -148,6 +148,10 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
  * @param data A pointer to the data to search for.
  * @return Returns a pointer to the node containing \a data or NULL if not
  * found.
+ *
+ * @warning Even though this function returns a pointer to a non-`const` node,
+ * the node's data _must not_ be modified if that would change the node's
+ * position within the tree according to the tree's data comparison function.
  */
 PJL_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data );
@@ -183,6 +187,10 @@ void rb_tree_init( rb_tree_t *tree, rb_data_cmp_t data_cmp_fn );
  * @return Returns NULL if \a data is inserted or a pointer to a node if \a
  * data already exists.
  *
+ * @warning Even though this function returns a pointer to a non-`const` node,
+ * the node's data _must not_ be modified if that would change the node's
+ * position within the tree according to the tree's data comparison function.
+ *
  * @sa rb_tree_delete()
  */
 PJL_WARN_UNUSED_RESULT
@@ -196,6 +204,10 @@ rb_node_t* rb_tree_insert( rb_tree_t *tree, void *data );
  * @param aux_data Optional data passed to \a visitor.
  * @return Returns a pointer to the node at which visiting stopped or NULL if
  * the entire tree was visited.
+ *
+ * @warning Even though this function returns a pointer to a non-`const` node,
+ * the node's data _must not_ be modified if that would change the node's
+ * position within the tree according to the tree's data comparison function.
  */
 PJL_WARN_UNUSED_RESULT
 rb_node_t* rb_tree_visit( rb_tree_t const *tree, rb_visitor_t visitor,
