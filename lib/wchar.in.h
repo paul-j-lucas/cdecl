@@ -72,9 +72,8 @@
 # include <stddef.h>
 #endif
 
-#if @GNULIB_WCSDUP@
-# include <stdlib.h> /* for free() */
-#endif
+/* Get free().  */
+#include <stdlib.h>
 
 /* Include the original <wchar.h> if it exists.
    Some builds of uClibc lack it.  */
@@ -945,7 +944,7 @@ _GL_WARN_ON_USE (wcsxfrm, "wcsxfrm is unportable - "
 #  endif
 _GL_CXXALIAS_MDA (wcsdup, wchar_t *, (const wchar_t *s));
 # else
-#  if !@HAVE_WCSDUP@
+#  if !@HAVE_WCSDUP@ || __GNUC__ >= 11
 _GL_FUNCDECL_SYS (wcsdup, wchar_t *,
                   (const wchar_t *s)
                   _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
@@ -953,30 +952,40 @@ _GL_FUNCDECL_SYS (wcsdup, wchar_t *,
 _GL_CXXALIAS_SYS (wcsdup, wchar_t *, (const wchar_t *s));
 # endif
 _GL_CXXALIASWARN (wcsdup);
-#elif defined GNULIB_POSIXCHECK
-# undef wcsdup
-# if HAVE_RAW_DECL_WCSDUP
+#else
+# if __GNUC__ >= 11 && !defined wcsdup
+/* For -Wmismatched-dealloc: Associate wcsdup with free or rpl_free.  */
+_GL_FUNCDECL_SYS (wcsdup, wchar_t *,
+                  (const wchar_t *s)
+                  _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+# endif
+# if defined GNULIB_POSIXCHECK
+#  undef wcsdup
+#  if HAVE_RAW_DECL_WCSDUP
 _GL_WARN_ON_USE (wcsdup, "wcsdup is unportable - "
                  "use gnulib module wcsdup for portability");
-# endif
-#elif @GNULIB_MDA_WCSDUP@
+#  endif
+# elif @GNULIB_MDA_WCSDUP@
 /* On native Windows, map 'wcsdup' to '_wcsdup', so that -loldnames is not
    required.  In C++ with GNULIB_NAMESPACE, avoid differences between
    platforms by defining GNULIB_NAMESPACE::wcsdup always.  */
-# if defined _WIN32 && !defined __CYGWIN__
-#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
-#   undef wcsdup
-#   define wcsdup _wcsdup
-#  endif
+#  if defined _WIN32 && !defined __CYGWIN__
+#   if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#    undef wcsdup
+#    define wcsdup _wcsdup
+#   endif
 _GL_CXXALIAS_MDA (wcsdup, wchar_t *, (const wchar_t *s));
-# else
-_GL_FUNCDECL_SYS (wcsdup, wchar_t *, (const wchar_t *s));
-#  if @HAVE_DECL_WCSDUP@
+#  else
+_GL_FUNCDECL_SYS (wcsdup, wchar_t *,
+                  (const wchar_t *s)
+                  _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+#   if @HAVE_DECL_WCSDUP@
 _GL_CXXALIAS_SYS (wcsdup, wchar_t *, (const wchar_t *s));
+#   endif
 #  endif
-# endif
-# if (defined _WIN32 && !defined __CYGWIN__) || @HAVE_DECL_WCSDUP@
+#  if (defined _WIN32 && !defined __CYGWIN__) || @HAVE_DECL_WCSDUP@
 _GL_CXXALIASWARN (wcsdup);
+#  endif
 # endif
 #endif
 

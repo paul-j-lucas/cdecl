@@ -1,4 +1,4 @@
-# gnulib-common.m4 serial 66
+# gnulib-common.m4 serial 67
 dnl Copyright (C) 2007-2021 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -85,12 +85,12 @@ AC_DEFUN([gl_COMMON_BODY], [
 # define _GL_ATTR_fallthrough _GL_GNUC_PREREQ (7, 0)
 # define _GL_ATTR_format _GL_GNUC_PREREQ (2, 7)
 # define _GL_ATTR_leaf _GL_GNUC_PREREQ (4, 6)
+# define _GL_ATTR_malloc _GL_GNUC_PREREQ (3, 0)
 # ifdef _ICC
 #  define _GL_ATTR_may_alias 0
 # else
 #  define _GL_ATTR_may_alias _GL_GNUC_PREREQ (3, 3)
 # endif
-# define _GL_ATTR_malloc _GL_GNUC_PREREQ (3, 0)
 # define _GL_ATTR_noinline _GL_GNUC_PREREQ (3, 1)
 # define _GL_ATTR_nonnull _GL_GNUC_PREREQ (3, 3)
 # define _GL_ATTR_nonstring _GL_GNUC_PREREQ (8, 0)
@@ -207,6 +207,12 @@ AC_DEFUN([gl_COMMON_BODY], [
 # define _GL_ATTRIBUTE_LEAF
 #endif
 
+#if _GL_HAS_ATTRIBUTE (malloc)
+# define _GL_ATTRIBUTE_MALLOC __attribute__ ((__malloc__))
+#else
+# define _GL_ATTRIBUTE_MALLOC
+#endif
+
 /* Oracle Studio 12.6 mishandles may_alias despite __has_attribute OK.  */
 #if _GL_HAS_ATTRIBUTE (may_alias) && !defined __SUNPRO_C
 # define _GL_ATTRIBUTE_MAY_ALIAS __attribute__ ((__may_alias__))
@@ -221,12 +227,6 @@ AC_DEFUN([gl_COMMON_BODY], [
 #endif
 /* Earlier spellings of this macro.  */
 #define _UNUSED_PARAMETER_ _GL_ATTRIBUTE_MAYBE_UNUSED
-
-#if _GL_HAS_ATTRIBUTE (malloc)
-# define _GL_ATTRIBUTE_MALLOC __attribute__ ((__malloc__))
-#else
-# define _GL_ATTRIBUTE_MALLOC
-#endif
 
 #if _GL_HAS_C_ATTRIBUTE (nodiscard)
 # define _GL_ATTRIBUTE_NODISCARD [[__nodiscard__]]

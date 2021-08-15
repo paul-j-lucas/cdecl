@@ -117,6 +117,9 @@
 # undef __THROW
 # undef __THROWNL
 # undef __attr_access
+# undef __attr_access_none
+# undef __attr_dealloc
+# undef __attr_dealloc_free
 # undef __attribute__
 # undef __attribute_alloc_size__
 # undef __attribute_artificial__

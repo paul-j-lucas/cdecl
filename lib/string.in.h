@@ -47,9 +47,8 @@
 /* NetBSD 5.0 mis-defines NULL.  */
 #include <stddef.h>
 
-#if @GNULIB_STRDUP@
-# include <stdlib.h> /* for free() */
-#endif
+/* Get free().  */
+#include <stdlib.h>
 
 /* MirBSD defines mbslen as a macro.  */
 #if @GNULIB_MBSLEN@ && defined __MirBSD__
@@ -438,7 +437,7 @@ _GL_CXXALIAS_MDA (strdup, char *, (char const *__s));
     /* strdup exists as a function and as a macro.  Get rid of the macro.  */
 #   undef strdup
 #  endif
-#  if !(@HAVE_DECL_STRDUP@ || defined strdup)
+#  if (!@HAVE_DECL_STRDUP@ || __GNUC__ >= 11) && !defined strdup
 _GL_FUNCDECL_SYS (strdup, char *,
                   (char const *__s)
                   _GL_ARG_NONNULL ((1))
@@ -447,29 +446,38 @@ _GL_FUNCDECL_SYS (strdup, char *,
 _GL_CXXALIAS_SYS (strdup, char *, (char const *__s));
 # endif
 _GL_CXXALIASWARN (strdup);
-#elif defined GNULIB_POSIXCHECK
-# undef strdup
-# if HAVE_RAW_DECL_STRDUP
+#else
+# if __GNUC__ >= 11 && !defined strdup
+/* For -Wmismatched-dealloc: Associate strdup with free or rpl_free.  */
+_GL_FUNCDECL_SYS (strdup, char *,
+                  (char const *__s)
+                  _GL_ARG_NONNULL ((1))
+                  _GL_ATTRIBUTE_MALLOC _GL_ATTRIBUTE_DEALLOC_FREE);
+# endif
+# if defined GNULIB_POSIXCHECK
+#  undef strdup
+#  if HAVE_RAW_DECL_STRDUP
 _GL_WARN_ON_USE (strdup, "strdup is unportable - "
                  "use gnulib module strdup for portability");
-# endif
-#elif @GNULIB_MDA_STRDUP@
+#  endif
+# elif @GNULIB_MDA_STRDUP@
 /* On native Windows, map 'creat' to '_creat', so that -loldnames is not
    required.  In C++ with GNULIB_NAMESPACE, avoid differences between
    platforms by defining GNULIB_NAMESPACE::strdup always.  */
-# if defined _WIN32 && !defined __CYGWIN__
-#  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
-#   undef strdup
-#   define strdup _strdup
-#  endif
+#  if defined _WIN32 && !defined __CYGWIN__
+#   if !(defined __cplusplus && defined GNULIB_NAMESPACE)
+#    undef strdup
+#    define strdup _strdup
+#   endif
 _GL_CXXALIAS_MDA (strdup, char *, (char const *__s));
-# else
-#  if defined __cplusplus && defined GNULIB_NAMESPACE && defined strdup
-#   undef strdup
-#  endif
+#  else
+#   if defined __cplusplus && defined GNULIB_NAMESPACE && defined strdup
+#    undef strdup
+#   endif
 _GL_CXXALIAS_SYS (strdup, char *, (char const *__s));
-# endif
+#  endif
 _GL_CXXALIASWARN (strdup);
+# endif
 #endif
 
 /* Append no more than N characters from SRC onto DEST.  */
