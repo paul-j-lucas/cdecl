@@ -1,3 +1,13 @@
+2021-08-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * _Noreturn.h, cdefs.h, libc-config.h, stdio.in.h, stdlib.in.h, string.in.h,
+     wchar.in.h, gnulib-common.m4: Updated GnuLib.
+
+2021-08-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * red_black.c: Changed rb_tree_visit_node() to use iteration rather than
+     recursion.
+
 2021-08-07  Paul J. Lucas <paul@lucasmail.org>
 
    * attribute.h, limits.in.h, stdlib.in.h, string.in.h, verify.h, wchar.in.h,
