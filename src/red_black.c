@@ -335,7 +335,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *delete_node ) {
   return data;
 }
 
-rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data ) {
+rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data ) {
   assert( tree != NULL );
   assert( data != NULL );
 

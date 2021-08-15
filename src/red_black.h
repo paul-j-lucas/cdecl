@@ -154,7 +154,7 @@ void* rb_tree_delete( rb_tree_t *tree, rb_node_t *node );
  * position within the tree according to the tree's data comparison function.
  */
 PJL_WARN_UNUSED_RESULT
-rb_node_t* rb_tree_find( rb_tree_t *tree, void const *data );
+rb_node_t* rb_tree_find( rb_tree_t const *tree, void const *data );
 
 /**
  * Frees all memory associated with \a tree but _not_ \a tree itself.
