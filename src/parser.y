@@ -720,7 +720,7 @@ static void fl_elaborate_error( char const *file, int line,
 
   if ( error_token != NULL ) {
     c_keyword_t const *const k =
-      c_keyword_find( error_token, LANG_ANY, C_KW_CTX_ALL );
+      c_keyword_find( error_token, LANG_ANY, C_KW_CTX_DEFAULT );
     if ( k != NULL ) {
       c_lang_id_t const oldest_lang = c_lang_oldest( k->lang_ids );
       if ( oldest_lang > opt_lang )
@@ -807,7 +807,7 @@ static void fl_keyword_expected( char const *file, int line,
   char const *const error_token = printable_token();
   if ( error_token != NULL && strcmp( error_token, keyword ) == 0 ) {
     c_keyword_t const *const k =
-      c_keyword_find( keyword, LANG_ANY, C_KW_CTX_ALL );
+      c_keyword_find( keyword, LANG_ANY, C_KW_CTX_DEFAULT );
     if ( k != NULL ) {
       char const *const which_lang = c_lang_which( k->lang_ids );
       if ( which_lang[0] != '\0' ) {
@@ -3977,7 +3977,7 @@ rparen_func_qualifier_list_c_stid_opt
     }
     func_qualifier_list_c_stid_opt
     {
-      lexer_keyword_ctx = C_KW_CTX_ALL;
+      lexer_keyword_ctx = C_KW_CTX_DEFAULT;
       $$ = $3;
     }
   ;
@@ -5131,7 +5131,7 @@ attribute_specifier_list_c_atid
     }
     using_opt attribute_list_c_atid_opt ']' rbracket_exp
     {
-      lexer_keyword_ctx = C_KW_CTX_ALL;
+      lexer_keyword_ctx = C_KW_CTX_DEFAULT;
 
       DUMP_START( "attribute_specifier_list_c_atid",
                   "'[[' using_opt attribute_list_c_atid_opt ']]'" );

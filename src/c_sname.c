@@ -246,7 +246,8 @@ bool c_sname_parse( char const *s, c_sname_t *sname ) {
     char *const name = check_strndup( s, (size_t)(end - s) );
 
     // Ensure that the name is NOT a keyword.
-    c_keyword_t const *const k = c_keyword_find( name, opt_lang, C_KW_CTX_ALL );
+    c_keyword_t const *const k =
+      c_keyword_find( name, opt_lang, C_KW_CTX_DEFAULT );
     if ( k != NULL ) {
       FREE( name );
       break;

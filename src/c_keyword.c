@@ -41,7 +41,7 @@
 #include <string.h>
 
 // shorthands
-#define KC__                      C_KW_CTX_ALL
+#define KC__                      C_KW_CTX_DEFAULT
 #define KC_A                      C_KW_CTX_ATTRIBUTE
 #define KC_F                      C_KW_CTX_MBR_FUNC
 
@@ -390,7 +390,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
       continue;
 
     if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
-         k->kw_ctx != C_KW_CTX_ALL && kw_ctx != k->kw_ctx ) {
+         k->kw_ctx != C_KW_CTX_DEFAULT && kw_ctx != k->kw_ctx ) {
       //
       // Keyword contexts matter only when converting gibberish to pseudo-
       // English.  For example, we do NOT match attribute names when parsing

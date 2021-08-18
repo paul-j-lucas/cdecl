@@ -47,7 +47,7 @@
  * @note These matter only when converting gibberish to pseudo-English.
  */
 enum c_keyword_ctx {
-  C_KW_CTX_ALL,                         ///< All contexts.
+  C_KW_CTX_DEFAULT,                     ///< Default context.
   C_KW_CTX_ATTRIBUTE,                   ///< Attribute declaration.
   C_KW_CTX_MBR_FUNC                     ///< Member function declaration.
 };

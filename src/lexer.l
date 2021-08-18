@@ -444,7 +444,8 @@ static bool c_sname_parse_dtor( char const *s, c_sname_t *sname ) {
     char *const name = strndup( s, (size_t)(end - s) );
 
     // Ensure that the name is NOT a keyword.
-    c_keyword_t const *const k = c_keyword_find( name, opt_lang, C_KW_CTX_ALL );
+    c_keyword_t const *const k =
+      c_keyword_find( name, opt_lang, C_KW_CTX_DEFAULT );
     if ( k != NULL ) {
       FREE( name );
       if ( k->literal == L_COMPL ) {    // k->literal is set to L_* so == is OK
@@ -1200,7 +1201,7 @@ void lexer_reset( bool hard_reset ) {
   BEGIN( INITIAL );
   input_len = input_sent = 0;
   lexer_find = LEXER_FIND_ALL;
-  lexer_keyword_ctx = C_KW_CTX_ALL;
+  lexer_keyword_ctx = C_KW_CTX_DEFAULT;
   newline();
   strbuf_free( &str_lit_buf );
 }
