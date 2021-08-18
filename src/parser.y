@@ -3912,6 +3912,19 @@ knr_func_or_constructor_decl_c_ast
      */
   : Y_NAME '(' param_list_c_ast_opt rparen_func_qualifier_list_c_stid_opt
     {
+      if ( OPT_LANG_IS(C_MIN(99)) ) {
+        //
+        // In C99 and later, implicit int is an error.  This check has to be
+        // done now in the parser rather than later in the AST since the AST
+        // would have no "memory" that the return type was implicitly int.
+        //
+        print_error( &@1,
+          "implicit \"%s\" functions are illegal in %s and later\n",
+          L_INT, c_lang_name( LANG_C_99 )
+        );
+        PARSE_ABORT();
+      }
+
       DUMP_START( "knr_func_or_constructor_decl_c_ast",
                   "NAME '(' param_list_c_ast_opt ')'" );
       DUMP_STR( "NAME", $1 );
@@ -3947,19 +3960,6 @@ knr_func_or_constructor_decl_c_ast
 
       DUMP_AST( "knr_func_or_constructor_decl_c_ast", $$ );
       DUMP_END();
-
-      if ( OPT_LANG_IS(C_MIN(99)) ) {
-        //
-        // In C99 and later, however, implicit int is an error.  This check has
-        // to be done now in the parser rather than later in the AST since the
-        // AST had no "memory" that the return type was implicitly int.
-        //
-        print_error( &@1,
-          "implicit \"%s\" functions are illegal in %s and later\n",
-          L_INT, c_lang_name( LANG_C_99 )
-        );
-        PARSE_ABORT();
-      }
     }
   ;
 
