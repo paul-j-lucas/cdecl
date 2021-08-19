@@ -20,6 +20,40 @@
 #       along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
+# Uncomment the following line for shell tracing.
+#set -x
+
+########## Functions ##########################################################
+
+error() {
+  echo $ME: $*
+  exit 1
+}
+
+assert_exists() {
+  for command in $*
+  do
+    command -v $command > /dev/null 2>&1 ||
+      error "required command \"$command\" not in \$PATH"
+  done
+}
+
+local_basename() {
+  ##
+  # Autoconf, 11.15:
+  #
+  # basename
+  #   Not all hosts have a working basename. You can use expr instead.
+  ##
+  expr "//$1" : '.*/\(.*\)'
+}
+
+########## Begin ##############################################################
+
+ME=`local_basename "$0"`
+
+assert_exists autoreconf automake m4
+
 echo "Generating \"configure\"..."
 autoreconf -fi
 
