@@ -142,7 +142,7 @@
 
 #ifndef PJL_IGNORE_RV
 #define PJL_IGNORE_RV(FN_CALL)    ((void)(FN_CALL))
-#endif /* HAVE___TYPEOF__ */
+#endif /* PJL_IGNORE_RV */
 
 #ifndef PJL_PRINTF_LIKE_FUNC
 #define PJL_PRINTF_LIKE_FUNC(N)   /* nothing */
