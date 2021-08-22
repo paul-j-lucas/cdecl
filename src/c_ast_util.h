@@ -135,6 +135,19 @@ PJL_WARN_UNUSED_RESULT
 bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids );
 
 /**
+ * Checks whether \a ast is an AST for a pointer to a \a kind AST.
+ *
+ * @param ast The AST to check.
+ * @param kind The kind to check for.
+ * @return Returns `true` only if \a ast is a pointer to \a kind.
+ *
+ * @sa c_ast_is_ptr_to_tid_any()
+ * @sa c_ast_is_ptr_to_type_any()
+ */
+PJL_WARN_UNUSED_RESULT
+bool c_ast_is_ptr_to_kind( c_ast_t const *ast, c_kind_id_t kind_id );
+
+/**
  * Checks whether \a ast is an AST for a pointer to another AST having a type
  * that contains any one of \a tids.
  *
@@ -143,36 +156,39 @@ bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids );
  * @return If \a ast is a pointer and the pointed-to AST has a type that is any
  * one of \a tids, returns the pointed-to AST; otherwise returns NULL.
  *
- * @sa c_ast_is_ptr_to_type()
+ * @sa c_ast_is_ptr_to_kind()
+ * @sa c_ast_is_ptr_to_type_any()
  * @sa c_ast_is_ref_to_tid_any()
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids );
 
 /**
- * Checks whether \a ast is an AST for a pointer to a certain type.
+ * Checks whether \a ast is an AST for a pointer to another AST having \a type.
  * For example:
- *  + `c_ast_is_ptr_to_type( ast, &T_ANY, &C_TYPE_LIT_B(TB_CHAR) )`
+ *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &C_TYPE_LIT_B(TB_CHAR) )`
  *    returns `true` only if \a ast is pointer to `char` (`char*`) _exactly_.
- *  + `c_ast_is_ptr_to_type( ast, &T_ANY, &C_TYPE_LIT(TB_CHAR, TS_CONST, TA_NONE) )`
+ *  + `c_ast_is_ptr_to_type_any( ast, &T_ANY, &C_TYPE_LIT(TB_CHAR, TS_CONST, TA_NONE) )`
  *    returns `true` only if \a ast is a pointer to `const` `char` (`char
  *    const*`) _exactly_.
- *  + `c_ast_is_ptr_to_type( ast, &C_TYPE_LIT_ANY_S(c_tid_compl( TS_CONST )), &C_TYPE_LIT_B(TB_CHAR) )`
+ *  + `c_ast_is_ptr_to_type_any( ast, &C_TYPE_LIT_ANY_S(c_tid_compl( TS_CONST )), &C_TYPE_LIT_B(TB_CHAR) )`
  *    returns `true` if \a ast is a pointer to `char` regardless of `const`
  *    (`char*` or `char const*`).
  *
  * @param ast The AST to check.
  * @param mask_type The type mask to apply to the type of \a ast before
  * equality comparison with \a equal_type.
- * @param equal_type The _exact_ type to check against.
+ * @param type The type to check against.  Only type IDs that are not NONE are
+ * compared.
  * @return Returns `true` only if \a ast (masked with \a mask_type) is a
- * pointer to \a equal_type.
+ * pointer to an AST having \a type.
  *
+ * @sa c_ast_is_ptr_to_kind()
  * @sa c_ast_is_ptr_to_tid_any()
  */
 PJL_WARN_UNUSED_RESULT
-bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
-                           c_type_t const *equal_type );
+bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
+                               c_type_t const *type );
 
 /**
  * Checks whether \a ast is an AST for a reference to another AST having a type
@@ -200,7 +216,7 @@ c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids );
  * @return If \a ast is a reference, returns the AST \a ast is a reference to;
  * otherwise returns NULL.
  *
- * @sa c_ast_is_ptr_to_type()
+ * @sa c_ast_is_ptr_to_type_any()
  * @sa c_ast_is_ref_to_tid_any()
  */
 PJL_WARN_UNUSED_RESULT

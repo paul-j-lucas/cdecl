@@ -508,8 +508,14 @@ bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids ) {
   return (ast->kind_id & kind_ids) != K_NONE;
 }
 
-bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
-                           c_type_t const *equal_type ) {
+bool c_ast_is_ptr_to_kind( c_ast_t const *ast, c_kind_id_t kind_id ) {
+  assert( ast != NULL );
+  ast = c_ast_unpointer( ast );
+  return ast != NULL && ast->kind_id == kind_id;
+}
+
+bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
+                               c_type_t const *type ) {
   assert( mask_type != NULL );
 
   c_tid_t cv_stids;
@@ -521,7 +527,7 @@ bool c_ast_is_ptr_to_type( c_ast_t const *ast, c_type_t const *mask_type,
     (ast->type.stid | cv_stids)       & mask_type->stid,
     ast->type.atid                    & mask_type->atid
   };
-  return c_type_equal( &masked_type, equal_type );
+  return c_type_is_any( &masked_type, type );
 }
 
 c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {

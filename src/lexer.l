@@ -367,6 +367,15 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
                         { { LANG_C_99, L_EMC__SAT   },
                           { LANG_ANY,  NULL         } } ) },
 
+  // Microsoft extensions
+  { L_MSC_CDECL,      C_SY1( false, L_MSC___CDECL         ) },
+  { L_MSC_CLRCALL,    C_SY1( false, L_MSC___CLRCALL       ) },
+  { L_MSC_FASTCALL,   C_SY1( false, L_MSC___FASTCALL      ) },
+  { L_MSC_STDCALL,    C_SY1( false, L_MSC___STDCALL       ) },
+  { L_MSC_THISCALL,   C_SY1( false, L_MSC___THISCALL      ) },
+  { L_MSC_VECTORCALL, C_SY1( false, L_MSC___VECTORCALL    ) },
+  { L_MSC_WINAPI,     C_SY1( true,  L_MSC___STDCALL       ) },
+
   { NULL,             TOKEN( 0                            ) }
 };
 

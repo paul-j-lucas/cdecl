@@ -324,6 +324,14 @@ enum c_tpid {
 #define TA_NORETURN           0x0000000000000104ull /**< `noreturn`           */
 #define TA_NO_UNIQUE_ADDRESS  0x0000000000000204ull /**< `no_unique_address`  */
 
+// Microsoft calling conventions
+#define TA_MSC_CDECL          0x0000000000001004ull /**< `__cdecl`            */
+#define TA_MSC_CLRCALL        0x0000000000002004ull /**< `__clrcall`          */
+#define TA_MSC_FASTCALL       0x0000000000004004ull /**< `__fastcall`         */
+#define TA_MSC_STDCALL        0x0000000000008004ull /**< `__stdcall`          */
+#define TA_MSC_THISCALL       0x0000000000010004ull /**< `__thiscall`         */
+#define TA_MSC_VECTORCALL     0x0000000000020004ull /**< `__vectorcall`       */
+
 // bit masks
 #define TX_MASK_TPID          0x000000000000000Full /**< Type part ID bitmask.*/
 #define TS_MASK_STORAGE       0x000000000FFFFFF2ull /**< Storage bitmask.     */
@@ -336,6 +344,9 @@ extern c_type_t const T_ANY_CONST_CLASS;///< Any `const` `class`-like type.
 extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 
 // shorthands
+
+/// Shorthand for any Microsoft C/C++ calling convention.
+#define TA_ANY_MSC_CALL       0x000000000003F004ull
 
 /// Shorthand for any character type.
 #define TB_ANY_CHAR           ( TB_CHAR | TB_WCHAR_T \

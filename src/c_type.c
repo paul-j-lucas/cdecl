@@ -141,6 +141,25 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
 
   { TA_NO_UNIQUE_ADDRESS, LANG_CPP_MIN(20), H_NON_UNIQUE_ADDRESS,
     C_LANG_LIT( { LANG_ANY, L_NO_UNIQUE_ADDRESS } ) },
+
+  // Microsoft extensions
+  { TA_MSC_CDECL, LANG_MIN(C_89), L_MSC_CDECL,
+    C_LANG_LIT( { LANG_ANY, L_MSC___CDECL } ) },
+
+  { TA_MSC_CLRCALL, LANG_MIN(C_89), L_MSC_CLRCALL,
+    C_LANG_LIT( { LANG_ANY, L_MSC___CLRCALL } ) },
+
+  { TA_MSC_FASTCALL, LANG_MIN(C_89), L_MSC_FASTCALL,
+    C_LANG_LIT( { LANG_ANY, L_MSC___FASTCALL } ) },
+
+  { TA_MSC_STDCALL, LANG_MIN(C_89), L_MSC_STDCALL,
+    C_LANG_LIT( { LANG_ANY, L_MSC___STDCALL } ) },
+
+  { TA_MSC_THISCALL, LANG_MIN(C_89), L_MSC_THISCALL,
+    C_LANG_LIT( { LANG_ANY, L_MSC___THISCALL } ) },
+
+  { TA_MSC_VECTORCALL, LANG_MIN(C_89), L_MSC_VECTORCALL,
+    C_LANG_LIT( { LANG_ANY, L_MSC___VECTORCALL } ) },
 };
 
 /**
@@ -872,7 +891,7 @@ char const* c_type_name( c_type_t const *type, bool in_english,
     atid &= c_tid_compl( TA_NORETURN );
   }
 
-  if ( atid != TA_NONE ) {
+  if ( (atid & c_tid_compl( TA_ANY_MSC_CALL )) != TA_NONE ) {
     static c_tid_t const C_ATTRIBUTE[] = {
       TA_CARRIES_DEPENDENCY,
       TA_DEPRECATED,
@@ -881,6 +900,7 @@ char const* c_type_name( c_type_t const *type, bool in_english,
       TA_NORETURN,                      // still here for C++'s [[noreturn]]
       TA_NO_UNIQUE_ADDRESS,
     };
+    // Microsoft calling conventions must be handled later -- see below.
 
     bool const print_brackets =
       OPT_LANG_IS(MIN(C_2X)) &&
@@ -1037,6 +1057,17 @@ char const* c_type_name( c_type_t const *type, bool in_english,
     TB_EMC_FRACT,
   };
   C_TID_NAME_CAT( sbuf, btid, C_TYPE, in_english, ' ', &space );
+
+  // Microsoft calling conventions must be handled here.
+  static c_tid_t const C_MSC_CALL[] = {
+    TA_MSC_CDECL,
+    TA_MSC_CLRCALL,
+    TA_MSC_FASTCALL,
+    TA_MSC_STDCALL,
+    TA_MSC_THISCALL,
+    TA_MSC_VECTORCALL,
+  };
+  C_TID_NAME_CAT( sbuf, atid, C_MSC_CALL, in_english, ' ', &space );
 
   if ( east_stid != TS_NONE )
     C_TID_NAME_CAT( sbuf, east_stid, C_QUALIFIER, in_english, ' ', &space );

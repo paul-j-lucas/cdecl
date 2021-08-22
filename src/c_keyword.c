@@ -375,6 +375,20 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_APPLE___BLOCK,
     Y_APPLE___BLOCK,      LANG_ANY,               KC__, TS_APPLE_BLOCK        },
 
+  // Microsoft extensions
+  { L_MSC___CDECL,
+    Y_MSC___CDECL,        LANG_ANY,               KC__, TA_MSC_CDECL          },
+  { L_MSC___CLRCALL,
+    Y_MSC___CLRCALL,      LANG_ANY,               KC__, TA_MSC_CLRCALL        },
+  { L_MSC___FASTCALL,
+    Y_MSC___FASTCALL,     LANG_ANY,               KC__, TA_MSC_FASTCALL       },
+  { L_MSC___STDCALL,
+    Y_MSC___STDCALL,      LANG_ANY,               KC__, TA_MSC_STDCALL        },
+  { L_MSC___THISCALL,
+    Y_MSC___THISCALL,     LANG_ANY,               KC__, TA_MSC_THISCALL       },
+  { L_MSC___VECTORCALL,
+    Y_MSC___VECTORCALL,   LANG_ANY,               KC__, TA_MSC_VECTORCALL     },
+
   { NULL,
     0,                    LANG_NONE,              KC__, TX_NONE               }
 };

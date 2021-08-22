@@ -10,6 +10,13 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 10.4
+
+** Microsoft calling conventions
+Added support for Microsoft calling conventions __cdecl, __clrcall, __fastcall,
+__stdcall, __thiscall, and __vectorcall.
+
+
 * Changes in Cdecl 10.3
 
 ** Deleted functions and conversion operators

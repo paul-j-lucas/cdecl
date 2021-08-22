@@ -362,9 +362,8 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( ast->kind_id == K_BUILTIN );
 
-  if ( (ast->parent_ast == NULL ||
-        ast->parent_ast->kind_id != K_USER_DEF_CONVERSION) &&
-        ast->type.btid == TB_NONE ) {
+  if ( !c_ast_parent_is_kind( ast, K_USER_DEF_CONVERSION ) &&
+       ast->type.btid == TB_NONE ) {
     print_error( &ast->loc,
       "implicit \"%s\" is illegal in %s and later\n",
       L_INT, c_lang_name( LANG_C_99 )
@@ -869,7 +868,7 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *ast ) {
   switch ( raw_ast->kind_id ) {
     case K_ARRAY:                       // char *argv[]
     case K_POINTER:                     // char **argv
-      if ( !c_ast_is_ptr_to_type( ast->as.parent.of_ast,
+      if ( !c_ast_is_ptr_to_type_any( ast->as.parent.of_ast,
               &C_TYPE_LIT_S_ANY( c_tid_compl( TS_CONST ) ),
               &C_TYPE_LIT_B( TB_CHAR ) ) ) {
         print_error( &ast->loc,
@@ -1683,7 +1682,8 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
   c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
   switch ( to_ast->kind_id ) {
     case K_FUNCTION:
-      if ( ast->kind_id == K_POINTER && !c_type_is_none( &to_ast->type ) ) {
+      if ( c_type_is_any( &to_ast->type,
+            &C_TYPE_LIT_A_ANY( c_tid_compl( TA_ANY_MSC_CALL ) ) ) ) {
         print_error( &to_ast->loc,
           "%s to %s %s is illegal\n",
           c_kind_name( ast->kind_id ),
@@ -1705,7 +1705,14 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
         print_hint( "\"*&\"" );
       return false;
     default:
-      /* suppress warning */;
+      if ( c_type_is_tid_any( &ast->type, TA_ANY_MSC_CALL ) ) {
+        print_error( &ast->loc,
+          "\"%s\": can be used only for %ss and %ss to %s\n",
+          c_tid_name_error( ast->type.atid ),
+          L_FUNCTION, L_POINTER, L_FUNCTION
+        );
+        return false;
+      }
   } // switch
 
   if ( c_ast_is_register( to_ast ) ) {
@@ -1890,7 +1897,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
         case TB_LONG | TB_DOUBLE:
           break;
         default:                        // check for: char const*
-          if ( !c_ast_is_ptr_to_type( param_ast,
+          if ( !c_ast_is_ptr_to_type_any( param_ast,
                   &T_ANY, &C_TYPE_LIT( TB_CHAR, TS_CONST, TA_NONE ) ) ) {
             print_error( &param_ast->loc,
               "invalid parameter type for %s %s; must be one of: "

@@ -1281,6 +1281,14 @@ static void yyerror( char const *msg ) {
 %token  <tid>       Y_APPLE___BLOCK     // __block storage class
 %token              Y_APPLE_BLOCK       // English for '^'
 
+                    // Microsoft extensions
+%token  <tid>       Y_MSC___CDECL
+%token  <tid>       Y_MSC___CLRCALL
+%token  <tid>       Y_MSC___FASTCALL
+%token  <tid>       Y_MSC___STDCALL
+%token  <tid>       Y_MSC___THISCALL
+%token  <tid>       Y_MSC___VECTORCALL
+
                     // Miscellaneous
 %token              ':'
 %token              ';'
@@ -1344,6 +1352,7 @@ static void yyerror( char const *msg ) {
 %type   <tid>       enum_fixed_type_modifier_list_english_btid_opt
 %type   <ast>       enum_unmodified_fixed_type_english_ast
 %type   <ast>       func_decl_english_ast
+%type   <type>      func_qualifier_english_type_opt
 %type   <bitmask>   member_or_non_member_mask_opt
 %type   <literal>   new_style_cast_english_literal
 %type   <sname>     of_scope_english
@@ -1457,6 +1466,10 @@ static void yyerror( char const *msg ) {
 %type   <ast>       pointer_udc_decl_c_ast
 %type   <ast>       reference_udc_decl_c_ast
 %type   <ast>       udc_decl_c_ast udc_decl_c_ast_opt
+
+                    // Microsoft extensions
+%type   <tid>       msc_calling_convention_atid
+%type   <ast_pair>  msc_calling_convention_c_astp
 
                     // Miscellaneous
 %type   <name>      any_name any_name_exp
@@ -3072,7 +3085,7 @@ destructor_decl_english_ast
 
 func_decl_english_ast
   : // in_attr: qualifier
-    ref_qualifier_english_stid_opt member_or_non_member_mask_opt
+    func_qualifier_english_type_opt member_or_non_member_mask_opt
     Y_FUNCTION paren_decl_list_english_opt returning_english_ast_opt
     {
       DUMP_START( "func_decl_english_ast",
@@ -3081,13 +3094,14 @@ func_decl_english_ast
                   "FUNCTION paren_decl_list_english_opt "
                   "returning_english_ast_opt" );
       DUMP_TID( "(qualifier)", ia_qual_peek_stid() );
-      DUMP_TID( "ref_qualifier_english_stid_opt", $1 );
+      DUMP_TYPE( "func_qualifier_english_type_opt", &$1 );
       DUMP_INT( "member_or_non_member_mask_opt", $2 );
       DUMP_AST_LIST( "paren_decl_list_english_opt", $4 );
       DUMP_AST( "returning_english_ast_opt", $5 );
 
       $$ = c_ast_new_gc( K_FUNCTION, &@$ );
-      $$->type.stid = c_tid_check( ia_qual_peek_stid() | $1, C_TPID_STORE );
+      $$->type = $1;
+      $$->type.stid |= ia_qual_peek_stid();
       $$->as.func.param_ast_list = $4;
       $$->as.func.flags = $2;
       c_ast_set_parent( $5, $$ );
@@ -3095,6 +3109,26 @@ func_decl_english_ast
       DUMP_AST( "func_decl_english_ast", $$ );
       DUMP_END();
     }
+  ;
+
+func_qualifier_english_type_opt
+  : ref_qualifier_english_stid_opt
+    {
+      $$ = C_TYPE_LIT_S( $1 );
+    }
+  | msc_calling_convention_atid
+    {
+      $$ = C_TYPE_LIT_A( $1 );
+    }
+  ;
+
+msc_calling_convention_atid
+  : Y_MSC___CDECL
+  | Y_MSC___CLRCALL
+  | Y_MSC___FASTCALL
+  | Y_MSC___STDCALL
+  | Y_MSC___THISCALL
+  | Y_MSC___VECTORCALL
   ;
 
 oper_decl_english_ast
@@ -3616,6 +3650,16 @@ decl_c_astp
   | pointer_decl_c_astp
   | pointer_to_member_decl_c_astp
   | reference_decl_c_astp
+  | msc_calling_convention_atid msc_calling_convention_c_astp
+    {
+      $$ = $2;
+      $$.ast->type.atid |= $1;
+    }
+  ;
+
+msc_calling_convention_c_astp
+  : func_decl_c_astp
+  | pointer_decl_c_astp
   ;
 
 decl2_c_astp
@@ -3896,6 +3940,22 @@ func_decl_c_astp
       }
 
       $$.target_ast = func_ast->as.func.ret_ast;
+
+      if ( c_ast_is_ptr_to_kind( $$.ast, K_FUNCTION ) ) {
+        //
+        // For a pointer to function, we need to move the Microsoft calling
+        // convention (if any) from the pointer to the function, e.g., change:
+        //
+        //      declare f as cdecl pointer to function returning void
+        //
+        // to:
+        //
+        //      declare f as pointer to cdecl function returning void
+        //
+        c_tid_t const msc_call_atid = $$.ast->type.atid & TA_ANY_MSC_CALL;
+        $$.ast->type.atid &= c_tid_compl( TA_ANY_MSC_CALL );
+        $$.ast->as.ptr_ref.to_ast->type.atid |= msc_call_atid;
+      }
 
       DUMP_AST( "func_decl_c_astp", $$.ast );
       DUMP_END();

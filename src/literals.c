@@ -295,5 +295,20 @@ char const L_GNU___VOLATILE__[]   = "__volatile__";
 char const L_APPLE___BLOCK[]      = "__block";
 char const L_APPLE_BLOCK[]        = "block";    // English for '^'
 
+// Microsoft extensions
+char const L_MSC___CDECL[]        = "__cdecl";
+char const L_MSC_CDECL[]          = "cdecl";
+char const L_MSC___CLRCALL[]      = "__clrcall";
+char const L_MSC_CLRCALL[]        = "clrcall";
+char const L_MSC___FASTCALL[]     = "__fastcall";
+char const L_MSC_FASTCALL[]       = "fastcall";
+char const L_MSC___STDCALL[]      = "__stdcall";
+char const L_MSC_STDCALL[]        = "stdcall";
+char const L_MSC___THISCALL[]     = "__thiscall";
+char const L_MSC_THISCALL[]       = "thiscall";
+char const L_MSC___VECTORCALL[]   = "__vectorcall";
+char const L_MSC_VECTORCALL[]     = "vectorcall";
+char const L_MSC_WINAPI[]         = "WINAPI";
+
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

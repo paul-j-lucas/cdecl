@@ -141,6 +141,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
   bool    is_override     = false;
   bool    is_pure_virtual = false;
   bool    is_throw        = false;
+  c_tid_t msc_call_atid   = TA_NONE;
   c_tid_t ref_qual_stid   = TS_NONE;
 
   //
@@ -195,6 +196,12 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
                    );
 
       //
+      // Microsoft calling conventions are printed specially.
+      //
+      msc_call_atid = (type.atid & TA_ANY_MSC_CALL);
+      type.atid &= c_tid_compl( TA_ANY_MSC_CALL );
+
+      //
       // Depending on the C++ language version, change noexcept to throw() or
       // vice versa.
       //
@@ -218,6 +225,15 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       }
       if ( ast->as.parent.of_ast != NULL )
         g_print_ast( g, ast->as.parent.of_ast );
+      if ( msc_call_atid != TA_NONE &&
+           !c_ast_parent_is_kind( ast, K_POINTER ) ) {
+        //
+        // If ast is a function having a Microsoft calling convention, but not
+        // a pointer to such a function, print the calling convention.
+        // (Pointers to such functions are handled in g_print_postfix().)
+        //
+        FPRINTF( g->gout, " %s", c_tid_name_c( msc_call_atid ) );
+      }
       if ( false_set( &g->postfix ) ) {
         if ( !g->skip_name_for_using && g->gib_kind != C_GIB_CAST )
           g_print_space_once( g );
@@ -531,6 +547,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
           case K_APPLE_BLOCK:
             FPUTS( "(^", g->gout );
             break;
+
           default:
             //
             // Pointers are written in gibberish like:
@@ -542,7 +559,19 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
             // so we need to add parentheses.
             //
             FPUTC( '(', g->gout );
+
+            if ( c_type_is_tid_any( &ast->type, TA_ANY_MSC_CALL ) ) {
+              //
+              // A pointer to a function having a Microsoft calling convention
+              // has the convention printed just inside the '(':
+              //
+              //      void (__stdcall *pf)(int, int)
+              //
+              c_tid_t const msc_call_atid = ast->type.atid & TA_ANY_MSC_CALL;
+              FPRINTF( g->gout, "%s ", c_tid_name_c( msc_call_atid ) );
+            }
             break;
+
           case K_POINTER:
             //
             // However, if there are consecutive pointers, omit the extra '(':
