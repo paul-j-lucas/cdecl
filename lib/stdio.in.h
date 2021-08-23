@@ -56,6 +56,52 @@
    May also define off_t to a 64-bit type on native Windows.  */
 #include <sys/types.h>
 
+/* Solaris 10 and NetBSD 7.0 declare renameat in <unistd.h>, not in <stdio.h>.  */
+/* But in any case avoid namespace pollution on glibc systems.  */
+#if (@GNULIB_RENAMEAT@ || defined GNULIB_POSIXCHECK) && (defined __sun || defined __NetBSD__) \
+    && ! defined __GLIBC__
+# include <unistd.h>
+#endif
+
+/* Android 4.3 declares renameat in <sys/stat.h>, not in <stdio.h>.  */
+/* But in any case avoid namespace pollution on glibc systems.  */
+#if (@GNULIB_RENAMEAT@ || defined GNULIB_POSIXCHECK) && defined __ANDROID__ \
+    && ! defined __GLIBC__
+# include <sys/stat.h>
+#endif
+
+/* MSVC declares 'perror' in <stdlib.h>, not in <stdio.h>.  We must include
+   it before we  #define perror rpl_perror.  */
+/* But in any case avoid namespace pollution on glibc systems.  */
+#if (@GNULIB_PERROR@ || defined GNULIB_POSIXCHECK) \
+    && (defined _WIN32 && ! defined __CYGWIN__) \
+    && ! defined __GLIBC__
+# include <stdlib.h>
+#endif
+
+/* MSVC declares 'remove' in <io.h>, not in <stdio.h>.  We must include
+   it before we  #define remove rpl_remove.  */
+/* MSVC declares 'rename' in <io.h>, not in <stdio.h>.  We must include
+   it before we  #define rename rpl_rename.  */
+/* But in any case avoid namespace pollution on glibc systems.  */
+#if (@GNULIB_REMOVE@ || @GNULIB_RENAME@ || defined GNULIB_POSIXCHECK) \
+    && (defined _WIN32 && ! defined __CYGWIN__) \
+    && ! defined __GLIBC__
+# include <io.h>
+#endif
+
+
+/* _GL_ATTRIBUTE_DEALLOC (F, I) declares that the function returns pointers
+   that can be freed by passing them as the Ith argument to the
+   function F.  */
+#ifndef _GL_ATTRIBUTE_DEALLOC
+# if __GNUC__ >= 11
+#  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
+# else
+#  define _GL_ATTRIBUTE_DEALLOC(f, i)
+# endif
+#endif
+
 /* The __attribute__ feature is available in gcc versions 2.5 and later.
    The __-protected variants of the attributes 'format' and 'printf' are
    accepted by gcc versions 2.6.4 (effectively 2.7) and later.
@@ -126,41 +172,6 @@
    ISO C99 and POSIX.  */
 #define _GL_ATTRIBUTE_FORMAT_SCANF_SYSTEM(formatstring_parameter, first_argument) \
   _GL_ATTRIBUTE_FORMAT ((__scanf__, formatstring_parameter, first_argument))
-
-/* Solaris 10 and NetBSD 7.0 declare renameat in <unistd.h>, not in <stdio.h>.  */
-/* But in any case avoid namespace pollution on glibc systems.  */
-#if (@GNULIB_RENAMEAT@ || defined GNULIB_POSIXCHECK) && (defined __sun || defined __NetBSD__) \
-    && ! defined __GLIBC__
-# include <unistd.h>
-#endif
-
-/* Android 4.3 declares renameat in <sys/stat.h>, not in <stdio.h>.  */
-/* But in any case avoid namespace pollution on glibc systems.  */
-#if (@GNULIB_RENAMEAT@ || defined GNULIB_POSIXCHECK) && defined __ANDROID__ \
-    && ! defined __GLIBC__
-# include <sys/stat.h>
-#endif
-
-/* MSVC declares 'perror' in <stdlib.h>, not in <stdio.h>.  We must include
-   it before we  #define perror rpl_perror.  */
-/* But in any case avoid namespace pollution on glibc systems.  */
-#if (@GNULIB_PERROR@ || defined GNULIB_POSIXCHECK) \
-    && (defined _WIN32 && ! defined __CYGWIN__) \
-    && ! defined __GLIBC__
-# include <stdlib.h>
-#endif
-
-/* MSVC declares 'remove' in <io.h>, not in <stdio.h>.  We must include
-   it before we  #define remove rpl_remove.  */
-/* MSVC declares 'rename' in <io.h>, not in <stdio.h>.  We must include
-   it before we  #define rename rpl_rename.  */
-/* But in any case avoid namespace pollution on glibc systems.  */
-#if (@GNULIB_REMOVE@ || @GNULIB_RENAME@ || defined GNULIB_POSIXCHECK) \
-    && (defined _WIN32 && ! defined __CYGWIN__) \
-    && ! defined __GLIBC__
-# include <io.h>
-#endif
-
 
 /* The definitions of _GL_FUNCDECL_RPL etc. are copied here.  */
 
