@@ -16,6 +16,9 @@ with their complete changes, see the AUTHORS file.
 Added support for Microsoft calling conventions __cdecl, __clrcall, __fastcall,
 __stdcall, __thiscall, and __vectorcall.
 
+** Updated GnuLib for gcc 11
+Pulled a fix from upstream GnuLib to fix a compile error under gcc 11.
+
 
 * Changes in Cdecl 10.3
 
