@@ -1,5 +1,7 @@
 2021-08-24  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_keyword.c: s/LANG_MIN(C_89)/LANG_ANY/ for __attribute__ and __declspec
+     -- why not?
    * configure.ac: Added AC_TYPE_UINT64_T.
    * NEWS, cdecl.1, c_keyword.c, literals.c, literals.h, parser.y,
      test/Makefile.am, explain_i_msds.out, explain_k_msds.out,
