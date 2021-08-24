@@ -421,7 +421,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
     else {
       //
       // When converting pseudo-English to gibberish, we MUST match attribute
-      // names because there isn't be any special syntax for them, e.g.:
+      // names because there isn't any special syntax for them, e.g.:
       //
       //      declare x as deprecated int
       //
