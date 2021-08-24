@@ -1,3 +1,41 @@
+2021-08-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * configure.ac: Added AC_TYPE_UINT64_T.
+   * NEWS, cdecl.1, c_keyword.c, literals.c, literals.h, parser.y,
+     test/Makefile.am, explain_i_msds.out, explain_k_msds.out,
+     explain_msds_i.out, explain_msds_k.out, explain_p_msds_i.out,
+     explain_i_msds.test, explain_k_msds.test, explain_msds_i.test,
+     explain_msds_k.test, explain_p_msds_i.test: Added partial support for
+     Microsoft's __declspec.
+
+2021-08-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS: Updated for GnuLib gcc 11 fix.
+   * getopt.c, stdio.in.h, stdlib.in.h, string.in.h, gnulib-common.m4: Updated
+     GnuLib.
+   * NEWS, configure.ac, cdecl.1, c_ast.h, c_ast_util.c, c_ast_util.h,
+     c_keyword.c, c_type.c, c_type.h, check.c, gibberish.c, lexer.l,
+     literals.c, literals.h, parser.y, test/Makefile.am, declare_cdecl_f.out,
+     declare_p_cdecl_f.out, explain_cdecl_f.out, explain_p_cdecl_f.out,
+     explain_p_cdecl_v.out, declare_cdecl_f.test, declare_p_cdecl_f.test,
+     explain_cdecl_f.test, explain_p_cdecl_f.test, explain_p_cdecl_v.test:
+     Support for Microsoft calling conventions.
+
+2021-08-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Added "in cdecl".
+
+2021-08-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * bootstrap: Now pre-checking for autoreconf, automake, and m4.
+   * pjl_config.h: s/HAVE___TYPEOF__/PJL_IGNORE_RV/
+
+2021-08-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_keyword.c, c_keyword.h, c_sname.c, check.c, lexer.l, parser.y, print.c:
+     s/C_KW_CTX_ALL/C_KW_CTX_DEFAULT/
+   * parser.y: Moved C99 check earlier.
+
 2021-08-15  Paul J. Lucas <paul@lucasmail.org>
 
    * red_black.c, red_black.h: Made rb_tree_find() take pointer-to-const
