@@ -343,7 +343,7 @@ static c_keyword_t const C_KEYWORDS[] = {
 
   // GNU extensions
   { L_GNU___ATTRIBUTE__,
-    Y_GNU___ATTRIBUTE__,  LANG_MIN(C_89),         KC__, TX_NONE               },
+    Y_GNU___ATTRIBUTE__,  LANG_ANY,               KC__, TX_NONE               },
   { L_GNU___AUTO_TYPE,
     Y_AUTO_TYPE,          LANG_ANY,               KC__, TB_AUTO               },
   { L_GNU___COMPLEX,
@@ -381,7 +381,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L_MSC___CLRCALL,
     Y_MSC___CLRCALL,      LANG_ANY,               KC__, TA_MSC_CLRCALL        },
   { L_MSC___DECLSPEC,
-    Y_MSC___DECLSPEC,     LANG_MIN(C_89),         KC__, TX_NONE               },
+    Y_MSC___DECLSPEC,     LANG_ANY,               KC__, TX_NONE               },
   { L_MSC___FASTCALL,
     Y_MSC___FASTCALL,     LANG_ANY,               KC__, TA_MSC_FASTCALL       },
   { L_MSC___STDCALL,
