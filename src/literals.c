@@ -300,6 +300,7 @@ char const L_MSC___CDECL[]        = "__cdecl";
 char const L_MSC_CDECL[]          = "cdecl";
 char const L_MSC___CLRCALL[]      = "__clrcall";
 char const L_MSC_CLRCALL[]        = "clrcall";
+char const L_MSC___DECLSPEC[]     = "__declspec";
 char const L_MSC___FASTCALL[]     = "__fastcall";
 char const L_MSC_FASTCALL[]       = "fastcall";
 char const L_MSC___STDCALL[]      = "__stdcall";

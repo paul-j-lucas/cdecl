@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 47
+%expect 48
 
 %{
 /** @endcond */
@@ -674,6 +674,28 @@ static bool add_type( char const *decl_keyword, c_ast_t const *type_ast,
 }
 
 /**
+ * Prints a warning that the attribute \a keyword syntax is not supported (and
+ * ignored).
+ *
+ * @param loc The source location of \a keyword.
+ * @param keyword The attribute syntax keyword, e.g., `__attribute__` or
+ * `__declspec`.
+ */
+static void attr_syntax_not_supported( c_loc_t const *loc,
+                                       char const *keyword ) {
+  assert( loc != NULL );
+  assert( keyword != NULL );
+
+  print_warning( loc,
+    "\"%s\" is not supported by %s (ignoring)", keyword, CDECL
+  );
+  if ( OPT_LANG_IS(C_CPP_MIN(2X,11)) )
+    print_hint( "[[...]]" );
+  else
+    EPUTC( '\n' );
+}
+
+/**
  * Prints an additional parsing error message including a newline to standard
  * error that continues from where yyerror() left off.  Additionally:
  *
@@ -1284,6 +1306,7 @@ static void yyerror( char const *msg ) {
                     // Microsoft extensions
 %token  <tid>       Y_MSC___CDECL
 %token  <tid>       Y_MSC___CLRCALL
+%token              Y_MSC___DECLSPEC
 %token  <tid>       Y_MSC___FASTCALL
 %token  <tid>       Y_MSC___STDCALL
 %token  <tid>       Y_MSC___THISCALL
@@ -5058,7 +5081,7 @@ type_qualifier_list_c_stid_opt
 
 type_qualifier_list_c_stid
   : type_qualifier_list_c_stid type_qualifier_c_stid
-    gnu_attribute_specifier_list_c_opt
+    gnu_or_msc_attribute_specifier_list_c_opt
     {
       DUMP_START( "type_qualifier_list_c_stid",
                   "type_qualifier_list_c_stid type_qualifier_c_stid" );
@@ -5072,12 +5095,12 @@ type_qualifier_list_c_stid
       DUMP_END();
     }
 
-  | gnu_attribute_specifier_list_c type_qualifier_c_stid
+  | gnu_or_msc_attribute_specifier_list_c type_qualifier_c_stid
     {
       $$ = $2;
     }
 
-  | type_qualifier_c_stid gnu_attribute_specifier_list_c_opt
+  | type_qualifier_c_stid gnu_or_msc_attribute_specifier_list_c_opt
     {
       $$ = $1;
     }
@@ -5202,7 +5225,7 @@ attribute_specifier_list_c_atid
       DUMP_END();
     }
 
-  | gnu_attribute_specifier_list_c
+  | gnu_or_msc_attribute_specifier_list_c
     {
       $$ = TA_NONE;
     }
@@ -5298,6 +5321,16 @@ attribute_str_arg_c_opt
     }
   ;
 
+gnu_or_msc_attribute_specifier_list_c_opt
+  : /* empty */
+  | gnu_or_msc_attribute_specifier_list_c
+  ;
+
+gnu_or_msc_attribute_specifier_list_c
+  : gnu_attribute_specifier_list_c
+  | msc_attribute_specifier_list_c
+  ;
+
 gnu_attribute_specifier_list_c_opt
   : /* empty */
   | gnu_attribute_specifier_list_c
@@ -5311,14 +5344,7 @@ gnu_attribute_specifier_list_c
 gnu_attribute_specifier_c
   : Y_GNU___ATTRIBUTE__
     {
-      print_warning( &@1,
-        "\"%s\" is not supported by %s (ignoring)",
-        L_GNU___ATTRIBUTE__, CDECL
-      );
-      if ( OPT_LANG_IS(C_CPP_MIN(2X,11)) )
-        print_hint( "[[...]]" );
-      else
-        EPUTC( '\n' );
+      attr_syntax_not_supported( &@1, L_GNU___ATTRIBUTE__ );
       //
       // Temporariy disabling finding keywords allows GNU attributes that are C
       // keywords (e.g., const) to be found as ordinary string literals.
@@ -5377,6 +5403,41 @@ gnu_attribute_arg_c
     {
       PARSE_ABORT();
     }
+  ;
+
+msc_attribute_specifier_list_c
+  : msc_attribute_specifier_list_c msc_attribute_specifier_c
+  | msc_attribute_specifier_c
+  ;
+
+msc_attribute_specifier_c
+  : Y_MSC___DECLSPEC
+    {
+      attr_syntax_not_supported( &@1, L_MSC___DECLSPEC );
+      // See comment in gnu_attribute_specifier_c.
+      lexer_find &= ~LEXER_FIND_C_KEYWORDS;
+    }
+    lparen_exp msc_attribute_list_c_opt ')'
+    {
+      lexer_find |= LEXER_FIND_C_KEYWORDS;
+    }
+  ;
+
+msc_attribute_list_c_opt
+  : /* empty */
+  | msc_attribuet_list_c
+  ;
+
+msc_attribuet_list_c
+    /*
+     * Microsoft's syntax for individual attributes is the same as GNU's, so we
+     * can just use gnu_attribute_c here.
+     *
+     * Note that Microsoft attributes are separated by whitespace, not commas
+     * as in GNU's, so that's why msc_attribuet_list_c is needed.
+     */
+  : msc_attribuet_list_c gnu_attribute_c
+  | gnu_attribute_c
   ;
 
 ///////////////////////////////////////////////////////////////////////////////

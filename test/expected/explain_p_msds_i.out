@@ -1,0 +1,4 @@
+explain int __declspec(selectany) *p
+            ^
+13: warning: "__declspec" is not supported by cdecl (ignoring); did you mean [[...]]?
+declare p as pointer to int

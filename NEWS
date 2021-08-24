@@ -16,6 +16,10 @@ with their complete changes, see the AUTHORS file.
 Added support for Microsoft calling conventions __cdecl, __clrcall, __fastcall,
 __stdcall, __thiscall, and __vectorcall.
 
+** Partial support for Microsoft's `__declspec`
+Microsoft C's `__declspec` syntax is now parsed, but otherwise ignored.  (A
+warning is printed that it's ignored.)
+
 ** Updated GnuLib for gcc 11
 Pulled a fix from upstream GnuLib to fix a compile error under gcc 11.
 

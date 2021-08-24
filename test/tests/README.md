@@ -70,6 +70,7 @@ The characters are:
 + `kr` = untyped K&R C function argument
 + `l` = `long`
 + `m` = member of class or `mutable`
++ `msds` = Microsoft C `__declspec`
 + `n` = name, nested, or `union`
 + `nr` = `noreturn`
 + `ns` = `namespace`

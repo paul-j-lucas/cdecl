@@ -380,6 +380,8 @@ static c_keyword_t const C_KEYWORDS[] = {
     Y_MSC___CDECL,        LANG_ANY,               KC__, TA_MSC_CDECL          },
   { L_MSC___CLRCALL,
     Y_MSC___CLRCALL,      LANG_ANY,               KC__, TA_MSC_CLRCALL        },
+  { L_MSC___DECLSPEC,
+    Y_MSC___DECLSPEC,     LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_MSC___FASTCALL,
     Y_MSC___FASTCALL,     LANG_ANY,               KC__, TA_MSC_FASTCALL       },
   { L_MSC___STDCALL,

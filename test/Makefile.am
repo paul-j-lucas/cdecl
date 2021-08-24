@@ -1645,6 +1645,16 @@ TESTS+=	tests/explain_2gat_cpi.test \
 	tests/explain_gat_i-08.test \
 	tests/explain_gat_i-09.test
 
+#
+# Microsoft __declspec tests
+# ==========================
+#
+TESTS+=	tests/explain_i_msds.test \
+	tests/explain_k_msds.test \
+	tests/explain_msds_i.test \
+	tests/explain_msds_k.test \
+	tests/explain_p_msds_i.test
+
 ###############################################################################
 
 #

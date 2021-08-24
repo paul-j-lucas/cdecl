@@ -327,6 +327,7 @@ extern char const L_MSC___CDECL[];
 extern char const L_MSC_CDECL[];
 extern char const L_MSC___CLRCALL[];
 extern char const L_MSC_CLRCALL[];
+extern char const L_MSC___DECLSPEC[];
 extern char const L_MSC___FASTCALL[];
 extern char const L_MSC_FASTCALL[];
 extern char const L_MSC___STDCALL[];
