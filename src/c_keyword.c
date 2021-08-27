@@ -376,6 +376,8 @@ static c_keyword_t const C_KEYWORDS[] = {
     Y_APPLE___BLOCK,      LANG_ANY,               KC__, TS_APPLE_BLOCK        },
 
   // Microsoft extensions
+  { L_MSC___ASM,
+    Y_ASM,                LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_MSC___CDECL,
     Y_MSC___CDECL,        LANG_ANY,               KC__, TA_MSC_CDECL          },
   { L_MSC___CLRCALL,

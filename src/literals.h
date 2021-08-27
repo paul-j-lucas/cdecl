@@ -323,6 +323,7 @@ extern char const L_APPLE___BLOCK[];      // storage class
 extern char const L_APPLE_BLOCK[];        // Engligh for '^'
 
 // Microsoft extensions
+extern char const L_MSC___ASM[];
 extern char const L_MSC___CDECL[];
 extern char const L_MSC_CDECL[];
 extern char const L_MSC___CLRCALL[];

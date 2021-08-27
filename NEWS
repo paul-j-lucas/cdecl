@@ -20,6 +20,10 @@ __stdcall, __thiscall, and __vectorcall.
 Microsoft C's `__declspec` syntax is now parsed, but otherwise ignored.  (A
 warning is printed that it's ignored.)
 
+** Microsoft `__asm` declarations
+Now recognizing Microsoft's `__asm` just to say it's not supported
+(just like `asm`).
+
 ** Updated GnuLib for gcc 11
 Pulled a fix from upstream GnuLib to fix a compile error under gcc 11.
 

@@ -296,6 +296,7 @@ char const L_APPLE___BLOCK[]      = "__block";
 char const L_APPLE_BLOCK[]        = "block";    // English for '^'
 
 // Microsoft extensions
+char const L_MSC___ASM[]          = "__asm";
 char const L_MSC___CDECL[]        = "__cdecl";
 char const L_MSC_CDECL[]          = "cdecl";
 char const L_MSC___CLRCALL[]      = "__clrcall";
