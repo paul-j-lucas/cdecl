@@ -678,7 +678,7 @@ static char const *const PREDEFINED_MISC[] = {
 };
 
 /**
- * Predefined types for Windows.
+ * Predefined types for Microsoft Windows.
  *
  * @sa [Windows Data Types](https://docs.microsoft.com/en-us/windows/win32/winprog/windows-data-types)
  */
