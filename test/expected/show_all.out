@@ -193,6 +193,10 @@ define __int16 as short int
 define __int32 as int
 define __int64 as long long int
 define __int8 as signed char
+define __m128 as structure __m128
+define __m128d as structure __m128d
+define __m128i as structure __m128i
+define __m64 as structure __m64
 define __wchar_t as wchar_t
 define atomic_bool as atomic _Bool
 define atomic_char as atomic char

@@ -24,6 +24,9 @@ warning is printed that it's ignored.)
 Now recognizing Microsoft's `__asm` just to say it's not supported
 (just like `asm`).
 
+** More Microsoft types
+Added types `__m128`, `__m128d`, `__m128i`, and `__m64`.
+
 ** Updated GnuLib for gcc 11
 Pulled a fix from upstream GnuLib to fix a compile error under gcc 11.
 

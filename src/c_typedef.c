@@ -692,6 +692,11 @@ static char const *const PREDEFINED_WIN32[] = {
   "typedef          long long     __int64",
   "typedef          wchar_t       __wchar_t",
 
+  "struct                         __m128",
+  "struct                         __m128d",
+  "struct                         __m128i",
+  "struct                         __m64",
+
   "typedef          int           BOOL",
   "typedef BOOL                 *PBOOL",
   "typedef BOOL                *LPBOOL",
