@@ -1,3 +1,25 @@
+2021-08-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1, c_keyword.c, c_typedef.c, literals.c, literals.h,
+     cdecl--debug.out, cdecl-d.out, show_all-c++.out, show_all.out,
+     show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined.out, show_predefined_typedef.out,
+     show_predefined_using.out: Added single-underscore equivalents for
+     Microsoft's extensions.
+
+2021-08-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
+     show_all-c++.out, show_all.out, show_all_predefined-c++.out,
+     show_all_predefined.out, show_all_predefined_typedef-c++.out,
+     show_all_typedef.out, show_predefined-c++.out, show_predefined.out,
+     show_predefined_typedef.out, show_predefined_using.out: Added Microsoft
+     types `__m128`, `__m128d`, `__m128i`, and `__m64`.
+   * c_typedef.c: Added "Microsoft".
+   * NEWS, c_keyword.c, literals.c, literals.h: Added partial support for
+     Microsoft's __asm.
+
 2021-08-24  Paul J. Lucas <paul@lucasmail.org>
 
    * c_keyword.c: s/LANG_MIN(C_89)/LANG_ANY/ for __attribute__ and __declspec
