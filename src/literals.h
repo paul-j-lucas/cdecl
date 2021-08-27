@@ -323,18 +323,26 @@ extern char const L_APPLE___BLOCK[];      // storage class
 extern char const L_APPLE_BLOCK[];        // Engligh for '^'
 
 // Microsoft extensions
+extern char const L_MSC__ASM[];
 extern char const L_MSC___ASM[];
+extern char const L_MSC__CDECL[];
 extern char const L_MSC___CDECL[];
 extern char const L_MSC_CDECL[];
 extern char const L_MSC___CLRCALL[];
 extern char const L_MSC_CLRCALL[];
+extern char const L_MSC__DECLSPEC[];
 extern char const L_MSC___DECLSPEC[];
+extern char const L_MSC__FASTCALL[];
 extern char const L_MSC___FASTCALL[];
 extern char const L_MSC_FASTCALL[];
+extern char const L_MSC__INLINE[];
+extern char const L_MSC__RESTRICT[];
+extern char const L_MSC__STDCALL[];
 extern char const L_MSC___STDCALL[];
 extern char const L_MSC_STDCALL[];
 extern char const L_MSC___THISCALL[];
 extern char const L_MSC_THISCALL[];
+extern char const L_MSC__VECTORCALL[];
 extern char const L_MSC___VECTORCALL[];
 extern char const L_MSC_VECTORCALL[];
 extern char const L_MSC_WINAPI[];

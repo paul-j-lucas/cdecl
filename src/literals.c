@@ -296,18 +296,26 @@ char const L_APPLE___BLOCK[]      = "__block";
 char const L_APPLE_BLOCK[]        = "block";    // English for '^'
 
 // Microsoft extensions
+char const L_MSC__ASM[]           = "_asm";
 char const L_MSC___ASM[]          = "__asm";
+char const L_MSC__CDECL[]         = "_cdecl";
 char const L_MSC___CDECL[]        = "__cdecl";
 char const L_MSC_CDECL[]          = "cdecl";
 char const L_MSC___CLRCALL[]      = "__clrcall";
 char const L_MSC_CLRCALL[]        = "clrcall";
+char const L_MSC__DECLSPEC[]      = "_declspec";
 char const L_MSC___DECLSPEC[]     = "__declspec";
+char const L_MSC__FASTCALL[]      = "_fastcall";
 char const L_MSC___FASTCALL[]     = "__fastcall";
 char const L_MSC_FASTCALL[]       = "fastcall";
+char const L_MSC__INLINE[]        = "_inline";
+char const L_MSC__RESTRICT[]      = "_restrict";
+char const L_MSC__STDCALL[]       = "_stdcall";
 char const L_MSC___STDCALL[]      = "__stdcall";
 char const L_MSC_STDCALL[]        = "stdcall";
 char const L_MSC___THISCALL[]     = "__thiscall";
 char const L_MSC_THISCALL[]       = "thiscall";
+char const L_MSC__VECTORCALL[]    = "_vectorcall";
 char const L_MSC___VECTORCALL[]   = "__vectorcall";
 char const L_MSC_VECTORCALL[]     = "vectorcall";
 char const L_MSC_WINAPI[]         = "WINAPI";

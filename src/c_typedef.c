@@ -687,9 +687,13 @@ static char const *const PREDEFINED_WIN32[] = {
   // The comment about GNU C's __int128 type applies to these also.
   //
   "typedef   signed char          __int8",
+  "typedef          __int8        _int8",
   "typedef          short         __int16",
+  "typedef          __int16       _int16",
   "typedef          int           __int32",
+  "typedef          __int32       _int32",
   "typedef          long long     __int64",
+  "typedef          __int64       _int64",
   "typedef          wchar_t       __wchar_t",
 
   "struct                         __m128",

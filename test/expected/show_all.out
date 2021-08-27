@@ -198,6 +198,10 @@ define __m128d as structure __m128d
 define __m128i as structure __m128i
 define __m64 as structure __m64
 define __wchar_t as wchar_t
+define _int16 as __int16
+define _int32 as __int32
+define _int64 as __int64
+define _int8 as __int8
 define atomic_bool as atomic _Bool
 define atomic_char as atomic char
 define atomic_char16_t as atomic char16_t
