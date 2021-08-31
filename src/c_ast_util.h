@@ -138,7 +138,7 @@ bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids );
  * Checks whether \a ast is an AST for a pointer to a \a kind AST.
  *
  * @param ast The AST to check.
- * @param kind The kind to check for.
+ * @param kind_id The kind to check for.
  * @return Returns `true` only if \a ast is a pointer to \a kind.
  *
  * @sa c_ast_is_ptr_to_tid_any()
