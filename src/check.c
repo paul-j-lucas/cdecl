@@ -591,6 +591,15 @@ static bool c_ast_check_func_c( c_ast_t const *ast ) {
     return false;
   }
 
+  c_ast_t const *const ret_ast = ast->as.func.ret_ast;
+  if ( OPT_LANG_IS(C_KNR) && ret_ast->kind_id == K_ENUM_CLASS_STRUCT_UNION ) {
+    print_error( &ret_ast->loc,
+      "%ss returning %s are not supported until %s\n",
+      L_FUNCTION, L_STRUCT, c_lang_name( LANG_C_89 )
+    );
+    return false;
+  }
+
   return true;
 }
 

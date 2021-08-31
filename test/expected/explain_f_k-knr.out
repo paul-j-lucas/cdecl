@@ -1,0 +1,3 @@
+explain struct S f()
+        ^
+9: error: functions returning struct are not supported until C89

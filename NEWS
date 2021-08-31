@@ -10,6 +10,12 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 10.5
+
+** K&R C function returning `struct`
+Now correctly forbidding functions returning `struct` in K&R C.
+
+
 * Changes in Cdecl 10.4
 
 ** Microsoft calling conventions
