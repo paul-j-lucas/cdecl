@@ -5,6 +5,7 @@ typedef unsigned char BYTE;
 typedef char CCHAR;
 typedef char CHAR;
 typedef DWORD COLORREF;
+typedef struct _dirdesc DIR;
 typedef unsigned long DWORD;
 typedef unsigned DWORD32;
 typedef unsigned long DWORD64;

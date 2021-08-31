@@ -5,6 +5,7 @@ using BYTE = unsigned char;
 using CCHAR = char;
 using CHAR = char;
 using COLORREF = DWORD;
+struct DIR;
 using DWORD = unsigned long;
 using DWORD32 = unsigned;
 using DWORD64 = unsigned long;

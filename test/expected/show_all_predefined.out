@@ -5,6 +5,7 @@ define BYTE as unsigned char
 define CCHAR as char
 define CHAR as char
 define COLORREF as DWORD
+define DIR as structure _dirdesc
 define DWORD as unsigned long int
 define DWORD32 as unsigned int
 define DWORD64 as unsigned long int

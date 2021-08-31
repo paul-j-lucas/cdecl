@@ -94,20 +94,21 @@ static char const *const PREDEFINED_KNR_C[] = {
  * necessarily match the underlying type on any particular platform.
  */
 static char const *const PREDEFINED_STD_C89[] = {
-  "typedef          long  clock_t",
-  "struct                 div_t",
-  "struct             imaxdiv_t",
-  "struct                ldiv_t",
-  "struct               lldiv_t",
-  "typedef          int   errno_t",
-  "struct                 fpos_t",
-  "typedef          int   jmp_buf[37]",
-  "struct                 lconv",
-  "typedef          long  ptrdiff_t",
-  "typedef          int   sig_atomic_t",
-  "typedef unsigned long  size_t",
-  "typedef          long ssize_t",
-  "typedef          void *va_list",
+  "typedef          long    clock_t",
+  "typedef struct _dirdesc  DIR",
+  "struct                   div_t",
+  "struct               imaxdiv_t",
+  "struct                  ldiv_t",
+  "struct                 lldiv_t",
+  "typedef          int     errno_t",
+  "struct                   fpos_t",
+  "typedef          int     jmp_buf[37]",
+  "struct                   lconv",
+  "typedef          long    ptrdiff_t",
+  "typedef          int     sig_atomic_t",
+  "typedef unsigned long    size_t",
+  "typedef          long   ssize_t",
+  "typedef          void   *va_list",
 
   NULL
 };
