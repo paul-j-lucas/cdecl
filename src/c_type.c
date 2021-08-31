@@ -388,12 +388,12 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define c9          LANG_C_99
 #define C9          LANG_MIN(C_99)
 #define C1          LANG_MIN(C_11)
-#define C2          LANG_C_CPP_MIN(2X,20)
 #define PP          LANG_CPP_ANY
 #define P3          LANG_CPP_MIN(03)
 #define P1          LANG_CPP_MIN(11)
 #define P2          LANG_CPP_MIN(20)
 #define E1          LANG_C_CPP_MIN(11,11)
+#define E2          LANG_C_CPP_MIN(2X,20)
 
 /// @endcond
 
@@ -471,7 +471,7 @@ static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
   { XX,C8,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// auto
   { XX,XX,C9,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// bool
   { XX,XX,XX,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char
-  { XX,XX,XX,XX,C2,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char8_t
+  { XX,XX,XX,XX,E2,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char8_t
   { XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char16_t
   { XX,XX,XX,XX,XX,XX,E1,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// char32_t
   { XX,XX,XX,XX,XX,XX,XX,C5,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__,__ },// wchar_t
