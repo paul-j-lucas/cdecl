@@ -821,6 +821,23 @@ bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tid, c_loc_t const *new_loc ) {
   return true;
 }
 
+c_tid_t c_tid_normalize( c_tid_t tid ) {
+  switch ( c_tid_tpid( tid ) ) {
+    case C_TPID_BASE:
+      tid = c_tid_simplify( tid );
+      // If the type is only implicitly int, make it explicitly int.
+      if ( c_tid_is_except( tid, TB_SHORT, TB_ANY_EMC ) ||
+           c_tid_is_except( tid, TB_LONG, TB_ANY_FLOAT | TB_ANY_EMC ) ||
+           c_tid_is_except( tid, TB_UNSIGNED, TB_CHAR | TB_ANY_EMC ) ) {
+        tid |= TB_INT;
+      }
+      break;
+    default:
+      /* suppress warning */;
+  } // switch
+  return tid;
+}
+
 unsigned c_tid_scope_order( c_tid_t tid ) {
   assert( (tid & TX_MASK_TPID) == C_TPID_BASE );
   switch ( tid & (TB_ANY_SCOPE | TB_ENUM) ) {
@@ -850,23 +867,6 @@ c_tpid_t c_tid_tpid( c_tid_t tid ) {
   tid &= TX_MASK_TPID;
   assert( tid <= C_TPID_ATTR );
   return STATIC_CAST( c_tpid_t, tid );
-}
-
-c_tid_t c_tid_normalize( c_tid_t tid ) {
-  switch ( c_tid_tpid( tid ) ) {
-    case C_TPID_BASE:
-      tid = c_tid_simplify( tid );
-      // If the type is only implicitly int, make it explicitly int.
-      if ( c_tid_is_except( tid, TB_SHORT, TB_ANY_EMC ) ||
-           c_tid_is_except( tid, TB_LONG, TB_ANY_FLOAT | TB_ANY_EMC ) ||
-           c_tid_is_except( tid, TB_UNSIGNED, TB_CHAR | TB_ANY_EMC ) ) {
-        tid |= TB_INT;
-      }
-      break;
-    default:
-      /* suppress warning */;
-  } // switch
-  return tid;
 }
 
 bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type ) {
