@@ -1,3 +1,23 @@
+2021-08-31  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, lexer.l: In K&R C, now printing a warning that trigraphs are not
+     supported.
+   * c_type.c, c_type.h: Split off functionality for "de-signed"-ing into
+     c_tid_simplify() and now calling it from c_type_name().  Made
+     c_tid_normalize() now also add `int` explicitly if it's implicit.
+   * c_type.c: s/C2/E2/
+
+2021-08-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_typedef.c, cdecl--debug.out, cdecl-d.out, show_all-c++.out,
+     show_all.out, show_all_predefined-c++.out, show_all_predefined.out,
+     show_all_predefined_typedef-c++.out, show_all_typedef.out,
+     show_predefined-c++.out, show_predefined.out, show_predefined_typedef.out,
+     show_predefined_using.out: Added the missing standard `DIR` type.
+   * NEWS, configure.ac, check.c, test/Makefile.am, explain_f_k-knr.out,
+     explain_f_k-knr.test: Now correctly forbidding functions returning
+     `struct` in K&R C.
+
 2021-08-27  Paul J. Lucas <paul@lucasmail.org>
 
    * cdecl.1, c_keyword.c, c_typedef.c, literals.c, literals.h,
