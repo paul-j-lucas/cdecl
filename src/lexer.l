@@ -26,7 +26,6 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%option nounput
 %option warn
 %option yylineno
 
@@ -995,14 +994,13 @@ declare/{S}({S}|{L})*user-def(ined)? {
   [^)]+       { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
   ")"         {
                 char const *d;
-                for ( d = rstr_delim; *d != '\0'; ++d ) {
+                for ( d = rstr_delim; *d != '\0'; ++d, ++column ) {
                   int const c = input();
                   if ( c == EOF ) {
                     print_error( &yylloc, "unterminated string literal\n" );
                     strbuf_free( &str_lit_buf );
                     return Y_LEXER_ERROR;
                   }
-                  ++column;
                   if ( c != *d ) {
                     //
                     // Found a mismatch with the delimiter, e.g.:
@@ -1011,12 +1009,22 @@ declare/{S}({S}|{L})*user-def(ined)? {
                     //      )abx"       // what was found
                     //
                     // Hence, it's not the actual delimiter, but part of the
-                    // string literal: append the part that matched (")ab")
-                    // plus the character that didn't ('x').
+                    // string literal: append the part that matched (")ab").
                     //
                     strbuf_catf( &str_lit_buf,
-                      ")%.*s%c", (int)(d - rstr_delim), rstr_delim, c
+                      ")%.*s", (int)(d - rstr_delim), rstr_delim
                     );
+                    //
+                    // Unput the character that caused the mismatch since it
+                    // could be ')' that could potentially start a real match,
+                    // e.g.:
+                    //
+                    //      R"abc(X)ab)abc"
+                    //                ^
+                    //
+                    // Hence the raw string is "X)ab".
+                    //
+                    unput( c );
                     break;
                   }
                 } // for

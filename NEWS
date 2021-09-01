@@ -22,6 +22,9 @@ Now correctly forbidding functions returning `struct` in K&R C.
 Using a trigraph in K&R C now prints a warning that triggraphs are not
 supported until C89.
 
+** Fixed C++ raw string literals
+A raw string literal like R"abc(X)ab)abc" was previously not parsed correctly.
+
 
 * Changes in Cdecl 10.4
 
