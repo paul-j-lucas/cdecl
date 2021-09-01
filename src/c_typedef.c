@@ -93,7 +93,7 @@ static char const *const PREDEFINED_KNR_C[] = {
  * @note The underlying types used here are merely typical and do not
  * necessarily match the underlying type on any particular platform.
  */
-static char const *const PREDEFINED_STD_C89[] = {
+static char const *const PREDEFINED_STD_C_89[] = {
   "typedef          long    clock_t",
   "typedef struct _dirdesc  DIR",
   "struct                   div_t",
@@ -1052,7 +1052,7 @@ void c_typedef_init( void ) {
     c_typedef_parse_predefined( PREDEFINED_KNR_C );
 
     predefined_lang_ids = LANG_MIN(C_89);
-    c_typedef_parse_predefined( PREDEFINED_STD_C89 );
+    c_typedef_parse_predefined( PREDEFINED_STD_C_89 );
     c_typedef_parse_predefined( PREDEFINED_FLOATING_POINT_EXTENSIONS );
     c_typedef_parse_predefined( PREDEFINED_GNU_C );
 
