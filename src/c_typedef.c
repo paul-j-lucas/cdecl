@@ -663,8 +663,8 @@ static char const *const PREDEFINED_MISC[] = {
   "typedef  int32_t       pid_t",
   "typedef uint32_t       uid_t",
 
-  "typedef void           *posix_spawnattr_t",
-  "typedef void           *posix_spawn_file_actions_t",
+  "typedef void          *posix_spawnattr_t",
+  "typedef void          *posix_spawn_file_actions_t",
 
   "struct                 regex_t",
   "struct                 regmatch_t",
