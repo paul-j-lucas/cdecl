@@ -499,15 +499,16 @@ static c_lang_id_t const OK_TYPE_LANGS[][ ARRAY_SIZE( C_TYPE_INFO ) ] = {
 
 /**
  * Checks whether \a tid is some form of <code>long int</code> only, and _not_
- * either `long float` (K&R) or `long double` (C89).
+ * one of `long float` (K&R), `long double` (C89), or either `long _Accum` or
+ * `long _Fract` (Embedded C).
  *
  * @param tid The <code>\ref c_tid_t</code> to check.
  * @return Returns `true` only if \a tid is some form of `long int`.
  */
 PJL_WARN_UNUSED_RESULT
-static inline bool is_long_int( c_tid_t tid ) {
+static inline bool c_tid_is_long_int( c_tid_t tid ) {
   return  c_tid_tpid( tid ) == C_TPID_BASE &&
-          (tid & (TB_LONG | TB_FLOAT | TB_DOUBLE)) == TB_LONG;
+          c_tid_is_except( tid, TB_LONG, TB_ANY_FLOAT | TB_ANY_EMC );
 }
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -636,6 +637,26 @@ static void c_tid_name_cat( strbuf_t *sbuf, c_tid_t tid, c_tid_t const tids[],
       strbuf_sepc_cats( sbuf, sep, sep_flag, name );
     }
   } // for
+}
+
+/**
+ * "Simplifies" a base <code>\ref c_tid_t</code>.  Specifically:
+ *
+ * + If \a btid is #TB_SIGNED and not #TB_CHAR, remove #TB_SIGNED.
+ * + If \a btid becomes #TB_NONE, make it #TB_INT.
+ *
+ * @param btid The <code>\ref c_tid_t</code> to simplify.
+ * @return Returns the simplified <code>\ref c_tid_t</code>.
+ */
+PJL_WARN_UNUSED_RESULT
+static c_tid_t c_tid_simplify( c_tid_t btid ) {
+  assert( c_tid_tpid( btid ) == C_TPID_BASE );
+  if ( c_tid_is_except( btid, TB_SIGNED, TB_CHAR ) ) {
+    btid &= c_tid_compl( TB_SIGNED );
+    if ( btid == TB_NONE )
+      btid = TB_INT;
+  }
+  return btid;
 }
 
 /**
@@ -780,7 +801,7 @@ bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tid, c_loc_t const *new_loc ) {
   assert( new_loc != NULL );
   assert( c_tid_tpid( *dst_tids ) == c_tid_tpid( new_tid ) );
 
-  if ( is_long_int( *dst_tids ) && is_long_int( new_tid ) ) {
+  if ( c_tid_is_long_int( *dst_tids ) && c_tid_is_long_int( new_tid ) ) {
     //
     // Special case: if the existing type is "long" and the new type is "long",
     // turn the new type into "long long".
@@ -834,11 +855,12 @@ c_tpid_t c_tid_tpid( c_tid_t tid ) {
 c_tid_t c_tid_normalize( c_tid_t tid ) {
   switch ( c_tid_tpid( tid ) ) {
     case C_TPID_BASE:
-      if ( (tid & (TB_SIGNED | TB_CHAR)) == TB_SIGNED ) {
-        // signed, but not signed char
-        tid &= c_tid_compl( TB_SIGNED );
-        if ( tid == TB_NONE )
-          tid = TB_INT;
+      tid = c_tid_simplify( tid );
+      // If the type is only implicitly int, make it explicitly int.
+      if ( c_tid_is_except( tid, TB_SHORT, TB_ANY_EMC ) ||
+           c_tid_is_except( tid, TB_LONG, TB_ANY_FLOAT | TB_ANY_EMC ) ||
+           c_tid_is_except( tid, TB_UNSIGNED, TB_CHAR | TB_ANY_EMC ) ) {
+        tid |= TB_INT;
       }
       break;
     default:
@@ -872,7 +894,7 @@ char const* c_type_name( c_type_t const *type, bool in_english,
   strbuf_free( sbuf );
   bool space = false;
 
-  c_tid_t btid = is_error ? type->btid : c_tid_normalize( type->btid );
+  c_tid_t btid = is_error ? type->btid : c_tid_simplify( type->btid );
   c_tid_t stid = type->stid;
   c_tid_t atid = type->atid;
 

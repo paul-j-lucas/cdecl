@@ -527,11 +527,13 @@ bool c_tid_add( c_tid_t *dst_tids, c_tid_t new_tid, c_loc_t const *new_loc );
 /**
  * "Normalize" \a tid:
  *
- *  1. If it's #TB_SIGNED and not #TB_CHAR, remove #TB_SIGNED.
- *  2. If it becomes #TB_NONE, add #TB_INT.
+ *  1. If it's #TB_SIGNED and not #TB_CHAR, remove #TB_SIGNED.  If it becomes
+ *     #TB_NONE, make it #TB_INT.
+ *  2. If it's only implicitly #TB_INT (e.g., `unsigned`), make it explicitly
+ *     #TB_INT (e.g., `unsigned int`).
  *
- * @param tid The type to normalize.
- * @return Returns the normalized type.
+ * @param tid The <code>\ref c_tid_t</code> to normalize.
+ * @return Returns the normalized <code>\ref c_tid_t</code>.
  */
 PJL_WARN_UNUSED_RESULT
 c_tid_t c_tid_normalize( c_tid_t tid );
@@ -805,6 +807,21 @@ C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 c_tid_t c_tid_compl( c_tid_t tid ) {
   assert( !c_tid_is_compl( tid ) );
   return ~tid ^ TX_MASK_TPID;
+}
+
+/**
+ * Checks whether \a tid is all of \a is_tids but not also any one of \a
+ * except_tids.
+ *
+ * @param tid The <code>\ref c_tid_t</code> to check.
+ * @param is_tids The bitwise-or of <code>\ref c_tid_t</code> to check for.
+ * @param except_tids The bitwise-or of <code>\ref c_tid_t</code> to exclude.
+ * @return Returns `true` only if \a tid is all of \a is_tids, but not also any
+ * one of \a except_tids.
+ */
+C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
+bool c_tid_is_except( c_tid_t tid, c_tid_t is_tids, c_tid_t except_tids ) {
+  return (tid & (is_tids | except_tids)) == is_tids;
 }
 
 /**
