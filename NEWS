@@ -18,6 +18,10 @@ Added the missing standard `DIR` type.
 ** K&R C function returning `struct`
 Now correctly forbidding functions returning `struct` in K&R C.
 
+** Trigraphs in K&R C
+Using a trigraph in K&R C now prints a warning that triggraphs are not
+supported until C89.
+
 
 * Changes in Cdecl 10.4
 

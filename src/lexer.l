@@ -399,6 +399,7 @@ static size_t     input_sent;           ///< How many bytes returned to Flex.
 static bool       is_eof;               ///< Encountered EOF?
 static strbuf_t   str_lit_buf;          ///< String (or character) literal.
 static c_loc_t    str_lit_loc;          ///< String literal starting location.
+static bool       trigraph_warned;      ///< Printed trigraph warning once?
 
 /// C++ raw string literal delimiter.
 static char       rstr_delim[ RSTR_DELIM_LEN_MAX + 1/*"*/ + 1/*\0*/ ];
@@ -547,6 +548,19 @@ static inline int parse_int( int base ) {
   // it if the base is 2.
   //
   return (int)strtol( lexer_token + (base == 2 ? 2 : 0), NULL, base );
+}
+
+/**
+ * Sets the current token to \a token for the current trigraph sequence.
+ * Additionally, if the current language is K&R C, prints a warning that
+ * trigraphs are not supported until C89 (only once per parse).
+ *
+ * @param token The token the trigraph maps to.
+ */
+static void set_trigraph( char const *token ) {
+  if ( opt_lang == LANG_C_KNR && false_set( &trigraph_warned ) )
+    print_warning( &yylloc, "trigraphs not supported until C89\n" );
+  SET_TOKEN_TO( token );
 }
 
 /**
@@ -864,14 +878,14 @@ declare/{S}({S}|{L})*user-def(ined)? {
 ":>"          { SET_TOKEN_TO_AND_RETURN( "]" ); }
 
               /* Trigraphs. */
-"??'="        { SET_TOKEN_TO( "^=" ); return Y_CIRC_EQ    ; }
-"??!="        { SET_TOKEN_TO( "|=" ); return Y_PIPE_EQ    ; }
-"??!??!"      { SET_TOKEN_TO( "||" ); return Y_PIPE2      ; }
-"??!"         { SET_TOKEN_TO( "|" );  return Y_PIPE       ; }
-"??'"         { SET_TOKEN_TO( "^" );  return Y_CIRC       ; }
-"??("         { SET_TOKEN_TO_AND_RETURN( "[" ); }
-"??)"         { SET_TOKEN_TO_AND_RETURN( "]" ); }
-"??-"         { SET_TOKEN_TO( "~" );  return Y_TILDE      ; }
+"??'="        { set_trigraph( "^=" ); return Y_CIRC_EQ; }
+"??!="        { set_trigraph( "|=" ); return Y_PIPE_EQ; }
+"??!??!"      { set_trigraph( "||" ); return Y_PIPE2  ; }
+"??!"         { set_trigraph( "|"  ); return Y_PIPE   ; }
+"??'"         { set_trigraph( "^"  ); return Y_CIRC   ; }
+"??("         { set_trigraph( "["  ); return '['      ; }
+"??)"         { set_trigraph( "]"  ); return ']'      ; }
+"??-"         { set_trigraph( "~"  ); return Y_TILDE  ; }
 
               /*
                * Special case: if "::" is immediately followed by a '*', return
@@ -1213,6 +1227,7 @@ void lexer_reset( bool hard_reset ) {
   lexer_keyword_ctx = C_KW_CTX_DEFAULT;
   newline();
   strbuf_free( &str_lit_buf );
+  trigraph_warned = false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
