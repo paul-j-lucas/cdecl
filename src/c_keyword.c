@@ -376,9 +376,6 @@ static c_keyword_t const C_KEYWORDS[] = {
     Y_APPLE___BLOCK,      LANG_ANY,               KC__, TS_APPLE_BLOCK        },
 
   // Microsoft extensions
-  //
-  // Only some of these keywords have both two and one leading underscore; see
-  // <https://docs.microsoft.com/en-us/cpp/cpp/keywords-cpp?#microsoft-specific-c-keywords>.
   { L_MSC__ASM,
     Y_ASM,                LANG_MIN(C_89),         KC__, TX_NONE               },
   { L_MSC___ASM,

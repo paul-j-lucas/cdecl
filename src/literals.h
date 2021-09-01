@@ -233,7 +233,7 @@ extern char const L_FINAL[];
 extern char const L_NOEXCEPT[];
 extern char const L_NORETURN[];
 extern char const L_LITERAL[];
-extern char const H_NO_EXCEPT[];
+extern char const H_NO_EXCEPT[];          // English for "noexcept"
 extern char const H_NO_EXCEPTION[];       // English for "noexcept"
 extern char const L_NULLPTR[];
 extern char const L_OVERRIDE[];
@@ -256,7 +256,7 @@ extern char const L_MAYBE_UNUSED[];
 extern char const H_MAYBE_UNUSED[];       // English for "maybe_unused"
 extern char const L___MAYBE_UNUSED__[];
 extern char const L_NODISCARD[];
-extern char const H_NO_DISCARD[];
+extern char const H_NO_DISCARD[];         // English for "nodiscard"
 extern char const L___NODISCARD__[];
 extern char const H_NON_DISCARDABLE[];    // English for "nodiscard"
 
@@ -271,8 +271,8 @@ extern char const L_CO_YIELD[];
 extern char const L_EXPORT[];
 extern char const L_EXPORTED[];           // English for "export"
 extern char const L_NO_UNIQUE_ADDRESS[];
-extern char const H_NO_UNIQUE_ADDRESS[];
-extern char const H_NON_UNIQUE_ADDRESS[];
+extern char const H_NO_UNIQUE_ADDRESS[];  // English for "no_unique_address"
+extern char const H_NON_UNIQUE_ADDRESS[]; // English for "no_unique_address"
 extern char const L_REQUIRES[];
 
 // Alternative tokens
@@ -323,29 +323,32 @@ extern char const L_APPLE___BLOCK[];      // storage class
 extern char const L_APPLE_BLOCK[];        // Engligh for '^'
 
 // Microsoft extensions
+//
+// Only some of these keywords have both two and one leading underscore; see
+// <https://docs.microsoft.com/en-us/cpp/cpp/keywords-cpp?#microsoft-specific-c-keywords>.
 extern char const L_MSC__ASM[];
 extern char const L_MSC___ASM[];
 extern char const L_MSC__CDECL[];
 extern char const L_MSC___CDECL[];
-extern char const L_MSC_CDECL[];
+extern char const L_MSC_CDECL[];          // English for "__cdecl"
 extern char const L_MSC___CLRCALL[];
-extern char const L_MSC_CLRCALL[];
+extern char const L_MSC_CLRCALL[];        // English for "__clrcall"
 extern char const L_MSC__DECLSPEC[];
 extern char const L_MSC___DECLSPEC[];
 extern char const L_MSC__FASTCALL[];
 extern char const L_MSC___FASTCALL[];
-extern char const L_MSC_FASTCALL[];
+extern char const L_MSC_FASTCALL[];       // English for "__fastcall"
 extern char const L_MSC__INLINE[];
 extern char const L_MSC__RESTRICT[];
 extern char const L_MSC__STDCALL[];
 extern char const L_MSC___STDCALL[];
-extern char const L_MSC_STDCALL[];
+extern char const L_MSC_STDCALL[];        // English for "__stdcall"
 extern char const L_MSC___THISCALL[];
-extern char const L_MSC_THISCALL[];
+extern char const L_MSC_THISCALL[];       // English for "__thiscall"
 extern char const L_MSC__VECTORCALL[];
 extern char const L_MSC___VECTORCALL[];
-extern char const L_MSC_VECTORCALL[];
-extern char const L_MSC_WINAPI[];
+extern char const L_MSC_VECTORCALL[];     // English for "__vectorcall"
+extern char const L_MSC_WINAPI[];         // synonym for "__stdcall"
 
 ////////// extern functions ///////////////////////////////////////////////////
 
