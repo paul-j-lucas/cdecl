@@ -88,6 +88,7 @@ typedef struct c_ptr_mbr_ast      c_ptr_mbr_ast_t;
 typedef struct c_ptr_ref_ast      c_ptr_ref_ast_t;
 typedef struct slist_node         c_scope_t;      ///< Scope in a c_sname_t.
 typedef struct c_scope_data       c_scope_data_t;
+typedef struct c_sglob            c_sglob_t;
 typedef struct slist              c_sname_t;      ///< C++ scoped name.
 typedef uint64_t                  c_tid_t;        ///< Type ID(s) bitmask.
 typedef enum   c_tpid             c_tpid_t;

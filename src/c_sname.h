@@ -331,8 +331,9 @@ c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
   return c_sname_empty( sname ) ? &T_NONE : &c_scope_data( sname->tail )->type;
 }
 
+
 /**
- * Checks whether \a sname matches \a glob where \a glob is glob-like in that
+ * Checks whether \a sname matches \a sglob where \a sglob is glob-like in that
  * `*` matches zero or more characters.  However, `*` matches only within a
  * single scope.  Examples:
  *
@@ -349,11 +350,11 @@ c_type_t const* c_sname_local_type( c_sname_t const *sname ) {
  *  + `**::&zwj;foo` matches all names equal to `foo` in any scope.
  *
  * @param sname The scoped name to match against.
- * @param glob The glob-like pattern to match.  It _must_ be a valid glob.
- * @return Returns `true` only if \a sname matches \a glob.
+ * @param sglob The scoped glob to match.
+ * @return Returns `true` only if \a sname matches \a sglob.
  */
 PJL_WARN_UNUSED_RESULT
-bool c_sname_match( c_sname_t const *sname, char const *glob );
+bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob );
 
 /**
  * Gets the name at \a roffset of \a sname.

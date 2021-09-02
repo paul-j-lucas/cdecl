@@ -38,6 +38,8 @@
 #include "c_keyword.h"
 #include "c_lang.h"
 #include "c_operator.h"
+#include "c_sglob.h"
+#include "c_sname.h"
 #include "c_type.h"
 #include "c_typedef.h"
 #include "cdecl.h"
@@ -446,9 +448,9 @@ typedef struct c_qualifier c_qualifier_t;
  * Information for show_type_visitor().
  */
 struct show_type_info {
-  unsigned        show_which;     ///< Predefined, user, or both?
-  char const     *glob;           ///< Glob pattern, if any.
-  c_gib_kind_t    gib_kind;       ///< Kind of gibberish to print.
+  unsigned      show_which;       ///< Predefined, user, or both?
+  c_gib_kind_t  gib_kind;         ///< Kind of gibberish to print.
+  c_sglob_t     sglob;            ///< Scoped glob to match, if any.
 };
 typedef struct show_type_info show_type_info_t;
 
@@ -591,6 +593,17 @@ static inline char const* printable_token( void ) {
     case '\n': return "\\n";
     default  : return lexer_token;
   } // switch
+}
+
+/**
+ * Frees all memory associated with \a sti but _not_ \a sti itself.
+ *
+ * @param sti The <code>\ref show_type_info</code> to free.
+ *
+ * @sa sti_init()
+ */
+static inline void sti_free( show_type_info_t *sti ) {
+  c_sglob_free( &sti->sglob );
 }
 
 /**
@@ -940,7 +953,8 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
       ((tdef->user_defined ?
         (sti->show_which & SHOW_USER_TYPES) != 0 :
         (sti->show_which & SHOW_PREDEFINED_TYPES) != 0)) &&
-      (sti->glob == NULL || c_sname_match( &tdef->ast->sname, sti->glob ));
+      (sti->sglob.count == 0 ||
+       c_sname_match( &tdef->ast->sname, &sti->sglob ));
 
     if ( show_type ) {
       if ( sti->gib_kind == C_GIB_NONE )
@@ -951,6 +965,25 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
   }
 
   return false;
+}
+
+/**
+ * Initializes a show_type_info_t.
+ *
+ * @param sti The <code>\ref show_type_info</code> to initialize.
+ * @param show_which Which types to show: predefined, user, or both?
+ * @param glob The glob string.  May be NULL.
+ * @param gib_kind The <code>\ref c_gib_kind</code> to use.
+ *
+ * @sa sti_free()
+ */
+static void sti_init( show_type_info_t *sti, unsigned show_which,
+                      char const *glob, c_gib_kind_t gib_kind ) {
+  sti->show_which = show_which;
+  sti->gib_kind = gib_kind;
+  c_sglob_init( &sti->sglob );
+  if ( glob != NULL )
+    c_sglob_parse( glob, &sti->sglob );
 }
 
 /**
@@ -2766,13 +2799,19 @@ show_command
 
   | Y_SHOW show_which_types_mask_opt glob_opt show_format_opt
     {
-      c_typedef_visit( &show_type_visitor, &(show_type_info_t){ $2, $3, $4 } );
+      show_type_info_t sti;
+      sti_init( &sti, $2, $3, $4 );
+      c_typedef_visit( &show_type_visitor, &sti );
+      sti_free( &sti );
       free( $3 );
     }
 
   | Y_SHOW show_which_types_mask_opt glob_opt Y_AS show_format_exp
     {
-      c_typedef_visit( &show_type_visitor, &(show_type_info_t){ $2, $3, $5 } );
+      show_type_info_t sti;
+      sti_init( &sti, $2, $3, $5 );
+      c_typedef_visit( &show_type_visitor, &sti );
+      sti_free( &sti );
       free( $3 );
     }
 
