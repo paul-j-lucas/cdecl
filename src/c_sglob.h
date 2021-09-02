@@ -65,7 +65,7 @@ struct c_sglob {
 /**
  * Frees all memory associated with \a sglob but _not_ \a sglob itself.
  *
- * @param sglob The scoped glob to free.
+ * @param sglob The scoped glob to free.  If NULL, does nothing.
  *
  * @sa c_sglob_init()
  */
