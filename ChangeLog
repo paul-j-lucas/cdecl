@@ -1,5 +1,8 @@
 2021-09-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_sglob.c, c_sname.c, prompt.c, red_black.c: Added missing #include
+     <stdlib.h>.
+   * c_type.h: Added missing PJL_WARN_UNUSED_RESULT.
    * src/Makefile.am, c_sglob.c, c_sglob.h, c_sname.c, c_sname.h, parser.y,
      types.h: Made showing types more efficient by parsing glob only once.
 
