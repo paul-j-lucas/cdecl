@@ -561,6 +561,7 @@ c_tid_t c_tid_normalize( c_tid_t tid );
  * @param tid The scope-type ID to get the order of.
  * @return Returns said order.
  */
+PJL_WARN_UNUSED_RESULT
 unsigned c_tid_scope_order( c_tid_t tid );
 
 /**
