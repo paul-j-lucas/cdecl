@@ -81,6 +81,7 @@
 // standard
 #include <assert.h>
 #include <stdio.h>                      /* for NULL */
+#include <stdlib.h>                     /* or free(3) */
 
 #define RB_FIRST(TREE)  (RB_ROOT(TREE)->child[RB_L])
 #define RB_NIL          (&rb_nil)

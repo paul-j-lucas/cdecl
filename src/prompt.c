@@ -37,7 +37,7 @@
 
 // standard
 #include <stdbool.h>
-#include <stdlib.h>
+#include <stdlib.h>                     /* for free(3) */
 #include <string.h>
 
 #if WITH_READLINE

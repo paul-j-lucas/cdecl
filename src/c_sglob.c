@@ -33,6 +33,7 @@
 
 // standard
 #include <assert.h>
+#include <stdlib.h>                     /* for free(3) */
 
 ////////// extern functions ///////////////////////////////////////////////////
 

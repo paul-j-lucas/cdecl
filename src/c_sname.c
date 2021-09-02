@@ -39,6 +39,7 @@
 // standard
 #include <assert.h>
 #include <fnmatch.h>
+#include <stdlib.h>                     /* for free(3) */
 
 ////////// local functions ////////////////////////////////////////////////////
 
