@@ -66,15 +66,15 @@ void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
 
   //
   // Special case: if the scoped glob starts with `**`, match in any scope.
-  // Decrement glob_count and skip past `**::`.
+  // Skip past `**::` and decrement scope count.
   //
   sglob->match_in_any_scope = s[0] == '*' && s[1] == '*';
   if ( sglob->match_in_any_scope ) {
-    --sglob->count;
     s += 2 /* "**" */;
     SKIP_WS( s );
     assert( s[0] == ':' && s[1] == ':' );
     s += 2 /* "::" */;
+    --sglob->count;
   }
 
   sglob->pattern = MALLOC( char*, sglob->count );
