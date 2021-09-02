@@ -331,6 +331,7 @@ enum c_tpid {
 #define TA_MSC_STDCALL        0x0000000000008004ull /**< `__stdcall`          */
 #define TA_MSC_THISCALL       0x0000000000010004ull /**< `__thiscall`         */
 #define TA_MSC_VECTORCALL     0x0000000000020004ull /**< `__vectorcall`       */
+#define TA_ANY_MSC_CALL       0x000000000003F004ull /**< Any call convention. */
 
 // bit masks
 #define TX_MASK_TPID          0x000000000000000Full /**< Type part ID bitmask.*/
@@ -346,7 +347,6 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 // shorthands
 
 /// Shorthand for any Microsoft C/C++ calling convention.
-#define TA_ANY_MSC_CALL       0x000000000003F004ull
 
 /// Shorthand for any character type.
 #define TB_ANY_CHAR           ( TB_CHAR | TB_WCHAR_T \
