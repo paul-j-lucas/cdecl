@@ -1,6 +1,6 @@
 /*
 **      cdecl -- C gibberish translator
-**      src/c_glob.h
+**      src/c_sglob.h
 **
 **      Copyright (C) 2021  Paul J. Lucas, et al.
 **
