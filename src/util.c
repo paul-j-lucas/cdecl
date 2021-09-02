@@ -152,7 +152,7 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
   if ( likely( ftmp != NULL && size > 0 ) &&
        unlikely( fwrite( buf, 1, size, ftmp ) != size ||
                  fseek( ftmp, 0L, SEEK_SET ) != 0 ) ) {
-    fclose( ftmp );
+    PJL_IGNORE_RV( fclose( ftmp ) );
     ftmp = NULL;
   }
   return ftmp;
