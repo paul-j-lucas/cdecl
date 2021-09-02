@@ -1,5 +1,17 @@
+2021-09-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * src/Makefile.am, c_sglob.c, c_sglob.h, c_sname.c, c_sname.h, parser.y,
+     types.h: Made showing types more efficient by parsing glob only once.
+
+2021-09-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, lexer.l, test/Makefile.am, explain_ecf_v-Rstr-03.out,
+     explain_ecf_v-Rstr-03.test: Fixed parsing of C++ raw string literals.
+   * c_type.c: Sorted functions.
+
 2021-08-31  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_typedef.c: s/PREDEFINED_STD_C89/PREDEFINED_STD_C_89/
    * NEWS, lexer.l: In K&R C, now printing a warning that trigraphs are not
      supported.
    * c_type.c, c_type.h: Split off functionality for "de-signed"-ing into
