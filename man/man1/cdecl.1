@@ -693,27 +693,41 @@ into pseudo-English.
 .BR "explain (" \f2gibberish\fP ")" [ \f2s-name\fP ]
 Deciphers a C (or C++) cast into pseudo-English.
 .TP
-.IR "scope-c s-name " [ " \f3{\fP " [{ " scope-c " | " typedef " | " using " } " \f3;\fP" ]* " \f3}\fP " ]
+.RB "{ " struct " | " union " | " enum " | " class " } " \f2s-name\fP
+Defines
+.I s-name
+as a
+\f(CWstruct\fP,
+\f(CWunion\fP,
+\f(CWenum\fP
+(or \f(CWclass\fP in C++)
+type.
+In C,
+this is equivalent to:
+.cS
+    typedef \f1{\fP struct \f1|\fP union \f1|\fP enum \f1}\fP \f2s-name\fP \f2s-name\fP
+.cE 0
+.TP
+.IR "scope-c s-name" " " \f3{\fP " [{ " scope-c " | " typedef " | " using " } " \f3;\fP "]* " \f3}\fP "
 For C++ only,
-for
-.BR class ,
-.BR struct ,
-or
-.B union
-(but not
-.BR namespace ),
 defines
 .I s-name
-as a type.
-Additionally,
-executes zero or more of
+as a
+.I scope-c
+(\f(CWstruct\fP,
+\f(CWunion\fP,
+or
+\f(CWclass\fP)
+type;
+or begins a \f(CW namespace\fP.
+Also executes zero or more
 .BR class ,
 .BR struct ,
 .BR typedef ,
 .BR union ,
 or
 .B using
-within the scope of
+commands within the scope of
 .I s-name
 thus declaring type(s) within that scope.
 .TP
@@ -1349,6 +1363,7 @@ since they are required by \f(CWoperator<=>()\fP.
 \f(CWblksize_t\fP,
 \f(CWclock_t\fP,
 \f(CWclockid_t\fP,
+\f(CWDIR\fP,
 \f(CWdiv_t\fP,
 \f(CWdouble_t\fP,
 \f(CWerrno_t\fP,
