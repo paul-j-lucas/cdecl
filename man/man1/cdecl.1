@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "August 27, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "September 3, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2107,10 +2107,10 @@ This is made more comprehensible with one of
 or
 .BR using :
 .cS
-cdecl> define pfi_rv as pointer to function (int) returning void
+cdecl> define pfi_v as pointer to function (int) returning void
 cdecl> declare signal as function \\
-cdecl+     (sig as int, f as pfi_rv) returning pfi_rv
-pfi_rv signal(int sig, pfi_rv f);
+cdecl+     (sig as int, f as pfi_v) returning pfi_v
+pfi_v signal(int sig, pfi_v f);
 .cE
 .B cdecl
 can help figure out where to put
