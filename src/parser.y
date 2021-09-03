@@ -2717,7 +2717,15 @@ namespace_declaration_c
       if ( !c_sname_check( &in_attr.current_scope, &@3 ) )
         PARSE_ABORT();
     }
-    brace_in_scope_declaration_c
+    brace_in_scope_declaration_c_exp
+  ;
+
+brace_in_scope_declaration_c_exp
+  : brace_in_scope_declaration_c
+  | error
+    {
+      elaborate_error( "'{' expected" );
+    }
   ;
 
 brace_in_scope_declaration_c_opt
