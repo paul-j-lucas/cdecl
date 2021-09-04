@@ -94,9 +94,6 @@ bool        is_input_a_tty;
 char const *me;
 
 // extern functions
-PJL_WARN_UNUSED_RESULT
-extern bool parse_cdecl_string( char const*, size_t );
-
 extern void parser_cleanup( void );
 
 PJL_WARN_UNUSED_RESULT
@@ -413,58 +410,6 @@ static bool parse_cdecl_stdin( void ) {
 }
 
 /**
- * Parses a cdecl command from a string.
- *
- * @note This is the main parsing function (the only one that calls Bison).
- * All other `parse_cdecl_*()` functions ultimately call this function.
- *
- * @param s The null-terminated string to parse.
- * @param s_len The length of \a s.
- * @return Returns `true` only upon success.
- */
-PJL_WARN_UNUSED_RESULT
-bool parse_cdecl_string( char const *s, size_t s_len ) {
-  assert( s != NULL );
-
-  // The code in print.c relies on command_line being set, so set it.
-  print_params.command_line = s;
-  print_params.command_line_len = s_len;
-
-  strbuf_t explain_buf;
-  bool const insert_explain =
-    opt_explain && !is_command( s, C_COMMAND_ANYWHERE );
-
-  if ( insert_explain ) {
-    //
-    // The string doesn't start with a command: insert "explain " and set
-    // inserted_len so the print_*() functions subtract it from the error
-    // column to get the correct column within the original string.
-    //
-    static char const EXPLAIN_SP[] = "explain ";
-    print_params.inserted_len = ARRAY_SIZE( EXPLAIN_SP ) - 1/*\0*/;
-    strbuf_init( &explain_buf );
-    strbuf_reserve( &explain_buf, print_params.inserted_len + s_len );
-    strbuf_catsn( &explain_buf, EXPLAIN_SP, print_params.inserted_len );
-    strbuf_catsn( &explain_buf, s, s_len );
-    s = explain_buf.str;
-    s_len = explain_buf.len;
-  }
-
-  FILE *const ftmp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
-  IF_EXIT( ftmp == NULL, EX_IOERR );
-  yyrestart( ftmp );
-  bool const ok = yyparse() == 0;
-  PJL_IGNORE_RV( fclose( ftmp ) );
-
-  if ( insert_explain ) {
-    strbuf_free( &explain_buf );
-    print_params.inserted_len = 0;
-  }
-
-  return ok;
-}
-
-/**
  * Reads the configuration file, if any.
  */
 static void read_conf_file( void ) {
@@ -515,6 +460,49 @@ static bool starts_with_token( char const *s, char const *token,
                                size_t token_len ) {
   return  strncmp( s, token, token_len ) == 0 &&
           !is_ident( token[ token_len ] );
+}
+
+////////// extern functions ///////////////////////////////////////////////////
+
+bool parse_cdecl_string( char const *s, size_t s_len ) {
+  assert( s != NULL );
+
+  // The code in print.c relies on command_line being set, so set it.
+  print_params.command_line = s;
+  print_params.command_line_len = s_len;
+
+  strbuf_t explain_buf;
+  bool const insert_explain =
+    opt_explain && !is_command( s, C_COMMAND_ANYWHERE );
+
+  if ( insert_explain ) {
+    //
+    // The string doesn't start with a command: insert "explain " and set
+    // inserted_len so the print_*() functions subtract it from the error
+    // column to get the correct column within the original string.
+    //
+    static char const EXPLAIN_SP[] = "explain ";
+    print_params.inserted_len = ARRAY_SIZE( EXPLAIN_SP ) - 1/*\0*/;
+    strbuf_init( &explain_buf );
+    strbuf_reserve( &explain_buf, print_params.inserted_len + s_len );
+    strbuf_catsn( &explain_buf, EXPLAIN_SP, print_params.inserted_len );
+    strbuf_catsn( &explain_buf, s, s_len );
+    s = explain_buf.str;
+    s_len = explain_buf.len;
+  }
+
+  FILE *const ftmp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
+  IF_EXIT( ftmp == NULL, EX_IOERR );
+  yyrestart( ftmp );
+  bool const ok = yyparse() == 0;
+  PJL_IGNORE_RV( fclose( ftmp ) );
+
+  if ( insert_explain ) {
+    strbuf_free( &explain_buf );
+    print_params.inserted_len = 0;
+  }
+
+  return ok;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

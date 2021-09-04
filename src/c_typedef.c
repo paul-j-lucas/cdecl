@@ -929,7 +929,6 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
  * strings.  The last element must be NULL.
  */
 static void parse_predefined_types( char const *const *types ) {
-  extern bool parse_cdecl_string( char const*, size_t );
   assert( types != NULL );
   do {
     if ( unlikely( !parse_cdecl_string( *types, strlen( *types ) ) ) )
