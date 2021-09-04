@@ -213,7 +213,7 @@ static void print_help_english( void ) {
   else {
     print_h( "  <store>* <cv-qual>* array [<number>] of <english>\n" );
     print_h( "  <store>* constructor [([<args>])]\n" );
-    print_h( "  [virtual] destructor\n" );
+    print_h( "  [virtual] destructor [()]\n" );
     print_h( "  <store>* <fn-qual>* [[non-]member] function [([<args>])] [returning <english>]\n" );
     print_h( "  <store>* <fn-qual>* [[non-]member] operator [([<args>])] [returning <english>]\n" );
     print_h( "  <store>* <cv-qual>* pointer to [member of { class | struct } <name>] <english>\n" );

@@ -3142,7 +3142,7 @@ constructor_decl_english_ast
   ;
 
 destructor_decl_english_ast
-  : Y_DESTRUCTOR
+  : Y_DESTRUCTOR parens_opt
     {
       DUMP_START( "destructor_decl_english_ast", "DESTRUCTOR" );
 
@@ -3151,6 +3151,11 @@ destructor_decl_english_ast
       DUMP_AST( "destructor_decl_english_ast", $$ );
       DUMP_END();
     }
+  ;
+
+parens_opt
+  : /* empty */
+  | '(' rparen_exp
   ;
 
 func_decl_english_ast
