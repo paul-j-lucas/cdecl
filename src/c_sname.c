@@ -109,8 +109,8 @@ void c_sname_fill_in_namespaces( c_sname_t *sname ) {
   FOREACH_SCOPE( scope, sname, sname->tail ) {
     c_type_t *const type = &c_scope_data( scope )->type;
     if ( c_type_is_none( type ) || c_type_is_tid_any( type, TB_SCOPE ) ) {
-      type->btid &= c_tid_compl( TB_SCOPE );
-      type->btid |= TB_NAMESPACE;
+      type->btids &= c_tid_compl( TB_SCOPE );
+      type->btids |= TB_NAMESPACE;
     }
   } // for
 }

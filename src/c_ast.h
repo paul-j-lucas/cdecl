@@ -194,7 +194,7 @@ struct c_array_ast {
    */
   c_array_size_t  size;
 
-  c_tid_t         stid;                 ///< E.g., `array[static const 10]`
+  c_tid_t         stids;                ///< E.g., `array[static const 10]`
 };
 
 /**

@@ -138,8 +138,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
       if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE )
         FPRINTF( eout, "%s %s ", L_VARIABLE, L_LENGTH );
       FPRINTF( eout, "%s ", L_ARRAY );
-      if ( ast->as.array.stid != TS_NONE )
-        FPRINTF( eout, "%s ", c_tid_name_english( ast->as.array.stid ) );
+      if ( ast->as.array.stids != TS_NONE )
+        FPRINTF( eout, "%s ", c_tid_name_english( ast->as.array.stids ) );
       if ( ast->as.array.size >= 0 )
         FPRINTF( eout, "%d ", ast->as.array.size );
       FPRINTF( eout, "%s ", L_OF );
@@ -212,7 +212,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
     case K_POINTER_TO_MEMBER: {
       c_type_print_not_base( &ast->type, eout );
       FPRINTF( eout, "%s %s %s %s ", L_POINTER, L_TO, L_MEMBER, L_OF );
-      char const *const name = c_tid_name_english( ast->type.btid );
+      char const *const name = c_tid_name_english( ast->type.btids );
       FPRINTF( eout, "%s%s", SP_AFTER( name ) );
       c_sname_english( &ast->as.ptr_mbr.class_sname, eout );
       FPUTC( ' ', eout );
@@ -279,7 +279,7 @@ static void c_type_print_not_base( c_type_t const *type, FILE *eout ) {
   assert( type != NULL );
   assert( eout != NULL );
 
-  c_type_t const temp_type = { TB_NONE, type->stid, type->atid };
+  c_type_t const temp_type = { TB_NONE, type->stids, type->atids };
   if ( !c_type_is_none( &temp_type ) )
     FPRINTF( eout, "%s ", c_type_name_english( &temp_type ) );
 }

@@ -110,8 +110,8 @@ static void c_ast_set_local_type_if_is_any_scope( c_ast_t *ast ) {
        c_type_is_tid_any( &ast->type, TB_ANY_SCOPE ) ) {
     c_ast_set_local_type( ast,
       &C_TYPE_LIT(
-        ast->type.btid & TB_ANY_SCOPE,
-        ast->type.stid & TS_INLINE,
+        ast->type.btids & TB_ANY_SCOPE,
+        ast->type.stids & TS_INLINE,
         TA_NONE
       )
     );
@@ -139,7 +139,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
   switch ( ast->kind_id ) {
     case K_ARRAY:
       dup_ast->as.array.size = ast->as.array.size;
-      dup_ast->as.array.stid = ast->as.array.stid;
+      dup_ast->as.array.stids = ast->as.array.stids;
       break;
 
     case K_TYPEDEF:
@@ -224,7 +224,7 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
       c_array_ast_t const *const aj_ast = &j_ast->as.array;
       if ( ai_ast->size != aj_ast->size )
         return false;
-      if ( ai_ast->stid != aj_ast->stid )
+      if ( ai_ast->stids != aj_ast->stids )
         return false;
       break;
     }
@@ -356,7 +356,7 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
 
   switch ( kind_id ) {
     case K_ARRAY:
-      ast->as.array.stid = TS_NONE;
+      ast->as.array.stids = TS_NONE;
       break;
     case K_APPLE_BLOCK:
     case K_BUILTIN:

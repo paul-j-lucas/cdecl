@@ -111,16 +111,16 @@ c_ast_t* c_ast_find_type_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_type_t const *type );
 
 /**
- * Checks whether \a ast is an AST is one of \a tids built-in type(s) or a
+ * Checks whether \a ast is an AST is one of \a btids built-in type(s) or a
  * `typedef` thereof.
  *
  * @param ast The AST to check.
- * @param tids The built-in type(s) \a ast can be.  They must be only base
+ * @param btids The built-in type(s) \a ast can be.  They must be only base
  * types (no storage classes, qualfiers, or attributes).
- * @return Returns `true` only if the type of \a ast is one of \a tids.
+ * @return Returns `true` only if the type of \a ast is one of \a btids.
  */
 PJL_WARN_UNUSED_RESULT
-bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t tids );
+bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids );
 
 /**
  * Checks whether \a ast is an AST of one of \a kind_ids or a reference
@@ -397,7 +397,7 @@ c_ast_t const* c_ast_untypedef( c_ast_t const *ast );
  */
 C_AST_UTIL_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_size_t( c_ast_t const *ast ) {
-  return c_tid_is_size_t( c_ast_untypedef( ast )->type.btid );
+  return c_tid_is_size_t( c_ast_untypedef( ast )->type.btids );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
