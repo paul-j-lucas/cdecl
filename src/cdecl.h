@@ -34,6 +34,7 @@
 
 // standard
 #include <stdbool.h>
+#include <stddef.h>                     /* for size_t */
 
 /// @endcond
 
