@@ -923,12 +923,12 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
 }
 
 /**
- * Parses an array of predefined `typedef` declarations.
+ * Parses an array of predefined type declarations.
  *
  * @param types A pointer to the start of an array of pointers to `typedef`
  * strings.  The last element must be NULL.
  */
-static void c_typedef_parse_predefined( char const *const *types ) {
+static void parse_predefined_types( char const *const *types ) {
   extern bool parse_cdecl_string( char const*, size_t );
   assert( types != NULL );
   do {
@@ -1049,33 +1049,33 @@ void c_typedef_init( void ) {
     opt_lang = LANG_C_NEW;
 
     predefined_lang_ids = LANG_MIN(C_KNR);
-    c_typedef_parse_predefined( PREDEFINED_KNR_C );
+    parse_predefined_types( PREDEFINED_KNR_C );
 
     predefined_lang_ids = LANG_MIN(C_89);
-    c_typedef_parse_predefined( PREDEFINED_STD_C_89 );
-    c_typedef_parse_predefined( PREDEFINED_FLOATING_POINT_EXTENSIONS );
-    c_typedef_parse_predefined( PREDEFINED_GNU_C );
+    parse_predefined_types( PREDEFINED_STD_C_89 );
+    parse_predefined_types( PREDEFINED_FLOATING_POINT_EXTENSIONS );
+    parse_predefined_types( PREDEFINED_GNU_C );
 
     predefined_lang_ids = LANG_MIN(C_95);
-    c_typedef_parse_predefined( PREDEFINED_STD_C_95 );
-    c_typedef_parse_predefined( PREDEFINED_PTHREAD_H );
-    c_typedef_parse_predefined( PREDEFINED_WIN32 );
+    parse_predefined_types( PREDEFINED_STD_C_95 );
+    parse_predefined_types( PREDEFINED_PTHREAD_H );
+    parse_predefined_types( PREDEFINED_WIN32 );
 
     predefined_lang_ids = LANG_MIN(C_99);
-    c_typedef_parse_predefined( PREDEFINED_STD_C_99 );
+    parse_predefined_types( PREDEFINED_STD_C_99 );
 
     // However, Embedded C extensions are available only in C99.
     opt_lang = LANG_C_99;
     predefined_lang_ids = LANG_C_99;
-    c_typedef_parse_predefined( PREDEFINED_EMBEDDED_C );
+    parse_predefined_types( PREDEFINED_EMBEDDED_C );
     opt_lang = LANG_C_NEW;
 
     // Must be defined after C99.
     predefined_lang_ids = LANG_MIN(C_89);
-    c_typedef_parse_predefined( PREDEFINED_MISC );
+    parse_predefined_types( PREDEFINED_MISC );
 
     predefined_lang_ids = LANG_MIN(C_11);
-    c_typedef_parse_predefined( PREDEFINED_STD_C_11 );
+    parse_predefined_types( PREDEFINED_STD_C_11 );
   }
 
   //
@@ -1086,20 +1086,20 @@ void c_typedef_init( void ) {
 
   if ( opt_typedefs ) {
     predefined_lang_ids = LANG_MIN(CPP_OLD);
-    c_typedef_parse_predefined( PREDEFINED_STD_CPP );
+    parse_predefined_types( PREDEFINED_STD_CPP );
 
     predefined_lang_ids = LANG_MIN(CPP_11);
-    c_typedef_parse_predefined( PREDEFINED_STD_CPP_11 );
+    parse_predefined_types( PREDEFINED_STD_CPP_11 );
 
     predefined_lang_ids = LANG_MIN(CPP_17);
-    c_typedef_parse_predefined( PREDEFINED_STD_CPP_17 );
+    parse_predefined_types( PREDEFINED_STD_CPP_17 );
 
     predefined_lang_ids = LANG_MIN(CPP_20);
-    c_typedef_parse_predefined( PREDEFINED_STD_CPP_20 );
+    parse_predefined_types( PREDEFINED_STD_CPP_20 );
   }
 
   predefined_lang_ids = LANG_MIN(CPP_20);
-  c_typedef_parse_predefined( PREDEFINED_STD_CPP_20_REQUIRED );
+  parse_predefined_types( PREDEFINED_STD_CPP_20_REQUIRED );
 
   opt_lang = orig_lang;
 
