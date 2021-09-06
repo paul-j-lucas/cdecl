@@ -1,5 +1,30 @@
+2021-09-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * gibberish.c: Made "if"s slightly more efficient by added "else"s where
+     possible.
+
+2021-09-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_sname.c, c_type.c,
+     c_type.h, check.c, dump.c, english.c, gibberish.c, parser.y: s/tid/tids/
+     where appropriate.
+   * cdecl.h: Added #include <stddef.h>.
+   * c_typedef.c, cdecl.c, cdecl.h: Added parse_cdecl_string() to cdecl.h.
+   * c_typedef.c: s/c_typedef_parse_predefined/parse_predefined_types/
+   * cdecl.1: s/earlier/later/
+   * NEWS, cdecl.1, help.c, parser.y, help_english-c++.out: Declaring a
+     destructor in English now optionally allows `()`.
+
+2021-09-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Reworked scope commands; added DIR.
+   * parser.y: Better error message when missing '{' after namespace.
+   * cdecl.1: s/pfi_rv/pfi_v/
+
 2021-09-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * util.c: Added missing IF_EXIT( dup_s == NULL, EX_OSERR ).
+   * util.c: Added PJL_IGNORE_RV().
    * c_sglob.c, c_sname.c, prompt.c, red_black.c: Added missing #include
      <stdlib.h>.
    * c_type.h: Added missing PJL_WARN_UNUSED_RESULT.
