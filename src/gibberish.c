@@ -62,6 +62,7 @@ typedef struct g_state g_state_t;
 // local functions
 static void g_init( g_state_t*, c_gib_kind_t, bool, FILE* );
 static void g_print_ast( g_state_t*, c_ast_t const* );
+static void g_print_ast_bit_width( g_state_t const*, c_ast_t const* );
 static void g_print_ast_name( g_state_t*, c_ast_t const* );
 static void g_print_postfix( g_state_t*, c_ast_t const* );
 static void g_print_qual_name( g_state_t*, c_ast_t const* );
@@ -266,8 +267,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_BUILTIN:
       FPUTS( c_type_name_c( &ast->type ), g->gout );
       g_print_space_ast_name( g, ast );
-      if ( ast->as.builtin.bit_width > 0 )
-        FPRINTF( g->gout, " : %u", ast->as.builtin.bit_width );
+      g_print_ast_bit_width( g, ast );
       break;
 
     case K_ENUM_CLASS_STRUCT_UNION:
@@ -404,8 +404,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       if ( is_more_than_plain_typedef && opt_east_const )
         FPRINTF( g->gout, " %s", c_type_name_c( &ast->type ) );
       g_print_space_ast_name( g, ast );
-      if ( ast->as.tdef.bit_width > 0 )
-        FPRINTF( g->gout, " : %u", ast->as.tdef.bit_width );
+      g_print_ast_bit_width( g, ast );
       break;
     }
 
@@ -439,6 +438,22 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
       FPRINTF( g->gout, "%d", ast->as.array.size );
   } // switch
   FPUTS( graph_token_c( "]" ), g->gout );
+}
+
+/**
+ * Helper function for c_ast_visitor_english() that prints a bit-field width,
+ * if any.
+ *
+ * @param g The `g_state` to use.
+ * @param ast The AST to print the bit-field width of.
+ */
+static void g_print_ast_bit_width( g_state_t const *g, c_ast_t const *ast ) {
+  assert( g != NULL );
+  assert( ast != NULL );
+  assert( (ast->kind_id & (K_BUILTIN | K_TYPEDEF)) != K_NONE );
+
+  if ( ast->as.builtin.bit_width > 0 )
+    FPRINTF( g->gout, " : %u", ast->as.builtin.bit_width );
 }
 
 /**
