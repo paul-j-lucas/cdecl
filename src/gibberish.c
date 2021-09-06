@@ -249,18 +249,18 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       }
       if ( is_noexcept )
         FPRINTF( g->gout, " %s", L_NOEXCEPT );
-      if ( is_throw )
+      else if ( is_throw )
         FPRINTF( g->gout, " %s()", L_THROW );
       if ( is_override )
         FPRINTF( g->gout, " %s", L_OVERRIDE );
-      if ( is_final )
+      else if ( is_final )
         FPRINTF( g->gout, " %s", L_FINAL );
+      else if ( is_pure_virtual )
+        FPUTS( " = 0", g->gout );
       if ( is_default )
         FPRINTF( g->gout, " = %s", L_DEFAULT );
-      if ( is_delete )
+      else if ( is_delete )
         FPRINTF( g->gout, " = %s", L_DELETE );
-      if ( is_pure_virtual )
-        FPUTS( " = 0", g->gout );
       break;
 
     case K_BUILTIN:
