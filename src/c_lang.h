@@ -280,7 +280,6 @@ bool c_lang_is_cpp( c_lang_id_t lang_ids ) {
  *  + \a lang_ids contains any version of C++, returns `"C++"`.
  *
  * @sa c_lang_name()
- * @sa c_lang_oldest_name()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_lang_coarse_name( c_lang_id_t lang_ids ) {
@@ -310,7 +309,6 @@ char const* c_lang_literal( c_lang_lit_t const *lang_lit );
  * @return Returns said name.
  *
  * @sa c_lang_coarse_name()
- * @sa c_lang_oldest_name()
  */
 PJL_WARN_UNUSED_RESULT
 char const* c_lang_name( c_lang_id_t lang_id );
@@ -343,7 +341,6 @@ c_lang_id_t c_lang_newer( c_lang_id_t lang_id ) {
  * @sa c_lang_and_newer()
  * @sa c_lang_newer()
  * @sa c_lang_oldest()
- * @sa c_lang_oldest_name()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_newest( c_lang_id_t lang_ids ) {
@@ -381,26 +378,10 @@ c_lang_t const* c_lang_next( c_lang_t const *lang );
  * @sa c_lang_and_newer()
  * @sa c_lang_newer()
  * @sa c_lang_newest()
- * @sa c_lang_oldest_name()
  */
 C_LANG_INLINE PJL_WARN_UNUSED_RESULT
 c_lang_id_t c_lang_oldest( c_lang_id_t lang_ids ) {
   return ls_bit1_32( lang_ids & ~LANGX_MASK ) | (lang_ids & LANGX_MASK);
-}
-
-/**
- * Gets the printable name of the oldest language among \a lang_ids.
- *
- * @param lang_ids The bitwise-or of language(s).
- * @return Returns said name.
- *
- * @sa c_lang_coarse_name()
- * @sa c_lang_name()
- * @sa c_lang_oldest()
- */
-C_LANG_INLINE PJL_WARN_UNUSED_RESULT
-char const* c_lang_oldest_name( c_lang_id_t lang_ids ) {
-  return c_lang_name( c_lang_oldest( lang_ids ) );
 }
 
 /**

@@ -2338,7 +2338,7 @@ static void c_sname_warn( c_sname_t const *sname, c_loc_t const *loc ) {
     if ( k != NULL ) {
       print_warning( loc,
         "\"%s\" is a keyword in %s\n",
-        name, c_lang_oldest_name( k->lang_ids )
+        name, c_lang_name( c_lang_oldest( k->lang_ids ) )
       );
       continue;
     }
