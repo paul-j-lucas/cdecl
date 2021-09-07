@@ -896,6 +896,10 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
     (!is_ecsu || c_lang_is_c( tdef->lang_ids ) ||
     (OPT_LANG_IS(C_ANY) && !c_lang_is_cpp( tdef->lang_ids )));
 
+  //
+  // When printing a "using", we don't have to check languages since "using" is
+  // available only in C++.
+  //
   bool const printing_using = gib_kind == C_GIB_USING && !is_ecsu;
 
   if ( printing_typedef )
