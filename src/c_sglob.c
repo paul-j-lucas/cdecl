@@ -27,7 +27,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 /// @cond DOXYGEN_IGNORE
-#define C_SGLOB _GL_EXTERN_INLINE
+#define C_SGLOB_INLINE _GL_EXTERN_INLINE
 /// @endcond
 #include "c_sglob.h"
 
