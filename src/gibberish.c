@@ -845,7 +845,8 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
       //      namespace S::T { typedef int I; }
       //
       // If the current language is any version of C, also print in nested
-      // namespace form.
+      // namespace form even though C doesn't have any namespaces because we
+      // might be being asked to print all types.
       //
       scope_type = *c_sname_scope_type( sname );
       if ( scope_type.btids == TB_SCOPE )
