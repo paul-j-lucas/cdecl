@@ -4016,10 +4016,11 @@ func_decl_c_astp
 
       $$.target_ast = func_ast->as.func.ret_ast;
 
-      if ( c_ast_is_ptr_to_kind( $$.ast, K_FUNCTION ) ) {
+      c_tid_t const msc_call_atids = $$.ast->type.atids & TA_ANY_MSC_CALL;
+      if ( msc_call_atids != TA_NONE ) {
         //
-        // For a pointer to function, we need to move the Microsoft calling
-        // convention (if any) from the pointer to the function, e.g., change:
+        // Microsoft calling conventions need to be moved from the pointer to
+        // the function, e.g., change:
         //
         //      declare f as cdecl pointer to function returning void
         //
@@ -4027,9 +4028,13 @@ func_decl_c_astp
         //
         //      declare f as pointer to cdecl function returning void
         //
-        c_tid_t const msc_call_atid = $$.ast->type.atids & TA_ANY_MSC_CALL;
-        $$.ast->type.atids &= c_tid_compl( TA_ANY_MSC_CALL );
-        $$.ast->as.ptr_ref.to_ast->type.atids |= msc_call_atid;
+        for ( c_ast_t const *ast = $$.ast;
+              (ast = c_ast_unpointer( ast )) != NULL; ) {
+          if ( ast->kind_id == K_FUNCTION ) {
+            $$.ast->type.atids &= c_tid_compl( TA_ANY_MSC_CALL );
+            CONST_CAST( c_ast_t*, ast )->type.atids |= msc_call_atids;
+          }
+        } // for
       }
 
       DUMP_AST( "func_decl_c_astp", $$.ast );

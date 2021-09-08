@@ -70,7 +70,14 @@ The characters are:
 + `kr` = untyped K&R C function argument
 + `l` = `long`
 + `m` = member of class or `mutable`
++ `mscc` = Microsoft C `__clrcall`
++ `mscd` = Microsoft C `__cdecl`
 + `msds` = Microsoft C `__declspec`
++ `msfc` = Microsoft C `__fastcall`
++ `mssc` = Microsoft C `__stdcall`
++ `mstc` = Microsoft C `__thiscall`
++ `msvc` = Microsoft C `__vectorcall`
++ `mswa` = Microsoft C `WINAPI`
 + `n` = name, nested, or `union`
 + `nr` = `noreturn`
 + `ns` = `namespace`

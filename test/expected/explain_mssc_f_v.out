@@ -1,0 +1,1 @@
+declare f as stdcall function returning int

@@ -1,0 +1,1 @@
+declare f as cdecl function returning int

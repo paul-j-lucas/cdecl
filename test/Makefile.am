@@ -411,6 +411,13 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_main_fippc_i.test \
 	tests/explain_main_fippcc_i.test \
 	tests/explain_main_fv_i.test \
+	tests/explain_mscc_f_v.test \
+	tests/explain_mscd_f_v.test \
+	tests/explain_msfc_f_v.test \
+	tests/explain_mssc_f_v.test \
+	tests/explain_mstc_f_v.test \
+	tests/explain_msvc_f_v.test \
+	tests/explain_mswa_f_v.test \
 	tests/explain_n.test \
 	tests/explain_nfi_c.test \
 	tests/explain_ni.test \
@@ -420,7 +427,8 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_ovo_minus_rk_rk.test \
 	tests/explain_ovo_plus2_i_rk.test \
 	tests/explain_ovo_plus_rk_rk.test \
-	tests/explain_p_cdecl_f.test \
+	tests/explain_p_mscd_f.test \
+	tests/explain_p_mssc_f_v.test \
 	tests/explain_pa3a5i.test \
 	tests/explain_pa3cpa5i.test \
 	tests/explain_pa3pa5i.test \
@@ -431,6 +439,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_pcpi.test \
 	tests/explain_pfv_pi.test \
 	tests/explain_pi.test \
+	tests/explain_pp_mssc_f_v.test \
 	tests/explain_ppi.test \
 	tests/explain_rgi.test \
 	tests/explain_rgk.test \

@@ -1,0 +1,1 @@
+declare f as vectorcall function returning int

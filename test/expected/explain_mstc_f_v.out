@@ -1,0 +1,1 @@
+declare f as thiscall function returning int

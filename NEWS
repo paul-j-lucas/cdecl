@@ -29,6 +29,13 @@ Declaring a destructor in English now optionally allows `()`.
 A raw string literal like `R"abc(X)ab)abc"` was previously not parsed
 correctly.
 
+** Fixed multiple pointers to function having a Microsoft calling convention
+Declarations like:
+
+    cdecl> explain int (__stdcall **f)()
+
+are now handled correctly.
+
 
 * Changes in Cdecl 10.4
 
