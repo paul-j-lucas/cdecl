@@ -336,6 +336,7 @@ void c_ast_free( c_ast_t *ast ) {
     } // switch
 
     FREE( ast );
+    MEM_ZERO( ast );
   }
 }
 
