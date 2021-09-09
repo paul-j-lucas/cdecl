@@ -320,6 +320,8 @@ typedef uint32_t rlim_t;
 typedef unsigned long rsize_t;
 typedef uint32_t sa_family_t;
 typedef int sig_atomic_t;
+typedef void (*sig_t)(int);
+typedef void (*sighandler_t)(int);
 typedef unsigned long sigset_t;
 typedef unsigned long size_t;
 typedef uint32_t socklen_t;

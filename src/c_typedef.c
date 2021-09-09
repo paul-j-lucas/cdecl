@@ -634,6 +634,7 @@ static char const *const PREDEFINED_GNU_C[] = {
   //
   "typedef long long   __int128",
 
+  "typedef void      (*sighandler_t)(int)",
   NULL
 };
 
@@ -653,6 +654,7 @@ static char const *const PREDEFINED_MISC[] = {
   "typedef unsigned long  nfds_t",
   "typedef uint32_t       nlink_t",
   "typedef uint32_t       rlim_t",
+  "typedef void         (*sig_t)(int)",
   "typedef unsigned long  sigset_t",
 
   "enum                   clockid_t",

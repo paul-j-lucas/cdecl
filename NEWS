@@ -36,6 +36,9 @@ Declarations like:
 
 are now handled correctly.
 
+** More types
+Added `sig_t` (BSD) and `sighandler_t` (GNU) types.
+
 
 * Changes in Cdecl 10.4
 

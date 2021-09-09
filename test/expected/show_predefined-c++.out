@@ -314,6 +314,8 @@ define rlim_t as uint32_t
 define rsize_t as unsigned long int
 define sa_family_t as uint32_t
 define sig_atomic_t as int
+define sig_t as pointer to function (int) returning void
+define sighandler_t as pointer to function (int) returning void
 define sigset_t as unsigned long int
 define size_t as unsigned long int
 define socklen_t as uint32_t
