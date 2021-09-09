@@ -1,5 +1,8 @@
 2021-09-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_sglob.c: Made c_sglob_parse() more robust.
+   * parser.y: Added MEM_ZERO().
+   * c_ast.c: Added MEM_ZERO( ast ).
    * AUTHORS: Added mention of Microsoft calling conventions.
 
 2021-09-08  Paul J. Lucas <paul@lucasmail.org>
