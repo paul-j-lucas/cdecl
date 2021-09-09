@@ -167,8 +167,7 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
                slist_node_data_cmp_fn_t data_cmp_fn );
 
 /**
- * Duplicates \a src_list and all of its nodes.  The caller is responsible for
- * calling slist_free() on the duplicate.
+ * Duplicates \a src_list and all of its nodes.
  *
  * @param src_list The <code>\ref slist</code> to duplicate; may ne NULL.
  * @param n The number of nodes to duplicate; -1 is equivalent to slist_len().
@@ -177,7 +176,8 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
  * @param node_data_dup_fn A pointer to a function to use to duplicate the data
  * at each node of \a src_list or NULL if none is required (hence a shallow
  * copy will be done).
- * @return Returns a duplicate of \a src_list.
+ * @return Returns a duplicate of \a src_list.  The caller is responsible for
+ * calling slist_free() on it.
  *
  * @sa slist_free()
  */

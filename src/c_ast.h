@@ -481,11 +481,11 @@ size_t c_ast_count_name( c_ast_t const *ast ) {
 }
 
 /**
- * Duplicates the name of \a ast.  The caller is responsible for calling
- * c_sname_free() on the duplicate.
+ * Duplicates the name of \a ast.
  *
  * @param ast The AST to duplicate the name of.
- * @return Returns the name of \a ast duplicated.
+ * @return Returns the name of \a ast duplicated.  The caller is responsible
+ * for calling c_sname_free() on it.
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 c_sname_t c_ast_dup_name( c_ast_t const *ast ) {

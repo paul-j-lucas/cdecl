@@ -91,8 +91,7 @@ static inline bool have_genuine_gnu_readline( void ) {
  * Creates a prompt.
  *
  * @param suffix The prompt suffix character to use.
- * @return Returns a prompt string.  The caller is responsible for freeing the
- * memory.
+ * @return Returns a prompt string.  The caller is responsible for freeing it.
  */
 PJL_WARN_UNUSED_RESULT
 static char* prompt_create( char suffix ) {

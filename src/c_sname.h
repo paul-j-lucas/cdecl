@@ -123,11 +123,11 @@ PJL_WARN_UNUSED_RESULT
 int c_scope_data_cmp( c_scope_data_t *i_data, c_scope_data_t *j_data );
 
 /**
- * Duplicates \a data.  The caller is responsible for calling
- * c_scope_data_free() on the duplicate.
+ * Duplicates \a data.
  *
  * @param data The <code>\ref c_scope_data</code> to duplicate.
- * @return Returns a duplicate of \a data.
+ * @return Returns a duplicate of \a data.  The caller is responsible for
+ * calling c_scope_data_free() on it.
  *
  * @c_scope_data_free()
  */
