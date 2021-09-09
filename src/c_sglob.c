@@ -42,6 +42,7 @@ void c_sglob_free( c_sglob_t *sglob ) {
     for ( size_t i = 0; i < sglob->count; ++i )
       free( sglob->pattern[i] );
     free( sglob->pattern );
+    c_sglob_init( sglob );
   }
 }
 
@@ -50,6 +51,7 @@ void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
 
   if ( s == NULL )
     return;
+  SKIP_WS( s );
 
   //
   // Scan through the scoped glob to count the number of scopes which is the
@@ -82,23 +84,47 @@ void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
   //
   // Break up scoped glob into array of globs.
   //
+  char const *glob_begin = SKIP_WS( s );
   size_t glob_index = 0;
-  for ( char const *t = s, *glob_begin = SKIP_WS( t ); ; ) {
-    if ( *t == ':' || *t == '\0' ) {
-      assert( glob_index < sglob->count );
-      size_t const glob_len = (size_t)(t - glob_begin);
-      sglob->pattern[ glob_index ] = check_strndup( glob_begin, glob_len );
-      if ( *t++ == '\0' )
+  for (;;) {
+    switch ( *s ) {
+      case ':':
+      case ' ':
+      case '\f':
+      case '\r':
+      case '\t':
+      case '\v':
+      case '\0': {                      // found end of glob
+        size_t const glob_len = (size_t)(s - glob_begin);
+        assert( glob_len > 0 );
+        assert( glob_index < sglob->count );
+        sglob->pattern[ glob_index ] = check_strndup( glob_begin, glob_len );
+redo:   switch ( *s ) {
+          case ':':
+            ++s;
+            assert( *s == ':' );
+            ++s;
+            SKIP_WS( s );
+            assert( is_ident( *s ) || *s == '*' );
+            glob_begin = s;
+            ++glob_index;
+            break;
+          case '\0':
+            return;
+          default:                      // must be whitespace
+            SKIP_WS( s );
+            goto redo;
+        } // switch
         break;
-      assert( *t == ':' );
-      ++t;
-      glob_begin = SKIP_WS( t );
-      ++glob_index;
-    }
-    else {
-      assert( is_ident( *t ) || *t == '*' );
-      ++t;
-    }
+      }
+
+      default:
+        assert( is_ident( *s ) );
+        PJL_FALLTHROUGH;
+      case '*':
+        ++s;
+        break;
+    } // switch
   } // for
 }
 
