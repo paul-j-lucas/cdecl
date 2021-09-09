@@ -1,5 +1,26 @@
+2021-09-08  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, parser.y, test/Makefile.am, explain_mscc_f_v.out,
+     explain_mscd_f_v.out, explain_msfc_f_v.out, explain_mssc_f_v.out,
+     explain_mstc_f_v.out, explain_msvc_f_v.out, explain_mswa_f_v.out,
+     explain_p_mssc_f_v.out, explain_pp_mssc_f_v.out, explain_mscc_f_v.test,
+     explain_mscd_f_v.test, explain_msfc_f_v.test, explain_mssc_f_v.test,
+     explain_mstc_f_v.test, explain_msvc_f_v.test, explain_mswa_f_v.test,
+     explain_p_mssc_f_v.test, explain_pp_mssc_f_v.test: Fixed declarations
+     like: explain int (__stdcall **f)()
+
+2021-09-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_lang.h, check.c: Removed c_lang_oldest_name() -- used in only 1 place.
+
+2021-09-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_sglob.c: s/C_SGLOB/C_SGLOB_INLINE/
+   * NEWS: Formatting.
+
 2021-09-05  Paul J. Lucas <paul@lucasmail.org>
 
+   * gibberish.c: Added g_print_ast_bit_width().
    * gibberish.c: Made "if"s slightly more efficient by added "else"s where
      possible.
 
