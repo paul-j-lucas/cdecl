@@ -129,7 +129,7 @@ int c_scope_data_cmp( c_scope_data_t *i_data, c_scope_data_t *j_data );
  * @return Returns a duplicate of \a data.  The caller is responsible for
  * calling c_scope_data_free() on it.
  *
- * @c_scope_data_free()
+ * @sa c_scope_data_free()
  */
 PJL_WARN_UNUSED_RESULT
 c_scope_data_t* c_scope_data_dup( c_scope_data_t const *data );
