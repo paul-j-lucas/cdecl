@@ -604,6 +604,7 @@ static inline char const* printable_token( void ) {
  */
 static inline void sti_free( show_type_info_t *sti ) {
   c_sglob_free( &sti->sglob );
+  MEM_ZERO( sti );
 }
 
 /**
