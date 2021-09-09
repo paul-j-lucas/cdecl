@@ -128,7 +128,7 @@
  * This code must be manually inserted before a REJECT to undo YY_USER_ACTION.
  */
 #define YY_USER_ACTION_UNDO_FOR_REJECT \
-  column -= (int)yyleng
+  token_column -= (int)yyleng
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -390,14 +390,14 @@ c_keyword_ctx_t   lexer_keyword_ctx;
 char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
-static int        column;               ///< Column position of current token.
-static int        column_newline;       ///< Column position of newline.
 static char      *input_buf;            ///< Entire current input line.
 static size_t     input_len;            ///< Length of `input_buf`.
 static size_t     input_sent;           ///< How many bytes returned to Flex.
 static bool       is_eof;               ///< Encountered EOF?
+static int        newline_column;       ///< Column position of newline.
 static strbuf_t   str_lit_buf;          ///< String (or character) literal.
 static c_loc_t    str_lit_loc;          ///< String literal starting location.
+static int        token_column;         ///< Column position of current token.
 static bool       trigraph_warned;      ///< Printed trigraph warning once?
 
 /// C++ raw string literal delimiter.
@@ -524,11 +524,11 @@ static yy_size_t lexer_get_input( char *buf, yy_size_t buf_capacity ) {
 }
 
 /**
- * Resets the column position upon encountering a newline.
+ * Resets the token column position upon encountering a newline.
  */
 static inline void newline( void ) {
-  column_newline = column;
-  column = 0;
+  newline_column = token_column;
+  token_column = 0;
 }
 
 /**
@@ -994,7 +994,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
   [^)]+       { strbuf_catsn( &str_lit_buf, yytext, yyleng ); }
   ")"         {
                 char const *d;
-                for ( d = rstr_delim; *d != '\0'; ++d, ++column ) {
+                for ( d = rstr_delim; *d != '\0'; ++d, ++token_column ) {
                   int const c = input();
                   if ( c == EOF ) {
                     print_error( &yylloc, "unterminated string literal\n" );
@@ -1096,7 +1096,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
                     print_error( &yylloc, "unterminated comment\n" );
                     return Y_LEXER_ERROR;
                   }
-                  ++column;
+                  ++token_column;
                   if ( c == '/' && prev == '*' )
                     break;
                   if ( c == '\n' )
@@ -1195,9 +1195,9 @@ static void lexer_fatal( char const *msg ) {
  */
 static void lexer_update_loc( void ) {
   yylloc.first_line   = yylloc.last_line = (int)yylineno;
-  yylloc.first_column = column;
-  yylloc.last_column  = column + (int)yyleng - 1;
-  column += (int)yyleng;
+  yylloc.first_column = token_column;
+  yylloc.last_column  = token_column + (int)yyleng - 1;
+  token_column += (int)yyleng;
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -1212,12 +1212,12 @@ c_loc_t lexer_loc( void ) {
   c_loc_t rv;
   rv.first_line = yylineno;
 
-  if ( column == 0 )
-    rv.first_column = column_newline;
+  if ( token_column == 0 )
+    rv.first_column = newline_column;
   else if ( lexer_token[0] == '\n' )
-    rv.first_column = column;
+    rv.first_column = token_column;
   else
-    rv.first_column = column - (int)strlen( lexer_token );
+    rv.first_column = token_column - (int)strlen( lexer_token );
 
   rv.last_line = rv.first_line;
   rv.last_column = rv.first_column;
