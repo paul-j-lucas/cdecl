@@ -119,7 +119,7 @@ static set_option_t const SET_OPTIONS[] = {
  * Convenience function for getting `"no"` or not to print.
  *
  * @param enabled Whether a toggle option is enabled.
- * @return If \a enabled is `true`, returns `" "` (two spaces); if `false`,
+ * @return If \a enabled is `true`, returns `"  "` (two spaces); if `false`,
  * returns `"no"`.
  */
 PJL_WARN_UNUSED_RESULT
