@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "September 3, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "September 9, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -2129,19 +2129,19 @@ pfi_v signal(int sig, pfi_v f);
 .cE
 .B cdecl
 can help figure out where to put
-\f(CWconst\fP and \f(CWvolatile\fP modifiers:
+\f(CWconst\fP and \f(CWvolatile\fP qualifiers:
 .cS
-cdecl> declare pc as pointer to const int
-const int *pc;
+cdecl> declare pci as pointer to const int
+const int *pci;
 
-cdecl> declare cp as const pointer to int
-int *const cp;
+cdecl> declare cpi as const pointer to int
+int *const cpi;
 .cE
 .B c++decl
 can help with declaring references:
 .cS
-c++decl> declare rp as reference to pointer to char
-char *&rp;
+c++decl> declare rpc as reference to pointer to char
+char *&rpc;
 .cE
 .B c++decl
 can help with pointers to member of classes:
@@ -2163,12 +2163,12 @@ c++decl> define T2 of scope A as int
 c++decl> define T3 of scope B of scope A as int
 c++decl> define T4 of scope A::B as int
 c++decl> define T5 of class C::D as int
-c++decl> class C { typedef int T; };
-c++decl> class C1 { class C2 { typedef int T; }; };
-c++decl> struct S { typedef int T; };
-c++decl> namespace N { typedef int T; };
-c++decl> namespace N::M { typedef int T; };
-c++decl> union U { typedef int T; };
+c++decl> class C { typedef int T; }
+c++decl> class C1 { class C2 { typedef int T; }; }
+c++decl> struct S { typedef int T; }
+c++decl> namespace N { typedef int T; }
+c++decl> namespace N::M { typedef int T; }
+c++decl> union U { typedef int T; }
 .cE 0
 .SH EXIT STATUS
 .PD 0
