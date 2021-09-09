@@ -90,7 +90,8 @@ void c_sglob_init( c_sglob_t *sglob ) {
  *
  * @param s The glob string to parse.  May be NULL.  If not, it _must_ be a
  * valid glob string.
- * @param sglob The scoped glob to parse into.
+ * @param sglob The scoped glob to parse into.  The caller is responsible for
+ * calling c_sglob_free().
  *
  * @sa c_sglob_free()
  */
