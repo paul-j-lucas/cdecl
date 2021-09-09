@@ -243,6 +243,7 @@ define atomic_ushort as atomic unsigned short int
 define atomic_wchar_t as atomic wchar_t
 define blkcnt_t as int32_t
 define blksize_t as int32_t
+define cc_t as unsigned int
 define clock_t as long int
 define clockid_t as enumeration clockid_t
 define cnd_t as pthread_cond_t
@@ -257,8 +258,11 @@ define fenv_t as structure fenv_t
 define fexcept_t as unsigned short int
 define float_t as float
 define fpos_t as structure fpos_t
+define fsblkcnt_t as unsigned long int
+define fsfilcnt_t as unsigned long int
 define gid_t as uint32_t
 define iconv_t as pointer to void
+define id_t as uint32_t
 define imaxdiv_t as structure imaxdiv_t
 define in_addr_t as uint32_t
 define in_port_t as uint16_t
@@ -284,6 +288,7 @@ define int_r_t as fract
 define intmax_t as long int
 define intptr_t as long int
 define jmp_buf as array 37 of int
+define key_t as int32_t
 define lconv as structure lconv
 define ldiv_t as structure ldiv_t
 define lldiv_t as structure lldiv_t
@@ -305,6 +310,7 @@ define pthread_barrier_t as structure pthread_barrier_t
 define pthread_barrierattr_t as structure pthread_barrierattr_t
 define pthread_cond_t as structure pthread_cond_t
 define pthread_condattr_t as structure pthread_condattr_t
+define pthread_key_t as unsigned int
 define pthread_mutex_t as structure pthread_mutex_t
 define pthread_mutexattr_t as structure pthread_mutexattr_t
 define pthread_once_t as int
@@ -322,6 +328,7 @@ define sa_family_t as uint32_t
 define sig_atomic_t as int
 define sig_t as pointer to function (int) returning void
 define sighandler_t as pointer to function (int) returning void
+define siginfo_t as structure siginfo_t
 define sigset_t as unsigned long int
 define size_t as unsigned long int
 define socklen_t as uint32_t
@@ -553,6 +560,7 @@ define suseconds_t as int64_t
 define thrd_start_t as pointer to function (pointer to void) returning int
 define thrd_t as pthread_t
 define time_t as long int
+define timer_t as pointer to void
 define tss_dtor_t as pointer to function (pointer to void) returning void
 define tss_t as pointer to void
 define uid_t as uint32_t

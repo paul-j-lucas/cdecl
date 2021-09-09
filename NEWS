@@ -37,7 +37,8 @@ Declarations like:
 are now handled correctly.
 
 ** More types
-Added `sig_t` (BSD) and `sighandler_t` (GNU) types.
+Added `cc_t`, `fsblkcnt_t`, `fsfilcnt_t`, `id_t`, `pthread_key_t`, `sig_t`,
+`sighandler_t`, `siginfo_t`, and `timer_t`.
 
 
 * Changes in Cdecl 10.4
