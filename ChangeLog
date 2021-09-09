@@ -1,5 +1,11 @@
+2021-09-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS: Added mention of Microsoft calling conventions.
+
 2021-09-08  Paul J. Lucas <paul@lucasmail.org>
 
+   * lexer.l: Removed unnecessary ().
+   * lexer.l: Variable renaming.
    * NEWS, parser.y, test/Makefile.am, explain_mscc_f_v.out,
      explain_mscd_f_v.out, explain_msfc_f_v.out, explain_mssc_f_v.out,
      explain_mstc_f_v.out, explain_msvc_f_v.out, explain_mswa_f_v.out,
