@@ -128,6 +128,8 @@ int c_scope_data_cmp( c_scope_data_t *i_data, c_scope_data_t *j_data );
  *
  * @param data The <code>\ref c_scope_data</code> to duplicate.
  * @return Returns a duplicate of \a data.
+ *
+ * @c_scope_data_free()
  */
 PJL_WARN_UNUSED_RESULT
 c_scope_data_t* c_scope_data_dup( c_scope_data_t const *data );

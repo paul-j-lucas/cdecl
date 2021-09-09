@@ -76,6 +76,8 @@ void c_sglob_free( c_sglob_t *sglob );
  *
  * @param sglob The scoped glob to initialize.
  *
+ * @note This need not be called for either global or `static` scoped names.
+ *
  * @sa c_sglob_free()
  */
 C_SGLOB_INLINE
@@ -89,6 +91,8 @@ void c_sglob_init( c_sglob_t *sglob ) {
  * @param s The glob string to parse.  May be NULL.  If not, it _must_ be a
  * valid glob string.
  * @param sglob The scoped glob to parse into.
+ *
+ * @sa c_sglob_free()
  */
 void c_sglob_parse( char const *s, c_sglob_t *sglob );
 
