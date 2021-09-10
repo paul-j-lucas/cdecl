@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "September 9, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "September 10, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -1223,6 +1223,23 @@ and
 \f(CW__vectorcall\fP.
 Pseudo-English also allows the same convention names
 but without the leading \f(CW__\fP.
+.IP \(bu
+Microsoft C's
+\f(CW__forceinline\fP,
+but it's treated as a synonym for \f(CWinline\fP.
+.IP \(bu
+Microsoft C's
+\f(CW_asm\fP,
+\f(CW_cdecl\fP,
+\f(CW_declspec\fP,
+\f(CW_fastcall\fP,
+\f(CW_forceinline\fP,
+\f(CW_inline\fP,
+\f(CW_restrict\fP,
+\f(CW_stdcall\fP,
+and
+\f(CW_vectorcall\fP
+that are synonyms for their respective \f(CW__\fP counterparts.
 .SS Set Options
 The
 .B set

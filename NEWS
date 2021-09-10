@@ -36,6 +36,10 @@ Declarations like:
 
 are now handled correctly.
 
+** Microsoft `__forceinline` declarations
+Added support for `__forceinline` (and `_forceinline`), but they're treated as
+`inline`.
+
 ** More types
 Added `cc_t`, `fsblkcnt_t`, `fsfilcnt_t`, `id_t`, `pthread_key_t`, `sig_t`,
 `sighandler_t`, `siginfo_t`, and `timer_t`.

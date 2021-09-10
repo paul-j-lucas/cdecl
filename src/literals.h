@@ -338,6 +338,8 @@ extern char const L_MSC___DECLSPEC[];
 extern char const L_MSC__FASTCALL[];
 extern char const L_MSC___FASTCALL[];
 extern char const L_MSC_FASTCALL[];       // English for "__fastcall"
+extern char const L_MSC__FORCEINLINE[];
+extern char const L_MSC___FORCEINLINE[];
 extern char const L_MSC__INLINE[];
 extern char const L_MSC__RESTRICT[];
 extern char const L_MSC__STDCALL[];
