@@ -1,1 +1,1 @@
-cdecl @ @ -3 -xc++ @ struct S; declare ??'= as operator (int) returning reference to S @ 0
+cdecl @ @ -3 -xc++11 @ struct S; declare ??'= as operator (int) returning reference to S @ 0

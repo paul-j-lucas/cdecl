@@ -19,8 +19,8 @@ Added the missing standard `DIR` type.
 Now correctly forbidding functions returning `struct` in K&R C.
 
 ** Trigraphs in K&R C
-Using a trigraph in K&R C now prints a warning that trigraphs are not supported
-until C89.
+Either using a trigraph or setting the trigraphs option in K&R C now prints a
+warning that trigraphs are not supported until C89.
 
 ** Optional `()` for `destructor`
 Declaring a destructor in English now optionally allows `()`.

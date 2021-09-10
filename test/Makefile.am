@@ -643,7 +643,7 @@ TESTS+=	tests/declare_digraphs_a9i.test \
 TESTS+=	tests/explain_digraphs_a9i.test \
 	tests/explain_digraphs_nrfi_v-c++.test \
 	tests/explain_trigraphs_a9i.test \
-	tests/explain_trigraphs_nrfi_v-c++.test \
+	tests/explain_trigraphs_nrfi_v-c++11.test \
 	tests/explain_trigraphs_o_circ_eq_i_rk.test \
 	tests/explain_trigraphs_o_circ_rcki_k.test \
 	tests/explain_trigraphs_o_pipe2_2rck_b.test \

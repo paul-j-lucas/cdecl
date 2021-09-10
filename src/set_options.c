@@ -275,8 +275,8 @@ static bool set_lang_impl( char const *name ) {
     if ( opt_graph == C_GRAPH_TRI ) {
       //
       // Every time the language changes, re-set trigraph mode so the user is
-      // warned that trigraphs are not supported if the language is C++17 or
-      // later.
+      // warned that trigraphs are not supported if the language is K&R C or
+      // C++17 or later.
       //
       set_trigraphs( &(set_option_fn_args_t){ true, NULL, NULL, NULL } );
     }
@@ -310,10 +310,16 @@ static void set_semicolon( set_option_fn_args_t const *args ) {
  */
 static void set_trigraphs( set_option_fn_args_t const *args ) {
   opt_graph = args->opt_enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
-  if ( args->opt_enabled && opt_lang >= LANG_CPP_17 ) {
-    print_warning( args->opt_name_loc,
-      "trigraphs are no longer supported in C++17\n"
-    );
+  if ( args->opt_enabled ) {
+    if ( opt_lang == LANG_C_KNR ) {
+      print_warning( args->opt_name_loc,
+        "trigraphs not supported until C89\n"
+      );
+    } else if ( opt_lang >= LANG_CPP_17 ) {
+      print_warning( args->opt_name_loc,
+        "trigraphs no longer supported since C++17\n"
+      );
+    }
   }
 }
 

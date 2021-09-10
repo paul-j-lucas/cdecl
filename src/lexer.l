@@ -557,8 +557,14 @@ static inline int parse_int( int base ) {
  * @param token The token the trigraph maps to.
  */
 static void set_trigraph( char const *token ) {
-  if ( opt_lang == LANG_C_KNR && false_set( &trigraph_warned ) )
-    print_warning( &yylloc, "trigraphs not supported until C89\n" );
+  if ( (opt_lang == LANG_C_KNR || opt_lang >= LANG_CPP_17) &&
+       false_set( &trigraph_warned ) ) {
+    print_warning( &yylloc,
+      opt_lang == LANG_C_KNR ?
+        "trigraphs not supported until C89\n" :
+        "trigraphs no longer supported since C++17\n"
+    );
+  }
   SET_TOKEN_TO( token );
 }
 

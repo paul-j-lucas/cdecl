@@ -1,1 +1,1 @@
-cdecl @ @ -3 -xc++ @ struct S; declare ??- as operator returning S @ 0
+cdecl @ @ -3 -xc++11 @ struct S; declare ??- as operator returning S @ 0
