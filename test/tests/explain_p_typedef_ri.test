@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ typedef int &RI; explain RI *p @ 65

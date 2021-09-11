@@ -33,6 +33,14 @@ Declarations like:
 
 are now handled correctly.
 
+** Fixed pointer to `typedef` of reference
+Declarations like:
+
+    typedef int &RI
+    explain RI *p
+
+are now correctly flagged as illegal.
+
 ** Fixed function returning `typedef` of array
 Declarations like:
 

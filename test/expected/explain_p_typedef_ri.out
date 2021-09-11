@@ -1,0 +1,3 @@
+typedef int &RI; explain RI *p
+            ^
+13: error: pointer to reference is illegal

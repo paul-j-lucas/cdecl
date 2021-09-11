@@ -1689,15 +1689,17 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
   assert( (ast->kind_id & K_ANY_POINTER) != K_NONE );
 
   c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
-  switch ( to_ast->kind_id ) {
+  c_ast_t const *const raw_to_ast = c_ast_untypedef( to_ast );
+
+  switch ( raw_to_ast->kind_id ) {
     case K_FUNCTION:
-      if ( c_type_is_any( &to_ast->type,
+      if ( c_type_is_any( &raw_to_ast->type,
             &C_TYPE_LIT_A_ANY( c_tid_compl( TA_ANY_MSC_CALL ) ) ) ) {
         print_error( &to_ast->loc,
           "%s to %s %s is illegal\n",
           c_kind_name( ast->kind_id ),
           c_type_name_error( &to_ast->type ),
-          c_kind_name( to_ast->kind_id )
+          c_kind_name( raw_to_ast->kind_id )
         );
         return false;
       }
@@ -1707,11 +1709,15 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
       return false;
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-      error_kind_to_kind( ast, to_ast, "" );
-      if ( c_mode == C_ENGLISH_TO_GIBBERISH )
-        print_hint( "%s to %s", L_REFERENCE, L_POINTER );
-      else
-        print_hint( "\"*&\"" );
+      error_kind_to_kind( ast, raw_to_ast, "" );
+      if ( raw_to_ast == to_ast ) {
+        if ( c_mode == C_ENGLISH_TO_GIBBERISH )
+          print_hint( "%s to %s", L_REFERENCE, L_POINTER );
+        else
+          print_hint( "\"*&\"" );
+      } else {
+        EPUTC( '\n' );
+      }
       return false;
     default:
       if ( c_type_is_tid_any( &ast->type, TA_ANY_MSC_CALL ) ) {
