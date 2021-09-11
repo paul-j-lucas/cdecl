@@ -96,7 +96,7 @@ static size_t print_caret( size_t error_column ) {
     //
     error_column_term += strlen( OPT_LANG_IS(C_ANY) ? CDECL : CPPDECL )
       + 2 /* "> " */;
-    if ( term_columns )
+    if ( term_columns > 0 )
       error_column_term %= term_columns;
   } else {
     --term_columns;                     // more aesthetically pleasing
