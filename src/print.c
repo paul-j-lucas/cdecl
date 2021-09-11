@@ -51,9 +51,7 @@
 // local constants
 static char const *const  MORE[]     = { "...", "..." };
 static size_t const       MORE_LEN[] = { 3,     3     };
-#ifdef ENABLE_TERM_SIZE
 static unsigned const     TERM_COLUMNS_DEFAULT = 80;
-#endif /* ENABLE_TERM_SIZE */
 
 /// @endcond
 
@@ -83,10 +81,8 @@ static size_t print_caret( size_t error_column ) {
 #ifdef ENABLE_TERM_SIZE
   get_term_columns_lines( &term_columns, NULL );
   if ( term_columns == 0 )
-    term_columns = TERM_COLUMNS_DEFAULT;
-#else
-  term_columns = 0;
 #endif /* ENABLE_TERM_SIZE */
+    term_columns = TERM_COLUMNS_DEFAULT;
 
   if ( is_input_a_tty || opt_interactive ) {
     //
