@@ -57,12 +57,44 @@ static unsigned const     TERM_COLUMNS_DEFAULT = 80;
 
 // local functions
 PJL_WARN_UNUSED_RESULT
+static size_t print_input_line( size_t, size_t );
+
+PJL_WARN_UNUSED_RESULT
 static size_t             token_len( char const*, size_t, size_t );
 
 // extern variables
 print_params_t            print_params;
 
 ////////// local functions ////////////////////////////////////////////////////
+
+/**
+ * Gets the current input line.
+ *
+ * @param input_line_len A pointer to receive the length of the input line.
+ * @return Returns the input line.
+ */
+PJL_WARN_UNUSED_RESULT
+static char const* get_input_line( size_t *input_line_len ) {
+  char const *input_line = lexer_input_line( input_line_len );
+  assert( input_line != NULL );
+  if ( *input_line_len == 0 ) {         // no input? try command line
+    input_line = print_params.command_line;
+    assert( input_line != NULL );
+    *input_line_len = print_params.command_line_len;
+  }
+  if ( *input_line_len >= print_params.inserted_len ) {
+    input_line += print_params.inserted_len;
+    *input_line_len -= print_params.inserted_len;
+  }
+
+  //
+  // Chop off whitespace (if any) so we can always print a newline ourselves.
+  //
+  while ( ends_with_any_chr( input_line, *input_line_len, WS ) )
+    --*input_line_len;
+
+  return input_line;
+}
 
 /**
  * Prints the error line (if not interactive) and a `^` (in color, if possible
@@ -75,7 +107,6 @@ PJL_WARN_UNUSED_RESULT
 static size_t print_caret( size_t error_column ) {
   if ( error_column >= print_params.inserted_len )
     error_column -= print_params.inserted_len;
-  size_t error_column_term = error_column;
 
   unsigned term_columns;
 #ifdef ENABLE_TERM_SIZE
@@ -90,115 +121,117 @@ static size_t print_caret( size_t error_column ) {
     // the user typed for the recent command, but we have to add the length of
     // the prompt.
     //
-    error_column_term += strlen( OPT_LANG_IS(C_ANY) ? CDECL : CPPDECL )
+    error_column += strlen( OPT_LANG_IS(C_ANY) ? CDECL : CPPDECL )
       + 2 /* "> " */;
     if ( term_columns > 0 )
-      error_column_term %= term_columns;
-  } else {
-    --term_columns;                     // more aesthetically pleasing
+      error_column %= term_columns;
+  }
+  else {
     //
     // Otherwise we have to print out the line containing the error then put
     // the ^ under that.
     //
-    size_t input_line_len;
-    char const *input_line = lexer_input_line( &input_line_len );
-    assert( input_line != NULL );
-    if ( input_line_len == 0 ) {        // no input? try command line
-      input_line = print_params.command_line;
-      assert( input_line != NULL );
-      input_line_len = print_params.command_line_len;
-    }
-    if ( input_line_len >= print_params.inserted_len ) {
-      input_line += print_params.inserted_len;
-      input_line_len -= print_params.inserted_len;
-    }
-    assert( error_column <= input_line_len );
-
-    //
-    // Chop off whitespace (if any) so we can always print a newline ourselves.
-    //
-    while ( ends_with_any_chr( input_line, input_line_len, WS ) )
-      --input_line_len;
-
-    if ( error_column > input_line_len ) {
-      error_column = input_line_len;
-    } else {
-      //
-      // If the error is due to unexpected end of input, back up the error
-      // column so it refers to a non-null character.
-      //
-      if ( error_column > 0 && input_line[ error_column ] == '\0' )
-        --error_column;
-    }
-
-    size_t const token_columns =
-      token_len( input_line, input_line_len, error_column );
-    size_t const error_end_column = error_column + token_columns - 1;
-
-    //
-    // Start with the number of printable columns equal to the length of the
-    // line.
-    //
-    size_t print_columns = input_line_len;
-
-    //
-    // If the number of printable columns exceeds the number of terminal
-    // columns, there is "more" on the right, so limit the number of printable
-    // columns.
-    //
-    bool more[2];                       // [0] = left; [1] = right
-    more[1] = print_columns > term_columns;
-    if ( more[1] )
-      print_columns = term_columns;
-
-    //
-    // If the error end column is past the number of printable columns, there
-    // is "more" on the left since we will "scroll" the line to the left.
-    //
-    more[0] = error_end_column > print_columns;
-
-    //
-    // However, if there is "more" on the right but the end of the error token
-    // is at the end of the line, then we can print through the end of the line
-    // without any "more."
-    //
-    if ( more[1] ) {
-      if ( error_end_column < input_line_len - 1 )
-        print_columns -= MORE_LEN[1];
-      else
-        more[1] = false;
-    }
-
-    //
-    // If there is "more" on the left, we have to adjust the error column, the
-    // offset into the input line that we start printing at, and the number of
-    // printable columns to give the appearance that the input line has been
-    // "scrolled" to the left.
-    //
-    size_t print_offset;                // offset into input_line to print from
-    if ( more[0] ) {
-      error_column_term = print_columns - token_columns;
-      print_offset = MORE_LEN[0] + (error_column - error_column_term);
-      print_columns -= MORE_LEN[0];
-    } else {
-      error_column_term = error_column;
-      print_offset = 0;
-    }
-
-    EPRINTF( "%s%.*s%s\n",
-      (more[0] ? MORE[0] : ""),
-      (int)print_columns, input_line + print_offset,
-      (more[1] ? MORE[1] : "")
-    );
+    error_column = print_input_line( error_column, term_columns );
   }
 
-  EPRINTF( "%*s", (int)error_column_term, "" );
+  EPRINTF( "%*s", (int)error_column, "" );
   SGR_START_COLOR( stderr, caret );
   EPUTC( '^' );
   SGR_END_COLOR( stderr );
   EPUTC( '\n' );
 
   return error_column;
+}
+
+/**
+ * Prints the input line, "scrolled" to the left with `...` printed if
+ * necessary, so that \a error_column is always within \a term_columns.
+ *
+ * @param error_column The zero-based column of the offending token.
+ * @param term_columns The number of columns of the terminal.
+ * @return Returns \a error_column, adjusted (if necessary), at which the `^`
+ * should be printed.
+ */
+PJL_WARN_UNUSED_RESULT
+static size_t print_input_line( size_t error_column, size_t term_columns ) {
+  size_t input_line_len;
+  char const *const input_line = get_input_line( &input_line_len );
+  assert( input_line != NULL );
+  assert( input_line_len > 0 );
+
+  if ( error_column > input_line_len )
+    error_column = input_line_len;
+
+  //
+  // If the error is due to unexpected end of input, back up the error
+  // column so it refers to a non-null character.
+  //
+  if ( error_column > 0 && input_line[ error_column ] == '\0' )
+    --error_column;
+
+  size_t const token_columns =
+    token_len( input_line, input_line_len, error_column );
+  size_t const error_end_column = error_column + token_columns - 1;
+
+  //
+  // Start with the number of printable columns equal to the length of the
+  // line.
+  //
+  size_t print_columns = input_line_len;
+
+  //
+  // If the number of printable columns exceeds the number of terminal
+  // columns, there is "more" on the right, so limit the number of printable
+  // columns.
+  //
+  bool more[2];                       // [0] = left; [1] = right
+  --term_columns;                     // more aesthetically pleasing
+  more[1] = print_columns > term_columns;
+  if ( more[1] )
+    print_columns = term_columns;
+
+  //
+  // If the error end column is past the number of printable columns, there
+  // is "more" on the left since we will "scroll" the line to the left.
+  //
+  more[0] = error_end_column > print_columns;
+
+  //
+  // However, if there is "more" on the right but the end of the error token
+  // is at the end of the line, then we can print through the end of the line
+  // without any "more."
+  //
+  if ( more[1] ) {
+    if ( error_end_column < input_line_len - 1 )
+      print_columns -= MORE_LEN[1];
+    else
+      more[1] = false;
+  }
+
+  size_t error_column_term;
+  size_t print_offset;                // offset into input_line to print from
+  if ( more[0] ) {
+    //
+    // There is "more" on the left so we have to adjust the error column, the
+    // offset into the input line that we start printing at, and the number of
+    // printable columns to give the appearance that the input line has been
+    // "scrolled" to the left.
+    //
+    error_column_term = print_columns - token_columns;
+    print_offset = MORE_LEN[0] + (error_column - error_column_term);
+    print_columns -= MORE_LEN[0];
+  } else {
+    error_column_term = error_column;
+    print_offset = 0;
+  }
+
+  EPRINTF( "%s%.*s%s\n",
+    (more[0] ? MORE[0] : ""),
+    (int)print_columns, input_line + print_offset,
+    (more[1] ? MORE[1] : "")
+  );
+
+  return error_column_term;
 }
 
 /**
