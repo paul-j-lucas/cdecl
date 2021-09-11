@@ -1,5 +1,38 @@
+2021-09-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * lib/Makefile.am, attribute.h, idx.h, stdlib.in.h, string.in.h, wchar.in.h,
+     gnulib-common.m4: Updated GnuLib.
+   * NEWS: Combined 2 items.
+   * NEWS, cdecl.1, c_keyword.c, literals.c, literals.h: Added partial support
+     for Microsoft's __forceinline.
+
 2021-09-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, lexer.l, set_options.c, test/Makefile.am,
+     declare_trigraphs_o_circ_eq_i_rk.test,
+     declare_trigraphs_o_circ_rcki_k.test,
+     declare_trigraphs_o_pipe2_2rck_b.test,
+     declare_trigraphs_o_pipe_2rck_k.test,
+     declare_trigraphs_o_pipe_eq_i_rk.test, declare_trigraphs_o_tilde_k.test,
+     explain_trigraphs_nrfi_v-c++11.test,
+     explain_trigraphs_o_circ_eq_i_rk.test,
+     explain_trigraphs_o_circ_rcki_k.test,
+     explain_trigraphs_o_pipe2_2rck_b.test,
+     explain_trigraphs_o_pipe_2rck_k.test,
+     explain_trigraphs_o_pipe_eq_i_rk.test, explain_trigraphs_o_tilde_k.test:
+     More trigraph warnings.
+   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
+     show_all-c++.out, show_all.out, show_all_predefined-c++.out,
+     show_all_predefined.out, show_all_predefined_typedef-c++.out,
+     show_all_typedef.out, show_predefined-c++.out, show_predefined.out,
+     show_predefined_typedef.out, show_predefined_using.out: More
+     POSIX/standard-ish types.
+   * NEWS, cdecl.1, c_typedef.c, cdecl--debug.out, cdecl-d.out,
+     show_all-c++.out, show_all.out, show_all_predefined-c++.out,
+     show_all_predefined.out, show_all_predefined_typedef-c++.out,
+     show_all_typedef.out, show_predefined-c++.out, show_predefined.out,
+     show_predefined_typedef.out, show_predefined_using.out: Added sig_t and
+     sighandler_t.
    * c_sglob.c: Made c_sglob_parse() more robust.
    * parser.y: Added MEM_ZERO().
    * c_ast.c: Added MEM_ZERO( ast ).
