@@ -79,11 +79,13 @@ static size_t print_caret( size_t error_column ) {
     error_column -= print_params.inserted_len;
   size_t error_column_term = error_column;
 
-  unsigned term_columns = 0;
+  unsigned term_columns;
 #ifdef ENABLE_TERM_SIZE
   get_term_columns_lines( &term_columns, NULL );
   if ( term_columns == 0 )
     term_columns = TERM_COLUMNS_DEFAULT;
+#else
+  term_columns = 0;
 #endif /* ENABLE_TERM_SIZE */
 
   if ( is_input_a_tty || opt_interactive ) {
