@@ -12,9 +12,6 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 10.5
 
-** Added `DIR` type
-Added the missing standard `DIR` type.
-
 ** K&R C function returning `struct`
 Now correctly forbidding functions returning `struct` in K&R C.
 
@@ -41,8 +38,8 @@ Added support for `__forceinline` (and `_forceinline`), but they're treated as
 `inline`.
 
 ** More types
-Added `cc_t`, `fsblkcnt_t`, `fsfilcnt_t`, `id_t`, `pthread_key_t`, `sig_t`,
-`sighandler_t`, `siginfo_t`, and `timer_t`.
+Added `cc_t`, `DIR`, `fsblkcnt_t`, `fsfilcnt_t`, `id_t`, `pthread_key_t`,
+`sig_t`, `sighandler_t`, `siginfo_t`, and `timer_t`.
 
 
 * Changes in Cdecl 10.4
