@@ -1790,14 +1790,15 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
 
   char const *const kind_name = c_kind_name( ast->kind_id );
   c_ast_t const *const ret_ast = ast->as.func.ret_ast;
+  c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
 
-  switch ( ret_ast->kind_id ) {
+  switch ( raw_ret_ast->kind_id ) {
     case K_ARRAY:
       print_error( &ret_ast->loc, "%s returning %s", kind_name, L_ARRAY );
       print_hint( "%s returning %s", kind_name, L_POINTER );
       return false;
     case K_BUILTIN:
-      if ( c_type_is_tid_any( &ret_ast->type, TB_AUTO ) &&
+      if ( c_type_is_tid_any( &raw_ret_ast->type, TB_AUTO ) &&
            opt_lang < LANG_CPP_14 ) {
         print_error( &ret_ast->loc,
           "\"%s\" return type is not supported%s\n",

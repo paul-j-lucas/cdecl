@@ -1,0 +1,1 @@
+cdecl @ @ @ typedef int A[2]; explain A f() @ 65

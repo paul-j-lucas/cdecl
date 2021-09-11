@@ -33,6 +33,14 @@ Declarations like:
 
 are now handled correctly.
 
+** Fixed function returning `typedef` of array
+Declarations like:
+
+    typedef int A[2]
+    explain A f()
+
+are now correctly flagged as illegal.
+
 ** Microsoft `__forceinline` declarations
 Added support for `__forceinline` (and `_forceinline`), but they're treated as
 `inline`.
