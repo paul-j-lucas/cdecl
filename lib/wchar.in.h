@@ -72,9 +72,6 @@
 # include <stddef.h>
 #endif
 
-/* Get free().  */
-#include <stdlib.h>
-
 /* Include the original <wchar.h> if it exists.
    Some builds of uClibc lack it.  */
 /* The include_next requires a split double-inclusion guard.  */
@@ -149,6 +146,13 @@ typedef int rpl_mbstate_t;
 # endif
 #endif
 
+/* Declare 'free' if needed for _GL_ATTRIBUTE_DEALLOC_FREE.  */
+#if (@REPLACE_FREE@ && !defined free \
+     && !(defined __cplusplus && defined GNULIB_NAMESPACE))
+_GL_EXTERN_C void free (void *);
+# define free rpl_free
+#endif
+_GL_EXTERN_C void free (void *);
 
 /* Convert a single-byte character to a wide character.  */
 #if @GNULIB_BTOWC@
