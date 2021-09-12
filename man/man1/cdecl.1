@@ -338,11 +338,20 @@ to read
 .BR \-\-debug " | " \-d
 Turns on
 .B cdecl
-debugging output (if compiled in).
-The additional JSON-like output is of an abstract syntax tree
+debugging output (if compiled in):
+.RS 4
+.IP \(bu 3
+Prints additional JSON-like output of an abstract syntax tree
 as it is being constructed
 from user input
 while the parser is reducing grammar productions.
+.IP \(bu
+When an error or warning message is printed,
+includes the
+.RI \f(CW[\fP file \f(CW:\fP line \f(CW]\fP
+of the code that generated said message.
+.RE
+.IP ""
 (This is a debugging aid for developers of
 .B cdecl
 itself.)
