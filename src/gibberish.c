@@ -558,6 +558,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
       case K_POINTER:
       case K_POINTER_TO_MEMBER:
       case K_REFERENCE:
+      case K_RVALUE_REFERENCE:
         switch ( ast->kind_id ) {
           case K_APPLE_BLOCK:
             FPUTS( "(^", g->gout );
@@ -608,8 +609,20 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
           FPUTC( ')', g->gout );
         break;
 
-      default:
-        /* suppress warning */;
+      case K_NONE:                      // should not occur in completed AST
+        assert( parent_ast->kind_id != K_NONE );
+        break;
+      case K_PLACEHOLDER:               // should not occur in completed AST
+        assert( parent_ast->kind_id != K_PLACEHOLDER );
+        break;
+
+      case K_BUILTIN:
+      case K_ENUM_CLASS_STRUCT_UNION:
+      case K_NAME:
+      case K_TYPEDEF:
+      case K_VARIADIC:
+        // nothing to do
+        break;
     } // switch
   } else {
     //
@@ -633,17 +646,32 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
       break;
     case K_APPLE_BLOCK:
     case K_CONSTRUCTOR:
-    case K_DESTRUCTOR:
     case K_FUNCTION:
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
       g_print_ast_func_params( g, ast );
       break;
+    case K_DESTRUCTOR:
     case K_USER_DEF_CONVERSION:
       FPUTS( "()", g->gout );
       break;
-    default:
-      /* suppress warning */;
+    case K_NONE:                        // should not occur in completed AST
+      assert( parent_ast->kind_id != K_NONE );
+      break;
+    case K_PLACEHOLDER:                 // should not occur in completed AST
+      assert( parent_ast->kind_id != K_PLACEHOLDER );
+      break;
+    case K_BUILTIN:
+    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_NAME:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+    case K_TYPEDEF:
+    case K_VARIADIC:
+      // nothing to do
+      break;
   } // switch
 }
 
