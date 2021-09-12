@@ -3758,7 +3758,6 @@ array_decl_c_astp
     decl2_c_astp array_size_c_int gnu_attribute_specifier_list_c_opt
     {
       DUMP_START( "array_decl_c_astp", "decl2_c_astp array_size_c_int" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_AST( "decl2_c_astp", $1.ast );
       DUMP_AST( "target_ast", $1.target_ast );
       DUMP_INT( "array_size_c_int", $2 );
@@ -5527,13 +5526,15 @@ array_cast_c_astp
   : // in_attr: type_c_ast
     cast_c_astp_opt array_size_c_ast
     {
+      c_ast_t *const array_ast = $2;
+
       DUMP_START( "array_cast_c_astp", "cast_c_astp_opt array_size_c_int" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
       DUMP_AST( "cast_c_astp_opt", $1.ast );
       DUMP_AST( "target_ast", $1.target_ast );
-      DUMP_AST( "array_size_c_ast", $2 );
+      DUMP_AST( "array_size_c_ast", array_ast );
 
-      c_ast_set_parent( c_ast_new_gc( K_PLACEHOLDER, &@1 ), $2 );
+      c_ast_set_parent( c_ast_new_gc( K_PLACEHOLDER, &@1 ), array_ast );
 
       if ( $1.target_ast != NULL ) {    // array-of or function-like-ret type
         $$.ast = $1.ast;
@@ -5641,7 +5642,7 @@ func_cast_c_astp
       func_ast->as.func.param_ast_list = $3;
 
       if ( $1.target_ast != NULL ) {
-        $$.ast = $1.ast;
+        $$.ast = cast2_c_ast;
         PJL_IGNORE_RV( c_ast_add_func( $1.target_ast, type_ast, func_ast ) );
       }
       else {
