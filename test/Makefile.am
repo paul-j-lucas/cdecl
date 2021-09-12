@@ -826,6 +826,7 @@ TESTS+=	tests/2c_typedef_i.test \
 	tests/typedef_i_explain_i.test \
 	tests/typedef_i_int_least32_t.test \
 	tests/typedef_i_pi.test \
+	tests/typedef_v.test \
 	tests/using_fi_v_show_f.test \
 	tests/using_i.test \
 	tests/using_i_declare_i.test \
@@ -849,6 +850,7 @@ TESTS+=	tests/2k_typedef_i.test \
 	tests/typedef_rgi.test \
 	tests/typedef_si.test \
 	tests/typedef_tni.test \
+	tests/typedef_v_explain_v.test \
 	tests/using_ai.test \
 	tests/using_c_int_least32_t.test \
 	tests/using_eti.test \

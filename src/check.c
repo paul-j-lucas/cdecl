@@ -393,7 +393,9 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
     }
   }
 
-  if ( c_ast_is_builtin_any( ast, TB_VOID ) && ast->parent_ast == NULL ) {
+  if ( c_ast_is_builtin_any( ast, TB_VOID ) &&
+       !c_tid_is_any( ast->type.stids, TS_TYPEDEF ) &&
+       ast->parent_ast == NULL ) {
     print_error( &ast->loc, "variable of %s", L_VOID );
     print_hint( "%s to %s", L_POINTER, L_VOID );
     return false;
@@ -2071,7 +2073,6 @@ static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
     }
 
     case K_NAME:
-    case K_TYPEDEF:
     case K_VARIADIC:
       // nothing to check
       break;
@@ -2108,6 +2109,15 @@ static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
       if ( !c_ast_check_reference( ast ) )
         return VISITOR_ERROR_FOUND;
       break;
+
+    case K_TYPEDEF:
+      //
+      // K_TYPEDEF isn't a "parent" kind since it's not a parent "of" the
+      // underlying type, but instead a synonym "for" it.  Hence, we have to
+      // recurse into it manually.
+      //
+      ast = CONST_CAST( c_ast_t*, c_ast_untypedef( ast ) );
+      return c_ast_visitor_error( ast, data );
 
     case K_USER_DEF_CONVERSION:
       if ( !c_ast_check_udef_conv( ast ) )
