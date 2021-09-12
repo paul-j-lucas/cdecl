@@ -1,5 +1,33 @@
+2021-09-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: Removed ancient K&R C examples.
+   * cdecl.1: Added "See PREDEFINED TYPES".
+   * cdecl.1: Added mention of [file:line] in debug output.
+   * cdecl.1: Proper way to indent.
+   * cdecl.1: Now only 1 section in ~/.editrc.
+   * cdecl.1: Added https://github.com/paul-j-lucas/cdecl/issues.
+
+2021-09-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, parser.y, test/Makefile.am, explain_fpf_pac_i.out,
+     explain_fpf_pac_i.test: Fixed "pointer to function returning pointer to
+     array" function argument.
+   * NEWS, check.c, test/Makefile.am, typedef_v.out, typedef_v_explain_v.out,
+     typedef_v.test, typedef_v_explain_v.test: `typedef void V` is now
+     correctly allowed and `V p` is now correctly flagged as an error.
+   * NEWS, check.c, test/Makefile.am, explain_p_typedef_ri.out,
+     explain_p_typedef_ri.test: Declarations like "typedef int &RI; explain RI
+     *p" are now correctly flagged as illegal.
+   * NEWS, check.c, test/Makefile.am, explain_f_typedef_ai.out,
+     explain_f_typedef_ai.test: Functions returning a typdef of an array are
+     now flagged as illegal.
+
 2021-09-10  Paul J. Lucas <paul@lucasmail.org>
 
+   * print.c: Test results are now consistent regardless of whether term-size
+     is enabled or disabled.
+   * print.c: Made comparison explicit.
+   * print.c: Setting term_columns = 0 only when !defined(ENABLE_TERM_SIZE).
    * lib/Makefile.am, attribute.h, idx.h, stdlib.in.h, string.in.h, wchar.in.h,
      gnulib-common.m4: Updated GnuLib.
    * NEWS: Combined 2 items.
