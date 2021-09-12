@@ -2099,33 +2099,14 @@ you can make sense out of it by doing:
 .cS
 cdecl> explain void *(*fptab[])()
 .cE
-The proper declaration for
-.BR signal (2),
-ignoring function prototypes,
-is easily described in
-.BR cdecl 's
-language:
-.cS
-cdecl> declare signal as function \\
-cdecl+     returning pointer to function returning void
-void (*signal())();
-.cE
-That function declaration has two sets of empty parentheses.
-The author of such a function might wonder where to put the parameters:
-.cS
-cdecl> declare signal as function (sig, func) \\
-cdecl+     returning pointer to function returning void
-void (*signal(sig,func))();
-.cE
-If we want to add in the function prototypes,
-the function prototype for a function such as
+The function prototype for a function such as
 .BR _exit (2)
 would be declared with:
 .cS
 cdecl> declare _exit as function (retval as int) returning void
 void _exit(int retval);
 .cE
-As a more complex example using function prototypes,
+As a more complex example,
 .BR signal (2)
 would be fully defined as:
 .cS
