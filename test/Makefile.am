@@ -1326,6 +1326,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_a_cd_i.test \
 	tests/explain_a_nua_f.test \
 	tests/explain_ai-c++11.test \
+	tests/explain_ari.test \
 	tests/explain_cepctor_i.test \
 	tests/explain_ecf_v-Rstr-03.test \
 	tests/explain_efd.test \

@@ -45,6 +45,10 @@ Declarations like:
 
 are now correctly flagged as illegal.
 
+** Fixed array of reference
+An array of reference (or rvalue reference) is now correctly flagged as an
+error.
+
 ** Fixed function returning `typedef` of array
 Declarations like:
 

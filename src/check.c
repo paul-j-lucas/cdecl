@@ -89,6 +89,20 @@
   )
 
 /**
+ * Prints an error: `<kind> of <kind> is illegal`.
+ *
+ * @param AST1 The AST having the bad kind.
+ * @param AST2 The AST having the other kind.
+ * @param END_STR_LIT A string literal appended to the end of the error message
+ * (either `"\n"` or `""`).
+ */
+#define error_kind_of_kind(AST1,AST2,END_STR_LIT)                   \
+  fl_print_error( __FILE__, __LINE__,                               \
+    &(AST1)->loc, "%s of %s is illegal" END_STR_LIT,                \
+    c_kind_name( (AST1)->kind_id ), c_kind_name( (AST2)->kind_id )  \
+  )
+
+/**
  * Prints an error: `<kind> to <kind> is illegal`.
  *
  * @param AST1 The AST having the bad kind.
@@ -317,18 +331,28 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
   }
 
   c_ast_t const *const of_ast = ast->as.array.of_ast;
-  switch ( of_ast->kind_id ) {
+  c_ast_t const *const raw_of_ast = c_ast_untypedef( of_ast );
+  switch ( raw_of_ast->kind_id ) {
+    case K_ARRAY:
+    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_POINTER:
+    case K_POINTER_TO_MEMBER:
+    case K_VARIADIC:
+      // nothing to do
+      break;
+
     case K_BUILTIN:
-      if ( c_ast_is_builtin_any( of_ast, TB_VOID ) ) {
+      if ( c_ast_is_builtin_any( raw_of_ast, TB_VOID ) ) {
         print_error( &ast->loc, "%s of %s", L_ARRAY, L_VOID );
         print_hint( "%s of %s to %s", L_ARRAY, L_POINTER, L_VOID );
         return false;
       }
-      if ( c_ast_is_register( of_ast ) ) {
+      if ( c_ast_is_register( raw_of_ast ) ) {
         error_kind_not_tid( ast, TS_REGISTER, "\n" );
         return false;
       }
       break;
+
     case K_APPLE_BLOCK:
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
@@ -336,16 +360,36 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
     case K_OPERATOR:
     case K_USER_DEF_CONVERSION:
     case K_USER_DEF_LITERAL:
-      print_error( &ast->loc,
-        "%s of %s", L_ARRAY, c_kind_name( of_ast->kind_id )
-      );
+      error_kind_of_kind( ast, raw_of_ast, "" );
       print_hint( "%s of %s to %s", L_ARRAY, L_POINTER, L_FUNCTION );
       return false;
+
     case K_NAME:
       error_unknown_name( of_ast );
       return false;
-    default:
-      /* suppress warning */;
+
+    case K_NONE:                        // should not occur in completed AST
+      assert( raw_of_ast->kind_id != K_NONE );
+      break;
+    case K_PLACEHOLDER:                 // should not occur in completed AST
+      assert( raw_of_ast->kind_id != K_PLACEHOLDER );
+      break;
+
+    case K_REFERENCE:
+    case K_RVALUE_REFERENCE:
+      error_kind_of_kind( ast, raw_of_ast, "" );
+      if ( c_mode == C_ENGLISH_TO_GIBBERISH )
+        print_hint( "%s to %s", c_kind_name( raw_of_ast->kind_id ), L_ARRAY );
+      else
+        print_hint( "(%s%s)[]",
+          raw_of_ast->kind_id == K_REFERENCE ? "&" : "&&",
+          c_sname_full_name( c_ast_find_name( ast, C_VISIT_DOWN ) )
+        );
+      return false;
+
+    case K_TYPEDEF:                     // can't happen after c_ast_untypedef()
+      assert( raw_of_ast->kind_id != K_TYPEDEF );
+      break;
   } // switch
 
   return true;
