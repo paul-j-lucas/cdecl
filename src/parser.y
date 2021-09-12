@@ -1449,9 +1449,9 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  func_cast_c_astp
 %type   <ast_pair>  nested_cast_c_astp
 %type   <literal>   new_style_cast_c_literal
-%type   <ast>       pointer_cast_c_ast
-%type   <ast>       pointer_to_member_cast_c_ast
-%type   <ast>       reference_cast_c_ast
+%type   <ast_pair>  pointer_cast_c_astp
+%type   <ast_pair>  pointer_to_member_cast_c_astp
+%type   <ast_pair>  reference_cast_c_astp
 
                     // C/C++ declarations
 %type   <align>     alignas_specifier_c
@@ -5508,9 +5508,9 @@ cast_c_astp_opt
 
 cast_c_astp
   : cast2_c_astp
-  | pointer_cast_c_ast            { $$ = (c_ast_pair_t){ $1, NULL }; }
-  | pointer_to_member_cast_c_ast  { $$ = (c_ast_pair_t){ $1, NULL }; }
-  | reference_cast_c_ast          { $$ = (c_ast_pair_t){ $1, NULL }; }
+  | pointer_cast_c_astp
+  | pointer_to_member_cast_c_astp
+  | reference_cast_c_astp
   ;
 
 cast2_c_astp
@@ -5681,52 +5681,55 @@ nested_cast_c_astp
     }
   ;
 
-pointer_cast_c_ast
+pointer_cast_c_astp
   : pointer_type_c_ast { ia_type_ast_push( $1 ); } cast_c_astp_opt
     {
       ia_type_ast_pop();
 
-      DUMP_START( "pointer_cast_c_ast", "pointer_type_c_ast cast_c_astp_opt" );
+      DUMP_START( "pointer_cast_c_astp", "pointer_type_c_ast cast_c_astp_opt" );
       DUMP_AST( "pointer_type_c_ast", $1 );
       DUMP_AST( "cast_c_astp_opt", $3.ast );
 
-      $$ = c_ast_patch_placeholder( $1, $3.ast );
+      $$.ast = c_ast_patch_placeholder( $1, $3.ast );
+      $$.target_ast = $3.target_ast;
 
-      DUMP_AST( "pointer_cast_c_ast", $$ );
+      DUMP_AST( "pointer_cast_c_astp", $$.ast );
       DUMP_END();
     }
   ;
 
-pointer_to_member_cast_c_ast
+pointer_to_member_cast_c_astp
   : pointer_to_member_type_c_ast { ia_type_ast_push( $1 ); } cast_c_astp_opt
     {
       ia_type_ast_pop();
 
-      DUMP_START( "pointer_to_member_cast_c_ast",
+      DUMP_START( "pointer_to_member_cast_c_astp",
                   "pointer_to_member_type_c_ast cast_c_astp_opt" );
       DUMP_AST( "pointer_to_member_type_c_ast", $1 );
       DUMP_AST( "cast_c_astp_opt", $3.ast );
 
-      $$ = c_ast_patch_placeholder( $1, $3.ast );
+      $$.ast = c_ast_patch_placeholder( $1, $3.ast );
+      $$.target_ast = $3.target_ast;
 
-      DUMP_AST( "pointer_to_member_cast_c_ast", $$ );
+      DUMP_AST( "pointer_to_member_cast_c_astp", $$.ast );
       DUMP_END();
     }
   ;
 
-reference_cast_c_ast
+reference_cast_c_astp
   : reference_type_c_ast { ia_type_ast_push( $1 ); } cast_c_astp_opt
     {
       ia_type_ast_pop();
 
-      DUMP_START( "reference_cast_c_ast",
+      DUMP_START( "reference_cast_c_astp",
                   "reference_type_c_ast cast_c_astp_opt" );
       DUMP_AST( "reference_type_c_ast", $1 );
       DUMP_AST( "cast_c_astp_opt", $3.ast );
 
-      $$ = c_ast_patch_placeholder( $1, $3.ast );
+      $$.ast = c_ast_patch_placeholder( $1, $3.ast );
+      $$.target_ast = $3.target_ast;
 
-      DUMP_AST( "reference_cast_c_ast", $$ );
+      DUMP_AST( "reference_cast_c_astp", $$.ast );
       DUMP_END();
     }
   ;

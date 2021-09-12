@@ -374,6 +374,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fpa5d_v.test \
 	tests/explain_fpc_pi.test \
 	tests/explain_fpci_pi.test \
+	tests/explain_fpf_pac_i.test \
 	tests/explain_fpfc_i_d.test \
 	tests/explain_frg_v-c89.test \
 	tests/explain_frgi_v.test \
