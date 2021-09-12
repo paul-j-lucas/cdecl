@@ -693,14 +693,15 @@ into pseudo-English.
 .BR "explain (" \f2gibberish\fP ")" [ \f2s-name\fP ]
 Deciphers a C (or C++) cast into pseudo-English.
 .TP
-.RB "{ " struct " | " union " | " enum " | " class " } " \f2s-name\fP
+.RB "{ " struct " | " union " | " class " | " enum " } " \f2s-name\fP
 Defines
 .I s-name
 as a
 \f(CWstruct\fP,
 \f(CWunion\fP,
+\f(CWclass\fP (C++ only),
+or
 \f(CWenum\fP
-(or \f(CWclass\fP in C++)
 type.
 In C,
 this is equivalent to:
