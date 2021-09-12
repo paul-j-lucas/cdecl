@@ -3766,7 +3766,7 @@ array_decl_c_astp
       array_ast->as.array.size = $2;
       c_ast_set_parent( c_ast_new_gc( K_PLACEHOLDER, &@1 ), array_ast );
 
-      if ( $1.target_ast != NULL ) {    // array-of or function/block-ret type
+      if ( $1.target_ast != NULL ) {    // array-of or function-like-ret type
         $$.ast = $1.ast;
         $$.target_ast = c_ast_add_array( $1.target_ast, array_ast );
       } else {
