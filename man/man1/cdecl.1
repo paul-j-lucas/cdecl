@@ -2072,27 +2072,6 @@ C-style \f(CW/*\fP\ \f(CW*/\fP comments,
 C++-style \f(CW//\fP comments,
 and C preprocessor directives \f(CW#\fP,
 all of which are ignored.
-.SS editrc
-On
-.BR macOS ,
-the
-.BR readline (3)
-API is provided,
-but backed by
-.BR libedit ,
-hence
-.BR ~/.editrc ,
-if present,
-is read instead of
-.BR ~/.inputrc .
-If present,
-add the following (undocumented) command to
-.BR ~/.editrc :
-.cS
-bind ^I rl_complete
-.cE
-to make tab-completion work in
-.BR cdecl .
 .SH EXAMPLES
 To declare an array of pointers to functions that are like
 .BR malloc (3):
@@ -2372,8 +2351,29 @@ commands
 .B ~/.editrc
 Individual
 .BR editline (3)
-initialization file
-(used on macOS).
+initialization file.
+On
+.BR macOS ,
+the
+.BR readline (3)
+API is provided,
+but backed by
+.BR libedit ,
+hence
+.BR ~/.editrc ,
+if present,
+is read instead of
+.BR ~/.inputrc .
+If present,
+add the following (undocumented) command:
+.RS
+.cS
+bind ^I rl_complete
+.cE 0
+.RE
+.IP ""
+to make tab-completion work in
+.BR cdecl .
 .TP
 .B ~/.inputrc
 Individual
