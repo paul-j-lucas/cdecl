@@ -117,8 +117,7 @@ void c_sname_fill_in_namespaces( c_sname_t *sname ) {
 
 char const* c_sname_full_name( c_sname_t const *sname ) {
   static strbuf_t sbuf;
-  assert( sname != NULL );
-  return scope_name_impl( &sbuf, sname, NULL );
+  return sname != NULL ? scope_name_impl( &sbuf, sname, NULL ) : "";
 }
 
 bool c_sname_is_ctor( c_sname_t const *sname ) {

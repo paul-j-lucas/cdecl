@@ -244,8 +244,8 @@ void c_sname_free( c_sname_t *sname ) {
 /**
  * Gets the fully scoped name of \a sname.
  *
- * @param sname The scoped name to get the full name of.
- * @return Returns said name or the empty string if \a sname is empty.
+ * @param sname The scoped name to get the full name of.  May be NULL.
+ * @return Returns said name or the empty string if \a sname is empty or NULL.
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  *
@@ -304,8 +304,8 @@ bool c_sname_is_ctor( c_sname_t const *sname );
  * Gets the local (last) name of \a sname, e.g., the local name of `S::T::x` is
  * `x`.
  *
- * @param sname The scoped name to get the local name of.
- * @return Returns said name or the empty string if \a sname is empty.
+ * @param sname The scoped name to get the local name of.  May be NULL.
+ * @return Returns said name or the empty string if \a sname is empty or NULL.
  *
  * @sa c_sname_full_name()
  * @sa c_sname_name_atr()
@@ -313,6 +313,8 @@ bool c_sname_is_ctor( c_sname_t const *sname );
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_sname_local_name( c_sname_t const *sname ) {
+  if ( sname == NULL )
+    return "";
   c_scope_data_t const *const local_data = slist_peek_tail( sname );
   return local_data == NULL ? "" : local_data->name;
 }
