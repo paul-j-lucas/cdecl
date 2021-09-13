@@ -34,6 +34,11 @@
  * `typedef` definitions in one file.
  */
 
+// We have to define these typedefs here rather than just use the struct tags
+// in the typedefs below otherwise Doxygen won't know about them.
+typedef struct slist slist_t;
+typedef struct slist_node slist_node_t;
+
 /**
  * @defgroup type-declarations-group Type Declarations
  * Declares many types and `typedef` declarations in one file.
@@ -59,9 +64,9 @@ typedef int                       c_array_size_t;
 typedef struct c_ast              c_ast_t;
 typedef unsigned                  c_ast_depth_t;  ///< How many `()` deep.
 typedef unsigned                  c_ast_id_t;     ///< Unique AST node id.
-typedef struct slist              c_ast_list_t;   ///< AST list.
+typedef slist_t                   c_ast_list_t;   ///< AST list.
 typedef struct c_ast_pair         c_ast_pair_t;
-typedef struct slist_node         c_ast_param_t;  ///< Function-like parameter.
+typedef slist_node_t              c_ast_param_t;  ///< Function-like parameter.
 typedef unsigned                  c_bit_width_t;  ///< Bit-field width.
 typedef struct c_builtin_ast      c_builtin_ast_t;
 typedef struct c_command          c_command_t;
@@ -86,10 +91,10 @@ typedef struct c_operator         c_operator_t;
 typedef struct c_parent_ast       c_parent_ast_t;
 typedef struct c_ptr_mbr_ast      c_ptr_mbr_ast_t;
 typedef struct c_ptr_ref_ast      c_ptr_ref_ast_t;
-typedef struct slist_node         c_scope_t;      ///< Scope in a c_sname_t.
+typedef slist_node_t              c_scope_t;      ///< Scope in a c_sname_t.
 typedef struct c_scope_data       c_scope_data_t;
 typedef struct c_sglob            c_sglob_t;
-typedef struct slist              c_sname_t;      ///< C++ scoped name.
+typedef slist_t                   c_sname_t;      ///< C++ scoped name.
 typedef uint64_t                  c_tid_t;        ///< Type ID(s) bitmask.
 typedef enum   c_tpid             c_tpid_t;
 typedef struct c_typedef          c_typedef_t;
