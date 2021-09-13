@@ -457,7 +457,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind_id & (K_CONSTRUCTOR | K_DESTRUCTOR)) != K_NONE );
+  assert( c_ast_is_kind_any( ast, K_CONSTRUCTOR | K_DESTRUCTOR ) );
 
   bool const is_definition = c_ast_count_name( ast ) > 1;
 
@@ -624,7 +624,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_c( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind_id & (K_APPLE_BLOCK | K_FUNCTION)) != K_NONE );
+  assert( c_ast_is_kind_any( ast, K_APPLE_BLOCK | K_FUNCTION ) );
   assert( OPT_LANG_IS(C_ANY) );
 
   c_tid_t const qual_stids = ast->type.stids & TS_MASK_QUALIFIER;
@@ -658,7 +658,7 @@ static bool c_ast_check_func_c( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_cpp( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
+  assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
   assert( OPT_LANG_IS(CPP_ANY) );
 
   if ( c_type_is_tid_any( &ast->type, TS_CONSTINIT ) ) {
@@ -954,7 +954,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
     return c_ast_check_func_params_knr( ast );
 
   assert( ast != NULL );
-  assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
+  assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
   assert( opt_lang != LANG_C_KNR );
 
   c_ast_t const *variadic_ast = NULL, *void_ast = NULL;
@@ -982,9 +982,10 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       return false;
     }
 
-    switch ( param_ast->kind_id ) {
+    c_ast_t const *const raw_param_ast = c_ast_untypedef( param_ast );
+    switch ( raw_param_ast->kind_id ) {
       case K_BUILTIN:
-        if ( c_type_is_tid_any( &param_ast->type, TB_AUTO ) &&
+        if ( c_type_is_tid_any( &raw_param_ast->type, TB_AUTO ) &&
              opt_lang < LANG_CPP_20 ) {
           print_error( &param_ast->loc,
             "parameters can not be \"%s\"%s\n", L_AUTO,
@@ -992,7 +993,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           );
           return false;
         }
-        if ( c_ast_is_builtin_any( param_ast, TB_VOID ) ) {
+        if ( c_ast_is_builtin_any( raw_param_ast, TB_VOID ) ) {
           //
           // Ordinarily, void parameters are invalid; but a single void
           // function "parameter" is valid (as long as it doesn't have a name).
@@ -1009,10 +1010,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
             goto only_void;             // R f(T, void)
           continue;
         }
-        PJL_FALLTHROUGH;
-
-      case K_TYPEDEF:
-        if ( param_ast->as.tdef.bit_width > 0 ) {
+        if ( param_ast->as.builtin.bit_width > 0 ) {
           print_error( &param_ast->loc,
             "parameters can not have bit-field widths\n"
           );
@@ -1035,6 +1033,10 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           );
           return false;
         }
+        break;
+
+      case K_NONE:                      // should not occur in completed AST
+        assert( param_ast->kind_id != K_NONE );
         break;
 
       case K_PLACEHOLDER:               // should not occur in completed AST
@@ -1060,8 +1062,22 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         variadic_ast = param_ast;
         continue;
 
-      default:
-        /* suppress warning */;
+      case K_ARRAY:
+      case K_APPLE_BLOCK:
+      case K_CONSTRUCTOR:
+      case K_DESTRUCTOR:
+      case K_ENUM_CLASS_STRUCT_UNION:
+      case K_FUNCTION:
+      case K_OPERATOR:
+      case K_POINTER:
+      case K_POINTER_TO_MEMBER:
+      case K_REFERENCE:
+      case K_RVALUE_REFERENCE:
+      case K_TYPEDEF:
+      case K_USER_DEF_CONVERSION:
+      case K_USER_DEF_LITERAL:
+        // nothing to do
+        break;
     } // switch
 
     if ( !c_ast_check_errors( param_ast, true ) )
@@ -1093,13 +1109,16 @@ only_void:
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind_id & (K_APPLE_BLOCK | K_FUNCTION)) != K_NONE );
+  assert( c_ast_is_kind_any( ast, K_APPLE_BLOCK | K_FUNCTION ) );
   assert( opt_lang == LANG_C_KNR );
 
   FOREACH_PARAM( param, ast ) {
     c_ast_t const *const param_ast = c_param_ast( param );
     switch ( param_ast->kind_id ) {
       case K_NAME:
+        break;
+      case K_NONE:                      // should not occur in completed AST
+        assert( param_ast->kind_id != K_NONE );
         break;
       case K_PLACEHOLDER:               // should not occur in completed AST
         assert( param_ast->kind_id != K_PLACEHOLDER );
@@ -1732,7 +1751,7 @@ rel_2par: print_error( &ast->loc,
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_pointer( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind_id & K_ANY_POINTER) != K_NONE );
+  assert( c_ast_is_kind_any( ast, K_ANY_POINTER ) );
 
   c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
   c_ast_t const *const raw_to_ast = c_ast_untypedef( to_ast );
@@ -1793,7 +1812,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_reference( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind_id & K_ANY_REFERENCE) != K_NONE );
+  assert( c_ast_is_kind_any( ast, K_ANY_REFERENCE ) );
 
   if ( c_type_is_tid_any( &ast->type, TS_CONST_VOLATILE ) ) {
     c_tid_t const qual_stids = ast->type.stids & TS_MASK_QUALIFIER;
@@ -1838,7 +1857,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
+  assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
 
   char const *const kind_name = c_kind_name( ast->kind_id );
   c_ast_t const *const ret_ast = ast->as.func.ret_ast;
@@ -2289,7 +2308,6 @@ static bool c_ast_visitor_warning( c_ast_t *ast, uint64_t data ) {
     case K_POINTER_TO_MEMBER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
-    case K_TYPEDEF:
     case K_USER_DEF_CONVERSION:
     case K_VARIADIC:
       // nothing to check
@@ -2335,6 +2353,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, uint64_t data ) {
       break;
 
     case K_BUILTIN:
+    case K_TYPEDEF:
       if ( c_ast_is_register( ast ) && opt_lang >= LANG_CPP_11 ) {
         print_warning( &ast->loc,
           "\"%s\" is deprecated in %s\n",

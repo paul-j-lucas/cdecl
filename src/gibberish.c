@@ -450,7 +450,7 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
 static void g_print_ast_bit_width( g_state_t const *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
-  assert( (ast->kind_id & (K_BUILTIN | K_TYPEDEF)) != K_NONE );
+  assert( c_ast_is_kind_any( ast, K_BUILTIN | K_TYPEDEF ) );
 
   if ( ast->as.builtin.bit_width > 0 )
     FPRINTF( g->gout, " : %u", ast->as.builtin.bit_width );
@@ -467,7 +467,7 @@ static void g_print_ast_bit_width( g_state_t const *g, c_ast_t const *ast ) {
 static void g_print_ast_func_params( g_state_t const *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
-  assert( (ast->kind_id & K_ANY_FUNCTION_LIKE) != K_NONE );
+  assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
 
   bool comma = false;
   FPUTC( '(', g->gout );

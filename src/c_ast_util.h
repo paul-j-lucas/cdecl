@@ -123,18 +123,6 @@ PJL_WARN_UNUSED_RESULT
 bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids );
 
 /**
- * Checks whether \a ast is an AST of one of \a kind_ids or a reference
- * thereto.
- *
- * @param ast The AST to check.
- * @param kind_ids The bitwise-or of the kinds(s) \a ast can be.
- * @return Returns `true` only if \a ast is one of \a kind_ids or a reference
- * or rvalue reference thereto.
- */
-PJL_WARN_UNUSED_RESULT
-bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids );
-
-/**
  * Checks whether \a ast is an AST for a pointer to a \a kind AST.
  *
  * @param ast The AST to check.

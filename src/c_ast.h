@@ -428,6 +428,18 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast );
 void c_ast_free( c_ast_t *ast );
 
 /**
+ * Checks whether \a ast is an AST of one of \a kind_ids.
+ *
+ * @param ast The AST to check.
+ * @param kind_ids The bitwise-or of the kinds(s) \a ast can be.
+ * @return Returns `true` only if \a ast is one of \a kind_ids.
+ */
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
+bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids ) {
+  return (ast->kind_id & kind_ids) != K_NONE;
+}
+
+/**
  * Checks whether \a ast is a parent node.
  *
  * @param ast The AST to check.  If NULL, does nothing.
