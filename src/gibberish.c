@@ -600,7 +600,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
         if ( c_ast_is_parent( parent_ast->parent_ast ) )
           g_print_postfix( g, parent_ast );
 
-        if ( (ast->kind_id & K_ANY_POINTER) == K_NONE )
+        if ( !c_ast_is_kind_any( ast, K_ANY_POINTER ) )
           FPUTC( ')', g->gout );
         break;
 

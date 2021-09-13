@@ -255,7 +255,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
       return false;
     }
 
-    if ( (ast->kind_id & K_ANY_OBJECT) == K_NONE ) {
+    if ( !c_ast_is_kind_any( ast, K_ANY_OBJECT ) ) {
       print_error( &ast->loc,
         "%s can not be %s\n", c_kind_name( ast->kind_id ), L_ALIGNED
       );
