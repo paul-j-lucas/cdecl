@@ -195,13 +195,6 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
       c_sname_english( &ast->sname, eout );
       break;
 
-    case K_NONE:                        // should not occur in completed AST
-      assert( ast->kind_id != K_NONE );
-      break;
-    case K_PLACEHOLDER:                 // should not occur in completed AST
-      assert( ast->kind_id != K_PLACEHOLDER );
-      break;
-
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
@@ -242,6 +235,8 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
     case K_VARIADIC:
       FPUTS( c_kind_name( ast->kind_id ), eout );
       break;
+
+    CASE_K_NONE_OR_PLACEHOLDER;
   } // switch
 
   return false;

@@ -368,13 +368,6 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
       error_unknown_name( of_ast );
       return false;
 
-    case K_NONE:                        // should not occur in completed AST
-      assert( raw_of_ast->kind_id != K_NONE );
-      break;
-    case K_PLACEHOLDER:                 // should not occur in completed AST
-      assert( raw_of_ast->kind_id != K_PLACEHOLDER );
-      break;
-
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       error_kind_of_kind( ast, raw_of_ast, "" );
@@ -390,6 +383,8 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
     case K_TYPEDEF:                     // can't happen after c_ast_untypedef()
       assert( raw_of_ast->kind_id != K_TYPEDEF );
       break;
+
+    CASE_K_NONE_OR_PLACEHOLDER;
   } // switch
 
   return true;
@@ -1035,14 +1030,6 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         }
         break;
 
-      case K_NONE:                      // should not occur in completed AST
-        assert( param_ast->kind_id != K_NONE );
-        break;
-
-      case K_PLACEHOLDER:               // should not occur in completed AST
-        assert( param_ast->kind_id != K_PLACEHOLDER );
-        break;
-
       case K_VARIADIC:
         if ( ast->kind_id == K_OPERATOR &&
              ast->as.oper.oper_id != C_OP_PARENS ) {
@@ -1078,6 +1065,8 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
       case K_USER_DEF_LITERAL:
         // nothing to do
         break;
+
+      CASE_K_NONE_OR_PLACEHOLDER;
     } // switch
 
     if ( !c_ast_check_errors( param_ast, true ) )
@@ -1117,18 +1106,13 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
     switch ( param_ast->kind_id ) {
       case K_NAME:
         break;
-      case K_NONE:                      // should not occur in completed AST
-        assert( param_ast->kind_id != K_NONE );
-        break;
-      case K_PLACEHOLDER:               // should not occur in completed AST
-        assert( param_ast->kind_id != K_PLACEHOLDER );
-        break;
       default:
         print_error( &param_ast->loc,
           "%s prototypes are not supported until %s\n",
           L_FUNCTION, c_lang_name( LANG_C_89 )
         );
         return false;
+      CASE_K_NONE_OR_PLACEHOLDER;
     } // switch
   } // for
 
@@ -2140,13 +2124,6 @@ static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
       // nothing to check
       break;
 
-    case K_NONE:                        // should not occur in completed AST
-      assert( ast->kind_id != K_NONE );
-      break;
-    case K_PLACEHOLDER:                 // should not occur in completed AST
-      assert( ast->kind_id != K_PLACEHOLDER );
-      break;
-
     case K_POINTER_TO_MEMBER:
       if ( OPT_LANG_IS(C_ANY) ) {
         error_kind_not_supported( ast, LANG_CPP_ANY );
@@ -2194,6 +2171,8 @@ static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
         return VISITOR_ERROR_FOUND;
       }
       break;
+
+      CASE_K_NONE_OR_PLACEHOLDER;
   } // switch
 
   if ( ast->kind_id != K_FUNCTION &&
@@ -2367,12 +2346,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, uint64_t data ) {
         print_warning( &ast->loc, "missing type specifier\n" );
       break;
 
-    case K_NONE:                        // should not occur in completed AST
-      assert( ast->kind_id != K_NONE );
-      break;
-    case K_PLACEHOLDER:                 // should not occur in completed AST
-      assert( ast->kind_id != K_PLACEHOLDER );
-      break;
+    CASE_K_NONE_OR_PLACEHOLDER;
   } // switch
 
   if ( c_initialized )                  // don't warn for predefined types

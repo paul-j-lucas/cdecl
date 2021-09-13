@@ -327,13 +327,6 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         g_print_ast_name( g, ast );
       break;
 
-    case K_NONE:                        // should not occur in completed AST
-      assert( ast->kind_id != K_NONE );
-      break;
-    case K_PLACEHOLDER:                 // should not occur in completed AST
-      assert( ast->kind_id != K_PLACEHOLDER );
-      break;
-
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE: {
@@ -411,6 +404,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_VARIADIC:
       FPUTS( L_ELLIPSIS, g->gout );
       break;
+
+    CASE_K_NONE_OR_PLACEHOLDER;
   } // switch
 }
 
@@ -609,13 +604,6 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
           FPUTC( ')', g->gout );
         break;
 
-      case K_NONE:                      // should not occur in completed AST
-        assert( parent_ast->kind_id != K_NONE );
-        break;
-      case K_PLACEHOLDER:               // should not occur in completed AST
-        assert( parent_ast->kind_id != K_PLACEHOLDER );
-        break;
-
       case K_BUILTIN:
       case K_ENUM_CLASS_STRUCT_UNION:
       case K_NAME:
@@ -623,6 +611,8 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
       case K_VARIADIC:
         // nothing to do
         break;
+
+      CASE_K_NONE_OR_PLACEHOLDER;
     } // switch
   } else {
     //
@@ -655,12 +645,6 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
     case K_USER_DEF_CONVERSION:
       FPUTS( "()", g->gout );
       break;
-    case K_NONE:                        // should not occur in completed AST
-      assert( parent_ast->kind_id != K_NONE );
-      break;
-    case K_PLACEHOLDER:                 // should not occur in completed AST
-      assert( parent_ast->kind_id != K_PLACEHOLDER );
-      break;
     case K_BUILTIN:
     case K_ENUM_CLASS_STRUCT_UNION:
     case K_NAME:
@@ -672,6 +656,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
     case K_VARIADIC:
       // nothing to do
       break;
+    CASE_K_NONE_OR_PLACEHOLDER;
   } // switch
 }
 

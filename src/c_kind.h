@@ -36,6 +36,23 @@
  * @{
  */
 
+/**
+ * Shorthand for use inside a `switch` statement on an AST's kind to assert
+ * that it's neither K_NONE nor K_PLACEHOLDER because neither should occur in a
+ * completed AST.  For example:
+ *
+ *      switch ( ast->kind_id ) {
+ *        // ...
+ *
+ *        CASE_K_NONE_OR_PLACEHOLDER;
+ *      }
+ */
+#define CASE_K_NONE_OR_PLACEHOLDER  \
+  case K_NONE:                      \
+  case K_PLACEHOLDER:               \
+    assert( 0 );                    \
+    break
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
