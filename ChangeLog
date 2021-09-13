@@ -1,5 +1,20 @@
 2021-09-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c, dump.c: Now calling UNEXPECTED_INT_VALUE() for K_NONE.
+   * c_ast.h: Using c_ast_is_kind_any() more.
+   * check.c, gibberish.c: Using c_ast_is_kind_any() more.
+   * c_ast_util.c, check.c: Using c_ast_is_kind_any() more.
+   * c_kind.h, check.c, english.c, gibberish.c: Added
+     CASE_K_NONE_OR_PLACEHOLDER.
+   * c_ast.h, c_ast_util.c, c_ast_util.h, check.c, english.c, gibberish.c: More
+     explicit with cases in some switches; now untypedefing more types before
+     checks.
+   * gibberish.c: Made kind switch cases explicit.
+   * NEWS, check.c, test/Makefile.am, explain_ari.out, explain_ari.test: An
+     array of reference (or rvalue reference) is now correctly flagged as an
+     error.
+   * c_sname.c, c_sname.h: c_name_local_name() and c_name_full_name() now allow
+     NULL.
    * cdecl.1: Removed ancient K&R C examples.
    * cdecl.1: Added "See PREDEFINED TYPES".
    * cdecl.1: Added mention of [file:line] in debug output.
