@@ -340,7 +340,6 @@ void c_ast_free( c_ast_t *ast ) {
         UNEXPECTED_INT_VALUE( ast->kind_id );
     } // switch
 
-    MEM_ZERO( ast );
     FREE( ast );
   }
 }
