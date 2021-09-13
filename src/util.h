@@ -303,7 +303,6 @@ _GL_INLINE_HEADER_BEGIN
  * @sa perror_exit()
  * @sa #PMESSAGE_EXIT()
  * @sa #UNEXPECTED_INT_VALUE()
- * @sa #UNEXPECTED_STR_VALUE()
  */
 #define IF_EXIT(EXPR,ERR) \
   BLOCK( if ( unlikely( EXPR ) ) perror_exit( ERR ); )
@@ -318,7 +317,6 @@ _GL_INLINE_HEADER_BEGIN
  * @sa perror_exit()
  * @sa #PMESSAGE_EXIT()
  * @sa #UNEXPECTED_INT_VALUE()
- * @sa #UNEXPECTED_STR_VALUE()
  */
 #define INTERNAL_ERR(FORMAT,...) \
   PMESSAGE_EXIT( EX_SOFTWARE, "%s:%d: internal error: " FORMAT, __FILE__, __LINE__, __VA_ARGS__ )
@@ -366,7 +364,6 @@ _GL_INLINE_HEADER_BEGIN
  * @sa #INTERNAL_ERR()
  * @sa perror_exit()
  * @sa #UNEXPECTED_INT_VALUE()
- * @sa #UNEXPECTED_STR_VALUE()
  */
 #define PMESSAGE_EXIT(STATUS,FORMAT,...) \
   BLOCK( EPRINTF( "%s: " FORMAT, me, __VA_ARGS__ ); exit( STATUS ); )
@@ -528,20 +525,9 @@ _GL_INLINE_HEADER_BEGIN
  *
  * @sa #INTERNAL_ERR()
  * @sa #PMESSAGE_EXIT()
- * @sa #UNEXPECTED_STR_VALUE()
  */
 #define UNEXPECTED_INT_VALUE(EXPR) \
   INTERNAL_ERR( "%lld (0x%llX): unexpected value for " #EXPR "\n", (long long)(EXPR), (unsigned long long)(EXPR) )
-
-/**
- * Prints that a string value was unexpected to standard error and exits.
- *
- * @sa #INTERNAL_ERR()
- * @sa #PMESSAGE_EXIT()
- * @sa #UNEXPECTED_INT_VALUE()
- */
-#define UNEXPECTED_STR_VALUE(EXPR) \
-  INTERNAL_ERR( "\"%s\": unexpected value for " #EXPR "\n", (char const*)(EXPR) )
 
 /**
  * Whitespace characters.
