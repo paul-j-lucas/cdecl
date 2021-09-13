@@ -198,8 +198,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
   assert( c_ast_is_kind_any( func_ast, K_ANY_FUNCTION_LIKE ) );
   assert( ret_ast != NULL );
 
-  if ( (ast->kind_id &
-        (K_ARRAY | K_ANY_POINTER | K_ANY_REFERENCE)) != K_NONE ) {
+  if ( c_ast_is_kind_any( ast, K_ARRAY | K_ANY_POINTER | K_ANY_REFERENCE ) ) {
     switch ( ast->as.parent.of_ast->kind_id ) {
       case K_ARRAY:
       case K_POINTER:
@@ -419,7 +418,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_vistor_kind_any( c_ast_t *ast, uint64_t data ) {
   assert( ast != NULL );
   c_kind_id_t const kind_ids = STATIC_CAST( c_kind_id_t, data );
-  return (ast->kind_id & kind_ids) != K_NONE;
+  return c_ast_is_kind_any( ast, kind_ids );
 }
 
 /**
