@@ -155,6 +155,9 @@ typedef bool (*c_ast_visitor_t)( c_ast_t *ast, uint64_t data );
 
 /**
  * @defgroup ast-nodes-group AST Nodes
+ *
+ * ## Layout
+ *
  * The AST node `struct`s  contain data specific to each
  * <code>\ref c_kind_id_t</code>.
  * In all cases where an AST node contains:
@@ -166,6 +169,24 @@ typedef bool (*c_ast_visitor_t)( c_ast_t *ast, uint64_t data );
  * Since all the different kinds of AST nodes are declared within a `union`,
  * these `struct` members are at the same offsets.  This makes traversing and
  * manipulating an AST easy.
+ *
+ * ## Memory Management
+ *
+ * Typically, nodes of a tree data structure are freed by freeing the root node
+ * followed by its child nodes in turn, recursively.  This is _not_ done for
+ * AST nodes.
+ * Instead, AST nodes created via c_ast_new() or c_ast_dup() are appended to a
+ * <code>\ref c_ast_list_t</code>.  Nodes are later freed by traversing the
+ * list and calling c_ast_free() on each node individually.
+ * It's done this way to simplify node memory management.
+ *
+ * As an AST is being built, sometimes <code>\ref K_PLACEHOLDER</code> nodes
+ * are created temporarily.  Later, once an actual node is created, the
+ * <code>\ref K_PLACEHOLDER</code> node is replaced.  Rather than freeing a
+ * <code>\ref K_PLACEHOLDER</code> node immediately (and, for a parent node,
+ * set its "of" node to NULL just prior to being freed so as not to free its
+ * child node also), it's simply left on the list.  Once parsing is complete,
+ * the entire list is freed effectively "garbage collecting" all nodes.
  * @{
  */
 
@@ -423,7 +444,14 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast );
  *
  * @param ast The AST to free.  If NULL, does nothing.
  *
+ * @note Even though \a ast invariably is part of a larger abstract syntax
+ * _tree_, this function frees _only_ \a ast and _not_ any child AST node \a
+ * ast may have.  Hence to free all AST nodes, they all be kept track of
+ * independently via some other data structure, e.g., a <code>\ref
+ * c_ast_list_t</code>.
+ *
  * @sa c_ast_dup()
+ * @sa c_ast_list_free()
  * @sa c_ast_new()
  */
 void c_ast_free( c_ast_t *ast );
@@ -525,6 +553,7 @@ bool c_ast_empty_name( c_ast_t const *ast ) {
  *
  * @param ast The AST to get the scoped name of.
  * @return Returns said name.
+ *
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  *
@@ -541,6 +570,8 @@ char const* c_ast_full_name( c_ast_t const *ast ) {
  * Frees only the list nodes of \a list but _not_ \a list itself.
  *
  * @param list The AST list to free the nodes of.
+ *
+ * @sa c_ast_free()
  */
 C_AST_INLINE
 void c_ast_list_free( c_ast_list_t *list ) {
