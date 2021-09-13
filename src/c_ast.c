@@ -177,11 +177,13 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       // of_ast duplicated by parent code below
     case K_DESTRUCTOR:
     case K_NAME:
-    case K_NONE:
     case K_PLACEHOLDER:
     case K_VARIADIC:
       // nothing to do
       break;
+
+    case K_NONE:
+      UNEXPECTED_INT_VALUE( ast->kind_id );
   } // switch
 
   if ( c_ast_is_parent( ast ) || ast->kind_id == K_TYPEDEF ) {
@@ -282,13 +284,15 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_RVALUE_REFERENCE:
     case K_USER_DEF_CONVERSION:
       // checked by parent code below
-    case K_NONE:
     case K_NAME:                        // names don't matter
     case K_DESTRUCTOR:
     case K_PLACEHOLDER:
     case K_VARIADIC:
       // nothing to do
       break;
+
+    case K_NONE:
+      UNEXPECTED_INT_VALUE( i_ast->kind_id );
   } // switch
 
   if ( !c_ast_is_parent( i_ast ) ) {
@@ -323,7 +327,6 @@ void c_ast_free( c_ast_t *ast ) {
       case K_BUILTIN:
       case K_DESTRUCTOR:
       case K_NAME:
-      case K_NONE:
       case K_PLACEHOLDER:
       case K_POINTER:
       case K_REFERENCE:
@@ -333,6 +336,8 @@ void c_ast_free( c_ast_t *ast ) {
       case K_VARIADIC:
         // nothing to do
         break;
+      case K_NONE:
+        UNEXPECTED_INT_VALUE( ast->kind_id );
     } // switch
 
     FREE( ast );
@@ -366,7 +371,6 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
     case K_ENUM_CLASS_STRUCT_UNION:
     case K_FUNCTION:
     case K_NAME:
-    case K_NONE:
     case K_OPERATOR:
     case K_PLACEHOLDER:
     case K_POINTER:
@@ -379,6 +383,8 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
     case K_VARIADIC:
       // nothing to do
       break;
+    case K_NONE:
+      UNEXPECTED_INT_VALUE( kind_id );
   } // switch
 
   ++c_ast_count;
