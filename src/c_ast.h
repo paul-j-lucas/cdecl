@@ -433,6 +433,8 @@ void c_ast_free( c_ast_t *ast );
  * @param ast The AST to check.
  * @param kind_ids The bitwise-or of the kinds(s) \a ast can be.
  * @return Returns `true` only if \a ast is one of \a kind_ids.
+ *
+ * @sa c_ast_is_parent()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids ) {
@@ -444,10 +446,12 @@ bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids ) {
  *
  * @param ast The AST to check.  If NULL, does nothing.
  * @return Returns `true` only if it is.
+ *
+ * @sa c_ast_is_kind_any()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_parent( c_ast_t const *ast ) {
-  return ast != NULL && (ast->kind_id & K_ANY_PARENT) != K_NONE;
+  return ast != NULL && c_ast_is_kind_any( ast, K_ANY_PARENT );
 }
 
 /**
