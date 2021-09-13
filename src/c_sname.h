@@ -246,6 +246,7 @@ void c_sname_free( c_sname_t *sname ) {
  *
  * @param sname The scoped name to get the full name of.  May be NULL.
  * @return Returns said name or the empty string if \a sname is empty or NULL.
+ *
  * @warning The pointer returned is to a static buffer, so you can't do
  * something like call this twice in the same `printf()` statement.
  *

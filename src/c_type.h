@@ -724,6 +724,7 @@ bool c_type_is_any( c_type_t const *i_type, c_type_t const *j_type );
  * @param is_error If `true`, the name is intended for use in an error message.
  * Specifically, c_tid_normalize() is _not_ called.
  * @return Returns said name.
+ *
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
