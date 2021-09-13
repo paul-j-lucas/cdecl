@@ -820,8 +820,8 @@ c_tid_t c_tid_compl( c_tid_t tids ) {
  * @param tids The <code>\ref c_tid_t</code> to check.
  * @param is_tids The bitwise-or of <code>\ref c_tid_t</code> to check for.
  * @param except_tids The bitwise-or of <code>\ref c_tid_t</code> to exclude.
- * @return Returns `true` only if \a tids is all of \a is_tids, but not also
- * any one of \a except_tids.
+ * @return Returns `true` only if \a tids contains any of \a is_tids, but not
+ * any of \a except_tids.
  */
 C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 bool c_tid_is_except( c_tid_t tids, c_tid_t is_tids, c_tid_t except_tids ) {
