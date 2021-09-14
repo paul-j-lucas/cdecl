@@ -63,73 +63,137 @@
  * thing is any _one_ of those kinds.
  */
 enum c_kind_id {
-  /// No kind.
+  /**
+   * No kind.  It indicates an "unset" value and is never used in a real AST
+   * node.
+   */
   K_NONE                    = 0u,
 
-  /// Temporary node in AST.
+  /**
+   * Temporary node in AST.  This is needed in two cases:
+   *
+   * 1. Array declarations or casts.  Consider:
+   *
+   *         int a[2][3]
+   *
+   *    At the first `[`, we know it's an "array 2 [of something]* of int," but
+   *    we don't yet know whether the "something" will turn out to be nothing.
+   *    It's not until the second `[` that we know it's an "array 2 of array 3
+   *    of int."  (Had the `[3]` not been there, then it would have been just
+   *    "array 2 of int.")
+   *
+   * 2. Nested declarations or casts (inside parentheses).  Consider:
+   *
+   *         int (*a)[2]
+   *
+   *    At the `*`, we know it's a "pointer [to something]* of int," but,
+   *    similar to the array case, we don't yet know whether the "something"
+   *    will turn out to be nothing.  It's not until the `[` that we know it's
+   *    a "pointer to array 2 of int."  (Had the `[2]` not been there, then it
+   *    would have been just "pointer to int" (with unnecessary parentheses).
+   *
+   * In either case, a placeholder node is created to hold the place of the
+   * "something" in the AST.
+   */
   K_PLACEHOLDER             = (1u << 0),
 
-  /// `void,` `char,` `int,` etc.
+  /**
+   * Built-in type, e.g., `void,` `char,` `int,` etc.
+   */
   K_BUILTIN                 = (1u << 1),
 
-  /// Typeless function parameter in K&R C, e.g., `double sin(x)`.
+  /**
+   * Name only.  It's used as the initial kind for an identifier ("name") until
+   * we know it's actual type (if ever).  However, it's also used for pre-
+   * prototype typeless function parameters in K&R C, e.g., `double sin(x)`.
+   */
   K_NAME                    = (1u << 2),
 
-  /// `typedef` type, e.g., `size_t`.
+  /**
+   * `typedef` type, e.g., `size_t`.
+   */
   K_TYPEDEF                 = (1u << 3),
 
-  /// Variadic (`...`) function parameter.
+  /**
+   * Variadic (`...`) function parameter.
+   */
   K_VARIADIC                = (1u << 4),
 
   ////////// "parent" kinds ///////////////////////////////////////////////////
 
-  /// Array.
+  /**
+   * Array.
+   */
   K_ARRAY                   = (1u << 5),
 
-  /// `enum,` `class,` `struct,` or `union`.
-  ///
-  /// @note This is a "parent" kind because `enum` in C++11 and later can be
-  /// "of" a fixed type.
+  /**
+   * An `enum,` `class,` `struct,` or `union`.
+   *
+   * @note This is a "parent" kind because `enum` in C++11 and later can be
+   * "of" a fixed type.
+   */
   K_ENUM_CLASS_STRUCT_UNION = (1u << 6),
 
-  /// Pointer.
+  /**
+   * C or C++ pointer.
+   */
   K_POINTER                 = (1u << 7),
 
-  /// C++ pointer-to-member.
+  /**
+   * C++ pointer-to-member.
+   */
   K_POINTER_TO_MEMBER       = (1u << 8),
 
-  /// C++ reference.
+  /**
+   * C++ reference.
+   */
   K_REFERENCE               = (1u << 9),
 
-  /// C++ rvalue reference.
+  /**
+   * C++11 rvalue reference.
+   */
   K_RVALUE_REFERENCE        = (1u << 10),
 
   ////////// function-like "parent" kinds /////////////////////////////////////
 
-  /// C++ constructor.
+  /**
+   * C++ constructor.
+   */
   K_CONSTRUCTOR             = (1u << 11),
 
-  /// C++ destructor.
+  /**
+   * C++ destructor.
+   */
   K_DESTRUCTOR              = (1u << 12),
 
   ////////// function-like "parent" kinds that have return values /////////////
 
-  /// Block (Apple extension).
-  ///
-  /// @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
-  /// @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
+  /**
+   * Block (Apple extension).
+   *
+   * @sa [Apple's Extensions to C](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1370.pdf)
+   * @sa [Blocks Programming Topics](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/Blocks)
+   */
   K_APPLE_BLOCK             = (1u << 13),
 
-  /// Function.
+  /**
+   * Function.
+   */
   K_FUNCTION                = (1u << 14),
 
-  /// C++ overloaded operator.
+  /**
+   * C++ overloaded operator.
+   */
   K_OPERATOR                = (1u << 15),
 
-  /// C++ user-defined conversion operator.
+  /**
+   * C++ user-defined conversion operator.
+   */
   K_USER_DEF_CONVERSION     = (1u << 16),
 
-  /// C++11 user-defined literal.
+  /**
+   * C++11 user-defined literal.
+   */
   K_USER_DEF_LITERAL        = (1u << 17),
 };
 
