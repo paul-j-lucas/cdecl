@@ -56,8 +56,7 @@ static unsigned const     TERM_COLUMNS_DEFAULT = 80;
 /// @endcond
 
 // local functions
-PJL_WARN_UNUSED_RESULT
-static size_t print_input_line( size_t, size_t );
+static void               print_input_line( size_t*, size_t );
 
 PJL_WARN_UNUSED_RESULT
 static size_t             token_len( char const*, size_t, size_t );
@@ -131,7 +130,7 @@ static size_t print_caret( size_t error_column ) {
     // Otherwise we have to print out the line containing the error then put
     // the ^ under that.
     //
-    error_column = print_input_line( error_column, term_columns );
+    print_input_line( &error_column, term_columns );
   }
 
   EPRINTF( "%*s", (int)error_column, "" );
@@ -147,20 +146,19 @@ static size_t print_caret( size_t error_column ) {
  * Prints the input line, "scrolled" to the left with `...` printed if
  * necessary, so that \a error_column is always within \a term_columns.
  *
- * @param error_column The zero-based column of the offending token.
+ * @param error_column A pointer to the zero-based column of the offending
+ * token.  It is adjusted if necessary to be the terminal column at which the
+ * `^` should be printed.
  * @param term_columns The number of columns of the terminal.
- * @return Returns \a error_column, adjusted (if necessary), at which the `^`
- * should be printed.
  */
-PJL_WARN_UNUSED_RESULT
-static size_t print_input_line( size_t error_column, size_t term_columns ) {
+static void print_input_line( size_t *error_column, size_t term_columns ) {
   size_t input_line_len;
-  char const *const input_line = get_input_line( &input_line_len );
+  char const *input_line = get_input_line( &input_line_len );
   assert( input_line != NULL );
   assert( input_line_len > 0 );
 
-  if ( error_column > input_line_len )
-    error_column = input_line_len;
+  if ( *error_column > input_line_len )
+    *error_column = input_line_len;
 
   --term_columns;                     // more aesthetically pleasing
 
@@ -168,12 +166,12 @@ static size_t print_input_line( size_t error_column, size_t term_columns ) {
   // If the error is due to unexpected end of input, back up the error
   // column so it refers to a non-null character.
   //
-  if ( error_column > 0 && input_line[ error_column ] == '\0' )
-    --error_column;
+  if ( *error_column > 0 && input_line[ *error_column ] == '\0' )
+    --*error_column;
 
   size_t const token_columns =
-    token_len( input_line, input_line_len, error_column );
-  size_t const error_end_column = error_column + token_columns - 1;
+    token_len( input_line, input_line_len, *error_column );
+  size_t const error_end_column = *error_column + token_columns - 1;
 
   //
   // Start with the number of printable columns equal to the length of the
@@ -209,30 +207,26 @@ static size_t print_input_line( size_t error_column, size_t term_columns ) {
       more[1] = false;
   }
 
-  size_t error_column_term;
-  size_t print_offset;                // offset into input_line to print from
   if ( more[0] ) {
     //
     // There is "more" on the left so we have to adjust the error column, the
-    // offset into the input line that we start printing at, and the number of
-    // printable columns to give the appearance that the input line has been
+    // number of printable columns, and the offset into the input line that we
+    // start printing at to give the appearance that the input line has been
     // "scrolled" to the left.
     //
-    error_column_term = print_columns - token_columns;
-    print_offset = MORE_LEN[0] + (error_column - error_column_term);
+    assert( print_columns >= token_columns );
+    size_t const error_column_term = print_columns - token_columns;
     print_columns -= MORE_LEN[0];
-  } else {
-    error_column_term = error_column;
-    print_offset = 0;
+    assert( *error_column > error_column_term );
+    input_line += MORE_LEN[0] + (*error_column - error_column_term);
+    *error_column = error_column_term;
   }
 
   EPRINTF( "%s%.*s%s\n",
     (more[0] ? MORE[0] : ""),
-    (int)print_columns, input_line + print_offset,
+    (int)print_columns, input_line,
     (more[1] ? MORE[1] : "")
   );
-
-  return error_column_term;
 }
 
 /**
