@@ -162,6 +162,8 @@ static size_t print_input_line( size_t error_column, size_t term_columns ) {
   if ( error_column > input_line_len )
     error_column = input_line_len;
 
+  --term_columns;                     // more aesthetically pleasing
+
   //
   // If the error is due to unexpected end of input, back up the error
   // column so it refers to a non-null character.
@@ -185,7 +187,6 @@ static size_t print_input_line( size_t error_column, size_t term_columns ) {
   // columns.
   //
   bool more[2];                       // [0] = left; [1] = right
-  --term_columns;                     // more aesthetically pleasing
   more[1] = print_columns > term_columns;
   if ( more[1] )
     print_columns = term_columns;
