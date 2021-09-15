@@ -194,6 +194,13 @@ EXPECTED_DIR=$srcdir/expected
 DIFF_FILE=/tmp/cdecl_diff_$$_
 
 ##
+# Must fix the number of terminal columns at 80 overriding the actual TERM
+# number of columns so that columns-dependent tests pass.
+##
+COLUMNS=80
+export COLUMNS
+
+##
 # Must put BUILD_SRC first in PATH so we get the correct version of cdecl.
 ##
 PATH=$BUILD_SRC:$PATH
