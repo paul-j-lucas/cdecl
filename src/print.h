@@ -181,7 +181,7 @@ void print_debug_file_line( char const *file, int line );
  *
  * @param help The type of help to print.
  */
-void print_help( c_help_t help );
+void print_help( cdecl_help_t help );
 
 /**
  * Prints a hint message to standard error in the form:

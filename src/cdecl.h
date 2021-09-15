@@ -52,18 +52,18 @@
 /**
  * Convenience  macro for iterating over all cdecl commands.
  *
- * @param VAR The `c_command` loop variable.
+ * @param VAR The `cdecl_command` loop variable.
  */
 #define FOREACH_COMMAND(VAR) \
-  for ( c_command_t const *VAR = CDECL_COMMANDS; VAR->literal != NULL; ++VAR )
+  for ( cdecl_command_t const *VAR = CDECL_COMMANDS; VAR->literal != NULL; ++VAR )
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // extern variables
-extern c_command_t const
+extern cdecl_command_t const
                     CDECL_COMMANDS[];   ///< cdecl commands.
-extern c_mode_t     c_mode;             ///< Converting English or gibberish?
-extern bool         c_initialized;      ///< Initialized (read conf. file)?
+extern bool         cdecl_initialized;  ///< Initialized (read conf. file)?
+extern cdecl_mode_t cdecl_mode;         ///< Converting English or gibberish?
 extern bool         is_input_a_tty;     ///< Is our input from a TTY?
 extern char const  *me;                 ///< Program name.
 

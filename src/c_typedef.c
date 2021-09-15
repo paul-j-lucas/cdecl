@@ -928,7 +928,7 @@ static c_typedef_t* c_typedef_new( c_ast_t const *ast ) {
   //
   tdef->lang_ids = user_defined ? opt_lang_and_newer() : predefined_lang_ids;
   tdef->user_defined = user_defined;
-  tdef->defined_in_english = c_mode == C_ENGLISH_TO_GIBBERISH;
+  tdef->defined_in_english = cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH;
   return tdef;
 }
 

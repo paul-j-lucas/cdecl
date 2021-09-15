@@ -224,7 +224,8 @@ static char* command_generator( char const *text, int state ) {
     text_len = strlen( text );
   }
 
-  for ( c_command_t const *c; (c = CDECL_COMMANDS + index)->literal != NULL; ) {
+  for ( cdecl_command_t const *c;
+        (c = CDECL_COMMANDS + index)->literal != NULL; ) {
     ++index;
     if ( !opt_lang_is_any( c->lang_ids ) )
       continue;

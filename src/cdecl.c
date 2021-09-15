@@ -63,35 +63,35 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-c_command_t const CDECL_COMMANDS[] = {
-  { L_CAST,                   C_COMMAND_PROG_NAME,  LANG_ANY          },
-  { L_CLASS,                  C_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_CONST /* cast */,       C_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_DECLARE,                C_COMMAND_PROG_NAME,  LANG_ANY          },
-  { L_DEFINE,                 C_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_DYNAMIC /* cast */,     C_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_ENUM,                   C_COMMAND_FIRST_ARG,  LANG_MIN(C_89)    },
-  { L_EXIT,                   C_COMMAND_LANG_ONLY,  LANG_ANY          },
-  { L_EXPLAIN,                C_COMMAND_PROG_NAME,  LANG_ANY          },
-  { L_HELP,                   C_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_NAMESPACE,              C_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_QUIT,                   C_COMMAND_LANG_ONLY,  LANG_ANY          },
-  { L_REINTERPRET /* cast */, C_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_SET_COMMAND,            C_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_SHOW,                   C_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_STATIC /* cast */,      C_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
-  { L_STRUCT,                 C_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_TYPEDEF,                C_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_UNION,                  C_COMMAND_FIRST_ARG,  LANG_ANY          },
-  { L_USING,                  C_COMMAND_FIRST_ARG,  LANG_CPP_MIN(11)  },
-  { NULL,                     C_COMMAND_ANYWHERE,   LANG_NONE         },
+cdecl_command_t const CDECL_COMMANDS[] = {
+  { L_CAST,                   CDECL_COMMAND_PROG_NAME,  LANG_ANY          },
+  { L_CLASS,                  CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
+  { L_CONST /* cast */,       CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
+  { L_DECLARE,                CDECL_COMMAND_PROG_NAME,  LANG_ANY          },
+  { L_DEFINE,                 CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
+  { L_DYNAMIC /* cast */,     CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
+  { L_ENUM,                   CDECL_COMMAND_FIRST_ARG,  LANG_MIN(C_89)    },
+  { L_EXIT,                   CDECL_COMMAND_LANG_ONLY,  LANG_ANY          },
+  { L_EXPLAIN,                CDECL_COMMAND_PROG_NAME,  LANG_ANY          },
+  { L_HELP,                   CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
+  { L_NAMESPACE,              CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
+  { L_QUIT,                   CDECL_COMMAND_LANG_ONLY,  LANG_ANY          },
+  { L_REINTERPRET /* cast */, CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
+  { L_SET_COMMAND,            CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
+  { L_SHOW,                   CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
+  { L_STATIC /* cast */,      CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
+  { L_STRUCT,                 CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
+  { L_TYPEDEF,                CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
+  { L_UNION,                  CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
+  { L_USING,                  CDECL_COMMAND_FIRST_ARG,  LANG_CPP_MIN(11)  },
+  { NULL,                     CDECL_COMMAND_ANYWHERE,   LANG_NONE         },
 };
 
 // extern variable definitions
-bool        c_initialized;
-c_mode_t    c_mode;
-bool        is_input_a_tty;
-char const *me;
+bool          cdecl_initialized;
+cdecl_mode_t  cdecl_mode;
+bool          is_input_a_tty;
+char const   *me;
 
 // extern functions
 extern void parser_cleanup( void );
@@ -139,7 +139,7 @@ int main( int argc, char const *argv[] ) {
   if ( !opt_no_conf )
     read_conf_file();
   opt_conf_file = NULL;                 // don't print in errors any more
-  c_initialized = true;
+  cdecl_initialized = true;
 
   bool const ok = parse_cdecl_argv( argc, argv );
   exit( ok ? EX_OK : EX_DATAERR );
@@ -231,7 +231,7 @@ static bool cdecl_read_line( strbuf_t *sbuf, char const *ps1,
  * @return Returns `true` only if \a s is a command.
  */
 PJL_WARN_UNUSED_RESULT
-static bool is_command( char const *s, c_command_kind_t command_kind ) {
+static bool is_command( char const *s, cdecl_command_kind_t command_kind ) {
   assert( s != NULL );
   SKIP_WS( s );
 
@@ -286,14 +286,14 @@ PJL_WARN_UNUSED_RESULT
 static bool parse_cdecl_argv( int argc, char const *const argv[] ) {
   if ( argc == 0 )                      // cdecl
     return parse_cdecl_stdin();
-  if ( is_command( me, C_COMMAND_PROG_NAME ) )
+  if ( is_command( me, CDECL_COMMAND_PROG_NAME ) )
     return parse_cdecl_command_line( me, argc, argv );
 
   //
   // Note that options_init() adjusts argv such that argv[0] becomes the first
   // argument (and no longer the program name).
   //
-  if ( is_command( argv[0], C_COMMAND_FIRST_ARG ) )
+  if ( is_command( argv[0], CDECL_COMMAND_FIRST_ARG ) )
     return parse_cdecl_command_line( NULL, argc, argv );
 
   if ( opt_explain )
@@ -473,7 +473,7 @@ bool parse_cdecl_string( char const *s, size_t s_len ) {
 
   strbuf_t explain_buf;
   bool const insert_explain =
-    opt_explain && !is_command( s, C_COMMAND_ANYWHERE );
+    opt_explain && !is_command( s, CDECL_COMMAND_ANYWHERE );
 
   if ( insert_explain ) {
     //

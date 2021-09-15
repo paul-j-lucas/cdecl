@@ -889,7 +889,8 @@ char const* c_tid_name_error( c_tid_t tids ) {
   // When giving an error message, return the type name in pseudo-English if
   // we're parsing pseudo-English or in C/C++ if we're parsing C/C++.
   return c_type_name(
-    &type, /*in_english=*/c_mode == C_ENGLISH_TO_GIBBERISH, /*is_error=*/true
+    &type, /*in_english=*/cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH,
+    /*is_error=*/true
   );
 }
 
@@ -1033,7 +1034,8 @@ C_TYPE_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_type_name_error( c_type_t const *type ) {
   // See comment in c_tid_name_error().
   return c_type_name(
-    type, /*in_english=*/c_mode == C_ENGLISH_TO_GIBBERISH, /*is_error=*/true
+    type, /*in_english=*/cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH,
+    /*is_error=*/true
   );
 }
 

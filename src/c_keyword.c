@@ -427,7 +427,7 @@ c_keyword_t const* c_keyword_find( char const *literal, c_lang_id_t lang_ids,
     if ( (k->lang_ids & lang_ids) == LANG_NONE )
       continue;
 
-    if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
+    if ( cdecl_mode == CDECL_GIBBERISH_TO_ENGLISH &&
          k->kw_ctx != C_KW_CTX_DEFAULT && kw_ctx != k->kw_ctx ) {
       //
       // Keyword contexts matter only when converting gibberish to pseudo-

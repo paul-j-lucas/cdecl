@@ -371,7 +371,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       error_kind_of_kind( ast, raw_of_ast, "" );
-      if ( c_mode == C_ENGLISH_TO_GIBBERISH )
+      if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
         print_hint( "%s to %s", c_kind_name( raw_of_ast->kind_id ), L_ARRAY );
       else
         print_hint( "(%s%s)[]",
@@ -500,7 +500,7 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
   c_ast_t const *const of_ast = ast->as.ecsu.of_ast;
 
   if ( c_type_is_tid_any( &ast->type, TB_ENUM ) ) {
-    if ( c_mode == C_GIBBERISH_TO_ENGLISH &&
+    if ( cdecl_mode == CDECL_GIBBERISH_TO_ENGLISH &&
          c_type_is_tid_any( &ast->type, TB_STRUCT | TB_CLASS ) &&
         !c_type_is_tid_any( &ast->type, TS_TYPEDEF ) ) {
       print_error( &ast->loc,
@@ -1760,7 +1760,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
     case K_RVALUE_REFERENCE:
       error_kind_to_kind( ast, raw_to_ast, "" );
       if ( raw_to_ast == to_ast ) {
-        if ( c_mode == C_ENGLISH_TO_GIBBERISH )
+        if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
           print_hint( "%s to %s", L_REFERENCE, L_POINTER );
         else
           print_hint( "\"*&\"" );
@@ -2349,7 +2349,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, uint64_t data ) {
     CASE_K_NONE_OR_PLACEHOLDER;
   } // switch
 
-  if ( c_initialized )                  // don't warn for predefined types
+  if ( cdecl_initialized )              // don't warn for predefined types
     c_ast_warn_name( ast );
 
   return false;

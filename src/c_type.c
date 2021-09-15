@@ -928,7 +928,7 @@ char const* c_type_name( c_type_t const *type, bool in_english,
 
     bool const print_brackets =
       OPT_LANG_IS(MIN(C_2X)) &&
-      c_mode == C_ENGLISH_TO_GIBBERISH &&
+      cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH &&
       !in_english;
 
     bool comma = false;

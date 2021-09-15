@@ -490,7 +490,7 @@ static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t const *loc ) {
  * Set our mode to deciphering gibberish into English.
  */
 static inline void gibberish_to_english( void ) {
-  c_mode = C_GIBBERISH_TO_ENGLISH;
+  cdecl_mode = CDECL_GIBBERISH_TO_ENGLISH;
   lexer_find &= ~LEXER_FIND_CDECL_KEYWORDS;
 }
 
@@ -616,7 +616,7 @@ static inline void sti_free( show_type_info_t *sti ) {
  */
 PJL_WARN_UNUSED_RESULT
 static inline bool unsupported( c_lang_id_t lang_ids ) {
-  return c_initialized && !opt_lang_is_any( lang_ids );
+  return cdecl_initialized && !opt_lang_is_any( lang_ids );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -914,7 +914,7 @@ static void parse_cleanup( bool hard_reset ) {
  */
 static void parse_init( void ) {
   ast_depth = 0;
-  c_mode = C_ENGLISH_TO_GIBBERISH;
+  cdecl_mode = CDECL_ENGLISH_TO_GIBBERISH;
   if ( false_set( &error_newlined ) )
     FPUTC( '\n', fout );
 }
@@ -1044,7 +1044,7 @@ static void yyerror( char const *msg ) {
   unsigned            bitmask;    // multipurpose bitmask (used by show)
   bool                flag;       // simple flag
   c_gib_kind_t        gib_kind;   // kind of gibberish
-  c_help_t            help;       // type of help to print
+  cdecl_help_t        help;       // type of help to print
   int                 int_val;    // integer value
   char const         *literal;    // token L_* literal (for new-style casts)
   char               *name;       // identifier name, cf. sname
@@ -2543,9 +2543,9 @@ help_command
   ;
 
 help_what_opt
-  : /* empty */                   { $$ = C_HELP_COMMANDS; }
-  | Y_COMMANDS                    { $$ = C_HELP_COMMANDS; }
-  | Y_ENGLISH                     { $$ = C_HELP_ENGLISH;  }
+  : /* empty */                   { $$ = CDECL_HELP_COMMANDS; }
+  | Y_COMMANDS                    { $$ = CDECL_HELP_COMMANDS; }
+  | Y_ENGLISH                     { $$ = CDECL_HELP_ENGLISH;  }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////

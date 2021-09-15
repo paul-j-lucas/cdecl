@@ -69,14 +69,11 @@ typedef struct c_ast_pair         c_ast_pair_t;
 typedef slist_node_t              c_ast_param_t;  ///< Function-like parameter.
 typedef unsigned                  c_bit_width_t;  ///< Bit-field width.
 typedef struct c_builtin_ast      c_builtin_ast_t;
-typedef struct c_command          c_command_t;
-typedef enum   c_command_kind     c_command_kind_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
 typedef struct c_ecsu_ast         c_ecsu_ast_t;
 typedef struct c_function_ast     c_function_ast_t;
 typedef enum   c_gib_kind         c_gib_kind_t;
 typedef enum   c_graph            c_graph_t;
-typedef enum   c_help             c_help_t;
 typedef struct c_keyword          c_keyword_t;
 typedef enum   c_keyword_ctx      c_keyword_ctx_t;
 typedef enum   c_kind_id          c_kind_id_t;
@@ -84,7 +81,6 @@ typedef struct c_lang             c_lang_t;
 typedef uint32_t                  c_lang_id_t;    ///< Languages bitmask.
 typedef struct c_lang_lit         c_lang_lit_t;
 typedef struct c_loc              c_loc_t;
-typedef enum   c_mode             c_mode_t;
 typedef struct c_operator_ast     c_operator_ast_t;
 typedef enum   c_oper_id          c_oper_id_t;
 typedef struct c_operator         c_operator_t;
@@ -104,6 +100,10 @@ typedef struct c_type             c_type_t;
 typedef struct c_udef_conv_ast    c_udef_conv_ast_t;
 typedef struct c_udef_lit_ast     c_udef_lit_ast_t;
 typedef enum   c_visit_dir        c_visit_dir_t;
+typedef struct cdecl_command      cdecl_command_t;
+typedef enum   cdecl_command_kind cdecl_command_kind_t;
+typedef enum   cdecl_help         cdecl_help_t;
+typedef enum   cdecl_mode         cdecl_mode_t;
 typedef enum   yytokentype        yytokentype;
 
 typedef c_loc_t YYLTYPE;                ///< Source location type for Bison.
@@ -128,25 +128,6 @@ struct c_ast_pair {
    * subsequent additions to the AST.
    */
   c_ast_t *target_ast;
-};
-
-/**
- * The kind of cdecl command in least-to-most restrictive order.
- */
-enum c_command_kind {
-  C_COMMAND_ANYWHERE,                   ///< Command is OK anywhere.
-  C_COMMAND_FIRST_ARG,                  ///< `$ cdecl` _command_ _args_
-  C_COMMAND_PROG_NAME,                  ///< `$` _command_ _args_
-  C_COMMAND_LANG_ONLY                   ///< `cdecl>` _command_ _args_
-};
-
-/**
- * A cdecl command.
- */
-struct c_command {
-  char const       *literal;            ///< The command literal.
-  c_command_kind_t  kind;               ///< The kind of command.
-  c_lang_id_t       lang_ids;           ///< Language(s) command is in.
 };
 
 /**
@@ -175,14 +156,6 @@ enum c_graph {
 };
 
 /**
- * Types of help.
- */
-enum c_help {
-  C_HELP_COMMANDS,                      ///< Help for cdecl commands.
-  C_HELP_ENGLISH                        ///< Help for cdecl pseudo-English.
-};
-
-/**
  * The source location used by Bison.
  */
 struct c_loc {
@@ -201,11 +174,38 @@ struct c_loc {
 };
 
 /**
+ * The kind of cdecl command in least-to-most restrictive order.
+ */
+enum cdecl_command_kind {
+  CDECL_COMMAND_ANYWHERE,               ///< Command is OK anywhere.
+  CDECL_COMMAND_FIRST_ARG,              ///< `$ cdecl` _command_ _args_
+  CDECL_COMMAND_PROG_NAME,              ///< `$` _command_ _args_
+  CDECL_COMMAND_LANG_ONLY               ///< `cdecl>` _command_ _args_
+};
+
+/**
+ * A cdecl command.
+ */
+struct cdecl_command {
+  char const           *literal;        ///< The command literal.
+  cdecl_command_kind_t  kind;           ///< The kind of command.
+  c_lang_id_t           lang_ids;       ///< Language(s) command is in.
+};
+
+/**
+ * Types of help.
+ */
+enum cdecl_help {
+  CDECL_HELP_COMMANDS,                  ///< Help for cdecl commands.
+  CDECL_HELP_ENGLISH                    ///< Help for cdecl pseudo-English.
+};
+
+/**
  * Mode of operation.
  */
-enum c_mode {
-  C_ENGLISH_TO_GIBBERISH,               ///< Convert English into gibberish.
-  C_GIBBERISH_TO_ENGLISH                ///< Decipher gibberish into English.
+enum cdecl_mode {
+  CDECL_ENGLISH_TO_GIBBERISH,           ///< Convert English into gibberish.
+  CDECL_GIBBERISH_TO_ENGLISH            ///< Decipher gibberish into English.
 };
 
 ///////////////////////////////////////////////////////////////////////////////

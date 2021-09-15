@@ -355,12 +355,12 @@ static void print_help_where( void ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void print_help( c_help_t help ) {
+void print_help( cdecl_help_t help ) {
   switch ( help ) {
-    case C_HELP_COMMANDS:
+    case CDECL_HELP_COMMANDS:
       print_help_commands();
       return;
-    case C_HELP_ENGLISH:
+    case CDECL_HELP_ENGLISH:
       print_help_english();
       return;
   } // switch
