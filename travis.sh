@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 ##
 #       cdecl -- C gibberish translator
 #       travis.sh
