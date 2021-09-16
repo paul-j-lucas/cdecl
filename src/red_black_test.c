@@ -29,6 +29,10 @@
 #include <string.h>
 #include <sysexits.h>
 
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wunused-value"
+#endif /* __GNUC__ */
+
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
