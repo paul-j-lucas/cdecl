@@ -76,6 +76,7 @@ static c_lang_t const C_LANG[] = {
   { "C++14",  false,  LANG_CPP_14  },
   { "C++17",  false,  LANG_CPP_17  },
   { "C++20",  false,  LANG_CPP_20  },
+  { "C++23",  false,  LANG_CPP_23  },
   { NULL,     false,  LANG_NONE    },
 };
 
@@ -120,6 +121,7 @@ char const* c_lang_name( c_lang_id_t lang_id ) {
     case LANG_CPP_14  : return "C++14";
     case LANG_CPP_17  : return "C++17";
     case LANG_CPP_20  : return "C++20";
+    case LANG_CPP_23  : return "C++23";
     default:
       UNEXPECTED_INT_VALUE( lang_id );
   } // switch

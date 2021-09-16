@@ -22,6 +22,10 @@ warning that trigraphs are not supported until C89.
 ** Optional `()` for `destructor`
 Declaring a destructor in English now optionally allows `()`.
 
+** C++23
+C++23 is both now allowed for and the default C++ version.  However, there are
+as of yet no differences with respect to declarations between it and C++20.
+
 ** Fixed C++ raw string literals
 A raw string literal like `R"abc(X)ab)abc"` was previously not parsed
 correctly.

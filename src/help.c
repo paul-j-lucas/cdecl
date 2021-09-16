@@ -176,7 +176,7 @@ static void print_help_commands( void ) {
   print_h( "  [no]explain-by-default [no]explicit-int[=<types>] lang=<lang>\n" );
   print_h( "  [no]prompt [no]semicolon\n" );
 
-  print_h( "lang: K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|2X] | C\\+\\+[98|03|11|14|17|20]\n" );
+  print_h( "lang: K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|2X] | C\\+\\+[98|03|11|14|17|20|23]\n" );
 
   if ( OPT_LANG_IS(CPP_ANY) ) {
     print_h( "scope-c: class | struct | union |" );

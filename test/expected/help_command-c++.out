@@ -18,6 +18,6 @@ option:
   [no]alt-tokens [no]debug {di|tri|no}graphs [no]east-const
   [no]explain-by-default [no]explicit-int[=<types>] lang=<lang>
   [no]prompt [no]semicolon
-lang: K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|2X] | C++[98|03|11|14|17|20]
+lang: K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|2X] | C++[98|03|11|14|17|20|23]
 scope-c: class | struct | union | [inline] namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

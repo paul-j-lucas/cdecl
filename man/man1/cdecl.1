@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "September 12, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "September 15, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -464,7 +464,7 @@ The default is
 (for
 .BR cdecl )
 and
-.B C++20
+.B C++23
 (for
 .BR c++decl ).
 .TP
@@ -660,6 +660,12 @@ Adds support for
 \f(CWconstinit\fP,
 and
 \f(CWoperator<=>\fP.
+.TP
+.B C++23
+Use the C++23 version of the C++ language.
+(Minor revision;
+no new features.
+Equivalent to C++20.)
 .SH CDECL LANGUAGE
 .SS Commands
 In what follows,
