@@ -17,11 +17,7 @@ git:
   depth: false
   quiet: true
 
-script: ./bootstrap && ./configure --disable-term-size --without-readline && make
-
-after_success:
-  - make check
-  - sudo make install
+script: ./travis.sh
 
 notifications:
   email:
