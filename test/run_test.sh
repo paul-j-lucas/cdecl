@@ -53,9 +53,8 @@ pass() {
 }
 
 fail() {
-  RESULT=$1
-  [ "$RESULT" ] || RESULT=FAIL
-  print_result $RESULT $TEST_NAME
+  RESULT=$1; shift; [ "$RESULT" ] || RESULT=FAIL
+  print_result $RESULT $TEST_NAME $*
   {
     echo ":test-result: $RESULT"
     echo ":copy-in-global-log: yes"
@@ -235,7 +234,7 @@ run_cdecl_test() {
   else
     case $ACTUAL_EXIT in
     0|65) fail ;;
-    *)    fail ERROR ;;
+    *)    fail ERROR $ACTUAL_EXIT ;;
     esac
   fi
 }
