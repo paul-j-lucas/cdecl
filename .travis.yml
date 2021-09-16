@@ -11,7 +11,7 @@ os:
 arch:
   - arm64
   - amd64
-  - ppc42le
+  - ppc64le
 
 git:
   depth: false
