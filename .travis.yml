@@ -17,7 +17,7 @@ git:
   depth: false
   quiet: true
 
-script: ./bootstrap && ./configure --without-readline && make
+script: ./bootstrap && ./configure --disable-term-size --without-readline && make
 
 after_success:
   - make check
