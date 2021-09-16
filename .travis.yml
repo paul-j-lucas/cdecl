@@ -4,6 +4,15 @@ compiler:
   - clang
   - gcc
 
+os:
+  - linux
+  - freebsd
+
+arch:
+  - arm64
+  - amd64
+  - ppc42le
+
 git:
   depth: false
   quiet: true
