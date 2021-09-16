@@ -17,10 +17,9 @@ git:
   depth: false
   quiet: true
 
-script:
-  - ./bootstrap
-  - ./configure
-  - make
+script: ./bootstrap && ./configure --without-readline && make
+
+after_success:
   - make check
   - sudo make install
 
