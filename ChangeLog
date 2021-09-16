@@ -1,3 +1,29 @@
+2021-09-15  Paul J. Lucas <paul@lucasmail.org>
+
+   * .travis.yml, travis.sh: Added own Travis CI build script.
+   * .travis.yml: Added --disable-term-size.
+   * cdecl.1: Added exit status code of 69.
+   * run_test.sh: Now including exit status.
+   * .travis.yml: Fixed ppc64le.
+   * red_black_test.c: Silence -Wunused-value.
+   * .travis.yml: Now using && in script; added after_success.
+   * .travis.yml: Travis CI Linux + FreeBSD, multiple architectures.
+   * .travis.yml: Travis-CI integration.
+   * NEWS, cdecl.1, c_lang.c, c_lang.h, help.c, cdecl-xx.out, help-c++.out,
+     help-c.out, help_command-c++.out, help_command-c++03.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out: Now allow
+     and default to C++23 for C++.
+   * print.c: More print clean-up.
+   * run_test.sh: Fixed columns-dependent tests.
+   * autocomplete.c, c_keyword.c, c_type.c, c_type.h, c_typedef.c, cdecl.c,
+     cdecl.h, check.c, help.c, parser.y, print.h, types.h: Renaming.
+
+2021-09-13  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.c: Decided to remove the MEM_ZERO() completely.
+   * c_ast.c: Moved MEM_ZERO() _before_ free().
+   * util.h: Removed UNEXPECTED_STR_VALUE -- not used.
+
 2021-09-12  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.c, dump.c: Now calling UNEXPECTED_INT_VALUE() for K_NONE.
