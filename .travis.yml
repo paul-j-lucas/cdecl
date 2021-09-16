@@ -1,0 +1,23 @@
+language: c
+
+compiler:
+  - clang
+  - gcc
+
+git:
+  depth: false
+  quiet: true
+
+script:
+  - ./bootstrap
+  - ./configure
+  - make
+  - make check
+  - sudo make install
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never
+
+# vim:set et sw=2 ts=2:

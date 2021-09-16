@@ -1,5 +1,7 @@
 # cdecl
 
+[![Build Status](https://app.travis-ci.com/paul-j-lucas/cdecl.svg?branch=master)](https://app.travis-ci.com/paul-j-lucas/cdecl)
+
 ## Introduction
 
 > *I’m still uncertain about the language declaration syntax, where in
