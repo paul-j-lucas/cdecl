@@ -46,8 +46,9 @@ most notably:
   C++11,
   C++14,
   C++17,
+  C++20,
   and
-  C++20.
+  C++23.
 * Support for C89
   `const`,
   `restrict`,
