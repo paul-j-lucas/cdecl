@@ -145,6 +145,13 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob ) {
       return false;
     }
   }
+  else if ( scope_count < sglob->count ) {
+    //
+    // For any-scope matches, if the number of scopes in sname is less than the
+    // number of scope globs, it can't possibly match.
+    //
+    return false;
+  }
   else {
     //
     // For any-scope matches, skip past leading scopes in sname (if necessary)
