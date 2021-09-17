@@ -171,16 +171,15 @@ bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob ) {
   //
   // Finally, attempt to match each scope name against each scope glob.
   //
-  bool is_match = true;
-  for ( size_t sglob_index = 0; is_match && scope != NULL;
+  for ( size_t sglob_index = 0; scope != NULL;
         ++sglob_index, scope = scope->next ) {
     assert( sglob_index < sglob->count );
     char const *const name = c_scope_data( scope )->name;
     if ( fnmatch( sglob->pattern[ sglob_index ], name, 0 ) != 0 )
-      is_match = false;
+      return false;
   } // for
 
-  return is_match;
+  return true;
 }
 
 bool c_sname_parse( char const *s, c_sname_t *sname ) {
