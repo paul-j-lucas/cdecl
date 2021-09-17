@@ -15,6 +15,10 @@ with their complete changes, see the AUTHORS file.
 ** K&R C function returning `struct`
 Now correctly forbidding functions returning `struct` in K&R C.
 
+** Digraphs before C95
+Either using a digraph or setting the digraphs option in a language before C95
+now prints a warning that digraphs are not supported until C95.
+
 ** Trigraphs in K&R C
 Either using a trigraph or setting the trigraphs option in K&R C now prints a
 warning that trigraphs are not supported until C89.

@@ -393,6 +393,7 @@ c_keyword_ctx_t   lexer_keyword_ctx;
 char const       *lexer_token = &lexer_token_init_buf;
 
 // local variables
+static bool       digraph_warned;       ///< Printed digraph warning once?
 static char      *input_buf;            ///< Entire current input line.
 static size_t     input_len;            ///< Length of `input_buf`.
 static size_t     input_sent;           ///< How many bytes returned to Flex.
@@ -553,11 +554,28 @@ static inline int parse_int( int base ) {
 }
 
 /**
+ * Sets the current token to \a token for the current digraph sequence.
+ * Additionally, if the current language is K&R C, prints a warning that
+ * digraphs are not supported until C89 (only once per parse).
+ *
+ * @param token The token the digraph maps to.
+ *
+ * @sa set_trigraph()
+ */
+static void set_digraph( char const *token ) {
+  if ( opt_lang < LANG_C_95 && false_set( &digraph_warned ) )
+    print_warning( &yylloc, "digraphs not supported until C95\n" );
+  SET_TOKEN_TO( token );
+}
+
+/**
  * Sets the current token to \a token for the current trigraph sequence.
  * Additionally, if the current language is K&R C, prints a warning that
  * trigraphs are not supported until C89 (only once per parse).
  *
  * @param token The token the trigraph maps to.
+ *
+ * @sa set_digraph()
  */
 static void set_trigraph( char const *token ) {
   if ( (opt_lang == LANG_C_KNR || opt_lang >= LANG_CPP_17) &&
@@ -877,13 +895,13 @@ declare/{S}({S}|{L})*user-def(ined)? {
                * (This doesn't use | to have the actions fall through to
                * eliminate a Flex warning with trailing context.)
                */
-"<:"/{S}*"<:"   { SET_TOKEN_TO( "[" ); return Y_ATTR_BEGIN; }
-"??("/{S}*"??(" { SET_TOKEN_TO( "[" ); return Y_ATTR_BEGIN; }
+"<:"/{S}*"<:"   { set_digraph( "[" );  return Y_ATTR_BEGIN; }
+"??("/{S}*"??(" { set_trigraph( "[" ); return Y_ATTR_BEGIN; }
 "["/{S}*"["     { SET_TOKEN;           return Y_ATTR_BEGIN; }
 
               /* Digraphs. */
-"<:"          { SET_TOKEN_TO_AND_RETURN( "[" ); }
-":>"          { SET_TOKEN_TO_AND_RETURN( "]" ); }
+"<:"          { set_digraph( "[" ); return '['; }
+":>"          { set_digraph( "]" ); return ']'; }
 
               /* Trigraphs. */
 "??'="        { set_trigraph( "^=" ); return Y_CIRC_EQ; }
@@ -1239,12 +1257,12 @@ void lexer_reset( bool hard_reset ) {
     yylineno = 0;
   }
   BEGIN( INITIAL );
+  digraph_warned = trigraph_warned = false;
   input_len = input_sent = 0;
   lexer_find = LEXER_FIND_ALL;
   lexer_keyword_ctx = C_KW_CTX_DEFAULT;
   newline();
   strbuf_free( &str_lit_buf );
-  trigraph_warned = false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -272,14 +272,20 @@ static bool set_lang_impl( char const *name ) {
   c_lang_id_t const new_lang_id = c_lang_find( name );
   if ( new_lang_id != LANG_NONE ) {
     c_lang_set( new_lang_id );
-    if ( opt_graph == C_GRAPH_TRI ) {
-      //
-      // Every time the language changes, re-set trigraph mode so the user is
-      // warned that trigraphs are not supported if the language is K&R C or
-      // C++17 or later.
-      //
-      set_trigraphs( &(set_option_fn_args_t){ true, NULL, NULL, NULL } );
-    }
+    //
+    // Every time the language changes, re-set di/trigraph mode so the user is
+    // re-warned if di/trigraphs are not supported in the current language.
+    //
+    switch ( opt_graph ) {
+      case C_GRAPH_NONE:
+        break;
+      case C_GRAPH_DI:
+        set_digraphs( &(set_option_fn_args_t){ true, NULL, NULL, NULL } );
+        break;
+      case C_GRAPH_TRI:
+        set_trigraphs( &(set_option_fn_args_t){ true, NULL, NULL, NULL } );
+        break;
+    } // switch
     return true;
   }
   return false;
