@@ -74,11 +74,9 @@ extern char const L_DECLARE[];
 extern char const L_DEFAULTED[];          // synonym for "default"
 extern char const L_DEFINE[];
 extern char const L_DELETED[];            // synonym for "delete"
-extern char const H_DOUBLE_PRECISION[];   // English for "double"
 extern char const L_ENGLISH[];
 extern char const L_EXIT[];
 extern char const L_EXPLAIN[];
-extern char const H_FLOATING_POINT[];
 extern char const L_FUNC[];               // synonym for "function"
 extern char const L_FUNCTION[];
 extern char const L_HELP[];
@@ -118,10 +116,12 @@ extern char const L_CONTINUE[];
 extern char const L_DEFAULT[];
 extern char const L_DO[];
 extern char const L_DOUBLE[];
+extern char const H_DOUBLE_PRECISION[];   // English for "double"
 extern char const L_ELSE[];
 extern char const L_EXTERN[];
 extern char const L_EXTERNAL[];           // English for "extern"
 extern char const L_FLOAT[];
+extern char const H_FLOATING_POINT[];     // English for "float"
 extern char const L_FOR[];
 extern char const L_GOTO[];
 extern char const L_IF[];
@@ -177,7 +177,7 @@ extern char const L__ATOMIC[];
 extern char const L_ATOMIC[];             // synonym for "_Atomic"
 extern char const L__GENERIC[];
 extern char const L__NORETURN[];
-extern char const H_NO_RETURN[];          // synonym for "_Noreturn"
+extern char const H_NO_RETURN[];          // English for "_Noreturn"
 extern char const H_NON_RETURNING[];      // English for "_Noreturn"
 extern char const L__STATIC_ASSERT[];
 extern char const L__THREAD_LOCAL[];
@@ -203,7 +203,7 @@ extern char const L_FRIEND[];
 extern char const L_MUTABLE[];
 extern char const L_NAMESPACE[];
 extern char const L_NEW[];
-extern char const H_NON_THROWING[];       // synonym for "throw"
+extern char const H_NON_THROWING[];       // English for "throw"
 extern char const L_OPER[];               // synonym for "operator"
 extern char const L_OPERATOR[];
 extern char const L_PRIVATE[];
