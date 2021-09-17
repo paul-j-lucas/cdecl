@@ -64,6 +64,9 @@ are now correctly flagged as illegal.
 ** Fixed "pointer to function returning pointer to array" function argument
 A declaration like `int f(char (*(*)())[])` is now parsed correctly.
 
+** `floating-point`
+This is now an English synonym for `float`.
+
 ** `double-precision`
 This is now an English synonym for `double`.
 

@@ -273,6 +273,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_EXPLAIN,        TOKEN( Y_EXPLAIN                    ) },
   { L_EXPORTED,       C_SY1( false, L_EXPORT              ) },
   { L_EXTERNAL,       C_SY1( false, L_EXTERN              ) },
+  { H_FLOATING_POINT, C_SY1( false, L_FLOAT               ) },
   { L_FUNC,           TOKEN( Y_FUNCTION                   ) },
   { L_FUNCTION,       TOKEN( Y_FUNCTION                   ) },
   { L_HELP,           TOKEN( Y_HELP                       ) },

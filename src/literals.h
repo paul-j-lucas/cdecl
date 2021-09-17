@@ -78,6 +78,7 @@ extern char const H_DOUBLE_PRECISION[];   // English for "double"
 extern char const L_ENGLISH[];
 extern char const L_EXIT[];
 extern char const L_EXPLAIN[];
+extern char const H_FLOATING_POINT[];
 extern char const L_FUNC[];               // synonym for "function"
 extern char const L_FUNCTION[];
 extern char const L_HELP[];

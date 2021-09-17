@@ -51,6 +51,7 @@ char const H_DOUBLE_PRECISION[]   = "double-precision";
 char const L_ENGLISH[]            = "english";
 char const L_EXIT[]               = "exit";
 char const L_EXPLAIN[]            = "explain";
+char const H_FLOATING_POINT[]     = "floating-point";
 char const L_FUNC[]               = "func";
 char const L_FUNCTION[]           = "function";
 char const L_HELP[]               = "help";
