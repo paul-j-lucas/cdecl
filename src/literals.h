@@ -74,6 +74,7 @@ extern char const L_DECLARE[];
 extern char const L_DEFAULTED[];          // synonym for "default"
 extern char const L_DEFINE[];
 extern char const L_DELETED[];            // synonym for "delete"
+extern char const H_DOUBLE_PRECISION[];   // English for "double"
 extern char const L_ENGLISH[];
 extern char const L_EXIT[];
 extern char const L_EXPLAIN[];

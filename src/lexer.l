@@ -263,6 +263,8 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
   { L_DEFINE,         TOKEN( Y_DEFINE                     ) },
   { L_DELETED,        C_SY1( false, L_DELETE              ) },
   { L_DESTRUCTOR,     TOKEN( Y_DESTRUCTOR                 ) },
+  { H_DOUBLE_PRECISION,
+                      C_SY1( false, L_DOUBLE              ) },
   { L_DTOR,           TOKEN( Y_DESTRUCTOR                 ) },
   { L_DYNAMIC,        TOKEN( Y_DYNAMIC                    ) },
   { L_ENGLISH,        TOKEN( Y_ENGLISH                    ) },

@@ -64,6 +64,9 @@ are now correctly flagged as illegal.
 ** Fixed "pointer to function returning pointer to array" function argument
 A declaration like `int f(char (*(*)())[])` is now parsed correctly.
 
+** `double-precision`
+This is now an English synonym for `double`.
+
 ** Microsoft `__forceinline` declarations
 Added support for `__forceinline` (and `_forceinline`), but they're treated as
 `inline`.

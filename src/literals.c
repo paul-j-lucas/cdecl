@@ -47,6 +47,7 @@ char const L_DECLARE[]            = "declare";
 char const L_DEFAULTED[]          = "defaulted";
 char const L_DEFINE[]             = "define";
 char const L_DELETED[]            = "deleted";
+char const H_DOUBLE_PRECISION[]   = "double-precision";
 char const L_ENGLISH[]            = "english";
 char const L_EXIT[]               = "exit";
 char const L_EXPLAIN[]            = "explain";
