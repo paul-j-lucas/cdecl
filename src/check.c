@@ -2512,10 +2512,10 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
           //      namespace N { class C; }
           //      namespace N::C { class D; }
           //                ^
-          //      11: error: "N::C" was previously declared as a class
+          //      11: error: "N::C" was previously declared as class
           //
           print_error( sname_loc,
-            "\"%s\" was previously declared as a %s:\n",
+            "\"%s\" was previously declared as %s:\n",
             c_sname_full_name( sname ),
             c_type_name_error( tdef_type )
           );
