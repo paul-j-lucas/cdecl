@@ -15,7 +15,6 @@ Test files are as follows:
 + `help-*`             = A help test.
 + `*-`_lang_`*`        = A test using _lang_ explicitly.
 + `*_mo_*`             = A member operator.
-+ `namespace_*`        = A `namespace` test.
 + `*_nmo_*`            = A non-member operator.
 + `*_o_*`              = An operator.
 + `reinterpret_cast_*` = A `reinterpret_cast` test.
