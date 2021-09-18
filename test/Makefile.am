@@ -843,7 +843,6 @@ TESTS+=	tests/2k_typedef_i.test \
 	tests/c_namespace_c.test \
 	tests/define_namespace_c_namespace_c.test \
 	tests/en_ns_c.test \
-	tests/k_namespace_typedef_i.test \
 	tests/namespace_+typedef_i-c++14.test \
 	tests/namespace_c_namespace_c.test \
 	tests/typedef_ai.test \
