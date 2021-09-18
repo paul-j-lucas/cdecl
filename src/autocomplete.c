@@ -122,7 +122,7 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_C_CPP_MIN(2X,17),  L_MAYBE_UNUSED        },
   { LANG_CPP_ANY,           L_MEMBER              },
   { LANG_CPP_ANY,           L_MUTABLE             },
-  //                        L_NAMESPACE   // handled in CDECL_COMMANDS
+  { LANG_CPP_ANY,           L_NAMESPACE           },
   { LANG_CPP_ANY,           L_NEW                 },
   { LANG_C_CPP_MIN(2X,17),  L_NODISCARD           },
   { LANG_CPP_MIN(11),       L_NOEXCEPT            },

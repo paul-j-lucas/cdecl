@@ -74,6 +74,7 @@ cdecl_command_t const CDECL_COMMANDS[] = {
   { L_EXIT,                   CDECL_COMMAND_LANG_ONLY,  LANG_ANY          },
   { L_EXPLAIN,                CDECL_COMMAND_PROG_NAME,  LANG_ANY          },
   { L_HELP,                   CDECL_COMMAND_FIRST_ARG,  LANG_ANY          },
+  { L_INLINE /* namespace */, CDECL_COMMAND_FIRST_ARG,  LANG_CPP_MIN(11)  },
   { L_NAMESPACE,              CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
   { L_QUIT,                   CDECL_COMMAND_LANG_ONLY,  LANG_ANY          },
   { L_REINTERPRET /* cast */, CDECL_COMMAND_FIRST_ARG,  LANG_CPP_ANY      },
