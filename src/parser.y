@@ -1948,20 +1948,20 @@ udc_storage_class_list_english_type_opt
     }
   ;
 
+  /*
+   * We need a seperate storage class set for user-defined conversion operators
+   * without "delete" to eliminiate a shift/reduce conflict; shift:
+   *
+   *      declare delete as ...
+   *
+   * where "delete" is the operator; and reduce:
+   *
+   *      declare delete[d] user-defined conversion operator ...
+   *
+   * where "delete" is storage-class-like.  The "delete" can safely be removed
+   * since only special members can be deleted anyway.
+   */
 udc_storage_class_english_type
-    /*
-     * We need a seperate storage class set for user-defined conversion
-     * operators without "delete" to eliminiate a shift/reduce conflict; shift:
-     *
-     *      declare delete as ...
-     *
-     * where "delete" is the operator; and reduce:
-     *
-     *      declare delete[d] user-defined conversion operator ...
-     *
-     * where "delete" is storage-class-like.  The "delete" can safely be
-     * removed since only special members can be deleted anyway.
-     */
   : attribute_english_atid        { $$ = C_TYPE_LIT_A( $1 ); }
   | Y_CONSTEVAL                   { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_CONSTEXPR                   { $$ = C_TYPE_LIT_S( $1 ); }
