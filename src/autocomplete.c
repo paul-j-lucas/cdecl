@@ -154,12 +154,12 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_C_CPP_MIN(11,11),  L_THREAD_LOCAL        },
   { LANG_CPP_MAX(17),       L_THROW               },
   { LANG_CPP_ANY,           L_TRUE                },
-  //                        L_TYPEDEF     // handled in CDECL_COMMANDS
+  { LANG_ANY,               L_TYPEDEF             },
   { LANG_CPP_ANY,           L_TYPENAME            },
   { LANG_ANY,               L_UNION               },
   { LANG_ANY,               L_UNSIGNED            },
   { LANG_CPP_ANY,           H_USER_DEFINED        },
-  //                        L_USING       // handled in CDECL_COMMANDS
+  { LANG_CPP_MIN(11),       L_USING               },
   { LANG_C_MIN(99),         L_VARIABLE            },
   { LANG_CPP_ANY,           L_VIRTUAL             },
   { LANG_MIN(C_89),         L_VOID                },
