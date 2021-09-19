@@ -92,11 +92,12 @@ Paul J. Lucas <paul@lucasmail.org>
 		operators, scoped names, throw(), typename, user-defined
 		conversion operators, virtual
 	added C++11 auto, constexpr, enum class, final, fixed-type enums,
-		function trailing return-type syntax, noexcept, override, ref-
-		qualifiers, rvalue references, thread_local, and user-defined
-		literals
+		function trailing return-type syntax, inline namespaces,
+		noexcept, override, ref-qualifiers, rvalue references,
+		thread_local, and user-defined literals
 	added C2X and C++11 later attribute specifiers
-	added C++20 consteval, constinit, export, and operator<=>
+	added C++20 consteval, constinit, export, operator<=>, and nested
+		inline namespaces
 	added Embedded C types _Accum, _Fract, _Sat, and typedefs
 	added Unified Parallel C qualifiers relaxed, shared, and strict
 	independently added typedef declarations
