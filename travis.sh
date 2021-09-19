@@ -46,17 +46,19 @@ set -ev # stop on error and be verbose
 #     --distable-term-size  : Some platforms don't have terminfo
 #     --without-readline    : BSD systems don't have readline
 ##
-CONFIG_OPTS="--disable-term-size --without-readline"
+CONFIGURE_OPTS="--disable-term-size --without-readline"
+
+MAKE_OPTS="-j2"
 
 # Build
 ./bootstrap
-./configure $CONFIG_OPTS
-make
+./configure $CONFIGURE_OPTS
+make $MAKE_OPTS
 
 # Run regression tests
-make check
+make $MAKE_OPTS check
 
 # Test installation
-sudo make install
+sudo make $MAKE_OPTS install
 
 # vim: set et sw=2 ts=2:
