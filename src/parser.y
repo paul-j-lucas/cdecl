@@ -980,6 +980,7 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
  */
 static void sti_init( show_type_info_t *sti, unsigned show_which,
                       char const *glob, c_gib_kind_t gib_kind ) {
+  assert( sti != NULL );
   sti->show_which = show_which;
   sti->gib_kind = gib_kind;
   c_sglob_init( &sti->sglob );
