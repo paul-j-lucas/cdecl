@@ -1,5 +1,7 @@
 2021-09-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_typedef.c: [skip ci] s/td_rb_visitor_data/tdef_rb_visitor_data/
+   * parser.y: [skip ci] Added assert().
    * travis.sh: Added MAKE_OPTS.
    * NEWS, c_sname.c, c_sname.h, check.c, gibberish.c, parser.y, strbuf.c,
      strbuf.h, test/Makefile.am, define_ins_ns_i.out, ins_ns_typedef_i.out,
