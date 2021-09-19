@@ -1,5 +1,45 @@
+2021-09-19  Paul J. Lucas <paul@lucasmail.org>
+
+   * travis.sh: Added MAKE_OPTS.
+   * NEWS, c_sname.c, c_sname.h, check.c, gibberish.c, parser.y, strbuf.c,
+     strbuf.h, test/Makefile.am, define_ins_ns_i.out, ins_ns_typedef_i.out,
+     ns_ins_ns_typedef_i.out, ns_ins_typedef_i.out, define_ins_ns_i.test,
+     ins_ns_typedef_i.test, ns_ins_ns_typedef_i.test, ns_ins_typedef_i.test:
+     Added support for C++20's nested inline namespaces.
+
+2021-09-18  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am: Namespace test renaming.
+   * test/Makefile.am: Removed duplicate test.
+   * NEWS, cdecl.1, autocomplete.c, cdecl.c: `inline` is now a command in C++11
+     and later (presumed to be followed by `namespace`) and `namespace` is
+     auto-completable.
+   * NEWS, autocomplete.c: Added "typedef" and "using" to autocomplete for
+     "set" command.
+   * test/Makefile.am, inamespace_typedef_i.out, inamespace_typedef_i.test:
+     Added inline namespace test.
+
+2021-09-17  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Moved comment.
+   * check.c, define_namespace_c_namespace_c.out, en_ns_c.out,
+     namespace_c_namespace_c.out: Removed "a" from error message.
+   * c_sname.c: Eliminated is_match local variable.
+   * c_sname.c: Fixed crash for any-scope matches.
+   * NEWS, configure.ac: Changed version to 11.0.
+   * NEWS, lexer.l, set_options.c: Either using a digraph or setting the
+     digraphs option in a language before C95 now prints a warning that
+     digraphs are not supported until C95.
+   * literals.c, literals.h: Reordering.
+
+2021-09-16  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, cdecl.1, lexer.l, literals.c, literals.h: Added "floating-point".
+   * NEWS, cdecl.1, lexer.l, literals.c, literals.h: Added "double-precision".
+
 2021-09-15  Paul J. Lucas <paul@lucasmail.org>
 
+   * travis.sh: Switch to sh.
    * .travis.yml, travis.sh: Added own Travis CI build script.
    * .travis.yml: Added --disable-term-size.
    * cdecl.1: Added exit status code of 69.
