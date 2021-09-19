@@ -302,8 +302,8 @@ PJL_WARN_UNUSED_RESULT
 bool c_sname_is_ctor( c_sname_t const *sname );
 
 /**
- * Gets the local (last) name of \a sname, e.g., the local name of `S::T::x` is
- * `x`.
+ * Gets the local name of \a sname (which is the name of the last scope), e.g.,
+ * the local name of `S::T::x` is `x`.
  *
  * @param sname The scoped name to get the local name of.  May be NULL.
  * @return Returns said name or the empty string if \a sname is empty or NULL.
@@ -321,8 +321,7 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
 }
 
 /**
- * Gets the local scope-type of \a sname (which is the type of the innermost
- * scope).
+ * Gets the local scope-type of \a sname (which is the type of the last scope).
  *
  * @param sname The scoped name to get the local scope-type of.
  * @return Returns the local scope-type or #T_NONE if \a sname is empty.
@@ -421,10 +420,10 @@ PJL_WARN_UNUSED_RESULT
 char const* c_sname_scope_name( c_sname_t const *sname );
 
 /**
- * Gets the scope scope-type of \a sname (which is the type of the outermost
- * scope).
+ * Gets the scope scope-type of \a sname (which is the type of the next
+ * innermost scope).
  *
- * @param sname The scoped name to get the scope-type the scope of.
+ * @param sname The scoped name to get the scope scope-type of.
  * @return Returns the scope-type #T_NONE if \a sname is empty or not within a
  * scope.
  *
@@ -453,8 +452,8 @@ void c_sname_set_local_type( c_sname_t *sname, c_type_t const *type ) {
 }
 
 /**
- * Sets the scope scope-type of \a sname (which is the type of the outermost
- * scope) or does nothing if \a sname has no scope.
+ * Sets the scope scope-type of \a sname (which is the type of the next
+ * innermost scope) or does nothing if \a sname has no scope.
  *
  * @param sname The scoped name to set the scope scope-type of.
  * @param type The type.
