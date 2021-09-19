@@ -809,12 +809,15 @@ TESTS+=	tests/show_foo.test
 # =====================================
 #
 TESTS+=	tests/2c_typedef_i.test \
+	tests/define_ins_ns_i.test \
 	tests/ins_typedef_i.test \
 	tests/k_typedef_i_explain_i.test \
 	tests/k_typedef_i_typedef_tn_i.test \
 	tests/ns_+typedef_i.test \
 	tests/ns_c_ns_+e.test \
 	tests/ns_c_typedef_i.test \
+	tests/ns_ins_ns_typedef_i.test \
+	tests/ns_ins_typedef_i.test \
 	tests/ns_k_typedef_i.test \
 	tests/ns_n_typedef_i.test \
 	tests/ns_ns_typedef_i-c++14.test \
@@ -843,6 +846,7 @@ TESTS+=	tests/2k_typedef_i.test \
 	tests/c_ns_c.test \
 	tests/define_ns_c_ns_c.test \
 	tests/en_ns_c.test \
+	tests/ins_ns_typedef_i.test \
 	tests/ns_+typedef_i-c++14.test \
 	tests/ns_c_ns_c.test \
 	tests/typedef_ai.test \

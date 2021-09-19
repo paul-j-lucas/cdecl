@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ inline namespace A::B { typedef int Int; } @ 65

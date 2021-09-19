@@ -34,6 +34,11 @@ as of yet no differences with respect to declarations between it and C++20.
 `inline` is now a command in C++11 and later (presumed to be followed by
 `namespace`) and `namespace` is auto-completable.
 
+** Nested `inline` namespaces
+C++20's nested inline namespaces are now supported:
+
+    namespace A::inline B { // ...
+
 ** `show typedef` & `show using` autocompletion
 The keywords `typedef` and `using` are now auto-completable.
 

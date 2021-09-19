@@ -835,9 +835,9 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
   size_t scope_close_braces_to_print = 0;
   c_type_t scope_type = T_NONE;
 
-  c_sname_t const *const sname = c_ast_find_name( tdef->ast, C_VISIT_DOWN );
+  c_sname_t const *sname = c_ast_find_name( tdef->ast, C_VISIT_DOWN );
   if ( sname != NULL && c_sname_count( sname ) > 1 ) {
-    scope_type = c_scope_data( sname->head )->type;
+    scope_type = *c_sname_first_type( sname );
     //
     // A type name can't be scoped in a typedef declaration, e.g.:
     //
@@ -861,12 +861,56 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
       // namespace form even though C doesn't have any namespaces because we
       // might be being asked to print all types.
       //
-      scope_type = *c_sname_scope_type( sname );
-      if ( scope_type.btids == TB_SCOPE )
-        scope_type.btids = TB_NAMESPACE;
+      c_sname_t temp_sname;
+      if ( c_type_is_tid_any( &scope_type, TS_INLINE ) ) {
+        //
+        // For an inline namespace, the "inline" is printed like:
+        //
+        //      inline namespace NS { // ...
+        //
+        // as opposed to:
+        //
+        //      namespace inline NS { // ...
+        //
+        // so we have to turn off TS_INLINE on the sname's scope type.
+        //
+        temp_sname = c_sname_dup( sname );
+        c_scope_data( temp_sname.head )->type.stids &= c_tid_compl( TS_INLINE );
+        sname = &temp_sname;
+      }
+      else {
+        c_sname_init( &temp_sname );    // for unconditional c_sname_free()
+        //
+        // For all other cases (non-inline namespaces, enum, class, struct, and
+        // union), the type is the scope's type, not the fisrt type used above.
+        // For example, in:
+        //
+        //      struct S::T { typedef int I; }
+        //                ^
+        //
+        // it's the T that's the struct; what S is doesn't matter, so we reset
+        // scope_type to be the actual scope's type of S::T::I which is T.
+        //
+        scope_type = *c_sname_scope_type( sname );
+        if ( scope_type.btids == TB_SCOPE )
+          scope_type.btids = TB_NAMESPACE;
+
+        //
+        // Starting in C++20, non-inline namespace may still have nested inline
+        // namespaces and they're printed like:
+        //
+        //      namespace A::inline B { // ...
+        //
+        // so we turn off "inline" on the scope's type so "inline" isn't
+        // printed before "namespace" as well.
+        //
+        scope_type.stids &= c_tid_compl( TS_INLINE );
+      }
+
       FPRINTF( gout,
         "%s %s { ", c_type_name_c( &scope_type ), c_sname_scope_name( sname )
       );
+      c_sname_free( &temp_sname );
       scope_close_braces_to_print = 1;
     }
     else {

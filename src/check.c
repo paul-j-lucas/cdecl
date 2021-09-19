@@ -2486,6 +2486,20 @@ bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {
   assert( !c_sname_empty( sname ) );
   assert( sname_loc != NULL );
 
+  size_t const sname_count = c_sname_count( sname );
+  if ( sname_count > 1 ) {
+    c_type_t const *const scope_type = c_sname_first_type( sname );
+    bool const is_inline_namespace =
+      c_type_is_tid_any( scope_type, TS_INLINE ) &&
+      c_type_is_tid_any( scope_type, TB_NAMESPACE );
+    if ( is_inline_namespace ) {
+      print_error( sname_loc,
+        "nested %s can not be %s\n", L_NAMESPACE, L_INLINE
+      );
+      return false;
+    }
+  }
+
   c_tid_t prev_btids = TB_NONE;
   unsigned prev_order = 0;
 

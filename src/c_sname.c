@@ -62,8 +62,15 @@ static char const* scope_name_impl( strbuf_t *sbuf, c_sname_t const *sname,
   strbuf_free( sbuf );
   bool colon2 = false;
 
-  FOREACH_SCOPE( scope, sname, end_scope )
-    strbuf_sepsn_cats( sbuf, "::", 2, &colon2, c_scope_data( scope )->name );
+  FOREACH_SCOPE( scope, sname, end_scope ) {
+    strbuf_sepsn( sbuf, "::", 2, &colon2 );
+    c_scope_data_t const *const data = c_scope_data( scope );
+    if ( data->type.stids != TS_NONE ) {
+      // For nested inline namespaces, e.g., namespace A::inline B::C.
+      strbuf_catf( sbuf, "%s ", c_tid_name_c( data->type.stids ) );
+    }
+    strbuf_cats( sbuf, data->name );
+  }
 
   return sbuf->str != NULL ? sbuf->str : "";
 }

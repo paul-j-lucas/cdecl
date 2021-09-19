@@ -1545,7 +1545,9 @@ static void yyerror( char const *msg ) {
 %type   <ast>       name_ast
 %type   <name>      name_exp
 %type   <tid>       namespace_btid_exp
+%type   <sname>     namespace_sname_c namespace_sname_c_exp
 %type   <type>      namespace_type
+%type   <sname>     namespace_typedef_sname_c
 %type   <tid>       no_except_bool_stid_exp
 %type   <bitmask>   predefined_or_user_mask_opt
 %type   <name>      set_option_value_opt
@@ -2613,6 +2615,7 @@ class_struct_union_declaration_c
                   "class_struct_union_btid sname '{' "
                   "in_scope_declaration_c_opt "
                   "'}' ';'" );
+      DUMP_SNAME( "(current_scope)", in_attr.current_scope );
       DUMP_TID( "class_struct_union_btid", $1 );
       DUMP_SNAME( "any_sname_c", $3 );
 
@@ -2685,12 +2688,13 @@ namespace_declaration_c
     {
       gibberish_to_english();           // see the comment in "explain"
     }
-    any_sname_c_exp
+    namespace_sname_c_exp
     {
       DUMP_START( "namespace_declaration_c",
                   "namespace_type sname '{' "
                   "in_scope_declaration_c_opt "
                   "'}' [';']" );
+      DUMP_SNAME( "(current_scope)", in_attr.current_scope );
       DUMP_TYPE( "namespace_type", &$1 );
       DUMP_SNAME( "any_sname_c", $3 );
       DUMP_END();
@@ -2712,13 +2716,165 @@ namespace_declaration_c
         PARSE_ABORT();
       }
 
+      //
+      // The namespace type (plain namespace or inline namespace) has to be
+      // split across the namespace sname: only the storage classes (for
+      // TS_INLINE) has to be or'd with the first scope-type of the sname ...
+      //
+      c_type_t const *const sname_first_type = c_sname_first_type( &$3 );
+      c_sname_set_first_type(
+        &$3,
+        &C_TYPE_LIT(
+          sname_first_type->btids,
+          sname_first_type->stids | $1.stids,
+          sname_first_type->atids
+        )
+      );
+      //
+      // ... and only the base types (for TB_NAMESPACE) has to be or'd with the
+      // local scope type of the sname.
+      //
+      c_type_t const *const sname_local_type = c_sname_local_type( &$3 );
+      c_sname_set_local_type(
+        &$3,
+        &C_TYPE_LIT(
+          sname_local_type->btids | $1.btids,
+          sname_local_type->stids,
+          sname_local_type->atids
+        )
+      );
+
       c_sname_append_sname( &in_attr.current_scope, &$3 );
-      c_sname_set_local_type( &in_attr.current_scope, &$1 );
-      c_sname_fill_in_namespaces( &in_attr.current_scope );
       if ( !c_sname_check( &in_attr.current_scope, &@3 ) )
         PARSE_ABORT();
     }
     brace_in_scope_declaration_c_exp
+  ;
+
+namespace_sname_c_exp
+  : namespace_sname_c
+  | namespace_typedef_sname_c
+  | error
+    {
+      c_sname_init( &$$ );
+      elaborate_error( "name expected" );
+    }
+  ;
+
+  /*
+   * A version of sname_c for namespace declarations that has an extra
+   * production for C++20 nested inline namespaces.  See sname_c for detailed
+   * comments.
+   */
+namespace_sname_c
+  : namespace_sname_c Y_COLON2 Y_NAME
+    {
+      DUMP_START( "namespace_sname_c", "sname_c '::' NAME" );
+      DUMP_SNAME( "namespace_sname_c", $1 );
+      DUMP_STR( "name", $3 );
+
+      $$ = $1;
+      c_sname_append_name( &$$, $3 );
+      c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_NAMESPACE ) );
+
+      DUMP_SNAME( "namespace_sname_c", $$ );
+      DUMP_END();
+    }
+
+  | namespace_sname_c Y_COLON2 any_typedef
+    {
+      DUMP_START( "namespace_sname_c", "namespace_sname_c '::' any_typedef" );
+      DUMP_SNAME( "namespace_sname_c", $1 );
+      DUMP_AST( "any_typedef.ast", $3->ast );
+
+      $$ = $1;
+      c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_NAMESPACE ) );
+      c_sname_t temp_sname = c_ast_dup_name( $3->ast );
+      c_sname_append_sname( &$$, &temp_sname );
+
+      DUMP_SNAME( "namespace_sname_c", $$ );
+      DUMP_END();
+    }
+
+  | namespace_sname_c Y_COLON2 Y_INLINE Y_NAME
+    {
+      DUMP_START( "namespace_sname_c", "sname_c '::' NAME INLINE NAME" );
+      DUMP_SNAME( "namespace_sname_c", $1 );
+      DUMP_STR( "name", $4 );
+
+      $$ = $1;
+      c_sname_append_name( &$$, $4 );
+      c_sname_set_local_type( &$$, &C_TYPE_LIT( TB_NAMESPACE, $3, TA_NONE ) );
+
+      DUMP_SNAME( "namespace_sname_c", $$ );
+      DUMP_END();
+    }
+
+  | Y_NAME
+    {
+      DUMP_START( "namespace_sname_c", "NAME" );
+      DUMP_STR( "NAME", $1 );
+
+      c_sname_init_name( &$$, $1 );
+      c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_NAMESPACE ) );
+
+      DUMP_SNAME( "sname_c", $$ );
+      DUMP_END();
+    }
+  ;
+
+  /*
+   * A version of typedef_sname_c for namespace declarations that has an extra
+   * production for C++20 nested inline namespaces.  See typedef_sname_c for
+   * detailed comments.
+   */
+namespace_typedef_sname_c
+  : namespace_typedef_sname_c Y_COLON2 sname_c
+    {
+      DUMP_START( "namespace_typedef_sname_c",
+                  "namespace_typedef_sname_c '::' sname_c" );
+      DUMP_SNAME( "namespace_typedef_sname_c", $1 );
+      DUMP_SNAME( "sname_c", $3 );
+
+      $$ = $1;
+      c_sname_append_sname( &$$, &$3 );
+
+      DUMP_SNAME( "typedef_sname_c", $$ );
+      DUMP_END();
+    }
+
+  | namespace_typedef_sname_c Y_COLON2 any_typedef
+    {
+      DUMP_START( "namespace_typedef_sname_c",
+                  "namespace_typedef_sname_c '::' any_typedef" );
+      DUMP_SNAME( "namespace_typedef_sname_c", $1 );
+      DUMP_AST( "any_typedef", $3->ast );
+
+      $$ = $1;
+      c_sname_set_local_type( &$$, c_ast_local_type( $3->ast ) );
+      c_sname_t temp_sname = c_ast_dup_name( $3->ast );
+      c_sname_append_sname( &$$, &temp_sname );
+
+      DUMP_SNAME( "typedef_sname_c", $$ );
+      DUMP_END();
+    }
+
+  | namespace_typedef_sname_c Y_COLON2 Y_INLINE Y_NAME
+    {
+      DUMP_START( "namespace_typedef_sname_c",
+                  "namespace_typedef_sname_c '::' INLINE NAME" );
+      DUMP_SNAME( "namespace_typedef_sname_c", $1 );
+      DUMP_STR( "name", $4 );
+
+      $$ = $1;
+      c_sname_append_name( &$$, $4 );
+      c_sname_set_local_type( &$$, &C_TYPE_LIT( TB_NAMESPACE, $3, TA_NONE ) );
+
+      DUMP_SNAME( "namespace_typedef_sname_c", $$ );
+      DUMP_END();
+    }
+
+  | any_typedef                   { $$ = c_ast_dup_name( $1->ast ); }
   ;
 
 brace_in_scope_declaration_c_exp
@@ -2971,6 +3127,7 @@ typedef_decl_c
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "typedef_decl_c", "decl_c_astp" );
+      DUMP_SNAME( "(current_scope)", in_attr.current_scope );
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl_c_astp", $1.ast );
 
@@ -4625,6 +4782,7 @@ using_decl_c_ast
 
       DUMP_START( "using_decl_c_ast",
                   "USING any_name_exp '=' type_c_ast cast_c_astp_opt" );
+      DUMP_SNAME( "(current_scope)", in_attr.current_scope );
       DUMP_STR( "any_name_exp", $3 );
       DUMP_AST( "type_c_ast", $5 );
       DUMP_AST( "cast_c_astp_opt", $7.ast );

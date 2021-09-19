@@ -164,6 +164,25 @@ PJL_NOWARN_UNUSED_RESULT
 bool strbuf_reserve( strbuf_t *sbuf, size_t res_len );
 
 /**
+ * Possibly concatenates \a sep_len bytes of \a sep onto the end of \a sbuf
+ * growing the buffer if necessary.
+ *
+ * @param sbuf A pointer to the strbuf to concatenate onto.
+ * @param sep The separator string to concatenate.
+ * @param sep_len The number of bytes of \a sep to concatenate.
+ * @param sep_flag A pointer to a flag to determine whether \a sep should be
+ * concatenated prior to \a s: if `false`, \a sep is _not_ concatenated and it
+ * is set to `true`; if `true`, \a sep is concatenated.
+ *
+ * @sa strbuf_sepc_cats()
+ * @sa strbuf_sepc_catsn()
+ * @sa strbuf_sepsn_cats()
+ * @sa strbuf_sepsn_catsn()
+ */
+void strbuf_sepsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
+                   bool *sep_flag );
+
+/**
  * Possibly concatenates \a sep_len bytes of \a sep followed by \a s_len bytes
  * of \a s onto the end of \a sbuf growing the buffer if necessary.
  *
@@ -176,6 +195,7 @@ bool strbuf_reserve( strbuf_t *sbuf, size_t res_len );
  * @param s The string to concatenate.
  * @param s_len The number of bytes of \a s to concatenate.
  *
+ * @sa strbuf_sepsn()
  * @sa strbuf_sepc_cats()
  * @sa strbuf_sepc_catsn()
  * @sa strbuf_sepsn_cats()
@@ -197,6 +217,7 @@ void strbuf_sepsn_catsn( strbuf_t *sbuf, char const *sep, size_t sep_len,
  *
  * @sa strbuf_sepc_cats()
  * @sa strbuf_sepc_catsn()
+ * @sa strbuf_sepsn()
  * @sa strbuf_sepsn_catsn()
  */
 STRBUF_INLINE
@@ -218,6 +239,7 @@ void strbuf_sepsn_cats( strbuf_t *sbuf, char const *sep, size_t sep_len,
  * @param s_len The number of bytes of \a s to concatenate.
  *
  * @sa strbuf_sepc_cats()
+ * @sa strbuf_sepsn()
  * @sa strbuf_sepsn_cats()
  * @sa strbuf_sepsn_catsn()
  */
@@ -239,6 +261,7 @@ void strbuf_sepc_catsn( strbuf_t *sbuf, char sep, bool *sep_flag, char const *s,
  * @param s The string to concatenate.
  *
  * @sa strbuf_sepc_catsn()
+ * @sa strbuf_sepsn()
  * @sa strbuf_sepsn_cats()
  * @sa strbuf_sepsn_catsn()
  */

@@ -321,11 +321,29 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
 }
 
 /**
- * Gets the local scope-type of \a sname (which is the type of the last scope).
+ * Gets the first scope-type of \a sname (which is the type of the outermost
+ * scope).
+ *
+ * @param sname The scoped name to get the first scope-type of.
+ * @return Returns the first scope-type or #T_NONE if \a sname is empty.
+ *
+ * @sa c_sname_local_type()
+ * @sa c_sname_scope_type()
+ * @sa c_sname_set_first_type()
+ */
+C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
+c_type_t const* c_sname_first_type( c_sname_t const *sname ) {
+  return c_sname_empty( sname ) ? &T_NONE : &c_scope_data( sname->head )->type;
+}
+
+/**
+ * Gets the local scope-type of \a sname (which is the type of the innermost
+ * scope).
  *
  * @param sname The scoped name to get the local scope-type of.
  * @return Returns the local scope-type or #T_NONE if \a sname is empty.
  *
+ * @sa c_sname_first_type()
  * @sa c_sname_scope_type()
  * @sa c_sname_set_local_type()
  */
@@ -437,6 +455,22 @@ c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
 }
 
 /**
+ * Sets the first scope-type of \a sname (which is the type of the outermost
+ * scope).
+ *
+ * @param sname The scoped name to set the first scope-type of.
+ * @param type The type.
+ *
+ * @sa c_sname_first_type()
+ * @sa c_sname_set_local_type()
+ * @sa c_sname_set_scope_type()
+ */
+C_SNAME_INLINE
+void c_sname_set_first_type( c_sname_t *sname, c_type_t const *type ) {
+  c_scope_data( sname->head )->type = *type;
+}
+
+/**
  * Sets the local scope-type of \a sname (which is the type of the innermost
  * scope).
  *
@@ -444,6 +478,7 @@ c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
  * @param type The type.
  *
  * @sa c_sname_local_type()
+ * @sa c_sname_set_first_type()
  * @sa c_sname_set_scope_type()
  */
 C_SNAME_INLINE
@@ -459,6 +494,7 @@ void c_sname_set_local_type( c_sname_t *sname, c_type_t const *type ) {
  * @param type The type.
  *
  * @sa c_sname_scope_type()
+ * @sa c_sname_set_first_type()
  * @sa c_sname_set_local_type()
  */
 C_SNAME_INLINE
