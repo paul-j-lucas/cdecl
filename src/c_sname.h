@@ -324,8 +324,7 @@ char const* c_sname_local_name( c_sname_t const *sname ) {
  * Gets the local scope-type of \a sname (which is the type of the innermost
  * scope).
  *
- * @param sname The scoped name to get the scope-type of.
- * @return Returns the local scope-type.
+ * @param sname The scoped name to get the local scope-type of.
  * @return Returns the local scope-type or #T_NONE if \a sname is empty.
  *
  * @sa c_sname_scope_type()
@@ -422,7 +421,8 @@ PJL_WARN_UNUSED_RESULT
 char const* c_sname_scope_name( c_sname_t const *sname );
 
 /**
- * Gets the scope-type the scope of \a sname.
+ * Gets the scope scope-type of \a sname (which is the type of the outermost
+ * scope).
  *
  * @param sname The scoped name to get the scope-type the scope of.
  * @return Returns the scope-type #T_NONE if \a sname is empty or not within a
@@ -438,9 +438,10 @@ c_type_t const* c_sname_scope_type( c_sname_t const *sname ) {
 }
 
 /**
- * Sets the local type of \a sname (which is the type of the innermost scope).
+ * Sets the local scope-type of \a sname (which is the type of the innermost
+ * scope).
  *
- * @param sname The scoped name to set the local type of.
+ * @param sname The scoped name to set the local scope-type of.
  * @param type The type.
  *
  * @sa c_sname_local_type()
@@ -452,14 +453,14 @@ void c_sname_set_local_type( c_sname_t *sname, c_type_t const *type ) {
 }
 
 /**
- * Sets the scope-typea sname (which is the type of the next-most innermost
+ * Sets the scope scope-type of \a sname (which is the type of the outermost
  * scope) or does nothing if \a sname has no scope.
  *
- * @param sname The scoped name to set the scope-type of.
+ * @param sname The scoped name to set the scope scope-type of.
  * @param type The type.
  *
- * @sa c_sname_local_type()
- * @sa c_sname_set_scope_type()
+ * @sa c_sname_scope_type()
+ * @sa c_sname_set_local_type()
  */
 C_SNAME_INLINE
 void c_sname_set_scope_type( c_sname_t *sname, c_type_t const *type ) {
