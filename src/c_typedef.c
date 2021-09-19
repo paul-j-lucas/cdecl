@@ -55,11 +55,11 @@
 /**
  * Data passed to our red-black tree visitor function.
  */
-struct td_rb_visitor_data {
+struct tdef_rb_visitor_data {
   c_typedef_visitor_t   visitor;        ///< Caller's visitor function.
   void                 *data;           ///< Caller's optional data.
 };
-typedef struct td_rb_visitor_data td_rb_visitor_data_t;
+typedef struct tdef_rb_visitor_data tdef_rb_visitor_data_t;
 
 // local variable definitions
 static rb_tree_t    typedefs;           ///< Global set of `typedef`s.
@@ -961,7 +961,7 @@ static bool rb_visitor( void *node_data, void *aux_data ) {
   assert( aux_data != NULL );
 
   c_typedef_t const *const tdef = node_data;
-  td_rb_visitor_data_t const *const vd = aux_data;
+  tdef_rb_visitor_data_t const *const vd = aux_data;
 
   return (*vd->visitor)( tdef, vd->data );
 }
@@ -1127,7 +1127,7 @@ void c_typedef_init( void ) {
 
 c_typedef_t const* c_typedef_visit( c_typedef_visitor_t visitor, void *data ) {
   assert( visitor != NULL );
-  td_rb_visitor_data_t vd = { visitor, data };
+  tdef_rb_visitor_data_t vd = { visitor, data };
   rb_node_t const *const rb = rb_tree_visit( &typedefs, &rb_visitor, &vd );
   return rb != NULL ? rb->data : NULL;
 }
