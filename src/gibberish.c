@@ -679,7 +679,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
   switch ( ast->kind_id ) {
     case K_POINTER:
       if ( qual_stid != TS_NONE && g->gib_kind != C_GIB_CAST &&
-           ast->as.ptr_ref.to_ast->kind_id != K_FUNCTION ) {
+           !c_ast_is_ptr_to_kind( ast, K_FUNCTION ) ) {
         //
         // If we're printing a type as a "using" declaration and there's a
         // qualifier for the pointer, print a space before it.  For example:
