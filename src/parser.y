@@ -1067,6 +1067,7 @@ static void yyerror( char const *msg ) {
 //                  Y_EXIT              // mapped to Y_QUIT by lexer
 %token              Y_EXPLAIN
 %token              Y_HELP
+//                  Y_INLINE            // covered in C99
 //                  Y_NAMESPACE         // covered in C++
 %token              Y_QUIT
 %token              Y_REINTERPRET
