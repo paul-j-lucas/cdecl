@@ -1106,6 +1106,12 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
     switch ( param_ast->kind_id ) {
       case K_NAME:
         break;
+      case K_VARIADIC:
+        print_error( &param_ast->loc,
+          "ellipsis is not supported until %s\n",
+          c_lang_name( LANG_C_89 )
+        );
+        return false;
       default:
         print_error( &param_ast->loc,
           "%s prototypes are not supported until %s\n",
