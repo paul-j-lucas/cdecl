@@ -702,11 +702,13 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
       }
       FPUTC( '*', g->gout );
       break;
+
     case K_POINTER_TO_MEMBER:
       FPRINTF( g->gout,
         "%s::*", c_sname_full_name( &ast->as.ptr_mbr.class_sname )
       );
       break;
+
     case K_REFERENCE:
       if ( opt_alt_tokens ) {
         g_print_space_once( g );
@@ -715,6 +717,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
         FPUTC( '&', g->gout );
       }
       break;
+
     case K_RVALUE_REFERENCE:
       if ( opt_alt_tokens ) {
         g_print_space_once( g );
@@ -723,6 +726,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
         FPUTS( "&&", g->gout );
       }
       break;
+
     default:
       /* suppress warning */;
   } // switch
