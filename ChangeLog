@@ -1,5 +1,8 @@
 2021-09-19  Paul J. Lucas <paul@lucasmail.org>
 
+   * check.c: [skip ci] Added assert().
+   * check.c: [skip ci] Better error message for using ... in K&R C.
+   * gibberish.c: [skip ci] Now using c_ast_is_ptr_to_kind().
    * AUTHORS, cdecl.1: [skip ci] Added mentions of inline and nested inline
      namespaces.
    * c_typedef.c: [skip ci] s/td_rb_visitor_data/tdef_rb_visitor_data/
