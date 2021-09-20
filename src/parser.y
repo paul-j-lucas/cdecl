@@ -1622,10 +1622,10 @@ command_list
   ;
 
 command
-  : cast_english semi_or_end
-  | declare_english semi_or_end
-  | define_english semi_or_end
-  | explain_c semi_or_end
+  : cast_command semi_or_end
+  | declare_command semi_or_end
+  | define_command semi_or_end
+  | explain_command semi_or_end
   | help_command semi_or_end
   | quit_command semi_or_end
   | scope_declaration_c
@@ -1648,13 +1648,13 @@ command
 //  cast command
 ///////////////////////////////////////////////////////////////////////////////
 
-cast_english
+cast_command
     /*
      * C-style cast.
      */
   : Y_CAST sname_english_exp as_into_to_exp decl_english_ast
     {
-      DUMP_START( "cast_english",
+      DUMP_START( "cast_command",
                   "CAST sname_english_exp as_into_to_exp decl_english_ast" );
       DUMP_SNAME( "sname_english_exp", $2 );
       DUMP_AST( "decl_english_ast", $4 );
@@ -1678,7 +1678,7 @@ cast_english
   | new_style_cast_english_literal cast_exp sname_english_exp as_into_to_exp
     decl_english_ast
     {
-      DUMP_START( "cast_english",
+      DUMP_START( "cast_command",
                   "new_style_cast_english_literal CAST sname_english_exp "
                   "as_into_to_exp decl_english_ast" );
       DUMP_STR( "new_style_cast_english_literal", $1 );
@@ -1716,7 +1716,7 @@ new_style_cast_english_literal
 //  declare command
 ///////////////////////////////////////////////////////////////////////////////
 
-declare_english
+declare_command
     /*
      * Common declaration, e.g.: declare x as int.
      */
@@ -1743,7 +1743,7 @@ declare_english
         PARSE_ABORT();
       }
 
-      DUMP_START( "declare_english",
+      DUMP_START( "declare_command",
                   "DECLARE sname AS storage_class_list_english_type_opt "
                   "alignas_or_width_decl_english_ast" );
       DUMP_SNAME( "sname", $2 );
@@ -1782,7 +1782,7 @@ declare_english
     of_scope_list_english_opt as_exp storage_class_list_english_type_opt
     oper_decl_english_ast
     {
-      DUMP_START( "declare_english",
+      DUMP_START( "declare_command",
                   "DECLARE c_operator of_scope_list_english_opt AS "
                   "storage_class_list_english_type_opt "
                   "oper_decl_english_ast" );
@@ -1796,7 +1796,7 @@ declare_english
       $7->as.oper.oper_id = $2;
       C_TYPE_ADD( &$7->type, &$6, @6 );
 
-      DUMP_AST( "declare_english", $7 );
+      DUMP_AST( "declare_command", $7 );
       DUMP_END();
 
       C_AST_CHECK_DECL( $7 );
@@ -1813,7 +1813,7 @@ declare_english
     Y_USER_DEFINED conversion_exp operator_opt of_scope_list_english_opt
     returning_exp decl_english_ast
     {
-      DUMP_START( "declare_english",
+      DUMP_START( "declare_command",
                   "DECLARE storage_class_list_english_type_opt "
                   "cv_qualifier_list_stid_opt "
                   "USER-DEFINED CONVERSION OPERATOR "
@@ -1829,7 +1829,7 @@ declare_english
       conv_ast->type = c_type_or( &$2, &C_TYPE_LIT_S( $3 ) );
       c_ast_set_parent( $9, conv_ast );
 
-      DUMP_AST( "declare_english", conv_ast );
+      DUMP_AST( "declare_command", conv_ast );
       DUMP_END();
 
       C_AST_CHECK_DECL( conv_ast );
@@ -2061,11 +2061,11 @@ bits_opt
 //  define command
 ///////////////////////////////////////////////////////////////////////////////
 
-define_english
+define_command
   : Y_DEFINE sname_english_exp as_exp storage_class_list_english_type_opt
     decl_english_ast
     {
-      DUMP_START( "define_english",
+      DUMP_START( "define_command",
                   "DEFINE sname_english AS "
                   "storage_class_list_english_type_opt decl_english_ast" );
       DUMP_SNAME( "sname", $2 );
@@ -2074,7 +2074,7 @@ define_english
 
       c_ast_set_sname( $5, &$2 );
 
-      if ( $5->kind_id == K_NAME ) {  // see the comment in "declare_english"
+      if ( $5->kind_id == K_NAME ) {  // see the comment in "declare_command"
         assert( !c_ast_empty_name( $5 ) );
         print_error_unknown_name( &@5, &$5->sname );
         PARSE_ABORT();
@@ -2117,7 +2117,7 @@ define_english
 //  explain command
 ///////////////////////////////////////////////////////////////////////////////
 
-explain_c
+explain_command
     /*
      * C-style cast.
      */
@@ -2129,7 +2129,7 @@ explain_c
     {
       ia_type_ast_pop();
 
-      DUMP_START( "explain_c",
+      DUMP_START( "explain_command",
                   "EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt" );
       DUMP_AST( "type_c_ast", $3 );
       DUMP_AST( "cast_c_astp_opt", $5.ast );
@@ -2137,7 +2137,7 @@ explain_c
 
       c_ast_t *const cast_ast = c_ast_patch_placeholder( $3, $5.ast );
 
-      DUMP_AST( "explain_c", cast_ast );
+      DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
 
       bool const ok = c_ast_check_cast( cast_ast );
@@ -2168,7 +2168,7 @@ explain_c
     {
       ia_type_ast_pop();
 
-      DUMP_START( "explain_c",
+      DUMP_START( "explain_command",
                   "EXPLAIN new_style_cast_c_literal "
                   "'<' type_c_ast cast_c_astp_opt '>' '(' sname ')'" );
       DUMP_STR( "new_style_cast_c_literal", $2 );
@@ -2178,7 +2178,7 @@ explain_c
 
       c_ast_t const *const cast_ast = c_ast_patch_placeholder( $4, $6.ast );
 
-      DUMP_AST( "explain_c", cast_ast );
+      DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
 
       bool ok = false;
@@ -2235,7 +2235,8 @@ explain_c
      */
   | explain knr_func_or_constructor_decl_c_ast
     {
-      DUMP_START( "explain_c", "EXPLAIN knr_func_or_constructor_decl_c_ast" );
+      DUMP_START( "explain_command",
+                  "EXPLAIN knr_func_or_constructor_decl_c_ast" );
       DUMP_AST( "knr_func_or_constructor_decl_c_ast", $2 );
       DUMP_END();
 
@@ -2248,7 +2249,8 @@ explain_c
      */
   | explain file_scope_constructor_decl_c_ast
     {
-      DUMP_START( "explain_c", "EXPLAIN file_scope_constructor_decl_c_ast" );
+      DUMP_START( "explain_command",
+                  "EXPLAIN file_scope_constructor_decl_c_ast" );
       DUMP_AST( "file_scope_constructor_decl_c_ast", $2 );
       DUMP_END();
 
@@ -2261,7 +2263,7 @@ explain_c
      */
   | explain destructor_decl_c_ast
     {
-      DUMP_START( "explain_c", "EXPLAIN destructor_decl_c_ast" );
+      DUMP_START( "explain_command", "EXPLAIN destructor_decl_c_ast" );
       DUMP_AST( "destructor_decl_c_ast", $2 );
       DUMP_END();
 
@@ -2274,7 +2276,8 @@ explain_c
      */
   | explain file_scope_destructor_decl_c_ast
     {
-      DUMP_START( "explain_c", "EXPLAIN file_scope_destructor_decl_c_ast" );
+      DUMP_START( "explain_command",
+                  "EXPLAIN file_scope_destructor_decl_c_ast" );
       DUMP_AST( "file_scope_destructor_decl_c_ast", $2 );
       DUMP_END();
 
@@ -2297,7 +2300,8 @@ explain_c
      */
   | explain user_defined_conversion_decl_c_astp
     {
-      DUMP_START( "explain_c", "EXPLAIN user_defined_conversion_decl_c_astp" );
+      DUMP_START( "explain_command",
+                  "EXPLAIN user_defined_conversion_decl_c_astp" );
       DUMP_AST( "user_defined_conversion_decl_c_astp", $2.ast );
       DUMP_END();
 
@@ -2310,7 +2314,7 @@ explain_c
      */
   | explain extern_linkage_c_stid_opt using_decl_c_ast
     {
-      DUMP_START( "explain_c",
+      DUMP_START( "explain_command",
                   "EXPLAIN extern_linkage_c_stid_opt using_decl_c_ast" );
       DUMP_TID( "extern_linkage_c_stid_opt", $2 );
       DUMP_AST( "using_decl_c_ast", $3 );
@@ -3086,7 +3090,7 @@ typedef_declaration_c
       if ( $2 && !c_ast_is_typename_ok( $4 ) )
         PARSE_ABORT();
 
-      // see the comment in define_english about TS_TYPEDEF
+      // see the comment in "define_command" about TS_TYPEDEF
       C_TYPE_ADD_TID( &$4->type, TS_TYPEDEF, @4 );
 
       //
@@ -3168,7 +3172,7 @@ typedef_decl_c
       }
 
       C_AST_CHECK_DECL( typedef_ast );
-      // see the comment in define_english about TS_TYPEDEF
+      // see the comment in "define_command" about TS_TYPEDEF
       PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &T_TS_TYPEDEF ) );
 
       if ( c_ast_count_name( typedef_ast ) > 1 ) {
@@ -3197,7 +3201,7 @@ typedef_decl_c
 using_declaration_c
   : using_decl_c_ast
     {
-      // see the comment in define_english about TS_TYPEDEF
+      // see the comment in "define_command" about TS_TYPEDEF
       PJL_IGNORE_RV( c_ast_take_type_any( $1, &T_TS_TYPEDEF ) );
 
       if ( !add_type( L_USING, $1, &@1 ) )
@@ -3559,7 +3563,7 @@ pointer_decl_english_ast
       DUMP_TID( "(qualifier)", ia_qual_peek_stid() );
       DUMP_AST( "decl_english_ast", $3 );
 
-      if ( $3->kind_id == K_NAME ) {  // see the comment in "declare_english"
+      if ( $3->kind_id == K_NAME ) {  // see the comment in "declare_command"
         assert( !c_ast_empty_name( $3 ) );
         print_error_unknown_name( &@3, &$3->sname );
         PARSE_ABORT();
@@ -3682,7 +3686,7 @@ var_decl_english_ast
       DUMP_SNAME( "sname", $1 );
       DUMP_AST( "decl_english_ast", $3 );
 
-      if ( $3->kind_id == K_NAME ) {  // see the comment in "declare_english"
+      if ( $3->kind_id == K_NAME ) {  // see the comment in "declare_command"
         assert( !c_ast_empty_name( $3 ) );
         print_error_unknown_name( &@3, &$3->sname );
         PARSE_ABORT();
@@ -4778,7 +4782,7 @@ using_decl_c_ast
     }
     any_name_exp equals_exp type_c_ast
     {
-      // see the comment in "define_english" about TS_TYPEDEF
+      // see the comment in "define_command" about TS_TYPEDEF
       C_TYPE_ADD_TID( &$5->type, TS_TYPEDEF, @5 );
       ia_type_ast_push( $5 );
     }
