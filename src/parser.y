@@ -2882,13 +2882,17 @@ brace_in_scope_declaration_c_opt
 
 brace_in_scope_declaration_c
   : '{' '}'
-  | '{' in_scope_declaration_c semi_opt rbrace_exp
+  | '{' in_scope_declaration_c_exp semi_opt rbrace_exp
   ;
 
-in_scope_declaration_c
+in_scope_declaration_c_exp
   : scope_declaration_c
   | typedef_declaration_c semi_exp
   | using_declaration_c semi_exp
+  | error
+    {
+      elaborate_error( "declaration expected" );
+    }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
