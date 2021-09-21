@@ -2121,83 +2121,12 @@ explain_command
     /*
      * C-style cast.
      */
-  : explain '(' type_c_ast
-    {
-      ia_type_ast_push( $3 );
-    }
-    cast_c_astp_opt rparen_exp sname_c_opt
-    {
-      ia_type_ast_pop();
-
-      DUMP_START( "explain_command",
-                  "EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt" );
-      DUMP_AST( "type_c_ast", $3 );
-      DUMP_AST( "cast_c_astp_opt", $5.ast );
-      DUMP_SNAME( "sname_c_opt", $7 );
-
-      c_ast_t *const cast_ast = c_ast_patch_placeholder( $3, $5.ast );
-
-      DUMP_AST( "explain_command", cast_ast );
-      DUMP_END();
-
-      bool const ok = c_ast_check_cast( cast_ast );
-      if ( ok ) {
-        FPUTS( L_CAST, fout );
-        if ( !c_sname_empty( &$7 ) ) {
-          FPUTC( ' ', fout );
-          c_sname_english( &$7, fout );
-        }
-        FPRINTF( fout, " %s ", L_INTO );
-        c_ast_english( cast_ast, fout );
-        FPUTC( '\n', fout );
-      }
-
-      c_sname_free( &$7 );
-      if ( !ok )
-        PARSE_ABORT();
-    }
+  : explain c_style_cast_c
 
     /*
      * New C++-style cast.
      */
-  | explain new_style_cast_c_literal lt_exp type_c_ast
-    {
-      ia_type_ast_push( $4 );
-    }
-    cast_c_astp_opt gt_exp lparen_exp sname_c_exp rparen_exp
-    {
-      ia_type_ast_pop();
-
-      DUMP_START( "explain_command",
-                  "EXPLAIN new_style_cast_c_literal "
-                  "'<' type_c_ast cast_c_astp_opt '>' '(' sname ')'" );
-      DUMP_STR( "new_style_cast_c_literal", $2 );
-      DUMP_AST( "type_c_ast", $4 );
-      DUMP_AST( "cast_c_astp_opt", $6.ast );
-      DUMP_SNAME( "sname", $9 );
-
-      c_ast_t const *const cast_ast = c_ast_patch_placeholder( $4, $6.ast );
-
-      DUMP_AST( "explain_command", cast_ast );
-      DUMP_END();
-
-      bool ok = false;
-
-      if ( unsupported( LANG_CPP_ANY ) ) {
-        print_error( &@2, "%s_cast is not supported in C\n", $2 );
-      }
-      else if ( (ok = c_ast_check_cast( cast_ast )) ) {
-        FPRINTF( fout, "%s %s ", $2, L_CAST );
-        c_sname_english( &$9, fout );
-        FPRINTF( fout, " %s ", L_INTO );
-        c_ast_english( cast_ast, fout );
-        FPUTC( '\n', fout );
-      }
-
-      c_sname_free( &$9 );
-      if ( !ok )
-        PARSE_ABORT();
-    }
+  | explain new_style_cast_c
 
     /*
      * Common typed declaration, e.g.: T x.
@@ -2217,8 +2146,7 @@ explain_command
     /*
      * Common declaration with alignas, e.g.: alignas(8) T x.
      */
-  | explain alignas_specifier_c { in_attr.align = $2; }
-    typename_flag_opt { in_attr.typename = $4; } typed_declaration_c
+  | explain aligned_declaration_c
 
     /*
      * Common C++ declaration with typename (without alignas), e.g.:
@@ -2358,11 +2286,36 @@ explain
     }
   ;
 
-new_style_cast_c_literal
-  : Y_CONST_CAST                  { $$ = L_CONST;       }
-  | Y_DYNAMIC_CAST                { $$ = L_DYNAMIC;     }
-  | Y_REINTERPRET_CAST            { $$ = L_REINTERPRET; }
-  | Y_STATIC_CAST                 { $$ = L_STATIC;      }
+///////////////////////////////////////////////////////////////////////////////
+//  help command
+///////////////////////////////////////////////////////////////////////////////
+
+help_command
+  : Y_HELP help_what_opt          { print_help( $2 ); }
+  ;
+
+help_what_opt
+  : /* empty */                   { $$ = CDECL_HELP_COMMANDS; }
+  | Y_COMMANDS                    { $$ = CDECL_HELP_COMMANDS; }
+  | Y_ENGLISH                     { $$ = CDECL_HELP_ENGLISH;  }
+  ;
+
+///////////////////////////////////////////////////////////////////////////////
+//  quit command
+///////////////////////////////////////////////////////////////////////////////
+
+quit_command
+  : Y_QUIT                        { quit(); }
+  ;
+
+///////////////////////////////////////////////////////////////////////////////
+//  aligned declaration
+///////////////////////////////////////////////////////////////////////////////
+
+aligned_declaration_c
+  : alignas_specifier_c { in_attr.align = $1; }
+    typename_flag_opt { in_attr.typename = $3; }
+    typed_declaration_c
   ;
 
 alignas_specifier_c
@@ -2406,153 +2359,6 @@ alignas
   | Y_ALIGNAS
   ;
 
-decl_list_c_opt
-    /*
-     * An enum, class, struct, or union (ECSU) declaration by itself, e.g.:
-     *
-     *      explain struct S
-     *
-     * without any object of that type.
-     */
-  : // in_attr: type_c_ast
-    /* empty */
-    {
-      c_ast_t *const type_ast = ia_type_ast_peek();
-
-      DUMP_START( "decl_list_c_opt", "<empty>" );
-      DUMP_AST( "(type_c_ast)", type_ast );
-      DUMP_AST( "decl_list_c_opt", type_ast );
-      DUMP_END();
-
-      if ( type_ast->kind_id != K_ENUM_CLASS_STRUCT_UNION ) {
-        //
-        // The declaration is a non-ECSU type, e.g.:
-        //
-        //      int
-        //
-        c_loc_t const loc = lexer_loc();
-        print_error( &loc, "declaration expected\n" );
-        PARSE_ABORT();
-      }
-
-      c_sname_t const *const ecsu_sname = &type_ast->as.ecsu.ecsu_sname;
-      assert( !c_sname_empty( ecsu_sname ) );
-
-      if ( c_sname_count( ecsu_sname ) > 1 ) {
-        print_error( &type_ast->loc,
-          "forward declaration can not have a scoped name\n"
-        );
-        PARSE_ABORT();
-      }
-
-      c_sname_t temp_sname = c_sname_dup( ecsu_sname );
-      c_ast_set_sname( type_ast, &temp_sname );
-
-      C_AST_CHECK_DECL( type_ast );
-      c_ast_explain_type( type_ast, fout );
-    }
-
-  | decl_list_c
-  ;
-
-decl_list_c
-  : decl_list_c ',' decl_c
-  | decl_c
-  ;
-
-decl_c
-  : // in_attr: alignas_specifier_c typename_flag_opt type_c_ast
-    decl_c_astp
-    {
-      c_ast_t *const type_ast = ia_type_ast_peek();
-
-      DUMP_START( "decl_c", "decl_c_astp" );
-      switch ( in_attr.align.kind ) {
-        case C_ALIGNAS_NONE:
-          break;
-        case C_ALIGNAS_EXPR:
-          DUMP_INT( "(alignas_specifier_c.as.expr)", in_attr.align.as.expr );
-          break;
-        case C_ALIGNAS_TYPE:
-          DUMP_AST(
-            "(alignas_specifier_c.as.type_ast)", in_attr.align.as.type_ast
-          );
-          break;
-      } // switch
-      DUMP_BOOL( "(typename_flag_opt)", in_attr.typename );
-      DUMP_AST( "(type_c_ast)", type_ast );
-      DUMP_AST( "decl_c_astp", $1.ast );
-
-      c_ast_t const *const decl_ast = c_ast_join_type_decl(
-        in_attr.typename, &in_attr.align, type_ast, $1.ast, &@1
-      );
-
-      DUMP_AST( "decl_c", decl_ast );
-      DUMP_END();
-
-      if ( decl_ast == NULL )
-        PARSE_ABORT();
-      C_AST_CHECK_DECL( decl_ast );
-      c_ast_explain_declaration( decl_ast, fout );
-
-      //
-      // The type's AST takes on the name of the thing being declared, e.g.:
-      //
-      //      int x
-      //
-      // makes the type_ast (kind = "built-in type", type = "int") take on the
-      // name of "x" so it'll be explained as:
-      //
-      //      declare x as int
-      //
-      // Once explained, the name must be cleared for the subsequent
-      // declaration (if any) in the same declaration statement, e.g.:
-      //
-      //      int x, y
-      //
-      c_sname_free( &type_ast->sname );
-    }
-  ;
-
-extern_linkage_c_stid_opt
-  : /* empty */                   { $$ = TS_NONE; }
-  | extern_linkage_c_stid
-  ;
-
-extern_linkage_c_stid
-  : Y_EXTERN linkage_stid         { $$ = $2; }
-  | Y_EXTERN linkage_stid '{'
-    {
-      print_error( &@3,
-        "explaining scoped linkage declarations is not supported by %s\n",
-        CDECL
-      );
-      PARSE_ABORT();
-    }
-  ;
-
-///////////////////////////////////////////////////////////////////////////////
-//  help command
-///////////////////////////////////////////////////////////////////////////////
-
-help_command
-  : Y_HELP help_what_opt          { print_help( $2 ); }
-  ;
-
-help_what_opt
-  : /* empty */                   { $$ = CDECL_HELP_COMMANDS; }
-  | Y_COMMANDS                    { $$ = CDECL_HELP_COMMANDS; }
-  | Y_ENGLISH                     { $$ = CDECL_HELP_ENGLISH;  }
-  ;
-
-///////////////////////////////////////////////////////////////////////////////
-//  quit command
-///////////////////////////////////////////////////////////////////////////////
-
-quit_command
-  : Y_QUIT                        { quit(); }
-  ;
-
 ///////////////////////////////////////////////////////////////////////////////
 //  asm declaration
 ///////////////////////////////////////////////////////////////////////////////
@@ -2567,6 +2373,100 @@ asm_declaration_c
       );
       PARSE_ABORT();
     }
+  ;
+
+///////////////////////////////////////////////////////////////////////////////
+//  C-style cast
+///////////////////////////////////////////////////////////////////////////////
+
+c_style_cast_c
+  : '(' type_c_ast
+    {
+      ia_type_ast_push( $2 );
+    }
+    cast_c_astp_opt rparen_exp sname_c_opt
+    {
+      ia_type_ast_pop();
+
+      DUMP_START( "explain_command",
+                  "EXPLAIN '(' type_c_ast cast_c_astp_opt ')' sname_c_opt" );
+      DUMP_AST( "type_c_ast", $2 );
+      DUMP_AST( "cast_c_astp_opt", $4.ast );
+      DUMP_SNAME( "sname_c_opt", $6 );
+
+      c_ast_t *const cast_ast = c_ast_patch_placeholder( $2, $4.ast );
+
+      DUMP_AST( "explain_command", cast_ast );
+      DUMP_END();
+
+      bool const ok = c_ast_check_cast( cast_ast );
+      if ( ok ) {
+        FPUTS( L_CAST, fout );
+        if ( !c_sname_empty( &$6 ) ) {
+          FPUTC( ' ', fout );
+          c_sname_english( &$6, fout );
+        }
+        FPRINTF( fout, " %s ", L_INTO );
+        c_ast_english( cast_ast, fout );
+        FPUTC( '\n', fout );
+      }
+
+      c_sname_free( &$6 );
+      if ( !ok )
+        PARSE_ABORT();
+    }
+  ;
+
+///////////////////////////////////////////////////////////////////////////////
+//  new-style C++ cast
+///////////////////////////////////////////////////////////////////////////////
+
+new_style_cast_c
+  : new_style_cast_c_literal lt_exp type_c_ast
+    {
+      ia_type_ast_push( $3 );
+    }
+    cast_c_astp_opt gt_exp lparen_exp sname_c_exp rparen_exp
+    {
+      ia_type_ast_pop();
+
+      DUMP_START( "explain_command",
+                  "EXPLAIN new_style_cast_c_literal "
+                  "'<' type_c_ast cast_c_astp_opt '>' '(' sname ')'" );
+      DUMP_STR( "new_style_cast_c_literal", $1 );
+      DUMP_AST( "type_c_ast", $3 );
+      DUMP_AST( "cast_c_astp_opt", $5.ast );
+      DUMP_SNAME( "sname", $8 );
+
+      c_ast_t const *const cast_ast = c_ast_patch_placeholder( $3, $5.ast );
+
+      DUMP_AST( "explain_command", cast_ast );
+      DUMP_END();
+
+      bool ok = false;
+
+      if ( unsupported( LANG_CPP_ANY ) ) {
+        print_error( &@1, "%s_cast is not supported in C\n", $1 );
+      }
+      else if ( (ok = c_ast_check_cast( cast_ast )) ) {
+        FPRINTF( fout, "%s %s ", $1, L_CAST );
+        c_sname_english( &$8, fout );
+        FPRINTF( fout, " %s ", L_INTO );
+        c_ast_english( cast_ast, fout );
+        FPUTC( '\n', fout );
+      }
+
+      c_sname_free( &$8 );
+      if ( !ok )
+        PARSE_ABORT();
+    }
+  ;
+
+new_style_cast_c_literal
+  : Y_CONST_CAST                  { $$ = L_CONST;       }
+  | Y_DYNAMIC_CAST                { $$ = L_DYNAMIC;     }
+  | Y_REINTERPRET_CAST            { $$ = L_REINTERPRET; }
+  | Y_STATIC_CAST                 { $$ = L_STATIC;      }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3887,6 +3787,114 @@ enum_unmodified_fixed_type_english_ast
 ///////////////////////////////////////////////////////////////////////////////
 //  declaration gibberish productions
 ///////////////////////////////////////////////////////////////////////////////
+
+decl_list_c_opt
+    /*
+     * An enum, class, struct, or union (ECSU) declaration by itself, e.g.:
+     *
+     *      explain struct S
+     *
+     * without any object of that type.
+     */
+  : // in_attr: type_c_ast
+    /* empty */
+    {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
+      DUMP_START( "decl_list_c_opt", "<empty>" );
+      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "decl_list_c_opt", type_ast );
+      DUMP_END();
+
+      if ( type_ast->kind_id != K_ENUM_CLASS_STRUCT_UNION ) {
+        //
+        // The declaration is a non-ECSU type, e.g.:
+        //
+        //      int
+        //
+        c_loc_t const loc = lexer_loc();
+        print_error( &loc, "declaration expected\n" );
+        PARSE_ABORT();
+      }
+
+      c_sname_t const *const ecsu_sname = &type_ast->as.ecsu.ecsu_sname;
+      assert( !c_sname_empty( ecsu_sname ) );
+
+      if ( c_sname_count( ecsu_sname ) > 1 ) {
+        print_error( &type_ast->loc,
+          "forward declaration can not have a scoped name\n"
+        );
+        PARSE_ABORT();
+      }
+
+      c_sname_t temp_sname = c_sname_dup( ecsu_sname );
+      c_ast_set_sname( type_ast, &temp_sname );
+
+      C_AST_CHECK_DECL( type_ast );
+      c_ast_explain_type( type_ast, fout );
+    }
+
+  | decl_list_c
+  ;
+
+decl_list_c
+  : decl_list_c ',' decl_c
+  | decl_c
+  ;
+
+decl_c
+  : // in_attr: alignas_specifier_c typename_flag_opt type_c_ast
+    decl_c_astp
+    {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
+      DUMP_START( "decl_c", "decl_c_astp" );
+      switch ( in_attr.align.kind ) {
+        case C_ALIGNAS_NONE:
+          break;
+        case C_ALIGNAS_EXPR:
+          DUMP_INT( "(alignas_specifier_c.as.expr)", in_attr.align.as.expr );
+          break;
+        case C_ALIGNAS_TYPE:
+          DUMP_AST(
+            "(alignas_specifier_c.as.type_ast)", in_attr.align.as.type_ast
+          );
+          break;
+      } // switch
+      DUMP_BOOL( "(typename_flag_opt)", in_attr.typename );
+      DUMP_AST( "(type_c_ast)", type_ast );
+      DUMP_AST( "decl_c_astp", $1.ast );
+
+      c_ast_t const *const decl_ast = c_ast_join_type_decl(
+        in_attr.typename, &in_attr.align, type_ast, $1.ast, &@1
+      );
+
+      DUMP_AST( "decl_c", decl_ast );
+      DUMP_END();
+
+      if ( decl_ast == NULL )
+        PARSE_ABORT();
+      C_AST_CHECK_DECL( decl_ast );
+      c_ast_explain_declaration( decl_ast, fout );
+
+      //
+      // The type's AST takes on the name of the thing being declared, e.g.:
+      //
+      //      int x
+      //
+      // makes the type_ast (kind = "built-in type", type = "int") take on the
+      // name of "x" so it'll be explained as:
+      //
+      //      declare x as int
+      //
+      // Once explained, the name must be cleared for the subsequent
+      // declaration (if any) in the same declaration statement, e.g.:
+      //
+      //      int x, y
+      //
+      c_sname_free( &type_ast->sname );
+    }
+  ;
 
 decl_c_astp
   : decl2_c_astp
@@ -6505,6 +6513,23 @@ equals_exp
     {
       elaborate_error( "'=' expected" );
     }
+  ;
+
+extern_linkage_c_stid
+  : Y_EXTERN linkage_stid         { $$ = $2; }
+  | Y_EXTERN linkage_stid '{'
+    {
+      print_error( &@3,
+        "scoped linkage declarations are not supported by %s\n",
+        CDECL
+      );
+      PARSE_ABORT();
+    }
+  ;
+
+extern_linkage_c_stid_opt
+  : /* empty */                   { $$ = TS_NONE; }
+  | extern_linkage_c_stid
   ;
 
 glob
