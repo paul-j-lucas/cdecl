@@ -3486,7 +3486,8 @@ pointer_decl_english_ast
     {
       DUMP_START( "pointer_to_member_decl_english",
                   "POINTER TO MEMBER OF "
-                  "class_struct_union_btid_exp sname_english decl_english_ast" );
+                  "class_struct_union_btid_exp "
+                  "sname_english decl_english_ast" );
       DUMP_TID( "(qualifier)", ia_qual_peek_stid() );
       DUMP_TID( "class_struct_union_btid_exp", $5 );
       DUMP_SNAME( "sname_english_exp", $6 );
