@@ -883,7 +883,7 @@ static void ia_free( void ) {
  */
 static void ia_qual_push_stid( c_tid_t qual_stid, c_loc_t const *loc ) {
   c_tid_check( qual_stid, C_TPID_STORE );
-  assert( (qual_stid & c_tid_compl( TS_MASK_QUALIFIER )) == TS_NONE );
+  assert( !c_tid_is_any( qual_stid, c_tid_compl( TS_MASK_QUALIFIER ) ) );
   assert( loc != NULL );
 
   c_qualifier_t *const qual = MALLOC( c_qualifier_t, 1 );
@@ -4166,7 +4166,7 @@ func_decl_c_astp
         ) &&
 
         // + The new type does _not_ have any non-constructor storage classes.
-        (func_stid & TS_NOT_CONSTRUCTOR) == TS_NONE;
+        !c_tid_is_any( func_stid, TS_NOT_CONSTRUCTOR );
 
       c_ast_t *const func_ast =
         c_ast_new_gc( assume_constructor ? K_CONSTRUCTOR : K_FUNCTION, &@$ );
@@ -4592,7 +4592,7 @@ pointer_to_member_type_c_ast
       $$ = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
 
       c_type_t scope_type = *c_sname_local_type( &$1 );
-      if ( (scope_type.btids & TB_ANY_SCOPE) == TB_NONE ) {
+      if ( !c_tid_is_any( scope_type.btids, TB_ANY_SCOPE ) ) {
         //
         // The sname has no scope-type, but we now know there's a pointer-to-
         // member of it, so it must be a class.  (It could alternatively be a

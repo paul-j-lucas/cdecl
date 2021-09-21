@@ -915,7 +915,7 @@ char const* c_type_name( c_type_t const *type, bool in_english,
     atids &= c_tid_compl( TA_NORETURN );
   }
 
-  if ( (atids & c_tid_compl( TA_ANY_MSC_CALL )) != TA_NONE ) {
+  if ( c_tid_is_any( atids, c_tid_compl( TA_ANY_MSC_CALL ) ) ) {
     static c_tid_t const ATIDS[] = {
       TA_CARRIES_DEPENDENCY,
       TA_DEPRECATED,
