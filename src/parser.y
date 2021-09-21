@@ -2101,11 +2101,11 @@ define_command
       if ( c_type_is_tid_any( &$5->type, TB_ANY_SCOPE ) )
         c_ast_set_local_type( $5, &$5->type );
       c_sname_fill_in_namespaces( &$5->sname );
-      if ( !c_sname_check( &$5->sname, &@2 ) )
-        PARSE_ABORT();
 
       DUMP_AST( "defined.ast", $5 );
 
+      if ( !c_sname_check( &$5->sname, &@2 ) )
+        PARSE_ABORT();
       if ( !add_type( L_DEFINE, $5, &@5 ) )
         PARSE_ABORT();
 
