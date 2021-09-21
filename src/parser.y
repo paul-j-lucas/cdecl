@@ -148,6 +148,14 @@
   if ( !c_tid_add( (DST_TID), (NEW_TID), &(NEW_LOC) ) ) PARSE_ABORT(); )
 
 /**
+ * Calls fl_is_nested_type_ok(): if it returns `false`, calls #PARSE_ABORT().
+ *
+ * @param TYPE_LOC The location of the type declaration.
+ */
+#define CHECK_NESTED_TYPE_OK(TYPE_LOC) BLOCK( \
+  if ( !fl_is_nested_type_ok( __FILE__, __LINE__, TYPE_LOC ) ) PARSE_ABORT(); )
+
+/**
  * Calls #elaborate_error_dym() with a <code>\ref dym_kind_t</code> of
  * #DYM_NONE.
  *
@@ -182,14 +190,6 @@
  */
 #define elaborate_error_dym(DYM_KINDS,...) BLOCK( \
   fl_elaborate_error( __FILE__, __LINE__, (DYM_KINDS), __VA_ARGS__ ); PARSE_ABORT(); )
-
-/**
- * Calls fl_is_nested_type_ok(): if it returns `false`, calls #PARSE_ABORT().
- *
- * @param TYPE_LOC The location of the type declaration.
- */
-#define IS_NESTED_TYPE_OK(TYPE_LOC) BLOCK( \
-  if ( !fl_is_nested_type_ok( __FILE__, __LINE__, TYPE_LOC ) ) PARSE_ABORT(); )
 
 /**
  * Calls fl_keyword_expected() followed by #PARSE_ABORT().
@@ -781,7 +781,7 @@ static void fl_elaborate_error( char const *file, int line,
  * in C anyway.
  *
  * @note This function isn't normally called directly; use the
- * #IS_NESTED_TYPE_OK() macro instead.
+ * #CHECK_NESTED_TYPE_OK() macro instead.
  *
  * @param file The name of the file where this function was called from.
  * @param line The line number within \a file where this function was called
@@ -2485,7 +2485,7 @@ class_struct_union_declaration_c
      */
   : class_struct_union_btid
     {
-      IS_NESTED_TYPE_OK( &@1 );
+      CHECK_NESTED_TYPE_OK( &@1 );
       gibberish_to_english();           // see the comment in "explain"
     }
     any_sname_c_exp
@@ -2542,7 +2542,7 @@ enum_declaration_c
      */
   : enum_btid
     {
-      IS_NESTED_TYPE_OK( &@1 );
+      CHECK_NESTED_TYPE_OK( &@1 );
       gibberish_to_english();           // see the comment in "explain"
     }
     any_sname_c_exp enum_fixed_type_c_ast_opt
@@ -2981,7 +2981,7 @@ typed_declaration_c
 typedef_declaration_c
   : Y_TYPEDEF typename_flag_opt
     {
-      IS_NESTED_TYPE_OK( &@1 );
+      CHECK_NESTED_TYPE_OK( &@1 );
       in_attr.typename = $2;
       gibberish_to_english();           // see the comment in "explain"
     }
