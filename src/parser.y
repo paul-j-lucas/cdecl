@@ -2134,43 +2134,14 @@ explain_command
   | explain typed_declaration_c
 
     /*
-     * asm declaration -- not supported.
-     */
-  | explain asm_declaration_c
-
-    /*
-     * Template declaration -- not supported.
-     */
-  | explain template_declaration_c
-
-    /*
      * Common declaration with alignas, e.g.: alignas(8) T x.
      */
   | explain aligned_declaration_c
 
     /*
-     * Common C++ declaration with typename (without alignas), e.g.:
-     *
-     *      explain typename T::U x
-     *
-     * (We can't use typename_flag_opt because it would introduce more
-     * shift/reduce conflicts.)
+     * asm declaration -- not supported.
      */
-  | explain Y_TYPENAME { in_attr.typename = true; } typed_declaration_c
-
-    /*
-     * K&R C implicit int function and C++ in-class constructor declaration.
-     */
-  | explain knr_func_or_constructor_decl_c_ast
-    {
-      DUMP_START( "explain_command",
-                  "EXPLAIN knr_func_or_constructor_decl_c_ast" );
-      DUMP_AST( "knr_func_or_constructor_decl_c_ast", $2 );
-      DUMP_END();
-
-      C_AST_CHECK_DECL( $2 );
-      c_ast_explain_declaration( $2, fout );
-    }
+  | explain asm_declaration_c
 
     /*
      * C++ file-scope constructor definition, e.g.: S::S([params]).
@@ -2212,6 +2183,35 @@ explain_command
       C_AST_CHECK_DECL( $2 );
       c_ast_explain_declaration( $2, fout );
     }
+
+    /*
+     * K&R C implicit int function and C++ in-class constructor declaration.
+     */
+  | explain knr_func_or_constructor_decl_c_ast
+    {
+      DUMP_START( "explain_command",
+                  "EXPLAIN knr_func_or_constructor_decl_c_ast" );
+      DUMP_AST( "knr_func_or_constructor_decl_c_ast", $2 );
+      DUMP_END();
+
+      C_AST_CHECK_DECL( $2 );
+      c_ast_explain_declaration( $2, fout );
+    }
+
+    /*
+     * Template declaration -- not supported.
+     */
+  | explain template_declaration_c
+
+    /*
+     * Common C++ declaration with typename (without alignas), e.g.:
+     *
+     *      explain typename T::U x
+     *
+     * (We can't use typename_flag_opt because it would introduce more
+     * shift/reduce conflicts.)
+     */
+  | explain Y_TYPENAME { in_attr.typename = true; } typed_declaration_c
 
     /*
      * User-defined conversion operator declaration without a storage-class-
