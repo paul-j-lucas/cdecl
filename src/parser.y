@@ -1628,7 +1628,7 @@ command
   | explain_command semi_or_end
   | help_command semi_or_end
   | quit_command semi_or_end
-  | scope_command
+  | scoped_command
   | set_command semi_or_end
   | show_command semi_or_end
   | template_command semi_or_end
@@ -2302,8 +2302,8 @@ quit_command
 
 /// scope (enum, class, struct, union, namespace) command /////////////////////
 
-scope_command
-  : scope_declaration_c
+scoped_command
+  : scoped_declaration_c
   ;
 
 /// set command ///////////////////////////////////////////////////////////////
@@ -2631,7 +2631,7 @@ asm_declaration_c
 
 /// Gibberish C/C++ scoped declarations ///////////////////////////////////////
 
-scope_declaration_c
+scoped_declaration_c
   : class_struct_union_declaration_c
   | enum_declaration_c
   | namespace_declaration_c
@@ -2949,7 +2949,7 @@ brace_in_scope_declaration_c
   ;
 
 in_scope_declaration_c_exp
-  : scope_declaration_c
+  : scoped_declaration_c
   | typedef_declaration_c semi_exp
   | using_declaration_c semi_exp
   | error
