@@ -4871,6 +4871,10 @@ enum_btid
 enum_fixed_type_c_ast_opt
   : /* empty */                   { $$ = NULL; }
   | ':' enum_fixed_type_c_ast     { $$ = $2; }
+  | ':' error
+    {
+      elaborate_error( "type name expected" );
+    }
   ;
 
     /*
