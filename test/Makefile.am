@@ -145,7 +145,6 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_if_v.test \
 	tests/declare_imd.test \
 	tests/declare_imf.test \
-	tests/declare_jf_i.test \
 	tests/declare_k.test \
 	tests/declare_ld.test \
 	tests/declare_lf.test \
@@ -185,6 +184,7 @@ TESTS+=	tests/declare_a3a5a7i.test \
 	tests/declare_vi-knr.test \
 	tests/declare_vpi.test \
 	tests/declare_wt.test \
+	tests/declare_xvf_i.test \
 	tests/declare_z.test \
 	tests/declare_zw3.test \
 	tests/declare_zz.test
@@ -239,7 +239,6 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_hv.test \
 	tests/declare_hwt.test \
 	tests/declare_ii.test \
-	tests/declare_ji.test \
 	tests/declare_lb.test \
 	tests/declare_lc.test \
 	tests/declare_lc16.test \
@@ -283,6 +282,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_vf_v-c.test \
 	tests/declare_vri.test \
 	tests/declare_wt-c89.test \
+	tests/declare_xvi-c.test \
 	tests/declare_xxi-c.test
 
 ###############################################################################

@@ -98,6 +98,7 @@ The characters are:
 + `w` = bit-field width (following digits specify width)
 + `wt` = `wchar_t`
 + `xi` = `constinit`
++ `xv` = `consteval`
 + `xx` = `constexpr`
 + `y` = `final`
 + `z` = `size_t`
