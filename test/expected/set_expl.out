@@ -1,0 +1,3 @@
+set expl
+    ^
+5: error: "expl": ambiguous set option; could be "explain-by-default" or "explicit-int"

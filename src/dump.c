@@ -78,7 +78,7 @@ static unsigned const DUMP_INDENT = 2;  ///< Spaces per dump indent level.
 static char const* c_tpid_name( c_tpid_t tpid ) {
   switch ( tpid ) {
     case C_TPID_NONE:
-      break;
+      break;                            // LCOV_EXCL_LINE
     case C_TPID_BASE:
       return "btid";
     case C_TPID_STORE:
@@ -86,6 +86,7 @@ static char const* c_tpid_name( c_tpid_t tpid ) {
     case C_TPID_ATTR:
       return "atid";
   } // switch
+
   UNEXPECTED_INT_VALUE( tpid );
 }
 
@@ -126,7 +127,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
     if ( ast->align.kind != C_ALIGNAS_NONE ) {
       switch ( ast->align.kind ) {
         case C_ALIGNAS_NONE:
-          break;
+          break;                        // LCOV_EXCL_LINE
         case C_ALIGNAS_EXPR:
           DUMP_FORMAT( "alignas.expr = %u,\n", ast->align.as.expr );
           break;

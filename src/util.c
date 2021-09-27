@@ -81,10 +81,13 @@ static slist_t free_later_list;         ///< List of stuff to free later.
 PJL_WARN_UNUSED_RESULT
 static unsigned check_tigetnum( char const *capname ) {
   int const num = tigetnum( CONST_CAST(char*, capname) );
-  if ( unlikely( num < 0 ) )
+  if ( unlikely( num < 0 ) ) {
+    // LCOV_EXCL_START
     PMESSAGE_EXIT( EX_UNAVAILABLE,
       "tigetnum(\"%s\") returned error code %d", capname, num
     );
+    // LCOV_EXCL_STOP
+  }
   return (unsigned)num;
 }
 #endif /* ENABLE_TERM_SIZE */
@@ -108,7 +111,7 @@ void* check_realloc( void *p, size_t size ) {
   //    malloc(size), but some old systems don't support this (e.g., NextStep).
   //
   if ( unlikely( size == 0 ) )
-    size = 1;
+    size = 1;                           // LCOV_EXCL_LINE
   p = p != NULL ? realloc( p, size ) : malloc( size );
   IF_EXIT( p == NULL, EX_OSERR );
   return p;
@@ -178,23 +181,30 @@ void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines ) {
 
   char const *const term = getenv( "TERM" );
   if ( unlikely( term == NULL ) ) {
+    // LCOV_EXCL_START
     reason = "TERM environment variable not set";
     goto error;
+    // LCOV_EXCL_STOP
   }
 
   char const *const cterm_path = ctermid( NULL );
   if ( unlikely( cterm_path == NULL || *cterm_path == '\0' ) ) {
+    // LCOV_EXCL_START
     reason = "ctermid(3) failed to get controlling terminal";
     goto error;
+    // LCOV_EXCL_STOP
   }
 
   if ( unlikely( (cterm_fd = open( cterm_path, O_RDWR )) == -1 ) ) {
+    // LCOV_EXCL_START
     reason = STRERROR();
     goto error;
+    // LCOV_EXCL_STOP
   }
 
   int sut_err;
   if ( setupterm( CONST_CAST(char*, term), cterm_fd, &sut_err ) == ERR ) {
+    // LCOV_EXCL_START
     reason = reason_buf;
     switch ( sut_err ) {
       case -1:
@@ -216,6 +226,7 @@ void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines ) {
         );
     } // switch
     goto error;
+    // LCOV_EXCL_STOP
   }
 
   if ( ncolumns != NULL )
@@ -226,11 +237,14 @@ void get_term_columns_lines( unsigned *ncolumns, unsigned *nlines ) {
 error:
   if ( likely( cterm_fd != -1 ) )
     close( cterm_fd );
-  if ( unlikely( reason != NULL ) )
+  if ( unlikely( reason != NULL ) ) {
+    // LCOV_EXCL_START
     PMESSAGE_EXIT( EX_UNAVAILABLE,
       "failed to determine number of columns or lines in terminal: %s\n",
       reason
     );
+    // LCOV_EXCL_STOP
+  }
 }
 #endif /* ENABLE_TERM_SIZE */
 
@@ -301,11 +315,13 @@ char const* parse_identifier( char const *s ) {
   return s;
 }
 
+// LCOV_EXCL_START
 noreturn
 void perror_exit( int status ) {
   perror( me );
   exit( status );
 }
+// LCOV_EXCL_STOP
 
 ///////////////////////////////////////////////////////////////////////////////
 /* vim:set et sw=2 ts=2: */

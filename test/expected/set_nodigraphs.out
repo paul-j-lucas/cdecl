@@ -1,0 +1,3 @@
+set nodigraphs
+    ^
+5: error: "no" not valid for "digraphs"

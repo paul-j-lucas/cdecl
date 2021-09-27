@@ -1,0 +1,1 @@
+cdecl @ @ -a -xc++ @ declare rr as rvalue reference to int @ 0

@@ -1,0 +1,3 @@
+explain _Alignas(4) int f()
+                        ^
+25: error: function can not be aligned

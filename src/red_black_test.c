@@ -77,17 +77,19 @@ static bool test_rb_visitor( void *node_data, void *aux_data ) {
   return false;
 }
 
+// LCOV_EXCL_START
 static noreturn void usage( void ) {
   EPRINTF( "usage: %s\n", me );
   exit( EX_USAGE );
 }
+// LCOV_EXCL_STOP
 
 ////////// main ///////////////////////////////////////////////////////////////
 
 int main( int argc, char const *argv[] ) {
   me = base_name( argv[0] );
   if ( --argc != 0 )
-    usage();
+    usage();                            // LCOV_EXCL_LINE
 
   rb_tree_t tree;
   rb_tree_init( &tree, &test_rb_data_cmp );

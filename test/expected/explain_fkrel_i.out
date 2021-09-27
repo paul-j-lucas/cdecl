@@ -1,0 +1,3 @@
+explain int f(x, ...)
+                 ^
+18: error: ellipsis is not supported until C89

@@ -1,0 +1,1 @@
+declare ! of structure S as friend member operator returning bool

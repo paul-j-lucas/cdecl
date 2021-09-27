@@ -19,6 +19,7 @@ Makefile
 /config.*
 /configure
 /conftest*
+/coverage*
 /depcomp
 /docs/
 /install-sh

@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ declare _x as user-defined literal (pointer to const char, int) returning int @ 65

@@ -1,0 +1,1 @@
+cdecl @ @ -d -xc++ @ struct S; explain bool S::operator!() const @ 0

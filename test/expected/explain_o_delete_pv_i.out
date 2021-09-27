@@ -1,0 +1,3 @@
+explain int operator delete(void*)
+        ^
+9: error: operator delete must return void

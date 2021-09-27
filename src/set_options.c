@@ -59,8 +59,9 @@ struct set_option_fn_args {
  *
  * @param NAME The option name with `-` replaced by `_`.
  */
-#define DECLARE_SET_OPTION_FN(NAME) \
-  static void set_##NAME( set_option_fn_args_t const* )
+#define DECLARE_SET_OPTION_FN(NAME)                     \
+  PJL_WARN_UNUSED_RESULT                                \
+  static bool set_##NAME( set_option_fn_args_t const* )
 
 // local functions
 DECLARE_SET_OPTION_FN( alt_tokens );
@@ -164,9 +165,11 @@ static void print_options( FILE *out ) {
  * Sets the alt-tokens option.
  *
  * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
  */
-static void set_alt_tokens( set_option_fn_args_t const *args ) {
+static bool set_alt_tokens( set_option_fn_args_t const *args ) {
   opt_alt_tokens = args->opt_enabled;
+  return true;
 }
 
 #ifdef YYDEBUG
@@ -174,9 +177,11 @@ static void set_alt_tokens( set_option_fn_args_t const *args ) {
  * Sets the Bison debugging option.
  *
  * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
  */
-static void set_bison_debug( set_option_fn_args_t const *args ) {
+static bool set_bison_debug( set_option_fn_args_t const *args ) {
   opt_bison_debug = args->opt_enabled;
+  return true;
 }
 #endif /* YYDEBUG */
 
@@ -185,9 +190,11 @@ static void set_bison_debug( set_option_fn_args_t const *args ) {
  * Sets the debug option.
  *
  * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
  */
-static void set_debug( set_option_fn_args_t const *args ) {
+static bool set_debug( set_option_fn_args_t const *args ) {
   opt_cdecl_debug = args->opt_enabled;
+  return true;
 }
 #endif /* ENABLE_CDECL_DEBUG */
 
@@ -195,43 +202,49 @@ static void set_debug( set_option_fn_args_t const *args ) {
  * Sets the digraphs-tokens option.
  *
  * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
  */
-static void set_digraphs( set_option_fn_args_t const *args ) {
+static bool set_digraphs( set_option_fn_args_t const *args ) {
   opt_graph = args->opt_enabled ? C_GRAPH_DI : C_GRAPH_NONE;
   if ( opt_graph && opt_lang < LANG_C_95 ) {
     print_warning( args->opt_name_loc,
-      "digraphs are not supported until C95\n"
+      "digraphs not supported%s\n", c_lang_which( LANG_MIN(C_95) )
     );
   }
+  return true;
 }
 
 /**
  * Sets the east-const option.
  *
  * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
  */
-static void set_east_const( set_option_fn_args_t const *args ) {
+static bool set_east_const( set_option_fn_args_t const *args ) {
   opt_east_const = args->opt_enabled;
+  return true;
 }
 
 /**
  * Sets the explain-by-default option.
  *
  * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
  */
-static void set_explain_by_default( set_option_fn_args_t const *args ) {
+static bool set_explain_by_default( set_option_fn_args_t const *args ) {
   opt_explain = args->opt_enabled;
+  return true;
 }
 
 /**
  * Sets the explicit-int option.
- *
+ *;
  * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
  */
-static void set_explicit_int( set_option_fn_args_t const *args ) {
-  if ( args->opt_enabled )
-    parse_explicit_int( args->opt_value, args->opt_value_loc );
-  else
+static bool set_explicit_int( set_option_fn_args_t const *args ) {
+  return args->opt_enabled ?
+    parse_explicit_int( args->opt_value, args->opt_value_loc ) :
     parse_explicit_int( "", /*loc=*/NULL );
 }
 
@@ -240,9 +253,11 @@ static void set_explicit_int( set_option_fn_args_t const *args ) {
  * Sets the Flex debugging option.
  *
  * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
  */
-static void set_flex_debug( set_option_fn_args_t const *args ) {
+static bool set_flex_debug( set_option_fn_args_t const *args ) {
   opt_flex_debug = args->opt_enabled;
+  return true;
 }
 #endif /* ENABLE_FLEX_DEBUG */
 
@@ -250,14 +265,17 @@ static void set_flex_debug( set_option_fn_args_t const *args ) {
  * Sets the current language.
  *
  * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
  */
-static void set_lang( set_option_fn_args_t const *args ) {
+static bool set_lang( set_option_fn_args_t const *args ) {
   assert( args->opt_enabled );
   if ( !set_lang_impl( args->opt_value ) ) {
     print_error( args->opt_value_loc,
       "\"%s\": unknown language\n", args->opt_value
     );
+    return false;
   }
+  return true;
 }
 
 /**
@@ -276,15 +294,14 @@ static bool set_lang_impl( char const *name ) {
     // Every time the language changes, re-set di/trigraph mode so the user is
     // re-warned if di/trigraphs are not supported in the current language.
     //
+    static set_option_fn_args_t const args = { true, NULL, NULL, NULL };
     switch ( opt_graph ) {
       case C_GRAPH_NONE:
         break;
       case C_GRAPH_DI:
-        set_digraphs( &(set_option_fn_args_t){ true, NULL, NULL, NULL } );
-        break;
+        return set_digraphs( &args );
       case C_GRAPH_TRI:
-        set_trigraphs( &(set_option_fn_args_t){ true, NULL, NULL, NULL } );
-        break;
+        return set_trigraphs( &args );
     } // switch
     return true;
   }
@@ -295,38 +312,44 @@ static bool set_lang_impl( char const *name ) {
  * Sets the prompt option.
  *
  * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
  */
-static void set_prompt( set_option_fn_args_t const *args ) {
+static bool set_prompt( set_option_fn_args_t const *args ) {
   cdecl_prompt_enable( /*enable=*/args->opt_enabled );
+  return true;
 }
 
 /**
  * Sets the semicolon option.
  *
  * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
  */
-static void set_semicolon( set_option_fn_args_t const *args ) {
+static bool set_semicolon( set_option_fn_args_t const *args ) {
   opt_semicolon = args->opt_enabled;
+  return true;
 }
 
 /**
  * Sets the trigraphs option.
  *
  * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
  */
-static void set_trigraphs( set_option_fn_args_t const *args ) {
+static bool set_trigraphs( set_option_fn_args_t const *args ) {
   opt_graph = args->opt_enabled ? C_GRAPH_TRI : C_GRAPH_NONE;
   if ( args->opt_enabled ) {
     if ( opt_lang == LANG_C_KNR ) {
       print_warning( args->opt_name_loc,
-        "trigraphs not supported until C89\n"
+        "trigraphs not supported%s\n", c_lang_which( LANG_MIN(C_89) )
       );
     } else if ( opt_lang >= LANG_CPP_17 ) {
       print_warning( args->opt_name_loc,
-        "trigraphs no longer supported since C++17\n"
+        "trigraphs no longer supported%s\n", c_lang_which( LANG_MAX(CPP_14) )
       );
     }
   }
+  return true;
 }
 
 /**
@@ -353,15 +376,15 @@ static bool strn_nohyphen_equal( char const *s1, char const *s2, size_t n ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
+bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc ) {
   if ( opt_name == NULL || strcmp( opt_name, "options" ) == 0 ) {
     print_options( fout );
-    return;
+    return true;
   }
 
   if ( set_lang_impl( opt_name ) )
-    return;
+    return true;
 
   assert( opt_name_loc != NULL );
   assert( opt_value == NULL || opt_value_loc != NULL );
@@ -382,7 +405,7 @@ void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
           is_no ? "no" : "", found_opt->name,
           is_no ? "no" : "", opt->name
         );
-        return;
+        return false;
       }
       found_opt = opt;
     }
@@ -392,7 +415,7 @@ void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
     print_error( opt_name_loc, "\"%s\": unknown set option", orig_name );
     print_suggestions( DYM_SET_OPTIONS, orig_name );
     EPUTC( '\n' );
-    return;
+    return false;
   }
 
   switch ( found_opt->type ) {
@@ -403,7 +426,7 @@ void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
         print_error( opt_name_loc,
           "\"no\" not valid for \"%s\"\n", found_opt->name
         );
-        return;
+        return false;
       }
       break;
     case SET_OPT_NEG_ONLY:
@@ -411,7 +434,7 @@ void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
         print_error( opt_name_loc,
           "\"no\" required for \"%s\"\n", found_opt->name
         );
-        return;
+        return false;
       }
       break;
   } // switch
@@ -422,26 +445,26 @@ void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
         "\"%s\" set option requires =<value>\n",
         orig_name
       );
-      return;
+      return false;
     }
   } else {
     if ( is_no ) {
       print_error( opt_value_loc, "\"no\" set options take no value\n" );
-      return;
+      return false;
     }
     if ( !found_opt->takes_value ) {
       print_error( opt_value_loc,
         "\"%s\": set option \"%s\" takes no value\n",
         opt_value, orig_name
       );
-      return;
+      return false;
     }
   }
 
   set_option_fn_args_t const args = {
     !is_no, opt_name_loc, opt_value, opt_value_loc
   };
-  (*found_opt->set_fn)( &args );
+  return (*found_opt->set_fn)( &args );
 }
 
 set_option_t const* set_option_next( set_option_t const *opt ) {

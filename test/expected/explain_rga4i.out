@@ -1,0 +1,3 @@
+explain register int a[4]
+                     ^
+22: error: array can not be register

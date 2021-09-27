@@ -89,32 +89,21 @@ void c_sglob_parse( char const *s, c_sglob_t *sglob ) {
   for (;;) {
     switch ( *s ) {
       case ':':
-      case ' ':
-      case '\f':
-      case '\r':
-      case '\t':
-      case '\v':
       case '\0': {                      // found end of glob
         size_t const glob_len = (size_t)(s - glob_begin);
         assert( glob_len > 0 );
         assert( glob_index < sglob->count );
         sglob->pattern[ glob_index ] = check_strndup( glob_begin, glob_len );
-redo:   switch ( *s ) {
-          case ':':
-            ++s;
-            assert( *s == ':' );
-            ++s;
-            SKIP_WS( s );
-            assert( is_ident( *s ) || *s == '*' );
-            glob_begin = s;
-            ++glob_index;
-            break;
-          case '\0':
-            return;
-          default:                      // must be whitespace
-            SKIP_WS( s );
-            goto redo;
-        } // switch
+        if ( *s == '\0' )
+          return;
+        assert( *s == ':' );
+        ++s;
+        assert( *s == ':' );
+        ++s;
+        SKIP_WS( s );
+        assert( is_ident( *s ) || *s == '*' );
+        glob_begin = s;
+        ++glob_index;
         break;
       }
 

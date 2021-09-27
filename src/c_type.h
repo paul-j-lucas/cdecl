@@ -383,7 +383,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  *
  * @sa #TS_CONSTRUCTOR_DEF
  * @sa #TS_CONSTRUCTOR_ONLY
- * @sa #TS_FUNC_LIKE
+ * @sa #TS_FUNC_LIKE_CPP
  */
 #define TS_CONSTRUCTOR_DECL   ( TS_CONSTEXPR | TS_DEFAULT | TS_DELETE \
                               | TS_EXPLICIT | TS_FRIEND | TS_INLINE \
@@ -425,36 +425,53 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 #define TS_DESTRUCTOR_DEF     ( TS_INLINE | TS_NOEXCEPT | TS_THROW )
 
 /**
- * The only types that can apply to function-like things (functions, blocks,
- * constructors, destructors, operators, and user-defined conversion
- * operators and literals).
+ * The only storage-types that can apply to C functions.
+ *
+ * @sa #TS_FUNC_LIKE_CPP
+ * @sa #TS_MAIN_FUNC_C
+ */
+#define TS_FUNC_C             ( TS_EXTERN | TS_INLINE | TS_STATIC )
+
+/**
+ * The only storage-types that can apply to C++ function-like things
+ * (functions, blocks, constructors, destructors, operators, and user-defined
+ * conversion operators and literals).
  *
  * @sa #TS_CONSTRUCTOR_DECL
  * @sa #TS_CONSTRUCTOR_DEF
- * @sa #TS_MAIN_FUNC
+ * @sa #TS_MAIN_FUNC_CPP
  * @sa #TS_NEW_DELETE_OPER
  * @sa #TS_USER_DEF_CONV
  */
-#define TS_FUNC_LIKE          ( TS_CONST_VOLATILE | TS_CONSTEVAL \
+#define TS_FUNC_LIKE_CPP      ( TS_CONST_VOLATILE | TS_CONSTEVAL \
                               | TS_CONSTEXPR | TS_DEFAULT | TS_DELETE \
-                              | TS_EXPLICIT | TS_EXPORT | TS_EXTERN \
-                              | TS_EXTERN_C | TS_FINAL | TS_FRIEND | TS_INLINE \
+                              | TS_EXPLICIT | TS_EXPORT | TS_EXTERN_C \
+                              | TS_FINAL | TS_FRIEND | TS_FUNC_C \
                               | TS_NOEXCEPT | TS_OVERRIDE | TS_PURE_VIRTUAL \
-                              | TS_ANY_REFERENCE | TS_RESTRICT | TS_STATIC \
-                              | TS_THROW | TS_TYPEDEF | TS_VIRTUAL )
+                              | TS_ANY_REFERENCE | TS_RESTRICT | TS_THROW \
+                              | TS_TYPEDEF | TS_VIRTUAL )
 
 /**
- * The only types that can apply to the program's `main()` function.
+ * The only storage types that can apply to a C program's `main()` function.
  *
- * @sa #TS_FUNC_LIKE
+ * @sa #TS_FUNC_LIKE_C
+ * @sa #TS_MAIN_FUNC_CPP
  */
-#define TS_MAIN_FUNC          ( TS_EXTERN | TS_FRIEND | TS_NOEXCEPT | TS_THROW )
+#define TS_MAIN_FUNC_C        TS_EXTERN
+
+/**
+ * The only types that can apply to a C++ program's `main()` function.
+ *
+ * @sa #TS_FUNC_LIKE_CPP
+ * @sa #TS_MAIN_FUNC_C
+ */
+#define TS_MAIN_FUNC_CPP      ( TS_EXTERN | TS_FRIEND | TS_NOEXCEPT | TS_THROW )
 
 /**
  * The types that can apply only to member functions, operators, or user-
  * defined conversions operators.
  *
- * @sa #TS_FUNC_LIKE
+ * @sa #TS_FUNC_LIKE_CPP
  * @sa #TS_NONMEMBER_FUNC_ONLY
  */
 #define TS_MEMBER_FUNC_ONLY   ( TS_CONST_VOLATILE \
@@ -466,7 +483,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * The only types that can apply to operators `new`, `new[]`, `delete`, or
  * `delete[]`.
  *
- * @sa #TS_FUNC_LIKE
+ * @sa #TS_FUNC_LIKE_CPP
  */
 #define TS_NEW_DELETE_OPER    ( TS_EXTERN | TS_FRIEND | TS_NOEXCEPT \
                               | TS_STATIC | TS_THROW )
@@ -484,7 +501,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
  * @sa #TS_CONSTRUCTOR_DECL
  * @sa #TS_CONSTRUCTOR_DEF
  * @sa #TS_CONSTRUCTOR_ONLY
- * @sa #TS_FUNC_LIKE
+ * @sa #TS_FUNC_LIKE_CPP
  */
 #define TS_NOT_CONSTRUCTOR    ( TS_CONST_VOLATILE | TS_EXTERN | TS_EXTERN_C \
                               | TS_FINAL | TS_OVERRIDE | TS_ANY_REFERENCE \
@@ -493,7 +510,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 /**
  * The only types that can apply to user-defined conversion operators.
  *
- * @sa #TS_FUNC_LIKE
+ * @sa #TS_FUNC_LIKE_CPP
  */
 #define TS_USER_DEF_CONV      ( TS_CONST | TS_CONSTEXPR | TS_EXPLICIT \
                               | TS_FINAL | TS_FRIEND | TS_INLINE \

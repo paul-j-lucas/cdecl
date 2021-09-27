@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ explain [[nodiscard]] void f() @ 0

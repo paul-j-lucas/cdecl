@@ -45,8 +45,9 @@ typedef struct set_option_fn_args set_option_fn_args_t;
  * The signature for a `set` option function.
  *
  * @param args The `set` option function arguments.
+ * @return Returns `true` only if the option was set.
  */
-typedef void (*set_option_fn_t)( set_option_fn_args_t const *args );
+typedef bool (*set_option_fn_t)( set_option_fn_args_t const *args );
 
 /**
  * cdecl `set` option type.
@@ -89,8 +90,10 @@ typedef struct set_option set_option_t;
  * @param opt_name_loc The location of \a opt_name.
  * @param opt_value The option value, if any.
  * @param opt_value_loc The location of \a opt_value.
+ * @param Return `true` only if the option was set.
  */
-void option_set( char const *opt_name, c_loc_t const *opt_name_loc,
+PJL_WARN_UNUSED_RESULT
+bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
                  char const *opt_value, c_loc_t const *opt_value_loc );
 
 /**

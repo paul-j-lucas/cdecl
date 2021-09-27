@@ -75,7 +75,7 @@ char const* c_kind_name( c_kind_id_t kind_id ) {
   } // switch
 
   UNEXPECTED_INT_VALUE( kind_id );
-  return NULL;                          // suppress warning
+  return NULL;                          // suppress warning; LCOV_EXCL_LINE
 }
 
 ///////////////////////////////////////////////////////////////////////////////

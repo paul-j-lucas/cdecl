@@ -1,0 +1,3 @@
+declare f as const non-member function
+        ^
+9: error: function can not be constant

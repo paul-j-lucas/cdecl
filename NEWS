@@ -42,6 +42,12 @@ C++20's nested inline namespaces are now supported:
 ** `show typedef` & `show using` autocompletion
 The keywords `typedef` and `using` are now auto-completable.
 
+** In-class `default`, `delete`, and `noexcept` constructors
+These are now accepted.
+
+** `static` `main()` in C
+This is now correctly forbidden.
+
 ** Fixed C++ raw string literals
 A raw string literal like `R"abc(X)ab)abc"` was previously not parsed
 correctly.
@@ -89,6 +95,12 @@ This is now an English synonym for `double`.
 ** Microsoft `__forceinline` declarations
 Added support for `__forceinline` (and `_forceinline`), but they're treated as
 `inline`.
+
+** Code coverage
+Running the test suite can now generate a code coverage report via:
+
+    ./configure --enable-coverage
+    make check-coverage
 
 ** More types
 Added `cc_t`, `DIR`, `fsblkcnt_t`, `fsfilcnt_t`, `id_t`, `pthread_key_t`,

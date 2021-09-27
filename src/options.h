@@ -149,8 +149,9 @@ void options_init( int *pargc, char const **pargv[] );
  * @param loc The location of \a ei_format.  If not NULL and \a ei_format is
  * invalid, calls print_error(); if NULL and \a ei_format is invalid, calls
  * PMESSAGE_EXIT().
+ * @return Returns `true` only if \a ei_format was parsed successfully.
  */
-void parse_explicit_int( char const *ei_format, c_loc_t const *loc );
+bool parse_explicit_int( char const *ei_format, c_loc_t const *loc );
 
 /**
  * Prints the string representation of the explicit integer option.

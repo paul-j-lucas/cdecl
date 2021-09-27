@@ -1,3 +1,3 @@
 declare x of scope s as int
              ^
-14: error: scoped names are not supported in C
+14: error: scoped names not supported in C

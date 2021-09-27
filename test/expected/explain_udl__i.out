@@ -1,3 +1,3 @@
 explain int operator"" _x()
                           ^
-27: syntax error: ")": '(' expected
+27: syntax error: ")": parameter list expected

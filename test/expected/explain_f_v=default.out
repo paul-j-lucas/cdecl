@@ -1,0 +1,3 @@
+explain void f() = default
+             ^
+14: error: "default" can be used only for special member functions and relational operators

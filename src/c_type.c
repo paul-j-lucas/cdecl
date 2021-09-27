@@ -578,7 +578,7 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english ) {
 
   switch ( c_tid_tpid( tid ) ) {
     case C_TPID_NONE:
-      break;
+      break;                            // LCOV_EXCL_LINE
 
     case C_TPID_BASE:
       for ( size_t i = 0; i < ARRAY_SIZE( C_TYPE_INFO ); ++i ) {
@@ -586,7 +586,7 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english ) {
         if ( tid == ti->tid )
           return c_type_literal( ti, in_english );
       } // for
-      break;
+      break;                            // LCOV_EXCL_LINE
 
     case C_TPID_STORE:
       for ( size_t i = 0; i < ARRAY_SIZE( C_QUALIFIER_INFO ); ++i ) {
@@ -600,7 +600,7 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english ) {
         if ( tid == ti->tid )
           return c_type_literal( ti, in_english );
       } // for
-      break;
+      break;                            // LCOV_EXCL_LINE
 
     case C_TPID_ATTR:
       for ( size_t i = 0; i < ARRAY_SIZE( C_ATTRIBUTE_INFO ); ++i ) {
@@ -608,7 +608,7 @@ static char const* c_tid_name_1( c_tid_t tid, bool in_english ) {
         if ( tid == ti->tid )
           return c_type_literal( ti, in_english );
       } // for
-      break;
+      break;                            // LCOV_EXCL_LINE
   } // switch
 
   UNEXPECTED_INT_VALUE( tid );
@@ -751,7 +751,7 @@ bool c_type_equal( c_type_t const *i_type, c_type_t const *j_type ) {
 c_type_t c_type_from_tid( c_tid_t tids ) {
   switch ( c_tid_tpid( tids ) ) {
     case C_TPID_NONE:
-      break;
+      break;                            // LCOV_EXCL_LINE
     case C_TPID_BASE:
       return C_TYPE_LIT_B( tids );
     case C_TPID_STORE:
@@ -759,6 +759,7 @@ c_type_t c_type_from_tid( c_tid_t tids ) {
     case C_TPID_ATTR:
       return C_TYPE_LIT_A( tids );
   } // switch
+
   UNEXPECTED_INT_VALUE( tids );
 }
 
@@ -767,7 +768,7 @@ c_tid_t c_type_get_tid( c_type_t const *type, c_tid_t tids ) {
 
   switch ( c_tid_tpid( tids ) ) {
     case C_TPID_NONE:
-      break;
+      break;                            // LCOV_EXCL_LINE
     case C_TPID_BASE:
       return type->btids;
     case C_TPID_STORE:
@@ -784,7 +785,7 @@ c_tid_t* c_type_get_tid_ptr( c_type_t *type, c_tid_t tids ) {
 
   switch ( c_tid_tpid( tids ) ) {
     case C_TPID_NONE:
-      break;
+      break;                            // LCOV_EXCL_LINE
     case C_TPID_BASE:
       return &type->btids;
     case C_TPID_STORE:
@@ -854,6 +855,7 @@ unsigned c_tid_scope_order( c_tid_t btids ) {
     case TB_ENUM | TB_CLASS:
       return 3;
   } // switch
+
   UNEXPECTED_INT_VALUE( btids );
 }
 

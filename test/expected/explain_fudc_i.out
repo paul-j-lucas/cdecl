@@ -1,0 +1,3 @@
+explain friend operator int()
+             ^
+14: error: friend user-defined conversion operator must use qualified name

@@ -216,7 +216,7 @@ PJL_WARN_UNUSED_RESULT
 static char const*  opt_get_long( char );
 
 noreturn
-static void         usage( void );
+static void         usage( int );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -519,6 +519,7 @@ use_help:
         exit( EX_USAGE );
 
       default:
+        // LCOV_EXCL_START
         if ( isprint( opt ) )
           INTERNAL_ERR(
             "'%c': unaccounted-for getopt_long() return value\n", opt
@@ -526,6 +527,7 @@ use_help:
         INTERNAL_ERR(
           "%d: unaccounted-for getopt_long() return value\n", opt
         );
+        // LCOV_EXCL_STOP
     } // switch
     opts_given[ opt ] = true;
   } // for
@@ -591,11 +593,11 @@ use_help:
   );
 
   if ( print_usage )
-    usage();
+    usage( EX_OK );
 
   if ( print_version ) {
     if ( argc > 2 )                     // cdecl -v foo
-      usage();
+      usage( EX_USAGE );
     printf( "%s\n", PACKAGE_STRING );
     exit( EX_OK );
   }
@@ -621,9 +623,11 @@ use_help:
 
 /**
  * Prints the usage message to standard error and exits.
+ *
+ * @param status The status to exit with.
  */
 noreturn
-static void usage( void ) {
+static void usage( int status ) {
   EPRINTF(
 "usage: " CDECL " [options] [command...]\n"
 "       " CDECL " [options] files...\n"
@@ -686,7 +690,7 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n",
     COPT(TRIGRAPHS),
     COPT(VERSION)
   );
-  exit( EX_USAGE );
+  exit( status );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
@@ -721,7 +725,7 @@ bool is_explicit_int( c_tid_t tid ) {
   return c_tid_is_any( tid, opt_explicit_int[ is_unsigned ] );
 }
 
-void parse_explicit_int( char const *ei_format, c_loc_t const *loc ) {
+bool parse_explicit_int( char const *ei_format, c_loc_t const *loc ) {
   assert( ei_format != NULL );
 
   c_tid_t tid = TB_NONE;
@@ -777,13 +781,15 @@ void parse_explicit_int( char const *ei_format, c_loc_t const *loc ) {
           " must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
           s
         );
-        return;
+        return false;
     } // switch
 
     bool const is_unsigned = c_tid_is_any( tid, TB_UNSIGNED );
     opt_explicit_int[ is_unsigned ] |= tid & c_tid_compl( TB_UNSIGNED );
     tid = TB_NONE;
   } // for
+
+  return true;
 }
 
 void print_explicit_int( FILE *out ) {

@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ explain virtual void* operator new(size_t) @ 65

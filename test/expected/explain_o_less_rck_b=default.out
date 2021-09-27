@@ -1,0 +1,3 @@
+struct S; explain bool operator<(S const&) = default
+            ^
+13: error: default member operator < must also be const

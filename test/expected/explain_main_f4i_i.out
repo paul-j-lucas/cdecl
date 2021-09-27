@@ -1,0 +1,3 @@
+explain int main(int, int, int, int)
+            ^
+13: error: main() must have 0-3 parameters

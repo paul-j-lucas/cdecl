@@ -721,17 +721,6 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_root( c_ast_t *ast );
 
 /**
- * Convenience function for getting the head of the scope list.
- *
- * @param ast The AST to get the scope list of.
- * @return Returns a pointer to the first scope entry.
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-c_scope_t const* c_ast_scope( c_ast_t const *ast ) {
-  return ast->sname.head;
-}
-
-/**
  * Gets the scope name of \a ast in C++ form.
  *
  * @param ast The AST to get the scope name of.

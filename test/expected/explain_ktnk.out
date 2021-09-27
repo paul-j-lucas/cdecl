@@ -1,0 +1,3 @@
+struct T; explain typename T x
+                  ^
+19: error: qualified name expected after "typename"

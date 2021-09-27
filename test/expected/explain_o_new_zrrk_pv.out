@@ -1,0 +1,1 @@
+declare new as non-member operator (size_t, rvalue reference to S) returning pointer to void

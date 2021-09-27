@@ -1,0 +1,4 @@
+explain [[nodiscard]] void f()
+                           ^
+28: warning: [[nodiscard]] functions can not return void
+declare f as non-discardable function returning void

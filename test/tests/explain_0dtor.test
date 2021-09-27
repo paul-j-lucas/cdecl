@@ -1,1 +1,1 @@
-cdecl @ @ -xc++ @ explain ~S() = 0 @ 0
+cdecl @ @ -xc++ @ explain virtual ~S() = 0 @ 0

@@ -564,7 +564,9 @@ static inline int parse_int( int base ) {
  */
 static void set_digraph( char const *token ) {
   if ( opt_lang < LANG_C_95 && false_set( &digraph_warned ) )
-    print_warning( &yylloc, "digraphs not supported until C95\n" );
+    print_warning( &yylloc,
+      "digraphs not supported%s\n", c_lang_which( LANG_MIN(C_95) )
+    );
   SET_TOKEN_TO( token );
 }
 
@@ -578,12 +580,11 @@ static void set_digraph( char const *token ) {
  * @sa set_digraph()
  */
 static void set_trigraph( char const *token ) {
-  if ( (opt_lang == LANG_C_KNR || opt_lang >= LANG_CPP_17) &&
+  if ( (opt_lang < LANG_C_89 || opt_lang > LANG_CPP_14) &&
        false_set( &trigraph_warned ) ) {
     print_warning( &yylloc,
-      opt_lang == LANG_C_KNR ?
-        "trigraphs not supported until C89\n" :
-        "trigraphs no longer supported since C++17\n"
+      "trigraphs not supported%s\n",
+      c_lang_which( LANG_C_MIN(89) | LANG_CPP_MAX(14) )
     );
   }
   SET_TOKEN_TO( token );
@@ -1198,6 +1199,7 @@ declare/{S}({S}|{L})*user-def(ined)? {
 
 ////////// local functions ////////////////////////////////////////////////////
 
+// LCOV_EXCL_START
 /**
  * Called by Flex only when there's a fatal error.
  *
@@ -1215,6 +1217,7 @@ static void lexer_fatal( char const *msg ) {
   // Not reached -- "called" just to silence the "unused function" warning.
   yy_fatal_error( msg );
 }
+// LCOV_EXCL_STOP
 
 /**
  * Update the parser's location.

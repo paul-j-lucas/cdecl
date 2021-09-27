@@ -1,0 +1,3 @@
+struct S; explain bool operator<(S const&, S const&) = default
+            ^
+13: error: default non-member operator < must also be friend

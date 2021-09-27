@@ -1,0 +1,3 @@
+explain auto f()
+        ^
+9: error: "auto" return type is not supported until C++14

@@ -795,9 +795,7 @@ static bool fl_is_nested_type_ok( char const *file, int line,
                                   c_loc_t const *type_loc ) {
   assert( type_loc != NULL );
   if ( !c_sname_empty( &in_attr.current_scope ) && OPT_LANG_IS(C_ANY) ) {
-    fl_print_error( file, line, type_loc,
-      "nested types are not supported in C\n"
-    );
+    fl_print_error( file, line, type_loc, "nested types not supported in C\n" );
     return false;
   }
   return true;
@@ -984,8 +982,7 @@ static void sti_init( show_type_info_t *sti, unsigned show_which,
   sti->show_which = show_which;
   sti->gib_kind = gib_kind;
   c_sglob_init( &sti->sglob );
-  if ( glob != NULL )
-    c_sglob_parse( glob, &sti->sglob );
+  c_sglob_parse( glob, &sti->sglob );
 }
 
 /**
@@ -1490,7 +1487,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>       oper_c_ast
 %type   <ast_pair>  oper_decl_c_astp
 %type   <ast>       param_c_ast
-%type   <ast_list>  param_list_c_ast param_list_c_ast_opt
+%type   <ast_list>  param_list_c_ast param_list_c_ast_exp param_list_c_ast_opt
 %type   <ast_pair>  pointer_decl_c_astp
 %type   <ast_pair>  pointer_to_member_decl_c_astp
 %type   <ast>       pointer_to_member_type_c_ast
@@ -1498,7 +1495,6 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  reference_decl_c_astp
 %type   <ast>       reference_type_c_ast
 %type   <tid>       restrict_qualifier_c_stid
-%type   <tid>       restrict_qualifier_c_stid_opt
 %type   <tid>       rparen_func_qualifier_list_c_stid_opt
 %type   <sname>     scope_sname_c_opt
 %type   <sname>     sname_c sname_c_exp sname_c_opt
@@ -1574,6 +1570,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_ast_list_free( &$$ ); } paren_decl_list_english
 %destructor { DTRACE; c_ast_list_free( &$$ ); } paren_decl_list_english_opt
 %destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast
+%destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast_exp
 %destructor { DTRACE; c_ast_list_free( &$$ ); } param_list_c_ast_opt
 
 // name
@@ -2309,7 +2306,11 @@ scoped_command
 /// set command ///////////////////////////////////////////////////////////////
 
 set_command
-  : Y_SET                         { option_set( NULL, NULL, NULL, NULL ); }
+  : Y_SET
+    {
+      if ( !option_set( NULL, NULL, NULL, NULL ) )
+        PARSE_ABORT();
+    }
   | Y_SET set_option_list
   ;
 
@@ -2321,9 +2322,11 @@ set_option_list
 set_option
   : Y_SET_OPTION set_option_value_opt
     {
-      option_set( $1, &@1, $2, &@2 );
+      bool const ok = option_set( $1, &@1, $2, &@2 );
       free( $1 );
       free( $2 );
+      if ( !ok )
+        PARSE_ABORT();
     }
   ;
 
@@ -2621,10 +2624,7 @@ asm_declaration_c
   : Y_ASM lparen_exp str_lit_exp rparen_exp
     {
       free( $3 );
-      print_error( &@1,
-        "%s declarations are not supported by %s\n",
-        L_ASM, CDECL
-      );
+      print_error( &@1, "%s declarations not supported by %s\n", L_ASM, CDECL );
       PARSE_ABORT();
     }
   ;
@@ -2762,7 +2762,7 @@ namespace_declaration_c
       //
       if ( c_sname_count( &$3 ) > 1 && unsupported( LANG_CPP_MIN(17) ) ) {
         print_error( &@3,
-          "nested %s declarations are not supported%s\n",
+          "nested %s declarations not supported%s\n",
           L_NAMESPACE, c_lang_which( LANG_CPP_MIN(17) )
         );
         c_sname_free( &$3 );
@@ -2964,8 +2964,7 @@ template_declaration_c
   : Y_TEMPLATE
     {
       print_error( &@1,
-        "%s declarations are not supported by %s\n",
-        L_TEMPLATE, CDECL
+        "%s declarations not supported by %s\n", L_TEMPLATE, CDECL
       );
       PARSE_ABORT();
     }
@@ -3630,7 +3629,8 @@ knr_func_or_constructor_decl_c_ast
      * cause grammar conflicts if they were separate rules in an LALR(1)
      * parser).
      */
-  : Y_NAME '(' param_list_c_ast_opt rparen_func_qualifier_list_c_stid_opt
+  : Y_NAME '(' param_list_c_ast_opt ')' noexcept_c_stid_opt
+    func_equals_c_stid_opt
     {
       if ( OPT_LANG_IS(C_MIN(99)) ) {
         //
@@ -3646,10 +3646,12 @@ knr_func_or_constructor_decl_c_ast
       }
 
       DUMP_START( "knr_func_or_constructor_decl_c_ast",
-                  "NAME '(' param_list_c_ast_opt ')'" );
+                  "NAME '(' param_list_c_ast_opt ')' noexcept_c_stid_opt "
+                  "func_equals_c_stid_opt" );
       DUMP_STR( "NAME", $1 );
       DUMP_AST_LIST( "param_list_c_ast_opt", $3 );
-      DUMP_TID( "func_qualifier_list_c_stid_opt", $4 );
+      DUMP_TID( "noexcept_c_stid_opt", $5 );
+      DUMP_TID( "func_equals_c_stid_opt", $6 );
 
       c_sname_t sname;
       c_sname_init_name( &sname, $1 );
@@ -3666,13 +3668,15 @@ knr_func_or_constructor_decl_c_ast
 
         $$ = c_ast_new_gc( K_FUNCTION, &@$ );
         $$->as.func.ret_ast = ret_ast;
-      } else {
+        $$->type.stids = c_tid_check( $5 | $6, C_TPID_STORE );
+      }
+      else {
         //
         // In C++, encountering a name followed by '(' declares an in-class
         // constructor.
         //
         $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-        $$->type.stids = c_tid_check( $4, C_TPID_STORE );
+        $$->type.stids = c_tid_check( $5 | $6, C_TPID_STORE );
       }
 
       c_ast_set_sname( $$, &sname );
@@ -3829,7 +3833,7 @@ func_equals_c_stid_opt
         print_error( &@2, "'0' expected\n" );
         PARSE_ABORT();
       }
-      $$ = TS_PURE_VIRTUAL | TS_VIRTUAL;
+      $$ = TS_PURE_VIRTUAL;
     }
   | '=' error
     {
@@ -3843,6 +3847,15 @@ func_equals_c_stid_opt
   ;
 
 /// Gibberish C/C++ function(like) parameter declaration //////////////////////
+
+param_list_c_ast_exp
+  : param_list_c_ast
+  | error
+    {
+      slist_init( &$$ );
+      elaborate_error( "parameter list expected" );
+    }
+  ;
 
 param_list_c_ast_opt
   : /* empty */                   { slist_init( &$$ ); }
@@ -4121,11 +4134,11 @@ reference_decl_c_astp
 
 reference_type_c_ast
   : // in_attr: type_c_ast
-    Y_AMPER restrict_qualifier_c_stid_opt
+    Y_AMPER type_qualifier_list_c_stid_opt
     {
       DUMP_START( "reference_type_c_ast", "&" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
-      DUMP_TID( "restrict_qualifier_c_stid_opt", $2 );
+      DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
 
       $$ = c_ast_new_gc( K_REFERENCE, &@$ );
       $$->type.stids = c_tid_check( $2, C_TPID_STORE );
@@ -4136,11 +4149,11 @@ reference_type_c_ast
     }
 
   | // in_attr: type_c_ast
-    Y_AMPER2 restrict_qualifier_c_stid_opt
+    Y_AMPER2 type_qualifier_list_c_stid_opt
     {
       DUMP_START( "reference_type_c_ast", "&&" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
-      DUMP_TID( "restrict_qualifier_c_stid_opt", $2 );
+      DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
 
       $$ = c_ast_new_gc( K_RVALUE_REFERENCE, &@$ );
       $$->type.stids = c_tid_check( $2, C_TPID_STORE );
@@ -4149,11 +4162,6 @@ reference_type_c_ast
       DUMP_AST( "reference_type_c_ast", $$ );
       DUMP_END();
     }
-  ;
-
-restrict_qualifier_c_stid_opt
-  : /* empty */                   { $$ = TS_NONE; }
-  | restrict_qualifier_c_stid
   ;
 
 /// Gibberish typedef type declaration ////////////////////////////////////////
@@ -4227,7 +4235,7 @@ user_defined_conversion_decl_c_astp
 
 user_defined_literal_decl_c_astp
   : // in_attr: type_c_ast
-    user_defined_literal_c_ast lparen_exp param_list_c_ast ')'
+    user_defined_literal_c_ast lparen_exp param_list_c_ast_exp ')'
     noexcept_c_stid_opt trailing_return_type_c_ast_opt
     {
       c_ast_t *const udl_c_ast = $1;
@@ -4236,11 +4244,11 @@ user_defined_literal_decl_c_astp
       c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "user_defined_literal_decl_c_astp",
-                  "user_defined_literal_c_ast '(' param_list_c_ast ')' "
+                  "user_defined_literal_c_ast '(' param_list_c_ast_exp ')' "
                   "noexcept_c_stid_opt trailing_return_type_c_ast_opt" );
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "user_defined_literal_c_ast", udl_c_ast );
-      DUMP_AST_LIST( "param_list_c_ast", $3 );
+      DUMP_AST_LIST( "param_list_c_ast_exp", $3 );
       DUMP_TID( "noexcept_c_stid_opt", noexcept_stid );
       DUMP_AST( "trailing_return_type_c_ast_opt", trailing_ret_ast );
 
@@ -5207,7 +5215,7 @@ attribute_c_atid
     {
       if ( c_sname_count( &$1 ) > 1 ) {
         print_warning( &@1,
-          "\"%s\": namespaced attributes are not supported by %s\n",
+          "\"%s\": namespaced attributes not supported by %s\n",
           c_sname_full_name( &$1 ), CDECL
         );
       }
@@ -5245,7 +5253,7 @@ attribute_str_arg_c_opt
   | '(' str_lit_exp rparen_exp
     {
       print_warning( &@1,
-        "attribute arguments are not supported by %s (ignoring)\n", CDECL
+        "attribute arguments not supported by %s (ignoring)\n", CDECL
       );
       free( $2 );
     }
@@ -6244,7 +6252,7 @@ sname_c
     {
       // see the comment in "of_scope_english"
       if ( unsupported( LANG_CPP_ANY ) ) {
-        print_error( &@2, "scoped names are not supported in C\n" );
+        print_error( &@2, "scoped names not supported in C\n" );
         PARSE_ABORT();
       }
 
@@ -6613,7 +6621,7 @@ extern_linkage_c_stid
   | Y_EXTERN linkage_stid '{'
     {
       print_error( &@3,
-        "scoped linkage declarations are not supported by %s\n",
+        "scoped linkage declarations not supported by %s\n",
         CDECL
       );
       PARSE_ABORT();
@@ -6629,7 +6637,7 @@ glob
   : Y_GLOB
     {
       if ( OPT_LANG_IS(C_ANY) && strchr( $1, ':' ) != NULL ) {
-        print_error( &@1, "scoped names are not supported in C\n" );
+        print_error( &@1, "scoped names not supported in C\n" );
         free( $1 );
         PARSE_ABORT();
       }
@@ -6725,7 +6733,7 @@ of_scope_english
       // better error location.
       //
       if ( unsupported( LANG_CPP_ANY ) ) {
-        print_error( &@2, "scoped names are not supported in C\n" );
+        print_error( &@2, "scoped names not supported in C\n" );
         PARSE_ABORT();
       }
       $$ = $3;

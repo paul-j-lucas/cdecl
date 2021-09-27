@@ -529,6 +529,14 @@ c_ast_t const* c_ast_is_ptr_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
   return c_ast_is_tid_any_impl( ast, cv_stids, tids );
 }
 
+bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname ) {
+  ast = c_ast_is_ref_to_tid_any( ast, TB_ANY_CLASS );
+  if ( ast == NULL )
+    return false;
+  return  c_sname_cmp( &ast->sname, sname ) == 0 ||
+          c_sname_cmp( &ast->as.ecsu.ecsu_sname, sname ) == 0;
+}
+
 c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids ) {
   c_tid_t cv_stids;
   ast = c_ast_if_unreference( ast, &cv_stids );
@@ -682,34 +690,51 @@ unsigned c_ast_oper_overload( c_ast_t const *ast ) {
 
   //
   // The user didn't specify either member or non-member explicitly: see if it
-  // has a member-only or non-member-only type qualifier.
+  // has a member-only type qualifier.
   //
   if ( c_type_is_tid_any( &ast->type, TS_MEMBER_FUNC_ONLY ) )
     return C_OP_MEMBER;
-  if ( c_type_is_tid_any( &ast->type, TS_NONMEMBER_FUNC_ONLY ) )
-    return C_OP_NON_MEMBER;
 
-  //
-  // Special case for new & delete operators: they're member operators if they
-  // have a name (of a class) or declared static.
-  //
+  size_t const n_params = c_ast_params_count( ast );
+
   switch ( ast->as.oper.oper_id ) {
     case C_OP_NEW:
     case C_OP_NEW_ARRAY:
     case C_OP_DELETE:
     case C_OP_DELETE_ARRAY:
+      //
+      // Special case for new and delete operators: they're member operators if
+      // they have a name (of a class) or declared static.
+      //
       return  !c_ast_empty_name( ast ) ||
               c_type_is_tid_any( &ast->type, TS_STATIC ) ?
         C_OP_MEMBER : C_OP_NON_MEMBER;
+
+    case C_OP_MINUS2:
+    case C_OP_PLUS2:
+      //
+      // Special case for ++ and -- operators: if the number of parameters is:
+      //
+      //  0. Member.
+      //  1. If the type of the argument is int, member; else, non-member.
+      //  2. Non-member.
+      //
+      if ( n_params == 1 ) {
+        c_ast_t const *const param_ast = c_param_ast( c_ast_params( ast ) );
+        return c_ast_is_builtin_any( param_ast, TB_INT ) ?
+          C_OP_MEMBER : C_OP_NON_MEMBER;
+      }
+      // The 0 and 2 cases are handled below.
+      break;
+
     default:
       /* suppress warning */;
   } // switch
 
   //
-  // No such qualifier: try to infer whether it's a member or non-member based
-  // on the number of parameters given.
+  // Try to infer whether it's a member or non-member based on the number of
+  // parameters given.
   //
-  size_t const n_params = c_ast_params_count( ast );
   if ( n_params == op->params_min )
     return C_OP_MEMBER;
   if ( n_params == op->params_max )
@@ -814,6 +839,16 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
   for (;;) {
     ast = c_ast_untypedef( ast );
     if ( ast->kind_id != K_REFERENCE )
+      return ast;
+    ast = ast->as.ptr_ref.to_ast;
+  } // for
+}
+
+c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast ) {
+  // This is a loop to implement the reference-collapsing rule.
+  for (;;) {
+    ast = c_ast_untypedef( ast );
+    if ( ast->kind_id != K_RVALUE_REFERENCE )
       return ast;
     ast = ast->as.ptr_ref.to_ast;
   } // for

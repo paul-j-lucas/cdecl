@@ -110,6 +110,7 @@ Paul J. Lucas <paul@lucasmail.org>
 	added checking for reserved identifiers
 	added "did you mean ...?" suggestions
 	added Microsoft calling convention support
+	added optional code coverage
 	now ignoring C /*...*/ and C++ // comments in lexer
 	now treating cdecl keywords in declarations as ordinary names
 	revamped the manual page

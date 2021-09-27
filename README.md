@@ -161,6 +161,16 @@ In either case,
 then follow the generic installation instructions given in
 [`INSTALL`](https://github.com/paul-j-lucas/cdecl/blob/master/INSTALL).
 
+If you would like to generate code coverage reports,
+you will also need
+`gcov` (part of `gcc`)
+and
+[`lcov`](https://github.com/linux-test-project/lcov);
+then instead do:
+
+    ./configure --enable-code-coverage
+    make check-code-coverage
+
 If you would like to generate the developer documentation,
 you will also need
 [Doxygen](http://www.doxygen.org/);

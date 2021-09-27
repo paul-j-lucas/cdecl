@@ -1,0 +1,1 @@
+cdecl @ @ -d @ explain void f( int a[], int b[4], int c[*], int d[const], int e[static 6] ) @ 0

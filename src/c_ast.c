@@ -91,7 +91,7 @@ static bool c_ast_has_cycle( c_ast_t const *ast ) {
   for ( c_ast_t const *const start_ast = ast; ast->parent_ast != NULL; ) {
     ast = ast->parent_ast;
     if ( unlikely( ast == start_ast ) )
-      return true;
+      return true;                      // LCOV_EXCL_LINE
   } // for
   return false;
 }

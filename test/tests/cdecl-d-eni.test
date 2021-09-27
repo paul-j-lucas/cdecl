@@ -1,0 +1,1 @@
+cdecl @ @ -d -xc++ @ explain enum E : int @ 0

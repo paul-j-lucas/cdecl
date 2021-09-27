@@ -29,13 +29,42 @@ EXTRA_DIST =	bootstrap \
 		README-blocks.txt \
 		README.md
 
+COVERAGE_OUT =	$(top_builddir)/coverage.out
+COVERAGE_DIR =	coverage
+
+LCOV_FLAGS =	--capture \
+		--config-file "$(top_srcdir)/lcovrc" \
+		--directory "$(abs_top_builddir)" \
+		--exclude "*/autocomplete.c" \
+		--exclude "*/lexer.c" \
+		--exclude "*/parser.c" \
+		--output-file $(COVERAGE_OUT)
+
+GENHTML_FLAGS=	--legend \
+		--title "$(PACKAGE_NAME)-$(PACKAGE_VERSION) Code Coverage" \
+		--output-directory $(top_builddir)/$(COVERAGE_DIR)
+
 .PHONY: doc docs
 
 doc docs:
 	@./makedoc.sh
 
-clean-local:
+check-coverage:
+	$(MAKE) $(AM_MAKEFLAGS) check
+	$(LCOV) $(LCOV_FLAGS)
+	$(GENHTML) $(GENHTML_FLAGS) $(COVERAGE_OUT)
+	@echo "file://$(abs_builddir)/$(COVERAGE_DIR)/index.html"
+
+clean-local: clean-coverage
 	rm -rf docs
+
+distclean-local: distclean-coverage
+
+clean-coverage-local:
+	rm -f $(COVERAGE_OUT)
+
+distclean-coverage-local: clean-coverage-local
+	rm -fr $(COVERAGE_DIR)
 
 update-gnulib:
 	gnulib-tool --add-import

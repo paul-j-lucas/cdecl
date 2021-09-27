@@ -23,6 +23,24 @@
 AC_INIT([cdecl],[11.0],[https://github.com/paul-j-lucas/cdecl/issues],[],[https://github.com/paul-j-lucas/cdecl])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
+AM_EXTRA_RECURSIVE_TARGETS([clean-coverage distclean-coverage])
+
+# Testing feature: code coverage (disabled by default)
+AC_ARG_ENABLE([coverage],
+  AS_HELP_STRING([--enable-coverage], [enable code coverage]),
+  [],
+  [enable_coverage=no]
+)
+AS_IF([test x$enable_coverage = xyes],
+  # Autconf 5.10.3: C Compiler Characteristics
+  #
+  # If output variable CFLAGS was not already set, set it to -g -O2 for the GNU
+  # C compiler (-O2 on systems where GCC does not accept -g), or -g for other
+  # compilers. If your package does not like this default, then it is
+  # acceptable to insert the line ': ${CFLAGS=""}' after AC_INIT and before
+  # AC_PROG_CC to select an empty default instead.
+  [: ${CFLAGS=""}]
+)
 
 # Checks for programs.
 AC_LANG(C)
@@ -165,11 +183,31 @@ AS_IF([test x$enable_bison_debug = xyes],
     [Define to 1 if Bison debugging is enabled.])]
 )
 
+# Testing feature: code coverage (disabled by default)
+AS_IF([test x$enable_coverage = xyes],
+  [
+    AS_IF([test x$GCC != xyes],
+      [AC_MSG_ERROR([gcc is required for code coverage])])
+    AC_CHECK_TOOL([GCOV], [gcov], [gcov])
+    AS_IF([test x$GCOV = "x:"],
+      [AC_MSG_ERROR([required program "gcov" for code coverage not found])])
+    AC_CHECK_PROG([LCOV], [lcov], [lcov])
+    AS_IF([test x$LCOV = x],
+      [AC_MSG_ERROR([required program "lcov" for code coverage not found])])
+    AC_CHECK_PROG([GENHTML], [genhtml], [genhtml])
+    AS_IF([test x$GENHTML = x],
+      [AC_MSG_ERROR([required program "genhtml" for code coverage not found])])
+    AC_DEFINE([ENABLE_CODE_COVERAGE], [1],
+      [Define to 1 if code coverage is enabled.])
+  ]
+)
+
 # Makefile conditionals.
-AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline      != xno])
-AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test x$enable_cdecl_debug = xyes])
-AM_CONDITIONAL([ENABLE_BISON_DEBUG],  [test x$enable_bison_debug = xyes])
-AM_CONDITIONAL([ENABLE_FLEX_DEBUG],   [test x$enable_flex_debug  = xyes])
+AM_CONDITIONAL([WITH_READLINE],         [test x$with_readline       != xno])
+AM_CONDITIONAL([ENABLE_CDECL_DEBUG],    [test x$enable_cdecl_debug  = xyes])
+AM_CONDITIONAL([ENABLE_CODE_COVERAGE],  [test x$enable_coverage     = xyes])
+AM_CONDITIONAL([ENABLE_BISON_DEBUG],    [test x$enable_bison_debug  = xyes])
+AM_CONDITIONAL([ENABLE_FLEX_DEBUG],     [test x$enable_flex_debug   = xyes])
 
 # Miscellaneous.
 AX_C___ATTRIBUTE__

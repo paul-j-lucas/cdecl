@@ -26,9 +26,10 @@ AUTOMAKE_OPTIONS = 1.12			# needed for TEST_LOG_DRIVER
 # Command-line option tests
 # =========================
 #
-TESTS =	tests/cdecl--no-semicolon.test \
+TESTS =	tests/cdecl--kolor.test \
+	tests/cdecl--no-semicolon.test \
 	tests/cdecl--no-typedefs.test \
-	tests/cdecl-e-const_cast_pi.test \
+	tests/cdecl-9.test \
 	tests/cdecl-Ii.test \
 	tests/cdecl-Iiu.test \
 	tests/cdecl-Il.test \
@@ -44,12 +45,27 @@ TESTS =	tests/cdecl--no-semicolon.test \
 	tests/cdecl-Iulull.test \
 	tests/cdecl-Ius.test \
 	tests/cdecl-Ix.test \
+	tests/cdecl-e-const_cast_pi.test \
+	tests/cdecl-h.test \
+	tests/cdecl-k.test \
+	tests/cdecl-knever.test \
+	tests/cdecl-kxxx.test \
 	tests/cdecl-s.test \
 	tests/cdecl-t.test
 
 if ENABLE_CDECL_DEBUG
-TESTS+=	tests/cdecl-d.test \
-	tests/cdecl--debug.test
+TESTS+=	tests/cdecl--debug.test \
+	tests/cdecl-d-+i.test \
+	tests/cdecl-d-al8i.test \
+	tests/cdecl-d-alli.test \
+	tests/cdecl-d-cmo_exclam__b.test \
+	tests/cdecl-d-eni.test \
+	tests/cdecl-d-f2i_pi.test \
+	tests/cdecl-d-f_v.test \
+	tests/cdecl-d-faia4iaviacias6i_v.test \
+	tests/cdecl-d-pmki.test \
+	tests/cdecl-d-udc_i.test \
+	tests/cdecl-d-z.test
 endif
 
 #
@@ -210,7 +226,7 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_c32-c99.test \
 	tests/declare_c8-c++17.test \
 	tests/declare_cf_v-c.test \
-	tests/declare_cnmf_v.test \
+	tests/declare_cnmf_v-c.test \
 	tests/declare_cri.test \
 	tests/declare_en-knr.test \
 	tests/declare_enc-c.test \
@@ -254,10 +270,12 @@ TESTS+=	tests/declare_0f_v-c.test \
 	tests/declare_nri.test \
 	tests/declare_pfkr_i.test \
 	tests/declare_pk.test \
+	tests/declare_prgi.test \
 	tests/declare_puw3.test \
 	tests/declare_pv-knr.test \
 	tests/declare_rgf_v.test \
 	tests/declare_rtf_v-c.test \
+	tests/declare_rti.test \
 	tests/declare_sb.test \
 	tests/declare_sc-knr.test \
 	tests/declare_sc16.test \
@@ -386,6 +404,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_fv_v.test \
 	tests/explain_gau.test \
 	tests/explain_gif_v.test \
+	tests/explain_i-reserved-c.test \
 	tests/explain_i_i.test \
 	tests/explain_i_pfd_i.test \
 	tests/explain_i_pi.test \
@@ -496,12 +515,18 @@ TESTS+=	tests/ci.test \
 TESTS+=	tests/explain_+i-c.test \
 	tests/explain_0f_v-02.test \
 	tests/explain_0f_v-c.test \
+	tests/explain_a4f_i.test \
+	tests/explain_a4v.test \
 	tests/explain_ac9i.test \
-	tests/explain_af.test \
+	tests/explain_af-c.test \
 	tests/explain_al3_c.test \
+	tests/explain_al8ty_i.test \
+	tests/explain_alf_i.test \
+	tests/explain_alrgi.test \
 	tests/explain_as9i.test \
 	tests/explain_b-c89.test \
 	tests/explain_b_ai.test \
+	tests/explain_c-02.test \
 	tests/explain_c-c.test \
 	tests/explain_c16-c++03.test \
 	tests/explain_c16-c99.test \
@@ -518,6 +543,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_f_k-knr.test \
 	tests/explain_f_typedef_ai.test \
 	tests/explain_fasv_v.test \
+	tests/explain_fd_i-cknr.test \
 	tests/explain_fel_v.test \
 	tests/explain_felcc_v.test \
 	tests/explain_felel_v.test \
@@ -526,6 +552,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_fiiv_v.test \
 	tests/explain_fiv_v.test \
 	tests/explain_fkr_pi.test \
+	tests/explain_fkrel_i.test \
 	tests/explain_fn.test \
 	tests/explain_frg_v.test \
 	tests/explain_fsi_v.test \
@@ -560,16 +587,21 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_lv.test \
 	tests/explain_lwt.test \
 	tests/explain_main_f2c_i.test \
+	tests/explain_main_f4i_i.test \
 	tests/explain_main_f_v.test \
 	tests/explain_main_fi_i.test \
 	tests/explain_main_fiapc_hi.test \
+	tests/explain_main_fiapci_i.test \
 	tests/explain_main_fic_i.test \
 	tests/explain_main_fipc_i.test \
 	tests/explain_main_fippi_i.test \
+	tests/explain_main_fkr_i.test \
+	tests/explain_main_sf_i-c.test \
 	tests/explain_p_cdecl_v.test \
 	tests/explain_pmi-c.test \
 	tests/explain_puw3.test \
 	tests/explain_pv-knr.test \
+	tests/explain_rga4i.test \
 	tests/explain_rgf_v.test \
 	tests/explain_ri-c.test \
 	tests/explain_rtf_v-error.test \
@@ -611,17 +643,20 @@ TESTS+=	tests/k_typedef_i-c.test
 # C++ declare alt-tokens tests
 # ============================
 #
-TESTS+=	tests/declare_alttokens_o_amper2_rck_b.test \
+TESTS+=	tests/declare_alttokens_dtor.test \
+	tests/declare_alttokens_o_amper2_rck_b.test \
 	tests/declare_alttokens_o_amper_eq_rki_rk.test \
 	tests/declare_alttokens_o_amper_rcki_k.test \
 	tests/declare_alttokens_o_circ_eq_i_rk.test \
 	tests/declare_alttokens_o_circ_rcki_k.test \
 	tests/declare_alttokens_o_exclam_eq_rcki_b.test \
 	tests/declare_alttokens_o_exclam_rck_b.test \
+	tests/declare_alttokens_o_pipe2_rck_b.test \
 	tests/declare_alttokens_o_pipe_2rck_k.test \
 	tests/declare_alttokens_o_pipe_eq_i_rk.test \
 	tests/declare_alttokens_o_pipe_i_rk.test \
-	tests/declare_alttokens_o_tilde_k.test
+	tests/declare_alttokens_o_tilde_k.test \
+	tests/declare_alttokens_rri.test
 
 #
 # C++ declare digraph & trigraph tests
@@ -642,8 +677,10 @@ TESTS+=	tests/declare_digraphs_a9i.test \
 # C++ explain digraph & trigraph tests
 # ====================================
 #
-TESTS+=	tests/explain_digraphs_a9i.test \
+TESTS+=	tests/explain_digraphs_a9i-c89.test \
+	tests/explain_digraphs_a9i.test \
 	tests/explain_digraphs_nrfi_v-c++.test \
+	tests/explain_trigraphs_a9i-c++.test \
 	tests/explain_trigraphs_a9i.test \
 	tests/explain_trigraphs_nrfi_v-c++11.test \
 	tests/explain_trigraphs_o_circ_eq_i_rk.test \
@@ -782,6 +819,7 @@ TESTS+=	tests/show_all.test \
 	tests/show_all_predefined_glob-01.test \
 	tests/show_all_predefined_glob-02.test \
 	tests/show_all_predefined_glob-03.test \
+	tests/show_all_predefined_glob-04.test \
 	tests/show_all_predefined_typedef-c++.test \
 	tests/show_all_typedef.test \
 	tests/show_cpf_cpcc_v_using.test \
@@ -957,6 +995,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_ctor_i.test \
 	tests/declare_dtor.test \
 	tests/declare_ecf_v.test \
+	tests/declare_efi.test \
 	tests/declare_enc.test \
 	tests/declare_enk.test \
 	tests/declare_epctor_i.test \
@@ -1015,6 +1054,8 @@ TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_a_cd_i.test \
 	tests/declare_a_nua_f.test \
 	tests/declare_ai-c++11.test \
+	tests/declare_ari.test \
+	tests/declare_cnmf_v.test \
 	tests/declare_epf.test \
 	tests/declare_exsi.test \
 	tests/declare_fcf.test \
@@ -1024,8 +1065,12 @@ TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_pri.test \
 	tests/declare_rrgi.test \
 	tests/declare_rv.test \
+	tests/declare_sctor.test \
 	tests/declare_smi.test \
-	tests/declare_v+f_v.test
+	tests/declare_thf_v.test \
+	tests/declare_udl_pcci_i.test \
+	tests/declare_v+f_v.test \
+	tests/declare_xvi.test
 
 #
 # C++ declare member operator tests
@@ -1225,7 +1270,8 @@ TESTS+=	tests/declare_+udl_c_i.test \
 # C++ explain tests
 # =================
 #
-TESTS+=	tests/explain_+ctor.test \
+TESTS+=	tests/explain_+compl_dtor.test \
+	tests/explain_+ctor.test \
 	tests/explain_+ctor_i.test \
 	tests/explain_+dtor.test \
 	tests/explain_0dtor.test \
@@ -1239,6 +1285,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_a_dep_i.test \
 	tests/explain_a_mu_f_v.test \
 	tests/explain_a_mu_i.test \
+	tests/explain_a_nd_f_v.test \
 	tests/explain_a_nua_k-1.test \
 	tests/explain_a_nua_k-2.test \
 	tests/explain_al0_c-c++.test \
@@ -1249,6 +1296,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_cpmci.test \
 	tests/explain_cpmi.test \
 	tests/explain_crf_v.test \
+	tests/explain_ctor=default.test \
 	tests/explain_ctor_i.test \
 	tests/explain_cvf_v.test \
 	tests/explain_dtor.test \
@@ -1271,6 +1319,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_f__v.test \
 	tests/explain_f_cpmi.test \
 	tests/explain_f_pmi.test \
+	tests/explain_f_v=delete.test \
 	tests/explain_fa_cd_i_i.test \
 	tests/explain_fa_dep_i_v.test \
 	tests/explain_fa_mu_i_v.test \
@@ -1282,6 +1331,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_grtri.test \
 	tests/explain_grtrri.test \
 	tests/explain_i+.test \
+	tests/explain_i-reserved-c++.test \
 	tests/explain_i2+.test \
 	tests/explain_ictor_i.test \
 	tests/explain_ii-c++.test \
@@ -1295,8 +1345,6 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_nxf_v.test \
 	tests/explain_nxff_v.test \
 	tests/explain_nxtf_v.test \
-	tests/explain_o_new_a_z_pv.test \
-	tests/explain_o_new_z_pv.test \
 	tests/explain_ovyf.test \
 	tests/explain_pmf_i.test \
 	tests/explain_pmf_pc.test \
@@ -1305,6 +1353,7 @@ TESTS+=	tests/explain_+ctor.test \
 	tests/explain_pmrgi.test \
 	tests/explain_ra3i.test \
 	tests/explain_rf_v.test \
+	tests/explain_rgi-c++11.test \
 	tests/explain_ri.test \
 	tests/explain_rrf_v.test \
 	tests/explain_sf__i.test \
@@ -1327,11 +1376,16 @@ TESTS+=	tests/explain_+ctor.test \
 #
 TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_+dtor-error.test \
+	tests/explain_0f_v-03.test \
 	tests/explain_a_cd_i.test \
 	tests/explain_a_nua_f.test \
+	tests/explain_af-c++11.test \
 	tests/explain_ai-c++11.test \
 	tests/explain_ari.test \
 	tests/explain_cepctor_i.test \
+	tests/explain_cfi.test \
+	tests/explain_cri.test \
+	tests/explain_ctor_2i=default.test \
 	tests/explain_ecf_v-Rstr-03.test \
 	tests/explain_efd.test \
 	tests/explain_enc.test \
@@ -1339,6 +1393,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_exsi.test \
 	tests/explain_f+_v.test \
 	tests/explain_f__v-c++03.test \
+	tests/explain_f_v=default.test \
 	tests/explain_f_v__v.test \
 	tests/explain_fa_v-c++17.test \
 	tests/explain_fac3_v-c++.test \
@@ -1348,12 +1403,15 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_fpcf_i_v.test \
 	tests/explain_frri_v-c++03.test \
 	tests/explain_fsf_v.test \
+	tests/explain_i+w3.test \
+	tests/explain_ktnk.test \
 	tests/explain_nrfi_v-c++-error.test \
 	tests/explain_p_typedef_ri.test \
 	tests/explain_pcf_i.test \
 	tests/explain_pmri.test \
 	tests/explain_pri.test \
 	tests/explain_prri.test \
+	tests/explain_rf_i.test \
 	tests/explain_rf_v-c++03.test \
 	tests/explain_rr.test \
 	tests/explain_rrf_v-c++03.test \
@@ -1370,7 +1428,8 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_thf_v.test \
 	tests/explain_unknown_attribute.test \
 	tests/explain_v+f_v.test \
-	tests/explain_xif_i.test
+	tests/explain_xif_i.test \
+	tests/explain_xxf_v-c++11.test
 
 #
 # C++ explain operator tests
@@ -1394,6 +1453,7 @@ TESTS+=	tests/explain_+co_eq2_rck_b=default.test \
 	tests/explain_co_star_rk_rk.test \
 	tests/explain_co_tilde_k.test \
 	tests/explain_dtor=delete.test \
+	tests/explain_f+o_exclam__b.test \
 	tests/explain_fo_eq2_2crk_b=default.test \
 	tests/explain_fo_eq2_2k_b=default.test \
 	tests/explain_mo_less_eq_greater_rck_a.test \
@@ -1452,6 +1512,9 @@ TESTS+=	tests/explain_+co_eq2_rck_b=default.test \
 	tests/explain_o_minus_eq_rki_rk.test \
 	tests/explain_o_minus_i_k.test \
 	tests/explain_o_minus_rcki_k.test \
+	tests/explain_o_new_a_z_pv.test \
+	tests/explain_o_new_z_pv.test \
+	tests/explain_o_new_zrrk_pv.test \
 	tests/explain_o_parens_2i_v.test \
 	tests/explain_o_parens_3i_v.test \
 	tests/explain_o_parens_i_v.test \
@@ -1467,6 +1530,8 @@ TESTS+=	tests/explain_+co_eq2_rck_b=default.test \
 	tests/explain_o_pipe_eq_i_rk.test \
 	tests/explain_o_pipe_eq_rki_rk.test \
 	tests/explain_o_pipe_i_rk.test \
+	tests/explain_o_plus2__rk.test \
+	tests/explain_o_plus2_rk_rk.test \
 	tests/explain_o_plus2_rki_rk.test \
 	tests/explain_o_plus_2rck_k.test \
 	tests/explain_o_plus_eq_i_rk.test \
@@ -1509,6 +1574,8 @@ TESTS+=	tests/explain_+co_eq2_rck_b=default-cpp17.test \
 	tests/explain_+o_exclam_eq_rck_rk=delete.test \
 	tests/explain_cmo_less_eq_greater_rck_i=default.test \
 	tests/explain_co_exclam_k_b.test \
+	tests/explain_co_less_i_b=default.test \
+	tests/explain_co_less_rck_i=default.test \
 	tests/explain_fo_eq2_crki_b=default.test \
 	tests/explain_fo_eq2_crkk_b=default.test \
 	tests/explain_fo_eq2_crkrk_b=default.test \
@@ -1517,23 +1584,34 @@ TESTS+=	tests/explain_+co_eq2_rck_b=default-cpp17.test \
 	tests/explain_fo_eq2_kcrk_b=default.test \
 	tests/explain_fo_eq2_ki_b=default.test \
 	tests/explain_fo_eq2_rkcrk_b=default.test \
+	tests/explain_fo_exclam__b.test \
 	tests/explain_fo_less_eq_greater_2rck_i=default.test \
 	tests/explain_fo_plus_2crk_b=default.test \
 	tests/explain_o_arrow_i.test \
 	tests/explain_o_brackets_2i_i.test \
+	tests/explain_o_delete__v.test \
+	tests/explain_o_delete_i_v.test \
+	tests/explain_o_delete_pv_i.test \
+	tests/explain_o_eq_rck_v=default.test \
 	tests/explain_o_exclam_2i.test \
+	tests/explain_o_exclam__b=delete.test \
+	tests/explain_o_less_2rck_b=default.test \
+	tests/explain_o_less_rck_b=default.test \
 	tests/explain_o_minus2_d_rk.test \
 	tests/explain_o_minus2_rkd_rk.test \
 	tests/explain_o_minus_iel_i.test \
+	tests/explain_o_new_i_pv.test \
 	tests/explain_o_new_z_z.test \
 	tests/explain_o_plus2_d_rk.test \
 	tests/explain_o_plus2_rkd_rk.test \
 	tests/explain_o_plus_iel_i.test \
+	tests/explain_o_plus_kel.test \
 	tests/explain_o_qmark_colon_k2i_i.test \
 	tests/explain_ov_o_exclam_k_b.test \
 	tests/explain_ro_exclam_k_b.test \
 	tests/explain_rro_exclam_k_b.test \
 	tests/explain_vo_exclam_k_b.test \
+	tests/explain_vv_o_new_z.test \
 	tests/explain_yo_exclam_k_b.test
 
 #
@@ -1584,6 +1662,7 @@ TESTS+=	tests/explain_+udl_c_i.test \
 	tests/explain_udl_c16_i.test \
 	tests/explain_udl_c32_i.test \
 	tests/explain_udl_c8_i.test \
+	tests/explain_udl_c_i-01.test \
 	tests/explain_udl_c_i.test \
 	tests/explain_udl_ld_i.test \
 	tests/explain_udl_pcc16ul_i.test \
@@ -1604,7 +1683,9 @@ TESTS+=	tests/explain_+udl_c_i.test \
 # C++ explain user-defined conversion error tests
 # ===============================================
 #
-TESTS+=	tests/explain_udc_a4i.test
+TESTS+=	tests/explain_fudc_i.test \
+	tests/explain_sudc_i.test \
+	tests/explain_udc_a4i.test
 
 #
 # C++ explain user-defined literal error tests
@@ -1745,11 +1826,13 @@ TESTS+=	tests/help-c++.test \
 	tests/help_commands-c++.test \
 	tests/help_commands-c.test \
 	tests/help_english-c++.test \
+	tests/help_english-c++03.test \
 	tests/help_english-c.test \
 	tests/help_english-c89.test \
 	tests/help_english-knr.test \
 	tests/set.test \
 	tests/set_-e-a--st-.test \
+	tests/set_alt-tokens.test \
 	tests/set_c++.test \
 	tests/set_c++03.test \
 	tests/set_c++11.test \
@@ -1767,24 +1850,42 @@ TESTS+=	tests/help-c++.test \
 	tests/set_c95.test \
 	tests/set_c99.test \
 	tests/set_cknr.test \
+	tests/set_digraphs-c89.test \
 	tests/set_digraphs.test \
+	tests/set_digraphs_c89.test \
 	tests/set_ea.test \
 	tests/set_east-const.test \
 	tests/set_east.test \
 	tests/set_eastconst.test \
+	tests/set_expl.test \
 	tests/set_explain-by-default.test \
 	tests/set_explain.test \
+	tests/set_explicit-int.test \
+	tests/set_explicit-int=i.test \
+	tests/set_explicit-int=u.test \
+	tests/set_explicit-int=x.test \
+	tests/set_graphs.test \
 	tests/set_knr.test \
 	tests/set_knrc.test \
+	tests/set_lang=c++.test \
+	tests/set_lang=xxx.test \
+	tests/set_nodigraphs.test \
 	tests/set_noexplain-by-default.test \
 	tests/set_noexplain.test \
+	tests/set_noexplicit-int.test \
+	tests/set_noexplicit-int=u.test \
 	tests/set_nographs.test \
 	tests/set_noprompt.test \
 	tests/set_nosemicolon.test \
 	tests/set_options.test \
 	tests/set_prompt.test \
+	tests/set_prompt=x.test \
 	tests/set_semicolon.test \
-	tests/set_trigraphs.test
+	tests/set_trigraphs-c++.test \
+	tests/set_trigraphs-cknr.test \
+	tests/set_trigraphs.test \
+	tests/set_trigraphs_c++17.test \
+	tests/set_xxx.test
 
 if ENABLE_CDECL_DEBUG
 TESTS+=	tests/set_debug.test \

@@ -1,4 +1,6 @@
 /*.dSYM
+/*.gcda
+/*.gcno
 /*.output
 /*.tab.[ch]
 /*.vcg

@@ -1,0 +1,3 @@
+set trigraphs
+    ^
+5: warning: trigraphs not supported until C89

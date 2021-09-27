@@ -18,15 +18,20 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ##
 
-bin_PROGRAMS = cdecl
-check_PROGRAMS = red_black_test
+bin_PROGRAMS =	cdecl
+check_PROGRAMS=	red_black_test
 
-AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(top_builddir)/lib
-if ENABLE_FLEX_DEBUG
-AM_LFLAGS = -d
+if ENABLE_CODE_COVERAGE
+AM_CFLAGS =	--coverage -g -O0
+AM_LDFLAGS =	--coverage
 endif
-AM_YFLAGS = -d
-LDADD = $(top_builddir)/lib/libgnu.a
+
+AM_CPPFLAGS =	-I$(top_srcdir)/lib -I$(top_builddir)/lib
+if ENABLE_FLEX_DEBUG
+AM_LFLAGS =	-d
+endif
+AM_YFLAGS =	-d
+LDADD =		$(top_builddir)/lib/libgnu.a
 
 BUILT_SOURCES =	parser.c parser.h lexer.c
 
@@ -71,11 +76,11 @@ cdecl_SOURCES += autocomplete.c
 endif
 
 red_black_test_SOURCES = \
-	pjl_config.h \
-	red_black.c red_black.h \
-	red_black_test.c \
-	slist.c \
-	util.c util.h
+		pjl_config.h \
+		red_black.c red_black.h \
+		red_black_test.c \
+		slist.c \
+		util.c util.h
 
 all-local: c++decl$(EXEEXT)
 
@@ -83,10 +88,18 @@ c++decl$(EXEEXT): cdecl$(EXEEXT)
 	rm -f $@
 	$(LN_S) $< $@
 
-TESTS = $(check_PROGRAMS)
+TESTS =		$(check_PROGRAMS)
+
+check-local: clean-coverage
 
 clean-local:
 	rm -f c++decl$(EXEEXT)
+
+clean-coverage-local:
+	rm -f *.gcda
+
+distclean-coverage-local: clean-coverage-local
+	rm -f *.gcno
 
 parser.output: parser.y
 	bison -v --report=all $<

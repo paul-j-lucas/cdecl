@@ -1,0 +1,10 @@
+warning: trigraphs no longer supported since C++17
+  noalt-tokens
+  nodebug
+  noeast-const
+  noexplain-by-default
+  noexplicit-int
+ trigraphs
+    lang=C++17
+    prompt
+    semicolon

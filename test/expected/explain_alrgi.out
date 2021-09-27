@@ -1,0 +1,3 @@
+explain _Alignas(4) register int x
+                             ^
+30: error: "_Alignas" can not be combined with "register"

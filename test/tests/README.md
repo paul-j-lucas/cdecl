@@ -74,7 +74,7 @@ The characters are:
 + `msvc` = Microsoft C `__vectorcall`
 + `mswa` = Microsoft C `WINAPI`
 + `n` = name, nested, or `union`
-+ `nmo` = non-member operator
++ `nm` = non-member
 + `nr` = `noreturn`
 + `ns` = `namespace`
 + `nt` = non-throwing
@@ -88,6 +88,7 @@ The characters are:
 + `rt` = `restrict`
 + `s` = `signed` or `static`
 + `t` = unknown type
++ `td` = `typedef`
 + `th` = `throw`
 + `tl` = `thread_local`
 + `tn` = `typename`

@@ -179,6 +179,19 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
                                c_type_t const *type );
 
 /**
+ * Checks whether \a ast is an AST for a reference to another AST that is a
+ * #TB_CLASS_ANY and has a name matching \a sname.
+ *
+ * @param ast The AST to check.
+ * @param sname The scoped name to check for.
+ *
+ * @sa c_ast_is_ref_to_tid_any()
+ * @sa c_ast_is_ref_to_type_any()
+ */
+PJL_WARN_UNUSED_RESULT
+bool c_ast_is_ref_to_class_sname( c_ast_t const *ast, c_sname_t const *sname );
+
+/**
  * Checks whether \a ast is an AST for a reference to another AST having a type
  * that contains any one of \a tids.
  *
@@ -188,6 +201,7 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
  * any one of \a tids, returns the referred-to AST; otherwise returns NULL.
  *
  * @sa c_ast_is_ptr_to_tid_any()
+ * @sa c_ast_is_ref_to_class_sname();
  * @sa c_ast_is_ref_to_type_any()
  * @sa c_ast_is_tid_any()
  */
@@ -205,6 +219,7 @@ c_ast_t const* c_ast_is_ref_to_tid_any( c_ast_t const *ast, c_tid_t tids );
  * otherwise returns NULL.
  *
  * @sa c_ast_is_ptr_to_type_any()
+ * @sa c_ast_is_ref_to_class_sname();
  * @sa c_ast_is_ref_to_tid_any()
  */
 PJL_WARN_UNUSED_RESULT
@@ -217,8 +232,8 @@ c_ast_t const* c_ast_is_ref_to_type_any( c_ast_t const *ast,
  *
  * @param ast The AST to check.  May be NULL.
  * @param tids The bitwise-or of type(s) to check against.
- * @return Returns If the type of \a ast has one of \a tids, returns the AST
- * after `typedef`s, if any, are stripped; otherwise returns NULL.
+ * @return If the type of \a ast has one of \a tids, returns the AST after
+ * `typedef`s, if any, are stripped; otherwise returns NULL.
  *
  * @sa c_ast_is_ptr_to_tid_any()
  * @sa c_ast_is_ref_to_tid_any()
@@ -333,6 +348,7 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type );
  *
  * @sa c_ast_pointer()
  * @sa c_ast_unreference()
+ * @sa c_ast_unrvalue_reference()
  * @sa c_ast_untypedef()
  */
 PJL_WARN_UNUSED_RESULT
@@ -351,10 +367,30 @@ c_ast_t const* c_ast_unpointer( c_ast_t const *ast );
  * a reference.
  *
  * @sa c_ast_unpointer()
+ * @sa c_ast_unrvalue_reference()
  * @sa c_ast_untypedef()
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_unreference( c_ast_t const *ast );
+
+/**
+ * Un-rvalue-references \a ast, i.e., if \a ast is a <code>\ref
+ * K_RVALUE_REFERENCE</code> returns the referred-to AST.
+ *
+ * @note Only <code>\ref K_RVALUE_REFERENCE</code> is un-referenced, not
+ * <code>\ref K_REFERENCE</code>.
+ *
+ * @param ast The AST to un-reference.
+ * @return If \a ast is an rvalue reference, Returns the referenced AST after
+ * `typedef`s, if any, are stripped; otherwise returns \a ast if \a ast is not
+ * an rvalue reference.
+ *
+ * @sa c_ast_unpointer()
+ * @sa c_ast_unrvalue_reference()
+ * @sa c_ast_untypedef()
+ */
+PJL_WARN_UNUSED_RESULT
+c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast );
 
 /**
  * Un-`typedef`s \a ast, i.e., if \a ast is a <code>\ref K_TYPEDEF</code>,
@@ -366,6 +402,7 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast );
  *
  * @sa c_ast_unpointer()
  * @sa c_ast_unreference()
+ * @sa c_ast_unrvalue_reference()
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast );

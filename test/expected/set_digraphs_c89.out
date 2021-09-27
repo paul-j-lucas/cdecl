@@ -1,0 +1,10 @@
+warning: digraphs not supported until C95
+  noalt-tokens
+  nodebug
+  noeast-const
+  noexplain-by-default
+  noexplicit-int
+  digraphs
+    lang=C89
+    prompt
+    semicolon

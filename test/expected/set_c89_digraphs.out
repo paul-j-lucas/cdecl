@@ -1,0 +1,12 @@
+set c89 digraphs; set
+        ^
+9: warning: digraphs are not supported until C95
+  noalt-tokens
+  nodebug
+  noeast-const
+  noexplain-by-default
+  noexplicit-int
+  digraphs
+    lang=C89
+    prompt
+    semicolon

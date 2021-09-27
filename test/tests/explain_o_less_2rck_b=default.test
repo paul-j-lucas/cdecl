@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ struct S; explain bool operator<(S const&, S const&) = default @ 65

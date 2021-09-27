@@ -1,0 +1,3 @@
+set prompt=x
+           ^
+12: error: "x": set option "prompt" takes no value

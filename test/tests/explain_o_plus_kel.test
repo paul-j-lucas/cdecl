@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ struct S; explain int operator+(S, ...) @ 65

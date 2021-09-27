@@ -1,0 +1,167 @@
+
+sname_c ::= NAME = {
+  NAME = "E",
+  sname_c = "E" (none)
+}
+
+builtin_type_ast ::= builtin_btid = {
+  builtin_btid = "int" (btid = 0x2001),
+  builtin_type_ast = {
+    sname = "",
+    unique_id = 1327,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-19,
+    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+enum_fixed_type_c_ast ::= enum_unmodified_fixed_type_c_ast enum_fixed_type_modifier_list_btid_opt = {
+  enum_unmodified_fixed_type_c_ast = {
+    sname = "",
+    unique_id = 1327,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-19,
+    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  enum_fixed_type_modifier_list_btid_opt = "" (btid = 0x1),
+  enum_fixed_type_c_ast = {
+    sname = "",
+    unique_id = 1327,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-19,
+    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+enum_class_struct_union_c_ast ::= enum_class_struct_union_c_btid attribute_specifier_list_c_atid_opt sname = {
+  enum_class_struct_union_c_btid = "enum" (btid = 0x400001),
+  attribute_specifier_list_c_atid_opt = "" (atid = 0x4),
+  any_sname_c = "E" (none),
+  enum_fixed_type_c_ast_opt = {
+    sname = "",
+    unique_id = 1327,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-19,
+    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  enum_class_struct_union_c_ast = {
+    sname = "",
+    unique_id = 1328,
+    kind = "enum, class, struct, or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x400001, stid = 0x2, atid = 0x4),
+    ecsu_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1327,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
+  unmodified_type_c_ast = {
+    sname = "",
+    unique_id = 1328,
+    kind = "enum, class, struct, or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x400001, stid = 0x2, atid = 0x4),
+    ecsu_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1327,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  type_modifier_list_c_type_opt = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1328,
+    kind = "enum, class, struct, or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x400001, stid = 0x2, atid = 0x4),
+    ecsu_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1327,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+decl_list_c_opt ::= <empty> = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1328,
+    kind = "enum, class, struct, or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x400001, stid = 0x2, atid = 0x4),
+    ecsu_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1327,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  decl_list_c_opt = {
+    sname = "",
+    unique_id = 1328,
+    kind = "enum, class, struct, or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 8-19,
+    type = "enum" (btid = 0x400001, stid = 0x2, atid = 0x4),
+    ecsu_sname = "E" (none),
+    of_ast = {
+      sname = "",
+      unique_id = 1327,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+define E as enumeration E of type int

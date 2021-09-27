@@ -1,0 +1,97 @@
+
+builtin_type_ast ::= builtin_btid = {
+  builtin_btid = "int" (btid = 0x2001),
+  builtin_type_ast = {
+    sname = "",
+    unique_id = 1327,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-19,
+    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
+  unmodified_type_c_ast = {
+    sname = "",
+    unique_id = 1327,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-19,
+    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1327,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-19,
+    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+user_defined_conversion_decl_c_astp ::= scope_sname_c_opt OPERATOR type_c_ast udc_decl_c_ast_opt '(' ')' func_qualifier_list_c_stid_opt noexcept_c_stid_opt func_equals_c_stid_opt = {
+  scope_sname_c_opt = "",
+  type_c_ast = {
+    sname = "",
+    unique_id = 1327,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 17-19,
+    type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  func_qualifier_list_c_stid_opt = "" (stid = 0x2),
+  noexcept_c_stid_opt = "" (stid = 0x2),
+  func_equals_c_stid_opt = "" (stid = 0x2),
+  user_defined_conversion_decl_c_astp = {
+    sname = "",
+    unique_id = 1328,
+    kind = "user-defined conversion operator",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 6-21,
+    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    conv_ast = {
+      sname = "",
+      unique_id = 1327,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+explain_command ::= EXPLAIN user_defined_conversion_decl_c_astp = {
+  user_defined_conversion_decl_c_astp = {
+    sname = "",
+    unique_id = 1328,
+    kind = "user-defined conversion operator",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 6-21,
+    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    conv_ast = {
+      sname = "",
+      unique_id = 1327,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = -1,
+      loc = 17-19,
+      type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+declare user-defined conversion operator returning int

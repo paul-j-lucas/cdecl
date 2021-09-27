@@ -1,0 +1,202 @@
+
+sname_c ::= NAME = {
+  NAME = "S",
+  sname_c = "S" (none)
+}
+
+class_struct_union_declaration_c ::= class_struct_union_btid sname '{' in_scope_declaration_c_opt '}' ';' = {
+  (current_scope) = "",
+  class_struct_union_btid = "struct" (btid = 0x800001),
+  any_sname_c = "S" (none),
+  class_struct_union_declaration_c = {
+    sname = "S" (struct),
+    unique_id = 1327,
+    kind = "enum, class, struct, or union",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 7-7,
+    type = "struct" (btid = 0x800001, stid = 0x2, atid = 0x4),
+    ecsu_sname = "S" (none)
+  }
+}
+
+builtin_type_ast ::= builtin_btid = {
+  builtin_btid = "bool" (btid = 0x41),
+  builtin_type_ast = {
+    sname = "",
+    unique_id = 1328,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 9-12,
+    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
+  unmodified_type_c_ast = {
+    sname = "",
+    unique_id = 1328,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 9-12,
+    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  type_modifier_list_c_type_opt = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_c_ast = {
+    sname = "",
+    unique_id = 1328,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 9-12,
+    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+oper_c_ast ::= OPERATOR c_operator = {
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1328,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 9-12,
+    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  scope_sname_c_opt = "S" (struct),
+  c_operator = "!",
+  oper_c_ast = {
+    sname = "S" (struct),
+    unique_id = 1328,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 9-12,
+    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  }
+}
+
+func_qualifier_list_c_stid_opt ::= func_qualifier_list_c_stid_opt func_qualifier_c_stid = {
+  func_qualifier_list_c_stid_opt = "" (stid = 0x2),
+  func_qualifier_c_stid = "const" (stid = 0x20000002),
+  func_qualifier_list_c_stid_opt = "const" (stid = 0x20000002)
+}
+
+oper_decl_c_astp ::= oper_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list_c_stid_opt func_ref_qualifier_c_stid_opt noexcept_c_stid_opt trailing_return_type_c_ast_opt func_equals_c_stid_opt = {
+  (type_c_ast) = {
+    sname = "S" (struct),
+    unique_id = 1328,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 9-12,
+    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  oper_c_ast = {
+    sname = "S" (struct),
+    unique_id = 1328,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 9-12,
+    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  param_list_c_ast_opt = [],
+  func_qualifier_list_c_stid_opt = "const" (stid = 0x20000002),
+  func_ref_qualifier_c_stid_opt = "" (stid = 0x2),
+  noexcept_c_stid_opt = "" (stid = 0x2),
+  func_equals_c_stid_opt = "" (stid = 0x2),
+  oper_decl_c_astp = {
+    sname = "S" (struct),
+    unique_id = 1329,
+    kind = "operator",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 14-33,
+    type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+    oper_id = 5,
+    operator_name = "!",
+    flags = unspecified (0x0),
+    param_ast_list = [],
+    ret_ast = {
+      sname = "",
+      unique_id = 1328,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1329,
+      loc = 9-12,
+      type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+
+decl_c ::= decl_c_astp = {
+  (typename_flag_opt) = false,
+  (type_c_ast) = {
+    sname = "",
+    unique_id = 1328,
+    kind = "built-in type",
+    depth = 0,
+    parent->unique_id = 1329,
+    loc = 9-12,
+    type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+    bit_width = 0
+  },
+  decl_c_astp = {
+    sname = "S" (struct),
+    unique_id = 1329,
+    kind = "operator",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 14-33,
+    type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+    oper_id = 5,
+    operator_name = "!",
+    flags = unspecified (0x0),
+    param_ast_list = [],
+    ret_ast = {
+      sname = "",
+      unique_id = 1328,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1329,
+      loc = 9-12,
+      type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  },
+  decl_c = {
+    sname = "S" (struct),
+    unique_id = 1329,
+    kind = "operator",
+    depth = 0,
+    parent->unique_id = -1,
+    loc = 14-33,
+    type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
+    oper_id = 5,
+    operator_name = "!",
+    flags = unspecified (0x0),
+    param_ast_list = [],
+    ret_ast = {
+      sname = "",
+      unique_id = 1328,
+      kind = "built-in type",
+      depth = 0,
+      parent->unique_id = 1329,
+      loc = 9-12,
+      type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
+      bit_width = 0
+    }
+  }
+}
+declare ! of structure S as constant member operator returning bool
