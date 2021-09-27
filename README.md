@@ -168,8 +168,8 @@ and
 [`lcov`](https://github.com/linux-test-project/lcov);
 then instead do:
 
-    ./configure --enable-code-coverage
-    make check-code-coverage
+    ./configure --enable-coverage
+    make check-coverage
 
 If you would like to generate the developer documentation,
 you will also need
