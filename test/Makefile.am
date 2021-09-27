@@ -1756,6 +1756,7 @@ TESTS+=	tests/help-c++.test \
 	tests/set_c++14.test \
 	tests/set_c++17.test \
 	tests/set_c++20.test \
+	tests/set_c++23.test \
 	tests/set_c++98.test \
 	tests/set_c.test \
 	tests/set_c11.test \

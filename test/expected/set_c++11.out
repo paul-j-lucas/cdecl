@@ -1,0 +1,9 @@
+  noalt-tokens
+  nodebug
+  noeast-const
+  noexplain-by-default
+  noexplicit-int
+  nographs
+    lang=C++11
+    prompt
+    semicolon

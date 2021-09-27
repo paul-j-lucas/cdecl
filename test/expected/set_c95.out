@@ -1,0 +1,9 @@
+  noalt-tokens
+  nodebug
+  noeast-const
+  noexplain-by-default
+  noexplicit-int
+  nographs
+    lang=C95
+    prompt
+    semicolon
