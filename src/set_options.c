@@ -297,7 +297,7 @@ static bool set_lang_impl( char const *name ) {
  * @param args The set option arguments.
  */
 static void set_prompt( set_option_fn_args_t const *args ) {
-  cdecl_prompt_enable( args->opt_enabled );
+  cdecl_prompt_enable( /*enable=*/args->opt_enabled );
 }
 
 /**

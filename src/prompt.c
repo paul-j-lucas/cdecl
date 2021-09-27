@@ -57,7 +57,7 @@
 char const         *cdecl_prompt[2];
 
 // local variable definitions
-static char        *prompt_buf[2];      ///< Buffers for prompts.
+static strbuf_t     prompt_buf[2];      ///< Buffers for prompts.
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -90,53 +90,48 @@ static inline bool have_genuine_gnu_readline( void ) {
 /**
  * Creates a prompt.
  *
- * @param suffix The prompt suffix character to use.
- * @return Returns a prompt string.  The caller is responsible for freeing it.
+ * @param suffix The prompt suffix character to use.  It is initially free'd.
+ * @param sbuf A pointer to the strbuf to use.
  */
-PJL_WARN_UNUSED_RESULT
-static char* prompt_create( char suffix ) {
-  strbuf_t sbuf;
-  strbuf_init( &sbuf );
+static void prompt_create( char suffix, strbuf_t *sbuf ) {
+  strbuf_free( sbuf );
 
 #ifdef WITH_READLINE
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
-    strbuf_catc( &sbuf, RL_PROMPT_START_IGNORE );
-    SGR_STRBUF_START_COLOR( &sbuf, prompt );
-    strbuf_catc( &sbuf, RL_PROMPT_END_IGNORE );
+    strbuf_catc( sbuf, RL_PROMPT_START_IGNORE );
+    SGR_STRBUF_START_COLOR( sbuf, prompt );
+    strbuf_catc( sbuf, RL_PROMPT_END_IGNORE );
   }
 #endif /* WITH_READLINE */
 
-  strbuf_catf( &sbuf, "%s%c", OPT_LANG_IS(C_ANY) ? CDECL : CPPDECL, suffix );
+  strbuf_catf( sbuf, "%s%c", OPT_LANG_IS(C_ANY) ? CDECL : CPPDECL, suffix );
 
 #ifdef WITH_READLINE
   if ( have_genuine_gnu_readline() && sgr_prompt != NULL ) {
-    strbuf_catc( &sbuf, RL_PROMPT_START_IGNORE );
-    SGR_STRBUF_END_COLOR( &sbuf );
-    strbuf_catc( &sbuf, RL_PROMPT_END_IGNORE );
+    strbuf_catc( sbuf, RL_PROMPT_START_IGNORE );
+    SGR_STRBUF_END_COLOR( sbuf );
+    strbuf_catc( sbuf, RL_PROMPT_END_IGNORE );
   }
 #endif /* WITH_READLINE */
 
-  strbuf_catc( &sbuf, ' ' );
-  return strbuf_take( &sbuf );
+  strbuf_catc( sbuf, ' ' );
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
 
 void cdecl_prompt_enable( bool enable ) {
   if ( enable ) {
-    cdecl_prompt[0] = prompt_buf[0];
-    cdecl_prompt[1] = prompt_buf[1];
+    cdecl_prompt[0] = prompt_buf[0].str;
+    cdecl_prompt[1] = prompt_buf[1].str;
   } else {
     cdecl_prompt[0] = cdecl_prompt[1] = "";
   }
 }
 
 void cdecl_prompt_init( void ) {
-  free( prompt_buf[0] );
-  free( prompt_buf[1] );
-
-  cdecl_prompt[0] = prompt_buf[0] = prompt_create( '>' );
-  cdecl_prompt[1] = prompt_buf[1] = prompt_create( '+' );
+  prompt_create( '>', &prompt_buf[0] );
+  prompt_create( '+', &prompt_buf[1] );
+  cdecl_prompt_enable( /*enable=*/true );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
