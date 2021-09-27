@@ -1,3 +1,133 @@
+2021-09-27  Paul J. Lucas <paul@lucasmail.org>
+
+   * AUTHORS, Makefile.am, NEWS, configure.ac, lcovrc, src/Makefile.am,
+     c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.c, c_sglob.c,
+     c_type.c, c_type.h, check.c, dump.c, lexer.l, options.c, options.h,
+     parser.y, red_black_test.c, set_options.c, set_options.h, util.c,
+     test/Makefile.am, cdecl--kolor.out, cdecl-9.out, cdecl-d-+i.out,
+     cdecl-d-al8i.out, cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out,
+     cdecl-d-eni.out, cdecl-d-f_v.out, cdecl-d-faia4iaviacias6i_v.out,
+     cdecl-d-pmki.out, cdecl-d-udc_i.out, cdecl-d-z.out, cdecl-h.out,
+     cdecl-k.out, cdecl-knever.out, cdecl-kxxx.out, declare_=i-c.out,
+     declare_alttokens_dtor.out, declare_alttokens_o_pipe2_rck_b.out,
+     declare_alttokens_rri.out, declare_ari.out, declare_cf_v-c.out,
+     declare_cnmf_v-c.out, declare_cnmf_v.out, declare_efi.out, declare_ii.out,
+     declare_o_minus2_d_rk.out, declare_o_plus2_d_rk.out, declare_prgi.out,
+     declare_rrgi.out, declare_rtf_v-c.out, declare_rti.out, declare_sctor.out,
+     declare_thf_v.out, declare_udl_pcci_i.out, declare_xvi.out,
+     explain_+compl_dtor.out, explain_+i-c.out, explain_0f_v-03.out,
+     explain_a4f_i.out, explain_a4v.out, explain_a_nd_f_v.out,
+     explain_af-c++11.out, explain_al8ty_i.out, explain_alf_i.out,
+     explain_alrgi.out, explain_c-02.out, explain_cf_v-c.out, explain_cfi.out,
+     explain_co_less_i_b=default.out, explain_co_less_rck_i=default.out,
+     explain_cri.out, explain_ctor=default.out, explain_ctor_2i=default.out,
+     explain_digraphs_a9i-c89.out, explain_f+o_exclam__b.out,
+     explain_f_k-knr.out, explain_f_v=default.out, explain_f_v=delete.out,
+     explain_fac3_v-c++.out, explain_fas3_v-c++.out, explain_fav_v-c++.out,
+     explain_fd_i-cknr.out, explain_fkrel_i.out, explain_fo_exclam__b.out,
+     explain_fudc_i.out, explain_i+w3.out, explain_i-reserved-c++.out,
+     explain_i-reserved-c.out, explain_ii.out, explain_ktnk.out,
+     explain_main_f4i_i.out, explain_main_fiapci_i.out, explain_main_fkr_i.out,
+     explain_main_sf_i-c.out, explain_o_delete__v.out,
+     explain_o_delete_i_v.out, explain_o_delete_pv_i.out,
+     explain_o_eq_rck_v=default.out, explain_o_exclam__b=delete.out,
+     explain_o_less_2rck_b=default.out, explain_o_less_rck_b=default.out,
+     explain_o_minus2_d_rk.out, explain_o_new_i_pv.out,
+     explain_o_new_zrrk_pv.out, explain_o_plus2__rk.out,
+     explain_o_plus2_d_rk.out, explain_o_plus2_rk_rk.out,
+     explain_o_plus_kel.out, explain_rf_i.out, explain_rf_v-c++03.out,
+     explain_rga4i.out, explain_rgi-c++11.out, explain_rrf_v-c++03.out,
+     explain_scf_v.out, explain_sudc_i.out, explain_trigraphs_a9i-c++.out,
+     explain_udl__i.out, explain_udl_c_i-01.out, explain_vv_o_new_z.out,
+     explain_xxf_v-c++11.out, help_english-c++03.out, k_typedef_i-c.out,
+     ns_+typedef_i-c++14.out, set_alt-tokens.out, set_c89_digraphs.out,
+     set_digraphs-c89.out, set_digraphs_c89.out, set_expl.out,
+     set_explicit-int.out, set_explicit-int=i.out, set_explicit-int=u.out,
+     set_explicit-int=x.out, set_graphs.out, set_lang=c++.out,
+     set_lang=xxx.out, set_nodigraphs.out, set_noexplicit-int.out,
+     set_noexplicit-int=u.out, set_prompt=x.out, set_trigraphs-c++.out,
+     set_trigraphs-cknr.out, set_trigraphs_c++17.out, set_xxx.out,
+     show_all_predefined_glob-04.out, cdecl--kolor.test, cdecl-9.test,
+     cdecl-d-+i.test, cdecl-d-al8i.test, cdecl-d-alli.test,
+     cdecl-d-cmo_exclam__b.test, cdecl-d-eni.test, cdecl-d-f_v.test,
+     cdecl-d-faia4iaviacias6i_v.test, cdecl-d-pmki.test, cdecl-d-udc_i.test,
+     cdecl-d-z.test, cdecl-h.test, cdecl-k.test, cdecl-knever.test,
+     cdecl-kxxx.test, declare_alttokens_dtor.test,
+     declare_alttokens_o_pipe2_rck_b.test, declare_alttokens_rri.test,
+     declare_ari.test, declare_cnmf_v-c.test, declare_cnmf_v.test,
+     declare_efi.test, declare_prgi.test, declare_rrgi.test, declare_rti.test,
+     declare_sctor.test, declare_thf_v.test, declare_udl_pcci_i.test,
+     declare_xvi.test, explain_+compl_dtor.test, explain_0dtor.test,
+     explain_0f_v-03.test, explain_a4f_i.test, explain_a4v.test,
+     explain_a_nd_f_v.test, explain_af-c++11.test, explain_al8ty_i.test,
+     explain_alf_i.test, explain_alrgi.test, explain_c-02.test,
+     explain_cfi.test, explain_co_less_i_b=default.test,
+     explain_co_less_rck_i=default.test, explain_cri.test,
+     explain_ctor=default.test, explain_ctor_2i=default.test,
+     explain_digraphs_a9i-c89.test, explain_f+o_exclam__b.test,
+     explain_f_v=default.test, explain_f_v=delete.test, explain_fd_i-cknr.test,
+     explain_fkrel_i.test, explain_fo_exclam__b.test, explain_fudc_i.test,
+     explain_i+w3.test, explain_i-reserved-c++.test, explain_i-reserved-c.test,
+     explain_ktnk.test, explain_main_f4i_i.test, explain_main_fiapci_i.test,
+     explain_main_fkr_i.test, explain_main_sf_i-c.test,
+     explain_o_delete__v.test, explain_o_delete_i_v.test,
+     explain_o_delete_pv_i.test, explain_o_eq_rck_v=default.test,
+     explain_o_exclam__b=delete.test, explain_o_less_2rck_b=default.test,
+     explain_o_less_rck_b=default.test, explain_o_new_i_pv.test,
+     explain_o_new_zrrk_pv.test, explain_o_plus2__rk.test,
+     explain_o_plus2_rk_rk.test, explain_o_plus_kel.test, explain_rf_i.test,
+     explain_rga4i.test, explain_rgi-c++11.test, explain_sudc_i.test,
+     explain_trigraphs_a9i-c++.test, explain_udl_c_i-01.test,
+     explain_vv_o_new_z.test, explain_xxf_v-c++11.test,
+     help_english-c++03.test, set_alt-tokens.test, set_digraphs-c89.test,
+     set_digraphs_c89.test, set_expl.test, set_explicit-int.test,
+     set_explicit-int=i.test, set_explicit-int=u.test, set_explicit-int=x.test,
+     set_graphs.test, set_lang=c++.test, set_lang=xxx.test,
+     set_nodigraphs.test, set_noexplicit-int.test, set_noexplicit-int=u.test,
+     set_prompt=x.test, set_trigraphs-c++.test, set_trigraphs-cknr.test,
+     set_trigraphs_c++17.test, set_xxx.test, show_all_predefined_glob-04.test:
+     Added code-coverage and many more tests to cover previously uncovered
+     code.
+   * prompt.c, set_options.c: Reworked prompt handling to eliminate two
+     pointers.
+
+2021-09-26  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am, set_c++.out, set_c++03.out, set_c++11.out,
+     set_c++14.out, set_c++17.out, set_c++20.out, set_c++23.out, set_c++98.out,
+     set_c11.out, set_c17.out, set_c18.out, set_c89.out, set_c90.out,
+     set_c95.out, set_c99.out, set_cknr.out, set_c++.test, set_c++03.test,
+     set_c++11.test, set_c++14.test, set_c++17.test, set_c++20.test,
+     set_c++23.test, set_c++98.test, set_c11.test, set_c17.test, set_c18.test,
+     set_c89.test, set_c90.test, set_c95.test, set_c99.test, set_cknr.test:
+     Added set c++23 test; updated set language tests to include expected
+     output.
+
+2021-09-24  Paul J. Lucas <paul@lucasmail.org>
+
+   * test/Makefile.am: Renamed tests.
+
+2021-09-22  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: s/scope_declaration_c/scoped_declaration_c/
+   * parser.y: Better error message for missing fixed enum type.
+   * parser.y: Grammar reorganization.
+
+2021-09-21  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: s/IS_NESTED_TYPE_OK/CHECK_NESTED_TYPE_OK/
+   * parser.y: Rule reordering.
+   * parser.y: Moved c_sname_check() later.
+   * c_type.c, parser.y: Now using c_tid_is_any() more.
+
+2021-09-20  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Grammar rework.
+   * parser.y: Renamed some grammar productions to be *_command.
+   * parser.y: Better error message for in-scope declarations.
+   * parser.y: Added typed_declaration_c production.
+   * AUTHORS: Added C++23.
+
 2021-09-19  Paul J. Lucas <paul@lucasmail.org>
 
    * check.c: Added assert().
