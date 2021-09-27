@@ -84,12 +84,14 @@
 /* The definition of _GL_WARN_ON_USE is copied here.  */
 
 /* Declare 'free' if needed for _GL_ATTRIBUTE_DEALLOC_FREE.  */
-#if (@REPLACE_FREE@ && !defined free \
-     && !(defined __cplusplus && defined GNULIB_NAMESPACE))
 _GL_EXTERN_C void free (void *);
-# define free rpl_free
+#if @GNULIB_FREE_POSIX@
+# if (@REPLACE_FREE@ && !defined free \
+      && !(defined __cplusplus && defined GNULIB_NAMESPACE))
+#  define free rpl_free
+_GL_EXTERN_C void free (void *);
+# endif
 #endif
-_GL_EXTERN_C void free (void *);
 
 /* Clear a block of memory.  The compiler will not delete a call to
    this function, even if the block is dead after the call.  */

@@ -147,12 +147,14 @@ typedef int rpl_mbstate_t;
 #endif
 
 /* Declare 'free' if needed for _GL_ATTRIBUTE_DEALLOC_FREE.  */
-#if (@REPLACE_FREE@ && !defined free \
-     && !(defined __cplusplus && defined GNULIB_NAMESPACE))
 _GL_EXTERN_C void free (void *);
-# define free rpl_free
+#if @GNULIB_FREE_POSIX@
+# if (@REPLACE_FREE@ && !defined free \
+      && !(defined __cplusplus && defined GNULIB_NAMESPACE))
+#  define free rpl_free
+_GL_EXTERN_C void free (void *);
+# endif
 #endif
-_GL_EXTERN_C void free (void *);
 
 /* Convert a single-byte character to a wide character.  */
 #if @GNULIB_BTOWC@

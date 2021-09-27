@@ -5,7 +5,7 @@
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
 
-# serial 32
+# serial 34
 
 # Written by Paul Eggert.
 
@@ -93,6 +93,8 @@ AC_DEFUN([gl_STRING_H_REQUIRE_DEFAULTS],
     gl_MODULE_INDICATOR_INIT_VARIABLE([GNULIB_MDA_STRDUP], [1])
   ])
   m4_require(GL_MODULE_INDICATOR_PREFIX[_STRING_H_MODULE_INDICATOR_DEFAULTS])
+  dnl Make sure the shell variable for GNULIB_FREE_POSIX is initialized.
+  gl_STDLIB_H_REQUIRE_DEFAULTS
   AC_REQUIRE([gl_STRING_H_DEFAULTS])
 ])
 
