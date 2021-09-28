@@ -235,6 +235,9 @@ void c_sname_fill_in_namespaces( c_sname_t *sname );
  *
  * @param sname The scoped name to free.  If NULL, does nothing; otherwise,
  * reinitializes it upon completion.
+ *
+ * @sa c_sname_init()
+ * @sa c_sname_init_name()
  */
 C_SNAME_INLINE
 void c_sname_free( c_sname_t *sname ) {
