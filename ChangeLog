@@ -1,5 +1,12 @@
 2021-09-27  Paul J. Lucas <paul@lucasmail.org>
 
+   * Makefile.am: Now using coverage.info per convention.
+   * Makefile.am: Added "Code coverage not enabled" message.
+   * lexer.l: Removd PJL_WARN_UNUSED_RESULT from yywrap().
+   * src/Makefile.am: "make clean" now removes BUILT_SOURCES.
+   * configure.ac, src/Makefile.am: s/ENABLE_CODE_COVERAGE/ENABLE_COVERAGE/
+   * lib/Makefile.am, intprops.h, string.in.h, wchar.in.h, extern-inline.m4,
+     string_h.m4, threadlib.m4, wchar_h.m4: Updated Gnulib.
    * AUTHORS, Makefile.am, NEWS, configure.ac, lcovrc, src/Makefile.am,
      c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.c, c_sglob.c,
      c_type.c, c_type.h, check.c, dump.c, lexer.l, options.c, options.h,
