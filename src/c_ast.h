@@ -573,12 +573,7 @@ char const* c_ast_full_name( c_ast_t const *ast ) {
  *
  * @sa c_ast_free()
  */
-C_AST_INLINE
-void c_ast_list_free( c_ast_list_t *list ) {
-  // Do not pass &c_ast_free as the second argument since all ASTs are free'd
-  // independently. Just free the list nodes.
-  slist_free( list, NULL, NULL );
-}
+void c_ast_list_free( c_ast_list_t *list );
 
 /**
  * Gets the local (last) name of \a ast, e.g., the local name of `S::T::x` is

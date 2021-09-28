@@ -146,11 +146,7 @@ void strbuf_init( strbuf_t *sbuf ) {
  * @sa strbuf_init()
  * @sa strbuf_take()
  */
-STRBUF_INLINE
-void strbuf_free( strbuf_t *sbuf ) {
-  free( sbuf->str );
-  strbuf_init( sbuf );
-}
+void strbuf_free( strbuf_t *sbuf );
 
 /**
  * Ensures at least \a res_len additional bytes of capacity exist in \a sbuf.

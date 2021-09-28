@@ -344,6 +344,12 @@ void c_ast_free( c_ast_t *ast ) {
   }
 }
 
+void c_ast_list_free( c_ast_list_t *list ) {
+  // Do not pass &c_ast_free as the second argument since all ASTs are free'd
+  // independently. Just free the list nodes.
+  slist_free( list, NULL, NULL );
+}
+
 c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
                     c_loc_t const *loc, c_ast_list_t *ast_list ) {
   assert( exactly_one_bit_set( kind_id ) );

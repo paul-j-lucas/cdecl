@@ -239,10 +239,7 @@ void c_sname_fill_in_namespaces( c_sname_t *sname );
  * @sa c_sname_init()
  * @sa c_sname_init_name()
  */
-C_SNAME_INLINE
-void c_sname_free( c_sname_t *sname ) {
-  slist_free( sname, NULL, (slist_data_free_fn_t)&c_scope_data_free );
-}
+void c_sname_free( c_sname_t *sname );
 
 /**
  * Gets the fully scoped name of \a sname.

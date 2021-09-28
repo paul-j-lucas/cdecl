@@ -87,6 +87,11 @@ void strbuf_catsn( strbuf_t *sbuf, char const *s, size_t s_len ) {
   sbuf->str[ sbuf->len ] = '\0';
 }
 
+void strbuf_free( strbuf_t *sbuf ) {
+  free( sbuf->str );
+  strbuf_init( sbuf );
+}
+
 bool strbuf_reserve( strbuf_t *sbuf, size_t res_len ) {
   assert( sbuf != NULL );
   size_t const buf_rem = sbuf->cap - sbuf->len;

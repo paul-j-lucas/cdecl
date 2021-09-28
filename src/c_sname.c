@@ -122,6 +122,10 @@ void c_sname_fill_in_namespaces( c_sname_t *sname ) {
   } // for
 }
 
+void c_sname_free( c_sname_t *sname ) {
+  slist_free( sname, NULL, (slist_data_free_fn_t)&c_scope_data_free );
+}
+
 char const* c_sname_full_name( c_sname_t const *sname ) {
   static strbuf_t sbuf;
   return sname != NULL ? scope_name_impl( &sbuf, sname, NULL ) : "";
