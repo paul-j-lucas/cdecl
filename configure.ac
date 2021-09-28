@@ -32,13 +32,19 @@ AC_ARG_ENABLE([coverage],
   [enable_coverage=no]
 )
 AS_IF([test x$enable_coverage = xyes],
-  # Autconf 5.10.3: C Compiler Characteristics
   #
-  # If output variable CFLAGS was not already set, set it to -g -O2 for the GNU
-  # C compiler (-O2 on systems where GCC does not accept -g), or -g for other
-  # compilers. If your package does not like this default, then it is
-  # acceptable to insert the line ': ${CFLAGS=""}' after AC_INIT and before
-  # AC_PROG_CC to select an empty default instead.
+  # When code coverage is desired, we have to set CFLAGS so it doesn't include
+  # -O2 (so we can add -O0 later in src/Makefile.am) before AC_PROG_CC is
+  # called as directed by "Autconf 5.10.3: C Compiler Characteristics":
+  #
+  #     If output variable CFLAGS was not already set, set it to -g -O2 for the
+  #     GNU C compiler ....  If your package does not like this default, then
+  #     it is acceptable to insert the line ': ${CFLAGS=""}' after AC_INIT and
+  #     before AC_PROG_CC to select an empty default instead.
+  #
+  # There's still more to do after AC_PROG_CC is called and sets $GCC.  This is
+  # handed below in part 2.
+  #
   [: ${CFLAGS=""}]
 )
 
@@ -183,7 +189,7 @@ AS_IF([test x$enable_bison_debug = xyes],
     [Define to 1 if Bison debugging is enabled.])]
 )
 
-# Testing feature: code coverage (disabled by default)
+# Testing feature: code coverage, part 2
 AS_IF([test x$enable_coverage = xyes],
   [
     AS_IF([test x$GCC != xyes],
