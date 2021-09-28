@@ -45,7 +45,7 @@
 //    if isdigit is mistakenly implemented via a static inline function, a
 //    program containing an extern inline function that calls isdigit may not
 //    work since the C standard prohibits extern inline functions from calling
-//    static functions (ISO C 99 section 6.7.4.(3).  This bug is known to occur
+//    static functions (ISO C 99 section 6.7.4.3).  This bug is known to occur
 //    on:
 //
 //      OS X 10.8 and earlier; see:
