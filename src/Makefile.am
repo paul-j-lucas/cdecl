@@ -93,7 +93,9 @@ TESTS =		$(check_PROGRAMS)
 check-local: clean-coverage
 
 clean-local:
-	rm -f c++decl$(EXEEXT)
+	rm -f $(BUILT_SOURCES) c++decl$(EXEEXT)
+
+distclean-local: distclean-coverage
 
 clean-coverage-local:
 	rm -f *.gcda
