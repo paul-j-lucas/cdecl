@@ -596,7 +596,6 @@ static void set_trigraph( char const *token ) {
  * @return Returns 1 if done or 0 to continue parsing (a new file set via
  * \c yyin).
  */
-PJL_WARN_UNUSED_RESULT
 static int yywrap( void ) {
   return 1 /* done */;
 }
