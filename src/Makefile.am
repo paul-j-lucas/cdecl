@@ -21,7 +21,7 @@
 bin_PROGRAMS =	cdecl
 check_PROGRAMS=	red_black_test
 
-if ENABLE_CODE_COVERAGE
+if ENABLE_COVERAGE
 AM_CFLAGS =	--coverage -g -O0
 AM_LDFLAGS =	--coverage
 endif

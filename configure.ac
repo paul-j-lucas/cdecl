@@ -197,17 +197,17 @@ AS_IF([test x$enable_coverage = xyes],
     AC_CHECK_PROG([GENHTML], [genhtml], [genhtml])
     AS_IF([test x$GENHTML = x],
       [AC_MSG_ERROR([required program "genhtml" for code coverage not found])])
-    AC_DEFINE([ENABLE_CODE_COVERAGE], [1],
+    AC_DEFINE([ENABLE_COVERAGE], [1],
       [Define to 1 if code coverage is enabled.])
   ]
 )
 
 # Makefile conditionals.
-AM_CONDITIONAL([WITH_READLINE],         [test x$with_readline       != xno])
-AM_CONDITIONAL([ENABLE_CDECL_DEBUG],    [test x$enable_cdecl_debug  = xyes])
-AM_CONDITIONAL([ENABLE_CODE_COVERAGE],  [test x$enable_coverage     = xyes])
-AM_CONDITIONAL([ENABLE_BISON_DEBUG],    [test x$enable_bison_debug  = xyes])
-AM_CONDITIONAL([ENABLE_FLEX_DEBUG],     [test x$enable_flex_debug   = xyes])
+AM_CONDITIONAL([WITH_READLINE],       [test x$with_readline       != xno])
+AM_CONDITIONAL([ENABLE_CDECL_DEBUG],  [test x$enable_cdecl_debug  = xyes])
+AM_CONDITIONAL([ENABLE_COVERAGE],     [test x$enable_coverage     = xyes])
+AM_CONDITIONAL([ENABLE_BISON_DEBUG],  [test x$enable_bison_debug  = xyes])
+AM_CONDITIONAL([ENABLE_FLEX_DEBUG],   [test x$enable_flex_debug   = xyes])
 
 # Miscellaneous.
 AX_C___ATTRIBUTE__
