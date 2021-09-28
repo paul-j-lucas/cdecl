@@ -40,7 +40,7 @@ LCOV_FLAGS =	--capture \
 		--exclude "*/parser.c" \
 		--output-file $(COVERAGE_OUT)
 
-GENHTML_FLAGS=	--legend \
+GENHTML_FLAGS =	--legend \
 		--title "$(PACKAGE_NAME)-$(PACKAGE_VERSION) Code Coverage" \
 		--output-directory $(top_builddir)/$(COVERAGE_DIR)
 
@@ -50,10 +50,16 @@ doc docs:
 	@./makedoc.sh
 
 check-coverage:
+if ENABLE_COVERAGE
 	$(MAKE) $(AM_MAKEFLAGS) check
 	$(LCOV) $(LCOV_FLAGS)
 	$(GENHTML) $(GENHTML_FLAGS) $(COVERAGE_OUT)
 	@echo "file://$(abs_builddir)/$(COVERAGE_DIR)/index.html"
+else
+	@echo "Code coverage not enabled; to enable:"
+	@echo
+	@echo "    ./configure --enable-coverage"
+endif
 
 clean-local: clean-coverage
 	rm -rf docs
