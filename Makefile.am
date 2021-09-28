@@ -29,7 +29,7 @@ EXTRA_DIST =	bootstrap \
 		README-blocks.txt \
 		README.md
 
-COVERAGE_OUT =	$(top_builddir)/coverage.out
+COVERAGE_INFO =	$(top_builddir)/coverage.info
 COVERAGE_DIR =	coverage
 
 LCOV_FLAGS =	--capture \
@@ -38,7 +38,7 @@ LCOV_FLAGS =	--capture \
 		--exclude "*/autocomplete.c" \
 		--exclude "*/lexer.c" \
 		--exclude "*/parser.c" \
-		--output-file $(COVERAGE_OUT)
+		--output-file $(COVERAGE_INFO)
 
 GENHTML_FLAGS =	--legend \
 		--title "$(PACKAGE_NAME)-$(PACKAGE_VERSION) Code Coverage" \
@@ -53,7 +53,7 @@ check-coverage:
 if ENABLE_COVERAGE
 	$(MAKE) $(AM_MAKEFLAGS) check
 	$(LCOV) $(LCOV_FLAGS)
-	$(GENHTML) $(GENHTML_FLAGS) $(COVERAGE_OUT)
+	$(GENHTML) $(GENHTML_FLAGS) $(COVERAGE_INFO)
 	@echo "file://$(abs_builddir)/$(COVERAGE_DIR)/index.html"
 else
 	@echo "Code coverage not enabled; to enable:"
@@ -67,7 +67,7 @@ clean-local: clean-coverage
 distclean-local: distclean-coverage
 
 clean-coverage-local:
-	rm -f $(COVERAGE_OUT)
+	rm -f $(COVERAGE_INFO)
 
 distclean-coverage-local: clean-coverage-local
 	rm -fr $(COVERAGE_DIR)
