@@ -454,7 +454,7 @@ extern c_type_t const T_TS_TYPEDEF;     ///< Type containing only #TS_TYPEDEF.
 /**
  * The only storage types that can apply to a C program's `main()` function.
  *
- * @sa #TS_FUNC_LIKE_C
+ * @sa #TS_FUNC_C
  * @sa #TS_MAIN_FUNC_CPP
  */
 #define TS_MAIN_FUNC_C        TS_EXTERN

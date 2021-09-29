@@ -180,7 +180,7 @@ bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
 
 /**
  * Checks whether \a ast is an AST for a reference to another AST that is a
- * #TB_CLASS_ANY and has a name matching \a sname.
+ * #TB_ANY_CLASS and has a name matching \a sname.
  *
  * @param ast The AST to check.
  * @param sname The scoped name to check for.
