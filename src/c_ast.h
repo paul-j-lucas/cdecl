@@ -467,7 +467,7 @@ void c_ast_free( c_ast_t *ast );
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids ) {
-  return (ast->kind_id & kind_ids) != K_NONE;
+  return (ast->kind_id & kind_ids) != 0;
 }
 
 /**

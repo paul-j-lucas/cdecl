@@ -181,9 +181,6 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
     case K_VARIADIC:
       // nothing to do
       break;
-
-    case K_NONE:
-      UNEXPECTED_INT_VALUE( ast->kind_id );
   } // switch
 
   if ( c_ast_is_parent( ast ) || ast->kind_id == K_TYPEDEF ) {
@@ -290,9 +287,6 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
     case K_VARIADIC:
       // nothing to do
       break;
-
-    case K_NONE:
-      UNEXPECTED_INT_VALUE( i_ast->kind_id );
   } // switch
 
   if ( !c_ast_is_parent( i_ast ) ) {
@@ -336,8 +330,6 @@ void c_ast_free( c_ast_t *ast ) {
       case K_VARIADIC:
         // nothing to do
         break;
-      case K_NONE:
-        UNEXPECTED_INT_VALUE( ast->kind_id );
     } // switch
 
     FREE( ast );
@@ -388,8 +380,6 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
     case K_VARIADIC:
       // nothing to do
       break;
-    case K_NONE:
-      UNEXPECTED_INT_VALUE( kind_id );
   } // switch
 
   ++c_ast_count;

@@ -236,7 +236,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
       FPUTS( c_kind_name( ast->kind_id ), eout );
       break;
 
-    CASE_K_NONE_OR_PLACEHOLDER;
+    CASE_K_PLACEHOLDER;
   } // switch
 
   return false;

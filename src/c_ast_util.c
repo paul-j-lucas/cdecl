@@ -473,7 +473,7 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast ) {
 
 c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
                               c_kind_id_t kind_ids ) {
-  assert( kind_ids != K_NONE );
+  assert( kind_ids != 0 );
   uint64_t const data = STATIC_CAST( uint64_t, kind_ids );
   return c_ast_visit( ast, dir, c_ast_vistor_kind_any, data );
 }

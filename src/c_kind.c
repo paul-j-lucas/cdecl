@@ -53,7 +53,6 @@ char const* c_kind_name( c_kind_id_t kind_id ) {
     case K_DESTRUCTOR         : return "destructor";
     case K_FUNCTION           : return "function";
     case K_NAME               : return "name";
-    case K_NONE               : return "none";
     case K_PLACEHOLDER        : return "placeholder";
     case K_OPERATOR           : return "operator";
     case K_POINTER            : return "pointer";

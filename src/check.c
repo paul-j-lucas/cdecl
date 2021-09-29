@@ -381,7 +381,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
       break;
       // LCOV_EXCL_STOP
 
-    CASE_K_NONE_OR_PLACEHOLDER;
+    CASE_K_PLACEHOLDER;
   } // switch
 
   return true;
@@ -1009,7 +1009,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         // nothing to do
         break;
 
-      CASE_K_NONE_OR_PLACEHOLDER;
+      CASE_K_PLACEHOLDER;
     } // switch
 
     if ( !c_ast_check_errors( param_ast, /*is_func_param=*/true ) )
@@ -1061,7 +1061,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
           L_FUNCTION, c_lang_which( LANG_MIN(C_89) )
         );
         return false;
-      CASE_K_NONE_OR_PLACEHOLDER;
+      CASE_K_PLACEHOLDER;
     } // switch
   } // for
 
@@ -2073,7 +2073,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
       }
       break;
 
-      CASE_K_NONE_OR_PLACEHOLDER;
+      CASE_K_PLACEHOLDER;
   } // switch
 
   if ( ast->kind_id != K_FUNCTION &&
@@ -2247,7 +2247,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, uint64_t data ) {
         print_warning( &ast->loc, "missing type specifier\n" );
       break;
 
-    CASE_K_NONE_OR_PLACEHOLDER;
+    CASE_K_PLACEHOLDER;
   } // switch
 
   if ( cdecl_initialized )              // don't warn for predefined types

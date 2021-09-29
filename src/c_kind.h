@@ -38,19 +38,18 @@
 
 /**
  * Shorthand for use inside a `switch` statement on an AST's kind to assert
- * that it's neither K_NONE nor K_PLACEHOLDER because neither should occur in a
- * completed AST.  For example:
+ * that it's not #K_PLACEHOLDER because it shouldn't occur in a completed AST.
+ * For example:
  *
  *      switch ( ast->kind_id ) {
  *        // ...
  *
- *        CASE_K_NONE_OR_PLACEHOLDER;
+ *        CASE_K_PLACEHOLDER;
  *      }
  */
-#define CASE_K_NONE_OR_PLACEHOLDER  \
-  case K_NONE:                      \
-  case K_PLACEHOLDER:               \
-    assert( 0 );                    \
+#define CASE_K_PLACEHOLDER  \
+  case K_PLACEHOLDER:       \
+    assert( 0 );            \
     break
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -63,12 +62,6 @@
  * thing is any _one_ of those kinds.
  */
 enum c_kind_id {
-  /**
-   * No kind.  It indicates an "unset" value and is never used in a real AST
-   * node.
-   */
-  K_NONE                    = 0u,
-
   /**
    * Temporary node in AST.  This is needed in two cases:
    *

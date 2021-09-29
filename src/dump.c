@@ -257,9 +257,6 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
         DUMP_COMMA;
         c_ast_dump( ast->as.udef_conv.conv_ast, indent, "conv_ast", dout );
         break;
-
-      case K_NONE:
-        UNEXPECTED_INT_VALUE( ast->kind_id );
     } // switch
 
     FPUTC( '\n', dout );

@@ -405,7 +405,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       FPUTS( L_ELLIPSIS, g->gout );
       break;
 
-    CASE_K_NONE_OR_PLACEHOLDER;
+    CASE_K_PLACEHOLDER;
   } // switch
 }
 
@@ -612,7 +612,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
         // nothing to do
         break;
 
-      CASE_K_NONE_OR_PLACEHOLDER;
+      CASE_K_PLACEHOLDER;
     } // switch
   } else {
     //
@@ -656,7 +656,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
     case K_VARIADIC:
       // nothing to do
       break;
-    CASE_K_NONE_OR_PLACEHOLDER;
+    CASE_K_PLACEHOLDER;
   } // switch
 }
 
