@@ -87,6 +87,7 @@ extern char const L_MEMBER[];
 extern char const H_NON_MBR[];            // synonym for "non-member"
 extern char const H_NON_MEMBER[];
 extern char const L_OF[];
+extern char const L_OPTIONS[];
 extern char const L_POINTER[];
 extern char const L_PREDEF[];             // synonym for "predefined"
 extern char const L_PREDEFINED[];

@@ -10,6 +10,17 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.1
+
+** Digraph & Trigraph output
+Digraphs and trigraphs are no longer emitted in a language in which they aren't
+supported.
+
+** Help options
+The `help` command now also acceptions `options`.  Help for options is now
+printed separately.
+
+
 * Changes in Cdecl 11.0
 
 ** K&R C function returning `struct`

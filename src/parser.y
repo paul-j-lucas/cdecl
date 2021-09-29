@@ -1096,6 +1096,7 @@ static void yyerror( char const *msg ) {
 %token              Y_MEMBER
 %token              Y_NON_MEMBER
 %token              Y_OF
+%token              Y_OPTIONS
 %token              Y_POINTER
 %token              Y_PREDEFINED
 %token              Y_PURE
@@ -2289,6 +2290,7 @@ help_what_opt
   : /* empty */                   { $$ = CDECL_HELP_COMMANDS; }
   | Y_COMMANDS                    { $$ = CDECL_HELP_COMMANDS; }
   | Y_ENGLISH                     { $$ = CDECL_HELP_ENGLISH;  }
+  | Y_OPTIONS                     { $$ = CDECL_HELP_OPTIONS;  }
   ;
 
 /// quit command //////////////////////////////////////////////////////////////

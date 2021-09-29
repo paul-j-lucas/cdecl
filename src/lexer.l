@@ -312,6 +312,7 @@ static cdecl_keyword_t const CDECL_KEYWORDS[] = {
                           { LANG_ANY,       L_NORETURN  } } ) },
   { L_OF,             TOKEN( Y_OF                         ) },
   { L_OPER,           TOKEN( Y_OPERATOR                   ) },
+  { L_OPTIONS,        TOKEN( Y_OPTIONS                    ) },
   { L_OVERRIDDEN,     C_SY1( false, L_OVERRIDE            ) },
   { L_POINTER,        TOKEN( Y_POINTER                    ) },
   { L_PREDEF,         TOKEN( Y_PREDEFINED                 ) },

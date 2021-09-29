@@ -666,6 +666,7 @@ TESTS+=	tests/declare_digraphs_a9i.test \
 	tests/declare_digraphs_nrfi_v-c++.test \
 	tests/declare_trigraphs_a9i.test \
 	tests/declare_trigraphs_nrfi_v-c++.test \
+	tests/declare_trigraphs_nrfi_v-c++14.test \
 	tests/declare_trigraphs_o_circ_eq_i_rk.test \
 	tests/declare_trigraphs_o_circ_rcki_k.test \
 	tests/declare_trigraphs_o_pipe2_2rck_b.test \
@@ -1830,6 +1831,7 @@ TESTS+=	tests/help-c++.test \
 	tests/help_english-c.test \
 	tests/help_english-c89.test \
 	tests/help_english-knr.test \
+	tests/help_options.test \
 	tests/set.test \
 	tests/set_-e-a--st-.test \
 	tests/set_alt-tokens.test \

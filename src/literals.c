@@ -60,6 +60,7 @@ char const L_MEMBER[]             = "member";
 char const H_NON_MBR[]            = "non-mbr";
 char const H_NON_MEMBER[]         = "non-member";
 char const L_OF[]                 = "of";
+char const L_OPTIONS[]            = "options";
 char const L_POINTER[]            = "pointer";
 char const L_PREDEF[]             = "predef";
 char const L_PREDEFINED[]         = "predefined";

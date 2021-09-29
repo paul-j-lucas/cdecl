@@ -197,7 +197,8 @@ struct cdecl_command {
  */
 enum cdecl_help {
   CDECL_HELP_COMMANDS,                  ///< Help for cdecl commands.
-  CDECL_HELP_ENGLISH                    ///< Help for cdecl pseudo-English.
+  CDECL_HELP_ENGLISH,                   ///< Help for cdecl pseudo-English.
+  CDECL_HELP_OPTIONS                    ///< Help for cdecl options.
 };
 
 /**

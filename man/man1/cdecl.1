@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "September 19, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "September 29, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -263,6 +263,7 @@ The alternative tokens are:
 \f(CWxor\fP (\f(CW^\fP),
 and
 \f(CWxor_eq\fP (\f(CW^=\fP).
+(Supported only in C95 and later.)
 .TP
 .BR \-\-bison-debug " | " \-B
 Turns on
@@ -363,6 +364,7 @@ The digraph tokens are:
 \f(CW<:\fP (\f(CW[\fP)
 and
 \f(CW:>\fP (\f(CW]\fP).
+(Supported only in C95 and later.)
 .TP
 .BR \-\-east-const " | " \-E
 Turns on ``east const'' output
@@ -370,6 +372,7 @@ where \f(CWconst\fP (and \f(CWvolatile\fP)
 are printed to the right
 (``east'')
 of the type.
+(Not supported in K&R\~C.)
 .TP
 .BR \-\-explain " | " \-e
 Assumes \f(CWexplain\fP
@@ -507,6 +510,8 @@ The trigraph tokens are:
 \f(CW??!??!\fP (\f(CW||\fP),
 and
 \f(CW??-\fP (\f(CW~\fP).
+(Supported only in C89 and later
+and only through C++14.)
 .TP
 .BR \-\-version " | " \-v
 Prints the version number to standard error
@@ -836,7 +841,7 @@ Defines types via a C (or C++) \f(CWtypedef\fP declaration.
 For C++11 or later only,
 defines a type via a \f(CWusing\fP declaration.
 .TP
-.RB "{ " help " | " ? " } [ " command [ s "] | " english " ]"
+.RB "{ " help " | " ? " } [ " command [ s "] | " english " | " options " ]"
 Prints help that's sensitive to the current programming language
 (C or C++).
 By default
@@ -852,9 +857,18 @@ commands
 if
 .B english
 is given,
-gives help on pseudo-English
+prints help on pseudo-English
 (see
 .B English
+below);
+if
+.B options
+is given,
+prints help on
+.BR cdecl 's
+options
+(see
+.B "Set Options"
 below).
 .TP
 .BR exit " | " quit " | " q
@@ -1276,6 +1290,7 @@ Unambiguous option abbreviations may be used.
 .RB [ no ] alt-tokens
 Turns [off] on alternative token output
 \(em default is off.
+(Supported only in C95 and later.)
 .TP
 .RB [ no ] bison-debug
 Turns [off] on
@@ -1303,6 +1318,7 @@ for
 and
 \f(CW]\fP
 \(em default is off.
+(Supported only in C95 and later.)
 .TP
 .RB [ no ] east-const
 Turns [off] on ``east const'' output
@@ -1311,6 +1327,7 @@ are printed to the right
 (``east'')
 of the type
 \(em default is off.
+(Not supported in K&R\~C.)
 .TP
 .RB [ no ] explain-by-default
 Turns [off] on \f(CWexplain\fP being assumed
@@ -1371,6 +1388,8 @@ for
 and
 \f(CW~\fP
 \(em default is off.
+(Supported only in C89 and later
+and only through C++14.)
 .RE
 .SH PREDEFINED TYPES
 The following types are predefined

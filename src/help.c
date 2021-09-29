@@ -144,7 +144,7 @@ static void print_help_commands( void ) {
 
   print_h( "  define <name> as <english>\n" );
   print_h( "  explain <gibberish>\n" );
-  print_h( "  { help | ? } [command[s] | english]\n" );
+  print_h( "  { help | ? } [command[s] | english | options]\n" );
   print_h( "  set [<option> [= <value>] | options | <lang>]*\n" );
 
   print_h( "  show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef" );
@@ -170,13 +170,6 @@ static void print_help_commands( void ) {
   if ( OPT_LANG_IS(CPP_ANY) )
     print_h( "\\+\\+" );
   print_h( " declaration, like \"int x\"; or a cast, like \"(int)x\"\n" );
-
-  print_h( "option:\n" );
-  print_h( "  [no]alt-tokens [no]debug {di|tri|no}graphs [no]east-const\n" );
-  print_h( "  [no]explain-by-default [no]explicit-int[=<types>] lang=<lang>\n" );
-  print_h( "  [no]prompt [no]semicolon\n" );
-
-  print_h( "lang: K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|2X] | C\\+\\+[98|03|11|14|17|20|23]\n" );
 
   if ( OPT_LANG_IS(CPP_ANY) ) {
     print_h( "scope-c: class | struct | union |" );
@@ -349,6 +342,26 @@ static void print_help_english( void ) {
   print_help_where();
 }
 
+/**
+ * Print the help for cdecl options.
+ */
+void print_help_options( void ) {
+  print_h( "option:\n" );
+  print_h( "  [no]alt-tokens\n" );
+  print_h( "  [no]debug\n" );
+  print_h( "  {di|tri|no}graphs\n" );
+  print_h( "  [no]east-const\n" );
+  print_h( "  [no]explain-by-default\n" );
+  print_h( "  [no]explicit-int[=<types>]\n" );
+  print_h( "  lang=<lang>\n" );
+  print_h( "  [no]prompt\n" );
+  print_h( "  [no]semicolon\n" );
+  print_h( "lang:\n" );
+  print_h( "  K[&|N]R[C] | C[K[&|N]R|78|89|95|99|11|17|2X] | C\\+\\+[98|03|11|14|17|20|23]\n" );
+
+  print_help_where();
+}
+
 static void print_help_where( void ) {
   print_h( "where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate\n" );
 }
@@ -362,6 +375,9 @@ void print_help( cdecl_help_t help ) {
       return;
     case CDECL_HELP_ENGLISH:
       print_help_english();
+      return;
+    case CDECL_HELP_OPTIONS:
+      print_help_options();
       return;
   } // switch
   UNEXPECTED_INT_VALUE( help );

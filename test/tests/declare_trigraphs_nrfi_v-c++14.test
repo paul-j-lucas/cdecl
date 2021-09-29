@@ -1,0 +1,1 @@
+cdecl @ @ -3 -xc++14 @ declare f as non-returning function (int) returning void @ 0

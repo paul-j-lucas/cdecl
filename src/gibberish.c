@@ -998,30 +998,34 @@ char const* graph_token_c( char const *token ) {
       // are returned as a single string.
       //
       case C_GRAPH_DI:
-        switch ( token[0] ) {
-          case '#'  : return token[1] == '#' ? "%:%:" : "%:";
-          case '['  : return token[1] == '[' ? "<:<:" : "<:";
-          case ']'  : return token[1] == ']' ? ":>:>" : ":>";
-          case '{'  : return "<%";
-          case '}'  : return "%>";
-        } // switch
+        if ( opt_lang >= LANG_C_95 ) {
+          switch ( token[0] ) {
+            case '#'  : return token[1] == '#' ? "%:%:" : "%:";
+            case '['  : return token[1] == '[' ? "<:<:" : "<:";
+            case ']'  : return token[1] == ']' ? ":>:>" : ":>";
+            case '{'  : return "<%";
+            case '}'  : return "%>";
+          } // switch
+        }
         break;
       case C_GRAPH_TRI:
-        switch ( token[0] ) {
-          case '#'  : return "?\?=";
-          case '['  : return token[1] == '[' ? "?\?(?\?(" : "?\?(";
-          case ']'  : return token[1] == ']' ? "?\?)?\?)" : "?\?)";
-          case '\\' : return "?\?/";
-          case '^'  : return token[1] == '=' ? "?\?'=" : "?\?'";
-          case '{'  : return "?\?<";
-          case '}'  : return "?\?>";
-          case '|'  : switch ( token[1] ) {
-                        case '=': return "?\?!=";
-                        case '|': return "?\?!?\?!";
-                      } // switch
-                      return "?\?!";
-          case '~'  : return "?\?-";
-        } // switch
+        if ( opt_lang >= LANG_C_89 && opt_lang <= LANG_CPP_14 ) {
+          switch ( token[0] ) {
+            case '#'  : return "?\?=";
+            case '['  : return token[1] == '[' ? "?\?(?\?(" : "?\?(";
+            case ']'  : return token[1] == ']' ? "?\?)?\?)" : "?\?)";
+            case '\\' : return "?\?/";
+            case '^'  : return token[1] == '=' ? "?\?'=" : "?\?'";
+            case '{'  : return "?\?<";
+            case '}'  : return "?\?>";
+            case '|'  : switch ( token[1] ) {
+                          case '=': return "?\?!=";
+                          case '|': return "?\?!?\?!";
+                        } // switch
+                        return "?\?!";
+            case '~'  : return "?\?-";
+          } // switch
+        }
         break;
     } // switch
   }
