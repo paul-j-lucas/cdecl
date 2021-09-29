@@ -6383,7 +6383,7 @@ sname_english
 sname_english_ast
   : Y_NAME of_scope_list_english_opt
     {
-      DUMP_START( "Y_NAME of_scope_list_english_opt", "NAME" );
+      DUMP_START( "sname_english_ast", "NAME of_scope_list_english_opt" );
       DUMP_STR( "NAME", $1 );
       DUMP_SNAME( "of_scope_list_english_opt", $2 );
 
