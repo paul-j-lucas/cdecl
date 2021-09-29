@@ -1,3 +1,23 @@
+2021-09-29  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, gibberish.c, help.c, lexer.l, literals.c,
+     literals.h, parser.y, types.h, test/Makefile.am,
+     declare_trigraphs_nrfi_v-c++.out, declare_trigraphs_nrfi_v-c++14.out,
+     help-c++.out, help-c.out, help_command-c++.out, help_command-c++03.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out,
+     help_options.out, declare_trigraphs_nrfi_v-c++14.test, help_options.test:
+     Help for options is now on a separate page. Digraphs & trigraphs are no
+     longer printed in unsupported languages.
+   * lexer.l: Fixed comment.
+   * c_ast.c, c_ast.h, c_ast_util.c, c_kind.c, c_kind.h, check.c, dump.c,
+     english.c, gibberish.c: Removed K_NONE.
+
+2021-09-28  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Fixed dump text for sname_english_ast.
+   * c_ast.c, c_ast.h, c_sname.c, c_sname.h, strbuf.c, strbuf.h: Moved all
+     *_free() functions out-of-line.
+
 2021-09-27  Paul J. Lucas <paul@lucasmail.org>
 
    * Makefile.am: Now using coverage.info per convention.
