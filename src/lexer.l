@@ -555,8 +555,8 @@ static inline int parse_int( int base ) {
 
 /**
  * Sets the current token to \a token for the current digraph sequence.
- * Additionally, if the current language is K&R C, prints a warning that
- * digraphs are not supported until C89 (only once per parse).
+ * Additionally, if the current language is older than C95, prints a warning
+ * that digraphs are not supported until C95 (only once per parse).
  *
  * @param token The token the digraph maps to.
  *
@@ -572,8 +572,8 @@ static void set_digraph( char const *token ) {
 
 /**
  * Sets the current token to \a token for the current trigraph sequence.
- * Additionally, if the current language is K&R C, prints a warning that
- * trigraphs are not supported until C89 (only once per parse).
+ * Additionally, if the current language is K&R C or C++17 or later, prints a
+ * warning that trigraphs are not supported (only once per parse).
  *
  * @param token The token the trigraph maps to.
  *
