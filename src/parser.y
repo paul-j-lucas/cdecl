@@ -5512,7 +5512,7 @@ constructor_decl_english_ast
       DUMP_AST_LIST( "paren_decl_list_english_opt", $2 );
 
       $$ = c_ast_new_gc( K_CONSTRUCTOR, &@$ );
-      $$->as.func.param_ast_list = $2;
+      $$->as.constructor.param_ast_list = $2;
 
       DUMP_AST( "constructor_decl_english_ast", $$ );
       DUMP_END();
