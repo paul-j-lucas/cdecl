@@ -140,6 +140,10 @@ bool c_sname_is_ctor( c_sname_t const *sname ) {
   return strcmp( local_name, class_name ) == 0;
 }
 
+void c_sname_list_free( slist_t *list ) {
+  slist_free( list, NULL, (slist_data_free_fn_t)&c_sname_free );
+}
+
 bool c_sname_match( c_sname_t const *sname, c_sglob_t const *sglob ) {
   assert( sname != NULL );
   assert( sglob != NULL );

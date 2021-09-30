@@ -43,31 +43,97 @@
  * @{
  */
 
+// Flags for c_ast_gibberish() and c_typedef_gibberish().
+
+/**
+ * Unset value for <code>\ref c_gib_flags_t</code>.  Can also be used to mean
+ * _not_ to print in gibberish (hence, print in English).
+ */
+#define C_GIB_NONE        0u
+
+/**
+ * Flag for c_ast_gibberish() to print as a cast.
+ *
+ * @sa #C_GIB_DECL
+ */
+#define C_GIB_CAST        (1u << 0)
+
+/**
+ * Flag for c_ast_gibberish() to print as a declaration.
+ *
+ * @sa #C_GIB_CAST
+ * @sa #C_GIB_MULTI_DECL
+ * @sa #C_GIB_OMIT_TYPE
+ */
+#define C_GIB_DECL        (1u << 1)
+
+/**
+ * Flag for c_ast_gibberish() to indicate that the declaration is for multiple
+ * ojects.
+ *
+ * @note Unlike #C_GIB_OMIT_TYPE, must be used for the entire declaration.
+ * @note May only be used in combination with #C_GIB_DECL.
+ *
+ * @sa #C_GIB_DECL
+ * @sa #C_GIB_OMIT_TYPE
+ */
+#define C_GIB_MULTI_DECL  (1u << 2)
+
+/**
+ * Flag for c_ast_gibberish() to omit the type name when printing gibberish for
+ * the _second_ and subsequent objects when printing multiple objects in the
+ * same declaration.  For example, when printing:
+ *
+ *      int *p, *q;
+ *
+ * the gibberish for `q` must _not_ print the `int` again.
+ *
+ * @note May only be used in combination with #C_GIB_DECL.
+ *
+ * @sa #C_GIB_DECL
+ * @sa #C_GIB_MULTI_DECL
+ */
+#define C_GIB_OMIT_TYPE   (1u << 3)
+
+/**
+ * Flag for c_typedef_gibberish() to print as a `typedef` declaration.
+ *
+ * @sa #C_GIB_USING
+ */
+#define C_GIB_TYPEDEF     (1u << 4)
+
+/**
+ * Flag for c_typedef_gibberish() to print as a `using` declaration.
+ *
+ * @sa #C_GIB_TYPEDEF
+ */
+#define C_GIB_USING       (1u << 5)
+
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
  * Prints \a ast as a C/C++ declaration or cast.
  *
  * @param ast The AST to print.
- * @param kind The kind of gibberish to print as; must only be either
- * #C_GIB_CAST or #C_GIB_DECL.
+ * @param flags The gibberish flags to use; must include either #C_GIB_CAST or
+ * #C_GIB_DECL.
  * @param gout The `FILE` to print to.
  *
  * @sa c_typedef_gibberish()
  */
-void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t kind, FILE *gout );
+void c_ast_gibberish( c_ast_t const *ast, c_gib_flags_t flags, FILE *gout );
 
 /**
  * Prints \a tdef as a C/C++ type declaration.
  *
  * @param tdef The type to print.
- * @param kind The kind of gibberish to print as; must only be either
- * #C_GIB_TYPEDEF or #C_GIB_USING.
+ * @param flags The gibberish flags to use; must include either #C_GIB_TYPEDEF
+ * or #C_GIB_USING.
  * @param gout The `FILE` to print to.
  *
  * @sa c_ast_gibberish()
  */
-void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t kind,
+void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
                           FILE *gout );
 
 /**

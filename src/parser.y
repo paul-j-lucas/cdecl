@@ -308,11 +308,24 @@
  * @param KEY The key name to print.
  * @param SNAME The scoped name to dump.
  *
+ * @sa #DUMP_SNAME_LIST()
  * @sa #DUMP_STR()
  */
 #define DUMP_SNAME(KEY,SNAME) IF_DEBUG( \
   DUMP_COMMA; PUTS( "  " KEY " = " );   \
   c_sname_dump( &(SNAME), stdout ); )
+
+/**
+ * Dumps a list of scoped names.
+ *
+ * @param KEY The key name to print.
+ * @param LIST The list of scoped names to dump.
+ *
+ * @sa #DUMP_SNAME()
+ */
+#define DUMP_SNAME_LIST(KEY,LIST) IF_DEBUG( \
+  DUMP_COMMA; PUTS( "  " KEY " = " );       \
+  c_sname_list_dump( &(LIST), stdout ); )
 
 #ifdef ENABLE_CDECL_DEBUG
 /**
@@ -449,7 +462,7 @@ typedef struct c_qualifier c_qualifier_t;
  */
 struct show_type_info {
   unsigned      show_which;       ///< Predefined, user, or both?
-  c_gib_kind_t  gib_kind;         ///< Kind of gibberish to print.
+  c_gib_flags_t gib_flags;        ///< Gibberish flags.
   c_sglob_t     sglob;            ///< Scoped glob to match, if any.
 };
 typedef struct show_type_info show_type_info_t;
@@ -956,10 +969,10 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
        c_sname_match( &tdef->ast->sname, &sti->sglob ));
 
     if ( show_type ) {
-      if ( sti->gib_kind == C_GIB_NONE )
+      if ( sti->gib_flags == C_GIB_NONE )
         c_ast_explain_type( tdef->ast, fout );
       else
-        c_typedef_gibberish( tdef, sti->gib_kind, fout );
+        c_typedef_gibberish( tdef, sti->gib_flags, fout );
     }
   }
 
@@ -972,15 +985,15 @@ static bool show_type_visitor( c_typedef_t const *tdef, void *data ) {
  * @param sti The <code>\ref show_type_info</code> to initialize.
  * @param show_which Which types to show: predefined, user, or both?
  * @param glob The glob string.  May be NULL.
- * @param gib_kind The <code>\ref c_gib_kind</code> to use.
+ * @param gib_flags The <code>\ref c_gib_flags_t</code> to use.
  *
  * @sa sti_free()
  */
 static void sti_init( show_type_info_t *sti, unsigned show_which,
-                      char const *glob, c_gib_kind_t gib_kind ) {
+                      char const *glob, c_gib_flags_t gib_flags ) {
   assert( sti != NULL );
   sti->show_which = show_which;
-  sti->gib_kind = gib_kind;
+  sti->gib_flags = gib_flags;
   c_sglob_init( &sti->sglob );
   c_sglob_parse( glob, &sti->sglob );
 }
@@ -1041,9 +1054,10 @@ static void yyerror( char const *msg ) {
   c_ast_pair_t        ast_pair;   // for the AST being built
   unsigned            bitmask;    // multipurpose bitmask (used by show)
   bool                flag;       // simple flag
-  c_gib_kind_t        gib_kind;   // kind of gibberish
+  c_gib_flags_t       gib_flags;  // gibberish flags
   cdecl_help_t        help;       // type of help to print
   int                 int_val;    // integer value
+  slist_t             list;       // multipurpose list
   char const         *literal;    // token L_* literal (for new-style casts)
   char               *name;       // identifier name, cf. sname
   c_oper_id_t         oper_id;    // overloaded operator ID
@@ -1427,6 +1441,7 @@ static void yyerror( char const *msg ) {
 %type   <type>      scope_english_type scope_english_type_exp
 %type   <sname>     sname_english sname_english_exp
 %type   <ast>       sname_english_ast
+%type   <list>      sname_list_english
 %type   <type>      storage_class_english_type
 %type   <type>      storage_class_list_english_type_opt
 %type   <ast>       type_english_ast
@@ -1550,7 +1565,7 @@ static void yyerror( char const *msg ) {
 %type   <tid>       no_except_bool_stid_exp
 %type   <bitmask>   predefined_or_user_mask_opt
 %type   <name>      set_option_value_opt
-%type   <gib_kind>  show_format show_format_exp show_format_opt
+%type   <gib_flags> show_format show_format_exp show_format_opt
 %type   <bitmask>   show_which_types_mask_opt
 %type   <tid>       static_stid_opt
 %type   <str_val>   str_lit str_lit_exp
@@ -1604,6 +1619,9 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_sname_free( &$$ ); } typedef_sname_c
 %destructor { DTRACE; c_sname_free( &$$ ); } Y_CONSTRUCTOR_SNAME
 %destructor { DTRACE; c_sname_free( &$$ ); } Y_DESTRUCTOR_SNAME
+
+// sname_list
+%destructor { DTRACE; c_sname_list_free( &$$ ); } sname_list_english
 
 ///////////////////////////////////////////////////////////////////////////////
 %%
@@ -1718,7 +1736,7 @@ declare_command
     /*
      * Common declaration, e.g.: declare x as int.
      */
-  : Y_DECLARE sname_english as_exp storage_class_list_english_type_opt
+  : Y_DECLARE sname_list_english as_exp storage_class_list_english_type_opt
     alignas_or_width_decl_english_ast
     {
       if ( $5->kind_id == K_NAME ) {
@@ -1737,29 +1755,42 @@ declare_command
         //
         assert( !c_ast_empty_name( $5 ) );
         print_error_unknown_name( &@5, &$5->sname );
-        c_sname_free( &$2 );
+        c_sname_list_free( &$2 );
         PARSE_ABORT();
       }
 
       DUMP_START( "declare_command",
-                  "DECLARE sname AS storage_class_list_english_type_opt "
+                  "DECLARE sname_list_english AS "
+                  "storage_class_list_english_type_opt "
                   "alignas_or_width_decl_english_ast" );
-      DUMP_SNAME( "sname", $2 );
+      DUMP_SNAME_LIST( "sname_list_english", $2 );
       DUMP_TYPE( "storage_class_list_english_type_opt", &$4 );
       DUMP_AST( "alignas_or_width_decl_english_ast", $5 );
 
-      c_ast_set_sname( $5, &$2 );
       $5->loc = @2;
       C_TYPE_ADD( &$5->type, &$4, @4 );
 
       DUMP_AST( "decl_english", $5 );
       DUMP_END();
 
-      C_AST_CHECK_DECL( $5 );
-      c_ast_gibberish( $5, C_GIB_DECL, fout );
+      c_gib_flags_t gib_flags = C_GIB_DECL;
+      if ( slist_len( &$2 ) > 1 )
+        gib_flags |= C_GIB_MULTI_DECL;
+      FOREACH_SLIST( sname_node, &$2, NULL ) {
+        c_ast_set_sname( $5, sname_node->data );
+        C_AST_CHECK_DECL( $5 );
+        c_ast_gibberish( $5, gib_flags, fout );
+        if ( sname_node->next != NULL ) {
+          gib_flags |= C_GIB_OMIT_TYPE;
+          FPUTS( ", ", fout );
+        }
+      } // for
+
       if ( opt_semicolon )
         FPUTC( ';', fout );
       FPUTC( '\n', fout );
+
+      c_sname_list_free( &$2 );
     }
 
     /*
@@ -6422,6 +6453,37 @@ sname_english_exp
     {
       c_sname_init( &$$ );
       elaborate_error( "name expected" );
+    }
+  ;
+
+sname_list_english
+  : sname_list_english ',' sname_english
+    {
+      DUMP_START( "sname_list_english", "sname_english" );
+      DUMP_SNAME_LIST( "sname_list_english", $1 );
+      DUMP_SNAME( "sname_english", $3 );
+
+      $$ = $1;
+      c_sname_t *const temp_sname = MALLOC( c_sname_t, 1 );
+      *temp_sname = $3;
+      slist_push_tail( &$$, temp_sname );
+
+      DUMP_SNAME_LIST( "sname_list_english", $$ );
+      DUMP_END();
+    }
+
+  | sname_english
+    {
+      DUMP_START( "sname_list_english", "sname_english" );
+      DUMP_SNAME( "sname_english", $1 );
+
+      slist_init( &$$ );
+      c_sname_t *const temp_sname = MALLOC( c_sname_t, 1 );
+      *temp_sname = $1;
+      slist_push_tail( &$$, temp_sname );
+
+      DUMP_SNAME_LIST( "sname_list_english", $$ );
+      DUMP_END();
     }
   ;
 

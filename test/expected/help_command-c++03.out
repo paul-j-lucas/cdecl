@@ -1,6 +1,6 @@
 command:
   [const | dynamic | reinterpret | static] cast <name> {as|[in]to} <english>
-  declare <name> as <english> [width <number> [bits]]
+  declare <name> [, <name>]* as <english> [<declare-options>]
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
@@ -11,6 +11,8 @@ command:
   typedef <gibberish> [, <gibberish>]*
   <scope-c> <name> [{ [{ <scope-c> | <typedef> } ;]* }]
   exit | q[uit]
+declare-options:
+  width <number> [bits]
 gibberish: a C++ declaration, like "int x"; or a cast, like "(int)x"
 scope-c: class | struct | union | namespace
 where: [] = 0 or 1; * = 0 or more; + = 1 or more; {} = one of; | = alternate

@@ -82,7 +82,13 @@ TESTS+=	tests/cdecl-23.test \
 # ===============
 # Almost every test here has a corresponding cast_ and explain_ test.
 #
-TESTS+=	tests/declare_a3a5a7i.test \
+TESTS+=	tests/declare_2a4i.test \
+	tests/declare_2i.test \
+	tests/declare_2pfid_pc.test \
+	tests/declare_2pfid_pcc.test \
+	tests/declare_2pfid_v.test \
+	tests/declare_2pi.test \
+	tests/declare_a3a5a7i.test \
 	tests/declare_a3a5i.test \
 	tests/declare_a3a5pfv_i.test \
 	tests/declare_a3a5pfv_pi.test \

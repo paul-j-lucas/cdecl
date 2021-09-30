@@ -238,6 +238,7 @@ void c_sname_fill_in_namespaces( c_sname_t *sname );
  *
  * @sa c_sname_init()
  * @sa c_sname_init_name()
+ * @sa c_sname_list_free()
  */
 void c_sname_free( c_sname_t *sname );
 
@@ -300,6 +301,16 @@ void c_sname_init_name( c_sname_t *sname, char *name ) {
  */
 PJL_WARN_UNUSED_RESULT
 bool c_sname_is_ctor( c_sname_t const *sname );
+
+/**
+ * Frees all memory associated with \a list but _not_ \a list itself.
+ *
+ * @param list The list of scoped names to free.  If NULL, does nothing;
+ * otherwise, reinitializes \a list upon completion.
+ *
+ * @sa c_sname_free()
+ */
+void c_sname_list_free( slist_t *list );
 
 /**
  * Gets the local name of \a sname (which is the name of the last scope), e.g.,

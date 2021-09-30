@@ -12,6 +12,12 @@ with their complete changes, see the AUTHORS file.
 
 * Changes in Cdecl 11.1
 
+** Multiple declarations
+The `declare` command can now accept multiple names like:
+
+    cdecl> declare p, q as pointer to int
+    int *p, *q;
+
 ** Digraph & Trigraph output
 Digraphs and trigraphs are no longer emitted in a language in which they aren't
 supported.

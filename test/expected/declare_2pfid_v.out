@@ -1,0 +1,1 @@
+void (*x)(int, double), (*y)(int, double);

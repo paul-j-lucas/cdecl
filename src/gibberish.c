@@ -50,7 +50,7 @@
  * arguments otherwise).
  */
 struct g_state {
-  c_gib_kind_t  gib_kind;               ///< Kind of gibberish to print.
+  c_gib_flags_t flags;                  ///< Gibberish printing flags.
   FILE         *gout;                   ///< Where to write the gibberish.
   bool          postfix;                ///< Doing postfix gibberish?
   bool          printed_space;          ///< Printed a space yet?
@@ -60,13 +60,14 @@ struct g_state {
 typedef struct g_state g_state_t;
 
 // local functions
-static void g_init( g_state_t*, c_gib_kind_t, bool, FILE* );
+static void g_init( g_state_t*, c_gib_flags_t, bool, FILE* );
 static void g_print_ast( g_state_t*, c_ast_t const* );
 static void g_print_ast_bit_width( g_state_t const*, c_ast_t const* );
 static void g_print_ast_name( g_state_t*, c_ast_t const* );
 static void g_print_postfix( g_state_t*, c_ast_t const* );
 static void g_print_qual_name( g_state_t*, c_ast_t const* );
 static void g_print_space_ast_name( g_state_t*, c_ast_t const* );
+static bool g_space_before_ptr_ref( g_state_t const*, c_ast_t const* );
 
 ////////// inline functions ///////////////////////////////////////////////////
 
@@ -87,17 +88,17 @@ static inline void g_print_space_once( g_state_t *g ) {
  * declaration or cast.
  *
  * @param ast The AST to print.
- * @param gib_kind The kind of gibberish to print as.
+ * @param flags The gibberish flags to use.
  * @param printing_typedef Printing a `typedef`?
  * @param gout The `FILE` to print to.
  */
-static void c_ast_gibberish_impl( c_ast_t const *ast, c_gib_kind_t gib_kind,
+static void c_ast_gibberish_impl( c_ast_t const *ast, c_gib_flags_t flags,
                                   bool printing_typedef, FILE *gout ) {
   assert( ast != NULL );
   assert( gout != NULL );
 
   g_state_t g;
-  g_init( &g, gib_kind, printing_typedef, gout );
+  g_init( &g, flags, printing_typedef, gout );
   g_print_ast( &g, ast );
 }
 
@@ -105,21 +106,23 @@ static void c_ast_gibberish_impl( c_ast_t const *ast, c_gib_kind_t gib_kind,
  * Initializes a `g_state`.
  *
  * @param g The `g_state` to initialize.
- * @param gib_kind The kind of gibberish to print.
+ * @param flags The gibberish flags to use.
  * @param printing_typedef Printing a `typedef`?
  * @param gout The `FILE` to print it to.
  */
-static void g_init( g_state_t *g, c_gib_kind_t gib_kind, bool printing_typedef,
+static void g_init( g_state_t *g, c_gib_flags_t flags, bool printing_typedef,
                     FILE *gout ) {
   assert( g != NULL );
   assert( gout != NULL );
 
   MEM_ZERO( g );
-  g->gib_kind = gib_kind;
+  g->flags = flags;
   g->gout = gout;
   g->printing_typedef = printing_typedef;
-  if ( gib_kind == C_GIB_USING )
+  if ( (flags & C_GIB_USING) != 0 )
     g->skip_name_for_using = true;
+  if ( (flags & C_GIB_OMIT_TYPE) != 0 )
+    g->printed_space = true;
 }
 
 /**
@@ -236,7 +239,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         FPRINTF( g->gout, " %s", c_tid_name_c( msc_call_atid ) );
       }
       if ( false_set( &g->postfix ) ) {
-        if ( !g->skip_name_for_using && g->gib_kind != C_GIB_CAST )
+        if ( !g->skip_name_for_using && (g->flags & C_GIB_CAST) == 0 )
           g_print_space_once( g );
         g_print_postfix( g, ast );
       }
@@ -265,7 +268,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_BUILTIN:
-      FPUTS( c_type_name_c( &ast->type ), g->gout );
+      if ( (g->flags & C_GIB_OMIT_TYPE) == 0 )
+        FPUTS( c_type_name_c( &ast->type ), g->gout );
       g_print_space_ast_name( g, ast );
       g_print_ast_bit_width( g, ast );
       break;
@@ -289,7 +293,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
       FPUTS( c_type_name_c( &type ), g->gout );
 
-      if ( g->gib_kind != C_GIB_TYPEDEF || g->printing_typedef ) {
+      if ( (g->flags & C_GIB_TYPEDEF) == 0 || g->printing_typedef ) {
         //
         // For enum, class, struct, or union (ECSU) types, we need to print the
         // ECSU name when either:
@@ -323,40 +327,21 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_NAME:
-      if ( !c_ast_empty_name( ast ) && g->gib_kind != C_GIB_CAST )
+      if ( !c_ast_empty_name( ast ) && (g->flags & C_GIB_CAST) == 0 )
         g_print_ast_name( g, ast );
       break;
 
     case K_POINTER:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE: {
-      c_tid_t const stid = type.stids & TS_MASK_STORAGE;
-      if ( stid != TS_NONE )
-        FPRINTF( g->gout, "%s ", c_tid_name_c( stid ) );
-      g_print_ast( g, ast->as.ptr_ref.to_ast );
-      if ( !g->skip_name_for_using && g->gib_kind != C_GIB_CAST &&
-           c_ast_find_name( ast, C_VISIT_UP ) != NULL &&
-           !c_ast_find_kind_any( ast->parent_ast, C_VISIT_UP,
-                                 K_ANY_FUNCTION_LIKE ) ) {
-        //
-        // For all kinds except function-like ASTs, we want the output to be
-        // like:
-        //
-        //      type *var
-        //
-        // i.e., the '*', '&', or "&&" adjacent to the variable; for function-
-        // like ASTs, when there's no name for a parameter, or when we're
-        // casting, we want the output to be like:
-        //
-        //      type* func()            // function
-        //      type* (^block)()        // block
-        //      func(type*)             // nameless function parameter
-        //      (type*)expr             // cast
-        //
-        // i.e., the '*', '&', or "&&" adjacent to the type.
-        //
-        g_print_space_once( g );
+      if ( (g->flags & C_GIB_OMIT_TYPE) == 0 ) {
+        c_tid_t const stid = type.stids & TS_MASK_STORAGE;
+        if ( stid != TS_NONE )
+          FPRINTF( g->gout, "%s ", c_tid_name_c( stid ) );
       }
+      g_print_ast( g, ast->as.ptr_ref.to_ast );
+      if ( g_space_before_ptr_ref( g, ast ) )
+        g_print_space_once( g );
       if ( !g->postfix )
         g_print_qual_name( g, ast );
       break;
@@ -370,36 +355,39 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       }
       break;
 
-    case K_TYPEDEF: {
-      //
-      // Of course a K_TYPEDEF AST also has a type comprising TB_TYPEDEF, but
-      // we need to see whether there's any more to the type, e.g., "const".
-      //
-      bool const is_more_than_plain_typedef =
-        !c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) );
-      if ( is_more_than_plain_typedef && !opt_east_const )
-        FPRINTF( g->gout, "%s ", c_type_name_c( &ast->type ) );
+    case K_TYPEDEF:
+      if ( (g->flags & C_GIB_OMIT_TYPE) == 0 ) {
+        //
+        // Of course a K_TYPEDEF AST also has a type comprising TB_TYPEDEF, but
+        // we need to see whether there's any more to the type, e.g., "const".
+        //
+        bool const is_more_than_plain_typedef =
+          !c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) );
 
-      //
-      // Temporarily set skip_name_for_using to false to force printing of the
-      // type's name.  This is necessary for when printing the name of a
-      // typedef of a typedef as a "using" declaration:
-      //
-      //      c++decl> typedef int32_t foo_t
-      //      c++decl> show foo_t as using
-      //      using foo_t = int32_t;
-      //
-      bool const orig_skip_name_for_using = g->skip_name_for_using;
-      g->skip_name_for_using = false;
-      g_print_ast_name( g, ast->as.tdef.for_ast );
-      g->skip_name_for_using = orig_skip_name_for_using;
+        if ( is_more_than_plain_typedef && !opt_east_const )
+          FPRINTF( g->gout, "%s ", c_type_name_c( &ast->type ) );
 
-      if ( is_more_than_plain_typedef && opt_east_const )
-        FPRINTF( g->gout, " %s", c_type_name_c( &ast->type ) );
+        //
+        // Temporarily set skip_name_for_using to false to force printing of
+        // the type's name.  This is necessary for when printing the name of a
+        // typedef of a typedef as a "using" declaration:
+        //
+        //      c++decl> typedef int32_t foo_t
+        //      c++decl> show foo_t as using
+        //      using foo_t = int32_t;
+        //
+        bool const orig_skip_name_for_using = g->skip_name_for_using;
+        g->skip_name_for_using = false;
+        g_print_ast_name( g, ast->as.tdef.for_ast );
+        g->skip_name_for_using = orig_skip_name_for_using;
+
+        if ( is_more_than_plain_typedef && opt_east_const )
+          FPRINTF( g->gout, " %s", c_type_name_c( &ast->type ) );
+      }
+
       g_print_space_ast_name( g, ast );
       g_print_ast_bit_width( g, ast );
       break;
-    }
 
     case K_VARIADIC:
       FPUTS( L_ELLIPSIS, g->gout );
@@ -470,7 +458,10 @@ static void g_print_ast_func_params( g_state_t const *g, c_ast_t const *ast ) {
     if ( true_or_set( &comma ) )
       FPUTS( ", ", g->gout );
     g_state_t params_g;
-    g_init( &params_g, g->gib_kind, /*printing_typedef=*/false, g->gout );
+    g_init(
+      &params_g,
+      g->flags & ~C_GIB_OMIT_TYPE, /*printing_typedef=*/false, g->gout
+    );
     g_print_ast( &params_g, c_param_ast( param ) );
   } // for
   FPUTC( ')', g->gout );
@@ -513,7 +504,7 @@ static void g_print_ast_name( g_state_t *g, c_ast_t const *ast ) {
     // For typedefs, the scope names (if any) were already printed in
     // c_typedef_gibberish() so now we just print the local name.
     //
-    g->gib_kind == C_GIB_TYPEDEF ?
+    (g->flags & C_GIB_TYPEDEF) != 0 ?
       c_ast_local_name( ast ) : c_ast_full_name( ast ),
     g->gout
   );
@@ -678,7 +669,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
 
   switch ( ast->kind_id ) {
     case K_POINTER:
-      if ( qual_stid != TS_NONE && g->gib_kind != C_GIB_CAST &&
+      if ( qual_stid != TS_NONE && (g->flags & C_GIB_CAST) == 0 &&
            !c_ast_is_ptr_to_kind( ast, K_FUNCTION ) ) {
         //
         // If we're printing a type as a "using" declaration and there's a
@@ -734,7 +725,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
   if ( qual_stid != TS_NONE ) {
     FPUTS( c_tid_name_c( qual_stid ), g->gout );
 
-    if ( (g->gib_kind & (C_GIB_DECL | C_GIB_TYPEDEF)) != C_GIB_NONE &&
+    if ( (g->flags & (C_GIB_DECL | C_GIB_TYPEDEF)) != 0 &&
          c_ast_find_name( ast, C_VISIT_UP ) != NULL ) {
       //
       // For declarations and typedefs, if there is a qualifier and if a name
@@ -762,7 +753,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
 
-  if ( g->gib_kind == C_GIB_CAST )
+  if ( (g->flags & C_GIB_CAST) != 0 )
     return;                             // for casts, print nothing
 
   switch ( ast->kind_id ) {
@@ -807,33 +798,81 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
   } // switch
 }
 
-////////// extern functions ///////////////////////////////////////////////////
-
-void c_ast_gibberish( c_ast_t const *ast, c_gib_kind_t gib_kind, FILE *gout ) {
-  assert( ast != NULL );
-  assert( (gib_kind & (C_GIB_CAST | C_GIB_DECL)) != C_GIB_NONE );
-  assert( gout != NULL );
-
-  switch ( ast->align.kind ) {
-    case C_ALIGNAS_NONE:
-      break;
-    case C_ALIGNAS_EXPR:
-      FPRINTF( gout, "%s(%u) ", alignas_lang(), ast->align.as.expr );
-      break;
-    case C_ALIGNAS_TYPE:
-      FPRINTF( gout, "%s(", alignas_lang() );
-      c_ast_gibberish( ast->align.as.type_ast, C_GIB_DECL, gout );
-      FPUTS( ") ", gout );
-      break;
-  } // switch
-
-  c_ast_gibberish_impl( ast, gib_kind, /*printing_typedef=*/false, gout );
+/**
+ * Determine whether we should print a space before the `*`, `&`, or `&&` in a
+ * declaration.  For all kinds _except_ function-like ASTs, we want the output
+ * to be like:
+ *
+ *      type *var
+ *
+ * i.e., the `*`, `&`, or `&&` adjacent to the variable; for function-like
+ * ASTs, when there's no name for a parameter, or when we're casting, we want
+ * the output to be like:
+ *
+ *      type* func()            // function
+ *      type* (^block)()        // block
+ *      func(type*)             // nameless function parameter
+ *      (type*)expr             // cast
+ *
+ * i.e., the `*`, `&`, or `&&` adjacent to the type.
+ *
+ * However, as an exception, if we're declaring more than one pointer to
+ * function returning a pointer or reference in the same declaration, then keep
+ * the `*`, `&`, or `&&` adjacent to the function like:
+ *
+ *      type &(*f)(), &(*g)()
+ *
+ * not:
+ *
+ *      type& (*f)(), &(*g)()
+ *
+ * because the latter looks inconsistent (even though it's correct).
+ *
+ * @param g The `g_state` to use.
+ * @param ast The current AST node.
+ * @return Returns `true` only if we should print a space after type type.
+ */
+static bool g_space_before_ptr_ref( g_state_t const *g, c_ast_t const *ast ) {
+  if ( g->skip_name_for_using )
+    return false;
+  if ( (g->flags & C_GIB_CAST) != 0 )
+    return false;
+  if ( c_ast_find_name( ast, C_VISIT_UP ) == NULL )
+    return false;
+  if ( c_ast_find_kind_any( ast->parent_ast, C_VISIT_UP, K_ANY_FUNCTION_LIKE ) )
+    return (g->flags & C_GIB_MULTI_DECL) != 0;
+  return true;
 }
 
-void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
+////////// extern functions ///////////////////////////////////////////////////
+
+void c_ast_gibberish( c_ast_t const *ast, c_gib_flags_t flags, FILE *gout ) {
+  assert( ast != NULL );
+  assert( (flags & (C_GIB_CAST | C_GIB_DECL)) != 0 );
+  assert( gout != NULL );
+
+  if ( (flags & C_GIB_OMIT_TYPE) == 0 ) {
+    switch ( ast->align.kind ) {
+      case C_ALIGNAS_NONE:
+        break;
+      case C_ALIGNAS_EXPR:
+        FPRINTF( gout, "%s(%u) ", alignas_lang(), ast->align.as.expr );
+        break;
+      case C_ALIGNAS_TYPE:
+        FPRINTF( gout, "%s(", alignas_lang() );
+        c_ast_gibberish( ast->align.as.type_ast, C_GIB_DECL, gout );
+        FPUTS( ") ", gout );
+        break;
+    } // switch
+  }
+
+  c_ast_gibberish_impl( ast, flags, /*printing_typedef=*/false, gout );
+}
+
+void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
                           FILE *gout ) {
   assert( tdef != NULL );
-  assert( (gib_kind & (C_GIB_TYPEDEF | C_GIB_USING)) != C_GIB_NONE );
+  assert( (flags & (C_GIB_TYPEDEF | C_GIB_USING)) != 0 );
   assert( gout != NULL );
 
   size_t scope_close_braces_to_print = 0;
@@ -954,7 +993,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
   // In C++, such typedefs are unnecessary since such types are first-class
   // types and not just tags, so we don't print "typedef".
   //
-  bool const printing_typedef = gib_kind == C_GIB_TYPEDEF &&
+  bool const printing_typedef = (flags & C_GIB_TYPEDEF) != 0 &&
     (!is_ecsu || c_lang_is_c( tdef->lang_ids ) ||
     (OPT_LANG_IS(C_ANY) && !c_lang_is_cpp( tdef->lang_ids )));
 
@@ -962,7 +1001,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_kind_t gib_kind,
   // When printing a "using", we don't have to check languages since "using" is
   // available only in C++.
   //
-  bool const printing_using = gib_kind == C_GIB_USING && !is_ecsu;
+  bool const printing_using = (flags & C_GIB_USING) != 0 && !is_ecsu;
 
   if ( printing_typedef )
     FPRINTF( gout, "%s ", L_TYPEDEF );

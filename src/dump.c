@@ -301,6 +301,17 @@ void c_sname_dump( c_sname_t const *sname, FILE *dout ) {
   }
 }
 
+void c_sname_list_dump( slist_t const *list, FILE *dout ) {
+  FPUTC( '[', dout );
+  bool dump_comma = false;
+  FOREACH_SLIST( node, list, NULL ) {
+    if ( true_or_set( &dump_comma ) )
+      FPUTS( ", ", dout );
+    c_sname_dump( node->data, dout );
+  }
+  FPUTC( ']', dout );
+}
+
 void c_tid_dump( c_tid_t tid, FILE *dout ) {
   FPRINTF( dout,
     "\"%s\" (%s = 0x%" PRIX_C_TID_T ")",

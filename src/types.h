@@ -72,7 +72,7 @@ typedef struct c_builtin_ast      c_builtin_ast_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
 typedef struct c_ecsu_ast         c_ecsu_ast_t;
 typedef struct c_function_ast     c_function_ast_t;
-typedef enum   c_gib_kind         c_gib_kind_t;
+typedef unsigned                  c_gib_flags_t;
 typedef enum   c_graph            c_graph_t;
 typedef struct c_keyword          c_keyword_t;
 typedef enum   c_keyword_ctx      c_keyword_ctx_t;
@@ -128,22 +128,6 @@ struct c_ast_pair {
    * subsequent additions to the AST.
    */
   c_ast_t *target_ast;
-};
-
-/**
- * Kind of gibberish to print.  The gibberish printed varies slightly depending
- * on the kind.
- *
- * A given gibberish may only be a single kind and _not_ be a bitwise-or of
- * kinds.  However, a bitwise-or of kinds may be used to test whether a given
- * gibberish is any _one_ of those kinds.
- */
-enum c_gib_kind {
-  C_GIB_NONE    = 0u,                   ///< Not gibberish (hence, English).
-  C_GIB_DECL    = (1u << 0),            ///< Gibberish is a declaration.
-  C_GIB_CAST    = (1u << 1),            ///< Gibberish is a cast.
-  C_GIB_TYPEDEF = (1u << 2),            ///< Gibberish is a `typedef`.
-  C_GIB_USING   = (1u << 3)             ///< Gibberish is a `using`.
 };
 
 /**

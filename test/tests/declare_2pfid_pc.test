@@ -1,0 +1,1 @@
+cdecl @ @ @ declare x, y as pointer to function (int, double) returning pointer to char @ 0
