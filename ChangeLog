@@ -1,5 +1,19 @@
 2021-09-29  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS, cdecl.1, c_sname.c, c_sname.h, dump.c, dump.h, gibberish.c,
+     gibberish.h, help.c, parser.y, types.h, test/Makefile.am,
+     declare_2a4i.out, declare_2i.out, declare_2pfid_pc.out,
+     declare_2pfid_pcc.out, declare_2pfid_v.out, declare_2pi.out, help-c++.out,
+     help-c.out, help_command-c++.out, help_command-c++03.out,
+     help_command-c.out, help_commands-c++.out, help_commands-c.out,
+     declare_2a4i.test, declare_2i.test, declare_2pfid_pc.test,
+     declare_2pfid_pcc.test, declare_2pfid_v.test, declare_2pi.test: Added
+     ability to declare multiple things in the same "declare" command.
+   * NEWS, parser.y, test/Makefile.am, cdecl--debug.out, cdecl-d-+i.out,
+     cdecl-d-al8i.out, cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out,
+     cdecl-d-f2i_pi.out, cdecl-d-f_v.out, cdecl-d-faia4iaviacias6i_v.out,
+     cdecl-d-pmki.out, cdecl-d-z.out, explain_2npi.out, explain_2npi.test:
+     Fixed multiple nested declarations crash.
    * NEWS, configure.ac, cdecl.1, gibberish.c, help.c, lexer.l, literals.c,
      literals.h, parser.y, types.h, test/Makefile.am,
      declare_trigraphs_nrfi_v-c++.out, declare_trigraphs_nrfi_v-c++14.out,
