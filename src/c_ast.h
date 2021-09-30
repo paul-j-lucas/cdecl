@@ -515,18 +515,6 @@ void c_ast_append_sname( c_ast_t *ast, c_sname_t *sname ) {
 }
 
 /**
- * Duplicates the name of \a ast.
- *
- * @param ast The AST to duplicate the name of.
- * @return Returns the name of \a ast duplicated.  The caller is responsible
- * for calling c_sname_free() on it.
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-c_sname_t c_ast_dup_name( c_ast_t const *ast ) {
-  return c_sname_dup( &ast->sname );
-}
-
-/**
  * Checks whether the name of \a ast is empty.
  *
  * @param ast The AST to check.
@@ -623,6 +611,18 @@ char const* c_ast_name_atr( c_ast_t const *ast, size_t roffset ) {
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 size_t c_ast_name_count( c_ast_t const *ast ) {
   return c_sname_count( &ast->sname );
+}
+
+/**
+ * Duplicates the name of \a ast.
+ *
+ * @param ast The AST to duplicate the name of.
+ * @return Returns the name of \a ast duplicated.  The caller is responsible
+ * for calling c_sname_free() on it.
+ */
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
+c_sname_t c_ast_name_dup( c_ast_t const *ast ) {
+  return c_sname_dup( &ast->sname );
 }
 
 /**

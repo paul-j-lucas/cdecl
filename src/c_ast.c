@@ -133,7 +133,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
 
   dup_ast->align = ast->align;
   dup_ast->depth = ast->depth;
-  dup_ast->sname = c_ast_dup_name( ast );
+  dup_ast->sname = c_ast_name_dup( ast );
   dup_ast->type = ast->type;
 
   switch ( ast->kind_id ) {

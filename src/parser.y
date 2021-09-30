@@ -2865,7 +2865,7 @@ namespace_sname_c
 
       $$ = $1;
       c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_NAMESPACE ) );
-      c_sname_t temp_sname = c_ast_dup_name( $3->ast );
+      c_sname_t temp_sname = c_ast_name_dup( $3->ast );
       c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "namespace_sname_c", $$ );
@@ -2928,7 +2928,7 @@ namespace_typedef_sname_c
 
       $$ = $1;
       c_sname_set_local_type( &$$, c_ast_local_type( $3->ast ) );
-      c_sname_t temp_sname = c_ast_dup_name( $3->ast );
+      c_sname_t temp_sname = c_ast_name_dup( $3->ast );
       c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "typedef_sname_c", $$ );
@@ -2950,7 +2950,7 @@ namespace_typedef_sname_c
       DUMP_END();
     }
 
-  | any_typedef                   { $$ = c_ast_dup_name( $1->ast ); }
+  | any_typedef                   { $$ = c_ast_name_dup( $1->ast ); }
   ;
 
 brace_in_scope_declaration_c_exp
@@ -3081,7 +3081,7 @@ typedef_decl_c
         //
         typedef_ast = type_ast;
         if ( c_ast_empty_name( typedef_ast ) )
-          typedef_ast->sname = c_ast_dup_name( $1.ast->as.tdef.for_ast );
+          typedef_ast->sname = c_ast_name_dup( $1.ast->as.tdef.for_ast );
       }
       else {
         //
@@ -6214,7 +6214,7 @@ typedef_type_c_ast
       }
 
       $$ = ia_type_ast_peek();
-      c_sname_t temp_name = c_ast_dup_name( $1->ast );
+      c_sname_t temp_name = c_ast_name_dup( $1->ast );
       c_ast_set_sname( $$, &temp_name );
       c_ast_append_sname( $$, &$3 );
 
@@ -6244,7 +6244,7 @@ typedef_type_c_ast
       }
 
       $$ = ia_type_ast_peek();
-      c_sname_t temp_name = c_ast_dup_name( $1->ast );
+      c_sname_t temp_name = c_ast_name_dup( $1->ast );
       c_ast_set_sname( $$, &temp_name );
       c_ast_append_sname( $$, &$3 );
 
@@ -6271,7 +6271,7 @@ scope_sname_c_opt
       //
       // that is: a typedef'd type used for a scope.
       //
-      $$ = c_ast_dup_name( $1->ast );
+      $$ = c_ast_name_dup( $1->ast );
     }
   ;
 
@@ -6311,7 +6311,7 @@ sname_c
 
       $$ = $1;
       c_sname_set_local_type( &$$, &C_TYPE_LIT_B( TB_SCOPE ) );
-      c_sname_t temp_sname = c_ast_dup_name( $3->ast );
+      c_sname_t temp_sname = c_ast_name_dup( $3->ast );
       c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "sname_c", $$ );
@@ -6512,14 +6512,14 @@ typedef_sname_c
       //
       $$ = $1;
       c_sname_set_local_type( &$$, c_ast_local_type( $3->ast ) );
-      c_sname_t temp_sname = c_ast_dup_name( $3->ast );
+      c_sname_t temp_sname = c_ast_name_dup( $3->ast );
       c_sname_append_sname( &$$, &temp_sname );
 
       DUMP_SNAME( "typedef_sname_c", $$ );
       DUMP_END();
     }
 
-  | any_typedef                   { $$ = c_ast_dup_name( $1->ast ); }
+  | any_typedef                   { $$ = c_ast_name_dup( $1->ast ); }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
