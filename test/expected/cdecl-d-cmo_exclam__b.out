@@ -144,10 +144,10 @@ decl_c ::= decl_c_astp = {
   (typename_flag_opt) = false,
   (type_c_ast) = {
     sname = "",
-    unique_id = 1328,
+    unique_id = 1330,
     kind = "built-in type",
     depth = 0,
-    parent->unique_id = 1329,
+    parent->unique_id = -1,
     loc = 9-12,
     type = "bool" (btid = 0x41, stid = 0x2, atid = 0x4),
     bit_width = 0

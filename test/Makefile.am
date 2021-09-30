@@ -315,6 +315,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_0o_minus_rk_rk.test \
 	tests/explain_0o_plus2_i_rk.test \
 	tests/explain_0o_plus_rk_rk.test \
+	tests/explain_2npi.test \
 	tests/explain_a012i.test \
 	tests/explain_a0b10i.test \
 	tests/explain_a0xAi-01.test \

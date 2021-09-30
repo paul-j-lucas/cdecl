@@ -3239,8 +3239,13 @@ decl_list_c
 decl_c
   : // in_attr: alignas_specifier_c typename_flag_opt type_c_ast
     decl_c_astp
-    {
-      c_ast_t *const type_ast = ia_type_ast_peek();
+    { //
+      // The type has to be duplicated to guarantee a fresh type AST in case
+      // we're doing multiple declarations, e.g.:
+      //
+      //    explain int *p, *q
+      //
+      c_ast_t *const type_ast = c_ast_dup( ia_type_ast_peek(), &gc_ast_list );
 
       DUMP_START( "decl_c", "decl_c_astp" );
       switch ( in_attr.align.kind ) {

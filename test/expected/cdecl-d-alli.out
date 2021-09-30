@@ -108,7 +108,7 @@ decl_c ::= decl_c_astp = {
   (typename_flag_opt) = false,
   (type_c_ast) = {
     sname = "i" (none),
-    unique_id = 1328,
+    unique_id = 1329,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,

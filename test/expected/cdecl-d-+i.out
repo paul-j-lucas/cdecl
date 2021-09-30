@@ -77,7 +77,7 @@ decl_c ::= decl_c_astp = {
   (typename_flag_opt) = false,
   (type_c_ast) = {
     sname = "S::x" (scope::none),
-    unique_id = 1327,
+    unique_id = 1328,
     kind = "built-in type",
     depth = 0,
     parent->unique_id = -1,

@@ -20,6 +20,13 @@ supported.
 The `help` command now also acceptions `options`.  Help for options is now
 printed separately.
 
+** Fixed multiple nested declarations crash
+Explaining a declaration like:
+
+    explain int (*p), (*q)
+
+is now fixed.
+
 
 * Changes in Cdecl 11.0
 

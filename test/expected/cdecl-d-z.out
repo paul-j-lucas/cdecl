@@ -130,7 +130,7 @@ decl_c ::= decl_c_astp = {
   (typename_flag_opt) = false,
   (type_c_ast) = {
     sname = "i" (none),
-    unique_id = 1327,
+    unique_id = 1328,
     kind = "typedef",
     depth = 0,
     parent->unique_id = -1,
@@ -138,10 +138,10 @@ decl_c ::= decl_c_astp = {
     type = "" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
-      unique_id = 32,
+      unique_id = 1329,
       kind = "built-in type",
       depth = 0,
-      parent->unique_id = -1,
+      parent->unique_id = 1328,
       loc = 8-20,
       type = "unsigned long" (btid = 0x24001, stid = 0x2, atid = 0x4),
       bit_width = 0
