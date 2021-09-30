@@ -5643,7 +5643,21 @@ decl_list_english_opt
   ;
 
 decl_list_english
-  : decl_english_ast
+  : decl_list_english comma_exp decl_english_ast
+    {
+      DUMP_START( "decl_list_english",
+                  "decl_list_english',' decl_english_ast" );
+      DUMP_AST_LIST( "decl_list_english", $1 );
+      DUMP_AST( "decl_english_ast", $3 );
+
+      $$ = $1;
+      slist_push_tail( &$$, $3 );
+
+      DUMP_AST_LIST( "decl_list_english", $$ );
+      DUMP_END();
+    }
+
+  | decl_english_ast
     {
       DUMP_START( "decl_list_english", "decl_english_ast" );
       DUMP_AST( "decl_english_ast", $1 );
@@ -5661,20 +5675,6 @@ decl_list_english
 
       slist_init( &$$ );
       slist_push_tail( &$$, $1 );
-
-      DUMP_AST_LIST( "decl_list_english", $$ );
-      DUMP_END();
-    }
-
-  | decl_list_english comma_exp decl_english_ast
-    {
-      DUMP_START( "decl_list_english",
-                  "decl_list_english',' decl_english_ast" );
-      DUMP_AST_LIST( "decl_list_english", $1 );
-      DUMP_AST( "decl_english_ast", $3 );
-
-      $$ = $1;
-      slist_push_tail( &$$, $3 );
 
       DUMP_AST_LIST( "decl_list_english", $$ );
       DUMP_END();
