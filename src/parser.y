@@ -4043,7 +4043,7 @@ oper_decl_c_astp
 
 oper_c_ast
   : // in_attr: type_c_ast
-    scope_sname_c_opt operator_exp c_operator
+    scope_sname_c_opt Y_OPERATOR c_operator
     {
       DUMP_START( "oper_c_ast", "OPERATOR c_operator" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
@@ -4306,7 +4306,7 @@ user_defined_literal_decl_c_astp
 
 user_defined_literal_c_ast
   : // in_attr: type_c_ast
-    scope_sname_c_opt operator_exp quote2_exp name_exp
+    scope_sname_c_opt Y_OPERATOR quote2_exp name_exp
     {
       DUMP_START( "user_defined_literal_c_ast", "OPERATOR \"\" NAME" );
       DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
