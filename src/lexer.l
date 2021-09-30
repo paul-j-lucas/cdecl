@@ -1239,19 +1239,19 @@ char const* lexer_input_line( size_t *plen ) {
 }
 
 c_loc_t lexer_loc( void ) {
-  c_loc_t rv;
-  rv.first_line = yylineno;
+  c_loc_t rv_loc;
+  rv_loc.first_line = yylineno;
 
   if ( token_column == 0 )
-    rv.first_column = newline_column;
+    rv_loc.first_column = newline_column;
   else if ( lexer_token[0] == '\n' )
-    rv.first_column = token_column;
+    rv_loc.first_column = token_column;
   else
-    rv.first_column = token_column - (int)strlen( lexer_token );
+    rv_loc.first_column = token_column - (int)strlen( lexer_token );
 
-  rv.last_line = rv.first_line;
-  rv.last_column = rv.first_column;
-  return rv;
+  rv_loc.last_line = rv_loc.first_line;
+  rv_loc.last_column = rv_loc.first_column;
+  return rv_loc;
 }
 
 void lexer_reset( bool hard_reset ) {
