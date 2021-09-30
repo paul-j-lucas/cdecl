@@ -388,13 +388,6 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
   return ast;
 }
 
-c_ast_t* c_ast_root( c_ast_t *ast ) {
-  assert( ast != NULL );
-  while ( ast->parent_ast != NULL )
-    ast = ast->parent_ast;
-  return ast;
-}
-
 void c_ast_set_name( c_ast_t *ast, char *name ) {
   assert( ast != NULL );
   assert( name != NULL );

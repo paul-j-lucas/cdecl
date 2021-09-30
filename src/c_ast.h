@@ -710,15 +710,6 @@ void c_ast_prepend_sname( c_ast_t *ast, c_sname_t *sname ) {
 }
 
 /**
- * Gets the root AST node of \a ast.
- *
- * @param ast The AST node to get the root of.
- * @return Returns said AST node.
- */
-PJL_WARN_UNUSED_RESULT
-c_ast_t* c_ast_root( c_ast_t *ast );
-
-/**
  * Gets the scope name of \a ast in C++ form.
  *
  * @param ast The AST to get the scope name of.

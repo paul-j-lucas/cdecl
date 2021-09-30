@@ -372,6 +372,20 @@ static c_ast_t const* c_ast_is_tid_any_impl( c_ast_t const *ast,
 }
 
 /**
+ * Gets the root AST node of \a ast.
+ *
+ * @param ast The AST node to get the root of.
+ * @return Returns said AST node.
+ */
+PJL_WARN_UNUSED_RESULT
+static c_ast_t* c_ast_root( c_ast_t *ast ) {
+  assert( ast != NULL );
+  while ( ast->parent_ast != NULL )
+    ast = ast->parent_ast;
+  return ast;
+}
+
+/**
  * Takes the storage (and attributes), if any, away from \a ast
  * (with the intent of giving them to another AST).
  * This is used is cases like:
