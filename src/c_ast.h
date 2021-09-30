@@ -427,6 +427,7 @@ void c_ast_cleanup( void );
  * @sa c_ast_free()
  * @sa c_ast_new()
  */
+PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list );
 
 /**
