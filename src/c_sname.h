@@ -187,6 +187,9 @@ int c_sname_cmp( c_sname_t const *i_sname, c_sname_t const *j_sname ) {
  *
  * @param sname The scoped name to get the number of names of.
  * @return Returns said number of names.
+ *
+ * @note This is named "count" rather than "len" to avoid misinterpretation
+ * that "len" would be the total length of the strings and `::` separators.
  */
 C_SNAME_INLINE PJL_WARN_UNUSED_RESULT
 size_t c_sname_count( c_sname_t const *sname ) {

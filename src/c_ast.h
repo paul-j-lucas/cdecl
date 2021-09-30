@@ -519,6 +519,9 @@ void c_ast_append_sname( c_ast_t *ast, c_sname_t *sname ) {
  *
  * @param ast The AST to get the number of names of.
  * @return Returns said number of names.
+ *
+ * @note This is named "count" rather than "len" to avoid misinterpretation
+ * that "len" would be the total length of the strings and `::` separators.
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 size_t c_ast_count_name( c_ast_t const *ast ) {
