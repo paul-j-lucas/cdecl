@@ -152,14 +152,14 @@ FILE* fmemopen( void *buf, size_t size, char const *mode ) {
   (void)mode;
 #endif /* NDEBUG */
 
-  FILE *const ftmp = tmpfile();
-  if ( likely( ftmp != NULL && size > 0 ) &&
-       unlikely( fwrite( buf, 1, size, ftmp ) != size ||
-                 fseek( ftmp, 0L, SEEK_SET ) != 0 ) ) {
-    PJL_IGNORE_RV( fclose( ftmp ) );
-    ftmp = NULL;
+  FILE *const temp_file = tmpfile();
+  if ( likely( temp_file != NULL && size > 0 ) &&
+       unlikely( fwrite( buf, 1, size, temp_file ) != size ||
+                 fseek( temp_file, 0L, SEEK_SET ) != 0 ) ) {
+    PJL_IGNORE_RV( fclose( temp_file ) );
+    temp_file = NULL;
   }
-  return ftmp;
+  return temp_file;
 }
 #endif /* HAVE_FMEMOPEN */
 

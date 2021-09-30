@@ -426,8 +426,8 @@ static void read_conf_file( void ) {
     opt_conf_file = conf_path_buf;
   }
 
-  FILE *const fconf = fopen( opt_conf_file, "r" );
-  if ( fconf == NULL ) {
+  FILE *const conf_file = fopen( opt_conf_file, "r" );
+  if ( conf_file == NULL ) {
     if ( is_explicit_conf_file )
       PMESSAGE_EXIT( EX_NOINPUT, "%s: %s\n", opt_conf_file, STRERROR() );
     return;
@@ -440,10 +440,10 @@ static void read_conf_file( void ) {
   //
   c_lang_id_t const orig_lang = opt_lang;
   opt_lang = LANG_CPP_NEW;
-  PJL_IGNORE_RV( parse_cdecl_file( fconf ) );
+  PJL_IGNORE_RV( parse_cdecl_file( conf_file ) );
   opt_lang = orig_lang;
 
-  PJL_IGNORE_RV( fclose( fconf ) );
+  PJL_IGNORE_RV( fclose( conf_file ) );
 }
 
 /**
@@ -492,11 +492,11 @@ bool parse_cdecl_string( char const *s, size_t s_len ) {
     s_len = explain_buf.len;
   }
 
-  FILE *const ftmp = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
-  IF_EXIT( ftmp == NULL, EX_IOERR );
-  yyrestart( ftmp );
+  FILE *const temp_file = fmemopen( CONST_CAST( void*, s ), s_len, "r" );
+  IF_EXIT( temp_file == NULL, EX_IOERR );
+  yyrestart( temp_file );
   bool const ok = yyparse() == 0;
-  PJL_IGNORE_RV( fclose( ftmp ) );
+  PJL_IGNORE_RV( fclose( temp_file ) );
 
   if ( insert_explain ) {
     strbuf_free( &explain_buf );
