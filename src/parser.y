@@ -1743,7 +1743,7 @@ declare_command
         // name, but the AST node is itself a name and overwriting it would
         // lose information.
         //
-        assert( !c_ast_empty_name( $5 ) );
+        assert( !c_ast_name_empty( $5 ) );
         print_error_unknown_name( &@5, &$5->sname );
         c_sname_list_free( &$2 );
         PARSE_ABORT();
@@ -2092,7 +2092,7 @@ define_command
       c_ast_set_sname( $5, &$2 );
 
       if ( $5->kind_id == K_NAME ) {  // see the comment in "declare_command"
-        assert( !c_ast_empty_name( $5 ) );
+        assert( !c_ast_name_empty( $5 ) );
         print_error_unknown_name( &@5, &$5->sname );
         PARSE_ABORT();
       }
@@ -3080,7 +3080,7 @@ typedef_decl_c
         // that is: any type name followed by an existing typedef name.
         //
         typedef_ast = type_ast;
-        if ( c_ast_empty_name( typedef_ast ) )
+        if ( c_ast_name_empty( typedef_ast ) )
           typedef_ast->sname = c_ast_name_dup( $1.ast->as.tdef.for_ast );
       }
       else {
@@ -5783,7 +5783,7 @@ pointer_decl_english_ast
       DUMP_AST( "decl_english_ast", $3 );
 
       if ( $3->kind_id == K_NAME ) {  // see the comment in "declare_command"
-        assert( !c_ast_empty_name( $3 ) );
+        assert( !c_ast_name_empty( $3 ) );
         print_error_unknown_name( &@3, &$3->sname );
         PARSE_ABORT();
       }
@@ -5913,7 +5913,7 @@ var_decl_english_ast
       DUMP_AST( "decl_english_ast", $3 );
 
       if ( $3->kind_id == K_NAME ) {  // see the comment in "declare_command"
-        assert( !c_ast_empty_name( $3 ) );
+        assert( !c_ast_name_empty( $3 ) );
         print_error_unknown_name( &@3, &$3->sname );
         PARSE_ABORT();
       }

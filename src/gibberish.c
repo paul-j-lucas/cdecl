@@ -223,7 +223,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       if ( !c_type_is_none( &type ) )
         FPRINTF( g->gout, "%s ", c_type_name_c( &type ) );
       if ( ast->kind_id == K_USER_DEF_CONVERSION ) {
-        if ( !c_ast_empty_name( ast ) )
+        if ( !c_ast_name_empty( ast ) )
           FPRINTF( g->gout, "%s::", c_ast_full_name( ast ) );
         FPRINTF( g->gout, "%s ", L_OPERATOR );
       }
@@ -327,7 +327,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       break;
 
     case K_NAME:
-      if ( !c_ast_empty_name( ast ) && (g->flags & C_GIB_CAST) == 0 )
+      if ( !c_ast_name_empty( ast ) && (g->flags & C_GIB_CAST) == 0 )
         g_print_ast_name( g, ast );
       break;
 
@@ -771,7 +771,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       break;
     case K_OPERATOR: {
       g_print_space_once( g );
-      if ( !c_ast_empty_name( ast ) )
+      if ( !c_ast_name_empty( ast ) )
         FPRINTF( g->gout, "%s::", c_ast_full_name( ast ) );
       char const *const token = c_oper_token_c( ast->as.oper.oper_id );
       FPRINTF( g->gout,
@@ -789,7 +789,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       FPRINTF( g->gout, "%s\"\" %s", L_OPERATOR, c_ast_local_name( ast ) );
       break;
     default:
-      if ( !c_ast_empty_name( ast ) ) {
+      if ( !c_ast_name_empty( ast ) ) {
         if ( !g->skip_name_for_using )
           g_print_space_once( g );
         g_print_ast_name( g, ast );

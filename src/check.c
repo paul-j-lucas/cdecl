@@ -936,7 +936,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
           // Ordinarily, void parameters are invalid; but a single void
           // function "parameter" is valid (as long as it doesn't have a name).
           //
-          if ( !c_ast_empty_name( param_ast ) ) {
+          if ( !c_ast_name_empty( param_ast ) ) {
             print_error( &param_ast->loc,
               "named parameters can not be %s\n", L_VOID
             );
@@ -1445,7 +1445,7 @@ same: print_error( &ast->loc,
       // presumably being declared within.
       //
       if ( c_type_is_tid_any( &ast->type, TS_FRIEND ) &&
-           c_ast_empty_name( ast ) ) {
+           c_ast_name_empty( ast ) ) {
         print_error( &ast->loc,
           "%s %ss can not be %s\n",
           L_MEMBER, L_OPERATOR, L_FRIEND
@@ -1803,7 +1803,7 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
     );
     return false;
   }
-  if ( c_type_is_tid_any( &ast->type, TS_FRIEND ) && c_ast_empty_name( ast ) ) {
+  if ( c_type_is_tid_any( &ast->type, TS_FRIEND ) && c_ast_name_empty( ast ) ) {
     print_error( &ast->loc,
       "%s %s %s %s must use qualified name\n",
       L_FRIEND, H_USER_DEFINED, L_CONVERSION, L_OPERATOR
