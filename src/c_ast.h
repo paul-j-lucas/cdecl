@@ -515,20 +515,6 @@ void c_ast_append_sname( c_ast_t *ast, c_sname_t *sname ) {
 }
 
 /**
- * Gets the number of names of \a ast, e.g., `S::T::x` is 3.
- *
- * @param ast The AST to get the number of names of.
- * @return Returns said number of names.
- *
- * @note This is named "count" rather than "len" to avoid misinterpretation
- * that "len" would be the total length of the strings and `::` separators.
- */
-C_AST_INLINE PJL_WARN_UNUSED_RESULT
-size_t c_ast_count_name( c_ast_t const *ast ) {
-  return c_sname_count( &ast->sname );
-}
-
-/**
  * Duplicates the name of \a ast.
  *
  * @param ast The AST to duplicate the name of.
@@ -614,7 +600,7 @@ c_type_t const* c_ast_local_type( c_ast_t const *ast ) {
  * @param ast The AST to get the name at \a roffset of.
  * @param roffset The reverse offset (starting at 0) of the name to get.
  * @return Returns the name at \a roffset or the empty string if \a roffset
- * &gt;= c_ast_count_name().
+ * &gt;= c_ast_name_count().
  *
  * @sa c_ast_full_name()
  * @sa c_ast_local_name()
@@ -623,6 +609,20 @@ c_type_t const* c_ast_local_type( c_ast_t const *ast ) {
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
 char const* c_ast_name_atr( c_ast_t const *ast, size_t roffset ) {
   return c_sname_name_atr( &ast->sname, roffset );
+}
+
+/**
+ * Gets the number of names of \a ast, e.g., `S::T::x` is 3.
+ *
+ * @param ast The AST to get the number of names of.
+ * @return Returns said number of names.
+ *
+ * @note This is named "count" rather than "len" to avoid misinterpretation
+ * that "len" would be the total length of the strings and `::` separators.
+ */
+C_AST_INLINE PJL_WARN_UNUSED_RESULT
+size_t c_ast_name_count( c_ast_t const *ast ) {
+  return c_sname_count( &ast->sname );
 }
 
 /**

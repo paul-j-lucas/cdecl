@@ -416,7 +416,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
   }
 
   if ( ast->as.builtin.bit_width > 0 ) {
-    if ( c_ast_count_name( ast ) > 1 ) {
+    if ( c_ast_name_count( ast ) > 1 ) {
       print_error( &ast->loc, "scoped names can not have bit-field widths\n" );
       return false;
     }
@@ -451,7 +451,7 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( c_ast_is_kind_any( ast, K_CONSTRUCTOR | K_DESTRUCTOR ) );
 
-  bool const is_definition = c_ast_count_name( ast ) > 1;
+  bool const is_definition = c_ast_name_count( ast ) > 1;
 
   if ( is_definition && !c_sname_is_ctor( &ast->sname ) ) {
     print_error( &ast->loc,
@@ -735,7 +735,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   }
 
   if ( c_type_is_tid_any( &ast->type, TS_VIRTUAL ) ) {
-    if ( c_ast_count_name( ast ) > 1 ) {
+    if ( c_ast_name_count( ast ) > 1 ) {
       print_error( &ast->loc,
         "\"%s\": %s can not be used in file-scoped %ss\n",
         c_ast_full_name( ast ), L_VIRTUAL, c_kind_name( ast->kind_id )
@@ -904,7 +904,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
 
     c_ast_t const *const param_ast = c_param_ast( param );
 
-    if ( c_ast_count_name( param_ast ) > 1 ) {
+    if ( c_ast_name_count( param_ast ) > 1 ) {
       print_error( &param_ast->loc, "parameter names can not be scoped\n" );
       return false;
     }

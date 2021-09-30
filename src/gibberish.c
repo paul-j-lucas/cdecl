@@ -761,7 +761,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       FPUTS( c_ast_full_name( ast ), g->gout );
       break;
     case K_DESTRUCTOR:
-      if ( c_ast_count_name( ast ) > 1 )
+      if ( c_ast_name_count( ast ) > 1 )
         FPRINTF( g->gout, "%s::", c_ast_scope_name( ast ) );
       if ( opt_alt_tokens )
         FPRINTF( g->gout, "%s ", L_COMPL );
@@ -784,7 +784,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
       break;
     case K_USER_DEF_LITERAL:
       g_print_space_once( g );
-      if ( c_ast_count_name( ast ) > 1 )
+      if ( c_ast_name_count( ast ) > 1 )
         FPRINTF( g->gout, "%s::", c_ast_scope_name( ast ) );
       FPRINTF( g->gout, "%s\"\" %s", L_OPERATOR, c_ast_local_name( ast ) );
       break;

@@ -3101,7 +3101,7 @@ typedef_decl_c
       // see the comment in "define_command" about TS_TYPEDEF
       PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &T_TS_TYPEDEF ) );
 
-      if ( c_ast_count_name( typedef_ast ) > 1 ) {
+      if ( c_ast_name_count( typedef_ast ) > 1 ) {
         print_error( &@1,
           "%s names can not be scoped; use: %s %s { %s ... }\n",
           L_TYPEDEF, L_NAMESPACE, c_ast_scope_name( typedef_ast ), L_TYPEDEF
@@ -6118,7 +6118,7 @@ any_name
   : Y_NAME
   | Y_TYPEDEF_NAME
     {
-      assert( c_ast_count_name( $1->ast ) == 1 );
+      assert( c_ast_name_count( $1->ast ) == 1 );
       $$ = check_strdup( c_ast_local_name( $1->ast ) );
     }
   ;
