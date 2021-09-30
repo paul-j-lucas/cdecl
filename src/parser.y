@@ -469,7 +469,6 @@ typedef struct show_type_info show_type_info_t;
 
 // local variables
 static c_ast_depth_t  ast_depth;        ///< Parentheses nesting depth.
-static bool           error_newlined = true;
 static c_ast_list_t   gc_ast_list;      ///< `c_ast` nodes freed after parse.
 static in_attr_t      in_attr;          ///< Inherited attributes.
 static c_ast_list_t   typedef_ast_list; ///< `c_ast` nodes for `typedef`s.
@@ -752,8 +751,6 @@ static void fl_elaborate_error( char const *file, int line,
                                 dym_kind_t dym_kinds, char const *format,
                                 ... ) {
   assert( format != NULL );
-  if ( error_newlined )
-    return;
 
   EPUTS( ": " );
   print_debug_file_line( file, line );
@@ -781,7 +778,6 @@ static void fl_elaborate_error( char const *file, int line,
   }
 
   EPUTC( '\n' );
-  error_newlined = true;
 }
 
 /**
@@ -848,8 +844,6 @@ static bool fl_is_nested_type_ok( char const *file, int line,
 static void fl_keyword_expected( char const *file, int line,
                                  char const *keyword ) {
   assert( keyword != NULL );
-  if ( error_newlined )
-    return;
 
   char const *const error_token = printable_token();
   if ( error_token != NULL && strcmp( error_token, keyword ) == 0 ) {
@@ -859,7 +853,6 @@ static void fl_keyword_expected( char const *file, int line,
       char const *const which_lang = c_lang_which( k->lang_ids );
       if ( which_lang[0] != '\0' ) {
         EPRINTF( ": \"%s\" not supported%s\n", keyword, which_lang );
-        error_newlined = true;
         return;
       }
     }
@@ -926,8 +919,6 @@ static void parse_cleanup( bool hard_reset ) {
 static void parse_init( void ) {
   ast_depth = 0;
   cdecl_mode = CDECL_ENGLISH_TO_GIBBERISH;
-  if ( false_set( &error_newlined ) )
-    FPUTC( '\n', fout );
 }
 
 /**
@@ -1028,7 +1019,6 @@ static void yyerror( char const *msg ) {
   SGR_START_COLOR( stderr, error );
   EPUTS( msg );                         // no newline
   SGR_END_COLOR( stderr );
-  error_newlined = false;
 
   parse_cleanup( false );
 }
