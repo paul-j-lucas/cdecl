@@ -2312,6 +2312,13 @@ help_what_opt
   | Y_COMMANDS                    { $$ = CDECL_HELP_COMMANDS; }
   | Y_ENGLISH                     { $$ = CDECL_HELP_ENGLISH;  }
   | Y_OPTIONS                     { $$ = CDECL_HELP_OPTIONS;  }
+  | error
+    {
+      elaborate_error(
+        "\"%s\", \"%s\", or \"%s\" expected",
+        L_COMMANDS, L_ENGLISH, L_OPTIONS
+      );
+    }
   ;
 
 /// quit command //////////////////////////////////////////////////////////////
