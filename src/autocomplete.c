@@ -183,6 +183,9 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
 PJL_WARN_UNUSED_RESULT
 static char*  command_generator( char const*, int );
 
+PJL_WARN_UNUSED_RESULT
+static bool   is_command( char const* );
+
 ////////// local functions ////////////////////////////////////////////////////
 
 /**
@@ -216,17 +219,17 @@ PJL_WARN_UNUSED_RESULT
 static char* command_generator( char const *text, int state ) {
   assert( text != NULL );
 
-  static size_t index;
+  static size_t match_index;
   static size_t text_len;
 
   if ( state == 0 ) {                   // new word? reset
-    index = 0;
+    match_index = 0;
     text_len = strlen( text );
   }
 
   for ( cdecl_command_t const *c;
-        (c = CDECL_COMMANDS + index)->literal != NULL; ) {
-    ++index;
+        (c = CDECL_COMMANDS + match_index)->literal != NULL; ) {
+    ++match_index;
     if ( !opt_lang_is_any( c->lang_ids ) )
       continue;
     if ( strncmp( text, c->literal, text_len ) == 0 )
@@ -244,7 +247,9 @@ static char* command_generator( char const *text, int state ) {
  */
 PJL_WARN_UNUSED_RESULT
 static char const* const* init_set_options( void ) {
-  size_t set_options_size = 1;          // for terminating pointer to NULL
+  size_t set_options_size =
+      1                                 // for "options"
+    + 1;                                // for terminating pointer to NULL
 
   // pre-flight to calculate array size
   FOREACH_SET_OPTION( opt ) {
@@ -258,6 +263,8 @@ static char const* const* init_set_options( void ) {
   char **const set_options = free_later( MALLOC( char*, set_options_size ) );
 
   char **p = set_options;
+  *p++ = CONST_CAST( char*, L_OPTIONS );
+
   FOREACH_SET_OPTION( opt ) {
     switch ( opt->type ) {
       case SET_OPT_AFF_ONLY:
@@ -289,6 +296,25 @@ static char const* const* init_set_options( void ) {
 }
 
 /**
+ * Checks whether the current line being read is a cast command.  In C, this
+ * can only be `cast`; in C++, this can also be `const`, `dynamic`, `static`,
+ * or `reinterpret`.
+ *
+ * @return Returns `true` only if it's a cast command.
+ */
+PJL_WARN_UNUSED_RESULT
+static bool is_cast_command( void ) {
+  if ( is_command( L_CAST ) )
+    return true;
+  if ( OPT_LANG_IS(C_ANY) )
+    return false;
+  return  is_command( L_CONST       ) ||
+          is_command( L_DYNAMIC     ) ||
+          is_command( L_STATIC      ) ||
+          is_command( L_REINTERPRET );
+}
+
+/**
  * Checks whether the current line being read is a particular cdecl command.
  *
  * @param command The command to check for.
@@ -315,32 +341,22 @@ PJL_WARN_UNUSED_RESULT
 static char* keyword_completion( char const *text, int state ) {
   assert( text != NULL );
 
-  static char const  *command;          // current command
-  static size_t       index;
-  static bool         more_matches;
-  static size_t       text_len;
+  static char const        *command;    // current command
+  static char const *const *command_keywords;
+  static size_t             match_index;
+  static bool               more_matches;
+  static size_t             text_len;
 
   if ( state == 0 ) {                   // new word? reset
-    index = 0;
+    match_index = 0;
     more_matches = true;
     text_len = strlen( text );
 
-    //
-    // Special case: the "cast" command is begun by either "cast" or, if C++11
-    // or later, any one of "const", "dynamic", "static", or "reinterpret" for
-    // "const cast ...", etc.
-    //
-    command = is_command( L_CAST ) ||
-      ( OPT_LANG_IS(CPP_ANY) && (
-        is_command( L_CONST       ) ||
-        is_command( L_DYNAMIC     ) ||
-        is_command( L_STATIC      ) ||
-        is_command( L_REINTERPRET ) ) ) ? L_CAST : NULL;
-
-    //
-    // If it's not the "cast" command, see if it's any other command.
-    //
-    if ( command == NULL ) {
+    if ( is_command( "?" ) )
+      command = L_HELP;
+    else if ( is_cast_command() )
+      command = L_CAST;
+    else {
       FOREACH_COMMAND( c ) {
         if ( opt_lang_is_any( c->lang_ids ) && is_command( c->literal ) ) {
           command = c->literal;
@@ -369,17 +385,36 @@ static char* keyword_completion( char const *text, int state ) {
     return check_strdup( L_INTO );
   }
 
-  //
-  // Special case: if it's the "set" command, complete options, not keywords.
-  //
-  if ( strcmp( command, L_SET_COMMAND ) == 0 ) {
-    static char const *const *set_options;
-    if ( set_options == NULL )
-      set_options = init_set_options();
-    for ( char const *option; (option = set_options[ index ]) != NULL; ) {
-      ++index;
-      if ( strncmp( text, option, text_len ) == 0 )
-        return check_strdup( option );
+  if ( state == 0 ) {
+    //
+    // Special case: for certain commands, complete using specific keywords for
+    // that command.
+    //
+    if ( strcmp( command, L_HELP ) == 0 ) {
+      char const *const help_keywords[] = {
+        L_COMMANDS,
+        L_ENGLISH,
+        L_OPTIONS,
+        NULL
+      };
+      command_keywords = help_keywords;
+    }
+    else if ( strcmp( command, L_SET_COMMAND ) == 0 ) {
+      static char const *const *set_options;
+      if ( set_options == NULL )
+        set_options = init_set_options();
+      command_keywords = set_options;
+    }
+    else {
+      command_keywords = NULL;
+    }
+  }
+
+  if ( command_keywords != NULL ) {
+    for ( char const *s; (s = command_keywords[ match_index ]) != NULL; ) {
+      ++match_index;
+      if ( strncmp( text, s, text_len ) == 0 )
+        return check_strdup( s );
     } // for
     return NULL;
   }
@@ -388,8 +423,8 @@ static char* keyword_completion( char const *text, int state ) {
   // Otherwise, just attempt to match any keyword.
   //
   for ( c_lang_lit_t const *ll;
-        (ll = CDECL_KEYWORDS + index)->literal != NULL; ) {
-    ++index;
+        (ll = CDECL_KEYWORDS + match_index)->literal != NULL; ) {
+    ++match_index;
     if ( !opt_lang_is_any( ll->lang_ids ) )
       continue;
     if ( strncmp( text, ll->literal, text_len ) == 0 )

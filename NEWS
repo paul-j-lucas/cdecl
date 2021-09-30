@@ -26,6 +26,9 @@ supported.
 The `help` command now also acceptions `options`.  Help for options is now
 printed separately.
 
+** Help autocompletion
+Help options are now autocompletable.
+
 ** Fixed multiple nested declarations crash
 Explaining a declaration like:
 
