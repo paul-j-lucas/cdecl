@@ -82,15 +82,24 @@ slist_t slist_dup( slist_t const *src_list, ssize_t n,
 void slist_free( slist_t *list, slist_data_free_fn_t data_free_fn,
                  slist_node_data_free_fn_t node_data_free_fn ) {
   if ( list != NULL ) {
+    slist_node_t *p = list->head, *next;
+
+    if ( node_data_free_fn == NULL ) {  // avoid repeated check in loop
+      for ( ; p != NULL; p = next ) {
+        next = p->next;
+        free( p );
+      } // for
+    }
+    else {
+      for ( ; p != NULL; p = next ) {
+        (*node_data_free_fn)( p->data );
+        next = p->next;
+        free( p );
+      } // for
+    }
+
     if ( data_free_fn != NULL )
       (*data_free_fn)( list->data );
-    for ( slist_node_t *p = list->head; p != NULL; ) {
-      if ( node_data_free_fn != NULL )
-        (*node_data_free_fn)( p->data );
-      slist_node_t *const next = p->next;
-      FREE( p );
-      p = next;
-    } // for
     slist_init( list );
   }
 }
