@@ -26,6 +26,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "cdecl.h"
+#include "c_keyword.h"
 #include "c_lang.h"
 #include "literals.h"
 #include "options.h"
@@ -62,123 +63,39 @@ typedef CPPFunction rl_completion_func_t;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Subset of cdecl and C/C++ keywords that are completable.
+ * Subset of cdecl keywords that are auto-completable.
  */
-static c_lang_lit_t const CDECL_KEYWORDS[] = {
-  { LANG_C_MIN(11),         L__ALIGNAS            },
-  { LANG_C_CPP_MIN(11,11),  L_ALIGN               },
-  { LANG_ANY,               L_ARRAY               },
-  //                        L_AS          // too short
-  { LANG_C_MIN(11),         L__ATOMIC             },
-  { LANG_C_MIN(11),         L_ATOMIC              },
-  { LANG_ANY,               L_AUTO                },
-  { LANG_ANY,               L_BITS                },
-  { LANG_ANY,               L_APPLE_BLOCK         },
-  { LANG_ANY,               L_APPLE___BLOCK       },
-  { LANG_C_MIN(99),         L__BOOL               },
-  { LANG_MIN(C_99),         L_BOOL                },
-  { LANG_C_CPP_MIN(11,11),  L_BYTES               },
-  { LANG_CPP_MIN(11),       L_CARRIES_DEPENDENCY  },
-  { LANG_ANY,               L_CAST                },
-  { LANG_ANY,               L_CHAR                },
-  { LANG_C_CPP_MIN(2X,20),  L_CHAR8_T             },
-  { LANG_C_CPP_MIN(11,11),  L_CHAR16_T            },
-  { LANG_C_CPP_MIN(11,11),  L_CHAR32_T            },
-  { LANG_CPP_ANY,           L_CLASS               },
-  { LANG_ANY,               L_COMMANDS            },
-  { LANG_C_MIN(99),         L__COMPLEX            },
-  { LANG_C_MIN(99),         L_COMPLEX             },
-  { LANG_C_MIN(89),         L_CONST               },
-  { LANG_CPP_ANY,           L_CONST_CAST          },
-  { LANG_CPP_MIN(20),       L_CONSTEVAL           },
-  { LANG_CPP_MIN(11),       L_CONSTEXPR           },
-  { LANG_CPP_MIN(20),       L_CONSTINIT           },
-  { LANG_CPP_ANY,           L_CONSTRUCTOR         },
-  { LANG_CPP_ANY,           L_CONVERSION          },
-  { LANG_CPP_MIN(11),       L_DEFAULT             },
-  { LANG_CPP_MIN(11),       L_DELETE              },
-  { LANG_C_CPP_MIN(2X,14),  L_DEPRECATED          },
-  { LANG_CPP_ANY,           L_DESTRUCTOR          },
-  { LANG_ANY,               L_DOUBLE              },
-  //                        L_DYNAMIC     // handled in CDECL_COMMANDS
-  { LANG_CPP_MIN(11),       L_DYNAMIC_CAST        },
-  { LANG_ANY,               L_ENGLISH             },
-  { LANG_MIN(C_89),         L_ENUM                },
-  { LANG_CPP_ANY,           L_EXPLICIT            },
-  { LANG_CPP_MIN(20),       L_EXPORT              },
-  { LANG_ANY,               L_EXTERN              },
-  { LANG_CPP_ANY,           L_FALSE               },
-  { LANG_CPP_MIN(11),       L_FINAL               },
-  { LANG_ANY,               L_FLOAT               },
-  { LANG_CPP_ANY,           L_FRIEND              },
-  { LANG_ANY,               L_FUNCTION            },
-  { LANG_C_MIN(99),         L__IMAGINARY          },
-  { LANG_C_MIN(99),         L_IMAGINARY           },
-  { LANG_MIN(C_99),         L_INLINE              },
-  { LANG_ANY,               L_INT                 },
-  //                        L_INTO        // special case (see below)
-  { LANG_C_MIN(99),         L_LENGTH              },
-  { LANG_CPP_ANY,           L_LINKAGE             },
-  { LANG_CPP_MIN(11),       L_LITERAL             },
-  { LANG_ANY,               L_LONG                },
-  { LANG_C_CPP_MIN(2X,17),  L_MAYBE_UNUSED        },
-  { LANG_CPP_ANY,           L_MEMBER              },
-  { LANG_CPP_ANY,           L_MUTABLE             },
-  { LANG_CPP_ANY,           L_NAMESPACE           },
-  { LANG_CPP_ANY,           L_NEW                 },
-  { LANG_C_CPP_MIN(2X,17),  L_NODISCARD           },
-  { LANG_CPP_MIN(11),       L_NOEXCEPT            },
-  { LANG_CPP_ANY,           H_NON_MEMBER          },
-  { LANG_C_MIN(11),         L__NORETURN           },
-  { LANG_MIN(C_11),         L_NORETURN            },
-  { LANG_CPP_MIN(20),       L_NO_UNIQUE_ADDRESS   },
-  //                        L_OF          // too short
-  { LANG_CPP_ANY,           L_OPERATOR            },
-  { LANG_CPP_MIN(11),       L_OVERRIDE            },
-  { LANG_ANY,               L_POINTER             },
-  { LANG_ANY,               L_PREDEFINED          },
-  { LANG_CPP_ANY,           L_PURE                },
-  { LANG_CPP_ANY,           L_REFERENCE           },
-  { LANG_MAX(CPP_14),       L_REGISTER            },
-  //                        L_REINTERPRET // handled in CDECL_COMMANDS
-  { LANG_CPP_ANY,           L_REINTERPRET_CAST    },
-  { LANG_C_MIN(99),         L_RESTRICT            },
-  { LANG_ANY,               L_RETURNING           },
-  { LANG_CPP_MIN(11),       L_RVALUE              },
-  { LANG_CPP_ANY,           L_SCOPE               },
-  { LANG_ANY,               L_SHORT               },
-  { LANG_MIN(C_89),         L_SIGNED              },
-  { LANG_ANY,               L_STATIC              },
-  { LANG_CPP_ANY,           L_STATIC_CAST         },
-  { LANG_ANY,               L_STRUCT              },
-  //                        L_TO          // too short
-  { LANG_C_MIN(11),         L__THREAD_LOCAL       },
-  { LANG_C_CPP_MIN(11,11),  L_THREAD_LOCAL        },
-  { LANG_CPP_MAX(17),       L_THROW               },
-  { LANG_CPP_ANY,           L_TRUE                },
-  { LANG_ANY,               L_TYPEDEF             },
-  { LANG_CPP_ANY,           L_TYPENAME            },
-  { LANG_ANY,               L_UNION               },
-  { LANG_ANY,               L_UNSIGNED            },
-  { LANG_CPP_ANY,           H_USER_DEFINED        },
-  { LANG_CPP_MIN(11),       L_USING               },
-  { LANG_C_MIN(99),         L_VARIABLE            },
-  { LANG_CPP_ANY,           L_VIRTUAL             },
-  { LANG_MIN(C_89),         L_VOID                },
-  { LANG_MIN(C_89),         L_VOLATILE            },
-  { LANG_MIN(C_95),         L_WCHAR_T             },
+static c_lang_lit_t const AC_CDECL_KEYWORDS[] = {
+  { LANG_C_CPP_MIN(11,11),  L_ALIGN         },
+  { LANG_ANY,               L_APPLE_BLOCK   },
+  { LANG_ANY,               L_ARRAY         },
+  { LANG_C_MIN(11),         L_ATOMIC        },
+  { LANG_ANY,               L_BITS          },
+  { LANG_C_CPP_MIN(11,11),  L_BYTES         },
+  { LANG_ANY,               L_CAST          },
+  { LANG_C_MIN(99),         L_COMPLEX       },
+  { LANG_CPP_ANY,           L_CONSTRUCTOR   },
+  { LANG_CPP_ANY,           L_CONVERSION    },
+  { LANG_CPP_ANY,           L_DESTRUCTOR    },
+  { LANG_ANY,               L_FUNCTION      },
+  { LANG_C_MIN(99),         L_IMAGINARY     },
+  { LANG_C_MIN(99),         L_LENGTH        },
+  { LANG_CPP_ANY,           L_LINKAGE       },
+  { LANG_CPP_MIN(11),       L_LITERAL       },
+  { LANG_CPP_ANY,           L_MEMBER        },
+  { LANG_CPP_ANY,           H_NON_MEMBER    },
+  { LANG_ANY,               L_POINTER       },
+  { LANG_ANY,               L_PREDEFINED    },
+  { LANG_CPP_ANY,           L_PURE          },
+  { LANG_CPP_ANY,           L_REFERENCE     },
+  { LANG_ANY,               L_RETURNING     },
+  { LANG_CPP_MIN(11),       L_RVALUE        },
+  { LANG_CPP_ANY,           L_SCOPE         },
+  { LANG_CPP_ANY,           H_USER_DEFINED  },
+  { LANG_C_MIN(99),         L_VARIABLE      },
+  { LANG_ANY,               L_WIDTH         },
 
-  // Embedded C extensions
-  { LANG_C_99,              L_EMC_ACCUM           },
-  { LANG_C_99,              L_EMC_FRACT           },
-  { LANG_C_99,              L_EMC_SATURATED       },
-
-  // Unified Parallel C extensions
-  { LANG_C_99,              L_UPC_RELAXED         },
-  { LANG_C_99,              L_UPC_SHARED          },
-  { LANG_C_99,              L_UPC_STRICT          },
-
-  { LANG_NONE,              NULL                  }
+  { LANG_NONE,              NULL            }
 };
 
 // local functions
@@ -242,10 +159,46 @@ static char* command_generator( char const *text, int state ) {
 }
 
 /**
+ * Creates an initializes an array of all auto-completable keywords composed of
+ * C/C++ keywords and cdecl keywords.
+ *
+ * @return Returns a pointer to said array.
+ */
+PJL_WARN_UNUSED_RESULT
+static c_lang_lit_t const* init_cdecl_keywords( void ) {
+  size_t cdecl_keywords_size = ARRAY_SIZE( AC_CDECL_KEYWORDS );
+
+  // pre-flight to calculate array size
+  FOREACH_KEYWORD( k ) {
+    if ( k->ac_lang_ids != LANG_NONE )
+      ++cdecl_keywords_size;
+  } // for
+
+  c_lang_lit_t *const cdecl_keywords =
+    free_later( MALLOC( c_lang_lit_t, cdecl_keywords_size ) );
+  c_lang_lit_t *p = cdecl_keywords;
+
+  for ( c_lang_lit_t const *ll = AC_CDECL_KEYWORDS; ll->literal != NULL; ++ll )
+    *p++ = *ll;
+
+  FOREACH_KEYWORD( k ) {
+    if ( k->ac_lang_ids != LANG_NONE ) {
+      p->lang_ids = k->ac_lang_ids;
+      p->literal  = k->literal;
+      ++p;
+    }
+  } // for
+
+  MEM_ZERO( p );
+
+  return cdecl_keywords;
+}
+
+/**
  * Creates and initializes an array of all `set` option strings to be used for
  * autocompletion for the `set` command.
  *
- * @return Returns a pointer to an array of all `set` option strings.
+ * @return Returns a pointer to said array.
  */
 PJL_WARN_UNUSED_RESULT
 static char const* const* init_set_options( void ) {
@@ -263,8 +216,8 @@ static char const* const* init_set_options( void ) {
   } // for
 
   char **const set_options = free_later( MALLOC( char*, set_options_size ) );
-
   char **p = set_options;
+
   *p++ = CONST_CAST( char*, L_OPTIONS );
 
   FOREACH_SET_OPTION( opt ) {
@@ -413,25 +366,33 @@ static char* keyword_completion( char const *text, int state ) {
   }
 
   if ( command_keywords != NULL ) {
+    //
+    // There's a special-case command having specific keywords in effect:
+    // attempt to match against only those.
+    //
     for ( char const *s; (s = command_keywords[ match_index ]) != NULL; ) {
       ++match_index;
       if ( strncmp( text, s, text_len ) == 0 )
         return check_strdup( s );
     } // for
-    return NULL;
   }
+  else {
+    //
+    // Otherwise, just attempt to match (almost) any keyword.
+    //
+    static c_lang_lit_t const *cdecl_keywords;
+    if ( cdecl_keywords == NULL )
+      cdecl_keywords = init_cdecl_keywords();
 
-  //
-  // Otherwise, just attempt to match any keyword.
-  //
-  for ( c_lang_lit_t const *ll;
-        (ll = CDECL_KEYWORDS + match_index)->literal != NULL; ) {
-    ++match_index;
-    if ( !opt_lang_is_any( ll->lang_ids ) )
-      continue;
-    if ( strncmp( text, ll->literal, text_len ) == 0 )
-      return check_strdup( ll->literal );
-  } // for
+    for ( c_lang_lit_t const *ll;
+          (ll = cdecl_keywords + match_index)->literal != NULL; ) {
+      ++match_index;
+      if ( !opt_lang_is_any( ll->lang_ids ) )
+        continue;
+      if ( strncmp( text, ll->literal, text_len ) == 0 )
+        return check_strdup( ll->literal );
+    } // for
+  }
 
   return NULL;
 }
