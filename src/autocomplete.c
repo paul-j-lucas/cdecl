@@ -72,10 +72,12 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_C_MIN(11),         L__ATOMIC             },
   { LANG_C_MIN(11),         L_ATOMIC              },
   { LANG_ANY,               L_AUTO                },
+  { LANG_ANY,               L_BITS                },
   { LANG_ANY,               L_APPLE_BLOCK         },
   { LANG_ANY,               L_APPLE___BLOCK       },
   { LANG_C_MIN(99),         L__BOOL               },
   { LANG_MIN(C_99),         L_BOOL                },
+  { LANG_C_CPP_MIN(11,11),  L_BYTES               },
   { LANG_CPP_MIN(11),       L_CARRIES_DEPENDENCY  },
   { LANG_ANY,               L_CAST                },
   { LANG_ANY,               L_CHAR                },
@@ -86,7 +88,7 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   { LANG_ANY,               L_COMMANDS            },
   { LANG_C_MIN(99),         L__COMPLEX            },
   { LANG_C_MIN(99),         L_COMPLEX             },
-  //                        L_CONST     // handled in CDECL_COMMANDS
+  { LANG_C_MIN(89),         L_CONST               },
   { LANG_CPP_ANY,           L_CONST_CAST          },
   { LANG_CPP_MIN(20),       L_CONSTEVAL           },
   { LANG_CPP_MIN(11),       L_CONSTEXPR           },
@@ -101,7 +103,7 @@ static c_lang_lit_t const CDECL_KEYWORDS[] = {
   //                        L_DYNAMIC     // handled in CDECL_COMMANDS
   { LANG_CPP_MIN(11),       L_DYNAMIC_CAST        },
   { LANG_ANY,               L_ENGLISH             },
-  //                        L_ENUM        // handled in CDECL_COMMANDS
+  { LANG_MIN(C_89),         L_ENUM                },
   { LANG_CPP_ANY,           L_EXPLICIT            },
   { LANG_CPP_MIN(20),       L_EXPORT              },
   { LANG_ANY,               L_EXTERN              },
