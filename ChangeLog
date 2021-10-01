@@ -1,3 +1,23 @@
+2021-09-30  Paul J. Lucas <paul@lucasmail.org>
+
+   * c_ast.h: Added missing PJL_WARN_UNUSED_RESULT.
+   * parser.y: s/func/constructor/
+   * parser.y: Rearranged decl_list_english.
+   * parser.y: No longer printing odd "operator expected" message.
+   * parser.y: Better error message for invalid help option.
+   * NEWS, autocomplete.c: Now autocompletes for "help" command.
+   * slist.c: Reworked slist_free() to be more efficient.
+   * c_ast.c, c_ast.h, c_ast_util.c: Moved c_ast_root() to c_ast_util.c.
+   * c_ast.h, c_ast_util.c, c_typedef.c, check.c, english.c, gibberish.c,
+     parser.y: s/c_ast_empty_name()/c_ast_name_empty()/
+   * c_ast.c, c_ast.h, parser.y: s/c_ast_dup_name()/c_ast_name_dup()/
+   * c_ast.h, check.c, gibberish.c, parser.y:
+     s/c_ast_count_name()/c_ast_name_count()/
+   * cdecl.c, util.c: FILE renaming.
+   * lexer.l: s/strndup/check_strndup/
+   * lexer.l: s/rv/rv_loc/
+   * parser.y: Removed error_newlined.
+
 2021-09-29  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, cdecl.1, c_sname.c, c_sname.h, dump.c, dump.h, gibberish.c,
