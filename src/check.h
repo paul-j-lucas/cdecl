@@ -48,7 +48,7 @@
  * Checks an entire AST for semantic errors and warnings.
  *
  * @param ast The AST to check.
- * @return Returns `true` only if \a ast error-free.
+ * @return Returns `true` only if all checks passed.
  */
 PJL_WARN_UNUSED_RESULT
 bool c_ast_check( c_ast_t const *ast );
