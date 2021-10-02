@@ -1,5 +1,6 @@
 2021-10-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * NEWS: Fixed casting to void.
    * NEWS, c_ast.h, c_ast_util.c, check.c, check.h, dump.c, english.c,
      english.h, gibberish.c, gibberish.h, parser.y, types.h, test/Makefile.am,
      cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out, cdecl-d-alli.out,
