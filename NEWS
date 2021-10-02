@@ -18,6 +18,10 @@ The `declare` command can now accept multiple names like:
     cdecl> declare p, q as pointer to int
     int *p, *q;
 
+** More C++ cast checks
+`const_cast`, `dynamic_cast`, and `reinterpret_cast` now perform additional
+checks.
+
 ** Digraph & Trigraph output
 Digraphs and trigraphs are no longer emitted in a language in which they aren't
 supported.

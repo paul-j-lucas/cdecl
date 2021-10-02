@@ -146,7 +146,13 @@ static bool const VISITOR_ERROR_NOT_FOUND = false;
 
 // local functions
 PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_declaration( c_ast_t const* );
+
+PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_emc( c_ast_t const* );
+
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_errors( c_ast_t const*, bool );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_main( c_ast_t const* );
@@ -177,6 +183,9 @@ static bool c_ast_visitor_error( c_ast_t*, uint64_t );
 
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_type( c_ast_t*, uint64_t );
+
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_visitor_warning( c_ast_t*, uint64_t );
 
 static void c_ast_warn_name( c_ast_t const* );
 static void c_sname_warn( c_sname_t const*, c_loc_t const* );
@@ -429,7 +438,7 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
     }
   }
 
-  if ( c_ast_is_builtin_any( ast, TB_VOID ) &&
+  if ( ast->cast_kind == C_CAST_NONE && c_ast_is_builtin_any( ast, TB_VOID ) &&
        !c_tid_is_any( ast->type.stids, TS_TYPEDEF ) &&
        ast->parent_ast == NULL ) {
     print_error( &ast->loc, "variable of %s", L_VOID );
@@ -438,6 +447,114 @@ static bool c_ast_check_builtin( c_ast_t const *ast ) {
   }
 
   return c_ast_check_emc( ast ) && c_ast_check_upc( ast );
+}
+
+/**
+ * Checks a cast AST for cast-specific errors.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if all checks passed.
+ *
+ * @sa c_ast_check_declaration()
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_cast( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  assert( ast->cast_kind != C_CAST_NONE );
+
+  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
+
+  c_ast_t const *const storage_ast = c_ast_find_type_any(
+    nonconst_ast, C_VISIT_DOWN, &C_TYPE_LIT_S( TS_MASK_STORAGE )
+  );
+
+  if ( storage_ast != NULL ) {
+    print_error( &ast->loc,
+      "can not %s %s %s\n", L_CAST, L_INTO,
+      c_tid_name_error( storage_ast->type.stids & TS_MASK_STORAGE )
+    );
+    return false;
+  }
+
+  switch ( ast->kind_id ) {
+    case K_ARRAY:
+      error_kind_not_cast_into( ast, "pointer" );
+      return false;
+    case K_CONSTRUCTOR:
+    case K_DESTRUCTOR:
+    case K_FUNCTION:
+    case K_OPERATOR:
+    case K_USER_DEF_CONVERSION:
+    case K_USER_DEF_LITERAL:
+      error_kind_not_cast_into( ast, "pointer to function" );
+      return false;
+    default:
+      /* suppress warning */;
+  } // switch
+
+  c_ast_t const *const raw_ast = c_ast_untypedef( ast );
+
+  switch ( ast->cast_kind ) {
+    case C_CAST_NONE:
+      UNEXPECTED_INT_VALUE( ast->cast_kind );
+
+    case C_CAST_CONST:
+      if ( !c_ast_is_kind_any( raw_ast, K_ANY_POINTER | K_ANY_REFERENCE ) ) {
+        if ( opt_lang < LANG_CPP_11 ) {
+          print_error( &ast->loc,
+            "%s must be to a %s, %s, or %s\n",
+            L_CONST_CAST,
+            c_kind_name( K_POINTER ),
+            c_kind_name( K_POINTER_TO_MEMBER ),
+            c_kind_name( K_REFERENCE )
+          );
+        } else {
+          print_error( &ast->loc,
+            "%s must be to a %s, %s, %s, or %s\n",
+            L_CONST_CAST,
+            c_kind_name( K_POINTER ),
+            c_kind_name( K_POINTER_TO_MEMBER ),
+            c_kind_name( K_REFERENCE ),
+            c_kind_name( K_RVALUE_REFERENCE )
+          );
+        }
+        return false;
+      }
+      break;
+
+    case C_CAST_DYNAMIC:
+      if ( !c_ast_is_ptr_to_tid_any( raw_ast, TB_ANY_CLASS ) &&
+           !c_ast_is_ref_to_tid_any( raw_ast, TB_ANY_CLASS ) ) {
+        print_error( &ast->loc,
+          "%s must be to a %s or %s to a %s, %s, or %s\n",
+          L_DYNAMIC_CAST,
+          c_kind_name( K_POINTER ),
+          c_kind_name( K_REFERENCE ),
+          L_CLASS, L_STRUCT, L_UNION
+        );
+        return false;
+      }
+      break;
+
+    case C_CAST_REINTERPRET:
+      if ( c_ast_is_builtin_any( ast, TB_VOID ) ) {
+        print_error( &ast->loc,
+          "%s can not be to %s\n",
+          L_REINTERPRET_CAST, L_VOID
+        );
+        return false;
+      }
+      break;
+
+    case C_CAST_C:
+      // A C-style cast can cast to any type, so nothing to check.
+    case C_CAST_STATIC:
+      // A static cast can cast to any type; but cdecl doesn't know the type of
+      // the object being cast, so nothing to check.
+      break;
+  } // switch
+
+  return true;
 }
 
 /**
@@ -480,6 +597,23 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
     return false;
   }
 
+  return true;
+}
+
+/**
+ * Check a declaration AST for errors.
+ *
+ * @param ast The AST to check.
+ * @return Returns `true` only if all checks passed.
+ *
+ * @sa c_ast_check_cast()
+ */
+PJL_WARN_UNUSED_RESULT
+static bool c_ast_check_declaration( c_ast_t const *ast ) {
+  assert( ast != NULL );
+  if ( !c_ast_check_errors( ast, /*is_func_param=*/false ) )
+    return false;
+  PJL_IGNORE_RV( c_ast_check_visitor( ast, c_ast_visitor_warning, 0 ) );
   return true;
 }
 
@@ -2339,47 +2473,11 @@ static c_lang_id_t is_reserved_name( char const *name ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-bool c_ast_check_cast( c_ast_t const *ast ) {
+bool c_ast_check( c_ast_t const *ast ) {
   assert( ast != NULL );
-  c_ast_t *const nonconst_ast = CONST_CAST( c_ast_t*, ast );
-
-  c_ast_t const *const storage_ast = c_ast_find_type_any(
-    nonconst_ast, C_VISIT_DOWN, &C_TYPE_LIT_S( TS_MASK_STORAGE )
-  );
-
-  if ( storage_ast != NULL ) {
-    print_error( &ast->loc,
-      "can not %s %s %s\n", L_CAST, L_INTO,
-      c_tid_name_error( storage_ast->type.stids & TS_MASK_STORAGE )
-    );
+  if ( ast->cast_kind != C_CAST_NONE && !c_ast_check_cast( ast ) )
     return false;
-  }
-
-  switch ( ast->kind_id ) {
-    case K_ARRAY:
-      error_kind_not_cast_into( ast, "pointer" );
-      return false;
-    case K_CONSTRUCTOR:
-    case K_DESTRUCTOR:
-    case K_FUNCTION:
-    case K_OPERATOR:
-    case K_USER_DEF_CONVERSION:
-    case K_USER_DEF_LITERAL:
-      error_kind_not_cast_into( ast, "pointer to function" );
-      return false;
-    default:
-      /* suppress warning */;
-  } // switch
-
   return c_ast_check_declaration( ast );
-}
-
-bool c_ast_check_declaration( c_ast_t const *ast ) {
-  assert( ast != NULL );
-  if ( !c_ast_check_errors( ast, /*is_func_param=*/false ) )
-    return false;
-  PJL_IGNORE_RV( c_ast_check_visitor( ast, c_ast_visitor_warning, 0 ) );
-  return true;
 }
 
 bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc ) {

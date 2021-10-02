@@ -69,6 +69,7 @@ typedef struct c_ast_pair         c_ast_pair_t;
 typedef slist_node_t              c_ast_param_t;  ///< Function-like parameter.
 typedef unsigned                  c_bit_width_t;  ///< Bit-field width.
 typedef struct c_builtin_ast      c_builtin_ast_t;
+typedef enum   c_cast_kind        c_cast_kind_t;
 typedef struct c_constructor_ast  c_constructor_ast_t;
 typedef struct c_ecsu_ast         c_ecsu_ast_t;
 typedef struct c_function_ast     c_function_ast_t;
@@ -128,6 +129,18 @@ struct c_ast_pair {
    * subsequent additions to the AST.
    */
   c_ast_t *target_ast;
+};
+
+/**
+ * C/C++ cast kinds.
+ */
+enum c_cast_kind {
+  C_CAST_NONE,                          ///< Not a cast.
+  C_CAST_C,                             ///< C-style cast.
+  C_CAST_CONST,                         ///< `const_cast`.
+  C_CAST_DYNAMIC,                       ///< `dynamic_cast`.
+  C_CAST_REINTERPRET,                   ///< `reinterpret_cast`.
+  C_CAST_STATIC                         ///< `static_cast`.
 };
 
 /**

@@ -1,0 +1,3 @@
+const cast x into int
+                  ^
+19: error: const_cast must be to a pointer, pointer-to-member, reference, or rvalue reference

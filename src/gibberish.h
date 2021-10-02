@@ -124,6 +124,15 @@
 void c_ast_gibberish( c_ast_t const *ast, c_gib_flags_t flags, FILE *gout );
 
 /**
+ * Given \a kind, gets the associated C++ literal.
+ *
+ * @param kind The cast kind to get the literal for.
+ * @return Returns said literal.
+ */
+PJL_WARN_UNUSED_RESULT
+char const* c_cast_gibberish( c_cast_kind_t kind );
+
+/**
  * Prints \a tdef as a C/C++ type declaration.
  *
  * @param tdef The type to print.

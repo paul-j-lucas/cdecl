@@ -45,27 +45,13 @@
  */
 
 /**
- * Performs additional checks on an entire AST for semantic errors when
- * casting.
- *
- * @param ast The AST to check.
- * @return Returns `true` only if all checks passed.
- *
- * @sa c_ast_check_declaration()
- */
-PJL_WARN_UNUSED_RESULT
-bool c_ast_check_cast( c_ast_t const *ast );
-
-/**
  * Checks an entire AST for semantic errors and warnings.
  *
  * @param ast The AST to check.
  * @return Returns `true` only if \a ast error-free.
- *
- * @sa c_ast_check_cast()
  */
 PJL_WARN_UNUSED_RESULT
-bool c_ast_check_declaration( c_ast_t const *ast );
+bool c_ast_check( c_ast_t const *ast );
 
 /** @} */
 

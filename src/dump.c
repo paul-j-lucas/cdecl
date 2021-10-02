@@ -26,6 +26,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "dump.h"
+#include "english.h"
 #include "cdecl.h"
 #include "c_ast.h"
 #include "c_type.h"
@@ -38,11 +39,6 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <sysexits.h>
-
-#define DUMP_BOOL(KEY,VALUE) BLOCK( \
-  dump_indent( indent, dout );      \
-  FPUTS( KEY " = ", dout );         \
-  bool_dump( (VALUE), dout ); )
 
 #define DUMP_COMMA \
   BLOCK( if ( false_set( &comma ) ) FPUTS( ",\n", dout ); )
@@ -125,6 +121,8 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
     FPUTS( ",\n", dout );
     DUMP_FORMAT( "unique_id = %u,\n", ast->unique_id );
     DUMP_STR( "kind", c_kind_name( ast->kind_id ) );
+    FPUTS( ",\n", dout );
+    DUMP_STR( "cast_kind", c_cast_english( ast->cast_kind ) );
     FPUTS( ",\n", dout );
     DUMP_FORMAT( "depth = %u,\n", ast->depth );
 

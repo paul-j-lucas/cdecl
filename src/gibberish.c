@@ -869,6 +869,18 @@ void c_ast_gibberish( c_ast_t const *ast, c_gib_flags_t flags, FILE *gout ) {
   c_ast_gibberish_impl( ast, flags, /*printing_typedef=*/false, gout );
 }
 
+char const* c_cast_gibberish( c_cast_kind_t kind ) {
+  switch ( kind ) {
+    case C_CAST_NONE        : return "none";
+    case C_CAST_C           : return "C";
+    case C_CAST_CONST       : return L_CONST_CAST;
+    case C_CAST_DYNAMIC     : return L_DYNAMIC_CAST;
+    case C_CAST_REINTERPRET : return L_REINTERPRET_CAST;
+    case C_CAST_STATIC      : return L_STATIC_CAST;
+  } // switch
+  UNEXPECTED_INT_VALUE( kind );
+}
+
 void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
                           FILE *gout ) {
   assert( tdef != NULL );

@@ -45,7 +45,6 @@ TESTS =	tests/cdecl--kolor.test \
 	tests/cdecl-Iulull.test \
 	tests/cdecl-Ius.test \
 	tests/cdecl-Ix.test \
-	tests/cdecl-e-const_cast_pi.test \
 	tests/cdecl-h.test \
 	tests/cdecl-k.test \
 	tests/cdecl-knever.test \
@@ -748,13 +747,18 @@ TESTS+=	tests/cast_bii_d.test \
 #
 TESTS+=	tests/cast_a3i.test \
 	tests/cast_f_i.test \
-	tests/cast_rgi.test \
 	tests/cast_pfx_i.test \
+	tests/cast_rgi.test \
 	tests/cast_type_i.test \
 	tests/cast_typedef_i.test \
+	tests/const_cast_i-c++03.test \
+	tests/const_cast_i.test \
 	tests/const_cast_pi-c.test \
+	tests/dynamic_cast_i.test \
 	tests/dynamic_cast_pc-c.test \
+	tests/dynamic_cast_pi.test \
 	tests/reinterpret_cast_pv-c.test \
+	tests/reinterpret_cast_v.test \
 	tests/static_cast_i-c.test
 
 ###############################################################################

@@ -359,6 +359,18 @@ void c_ast_explain_type( c_ast_t const *ast, FILE *eout ) {
   FPUTC( '\n', eout );
 }
 
+char const* c_cast_english( c_cast_kind_t kind ) {
+  switch ( kind ) {
+    case C_CAST_NONE        : return "none";
+    case C_CAST_C           : return "C";
+    case C_CAST_CONST       : return L_CONST;
+    case C_CAST_DYNAMIC     : return L_DYNAMIC;
+    case C_CAST_REINTERPRET : return L_REINTERPRET;
+    case C_CAST_STATIC      : return L_STATIC;
+  } // switch
+  UNEXPECTED_INT_VALUE( kind );
+}
+
 void c_sname_english( c_sname_t const *sname, FILE *eout ) {
   assert( sname != NULL );
   assert( eout != NULL );

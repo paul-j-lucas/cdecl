@@ -373,6 +373,7 @@ struct c_ast {
   c_ast_depth_t         depth;          ///< How many `()` deep.
   c_ast_id_t            unique_id;      ///< Unique id (starts at 1).
   c_kind_id_t           kind_id;        ///< Kind.
+  c_cast_kind_t         cast_kind;      ///< Cast kind.
   c_sname_t             sname;          ///< Scoped name, if any.
   c_type_t              type;           ///< Type, if any.
   c_ast_t              *parent_ast;     ///< Parent AST node, if any.

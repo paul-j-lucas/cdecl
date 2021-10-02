@@ -85,6 +85,15 @@ void c_ast_explain_declaration( c_ast_t const *ast, FILE *eout );
 void c_ast_explain_type( c_ast_t const *ast, FILE *eout );
 
 /**
+ * Given \a kind, gets the associated English literal.
+ *
+ * @param kind The cast kind to get the literal for.
+ * @return Returns said literal.
+ */
+PJL_WARN_UNUSED_RESULT
+char const* c_cast_english( c_cast_kind_t kind );
+
+/**
  * Prints \a sname in pseudo-English.
  *
  * @note A newline is _not_ printed.

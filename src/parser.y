@@ -101,12 +101,12 @@
  */
 
 /**
- * Calls c_ast_check_declaration(): if the check fails, calls #PARSE_ABORT().
+ * Calls c_ast_check(): if the check fails, calls #PARSE_ABORT().
  *
  * @param AST The AST to check.
  */
-#define C_AST_CHECK_DECL(AST) \
-  BLOCK( if ( !c_ast_check_declaration( AST ) ) PARSE_ABORT(); )
+#define C_AST_CHECK(AST) \
+  BLOCK( if ( !c_ast_check( AST ) ) PARSE_ABORT(); )
 
 /**
  * Calls c_type_add(): if adding the type fails, calls #PARSE_ABORT().
@@ -1043,6 +1043,7 @@ static void yyerror( char const *msg ) {
   c_ast_list_t        ast_list;   // for declarations and function parameters
   c_ast_pair_t        ast_pair;   // for the AST being built
   unsigned            bitmask;    // multipurpose bitmask (used by show)
+  c_cast_kind_t       cast_kind;  // C/C++ cast kind
   bool                flag;       // simple flag
   c_gib_flags_t       gib_flags;  // gibberish flags
   cdecl_help_t        help;       // type of help to print
@@ -1415,7 +1416,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>       func_decl_english_ast
 %type   <type>      func_qualifier_english_type_opt
 %type   <bitmask>   member_or_non_member_mask_opt
-%type   <literal>   new_style_cast_english_literal
+%type   <cast_kind> new_style_cast_english
 %type   <sname>     of_scope_english
 %type   <sname>     of_scope_list_english of_scope_list_english_opt
 %type   <ast>       of_type_enum_fixed_type_english_ast_opt
@@ -1453,7 +1454,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  cast_c_astp cast_c_astp_opt cast2_c_astp
 %type   <ast_pair>  func_cast_c_astp
 %type   <ast_pair>  nested_cast_c_astp
-%type   <literal>   new_style_cast_c_literal
+%type   <cast_kind> new_style_cast_c
 %type   <ast_pair>  pointer_cast_c_astp
 %type   <ast_pair>  pointer_to_member_cast_c_astp
 %type   <ast_pair>  reference_cast_c_astp
@@ -1668,7 +1669,8 @@ cast_command
       DUMP_AST( "decl_english_ast", $4 );
       DUMP_END();
 
-      bool const ok = c_ast_check_cast( $4 );
+      $4->cast_kind = C_CAST_C;
+      bool const ok = c_ast_check( $4 );
       if ( ok ) {
         FPUTC( '(', fout );
         c_ast_gibberish( $4, C_GIB_CAST, fout );
@@ -1683,28 +1685,34 @@ cast_command
     /*
      * New C++-style cast.
      */
-  | new_style_cast_english_literal cast_exp sname_english_exp as_into_to_exp
+  | new_style_cast_english cast_exp sname_english_exp as_into_to_exp
     decl_english_ast
     {
+      char const *const cast_literal = c_cast_gibberish( $1 );
+
       DUMP_START( "cast_command",
-                  "new_style_cast_english_literal CAST sname_english_exp "
+                  "new_style_cast_english CAST sname_english_exp "
                   "as_into_to_exp decl_english_ast" );
-      DUMP_STR( "new_style_cast_english_literal", $1 );
+      DUMP_STR( "new_style_cast_english", cast_literal );
       DUMP_SNAME( "sname_english_exp", $3 );
       DUMP_AST( "decl_english_ast", $5 );
       DUMP_END();
 
       bool ok = false;
 
-      if ( unsupported( LANG_CPP_MIN(11) ) ) {
+      if ( unsupported( LANG_CPP_ANY ) ) {
         print_error( &@1,
-          "%s is not supported%s\n", $1, c_lang_which( LANG_CPP_MIN(11) )
+          "%s is not supported%s\n",
+          cast_literal, c_lang_which( LANG_CPP_ANY )
         );
       }
-      else if ( (ok = c_ast_check_cast( $5 )) ) {
-        FPRINTF( fout, "%s<", $1 );
-        c_ast_gibberish( $5, C_GIB_CAST, fout );
-        FPRINTF( fout, ">(%s)\n", c_sname_full_name( &$3 ) );
+      else {
+        $5->cast_kind = $1;
+        if ( (ok = c_ast_check( $5 )) ) {
+          FPRINTF( fout, "%s<", cast_literal );
+          c_ast_gibberish( $5, C_GIB_CAST, fout );
+          FPRINTF( fout, ">(%s)\n", c_sname_full_name( &$3 ) );
+        }
       }
 
       c_sname_free( &$3 );
@@ -1713,11 +1721,11 @@ cast_command
     }
   ;
 
-new_style_cast_english_literal
-  : Y_CONST                       { $$ = L_CONST_CAST;        }
-  | Y_DYNAMIC                     { $$ = L_DYNAMIC_CAST;      }
-  | Y_REINTERPRET                 { $$ = L_REINTERPRET_CAST;  }
-  | Y_STATIC                      { $$ = L_STATIC_CAST;       }
+new_style_cast_english
+  : Y_CONST                       { $$ = C_CAST_CONST;        }
+  | Y_DYNAMIC                     { $$ = C_CAST_DYNAMIC;      }
+  | Y_REINTERPRET                 { $$ = C_CAST_REINTERPRET;  }
+  | Y_STATIC                      { $$ = C_CAST_STATIC;       }
   ;
 
 /// declare command ///////////////////////////////////////////////////////////
@@ -1768,7 +1776,7 @@ declare_command
         gib_flags |= C_GIB_MULTI_DECL;
       FOREACH_SLIST( sname_node, &$2, NULL ) {
         c_ast_set_sname( $5, sname_node->data );
-        C_AST_CHECK_DECL( $5 );
+        C_AST_CHECK( $5 );
         c_ast_gibberish( $5, gib_flags, fout );
         if ( sname_node->next != NULL ) {
           gib_flags |= C_GIB_OMIT_TYPE;
@@ -1818,7 +1826,7 @@ declare_command
       DUMP_AST( "declare_command", $7 );
       DUMP_END();
 
-      C_AST_CHECK_DECL( $7 );
+      C_AST_CHECK( $7 );
       c_ast_gibberish( $7, C_GIB_DECL, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
@@ -1851,7 +1859,7 @@ declare_command
       DUMP_AST( "declare_command", conv_ast );
       DUMP_END();
 
-      C_AST_CHECK_DECL( conv_ast );
+      C_AST_CHECK( conv_ast );
       c_ast_gibberish( conv_ast, C_GIB_DECL, fout );
       if ( opt_semicolon )
         FPUTC( ';', fout );
@@ -2110,7 +2118,7 @@ define_command
       //
       if ( !c_type_add( &$5->type, &T_TS_TYPEDEF, &@4 ) ||
            !c_type_add( &$5->type, &$4, &@4 ) ||
-           !c_ast_check_declaration( $5 ) ) {
+           !c_ast_check( $5 ) ) {
         PARSE_ABORT();
       }
       PJL_IGNORE_RV( c_ast_take_type_any( $5, &T_TS_TYPEDEF ) );
@@ -2168,7 +2176,7 @@ explain_command
       DUMP_AST( "file_scope_constructor_decl_c_ast", $2 );
       DUMP_END();
 
-      C_AST_CHECK_DECL( $2 );
+      C_AST_CHECK( $2 );
       c_ast_explain_declaration( $2, fout );
     }
 
@@ -2181,7 +2189,7 @@ explain_command
       DUMP_AST( "destructor_decl_c_ast", $2 );
       DUMP_END();
 
-      C_AST_CHECK_DECL( $2 );
+      C_AST_CHECK( $2 );
       c_ast_explain_declaration( $2, fout );
     }
 
@@ -2195,7 +2203,7 @@ explain_command
       DUMP_AST( "file_scope_destructor_decl_c_ast", $2 );
       DUMP_END();
 
-      C_AST_CHECK_DECL( $2 );
+      C_AST_CHECK( $2 );
       c_ast_explain_declaration( $2, fout );
     }
 
@@ -2209,7 +2217,7 @@ explain_command
       DUMP_AST( "knr_func_or_constructor_decl_c_ast", $2 );
       DUMP_END();
 
-      C_AST_CHECK_DECL( $2 );
+      C_AST_CHECK( $2 );
       c_ast_explain_declaration( $2, fout );
     }
 
@@ -2248,7 +2256,7 @@ explain_command
       DUMP_AST( "user_defined_conversion_decl_c_astp", $2.ast );
       DUMP_END();
 
-      C_AST_CHECK_DECL( $2.ast );
+      C_AST_CHECK( $2.ast );
       c_ast_explain_declaration( $2.ast, fout );
     }
 
@@ -2265,7 +2273,7 @@ explain_command
 
       C_TYPE_ADD_TID( &$3->type, $2, @2 );
 
-      C_AST_CHECK_DECL( $3 );
+      C_AST_CHECK( $3 );
       c_ast_explain_declaration( $3, fout );
     }
 
@@ -2523,11 +2531,12 @@ c_style_cast_c
       DUMP_SNAME( "sname_c_opt", $6 );
 
       c_ast_t *const cast_ast = c_ast_patch_placeholder( $2, $4.ast );
+      cast_ast->cast_kind = C_CAST_C;
 
       DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
 
-      bool const ok = c_ast_check_cast( cast_ast );
+      bool const ok = c_ast_check( cast_ast );
       if ( ok ) {
         FPUTS( L_CAST, fout );
         if ( !c_sname_empty( &$6 ) ) {
@@ -2548,7 +2557,7 @@ c_style_cast_c
 /// Gibberish C++-style cast //////////////////////////////////////////////////
 
 new_style_cast_c
-  : new_style_cast_c_literal lt_exp type_c_ast
+  : new_style_cast_c lt_exp type_c_ast
     {
       ia_type_ast_push( $3 );
     }
@@ -2556,15 +2565,18 @@ new_style_cast_c
     {
       ia_type_ast_pop();
 
+      char const *const cast_literal = c_cast_english( $1 );
+
       DUMP_START( "explain_command",
-                  "EXPLAIN new_style_cast_c_literal "
+                  "EXPLAIN new_style_cast_c"
                   "'<' type_c_ast cast_c_astp_opt '>' '(' sname ')'" );
-      DUMP_STR( "new_style_cast_c_literal", $1 );
+      DUMP_STR( "new_style_cast_c", cast_literal );
       DUMP_AST( "type_c_ast", $3 );
       DUMP_AST( "cast_c_astp_opt", $5.ast );
       DUMP_SNAME( "sname", $8 );
 
-      c_ast_t const *const cast_ast = c_ast_patch_placeholder( $3, $5.ast );
+      c_ast_t *const cast_ast = c_ast_patch_placeholder( $3, $5.ast );
+      cast_ast->cast_kind = $1;
 
       DUMP_AST( "explain_command", cast_ast );
       DUMP_END();
@@ -2572,10 +2584,10 @@ new_style_cast_c
       bool ok = false;
 
       if ( unsupported( LANG_CPP_ANY ) ) {
-        print_error( &@1, "%s_cast is not supported in C\n", $1 );
+        print_error( &@1, "%s_cast is not supported in C\n", cast_literal );
       }
-      else if ( (ok = c_ast_check_cast( cast_ast )) ) {
-        FPRINTF( fout, "%s %s ", $1, L_CAST );
+      else if ( (ok = c_ast_check( cast_ast )) ) {
+        FPRINTF( fout, "%s %s ", cast_literal, L_CAST );
         c_sname_english( &$8, fout );
         FPRINTF( fout, " %s ", L_INTO );
         c_ast_english( cast_ast, fout );
@@ -2588,11 +2600,11 @@ new_style_cast_c
     }
   ;
 
-new_style_cast_c_literal
-  : Y_CONST_CAST                  { $$ = L_CONST;       }
-  | Y_DYNAMIC_CAST                { $$ = L_DYNAMIC;     }
-  | Y_REINTERPRET_CAST            { $$ = L_REINTERPRET; }
-  | Y_STATIC_CAST                 { $$ = L_STATIC;      }
+new_style_cast_c
+  : Y_CONST_CAST                  { $$ = C_CAST_CONST;        }
+  | Y_DYNAMIC_CAST                { $$ = C_CAST_DYNAMIC;      }
+  | Y_REINTERPRET_CAST            { $$ = C_CAST_REINTERPRET;  }
+  | Y_STATIC_CAST                 { $$ = C_CAST_STATIC;       }
   ;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -3104,7 +3116,7 @@ typedef_decl_c
         c_ast_set_sname( typedef_ast, &temp_sname );
       }
 
-      C_AST_CHECK_DECL( typedef_ast );
+      C_AST_CHECK( typedef_ast );
       // see the comment in "define_command" about TS_TYPEDEF
       PJL_IGNORE_RV( c_ast_take_type_any( typedef_ast, &T_TS_TYPEDEF ) );
 
@@ -3204,7 +3216,7 @@ using_decl_c_ast
         PARSE_ABORT();
       }
 
-      C_AST_CHECK_DECL( $$ );
+      C_AST_CHECK( $$ );
     }
   ;
 
@@ -3252,7 +3264,7 @@ decl_list_c_opt
       c_sname_t temp_sname = c_sname_dup( ecsu_sname );
       c_ast_set_sname( type_ast, &temp_sname );
 
-      C_AST_CHECK_DECL( type_ast );
+      C_AST_CHECK( type_ast );
       c_ast_explain_type( type_ast, fout );
     }
 
@@ -3301,7 +3313,7 @@ decl_c
 
       if ( decl_ast == NULL )
         PARSE_ABORT();
-      C_AST_CHECK_DECL( decl_ast );
+      C_AST_CHECK( decl_ast );
       c_ast_explain_declaration( decl_ast, fout );
 
       //
@@ -4665,8 +4677,7 @@ type_c_ast
       //
       // Prior to C99, typeless declarations are implicitly int, so we set it
       // here.  In C99 and later, however, implicit int is an error, so we
-      // don't set it here and c_ast_check_declaration() will catch the error
-      // later.
+      // don't set it here and c_ast_check() will catch the error later.
       //
       // Note that type modifiers, e.g., unsigned, count as a type since that
       // means unsigned int; however, neither qualifiers, e.g., const, nor
