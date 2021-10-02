@@ -40,11 +40,7 @@
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * @addtogroup ast-functions-group
- * @{
- */
-
-/**
+ * @ingroup ast-functions-group
  * Checks an entire AST for semantic errors and warnings.
  *
  * @param ast The AST to check.
@@ -53,9 +49,8 @@
 PJL_WARN_UNUSED_RESULT
 bool c_ast_check( c_ast_t const *ast );
 
-/** @} */
-
 /**
+ * @ingroup sname-group
  * Checks a scoped name for valid scope order.
  *
  * @param sname The scoped name to check.
