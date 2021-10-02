@@ -39,6 +39,11 @@
 #include <stdlib.h>
 #include <sysexits.h>
 
+#define DUMP_BOOL(KEY,VALUE) BLOCK( \
+  dump_indent( indent, dout );      \
+  FPUTS( KEY " = ", dout );         \
+  bool_dump( (VALUE), dout ); )
+
 #define DUMP_COMMA \
   BLOCK( if ( false_set( &comma ) ) FPUTS( ",\n", dout ); )
 
@@ -101,6 +106,10 @@ static void dump_indent( unsigned indent, FILE *out ) {
 }
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+void bool_dump( bool value, FILE *dout ) {
+  FPRINTF( dout, "%s", value ? "true" : "false" );
+}
 
 void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
                  FILE *dout ) {

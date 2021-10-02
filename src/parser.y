@@ -281,8 +281,8 @@
  * @param BOOL The `bool` to dump.
  */
 #define DUMP_BOOL(KEY,BOOL)  IF_DEBUG(  \
-  DUMP_COMMA;                           \
-  FPRINTF( stdout, "  " KEY " = %s", ((BOOL) ? "true" : "false") ); )
+  DUMP_COMMA; PUTS( "  " KEY " = " );   \
+  bool_dump( BOOL, stdout ); )
 
 /**
  * Ends a dump block.

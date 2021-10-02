@@ -33,6 +33,7 @@
 /// @cond DOXYGEN_IGNORE
 
 // standard
+#include <stdbool.h>
 #include <stdio.h>                      /* for FILE */
 
 /// @endcond
@@ -44,6 +45,14 @@
  */
 
 ////////// extern functions ///////////////////////////////////////////////////
+
+/**
+ * Dumps a Boolean value (for debugging).
+ *
+ * @param b The Boolean to dump.
+ * @param dout The `FILE` to dump to.
+ */
+void bool_dump( bool b, FILE *dout );
 
 /**
  * Dumps \a ast (for debugging).
