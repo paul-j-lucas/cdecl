@@ -1,3 +1,24 @@
+2021-10-02  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_ast.h, c_ast_util.c, check.c, check.h, dump.c, english.c,
+     english.h, gibberish.c, gibberish.h, parser.y, types.h, test/Makefile.am,
+     cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out, cdecl-d-alli.out,
+     cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out, cdecl-d-f2i_pi.out,
+     cdecl-d-f_v.out, cdecl-d-faia4iaviacias6i_v.out, cdecl-d-pmki.out,
+     cdecl-d-udc_i.out, cdecl-d-z.out, const_cast_i-c++03.out,
+     const_cast_i.out, dynamic_cast_i.out, dynamic_cast_pi.out,
+     reinterpret_cast_v.out, const_cast_i-c++03.test, const_cast_i.test,
+     dynamic_cast_i.test, dynamic_cast_pi.test, reinterpret_cast_v.test:
+     const_cast, dynamic_cast, and reinterpret_cast now perform additional
+     checks.
+   * dump.c, dump.h, parser.y: Added bool_dump().
+
+2021-10-01  Paul J. Lucas <paul@lucasmail.org>
+
+   * autocomplete.c, c_keyword.c, c_keyword.h, lexer.l, literals.h: Moved
+     auto-completion information for C/C++ keywords to C_KEYWORDS.
+   * autocomplete.c: Now autocompletable: bits, bytes, const, enum.
+
 2021-09-30  Paul J. Lucas <paul@lucasmail.org>
 
    * c_ast.h: Added missing PJL_WARN_UNUSED_RESULT.
