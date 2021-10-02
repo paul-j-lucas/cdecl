@@ -41,7 +41,7 @@
  * that it's not #K_PLACEHOLDER because it shouldn't occur in a completed AST.
  * For example:
  *
- *      switch ( ast->kind_id ) {
+ *      switch ( ast->kind ) {
  *        // ...
  *
  *        CASE_K_PLACEHOLDER;
@@ -61,7 +61,7 @@
  * kinds.  However, a bitwise-or of kinds may be used to test whether a given
  * thing is any _one_ of those kinds.
  */
-enum c_kind_id {
+enum c_ast_kind {
   /**
    * Temporary node in AST.  This is needed in two cases:
    *
@@ -232,13 +232,13 @@ enum c_kind_id {
 ////////// extern functions ///////////////////////////////////////////////////
 
 /**
- * Gets the name of \a kind_id.
+ * Gets the name of \a kind.
  *
- * @param kind_id The <code>\ref c_kind_id</code> to get the name for.
+ * @param kind The <code>\ref c_ast_kind</code> to get the name for.
  * @return Returns said name.
  */
 PJL_WARN_UNUSED_RESULT
-char const* c_kind_name( c_kind_id_t kind_id );
+char const* c_kind_name( c_ast_kind_t kind );
 
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -58,12 +58,12 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t* );
 PJL_WARN_UNUSED_RESULT
 static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast ) {
   assert( array_ast != NULL );
-  assert( array_ast->kind_id == K_ARRAY );
+  assert( array_ast->kind == K_ARRAY );
 
   if ( ast == NULL )
     return array_ast;
 
-  switch ( ast->kind_id ) {
+  switch ( ast->kind ) {
     case K_ARRAY:
       return c_ast_append_array( ast, array_ast );
 
@@ -139,11 +139,11 @@ PJL_WARN_UNUSED_RESULT
 static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast ) {
   assert( ast != NULL );
   assert( array_ast != NULL );
-  assert( array_ast->kind_id == K_ARRAY );
+  assert( array_ast->kind == K_ARRAY );
   assert( array_ast->as.array.of_ast != NULL );
-  assert( array_ast->as.array.of_ast->kind_id == K_PLACEHOLDER );
+  assert( array_ast->as.array.of_ast->kind == K_PLACEHOLDER );
 
-  switch ( ast->kind_id ) {
+  switch ( ast->kind ) {
     case K_POINTER:
       //
       // If there's an intervening pointer, e.g.:
@@ -199,7 +199,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
   assert( ret_ast != NULL );
 
   if ( c_ast_is_kind_any( ast, K_ARRAY | K_ANY_POINTER | K_ANY_REFERENCE ) ) {
-    switch ( ast->as.parent.of_ast->kind_id ) {
+    switch ( ast->as.parent.of_ast->kind ) {
       case K_ARRAY:
       case K_POINTER:
       case K_POINTER_TO_MEMBER:
@@ -274,7 +274,7 @@ PJL_WARN_UNUSED_RESULT
 static c_ast_t const* c_ast_if_unpointer( c_ast_t const *ast,
                                           c_tid_t *cv_stids ) {
   ast = c_ast_untypedef( ast );
-  if ( ast->kind_id != K_POINTER )
+  if ( ast->kind != K_POINTER )
     return NULL;
 
   ast = ast->as.ptr_ref.to_ast;
@@ -331,7 +331,7 @@ PJL_WARN_UNUSED_RESULT
 static c_ast_t const* c_ast_if_unreference( c_ast_t const *ast,
                                             c_tid_t *cv_stids ) {
   ast = c_ast_untypedef( ast );
-  if ( ast->kind_id != K_REFERENCE )
+  if ( ast->kind != K_REFERENCE )
     return NULL;
 
   ast = ast->as.ptr_ref.to_ast;
@@ -431,8 +431,8 @@ static c_type_t c_ast_take_storage( c_ast_t *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_vistor_kind_any( c_ast_t *ast, uint64_t data ) {
   assert( ast != NULL );
-  c_kind_id_t const kind_ids = STATIC_CAST( c_kind_id_t, data );
-  return c_ast_is_kind_any( ast, kind_ids );
+  c_ast_kind_t const kinds = STATIC_CAST( c_ast_kind_t, data );
+  return c_ast_is_kind_any( ast, kinds );
 }
 
 /**
@@ -486,9 +486,9 @@ c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast ) {
 }
 
 c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
-                              c_kind_id_t kind_ids ) {
-  assert( kind_ids != 0 );
-  uint64_t const data = STATIC_CAST( uint64_t, kind_ids );
+                              c_ast_kind_t kinds ) {
+  assert( kinds != 0 );
+  uint64_t const data = STATIC_CAST( uint64_t, kinds );
   return c_ast_visit( ast, dir, c_ast_vistor_kind_any, data );
 }
 
@@ -509,16 +509,16 @@ bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids ) {
   assert( c_tid_tpid( btids ) == C_TPID_BASE );
 
   ast = c_ast_untypedef( ast );
-  if ( ast->kind_id != K_BUILTIN )
+  if ( ast->kind != K_BUILTIN )
     return false;
   c_tid_t const ast_btids = c_tid_normalize( ast->type.btids );
   return only_bits_set( ast_btids, btids );
 }
 
-bool c_ast_is_ptr_to_kind( c_ast_t const *ast, c_kind_id_t kind_id ) {
+bool c_ast_is_ptr_to_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
   assert( ast != NULL );
   ast = c_ast_unpointer( ast );
-  return ast != NULL && ast->kind_id == kind_id;
+  return ast != NULL && ast->kind == kind;
 }
 
 bool c_ast_is_ptr_to_type_any( c_ast_t const *ast, c_type_t const *mask_type,
@@ -581,7 +581,7 @@ c_ast_t const* c_ast_is_tid_any( c_ast_t const *ast, c_tid_t tids ) {
 bool c_ast_is_typename_ok( c_ast_t const *ast ) {
   assert( ast != NULL );
 
-  c_sname_t const *const sname = ast->kind_id == K_TYPEDEF ?
+  c_sname_t const *const sname = ast->kind == K_TYPEDEF ?
     &ast->as.tdef.for_ast->sname :
     &ast->sname;
 
@@ -607,7 +607,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
   c_type_t type = c_ast_take_type_any( type_ast, &T_TS_TYPEDEF );
 
   if ( c_type_is_tid_any( &type, TS_TYPEDEF ) &&
-       decl_ast->kind_id == K_TYPEDEF ) {
+       decl_ast->kind == K_TYPEDEF ) {
     //
     // This is for a case like:
     //
@@ -662,7 +662,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
     }
   }
 
-  if ( ast->kind_id == K_USER_DEF_CONVERSION &&
+  if ( ast->kind == K_USER_DEF_CONVERSION &&
        c_ast_local_type( ast )->btids == TB_SCOPE ) {
     //
     // User-defined conversions don't have names, but they can still have a
@@ -677,7 +677,7 @@ c_ast_t* c_ast_join_type_decl( bool has_typename, c_alignas_t const *align,
 
 unsigned c_ast_oper_overload( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_OPERATOR );
+  assert( ast->kind == K_OPERATOR );
 
   //
   // If the operator is either member or non-member only, then it's that.
@@ -844,7 +844,7 @@ c_type_t c_ast_take_type_any( c_ast_t *ast, c_type_t const *type ) {
 
 c_ast_t const* c_ast_unpointer( c_ast_t const *ast ) {
   ast = c_ast_untypedef( ast );
-  return  ast->kind_id == K_POINTER ?
+  return  ast->kind == K_POINTER ?
           c_ast_untypedef( ast->as.ptr_ref.to_ast ) : NULL;
 }
 
@@ -852,7 +852,7 @@ c_ast_t const* c_ast_unreference( c_ast_t const *ast ) {
   // This is a loop to implement the reference-collapsing rule.
   for (;;) {
     ast = c_ast_untypedef( ast );
-    if ( ast->kind_id != K_REFERENCE )
+    if ( ast->kind != K_REFERENCE )
       return ast;
     ast = ast->as.ptr_ref.to_ast;
   } // for
@@ -862,7 +862,7 @@ c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast ) {
   // This is a loop to implement the reference-collapsing rule.
   for (;;) {
     ast = c_ast_untypedef( ast );
-    if ( ast->kind_id != K_RVALUE_REFERENCE )
+    if ( ast->kind != K_RVALUE_REFERENCE )
       return ast;
     ast = ast->as.ptr_ref.to_ast;
   } // for
@@ -871,7 +871,7 @@ c_ast_t const* c_ast_unrvalue_reference( c_ast_t const *ast ) {
 c_ast_t const* c_ast_untypedef( c_ast_t const *ast ) {
   for (;;) {
     assert( ast != NULL );
-    if ( ast->kind_id != K_TYPEDEF )
+    if ( ast->kind != K_TYPEDEF )
       return ast;
     ast = ast->as.tdef.for_ast;
   } // for

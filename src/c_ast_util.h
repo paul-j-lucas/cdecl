@@ -75,17 +75,17 @@ PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_add_func( c_ast_t *ast, c_ast_t *ret_ast, c_ast_t *func_ast );
 
 /**
- * Traverses \a ast attempting to find an AST node having one of \a kind_ids.
+ * Traverses \a ast attempting to find an AST node having one of \a kinds.
  *
  * @param ast The AST to begin at; may be NULL.
  * @param dir The direction to visit.
- * @param kind_ids The bitwise-or of kind(s) to find.
- * @return Returns a pointer to an AST node having one of \a kind_ids or NULL
- * if none.
+ * @param kinds The bitwise-or of kind(s) to find.
+ * @return Returns a pointer to an AST node having one of \a kinds or NULL if
+ * none.
  */
 PJL_WARN_UNUSED_RESULT
 c_ast_t* c_ast_find_kind_any( c_ast_t *ast, c_visit_dir_t dir,
-                              c_kind_id_t kind_ids );
+                              c_ast_kind_t kinds );
 
 /**
  * Traverses \a ast attempting to find an AST node having a name.
@@ -126,14 +126,14 @@ bool c_ast_is_builtin_any( c_ast_t const *ast, c_tid_t btids );
  * Checks whether \a ast is an AST for a pointer to a \a kind AST.
  *
  * @param ast The AST to check.
- * @param kind_id The kind to check for.
+ * @param kind The kind to check for.
  * @return Returns `true` only if \a ast is a pointer to \a kind.
  *
  * @sa c_ast_is_ptr_to_tid_any()
  * @sa c_ast_is_ptr_to_type_any()
  */
 PJL_WARN_UNUSED_RESULT
-bool c_ast_is_ptr_to_kind( c_ast_t const *ast, c_kind_id_t kind_id );
+bool c_ast_is_ptr_to_kind( c_ast_t const *ast, c_ast_kind_t kind );
 
 /**
  * Checks whether \a ast is an AST for a pointer to another AST having a type

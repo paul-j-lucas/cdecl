@@ -120,7 +120,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
     DUMP_SNAME( "sname", &ast->sname );
     FPUTS( ",\n", dout );
     DUMP_FORMAT( "unique_id = %u,\n", ast->unique_id );
-    DUMP_STR( "kind", c_kind_name( ast->kind_id ) );
+    DUMP_STR( "kind", c_kind_name( ast->kind ) );
     FPUTS( ",\n", dout );
     DUMP_STR( "cast_kind", c_cast_english( ast->cast_kind ) );
     FPUTS( ",\n", dout );
@@ -153,7 +153,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
 
     bool comma = false;
 
-    switch ( ast->kind_id ) {
+    switch ( ast->kind ) {
       case K_DESTRUCTOR:
       case K_NAME:
       case K_PLACEHOLDER:

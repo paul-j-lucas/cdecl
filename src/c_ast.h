@@ -159,7 +159,7 @@ typedef bool (*c_ast_visitor_t)( c_ast_t *ast, uint64_t data );
  * ## Layout
  *
  * The AST node `struct`s  contain data specific to each
- * <code>\ref c_kind_id_t</code>.
+ * <code>\ref c_ast_kind_t</code>.
  * In all cases where an AST node contains:
  *
  *  1. A pointer to another, that pointer is always declared first.
@@ -372,7 +372,7 @@ struct c_ast {
   c_alignas_t           align;          ///< Alignment, if any.
   c_ast_depth_t         depth;          ///< How many `()` deep.
   c_ast_id_t            unique_id;      ///< Unique id (starts at 1).
-  c_kind_id_t           kind_id;        ///< Kind.
+  c_ast_kind_t          kind;           ///< AST kind.
   c_cast_kind_t         cast_kind;      ///< Cast kind.
   c_sname_t             sname;          ///< Scoped name, if any.
   c_type_t              type;           ///< Type, if any.
@@ -459,17 +459,17 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast );
 void c_ast_free( c_ast_t *ast );
 
 /**
- * Checks whether \a ast is an AST of one of \a kind_ids.
+ * Checks whether \a ast is an AST of one of \a kinds.
  *
  * @param ast The AST to check.
- * @param kind_ids The bitwise-or of the kinds(s) \a ast can be.
- * @return Returns `true` only if \a ast is one of \a kind_ids.
+ * @param kinds The bitwise-or of the kinds(s) \a ast can be.
+ * @return Returns `true` only if \a ast is one of \a kinds.
  *
  * @sa c_ast_is_parent()
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
-bool c_ast_is_kind_any( c_ast_t const *ast, c_kind_id_t kind_ids ) {
-  return (ast->kind_id & kind_ids) != 0;
+bool c_ast_is_kind_any( c_ast_t const *ast, c_ast_kind_t kinds ) {
+  return (ast->kind & kinds) != 0;
 }
 
 /**
@@ -630,7 +630,7 @@ bool c_ast_name_empty( c_ast_t const *ast ) {
 /**
  * Creates a new AST node.
  *
- * @param kind_id The kind of AST to create.
+ * @param kind The kind of AST to create.
  * @param depth How deep within `()` it is.
  * @param loc A pointer to the token location data.
  * @param ast_list If not NULL, the new AST is appended to the list.
@@ -640,7 +640,7 @@ bool c_ast_name_empty( c_ast_t const *ast ) {
  * @sa c_ast_free()
  */
 PJL_WARN_UNUSED_RESULT
-c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
+c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,
                     c_loc_t const *loc, c_ast_list_t *ast_list );
 
 /**
@@ -691,8 +691,8 @@ size_t c_ast_params_count( c_ast_t const *ast ) {
  * @return Returns `true` only if the parent of \a ast is \a kind.
  */
 C_AST_INLINE PJL_WARN_UNUSED_RESULT
-bool c_ast_parent_is_kind( c_ast_t const *ast, c_kind_id_t kind ) {
-  return ast->parent_ast != NULL && ast->parent_ast->kind_id == kind;
+bool c_ast_parent_is_kind( c_ast_t const *ast, c_ast_kind_t kind ) {
+  return ast->parent_ast != NULL && ast->parent_ast->kind == kind;
 }
 
 /**

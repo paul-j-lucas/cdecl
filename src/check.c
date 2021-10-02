@@ -56,10 +56,10 @@
  * @param AST The AST.
  * @param HINT The hint.
  */
-#define error_kind_not_cast_into(AST,HINT) BLOCK(                     \
-  fl_print_error( __FILE__, __LINE__, &(AST)->loc,                    \
-    "can not %s %s %s", L_CAST, L_INTO, c_kind_name( (AST)->kind_id ) \
-  );                                                                  \
+#define error_kind_not_cast_into(AST,HINT) BLOCK(                   \
+  fl_print_error( __FILE__, __LINE__, &(AST)->loc,                  \
+    "can not %s %s %s", L_CAST, L_INTO, c_kind_name( (AST)->kind )  \
+  );                                                                \
   print_hint( "%s %s %s", L_CAST, L_INTO, (HINT) ); )
 
 /**
@@ -68,10 +68,10 @@
  * @param AST The AST having the unsupported kind.
  * @param LANG_IDS The bitwise-or of legal language(s).
  */
-#define error_kind_not_supported(AST,LANG_IDS)              \
-  fl_print_error( __FILE__, __LINE__,                       \
-    &(AST)->loc, "%s is not supported%s\n",                 \
-    c_kind_name( (AST)->kind_id ), c_lang_which( LANG_IDS ) \
+#define error_kind_not_supported(AST,LANG_IDS)            \
+  fl_print_error( __FILE__, __LINE__,                     \
+    &(AST)->loc, "%s is not supported%s\n",               \
+    c_kind_name( (AST)->kind ), c_lang_which( LANG_IDS )  \
   )
 
 /**
@@ -82,10 +82,10 @@
  * @param END_STR_LIT A string literal appended to the end of the error message
  * (either `"\n"` or `""`).
  */
-#define error_kind_not_tid(AST,TID,END_STR_LIT)             \
-  fl_print_error( __FILE__, __LINE__,                       \
-    &(AST)->loc, "%s can not be %s" END_STR_LIT,            \
-    c_kind_name( (AST)->kind_id ), c_tid_name_error( TID )  \
+#define error_kind_not_tid(AST,TID,END_STR_LIT)         \
+  fl_print_error( __FILE__, __LINE__,                   \
+    &(AST)->loc, "%s can not be %s" END_STR_LIT,        \
+    c_kind_name( (AST)->kind ), c_tid_name_error( TID ) \
   )
 
 /**
@@ -96,10 +96,10 @@
  * @param END_STR_LIT A string literal appended to the end of the error message
  * (either `"\n"` or `""`).
  */
-#define error_kind_of_kind(AST1,AST2,END_STR_LIT)                   \
-  fl_print_error( __FILE__, __LINE__,                               \
-    &(AST1)->loc, "%s of %s is illegal" END_STR_LIT,                \
-    c_kind_name( (AST1)->kind_id ), c_kind_name( (AST2)->kind_id )  \
+#define error_kind_of_kind(AST1,AST2,END_STR_LIT)             \
+  fl_print_error( __FILE__, __LINE__,                         \
+    &(AST1)->loc, "%s of %s is illegal" END_STR_LIT,          \
+    c_kind_name( (AST1)->kind ), c_kind_name( (AST2)->kind )  \
   )
 
 /**
@@ -110,10 +110,10 @@
  * @param END_STR_LIT A string literal appended to the end of the error message
  * (either `"\n"` or `""`).
  */
-#define error_kind_to_kind(AST1,AST2,END_STR_LIT)                   \
-  fl_print_error( __FILE__, __LINE__,                               \
-    &(AST1)->loc, "%s to %s is illegal" END_STR_LIT,                \
-    c_kind_name( (AST1)->kind_id ), c_kind_name( (AST2)->kind_id )  \
+#define error_kind_to_kind(AST1,AST2,END_STR_LIT)             \
+  fl_print_error( __FILE__, __LINE__,                         \
+    &(AST1)->loc, "%s to %s is illegal" END_STR_LIT,          \
+    c_kind_name( (AST1)->kind ), c_kind_name( (AST2)->kind )  \
   )
 
 /**
@@ -124,10 +124,10 @@
  * @param END_STR_LIT A string literal appended to the end of the error message
  * (either `"\n"` or `""`).
  */
-#define error_kind_to_tid(AST,TID,END_STR_LIT)              \
-  fl_print_error( __FILE__, __LINE__,                       \
-    &(AST)->loc, "%s to %s is illegal" END_STR_LIT,         \
-    c_kind_name( (AST)->kind_id ), c_tid_name_error( TID )  \
+#define error_kind_to_tid(AST,TID,END_STR_LIT)          \
+  fl_print_error( __FILE__, __LINE__,                   \
+    &(AST)->loc, "%s to %s is illegal" END_STR_LIT,     \
+    c_kind_name( (AST)->kind ), c_tid_name_error( TID ) \
   )
 
 /**
@@ -260,7 +260,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
 
     if ( !c_ast_is_kind_any( ast, K_ANY_OBJECT ) ) {
       print_error( &ast->loc,
-        "%s can not be %s\n", c_kind_name( ast->kind_id ), L_ALIGNED
+        "%s can not be %s\n", c_kind_name( ast->kind ), L_ALIGNED
       );
       return false;
     }
@@ -297,7 +297,7 @@ static bool c_ast_check_alignas( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_ARRAY );
+  assert( ast->kind == K_ARRAY );
 
   if ( c_ast_is_register( ast ) ) {
     error_kind_not_tid( ast, TS_REGISTER, "\n" );
@@ -340,7 +340,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
 
   c_ast_t const *const of_ast = ast->as.array.of_ast;
   c_ast_t const *const raw_of_ast = c_ast_untypedef( of_ast );
-  switch ( raw_of_ast->kind_id ) {
+  switch ( raw_of_ast->kind ) {
     case K_ARRAY:
     case K_ENUM_CLASS_STRUCT_UNION:
     case K_POINTER:
@@ -376,17 +376,17 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
     case K_RVALUE_REFERENCE:
       error_kind_of_kind( ast, raw_of_ast, "" );
       if ( cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH )
-        print_hint( "%s to %s", c_kind_name( raw_of_ast->kind_id ), L_ARRAY );
+        print_hint( "%s to %s", c_kind_name( raw_of_ast->kind ), L_ARRAY );
       else
         print_hint( "(%s%s)[]",
-          raw_of_ast->kind_id == K_REFERENCE ? "&" : "&&",
+          raw_of_ast->kind == K_REFERENCE ? "&" : "&&",
           c_sname_full_name( c_ast_find_name( ast, C_VISIT_DOWN ) )
         );
       return false;
 
     case K_TYPEDEF:                     // can't happen after c_ast_untypedef()
       // LCOV_EXCL_START
-      assert( raw_of_ast->kind_id != K_TYPEDEF );
+      assert( raw_of_ast->kind != K_TYPEDEF );
       break;
       // LCOV_EXCL_STOP
 
@@ -405,7 +405,7 @@ static bool c_ast_check_array( c_ast_t const *ast, bool is_func_param ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_builtin( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_BUILTIN );
+  assert( ast->kind == K_BUILTIN );
 
   if ( !c_ast_parent_is_kind( ast, K_USER_DEF_CONVERSION ) &&
        ast->type.btids == TB_NONE ) {
@@ -476,7 +476,7 @@ static bool c_ast_check_cast( c_ast_t const *ast ) {
     return false;
   }
 
-  switch ( ast->kind_id ) {
+  switch ( ast->kind ) {
     case K_ARRAY:
       error_kind_not_cast_into( ast, "pointer" );
       return false;
@@ -575,12 +575,12 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
       "\"%s\", \"%s\": %s and %s names don't match\n",
       c_ast_name_atr( ast, 1 ), c_ast_local_name( ast ),
       c_type_name_error( c_ast_local_type( ast ) ),
-      c_kind_name( ast->kind_id )
+      c_kind_name( ast->kind )
     );
     return false;
   }
 
-  bool const is_constructor = ast->kind_id == K_CONSTRUCTOR;
+  bool const is_constructor = ast->kind == K_CONSTRUCTOR;
 
   c_tid_t const ok_stids = is_constructor ?
     (is_definition ? TS_CONSTRUCTOR_DEF : TS_CONSTRUCTOR_DECL) :
@@ -590,7 +590,7 @@ static bool c_ast_check_ctor_dtor( c_ast_t const *ast ) {
   if ( stids != TS_NONE ) {
     print_error( &ast->loc,
       "%s%s can not be %s\n",
-      c_kind_name( ast->kind_id ),
+      c_kind_name( ast->kind ),
       is_definition ? " definitions" : "s",
       c_tid_name_error( stids )
     );
@@ -626,7 +626,7 @@ static bool c_ast_check_declaration( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_ecsu( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_ENUM_CLASS_STRUCT_UNION );
+  assert( ast->kind == K_ENUM_CLASS_STRUCT_UNION );
 
   c_ast_t const *const of_ast = ast->as.ecsu.of_ast;
 
@@ -679,7 +679,7 @@ static bool c_ast_check_ecsu( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_emc( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_BUILTIN );
+  assert( ast->kind == K_BUILTIN );
 
   if ( c_type_is_tid_any( &ast->type, TB_EMC_SAT ) &&
       !c_type_is_tid_any( &ast->type, TB_ANY_EMC ) ) {
@@ -719,7 +719,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
 
-  if ( ast->kind_id == K_FUNCTION && c_ast_name_equal( ast, "main" ) &&
+  if ( ast->kind == K_FUNCTION && c_ast_name_equal( ast, "main" ) &&
       ( //
         // Perform extra checks on a function named "main" if either:
         //
@@ -747,7 +747,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     if ( opt_lang < LANG_CPP_11 ) {
       print_error( &ast->loc,
         "%s qualified %ss not supported%s\n",
-        L_REFERENCE, c_kind_name( ast->kind_id ),
+        L_REFERENCE, c_kind_name( ast->kind ),
         c_lang_which( LANG_CPP_MIN(11) )
       );
       return false;
@@ -755,7 +755,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     if ( c_type_is_tid_any( &ast->type, TS_EXTERN | TS_STATIC ) ) {
       print_error( &ast->loc,
         "%s qualified %ss can not be %s\n",
-        L_REFERENCE, c_kind_name( ast->kind_id ),
+        L_REFERENCE, c_kind_name( ast->kind ),
         c_tid_name_error( ast->type.stids & (TS_EXTERN | TS_STATIC) )
       );
       return false;
@@ -769,7 +769,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     print_error( &ast->loc,
       "%s %s can not be %s\n",
       c_tid_name_error( ast->type.stids & (TS_EXTERN | TS_STATIC) ),
-      c_kind_name( ast->kind_id ),
+      c_kind_name( ast->kind ),
       c_tid_name_error( member_func_stids )
     );
     return false;
@@ -784,7 +784,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
       if ( member_func_stids != TS_NONE ) {
         print_error( &ast->loc,
           "%s %s can not be %s\n",
-          H_NON_MEMBER, c_kind_name( ast->kind_id ),
+          H_NON_MEMBER, c_kind_name( ast->kind ),
           c_tid_name_error( member_func_stids )
         );
         return false;
@@ -794,7 +794,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
 
   if ( c_type_is_tid_any( &ast->type, TS_DEFAULT | TS_DELETE ) ) {
     c_ast_t const *param_ast;
-    switch ( ast->kind_id ) {
+    switch ( ast->kind ) {
       case K_CONSTRUCTOR:
         switch ( c_ast_params_count( ast ) ) {
           case 0:                     // C()
@@ -872,7 +872,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
     if ( c_ast_name_count( ast ) > 1 ) {
       print_error( &ast->loc,
         "\"%s\": %s can not be used in file-scoped %ss\n",
-        c_ast_full_name( ast ), L_VIRTUAL, c_kind_name( ast->kind_id )
+        c_ast_full_name( ast ), L_VIRTUAL, c_kind_name( ast->kind )
       );
       return false;
     }
@@ -880,7 +880,7 @@ static bool c_ast_check_func( c_ast_t const *ast ) {
   else if ( c_type_is_tid_any( &ast->type, TS_PURE_VIRTUAL ) ) {
     print_error( &ast->loc,
       "non-%s %s can not be %s\n",
-      L_VIRTUAL, c_kind_name( ast->kind_id ), L_PURE
+      L_VIRTUAL, c_kind_name( ast->kind ), L_PURE
     );
     return false;
   }
@@ -906,7 +906,7 @@ only_special:
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_main( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_FUNCTION );
+  assert( ast->kind == K_FUNCTION );
 
   if ( OPT_LANG_IS(C_ANY) &&
        c_type_is_tid_any( &ast->type, c_tid_compl( TS_MAIN_FUNC_C ) ) ) {
@@ -992,7 +992,7 @@ static bool c_ast_check_func_main( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *ast ) {
   c_ast_t const *const raw_ast = c_ast_untypedef( ast );
-  switch ( raw_ast->kind_id ) {
+  switch ( raw_ast->kind ) {
     case K_ARRAY:                       // char *argv[]
     case K_POINTER:                     // char **argv
       if ( !c_ast_is_ptr_to_type_any( ast->as.parent.of_ast,
@@ -1000,8 +1000,8 @@ static bool c_ast_check_func_main_char_ptr_param( c_ast_t const *ast ) {
               &C_TYPE_LIT_B( TB_CHAR ) ) ) {
         print_error( &ast->loc,
           "this parameter of main() must be %s %s %s to [%s] %s\n",
-          c_kind_name( ast->kind_id ),
-          ast->kind_id == K_ARRAY ? "of" : "to",
+          c_kind_name( ast->kind ),
+          ast->kind == K_ARRAY ? "of" : "to",
           L_POINTER, L_CONST, L_CHAR
         );
         return false;
@@ -1048,14 +1048,14 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
     if ( param_stids != TS_NONE ) {
       print_error( &param_ast->loc,
         "%s parameters can not be %s\n",
-        c_kind_name( ast->kind_id ),
+        c_kind_name( ast->kind ),
         c_tid_name_error( param_stids )
       );
       return false;
     }
 
     c_ast_t const *const raw_param_ast = c_ast_untypedef( param_ast );
-    switch ( raw_param_ast->kind_id ) {
+    switch ( raw_param_ast->kind ) {
       case K_BUILTIN:
         if ( c_type_is_tid_any( &raw_param_ast->type, TB_AUTO ) &&
              opt_lang < LANG_CPP_20 ) {
@@ -1108,8 +1108,7 @@ static bool c_ast_check_func_params( c_ast_t const *ast ) {
         break;
 
       case K_VARIADIC:
-        if ( ast->kind_id == K_OPERATOR &&
-             ast->as.oper.oper_id != C_OP_PARENS ) {
+        if ( ast->kind == K_OPERATOR && ast->as.oper.oper_id != C_OP_PARENS ) {
           print_error( &param_ast->loc,
             "%s %s can not have a %s parameter\n",
             L_OPERATOR, c_oper_get( ast->as.oper.oper_id )->name, L_VARIADIC
@@ -1180,7 +1179,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
 
   FOREACH_PARAM( param, ast ) {
     c_ast_t const *const param_ast = c_param_ast( param );
-    switch ( param_ast->kind_id ) {
+    switch ( param_ast->kind ) {
       case K_NAME:
         break;
       case K_VARIADIC:
@@ -1211,7 +1210,7 @@ static bool c_ast_check_func_params_knr( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_oper( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_OPERATOR );
+  assert( ast->kind == K_OPERATOR );
 
   c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
 
@@ -1336,7 +1335,7 @@ static bool c_ast_check_oper( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_default( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_OPERATOR );
+  assert( ast->kind == K_OPERATOR );
   assert( c_type_is_tid_any( &ast->type, TS_DEFAULT ) );
 
   switch ( ast->as.oper.oper_id ) {
@@ -1378,7 +1377,7 @@ static bool c_ast_check_oper_default( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_OPERATOR );
+  assert( ast->kind == K_OPERATOR );
   assert( ast->as.oper.oper_id == C_OP_DELETE ||
           ast->as.oper.oper_id == C_OP_DELETE_ARRAY );
 
@@ -1409,7 +1408,7 @@ static bool c_ast_check_oper_delete_params( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_OPERATOR );
+  assert( ast->kind == K_OPERATOR );
   assert( ast->as.oper.oper_id == C_OP_NEW ||
           ast->as.oper.oper_id == C_OP_NEW_ARRAY );
 
@@ -1439,7 +1438,7 @@ static bool c_ast_check_oper_new_params( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_params( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_OPERATOR );
+  assert( ast->kind == K_OPERATOR );
 
   c_operator_t const *const op = c_oper_get( ast->as.oper.oper_id );
   unsigned const overload_flags = c_ast_oper_overload( ast );
@@ -1518,18 +1517,18 @@ same: print_error( &ast->loc,
     // operators in C++20.
     //
     c_ast_t const *param_ast = c_ast_untypedef( c_param_ast( param ) );
-    switch ( param_ast->kind_id ) {
+    switch ( param_ast->kind ) {
       case K_ENUM_CLASS_STRUCT_UNION:
         ++ecsu_obj_param_count;
         break;
       case K_REFERENCE:
         param_ast = c_ast_unreference( param_ast );
-        if ( param_ast->kind_id == K_ENUM_CLASS_STRUCT_UNION )
+        if ( param_ast->kind == K_ENUM_CLASS_STRUCT_UNION )
           ++ecsu_lref_param_count;
         break;
       case K_RVALUE_REFERENCE:
         param_ast = c_ast_unrvalue_reference( param_ast );
-        if ( param_ast->kind_id == K_ENUM_CLASS_STRUCT_UNION )
+        if ( param_ast->kind == K_ENUM_CLASS_STRUCT_UNION )
           ++ecsu_rref_param_count;
         break;
       default:
@@ -1642,7 +1641,7 @@ same: print_error( &ast->loc,
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_oper_relational_default( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_OPERATOR );
+  assert( ast->kind == K_OPERATOR );
   assert( c_type_is_tid_any( &ast->type, TS_DEFAULT ) );
 
   // number of parameters checked in c_ast_check_oper_params()
@@ -1782,7 +1781,7 @@ static bool c_ast_check_pointer( c_ast_t const *ast ) {
   c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
   c_ast_t const *const raw_to_ast = c_ast_untypedef( to_ast );
 
-  switch ( raw_to_ast->kind_id ) {
+  switch ( raw_to_ast->kind ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       error_kind_to_kind( ast, raw_to_ast, "" );
@@ -1833,7 +1832,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   }
 
   c_ast_t const *const to_ast = ast->as.ptr_ref.to_ast;
-  switch ( to_ast->kind_id ) {
+  switch ( to_ast->kind ) {
     case K_FUNCTION:
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
@@ -1868,11 +1867,11 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( c_ast_is_kind_any( ast, K_ANY_FUNCTION_LIKE ) );
 
-  char const *const kind_name = c_kind_name( ast->kind_id );
+  char const *const kind_name = c_kind_name( ast->kind );
   c_ast_t const *const ret_ast = ast->as.func.ret_ast;
   c_ast_t const *const raw_ret_ast = c_ast_untypedef( ret_ast );
 
-  switch ( raw_ret_ast->kind_id ) {
+  switch ( raw_ret_ast->kind ) {
     case K_ARRAY:
       print_error( &ret_ast->loc, "%s returning %s", kind_name, L_ARRAY );
       print_hint( "%s returning %s", kind_name, L_POINTER );
@@ -1891,7 +1890,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
       if ( OPT_LANG_IS(C_KNR) ) {
         print_error( &ret_ast->loc,
           "%s returning %s is not supported%s\n",
-          L_FUNCTION, c_kind_name( raw_ret_ast->kind_id ),
+          L_FUNCTION, c_kind_name( raw_ret_ast->kind ),
           c_lang_which( LANG_MIN(C_89) )
         );
         return false;
@@ -1902,7 +1901,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
     case K_USER_DEF_LITERAL:
       print_error( &ret_ast->loc,
         "%s returning %s",
-        kind_name, c_kind_name( ret_ast->kind_id )
+        kind_name, c_kind_name( ret_ast->kind )
       );
       print_hint( "%s returning %s to %s", kind_name, L_POINTER, L_FUNCTION );
       return false;
@@ -1927,7 +1926,7 @@ static bool c_ast_check_ret_type( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_USER_DEF_CONVERSION );
+  assert( ast->kind == K_USER_DEF_CONVERSION );
 
   if ( c_type_is_tid_any( &ast->type, c_tid_compl( TS_USER_DEF_CONV ) ) ) {
     print_error( &ast->loc,
@@ -1946,7 +1945,7 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
   }
   c_ast_t const *const conv_ast = ast->as.udef_conv.conv_ast;
   c_ast_t const *const raw_conv_ast = c_ast_untypedef( conv_ast );
-  if ( raw_conv_ast->kind_id == K_ARRAY ) {
+  if ( raw_conv_ast->kind == K_ARRAY ) {
     print_error( &conv_ast->loc,
       "%s %s %s can not convert to an %s",
       H_USER_DEFINED, L_CONVERSION, L_OPERATOR, L_ARRAY
@@ -1969,7 +1968,7 @@ static bool c_ast_check_udef_conv( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_USER_DEF_LITERAL );
+  assert( ast->kind == K_USER_DEF_LITERAL );
 
   c_ast_param_t const *param = c_ast_params( ast );
   assert( param != NULL );
@@ -2052,7 +2051,7 @@ static bool c_ast_check_udef_lit_params( c_ast_t const *ast ) {
 PJL_WARN_UNUSED_RESULT
 static bool c_ast_check_upc( c_ast_t const *ast ) {
   assert( ast != NULL );
-  assert( ast->kind_id == K_BUILTIN );
+  assert( ast->kind == K_BUILTIN );
 
   if ( c_type_is_tid_any( &ast->type, TS_UPC_RELAXED | TS_UPC_STRICT ) &&
       !c_type_is_tid_any( &ast->type, TS_UPC_SHARED ) ) {
@@ -2096,7 +2095,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
   if ( !c_ast_check_alignas( ast ) )
     return VISITOR_ERROR_FOUND;
 
-  switch ( ast->kind_id ) {
+  switch ( ast->kind ) {
     case K_ARRAY:
       if ( !c_ast_check_array( ast, is_func_param ) )
         return VISITOR_ERROR_FOUND;
@@ -2210,7 +2209,7 @@ static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
       CASE_K_PLACEHOLDER;
   } // switch
 
-  if ( ast->kind_id != K_FUNCTION &&
+  if ( ast->kind != K_FUNCTION &&
        c_type_is_tid_any( &ast->type, TS_CONSTEVAL ) ) {
     print_error( &ast->loc, "only functions can be %s\n", L_CONSTEVAL );
     return VISITOR_ERROR_FOUND;
@@ -2236,7 +2235,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, uint64_t data ) {
   if ( lang_ids != LANG_ANY ) {
     print_error( &ast->loc,
       "\"%s\" is illegal for %s%s\n",
-      c_type_name_error( &ast->type ), c_kind_name( ast->kind_id ),
+      c_type_name_error( &ast->type ), c_kind_name( ast->kind ),
       c_lang_which( lang_ids )
     );
     return VISITOR_ERROR_FOUND;
@@ -2275,7 +2274,7 @@ static bool c_ast_visitor_type( c_ast_t *ast, uint64_t data ) {
   }
 
   if ( c_type_is_tid_any( &ast->type, TS_RESTRICT ) ) {
-    switch ( ast->kind_id ) {
+    switch ( ast->kind ) {
       case K_FUNCTION:
       case K_OPERATOR:
       case K_REFERENCE:
@@ -2315,7 +2314,7 @@ PJL_WARN_UNUSED_RESULT
 static bool c_ast_visitor_warning( c_ast_t *ast, uint64_t data ) {
   assert( ast != NULL );
 
-  switch ( ast->kind_id ) {
+  switch ( ast->kind ) {
     case K_ARRAY:
     case K_ENUM_CLASS_STRUCT_UNION:
     case K_POINTER:
@@ -2343,7 +2342,7 @@ static bool c_ast_visitor_warning( c_ast_t *ast, uint64_t data ) {
            c_ast_is_builtin_any( ret_ast, TB_VOID ) ) {
         print_warning( &ast->loc,
           "[[%s]] %ss can not return %s\n",
-          L_NODISCARD, c_kind_name( ast->kind_id ), L_VOID
+          L_NODISCARD, c_kind_name( ast->kind ), L_VOID
         );
       }
       PJL_FALLTHROUGH;
@@ -2399,7 +2398,7 @@ static void c_ast_warn_name( c_ast_t const *ast ) {
   assert( ast != NULL );
 
   c_sname_warn( &ast->sname, &ast->loc );
-  switch ( ast->kind_id ) {
+  switch ( ast->kind ) {
     case K_ENUM_CLASS_STRUCT_UNION:
     case K_POINTER_TO_MEMBER:
       c_sname_warn( &ast->as.ecsu.ecsu_sname, &ast->loc );

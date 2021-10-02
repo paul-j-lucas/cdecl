@@ -154,7 +154,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
   // pre-order.  Since this is the only case where a pre-order traversal has to
   // be done, it's not worth having a pre-order version of c_ast_visit().
   //
-  switch ( ast->kind_id ) {
+  switch ( ast->kind ) {
     case K_CONSTRUCTOR:
     case K_DESTRUCTOR:
     case K_USER_DEF_CONVERSION:
@@ -222,7 +222,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
     case K_APPLE_BLOCK:
       if ( !c_type_is_none( &type ) )
         FPRINTF( g->gout, "%s ", c_type_name_c( &type ) );
-      if ( ast->kind_id == K_USER_DEF_CONVERSION ) {
+      if ( ast->kind == K_USER_DEF_CONVERSION ) {
         if ( !c_ast_name_empty( ast ) )
           FPRINTF( g->gout, "%s::", c_ast_full_name( ast ) );
         FPRINTF( g->gout, "%s ", L_OPERATOR );
@@ -406,7 +406,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
   assert( g != NULL );
   assert( ast != NULL );
-  assert( ast->kind_id == K_ARRAY );
+  assert( ast->kind == K_ARRAY );
 
   FPUTS( graph_token_c( "[" ), g->gout );
   if ( ast->as.array.stids != TS_NONE )
@@ -529,7 +529,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
   c_ast_t const *const parent_ast = ast->parent_ast;
 
   if ( parent_ast != NULL ) {
-    switch ( parent_ast->kind_id ) {
+    switch ( parent_ast->kind ) {
       case K_ARRAY:
       case K_APPLE_BLOCK:
       case K_CONSTRUCTOR:
@@ -545,7 +545,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
       case K_POINTER_TO_MEMBER:
       case K_REFERENCE:
       case K_RVALUE_REFERENCE:
-        switch ( ast->kind_id ) {
+        switch ( ast->kind ) {
           case K_APPLE_BLOCK:
             FPUTS( "(^", g->gout );
             break;
@@ -610,10 +610,10 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
     // We've reached the root of the AST that has the name of the thing we're
     // printing the gibberish for.
     //
-    if ( ast->kind_id == K_APPLE_BLOCK )
+    if ( ast->kind == K_APPLE_BLOCK )
       FPUTS( "(^", g->gout );
     g_print_space_ast_name( g, ast );
-    if ( ast->kind_id == K_APPLE_BLOCK )
+    if ( ast->kind == K_APPLE_BLOCK )
       FPUTC( ')', g->gout );
   }
 
@@ -621,7 +621,7 @@ static void g_print_postfix( g_state_t *g, c_ast_t const *ast ) {
   // We're now unwinding the recursion: print the "postfix" things (size for
   // arrays, parameters for functions) in root-to-leaf order.
   //
-  switch ( ast->kind_id ) {
+  switch ( ast->kind ) {
     case K_ARRAY:
       g_print_ast_array_size( g, ast );
       break;
@@ -667,7 +667,7 @@ static void g_print_qual_name( g_state_t *g, c_ast_t const *ast ) {
 
   c_tid_t const qual_stid = ast->type.stids & TS_MASK_QUALIFIER;
 
-  switch ( ast->kind_id ) {
+  switch ( ast->kind ) {
     case K_POINTER:
       if ( qual_stid != TS_NONE && (g->flags & C_GIB_CAST) == 0 &&
            !c_ast_is_ptr_to_kind( ast, K_FUNCTION ) ) {
@@ -756,7 +756,7 @@ static void g_print_space_ast_name( g_state_t *g, c_ast_t const *ast ) {
   if ( (g->flags & C_GIB_CAST) != 0 )
     return;                             // for casts, print nothing
 
-  switch ( ast->kind_id ) {
+  switch ( ast->kind ) {
     case K_CONSTRUCTOR:
       FPUTS( c_ast_full_name( ast ), g->gout );
       break;
@@ -987,7 +987,7 @@ void c_typedef_gibberish( c_typedef_t const *tdef, c_gib_flags_t flags,
     }
   }
 
-  bool const is_ecsu = tdef->ast->kind_id == K_ENUM_CLASS_STRUCT_UNION;
+  bool const is_ecsu = tdef->ast->kind == K_ENUM_CLASS_STRUCT_UNION;
 
   //
   // When printing a type, all types except enum, class, struct, or union types

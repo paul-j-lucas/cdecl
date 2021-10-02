@@ -83,7 +83,7 @@ static void c_ast_english_func_params( c_ast_t const *ast, FILE *eout ) {
       FPUTS( ", ", eout );
 
     c_ast_t const *const param_ast = c_param_ast( param );
-    if ( param_ast->kind_id != K_NAME ) {
+    if ( param_ast->kind != K_NAME ) {
       //
       // For all kinds except K_NAME, we have to print:
       //
@@ -132,7 +132,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
   FILE *const eout = REINTERPRET_CAST( FILE*, data );
   assert( eout != NULL );
 
-  switch ( ast->kind_id ) {
+  switch ( ast->kind ) {
     case K_ARRAY:
       c_type_print_not_base( &ast->type, eout );
       if ( ast->as.array.size == C_ARRAY_SIZE_VARIABLE )
@@ -152,7 +152,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
     case K_OPERATOR:
     case K_USER_DEF_LITERAL:
       c_type_print_not_base( &ast->type, eout );
-      switch ( ast->kind_id ) {
+      switch ( ast->kind ) {
         case K_FUNCTION:
           if ( c_type_is_tid_any( &ast->type, TS_MEMBER_FUNC_ONLY ) )
             FPRINTF( eout, "%s ", L_MEMBER );
@@ -170,7 +170,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
           /* suppress warning */;
       } // switch
 
-      FPUTS( c_kind_name( ast->kind_id ), eout );
+      FPUTS( c_kind_name( ast->kind ), eout );
       if ( c_ast_params_count( ast ) > 0 ) {
         FPUTC( ' ', eout );
         c_ast_english_func_params( ast, eout );
@@ -199,7 +199,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
     case K_REFERENCE:
     case K_RVALUE_REFERENCE:
       c_type_print_not_base( &ast->type, eout );
-      FPRINTF( eout, "%s %s ", c_kind_name( ast->kind_id ), L_TO );
+      FPRINTF( eout, "%s %s ", c_kind_name( ast->kind ), L_TO );
       break;
 
     case K_POINTER_TO_MEMBER: {
@@ -221,7 +221,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
 
     case K_USER_DEF_CONVERSION: {
       char const *const name = c_type_name_english( &ast->type );
-      FPRINTF( eout, "%s%s%s", SP_AFTER( name ), c_kind_name( ast->kind_id ) );
+      FPRINTF( eout, "%s%s%s", SP_AFTER( name ), c_kind_name( ast->kind ) );
       if ( !c_ast_name_empty( ast ) ) {
         FPRINTF( eout,
           " %s %s ", L_OF, c_type_name_english( c_ast_local_type( ast ) )
@@ -233,7 +233,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
     }
 
     case K_VARIADIC:
-      FPUTS( c_kind_name( ast->kind_id ), eout );
+      FPUTS( c_kind_name( ast->kind ), eout );
       break;
 
     CASE_K_PLACEHOLDER;
@@ -311,7 +311,7 @@ void c_ast_explain_declaration( c_ast_t const *ast, FILE *eout ) {
   assert( eout != NULL );
 
   FPRINTF( eout, "%s ", L_DECLARE );
-  if ( ast->kind_id != K_USER_DEF_CONVERSION ) {
+  if ( ast->kind != K_USER_DEF_CONVERSION ) {
     //
     // Every kind but a user-defined conversion has a name.
     //
@@ -319,7 +319,7 @@ void c_ast_explain_declaration( c_ast_t const *ast, FILE *eout ) {
     char const *local_name, *scope_name = "";
     c_type_t const *scope_type = NULL;
 
-    if ( ast->kind_id == K_OPERATOR ) {
+    if ( ast->kind == K_OPERATOR ) {
       local_name = c_oper_token_c( ast->as.oper.oper_id );
       if ( found_sname != NULL ) {
         scope_name = c_sname_full_name( found_sname );

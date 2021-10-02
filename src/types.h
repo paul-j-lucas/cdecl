@@ -64,6 +64,7 @@ typedef int                       c_array_size_t;
 typedef struct c_ast              c_ast_t;
 typedef unsigned                  c_ast_depth_t;  ///< How many `()` deep.
 typedef unsigned                  c_ast_id_t;     ///< Unique AST node id.
+typedef enum   c_ast_kind         c_ast_kind_t;
 typedef slist_t                   c_ast_list_t;   ///< AST list.
 typedef struct c_ast_pair         c_ast_pair_t;
 typedef slist_node_t              c_ast_param_t;  ///< Function-like parameter.
@@ -77,7 +78,6 @@ typedef unsigned                  c_gib_flags_t;
 typedef enum   c_graph            c_graph_t;
 typedef struct c_keyword          c_keyword_t;
 typedef enum   c_keyword_ctx      c_keyword_ctx_t;
-typedef enum   c_kind_id          c_kind_id_t;
 typedef struct c_lang             c_lang_t;
 typedef uint32_t                  c_lang_id_t;    ///< Languages bitmask.
 typedef struct c_lang_lit         c_lang_lit_t;

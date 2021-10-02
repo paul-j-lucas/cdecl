@@ -42,10 +42,10 @@
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-char const* c_kind_name( c_kind_id_t kind_id ) {
-  assert( exactly_one_bit_set( kind_id ) );
+char const* c_kind_name( c_ast_kind_t kind ) {
+  assert( exactly_one_bit_set( kind ) );
 
-  switch ( kind_id ) {
+  switch ( kind ) {
     case K_ARRAY              : return "array";
     case K_APPLE_BLOCK        : return "block";
     case K_BUILTIN            : return "built-in type";
@@ -73,7 +73,7 @@ char const* c_kind_name( c_kind_id_t kind_id ) {
       return "struct or union";
   } // switch
 
-  UNEXPECTED_INT_VALUE( kind_id );
+  UNEXPECTED_INT_VALUE( kind );
   return NULL;                          // suppress warning; LCOV_EXCL_LINE
 }
 

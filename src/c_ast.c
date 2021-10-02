@@ -129,14 +129,14 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
   if ( ast == NULL )
     return NULL;
   c_ast_t *const dup_ast =
-    c_ast_new( ast->kind_id, ast->depth, &ast->loc, ast_list );
+    c_ast_new( ast->kind, ast->depth, &ast->loc, ast_list );
 
   dup_ast->align = ast->align;
   dup_ast->depth = ast->depth;
   dup_ast->sname = c_ast_name_dup( ast );
   dup_ast->type = ast->type;
 
-  switch ( ast->kind_id ) {
+  switch ( ast->kind ) {
     case K_ARRAY:
       dup_ast->as.array.size = ast->as.array.size;
       dup_ast->as.array.stids = ast->as.array.stids;
@@ -183,7 +183,7 @@ c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
       break;
   } // switch
 
-  if ( c_ast_is_parent( ast ) || ast->kind_id == K_TYPEDEF ) {
+  if ( c_ast_is_parent( ast ) || ast->kind == K_TYPEDEF ) {
     c_ast_t *const child_ast = ast->as.parent.of_ast;
     if ( child_ast != NULL )
       c_ast_set_parent( c_ast_dup( child_ast, ast_list ), dup_ast );
@@ -202,22 +202,22 @@ bool c_ast_equiv( c_ast_t const *i_ast, c_ast_t const *j_ast ) {
   // If only one of the ASTs is a typedef, compare the other AST to the
   // typedef's AST.
   //
-  if ( i_ast->kind_id == K_TYPEDEF ) {
-    if ( j_ast->kind_id != K_TYPEDEF )
+  if ( i_ast->kind == K_TYPEDEF ) {
+    if ( j_ast->kind != K_TYPEDEF )
       return c_ast_equiv( i_ast->as.tdef.for_ast, j_ast );
   } else {
-    if ( j_ast->kind_id == K_TYPEDEF )
+    if ( j_ast->kind == K_TYPEDEF )
       return c_ast_equiv( i_ast, j_ast->as.tdef.for_ast );
   }
 
-  if ( i_ast->kind_id != j_ast->kind_id )
+  if ( i_ast->kind != j_ast->kind )
     return false;
   if ( !c_alignas_equiv( &i_ast->align, &j_ast->align ) )
     return false;
   if ( !c_type_equal( &i_ast->type, &j_ast->type ) )
     return false;
 
-  switch ( i_ast->kind_id ) {
+  switch ( i_ast->kind ) {
     case K_ARRAY: {
       c_array_ast_t const *const ai_ast = &i_ast->as.array;
       c_array_ast_t const *const aj_ast = &j_ast->as.array;
@@ -305,7 +305,7 @@ void c_ast_free( c_ast_t *ast ) {
     --c_ast_count;
 
     c_sname_free( &ast->sname );
-    switch ( ast->kind_id ) {
+    switch ( ast->kind ) {
       case K_APPLE_BLOCK:
       case K_CONSTRUCTOR:
       case K_FUNCTION:
@@ -342,9 +342,9 @@ void c_ast_list_free( c_ast_list_t *list ) {
   slist_free( list, NULL, NULL );
 }
 
-c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
+c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,
                     c_loc_t const *loc, c_ast_list_t *ast_list ) {
-  assert( exactly_one_bit_set( kind_id ) );
+  assert( exactly_one_bit_set( kind ) );
   assert( loc != NULL );
   static c_ast_id_t next_id;
 
@@ -353,11 +353,11 @@ c_ast_t* c_ast_new( c_kind_id_t kind_id, c_ast_depth_t depth,
 
   ast->depth = depth;
   ast->unique_id = ++next_id;
-  ast->kind_id = kind_id;
+  ast->kind = kind;
   ast->type = T_NONE;
   ast->loc = *loc;
 
-  switch ( kind_id ) {
+  switch ( kind ) {
     case K_ARRAY:
       ast->as.array.stids = TS_NONE;
       break;
@@ -399,7 +399,7 @@ void c_ast_set_name( c_ast_t *ast, char *name ) {
 void c_ast_set_parent( c_ast_t *child_ast, c_ast_t *parent_ast ) {
   assert( child_ast != NULL );
   assert( parent_ast != NULL );
-  assert( c_ast_is_parent( parent_ast ) || parent_ast->kind_id == K_TYPEDEF );
+  assert( c_ast_is_parent( parent_ast ) || parent_ast->kind == K_TYPEDEF );
 
   child_ast->parent_ast = parent_ast;
   parent_ast->as.parent.of_ast = child_ast;

@@ -487,15 +487,15 @@ static inline void c_ast_list_gc( c_ast_list_t *ast_list ) {
 /**
  * Creates a new AST and adds it to <code>\ref gc_ast_list</code>.
  *
- * @param kind_id The kind of AST to create.
+ * @param kind The kind of AST to create.
  * @param loc A pointer to the token location data.
  * @return Returns a pointer to a new AST.
  *
  * @sa c_ast_pair_new_gc()
  */
 PJL_WARN_UNUSED_RESULT
-static inline c_ast_t* c_ast_new_gc( c_kind_id_t kind_id, c_loc_t const *loc ) {
-  return c_ast_new( kind_id, ast_depth, loc, &gc_ast_list );
+static inline c_ast_t* c_ast_new_gc( c_ast_kind_t kind, c_loc_t const *loc ) {
+  return c_ast_new( kind, ast_depth, loc, &gc_ast_list );
 }
 
 /**
@@ -1737,7 +1737,7 @@ declare_command
   : Y_DECLARE sname_list_english as_exp storage_class_list_english_type_opt
     alignas_or_width_decl_english_ast
     {
-      if ( $5->kind_id == K_NAME ) {
+      if ( $5->kind == K_NAME ) {
         //
         // This checks for a case like:
         //
@@ -2099,7 +2099,7 @@ define_command
 
       c_ast_set_sname( $5, &$2 );
 
-      if ( $5->kind_id == K_NAME ) {  // see the comment in "declare_command"
+      if ( $5->kind == K_NAME ) {       // see the comment in "declare_command"
         assert( !c_ast_name_empty( $5 ) );
         print_error_unknown_name( &@5, &$5->sname );
         PARSE_ABORT();
@@ -3089,7 +3089,7 @@ typedef_decl_c
       c_ast_t *typedef_ast;
       c_sname_t temp_sname;
 
-      if ( $1.ast->kind_id == K_TYPEDEF ) {
+      if ( $1.ast->kind == K_TYPEDEF ) {
         //
         // This is for either of the following cases:
         //
@@ -3240,7 +3240,7 @@ decl_list_c_opt
       DUMP_AST( "decl_list_c_opt", type_ast );
       DUMP_END();
 
-      if ( type_ast->kind_id != K_ENUM_CLASS_STRUCT_UNION ) {
+      if ( type_ast->kind != K_ENUM_CLASS_STRUCT_UNION ) {
         //
         // The declaration is a non-ECSU type, e.g.:
         //
@@ -3656,7 +3656,7 @@ func_decl_c_astp
         //
         for ( c_ast_t const *ast = $$.ast;
               (ast = c_ast_unpointer( ast )) != NULL; ) {
-          if ( ast->kind_id == K_FUNCTION ) {
+          if ( ast->kind == K_FUNCTION ) {
             $$.ast->type.atids &= c_tid_compl( TA_ANY_MSC_CALL );
             CONST_CAST( c_ast_t*, ast )->type.atids |= msc_call_atids;
           }
@@ -3950,7 +3950,7 @@ param_c_ast
 
       $$ = c_ast_patch_placeholder( $1, $3.ast );
 
-      if ( $$->kind_id == K_FUNCTION )  // see the comment in decl_english_ast
+      if ( $$->kind == K_FUNCTION )     // see the comment in decl_english_ast
         $$ = c_ast_pointer( $$, &gc_ast_list );
 
       DUMP_AST( "param_c_ast", $$ );
@@ -5673,7 +5673,7 @@ decl_list_english
       DUMP_START( "decl_list_english", "decl_english_ast" );
       DUMP_AST( "decl_english_ast", $1 );
 
-      if ( $1->kind_id == K_FUNCTION ) {
+      if ( $1->kind == K_FUNCTION ) {
         //
         // From the C11 standard, section 6.3.2.1(4):
         //
@@ -5800,7 +5800,7 @@ pointer_decl_english_ast
       DUMP_TID( "(qualifier)", ia_qual_peek_stid() );
       DUMP_AST( "decl_english_ast", $3 );
 
-      if ( $3->kind_id == K_NAME ) {  // see the comment in "declare_command"
+      if ( $3->kind == K_NAME ) {       // see the comment in "declare_command"
         assert( !c_ast_name_empty( $3 ) );
         print_error_unknown_name( &@3, &$3->sname );
         PARSE_ABORT();
@@ -5930,7 +5930,7 @@ var_decl_english_ast
       DUMP_SNAME( "sname", $1 );
       DUMP_AST( "decl_english_ast", $3 );
 
-      if ( $3->kind_id == K_NAME ) {  // see the comment in "declare_command"
+      if ( $3->kind == K_NAME ) {       // see the comment in "declare_command"
         assert( !c_ast_name_empty( $3 ) );
         print_error_unknown_name( &@3, &$3->sname );
         PARSE_ABORT();
