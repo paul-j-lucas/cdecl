@@ -10,6 +10,16 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.2
+
+** More C++ cast checks
+`const_cast`, `dynamic_cast`, and `reinterpret_cast` now perform additional
+checks.
+
+** Fixed casting to `void`
+Fixed the ability to cast to `void`.
+
+
 * Changes in Cdecl 11.1
 
 ** Multiple declarations
@@ -17,10 +27,6 @@ The `declare` command can now accept multiple names like:
 
     cdecl> declare p, q as pointer to int
     int *p, *q;
-
-** More C++ cast checks
-`const_cast`, `dynamic_cast`, and `reinterpret_cast` now perform additional
-checks.
 
 ** Digraph & Trigraph output
 Digraphs and trigraphs are no longer emitted in a language in which they aren't
@@ -32,9 +38,6 @@ printed separately.
 
 ** Help autocompletion
 Help options are now autocompletable.
-
-** Fixed casting to `void`
-Fixed the ability to cast to `void`.
 
 ** Fixed multiple nested declarations crash
 Explaining a declaration like:
