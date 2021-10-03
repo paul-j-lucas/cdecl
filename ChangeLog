@@ -1,5 +1,12 @@
+2021-10-03  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac: Updated to 11.2 and fixed NEWS.
+
 2021-10-02  Paul J. Lucas <paul@lucasmail.org>
 
+   * c_ast.c, c_ast.h, c_ast_util.c, c_ast_util.h, c_kind.c, c_kind.h, check.c,
+     dump.c, english.c, gibberish.c, parser.y, types.h:
+     s/c_kind_id_t/c_ast_kind_t/; s/kind_id/kind/
    * NEWS: Fixed casting to void.
    * NEWS, c_ast.h, c_ast_util.c, check.c, check.h, dump.c, english.c,
      english.h, gibberish.c, gibberish.h, parser.y, types.h, test/Makefile.am,
