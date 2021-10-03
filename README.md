@@ -184,9 +184,6 @@ then do:
 
     make doc                            # or: make docs
 
-and then open `docs/html/index.html`
-with a browser.
-
 ## Licensing
 
 **cdecl** was originally written by Graham Ross
