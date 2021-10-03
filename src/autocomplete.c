@@ -303,6 +303,7 @@ static char* keyword_completion( char const *text, int state ) {
   static size_t             text_len;
 
   if ( state == 0 ) {                   // new word? reset
+    command = NULL;
     match_index = 0;
     more_matches = true;
     text_len = strlen( text );
@@ -346,7 +347,7 @@ static char* keyword_completion( char const *text, int state ) {
     // that command.
     //
     if ( strcmp( command, L_HELP ) == 0 ) {
-      char const *const help_keywords[] = {
+      static char const *const help_keywords[] = {
         L_COMMANDS,
         L_ENGLISH,
         L_OPTIONS,
