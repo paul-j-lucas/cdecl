@@ -19,6 +19,9 @@ checks.
 ** Fixed casting to `void`
 Fixed the ability to cast to `void`.
 
+** Fixed autocompletion crash
+A crash for autocompletion of help options has been fixed.
+
 
 * Changes in Cdecl 11.1
 
