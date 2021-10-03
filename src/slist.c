@@ -46,14 +46,24 @@ int slist_cmp( slist_t const *i_list, slist_t const *j_list,
   assert( j_list != NULL );
 
   slist_node_t const *i_node = i_list->head, *j_node = j_list->head;
-  for ( ; i_node != NULL && j_node != NULL;
-        i_node = i_node->next, j_node = j_node->next ) {
-    int const cmp = data_cmp_fn != NULL ?
-      (*data_cmp_fn)( i_node->data, j_node->data ) :
-      (int)((intptr_t)i_node->data - (intptr_t)j_node->data);
-    if ( cmp != 0 )
-      return cmp;
-  } // for
+
+  if ( data_cmp_fn == NULL ) {          // avoid repeated check in loop
+    for ( ; i_node != NULL && j_node != NULL;
+          i_node = i_node->next, j_node = j_node->next ) {
+      int const cmp = (int)((intptr_t)i_node->data - (intptr_t)j_node->data);
+      if ( cmp != 0 )
+        return cmp;
+    } // for
+  }
+  else {
+    for ( ; i_node != NULL && j_node != NULL;
+          i_node = i_node->next, j_node = j_node->next ) {
+      int const cmp = (*data_cmp_fn)( i_node->data, j_node->data );
+      if ( cmp != 0 )
+        return cmp;
+    } // for
+  }
+
   return i_node == NULL ? (j_node == NULL ? 0 : -1) : 1;
 }
 
