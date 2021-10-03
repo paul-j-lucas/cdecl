@@ -43,6 +43,7 @@
 /// @endcond
 
 // local functions
+static void print_help_name( void );
 static void print_help_where( void );
 
 ////////// local functions ////////////////////////////////////////////////////
@@ -174,6 +175,8 @@ static void print_help_commands( void ) {
     print_h( "\\+\\+" );
   print_h( " declaration, like \"int x\"; or a cast, like \"(int)x\"\n" );
 
+  print_help_name();
+
   if ( OPT_LANG_IS(CPP_ANY) ) {
     print_h( "scope-c: class | struct | union |" );
     if ( OPT_LANG_IS(CPP_MIN(11)) )
@@ -274,7 +277,7 @@ static void print_help_english( void ) {
       print_h( " | <cv-qual>" );
     print_h( "\n" );
 
-    print_h( "name: a C identifier\n" );
+    print_help_name();
     print_h( "store: auto | extern | register | static" );
     if ( OPT_LANG_IS(C_MIN(11)) )
       print_h( " | _Thread_local" );
@@ -314,7 +317,7 @@ static void print_help_english( void ) {
     print_h( "\n" );
 
     print_h( "modifier: short | long | signed | unsigned | <cv-qual>\n" );
-    print_h( "name: a C\\+\\+ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*\n" );
+    print_help_name();
 
     print_h( "scope-e: scope | class | struct | union |" );
     if ( OPT_LANG_IS(CPP_MIN(11)) )
@@ -346,9 +349,19 @@ static void print_help_english( void ) {
 }
 
 /**
+ * Print the help for a cdecl name.
+ */
+static void print_help_name( void ) {
+  if ( OPT_LANG_IS(C_ANY) )
+    print_h( "name: a C identifier\n" );
+  else
+    print_h( "name: a C\\+\\+ identifier: <name>[::<name>]* | <name> [of <scope-e> <name>]*\n" );
+}
+
+/**
  * Print the help for cdecl options.
  */
-void print_help_options( void ) {
+static void print_help_options( void ) {
   print_h( "option:\n" );
   print_h( "  [no]alt-tokens\n" );
   print_h( "  [no]debug\n" );
