@@ -158,7 +158,7 @@ struct slist_node {
  * @param j_list The second list.
  * @param data_cmp_fn A pointer to a function to use to compare data at each
  * node of \a i_list and \a j_list or NULL if none is required (hence the data
- * will be compared directly).
+ * will be compared directly as signed integers).
  * @return Returns a number less than 0, 0, or greater than 0 if \a i_list is
  * less than, equal to, or greater than \a j_list, respectively.
  */
