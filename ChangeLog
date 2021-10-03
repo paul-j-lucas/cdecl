@@ -1,5 +1,6 @@
 2021-10-03  Paul J. Lucas <paul@lucasmail.org>
 
+   * configure.ac: Expanded AC_INIT.
    * slist.c: Split the loop for efficiency.
    * NEWS, configure.ac: Updated to 11.2 and fixed NEWS.
 
