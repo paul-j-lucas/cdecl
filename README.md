@@ -144,7 +144,12 @@ most notably:
 The git repository contains only the necessary source code.
 Things like `configure` are _derived_ sources and
 [should not be included in repositories](http://stackoverflow.com/a/18732931).
-If you have `autoconf`, `automake`, and `m4` installed,
+If you have
+[`autoconf`](https://www.gnu.org/software/autoconf/),
+[`automake`](https://www.gnu.org/software/automake/),
+and
+[`m4`](https://www.gnu.org/software/m4/)
+installed,
 you can generate `configure` yourself by doing:
 
     ./bootstrap
