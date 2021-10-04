@@ -622,13 +622,14 @@ use_help:
 }
 
 /**
- * Prints the usage message to standard error and exits.
+ * Prints the usage message and exits.
  *
- * @param status The status to exit with.
+ * @param status The status to exit with.  If it is `EX_OK`, prints to standard
+ * output; otherwise prints to standard error.
  */
 noreturn
 static void usage( int status ) {
-  EPRINTF(
+  fprintf( status == EX_OK ? stdout : stderr,
 "usage: " CDECL " [options] [command...]\n"
 "       " CDECL " [options] files...\n"
 "options:\n"
