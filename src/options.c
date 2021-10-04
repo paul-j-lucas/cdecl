@@ -46,37 +46,37 @@
 #include <sysexits.h>
 
 // in ascending option character ASCII order
-#define OPT_DIGRAPHS        2
-#define OPT_TRIGRAPHS       3
-#define OPT_ALT_TOKENS      a
+#define SOPT_DIGRAPHS       2
+#define SOPT_TRIGRAPHS      3
+#define SOPT_ALT_TOKENS     a
 #ifdef YYDEBUG
-#define OPT_BISON_DEBUG     B
+#define SOPT_BISON_DEBUG    B
 #endif /* YYDEBUG */
-#define OPT_CONFIG          c
-#define OPT_NO_CONFIG       C
+#define SOPT_CONFIG         c
+#define SOPT_NO_CONFIG      C
 #ifdef ENABLE_CDECL_DEBUG
-#define OPT_CDECL_DEBUG     d
+#define SOPT_CDECL_DEBUG    d
 #endif /* ENABLE_CDECL_DEBUG */
-#define OPT_EXPLAIN         e
-#define OPT_EAST_CONST      E
-#define OPT_FILE            f
+#define SOPT_EXPLAIN        e
+#define SOPT_EAST_CONST     E
+#define SOPT_FILE           f
 #ifdef ENABLE_FLEX_DEBUG
-#define OPT_FLEX_DEBUG      F
+#define SOPT_FLEX_DEBUG     F
 #endif /* ENABLE_FLEX_DEBUG */
-#define OPT_HELP            h
-#define OPT_INTERACTIVE     i
-#define OPT_EXPLICIT_INT    I
-#define OPT_COLOR           k
-#define OPT_OUTPUT          o
-#define OPT_NO_PROMPT       p
-#define OPT_NO_SEMICOLON    s
-#define OPT_NO_TYPEDEFS     t
-#define OPT_VERSION         v
-#define OPT_LANGUAGE        x
+#define SOPT_HELP           h
+#define SOPT_INTERACTIVE    i
+#define SOPT_EXPLICIT_INT   I
+#define SOPT_COLOR          k
+#define SOPT_OUTPUT         o
+#define SOPT_NO_PROMPT      p
+#define SOPT_NO_SEMICOLON   s
+#define SOPT_NO_TYPEDEFS    t
+#define SOPT_VERSION        v
+#define SOPT_LANGUAGE       x
 
-#define COPT(X)                   CHARIFY(OPT_##X)
+#define COPT(X)                   CHARIFY(SOPT_##X)
 #define SOPT_HELPER(X)            STRINGIFY(X)
-#define SOPT(X)                   SOPT_HELPER(OPT_##X)
+#define SOPT(X)                   SOPT_HELPER(SOPT_##X)
 
 /// @endcond
 
