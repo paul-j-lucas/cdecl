@@ -598,7 +598,7 @@ use_help:
   if ( print_version ) {
     if ( argc > 2 )                     // cdecl -v foo
       usage( EX_USAGE );
-    printf( "%s\n", PACKAGE_STRING );
+    puts( PACKAGE_STRING );
     exit( EX_OK );
   }
 
