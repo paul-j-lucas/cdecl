@@ -132,8 +132,7 @@ oper_decl_c_astp ::= oper_c_ast '(' param_list_c_ast_opt ')' func_qualifier_list
     parent->unique_id = -1,
     loc = 14-33,
     type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
-    oper_id = 5,
-    operator_name = "!",
+    oper_id = "!" (5),
     flags = unspecified (0x0),
     param_ast_list = [],
     ret_ast = {
@@ -172,8 +171,7 @@ decl_c ::= decl_c_astp = {
     parent->unique_id = -1,
     loc = 14-33,
     type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
-    oper_id = 5,
-    operator_name = "!",
+    oper_id = "!" (5),
     flags = unspecified (0x0),
     param_ast_list = [],
     ret_ast = {
@@ -197,8 +195,7 @@ decl_c ::= decl_c_astp = {
     parent->unique_id = -1,
     loc = 14-33,
     type = "const" (btid = 0x1, stid = 0x20000002, atid = 0x4),
-    oper_id = 5,
-    operator_name = "!",
+    oper_id = "!" (5),
     flags = unspecified (0x0),
     param_ast_list = [],
     ret_ast = {

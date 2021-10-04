@@ -185,11 +185,11 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_OPERATOR:
         DUMP_COMMA;
-        DUMP_FORMAT( "oper_id = %u,\n", ast->as.oper.oper_id );
-        DUMP_STR(
-          "operator_name", c_oper_get( ast->as.oper.oper_id )->name
+        DUMP_FORMAT(
+          "oper_id = \"%s\" (%u),\n",
+          c_oper_get( ast->as.oper.oper_id )->name,
+          ast->as.oper.oper_id
         );
-        FPUTS( ",\n", dout );
         PJL_FALLTHROUGH;
 
       case K_FUNCTION:
