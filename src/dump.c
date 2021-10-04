@@ -104,7 +104,7 @@ static void dump_indent( unsigned indent, FILE *out ) {
 ////////// extern functions ///////////////////////////////////////////////////
 
 void bool_dump( bool value, FILE *dout ) {
-  FPRINTF( dout, "%s", value ? "true" : "false" );
+  FPUTS( value ? "true" : "false", dout );
 }
 
 void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
