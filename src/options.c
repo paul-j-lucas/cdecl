@@ -593,7 +593,7 @@ use_help:
   );
 
   if ( print_usage )
-    usage( EX_OK );
+    usage( argc > 2 ? EX_USAGE : EX_OK );
 
   if ( print_version ) {
     if ( argc > 2 )                     // cdecl -v foo
