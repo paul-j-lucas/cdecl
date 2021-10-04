@@ -129,7 +129,7 @@ static struct option const CLI_OPTIONS_LONG[] = {
   //
   // If this array is modified, also modify CLI_OPTIONS_SHORT, the call(s) to
   // check_mutually_exclusive() in parse_options(), the message in usage(), and
-  // the corresponding "set" option in SET_OPTIONS in set.c.
+  // the corresponding "set" option in SET_OPTIONS in set_options.c.
   //
   { "alt-tokens",   no_argument,        NULL, COPT(ALT_TOKENS)    },
 #ifdef YYDEBUG
