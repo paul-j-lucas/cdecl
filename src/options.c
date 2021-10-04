@@ -121,7 +121,7 @@ FILE               *fout;
 static c_tid_t      opt_explicit_int[] = { TB_NONE, TB_NONE };
 
 /**
- * Long options.
+ * Long command-line options.
  *
  * @sa CLI_OPTIONS_SHORT
  */
@@ -167,7 +167,7 @@ static struct option const CLI_OPTIONS_LONG[] = {
 /// @endcond
 
 /**
- * Short options.
+ * Short command-line options.
  *
  * @note
  * It _must_ start with `:` to make `getopt_long()` return `:` when a required
