@@ -26,7 +26,7 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
-  type_modifier_list_c_type_opt = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
     unique_id = 1327,
@@ -61,7 +61,7 @@ pointer_type_c_ast ::= * type_qualifier_list_c_stid_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 11-11,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     to_ast = {
       sname = "",
       unique_id = 1327,
@@ -90,7 +90,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 11-11,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     to_ast = {
       sname = "",
       unique_id = 1327,
@@ -113,7 +113,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 11-11,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     to_ast = {
       sname = "",
       unique_id = 1327,
@@ -155,7 +155,7 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
-  type_modifier_list_c_type_opt = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
     unique_id = 1329,
@@ -291,7 +291,7 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
-  type_modifier_list_c_type_opt = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
     unique_id = 1330,
@@ -433,7 +433,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
     depth = 0,
     parent->unique_id = -1,
     loc = 11-11,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     to_ast = {
       sname = "",
       unique_id = 1327,
@@ -454,7 +454,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
     depth = 0,
     parent->unique_id = -1,
     loc = 11-11,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     to_ast = {
       sname = "",
       unique_id = 1327,
@@ -503,7 +503,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
     depth = 0,
     parent->unique_id = -1,
     loc = 13-27,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     flags = unspecified (0x0),
     param_ast_list = [
       {
@@ -537,7 +537,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
       depth = 0,
       parent->unique_id = 1331,
       loc = 11-11,
-      type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       to_ast = {
         sname = "",
         unique_id = 1327,
@@ -562,7 +562,7 @@ pointer_decl_c_astp ::= pointer_type_c_ast decl_c_astp = {
     depth = 0,
     parent->unique_id = 1331,
     loc = 11-11,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     to_ast = {
       sname = "",
       unique_id = 1327,
@@ -583,7 +583,7 @@ pointer_decl_c_astp ::= pointer_type_c_ast decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 13-27,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     flags = unspecified (0x0),
     param_ast_list = [
       {
@@ -617,7 +617,7 @@ pointer_decl_c_astp ::= pointer_type_c_ast decl_c_astp = {
       depth = 0,
       parent->unique_id = 1331,
       loc = 11-11,
-      type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       to_ast = {
         sname = "",
         unique_id = 1327,
@@ -639,7 +639,7 @@ pointer_decl_c_astp ::= pointer_type_c_ast decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 13-27,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     flags = unspecified (0x0),
     param_ast_list = [
       {
@@ -673,7 +673,7 @@ pointer_decl_c_astp ::= pointer_type_c_ast decl_c_astp = {
       depth = 0,
       parent->unique_id = 1331,
       loc = 11-11,
-      type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       to_ast = {
         sname = "",
         unique_id = 1327,
@@ -710,7 +710,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 13-27,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     flags = unspecified (0x0),
     param_ast_list = [
       {
@@ -744,7 +744,7 @@ decl_c ::= decl_c_astp = {
       depth = 0,
       parent->unique_id = 1331,
       loc = 11-11,
-      type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       to_ast = {
         sname = "",
         unique_id = 1327,
@@ -766,7 +766,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 13-27,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     flags = unspecified (0x0),
     param_ast_list = [
       {
@@ -800,7 +800,7 @@ decl_c ::= decl_c_astp = {
       depth = 0,
       parent->unique_id = 1331,
       loc = 11-11,
-      type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+      type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
       to_ast = {
         sname = "",
         unique_id = 1327,

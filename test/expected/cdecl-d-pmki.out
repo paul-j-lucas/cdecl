@@ -26,7 +26,7 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
-  type_modifier_list_c_type_opt = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
     unique_id = 1327,

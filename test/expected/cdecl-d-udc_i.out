@@ -26,7 +26,7 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     type = "int" (btid = 0x2001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
-  type_modifier_list_c_type_opt = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
     unique_id = 1327,
@@ -64,7 +64,7 @@ user_defined_conversion_decl_c_astp ::= scope_sname_c_opt OPERATOR type_c_ast ud
     depth = 0,
     parent->unique_id = -1,
     loc = 6-21,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     conv_ast = {
       sname = "",
       unique_id = 1327,
@@ -88,7 +88,7 @@ explain_command ::= EXPLAIN user_defined_conversion_decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 6-21,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     conv_ast = {
       sname = "",
       unique_id = 1327,

@@ -19,7 +19,7 @@ typedef_type_c_ast ::= any_typedef = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 32,
@@ -44,7 +44,7 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 32,
@@ -58,7 +58,7 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     },
     bit_width = 0
   },
-  type_modifier_list_c_type_opt = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
     unique_id = 1327,
@@ -67,7 +67,7 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 32,
@@ -97,7 +97,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 32,
@@ -121,7 +121,7 @@ sname_c_ast ::= sname_c = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 32,
@@ -147,7 +147,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 1329,
@@ -169,7 +169,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 32,
@@ -191,7 +191,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 8-13,
-    type = "" (btid = 0x10000001, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x10000001, stid = 0x2, atid = 0x4),
     for_ast = {
       sname = "size_t" (none),
       unique_id = 32,

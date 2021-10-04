@@ -328,12 +328,13 @@ void c_tid_dump( c_tid_t tid, FILE *dout ) {
 
 void c_type_dump( c_type_t const *type, FILE *dout ) {
   assert( type != NULL );
+  char const *const type_name = c_type_name_c( type );
   FPRINTF( dout,
     "\"%s\" "
      "(%s = 0x%" PRIX_C_TID_T
     ", %s = 0x%" PRIX_C_TID_T
     ", %s = 0x%" PRIX_C_TID_T ")",
-    c_type_name_c( type ),
+    type_name[0] != '\0' ? type_name : "none",
     c_tpid_name( C_TPID_BASE  ), type->btids,
     c_tpid_name( C_TPID_STORE ), type->stids,
     c_tpid_name( C_TPID_ATTR  ), type->atids

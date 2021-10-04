@@ -26,7 +26,7 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
     type = "void" (btid = 0x11, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
-  type_modifier_list_c_type_opt = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
   type_c_ast = {
     sname = "",
     unique_id = 1327,
@@ -108,7 +108,7 @@ func_decl_c_astp ::= decl2_c_astp '(' param_list_c_ast_opt ')' func_qualifier_li
     depth = 0,
     parent->unique_id = -1,
     loc = 13-15,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     flags = unspecified (0x0),
     param_ast_list = [],
     ret_ast = {
@@ -146,7 +146,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 13-15,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     flags = unspecified (0x0),
     param_ast_list = [],
     ret_ast = {
@@ -169,7 +169,7 @@ decl_c ::= decl_c_astp = {
     depth = 0,
     parent->unique_id = -1,
     loc = 13-15,
-    type = "" (btid = 0x1, stid = 0x2, atid = 0x4),
+    type = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
     flags = unspecified (0x0),
     param_ast_list = [],
     ret_ast = {
