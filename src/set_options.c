@@ -238,7 +238,7 @@ static bool set_explain_by_default( set_option_fn_args_t const *args ) {
 
 /**
  * Sets the explicit-int option.
- *;
+ *
  * @param args The set option arguments.
  * @return Returns `true` only if the option was set.
  */
