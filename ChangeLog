@@ -1,5 +1,6 @@
 2021-10-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * help.c, help_options.out: Added missing explicit-ecsu to options help.
    * NEWS, configure.ac, cdecl.1, c_type.c, c_type.h, gibberish.c, options.c,
      options.h, set_options.c, test/Makefile.am, cdecl-Ix.out, cdecl-Sx.out,
      cdecl-h.out, declare_c.out, declare_pmf_pc.out, declare_pmf_pk.out,
