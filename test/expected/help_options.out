@@ -4,6 +4,7 @@ option:
   {di|tri|no}graphs
   [no]east-const
   [no]explain-by-default
+  [no]explicit-ecsu[={e|c|s|u}+]
   [no]explicit-int[=<types>]
   lang=<lang>
   [no]prompt
