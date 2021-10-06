@@ -1,3 +1,42 @@
+2021-10-06  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, configure.ac, cdecl.1, c_type.c, c_type.h, gibberish.c, options.c,
+     options.h, set_options.c, test/Makefile.am, cdecl-Ix.out, cdecl-Sx.out,
+     cdecl-h.out, declare_c.out, declare_pmf_pc.out, declare_pmf_pk.out,
+     dynamic_cast_+pc.out, dynamic_cast_pc.out, dynamic_cast_pk.out, set.out,
+     set_c++.out, set_c++03.out, set_c++11.out, set_c++14.out, set_c++17.out,
+     set_c++20.out, set_c++23.out, set_c++98.out, set_c11.out, set_c17.out,
+     set_c18.out, set_c89.out, set_c89_digraphs.out, set_c90.out, set_c95.out,
+     set_c99.out, set_cknr.out, set_digraphs_c89.out, set_expl.out,
+     set_expli.out, set_explicit-ecsu.out, set_explicit-ecsu=ecsu.out,
+     set_explicit-ecsu=x.out, set_explicit-int=i.out, set_explicit-int=u.out,
+     set_explicit-int=x.out, set_lang=c++.out, set_noexplicit-int.out,
+     set_options.out, set_trigraphs_c++17.out, cdecl-Sx.test,
+     declare_pmf_pk.test, dynamic_cast_pk.test, set_expli.test,
+     set_explicit-ecsu.test, set_explicit-ecsu=ecsu.test,
+     set_explicit-ecsu=x.test: Added explicit-ecsu option.
+
+2021-10-05  Paul J. Lucas <paul@lucasmail.org>
+
+   * cdecl.1: s/Ovtober/October/
+   * cdecl.1: Removed "to standard error".
+
+2021-10-04  Paul J. Lucas <paul@lucasmail.org>
+
+   * dump.c, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
+     cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out,
+     cdecl-d-f2i_pi.out, cdecl-d-f_v.out, cdecl-d-faia4iaviacias6i_v.out,
+     cdecl-d-pmki.out, cdecl-d-udc_i.out, cdecl-d-z.out: Now printing "none"
+     when the type is none.
+   * dump.c, cdecl-d-cmo_exclam__b.out: Reworked dumping of C++ operators.
+   * dump.c: s/FPRINTF/FPUTS/
+   * options.c: If the exit status is 0, the usage message is now printed to
+     stdout.
+   * options.c: s/printf/puts/
+   * options.c: If there are more CLI options after either -h or --help, the
+     exit status is now 64.
+   * options.c: s/OPT_/SOPT_/
+
 2021-10-03  Paul J. Lucas <paul@lucasmail.org>
 
    * configure.ac: Reverted AC_INIT change.
