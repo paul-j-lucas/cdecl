@@ -274,7 +274,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       g_print_ast_bit_width( g, ast );
       break;
 
-    case K_ENUM_CLASS_STRUCT_UNION:
+    case K_ENUM_CLASS_STRUCT_UNION: {
       if ( c_type_is_tid_any( &type, TB_ENUM ) ) {
         //
         // Special case: an enum class must be written as just "enum" when
@@ -291,7 +291,12 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         type.stids &= c_tid_compl( TS_CONST_VOLATILE );
       }
 
-      FPUTS( c_type_name_c( &type ), g->gout );
+      char const *const type_name =
+        (g->flags & (C_GIB_CAST | C_GIB_DECL)) != 0 ?
+          c_type_name_ecsu( &type ) :
+          c_type_name_c( &type );
+
+      FPUTS( type_name, g->gout );
 
       if ( (g->flags & C_GIB_TYPEDEF) == 0 || g->printing_typedef ) {
         //
@@ -311,7 +316,9 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         //          typedef struct S T; // ast->sname ="T"; escu_name = "S"
         //
         FPRINTF( g->gout,
-          " %s", c_sname_full_name( &ast->as.ecsu.ecsu_sname )
+          "%s%s",
+          type_name[0] != '\0' ? " " : "",
+          c_sname_full_name( &ast->as.ecsu.ecsu_sname )
         );
       }
 
@@ -325,6 +332,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
 
       g_print_space_ast_name( g, ast );
       break;
+    }
 
     case K_NAME:
       if ( !c_ast_name_empty( ast ) && (g->flags & C_GIB_CAST) == 0 )

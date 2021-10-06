@@ -27,10 +27,13 @@
 #include "pjl_config.h"                 /* must go first */
 #include "set_options.h"
 #include "c_lang.h"
+#include "c_type.h"
 #include "did_you_mean.h"
 #include "options.h"
 #include "print.h"
 #include "prompt.h"
+#include "slist.h"
+#include "types.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
@@ -74,6 +77,7 @@ DECLARE_SET_OPTION_FN( debug );
 DECLARE_SET_OPTION_FN( digraphs );
 DECLARE_SET_OPTION_FN( east_const );
 DECLARE_SET_OPTION_FN( explain_by_default );
+DECLARE_SET_OPTION_FN( explicit_ecsu );
 DECLARE_SET_OPTION_FN( explicit_int );
 #ifdef ENABLE_FLEX_DEBUG
 DECLARE_SET_OPTION_FN( flex_debug );
@@ -103,6 +107,7 @@ static set_option_t const SET_OPTIONS[] = {
   { "graphs",             SET_OPT_NEG_ONLY, false,  &set_digraphs           },
   { "east-const",         SET_OPT_TOGGLE,   false,  &set_east_const         },
   { "explain-by-default", SET_OPT_TOGGLE,   false,  &set_explain_by_default },
+  { "explicit-ecsu",      SET_OPT_TOGGLE,   true,   &set_explicit_ecsu      },
   { "explicit-int",       SET_OPT_TOGGLE,   true,   &set_explicit_int       },
 #ifdef ENABLE_FLEX_DEBUG
   { "flex-debug",         SET_OPT_TOGGLE,   false,  &set_flex_debug         },
@@ -143,6 +148,21 @@ static void print_options( FILE *out ) {
 #endif /* ENABLE_CDECL_DEBUG */
   FPRINTF( out, "  %seast-const\n", maybe_no( opt_east_const ) );
   FPRINTF( out, "  %sexplain-by-default\n", maybe_no( opt_explain ) );
+
+  if ( opt_explicit_ecsu != TB_NONE ) {
+    FPUTS( "    explicit-ecsu=", out );
+    if ( (opt_explicit_ecsu & TB_ENUM) != TB_NONE )
+      FPUTC( 'e', out );
+    if ( (opt_explicit_ecsu & TB_CLASS) != TB_NONE )
+      FPUTC( 'c', out );
+    if ( (opt_explicit_ecsu & TB_STRUCT) != TB_NONE )
+      FPUTC( 's', out );
+    if ( (opt_explicit_ecsu & TB_UNION) != TB_NONE )
+      FPUTC( 'u', out );
+    FPUTC( '\n', out );
+  } else {
+    FPUTS( "  noexplicit-ecsu\n", out );
+  }
 
   if ( any_explicit_int() ) {
     FPUTS( "    explicit-int=", out );
@@ -234,6 +254,20 @@ static bool set_east_const( set_option_fn_args_t const *args ) {
 static bool set_explain_by_default( set_option_fn_args_t const *args ) {
   opt_explain = args->opt_enabled;
   return true;
+}
+
+/**
+ * Sets the explicit-ecsu option.
+ *
+ * @param args The set option arguments.
+ * @return Returns `true` only if the option was set.
+ */
+static bool set_explicit_ecsu( set_option_fn_args_t const *args ) {
+  if ( OPT_LANG_IS(C_ANY) )
+    print_warning( args->opt_name_loc, "explicit-ecsu is ignored in C\n" );
+  return args->opt_enabled ?
+    parse_explicit_ecsu( args->opt_value, args->opt_value_loc ) :
+    parse_explicit_ecsu( "", /*loc=*/NULL );
 }
 
 /**
@@ -395,19 +429,16 @@ bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
     opt_name += 2/*no*/;
   size_t const opt_name_len = strlen( opt_name );
 
+  slist_t ambiguous_list;
+  slist_init( &ambiguous_list );
   set_option_t const *found_opt = NULL;
-  for ( set_option_t const *opt = SET_OPTIONS; opt->name != NULL; ++opt ) {
+
+  FOREACH_SET_OPTION( opt ) {
     if ( strn_nohyphen_equal( opt->name, opt_name, opt_name_len ) ) {
-      if ( found_opt != NULL ) {
-        print_error( opt_name_loc,
-          "\"%s\": ambiguous set option; could be \"%s%s\" or \"%s%s\"\n",
-          orig_name,
-          is_no ? "no" : "", found_opt->name,
-          is_no ? "no" : "", opt->name
-        );
-        return false;
-      }
-      found_opt = opt;
+      if ( found_opt == NULL )
+        found_opt = opt;
+      else
+        slist_push_tail( &ambiguous_list, CONST_CAST( void*, opt->name ) );
     }
   } // for
 
@@ -415,6 +446,25 @@ bool option_set( char const *opt_name, c_loc_t const *opt_name_loc,
     print_error( opt_name_loc, "\"%s\": unknown set option", orig_name );
     print_suggestions( DYM_SET_OPTIONS, orig_name );
     EPUTC( '\n' );
+    return false;
+  }
+
+  if ( !slist_empty( &ambiguous_list ) ) {
+    print_error( opt_name_loc,
+      "\"%s\": ambiguous set option; could be \"%s%s\"",
+      orig_name,
+      is_no ? "no" : "", found_opt->name
+    );
+    size_t i = 1;
+    FOREACH_SLIST( node, &ambiguous_list, NULL ) {
+      EPRINTF( "%s\"%s%s\"",
+        (node->next != NULL ? ", " : (i > 1 ?  ", or " : " or ")),
+        is_no ? "no" : "", STATIC_CAST( char*, node->data )
+      );
+      ++i;
+    } // for
+    EPUTC( '\n' );
+    slist_free( &ambiguous_list, NULL, NULL );
     return false;
   }
 

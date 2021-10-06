@@ -1,0 +1,3 @@
+set explicit-ecsu=x
+                  ^
+19: error: "x": invalid explicit-ecsu value; must be only a combination of: e, c, s, or u

@@ -1,25 +1,26 @@
 usage: cdecl [options] [command...]
        cdecl [options] files...
 options:
-  --alt-tokens        (-a)  Print alternative tokens.
-  --color=WHEN        (-k)  When to colorize output [default: not_file].
-  --config=FILE       (-c)  The configuration file [default: ~/.cdeclrc].
-  --debug             (-d)  Enable debug output.
-  --digraphs          (-2)  Print digraphs.
-  --east-const        (-E)  Print in "east const" form.
-  --explain           (-e)  Assume "explain" when no other command is given.
-  --explicit-int=WHEN (-I)  When to print "int" explicitly.
-  --file=FILE         (-f)  Read from this file [default: stdin].
-  --help              (-h)  Print this help and exit.
-  --interactive       (-i)  Force interactive mode.
-  --language=LANG     (-x)  Use LANG.
-  --no-config         (-C)  Suppress reading configuration file.
-  --no-prompt         (-p)  Suppress prompt.
-  --no-semicolon      (-s)  Suppress printing final semicolon for declarations.
-  --no-typedefs       (-t)  Suppress predefining standard types.
-  --output=FILE       (-o)  Write to this file [default: stdout].
-  --trigraphs         (-3)  Print trigraphs.
-  --version           (-v)  Print version and exit.
+  --alt-tokens         (-a) Print alternative tokens.
+  --color=WHEN         (-k) When to colorize output [default: not_file].
+  --config=FILE        (-c) The configuration file [default: ~/.cdeclrc].
+  --debug              (-d) Enable debug output.
+  --digraphs           (-2) Print digraphs.
+  --east-const         (-E) Print in "east const" form.
+  --explain            (-e) Assume "explain" when no other command is given.
+  --explicit-ecsu=WHEN (-S) When to print "class", "struct", "union" explicitly.
+  --explicit-int=WHEN  (-I) When to print "int" explicitly.
+  --file=FILE          (-f) Read from this file [default: stdin].
+  --help               (-h) Print this help and exit.
+  --interactive        (-i) Force interactive mode.
+  --language=LANG      (-x) Use LANG.
+  --no-config          (-C) Suppress reading configuration file.
+  --no-prompt          (-p) Suppress prompt.
+  --no-semicolon       (-s) Suppress printing final semicolon for declarations.
+  --no-typedefs        (-t) Suppress predefining standard types.
+  --output=FILE        (-o) Write to this file [default: stdout].
+  --trigraphs          (-3) Print trigraphs.
+  --version            (-v) Print version and exit.
 
 Report bugs to: https://github.com/paul-j-lucas/cdecl/issues
 cdecl home page: https://github.com/paul-j-lucas/cdecl

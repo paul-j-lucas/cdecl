@@ -2,7 +2,7 @@
   nodebug
   noeast-const
   noexplain-by-default
-    explicit-ecsu=su
+    explicit-ecsu=ecsu
   noexplicit-int
   nographs
     lang=C++23

@@ -33,7 +33,7 @@
 .if !'\\$1'0' .sp
 ..
 .\" ---------------------------------------------------------------------------
-.TH \f3cdecl\fP 1 "October 5, 2021" "PJL TOOLS"
+.TH \f3cdecl\fP 1 "October 6, 2021" "PJL TOOLS"
 .SH NAME
 cdecl, c++decl \- compose and decipher C & C++ declarations and casts
 .SH SYNOPSIS
@@ -378,6 +378,40 @@ of the type.
 Assumes \f(CWexplain\fP
 when an input line doesn't start with any command.
 .TP
+.BI \-\-explicit-ecsu \f1=\fPs "\f1 | \fP" "" \-S " s"
+For C++ only,
+sets the type keywords to
+.I s
+(which is case-insensitive)
+that should be explicitly included in declarations,
+one or more of
+.BR e " (for \f(CWenum\fP),"
+.BR c " (for \f(CWclass\fP),"
+.BR s " (for \f(CWstruct\fP),"
+and
+.BR u " (for \f(CWunion\fP)."
+The default is
+.BR su .
+For example,
+using the default:
+.RS
+.cS
+c++decl> declare ps as pointer to struct S
+struct S *ps;
+c++decl> declare pt as pointer to class T
+T *pt;
+.cE 0
+.RE
+.IP ""
+(See
+.BR "Other Minor Caveats" .)
+For C,
+\f(CWenum\fP,
+\f(CWstruct\fP,
+and
+\f(CWunion\fP
+are always included in declarations.
+.TP
 .BI \-\-explicit-int \f1=\fPs "\f1 | \fP" "" \-I " s"
 Sets the integer types to
 .I s
@@ -394,7 +428,7 @@ where \f(CWint\fP is implied.)
 Valid formats for
 .I s
 are:
-.RS
+.RS 8
 .TP 4
 .B i
 All signed integer types.
@@ -1334,6 +1368,24 @@ Turns [off] on \f(CWexplain\fP being assumed
 when an input line doesn't start with any command
 \(em default is off.
 .TP
+.BI explicit-ecsu \f1=\fPs
+For C++ only,
+turns on explicit
+\f(CWenum\fP,
+\f(CWclass\fP,
+\f(CWstruct\fP,
+or
+\f(CWunion\fP
+in declarations
+\(em default is \f(CWsu\fP
+(for \f(CWstruct\fP
+and \f(CWunion\fP).
+(See the
+.B \-\-explicit-ecsu
+or
+.B \-S
+option for details.)
+.TP
 .BI explicit-int \f1=\fPs
 Turns on explicit \f(CWint\fP for the integer types
 .IR s
@@ -1343,6 +1395,16 @@ Turns on explicit \f(CWint\fP for the integer types
 or
 .B \-I
 option for details.)
+.TP
+.B noexplicit-ccsu
+For C++ only,
+turns off explicit
+\f(CWenum\fP,
+\f(CWclass\fP,
+\f(CWstruct\fP,
+and
+\f(CWunion\fP
+in declarations.
 .TP
 .B noexplicit-int
 Turns off explicit \f(CWint\fP for all integer types.
@@ -2184,7 +2246,7 @@ and:
 c++decl> declare p as pointer to member of class C \\
 c++decl+     function (i as int, j as int) \\
 c++decl+     returning pointer to class D
-class D *(C::*p)(int i, int j)
+D *(C::*p)(int i, int j)
 .cE
 To define types within scopes:
 .cS
@@ -2504,39 +2566,53 @@ are not supported.
 .nr step 1 1
 .IP \n[step]. 4
 When converting from pseudo-English to a C++ declaration,
-\f(CWenum\fP,
-\f(CWclass\fP,
-\f(CWstruct\fP,
-and
-\f(CWunion\fP
-types include the corresponding keyword explicitly in the result
-even though it isn't needed in C++:
-.RS
-.cS
-c++decl> declare p as const pointer to struct S
-struct S *const p;
-.cE 0
-.RE
-.IP ""
-This is because,
-when going the other way from a C++ declaration to pseudo-English,
-the declaration parser can't know that an arbitrary name,
-in this example, \f(CWS\fP, is one of an
+any
 \f(CWenum\fP,
 \f(CWclass\fP,
 \f(CWstruct\fP,
 or
 \f(CWunion\fP
-name.
-While the keyword
-.I could
-be elided from the output of
-.BR declare ,
-it isn't in order to have the output be ``round-trippable''
-when used as input to
-.BR explain .
+type keyword omitted from a declaration
+(via omission from either the
+.B \-\-explicit-ecsu
+or
+.B \-S
+option,
+or the
+.B set explicit-ecsu
+command)
+makes the declaration
+.I not
+``round-trippable'':
+.RS
+.cS
+c++decl> declare pt as pointer to class T
+T *pt;
+c++decl> explain T *pt
+                 ^
+18: error: "T": unknown name
+.cE 0
+.RE
 .IP ""
-However,
+This is because,
+when going from a C++ declaration to pseudo-English,
+.B cdecl
+doesn't know that an arbitrary name,
+in this example, \f(CWT\fP, is a \f(CWclass\fP name.
+.IP ""
+To include the type keywords explicitly
+and thus make the declarations ``round-trippable,''
+include them via either the
+.B \-\-explicit-ecsu
+or
+.B \-S
+option,
+or the
+.B set explicit-ecsu
+command.
+.IP ""
+Alternatively,
+declare the type via one of
 .BR class ,
 .BR define ,
 .BR enum ,
@@ -2544,13 +2620,12 @@ However,
 .BR typedef ,
 .BR union ,
 or
-.B using
-can be used to define the type:
+.BR using :
 .RS
 .cS
-c++decl> struct S
-c++decl> declare p as const pointer to S
-S *const p;
+c++decl> class T
+c++decl> explain T *pt
+declare pt as pointer to T
 .cE 0
 .RE
 .IP \n+[step].
@@ -2561,8 +2636,9 @@ While
 .BR namespace ,
 .BR struct ,
 .BR typedef ,
+.BR union ,
 and
-.BR union
+.B using
 can accept names that are
 .B cdecl
 keywords,

@@ -5,6 +5,7 @@ set c89 digraphs; set
   nodebug
   noeast-const
   noexplain-by-default
+    explicit-ecsu=su
   noexplicit-int
   digraphs
     lang=C89

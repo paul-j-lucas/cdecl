@@ -1,0 +1,1 @@
+cdecl @ @ -xc++ @ declare p as pointer to member of class C function returning pointer to struct S @ 0

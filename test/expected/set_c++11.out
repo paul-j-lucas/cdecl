@@ -2,6 +2,7 @@
   nodebug
   noeast-const
   noexplain-by-default
+    explicit-ecsu=su
   noexplicit-int
   nographs
     lang=C++11

@@ -10,6 +10,20 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.3
+
+** Added `explicit-ecsu` option
+Both a `--explicit-csu`/`-S` command-line and `explicit-ecsu` set option have
+been added that set which type keywords `enum`, `class`, `struct`, or `union`,
+are included explicitly in C++ declarations.  The default is `struct` and
+`union` only, so:
+
+    c++decl> declare ps as pointer to struct S
+    struct S *ps;
+    c++decl> declare pt as pointer to class T
+    T *pt;
+
+
 * Changes in Cdecl 11.2
 
 ** More C++ cast checks

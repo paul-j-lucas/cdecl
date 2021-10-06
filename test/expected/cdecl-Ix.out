@@ -1,1 +1,1 @@
-cdecl: "x": invalid explicit int for --explicit-int/-I: 'x': must be one of: i, u, or {[u]{isl[l]}[,]}+
+cdecl: "x": invalid value for --explicit-int/-I: 'x'; must be one of: i, u, or {[u]{isl[l]}[,]}+

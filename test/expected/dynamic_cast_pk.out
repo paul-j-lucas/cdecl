@@ -1,0 +1,1 @@
+dynamic_cast<struct S*>(x)

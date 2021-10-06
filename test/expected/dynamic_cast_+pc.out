@@ -1,1 +1,1 @@
-dynamic_cast<class C*>(S::x)
+dynamic_cast<C*>(S::x)

@@ -3,6 +3,7 @@ warning: digraphs not supported until C95
   nodebug
   noeast-const
   noexplain-by-default
+    explicit-ecsu=su
   noexplicit-int
   digraphs
     lang=C89

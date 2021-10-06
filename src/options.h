@@ -65,6 +65,7 @@ extern bool         opt_cdecl_debug;    ///< Print JSON-like debug output?
 extern char const  *opt_conf_file;      ///< Configuration file path.
 extern bool         opt_east_const;     ///< Print in "east const" form?
 extern bool         opt_explain;        ///< Assume `explain` if no command?
+extern c_tid_t      opt_explicit_ecsu;  ///< Explicit `class`|`struct`|`union`?
 extern c_graph_t    opt_graph;          ///< Di/Trigraph mode.
 extern bool         opt_interactive;    ///< Interactive mode?
 extern c_lang_id_t  opt_lang;           ///< Current language.
@@ -130,6 +131,26 @@ struct option const* cli_option_next( struct option const *opt );
  * @param pargv A pointer to the argument values from main().
  */
 void options_init( int *pargc, char const **pargv[] );
+
+/**
+ * Parses the explicit `enum`, `class`, `struct`, `union` option.
+ *
+ * @param ecsu_format The null-terminated explicit `enum`, `class`, `struct`,
+ * `union` format string to parse.  Valid formats are:
+ *      Format | Meaning
+ *      -------|--------
+ *      `e`    | `enum`
+ *      `c`    | `class`
+ *      `s`    | `struct`
+ *      `u`    | `union`
+ * Multiple formats may be given, one immediately after the other, e.g., `su`
+ * means `struct` and `union`.
+ * @param loc The location of \a ecsu_format.  If not NULL and \a ecsu_format
+ * is invalid, calls print_error(); if NULL and \a ecsu_format is invalid,
+ * calls PMESSAGE_EXIT().
+ * @return Returns `true` only if \a ecsu_format was parsed successfully.
+ */
+bool parse_explicit_ecsu( char const *ecsu_format, c_loc_t const *loc );
 
 /**
  * Parses the explicit `int` option.

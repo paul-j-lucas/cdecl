@@ -45,6 +45,7 @@ TESTS =	tests/cdecl--kolor.test \
 	tests/cdecl-Iulull.test \
 	tests/cdecl-Ius.test \
 	tests/cdecl-Ix.test \
+	tests/cdecl-Sx.test \
 	tests/cdecl-h.test \
 	tests/cdecl-k.test \
 	tests/cdecl-knever.test \
@@ -1039,6 +1040,7 @@ TESTS+=	tests/declare_+dtor.test \
 	tests/declare_pmci.test \
 	tests/declare_pmf_i.test \
 	tests/declare_pmf_pc.test \
+	tests/declare_pmf_pk.test \
 	tests/declare_pmi.test \
 	tests/declare_ra3i.test \
 	tests/declare_rci.test \
@@ -1636,6 +1638,7 @@ TESTS+=	tests/cast_+i.test \
 	tests/const_cast_pi.test \
 	tests/dynamic_cast_+pc.test \
 	tests/dynamic_cast_pc.test \
+	tests/dynamic_cast_pk.test \
 	tests/reinterpret_cast_+pv.test \
 	tests/reinterpret_cast_pv.test \
 	tests/static_cast_+i.test \
@@ -1873,6 +1876,10 @@ TESTS+=	tests/help-c++.test \
 	tests/set_expl.test \
 	tests/set_explain-by-default.test \
 	tests/set_explain.test \
+	tests/set_expli.test \
+	tests/set_explicit-ecsu.test \
+	tests/set_explicit-ecsu=ecsu.test \
+	tests/set_explicit-ecsu=x.test \
 	tests/set_explicit-int.test \
 	tests/set_explicit-int=i.test \
 	tests/set_explicit-int=u.test \

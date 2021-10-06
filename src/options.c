@@ -70,6 +70,7 @@
 #define SOPT_OUTPUT         o
 #define SOPT_NO_PROMPT      p
 #define SOPT_NO_SEMICOLON   s
+#define SOPT_EXPLICIT_ECSU  S
 #define SOPT_NO_TYPEDEFS    t
 #define SOPT_VERSION        v
 #define SOPT_LANGUAGE       x
@@ -90,6 +91,7 @@ bool                opt_cdecl_debug;
 char const         *opt_conf_file;
 bool                opt_east_const;
 bool                opt_explain;
+c_tid_t             opt_explicit_ecsu = TB_STRUCT | TB_UNION;
 c_graph_t           opt_graph;
 bool                opt_interactive;
 c_lang_id_t         opt_lang;
@@ -131,34 +133,35 @@ static struct option const CLI_OPTIONS_LONG[] = {
   // check_mutually_exclusive() in parse_options(), the message in usage(), and
   // the corresponding "set" option in SET_OPTIONS in set_options.c.
   //
-  { "alt-tokens",   no_argument,        NULL, COPT(ALT_TOKENS)    },
+  { "alt-tokens",     no_argument,        NULL, COPT(ALT_TOKENS)    },
 #ifdef YYDEBUG
-  { "bison-debug",  no_argument,        NULL, COPT(BISON_DEBUG)   },
-#endif /* YYDEBUG */
-  { "color",        required_argument,  NULL, COPT(COLOR)         },
-  { "config",       required_argument,  NULL, COPT(CONFIG)        },
+  { "bison-debug",    no_argument,        NULL, COPT(BISON_DEBUG)   },
+#endif /* YYDEBUG */  
+  { "color",          required_argument,  NULL, COPT(COLOR)         },
+  { "config",         required_argument,  NULL, COPT(CONFIG)        },
 #ifdef ENABLE_CDECL_DEBUG
-  { "debug",        no_argument,        NULL, COPT(CDECL_DEBUG)   },
+  { "debug",          no_argument,        NULL, COPT(CDECL_DEBUG)   },
 #endif /* ENABLE_CDECL_DEBUG */
-  { "digraphs",     no_argument,        NULL, COPT(DIGRAPHS)      },
-  { "east-const",   no_argument,        NULL, COPT(EAST_CONST)    },
-  { "explain",      no_argument,        NULL, COPT(EXPLAIN)       },
-  { "explicit-int", required_argument,  NULL, COPT(EXPLICIT_INT)  },
-  { "file",         required_argument,  NULL, COPT(FILE)          },
+  { "digraphs",       no_argument,        NULL, COPT(DIGRAPHS)      },
+  { "east-const",     no_argument,        NULL, COPT(EAST_CONST)    },
+  { "explain",        no_argument,        NULL, COPT(EXPLAIN)       },
+  { "explicit-ecsu",  required_argument,  NULL, COPT(EXPLICIT_ECSU) },
+  { "explicit-int",   required_argument,  NULL, COPT(EXPLICIT_INT)  },
+  { "file",           required_argument,  NULL, COPT(FILE)          },
 #ifdef ENABLE_FLEX_DEBUG
-  { "flex-debug",   no_argument,        NULL, COPT(FLEX_DEBUG)    },
+  { "flex-debug",     no_argument,        NULL, COPT(FLEX_DEBUG)    },
 #endif /* ENABLE_FLEX_DEBUG */
-  { "help",         no_argument,        NULL, COPT(HELP)          },
-  { "interactive",  no_argument,        NULL, COPT(INTERACTIVE)   },
-  { "language",     required_argument,  NULL, COPT(LANGUAGE)      },
-  { "no-config",    no_argument,        NULL, COPT(NO_CONFIG)     },
-  { "no-prompt",    no_argument,        NULL, COPT(NO_PROMPT)     },
-  { "no-semicolon", no_argument,        NULL, COPT(NO_SEMICOLON)  },
-  { "no-typedefs",  no_argument,        NULL, COPT(NO_TYPEDEFS)   },
-  { "output",       required_argument,  NULL, COPT(OUTPUT)        },
-  { "trigraphs",    no_argument,        NULL, COPT(TRIGRAPHS)     },
-  { "version",      no_argument,        NULL, COPT(VERSION)       },
-  { NULL,           0,                  NULL, 0                   }
+  { "help",           no_argument,        NULL, COPT(HELP)          },
+  { "interactive",    no_argument,        NULL, COPT(INTERACTIVE)   },
+  { "language",       required_argument,  NULL, COPT(LANGUAGE)      },
+  { "no-config",      no_argument,        NULL, COPT(NO_CONFIG)     },
+  { "no-prompt",      no_argument,        NULL, COPT(NO_PROMPT)     },
+  { "no-semicolon",   no_argument,        NULL, COPT(NO_SEMICOLON)  },
+  { "no-typedefs",    no_argument,        NULL, COPT(NO_TYPEDEFS)   },
+  { "output",         required_argument,  NULL, COPT(OUTPUT)        },
+  { "trigraphs",      no_argument,        NULL, COPT(TRIGRAPHS)     },
+  { "version",        no_argument,        NULL, COPT(VERSION)       },
+  { NULL,             0,                  NULL, 0                   }
 };
 
 /// @cond DOXYGEN_IGNORE
@@ -188,6 +191,7 @@ static char const   CLI_OPTIONS_SHORT[] = ":"
   SOPT(DIGRAPHS)      SOPT_NO_ARGUMENT
   SOPT(EAST_CONST)    SOPT_NO_ARGUMENT
   SOPT(EXPLAIN)       SOPT_NO_ARGUMENT
+  SOPT(EXPLICIT_ECSU) SOPT_REQUIRED_ARGUMENT
   SOPT(EXPLICIT_INT)  SOPT_REQUIRED_ARGUMENT
   SOPT(FILE)          SOPT_REQUIRED_ARGUMENT
 #ifdef ENABLE_FLEX_DEBUG
@@ -447,6 +451,9 @@ static void parse_options( int argc, char const *argv[] ) {
       case COPT(EXPLAIN):
         opt_explain = true;
         break;
+      case COPT(EXPLICIT_ECSU):
+        parse_explicit_ecsu( optarg, /*loc=*/NULL );
+        break;
       case COPT(EXPLICIT_INT):
         parse_explicit_int( optarg, /*loc=*/NULL );
         break;
@@ -547,6 +554,7 @@ use_help:
     SOPT(DIGRAPHS)
     SOPT(EAST_CONST)
     SOPT(EXPLAIN)
+    SOPT(EXPLICIT_ECSU)
     SOPT(EXPLICIT_INT)
     SOPT(FILE)
 #ifdef ENABLE_FLEX_DEBUG
@@ -576,6 +584,7 @@ use_help:
     SOPT(DIGRAPHS)
     SOPT(EAST_CONST)
     SOPT(EXPLAIN)
+    SOPT(EXPLICIT_ECSU)
     SOPT(EXPLICIT_INT)
     SOPT(FILE)
 #ifdef ENABLE_FLEX_DEBUG
@@ -633,33 +642,34 @@ static void usage( int status ) {
 "usage: " CDECL " [options] [command...]\n"
 "       " CDECL " [options] files...\n"
 "options:\n"
-"  --alt-tokens        (-%c)  Print alternative tokens.\n"
+"  --alt-tokens         (-%c) Print alternative tokens.\n"
 #ifdef YYDEBUG
-"  --bison-debug       (-%c)  Enable Bison debug output.\n"
+"  --bison-debug        (-%c) Enable Bison debug output.\n"
 #endif /* YYDEBUG */
-"  --color=WHEN        (-%c)  When to colorize output [default: not_file].\n"
-"  --config=FILE       (-%c)  The configuration file [default: ~/" CONF_FILE_NAME_DEFAULT "].\n"
+"  --color=WHEN         (-%c) When to colorize output [default: not_file].\n"
+"  --config=FILE        (-%c) The configuration file [default: ~/" CONF_FILE_NAME_DEFAULT "].\n"
 #ifdef ENABLE_CDECL_DEBUG
-"  --debug             (-%c)  Enable debug output.\n"
+"  --debug              (-%c) Enable debug output.\n"
 #endif /* ENABLE_CDECL_DEBUG */
-"  --digraphs          (-%c)  Print digraphs.\n"
-"  --east-const        (-%c)  Print in \"east const\" form.\n"
-"  --explain           (-%c)  Assume \"explain\" when no other command is given.\n"
-"  --explicit-int=WHEN (-%c)  When to print \"int\" explicitly.\n"
-"  --file=FILE         (-%c)  Read from this file [default: stdin].\n"
+"  --digraphs           (-%c) Print digraphs.\n"
+"  --east-const         (-%c) Print in \"east const\" form.\n"
+"  --explain            (-%c) Assume \"explain\" when no other command is given.\n"
+"  --explicit-ecsu=WHEN (-%c) When to print \"class\", \"struct\", \"union\" explicitly.\n"
+"  --explicit-int=WHEN  (-%c) When to print \"int\" explicitly.\n"
+"  --file=FILE          (-%c) Read from this file [default: stdin].\n"
 #ifdef ENABLE_FLEX_DEBUG
-"  --flex-debug        (-%c)  Enable Flex debug output.\n"
+"  --flex-debug         (-%c) Enable Flex debug output.\n"
 #endif /* ENABLE_FLEX_DEBUG */
-"  --help              (-%c)  Print this help and exit.\n"
-"  --interactive       (-%c)  Force interactive mode.\n"
-"  --language=LANG     (-%c)  Use LANG.\n"
-"  --no-config         (-%c)  Suppress reading configuration file.\n"
-"  --no-prompt         (-%c)  Suppress prompt.\n"
-"  --no-semicolon      (-%c)  Suppress printing final semicolon for declarations.\n"
-"  --no-typedefs       (-%c)  Suppress predefining standard types.\n"
-"  --output=FILE       (-%c)  Write to this file [default: stdout].\n"
-"  --trigraphs         (-%c)  Print trigraphs.\n"
-"  --version           (-%c)  Print version and exit.\n"
+"  --help               (-%c) Print this help and exit.\n"
+"  --interactive        (-%c) Force interactive mode.\n"
+"  --language=LANG      (-%c) Use LANG.\n"
+"  --no-config          (-%c) Suppress reading configuration file.\n"
+"  --no-prompt          (-%c) Suppress prompt.\n"
+"  --no-semicolon       (-%c) Suppress printing final semicolon for declarations.\n"
+"  --no-typedefs        (-%c) Suppress predefining standard types.\n"
+"  --output=FILE        (-%c) Write to this file [default: stdout].\n"
+"  --trigraphs          (-%c) Print trigraphs.\n"
+"  --version            (-%c) Print version and exit.\n"
 "\n"
 "Report bugs to: " PACKAGE_BUGREPORT "\n"
 PACKAGE_NAME " home page: " PACKAGE_URL "\n",
@@ -675,6 +685,7 @@ PACKAGE_NAME " home page: " PACKAGE_URL "\n",
     COPT(DIGRAPHS),
     COPT(EAST_CONST),
     COPT(EXPLAIN),
+    COPT(EXPLICIT_ECSU),
     COPT(EXPLICIT_INT),
     COPT(FILE),
 #ifdef ENABLE_FLEX_DEBUG
@@ -726,6 +737,47 @@ bool is_explicit_int( c_tid_t tid ) {
   return c_tid_is_any( tid, opt_explicit_int[ is_unsigned ] );
 }
 
+bool parse_explicit_ecsu( char const *ecsu_format, c_loc_t const *loc ) {
+  assert( ecsu_format != NULL );
+
+  c_tid_t btids = TB_NONE;
+
+  for ( char const *s = ecsu_format; *s != '\0'; ++s ) {
+    switch ( tolower( *s ) ) {
+      case 'e':
+        btids |= TB_ENUM;
+        break;
+      case 'c':
+        btids |= TB_CLASS;
+        break;
+      case 's':
+        btids |= TB_STRUCT;
+        break;
+      case 'u':
+        btids |= TB_UNION;
+        break;
+      default:
+        if ( loc == NULL ) {            // invalid for CLI option
+          strbuf_t opt_sbuf;
+          PMESSAGE_EXIT( EX_USAGE,
+            "\"%s\": invalid value for %s;"
+            " must be only a combination of: e, c, s, or u\n",
+            s, opt_format( COPT(EXPLICIT_ECSU), &opt_sbuf )
+          );
+        }
+        print_error( loc,               // invalid for `set` option
+          "\"%s\": invalid explicit-ecsu value;"
+          " must be only a combination of: e, c, s, or u\n",
+          s
+        );
+        return false;
+    } // switch
+  } // for
+
+  opt_explicit_ecsu = btids;
+  return true;
+}
+
 bool parse_explicit_int( char const *ei_format, c_loc_t const *loc ) {
   assert( ei_format != NULL );
 
@@ -772,13 +824,13 @@ bool parse_explicit_int( char const *ei_format, c_loc_t const *loc ) {
         if ( loc == NULL ) {            // invalid for CLI option
           strbuf_t opt_sbuf;
           PMESSAGE_EXIT( EX_USAGE,
-            "\"%s\": invalid explicit int for %s:"
-            " '%c': must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
+            "\"%s\": invalid value for %s: '%c';"
+            " must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
             s, opt_format( COPT(EXPLICIT_INT), &opt_sbuf ), *s
           );
         }
         print_error( loc,               // invalid for `set` option
-          "\"%s\": invalid explicit-int:"
+          "\"%s\": invalid explicit-int value;"
           " must be one of: i, u, or {[u]{isl[l]}[,]}+\n",
           s
         );

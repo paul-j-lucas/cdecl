@@ -3,6 +3,7 @@ warning: trigraphs no longer supported since C++17
   nodebug
   noeast-const
   noexplain-by-default
+    explicit-ecsu=su
   noexplicit-int
  trigraphs
     lang=C++17
