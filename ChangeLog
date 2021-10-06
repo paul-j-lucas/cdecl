@@ -1,5 +1,9 @@
 2021-10-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * help.c, help_options.out: Added <lang> to help for options.
+   * help.c, help-c++.out, help-c.out, help_command-c++.out,
+     help_command-c++03.out, help_command-c.out, help_commands-c++.out,
+     help_commands-c.out: Added [, <sibberish>]* to help for explain.
    * help.c, help_options.out: Added missing explicit-ecsu to options help.
    * NEWS, configure.ac, cdecl.1, c_type.c, c_type.h, gibberish.c, options.c,
      options.h, set_options.c, test/Makefile.am, cdecl-Ix.out, cdecl-Sx.out,
