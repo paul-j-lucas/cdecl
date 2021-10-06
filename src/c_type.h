@@ -851,6 +851,7 @@ bool c_tid_is_except( c_tid_t tids, c_tid_t is_tids, c_tid_t except_tids ) {
  *
  * @param tids The <code>\ref c_tid_t</code> to get the name of.
  * @return Returns said name.
+ *
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
@@ -871,6 +872,7 @@ char const* c_tid_name_c( c_tid_t tids ) {
  *
  * @param tids The <code>\ref c_tid_t</code> to get the name of.
  * @return Returns said name.
+ *
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
@@ -892,6 +894,7 @@ char const* c_tid_name_english( c_tid_t tids ) {
  *
  * @param tids The <code>\ref c_tid_t</code> to get the name of.
  * @return Returns said name.
+ *
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
@@ -1002,6 +1005,8 @@ bool c_type_is_tid_any( c_type_t const *type, c_tid_t tids ) {
  * Gets the C/C++ name of \a type.
  *
  * @param type The type to get the name for.
+ * @return Returns said name.
+ *
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
@@ -1020,6 +1025,8 @@ char const* c_type_name_c( c_type_t const *type ) {
  * not.
  *
  * @param type The type to get the name for.
+ * @return Returns said name.
+ *
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
@@ -1039,6 +1046,8 @@ char const* c_type_name_english( c_type_t const *type ) {
  * return the alias, e.g., `non-returning` rather than `noreturn`.
  *
  * @param type The type to get the name for.
+ * @return Returns said name.
+ *
  * @warning The pointer returned is to a small number of static buffers, so you
  * can't do something like call this more than twice in the same `printf()`
  * statement.
