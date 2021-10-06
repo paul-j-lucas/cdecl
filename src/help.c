@@ -371,6 +371,7 @@ static void print_help_options( void ) {
   print_h( "  [no]explicit-ecsu[={e|c|s|u}+]\n" );
   print_h( "  [no]explicit-int[=<types>]\n" );
   print_h( "  lang=<lang>\n" );
+  print_h( "  <lang>\n" );
   print_h( "  [no]prompt\n" );
   print_h( "  [no]semicolon\n" );
   print_h( "lang:\n" );
