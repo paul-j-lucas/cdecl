@@ -2,7 +2,7 @@ command:
   cast <name> {as|[in]to} <english>
   declare <name> [, <name>]* as <english> [<declare-options>]
   define <name> as <english>
-  explain <gibberish>
+  explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]

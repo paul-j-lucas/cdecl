@@ -4,7 +4,7 @@ command:
   declare <operator> as <english>
   declare [<english>] user-def[ined] <user-defined-english>
   define <name> as <english>
-  explain <gibberish>
+  explain <gibberish> [, <gibberish>]*
   { help | ? } [command[s] | english | options]
   set [<option> [= <value>] | options | <lang>]*
   show [<name>|[all] [predefined|user] [<glob>]] [[as] {english|typedef}]
