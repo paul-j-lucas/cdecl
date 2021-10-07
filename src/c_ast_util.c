@@ -353,7 +353,7 @@ static c_ast_t const* c_ast_if_unreference( c_ast_t const *ast,
  * @param ast_cv_stids The `const`/`volatiile` qualifier(s) of the `typedef`
  * for \a ast, if any.
  * @param tids The bitwise-or of type(s) to check against.
- * @return If \a ast is not null and the type of \a ast is one of \a tids,
+ * @return If \a ast is not NULL and the type of \a ast is one of \a tids,
  * returns \a ast; otherwise returns NULL.
  */
 PJL_WARN_UNUSED_RESULT
