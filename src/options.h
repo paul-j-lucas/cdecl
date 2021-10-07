@@ -150,6 +150,7 @@ void options_init( int *pargc, char const **pargv[] );
  * calls PMESSAGE_EXIT().
  * @return Returns `true` only if \a ecsu_format was parsed successfully.
  */
+PJL_NOWARN_UNUSED_RESULT
 bool parse_explicit_ecsu( char const *ecsu_format, c_loc_t const *loc );
 
 /**
@@ -172,6 +173,7 @@ bool parse_explicit_ecsu( char const *ecsu_format, c_loc_t const *loc );
  * PMESSAGE_EXIT().
  * @return Returns `true` only if \a ei_format was parsed successfully.
  */
+PJL_NOWARN_UNUSED_RESULT
 bool parse_explicit_int( char const *ei_format, c_loc_t const *loc );
 
 /**

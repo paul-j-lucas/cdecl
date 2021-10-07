@@ -83,6 +83,7 @@ void dym_free( did_you_mean_t const *dym_array );
  *
  * @sa dym_free()
  */
+PJL_WARN_UNUSED_RESULT
 did_you_mean_t const* dym_new( dym_kind_t kinds, char const *unknown_token );
 
 ///////////////////////////////////////////////////////////////////////////////

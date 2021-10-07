@@ -57,6 +57,7 @@ bool c_ast_check( c_ast_t const *ast );
  * @param sname_loc The location of \a sname.
  * @return Returns `true` only if all checks passed.
  */
+PJL_WARN_UNUSED_RESULT
 bool c_sname_check( c_sname_t const *sname, c_loc_t const *sname_loc );
 
 ///////////////////////////////////////////////////////////////////////////////
