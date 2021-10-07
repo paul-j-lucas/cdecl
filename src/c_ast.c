@@ -43,7 +43,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 // local variable definitions
-static unsigned   c_ast_count;          ///< ASTs allocated but not yet freed.
+static size_t c_ast_count;              ///< ASTs allocated but not yet freed.
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -122,7 +122,7 @@ static void c_ast_set_local_type_if_is_any_scope( c_ast_t *ast ) {
 
 void c_ast_cleanup( void ) {
   if ( unlikely( c_ast_count > 0 ) )
-    INTERNAL_ERR( "number of c_ast objects (%u) > 0\n", c_ast_count );
+    INTERNAL_ERR( "number of c_ast objects (%zu) > 0\n", c_ast_count );
 }
 
 c_ast_t* c_ast_dup( c_ast_t const *ast, c_ast_list_t *ast_list ) {
