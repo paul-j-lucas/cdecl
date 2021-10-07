@@ -235,12 +235,12 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
 /**
  * Only if \a ast is a <code>\ref K_POINTER</code>, un-pointers \a ast.
  *
- * @param ast The AST to un-reference.
- * @param cv_stids If \a ast is a reference, receives the `const` and
- * `volatile` (cv) qualifiers (only) of the first referred-to type.  For a
- * declaration like <code>const&nbsp;S&nbsp;&x</code> (where `S` is a
- * `struct`), the `const` is associated with the `typedef` for the `struct` and
- * _not_ the actual `struct` the `typedef` is a `typedef` for:
+ * @param ast The AST to un-pointer.
+ * @param cv_stids If \a ast is a pointer, receives the `const` and `volatile`
+ * (cv) qualifiers (only) of the first pointed-to type.  For a declaration like
+ * <code>const&nbsp;S&nbsp;*x</code> (where `S` is a `struct`), the `const` is
+ * associated with the `typedef` for the `struct` and _not_ the actual `struct`
+ * the `typedef` is a `typedef` for:
  * ```
  * decl_c = {
  *   sname = "x" (none),
@@ -265,7 +265,7 @@ static c_ast_t* c_ast_add_func_impl( c_ast_t *ast, c_ast_t *ret_ast,
  * ```
  * Therefore, we need to copy the cv qualifiers of the `typedef` before we
  * un-`typedef` it.
- * @return Returns the referenced AST or NULL if \a ast is not a reference.
+ * @return Returns the pointed-to AST or NULL if \a ast is not a pointer.
  *
  * @sa c_ast_if_unreference()
  * @sa c_ast_unpointer()
@@ -282,7 +282,7 @@ static c_ast_t const* c_ast_if_unpointer( c_ast_t const *ast,
   assert( cv_stids != NULL );
   *cv_stids = ast->type.stids & TS_CONST_VOLATILE;
   //
-  // Now that we've gotten the cv qualifiers of the first referred-to type, we
+  // Now that we've gotten the cv qualifiers of the first pointed-to type, we
   // can just call the ordinary c_ast_untypedef() to peel off any remaining
   // typedef layers.
   //
