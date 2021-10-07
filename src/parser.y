@@ -3422,18 +3422,19 @@ block_decl_c_astp                       // Apple extension
     lparen_exp param_list_c_ast_opt ')' gnu_attribute_specifier_list_c_opt
     {
       c_ast_t *const block_ast = ia_type_ast_pop();
+      c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "block_decl_c_astp",
                   "'(' '^' type_qualifier_list_c_stid_opt decl_c_astp ')' "
                   "'(' param_list_c_ast_opt ')'" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $4 );
       DUMP_AST( "decl_c_astp", $5.ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $8 );
 
       C_TYPE_ADD_TID( &block_ast->type, $4, @4 );
       block_ast->as.block.param_ast_list = $8;
-      $$.ast = c_ast_add_func( $5.ast, ia_type_ast_peek(), block_ast );
+      $$.ast = c_ast_add_func( $5.ast, type_ast, block_ast );
       $$.target_ast = block_ast->as.block.ret_ast;
 
       DUMP_AST( "block_decl_c_astp", $$.ast );
@@ -4060,12 +4061,14 @@ oper_c_ast
   : // in_attr: type_c_ast
     scope_sname_c_opt Y_OPERATOR c_operator
     {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
       DUMP_START( "oper_c_ast", "OPERATOR c_operator" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_SNAME( "scope_sname_c_opt", $1 );
       DUMP_STR( "c_operator", c_oper_get( $3 )->name );
 
-      $$ = ia_type_ast_peek();
+      $$ = type_ast;
       c_ast_set_sname( $$, &$1 );
       $$->as.oper.oper_id = $3;
 
@@ -4097,13 +4100,15 @@ pointer_type_c_ast
   : // in_attr: type_c_ast
     '*' type_qualifier_list_c_stid_opt
     {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
       DUMP_START( "pointer_type_c_ast", "* type_qualifier_list_c_stid_opt" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
 
       $$ = c_ast_new_gc( K_POINTER, &@$ );
       $$->type.stids = c_tid_check( $2, C_TPID_STORE );
-      c_ast_set_parent( ia_type_ast_peek(), $$ );
+      c_ast_set_parent( type_ast, $$ );
 
       DUMP_AST( "pointer_type_c_ast", $$ );
       DUMP_END();
@@ -4133,9 +4138,11 @@ pointer_to_member_type_c_ast
   : // in_attr: type_c_ast
     any_sname_c Y_COLON2_STAR cv_qualifier_list_stid_opt
     {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
       DUMP_START( "pointer_to_member_type_c_ast",
                   "sname '::*' cv_qualifier_list_stid_opt" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_SNAME( "sname", $1 );
       DUMP_TID( "cv_qualifier_list_stid_opt", $3 );
 
@@ -4157,7 +4164,7 @@ pointer_to_member_type_c_ast
       $$->type = c_type_or( &C_TYPE_LIT_S( $3 ), &scope_type );
 
       $$->as.ptr_mbr.class_sname = $1;
-      c_ast_set_parent( ia_type_ast_peek(), $$ );
+      c_ast_set_parent( type_ast, $$ );
 
       DUMP_AST( "pointer_to_member_type_c_ast", $$ );
       DUMP_END();
@@ -4186,13 +4193,15 @@ reference_type_c_ast
   : // in_attr: type_c_ast
     Y_AMPER type_qualifier_list_c_stid_opt
     {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
       DUMP_START( "reference_type_c_ast", "&" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
 
       $$ = c_ast_new_gc( K_REFERENCE, &@$ );
       $$->type.stids = c_tid_check( $2, C_TPID_STORE );
-      c_ast_set_parent( ia_type_ast_peek(), $$ );
+      c_ast_set_parent( type_ast, $$ );
 
       DUMP_AST( "reference_type_c_ast", $$ );
       DUMP_END();
@@ -4201,13 +4210,15 @@ reference_type_c_ast
   | // in_attr: type_c_ast
     Y_AMPER2 type_qualifier_list_c_stid_opt
     {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
       DUMP_START( "reference_type_c_ast", "&&" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $2 );
 
       $$ = c_ast_new_gc( K_RVALUE_REFERENCE, &@$ );
       $$->type.stids = c_tid_check( $2, C_TPID_STORE );
-      c_ast_set_parent( ia_type_ast_peek(), $$ );
+      c_ast_set_parent( type_ast, $$ );
 
       DUMP_AST( "reference_type_c_ast", $$ );
       DUMP_END();
@@ -4220,11 +4231,13 @@ typedef_type_decl_c_ast
   : // in_attr: type_c_ast
     typedef_type_c_ast
     {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
       DUMP_START( "typedef_type_decl_c_ast", "typedef_type_c_ast" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "typedef_type_c_ast", $1 );
 
-      if ( c_type_is_tid_any( &ia_type_ast_peek()->type, TS_TYPEDEF ) ) {
+      if ( c_type_is_tid_any( &type_ast->type, TS_TYPEDEF ) ) {
         //
         // If we're defining a type, return the type as-is.
         //
@@ -4254,13 +4267,14 @@ user_defined_conversion_decl_c_astp
     noexcept_c_stid_opt func_equals_c_stid_opt
     {
       ia_type_ast_pop();
+      c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "user_defined_conversion_decl_c_astp",
                   "scope_sname_c_opt OPERATOR "
                   "type_c_ast udc_decl_c_ast_opt '(' ')' "
                   "func_qualifier_list_c_stid_opt noexcept_c_stid_opt "
                   "func_equals_c_stid_opt" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_SNAME( "scope_sname_c_opt", $1 );
       DUMP_AST( "type_c_ast", $3 );
       DUMP_AST( "udc_decl_c_ast_opt", $5 );
@@ -4271,8 +4285,8 @@ user_defined_conversion_decl_c_astp
       $$.ast = c_ast_new_gc( K_USER_DEF_CONVERSION, &@$ );
       $$.ast->sname = $1;
       $$.ast->type.stids = c_tid_check( $7 | $8 | $9, C_TPID_STORE );
-      if ( ia_type_ast_peek() != NULL )
-        c_type_or_eq( &$$.ast->type, &ia_type_ast_peek()->type );
+      if ( type_ast != NULL )
+        c_type_or_eq( &$$.ast->type, &type_ast->type );
       $$.ast->as.udef_conv.conv_ast = $5 != NULL ? $5 : $3;
       $$.target_ast = $$.ast->as.udef_conv.conv_ast;
 
@@ -4323,12 +4337,14 @@ user_defined_literal_c_ast
   : // in_attr: type_c_ast
     scope_sname_c_opt Y_OPERATOR quote2_exp name_exp
     {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
       DUMP_START( "user_defined_literal_c_ast", "OPERATOR \"\" NAME" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_SNAME( "scope_sname_c_opt", $1 );
       DUMP_STR( "name", $4 );
 
-      $$ = ia_type_ast_peek();
+      $$ = type_ast;
       c_ast_set_sname( $$, &$1 );
       c_ast_append_name( $$, $4 );
 
@@ -4443,18 +4459,19 @@ block_cast_c_astp                       // Apple extension
     lparen_exp param_list_c_ast_opt ')'
     {
       c_ast_t *const block_ast = ia_type_ast_pop();
+      c_ast_t *const type_ast = ia_type_ast_peek();
 
       DUMP_START( "block_cast_c_astp",
                   "'(' '^' type_qualifier_list_c_stid_opt cast_c_astp_opt ')' "
                   "'(' param_list_c_ast_opt ')'" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_TID( "type_qualifier_list_c_stid_opt", $4 );
       DUMP_AST( "cast_c_astp_opt", $5.ast );
       DUMP_AST_LIST( "param_list_c_ast_opt", $8 );
 
       C_TYPE_ADD_TID( &block_ast->type, $4, @4 );
       block_ast->as.block.param_ast_list = $8;
-      $$.ast = c_ast_add_func( $5.ast, ia_type_ast_peek(), block_ast );
+      $$.ast = c_ast_add_func( $5.ast, type_ast, block_ast );
       $$.target_ast = block_ast->as.block.ret_ast;
 
       DUMP_AST( "block_cast_c_astp", $$.ast );
@@ -6217,7 +6234,9 @@ typedef_type_c_ast
 
   | // in_attr: type_c_ast
     any_typedef Y_COLON2 sname_c
-    { //
+    {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+      //
       // This is for a case like:
       //
       //      define S as struct S
@@ -6226,16 +6245,16 @@ typedef_type_c_ast
       // that is: a typedef'd type used for a scope.
       //
       DUMP_START( "typedef_type_c_ast", "any_typedef '::' sname_c" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "any_typedef.ast", $1->ast );
       DUMP_SNAME( "sname_c", $3 );
 
-      if ( ia_type_ast_peek() == NULL ) {
+      if ( type_ast == NULL ) {
         print_error_unknown_name( &@3, &$3 );
         PARSE_ABORT();
       }
 
-      $$ = ia_type_ast_peek();
+      $$ = type_ast;
       c_sname_t temp_name = c_ast_name_dup( $1->ast );
       c_ast_set_sname( $$, &temp_name );
       c_ast_append_sname( $$, &$3 );
@@ -6246,7 +6265,9 @@ typedef_type_c_ast
 
   | // in_attr: type_c_ast
     any_typedef Y_COLON2 typedef_sname_c
-    { //
+    {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+      //
       // This is for a case like:
       //
       //      define S as struct S
@@ -6256,16 +6277,16 @@ typedef_type_c_ast
       // that is: a typedef'd type used for an intermediate scope.
       //
       DUMP_START( "typedef_type_c_ast", "any_typedef '::' typedef_sname_c" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "any_typedef", $1->ast );
       DUMP_SNAME( "typedef_sname_c", $3 );
 
-      if ( ia_type_ast_peek() == NULL ) {
+      if ( type_ast == NULL ) {
         print_error_unknown_name( &@3, &$3 );
         PARSE_ABORT();
       }
 
-      $$ = ia_type_ast_peek();
+      $$ = type_ast;
       c_sname_t temp_name = c_ast_name_dup( $1->ast );
       c_ast_set_sname( $$, &temp_name );
       c_ast_append_sname( $$, &$3 );
@@ -6356,12 +6377,14 @@ sname_c_ast
   : // in_attr: type_c_ast
     sname_c bit_field_c_int_opt
     {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
       DUMP_START( "sname_c_ast", "sname_c" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_SNAME( "sname", $1 );
       DUMP_INT( "bit_field_c_int_opt", $2 );
 
-      $$ = ia_type_ast_peek();
+      $$ = type_ast;
       c_ast_set_sname( $$, &$1 );
 
       bool ok = true;
