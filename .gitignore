@@ -5,11 +5,13 @@
 *.o
 *.trs
 *~
-.*.sw[op]
 .deps/
 .DS_Store
 Makefile
 tags
+
+.*.s[a-v][a-z]
+.*.sw[a-p]
 
 /*.[ch]
 /*-t
