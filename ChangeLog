@@ -1,5 +1,17 @@
+2021-10-07  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, c_ast_util.c, c_ast_util.h, parser.y, test/Makefile.am,
+     cdecl-d-faia4iaviacias6i_v.out, explain_na4i.out, explain_na4i.test: Fixed
+     nested array declarations, e.g.: int (a)[4].
+   * c_ast_util.c: s/c_ast_is_parent( ast->parent_ast )/ast->parent_ast !=
+     NULL/
+   * c_ast.c: s/unsigned/size_t/
+
 2021-10-06  Paul J. Lucas <paul@lucasmail.org>
 
+   * check.h, dam_lev.h, did_you_mean.h, options.h: Added
+     PJL_WARN_UNUSED_RESULT.
+   * lcovrc: s/CASE_K_NONE_OR_PLACEHOLDER/CASE_K_PLACEHOLDER/
    * help.c, help_options.out: Added <lang> to help for options.
    * help.c, help-c++.out, help-c.out, help_command-c++.out,
      help_command-c++03.out, help_command-c.out, help_commands-c++.out,
