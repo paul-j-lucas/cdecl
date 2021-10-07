@@ -44,7 +44,7 @@
 
 // local functions
 PJL_WARN_UNUSED_RESULT
-static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t* );
+static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t*, c_ast_t* );
 
 ////////// local functions ////////////////////////////////////////////////////
 
@@ -52,11 +52,14 @@ static c_ast_t* c_ast_append_array( c_ast_t*, c_ast_t* );
  * Adds an array to the AST being built.
  *
  * @param ast The AST to append to; may be NULL.
+ * @param of_ast The AST of the of-type of the array AST.
  * @param array_ast The array AST to append.  Its "of" type must be NULL.
  * @return Returns the AST to be used as the grammar production's return value.
  */
 PJL_WARN_UNUSED_RESULT
-static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast ) {
+static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *of_ast,
+                                      c_ast_t *array_ast ) {
+  assert( of_ast != NULL );
   assert( array_ast != NULL );
   assert( array_ast->kind == K_ARRAY );
 
@@ -65,12 +68,29 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast ) {
 
   switch ( ast->kind ) {
     case K_ARRAY:
-      return c_ast_append_array( ast, array_ast );
+      return c_ast_append_array( ast, of_ast, array_ast );
+
+    case K_PLACEHOLDER:
+      //
+      // Before:
+      //
+      //      [array_ast]
+      //      [placeholder] --> [placeholder-parent]
+      //      [of_ast]
+      //
+      // After:
+      //
+      //      [of_ast] --> [array_ast] --> [placeholder-parent]
+      //
+      if ( ast->parent_ast != NULL )
+        c_ast_set_parent( array_ast, ast->parent_ast );
+      c_ast_set_parent( of_ast, array_ast );
+      return array_ast;
 
     case K_POINTER:
       if ( ast->depth > array_ast->depth ) {
         PJL_IGNORE_RV(
-          c_ast_add_array_impl( ast->as.ptr_ref.to_ast, array_ast )
+          c_ast_add_array_impl( ast->as.ptr_ref.to_ast, of_ast, array_ast )
         );
         return ast;
       }
@@ -131,13 +151,16 @@ static c_ast_t* c_ast_add_array_impl( c_ast_t *ast, c_ast_t *array_ast ) {
  *  + <code>array 3 of array 5 of array 7 of int</code>
  *
  * @param ast The AST to append to.
+ * @param of_ast The AST of the of-type of the array AST.
  * @param array_ast The array AST to append.  Its "of" type must be NULL.
  * @return If \a ast is an array, returns \a ast; otherwise returns \a
  * array_ast.
  */
 PJL_WARN_UNUSED_RESULT
-static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast ) {
+static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *of_ast,
+                                    c_ast_t *array_ast ) {
   assert( ast != NULL );
+  assert( of_ast != NULL );
   assert( array_ast != NULL );
   assert( array_ast->kind == K_ARRAY );
   assert( array_ast->as.array.of_ast != NULL );
@@ -163,8 +186,9 @@ static c_ast_t* c_ast_append_array( c_ast_t *ast, c_ast_t *array_ast ) {
       // On the next-to-last recursive call, this sets this array to be an
       // array of the new array; for all prior recursive calls, it's a no-op.
       //
-      c_ast_t *const a = c_ast_append_array( ast->as.array.of_ast, array_ast );
-      c_ast_set_parent( a, ast );
+      c_ast_t *const temp_ast =
+        c_ast_append_array( ast->as.array.of_ast, of_ast, array_ast );
+      c_ast_set_parent( temp_ast, ast );
       return ast;
     }
 
@@ -466,10 +490,12 @@ static bool c_ast_vistor_type_any( c_ast_t *ast, uint64_t data ) {
 
 ////////// extern functions ///////////////////////////////////////////////////
 
-c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *array_ast ) {
+c_ast_t* c_ast_add_array( c_ast_t *ast, c_ast_t *of_ast, c_ast_t *array_ast ) {
   assert( ast != NULL );
-  c_ast_t *const rv_ast = c_ast_add_array_impl( ast, array_ast );
+  c_ast_t *const rv_ast = c_ast_add_array_impl( ast, of_ast, array_ast );
   assert( rv_ast != NULL );
+  if ( c_ast_name_empty( rv_ast ) )
+    rv_ast->sname = c_ast_take_name( ast );
   c_type_t const taken_type = c_ast_take_storage( array_ast->as.array.of_ast );
   c_type_or_eq( &array_ast->type, &taken_type );
   return rv_ast;
@@ -782,12 +808,12 @@ c_ast_t* c_ast_patch_placeholder( c_ast_t *type_ast, c_ast_t *decl_ast ) {
       // Otherwise, excise the K_PLACEHOLDER.
       // Before:
       //
-      //      [type] --> ... --> [type-root]
+      //      [type_ast] --> ... --> [type_root_ast]
       //      [placeholder] --> [placeholder-parent]
       //
       // After:
       //
-      //      [type] --> ... --> [type-root] --> [placeholder-parent]
+      //      [type_ast] --> ... --> [type_root_ast] --> [placeholder-parent]
       //
       c_ast_t *const type_root_ast = c_ast_root( type_ast );
       c_ast_set_parent( type_root_ast, placeholder_ast->parent_ast );

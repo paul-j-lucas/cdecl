@@ -23,6 +23,13 @@ are included explicitly in C++ declarations.  The default is `struct` and
     c++decl> declare pt as pointer to class T
     T *pt;
 
+** Fixed nested array declaration
+Explaining a declaration like:
+
+    explain int (a)[4]
+
+is now fixed.
+
 
 * Changes in Cdecl 11.2
 

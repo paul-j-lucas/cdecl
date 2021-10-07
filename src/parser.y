@@ -3373,7 +3373,10 @@ array_decl_c_astp
   : // in_attr: type_c_ast
     decl2_c_astp array_size_c_int gnu_attribute_specifier_list_c_opt
     {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+
       DUMP_START( "array_decl_c_astp", "decl2_c_astp array_size_c_int" );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "decl2_c_astp", $1.ast );
       DUMP_AST( "target_ast", $1.target_ast );
       DUMP_INT( "array_size_c_int", $2 );
@@ -3384,9 +3387,9 @@ array_decl_c_astp
 
       if ( $1.target_ast != NULL ) {    // array-of or function-like-ret type
         $$.ast = $1.ast;
-        $$.target_ast = c_ast_add_array( $1.target_ast, array_ast );
+        $$.target_ast = c_ast_add_array( $1.target_ast, type_ast, array_ast );
       } else {
-        $$.ast = c_ast_add_array( $1.ast, array_ast );
+        $$.ast = c_ast_add_array( $1.ast, type_ast, array_ast );
         $$.target_ast = NULL;
       }
 
@@ -4368,10 +4371,11 @@ array_cast_c_astp
   : // in_attr: type_c_ast
     cast_c_astp_opt array_size_c_ast
     {
+      c_ast_t *const type_ast = ia_type_ast_peek();
       c_ast_t *const array_ast = $2;
 
       DUMP_START( "array_cast_c_astp", "cast_c_astp_opt array_size_c_int" );
-      DUMP_AST( "(type_c_ast)", ia_type_ast_peek() );
+      DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "cast_c_astp_opt", $1.ast );
       DUMP_AST( "target_ast", $1.target_ast );
       DUMP_AST( "array_size_c_ast", array_ast );
@@ -4380,10 +4384,10 @@ array_cast_c_astp
 
       if ( $1.target_ast != NULL ) {    // array-of or function-like-ret type
         $$.ast = $1.ast;
-        $$.target_ast = c_ast_add_array( $1.target_ast, $2 );
+        $$.target_ast = c_ast_add_array( $1.target_ast, type_ast, $2 );
       } else {
-        c_ast_t *const ast = $1.ast != NULL ? $1.ast : ia_type_ast_peek();
-        $$.ast = c_ast_add_array( ast, $2 );
+        c_ast_t *const ast = $1.ast != NULL ? $1.ast : type_ast;
+        $$.ast = c_ast_add_array( ast, type_ast, $2 );
         $$.target_ast = NULL;
       }
 

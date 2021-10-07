@@ -446,6 +446,7 @@ TESTS+=	tests/explain_0f_v-01.test \
 	tests/explain_msvc_f_v.test \
 	tests/explain_mswa_f_v.test \
 	tests/explain_n.test \
+	tests/explain_na4i.test \
 	tests/explain_nfi_c.test \
 	tests/explain_ni.test \
 	tests/explain_nrfi_v.test \
