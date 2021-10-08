@@ -1,5 +1,9 @@
 2021-10-07  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.c, cdecl.h, color.c, options.c, options.h: Moved fin, fout to
+     cdecl.[hc].
+   * parser.y: Now doing this more: c_ast_t *const type_ast =
+     ia_type_ast_peek();
    * NEWS, c_ast_util.c, c_ast_util.h, parser.y, test/Makefile.am,
      cdecl-d-faia4iaviacias6i_v.out, explain_na4i.out, explain_na4i.test: Fixed
      nested array declarations, e.g.: int (a)[4].
