@@ -13,7 +13,7 @@ with their complete changes, see the AUTHORS file.
 * Changes in Cdecl 11.3
 
 ** Added `explicit-ecsu` option
-Both a `--explicit-csu`/`-S` command-line and `explicit-ecsu` set option have
+Both a `--explicit-ecsu`/`-S` command-line and `explicit-ecsu` set option have
 been added that set which type keywords `enum`, `class`, `struct`, or `union`,
 are included explicitly in C++ declarations.  The default is `struct` and
 `union` only, so:
