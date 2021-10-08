@@ -100,10 +100,6 @@ bool                opt_prompt = true;
 bool                opt_semicolon = true;
 bool                opt_typedefs = true;
 
-// other extern variables
-FILE               *fin;
-FILE               *fout;
-
 /**
  * The integer type(s) that `int` shall be print explicitly for in C/C++
  * declarations even when not needed because the type(s) contain at least one

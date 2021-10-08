@@ -91,6 +91,8 @@ cdecl_command_t const CDECL_COMMANDS[] = {
 // extern variable definitions
 bool          cdecl_initialized;
 cdecl_mode_t  cdecl_mode;
+FILE         *fin;
+FILE         *fout;
 bool          is_input_a_tty;
 char const   *me;
 

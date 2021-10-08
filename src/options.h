@@ -75,8 +75,6 @@ extern bool         opt_semicolon;      ///< Print `;` at end of gibberish?
 extern bool         opt_typedefs;       ///< Load C/C++ standard `typedef`s?
 
 // other extern variables
-extern FILE        *fin;                ///< File in.
-extern FILE        *fout;               ///< File out.
 #ifdef ENABLE_FLEX_DEBUG
 extern int          yy_flex_debug;      ///< Flex variable for debugging.
 #define opt_flex_debug  yy_flex_debug   ///< Print Flex debug output?

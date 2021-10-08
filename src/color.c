@@ -26,7 +26,7 @@
 // local
 #include "pjl_config.h"                 /* must go first */
 #include "color.h"
-#include "options.h"
+#include "cdecl.h"
 #include "util.h"
 
 /// @cond DOXYGEN_IGNORE
