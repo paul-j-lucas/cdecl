@@ -4858,7 +4858,8 @@ atomic_specifier_type_c_ast
       $$ = $5.ast != NULL ? $5.ast : $3;
 
       //
-      // Ensure the _Atomic() specifier type isn't cvr-qualified:
+      // Ensure the _Atomic() specifier type doesn't have either a storage
+      // class or attributes:
       //
       //      const _Atomic(int) x;     // OK
       //      _Atomic(const int) y;     // error
@@ -4867,11 +4868,12 @@ atomic_specifier_type_c_ast
       // AST since the type would be stored as "atomic const int" either way so
       // the AST has no "memory" of which it was.
       //
-      if ( c_tid_is_any( $$->type.stids, TS_CVR ) ) {
+      if ( $$->type.stids != TS_NONE || $$->type.atids != TA_NONE ) {
+        static c_type_t const TSA_ANY = C_TYPE_LIT( TB_NONE, TS_ANY, TA_ANY );
+        c_type_t const error_type = c_type_and( &$$->type, &TSA_ANY );
         print_error( &@3,
-          "%s can not be applied to \"%s\" qualified type\n",
-          L__ATOMIC,
-          c_tid_name_c( $$->type.stids & TS_CVR )
+          "%s can not be of \"%s\"\n",
+          L__ATOMIC, c_type_name_c( &error_type )
         );
         PARSE_ABORT();
       }
