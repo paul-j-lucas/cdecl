@@ -448,7 +448,7 @@ static void g_print_ast_array_size( g_state_t const *g, c_ast_t const *ast ) {
       FPUTC( '*', g->gout );
       break;
     default:
-      FPRINTF( g->gout, "%d", ast->as.array.size );
+      FPRINTF( g->gout, PRId_C_ARRAY_SIZE_T, ast->as.array.size );
   } // switch
   FPUTS( graph_token_c( "]" ), g->gout );
 }
@@ -466,7 +466,7 @@ static void g_print_ast_bit_width( g_state_t const *g, c_ast_t const *ast ) {
   assert( c_ast_is_kind_any( ast, K_BUILTIN | K_TYPEDEF ) );
 
   if ( ast->as.builtin.bit_width > 0 )
-    FPRINTF( g->gout, " : %u", ast->as.builtin.bit_width );
+    FPRINTF( g->gout, " : " PRId_C_BIT_WIDTH_T, ast->as.builtin.bit_width );
 }
 
 /**

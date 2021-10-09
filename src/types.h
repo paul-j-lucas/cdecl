@@ -21,9 +21,6 @@
 #ifndef cdecl_types_H
 #define cdecl_types_H
 
-// standard
-#include <stdint.h>                     /* for uint*_t */
-
 /**
  * @file
  * Declares some types and many `typedef` definitions in one file.
@@ -33,6 +30,40 @@
  * multiple `typedef` definitions even if the types match.  Hence, just put all
  * `typedef` definitions in one file.
  */
+
+// standard
+#include <stdint.h>                     /* for uint*_t */
+
+/**
+ * Decimal print conversion specifier for <code>\ref c_bit_width_t</code>.
+ */
+#define PRId_C_BIT_WIDTH_T        "%u"
+
+/**
+ * Decimal print conversion specifier for <code>\ref c_array_size_t</code>.
+ */
+#define PRId_C_ARRAY_SIZE_T       "%d"
+
+/**
+ * Decimal print conversion specifier for <code>\ref c_ast_sid_t</code>.
+ *
+ * @sa PRId_C_AST_ID_T
+ */
+#define PRId_C_AST_DEPTH_T        "%u"
+
+/**
+ * Decimal print conversion specifier for <code>\ref c_ast_id_t</code>.
+ *
+ * @sa #PRId_C_AST_SID_T
+ */
+#define PRId_C_AST_ID_T           "%u"
+
+/**
+ * Decimal print conversion specifier for <code>\ref c_ast_sid_t</code>.
+ *
+ * @sa PRId_C_AST_ID_T
+ */
+#define PRId_C_AST_SID_T          "%d"
 
 // We have to define these typedefs here rather than just use the struct tags
 // in the typedefs below otherwise Doxygen won't know about them.
@@ -68,6 +99,7 @@ typedef enum   c_ast_kind         c_ast_kind_t;
 typedef slist_t                   c_ast_list_t;   ///< AST list.
 typedef struct c_ast_pair         c_ast_pair_t;
 typedef slist_node_t              c_ast_param_t;  ///< Function-like parameter.
+typedef int                       c_ast_sid_t;    ///< Signed `c_ast_id_t`.
 typedef unsigned                  c_bit_width_t;  ///< Bit-field width.
 typedef struct c_builtin_ast      c_builtin_ast_t;
 typedef enum   c_cast_kind        c_cast_kind_t;

@@ -119,16 +119,17 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
 
     DUMP_SNAME( "sname", &ast->sname );
     FPUTS( ",\n", dout );
-    DUMP_FORMAT( "unique_id = %u,\n", ast->unique_id );
+    DUMP_FORMAT( "unique_id = " PRId_C_AST_ID_T ",\n", ast->unique_id );
     DUMP_STR( "kind", c_kind_name( ast->kind ) );
     FPUTS( ",\n", dout );
     DUMP_STR( "cast_kind", c_cast_english( ast->cast_kind ) );
     FPUTS( ",\n", dout );
-    DUMP_FORMAT( "depth = %u,\n", ast->depth );
+    DUMP_FORMAT( "depth = " PRId_C_AST_DEPTH_T ",\n", ast->depth );
 
     DUMP_FORMAT(
-      "parent->unique_id = %d,\n",
-      ast->parent_ast != NULL ? (int)ast->parent_ast->unique_id : -1
+      "parent->unique_id = " PRId_C_AST_SID_T ",\n",
+      ast->parent_ast != NULL ?
+        (c_ast_sid_t)ast->parent_ast->unique_id : (c_ast_sid_t)(-1)
     );
 
     if ( ast->align.kind != C_ALIGNAS_NONE ) {
@@ -172,7 +173,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
             FPUTC( '*', dout );
             break;
           default:
-            FPRINTF( dout, "%d", ast->as.array.size );
+            FPRINTF( dout, PRId_C_ARRAY_SIZE_T, ast->as.array.size );
         } // switch
         FPUTS( ",\n", dout );
         if ( ast->as.array.stids != TS_NONE ) {
@@ -186,7 +187,7 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
       case K_OPERATOR:
         DUMP_COMMA;
         DUMP_FORMAT(
-          "oper_id = \"%s\" (%u),\n",
+          "oper_id = \"%s\" (%d),\n",
           c_oper_get( ast->as.oper.oper_id )->name,
           ast->as.oper.oper_id
         );
@@ -257,7 +258,9 @@ void c_ast_dump( c_ast_t const *ast, unsigned indent, char const *key0,
 
       case K_BUILTIN:
         DUMP_COMMA;
-        DUMP_FORMAT( "bit_width = %u", ast->as.builtin.bit_width );
+        DUMP_FORMAT(
+          "bit_width = " PRId_C_BIT_WIDTH_T, ast->as.builtin.bit_width
+        );
         break;
 
       case K_USER_DEF_CONVERSION:

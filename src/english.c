@@ -59,8 +59,12 @@ static void c_ast_english_bit_width( c_ast_t const *ast, FILE *eout ) {
   assert( c_ast_is_kind_any( ast, K_BUILTIN | K_TYPEDEF ) );
   assert( eout != NULL );
 
-  if ( ast->as.builtin.bit_width > 0 )
-    FPRINTF( eout, " %s %u %s", L_WIDTH, ast->as.builtin.bit_width, L_BITS );
+  if ( ast->as.builtin.bit_width > 0 ) {
+    FPRINTF( eout,
+      " %s " PRId_C_BIT_WIDTH_T " %s",
+      L_WIDTH, ast->as.builtin.bit_width, L_BITS
+    );
+  }
 }
 
 /**
@@ -141,7 +145,7 @@ static bool c_ast_visitor_english( c_ast_t *ast, uint64_t data ) {
       if ( ast->as.array.stids != TS_NONE )
         FPRINTF( eout, "%s ", c_tid_name_english( ast->as.array.stids ) );
       if ( ast->as.array.size >= 0 )
-        FPRINTF( eout, "%d ", ast->as.array.size );
+        FPRINTF( eout, PRId_C_ARRAY_SIZE_T " ", ast->as.array.size );
       FPRINTF( eout, "%s ", L_OF );
       break;
 
