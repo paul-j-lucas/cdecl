@@ -371,13 +371,13 @@ struct c_udef_lit_ast {
 struct c_ast {
   c_alignas_t           align;          ///< Alignment, if any.
   c_ast_depth_t         depth;          ///< How many `()` deep.
-  c_ast_id_t            unique_id;      ///< Unique id (starts at 1).
   c_ast_kind_t          kind;           ///< AST kind.
-  c_cast_kind_t         cast_kind;      ///< Cast kind.
+  c_cast_kind_t         cast_kind;      ///< Cast kind, if any.
+  c_loc_t               loc;            ///< Source location.
   c_sname_t             sname;          ///< Scoped name, if any.
   c_type_t              type;           ///< Type, if any.
   c_ast_t              *parent_ast;     ///< Parent AST node, if any.
-  c_loc_t               loc;            ///< Source location.
+  c_ast_id_t            unique_id;      ///< Unique id (starts at 1).
 
   union {
     c_parent_ast_t      parent;         ///< "Parent" member(s).

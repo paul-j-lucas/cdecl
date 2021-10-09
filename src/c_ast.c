@@ -352,10 +352,10 @@ c_ast_t* c_ast_new( c_ast_kind_t kind, c_ast_depth_t depth,
   MEM_ZERO( ast );
 
   ast->depth = depth;
-  ast->unique_id = ++next_id;
   ast->kind = kind;
-  ast->type = T_NONE;
   ast->loc = *loc;
+  ast->type = T_NONE;
+  ast->unique_id = ++next_id;
 
   switch ( kind ) {
     case K_ARRAY:
