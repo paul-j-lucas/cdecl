@@ -1,5 +1,6 @@
 2021-10-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * cdecl.1: Added "[, gibberish]*" to explain.
    * cdecl.1: Added mention of _Atomic in C++23.
    * dump.c, english.c, gibberish.c, types.h: Added c_ast_sid_t,
      PRId_C_BIT_WIDTH_T, PRId_C_ARRAY_SIZE_T, PRId_C_AST_DEPTH_T,
