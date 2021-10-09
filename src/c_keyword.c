@@ -155,7 +155,7 @@ static c_keyword_t const C_KEYWORDS[] = {
   { L__ALIGNOF,             Y__ALIGNOF,           KC__, TX_NONE,
     LANG_C_MIN(11),         AC_LANG(NONE)                                 },
   { L__ATOMIC,              Y__ATOMIC_QUAL,       KC__, TS_ATOMIC,
-    LANG_C_MIN(11),         AC_LANG(C_MIN(11))                            },
+    LANG_C_CPP_MIN(11,23),  AC_LANG(C_CPP_MIN(11,23))                     },
   { L__GENERIC,             Y__GENERIC,           KC__, TX_NONE,
     LANG_C_MIN(11),         AC_LANG(NONE)                                 },
   { L__NORETURN,            Y__NORETURN,          KC__, TA_NORETURN,

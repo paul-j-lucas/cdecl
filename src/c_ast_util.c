@@ -304,7 +304,7 @@ static c_ast_t const* c_ast_if_unpointer( c_ast_t const *ast,
   ast = ast->as.ptr_ref.to_ast;
   assert( ast != NULL );
   assert( cv_stids != NULL );
-  *cv_stids = ast->type.stids & TS_CONST_VOLATILE;
+  *cv_stids = ast->type.stids & TS_CV;
   //
   // Now that we've gotten the cv qualifiers of the first pointed-to type, we
   // can just call the ordinary c_ast_untypedef() to peel off any remaining
@@ -361,7 +361,7 @@ static c_ast_t const* c_ast_if_unreference( c_ast_t const *ast,
   ast = ast->as.ptr_ref.to_ast;
   assert( ast != NULL );
   assert( cv_stids != NULL );
-  *cv_stids = ast->type.stids & TS_CONST_VOLATILE;
+  *cv_stids = ast->type.stids & TS_CV;
   //
   // Now that we've gotten the cv qualifiers of the first referred-to type, we
   // can just call the ordinary c_ast_unreference() to peel off any remaining

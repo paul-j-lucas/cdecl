@@ -532,6 +532,7 @@ TESTS+=	tests/explain_+i-c.test \
 	tests/explain_alf_i.test \
 	tests/explain_alrgi.test \
 	tests/explain_as9i.test \
+	tests/explain_atci.test \
 	tests/explain_b-c89.test \
 	tests/explain_b_ai.test \
 	tests/explain_c-02.test \
@@ -1070,6 +1071,7 @@ TESTS+=	tests/declare_+ctor-error.test \
 	tests/declare_a_nua_f.test \
 	tests/declare_ai-c++11.test \
 	tests/declare_ari.test \
+	tests/declare_ati-c++20.test \
 	tests/declare_cnmf_v.test \
 	tests/declare_epf.test \
 	tests/declare_exsi.test \
@@ -1397,6 +1399,7 @@ TESTS+=	tests/explain_+ctor-error.test \
 	tests/explain_af-c++11.test \
 	tests/explain_ai-c++11.test \
 	tests/explain_ari.test \
+	tests/explain_ati-c++20.test \
 	tests/explain_cepctor_i.test \
 	tests/explain_cfi.test \
 	tests/explain_cri.test \

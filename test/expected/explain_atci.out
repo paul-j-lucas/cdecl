@@ -1,0 +1,3 @@
+explain _Atomic(const int) x
+                ^
+17: error: _Atomic can not be applied to "const" qualified type

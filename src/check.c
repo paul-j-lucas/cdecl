@@ -1824,7 +1824,7 @@ static bool c_ast_check_reference( c_ast_t const *ast ) {
   assert( ast != NULL );
   assert( c_ast_is_kind_any( ast, K_ANY_REFERENCE ) );
 
-  if ( c_type_is_tid_any( &ast->type, TS_CONST_VOLATILE ) ) {
+  if ( c_type_is_tid_any( &ast->type, TS_CV ) ) {
     c_tid_t const qual_stids = ast->type.stids & TS_MASK_QUALIFIER;
     error_kind_not_tid( ast, qual_stids, "" );
     print_hint( "%s to %s", L_REFERENCE, c_tid_name_error( qual_stids ) );

@@ -169,7 +169,7 @@ static c_type_info_t const C_ATTRIBUTE_INFO[] = {
  * This array _must_ have the same size and order as OK_QUALIFIER_LANGS.
  */
 static c_type_info_t const C_QUALIFIER_INFO[] = {
-  { TS_ATOMIC, LANG_MIN(C_11), L_ATOMIC,
+  { TS_ATOMIC, LANG_C_CPP_MIN(11,23), L_ATOMIC,
     C_LANG_LIT( { LANG_ANY, L__ATOMIC } ) },
 
   { TS_CONST, LANG_ANY, L_CONSTANT,
@@ -394,6 +394,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 #define P2          LANG_CPP_MIN(20)
 #define E1          LANG_C_CPP_MIN(11,11)
 #define E2          LANG_C_CPP_MIN(2X,20)
+#define E3          LANG_C_CPP_MIN(11,23)
 
 /// @endcond
 
@@ -409,7 +410,7 @@ static c_type_info_t const C_TYPE_INFO[] = {
 static c_lang_id_t const OK_QUALIFIER_LANGS[][ ARRAY_SIZE( C_QUALIFIER_INFO ) ] = {
 // Only the lower triangle is used.
 //  a  c  r  rr re v    rx sh st
-  { E1,__,__,__,__,__,  __,__,__ }, // atomic
+  { E3,__,__,__,__,__,  __,__,__ }, // atomic
   { E1,__,__,__,__,__,  __,__,__ }, // const
   { XX,PP,PP,__,__,__,  __,__,__ }, // reference
   { XX,P1,XX,P1,__,__,  __,__,__ }, // rvalue reference
@@ -738,8 +739,7 @@ static char const* c_type_name_impl( c_type_t const *type,
 
     bool const print_brackets =
       OPT_LANG_IS(MIN(C_2X)) &&
-      cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH &&
-      !in_english;
+      cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH && !in_english;
 
     bool comma = false;
     char const sep = print_brackets ? ',' : ' ';
@@ -832,8 +832,8 @@ static char const* c_type_name_impl( c_type_t const *type,
 
   c_tid_t east_stids = TS_NONE;
   if ( opt_east_const && !in_english ) {
-    east_stids = stids & TS_CONST_VOLATILE;
-    stids &= c_tid_compl( TS_CONST_VOLATILE );
+    east_stids = stids & TS_CV;
+    stids &= c_tid_compl( TS_CV );
   }
 
   static c_tid_t const QUAL_STIDS[] = {
@@ -859,6 +859,27 @@ static char const* c_type_name_impl( c_type_t const *type,
   if ( OPT_LANG_IS(CPP_ANY) && apply_explicit_ecsu &&
        !in_english && !is_error && c_tid_is_any( btids, TB_ANY_CLASS ) ) {
     btids &= opt_explicit_ecsu;
+  }
+
+  //
+  // Special case: C++23 adds an _Atomic(T) macro for compatibility with C11,
+  // but while _Atomic can be printed without () in C, they're required in C++:
+  //
+  //      _Atomic int x;                // C11 only
+  //      _Atomic(int) y;               // C11 or C++23
+  //
+  // Note that this handles printing () only for non-typedef types; for typedef
+  // types, see the similar special case for K_TYPEDEF in g_ast_print().
+  //
+  bool const print_parens_for_cpp23_Atomic =
+    OPT_LANG_IS(CPP_MIN(23)) &&
+    cdecl_mode == CDECL_ENGLISH_TO_GIBBERISH && !in_english &&
+    c_tid_is_any( stids, TS_ATOMIC ) &&
+    !c_tid_is_any( btids, TB_TYPEDEF );
+
+  if ( print_parens_for_cpp23_Atomic ) {
+    strbuf_catc( sbuf, '(' );
+    space = false;
   }
 
   static c_tid_t const BTIDS[] = {
@@ -896,6 +917,9 @@ static char const* c_type_name_impl( c_type_t const *type,
     TB_EMC_FRACT,
   };
   C_TID_NAME_CAT( sbuf, btids, BTIDS, in_english, ' ', &space );
+
+  if ( print_parens_for_cpp23_Atomic )
+    strbuf_catc( sbuf, ')' );
 
   // Microsoft calling conventions must be handled here.
   static c_tid_t const MSC_CALL_ATIDS[] = {

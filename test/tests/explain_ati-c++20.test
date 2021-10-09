@@ -1,0 +1,1 @@
+cdecl @ @ -xc++20 @ explain _Atomic(int) x @ 65

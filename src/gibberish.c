@@ -287,8 +287,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
       }
 
       if ( opt_east_const ) {
-        cv_qual_stid = type.stids & TS_CONST_VOLATILE;
-        type.stids &= c_tid_compl( TS_CONST_VOLATILE );
+        cv_qual_stid = type.stids & TS_CV;
+        type.stids &= c_tid_compl( TS_CV );
       }
 
       char const *const type_name =
@@ -373,7 +373,27 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
           !c_type_equal( &ast->type, &C_TYPE_LIT_B( TB_TYPEDEF ) );
 
         if ( is_more_than_plain_typedef && !opt_east_const )
-          FPRINTF( g->gout, "%s ", c_type_name_c( &ast->type ) );
+          FPUTS( c_type_name_c( &ast->type ), g->gout );
+
+        //
+        // Special case: C++23 adds an _Atomic(T) macro for compatibility with
+        // C11, but while _Atomic can be printed without () in C, they're
+        // required in C++:
+        //
+        //      _Atomic size_t x;       // C11 only
+        //      _Atomic(size_t) y;      // C11 or C++23
+        //
+        // Note hat this handles printing () only for typedef types; for non-
+        // typedef types, see the similar special case in c_type_name_impl().
+        //
+        bool const print_parens_for_cpp23_Atomic =
+          OPT_LANG_IS(CPP_MIN(23)) &&
+          c_tid_is_any( type.stids, TS_ATOMIC );
+
+        if ( print_parens_for_cpp23_Atomic )
+          FPUTC( '(', g->gout );
+        else if ( is_more_than_plain_typedef && !opt_east_const )
+          FPUTC( ' ', g->gout );
 
         //
         // Temporarily set skip_name_for_using to false to force printing of
@@ -389,6 +409,8 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         g_print_ast_name( g, ast->as.tdef.for_ast );
         g->skip_name_for_using = orig_skip_name_for_using;
 
+        if ( print_parens_for_cpp23_Atomic )
+          FPUTC( ')', g->gout );
         if ( is_more_than_plain_typedef && opt_east_const )
           FPRINTF( g->gout, " %s", c_type_name_c( &ast->type ) );
       }

@@ -10,6 +10,16 @@ with their complete changes, see the AUTHORS file.
 
 -------------------------------------------------------------------------------
 
+* Changes in Cdecl 11.4
+
+** `_Atomic(T)` in C++23
+Now supporting the `_Atomic(T)` macro in C++23.
+
+** cvr-qualified `_Atomic`
+`const`-`volatile`-`restrict`-qualified `_Atomic` types are now correctly
+forbidden.
+
+
 * Changes in Cdecl 11.3
 
 ** Added `explicit-ecsu` option

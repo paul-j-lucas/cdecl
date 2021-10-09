@@ -1,0 +1,3 @@
+declare x as atomic int
+             ^
+14: error: "_Atomic": unsupported keyword until C++23

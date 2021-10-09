@@ -4856,6 +4856,26 @@ atomic_specifier_type_c_ast
       DUMP_AST( "cast_c_astp_opt", $5.ast );
 
       $$ = $5.ast != NULL ? $5.ast : $3;
+
+      //
+      // Ensure the _Atomic() specifier type isn't cvr-qualified:
+      //
+      //      const _Atomic(int) x;     // OK
+      //      _Atomic(const int) y;     // error
+      //
+      // This check has to be done now in the parser rather than later in the
+      // AST since the type would be stored as "atomic const int" either way so
+      // the AST has no "memory" of which it was.
+      //
+      if ( c_tid_is_any( $$->type.stids, TS_CVR ) ) {
+        print_error( &@3,
+          "%s can not be applied to \"%s\" qualified type\n",
+          L__ATOMIC,
+          c_tid_name_c( $$->type.stids & TS_CVR )
+        );
+        PARSE_ABORT();
+      }
+
       C_TYPE_ADD_TID( &$$->type, TS_ATOMIC, @1 );
 
       DUMP_AST( "atomic_specifier_type_c_ast", $$ );
