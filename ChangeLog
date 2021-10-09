@@ -1,3 +1,8 @@
+2021-10-09  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y, explain_atci.out: Now checking for any storage or attribute
+     qualified _Atomic type.
+
 2021-10-08  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, configure.ac, c_ast_util.c, c_keyword.c, c_type.c, c_type.h,
