@@ -93,7 +93,7 @@ TESTS =		$(check_PROGRAMS)
 check-local: clean-coverage
 
 clean-local:
-	rm -f $(BUILT_SOURCES) c++decl$(EXEEXT)
+	rm -f $(BUILT_SOURCES) c++decl$(EXEEXT) parser.output
 
 distclean-local: distclean-coverage
 
