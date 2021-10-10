@@ -1819,6 +1819,7 @@ TESTS+=	tests/xupc_declare_a2di.test \
 	tests/xupc_declare_tdi.test \
 	tests/xupc_explain_da2i.test \
 	tests/xupc_explain_dpi.test \
+	tests/xupc_explain_dq+a4i.test \
 	tests/xupc_explain_pdi.test \
 	tests/xupc_explain_ptdi.test \
 	tests/xupc_explain_rdi.test \

@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 48
+%expect 47
 
 %{
 /** @endcond */
@@ -1114,6 +1114,9 @@ static void yyerror( char const *msg ) {
 %token              Y_USER_DEFINED
 %token              Y_VARIABLE
 %token              Y_WIDTH
+
+                    // Precedence
+%nonassoc           Y_PREC_LESS_THAN_upc_layout_qualifier
 
                     //
                     // C and C++ operators that are single-character and have
@@ -5133,7 +5136,8 @@ type_qualifier_c_stid
   | cv_qualifier_stid
   | restrict_qualifier_c_stid
   | Y_UPC_RELAXED
-  | Y_UPC_SHARED upc_layout_qualifier_opt
+  | Y_UPC_SHARED                  %prec Y_PREC_LESS_THAN_upc_layout_qualifier
+  | Y_UPC_SHARED upc_layout_qualifier
   | Y_UPC_STRICT
   ;
 
@@ -5177,9 +5181,8 @@ restrict_qualifier_c_stid
   | Y_GNU___RESTRICT                    // GNU C/C++ extension
   ;
 
-upc_layout_qualifier_opt
-  : /* empty */
-  | '[' ']'
+upc_layout_qualifier
+  : '[' ']'
   | '[' Y_INT_LIT rbracket_exp
   | '[' '*' rbracket_exp
   | '[' error ']'

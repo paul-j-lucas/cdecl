@@ -115,6 +115,7 @@ For a Unified Parallel C test, some characters change meaning:
 
 + `r` = `relaxed`
 + `d` = `shared`
++ `dq` = `shared` followed by layout qualifier (followed by digits or + for *)
 + `t` = `strict`
 
 Characters may be preceded by a count,
