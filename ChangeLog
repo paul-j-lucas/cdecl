@@ -1,5 +1,16 @@
+2021-10-10  Paul J. Lucas <paul@lucasmail.org>
+
+   * NEWS, check.c, parser.y, test/Makefile.am, cdecl-d-z.out, explain_2+n.out,
+     explain_2+n.test: Now assume an unknown scoped name is a type when used as
+     one.
+   * src/Makefile.am: Added parser.output to clean rule.
+
 2021-10-09  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y, test/Makefile.am, xupc_explain_dq+a4i.out,
+     xupc_explain_dq+a4i.test: Added %prec rule to eliminate a shift/reduce
+     conflict. Also added UPC shared test with layout qualifier.
+   * parser.y: Removed Y_TYPES.
    * cdecl.1: Added "[, gibberish]*" to explain.
    * cdecl.1: Added mention of _Atomic in C++23.
    * dump.c, english.c, gibberish.c, types.h: Added c_ast_sid_t,
