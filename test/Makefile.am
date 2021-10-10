@@ -1293,6 +1293,7 @@ TESTS+=	tests/explain_+compl_dtor.test \
 	tests/explain_+dtor.test \
 	tests/explain_0dtor.test \
 	tests/explain_2+dtor.test \
+	tests/explain_2+n.test \
 	tests/explain_a.test \
 	tests/explain_a_cd_fa_cd_i_i.test \
 	tests/explain_a_cd_fi_i.test \

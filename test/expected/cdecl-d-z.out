@@ -11,6 +11,7 @@ typedef_type_c_ast ::= any_typedef = {
     type = "unsigned long" (btid = 0x24001, stid = 0x2, atid = 0x4),
     bit_width = 0
   },
+  sub_scope_sname_c_opt = "",
   typedef_type_c_ast = {
     sname = "",
     unique_id = 1327,

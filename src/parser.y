@@ -1505,7 +1505,7 @@ static void yyerror( char const *msg ) {
 %type   <ast>       reference_type_c_ast
 %type   <tid>       restrict_qualifier_c_stid
 %type   <tid>       rparen_func_qualifier_list_c_stid_opt
-%type   <sname>     scope_sname_c_opt
+%type   <sname>     scope_sname_c_opt sub_scope_sname_c_opt
 %type   <sname>     sname_c sname_c_exp sname_c_opt
 %type   <ast>       sname_c_ast
 %type   <tid>       extern_linkage_c_stid extern_linkage_c_stid_opt
@@ -1609,6 +1609,7 @@ static void yyerror( char const *msg ) {
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_c_opt
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_english
 %destructor { DTRACE; c_sname_free( &$$ ); } sname_english_exp
+%destructor { DTRACE; c_sname_free( &$$ ); } sub_scope_sname_c_opt
 %destructor { DTRACE; c_sname_free( &$$ ); } typedef_sname_c
 %destructor { DTRACE; c_sname_free( &$$ ); } Y_CONSTRUCTOR_SNAME
 %destructor { DTRACE; c_sname_free( &$$ ); } Y_DESTRUCTOR_SNAME
@@ -6243,81 +6244,68 @@ name_exp
   ;
 
 typedef_type_c_ast
-  : any_typedef
+  : any_typedef sub_scope_sname_c_opt
     {
+      c_ast_t *const type_ast = ia_type_ast_peek();
+      c_ast_t const *type_for_ast = $1->ast;
+
       DUMP_START( "typedef_type_c_ast", "any_typedef" );
-      DUMP_AST( "any_typedef.ast", $1->ast );
-
-      $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
-      $$->type.btids = TB_TYPEDEF;
-      $$->as.tdef.for_ast = $1->ast;
-
-      DUMP_AST( "typedef_type_c_ast", $$ );
-      DUMP_END();
-    }
-
-  | // in_attr: type_c_ast
-    any_typedef Y_COLON2 sname_c
-    {
-      c_ast_t *const type_ast = ia_type_ast_peek();
-      //
-      // This is for a case like:
-      //
-      //      define S as struct S
-      //      explain int S::x
-      //
-      // that is: a typedef'd type used for a scope.
-      //
-      DUMP_START( "typedef_type_c_ast", "any_typedef '::' sname_c" );
       DUMP_AST( "(type_c_ast)", type_ast );
-      DUMP_AST( "any_typedef.ast", $1->ast );
-      DUMP_SNAME( "sname_c", $3 );
+      DUMP_AST( "any_typedef.ast", type_for_ast );
+      DUMP_SNAME( "sub_scope_sname_c_opt", $2 );
 
-      if ( type_ast == NULL ) {
-        print_error_unknown_name( &@3, &$3 );
-        PARSE_ABORT();
+      if ( c_sname_empty( &$2 ) ) {
+ttntd:  $$ = c_ast_new_gc( K_TYPEDEF, &@$ );
+        $$->type.btids = TB_TYPEDEF;
+        $$->as.tdef.for_ast = type_for_ast;
+      }
+      else {
+        c_sname_t temp_name = c_ast_name_dup( $1->ast );
+        c_sname_append_sname( &temp_name, &$2 );
+
+        if ( type_ast == NULL ) {
+          //
+          // This is for a case like:
+          //
+          //      define S as struct S
+          //      explain S::T x
+          //
+          // that is: a typedef'd type followed by ::T where T is an unknown
+          // name used as a type. Just assume the T is a type and create a name
+          // for it.
+          //
+          c_ast_t *const name_ast = c_ast_new_gc( K_NAME, &@2 );
+          c_ast_set_sname( name_ast, &temp_name );
+          type_for_ast = name_ast;
+          goto ttntd;
+        }
+
+        //
+        // Otherwise, this is for cases like:
+        //
+        //  1. A typedef'd type used for a scope:
+        //
+        //          define S as struct S
+        //          explain int S::x
+        //
+        //  2. A typedef'd type used for an intermediate scope:
+        //
+        //          define S as struct S
+        //          define T as struct T
+        //          explain int S::T::x
+        //
+        $$ = type_ast;
+        c_ast_set_sname( $$, &temp_name );
       }
 
-      $$ = type_ast;
-      c_sname_t temp_name = c_ast_name_dup( $1->ast );
-      c_ast_set_sname( $$, &temp_name );
-      c_ast_append_sname( $$, &$3 );
-
       DUMP_AST( "typedef_type_c_ast", $$ );
       DUMP_END();
     }
+  ;
 
-  | // in_attr: type_c_ast
-    any_typedef Y_COLON2 typedef_sname_c
-    {
-      c_ast_t *const type_ast = ia_type_ast_peek();
-      //
-      // This is for a case like:
-      //
-      //      define S as struct S
-      //      define T as struct T
-      //      explain int S::T::x
-      //
-      // that is: a typedef'd type used for an intermediate scope.
-      //
-      DUMP_START( "typedef_type_c_ast", "any_typedef '::' typedef_sname_c" );
-      DUMP_AST( "(type_c_ast)", type_ast );
-      DUMP_AST( "any_typedef", $1->ast );
-      DUMP_SNAME( "typedef_sname_c", $3 );
-
-      if ( type_ast == NULL ) {
-        print_error_unknown_name( &@3, &$3 );
-        PARSE_ABORT();
-      }
-
-      $$ = type_ast;
-      c_sname_t temp_name = c_ast_name_dup( $1->ast );
-      c_ast_set_sname( $$, &temp_name );
-      c_ast_append_sname( $$, &$3 );
-
-      DUMP_AST( "typedef_type_c_ast", $$ );
-      DUMP_END();
-    }
+sub_scope_sname_c_opt
+  : /* empty */                   { c_sname_init( &$$ ); }
+  | Y_COLON2 any_sname_c          { $$ = $2; }
   ;
 
 scope_sname_c_opt

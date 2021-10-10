@@ -15,6 +15,19 @@ with their complete changes, see the AUTHORS file.
 ** `_Atomic(T)` in C++23
 Now supporting the `_Atomic(T)` macro in C++23.
 
+** Allow declarations using unknown scoped type names
+Previously, cdecl complained about things like:
+
+    cdecl> define S as struct S
+    cdecl> explain S::T x
+                      ^
+    19: error: "T": unknown name
+
+Now, it just assumes the `T` is a type:
+
+    declare x as T of structure S
+
+
 ** cvr-qualified `_Atomic`
 `const`-`volatile`-`restrict`-qualified `_Atomic` types are now correctly
 forbidden.

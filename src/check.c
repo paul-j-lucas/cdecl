@@ -2153,8 +2153,6 @@ static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
     }
 
     case K_NAME:
-    case K_VARIADIC:
-      assert( is_func_param );
       // nothing to check
       break;
 
@@ -2206,7 +2204,11 @@ static bool c_ast_visitor_error( c_ast_t *ast, uint64_t data ) {
       }
       break;
 
-      CASE_K_PLACEHOLDER;
+    case K_VARIADIC:
+      assert( is_func_param );
+      break;
+
+    CASE_K_PLACEHOLDER;
   } // switch
 
   if ( ast->kind != K_FUNCTION &&
