@@ -1110,7 +1110,6 @@ static void yyerror( char const *msg ) {
 %token              Y_RVALUE
 %token              Y_SCOPE
 %token              Y_TO
-%token              Y_TYPES
 %token              Y_USER
 %token              Y_USER_DEFINED
 %token              Y_VARIABLE
