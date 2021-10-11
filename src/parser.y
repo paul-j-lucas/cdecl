@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 47
+%expect 48
 
 %{
 /** @endcond */
@@ -440,7 +440,6 @@
 struct in_attr {
   c_alignas_t   align;            ///< Alignment, if any.
   c_sname_t     current_scope;    ///< C++ only: current scope, if any.
-  slist_t       qualifier_stack;  ///< `c_qualifier` stack.
   c_ast_list_t  type_ast_stack;   ///< Type AST stack.
   c_ast_list_t  typedef_ast_list; ///< AST nodes of `typedef` being declared.
   c_ast_t      *typedef_type_ast; ///< AST of `typedef` being declared.
@@ -545,51 +544,6 @@ static inline c_ast_t* ia_type_ast_pop( void ) {
  */
 static inline void ia_type_ast_push( c_ast_t *ast ) {
   slist_push_head( &in_attr.type_ast_stack, ast );
-}
-
-/**
- * Peeks at the location of the qualifier at the top of the
- * \ref in_attr.qualifier_stack "qualifier inherited attribute stack".
- *
- * @note This is a macro instead of an inline function because it should return
- * a reference (not a pointer), but C doesn't have references.
- *
- * @return Returns said qualifier location.
- *
- * @sa ia_qual_peek_stid()
- * @sa ia_qual_pop()
- * @sa ia_qual_push_stid()
- */
-#define ia_qual_peek_loc() \
-  (((c_qualifier_t*)slist_peek_head( &in_attr.qualifier_stack ))->loc)
-
-/**
- * Peeks at the qualifier at the top of the
- * \ref in_attr.qualifier_stack "qualifier inherited attribute stack".
- *
- * @return Returns said qualifier.
- *
- * @sa #ia_qual_peek_loc()
- * @sa ia_qual_pop()
- * @sa ia_qual_push_stid()
- */
-PJL_WARN_UNUSED_RESULT
-static inline c_tid_t ia_qual_peek_stid( void ) {
-  c_qualifier_t const *const qual = slist_peek_head( &in_attr.qualifier_stack );
-  return qual->qual_stid;
-}
-
-/**
- * Pops a qualifier from the
- * \ref in_attr.qualifier_stack "qualifer inherited attribute stack" and frees
- * it.
- *
- * @sa #ia_qual_peek_loc()
- * @sa ia_qual_peek_stid()
- * @sa ia_qual_push_stid()
- */
-static inline void ia_qual_pop( void ) {
-  FREE( slist_pop_head( &in_attr.qualifier_stack ) );
 }
 
 /**
@@ -866,34 +820,11 @@ static void fl_keyword_expected( char const *file, int line,
  */
 static void ia_free( void ) {
   c_sname_free( &in_attr.current_scope );
-  slist_free( &in_attr.qualifier_stack, NULL, &free );
   // Do _not_ pass &c_ast_free for the 3rd argument! All AST nodes were already
   // free'd from the gc_ast_list in parse_cleanup(). Just free the slist nodes.
   slist_free( &in_attr.type_ast_stack, NULL, NULL );
   c_ast_list_gc( &in_attr.typedef_ast_list );
   MEM_ZERO( &in_attr );
-}
-
-/**
- * Pushes a qualifier onto the
- * \ref in_attr.qualifier_stack "qualifier inherited attribute stack."
- *
- * @param qual_stid The qualifier to push.
- * @param loc A pointer to the source location of the qualifier.
- *
- * @sa #ia_qual_peek_loc()
- * @sa ia_qual_peek_stid()
- * @sa ia_qual_pop()
- */
-static void ia_qual_push_stid( c_tid_t qual_stid, c_loc_t const *loc ) {
-  c_tid_check( qual_stid, C_TPID_STORE );
-  assert( !c_tid_is_any( qual_stid, c_tid_compl( TS_MASK_QUALIFIER ) ) );
-  assert( loc != NULL );
-
-  c_qualifier_t *const qual = MALLOC( c_qualifier_t, 1 );
-  qual->qual_stid = qual_stid;
-  qual->loc = *loc;
-  slist_push_head( &in_attr.qualifier_stack, qual );
 }
 
 /**
@@ -1441,6 +1372,7 @@ static void yyerror( char const *msg ) {
 %type   <type>      type_modifier_english_type
 %type   <type>      type_modifier_list_english_type
 %type   <type>      type_modifier_list_english_type_opt
+%type   <tid>       type_qualifier_english_stid
 %type   <tid>       type_qualifier_list_english_stid
 %type   <tid>       type_qualifier_list_english_stid_opt
 %type   <type>      udc_storage_class_english_type
@@ -5138,7 +5070,7 @@ type_qualifier_c_stid
   | restrict_qualifier_c_stid
   | Y_UPC_RELAXED
   | Y_UPC_SHARED                  %prec Y_PREC_LESS_THAN_upc_layout_qualifier
-  | Y_UPC_SHARED upc_layout_qualifier
+  | Y_UPC_SHARED upc_layout_qualifier_c
   | Y_UPC_STRICT
   ;
 
@@ -5182,7 +5114,7 @@ restrict_qualifier_c_stid
   | Y_GNU___RESTRICT                    // GNU C/C++ extension
   ;
 
-upc_layout_qualifier
+upc_layout_qualifier_c
   : '[' ']'
   | '[' Y_INT_LIT rbracket_exp
   | '[' '*' rbracket_exp
@@ -5545,12 +5477,10 @@ block_decl_english_ast                  // Apple extension
       DUMP_START( "block_decl_english_ast",
                   "BLOCK paren_decl_list_english_opt "
                   "returning_english_ast_opt" );
-      DUMP_TID( "(qualifier)", ia_qual_peek_stid() );
       DUMP_AST_LIST( "paren_decl_list_english_opt", $2 );
       DUMP_AST( "returning_english_ast_opt", $3 );
 
       $$ = c_ast_new_gc( K_APPLE_BLOCK, &@$ );
-      $$->type.stids = ia_qual_peek_stid();
       $$->as.block.param_ast_list = $2;
       c_ast_set_parent( $3, $$ );
 
@@ -5607,7 +5537,6 @@ func_decl_english_ast
                   "member_or_non_member_mask_opt "
                   "FUNCTION paren_decl_list_english_opt "
                   "returning_english_ast_opt" );
-      DUMP_TID( "(qualifier)", ia_qual_peek_stid() );
       DUMP_TYPE( "func_qualifier_english_type_opt", &$1 );
       DUMP_INT( "member_or_non_member_mask_opt", $2 );
       DUMP_AST_LIST( "paren_decl_list_english_opt", $4 );
@@ -5615,7 +5544,6 @@ func_decl_english_ast
 
       $$ = c_ast_new_gc( K_FUNCTION, &@$ );
       $$->type = $1;
-      $$->type.stids |= ia_qual_peek_stid();
       $$->as.func.param_ast_list = $4;
       $$->as.func.flags = $2;
       c_ast_set_parent( $5, $$ );
@@ -5648,25 +5576,27 @@ msc_calling_convention_atid
 /// English C++ operator declaration //////////////////////////////////////////
 
 oper_decl_english_ast
-  : type_qualifier_list_english_stid_opt { ia_qual_push_stid( $1, &@1 ); }
-    ref_qualifier_english_stid_opt member_or_non_member_mask_opt
-    operator_exp paren_decl_list_english_opt returning_english_ast_opt
+  : type_qualifier_list_english_stid_opt ref_qualifier_english_stid_opt
+    member_or_non_member_mask_opt operator_exp paren_decl_list_english_opt
+    returning_english_ast_opt
     {
-      ia_qual_pop();
       DUMP_START( "oper_decl_english_ast",
+                  "type_qualifier_list_english_stid_opt "
+                  "type_qualifier_list_english_stid_opt "
                   "member_or_non_member_mask_opt "
                   "OPERATOR paren_decl_list_english_opt "
                   "returning_english_ast_opt" );
-      DUMP_TID( "ref_qualifier_english_stid_opt", $3 );
-      DUMP_INT( "member_or_non_member_mask_opt", $4 );
-      DUMP_AST_LIST( "paren_decl_list_english_opt", $6 );
-      DUMP_AST( "returning_english_ast_opt", $7 );
+      DUMP_TID( "type_qualifier_list_english_stid_opt", $1 );
+      DUMP_TID( "ref_qualifier_english_stid_opt", $2 );
+      DUMP_INT( "member_or_non_member_mask_opt", $3 );
+      DUMP_AST_LIST( "paren_decl_list_english_opt", $5 );
+      DUMP_AST( "returning_english_ast_opt", $6 );
 
       $$ = c_ast_new_gc( K_OPERATOR, &@$ );
-      $$->type.stids = c_tid_check( $1 | $3, C_TPID_STORE );
-      $$->as.oper.param_ast_list = $6;
-      $$->as.oper.flags = $4;
-      c_ast_set_parent( $7, $$ );
+      $$->type.stids = c_tid_check( $1 | $2, C_TPID_STORE );
+      $$->as.oper.param_ast_list = $5;
+      $$->as.oper.flags = $3;
+      c_ast_set_parent( $6, $$ );
 
       DUMP_AST( "oper_decl_english_ast", $$ );
       DUMP_END();
@@ -5785,17 +5715,16 @@ returning_english_ast
 /// English C/C++ qualified declaration ///////////////////////////////////////
 
 qualified_decl_english_ast
-  : type_qualifier_list_english_stid_opt { ia_qual_push_stid( $1, &@1 ); }
-    qualifiable_decl_english_ast
+  : type_qualifier_list_english_stid_opt qualifiable_decl_english_ast
     {
-      ia_qual_pop();
       DUMP_START( "qualified_decl_english_ast",
                   "type_qualifier_list_english_stid_opt "
                   "qualifiable_decl_english_ast" );
       DUMP_TID( "type_qualifier_list_english_stid_opt", $1 );
-      DUMP_AST( "qualifiable_decl_english_ast", $3 );
+      DUMP_AST( "qualifiable_decl_english_ast", $2 );
 
-      $$ = $3;
+      $$ = $2;
+      C_TYPE_ADD_TID( &$$->type, $1, @1 );
 
       DUMP_AST( "qualified_decl_english_ast", $$ );
       DUMP_END();
@@ -5808,12 +5737,13 @@ type_qualifier_list_english_stid_opt
   ;
 
 type_qualifier_list_english_stid
-  : type_qualifier_list_english_stid type_qualifier_c_stid
+  : type_qualifier_list_english_stid type_qualifier_english_stid
     {
       DUMP_START( "type_qualifier_list_english_stid",
-                  "type_qualifier_list_english_stid type_qualifier_c_stid" );
+                  "type_qualifier_list_english_stid "
+                  "type_qualifier_english_stid" );
       DUMP_TID( "type_qualifier_list_english_stid", $1 );
-      DUMP_TID( "type_qualifier_c_stid", $2 );
+      DUMP_TID( "type_qualifier_english_stid", $2 );
 
       $$ = $1;
       C_TID_ADD( &$$, $2, @2 );
@@ -5822,7 +5752,22 @@ type_qualifier_list_english_stid
       DUMP_END();
     }
 
-  | type_qualifier_c_stid
+  | type_qualifier_english_stid
+  ;
+
+type_qualifier_english_stid
+  : Y__ATOMIC_QUAL
+  | cv_qualifier_stid
+  | restrict_qualifier_c_stid
+  | Y_UPC_RELAXED
+  | Y_UPC_SHARED                  %prec Y_PREC_LESS_THAN_upc_layout_qualifier
+  | Y_UPC_SHARED upc_layout_qualifier_english
+  | Y_UPC_STRICT
+  ;
+
+upc_layout_qualifier_english
+  : Y_INT_LIT
+  | '*'
   ;
 
 qualifiable_decl_english_ast
@@ -5843,7 +5788,6 @@ pointer_decl_english_ast
     Y_POINTER to_exp decl_english_ast
     {
       DUMP_START( "pointer_decl_english_ast", "POINTER TO decl_english_ast" );
-      DUMP_TID( "(qualifier)", ia_qual_peek_stid() );
       DUMP_AST( "decl_english_ast", $3 );
 
       if ( $3->kind == K_NAME ) {       // see the comment in "declare_command"
@@ -5853,7 +5797,6 @@ pointer_decl_english_ast
       }
 
       $$ = c_ast_new_gc( K_POINTER, &@$ );
-      $$->type.stids = ia_qual_peek_stid();
       c_ast_set_parent( $3, $$ );
 
       DUMP_AST( "pointer_decl_english_ast", $$ );
@@ -5871,13 +5814,11 @@ pointer_decl_english_ast
                   "POINTER TO MEMBER OF "
                   "class_struct_union_btid_exp "
                   "sname_english decl_english_ast" );
-      DUMP_TID( "(qualifier)", ia_qual_peek_stid() );
       DUMP_TID( "class_struct_union_btid_exp", $5 );
       DUMP_SNAME( "sname_english_exp", $6 );
       DUMP_AST( "decl_english_ast", $7 );
 
       $$ = c_ast_new_gc( K_POINTER_TO_MEMBER, &@$ );
-      $$->type.stids = ia_qual_peek_stid();
       $$->as.ptr_mbr.class_sname = $6;
       c_ast_set_parent( $7, $$ );
       C_TYPE_ADD_TID( &$$->type, $5, @5 );
@@ -5903,13 +5844,11 @@ reference_decl_english_ast
     {
       DUMP_START( "reference_decl_english_ast",
                   "reference_english_ast TO decl_english_ast" );
-      DUMP_TID( "(qualifier)", ia_qual_peek_stid() );
       DUMP_AST( "reference_english_ast", $1 );
       DUMP_AST( "decl_english_ast", $3 );
 
       $$ = $1;
       c_ast_set_parent( $3, $$ );
-      C_TYPE_ADD_TID( &$$->type, ia_qual_peek_stid(), ia_qual_peek_loc() );
 
       DUMP_AST( "reference_decl_english_ast", $$ );
       DUMP_END();
@@ -6021,10 +5960,8 @@ type_english_ast
                   "unmodified_type_english_ast" );
       DUMP_TYPE( "type_modifier_list_english_type_opt", &$1 );
       DUMP_AST( "unmodified_type_english_ast", $2 );
-      DUMP_TID( "(qualifier)", ia_qual_peek_stid() );
 
       $$ = $2;
-      C_TYPE_ADD_TID( &$$->type, ia_qual_peek_stid(), ia_qual_peek_loc() );
       C_TYPE_ADD( &$$->type, &$1, @1 );
 
       DUMP_AST( "type_english_ast", $$ );
@@ -6036,12 +5973,10 @@ type_english_ast
     {
       DUMP_START( "type_english_ast", "type_modifier_list_english_type" );
       DUMP_TYPE( "type_modifier_list_english_type", &$1 );
-      DUMP_TID( "(qualifier)", ia_qual_peek_stid() );
 
       // see the comment in "type_c_ast"
       c_type_t type = C_TYPE_LIT_B( opt_lang < LANG_C_99 ? TB_INT : TB_NONE );
 
-      C_TYPE_ADD_TID( &type, ia_qual_peek_stid(), ia_qual_peek_loc() );
       C_TYPE_ADD( &type, &$1, @1 );
 
       $$ = c_ast_new_gc( K_BUILTIN, &@$ );
