@@ -5582,7 +5582,7 @@ oper_decl_english_ast
     {
       DUMP_START( "oper_decl_english_ast",
                   "type_qualifier_list_english_stid_opt "
-                  "type_qualifier_list_english_stid_opt "
+                  "ref_qualifier_english_stid_opt "
                   "member_or_non_member_mask_opt "
                   "OPERATOR paren_decl_list_english_opt "
                   "returning_english_ast_opt" );
