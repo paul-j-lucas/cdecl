@@ -1,3 +1,15 @@
+2021-10-12  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y: Rewrote parts of the grammar to lower the shift-reduce conflicts
+     from 48 to 33.
+
+2021-10-11  Paul J. Lucas <paul@lucasmail.org>
+
+   * parser.y:
+     s/type_qualifier_list_english_stid_opt/ref_qualifier_english_stid_opt/
+   * parser.y: Split out type_qualifier_english_stid; eliminated
+     qualifier_stack.
+
 2021-10-10  Paul J. Lucas <paul@lucasmail.org>
 
    * NEWS, check.c, parser.y, test/Makefile.am, cdecl-d-z.out, explain_2+n.out,
