@@ -383,7 +383,7 @@ static void g_print_ast( g_state_t *g, c_ast_t const *ast ) {
         //      _Atomic size_t x;       // C11 only
         //      _Atomic(size_t) y;      // C11 or C++23
         //
-        // Note hat this handles printing () only for typedef types; for non-
+        // Note that this handles printing () only for typedef types; for non-
         // typedef types, see the similar special case in c_type_name_impl().
         //
         bool const print_parens_for_cpp23_Atomic =
