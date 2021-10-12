@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 48
+%expect 33
 
 %{
 /** @endcond */
@@ -1334,6 +1334,8 @@ static void yyerror( char const *msg ) {
 %type   <ast>       alignas_or_width_decl_english_ast
 %type   <align>     alignas_specifier_english
 %type   <ast>       array_decl_english_ast
+%type   <tid>       array_qualifier_list_english_stid
+%type   <tid>       array_qualifier_list_english_stid_opt
 %type   <int_val>   array_size_int_opt
 %type   <tid>       attribute_english_atid
 %type   <ast>       block_decl_english_ast
@@ -1366,15 +1368,17 @@ static void yyerror( char const *msg ) {
 %type   <sname>     sname_english sname_english_exp
 %type   <ast>       sname_english_ast
 %type   <list>      sname_list_english
-%type   <type>      storage_class_english_type
-%type   <type>      storage_class_list_english_type_opt
+%type   <tid>       storage_class_english_stid
+%type   <tid>       storage_class_list_english_stid_opt
 %type   <ast>       type_english_ast
 %type   <type>      type_modifier_english_type
 %type   <type>      type_modifier_list_english_type
 %type   <type>      type_modifier_list_english_type_opt
 %type   <tid>       type_qualifier_english_stid
-%type   <tid>       type_qualifier_list_english_stid
-%type   <tid>       type_qualifier_list_english_stid_opt
+%type   <type>      type_qualifier_english_type
+%type   <type>      type_qualifier_list_english_type
+%type   <type>      type_qualifier_list_english_type_opt
+%type   <tid>       udc_storage_class_english_stid
 %type   <type>      udc_storage_class_english_type
 %type   <type>      udc_storage_class_list_english_type_opt
 %type   <ast>       unmodified_type_english_ast
@@ -1669,7 +1673,7 @@ declare_command
     /*
      * Common declaration, e.g.: declare x as int.
      */
-  : Y_DECLARE sname_list_english as_exp storage_class_list_english_type_opt
+  : Y_DECLARE sname_list_english as_exp storage_class_list_english_stid_opt
     alignas_or_width_decl_english_ast
     {
       if ( $5->kind == K_NAME ) {
@@ -1694,14 +1698,14 @@ declare_command
 
       DUMP_START( "declare_command",
                   "DECLARE sname_list_english AS "
-                  "storage_class_list_english_type_opt "
+                  "storage_class_list_english_stid_opt "
                   "alignas_or_width_decl_english_ast" );
       DUMP_SNAME_LIST( "sname_list_english", $2 );
-      DUMP_TYPE( "storage_class_list_english_type_opt", &$4 );
+      DUMP_TID( "storage_class_list_english_stid_opt", $4 );
       DUMP_AST( "alignas_or_width_decl_english_ast", $5 );
 
       $5->loc = @2;
-      C_TYPE_ADD( &$5->type, &$4, @4 );
+      C_TYPE_ADD_TID( &$5->type, $4, @4 );
 
       DUMP_AST( "decl_english", $5 );
       DUMP_END();
@@ -1741,22 +1745,22 @@ declare_command
         PARSE_ABORT();
       }
     }
-    of_scope_list_english_opt as_exp storage_class_list_english_type_opt
+    of_scope_list_english_opt as_exp storage_class_list_english_stid_opt
     oper_decl_english_ast
     {
       DUMP_START( "declare_command",
                   "DECLARE c_operator of_scope_list_english_opt AS "
-                  "storage_class_list_english_type_opt "
+                  "storage_class_list_english_stid_opt "
                   "oper_decl_english_ast" );
       DUMP_STR( "c_operator", c_oper_get( $2 )->name );
       DUMP_SNAME( "of_scope_list_english_opt", $4 );
-      DUMP_TYPE( "storage_class_list_english_type_opt", &$6 );
+      DUMP_TID( "storage_class_list_english_stid_opt", $6 );
       DUMP_AST( "oper_decl_english_ast", $7 );
 
       c_ast_set_sname( $7, &$4 );
       $7->loc = @2;
       $7->as.oper.oper_id = $2;
-      C_TYPE_ADD( &$7->type, &$6, @6 );
+      C_TYPE_ADD_TID( &$7->type, $6, @6 );
 
       DUMP_AST( "declare_command", $7 );
       DUMP_END();
@@ -1776,12 +1780,12 @@ declare_command
     returning_exp decl_english_ast
     {
       DUMP_START( "declare_command",
-                  "DECLARE storage_class_list_english_type_opt "
+                  "DECLARE udc_storage_class_list_english_type_opt "
                   "cv_qualifier_list_stid_opt "
                   "USER-DEFINED CONVERSION OPERATOR "
                   "of_scope_list_english_opt "
                   "RETURNING decl_english_ast" );
-      DUMP_TYPE( "storage_class_list_english_type_opt", &$2 );
+      DUMP_TYPE( "udc_storage_class_list_english_type_opt", &$2 );
       DUMP_TID( "cv_qualifier_list_stid_opt", $3 );
       DUMP_SNAME( "of_scope_list_english_opt", $7 );
       DUMP_AST( "decl_english_ast", $9 );
@@ -1810,54 +1814,53 @@ declare_command
     }
   ;
 
-storage_class_list_english_type_opt
-  : /* empty */                   { $$ = T_NONE; }
-  | storage_class_list_english_type_opt storage_class_english_type
+storage_class_list_english_stid_opt
+  : /* empty */                   { $$ = TS_NONE; }
+  | storage_class_list_english_stid_opt storage_class_english_stid
     {
-      DUMP_START( "storage_class_list_english_type_opt",
-                  "storage_class_list_english_type_opt "
-                  "storage_class_english_type" );
-      DUMP_TYPE( "storage_class_list_english_type_opt", &$1 );
-      DUMP_TYPE( "storage_class_english_type", &$2 );
+      DUMP_START( "storage_class_list_english_stid_opt",
+                  "storage_class_list_english_stid_opt "
+                  "storage_class_english_stid" );
+      DUMP_TID( "storage_class_list_english_stid_opt", $1 );
+      DUMP_TID( "storage_class_english_stid", $2 );
 
       $$ = $1;
-      C_TYPE_ADD( &$$, &$2, @2 );
+      C_TID_ADD( &$$, $2, @2 );
 
-      DUMP_TYPE( "storage_class_list_english_type_opt", &$$ );
+      DUMP_TID( "storage_class_list_english_stid_opt", $$ );
       DUMP_END();
     }
   ;
 
-storage_class_english_type
-  : attribute_english_atid        { $$ = C_TYPE_LIT_A( $1 ); }
-  | Y_AUTO_STORAGE                { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_APPLE___BLOCK               { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_CONSTEVAL                   { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_CONSTEXPR                   { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_CONSTINIT                   { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_DEFAULT                     { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_DELETE                      { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_EXPLICIT                    { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_EXPORT                      { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_EXTERN                      { $$ = C_TYPE_LIT_S( $1 ); }
+storage_class_english_stid
+  : Y_AUTO_STORAGE
+  | Y_APPLE___BLOCK
+  | Y_CONSTEVAL
+  | Y_CONSTEXPR
+  | Y_CONSTINIT
+  | Y_DEFAULT
+  | Y_DELETE
+  | Y_EXPLICIT
+  | Y_EXPORT
+  | Y_EXTERN
   | Y_EXTERN linkage_stid linkage_opt
     {
-      $$ = C_TYPE_LIT_S( $2 );
+      $$ = $2;
     }
-  | Y_FINAL                       { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_FRIEND                      { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_INLINE                      { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_MUTABLE                     { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_NOEXCEPT                    { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_OVERRIDE                    { $$ = C_TYPE_LIT_S( $1 ); }
+  | Y_FINAL
+  | Y_FRIEND
+  | Y_INLINE
+  | Y_MUTABLE
+  | Y_NOEXCEPT
+  | Y_OVERRIDE
 //| Y_REGISTER                          // in type_modifier_list_english_type
-  | Y_STATIC                      { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y__THREAD_LOCAL               { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_THREAD_LOCAL                { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_THROW                       { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_TYPEDEF                     { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_VIRTUAL                     { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_PURE virtual_stid_exp       { $$ = C_TYPE_LIT_S( TS_PURE_VIRTUAL | $2 ); }
+  | Y_STATIC
+  | Y__THREAD_LOCAL
+  | Y_THREAD_LOCAL
+  | Y_THROW
+  | Y_TYPEDEF
+  | Y_VIRTUAL
+  | Y_PURE virtual_stid_exp       { $$ = TS_PURE_VIRTUAL | $2; }
   ;
 
 attribute_english_atid
@@ -1914,6 +1917,14 @@ udc_storage_class_list_english_type_opt
     }
   ;
 
+udc_storage_class_english_type
+  : attribute_english_atid        { $$ = C_TYPE_LIT_A( $1 ); }
+  | udc_storage_class_english_stid
+    {
+      $$ = C_TYPE_LIT_S( $1 );
+    }
+  ;
+
   /*
    * We need a seperate storage class set for user-defined conversion operators
    * without "delete" to eliminiate a shift/reduce conflict; shift:
@@ -1927,21 +1938,20 @@ udc_storage_class_list_english_type_opt
    * where "delete" is storage-class-like.  The "delete" can safely be removed
    * since only special members can be deleted anyway.
    */
-udc_storage_class_english_type
-  : attribute_english_atid        { $$ = C_TYPE_LIT_A( $1 ); }
-  | Y_CONSTEVAL                   { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_CONSTEXPR                   { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_CONSTINIT                   { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_EXPLICIT                    { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_EXPORT                      { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_FINAL                       { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_FRIEND                      { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_INLINE                      { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_NOEXCEPT                    { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_OVERRIDE                    { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_THROW                       { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_VIRTUAL                     { $$ = C_TYPE_LIT_S( $1 ); }
-  | Y_PURE virtual_stid_exp       { $$ = C_TYPE_LIT_S( TS_PURE_VIRTUAL | $2 ); }
+udc_storage_class_english_stid
+  : Y_CONSTEVAL
+  | Y_CONSTEXPR
+  | Y_CONSTINIT
+  | Y_EXPLICIT
+  | Y_EXPORT
+  | Y_FINAL
+  | Y_FRIEND
+  | Y_INLINE
+  | Y_NOEXCEPT
+  | Y_OVERRIDE
+  | Y_THROW
+  | Y_VIRTUAL
+  | Y_PURE virtual_stid_exp       { $$ = TS_PURE_VIRTUAL | $2; }
   ;
 
 alignas_or_width_decl_english_ast
@@ -2022,14 +2032,14 @@ bits_opt
 /// define command ////////////////////////////////////////////////////////////
 
 define_command
-  : Y_DEFINE sname_english_exp as_exp storage_class_list_english_type_opt
+  : Y_DEFINE sname_english_exp as_exp storage_class_list_english_stid_opt
     decl_english_ast
     {
       DUMP_START( "define_command",
                   "DEFINE sname_english AS "
-                  "storage_class_list_english_type_opt decl_english_ast" );
+                  "storage_class_list_english_stid_opt decl_english_ast" );
       DUMP_SNAME( "sname", $2 );
-      DUMP_TYPE( "storage_class_list_english_type_opt", &$4 );
+      DUMP_TID( "storage_class_list_english_stid_opt", $4 );
       DUMP_AST( "decl_english_ast", $5 );
 
       c_ast_set_sname( $5, &$2 );
@@ -2052,7 +2062,7 @@ define_command
       // pass, remove the TS_TYPEDEF.
       //
       if ( !c_type_add( &$5->type, &T_TS_TYPEDEF, &@4 ) ||
-           !c_type_add( &$5->type, &$4, &@4 ) ||
+           !c_type_add_tid( &$5->type, $4, &@4 ) ||
            !c_ast_check( $5 ) ) {
         PARSE_ABORT();
       }
@@ -4749,6 +4759,10 @@ type_modifier_c_type
     }
   | type_qualifier_c_stid         { $$ = C_TYPE_LIT_S( $1 ); }
   | storage_class_c_type
+  | attribute_specifier_list_c_atid
+    {
+      $$ = C_TYPE_LIT_A( $1 );
+    }
   ;
 
 type_modifier_base_type
@@ -5127,11 +5141,7 @@ upc_layout_qualifier_c
 /// Gibberish C/C++ storage classes ///////////////////////////////////////////
 
 storage_class_c_type
-  : attribute_specifier_list_c_atid
-    {
-      $$ = C_TYPE_LIT_A( $1 );
-    }
-  | Y_AUTO_STORAGE                { $$ = C_TYPE_LIT_S( $1 ); }
+  : Y_AUTO_STORAGE                { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_APPLE___BLOCK               { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_CONSTEVAL                   { $$ = C_TYPE_LIT_S( $1 ); }
   | Y_CONSTEXPR                   { $$ = C_TYPE_LIT_S( $1 ); }
@@ -5418,14 +5428,14 @@ decl_english_ast
 /// English C/C++ array declaration ///////////////////////////////////////////
 
 array_decl_english_ast
-  : Y_ARRAY static_stid_opt type_qualifier_list_english_stid_opt
+  : Y_ARRAY static_stid_opt array_qualifier_list_english_stid_opt
     array_size_int_opt of_exp decl_english_ast
     {
       DUMP_START( "array_decl_english_ast",
-                  "ARRAY static_stid_opt type_qualifier_list_english_stid_opt "
+                  "ARRAY static_stid_opt array_qualifier_list_english_stid_opt "
                   "array_size_num_opt OF decl_english_ast" );
       DUMP_TID( "static_stid_opt", $2 );
-      DUMP_TID( "type_qualifier_list_english_stid_opt", $3 );
+      DUMP_TID( "array_qualifier_list_english_stid_opt", $3 );
       DUMP_INT( "array_size_int_opt", $4 );
       DUMP_AST( "decl_english_ast", $6 );
 
@@ -5438,13 +5448,13 @@ array_decl_english_ast
       DUMP_END();
     }
 
-  | Y_VARIABLE length_opt array_exp type_qualifier_list_english_stid_opt
+  | Y_VARIABLE length_opt array_exp array_qualifier_list_english_stid_opt
     of_exp decl_english_ast
     {
       DUMP_START( "array_decl_english_ast",
-                  "VARIABLE LENGTH ARRAY type_qualifier_list_english_stid_opt "
+                  "VARIABLE LENGTH ARRAY array_qualifier_list_english_stid_opt "
                   "OF decl_english_ast" );
-      DUMP_TID( "type_qualifier_list_english_stid_opt", $4 );
+      DUMP_TID( "array_qualifier_list_english_stid_opt", $4 );
       DUMP_AST( "decl_english_ast", $6 );
 
       $$ = c_ast_new_gc( K_ARRAY, &@$ );
@@ -5455,6 +5465,15 @@ array_decl_english_ast
       DUMP_AST( "array_decl_english_ast", $$ );
       DUMP_END();
     }
+  ;
+
+array_qualifier_list_english_stid_opt
+  : /* empty */                   { $$ = TS_NONE; }
+  | array_qualifier_list_english_stid
+  ;
+
+array_qualifier_list_english_stid
+  : cv_qualifier_stid
   ;
 
 array_size_int_opt
@@ -5576,24 +5595,25 @@ msc_calling_convention_atid
 /// English C++ operator declaration //////////////////////////////////////////
 
 oper_decl_english_ast
-  : type_qualifier_list_english_stid_opt ref_qualifier_english_stid_opt
+  : type_qualifier_list_english_type_opt ref_qualifier_english_stid_opt
     member_or_non_member_mask_opt operator_exp paren_decl_list_english_opt
     returning_english_ast_opt
     {
       DUMP_START( "oper_decl_english_ast",
-                  "type_qualifier_list_english_stid_opt "
+                  "type_qualifier_list_english_type_opt "
                   "ref_qualifier_english_stid_opt "
                   "member_or_non_member_mask_opt "
                   "OPERATOR paren_decl_list_english_opt "
                   "returning_english_ast_opt" );
-      DUMP_TID( "type_qualifier_list_english_stid_opt", $1 );
+      DUMP_TYPE( "type_qualifier_list_english_type_opt", &$1 );
       DUMP_TID( "ref_qualifier_english_stid_opt", $2 );
       DUMP_INT( "member_or_non_member_mask_opt", $3 );
       DUMP_AST_LIST( "paren_decl_list_english_opt", $5 );
       DUMP_AST( "returning_english_ast_opt", $6 );
 
       $$ = c_ast_new_gc( K_OPERATOR, &@$ );
-      $$->type.stids = c_tid_check( $1 | $2, C_TPID_STORE );
+      C_TYPE_ADD( &$$->type, &$1, @1 );
+      C_TYPE_ADD_TID( &$$->type, $2, @2 );
       $$->as.oper.param_ast_list = $5;
       $$->as.oper.flags = $3;
       c_ast_set_parent( $6, $$ );
@@ -5715,44 +5735,49 @@ returning_english_ast
 /// English C/C++ qualified declaration ///////////////////////////////////////
 
 qualified_decl_english_ast
-  : type_qualifier_list_english_stid_opt qualifiable_decl_english_ast
+  : type_qualifier_list_english_type_opt qualifiable_decl_english_ast
     {
       DUMP_START( "qualified_decl_english_ast",
-                  "type_qualifier_list_english_stid_opt "
+                  "type_qualifier_list_english_type_opt "
                   "qualifiable_decl_english_ast" );
-      DUMP_TID( "type_qualifier_list_english_stid_opt", $1 );
+      DUMP_TYPE( "type_qualifier_list_english_type_opt", &$1 );
       DUMP_AST( "qualifiable_decl_english_ast", $2 );
 
       $$ = $2;
-      C_TYPE_ADD_TID( &$$->type, $1, @1 );
+      C_TYPE_ADD( &$$->type, &$1, @1 );
 
       DUMP_AST( "qualified_decl_english_ast", $$ );
       DUMP_END();
     }
   ;
 
-type_qualifier_list_english_stid_opt
-  : /* empty */                   { $$ = TS_NONE; }
-  | type_qualifier_list_english_stid
+type_qualifier_list_english_type_opt
+  : /* empty */                   { $$ = T_NONE; }
+  | type_qualifier_list_english_type
   ;
 
-type_qualifier_list_english_stid
-  : type_qualifier_list_english_stid type_qualifier_english_stid
+type_qualifier_list_english_type
+  : type_qualifier_list_english_type type_qualifier_english_type
     {
-      DUMP_START( "type_qualifier_list_english_stid",
-                  "type_qualifier_list_english_stid "
-                  "type_qualifier_english_stid" );
-      DUMP_TID( "type_qualifier_list_english_stid", $1 );
-      DUMP_TID( "type_qualifier_english_stid", $2 );
+      DUMP_START( "type_qualifier_list_english_type",
+                  "type_qualifier_list_english_type "
+                  "type_qualifier_english_type" );
+      DUMP_TYPE( "type_qualifier_list_english_type", &$1 );
+      DUMP_TYPE( "type_qualifier_english_type", &$2 );
 
       $$ = $1;
-      C_TID_ADD( &$$, $2, @2 );
+      C_TYPE_ADD( &$$, &$2, @2 );
 
-      DUMP_TID( "type_qualifier_list_english_stid", $$ );
+      DUMP_TYPE( "type_qualifier_list_english_type", &$$ );
       DUMP_END();
     }
 
-  | type_qualifier_english_stid
+  | type_qualifier_english_type
+  ;
+
+type_qualifier_english_type
+  : attribute_english_atid        { $$ = C_TYPE_LIT_A( $1 ); }
+  | type_qualifier_english_stid   { $$ = C_TYPE_LIT_S( $1 ); }
   ;
 
 type_qualifier_english_stid
@@ -6012,8 +6037,7 @@ type_modifier_list_english_type
   ;
 
 type_modifier_english_type
-  : attribute_english_atid        { $$ = C_TYPE_LIT_A( $1 ); }
-  | type_modifier_base_type
+  : type_modifier_base_type
   ;
 
 unmodified_type_english_ast
