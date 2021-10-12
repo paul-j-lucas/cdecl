@@ -4818,7 +4818,7 @@ atomic_specifier_type_c_ast
       // the AST has no "memory" of which it was.
       //
       if ( $$->type.stids != TS_NONE || $$->type.atids != TA_NONE ) {
-        static c_type_t const TSA_ANY = C_TYPE_LIT( TB_NONE, TS_ANY, TA_ANY );
+        static c_type_t const TSA_ANY = { TB_NONE, TS_ANY, TA_ANY };
         c_type_t const error_type = c_type_and( &$$->type, &TSA_ANY );
         print_error( &@3,
           "%s can not be of \"%s\"\n",
