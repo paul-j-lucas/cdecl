@@ -1,5 +1,13 @@
 2021-10-12  Paul J. Lucas <paul@lucasmail.org>
 
+   * parser.y, cdecl--debug.out, cdecl-d-+i.out, cdecl-d-al8i.out,
+     cdecl-d-alli.out, cdecl-d-cmo_exclam__b.out, cdecl-d-eni.out,
+     cdecl-d-f2i_pi.out, cdecl-d-f_v.out, cdecl-d-faia4iaviacias6i_v.out,
+     cdecl-d-pmki.out, cdecl-d-udc_i.out, cdecl-d-z.out: Rewrote parts of the
+     grammar to lower the shift-reduce conflicts from 33 to 17.
+   * c_type.c: Removed redundant condition.
+   * parser.y: Fix for ancient gcc that didn't like the previous static
+     declaration.
    * parser.y: Rewrote parts of the grammar to lower the shift-reduce conflicts
      from 48 to 33.
 
