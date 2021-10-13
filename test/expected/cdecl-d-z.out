@@ -36,8 +36,8 @@ typedef_type_c_ast ::= any_typedef = {
   }
 }
 
-type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
-  unmodified_type_c_ast = {
+east_modified_type_c_ast ::= atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt = {
+  builtin_type_ast = {
     sname = "",
     unique_id = 1327,
     kind = "typedef",

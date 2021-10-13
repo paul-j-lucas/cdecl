@@ -84,8 +84,8 @@ enum_class_struct_union_c_ast ::= enum_class_struct_union_c_btid attribute_speci
   }
 }
 
-type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
-  unmodified_type_c_ast = {
+east_modified_type_c_ast ::= enum_class_struct_union_c_ast cv_qualifier_list_stid_opt = {
+  enum_class_struct_union_c_ast = {
     sname = "",
     unique_id = 1328,
     kind = "enum, class, struct, or union",
@@ -107,8 +107,8 @@ type_c_ast ::= unmodified_type_c_ast type_modifier_list_c_type_opt = {
       bit_width = 0
     }
   },
-  type_modifier_list_c_type_opt = "none" (btid = 0x1, stid = 0x2, atid = 0x4),
-  type_c_ast = {
+  cv_qualifier_list_stid_opt = "" (stid = 0x2),
+  east_modified_type_c_ast = {
     sname = "",
     unique_id = 1328,
     kind = "enum, class, struct, or union",

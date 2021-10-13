@@ -26,7 +26,7 @@
 
 /** @cond DOXYGEN_IGNORE */
 
-%expect 33
+%expect 17
 
 %{
 /** @endcond */
@@ -1403,6 +1403,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  array_decl_c_astp
 %type   <ast>       array_size_c_ast
 %type   <int_val>   array_size_c_int
+%type   <ast>       atomic_builtin_typedef_type_c_ast
 %type   <ast>       atomic_specifier_type_c_ast
 %type   <tid>       attribute_c_atid
 %type   <tid>       attribute_list_c_atid attribute_list_c_atid_opt
@@ -1412,6 +1413,7 @@ static void yyerror( char const *msg ) {
 %type   <ast_pair>  block_decl_c_astp
 %type   <ast_pair>  decl_c_astp decl2_c_astp
 %type   <ast>       destructor_decl_c_ast
+%type   <ast>       east_modified_type_c_ast
 %type   <ast>       enum_class_struct_union_c_ast
 %type   <ast>       enum_fixed_type_c_ast enum_fixed_type_c_ast_opt
 %type   <tid>       enum_fixed_type_modifier_list_btid
@@ -1455,7 +1457,6 @@ static void yyerror( char const *msg ) {
 %type   <type>      type_modifier_list_c_type type_modifier_list_c_type_opt
 %type   <tid>       type_qualifier_c_stid
 %type   <tid>       type_qualifier_list_c_stid type_qualifier_list_c_stid_opt
-%type   <ast>       unmodified_type_c_ast
 %type   <ast_pair>  user_defined_conversion_decl_c_astp
 %type   <ast>       user_defined_literal_c_ast
 %type   <ast_pair>  user_defined_literal_decl_c_astp
@@ -4669,42 +4670,21 @@ type_c_ast
      *
      *      unsigned int const i;       // uncommon, but legal
      */
-  | type_modifier_list_c_type unmodified_type_c_ast
-    type_modifier_list_c_type_opt
+  | type_modifier_list_c_type east_modified_type_c_ast
     {
       DUMP_START( "type_c_ast",
-                  "type_modifier_list_c_type unmodified_type_c_ast "
-                  "type_modifier_list_c_type_opt" );
+                  "type_modifier_list_c_type east_modified_type_c_ast " );
       DUMP_TYPE( "type_modifier_list_c_type", &$1 );
-      DUMP_AST( "unmodified_type_c_ast", $2 );
-      DUMP_TYPE( "type_modifier_list_c_type_opt", &$3 );
+      DUMP_AST( "east_modified_type_c_ast", $2 );
 
       $$ = $2;
       C_TYPE_ADD( &$$->type, &$1, @1 );
-      C_TYPE_ADD( &$$->type, &$3, @3 );
 
       DUMP_AST( "type_c_ast", $$ );
       DUMP_END();
     }
 
-    /*
-     * Type with trailing type-modifier(s) declarations:
-     *
-     *      int const i;                // uncommon, but legal
-     */
-  | unmodified_type_c_ast type_modifier_list_c_type_opt
-    {
-      DUMP_START( "type_c_ast",
-                  "unmodified_type_c_ast type_modifier_list_c_type_opt" );
-      DUMP_AST( "unmodified_type_c_ast", $1 );
-      DUMP_TYPE( "type_modifier_list_c_type_opt", &$2 );
-
-      $$ = $1;
-      C_TYPE_ADD( &$$->type, &$2, @2 );
-
-      DUMP_AST( "type_c_ast", $$ );
-      DUMP_END();
-    }
+  | east_modified_type_c_ast
   ;
 
 type_modifier_list_c_type_opt
@@ -4741,10 +4721,10 @@ type_modifier_c_type
       //
       // that is: explain a redefinition of a typedef'd type with the same type
       // that contains only one or more type_modifier_base_type.  The problem
-      // is that, without an unmodified_type_c_ast (like int), the parser would
-      // ordinarily take the typedef'd type (here, the size_t) as part of the
-      // type_c_ast and then be out of tokens for the decl_c_astp -- at which
-      // time it'll complain.
+      // is that, without an east_modified_type_c_ast (like int), the parser
+      // would ordinarily take the typedef'd type (here, the size_t) as part of
+      // the type_c_ast and then be out of tokens for the decl_c_astp -- at
+      // which time it'll complain.
       //
       // Since type modifiers can't apply to a typedef'd type (e.g., "long
       // size_t" is illegal), we tell the lexer not to return either
@@ -4781,10 +4761,40 @@ type_modifier_base_type
   | Y_REGISTER                    { $$ = C_TYPE_LIT_S( $1 ); }
   ;
 
-unmodified_type_c_ast
+east_modified_type_c_ast
+  : atomic_builtin_typedef_type_c_ast type_modifier_list_c_type_opt
+    {
+      DUMP_START( "east_modified_type_c_ast",
+                  "atomic_builtin_typedef_type_c_ast "
+                  "type_modifier_list_c_type_opt" );
+      DUMP_AST( "builtin_type_ast", $1 );
+      DUMP_TYPE( "type_modifier_list_c_type_opt", &$2 );
+
+      $$ = $1;
+      C_TYPE_ADD( &$$->type, &$2, @2 );
+
+      DUMP_AST( "type_c_ast", $$ );
+      DUMP_END();
+    }
+
+  | enum_class_struct_union_c_ast cv_qualifier_list_stid_opt
+    {
+      DUMP_START( "east_modified_type_c_ast",
+                  "enum_class_struct_union_c_ast cv_qualifier_list_stid_opt" );
+      DUMP_AST( "enum_class_struct_union_c_ast", $1 );
+      DUMP_TID( "cv_qualifier_list_stid_opt", $2 );
+
+      $$ = $1;
+      C_TYPE_ADD_TID( &$$->type, $2, @2 );
+
+      DUMP_AST( "east_modified_type_c_ast", $$ );
+      DUMP_END();
+    }
+  ;
+
+atomic_builtin_typedef_type_c_ast
   : atomic_specifier_type_c_ast
   | builtin_type_ast
-  | enum_class_struct_union_c_ast
   | typedef_type_c_ast
   ;
 
