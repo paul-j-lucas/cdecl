@@ -4336,7 +4336,7 @@ array_cast_c_astp
       c_ast_t *const type_ast = ia_type_ast_peek();
       c_ast_t *const array_ast = $2;
 
-      DUMP_START( "array_cast_c_astp", "cast_c_astp_opt array_size_c_int" );
+      DUMP_START( "array_cast_c_astp", "cast_c_astp_opt array_size_c_ast" );
       DUMP_AST( "(type_c_ast)", type_ast );
       DUMP_AST( "cast_c_astp_opt", $1.ast );
       DUMP_AST( "target_ast", $1.target_ast );

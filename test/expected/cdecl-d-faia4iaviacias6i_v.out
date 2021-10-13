@@ -145,7 +145,7 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-array_cast_c_astp ::= cast_c_astp_opt array_size_c_int = {
+array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
   (type_c_ast) = {
     sname = "a" (none),
     unique_id = 1328,
@@ -385,7 +385,7 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-array_cast_c_astp ::= cast_c_astp_opt array_size_c_int = {
+array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
   (type_c_ast) = {
     sname = "b" (none),
     unique_id = 1331,
@@ -671,7 +671,7 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-array_cast_c_astp ::= cast_c_astp_opt array_size_c_int = {
+array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
   (type_c_ast) = {
     sname = "c" (none),
     unique_id = 1334,
@@ -1001,7 +1001,7 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-array_cast_c_astp ::= cast_c_astp_opt array_size_c_int = {
+array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
   (type_c_ast) = {
     sname = "d" (none),
     unique_id = 1337,
@@ -1381,7 +1381,7 @@ sname_c_ast ::= sname_c = {
   }
 }
 
-array_cast_c_astp ::= cast_c_astp_opt array_size_c_int = {
+array_cast_c_astp ::= cast_c_astp_opt array_size_c_ast = {
   (type_c_ast) = {
     sname = "e" (none),
     unique_id = 1340,
